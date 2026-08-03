@@ -206,7 +206,7 @@ export function FuelLogSheet({
           />
           <Button
             type="button"
-            variant="fitness"
+            variant="default"
             className="w-full min-h-[44px]"
             disabled={!description.trim()}
             onClick={runEstimate}
@@ -341,7 +341,7 @@ export function FuelLogSheet({
             </div>
           </div>
           <Button
-            variant="fitness"
+            variant="default"
             className="w-full h-11"
             disabled={!customName.trim()}
             onClick={() => {

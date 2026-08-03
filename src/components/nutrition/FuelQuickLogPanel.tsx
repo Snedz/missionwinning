@@ -157,7 +157,7 @@ export function FuelQuickLogPanel({
               key={m}
               type="button"
               size="sm"
-              variant={activeMeal === m ? 'fitness' : 'outline'}
+              variant={activeMeal === m ? 'selected' : 'outline'}
               className="h-8 text-xs "
               onClick={() => onActiveMealChange(m)}
             >

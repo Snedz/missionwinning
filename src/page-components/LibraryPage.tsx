@@ -285,7 +285,7 @@ export function LibraryPage() {
               <Button variant="outline" className="flex-1" onClick={clearFilters}>
                 {t('libraryClearFilters', { defaultValue: 'Clear filters' })}
               </Button>
-              <Button variant="fitness" className="flex-1" onClick={() => setFiltersOpen(false)}>
+              <Button variant="default" className="flex-1" onClick={() => setFiltersOpen(false)}>
                 {t('libraryApplyFilters', { defaultValue: 'Done' })}
               </Button>
             </div>

@@ -157,7 +157,7 @@ export function DailyCheckIn() {
             })}
           />
         </div>
-        <Button variant="fitness" className="min-h-[44px] w-full" onClick={handleSave}>
+        <Button variant="default" className="min-h-[44px] w-full" onClick={handleSave}>
           {saved
             ? t('mindCheckInUpdate', { defaultValue: "Update Today's Check-In" })
             : t('mindCheckInSave', { defaultValue: 'Save Check-In' })}

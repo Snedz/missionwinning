@@ -475,7 +475,7 @@ export function CoachChatPanel({
               ) : (
                 <Button
                   type="button"
-                  variant="fitness"
+                  variant="default"
                   className="min-h-[44px] min-w-[44px]"
                   disabled={!input.trim()}
                   onClick={() => void send()}

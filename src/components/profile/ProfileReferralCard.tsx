@@ -92,7 +92,7 @@ export function ProfileReferralCard({ signedIn }: Props) {
                 defaultValue: 'Sign in to get your invite code and share the mission.',
               })}
             </p>
-            <Button asChild variant="fitness" className="min-h-[44px]">
+            <Button asChild variant="default" className="min-h-[44px]">
               <Link href="/profile">
                 {t('growthReferralSignIn', { defaultValue: 'Sign in' })}
               </Link>
@@ -132,7 +132,7 @@ export function ProfileReferralCard({ signedIn }: Props) {
             ) : null}
             <Button
               type="button"
-              variant="fitness"
+              variant="default"
               className="min-h-[44px] w-full sm:w-auto"
               disabled={!code}
               onClick={() => void invite()}

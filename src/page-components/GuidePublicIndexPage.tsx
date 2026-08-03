@@ -74,7 +74,7 @@ export function GuidePublicIndexPage() {
         </section>
 
         <div className="pt-4 text-center">
-          <Button asChild variant="fitness">
+          <Button asChild variant="default">
             <Link
               href="/welcome"
               onClick={() => track('public_cta_clicked', { target: '/welcome' })}

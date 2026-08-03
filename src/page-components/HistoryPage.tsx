@@ -72,7 +72,6 @@ import type { CompletedWorkoutLog } from '@/types';
 import { getUser, getUserNutritionForDate, type CloudNutritionEntry } from '@/lib/supabase';
 import { PillarPageShell } from '@/components/layout/PillarPageShell';
 import { EmptyState } from '@/components/ui/EmptyState';
-import { TodaySection } from '@/components/journey/TodaySection';
 import { Input } from '@/components/ui/input';
 import { SegmentedControl } from '@/components/ui/SegmentedControl';
 import { localDateKey, localDateKeyFromIso } from '@/lib/time/localDate';

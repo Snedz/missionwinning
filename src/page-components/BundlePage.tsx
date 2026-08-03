@@ -193,7 +193,7 @@ export function BundlePage() {
                 </p>
               )}
               {premium && (
-                <Button asChild variant="fitness" size="sm">
+                <Button asChild variant="default" size="sm">
                   <Link href="/coach">{t('coachViewPlan', { defaultValue: 'View full week' })}</Link>
                 </Button>
               )}

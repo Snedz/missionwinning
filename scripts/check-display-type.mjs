@@ -123,11 +123,11 @@ function redButtonVariants() {
 
 const RED_VARIANTS = redButtonVariants();
 /*
- * A derived list that derives nothing passes everything. `default` and
- * `fitness` are both `bg-primary-fill` today; if neither is found, the variant
- * map moved and this rule has quietly stopped existing — which is the exact
- * failure mode (`.213`, `.220`) that makes a guard worth less than no guard,
- * because now nobody is looking.
+ * A derived list that derives nothing passes everything. `default` is
+ * `bg-primary-fill` today (`fitness` was folded into it in the D11–D13 Kaizen
+ * night); if none is found, the variant map moved and this rule has quietly
+ * stopped existing — which is the exact failure mode (`.213`, `.220`) that
+ * makes a guard worth less than no guard, because now nobody is looking.
  */
 if (RED_VARIANTS.size === 0) {
   console.error(

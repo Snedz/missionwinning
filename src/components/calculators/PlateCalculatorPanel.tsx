@@ -175,7 +175,7 @@ export function PlateCalculatorPanel({ initialTarget, onApplyTarget, compact }: 
 
         {onApplyTarget && (
           <Button
-            variant="fitness"
+            variant="default"
             size="block"
             onClick={() => onApplyTarget(result.achievedWeight)}
           >

@@ -9,14 +9,9 @@ describe('coachAdaptReentryIsPrescribed', () => {
         {
           sessions: [
             {
-              id: 'a',
               dayOffset: 0,
-              name: 'A',
-              kind: 'strength',
-              focusGroups: [],
-              estMinutes: 40,
               status: 'planned',
-              exercises: [{ exerciseId: 'squat', sets: 3, reps: 5, weight: 100 }],
+              exercises: [{ exerciseId: 'squat' }],
             },
           ],
         },
@@ -32,14 +27,9 @@ describe('coachAdaptReentryIsPrescribed', () => {
         {
           sessions: [
             {
-              id: 'a',
               dayOffset: 1,
-              name: 'Upper',
-              kind: 'strength',
-              focusGroups: ['chest'],
-              estMinutes: 45,
               status: 'planned',
-              exercises: [{ exerciseId: 'bench', sets: 3, reps: 8, weight: 60 }],
+              exercises: [{ exerciseId: 'bench' }],
             },
           ],
         },
@@ -55,14 +45,9 @@ describe('coachAdaptReentryIsPrescribed', () => {
         {
           sessions: [
             {
-              id: 'a',
               dayOffset: 2,
-              name: 'Done',
-              kind: 'strength',
-              focusGroups: [],
-              estMinutes: 40,
               status: 'done',
-              exercises: [{ exerciseId: 'row', sets: 3, reps: 8, weight: 50 }],
+              exercises: [{ exerciseId: 'row' }],
             },
           ],
         },
@@ -78,12 +63,7 @@ describe('coachAdaptReentryIsPrescribed', () => {
         {
           sessions: [
             {
-              id: 'a',
               dayOffset: 0,
-              name: 'Empty',
-              kind: 'recovery',
-              focusGroups: [],
-              estMinutes: 20,
               status: 'planned',
               exercises: [],
             },

@@ -89,7 +89,7 @@ export function FeedbackPage() {
                   {t('feedbackThankEmail', { defaultValue: 'Check your inbox if you left an email.' })}
                 </p>
               </div>
-              <Button size="lg" variant="fitness" onClick={() => router.push('/log')}>
+              <Button size="lg" variant="default" onClick={() => router.push('/log')}>
                 {t('feedbackBackToday', { defaultValue: 'Back to Today' })}
               </Button>
             </CardContent>
@@ -196,7 +196,7 @@ export function FeedbackPage() {
                 </div>
               </div>
 
-              <Button type="submit" size="lg" variant="fitness" className="w-full" disabled={loading}>
+              <Button type="submit" size="lg" variant="default" className="w-full" disabled={loading}>
                 {loading
                   ? t('feedbackSubmitting', { defaultValue: 'Submitting…' })
                   : t('feedbackSubmit', { defaultValue: 'Submit feedback' })}

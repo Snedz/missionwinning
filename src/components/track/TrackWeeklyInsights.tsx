@@ -61,7 +61,7 @@ export function TrackWeeklyInsights({ locked = false }: Props) {
                 defaultValue: 'Weekly GPS distance and average pace — Super Bundle.',
               })}
             </p>
-            <Button variant="fitness" size="sm" asChild>
+            <Button variant="default" size="sm" asChild>
               <Link href="/bundle">{t('trackExploreBundle', { defaultValue: 'See Super Bundle' })}</Link>
             </Button>
           </div>

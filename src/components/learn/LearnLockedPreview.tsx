@@ -45,7 +45,7 @@ export function LearnLockedPreview() {
             </p>
             <p className="font-semibold">{intro.title}</p>
             <p className="text-sm text-muted-foreground">{intro.subtitle}</p>
-            <Button variant="fitness" size="sm" asChild>
+            <Button variant="default" size="sm" asChild>
               <Link href={`/learn/guide/${intro.id}`}>
                 {t('learnReadIntro', { defaultValue: 'Read intro chapter →' })}
               </Link>

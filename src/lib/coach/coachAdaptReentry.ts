@@ -2,10 +2,19 @@
  * Pure: should adapt-banner re-entry advertise the coach session vs freestyle Just Go?
  * Kept separate so UI cannot re-lie without a failing test (same contract as justGoHeroMeta).
  */
-import type { CoachPlan } from '@/lib/coach/types';
+
+export type AdaptReentrySession = {
+  dayOffset: number;
+  status: string;
+  exercises: readonly unknown[];
+};
+
+export type AdaptReentryPlan = {
+  sessions: readonly AdaptReentrySession[];
+};
 
 export function coachAdaptReentryIsPrescribed(
-  plan: Pick<CoachPlan, 'sessions'>,
+  plan: AdaptReentryPlan,
   todayOffset: number | undefined
 ): boolean {
   if (typeof todayOffset !== 'number') return false;

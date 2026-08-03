@@ -74,7 +74,7 @@ export function CoachingPage() {
                   'Thanks — your note is with the founder, who reads every one. Replies come by email, and it is a one-person shop, so give it a few days.',
               })}
             </p>
-            <Button variant="fitness" onClick={() => router.push('/log')}>
+            <Button variant="default" onClick={() => router.push('/log')}>
               {t('infoBackToday', { defaultValue: 'Back to Today' })}
             </Button>
           </CardContent>
@@ -111,7 +111,7 @@ export function CoachingPage() {
             aria-label={t('infoCoachingGoalsLabel', { defaultValue: 'Your goals and current training' })}
           />
           {error && <p className="text-sm font-medium text-primary">{error}</p>}
-          <Button type="submit" size="lg" variant="fitness" className="w-full" disabled={loading}>
+          <Button type="submit" size="lg" variant="default" className="w-full" disabled={loading}>
             {loading
               ? t('infoCoachingSending', { defaultValue: 'Sending…' })
               : t('infoCoachingSubmit', { defaultValue: 'Join the coaching interest list' })}

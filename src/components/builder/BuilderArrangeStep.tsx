@@ -107,7 +107,7 @@ export function BuilderArrangeStep({
               footer={
                 <Button
                   type="button"
-                  variant="fitness"
+                  variant="default"
                   className="w-full min-h-[52px]"
                   disabled={!selectedExerciseId}
                   onClick={() => {
@@ -264,7 +264,7 @@ export function BuilderArrangeStep({
           <Button variant="outline" onClick={onBack}>
             {t('builderBack', { defaultValue: 'Back' })}
           </Button>
-          <Button variant="fitness"
+          <Button variant="default"
             className="flex-1 primary-action" disabled={exercises.length === 0}
             onClick={onContinue}
           >

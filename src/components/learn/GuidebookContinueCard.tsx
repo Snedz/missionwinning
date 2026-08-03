@@ -47,7 +47,7 @@ export function GuidebookContinueCard() {
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <Button variant="fitness" size="sm" asChild>
+        <Button variant="default" size="sm" asChild>
           <Link href={href}>{t('learnOpenGuidebook', { defaultValue: 'Open Guidebook →' })}</Link>
         </Button>
       </CardContent>

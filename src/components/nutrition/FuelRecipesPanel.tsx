@@ -94,7 +94,7 @@ export function FuelRecipesPanel({
                 <div className="flex items-center gap-2 shrink-0">
                   <Button
                     size="sm"
-                    variant="fitness"
+                    variant="default"
                     onClick={(e) => {
                       e.preventDefault();
                       pickRecipe(r);
@@ -145,7 +145,7 @@ export function FuelRecipesPanel({
                   <div className="flex items-center gap-2 shrink-0">
                     <Button
                       size="sm"
-                      variant="fitness"
+                      variant="default"
                       onClick={(e) => {
                         e.preventDefault();
                         pickRecipe(r);
@@ -197,7 +197,7 @@ export function FuelRecipesPanel({
                 </li>
               ))}
             </ul>
-            <Button variant="fitness" asChild>
+            <Button variant="default" asChild>
               <Link href="/bundle">
                 {t('fuelExploreBundle', { defaultValue: 'Explore Super Bundle' })}
               </Link>

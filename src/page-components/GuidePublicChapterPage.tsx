@@ -156,7 +156,7 @@ export function GuidePublicChapterPage({ chapter: chapterProp, prev, next, jsonL
               {nextLocalized.title} →
             </Link>
           ) : (
-            <Button asChild variant="fitness">
+            <Button asChild variant="default">
               <Link href="/welcome">
                 {t('magazineStartFree', { defaultValue: 'Start free' })} →
               </Link>

@@ -159,7 +159,7 @@ export function TrackGpsPanel({ onLogged }: { onLogged?: () => void }) {
         </p>
         <div className="flex gap-2 flex-wrap">
           {!tracking ? (
-            <Button size="sm" variant="fitness" onClick={startTracking}>
+            <Button size="sm" variant="default" onClick={startTracking}>
               {t('trackGpsStart', { defaultValue: 'Start GPS' })}
             </Button>
           ) : (
@@ -167,7 +167,7 @@ export function TrackGpsPanel({ onLogged }: { onLogged?: () => void }) {
               <Button size="sm" variant="outline" onClick={stopTracking}>
                 {t('trackGpsStop', { defaultValue: 'Stop' })}
               </Button>
-              <Button size="sm" variant="fitness" onClick={saveSession}>
+              <Button size="sm" variant="default" onClick={saveSession}>
                 {t('trackGpsSave', { defaultValue: 'Save to log' })}
               </Button>
             </>

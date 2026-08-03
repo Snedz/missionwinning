@@ -32,7 +32,7 @@ export function InfoPageFooter({
           </Button>
         )}
         {bundleVisible && (
-          <Button asChild variant="fitness" size="sm">
+          <Button asChild variant="default" size="sm">
             <Link href="/bundle">Super Bundle</Link>
           </Button>
         )}

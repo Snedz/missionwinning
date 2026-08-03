@@ -92,7 +92,7 @@ export function ActiveSessionChrome({
           </Button>
 
           <Button
-            variant="fitness"
+            variant="default"
             size="sm"
             className="h-11 min-h-[44px] shrink-0 gap-1 px-3 tap-target"
             onClick={onFinish}
