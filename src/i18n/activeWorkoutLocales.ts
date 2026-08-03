@@ -86,6 +86,43 @@ type ActiveWorkoutStrings = {
   victoryProgressHold: string;
   victoryProgressAddRepsBw: string;
   victoryProgressHoldBw: string;
+  /** Finish with zero sets — toast description (`.296`). */
+  activeNothingLoggedDesc: string;
+  /** Victory sheet (`.296`). */
+  victoryShareText: string;
+  victoryTitle: string;
+  victoryScoutCue: string;
+  victoryVolume: string;
+  victorySets: string;
+  victoryFeelSaved: string;
+  victoryFeelPrompt: string;
+  victoryFeelLow: string;
+  victoryFeelHigh: string;
+  victoryBodyDeltaLabel: string;
+  victoryReadinessDelta: string;
+  victoryStrainDelta: string;
+  victoryRecoveryDelta: string;
+  victoryStreak: string;
+  victoryNextLabel: string;
+  victoryBackToday: string;
+  victoryViewHistory: string;
+  victoryShare: string;
+  victoryShareCard: string;
+  /** Pre-session check-in sheet (`.296`). */
+  sessionCheckInEyebrow: string;
+  sessionCheckInTitle: string;
+  sessionCheckInSave: string;
+  sessionCheckInSkip: string;
+  sessionCheckInLead: string;
+  sessionCheckInSoreness: string;
+  sessionCheckInFresh: string;
+  sessionCheckInBeaten: string;
+  sessionCheckInSleep: string;
+  sessionCheckInPoor: string;
+  sessionCheckInGreat: string;
+  sessionCheckInMotivation: string;
+  sessionCheckInLow: string;
+  sessionCheckInFired: string;
 };
 
 const en: ActiveWorkoutStrings = {
@@ -167,6 +204,42 @@ const en: ActiveWorkoutStrings = {
   victoryProgressHold: 'Next: hold {{reps}} × {{weight}} {{unit}} on {{name}}',
   victoryProgressAddRepsBw: 'Next: {{reps}} reps on {{name}}',
   victoryProgressHoldBw: 'Next: hold {{reps}} on {{name}}',
+  activeNothingLoggedDesc: 'Complete at least one set before finishing.',
+  victoryShareText:
+    'Session done: {{name}} — {{volume}} {{unit}}, {{sets}} sets.',
+  victoryTitle: 'Session locked',
+  victoryScoutCue: 'Session saved.',
+  victoryVolume: 'Volume',
+  victorySets: 'Sets',
+  victoryFeelSaved: 'Logged — feeds readiness on Today.',
+  victoryFeelPrompt: 'How do you feel after this session?',
+  victoryFeelLow: 'Drained',
+  victoryFeelHigh: 'Energized',
+  victoryBodyDeltaLabel: 'What changed',
+  victoryReadinessDelta: 'Readiness {{delta}}',
+  victoryStrainDelta: 'Strain {{delta}}',
+  victoryRecoveryDelta: 'Recovery {{delta}}',
+  victoryStreak: '{{count}}-day streak — nice consistency',
+  victoryNextLabel: 'Next',
+  victoryBackToday: 'Back to Today',
+  victoryViewHistory: 'History',
+  victoryShare: 'Share',
+  victoryShareCard: 'Share card',
+  sessionCheckInEyebrow: 'Before you train',
+  sessionCheckInTitle: 'How do you feel?',
+  sessionCheckInSave: 'Save & continue',
+  sessionCheckInSkip: 'Not now',
+  sessionCheckInLead:
+    'Three quick ratings. We adjust readiness — we never cut your sets without asking.',
+  sessionCheckInSoreness: 'Soreness',
+  sessionCheckInFresh: 'Fresh',
+  sessionCheckInBeaten: 'Beaten up',
+  sessionCheckInSleep: 'Sleep last night',
+  sessionCheckInPoor: 'Poor',
+  sessionCheckInGreat: 'Great',
+  sessionCheckInMotivation: 'Motivation',
+  sessionCheckInLow: 'Low',
+  sessionCheckInFired: 'Fired up',
 };
 
 const es: ActiveWorkoutStrings = {

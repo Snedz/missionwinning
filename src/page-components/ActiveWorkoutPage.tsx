@@ -367,7 +367,9 @@ export function ActiveWorkoutPage() {
     if (!log) {
       toast({
         title: t('activeNothingLogged', { defaultValue: 'Nothing logged' }),
-        description: 'Complete at least one set before finishing.',
+        description: t('activeNothingLoggedDesc', {
+          defaultValue: 'Complete at least one set before finishing.',
+        }),
         variant: 'destructive',
       });
       return;
