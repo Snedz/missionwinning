@@ -9,6 +9,12 @@ Chronological record of shipped work. Newest first.
 Archive: [2026-06 → 2026-07-20](docs/archive/log/LOG-2026-06_to_2026-07-20.md) · [2026-07-20 tail](docs/archive/log/LOG-2026-07-20_tail.md) (incl. Accelerator sprint kit rotated 2026-07-22) · [2026-07-20 → 2026-07-29 (`.179` and earlier)](docs/archive/log/LOG-2026-07-20_to_2026-07-29.md) · [2026-07-29 → 2026-07-30 (`.180`–`.199`)](docs/archive/log/LOG-2026-07-29_to_2026-07-30.md) (both rotated 2026-07-30) · [2026-07-30 → 2026-07-31 (`.200`–`.213`)](docs/archive/log/LOG-2026-07-30_to_2026-07-31.md) (rotated 2026-08-02) · [`.247` for `.263`](docs/archive/log/LOG-hero-audit-rotate-2026-08-03.md).
 
 ---
+## 2026-08-03 — Victory progression is structured + i18n (`.290`)
+
+`buildProgressionInsight` returns a pure payload (reason · lift · numbers), not a
+hard-coded English sentence. Bodyweight sessions get rep-based cues. Victory sheet
+maps keys (EN/ES/FR/PT); BW work no longer skipped because `weight <= 0`.
+
 ## 2026-08-03 — Same-session set carry on the logger (`.289`)
 
 After you log a freestyle set, the next set of that exercise dials in what you
@@ -107,11 +113,4 @@ solid 2px paper/ink. Today reentry card, history pillar wins, sign-in prompt,
 unlock waitlist field, live HR strip, Coach today card border. CI workflows:
 `actions/checkout`, `setup-node`, `upload-artifact` **v4 → v5** (Node-20
 deprecation path; Dependabot still open for v7 majors).
-
-## 2026-08-03 — Leaderboard + public index hubs (`.275`)
-
-Leaderboard board picker, scope tabs, table, call-sign/squad inputs — solid
-2px paper/ink; “you” row uses a primary side rule instead of glow rings.
-Board header dropped corrupted gradient utility stubs. Public `/exercises`
-and `/paths` index/hub lists match the same chrome.
 

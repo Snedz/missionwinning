@@ -2,6 +2,9 @@ import { describe, it } from 'node:test';
 import assert from 'node:assert/strict';
 import {
   COACH_VICTORY_EARLY_WORKOUTS,
+  buildProgressionInsight,
+  formatProgressionInsight,
+  progressionInsightKey,
   pickVictoryNextAction,
   summarizeWorkoutVictory,
 } from './workoutVictory.ts';
@@ -63,6 +66,64 @@ describe('pickVictoryNextAction', () => {
       hasCoachPlan: undefined,
     });
     assert.equal(a.href, '/active');
+  });
+});
+
+describe('buildProgressionInsight', () => {
+  const baseLog = (
+    sets: { reps: number; weight: number; kind?: 'normal' | 'warmup' | 'failure' | 'drop' }[]
+  ): CompletedWorkoutLog => ({
+    id: '1',
+    workoutName: 'Push',
+    startedAt: '2026-07-01T10:00:00Z',
+    completedAt: '2026-07-01T10:30:00Z',
+    durationSeconds: 1800,
+    totalVolume: 1000,
+    exercises: [{ exerciseId: 'bench-press', sets }],
+  });
+
+  it('returns structured add_reps when below top of range', () => {
+    const insight = buildProgressionInsight(baseLog([{ reps: 8, weight: 100 }]), 'metric', {
+      min: 8,
+      max: 12,
+    });
+    assert.ok(insight);
+    assert.equal(insight!.reason, 'add_reps');
+    assert.equal(insight!.reps, 9);
+    assert.equal(insight!.weight, 100);
+    assert.equal(insight!.bodyweight, false);
+    assert.match(formatProgressionInsight(insight!), /9 × 100/);
+    assert.equal(progressionInsightKey(insight!), 'victoryProgressAddReps');
+  });
+
+  it('includes bodyweight work (reps-based progress)', () => {
+    const insight = buildProgressionInsight(
+      {
+        id: '1',
+        workoutName: 'Pull',
+        startedAt: '2026-07-01T10:00:00Z',
+        completedAt: '2026-07-01T10:30:00Z',
+        durationSeconds: 1800,
+        totalVolume: 0,
+        exercises: [{ exerciseId: 'pull-ups', sets: [{ reps: 8, weight: 0 }] }],
+      },
+      'metric',
+      { min: 8, max: 12 }
+    );
+    assert.ok(insight);
+    assert.equal(insight!.bodyweight, true);
+    assert.equal(insight!.reason, 'add_reps');
+    assert.equal(insight!.reps, 9);
+    assert.equal(progressionInsightKey(insight!), 'victoryProgressAddRepsBw');
+    assert.match(formatProgressionInsight(insight!), /9 reps/);
+  });
+
+  it('skips warmup-only sessions', () => {
+    const insight = buildProgressionInsight(
+      baseLog([{ reps: 10, weight: 40, kind: 'warmup' }]),
+      'metric'
+    );
+    assert.equal(insight, undefined);
   });
 });
 

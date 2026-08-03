@@ -17,6 +17,10 @@ import {
 } from '@/components/ui/dialog';
 import { formatDuration } from '@/lib/utils';
 import type { WorkoutVictorySummary } from '@/lib/workout/workoutVictory';
+import {
+  formatProgressionInsight,
+  progressionInsightKey,
+} from '@/lib/workout/workoutVictory';
 import { useUnits, weightUnitLabel } from '@/hooks/useUnits';
 import { track } from '@/lib/analytics';
 import { upsertTodayPartial } from '@/lib/mindCheckIns';
@@ -284,11 +288,18 @@ export function WorkoutVictorySheet({
 
         {debrief && <SessionDebriefCard debrief={debrief} fragments={fragments} />}
 
-        {summary.progressionInsight && (
+        {summary.progressionInsight ? (
           <p className="text-center text-sm text-muted-foreground px-2 leading-relaxed">
-            {summary.progressionInsight}
+            {t(progressionInsightKey(summary.progressionInsight), {
+              step: summary.progressionInsight.step,
+              unit: summary.progressionInsight.unit,
+              name: summary.progressionInsight.exerciseName,
+              reps: summary.progressionInsight.reps,
+              weight: summary.progressionInsight.weight,
+              defaultValue: formatProgressionInsight(summary.progressionInsight),
+            })}
           </p>
-        )}
+        ) : null}
 
         {summary.streak > 0 && (
           <p className="text-center text-sm text-muted-foreground">

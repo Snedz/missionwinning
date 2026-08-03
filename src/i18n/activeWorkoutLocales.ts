@@ -74,6 +74,12 @@ type ActiveWorkoutStrings = {
   activeOverloadPrescribed: string;
   /** One-tap fill console from progressive-overload / coach next (.288). */
   activeUseNextTarget: string;
+  /** Victory next-session progression (structured insight, `.290`). */
+  victoryProgressAddWeight: string;
+  victoryProgressAddReps: string;
+  victoryProgressHold: string;
+  victoryProgressAddRepsBw: string;
+  victoryProgressHoldBw: string;
 };
 
 const en: ActiveWorkoutStrings = {
@@ -145,6 +151,11 @@ const en: ActiveWorkoutStrings = {
   activeOverloadFromLast: 'From last time',
   activeOverloadPrescribed: 'Coach plan',
   activeUseNextTarget: 'Use next target',
+  victoryProgressAddWeight: 'Next: +{{step}} {{unit}} on {{name}} (hit top of range)',
+  victoryProgressAddReps: 'Next: {{reps}} × {{weight}} {{unit}} on {{name}}',
+  victoryProgressHold: 'Next: hold {{reps}} × {{weight}} {{unit}} on {{name}}',
+  victoryProgressAddRepsBw: 'Next: {{reps}} reps on {{name}}',
+  victoryProgressHoldBw: 'Next: hold {{reps}} on {{name}}',
 };
 
 const es: ActiveWorkoutStrings = {
@@ -159,6 +170,11 @@ const es: ActiveWorkoutStrings = {
   activeOverloadFromLast: 'De la última vez',
   activeOverloadPrescribed: 'Plan del coach',
   activeUseNextTarget: 'Usar el siguiente objetivo',
+  victoryProgressAddWeight: 'Siguiente: +{{step}} {{unit}} en {{name}} (tope del rango)',
+  victoryProgressAddReps: 'Siguiente: {{reps}} × {{weight}} {{unit}} en {{name}}',
+  victoryProgressHold: 'Siguiente: mantén {{reps}} × {{weight}} {{unit}} en {{name}}',
+  victoryProgressAddRepsBw: 'Siguiente: {{reps}} reps en {{name}}',
+  victoryProgressHoldBw: 'Siguiente: mantén {{reps}} en {{name}}',
   activeElapsed: 'Transcurrido',
   activeSetsLabel: 'Series',
   activeNoWorkout: 'Sin entrenamiento activo',
@@ -208,6 +224,11 @@ const fr: ActiveWorkoutStrings = {
   activeOverloadFromLast: 'De la dernière fois',
   activeOverloadPrescribed: 'Plan coach',
   activeUseNextTarget: 'Utiliser la cible suivante',
+  victoryProgressAddWeight: 'Suite : +{{step}} {{unit}} sur {{name}} (haut de fourchette)',
+  victoryProgressAddReps: 'Suite : {{reps}} × {{weight}} {{unit}} sur {{name}}',
+  victoryProgressHold: 'Suite : maintiens {{reps}} × {{weight}} {{unit}} sur {{name}}',
+  victoryProgressAddRepsBw: 'Suite : {{reps}} reps sur {{name}}',
+  victoryProgressHoldBw: 'Suite : maintiens {{reps}} sur {{name}}',
   activeElapsed: 'Écoulé',
   activeSetsLabel: 'Séries',
   activeNoWorkout: 'Aucun entraînement actif',
@@ -421,6 +442,11 @@ const LOCALES: Partial<Record<string, ActiveWorkoutStrings>> = {
     activeOverloadFromLast: 'Da última vez',
     activeOverloadPrescribed: 'Plano do coach',
     activeUseNextTarget: 'Usar próximo alvo',
+    victoryProgressAddWeight: 'Próximo: +{{step}} {{unit}} em {{name}} (topo da faixa)',
+    victoryProgressAddReps: 'Próximo: {{reps}} × {{weight}} {{unit}} em {{name}}',
+    victoryProgressHold: 'Próximo: mantenha {{reps}} × {{weight}} {{unit}} em {{name}}',
+    victoryProgressAddRepsBw: 'Próximo: {{reps}} reps em {{name}}',
+    victoryProgressHoldBw: 'Próximo: mantenha {{reps}} em {{name}}',
   },
   it: {
     ...en,
