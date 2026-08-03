@@ -30,8 +30,10 @@ const FOODS: FoodToken[] = [
   { keywords: ['protein shake', 'whey shake'], label: 'Protein shake', protein: 25, cals: 200, carbs: 8, fat: 2 },
   { keywords: ['greek yogurt', 'greek yoghurt'], label: 'Greek yogurt', protein: 18, cals: 150, carbs: 12, fat: 2 },
   { keywords: ['peanut butter', 'pb'], label: 'Peanut butter', protein: 8, cals: 190, carbs: 6, fat: 16 },
-  { keywords: ['olive oil', 'oil'], label: 'Oil', protein: 0, cals: 120, carbs: 0, fat: 14 },
-  { keywords: ['chicken breast', 'chicken', 'pollo', 'ayam'], label: 'Chicken', protein: 35, cals: 220, carbs: 0, fat: 5 },
+  // Never bare "oil" — too many false hits ("boil", "toil" aside, and every
+  // "cooking oil" phrase without a brand). Multi-word only.
+  { keywords: ['olive oil', 'coconut oil', 'cooking oil', 'avocado oil'], label: 'Oil', protein: 0, cals: 120, carbs: 0, fat: 14 },
+  { keywords: ['chicken breast', 'grilled chicken', 'chicken', 'pollo', 'ayam'], label: 'Chicken', protein: 35, cals: 220, carbs: 0, fat: 5 },
   { keywords: ['turkey'], label: 'Turkey', protein: 30, cals: 180, carbs: 0, fat: 3 },
   { keywords: ['salmon', 'fish', 'tuna', 'ikan'], label: 'Fish', protein: 28, cals: 250, carbs: 0, fat: 12 },
   { keywords: ['shrimp', 'prawn'], label: 'Shrimp', protein: 24, cals: 120, carbs: 1, fat: 2 },
@@ -48,7 +50,13 @@ const FOODS: FoodToken[] = [
   { keywords: ['rice bowl', 'bowl'], label: 'Bowl base', protein: 8, cals: 320, carbs: 50, fat: 4 },
   { keywords: ['oats', 'oatmeal', 'porridge'], label: 'Oats', protein: 6, cals: 180, carbs: 30, fat: 3 },
   { keywords: ['yogurt', 'yoghurt'], label: 'Yogurt', protein: 12, cals: 140, carbs: 16, fat: 3 },
-  { keywords: ['shake', 'smoothie', 'whey'], label: 'Protein shake', protein: 25, cals: 200, carbs: 8, fat: 2 },
+  { keywords: ['protein powder', 'whey protein', 'casein', 'whey'], label: 'Protein powder', protein: 24, cals: 120, carbs: 3, fat: 1 },
+  { keywords: ['shake', 'smoothie'], label: 'Protein shake', protein: 25, cals: 200, carbs: 8, fat: 2 },
+  { keywords: ['oat milk'], label: 'Oat milk', protein: 3, cals: 120, carbs: 16, fat: 5 },
+  { keywords: ['almond milk'], label: 'Almond milk', protein: 1, cals: 40, carbs: 2, fat: 3 },
+  { keywords: ['brown rice'], label: 'Brown rice', protein: 5, cals: 215, carbs: 45, fat: 2 },
+  { keywords: ['white rice'], label: 'White rice', protein: 4, cals: 200, carbs: 45, fat: 0 },
+  { keywords: ['meal prep'], label: 'Meal prep plate', protein: 35, cals: 480, carbs: 40, fat: 12 },
   { keywords: ['banana'], label: 'Banana', protein: 1, cals: 105, carbs: 27, fat: 0 },
   { keywords: ['apple'], label: 'Apple', protein: 0, cals: 95, carbs: 25, fat: 0 },
   { keywords: ['orange', 'berries', 'berries'], label: 'Fruit', protein: 1, cals: 80, carbs: 20, fat: 0 },
@@ -129,12 +137,38 @@ function findQtyBefore(text: string, kwStart: number): { qty: number; start: num
       return { qty: Math.round((g / 100) * 10) / 10, start: kwStart - grams[0].length };
     }
   }
+  // 6 oz chicken ≈ 170g → ~1.7 template servings
+  const ounces = before.match(/(\d+(?:\.\d+)?)\s*(?:oz|ounces?)\s*$/i);
+  if (ounces) {
+    const oz = parseFloat(ounces[1]);
+    if (oz > 0 && oz <= 32) {
+      const g = oz * 28.35;
+      return { qty: Math.round((g / 100) * 10) / 10, start: kwStart - ounces[0].length };
+    }
+  }
+  // 2 scoops whey — one scoop ≈ one powder template serving
+  const scoops = before.match(/(\d+(?:\.\d+)?)\s*(?:scoops?|scoopfuls?)\s*(?:of\s+)?$/i);
+  if (scoops) {
+    const s = parseFloat(scoops[1]);
+    if (s > 0 && s <= 6) {
+      return { qty: s, start: kwStart - scoops[0].length };
+    }
+  }
   // 1 cup rice / 2 cups oats
   const cups = before.match(/(\d+(?:\.\d+)?)\s*cups?\s*$/i);
   if (cups) {
     const c = parseFloat(cups[1]);
     if (c > 0 && c <= 8) {
       return { qty: c, start: kwStart - cups[0].length };
+    }
+  }
+  // 2 tbsp peanut butter
+  const tbsp = before.match(/(\d+(?:\.\d+)?)\s*(?:tbsp|tablespoons?)\s*$/i);
+  if (tbsp) {
+    const t = parseFloat(tbsp[1]);
+    if (t > 0 && t <= 12) {
+      // templates are ~1–2 tbsp for spreads; treat 1 tbsp ≈ 0.5 serving of PB template
+      return { qty: Math.round(t * 0.5 * 10) / 10, start: kwStart - tbsp[0].length };
     }
   }
   const num = before.match(/(\d{1,2})\s*(?:x\s*)?$/i);
@@ -236,8 +270,10 @@ export function estimateMealFromDescription(raw: string): NlMealEstimate | null 
   carbs = Math.round(carbs * plateScale);
   fat = Math.round(fat * plateScale);
 
+  // Two+ distinct foods is the only "high" — quantity alone is still a guess
+  // about portion size, not composition.
   const confidence: NlMealEstimate['confidence'] =
-    hits.length >= 2 ? 'high' : hits[0].qty > 1 ? 'medium' : 'medium';
+    hits.length >= 2 ? 'high' : hits[0].qty !== 1 ? 'medium' : 'medium';
 
   return {
     name: labels.join(' + '),

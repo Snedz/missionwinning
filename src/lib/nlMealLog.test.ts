@@ -57,4 +57,31 @@ describe('nlMealLog', () => {
     assert.ok(half.protein < base.protein);
     assert.ok(half.protein >= Math.round(base.protein * 0.4));
   });
+
+  it('scales scoops of whey', () => {
+    const one = estimateMealFromDescription('whey protein');
+    const two = estimateMealFromDescription('2 scoops whey protein');
+    assert.ok(one && two);
+    assert.equal(two.protein, one.protein * 2);
+    assert.equal(two.source, 'matched');
+  });
+
+  it('scales ounces of chicken', () => {
+    const hundredG = estimateMealFromDescription('100g chicken');
+    const sixOz = estimateMealFromDescription('6 oz chicken');
+    assert.ok(hundredG && sixOz);
+    // 6 oz ≈ 170g → more protein than 100g
+    assert.ok(sixOz.protein > hundredG.protein);
+  });
+
+  it('does not treat bare "oil" as a food (only multi-word oils)', () => {
+    const bare = estimateMealFromDescription('oil');
+    assert.ok(bare);
+    assert.equal(bare.source, 'rough');
+    assert.equal(bare.matched.length, 0);
+    const olive = estimateMealFromDescription('salmon olive oil');
+    assert.ok(olive);
+    assert.equal(olive.source, 'matched');
+    assert.ok(olive.matched.some((m) => m.includes('Oil') || m.includes('Fish')));
+  });
 });

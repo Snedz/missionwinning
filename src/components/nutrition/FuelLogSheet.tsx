@@ -16,7 +16,9 @@ const PhotoMealLogger = dynamic(
   {
     ssr: false,
     loading: () => (
-      <p className="text-sm text-muted-foreground py-6 text-center" role="status" aria-busy="true">Loading photo log…</p>
+      <p className="text-sm text-muted-foreground py-6 text-center" role="status" aria-busy="true">
+        Loading photo log…
+      </p>
     ),
   }
 );
@@ -70,22 +72,32 @@ export function FuelLogSheet({
   const [tab, setTab] = useState<'quick' | 'describe' | 'custom' | 'photo'>('quick');
   const [description, setDescription] = useState('');
   const [describeMiss, setDescribeMiss] = useState(false);
+  /** Honesty strip on Custom after Describe — source + confidence, never silent. */
+  const [estimateMeta, setEstimateMeta] = useState<{
+    source: 'matched' | 'rough';
+    confidence: 'low' | 'medium' | 'high';
+    matched: string[];
+  } | null>(null);
 
   /**
-   * `estimateMealFromDescription` has been in the tree, unit-tested, since the
-   * NL fuel-log wave — referenced by nothing but its own test file. A working
-   * estimator with no way for a user to reach it is the same as no estimator.
-   *
-   * It fills the Custom fields and hands over, rather than growing a second
-   * review-and-log path beside the one that already exists.
+   * Fills Custom fields and hands over — edit-before-log, one review path.
+   * Always carries source/confidence onto Custom so a rough guess is never
+   * dressed as a match. `describeMiss` is only for empty/too-short input
+   * (the estimator never invents numbers for blank text).
    */
   const runEstimate = () => {
     const estimate = estimateMealFromDescription(description);
     if (!estimate) {
       setDescribeMiss(true);
+      setEstimateMeta(null);
       return;
     }
     setDescribeMiss(false);
+    setEstimateMeta({
+      source: estimate.source,
+      confidence: estimate.confidence,
+      matched: estimate.matched,
+    });
     onCustomNameChange(estimate.name);
     onCustomPChange(estimate.protein);
     onCustomCChange(estimate.cals);
@@ -216,9 +228,57 @@ export function FuelLogSheet({
 
       {tab === 'custom' && (
         <div className="space-y-4">
+          {estimateMeta ? (
+            <div
+              className={
+                estimateMeta.source === 'rough' || estimateMeta.confidence === 'low'
+                  ? 'border-2 border-primary bg-accent-100 p-3 space-y-1.5'
+                  : 'border-2 border-border bg-card p-3 space-y-1.5'
+              }
+            >
+              <div className="flex flex-wrap items-center gap-2">
+                <span className="text-[11px] font-medium border-2 border-border px-2 py-0.5 text-muted-foreground">
+                  {estimateMeta.source === 'matched'
+                    ? t('fuelSourceMatched', { defaultValue: 'Matched foods' })
+                    : t('fuelSourceRough', { defaultValue: 'Rough estimate' })}
+                </span>
+                <span
+                  className={
+                    estimateMeta.confidence === 'low'
+                      ? 'text-[11px] font-medium border-2 border-primary px-2 py-0.5 text-primary'
+                      : 'text-[11px] font-medium border-2 border-border px-2 py-0.5 text-muted-foreground'
+                  }
+                >
+                  {estimateMeta.confidence === 'high'
+                    ? t('fuelConfHigh', { defaultValue: 'Higher confidence' })
+                    : estimateMeta.confidence === 'medium'
+                      ? t('fuelConfMed', { defaultValue: 'Medium confidence' })
+                      : t('fuelConfLow', { defaultValue: 'Low confidence — edit before log' })}
+                </span>
+              </div>
+              {estimateMeta.matched.length > 0 ? (
+                <p className="text-xs text-muted-foreground leading-relaxed">
+                  {t('fuelEstimateMatchedList', {
+                    list: estimateMeta.matched.join(' · '),
+                    defaultValue: `Detected: ${estimateMeta.matched.join(' · ')}`,
+                  })}
+                </p>
+              ) : (
+                <p className="text-xs text-muted-foreground leading-relaxed">
+                  {t('fuelEstimateRoughNote', {
+                    defaultValue:
+                      'No foods matched — these numbers are a placeholder. Edit them before logging.',
+                  })}
+                </p>
+              )}
+            </div>
+          ) : null}
           <Input
             value={customName}
-            onChange={(e) => onCustomNameChange(e.target.value)}
+            onChange={(e) => {
+              onCustomNameChange(e.target.value);
+              setEstimateMeta(null);
+            }}
             placeholder={t('fuelFoodLabel', { defaultValue: 'Food' })}
             className="h-11"
           />
@@ -230,7 +290,10 @@ export function FuelLogSheet({
               <Input
                 type="number"
                 value={customP}
-                onChange={(e) => onCustomPChange(parseInt(e.target.value) || 0)}
+                onChange={(e) => {
+                  onCustomPChange(parseInt(e.target.value) || 0);
+                  setEstimateMeta((m) => (m ? { ...m, confidence: 'low' } : m));
+                }}
                 className="h-11"
               />
             </div>
@@ -241,7 +304,10 @@ export function FuelLogSheet({
               <Input
                 type="number"
                 value={customC}
-                onChange={(e) => onCustomCChange(parseInt(e.target.value) || 0)}
+                onChange={(e) => {
+                  onCustomCChange(parseInt(e.target.value) || 0);
+                  setEstimateMeta((m) => (m ? { ...m, confidence: 'low' } : m));
+                }}
                 className="h-11"
               />
             </div>
@@ -252,7 +318,10 @@ export function FuelLogSheet({
               <Input
                 type="number"
                 value={customCarbs}
-                onChange={(e) => onCustomCarbsChange(parseInt(e.target.value) || 0)}
+                onChange={(e) => {
+                  onCustomCarbsChange(parseInt(e.target.value) || 0);
+                  setEstimateMeta((m) => (m ? { ...m, confidence: 'low' } : m));
+                }}
                 className="h-11"
               />
             </div>
@@ -263,7 +332,10 @@ export function FuelLogSheet({
               <Input
                 type="number"
                 value={customFat}
-                onChange={(e) => onCustomFatChange(parseInt(e.target.value) || 0)}
+                onChange={(e) => {
+                  onCustomFatChange(parseInt(e.target.value) || 0);
+                  setEstimateMeta((m) => (m ? { ...m, confidence: 'low' } : m));
+                }}
                 className="h-11"
               />
             </div>
@@ -274,6 +346,7 @@ export function FuelLogSheet({
             disabled={!customName.trim()}
             onClick={() => {
               onCustomLog();
+              setEstimateMeta(null);
               onClose();
             }}
           >

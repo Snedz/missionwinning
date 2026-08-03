@@ -24,4 +24,17 @@ describe('estimateMealFromPhoto', () => {
     assert.equal(portionScaleFromBytes(200 * 1024), 1);
     assert.equal(portionScaleFromBytes(500 * 1024), 1.25);
   });
+
+  it('labels color-only guesses honestly and never marks them high', () => {
+    const colorOnly = estimateMealFromSignals('IMG_9999.jpg', 200 * 1024, { palette: 'green' });
+    assert.match(colorOnly.name, /color guess/i);
+    assert.notEqual(colorOnly.confidence, 'high');
+    assert.equal(colorOnly.source, 'heuristic');
+  });
+
+  it('filename + palette can be high confidence', () => {
+    const both = estimateMealFromSignals('salad-bowl.jpg', 200 * 1024, { palette: 'green' });
+    assert.equal(both.confidence, 'high');
+    assert.doesNotMatch(both.name, /color guess/i);
+  });
 });

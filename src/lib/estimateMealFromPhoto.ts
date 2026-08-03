@@ -92,12 +92,24 @@ export function estimateMealFromSignals(
   const nameMatch = scoreTemplate(base, fileName, hints) >= 10;
   const paletteMatch = hints?.palette && base.palettes?.includes(hints.palette);
 
+  // Filename keyword is the only strong signal. Palette alone is a weak tint
+  // guess — medium at best, never high. Pure fallback stays low so the UI chip
+  // ("Rough estimate (filename / color)") is not contradicted by "high conf".
   let confidence: MealEstimate['confidence'] = 'low';
   if (nameMatch && paletteMatch) confidence = 'high';
-  else if (nameMatch || paletteMatch || base !== FALLBACK) confidence = 'medium';
+  else if (nameMatch) confidence = 'medium';
+  else if (paletteMatch || base !== FALLBACK) confidence = 'medium';
+
+  // Prefer an honest name when we only guessed from color.
+  let name = base.name;
+  if (!nameMatch && paletteMatch) {
+    name = `${base.name.replace(/\s*\(est\.\)\s*$/i, '')} (color guess)`;
+  } else if (!nameMatch && base === FALLBACK) {
+    name = 'Balanced meal (est.)';
+  }
 
   return {
-    name: base.name,
+    name,
     protein: Math.round(base.protein * scale),
     cals: Math.round(base.cals * scale),
     carbs: Math.round(base.carbs * scale),
