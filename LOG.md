@@ -17,6 +17,12 @@ re-spread — so the week strip stayed a wall of shame.
 - I-Day hides America/PFT/kids goal chips while `america` is parked.
 - GPS panel title is "GPS track" when unlocked (not "(Premium)" under free beta).
 
+Also in `.263` (follow-up commits on the same PR):
+- Public story aligned: invite-only beta bar + private gate copy (no more
+  "OPEN BETA" next to "Launching soon").
+- Log console shows **BW** (tap to add load) instead of a 0 kg stepper.
+
+
 
 # Mission Winning — Development Log
 
