@@ -724,14 +724,24 @@ describe('shouldOfferVolumeTrim', () => {
     );
   });
 
-  it('ActiveWorkoutPage uses shouldOfferVolumeTrim rather than inlining the threshold', () => {
-    const src = readFileSync(
+  it('volume-trim offer goes through planSessionCheckInDismiss (.406)', () => {
+    const page = readFileSync(
       path.join(import.meta.dirname, '..', '..', 'page-components', 'ActiveWorkoutPage.tsx'),
       'utf8'
     );
-    assert.match(src, /shouldOfferVolumeTrim\(/);
+    const checkIn = readFileSync(
+      path.join(import.meta.dirname, 'activeSessionCheckIn.ts'),
+      'utf8'
+    );
+    assert.match(page, /planSessionCheckInDismiss\(/);
     assert.doesNotMatch(
-      src,
+      page,
+      /shouldOfferVolumeTrim\(/,
+      'page must not call shouldOfferVolumeTrim — planSessionCheckInDismiss owns the offer'
+    );
+    assert.match(checkIn, /shouldOfferVolumeTrim\(/);
+    assert.doesNotMatch(
+      page,
       /completed\s*&&\s*adj\.readiness\s*<\s*40/,
       'volume-trim threshold must stay inside shouldOfferVolumeTrim'
     );
