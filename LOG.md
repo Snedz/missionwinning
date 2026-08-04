@@ -10,12 +10,14 @@ Archive: [2026-06 → 2026-07-20](docs/archive/log/LOG-2026-06_to_2026-07-20.md)
 
 ---
 
-## 2026-08-04 — Landing photos + form stick geometry (`.418`)
+## 2026-08-04 — Landing photos + form sticks + PDF figure crop (`.418`)
 
 Landing Anywhere band was empty on purpose (`GrayscalePhoto` without `base`);
 wired three grayscale documentary slots under `/public/photo/`. Form stick kit
 no longer emits zero-length shoulder segments; all form SVGs rebuilt with
-side/front athletic poses (`npm run media:form-all`). Uniqueness green.
+side/front athletic poses (`npm run media:form-all`). Magazine/PDF figures used
+`object-fit: cover` at 220px — densified diagrams were cropped into strips;
+switched to contain + taller print cap; PDF rebuilt; images wait for naturalWidth.
 
 ## 2026-08-04 — Guidebook hero palette discovery scope (`.417`)
 

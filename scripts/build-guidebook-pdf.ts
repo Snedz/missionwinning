@@ -113,21 +113,17 @@ async function renderLang(base: string, lang: string): Promise<void> {
       );
     }
     await page.waitForSelector('.magazine-document', { timeout: 60_000 });
-    // Let images (heroes + section figures) settle before print.
-    await page.evaluate(async () => {
-      const imgs = [...document.images];
-      await Promise.all(
-        imgs.map((img) =>
-          img.complete
-            ? Promise.resolve()
-            : new Promise<void>((resolve) => {
-                img.addEventListener('load', () => resolve(), { once: true });
-                img.addEventListener('error', () => resolve(), { once: true });
-              })
-        )
-      );
-    });
-    await page.waitForTimeout(800);
+    // Wait until every figure has decoded pixels (not just the load event).
+    // Empty naturalWidth meant Chromium PDF-captured broken-image placeholders.
+    await page.waitForFunction(
+      () => {
+        const imgs = [...document.querySelectorAll<HTMLImageElement>('.magazine-figure-img, .magazine-document img')];
+        if (imgs.length === 0) return true;
+        return imgs.every((img) => img.complete && img.naturalWidth > 0);
+      },
+      { timeout: 90_000 }
+    );
+    await page.waitForTimeout(400);
     await page.emulateMedia({ media: 'print' });
     await page.addStyleTag({
       content: `.no-print { display: none !important; }`,

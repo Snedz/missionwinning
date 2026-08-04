@@ -23,16 +23,27 @@ export function GuideFigureBlock({
   if (variant === 'magazine') {
     return (
       <figure className="magazine-figure">
-        {/* Plain <img>: static guidebook assets, already sized and optimised at build. */}
-        <img src={figure.src} alt={figure.alt} className="magazine-figure-img" />
-        {figure.caption && <figcaption className="magazine-figure-caption">{figure.caption}</figcaption>}
+        {/*
+          Plain <img> for static guidebook assets. Do not use object-fit:cover —
+          instructional diagrams need every label visible in print/PDF.
+          loading=eager so Playwright PDF capture does not snapshot empty slots.
+        */}
+        <img
+          src={figure.src}
+          alt={figure.alt}
+          className="magazine-figure-img"
+          loading="eager"
+          decoding="sync"
+        />
+        {figure.caption && (
+          <figcaption className="magazine-figure-caption">{figure.caption}</figcaption>
+        )}
       </figure>
     );
   }
 
   return (
-    <figure className="overflow-hidden  border-2 border-border bg-card">
-      {/* Plain <img>: static guidebook assets, already sized and optimised at build. */}
+    <figure className="overflow-hidden border-2 border-border bg-card">
       <img
         src={figure.src}
         alt={figure.alt}
