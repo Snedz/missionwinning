@@ -463,6 +463,18 @@ function findQtyBefore(text: string, kwStart: number): { qty: number; start: num
       return { qty: n, start: kwStart - num[0].length };
     }
   }
+  // "half a dozen eggs" / "half dozen" / "a half-dozen" → 6 (.446) — before bare dozen
+  const halfDozenQty = before.match(
+    /\b(?:(?:a|an)\s+)?half(?:\s+a|\s*-\s*)?\s*dozen\s+(?:of\s+)?$/i
+  );
+  if (halfDozenQty) {
+    return { qty: 6, start: kwStart - halfDozenQty[0].length };
+  }
+  // "a dozen eggs" / "dozen eggs" → 12 (.446)
+  const dozenQty = before.match(/\b(?:(?:a|an)\s+)?dozen\s+(?:of\s+)?$/i);
+  if (dozenQty) {
+    return { qty: 12, start: kwStart - dozenQty[0].length };
+  }
   // "a couple of eggs" / "couple eggs" → 2 (.438)
   const coupleQty = before.match(/\b(?:(?:a|an)\s+)?couple\s+(?:of\s+)?$/i);
   if (coupleQty) {
@@ -477,6 +489,11 @@ function findQtyBefore(text: string, kwStart: number): { qty: number; start: num
   const fewQty = before.match(/\b(?:(?:a|an)\s+)?few\s+(?:of\s+)?$/i);
   if (fewQty) {
     return { qty: 3, start: kwStart - fewQty[0].length };
+  }
+  // "some eggs" / "some chicken" → 3 (same band as few) (.446)
+  const someQty = before.match(/\b(?:(?:a|an)\s+)?some\s+(?:of\s+)?$/i);
+  if (someQty) {
+    return { qty: 3, start: kwStart - someQty[0].length };
   }
   // "a dash/splash/pinch/dab/bit of olive oil" → tsp-scale, not a full serving (.441/.443)
   const dabQty = before.match(

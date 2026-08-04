@@ -321,4 +321,30 @@ describe('nlMealLog', () => {
     assert.equal(bareTbspShort.fat, oneTbsp.fat);
     assert.notEqual(bareTbsp.cals, oil.cals, 'bare tbsp must not be a full oil serving');
   });
+
+  it('parses dozen / half-dozen / some qty (.446)', () => {
+    const egg = estimateMealFromDescription('egg');
+    const chicken = estimateMealFromDescription('chicken');
+    assert.ok(egg && chicken);
+    const dozen = estimateMealFromDescription('a dozen eggs');
+    const dozenBare = estimateMealFromDescription('dozen eggs');
+    const halfDozen = estimateMealFromDescription('half dozen eggs');
+    const halfADozen = estimateMealFromDescription('half a dozen eggs');
+    const aHalfDozen = estimateMealFromDescription('a half dozen eggs');
+    const halfHyphen = estimateMealFromDescription('a half-dozen eggs');
+    const someEggs = estimateMealFromDescription('some eggs');
+    const someChicken = estimateMealFromDescription('some chicken');
+    assert.ok(
+      dozen && dozenBare && halfDozen && halfADozen && aHalfDozen && halfHyphen && someEggs && someChicken
+    );
+    assert.equal(dozen.protein, egg.protein * 12);
+    assert.equal(dozenBare.protein, egg.protein * 12);
+    assert.equal(halfDozen.protein, egg.protein * 6);
+    assert.equal(halfADozen.protein, egg.protein * 6);
+    assert.equal(aHalfDozen.protein, egg.protein * 6);
+    assert.equal(halfHyphen.protein, egg.protein * 6);
+    assert.equal(someEggs.protein, egg.protein * 3);
+    assert.equal(someChicken.protein, chicken.protein * 3);
+    assert.notEqual(dozen.cals, egg.cals, 'dozen must not be a single egg');
+  });
 });
