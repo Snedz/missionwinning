@@ -708,6 +708,32 @@ test.describe('Accessibility @a11y', () => {
   });
 
   /**
+   * Loop 20 D1 — Field note jot open. Zero-data /active keeps it collapsed;
+   * axe must see the textarea + privacy line after expanding Field note.
+   */
+  test('axe serious/critical: /active with field note open @a11y', async ({
+    page,
+    context,
+    baseURL,
+  }) => {
+    if (!baseURL) throw new Error('baseURL required');
+    const ok = await unlockGate(page, context, baseURL);
+    if (gateRequired() && !ok) {
+      test.skip(true, 'SMOKE_ACCESS_SECRET required to unlock private gate');
+    }
+    await seedLegacyOnboarding(page);
+    await seedReadinessPhase(page);
+    await startEmptyActiveWorkout(page);
+    const jot = page.getByRole('button', { name: /field note/i }).first();
+    await expect(jot).toBeVisible({ timeout: 15_000 });
+    await jot.click();
+    await expect(
+      page.getByPlaceholder(/five words|knee twinge/i).or(page.getByText(/stays on this device/i)).first()
+    ).toBeVisible({ timeout: 10_000 });
+    await axeSerious(page, '/active (field note open)');
+  });
+
+  /**
    * The assertion axe cannot make.
    *
    * axe-core does not reliably test focus visibility, which is how this suite sat at

@@ -470,3 +470,12 @@ PR: #234
 **Verified:** plate calculator a11y green (+ Plates aria-label); activePostSessionPath unit + wiring; design-system green.
 **Aikido:** `aikido_full_scan` fails without X11 `$DISPLAY`. Noted; continue.
 **Next:** Loop 20 — more seeded a11y; Active extracts; Bundle i18n still refused.
+
+## Loop 20 waves
+
+| Wave | Status | Notes |
+|------|--------|-------|
+| D1 Field note jot a11y | done (`.361`) | SessionJotField expanded axe green |
+| D2 Active extract | pending | |
+| D3 Soft chrome / log close | pending | |
+
