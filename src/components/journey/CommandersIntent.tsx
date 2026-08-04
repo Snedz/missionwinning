@@ -21,7 +21,7 @@ export function CommandersIntent() {
   if (!goal.trim()) return null;
 
   return (
-    <div className="rounded-2xl border border-border/50 bg-muted/15 px-4 py-3 flex items-start gap-3">
+    <div className="border-2 border-border bg-background px-4 py-3 flex items-start gap-3">
       <div className="flex h-9 w-9 shrink-0 items-center justify-center border-2 border-border bg-background mt-0.5">
         <Target className="h-4 w-4 text-primary" />
       </div>

@@ -14,6 +14,7 @@ import {
   resolveActiveSetDial,
   resolveFormGuideSheet,
   resolveRepeatLastTarget,
+  shouldOfferVolumeTrim,
   resolveSetInput,
   formatLoggedSetLine,
   sessionIsCoachPrescribed,
@@ -638,6 +639,36 @@ describe('resolveFormGuideSheet', () => {
       src,
       /getFormGuideOrCues\(formGuideId/,
       'form guide lookup must stay inside resolveFormGuideSheet'
+    );
+  });
+});
+
+describe('shouldOfferVolumeTrim', () => {
+  it('requires a completed check-in under the readiness threshold', () => {
+    assert.equal(
+      shouldOfferVolumeTrim({ checkInCompleted: true, readinessAfter: 39 }),
+      true
+    );
+    assert.equal(
+      shouldOfferVolumeTrim({ checkInCompleted: true, readinessAfter: 40 }),
+      false
+    );
+    assert.equal(
+      shouldOfferVolumeTrim({ checkInCompleted: false, readinessAfter: 10 }),
+      false
+    );
+  });
+
+  it('ActiveWorkoutPage uses shouldOfferVolumeTrim rather than inlining the threshold', () => {
+    const src = readFileSync(
+      path.join(import.meta.dirname, '..', '..', 'page-components', 'ActiveWorkoutPage.tsx'),
+      'utf8'
+    );
+    assert.match(src, /shouldOfferVolumeTrim\(/);
+    assert.doesNotMatch(
+      src,
+      /completed\s*&&\s*adj\.readiness\s*<\s*40/,
+      'volume-trim threshold must stay inside shouldOfferVolumeTrim'
     );
   });
 });

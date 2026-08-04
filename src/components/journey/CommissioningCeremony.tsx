@@ -45,7 +45,7 @@ export function CommissioningCeremony() {
         role="dialog"
         aria-labelledby="commissioning-title"
       >
-        <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center bg-primary/20">
+        <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center border-2 border-primary bg-background">
           <Award className="h-8 w-8 text-primary" />
         </div>
         <p className="text-xs uppercase tracking-widest text-primary mb-2">

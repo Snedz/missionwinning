@@ -63,6 +63,7 @@ import {
   resolveActiveSetDial,
   resolveFormGuideSheet,
   resolveRepeatLastTarget,
+  shouldOfferVolumeTrim,
   sessionIsCoachPrescribed,
   sessionSetStats,
   setInputKey,
@@ -476,7 +477,7 @@ export function ActiveWorkoutPage() {
           const adj = computeBodyScores(workoutHistory, { checkIn });
           setReadinessBefore(base.readiness);
           setReadinessAfter(adj.readiness);
-          if (completed && adj.readiness < 40) {
+          if (shouldOfferVolumeTrim({ checkInCompleted: completed, readinessAfter: adj.readiness })) {
             setOfferVolumeTrim(true);
           }
         }}

@@ -190,7 +190,7 @@ export function UnlockButton({
   if (submitted) {
     return (
       <div
-        className={`rounded-2xl border border-primary/30 bg-primary/10 p-4 text-center ${className}`}
+        className={`border-2 border-primary bg-background p-4 text-center ${className}`}
       >
         <p className="inline-flex items-center gap-1.5 font-semibold text-primary">
           <Check className="h-4 w-4" /> You&apos;re on the founders list.

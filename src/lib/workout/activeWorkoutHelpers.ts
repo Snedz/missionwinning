@@ -456,3 +456,16 @@ export function resolveFormGuideSheet<TExercise extends { id: string; name: stri
   if (!ex || !guide) return null;
   return { exerciseId: ex.id, exerciseName: ex.name, guide };
 }
+
+/**
+ * After session check-in: offer volume trim only when the athlete completed the
+ * strip and readiness landed under the soft threshold.
+ */
+export function shouldOfferVolumeTrim(params: {
+  checkInCompleted: boolean;
+  readinessAfter: number;
+  threshold?: number;
+}): boolean {
+  const threshold = params.threshold ?? 40;
+  return params.checkInCompleted && params.readinessAfter < threshold;
+}

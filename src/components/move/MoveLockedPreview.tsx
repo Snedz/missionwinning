@@ -36,7 +36,7 @@ export function MoveLockedPreview() {
             defaultValue: 'Sports-specific mobility, recovery protocols, and advanced flows.',
           })}
         </p>
-        <div className="relative rounded-lg border border-border/50 bg-card p-4">
+        <div className="relative border-2 border-border bg-card p-4">
           <div className="pointer-events-none select-none opacity-60 blur-[1px] space-y-3">
             <div className="flex justify-center">
               <MeterBar label="Athlete recovery" value={18} readout="18% · 0:45" className="w-full sm:w-48" />
