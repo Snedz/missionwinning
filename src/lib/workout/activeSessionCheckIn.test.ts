@@ -61,19 +61,31 @@ describe('volumeTrimToastCopy', () => {
   });
 });
 
-describe('Active wiring (.406/.408)', () => {
-  it('ActiveWorkoutPage uses check-in plan + volume-trim toast helpers', () => {
+describe('Active wiring (.406/.408/.432)', () => {
+  it('ActiveWorkoutPage uses check-in plan; volume-trim toast lives in strip', () => {
     const src = readFileSync(
       path.join(root, 'src/page-components/ActiveWorkoutPage.tsx'),
       'utf8'
     );
+    const strip = readFileSync(
+      path.join(root, 'src/components/workout/ActiveReadinessDeltaStrip.tsx'),
+      'utf8'
+    );
     assert.match(src, /planSessionCheckInDismiss\(/);
-    assert.match(src, /volumeTrimToastKind\(/);
-    assert.match(src, /volumeTrimToastCopy\(/);
+    assert.match(src, /ActiveReadinessDeltaStrip/);
+    assert.match(strip, /volumeTrimToastKind\(/);
+    assert.match(strip, /volumeTrimToastCopy\(/);
+    assert.match(strip, /shouldShowReadinessDelta\(/);
+    assert.match(strip, /shouldShowVolumeTrimOffer\(/);
     assert.doesNotMatch(
       src,
       /shouldOfferVolumeTrim\(/,
       'volume-trim offer must go through planSessionCheckInDismiss'
+    );
+    assert.doesNotMatch(
+      src,
+      /volumeTrimToastKind\(/,
+      'volume-trim toast copy lives in ActiveReadinessDeltaStrip'
     );
   });
 });

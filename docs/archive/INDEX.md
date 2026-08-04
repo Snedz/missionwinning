@@ -65,6 +65,7 @@ When adding a doc:
 | [log/LOG-rotate-414.md](./log/LOG-rotate-414.md) | `.399` FileUploadRow chrome — rotated for `.414` form media T1 |
 | [log/LOG-rotate-415.md](./log/LOG-rotate-415.md) | `.400` opacity exemptions — rotated for `.415` pattern packs |
 | [log/LOG-rotate-416.md](./log/LOG-rotate-416.md) | `.401` beachhead i18n — rotated for `.416` Scout + PDF |
+| [log/LOG-rotate-432.md](./log/LOG-rotate-432.md) | `.417` — rotated for `.432` — (rotated for Active readiness strip). |
 | [log/LOG-rotate-431.md](./log/LOG-rotate-431.md) | `.416` — rotated for `.431` — (rotated for Active header peel). |
 | [log/LOG-rotate-430.md](./log/LOG-rotate-430.md) | `.415` — rotated for `.430` — (rotated for Today focus line). |
 | [log/LOG-rotate-429.md](./log/LOG-rotate-429.md) | `.414` — rotated for `.429` — (rotated for Victory feel strip). |

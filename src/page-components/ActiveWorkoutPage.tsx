@@ -28,6 +28,7 @@ import { PlateCalculatorSheet } from '@/components/workout/PlateCalculatorSheet'
 import { ActiveExerciseCard } from '@/components/workout/ActiveExerciseCard';
 import { ActiveEmptyState } from '@/components/workout/ActiveEmptyState';
 import { ActiveSessionChrome } from '@/components/workout/ActiveSessionChrome';
+import { ActiveReadinessDeltaStrip } from '@/components/workout/ActiveReadinessDeltaStrip';
 import { LiveHeartRate } from '@/components/workout/LiveHeartRate';
 import { useUnits, weightStep, weightUnitLabel } from '@/hooks/useUnits';
 import {
@@ -54,8 +55,6 @@ import {
 } from '@/lib/workout/activeSessionFinish';
 import {
   planSessionCheckInDismiss,
-  volumeTrimToastCopy,
-  volumeTrimToastKind,
 } from '@/lib/workout/activeSessionCheckIn';
 import {
   patchesForApplyTargets,
@@ -78,8 +77,6 @@ import {
   resolveRepeatLastTarget,
   resolveSwapCandidatesWhenOpen,
   activeSessionBottomClass,
-  shouldShowReadinessDelta,
-  shouldShowVolumeTrimOffer,
   resolveActiveGoalId,
   activeSessionHasExercises,
   activePostSessionPath,
@@ -632,34 +629,15 @@ export function ActiveWorkoutPage() {
           </div>
         )}
 
-      {shouldShowReadinessDelta(readinessBefore, readinessAfter) ? (
-        <div className="border-2 border-border bg-card px-3 py-2 text-xs flex flex-wrap items-center gap-2">
-          <span className="font-medium text-muted-foreground">
-            {t('sessionReadinessDelta', {
-              defaultValue: 'Readiness {{from}} → {{to}}',
-              from: readinessBefore,
-              to: readinessAfter,
-            })}
-          </span>
-          {shouldShowVolumeTrimOffer(offerVolumeTrim, !!plan) ? (
-            <button
-              type="button"
-              className="border-2 border-border bg-background px-3 py-1 text-muted-foreground font-medium hover:border-primary hover:text-foreground"
-              onClick={() => {
-                const next = adjustToday({ type: 'readiness' });
-                const copy = volumeTrimToastCopy(volumeTrimToastKind(!!next));
-                toast({
-                  title: t(copy.titleKey, { defaultValue: copy.titleDefault }),
-                  description: t(copy.descKey, { defaultValue: copy.descDefault }),
-                });
-                setOfferVolumeTrim(false);
-              }}
-            >
-              {t('sessionReduceVolume', { defaultValue: "Reduce today's volume" })}
-            </button>
-          ) : null}
-        </div>
-      ) : null}
+      <ActiveReadinessDeltaStrip
+        readinessBefore={readinessBefore}
+        readinessAfter={readinessAfter}
+        offerVolumeTrim={offerVolumeTrim}
+        hasPlan={!!plan}
+        onReduceVolume={() => adjustToday({ type: 'readiness' })}
+        onDismissOffer={() => setOfferVolumeTrim(false)}
+        toast={toast}
+      />
 
       <SignInPrompt
         className="mt-6"
