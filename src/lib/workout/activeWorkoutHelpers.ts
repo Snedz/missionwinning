@@ -487,3 +487,20 @@ export function bodyScoreDeltas(
     recovery: after.recovery - before.recovery,
   };
 }
+
+/**
+ * Swap sheet candidates only when this exercise owns the open swap UI —
+ * keeps the Active map free of an inline empty-array ternary.
+ */
+export function resolveSwapCandidatesWhenOpen<
+  T extends { id: string; name: string; muscleGroups: string[] },
+>(params: {
+  swapOpenIdx: number | null;
+  exIdx: number;
+  catalog: T[];
+  current: T;
+  compareNames: (a: string, b: string) => number;
+}): T[] {
+  if (params.swapOpenIdx !== params.exIdx) return [];
+  return rankSwapCandidates(params.catalog, params.current, params.compareNames);
+}

@@ -322,6 +322,6 @@ PR: #234
 | Wave | Status | Notes |
 |------|--------|-------|
 | W1 Coaching filled-form a11y | done (`.340`) | Route was outside GATED_ROUTES; filled lead form axe green |
-| W2 Active extract | pending | |
+| W2 Active extract | done (`.341`) | `resolveSwapCandidatesWhenOpen` + wiring guard |
 | W3 Soft chrome / log close | pending | |
 

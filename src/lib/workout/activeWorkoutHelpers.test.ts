@@ -22,6 +22,7 @@ import {
   setInputKey,
   rankSwapCandidates,
   bodyScoreDeltas,
+  resolveSwapCandidatesWhenOpen,
 } from './activeWorkoutHelpers.ts';
 import type { CompletedWorkoutLog } from '@/types';
 
@@ -348,16 +349,57 @@ describe('rankSwapCandidates', () => {
     );
   });
 
-  it('ActiveWorkoutPage uses the shared ranker rather than an inline sort', () => {
+  it('ActiveWorkoutPage uses resolveSwapCandidatesWhenOpen rather than an open-idx ternary', () => {
     const src = readFileSync(
       path.join(import.meta.dirname, '..', '..', 'page-components', 'ActiveWorkoutPage.tsx'),
       'utf8'
     );
-    assert.match(src, /rankSwapCandidates\(/);
+    assert.match(src, /resolveSwapCandidatesWhenOpen\(/);
+    assert.doesNotMatch(
+      src,
+      /rankSwapCandidates\(/,
+      'page must call resolveSwapCandidatesWhenOpen, not rankSwapCandidates directly'
+    );
     assert.doesNotMatch(
       src,
       /aShared !== bShared/,
       'inline muscle-share sort returned — keep one definition in activeWorkoutHelpers'
+    );
+  });
+});
+
+describe('resolveSwapCandidatesWhenOpen', () => {
+  const catalog = [
+    { id: 'a', name: 'Zebra Press', muscleGroups: ['Chest'] },
+    { id: 'b', name: 'Alpha Curl', muscleGroups: ['Arms'] },
+    { id: 'c', name: 'Bench Press', muscleGroups: ['Chest'] },
+    { id: 'current', name: 'Current', muscleGroups: ['Chest'] },
+  ];
+
+  it('returns [] when this exercise does not own the open swap UI', () => {
+    assert.deepEqual(
+      resolveSwapCandidatesWhenOpen({
+        swapOpenIdx: 0,
+        exIdx: 1,
+        catalog,
+        current: catalog[3]!,
+        compareNames: (a, b) => a.localeCompare(b),
+      }),
+      []
+    );
+  });
+
+  it('ranks when this exercise owns the open swap UI', () => {
+    const ranked = resolveSwapCandidatesWhenOpen({
+      swapOpenIdx: 2,
+      exIdx: 2,
+      catalog,
+      current: catalog[3]!,
+      compareNames: (a, b) => a.localeCompare(b),
+    });
+    assert.deepEqual(
+      ranked.map((e) => e.id),
+      ['c', 'a', 'b']
     );
   });
 });

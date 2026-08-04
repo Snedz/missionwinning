@@ -65,10 +65,10 @@ import {
   resolveRepeatLastTarget,
   shouldOfferVolumeTrim,
   bodyScoreDeltas,
+  resolveSwapCandidatesWhenOpen,
   sessionIsCoachPrescribed,
   sessionSetStats,
   setInputKey,
-  rankSwapCandidates,
 } from '@/lib/workout/activeWorkoutHelpers';
 import { prefersReducedMotion } from '@/lib/motion';
 import { compareText } from '@/lib/i18n/formatLocale';
@@ -512,12 +512,13 @@ export function ActiveWorkoutPage() {
           {activeWorkout.exercises.map((exLog, exIdx) => {
             const exercise = getExerciseById(exLog.exerciseId);
             if (!exercise) return null;
-            const swapCandidates =
-              swapOpenIdx === exIdx
-                ? rankSwapCandidates(EXERCISES, exercise, (a, b) =>
-                    compareText(a, b, fmt.lang)
-                  )
-                : [];
+            const swapCandidates = resolveSwapCandidatesWhenOpen({
+              swapOpenIdx,
+              exIdx,
+              catalog: EXERCISES,
+              current: exercise,
+              compareNames: (a, b) => compareText(a, b, fmt.lang),
+            });
 
             return (
               <ActiveExerciseCard
