@@ -23,6 +23,7 @@ Root-level `@/lib/{name}` paths re-export from here for compatibility — prefer
 15. `activeSessionFinish.ts` — log-set PR/rest + Victory assembly (`.405`)
 16. `activeSessionCheckIn.ts` — check-in dismiss + volume-trim toast kind (`.406`)
 17. `activeSetInputPatches.ts` — Use next / plate / apply-targets field patches (`.407`)
+18. `activeTableSetControls.ts` — desktop table set dial + kind projection (`.408`)
 
 ## Tests (colocated)
 
