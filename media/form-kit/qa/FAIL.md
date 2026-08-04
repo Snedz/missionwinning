@@ -35,7 +35,12 @@ Log every rejected generation. Do not re-ship the same glitch.
 | 2026-08-04 | `air-squat/side.mp4` | Directed loop pilot from PASS still (.469) |
 | 2026-08-04 | `glute-bridge/side.mp4` | Bodyweight-only I2V from PASS still (.469) |
 
+| 2026-08-04 | `overhead-press/side.webp` | Clean lockout, head clear, single bar (.470) |
+| 2026-08-04 | `barbell-row/side.webp` | Mid-pull, head clear of plates (.470) |
+| 2026-08-04 | `push-ups/side.mp4` · `plank/side.mp4` | Directed loops from PASS stills (.470) |
+
 ## Known hard cases
 
 - **Chin-over pull-up:** model often returns dead hang — ship hang as setup still if top fails twice.
 - **Front rack + side camera:** plates hide head — prefer empty/light bar and explicit “head not behind plates”.
+- **Barbell row:** model often puts bar on back (good-morning) — insist “bar outside body toward ribs, not on back”.

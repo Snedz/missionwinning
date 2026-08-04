@@ -17,16 +17,18 @@ test('unknown exercise has no form pack', () => {
 });
 
 test('still-only packs stay image when not in VIDEO_IDS', () => {
-  const guide = getFormGuideOrCues('push-ups');
-  assert.ok(guide?.mediaUrl?.includes('/form/push-ups/side.webp'), guide?.mediaUrl);
+  const guide = getFormGuideOrCues('deadlift');
+  assert.ok(guide?.mediaUrl?.includes('/form/deadlift/side.webp'), guide?.mediaUrl);
   assert.equal(guide?.mediaType, 'image');
 });
 
-test('loop pilot: air-squat resolves to video with poster', () => {
-  const pack = resolveFormPackMedia('air-squat');
-  assert.equal(pack?.mediaType, 'video');
-  assert.equal(pack?.mediaUrl, '/form/air-squat/side.mp4');
-  assert.equal(pack?.mediaPosterUrl, '/form/air-squat/side.webp');
+test('loop pilot packs resolve to video with poster', () => {
+  for (const id of ['air-squat', 'glute-bridge', 'push-ups', 'plank'] as const) {
+    const pack = resolveFormPackMedia(id);
+    assert.equal(pack?.mediaType, 'video', id);
+    assert.equal(pack?.mediaUrl, `/form/${id}/side.mp4`, id);
+    assert.equal(pack?.mediaPosterUrl, `/form/${id}/side.webp`, id);
+  }
 });
 
 test('Form Director regen re-wires burpees and box-jump stills', () => {

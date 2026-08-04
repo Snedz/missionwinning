@@ -16,7 +16,7 @@ One screen of truth for any AI tool or human joining cold. Read this, then [AGEN
 
 ---
 
-## Now (2026-08-04 · web `2026.07-unified.469` · Android `1.24.1`)
+## Now (2026-08-04 · web `2026.07-unified.470` · Android `1.24.1`)
 
 > The ONLY "where we are" block in the repo — [ORCHESTRATION.md](ORCHESTRATION.md) points here.
 >
@@ -228,6 +228,7 @@ One screen of truth for any AI tool or human joining cold. Read this, then [AGEN
 > and `.467` dropped `.452` detail (full text remains in LOG.md / archive)
 > and `.468` dropped `.453` detail (full text remains in LOG.md / archive)
 > and `.469` dropped `.454` detail (full text remains in LOG.md / archive)
+> and `.470` dropped `.455` detail (full text remains in LOG.md / archive)
 > to [CONTEXT-now-2026-07-30.md](docs/archive/CONTEXT-now-2026-07-30.md) after this
 > block reached **79 bullets / 103KB**. A status doc that only grows stops being read.
 
@@ -248,9 +249,9 @@ One screen of truth for any AI tool or human joining cold. Read this, then [AGEN
 > | Migrations | **9 recorded pending** — [LAUNCH_RUNBOOK](docs/LAUNCH_RUNBOOK.md) §3, enforced by `src/lib/migrationLedger.test.ts`. |
 > | gitleaks | **green — and scanning for the first time.** It had never scanned anything: on a `pull_request` event the action lists the PR's commits, the job declared no `permissions:` block, and it 403'd (`pull_requests=read`) before opening a file. Fixed by a `permissions:` block (`.224` carrying `.255`). It scans **only the PR's own commits**, so commit `8ea3527a`'s real Solana treasury address — scrubbed from the working file, still in history — is out of its scope. That finding stands, deliberately not allowlisted; it was never what made this check red. |
 
-- **`.469`:** Form Director — thruster/RDL/front-squat regen; air-squat + glute loop pilot.
-- **`.468`:** Form Director regen — core/isolation/glute/burpees/box-jump PASS; prop kit.
-- **`.467`:** Form Director quality reset — demote glitchy media; Seedance-class prompts.
+- **`.470`:** Form Director — OHP/row still regen; push-ups + plank loops (4 video pilots).
+- **`.469`:** thruster/RDL/front-squat regen; air-squat + glute loop pilot.
+- **`.468`–`.467`:** Form Director system + first regen pass.
 - **`.466`–`.464`:** Form Index bulk gen (many demoted).
 - **`.463`–`.462`:** Sprint A Imagine social + prompt pack.
 - **`.461`:** Library multi-select session studio.
