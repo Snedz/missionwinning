@@ -411,5 +411,18 @@ PR: #234
 |------|--------|-------|
 | A1 Assessments result a11y | done (`.352`) | Submit after ≥5 Nos → result axe green |
 | A2 Active extract | done (`.353`) | `restSecondsForExercise` + wiring guard |
-| A3 Soft chrome / log close | pending | |
+| A3 Soft chrome / log close | done (`.354`) | Assessments rounded → none + solid border; Loop 17 close |
 
+## Metrics
+
+| Metric | Loop 16 end | Loop 17 end |
+|--------|-------------|-------------|
+| Build | `.351` | **`.354`** |
+| i18n uncovered cap | 16 (Bundle refuse) | **16** (unchanged) |
+
+## End of Loop 17
+
+**Delivered:** A1–A3 on `cursor/kaizen-wedge-night-be9b` → PR #234 (`.352`–`.354`).
+**Verified:** Assessments result a11y green; restSecondsForExercise unit + wiring; design-system green.
+**Aikido:** `aikido_full_scan` fails without X11 `$DISPLAY`. Noted; continue.
+**Next:** Loop 18 — more seeded a11y; Active extracts; Bundle i18n still refused.
