@@ -359,6 +359,31 @@ test.describe('Accessibility @a11y', () => {
   });
 
   /**
+   * Loop 7 Q5 — Library Filters dialog. Zero-data /library never opens the
+   * sheet; axe must see muscle/equipment/level/goal chrome after Filters.
+   */
+  test('axe serious/critical: /library with Filters dialog open @a11y', async ({
+    page,
+    context,
+    baseURL,
+  }) => {
+    if (!baseURL) throw new Error('baseURL required');
+    const ok = await unlockGate(page, context, baseURL);
+    if (gateRequired() && !ok) {
+      test.skip(true, 'SMOKE_ACCESS_SECRET required to unlock private gate');
+    }
+    await seedLegacyOnboarding(page);
+    await page.goto('/library', { waitUntil: 'domcontentloaded' });
+    const filters = page.getByRole('button', { name: /^filters$/i }).first();
+    await expect(filters).toBeVisible({ timeout: 15_000 });
+    await filters.click();
+    await expect(page.getByRole('heading', { name: /^filters$/i }).or(page.getByText(/^muscle$/i)).first()).toBeVisible({
+      timeout: 10_000,
+    });
+    await axeSerious(page, '/library (filters open)');
+  });
+
+  /**
    * The assertion axe cannot make.
    *
    * axe-core does not reliably test focus visibility, which is how this suite sat at

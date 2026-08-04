@@ -181,3 +181,27 @@ PR: #234
 **Aikido:** `aikido_full_scan` still fails without X11 `$DISPLAY`. Noted; continue.
 **Next:** Loop 7 — profile wearables/owner leftovers, library/builder/session HR i18n, soft chrome, Active extracts.
 
+## Loop 7 waves
+
+| Wave | Status | Notes |
+|------|--------|-------|
+| Q1 Profile wearables | done (`.318`) | Wearables connect/sync pack; **193→176** |
+| Q2 Library filters | done (`.319`) | Filters/details leftovers; **176→162** |
+| Q3 Builder/templates | done (`.320`) | Start/arrange/finish + templates + `retry`; **162→141** |
+| Q4 LiveHeartRate | done (`.321`) | Connect/idle/hint pack; **141→134** |
+| Q5 Library filters a11y | done (`.322`) | Seeded axe on Filters dialog; Loop 7 living-log close |
+
+## Metrics
+
+| Metric | Loop 6 end | Loop 7 end |
+|--------|------------|------------|
+| Build | `.317` | **`.322`** |
+| i18n uncovered cap | 193 | **134** |
+
+## End of Loop 7
+
+**Delivered:** Q1–Q5 on `cursor/kaizen-wedge-night-be9b` → PR #234 (`.318`–`.322`).
+**Verified:** i18n @134; Library Filters a11y axe green (`localhost`).
+**Aikido:** `aikido_full_scan` still fails without X11 `$DISPLAY`. Noted; continue.
+**Next:** Loop 8 — Coaching/Leaderboard/Welcome/FileUpload leftovers, ProfileOwnerTools, soft chrome, Active extracts; Bundle UI still refused (free-first).
+
