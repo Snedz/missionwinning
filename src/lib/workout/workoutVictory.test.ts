@@ -4,6 +4,7 @@ import {
   COACH_VICTORY_EARLY_WORKOUTS,
   buildProgressionInsight,
   formatProgressionInsight,
+  formatVictorySignedDelta,
   progressionInsightKey,
   pickVictoryNextAction,
   shouldShowVictoryBackTodaySecondary,
@@ -104,6 +105,16 @@ describe('shouldShowVictoryBackTodaySecondary', () => {
     assert.match(src, /victoryShare/);
     assert.doesNotMatch(src, /victoryShareCard/);
     assert.doesNotMatch(src, /ImageIcon/);
+    assert.match(src, /VictoryFeelStrip/);
+    assert.match(src, /formatVictorySignedDelta/);
+  });
+});
+
+describe('formatVictorySignedDelta', () => {
+  it('prefixes positives and leaves zero/negatives bare (.429)', () => {
+    assert.equal(formatVictorySignedDelta(3), '+3');
+    assert.equal(formatVictorySignedDelta(0), '0');
+    assert.equal(formatVictorySignedDelta(-2), '-2');
   });
 });
 

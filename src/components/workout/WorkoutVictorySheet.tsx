@@ -21,12 +21,14 @@ import {
   formatProgressionInsight,
   progressionInsightKey,
   shouldShowVictoryBackTodaySecondary,
+  formatVictorySignedDelta,
 } from '@/lib/workout/workoutVictory';
 import { useUnits, weightUnitLabel } from '@/hooks/useUnits';
 import { track } from '@/lib/analytics';
 import { upsertTodayPartial } from '@/lib/mindCheckIns';
 import { getCachedReferralCode } from '@/lib/referral';
 import { SessionDebriefCard } from '@/components/workout/SessionDebriefCard';
+import { VictoryFeelStrip } from '@/components/workout/VictoryFeelStrip';
 import type { Debrief } from '@/lib/coach/debrief';
 import {
   buildVictoryCardData,
@@ -200,48 +202,7 @@ export function WorkoutVictorySheet({
           </div>
         </div>
 
-        {/*
-          Feel scale: one 2px-ruled strip, five full-height cells — same treatment
-          as session check-in (`.155`). Soft `bg-muted` on `bg-card` was invisible
-          at rest; selected/hover uses primary fill only.
-        */}
-        <div className="border-2 border-border bg-background px-3 py-3 space-y-2">
-          <p className="text-center text-xs text-muted-foreground">
-            {feelSaved
-              ? t('victoryFeelSaved', { defaultValue: 'Logged — feeds readiness on Today.' })
-              : t('victoryFeelPrompt', {
-                  defaultValue: 'How do you feel after this session?',
-                })}
-          </p>
-          {!feelSaved && (
-            <>
-              <div
-                className="flex border-2 border-border"
-                role="group"
-                aria-label={t('victoryFeelPrompt', {
-                  defaultValue: 'How do you feel after this session?',
-                })}
-              >
-                {[1, 2, 3, 4, 5].map((n, i) => (
-                  <button
-                    key={n}
-                    type="button"
-                    onClick={() => saveFeel(n)}
-                    className={`flex-1 min-h-[52px] tap-target text-sm font-semibold text-foreground bg-card hover:bg-primary-fill hover:text-primary-foreground transition-colors ${
-                      i > 0 ? 'border-s-2 border-border' : ''
-                    }`}
-                  >
-                    {n}
-                  </button>
-                ))}
-              </div>
-              <div className="flex justify-between text-[10px] text-muted-foreground px-0.5">
-                <span>{t('victoryFeelLow', { defaultValue: 'Drained' })}</span>
-                <span>{t('victoryFeelHigh', { defaultValue: 'Energized' })}</span>
-              </div>
-            </>
-          )}
-        </div>
+        <VictoryFeelStrip feelSaved={feelSaved} onSaveFeel={saveFeel} />
 
         {summary.bodyDelta && (
           <div className="flex flex-wrap items-center justify-center gap-2 border-2 border-border bg-background px-3 py-2 text-xs tabular-nums">
@@ -250,43 +211,22 @@ export function WorkoutVictorySheet({
             </span>
             <span className="text-status-warn">
               {t('victoryReadinessDelta', {
-                delta:
-                  summary.bodyDelta.readiness > 0
-                    ? `+${summary.bodyDelta.readiness}`
-                    : `${summary.bodyDelta.readiness}`,
-                defaultValue: `Readiness ${
-                  summary.bodyDelta.readiness > 0
-                    ? `+${summary.bodyDelta.readiness}`
-                    : summary.bodyDelta.readiness
-                }`,
+                delta: formatVictorySignedDelta(summary.bodyDelta.readiness),
+                defaultValue: `Readiness ${formatVictorySignedDelta(summary.bodyDelta.readiness)}`,
               })}
             </span>
             <span className="text-muted-foreground">·</span>
             <span className="text-status-danger">
               {t('victoryStrainDelta', {
-                delta:
-                  summary.bodyDelta.strain > 0
-                    ? `+${summary.bodyDelta.strain}`
-                    : `${summary.bodyDelta.strain}`,
-                defaultValue: `Strain ${
-                  summary.bodyDelta.strain > 0
-                    ? `+${summary.bodyDelta.strain}`
-                    : summary.bodyDelta.strain
-                }`,
+                delta: formatVictorySignedDelta(summary.bodyDelta.strain),
+                defaultValue: `Strain ${formatVictorySignedDelta(summary.bodyDelta.strain)}`,
               })}
             </span>
             <span className="text-muted-foreground">·</span>
             <span className="text-primary">
               {t('victoryRecoveryDelta', {
-                delta:
-                  summary.bodyDelta.recovery > 0
-                    ? `+${summary.bodyDelta.recovery}`
-                    : `${summary.bodyDelta.recovery}`,
-                defaultValue: `Recovery ${
-                  summary.bodyDelta.recovery > 0
-                    ? `+${summary.bodyDelta.recovery}`
-                    : summary.bodyDelta.recovery
-                }`,
+                delta: formatVictorySignedDelta(summary.bodyDelta.recovery),
+                defaultValue: `Recovery ${formatVictorySignedDelta(summary.bodyDelta.recovery)}`,
               })}
             </span>
           </div>
