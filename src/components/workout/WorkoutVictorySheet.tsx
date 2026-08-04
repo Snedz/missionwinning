@@ -34,6 +34,11 @@ import {
   buildVictoryCardData,
   renderShareCard,
 } from '@/lib/share/shareCard';
+import {
+  buildVictorySharePayload,
+  nextVictoryShareAfterFile,
+  nextVictoryShareAfterText,
+} from '@/lib/share/victoryShare';
 
 type Props = {
   open: boolean;
@@ -86,31 +91,36 @@ export function WorkoutVictorySheet({
    * One Share control: prefer the on-device card when the platform can share
    * files; otherwise text/clipboard. Dual Share · Share card competed with the
    * primary Coach/train exit (`.422`). Cancel stops — no silent PNG download.
+   * Fallthrough ladder: `victoryShare` helpers (.452).
    */
   const handleShare = async () => {
     const refCode = getCachedReferralCode();
-    const origin = typeof window !== 'undefined' ? window.location.origin : 'https://www.missionwinning.com';
-    const shareUrl = refCode
-      ? `${origin}/?ref=${encodeURIComponent(refCode)}`
-      : `${origin}/?utm_source=share&utm_medium=victory`;
-    const fullText = `${shareText} ${shareUrl}`;
+    const origin =
+      typeof window !== 'undefined' ? window.location.origin : 'https://www.missionwinning.com';
+    const { shareUrl, fullText } = buildVictorySharePayload({
+      origin,
+      refCode,
+      shareText,
+    });
 
     const card = buildVictoryCardData(summary, debrief?.records ?? [], unitLabel);
     const blob = await renderShareCard(card);
+    let fileResult: 'shared' | 'cancelled' | 'unavailable' = 'unavailable';
     if (blob && typeof navigator !== 'undefined' && navigator.share) {
       const file = new File([blob], 'mission-winning.png', { type: 'image/png' });
       if (navigator.canShare?.({ files: [file] })) {
         try {
           await navigator.share({ files: [file], text: fullText });
           track('share_card_generated', { surface: 'victory', method: 'shared' });
-          return;
+          fileResult = 'shared';
         } catch {
-          // user cancelled — do not fall through to download or text
-          return;
+          fileResult = 'cancelled';
         }
       }
     }
+    if (nextVictoryShareAfterFile(fileResult) === 'done') return;
 
+    let textResult: 'shared' | 'cancelled' | 'unavailable' = 'unavailable';
     if (typeof navigator !== 'undefined' && navigator.share) {
       try {
         await navigator.share({
@@ -119,17 +129,22 @@ export function WorkoutVictorySheet({
           url: shareUrl,
         });
         track('workout_shared', { method: 'shared' });
-        return;
+        textResult = 'shared';
       } catch {
-        // user cancelled or failed — fall through to clipboard
+        textResult = 'cancelled';
       }
     }
-    if (typeof navigator !== 'undefined' && navigator.clipboard?.writeText) {
+    const canClipboard = Boolean(
+      typeof navigator !== 'undefined' && navigator.clipboard?.writeText
+    );
+    const next = nextVictoryShareAfterText(textResult, canClipboard);
+    if (next === 'shared') return;
+    if (next === 'clipboard') {
       await navigator.clipboard.writeText(fullText);
       track('workout_shared', { method: 'copied' });
-    } else {
-      track('workout_shared', { method: 'failed' });
+      return;
     }
+    track('workout_shared', { method: 'failed' });
   };
 
   const showBackTodaySecondary = shouldShowVictoryBackTodaySecondary(
