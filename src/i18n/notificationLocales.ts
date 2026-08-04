@@ -172,6 +172,12 @@ const NOTIFICATION_EN: Record<string, string> = {
   avgTicket: 'Avg bundle ~${{price}}/mo',
   demoAnalytics: 'Demo Analytics (Events)',
   viewEvents: 'View Tracked Events (console)',
+  analyticsBannerAria: 'Product analytics preference',
+  analyticsBannerBody:
+    'Your workouts stay on this device by default. Optional product analytics (no session replay, no autocapture) help improve Mission Winning. You can change this anytime in Profile.',
+  analyticsBannerPrivacyLink: 'Privacy policy',
+  analyticsBannerStayPrivate: 'Stay private',
+  analyticsBannerAllow: 'Allow analytics',
 };
 
 const nl = (over: Record<string, string>): Record<string, string> => ({

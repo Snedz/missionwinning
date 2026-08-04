@@ -12,6 +12,22 @@ type LearnStrings = {
   learnPremiumTitle: string;
   learnPremiumDesc: string;
   learnPremiumBtn: string;
+  learnEyebrow: string;
+  learnExpandedBanner: string;
+  learnExpandedDesc: string;
+  learnOpenGuidebook: string;
+  learnSearchPlaceholder: string;
+  learnNoMatches: string;
+  learnNoMatchesDesc: string;
+  learnClearSearch: string;
+  learnPremiumCourseDesc: string;
+  learnOpenCourses: string;
+  learnCourseEmpty: string;
+  learnCourseNav: string;
+  learnBack: string;
+  learnCourseProgress: string;
+  learnChapterComplete: string;
+  learnChapterNextHint: string;
 };
 
 const en: LearnStrings = {
@@ -26,6 +42,24 @@ const en: LearnStrings = {
   learnPremiumDesc:
     'Full PT+Nutrition, Bodybuilding, Corrective, Business, Coaching, Conditioning.',
   learnPremiumBtn: 'Learn & Master Bundle (All Programs)',
+  learnEyebrow: 'Learn',
+  learnExpandedBanner: 'Beyond the Basics',
+  learnExpandedDesc:
+    'Six free chapters on performance, movement, and programming — practical, not hype.',
+  learnOpenGuidebook: 'Open Guidebook →',
+  learnSearchPlaceholder: 'Search paths or lessons…',
+  learnNoMatches: 'No paths match that search.',
+  learnNoMatchesDesc: 'Try a different keyword, or clear search to see all free paths.',
+  learnClearSearch: 'Clear search',
+  learnPremiumCourseDesc: 'Multi-chapter specialist courses with progress that survives reload.',
+  learnOpenCourses: 'Open specialist courses →',
+  learnCourseEmpty: 'No premium courses available.',
+  learnCourseNav: 'Course chapters',
+  learnBack: 'Learn',
+  learnCourseProgress: 'Chapter progress',
+  learnChapterComplete: 'Chapter complete — logged to Learn pillar.',
+  learnChapterNextHint:
+    'Practice what you learned — mobility or a Fuel log compounds the win.',
 };
 
 const es: LearnStrings = {

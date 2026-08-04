@@ -183,6 +183,12 @@ const LANDING_EN: Record<string, string> = {
   footerLegalTerms: 'Terms',
   footerDisclaimer:
     'Educational fitness tools — not medical advice. Consult a physician before starting any training program.',
+  coachDemoTitle: 'Mission Coach',
+  coachDemoAdaptedBody:
+    'Wednesday is gone, so upper body moved to Thursday and conditioning to Saturday. Same week, same dose.',
+  coachDemoPlannedBody: 'Three sessions, spaced from the days you said you can train.',
+  coachDemoReset: 'Start over',
+  coachDemoMissCta: 'Miss Wednesday',
 };
 
 const LANDING_ES: Record<string, string> = {
