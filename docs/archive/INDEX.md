@@ -55,6 +55,7 @@ When adding a doc:
 | [log/LOG-rotate-300.md](./log/LOG-rotate-300.md) | `.285` progressive overload — rotated for `.300` L5 fillers |
 | [log/LOG-rotate-301.md](./log/LOG-rotate-301.md) | `.286` re-entry dose — rotated for `.301` Coach/History i18n |
 | [log/LOG-rotate-302.md](./log/LOG-rotate-302.md) | `.287` coach why — rotated for `.302` debrief i18n |
+| [log/LOG-rotate-324.md](./log/LOG-rotate-324.md) | `.309` Today/Behavior i18n — rotated for `.324` Leaderboard i18n |
 | [log/LOG-rotate-323.md](./log/LOG-rotate-323.md) | `.308` repeat-last — rotated for `.323` Coaching i18n |
 | [log/LOG-rotate-322.md](./log/LOG-rotate-322.md) | `.307` Fuel leftovers — rotated for `.322` Library filters a11y |
 | [log/LOG-rotate-321.md](./log/LOG-rotate-321.md) | `.306` Mind i18n — rotated for `.321` LiveHR i18n |
