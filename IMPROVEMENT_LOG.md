@@ -735,6 +735,22 @@ PR: #234
 **Aikido:** `aikido_full_scan` fails without X11 `$DISPLAY`. Noted; continue.
 **Next:** Loop 32 — more seeded a11y; Active extracts; Bundle i18n still refused.
 
+## Loop 32 waves
+
+| Wave | Status | Notes |
+|------|--------|-------|
+| P1 Log console set kinds a11y | done (`.397`) | WORK/WARMUP dock axe green |
+| P2 Active extract | pending (`.398`) | `exerciseHasWeightedSet` + `firstWeightedLoad` |
+| P3 Soft chrome / log close | pending (`.399`) | FileUploadRow queued state |
+
+## Metrics
+
+| Metric | Loop 31 end | Loop 32 (in progress) |
+|--------|-------------|------------------------|
+| Build | `.396` | **`.397`** |
+| i18n uncovered cap | 16 (Bundle refuse) | **16** (unchanged) |
+
+
 
 
 

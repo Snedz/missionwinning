@@ -1082,6 +1082,37 @@ test.describe('Accessibility @a11y', () => {
   });
 
   /**
+   * Loop 32 P1 — LogConsole set-kind strip. After add exercise the compact
+   * console shows WORK/WARMUP/FAILURE/DROP; axe that dock chrome.
+   */
+  test('axe serious/critical: /active with log console set kinds @a11y', async ({
+    page,
+    context,
+    baseURL,
+  }) => {
+    if (!baseURL) throw new Error('baseURL required');
+    const ok = await unlockGate(page, context, baseURL);
+    if (gateRequired() && !ok) {
+      test.skip(true, 'SMOKE_ACCESS_SECRET required to unlock private gate');
+    }
+    await seedLegacyOnboarding(page);
+    await seedReadinessPhase(page);
+    await startEmptyActiveWorkout(page);
+
+    await page.getByRole('button', { name: /^add exercise$/i }).first().click();
+    const search = page.getByPlaceholder(/search exercises/i);
+    await expect(search).toBeVisible({ timeout: 10_000 });
+    await search.fill('push-ups');
+    await page.getByRole('option', { name: /push-ups/i }).first().click();
+    await page.getByRole('button', { name: /add selected exercise/i }).click();
+    await expect(page.getByRole('button', { name: /^work$/i }).first()).toBeVisible({
+      timeout: 15_000,
+    });
+    await expect(page.getByRole('button', { name: /^warmup$/i }).first()).toBeVisible();
+    await axeSerious(page, '/active (log console set kinds)');
+  });
+
+  /**
    * The assertion axe cannot make.
    *
    * axe-core does not reliably test focus visibility, which is how this suite sat at
