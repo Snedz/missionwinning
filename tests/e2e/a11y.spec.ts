@@ -734,6 +734,30 @@ test.describe('Accessibility @a11y', () => {
   });
 
   /**
+   * Loop 21 E1 — Add exercise sheet. Zero-data /active never opens the picker sheet;
+   * axe must see search chrome after Add exercise.
+   */
+  test('axe serious/critical: /active with add-exercise sheet open @a11y', async ({
+    page,
+    context,
+    baseURL,
+  }) => {
+    if (!baseURL) throw new Error('baseURL required');
+    const ok = await unlockGate(page, context, baseURL);
+    if (gateRequired() && !ok) {
+      test.skip(true, 'SMOKE_ACCESS_SECRET required to unlock private gate');
+    }
+    await seedLegacyOnboarding(page);
+    await seedReadinessPhase(page);
+    await startEmptyActiveWorkout(page);
+    await page.getByRole('button', { name: /^add exercise$/i }).first().click();
+    await expect(page.getByPlaceholder(/search exercises/i).first()).toBeVisible({
+      timeout: 15_000,
+    });
+    await axeSerious(page, '/active (add exercise sheet)');
+  });
+
+  /**
    * The assertion axe cannot make.
    *
    * axe-core does not reliably test focus visibility, which is how this suite sat at

@@ -54,6 +54,10 @@ export function ExercisePicker({
           placeholder ??
           t('exercisePickerSearch', { defaultValue: 'Search exercises…' })
         }
+        aria-label={
+          placeholder ??
+          t('exercisePickerSearch', { defaultValue: 'Search exercises…' })
+        }
         className="w-full  border-2 border-border bg-background px-3 py-2.5 min-h-[44px] text-sm"
         autoComplete="off"
       />
@@ -66,44 +70,45 @@ export function ExercisePicker({
         </p>
       )}
       {(query.trim().length > 0 || !selected) && (
-        <ul
+        <div
           className={cn(
             'overflow-y-auto border-2 border-border divide-y divide-border',
             listClassName ?? 'max-h-48'
           )}
           role="listbox"
+          aria-label={t('exercisePickerList', { defaultValue: 'Exercise matches' })}
+          tabIndex={0}
         >
           {filtered.length === 0 ? (
-            <li className="px-3 py-2 text-sm text-muted-foreground">
+            <p className="px-3 py-2 text-sm text-muted-foreground">
               {t('exercisePickerEmpty', { defaultValue: 'No matches' })}
-            </li>
+            </p>
           ) : (
             filtered.map((ex) => (
-              <li key={ex.id}>
-                <button
-                  type="button"
-                  role="option"
-                  aria-selected={value === ex.id}
-                  className={cn(
-                    'w-full min-h-[56px] px-3 py-2.5 text-start text-sm hover:bg-card',
-                    value === ex.id && 'bg-accent-100 text-primary'
-                  )}
-                  onClick={() => {
-                    onChange(ex.id);
-                    setQuery('');
-                  }}
-                >
-                  <span className="font-semibold">{ex.name}</span>
-                  <span className="block text-[11px] text-muted-foreground">
-                    {[ex.muscleGroups.slice(0, 2).join(' · '), ex.equipment]
-                      .filter(Boolean)
-                      .join(' · ')}
-                  </span>
-                </button>
-              </li>
+              <button
+                key={ex.id}
+                type="button"
+                role="option"
+                aria-selected={value === ex.id}
+                className={cn(
+                  'w-full min-h-[56px] px-3 py-2.5 text-start text-sm hover:bg-card',
+                  value === ex.id && 'bg-accent-100 text-primary'
+                )}
+                onClick={() => {
+                  onChange(ex.id);
+                  setQuery('');
+                }}
+              >
+                <span className="font-semibold">{ex.name}</span>
+                <span className="block text-[11px] text-muted-foreground">
+                  {[ex.muscleGroups.slice(0, 2).join(' · '), ex.equipment]
+                    .filter(Boolean)
+                    .join(' · ')}
+                </span>
+              </button>
             ))
           )}
-        </ul>
+        </div>
       )}
     </div>
   );
