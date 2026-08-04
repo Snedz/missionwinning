@@ -33,6 +33,7 @@ import {
   activeCoachTipKind,
   activeSessionEyebrowKind,
   toggleOpenIdx,
+  isOpenIdx,
 } from './activeWorkoutHelpers.ts';
 import type { CompletedWorkoutLog } from '@/types';
 
@@ -977,6 +978,32 @@ describe('toggleOpenIdx', () => {
       src,
       /setSwapOpenIdx\(swapOpenIdx\s*===\s*exIdx\s*\?\s*null\s*:\s*exIdx\)/,
       'swap accordion toggle must stay inside toggleOpenIdx'
+    );
+  });
+});
+
+describe('isOpenIdx', () => {
+  it('matches the open row only', () => {
+    assert.equal(isOpenIdx(null, 0), false);
+    assert.equal(isOpenIdx(1, 1), true);
+    assert.equal(isOpenIdx(1, 0), false);
+  });
+
+  it('ActiveWorkoutPage uses isOpenIdx for note/swap open props', () => {
+    const src = readFileSync(
+      path.join(import.meta.dirname, '..', '..', 'page-components', 'ActiveWorkoutPage.tsx'),
+      'utf8'
+    );
+    assert.match(src, /isOpenIdx\(/);
+    assert.doesNotMatch(
+      src,
+      /swapOpen=\{swapOpenIdx\s*===\s*exIdx\}/,
+      'swap open prop must stay inside isOpenIdx'
+    );
+    assert.doesNotMatch(
+      src,
+      /noteOpen=\{noteOpenIdx\s*===\s*exIdx\}/,
+      'note open prop must stay inside isOpenIdx'
     );
   });
 });

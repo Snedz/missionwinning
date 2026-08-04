@@ -76,6 +76,7 @@ import {
   sessionSetStats,
   setInputKey,
   toggleOpenIdx,
+  isOpenIdx,
 } from '@/lib/workout/activeWorkoutHelpers';
 import { prefersReducedMotion } from '@/lib/motion';
 import { compareText } from '@/lib/i18n/formatLocale';
@@ -541,8 +542,8 @@ export function ActiveWorkoutPage() {
                 unitLabel={unitLabel}
                 nextSet={nextSet}
                 nextSetRef={nextSetRef}
-                swapOpen={swapOpenIdx === exIdx}
-                noteOpen={noteOpenIdx === exIdx}
+                swapOpen={isOpenIdx(swapOpenIdx, exIdx)}
+                noteOpen={isOpenIdx(noteOpenIdx, exIdx)}
                 swapCandidates={swapCandidates}
                 lastSessionSets={getLastSessionSets}
                 onRepeatLast={() => handleRepeatLast(exIdx)}

@@ -542,14 +542,14 @@ PR: #234
 | Wave | Status | Notes |
 |------|--------|-------|
 | G1 Swap sheet a11y | done (`.370`) | Add exercise → More → Swap axe green |
-| G2 Active extract | pending (`.371`) | `isOpenIdx` |
+| G2 Active extract | done (`.371`) | `isOpenIdx` + wiring guard |
 | G3 Soft chrome / log close | pending (`.372`) | Button/Input/Dialog/Otp + oauth borders |
 
 ## Metrics
 
 | Metric | Loop 22 end | Loop 23 (in progress) |
 |--------|-------------|------------------------|
-| Build | `.369` | **`.370`** |
+| Build | `.369` | **`.371`** |
 | i18n uncovered cap | 16 (Bundle refuse) | **16** (unchanged) |
 
 

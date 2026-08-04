@@ -595,3 +595,8 @@ export function toggleOpenIdx(
 ): number | null {
   return current === idx ? null : idx;
 }
+
+/** True when accordion/sheet open-index matches this row. */
+export function isOpenIdx(current: number | null, idx: number): boolean {
+  return current === idx;
+}
