@@ -6,7 +6,7 @@
  */
 
 import { useRouter } from 'next/navigation';
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState, type ReactNode } from "react";
 import dynamic from "next/dynamic";
 import { useTranslation } from "react-i18next";
 import { useWorkoutStore } from "@/store/workoutStore";
@@ -39,12 +39,11 @@ import { readJson, readRaw } from "@/lib/storage/safeStorage";
 import { STORAGE_KEYS } from "@/lib/storage/keys";
 import { computeReentry, type Reentry } from "@/lib/reentry";
 import { TodayReentryCard } from "@/components/today/TodayReentryCard";
-import { firstStepsMayMount, reentryCardMayMount } from "@/lib/today/todayGuidanceMount";
 import { FIRST_STEPS_DISMISS_KEY } from "@/lib/today/firstStepsDismissed";
-import { TODAY_BLOCK_PRIORITY as P } from "@/lib/today/todayBlockPriority";
-import { useDismissed } from "@/hooks/useDismissed";
-import { dayReviewMayMount } from "@/lib/today/dayReviewMount";
+import { buildTodayCandidates } from "@/lib/today/buildTodayCandidates";
 import { planTodayBlocks, type TodayBlockCandidate } from "@/lib/today/todayBlockBudget";
+import type { TodayBlockKey } from "@/lib/today/todayBlockPriority";
+import { useDismissed } from "@/hooks/useDismissed";
 import { localDateKey } from '@/lib/time/localDate';
 import { peekCoachToday } from '@/lib/coach/peekCoachToday';
 import { buildJustGoHeroMeta, type JustGoHeroMeta } from '@/lib/justGoHeroMeta';
@@ -512,179 +511,109 @@ export function HomeTodayDashboard() {
    * spills into Today details on the densest evening instead of crowding the
    * session. The budget number still lives only in `todayBlockBudget.ts`.
    */
-  const staggerBlocks: TodayBlockCandidate<React.ReactNode>[] = [
-    ...(firstStepsMayMount({ phase: state.phase, dismissed: betaDismissed })
-      ? [{ key: 'beta', priority: P.beta, pinned: true, node: <FirstStepsCard state={state} /> }]
-      : []),
-    {
-      key: 'header',
-      priority: P.header,
-      pinned: true,
-      node: (
-        <TodayPageHeader
-          today={todayLabel}
-          focusLine={
-            layout.showFocusLine
-              ? `${formatRecommendedFocusLine(recommendedFocus, t)}${
-                  userEquip === 'bodyweight'
-                    ? ` · ${t('todayBodyweightTag', { defaultValue: 'bodyweight' })}`
-                    : ''
-                }`
-              : null
-          }
-          streak={streak}
-          userEmail={userEmail}
-          action={action}
-          showEditToday={layout.showDetailsAccordion}
-          onEditToday={() => setEditTodayOpen(true)}
-        />
-      ),
-    },
-  ];
+  const candidateSpecs = buildTodayCandidates({
+    phase: state.phase,
+    firstStepsDismissed: betaDismissed,
+    reentryShow: !!reentry?.show,
+    showDashboard: layout.showDashboard,
+    belowFoldReady,
+    totalSessions,
+    streak,
+    hour: new Date().getHours(),
+    weekRecap: weekRecap
+      ? { hasActivity: weekRecap.hasActivity, isWeekEnd: weekRecap.isWeekEnd }
+      : null,
+  });
 
-  if (state.phase === 'commissioned') {
-    staggerBlocks.push({ key: 'intent', priority: P.intent, node: <CommandersIntent /> });
-  }
-
-  // The hero is no longer a stagger block — it docks above the tab bar (see the
-  // ScreenDock render below). "One boss CTA above the fold" (JOURNEY F2) becomes
-  // "one boss CTA that cannot leave the fold".
-
-  // Directly under the boss CTA: a returning user should see the smaller ask before
-  // any score, streak or pillar chrome that would read as a scoreboard of the gap.
-  if (reentry && reentryCardMayMount({ phase: state.phase, show: reentry.show })) {
-    staggerBlocks.push({ key: 'reentry', priority: P.reentry, pinned: true, node: <TodayReentryCard reentry={reentry} /> });
-  }
-
-  if (layout.showDashboard) {
-    staggerBlocks.push({
-      key: 'dashboard',
-      priority: P.dashboard,
-      node: (
-        <TodayDashboardHeader
-          missionScore={score}
-          scores={bodyScores}
-          sessions={totalSessions}
-          trends={todayTrends}
-          coachLine={t(coachInsight.messageKey, {
-            ...coachInsight.messageParams,
-            defaultValue: coachInsight.messageKey,
-          })}
-        />
-      ),
-    });
-    staggerBlocks.push({
-      key: 'freshness',
-      priority: P.freshness,
-      node: (
-        /* Was a `<details>` — a 1px hairline at 40% wrapping a 1px hairline at
-           30% wrapping a sideways chip scroller. Eight rows of one line each
-           cost less height than the disclosure that hid them, so nothing is
-           hidden. */
-        <section>
-          <h2 className="mb-2 text-[11px] font-semibold uppercase tracking-[0.1em] text-muted-foreground">
-            {t('todayMuscleFreshness', { defaultValue: 'Muscle freshness' })}
-          </h2>
-          <MuscleFreshnessStrip rows={freshnessRows} />
-        </section>
-      ),
-    });
-  }
-
-  /*
-   * After the first logged session, surface Mission Coach as the depth path —
-   * but only while there is nothing better to show.
-   *
-   * `.240`: this ran for `basic` *and* `readiness`, and `coach-week` mounts from
-   * `readiness` up. So a readiness athlete got the real week strip **and** a
-   * card inviting them to go and get a week. An invitation is what you show
-   * instead of the thing, never beside it.
-   */
-  if (belowFoldReady && totalSessions >= 1 && state.phase === 'basic') {
-    staggerBlocks.push({
-      key: 'coach-invite',
-      priority: P['coach-invite'],
-      node: (
-        <a
-          href="/coach"
-          className="block border-y-2 border-border py-3.5 text-sm transition-colors hover:bg-muted"
-        >
-          <p className="mb-0.5 text-[11px] font-semibold uppercase tracking-[0.1em] text-muted-foreground">
-            {t('todayCoachInviteEyebrow', { defaultValue: 'Mission Coach' })}
-          </p>
-          <p className="text-[15px] font-semibold leading-snug text-foreground">
-            {t('todayCoachInviteTitle', {
-              defaultValue: 'Turn your logs into this week’s plan',
-            })}
-          </p>
-          <p className="text-xs text-muted-foreground mt-1 leading-relaxed">
-            {t('todayCoachInviteBody', {
-              defaultValue: 'Built from your gear and days per week — free every week.',
-            })}
-          </p>
-        </a>
-      ),
-    });
-  }
-
-  // Day in review — the same mount decision the lean shell asks, so "who sees
-  // the evening card" cannot drift between the two Today shells. The hour test
-  // lives there rather than inside the card, so the chunk is never fetched in
-  // the morning just to render null.
-  if (belowFoldReady && dayReviewMayMount({ hour: new Date().getHours(), phase: state.phase })) {
-    staggerBlocks.push({ key: 'day-review', priority: P['day-review'], node: <TodayDayReviewCard /> });
-  }
-
-  // Week recap — Sunday ceremony or mid-week pulse when active.
-  if (belowFoldReady && weekRecap && (weekRecap.hasActivity || weekRecap.isWeekEnd)) {
-    staggerBlocks.push({
-      key: 'week-recap',
-      priority: P['week-recap'],
-      node: <TodayWeekRecapCard recap={weekRecap} />,
-    });
-  }
-
-  // Secondary surfaces only after idle — never compete with JourneyHero.
-  // The week the session belongs to, directly under it — the two halves of one
-  // answer, so neither can be on screen without the other for want of a slot.
-  if (belowFoldReady && (state.phase === 'readiness' || state.phase === 'commissioned')) {
-    staggerBlocks.push({ key: 'coach-week', priority: P['coach-week'], node: <TodayCoachWeekStrip /> });
-  }
-
-  // Today's prescribed session. The highest-priority spillable block on the
-  // screen: it is the one thing Today exists to answer.
-  if (belowFoldReady && state.phase === 'commissioned') {
-    staggerBlocks.push({ key: 'coach-today', priority: P['coach-today'], node: <CoachTodayCard /> });
-  }
-
-  if (belowFoldReady && (state.phase === 'readiness' || state.phase === 'commissioned')) {
-    staggerBlocks.push({ key: 'guidebook', priority: P.guidebook, node: <GuidebookContinueCard /> });
-  }
-
-  if (!layout.showDashboard && state.phase === 'basic' && streak === 0) {
-    staggerBlocks.push({
-      key: 'encourage',
-      priority: P.encourage,
-      node: (
-        <p className="text-center text-sm text-muted-foreground px-4">
-          {t('todayBasicEncouragement', {
-            defaultValue:
-              'One step at a time. Log a set — Mission Coach shapes the week from your history.',
+  const nodesByKey: Partial<Record<TodayBlockKey, ReactNode>> = {
+    beta: <FirstStepsCard state={state} />,
+    header: (
+      <TodayPageHeader
+        today={todayLabel}
+        focusLine={
+          layout.showFocusLine
+            ? `${formatRecommendedFocusLine(recommendedFocus, t)}${
+                userEquip === 'bodyweight'
+                  ? ` · ${t('todayBodyweightTag', { defaultValue: 'bodyweight' })}`
+                  : ''
+              }`
+            : null
+        }
+        streak={streak}
+        userEmail={userEmail}
+        action={action}
+        showEditToday={layout.showDetailsAccordion}
+        onEditToday={() => setEditTodayOpen(true)}
+      />
+    ),
+    intent: <CommandersIntent />,
+    reentry: reentry ? <TodayReentryCard reentry={reentry} /> : null,
+    dashboard: (
+      <TodayDashboardHeader
+        missionScore={score}
+        scores={bodyScores}
+        sessions={totalSessions}
+        trends={todayTrends}
+        coachLine={t(coachInsight.messageKey, {
+          ...coachInsight.messageParams,
+          defaultValue: coachInsight.messageKey,
+        })}
+      />
+    ),
+    freshness: (
+      <section>
+        <h2 className="mb-2 text-[11px] font-semibold uppercase tracking-[0.1em] text-muted-foreground">
+          {t('todayMuscleFreshness', { defaultValue: 'Muscle freshness' })}
+        </h2>
+        <MuscleFreshnessStrip rows={freshnessRows} />
+      </section>
+    ),
+    'coach-invite': (
+      <a
+        href="/coach"
+        className="block border-y-2 border-border py-3.5 text-sm transition-colors hover:bg-muted"
+      >
+        <p className="mb-0.5 text-[11px] font-semibold uppercase tracking-[0.1em] text-muted-foreground">
+          {t('todayCoachInviteEyebrow', { defaultValue: 'Mission Coach' })}
+        </p>
+        <p className="text-[15px] font-semibold leading-snug text-foreground">
+          {t('todayCoachInviteTitle', {
+            defaultValue: 'Turn your logs into this week’s plan',
           })}
         </p>
-      ),
-    });
-  }
+        <p className="text-xs text-muted-foreground mt-1 leading-relaxed">
+          {t('todayCoachInviteBody', {
+            defaultValue: 'Built from your gear and days per week — free every week.',
+          })}
+        </p>
+      </a>
+    ),
+    'day-review': <TodayDayReviewCard />,
+    'week-recap': weekRecap ? <TodayWeekRecapCard recap={weekRecap} /> : null,
+    'coach-week': <TodayCoachWeekStrip />,
+    'coach-today': <CoachTodayCard />,
+    guidebook: <GuidebookContinueCard />,
+    encourage: (
+      <p className="text-center text-sm text-muted-foreground px-4">
+        {t('todayBasicEncouragement', {
+          defaultValue:
+            'One step at a time. Log a set — Mission Coach shapes the week from your history.',
+        })}
+      </p>
+    ),
+  };
 
   /*
-   * The budget, applied. Everything past TODAY_MAX_TOP_LEVEL_BLOCKS spills into
-   * the disclosure below rather than being dropped — the athlete who wants the
-   * long version is one tap away, and the one who does not gets a screen instead
-   * of a feed.
-   *
-   * `more` is planned separately because it is the overflow container: counting
-   * it against the budget it enforces would be circular.
+   * The budget, applied. Specs come from `buildTodayCandidates`; nodes stay here.
+   * `more` is planned separately because it is the overflow container.
    */
+  const staggerBlocks: TodayBlockCandidate<ReactNode>[] = [];
+  for (const spec of candidateSpecs) {
+    const node = nodesByKey[spec.key];
+    if (node == null) continue;
+    staggerBlocks.push({ ...spec, node });
+  }
+
   const plan = planTodayBlocks(staggerBlocks);
 
   // Quick links + accordion live under one collapsed "More" — never compete with JourneyHero.
