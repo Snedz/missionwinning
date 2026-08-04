@@ -13,14 +13,18 @@ import { getFormGuideOrCues } from '@/lib/formGuides';
 
 const root = path.join(import.meta.dirname, '..', '..');
 
-test('every pattern SVG ships on disk', () => {
+test('every pattern has legacy SVG; raster patterns resolve to form still', () => {
   for (const id of FORM_PATTERN_IDS) {
-    const rel = formPatternPath(id).replace(/^\//, '');
-    assert.ok(existsSync(path.join(root, 'public', rel.replace('form-guides/', 'form-guides/'))), rel);
-    // public/form-guides/pattern-X.svg
     assert.ok(
       existsSync(path.join(root, 'public', 'form-guides', `pattern-${id}.svg`)),
       `missing pattern-${id}.svg`
+    );
+  }
+  for (const id of FORM_PATTERN_IDS) {
+    assert.equal(formPatternPath(id), `/form/pattern-${id}/side.webp`);
+    assert.ok(
+      existsSync(path.join(root, 'public', 'form', `pattern-${id}`, 'side.webp')),
+      `missing form/pattern-${id}/side.webp`
     );
   }
 });
@@ -35,10 +39,25 @@ test('inferFormPattern maps common families', () => {
   assert.equal(inferFormPattern('farmer-carry'), 'loco');
 });
 
-test('bespoke form SVG wins over pattern for structured guides', () => {
-  const guide = getFormGuideOrCues('push-ups');
-  assert.ok(guide?.mediaUrl?.includes('push-ups.svg'), guide?.mediaUrl);
-  assert.equal(guide?.mediaCaption, undefined);
+test('inferFormPattern routes landmine family by movement', () => {
+  assert.equal(inferFormPattern('landmine-press'), 'push');
+  assert.equal(inferFormPattern('landmine-single-arm-press'), 'push');
+  assert.equal(inferFormPattern('landmine-row'), 'pull');
+  assert.equal(inferFormPattern('landmine-meadows-row'), 'pull');
+  assert.equal(inferFormPattern('landmine-squat'), 'squat');
+  assert.equal(inferFormPattern('landmine-thruster'), 'squat');
+  assert.equal(inferFormPattern('landmine-reverse-lunge'), 'squat');
+  assert.equal(inferFormPattern('landmine-hack-squat'), 'squat');
+  assert.equal(inferFormPattern('landmine-rdl'), 'hinge');
+  assert.equal(inferFormPattern('landmine-rotation'), 'core');
+  assert.equal(inferFormPattern('landmine-antirotation-press'), 'core');
+});
+
+test('form pack still wins over pattern for still-only structured guides', () => {
+  // front-squat is still-only (not in VIDEO_IDS pilot set)
+  const guide = getFormGuideOrCues('front-squat');
+  assert.ok(guide?.mediaUrl?.includes('/form/front-squat/side.webp'), guide?.mediaUrl);
+  assert.equal(guide?.mediaType, 'image');
 });
 
 test('long-tail cues attach honest pattern caption', () => {
@@ -58,7 +77,7 @@ test('long-tail cues attach honest pattern caption', () => {
     muscleGroups: ['Chest', 'Shoulders'],
   }));
   assert.equal(guide?.mediaCaption, PATTERN_MEDIA_CAPTION);
-  assert.match(guide!.mediaUrl!, /pattern-push\.svg$/);
+  assert.match(guide!.mediaUrl!, /pattern-push\/side\.webp$/);
 });
 
 test('pattern caption states shared art honestly', () => {

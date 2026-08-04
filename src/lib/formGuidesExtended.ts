@@ -450,4 +450,71 @@ export const EXTENDED_GUIDES: Record<string, FormGuide> = {
     ['Reach arms overhead or rotate', 'Keep front knee tracking', 'Return and switch'],
     ['Front knee collapse', 'Losing balance']
   ),
+  // Landmine family — free bar end in corner/sleeve; fixed arc
+  'landmine-press': g(
+    'Half-kneeling or standing, free bar end at chest',
+    ['Cup sleeve or handle at sternum', 'Ribs down, glute on back leg if kneeling', 'Elbows under load'],
+    ['Press on the arc to full lockout', 'Do not flare ribs', 'Lower with control to chest'],
+    ['Arching hard to finish', 'Pressing with only arms — lose core brace']
+  ),
+  'landmine-row': g(
+    'Straddle free bar end, hinge to bar',
+    ['Neutral grip on sleeve/handle', 'Flat back, soft knees', 'Hips set'],
+    ['Pull to hip along the arc', 'Squeeze lat at top', 'Lower fully without bouncing'],
+    ['Rounding lower back', 'Standing upright and curling']
+  ),
+  'landmine-squat': g(
+    'Hold free bar end at chest (goblet)',
+    ['Elbows under load', 'Feet shoulder-width', 'Chest up'],
+    ['Sit hips down and back', 'Depth as mobility allows', 'Drive midfoot to stand'],
+    ['Knees caving', 'Letting bar drift away from body']
+  ),
+  'landmine-rdl': g(
+    'Standing, free end at hips',
+    ['Soft knees', 'Bar close to body', 'Flat back'],
+    ['Hinge until hamstrings stretch', 'Drive hips forward to stand', 'Do not yank with arms'],
+    ['Rounding lumbar', 'Squatting instead of hinging']
+  ),
+  'landmine-meadows-row': g(
+    'Beside bar, staggered stance',
+    ['Overhand on sleeve', 'Hinge, free hand braced if needed', 'Shoulders packed'],
+    ['Pull elbow high toward hip', 'Pause squeeze', 'Control the lower'],
+    ['Torso rotating open', 'Using momentum only']
+  ),
+  'landmine-single-arm-press': g(
+    'Half-kneeling, opposite knee down',
+    ['Free end at shoulder/chest', 'Tall torso', 'Brace against twist'],
+    ['Press on arc to lockout', 'Keep hips square', 'Lower without collapsing'],
+    ['Rotating with the bar', 'Front knee drifting']
+  ),
+  'landmine-rotation': g(
+    'Feet planted, free end at chest',
+    ['Soft knees', 'Arms long enough to hold sleeve', 'Brace core'],
+    ['Rotate through hips and upper back', 'Control both sides', 'Arms follow torso — not yank'],
+    ['Twisting only from arms', 'Feet spinning out']
+  ),
+  'landmine-thruster': g(
+    'Goblet hold free end at chest',
+    ['Elbows under', 'Feet set for squat', 'Brace'],
+    ['Squat deep then drive and press on arc', 'One fluid motion', 'Catch soft at chest'],
+    ['Pressing before legs finish', 'Losing brace at lockout']
+  ),
+  'landmine-reverse-lunge': g(
+    'Standing, free end at chest or shoulder',
+    ['Tall posture', 'Soft front knee ready', 'Brace'],
+    ['Step back into lunge', 'Front knee tracks over midfoot', 'Drive front heel to stand'],
+    ['Front knee cave', 'Leaning hard into bar']
+  ),
+  'landmine-hack-squat': g(
+    'Bar end on shoulder or elbow crook',
+    ['Heels may elevate slightly', 'Torso braced', 'Knees track'],
+    ['Sit back and down (quad bias)', 'Drive up without collapsing knees', 'Control depth'],
+    ['Heels lifting off', 'Rounding under load']
+  ),
+  'landmine-antirotation-press': g(
+    'Side-on to pivot, free end at chest',
+    ['Feet planted', 'Ribs stacked', 'Shoulders level'],
+    ['Press bar straight out', 'Resist any twist', 'Return under control'],
+    ['Letting hips spin', 'Holding breath the whole set']
+  ),
 };

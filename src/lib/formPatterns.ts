@@ -2,10 +2,11 @@ import type { Exercise } from '@/types';
 import { getExerciseById } from '@/data/exercises';
 
 /**
- * Shared movement-pattern diagrams for long-tail exercises without a bespoke SVG.
+ * Shared movement-pattern media for long-tail exercises without a bespoke pack.
  * Honest: these are pattern art — cues stay exercise-specific.
  *
- * Files: public/form-guides/pattern-{squat|hinge|push|pull|core|loco|isolation}.svg
+ * Preferred: public/form/pattern-{id}/side.webp (Form Index clinical still)
+ * Legacy fallback: public/form-guides/pattern-{id}.svg
  */
 
 export type FormPatternId =
@@ -30,8 +31,26 @@ export const FORM_PATTERN_IDS: readonly FormPatternId[] = [
 export const PATTERN_MEDIA_CAPTION =
   'Shared movement pattern — cues below are for this exercise';
 
-/** Public path for a pattern diagram. */
+/**
+ * Patterns with clinical Form Index stills under public/form/pattern-{id}/side.webp.
+ * Demoted (.467): core (was cropped curl), isolation (was side-plank / head fail).
+ * Re-add only after Form Director regen + eyes-on QA.
+ */
+export const FORM_PATTERN_RASTER_IDS = new Set<FormPatternId>([
+  'squat',
+  'hinge',
+  'push',
+  'pull',
+  'loco',
+  'core', // Form Director regen (.468) — forearm plank PASS
+  'isolation', // Form Director regen (.468) — standing DB curl PASS
+]);
+
+/** Public path for a pattern diagram (raster preferred over legacy SVG). */
 export function formPatternPath(pattern: FormPatternId): string {
+  if (FORM_PATTERN_RASTER_IDS.has(pattern)) {
+    return `/form/pattern-${pattern}/side.webp`;
+  }
   return `/form-guides/pattern-${pattern}.svg`;
 }
 
@@ -101,8 +120,21 @@ export function inferFormPattern(
     return 'pull';
   }
 
+  // Landmine family — route by movement, not bare "landmine" (else rotation → push).
+  // Match id/name tokens carefully: cues may say "against rotation" on a press.
+  if (/landmine/.test(text)) {
+    const idName = `${exerciseId} ${ex?.name ?? ''}`.toLowerCase();
+    if (/row|meadows/.test(idName)) return 'pull';
+    if (/squat|lunge|hack|thruster/.test(idName)) return 'squat';
+    if (/rdl|deadlift|hinge/.test(idName)) return 'hinge';
+    if (/anti.?rotat|pallof/.test(idName)) return 'core';
+    if (/rotation|twist|woodchop/.test(idName)) return 'core';
+    if (/press|raise/.test(idName)) return 'push';
+    return 'push';
+  }
+
   if (
-    /push.?up|bench|overhead|ohp|pike.?push|floor.?press|landmine|handstand|fly|crossover|pec|\bpress\b/.test(
+    /push.?up|bench|overhead|ohp|pike.?push|floor.?press|handstand|fly|crossover|pec|\bpress\b/.test(
       text
     )
   ) {

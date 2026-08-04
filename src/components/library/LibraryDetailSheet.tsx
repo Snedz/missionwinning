@@ -173,8 +173,9 @@ export function LibraryDetailSheet({
                   >
                     {guide.mediaType === 'video' ? (
                       <video
-                        className="w-full max-h-48 object-contain"
+                        className="w-full max-h-56 object-contain bg-background"
                         src={guide.mediaUrl}
+                        poster={guide.mediaPosterUrl}
                         muted
                         playsInline
                         loop
@@ -182,11 +183,11 @@ export function LibraryDetailSheet({
                         preload="metadata"
                       />
                     ) : (
-                      // Static form diagram under /public — plain img is intentional.
+                      // Form Index poster / legacy SVG under /public — plain img is intentional.
                       <img
                         src={guide.mediaUrl}
                         alt=""
-                        className="w-full max-h-48 object-contain"
+                        className="w-full max-h-56 object-contain bg-background"
                       />
                     )}
                     {guide.mediaCaption ? (

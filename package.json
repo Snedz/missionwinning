@@ -53,6 +53,7 @@
     "media:form-patterns": "node scripts/generate-form-patterns.mjs",
     "media:form-all": "node scripts/generate-form-guides-all.mjs && node scripts/inject-form-motion.mjs",
     "media:form-motion": "node scripts/inject-form-motion.mjs",
+    "media:grok-prompt": "node scripts/print-grok-prompt.mjs",
     "mobile": "npm --prefix apps/mobile start",
     "mobile:typecheck": "npm --prefix apps/mobile run typecheck",
     "android:assemble": "cd apps/android && ./gradlew :app:assembleDebug",

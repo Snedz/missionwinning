@@ -381,17 +381,37 @@ export function LibraryPage() {
             No nested interactive roles — real Button inside is the keyboard stop.
           */
           const pattern = inferFormPattern(ex.id, ex);
-          const hasForm = !!getFormGuideOrCues(ex.id, { exercise: ex })?.mediaUrl;
+          const guideMedia = getFormGuideOrCues(ex.id, { exercise: ex });
+          const hasForm = !!guideMedia?.mediaUrl;
+          const posterUrl =
+            guideMedia?.mediaPosterUrl ??
+            (guideMedia?.mediaType === 'image' &&
+            guideMedia.mediaUrl &&
+            !guideMedia.mediaUrl.endsWith('.svg')
+              ? guideMedia.mediaUrl
+              : undefined);
           const isPicked = pickedIds.includes(ex.id);
           return (
           <Card
             key={ex.id}
             className={cn(
-              'content-card pressable-card cursor-pointer',
+              'content-card pressable-card cursor-pointer overflow-hidden',
               isPicked && 'border-primary ring-1 ring-primary'
             )}
             onClick={() => setDetailId(ex.id)}
           >
+            {posterUrl ? (
+              <div className="border-b-2 border-border bg-background">
+                {/* Form Index still under /public — plain img is intentional. */}
+                <img
+                  src={posterUrl}
+                  alt=""
+                  loading="lazy"
+                  decoding="async"
+                  className="aspect-[4/3] w-full object-cover object-center"
+                />
+              </div>
+            ) : null}
             <CardHeader className="pb-2">
               <div className="flex items-baseline justify-between gap-2">
                 <span className="font-mono text-[10px] tracking-wider text-muted-foreground tabular-nums">

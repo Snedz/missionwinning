@@ -3,14 +3,17 @@
 **Audience:** Agents and founder generating / shipping product imagery.  
 **Brand colors & voice:** [brand-guidelines.md](brand-guidelines.md) · **UI tokens:** [DESIGN_SYSTEM.md](DESIGN_SYSTEM.md)  
 **Manifest:** [`media/manifest.json`](../media/manifest.json) — check before regenerating.  
-**Flow prompts (copy-paste):** [media/FLOW_PROMPTS.md](../media/FLOW_PROMPTS.md) · **Drop exports:** [`media/inbox/`](../media/inbox/)
+**Flow prompts (copy-paste):** [media/FLOW_PROMPTS.md](../media/FLOW_PROMPTS.md) · **Grok Imagine session pack:** [media/GROK_IMAGINE_PROMPTS.md](../media/GROK_IMAGINE_PROMPTS.md) · **Drop exports:** [`media/inbox/`](../media/inbox/)
 
 Generation is **offline batch** → founder approve → commit static files. There is **no** runtime image-gen API in the product.
 
-**Exercise craft index (Train + public `/exercises`):** browse by **pattern** (squat / hinge / push / pull / core / loco / isolation), show form SVG (bespoke or honest pattern pack), coach language, one-click **Train this**. Hero SVGs may include CSS-in-SVG mid-phase motion (`npm run media:form-motion`). Structured guide floor ≥80 — `src/lib/formGuideCoverage.test.ts`. Coverage snapshot: `npm run media:coverage` → `media/COVERAGE.md`.
+**Exercise Form Index (Train + library + public `/exercises`):** GrokFilm-style browse (pattern / equipment / muscle) → **clinical side poster or short loop** → **Train this free**. Pedagogy borrows CrossFit *movement-standards craft* (full body, full ROM, side camera, short silent loop) — **not** CrossFit IP, embeds, or brand. Host on Vercel static free tier (`public/form/`); **not** Supabase Storage (egress) and **not** YouTube as mid-set primary.
 
-**Primary HQ tool for Learn / social / motion:** [Google Flow](https://labs.google/fx/tools/flow) (50 free credits/day on non‑AI plans).  
-**Form guides stay SVG** — do not replace with Flow video or photoreal people.
+**Default form media:** `/form/{id}/side.webp` (+ optional `side.mp4` only after QA). Legacy stick SVGs under `/form-guides/` remain as fallback. Resolve: form pack → pattern raster (when wired) → pattern SVG → text. Structured guide floor ≥80 — `src/lib/formGuideCoverage.test.ts`.
+
+**Form generation:** [media/form-kit/FORM_DIRECTOR.md](../media/form-kit/FORM_DIRECTOR.md) — Seedance-class director prompts (asset kit → still QA → optional loop). Soft two-line prompts retired (`.467` quality reset). Still-only is a valid ship; glitchy video is not.
+
+**Primary HQ tool for Learn / social / motion:** [Google Flow](https://labs.google/fx/tools/flow) + [Grok Imagine](https://grok.com/imagine). Optional later: same Form Director sheets on Higgsfield Seedance for hard physics.
 
 ---
 
@@ -18,7 +21,8 @@ Generation is **offline batch** → founder approve → commit static files. The
 
 | Folder | Role | Format | Naming |
 |--------|------|--------|--------|
-| `public/form-guides/` | In-app + public exercise teaching | SVG (optional short WebM later) | `{exerciseId}.svg` |
+| `public/form/` | **Form Index** posters + short loops (Train default) | WebP + optional MP4 | `{exerciseId}/side.webp` · `side.mp4` · `front.webp` |
+| `public/form-guides/` | Legacy stick SVG fallback | SVG | `{exerciseId}.svg` · `pattern-*.svg` |
 | `public/art/` | Marketing decorative | AVIF + WebP pairs | `{name}.avif` / `{name}.webp` |
 | `public/learn/` | Guidebook / Learn figures | WebP (+ AVIF when large) | `{chapterId}-hero.webp` or `{sectionId}.webp` |
 | `public/social/` | Launch / invite creatives | PNG/WebP 1080² or 1080×1350; short WebM OK | `{campaign}-{variant}.webp` |
@@ -53,24 +57,25 @@ Generation is **offline batch** → founder approve → commit static files. The
 
 ---
 
-## Form diagram language (instructional SVG)
+## Form Index language (clinical poster + loop)
 
-**Default for Train form guides** — line/stick figures, not photoreal people.
+**Default for Train form** — clinical movement-standard demos (CrossFit-style craft, MW-owned assets). Not stick SVG. Not CrossFit.com embeds.
 
 | Element | Spec |
 |---------|------|
-| Canvas | `viewBox="0 0 320 200"` (or 360×220 for multi-phase) |
-| Background | Paper `#f3f2f2` (or transparent on a surface card) |
-| Figure stroke | Ink `#201e1d`, `stroke-width="2.5"`, round caps/joins |
-| Motion arrows | The one red `#ec3013` |
-| Joint / cue marks | Mid grey `#6f6b69` dots + short labels |
-| Phase layout | 2–3 poses left→right: **setup → mid → lockout** (or hold) |
-| A11y | `role="img"`, `aria-label`, `<title>` with exercise name |
-| Animation | Optional CSS-in-SVG mid-phase bob on **16 heroes** (`npm run media:form-motion`); gated on `prefers-reduced-motion: no-preference`; works under `<img src>` |
+| Camera | Locked **side** tripod; knee–hip height for hinge/squat; full body head-to-feet |
+| Action | 1–2 clean reps, full ROM (start → finish visible) |
+| Duration | Still poster required; optional silent loop 6–8s WebM |
+| Ground | Paper-neutral floor/wall `#f3f2f2` field |
+| Athlete | Simple dark training clothes; face not hero |
+| Accent | Optional single vermillion `#ec3013` joint/path mark — never neon |
+| Forbidden | Text in frame, logos, music, Dutch tilt, film grain, gym-bro montage, third-party CF IP |
+| Host | `public/form/{id}/` on Vercel — **not** Supabase free egress, **not** YT primary |
+| A11y | Meaningful `alt` / video label; caption under media |
 
-**Reference asset:** `public/form-guides/push-ups.svg`
+**Legacy SVG** (`public/form-guides/`): fallback only when no form pack. Stick language docs remain for regenerating those files if needed.
 
-Do **not** use gym-bro aesthetics, neon glow stacks, or medical claim overlays on form art.
+**Reference pack ids:** `src/lib/formMedia.ts` (`FORM_PACK_SIDE_IDS`).
 
 ---
 
@@ -86,12 +91,13 @@ gradients, no glow, no drop shadows, no dark backgrounds, no second accent hue.
 Clinical athletic clarity — not gym-bro hype, not medical.
 No logos invented; no competitor blue/violet identity; no cream/terracotta editorial look.
 Atmosphere: mission briefing, train-anywhere athlete, calm competence.
-Decorative or chapter-hero only — not instructional form diagrams (those are SVG stick figures).
+Decorative / chapter-hero / social only when used without form ROM intent.
+For **form packs**, use the Form Index block in [GROK_IMAGINE_PROMPTS.md](../media/GROK_IMAGINE_PROMPTS.md) instead.
 No text in the image unless explicitly requested. No crisis or clinical depression framing.
 No readable UI chrome, no fake app screenshots unless asked.
 ```
 
-Instructional form **concepts** may use AI as a pose reference only; **ship** hand-tuned SVG matching the form language above.
+**Form packs** ship Imagine-generated clinical stills (and optional loops) to `public/form/`. Do **not** scrape CrossFit or random YouTube demos.
 
 ---
 
@@ -119,7 +125,7 @@ Studio: https://labs.google/fx/tools/flow
 | **Agent** | Maintains prompts, runs `npm run media:optimize-inbox`, updates manifest, wires paths, commits approved assets |
 | **Neither** | Puts Flow keys in Vercel / `NEXT_PUBLIC_*` — Flow is not an app API |
 
-**Grok Imagine / SuperGrok:** Same offline rule — generate in product UI → export → `media/inbox/`. Prefer for still portraits / atmosphere when Flow free tier is video-only.
+**Grok Imagine / SuperGrok:** Same offline rule — generate in product UI → export → `media/inbox/`. Prefer for stills when already in Grok or Flow free tier is video-only. **Start here:** [media/GROK_IMAGINE_PROMPTS.md](../media/GROK_IMAGINE_PROMPTS.md) (Sprint A paste sheet + filenames).
 
 ### Fallback tools (when Flow is spent or for quick drafts)
 
@@ -151,7 +157,7 @@ npm run media:optimize-inbox
 
 | Surface | How media attaches |
 |---------|-------------------|
-| Form guides | `FORM_MEDIA_IDS` + `/form-guides/{id}.svg` in `src/lib/formGuides.ts`; long-tail uses `formPatterns.ts` → `/form-guides/pattern-*.svg` with honest caption |
+| Form Index | `FORM_PACK_SIDE_IDS` + `/form/{id}/side.webp` via `src/lib/formMedia.ts` → `formGuides.ts`; fallback SVG + pattern packs |
 | Guidebook | Optional `figure` / `heroImage` on guidebook types → reader + PDF |
 | Marketing | `ArtPicture` + `public/art/` |
 | Social | Files under `public/social/`; paths listed in [SOCIAL_LAUNCH.md](SOCIAL_LAUNCH.md) |
@@ -173,4 +179,4 @@ npm run media:optimize-inbox
 | **7** | Pattern packs (7) for long-tail + honest caption · social WebP | Shipped (`.415`) |
 | **8** | Scout modernist re-ink · magazine PDF densify · PDF builder `load` settle | Shipped (`.416`) |
 
-**Craft loop (Wave 5+):** inventory (`npm run media:coverage`) → art direction → optional Grok pose ref in `media/inbox/form-ref-*` → SVG via `scripts/form-kit/` → uniqueness + palette tests → wire + manifest. Form guides stay instructional SVG — never ship photoreal as Train default. Coverage snapshot: [`media/COVERAGE.md`](../media/COVERAGE.md).
+**Form Index craft loop:** inventory → Imagine clinical side still (`form-{id}-side-frame`) → `npm run media:optimize-inbox` → wire `FORM_PACK_SIDE_IDS` → library card poster + sheet. Optional later: image→video loop → WebM. Coverage: [`media/COVERAGE.md`](../media/COVERAGE.md).

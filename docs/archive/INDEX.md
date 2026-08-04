@@ -65,6 +65,20 @@ When adding a doc:
 | [log/LOG-rotate-414.md](./log/LOG-rotate-414.md) | `.399` FileUploadRow chrome — rotated for `.414` form media T1 |
 | [log/LOG-rotate-415.md](./log/LOG-rotate-415.md) | `.400` opacity exemptions — rotated for `.415` pattern packs |
 | [log/LOG-rotate-416.md](./log/LOG-rotate-416.md) | `.401` beachhead i18n — rotated for `.416` Scout + PDF |
+| [log/LOG-rotate-475.md](./log/LOG-rotate-475.md) | `.460` — rotated for `.475` (RDL bar-axis fix). |
+| [log/LOG-rotate-474.md](./log/LOG-rotate-474.md) | `.459` — rotated for `.474` (empty-bar collar fix). |
+| [log/LOG-rotate-473.md](./log/LOG-rotate-473.md) | `.458` — rotated for `.473` (landmine family + stills). |
+| [log/LOG-rotate-472.md](./log/LOG-rotate-472.md) | `.457` — rotated for `.472` (athlete unify + bar loops). |
+| [log/LOG-rotate-471.md](./log/LOG-rotate-471.md) | `.456` — rotated for `.471` (loop wave: lunges/box/burpee/KB). |
+| [log/LOG-rotate-470.md](./log/LOG-rotate-470.md) | `.455` — rotated for `.470` (OHP/row + plank/push loops). |
+| [log/LOG-rotate-469.md](./log/LOG-rotate-469.md) | `.454` — rotated for `.469` (hero regen + loop pilot). |
+| [log/LOG-rotate-468.md](./log/LOG-rotate-468.md) | `.453` — rotated for `.468` (Form Director regen PASS). |
+| [log/LOG-rotate-467.md](./log/LOG-rotate-467.md) | `.452` — rotated for `.467` (Form Director quality reset). |
+| [log/LOG-rotate-466.md](./log/LOG-rotate-466.md) | `.451` — rotated for `.466` (full loops + pattern stills). |
+| [log/LOG-rotate-465.md](./log/LOG-rotate-465.md) | `.450` — rotated for `.465` (Form Index loops + wave-2). |
+| [log/LOG-rotate-464.md](./log/LOG-rotate-464.md) | `.449` — rotated for `.464` (Form Index pilot). |
+| [log/LOG-rotate-463.md](./log/LOG-rotate-463.md) | `.448` — rotated for `.463` (Sprint A Imagine stills). |
+| [log/LOG-rotate-462.md](./log/LOG-rotate-462.md) | `.447` — rotated for `.462` (Grok Imagine pack). |
 | [log/LOG-rotate-461.md](./log/LOG-rotate-461.md) | `.446` — rotated for `.461` (library session studio). |
 | [log/LOG-rotate-460.md](./log/LOG-rotate-460.md) | `.445` — rotated for `.460` (craft CTA + coverage). |
 | [log/LOG-rotate-459.md](./log/LOG-rotate-459.md) | `.444` — rotated for `.459` (guides to 82). |

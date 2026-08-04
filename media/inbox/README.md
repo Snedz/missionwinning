@@ -2,14 +2,21 @@
 
 Drop **raw** Google Flow / Grok Imagine exports here. Do not commit large binaries.
 
+## Grok Imagine first session
+
+Paste-ready prompts + exact filenames: **[media/GROK_IMAGINE_PROMPTS.md](../GROK_IMAGINE_PROMPTS.md)**.  
+Studio: [grok.com/imagine](https://grok.com/imagine).
+
 ## Naming
 
 | Kind | Example |
 |------|---------|
 | Learn still/frame | `learn-human-performance-frame.png` |
-| Social still/frame | `social-invite-frame.png` |
-| Social video | `social-invite-raw.mp4` (optional; keep local) |
+| Social still/frame | `social-invite-square-frame.png` · `social-coach-story-frame.png` |
+| Social video | `social-invite-raw.mp4` (optional; keep local — do not commit multi-MB) |
 | Mascot (Scout) | `mascot-scout-idle-frame.png` · `mascot-scout-invite-frame.png` · `mascot-scout-celebrate-frame.png` |
+| Form Index poster | `form-{exerciseId}-side-frame.png` → `public/form/{id}/side.webp` |
+| Form Index front | `form-{exerciseId}-front-frame.png` → `public/form/{id}/front.webp` |
 
 ## Optimize
 
@@ -17,4 +24,5 @@ Drop **raw** Google Flow / Grok Imagine exports here. Do not commit large binari
 npm run media:optimize-inbox
 ```
 
-Writes WebP to `public/learn/` or `public/social/` per filename prefix. See [docs/MEDIA_SYSTEM.md](../docs/MEDIA_SYSTEM.md).
+Writes WebP to `public/learn/`, `public/social/`, or `public/brand/mascot/` per filename prefix.  
+See [docs/MEDIA_SYSTEM.md](../docs/MEDIA_SYSTEM.md).

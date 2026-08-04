@@ -68,6 +68,7 @@ export function FormGuideSheet({
               type={guide.mediaType ?? 'image'}
               name={exerciseName}
               caption={guide.mediaCaption}
+              poster={guide.mediaPosterUrl}
             />
           )}
 
@@ -106,40 +107,49 @@ function FormGuideMedia({
   type,
   name,
   caption,
+  poster,
 }: {
   url: string;
   type: 'image' | 'video';
   name: string;
   caption?: string;
+  poster?: string;
 }) {
   if (type === 'video') {
     return (
-      <div className="overflow-hidden border-2 border-border bg-card">
+      <figure className="overflow-hidden border-2 border-border bg-card">
         <video
-          className="w-full max-h-56 object-contain"
+          className="w-full max-h-64 object-contain bg-background"
           src={url}
+          poster={poster}
           controls
-          preload="none"
           playsInline
-          aria-label={`${name} form video`}
+          muted
+          loop
+          preload="metadata"
+          aria-label={`${name} form demo`}
         >
           <track kind="captions" srcLang="en" label="Captions" />
         </video>
-      </div>
+        <figcaption className="border-t-2 border-border px-3 py-1.5 text-center text-xs text-muted-foreground">
+          {caption ?? 'Side view · full range of motion'}
+        </figcaption>
+      </figure>
     );
   }
 
   return (
     <figure className="overflow-hidden border-2 border-border bg-card">
+      {/* Form Index posters + legacy SVG under /public — plain img is intentional. */}
       <img
         src={url}
-        alt={`${name} form diagram`}
+        alt={`${name} form demo, side view`}
         loading="lazy"
         decoding="async"
-        className="mx-auto w-full max-h-64 object-contain"
+        className="mx-auto w-full max-h-64 object-contain bg-background"
       />
       <figcaption className="border-t-2 border-border px-3 py-1.5 text-center text-xs text-muted-foreground">
-        {caption ?? 'Form diagram'}
+        {caption ?? 'Form demo'}
       </figcaption>
     </figure>
   );

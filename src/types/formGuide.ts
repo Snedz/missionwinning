@@ -7,9 +7,14 @@ export interface FormGuide {
   breathing?: string;
   /** Military-style cue names only when guide is for readiness test prep. */
   militaryStyle?: boolean;
-  /** Public path e.g. `/form-guides/squats.svg` or `/form-guides/pattern-squat.svg`. */
+  /**
+   * Primary media URL — prefer `/form/{id}/side.webp|webm` (Form Index pack).
+   * Legacy: `/form-guides/{id}.svg` or pattern SVG.
+   */
   mediaUrl?: string;
   mediaType?: 'image' | 'video';
+  /** Poster for video packs (side.webp while mediaUrl is side.webm). */
+  mediaPosterUrl?: string;
   /**
    * Optional caption under the diagram. Pattern-pack media should state that
    * the art is shared — not exercise-specific — so we stay honest mid-set.

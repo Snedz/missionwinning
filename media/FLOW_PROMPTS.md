@@ -1,6 +1,7 @@
 # Google Flow / Imagine prompt pack — Mission Winning
 
 **Studio:** [Google Flow](https://labs.google/fx/tools/flow) · **Playbook:** [docs/MEDIA_SYSTEM.md](../docs/MEDIA_SYSTEM.md)  
+**Grok Imagine stills (paste session):** [GROK_IMAGINE_PROMPTS.md](GROK_IMAGINE_PROMPTS.md)  
 **Spend:** Free tier ≈ **50 credits/day** → prefer **Veo 3.1 Lite (~10 credits)** = up to **5 clips**. Skip Quality (100).  
 **Ship:** Download → `media/inbox/` → `npm run media:optimize-inbox`.
 
