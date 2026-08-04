@@ -54,6 +54,13 @@ import {
   volumeTrimToastKind,
 } from '@/lib/workout/activeSessionCheckIn';
 import {
+  patchesForApplyTargets,
+  patchesForPlateWeight,
+  patchesForUseNext,
+  plateCalcInitialWeight,
+  resolveAddExerciseId,
+} from '@/lib/workout/activeSetInputPatches';
+import {
   buildConsoleSet,
   findNextSet,
   getLastPerformanceForSet,
@@ -401,9 +408,10 @@ export function ActiveWorkoutPage() {
       repMin: range.min,
       repMax: range.max,
     });
-    for (const target of targets) {
-      updateSetInput(exIdx, target.setIdx, 'reps', target.reps);
-      updateSetInput(exIdx, target.setIdx, 'weight', target.weight);
+    for (const { setIdx, patches } of patchesForApplyTargets(targets)) {
+      for (const p of patches) {
+        updateSetInput(exIdx, setIdx, p.field, p.value);
+      }
     }
   };
 
@@ -608,9 +616,10 @@ export function ActiveWorkoutPage() {
               type="button"
               disabled={!addExerciseId}
               onClick={() => {
-                if (!addExerciseId) return;
-                const ex = getExerciseById(addExerciseId);
-                addExerciseToActive(addExerciseId, ex?.muscleGroups);
+                const id = resolveAddExerciseId(addExerciseId);
+                if (!id) return;
+                const ex = getExerciseById(id);
+                addExerciseToActive(id, ex?.muscleGroups);
                 setAddExerciseId('');
               }}
               className="mt-3 min-h-[40px] border-2 border-border px-4 text-sm font-semibold transition-colors hover:bg-accent-100 disabled:pointer-events-none disabled:border-dashed disabled:text-muted-foreground"
@@ -716,8 +725,9 @@ export function ActiveWorkoutPage() {
             onKindChange={(kind) => setSetKind(consoleSet.exIdx, consoleSet.setIdx, kind)}
             onLog={() => handleLogSet(consoleSet.exIdx, consoleSet.setIdx)}
             onUseNext={(target) => {
-              updateSetInput(consoleSet.exIdx, consoleSet.setIdx, 'reps', target.reps);
-              updateSetInput(consoleSet.exIdx, consoleSet.setIdx, 'weight', target.weight);
+              for (const p of patchesForUseNext(target)) {
+                updateSetInput(consoleSet.exIdx, consoleSet.setIdx, p.field, p.value);
+              }
             }}
           />
         </ScreenDock>
@@ -729,9 +739,10 @@ export function ActiveWorkoutPage() {
         value={addExerciseId}
         onChange={setAddExerciseId}
         onConfirm={() => {
-          if (!addExerciseId) return;
-          const ex = getExerciseById(addExerciseId);
-          addExerciseToActive(addExerciseId, ex?.muscleGroups);
+          const id = resolveAddExerciseId(addExerciseId);
+          if (!id) return;
+          const ex = getExerciseById(id);
+          addExerciseToActive(id, ex?.muscleGroups);
           setAddExerciseId('');
         }}
       />
@@ -739,19 +750,16 @@ export function ActiveWorkoutPage() {
       <PlateCalculatorSheet
         open={plateCalcOpen}
         onClose={() => setPlateCalcOpen(false)}
-        initialTarget={
-          nextSet
-            ? getSetInput(
-                nextSet.exIdx,
-                nextSet.setIdx,
-                activeWorkout.exercises[nextSet.exIdx].sets[nextSet.setIdx].reps,
-                activeWorkout.exercises[nextSet.exIdx].sets[nextSet.setIdx].weight
-              ).weight
-            : undefined
-        }
+        initialTarget={plateCalcInitialWeight({
+          nextSet,
+          exercises: activeWorkout.exercises,
+          resolveInput: getSetInput,
+        })}
         onApplyTarget={(weight) => {
           if (!nextSet) return;
-          updateSetInput(nextSet.exIdx, nextSet.setIdx, 'weight', weight);
+          for (const p of patchesForPlateWeight(weight)) {
+            updateSetInput(nextSet.exIdx, nextSet.setIdx, p.field, p.value);
+          }
         }}
       />
       <WorkoutVictorySheet

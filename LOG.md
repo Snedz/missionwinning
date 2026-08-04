@@ -10,6 +10,11 @@ Archive: [2026-06 → 2026-07-20](docs/archive/log/LOG-2026-06_to_2026-07-20.md)
 
 ---
 
+## 2026-08-04 — Active set-input patches pure extract (`.407`)
+
+`patchesForUseNext` / plate / apply-targets + `plateCalcInitialWeight` +
+`resolveAddExerciseId` peel dual-field dial updates out of Active (T2.1).
+
 ## 2026-08-04 — Active check-in dismiss pure extract (`.406`)
 
 `planSessionCheckInDismiss` + `volumeTrimToastKind` own readiness delta /
@@ -81,8 +86,4 @@ Kaizen Loop 30 N3. Soft chrome leftovers:
 2. SelectItem: `rounded-sm` → `rounded-none`
 
 Living log Loop 30 closed. Cap 16.
-
-## 2026-08-04 — Active shouldShowSetOptionsFooter extract (`.392`)
-
-Kaizen Loop 30 N2. `shouldShowSetOptionsFooter` owns the Set options footer gate so ActiveExerciseCard does not inline the lastSets/hasPlanned or. Wiring guard on the card. Cap 16.
 
