@@ -55,6 +55,7 @@ When adding a doc:
 | [log/LOG-rotate-300.md](./log/LOG-rotate-300.md) | `.285` progressive overload — rotated for `.300` L5 fillers |
 | [log/LOG-rotate-301.md](./log/LOG-rotate-301.md) | `.286` re-entry dose — rotated for `.301` Coach/History i18n |
 | [log/LOG-rotate-302.md](./log/LOG-rotate-302.md) | `.287` coach why — rotated for `.302` debrief i18n |
+| [log/LOG-rotate-356.md](./log/LOG-rotate-356.md) | `.341` — rotated for `.356` — Swap candidates when-open |
 | [log/LOG-rotate-355.md](./log/LOG-rotate-355.md) | `.340` — rotated for `.355` — Coaching filled-form a11y |
 | [log/LOG-rotate-354.md](./log/LOG-rotate-354.md) | `.339` — rotated for `.354` — Offline banner seeded a11y |
 | [log/LOG-rotate-353.md](./log/LOG-rotate-353.md) | `.338` — rotated for `.353` — Victory body-score deltas |

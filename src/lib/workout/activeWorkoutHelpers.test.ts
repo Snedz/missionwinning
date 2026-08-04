@@ -27,6 +27,7 @@ import {
   shouldShowReadinessDelta,
   shouldShowVolumeTrimOffer,
   resolveActiveGoalId,
+  activeSessionHasExercises,
 } from './activeWorkoutHelpers.ts';
 import type { CompletedWorkoutLog } from '@/types';
 
@@ -849,5 +850,22 @@ describe('resolveActiveGoalId', () => {
       /parseGoalPresetId\(\s*readRaw\(STORAGE_KEYS\.primaryGoal\)/,
       'goal id resolution must stay inside resolveActiveGoalId'
     );
+  });
+});
+
+describe('activeSessionHasExercises', () => {
+  it('is false for empty or missing lists', () => {
+    assert.equal(activeSessionHasExercises([]), false);
+    assert.equal(activeSessionHasExercises(null), false);
+    assert.equal(activeSessionHasExercises([{ id: 'x' }]), true);
+  });
+
+  it('ActiveWorkoutPage uses activeSessionHasExercises rather than length === 0', () => {
+    const src = readFileSync(
+      path.join(import.meta.dirname, '..', '..', 'page-components', 'ActiveWorkoutPage.tsx'),
+      'utf8'
+    );
+    assert.match(src, /activeSessionHasExercises\(/);
+    assert.doesNotMatch(src, /activeWorkout\.exercises\.length\s*===\s*0/);
   });
 });

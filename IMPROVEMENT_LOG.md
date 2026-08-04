@@ -432,6 +432,6 @@ PR: #234
 | Wave | Status | Notes |
 |------|--------|-------|
 | B1 Body metrics sheet a11y | done (`.355`) | Track Log → BodyMetricsSheet axe green |
-| B2 Active extract | pending | |
+| B2 Active extract | done (`.356`) | `activeSessionHasExercises` + wiring guard |
 | B3 Soft chrome / log close | pending | |
 

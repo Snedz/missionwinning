@@ -70,6 +70,7 @@ import {
   shouldShowReadinessDelta,
   shouldShowVolumeTrimOffer,
   resolveActiveGoalId,
+  activeSessionHasExercises,
   sessionIsCoachPrescribed,
   sessionSetStats,
   setInputKey,
@@ -503,7 +504,7 @@ export function ActiveWorkoutPage() {
 
       <SessionJotField value={activeWorkout.sessionNote ?? ''} onChange={setSessionNote} />
 
-      {activeWorkout.exercises.length === 0 ? (
+      {!activeSessionHasExercises(activeWorkout.exercises) ? (
         /* Was the logger's own dashed box — the system has no dashed borders
            and nothing centred. Two rules, flush left, like every other empty
            state since `.150`. */
