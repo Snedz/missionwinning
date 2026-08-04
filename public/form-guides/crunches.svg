@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 220" fill="none" role="img" aria-label="Crunches form: setup, curl ribs, lower">
-  <title>Crunches form diagram</title>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 220" fill="none" role="img" aria-label="crunches form">
+  <title>crunches form diagram</title>
   <rect width="360" height="220" fill="#f3f2f2"></rect>
   <text x="60" y="28" text-anchor="middle" fill="#6f6b69" font-family="Archivo, system-ui, sans-serif" font-size="11" letter-spacing="0.5">SETUP</text>
   <text x="180" y="28" text-anchor="middle" fill="#6f6b69" font-family="Archivo, system-ui, sans-serif" font-size="11" letter-spacing="0.5">CURL</text>
@@ -9,49 +9,36 @@
   <line x1="140" y1="185" x2="220" y2="185" stroke="#201e1d" stroke-width="2"></line>
   <line x1="260" y1="185" x2="340" y2="185" stroke="#201e1d" stroke-width="2"></line>
   <g stroke="#201e1d" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none">
-    <circle cx="55" cy="115" r="9"></circle>
-    <line x1="55" y1="115" x2="55" y2="126"></line>
-    <line x1="55" y1="126" x2="55" y2="150"></line>
-    <line x1="55" y1="126" x2="55" y2="126"></line>
-    <line x1="55" y1="126" x2="55" y2="126"></line>
-    <line x1="55" y1="126" x2="45" y2="105"></line>
-    <line x1="55" y1="126" x2="65" y2="105"></line>
-    <line x1="55" y1="150" x2="75" y2="155"></line>
-    <line x1="75" y1="155" x2="90" y2="175"></line>
-    <line x1="55" y1="150" x2="80" y2="160"></line>
-    <line x1="80" y1="160" x2="95" y2="175"></line>
+    <circle cx="45" cy="125" r="9"></circle>
+    <line x1="45" y1="125" x2="55" y2="135"></line>
+    <line x1="55" y1="135" x2="80" y2="155"></line>
+    <line x1="55" y1="135" x2="60" y2="138"></line>
+    <line x1="60" y1="138" x2="50" y2="120"></line>
+    <line x1="80" y1="155" x2="100" y2="155"></line>
+    <line x1="100" y1="155" x2="110" y2="185"></line>
+    <line x1="80" y1="155" x2="105" y2="185"></line>
   </g>
-  <circle cx="55" cy="150" r="3.5" fill="#ec3013"></circle>
-  <text x="55" y="142" text-anchor="middle" fill="#ec3013" font-family="Archivo, system-ui, sans-serif" font-size="8">low back</text>
   <g stroke="#201e1d" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none">
-    <circle cx="175" cy="95" r="9"></circle>
-    <line x1="175" y1="95" x2="175" y2="106"></line>
-    <line x1="175" y1="106" x2="180" y2="150"></line>
-    <line x1="175" y1="106" x2="175" y2="106"></line>
-    <line x1="175" y1="106" x2="175" y2="106"></line>
-    <line x1="175" y1="106" x2="165" y2="90"></line>
-    <line x1="175" y1="106" x2="185" y2="90"></line>
-    <line x1="180" y1="150" x2="200" y2="155"></line>
-    <line x1="200" y1="155" x2="215" y2="175"></line>
-    <line x1="180" y1="150" x2="205" y2="160"></line>
-    <line x1="205" y1="160" x2="220" y2="175"></line>
+    <circle cx="170" cy="105" r="9"></circle>
+    <line x1="170" y1="105" x2="180" y2="118"></line>
+    <line x1="180" y1="118" x2="205" y2="155"></line>
+    <line x1="180" y1="118" x2="185" y2="122"></line>
+    <line x1="185" y1="122" x2="175" y2="105"></line>
+    <line x1="205" y1="155" x2="225" y2="155"></line>
+    <line x1="225" y1="155" x2="235" y2="185"></line>
+    <line x1="205" y1="155" x2="230" y2="185"></line>
   </g>
-  <path d="M175 120 L175 100" stroke="#ec3013" stroke-width="2" stroke-linecap="round"></path>
-  <polygon points="175,100 179,108 171,108" fill="#ec3013"></polygon>
-  <text x="185" y="110" fill="#ec3013" font-family="Archivo, system-ui, sans-serif" font-size="9">ribs</text>
+  <path d="M175 130 L175 110" stroke="#ec3013" stroke-width="2" stroke-linecap="round"></path>
+  <polygon points="175,110 179,118 171,118" fill="#ec3013"></polygon>
+  <text x="185" y="120" fill="#ec3013" font-family="Archivo, system-ui, sans-serif" font-size="9">ribs</text>
   <g stroke="#201e1d" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none">
-    <circle cx="295" cy="115" r="9"></circle>
-    <line x1="295" y1="115" x2="295" y2="126"></line>
-    <line x1="295" y1="126" x2="300" y2="150"></line>
-    <line x1="295" y1="126" x2="295" y2="126"></line>
-    <line x1="295" y1="126" x2="295" y2="126"></line>
-    <line x1="295" y1="126" x2="285" y2="105"></line>
-    <line x1="295" y1="126" x2="305" y2="105"></line>
-    <line x1="300" y1="150" x2="320" y2="155"></line>
-    <line x1="320" y1="155" x2="335" y2="175"></line>
-    <line x1="300" y1="150" x2="325" y2="160"></line>
-    <line x1="325" y1="160" x2="340" y2="175"></line>
+    <circle cx="285" cy="125" r="9"></circle>
+    <line x1="285" y1="125" x2="295" y2="135"></line>
+    <line x1="295" y1="135" x2="320" y2="155"></line>
+    <line x1="295" y1="135" x2="300" y2="138"></line>
+    <line x1="300" y1="138" x2="290" y2="120"></line>
+    <line x1="320" y1="155" x2="340" y2="155"></line>
+    <line x1="340" y1="155" x2="350" y2="185"></line>
+    <line x1="320" y1="155" x2="345" y2="185"></line>
   </g>
-  <path d="M295 100 L295 115" stroke="#ec3013" stroke-width="2" stroke-linecap="round"></path>
-  <polygon points="295,115 291,107 299,107" fill="#ec3013"></polygon>
 </svg>

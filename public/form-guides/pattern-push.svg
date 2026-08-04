@@ -1,51 +1,62 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 220" fill="none" role="img" aria-label="Shared push pattern: setup, lower, press">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 220" fill="none" role="img" aria-label="Shared push pattern: brace, press, lock">
   <title>Push pattern form diagram</title>
   <rect width="360" height="220" fill="#f3f2f2"></rect>
-  <text x="60" y="28" text-anchor="middle" fill="#6f6b69" font-family="Archivo, system-ui, sans-serif" font-size="11" letter-spacing="0.5">SETUP</text>
-  <text x="180" y="28" text-anchor="middle" fill="#6f6b69" font-family="Archivo, system-ui, sans-serif" font-size="11" letter-spacing="0.5">LOWER</text>
-  <text x="300" y="28" text-anchor="middle" fill="#6f6b69" font-family="Archivo, system-ui, sans-serif" font-size="11" letter-spacing="0.5">PRESS</text>
+  <text x="60" y="28" text-anchor="middle" fill="#6f6b69" font-family="Archivo, system-ui, sans-serif" font-size="11" letter-spacing="0.5">BRACE</text>
+  <text x="180" y="28" text-anchor="middle" fill="#6f6b69" font-family="Archivo, system-ui, sans-serif" font-size="11" letter-spacing="0.5">PRESS</text>
+  <text x="300" y="28" text-anchor="middle" fill="#6f6b69" font-family="Archivo, system-ui, sans-serif" font-size="11" letter-spacing="0.5">LOCK</text>
   <line x1="20" y1="185" x2="100" y2="185" stroke="#201e1d" stroke-width="2"></line>
   <line x1="140" y1="185" x2="220" y2="185" stroke="#201e1d" stroke-width="2"></line>
   <line x1="260" y1="185" x2="340" y2="185" stroke="#201e1d" stroke-width="2"></line>
   <g stroke="#201e1d" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none">
-    <circle cx="80" cy="95" r="9"></circle>
-    <line x1="80" y1="95" x2="80" y2="106"></line>
-    <line x1="80" y1="106" x2="50" y2="125"></line>
-    <line x1="80" y1="106" x2="80" y2="106"></line>
-    <line x1="80" y1="106" x2="80" y2="106"></line>
-    <line x1="80" y1="106" x2="95" y2="155"></line>
-    <line x1="80" y1="106" x2="85" y2="155"></line>
-    <line x1="50" y1="125" x2="30" y2="155"></line>
-    <line x1="50" y1="125" x2="40" y2="155"></line>
+    <circle cx="60" cy="54" r="9"></circle>
+    <line x1="60" y1="54" x2="60" y2="67"></line>
+    <line x1="60" y1="67" x2="60" y2="115"></line>
+    <line x1="60" y1="67" x2="60" y2="71"></line>
+    <line x1="60" y1="71" x2="50" y2="79"></line>
+    <line x1="50" y1="79" x2="52" y2="65"></line>
+    <line x1="60" y1="71" x2="70" y2="79"></line>
+    <line x1="70" y1="79" x2="68" y2="65"></line>
+    <line x1="60" y1="115" x2="50" y2="143"></line>
+    <line x1="50" y1="143" x2="46" y2="185"></line>
+    <line x1="60" y1="115" x2="68" y2="145"></line>
+    <line x1="68" y1="145" x2="70" y2="185"></line>
   </g>
-  <circle cx="50" cy="125" r="3.5" fill="#ec3013"></circle>
-  <text x="50" y="117" text-anchor="middle" fill="#ec3013" font-family="Archivo, system-ui, sans-serif" font-size="8">line</text>
+  <line x1="44" y1="72" x2="76" y2="72" stroke="#201e1d" stroke-width="3" stroke-linecap="round"></line>
+  <circle cx="60" cy="100" r="3.5" fill="#ec3013"></circle>
+  <text x="60" y="92" text-anchor="middle" fill="#ec3013" font-family="Archivo, system-ui, sans-serif" font-size="8">brace</text>
   <g stroke="#201e1d" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none">
-    <circle cx="200" cy="115" r="9"></circle>
-    <line x1="200" y1="115" x2="200" y2="126"></line>
-    <line x1="200" y1="126" x2="170" y2="135"></line>
-    <line x1="200" y1="126" x2="200" y2="126"></line>
-    <line x1="200" y1="126" x2="200" y2="126"></line>
-    <line x1="200" y1="126" x2="215" y2="155"></line>
-    <line x1="200" y1="126" x2="205" y2="155"></line>
-    <line x1="170" y1="135" x2="150" y2="155"></line>
-    <line x1="170" y1="135" x2="160" y2="155"></line>
+    <circle cx="180" cy="54" r="9"></circle>
+    <line x1="180" y1="54" x2="180" y2="67"></line>
+    <line x1="180" y1="67" x2="180" y2="115"></line>
+    <line x1="180" y1="67" x2="180" y2="71"></line>
+    <line x1="180" y1="71" x2="174" y2="45"></line>
+    <line x1="174" y1="45" x2="176" y2="25"></line>
+    <line x1="180" y1="71" x2="186" y2="45"></line>
+    <line x1="186" y1="45" x2="184" y2="25"></line>
+    <line x1="180" y1="115" x2="170" y2="143"></line>
+    <line x1="170" y1="143" x2="166" y2="185"></line>
+    <line x1="180" y1="115" x2="188" y2="145"></line>
+    <line x1="188" y1="145" x2="190" y2="185"></line>
   </g>
-  <path d="M190 100 L190 125" stroke="#ec3013" stroke-width="2" stroke-linecap="round"></path>
-  <polygon points="190,125 186,117 194,117" fill="#ec3013"></polygon>
+  <line x1="166" y1="50" x2="194" y2="50" stroke="#201e1d" stroke-width="3" stroke-linecap="round"></line>
+  <path d="M208 100 L208 60" stroke="#ec3013" stroke-width="2" stroke-linecap="round"></path>
+  <polygon points="208,60 212,68 204,68" fill="#ec3013"></polygon>
   <g stroke="#201e1d" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none">
-    <circle cx="320" cy="95" r="9"></circle>
-    <line x1="320" y1="95" x2="320" y2="106"></line>
-    <line x1="320" y1="106" x2="290" y2="125"></line>
-    <line x1="320" y1="106" x2="320" y2="106"></line>
-    <line x1="320" y1="106" x2="320" y2="106"></line>
-    <line x1="320" y1="106" x2="335" y2="155"></line>
-    <line x1="320" y1="106" x2="325" y2="155"></line>
-    <line x1="290" y1="125" x2="270" y2="155"></line>
-    <line x1="290" y1="125" x2="280" y2="155"></line>
+    <circle cx="300" cy="54" r="9"></circle>
+    <line x1="300" y1="54" x2="300" y2="67"></line>
+    <line x1="300" y1="67" x2="300" y2="115"></line>
+    <line x1="300" y1="67" x2="300" y2="71"></line>
+    <line x1="300" y1="71" x2="294" y2="45"></line>
+    <line x1="294" y1="45" x2="296" y2="25"></line>
+    <line x1="300" y1="71" x2="306" y2="45"></line>
+    <line x1="306" y1="45" x2="304" y2="25"></line>
+    <line x1="300" y1="115" x2="290" y2="143"></line>
+    <line x1="290" y1="143" x2="286" y2="185"></line>
+    <line x1="300" y1="115" x2="308" y2="145"></line>
+    <line x1="308" y1="145" x2="310" y2="185"></line>
   </g>
-  <path d="M310 140 L310 110" stroke="#ec3013" stroke-width="2" stroke-linecap="round"></path>
-  <polygon points="310,110 314,118 306,118" fill="#ec3013"></polygon>
-  <text x="320" y="125" fill="#ec3013" font-family="Archivo, system-ui, sans-serif" font-size="9">press</text>
+  <line x1="286" y1="42" x2="314" y2="42" stroke="#201e1d" stroke-width="3" stroke-linecap="round"></line>
+  <circle cx="300" cy="42" r="3.5" fill="#ec3013"></circle>
+  <text x="300" y="34" text-anchor="middle" fill="#ec3013" font-family="Archivo, system-ui, sans-serif" font-size="8">lock</text>
 </svg>
