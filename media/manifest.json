@@ -309,40 +309,40 @@
       "kind": "social",
       "path": "/social/invite-square.webp",
       "status": "shipped",
-      "promptId": "brand-raster-v1",
-      "notes": "1080 square invite background; WebP (.415)"
+      "promptId": "grok-social-invite",
+      "notes": "Grok Imagine 2026-08-04 — kettlebell + chalk outdoor square; paper/ink/one-red (.463)"
     },
     {
       "id": "coach-story",
       "kind": "social",
       "path": "/social/coach-story.webp",
       "status": "shipped",
-      "promptId": "brand-raster-v1",
-      "notes": "1080x1920 story/reel canvas; WebP (.415)"
+      "promptId": "grok-social-coach",
+      "notes": "Grok Imagine 2026-08-04 — progressive-load arcs 9:16 story canvas; overlay copy in editor (.463)"
     },
     {
       "id": "scout-idle",
       "kind": "mascot",
       "path": "/brand/mascot/scout-idle.webp",
       "status": "shipped",
-      "promptId": "flow-mascot-idle",
-      "notes": "Grok Imagine modernist re-ink paper/ink/red (.416)"
+      "promptId": "grok-mascot-idle",
+      "notes": "Grok Imagine 2026-08-04 — geometric falcon idle; paper/ink/red eye (.463)"
     },
     {
       "id": "scout-invite",
       "kind": "mascot",
       "path": "/brand/mascot/scout-invite.webp",
       "status": "shipped",
-      "promptId": "flow-mascot-invite",
-      "notes": "Grok Imagine modernist re-ink paper/ink/red (.416)"
+      "promptId": "grok-mascot-invite",
+      "notes": "Grok Imagine 2026-08-04 — open-wing beckon; matches idle proportions (.463)"
     },
     {
       "id": "scout-celebrate",
       "kind": "mascot",
       "path": "/brand/mascot/scout-celebrate.webp",
       "status": "shipped",
-      "promptId": "flow-mascot-celebrate",
-      "notes": "Grok Imagine modernist re-ink paper/ink/red (.416)"
+      "promptId": "grok-mascot-celebrate",
+      "notes": "Grok Imagine 2026-08-04 — wings lift + thin red rim; set-locked energy (.463)"
     },
     {
       "id": "scout-mark",
