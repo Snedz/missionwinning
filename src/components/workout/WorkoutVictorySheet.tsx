@@ -21,7 +21,6 @@ import {
   formatProgressionInsight,
   progressionInsightKey,
   shouldShowVictoryBackTodaySecondary,
-  formatVictorySignedDelta,
 } from '@/lib/workout/workoutVictory';
 import { useUnits, weightUnitLabel } from '@/hooks/useUnits';
 import { track } from '@/lib/analytics';
@@ -29,6 +28,7 @@ import { upsertTodayPartial } from '@/lib/mindCheckIns';
 import { getCachedReferralCode } from '@/lib/referral';
 import { SessionDebriefCard } from '@/components/workout/SessionDebriefCard';
 import { VictoryFeelStrip } from '@/components/workout/VictoryFeelStrip';
+import { VictoryBodyDeltaStrip } from '@/components/workout/VictoryBodyDeltaStrip';
 import type { Debrief } from '@/lib/coach/debrief';
 import {
   buildVictoryCardData,
@@ -204,33 +204,7 @@ export function WorkoutVictorySheet({
 
         <VictoryFeelStrip feelSaved={feelSaved} onSaveFeel={saveFeel} />
 
-        {summary.bodyDelta && (
-          <div className="flex flex-wrap items-center justify-center gap-2 border-2 border-border bg-background px-3 py-2 text-xs tabular-nums">
-            <span className="text-muted-foreground me-1">
-              {t('victoryBodyDeltaLabel', { defaultValue: 'What changed' })}
-            </span>
-            <span className="text-status-warn">
-              {t('victoryReadinessDelta', {
-                delta: formatVictorySignedDelta(summary.bodyDelta.readiness),
-                defaultValue: `Readiness ${formatVictorySignedDelta(summary.bodyDelta.readiness)}`,
-              })}
-            </span>
-            <span className="text-muted-foreground">·</span>
-            <span className="text-status-danger">
-              {t('victoryStrainDelta', {
-                delta: formatVictorySignedDelta(summary.bodyDelta.strain),
-                defaultValue: `Strain ${formatVictorySignedDelta(summary.bodyDelta.strain)}`,
-              })}
-            </span>
-            <span className="text-muted-foreground">·</span>
-            <span className="text-primary">
-              {t('victoryRecoveryDelta', {
-                delta: formatVictorySignedDelta(summary.bodyDelta.recovery),
-                defaultValue: `Recovery ${formatVictorySignedDelta(summary.bodyDelta.recovery)}`,
-              })}
-            </span>
-          </div>
-        )}
+        {summary.bodyDelta ? <VictoryBodyDeltaStrip bodyDelta={summary.bodyDelta} /> : null}
 
         {debrief && <SessionDebriefCard debrief={debrief} fragments={fragments} />}
 

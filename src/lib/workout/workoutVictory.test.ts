@@ -106,7 +106,12 @@ describe('shouldShowVictoryBackTodaySecondary', () => {
     assert.doesNotMatch(src, /victoryShareCard/);
     assert.doesNotMatch(src, /ImageIcon/);
     assert.match(src, /VictoryFeelStrip/);
-    assert.match(src, /formatVictorySignedDelta/);
+    assert.match(src, /VictoryBodyDeltaStrip/);
+    assert.doesNotMatch(
+      src,
+      /formatVictorySignedDelta/,
+      'signed delta formatting lives in VictoryBodyDeltaStrip'
+    );
   });
 });
 
@@ -115,6 +120,17 @@ describe('formatVictorySignedDelta', () => {
     assert.equal(formatVictorySignedDelta(3), '+3');
     assert.equal(formatVictorySignedDelta(0), '0');
     assert.equal(formatVictorySignedDelta(-2), '-2');
+  });
+
+  it('VictoryBodyDeltaStrip uses formatVictorySignedDelta (.444)', () => {
+    const src = fs.readFileSync(
+      path.join(import.meta.dirname, '..', '..', 'components', 'workout', 'VictoryBodyDeltaStrip.tsx'),
+      'utf8'
+    );
+    assert.match(src, /formatVictorySignedDelta\(/);
+    assert.match(src, /victoryReadinessDelta/);
+    assert.match(src, /victoryStrainDelta/);
+    assert.match(src, /victoryRecoveryDelta/);
   });
 });
 

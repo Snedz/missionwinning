@@ -17,6 +17,8 @@
 | `AddExerciseSheet.tsx` | `ExercisePicker` in a sheet with the confirm in the footer. **Test contract:** keeps the `search exercises` placeholder, `option` rows and `add selected exercise` name — `logger-depth`, `first-90` and `hero-flows` all drive them |
 | `RestTimerBar.tsx` | Rest countdown — **takes the `ScreenDock` over from `LogConsole`, never both**. Stacked on compact; at `md+` the handoff's `#restDock`: `sticky bottom-0`, full-bleed, **one row**, 30px clock, no presets — via `md:contents`, so it stays one markup tree. Skip must stay exactly `Skip` (`logger-depth` matches `/^skip$/i`) |
 | `WorkoutVictorySheet.tsx` | Post-workout summary sheet |
+| `VictoryFeelStrip.tsx` | Post-session feel 1–5 energy (free ritual) (`.429`) |
+| `VictoryBodyDeltaStrip.tsx` | Readiness · strain · recovery signed deltas (`.444`) |
 | `PlateCalculatorSheet.tsx` | Plate math sheet |
 | `LiveHeartRate.tsx` | Optional Web Bluetooth BPM strip (wearables flag) |
 
