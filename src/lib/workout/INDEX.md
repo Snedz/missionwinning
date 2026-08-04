@@ -20,6 +20,7 @@ Root-level `@/lib/{name}` paths re-export from here for compatibility — prefer
 12. `workoutPersistLite.ts` — history/streak from localStorage (cold path)
 13. `sessionCheckInOffer.ts` — pure W1 gate: never Mind-sheet the first mission (`.293`)
 14. `loggerSpeed.ts` — Enter/Use-next helpers (`.288`)
+15. `activeSessionFinish.ts` — log-set PR/rest + Victory assembly (`.405`)
 
 ## Tests (colocated)
 

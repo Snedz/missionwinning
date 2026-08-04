@@ -196,15 +196,30 @@ test('a field the product renders has a writer the product calls', () => {
  * nothing.
  */
 test('the victory sheet annotates the entry the same completion just saved', () => {
-  const src = stripComments(read('src/page-components/ActiveWorkoutPage.tsx'));
-  const saved = /saveJournalEntry\(\{\s*workoutId:\s*([\w.]+)/.exec(src);
-  const handed = /setVictoryWorkoutId\(([\w.]+)\)/.exec(src);
-  assert.ok(saved, 'expected the completion handler to save a journal entry keyed by workoutId');
+  const page = stripComments(read('src/page-components/ActiveWorkoutPage.tsx'));
+  const finish = stripComments(read('src/lib/workout/activeSessionFinish.ts'));
+  // `.405` — journal fields come from assembleActiveVictory; sheet id is still log.id.
+  assert.match(
+    page,
+    /assembleActiveVictory\(/,
+    'completion must assemble journal + victory from one pure helper'
+  );
+  assert.match(
+    page,
+    /saveJournalEntry\(\{\s*\.\.\.assembled\.journal/,
+    'expected the completion handler to save the assembled journal entry'
+  );
+  const handed = /setVictoryWorkoutId\(([\w.]+)\)/.exec(page);
   assert.ok(handed, 'expected the completion handler to hand the sheet a workout id');
   assert.equal(
     handed![1],
-    saved![1],
-    `the sheet is given ${handed![1]} while the entry is saved under ${saved![1]} — the feel rating would land on a different session, or none`
+    'log.id',
+    `the sheet is given ${handed![1]} — feel rating must key off the finished log`
+  );
+  assert.match(
+    finish,
+    /workoutId:\s*params\.log\.id/,
+    'assembled journal must key off the same finished log id'
   );
 });
 
