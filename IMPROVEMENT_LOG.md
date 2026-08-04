@@ -3,7 +3,7 @@
 Session branch: `cursor/kaizen-night-be9b`  
 Started: 2026-08-04 · Web craft only · Modernist system stands  
 Base: `master` @ `2026.07-unified.417`  
-Tip: `2026.07-unified.440` · PR #254  
+Tip: `2026.07-unified.441` · PR #254  
 Prior night: #234 (`.294`–`.403`) + follow-on media/Learn through `.417`
 
 ## Contract
@@ -34,15 +34,15 @@ Pause/restart · week numbers · Fixed vs Flexible · glow FAB · Habits/communi
 
 | Metric | Night start | Tip |
 |--------|-------------|-----|
-| Build | `.417` | **`.439`** |
+| Build | `.417` | **`.441`** |
 | i18n uncovered cap | 16 | **16** |
 | ActiveExerciseCard LOC | 536 | **224** (−312) |
 | HomeTodayDashboard LOC | 785 | **714** (−71) |
-| ActiveWorkoutPage LOC | 765 | **686** (−79) |
+| ActiveWorkoutPage LOC | 765 | **660** (−105) |
 | WorkoutVictorySheet LOC | 387 | **316** (−71) |
 | CoachChatPanel LOC | 492 | **399** (−93) |
 | New axe cases | — | 3 (Coach manage / schedule / adjust) |
-| Fuel unit cases added | — | fraction · mixed · word-half · quarter · thirds · unicode · couple |
+| Fuel unit cases added | — | fraction · mixed · word-half · quarter · thirds · unicode · couple · few · dab |
 
 ## Decisions / findings
 
@@ -196,11 +196,23 @@ Pause/restart · week numbers · Fixed vs Flexible · glow FAB · Habits/communi
 |------|--------|-------|
 | `.439` | done | ActiveExerciseList peel; page →686; readiness wiring → strip |
 
+### Loop 23 — Active session dock
+
+| Wave | Status | Notes |
+|------|--------|-------|
+| `.440` | done | ActiveSessionDock peel; page →660; rest/console chrome |
+
+### Loop 24 — NL few + dab
+
+| Wave | Status | Notes |
+|------|--------|-------|
+| `.441` | done | few → 3; dash/splash/pinch → tsp dab scale |
+
 ## Next (founder / later nights)
 
-1. Phone excellence walk of Train → Today → Victory → Coach on tip `.439`.
+1. Phone excellence walk of Train → Today → Victory → Coach on tip `.441`.
 2. Visual baseline bootstrap on Linux when founder ready (not this branch).
 3. Pump D14 only when screenshots arrive — do not invent IA.
 4. Further Fuel accuracy: vision grounding for honest `high` confidence.
-5. More Active/Coach extracts only if they unlock a real test or shrink a hot path.
+5. More Active/Coach extracts only if they unlock a real test or shrink a hot path (CoachPlanSessionGrid).
 6. Soft-chrome ratchet: bare opacity-90/95 already banned (`.427`).

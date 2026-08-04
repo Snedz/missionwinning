@@ -276,4 +276,27 @@ describe('nlMealLog', () => {
     assert.equal(couple.protein, egg.protein * 2);
     assert.equal(coupleBare.protein, egg.protein * 2);
   });
+
+  it('parses few → 3 and dash/splash dab scale (.441)', () => {
+    const egg = estimateMealFromDescription('egg');
+    const oil = estimateMealFromDescription('olive oil');
+    const milk = estimateMealFromDescription('milk');
+    const tspOil = estimateMealFromDescription('1 tsp olive oil');
+    assert.ok(egg && oil && milk && tspOil);
+    const few = estimateMealFromDescription('a few eggs');
+    const fewBare = estimateMealFromDescription('few almonds');
+    const almond = estimateMealFromDescription('almonds');
+    const dash = estimateMealFromDescription('a dash of olive oil');
+    const splash = estimateMealFromDescription('a splash of milk');
+    const pinch = estimateMealFromDescription('a pinch of olive oil');
+    assert.ok(few && fewBare && almond && dash && splash && pinch);
+    assert.equal(few.protein, egg.protein * 3);
+    assert.equal(fewBare.protein, almond.protein * 3);
+    assert.equal(dash.fat, tspOil.fat);
+    assert.equal(dash.cals, tspOil.cals);
+    assert.equal(pinch.fat, tspOil.fat);
+    assert.equal(splash.protein, Math.round(milk.protein * 0.2));
+    assert.equal(splash.cals, Math.round(milk.cals * 0.2));
+    assert.notEqual(dash.cals, oil.cals, 'dash must not be a full oil serving');
+  });
 });

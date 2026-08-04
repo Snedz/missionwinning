@@ -103,6 +103,7 @@ const WORD_QTY: Record<string, number> = {
   one: 1,
   two: 2,
   couple: 2,
+  few: 3,
   three: 3,
   four: 4,
   five: 5,
@@ -460,6 +461,19 @@ function findQtyBefore(text: string, kwStart: number): { qty: number; start: num
   const coupleQty = before.match(/\b(?:(?:a|an)\s+)?couple\s+(?:of\s+)?$/i);
   if (coupleQty) {
     return { qty: 2, start: kwStart - coupleQty[0].length };
+  }
+  // "a few eggs" / "few almonds" → 3 (.441)
+  const fewQty = before.match(/\b(?:(?:a|an)\s+)?few\s+(?:of\s+)?$/i);
+  if (fewQty) {
+    return { qty: 3, start: kwStart - fewQty[0].length };
+  }
+  // "a dash/splash/pinch of olive oil" → tsp-scale dab, not a full serving (.441)
+  const dabQty = before.match(/\b(?:(?:a|an)\s+)?(?:dash|splash|pinch)\s+(?:of\s+)?$/i);
+  if (dabQty) {
+    return {
+      qty: Math.round(portionWordScale('tsp') * 10) / 10,
+      start: kwStart - dabQty[0].length,
+    };
   }
   const word = before.match(/\b(a|an|one|two|three|four|five|six)\s+$/i);
   if (word) {
