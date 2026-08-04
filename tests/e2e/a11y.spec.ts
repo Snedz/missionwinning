@@ -481,6 +481,32 @@ test.describe('Accessibility @a11y', () => {
   });
 
   /**
+   * Loop 12 V3 — Offline banner. Online routes never mount OnlineStatusBanner;
+   * axe must see the ink status strip after context.setOffline.
+   */
+  test('axe serious/critical: offline banner on /log @a11y', async ({
+    page,
+    context,
+    baseURL,
+  }) => {
+    if (!baseURL) throw new Error('baseURL required');
+    const ok = await unlockGate(page, context, baseURL);
+    if (gateRequired() && !ok) {
+      test.skip(true, 'SMOKE_ACCESS_SECRET required to unlock private gate');
+    }
+    await seedLegacyOnboarding(page);
+    await page.goto('/log', { waitUntil: 'domcontentloaded' });
+    await settle(page);
+    await context.setOffline(true);
+    await page.evaluate(() => window.dispatchEvent(new Event('offline')));
+    await expect(page.getByRole('status').filter({ hasText: /offline/i }).first()).toBeVisible({
+      timeout: 10_000,
+    });
+    await axeSerious(page, '/log (offline banner)');
+    await context.setOffline(false);
+  });
+
+  /**
    * The assertion axe cannot make.
    *
    * axe-core does not reliably test focus visibility, which is how this suite sat at

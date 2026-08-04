@@ -300,6 +300,6 @@ PR: #234
 | Wave | Status | Notes |
 |------|--------|-------|
 | V1 Soft chrome leftovers | done (`.337`) | Toast/BetaAdmin/Benchmarks/Guide/Calc/Builder/Phantom solid |
-| V2 Active body-score deltas extract | pending | |
+| V2 Active body-score deltas extract | done (`.338`) | `bodyScoreDeltas` + wiring guard |
 | V3 Offline banner seeded a11y + log close | pending | |
 

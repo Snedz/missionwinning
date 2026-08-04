@@ -469,3 +469,21 @@ export function shouldOfferVolumeTrim(params: {
   const threshold = params.threshold ?? 40;
   return params.checkInCompleted && params.readinessAfter < threshold;
 }
+
+/** Readiness / strain / recovery deltas for Victory “what changed” chrome. */
+export type BodyScoreTriple = {
+  readiness: number;
+  strain: number;
+  recovery: number;
+};
+
+export function bodyScoreDeltas(
+  before: BodyScoreTriple,
+  after: BodyScoreTriple
+): BodyScoreTriple {
+  return {
+    readiness: after.readiness - before.readiness,
+    strain: after.strain - before.strain,
+    recovery: after.recovery - before.recovery,
+  };
+}

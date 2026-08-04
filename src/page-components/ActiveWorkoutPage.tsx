@@ -64,6 +64,7 @@ import {
   resolveFormGuideSheet,
   resolveRepeatLastTarget,
   shouldOfferVolumeTrim,
+  bodyScoreDeltas,
   sessionIsCoachPrescribed,
   sessionSetStats,
   setInputKey,
@@ -379,21 +380,18 @@ export function ActiveWorkoutPage() {
       })
     );
     const afterScores = computeBodyScores(historyAfter, { checkIn });
+    const scoreDeltas = bodyScoreDeltas(beforeScores, afterScores);
     setVictorySummary(
       summarizeWorkoutVictory(
         log,
         streak,
-        {
-          readiness: afterScores.readiness - beforeScores.readiness,
-          strain: afterScores.strain - beforeScores.strain,
-          recovery: afterScores.recovery - beforeScores.recovery,
-        },
+        scoreDeltas,
         buildProgressionInsight(log, units, repRangeForGoal(goalId)),
         undefined,
         {
           completedWorkouts: historyAfter.length,
           hasCoachPlan: !!plan,
-          strainDelta: afterScores.strain - beforeScores.strain,
+          strainDelta: scoreDeltas.strain,
         }
       )
     );

@@ -55,6 +55,7 @@ When adding a doc:
 | [log/LOG-rotate-300.md](./log/LOG-rotate-300.md) | `.285` progressive overload — rotated for `.300` L5 fillers |
 | [log/LOG-rotate-301.md](./log/LOG-rotate-301.md) | `.286` re-entry dose — rotated for `.301` Coach/History i18n |
 | [log/LOG-rotate-302.md](./log/LOG-rotate-302.md) | `.287` coach why — rotated for `.302` debrief i18n |
+| [log/LOG-rotate-338.md](./log/LOG-rotate-338.md) | `.323` — rotated for `.338` — Coaching interest i18n |
 | [log/LOG-rotate-337.md](./log/LOG-rotate-337.md) | `.322` — rotated for `.337` — Library filters a11y |
 | [log/LOG-rotate-336.md](./log/LOG-rotate-336.md) | `.321` — rotated for `.336` — LiveHR i18n |
 | [log/LOG-rotate-335.md](./log/LOG-rotate-335.md) | `.320` — rotated for `.335` chrome + volume-trim extract |

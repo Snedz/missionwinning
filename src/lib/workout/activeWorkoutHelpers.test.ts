@@ -21,6 +21,7 @@ import {
   sessionSetStats,
   setInputKey,
   rankSwapCandidates,
+  bodyScoreDeltas,
 } from './activeWorkoutHelpers.ts';
 import type { CompletedWorkoutLog } from '@/types';
 
@@ -669,6 +670,31 @@ describe('shouldOfferVolumeTrim', () => {
       src,
       /completed\s*&&\s*adj\.readiness\s*<\s*40/,
       'volume-trim threshold must stay inside shouldOfferVolumeTrim'
+    );
+  });
+});
+
+describe('bodyScoreDeltas', () => {
+  it('subtracts before from after for readiness, strain, recovery', () => {
+    assert.deepEqual(
+      bodyScoreDeltas(
+        { readiness: 50, strain: 40, recovery: 60 },
+        { readiness: 55, strain: 48, recovery: 58 }
+      ),
+      { readiness: 5, strain: 8, recovery: -2 }
+    );
+  });
+
+  it('ActiveWorkoutPage uses bodyScoreDeltas rather than inlining Victory deltas', () => {
+    const src = readFileSync(
+      path.join(import.meta.dirname, '..', '..', 'page-components', 'ActiveWorkoutPage.tsx'),
+      'utf8'
+    );
+    assert.match(src, /bodyScoreDeltas\(/);
+    assert.doesNotMatch(
+      src,
+      /afterScores\.readiness\s*-\s*beforeScores\.readiness/,
+      'Victory body-score deltas must stay inside bodyScoreDeltas'
     );
   });
 });
