@@ -80,10 +80,16 @@ const FLOORS = {
    * The pure helpers they wrap (`coachAdaptReentry`, `whatsNew`) got unit tests
    * in the same night, so this is not 395.
    *
+   * Raised 393 → 407 for Pump Kaizen peels that landed after D13 without a floor
+   * bump: Active exercise list/dock/sheets, Victory body/stats/next strips,
+   * CoachChat transcript/composer peels — all Playwright-covered UI chrome. Pure
+   * helpers under `src/lib/workout/*` and coach chat stay unit-tested. Form-guide
+   * quality PR only ships SVG + scripts (outside this universe).
+   *
    * That split is the point of the ratchet: it does not stop the number moving,
    * it makes somebody look at what moved it.
    */
-  untestedFiles: 393,
+  untestedFiles: 407,
   /**
    * Line % across the files that *are* loaded. Must not fall.
    *
