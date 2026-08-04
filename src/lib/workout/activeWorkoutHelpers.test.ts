@@ -10,6 +10,7 @@ import {
   nextSetInput,
   planApplyTargets,
   priorCompletedInExercise,
+  resolveActiveDockMode,
   resolveActiveSetDial,
   resolveRepeatLastTarget,
   resolveSetInput,
@@ -552,6 +553,43 @@ describe('resolveRepeatLastTarget', () => {
       src,
       /\.reverse\(\)\.find\(\(s\) => s\.completed\)/,
       'repeat-last must stay inside resolveRepeatLastTarget'
+    );
+  });
+});
+
+describe('resolveActiveDockMode', () => {
+  it('rest wins over console', () => {
+    assert.equal(
+      resolveActiveDockMode({ restTimerActive: true, hasConsoleSet: true, isCompact: true }),
+      'rest'
+    );
+  });
+
+  it('console only when compact and a set is open', () => {
+    assert.equal(
+      resolveActiveDockMode({ restTimerActive: false, hasConsoleSet: true, isCompact: true }),
+      'console'
+    );
+    assert.equal(
+      resolveActiveDockMode({ restTimerActive: false, hasConsoleSet: true, isCompact: false }),
+      null
+    );
+    assert.equal(
+      resolveActiveDockMode({ restTimerActive: false, hasConsoleSet: false, isCompact: true }),
+      null
+    );
+  });
+
+  it('ActiveWorkoutPage uses resolveActiveDockMode rather than nesting rest/console ternaries', () => {
+    const src = readFileSync(
+      path.join(import.meta.dirname, '..', '..', 'page-components', 'ActiveWorkoutPage.tsx'),
+      'utf8'
+    );
+    assert.match(src, /resolveActiveDockMode\(/);
+    assert.doesNotMatch(
+      src,
+      /restTimerActive\s*\?\s*\([\s\S]*?consoleSet\s*&&\s*isCompact/,
+      'dock mode decision must stay inside resolveActiveDockMode'
     );
   });
 });

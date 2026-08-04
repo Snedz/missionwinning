@@ -59,6 +59,7 @@ import {
   getLastSessionSets,
   nextSetInput,
   planApplyTargets,
+  resolveActiveDockMode,
   resolveActiveSetDial,
   resolveRepeatLastTarget,
   sessionIsCoachPrescribed,
@@ -259,6 +260,11 @@ export function ActiveWorkoutPage() {
     resolveExerciseName: (id) => getExerciseById(id)?.name ?? id,
     resolveInput: getSetInput,
     translateReason: (key, defaultValue) => t(key, { defaultValue }),
+  });
+  const dockMode = resolveActiveDockMode({
+    restTimerActive,
+    hasConsoleSet: Boolean(consoleSet),
+    isCompact,
   });
 
   const handleLogSet = (exIdx: number, setIdx: number, override?: { reps: number; weight: number }) => {
@@ -694,7 +700,7 @@ export function ActiveWorkoutPage() {
         and because the dock is a flex sibling of `main`, neither can overlap
         the list.
       */}
-      {restTimerActive ? (
+      {dockMode === 'rest' ? (
         <ScreenDock>
           <RestTimerBar
             remaining={restSecondsRemaining}
@@ -704,7 +710,7 @@ export function ActiveWorkoutPage() {
             onPreset={startRestTimer}
           />
         </ScreenDock>
-      ) : consoleSet && isCompact ? (
+      ) : dockMode === 'console' && consoleSet ? (
         /* Compact only. Desktop enters the set in the row it belongs to
            (`SetLogTable`), so a console here would be a second, competing
            place to type the same number. */

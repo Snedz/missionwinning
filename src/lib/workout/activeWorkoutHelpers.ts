@@ -424,3 +424,19 @@ export function resolveRepeatLastTarget(ex: {
   if (!lastCompleted || nextIdx < 0) return null;
   return { setIdx: nextIdx, reps: lastCompleted.reps, weight: lastCompleted.weight };
 }
+
+/**
+ * Active bottom dock: rest takes the console over; compact freestyle gets
+ * LogConsole; desktop set entry stays in the row. Never both docks.
+ */
+export type ActiveDockMode = 'rest' | 'console' | null;
+
+export function resolveActiveDockMode(params: {
+  restTimerActive: boolean;
+  hasConsoleSet: boolean;
+  isCompact: boolean;
+}): ActiveDockMode {
+  if (params.restTimerActive) return 'rest';
+  if (params.hasConsoleSet && params.isCompact) return 'console';
+  return null;
+}
