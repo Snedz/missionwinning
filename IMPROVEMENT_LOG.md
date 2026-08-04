@@ -498,13 +498,13 @@ PR: #234
 | Wave | Status | Notes |
 |------|--------|-------|
 | E1 Add-exercise sheet a11y | done (`.364`) | ExercisePicker search name + listbox structure |
-| E2 Active extract | pending (`.365`) | `activeCoachTipKind` |
+| E2 Active extract | done (`.365`) | `activeCoachTipKind` + wiring guard |
 | E3 Soft chrome / log close | pending (`.366`) | Coach chat + briefing-rule |
 
 ## Metrics
 
 | Metric | Loop 20 end | Loop 21 (in progress) |
 |--------|-------------|------------------------|
-| Build | `.363` | **`.364`** |
+| Build | `.363` | **`.365`** |
 | i18n uncovered cap | 16 (Bundle refuse) | **16** (unchanged) |
 

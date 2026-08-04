@@ -30,6 +30,7 @@ import {
   activeSessionHasExercises,
   activePostSessionPath,
   sessionSetsProgressPct,
+  activeCoachTipKind,
 } from './activeWorkoutHelpers.ts';
 import type { CompletedWorkoutLog } from '@/types';
 
@@ -906,6 +907,28 @@ describe('sessionSetsProgressPct', () => {
       src,
       /totalSets\s*>\s*0\s*\?\s*Math\.round/,
       'sets meter percent must stay inside sessionSetsProgressPct'
+    );
+  });
+});
+
+describe('activeCoachTipKind', () => {
+  it('bands hard-set count into high vs default', () => {
+    assert.equal(activeCoachTipKind(0), 'default');
+    assert.equal(activeCoachTipKind(2), 'default');
+    assert.equal(activeCoachTipKind(3), 'high');
+    assert.equal(activeCoachTipKind(2, 1), 'high');
+  });
+
+  it('ActiveSessionChrome uses activeCoachTipKind rather than an inline hardCount threshold', () => {
+    const src = readFileSync(
+      path.join(import.meta.dirname, '..', '..', 'components', 'workout', 'ActiveSessionChrome.tsx'),
+      'utf8'
+    );
+    assert.match(src, /activeCoachTipKind\(/);
+    assert.doesNotMatch(
+      src,
+      /hardCount\s*>\s*2/,
+      'hard-set tip threshold must stay inside activeCoachTipKind'
     );
   });
 });

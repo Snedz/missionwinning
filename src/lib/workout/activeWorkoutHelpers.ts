@@ -560,3 +560,16 @@ export function sessionSetsProgressPct(completedSets: number, totalSets: number)
   if (totalSets <= 0) return 0;
   return Math.round((completedSets / totalSets) * 100);
 }
+
+/**
+ * Active session coach tip band — hard sets stacking above the threshold get
+ * the high-effort note; otherwise the default rate-your-set cue.
+ */
+export type ActiveCoachTipKind = 'high' | 'default';
+
+export function activeCoachTipKind(
+  hardCount: number,
+  threshold = 2
+): ActiveCoachTipKind {
+  return hardCount > threshold ? 'high' : 'default';
+}

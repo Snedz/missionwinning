@@ -55,6 +55,7 @@ When adding a doc:
 | [log/LOG-rotate-300.md](./log/LOG-rotate-300.md) | `.285` progressive overload — rotated for `.300` L5 fillers |
 | [log/LOG-rotate-301.md](./log/LOG-rotate-301.md) | `.286` re-entry dose — rotated for `.301` Coach/History i18n |
 | [log/LOG-rotate-302.md](./log/LOG-rotate-302.md) | `.287` coach why — rotated for `.302` debrief i18n |
+| [log/LOG-rotate-365.md](./log/LOG-rotate-365.md) | `.350` — rotated for `.365` Active goal-id resolve (Loop 16 Z2) |
 | [log/LOG-rotate-364.md](./log/LOG-rotate-364.md) | `.349` — rotated for `.364` Track logged-activity a11y (Loop 16 Z1) |
 | [log/LOG-rotate-363.md](./log/LOG-rotate-363.md) | `.348` — rotated for `.363` — Primary opacity chrome |
 | [log/LOG-rotate-362.md](./log/LOG-rotate-362.md) | `.347` — rotated for `.362` — Volume-trim offer gate |

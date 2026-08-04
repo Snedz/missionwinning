@@ -11,7 +11,10 @@ import { useTranslation } from 'react-i18next';
 import { Button } from '@/components/ui/button';
 import { HoldToConfirmButton } from '@/components/ui/HoldToConfirmButton';
 import { formatDuration } from '@/lib/utils';
-import { sessionSetsProgressPct } from '@/lib/workout/activeWorkoutHelpers';
+import {
+  activeCoachTipKind,
+  sessionSetsProgressPct,
+} from '@/lib/workout/activeWorkoutHelpers';
 
 type Props = {
   workoutName: string;
@@ -46,7 +49,7 @@ export function ActiveSessionChrome({
   const [menuOpen, setMenuOpen] = useState(false);
 
   const coachTip =
-    hardCount > 2
+    activeCoachTipKind(hardCount) === 'high'
       ? t('activeCoachNotesHighEffort', {
           defaultValue: 'Hard sets stacking up — leave a little in the tank if form slips.',
         })
