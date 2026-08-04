@@ -8,6 +8,7 @@ import Link from 'next/link';
 import { useTranslation } from 'react-i18next';
 import { Scale } from 'lucide-react';
 import { InfoPageShell, InfoSection } from '@/components/layout/InfoPageShell';
+import { CURRENT_TERMS_VERSION } from '@/lib/privacyConsent';
 
 const TERM_SECTIONS = [
   { id: 'agreement', key: 'infoTermsAgreement', bodyKey: 'infoTermsAgreementBody' },
@@ -35,7 +36,7 @@ export function TermsPage() {
     <InfoPageShell
       icon={Scale}
       title={t('infoTermsTitle', { defaultValue: 'Terms of Use' })}
-      lastUpdated={t('infoLastUpdated', { defaultValue: 'Last updated: July 2026' })}
+      lastUpdated={`${t('infoLastUpdatedLabel', { defaultValue: 'Last updated:' })} ${CURRENT_TERMS_VERSION}`}
       showLegalFooter
       jumpLinks={jumpLinks}
     >

@@ -4,6 +4,8 @@ import {
   ATTRIBUTION_KEY,
   attributionAsProps,
   captureAttribution,
+  discardPendingAttribution,
+  flushPendingAttribution,
   loadAttribution,
 } from '@/lib/attribution';
 
@@ -13,6 +15,7 @@ describe('attribution', () => {
 
   beforeEach(() => {
     store.clear();
+    discardPendingAttribution();
     hadWindow = typeof globalThis.window !== 'undefined';
     if (!hadWindow) {
       (globalThis as unknown as { window: typeof globalThis }).window = globalThis;
@@ -46,10 +49,11 @@ describe('attribution', () => {
     }
   });
 
-  it('captures first-touch utm and path', () => {
+  it('captures first-touch utm and path when marketing storage is allowed', () => {
     const { attribution: a } = captureAttribution('?utm_source=twitter&utm_campaign=launch', {
       path: '/?utm_source=twitter',
       referrer: 'https://t.co/x',
+      persistMarketing: true,
     });
     assert.equal(a?.utm_source, 'twitter');
     assert.equal(a?.utm_campaign, 'launch');
@@ -59,8 +63,8 @@ describe('attribution', () => {
   });
 
   it('does not overwrite first touch UTMs', () => {
-    captureAttribution('?utm_source=twitter');
-    captureAttribution('?utm_source=reddit');
+    captureAttribution('?utm_source=twitter', { persistMarketing: true });
+    captureAttribution('?utm_source=reddit', { persistMarketing: true });
     assert.equal(loadAttribution()?.utm_source, 'twitter');
   });
 
@@ -81,7 +85,7 @@ describe('attribution', () => {
   });
 
   it('backfills ref onto existing first-touch without clobbering UTMs', () => {
-    captureAttribution('?utm_source=twitter&utm_campaign=launch');
+    captureAttribution('?utm_source=twitter&utm_campaign=launch', { persistMarketing: true });
     const { attribution: a, referralLanded } = captureAttribution('?ref=MW-XYZ99&utm_source=reddit');
     assert.equal(referralLanded, true);
     assert.equal(a?.ref, 'MW-XYZ99');
@@ -90,7 +94,7 @@ describe('attribution', () => {
   });
 
   it('backfills invite onto existing first-touch without clobbering UTMs or ref', () => {
-    captureAttribution('?utm_source=twitter&ref=MW-ABC12');
+    captureAttribution('?utm_source=twitter&ref=MW-ABC12', { persistMarketing: true });
     const { attribution: a, inviteLanded, referralLanded } = captureAttribution(
       '?invite=MW-B-XYZ99&utm_source=reddit'
     );
@@ -113,6 +117,51 @@ describe('attribution', () => {
     const { inviteLanded } = captureAttribution('?invite=MW-B-SECON');
     assert.equal(inviteLanded, false);
     assert.equal(loadAttribution()?.invite, 'MW-B-FIRST');
+  });
+
+  it('does not persist marketing fields without consent — ref still honored', () => {
+    const { attribution } = captureAttribution('?utm_source=twitter&ref=MW-ABC12', {
+      path: '/?utm_source=twitter',
+      referrer: 'https://t.co/x',
+    });
+    // Visible to this page load (referral tracking, in-session props)…
+    assert.equal(attribution?.utm_source, 'twitter');
+    assert.equal(attribution?.ref, 'MW-ABC12');
+    // …but device storage carries only what honoring the link requires.
+    const stored = loadAttribution();
+    assert.equal(stored?.ref, 'MW-ABC12');
+    assert.ok(stored?.captured_at);
+    assert.equal(stored?.utm_source, undefined);
+    assert.equal(stored?.referrer, undefined);
+    assert.equal(stored?.landing_path, undefined);
+  });
+
+  it('stores nothing at all without consent when no ref/invite is present', () => {
+    captureAttribution('?utm_source=twitter&utm_campaign=launch');
+    assert.equal(loadAttribution(), null);
+  });
+
+  it('flushPendingAttribution persists held marketing once the user allows', () => {
+    captureAttribution('?utm_source=twitter&ref=MW-ABC12');
+    assert.equal(loadAttribution()?.utm_source, undefined);
+    const flushed = flushPendingAttribution();
+    assert.equal(flushed?.utm_source, 'twitter');
+    assert.equal(loadAttribution()?.utm_source, 'twitter');
+    assert.equal(loadAttribution()?.ref, 'MW-ABC12');
+  });
+
+  it('flush never overwrites stored first-touch values', () => {
+    captureAttribution('?utm_source=held');
+    captureAttribution('?utm_source=stored', { persistMarketing: true });
+    flushPendingAttribution();
+    assert.equal(loadAttribution()?.utm_source, 'stored');
+  });
+
+  it('discardPendingAttribution drops held marketing for good', () => {
+    captureAttribution('?utm_source=twitter');
+    discardPendingAttribution();
+    flushPendingAttribution();
+    assert.equal(loadAttribution()?.utm_source, undefined);
   });
 
   it('flattens props without captured_at', () => {

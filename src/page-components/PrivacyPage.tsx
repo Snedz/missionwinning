@@ -7,6 +7,7 @@
 import { useTranslation } from 'react-i18next';
 import { Shield } from 'lucide-react';
 import { InfoPageShell, InfoSection } from '@/components/layout/InfoPageShell';
+import { CURRENT_PRIVACY_VERSION } from '@/lib/privacyConsent';
 
 const PRIVACY_SECTIONS = [
   { id: 'overview', key: 'infoPrivacyOverview', bodyKey: 'infoPrivacyOverviewBody' },
@@ -57,7 +58,7 @@ export function PrivacyPage() {
     <InfoPageShell
       icon={Shield}
       title={t('infoPrivacyTitle', { defaultValue: 'Privacy Policy' })}
-      lastUpdated={t('infoLastUpdated', { defaultValue: 'Last updated: July 2026' })}
+      lastUpdated={`${t('infoLastUpdatedLabel', { defaultValue: 'Last updated:' })} ${CURRENT_PRIVACY_VERSION}`}
       showLegalFooter
       jumpLinks={jumpLinks}
     >
