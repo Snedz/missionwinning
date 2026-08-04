@@ -3,7 +3,7 @@
 **Audience:** Agents and founder generating / shipping product imagery.  
 **Brand colors & voice:** [brand-guidelines.md](brand-guidelines.md) · **UI tokens:** [DESIGN_SYSTEM.md](DESIGN_SYSTEM.md)  
 **Manifest:** [`media/manifest.json`](../media/manifest.json) — check before regenerating.  
-**Flow prompts (copy-paste):** [media/FLOW_PROMPTS.md](../media/FLOW_PROMPTS.md) · **Drop exports:** [`media/inbox/`](../media/inbox/)
+**Flow prompts (copy-paste):** [media/FLOW_PROMPTS.md](../media/FLOW_PROMPTS.md) · **Grok Imagine session pack:** [media/GROK_IMAGINE_PROMPTS.md](../media/GROK_IMAGINE_PROMPTS.md) · **Drop exports:** [`media/inbox/`](../media/inbox/)
 
 Generation is **offline batch** → founder approve → commit static files. There is **no** runtime image-gen API in the product.
 
@@ -119,7 +119,7 @@ Studio: https://labs.google/fx/tools/flow
 | **Agent** | Maintains prompts, runs `npm run media:optimize-inbox`, updates manifest, wires paths, commits approved assets |
 | **Neither** | Puts Flow keys in Vercel / `NEXT_PUBLIC_*` — Flow is not an app API |
 
-**Grok Imagine / SuperGrok:** Same offline rule — generate in product UI → export → `media/inbox/`. Prefer for still portraits / atmosphere when Flow free tier is video-only.
+**Grok Imagine / SuperGrok:** Same offline rule — generate in product UI → export → `media/inbox/`. Prefer for stills when already in Grok or Flow free tier is video-only. **Start here:** [media/GROK_IMAGINE_PROMPTS.md](../media/GROK_IMAGINE_PROMPTS.md) (Sprint A paste sheet + filenames).
 
 ### Fallback tools (when Flow is spent or for quick drafts)
 
