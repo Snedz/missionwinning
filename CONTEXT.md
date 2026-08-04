@@ -16,7 +16,7 @@ One screen of truth for any AI tool or human joining cold. Read this, then [AGEN
 
 ---
 
-## Now (2026-08-04 · web `2026.07-unified.472` · Android `1.24.1`)
+## Now (2026-08-04 · web `2026.07-unified.473` · Android `1.24.1`)
 
 > The ONLY "where we are" block in the repo — [ORCHESTRATION.md](ORCHESTRATION.md) points here.
 >
@@ -231,6 +231,7 @@ One screen of truth for any AI tool or human joining cold. Read this, then [AGEN
 > and `.470` dropped `.455` detail (full text remains in LOG.md / archive)
 > and `.471` dropped `.456` detail (full text remains in LOG.md / archive)
 > and `.472` dropped `.457` detail (full text remains in LOG.md / archive)
+> and `.473` dropped `.458` detail (full text remains in LOG.md / archive)
 > to [CONTEXT-now-2026-07-30.md](docs/archive/CONTEXT-now-2026-07-30.md) after this
 > block reached **79 bullets / 103KB**. A status doc that only grows stops being read.
 
@@ -251,8 +252,8 @@ One screen of truth for any AI tool or human joining cold. Read this, then [AGEN
 > | Migrations | **9 recorded pending** — [LAUNCH_RUNBOOK](docs/LAUNCH_RUNBOOK.md) §3, enforced by `src/lib/migrationLedger.test.ts`. |
 > | gitleaks | **green — and scanning for the first time.** It had never scanned anything: on a `pull_request` event the action lists the PR's commits, the job declared no `permissions:` block, and it 403'd (`pull_requests=read`) before opening a file. Fixed by a `permissions:` block (`.224` carrying `.255`). It scans **only the PR's own commits**, so commit `8ea3527a`'s real Solana treasury address — scrubbed from the working file, still in history — is out of its scope. That finding stands, deliberately not allowlisted; it was never what made this check red. |
 
-- **`.472`:** Form Director — athlete-a unify + thruster/OHP/deadlift loops (11 video pilots).
-- **`.471`–`.470`:** Loop waves (lunges/box/burpee/KB + plank/push).
+- **`.473`:** Landmine family (11 movements) + Form Director stills (press/row/squat).
+- **`.472`–`.470`:** Form Director loops (11 video pilots) + athlete-a unify.
 - **`.469`–`.467`:** Form Director system + quality reset + hero regen.
 - **`.466`–`.464`:** Form Index bulk gen (many demoted).
 - **`.463`–`.461`:** Imagine social pack + library session studio.

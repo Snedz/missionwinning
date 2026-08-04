@@ -120,8 +120,21 @@ export function inferFormPattern(
     return 'pull';
   }
 
+  // Landmine family — route by movement, not bare "landmine" (else rotation → push).
+  // Match id/name tokens carefully: cues may say "against rotation" on a press.
+  if (/landmine/.test(text)) {
+    const idName = `${exerciseId} ${ex?.name ?? ''}`.toLowerCase();
+    if (/row|meadows/.test(idName)) return 'pull';
+    if (/squat|lunge|hack|thruster/.test(idName)) return 'squat';
+    if (/rdl|deadlift|hinge/.test(idName)) return 'hinge';
+    if (/anti.?rotat|pallof/.test(idName)) return 'core';
+    if (/rotation|twist|woodchop/.test(idName)) return 'core';
+    if (/press|raise/.test(idName)) return 'push';
+    return 'push';
+  }
+
   if (
-    /push.?up|bench|overhead|ohp|pike.?push|floor.?press|landmine|handstand|fly|crossover|pec|\bpress\b/.test(
+    /push.?up|bench|overhead|ohp|pike.?push|floor.?press|handstand|fly|crossover|pec|\bpress\b/.test(
       text
     )
   ) {

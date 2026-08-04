@@ -13,4 +13,6 @@ Clinical movement demos for Train / library / public exercises.
 
 **Quality reset (`.467`):** loops demoted; `burpees` / `box-jump` / broken patterns demoted. Prefer still-only over glitchy motion.
 
+**Landmine (`.473`):** still-only packs for `landmine-press`, `landmine-row`, `landmine-squat`. Other landmines use pattern media + structured guides.
+
 Do not embed third-party CrossFit or YouTube demos. MW-owned assets only.

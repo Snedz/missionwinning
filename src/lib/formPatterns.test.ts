@@ -39,6 +39,20 @@ test('inferFormPattern maps common families', () => {
   assert.equal(inferFormPattern('farmer-carry'), 'loco');
 });
 
+test('inferFormPattern routes landmine family by movement', () => {
+  assert.equal(inferFormPattern('landmine-press'), 'push');
+  assert.equal(inferFormPattern('landmine-single-arm-press'), 'push');
+  assert.equal(inferFormPattern('landmine-row'), 'pull');
+  assert.equal(inferFormPattern('landmine-meadows-row'), 'pull');
+  assert.equal(inferFormPattern('landmine-squat'), 'squat');
+  assert.equal(inferFormPattern('landmine-thruster'), 'squat');
+  assert.equal(inferFormPattern('landmine-reverse-lunge'), 'squat');
+  assert.equal(inferFormPattern('landmine-hack-squat'), 'squat');
+  assert.equal(inferFormPattern('landmine-rdl'), 'hinge');
+  assert.equal(inferFormPattern('landmine-rotation'), 'core');
+  assert.equal(inferFormPattern('landmine-antirotation-press'), 'core');
+});
+
 test('form pack still wins over pattern for still-only structured guides', () => {
   // front-squat is still-only (not in VIDEO_IDS pilot set)
   const guide = getFormGuideOrCues('front-squat');

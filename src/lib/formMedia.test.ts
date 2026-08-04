@@ -49,6 +49,14 @@ test('Form Director packs keep poster paths for still-only heroes', () => {
   assert.equal(resolveFormPackMedia('front-squat')?.mediaType, 'image');
 });
 
+test('landmine family still packs are still-only', () => {
+  for (const id of ['landmine-press', 'landmine-row', 'landmine-squat'] as const) {
+    const pack = resolveFormPackMedia(id);
+    assert.equal(pack?.mediaType, 'image', id);
+    assert.equal(pack?.mediaUrl, `/form/${id}/side.webp`, id);
+  }
+});
+
 test('formPackSidePosterPath is stable', () => {
   assert.equal(formPackSidePosterPath('air-squat'), '/form/air-squat/side.webp');
 });
