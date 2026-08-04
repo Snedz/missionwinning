@@ -35,10 +35,11 @@ test('inferFormPattern maps common families', () => {
   assert.equal(inferFormPattern('farmer-carry'), 'loco');
 });
 
-test('bespoke form SVG wins over pattern for structured guides', () => {
+test('form pack poster wins over pattern for pilot structured guides', () => {
   const guide = getFormGuideOrCues('push-ups');
-  assert.ok(guide?.mediaUrl?.includes('push-ups.svg'), guide?.mediaUrl);
-  assert.equal(guide?.mediaCaption, undefined);
+  // Form Index pack (clinical still) beats legacy SVG sticks.
+  assert.ok(guide?.mediaUrl?.includes('/form/push-ups/side.webp'), guide?.mediaUrl);
+  assert.equal(guide?.mediaType, 'image');
 });
 
 test('long-tail cues attach honest pattern caption', () => {

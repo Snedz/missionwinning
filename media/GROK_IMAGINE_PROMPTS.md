@@ -179,26 +179,53 @@ Reuse A1 / A2 bodies with: `Slow subtle camera drift only. 6 second loopable mot
 
 ---
 
-## Sprint C — form pose refs only (optional)
+## Sprint C — Form Index (clinical movement demos)
 
-**Never** copy these into `public/form-guides/`. Use for stick SVG refinement only.
+**Ships to** `public/form/{id}/` — **not** stick SVG.  
+**Craft:** CrossFit-style movement standards (full body, full ROM, side camera) — **MW-owned assets only**. Never CrossFit IP/embeds.
 
-| Inbox name | Notes |
-|------------|--------|
-| `form-ref-thruster-raw.png` | Side view, three phases implied, paper bg, stick-friendly silhouette |
-| `form-ref-deadlift-raw.png` | Same |
-| `form-ref-push-ups-raw.png` | Same |
+### Form block (prepend every form prompt)
 
 ```
-[BRAND BLOCK]
-
-Instructional pose reference for a stick-figure diagram. Side view athlete
-silhouette on paper ground, simple clothing, clear joint positions for thruster
-(squat → drive → overhead). High contrast ink-like silhouette, not photoreal
-bodybuilding, no face detail, no gym-bro aesthetic, no text, no logos.
+Clinical movement standard demonstration for Mission Winning.
+Full body head-to-feet always in frame. Empty paper-neutral floor and wall #f3f2f2.
+Locked side-profile tripod camera, knee-to-hip height for hinge and squat,
+eye-level for bodyweight. One athlete, simple dark training clothes, face not hero.
+Show clear start and finish of the rep (full range of motion).
+Calm clinical gym — not gym-bro hype, not film noir, not Dutch angle, not music video.
+No text, no logos, no watermarks, no CrossFit branding, no neon, no second accent hue.
+Optional single vermillion #ec3013 joint or path mark only if it clarifies a joint line.
+Ink #201e1d silhouette clarity on paper ground.
 ```
 
-After export: agent updates `scripts/form-kit/` SVGs → uniqueness + `media:form-motion`.
+### Export naming
+
+| File | Ships to |
+|------|----------|
+| `form-{exerciseId}-side-frame.png` | `public/form/{exerciseId}/side.webp` |
+| `form-{exerciseId}-front-frame.png` | `public/form/{exerciseId}/front.webp` |
+| `form-{exerciseId}-side-raw.mp4` | optional local → WebM later (do not commit multi-MB raw) |
+
+Then: `npm run media:optimize-inbox` · add id to `FORM_PACK_SIDE_IDS` in `src/lib/formMedia.ts`.
+
+### Pilot 8 (T0)
+
+| Id | Side still prompt focus |
+|----|-------------------------|
+| `air-squat` | Bodyweight squat: standing → hip crease below knee → stand |
+| `romanian-deadlift` | Soft knee hinge, bar close to legs, flat back |
+| `push-ups` | Plank → chest near floor → lockout |
+| `pull-ups` | Dead hang → chin over bar → controlled lower |
+| `thruster` | Front rack squat → drive → overhead lockout |
+| `kettlebell-swing` | Hinge hike → hip snap → float to chest height |
+| `plank` | Rigid prone hold, full body side view |
+| `bench-press` | Side: bar to chest → lockout (or ¾ if clearer) |
+
+Aspect: **1:1** or **4:5**. Prefer mid-rep or two-phase composite that reads full ROM.
+
+### Loop (optional after still approved)
+
+Image→video from side still: “One clean silent rep, locked camera, loopable 6 seconds, no camera move.”
 
 ---
 
@@ -208,8 +235,9 @@ After export: agent updates `scripts/form-kit/` SVGs → uniqueness + `media:for
 |-------|-----|
 | `public/photo/*` | Documentary grayscale photography only |
 | Learn heroes as dark cinematic stills | Failed palette QA (`.258`/`.268`); paper diagrams ship |
-| Photoreal form under `/form-guides/` | Train law |
+| CrossFit.com / CF YouTube embeds as form | IP + offline fail |
 | Purple / teal / navy AI “premium” looks | Off brand |
+| Dutch / noir / kaiju as form default | Social only — not mid-set teaching |
 
 ---
 

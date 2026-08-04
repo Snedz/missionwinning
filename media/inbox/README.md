@@ -15,7 +15,8 @@ Studio: [grok.com/imagine](https://grok.com/imagine).
 | Social still/frame | `social-invite-square-frame.png` · `social-coach-story-frame.png` |
 | Social video | `social-invite-raw.mp4` (optional; keep local — do not commit multi-MB) |
 | Mascot (Scout) | `mascot-scout-idle-frame.png` · `mascot-scout-invite-frame.png` · `mascot-scout-celebrate-frame.png` |
-| Form pose ref only | `form-ref-{exerciseId}-raw.png` (**never** ship to `public/form-guides/`) |
+| Form Index poster | `form-{exerciseId}-side-frame.png` → `public/form/{id}/side.webp` |
+| Form Index front | `form-{exerciseId}-front-frame.png` → `public/form/{id}/front.webp` |
 
 ## Optimize
 

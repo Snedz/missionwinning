@@ -86,28 +86,31 @@ export function ExercisePublicPage({ exercise: raw, jsonLd }: Props) {
         {guide?.mediaUrl && (
           <section>
             <h2 className="mb-2 font-display text-lg font-semibold uppercase tracking-wide text-foreground">
-              Form diagram
+              Form
             </h2>
             <div className="mb-2 overflow-hidden border-2 border-border bg-card">
               {guide.mediaType === 'video' ? (
                 <video
-                  className="w-full max-h-56 object-contain"
+                  className="w-full max-h-72 object-contain bg-background"
                   src={guide.mediaUrl}
+                  poster={guide.mediaPosterUrl}
                   controls
-                  preload="none"
                   playsInline
-                  aria-label={`${exercise.name} form video`}
+                  muted
+                  loop
+                  preload="metadata"
+                  aria-label={`${exercise.name} form demo`}
                 >
                   <track kind="captions" srcLang="en" label="Captions" />
                 </video>
               ) : (
-                // Static form diagram under /public — plain img is intentional.
+                // Form Index poster / legacy SVG under /public — plain img is intentional.
                 <img
                   src={guide.mediaUrl}
-                  alt={`${exercise.name} form diagram`}
+                  alt={`${exercise.name} form demo, side view`}
                   loading="lazy"
                   decoding="async"
-                  className="mx-auto w-full max-h-56 object-contain p-3"
+                  className="mx-auto w-full max-h-72 object-contain bg-background p-1"
                 />
               )}
             </div>

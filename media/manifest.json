@@ -5,18 +5,18 @@
     {
       "id": "push-ups",
       "kind": "form",
-      "path": "/form-guides/push-ups.svg",
+      "path": "/form/push-ups/side.webp",
       "status": "shipped",
-      "promptId": "form-instructional-v1",
-      "notes": "Multi-phase instructional SVG with SMIL elbow cycle"
+      "promptId": "grok-form-index-side",
+      "notes": "Form Index clinical side still \u2014 Grok Imagine 2026-08-04 (.464); legacy SVG fallback retained on disk"
     },
     {
       "id": "air-squat",
       "kind": "form",
-      "path": "/form-guides/air-squat.svg",
+      "path": "/form/air-squat/side.webp",
       "status": "shipped",
-      "promptId": "form-instructional-v1",
-      "notes": "Multi-phase + light depth animation"
+      "promptId": "grok-form-index-side",
+      "notes": "Form Index clinical side still \u2014 Grok Imagine 2026-08-04 (.464); legacy SVG fallback retained on disk"
     },
     {
       "id": "squats",
@@ -35,17 +35,18 @@
     {
       "id": "pull-ups",
       "kind": "form",
-      "path": "/form-guides/pull-ups.svg",
+      "path": "/form/pull-ups/side.webp",
       "status": "shipped",
-      "promptId": "form-instructional-v1",
-      "notes": "SMIL pull cycle"
+      "promptId": "grok-form-index-side",
+      "notes": "Form Index clinical side still \u2014 Grok Imagine 2026-08-04 (.464); legacy SVG fallback retained on disk"
     },
     {
       "id": "plank",
       "kind": "form",
-      "path": "/form-guides/plank.svg",
+      "path": "/form/plank/side.webp",
       "status": "shipped",
-      "promptId": "form-instructional-v1"
+      "promptId": "grok-form-index-side",
+      "notes": "Form Index clinical side still \u2014 Grok Imagine 2026-08-04 (.464); legacy SVG fallback retained on disk"
     },
     {
       "id": "glute-bridge",
@@ -92,17 +93,18 @@
     {
       "id": "bench-press",
       "kind": "form",
-      "path": "/form-guides/bench-press.svg",
+      "path": "/form/bench-press/side.webp",
       "status": "shipped",
-      "promptId": "form-instructional-v1",
-      "notes": "SMIL bar path"
+      "promptId": "grok-form-index-side",
+      "notes": "Form Index clinical side still \u2014 Grok Imagine 2026-08-04 (.464); legacy SVG fallback retained on disk"
     },
     {
       "id": "romanian-deadlift",
       "kind": "form",
-      "path": "/form-guides/romanian-deadlift.svg",
+      "path": "/form/romanian-deadlift/side.webp",
       "status": "shipped",
-      "promptId": "form-instructional-v1"
+      "promptId": "grok-form-index-side",
+      "notes": "Form Index clinical side still \u2014 Grok Imagine 2026-08-04 (.464); legacy SVG fallback retained on disk"
     },
     {
       "id": "hip-thrust",
@@ -147,10 +149,10 @@
     {
       "id": "kettlebell-swing",
       "kind": "form",
-      "path": "/form-guides/kettlebell-swing.svg",
+      "path": "/form/kettlebell-swing/side.webp",
       "status": "shipped",
-      "promptId": "form-instructional-v1",
-      "notes": "Expansion batch; T0 craft de-clone (.413) via form-kit"
+      "promptId": "grok-form-index-side",
+      "notes": "Form Index clinical side still \u2014 Grok Imagine 2026-08-04 (.464); legacy SVG fallback retained on disk"
     },
     {
       "id": "face-pull",
@@ -286,7 +288,7 @@
       "path": "/learn/getting-started-mw-hero.webp",
       "status": "shipped",
       "promptId": "brand-raster-v1",
-      "notes": "Chapter 4 hero — v1.4.1"
+      "notes": "Chapter 4 hero \u2014 v1.4.1"
     },
     {
       "id": "nutrition-recovery",
@@ -310,7 +312,7 @@
       "path": "/social/invite-square.webp",
       "status": "shipped",
       "promptId": "grok-social-invite",
-      "notes": "Grok Imagine 2026-08-04 — kettlebell + chalk outdoor square; paper/ink/one-red (.463)"
+      "notes": "Grok Imagine 2026-08-04 \u2014 kettlebell + chalk outdoor square; paper/ink/one-red (.463)"
     },
     {
       "id": "coach-story",
@@ -318,7 +320,7 @@
       "path": "/social/coach-story.webp",
       "status": "shipped",
       "promptId": "grok-social-coach",
-      "notes": "Grok Imagine 2026-08-04 — progressive-load arcs 9:16 story canvas; overlay copy in editor (.463)"
+      "notes": "Grok Imagine 2026-08-04 \u2014 progressive-load arcs 9:16 story canvas; overlay copy in editor (.463)"
     },
     {
       "id": "scout-idle",
@@ -326,7 +328,7 @@
       "path": "/brand/mascot/scout-idle.webp",
       "status": "shipped",
       "promptId": "grok-mascot-idle",
-      "notes": "Grok Imagine 2026-08-04 — geometric falcon idle; paper/ink/red eye (.463)"
+      "notes": "Grok Imagine 2026-08-04 \u2014 geometric falcon idle; paper/ink/red eye (.463)"
     },
     {
       "id": "scout-invite",
@@ -334,7 +336,7 @@
       "path": "/brand/mascot/scout-invite.webp",
       "status": "shipped",
       "promptId": "grok-mascot-invite",
-      "notes": "Grok Imagine 2026-08-04 — open-wing beckon; matches idle proportions (.463)"
+      "notes": "Grok Imagine 2026-08-04 \u2014 open-wing beckon; matches idle proportions (.463)"
     },
     {
       "id": "scout-celebrate",
@@ -342,7 +344,7 @@
       "path": "/brand/mascot/scout-celebrate.webp",
       "status": "shipped",
       "promptId": "grok-mascot-celebrate",
-      "notes": "Grok Imagine 2026-08-04 — wings lift + thin red rim; set-locked energy (.463)"
+      "notes": "Grok Imagine 2026-08-04 \u2014 wings lift + thin red rim; set-locked energy (.463)"
     },
     {
       "id": "scout-mark",
@@ -350,7 +352,7 @@
       "path": "/brand/mascot/scout-mark.svg",
       "status": "shipped",
       "promptId": "flow-mascot-mark",
-      "notes": "Hand SVG tiny mark — not logo replacement"
+      "notes": "Hand SVG tiny mark \u2014 not logo replacement"
     },
     {
       "id": "dead-bug",
@@ -363,10 +365,10 @@
     {
       "id": "thruster",
       "kind": "form",
-      "path": "/form-guides/thruster.svg",
+      "path": "/form/thruster/side.webp",
       "status": "shipped",
-      "promptId": "form-instructional-v1",
-      "notes": "T1 structured-guide media (.414) via form-kit"
+      "promptId": "grok-form-index-side",
+      "notes": "Form Index clinical side still \u2014 Grok Imagine 2026-08-04 (.464); legacy SVG fallback retained on disk"
     },
     {
       "id": "cable-row",
@@ -534,7 +536,7 @@
       "path": "/learn/said-principle.webp",
       "status": "shipped",
       "promptId": "brand-diagram-v1",
-      "notes": "Section figure SVG→WebP (.414)"
+      "notes": "Section figure SVG\u2192WebP (.414)"
     },
     {
       "id": "energy-systems",
@@ -542,7 +544,7 @@
       "path": "/learn/energy-systems.webp",
       "status": "shipped",
       "promptId": "brand-diagram-v1",
-      "notes": "Section figure SVG→WebP (.414)"
+      "notes": "Section figure SVG\u2192WebP (.414)"
     },
     {
       "id": "recovery-stimulus",
@@ -550,7 +552,7 @@
       "path": "/learn/recovery-stimulus.webp",
       "status": "shipped",
       "promptId": "brand-diagram-v1",
-      "notes": "Section figure SVG→WebP (.414)"
+      "notes": "Section figure SVG\u2192WebP (.414)"
     },
     {
       "id": "progressive-overload",
@@ -558,7 +560,7 @@
       "path": "/learn/progressive-overload.webp",
       "status": "shipped",
       "promptId": "brand-diagram-v1",
-      "notes": "Section figure SVG→WebP (.414)"
+      "notes": "Section figure SVG\u2192WebP (.414)"
     },
     {
       "id": "deload-signal",
@@ -566,7 +568,7 @@
       "path": "/learn/deload-signal.webp",
       "status": "shipped",
       "promptId": "brand-diagram-v1",
-      "notes": "Section figure SVG→WebP (.414)"
+      "notes": "Section figure SVG\u2192WebP (.414)"
     },
     {
       "id": "first-session",
@@ -574,7 +576,7 @@
       "path": "/learn/first-session.webp",
       "status": "shipped",
       "promptId": "brand-diagram-v1",
-      "notes": "Section figure SVG→WebP (.414)"
+      "notes": "Section figure SVG\u2192WebP (.414)"
     },
     {
       "id": "protein-briefing",
@@ -582,7 +584,7 @@
       "path": "/learn/protein-briefing.webp",
       "status": "shipped",
       "promptId": "brand-diagram-v1",
-      "notes": "Section figure SVG→WebP (.414)"
+      "notes": "Section figure SVG\u2192WebP (.414)"
     },
     {
       "id": "retest-cadence",
@@ -590,7 +592,7 @@
       "path": "/learn/retest-cadence.webp",
       "status": "shipped",
       "promptId": "brand-diagram-v1",
-      "notes": "Section figure SVG→WebP (.414)"
+      "notes": "Section figure SVG\u2192WebP (.414)"
     },
     {
       "id": "pattern-squat",
@@ -598,7 +600,7 @@
       "path": "/form-guides/pattern-squat.svg",
       "status": "shipped",
       "promptId": "form-pattern-v1",
-      "notes": "Shared movement pattern pack (.415) — not exercise-specific"
+      "notes": "Shared movement pattern pack (.415) \u2014 not exercise-specific"
     },
     {
       "id": "pattern-hinge",
@@ -606,7 +608,7 @@
       "path": "/form-guides/pattern-hinge.svg",
       "status": "shipped",
       "promptId": "form-pattern-v1",
-      "notes": "Shared movement pattern pack (.415) — not exercise-specific"
+      "notes": "Shared movement pattern pack (.415) \u2014 not exercise-specific"
     },
     {
       "id": "pattern-push",
@@ -614,7 +616,7 @@
       "path": "/form-guides/pattern-push.svg",
       "status": "shipped",
       "promptId": "form-pattern-v1",
-      "notes": "Shared movement pattern pack (.415) — not exercise-specific"
+      "notes": "Shared movement pattern pack (.415) \u2014 not exercise-specific"
     },
     {
       "id": "pattern-pull",
@@ -622,7 +624,7 @@
       "path": "/form-guides/pattern-pull.svg",
       "status": "shipped",
       "promptId": "form-pattern-v1",
-      "notes": "Shared movement pattern pack (.415) — not exercise-specific"
+      "notes": "Shared movement pattern pack (.415) \u2014 not exercise-specific"
     },
     {
       "id": "pattern-core",
@@ -630,7 +632,7 @@
       "path": "/form-guides/pattern-core.svg",
       "status": "shipped",
       "promptId": "form-pattern-v1",
-      "notes": "Shared movement pattern pack (.415) — not exercise-specific"
+      "notes": "Shared movement pattern pack (.415) \u2014 not exercise-specific"
     },
     {
       "id": "pattern-loco",
@@ -638,7 +640,7 @@
       "path": "/form-guides/pattern-loco.svg",
       "status": "shipped",
       "promptId": "form-pattern-v1",
-      "notes": "Shared movement pattern pack (.415) — not exercise-specific"
+      "notes": "Shared movement pattern pack (.415) \u2014 not exercise-specific"
     },
     {
       "id": "pattern-isolation",
@@ -646,7 +648,7 @@
       "path": "/form-guides/pattern-isolation.svg",
       "status": "shipped",
       "promptId": "form-pattern-v1",
-      "notes": "Shared movement pattern pack (.415) — not exercise-specific"
+      "notes": "Shared movement pattern pack (.415) \u2014 not exercise-specific"
     },
     {
       "id": "six-pillars",
@@ -654,7 +656,7 @@
       "path": "/learn/six-pillars.webp",
       "status": "shipped",
       "promptId": "brand-diagram-v1",
-      "notes": "Section figure SVG→WebP (.415)"
+      "notes": "Section figure SVG\u2192WebP (.415)"
     },
     {
       "id": "win-score-offline",
@@ -662,7 +664,7 @@
       "path": "/learn/win-score-offline.webp",
       "status": "shipped",
       "promptId": "brand-diagram-v1",
-      "notes": "Section figure SVG→WebP (.415)"
+      "notes": "Section figure SVG\u2192WebP (.415)"
     },
     {
       "id": "meal-timing",
@@ -670,7 +672,7 @@
       "path": "/learn/meal-timing.webp",
       "status": "shipped",
       "promptId": "brand-diagram-v1",
-      "notes": "Section figure SVG→WebP (.415)"
+      "notes": "Section figure SVG\u2192WebP (.415)"
     },
     {
       "id": "parq-screen",
@@ -678,7 +680,7 @@
       "path": "/learn/parq-screen.webp",
       "status": "shipped",
       "promptId": "brand-diagram-v1",
-      "notes": "Section figure SVG→WebP (.415)"
+      "notes": "Section figure SVG\u2192WebP (.415)"
     },
     {
       "id": "adjust-plan",
@@ -686,7 +688,7 @@
       "path": "/learn/adjust-plan.webp",
       "status": "shipped",
       "promptId": "brand-diagram-v1",
-      "notes": "Section figure SVG→WebP (.415)"
+      "notes": "Section figure SVG\u2192WebP (.415)"
     },
     {
       "id": "beyond-the-basics-pdf",

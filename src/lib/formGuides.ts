@@ -2,9 +2,10 @@ import type { FormGuide } from '@/types/formGuide';
 import type { Exercise } from '@/types';
 import { getExerciseById } from '@/data/exercises';
 import { EXTENDED_GUIDES } from '@/lib/formGuidesExtended';
+import { resolveFormPackMedia } from '@/lib/formMedia';
 import { PATTERN_MEDIA_CAPTION, resolvePatternMediaUrl } from '@/lib/formPatterns';
 
-/** Hero movements with instructional diagrams under /public/form-guides/. */
+/** Legacy stick SVG under /public/form-guides/ — used only when no Form Index pack. */
 const FORM_MEDIA_IDS = new Set([
   'push-ups',
   'air-squat',
@@ -68,6 +69,19 @@ function attachFormMedia(
   exercise?: Exercise | null
 ): FormGuide {
   if (guide.mediaUrl) return guide;
+
+  // Form Index pack (clinical poster / loop) beats legacy SVG sticks.
+  const pack = resolveFormPackMedia(exerciseId);
+  if (pack) {
+    return {
+      ...guide,
+      mediaUrl: pack.mediaUrl,
+      mediaType: pack.mediaType,
+      mediaPosterUrl: pack.mediaPosterUrl,
+      mediaCaption: pack.mediaCaption ?? guide.mediaCaption,
+    };
+  }
+
   if (FORM_MEDIA_IDS.has(exerciseId)) {
     return {
       ...guide,
@@ -75,7 +89,7 @@ function attachFormMedia(
       mediaType: 'image',
     };
   }
-  // Long-tail: honest shared pattern diagram when we have no bespoke SVG.
+  // Long-tail: honest shared pattern diagram when we have no pack or SVG.
   const patternUrl = resolvePatternMediaUrl(exerciseId, exercise);
   if (!patternUrl) return guide;
   return {

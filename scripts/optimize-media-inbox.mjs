@@ -1,14 +1,17 @@
 #!/usr/bin/env node
 /**
- * Optimize Google Flow / Imagine exports from media/inbox → public/learn|social.
+ * Optimize Google Flow / Imagine exports from media/inbox → public/.
  *
  * Naming:
  *   learn-{id}-frame.png|jpg|webp  → public/learn/{id}-hero.webp
  *   social-{id}-frame.png|…        → public/social/{id}.webp
  *   mascot-scout-{pose}-frame.png  → public/brand/mascot/scout-{pose}.webp
+ *   form-{id}-side-frame.png       → public/form/{id}/side.webp
+ *   form-{id}-front-frame.png      → public/form/{id}/front.webp
+ *   form-pattern-{name}-side-frame → public/form/pattern-{name}/side.webp
  *
  * Usage: npm run media:optimize-inbox
- * See docs/MEDIA_SYSTEM.md · media/FLOW_PROMPTS.md · docs/MASCOT.md
+ * See docs/MEDIA_SYSTEM.md · media/GROK_IMAGINE_PROMPTS.md · docs/MASCOT.md
  */
 
 import fs from 'node:fs';
@@ -84,6 +87,23 @@ function resolveTarget(fileName) {
       publicPath: `/brand/mascot/${id}.webp`,
     };
   }
+  // form-push-ups-side-frame → public/form/push-ups/side.webp
+  // form-pattern-squat-side-frame → public/form/pattern-squat/side.webp
+  if (base.startsWith('form-')) {
+    let rest = base.slice('form-'.length).replace(/-frame$/, '').replace(/-raw$/, '');
+    const angleMatch = rest.match(/^(.*)-(side|front|top)$/);
+    if (!angleMatch) return null;
+    const id = angleMatch[1];
+    const angle = angleMatch[2];
+    if (!id || !angle) return null;
+    return {
+      kind: 'form',
+      out: path.join(root, 'public', 'form', id, `${angle}.webp`),
+      width: 1080,
+      maxBytes: 120_000,
+      publicPath: `/form/${id}/${angle}.webp`,
+    };
+  }
   return null;
 }
 
@@ -100,22 +120,28 @@ async function main() {
 
   if (files.length === 0) {
     console.log('No images in media/inbox/. Drop PNG/JPG frames from Google Flow, then re-run.');
-    console.log('Tips: learn-*-frame.png · social-*-frame.png · mascot-scout-{idle|invite|celebrate}-frame.png');
+    console.log(
+      'Tips: learn-*-frame · social-*-frame · mascot-scout-*-frame · form-{id}-side-frame'
+    );
     process.exit(0);
   }
 
   ensureDir(path.join(root, 'public', 'learn'));
   ensureDir(path.join(root, 'public', 'social'));
   ensureDir(path.join(root, 'public', 'brand', 'mascot'));
+  ensureDir(path.join(root, 'public', 'form'));
 
   const results = [];
   for (const file of files) {
     const target = resolveTarget(file);
     if (!target) {
-      console.warn(`Skip (name must start with learn-, social-, or mascot-): ${file}`);
+      console.warn(
+        `Skip (name must start with learn-, social-, mascot-, or form-): ${file}`
+      );
       continue;
     }
     const src = path.join(inbox, file);
+    ensureDir(path.dirname(target.out));
     const { bytes, quality } = await toWebp(src, target.out, target);
     results.push({ file, ...target, kb: Math.round(bytes / 1024), quality });
     console.log(
