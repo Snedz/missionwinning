@@ -262,4 +262,95 @@ export const EXTENDED_GUIDES: Record<string, FormGuide> = {
     ['Hold static stretch', 'Do not bounce', 'Exit slowly'],
     ['Forcing knees to floor', 'Lower back pain — reduce range']
   ),
+  // Phase 4 craft completeness — common logger lifts still on cues-only
+  'dumbbell-press': g(
+    'Lie on bench, dumbbells at chest',
+    ['Feet flat, shoulder blades pinched', 'Wrists stacked over elbows', 'Neutral spine'],
+    ['Press dumbbells up and slightly together', 'Lower with control to chest line', 'Do not bounce at bottom'],
+    ['Flaring elbows hard', 'Arching low back off bench']
+  ),
+  'incline-bench': g(
+    'Incline bench, bar or DBs',
+    ['Bench 30–45°', 'Shoulder blades set', 'Grip slightly wider than shoulders'],
+    ['Lower to upper chest', 'Press up without shrugging', 'Control the eccentric'],
+    ['Angle too steep (becomes shoulder press)', 'Bouncing bar']
+  ),
+  'hammer-curl': g(
+    'Standing, neutral grip',
+    ['Elbows at ribs', 'Thumbs up / hammer grip', 'Shoulders quiet'],
+    ['Curl without swinging', 'Squeeze at top', 'Lower fully'],
+    ['Torso lean', 'Partial range']
+  ),
+  'preacher-curl': g(
+    'Arms on preacher pad',
+    ['Armpits near top of pad', 'Full stretch at bottom', 'Wrists neutral'],
+    ['Curl without lifting elbows', 'Squeeze peak', 'Lower under control'],
+    ['Incomplete bottom stretch', 'Using body English']
+  ),
+  'triceps-extension': g(
+    'Overhead dumbbell or cable',
+    ['Elbows point forward/up', 'Ribs down', 'Core braced'],
+    ['Extend elbows fully', 'Keep upper arms still', 'Control the lower'],
+    ['Flaring elbows', 'Arching lumbar']
+  ),
+  'leg-extension': g(
+    'Seated on machine',
+    ['Pad on lower shins', 'Back against pad', 'Toes up'],
+    ['Extend knees fully', 'Squeeze quads', 'Lower without slamming'],
+    ['Using momentum', 'Hips lifting off seat']
+  ),
+  'leg-curl': g(
+    'Prone or seated machine',
+    ['Pad just above heels', 'Hips stable', 'Neutral spine'],
+    ['Curl heels toward glutes', 'Squeeze hamstrings', 'Return with control'],
+    ['Hips rising', 'Partial range']
+  ),
+  'reverse-lunge': g(
+    'Standing, feet hip-width',
+    ['Torso tall', 'Core braced', 'Step back far enough for vertical front shin'],
+    ['Lower back knee toward floor', 'Front knee tracks toes', 'Drive through front heel'],
+    ['Front knee cave', 'Falling forward']
+  ),
+  'cossack-squat': g(
+    'Wide stance',
+    ['Toes out slightly', 'Weight shifts to one leg', 'Other leg straight'],
+    ['Sit into the bent leg', 'Keep heel down if possible', 'Stand and switch'],
+    ['Collapsing knee inward', 'Rounding upper back']
+  ),
+  'scap-pullup': g(
+    'Dead hang',
+    ['Full hang, passive shoulders first', 'Grip solid', 'Body still'],
+    ['Depress and retract scapulae (lift body slightly)', 'Hold 1 second', 'Return to passive hang'],
+    ['Bending elbows into a pull-up', 'Shrugging up']
+  ),
+  'jumping-jack': g(
+    'Standing, feet together',
+    ['Arms at sides', 'Soft knees', 'Light on feet'],
+    ['Jump feet out while arms go overhead', 'Jump back to start', 'Steady rhythm'],
+    ['Landing stiff-legged', 'Holding breath']
+  ),
+  'worlds-greatest-stretch': g(
+    'Lunge position',
+    ['Long lunge, front foot flat', 'Back knee down or hovering', 'Hands inside front foot'],
+    ['Rotate open toward front leg', 'Reach arm up', 'Return and switch sides'],
+    ['Front knee collapsing', 'Forcing rotation']
+  ),
+  'dumbbell-fly': g(
+    'Lie on bench, DBs above chest',
+    ['Soft elbows fixed angle', 'Shoulder blades set', 'Feet flat'],
+    ['Open arms wide with control', 'Feel stretch in chest', 'Bring DBs together over chest'],
+    ['Locking elbows straight', 'Going too deep for shoulders']
+  ),
+  'rear-delt-fly': g(
+    'Hinge or seated chest-supported',
+    ['Soft elbows', 'Neutral neck', 'Light weight'],
+    ['Raise arms out to sides', 'Squeeze rear delts', 'Lower slowly'],
+    ['Using traps/shrugging', 'Swinging torso']
+  ),
+  'face-pull-band': g(
+    'Band at face height',
+    ['Step back for tension', 'Elbows high', 'Shoulders down'],
+    ['Pull band toward face', 'Externally rotate at end', 'Control return'],
+    ['Band too heavy', 'Shrugging']
+  ),
 };
