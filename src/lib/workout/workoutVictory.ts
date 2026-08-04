@@ -3,6 +3,7 @@ import type { UnitsPref } from '@/lib/units';
 import { weightStep, weightUnitLabel } from '@/lib/units';
 import { suggestNextSetTarget } from '@/lib/workout/nextSetTargets';
 import { sessionIsCoachPrescribed } from '@/lib/workout/activeWorkoutHelpers';
+import { week1SecondSessionCue } from '@/lib/activation/week1SecondSession';
 import { getExerciseById } from '@/data/exercises';
 
 export type VictoryBodyDelta = {
@@ -170,13 +171,35 @@ export type PickVictoryNextActionOpts = {
 /**
  * One boss next step after a session.
  * Prefer Mission Coach / next train — stay in the Train+Coach wedge (Horizon W).
+ *
+ * **Week-1 session 2 wins** over the early-Coach CTA (`.412` / T1.3). After exactly
+ * one log, Today and First Steps already name "Start session 2" at `/active`
+ * (`.291` / `.404`). Victory used to send that athlete to Coach instead — two
+ * next bosses for the same habit loop. One definition: `week1SecondSessionCue`.
  */
 export function pickVictoryNextAction(opts?: PickVictoryNextActionOpts): VictoryNextAction {
+  const completed =
+    typeof opts?.completedWorkouts === 'number' ? opts.completedWorkouts : undefined;
+
+  // Exactly one finished session → second session is the boss habit, not Coach.
+  if (completed === 1) {
+    const cue = week1SecondSessionCue({ completedSessions: 1 });
+    if (cue) {
+      return {
+        href: cue.href,
+        labelKey: cue.labelKey,
+        defaultLabel: cue.defaultLabel,
+        reasonKey: cue.reasonKey,
+        defaultReason: cue.defaultReason,
+      };
+    }
+  }
+
   const early =
-    typeof opts?.completedWorkouts === 'number' &&
-    opts.completedWorkouts > 0 &&
-    opts.completedWorkouts <= COACH_VICTORY_EARLY_WORKOUTS;
-  // Explicit plan presence (true or false) → Coach. Early workouts → Coach.
+    typeof completed === 'number' &&
+    completed > 0 &&
+    completed <= COACH_VICTORY_EARLY_WORKOUTS;
+  // Explicit plan presence (true or false) → Coach. Early workouts (2–3) → Coach.
   const wantsCoach = early || opts?.hasCoachPlan === true || opts?.hasCoachPlan === false;
 
   if (wantsCoach) {

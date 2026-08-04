@@ -15,6 +15,7 @@ import {
   week1SecondSessionCue,
   week1SecondSessionDone,
 } from './week1SecondSession.ts';
+import { pickVictoryNextAction } from '@/lib/workout/workoutVictory';
 import { getFirstSteps, summarizeFirstSteps } from '@/lib/journey/firstSteps';
 import type { JourneyState } from '@/lib/missionJourney';
 import {
@@ -47,6 +48,18 @@ describe('week-1 activation contract after composure (.404)', () => {
     assert.equal(progress.next?.href, '/active');
     assert.equal(week1SecondSessionDone(1), false);
     assert.equal(week1SecondSessionDone(2), true);
+  });
+
+  it('Victory next after first log matches session-2 cue (T1.3 · .412)', () => {
+    const cue = week1SecondSessionCue({ completedSessions: 1 });
+    assert.ok(cue);
+    const victory = pickVictoryNextAction({
+      completedWorkouts: 1,
+      hasCoachPlan: true,
+    });
+    assert.equal(victory.href, cue!.href);
+    assert.equal(victory.labelKey, cue!.labelKey);
+    assert.equal(victory.reasonKey, cue!.reasonKey);
   });
 
   it('pure cue shows only at completedSessions === 1', () => {
