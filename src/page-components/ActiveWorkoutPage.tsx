@@ -61,6 +61,7 @@ import {
   planApplyTargets,
   resolveActiveDockMode,
   resolveActiveSetDial,
+  resolveFormGuideSheet,
   resolveRepeatLastTarget,
   sessionIsCoachPrescribed,
   sessionSetStats,
@@ -458,6 +459,11 @@ export function ActiveWorkoutPage() {
   const { completed: completedSets, total: totalSets, hardCount } = sessionSetStats(
     activeWorkout.exercises
   );
+  const formGuideSheet = resolveFormGuideSheet({
+    formGuideId,
+    getExerciseById,
+    getFormGuideOrCues,
+  });
 
   return (
     <div className={`space-y-4 ${restTimerActive ?'pb-36 md:pb-28' : 'pb-4'}`}>
@@ -678,21 +684,15 @@ export function ActiveWorkoutPage() {
         description="Workouts auto-save to the cloud when you're signed in."
       />
 
-      {formGuideId &&
-        (() => {
-          const ex = getExerciseById(formGuideId);
-          const guide = getFormGuideOrCues(formGuideId, { exercise: ex });
-          if (!ex || !guide) return null;
-          return (
-            <FormGuideSheet
-              exerciseName={ex.name}
-              exerciseId={ex.id}
-              guide={guide}
-              open
-              onClose={() => setFormGuideId(null)}
-            />
-          );
-        })()}
+      {formGuideSheet ? (
+        <FormGuideSheet
+          exerciseName={formGuideSheet.exerciseName}
+          exerciseId={formGuideSheet.exerciseId}
+          guide={formGuideSheet.guide}
+          open
+          onClose={() => setFormGuideId(null)}
+        />
+      ) : null}
 
       {/*
         One dock, two states, never both. Rest takes the console over rather

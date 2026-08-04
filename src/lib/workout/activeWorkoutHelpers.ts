@@ -440,3 +440,19 @@ export function resolveActiveDockMode(params: {
   if (params.hasConsoleSet && params.isCompact) return 'console';
   return null;
 }
+
+/**
+ * Form guide sheet props from an exercise id, or null when the catalog has no
+ * guide for that id. Keeps the Active page free of an open IIFE in JSX.
+ */
+export function resolveFormGuideSheet<TExercise extends { id: string; name: string }, TGuide>(params: {
+  formGuideId: string | null;
+  getExerciseById: (id: string) => TExercise | undefined;
+  getFormGuideOrCues: (id: string, opts: { exercise: TExercise | undefined }) => TGuide | null;
+}): { exerciseId: string; exerciseName: string; guide: TGuide } | null {
+  if (!params.formGuideId) return null;
+  const ex = params.getExerciseById(params.formGuideId);
+  const guide = params.getFormGuideOrCues(params.formGuideId, { exercise: ex });
+  if (!ex || !guide) return null;
+  return { exerciseId: ex.id, exerciseName: ex.name, guide };
+}

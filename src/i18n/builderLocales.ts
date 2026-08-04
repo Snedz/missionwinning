@@ -85,6 +85,8 @@ type BuilderStrings = {
   builderTemplateSearchCount: string;
   builderProFreeBeta: string;
   builderRemoveExercise: string;
+  builderRemoveSet: string;
+  builderContinue: string;
 };
 
 const en: BuilderStrings = {

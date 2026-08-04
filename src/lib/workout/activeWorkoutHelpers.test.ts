@@ -12,6 +12,7 @@ import {
   priorCompletedInExercise,
   resolveActiveDockMode,
   resolveActiveSetDial,
+  resolveFormGuideSheet,
   resolveRepeatLastTarget,
   resolveSetInput,
   formatLoggedSetLine,
@@ -590,6 +591,53 @@ describe('resolveActiveDockMode', () => {
       src,
       /restTimerActive\s*\?\s*\([\s\S]*?consoleSet\s*&&\s*isCompact/,
       'dock mode decision must stay inside resolveActiveDockMode'
+    );
+  });
+});
+
+describe('resolveFormGuideSheet', () => {
+  it('returns null without an id or when the catalog misses', () => {
+    assert.equal(
+      resolveFormGuideSheet({
+        formGuideId: null,
+        getExerciseById: () => undefined,
+        getFormGuideOrCues: () => null,
+      }),
+      null
+    );
+    assert.equal(
+      resolveFormGuideSheet({
+        formGuideId: 'missing',
+        getExerciseById: () => undefined,
+        getFormGuideOrCues: () => ({ setup: [] }),
+      }),
+      null
+    );
+  });
+
+  it('returns sheet props when exercise and guide exist', () => {
+    const out = resolveFormGuideSheet({
+      formGuideId: 'push-ups',
+      getExerciseById: (id) => ({ id, name: 'Push-ups' }),
+      getFormGuideOrCues: () => ({ setup: ['hands under shoulders'] }),
+    });
+    assert.deepEqual(out, {
+      exerciseId: 'push-ups',
+      exerciseName: 'Push-ups',
+      guide: { setup: ['hands under shoulders'] },
+    });
+  });
+
+  it('ActiveWorkoutPage uses resolveFormGuideSheet rather than an inline IIFE', () => {
+    const src = readFileSync(
+      path.join(import.meta.dirname, '..', '..', 'page-components', 'ActiveWorkoutPage.tsx'),
+      'utf8'
+    );
+    assert.match(src, /resolveFormGuideSheet\(/);
+    assert.doesNotMatch(
+      src,
+      /getFormGuideOrCues\(formGuideId/,
+      'form guide lookup must stay inside resolveFormGuideSheet'
     );
   });
 });

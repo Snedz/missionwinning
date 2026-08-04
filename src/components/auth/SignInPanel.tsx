@@ -185,7 +185,7 @@ export function SignInPanel({
         <p
           id="signin-message"
           role="status"
-          className="text-sm text-primary bg-primary/10 border border-primary/40 rounded-lg px-3 py-3"
+          className="text-sm text-primary bg-background border-2 border-primary px-3 py-3"
         >
           {message}
         </p>
@@ -358,7 +358,7 @@ export function SignInPanel({
         <p
           id="signin-error"
           role="alert"
-          className="text-sm text-red-400 bg-red-950/20 border border-red-500/20 rounded-lg px-3 py-2"
+          className="text-sm text-destructive bg-background border-2 border-destructive px-3 py-2"
         >
           {error}
         </p>

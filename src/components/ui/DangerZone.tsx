@@ -19,7 +19,7 @@ export function DangerZone({
   return (
     <section
       className={cn(
-        'rounded-lg border border-destructive/40 bg-destructive/5 p-4 space-y-3',
+        'border-2 border-destructive bg-background p-4 space-y-3',
         className
       )}
       aria-label={title}
