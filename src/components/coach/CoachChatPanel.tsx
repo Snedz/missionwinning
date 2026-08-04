@@ -429,7 +429,7 @@ export function CoachChatPanel({
                 <div
                   key={`${turn.role}-${i}`}
                   className={cn(
-                    'rounded-md px-2 py-1.5 whitespace-pre-wrap',
+                    'rounded-none px-2 py-1.5 whitespace-pre-wrap',
                     turn.role === 'user'
                       ? 'border-2 border-primary bg-tint ml-4'
                       : 'border-2 border-border bg-card mr-4'
@@ -452,7 +452,7 @@ export function CoachChatPanel({
               <input
                 id="coach-chat-input"
                 type="text"
-                className="flex-1 min-h-[44px] rounded-md border border-border bg-background px-3 text-sm"
+                className="flex-1 min-h-[44px] rounded-none border border-border bg-background px-3 text-sm"
                 value={input}
                 disabled={sending}
                 placeholder={t('coachChatPlaceholder', {

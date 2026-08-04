@@ -340,7 +340,7 @@
   }
 
   .briefing-rule {
-    @apply flex items-center gap-3 text-muted-foreground/80;
+    @apply flex items-center gap-3 text-muted-foreground;
   }
 
   .briefing-rule::after {

@@ -499,12 +499,20 @@ PR: #234
 |------|--------|-------|
 | E1 Add-exercise sheet a11y | done (`.364`) | ExercisePicker search name + listbox structure |
 | E2 Active extract | done (`.365`) | `activeCoachTipKind` + wiring guard |
-| E3 Soft chrome / log close | pending (`.366`) | Coach chat + briefing-rule |
+| E3 Soft chrome / log close | done (`.366`) | Coach chat rounded-none; briefing-rule solid |
 
 ## Metrics
 
 | Metric | Loop 20 end | Loop 21 (in progress) |
 |--------|-------------|------------------------|
-| Build | `.363` | **`.365`** |
+| Build | `.363` | **`.366`** |
 | i18n uncovered cap | 16 (Bundle refuse) | **16** (unchanged) |
+
+## End of Loop 21
+
+**Delivered:** E1–E3 on `cursor/kaizen-wedge-night-be9b` → PR #234 (`.364`–`.366`).
+**Verified:** add-exercise a11y green; activeCoachTipKind unit + wiring; design-system green.
+**Aikido:** `aikido_full_scan` fails without X11 `$DISPLAY`. Noted; continue.
+**Next:** Loop 22 — more seeded a11y; Active extracts; Bundle i18n still refused.
+
 
