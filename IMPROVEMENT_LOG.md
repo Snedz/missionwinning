@@ -388,6 +388,6 @@ PR: #234
 | Wave | Status | Notes |
 |------|--------|-------|
 | Z1 Track logged-activity a11y | done (`.349`) | Log Activity → week list axe green |
-| Z2 Active extract | pending | |
+| Z2 Active extract | done (`.350`) | `resolveActiveGoalId` + wiring guard |
 | Z3 Soft chrome / log close | pending | |
 

@@ -26,6 +26,7 @@ import {
   activeSessionBottomClass,
   shouldShowReadinessDelta,
   shouldShowVolumeTrimOffer,
+  resolveActiveGoalId,
 } from './activeWorkoutHelpers.ts';
 import type { CompletedWorkoutLog } from '@/types';
 
@@ -803,6 +804,50 @@ describe('shouldShowVolumeTrimOffer', () => {
       src,
       /offerVolumeTrim\s*&&\s*plan/,
       'volume-trim CTA gate must stay inside shouldShowVolumeTrimOffer'
+    );
+  });
+});
+
+describe('resolveActiveGoalId', () => {
+  const parse = (raw: string) => (raw.startsWith('goal:') ? raw.slice(5) : null);
+
+  it('prefers primaryGoal, then goals, then general', () => {
+    assert.equal(
+      resolveActiveGoalId({
+        primaryGoal: 'goal:strength',
+        goals: 'goal:hypertrophy',
+        parseGoalPresetId: parse,
+      }),
+      'strength'
+    );
+    assert.equal(
+      resolveActiveGoalId({
+        primaryGoal: null,
+        goals: 'goal:hypertrophy',
+        parseGoalPresetId: parse,
+      }),
+      'hypertrophy'
+    );
+    assert.equal(
+      resolveActiveGoalId({
+        primaryGoal: null,
+        goals: null,
+        parseGoalPresetId: parse,
+      }),
+      'general'
+    );
+  });
+
+  it('ActiveWorkoutPage uses resolveActiveGoalId rather than inlining storage reads', () => {
+    const src = readFileSync(
+      path.join(import.meta.dirname, '..', '..', 'page-components', 'ActiveWorkoutPage.tsx'),
+      'utf8'
+    );
+    assert.match(src, /resolveActiveGoalId\(/);
+    assert.doesNotMatch(
+      src,
+      /parseGoalPresetId\(\s*readRaw\(STORAGE_KEYS\.primaryGoal\)/,
+      'goal id resolution must stay inside resolveActiveGoalId'
     );
   });
 });

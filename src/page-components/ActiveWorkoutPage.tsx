@@ -69,6 +69,7 @@ import {
   activeSessionBottomClass,
   shouldShowReadinessDelta,
   shouldShowVolumeTrimOffer,
+  resolveActiveGoalId,
   sessionIsCoachPrescribed,
   sessionSetStats,
   setInputKey,
@@ -190,10 +191,11 @@ export function ActiveWorkoutPage() {
    */
   // Resolved the same way coach/contextBuilder does, so the logger's suggestions and
   // the plan's prescriptions are talking about the same goal.
-  const goalId =
-    parseGoalPresetId(
-      readRaw(STORAGE_KEYS.primaryGoal) ?? readRaw(STORAGE_KEYS.goals) ?? 'goal:general'
-    ) ?? 'general';
+  const goalId = resolveActiveGoalId({
+    primaryGoal: readRaw(STORAGE_KEYS.primaryGoal),
+    goals: readRaw(STORAGE_KEYS.goals),
+    parseGoalPresetId,
+  });
 
   /*
    * `.201` — these handlers used `activeWorkout!` six times.

@@ -525,3 +525,20 @@ export function shouldShowVolumeTrimOffer(
 ): boolean {
   return offerVolumeTrim && hasPlan;
 }
+
+/**
+ * Active logger goal id — same resolution as coach/contextBuilder so suggestions
+ * and plan prescriptions share one goal.
+ */
+export function resolveActiveGoalId(params: {
+  primaryGoal: string | null;
+  goals: string | null;
+  parseGoalPresetId: (raw: string) => string | null;
+  fallback?: string;
+}): string {
+  const fallback = params.fallback ?? 'general';
+  return (
+    params.parseGoalPresetId(params.primaryGoal ?? params.goals ?? 'goal:general') ??
+    fallback
+  );
+}
