@@ -309,6 +309,22 @@ function findQtyBefore(text: string, kwStart: number): { qty: number; start: num
   }
   // Word half + portion: "half a cup of rice", "half cup rice" → 0.5× (.424)
   // Also "a quarter cup" / "quarter of a cup" → 0.25× (.433)
+  // "a third cup" / "two thirds of a cup" → ⅓ / ⅔ (.435)
+  const thirdsPortion = before.match(
+    new RegExp(
+      `\\b(an?|one|two)?\\s*thirds?(?:\\s+of)?\\s+(?:an?\\s+)?(${PORTION_WORD})\\s*(?:of\\s+)?$`,
+      'i'
+    )
+  );
+  if (thirdsPortion) {
+    const lead = (thirdsPortion[1] ?? 'one').toLowerCase();
+    const n = lead === 'two' ? 2 / 3 : 1 / 3;
+    const scale = portionWordScale(thirdsPortion[2]);
+    const qty = Math.round(n * scale * 10) / 10;
+    if (qty > 0 && qty <= 12) {
+      return { qty, start: kwStart - thirdsPortion[0].length };
+    }
+  }
   const quarterPortion = before.match(
     new RegExp(
       `\\b(?:an?\\s+)?quarter(?:\\s+of)?\\s+(?:an?\\s+)?(${PORTION_WORD})\\s*(?:of\\s+)?$`,

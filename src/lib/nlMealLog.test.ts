@@ -232,4 +232,13 @@ describe('nlMealLog', () => {
     assert.equal(quarterOf.protein, Math.round(aCup.protein * 0.25));
     assert.equal(quarter.source, 'matched');
   });
+
+  it('parses third / two thirds cups (.435)', () => {
+    const aCup = estimateMealFromDescription('a cup of rice');
+    const third = estimateMealFromDescription('a third cup of rice');
+    const twoThirds = estimateMealFromDescription('two thirds cup rice');
+    assert.ok(aCup && third && twoThirds);
+    assert.equal(third.protein, Math.round(aCup.protein * (1 / 3)));
+    assert.equal(twoThirds.protein, Math.round(aCup.protein * (2 / 3)));
+  });
 });
