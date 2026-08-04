@@ -55,6 +55,7 @@ When adding a doc:
 | [log/LOG-rotate-300.md](./log/LOG-rotate-300.md) | `.285` progressive overload — rotated for `.300` L5 fillers |
 | [log/LOG-rotate-301.md](./log/LOG-rotate-301.md) | `.286` re-entry dose — rotated for `.301` Coach/History i18n |
 | [log/LOG-rotate-302.md](./log/LOG-rotate-302.md) | `.287` coach why — rotated for `.302` debrief i18n |
+| [log/LOG-rotate-402.md](./log/LOG-rotate-402.md) | `.387` — rotated for `.402` OtpInput chrome |
 | [log/LOG-rotate-401.md](./log/LOG-rotate-401.md) | `.386` — rotated for `.401` isActiveSetCell extract |
 | [log/LOG-rotate-400.md](./log/LOG-rotate-400.md) | `.385` — rotated for `.400` session more menu a11y |
 | [log/LOG-rotate-399.md](./log/LOG-rotate-399.md) | `.384` — rotated for `.399` BetaAdmin landing chrome (Loop 27 K3) |
