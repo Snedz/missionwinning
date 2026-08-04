@@ -381,4 +381,27 @@ describe('nlMealLog', () => {
       'bowl of rice must not also count Bowl base'
     );
   });
+
+  it('parses plenty/loads/heap/bunch/ton as lots-band qty (.451)', () => {
+    const egg = estimateMealFromDescription('egg');
+    const rice = estimateMealFromDescription('rice');
+    const chicken = estimateMealFromDescription('chicken');
+    assert.ok(egg && rice && chicken);
+    const plenty = estimateMealFromDescription('plenty of rice');
+    const loads = estimateMealFromDescription('loads of chicken');
+    const heap = estimateMealFromDescription('a heap of rice');
+    const heapBare = estimateMealFromDescription('heap of oats');
+    const bunch = estimateMealFromDescription('a bunch of eggs');
+    const tons = estimateMealFromDescription('tons of chicken');
+    const ton = estimateMealFromDescription('a ton of rice');
+    const oats = estimateMealFromDescription('oatmeal');
+    assert.ok(plenty && loads && heap && heapBare && bunch && tons && ton && oats);
+    assert.equal(plenty.protein, rice.protein * 2);
+    assert.equal(loads.protein, chicken.protein * 2);
+    assert.equal(heap.protein, rice.protein * 2);
+    assert.equal(heapBare.protein, oats.protein * 2);
+    assert.equal(bunch.protein, egg.protein * 2);
+    assert.equal(tons.protein, chicken.protein * 2);
+    assert.equal(ton.protein, rice.protein * 2);
+  });
 });

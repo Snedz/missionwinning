@@ -57,7 +57,7 @@ const FOODS: FoodToken[] = [
   { keywords: ['brown rice'], label: 'Brown rice', protein: 5, cals: 215, carbs: 45, fat: 2 },
   { keywords: ['white rice'], label: 'White rice', protein: 4, cals: 200, carbs: 45, fat: 0 },
   { keywords: ['meal prep'], label: 'Meal prep plate', protein: 35, cals: 480, carbs: 40, fat: 12 },
-  { keywords: ['banana'], label: 'Banana', protein: 1, cals: 105, carbs: 27, fat: 0 },
+  { keywords: ['banana', 'bananas'], label: 'Banana', protein: 1, cals: 105, carbs: 27, fat: 0 },
   { keywords: ['apple'], label: 'Apple', protein: 0, cals: 95, carbs: 25, fat: 0 },
   { keywords: ['orange', 'berries', 'berries'], label: 'Fruit', protein: 1, cals: 80, carbs: 20, fat: 0 },
   { keywords: ['beans', 'lentils', 'chickpea', 'chickpeas', 'tofu', 'tempeh'], label: 'Legumes', protein: 14, cals: 180, carbs: 22, fat: 4 },
@@ -511,8 +511,10 @@ function findQtyBefore(text: string, kwStart: number): { qty: number; start: num
   if (severalQty) {
     return { qty: 3, start: kwStart - severalQty[0].length };
   }
-  // "a lot of chicken" / "lots of rice" → 2 (.449)
-  const lotsQty = before.match(/\b(?:a\s+lot|lots)\s+(?:of\s+)?$/i);
+  // "a lot of chicken" / "lots|loads|plenty|heap|bunch|ton of …" → 2 (.449/.451)
+  const lotsQty = before.match(
+    /\b(?:a\s+lot|lots|loads|plenty|(?:a\s+)?(?:heap|bunch|ton)s?)\s+(?:of\s+)?$/i
+  );
   if (lotsQty) {
     return { qty: 2, start: kwStart - lotsQty[0].length };
   }

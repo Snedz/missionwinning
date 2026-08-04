@@ -3,7 +3,7 @@
 Session branch: `cursor/kaizen-night-be9b`  
 Started: 2026-08-04 · Web craft only · Modernist system stands  
 Base: `master` @ `2026.07-unified.417`  
-Tip: `2026.07-unified.450` · PR #254  
+Tip: `2026.07-unified.451` · PR #254  
 Prior night: #234 (`.294`–`.403`) + follow-on media/Learn through `.417`
 
 ## Contract
@@ -34,7 +34,7 @@ Pause/restart · week numbers · Fixed vs Flexible · glow FAB · Habits/communi
 
 | Metric | Night start | Tip |
 |--------|-------------|-----|
-| Build | `.417` | **`.450`** |
+| Build | `.417` | **`.451`** |
 | i18n uncovered cap | 16 | **16** |
 | ActiveExerciseCard LOC | 536 | **224** (−312) |
 | HomeTodayDashboard LOC | 785 | **714** (−71) |
@@ -263,9 +263,15 @@ Pause/restart · week numbers · Fixed vs Flexible · glow FAB · Habits/communi
 |------|--------|-------|
 | `.450` | done | ActiveWorkoutSheets overlay cluster; page →632 |
 
+### Loop 34 — NL plenty / loads
+
+| Wave | Status | Notes |
+|------|--------|-------|
+| `.451` | done | plenty/loads/heap/bunch/ton → 2; bananas plural |
+
 ## Next (founder / later nights)
 
-1. Phone excellence walk of Train → Today → Victory → Coach on tip `.450`.
+1. Phone excellence walk of Train → Today → Victory → Coach on tip `.451`.
 2. Visual baseline bootstrap on Linux when founder ready (not this branch).
 3. Pump D14 only when screenshots arrive — do not invent IA.
 4. Further Fuel accuracy: vision grounding for honest `high` confidence.
