@@ -65,6 +65,7 @@ When adding a doc:
 | [log/LOG-rotate-414.md](./log/LOG-rotate-414.md) | `.399` FileUploadRow chrome — rotated for `.414` form media T1 |
 | [log/LOG-rotate-415.md](./log/LOG-rotate-415.md) | `.400` opacity exemptions — rotated for `.415` pattern packs |
 | [log/LOG-rotate-416.md](./log/LOG-rotate-416.md) | `.401` beachhead i18n — rotated for `.416` Scout + PDF |
+| [log/LOG-rotate-424.md](./log/LOG-rotate-424.md) | `.409` — rotated for `.424` — Active session finish (rotated for NL word-half). |
 | [log/LOG-rotate-423.md](./log/LOG-rotate-423.md) | `.408` — rotated for `.423` — Active table set controls (rotated for soft chrome + NL mixed). |
 | [log/LOG-rotate-422.md](./log/LOG-rotate-422.md) | `.407` — rotated for `.422` — Active set-input patches (rotated for Victory one-exit). |
 | [log/LOG-rotate-421.md](./log/LOG-rotate-421.md) | `.406` — rotated for `.421` NL fractions |

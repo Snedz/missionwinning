@@ -197,4 +197,29 @@ describe('nlMealLog', () => {
     assert.ok(bareMixed && chicken);
     assert.equal(bareMixed.protein, Math.round(chicken.protein * 1.5));
   });
+
+  it('parses word half / and-a-half — not global 0.65 (.424)', () => {
+    const aCup = estimateMealFromDescription('a cup of rice');
+    const halfACup = estimateMealFromDescription('half a cup of rice');
+    const halfCup = estimateMealFromDescription('half cup rice');
+    const decimal = estimateMealFromDescription('0.5 cup rice');
+    const oneAndHalf = estimateMealFromDescription('one and a half cups rice');
+    const cupAndHalf = estimateMealFromDescription('a cup and a half of rice');
+    const twoAndHalf = estimateMealFromDescription('2 and a half cups rice');
+    assert.ok(aCup && halfACup && halfCup && decimal && oneAndHalf && cupAndHalf && twoAndHalf);
+    assert.equal(halfACup.protein, Math.round(aCup.protein * 0.5));
+    assert.equal(halfCup.protein, Math.round(aCup.protein * 0.5));
+    assert.equal(decimal.protein, Math.round(aCup.protein * 0.5));
+    assert.equal(oneAndHalf.protein, Math.round(aCup.protein * 1.5));
+    assert.equal(cupAndHalf.protein, Math.round(aCup.protein * 1.5));
+    assert.equal(twoAndHalf.protein, Math.round(aCup.protein * 2.5));
+    const chicken = estimateMealFromDescription('chicken');
+    const halfChicken = estimateMealFromDescription('half chicken');
+    assert.ok(chicken && halfChicken);
+    assert.equal(halfChicken.protein, Math.round(chicken.protein * 0.5));
+    // small still uses plate-size scale; half no longer does
+    const small = estimateMealFromDescription('small chicken');
+    assert.ok(small);
+    assert.equal(small.protein, Math.round(chicken.protein * 0.65));
+  });
 });

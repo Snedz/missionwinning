@@ -110,7 +110,9 @@ const WORD_QTY: Record<string, number> = {
 
 const GLOBAL_PORTION: { pattern: RegExp; scale: number }[] = [
   { pattern: /\b(large|big|xl|double|extra)\b/i, scale: 1.35 },
-  { pattern: /\b(small|light|half|mini)\b/i, scale: 0.65 },
+  // `half` is a quantity word (`half a cup`, `half chicken`) — not a plate-size
+  // adjective. Keeping it here double-scaled word-half qty to ~0.65× (.424).
+  { pattern: /\b(small|light|mini)\b/i, scale: 0.65 },
 ];
 
 function globalPortionScale(text: string): number {
@@ -266,6 +268,60 @@ function findQtyBefore(text: string, kwStart: number): { qty: number; start: num
         start: kwStart - numberedPortion[0].length,
       };
     }
+  }
+  // "one and a half cups" / "2 and a half cups" before the food.
+  // Must run before bare `half cup` — otherwise "one and a half cups" matches
+  // as qty 0.5 via the trailing "half cups" (.424).
+  const andAHalfBefore = before.match(
+    new RegExp(
+      `\\b(a|an|one|two|three|four|five|six|\\d+)\\s+and\\s+a\\s+half\\s+(${PORTION_WORD})\\s*(?:of\\s+)?$`,
+      'i'
+    )
+  );
+  if (andAHalfBefore) {
+    const raw = andAHalfBefore[1].toLowerCase();
+    const n = WORD_QTY[raw] ?? parseFloat(raw);
+    const scale = portionWordScale(andAHalfBefore[2]);
+    if (n > 0 && n <= 12) {
+      const qty = Math.round((n + 0.5) * scale * 10) / 10;
+      if (qty > 0 && qty <= 12) {
+        return { qty, start: kwStart - andAHalfBefore[0].length };
+      }
+    }
+  }
+  // "a cup and a half of rice" — portion word before "and a half"
+  const portionAndAHalf = before.match(
+    new RegExp(
+      `\\b(a|an|one|two|three|four|five|six|\\d+)\\s+(${PORTION_WORD})\\s+and\\s+a\\s+half\\s*(?:of\\s+)?$`,
+      'i'
+    )
+  );
+  if (portionAndAHalf) {
+    const raw = portionAndAHalf[1].toLowerCase();
+    const n = WORD_QTY[raw] ?? parseFloat(raw);
+    const scale = portionWordScale(portionAndAHalf[2]);
+    if (n > 0 && n <= 12) {
+      const qty = Math.round((n + 0.5) * scale * 10) / 10;
+      if (qty > 0 && qty <= 12) {
+        return { qty, start: kwStart - portionAndAHalf[0].length };
+      }
+    }
+  }
+  // Word half + portion: "half a cup of rice", "half cup rice" → 0.5× (.424)
+  const halfPortion = before.match(
+    new RegExp(`\\bhalf\\s+(?:an?\\s+)?(${PORTION_WORD})\\s*(?:of\\s+)?$`, 'i')
+  );
+  if (halfPortion) {
+    const scale = portionWordScale(halfPortion[1]);
+    const qty = Math.round(0.5 * scale * 10) / 10;
+    if (qty > 0 && qty <= 12) {
+      return { qty, start: kwStart - halfPortion[0].length };
+    }
+  }
+  // Bare "half chicken" / "half a chicken" — quantity, not plate-size adjective
+  const bareHalf = before.match(/\bhalf\s+(?:an?\s+)?$/i);
+  if (bareHalf) {
+    return { qty: 0.5, start: kwStart - bareHalf[0].length };
   }
   // Word + portion: "a cup of rice", "two handfuls of almonds", "a plate of chicken"
   const wordPortion = before.match(
