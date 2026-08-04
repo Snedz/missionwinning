@@ -29,13 +29,14 @@
  * the list is not the same as the states on that route being covered — which is
  * the whole reason this check reads source rather than waiting for a render.
  *
- * The rule: no **bare** `opacity-{40,50,60,70,80}` in component source.
+ * The rule: no **bare** `opacity-{40,50,60,70,80,90,95}` in component source.
  *
  * Prefixed variants are out of scope on purpose. `disabled:opacity-50` is the
  * shadcn idiom and WCAG 1.4.3 explicitly exempts disabled controls;
  * `hover:`/`group-`/`data-[…]:` are transient or duplicate an accessible state
  * that is already conveyed some other way. What is dangerous is the unprefixed
  * kind, which is on the element for as long as the element exists.
+ * `.427` extends the ban to 90/95 — soft chrome that still dims text.
  */
 
 import { test } from 'node:test';
@@ -46,8 +47,8 @@ import path from 'node:path';
 const root = path.join(import.meta.dirname, '..', '..');
 const ROOTS = ['src/components', 'src/page-components'];
 
-/** Matches `opacity-40` … `opacity-80` only when nothing prefixes it. */
-const BARE_OPACITY = /(^|[\s'"`{(])(opacity-(?:40|50|60|70|80))\b/g;
+/** Matches `opacity-40` … `opacity-95` only when nothing prefixes it. */
+const BARE_OPACITY = /(^|[\s'"`{(])(opacity-(?:40|50|60|70|80|90|95))\b/g;
 
 /**
  * Bare opacity that is **not** a contrast risk, each with the reason.
