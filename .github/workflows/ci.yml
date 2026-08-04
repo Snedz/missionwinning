@@ -43,7 +43,7 @@ jobs:
           # made the step below decorative rather than a gate.
           fetch-depth: 0
 
-      - uses: actions/setup-node@v5
+      - uses: actions/setup-node@v7
         with:
           node-version: '22'
           cache: npm
