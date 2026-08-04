@@ -434,6 +434,31 @@ test.describe('Accessibility @a11y', () => {
   });
 
   /**
+   * Loop 10 T5 — Library detail sheet. Zero-data /library lists cards but never
+   * opens the detail sheet; axe must see cues/history chrome after View details.
+   */
+  test('axe serious/critical: /library with detail sheet open @a11y', async ({
+    page,
+    context,
+    baseURL,
+  }) => {
+    if (!baseURL) throw new Error('baseURL required');
+    const ok = await unlockGate(page, context, baseURL);
+    if (gateRequired() && !ok) {
+      test.skip(true, 'SMOKE_ACCESS_SECRET required to unlock private gate');
+    }
+    await seedLegacyOnboarding(page);
+    await page.goto('/library', { waitUntil: 'domcontentloaded' });
+    const details = page.getByRole('button', { name: /view details/i }).first();
+    await expect(details).toBeVisible({ timeout: 15_000 });
+    await details.click();
+    await expect(
+      page.getByRole('button', { name: /view form guide|add to today/i }).or(page.getByText(/key cues/i)).first()
+    ).toBeVisible({ timeout: 10_000 });
+    await axeSerious(page, '/library (detail sheet)');
+  });
+
+  /**
    * The assertion axe cannot make.
    *
    * axe-core does not reliably test focus visibility, which is how this suite sat at

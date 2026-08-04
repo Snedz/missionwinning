@@ -251,3 +251,25 @@ PR: #234
 **Aikido:** `aikido_full_scan` still fails without X11 `$DISPLAY`. Noted; continue.
 **Next:** Loop 10 — remaining uncovered batches (Bundle refused); soft chrome leftovers; more Active extracts; seeded a11y.
 
+## Loop 10 waves
+
+| Wave | Status | Notes |
+|------|--------|-------|
+| T1–T3 Programs/Learn/Library/Builder/Coach | done (`.331`) | Pack leftovers; Bundle refused; **69→44** |
+| T4 Form-guide + chrome | done (`.332`) | `resolveFormGuideSheet`; SignIn/DangerZone/Intent solid |
+| T5 Library detail a11y | done (`.333`) | Seeded axe on detail sheet; Loop 10 living-log close |
+
+## Metrics
+
+| Metric | Loop 9 end | Loop 10 end |
+|--------|------------|------------|
+| Build | `.330` | **`.333`** |
+| i18n uncovered cap | 69 | **44** |
+
+## End of Loop 10
+
+**Delivered:** T1–T5 on `cursor/kaizen-wedge-night-be9b` → PR #234 (`.331`–`.333`).
+**Verified:** i18n @44; form-guide helper unit tests; Library detail a11y axe green (`localhost`).
+**Aikido:** `aikido_full_scan` still fails without X11 `$DISPLAY`. Noted; continue.
+**Next:** Loop 11 — Compare/Benchmarks/About/offline/landing leftovers (Bundle refused); soft chrome; Active extracts; seeded a11y.
+
