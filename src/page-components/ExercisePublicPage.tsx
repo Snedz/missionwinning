@@ -9,10 +9,12 @@ import { EXERCISES, getExerciseById } from '@/data/exercises';
 import { getFormGuideOrCues } from '@/lib/formGuides';
 import {
   enrichExerciseForPublic,
-  relatedExercises,
+  relatedExercisesByPattern,
   guideChaptersForExercise,
   muscleHubSlug,
 } from '@/lib/exerciseSeo';
+import { inferFormPattern } from '@/lib/formPatterns';
+import { PATTERN_FILTER_LABELS } from '@/lib/libraryFilters';
 import { templatesUsingExercise } from '@/lib/exerciseUsage';
 import { PublicPageShell } from '@/components/public/PublicPageShell';
 import { ExercisePageBeacon } from '@/components/public/ExercisePageBeacon';
@@ -25,7 +27,8 @@ type Props = {
 
 export function ExercisePublicPage({ exercise: raw, jsonLd }: Props) {
   const exercise = enrichExerciseForPublic(raw);
-  const related = relatedExercises(exercise, 6);
+  const pattern = inferFormPattern(exercise.id, exercise);
+  const related = relatedExercisesByPattern(exercise, 6, inferFormPattern);
   const guides = guideChaptersForExercise(exercise);
   const enrichment = 'enrichment' in exercise ? exercise.enrichment : undefined;
   const guide = getFormGuideOrCues(exercise.id, { exercise });
@@ -42,6 +45,13 @@ export function ExercisePublicPage({ exercise: raw, jsonLd }: Props) {
     })
     .filter((x): x is { id: string; name: string } => x != null);
 
+  const subtitleParts = [
+    pattern ? PATTERN_FILTER_LABELS[pattern] : null,
+    exercise.muscleGroups.join(' · '),
+    exercise.equipment || 'Various',
+    exercise.level ?? null,
+  ].filter(Boolean);
+
   return (
     <>
       <script
@@ -52,9 +62,7 @@ export function ExercisePublicPage({ exercise: raw, jsonLd }: Props) {
       <PublicPageShell
         eyebrow="Free exercise library"
         title={exercise.name}
-        subtitle={`${exercise.muscleGroups.join(' · ')} · ${exercise.equipment || 'Various'}${
-          exercise.level ? ` · ${exercise.level}` : ''
-        }`}
+        subtitle={subtitleParts.join(' · ')}
         breadcrumb={
           <>
             <Link href="/exercises" className="text-primary hover:underline">
@@ -74,50 +82,91 @@ export function ExercisePublicPage({ exercise: raw, jsonLd }: Props) {
           </>
         }
       >
+        {/* Craft-index detail order: media → coach language → depth → mesh */}
+        {guide?.mediaUrl && (
+          <section>
+            <h2 className="mb-2 font-display text-lg font-semibold uppercase tracking-wide text-foreground">
+              Form diagram
+            </h2>
+            <div className="mb-2 overflow-hidden border-2 border-border bg-card">
+              {guide.mediaType === 'video' ? (
+                <video
+                  className="w-full max-h-56 object-contain"
+                  src={guide.mediaUrl}
+                  controls
+                  preload="none"
+                  playsInline
+                  aria-label={`${exercise.name} form video`}
+                >
+                  <track kind="captions" srcLang="en" label="Captions" />
+                </video>
+              ) : (
+                // Static form diagram under /public — plain img is intentional.
+                <img
+                  src={guide.mediaUrl}
+                  alt={`${exercise.name} form diagram`}
+                  loading="lazy"
+                  decoding="async"
+                  className="mx-auto w-full max-h-56 object-contain p-3"
+                />
+              )}
+            </div>
+            {guide.mediaCaption ? (
+              <p className="text-xs text-muted-foreground">{guide.mediaCaption}</p>
+            ) : null}
+          </section>
+        )}
+
         {exercise.cues && (
           <section>
-            <h2 className="mb-2 font-display text-lg font-semibold uppercase tracking-wide text-foreground">Key cues</h2>
+            <h2 className="mb-2 font-mono text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
+              Coach language
+            </h2>
             <p className="text-sm text-muted-foreground leading-relaxed">{exercise.cues}</p>
           </section>
         )}
-        {guide && (
-          <section>
-            <h2 className="mb-2 font-display text-lg font-semibold uppercase tracking-wide text-foreground">Form guide</h2>
-            {guide.mediaUrl && (
-              <div className="mb-4 overflow-hidden border-2 border-border bg-card">
-                {guide.mediaType === 'video' ? (
-                  <video
-                    className="w-full max-h-56 object-contain"
-                    src={guide.mediaUrl}
-                    controls
-                    preload="none"
-                    playsInline
-                    aria-label={`${exercise.name} form video`}
-                  >
-                    <track kind="captions" srcLang="en" label="Captions" />
-                  </video>
-                ) : (
-                  // Static form diagram under /public — plain img is intentional.
-                  <img
-                    src={guide.mediaUrl}
-                    alt={`${exercise.name} form diagram`}
-                    loading="lazy"
-                    decoding="async"
-                    className="mx-auto w-full max-h-56 object-contain p-3"
-                  />
-                )}
+
+        {guide && (guide.setup.length > 0 || guide.execute.length > 0) && (
+          <section className="space-y-3">
+            {guide.setup.length > 0 && (
+              <div>
+                <h2 className="mb-2 font-mono text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
+                  Setup
+                </h2>
+                <ul className="list-disc pl-5 text-sm text-muted-foreground space-y-1">
+                  {guide.setup.map((line, i) => (
+                    <li key={`setup-${i}`}>{line}</li>
+                  ))}
+                </ul>
               </div>
             )}
-            <ul className="list-disc pl-5 text-sm text-muted-foreground space-y-1">
-              {guide.setup.map((line, i) => (
-                <li key={`setup-${i}`}>{line}</li>
-              ))}
-              {guide.execute.map((line, i) => (
-                <li key={`exec-${i}`}>{line}</li>
-              ))}
-            </ul>
+            {guide.execute.length > 0 && (
+              <div>
+                <h2 className="mb-2 font-mono text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
+                  Execute
+                </h2>
+                <ul className="list-disc pl-5 text-sm text-muted-foreground space-y-1">
+                  {guide.execute.map((line, i) => (
+                    <li key={`exec-${i}`}>{line}</li>
+                  ))}
+                </ul>
+              </div>
+            )}
+            {guide.commonErrors && guide.commonErrors.length > 0 && (
+              <div>
+                <h2 className="mb-2 font-mono text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
+                  Avoid
+                </h2>
+                <ul className="list-disc pl-5 text-sm text-muted-foreground space-y-1">
+                  {guide.commonErrors.map((line, i) => (
+                    <li key={`err-${i}`}>{line}</li>
+                  ))}
+                </ul>
+              </div>
+            )}
           </section>
         )}
+
         {!guide && tipLines && tipLines.length > 0 && (
           <section>
             <h2 className="mb-2 font-display text-lg font-semibold uppercase tracking-wide text-foreground">Form tips</h2>
@@ -198,7 +247,11 @@ export function ExercisePublicPage({ exercise: raw, jsonLd }: Props) {
 
         {related.length > 0 && (
           <section>
-            <h2 className="mb-2 font-display text-lg font-semibold uppercase tracking-wide text-foreground">Related movements</h2>
+            <h2 className="mb-2 font-display text-lg font-semibold uppercase tracking-wide text-foreground">
+              {pattern
+                ? `More ${PATTERN_FILTER_LABELS[pattern].toLowerCase()} pattern`
+                : 'Related movements'}
+            </h2>
             <div className="flex flex-wrap gap-2">
               {related.map((ex) => (
                 <Link
