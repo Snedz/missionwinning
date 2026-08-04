@@ -1250,6 +1250,10 @@ describe('shouldShowApplyTargetsMenuitem / shouldShowRemoveSetMenuitem', () => {
       path.join(import.meta.dirname, '..', '..', 'components', 'workout', 'ActiveExerciseCard.tsx'),
       'utf8'
     );
+    const header = readFileSync(
+      path.join(import.meta.dirname, '..', '..', 'components', 'workout', 'ActiveExerciseHeader.tsx'),
+      'utf8'
+    );
     const footer = readFileSync(
       path.join(import.meta.dirname, '..', '..', 'components', 'workout', 'ActiveExerciseFooter.tsx'),
       'utf8'
@@ -1258,13 +1262,19 @@ describe('shouldShowApplyTargetsMenuitem / shouldShowRemoveSetMenuitem', () => {
     assert.match(more, /shouldShowExerciseSwapMenuitem\(/);
     assert.match(opts, /shouldShowApplyTargetsMenuitem\(/);
     assert.match(opts, /shouldShowRemoveSetMenuitem\(/);
-    assert.match(card, /ActiveExerciseMoreMenu/);
+    assert.match(card, /ActiveExerciseHeader/);
     assert.match(card, /ActiveExerciseFooter/);
+    assert.match(header, /ActiveExerciseMoreMenu/);
     assert.match(footer, /ActiveSetOptionsMenu/);
     assert.doesNotMatch(
       card,
       /ActiveSetOptionsMenu/,
       'Set options menu mounts from ActiveExerciseFooter'
+    );
+    assert.doesNotMatch(
+      card,
+      /ActiveExerciseMoreMenu/,
+      'More menu mounts from ActiveExerciseHeader'
     );
     assert.doesNotMatch(
       card,
@@ -1282,20 +1292,25 @@ describe('exerciseHasWeightedSet / firstWeightedLoad', () => {
     assert.equal(firstWeightedLoad([{ weight: 0 }]), 0);
   });
 
-  it('ActiveExerciseCard uses weighted-set helpers for the load chip', () => {
-    const src = readFileSync(
+  it('ActiveExerciseHeader uses weighted-set helpers for the load chip', () => {
+    const header = readFileSync(
+      path.join(import.meta.dirname, '..', '..', 'components', 'workout', 'ActiveExerciseHeader.tsx'),
+      'utf8'
+    );
+    const card = readFileSync(
       path.join(import.meta.dirname, '..', '..', 'components', 'workout', 'ActiveExerciseCard.tsx'),
       'utf8'
     );
-    assert.match(src, /shouldShowLoadPctChip\(/);
-    assert.match(src, /firstWeightedLoad\(/);
+    assert.match(header, /shouldShowLoadPctChip\(/);
+    assert.match(header, /firstWeightedLoad\(/);
+    assert.match(card, /ActiveExerciseHeader/);
     assert.doesNotMatch(
-      src,
+      header,
       /exLog\.sets\.some\(\(s\)\s*=>\s*s\.weight\s*>\s*0\)/,
       'weighted-set gate must stay inside exerciseHasWeightedSet / shouldShowLoadPctChip'
     );
     assert.doesNotMatch(
-      src,
+      header,
       /exLog\.loadPct\s*!=\s*null\s*&&\s*\n?\s*exLog\.loadPct\s*>\s*0/,
       'loadPct chip gate must stay inside shouldShowLoadPctChip'
     );
@@ -1366,7 +1381,7 @@ describe('resolveExerciseNextTarget / menu visibility', () => {
     assert.equal(shouldShowExerciseSwapMenuitem(true), false);
   });
 
-  it('ActiveExerciseCard wires the next-target and menu helpers', () => {
+  it('ActiveExerciseCard wires the next-target and header/footer', () => {
     const src = readFileSync(
       path.join(import.meta.dirname, '..', '..', 'components', 'workout', 'ActiveExerciseCard.tsx'),
       'utf8'
@@ -1375,8 +1390,14 @@ describe('resolveExerciseNextTarget / menu visibility', () => {
       path.join(import.meta.dirname, '..', '..', 'components', 'workout', 'ActiveExerciseMoreMenu.tsx'),
       'utf8'
     );
+    const header = readFileSync(
+      path.join(import.meta.dirname, '..', '..', 'components', 'workout', 'ActiveExerciseHeader.tsx'),
+      'utf8'
+    );
     assert.match(src, /resolveExerciseNextTarget\(/);
-    assert.match(src, /ActiveExerciseMoreMenu/);
+    assert.match(src, /ActiveExerciseHeader/);
+    assert.match(src, /ActiveExerciseFooter/);
+    assert.match(header, /ActiveExerciseMoreMenu/);
     assert.match(more, /shouldShowSupersetLinkMenuitem\(/);
     assert.match(more, /shouldShowExerciseSwapMenuitem\(/);
     assert.doesNotMatch(

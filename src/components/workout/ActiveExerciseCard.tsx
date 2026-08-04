@@ -6,16 +6,10 @@
  */
 
 import { useState, type RefObject } from 'react';
-import { useTranslation } from 'react-i18next';
-import { Info } from 'lucide-react';
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { ExercisePicker } from '@/components/library/ExercisePicker';
-import { AdaptiveOverlay } from '@/components/ui/AdaptiveOverlay';
+import { Card, CardContent } from '@/components/ui/card';
 import { SetLogRow } from '@/components/workout/SetLogRow';
 import { SetLogTable } from '@/components/workout/SetLogTable';
-import { ActiveExerciseMoreMenu } from '@/components/workout/ActiveExerciseMoreMenu';
+import { ActiveExerciseHeader } from '@/components/workout/ActiveExerciseHeader';
 import { ActiveExerciseFooter } from '@/components/workout/ActiveExerciseFooter';
 import { useIsCompact } from '@/hooks/useIsCompact';
 import {
@@ -24,8 +18,6 @@ import {
   holdsActiveExercise,
   isActiveSetCell,
   activeSetIdxForExercise,
-  firstWeightedLoad,
-  shouldShowLoadPctChip,
   resolveExerciseNextTarget,
   formatPrevSetLabels,
 } from '@/lib/workout/activeWorkoutHelpers';
@@ -34,7 +26,6 @@ import { lastNotesFor } from '@/lib/journal/cueMemory';
 import { resolveRestSeconds } from '@/lib/workout/restTimer';
 import { supersetLabel } from '@/lib/workout/superset';
 import { cn } from '@/lib/utils';
-import { useLocaleFormat } from '@/hooks/useLocaleFormat';
 import type { UnitsPref } from '@/lib/units';
 import type {
   ActiveExerciseLog,
@@ -124,8 +115,6 @@ export function ActiveExerciseCard({
   activeSetKind,
   onSetKindChange,
 }: Props) {
-  const { t } = useTranslation();
-  const fmt = useLocaleFormat();
   const isCompact = useIsCompact();
   const [menuOpen, setMenuOpen] = useState(false);
   const [footerOpen, setFooterOpen] = useState(false);
@@ -137,14 +126,8 @@ export function ActiveExerciseCard({
   const holdsActiveSet = holdsActiveExercise(nextSet, exIdx);
   const lastSets = lastSessionSets(workoutHistory, exLog.exerciseId);
   const hasFormGuide = !!getFormGuideOrCues(exercise.id, { exercise });
-  // The cue the athlete wrote last time this lift came up — what a paper
-  // logbook gets flipped back for. Verbatim from history; absent is silence.
   const lastNote = lastNotesFor(exLog.exerciseId, workoutHistory)[0] ?? null;
 
-  /**
-   * The "Next: N × W" line — one definition in `resolveExerciseNextTarget`
-   * so prescribed sessions never disagree with the coach chip.
-   */
   const nextTarget = resolveExerciseNextTarget({
     sets: exLog.sets,
     prescribed: exLog.prescribed,
@@ -157,134 +140,34 @@ export function ActiveExerciseCard({
     <Card
       className={cn(
         'content-card',
-        // Superset members are tied together by a red left edge, per the
-        // handoff — it was a blue --status-info border, which was the last
-        // non-red hue in the logger.
         ssLabel && 'border-s-[3px] border-s-[hsl(var(--accent-poster))]'
       )}
     >
-      <CardHeader className="p-3 pb-2 space-y-2">
-        <div className="flex items-start gap-2">
-          <CardTitle className="text-base sm:text-lg flex flex-wrap items-center gap-2 min-w-0 flex-1">
-            <span className="leading-tight font-extrabold">{exercise.name}</span>
-            {ssLabel && (
-              <Badge variant="outline" className="text-[10px]">
-                {ssLabel}
-              </Badge>
-            )}
-            {shouldShowLoadPctChip(exLog.loadPct, exLog.sets) && (
-                <Badge variant="outline" className="text-[10px] tabular-nums">
-                  {t('activeLoadPctChip', {
-                    pct: exLog.loadPct,
-                    weight: firstWeightedLoad(exLog.sets),
-                    unit: unitLabel,
-                    defaultValue: '{{pct}}% · {{weight}} {{unit}}',
-                  })}
-                </Badge>
-              )}
-          </CardTitle>
-          <div className="flex shrink-0 items-center gap-0.5">
-            {hasFormGuide && (
-              <Button
-                type="button"
-                variant="ghost"
-                size="icon"
-                className="h-11 w-11 tap-target text-primary"
-                aria-label={t('activeFormGuide', { defaultValue: 'Form guide' })}
-                onClick={onFormGuide}
-              >
-                <Info className="h-5 w-5" />
-              </Button>
-            )}
-            <ActiveExerciseMoreMenu
-              open={menuOpen}
-              onOpenChange={setMenuOpen}
-              exerciseId={exercise.id}
-              hasNextExercise={hasNext}
-              supersetted={!!exLog.supersetGroup}
-              hasCompletedSet={hasCompleted}
-              onToggleSuperset={onToggleSuperset}
-              onUnlinkSuperset={onUnlinkSuperset}
-              onToggleNote={onToggleNote}
-              onToggleSwap={onToggleSwap}
-              onRemove={onRemove}
-            />
-          </div>
-        </div>
-
-        {nextTarget && (
-          <p className="text-[11px] tabular-nums text-muted-foreground">
-            {t('activeNextTargetLine', {
-              reps: nextTarget.reps,
-              weight: nextTarget.weight,
-              unit: unitLabel,
-              defaultValue: 'Next: {{reps}} × {{weight}} {{unit}}',
-            })}
-          </p>
-        )}
-
-        {hasCompleted && (
-          <Button
-            type="button"
-            variant="outline"
-            size="sm"
-            className="min-h-[44px] w-fit"
-            onClick={onRepeatLast}
-          >
-            {t('activeRepeatLast', { defaultValue: 'Repeat last set' })}
-          </Button>
-        )}
-
-        {/*
-          Swap used to expand an inline max-h-48 list inside the scrolling
-          logger — same defect AddExerciseSheet closed: list competes for
-          height with the session it mutates. Sheet gives the catalog room;
-          pick closes and swaps (one tap, no second confirm — mid-set speed).
-        */}
-        {!hasCompleted && (
-          <AdaptiveOverlay
-            open={swapOpen}
-            onClose={onToggleSwap}
-            size="sm"
-            eyebrow={t('activeSwapEyebrow', { defaultValue: 'This exercise' })}
-            title={t('activeSwapTitle', {
-              defaultValue: 'Swap exercise',
-            })}
-            bodyClassName="p-4"
-          >
-            <ExercisePicker
-              value=""
-              exercises={swapCandidates}
-              listClassName="max-h-[52vh]"
-              placeholder={t('activeSwapPlaceholder', {
-                defaultValue: 'Swap to… (same muscles first)',
-              })}
-              onChange={onSwapTo}
-            />
-          </AdaptiveOverlay>
-        )}
-        {lastNote && (
-          <p className="text-[11px] text-muted-foreground">
-            {t('activeLastNoteLine', {
-              date: fmt.longDate(lastNote.date),
-              defaultValue: `Last note (${fmt.longDate(lastNote.date)}):`,
-            })}{' '}
-            <span className="italic text-foreground">&ldquo;{lastNote.text}&rdquo;</span>
-          </p>
-        )}
-        {(noteOpen || exLog.note) && (
-          <input
-            type="text"
-            value={exLog.note ?? ''}
-            maxLength={200}
-            placeholder={t('activeNotePlaceholder', {
-              defaultValue: 'Note — "machine 3, seat 4", "left knee tight"…',
-            })}
-            onChange={(e) => onNoteChange(e.target.value)}
-            className="w-full border-2 border-border bg-background px-3 py-2.5 min-h-[44px] text-sm placeholder:text-muted-foreground focus:outline-none focus:border-foreground"
-          />
-        )}
-      </CardHeader>
+      <ActiveExerciseHeader
+        exercise={exercise}
+        exLog={exLog}
+        unitLabel={unitLabel}
+        ssLabel={ssLabel}
+        hasFormGuide={hasFormGuide}
+        hasCompleted={hasCompleted}
+        hasNext={hasNext}
+        menuOpen={menuOpen}
+        onMenuOpenChange={setMenuOpen}
+        swapOpen={swapOpen}
+        noteOpen={noteOpen}
+        swapCandidates={swapCandidates}
+        lastNote={lastNote}
+        nextTarget={nextTarget}
+        onFormGuide={onFormGuide}
+        onToggleSuperset={onToggleSuperset}
+        onUnlinkSuperset={onUnlinkSuperset}
+        onToggleNote={onToggleNote}
+        onToggleSwap={onToggleSwap}
+        onRemove={onRemove}
+        onSwapTo={onSwapTo}
+        onNoteChange={onNoteChange}
+        onRepeatLast={onRepeatLast}
+      />
       <CardContent className="space-y-2 p-3 pt-0">
         {isCompact ? (
           exLog.sets.map((set, setIdx) => {
@@ -302,8 +185,6 @@ export function ActiveExerciseCard({
             );
           })
         ) : (
-          /* Desktop logs in the row, so the ref goes on the table — the
-             scroll-into-view target is the exercise, not one set. */
           <div ref={holdsActiveExercise(nextSet, exIdx) ? nextSetRef : undefined}>
             <SetLogTable
               sets={exLog.sets}
