@@ -28,5 +28,14 @@ Log every rejected generation. Do not re-ship the same glitch.
 | 2026-08-04 | `box-jump/side.webp` | Landing on box, full headroom (.468) |
 | 2026-08-04 | `refs/athlete-a-side` | Kit identity |
 | 2026-08-04 | `refs/prop-*` | Barbell, KB, box, bench sheets |
+| 2026-08-04 | `thruster/side.webp` | Front-rack squat bottom, head visible (.469) |
+| 2026-08-04 | `front-squat/side.webp` | Head clear of bar (.469) |
+| 2026-08-04 | `romanian-deadlift/side.webp` | Full headroom mid-hinge (.469) |
+| 2026-08-04 | `pull-ups/side.webp` | Athlete-a hang setup (.469; chin-over hard for model) |
+| 2026-08-04 | `air-squat/side.mp4` | Directed loop pilot from PASS still (.469) |
+| 2026-08-04 | `glute-bridge/side.mp4` | Bodyweight-only I2V from PASS still (.469) |
 
-Loops still demoted globally until per-lift video QA.
+## Known hard cases
+
+- **Chin-over pull-up:** model often returns dead hang — ship hang as setup still if top fails twice.
+- **Front rack + side camera:** plates hide head — prefer empty/light bar and explicit “head not behind plates”.

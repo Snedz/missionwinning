@@ -39,7 +39,7 @@ test('inferFormPattern maps common families', () => {
   assert.equal(inferFormPattern('farmer-carry'), 'loco');
 });
 
-test('form pack still wins over pattern for pilot structured guides', () => {
+test('form pack still wins over pattern for still-only structured guides', () => {
   const guide = getFormGuideOrCues('push-ups');
   assert.ok(guide?.mediaUrl?.includes('/form/push-ups/side.webp'), guide?.mediaUrl);
   assert.equal(guide?.mediaType, 'image');

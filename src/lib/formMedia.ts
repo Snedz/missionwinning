@@ -34,7 +34,9 @@ export const FORM_PACK_SIDE_IDS = new Set([
  * Files may still exist on disk; do not wire until regen.
  */
 export const FORM_PACK_VIDEO_IDS = new Set<string>([
-  // quality reset — re-add only after loop QA
+  // Form Director loop pilot (.469) — directed I2V from PASS stills only
+  'air-squat',
+  'glute-bridge',
 ]);
 
 export function formPackSidePosterPath(exerciseId: string): string {
