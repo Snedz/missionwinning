@@ -178,11 +178,38 @@ function findQtyBefore(text: string, kwStart: number): { qty: number; start: num
       return { qty: Math.round((g / 100) * 10) / 10, start: kwStart - ounces[0].length };
     }
   }
+  // Fractions before whole numbers: "1/2 cup rice" must not become qty 2
+  // via the trailing digit of the denominator.
+  const fractionPortion = before.match(
+    new RegExp(`(\\d+)\\s*/\\s*(\\d+)\\s*(${PORTION_WORD})\\s*(?:of\\s+)?$`, 'i')
+  );
+  if (fractionPortion) {
+    const num = parseInt(fractionPortion[1], 10);
+    const den = parseInt(fractionPortion[2], 10);
+    if (num > 0 && den > 0 && den <= 16 && num < den * 8) {
+      const scale = portionWordScale(fractionPortion[3]);
+      const qty = Math.round((num / den) * scale * 10) / 10;
+      if (qty > 0 && qty <= 12) {
+        return { qty, start: kwStart - fractionPortion[0].length };
+      }
+    }
+  }
+  const bareFraction = before.match(/(\d+)\s*\/\s*(\d+)\s*$/);
+  if (bareFraction) {
+    const num = parseInt(bareFraction[1], 10);
+    const den = parseInt(bareFraction[2], 10);
+    if (num > 0 && den > 0 && den <= 16 && num < den * 8) {
+      const qty = Math.round((num / den) * 10) / 10;
+      if (qty > 0 && qty <= 12) {
+        return { qty, start: kwStart - bareFraction[0].length };
+      }
+    }
+  }
   // Numbered portion words: "2 scoops whey", "1 cup rice", "2 handfuls almonds",
   // "3 pieces chicken", "2 slices bread", "a plate of rice", "2 tsp oil"
-  // — optional "of" before the food.
+  // — optional "of" before the food. Leading digit must not be a fraction denom.
   const numberedPortion = before.match(
-    new RegExp(`(\\d+(?:\\.\\d+)?)\\s*(${PORTION_WORD})\\s*(?:of\\s+)?$`, 'i')
+    new RegExp(`(?<![\\d/])(\\d+(?:\\.\\d+)?)\\s*(${PORTION_WORD})\\s*(?:of\\s+)?$`, 'i')
   );
   if (numberedPortion) {
     const n = parseFloat(numberedPortion[1]);
@@ -239,7 +266,7 @@ function findQtyBefore(text: string, kwStart: number): { qty: number; start: num
       };
     }
   }
-  const num = before.match(/(\d{1,2})\s*(?:x\s*)?$/i);
+  const num = before.match(/(?<![\d/])(\d{1,2})\s*(?:x\s*)?$/i);
   if (num) {
     const n = parseInt(num[1], 10);
     if (n >= 1 && n <= 20) {

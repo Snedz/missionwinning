@@ -147,4 +147,36 @@ describe('nlMealLog', () => {
     assert.equal(bare.confidence, 'low');
     assert.equal(bare.matched.length, 0);
   });
+
+  it('parses fractions — 1/2 cup is half, not two (denominator trap)', () => {
+    const rice = estimateMealFromDescription('rice');
+    const halfCup = estimateMealFromDescription('1/2 cup rice');
+    const aCup = estimateMealFromDescription('a cup of rice');
+    const twoCups = estimateMealFromDescription('2 cups rice');
+    assert.ok(rice && halfCup && aCup && twoCups);
+    assert.equal(halfCup.protein, Math.round(aCup.protein * 0.5));
+    assert.equal(halfCup.cals, Math.round(aCup.cals * 0.5));
+    assert.ok(halfCup.protein < twoCups.protein);
+    assert.equal(halfCup.source, 'matched');
+    assert.equal(halfCup.confidence, 'medium');
+  });
+
+  it('parses bare food fractions and three-quarters cups', () => {
+    const chicken = estimateMealFromDescription('chicken');
+    const halfChicken = estimateMealFromDescription('1/2 chicken');
+    const oats = estimateMealFromDescription('oats');
+    const threeQuarters = estimateMealFromDescription('3/4 cup oats');
+    assert.ok(chicken && halfChicken && oats && threeQuarters);
+    assert.equal(halfChicken.protein, Math.round(chicken.protein * 0.5));
+    assert.equal(threeQuarters.protein, Math.round(oats.protein * 0.75));
+    // regressions: whole counts and scoops still work
+    const twelveEggs = estimateMealFromDescription('12 eggs');
+    const egg = estimateMealFromDescription('egg');
+    assert.ok(twelveEggs && egg);
+    assert.equal(twelveEggs.protein, egg.protein * 12);
+    const twoScoops = estimateMealFromDescription('2 scoops whey');
+    const whey = estimateMealFromDescription('whey');
+    assert.ok(twoScoops && whey);
+    assert.equal(twoScoops.protein, whey.protein * 2);
+  });
 });
