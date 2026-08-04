@@ -740,14 +740,14 @@ PR: #234
 | Wave | Status | Notes |
 |------|--------|-------|
 | P1 Log console set kinds a11y | done (`.397`) | WORK/WARMUP dock axe green |
-| P2 Active extract | pending (`.398`) | `exerciseHasWeightedSet` + `firstWeightedLoad` |
+| P2 Active extract | done (`.398`) | weighted-set helpers + wiring |
 | P3 Soft chrome / log close | pending (`.399`) | FileUploadRow queued state |
 
 ## Metrics
 
 | Metric | Loop 31 end | Loop 32 (in progress) |
 |--------|-------------|------------------------|
-| Build | `.396` | **`.397`** |
+| Build | `.396` | **`.398`** |
 | i18n uncovered cap | 16 (Bundle refuse) | **16** (unchanged) |
 
 

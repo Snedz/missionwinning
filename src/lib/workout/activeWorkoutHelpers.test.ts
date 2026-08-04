@@ -43,6 +43,8 @@ import {
   shouldShowSetOptionsFooter,
   shouldShowApplyTargetsMenuitem,
   shouldShowRemoveSetMenuitem,
+  exerciseHasWeightedSet,
+  firstWeightedLoad,
 } from './activeWorkoutHelpers.ts';
 import type { CompletedWorkoutLog } from '@/types';
 
@@ -1192,6 +1194,29 @@ describe('shouldShowApplyTargetsMenuitem / shouldShowRemoveSetMenuitem', () => {
       src,
       /\{lastSets\s*&&\s*hasPlanned\s*&&\s*\(/,
       'Apply targets menuitem must stay inside shouldShowApplyTargetsMenuitem'
+    );
+  });
+});
+
+describe('exerciseHasWeightedSet / firstWeightedLoad', () => {
+  it('finds the first positive weight', () => {
+    assert.equal(exerciseHasWeightedSet([{ weight: 0 }]), false);
+    assert.equal(exerciseHasWeightedSet([{ weight: 0 }, { weight: 60 }]), true);
+    assert.equal(firstWeightedLoad([{ weight: 0 }, { weight: 60 }]), 60);
+    assert.equal(firstWeightedLoad([{ weight: 0 }]), 0);
+  });
+
+  it('ActiveExerciseCard uses weighted-set helpers for the load chip', () => {
+    const src = readFileSync(
+      path.join(import.meta.dirname, '..', '..', 'components', 'workout', 'ActiveExerciseCard.tsx'),
+      'utf8'
+    );
+    assert.match(src, /exerciseHasWeightedSet\(/);
+    assert.match(src, /firstWeightedLoad\(/);
+    assert.doesNotMatch(
+      src,
+      /exLog\.sets\.some\(\(s\)\s*=>\s*s\.weight\s*>\s*0\)/,
+      'weighted-set gate must stay inside exerciseHasWeightedSet'
     );
   });
 });

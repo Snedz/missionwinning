@@ -677,3 +677,15 @@ export function shouldShowRemoveSetMenuitem(
 ): boolean {
   return hasPlanned && plannedSetCount > 1;
 }
+
+/** True when any set on this exercise carries a logged weight (> 0). */
+export function exerciseHasWeightedSet(
+  sets: { weight: number }[]
+): boolean {
+  return sets.some((s) => s.weight > 0);
+}
+
+/** First positive weight on this exercise, or 0 when none. */
+export function firstWeightedLoad(sets: { weight: number }[]): number {
+  return sets.find((s) => s.weight > 0)?.weight ?? 0;
+}

@@ -18,7 +18,7 @@ import { AdaptiveOverlay } from '@/components/ui/AdaptiveOverlay';
 import { SetLogRow } from '@/components/workout/SetLogRow';
 import { SetLogTable } from '@/components/workout/SetLogTable';
 import { useIsCompact } from '@/hooks/useIsCompact';
-import { getLastPerformanceForSet, exerciseHasCompletedSet, exerciseHasPlannedSet, firstPlannedSetIdx, holdsActiveExercise, isActiveSetCell, activeSetIdxForExercise, shouldShowSetOptionsFooter, shouldShowApplyTargetsMenuitem, shouldShowRemoveSetMenuitem } from '@/lib/workout/activeWorkoutHelpers';
+import { getLastPerformanceForSet, exerciseHasCompletedSet, exerciseHasPlannedSet, firstPlannedSetIdx, holdsActiveExercise, isActiveSetCell, activeSetIdxForExercise, shouldShowSetOptionsFooter, shouldShowApplyTargetsMenuitem, shouldShowRemoveSetMenuitem, exerciseHasWeightedSet, firstWeightedLoad } from '@/lib/workout/activeWorkoutHelpers';
 import { SET_KINDS, setKindDefaultLabel, setKindLabelKey } from '@/lib/workout/setKind';
 import { getFormGuideOrCues } from '@/lib/formGuides';
 import { lastNotesFor } from '@/lib/journal/cueMemory';
@@ -179,11 +179,11 @@ export function ActiveExerciseCard({
             )}
             {exLog.loadPct != null &&
               exLog.loadPct > 0 &&
-              exLog.sets.some((s) => s.weight > 0) && (
+              exerciseHasWeightedSet(exLog.sets) && (
                 <Badge variant="outline" className="text-[10px] tabular-nums">
                   {t('activeLoadPctChip', {
                     pct: exLog.loadPct,
-                    weight: exLog.sets.find((s) => s.weight > 0)?.weight ?? 0,
+                    weight: firstWeightedLoad(exLog.sets),
                     unit: unitLabel,
                     defaultValue: '{{pct}}% · {{weight}} {{unit}}',
                   })}
