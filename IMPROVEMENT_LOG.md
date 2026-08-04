@@ -476,6 +476,6 @@ PR: #234
 | Wave | Status | Notes |
 |------|--------|-------|
 | D1 Field note jot a11y | done (`.361`) | SessionJotField expanded axe green |
-| D2 Active extract | pending | |
+| D2 Active extract | done (`.362`) | `sessionSetsProgressPct` + wiring guard |
 | D3 Soft chrome / log close | pending | |
 

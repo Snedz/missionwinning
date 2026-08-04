@@ -29,6 +29,7 @@ import {
   resolveActiveGoalId,
   activeSessionHasExercises,
   activePostSessionPath,
+  sessionSetsProgressPct,
 } from './activeWorkoutHelpers.ts';
 import type { CompletedWorkoutLog } from '@/types';
 
@@ -885,5 +886,26 @@ describe('activePostSessionPath', () => {
     assert.match(src, /activePostSessionPath\(/);
     assert.doesNotMatch(src, /router\.push\(['"]\/log['"]\)/);
     assert.doesNotMatch(src, /router\.push\(['"]\/history['"]\)/);
+  });
+});
+
+describe('sessionSetsProgressPct', () => {
+  it('returns 0 for empty sessions and rounds the ratio', () => {
+    assert.equal(sessionSetsProgressPct(0, 0), 0);
+    assert.equal(sessionSetsProgressPct(1, 3), 33);
+    assert.equal(sessionSetsProgressPct(3, 3), 100);
+  });
+
+  it('ActiveSessionChrome uses sessionSetsProgressPct rather than an inline ratio', () => {
+    const src = readFileSync(
+      path.join(import.meta.dirname, '..', '..', 'components', 'workout', 'ActiveSessionChrome.tsx'),
+      'utf8'
+    );
+    assert.match(src, /sessionSetsProgressPct\(/);
+    assert.doesNotMatch(
+      src,
+      /totalSets\s*>\s*0\s*\?\s*Math\.round/,
+      'sets meter percent must stay inside sessionSetsProgressPct'
+    );
   });
 });

@@ -11,6 +11,7 @@ import { useTranslation } from 'react-i18next';
 import { Button } from '@/components/ui/button';
 import { HoldToConfirmButton } from '@/components/ui/HoldToConfirmButton';
 import { formatDuration } from '@/lib/utils';
+import { sessionSetsProgressPct } from '@/lib/workout/activeWorkoutHelpers';
 
 type Props = {
   workoutName: string;
@@ -174,7 +175,7 @@ export function ActiveSessionChrome({
         <div className="mt-2 h-1.5 overflow-hidden bg-neutral-300">
           <div
             className="h-full bg-primary-fill transition-[width] duration-500"
-            style={{ width: `${totalSets > 0 ? Math.round((completedSets / totalSets) * 100) : 0}%` }}
+            style={{ width: `${sessionSetsProgressPct(completedSets, totalSets)}%` }}
           />
         </div>
       </div>

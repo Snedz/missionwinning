@@ -554,3 +554,9 @@ export type ActivePostSessionPath = '/log' | '/history';
 export function activePostSessionPath(kind: 'today' | 'history'): ActivePostSessionPath {
   return kind === 'history' ? '/history' : '/log';
 }
+
+/** Percent complete for the Active session sets meter (0–100). */
+export function sessionSetsProgressPct(completedSets: number, totalSets: number): number {
+  if (totalSets <= 0) return 0;
+  return Math.round((completedSets / totalSets) * 100);
+}
