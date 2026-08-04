@@ -55,6 +55,7 @@ When adding a doc:
 | [log/LOG-rotate-300.md](./log/LOG-rotate-300.md) | `.285` progressive overload — rotated for `.300` L5 fillers |
 | [log/LOG-rotate-301.md](./log/LOG-rotate-301.md) | `.286` re-entry dose — rotated for `.301` Coach/History i18n |
 | [log/LOG-rotate-302.md](./log/LOG-rotate-302.md) | `.287` coach why — rotated for `.302` debrief i18n |
+| [log/LOG-rotate-315.md](./log/LOG-rotate-315.md) | `.300` track/mind zero-state — rotated for `.315` GuidedStepPlayer |
 | [log/LOG-rotate-314.md](./log/LOG-rotate-314.md) | `.299` i18n Active/Fuel/Today — rotated for `.314` History journal |
 | [log/LOG-rotate-313.md](./log/LOG-rotate-313.md) | `.298` Fuel NL mealDraft — rotated for `.313` Profile privacy/CSV |
 | [log/LOG-rotate-312.md](./log/LOG-rotate-312.md) | `.297` buildConsoleSet extract — rotated for `.312` Profile/chrome |

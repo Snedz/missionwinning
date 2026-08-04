@@ -173,6 +173,18 @@ type ActiveWorkoutStrings = {
   sessionJotLabel: string;
   sessionJotPlaceholder: string;
   sessionJotPrivacy: string;
+  /** Kaizen Loop 6 P3 — GuidedStepPlayer (.315) */
+  guidedSessionComplete: string;
+  guidedSessionNextHint: string;
+  guidedSessionRepeat: string;
+  guidedSessionBack: string;
+  guidedSessionStepOf: string;
+  guidedSessionProgress: string;
+  guidedSessionStart: string;
+  guidedSessionPause: string;
+  guidedSessionResume: string;
+  guidedSessionSkip: string;
+  guidedSessionReset: string;
 };
 
 const en: ActiveWorkoutStrings = {
@@ -338,6 +350,17 @@ const en: ActiveWorkoutStrings = {
   sessionJotLabel: 'Field note',
   sessionJotPlaceholder: 'Five words is enough — "knee twinge set 3". Opens your journal entry.',
   sessionJotPrivacy: 'Stays on this device.',
+  guidedSessionComplete: 'Session complete',
+  guidedSessionNextHint: 'Next: log protein on Fuel, read a Learn chapter, or return to Today.',
+  guidedSessionRepeat: 'Repeat',
+  guidedSessionBack: 'Back',
+  guidedSessionStepOf: 'Step {{current}}/{{total}}',
+  guidedSessionProgress: 'Progress',
+  guidedSessionStart: 'Start session',
+  guidedSessionPause: 'Pause',
+  guidedSessionResume: 'Resume',
+  guidedSessionSkip: 'Skip step',
+  guidedSessionReset: 'Reset',
 };
 
 const es: ActiveWorkoutStrings = {
