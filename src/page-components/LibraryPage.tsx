@@ -28,9 +28,13 @@ import { PROGRAM_TAG_LABELS } from '@/data/exerciseEnrichment';
 import {
   DEFAULT_LIBRARY_FILTERS,
   filterExercises,
+  PATTERN_FILTER_CHIPS,
+  PATTERN_FILTER_LABELS,
   uniqueMuscleGroups,
   type LibraryFilterState,
 } from '@/lib/libraryFilters';
+import { inferFormPattern } from '@/lib/formPatterns';
+import { getFormGuideOrCues } from '@/lib/formGuides';
 import { usePremium } from '@/hooks/usePremium';
 import type { ProgramTag } from '@/types';
 
@@ -96,9 +100,13 @@ export function LibraryPage() {
     setVisibleCount(48);
   };
 
-  const activeFilterCount = [filters.equipment, filters.tag, filters.level, filters.muscle].filter(
-    Boolean
-  ).length;
+  const activeFilterCount = [
+    filters.equipment,
+    filters.tag,
+    filters.level,
+    filters.muscle,
+    filters.pattern,
+  ].filter(Boolean).length;
 
   const clearFilters = () => {
     setFilters({ ...DEFAULT_LIBRARY_FILTERS, query: filters.query });
@@ -179,6 +187,12 @@ export function LibraryPage() {
                 {PROGRAM_TAG_LABELS[filters.tag]} <X className="inline h-3 w-3 ms-0.5" />
               </FilterChip>
             )}
+            {filters.pattern && (
+              <FilterChip active onClick={() => setFilter('pattern', '')}>
+                {PATTERN_FILTER_LABELS[filters.pattern]}{' '}
+                <X className="inline h-3 w-3 ms-0.5" />
+              </FilterChip>
+            )}
             <button
               type="button"
               className="text-xs text-muted-foreground underline"
@@ -225,6 +239,25 @@ export function LibraryPage() {
                     onClick={() => setFilter('muscle', m)}
                   >
                     {m}
+                  </FilterChip>
+                ))}
+              </div>
+            </div>
+
+            <div className="space-y-2">
+              <p className="text-xs uppercase tracking-wider text-muted-foreground">
+                {t('libraryFilterPattern', { defaultValue: 'Pattern' })}
+              </p>
+              <div className="flex flex-wrap gap-2">
+                {PATTERN_FILTER_CHIPS.map((p) => (
+                  <FilterChip
+                    key={p || 'all-pattern'}
+                    active={filters.pattern === p}
+                    onClick={() => setFilter('pattern', p)}
+                  >
+                    {p
+                      ? PATTERN_FILTER_LABELS[p]
+                      : t('libraryPatternAll', { defaultValue: 'All' })}
                   </FilterChip>
                 ))}
               </div>
@@ -294,21 +327,33 @@ export function LibraryPage() {
       </Dialog>
 
       <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
-        {visibleExercises.map((ex) => (
+        {visibleExercises.map((ex, idx) => {
           /*
-            No `role="button"` / `tabIndex` on the card. It wrapped a real
-            <Button> in a fake one, which is axe's nested-interactive: a
-            keyboard user hit two stops for one destination and a screen reader
-            announced a button containing a button. The card keeps its pointer
-            click as a convenience; the control inside it is the real one.
+            Craft-index card (GrokFilm-style metadata at a glance):
+            mono pattern label · form-diagram reel-dot · level · tags.
+            No nested interactive roles — real Button inside is the keyboard stop.
           */
+          const pattern = inferFormPattern(ex.id, ex);
+          const hasForm = !!getFormGuideOrCues(ex.id, { exercise: ex })?.mediaUrl;
+          return (
           <Card
             key={ex.id}
             className="content-card pressable-card cursor-pointer"
             onClick={() => setDetailId(ex.id)}
           >
             <CardHeader className="pb-2">
-              <CardTitle className="text-lg">{ex.name}</CardTitle>
+              <div className="flex items-baseline justify-between gap-2">
+                <span className="font-mono text-[10px] tracking-wider text-muted-foreground tabular-nums">
+                  {String(idx + 1).padStart(3, '0')}
+                </span>
+                <span className="font-mono text-[10px] tracking-wider text-primary uppercase">
+                  {hasForm ? (
+                    <span className="me-1.5 inline-block h-1.5 w-1.5 rounded-none bg-primary align-middle" aria-hidden />
+                  ) : null}
+                  {pattern ? PATTERN_FILTER_LABELS[pattern] : t('libraryPatternUnknown', { defaultValue: 'Move' })}
+                </span>
+              </div>
+              <CardTitle className="text-lg mt-2">{ex.name}</CardTitle>
               <div className="text-xs text-muted-foreground">
                 {ex.muscleGroups.join(' • ')} · {ex.equipment || 'Various'}
               </div>
@@ -332,8 +377,6 @@ export function LibraryPage() {
                     defaultValue: 'Form cues coming soon for this movement.',
                   })}
               </p>
-              {/* Named for the exercise: forty buttons all reading "View
-                  details" is a list a screen-reader user cannot navigate. */}
               <Button
                 variant="ghost"
                 size="sm"
@@ -351,7 +394,8 @@ export function LibraryPage() {
               </Button>
             </CardContent>
           </Card>
-        ))}
+          );
+        })}
       </div>
 
       {filtered.length > visibleCount ? (
@@ -387,6 +431,7 @@ export function LibraryPage() {
         open={!!detailId}
         onOpenChange={(open) => !open && setDetailId(null)}
         onSelectExercise={(id) => setDetailId(id)}
+        neighborIds={filtered.map((e) => e.id)}
       />
     </PillarPageShell>
   );

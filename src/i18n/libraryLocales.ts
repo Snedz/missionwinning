@@ -52,6 +52,15 @@ const LIBRARY_EN: Record<string, string> = {
   libraryAlternatives: 'Alternatives:',
   libraryQuickAdd: "Quick Add to Today's Workout →",
   libraryNoResults: 'Clear equipment or muscle filters to see the full library again.',
+  // Craft-index (GrokFilm-grade library)
+  libraryFilterPattern: 'Pattern',
+  libraryPatternAll: 'All',
+  libraryPatternUnknown: 'Move',
+  libraryTrainThis: 'Train this',
+  libraryPrevExercise: 'Previous exercise',
+  libraryNextExercise: 'Next exercise',
+  libraryFormSetup: 'Setup',
+  libraryFormExecute: 'Execute',
 };
 
 const LIBRARY_ES: Record<string, string> = {

@@ -8,40 +8,40 @@
   <line x1="20" y1="185" x2="100" y2="185" stroke="#201e1d" stroke-width="2"></line>
   <line x1="140" y1="185" x2="220" y2="185" stroke="#201e1d" stroke-width="2"></line>
   <line x1="260" y1="185" x2="340" y2="185" stroke="#201e1d" stroke-width="2"></line>
+  <rect x="20" y="125" width="28" height="40" fill="none" stroke="#201e1d" stroke-width="2"></rect>
   <g stroke="#201e1d" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none">
-    <circle cx="50" cy="100" r="9"></circle>
-    <line x1="50" y1="100" x2="60" y2="115"></line>
-    <line x1="60" y1="115" x2="90" y2="150"></line>
-    <line x1="60" y1="115" x2="62" y2="118"></line>
-    <line x1="62" y1="118" x2="85" y2="145"></line>
-    <line x1="90" y1="150" x2="110" y2="155"></line>
-    <line x1="110" y1="155" x2="115" y2="185"></line>
-    <line x1="90" y1="150" x2="108" y2="185"></line>
+    <circle cx="40" cy="100" r="9"></circle>
+    <line x1="40" y1="100" x2="52" y2="115"></line>
+    <line x1="52" y1="115" x2="88" y2="152"></line>
+    <line x1="52" y1="115" x2="55" y2="118"></line>
+    <line x1="55" y1="118" x2="82" y2="148"></line>
+    <line x1="88" y1="152" x2="108" y2="158"></line>
+    <line x1="108" y1="158" x2="115" y2="185"></line>
+    <line x1="88" y1="152" x2="108" y2="185"></line>
   </g>
-  <rect x="25" y="125" width="30" height="40" fill="none" stroke="#201e1d" stroke-width="2"></rect>
+  <rect x="140" y="120" width="28" height="40" fill="none" stroke="#201e1d" stroke-width="2"></rect>
   <g stroke="#201e1d" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none">
-    <circle cx="170" cy="95" r="9"></circle>
-    <line x1="170" y1="95" x2="180" y2="110"></line>
-    <line x1="180" y1="110" x2="215" y2="115"></line>
-    <line x1="180" y1="110" x2="182" y2="112"></line>
-    <line x1="182" y1="112" x2="210" y2="118"></line>
-    <line x1="215" y1="115" x2="235" y2="150"></line>
-    <line x1="235" y1="150" x2="240" y2="185"></line>
-    <line x1="215" y1="115" x2="232" y2="185"></line>
+    <circle cx="160" cy="95" r="9"></circle>
+    <line x1="160" y1="95" x2="172" y2="110"></line>
+    <line x1="172" y1="110" x2="212" y2="118"></line>
+    <line x1="172" y1="110" x2="175" y2="112"></line>
+    <line x1="175" y1="112" x2="208" y2="120"></line>
+    <line x1="212" y1="118" x2="232" y2="152"></line>
+    <line x1="232" y1="152" x2="238" y2="185"></line>
+    <line x1="212" y1="118" x2="230" y2="185"></line>
   </g>
-  <rect x="145" y="120" width="30" height="40" fill="none" stroke="#201e1d" stroke-width="2"></rect>
-  <path d="M210 145 L210 120" stroke="#ec3013" stroke-width="2" stroke-linecap="round"></path>
-  <polygon points="210,120 214,128 206,128" fill="#ec3013"></polygon>
-  <text x="220" y="132.5" fill="#ec3013" font-family="Archivo, system-ui, sans-serif" font-size="9">drive</text>
+  <path d="M208 150 L208 120" stroke="#ec3013" stroke-width="2" stroke-linecap="round"></path>
+  <polygon points="208,120 212,128 204,128" fill="#ec3013"></polygon>
+  <text x="218" y="135" fill="#ec3013" font-family="Archivo, system-ui, sans-serif" font-size="9">drive</text>
+  <rect x="260" y="125" width="28" height="40" fill="none" stroke="#201e1d" stroke-width="2"></rect>
   <g stroke="#201e1d" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none">
-    <circle cx="290" cy="100" r="9"></circle>
-    <line x1="290" y1="100" x2="300" y2="115"></line>
-    <line x1="300" y1="115" x2="330" y2="150"></line>
-    <line x1="300" y1="115" x2="302" y2="118"></line>
-    <line x1="302" y1="118" x2="325" y2="145"></line>
-    <line x1="330" y1="150" x2="350" y2="155"></line>
-    <line x1="350" y1="155" x2="355" y2="185"></line>
-    <line x1="330" y1="150" x2="348" y2="185"></line>
+    <circle cx="280" cy="100" r="9"></circle>
+    <line x1="280" y1="100" x2="292" y2="115"></line>
+    <line x1="292" y1="115" x2="328" y2="152"></line>
+    <line x1="292" y1="115" x2="295" y2="118"></line>
+    <line x1="295" y1="118" x2="322" y2="148"></line>
+    <line x1="328" y1="152" x2="348" y2="158"></line>
+    <line x1="348" y1="158" x2="355" y2="185"></line>
+    <line x1="328" y1="152" x2="348" y2="185"></line>
   </g>
-  <rect x="265" y="125" width="30" height="40" fill="none" stroke="#201e1d" stroke-width="2"></rect>
 </svg>

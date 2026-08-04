@@ -264,12 +264,22 @@ test('a Today card is mounted in every Today shell', () => {
   }
 });
 
-/** The mount decision itself lives in one place, not re-derived per shell. */
+/**
+ * The mount decision itself lives in one place, not re-derived per shell.
+ *
+ * Lean calls `dayReviewMayMount` at the mount site. Dashboard goes through
+ * `buildTodayCandidates`, which is the one pure ladder that already asks
+ * `dayReviewMayMount` (guarded in buildTodayCandidates tests) — so a shell that
+ * only spells the helper name is not the only honest path.
+ */
 test('both Today shells ask the same question about the evening card', () => {
   for (const shell of TODAY_SHELLS) {
+    const src = read(shell);
+    const viaHelper = mentions(src, 'dayReviewMayMount') > 0;
+    const viaLadder = mentions(src, 'buildTodayCandidates') > 0;
     assert.ok(
-      mentions(read(shell), 'dayReviewMayMount') > 0,
-      `${shell} mounts the evening card without dayReviewMayMount — two shells deciding "who sees this" separately is how they drift`
+      viaHelper || viaLadder,
+      `${shell} mounts the evening card without dayReviewMayMount or buildTodayCandidates — two shells deciding "who sees this" separately is how they drift`
     );
   }
 });

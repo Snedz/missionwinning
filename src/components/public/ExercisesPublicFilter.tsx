@@ -7,7 +7,10 @@ import { Input } from '@/components/ui/input';
 import { EXERCISES, ensureFullExerciseCatalog } from '@/data/exercises';
 import { PROGRAM_TAG_LABELS } from '@/data/exerciseEnrichment';
 import {
+  DEFAULT_LIBRARY_FILTERS,
   filterExercises,
+  PATTERN_FILTER_CHIPS,
+  PATTERN_FILTER_LABELS,
   uniqueMuscleGroups,
   type LibraryFilterState,
 } from '@/lib/libraryFilters';
@@ -20,13 +23,7 @@ const TAG_CHIPS: (ProgramTag | '')[] = ['', 'strength', 'hypertrophy', 'conditio
 
 export function ExercisesPublicFilter() {
   const fmt = useLocaleFormat();
-  const [filters, setFilters] = useState<LibraryFilterState>({
-    query: '',
-    equipment: '',
-    tag: '',
-    level: '',
-    muscle: '',
-  });
+  const [filters, setFilters] = useState<LibraryFilterState>({ ...DEFAULT_LIBRARY_FILTERS });
   const [catalogRevision, setCatalogRevision] = useState(0);
 
   useEffect(() => {
@@ -64,6 +61,17 @@ export function ExercisesPublicFilter() {
           {muscleFilterChips.map((m) => (
             <FilterChip key={m || 'all'} active={filters.muscle === m} onClick={() => setFilter('muscle', m)}>
               {m || 'All muscles'}
+            </FilterChip>
+          ))}
+        </div>
+        <div className="flex gap-2 overflow-x-auto pb-1 scrollbar-none">
+          {PATTERN_FILTER_CHIPS.map((p) => (
+            <FilterChip
+              key={p || 'all-p'}
+              active={filters.pattern === p}
+              onClick={() => setFilter('pattern', p)}
+            >
+              {p ? PATTERN_FILTER_LABELS[p] : 'All patterns'}
             </FilterChip>
           ))}
         </div>

@@ -65,9 +65,10 @@ describe('resolveActiveTableSetControls', () => {
 });
 
 describe('Active wiring (.408)', () => {
-  it('ActiveWorkoutPage uses resolveActiveTableSetControls', () => {
+  it('ActiveExerciseList uses resolveActiveTableSetControls', () => {
+    // Peels: table dial lives with the exercise-card list (.439), not the page shell.
     const src = readFileSync(
-      path.join(root, 'src/page-components/ActiveWorkoutPage.tsx'),
+      path.join(root, 'src/components/workout/ActiveExerciseList.tsx'),
       'utf8'
     );
     assert.match(src, /resolveActiveTableSetControls\(/);

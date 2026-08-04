@@ -26,5 +26,13 @@
   "libraryCuesComing": "Form cues coming soon for this movement.",
   "libraryAlternatives": "Alternatives:",
   "libraryQuickAdd": "Quick Add to Today's Workout →",
-  "libraryNoResults": "No exercises match these filters. Try clearing equipment or style filters."
+  "libraryNoResults": "No exercises match these filters. Try clearing equipment or style filters.",
+  "libraryFilterPattern": "Pattern",
+  "libraryPatternAll": "All",
+  "libraryPatternUnknown": "Move",
+  "libraryTrainThis": "Train this",
+  "libraryPrevExercise": "Previous exercise",
+  "libraryNextExercise": "Next exercise",
+  "libraryFormSetup": "Setup",
+  "libraryFormExecute": "Execute"
 }
