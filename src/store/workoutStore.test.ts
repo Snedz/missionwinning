@@ -111,6 +111,20 @@ test('workoutStore', async (t) => {
     assert.equal(log?.exercises[0].sets.length, 1);
   });
 
+  await t.test('prescribed stamp survives complete for Victory honesty (.410)', () => {
+    const store = useWorkoutStore.getState();
+    store.startWorkout('Coach Push', [
+      {
+        exerciseId: 'bench-press',
+        prescribed: true,
+        sets: [{ reps: 5, weight: 100 }],
+      },
+    ] as Parameters<ReturnType<typeof useWorkoutStore.getState>['startWorkout']>[1]);
+    store.logSet(0, 0, 5, 100);
+    const log = useWorkoutStore.getState().completeActiveWorkout();
+    assert.equal(log?.exercises[0]?.prescribed, true);
+  });
+
   await t.test('finishing with nothing logged discards instead of saving an empty session', () => {
     const store = useWorkoutStore.getState();
     store.startWorkout('Push', template());

@@ -179,6 +179,9 @@ export function normalizeCloudExercises(value: unknown): NestedExercises {
     const ex: NestedExercises[number] = { exerciseId: e.exerciseId, sets };
     if (Array.isArray(e.muscleGroups)) ex.muscleGroups = e.muscleGroups as never;
     if (typeof e.note === 'string') ex.note = e.note;
+    // Optional coach stamp — Victory honesty after a plan session. Flat Android
+    // rows never carry it; nested web rows must not drop it on pull (`.410`).
+    if (e.prescribed === true) ex.prescribed = true;
     out.push(ex);
   }
   return out;
