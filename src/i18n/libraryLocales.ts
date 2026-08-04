@@ -61,6 +61,14 @@ const LIBRARY_EN: Record<string, string> = {
   libraryNextExercise: 'Next exercise',
   libraryFormSetup: 'Setup',
   libraryFormExecute: 'Execute',
+  libraryPickHint: 'Tap ✓ to build a session · open card for form',
+  libraryPick: 'Add {{name}} to session',
+  libraryUnpick: 'Remove {{name}} from session',
+  libraryPickBar: 'Session pick bar',
+  libraryPickedCount: '{{count}} / {{max}} selected',
+  libraryClearPick: 'Clear',
+  libraryTrainPicked: 'Train selected ({{count}})',
+  libraryAddPickedToSession: 'Add {{count}} to session',
 };
 
 const LIBRARY_ES: Record<string, string> = {
