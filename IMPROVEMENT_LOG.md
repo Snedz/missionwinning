@@ -433,5 +433,18 @@ PR: #234
 |------|--------|-------|
 | B1 Body metrics sheet a11y | done (`.355`) | Track Log → BodyMetricsSheet axe green |
 | B2 Active extract | done (`.356`) | `activeSessionHasExercises` + wiring guard |
-| B3 Soft chrome / log close | pending | |
+| B3 Soft chrome / log close | done (`.357`) | DailyCheckIn note rounded-none; Loop 18 close |
 
+## Metrics
+
+| Metric | Loop 17 end | Loop 18 end |
+|--------|-------------|-------------|
+| Build | `.354` | **`.357`** |
+| i18n uncovered cap | 16 (Bundle refuse) | **16** (unchanged) |
+
+## End of Loop 18
+
+**Delivered:** B1–B3 on `cursor/kaizen-wedge-night-be9b` → PR #234 (`.355`–`.357`).
+**Verified:** body metrics sheet a11y green; activeSessionHasExercises unit + wiring; design-system green.
+**Aikido:** `aikido_full_scan` fails without X11 `$DISPLAY`. Noted; continue.
+**Next:** Loop 19 — more seeded a11y; Active extracts; Bundle i18n still refused.

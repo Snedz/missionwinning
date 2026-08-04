@@ -151,7 +151,7 @@ export function DailyCheckIn() {
             id="daily-checkin-note"
             value={note}
             onChange={(e) => setNote(e.target.value)}
-            className="w-full mt-1 min-h-[60px] rounded border border-border bg-background px-3 py-2 text-sm"
+            className="w-full mt-1 min-h-[60px] rounded-none border border-border bg-background px-3 py-2 text-sm"
             placeholder={t('mindCheckInNotePlaceholder', {
               defaultValue: 'One line — what helped or what you need tomorrow',
             })}
