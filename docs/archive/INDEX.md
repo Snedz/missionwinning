@@ -55,6 +55,7 @@ When adding a doc:
 | [log/LOG-rotate-300.md](./log/LOG-rotate-300.md) | `.285` progressive overload — rotated for `.300` L5 fillers |
 | [log/LOG-rotate-301.md](./log/LOG-rotate-301.md) | `.286` re-entry dose — rotated for `.301` Coach/History i18n |
 | [log/LOG-rotate-302.md](./log/LOG-rotate-302.md) | `.287` coach why — rotated for `.302` debrief i18n |
+| [log/LOG-rotate-382.md](./log/LOG-rotate-382.md) | `.367` — rotated for `.382` Session check-in a11y (Loop 22 F1) |
 | [log/LOG-rotate-381.md](./log/LOG-rotate-381.md) | `.366` — rotated for `.381` Coach chat briefing-rule (Loop 21 E3) |
 | [log/LOG-rotate-380.md](./log/LOG-rotate-380.md) | `.365` — rotated for `.380` activeCoachTipKind (Loop 21 E2) |
 | [log/LOG-rotate-379.md](./log/LOG-rotate-379.md) | `.364` — rotated for `.379` Add-exercise sheet a11y (Loop 21 E1) |
