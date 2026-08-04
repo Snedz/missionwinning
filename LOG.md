@@ -10,6 +10,12 @@ Archive: [2026-06 → 2026-07-20](docs/archive/log/LOG-2026-06_to_2026-07-20.md)
 
 ---
 
+## 2026-08-04 — Week-1 activation contract after composure (`.404`)
+
+Regression net for `.291` + K1 (`.294`): First Steps still next=`session2` at one
+log; train CTA still "Start session 2"; Mission Score priority stays 32 so dense
+evenings keep coach session above the fold. Wiring guards on lean/full Today.
+
 ## 2026-08-04 — Pack exercisePickerList for coverage (`.403`)
 
 Seeded axe on ExercisePicker added `t('exercisePickerList')` for the listbox name but never put the key in [`libraryLocales.ts`](src/i18n/libraryLocales.ts). Coverage hit **17 / cap 16** (Bundle keys stay intentionally uncovered under free-first). Added `exercisePickerList: 'Exercise matches'`. Coverage OK at 16/16.
@@ -80,8 +86,4 @@ Kaizen Loop 29 M3. Soft chrome leftovers:
 2. Dialog close: drop opacity/rounded-sm for bordered rounded-none + hover muted
 
 Living log Loop 29 closed. Cap 16.
-
-## 2026-08-04 — Active activeSetIdxForExercise extract (`.389`)
-
-Kaizen Loop 29 M2. `activeSetIdxForExercise` owns desktop SetLogTable activeSetIdx so ActiveExerciseCard does not inline the ternary. Wiring guard on the card. Cap 16.
 
