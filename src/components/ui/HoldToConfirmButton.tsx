@@ -176,7 +176,7 @@ export function HoldToConfirmButton({
         buttonVariants({ variant, size: icon ? 'icon' : size }),
         'relative isolate select-none touch-none',
         icon && 'shrink-0',
-        armed && 'ring-2 ring-destructive/60',
+        armed && 'ring-2 ring-destructive',
         className
       )}
       onPointerDown={onPointerDown}
@@ -196,7 +196,7 @@ export function HoldToConfirmButton({
       <span
         aria-hidden
         className={cn(
-          'pointer-events-none absolute inset-0 rounded-[inherit] opacity-90',
+          'pointer-events-none absolute inset-0 rounded-[inherit]',
           !holding && 'opacity-0'
         )}
         style={holding ? ringStyle : undefined}
@@ -211,7 +211,7 @@ export function HoldToConfirmButton({
       <span className="relative z-10 inline-flex items-center justify-center gap-2">
         {icon ?? label}
         {armed && !icon ? (
-          <span className="text-[10px] uppercase tracking-wide opacity-90">again</span>
+          <span className="text-[10px] uppercase tracking-wide">again</span>
         ) : null}
       </span>
     </button>

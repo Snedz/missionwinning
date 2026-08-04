@@ -565,14 +565,22 @@ PR: #234
 |------|--------|-------|
 | H1 Form guide a11y | done (`.373`) | Overlay scroll region + destructive Avoid heading |
 | H2 Active extract | done (`.374`) | `exerciseHasCompletedSet` + wiring |
-| H3 Soft chrome / log close | pending (`.375`) | HoldToConfirm + button hover opacities |
+| H3 Soft chrome / log close | done (`.375`) | HoldToConfirm + button/OTP solid |
 
 ## Metrics
 
 | Metric | Loop 23 end | Loop 24 (in progress) |
 |--------|-------------|------------------------|
-| Build | `.372` | **`.374`** |
+| Build | `.372` | **`.375`** |
 | i18n uncovered cap | 16 (Bundle refuse) | **16** (unchanged) |
+
+## End of Loop 24
+
+**Delivered:** H1–H3 on `cursor/kaizen-wedge-night-be9b` → PR #234 (`.373`–`.375`).
+**Verified:** form guide a11y green (real axe fixes); exerciseHasCompletedSet unit + wiring; design-system green.
+**Aikido:** `aikido_full_scan` fails without X11 `$DISPLAY`. Noted; continue.
+**Next:** Loop 25 — more seeded a11y; Active extracts; Bundle i18n still refused.
+
 
 
 

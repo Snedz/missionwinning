@@ -193,7 +193,7 @@ export const OtpInput = forwardRef<OtpInputHandle, Props>(function OtpInput(
             status === 'success'
               ? 'border-[hsl(var(--status-ok))] bg-[hsl(var(--status-ok)/0.08)] text-[hsl(var(--status-ok))]'
               : status === 'error'
-                ? 'border-red-500/60'
+                ? 'border-destructive'
                 : 'border-border'
           )}
         />

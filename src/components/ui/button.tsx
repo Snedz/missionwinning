@@ -14,10 +14,10 @@ const buttonVariants = cva(
     variants: {
       variant: {
         default: "bg-primary-fill text-primary-foreground hover:bg-primary-fill-hover",
-        destructive: "bg-destructive text-destructive-foreground hover:bg-destructive/90",
+        destructive: "bg-destructive text-destructive-foreground hover:bg-destructive",
         // Modernist ghost = 2px ink border (never a hairline).
         outline: "border-2 border-foreground bg-transparent hover:bg-accent-100 active:bg-accent-100",
-        secondary: "bg-secondary text-secondary-foreground hover:bg-secondary/80",
+        secondary: "bg-secondary text-secondary-foreground hover:bg-secondary",
         ghost: "hover:bg-accent hover:text-accent-foreground",
         link: "text-primary underline-offset-4 hover:underline",
         /**
