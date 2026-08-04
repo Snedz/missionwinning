@@ -3,7 +3,7 @@
 import { useMemo, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useTranslation } from 'react-i18next';
-import { Plus } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Plus } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { AdaptiveOverlay } from '@/components/ui/AdaptiveOverlay';
 import { Badge } from '@/components/ui/badge';
@@ -25,9 +25,20 @@ type Props = {
   onOpenChange: (open: boolean) => void;
   /** Open another exercise in this sheet (e.g. alternatives). */
   onSelectExercise?: (exerciseId: string) => void;
+  /**
+   * Filtered list order for prev/next (GrokFilm sheet-nav). When omitted,
+   * only alternatives / external select still work.
+   */
+  neighborIds?: string[];
 };
 
-export function LibraryDetailSheet({ exercise, open, onOpenChange, onSelectExercise }: Props) {
+export function LibraryDetailSheet({
+  exercise,
+  open,
+  onOpenChange,
+  onSelectExercise,
+  neighborIds,
+}: Props) {
   const { t } = useTranslation();
   const router = useRouter();
   const workoutHistory = useWorkoutStore((s) => s.workoutHistory);
@@ -59,6 +70,18 @@ export function LibraryDetailSheet({ exercise, open, onOpenChange, onSelectExerc
 
   const guide = exercise ? getFormGuideOrCues(exercise.id, { exercise }) : null;
   const pattern = exercise ? inferFormPattern(exercise.id, exercise) : null;
+
+  const neighborNav = useMemo(() => {
+    if (!exercise || !neighborIds?.length) return null;
+    const i = neighborIds.indexOf(exercise.id);
+    if (i < 0) return null;
+    return {
+      prevId: i > 0 ? neighborIds[i - 1]! : null,
+      nextId: i < neighborIds.length - 1 ? neighborIds[i + 1]! : null,
+      index: i + 1,
+      total: neighborIds.length,
+    };
+  }, [exercise, neighborIds]);
 
   const addToSession = () => {
     if (!exercise) return;
@@ -111,6 +134,35 @@ export function LibraryDetailSheet({ exercise, open, onOpenChange, onSelectExerc
       >
           {exercise && (
               <div className="space-y-4">
+                {neighborNav && onSelectExercise && (
+                  <div className="flex items-center justify-between gap-2 border-b-2 border-border pb-3">
+                    <Button
+                      type="button"
+                      variant="outline"
+                      size="sm"
+                      className="min-h-[44px] min-w-[44px] border-2 px-2"
+                      disabled={!neighborNav.prevId}
+                      aria-label={t('libraryPrevExercise', { defaultValue: 'Previous exercise' })}
+                      onClick={() => neighborNav.prevId && onSelectExercise(neighborNav.prevId)}
+                    >
+                      <ChevronLeft className="h-4 w-4" />
+                    </Button>
+                    <span className="font-mono text-[10px] tracking-wider text-muted-foreground tabular-nums">
+                      {String(neighborNav.index).padStart(3, '0')} / {String(neighborNav.total).padStart(3, '0')}
+                    </span>
+                    <Button
+                      type="button"
+                      variant="outline"
+                      size="sm"
+                      className="min-h-[44px] min-w-[44px] border-2 px-2"
+                      disabled={!neighborNav.nextId}
+                      aria-label={t('libraryNextExercise', { defaultValue: 'Next exercise' })}
+                      onClick={() => neighborNav.nextId && onSelectExercise(neighborNav.nextId)}
+                    >
+                      <ChevronRight className="h-4 w-4" />
+                    </Button>
+                  </div>
+                )}
                 {/* Craft-index detail order: media → coach language → history → alts */}
                 {guide?.mediaUrl && (
                   <button

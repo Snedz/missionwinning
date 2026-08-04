@@ -431,6 +431,7 @@ export function LibraryPage() {
         open={!!detailId}
         onOpenChange={(open) => !open && setDetailId(null)}
         onSelectExercise={(id) => setDetailId(id)}
+        neighborIds={filtered.map((e) => e.id)}
       />
     </PillarPageShell>
   );
