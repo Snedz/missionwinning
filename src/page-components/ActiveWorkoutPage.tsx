@@ -50,6 +50,10 @@ import {
   planLogSetRest,
 } from '@/lib/workout/activeSessionFinish';
 import {
+  planSessionCheckInDismiss,
+  volumeTrimToastKind,
+} from '@/lib/workout/activeSessionCheckIn';
+import {
   buildConsoleSet,
   findNextSet,
   getLastPerformanceForSet,
@@ -60,7 +64,6 @@ import {
   resolveActiveSetDial,
   resolveFormGuideSheet,
   resolveRepeatLastTarget,
-  shouldOfferVolumeTrim,
   resolveSwapCandidatesWhenOpen,
   activeSessionBottomClass,
   shouldShowReadinessDelta,
@@ -450,14 +453,17 @@ export function ActiveWorkoutPage() {
         open={checkInOpen}
         onDismiss={({ completed, checkIn }) => {
           setCheckInOpen(false);
-          if (!completed) markSessionCheckInSkipped();
           const base = computeBodyScores(workoutHistory);
           const adj = computeBodyScores(workoutHistory, { checkIn });
-          setReadinessBefore(base.readiness);
-          setReadinessAfter(adj.readiness);
-          if (shouldOfferVolumeTrim({ checkInCompleted: completed, readinessAfter: adj.readiness })) {
-            setOfferVolumeTrim(true);
-          }
+          const plan = planSessionCheckInDismiss({
+            completed,
+            baseReadiness: base.readiness,
+            adjReadiness: adj.readiness,
+          });
+          if (plan.markSkipped) markSessionCheckInSkipped();
+          setReadinessBefore(plan.readinessBefore);
+          setReadinessAfter(plan.readinessAfter);
+          if (plan.offerVolumeTrim) setOfferVolumeTrim(true);
         }}
       />
 
@@ -629,7 +635,8 @@ export function ActiveWorkoutPage() {
               className="border-2 border-border bg-background px-3 py-1 text-muted-foreground font-medium hover:border-primary hover:text-foreground"
               onClick={() => {
                 const next = adjustToday({ type: 'readiness' });
-                if (next) {
+                const kind = volumeTrimToastKind(!!next);
+                if (kind === 'reduced') {
                   toast({
                     title: t('sessionVolumeReduced', {
                       defaultValue: 'Volume reduced',
@@ -638,7 +645,6 @@ export function ActiveWorkoutPage() {
                       defaultValue: 'One set trimmed from accessories (min 2). Plan marked Adapted.',
                     }),
                   });
-                  setOfferVolumeTrim(false);
                 } else {
                   toast({
                     title: t('sessionVolumeNoPlan', {
@@ -648,8 +654,8 @@ export function ActiveWorkoutPage() {
                       defaultValue: 'Start from Mission Coach for plan volume cuts. Sets here stay yours.',
                     }),
                   });
-                  setOfferVolumeTrim(false);
                 }
+                setOfferVolumeTrim(false);
               }}
             >
               {t('sessionReduceVolume', { defaultValue: "Reduce today's volume" })}

@@ -10,6 +10,12 @@ Archive: [2026-06 → 2026-07-20](docs/archive/log/LOG-2026-06_to_2026-07-20.md)
 
 ---
 
+## 2026-08-04 — Active check-in dismiss pure extract (`.406`)
+
+`planSessionCheckInDismiss` + `volumeTrimToastKind` own readiness delta /
+volume-trim offer and toast branching after session check-in. Wiring guard on
+Active; T2.1 fat decomp continues.
+
 ## 2026-08-04 — Active session finish pure extract (`.405`)
 
 `logSetIsPr` + `planLogSetRest` + `assembleActiveVictory` peel PR/rest/Victory
@@ -79,8 +85,4 @@ Living log Loop 30 closed. Cap 16.
 ## 2026-08-04 — Active shouldShowSetOptionsFooter extract (`.392`)
 
 Kaizen Loop 30 N2. `shouldShowSetOptionsFooter` owns the Set options footer gate so ActiveExerciseCard does not inline the lastSets/hasPlanned or. Wiring guard on the card. Cap 16.
-
-## 2026-08-04 — Coach chat seeded a11y (`.391`)
-
-Kaizen Loop 30 N1. Seeded axe on `/coach` with Ask your coach chat open. Cap 16.
 
