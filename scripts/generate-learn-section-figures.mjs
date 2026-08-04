@@ -128,13 +128,15 @@ const figures = {
     'Protein as a briefing — one idea, one action',
     `
     <circle cx="220" cy="300" r="90" fill="none" stroke="${INK}" stroke-width="3"/>
-    <text x="220" y="290" text-anchor="middle" fill="${INK}" font-family="Archivo, system-ui, sans-serif" font-size="18" font-weight="600">Protein</text>
-    <text x="220" y="320" text-anchor="middle" fill="${MUTED}" font-family="Archivo, system-ui, sans-serif" font-size="14">most meals</text>
-    <path d="M320 300 L420 300" stroke="${RED}" stroke-width="3"/>
-    <polygon points="420,292 432,300 420,308" fill="${RED}"/>
+    <circle cx="220" cy="300" r="12" fill="${RED}"/>
+    <text x="220" y="270" text-anchor="middle" fill="${INK}" font-family="Archivo, system-ui, sans-serif" font-size="18" font-weight="600">Protein</text>
+    <text x="220" y="350" text-anchor="middle" fill="${MUTED}" font-family="Archivo, system-ui, sans-serif" font-size="14">most meals</text>
+    <path d="M320 300 L420 300" stroke="${RED}" stroke-width="4"/>
+    <polygon points="420,290 436,300 420,310" fill="${RED}"/>
     <rect x="450" y="220" width="400" height="160" fill="none" stroke="${INK}" stroke-width="2"/>
-    <text x="650" y="280" text-anchor="middle" fill="${INK}" font-family="Archivo, system-ui, sans-serif" font-size="18" font-weight="600">Repair · satiety · consistency</text>
-    <text x="650" y="330" text-anchor="middle" fill="${MUTED}" font-family="Archivo, system-ui, sans-serif" font-size="15">Not a macro religion — a daily habit</text>
+    <rect x="450" y="220" width="12" height="160" fill="${RED}"/>
+    <text x="660" y="280" text-anchor="middle" fill="${INK}" font-family="Archivo, system-ui, sans-serif" font-size="18" font-weight="600">Repair · satiety · consistency</text>
+    <text x="660" y="330" text-anchor="middle" fill="${MUTED}" font-family="Archivo, system-ui, sans-serif" font-size="15">Not a macro religion — a daily habit</text>
     `
   ),
 
@@ -206,9 +208,15 @@ const figures = {
       <rect x="360" y="300" width="240" height="70" fill="none" stroke="${INK}" stroke-width="2"/>
       <text x="480" y="342" text-anchor="middle">Track</text>
       <rect x="640" y="300" width="240" height="70" fill="none" stroke="${INK}" stroke-width="2"/>
-      <rect x="640" y="300" width="240" height="70" fill="${RED}" opacity="0.08"/>
+      <rect x="640" y="300" width="240" height="70" fill="${RED}" opacity="0.12"/>
       <text x="760" y="342" text-anchor="middle">Learn</text>
     </g>
+    <circle cx="200" cy="180" r="6" fill="${RED}"/>
+    <circle cx="480" cy="180" r="6" fill="${RED}"/>
+    <circle cx="760" cy="180" r="6" fill="${RED}"/>
+    <circle cx="200" cy="300" r="6" fill="${RED}"/>
+    <circle cx="480" cy="300" r="6" fill="${RED}"/>
+    <circle cx="760" cy="300" r="6" fill="${RED}"/>
     <text x="480" y="440" text-anchor="middle" fill="${MUTED}" font-family="Archivo, system-ui, sans-serif" font-size="15">One win per pillar beats a siloed grind</text>
     `
   ),
