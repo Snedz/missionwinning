@@ -4,11 +4,20 @@ import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import {
+  estimateLogAllowed,
+  estimateLogNeedsAthleteEdit,
+} from '@/lib/fuelEstimateLogGate';
 import { cn } from '@/lib/utils';
 import { scaleMealMacros } from '@/lib/nutritionQuickLog';
-import type { MealDraftFields } from '@/lib/mealDraft';
 
-export type { MealDraftFields };
+export type MealDraftFields = {
+  name: string;
+  protein: number;
+  cals: number;
+  carbs: number;
+  fat: number;
+};
 
 type Props = {
   draft: MealDraftFields;
@@ -18,6 +27,11 @@ type Props = {
   confidence?: 'low' | 'medium' | 'high';
   /** Short source chip, e.g. "Matched foods" / "Rough estimate" / "Vision" */
   sourceLabel?: string;
+  /**
+   * Force edit-before-log (rough / heuristic sources) even when confidence is
+   * medium. Low confidence always requires a touch.
+   */
+  requireEdit?: boolean;
   className?: string;
   logLabel?: string;
 };
@@ -38,6 +52,8 @@ function servingLabel(s: number): string {
 /**
  * Editable macro draft before logging — accuracy depends on user correction.
  * Serving chips scale from a base snapshot (speed logging steal from MFP/MacroFactor).
+ * Low / requireEdit drafts keep Log disabled until the athlete touches a field
+ * or scales servings away from 1× (Fuel honesty, edit-before-log).
  */
 export function MealEstimateDraft({
   draft,
@@ -46,6 +62,7 @@ export function MealEstimateDraft({
   onDismiss,
   confidence = 'medium',
   sourceLabel,
+  requireEdit = false,
   className,
   logLabel,
 }: Props) {
@@ -53,8 +70,9 @@ export function MealEstimateDraft({
   const low = confidence === 'low';
   const baseRef = useRef<MealDraftFields>({ ...draft });
   const [servings, setServings] = useState(1);
+  const [athleteTouched, setAthleteTouched] = useState(false);
 
-  // When name changes from parent (new food), reset base + servings
+  // When name changes from parent (new food), reset base + servings + touch
   useEffect(() => {
     baseRef.current = {
       name: draft.name,
@@ -64,12 +82,14 @@ export function MealEstimateDraft({
       fat: draft.fat,
     };
     setServings(1);
+    setAthleteTouched(false);
     // Only when identity of food changes — parent replaces whole draft
     // eslint-disable-next-line react-hooks/exhaustive-deps -- intentional: name identity
   }, [draft.name]);
 
   const applyServings = (s: number) => {
     setServings(s);
+    if (s !== 1) setAthleteTouched(true);
     const scaled = scaleMealMacros(baseRef.current, s);
     onChange({
       name: draft.name,
@@ -78,6 +98,7 @@ export function MealEstimateDraft({
   };
 
   const onManualField = (patch: Partial<MealDraftFields>) => {
+    setAthleteTouched(true);
     const next = { ...draft, ...patch };
     onChange(next);
     // Manual edit becomes new base at 1 serving
@@ -85,11 +106,24 @@ export function MealEstimateDraft({
     setServings(1);
   };
 
+  const canLog = estimateLogAllowed({
+    name: draft.name,
+    confidence,
+    requireEdit,
+    athleteTouched,
+  });
+  const needsAthleteEdit = estimateLogNeedsAthleteEdit({
+    confidence,
+    requireEdit,
+    athleteTouched,
+  });
+  const showEditGateHint = low || needsAthleteEdit;
+
   return (
     <div
       className={cn(
         ' border p-4 space-y-3',
-        low ? 'border-primary bg-accent-100' : 'border-border bg-card',
+        low || needsAthleteEdit ? 'border-primary bg-accent-100' : 'border-border bg-card',
         className
       )}
     >
@@ -106,7 +140,7 @@ export function MealEstimateDraft({
           <span
             className={cn(
               'text-[11px] font-medium  px-2 py-0.5 border',
-              low
+              low || needsAthleteEdit
                 ? 'border-primary text-primary'
                 : 'border-border text-muted-foreground'
             )}
@@ -120,8 +154,8 @@ export function MealEstimateDraft({
         ) : null}
       </div>
 
-      {low ? (
-        <p className="text-xs text-muted-foreground leading-relaxed">
+      {showEditGateHint ? (
+        <p className="text-xs text-muted-foreground leading-relaxed" id="meal-draft-edit-hint">
           {t('fuelEstimateLowHint', {
             defaultValue:
               'We could not match this well. Edit protein and calories before logging, or search foods instead.',
@@ -227,7 +261,9 @@ export function MealEstimateDraft({
           type="button"
           variant="default"
           className="h-10"
-          disabled={!draft.name.trim()}
+          disabled={!canLog}
+          aria-disabled={!canLog}
+          aria-describedby={needsAthleteEdit ? 'meal-draft-edit-hint' : undefined}
           onClick={onLog}
         >
           {logLabel ?? t('fuelLogMeal', { defaultValue: 'Log meal' })}

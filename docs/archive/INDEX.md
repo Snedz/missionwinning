@@ -59,6 +59,7 @@ When adding a doc:
 | [log/LOG-rotate-408.md](./log/LOG-rotate-408.md) | `.393` Select chevron chrome — rotated for `.408` table set controls |
 | [log/LOG-rotate-409.md](./log/LOG-rotate-409.md) | `.394` Coach ask-form a11y — rotated for `.409` log-set payload |
 | [log/LOG-rotate-410.md](./log/LOG-rotate-410.md) | `.395` set-options menuitems — rotated for `.410` Victory prescribed |
+| [log/LOG-rotate-411.md](./log/LOG-rotate-411.md) | `.396` disabled opacity solidify — rotated for `.411` Fuel edit-before-log |
 | [log/LOG-rotate-406.md](./log/LOG-rotate-406.md) | rotated for .406 Active check-in |
 | [log/LOG-rotate-405.md](./log/LOG-rotate-405.md) | rotated for .405 Active finish extract |
 | [log/LOG-rotate-404.md](./log/LOG-rotate-404.md) | rotated for .404 week-1 activation contract |

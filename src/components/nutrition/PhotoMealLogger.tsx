@@ -370,6 +370,10 @@ export function PhotoMealLogger({ onLogEstimate }: Props) {
                       defaultValue: 'Rough estimate (filename / color)',
                     })
             }
+            requireEdit={
+              draftSource === 'heuristic' ||
+              (draftSource !== 'database' && estimate.confidence === 'low')
+            }
             logLabel={t('photoLogLogEstimate', { defaultValue: 'Log meal' })}
             onLog={() => {
               onLogEstimate({
