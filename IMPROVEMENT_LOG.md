@@ -316,3 +316,12 @@ PR: #234
 **Verified:** design-system green; bodyScoreDeltas unit + wiring; offline banner a11y axe green (`localhost`).
 **Aikido:** `aikido_full_scan` still fails without X11 `$DISPLAY` when that path is used. Noted; continue.
 **Next:** Loop 13 — coaching-form filled a11y; more Active extracts; residual soft chrome in ui primitives where design gate allows; Bundle i18n still refused.
+
+## Loop 13 waves
+
+| Wave | Status | Notes |
+|------|--------|-------|
+| W1 Coaching filled-form a11y | done (`.340`) | Route was outside GATED_ROUTES; filled lead form axe green |
+| W2 Active extract | pending | |
+| W3 Soft chrome / log close | pending | |
+

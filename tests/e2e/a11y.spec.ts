@@ -507,6 +507,36 @@ test.describe('Accessibility @a11y', () => {
   });
 
   /**
+   * Loop 13 W1 — Coaching interest form filled. Zero-data /coaching is not even
+   * in GATED_ROUTES; axe must see the filled lead form chrome (not the empty shell).
+   */
+  test('axe serious/critical: /coaching with filled interest form @a11y', async ({
+    page,
+    context,
+    baseURL,
+  }) => {
+    if (!baseURL) throw new Error('baseURL required');
+    const ok = await unlockGate(page, context, baseURL);
+    if (gateRequired() && !ok) {
+      test.skip(true, 'SMOKE_ACCESS_SECRET required to unlock private gate');
+    }
+    await seedLegacyOnboarding(page);
+    await page.goto('/coaching', { waitUntil: 'domcontentloaded' });
+    const name = page.getByRole('textbox', { name: /^name$/i }).first();
+    await expect(name).toBeVisible({ timeout: 15_000 });
+    await name.fill('Kaizen Tester');
+    await page.getByRole('textbox', { name: /^email$/i }).first().fill('kaizen@example.com');
+    await page
+      .getByRole('textbox', { name: /goals and current training/i })
+      .first()
+      .fill('Train anywhere strength — want a human coach for weekly accountability.');
+    await expect(
+      page.getByRole('button', { name: /join the coaching interest list/i }).first()
+    ).toBeVisible();
+    await axeSerious(page, '/coaching (filled form)');
+  });
+
+  /**
    * The assertion axe cannot make.
    *
    * axe-core does not reliably test focus visibility, which is how this suite sat at
