@@ -239,7 +239,7 @@ export function PhotoMealLogger({ onLogEstimate }: Props) {
           })}
           idleLabel={
             <span className="flex flex-col items-center gap-2 py-10 px-4">
-              <ImagePlus className="h-8 w-8 text-primary/80" />
+              <ImagePlus className="h-8 w-8 text-primary" />
               <span className="text-sm font-medium text-foreground">
                 {t('photoLogDropIdle', {
                   defaultValue: 'Drop a meal photo or click to browse',

@@ -98,7 +98,7 @@ export function ProfileImportCard() {
             })}
             idleLabel={
               <span className="flex flex-col items-center gap-2 py-8 px-4">
-                <FileSpreadsheet className="h-6 w-6 text-primary/80" />
+                <FileSpreadsheet className="h-6 w-6 text-primary" />
                 <span className="text-sm font-medium text-foreground">
                   {t('csvImportDropIdle', {
                     defaultValue: 'Drop a Strong or Hevy CSV or click to browse',

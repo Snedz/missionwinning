@@ -104,7 +104,7 @@ export function ProfileBackupCard() {
                 })}
                 idleLabel={
                   <span className="flex flex-col items-center gap-2 py-8 px-4">
-                    <FileJson className="h-6 w-6 text-primary/80" />
+                    <FileJson className="h-6 w-6 text-primary" />
                     <span className="text-sm font-medium text-foreground">
                       {t('backupDropIdle', {
                         defaultValue: 'Drop backup JSON or click to browse',

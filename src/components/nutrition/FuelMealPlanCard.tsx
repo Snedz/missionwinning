@@ -78,7 +78,7 @@ export function FuelMealPlanCard() {
                 </li>
               ))}
             </ul>
-            <p className="text-[11px] tabular-nums text-primary/90">
+            <p className="text-[11px] tabular-nums text-primary">
               {t('fuelCoachDayTotals', { defaultValue: 'Day totals' })}: {day.totals.protein}/
               {day.targets.protein}g P · {day.totals.carbs}/{day.targets.carbs}g C · {day.totals.cals}/
               {day.targets.cals} kcal

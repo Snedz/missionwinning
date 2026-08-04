@@ -367,5 +367,18 @@ PR: #234
 |------|--------|-------|
 | Y1 Mind breathing-timer a11y | done (`.346`) | Box pattern Start → running chrome axe green |
 | Y2 Active extract | done (`.347`) | `shouldShowVolumeTrimOffer` + wiring guard |
-| Y3 Soft chrome / log close | pending | |
+| Y3 Soft chrome / log close | done (`.348`) | text-primary/80|90 → solid; Loop 15 close |
 
+## Metrics
+
+| Metric | Loop 14 end | Loop 15 end |
+|--------|-------------|-------------|
+| Build | `.345` | **`.348`** |
+| i18n uncovered cap | 16 (Bundle refuse) | **16** (unchanged) |
+
+## End of Loop 15
+
+**Delivered:** Y1–Y3 on `cursor/kaizen-wedge-night-be9b` → PR #234 (`.346`–`.348`).
+**Verified:** Mind breathing-timer a11y green; volume-trim offer unit + wiring; design-system green.
+**Aikido:** `aikido_full_scan` fails without X11 `$DISPLAY`. Noted; continue.
+**Next:** Loop 16 — Track logged-activity / Assessments seeded a11y; more Active extracts; Bundle i18n still refused.
