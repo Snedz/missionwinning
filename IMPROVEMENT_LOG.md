@@ -741,14 +741,22 @@ PR: #234
 |------|--------|-------|
 | P1 Log console set kinds a11y | done (`.397`) | WORK/WARMUP dock axe green |
 | P2 Active extract | done (`.398`) | weighted-set helpers + wiring |
-| P3 Soft chrome / log close | pending (`.399`) | FileUploadRow queued state |
+| P3 Soft chrome / log close | done (`.399`) | FileUploadRow queued muted |
 
 ## Metrics
 
 | Metric | Loop 31 end | Loop 32 (in progress) |
 |--------|-------------|------------------------|
-| Build | `.396` | **`.398`** |
+| Build | `.396` | **`.399`** |
 | i18n uncovered cap | 16 (Bundle refuse) | **16** (unchanged) |
+
+## End of Loop 32
+
+**Delivered:** P1–P3 on `cursor/kaizen-wedge-night-be9b` → PR #234 (`.397`–`.399`).
+**Verified:** log console set kinds a11y green; weighted-set helpers unit + wiring; design-system green.
+**Aikido:** `aikido_full_scan` fails without X11 `$DISPLAY`. Noted; continue.
+**Next:** Loop 33 — more seeded a11y; Active extracts; Bundle i18n still refused.
+
 
 
 

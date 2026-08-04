@@ -126,7 +126,7 @@ export function FileUploadRow({
               <div
                 className={cn(
                   'h-full  bg-primary transition-[width] duration-200',
-                  status === 'queued' && 'w-0 opacity-40'
+                  status === 'queued' && 'w-0 text-muted-foreground'
                 )}
                 style={{ width: status === 'queued' ? undefined : `${pct}%` }}
               />
