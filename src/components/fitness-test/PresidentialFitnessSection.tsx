@@ -27,7 +27,7 @@ export function PresidentialFitnessSection() {
  return (
  <Card className="border-border bg-card">
  <CardHeader>
- <CardTitle className="flex items-center gap-2 text-muted-foreground/90">
+ <CardTitle className="flex items-center gap-2 text-muted-foreground">
  <Flag className="h-5 w-5" />
  {t('pftSectionTitle', { defaultValue: 'Presidential Fitness Test' })}
  </CardTitle>

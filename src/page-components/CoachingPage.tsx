@@ -124,7 +124,7 @@ export function CoachingPage() {
         </form>
       )}
 
-      <p className="text-center text-xs leading-relaxed text-muted-foreground/80">
+      <p className="text-center text-xs leading-relaxed text-muted-foreground">
         {t('infoCoachingDisclaimer', {
           defaultValue:
             'Coaching is education and accountability — results depend on your consistency and circumstances. Always clear new training or nutrition plans with your physician.',

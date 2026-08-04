@@ -364,7 +364,7 @@ export function SignInPanel({
         </p>
       )}
 
-      <p className="text-[11px] text-muted-foreground/80 leading-relaxed">
+      <p className="text-[11px] text-muted-foreground leading-relaxed">
         Privacy by design: no password stored.
         {showOAuth && oauthLabelList
           ? ` OAuth uses ${oauthLabelList} — we receive your email and name only.`

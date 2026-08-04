@@ -389,5 +389,18 @@ PR: #234
 |------|--------|-------|
 | Z1 Track logged-activity a11y | done (`.349`) | Log Activity → week list axe green |
 | Z2 Active extract | done (`.350`) | `resolveActiveGoalId` + wiring guard |
-| Z3 Soft chrome / log close | pending | |
+| Z3 Soft chrome / log close | done (`.351`) | muted-foreground/70|80|90 → solid; Loop 16 close |
 
+## Metrics
+
+| Metric | Loop 15 end | Loop 16 end |
+|--------|-------------|-------------|
+| Build | `.348` | **`.351`** |
+| i18n uncovered cap | 16 (Bundle refuse) | **16** (unchanged) |
+
+## End of Loop 16
+
+**Delivered:** Z1–Z3 on `cursor/kaizen-wedge-night-be9b` → PR #234 (`.349`–`.351`).
+**Verified:** Track logged-activity a11y green; resolveActiveGoalId unit + wiring; design-system green.
+**Aikido:** `aikido_full_scan` fails without X11 `$DISPLAY`. Noted; continue.
+**Next:** Loop 17 — Assessments / History anatomy seeded a11y; more Active extracts; Bundle i18n still refused.
