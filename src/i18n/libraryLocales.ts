@@ -4,6 +4,7 @@ const LIBRARY_EN: Record<string, string> = {
   exercisePickerSearch: 'Search exercises…',
   exercisePickerSelected: 'Selected: {{name}}',
   exercisePickerEmpty: 'No matches',
+  exercisePickerList: 'Exercise matches',
   libraryAddToActive: "Add to today's session",
   libraryYourHistory: 'Logged in {{count}} sessions',
   libraryVolumeSpark: 'Volume across recent sessions (oldest → newest)',
