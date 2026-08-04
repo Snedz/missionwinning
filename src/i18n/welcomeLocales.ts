@@ -54,6 +54,13 @@ type WelcomeStrings = {
   welcomeRemindersOptIn: string;
   editJourneyProfile: string;
   saveProfile: string;
+  welcomeProgressLabel: string;
+  welcomeProgressMono: string;
+  welcomePreviewLabel: string;
+  welcomePreviewSessionName: string;
+  welcomeSessionReadyEyebrow: string;
+  welcomeSessionReadyTitle: string;
+  welcomeSessionReadyBody: string;
 };
 
 const en: WelcomeStrings = {
@@ -114,6 +121,14 @@ const en: WelcomeStrings = {
     'Email me if I go quiet, and a recap after my first week. Never more than one every two days — unsubscribe anytime.',
   editJourneyProfile: 'Edit journey profile',
   saveProfile: 'Save profile',
+  welcomeProgressLabel: 'Progress, step {{step}} of {{total}}',
+  welcomeProgressMono: '{{step}} / {{total}}',
+  welcomePreviewLabel: 'Your first session is ready',
+  welcomePreviewSessionName: '{{name}}',
+  welcomeSessionReadyEyebrow: 'Up next',
+  welcomeSessionReadyTitle: 'Your first session is ready',
+  welcomeSessionReadyBody:
+    '{{name}} · {{count}} exercises for your gear. Skip sign-in to start logging right away.',
 };
 
 const zh: WelcomeStrings = {

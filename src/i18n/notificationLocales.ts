@@ -159,6 +159,19 @@ const NOTIFICATION_EN: Record<string, string> = {
   wearablesManualHint: 'No account? Import Apple / Google JSON or CSV on Track.',
   wearablesOpenTrack: 'Open Track',
   retry: 'Retry',
+  uploadAlmostDone: 'Almost done…',
+  uploadQueued: 'Waiting…',
+  uploadFailed: 'Upload failed.',
+  uploadDone: 'Done',
+  uploadCancel: 'Stop',
+  uploadRemove: 'Remove',
+  uploadRetry: 'Retry',
+  revenueSnapshot: 'Super Bundle Snapshot (Demo)',
+  spotsClaimed: 'Members',
+  estRevenue: 'Est. revenue from bundles',
+  avgTicket: 'Avg bundle ~${{price}}/mo',
+  demoAnalytics: 'Demo Analytics (Events)',
+  viewEvents: 'View Tracked Events (console)',
 };
 
 const nl = (over: Record<string, string>): Record<string, string> => ({
