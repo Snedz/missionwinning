@@ -28,9 +28,9 @@ test('quality reset: no form pack videos wired', () => {
   assert.equal(pack?.mediaUrl, '/form/air-squat/side.webp');
 });
 
-test('demoted cropped stills fall back off form pack', () => {
-  assert.equal(resolveFormPackMedia('burpees'), null);
-  assert.equal(resolveFormPackMedia('box-jump'), null);
+test('Form Director regen re-wires burpees and box-jump stills', () => {
+  assert.equal(resolveFormPackMedia('burpees')?.mediaUrl, '/form/burpees/side.webp');
+  assert.equal(resolveFormPackMedia('box-jump')?.mediaUrl, '/form/box-jump/side.webp');
 });
 
 test('formPackSidePosterPath is stable', () => {

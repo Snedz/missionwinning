@@ -20,13 +20,13 @@ test('every pattern has legacy SVG; raster patterns resolve to form still', () =
       `missing pattern-${id}.svg`
     );
   }
-  // Wired raster patterns (quality-reset set)
-  for (const id of ['squat', 'hinge', 'push', 'pull', 'loco'] as const) {
+  for (const id of FORM_PATTERN_IDS) {
     assert.equal(formPatternPath(id), `/form/pattern-${id}/side.webp`);
+    assert.ok(
+      existsSync(path.join(root, 'public', 'form', `pattern-${id}`, 'side.webp')),
+      `missing form/pattern-${id}/side.webp`
+    );
   }
-  // Demoted patterns fall back to SVG until Form Director regen
-  assert.equal(formPatternPath('core'), '/form-guides/pattern-core.svg');
-  assert.equal(formPatternPath('isolation'), '/form-guides/pattern-isolation.svg');
 });
 
 test('inferFormPattern maps common families', () => {

@@ -23,7 +23,9 @@ export const FORM_PACK_SIDE_IDS = new Set([
   'lunges',
   'glute-bridge',
   'barbell-row',
-  // Demoted (.467): burpees, box-jump — head crop / hyper-tight frame
+  // Form Director regen (.468) — eyes-on PASS
+  'burpees',
+  'box-jump',
 ]);
 
 /**

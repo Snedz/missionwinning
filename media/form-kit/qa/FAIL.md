@@ -16,3 +16,17 @@ Log every rejected generation. Do not re-ship the same glitch.
 - Soft two-line prompts caused wrong patterns and crops.  
 - Batch rename by generation order mis-mapped pattern assets.  
 - Always vision-read before optimize/commit.
+
+## PASS log (Form Director regen)
+
+| Date | Asset | Notes |
+|------|--------|--------|
+| 2026-08-04 | `pattern-core/side.webp` | Forearm plank, full head/feet, athlete-a identity (.468) |
+| 2026-08-04 | `pattern-isolation/side.webp` | Standing DB curl mid, full body (.468) |
+| 2026-08-04 | `glute-bridge/side.webp` | Bodyweight top, no bar (.468) |
+| 2026-08-04 | `burpees/side.webp` | High-plank phase, head in frame (.468) |
+| 2026-08-04 | `box-jump/side.webp` | Landing on box, full headroom (.468) |
+| 2026-08-04 | `refs/athlete-a-side` | Kit identity |
+| 2026-08-04 | `refs/prop-*` | Barbell, KB, box, bench sheets |
+
+Loops still demoted globally until per-lift video QA.

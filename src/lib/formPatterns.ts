@@ -42,7 +42,8 @@ export const FORM_PATTERN_RASTER_IDS = new Set<FormPatternId>([
   'push',
   'pull',
   'loco',
-  // 'core', 'isolation' — wait for Form Director regen
+  'core', // Form Director regen (.468) — forearm plank PASS
+  'isolation', // Form Director regen (.468) — standing DB curl PASS
 ]);
 
 /** Public path for a pattern diagram (raster preferred over legacy SVG). */
