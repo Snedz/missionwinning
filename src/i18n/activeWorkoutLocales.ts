@@ -185,6 +185,13 @@ type ActiveWorkoutStrings = {
   guidedSessionResume: string;
   guidedSessionSkip: string;
   guidedSessionReset: string;
+  liveHrConnectFailed: string;
+  liveHrBpm: string;
+  liveHrIdle: string;
+  liveHrUnsupported: string;
+  liveHrHint: string;
+  liveHrDisconnect: string;
+  liveHrConnect: string;
 };
 
 const en: ActiveWorkoutStrings = {
@@ -361,6 +368,13 @@ const en: ActiveWorkoutStrings = {
   guidedSessionResume: 'Resume',
   guidedSessionSkip: 'Skip step',
   guidedSessionReset: 'Reset',
+  liveHrConnectFailed: 'Could not connect heart rate monitor.',
+  liveHrBpm: '{{bpm}} BPM',
+  liveHrIdle: 'Heart rate',
+  liveHrUnsupported: 'Bluetooth HR needs Chrome or another browser with Web Bluetooth.',
+  liveHrHint: 'Optional Polar / Wahoo chest strap — not used in Win Score.',
+  liveHrDisconnect: 'Disconnect',
+  liveHrConnect: 'Connect HR',
 };
 
 const es: ActiveWorkoutStrings = {
