@@ -521,14 +521,22 @@ PR: #234
 |------|--------|-------|
 | F1 Session check-in a11y | done (`.367`) | Sheet axe green; table region + Move lint |
 | F2 Active extract | done (`.368`) | eyebrow kind + toggleOpenIdx + wiring |
-| F3 Soft chrome / log close | pending (`.369`) | Select + tooltip rounded-none |
+| F3 Soft chrome / log close | done (`.369`) | Select + tooltip rounded-none |
 
 ## Metrics
 
 | Metric | Loop 21 end | Loop 22 (in progress) |
 |--------|-------------|------------------------|
-| Build | `.366` | **`.368`** |
+| Build | `.366` | **`.369`** |
 | i18n uncovered cap | 16 (Bundle refuse) | **16** (unchanged) |
+
+## End of Loop 22
+
+**Delivered:** F1–F3 on `cursor/kaizen-wedge-night-be9b` → PR #234 (`.367`–`.369`).
+**Verified:** session check-in a11y green; eyebrow/toggle unit + wiring; design-system green.
+**Aikido:** `aikido_full_scan` fails without X11 `$DISPLAY`. Noted; continue.
+**Next:** Loop 23 — more seeded a11y; Active extracts; Bundle i18n still refused.
+
 
 
 
