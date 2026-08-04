@@ -696,14 +696,14 @@ PR: #234
 | Wave | Status | Notes |
 |------|--------|-------|
 | N1 Coach chat a11y | done (`.391`) | Ask your coach open axe green |
-| N2 Active extract | pending (`.392`) | `shouldShowSetOptionsFooter` |
+| N2 Active extract | done (`.392`) | `shouldShowSetOptionsFooter` + wiring |
 | N3 Soft chrome / log close | pending (`.393`) | Select chevron + item radius |
 
 ## Metrics
 
 | Metric | Loop 29 end | Loop 30 (in progress) |
 |--------|-------------|------------------------|
-| Build | `.390` | **`.391`** |
+| Build | `.390` | **`.392`** |
 | i18n uncovered cap | 16 (Bundle refuse) | **16** (unchanged) |
 
 

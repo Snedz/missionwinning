@@ -646,3 +646,18 @@ export function activeSetIdxForExercise(
 ): number {
   return nextSet?.exIdx === exIdx ? nextSet.setIdx : -1;
 }
+
+/**
+ * Whether the Set options footer control should render — Apply targets and/or
+ * Remove set only make sense with history or more than one planned set.
+ */
+export function shouldShowSetOptionsFooter(params: {
+  hasLastSets: boolean;
+  hasPlanned: boolean;
+  plannedSetCount: number;
+}): boolean {
+  return (
+    (params.hasLastSets && params.hasPlanned) ||
+    (params.hasPlanned && params.plannedSetCount > 1)
+  );
+}

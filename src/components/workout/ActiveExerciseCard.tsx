@@ -18,7 +18,7 @@ import { AdaptiveOverlay } from '@/components/ui/AdaptiveOverlay';
 import { SetLogRow } from '@/components/workout/SetLogRow';
 import { SetLogTable } from '@/components/workout/SetLogTable';
 import { useIsCompact } from '@/hooks/useIsCompact';
-import { getLastPerformanceForSet, exerciseHasCompletedSet, exerciseHasPlannedSet, firstPlannedSetIdx, holdsActiveExercise, isActiveSetCell, activeSetIdxForExercise } from '@/lib/workout/activeWorkoutHelpers';
+import { getLastPerformanceForSet, exerciseHasCompletedSet, exerciseHasPlannedSet, firstPlannedSetIdx, holdsActiveExercise, isActiveSetCell, activeSetIdxForExercise, shouldShowSetOptionsFooter } from '@/lib/workout/activeWorkoutHelpers';
 import { SET_KINDS, setKindDefaultLabel, setKindLabelKey } from '@/lib/workout/setKind';
 import { getFormGuideOrCues } from '@/lib/formGuides';
 import { lastNotesFor } from '@/lib/journal/cueMemory';
@@ -464,7 +464,11 @@ export function ActiveExerciseCard({
               ))}
             </div>
           )}
-          {((lastSets && hasPlanned) || (hasPlanned && exLog.sets.length > 1)) && (
+          {shouldShowSetOptionsFooter({
+            hasLastSets: !!lastSets,
+            hasPlanned,
+            plannedSetCount: exLog.sets.length,
+          }) && (
             <div className="relative ms-auto">
               <Button
                 type="button"

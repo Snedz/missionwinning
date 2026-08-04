@@ -40,6 +40,7 @@ import {
   holdsActiveExercise,
   isActiveSetCell,
   activeSetIdxForExercise,
+  shouldShowSetOptionsFooter,
 } from './activeWorkoutHelpers.ts';
 import type { CompletedWorkoutLog } from '@/types';
 
@@ -1136,6 +1137,36 @@ describe('activeSetIdxForExercise', () => {
       src,
       /activeSetIdx=\{nextSet\?\.exIdx\s*===\s*exIdx\s*\?\s*nextSet\.setIdx\s*:\s*-1\}/,
       'desktop activeSetIdx must stay inside activeSetIdxForExercise'
+    );
+  });
+});
+
+describe('shouldShowSetOptionsFooter', () => {
+  it('shows when history exists or more than one planned set', () => {
+    assert.equal(
+      shouldShowSetOptionsFooter({ hasLastSets: true, hasPlanned: true, plannedSetCount: 1 }),
+      true
+    );
+    assert.equal(
+      shouldShowSetOptionsFooter({ hasLastSets: false, hasPlanned: true, plannedSetCount: 2 }),
+      true
+    );
+    assert.equal(
+      shouldShowSetOptionsFooter({ hasLastSets: false, hasPlanned: true, plannedSetCount: 1 }),
+      false
+    );
+  });
+
+  it('ActiveExerciseCard uses shouldShowSetOptionsFooter rather than an inline or', () => {
+    const src = readFileSync(
+      path.join(import.meta.dirname, '..', '..', 'components', 'workout', 'ActiveExerciseCard.tsx'),
+      'utf8'
+    );
+    assert.match(src, /shouldShowSetOptionsFooter\(/);
+    assert.doesNotMatch(
+      src,
+      /\(\(lastSets\s*&&\s*hasPlanned\)\s*\|\|\s*\(hasPlanned\s*&&\s*exLog\.sets\.length\s*>\s*1\)\)/,
+      'set options footer gate must stay inside shouldShowSetOptionsFooter'
     );
   });
 });
