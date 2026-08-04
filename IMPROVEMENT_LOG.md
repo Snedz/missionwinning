@@ -609,14 +609,22 @@ PR: #234
 |------|--------|-------|
 | J1 Rest timer a11y | done (`.379`) | Log set → RestTimerBar axe green |
 | J2 Active extract | done (`.380`) | `firstPlannedSetIdx` + wiring |
-| J3 Soft chrome / log close | pending (`.381`) | Fitness inputs + leaderboard flavor |
+| J3 Soft chrome / log close | done (`.381`) | Fitness rounded-none; LB flavor solid |
 
 ## Metrics
 
 | Metric | Loop 25 end | Loop 26 (in progress) |
 |--------|-------------|------------------------|
-| Build | `.378` | **`.380`** |
+| Build | `.378` | **`.381`** |
 | i18n uncovered cap | 16 (Bundle refuse) | **16** (unchanged) |
+
+## End of Loop 26
+
+**Delivered:** J1–J3 on `cursor/kaizen-wedge-night-be9b` → PR #234 (`.379`–`.381`).
+**Verified:** rest timer a11y green; firstPlannedSetIdx unit + wiring; design-system green.
+**Aikido:** `aikido_full_scan` fails without X11 `$DISPLAY`. Noted; continue.
+**Next:** Loop 27 — more seeded a11y; Active extracts; Bundle i18n still refused.
+
 
 
 

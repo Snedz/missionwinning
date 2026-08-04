@@ -302,7 +302,7 @@ export function YouthParentGate({ childAge, onConsented, onCancel }: Props) {
               setEmail(e.target.value);
               setError('');
             }}
-            className="w-full rounded-md bg-background border border-border px-3 py-2"
+            className="w-full rounded-none bg-background border border-border px-3 py-2"
             placeholder="parent@example.com"
           />
         </label>

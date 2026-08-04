@@ -211,7 +211,7 @@ function TeacherClassInner({ code: rawCode }: { code: string }) {
                 setPinInput(e.target.value);
                 setPinError('');
               }}
-              className="w-full rounded-md bg-background border border-border px-3 py-2 font-mono text-lg"
+              className="w-full rounded-none bg-background border border-border px-3 py-2 font-mono text-lg"
               placeholder="123456"
             />
             {pinError && <p className="text-xs text-destructive">{pinError}</p>}

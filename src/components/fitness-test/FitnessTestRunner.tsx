@@ -132,7 +132,7 @@ export function FitnessTestRunner() {
           inputMode={eventId === 'mile_run' ? 'text' : 'decimal'}
           value={values[eventId] ?? ''}
           onChange={(e) => setValues((v) => ({ ...v, [eventId]: e.target.value }))}
-          className="w-full rounded-md bg-background border border-border px-3 py-2"
+          className="w-full rounded-none bg-background border border-border px-3 py-2"
           placeholder={placeholder}
         />
       </label>
@@ -236,7 +236,7 @@ export function FitnessTestRunner() {
                 max={120}
                 value={age}
                 onChange={(e) => setAge(e.target.value)}
-                className="w-full rounded-md bg-background border border-border px-3 py-2"
+                className="w-full rounded-none bg-background border border-border px-3 py-2"
               />
             </label>
             <label className="block space-y-1 text-sm">
@@ -244,7 +244,7 @@ export function FitnessTestRunner() {
               <select
                 value={sex}
                 onChange={(e) => setSex(e.target.value as FitnessSex)}
-                className="w-full rounded-md bg-background border border-border px-3 py-2"
+                className="w-full rounded-none bg-background border border-border px-3 py-2"
               >
                 <option value="male">{t('pftSexMale', { defaultValue: 'Male standards' })}</option>
                 <option value="female">
