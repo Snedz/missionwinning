@@ -35,11 +35,12 @@ test('inferFormPattern maps common families', () => {
   assert.equal(inferFormPattern('farmer-carry'), 'loco');
 });
 
-test('form pack poster wins over pattern for pilot structured guides', () => {
+test('form pack video wins over pattern for pilot structured guides', () => {
   const guide = getFormGuideOrCues('push-ups');
-  // Form Index pack (clinical still) beats legacy SVG sticks.
-  assert.ok(guide?.mediaUrl?.includes('/form/push-ups/side.webp'), guide?.mediaUrl);
-  assert.equal(guide?.mediaType, 'image');
+  // Form Index pack (clinical loop + poster) beats legacy SVG sticks.
+  assert.ok(guide?.mediaUrl?.includes('/form/push-ups/side.mp4'), guide?.mediaUrl);
+  assert.equal(guide?.mediaType, 'video');
+  assert.equal(guide?.mediaPosterUrl, '/form/push-ups/side.webp');
 });
 
 test('long-tail cues attach honest pattern caption', () => {

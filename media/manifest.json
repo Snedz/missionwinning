@@ -8,7 +8,7 @@
       "path": "/form/push-ups/side.webp",
       "status": "shipped",
       "promptId": "grok-form-index-side",
-      "notes": "Form Index clinical side still \u2014 Grok Imagine 2026-08-04 (.464); legacy SVG fallback retained on disk"
+      "notes": "Form Index clinical side still + loop (.465)"
     },
     {
       "id": "air-squat",
@@ -16,7 +16,7 @@
       "path": "/form/air-squat/side.webp",
       "status": "shipped",
       "promptId": "grok-form-index-side",
-      "notes": "Form Index clinical side still \u2014 Grok Imagine 2026-08-04 (.464); legacy SVG fallback retained on disk"
+      "notes": "Form Index clinical side still + loop (.465)"
     },
     {
       "id": "squats",
@@ -28,9 +28,10 @@
     {
       "id": "deadlift",
       "kind": "form",
-      "path": "/form-guides/deadlift.svg",
+      "path": "/form/deadlift/side.webp",
       "status": "shipped",
-      "promptId": "form-instructional-v1"
+      "promptId": "grok-form-index-side",
+      "notes": "Form Index clinical side still (.465)"
     },
     {
       "id": "pull-ups",
@@ -38,7 +39,7 @@
       "path": "/form/pull-ups/side.webp",
       "status": "shipped",
       "promptId": "grok-form-index-side",
-      "notes": "Form Index clinical side still \u2014 Grok Imagine 2026-08-04 (.464); legacy SVG fallback retained on disk"
+      "notes": "Form Index clinical side still + loop (.465)"
     },
     {
       "id": "plank",
@@ -46,42 +47,47 @@
       "path": "/form/plank/side.webp",
       "status": "shipped",
       "promptId": "grok-form-index-side",
-      "notes": "Form Index clinical side still \u2014 Grok Imagine 2026-08-04 (.464); legacy SVG fallback retained on disk"
+      "notes": "Form Index clinical side still + loop (.465)"
     },
     {
       "id": "glute-bridge",
       "kind": "form",
-      "path": "/form-guides/glute-bridge.svg",
+      "path": "/form/glute-bridge/side.webp",
       "status": "shipped",
-      "promptId": "form-instructional-v1"
+      "promptId": "grok-form-index-side",
+      "notes": "Form Index clinical side still (.465)"
     },
     {
       "id": "lunges",
       "kind": "form",
-      "path": "/form-guides/lunges.svg",
+      "path": "/form/lunges/side.webp",
       "status": "shipped",
-      "promptId": "form-instructional-v1"
+      "promptId": "grok-form-index-side",
+      "notes": "Form Index clinical side still (.465)"
     },
     {
       "id": "overhead-press",
       "kind": "form",
-      "path": "/form-guides/overhead-press.svg",
+      "path": "/form/overhead-press/side.webp",
       "status": "shipped",
-      "promptId": "form-instructional-v1"
+      "promptId": "grok-form-index-side",
+      "notes": "Form Index clinical side still (.465)"
     },
     {
       "id": "barbell-row",
       "kind": "form",
-      "path": "/form-guides/barbell-row.svg",
+      "path": "/form/barbell-row/side.webp",
       "status": "shipped",
-      "promptId": "form-instructional-v1"
+      "promptId": "grok-form-index-side",
+      "notes": "Form Index clinical side still (.465)"
     },
     {
       "id": "burpees",
       "kind": "form",
-      "path": "/form-guides/burpees.svg",
+      "path": "/form/burpees/side.webp",
       "status": "shipped",
-      "promptId": "form-instructional-v1"
+      "promptId": "grok-form-index-side",
+      "notes": "Form Index clinical side still (.465)"
     },
     {
       "id": "inverted-row",
@@ -96,7 +102,7 @@
       "path": "/form/bench-press/side.webp",
       "status": "shipped",
       "promptId": "grok-form-index-side",
-      "notes": "Form Index clinical side still \u2014 Grok Imagine 2026-08-04 (.464); legacy SVG fallback retained on disk"
+      "notes": "Form Index clinical side still + loop (.465)"
     },
     {
       "id": "romanian-deadlift",
@@ -104,7 +110,7 @@
       "path": "/form/romanian-deadlift/side.webp",
       "status": "shipped",
       "promptId": "grok-form-index-side",
-      "notes": "Form Index clinical side still \u2014 Grok Imagine 2026-08-04 (.464); legacy SVG fallback retained on disk"
+      "notes": "Form Index clinical side still + loop (.465)"
     },
     {
       "id": "hip-thrust",
@@ -152,7 +158,7 @@
       "path": "/form/kettlebell-swing/side.webp",
       "status": "shipped",
       "promptId": "grok-form-index-side",
-      "notes": "Form Index clinical side still \u2014 Grok Imagine 2026-08-04 (.464); legacy SVG fallback retained on disk"
+      "notes": "Form Index clinical side still + loop (.465)"
     },
     {
       "id": "face-pull",
@@ -237,10 +243,10 @@
     {
       "id": "front-squat",
       "kind": "form",
-      "path": "/form-guides/front-squat.svg",
+      "path": "/form/front-squat/side.webp",
       "status": "shipped",
-      "promptId": "form-instructional-v1",
-      "notes": "Expansion batch; T0 craft de-clone (.413) via form-kit"
+      "promptId": "grok-form-index-side",
+      "notes": "Form Index clinical side still (.465)"
     },
     {
       "id": "goblet-squat",
@@ -368,7 +374,7 @@
       "path": "/form/thruster/side.webp",
       "status": "shipped",
       "promptId": "grok-form-index-side",
-      "notes": "Form Index clinical side still \u2014 Grok Imagine 2026-08-04 (.464); legacy SVG fallback retained on disk"
+      "notes": "Form Index clinical side still + loop (.465)"
     },
     {
       "id": "cable-row",
@@ -397,10 +403,10 @@
     {
       "id": "box-jump",
       "kind": "form",
-      "path": "/form-guides/box-jump.svg",
+      "path": "/form/box-jump/side.webp",
       "status": "shipped",
-      "promptId": "form-instructional-v1",
-      "notes": "T1 structured-guide media (.414) via form-kit"
+      "promptId": "grok-form-index-side",
+      "notes": "Form Index clinical side still (.465)"
     },
     {
       "id": "skull-crusher",

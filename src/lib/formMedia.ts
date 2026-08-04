@@ -4,8 +4,33 @@
  * See docs/MEDIA_SYSTEM.md · media/GROK_IMAGINE_PROMPTS.md (Form Index).
  */
 
-/** Pilot + shipped exercise ids with public/form/{id}/side.webp */
+/** Shipped exercise ids with public/form/{id}/side.webp */
 export const FORM_PACK_SIDE_IDS = new Set([
+  // Pilot loops (also in FORM_PACK_VIDEO_IDS)
+  'air-squat',
+  'romanian-deadlift',
+  'push-ups',
+  'pull-ups',
+  'thruster',
+  'kettlebell-swing',
+  'plank',
+  'bench-press',
+  // Wave 2 stills
+  'deadlift',
+  'overhead-press',
+  'front-squat',
+  'lunges',
+  'burpees',
+  'glute-bridge',
+  'barbell-row',
+  'box-jump',
+]);
+
+/**
+ * Silent loops under public/form/{id}/side.mp4 (480p Imagine → ship).
+ * Prefer MP4 for free-tier pipeline (no ffmpeg WebM required).
+ */
+export const FORM_PACK_VIDEO_IDS = new Set([
   'air-squat',
   'romanian-deadlift',
   'push-ups',
@@ -16,17 +41,12 @@ export const FORM_PACK_SIDE_IDS = new Set([
   'bench-press',
 ]);
 
-/** Optional silent loops public/form/{id}/side.webm (add ids as WebMs ship). */
-export const FORM_PACK_VIDEO_IDS = new Set<string>([
-  // empty until Phase 1 loops land
-]);
-
 export function formPackSidePosterPath(exerciseId: string): string {
   return `/form/${exerciseId}/side.webp`;
 }
 
 export function formPackSideVideoPath(exerciseId: string): string {
-  return `/form/${exerciseId}/side.webm`;
+  return `/form/${exerciseId}/side.mp4`;
 }
 
 export function formPackFrontPosterPath(exerciseId: string): string {

@@ -19,7 +19,7 @@ Generation is **offline batch** → founder approve → commit static files. The
 
 | Folder | Role | Format | Naming |
 |--------|------|--------|--------|
-| `public/form/` | **Form Index** posters + short loops (Train default) | WebP + optional WebM | `{exerciseId}/side.webp` · `side.webm` · `front.webp` |
+| `public/form/` | **Form Index** posters + short loops (Train default) | WebP + optional MP4 | `{exerciseId}/side.webp` · `side.mp4` · `front.webp` |
 | `public/form-guides/` | Legacy stick SVG fallback | SVG | `{exerciseId}.svg` · `pattern-*.svg` |
 | `public/art/` | Marketing decorative | AVIF + WebP pairs | `{name}.avif` / `{name}.webp` |
 | `public/learn/` | Guidebook / Learn figures | WebP (+ AVIF when large) | `{chapterId}-hero.webp` or `{sectionId}.webp` |

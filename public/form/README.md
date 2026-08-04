@@ -4,8 +4,8 @@ Clinical movement demos for Train / library / public exercises.
 
 | Path | Role |
 |------|------|
-| `{exerciseId}/side.webp` | Primary poster (library card + sheet) |
-| `{exerciseId}/side.webm` | Optional silent 6–8s loop |
+| `{exerciseId}/side.webp` | Primary poster (library card + LCP) |
+| `{exerciseId}/side.mp4` | Silent ~6s loop (480p); poster used as `poster` |
 | `{exerciseId}/front.webp` | Optional second angle |
 | `pattern-*/` | Shared pattern fallback (later) |
 
