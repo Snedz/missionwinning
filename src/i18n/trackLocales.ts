@@ -87,6 +87,23 @@ type TrackStrings = {
   progressPhotosEmpty: string;
   trackEyebrow: string;
   trackDeleteActivity: string;
+  /** Kaizen Loop 6 P4 — activity import (.316) */
+  trackImportReading: string;
+  trackImportParsing: string;
+  trackImportSaving: string;
+  trackImportEmpty: string;
+  trackImportResultMulti: string;
+  trackImportTitle: string;
+  trackImportDesc: string;
+  trackImportDropIdle: string;
+  trackImportDropActive: string;
+  trackImportNeedJsonCsv: string;
+  trackImportSampleCopied: string;
+  trackImportSample: string;
+  trackImportCsvCopied: string;
+  trackImportCsvSample: string;
+  trackImportHowTo: string;
+  sessions: string;
 };
 
 const en: TrackStrings = {
@@ -176,6 +193,24 @@ const en: TrackStrings = {
   progressPhotosEmpty: 'No photos yet.',
   trackEyebrow: 'Track',
   trackDeleteActivity: 'Delete activity',
+  trackImportReading: 'Reading file…',
+  trackImportParsing: 'Parsing…',
+  trackImportSaving: 'Importing…',
+  trackImportEmpty: 'No activities found in this file.',
+  trackImportResultMulti: 'Imported {{imported}} activities across {{files}} file(s).',
+  trackImportTitle: 'Import activities (JSON / CSV)',
+  trackImportDesc:
+    'Import from Apple Health Shortcuts JSON, Google Fit / Takeout export, or CSV (date,type,durationMin,distanceKm). Free — no live wearable account required.',
+  trackImportDropIdle: 'Drop JSON/CSV files or click to browse',
+  trackImportDropActive: 'Drop to import',
+  trackImportNeedJsonCsv: 'Use JSON or CSV activity exports.',
+  trackImportSampleCopied: 'Sample JSON copied to clipboard.',
+  trackImportSample: 'Copy JSON sample',
+  trackImportCsvCopied: 'Sample CSV copied to clipboard.',
+  trackImportCsvSample: 'Copy CSV sample',
+  trackImportHowTo:
+    'Apple: Shortcuts → Find Workouts → Get Details → Save File as JSON with date, type, durationMin. Google: export Fit activities (or Takeout) and convert to the same fields, or use CSV.',
+  sessions: 'sessions',
 };
 
 const es: TrackStrings = {
