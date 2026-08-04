@@ -619,6 +619,40 @@ test.describe('Accessibility @a11y', () => {
   });
 
   /**
+   * Loop 17 A1 — Assessments result. Zero-data /assessments never submits;
+   * axe must see Assessment Result chrome after answering ≥5 and Submit.
+   */
+  test('axe serious/critical: /assessments with result @a11y', async ({
+    page,
+    context,
+    baseURL,
+  }) => {
+    if (!baseURL) throw new Error('baseURL required');
+    const ok = await unlockGate(page, context, baseURL);
+    if (gateRequired() && !ok) {
+      test.skip(true, 'SMOKE_ACCESS_SECRET required to unlock private gate');
+    }
+    await seedLegacyOnboarding(page);
+    await page.goto('/assessments', { waitUntil: 'domcontentloaded' });
+    await expect(page.getByRole('button', { name: /submit assessment/i }).first()).toBeVisible({
+      timeout: 15_000,
+    });
+    // Answer No on the first five question rows (enough to enable Submit).
+    const noButtons = page.getByRole('button', { name: /^no$/i });
+    const count = await noButtons.count();
+    for (let i = 0; i < Math.min(count, 8); i++) {
+      await noButtons.nth(i).click();
+    }
+    const submit = page.getByRole('button', { name: /submit assessment/i }).first();
+    await expect(submit).toBeEnabled({ timeout: 5_000 });
+    await submit.click();
+    await expect(page.getByText(/assessment result/i).first()).toBeVisible({
+      timeout: 10_000,
+    });
+    await axeSerious(page, '/assessments (result)');
+  });
+
+  /**
    * The assertion axe cannot make.
    *
    * axe-core does not reliably test focus visibility, which is how this suite sat at

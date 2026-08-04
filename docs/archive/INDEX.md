@@ -55,6 +55,7 @@ When adding a doc:
 | [log/LOG-rotate-300.md](./log/LOG-rotate-300.md) | `.285` progressive overload — rotated for `.300` L5 fillers |
 | [log/LOG-rotate-301.md](./log/LOG-rotate-301.md) | `.286` re-entry dose — rotated for `.301` Coach/History i18n |
 | [log/LOG-rotate-302.md](./log/LOG-rotate-302.md) | `.287` coach why — rotated for `.302` debrief i18n |
+| [log/LOG-rotate-352.md](./log/LOG-rotate-352.md) | `.337` — rotated for `.352` — Soft chrome toast BetaAdmin |
 | [log/LOG-rotate-351.md](./log/LOG-rotate-351.md) | `.336` — rotated for `.351` — Benchmarks anatomy a11y |
 | [log/LOG-rotate-350.md](./log/LOG-rotate-350.md) | `.335` — rotated for `.350` — Soft chrome + volume-trim |
 | [log/LOG-rotate-349.md](./log/LOG-rotate-349.md) | `.334` — rotated for `.349` — Compare/Benchmarks leftovers i18n |

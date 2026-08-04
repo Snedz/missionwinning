@@ -404,3 +404,12 @@ PR: #234
 **Verified:** Track logged-activity a11y green; resolveActiveGoalId unit + wiring; design-system green.
 **Aikido:** `aikido_full_scan` fails without X11 `$DISPLAY`. Noted; continue.
 **Next:** Loop 17 — Assessments / History anatomy seeded a11y; more Active extracts; Bundle i18n still refused.
+
+## Loop 17 waves
+
+| Wave | Status | Notes |
+|------|--------|-------|
+| A1 Assessments result a11y | done (`.352`) | Submit after ≥5 Nos → result axe green |
+| A2 Active extract | pending | |
+| A3 Soft chrome / log close | pending | |
+
