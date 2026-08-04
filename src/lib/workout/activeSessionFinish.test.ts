@@ -5,7 +5,11 @@ import path from 'node:path';
 import {
   assembleActiveVictory,
   logSetIsPr,
+  nothingLoggedToastCopy,
   planLogSetRest,
+  planPrHaptic,
+  PR_HAPTIC_PATTERN,
+  resolveLogSetPayload,
 } from './activeSessionFinish.ts';
 import type { CompletedWorkoutLog } from '@/types';
 
@@ -31,6 +35,65 @@ function log(partial?: Partial<CompletedWorkoutLog>): CompletedWorkoutLog {
     ...partial,
   };
 }
+
+describe('resolveLogSetPayload', () => {
+  it('returns null without exercise or set', () => {
+    assert.equal(
+      resolveLogSetPayload({
+        exerciseId: undefined,
+        set: { reps: 5, weight: 100 },
+        dial: { reps: 5, weight: 100 },
+      }),
+      null
+    );
+    assert.equal(
+      resolveLogSetPayload({
+        exerciseId: 'bench',
+        set: undefined,
+        dial: { reps: 5, weight: 100 },
+      }),
+      null
+    );
+  });
+
+  it('prefers override over dial and defaults kind', () => {
+    const payload = resolveLogSetPayload({
+      exerciseId: 'bench',
+      set: { reps: 5, weight: 100 },
+      override: { reps: 3, weight: 120 },
+      dial: { reps: 5, weight: 100 },
+    });
+    assert.deepEqual(payload, {
+      exerciseId: 'bench',
+      setKind: 'normal',
+      input: { reps: 3, weight: 120 },
+    });
+  });
+
+  it('uses dial when no override and preserves kind', () => {
+    const payload = resolveLogSetPayload({
+      exerciseId: 'squat',
+      set: { reps: 5, weight: 140, kind: 'warmup' },
+      dial: { reps: 5, weight: 140 },
+    });
+    assert.equal(payload?.setKind, 'warmup');
+    assert.deepEqual(payload?.input, { reps: 5, weight: 140 });
+  });
+});
+
+describe('planPrHaptic + nothingLoggedToastCopy', () => {
+  it('returns pattern only for PRs', () => {
+    assert.equal(planPrHaptic(false), null);
+    assert.deepEqual(planPrHaptic(true), [...PR_HAPTIC_PATTERN]);
+  });
+
+  it('empty finish toast is destructive with stable keys', () => {
+    const copy = nothingLoggedToastCopy();
+    assert.equal(copy.variant, 'destructive');
+    assert.equal(copy.titleKey, 'activeNothingLogged');
+    assert.equal(copy.descKey, 'activeNothingLoggedDesc');
+  });
+});
 
 describe('logSetIsPr + planLogSetRest', () => {
   it('names a PR from empty history and starts rest when more sets remain', () => {
@@ -102,8 +165,8 @@ describe('assembleActiveVictory', () => {
   });
 });
 
-describe('Active page wiring (.405)', () => {
-  it('ActiveWorkoutPage uses logSetIsPr, planLogSetRest, assembleActiveVictory', () => {
+describe('Active page wiring (.405/.409)', () => {
+  it('ActiveWorkoutPage uses session-finish helpers', () => {
     const src = readFileSync(
       path.join(root, 'src/page-components/ActiveWorkoutPage.tsx'),
       'utf8'
@@ -111,6 +174,9 @@ describe('Active page wiring (.405)', () => {
     assert.match(src, /logSetIsPr\(/);
     assert.match(src, /planLogSetRest\(/);
     assert.match(src, /assembleActiveVictory\(/);
+    assert.match(src, /resolveLogSetPayload\(/);
+    assert.match(src, /planPrHaptic\(/);
+    assert.match(src, /nothingLoggedToastCopy\(/);
     assert.doesNotMatch(
       src,
       /isPersonalRecord\(/,
@@ -125,6 +191,11 @@ describe('Active page wiring (.405)', () => {
       src,
       /shouldRestAfterLog\(/,
       'rest gate must live inside planLogSetRest'
+    );
+    assert.doesNotMatch(
+      src,
+      /vibrate\(\[80,\s*40,\s*80\]\)/,
+      'PR haptic pattern must live inside planPrHaptic'
     );
   });
 });

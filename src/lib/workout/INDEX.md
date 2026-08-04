@@ -20,7 +20,7 @@ Root-level `@/lib/{name}` paths re-export from here for compatibility — prefer
 12. `workoutPersistLite.ts` — history/streak from localStorage (cold path)
 13. `sessionCheckInOffer.ts` — pure W1 gate: never Mind-sheet the first mission (`.293`)
 14. `loggerSpeed.ts` — Enter/Use-next helpers (`.288`)
-15. `activeSessionFinish.ts` — log-set PR/rest + Victory assembly (`.405`)
+15. `activeSessionFinish.ts` — log-set payload/PR/rest/haptic + Victory + empty-finish toast (`.405`/`.409`)
 16. `activeSessionCheckIn.ts` — check-in dismiss + volume-trim toast kind (`.406`)
 17. `activeSetInputPatches.ts` — Use next / plate / apply-targets field patches (`.407`)
 18. `activeTableSetControls.ts` — desktop table set dial + kind projection (`.408`)

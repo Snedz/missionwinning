@@ -32,6 +32,30 @@ import {
   type WorkoutVictorySummary,
 } from '@/lib/workout/workoutVictory';
 
+/**
+ * Resolve what to log for one set (override wins; else dial).
+ * Returns null when the exercise/set slot is missing — page no-ops.
+ */
+export type LogSetPayload = {
+  exerciseId: string;
+  setKind: SetKind;
+  input: { reps: number; weight: number };
+};
+
+export function resolveLogSetPayload(params: {
+  exerciseId: string | undefined;
+  set: { reps: number; weight: number; kind?: SetKind } | undefined;
+  override?: { reps: number; weight: number };
+  dial: { reps: number; weight: number };
+}): LogSetPayload | null {
+  if (!params.exerciseId || !params.set) return null;
+  return {
+    exerciseId: params.exerciseId,
+    setKind: params.set.kind ?? 'normal',
+    input: params.override ?? params.dial,
+  };
+}
+
 /** PR check against completed history (active set is not history yet). */
 export function logSetIsPr(params: {
   exerciseId: string;
@@ -47,6 +71,32 @@ export function logSetIsPr(params: {
     params.workoutHistory,
     params.setKind
   );
+}
+
+/** Brass PR haptic pattern (Design Orchestration D0) — null when not a PR. */
+export const PR_HAPTIC_PATTERN = [80, 40, 80] as const;
+
+export function planPrHaptic(isPr: boolean): readonly number[] | null {
+  return isPr ? PR_HAPTIC_PATTERN : null;
+}
+
+/** Toast when Finish is tapped with zero completed sets. */
+export type NothingLoggedToastCopy = {
+  titleKey: string;
+  titleDefault: string;
+  descKey: string;
+  descDefault: string;
+  variant: 'destructive';
+};
+
+export function nothingLoggedToastCopy(): NothingLoggedToastCopy {
+  return {
+    titleKey: 'activeNothingLogged',
+    titleDefault: 'Nothing logged',
+    descKey: 'activeNothingLoggedDesc',
+    descDefault: 'Complete at least one set before finishing.',
+    variant: 'destructive',
+  };
 }
 
 export type LogSetRestPlan = {
