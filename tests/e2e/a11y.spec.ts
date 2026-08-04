@@ -795,6 +795,42 @@ test.describe('Accessibility @a11y', () => {
   });
 
   /**
+   * Loop 23 G1 — Exercise swap sheet. Zero-data /active has no card menu;
+   * add an exercise, open More → Swap, axe the picker overlay.
+   */
+  test('axe serious/critical: /active with swap sheet open @a11y', async ({
+    page,
+    context,
+    baseURL,
+  }) => {
+    if (!baseURL) throw new Error('baseURL required');
+    const ok = await unlockGate(page, context, baseURL);
+    if (gateRequired() && !ok) {
+      test.skip(true, 'SMOKE_ACCESS_SECRET required to unlock private gate');
+    }
+    await seedLegacyOnboarding(page);
+    await seedReadinessPhase(page);
+    await startEmptyActiveWorkout(page);
+
+    await page.getByRole('button', { name: /^add exercise$/i }).first().click();
+    const search = page.getByPlaceholder(/search exercises/i);
+    await expect(search).toBeVisible({ timeout: 10_000 });
+    await search.fill('push-ups');
+    await page.getByRole('option', { name: /push-ups/i }).first().click();
+    await page.getByRole('button', { name: /add selected exercise/i }).click();
+    await expect(page.getByRole('button', { name: /^log( set)?$/i }).first()).toBeVisible({
+      timeout: 15_000,
+    });
+
+    await page.getByRole('button', { name: /more actions/i }).first().click();
+    await page.getByRole('menuitem', { name: /^swap$/i }).click();
+    await expect(
+      page.getByText(/swap exercise/i).or(page.getByPlaceholder(/swap to/i)).first()
+    ).toBeVisible({ timeout: 10_000 });
+    await axeSerious(page, '/active (swap sheet)');
+  });
+
+  /**
    * The assertion axe cannot make.
    *
    * axe-core does not reliably test focus visibility, which is how this suite sat at
