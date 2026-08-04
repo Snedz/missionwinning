@@ -16,7 +16,7 @@ One screen of truth for any AI tool or human joining cold. Read this, then [AGEN
 
 ---
 
-## Now (2026-08-04 · web `2026.07-unified.406` · Android `1.24.1`)
+## Now (2026-08-04 · web `2026.07-unified.407` · Android `1.24.1`)
 
 > The ONLY "where we are" block in the repo — [ORCHESTRATION.md](ORCHESTRATION.md) points here.
 >
@@ -165,6 +165,7 @@ One screen of truth for any AI tool or human joining cold. Read this, then [AGEN
 > and `.404` dropped `.389` detail (full text remains in LOG.md / archive)
 > and `.405` dropped `.390` detail (full text remains in LOG.md / archive)
 > and `.406` dropped `.391` detail (full text remains in LOG.md / archive)
+> and `.407` dropped `.392` detail (full text remains in LOG.md / archive)
 > to [CONTEXT-now-2026-07-30.md](docs/archive/CONTEXT-now-2026-07-30.md) after this
 > block reached **79 bullets / 103KB**. A status doc that only grows stops being read.
 
@@ -185,6 +186,7 @@ One screen of truth for any AI tool or human joining cold. Read this, then [AGEN
 > | Migrations | **9 recorded pending** — [LAUNCH_RUNBOOK](docs/LAUNCH_RUNBOOK.md) §3, enforced by `src/lib/migrationLedger.test.ts`. |
 > | gitleaks | **green — and scanning for the first time.** It had never scanned anything: on a `pull_request` event the action lists the PR's commits, the job declared no `permissions:` block, and it 403'd (`pull_requests=read`) before opening a file. Fixed by a `permissions:` block (`.224` carrying `.255`). It scans **only the PR's own commits**, so commit `8ea3527a`'s real Solana treasury address — scrubbed from the working file, still in history — is out of its scope. That finding stands, deliberately not allowlisted; it was never what made this check red. |
 
+- **`.407`:** Active **set-input patches** — Use next / plate / apply-targets + plate initial weight (T2.1).
 - **`.406`:** Active **check-in dismiss extract** — `planSessionCheckInDismiss` + `volumeTrimToastKind` (T2.1).
 - **`.405`:** Active **session finish extract** — `logSetIsPr` / `planLogSetRest` / `assembleActiveVictory` + wiring guards (T2.1).
 - **`.404`:** Week-1 activation **contract** after composure — session2 First Steps + CTA + Mission Score priority 32 locked by tests (`.291`+`.294` regression net).
@@ -198,7 +200,6 @@ One screen of truth for any AI tool or human joining cold. Read this, then [AGEN
 - **`.396`:** Disabled control opacity solidify; Loop 31 closed.
 - **`.395`:** Active Apply/Remove set menuitem extracts + wiring guards.
 - **`.394`:** Seeded axe on Coach ask-form prefill (`/coach?ask=`).
-- **`.393`:** Select chevron + item chrome solidify; Loop 30 closed.
 - **`.390`:** Label + Dialog close chrome solidify; Loop 29 closed.
 - **Horizon W — wedge excellence.** Web craft 1–6 + **Fuel estimate accuracy** (edit-before-log, better NL match, honest photo sources).
 - **Free-first beta (~4 weeks):** LLC + EIN pending — **no Bundle UI** + **full depth unlocked** + **full More nav** (journey train-only deferred) ([docs/FREE_BETA.md](docs/FREE_BETA.md)).
