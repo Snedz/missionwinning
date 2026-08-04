@@ -63,7 +63,12 @@ export function FormGuideSheet({
     >
         <div className="p-5 space-y-5 text-[17px] leading-relaxed">
           {guide.mediaUrl && (
-            <FormGuideMedia url={guide.mediaUrl} type={guide.mediaType ?? 'image'} name={exerciseName} />
+            <FormGuideMedia
+              url={guide.mediaUrl}
+              type={guide.mediaType ?? 'image'}
+              name={exerciseName}
+              caption={guide.mediaCaption}
+            />
           )}
 
           {guide.readyPosition && (
@@ -100,10 +105,12 @@ function FormGuideMedia({
   url,
   type,
   name,
+  caption,
 }: {
   url: string;
   type: 'image' | 'video';
   name: string;
+  caption?: string;
 }) {
   if (type === 'video') {
     return (
@@ -132,7 +139,7 @@ function FormGuideMedia({
         className="mx-auto w-full max-h-64 object-contain"
       />
       <figcaption className="border-t-2 border-border px-3 py-1.5 text-center text-xs text-muted-foreground">
-        Form diagram
+        {caption ?? 'Form diagram'}
       </figcaption>
     </figure>
   );

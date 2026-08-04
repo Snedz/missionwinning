@@ -149,7 +149,7 @@ npm run media:optimize-inbox
 
 | Surface | How media attaches |
 |---------|-------------------|
-| Form guides | `FORM_MEDIA_IDS` + `/form-guides/{id}.svg` in `src/lib/formGuides.ts` |
+| Form guides | `FORM_MEDIA_IDS` + `/form-guides/{id}.svg` in `src/lib/formGuides.ts`; long-tail uses `formPatterns.ts` → `/form-guides/pattern-*.svg` with honest caption |
 | Guidebook | Optional `figure` / `heroImage` on guidebook types → reader + PDF |
 | Marketing | `ArtPicture` + `public/art/` |
 | Social | Files under `public/social/`; paths listed in [SOCIAL_LAUNCH.md](SOCIAL_LAUNCH.md) |
@@ -165,3 +165,10 @@ npm run media:optimize-inbox
 | **2** | Social folder + Android form-guide reuse | Shipped (`.121`) |
 | **3** | Google Flow primary HQ path + inbox optimize + prompt pack | Shipped |
 | **4** | Scout mascot bible + kit + History empty + Victory flourish | Shipped |
+| **5** | Form craft excellence — stick kit, uniqueness guards, T0 de-clone, coverage report, MASCOT modernist lock | Shipped (`.413`) |
+| **6** | T1 SVGs — every structured form guide has a diagram (52 guides / 52 SVGs) | Shipped (`.414`) |
+| **6b** | Learn section densify — paper/ink teaching figures (18/18 free sections) | Shipped (`.414`–`.415`) |
+| **7** | Pattern packs (7) for long-tail + honest caption · social WebP | Shipped (`.415`) |
+| **8** | Scout modernist re-ink · magazine PDF densify · PDF builder `load` settle | Shipped (`.416`) |
+
+**Craft loop (Wave 5+):** inventory (`npm run media:coverage`) → art direction → optional Grok pose ref in `media/inbox/form-ref-*` → SVG via `scripts/form-kit/` → uniqueness + palette tests → wire + manifest. Form guides stay instructional SVG — never ship photoreal as Train default. Coverage snapshot: [`media/COVERAGE.md`](../media/COVERAGE.md).

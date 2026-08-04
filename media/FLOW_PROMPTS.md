@@ -214,7 +214,7 @@ clinical calm. No text, no logos, no photoreal.
 **Model:** Veo 3.1 Lite · 4–6s · no dialogue
 
 ```
-Mission Winning brand imagery. Dark paper ground #f3f2f2, the one red accent #ec3013,
+Mission Winning brand imagery. Paper ground #f3f2f2, the one red accent #ec3013,
 mid-grey detail #6f6b69. Clinical athletic clarity — not gym-bro hype, not medical.
 Slow cinematic push into an empty park at dawn: chalk lines on asphalt, a single
 kettlebell silhouette, soft vermillion red rim light, mid grey dust motes. Train-anywhere
@@ -231,7 +231,7 @@ no cream terracotta look. Subtle camera drift only.
 **Model:** Veo 3.1 Lite · 4–6s
 
 ```
-Mission Winning brand imagery. Dark paper #f3f2f2, vermillion red #ec3013, mid grey #6f6b69.
+Mission Winning brand imagery. Paper ground #f3f2f2, vermillion red #ec3013, mid grey #6f6b69.
 Abstract mission-briefing atmosphere: faint grid like a weekly plan, soft vermillion red
 arcs suggesting progressive load, mid-grey detail marks. Clinical telemetry mood —
 not gamification fireworks. No readable text, no logos, no faces, no gym-bro,
@@ -247,7 +247,7 @@ no medical charts. Slow orbit of light across the field.
 **Model:** Veo 3.1 Lite · 4s · pick best still for chapter hero
 
 ```
-Mission Winning brand imagery. Dark paper #f3f2f2, vermillion red #ec3013, mid grey #6f6b69.
+Mission Winning brand imagery. Paper ground #f3f2f2, vermillion red #ec3013, mid grey #6f6b69.
 Abstract human performance / adaptation: soft topographic energy field, faint
 athlete silhouette dissolving into geometric muscle-fiber suggestions, clinical
 and calm. Chapter opener for performance science — not medical, not depression.
@@ -261,7 +261,7 @@ No text, no logos, no purple.
 ## Prompt: learn-movement-mechanics (`promptId: flow-learn-ch2`)
 
 ```
-Mission Winning brand imagery. Dark paper #f3f2f2, vermillion red #ec3013, mid grey #6f6b69.
+Mission Winning brand imagery. Paper ground #f3f2f2, vermillion red #ec3013, mid grey #6f6b69.
 Abstract movement mechanics: elegant line-figure geometry implying squat and hinge
 patterns, vermillion red motion arcs, mid grey joint points. Clinical briefing mood.
 No photoreal gym, no faces, no text, no logos.
@@ -274,7 +274,7 @@ No photoreal gym, no faces, no text, no logos.
 ## Prompt: learn-programming-tuning (`promptId: flow-learn-ch3`)
 
 ```
-Mission Winning brand imagery. Dark paper #f3f2f2, vermillion red #ec3013, mid grey #6f6b69.
+Mission Winning brand imagery. Paper ground #f3f2f2, vermillion red #ec3013, mid grey #6f6b69.
 Abstract progressive overload: ascending waveform or stepped light bars in vermillion red,
 mid grey markers for deload. Periodization atmosphere without charts or numbers.
 No text, no logos, no purple.

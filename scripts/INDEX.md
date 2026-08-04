@@ -34,6 +34,12 @@
 | `print-beta-invite.ts` | `npm run print-beta-invite` | Beta invite: `/private?invite=` + out-of-band access code (no default `?access=`) |
 | `build-guidebook-pdf.ts` | `npm run build-guidebook-pdf` | Generate `public/magazine/beyond-the-basics[.lang].pdf` from `/guide/print?lang=` (app must be serving). Set `GUIDEBOOK_PDF_AUTO_SERVER=1` to spawn `next start`. Set `GUIDEBOOK_PDF_LANGS=all` (or `en,es,fr`) for localized PDFs. Asserts ~12–28 pages. |
 | `optimize-media-inbox.mjs` | `npm run media:optimize-inbox` | Google Flow / Imagine frames in `media/inbox/` → WebP under `public/learn/` or `public/social/` ([MEDIA_SYSTEM.md](../docs/MEDIA_SYSTEM.md)) |
+| `media-coverage-report.mjs` | `npm run media:coverage` | Exercises × text guides × form SVGs → stdout + `media/COVERAGE.md` |
+| `generate-form-guides-t0.mjs` | `npm run media:form-t0` | Rebuild T0 de-cloned form SVGs via `scripts/form-kit/` |
+| `generate-form-guides-t1.mjs` | `npm run media:form-t1` | T1 SVGs for structured guides that lacked media |
+| `generate-learn-section-figures.mjs` | `npm run media:learn-sections` | Guidebook section teaching figures → `public/learn/*.webp` |
+| `generate-form-patterns.mjs` | `npm run media:form-patterns` | Shared pattern SVGs for long-tail form media |
+| `form-kit/stickFigure.mjs` | (import) | Stick-figure primitives for form-guide SVGs |
 | `sync-vercel-env.mjs` | `npm run sync-vercel-env` | Sync env to Vercel |
 | `secrets-scan.mjs` | `npm run secrets:scan` | Gitleaks on working tree ([SECRETS.md](../docs/SECRETS.md)) |
 

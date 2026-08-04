@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 220" fill="none" role="img" aria-label="Box jump form: load, explode onto box, soft land">
+  <title>Box jump form diagram</title>
+  <rect width="360" height="220" fill="#f3f2f2"></rect>
+  <text x="60" y="28" text-anchor="middle" fill="#6f6b69" font-family="Archivo, system-ui, sans-serif" font-size="11" letter-spacing="0.5">LOAD</text>
+  <text x="180" y="28" text-anchor="middle" fill="#6f6b69" font-family="Archivo, system-ui, sans-serif" font-size="11" letter-spacing="0.5">JUMP</text>
+  <text x="300" y="28" text-anchor="middle" fill="#6f6b69" font-family="Archivo, system-ui, sans-serif" font-size="11" letter-spacing="0.5">LAND</text>
+  <line x1="20" y1="185" x2="100" y2="185" stroke="#201e1d" stroke-width="2"></line>
+  <line x1="140" y1="185" x2="220" y2="185" stroke="#201e1d" stroke-width="2"></line>
+  <line x1="260" y1="185" x2="340" y2="185" stroke="#201e1d" stroke-width="2"></line>
+  <g stroke="#201e1d" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none">
+    <circle cx="50" cy="85" r="9"></circle>
+    <line x1="50" y1="85" x2="50" y2="96"></line>
+    <line x1="50" y1="96" x2="50" y2="140"></line>
+    <line x1="50" y1="96" x2="50" y2="96"></line>
+    <line x1="50" y1="96" x2="50" y2="96"></line>
+    <line x1="50" y1="96" x2="35" y2="115"></line>
+    <line x1="50" y1="96" x2="65" y2="115"></line>
+    <line x1="50" y1="140" x2="38" y2="160"></line>
+    <line x1="38" y1="160" x2="35" y2="175"></line>
+    <line x1="50" y1="140" x2="62" y2="160"></line>
+    <line x1="62" y1="160" x2="65" y2="175"></line>
+  </g>
+  <rect x="85" y="130" width="40" height="45" fill="none" stroke="#201e1d" stroke-width="2"></rect>
+  <circle cx="50" cy="140" r="3.5" fill="#ec3013"></circle>
+  <text x="50" y="132" text-anchor="middle" fill="#ec3013" font-family="Archivo, system-ui, sans-serif" font-size="8">load</text>
+  <g stroke="#201e1d" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none">
+    <circle cx="175" cy="45" r="9"></circle>
+    <line x1="175" y1="45" x2="175" y2="56"></line>
+    <line x1="175" y1="56" x2="175" y2="95"></line>
+    <line x1="175" y1="56" x2="175" y2="56"></line>
+    <line x1="175" y1="56" x2="175" y2="56"></line>
+    <line x1="175" y1="56" x2="155" y2="70"></line>
+    <line x1="175" y1="56" x2="195" y2="70"></line>
+    <line x1="175" y1="95" x2="160" y2="130"></line>
+    <line x1="175" y1="95" x2="190" y2="130"></line>
+  </g>
+  <rect x="200" y="130" width="40" height="45" fill="none" stroke="#201e1d" stroke-width="2"></rect>
+  <path d="M175 150 L175 115" stroke="#ec3013" stroke-width="2" stroke-linecap="round"></path>
+  <polygon points="175,115 179,123 171,123" fill="#ec3013"></polygon>
+  <text x="185" y="132.5" fill="#ec3013" font-family="Archivo, system-ui, sans-serif" font-size="9">up</text>
+  <g stroke="#201e1d" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none">
+    <circle cx="295" cy="55" r="9"></circle>
+    <line x1="295" y1="55" x2="295" y2="66"></line>
+    <line x1="295" y1="66" x2="295" y2="100"></line>
+    <line x1="295" y1="66" x2="295" y2="66"></line>
+    <line x1="295" y1="66" x2="295" y2="66"></line>
+    <line x1="295" y1="66" x2="275" y2="80"></line>
+    <line x1="295" y1="66" x2="315" y2="80"></line>
+    <line x1="295" y1="100" x2="285" y2="120"></line>
+    <line x1="285" y1="120" x2="282" y2="130"></line>
+    <line x1="295" y1="100" x2="305" y2="120"></line>
+    <line x1="305" y1="120" x2="308" y2="130"></line>
+  </g>
+  <rect x="270" y="130" width="55" height="45" fill="none" stroke="#201e1d" stroke-width="2"></rect>
+  <circle cx="295" cy="130" r="3.5" fill="#ec3013"></circle>
+  <text x="295" y="122" text-anchor="middle" fill="#ec3013" font-family="Archivo, system-ui, sans-serif" font-size="8">soft</text>
+</svg>

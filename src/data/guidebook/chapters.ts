@@ -33,6 +33,11 @@ Mission Winning tracks what you actually do. That history is the feedback loop: 
           title: 'Key idea',
           body: 'Adapt to the demand you repeat. Progress the same patterns — load, reps, quality, or range — before chasing novelty.',
         },
+        figure: {
+          src: '/learn/said-principle.webp',
+          alt: 'Diagram of capacity rising as the same training pattern is repeated',
+          caption: 'SAID — adapt to the demand you repeat',
+        },
       },
       {
         id: 'ch1-s2',
@@ -61,6 +66,11 @@ Most general fitness blends all three across the week. A lifter who never trains
             ['Oxidative', 'Minutes+', 'Sustainable pace', 'Easy jog, hike, long bike'],
           ],
         },
+        figure: {
+          src: '/learn/energy-systems.webp',
+          alt: 'Three panels for ATP-PC, glycolytic, and oxidative energy systems',
+          caption: 'Match training intent to the system you want to develop',
+        },
       },
       {
         id: 'ch1-s3',
@@ -79,6 +89,11 @@ Readiness on the Today hub is a consistency score from your logs — not a medic
         callout: {
           title: 'Recovery is training',
           body: 'The session is the stimulus; sleep, food, and easy movement are where adaptation lands. Treat under-recovery as a programming input — not a character flaw.',
+        },
+        figure: {
+          src: '/learn/recovery-stimulus.webp',
+          alt: 'Session stimulus arrow into a recovery window where adaptation lands',
+          caption: 'Adaptation happens between sessions',
         },
       },
     ],
@@ -225,9 +240,9 @@ Log sets and reps in Active Workout. Mission Winning history is your programming
         relatedExerciseIds: ['squats', 'deadlift', 'bench-press'],
         sourceRef: 'foundations — volume & intensity',
         figure: {
-          src: '/form-guides/bench-press.svg',
-          alt: 'Bench press form diagram with bar path phases',
-          caption: 'Progress key lifts — log hard sets, not random add-ons',
+          src: '/learn/progressive-overload.webp',
+          alt: 'Four levers for progressive overload: load, reps, sets, quality',
+          caption: 'Progress one variable at a time — keep the others honest',
         },
         table: {
           caption: 'Volume landmarks (hard sets / week)',
@@ -290,6 +305,11 @@ Program templates in the Builder encode these ideas. Pro templates (premium) add
           title: 'When to deload',
           body: 'If key lifts stall for 2+ weeks, readiness trends down for 5+ days, or sleep and mood are clearly off — cut volume or intensity 40–60% for a week, then rebuild. Deload is a plan, not a failure.',
         },
+        figure: {
+          src: '/learn/deload-signal.webp',
+          alt: 'Load trend over weeks with a marked deload when readiness drops',
+          caption: 'Deload is a plan — not a failure',
+        },
       },
     ],
   },
@@ -328,6 +348,11 @@ Journey phases — Basic Training, Readiness, Commissioned — exist to build ha
             'Revisit Welcome with ?edit=1 if equipment or goals change',
           ],
         },
+        figure: {
+          src: '/learn/first-session.webp',
+          alt: 'Three steps: gear, session, log set',
+          caption: 'Gear-matched session — then log the work',
+        },
       },
       {
         id: 'ch4-s2',
@@ -362,6 +387,11 @@ Each pillar can log a win on Today. Basic Training asks for one win in each — 
             ['Learn', 'Guidebook and quick paths', '/learn'],
           ],
         },
+        figure: {
+          src: '/learn/six-pillars.webp',
+          alt: 'Six pillar cards: Train, Fuel, Move, Mind, Track, Learn',
+          caption: 'One win per pillar beats a siloed grind',
+        },
       },
       {
         id: 'ch4-s3',
@@ -379,6 +409,11 @@ Beta testers: see /beta for the start guide and feedback channels.`,
         callout: {
           title: 'Score is feedback',
           body: 'Win Score rewards consistency across pillars — not a single hero workout. Use it to notice gaps, not to punish a quiet week.',
+        },
+        figure: {
+          src: '/learn/win-score-offline.webp',
+          alt: 'Win Score circle linked to offline install and log',
+          caption: 'Install · log offline · sync when signed in',
         },
       },
     ],
@@ -414,6 +449,11 @@ Log a typical day on Fuel. Free recipes cover the basics; premium adds meal-prep
         callout: {
           title: 'Priority order',
           body: 'Hit protein first, then overall calories, then carbs around hard training. Fats fill the rest — do not zero them out.',
+        },
+        figure: {
+          src: '/learn/protein-briefing.webp',
+          alt: 'Protein as a simple daily habit linked to repair and satiety',
+          caption: 'Protein first — a daily habit, not a religion',
         },
       },
       {
@@ -460,6 +500,11 @@ Use Fuel recipes to pre-fill macros when planning is hard. Weekly challenges can
         practiceCTA: { label: 'Browse recipes', href: '/nutrition' },
         relatedLearnPathId: 'nutrition-101',
         sourceRef: 'foundations — meal timing',
+        figure: {
+          src: '/learn/meal-timing.webp',
+          alt: 'Day timeline with train and protein anchors',
+          caption: 'Consistency beats perfect timing',
+        },
         checklist: {
           title: 'Around-workout habits',
           items: [
@@ -502,6 +547,11 @@ Assessments save a summary to your log for your own reference — share with you
           title: 'Screen before you load',
           body: 'A yes on the readiness screen means get clearance — not never train. Honesty here protects intensity later.',
         },
+        figure: {
+          src: '/learn/parq-screen.webp',
+          alt: 'PAR-Q screening card leading to medical clearance when needed',
+          caption: 'Yes means get clearance — not never train',
+        },
       },
       {
         id: 'ch6-s2',
@@ -518,9 +568,9 @@ Leaderboards add optional social motivation. Squad codes let friends compare wit
         relatedExerciseIds: ['push-ups', 'pull-ups', 'squats'],
         sourceRef: 'foundations — assessments',
         figure: {
-          src: '/form-guides/pull-ups.svg',
-          alt: 'Pull-up form diagram with hang and pull phases',
-          caption: 'Retest bodyweight benchmarks every 3–4 weeks',
+          src: '/learn/retest-cadence.webp',
+          alt: 'Timeline of baseline, train, retest, and train again',
+          caption: 'Retest every 3–4 weeks — same conditions, honest score',
         },
         table: {
           caption: 'What to retest and when',
@@ -552,6 +602,11 @@ History and Win Score trends on Today help you decide. This guidebook is the ref
         callout: {
           title: 'Stall vs pain vs stress',
           body: 'Stall → progress one lift or deload. Sharp joint pain → stop and refer out. Life stress → keep the habit at lower RPE. Do not treat every bad week as a cue to push harder.',
+        },
+        figure: {
+          src: '/learn/adjust-plan.webp',
+          alt: 'Three cards for stall, pain, and stress adjustments',
+          caption: 'Different signals need different fixes',
         },
       },
     ],

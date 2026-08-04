@@ -104,14 +104,30 @@ async function renderLang(base: string, lang: string): Promise<void> {
   const browser = await chromium.launch({ headless: true });
   try {
     const page = await browser.newPage();
-    const res = await page.goto(printUrl, { waitUntil: 'networkidle', timeout: 90_000 });
+    // Prefer `load` over `networkidle`: Next/static asset polling often never
+    // quiets enough for networkidle, which timed out a densified print page at 90s.
+    const res = await page.goto(printUrl, { waitUntil: 'load', timeout: 120_000 });
     if (!res || !res.ok()) {
       throw new Error(
         `Failed to load ${printUrl} (status ${res?.status() ?? 'none'}). Is the app running?`
       );
     }
-    await page.waitForSelector('.magazine-document', { timeout: 30_000 });
-    await page.waitForTimeout(1500);
+    await page.waitForSelector('.magazine-document', { timeout: 60_000 });
+    // Let images (heroes + section figures) settle before print.
+    await page.evaluate(async () => {
+      const imgs = [...document.images];
+      await Promise.all(
+        imgs.map((img) =>
+          img.complete
+            ? Promise.resolve()
+            : new Promise<void>((resolve) => {
+                img.addEventListener('load', () => resolve(), { once: true });
+                img.addEventListener('error', () => resolve(), { once: true });
+              })
+        )
+      );
+    });
+    await page.waitForTimeout(800);
     await page.emulateMedia({ media: 'print' });
     await page.addStyleTag({
       content: `.no-print { display: none !important; }`,

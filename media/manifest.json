@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated": "2026-07-23",
+  "updated": "2026-08-04",
   "assets": [
     {
       "id": "push-ups",
@@ -150,7 +150,7 @@
       "path": "/form-guides/kettlebell-swing.svg",
       "status": "shipped",
       "promptId": "form-instructional-v1",
-      "notes": "Expansion batch"
+      "notes": "Expansion batch; T0 craft de-clone (.413) via form-kit"
     },
     {
       "id": "face-pull",
@@ -158,7 +158,7 @@
       "path": "/form-guides/face-pull.svg",
       "status": "shipped",
       "promptId": "form-instructional-v1",
-      "notes": "Expansion batch"
+      "notes": "Expansion batch; T0 craft de-clone (.413) via form-kit"
     },
     {
       "id": "bicep-curl",
@@ -166,7 +166,7 @@
       "path": "/form-guides/bicep-curl.svg",
       "status": "shipped",
       "promptId": "form-instructional-v1",
-      "notes": "Expansion batch"
+      "notes": "Expansion batch; T0 craft de-clone (.413) via form-kit"
     },
     {
       "id": "tricep-pushdown",
@@ -182,7 +182,7 @@
       "path": "/form-guides/bird-dog.svg",
       "status": "shipped",
       "promptId": "form-instructional-v1",
-      "notes": "Expansion batch"
+      "notes": "Expansion batch; T0 craft de-clone (.413) via form-kit"
     },
     {
       "id": "wall-sit",
@@ -198,7 +198,7 @@
       "path": "/form-guides/pike-pushup.svg",
       "status": "shipped",
       "promptId": "form-instructional-v1",
-      "notes": "Expansion batch"
+      "notes": "Expansion batch; T0 craft de-clone (.413) via form-kit"
     },
     {
       "id": "side-plank",
@@ -206,7 +206,7 @@
       "path": "/form-guides/side-plank.svg",
       "status": "shipped",
       "promptId": "form-instructional-v1",
-      "notes": "Expansion batch"
+      "notes": "Expansion batch; T0 craft de-clone (.413) via form-kit"
     },
     {
       "id": "mountain-climbers",
@@ -214,7 +214,7 @@
       "path": "/form-guides/mountain-climbers.svg",
       "status": "shipped",
       "promptId": "form-instructional-v1",
-      "notes": "Expansion batch"
+      "notes": "Expansion batch; T0 craft de-clone (.413) via form-kit"
     },
     {
       "id": "dips-chair",
@@ -222,7 +222,7 @@
       "path": "/form-guides/dips-chair.svg",
       "status": "shipped",
       "promptId": "form-instructional-v1",
-      "notes": "Expansion batch"
+      "notes": "Expansion batch; T0 craft de-clone (.413) via form-kit"
     },
     {
       "id": "step-ups",
@@ -230,7 +230,7 @@
       "path": "/form-guides/step-ups.svg",
       "status": "shipped",
       "promptId": "form-instructional-v1",
-      "notes": "Expansion batch"
+      "notes": "Expansion batch; T0 craft de-clone (.413) via form-kit"
     },
     {
       "id": "front-squat",
@@ -238,7 +238,7 @@
       "path": "/form-guides/front-squat.svg",
       "status": "shipped",
       "promptId": "form-instructional-v1",
-      "notes": "Expansion batch"
+      "notes": "Expansion batch; T0 craft de-clone (.413) via form-kit"
     },
     {
       "id": "goblet-squat",
@@ -246,7 +246,7 @@
       "path": "/form-guides/goblet-squat.svg",
       "status": "shipped",
       "promptId": "form-instructional-v1",
-      "notes": "Expansion batch"
+      "notes": "Expansion batch; T0 craft de-clone (.413) via form-kit"
     },
     {
       "id": "jump-squats",
@@ -254,7 +254,7 @@
       "path": "/form-guides/jump-squats.svg",
       "status": "shipped",
       "promptId": "form-instructional-v1",
-      "notes": "Expansion batch"
+      "notes": "Expansion batch; T0 craft de-clone (.413) via form-kit"
     },
     {
       "id": "human-performance",
@@ -310,7 +310,7 @@
       "path": "/social/invite-square.webp",
       "status": "shipped",
       "promptId": "brand-raster-v1",
-      "notes": "1080 square invite background"
+      "notes": "1080 square invite background; WebP (.415)"
     },
     {
       "id": "coach-story",
@@ -318,7 +318,7 @@
       "path": "/social/coach-story.webp",
       "status": "shipped",
       "promptId": "brand-raster-v1",
-      "notes": "1080x1920 story/reel canvas"
+      "notes": "1080x1920 story/reel canvas; WebP (.415)"
     },
     {
       "id": "scout-idle",
@@ -326,7 +326,7 @@
       "path": "/brand/mascot/scout-idle.webp",
       "status": "shipped",
       "promptId": "flow-mascot-idle",
-      "notes": "GenerateImage geometric falcon v1"
+      "notes": "Grok Imagine modernist re-ink paper/ink/red (.416)"
     },
     {
       "id": "scout-invite",
@@ -334,7 +334,7 @@
       "path": "/brand/mascot/scout-invite.webp",
       "status": "shipped",
       "promptId": "flow-mascot-invite",
-      "notes": "GenerateImage geometric falcon v1"
+      "notes": "Grok Imagine modernist re-ink paper/ink/red (.416)"
     },
     {
       "id": "scout-celebrate",
@@ -342,7 +342,7 @@
       "path": "/brand/mascot/scout-celebrate.webp",
       "status": "shipped",
       "promptId": "flow-mascot-celebrate",
-      "notes": "GenerateImage geometric falcon v1"
+      "notes": "Grok Imagine modernist re-ink paper/ink/red (.416)"
     },
     {
       "id": "scout-mark",
@@ -351,6 +351,349 @@
       "status": "shipped",
       "promptId": "flow-mascot-mark",
       "notes": "Hand SVG tiny mark — not logo replacement"
+    },
+    {
+      "id": "dead-bug",
+      "kind": "form",
+      "path": "/form-guides/dead-bug.svg",
+      "status": "shipped",
+      "promptId": "form-instructional-v1",
+      "notes": "T1 structured-guide media (.414) via form-kit"
+    },
+    {
+      "id": "thruster",
+      "kind": "form",
+      "path": "/form-guides/thruster.svg",
+      "status": "shipped",
+      "promptId": "form-instructional-v1",
+      "notes": "T1 structured-guide media (.414) via form-kit"
+    },
+    {
+      "id": "cable-row",
+      "kind": "form",
+      "path": "/form-guides/cable-row.svg",
+      "status": "shipped",
+      "promptId": "form-instructional-v1",
+      "notes": "T1 structured-guide media (.414) via form-kit"
+    },
+    {
+      "id": "lateral-raise",
+      "kind": "form",
+      "path": "/form-guides/lateral-raise.svg",
+      "status": "shipped",
+      "promptId": "form-instructional-v1",
+      "notes": "T1 structured-guide media (.414) via form-kit"
+    },
+    {
+      "id": "hanging-leg-raise",
+      "kind": "form",
+      "path": "/form-guides/hanging-leg-raise.svg",
+      "status": "shipped",
+      "promptId": "form-instructional-v1",
+      "notes": "T1 structured-guide media (.414) via form-kit"
+    },
+    {
+      "id": "box-jump",
+      "kind": "form",
+      "path": "/form-guides/box-jump.svg",
+      "status": "shipped",
+      "promptId": "form-instructional-v1",
+      "notes": "T1 structured-guide media (.414) via form-kit"
+    },
+    {
+      "id": "skull-crusher",
+      "kind": "form",
+      "path": "/form-guides/skull-crusher.svg",
+      "status": "shipped",
+      "promptId": "form-instructional-v1",
+      "notes": "T1 structured-guide media (.414) via form-kit"
+    },
+    {
+      "id": "calf-raise",
+      "kind": "form",
+      "path": "/form-guides/calf-raise.svg",
+      "status": "shipped",
+      "promptId": "form-instructional-v1",
+      "notes": "T1 structured-guide media (.414) via form-kit"
+    },
+    {
+      "id": "leg-press",
+      "kind": "form",
+      "path": "/form-guides/leg-press.svg",
+      "status": "shipped",
+      "promptId": "form-instructional-v1",
+      "notes": "T1 structured-guide media (.414) via form-kit"
+    },
+    {
+      "id": "band-pull-apart",
+      "kind": "form",
+      "path": "/form-guides/band-pull-apart.svg",
+      "status": "shipped",
+      "promptId": "form-instructional-v1",
+      "notes": "T1 structured-guide media (.414) via form-kit"
+    },
+    {
+      "id": "superman",
+      "kind": "form",
+      "path": "/form-guides/superman.svg",
+      "status": "shipped",
+      "promptId": "form-instructional-v1",
+      "notes": "T1 structured-guide media (.414) via form-kit"
+    },
+    {
+      "id": "negative-pullup",
+      "kind": "form",
+      "path": "/form-guides/negative-pullup.svg",
+      "status": "shipped",
+      "promptId": "form-instructional-v1",
+      "notes": "T1 structured-guide media (.414) via form-kit"
+    },
+    {
+      "id": "crunches",
+      "kind": "form",
+      "path": "/form-guides/crunches.svg",
+      "status": "shipped",
+      "promptId": "form-instructional-v1",
+      "notes": "T1 structured-guide media (.414) via form-kit"
+    },
+    {
+      "id": "cat-camel",
+      "kind": "form",
+      "path": "/form-guides/cat-camel.svg",
+      "status": "shipped",
+      "promptId": "form-instructional-v1",
+      "notes": "T1 structured-guide media (.414) via form-kit"
+    },
+    {
+      "id": "couch-stretch",
+      "kind": "form",
+      "path": "/form-guides/couch-stretch.svg",
+      "status": "shipped",
+      "promptId": "form-instructional-v1",
+      "notes": "T1 structured-guide media (.414) via form-kit"
+    },
+    {
+      "id": "bear-crawl",
+      "kind": "form",
+      "path": "/form-guides/bear-crawl.svg",
+      "status": "shipped",
+      "promptId": "form-instructional-v1",
+      "notes": "T1 structured-guide media (.414) via form-kit"
+    },
+    {
+      "id": "inchworm",
+      "kind": "form",
+      "path": "/form-guides/inchworm.svg",
+      "status": "shipped",
+      "promptId": "form-instructional-v1",
+      "notes": "T1 structured-guide media (.414) via form-kit"
+    },
+    {
+      "id": "single-leg-glute",
+      "kind": "form",
+      "path": "/form-guides/single-leg-glute.svg",
+      "status": "shipped",
+      "promptId": "form-instructional-v1",
+      "notes": "T1 structured-guide media (.414) via form-kit"
+    },
+    {
+      "id": "wall-angels",
+      "kind": "form",
+      "path": "/form-guides/wall-angels.svg",
+      "status": "shipped",
+      "promptId": "form-instructional-v1",
+      "notes": "T1 structured-guide media (.414) via form-kit"
+    },
+    {
+      "id": "thread-needle",
+      "kind": "form",
+      "path": "/form-guides/thread-needle.svg",
+      "status": "shipped",
+      "promptId": "form-instructional-v1",
+      "notes": "T1 structured-guide media (.414) via form-kit"
+    },
+    {
+      "id": "frog-pose",
+      "kind": "form",
+      "path": "/form-guides/frog-pose.svg",
+      "status": "shipped",
+      "promptId": "form-instructional-v1",
+      "notes": "T1 structured-guide media (.414) via form-kit"
+    },
+    {
+      "id": "sled-push",
+      "kind": "form",
+      "path": "/form-guides/sled-push.svg",
+      "status": "shipped",
+      "promptId": "form-instructional-v1",
+      "notes": "T1 structured-guide media (.414) via form-kit"
+    },
+    {
+      "id": "said-principle",
+      "kind": "learn",
+      "path": "/learn/said-principle.webp",
+      "status": "shipped",
+      "promptId": "brand-diagram-v1",
+      "notes": "Section figure SVG→WebP (.414)"
+    },
+    {
+      "id": "energy-systems",
+      "kind": "learn",
+      "path": "/learn/energy-systems.webp",
+      "status": "shipped",
+      "promptId": "brand-diagram-v1",
+      "notes": "Section figure SVG→WebP (.414)"
+    },
+    {
+      "id": "recovery-stimulus",
+      "kind": "learn",
+      "path": "/learn/recovery-stimulus.webp",
+      "status": "shipped",
+      "promptId": "brand-diagram-v1",
+      "notes": "Section figure SVG→WebP (.414)"
+    },
+    {
+      "id": "progressive-overload",
+      "kind": "learn",
+      "path": "/learn/progressive-overload.webp",
+      "status": "shipped",
+      "promptId": "brand-diagram-v1",
+      "notes": "Section figure SVG→WebP (.414)"
+    },
+    {
+      "id": "deload-signal",
+      "kind": "learn",
+      "path": "/learn/deload-signal.webp",
+      "status": "shipped",
+      "promptId": "brand-diagram-v1",
+      "notes": "Section figure SVG→WebP (.414)"
+    },
+    {
+      "id": "first-session",
+      "kind": "learn",
+      "path": "/learn/first-session.webp",
+      "status": "shipped",
+      "promptId": "brand-diagram-v1",
+      "notes": "Section figure SVG→WebP (.414)"
+    },
+    {
+      "id": "protein-briefing",
+      "kind": "learn",
+      "path": "/learn/protein-briefing.webp",
+      "status": "shipped",
+      "promptId": "brand-diagram-v1",
+      "notes": "Section figure SVG→WebP (.414)"
+    },
+    {
+      "id": "retest-cadence",
+      "kind": "learn",
+      "path": "/learn/retest-cadence.webp",
+      "status": "shipped",
+      "promptId": "brand-diagram-v1",
+      "notes": "Section figure SVG→WebP (.414)"
+    },
+    {
+      "id": "pattern-squat",
+      "kind": "form",
+      "path": "/form-guides/pattern-squat.svg",
+      "status": "shipped",
+      "promptId": "form-pattern-v1",
+      "notes": "Shared movement pattern pack (.415) — not exercise-specific"
+    },
+    {
+      "id": "pattern-hinge",
+      "kind": "form",
+      "path": "/form-guides/pattern-hinge.svg",
+      "status": "shipped",
+      "promptId": "form-pattern-v1",
+      "notes": "Shared movement pattern pack (.415) — not exercise-specific"
+    },
+    {
+      "id": "pattern-push",
+      "kind": "form",
+      "path": "/form-guides/pattern-push.svg",
+      "status": "shipped",
+      "promptId": "form-pattern-v1",
+      "notes": "Shared movement pattern pack (.415) — not exercise-specific"
+    },
+    {
+      "id": "pattern-pull",
+      "kind": "form",
+      "path": "/form-guides/pattern-pull.svg",
+      "status": "shipped",
+      "promptId": "form-pattern-v1",
+      "notes": "Shared movement pattern pack (.415) — not exercise-specific"
+    },
+    {
+      "id": "pattern-core",
+      "kind": "form",
+      "path": "/form-guides/pattern-core.svg",
+      "status": "shipped",
+      "promptId": "form-pattern-v1",
+      "notes": "Shared movement pattern pack (.415) — not exercise-specific"
+    },
+    {
+      "id": "pattern-loco",
+      "kind": "form",
+      "path": "/form-guides/pattern-loco.svg",
+      "status": "shipped",
+      "promptId": "form-pattern-v1",
+      "notes": "Shared movement pattern pack (.415) — not exercise-specific"
+    },
+    {
+      "id": "pattern-isolation",
+      "kind": "form",
+      "path": "/form-guides/pattern-isolation.svg",
+      "status": "shipped",
+      "promptId": "form-pattern-v1",
+      "notes": "Shared movement pattern pack (.415) — not exercise-specific"
+    },
+    {
+      "id": "six-pillars",
+      "kind": "learn",
+      "path": "/learn/six-pillars.webp",
+      "status": "shipped",
+      "promptId": "brand-diagram-v1",
+      "notes": "Section figure SVG→WebP (.415)"
+    },
+    {
+      "id": "win-score-offline",
+      "kind": "learn",
+      "path": "/learn/win-score-offline.webp",
+      "status": "shipped",
+      "promptId": "brand-diagram-v1",
+      "notes": "Section figure SVG→WebP (.415)"
+    },
+    {
+      "id": "meal-timing",
+      "kind": "learn",
+      "path": "/learn/meal-timing.webp",
+      "status": "shipped",
+      "promptId": "brand-diagram-v1",
+      "notes": "Section figure SVG→WebP (.415)"
+    },
+    {
+      "id": "parq-screen",
+      "kind": "learn",
+      "path": "/learn/parq-screen.webp",
+      "status": "shipped",
+      "promptId": "brand-diagram-v1",
+      "notes": "Section figure SVG→WebP (.415)"
+    },
+    {
+      "id": "adjust-plan",
+      "kind": "learn",
+      "path": "/learn/adjust-plan.webp",
+      "status": "shipped",
+      "promptId": "brand-diagram-v1",
+      "notes": "Section figure SVG→WebP (.415)"
+    },
+    {
+      "id": "beyond-the-basics-pdf",
+      "kind": "learn",
+      "path": "/magazine/beyond-the-basics.pdf",
+      "status": "shipped",
+      "notes": "Rebuilt .416 with section densify (~27 pages)"
     }
   ]
 }

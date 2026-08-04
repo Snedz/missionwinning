@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 220" fill="none" role="img" aria-label="Shared pull pattern: hang, pull, lower">
+  <title>Pull pattern form diagram</title>
+  <rect width="360" height="220" fill="#f3f2f2"></rect>
+  <text x="60" y="28" text-anchor="middle" fill="#6f6b69" font-family="Archivo, system-ui, sans-serif" font-size="11" letter-spacing="0.5">HANG</text>
+  <text x="180" y="28" text-anchor="middle" fill="#6f6b69" font-family="Archivo, system-ui, sans-serif" font-size="11" letter-spacing="0.5">PULL</text>
+  <text x="300" y="28" text-anchor="middle" fill="#6f6b69" font-family="Archivo, system-ui, sans-serif" font-size="11" letter-spacing="0.5">LOWER</text>
+  <line x1="20" y1="185" x2="100" y2="185" stroke="#201e1d" stroke-width="2"></line>
+  <line x1="140" y1="185" x2="220" y2="185" stroke="#201e1d" stroke-width="2"></line>
+  <line x1="260" y1="185" x2="340" y2="185" stroke="#201e1d" stroke-width="2"></line>
+  <line x1="30" y1="50" x2="90" y2="50" stroke="#201e1d" stroke-width="3" stroke-linecap="round"></line>
+  <g stroke="#201e1d" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none">
+    <circle cx="60" cy="95" r="9"></circle>
+    <line x1="60" y1="95" x2="60" y2="106"></line>
+    <line x1="60" y1="106" x2="60" y2="145"></line>
+    <line x1="60" y1="106" x2="60" y2="106"></line>
+    <line x1="60" y1="106" x2="60" y2="106"></line>
+    <line x1="60" y1="106" x2="45" y2="55"></line>
+    <line x1="60" y1="106" x2="75" y2="55"></line>
+    <line x1="60" y1="145" x2="52" y2="175"></line>
+    <line x1="60" y1="145" x2="68" y2="175"></line>
+  </g>
+  <circle cx="60" cy="55" r="3.5" fill="#ec3013"></circle>
+  <text x="60" y="47" text-anchor="middle" fill="#ec3013" font-family="Archivo, system-ui, sans-serif" font-size="8">grip</text>
+  <line x1="150" y1="50" x2="210" y2="50" stroke="#201e1d" stroke-width="3" stroke-linecap="round"></line>
+  <g stroke="#201e1d" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none">
+    <circle cx="180" cy="70" r="9"></circle>
+    <line x1="180" y1="70" x2="180" y2="81"></line>
+    <line x1="180" y1="81" x2="180" y2="120"></line>
+    <line x1="180" y1="81" x2="180" y2="81"></line>
+    <line x1="180" y1="81" x2="180" y2="81"></line>
+    <line x1="180" y1="81" x2="160" y2="85"></line>
+    <line x1="160" y1="85" x2="165" y2="55"></line>
+    <line x1="180" y1="81" x2="200" y2="85"></line>
+    <line x1="200" y1="85" x2="195" y2="55"></line>
+    <line x1="180" y1="120" x2="172" y2="165"></line>
+    <line x1="180" y1="120" x2="188" y2="165"></line>
+  </g>
+  <path d="M200 100 L200 75" stroke="#ec3013" stroke-width="2" stroke-linecap="round"></path>
+  <polygon points="200,75 204,83 196,83" fill="#ec3013"></polygon>
+  <text x="210" y="87.5" fill="#ec3013" font-family="Archivo, system-ui, sans-serif" font-size="9">pull</text>
+  <line x1="270" y1="50" x2="330" y2="50" stroke="#201e1d" stroke-width="3" stroke-linecap="round"></line>
+  <g stroke="#201e1d" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none">
+    <circle cx="300" cy="95" r="9"></circle>
+    <line x1="300" y1="95" x2="300" y2="106"></line>
+    <line x1="300" y1="106" x2="300" y2="145"></line>
+    <line x1="300" y1="106" x2="300" y2="106"></line>
+    <line x1="300" y1="106" x2="300" y2="106"></line>
+    <line x1="300" y1="106" x2="285" y2="55"></line>
+    <line x1="300" y1="106" x2="315" y2="55"></line>
+    <line x1="300" y1="145" x2="292" y2="175"></line>
+    <line x1="300" y1="145" x2="308" y2="175"></line>
+  </g>
+  <path d="M315 70 L315 100" stroke="#ec3013" stroke-width="2" stroke-linecap="round"></path>
+  <polygon points="315,100 311,92 319,92" fill="#ec3013"></polygon>
+</svg>

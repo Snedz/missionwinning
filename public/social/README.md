@@ -4,7 +4,8 @@ Launch / invite stills for Mission Winning. Full playbook: [docs/MEDIA_SYSTEM.md
 
 | File | Size | Use |
 |------|------|-----|
-| `invite-square.png` | 1080×1080 | Invite / beta DM share background (Modernist, rebrand 2026-07-25) |
-| `coach-story.png` | 1080×1920 | Stories / Reels canvas (overlay copy in editor) |
+| `invite-square.webp` | 1080×1080 | Invite / beta DM share background (Modernist) |
+| `coach-story.webp` | 1080×1920 | Stories / Reels canvas (overlay copy in editor) |
+| `invite-square.png` · `coach-story.png` | source | Prefer WebP in product links; PNG kept as source |
 
 Do not commit multi‑MB drafts. Check `media/manifest.json` before regenerating.
