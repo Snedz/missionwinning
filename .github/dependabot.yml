@@ -10,6 +10,11 @@ updates:
     labels:
       - dependencies
       - security
+    # Keep @types/node on the same major as CI/runtime (Node 22). A types major
+    # without a runtime move only creates close-noise (e.g. closed PR #213).
+    ignore:
+      - dependency-name: "@types/node"
+        update-types: ["version-update:semver-major"]
 
   - package-ecosystem: github-actions
     directory: /
@@ -20,3 +25,10 @@ updates:
     labels:
       - dependencies
       - ci
+    # .276 pinned checkout + upload-artifact at v5 deliberately; Dependabot's
+    # jump to v7 was closed as #75/#77. Allow patch/minor only until we choose v6+.
+    ignore:
+      - dependency-name: "actions/checkout"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "actions/upload-artifact"
+        update-types: ["version-update:semver-major"]
