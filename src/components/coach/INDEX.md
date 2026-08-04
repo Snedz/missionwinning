@@ -17,6 +17,8 @@
 | `CoachVoiceCard.tsx` | Weekly voice briefing display |
 | `AdjustSessionSheet.tsx` | Free offline adjust chips (time / BW / avoid) |
 | `CoachChatPanel.tsx` | Premium chat; free = soft tip or form cues for `?ask=` (not brass paywall) |
+| `CoachChatTranscript.tsx` | Premium turn log (`role="log"`) (`.448`) |
+| `CoachChatComposer.tsx` | Premium input + send/stop (`.448`) |
 
 ## Related
 

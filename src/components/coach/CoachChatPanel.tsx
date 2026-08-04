@@ -15,6 +15,8 @@ import { EXERCISES, ensureFullExerciseCatalog, getExerciseById } from '@/data/ex
 import { cn } from '@/lib/utils';
 import { CoachFreeFormAskPanel } from '@/components/coach/CoachFreeFormAskPanel';
 import { CoachSoftBundleChatTip } from '@/components/coach/CoachSoftBundleChatTip';
+import { CoachChatTranscript } from '@/components/coach/CoachChatTranscript';
+import { CoachChatComposer } from '@/components/coach/CoachChatComposer';
 import {
   buildCoachChatRequestContext,
   classifyCoachChatStreamChunk,
@@ -269,78 +271,14 @@ export function CoachChatPanel({
                 </Button>
               </div>
             ) : null}
-            <div
-              ref={logRef}
-              role="log"
-              aria-live="polite"
-              className="max-h-56 overflow-y-auto space-y-2 border-2 border-border p-3 text-sm"
-            >
-              {turns.length === 0 ? (
-                <p className="text-muted-foreground text-xs">
-                  {t('coachChatPlaceholder', {
-                    defaultValue: "Ask about today's session, form, or recovery…",
-                  })}
-                </p>
-              ) : null}
-              {turns.map((turn, i) => (
-                <div
-                  key={`${turn.role}-${i}`}
-                  className={cn(
-                    'rounded-none px-2 py-1.5 whitespace-pre-wrap',
-                    turn.role === 'user'
-                      ? 'border-2 border-primary bg-tint ml-4'
-                      : 'border-2 border-border bg-card mr-4'
-                  )}
-                >
-                  {turn.content}
-                  {sending && turn.role === 'coach' && i === turns.length - 1 ? (
-                    <span
-                      className="inline-block w-1.5 h-3.5 ms-0.5 align-middle bg-primary animate-pulse"
-                      aria-hidden
-                    />
-                  ) : null}
-                </div>
-              ))}
-            </div>
-            <div className="flex gap-2">
-              <label className="sr-only" htmlFor="coach-chat-input">
-                {t('coachChatTitle', { defaultValue: 'Ask your coach' })}
-              </label>
-              <input
-                id="coach-chat-input"
-                type="text"
-                className="flex-1 min-h-[44px] rounded-none border border-border bg-background px-3 text-sm"
-                value={input}
-                disabled={sending}
-                placeholder={t('coachChatPlaceholder', {
-                  defaultValue: "Ask about today's session, form, or recovery…",
-                })}
-                onChange={(e) => setInput(e.target.value)}
-                onKeyDown={(e) => {
-                  if (e.key === 'Enter') void send();
-                }}
-              />
-              {sending ? (
-                <Button
-                  type="button"
-                  variant="outline"
-                  className="min-h-[44px] min-w-[44px]"
-                  onClick={stopStreaming}
-                >
-                  {t('coachChatStop', { defaultValue: 'Stop' })}
-                </Button>
-              ) : (
-                <Button
-                  type="button"
-                  variant="default"
-                  className="min-h-[44px] min-w-[44px]"
-                  disabled={!input.trim()}
-                  onClick={() => void send()}
-                >
-                  {t('coachChatSend', { defaultValue: 'Send' })}
-                </Button>
-              )}
-            </div>
+            <CoachChatTranscript turns={turns} sending={sending} logRef={logRef} />
+            <CoachChatComposer
+              input={input}
+              sending={sending}
+              onInputChange={setInput}
+              onSend={() => void send()}
+              onStop={stopStreaming}
+            />
           </CardContent>
         ) : null}
       </Card>
