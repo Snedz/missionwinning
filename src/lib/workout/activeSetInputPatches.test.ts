@@ -73,10 +73,14 @@ describe('resolveAddExerciseId', () => {
   });
 });
 
-describe('Active wiring (.407)', () => {
-  it('ActiveWorkoutPage uses the patch helpers', () => {
+describe('Active wiring (.407/.434)', () => {
+  it('ActiveWorkoutPage uses the patch helpers; inline add mounts strip', () => {
     const src = readFileSync(
       path.join(root, 'src/page-components/ActiveWorkoutPage.tsx'),
+      'utf8'
+    );
+    const inline = readFileSync(
+      path.join(root, 'src/components/workout/ActiveInlineAddExercise.tsx'),
       'utf8'
     );
     assert.match(src, /patchesForUseNext\(/);
@@ -84,5 +88,7 @@ describe('Active wiring (.407)', () => {
     assert.match(src, /patchesForApplyTargets\(/);
     assert.match(src, /plateCalcInitialWeight\(/);
     assert.match(src, /resolveAddExerciseId\(/);
+    assert.match(src, /ActiveInlineAddExercise/);
+    assert.match(inline, /resolveAddExerciseId\(/);
   });
 });

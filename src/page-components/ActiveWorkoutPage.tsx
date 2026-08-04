@@ -21,7 +21,6 @@ import { SignInPrompt } from '@/components/auth/SignInPrompt';
 import { RestTimerBar } from '@/components/workout/RestTimerBar';
 import { LogConsole } from '@/components/workout/LogConsole';
 import { AddExerciseSheet } from '@/components/workout/AddExerciseSheet';
-import { ExercisePicker } from '@/components/library/ExercisePicker';
 import { ScreenDock } from '@/components/layout/ScreenDock';
 import { useIsCompact } from '@/hooks/useIsCompact';
 import { PlateCalculatorSheet } from '@/components/workout/PlateCalculatorSheet';
@@ -29,6 +28,7 @@ import { ActiveExerciseCard } from '@/components/workout/ActiveExerciseCard';
 import { ActiveEmptyState } from '@/components/workout/ActiveEmptyState';
 import { ActiveSessionChrome } from '@/components/workout/ActiveSessionChrome';
 import { ActiveReadinessDeltaStrip } from '@/components/workout/ActiveReadinessDeltaStrip';
+import { ActiveInlineAddExercise } from '@/components/workout/ActiveInlineAddExercise';
 import { LiveHeartRate } from '@/components/workout/LiveHeartRate';
 import { useUnits, weightStep, weightUnitLabel } from '@/hooks/useUnits';
 import {
@@ -604,29 +604,13 @@ export function ActiveWorkoutPage() {
           step the mock does not ask for. Compact keeps the sheet.
         */}
         {!isCompact && (
-          <div className="max-w-[640px] border-t-2 border-border pt-5">
-            <ExercisePicker
-              value={addExerciseId}
-              onChange={setAddExerciseId}
-              placeholder={t('activeAddExerciseInline', {
-                defaultValue: 'Add exercise — search 300+ movements',
-              })}
-            />
-            <button
-              type="button"
-              disabled={!addExerciseId}
-              onClick={() => {
-                const id = resolveAddExerciseId(addExerciseId);
-                if (!id) return;
-                const ex = getExerciseById(id);
-                addExerciseToActive(id, ex?.muscleGroups);
-                setAddExerciseId('');
-              }}
-              className="mt-3 min-h-[40px] border-2 border-border px-4 text-sm font-semibold transition-colors hover:bg-accent-100 disabled:pointer-events-none disabled:border-dashed disabled:text-muted-foreground"
-            >
-              {t('activeAddSelectedExercise', { defaultValue: 'Add selected exercise' })}
-            </button>
-          </div>
+          <ActiveInlineAddExercise
+            addExerciseId={addExerciseId}
+            onAddExerciseIdChange={setAddExerciseId}
+            onAdd={(id, muscleGroups) => {
+              addExerciseToActive(id, muscleGroups);
+            }}
+          />
         )}
 
       <ActiveReadinessDeltaStrip
