@@ -55,6 +55,7 @@ When adding a doc:
 | [log/LOG-rotate-300.md](./log/LOG-rotate-300.md) | `.285` progressive overload — rotated for `.300` L5 fillers |
 | [log/LOG-rotate-301.md](./log/LOG-rotate-301.md) | `.286` re-entry dose — rotated for `.301` Coach/History i18n |
 | [log/LOG-rotate-302.md](./log/LOG-rotate-302.md) | `.287` coach why — rotated for `.302` debrief i18n |
+| [log/LOG-rotate-317.md](./log/LOG-rotate-317.md) | `.302` Victory debrief i18n — rotated for `.317` journal a11y |
 | [log/LOG-rotate-316.md](./log/LOG-rotate-316.md) | `.301` Coach/History/Active i18n — rotated for `.316` Track import |
 | [log/LOG-rotate-315.md](./log/LOG-rotate-315.md) | `.300` track/mind zero-state — rotated for `.315` GuidedStepPlayer |
 | [log/LOG-rotate-314.md](./log/LOG-rotate-314.md) | `.299` i18n Active/Fuel/Today — rotated for `.314` History journal |

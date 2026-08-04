@@ -125,6 +125,25 @@ function plantSeed(): void {
       sessions,
     })
   );
+
+  // Journal timeline chrome (search / edit / privacy line) only mounts when an
+  // entry exists — zero-data /history → Journal shows EmptyState forever.
+  const todayKey = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
+  localStorage.setItem(
+    'mw_session_journal',
+    JSON.stringify([
+      {
+        workoutId: 'seed-hist-1',
+        date: todayKey,
+        workoutName: 'Seed Upper',
+        zone: 'steady',
+        lines: [{ kind: 'band', text: 'Steady — keep this dose.' }],
+        fragments: ['Felt strong on push-ups'],
+        feel: 4,
+        savedAt: completedAt,
+      },
+    ])
+  );
 }
 
 export async function seedHistoryAndMissedCoach(page: Page): Promise<void> {

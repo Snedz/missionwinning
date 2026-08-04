@@ -331,6 +331,34 @@ test.describe('Accessibility @a11y', () => {
   });
 
   /**
+   * Loop 6 P5 — Journal timeline + edit chrome. Zero-data /history → Journal
+   * is EmptyState; axe must see search, privacy line, and the edit textarea
+   * after a seeded entry.
+   */
+  test('axe serious/critical: /history journal with entry editing @a11y', async ({
+    page,
+    context,
+    baseURL,
+  }) => {
+    if (!baseURL) throw new Error('baseURL required');
+    const ok = await unlockGate(page, context, baseURL);
+    if (gateRequired() && !ok) {
+      test.skip(true, 'SMOKE_ACCESS_SECRET required to unlock private gate');
+    }
+    await seedHistoryAndMissedCoach(page);
+    await page.goto('/history', { waitUntil: 'domcontentloaded' });
+    await page.getByText(/^Journal$/i).first().click();
+    await expect(page.getByPlaceholder(/search your journal/i)).toBeVisible({
+      timeout: 15_000,
+    });
+    await page.getByRole('button', { name: /edit your notes on seed upper/i }).click();
+    await expect(page.getByLabel(/your notes, one per line/i)).toBeVisible({
+      timeout: 10_000,
+    });
+    await axeSerious(page, '/history (journal editing)');
+  });
+
+  /**
    * The assertion axe cannot make.
    *
    * axe-core does not reliably test focus visibility, which is how this suite sat at

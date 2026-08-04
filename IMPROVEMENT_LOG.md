@@ -156,3 +156,28 @@ PR: #234
 **Verified:** i18n @274; ship-protocol guards green.
 **Aikido:** `aikido_full_scan` still fails without X11 `$DISPLAY`. Noted; continue.
 **Next:** Pump screenshot batch → D14; founder phone excellence; visual baseline bootstrap.
+
+## Loop 6 waves
+
+| Wave | Status | Notes |
+|------|--------|-------|
+| P1 Profile privacy/CSV | done (`.313`) | Privacy/premium/CSV/sync; **274→235** |
+| P2 History journal/anatomy | done (`.314`) | Journal + anatomy keys; **235→220** |
+| P3 GuidedStepPlayer | done (`.315`) | Move/Mind runner chrome; **220→209** |
+| P4 Track import | done (`.316`) | ActivityImportPanel keys; **209→193** |
+| P5 Journal seeded a11y | done (`.317`) | Journal edit chrome + Loop 6 living-log close |
+
+## Metrics
+
+| Metric | Loop 5 end | Loop 6 end |
+|--------|------------|------------|
+| Build | `.312` | **`.317`** |
+| i18n uncovered cap | 274 | **193** |
+
+## End of Loop 6
+
+**Delivered:** P1–P5 on `cursor/kaizen-wedge-night-be9b` → PR #234 (`.313`–`.317`).
+**Verified:** i18n @193; journal edit a11y axe green (`localhost` — `127.0.0.1` blocked by Next `allowedDevOrigins` in this VM).
+**Aikido:** `aikido_full_scan` still fails without X11 `$DISPLAY`. Noted; continue.
+**Next:** Loop 7 — profile wearables/owner leftovers, library/builder/session HR i18n, soft chrome, Active extracts.
+
