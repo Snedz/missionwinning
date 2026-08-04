@@ -122,7 +122,10 @@ const VULGAR_FRAC: Record<string, number> = {
 const VULGAR_CLASS = '¼½⅓⅔¾';
 
 const GLOBAL_PORTION: { pattern: RegExp; scale: number }[] = [
-  { pattern: /\b(large|big|xl|double|extra)\b/i, scale: 1.35 },
+  { pattern: /\b(large|big|xl|extra)\b/i, scale: 1.35 },
+  // `double portion` is a qty phrase (→ 2× in findQtyBefore). Bare `double chicken`
+  // still means a large plate (.449).
+  { pattern: /\bdouble\b(?!\s+portions?\b)/i, scale: 1.35 },
   // `half` is a quantity word (`half a cup`, `half chicken`) — not a plate-size
   // adjective. Keeping it here double-scaled word-half qty to ~0.65× (.424).
   { pattern: /\b(small|light|mini)\b/i, scale: 0.65 },
@@ -151,6 +154,8 @@ function portionWordScale(word: string): number {
   const w = word.toLowerCase();
   if (/^cups?$/.test(w)) return 1;
   if (/^plates?$/.test(w)) return 1;
+  if (/^bowls?$/.test(w)) return 1;
+  if (/^servings?$/.test(w)) return 1;
   if (/^pieces?$|^pcs?$/.test(w)) return 1;
   if (/^handfuls?$/.test(w)) return 0.5;
   if (/^slices?$/.test(w)) return 0.5;
@@ -161,7 +166,13 @@ function portionWordScale(word: string): number {
 
 /** Shared portion-word token for numbered / word / bare parsers. */
 const PORTION_WORD =
-  'scoops?|scoopfuls?|cups?|pieces?|pcs?|handfuls?|slices?|plates?|tsps?|teaspoons?';
+  'scoops?|scoopfuls?|cups?|pieces?|pcs?|handfuls?|slices?|plates?|bowls?|servings?|tsps?|teaspoons?';
+
+/**
+ * Food keywords that are also portion words (`bowl of rice`). When followed by
+ * `of <food>`, skip the food match so we do not double-count Bowl base (.449).
+ */
+const PORTION_ALSO_FOOD = /^(bowls?|plates?|cups?|scoops?|scoopfuls?|handfuls?|slices?|pieces?|pcs?|servings?)$/i;
 
 function findQtyBefore(text: string, kwStart: number): { qty: number; start: number } {
   const before = text.slice(0, kwStart);
@@ -495,6 +506,23 @@ function findQtyBefore(text: string, kwStart: number): { qty: number; start: num
   if (someQty) {
     return { qty: 3, start: kwStart - someQty[0].length };
   }
+  // "several eggs" → 3 (.449)
+  const severalQty = before.match(/\b(?:(?:a|an)\s+)?several\s+(?:of\s+)?$/i);
+  if (severalQty) {
+    return { qty: 3, start: kwStart - severalQty[0].length };
+  }
+  // "a lot of chicken" / "lots of rice" → 2 (.449)
+  const lotsQty = before.match(/\b(?:a\s+lot|lots)\s+(?:of\s+)?$/i);
+  if (lotsQty) {
+    return { qty: 2, start: kwStart - lotsQty[0].length };
+  }
+  // "double portion of rice" → 2 (not GLOBAL 1.35×) (.449)
+  const doublePortionQty = before.match(
+    /\b(?:(?:a|an)\s+)?double\s+portions?\s+(?:of\s+)?$/i
+  );
+  if (doublePortionQty) {
+    return { qty: 2, start: kwStart - doublePortionQty[0].length };
+  }
   // "a dash/splash/pinch/dab/bit of olive oil" → tsp-scale, not a full serving (.441/.443)
   const dabQty = before.match(
     /\b(?:(?:a|an)\s+)?(?:dash|splash|pinch|dab|bit)\s+(?:of\s+)?$/i
@@ -533,6 +561,11 @@ function collectHits(text: string): Hit[] {
         const rightOk = end >= text.length || /[\s,+/&-]/.test(text[end] ?? '');
         if (!leftOk || !rightOk) {
           from = idx + 1;
+          continue;
+        }
+        // `bowl of rice` — bowl is a portion word, not Bowl base (.449)
+        if (PORTION_ALSO_FOOD.test(kw) && /^\s+of\s+\w/i.test(text.slice(end))) {
+          from = end;
           continue;
         }
         const { qty, start } = findQtyBefore(text, idx);

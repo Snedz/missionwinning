@@ -347,4 +347,38 @@ describe('nlMealLog', () => {
     assert.equal(someChicken.protein, chicken.protein * 3);
     assert.notEqual(dozen.cals, egg.cals, 'dozen must not be a single egg');
   });
+
+  it('parses several/lots/double-portion/servings/bowl-of (.449)', () => {
+    const egg = estimateMealFromDescription('egg');
+    const rice = estimateMealFromDescription('rice');
+    const chicken = estimateMealFromDescription('chicken');
+    const oats = estimateMealFromDescription('oatmeal');
+    assert.ok(egg && rice && chicken && oats);
+    const several = estimateMealFromDescription('several eggs');
+    const aLot = estimateMealFromDescription('a lot of chicken');
+    const lots = estimateMealFromDescription('lots of rice');
+    const doubleP = estimateMealFromDescription('double portion of rice');
+    const aDoubleP = estimateMealFromDescription('a double portion of eggs');
+    const twoServings = estimateMealFromDescription('2 servings of rice');
+    const bowlRice = estimateMealFromDescription('bowl of rice');
+    const aBowlOats = estimateMealFromDescription('a bowl of oatmeal');
+    const bowlChicken = estimateMealFromDescription('bowl of chicken');
+    assert.ok(
+      several && aLot && lots && doubleP && aDoubleP && twoServings && bowlRice && aBowlOats && bowlChicken
+    );
+    assert.equal(several.protein, egg.protein * 3);
+    assert.equal(aLot.protein, chicken.protein * 2);
+    assert.equal(lots.protein, rice.protein * 2);
+    assert.equal(doubleP.protein, rice.protein * 2);
+    assert.equal(aDoubleP.protein, egg.protein * 2);
+    assert.equal(twoServings.protein, rice.protein * 2);
+    assert.equal(bowlRice.cals, rice.cals);
+    assert.equal(bowlRice.matched?.length, 1);
+    assert.equal(aBowlOats.cals, oats.cals);
+    assert.equal(bowlChicken.protein, chicken.protein);
+    assert.ok(
+      !bowlRice.matched?.some((m) => /bowl/i.test(m)),
+      'bowl of rice must not also count Bowl base'
+    );
+  });
 });
