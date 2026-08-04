@@ -1,44 +1,47 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 220" fill="none" role="img" aria-label="Hip thrust form: setup, drive, squeeze">
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 220" fill="none" role="img" aria-label="Hip thrust: setup, drive, lower">
   <title>Hip thrust form diagram</title>
   <rect width="360" height="220" fill="#f3f2f2"></rect>
-  <text x="60" y="28" text-anchor="middle" fill="#6f6b69" font-family="Archivo, system-ui, sans-serif" font-size="11">Setup</text>
-  <text x="180" y="28" text-anchor="middle" fill="#6f6b69" font-family="Archivo, system-ui, sans-serif" font-size="11">Drive</text>
-  <text x="300" y="28" text-anchor="middle" fill="#6f6b69" font-family="Archivo, system-ui, sans-serif" font-size="11">Squeeze</text>
-  <line x1="20" y1="185" x2="340" y2="185" stroke="#201e1d" stroke-width="2"></line>
-  
-  <rect x="25" y="100" width="14" height="50" rx="2" fill="#201e1d"></rect>
-  <rect x="145" y="100" width="14" height="50" rx="2" fill="#201e1d"></rect>
-  <rect x="265" y="100" width="14" height="50" rx="2" fill="#201e1d"></rect>
-
-  <g stroke="#201e1d" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-    <circle cx="50" cy="115" r="8"></circle>
-    <line x1="55" y1="120" x2="90" y2="150"></line>
-    <line x1="90" y1="150" x2="80" y2="175"></line>
-    <line x1="90" y1="150" x2="105" y2="175"></line>
-    <line x1="70" y1="145" x2="100" y2="145"></line>
+  <text x="60" y="28" text-anchor="middle" fill="#6f6b69" font-family="Archivo, system-ui, sans-serif" font-size="11" letter-spacing="0.5">SETUP</text>
+  <text x="180" y="28" text-anchor="middle" fill="#6f6b69" font-family="Archivo, system-ui, sans-serif" font-size="11" letter-spacing="0.5">DRIVE</text>
+  <text x="300" y="28" text-anchor="middle" fill="#6f6b69" font-family="Archivo, system-ui, sans-serif" font-size="11" letter-spacing="0.5">LOWER</text>
+  <line x1="20" y1="185" x2="100" y2="185" stroke="#201e1d" stroke-width="2"></line>
+  <line x1="140" y1="185" x2="220" y2="185" stroke="#201e1d" stroke-width="2"></line>
+  <line x1="260" y1="185" x2="340" y2="185" stroke="#201e1d" stroke-width="2"></line>
+  <g stroke="#201e1d" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none">
+    <circle cx="50" cy="100" r="9"></circle>
+    <line x1="50" y1="100" x2="60" y2="115"></line>
+    <line x1="60" y1="115" x2="90" y2="150"></line>
+    <line x1="60" y1="115" x2="62" y2="118"></line>
+    <line x1="62" y1="118" x2="85" y2="145"></line>
+    <line x1="90" y1="150" x2="110" y2="155"></line>
+    <line x1="110" y1="155" x2="115" y2="185"></line>
+    <line x1="90" y1="150" x2="108" y2="185"></line>
   </g>
-  <text x="85" y="140" fill="#ec3013" font-family="Archivo, system-ui, sans-serif" font-size="8">bar</text>
-
-  <g stroke="#201e1d" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-    <circle cx="170" cy="110" r="8"></circle>
-    <line x1="175" y1="115" x2="210" y2="120"></line>
-    <line x1="210" y1="120" x2="205" y2="175"></line>
-    <line x1="210" y1="120" x2="230" y2="175"></line>
-    <line x1="195" y1="118" x2="225" y2="118"></line>
+  <rect x="25" y="125" width="30" height="40" fill="none" stroke="#201e1d" stroke-width="2"></rect>
+  <g stroke="#201e1d" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none">
+    <circle cx="170" cy="95" r="9"></circle>
+    <line x1="170" y1="95" x2="180" y2="110"></line>
+    <line x1="180" y1="110" x2="215" y2="115"></line>
+    <line x1="180" y1="110" x2="182" y2="112"></line>
+    <line x1="182" y1="112" x2="210" y2="118"></line>
+    <line x1="215" y1="115" x2="235" y2="150"></line>
+    <line x1="235" y1="150" x2="240" y2="185"></line>
+    <line x1="215" y1="115" x2="232" y2="185"></line>
   </g>
-  <path d="M210 150 L210 128" stroke="#ec3013" stroke-width="2" stroke-linecap="round"></path>
-  <polygon points="206,128 210,121 214,128" fill="#ec3013"></polygon>
-  <text x="220" y="145" fill="#ec3013" font-family="Archivo, system-ui, sans-serif" font-size="9">hips up</text>
-  <circle cx="210" cy="120" r="3.5" fill="#ec3013"></circle>
-
-  <g stroke="#201e1d" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-    <circle cx="290" cy="105" r="8"></circle>
-    <line x1="295" y1="110" x2="330" y2="105"></line>
-    <line x1="330" y1="105" x2="325" y2="175"></line>
-    <line x1="330" y1="105" x2="348" y2="175"></line>
-    <line x1="315" y1="105" x2="345" y2="105"></line>
+  <rect x="145" y="120" width="30" height="40" fill="none" stroke="#201e1d" stroke-width="2"></rect>
+  <path d="M210 145 L210 120" stroke="#ec3013" stroke-width="2" stroke-linecap="round"></path>
+  <polygon points="210,120 214,128 206,128" fill="#ec3013"></polygon>
+  <text x="220" y="132.5" fill="#ec3013" font-family="Archivo, system-ui, sans-serif" font-size="9">drive</text>
+  <g stroke="#201e1d" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none">
+    <circle cx="290" cy="100" r="9"></circle>
+    <line x1="290" y1="100" x2="300" y2="115"></line>
+    <line x1="300" y1="115" x2="330" y2="150"></line>
+    <line x1="300" y1="115" x2="302" y2="118"></line>
+    <line x1="302" y1="118" x2="325" y2="145"></line>
+    <line x1="330" y1="150" x2="350" y2="155"></line>
+    <line x1="350" y1="155" x2="355" y2="185"></line>
+    <line x1="330" y1="150" x2="348" y2="185"></line>
   </g>
-  <circle cx="330" cy="105" r="3.5" fill="#ec3013"></circle>
-  <text x="330" y="96" text-anchor="middle" fill="#ec3013" font-family="Archivo, system-ui, sans-serif" font-size="8">squeeze</text>
-  <text x="300" y="200" text-anchor="middle" fill="#6f6b69" font-family="Archivo, system-ui, sans-serif" font-size="8">chin tucked · no over-arch</text>
+  <rect x="265" y="125" width="30" height="40" fill="none" stroke="#201e1d" stroke-width="2"></rect>
 </svg>

@@ -51,6 +51,7 @@
     "media:form-t1": "node scripts/generate-form-guides-t1.mjs",
     "media:learn-sections": "node scripts/generate-learn-section-figures.mjs",
     "media:form-patterns": "node scripts/generate-form-patterns.mjs",
+    "media:form-all": "node scripts/generate-form-guides-all.mjs",
     "mobile": "npm --prefix apps/mobile start",
     "mobile:typecheck": "npm --prefix apps/mobile run typecheck",
     "android:assemble": "cd apps/android && ./gradlew :app:assembleDebug",

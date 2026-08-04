@@ -282,6 +282,7 @@ export function LandingPage() {
                       'Sets save on the device the moment you log them. Signal is optional; the log is not.',
                   }),
                   shot: 'Phone on a bench, mid-set',
+                  photo: '/photo/phone-bench',
                 },
                 {
                   k: 'landingAnywhereGear',
@@ -291,6 +292,7 @@ export function LandingPage() {
                       'Tell it what you have — a bar, two bands, nothing — and the week is built from that.',
                   }),
                   shot: 'Home rack, bar loaded',
+                  photo: '/photo/home-rack',
                 },
                 {
                   k: 'landingAnywhereNoSensor',
@@ -300,10 +302,16 @@ export function LandingPage() {
                       'The plan comes from logged sets, so nothing needs charging for it to work.',
                   }),
                   shot: 'Bare wrist on a barbell',
+                  photo: '/photo/bare-wrist',
                 },
               ].map((col) => (
                 <div key={col.k}>
-                  <GrayscalePhoto caption={col.shot} className="mb-4" />
+                  <GrayscalePhoto
+                    base={col.photo}
+                    alt={col.shot}
+                    caption={col.shot}
+                    className="mb-4"
+                  />
                   <h3 className="mb-2 font-display text-lg font-semibold uppercase tracking-wide text-foreground">
                     {col.h}
                   </h3>
