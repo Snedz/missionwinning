@@ -65,6 +65,7 @@ When adding a doc:
 | [log/LOG-rotate-414.md](./log/LOG-rotate-414.md) | `.399` FileUploadRow chrome — rotated for `.414` form media T1 |
 | [log/LOG-rotate-415.md](./log/LOG-rotate-415.md) | `.400` opacity exemptions — rotated for `.415` pattern packs |
 | [log/LOG-rotate-416.md](./log/LOG-rotate-416.md) | `.401` beachhead i18n — rotated for `.416` Scout + PDF |
+| [log/LOG-rotate-421.md](./log/LOG-rotate-421.md) | `.406` — rotated for `.421` NL fractions |
 | [log/LOG-rotate-420.md](./log/LOG-rotate-420.md) | `.405` — rotated for `.420` Today candidates |
 | [log/LOG-rotate-419.md](./log/LOG-rotate-419.md) | `.404` — rotated for `.419` ActiveExerciseCard extract |
 | [log/LOG-rotate-418.md](./log/LOG-rotate-418.md) | `.403` — rotated for `.418` exercisePickerList coverage |
