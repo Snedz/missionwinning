@@ -182,7 +182,7 @@ export function LibraryDetailSheet({
                         preload="metadata"
                       />
                     ) : (
-                      // eslint-disable-next-line @next/next/no-img-element -- static form SVG under /public
+                      // Static form diagram under /public — plain img is intentional.
                       <img
                         src={guide.mediaUrl}
                         alt=""
