@@ -1,6 +1,8 @@
 /** Exercise library filter labels — merged into i18n `common` namespace. */
 
 const LIBRARY_EN: Record<string, string> = {
+  libraryEyebrow: 'Library',
+  library: 'Exercise Library',
   librarySubtitle:
     '{{count}}+ movements with cues and alternatives. Bodyweight and minimal equipment prioritized.',
   libraryTodayHub: 'Today Hub',
@@ -8,6 +10,18 @@ const LIBRARY_EN: Record<string, string> = {
   libraryPremiumUnlocked: ' — full library unlocked.',
   libraryFreeCatalog: ' — free core includes the full catalog.',
   librarySearchPlaceholder: 'Search name or muscle...',
+  libraryFilters: 'Filters',
+  libraryClearFilters: 'Clear filters',
+  libraryFilterMuscle: 'Muscle',
+  libraryMuscleSearch: 'Search muscles…',
+  libraryFilterEquipment: 'Equipment',
+  libraryFilterLevel: 'Level',
+  libraryFilterTag: 'Goal',
+  libraryApplyFilters: 'Done',
+  libraryViewDetailsFor: 'View details for {{name}}',
+  libraryViewDetails: 'View details →',
+  libraryLoadMore: 'Load more ({{remaining}} left)',
+  libraryNoResultsTitle: 'Nothing matches',
   libraryEquipAll: 'All Equipment',
   libraryEquipBodyweight: 'Bodyweight',
   libraryEquipDumbbell: 'Dumbbells',
@@ -29,7 +43,7 @@ const LIBRARY_EN: Record<string, string> = {
   libraryCuesComing: 'Form cues coming soon for this movement.',
   libraryAlternatives: 'Alternatives:',
   libraryQuickAdd: "Quick Add to Today's Workout →",
-  libraryNoResults: 'No exercises match these filters. Try clearing equipment or style filters.',
+  libraryNoResults: 'Clear equipment or muscle filters to see the full library again.',
 };
 
 const LIBRARY_ES: Record<string, string> = {
