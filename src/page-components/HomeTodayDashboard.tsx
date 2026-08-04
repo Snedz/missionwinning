@@ -42,6 +42,7 @@ import { TodayReentryCard } from "@/components/today/TodayReentryCard";
 import { FIRST_STEPS_DISMISS_KEY } from "@/lib/today/firstStepsDismissed";
 import { buildTodayCandidates } from "@/lib/today/buildTodayCandidates";
 import { planTodayBlocks, type TodayBlockCandidate } from "@/lib/today/todayBlockBudget";
+import { shouldAppendTodayMoreDetails } from "@/lib/today/shouldAppendTodayMore";
 import type { TodayBlockKey } from "@/lib/today/todayBlockPriority";
 import { useDismissed } from "@/hooks/useDismissed";
 import { localDateKey } from '@/lib/time/localDate';
@@ -622,8 +623,12 @@ export function HomeTodayDashboard() {
   // Quick links + accordion live under one collapsed "More" — never compete with JourneyHero.
   // Also renders whenever the budget spilled something, since the spill has to land here.
   if (
-    belowFoldReady &&
-    (layout.showQuickLinks || layout.showDetailsAccordion || plan.inMore.length > 0)
+    shouldAppendTodayMoreDetails({
+      belowFoldReady,
+      showQuickLinks: layout.showQuickLinks,
+      showDetailsAccordion: layout.showDetailsAccordion,
+      spilledCount: plan.inMore.length,
+    })
   ) {
     plan.top.push({
       key: 'more',

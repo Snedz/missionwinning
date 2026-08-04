@@ -65,6 +65,7 @@ When adding a doc:
 | [log/LOG-rotate-414.md](./log/LOG-rotate-414.md) | `.399` FileUploadRow chrome — rotated for `.414` form media T1 |
 | [log/LOG-rotate-415.md](./log/LOG-rotate-415.md) | `.400` opacity exemptions — rotated for `.415` pattern packs |
 | [log/LOG-rotate-416.md](./log/LOG-rotate-416.md) | `.401` beachhead i18n — rotated for `.416` Scout + PDF |
+| [log/LOG-rotate-428.md](./log/LOG-rotate-428.md) | `.413` — rotated for `.428` — Victory secondary Today (rotated for Today More gate). |
 | [log/LOG-rotate-427.md](./log/LOG-rotate-427.md) | `.412` — rotated for `.427` — Week-1 session-2 victory primary (rotated for opacity ratchet). |
 | [log/LOG-rotate-426.md](./log/LOG-rotate-426.md) | `.411` — rotated for `.426` — Coach early victory path (rotated for trainReady one-home). |
 | [log/LOG-rotate-425.md](./log/LOG-rotate-425.md) | `.410` — rotated for `.425` — Freestyle progression skip when prescribed (rotated for Active footer). |

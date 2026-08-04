@@ -3,7 +3,7 @@
 Session branch: `cursor/kaizen-night-be9b`  
 Started: 2026-08-04 · Web craft only · Modernist system stands  
 Base: `master` @ `2026.07-unified.417`  
-Tip: `2026.07-unified.426` · PR #254  
+Tip: `2026.07-unified.428` · PR #254  
 Prior night: #234 (`.294`–`.403`) + follow-on media/Learn through `.417`
 
 ## Contract
@@ -34,7 +34,7 @@ Pause/restart · week numbers · Fixed vs Flexible · glow FAB · Habits/communi
 
 | Metric | Night start | Tip |
 |--------|-------------|-----|
-| Build | `.417` | **`.426`** |
+| Build | `.417` | **`.428`** |
 | i18n uncovered cap | 16 | **16** |
 | ActiveExerciseCard LOC | 536 | **343** (−193) |
 | HomeTodayDashboard LOC | 785 | **714** (−71) |
@@ -117,9 +117,21 @@ Pause/restart · week numbers · Fixed vs Flexible · glow FAB · Habits/communi
 |------|--------|-------|
 | `.426` | done | isTodayTrainReady one-home lean+dashboard+primary |
 
+### Loop 10 — Soft chrome ratchet
+
+| Wave | Status | Notes |
+|------|--------|-------|
+| `.427` | done | Ban bare opacity-90/95; TrackWeeklyInsights solid |
+
+### Loop 11 — Today More mount
+
+| Wave | Status | Notes |
+|------|--------|-------|
+| `.428` | done | shouldAppendTodayMoreDetails one-home |
+
 ## Next (founder / later nights)
 
-1. Phone excellence walk of Train → Today → Victory → Coach on tip `.426`.
+1. Phone excellence walk of Train → Today → Victory → Coach on tip `.428`.
 2. Visual baseline bootstrap on Linux when founder ready (not this branch).
 3. Pump D14 only when screenshots arrive — do not invent IA.
 4. Further Fuel accuracy: vision grounding for honest `high` confidence.
