@@ -5,7 +5,7 @@
 > **Current status lives in exactly one place: [CONTEXT.md](../CONTEXT.md) `## Now`.**
 > This file is kept for the vision-vs-reality *framing*, not for its status column.
 
-**Living comparison** against [vision.md](../vision.md). Updated **2026-07-23** (build `2026.07-unified.109` — exercise-as-medicine thesis + Coach dose / victory feel / re-entry; **recruiting ≥10 users + founder Production promote remain the bottleneck**).
+**Living comparison** against [vision.md](../vision.md). Last content review **2026-07-23** (exercise-as-medicine thesis + Coach dose / victory feel / re-entry; **recruiting ≥10 users + founder Production promote remain the bottleneck**). Current build: see [`src/lib/buildInfo.ts`](../src/lib/buildInfo.ts).
 
 Use this doc when prioritizing work. Every feature should pass: *Does it serve free global accessibility or the right path?*
 
@@ -99,4 +99,4 @@ Code shipped; legal sign-off before `NEXT_PUBLIC_SHOW_MAHA_COPY=true`.
 
 ## Build label
 
-Current: `2026.07-unified.110` — see [`src/lib/buildInfo.ts`](../src/lib/buildInfo.ts). Confirm Profile footer matches Vercel production after founder promote.
+Current: see `APP_BUILD_LABEL` in [`src/lib/buildInfo.ts`](../src/lib/buildInfo.ts) — the one home for the number (a copy here goes stale). Confirm Profile footer matches Vercel production after founder promote.

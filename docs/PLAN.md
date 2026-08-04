@@ -194,7 +194,7 @@ npm run dev
 
 ---
 
-Last updated: 2026-07-14 (ORCHESTRATION.md horizons; S-Tier build `2026.07-unified.58`)
+Last content review: 2026-07-14 (ORCHESTRATION.md horizons). Current build: see `APP_BUILD_LABEL` in [src/lib/buildInfo.ts](../src/lib/buildInfo.ts) — a copied number here goes stale.
 
 ---
 
