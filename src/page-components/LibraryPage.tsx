@@ -5,10 +5,11 @@
  */
 
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { useMemo, useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useLocaleFormat } from '@/hooks/useLocaleFormat';
-import { Dumbbell, Search, SlidersHorizontal, X } from 'lucide-react';
+import { Check, Dumbbell, Search, SlidersHorizontal, X } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
@@ -36,8 +37,16 @@ import {
 import { inferFormPattern } from '@/lib/formPatterns';
 import { getFormGuideOrCues } from '@/lib/formGuides';
 import { exerciseCraftBlurb } from '@/lib/exerciseCraftBlurb';
+import {
+  LIBRARY_PICK_MAX,
+  sessionNameFromLibraryPick,
+  templatesFromLibraryPick,
+  toggleLibraryPick,
+} from '@/lib/librarySessionPick';
 import { usePremium } from '@/hooks/usePremium';
+import { useWorkoutStore } from '@/store/workoutStore';
 import type { ProgramTag } from '@/types';
+import { cn } from '@/lib/utils';
 
 const EQUIP_CHIPS = ['', 'bodyweight', 'dumbbell', 'barbell', 'cable', 'band', 'kettlebell'] as const;
 const LEVEL_CHIPS = ['', 'beginner', 'intermediate', 'advanced'] as const;
@@ -63,13 +72,20 @@ const LEVEL_LABELS: Record<string, string> = {
 export function LibraryPage() {
   const { t } = useTranslation();
   const fmt = useLocaleFormat();
+  const router = useRouter();
   const { premium } = usePremium();
+  const activeWorkout = useWorkoutStore((s) => s.activeWorkout);
+  const startWorkout = useWorkoutStore((s) => s.startWorkout);
+  const addExerciseToActive = useWorkoutStore((s) => s.addExerciseToActive);
   const [filters, setFilters] = useState<LibraryFilterState>({ ...DEFAULT_LIBRARY_FILTERS });
   const [detailId, setDetailId] = useState<string | null>(null);
   const [catalogRevision, setCatalogRevision] = useState(0);
   const [filtersOpen, setFiltersOpen] = useState(false);
   const [muscleQuery, setMuscleQuery] = useState('');
   const [visibleCount, setVisibleCount] = useState(48);
+  /** Craft-index studio: multi-select for freestyle session build. */
+  const [pickedIds, setPickedIds] = useState<string[]>([]);
+  const pickMode = pickedIds.length > 0;
 
   useEffect(() => {
     void ensureFullExerciseCatalog().then(() => setCatalogRevision((n) => n + 1));
@@ -115,6 +131,29 @@ export function LibraryPage() {
   };
 
   const visibleExercises = filtered.slice(0, visibleCount);
+
+  const togglePick = (id: string) => {
+    setPickedIds((prev) => toggleLibraryPick(prev, id));
+  };
+
+  const trainPicked = () => {
+    if (pickedIds.length === 0) return;
+    if (activeWorkout) {
+      for (const id of pickedIds) {
+        const ex = EXERCISES.find((e) => e.id === id);
+        addExerciseToActive(id, ex?.muscleGroups);
+      }
+      setPickedIds([]);
+      router.push('/active');
+      return;
+    }
+    const templates = templatesFromLibraryPick(EXERCISES, pickedIds);
+    if (templates.length === 0) return;
+    const name = sessionNameFromLibraryPick(EXERCISES, pickedIds);
+    startWorkout(name, templates);
+    setPickedIds([]);
+    router.push('/active');
+  };
 
   return (
     <PillarPageShell
@@ -204,13 +243,20 @@ export function LibraryPage() {
           </div>
         )}
 
-        <p className="text-xs text-muted-foreground">
-          {t('libraryShowingCount', {
-            shown: filtered.length,
-            total: EXERCISES.length,
-            defaultValue: `Showing ${filtered.length} of ${EXERCISES.length}`,
-          })}
-        </p>
+        <div className="flex flex-wrap items-center justify-between gap-2">
+          <p className="text-xs text-muted-foreground">
+            {t('libraryShowingCount', {
+              shown: filtered.length,
+              total: EXERCISES.length,
+              defaultValue: `Showing ${filtered.length} of ${EXERCISES.length}`,
+            })}
+          </p>
+          <p className="text-[10px] font-mono uppercase tracking-wider text-muted-foreground">
+            {t('libraryPickHint', {
+              defaultValue: 'Tap ✓ to build a session · open card for form',
+            })}
+          </p>
+        </div>
       </div>
 
       <Dialog open={filtersOpen} onOpenChange={setFiltersOpen}>
@@ -336,10 +382,14 @@ export function LibraryPage() {
           */
           const pattern = inferFormPattern(ex.id, ex);
           const hasForm = !!getFormGuideOrCues(ex.id, { exercise: ex })?.mediaUrl;
+          const isPicked = pickedIds.includes(ex.id);
           return (
           <Card
             key={ex.id}
-            className="content-card pressable-card cursor-pointer"
+            className={cn(
+              'content-card pressable-card cursor-pointer',
+              isPicked && 'border-primary ring-1 ring-primary'
+            )}
             onClick={() => setDetailId(ex.id)}
           >
             <CardHeader className="pb-2">
@@ -347,12 +397,35 @@ export function LibraryPage() {
                 <span className="font-mono text-[10px] tracking-wider text-muted-foreground tabular-nums">
                   {String(idx + 1).padStart(3, '0')}
                 </span>
-                <span className="font-mono text-[10px] tracking-wider text-primary uppercase">
-                  {hasForm ? (
-                    <span className="me-1.5 inline-block h-1.5 w-1.5 rounded-none bg-primary align-middle" aria-hidden />
-                  ) : null}
-                  {pattern ? PATTERN_FILTER_LABELS[pattern] : t('libraryPatternUnknown', { defaultValue: 'Move' })}
-                </span>
+                <div className="flex items-center gap-2">
+                  <span className="font-mono text-[10px] tracking-wider text-primary uppercase">
+                    {hasForm ? (
+                      <span className="me-1.5 inline-block h-1.5 w-1.5 bg-primary align-middle" aria-hidden />
+                    ) : null}
+                    {pattern ? PATTERN_FILTER_LABELS[pattern] : t('libraryPatternUnknown', { defaultValue: 'Move' })}
+                  </span>
+                  <button
+                    type="button"
+                    className={cn(
+                      'flex h-9 w-9 shrink-0 items-center justify-center border-2 border-border',
+                      isPicked
+                        ? 'border-primary bg-primary text-primary-foreground'
+                        : 'bg-background text-muted-foreground hover:border-primary'
+                    )}
+                    aria-pressed={isPicked}
+                    aria-label={
+                      isPicked
+                        ? t('libraryUnpick', { name: ex.name, defaultValue: `Remove ${ex.name} from session` })
+                        : t('libraryPick', { name: ex.name, defaultValue: `Add ${ex.name} to session` })
+                    }
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      togglePick(ex.id);
+                    }}
+                  >
+                    <Check className="h-4 w-4" aria-hidden />
+                  </button>
+                </div>
               </div>
               <CardTitle className="text-lg mt-2">{ex.name}</CardTitle>
               <div className="text-xs text-muted-foreground">
@@ -431,6 +504,50 @@ export function LibraryPage() {
         onSelectExercise={(id) => setDetailId(id)}
         neighborIds={filtered.map((e) => e.id)}
       />
+
+      {pickMode && (
+        <div
+          className="fixed inset-x-0 bottom-0 z-30 border-t-2 border-border bg-background px-4 py-3 pb-[max(0.75rem,env(safe-area-inset-bottom))]"
+          role="region"
+          aria-label={t('libraryPickBar', { defaultValue: 'Session pick bar' })}
+        >
+          <div className="mx-auto flex max-w-3xl flex-wrap items-center justify-between gap-3">
+            <p className="font-mono text-xs uppercase tracking-wider text-muted-foreground">
+              {t('libraryPickedCount', {
+                count: pickedIds.length,
+                max: LIBRARY_PICK_MAX,
+                defaultValue: `${pickedIds.length} / ${LIBRARY_PICK_MAX} selected`,
+              })}
+            </p>
+            <div className="flex gap-2">
+              <Button
+                type="button"
+                variant="outline"
+                className="min-h-[44px] border-2"
+                onClick={() => setPickedIds([])}
+              >
+                {t('libraryClearPick', { defaultValue: 'Clear' })}
+              </Button>
+              <Button
+                type="button"
+                variant="default"
+                className="min-h-[44px]"
+                onClick={trainPicked}
+              >
+                {activeWorkout
+                  ? t('libraryAddPickedToSession', {
+                      count: pickedIds.length,
+                      defaultValue: `Add ${pickedIds.length} to session`,
+                    })
+                  : t('libraryTrainPicked', {
+                      count: pickedIds.length,
+                      defaultValue: `Train selected (${pickedIds.length})`,
+                    })}
+              </Button>
+            </div>
+          </div>
+        </div>
+      )}
     </PillarPageShell>
   );
 }
