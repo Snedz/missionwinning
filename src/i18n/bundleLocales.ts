@@ -53,6 +53,22 @@ type BundleStrings = {
   bundlePillarLearnPremium: string;
   bundleVsSeparate: string;
   bundleRowTotal: string;
+  bundleCheckoutSuccess: string;
+  bundleEyebrow: string;
+  bundleHonestNote: string;
+  bundleCheckoutStillProcessing: string;
+  bundleCheckoutRetry: string;
+  bundleCheckoutUnlocking: string;
+  bundleStoryEyebrow: string;
+  bundleStoryTitle: string;
+  bundleStoryBody: string;
+  bundleStoryProof: string;
+  bundleStoryCompare: string;
+  bundleProofNearCta: string;
+  bundlePayMethods: string;
+  bundleUsdcNote: string;
+  bundleUnlockLifetimeCta: string;
+  bundleRefundNote: string;
 };
 
 const en: BundleStrings = {
@@ -112,6 +128,24 @@ const en: BundleStrings = {
   bundlePillarLearnPremium: '4 specialist courses with chapter progress',
   bundleVsSeparate: 'Save {{percent}}% vs buying pillars separately',
   bundleRowTotal: 'Super Bundle (all pillars)',
+  bundleCheckoutSuccess: 'You are in — Super Bundle is active.',
+  bundleEyebrow: 'Super Bundle',
+  bundleHonestNote:
+    'The free logger stays free. Super Bundle unlocks Mission Coach depth and the other pillars — it never gates logging a set.',
+  bundleCheckoutStillProcessing: 'Checkout is still processing. This usually finishes in a few seconds.',
+  bundleCheckoutRetry: 'Check again',
+  bundleCheckoutUnlocking: 'Unlocking your bundle…',
+  bundleStoryEyebrow: 'One path',
+  bundleStoryTitle: 'Mission Coach depth. Same free logger.',
+  bundleStoryBody:
+    'Weekly plans adapt from your logs alone. Super Bundle adds Coach depth and pillar tools when you want them — without a second app.',
+  bundleStoryProof: 'Founders pricing locks in at launch.',
+  bundleStoryCompare: 'See comparisons',
+  bundleProofNearCta: 'Cancel anytime on monthly. Lifetime is a one-time buy.',
+  bundlePayMethods: 'Card · Apple Pay · Google Pay · USDC',
+  bundleUsdcNote: 'Base USDC is a payment rail — not the product.',
+  bundleUnlockLifetimeCta: 'Unlock lifetime Super Bundle',
+  bundleRefundNote: 'Questions on access? Contact support from Profile.',
 };
 
 const es: BundleStrings = {
