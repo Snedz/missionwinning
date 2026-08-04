@@ -653,14 +653,22 @@ PR: #234
 |------|--------|-------|
 | L1 Session more menu a11y | done (`.385`) | HoldToConfirm outside role=menu |
 | L2 Active extract | done (`.386`) | `isActiveSetCell` + wiring |
-| L3 Soft chrome / log close | pending (`.387`) | OtpInput status-ok solid |
+| L3 Soft chrome / log close | done (`.387`) | OtpInput status-ok solid fill |
 
 ## Metrics
 
 | Metric | Loop 27 end | Loop 28 (in progress) |
 |--------|-------------|------------------------|
-| Build | `.384` | **`.386`** |
+| Build | `.384` | **`.387`** |
 | i18n uncovered cap | 16 (Bundle refuse) | **16** (unchanged) |
+
+## End of Loop 28
+
+**Delivered:** L1–L3 on `cursor/kaizen-wedge-night-be9b` → PR #234 (`.385`–`.387`).
+**Verified:** session more menu a11y green (HoldToConfirm menu fix); isActiveSetCell unit + wiring; design-system green.
+**Aikido:** `aikido_full_scan` fails without X11 `$DISPLAY`. Noted; continue.
+**Next:** Loop 29 — more seeded a11y; Active extracts; Bundle i18n still refused.
+
 
 
 

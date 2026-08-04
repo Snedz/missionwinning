@@ -191,7 +191,7 @@ export const OtpInput = forwardRef<OtpInputHandle, Props>(function OtpInput(
             'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background',
             'disabled:cursor-not-allowed disabled:opacity-80',
             status === 'success'
-              ? 'border-[hsl(var(--status-ok))] bg-[hsl(var(--status-ok)/0.08)] text-[hsl(var(--status-ok))]'
+              ? 'border-[hsl(var(--status-ok))] bg-[hsl(var(--status-ok))] text-background'
               : status === 'error'
                 ? 'border-destructive'
                 : 'border-border'
