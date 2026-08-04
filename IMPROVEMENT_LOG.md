@@ -366,6 +366,6 @@ PR: #234
 | Wave | Status | Notes |
 |------|--------|-------|
 | Y1 Mind breathing-timer a11y | done (`.346`) | Box pattern Start → running chrome axe green |
-| Y2 Active extract | pending | |
+| Y2 Active extract | done (`.347`) | `shouldShowVolumeTrimOffer` + wiring guard |
 | Y3 Soft chrome / log close | pending | |
 

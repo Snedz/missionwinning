@@ -517,3 +517,11 @@ export function shouldShowReadinessDelta(
 ): boolean {
   return before != null && after != null && after !== before;
 }
+
+/** Volume-trim CTA only when the check-in offered it and a coach plan exists. */
+export function shouldShowVolumeTrimOffer(
+  offerVolumeTrim: boolean,
+  hasPlan: boolean
+): boolean {
+  return offerVolumeTrim && hasPlan;
+}

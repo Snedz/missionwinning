@@ -238,7 +238,7 @@ export function TrackPage() {
                     <div>
                       <span className="font-medium">{ACTIVITY_LABELS[a.type]}</span>
                       {isGpsActivity(a.notes) && (
-                        <span className="ms-1.5 text-[10px] uppercase tracking-wide text-primary/90 font-semibold">
+                        <span className="ms-1.5 text-[10px] uppercase tracking-wide text-primary font-semibold">
                           GPS
                         </span>
                       )}

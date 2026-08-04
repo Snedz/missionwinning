@@ -25,6 +25,7 @@ import {
   resolveSwapCandidatesWhenOpen,
   activeSessionBottomClass,
   shouldShowReadinessDelta,
+  shouldShowVolumeTrimOffer,
 } from './activeWorkoutHelpers.ts';
 import type { CompletedWorkoutLog } from '@/types';
 
@@ -781,6 +782,27 @@ describe('shouldShowReadinessDelta', () => {
       src,
       /readinessAfter\s*!=\s*null\s*&&\s*readinessBefore\s*!=\s*null/,
       'readiness delta visibility must stay inside shouldShowReadinessDelta'
+    );
+  });
+});
+
+describe('shouldShowVolumeTrimOffer', () => {
+  it('requires both the check-in offer and a coach plan', () => {
+    assert.equal(shouldShowVolumeTrimOffer(true, true), true);
+    assert.equal(shouldShowVolumeTrimOffer(true, false), false);
+    assert.equal(shouldShowVolumeTrimOffer(false, true), false);
+  });
+
+  it('ActiveWorkoutPage uses shouldShowVolumeTrimOffer rather than offer && plan', () => {
+    const src = readFileSync(
+      path.join(import.meta.dirname, '..', '..', 'page-components', 'ActiveWorkoutPage.tsx'),
+      'utf8'
+    );
+    assert.match(src, /shouldShowVolumeTrimOffer\(/);
+    assert.doesNotMatch(
+      src,
+      /offerVolumeTrim\s*&&\s*plan/,
+      'volume-trim CTA gate must stay inside shouldShowVolumeTrimOffer'
     );
   });
 });

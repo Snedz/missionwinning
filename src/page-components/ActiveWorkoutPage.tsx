@@ -68,6 +68,7 @@ import {
   resolveSwapCandidatesWhenOpen,
   activeSessionBottomClass,
   shouldShowReadinessDelta,
+  shouldShowVolumeTrimOffer,
   sessionIsCoachPrescribed,
   sessionSetStats,
   setInputKey,
@@ -645,7 +646,7 @@ export function ActiveWorkoutPage() {
               to: readinessAfter,
             })}
           </span>
-          {offerVolumeTrim && plan ? (
+          {shouldShowVolumeTrimOffer(offerVolumeTrim, !!plan) ? (
             <button
               type="button"
               className="border-2 border-border bg-background px-3 py-1 text-muted-foreground font-medium hover:border-primary hover:text-foreground"
