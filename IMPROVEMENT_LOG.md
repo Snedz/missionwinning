@@ -520,14 +520,14 @@ PR: #234
 | Wave | Status | Notes |
 |------|--------|-------|
 | F1 Session check-in a11y | done (`.367`) | Sheet axe green; table region + Move lint |
-| F2 Active extract | pending (`.368`) | `activeSessionEyebrowKind` + `toggleOpenIdx` |
+| F2 Active extract | done (`.368`) | eyebrow kind + toggleOpenIdx + wiring |
 | F3 Soft chrome / log close | pending (`.369`) | Select + tooltip rounded-none |
 
 ## Metrics
 
 | Metric | Loop 21 end | Loop 22 (in progress) |
 |--------|-------------|------------------------|
-| Build | `.366` | **`.367`** |
+| Build | `.366` | **`.368`** |
 | i18n uncovered cap | 16 (Bundle refuse) | **16** (unchanged) |
 
 

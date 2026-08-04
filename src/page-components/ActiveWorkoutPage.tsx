@@ -75,6 +75,7 @@ import {
   sessionIsCoachPrescribed,
   sessionSetStats,
   setInputKey,
+  toggleOpenIdx,
 } from '@/lib/workout/activeWorkoutHelpers';
 import { prefersReducedMotion } from '@/lib/motion';
 import { compareText } from '@/lib/i18n/formatLocale';
@@ -548,8 +549,8 @@ export function ActiveWorkoutPage() {
                 onFormGuide={() => setFormGuideId(exercise.id)}
                 onToggleSuperset={() => toggleSupersetWithNext(exIdx)}
                 onUnlinkSuperset={() => unlinkSuperset(exIdx)}
-                onToggleNote={() => setNoteOpenIdx(noteOpenIdx === exIdx ? null : exIdx)}
-                onToggleSwap={() => setSwapOpenIdx(swapOpenIdx === exIdx ? null : exIdx)}
+                onToggleNote={() => setNoteOpenIdx((cur) => toggleOpenIdx(cur, exIdx))}
+                onToggleSwap={() => setSwapOpenIdx((cur) => toggleOpenIdx(cur, exIdx))}
                 onRemove={() => {
                   removeExerciseFromActive(exIdx);
                   setSwapOpenIdx(null);

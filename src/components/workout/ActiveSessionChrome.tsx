@@ -13,6 +13,7 @@ import { HoldToConfirmButton } from '@/components/ui/HoldToConfirmButton';
 import { formatDuration } from '@/lib/utils';
 import {
   activeCoachTipKind,
+  activeSessionEyebrowKind,
   sessionSetsProgressPct,
 } from '@/lib/workout/activeWorkoutHelpers';
 
@@ -57,9 +58,10 @@ export function ActiveSessionChrome({
           defaultValue: 'Rate Easy / Med / Hard after each set so Coach can learn.',
         });
 
-  const sessionEyebrow = fromCoachPlan
-    ? t('activeCoachSessionEyebrow', { defaultValue: 'Mission Coach session' })
-    : t('activeLiveSession', { defaultValue: 'Live session' });
+  const sessionEyebrow =
+    activeSessionEyebrowKind(fromCoachPlan) === 'coach'
+      ? t('activeCoachSessionEyebrow', { defaultValue: 'Mission Coach session' })
+      : t('activeLiveSession', { defaultValue: 'Live session' });
 
   return (
     <div className="space-y-3">

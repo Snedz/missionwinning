@@ -31,6 +31,8 @@ import {
   activePostSessionPath,
   sessionSetsProgressPct,
   activeCoachTipKind,
+  activeSessionEyebrowKind,
+  toggleOpenIdx,
 } from './activeWorkoutHelpers.ts';
 import type { CompletedWorkoutLog } from '@/types';
 
@@ -929,6 +931,52 @@ describe('activeCoachTipKind', () => {
       src,
       /hardCount\s*>\s*2/,
       'hard-set tip threshold must stay inside activeCoachTipKind'
+    );
+  });
+});
+
+describe('activeSessionEyebrowKind', () => {
+  it('bands coach vs live eyebrow', () => {
+    assert.equal(activeSessionEyebrowKind(true), 'coach');
+    assert.equal(activeSessionEyebrowKind(false), 'live');
+  });
+
+  it('ActiveSessionChrome uses activeSessionEyebrowKind rather than an inline ternary', () => {
+    const src = readFileSync(
+      path.join(import.meta.dirname, '..', '..', 'components', 'workout', 'ActiveSessionChrome.tsx'),
+      'utf8'
+    );
+    assert.match(src, /activeSessionEyebrowKind\(/);
+    assert.doesNotMatch(
+      src,
+      /fromCoachPlan\s*\?\s*t\(/,
+      'session eyebrow band must stay inside activeSessionEyebrowKind'
+    );
+  });
+});
+
+describe('toggleOpenIdx', () => {
+  it('opens when closed or on another row, closes when already open', () => {
+    assert.equal(toggleOpenIdx(null, 1), 1);
+    assert.equal(toggleOpenIdx(0, 1), 1);
+    assert.equal(toggleOpenIdx(1, 1), null);
+  });
+
+  it('ActiveWorkoutPage uses toggleOpenIdx for note and swap toggles', () => {
+    const src = readFileSync(
+      path.join(import.meta.dirname, '..', '..', 'page-components', 'ActiveWorkoutPage.tsx'),
+      'utf8'
+    );
+    assert.match(src, /toggleOpenIdx\(/);
+    assert.doesNotMatch(
+      src,
+      /setNoteOpenIdx\(noteOpenIdx\s*===\s*exIdx\s*\?\s*null\s*:\s*exIdx\)/,
+      'note accordion toggle must stay inside toggleOpenIdx'
+    );
+    assert.doesNotMatch(
+      src,
+      /setSwapOpenIdx\(swapOpenIdx\s*===\s*exIdx\s*\?\s*null\s*:\s*exIdx\)/,
+      'swap accordion toggle must stay inside toggleOpenIdx'
     );
   });
 });
