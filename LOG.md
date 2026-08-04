@@ -6,101 +6,82 @@ Chronological record of shipped work. Newest first.
 
 > **The `≤20KB` half of this rule was unmeetable and is retired.** An entry here averages ~5.6KB, because the house style is to explain the defect class rather than name the change — which is the most valuable thing in this repo and not something to trade away for a byte count. Fifteen entries is ~84KB; obeying 20KB would have meant keeping **three**. So the count rule stands, and the size rule becomes a **ratchet**: the file may shrink, never grow. If the founder wants a hard byte ceiling instead, that is a call about house style, not about this file.
 
-Archive: [2026-06 → 2026-07-20](docs/archive/log/LOG-2026-06_to_2026-07-20.md) · [2026-07-20 tail](docs/archive/log/LOG-2026-07-20_tail.md) (incl. Accelerator sprint kit rotated 2026-07-22) · [2026-07-20 → 2026-07-29 (`.179` and earlier)](docs/archive/log/LOG-2026-07-20_to_2026-07-29.md) · [2026-07-29 → 2026-07-30 (`.180`–`.199`)](docs/archive/log/LOG-2026-07-29_to_2026-07-30.md) (both rotated 2026-07-30) · [2026-07-30 → 2026-07-31 (`.200`–`.213`)](docs/archive/log/LOG-2026-07-30_to_2026-07-31.md) (rotated 2026-08-02) · [`.247` for `.263`](docs/archive/log/LOG-hero-audit-rotate-2026-08-03.md).
+Archive: [2026-06 → 2026-07-20](docs/archive/log/LOG-2026-06_to_2026-07-20.md) · [2026-07-20 tail](docs/archive/log/LOG-2026-07-20_tail.md) (incl. Accelerator sprint kit rotated 2026-07-22) · [2026-07-20 → 2026-07-29 (`.179` and earlier)](docs/archive/log/LOG-2026-07-20_to_2026-07-29.md) · [2026-07-29 → 2026-07-30 (`.180`–`.199`)](docs/archive/log/LOG-2026-07-29_to_2026-07-30.md) (both rotated 2026-07-30) · [2026-07-30 → 2026-07-31 (`.200`–`.213`)](docs/archive/log/LOG-2026-07-30_to_2026-07-31.md) (rotated 2026-08-02) · [`.247` for `.263`](docs/archive/log/LOG-hero-audit-rotate-2026-08-03.md) · [`.279`](docs/archive/log/LOG-rotate-279.md) · [`.280`](docs/archive/log/LOG-rotate-280.md) · [`.281` for `.296`](docs/archive/log/LOG-rotate-296.md) · [`.282` for `.297`](docs/archive/log/LOG-rotate-297.md) · [`.283` for `.298`](docs/archive/log/LOG-rotate-298.md) · [`.284` for `.299`](docs/archive/log/LOG-rotate-299.md) · [`.285` for `.300`](docs/archive/log/LOG-rotate-300.md) · [`.286` for `.301`](docs/archive/log/LOG-rotate-301.md) · [`.287` for `.302`](docs/archive/log/LOG-rotate-302.md) · [`.288` for `.303`](docs/archive/log/LOG-rotate-303.md) · [`.289` for `.304`](docs/archive/log/LOG-rotate-304.md) · [`.290` for `.305`](docs/archive/log/LOG-rotate-305.md) · [`.291` for `.306`](docs/archive/log/LOG-rotate-306.md) · [`.292` for `.307`](docs/archive/log/LOG-rotate-307.md) · [`.293` for `.308`](docs/archive/log/LOG-rotate-308.md) · [`.294` for `.309`](docs/archive/log/LOG-rotate-309.md) · [`.295` for `.310`](docs/archive/log/LOG-rotate-310.md) · [`.296` for `.311`](docs/archive/log/LOG-rotate-311.md) · [`.297` for `.312`](docs/archive/log/LOG-rotate-312.md) · [`.298` for `.313`](docs/archive/log/LOG-rotate-313.md) · [`.299` for `.314`](docs/archive/log/LOG-rotate-314.md) · [`.300` for `.315`](docs/archive/log/LOG-rotate-315.md). · [`.301` for `.316`](docs/archive/log/LOG-rotate-316.md). · [`.302` for `.317`](docs/archive/log/LOG-rotate-317.md). · [`.303` for `.318`](docs/archive/log/LOG-rotate-318.md). · [`.304` for `.319`](docs/archive/log/LOG-rotate-319.md). · [`.305` for `.320`](docs/archive/log/LOG-rotate-320.md). · [`.306` for `.321`](docs/archive/log/LOG-rotate-321.md). · [`.307` for `.322`](docs/archive/log/LOG-rotate-322.md). · [`.308` for `.323`](docs/archive/log/LOG-rotate-323.md). · [`.309` for `.324`](docs/archive/log/LOG-rotate-324.md). · [`.310` for `.325`](docs/archive/log/LOG-rotate-325.md). · [`.311` for `.326`](docs/archive/log/LOG-rotate-326.md). · [`.312` for `.327`](docs/archive/log/LOG-rotate-327.md). · [`.313` for `.328`](docs/archive/log/LOG-rotate-328.md). · [`.314` for `.329`](docs/archive/log/LOG-rotate-329.md). · [`.315` for `.330`](docs/archive/log/LOG-rotate-330.md). · [`.316` for `.331`](docs/archive/log/LOG-rotate-331.md). · [`.317` for `.332`](docs/archive/log/LOG-rotate-332.md). · [`.318` for `.333`](docs/archive/log/LOG-rotate-333.md). · [`.319` for `.334`](docs/archive/log/LOG-rotate-334.md). · [`.320` for `.335`](docs/archive/log/LOG-rotate-335.md). · [`.321` for `.336`](docs/archive/log/LOG-rotate-336.md). · [`.322` for `.337`](docs/archive/log/LOG-rotate-337.md). · [`.323` for `.338`](docs/archive/log/LOG-rotate-338.md). · [`.324` for `.339`](docs/archive/log/LOG-rotate-339.md). · [`.325` for `.340`](docs/archive/log/LOG-rotate-340.md). · [`.326` for `.341`](docs/archive/log/LOG-rotate-341.md). · [`.327` for `.342`](docs/archive/log/LOG-rotate-342.md). · [`.328` for `.343`](docs/archive/log/LOG-rotate-343.md). · [`.329` for `.344`](docs/archive/log/LOG-rotate-344.md). · [`.330` for `.345`](docs/archive/log/LOG-rotate-345.md). · [`.331` for `.346`](docs/archive/log/LOG-rotate-346.md). · [`.332` for `.347`](docs/archive/log/LOG-rotate-347.md). · [`.333` for `.348`](docs/archive/log/LOG-rotate-348.md). · [`.334` for `.349`](docs/archive/log/LOG-rotate-349.md). · [`.335` for `.350`](docs/archive/log/LOG-rotate-350.md). · [`.336` for `.351`](docs/archive/log/LOG-rotate-351.md). · [`.337` for `.352`](docs/archive/log/LOG-rotate-352.md). · [`.338` for `.353`](docs/archive/log/LOG-rotate-353.md). · [`.339` for `.354`](docs/archive/log/LOG-rotate-354.md). · [`.340` for `.355`](docs/archive/log/LOG-rotate-355.md). · [`.341` for `.356`](docs/archive/log/LOG-rotate-356.md). · [`.342` for `.357`](docs/archive/log/LOG-rotate-357.md). · [`.343` for `.358`](docs/archive/log/LOG-rotate-358.md). · [`.344` for `.359`](docs/archive/log/LOG-rotate-359.md). · [`.345` for `.360`](docs/archive/log/LOG-rotate-360.md). · [`.346` for `.361`](docs/archive/log/LOG-rotate-361.md). · [`.347` for `.362`](docs/archive/log/LOG-rotate-362.md). · [`.348` for `.363`](docs/archive/log/LOG-rotate-363.md). · [`.349` for `.364`](docs/archive/log/LOG-rotate-364.md). · [`.350` for `.365`](docs/archive/log/LOG-rotate-365.md). · [`.351` for `.366`](docs/archive/log/LOG-rotate-366.md). · [`.352` for `.367`](docs/archive/log/LOG-rotate-367.md). · [`.353` for `.368`](docs/archive/log/LOG-rotate-368.md). · [`.354` for `.369`](docs/archive/log/LOG-rotate-369.md). · [`.355` for `.370`](docs/archive/log/LOG-rotate-370.md). · [`.356` for `.371`](docs/archive/log/LOG-rotate-371.md). · [`.357` for `.372`](docs/archive/log/LOG-rotate-372.md). · [`.358` for `.373`](docs/archive/log/LOG-rotate-373.md). · [`.359` for `.374`](docs/archive/log/LOG-rotate-374.md). · [`.360` for `.375`](docs/archive/log/LOG-rotate-375.md). · [`.361` for `.376`](docs/archive/log/LOG-rotate-376.md). · [`.362` for `.377`](docs/archive/log/LOG-rotate-377.md). · [`.363` for `.378`](docs/archive/log/LOG-rotate-378.md). · [`.364` for `.379`](docs/archive/log/LOG-rotate-379.md). · [`.365` for `.380`](docs/archive/log/LOG-rotate-380.md). · [`.366` for `.381`](docs/archive/log/LOG-rotate-381.md). · [`.367` for `.382`](docs/archive/log/LOG-rotate-382.md). · [`.368` for `.383`](docs/archive/log/LOG-rotate-383.md). · [`.369` for `.384`](docs/archive/log/LOG-rotate-384.md). · [`.370` for `.385`](docs/archive/log/LOG-rotate-385.md). · [`.371` for `.386`](docs/archive/log/LOG-rotate-386.md). · [`.372` for `.387`](docs/archive/log/LOG-rotate-387.md). · [`.373` for `.388`](docs/archive/log/LOG-rotate-388.md). · [`.374` for `.389`](docs/archive/log/LOG-rotate-389.md). · [`.375` for `.390`](docs/archive/log/LOG-rotate-390.md). · [`.376` for `.391`](docs/archive/log/LOG-rotate-391.md). · [`.377` for `.392`](docs/archive/log/LOG-rotate-392.md). · [`.378` for `.393`](docs/archive/log/LOG-rotate-393.md). · [`.379` for `.394`](docs/archive/log/LOG-rotate-394.md). · [`.380` for `.395`](docs/archive/log/LOG-rotate-395.md). · [`.381` for `.396`](docs/archive/log/LOG-rotate-396.md). · [`.382` for `.397`](docs/archive/log/LOG-rotate-397.md). · [`.383` for `.398`](docs/archive/log/LOG-rotate-398.md). · [`.384` for `.399`](docs/archive/log/LOG-rotate-399.md). · [`.385` for `.400`](docs/archive/log/LOG-rotate-400.md). · [`.386` for `.401`](docs/archive/log/LOG-rotate-401.md). · [`.387` for `.402`](docs/archive/log/LOG-rotate-402.md). · [`.388` for `.403`](docs/archive/log/LOG-rotate-403.md).
 
 ---
-## 2026-08-03 — First-mission check-in is one pure rule (`.293`)
 
-`shouldOfferSessionCheckInDecision`: never open the pre-session Mind sheet when
-completed history is empty (W1). Sheet wraps storage; unit + wiring guards so the
-cold path cannot re-grow an interstitial without a red test.
+## 2026-08-04 — Pack exercisePickerList for coverage (`.403`)
 
-## 2026-08-03 — Rest timer default is one source of truth (`.292`)
+Seeded axe on ExercisePicker added `t('exercisePickerList')` for the listbox name but never put the key in [`libraryLocales.ts`](src/i18n/libraryLocales.ts). Coverage hit **17 / cap 16** (Bundle keys stay intentionally uncovered under free-first). Added `exercisePickerList: 'Exercise matches'`. Coverage OK at 16/16.
 
-Store `startRestTimer()` no longer invents **30s**. Duration resolves through
-`resolveStartRestSeconds` → saved default / **90s** fallback shared with exercise
-heuristics. Guard: store must not hardcode 30.
+## 2026-08-04 — Drop colliding learnExpanded pack keys (`.402`)
 
-## 2026-08-03 — Week-1 second-session activation (`.291`)
+`.401` filled beachhead packs including `learnExpandedBanner` / `learnExpandedDesc` — keys that already mean something else in `guidebookLocales` (same `.178` class as the recorded `fuelTitle` collisions). `localeFootprint.test.ts` caught pack vs `public/locales` drift. Dropped those two keys from `es`/`fr`/`pt` packs; learn beachhead stays at ~32% placeholders. No `export-locales` (would re-surface the dual-namespace EN conflict into public files).
 
-After the first log, First Steps next is **session 2** (not Fuel tourism). Today
-train CTA says "Start session 2" when history length is 1. Pure
-`week1SecondSessionCue` + checklist order. Basic still = first workout only.
+## 2026-08-04 — Beachhead i18n parity for Fuel/Active/Learn (`.401`)
 
-## 2026-08-03 — Victory progression is structured + i18n (`.290`)
+CI `i18n:parity` failed after unit tests cleared: beachhead `es`/`fr`/`pt` for **fuel**, **activeWorkout**, and **learn** were above the 40% English-placeholder cap (kaizen loops added EN keys; packs never caught up because superseding pushes cancelled earlier runs before the parity step). Filled the deficit into `src/i18n/packs/{es,fr,pt}.json` via `google-translate-api-x` (preserve brand / `{placeholders}`). `npm run i18n:parity` → OK.
 
-`buildProgressionInsight` returns a pure payload (reason · lift · numbers), not a
-hard-coded English sentence. Bodyweight sessions get rep-based cues. Victory sheet
-maps keys (EN/ES/FR/PT); BW work no longer skipped because `weight <= 0`.
+## 2026-08-04 — Drop stale opacity exemptions (`.400`)
 
-## 2026-08-03 — Same-session set carry on the logger (`.289`)
+Soft-chrome Loops 29–32 removed bare `opacity-*` from Dialog close, Select chevron, and FileUploadRow queued bar — but left those three paths in `NOT_TEXT` in [`stateOpacityContrast.test.ts`](src/lib/stateOpacityContrast.test.ts). The staleness test failed CI (`build-and-test` on PR #234): *"these no longer use bare opacity — remove their exemptions"*. Dropped the three allowlist rows. Mutant: re-add `FileUploadRow` → red. Tests 5/5 green on the file.
 
-After you log a freestyle set, the next set of that exercise dials in what you
-just did (Hevy/Strong gym-speed). Coach prescriptions stay per-set. Pure
-`priorCompletedInExercise` + `resolveSetInput` order 3.
+## 2026-08-04 — FileUploadRow queued chrome solidify (`.399`)
 
-## 2026-08-03 — Gym-speed logger: Enter + Use next (`.288`)
+Kaizen Loop 32 P3. FileUploadRow queued progress drops `opacity-40` for muted ink (no opacity dim). Living log Loop 32 closed. Cap 16.
 
-Compact log console: **Enter** submits the set; **Use next target** one-taps
-progressive-overload / coach numbers into reps·weight when the dial differs.
-Pure `shouldOfferUseNext` / `consoleMatchesTarget`.
+## 2026-08-04 — Active weighted-set helper extracts (`.398`)
 
-## 2026-08-03 — Coach why panel: named days + today's reasons (`.287`)
+Kaizen Loop 32 P2. `exerciseHasWeightedSet` + `firstWeightedLoad` own the load-% chip gate/value so ActiveExerciseCard does not inline `weight > 0` scans. Wiring guards on the card. Cap 16.
 
-Adapt banner names **which weekdays** were missed/swapped. Full Coach also lists
-up to three unique prescription why-keys for today and a control to adjust/keep
-today's version. Pure `todaySessionWhyKeys` + richer adaptSummary.
+## 2026-08-04 — Log console set kinds seeded a11y (`.397`)
 
-## 2026-08-03 — Re-entry dose actually trims the session (`.286`)
+Kaizen Loop 32 P1. Seeded axe on `/active` with LogConsole set-kind strip visible (WORK/WARMUP after add exercise). Cap 16.
 
-`doseScale` from `computeReentry` now scales Just Go / plan starts via
-`scaleExercisesByDose` on the Today primary CTA. Re-entry card copy names the
-real percent (e.g. 70% / 50%) so the promise matches the workout.
+## 2026-08-04 — Disabled control opacity solidify (`.396`)
 
-## 2026-08-03 — Progressive overload on the log console (`.285`)
+Kaizen Loop 31 O3. Soft chrome leftovers:
 
-Compact logger shows **Last · Next · why** (add rep / add weight / hold /
-coach plan) from pure `buildOverloadCue` + double-progression or prescribed
-sets. Industry table stakes for gym-speed overload without a second card.
+1. UnlockButton + PhantomLifetimePayButton: `disabled:opacity-60` → `disabled:opacity-50`
+2. TodayDashboardCustomize: `disabled:opacity-40` → muted ink (no opacity dim)
 
-## 2026-08-03 — Coverage floor for D11–D13 UI sheets (`.284`)
+Living log Loop 31 closed. Cap 16.
 
-`npm run coverage` failed CI: **393 untested** vs floor **389**. Four new
-Playwright-covered sheets (`CoachManageSheet`, `CoachScheduleEditor`,
-`WhatsNewSheet`, `ProfileWhatsNewCard`) — pure helpers already unit-tested.
-Raised `FLOORS.untestedFiles` / high-water **389 → 393** via the escape hatch
-the coverage script names (same commit a reviewer can see).
+## 2026-08-04 — Active set-options menuitem extracts (`.395`)
 
-## 2026-08-03 — Pump Kaizen D11–D12 + guards (`.283`)
+Kaizen Loop 31 O2. `shouldShowApplyTargetsMenuitem` + `shouldShowRemoveSetMenuitem` own Set options menuitem gates. Wiring guards on ActiveExerciseCard. Cap 16.
 
-History **Exercises** tab (Trends promoted). Coach manage sheet (schedule /
-adjust / regenerate / ask) + one filled Start on the week grid. Adapt re-entry
-honest on coach days; `fitness` Button variant folded into `default`. Seeded
-a11y paths for History volume + Coach missed; i18n uncovered ratchet **698→686**.
+## 2026-08-04 — Coach ask-form prefill seeded a11y (`.394`)
 
-## 2026-08-03 — D13 trust micro-surfaces (`.282`)
+Kaizen Loop 31 O1. Seeded axe on `/coach?ask=push-ups` FreeFormAskPanel chrome. Cap 16.
 
-Landing FAQ exclusive-open + keyboard polish (existing `<details>`, not a band
-redesign). Thin What’s New sheet keyed off `APP_BUILD_LABEL` + safeStorage
-last-seen; curated athlete bullets only (no LOG scrape). Mounted from Profile
-and More. Profile can clear First Steps dismiss so the Today card returns.
+## 2026-08-04 — Select chevron and item chrome solidify (`.393`)
 
-## 2026-08-03 — Fuel NL portions + Today/Fuel chrome (`.281`)
+Kaizen Loop 30 N3. Soft chrome leftovers:
 
-K3–K5: NL meal estimate gains cup/piece/handful/slice (and “a cup of …”) with
-matched/rough + confidence honesty unchanged. Today progress/quick-links/pillar
-breakdown/skeletons — solid 2px paper/ink (no soft `/10`–`/50` or `rounded-xl`).
-Fuel empty state drops duplicate CTA; docked Log food is the one red
-(`/nutrition` zero-state cap 2→1).
+1. Select chevron: `opacity-50` → `text-muted-foreground`
+2. SelectItem: `rounded-sm` → `rounded-none`
 
-## 2026-08-03 — Coach session predicate for Active chrome (`.280`)
+Living log Loop 30 closed. Cap 16.
 
-`sessionIsCoachPrescribed` pure helper — Active eyebrow and future apply-targets
-call sites share one definition of "this is a Mission Coach load".
+## 2026-08-04 — Active shouldShowSetOptionsFooter extract (`.392`)
 
-## 2026-08-03 — Shared Just Go hero meta builder (`.279`)
+Kaizen Loop 30 N2. `shouldShowSetOptionsFooter` owns the Set options footer gate so ActiveExerciseCard does not inline the lastSets/hasPlanned or. Wiring guard on the card. Cap 16.
 
-Lean + full Today shells now build train-CTA meta through pure
-`buildJustGoHeroMeta` (one coach/freestyle rule, unit-tested). No product
-behavior change beyond locking the `.278` honesty contract in one place.
+## 2026-08-04 — Coach chat seeded a11y (`.391`)
+
+Kaizen Loop 30 N1. Seeded axe on `/coach` with Ask your coach chat open. Cap 16.
+
+## 2026-08-04 — Label and dialog close chrome solidify (`.390`)
+
+Kaizen Loop 29 M3. Soft chrome leftovers:
+
+1. Label peer-disabled: opacity → muted ink
+2. Dialog close: drop opacity/rounded-sm for bordered rounded-none + hover muted
+
+Living log Loop 29 closed. Cap 16.
+
+## 2026-08-04 — Active activeSetIdxForExercise extract (`.389`)
+
+Kaizen Loop 29 M2. `activeSetIdxForExercise` owns desktop SetLogTable activeSetIdx so ActiveExerciseCard does not inline the ternary. Wiring guard on the card. Cap 16.
 

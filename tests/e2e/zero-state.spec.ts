@@ -99,7 +99,7 @@ const RED_ACTION_CAP: Record<string, { cap: number; why: string }> = {
   '/library': { cap: 0, why: 'Clean.' },
   '/programs': { cap: 0, why: 'Was 2 — both were selected filter chips. `variant="selected"` fixed it.' },
 
-  '/move': { cap: 1, why: 'Was 2. One "Start Flow" on the first flow card remains — class 2.' },
+  '/move': { cap: 0, why: 'Was 1 — first-card Start Flow demoted to outline (Loop 3 M5). EmptyState CTA stays outline.' },
   '/assessments': { cap: 1, why: 'Was 2 — the stage chip was a selection. Submit is the one action.' },
 
   '/nutrition': {
@@ -107,21 +107,24 @@ const RED_ACTION_CAP: Record<string, { cap: number; why: string }> = {
     why: 'K5: docked Log food is the one red; empty state dropped its duplicate CTA (dock owns the action).',
   },
 
-  '/builder': { cap: 3, why: 'Class 2: "Blank workout" renders in both the wizard and the template panel.' },
-  '/track': { cap: 3, why: 'Was 6. Activity-type chips were selections; two Log Activity buttons and Start GPS remain — class 2.' },
+  '/builder': { cap: 1, why: 'One red Blank workout in the wizard; style chips use selected; quick-load is outline; EmptyState Blank stays outline.' },
+  '/track': {
+    cap: 1,
+    why: 'Log Activity is the one red; Start GPS + body-metrics Log demoted to outline (Loop 2 L5).',
+  },
 
   '/coach': {
     cap: 1,
     why: 'D12: only today’s PlanSessionCard uses filled Start; other days outline; Regenerate lives in Manage sheet.',
   },
   '/profile': {
-    cap: 4,
-    why: 'Was 5. Unit/privacy/reminder toggles were selections; magic-link, Save Goals, backup and a days chip remain on a settings screen.',
+    cap: 1,
+    why: 'Send magic link is the one red; Continue/Save Goals/backup demoted. Day chips use selected without bg-primary.',
   },
 
   '/mind': {
-    cap: 2,
-    why: 'Was 51, then 34, now 2 — BreathingTimer\'s Start and DailyCheckIn\'s Save, one each. `.242` demoted GuidedStepPlayer\'s compact Start to `outline`, which took 32 of them out in one line.',
+    cap: 1,
+    why: 'DailyCheckIn Save is the one red; BreathingTimer Start demoted to outline (Loop 2 L5). Was 2.',
   },
 };
 

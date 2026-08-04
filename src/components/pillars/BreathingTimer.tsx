@@ -127,7 +127,7 @@ export function BreathingTimer() {
           {/* `min-h-[44px]`: the Button default is `h-10` (40px), under the 44px
               floor `.125` set for one-thumb use. Applied here rather than to the
               primitive — see LOG `.198` for why that is a founder call. */}
-          <Button variant="default" className="min-h-[44px]" onClick={() => setRunning(!running)}>
+          <Button variant="outline" className="min-h-[44px]" onClick={() => setRunning(!running)}>
             {running ? 'Pause' : cycles >= targetCycles ? 'Restart' : 'Start'}
           </Button>
           {running && (

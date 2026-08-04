@@ -29,7 +29,7 @@ import { ActiveExerciseCard } from '@/components/workout/ActiveExerciseCard';
 import { ActiveEmptyState } from '@/components/workout/ActiveEmptyState';
 import { ActiveSessionChrome } from '@/components/workout/ActiveSessionChrome';
 import { LiveHeartRate } from '@/components/workout/LiveHeartRate';
-import { resolveRestSeconds } from '@/lib/workout/restTimer';
+import { restSecondsForExercise } from '@/lib/workout/restTimer';
 import { isPersonalRecord } from '@/lib/workout/workoutPr';
 import { shouldRestAfterLog } from '@/lib/workout/superset';
 import { useUnits, weightStep, weightUnitLabel } from '@/hooks/useUnits';
@@ -44,13 +44,6 @@ import { buildDebrief } from '@/lib/coach/debrief';
 import type { Debrief } from '@/lib/coach/debrief';
 import { collectFragments, composeSessionEntry } from '@/lib/journal/composeEntry';
 import { SessionJotField } from '@/components/workout/SessionJotField';
-import { suggestNextSetTarget } from '@/lib/workout/nextSetTargets';
-import {
-  buildOverloadCue,
-  formatOverloadSetLine,
-  overloadReasonDefault,
-  overloadReasonKey,
-} from '@/lib/workout/progressiveOverloadCue';
 import { computeBodyScores } from '@/lib/score';
 import { getTodayCheckIn } from '@/lib/mindCheckIns';
 import {
@@ -60,15 +53,30 @@ import {
 } from '@/components/workout/SessionCheckInSheet';
 import { useCoachPlan } from '@/hooks/useCoachPlan';
 import {
+  buildConsoleSet,
   findNextSet,
   getLastPerformanceForSet,
   getLastSessionSets,
   nextSetInput,
-  priorCompletedInExercise,
-  resolveSetInput,
+  planApplyTargets,
+  resolveActiveDockMode,
+  resolveActiveSetDial,
+  resolveFormGuideSheet,
+  resolveRepeatLastTarget,
+  shouldOfferVolumeTrim,
+  bodyScoreDeltas,
+  resolveSwapCandidatesWhenOpen,
+  activeSessionBottomClass,
+  shouldShowReadinessDelta,
+  shouldShowVolumeTrimOffer,
+  resolveActiveGoalId,
+  activeSessionHasExercises,
+  activePostSessionPath,
   sessionIsCoachPrescribed,
   sessionSetStats,
   setInputKey,
+  toggleOpenIdx,
+  isOpenIdx,
 } from '@/lib/workout/activeWorkoutHelpers';
 import { prefersReducedMotion } from '@/lib/motion';
 import { compareText } from '@/lib/i18n/formatLocale';
@@ -187,10 +195,11 @@ export function ActiveWorkoutPage() {
    */
   // Resolved the same way coach/contextBuilder does, so the logger's suggestions and
   // the plan's prescriptions are talking about the same goal.
-  const goalId =
-    parseGoalPresetId(
-      readRaw(STORAGE_KEYS.primaryGoal) ?? readRaw(STORAGE_KEYS.goals) ?? 'goal:general'
-    ) ?? 'general';
+  const goalId = resolveActiveGoalId({
+    primaryGoal: readRaw(STORAGE_KEYS.primaryGoal),
+    goals: readRaw(STORAGE_KEYS.goals),
+    parseGoalPresetId,
+  });
 
   /*
    * `.201` — these handlers used `activeWorkout!` six times.
@@ -207,22 +216,18 @@ export function ActiveWorkoutPage() {
     const exLog = activeWorkout?.exercises[exIdx];
     if (!exLog) return { reps: defaultReps, weight: defaultWeight };
     const exerciseId = exLog.exerciseId;
-    const lastSets = exLog.prescribed ? null : getLastSessionSets(workoutHistory, exerciseId);
     const range = repRangeForGoal(goalId);
-    // Freestyle only: carry the set you just logged into the next dial.
-    // Coach prescriptions stay per-set (resolveSetInput order 2).
-    const sessionCarry = exLog.prescribed
-      ? null
-      : priorCompletedInExercise(exLog.sets, setIdx);
-    return resolveSetInput({
+    return resolveActiveSetDial({
       manual: setInputs[setInputKey(exIdx, setIdx)],
       prescribed: exLog.prescribed,
       defaultReps,
       defaultWeight,
-      sessionCarry,
-      suggestion: lastSets
-        ? suggestNextSetTarget(lastSets, setIdx, units, { repMin: range.min, repMax: range.max })
-        : null,
+      sets: exLog.sets,
+      setIdx,
+      lastSets: exLog.prescribed ? null : getLastSessionSets(workoutHistory, exerciseId),
+      units,
+      repMin: range.min,
+      repMax: range.max,
       lastPerformance: getLastPerformanceForSet(workoutHistory, exerciseId, setIdx),
     });
   };
@@ -256,68 +261,23 @@ export function ActiveWorkoutPage() {
    * which is the correct empty state rather than a console for a set that does
    * not exist.
    */
-  const consoleSet = (() => {
-    if (!activeWorkout || !nextSet) return null;
-    const exLog = activeWorkout.exercises[nextSet.exIdx];
-    if (!exLog) return null;
-    const set = exLog.sets[nextSet.setIdx];
-    if (!set) return null;
-    const last = getLastPerformanceForSet(workoutHistory, exLog.exerciseId, nextSet.setIdx);
-    const lastSets = getLastSessionSets(workoutHistory, exLog.exerciseId);
-    const range = repRangeForGoal(goalId);
-    const bwLabel = t('activeSetBodyweight', { defaultValue: 'BW' });
-
-    // Coach prescription wins; freestyle uses double-progression from history.
-    const suggested =
-      exLog.prescribed
-        ? {
-            reps: set.reps,
-            weight: set.weight,
-            reason: null as null,
-          }
-        : lastSets
-          ? suggestNextSetTarget(lastSets, nextSet.setIdx, units, {
-              repMin: range.min,
-              repMax: range.max,
-            })
-          : null;
-
-    const cue = buildOverloadCue({
-      last: last ? { reps: last.reps, weight: last.weight } : null,
-      next: suggested
-        ? { reps: suggested.reps, weight: suggested.weight }
-        : null,
-      reason: suggested && 'reason' in suggested ? suggested.reason : null,
-      prescribed: !!exLog.prescribed,
-    });
-
-    const reasonKey = overloadReasonKey(cue.reason);
-    const reasonLine =
-      reasonKey && cue.reason
-        ? t(reasonKey, { defaultValue: overloadReasonDefault(cue.reason) ?? '' })
-        : null;
-
-    return {
-      exIdx: nextSet.exIdx,
-      setIdx: nextSet.setIdx,
-      exerciseName: getExerciseById(exLog.exerciseId)?.name ?? exLog.exerciseId,
-      totalSets: exLog.sets.length,
-      kind: set.kind ?? ('normal' as const),
-      input: getSetInput(nextSet.exIdx, nextSet.setIdx, set.reps, set.weight),
-      overloadCue: {
-        lastLine: cue.last
-          ? formatOverloadSetLine(cue.last.reps, cue.last.weight, unitLabel, bwLabel)
-          : null,
-        nextLine: cue.next
-          ? formatOverloadSetLine(cue.next.reps, cue.next.weight, unitLabel, bwLabel)
-          : null,
-        reasonLine: reasonLine || null,
-        nextTarget: cue.next
-          ? { reps: cue.next.reps, weight: cue.next.weight }
-          : null,
-      },
-    };
-  })();
+  const consoleSet = buildConsoleSet({
+    exercises: activeWorkout?.exercises ?? [],
+    nextSet,
+    workoutHistory,
+    units,
+    goalId,
+    unitLabel,
+    bodyweightLabel: t('activeSetBodyweight', { defaultValue: 'BW' }),
+    resolveExerciseName: (id) => getExerciseById(id)?.name ?? id,
+    resolveInput: getSetInput,
+    translateReason: (key, defaultValue) => t(key, { defaultValue }),
+  });
+  const dockMode = resolveActiveDockMode({
+    restTimerActive,
+    hasConsoleSet: Boolean(consoleSet),
+    isCompact,
+  });
 
   const handleLogSet = (exIdx: number, setIdx: number, override?: { reps: number; weight: number }) => {
     const exLog = activeWorkout?.exercises[exIdx];
@@ -325,7 +285,7 @@ export function ActiveWorkoutPage() {
     if (!exLog || !set) return;
     const input = override ?? getSetInput(exIdx, setIdx, set.reps, set.weight);
     const exercise = getExerciseById(exLog.exerciseId);
-    const restSec = exercise ? resolveRestSeconds(exercise.name) : 90;
+    const restSec = restSecondsForExercise(exercise?.name);
     const exerciseId = exLog.exerciseId;
     const setKind = set.kind ?? 'normal';
     const isPr = isPersonalRecord(exerciseId, input.reps, input.weight, workoutHistory, setKind);
@@ -350,10 +310,9 @@ export function ActiveWorkoutPage() {
   const handleRepeatLast = (exIdx: number) => {
     const ex = activeWorkout?.exercises[exIdx];
     if (!ex) return;
-    const lastCompleted = [...ex.sets].reverse().find((s) => s.completed);
-    const nextIdx = ex.sets.findIndex((s) => !s.completed);
-    if (!lastCompleted || nextIdx < 0) return;
-    handleLogSet(exIdx, nextIdx, { reps: lastCompleted.reps, weight: lastCompleted.weight });
+    const target = resolveRepeatLastTarget(ex);
+    if (!target) return;
+    handleLogSet(exIdx, target.setIdx, { reps: target.reps, weight: target.weight });
   };
 
   const handleComplete = () => {
@@ -366,7 +325,9 @@ export function ActiveWorkoutPage() {
     if (!log) {
       toast({
         title: t('activeNothingLogged', { defaultValue: 'Nothing logged' }),
-        description: 'Complete at least one set before finishing.',
+        description: t('activeNothingLoggedDesc', {
+          defaultValue: 'Complete at least one set before finishing.',
+        }),
         variant: 'destructive',
       });
       return;
@@ -428,21 +389,18 @@ export function ActiveWorkoutPage() {
       })
     );
     const afterScores = computeBodyScores(historyAfter, { checkIn });
+    const scoreDeltas = bodyScoreDeltas(beforeScores, afterScores);
     setVictorySummary(
       summarizeWorkoutVictory(
         log,
         streak,
-        {
-          readiness: afterScores.readiness - beforeScores.readiness,
-          strain: afterScores.strain - beforeScores.strain,
-          recovery: afterScores.recovery - beforeScores.recovery,
-        },
+        scoreDeltas,
         buildProgressionInsight(log, units, repRangeForGoal(goalId)),
         undefined,
         {
           completedWorkouts: historyAfter.length,
           hasCoachPlan: !!plan,
-          strainDelta: afterScores.strain - beforeScores.strain,
+          strainDelta: scoreDeltas.strain,
         }
       )
     );
@@ -460,43 +418,33 @@ export function ActiveWorkoutPage() {
   const applyTargetsForExercise = (exIdx: number) => {
     if (!activeWorkout) return;
     const exLog = activeWorkout.exercises[exIdx];
-
-    if (exLog.prescribed) {
-      exLog.sets.forEach((set, setIdx) => {
-        if (set.completed) return;
-        updateSetInput(exIdx, setIdx, 'reps', set.reps);
-        updateSetInput(exIdx, setIdx, 'weight', set.weight);
-      });
-      return;
-    }
-
-    const lastSets = getLastSessionSets(workoutHistory, exLog.exerciseId);
-    if (!lastSets) return;
     const range = repRangeForGoal(goalId);
-    exLog.sets.forEach((set, setIdx) => {
-      if (set.completed) return;
-      const target = suggestNextSetTarget(lastSets, setIdx, units, {
-        repMin: range.min,
-        repMax: range.max,
-      });
-      if (!target) return;
-      updateSetInput(exIdx, setIdx, 'reps', target.reps);
-      updateSetInput(exIdx, setIdx, 'weight', target.weight);
+    const targets = planApplyTargets({
+      prescribed: exLog.prescribed,
+      sets: exLog.sets,
+      lastSets: getLastSessionSets(workoutHistory, exLog.exerciseId),
+      units,
+      repMin: range.min,
+      repMax: range.max,
     });
+    for (const target of targets) {
+      updateSetInput(exIdx, target.setIdx, 'reps', target.reps);
+      updateSetInput(exIdx, target.setIdx, 'weight', target.weight);
+    }
   };
 
   const discardWorkout = () => {
     cancelActiveWorkout();
-    router.push('/log');
+    router.push(activePostSessionPath('today'));
   };
 
   const goToday = () => {
     setVictoryOpen(false);
-    router.push('/log');
+    router.push(activePostSessionPath('today'));
   };
   const goHistory = () => {
     setVictoryOpen(false);
-    router.push('/history');
+    router.push(activePostSessionPath('history'));
   };
 
   if (!activeWorkout) {
@@ -519,9 +467,14 @@ export function ActiveWorkoutPage() {
   const { completed: completedSets, total: totalSets, hardCount } = sessionSetStats(
     activeWorkout.exercises
   );
+  const formGuideSheet = resolveFormGuideSheet({
+    formGuideId,
+    getExerciseById,
+    getFormGuideOrCues,
+  });
 
   return (
-    <div className={`space-y-4 ${restTimerActive ?'pb-36 md:pb-28' : 'pb-4'}`}>
+    <div className={`space-y-4 ${activeSessionBottomClass(restTimerActive)}`}>
       <SessionCheckInSheet
         open={checkInOpen}
         onDismiss={({ completed, checkIn }) => {
@@ -531,7 +484,7 @@ export function ActiveWorkoutPage() {
           const adj = computeBodyScores(workoutHistory, { checkIn });
           setReadinessBefore(base.readiness);
           setReadinessAfter(adj.readiness);
-          if (completed && adj.readiness < 40) {
+          if (shouldOfferVolumeTrim({ checkInCompleted: completed, readinessAfter: adj.readiness })) {
             setOfferVolumeTrim(true);
           }
         }}
@@ -554,7 +507,7 @@ export function ActiveWorkoutPage() {
 
       <SessionJotField value={activeWorkout.sessionNote ?? ''} onChange={setSessionNote} />
 
-      {activeWorkout.exercises.length === 0 ? (
+      {!activeSessionHasExercises(activeWorkout.exercises) ? (
         /* Was the logger's own dashed box — the system has no dashed borders
            and nothing centred. Two rules, flush left, like every other empty
            state since `.150`. */
@@ -568,17 +521,13 @@ export function ActiveWorkoutPage() {
           {activeWorkout.exercises.map((exLog, exIdx) => {
             const exercise = getExerciseById(exLog.exerciseId);
             if (!exercise) return null;
-            const swapCandidates =
-              swapOpenIdx === exIdx
-                ? [...EXERCISES]
-                    .filter((e) => e.id !== exLog.exerciseId)
-                    .sort((a, b) => {
-                      const aShared = a.muscleGroups.some((m) => exercise.muscleGroups.includes(m));
-                      const bShared = b.muscleGroups.some((m) => exercise.muscleGroups.includes(m));
-                      if (aShared !== bShared) return aShared ? -1 : 1;
-                      return compareText(a.name, b.name, fmt.lang);
-                    })
-                : [];
+            const swapCandidates = resolveSwapCandidatesWhenOpen({
+              swapOpenIdx,
+              exIdx,
+              catalog: EXERCISES,
+              current: exercise,
+              compareNames: (a, b) => compareText(a, b, fmt.lang),
+            });
 
             return (
               <ActiveExerciseCard
@@ -593,16 +542,16 @@ export function ActiveWorkoutPage() {
                 unitLabel={unitLabel}
                 nextSet={nextSet}
                 nextSetRef={nextSetRef}
-                swapOpen={swapOpenIdx === exIdx}
-                noteOpen={noteOpenIdx === exIdx}
+                swapOpen={isOpenIdx(swapOpenIdx, exIdx)}
+                noteOpen={isOpenIdx(noteOpenIdx, exIdx)}
                 swapCandidates={swapCandidates}
                 lastSessionSets={getLastSessionSets}
                 onRepeatLast={() => handleRepeatLast(exIdx)}
                 onFormGuide={() => setFormGuideId(exercise.id)}
                 onToggleSuperset={() => toggleSupersetWithNext(exIdx)}
                 onUnlinkSuperset={() => unlinkSuperset(exIdx)}
-                onToggleNote={() => setNoteOpenIdx(noteOpenIdx === exIdx ? null : exIdx)}
-                onToggleSwap={() => setSwapOpenIdx(swapOpenIdx === exIdx ? null : exIdx)}
+                onToggleNote={() => setNoteOpenIdx((cur) => toggleOpenIdx(cur, exIdx))}
+                onToggleSwap={() => setSwapOpenIdx((cur) => toggleOpenIdx(cur, exIdx))}
                 onRemove={() => {
                   removeExerciseFromActive(exIdx);
                   setSwapOpenIdx(null);
@@ -687,14 +636,14 @@ export function ActiveWorkoutPage() {
                 addExerciseToActive(addExerciseId, ex?.muscleGroups);
                 setAddExerciseId('');
               }}
-              className="mt-3 min-h-[40px] border-2 border-border px-4 text-sm font-semibold transition-colors hover:bg-accent-100 disabled:opacity-45"
+              className="mt-3 min-h-[40px] border-2 border-border px-4 text-sm font-semibold transition-colors hover:bg-accent-100 disabled:pointer-events-none disabled:border-dashed disabled:text-muted-foreground"
             >
               {t('activeAddSelectedExercise', { defaultValue: 'Add selected exercise' })}
             </button>
           </div>
         )}
 
-      {readinessAfter != null && readinessBefore != null && readinessAfter !== readinessBefore ? (
+      {shouldShowReadinessDelta(readinessBefore, readinessAfter) ? (
         <div className="border-2 border-border bg-card px-3 py-2 text-xs flex flex-wrap items-center gap-2">
           <span className="font-medium text-muted-foreground">
             {t('sessionReadinessDelta', {
@@ -703,7 +652,7 @@ export function ActiveWorkoutPage() {
               to: readinessAfter,
             })}
           </span>
-          {offerVolumeTrim && plan ? (
+          {shouldShowVolumeTrimOffer(offerVolumeTrim, !!plan) ? (
             <button
               type="button"
               className="border-2 border-border bg-background px-3 py-1 text-muted-foreground font-medium hover:border-primary hover:text-foreground"
@@ -744,21 +693,15 @@ export function ActiveWorkoutPage() {
         description="Workouts auto-save to the cloud when you're signed in."
       />
 
-      {formGuideId &&
-        (() => {
-          const ex = getExerciseById(formGuideId);
-          const guide = getFormGuideOrCues(formGuideId, { exercise: ex });
-          if (!ex || !guide) return null;
-          return (
-            <FormGuideSheet
-              exerciseName={ex.name}
-              exerciseId={ex.id}
-              guide={guide}
-              open
-              onClose={() => setFormGuideId(null)}
-            />
-          );
-        })()}
+      {formGuideSheet ? (
+        <FormGuideSheet
+          exerciseName={formGuideSheet.exerciseName}
+          exerciseId={formGuideSheet.exerciseId}
+          guide={formGuideSheet.guide}
+          open
+          onClose={() => setFormGuideId(null)}
+        />
+      ) : null}
 
       {/*
         One dock, two states, never both. Rest takes the console over rather
@@ -766,7 +709,7 @@ export function ActiveWorkoutPage() {
         and because the dock is a flex sibling of `main`, neither can overlap
         the list.
       */}
-      {restTimerActive ? (
+      {dockMode === 'rest' ? (
         <ScreenDock>
           <RestTimerBar
             remaining={restSecondsRemaining}
@@ -776,7 +719,7 @@ export function ActiveWorkoutPage() {
             onPreset={startRestTimer}
           />
         </ScreenDock>
-      ) : consoleSet && isCompact ? (
+      ) : dockMode === 'console' && consoleSet ? (
         /* Compact only. Desktop enters the set in the row it belongs to
            (`SetLogTable`), so a console here would be a second, competing
            place to type the same number. */

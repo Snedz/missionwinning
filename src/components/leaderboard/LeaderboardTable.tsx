@@ -19,7 +19,7 @@ function rankDisplay(rank: number) {
   // position and the aria-label; the medals differ by tier, not by hue.
   if (rank === 2) return <Medal className="h-4 w-4 text-muted-foreground" aria-label="2nd" />;
   // Brass is retired (`.131`); this resolved to a neutral anyway.
-  if (rank === 3) return <Medal className="h-4 w-4 text-muted-foreground/70" aria-label="3rd" />;
+  if (rank === 3) return <Medal className="h-4 w-4 text-muted-foreground" aria-label="3rd" />;
   return <span className="font-mono text-muted-foreground tabular-nums">{rank}</span>;
 }
 

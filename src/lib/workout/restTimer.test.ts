@@ -5,6 +5,7 @@ import {
   formatRestClock,
   getSuggestedRestSeconds,
   resolveRestSeconds,
+  restSecondsForExercise,
   resolveStartRestSeconds,
   restProgress,
 } from '@/lib/workout/restTimer';
@@ -52,5 +53,20 @@ describe('rest timer single source of truth (.292)', () => {
       'store must not invent 30s rest — use resolveStartRestSeconds / FALLBACK_REST_SECONDS'
     );
     assert.match(src, /resolveStartRestSeconds/, 'startRestTimer must delegate duration');
+  });
+});
+
+describe('restSecondsForExercise', () => {
+  it('falls back when the exercise name is missing', () => {
+    assert.equal(restSecondsForExercise(undefined), 90);
+  });
+
+  it('ActiveWorkoutPage uses restSecondsForExercise rather than a ternary', () => {
+    const src = readFileSync(
+      path.join(import.meta.dirname, '..', '..', 'page-components', 'ActiveWorkoutPage.tsx'),
+      'utf8'
+    );
+    assert.match(src, /restSecondsForExercise\(/);
+    assert.doesNotMatch(src, /resolveRestSeconds\(exercise\.name\)\s*:\s*90/);
   });
 });

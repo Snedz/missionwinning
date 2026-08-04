@@ -57,7 +57,7 @@ function FreeFormAskPanel({
   }, [askExerciseId]);
 
   return (
-    <Card className={cn('content-card border-primary/30', className)} data-testid="coach-free-form-ask">
+    <Card className={cn('content-card border-2 border-border', className)} data-testid="coach-free-form-ask">
       <CardHeader className="pb-2">
         <CardTitle className="text-base">
           {t('coachFreeFormTitle', {
@@ -68,7 +68,7 @@ function FreeFormAskPanel({
       </CardHeader>
       <CardContent className="space-y-3">
         {cues.length > 0 ? (
-          <ul className="space-y-1.5 text-sm text-foreground/90">
+          <ul className="space-y-1.5 text-sm text-foreground">
             {cues.map((line) => (
               <li key={line} className="flex gap-2">
                 <span className="text-primary shrink-0">·</span>
@@ -429,7 +429,7 @@ export function CoachChatPanel({
                 <div
                   key={`${turn.role}-${i}`}
                   className={cn(
-                    'rounded-md px-2 py-1.5 whitespace-pre-wrap',
+                    'rounded-none px-2 py-1.5 whitespace-pre-wrap',
                     turn.role === 'user'
                       ? 'border-2 border-primary bg-tint ml-4'
                       : 'border-2 border-border bg-card mr-4'
@@ -438,7 +438,7 @@ export function CoachChatPanel({
                   {turn.content}
                   {sending && turn.role === 'coach' && i === turns.length - 1 ? (
                     <span
-                      className="inline-block w-1.5 h-3.5 ms-0.5 align-middle bg-primary/70 animate-pulse"
+                      className="inline-block w-1.5 h-3.5 ms-0.5 align-middle bg-primary animate-pulse"
                       aria-hidden
                     />
                   ) : null}
@@ -452,7 +452,7 @@ export function CoachChatPanel({
               <input
                 id="coach-chat-input"
                 type="text"
-                className="flex-1 min-h-[44px] rounded-md border border-border bg-background px-3 text-sm"
+                className="flex-1 min-h-[44px] rounded-none border border-border bg-background px-3 text-sm"
                 value={input}
                 disabled={sending}
                 placeholder={t('coachChatPlaceholder', {

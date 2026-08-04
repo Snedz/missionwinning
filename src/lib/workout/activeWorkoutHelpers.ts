@@ -3,6 +3,14 @@
  * Consumers: ActiveWorkoutPage, unit tests.
  */
 import type { CompletedWorkoutLog } from '@/types';
+import { repRangeForGoal } from '@/lib/coach/progression';
+import { suggestNextSetTarget } from '@/lib/workout/nextSetTargets';
+import {
+  buildOverloadCue,
+  formatOverloadSetLine,
+  overloadReasonDefault,
+  overloadReasonKey,
+} from '@/lib/workout/progressiveOverloadCue';
 
 /** First incomplete set across the active session, or null when all done. */
 export function findNextSet(exercises: { sets: { completed: boolean }[] }[]): {
@@ -194,4 +202,490 @@ export function nextSetInput(params: {
   const { prevManual, resolved, field, value } = params;
   const base = prevManual ?? resolved;
   return { reps: base.reps, weight: base.weight, [field]: value };
+}
+
+/**
+ * Swap picker ranking — shared muscle groups first, then locale name order.
+ * Extracted from ActiveWorkoutPage so the sort cannot silently invert (Kaizen K5).
+ */
+export function rankSwapCandidates<T extends { id: string; name: string; muscleGroups: string[] }>(
+  catalog: readonly T[],
+  current: { id: string; muscleGroups: readonly string[] },
+  compareNames: (a: string, b: string) => number
+): T[] {
+  return [...catalog]
+    .filter((e) => e.id !== current.id)
+    .sort((a, b) => {
+      const aShared = a.muscleGroups.some((m) => current.muscleGroups.includes(m));
+      const bShared = b.muscleGroups.some((m) => current.muscleGroups.includes(m));
+      if (aShared !== bShared) return aShared ? -1 : 1;
+      return compareNames(a.name, b.name);
+    });
+}
+
+export type ConsoleSetKind = 'normal' | 'warmup' | 'failure' | 'drop';
+
+export type ConsoleSetView = {
+  exIdx: number;
+  setIdx: number;
+  exerciseName: string;
+  totalSets: number;
+  kind: ConsoleSetKind;
+  input: { reps: number; weight: number };
+  overloadCue: {
+    lastLine: string | null;
+    nextLine: string | null;
+    reasonLine: string | null;
+    nextTarget: { reps: number; weight: number } | null;
+  };
+};
+
+/**
+ * Compact log-console payload for the next incomplete set.
+ * Extracted from ActiveWorkoutPage so coach-vs-freestyle + overload cue cannot
+ * silently diverge from tests (Kaizen Loop 2 L2 / `.297`).
+ */
+export function buildConsoleSet(params: {
+  exercises: {
+    exerciseId: string;
+    prescribed?: boolean;
+    sets: {
+      reps: number;
+      weight: number;
+      completed: boolean;
+      kind?: ConsoleSetKind;
+    }[];
+  }[];
+  nextSet: { exIdx: number; setIdx: number } | null;
+  workoutHistory: CompletedWorkoutLog[];
+  units: 'metric' | 'imperial';
+  goalId: string;
+  unitLabel: string;
+  bodyweightLabel: string;
+  resolveExerciseName: (exerciseId: string) => string;
+  resolveInput: (
+    exIdx: number,
+    setIdx: number,
+    defaultReps: number,
+    defaultWeight: number
+  ) => { reps: number; weight: number };
+  translateReason: (key: string, defaultValue: string) => string;
+}): ConsoleSetView | null {
+  const { exercises, nextSet } = params;
+  if (!nextSet) return null;
+  const exLog = exercises[nextSet.exIdx];
+  if (!exLog) return null;
+  const set = exLog.sets[nextSet.setIdx];
+  if (!set) return null;
+
+  const last = getLastPerformanceForSet(
+    params.workoutHistory,
+    exLog.exerciseId,
+    nextSet.setIdx
+  );
+  const lastSets = getLastSessionSets(params.workoutHistory, exLog.exerciseId);
+  const range = repRangeForGoal(params.goalId);
+
+  const suggested = exLog.prescribed
+    ? { reps: set.reps, weight: set.weight, reason: null as null }
+    : lastSets
+      ? suggestNextSetTarget(lastSets, nextSet.setIdx, params.units, {
+          repMin: range.min,
+          repMax: range.max,
+        })
+      : null;
+
+  const cue = buildOverloadCue({
+    last: last ? { reps: last.reps, weight: last.weight } : null,
+    next: suggested ? { reps: suggested.reps, weight: suggested.weight } : null,
+    reason: suggested && 'reason' in suggested ? suggested.reason : null,
+    prescribed: !!exLog.prescribed,
+  });
+
+  const reasonKey = overloadReasonKey(cue.reason);
+  const reasonLine =
+    reasonKey && cue.reason
+      ? params.translateReason(reasonKey, overloadReasonDefault(cue.reason) ?? '')
+      : null;
+
+  return {
+    exIdx: nextSet.exIdx,
+    setIdx: nextSet.setIdx,
+    exerciseName: params.resolveExerciseName(exLog.exerciseId),
+    totalSets: exLog.sets.length,
+    kind: set.kind ?? 'normal',
+    input: params.resolveInput(nextSet.exIdx, nextSet.setIdx, set.reps, set.weight),
+    overloadCue: {
+      lastLine: cue.last
+        ? formatOverloadSetLine(
+            cue.last.reps,
+            cue.last.weight,
+            params.unitLabel,
+            params.bodyweightLabel
+          )
+        : null,
+      nextLine: cue.next
+        ? formatOverloadSetLine(
+            cue.next.reps,
+            cue.next.weight,
+            params.unitLabel,
+            params.bodyweightLabel
+          )
+        : null,
+      reasonLine: reasonLine || null,
+      nextTarget: cue.next
+        ? { reps: cue.next.reps, weight: cue.next.weight }
+        : null,
+    },
+  };
+}
+
+/**
+ * Which incomplete sets get which targets when the athlete taps Apply targets.
+ * Prescribed → template numbers; freestyle → suggestion engine in goal range.
+ */
+export function planApplyTargets(params: {
+  prescribed?: boolean;
+  sets: { completed: boolean; reps: number; weight: number }[];
+  lastSets: { reps: number; weight: number }[] | null;
+  units: 'metric' | 'imperial';
+  repMin: number;
+  repMax: number;
+}): { setIdx: number; reps: number; weight: number }[] {
+  const out: { setIdx: number; reps: number; weight: number }[] = [];
+  if (params.prescribed) {
+    params.sets.forEach((set, setIdx) => {
+      if (set.completed) return;
+      out.push({ setIdx, reps: set.reps, weight: set.weight });
+    });
+    return out;
+  }
+  if (!params.lastSets) return out;
+  params.sets.forEach((set, setIdx) => {
+    if (set.completed) return;
+    const target = suggestNextSetTarget(params.lastSets!, setIdx, params.units, {
+      repMin: params.repMin,
+      repMax: params.repMax,
+    });
+    if (!target) return;
+    out.push({ setIdx, reps: target.reps, weight: target.weight });
+  });
+  return out;
+}
+
+/**
+ * What the Active dial shows for one set — prescribed vs freestyle carry vs
+ * suggestion. Extracted so the page cannot silently reorder resolveSetInput
+ * inputs (Kaizen Loop 3 M3 / `.303`).
+ */
+export function resolveActiveSetDial(params: {
+  manual?: { reps: number; weight: number };
+  prescribed?: boolean;
+  defaultReps: number;
+  defaultWeight: number;
+  sets: { completed: boolean; reps: number; weight: number }[];
+  setIdx: number;
+  lastSets: { reps: number; weight: number }[] | null;
+  units: 'metric' | 'imperial';
+  repMin: number;
+  repMax: number;
+  lastPerformance: { reps: number; weight: number } | null;
+}): { reps: number; weight: number } {
+  const sessionCarry = params.prescribed
+    ? null
+    : priorCompletedInExercise(params.sets, params.setIdx);
+  const suggestion =
+    !params.prescribed && params.lastSets
+      ? suggestNextSetTarget(params.lastSets, params.setIdx, params.units, {
+          repMin: params.repMin,
+          repMax: params.repMax,
+        })
+      : null;
+  return resolveSetInput({
+    manual: params.manual,
+    prescribed: params.prescribed,
+    defaultReps: params.defaultReps,
+    defaultWeight: params.defaultWeight,
+    sessionCarry,
+    suggestion,
+    lastPerformance: params.lastPerformance,
+  });
+}
+
+/**
+ * Repeat-last on Active: copy the most recent completed set onto the next open
+ * slot. Returns null when there is nothing to copy or nowhere to put it.
+ */
+export function resolveRepeatLastTarget(ex: {
+  sets: { completed: boolean; reps: number; weight: number }[];
+}): { setIdx: number; reps: number; weight: number } | null {
+  const lastCompleted = [...ex.sets].reverse().find((s) => s.completed);
+  const nextIdx = ex.sets.findIndex((s) => !s.completed);
+  if (!lastCompleted || nextIdx < 0) return null;
+  return { setIdx: nextIdx, reps: lastCompleted.reps, weight: lastCompleted.weight };
+}
+
+/**
+ * Active bottom dock: rest takes the console over; compact freestyle gets
+ * LogConsole; desktop set entry stays in the row. Never both docks.
+ */
+export type ActiveDockMode = 'rest' | 'console' | null;
+
+export function resolveActiveDockMode(params: {
+  restTimerActive: boolean;
+  hasConsoleSet: boolean;
+  isCompact: boolean;
+}): ActiveDockMode {
+  if (params.restTimerActive) return 'rest';
+  if (params.hasConsoleSet && params.isCompact) return 'console';
+  return null;
+}
+
+/**
+ * Form guide sheet props from an exercise id, or null when the catalog has no
+ * guide for that id. Keeps the Active page free of an open IIFE in JSX.
+ */
+export function resolveFormGuideSheet<TExercise extends { id: string; name: string }, TGuide>(params: {
+  formGuideId: string | null;
+  getExerciseById: (id: string) => TExercise | undefined;
+  getFormGuideOrCues: (id: string, opts: { exercise: TExercise | undefined }) => TGuide | null;
+}): { exerciseId: string; exerciseName: string; guide: TGuide } | null {
+  if (!params.formGuideId) return null;
+  const ex = params.getExerciseById(params.formGuideId);
+  const guide = params.getFormGuideOrCues(params.formGuideId, { exercise: ex });
+  if (!ex || !guide) return null;
+  return { exerciseId: ex.id, exerciseName: ex.name, guide };
+}
+
+/**
+ * After session check-in: offer volume trim only when the athlete completed the
+ * strip and readiness landed under the soft threshold.
+ */
+export function shouldOfferVolumeTrim(params: {
+  checkInCompleted: boolean;
+  readinessAfter: number;
+  threshold?: number;
+}): boolean {
+  const threshold = params.threshold ?? 40;
+  return params.checkInCompleted && params.readinessAfter < threshold;
+}
+
+/** Readiness / strain / recovery deltas for Victory “what changed” chrome. */
+export type BodyScoreTriple = {
+  readiness: number;
+  strain: number;
+  recovery: number;
+};
+
+export function bodyScoreDeltas(
+  before: BodyScoreTriple,
+  after: BodyScoreTriple
+): BodyScoreTriple {
+  return {
+    readiness: after.readiness - before.readiness,
+    strain: after.strain - before.strain,
+    recovery: after.recovery - before.recovery,
+  };
+}
+
+/**
+ * Swap sheet candidates only when this exercise owns the open swap UI —
+ * keeps the Active map free of an inline empty-array ternary.
+ */
+export function resolveSwapCandidatesWhenOpen<
+  T extends { id: string; name: string; muscleGroups: string[] },
+>(params: {
+  swapOpenIdx: number | null;
+  exIdx: number;
+  catalog: T[];
+  current: T;
+  compareNames: (a: string, b: string) => number;
+}): T[] {
+  if (params.swapOpenIdx !== params.exIdx) return [];
+  return rankSwapCandidates(params.catalog, params.current, params.compareNames);
+}
+
+/** Bottom padding so the rest dock does not cover the last exercise card. */
+export function activeSessionBottomClass(restTimerActive: boolean): string {
+  return restTimerActive ? 'pb-36 md:pb-28' : 'pb-4';
+}
+
+/** Show the readiness delta strip only when both scores exist and differ. */
+export function shouldShowReadinessDelta(
+  before: number | null,
+  after: number | null
+): boolean {
+  return before != null && after != null && after !== before;
+}
+
+/** Volume-trim CTA only when the check-in offered it and a coach plan exists. */
+export function shouldShowVolumeTrimOffer(
+  offerVolumeTrim: boolean,
+  hasPlan: boolean
+): boolean {
+  return offerVolumeTrim && hasPlan;
+}
+
+/**
+ * Active logger goal id — same resolution as coach/contextBuilder so suggestions
+ * and plan prescriptions share one goal.
+ */
+export function resolveActiveGoalId(params: {
+  primaryGoal: string | null;
+  goals: string | null;
+  parseGoalPresetId: (raw: string) => string | null;
+  fallback?: string;
+}): string {
+  const fallback = params.fallback ?? 'general';
+  return (
+    params.parseGoalPresetId(params.primaryGoal ?? params.goals ?? 'goal:general') ??
+    fallback
+  );
+}
+
+/** True when the active session has at least one exercise to log. */
+export function activeSessionHasExercises(exercises: { length: number } | null | undefined): boolean {
+  return (exercises?.length ?? 0) > 0;
+}
+
+/** Where Victory / discard send the athlete after the session. */
+export type ActivePostSessionPath = '/log' | '/history';
+
+export function activePostSessionPath(kind: 'today' | 'history'): ActivePostSessionPath {
+  return kind === 'history' ? '/history' : '/log';
+}
+
+/** Percent complete for the Active session sets meter (0–100). */
+export function sessionSetsProgressPct(completedSets: number, totalSets: number): number {
+  if (totalSets <= 0) return 0;
+  return Math.round((completedSets / totalSets) * 100);
+}
+
+/**
+ * Active session coach tip band — hard sets stacking above the threshold get
+ * the high-effort note; otherwise the default rate-your-set cue.
+ */
+export type ActiveCoachTipKind = 'high' | 'default';
+
+export function activeCoachTipKind(
+  hardCount: number,
+  threshold = 2
+): ActiveCoachTipKind {
+  return hardCount > threshold ? 'high' : 'default';
+}
+
+/**
+ * Active session eyebrow band — Mission Coach vs freestyle live session.
+ */
+export type ActiveSessionEyebrowKind = 'coach' | 'live';
+
+export function activeSessionEyebrowKind(
+  fromCoachPlan: boolean
+): ActiveSessionEyebrowKind {
+  return fromCoachPlan ? 'coach' : 'live';
+}
+
+/**
+ * Accordion-style open index: open `idx` when closed / another row open;
+ * close when `idx` is already open.
+ */
+export function toggleOpenIdx(
+  current: number | null,
+  idx: number
+): number | null {
+  return current === idx ? null : idx;
+}
+
+/** True when accordion/sheet open-index matches this row. */
+export function isOpenIdx(current: number | null, idx: number): boolean {
+  return current === idx;
+}
+
+/** True when any set on this exercise has been logged this session. */
+export function exerciseHasCompletedSet(
+  sets: { completed: boolean }[]
+): boolean {
+  return sets.some((s) => s.completed);
+}
+
+/** True when any set on this exercise is still open to log. */
+export function exerciseHasPlannedSet(
+  sets: { completed: boolean }[]
+): boolean {
+  return sets.some((s) => !s.completed);
+}
+
+/** Index of the first incomplete set, or -1 when all done. */
+export function firstPlannedSetIdx(
+  sets: { completed: boolean }[]
+): number {
+  return sets.findIndex((s) => !s.completed);
+}
+
+/** True when this exercise owns the session's next open set. */
+export function holdsActiveExercise(
+  nextSet: { exIdx: number } | null | undefined,
+  exIdx: number
+): boolean {
+  return nextSet?.exIdx === exIdx;
+}
+
+/** True when this set cell is the session's next open set. */
+export function isActiveSetCell(
+  nextSet: { exIdx: number; setIdx: number } | null | undefined,
+  exIdx: number,
+  setIdx: number
+): boolean {
+  return nextSet?.exIdx === exIdx && nextSet?.setIdx === setIdx;
+}
+
+/** Active set index for this exercise, or -1 when another exercise is next. */
+export function activeSetIdxForExercise(
+  nextSet: { exIdx: number; setIdx: number } | null | undefined,
+  exIdx: number
+): number {
+  return nextSet?.exIdx === exIdx ? nextSet.setIdx : -1;
+}
+
+/**
+ * Whether the Set options footer control should render — Apply targets and/or
+ * Remove set only make sense with history or more than one planned set.
+ */
+export function shouldShowSetOptionsFooter(params: {
+  hasLastSets: boolean;
+  hasPlanned: boolean;
+  plannedSetCount: number;
+}): boolean {
+  return (
+    (params.hasLastSets && params.hasPlanned) ||
+    (params.hasPlanned && params.plannedSetCount > 1)
+  );
+}
+
+/** Apply targets menuitem — needs last-session sets and open planned work. */
+export function shouldShowApplyTargetsMenuitem(
+  hasLastSets: boolean,
+  hasPlanned: boolean
+): boolean {
+  return hasLastSets && hasPlanned;
+}
+
+/** Remove set menuitem — only when more than one planned set remains. */
+export function shouldShowRemoveSetMenuitem(
+  hasPlanned: boolean,
+  plannedSetCount: number
+): boolean {
+  return hasPlanned && plannedSetCount > 1;
+}
+
+/** True when any set on this exercise carries a logged weight (> 0). */
+export function exerciseHasWeightedSet(
+  sets: { weight: number }[]
+): boolean {
+  return sets.some((s) => s.weight > 0);
+}
+
+/** First positive weight on this exercise, or 0 when none. */
+export function firstWeightedLoad(sets: { weight: number }[]): number {
+  return sets.find((s) => s.weight > 0)?.weight ?? 0;
 }

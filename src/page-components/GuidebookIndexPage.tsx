@@ -67,7 +67,7 @@ export function GuidebookIndexPage() {
       })}
       showLegalFooter
     >
-        <Card className="content-card border-primary/25 bg-primary/10">
+        <Card className="content-card border-primary">
           <CardContent className="py-4 flex flex-wrap items-center justify-between gap-3">
             <div>
               <p className="text-sm font-medium text-primary">

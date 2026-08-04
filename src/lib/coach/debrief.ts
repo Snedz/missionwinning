@@ -199,7 +199,8 @@ export function buildDebrief(input: DebriefInput): Debrief {
 
   lines.push({
     kind: 'question',
-    text: 'Did that run hotter than planned, or was it the work you wanted?',
+    /** Stable id; SessionDebriefCard translates via `debriefDoseQuestion`. */
+    text: 'debriefDoseQuestion',
   });
 
   return {
@@ -207,6 +208,7 @@ export function buildDebrief(input: DebriefInput): Debrief {
     session,
     records,
     zone: bands.zone,
-    replies: ['Harder than expected', 'Exactly what I wanted', 'Too easy'],
+    /** Stable reply ids — labels live in i18n (`debriefReply*`). */
+    replies: ['harder', 'exact', 'easy'],
   };
 }

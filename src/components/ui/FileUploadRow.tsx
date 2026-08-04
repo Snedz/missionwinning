@@ -62,13 +62,13 @@ export function FileUploadRow({
   return (
     <div
       className={cn(
-        'rounded-xl border border-border/60 bg-background/50 p-3 flex gap-3 items-start',
-        status === 'error' && 'border-destructive/40 bg-destructive/5',
-        status === 'success' && 'border-[hsl(var(--status-ok)/0.4)] bg-[hsl(var(--status-ok)/0.05)]',
+        'rounded-none border-2 border-border bg-background p-3 flex gap-3 items-start',
+        status === 'error' && 'border-destructive bg-background',
+        status === 'success' && 'border-[hsl(var(--status-ok))] bg-background',
         className
       )}
     >
-      <div className="h-12 w-12 shrink-0 rounded-lg overflow-hidden border border-border/50 bg-muted/40 flex items-center justify-center">
+      <div className="h-12 w-12 shrink-0 overflow-hidden border-2 border-border bg-muted flex items-center justify-center">
         {previewUrl ? (
           <img src={previewUrl} alt="" className="h-full w-full object-cover" />
         ) : (
@@ -126,7 +126,7 @@ export function FileUploadRow({
               <div
                 className={cn(
                   'h-full  bg-primary transition-[width] duration-200',
-                  status === 'queued' && 'w-0 opacity-40'
+                  status === 'queued' && 'w-0 text-muted-foreground'
                 )}
                 style={{ width: status === 'queued' ? undefined : `${pct}%` }}
               />

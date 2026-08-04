@@ -148,7 +148,7 @@ export function UnlockButton({
       <div className={className}>
         <button
           type="button"
-          className="primary-action w-full disabled:opacity-60"
+          className="primary-action w-full disabled:opacity-50"
           disabled={checkoutBusy}
           onClick={() => void startCheckout()}
         >
@@ -190,7 +190,7 @@ export function UnlockButton({
   if (submitted) {
     return (
       <div
-        className={`rounded-2xl border border-primary/30 bg-primary/10 p-4 text-center ${className}`}
+        className={`border-2 border-primary bg-background p-4 text-center ${className}`}
       >
         <p className="inline-flex items-center gap-1.5 font-semibold text-primary">
           <Check className="h-4 w-4" /> You&apos;re on the founders list.
@@ -214,7 +214,7 @@ export function UnlockButton({
           aria-label="Email for the founders waitlist"
           className="tap-target w-full min-h-[44px] border-2 border-border bg-background px-3.5 py-2.5 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-foreground"
         />
-        <button type="submit" disabled={submitting} className="primary-action disabled:opacity-60">
+        <button type="submit" disabled={submitting} className="primary-action disabled:opacity-50">
           {submitting ? 'Joining…' : 'Join the founders waitlist'}
         </button>
       </div>

@@ -123,7 +123,7 @@ export function FoodSearchBar({ onSelect, initialQuery = '', compact = false }: 
         </ul>
       )}
       {!compact ? (
-        <p className="text-[10px] text-muted-foreground/70">
+        <p className="text-[10px] text-muted-foreground">
           {t('fuelSearchCredit', {
             defaultValue: 'Powered by Open Food Facts — community database, edit portions after adding.',
           })}

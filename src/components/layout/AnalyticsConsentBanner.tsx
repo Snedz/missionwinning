@@ -55,7 +55,7 @@ export function AnalyticsConsentBanner() {
               defaultValue:
                 'Your workouts stay on this device by default. Optional product analytics (no session replay, no autocapture) help improve Mission Winning. You can change this anytime in Profile.',
             })}{' '}
-            <Link href="/privacy" className="underline underline-offset-2 text-foreground/90">
+            <Link href="/privacy" className="underline underline-offset-2 text-foreground">
               {t('analyticsBannerPrivacyLink', { defaultValue: 'Privacy policy' })}
             </Link>
           </p>

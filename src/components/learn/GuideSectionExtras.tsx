@@ -64,7 +64,7 @@ export function GuideSectionExtras({ section, variant = 'app' }: Props) {
           <p className={variant === 'magazine' ? 'eyebrow-live magazine-callout-title' : 'eyebrow-live mb-2'}>
             {callout.title}
           </p>
-          <p className={variant === 'magazine' ? 'magazine-callout-body' : 'text-sm leading-relaxed text-foreground/90'}>
+          <p className={variant === 'magazine' ? 'magazine-callout-body' : 'text-sm leading-relaxed text-foreground'}>
             {callout.body}
           </p>
         </aside>

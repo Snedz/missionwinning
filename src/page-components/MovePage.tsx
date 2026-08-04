@@ -91,8 +91,8 @@ export function MovePage() {
         </h3>
       ) : null}
       <div className="grid gap-4 md:grid-cols-2">
-        {flows.map((flow, i) => (
-          <Card key={flow.id} className="content-card hover:border-primary/40 transition-colors">
+        {flows.map((flow) => (
+          <Card key={flow.id} className="content-card border-2 border-border hover:border-primary transition-colors">
             <CardHeader>
               <CardTitle className="flex items-center gap-2 text-lg">
                 <Clock className="h-4 w-4 text-primary" />
@@ -105,7 +105,7 @@ export function MovePage() {
                 {flow.durationMin} min · {flow.steps.length} steps
               </span>
               <Button
-                variant={!accent && i === 0 ? 'default' : 'outline'}
+                variant="outline"
                 size="sm"
                 onClick={() => setActiveFlowId(flow.id)}
               >

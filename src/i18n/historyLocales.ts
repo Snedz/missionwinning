@@ -45,6 +45,31 @@ type HistoryStrings = {
   historyTableVolume: string;
   historyTableType: string;
   historyWarmupExcluded: string;
+  /** Kaizen Loop 3 M1 — History chrome (.301) */
+  historyBriefingEmpty: string;
+  historyBriefingLine: string;
+  historyEyebrow: string;
+  historyMissionStory: string;
+  historyStartWorkout: string;
+  historySearchPlaceholder: string;
+  historyNoMatches: string;
+  historyLoadMore: string;
+  /** Kaizen Loop 6 P2 — journal + anatomy (.314) */
+  anatomyMapLead: string;
+  anatomyFront: string;
+  anatomyBack: string;
+  journalEmptyTitle: string;
+  journalEmptyDesc: string;
+  journalSearchPlaceholder: string;
+  journalPrivacyLine: string;
+  journalNoMatches: string;
+  journalCheckInTag: string;
+  journalEditAria: string;
+  journalEdit: string;
+  journalEditLabel: string;
+  journalEditPlaceholder: string;
+  journalSave: string;
+  journalCancel: string;
 };
 
 const en: HistoryStrings = {
@@ -92,6 +117,30 @@ const en: HistoryStrings = {
   historyTableVolume: 'Volume',
   historyTableType: 'Type',
   historyWarmupExcluded: '—',
+  historyBriefingEmpty: 'Your mission story starts with the first logged set.',
+  historyBriefingLine: '{{count}} sessions · {{volume}} total volume — consistency compounds.',
+  historyEyebrow: 'History',
+  historyMissionStory: 'At a glance',
+  historyStartWorkout: 'Open Today',
+  historySearchPlaceholder: 'Search by workout name…',
+  historyNoMatches: 'No sessions match these filters',
+  historyLoadMore: 'Show more ({{remaining}} left)',
+  anatomyMapLead: 'Tap a region for exercises. Color = recent volume; red = overdue.',
+  anatomyFront: 'Front',
+  anatomyBack: 'Back',
+  journalEmptyTitle: 'No journal entries yet',
+  journalEmptyDesc:
+    'Finish a session and its debrief is kept here. Jot a field note mid-workout and it opens the entry in your own words.',
+  journalSearchPlaceholder: 'Search your journal…',
+  journalPrivacyLine: 'Your journal stays on this device. It is never uploaded.',
+  journalNoMatches: 'Nothing in the journal matches that.',
+  journalCheckInTag: 'Check-in note',
+  journalEditAria: 'Edit your notes on {{name}}',
+  journalEdit: 'Edit',
+  journalEditLabel: 'Your notes, one per line',
+  journalEditPlaceholder: 'One note per line — your words, kept verbatim.',
+  journalSave: 'Save',
+  journalCancel: 'Cancel',
 };
 
 const es: HistoryStrings = {

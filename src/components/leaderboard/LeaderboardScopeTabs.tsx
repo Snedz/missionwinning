@@ -34,7 +34,7 @@ export function LeaderboardScopeTabs({ scope, onScopeChange, scopeLabel }: Props
         ))}
       </div>
       <p className="text-xs text-muted-foreground">
-        <span className="text-foreground/80 font-medium">{scopeLabel}</span>
+        <span className="text-foreground font-medium">{scopeLabel}</span>
         {' · '}
         {visibleLeaderboardScopes().find((s) => s.id === scope)?.description}
       </p>

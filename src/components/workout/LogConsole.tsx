@@ -57,7 +57,7 @@ type Props = {
 
 /** 48 × 52px, 2px light rule — the ink ground needs a lighter border than paper. */
 const stepper =
-  'flex h-[52px] w-12 shrink-0 items-center justify-center text-neutral-100 transition-colors hover:bg-neutral-100/10 active:bg-neutral-100/20';
+  'flex h-[52px] w-12 shrink-0 items-center justify-center text-neutral-100 transition-colors hover:bg-neutral-800 active:bg-neutral-700';
 
 function Field({
   label,
@@ -211,7 +211,7 @@ export function LogConsole({
               'min-h-[44px] border-2 px-2.5 text-[11px] font-semibold uppercase tracking-[0.06em] transition-colors',
               kind === k
                 ? 'border-accent-400 bg-accent-400 text-neutral-900'
-                : 'border-neutral-700 text-neutral-300 hover:bg-neutral-100/10'
+                : 'border-neutral-700 text-neutral-300 hover:bg-neutral-800'
             )}
           >
             {t(setKindLabelKey(k), {

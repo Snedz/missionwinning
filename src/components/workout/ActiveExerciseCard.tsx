@@ -18,7 +18,7 @@ import { AdaptiveOverlay } from '@/components/ui/AdaptiveOverlay';
 import { SetLogRow } from '@/components/workout/SetLogRow';
 import { SetLogTable } from '@/components/workout/SetLogTable';
 import { useIsCompact } from '@/hooks/useIsCompact';
-import { getLastPerformanceForSet } from '@/lib/workout/activeWorkoutHelpers';
+import { getLastPerformanceForSet, exerciseHasCompletedSet, exerciseHasPlannedSet, firstPlannedSetIdx, holdsActiveExercise, isActiveSetCell, activeSetIdxForExercise, shouldShowSetOptionsFooter, shouldShowApplyTargetsMenuitem, shouldShowRemoveSetMenuitem, exerciseHasWeightedSet, firstWeightedLoad } from '@/lib/workout/activeWorkoutHelpers';
 import { SET_KINDS, setKindDefaultLabel, setKindLabelKey } from '@/lib/workout/setKind';
 import { getFormGuideOrCues } from '@/lib/formGuides';
 import { lastNotesFor } from '@/lib/journal/cueMemory';
@@ -121,19 +121,19 @@ export function ActiveExerciseCard({
   const isCompact = useIsCompact();
   const [menuOpen, setMenuOpen] = useState(false);
   const [footerOpen, setFooterOpen] = useState(false);
-  const hasCompleted = exLog.sets.some((s) => s.completed);
-  const hasPlanned = exLog.sets.some((s) => !s.completed);
+  const hasCompleted = exerciseHasCompletedSet(exLog.sets);
+  const hasPlanned = exerciseHasPlannedSet(exLog.sets);
   const restSec = resolveRestSeconds(exercise.name);
   const ssLabel = supersetLabel(exercises, exIdx);
   const hasNext = exIdx < exercises.length - 1;
-  const holdsActiveSet = nextSet?.exIdx === exIdx;
+  const holdsActiveSet = holdsActiveExercise(nextSet, exIdx);
   const lastSets = lastSessionSets(workoutHistory, exLog.exerciseId);
   const hasFormGuide = !!getFormGuideOrCues(exercise.id, { exercise });
   // The cue the athlete wrote last time this lift came up — what a paper
   // logbook gets flipped back for. Verbatim from history; absent is silence.
   const lastNote = lastNotesFor(exLog.exerciseId, workoutHistory)[0] ?? null;
 
-  const nextPlannedIdx = exLog.sets.findIndex((s) => !s.completed);
+  const nextPlannedIdx = firstPlannedSetIdx(exLog.sets);
   /**
    * The "Next: N × W" line.
    *
@@ -179,11 +179,11 @@ export function ActiveExerciseCard({
             )}
             {exLog.loadPct != null &&
               exLog.loadPct > 0 &&
-              exLog.sets.some((s) => s.weight > 0) && (
+              exerciseHasWeightedSet(exLog.sets) && (
                 <Badge variant="outline" className="text-[10px] tabular-nums">
                   {t('activeLoadPctChip', {
                     pct: exLog.loadPct,
-                    weight: exLog.sets.find((s) => s.weight > 0)?.weight ?? 0,
+                    weight: firstWeightedLoad(exLog.sets),
                     unit: unitLabel,
                     defaultValue: '{{pct}}% · {{weight}} {{unit}}',
                   })}
@@ -223,10 +223,8 @@ export function ActiveExerciseCard({
                     aria-label={t('activeCloseMenu', { defaultValue: 'Close menu' })}
                     onClick={() => setMenuOpen(false)}
                   />
-                  <div
-                    role="menu"
-                    className="absolute end-0 top-full z-50 mt-1 min-w-[11rem] border-2 border-border bg-card p-1"
-                  >
+                  <div className="absolute end-0 top-full z-50 mt-1 min-w-[11rem] border-2 border-border bg-card p-1">
+                    <div role="menu">
                     <Link
                       href={`/coach?ask=${encodeURIComponent(exercise.id)}`}
                       role="menuitem"
@@ -285,6 +283,8 @@ export function ActiveExerciseCard({
                         {t('activeSwap', { defaultValue: 'Swap' })}
                       </button>
                     )}
+                    </div>
+                    {/* HoldToConfirm is not a menuitem (aria-busy) — keep it outside role=menu. */}
                     <div className="border-t border-border px-1 pt-1">
                       <HoldToConfirmButton
                         size="sm"
@@ -385,7 +385,7 @@ export function ActiveExerciseCard({
       <CardContent className="space-y-2 p-3 pt-0">
         {isCompact ? (
           exLog.sets.map((set, setIdx) => {
-            const isNext = nextSet?.exIdx === exIdx && nextSet?.setIdx === setIdx;
+            const isNext = isActiveSetCell(nextSet, exIdx, setIdx);
             return (
               <div key={set.id} ref={isNext ? nextSetRef : undefined}>
                 <SetLogRow
@@ -401,10 +401,10 @@ export function ActiveExerciseCard({
         ) : (
           /* Desktop logs in the row, so the ref goes on the table — the
              scroll-into-view target is the exercise, not one set. */
-          <div ref={nextSet?.exIdx === exIdx ? nextSetRef : undefined}>
+          <div ref={holdsActiveExercise(nextSet, exIdx) ? nextSetRef : undefined}>
             <SetLogTable
               sets={exLog.sets}
-              activeSetIdx={nextSet?.exIdx === exIdx ? nextSet.setIdx : -1}
+              activeSetIdx={activeSetIdxForExercise(nextSet, exIdx)}
               weightLabel={unitLabel}
               prevLabels={exLog.sets.map((_, setIdx) => {
                 const last = getLastPerformanceForSet(
@@ -464,7 +464,11 @@ export function ActiveExerciseCard({
               ))}
             </div>
           )}
-          {((lastSets && hasPlanned) || (hasPlanned && exLog.sets.length > 1)) && (
+          {shouldShowSetOptionsFooter({
+            hasLastSets: !!lastSets,
+            hasPlanned,
+            plannedSetCount: exLog.sets.length,
+          }) && (
             <div className="relative ms-auto">
               <Button
                 type="button"
@@ -494,7 +498,7 @@ export function ActiveExerciseCard({
                     role="menu"
                     className="absolute end-0 bottom-full z-50 mb-1 min-w-[10rem] border-2 border-border bg-card p-1"
                   >
-                    {lastSets && hasPlanned && (
+                    {shouldShowApplyTargetsMenuitem(!!lastSets, hasPlanned) && (
                       <button
                         type="button"
                         role="menuitem"
@@ -507,7 +511,7 @@ export function ActiveExerciseCard({
                         {t('activeApplyAllTargets', { defaultValue: 'Apply targets' })}
                       </button>
                     )}
-                    {hasPlanned && exLog.sets.length > 1 && (
+                    {shouldShowRemoveSetMenuitem(hasPlanned, exLog.sets.length) && (
                       <button
                         type="button"
                         role="menuitem"

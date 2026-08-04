@@ -74,6 +74,11 @@ const ASSESS_EN: Record<string, string> = {
   assessRecHigh1: 'Begin with Corrective & Mobility block.',
   assessRecHigh2: 'Consult physician.',
   assessRecHigh3: 'Use low-impact options and monitor symptoms.',
+  /** Kaizen Loop 3 M5 (.305) */
+  submitAssessment: 'Submit Assessment',
+  riskLow: 'Low risk',
+  riskModerate: 'Moderate risk',
+  riskHigh: 'High risk',
 };
 
 const ASSESS_ES: Record<string, string> = {

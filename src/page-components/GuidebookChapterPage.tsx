@@ -114,7 +114,7 @@ export function GuidebookChapterPage({ chapterId }: Props) {
                 <CardContent className="space-y-4">
                   <div className="space-y-3">
                     {renderMagazineBody(section.body, {
-                      paragraphClassName: 'text-sm leading-relaxed text-foreground/90',
+                      paragraphClassName: 'text-sm leading-relaxed text-foreground',
                     })}
                   </div>
                   <GuideSectionExtras section={section} variant="app" />
@@ -140,7 +140,7 @@ export function GuidebookChapterPage({ chapterId }: Props) {
       </div>
 
       {allDone && (
-        <Card className="content-card border-primary/40">
+        <Card className="content-card border-primary">
           <CardContent className="py-4 flex flex-wrap items-center justify-between gap-3">
             <p className="text-sm text-primary">
               {t('guidebookChapterComplete', { defaultValue: 'Chapter complete!' })}
@@ -160,7 +160,7 @@ export function GuidebookChapterPage({ chapterId }: Props) {
         </Card>
       )}
 
-      <div className="fixed bottom-0 left-0 right-0 p-4 bg-background/95 border-t border-border md:hidden z-40">
+      <div className="fixed bottom-0 left-0 right-0 p-4 bg-background border-t border-border md:hidden z-40">
         <Button className="w-full" variant="default" asChild>
           <Link href={chapter.sections[0]?.practiceCTA.href ?? '/log'}>
             {t('guidebookPracticeInApp', { defaultValue: 'Practice in app' })}

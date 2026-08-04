@@ -74,12 +74,124 @@ type ActiveWorkoutStrings = {
   activeOverloadPrescribed: string;
   /** One-tap fill console from progressive-overload / coach next (.288). */
   activeUseNextTarget: string;
+  /** Compact console set ordinal ("Set 2 of 4"). */
+  activeSetOf: string;
+  activeDecreaseReps: string;
+  activeIncreaseReps: string;
+  activeDecreaseWeight: string;
+  activeIncreaseWeight: string;
   /** Victory next-session progression (structured insight, `.290`). */
   victoryProgressAddWeight: string;
   victoryProgressAddReps: string;
   victoryProgressHold: string;
   victoryProgressAddRepsBw: string;
   victoryProgressHoldBw: string;
+  /** Finish with zero sets — toast description (`.296`). */
+  activeNothingLoggedDesc: string;
+  /** Victory sheet (`.296`). */
+  victoryShareText: string;
+  victoryTitle: string;
+  victoryScoutCue: string;
+  victoryVolume: string;
+  victorySets: string;
+  victoryFeelSaved: string;
+  victoryFeelPrompt: string;
+  victoryFeelLow: string;
+  victoryFeelHigh: string;
+  victoryBodyDeltaLabel: string;
+  victoryReadinessDelta: string;
+  victoryStrainDelta: string;
+  victoryRecoveryDelta: string;
+  victoryStreak: string;
+  victoryNextLabel: string;
+  victoryBackToday: string;
+  victoryViewHistory: string;
+  victoryShare: string;
+  victoryShareCard: string;
+  /** Pre-session check-in sheet (`.296`). */
+  sessionCheckInEyebrow: string;
+  sessionCheckInTitle: string;
+  sessionCheckInSave: string;
+  sessionCheckInSkip: string;
+  sessionCheckInLead: string;
+  sessionCheckInSoreness: string;
+  sessionCheckInFresh: string;
+  sessionCheckInBeaten: string;
+  sessionCheckInSleep: string;
+  sessionCheckInPoor: string;
+  sessionCheckInGreat: string;
+  sessionCheckInMotivation: string;
+  sessionCheckInLow: string;
+  sessionCheckInFired: string;
+  /** Kaizen Loop 2 L4 — Active chrome + session volume (.299) */
+  activeAddExerciseTitle: string;
+  activeApplyAllTargets: string;
+  activeAskAboutForm: string;
+  activeCloseMenu: string;
+  activeCoachNotesDefault: string;
+  activeCoachNotesHighEffort: string;
+  activeDiscardWorkout: string;
+  activeEmptySubtitle: string;
+  activeExerciseMore: string;
+  activeEyebrow: string;
+  activeGoBuilder: string;
+  activeGoToday: string;
+  activeLastNoteLine: string;
+  activeLoadingSession: string;
+  activeLoadingSessionDesc: string;
+  activeNextTargetLine: string;
+  activeNote: string;
+  activeNotePlaceholder: string;
+  activeRemoveExercise: string;
+  activeRemoveExerciseLogged: string;
+  activeRemoveSet: string;
+  activeRestDefault: string;
+  activeSessionMore: string;
+  activeSessionTimer: string;
+  activeSetLess: string;
+  activeSetOptions: string;
+  activeSwap: string;
+  activeTitle: string;
+  activeAddExerciseInline: string;
+  activeAddSelectedExercise: string;
+  sessionReadinessDelta: string;
+  sessionReduceVolume: string;
+  sessionVolumeNoPlan: string;
+  sessionVolumeNoPlanDesc: string;
+  sessionVolumeReduced: string;
+  sessionVolumeReducedDesc: string;
+  /** Kaizen Loop 3 M1 — set table + jot (.301) */
+  activeAddExerciseEyebrow: string;
+  activeColSet: string;
+  activeColPrev: string;
+  activeColReps: string;
+  activeColAction: string;
+  activePrBadge: string;
+  activeSetInConsole: string;
+  activeSetPlanned: string;
+  activePrTip: string;
+  sessionJotLabel: string;
+  sessionJotPlaceholder: string;
+  sessionJotPrivacy: string;
+  /** Kaizen Loop 6 P3 — GuidedStepPlayer (.315) */
+  guidedSessionComplete: string;
+  guidedSessionNextHint: string;
+  guidedSessionRepeat: string;
+  guidedSessionBack: string;
+  guidedSessionStepOf: string;
+  guidedSessionProgress: string;
+  guidedSessionStart: string;
+  guidedSessionPause: string;
+  guidedSessionResume: string;
+  guidedSessionSkip: string;
+  guidedSessionReset: string;
+  liveHrConnectFailed: string;
+  liveHrBpm: string;
+  liveHrIdle: string;
+  liveHrUnsupported: string;
+  liveHrHint: string;
+  liveHrDisconnect: string;
+  liveHrConnect: string;
 };
 
 const en: ActiveWorkoutStrings = {
@@ -151,11 +263,118 @@ const en: ActiveWorkoutStrings = {
   activeOverloadFromLast: 'From last time',
   activeOverloadPrescribed: 'Coach plan',
   activeUseNextTarget: 'Use next target',
+  activeSetOf: 'Set {{current}} of {{total}}',
+  activeDecreaseReps: 'Decrease reps',
+  activeIncreaseReps: 'Increase reps',
+  activeDecreaseWeight: 'Decrease weight',
+  activeIncreaseWeight: 'Increase weight',
   victoryProgressAddWeight: 'Next: +{{step}} {{unit}} on {{name}} (hit top of range)',
   victoryProgressAddReps: 'Next: {{reps}} × {{weight}} {{unit}} on {{name}}',
   victoryProgressHold: 'Next: hold {{reps}} × {{weight}} {{unit}} on {{name}}',
   victoryProgressAddRepsBw: 'Next: {{reps}} reps on {{name}}',
   victoryProgressHoldBw: 'Next: hold {{reps}} on {{name}}',
+  activeNothingLoggedDesc: 'Complete at least one set before finishing.',
+  victoryShareText:
+    'Session done: {{name}} — {{volume}} {{unit}}, {{sets}} sets.',
+  victoryTitle: 'Session locked',
+  victoryScoutCue: 'Session saved.',
+  victoryVolume: 'Volume',
+  victorySets: 'Sets',
+  victoryFeelSaved: 'Logged — feeds readiness on Today.',
+  victoryFeelPrompt: 'How do you feel after this session?',
+  victoryFeelLow: 'Drained',
+  victoryFeelHigh: 'Energized',
+  victoryBodyDeltaLabel: 'What changed',
+  victoryReadinessDelta: 'Readiness {{delta}}',
+  victoryStrainDelta: 'Strain {{delta}}',
+  victoryRecoveryDelta: 'Recovery {{delta}}',
+  victoryStreak: '{{count}}-day streak — nice consistency',
+  victoryNextLabel: 'Next',
+  victoryBackToday: 'Back to Today',
+  victoryViewHistory: 'History',
+  victoryShare: 'Share',
+  victoryShareCard: 'Share card',
+  sessionCheckInEyebrow: 'Before you train',
+  sessionCheckInTitle: 'How do you feel?',
+  sessionCheckInSave: 'Save & continue',
+  sessionCheckInSkip: 'Not now',
+  sessionCheckInLead:
+    'Three quick ratings. We adjust readiness — we never cut your sets without asking.',
+  sessionCheckInSoreness: 'Soreness',
+  sessionCheckInFresh: 'Fresh',
+  sessionCheckInBeaten: 'Beaten up',
+  sessionCheckInSleep: 'Sleep last night',
+  sessionCheckInPoor: 'Poor',
+  sessionCheckInGreat: 'Great',
+  sessionCheckInMotivation: 'Motivation',
+  sessionCheckInLow: 'Low',
+  sessionCheckInFired: 'Fired up',
+  activeAddExerciseTitle: 'Add exercise',
+  activeApplyAllTargets: 'Apply targets',
+  activeAskAboutForm: 'Ask about form',
+  activeCloseMenu: 'Close menu',
+  activeCoachNotesDefault: 'Rate Easy / Med / Hard after each set so Coach can learn.',
+  activeCoachNotesHighEffort: 'Hard sets stacking up — leave a little in the tank if form slips.',
+  activeDiscardWorkout: 'Discard workout',
+  activeEmptySubtitle: 'Log sets with rest timers, PRs, and form cues — offline ready.',
+  activeExerciseMore: 'More actions',
+  activeEyebrow: 'Train',
+  activeGoBuilder: 'Builder',
+  activeGoToday: 'Today',
+  activeLastNoteLine: 'Last note ({{date}}):',
+  activeLoadingSession: 'Restoring session…',
+  activeLoadingSessionDesc: 'Reading the last workout saved on this device.',
+  activeNextTargetLine: 'Next: {{reps}} × {{weight}} {{unit}}',
+  activeNote: 'Note',
+  activeNotePlaceholder: 'Note — "machine 3, seat 4", "left knee tight"…',
+  activeRemoveExercise: 'Remove exercise',
+  activeRemoveExerciseLogged: 'Remove exercise — discards logged sets',
+  activeRemoveSet: 'Remove set',
+  activeRestDefault: 'Default',
+  activeSessionMore: 'More session actions',
+  activeSessionTimer: 'Session timer',
+  activeSetLess: 'Less',
+  activeSetOptions: 'Set options',
+  activeSwap: 'Swap',
+  activeTitle: 'Active workout',
+  activeAddExerciseInline: 'Add exercise — search 300+ movements',
+  activeAddSelectedExercise: 'Add selected exercise',
+  sessionReadinessDelta: 'Readiness {{from}} → {{to}}',
+  sessionReduceVolume: "Reduce today's volume",
+  sessionVolumeNoPlan: 'No coach session today',
+  sessionVolumeNoPlanDesc: 'Start from Mission Coach for plan volume cuts. Sets here stay yours.',
+  sessionVolumeReduced: 'Volume reduced',
+  sessionVolumeReducedDesc: 'One set trimmed from accessories (min 2). Plan marked Adapted.',
+  activeAddExerciseEyebrow: 'This session',
+  activeColSet: 'Set',
+  activeColPrev: 'Prev',
+  activeColReps: 'Reps',
+  activeColAction: 'Action',
+  activePrBadge: 'PR',
+  activeSetInConsole: 'In the console',
+  activeSetPlanned: '{{reps}} planned',
+  activePrTip: 'Personal record for this exercise',
+  sessionJotLabel: 'Field note',
+  sessionJotPlaceholder: 'Five words is enough — "knee twinge set 3". Opens your journal entry.',
+  sessionJotPrivacy: 'Stays on this device.',
+  guidedSessionComplete: 'Session complete',
+  guidedSessionNextHint: 'Next: log protein on Fuel, read a Learn chapter, or return to Today.',
+  guidedSessionRepeat: 'Repeat',
+  guidedSessionBack: 'Back',
+  guidedSessionStepOf: 'Step {{current}}/{{total}}',
+  guidedSessionProgress: 'Progress',
+  guidedSessionStart: 'Start session',
+  guidedSessionPause: 'Pause',
+  guidedSessionResume: 'Resume',
+  guidedSessionSkip: 'Skip step',
+  guidedSessionReset: 'Reset',
+  liveHrConnectFailed: 'Could not connect heart rate monitor.',
+  liveHrBpm: '{{bpm}} BPM',
+  liveHrIdle: 'Heart rate',
+  liveHrUnsupported: 'Bluetooth HR needs Chrome or another browser with Web Bluetooth.',
+  liveHrHint: 'Optional Polar / Wahoo chest strap — not used in Win Score.',
+  liveHrDisconnect: 'Disconnect',
+  liveHrConnect: 'Connect HR',
 };
 
 const es: ActiveWorkoutStrings = {

@@ -205,7 +205,7 @@ export function YouthParentGate({ childAge, onConsented, onCancel }: Props) {
 
   if (step === 'verify') {
     return (
-      <Card className="border-[hsl(var(--status-warn)/0.3)] bg-[hsl(var(--status-warn)/0.08)]">
+      <Card className="border-2 border-[hsl(var(--status-warn))] bg-card">
         <CardHeader>
           <CardTitle className="text-base">
             {t('youthVerifyTitle', { defaultValue: 'Enter verification code' })}
@@ -243,7 +243,7 @@ export function YouthParentGate({ childAge, onConsented, onCancel }: Props) {
             }}
           />
           {error && (
-            <p id="youth-otp-error" className="text-xs text-red-400 text-center" role="alert">
+            <p id="youth-otp-error" className="text-xs text-destructive text-center" role="alert">
               {error}
             </p>
           )}
@@ -280,7 +280,7 @@ export function YouthParentGate({ childAge, onConsented, onCancel }: Props) {
   }
 
   return (
-    <Card className="border-[hsl(var(--status-warn)/0.3)] bg-[hsl(var(--status-warn)/0.08)]">
+    <Card className="border-2 border-[hsl(var(--status-warn))] bg-card">
       <CardHeader>
         <CardTitle className="text-base">
           {t('youthGateTitle', { defaultValue: 'Parent or guardian approval' })}
@@ -302,7 +302,7 @@ export function YouthParentGate({ childAge, onConsented, onCancel }: Props) {
               setEmail(e.target.value);
               setError('');
             }}
-            className="w-full rounded-md bg-background border border-border px-3 py-2"
+            className="w-full rounded-none bg-background border border-border px-3 py-2"
             placeholder="parent@example.com"
           />
         </label>
@@ -321,7 +321,7 @@ export function YouthParentGate({ childAge, onConsented, onCancel }: Props) {
           </span>
         </label>
         {error && (
-          <p id="youth-request-error" className="text-xs text-red-400" role="alert">
+          <p id="youth-request-error" className="text-xs text-destructive" role="alert">
             {error}
           </p>
         )}

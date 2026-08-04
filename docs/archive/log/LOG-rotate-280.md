@@ -1,10 +1,10 @@
-# Rotated for .280
+# LOG rotate — `.280` (2026-08-03)
 
-## 2026-08-03 — Pre-EIN craft window opens (`.265`)
+Rotated from [LOG.md](../../../LOG.md) when `.295` shipped (≤15-entry rule).
 
-Founder waived the A5 *feature freeze* for the EIN wait (public-flip gates
-remain). ORCHESTRATION + CONTEXT state the override. Week-1 recap push/email
-drops peer-shame ("most people quit"). Builder arrange uses AdaptiveOverlay
-for add-exercise on compact widths. Named loading labels on fitness-test /
-teacher routes instead of bare "Loading…".
+---
 
+## 2026-08-03 — Coach session predicate for Active chrome (`.280`)
+
+`sessionIsCoachPrescribed` pure helper — Active eyebrow and future apply-targets
+call sites share one definition of "this is a Mission Coach load".

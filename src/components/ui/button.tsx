@@ -9,15 +9,15 @@ const buttonVariants = cva(
   // rule is also what finally covers the 91 raw <button>s this component never reached.
   // font-semibold not font-medium: Archivo loads 400/600/800 only, so 500 would
   // synthesize. Radius-0 comes from the collapsed borderRadius scale.
-  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-semibold transition-colors disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0",
+  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-none text-sm font-semibold transition-colors disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0",
   {
     variants: {
       variant: {
         default: "bg-primary-fill text-primary-foreground hover:bg-primary-fill-hover",
-        destructive: "bg-destructive text-destructive-foreground hover:bg-destructive/90",
+        destructive: "bg-destructive text-destructive-foreground hover:bg-destructive",
         // Modernist ghost = 2px ink border (never a hairline).
-        outline: "border-2 border-foreground bg-transparent hover:bg-foreground/[0.07] active:bg-foreground/[0.14]",
-        secondary: "bg-secondary text-secondary-foreground hover:bg-secondary/80",
+        outline: "border-2 border-foreground bg-transparent hover:bg-accent-100 active:bg-accent-100",
+        secondary: "bg-secondary text-secondary-foreground hover:bg-secondary",
         ghost: "hover:bg-accent hover:text-accent-foreground",
         link: "text-primary underline-offset-4 hover:underline",
         /**
@@ -41,7 +41,7 @@ const buttonVariants = cva(
          * disappear entirely.
          */
         onInk:
-          "border-2 border-neutral-500 bg-transparent text-neutral-100 hover:bg-neutral-100/10 active:bg-neutral-100/20",
+          "border-2 border-neutral-500 bg-transparent text-neutral-100 hover:bg-neutral-800 active:bg-neutral-700",
         onInkSolid:
           "border-2 border-transparent bg-neutral-100 text-neutral-900 hover:bg-white",
       },

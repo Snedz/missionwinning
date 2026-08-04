@@ -3,7 +3,18 @@ import { cn } from "@/lib/utils";
 
 const Table = React.forwardRef<HTMLTableElement, React.HTMLAttributes<HTMLTableElement>>(
   ({ className, ...props }, ref) => (
-    <div className="relative w-full overflow-auto">
+    // tabIndex so a horizontally scrolling table stays keyboard-reachable
+    // (axe scrollable-region-focusable) — zero-data routes never mount wide
+    // tables, so seeded Benchmarks is what finally measured this.
+    // role=region + aria-label name the landmark. eslint jsx-a11y still treats
+    // region as non-interactive; the disable is load-bearing for the axe rule.
+    <div
+      className="relative w-full overflow-auto"
+      role="region"
+      aria-label="Scrollable data table"
+      // eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex -- scrollable-region-focusable
+      tabIndex={0}
+    >
       <table ref={ref} className={cn("w-full caption-bottom text-sm", className)} {...props} />
     </div>
   )
@@ -32,7 +43,7 @@ const TableFooter = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <tfoot
     ref={ref}
-    className={cn("border-t bg-muted/50 font-medium [&>tr]:last:border-b-0", className)}
+    className={cn("border-t bg-muted font-medium [&>tr]:last:border-b-0", className)}
     {...props}
   />
 ));
@@ -43,7 +54,7 @@ const TableRow = React.forwardRef<HTMLTableRowElement, React.HTMLAttributes<HTML
     <tr
       ref={ref}
       className={cn(
-        "border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted",
+        "border-b transition-colors hover:bg-muted data-[state=selected]:bg-muted",
         className
       )}
       {...props}

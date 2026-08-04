@@ -300,7 +300,7 @@ export function BuilderPage() {
           </Card>
 
           <section id="program-templates"
-            className="content-card  border border-primary  from-primary/10  p-5 md:p-6 space-y-4"
+            className="content-card border-2 border-border p-5 md:p-6 space-y-4"
           >
         <div className="flex flex-wrap items-center justify-between gap-2">
           <h3 className="text-xl font-bold flex items-center gap-2">

@@ -47,36 +47,32 @@ export function MuscleHeatmap({ cells, windowDays }: Props) {
       </CardHeader>
       <CardContent>
         <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
-          {cells.map((cell) => (
+          {cells.map((cell) => {
+            const groupLabel = muscleGroupLabel(cell.group, t);
+            const intensityPct = Math.round(cell.intensity * 100);
+            return (
             <div
               key={cell.group}
               className={cn(
                 'border-2 p-3 min-h-[88px] flex flex-col justify-between transition-colors',
                 heatColor(cell.intensity, cell.daysSince)
               )}
+              aria-label={
+                cell.intensity > 0 ? `${groupLabel}, ${intensityPct}%` : groupLabel
+              }
             >
               <div className="flex items-start justify-between gap-1">
                 <span className="text-sm font-semibold">
-                  {muscleGroupLabel(cell.group, t)}
+                  {groupLabel}
                 </span>
                 {/*
                   `.256` — `opacity-70` here failed WCAG 1.4.3 on the *hottest*
-                  cell. `heatColor` puts `text-accent-900` (#4d170e) on
-                  `bg-accent-400` (#ff9783) at intensity ≥ 0.75; at full strength
-                  that is 6.93:1, and at 70% it composites to **3.76:1**. The
-                  busiest muscle group — the one an athlete most wants to read —
-                  was the one below the line.
-
-                  axe never saw it: this span only renders when
-                  `cell.intensity > 0`, and the a11y suite seeds onboarding with
-                  no history, so /history passes with the element absent. A route
-                  in the list is not the same as the states on it being covered.
-
-                  Hierarchy comes from size and weight, which cost no contrast.
+                  cell. Hierarchy comes from size and weight, which cost no contrast.
+                  Loop 2 L5: cell `aria-label` names intensity for AT.
                 */}
                 {cell.intensity > 0 && (
                   <span className="text-[10px] font-semibold uppercase tracking-[0.08em]">
-                    {Math.round(cell.intensity * 100)}%
+                    {intensityPct}%
                   </span>
                 )}
               </div>
@@ -109,7 +105,8 @@ export function MuscleHeatmap({ cells, windowDays }: Props) {
                 />
               </div>
             </div>
-          ))}
+            );
+          })}
         </div>
       </CardContent>
     </Card>

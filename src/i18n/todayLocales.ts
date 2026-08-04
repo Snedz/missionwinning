@@ -163,6 +163,87 @@ type TodayStrings = {
   coachPlanGenerating: string;
   coachPlanLoad: string;
   coachPlanRegenerate: string;
+  /** Kaizen Loop 2 L4 — week recap + debrief (.299) */
+  todayWeekRecapTitle: string;
+  todayWeekRecapBody: string;
+  todayWeekRecapShareCard: string;
+  todayWeekRecapCoach: string;
+  todayWeekRecapHistory: string;
+  debriefTitle: string;
+  debriefTrain: string;
+  debriefFuel: string;
+  debriefMoveMind: string;
+  debriefBody: string;
+  debriefBodyNone: string;
+  debriefImpacts: string;
+  debriefBehaviorImpacts: string;
+  debriefCollapse: string;
+  debriefExpand: string;
+  debriefDetails: string;
+  debriefTrackLink: string;
+  /** Kaizen Loop 3 M2 — Victory SessionDebriefCard (.302) */
+  debriefSectionLabel: string;
+  debriefFieldNotesLabel: string;
+  debriefListen: string;
+  debriefStop: string;
+  debriefListenAria: string;
+  debriefStopAria: string;
+  debriefDoseQuestion: string;
+  debriefReplyHarder: string;
+  debriefReplyExact: string;
+  debriefReplyEasy: string;
+  debriefNoted: string;
+  debriefSavedJournal: string;
+  /** Kaizen Loop 4 N4 — Behavior / DayReview / freshness / reentry (.309) */
+  behaviorWhyWeTrack: string;
+  behaviorNo: string;
+  behaviorYes: string;
+  behaviorFewer: string;
+  behaviorMore: string;
+  behaviorStripTitle: string;
+  behaviorStripHeading: string;
+  behaviorStripNote: string;
+  behaviorBedTimeAria: string;
+  behaviorWakeTimeAria: string;
+  behaviorCaffeineAria: string;
+  behaviorCaffeineLastServing: string;
+  behaviorCaffeineLastAria: string;
+  behaviorAlcoholAria: string;
+  dayReviewOptInOnTitle: string;
+  dayReviewOptInOnBody: string;
+  dayReviewOptInOffTitle: string;
+  dayReviewOptInOffBody: string;
+  dayReviewOptInInstall: string;
+  dayReviewOptInInstallHow: string;
+  dayReviewOptInAsk: string;
+  dayReviewOptInDetail: string;
+  dayReviewOptInAt: string;
+  dayReviewOptInEnable: string;
+  dayReviewOptInDismiss: string;
+  todayMuscleFreshness: string;
+  todayFreshNew: string;
+  todayFreshDays: string;
+  todayFreshRec: string;
+  todayFreshReady: string;
+  todayFreshRecovering: string;
+  todayWeekLoading: string;
+  todayTrendsDetails: string;
+  todayDayReviewTitle: string;
+  todayDayReviewBedLogged: string;
+  todayDayReviewLogBed: string;
+  todayReentryLapsedTitle: string;
+  todayReentryTitle: string;
+  todayReentryLapsedBody: string;
+  todayReentryLongBody: string;
+  todayReentryBody: string;
+  todayReentryEyebrow: string;
+  todayMissionScoreFromLogs: string;
+  todayScoreAfterFirstLog: string;
+  todayScoreNotMeasured: string;
+  todayScoreNeedsSessions: string;
+  todayMissionScoreTip: string;
+  todayMoreSummary: string;
+  todaySessionFocus: string;
 };
 
 const en: TodayStrings = {
@@ -347,6 +428,84 @@ const en: TodayStrings = {
   coachPlanGenerating: 'Building your week…',
   coachPlanLoad: 'Load',
   coachPlanRegenerate: 'Regenerate',
+  todayWeekRecapTitle: 'This week',
+  todayWeekRecapBody: '{{sessions}} sessions · {{sets}} sets · {{streak}}-day streak',
+  todayWeekRecapShareCard: 'Share card',
+  todayWeekRecapCoach: 'Open AI weekly plan',
+  todayWeekRecapHistory: 'History',
+  debriefTitle: 'Mission Debrief',
+  debriefTrain: 'Train',
+  debriefFuel: 'Fuel',
+  debriefMoveMind: 'Move / Mind',
+  debriefBody: 'Body',
+  debriefBodyNone: 'No weight logged',
+  debriefImpacts: 'Impacts',
+  debriefBehaviorImpacts: 'Behaviors',
+  debriefCollapse: 'Less',
+  debriefExpand: 'Details',
+  debriefDetails: 'Training volume ~{{volume}}. Focus next week on the note above — honest, not automatic.',
+  debriefTrackLink: 'Body metrics',
+  debriefSectionLabel: 'Session debrief',
+  debriefFieldNotesLabel: 'Your field notes',
+  debriefListen: 'Listen',
+  debriefStop: 'Stop',
+  debriefListenAria: 'Read the debrief aloud',
+  debriefStopAria: 'Stop reading the debrief',
+  debriefDoseQuestion: 'Did that run hotter than planned, or was it the work you wanted?',
+  debriefReplyHarder: 'Harder than expected',
+  debriefReplyExact: 'Exactly what I wanted',
+  debriefReplyEasy: 'Too easy',
+  debriefNoted: 'Noted — next session will account for that.',
+  debriefSavedJournal: 'Saved to your journal — edit any time from History.',
+  behaviorWhyWeTrack: 'Why we track {{label}}',
+  behaviorNo: 'No',
+  behaviorYes: 'Yes',
+  behaviorFewer: 'Fewer {{label}}',
+  behaviorMore: 'More {{label}}',
+  behaviorStripTitle: 'Behavior journal',
+  behaviorStripHeading: 'Behaviors — all optional',
+  behaviorStripNote: 'Stays on this device. Tap the info icon on any row to see what the research actually says.',
+  behaviorBedTimeAria: 'In bed around',
+  behaviorWakeTimeAria: 'Up around',
+  behaviorCaffeineAria: 'caffeine servings',
+  behaviorCaffeineLastServing: 'Last serving',
+  behaviorCaffeineLastAria: 'Last caffeine serving',
+  behaviorAlcoholAria: 'alcoholic drinks',
+  dayReviewOptInOnTitle: 'Evening review on',
+  dayReviewOptInOnBody: 'One note at {{hour}}:00. The recap itself opens on this device.',
+  dayReviewOptInOffTitle: 'Not enabled',
+  dayReviewOptInOffBody: 'Notifications stayed off. Everything else works exactly as before.',
+  dayReviewOptInInstall: 'Add Mission Winning to your home screen and an evening review can find you here.',
+  dayReviewOptInInstallHow: 'Share → Add to Home Screen.',
+  dayReviewOptInAsk: 'Want your day in review as an evening note?',
+  dayReviewOptInDetail: 'One a day, at an hour you pick. The note carries no numbers — the recap opens on this device.',
+  dayReviewOptInAt: 'At',
+  dayReviewOptInEnable: 'Turn on',
+  dayReviewOptInDismiss: 'Not now',
+  todayMuscleFreshness: 'Muscle freshness',
+  todayFreshNew: 'new',
+  todayFreshDays: '{{days}}d',
+  todayFreshRec: 'REC',
+  todayFreshReady: 'ready',
+  todayFreshRecovering: 'recovering',
+  todayWeekLoading: 'Loading week…',
+  todayTrendsDetails: 'Trends',
+  todayDayReviewTitle: 'Day in review',
+  todayDayReviewBedLogged: 'Bed time logged — stays on this device.',
+  todayDayReviewLogBed: 'Log bed time now',
+  todayReentryLapsedTitle: 'Picking this back up',
+  todayReentryTitle: 'Good to see you back',
+  todayReentryLapsedBody: "It's been a while — today's session starts at about {{pct}}% of usual size. Nothing to catch up on.",
+  todayReentryLongBody: "Today's session is about {{pct}}% of usual so the first one back is easy to finish. Your history is still here.",
+  todayReentryBody: "Today's session is about {{pct}}% of usual sets. Get it done and the week rebuilds itself.",
+  todayReentryEyebrow: 'Back in',
+  todayMissionScoreFromLogs: 'From your logs',
+  todayScoreAfterFirstLog: 'After your first log',
+  todayScoreNotMeasured: 'Not measured',
+  todayScoreNeedsSessions: 'Needs 3 sessions',
+  todayMissionScoreTip: 'Daily score from all six pillars. Log training, fuel, move, mind, track, and learn to raise it.',
+  todayMoreSummary: 'Today details',
+  todaySessionFocus: 'Training',
 };
 
 const coachPlanDefaults = {
@@ -521,6 +680,84 @@ const es: TodayStrings = {
 };
 
 const zh: TodayStrings = {
+  todayWeekRecapTitle: en.todayWeekRecapTitle,
+  todayWeekRecapBody: en.todayWeekRecapBody,
+  todayWeekRecapShareCard: en.todayWeekRecapShareCard,
+  todayWeekRecapCoach: en.todayWeekRecapCoach,
+  todayWeekRecapHistory: en.todayWeekRecapHistory,
+  debriefTitle: en.debriefTitle,
+  debriefTrain: en.debriefTrain,
+  debriefFuel: en.debriefFuel,
+  debriefMoveMind: en.debriefMoveMind,
+  debriefBody: en.debriefBody,
+  debriefBodyNone: en.debriefBodyNone,
+  debriefImpacts: en.debriefImpacts,
+  debriefBehaviorImpacts: en.debriefBehaviorImpacts,
+  debriefCollapse: en.debriefCollapse,
+  debriefExpand: en.debriefExpand,
+  debriefDetails: en.debriefDetails,
+  debriefTrackLink: en.debriefTrackLink,
+  debriefSectionLabel: en.debriefSectionLabel,
+  debriefFieldNotesLabel: en.debriefFieldNotesLabel,
+  debriefListen: en.debriefListen,
+  debriefStop: en.debriefStop,
+  debriefListenAria: en.debriefListenAria,
+  debriefStopAria: en.debriefStopAria,
+  debriefDoseQuestion: en.debriefDoseQuestion,
+  debriefReplyHarder: en.debriefReplyHarder,
+  debriefReplyExact: en.debriefReplyExact,
+  debriefReplyEasy: en.debriefReplyEasy,
+  debriefNoted: en.debriefNoted,
+  debriefSavedJournal: en.debriefSavedJournal,
+  behaviorWhyWeTrack: en.behaviorWhyWeTrack,
+  behaviorNo: en.behaviorNo,
+  behaviorYes: en.behaviorYes,
+  behaviorFewer: en.behaviorFewer,
+  behaviorMore: en.behaviorMore,
+  behaviorStripTitle: en.behaviorStripTitle,
+  behaviorStripHeading: en.behaviorStripHeading,
+  behaviorStripNote: en.behaviorStripNote,
+  behaviorBedTimeAria: en.behaviorBedTimeAria,
+  behaviorWakeTimeAria: en.behaviorWakeTimeAria,
+  behaviorCaffeineAria: en.behaviorCaffeineAria,
+  behaviorCaffeineLastServing: en.behaviorCaffeineLastServing,
+  behaviorCaffeineLastAria: en.behaviorCaffeineLastAria,
+  behaviorAlcoholAria: en.behaviorAlcoholAria,
+  dayReviewOptInOnTitle: en.dayReviewOptInOnTitle,
+  dayReviewOptInOnBody: en.dayReviewOptInOnBody,
+  dayReviewOptInOffTitle: en.dayReviewOptInOffTitle,
+  dayReviewOptInOffBody: en.dayReviewOptInOffBody,
+  dayReviewOptInInstall: en.dayReviewOptInInstall,
+  dayReviewOptInInstallHow: en.dayReviewOptInInstallHow,
+  dayReviewOptInAsk: en.dayReviewOptInAsk,
+  dayReviewOptInDetail: en.dayReviewOptInDetail,
+  dayReviewOptInAt: en.dayReviewOptInAt,
+  dayReviewOptInEnable: en.dayReviewOptInEnable,
+  dayReviewOptInDismiss: en.dayReviewOptInDismiss,
+  todayMuscleFreshness: en.todayMuscleFreshness,
+  todayFreshNew: en.todayFreshNew,
+  todayFreshDays: en.todayFreshDays,
+  todayFreshRec: en.todayFreshRec,
+  todayFreshReady: en.todayFreshReady,
+  todayFreshRecovering: en.todayFreshRecovering,
+  todayWeekLoading: en.todayWeekLoading,
+  todayTrendsDetails: en.todayTrendsDetails,
+  todayDayReviewTitle: en.todayDayReviewTitle,
+  todayDayReviewBedLogged: en.todayDayReviewBedLogged,
+  todayDayReviewLogBed: en.todayDayReviewLogBed,
+  todayReentryLapsedTitle: en.todayReentryLapsedTitle,
+  todayReentryTitle: en.todayReentryTitle,
+  todayReentryLapsedBody: en.todayReentryLapsedBody,
+  todayReentryLongBody: en.todayReentryLongBody,
+  todayReentryBody: en.todayReentryBody,
+  todayReentryEyebrow: en.todayReentryEyebrow,
+  todayMissionScoreFromLogs: en.todayMissionScoreFromLogs,
+  todayScoreAfterFirstLog: en.todayScoreAfterFirstLog,
+  todayScoreNotMeasured: en.todayScoreNotMeasured,
+  todayScoreNeedsSessions: en.todayScoreNeedsSessions,
+  todayMissionScoreTip: en.todayMissionScoreTip,
+  todayMoreSummary: en.todayMoreSummary,
+  todaySessionFocus: en.todaySessionFocus,
   todayBasicEncouragement: '一步一步来。健康属于每个人 — 在你的路上训练、营养、活动和学习。',
   todaySectionHealth: '健康评分',
   todaySectionHealthDesc: '教练洞察与支柱分解',
@@ -680,6 +917,84 @@ const zh: TodayStrings = {
 };
 
 const id: TodayStrings = {
+  todayWeekRecapTitle: en.todayWeekRecapTitle,
+  todayWeekRecapBody: en.todayWeekRecapBody,
+  todayWeekRecapShareCard: en.todayWeekRecapShareCard,
+  todayWeekRecapCoach: en.todayWeekRecapCoach,
+  todayWeekRecapHistory: en.todayWeekRecapHistory,
+  debriefTitle: en.debriefTitle,
+  debriefTrain: en.debriefTrain,
+  debriefFuel: en.debriefFuel,
+  debriefMoveMind: en.debriefMoveMind,
+  debriefBody: en.debriefBody,
+  debriefBodyNone: en.debriefBodyNone,
+  debriefImpacts: en.debriefImpacts,
+  debriefBehaviorImpacts: en.debriefBehaviorImpacts,
+  debriefCollapse: en.debriefCollapse,
+  debriefExpand: en.debriefExpand,
+  debriefDetails: en.debriefDetails,
+  debriefTrackLink: en.debriefTrackLink,
+  debriefSectionLabel: en.debriefSectionLabel,
+  debriefFieldNotesLabel: en.debriefFieldNotesLabel,
+  debriefListen: en.debriefListen,
+  debriefStop: en.debriefStop,
+  debriefListenAria: en.debriefListenAria,
+  debriefStopAria: en.debriefStopAria,
+  debriefDoseQuestion: en.debriefDoseQuestion,
+  debriefReplyHarder: en.debriefReplyHarder,
+  debriefReplyExact: en.debriefReplyExact,
+  debriefReplyEasy: en.debriefReplyEasy,
+  debriefNoted: en.debriefNoted,
+  debriefSavedJournal: en.debriefSavedJournal,
+  behaviorWhyWeTrack: en.behaviorWhyWeTrack,
+  behaviorNo: en.behaviorNo,
+  behaviorYes: en.behaviorYes,
+  behaviorFewer: en.behaviorFewer,
+  behaviorMore: en.behaviorMore,
+  behaviorStripTitle: en.behaviorStripTitle,
+  behaviorStripHeading: en.behaviorStripHeading,
+  behaviorStripNote: en.behaviorStripNote,
+  behaviorBedTimeAria: en.behaviorBedTimeAria,
+  behaviorWakeTimeAria: en.behaviorWakeTimeAria,
+  behaviorCaffeineAria: en.behaviorCaffeineAria,
+  behaviorCaffeineLastServing: en.behaviorCaffeineLastServing,
+  behaviorCaffeineLastAria: en.behaviorCaffeineLastAria,
+  behaviorAlcoholAria: en.behaviorAlcoholAria,
+  dayReviewOptInOnTitle: en.dayReviewOptInOnTitle,
+  dayReviewOptInOnBody: en.dayReviewOptInOnBody,
+  dayReviewOptInOffTitle: en.dayReviewOptInOffTitle,
+  dayReviewOptInOffBody: en.dayReviewOptInOffBody,
+  dayReviewOptInInstall: en.dayReviewOptInInstall,
+  dayReviewOptInInstallHow: en.dayReviewOptInInstallHow,
+  dayReviewOptInAsk: en.dayReviewOptInAsk,
+  dayReviewOptInDetail: en.dayReviewOptInDetail,
+  dayReviewOptInAt: en.dayReviewOptInAt,
+  dayReviewOptInEnable: en.dayReviewOptInEnable,
+  dayReviewOptInDismiss: en.dayReviewOptInDismiss,
+  todayMuscleFreshness: en.todayMuscleFreshness,
+  todayFreshNew: en.todayFreshNew,
+  todayFreshDays: en.todayFreshDays,
+  todayFreshRec: en.todayFreshRec,
+  todayFreshReady: en.todayFreshReady,
+  todayFreshRecovering: en.todayFreshRecovering,
+  todayWeekLoading: en.todayWeekLoading,
+  todayTrendsDetails: en.todayTrendsDetails,
+  todayDayReviewTitle: en.todayDayReviewTitle,
+  todayDayReviewBedLogged: en.todayDayReviewBedLogged,
+  todayDayReviewLogBed: en.todayDayReviewLogBed,
+  todayReentryLapsedTitle: en.todayReentryLapsedTitle,
+  todayReentryTitle: en.todayReentryTitle,
+  todayReentryLapsedBody: en.todayReentryLapsedBody,
+  todayReentryLongBody: en.todayReentryLongBody,
+  todayReentryBody: en.todayReentryBody,
+  todayReentryEyebrow: en.todayReentryEyebrow,
+  todayMissionScoreFromLogs: en.todayMissionScoreFromLogs,
+  todayScoreAfterFirstLog: en.todayScoreAfterFirstLog,
+  todayScoreNotMeasured: en.todayScoreNotMeasured,
+  todayScoreNeedsSessions: en.todayScoreNeedsSessions,
+  todayMissionScoreTip: en.todayMissionScoreTip,
+  todayMoreSummary: en.todayMoreSummary,
+  todaySessionFocus: en.todaySessionFocus,
   todayBasicEncouragement:
     'Satu langkah demi langkah. Kesehatan untuk semua — latihan, nutrisi, gerak, dan belajar.',
   todaySectionHealth: 'Skor kesehatan',
@@ -853,6 +1168,84 @@ const id: TodayStrings = {
 };
 
 const th: TodayStrings = {
+  todayWeekRecapTitle: en.todayWeekRecapTitle,
+  todayWeekRecapBody: en.todayWeekRecapBody,
+  todayWeekRecapShareCard: en.todayWeekRecapShareCard,
+  todayWeekRecapCoach: en.todayWeekRecapCoach,
+  todayWeekRecapHistory: en.todayWeekRecapHistory,
+  debriefTitle: en.debriefTitle,
+  debriefTrain: en.debriefTrain,
+  debriefFuel: en.debriefFuel,
+  debriefMoveMind: en.debriefMoveMind,
+  debriefBody: en.debriefBody,
+  debriefBodyNone: en.debriefBodyNone,
+  debriefImpacts: en.debriefImpacts,
+  debriefBehaviorImpacts: en.debriefBehaviorImpacts,
+  debriefCollapse: en.debriefCollapse,
+  debriefExpand: en.debriefExpand,
+  debriefDetails: en.debriefDetails,
+  debriefTrackLink: en.debriefTrackLink,
+  debriefSectionLabel: en.debriefSectionLabel,
+  debriefFieldNotesLabel: en.debriefFieldNotesLabel,
+  debriefListen: en.debriefListen,
+  debriefStop: en.debriefStop,
+  debriefListenAria: en.debriefListenAria,
+  debriefStopAria: en.debriefStopAria,
+  debriefDoseQuestion: en.debriefDoseQuestion,
+  debriefReplyHarder: en.debriefReplyHarder,
+  debriefReplyExact: en.debriefReplyExact,
+  debriefReplyEasy: en.debriefReplyEasy,
+  debriefNoted: en.debriefNoted,
+  debriefSavedJournal: en.debriefSavedJournal,
+  behaviorWhyWeTrack: en.behaviorWhyWeTrack,
+  behaviorNo: en.behaviorNo,
+  behaviorYes: en.behaviorYes,
+  behaviorFewer: en.behaviorFewer,
+  behaviorMore: en.behaviorMore,
+  behaviorStripTitle: en.behaviorStripTitle,
+  behaviorStripHeading: en.behaviorStripHeading,
+  behaviorStripNote: en.behaviorStripNote,
+  behaviorBedTimeAria: en.behaviorBedTimeAria,
+  behaviorWakeTimeAria: en.behaviorWakeTimeAria,
+  behaviorCaffeineAria: en.behaviorCaffeineAria,
+  behaviorCaffeineLastServing: en.behaviorCaffeineLastServing,
+  behaviorCaffeineLastAria: en.behaviorCaffeineLastAria,
+  behaviorAlcoholAria: en.behaviorAlcoholAria,
+  dayReviewOptInOnTitle: en.dayReviewOptInOnTitle,
+  dayReviewOptInOnBody: en.dayReviewOptInOnBody,
+  dayReviewOptInOffTitle: en.dayReviewOptInOffTitle,
+  dayReviewOptInOffBody: en.dayReviewOptInOffBody,
+  dayReviewOptInInstall: en.dayReviewOptInInstall,
+  dayReviewOptInInstallHow: en.dayReviewOptInInstallHow,
+  dayReviewOptInAsk: en.dayReviewOptInAsk,
+  dayReviewOptInDetail: en.dayReviewOptInDetail,
+  dayReviewOptInAt: en.dayReviewOptInAt,
+  dayReviewOptInEnable: en.dayReviewOptInEnable,
+  dayReviewOptInDismiss: en.dayReviewOptInDismiss,
+  todayMuscleFreshness: en.todayMuscleFreshness,
+  todayFreshNew: en.todayFreshNew,
+  todayFreshDays: en.todayFreshDays,
+  todayFreshRec: en.todayFreshRec,
+  todayFreshReady: en.todayFreshReady,
+  todayFreshRecovering: en.todayFreshRecovering,
+  todayWeekLoading: en.todayWeekLoading,
+  todayTrendsDetails: en.todayTrendsDetails,
+  todayDayReviewTitle: en.todayDayReviewTitle,
+  todayDayReviewBedLogged: en.todayDayReviewBedLogged,
+  todayDayReviewLogBed: en.todayDayReviewLogBed,
+  todayReentryLapsedTitle: en.todayReentryLapsedTitle,
+  todayReentryTitle: en.todayReentryTitle,
+  todayReentryLapsedBody: en.todayReentryLapsedBody,
+  todayReentryLongBody: en.todayReentryLongBody,
+  todayReentryBody: en.todayReentryBody,
+  todayReentryEyebrow: en.todayReentryEyebrow,
+  todayMissionScoreFromLogs: en.todayMissionScoreFromLogs,
+  todayScoreAfterFirstLog: en.todayScoreAfterFirstLog,
+  todayScoreNotMeasured: en.todayScoreNotMeasured,
+  todayScoreNeedsSessions: en.todayScoreNeedsSessions,
+  todayMissionScoreTip: en.todayMissionScoreTip,
+  todayMoreSummary: en.todayMoreSummary,
+  todaySessionFocus: en.todaySessionFocus,
   todayBasicEncouragement:
     'ทีละขั้น สุขภาพสำหรับทุกคน — ฝึก โภชนาการ เคลื่อนไหว และเรียนรู้บนเส้นทางของคุณ',
   todaySectionHealth: 'คะแนนสุขภาพ',
@@ -1016,6 +1409,84 @@ const th: TodayStrings = {
 };
 
 const ar: TodayStrings = {
+  todayWeekRecapTitle: en.todayWeekRecapTitle,
+  todayWeekRecapBody: en.todayWeekRecapBody,
+  todayWeekRecapShareCard: en.todayWeekRecapShareCard,
+  todayWeekRecapCoach: en.todayWeekRecapCoach,
+  todayWeekRecapHistory: en.todayWeekRecapHistory,
+  debriefTitle: en.debriefTitle,
+  debriefTrain: en.debriefTrain,
+  debriefFuel: en.debriefFuel,
+  debriefMoveMind: en.debriefMoveMind,
+  debriefBody: en.debriefBody,
+  debriefBodyNone: en.debriefBodyNone,
+  debriefImpacts: en.debriefImpacts,
+  debriefBehaviorImpacts: en.debriefBehaviorImpacts,
+  debriefCollapse: en.debriefCollapse,
+  debriefExpand: en.debriefExpand,
+  debriefDetails: en.debriefDetails,
+  debriefTrackLink: en.debriefTrackLink,
+  debriefSectionLabel: en.debriefSectionLabel,
+  debriefFieldNotesLabel: en.debriefFieldNotesLabel,
+  debriefListen: en.debriefListen,
+  debriefStop: en.debriefStop,
+  debriefListenAria: en.debriefListenAria,
+  debriefStopAria: en.debriefStopAria,
+  debriefDoseQuestion: en.debriefDoseQuestion,
+  debriefReplyHarder: en.debriefReplyHarder,
+  debriefReplyExact: en.debriefReplyExact,
+  debriefReplyEasy: en.debriefReplyEasy,
+  debriefNoted: en.debriefNoted,
+  debriefSavedJournal: en.debriefSavedJournal,
+  behaviorWhyWeTrack: en.behaviorWhyWeTrack,
+  behaviorNo: en.behaviorNo,
+  behaviorYes: en.behaviorYes,
+  behaviorFewer: en.behaviorFewer,
+  behaviorMore: en.behaviorMore,
+  behaviorStripTitle: en.behaviorStripTitle,
+  behaviorStripHeading: en.behaviorStripHeading,
+  behaviorStripNote: en.behaviorStripNote,
+  behaviorBedTimeAria: en.behaviorBedTimeAria,
+  behaviorWakeTimeAria: en.behaviorWakeTimeAria,
+  behaviorCaffeineAria: en.behaviorCaffeineAria,
+  behaviorCaffeineLastServing: en.behaviorCaffeineLastServing,
+  behaviorCaffeineLastAria: en.behaviorCaffeineLastAria,
+  behaviorAlcoholAria: en.behaviorAlcoholAria,
+  dayReviewOptInOnTitle: en.dayReviewOptInOnTitle,
+  dayReviewOptInOnBody: en.dayReviewOptInOnBody,
+  dayReviewOptInOffTitle: en.dayReviewOptInOffTitle,
+  dayReviewOptInOffBody: en.dayReviewOptInOffBody,
+  dayReviewOptInInstall: en.dayReviewOptInInstall,
+  dayReviewOptInInstallHow: en.dayReviewOptInInstallHow,
+  dayReviewOptInAsk: en.dayReviewOptInAsk,
+  dayReviewOptInDetail: en.dayReviewOptInDetail,
+  dayReviewOptInAt: en.dayReviewOptInAt,
+  dayReviewOptInEnable: en.dayReviewOptInEnable,
+  dayReviewOptInDismiss: en.dayReviewOptInDismiss,
+  todayMuscleFreshness: en.todayMuscleFreshness,
+  todayFreshNew: en.todayFreshNew,
+  todayFreshDays: en.todayFreshDays,
+  todayFreshRec: en.todayFreshRec,
+  todayFreshReady: en.todayFreshReady,
+  todayFreshRecovering: en.todayFreshRecovering,
+  todayWeekLoading: en.todayWeekLoading,
+  todayTrendsDetails: en.todayTrendsDetails,
+  todayDayReviewTitle: en.todayDayReviewTitle,
+  todayDayReviewBedLogged: en.todayDayReviewBedLogged,
+  todayDayReviewLogBed: en.todayDayReviewLogBed,
+  todayReentryLapsedTitle: en.todayReentryLapsedTitle,
+  todayReentryTitle: en.todayReentryTitle,
+  todayReentryLapsedBody: en.todayReentryLapsedBody,
+  todayReentryLongBody: en.todayReentryLongBody,
+  todayReentryBody: en.todayReentryBody,
+  todayReentryEyebrow: en.todayReentryEyebrow,
+  todayMissionScoreFromLogs: en.todayMissionScoreFromLogs,
+  todayScoreAfterFirstLog: en.todayScoreAfterFirstLog,
+  todayScoreNotMeasured: en.todayScoreNotMeasured,
+  todayScoreNeedsSessions: en.todayScoreNeedsSessions,
+  todayMissionScoreTip: en.todayMissionScoreTip,
+  todayMoreSummary: en.todayMoreSummary,
+  todaySessionFocus: en.todaySessionFocus,
   todayBasicEncouragement: 'خطوة بخطوة. الصحة للجميع — تدريب وتغذية وحركة وتعلّم على مسارك.',
   todaySectionHealth: 'درجات الصحة',
   todaySectionHealthDesc: 'رؤية المدرب وتفصيل الركائز',

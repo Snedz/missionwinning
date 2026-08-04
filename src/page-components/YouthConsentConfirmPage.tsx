@@ -78,7 +78,7 @@ export function YouthConsentConfirmPage() {
           )}
           {status === 'error' && (
             <>
-              <p className="text-red-400">
+              <p className="text-destructive">
                 {t('youthConfirmError', {
                   defaultValue: 'Link expired or invalid. Ask your parent to resubmit consent.',
                 })}

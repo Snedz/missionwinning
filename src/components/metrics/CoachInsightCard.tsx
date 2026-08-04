@@ -46,7 +46,7 @@ export function CoachInsightCard({
       <CardContent className="flex flex-col sm:flex-row sm:items-center gap-4">
         <p
           className={cn(
-            'text-sm text-foreground/90 flex-1 leading-relaxed',
+            'text-sm text-foreground flex-1 leading-relaxed',
             loading && 'animate-pulse text-muted-foreground'
           )}
         >

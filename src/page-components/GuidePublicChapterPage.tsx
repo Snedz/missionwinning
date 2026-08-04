@@ -89,9 +89,9 @@ export function GuidePublicChapterPage({ chapter: chapterProp, prev, next, jsonL
             <article key={s.id} id={s.id} className="scroll-mt-24 prose prose-invert max-w-none">
               <h3 className="text-xl font-semibold">{s.title}</h3>
               <p className="mb-4 text-sm text-muted-foreground">{s.summary}</p>
-              <div className="text-sm leading-relaxed text-foreground/90 space-y-3">
+              <div className="text-sm leading-relaxed text-foreground space-y-3">
                 {renderMagazineBody(s.body, {
-                  paragraphClassName: 'text-sm leading-relaxed text-foreground/90',
+                  paragraphClassName: 'text-sm leading-relaxed text-foreground',
                 })}
               </div>
               <GuideSectionExtras section={s} variant="app" />

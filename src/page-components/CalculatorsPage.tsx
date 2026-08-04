@@ -74,7 +74,7 @@ export function CalculatorsPage() {
       </p>
 
       {!freeBeta && (
-      <Card className="content-card border-primary/30 bg-primary/5">
+      <Card className="content-card border-primary">
         <CardContent className="pt-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
           <div className="space-y-1">
             <p className="font-semibold text-primary">

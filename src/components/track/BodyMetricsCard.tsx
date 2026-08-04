@@ -87,7 +87,7 @@ export function BodyMetricsCard({ refreshKey = 0, onChanged }: Props) {
             })}
           </CardDescription>
         </div>
-        <Button type="button" size="sm" onClick={() => setOpen(true)}>
+        <Button type="button" size="sm" variant="outline" onClick={() => setOpen(true)}>
           {t('bodyMetricsLog', { defaultValue: 'Log' })}
         </Button>
       </CardHeader>

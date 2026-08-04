@@ -215,7 +215,7 @@ export function ProgramTemplatesPanel({
 
   if (PROGRAM_TEMPLATES.length === 0) {
     return (
-      <div className="border border-dashed border-primary bg-destructive/10 p-6 text-center text-sm">
+      <div className="border-2 border-primary bg-accent-100 p-6 text-center text-sm">
         {t('builderTemplateLoadFail', {
           defaultValue: 'Template data failed to load. Restart the dev server.',
         })}
@@ -275,7 +275,7 @@ export function ProgramTemplatesPanel({
           {t('builderStyleFilter', { defaultValue: 'Style:' })}
         </span>
         {(["", "strength", "hypertrophy", "conditioning", "corrective"] as const).map((tag) => (
-          <Button key={tag || "all"} size="sm" variant={tagFilter === tag ? "default" : "outline"}
+          <Button key={tag || "all"} size="sm" variant={tagFilter === tag ? "selected" : "outline"}
             className="h-7 text-xs"
             onClick={() => setTagFilter(tag)}
           >
@@ -348,7 +348,7 @@ export function ProgramTemplatesPanel({
               })}
             </SelectContent>
           </Select>
-          <Button variant="default" onClick={handleQuickLoad} disabled={!quickPick}>
+          <Button variant="outline" onClick={handleQuickLoad} disabled={!quickPick}>
             {t('builderQuickLoadButton', { defaultValue: 'Load into builder' })}
           </Button>
         </div>

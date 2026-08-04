@@ -16,7 +16,7 @@ One screen of truth for any AI tool or human joining cold. Read this, then [AGEN
 
 ---
 
-## Now (2026-08-03 · web `2026.07-unified.293` · Android `1.24.1`)
+## Now (2026-08-04 · web `2026.07-unified.403` · Android `1.24.1`)
 
 > The ONLY "where we are" block in the repo — [ORCHESTRATION.md](ORCHESTRATION.md) points here.
 >
@@ -52,6 +52,116 @@ One screen of truth for any AI tool or human joining cold. Read this, then [AGEN
 > and `.291` dropped `.276` detail (full text remains in LOG.md / archive)
 > and `.292` dropped `.277` detail (full text remains in LOG.md / archive)
 > and `.293` dropped `.278` detail (full text remains in LOG.md / archive)
+> and `.294` dropped `.279` detail (full text remains in LOG.md / archive)
+> and `.295` dropped `.280` detail (full text remains in LOG.md / archive)
+> and `.296` dropped `.281` detail (full text remains in LOG.md / archive)
+> and `.297` dropped `.282` detail (full text remains in LOG.md / archive)
+> and `.298` dropped `.283` detail (full text remains in LOG.md / archive)
+> and `.299` dropped `.284` detail (full text remains in LOG.md / archive)
+> and `.300` dropped `.285` detail (full text remains in LOG.md / archive)
+> and `.301` dropped `.286` detail (full text remains in LOG.md / archive)
+> and `.302` dropped `.287` detail (full text remains in LOG.md / archive)
+> and `.303` dropped `.288` detail (full text remains in LOG.md / archive)
+> and `.304` dropped `.289` detail (full text remains in LOG.md / archive)
+> and `.305` dropped `.290` detail (full text remains in LOG.md / archive)
+> and `.306` dropped `.291` detail (full text remains in LOG.md / archive)
+> and `.307` dropped `.292` detail (full text remains in LOG.md / archive)
+> and `.308` dropped `.293` detail (full text remains in LOG.md / archive)
+> and `.309` dropped `.294` detail (full text remains in LOG.md / archive)
+> and `.310` dropped `.295` detail (full text remains in LOG.md / archive)
+> and `.311` dropped `.296` detail (full text remains in LOG.md / archive)
+> and `.312` dropped `.297` detail (full text remains in LOG.md / archive)
+> and `.313` dropped `.298` detail (full text remains in LOG.md / archive)
+> and `.314` dropped `.299` detail (full text remains in LOG.md / archive)
+> and `.315` dropped `.300` detail (full text remains in LOG.md / archive)
+> and `.316` dropped `.301` detail (full text remains in LOG.md / archive)
+> and `.317` dropped `.302` detail (full text remains in LOG.md / archive)
+> and `.318` dropped `.303` detail (full text remains in LOG.md / archive)
+> and `.319` dropped `.304` detail (full text remains in LOG.md / archive)
+> and `.320` dropped `.305` detail (full text remains in LOG.md / archive)
+> and `.321` dropped `.306` detail (full text remains in LOG.md / archive)
+> and `.322` dropped `.307` detail (full text remains in LOG.md / archive)
+> and `.323` dropped `.308` detail (full text remains in LOG.md / archive)
+> and `.324` dropped `.309` detail (full text remains in LOG.md / archive)
+> and `.325` dropped `.310` detail (full text remains in LOG.md / archive)
+> and `.326` dropped `.311` detail (full text remains in LOG.md / archive)
+> and `.327` dropped `.312` detail (full text remains in LOG.md / archive)
+> and `.328` dropped `.313` detail (full text remains in LOG.md / archive)
+> and `.329` dropped `.314` detail (full text remains in LOG.md / archive)
+> and `.330` dropped `.315` detail (full text remains in LOG.md / archive)
+> and `.331` dropped `.316` detail (full text remains in LOG.md / archive)
+> and `.332` dropped `.317` detail (full text remains in LOG.md / archive)
+> and `.333` dropped `.318` detail (full text remains in LOG.md / archive)
+> and `.334` dropped `.319` detail (full text remains in LOG.md / archive)
+> and `.335` dropped `.320` detail (full text remains in LOG.md / archive)
+> and `.336` dropped `.321` detail (full text remains in LOG.md / archive)
+> and `.337` dropped `.322` detail (full text remains in LOG.md / archive)
+> and `.338` dropped `.323` detail (full text remains in LOG.md / archive)
+> and `.339` dropped `.324` detail (full text remains in LOG.md / archive)
+> and `.340` dropped `.325` detail (full text remains in LOG.md / archive)
+> and `.341` dropped `.326` detail (full text remains in LOG.md / archive)
+> and `.342` dropped `.327` detail (full text remains in LOG.md / archive)
+> and `.343` dropped `.328` detail (full text remains in LOG.md / archive)
+> and `.344` dropped `.329` detail (full text remains in LOG.md / archive)
+> and `.345` dropped `.330` detail (full text remains in LOG.md / archive)
+> and `.346` dropped `.331` detail (full text remains in LOG.md / archive)
+> and `.347` dropped `.332` detail (full text remains in LOG.md / archive)
+> and `.348` dropped `.333` detail (full text remains in LOG.md / archive)
+> and `.349` dropped `.334` detail (full text remains in LOG.md / archive)
+> and `.350` dropped `.335` detail (full text remains in LOG.md / archive)
+> and `.351` dropped `.336` detail (full text remains in LOG.md / archive)
+> and `.352` dropped `.337` detail (full text remains in LOG.md / archive)
+> and `.353` dropped `.338` detail (full text remains in LOG.md / archive)
+> and `.354` dropped `.339` detail (full text remains in LOG.md / archive)
+> and `.355` dropped `.340` detail (full text remains in LOG.md / archive)
+> and `.356` dropped `.341` detail (full text remains in LOG.md / archive)
+> and `.357` dropped `.342` detail (full text remains in LOG.md / archive)
+> and `.358` dropped `.343` detail (full text remains in LOG.md / archive)
+> and `.359` dropped `.344` detail (full text remains in LOG.md / archive)
+> and `.360` dropped `.345` detail (full text remains in LOG.md / archive)
+> and `.361` dropped `.346` detail (full text remains in LOG.md / archive)
+> and `.362` dropped `.347` detail (full text remains in LOG.md / archive)
+> and `.363` dropped `.348` detail (full text remains in LOG.md / archive)
+> and `.364` dropped `.349` detail (full text remains in LOG.md / archive)
+> and `.365` dropped `.350` detail (full text remains in LOG.md / archive)
+> and `.366` dropped `.351` detail (full text remains in LOG.md / archive)
+> and `.367` dropped `.352` detail (full text remains in LOG.md / archive)
+> and `.368` dropped `.353` detail (full text remains in LOG.md / archive)
+> and `.369` dropped `.354` detail (full text remains in LOG.md / archive)
+> and `.370` dropped `.355` detail (full text remains in LOG.md / archive)
+> and `.371` dropped `.356` detail (full text remains in LOG.md / archive)
+> and `.372` dropped `.357` detail (full text remains in LOG.md / archive)
+> and `.373` dropped `.358` detail (full text remains in LOG.md / archive)
+> and `.374` dropped `.359` detail (full text remains in LOG.md / archive)
+> and `.375` dropped `.360` detail (full text remains in LOG.md / archive)
+> and `.376` dropped `.361` detail (full text remains in LOG.md / archive)
+> and `.377` dropped `.362` detail (full text remains in LOG.md / archive)
+> and `.378` dropped `.363` detail (full text remains in LOG.md / archive)
+> and `.379` dropped `.364` detail (full text remains in LOG.md / archive)
+> and `.380` dropped `.365` detail (full text remains in LOG.md / archive)
+> and `.381` dropped `.366` detail (full text remains in LOG.md / archive)
+> and `.382` dropped `.367` detail (full text remains in LOG.md / archive)
+> and `.383` dropped `.368` detail (full text remains in LOG.md / archive)
+> and `.384` dropped `.369` detail (full text remains in LOG.md / archive)
+> and `.385` dropped `.370` detail (full text remains in LOG.md / archive)
+> and `.386` dropped `.371` detail (full text remains in LOG.md / archive)
+> and `.387` dropped `.372` detail (full text remains in LOG.md / archive)
+> and `.388` dropped `.373` detail (full text remains in LOG.md / archive)
+> and `.389` dropped `.374` detail (full text remains in LOG.md / archive)
+> and `.390` dropped `.375` detail (full text remains in LOG.md / archive)
+> and `.391` dropped `.376` detail (full text remains in LOG.md / archive)
+> and `.392` dropped `.377` detail (full text remains in LOG.md / archive)
+> and `.393` dropped `.378` detail (full text remains in LOG.md / archive)
+> and `.394` dropped `.379` detail (full text remains in LOG.md / archive)
+> and `.395` dropped `.380` detail (full text remains in LOG.md / archive)
+> and `.396` dropped `.381` detail (full text remains in LOG.md / archive)
+> and `.397` dropped `.382` detail (full text remains in LOG.md / archive)
+> and `.398` dropped `.383` detail (full text remains in LOG.md / archive)
+> and `.399` dropped `.384` detail (full text remains in LOG.md / archive)
+> and `.400` dropped `.385` detail (full text remains in LOG.md / archive)
+> and `.401` dropped `.386` detail (full text remains in LOG.md / archive)
+> and `.402` dropped `.387` detail (full text remains in LOG.md / archive)
+> and `.403` dropped `.388` detail (full text remains in LOG.md / archive)
 > to [CONTEXT-now-2026-07-30.md](docs/archive/CONTEXT-now-2026-07-30.md) after this
 > block reached **79 bullets / 103KB**. A status doc that only grows stops being read.
 
@@ -72,21 +182,21 @@ One screen of truth for any AI tool or human joining cold. Read this, then [AGEN
 > | Migrations | **9 recorded pending** — [LAUNCH_RUNBOOK](docs/LAUNCH_RUNBOOK.md) §3, enforced by `src/lib/migrationLedger.test.ts`. |
 > | gitleaks | **green — and scanning for the first time.** It had never scanned anything: on a `pull_request` event the action lists the PR's commits, the job declared no `permissions:` block, and it 403'd (`pull_requests=read`) before opening a file. Fixed by a `permissions:` block (`.224` carrying `.255`). It scans **only the PR's own commits**, so commit `8ea3527a`'s real Solana treasury address — scrubbed from the working file, still in history — is out of its scope. That finding stands, deliberately not allowlisted; it was never what made this check red. |
 
-- **`.293`:** First-mission **session check-in** is one pure rule — never Mind-sheet empty history (`shouldOfferSessionCheckInDecision`); unit + wiring guards (W1 / first-90).
-- **`.292`:** Rest timer **one default** — store no longer invents 30s; `resolveStartRestSeconds` → saved default / 90s fallback shared with exercise heuristics.
-- **`.291`:** Week-1 **second-session** activation — after first log, First Steps next is session 2 (not Fuel); Today CTA “Start session 2”; pure `week1SecondSessionCue`. Basic still = first workout only.
-- **`.290`:** Victory progression is **structured + i18n** — pure payload (reason/lift/numbers); BW sessions get rep cues; EN/ES/FR/PT keys (no hard-coded English line).
-- **`.289`:** Logger same-session **set carry** — next freestyle set dials what you just logged (`priorCompletedInExercise`); coach prescriptions stay per-set.
-- **`.288`:** Gym-speed logger — **Enter** logs the set; **Use next target** one-taps progressive-overload / coach numbers when the dial differs (`shouldOfferUseNext`).
-- **`.287`:** Coach why panel — adapt beats name weekdays; today's prescription why-keys + adjust/keep control.
-- **`.286`:** Re-entry **doseScale applied** — Just Go / plan starts trim sets; card copy names real % (70/50).
-- **`.285`:** Progressive overload on compact log console — **Last · Next · why** via pure `buildOverloadCue`; i18n **685**.
-- **`.284`:** Coverage floor **389→393** — four Playwright Coach/Profile sheets from D11–D13; helpers already unit-tested.
-- **`.283`:** Pump Kaizen D11–D12 — History Exercises tab; Coach manage sheet + one-red week grid; Just Go adapt honesty; `fitness`→`default`; seeded a11y History/Coach; i18n **686**.
-- **`.282`:** D13 trust — Landing FAQ exclusive-open; What’s New sheet (`APP_BUILD_LABEL` + safeStorage); First Steps show-again on Profile.
-- **`.281`:** K3–K5 — Fuel NL cup/piece/handful/slice; Today soft-chrome → 2px paper/ink; Fuel empty dual-red collapsed (dock owns Log food; zero-state cap 1).
-- **`.280`:** Pure `sessionIsCoachPrescribed` for Active chrome (one definition of coach-loaded session).
-- **`.279`:** Pure `buildJustGoHeroMeta` shared by lean + full Today (locks `.278` coach vs freestyle CTA rule in one place). Master has `.279`; **www may lag** while free deploy quota is hot.
+- **`.403`:** Pack `exercisePickerList` — coverage back at cap 16.
+- **`.402`:** Drop colliding learnExpanded* pack keys (guidebook `.178`); footprint + parity green.
+- **`.401`:** Beachhead es/fr/pt Fuel/Active/Learn packs under 40% placeholder cap; i18n parity green.
+- **`.400`:** Drop stale opacity exemptions (Dialog/Select/FileUploadRow) after soft-chrome; CI green.
+- **`.399`:** FileUploadRow queued chrome solidify; Loop 32 closed.
+- **`.398`:** Active `exerciseHasWeightedSet` + `firstWeightedLoad` extracts + wiring.
+- **`.397`:** Seeded axe on Active LogConsole set-kind strip.
+- **`.396`:** Disabled control opacity solidify; Loop 31 closed.
+- **`.395`:** Active Apply/Remove set menuitem extracts + wiring guards.
+- **`.394`:** Seeded axe on Coach ask-form prefill (`/coach?ask=`).
+- **`.393`:** Select chevron + item chrome solidify; Loop 30 closed.
+- **`.392`:** Active `shouldShowSetOptionsFooter` extract + wiring guard.
+- **`.391`:** Seeded axe on Mission Coach chat open.
+- **`.390`:** Label + Dialog close chrome solidify; Loop 29 closed.
+- **`.389`:** Active `activeSetIdxForExercise` extract + wiring guard.
 - **Horizon W — wedge excellence.** Web craft 1–6 + **Fuel estimate accuracy** (edit-before-log, better NL match, honest photo sources).
 - **Free-first beta (~4 weeks):** LLC + EIN pending — **no Bundle UI** + **full depth unlocked** + **full More nav** (journey train-only deferred) ([docs/FREE_BETA.md](docs/FREE_BETA.md)).
 - **`e2e:visual` is the one dark gate.** Its three baselines were generated **2026-07-22, before the rebrand**, and depicted the old navy/emerald dark design — black grounds, emerald CTAs, rounded corners. Verified by opening one, not inferred from dates. **Deleted**, because a known-wrong baseline is worse than none: the first Linux run would have shown four huge diffs, and the reflex there is `--update-snapshots` without looking, which launders whatever renders that day into truth. `home-reduced.png` **never had a baseline at all**, so the homepage has been silently self-approving since the case was written. **First Linux CI run after billing clears must bootstrap all four** (`npx playwright test --grep @visual --update-snapshots`, then commit the artifact) — it cannot be done on macOS, the pixels will not match.

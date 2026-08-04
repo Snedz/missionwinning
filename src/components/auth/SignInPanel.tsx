@@ -185,7 +185,7 @@ export function SignInPanel({
         <p
           id="signin-message"
           role="status"
-          className="text-sm text-primary bg-primary/10 border border-primary/40 rounded-lg px-3 py-3"
+          className="text-sm text-primary bg-background border-2 border-primary px-3 py-3"
         >
           {message}
         </p>
@@ -227,7 +227,7 @@ export function SignInPanel({
         with room. `.127`'s lesson, twice in one element.
       */}
       {!configured && (
-        <p className="text-xs text-status-warn border-2 border-[hsl(var(--status-warn)/0.35)] px-3 py-2">
+        <p className="text-xs text-status-warn border-2 border-[hsl(var(--status-warn))] px-3 py-2">
           Demo mode — add Supabase keys to enable cloud sync and social sign-in.
         </p>
       )}
@@ -308,7 +308,7 @@ export function SignInPanel({
             disabled={!!loading}
             aria-invalid={!!error}
             aria-describedby={error ? 'signin-error' : undefined}
-            className="pl-10 h-12 bg-background/80"
+            className="pl-10 h-12 bg-background"
           />
         </div>
         <Button
@@ -358,13 +358,13 @@ export function SignInPanel({
         <p
           id="signin-error"
           role="alert"
-          className="text-sm text-red-400 bg-red-950/20 border border-red-500/20 rounded-lg px-3 py-2"
+          className="text-sm text-destructive bg-background border-2 border-destructive px-3 py-2"
         >
           {error}
         </p>
       )}
 
-      <p className="text-[11px] text-muted-foreground/80 leading-relaxed">
+      <p className="text-[11px] text-muted-foreground leading-relaxed">
         Privacy by design: no password stored.
         {showOAuth && oauthLabelList
           ? ` OAuth uses ${oauthLabelList} — we receive your email and name only.`

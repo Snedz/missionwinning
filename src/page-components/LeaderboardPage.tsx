@@ -285,8 +285,8 @@ export function LeaderboardPage() {
  <p
  className={cn(
  'text-xs mt-3 leading-relaxed border-l-2 pl-3 italic',
- boardTheme === 'night' && 'text-status-info/80 border-border',
- boardTheme === 'dawn' && 'text-accent-900/90 border-border'
+ boardTheme === 'night' && 'text-status-info border-border',
+ boardTheme === 'dawn' && 'text-accent-900 border-border'
  )}
  >
  {ranked.board.flavor}

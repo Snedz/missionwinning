@@ -1,6 +1,16 @@
 /** Programs page filter chip labels + catalog — merged into i18n `common` namespace. */
 
 const PROGRAMS_EN: Record<string, string> = {
+  programsEyebrow: 'Programs',
+  programsCatalogIntro:
+    'Specialist education outlines below. Free core tools live in Learn and the public guide.',
+  programsCurriculumOutline: 'Curriculum outline',
+  programsModuleLabel: 'Module {{n}}',
+  programsFreeNote: 'Free education path',
+  programsNoMatchTitle: 'No programs match those filters',
+  programsNoMatchBody:
+    'Nothing in the catalog fits that combination of goal and equipment yet. Clear the filters to see all programs.',
+  programsClearFilters: 'Clear filters',
   programsFilterGoal: 'Filter by goal:',
   programsFilterEquip: 'Equipment:',
   programsGoalAll: 'All',

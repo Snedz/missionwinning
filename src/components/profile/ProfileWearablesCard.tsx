@@ -66,7 +66,7 @@ export function ProfileWearablesCard({ signedIn }: Props) {
     } else if (w !== 'disabled') {
       setMessage(
         t('wearablesOauthResult', {
-          code: w,
+          code: w.replace(/_/g, ' '),
           defaultValue: `Wearables: ${w.replace(/_/g, ' ')}`,
         })
       );

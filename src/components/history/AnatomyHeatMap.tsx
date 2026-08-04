@@ -72,22 +72,24 @@ export function AnatomyHeatMap({ cells, className }: Props) {
           <figcaption className="text-[10px] uppercase tracking-wide text-muted-foreground mb-1 text-center">
             {t('anatomyFront', { defaultValue: 'Front' })}
           </figcaption>
-          <svg viewBox="0 0 200 260" className="w-full max-w-[180px] mx-auto" role="img" aria-label="Front anatomy">
+          <svg viewBox="0 0 200 260" className="w-full max-w-[180px] mx-auto">
             <ellipse cx="100" cy="28" rx="18" ry="22" fill="none" stroke="hsl(var(--border))" strokeWidth="1.5" />
             <path d="M70 55 Q100 48 130 55 L145 240 L55 240 Z" fill="none" stroke="hsl(var(--border))" strokeWidth="1.5" />
             {front.map((r) => {
               const st = region(r.group);
               return (
-                <Link key={r.group + r.d} href={`/exercises/muscle/${muscleHubSlug(r.group)}`}>
+                <Link
+                  key={r.group + r.d}
+                  href={`/exercises/muscle/${muscleHubSlug(r.group)}`}
+                  aria-label={`${r.group} exercises`}
+                >
                   <path
                     d={r.d}
                     fill={st.fill}
                     stroke="hsl(var(--foreground) / 0.25)"
                     strokeWidth="1"
                     className="cursor-pointer hover:opacity-90"
-                  >
-                    <title>{r.group}</title>
-                  </path>
+                  />
                 </Link>
               );
             })}
@@ -97,22 +99,24 @@ export function AnatomyHeatMap({ cells, className }: Props) {
           <figcaption className="text-[10px] uppercase tracking-wide text-muted-foreground mb-1 text-center">
             {t('anatomyBack', { defaultValue: 'Back' })}
           </figcaption>
-          <svg viewBox="0 0 200 260" className="w-full max-w-[180px] mx-auto" role="img" aria-label="Back anatomy">
+          <svg viewBox="0 0 200 260" className="w-full max-w-[180px] mx-auto">
             <ellipse cx="100" cy="28" rx="18" ry="22" fill="none" stroke="hsl(var(--border))" strokeWidth="1.5" />
             <path d="M70 55 Q100 48 130 55 L145 240 L55 240 Z" fill="none" stroke="hsl(var(--border))" strokeWidth="1.5" />
             {back.map((r) => {
               const st = region(r.group);
               return (
-                <Link key={r.group} href={`/exercises/muscle/${muscleHubSlug(r.group)}`}>
+                <Link
+                  key={r.group}
+                  href={`/exercises/muscle/${muscleHubSlug(r.group)}`}
+                  aria-label={`${r.group} exercises`}
+                >
                   <path
                     d={r.d}
                     fill={st.fill}
                     stroke="hsl(var(--foreground) / 0.25)"
                     strokeWidth="1"
                     className="cursor-pointer hover:opacity-90"
-                  >
-                    <title>{r.group}</title>
-                  </path>
+                  />
                 </Link>
               );
             })}
@@ -126,7 +130,11 @@ export function AnatomyHeatMap({ cells, className }: Props) {
                     ? 'M30 80 h18 v70 h-18 z M152 80 h18 v70 h-18 z'
                     : 'M65 165 h30 v70 h-30 z M105 165 h30 v70 h-30 z';
               return (
-                <Link key={`back-${g}`} href={`/exercises/muscle/${muscleHubSlug(g)}`}>
+                <Link
+                  key={`back-${g}`}
+                  href={`/exercises/muscle/${muscleHubSlug(g)}`}
+                  aria-label={`${g} exercises`}
+                >
                   <path d={d} fill={st.fill} stroke="hsl(var(--foreground) / 0.2)" strokeWidth="1" className="cursor-pointer" />
                 </Link>
               );

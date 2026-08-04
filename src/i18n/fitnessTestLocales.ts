@@ -125,6 +125,10 @@ type FitnessTestStrings = {
   youthConfirmCrossDevice: string;
   youthConfirmError: string;
   youthConfirmBack: string;
+  youthSendFailed: string;
+  youthVerifyNetwork: string;
+  youthSending: string;
+  schoolJoinedTeacherNote: string;
 };
 
 const en: FitnessTestStrings = {
@@ -271,6 +275,10 @@ const en: FitnessTestStrings = {
     'Consent saved to the athlete account. They can continue on any signed-in device.',
   youthConfirmError: 'Link expired or invalid. Ask your parent to resubmit consent.',
   youthConfirmBack: 'Back to fitness test',
+  youthSendFailed: 'Could not send the verification email. Try again shortly.',
+  youthVerifyNetwork: 'Could not verify right now. Check your connection and try again.',
+  youthSending: 'Sending…',
+  schoolJoinedTeacherNote: 'Complete a fitness test while signed in to sync your score. Teachers view standings on the class dashboard.',
 };
 
 const es: FitnessTestStrings = {

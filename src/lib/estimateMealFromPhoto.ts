@@ -92,13 +92,13 @@ export function estimateMealFromSignals(
   const nameMatch = scoreTemplate(base, fileName, hints) >= 10;
   const paletteMatch = hints?.palette && base.palettes?.includes(hints.palette);
 
-  // Filename keyword is the only strong signal. Palette alone is a weak tint
-  // guess — medium at best, never high. Pure fallback stays low so the UI chip
-  // ("Rough estimate (filename / color)") is not contradicted by "high conf".
+  // Heuristic path never claims `high`. Filename + palette is still a guess on
+  // device — "high" is reserved for vision / food-database grounding (Kaizen K2).
+  // Palette alone and pure fallback stay low so the UI chip
+  // ("Rough estimate (filename / color)") is not contradicted by the badge.
   let confidence: MealEstimate['confidence'] = 'low';
-  if (nameMatch && paletteMatch) confidence = 'high';
-  else if (nameMatch) confidence = 'medium';
-  else if (paletteMatch || base !== FALLBACK) confidence = 'medium';
+  if (nameMatch) confidence = 'medium';
+  else if (paletteMatch) confidence = 'low';
 
   // Prefer an honest name when we only guessed from color.
   let name = base.name;

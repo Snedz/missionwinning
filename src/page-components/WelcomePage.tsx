@@ -176,6 +176,8 @@ export function WelcomePage() {
           className="relative z-10 mx-auto w-full max-w-lg px-5 pt-5"
           role="group"
           aria-label={t('welcomeProgressLabel', {
+            step: stepIndex + 1,
+            total: STEP_ORDER.length,
             defaultValue: `Progress, step ${stepIndex + 1} of ${STEP_ORDER.length}`,
           })}
         >

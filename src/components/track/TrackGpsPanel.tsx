@@ -159,7 +159,7 @@ export function TrackGpsPanel({ onLogged }: { onLogged?: () => void }) {
         </p>
         <div className="flex gap-2 flex-wrap">
           {!tracking ? (
-            <Button size="sm" variant="default" onClick={startTracking}>
+            <Button size="sm" variant="outline" onClick={startTracking}>
               {t('trackGpsStart', { defaultValue: 'Start GPS' })}
             </Button>
           ) : (
@@ -173,7 +173,7 @@ export function TrackGpsPanel({ onLogged }: { onLogged?: () => void }) {
             </>
           )}
         </div>
-        {error && <p className="text-xs text-red-400">{error}</p>}
+        {error && <p className="text-xs text-destructive">{error}</p>}
         {!tracking && points.length === 0 && !error && (
           <p className="text-xs text-muted-foreground">
             {t('trackGpsHint', {

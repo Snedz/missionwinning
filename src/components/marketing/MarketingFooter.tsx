@@ -79,7 +79,7 @@ export function MarketingFooter({ className }: MarketingFooterProps) {
           ))}
         </div>
       </div>
-      <div className="border-t-2 border-border px-5 py-4"><p className="mx-auto max-w-6xl text-left text-xs leading-relaxed text-muted-foreground/80">
+      <div className="border-t-2 border-border px-5 py-4"><p className="mx-auto max-w-6xl text-left text-xs leading-relaxed text-muted-foreground">
         {t(FOOTER_DISCLAIMER_KEY, { defaultValue: FOOTER_DISCLAIMER_DEFAULT })}
         </p>
       </div>

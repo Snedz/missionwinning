@@ -11,6 +11,11 @@ import {
   type MealDraftFields,
 } from '@/components/nutrition/MealEstimateDraft';
 import {
+  draftSourceFromEstimate,
+  estimateToDraft,
+  foodToDraft,
+} from '@/lib/mealDraft';
+import {
   estimateMealFromPhoto,
   estimateMealViaApi,
   sampleMealImageHints,
@@ -25,26 +30,6 @@ type Props = {
 };
 
 type Phase = 'idle' | 'preview' | 'processing' | 'estimate' | 'error';
-
-function foodToDraft(item: FoodSearchItem): MealDraftFields {
-  return {
-    name: item.brand ? `${item.name} (${item.brand})` : item.name,
-    protein: item.protein,
-    cals: item.calories,
-    carbs: item.carbs,
-    fat: item.fat,
-  };
-}
-
-function estimateToDraft(e: MealEstimate): MealDraftFields {
-  return {
-    name: e.name,
-    protein: e.protein,
-    cals: e.cals,
-    carbs: e.carbs,
-    fat: e.fat,
-  };
-}
 
 /** Bevel-style photo meal log — drop zone, honest %, inline retry without re-pick. */
 export function PhotoMealLogger({ onLogEstimate }: Props) {
@@ -70,7 +55,7 @@ export function PhotoMealLogger({ onLogEstimate }: Props) {
   useEffect(() => {
     if (estimate) {
       setDraft(estimateToDraft(estimate));
-      setDraftSource(estimate.source === 'vision' ? 'vision' : 'heuristic');
+      setDraftSource(draftSourceFromEstimate(estimate.source));
     } else {
       setDraft(null);
     }
@@ -254,7 +239,7 @@ export function PhotoMealLogger({ onLogEstimate }: Props) {
           })}
           idleLabel={
             <span className="flex flex-col items-center gap-2 py-10 px-4">
-              <ImagePlus className="h-8 w-8 text-primary/80" />
+              <ImagePlus className="h-8 w-8 text-primary" />
               <span className="text-sm font-medium text-foreground">
                 {t('photoLogDropIdle', {
                   defaultValue: 'Drop a meal photo or click to browse',
@@ -357,7 +342,8 @@ export function PhotoMealLogger({ onLogEstimate }: Props) {
                       ...estimate,
                       ...foodToDraft(item),
                       confidence: 'high',
-                      source: 'heuristic',
+                      // Database match is grounded food data — not the filename heuristic.
+                      source: 'api',
                     });
                   }}
                 >
@@ -393,7 +379,12 @@ export function PhotoMealLogger({ onLogEstimate }: Props) {
                 carbs: draft.carbs,
                 fat: draft.fat,
                 confidence: draftSource === 'database' ? 'high' : estimate.confidence,
-                source: draftSource === 'vision' ? 'vision' : 'heuristic',
+                source:
+                  draftSource === 'vision'
+                    ? 'vision'
+                    : draftSource === 'database'
+                      ? 'api'
+                      : 'heuristic',
               });
               reset();
             }}
@@ -429,7 +420,7 @@ export function PhotoMealLogger({ onLogEstimate }: Props) {
         </div>
       )}
 
-      <p className="text-[11px] text-muted-foreground/80 leading-relaxed">
+      <p className="text-[11px] text-muted-foreground leading-relaxed">
         {t('photoLogBetaNote', {
           defaultValue:
             'Estimates are approximate. Prefer database matches when listed. Not medical advice.',

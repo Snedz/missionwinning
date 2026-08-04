@@ -59,18 +59,6 @@ const BARE_OPACITY = /(^|[\s'"`{(])(opacity-(?:40|50|60|70|80))\b/g;
  */
 const NOT_TEXT: { file: string; why: string }[] = [
   {
-    file: 'src/components/ui/FileUploadRow.tsx',
-    why: 'A progress bar at `w-0` while queued — the element has zero width and no text node, so there is nothing for the opacity to reduce the contrast of.',
-  },
-  {
-    file: 'src/components/ui/select.tsx',
-    why: 'The ChevronDown affordance on the trigger. A decorative icon duplicating information the control already conveys; WCAG 1.4.11 exempts purely decorative graphics, and no text is inside it.',
-  },
-  {
-    file: 'src/components/ui/dialog.tsx',
-    why: 'The close X, at opacity-70 with hover:opacity-100. An icon with no text node, and its accessible name comes from the sr-only label rather than anything the opacity touches.',
-  },
-  {
     file: 'src/components/mind/MindLockedPreview.tsx',
     why: 'A locked premium preview, blurred by design at `blur-[1px]` alongside the opacity. The content is meant to be unreadable — that is the paywall — and what the athlete needs to read is the unlocked copy outside this element.',
   },

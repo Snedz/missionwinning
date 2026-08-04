@@ -46,7 +46,7 @@ export function ProfileOwnerTools() {
             <span className="font-mono text-primary">${fmt.num(estRevenue)}</span>
           </div>
           <div className="text-xs text-muted-foreground">
-            {t('avgTicket', { defaultValue: `Avg bundle ~$${SUPER_BUNDLE_PRICE}/mo` })} — Super
+            {t('avgTicket', { price: SUPER_BUNDLE_PRICE, defaultValue: `Avg bundle ~$${SUPER_BUNDLE_PRICE}/mo` })} — Super
             Bundle sustains the free core for the global mission. Track real via Supabase later.
           </div>
           <div className="text-[10px] mt-1">

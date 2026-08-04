@@ -179,7 +179,7 @@ export function SchoolClassPanel() {
               value={joinInput}
               onChange={(e) => setJoinInput(e.target.value)}
               placeholder={t('schoolJoinPlaceholder', { defaultValue: 'MWA3K9' })}
-              className="flex-1 rounded-md bg-background border border-border px-3 py-2 text-sm font-mono uppercase"
+              className="flex-1 rounded-none bg-background border border-border px-3 py-2 text-sm font-mono uppercase"
             />
             <Button onClick={handleJoin}>{t('schoolJoin', { defaultValue: 'Join class' })}</Button>
           </div>
@@ -191,14 +191,14 @@ export function SchoolClassPanel() {
             value={className}
             onChange={(e) => setClassName(e.target.value)}
             placeholder={t('schoolNamePlaceholder', { defaultValue: 'Mrs. Smith — 5th Grade PE' })}
-            className="w-full rounded-md bg-background border border-border px-3 py-2 text-sm"
+            className="w-full rounded-none bg-background border border-border px-3 py-2 text-sm"
           />
           <Button variant="outline" className="w-full" onClick={() => void handleCreate()}>
             {t('schoolCreate', { defaultValue: 'Generate class code' })}
           </Button>
           {createdCode && (
             <div className="space-y-2">
-            <div className="flex items-center justify-between gap-2 text-sm rounded-lg bg-card px-3 py-2">
+            <div className="flex items-center justify-between gap-2 text-sm rounded-none border border-border bg-card px-3 py-2">
               <span className="font-mono text-muted-foreground">{createdCode}</span>
               <div className="flex gap-1">
                 <Button

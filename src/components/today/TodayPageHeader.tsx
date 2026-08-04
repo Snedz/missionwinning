@@ -49,7 +49,7 @@ export function TodayPageHeader({
         {showEditToday && onEditToday && (
           <button
             type="button"
-            className="shrink-0 inline-flex items-center gap-1.5 min-h-[44px] border-2 border-foreground bg-transparent px-3 text-sm font-semibold transition-colors hover:bg-foreground/[0.07]"
+            className="shrink-0 inline-flex items-center gap-1.5 min-h-[44px] border-2 border-foreground bg-transparent px-3 text-sm font-semibold transition-colors hover:bg-accent-100"
             onClick={onEditToday}
           >
             <LayoutGrid className="h-4 w-4" />

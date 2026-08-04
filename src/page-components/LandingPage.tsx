@@ -416,7 +416,7 @@ export function LandingPage() {
               {t('landingFinalCtaButton', { defaultValue: 'Start free — no account' })}
               <ArrowRight className="h-5 w-5" />
             </button>
-            <p className="mt-4 text-sm text-background/80">
+            <p className="mt-4 text-sm text-background">
               {t('landingFinalCtaFoot', {
                 defaultValue:
                   'Under three minutes to your first session. Nothing to install, nothing to pay.',

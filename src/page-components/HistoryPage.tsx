@@ -560,7 +560,7 @@ export function HistoryPage() {
                   const entry = getJournalEntry(selected.id);
                   if (!entry || (entry.lines.length === 0 && !entry.fragments?.length)) return null;
                   return (
-                    <div className="border-l-2 border-primary/40 pl-3 space-y-1">
+                    <div className="border-l-2 border-primary pl-3 space-y-1">
                       {/* The athlete's fragments open the entry — their words, verbatim. */}
                       {entry.fragments?.map((fragment, i) => (
                         <p key={`f-${i}`} className="text-sm italic text-foreground">

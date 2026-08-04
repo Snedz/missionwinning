@@ -66,7 +66,7 @@ export function TodayDashboardCustomize({ prefs, onChange }: Props) {
                   aria-label={t('todayMoveSectionUp', { defaultValue: 'Move up' })}
                   disabled={idx === 0}
                   onClick={() => reorder(id, 'up')}
-                  className="p-0.5 text-muted-foreground hover:text-foreground disabled:opacity-40 disabled:pointer-events-none"
+                  className="p-0.5 text-muted-foreground hover:text-foreground disabled:text-muted-foreground disabled:pointer-events-none"
                 >
                   <ChevronUp className="h-3.5 w-3.5" />
                 </button>
@@ -75,7 +75,7 @@ export function TodayDashboardCustomize({ prefs, onChange }: Props) {
                   aria-label={t('todayMoveSectionDown', { defaultValue: 'Move down' })}
                   disabled={idx === prefs.order.length - 1}
                   onClick={() => reorder(id, 'down')}
-                  className="p-0.5 text-muted-foreground hover:text-foreground disabled:opacity-40 disabled:pointer-events-none"
+                  className="p-0.5 text-muted-foreground hover:text-foreground disabled:text-muted-foreground disabled:pointer-events-none"
                 >
                   <ChevronDown className="h-3.5 w-3.5" />
                 </button>

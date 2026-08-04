@@ -28,13 +28,23 @@ describe('estimateMealFromPhoto', () => {
   it('labels color-only guesses honestly and never marks them high', () => {
     const colorOnly = estimateMealFromSignals('IMG_9999.jpg', 200 * 1024, { palette: 'green' });
     assert.match(colorOnly.name, /color guess/i);
-    assert.notEqual(colorOnly.confidence, 'high');
+    assert.equal(colorOnly.confidence, 'low');
     assert.equal(colorOnly.source, 'heuristic');
   });
 
-  it('filename + palette can be high confidence', () => {
+  it('filename match is medium at most — heuristic never claims high', () => {
     const both = estimateMealFromSignals('salad-bowl.jpg', 200 * 1024, { palette: 'green' });
-    assert.equal(both.confidence, 'high');
+    assert.equal(both.confidence, 'medium');
+    assert.equal(both.source, 'heuristic');
     assert.doesNotMatch(both.name, /color guess/i);
+    const nameOnly = estimateMealFromSignals('chicken-dinner.jpg', 200 * 1024);
+    assert.equal(nameOnly.confidence, 'medium');
+    assert.notEqual(nameOnly.confidence, 'high');
+  });
+
+  it('fallback with no signal stays low', () => {
+    const plain = estimateMealFromSignals('IMG_0001.jpg', 200 * 1024);
+    assert.equal(plain.confidence, 'low');
+    assert.equal(plain.source, 'heuristic');
   });
 });

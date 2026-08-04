@@ -140,6 +140,22 @@ type InfoStrings = {
   infoVisionSuperAppP2: string;
   infoVisionSuperBundleBody: string;
   infoVisionFoot: string;
+  infoCoachingError: string;
+  coachingEyebrow: string;
+  infoCoachingReceived: string;
+  infoCoachingThanks: string;
+  infoBackToday: string;
+  infoCoachingName: string;
+  infoCoachingEmail: string;
+  infoCoachingGoalsPlaceholder: string;
+  infoCoachingGoalsLabel: string;
+  infoCoachingSending: string;
+  infoCoachingSubmit: string;
+  infoCoachingFoot: string;
+  infoCoachingDisclaimer: string;
+  aboutEyebrow: string;
+  navPressBrand: string;
+  visionEyebrow: string;
 };
 
 const en: InfoStrings = {
@@ -343,6 +359,26 @@ const en: InfoStrings = {
     'The flagship offering. One subscription unlocks premium depth across multiple (or all) pillars — "X premium tools for the price of 1–2." Modeled directly on Freeletics: 50% off introductory pricing for first 6–12 months, annual discounts, "X apps for the price of 1".',
   infoVisionFoot:
     'Full details in vision.md in the project root. This page is a summary. The app exists to serve this vision.',
+  infoCoachingError:
+    'Could not submit right now. Try again or email support@missionwinning.com',
+  coachingEyebrow: 'Coaching',
+  infoCoachingReceived: 'Received.',
+  infoCoachingThanks:
+    'Thanks — your note is with the founder, who reads every one. Replies come by email, and it is a one-person shop, so give it a few days.',
+  infoBackToday: 'Back to Today',
+  infoCoachingName: 'Name',
+  infoCoachingEmail: 'Email',
+  infoCoachingGoalsPlaceholder:
+    "Your goals, your current training, and what you'd want from a coach…",
+  infoCoachingGoalsLabel: 'Your goals and current training',
+  infoCoachingSending: 'Sending…',
+  infoCoachingSubmit: 'Join the coaching interest list',
+  infoCoachingFoot: "Free to join. We'll only email you about coaching.",
+  infoCoachingDisclaimer:
+    'Coaching is education and accountability — results depend on your consistency and circumstances. Always clear new training or nutrition plans with your physician.',
+  aboutEyebrow: 'About',
+  navPressBrand: 'Press / Brand',
+  visionEyebrow: 'Vision',
 };
 
 const es: InfoStrings = {

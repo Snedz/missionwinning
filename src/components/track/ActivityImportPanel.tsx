@@ -104,7 +104,7 @@ export function ActivityImportPanel({ onImported }: Props) {
           })}
           idleLabel={
             <span className="flex flex-col items-center gap-1 py-8 px-4">
-              <Upload className="h-6 w-6 text-primary/80" />
+              <Upload className="h-6 w-6 text-primary" />
               <span className="text-sm font-medium text-foreground">
                 {t('trackImportDropIdle', {
                   defaultValue: 'Drop JSON/CSV files or click to browse',

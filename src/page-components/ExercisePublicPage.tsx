@@ -169,7 +169,7 @@ export function ExercisePublicPage({ exercise: raw, jsonLd }: Props) {
                   <Link href="/builder" className="text-primary hover:underline">
                     {hit.name}
                   </Link>
-                  <span className="text-muted-foreground/80">
+                  <span className="text-muted-foreground">
                     {' '}
                     ({hit.kind === 'starter' ? 'starter' : 'template'})
                   </span>

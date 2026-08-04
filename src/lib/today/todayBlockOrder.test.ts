@@ -106,6 +106,39 @@ test('what to do outranks how you did', () => {
     p('coach-week') < p('dashboard'),
     `this week's plan (${p('coach-week')}) must outrank the Mission Score (${p('dashboard')})`
   );
+  assert.ok(
+    p('week-recap') < p('dashboard'),
+    `week ceremony (${p('week-recap')}) must outrank the standing scoreboard (${p('dashboard')}) — ` +
+      `Kaizen K1: dense evenings keep the recap, spill the rings`
+  );
+  assert.ok(
+    p('day-review') < p('dashboard') && p('intent') < p('dashboard'),
+    `day-review and intent must outrank dashboard so the scoreboard is not the last survivor`
+  );
+});
+
+/**
+ * Densest commissioned evening with First Steps still up: six top-level slots,
+ * three of them pinned once `more` is attached after planning. Session + week
+ * must stay visible; Mission Score is allowed to spill into Today details.
+ */
+test('Mission Score spills on the densest evening — session and week do not', () => {
+  const candidates: TodayBlockCandidate<string>[] = [
+    { key: 'beta', priority: 0, pinned: true, node: 'beta' },
+    { key: 'header', priority: 1, pinned: true, node: 'header' },
+    ...(
+      ['intent', 'dashboard', 'freshness', 'day-review', 'week-recap', 'coach-week', 'coach-today', 'guidebook'] as const
+    ).map((k) => ({ key: k, priority: p(k), node: k })),
+  ];
+  const { top, inMore } = planTodayBlocks(candidates);
+  const visible = new Set(top.map((c) => c.key));
+  assert.ok(visible.has('coach-today'), `session missing: ${[...visible].join(', ')}`);
+  assert.ok(visible.has('coach-week'), `week missing: ${[...visible].join(', ')}`);
+  assert.ok(
+    inMore.some((c) => c.key === 'dashboard'),
+    `Mission Score stayed top-level on the densest evening — Kaizen K1 composure failed. ` +
+      `top=${[...visible].join(', ')} more=${inMore.map((c) => c.key).join(', ')}`
+  );
 });
 
 test('the invitation never outranks the thing it invites you to', () => {

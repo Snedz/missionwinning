@@ -119,7 +119,7 @@ export function CourseReader({ chapters, initialChapterId }: Props) {
                 </CardHeader>
                 <CardContent className="space-y-4">
                   {section.body.split('\n\n').map((para, i) => (
-                    <p key={i} className="text-sm leading-relaxed text-foreground/90 whitespace-pre-wrap">
+                    <p key={i} className="text-sm leading-relaxed text-foreground whitespace-pre-wrap">
                       {para.split('**').map((chunk, j) =>
                         j % 2 === 1 ? <strong key={j}>{chunk}</strong> : chunk
                       )}

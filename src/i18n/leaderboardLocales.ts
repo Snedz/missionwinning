@@ -29,6 +29,17 @@ export type LeaderboardStrings = {
   lbNightSessions: string;
   lbDawnSessions: string;
   lbYou: string;
+  leaderboardEyebrow: string;
+  leaderboardLoadError: string;
+  leaderboardOffline: string;
+  leaderboardLoadErrorDesc: string;
+  leaderboardClassEmptyTitle: string;
+  leaderboardClassScopeHint: string;
+  leaderboardClassEmptyCta: string;
+  leaderboardSquadEmptyTitle: string;
+  leaderboardClassNote: string;
+  lbPacerHint: string;
+  lbPacer: string;
 };
 
 const en: LeaderboardStrings = {
@@ -64,6 +75,19 @@ const en: LeaderboardStrings = {
   lbNightSessions: 'night sessions',
   lbDawnSessions: 'dawn sessions',
   lbYou: 'You',
+  leaderboardEyebrow: 'Leaderboard',
+  leaderboardLoadError: 'Could not refresh standings',
+  leaderboardOffline: 'You appear offline. Local ranks still show below when available.',
+  leaderboardLoadErrorDesc: 'Cloud sync failed. Retry when the network is ready.',
+  leaderboardClassEmptyTitle: 'Join a PE class',
+  leaderboardClassScopeHint:
+    'Join a PE class on /america to see class standings here. Class board uses signed-in fitness test results.',
+  leaderboardClassEmptyCta: 'Open America track',
+  leaderboardSquadEmptyTitle: 'Add a squad code',
+  leaderboardClassNote:
+    'Class standings rank best signed-in fitness test per athlete. Demo operators are hidden on this board.',
+  lbPacerHint: 'Pacer — a virtual pace-setter, not a real athlete',
+  lbPacer: 'Pacer',
 };
 
 const es: LeaderboardStrings = {

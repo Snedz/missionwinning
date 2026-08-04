@@ -220,7 +220,7 @@ export function AssessmentsPage() {
                   ))}
                   {item.key === 'smoke' || item.key === 'sleep' || item.key === 'energy' ? (
                     <input
-                      className="border rounded px-2 text-sm" placeholder={t('assessDetailsPlaceholder', { defaultValue: 'details' })}
+                      className="border border-border rounded-none px-2 text-sm" placeholder={t('assessDetailsPlaceholder', { defaultValue: 'details' })}
                       onBlur={(e) =>
                         handleAnswer(item.key, e.target.value || answers[item.key] || '')
                       }
@@ -256,7 +256,7 @@ export function AssessmentsPage() {
               </Button>
             ))}
           </div>
-          <div className="bg-card p-3 rounded">
+          <div className="rounded-none border border-border bg-card p-3">
             <div className="font-medium text-primary">
               {t('assessCoachFocus', { defaultValue: 'Coach Focus:' })}{' '}
               {t(stages[selectedStage].focusKey, { defaultValue: '' })}

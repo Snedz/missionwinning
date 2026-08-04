@@ -56,7 +56,7 @@ export function PublicSiteFooter() {
         </div>
       </div>
       <div className="border-t-2 border-border px-5 py-4">
-        <p className="mx-auto max-w-6xl text-left text-xs leading-relaxed text-muted-foreground/80">
+        <p className="mx-auto max-w-6xl text-left text-xs leading-relaxed text-muted-foreground">
           {FOOTER_DISCLAIMER_DEFAULT}
         </p>
       </div>

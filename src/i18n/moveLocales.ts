@@ -9,6 +9,20 @@ type MoveStrings = {
   movePremiumDesc: string;
   movePremiumBtn: string;
   movePremiumLoading: string;
+  /** Kaizen Loop 3 M5 — Move page leftovers (.305) */
+  moveEyebrow: string;
+  moveFreeFlows: string;
+  movePremiumFlows: string;
+  movePremiumOffline: string;
+  movePremiumPreview: string;
+  moveEmptyTitle: string;
+  moveEmptyDesc: string;
+  moveEmptyCta: string;
+  movePremiumFetchFailed: string;
+  movePremiumFetchFailedDesc: string;
+  movePremiumRetry: string;
+  movePreviewPlayer: string;
+  moveLockedHint: string;
 };
 
 const en: MoveStrings = {
@@ -21,6 +35,20 @@ const en: MoveStrings = {
   movePremiumDesc: 'Sports-specific mobility, recovery protocols, and advanced flows.',
   movePremiumBtn: 'Move Premium',
   movePremiumLoading: 'Loading recovery flows…',
+  moveEyebrow: 'Move',
+  moveFreeFlows: 'Mobility flows',
+  movePremiumFlows: 'More recovery flows',
+  movePremiumOffline: 'Premium recovery flows unavailable offline — free flows below still work.',
+  movePremiumPreview: 'Premium recovery flows',
+  moveEmptyTitle: 'No Move sessions logged yet',
+  moveEmptyDesc: 'Start a free mobility flow — your first win shows here.',
+  moveEmptyCta: 'Browse free flows',
+  movePremiumFetchFailed: 'Could not load premium flows',
+  movePremiumFetchFailedDesc: 'Free flows still work. Check your connection and try again.',
+  movePremiumRetry: 'Try again',
+  movePreviewPlayer: 'Timed cues — Pliability-style recovery flows',
+  moveLockedHint:
+    'Free tier includes 10 flows. Premium adds 11 longer protocols — post-lift, morning open, low-back friendly, and athlete recovery.',
 };
 
 const es: MoveStrings = {

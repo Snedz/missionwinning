@@ -507,9 +507,10 @@ export function HomeTodayDashboard() {
    * the screen was answering "here is how you are doing" first.
    *
    * The rule now: **what to do beats how you did.** Session, then the week it
-   * belongs to, then the numbers. `TODAY_MAX_TOP_LEVEL_BLOCKS` is untouched —
-   * this is a re-pricing, and the budget stays a separate argument in the one
-   * file that exists to hold it.
+   * belongs to, then the numbers. Kaizen K1 (`.294`) demoted `dashboard` behind
+   * week-recap and tightened `TODAY_MAX_TOP_LEVEL_BLOCKS` 7→6 so Mission Score
+   * spills into Today details on the densest evening instead of crowding the
+   * session. The budget number still lives only in `todayBlockBudget.ts`.
    */
   const staggerBlocks: TodayBlockCandidate<React.ReactNode>[] = [
     ...(firstStepsMayMount({ phase: state.phase, dismissed: betaDismissed })

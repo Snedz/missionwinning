@@ -11,6 +11,11 @@ import { useTranslation } from 'react-i18next';
 import { Button } from '@/components/ui/button';
 import { HoldToConfirmButton } from '@/components/ui/HoldToConfirmButton';
 import { formatDuration } from '@/lib/utils';
+import {
+  activeCoachTipKind,
+  activeSessionEyebrowKind,
+  sessionSetsProgressPct,
+} from '@/lib/workout/activeWorkoutHelpers';
 
 type Props = {
   workoutName: string;
@@ -45,7 +50,7 @@ export function ActiveSessionChrome({
   const [menuOpen, setMenuOpen] = useState(false);
 
   const coachTip =
-    hardCount > 2
+    activeCoachTipKind(hardCount) === 'high'
       ? t('activeCoachNotesHighEffort', {
           defaultValue: 'Hard sets stacking up — leave a little in the tank if form slips.',
         })
@@ -53,9 +58,10 @@ export function ActiveSessionChrome({
           defaultValue: 'Rate Easy / Med / Hard after each set so Coach can learn.',
         });
 
-  const sessionEyebrow = fromCoachPlan
-    ? t('activeCoachSessionEyebrow', { defaultValue: 'Mission Coach session' })
-    : t('activeLiveSession', { defaultValue: 'Live session' });
+  const sessionEyebrow =
+    activeSessionEyebrowKind(fromCoachPlan) === 'coach'
+      ? t('activeCoachSessionEyebrow', { defaultValue: 'Mission Coach session' })
+      : t('activeLiveSession', { defaultValue: 'Live session' });
 
   return (
     <div className="space-y-3">
@@ -84,6 +90,7 @@ export function ActiveSessionChrome({
             size="sm"
             className="h-11 min-h-[44px] shrink-0 px-3 tap-target"
             onClick={onOpenPlateCalc}
+            aria-label={t('activeOpenPlateCalc', { defaultValue: 'Plates' })}
           >
             <Scale className="h-4 w-4 md:me-1" aria-hidden />
             <span className="hidden md:inline">
@@ -124,8 +131,10 @@ export function ActiveSessionChrome({
                 {/* Plates moved out to the header, so discard is all that is
                     left in here — which is the right amount for a menu whose
                     only remaining item is destructive. */}
+                {/* Not role=menu — HoldToConfirm is a button with aria-busy,
+                    which axe aria-required-children rejects as a menuitem child.
+                    Single destructive action: plain disclosure panel. */}
                 <div
-                  role="menu"
                   className="absolute end-0 top-full z-50 mt-1 min-w-[11rem] border-2 border-border bg-card p-1"
                 >
                   <HoldToConfirmButton
@@ -173,7 +182,7 @@ export function ActiveSessionChrome({
         <div className="mt-2 h-1.5 overflow-hidden bg-neutral-300">
           <div
             className="h-full bg-primary-fill transition-[width] duration-500"
-            style={{ width: `${totalSets > 0 ? Math.round((completedSets / totalSets) * 100) : 0}%` }}
+            style={{ width: `${sessionSetsProgressPct(completedSets, totalSets)}%` }}
           />
         </div>
       </div>

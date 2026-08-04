@@ -117,7 +117,7 @@ export function ExperiencePage() {
                 <article key={p.id} className="xp-pillar" data-i={i}>
                   <p className="section-index">{String(i + 1).padStart(2, '0')}</p>
                   <h3 className="font-display text-2xl uppercase mt-1 mb-3">{p.name}</h3>
-                  <p className="xp-free text-sm text-foreground/90">
+                  <p className="xp-free text-sm text-foreground">
                     <span className="eyebrow-live mr-2 text-[10px]">{XP.ch03Free}</span>
                     {p.free}
                   </p>

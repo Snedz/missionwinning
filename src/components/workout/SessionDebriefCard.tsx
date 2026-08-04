@@ -14,6 +14,7 @@
 
 import { useEffect, useMemo, useState } from 'react';
 import { Volume2, Square } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import { WindDownOptIn } from '@/components/workout/WindDownOptIn';
 import type { Debrief } from '@/lib/coach/debrief';
 import { track } from '@/lib/analytics';
@@ -33,17 +34,29 @@ type Props = {
 
 /**
  * Map the tapped chip onto the check-in the coach already reads, so the answer
- * changes the next session rather than only being counted. "Harder than expected"
- * is the athlete telling us the dose was too high — the same signal a low energy
- * rating carries.
+ * changes the next session rather than only being counted. `harder` is the athlete
+ * telling us the dose was too high — the same signal a low energy rating carries.
  */
 const CHIP_EFFECT: Record<string, { energy?: number } | undefined> = {
-  'Harder than expected': { energy: 2 },
-  'Exactly what I wanted': undefined,
-  'Too easy': { energy: 5 },
+  harder: { energy: 2 },
+  exact: undefined,
+  easy: { energy: 5 },
+};
+
+const REPLY_KEY: Record<string, string> = {
+  harder: 'debriefReplyHarder',
+  exact: 'debriefReplyExact',
+  easy: 'debriefReplyEasy',
+};
+
+const REPLY_DEFAULT: Record<string, string> = {
+  harder: 'Harder than expected',
+  exact: 'Exactly what I wanted',
+  easy: 'Too easy',
 };
 
 export function SessionDebriefCard({ debrief, fragments }: Props) {
+  const { t } = useTranslation();
   const [answered, setAnswered] = useState<string | null>(null);
   const [speaking, setSpeaking] = useState(false);
 
@@ -77,9 +90,15 @@ export function SessionDebriefCard({ debrief, fragments }: Props) {
   const question = debrief.lines.find((l) => l.kind === 'question');
 
   return (
-    <section className="border-t border-border pt-4" aria-label="Session debrief">
+    <section
+      className="border-t border-border pt-4"
+      aria-label={t('debriefSectionLabel', { defaultValue: 'Session debrief' })}
+    >
       {fragments && fragments.length > 0 ? (
-        <ul className="mb-3 space-y-1.5 border-l-2 border-poster pl-3" aria-label="Your field notes">
+        <ul
+          className="mb-3 space-y-1.5 border-l-2 border-poster pl-3"
+          aria-label={t('debriefFieldNotesLabel', { defaultValue: 'Your field notes' })}
+        >
           {fragments.map((fragment, i) => (
             <li key={i} className="text-sm italic text-foreground">
               {fragment}
@@ -92,11 +111,17 @@ export function SessionDebriefCard({ debrief, fragments }: Props) {
         <button
           type="button"
           onClick={toggleSpeech}
-          aria-label={speaking ? 'Stop reading the debrief' : 'Read the debrief aloud'}
+          aria-label={
+            speaking
+              ? t('debriefStopAria', { defaultValue: 'Stop reading the debrief' })
+              : t('debriefListenAria', { defaultValue: 'Read the debrief aloud' })
+          }
           className="mb-3 inline-flex min-h-[44px] items-center gap-2 border border-input px-3 py-2 text-xs font-medium"
         >
           {speaking ? <Square className="h-3 w-3" aria-hidden /> : <Volume2 className="h-3 w-3" aria-hidden />}
-          {speaking ? 'Stop' : 'Listen'}
+          {speaking
+            ? t('debriefStop', { defaultValue: 'Stop' })
+            : t('debriefListen', { defaultValue: 'Listen' })}
         </button>
       ) : null}
 
@@ -117,10 +142,16 @@ export function SessionDebriefCard({ debrief, fragments }: Props) {
 
       {question ? (
         <div className="mt-4">
-          <p className="text-sm">{question.text}</p>
+          <p className="text-sm">
+            {t('debriefDoseQuestion', {
+              defaultValue: 'Did that run hotter than planned, or was it the work you wanted?',
+            })}
+          </p>
           {answered ? (
             <p className="mt-2 text-xs text-muted-foreground" role="status">
-              Noted — next session will account for that.
+              {t('debriefNoted', {
+                defaultValue: 'Noted — next session will account for that.',
+              })}
             </p>
           ) : (
             <div className="mt-2 flex flex-wrap gap-2">
@@ -131,7 +162,9 @@ export function SessionDebriefCard({ debrief, fragments }: Props) {
                   onClick={() => answer(chip)}
                   className="min-h-[44px] border border-input px-3 py-2 text-xs"
                 >
-                  {chip}
+                  {t(REPLY_KEY[chip] ?? chip, {
+                    defaultValue: REPLY_DEFAULT[chip] ?? chip,
+                  })}
                 </button>
               ))}
             </div>
@@ -142,7 +175,9 @@ export function SessionDebriefCard({ debrief, fragments }: Props) {
       {/* Honest by the time it renders: handleComplete saved the entry before
           opening this sheet. Points at the journal without adding a second CTA. */}
       <p className="mt-4 text-xs text-muted-foreground" role="status">
-        Saved to your journal — edit any time from History.
+        {t('debriefSavedJournal', {
+          defaultValue: 'Saved to your journal — edit any time from History.',
+        })}
       </p>
 
       {/* Only after a session that actually ran hot — that is when "evenings like
