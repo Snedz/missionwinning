@@ -40,9 +40,9 @@ test('inferFormPattern maps common families', () => {
 });
 
 test('form pack still wins over pattern for still-only structured guides', () => {
-  // deadlift is still-only (not in VIDEO_IDS pilot set)
-  const guide = getFormGuideOrCues('deadlift');
-  assert.ok(guide?.mediaUrl?.includes('/form/deadlift/side.webp'), guide?.mediaUrl);
+  // front-squat is still-only (not in VIDEO_IDS pilot set)
+  const guide = getFormGuideOrCues('front-squat');
+  assert.ok(guide?.mediaUrl?.includes('/form/front-squat/side.webp'), guide?.mediaUrl);
   assert.equal(guide?.mediaType, 'image');
 });
 

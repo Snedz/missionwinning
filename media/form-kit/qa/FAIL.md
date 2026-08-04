@@ -39,6 +39,8 @@ Log every rejected generation. Do not re-ship the same glitch.
 | 2026-08-04 | `barbell-row/side.webp` | Mid-pull, head clear of plates (.470) |
 | 2026-08-04 | `push-ups/side.mp4` · `plank/side.mp4` | Directed loops from PASS stills (.470) |
 | 2026-08-04 | `lunges` · `box-jump` · `burpees` · `kettlebell-swing` loops | Directed I2V from PASS stills (.471) |
+| 2026-08-04 | athlete-a unify: lunges, KB, push-ups, deadlift stills | Identity lock (.472) |
+| 2026-08-04 | thruster · OHP · deadlift loops | Empty/light-bar I2V pilots (.472) |
 
 ## Known hard cases
 

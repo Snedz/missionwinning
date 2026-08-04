@@ -34,7 +34,7 @@ export const FORM_PACK_SIDE_IDS = new Set([
  * Files may still exist on disk; do not wire until regen.
  */
 export const FORM_PACK_VIDEO_IDS = new Set<string>([
-  // Directed I2V from PASS stills only (.469–.471)
+  // Directed I2V from PASS stills (.469–.472)
   'air-squat',
   'glute-bridge',
   'push-ups',
@@ -43,6 +43,11 @@ export const FORM_PACK_VIDEO_IDS = new Set<string>([
   'box-jump',
   'burpees',
   'kettlebell-swing',
+  // Empty/light-bar pilots (.472)
+  'thruster',
+  'overhead-press',
+  'deadlift',
+  // Still-only: front-squat, RDL, bench, barbell-row, pull-ups
 ]);
 
 export function formPackSidePosterPath(exerciseId: string): string {

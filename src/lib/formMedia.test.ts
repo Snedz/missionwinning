@@ -17,8 +17,8 @@ test('unknown exercise has no form pack', () => {
 });
 
 test('still-only packs stay image when not in VIDEO_IDS', () => {
-  const guide = getFormGuideOrCues('deadlift');
-  assert.ok(guide?.mediaUrl?.includes('/form/deadlift/side.webp'), guide?.mediaUrl);
+  const guide = getFormGuideOrCues('front-squat');
+  assert.ok(guide?.mediaUrl?.includes('/form/front-squat/side.webp'), guide?.mediaUrl);
   assert.equal(guide?.mediaType, 'image');
 });
 
@@ -32,6 +32,9 @@ test('loop pilot packs resolve to video with poster', () => {
     'box-jump',
     'burpees',
     'kettlebell-swing',
+    'thruster',
+    'overhead-press',
+    'deadlift',
   ] as const) {
     const pack = resolveFormPackMedia(id);
     assert.equal(pack?.mediaType, 'video', id);
@@ -41,8 +44,9 @@ test('loop pilot packs resolve to video with poster', () => {
 });
 
 test('Form Director packs keep poster paths for still-only heroes', () => {
-  assert.equal(resolveFormPackMedia('deadlift')?.mediaUrl, '/form/deadlift/side.webp');
-  assert.equal(resolveFormPackMedia('overhead-press')?.mediaUrl, '/form/overhead-press/side.webp');
+  assert.equal(resolveFormPackMedia('front-squat')?.mediaUrl, '/form/front-squat/side.webp');
+  assert.equal(resolveFormPackMedia('barbell-row')?.mediaUrl, '/form/barbell-row/side.webp');
+  assert.equal(resolveFormPackMedia('front-squat')?.mediaType, 'image');
 });
 
 test('formPackSidePosterPath is stable', () => {
