@@ -42,7 +42,7 @@ export function MoveLockedPreview() {
               <MeterBar label="Athlete recovery" value={18} readout="18% · 0:45" className="w-full sm:w-48" />
             </div>
             {DEMO_FLOW.map((s) => (
-              <div key={s.label} className="text-sm border border-border/30 rounded-lg p-2">
+              <div key={s.label} className="text-sm border border-border p-2">
                 <div className="font-medium">{s.label}</div>
                 <div className="text-xs text-muted-foreground">{s.cue}</div>
               </div>

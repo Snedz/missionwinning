@@ -84,7 +84,7 @@ export function WeekStrip({ sessions, todayOffset }: Props) {
               missed && 'border-border bg-transparent',
               // Quieter via border + no glyph, not opacity — dimming the
               // container also dims the day label past 4.5:1 at 10px.
-              !session && 'bg-transparent border-border/20'
+              !session && 'bg-transparent border-border'
             )}
           >
             <span className={cn('font-medium', done ? 'text-neutral-300' : 'text-muted-foreground')}>

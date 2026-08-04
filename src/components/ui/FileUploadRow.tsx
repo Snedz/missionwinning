@@ -63,8 +63,8 @@ export function FileUploadRow({
     <div
       className={cn(
         'rounded-none border-2 border-border bg-background p-3 flex gap-3 items-start',
-        status === 'error' && 'border-destructive/40 bg-destructive/5',
-        status === 'success' && 'border-[hsl(var(--status-ok)/0.4)] bg-[hsl(var(--status-ok)/0.05)]',
+        status === 'error' && 'border-destructive bg-background',
+        status === 'success' && 'border-[hsl(var(--status-ok))] bg-background',
         className
       )}
     >

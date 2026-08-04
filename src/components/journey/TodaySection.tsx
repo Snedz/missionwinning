@@ -26,7 +26,7 @@ export function TodaySection({ title, description, defaultOpen = false, children
         </div>
         <ChevronDown className="h-5 w-5 text-muted-foreground shrink-0 transition-transform group-open:rotate-180" />
       </summary>
-      <div className="px-5 pb-5 pt-0 border-t border-border/40">{children}</div>
+      <div className="px-5 pb-5 pt-0 border-t border-border">{children}</div>
     </details>
   );
 }
