@@ -102,6 +102,17 @@ function plantSeed(): void {
                   { reps: 15, weight: 0, kind: 'work' },
                 ],
               },
+              // Weighted sets unlock /benchmarks anatomy + 1RM chrome —
+              // getExercisesWithBenchmarkData requires weight > 0.
+              {
+                exerciseId: 'bench-press',
+                muscleGroups: ['Chest', 'Arms'],
+                sets: [
+                  { reps: 5, weight: 60, kind: 'work' },
+                  { reps: 5, weight: 60, kind: 'work' },
+                  { reps: 3, weight: 70, kind: 'work' },
+                ],
+              },
             ],
           },
         ],

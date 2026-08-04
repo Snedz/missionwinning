@@ -459,6 +459,28 @@ test.describe('Accessibility @a11y', () => {
   });
 
   /**
+   * Loop 11 U5 — Benchmarks anatomy. Zero-data /benchmarks stays on EmptyState;
+   * axe must see Muscle balance + tracked stats after weighted history.
+   */
+  test('axe serious/critical: /benchmarks with anatomy map @a11y', async ({
+    page,
+    context,
+    baseURL,
+  }) => {
+    if (!baseURL) throw new Error('baseURL required');
+    const ok = await unlockGate(page, context, baseURL);
+    if (gateRequired() && !ok) {
+      test.skip(true, 'SMOKE_ACCESS_SECRET required to unlock private gate');
+    }
+    await seedHistoryAndMissedCoach(page);
+    await page.goto('/benchmarks', { waitUntil: 'domcontentloaded' });
+    await expect(page.getByText(/muscle balance/i).first()).toBeVisible({
+      timeout: 15_000,
+    });
+    await axeSerious(page, '/benchmarks (anatomy map)');
+  });
+
+  /**
    * The assertion axe cannot make.
    *
    * axe-core does not reliably test focus visibility, which is how this suite sat at

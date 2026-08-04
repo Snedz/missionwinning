@@ -273,3 +273,25 @@ PR: #234
 **Aikido:** `aikido_full_scan` still fails without X11 `$DISPLAY`. Noted; continue.
 **Next:** Loop 11 — Compare/Benchmarks/About/offline/landing leftovers (Bundle refused); soft chrome; Active extracts; seeded a11y.
 
+## Loop 11 waves
+
+| Wave | Status | Notes |
+|------|--------|-------|
+| U1–U2 Compare/Benchmarks/nav leftovers | done (`.334`) | About/landing/offline/pacer/misc; Bundle refused; **44→16** |
+| U3–U4 Soft chrome + volume-trim | done (`.335`) | Intent/Move/Ceremony/Unlock solid; `shouldOfferVolumeTrim` |
+| U5 Benchmarks anatomy a11y | done (`.336`) | Seeded weighted history; Select name + Table keyboard scroll fixes |
+
+## Metrics
+
+| Metric | Loop 10 end | Loop 11 end |
+|--------|-------------|-------------|
+| Build | `.333` | **`.336`** |
+| i18n uncovered cap | 44 | **16** (Bundle-only refuse) |
+
+## End of Loop 11
+
+**Delivered:** U1–U5 on `cursor/kaizen-wedge-night-be9b` → PR #234 (`.334`–`.336`).
+**Verified:** i18n @16 Bundle-only; volume-trim helper unit tests; Benchmarks anatomy a11y axe green (`localhost`) after Select `aria-label` + Table `tabIndex`.
+**Aikido:** `aikido_full_scan` still fails without X11 `$DISPLAY`. Noted; continue.
+**Next:** Loop 12 — soft chrome leftovers (toast destructive, BetaAdmin, secondary/20 cards); more Active extracts; offline-banner / coaching-form seeded a11y; Bundle i18n still refused.
+

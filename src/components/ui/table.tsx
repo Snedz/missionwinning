@@ -3,7 +3,10 @@ import { cn } from "@/lib/utils";
 
 const Table = React.forwardRef<HTMLTableElement, React.HTMLAttributes<HTMLTableElement>>(
   ({ className, ...props }, ref) => (
-    <div className="relative w-full overflow-auto">
+    // tabIndex so a horizontally scrolling table stays keyboard-reachable
+    // (axe scrollable-region-focusable) — zero-data routes never mount wide
+    // tables, so seeded Benchmarks is what finally measured this.
+    <div className="relative w-full overflow-auto" tabIndex={0}>
       <table ref={ref} className={cn("w-full caption-bottom text-sm", className)} {...props} />
     </div>
   )

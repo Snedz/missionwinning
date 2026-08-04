@@ -255,7 +255,10 @@ export function BenchmarksPage() {
 
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
         <Select value={activeId} onValueChange={setSelectedId}>
-          <SelectTrigger className="w-full sm:w-72">
+          <SelectTrigger
+            className="w-full sm:w-72"
+            aria-label={t('benchmarksSelectExercise', { defaultValue: 'Select exercise…' })}
+          >
             <SelectValue placeholder={t('benchmarksSelectExercise', { defaultValue: 'Select exercise…' })}
             />
           </SelectTrigger>
