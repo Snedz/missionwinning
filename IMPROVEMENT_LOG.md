@@ -780,3 +780,7 @@ PR: #234
 
 
 
+
+## Loop resume (.404)
+
+T1.1 week-1 activation contract tests after K1 composure — no product code change beyond regression net.
