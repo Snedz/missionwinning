@@ -47,11 +47,11 @@ export const FORM_PACK_VIDEO_IDS = new Set<string>([
   'box-jump',
   'burpees',
   'kettlebell-swing',
-  // Empty/light-bar pilots (.472)
+  // Empty-bar pilot still has clean still+loop (.472 thruster)
   'thruster',
-  'overhead-press',
-  'deadlift',
-  // Still-only: front-squat, RDL, bench, barbell-row, pull-ups
+  // Demoted (.474): OHP + deadlift loops were from plated stills with broken collars
+  // Still-only until I2V from empty-bar stills: overhead-press, deadlift,
+  // front-squat, RDL, bench, barbell-row, pull-ups, landmines
 ]);
 
 export function formPackSidePosterPath(exerciseId: string): string {

@@ -131,7 +131,9 @@ async function main() {
   ensureDir(path.join(root, 'public', 'brand', 'mascot'));
   ensureDir(path.join(root, 'public', 'form'));
 
-  const results = [];
+  // Prefer newest source per output path — a stale PNG must not overwrite a
+  // newer JPG for the same form-{id}-side-frame (collar-fix class of bug).
+  const byOut = new Map();
   for (const file of files) {
     const target = resolveTarget(file);
     if (!target) {
@@ -141,6 +143,17 @@ async function main() {
       continue;
     }
     const src = path.join(inbox, file);
+    const mtime = fs.statSync(src).mtimeMs;
+    const prev = byOut.get(target.out);
+    if (!prev || mtime >= prev.mtime) {
+      byOut.set(target.out, { file, target, src, mtime });
+    } else {
+      console.warn(`Skip older duplicate for ${path.relative(root, target.out)}: ${file}`);
+    }
+  }
+
+  const results = [];
+  for (const { file, target, src } of byOut.values()) {
     ensureDir(path.dirname(target.out));
     const { bytes, quality } = await toWebp(src, target.out, target);
     results.push({ file, ...target, kb: Math.round(bytes / 1024), quality });

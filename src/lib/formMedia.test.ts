@@ -33,13 +33,19 @@ test('loop pilot packs resolve to video with poster', () => {
     'burpees',
     'kettlebell-swing',
     'thruster',
-    'overhead-press',
-    'deadlift',
   ] as const) {
     const pack = resolveFormPackMedia(id);
     assert.equal(pack?.mediaType, 'video', id);
     assert.equal(pack?.mediaUrl, `/form/${id}/side.mp4`, id);
     assert.equal(pack?.mediaPosterUrl, `/form/${id}/side.webp`, id);
+  }
+});
+
+test('empty-bar collar fix stills stay image (no loop until I2V)', () => {
+  for (const id of ['overhead-press', 'deadlift', 'front-squat', 'barbell-row'] as const) {
+    const pack = resolveFormPackMedia(id);
+    assert.equal(pack?.mediaType, 'image', id);
+    assert.equal(pack?.mediaUrl, `/form/${id}/side.webp`, id);
   }
 });
 

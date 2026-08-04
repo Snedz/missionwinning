@@ -41,9 +41,16 @@ Log every rejected generation. Do not re-ship the same glitch.
 | 2026-08-04 | `lunges` · `box-jump` · `burpees` · `kettlebell-swing` loops | Directed I2V from PASS stills (.471) |
 | 2026-08-04 | athlete-a unify: lunges, KB, push-ups, deadlift stills | Identity lock (.472) |
 | 2026-08-04 | thruster · OHP · deadlift loops | Empty/light-bar I2V pilots (.472) |
+| 2026-08-04 | `overhead-press/side.webp` (pre-`.474`) | Multi-prong spring collar hub — reads as 3 clips from side | FAIL → empty-bar regen (.474) |
+| 2026-08-04 | `front-squat` / `deadlift` / `barbell-row` plated collars | Invented clips/prongs | Empty-bar regen (.474) |
+| 2026-08-04 | OHP · deadlift loops | Wired to old plated stills | Demoted from VIDEO_IDS until I2V from clean empty-bar still |
+
+| 2026-08-04 | `overhead-press/side.webp` | Empty bar lockout, clean sleeves, no clips (.474) |
+| 2026-08-04 | `front-squat` · `deadlift` · `barbell-row` stills | Empty bar, no collar hardware (.474) |
 
 ## Known hard cases
 
 - **Chin-over pull-up:** model often returns dead hang — ship hang as setup still if top fails twice.
 - **Front rack + side camera:** plates hide head — prefer empty/light bar and explicit “head not behind plates”.
 - **Barbell row:** model often puts bar on back (good-morning) — insist “bar outside body toward ribs, not on back”.
+- **Collar / clip geometry:** models invent multi-prong hubs (3 clips from side). **Default empty bar; never spring collars.**

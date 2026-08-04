@@ -161,20 +161,31 @@ Bar through body, head crop, camera move, second person, text, logos, drama spee
 
 ---
 
+## Barbell geometry (hard — Form Index)
+
+Models invent **broken collars**: multi-prong hubs, three spring arms, star locks stacked into a trident. From a side camera that reads as “three clips.”
+
+**Default for teaching stills:** **empty Olympic bar** — no plates, no collars, no spring clips. Clean cylindrical sleeves with only the real sleeve stop rings. Same empty-bar look as thruster technique stills.
+
+**If plates are required** (rare): solid circular plates flush on the sleeve **with no collar hardware at all**. Never invent spring clips, prongs, clamps, or multi-arm hubs.
+
+**Hard reject:** extra prongs / three-clip hubs · asymmetric collar only on one end · logo text on plates · bar through body · head buried in plates.
+
 ## Per-lift equipment locks (required)
 
 | Id / family | Equipment rule |
 |-------------|----------------|
 | glute-bridge | Bodyweight **or** bar resting **across hip crease** on pad — never through abdomen |
 | bench-press | Bar above chest; arms support bar; never through torso |
-| deadlift / RDL | Bar outside shins/thighs; hands on bar |
+| deadlift / RDL | Bar outside shins/thighs; hands on bar · **prefer empty bar** |
 | pull-ups | Full head visible; bar above head |
-| thruster / OHP | Bar path outside body |
+| thruster / OHP / front-squat / barbell-row | **Empty bar default** · path outside body · head clear |
 | kettlebell-swing | KB outside hips; hinge + hip snap |
 | isolation pattern | Standing DB curl only — never side plank |
 | core pattern | Forearm plank only — never curl |
 | burpee | Full body; head in frame; readable plank or stand-to-floor |
 | box-jump | Full head + box + feet; generous headroom |
+| landmine family | One bar; far end on floor as pivot; free end only — no extra prongs |
 
 ---
 
