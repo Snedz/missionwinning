@@ -592,6 +592,33 @@ test.describe('Accessibility @a11y', () => {
   });
 
   /**
+   * Loop 16 Z1 — Track week log with an activity. Zero-data /track shows EmptyState;
+   * axe must see the logged row after Log Activity.
+   */
+  test('axe serious/critical: /track with logged activity @a11y', async ({
+    page,
+    context,
+    baseURL,
+  }) => {
+    if (!baseURL) throw new Error('baseURL required');
+    const ok = await unlockGate(page, context, baseURL);
+    if (gateRequired() && !ok) {
+      test.skip(true, 'SMOKE_ACCESS_SECRET required to unlock private gate');
+    }
+    await seedLegacyOnboarding(page);
+    await page.goto('/track', { waitUntil: 'domcontentloaded' });
+    await expect(page.getByLabel(/duration/i).or(page.locator('#track-duration')).first()).toBeVisible({
+      timeout: 15_000,
+    });
+    await page.locator('#track-duration').fill('30');
+    await page.getByRole('button', { name: /^log activity$/i }).first().click();
+    await expect(
+      page.getByText(/walk|run|cycle|swim|other/i).filter({ hasNotText: /no activities/i }).first()
+    ).toBeVisible({ timeout: 10_000 });
+    await axeSerious(page, '/track (logged activity)');
+  });
+
+  /**
    * The assertion axe cannot make.
    *
    * axe-core does not reliably test focus visibility, which is how this suite sat at

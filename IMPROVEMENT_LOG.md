@@ -382,3 +382,12 @@ PR: #234
 **Verified:** Mind breathing-timer a11y green; volume-trim offer unit + wiring; design-system green.
 **Aikido:** `aikido_full_scan` fails without X11 `$DISPLAY`. Noted; continue.
 **Next:** Loop 16 — Track logged-activity / Assessments seeded a11y; more Active extracts; Bundle i18n still refused.
+
+## Loop 16 waves
+
+| Wave | Status | Notes |
+|------|--------|-------|
+| Z1 Track logged-activity a11y | done (`.349`) | Log Activity → week list axe green |
+| Z2 Active extract | pending | |
+| Z3 Soft chrome / log close | pending | |
+
