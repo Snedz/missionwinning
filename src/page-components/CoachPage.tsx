@@ -13,7 +13,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { PillarPageShell } from '@/components/layout/PillarPageShell';
 import { WeekStrip } from '@/components/coach/WeekStrip';
-import { PlanSessionCard } from '@/components/coach/PlanSessionCard';
+import { CoachPlanSessionGrid } from '@/components/coach/CoachPlanSessionGrid';
 import { AdjustSessionSheet } from '@/components/coach/AdjustSessionSheet';
 import { CoachAdaptBanner } from '@/components/coach/CoachAdaptBanner';
 import { CoachManageSheet } from '@/components/coach/CoachManageSheet';
@@ -255,41 +255,11 @@ export function CoachPage({ askExerciseId }: CoachPageProps = {}) {
           {/* Free Coach hero: week sessions before any Bundle upsell.
               Two columns from sm up, per the handoff — a week of sessions is a
               grid you scan, not a stack you scroll. */}
-          {/* Free Coach hero: week sessions before any Bundle upsell.
-              Two columns from sm up, per the handoff — a week of sessions is a
-              grid you scan, not a stack you scroll. */}
-          {(() => {
-            const pending = plan.sessions
-              .filter((s) => s.status !== 'done')
-              .sort((a, b) => a.dayOffset - b.dayOffset);
-            const todayPending = pending.find((s) => s.dayOffset === todayOffset);
-            const nextPending =
-              pending.find((s) => s.dayOffset >= todayOffset) ?? pending[0];
-            const bossId = (todayPending ?? nextPending)?.id;
-            return (
-              <div className="grid gap-4 sm:grid-cols-2">
-                {plan.sessions
-                  .slice()
-                  .sort((a, b) => a.dayOffset - b.dayOffset)
-                  .map((session) => {
-                    const isToday = session.dayOffset === todayOffset;
-                    return (
-                      <PlanSessionCard
-                        key={session.id}
-                        session={session}
-                        isToday={isToday}
-                        isPrimaryStart={session.id === bossId}
-                        onAdjust={
-                          isToday && session.status !== 'done'
-                            ? () => setAdjustOpen(true)
-                            : undefined
-                        }
-                      />
-                    );
-                  })}
-              </div>
-            );
-          })()}
+          <CoachPlanSessionGrid
+            sessions={plan.sessions}
+            todayOffset={todayOffset}
+            onAdjustToday={() => setAdjustOpen(true)}
+          />
 
           {!askExerciseId ? (
             <div id="coach-chat">

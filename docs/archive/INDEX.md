@@ -65,6 +65,7 @@ When adding a doc:
 | [log/LOG-rotate-414.md](./log/LOG-rotate-414.md) | `.399` FileUploadRow chrome — rotated for `.414` form media T1 |
 | [log/LOG-rotate-415.md](./log/LOG-rotate-415.md) | `.400` opacity exemptions — rotated for `.415` pattern packs |
 | [log/LOG-rotate-416.md](./log/LOG-rotate-416.md) | `.401` beachhead i18n — rotated for `.416` Scout + PDF |
+| [log/LOG-rotate-442.md](./log/LOG-rotate-442.md) | `.427` — rotated for `.442` — Bare opacity-90/95 soft-chrome ratchet. |
 | [log/LOG-rotate-441.md](./log/LOG-rotate-441.md) | `.426` — rotated for `.441` — Today trainReady one definition. |
 | [log/LOG-rotate-440.md](./log/LOG-rotate-440.md) | `.425` — rotated for `.440` — ActiveExerciseFooter + prev labels. |
 | [log/LOG-rotate-439.md](./log/LOG-rotate-439.md) | `.424` — rotated for `.439` — NL word-half qty (Fuel accuracy). |
