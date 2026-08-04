@@ -3,7 +3,7 @@
 Session branch: `cursor/kaizen-night-be9b`  
 Started: 2026-08-04 · Web craft only · Modernist system stands  
 Base: `master` @ `2026.07-unified.417`  
-Tip: `2026.07-unified.444` · PR #254  
+Tip: `2026.07-unified.445` · PR #254  
 Prior night: #234 (`.294`–`.403`) + follow-on media/Learn through `.417`
 
 ## Contract
@@ -34,14 +34,14 @@ Pause/restart · week numbers · Fixed vs Flexible · glow FAB · Habits/communi
 
 | Metric | Night start | Tip |
 |--------|-------------|-----|
-| Build | `.417` | **`.444`** |
+| Build | `.417` | **`.445`** |
 | i18n uncovered cap | 16 | **16** |
 | ActiveExerciseCard LOC | 536 | **224** (−312) |
 | HomeTodayDashboard LOC | 785 | **714** (−71) |
 | ActiveWorkoutPage LOC | 765 | **660** (−105) |
 | CoachPage LOC | 322 | **292** (−30) |
 | WorkoutVictorySheet LOC | 387 | **290** (−97) |
-| CoachChatPanel LOC | 492 | **399** (−93) |
+| CoachChatPanel LOC | 492 | **349** (−143) |
 | New axe cases | — | 3 (Coach manage / schedule / adjust) |
 | Fuel unit cases added | — | fraction · mixed · word-half · quarter · thirds · unicode · couple · few · dab · pair · bare tbsp |
 
@@ -227,11 +227,17 @@ Pause/restart · week numbers · Fixed vs Flexible · glow FAB · Habits/communi
 |------|--------|-------|
 | `.444` | done | VictoryBodyDeltaStrip; sheet →290 |
 
+### Loop 28 — Coach chat client
+
+| Wave | Status | Notes |
+|------|--------|-------|
+| `.445` | done | coachChatClient helpers; panel 399→349 |
+
 ## Next (founder / later nights)
 
-1. Phone excellence walk of Train → Today → Victory → Coach on tip `.444`.
+1. Phone excellence walk of Train → Today → Victory → Coach on tip `.445`.
 2. Visual baseline bootstrap on Linux when founder ready (not this branch).
 3. Pump D14 only when screenshots arrive — do not invent IA.
-4. Further Fuel accuracy: vision grounding for honest `high` confidence; Coach chat send/stream helpers next peel candidate.
+4. Further Fuel accuracy: vision grounding for honest `high` confidence.
 5. More Active/Coach extracts only if they unlock a real test or shrink a hot path.
 6. Soft-chrome ratchet: bare opacity-90/95 already banned (`.427`).

@@ -65,6 +65,7 @@ When adding a doc:
 | [log/LOG-rotate-414.md](./log/LOG-rotate-414.md) | `.399` FileUploadRow chrome — rotated for `.414` form media T1 |
 | [log/LOG-rotate-415.md](./log/LOG-rotate-415.md) | `.400` opacity exemptions — rotated for `.415` pattern packs |
 | [log/LOG-rotate-416.md](./log/LOG-rotate-416.md) | `.401` beachhead i18n — rotated for `.416` Scout + PDF |
+| [log/LOG-rotate-445.md](./log/LOG-rotate-445.md) | `.430` — rotated for `.445` — Today header focus line builder. |
 | [log/LOG-rotate-444.md](./log/LOG-rotate-444.md) | `.429` — rotated for `.444` — VictoryFeelStrip + signed delta. |
 | [log/LOG-rotate-443.md](./log/LOG-rotate-443.md) | `.428` — rotated for `.443` — Today details More mount gate. |
 | [log/LOG-rotate-442.md](./log/LOG-rotate-442.md) | `.427` — rotated for `.442` — Bare opacity-90/95 soft-chrome ratchet. |

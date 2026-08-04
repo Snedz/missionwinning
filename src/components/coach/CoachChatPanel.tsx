@@ -15,6 +15,11 @@ import { EXERCISES, ensureFullExerciseCatalog, getExerciseById } from '@/data/ex
 import { cn } from '@/lib/utils';
 import { CoachFreeFormAskPanel } from '@/components/coach/CoachFreeFormAskPanel';
 import { CoachSoftBundleChatTip } from '@/components/coach/CoachSoftBundleChatTip';
+import {
+  buildCoachChatRequestContext,
+  classifyCoachChatStreamChunk,
+  coachChatCopyForStatus,
+} from '@/lib/coach/coachChatClient';
 
 type Turn = { role: 'user' | 'coach'; content: string };
 
@@ -104,32 +109,6 @@ export function CoachChatPanel({
     return <CoachSoftBundleChatTip className={className} />;
   }
 
-  const errorMessageForStatus = (status: number) => {
-    if (status === 429) {
-      return t('coachChatRateLimited', {
-        defaultValue: 'Too many messages — wait a moment and try again.',
-      });
-    }
-    if (status === 401) {
-      return t('coachChatUnauthorized', {
-        defaultValue: 'Sign in again to keep chatting with your coach.',
-      });
-    }
-    if (status === 402) {
-      return t('coachChatPremium', {
-        defaultValue: 'Coach chat needs an active Super Bundle.',
-      });
-    }
-    if (status === 503) {
-      return t('coachChatOffline', {
-        defaultValue: 'Coach voice offline — your plan and adjustments still work.',
-      });
-    }
-    return t('coachChatError', {
-      defaultValue: 'Could not reach the coach. Try again.',
-    });
-  };
-
   const failWithUserKept = (message: string, prior: Turn[], coachContent: string, markOffline = false) => {
     if (markOffline) setOffline(true);
     setSendError(coachContent);
@@ -154,24 +133,14 @@ export function CoachChatPanel({
     const prior = turns;
     setTurns([...prior, { role: 'user', content: message }, { role: 'coach', content: '' }]);
 
-    const context = {
+    const context = buildCoachChatRequestContext({
       readiness,
       strain,
       recovery,
-      trainDays14: 0,
       exerciseId,
-      todaySession: todaySession
-        ? {
-            name: todaySession.name,
-            kind: todaySession.kind,
-            estMinutes: todaySession.estMinutes,
-            exercises: todaySession.exercises.slice(0, 12).map((e) => ({
-              id: e.exerciseId,
-              name: EXERCISES.find((x) => x.id === e.exerciseId)?.name ?? e.exerciseId,
-            })),
-          }
-        : undefined,
-    };
+      todaySession,
+      resolveExerciseName: (id) => EXERCISES.find((x) => x.id === id)?.name ?? id,
+    });
 
     abortRef.current?.abort();
     const ac = new AbortController();
@@ -195,7 +164,13 @@ export function CoachChatPanel({
         signal: ac.signal,
       });
       if (!res.ok || !res.body) {
-        failWithUserKept(message, prior, errorMessageForStatus(res.status), res.status === 503);
+        const copy = coachChatCopyForStatus(res.status);
+        failWithUserKept(
+          message,
+          prior,
+          t(copy.key, { defaultValue: copy.defaultValue }),
+          Boolean(copy.markOffline)
+        );
         return;
       }
 
@@ -211,36 +186,13 @@ export function CoachChatPanel({
         const { done, value } = await reader.read();
         if (done) break;
         const chunk = decoder.decode(value, { stream: true });
-        if (chunk.includes('[[error:coach_offline]]')) {
+        const streamErr = classifyCoachChatStreamChunk(chunk);
+        if (streamErr) {
           failWithUserKept(
             message,
             prior,
-            t('coachChatOffline', {
-              defaultValue: 'Coach voice offline — your plan and adjustments still work.',
-            }),
-            true
-          );
-          return;
-        }
-        if (chunk.includes('[[error:coach_quota]]')) {
-          // Honest, not apologetic: the limit is real and it resets.
-          failWithUserKept(
-            message,
-            prior,
-            t('coachChatQuota', {
-              defaultValue: "Today's chat limit reached — resets tomorrow. Your plan and logger are unaffected.",
-            }),
-            true
-          );
-          return;
-        }
-        if (chunk.includes('[[error:')) {
-          failWithUserKept(
-            message,
-            prior,
-            t('coachChatError', {
-              defaultValue: 'Could not reach the coach. Try again.',
-            })
+            t(streamErr.copy.key, { defaultValue: streamErr.copy.defaultValue }),
+            Boolean(streamErr.copy.markOffline)
           );
           return;
         }
@@ -249,12 +201,11 @@ export function CoachChatPanel({
         setTurns([...prior, { role: 'user', content: message }, { role: 'coach', content: snapshot }]);
       }
       if (!coachText.trim()) {
+        const copy = coachChatCopyForStatus(0);
         failWithUserKept(
           message,
           prior,
-          t('coachChatError', {
-            defaultValue: 'Could not reach the coach. Try again.',
-          })
+          t(copy.key, { defaultValue: copy.defaultValue })
         );
       }
     } catch (err) {
@@ -263,12 +214,11 @@ export function CoachChatPanel({
         setSendError(t('coachChatStopped', { defaultValue: 'Stopped.' }));
         return;
       }
+      const copy = coachChatCopyForStatus(0);
       failWithUserKept(
         message,
         prior,
-        t('coachChatError', {
-          defaultValue: 'Could not reach the coach. Try again.',
-        })
+        t(copy.key, { defaultValue: copy.defaultValue })
       );
     } finally {
       setSending(false);
