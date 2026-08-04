@@ -61,12 +61,22 @@ describe('restSecondsForExercise', () => {
     assert.equal(restSecondsForExercise(undefined), 90);
   });
 
-  it('ActiveWorkoutPage uses restSecondsForExercise rather than a ternary', () => {
-    const src = readFileSync(
+  it('restSecondsForExercise is used via planLogSetRest, not inlined on Active (.405)', () => {
+    const page = readFileSync(
       path.join(import.meta.dirname, '..', '..', 'page-components', 'ActiveWorkoutPage.tsx'),
       'utf8'
     );
-    assert.match(src, /restSecondsForExercise\(/);
-    assert.doesNotMatch(src, /resolveRestSeconds\(exercise\.name\)\s*:\s*90/);
+    const finish = readFileSync(
+      path.join(import.meta.dirname, 'activeSessionFinish.ts'),
+      'utf8'
+    );
+    assert.match(page, /planLogSetRest\(/);
+    assert.doesNotMatch(
+      page,
+      /restSecondsForExercise\(/,
+      'page must not call restSecondsForExercise — planLogSetRest owns rest duration'
+    );
+    assert.match(finish, /restSecondsForExercise\(/);
+    assert.doesNotMatch(finish, /resolveRestSeconds\(exercise\.name\)\s*:\s*90/);
   });
 });

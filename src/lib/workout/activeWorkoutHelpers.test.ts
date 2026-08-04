@@ -749,14 +749,24 @@ describe('bodyScoreDeltas', () => {
     );
   });
 
-  it('ActiveWorkoutPage uses bodyScoreDeltas rather than inlining Victory deltas', () => {
-    const src = readFileSync(
+  it('Victory deltas live in assembleActiveVictory via bodyScoreDeltas (.405)', () => {
+    const page = readFileSync(
       path.join(import.meta.dirname, '..', '..', 'page-components', 'ActiveWorkoutPage.tsx'),
       'utf8'
     );
-    assert.match(src, /bodyScoreDeltas\(/);
+    const finish = readFileSync(
+      path.join(import.meta.dirname, 'activeSessionFinish.ts'),
+      'utf8'
+    );
+    assert.match(page, /assembleActiveVictory\(/);
     assert.doesNotMatch(
-      src,
+      page,
+      /bodyScoreDeltas\(/,
+      'page must not call bodyScoreDeltas — assembleActiveVictory owns Victory deltas'
+    );
+    assert.match(finish, /bodyScoreDeltas\(/);
+    assert.doesNotMatch(
+      finish,
       /afterScores\.readiness\s*-\s*beforeScores\.readiness/,
       'Victory body-score deltas must stay inside bodyScoreDeltas'
     );
