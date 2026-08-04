@@ -89,6 +89,55 @@ const NOTIFICATION_EN: Record<string, string> = {
   imperial: 'Imperial (lbs, in)',
   trainingGoals: 'Training Goals',
   saveGoals: 'Save Goals',
+
+  /** Kaizen Loop 6 P1 — Profile privacy / premium / CSV / sync (.313) */
+  csvImportFailed: 'Could not read that file',
+  csvImportUnrecognized:
+    'Expected a Strong or Hevy CSV export. Export from the other app, then drop the file here.',
+  csvImportEmpty: 'No workout rows found in the file.',
+  csvImportDone: 'History imported',
+  csvImportDoneDesc:
+    '{{added}} workouts imported ({{duplicates}} already here). Your PRs, 1RM trends and load band now use them. Reloading…',
+  csvImportTitle: 'Switching from another app?',
+  csvImportSubtitle:
+    'Import your Strong or Hevy history from a CSV export. Your records rebuild here in seconds — free, no account needed.',
+  csvImportCta: 'Import CSV (Strong / Hevy)',
+  csvImportDropIdle: 'Drop a Strong or Hevy CSV or click to browse',
+  csvImportDropActive: 'Drop to import',
+  csvImportNeedCsv: 'Use the CSV export from Strong or Hevy.',
+  premiumStatus: 'Premium Status',
+  premiumUnlocked: '✓ Premium unlocked (via Super Bundle or demo request)',
+  billingPortalOpening: 'Opening…',
+  manageBilling: 'Manage billing',
+  noPremium:
+    'Free tier active. Unlock full library cues, deep nutrition, mobility flows, mind sessions, advanced programs, and analytics via the Super Bundle or specialist programs.',
+  exploreBundle: 'Explore Super Bundle',
+  privacyAnalyticsDnt: 'Off — your browser sent Do Not Track.',
+  privacyAnalyticsOn: 'On — optional product metrics only (no session replay).',
+  privacyAnalyticsOff: 'Off — product analytics disabled on this device.',
+  privacyAnalyticsUndecided: 'Not set — no product analytics until you choose.',
+  privacyControlsTitle: 'Privacy & analytics',
+  privacyControlsLead:
+    'Workouts, nutrition, and journey progress stay on this device until you sign in to sync. Product analytics are optional and off until you allow them.',
+  privacyAnalyticsStatus: 'Product analytics:',
+  privacyKeepPrivate: 'Keep analytics off',
+  privacyAllowAnalytics: 'Allow product analytics',
+  privacyAnalyticsNotConfigured: 'Product analytics are not configured in this environment.',
+  privacyPolicyLink: 'Read the privacy policy',
+  syncStorageFull:
+    'This device is out of storage space. Export a backup, then clear some space so new sessions save.',
+  syncStorageDenied:
+    "This browser won't let us save to the device — private browsing does this. Your session works, but it won't be here next time.",
+  syncQueuedCount: '{{count}} sessions saved here, waiting to reach your account.',
+  syncRetryNow: 'Retry',
+  billingPortalError: 'Billing portal',
+  billingPortalSignIn: 'Sign in to manage billing.',
+  emailNextStepFailed: 'Could not send email',
+  profileEyebrow: 'You',
+  profileSettings: 'Profile & settings',
+  profileCommissionedDay: 'Day {{day}} on the path',
+  profileSubtitle:
+    'Account, units, and preferences. Progress stays on this device unless you sign in.',
 };
 
 const nl = (over: Record<string, string>): Record<string, string> => ({
