@@ -19,6 +19,8 @@
 | `WorkoutVictorySheet.tsx` | Post-workout summary sheet |
 | `VictoryFeelStrip.tsx` | Post-session feel 1–5 energy (free ritual) (`.429`) |
 | `VictoryBodyDeltaStrip.tsx` | Readiness · strain · recovery signed deltas (`.444`) |
+| `VictoryStatsStrip.tsx` | Volume · sets · duration grid (`.447`) |
+| `VictoryNextActionStrip.tsx` | Primary Next CTA block (`.447`) |
 | `PlateCalculatorSheet.tsx` | Plate math sheet |
 | `LiveHeartRate.tsx` | Optional Web Bluetooth BPM strip (wearables flag) |
 

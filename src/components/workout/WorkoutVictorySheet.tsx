@@ -2,7 +2,6 @@
 
 import { useState } from 'react';
 import Image from 'next/image';
-import Link from 'next/link';
 import { Share2 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { useLocaleFormat } from '@/hooks/useLocaleFormat';
@@ -15,7 +14,6 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog';
-import { formatDuration } from '@/lib/utils';
 import type { WorkoutVictorySummary } from '@/lib/workout/workoutVictory';
 import {
   formatProgressionInsight,
@@ -29,6 +27,8 @@ import { getCachedReferralCode } from '@/lib/referral';
 import { SessionDebriefCard } from '@/components/workout/SessionDebriefCard';
 import { VictoryFeelStrip } from '@/components/workout/VictoryFeelStrip';
 import { VictoryBodyDeltaStrip } from '@/components/workout/VictoryBodyDeltaStrip';
+import { VictoryStatsStrip } from '@/components/workout/VictoryStatsStrip';
+import { VictoryNextActionStrip } from '@/components/workout/VictoryNextActionStrip';
 import type { Debrief } from '@/lib/coach/debrief';
 import {
   buildVictoryCardData,
@@ -181,26 +181,13 @@ export function WorkoutVictorySheet({
           </DialogDescription>
         </DialogHeader>
 
-        <div className="grid grid-cols-2 gap-3 py-2">
-          <div className="border-2 border-border bg-background p-3 text-center">
-            <p className="text-xs font-medium text-muted-foreground">
-              {t('victoryVolume', { defaultValue: 'Volume' })}
-            </p>
-            <p className="text-xl font-semibold tabular-nums text-foreground">
-              {fmt.num(summary.totalVolume)}
-            </p>
-            <p className="text-xs text-muted-foreground">{unitLabel}</p>
-          </div>
-          <div className="border-2 border-border bg-background p-3 text-center">
-            <p className="text-xs font-medium text-muted-foreground">
-              {t('victorySets', { defaultValue: 'Sets' })}
-            </p>
-            <p className="text-xl font-semibold tabular-nums">{summary.setCount}</p>
-            <p className="text-xs text-muted-foreground">
-              {formatDuration(summary.durationSeconds)}
-            </p>
-          </div>
-        </div>
+        <VictoryStatsStrip
+          totalVolume={summary.totalVolume}
+          setCount={summary.setCount}
+          durationSeconds={summary.durationSeconds}
+          unitLabel={unitLabel}
+          formatVolume={(n) => fmt.num(n)}
+        />
 
         <VictoryFeelStrip feelSaved={feelSaved} onSaveFeel={saveFeel} />
 
@@ -230,25 +217,12 @@ export function WorkoutVictorySheet({
           </p>
         )}
 
-        {summary.nextAction && (
-          <div className="border-2 border-primary bg-tint p-3 space-y-2 text-center">
-            <p className="text-xs font-semibold uppercase tracking-[0.08em] text-primary">
-              {t('victoryNextLabel', { defaultValue: 'Next' })}
-            </p>
-            <p className="text-sm text-muted-foreground leading-relaxed">
-              {t(summary.nextAction.reasonKey, {
-                defaultValue: summary.nextAction.defaultReason,
-              })}
-            </p>
-            <Button asChild className="w-full primary-action">
-              <Link href={summary.nextAction.href} onClick={() => onOpenChange(false)}>
-                {t(summary.nextAction.labelKey, {
-                  defaultValue: summary.nextAction.defaultLabel,
-                })}
-              </Link>
-            </Button>
-          </div>
-        )}
+        {summary.nextAction ? (
+          <VictoryNextActionStrip
+            nextAction={summary.nextAction}
+            onNavigate={() => onOpenChange(false)}
+          />
+        ) : null}
 
         <DialogFooter className="flex-col sm:flex-col gap-2 pt-1">
           {!summary.nextAction && (

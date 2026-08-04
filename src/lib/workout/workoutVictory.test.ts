@@ -107,10 +107,22 @@ describe('shouldShowVictoryBackTodaySecondary', () => {
     assert.doesNotMatch(src, /ImageIcon/);
     assert.match(src, /VictoryFeelStrip/);
     assert.match(src, /VictoryBodyDeltaStrip/);
+    assert.match(src, /VictoryStatsStrip/);
+    assert.match(src, /VictoryNextActionStrip/);
     assert.doesNotMatch(
       src,
       /formatVictorySignedDelta/,
       'signed delta formatting lives in VictoryBodyDeltaStrip'
+    );
+    assert.doesNotMatch(
+      src,
+      /victoryVolume/,
+      'volume/sets grid lives in VictoryStatsStrip'
+    );
+    assert.doesNotMatch(
+      src,
+      /victoryNextLabel/,
+      'next CTA lives in VictoryNextActionStrip'
     );
   });
 });
