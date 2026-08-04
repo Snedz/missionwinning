@@ -125,6 +125,50 @@ describe('buildProgressionInsight', () => {
     );
     assert.equal(insight, undefined);
   });
+
+  it('refuses freestyle progression after a Mission Coach prescribed session (.410)', () => {
+    const log: CompletedWorkoutLog = {
+      id: '1',
+      workoutName: 'Coach Push',
+      startedAt: '2026-07-01T10:00:00Z',
+      completedAt: '2026-07-01T10:30:00Z',
+      durationSeconds: 1800,
+      totalVolume: 1500,
+      exercises: [
+        {
+          exerciseId: 'bench-press',
+          prescribed: true,
+          sets: [{ reps: 5, weight: 100 }],
+        },
+      ],
+    };
+    const insight = buildProgressionInsight(log, 'metric', { min: 8, max: 12 });
+    assert.equal(
+      insight,
+      undefined,
+      'coached loads must not get freestyle double-progression copy'
+    );
+  });
+
+  it('treats a mixed session with any prescribed lift as coached (.410)', () => {
+    const log: CompletedWorkoutLog = {
+      id: '1',
+      workoutName: 'Mixed',
+      startedAt: '2026-07-01T10:00:00Z',
+      completedAt: '2026-07-01T10:30:00Z',
+      durationSeconds: 1800,
+      totalVolume: 2000,
+      exercises: [
+        { exerciseId: 'curl', sets: [{ reps: 12, weight: 20 }] },
+        {
+          exerciseId: 'bench-press',
+          prescribed: true,
+          sets: [{ reps: 5, weight: 100 }],
+        },
+      ],
+    };
+    assert.equal(buildProgressionInsight(log, 'metric'), undefined);
+  });
 });
 
 describe('summarizeWorkoutVictory', () => {

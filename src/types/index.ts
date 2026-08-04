@@ -127,6 +127,12 @@ export interface CompletedWorkoutLog {
     note?: string;
     /** Snapshot from catalog at complete time — readiness can skip EXERCISES lookup. */
     muscleGroups?: MuscleGroup[];
+    /**
+     * True when this exercise came from Mission Coach (or a % program) rather
+     * than freestyle Just Go. Kept on the completed log so Victory can refuse
+     * freestyle double-progression copy after a coached session (`.410`).
+     */
+    prescribed?: boolean;
   }[];
   totalVolume: number;
 }

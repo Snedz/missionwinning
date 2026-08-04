@@ -78,6 +78,18 @@ test('normalize is the identity on rows web already wrote', () => {
   assert.deepEqual(normalizeCloudExercises(nested), nested);
 });
 
+test('normalize keeps Mission Coach prescribed stamp on nested web rows (.410)', () => {
+  const nested = [
+    {
+      exerciseId: 'bench-press',
+      prescribed: true as const,
+      sets: [{ reps: 5, weight: 100 }],
+    },
+  ];
+  const out = normalizeCloudExercises(nested);
+  assert.equal(out[0]?.prescribed, true);
+});
+
 test('garbage becomes an empty session rather than a thrown engine', () => {
   assert.deepEqual(normalizeCloudExercises(null), []);
   assert.deepEqual(normalizeCloudExercises('nope'), []);

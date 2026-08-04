@@ -218,6 +218,8 @@ export const useWorkoutStore = create<WorkoutState>()(
                 })),
               ...(ex.note?.trim() ? { note: ex.note.trim() } : {}),
               ...(ex.muscleGroups?.length ? { muscleGroups: [...ex.muscleGroups] } : {}),
+              // Victory + history must know this was a Coach load, not freestyle (`.410`).
+              ...(ex.prescribed ? { prescribed: true as const } : {}),
             };
           })
           .filter((ex) => ex.sets.length > 0);
