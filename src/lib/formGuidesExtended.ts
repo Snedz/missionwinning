@@ -353,4 +353,101 @@ export const EXTENDED_GUIDES: Record<string, FormGuide> = {
     ['Pull band toward face', 'Externally rotate at end', 'Control return'],
     ['Band too heavy', 'Shrugging']
   ),
+  // Toward 80 structured guides — conditioning, carries, core, mobility
+  'cable-crossover': g(
+    'Stand between cables',
+    ['Slight forward lean', 'Soft elbows', 'Chest open'],
+    ['Bring handles together in arc', 'Squeeze chest at midline', 'Return with control'],
+    ['Locking elbows straight', 'Using momentum']
+  ),
+  'seated-calf': g(
+    'Seated calf machine',
+    ['Pad on lower thighs', 'Balls of feet on platform', 'Full stretch at bottom'],
+    ['Rise to full plantar flexion', 'Pause', 'Lower slowly'],
+    ['Bouncing', 'Partial range']
+  ),
+  'wall-ball': g(
+    'Facing wall, ball at chest',
+    ['Feet shoulder-width', 'Target marked on wall', 'Brace core'],
+    ['Squat then drive up', 'Release ball to target', 'Catch and absorb into next squat'],
+    ['Throwing with arms only', 'Soft target miss — reset stance']
+  ),
+  'double-under': g(
+    'Rope ready, athletic stance',
+    ['Wrists relaxed', 'Elbows near ribs', 'Light bounce'],
+    ['Single jump, rope passes twice', 'Spin from wrists not shoulders', 'Stay tall'],
+    ['Piking hips', 'Jumping too high']
+  ),
+  'kettlebell-swing-2h': g(
+    'Hinge, two hands on KB',
+    ['Bell between feet', 'Hike back', 'Flat back'],
+    ['Snap hips to float bell', 'Arms loose', 'Absorb into next hinge'],
+    ['Squatting the swing', 'Lifting with arms']
+  ),
+  'burpee-pullup': g(
+    'Standing under bar',
+    ['Clear path to bar', 'Know pull-up grip', 'Brace'],
+    ['Burpee to floor then jump/pull to bar', 'Chin over if able', 'Control down and reset'],
+    ['Kipping when testing strict', 'Sloppy push-up phase']
+  ),
+  'hollow-hold': g(
+    'Supine, arms overhead optional',
+    ['Low back pressed down', 'Ribs down', 'Legs extended or bent'],
+    ['Lift shoulders and legs slightly', 'Hold hollow shape', 'Breathe without arching'],
+    ['Low back peeling off floor', 'Holding breath']
+  ),
+  'v-up': g(
+    'Supine, arms extended',
+    ['Legs straight or soft knees', 'Core braced'],
+    ['Sit up and reach toward toes', 'Form a V', 'Lower with control'],
+    ['Using momentum only', 'Rounding into neck strain']
+  ),
+  'farmers-walk-dbs': g(
+    'Heavy DBs at sides',
+    ['Tall posture', 'Shoulders packed', 'Core braced'],
+    ['Walk with short stable steps', 'Avoid leaning', 'Set down under control'],
+    ['Shrugging traps hard', 'Rushing and losing posture']
+  ),
+  'suitcase-carry': g(
+    'Load in one hand',
+    ['Ribs level', 'Shoulders even', 'Opposite arm free for balance'],
+    ['Walk without leaning toward load', 'Brace side body', 'Switch hands'],
+    ['Hiking hip on loaded side', 'Twisting torso']
+  ),
+  'high-knees': g(
+    'Running in place setup',
+    ['Light on feet', 'Arms ready', 'Tall posture'],
+    ['Drive knees up alternately', 'Quick ground contact', 'Stay springy'],
+    ['Leaning back', 'Landing heavy on heels']
+  ),
+  'skater-hop': g(
+    'Athletic stance',
+    ['Soft knees', 'Arms for counterbalance'],
+    ['Bound laterally to one leg', 'Absorb and stick', 'Bound to other side'],
+    ['Stiff landings', 'Knee caving inward']
+  ),
+  'good-morning-bw': g(
+    'Standing, hands behind head or crossed',
+    ['Soft knees', 'Hips back', 'Flat back'],
+    ['Hinge until hamstrings load', 'Drive hips forward to stand', 'Keep neck neutral'],
+    ['Rounding lower back', 'Bending only at knees']
+  ),
+  'tuck-jump': g(
+    'Athletic stance',
+    ['Soft knees', 'Arm swing ready'],
+    ['Jump and tuck knees up', 'Land softly into quarter squat', 'Reset if form breaks'],
+    ['Landing locked out', 'Losing balance forward']
+  ),
+  'ring-row': g(
+    'Under rings, body straight',
+    ['Rings at chest height or lower for harder', 'Heels planted', 'Shoulders packed'],
+    ['Pull rings to chest', 'Squeeze scaps', 'Lower fully'],
+    ['Hips sagging', 'Partial range']
+  ),
+  'lunge-with-reach': g(
+    'Standing or half-kneeling',
+    ['Long lunge stance', 'Front foot flat', 'Torso tall'],
+    ['Reach arms overhead or rotate', 'Keep front knee tracking', 'Return and switch'],
+    ['Front knee collapse', 'Losing balance']
+  ),
 };

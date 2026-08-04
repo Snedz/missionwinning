@@ -65,6 +65,7 @@ When adding a doc:
 | [log/LOG-rotate-414.md](./log/LOG-rotate-414.md) | `.399` FileUploadRow chrome — rotated for `.414` form media T1 |
 | [log/LOG-rotate-415.md](./log/LOG-rotate-415.md) | `.400` opacity exemptions — rotated for `.415` pattern packs |
 | [log/LOG-rotate-416.md](./log/LOG-rotate-416.md) | `.401` beachhead i18n — rotated for `.416` Scout + PDF |
+| [log/LOG-rotate-459.md](./log/LOG-rotate-459.md) | `.444` — rotated for `.459` (guides to 82). |
 | [log/LOG-rotate-458.md](./log/LOG-rotate-458.md) | `.443` — rotated for `.458` (craft blurbs + guides). |
 | [log/LOG-rotate-457.md](./log/LOG-rotate-457.md) | `.442` — rotated for `.457` (public craft index). |
 | [log/LOG-rotate-456.md](./log/LOG-rotate-456.md) | `.441` — rotated for `.456` (hero form motion). |
