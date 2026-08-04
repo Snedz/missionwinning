@@ -131,3 +131,37 @@ export function buildCoachChatRequestContext(params: {
       : undefined,
   };
 }
+
+export type CoachChatStreamReadResult =
+  | { kind: 'ok'; text: string }
+  | { kind: 'empty' }
+  | { kind: 'stream_error'; error: CoachChatStreamError };
+
+/**
+ * Read a coach chat SSE/text body, classifying [[error:…]] tags and reporting
+ * partial text via onPartial. Fetch stays in the panel (.453).
+ */
+export async function readCoachChatStream(
+  body: ReadableStream<Uint8Array>,
+  onPartial: (text: string) => void
+): Promise<CoachChatStreamReadResult> {
+  const reader = body.getReader();
+  const decoder = new TextDecoder();
+  let coachText = '';
+  while (true) {
+    const { done, value } = await reader.read();
+    if (done) break;
+    const chunk = decoder.decode(value, { stream: true });
+    const streamErr = classifyCoachChatStreamChunk(chunk);
+    if (streamErr) return { kind: 'stream_error', error: streamErr };
+    coachText += chunk;
+    onPartial(coachText);
+  }
+  if (!coachText.trim()) return { kind: 'empty' };
+  return { kind: 'ok', text: coachText };
+}
+
+/** AbortError from Stop — keep the user turn, drop the empty coach bubble. */
+export function isCoachChatAbortError(err: unknown): boolean {
+  return err instanceof Error && err.name === 'AbortError';
+}

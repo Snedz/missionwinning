@@ -6,6 +6,8 @@ import {
   buildCoachChatRequestContext,
   classifyCoachChatStreamChunk,
   coachChatCopyForStatus,
+  isCoachChatAbortError,
+  readCoachChatStream,
 } from '@/lib/coach/coachChatClient';
 
 describe('coachChatCopyForStatus', () => {
@@ -74,8 +76,9 @@ describe('CoachChatPanel wires coachChatClient (.445)', () => {
       'utf8'
     );
     assert.match(panel, /coachChatCopyForStatus/);
-    assert.match(panel, /classifyCoachChatStreamChunk/);
     assert.match(panel, /buildCoachChatRequestContext/);
+    assert.match(panel, /readCoachChatStream/);
+    assert.match(panel, /isCoachChatAbortError/);
     assert.doesNotMatch(
       panel,
       /status === 429/,
@@ -86,5 +89,65 @@ describe('CoachChatPanel wires coachChatClient (.445)', () => {
       /\[\[error:coach_quota\]\]/,
       'stream error tags must stay inside classifyCoachChatStreamChunk'
     );
+    assert.doesNotMatch(
+      panel,
+      /getReader\(\)/,
+      'stream read loop lives in readCoachChatStream'
+    );
+    assert.doesNotMatch(
+      panel,
+      /err\.name === 'AbortError'/,
+      'abort detection lives in isCoachChatAbortError'
+    );
+  });
+});
+
+describe('readCoachChatStream', () => {
+  it('accumulates text and reports stream errors / empty', async () => {
+    const chunks = ['Hello ', 'coach'];
+    let i = 0;
+    const stream = new ReadableStream<Uint8Array>({
+      pull(controller) {
+        if (i < chunks.length) {
+          controller.enqueue(new TextEncoder().encode(chunks[i++]));
+          return;
+        }
+        controller.close();
+      },
+    });
+    const partials: string[] = [];
+    const result = await readCoachChatStream(stream, (t) => partials.push(t));
+    assert.equal(result.kind, 'ok');
+    if (result.kind === 'ok') assert.equal(result.text, 'Hello coach');
+    assert.deepEqual(partials, ['Hello ', 'Hello coach']);
+
+    const errStream = new ReadableStream<Uint8Array>({
+      start(controller) {
+        controller.enqueue(new TextEncoder().encode('[[error:coach_quota]]'));
+        controller.close();
+      },
+    });
+    const err = await readCoachChatStream(errStream, () => {});
+    assert.equal(err.kind, 'stream_error');
+    if (err.kind === 'stream_error') assert.equal(err.error.kind, 'quota');
+
+    const emptyStream = new ReadableStream<Uint8Array>({
+      start(controller) {
+        controller.enqueue(new TextEncoder().encode('   '));
+        controller.close();
+      },
+    });
+    const empty = await readCoachChatStream(emptyStream, () => {});
+    assert.equal(empty.kind, 'empty');
+  });
+});
+
+describe('isCoachChatAbortError', () => {
+  it('detects AbortError only', () => {
+    const abort = new Error('aborted');
+    abort.name = 'AbortError';
+    assert.equal(isCoachChatAbortError(abort), true);
+    assert.equal(isCoachChatAbortError(new Error('nope')), false);
+    assert.equal(isCoachChatAbortError('x'), false);
   });
 });

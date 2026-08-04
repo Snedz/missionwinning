@@ -19,8 +19,9 @@ import { CoachChatTranscript } from '@/components/coach/CoachChatTranscript';
 import { CoachChatComposer } from '@/components/coach/CoachChatComposer';
 import {
   buildCoachChatRequestContext,
-  classifyCoachChatStreamChunk,
   coachChatCopyForStatus,
+  isCoachChatAbortError,
+  readCoachChatStream,
 } from '@/lib/coach/coachChatClient';
 
 type Turn = { role: 'user' | 'coach'; content: string };
@@ -181,28 +182,21 @@ export function CoachChatPanel({
         grounded: Boolean(exerciseId),
       });
 
-      const reader = res.body.getReader();
-      const decoder = new TextDecoder();
-      let coachText = '';
-      while (true) {
-        const { done, value } = await reader.read();
-        if (done) break;
-        const chunk = decoder.decode(value, { stream: true });
-        const streamErr = classifyCoachChatStreamChunk(chunk);
-        if (streamErr) {
-          failWithUserKept(
-            message,
-            prior,
-            t(streamErr.copy.key, { defaultValue: streamErr.copy.defaultValue }),
-            Boolean(streamErr.copy.markOffline)
-          );
-          return;
-        }
-        coachText += chunk;
-        const snapshot = coachText;
+      const streamResult = await readCoachChatStream(res.body, (snapshot) => {
         setTurns([...prior, { role: 'user', content: message }, { role: 'coach', content: snapshot }]);
+      });
+      if (streamResult.kind === 'stream_error') {
+        failWithUserKept(
+          message,
+          prior,
+          t(streamResult.error.copy.key, {
+            defaultValue: streamResult.error.copy.defaultValue,
+          }),
+          Boolean(streamResult.error.copy.markOffline)
+        );
+        return;
       }
-      if (!coachText.trim()) {
+      if (streamResult.kind === 'empty') {
         const copy = coachChatCopyForStatus(0);
         failWithUserKept(
           message,
@@ -211,7 +205,7 @@ export function CoachChatPanel({
         );
       }
     } catch (err) {
-      if (err instanceof Error && err.name === 'AbortError') {
+      if (isCoachChatAbortError(err)) {
         setTurns([...prior, { role: 'user', content: message }]);
         setSendError(t('coachChatStopped', { defaultValue: 'Stopped.' }));
         return;

@@ -17,7 +17,7 @@
 8c. `weekDose.ts` — plain-language weekly “dose” (session count · intent · minutes) for Coach UI
 8d. `coachAdaptReentry.ts` — pure: adapt-banner re-entry is coach day vs freestyle Just Go
 8e. `resolveCoachBossSessionId.ts` — which session gets filled Start on `/coach` (today pending else next)
-8f. `coachChatClient.ts` — HTTP status → copy + stream `[[error:…]]` classifier + request context (.445)
+8f. `coachChatClient.ts` — HTTP status → copy + stream `[[error:…]]` + request context + `readCoachChatStream` (.445/.453)
 9. `storage.ts` — `loadPlan`, `savePlan`, taster flags, device id
 10. `contextBuilder.ts` — `readLocalCoachContext`, assembles from localStorage + history
 11. `planVoiceServer.ts` — LLM/rules voice for weekly briefing (used by API route)
