@@ -35,6 +35,7 @@ import {
 } from '@/lib/libraryFilters';
 import { inferFormPattern } from '@/lib/formPatterns';
 import { getFormGuideOrCues } from '@/lib/formGuides';
+import { exerciseCraftBlurb } from '@/lib/exerciseCraftBlurb';
 import { usePremium } from '@/hooks/usePremium';
 import type { ProgramTag } from '@/types';
 
@@ -372,10 +373,7 @@ export function LibraryPage() {
             </CardHeader>
             <CardContent className="text-sm">
               <p className="text-muted-foreground line-clamp-2">
-                {ex.cues ||
-                  t('libraryCuesComing', {
-                    defaultValue: 'Form cues coming soon for this movement.',
-                  })}
+                {exerciseCraftBlurb(ex)}
               </p>
               <Button
                 variant="ghost"

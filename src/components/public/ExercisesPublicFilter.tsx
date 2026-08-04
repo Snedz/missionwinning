@@ -16,6 +16,7 @@ import {
 } from '@/lib/libraryFilters';
 import { inferFormPattern } from '@/lib/formPatterns';
 import { getFormGuideOrCues } from '@/lib/formGuides';
+import { exerciseCraftBlurb } from '@/lib/exerciseCraftBlurb';
 import { FilterChip } from '@/components/ui/FilterChip';
 import type { ProgramTag } from '@/types';
 import { useLocaleFormat } from '@/hooks/useLocaleFormat';
@@ -128,9 +129,9 @@ export function ExercisesPublicFilter() {
                   {ex.muscleGroups.join(' · ')}
                   {ex.equipment ? ` · ${ex.equipment}` : ''}
                 </span>
-                {ex.cues ? (
-                  <span className="line-clamp-2 text-xs text-muted-foreground">{ex.cues}</span>
-                ) : null}
+                <span className="line-clamp-2 text-xs text-muted-foreground">
+                  {exerciseCraftBlurb(ex)}
+                </span>
               </Link>
             </li>
           );
