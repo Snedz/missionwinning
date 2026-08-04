@@ -1056,6 +1056,32 @@ test.describe('Accessibility @a11y', () => {
   });
 
   /**
+   * Loop 31 O1 — Coach ask-about-form deep link. Form guide "Ask about form"
+   * lands on `/coach?ask=…`; axe the FreeFormAskPanel chrome.
+   */
+  test('axe serious/critical: /coach with ask-form prefill @a11y', async ({
+    page,
+    context,
+    baseURL,
+  }) => {
+    if (!baseURL) throw new Error('baseURL required');
+    const ok = await unlockGate(page, context, baseURL);
+    if (gateRequired() && !ok) {
+      test.skip(true, 'SMOKE_ACCESS_SECRET required to unlock private gate');
+    }
+    await seedLegacyOnboarding(page);
+    await seedHistoryAndMissedCoach(page);
+    await page.goto('/coach?ask=push-ups', { waitUntil: 'domcontentloaded' });
+    await expect(
+      page
+        .getByPlaceholder(/ask|form|session/i)
+        .or(page.getByText(/ask about|push-ups|form/i))
+        .first()
+    ).toBeVisible({ timeout: 15_000 });
+    await axeSerious(page, '/coach (ask-form prefill)');
+  });
+
+  /**
    * The assertion axe cannot make.
    *
    * axe-core does not reliably test focus visibility, which is how this suite sat at
