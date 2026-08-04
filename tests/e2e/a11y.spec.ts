@@ -902,6 +902,39 @@ test.describe('Accessibility @a11y', () => {
   });
 
   /**
+   * Loop 26 J1 — Rest timer dock. Zero-data /active never starts rest;
+   * log one set so RestTimerBar takes the dock, then axe.
+   */
+  test('axe serious/critical: /active with rest timer open @a11y', async ({
+    page,
+    context,
+    baseURL,
+  }) => {
+    if (!baseURL) throw new Error('baseURL required');
+    const ok = await unlockGate(page, context, baseURL);
+    if (gateRequired() && !ok) {
+      test.skip(true, 'SMOKE_ACCESS_SECRET required to unlock private gate');
+    }
+    await seedLegacyOnboarding(page);
+    await seedReadinessPhase(page);
+    await startEmptyActiveWorkout(page);
+
+    await page.getByRole('button', { name: /^add exercise$/i }).first().click();
+    const search = page.getByPlaceholder(/search exercises/i);
+    await expect(search).toBeVisible({ timeout: 10_000 });
+    await search.fill('push-ups');
+    await page.getByRole('option', { name: /push-ups/i }).first().click();
+    await page.getByRole('button', { name: /add selected exercise/i }).click();
+    const logBtn = page.getByRole('button', { name: /^log( set)?$/i }).first();
+    await expect(logBtn).toBeVisible({ timeout: 15_000 });
+    await logBtn.click();
+    await expect(
+      page.getByRole('button', { name: /^skip$/i }).or(page.getByText(/^rest$/i)).first()
+    ).toBeVisible({ timeout: 10_000 });
+    await axeSerious(page, '/active (rest timer)');
+  });
+
+  /**
    * The assertion axe cannot make.
    *
    * axe-core does not reliably test focus visibility, which is how this suite sat at
