@@ -697,14 +697,22 @@ PR: #234
 |------|--------|-------|
 | N1 Coach chat a11y | done (`.391`) | Ask your coach open axe green |
 | N2 Active extract | done (`.392`) | `shouldShowSetOptionsFooter` + wiring |
-| N3 Soft chrome / log close | pending (`.393`) | Select chevron + item radius |
+| N3 Soft chrome / log close | done (`.393`) | Select chevron muted; item rounded-none |
 
 ## Metrics
 
 | Metric | Loop 29 end | Loop 30 (in progress) |
 |--------|-------------|------------------------|
-| Build | `.390` | **`.392`** |
+| Build | `.390` | **`.393`** |
 | i18n uncovered cap | 16 (Bundle refuse) | **16** (unchanged) |
+
+## End of Loop 30
+
+**Delivered:** N1–N3 on `cursor/kaizen-wedge-night-be9b` → PR #234 (`.391`–`.393`).
+**Verified:** coach chat a11y green; shouldShowSetOptionsFooter unit + wiring; design-system green.
+**Aikido:** `aikido_full_scan` fails without X11 `$DISPLAY`. Noted; continue.
+**Next:** Loop 31 — more seeded a11y; Active extracts; Bundle i18n still refused.
+
 
 
 
