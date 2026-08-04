@@ -198,7 +198,7 @@ export function SchoolClassPanel() {
           </Button>
           {createdCode && (
             <div className="space-y-2">
-            <div className="flex items-center justify-between gap-2 text-sm rounded-lg bg-card px-3 py-2">
+            <div className="flex items-center justify-between gap-2 text-sm rounded-none border border-border bg-card px-3 py-2">
               <span className="font-mono text-muted-foreground">{createdCode}</span>
               <div className="flex gap-1">
                 <Button

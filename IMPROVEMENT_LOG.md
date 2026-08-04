@@ -345,5 +345,18 @@ PR: #234
 |------|--------|-------|
 | X1 Programs no-match a11y | done (`.343`) | Hypertrophy × Bodyweight EmptyState axe green |
 | X2 Active extract | done (`.344`) | `activeSessionBottomClass` + `shouldShowReadinessDelta` |
-| X3 Soft chrome / log close | pending | |
+| X3 Soft chrome / log close | done (`.345`) | status-warn solid; sticky/SignIn solid; Loop 14 close |
 
+## Metrics
+
+| Metric | Loop 13 end | Loop 14 end |
+|--------|-------------|-------------|
+| Build | `.342` | **`.345`** |
+| i18n uncovered cap | 16 (Bundle refuse) | **16** (unchanged) |
+
+## End of Loop 14
+
+**Delivered:** X1–X3 on `cursor/kaizen-wedge-night-be9b` → PR #234 (`.343`–`.345`).
+**Verified:** Programs no-match a11y green; pad/readiness-delta unit + wiring; design-system green.
+**Aikido:** `aikido_full_scan` fails without X11 `$DISPLAY`. Noted; continue.
+**Next:** Loop 15 — Compare story / Mind / Track seeded a11y; more Active extracts; Bundle i18n still refused.

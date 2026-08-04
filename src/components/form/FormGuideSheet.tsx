@@ -70,7 +70,7 @@ export function FormGuideSheet({
             <section>
               <h3 className={cn(
                 'text-sm font-semibold uppercase tracking-wide mb-2',
-                guide.militaryStyle ? 'text-[hsl(var(--status-warn)/0.9)]' : 'text-primary'
+                guide.militaryStyle ? 'text-status-warn' : 'text-primary'
               )}>
                 {guide.militaryStyle ? 'Ready position' : guide.readyPosition}
               </h3>

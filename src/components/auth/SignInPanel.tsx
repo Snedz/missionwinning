@@ -227,7 +227,7 @@ export function SignInPanel({
         with room. `.127`'s lesson, twice in one element.
       */}
       {!configured && (
-        <p className="text-xs text-status-warn border-2 border-[hsl(var(--status-warn)/0.35)] px-3 py-2">
+        <p className="text-xs text-status-warn border-2 border-[hsl(var(--status-warn))] px-3 py-2">
           Demo mode — add Supabase keys to enable cloud sync and social sign-in.
         </p>
       )}
@@ -308,7 +308,7 @@ export function SignInPanel({
             disabled={!!loading}
             aria-invalid={!!error}
             aria-describedby={error ? 'signin-error' : undefined}
-            className="pl-10 h-12 bg-background/80"
+            className="pl-10 h-12 bg-background"
           />
         </div>
         <Button

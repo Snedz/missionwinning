@@ -239,7 +239,7 @@ export function BetaAdminPanel({ enabled }: Props) {
 
   return (
     <div className="space-y-4">
-      <Card className="border-[color:var(--status-warning-border)] bg-[color:var(--status-warning-bg)]">
+      <Card className="border-2 border-[hsl(var(--status-warn))] bg-card">
         <CardHeader>
           <CardTitle className="flex flex-wrap items-center justify-between gap-2">
             <span>Beta funnel (all users)</span>
@@ -378,7 +378,7 @@ export function BetaAdminPanel({ enabled }: Props) {
                 </div>
 
                 {feedbackError ? (
-                  <p className="text-[color:var(--status-warning-fg)]">{feedbackError}</p>
+                  <p className="text-status-warn">{feedbackError}</p>
                 ) : feedback === null ? (
                   <p className="text-muted-foreground">Loading…</p>
                 ) : feedback.length === 0 ? (
@@ -423,10 +423,10 @@ export function BetaAdminPanel({ enabled }: Props) {
                 </div>
               ) : null}
               <div
-                className={`rounded-lg border p-3 text-xs ${
+                className={`rounded-none border-2 p-3 text-xs ${
                   metrics.launchReady
                     ? 'border-primary bg-accent-100 text-primary'
-                    : 'border-[color:var(--status-warning-border)] bg-[color:var(--status-warning-bg)] text-[color:var(--status-warning-fg)]'
+                    : 'border-2 border-[hsl(var(--status-warn))] bg-card text-status-warn'
                 }`}
               >
                 <div className="font-semibold mb-1">
@@ -469,7 +469,7 @@ export function BetaAdminPanel({ enabled }: Props) {
             <Stat label="With workout" value={String(invites?.totals.withWorkout ?? 0)} />
           </div>
           {signedUp < gateTarget ? (
-            <p className="text-xs text-[color:var(--status-warning-fg)]">
+            <p className="text-xs text-status-warn">
               Need ≥{gateTarget} signed-up invitees to unlock flip gates (I-Day ≥80% / BT ≥60%).
             </p>
           ) : (
