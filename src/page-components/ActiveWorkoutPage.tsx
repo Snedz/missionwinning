@@ -18,10 +18,7 @@ import { useWorkoutStore } from '@/store/workoutStore';
 import { getFormGuideOrCues } from '@/lib/formGuides';
 import { FormGuideSheet } from '@/components/form/FormGuideSheet';
 import { SignInPrompt } from '@/components/auth/SignInPrompt';
-import { RestTimerBar } from '@/components/workout/RestTimerBar';
-import { LogConsole } from '@/components/workout/LogConsole';
 import { AddExerciseSheet } from '@/components/workout/AddExerciseSheet';
-import { ScreenDock } from '@/components/layout/ScreenDock';
 import { useIsCompact } from '@/hooks/useIsCompact';
 import { PlateCalculatorSheet } from '@/components/workout/PlateCalculatorSheet';
 import { ActiveEmptyState } from '@/components/workout/ActiveEmptyState';
@@ -29,6 +26,7 @@ import { ActiveSessionChrome } from '@/components/workout/ActiveSessionChrome';
 import { ActiveReadinessDeltaStrip } from '@/components/workout/ActiveReadinessDeltaStrip';
 import { ActiveInlineAddExercise } from '@/components/workout/ActiveInlineAddExercise';
 import { ActiveExerciseList } from '@/components/workout/ActiveExerciseList';
+import { ActiveSessionDock } from '@/components/workout/ActiveSessionDock';
 import { LiveHeartRate } from '@/components/workout/LiveHeartRate';
 import { useUnits, weightStep, weightUnitLabel } from '@/hooks/useUnits';
 import {
@@ -58,7 +56,6 @@ import {
 } from '@/lib/workout/activeSessionCheckIn';
 import { patchesForApplyTargets,
   patchesForPlateWeight,
-  patchesForUseNext,
   plateCalcInitialWeight,
   resolveAddExerciseId,
 } from '@/lib/workout/activeSetInputPatches';
@@ -598,49 +595,26 @@ export function ActiveWorkoutPage() {
         />
       ) : null}
 
-      {/*
-        One dock, two states, never both. Rest takes the console over rather
-        than being a second fixed panel floating on the set rows it describes —
-        and because the dock is a flex sibling of `main`, neither can overlap
-        the list.
-      */}
-      {dockMode === 'rest' ? (
-        <ScreenDock>
-          <RestTimerBar
-            remaining={restSecondsRemaining}
-            initial={restTimerInitialSeconds}
-            onSkip={stopRestTimer}
-            onAdjust={adjustRestTimer}
-            onPreset={startRestTimer}
-          />
-        </ScreenDock>
-      ) : dockMode === 'console' && consoleSet ? (
-        /* Compact only. Desktop enters the set in the row it belongs to
-           (`SetLogTable`), so a console here would be a second, competing
-           place to type the same number. */
-        <ScreenDock>
-          <LogConsole
-            exerciseName={consoleSet.exerciseName}
-            setNumber={consoleSet.setIdx + 1}
-            totalSets={consoleSet.totalSets}
-            overloadCue={consoleSet.overloadCue}
-            reps={consoleSet.input.reps}
-            weight={consoleSet.input.weight}
-            weightLabel={unitLabel}
-            weightStep={step}
-            kind={consoleSet.kind}
-            onRepsChange={(v) => updateSetInput(consoleSet.exIdx, consoleSet.setIdx, 'reps', v)}
-            onWeightChange={(v) => updateSetInput(consoleSet.exIdx, consoleSet.setIdx, 'weight', v)}
-            onKindChange={(kind) => setSetKind(consoleSet.exIdx, consoleSet.setIdx, kind)}
-            onLog={() => handleLogSet(consoleSet.exIdx, consoleSet.setIdx)}
-            onUseNext={(target) => {
-              for (const p of patchesForUseNext(target)) {
-                updateSetInput(consoleSet.exIdx, consoleSet.setIdx, p.field, p.value);
-              }
-            }}
-          />
-        </ScreenDock>
-      ) : null}
+      <ActiveSessionDock
+        dockMode={dockMode}
+        consoleSet={consoleSet}
+        restSecondsRemaining={restSecondsRemaining}
+        restTimerInitialSeconds={restTimerInitialSeconds}
+        unitLabel={unitLabel}
+        weightStep={step}
+        onSkipRest={stopRestTimer}
+        onAdjustRest={adjustRestTimer}
+        onPresetRest={startRestTimer}
+        onRepsChange={(exIdx, setIdx, reps) => updateSetInput(exIdx, setIdx, 'reps', reps)}
+        onWeightChange={(exIdx, setIdx, weight) => updateSetInput(exIdx, setIdx, 'weight', weight)}
+        onKindChange={(exIdx, setIdx, kind) => setSetKind(exIdx, setIdx, kind)}
+        onLog={(exIdx, setIdx) => handleLogSet(exIdx, setIdx)}
+        onApplyFieldPatches={(exIdx, setIdx, patches) => {
+          for (const p of patches) {
+            updateSetInput(exIdx, setIdx, p.field, p.value);
+          }
+        }}
+      />
 
       <AddExerciseSheet
         open={addExerciseOpen}

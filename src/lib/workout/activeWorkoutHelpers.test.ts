@@ -682,11 +682,29 @@ describe('resolveActiveDockMode', () => {
       'utf8'
     );
     assert.match(src, /resolveActiveDockMode\(/);
+    assert.match(src, /ActiveSessionDock/);
     assert.doesNotMatch(
       src,
       /restTimerActive\s*\?\s*\([\s\S]*?consoleSet\s*&&\s*isCompact/,
       'dock mode decision must stay inside resolveActiveDockMode'
     );
+    assert.doesNotMatch(
+      src,
+      /<RestTimerBar[\s\S]*?<LogConsole/,
+      'rest/console chrome lives in ActiveSessionDock'
+    );
+  });
+
+  it('ActiveSessionDock mounts RestTimerBar on rest and LogConsole on console', () => {
+    const src = readFileSync(
+      path.join(import.meta.dirname, '..', '..', 'components', 'workout', 'ActiveSessionDock.tsx'),
+      'utf8'
+    );
+    assert.match(src, /dockMode === 'rest'/);
+    assert.match(src, /<RestTimerBar/);
+    assert.match(src, /dockMode === 'console'/);
+    assert.match(src, /<LogConsole/);
+    assert.match(src, /patchesForUseNext\(/);
   });
 });
 
