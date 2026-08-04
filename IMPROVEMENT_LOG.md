@@ -564,14 +564,14 @@ PR: #234
 | Wave | Status | Notes |
 |------|--------|-------|
 | H1 Form guide a11y | done (`.373`) | Overlay scroll region + destructive Avoid heading |
-| H2 Active extract | pending (`.374`) | `exerciseHasCompletedSet` |
+| H2 Active extract | done (`.374`) | `exerciseHasCompletedSet` + wiring |
 | H3 Soft chrome / log close | pending (`.375`) | HoldToConfirm + button hover opacities |
 
 ## Metrics
 
 | Metric | Loop 23 end | Loop 24 (in progress) |
 |--------|-------------|------------------------|
-| Build | `.372` | **`.373`** |
+| Build | `.372` | **`.374`** |
 | i18n uncovered cap | 16 (Bundle refuse) | **16** (unchanged) |
 
 

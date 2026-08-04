@@ -34,6 +34,7 @@ import {
   activeSessionEyebrowKind,
   toggleOpenIdx,
   isOpenIdx,
+  exerciseHasCompletedSet,
 } from './activeWorkoutHelpers.ts';
 import type { CompletedWorkoutLog } from '@/types';
 
@@ -1004,6 +1005,27 @@ describe('isOpenIdx', () => {
       src,
       /noteOpen=\{noteOpenIdx\s*===\s*exIdx\}/,
       'note open prop must stay inside isOpenIdx'
+    );
+  });
+});
+
+describe('exerciseHasCompletedSet', () => {
+  it('is true when any set is completed', () => {
+    assert.equal(exerciseHasCompletedSet([]), false);
+    assert.equal(exerciseHasCompletedSet([{ completed: false }]), false);
+    assert.equal(exerciseHasCompletedSet([{ completed: true }, { completed: false }]), true);
+  });
+
+  it('ActiveExerciseCard uses exerciseHasCompletedSet rather than sets.some', () => {
+    const src = readFileSync(
+      path.join(import.meta.dirname, '..', '..', 'components', 'workout', 'ActiveExerciseCard.tsx'),
+      'utf8'
+    );
+    assert.match(src, /exerciseHasCompletedSet\(/);
+    assert.doesNotMatch(
+      src,
+      /exLog\.sets\.some\(\(s\)\s*=>\s*s\.completed\)/,
+      'completed-set predicate must stay inside exerciseHasCompletedSet'
     );
   });
 });

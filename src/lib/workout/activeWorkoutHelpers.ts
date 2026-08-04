@@ -600,3 +600,10 @@ export function toggleOpenIdx(
 export function isOpenIdx(current: number | null, idx: number): boolean {
   return current === idx;
 }
+
+/** True when any set on this exercise has been logged this session. */
+export function exerciseHasCompletedSet(
+  sets: { completed: boolean }[]
+): boolean {
+  return sets.some((s) => s.completed);
+}
