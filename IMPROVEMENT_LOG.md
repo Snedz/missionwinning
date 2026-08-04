@@ -675,14 +675,22 @@ PR: #234
 |------|--------|-------|
 | M1 Exercise more menu a11y | done (`.388`) | More actions axe green post-menu fix |
 | M2 Active extract | done (`.389`) | `activeSetIdxForExercise` + wiring |
-| M3 Soft chrome / log close | pending (`.390`) | Label + Dialog close chrome |
+| M3 Soft chrome / log close | done (`.390`) | Label muted; Dialog close solid |
 
 ## Metrics
 
 | Metric | Loop 28 end | Loop 29 (in progress) |
 |--------|-------------|------------------------|
-| Build | `.387` | **`.389`** |
+| Build | `.387` | **`.390`** |
 | i18n uncovered cap | 16 (Bundle refuse) | **16** (unchanged) |
+
+## End of Loop 29
+
+**Delivered:** M1–M3 on `cursor/kaizen-wedge-night-be9b` → PR #234 (`.388`–`.390`).
+**Verified:** exercise more menu a11y green; activeSetIdxForExercise unit + wiring; design-system green.
+**Aikido:** `aikido_full_scan` fails without X11 `$DISPLAY`. Noted; continue.
+**Next:** Loop 30 — more seeded a11y; Active extracts; Bundle i18n still refused.
+
 
 
 
