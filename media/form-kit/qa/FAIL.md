@@ -47,6 +47,8 @@ Log every rejected generation. Do not re-ship the same glitch.
 
 | 2026-08-04 | `overhead-press/side.webp` | Empty bar lockout, clean sleeves, no clips (.474) |
 | 2026-08-04 | `front-squat` · `deadlift` · `barbell-row` stills | Empty bar, no collar hardware (.474) |
+| 2026-08-04 | `romanian-deadlift/side.webp` (pre-fix) | Bar read as through thighs / wrong grip axis | FAIL → regen bar clearly anterior to legs (.475) |
+| 2026-08-04 | `romanian-deadlift/side.webp` | Mid-hinge, bar in front of legs, empty bar L–R axis (.475) |
 
 ## Known hard cases
 

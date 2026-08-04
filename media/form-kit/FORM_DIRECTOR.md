@@ -177,7 +177,7 @@ Models invent **broken collars**: multi-prong hubs, three spring arms, star lock
 |-------------|----------------|
 | glute-bridge | Bodyweight **or** bar resting **across hip crease** on pad — never through abdomen |
 | bench-press | Bar above chest; arms support bar; never through torso |
-| deadlift / RDL | Bar outside shins/thighs; hands on bar · **prefer empty bar** |
+| deadlift / RDL | Bar **in front of** legs (never through thighs or on back) · left–right axis like conventional DL · **prefer empty bar** · RDL = mid-hinge not lockout |
 | pull-ups | Full head visible; bar above head |
 | thruster / OHP / front-squat / barbell-row | **Empty bar default** · path outside body · head clear |
 | kettlebell-swing | KB outside hips; hinge + hip snap |
