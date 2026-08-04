@@ -28,6 +28,7 @@ import {
   shouldShowVolumeTrimOffer,
   resolveActiveGoalId,
   activeSessionHasExercises,
+  activePostSessionPath,
 } from './activeWorkoutHelpers.ts';
 import type { CompletedWorkoutLog } from '@/types';
 
@@ -867,5 +868,22 @@ describe('activeSessionHasExercises', () => {
     );
     assert.match(src, /activeSessionHasExercises\(/);
     assert.doesNotMatch(src, /activeWorkout\.exercises\.length\s*===\s*0/);
+  });
+});
+
+describe('activePostSessionPath', () => {
+  it('maps today and history', () => {
+    assert.equal(activePostSessionPath('today'), '/log');
+    assert.equal(activePostSessionPath('history'), '/history');
+  });
+
+  it('ActiveWorkoutPage uses activePostSessionPath for Victory/discard navigation', () => {
+    const src = readFileSync(
+      path.join(import.meta.dirname, '..', '..', 'page-components', 'ActiveWorkoutPage.tsx'),
+      'utf8'
+    );
+    assert.match(src, /activePostSessionPath\(/);
+    assert.doesNotMatch(src, /router\.push\(['"]\/log['"]\)/);
+    assert.doesNotMatch(src, /router\.push\(['"]\/history['"]\)/);
   });
 });

@@ -55,6 +55,7 @@ When adding a doc:
 | [log/LOG-rotate-300.md](./log/LOG-rotate-300.md) | `.285` progressive overload — rotated for `.300` L5 fillers |
 | [log/LOG-rotate-301.md](./log/LOG-rotate-301.md) | `.286` re-entry dose — rotated for `.301` Coach/History i18n |
 | [log/LOG-rotate-302.md](./log/LOG-rotate-302.md) | `.287` coach why — rotated for `.302` debrief i18n |
+| [log/LOG-rotate-359.md](./log/LOG-rotate-359.md) | `.344` — rotated for `.359` — Active pad + readiness-delta |
 | [log/LOG-rotate-358.md](./log/LOG-rotate-358.md) | `.343` — rotated for `.358` — Programs no-match a11y |
 | [log/LOG-rotate-357.md](./log/LOG-rotate-357.md) | `.342` — rotated for `.357` — Soft text opacity chrome |
 | [log/LOG-rotate-356.md](./log/LOG-rotate-356.md) | `.341` — rotated for `.356` — Swap candidates when-open |

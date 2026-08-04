@@ -71,6 +71,7 @@ import {
   shouldShowVolumeTrimOffer,
   resolveActiveGoalId,
   activeSessionHasExercises,
+  activePostSessionPath,
   sessionIsCoachPrescribed,
   sessionSetStats,
   setInputKey,
@@ -432,16 +433,16 @@ export function ActiveWorkoutPage() {
 
   const discardWorkout = () => {
     cancelActiveWorkout();
-    router.push('/log');
+    router.push(activePostSessionPath('today'));
   };
 
   const goToday = () => {
     setVictoryOpen(false);
-    router.push('/log');
+    router.push(activePostSessionPath('today'));
   };
   const goHistory = () => {
     setVictoryOpen(false);
-    router.push('/history');
+    router.push(activePostSessionPath('history'));
   };
 
   if (!activeWorkout) {

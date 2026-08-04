@@ -547,3 +547,10 @@ export function resolveActiveGoalId(params: {
 export function activeSessionHasExercises(exercises: { length: number } | null | undefined): boolean {
   return (exercises?.length ?? 0) > 0;
 }
+
+/** Where Victory / discard send the athlete after the session. */
+export type ActivePostSessionPath = '/log' | '/history';
+
+export function activePostSessionPath(kind: 'today' | 'history'): ActivePostSessionPath {
+  return kind === 'history' ? '/history' : '/log';
+}

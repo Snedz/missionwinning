@@ -454,6 +454,6 @@ PR: #234
 | Wave | Status | Notes |
 |------|--------|-------|
 | C1 Plate calculator a11y | done (`.358`) | Sheet axe green; mobile Plates aria-label |
-| C2 Active extract | pending | |
+| C2 Active extract | done (`.359`) | `activePostSessionPath` + wiring guard |
 | C3 Soft chrome / log close | pending | |
 
