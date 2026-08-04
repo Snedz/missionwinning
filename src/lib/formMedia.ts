@@ -31,6 +31,7 @@ export const FORM_PACK_SIDE_IDS = new Set([
  * Prefer MP4 for free-tier pipeline (no ffmpeg WebM required).
  */
 export const FORM_PACK_VIDEO_IDS = new Set([
+  // Pilot
   'air-squat',
   'romanian-deadlift',
   'push-ups',
@@ -39,6 +40,15 @@ export const FORM_PACK_VIDEO_IDS = new Set([
   'kettlebell-swing',
   'plank',
   'bench-press',
+  // Wave 2
+  'deadlift',
+  'overhead-press',
+  'front-squat',
+  'lunges',
+  'burpees',
+  'glute-bridge',
+  'barbell-row',
+  'box-jump',
 ]);
 
 export function formPackSidePosterPath(exerciseId: string): string {

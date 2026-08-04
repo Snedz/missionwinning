@@ -13,11 +13,14 @@ import { getFormGuideOrCues } from '@/lib/formGuides';
 
 const root = path.join(import.meta.dirname, '..', '..');
 
-test('every pattern SVG ships on disk', () => {
+test('every pattern has Form Index still + legacy SVG on disk', () => {
   for (const id of FORM_PATTERN_IDS) {
-    const rel = formPatternPath(id).replace(/^\//, '');
-    assert.ok(existsSync(path.join(root, 'public', rel.replace('form-guides/', 'form-guides/'))), rel);
-    // public/form-guides/pattern-X.svg
+    assert.equal(formPatternPath(id), `/form/pattern-${id}/side.webp`);
+    assert.ok(
+      existsSync(path.join(root, 'public', 'form', `pattern-${id}`, 'side.webp')),
+      `missing form/pattern-${id}/side.webp`
+    );
+    // Legacy stick SVG kept for fallback / offline tooling
     assert.ok(
       existsSync(path.join(root, 'public', 'form-guides', `pattern-${id}.svg`)),
       `missing pattern-${id}.svg`
@@ -60,7 +63,7 @@ test('long-tail cues attach honest pattern caption', () => {
     muscleGroups: ['Chest', 'Shoulders'],
   }));
   assert.equal(guide?.mediaCaption, PATTERN_MEDIA_CAPTION);
-  assert.match(guide!.mediaUrl!, /pattern-push\.svg$/);
+  assert.match(guide!.mediaUrl!, /pattern-push\/side\.webp$/);
 });
 
 test('pattern caption states shared art honestly', () => {

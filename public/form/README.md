@@ -7,7 +7,7 @@ Clinical movement demos for Train / library / public exercises.
 | `{exerciseId}/side.webp` | Primary poster (library card + LCP) |
 | `{exerciseId}/side.mp4` | Silent ~6s loop (480p); poster used as `poster` |
 | `{exerciseId}/front.webp` | Optional second angle |
-| `pattern-*/` | Shared pattern fallback (later) |
+| `pattern-{squat|hinge|push|pull|core|loco|isolation}/side.webp` | Long-tail shared pattern still |
 
 **Pipeline:** Imagine → `media/inbox/form-{id}-side-frame.png` → `npm run media:optimize-inbox` → wire id in `src/lib/formMedia.ts`.
 

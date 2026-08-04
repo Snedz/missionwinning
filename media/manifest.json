@@ -31,7 +31,7 @@
       "path": "/form/deadlift/side.webp",
       "status": "shipped",
       "promptId": "grok-form-index-side",
-      "notes": "Form Index clinical side still (.465)"
+      "notes": "Form Index clinical side still + loop (.466)"
     },
     {
       "id": "pull-ups",
@@ -55,7 +55,7 @@
       "path": "/form/glute-bridge/side.webp",
       "status": "shipped",
       "promptId": "grok-form-index-side",
-      "notes": "Form Index clinical side still (.465)"
+      "notes": "Form Index clinical side still + loop (.466)"
     },
     {
       "id": "lunges",
@@ -63,7 +63,7 @@
       "path": "/form/lunges/side.webp",
       "status": "shipped",
       "promptId": "grok-form-index-side",
-      "notes": "Form Index clinical side still (.465)"
+      "notes": "Form Index clinical side still + loop (.466)"
     },
     {
       "id": "overhead-press",
@@ -71,7 +71,7 @@
       "path": "/form/overhead-press/side.webp",
       "status": "shipped",
       "promptId": "grok-form-index-side",
-      "notes": "Form Index clinical side still (.465)"
+      "notes": "Form Index clinical side still + loop (.466)"
     },
     {
       "id": "barbell-row",
@@ -79,7 +79,7 @@
       "path": "/form/barbell-row/side.webp",
       "status": "shipped",
       "promptId": "grok-form-index-side",
-      "notes": "Form Index clinical side still (.465)"
+      "notes": "Form Index clinical side still + loop (.466)"
     },
     {
       "id": "burpees",
@@ -87,7 +87,7 @@
       "path": "/form/burpees/side.webp",
       "status": "shipped",
       "promptId": "grok-form-index-side",
-      "notes": "Form Index clinical side still (.465)"
+      "notes": "Form Index clinical side still + loop (.466)"
     },
     {
       "id": "inverted-row",
@@ -246,7 +246,7 @@
       "path": "/form/front-squat/side.webp",
       "status": "shipped",
       "promptId": "grok-form-index-side",
-      "notes": "Form Index clinical side still (.465)"
+      "notes": "Form Index clinical side still + loop (.466)"
     },
     {
       "id": "goblet-squat",
@@ -406,7 +406,7 @@
       "path": "/form/box-jump/side.webp",
       "status": "shipped",
       "promptId": "grok-form-index-side",
-      "notes": "Form Index clinical side still (.465)"
+      "notes": "Form Index clinical side still + loop (.466)"
     },
     {
       "id": "skull-crusher",
@@ -603,58 +603,58 @@
     {
       "id": "pattern-squat",
       "kind": "form",
-      "path": "/form-guides/pattern-squat.svg",
+      "path": "/form/pattern-squat/side.webp",
       "status": "shipped",
-      "promptId": "form-pattern-v1",
-      "notes": "Shared movement pattern pack (.415) \u2014 not exercise-specific"
+      "promptId": "grok-form-index-pattern",
+      "notes": "Form Index shared pattern still for long-tail (.466)"
     },
     {
       "id": "pattern-hinge",
       "kind": "form",
-      "path": "/form-guides/pattern-hinge.svg",
+      "path": "/form/pattern-hinge/side.webp",
       "status": "shipped",
-      "promptId": "form-pattern-v1",
-      "notes": "Shared movement pattern pack (.415) \u2014 not exercise-specific"
+      "promptId": "grok-form-index-pattern",
+      "notes": "Form Index shared pattern still for long-tail (.466)"
     },
     {
       "id": "pattern-push",
       "kind": "form",
-      "path": "/form-guides/pattern-push.svg",
+      "path": "/form/pattern-push/side.webp",
       "status": "shipped",
-      "promptId": "form-pattern-v1",
-      "notes": "Shared movement pattern pack (.415) \u2014 not exercise-specific"
+      "promptId": "grok-form-index-pattern",
+      "notes": "Form Index shared pattern still for long-tail (.466)"
     },
     {
       "id": "pattern-pull",
       "kind": "form",
-      "path": "/form-guides/pattern-pull.svg",
+      "path": "/form/pattern-pull/side.webp",
       "status": "shipped",
-      "promptId": "form-pattern-v1",
-      "notes": "Shared movement pattern pack (.415) \u2014 not exercise-specific"
+      "promptId": "grok-form-index-pattern",
+      "notes": "Form Index shared pattern still for long-tail (.466)"
     },
     {
       "id": "pattern-core",
       "kind": "form",
-      "path": "/form-guides/pattern-core.svg",
+      "path": "/form/pattern-core/side.webp",
       "status": "shipped",
-      "promptId": "form-pattern-v1",
-      "notes": "Shared movement pattern pack (.415) \u2014 not exercise-specific"
+      "promptId": "grok-form-index-pattern",
+      "notes": "Form Index shared pattern still for long-tail (.466)"
     },
     {
       "id": "pattern-loco",
       "kind": "form",
-      "path": "/form-guides/pattern-loco.svg",
+      "path": "/form/pattern-loco/side.webp",
       "status": "shipped",
-      "promptId": "form-pattern-v1",
-      "notes": "Shared movement pattern pack (.415) \u2014 not exercise-specific"
+      "promptId": "grok-form-index-pattern",
+      "notes": "Form Index shared pattern still for long-tail (.466)"
     },
     {
       "id": "pattern-isolation",
       "kind": "form",
-      "path": "/form-guides/pattern-isolation.svg",
+      "path": "/form/pattern-isolation/side.webp",
       "status": "shipped",
-      "promptId": "form-pattern-v1",
-      "notes": "Shared movement pattern pack (.415) \u2014 not exercise-specific"
+      "promptId": "grok-form-index-pattern",
+      "notes": "Form Index shared pattern still for long-tail (.466)"
     },
     {
       "id": "six-pillars",

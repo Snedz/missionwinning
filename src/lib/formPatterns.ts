@@ -2,10 +2,11 @@ import type { Exercise } from '@/types';
 import { getExerciseById } from '@/data/exercises';
 
 /**
- * Shared movement-pattern diagrams for long-tail exercises without a bespoke SVG.
+ * Shared movement-pattern media for long-tail exercises without a bespoke pack.
  * Honest: these are pattern art — cues stay exercise-specific.
  *
- * Files: public/form-guides/pattern-{squat|hinge|push|pull|core|loco|isolation}.svg
+ * Preferred: public/form/pattern-{id}/side.webp (Form Index clinical still)
+ * Legacy fallback: public/form-guides/pattern-{id}.svg
  */
 
 export type FormPatternId =
@@ -30,8 +31,22 @@ export const FORM_PATTERN_IDS: readonly FormPatternId[] = [
 export const PATTERN_MEDIA_CAPTION =
   'Shared movement pattern — cues below are for this exercise';
 
-/** Public path for a pattern diagram. */
+/** Patterns with clinical Form Index stills under public/form/pattern-{id}/side.webp */
+export const FORM_PATTERN_RASTER_IDS = new Set<FormPatternId>([
+  'squat',
+  'hinge',
+  'push',
+  'pull',
+  'core',
+  'loco',
+  'isolation',
+]);
+
+/** Public path for a pattern diagram (raster preferred over legacy SVG). */
 export function formPatternPath(pattern: FormPatternId): string {
+  if (FORM_PATTERN_RASTER_IDS.has(pattern)) {
+    return `/form/pattern-${pattern}/side.webp`;
+  }
   return `/form-guides/pattern-${pattern}.svg`;
 }
 
