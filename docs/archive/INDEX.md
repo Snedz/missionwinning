@@ -55,6 +55,7 @@ When adding a doc:
 | [log/LOG-rotate-300.md](./log/LOG-rotate-300.md) | `.285` progressive overload — rotated for `.300` L5 fillers |
 | [log/LOG-rotate-301.md](./log/LOG-rotate-301.md) | `.286` re-entry dose — rotated for `.301` Coach/History i18n |
 | [log/LOG-rotate-302.md](./log/LOG-rotate-302.md) | `.287` coach why — rotated for `.302` debrief i18n |
+| [log/LOG-rotate-391.md](./log/LOG-rotate-391.md) | `.376` — rotated for `.391` Exercise note a11y (Loop 25 I1) |
 | [log/LOG-rotate-390.md](./log/LOG-rotate-390.md) | `.375` — rotated for `.390` HoldToConfirm button hover (Loop 24 H3) |
 | [log/LOG-rotate-389.md](./log/LOG-rotate-389.md) | `.374` — rotated for `.389` exerciseHasCompletedSet (Loop 24 H2) |
 | [log/LOG-rotate-388.md](./log/LOG-rotate-388.md) | `.373` — rotated for `.388` Form guide a11y (Loop 24 H1) |

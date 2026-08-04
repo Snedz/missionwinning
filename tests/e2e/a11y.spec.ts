@@ -1032,6 +1032,30 @@ test.describe('Accessibility @a11y', () => {
   });
 
   /**
+   * Loop 30 N1 — Mission Coach chat panel open. Zero-data /coach keeps chat
+   * collapsed; open Ask your coach after seeding history/plan.
+   */
+  test('axe serious/critical: /coach with chat open @a11y', async ({
+    page,
+    context,
+    baseURL,
+  }) => {
+    if (!baseURL) throw new Error('baseURL required');
+    const ok = await unlockGate(page, context, baseURL);
+    if (gateRequired() && !ok) {
+      test.skip(true, 'SMOKE_ACCESS_SECRET required to unlock private gate');
+    }
+    await seedLegacyOnboarding(page);
+    await seedHistoryAndMissedCoach(page);
+    await page.goto('/coach', { waitUntil: 'domcontentloaded' });
+    await page.getByRole('button', { name: /ask your coach/i }).first().click();
+    await expect(
+      page.getByPlaceholder(/today's session|form, or recovery/i).first()
+    ).toBeVisible({ timeout: 15_000 });
+    await axeSerious(page, '/coach (chat open)');
+  });
+
+  /**
    * The assertion axe cannot make.
    *
    * axe-core does not reliably test focus visibility, which is how this suite sat at

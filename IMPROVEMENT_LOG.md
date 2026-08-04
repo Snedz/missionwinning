@@ -691,6 +691,22 @@ PR: #234
 **Aikido:** `aikido_full_scan` fails without X11 `$DISPLAY`. Noted; continue.
 **Next:** Loop 30 — more seeded a11y; Active extracts; Bundle i18n still refused.
 
+## Loop 30 waves
+
+| Wave | Status | Notes |
+|------|--------|-------|
+| N1 Coach chat a11y | done (`.391`) | Ask your coach open axe green |
+| N2 Active extract | pending (`.392`) | `shouldShowSetOptionsFooter` |
+| N3 Soft chrome / log close | pending (`.393`) | Select chevron + item radius |
+
+## Metrics
+
+| Metric | Loop 29 end | Loop 30 (in progress) |
+|--------|-------------|------------------------|
+| Build | `.390` | **`.391`** |
+| i18n uncovered cap | 16 (Bundle refuse) | **16** (unchanged) |
+
+
 
 
 
