@@ -65,6 +65,43 @@ When adding a doc:
 | [log/LOG-rotate-414.md](./log/LOG-rotate-414.md) | `.399` FileUploadRow chrome — rotated for `.414` form media T1 |
 | [log/LOG-rotate-415.md](./log/LOG-rotate-415.md) | `.400` opacity exemptions — rotated for `.415` pattern packs |
 | [log/LOG-rotate-416.md](./log/LOG-rotate-416.md) | `.401` beachhead i18n — rotated for `.416` Scout + PDF |
+| [log/LOG-rotate-454.md](./log/LOG-rotate-454.md) | `.439` — rotated for `.454` (ActiveExerciseList peel). |
+| [log/LOG-rotate-453.md](./log/LOG-rotate-453.md) | `.438` — rotated for `.453` — NL quarter unicode + couple qty. |
+| [log/LOG-rotate-452.md](./log/LOG-rotate-452.md) | `.437` — rotated for `.452` — Coach free-form + soft tip peel. |
+| [log/LOG-rotate-451.md](./log/LOG-rotate-451.md) | `.436` — rotated for `.451` — NL unicode + residual word fractions. |
+| [log/LOG-rotate-450.md](./log/LOG-rotate-450.md) | `.435` — rotated for `.450` — NL third / two-thirds cup qty. |
+| [log/LOG-rotate-449.md](./log/LOG-rotate-449.md) | `.434` — rotated for `.449` — ActiveInlineAddExercise peel. |
+| [log/LOG-rotate-448.md](./log/LOG-rotate-448.md) | `.433` — rotated for `.448` — NL quarter cup qty. |
+| [log/LOG-rotate-447.md](./log/LOG-rotate-447.md) | `.432` — rotated for `.447` — ActiveReadinessDeltaStrip peel. |
+| [log/LOG-rotate-446.md](./log/LOG-rotate-446.md) | `.431` — rotated for `.446` — ActiveExerciseHeader peel. |
+| [log/LOG-rotate-445.md](./log/LOG-rotate-445.md) | `.430` — rotated for `.445` — Today header focus line builder. |
+| [log/LOG-rotate-444.md](./log/LOG-rotate-444.md) | `.429` — rotated for `.444` — VictoryFeelStrip + signed delta. |
+| [log/LOG-rotate-443.md](./log/LOG-rotate-443.md) | `.428` — rotated for `.443` — Today details More mount gate. |
+| [log/LOG-rotate-442.md](./log/LOG-rotate-442.md) | `.427` — rotated for `.442` — Bare opacity-90/95 soft-chrome ratchet. |
+| [log/LOG-rotate-441.md](./log/LOG-rotate-441.md) | `.426` — rotated for `.441` — Today trainReady one definition. |
+| [log/LOG-rotate-440.md](./log/LOG-rotate-440.md) | `.425` — rotated for `.440` — ActiveExerciseFooter + prev labels. |
+| [log/LOG-rotate-439.md](./log/LOG-rotate-439.md) | `.424` — rotated for `.439` — NL word-half qty (Fuel accuracy). |
+| [log/LOG-rotate-438.md](./log/LOG-rotate-438.md) | `.423` — rotated for `.438` — (rotated for NL quarter unicode / couple). |
+| [log/LOG-rotate-437.md](./log/LOG-rotate-437.md) | `.422` — rotated for `.437` — (rotated for Coach chat peel). |
+| [log/LOG-rotate-436.md](./log/LOG-rotate-436.md) | `.421` — rotated for `.436` — (rotated for NL unicode fractions). |
+| [log/LOG-rotate-435.md](./log/LOG-rotate-435.md) | `.420` — rotated for `.435` — (rotated for NL thirds). |
+| [log/LOG-rotate-434.md](./log/LOG-rotate-434.md) | `.419` — rotated for `.434` — (rotated for Active inline add). |
+| [log/LOG-rotate-433.md](./log/LOG-rotate-433.md) | `.418` — rotated for `.433` — (rotated for NL quarter cup). |
+| [log/LOG-rotate-432.md](./log/LOG-rotate-432.md) | `.417` — rotated for `.432` — (rotated for Active readiness strip). |
+| [log/LOG-rotate-431.md](./log/LOG-rotate-431.md) | `.416` — rotated for `.431` — (rotated for Active header peel). |
+| [log/LOG-rotate-430.md](./log/LOG-rotate-430.md) | `.415` — rotated for `.430` — (rotated for Today focus line). |
+| [log/LOG-rotate-429.md](./log/LOG-rotate-429.md) | `.414` — rotated for `.429` — (rotated for Victory feel strip). |
+| [log/LOG-rotate-428.md](./log/LOG-rotate-428.md) | `.413` — rotated for `.428` — Victory secondary Today (rotated for Today More gate). |
+| [log/LOG-rotate-427.md](./log/LOG-rotate-427.md) | `.412` — rotated for `.427` — Week-1 session-2 victory primary (rotated for opacity ratchet). |
+| [log/LOG-rotate-426.md](./log/LOG-rotate-426.md) | `.411` — rotated for `.426` — Coach early victory path (rotated for trainReady one-home). |
+| [log/LOG-rotate-425.md](./log/LOG-rotate-425.md) | `.410` — rotated for `.425` — Freestyle progression skip when prescribed (rotated for Active footer). |
+| [log/LOG-rotate-424.md](./log/LOG-rotate-424.md) | `.409` — rotated for `.424` — Active session finish (rotated for NL word-half). |
+| [log/LOG-rotate-423.md](./log/LOG-rotate-423.md) | `.408` — rotated for `.423` — Active table set controls (rotated for soft chrome + NL mixed). |
+| [log/LOG-rotate-422.md](./log/LOG-rotate-422.md) | `.407` — rotated for `.422` — Active set-input patches (rotated for Victory one-exit). |
+| [log/LOG-rotate-421.md](./log/LOG-rotate-421.md) | `.406` — rotated for `.421` NL fractions |
+| [log/LOG-rotate-420.md](./log/LOG-rotate-420.md) | `.405` — rotated for `.420` Today candidates |
+| [log/LOG-rotate-419.md](./log/LOG-rotate-419.md) | `.404` — rotated for `.419` ActiveExerciseCard extract |
+| [log/LOG-rotate-418.md](./log/LOG-rotate-418.md) | `.403` — rotated for `.418` exercisePickerList coverage |
 | [log/LOG-rotate-417.md](./log/LOG-rotate-417.md) | `.402` pack keys — rotated for `.417` hero palette scope |
 | [log/LOG-rotate-418.md](./log/LOG-rotate-418.md) | rotated for `.418` landing photos + form geometry |
 | [log/LOG-rotate-406.md](./log/LOG-rotate-406.md) | rotated for .406 Active check-in |

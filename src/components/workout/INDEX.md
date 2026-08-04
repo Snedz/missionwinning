@@ -8,6 +8,9 @@
 |------|---------|
 | `ActiveEmptyState.tsx` | No-session shell — start quick workout |
 | `ActiveSessionChrome.tsx` | Session bar — Elapsed/Sets pair, progress, Plates + Finish; **Add exercise is a trigger** for `AddExerciseSheet`, not an inline picker |
+| `ActiveSessionDock.tsx` | One `ScreenDock` for rest **or** compact `LogConsole` — never both (`.440`). Mode from `resolveActiveDockMode` |
+| `ActiveWorkoutSheets.tsx` | Check-in · form · add · plates · victory overlay cluster (`.450`) |
+| `ActiveExerciseList.tsx` | Maps session exercises → `ActiveExerciseCard` (swap candidates, table controls, open-idx). Page mounts this instead of inlining the map (`.439`) |
 | `ActiveExerciseCard.tsx` | Dense exercise block — Info → form guide; overflow for Note/Swap/SS/Ask/Remove. **Swap** is `AdaptiveOverlay` + `ExercisePicker` (not an inline max-h-48 list) |
 | `SetLogTable.tsx` | **Desktop** set list — the handoff's table (`Set · Prev · kg · Reps`), inline inputs + inline `Log set` on the active row. Compact uses `SetLogRow` + `LogConsole` instead |
 | `SetLogRow.tsx` | **A read-only record of one set** — `#n · 8 × 60 kg`, kind tag, PR honor, RPE, `Check`. Carries no inputs: entry is `LogConsole` |
@@ -15,6 +18,10 @@
 | `AddExerciseSheet.tsx` | `ExercisePicker` in a sheet with the confirm in the footer. **Test contract:** keeps the `search exercises` placeholder, `option` rows and `add selected exercise` name — `logger-depth`, `first-90` and `hero-flows` all drive them |
 | `RestTimerBar.tsx` | Rest countdown — **takes the `ScreenDock` over from `LogConsole`, never both**. Stacked on compact; at `md+` the handoff's `#restDock`: `sticky bottom-0`, full-bleed, **one row**, 30px clock, no presets — via `md:contents`, so it stays one markup tree. Skip must stay exactly `Skip` (`logger-depth` matches `/^skip$/i`) |
 | `WorkoutVictorySheet.tsx` | Post-workout summary sheet |
+| `VictoryFeelStrip.tsx` | Post-session feel 1–5 energy (free ritual) (`.429`) |
+| `VictoryBodyDeltaStrip.tsx` | Readiness · strain · recovery signed deltas (`.444`) |
+| `VictoryStatsStrip.tsx` | Volume · sets · duration grid (`.447`) |
+| `VictoryNextActionStrip.tsx` | Primary Next CTA block (`.447`) |
 | `PlateCalculatorSheet.tsx` | Plate math sheet |
 | `LiveHeartRate.tsx` | Optional Web Bluetooth BPM strip (wearables flag) |
 

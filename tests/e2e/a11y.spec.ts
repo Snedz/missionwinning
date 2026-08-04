@@ -1082,6 +1082,78 @@ test.describe('Accessibility @a11y', () => {
   });
 
   /**
+   * Kaizen Night P4 — Coach Manage sheet (D12). Seeded plan → open Manage this week.
+   */
+  test('axe serious/critical: /coach with manage sheet open @a11y', async ({
+    page,
+    context,
+    baseURL,
+  }) => {
+    if (!baseURL) throw new Error('baseURL required');
+    const ok = await unlockGate(page, context, baseURL);
+    if (gateRequired() && !ok) {
+      test.skip(true, 'SMOKE_ACCESS_SECRET required to unlock private gate');
+    }
+    await seedLegacyOnboarding(page);
+    await seedHistoryAndMissedCoach(page);
+    await page.goto('/coach', { waitUntil: 'domcontentloaded' });
+    await page.getByRole('button', { name: /manage this week/i }).first().click();
+    await expect(
+      page.getByRole('button', { name: /change schedule|adjust today|ask coach/i }).first()
+    ).toBeVisible({ timeout: 15_000 });
+    await axeSerious(page, '/coach (manage sheet)');
+  });
+
+  /**
+   * Kaizen Night P4 — Change schedule panel inside Manage (CoachScheduleEditor).
+   */
+  test('axe serious/critical: /coach with schedule editor open @a11y', async ({
+    page,
+    context,
+    baseURL,
+  }) => {
+    if (!baseURL) throw new Error('baseURL required');
+    const ok = await unlockGate(page, context, baseURL);
+    if (gateRequired() && !ok) {
+      test.skip(true, 'SMOKE_ACCESS_SECRET required to unlock private gate');
+    }
+    await seedLegacyOnboarding(page);
+    await seedHistoryAndMissedCoach(page);
+    await page.goto('/coach', { waitUntil: 'domcontentloaded' });
+    await page.getByRole('button', { name: /manage this week/i }).first().click();
+    await page.getByRole('button', { name: /change schedule/i }).first().click();
+    await expect(
+      page.getByRole('heading', { name: /change schedule/i }).or(page.getByText(/days per week|train days/i)).first()
+    ).toBeVisible({ timeout: 15_000 });
+    await axeSerious(page, '/coach (schedule editor)');
+  });
+
+  /**
+   * Kaizen Night P4 — Adjust today sheet open from Coach.
+   */
+  test('axe serious/critical: /coach with adjust today open @a11y', async ({
+    page,
+    context,
+    baseURL,
+  }) => {
+    if (!baseURL) throw new Error('baseURL required');
+    const ok = await unlockGate(page, context, baseURL);
+    if (gateRequired() && !ok) {
+      test.skip(true, 'SMOKE_ACCESS_SECRET required to unlock private gate');
+    }
+    await seedLegacyOnboarding(page);
+    await seedHistoryAndMissedCoach(page);
+    await page.goto('/coach', { waitUntil: 'domcontentloaded' });
+    const adjust = page.getByRole('button', { name: /adjust today/i }).first();
+    await expect(adjust).toBeVisible({ timeout: 15_000 });
+    await adjust.click();
+    await expect(
+      page.getByText(/easier|harder|swap|adjust/i).first()
+    ).toBeVisible({ timeout: 15_000 });
+    await axeSerious(page, '/coach (adjust today)');
+  });
+
+  /**
    * Loop 32 P1 — LogConsole set-kind strip. After add exercise the compact
    * console shows WORK/WARMUP/FAILURE/DROP; axe that dock chrome.
    */

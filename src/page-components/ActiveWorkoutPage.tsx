@@ -13,33 +13,28 @@ import { STORAGE_KEYS } from '@/lib/storage/keys';
 import { useRouter } from 'next/navigation';
 import { useTranslation } from 'react-i18next';
 import { toast } from '@/hooks/use-toast';
-import { EXERCISES, ensureFullExerciseCatalog, getExerciseById } from '@/data/exercises';
+import { ensureFullExerciseCatalog, getExerciseById } from '@/data/exercises';
 import { useWorkoutStore } from '@/store/workoutStore';
 import { getFormGuideOrCues } from '@/lib/formGuides';
-import { FormGuideSheet } from '@/components/form/FormGuideSheet';
 import { SignInPrompt } from '@/components/auth/SignInPrompt';
-import { RestTimerBar } from '@/components/workout/RestTimerBar';
-import { LogConsole } from '@/components/workout/LogConsole';
-import { AddExerciseSheet } from '@/components/workout/AddExerciseSheet';
-import { ExercisePicker } from '@/components/library/ExercisePicker';
-import { ScreenDock } from '@/components/layout/ScreenDock';
 import { useIsCompact } from '@/hooks/useIsCompact';
-import { PlateCalculatorSheet } from '@/components/workout/PlateCalculatorSheet';
-import { ActiveExerciseCard } from '@/components/workout/ActiveExerciseCard';
 import { ActiveEmptyState } from '@/components/workout/ActiveEmptyState';
 import { ActiveSessionChrome } from '@/components/workout/ActiveSessionChrome';
+import { ActiveReadinessDeltaStrip } from '@/components/workout/ActiveReadinessDeltaStrip';
+import { ActiveInlineAddExercise } from '@/components/workout/ActiveInlineAddExercise';
+import { ActiveExerciseList } from '@/components/workout/ActiveExerciseList';
+import { ActiveSessionDock } from '@/components/workout/ActiveSessionDock';
+import { ActiveWorkoutSheets } from '@/components/workout/ActiveWorkoutSheets';
 import { LiveHeartRate } from '@/components/workout/LiveHeartRate';
 import { useUnits, weightStep, weightUnitLabel } from '@/hooks/useUnits';
 import {
   type WorkoutVictorySummary,
 } from '@/lib/workout/workoutVictory';
-import { WorkoutVictorySheet } from '@/components/workout/WorkoutVictorySheet';
 import type { Debrief } from '@/lib/coach/debrief';
 import { SessionJotField } from '@/components/workout/SessionJotField';
 import { computeBodyScores } from '@/lib/score';
 import { getTodayCheckIn } from '@/lib/mindCheckIns';
 import {
-  SessionCheckInSheet,
   shouldOfferSessionCheckIn,
   markSessionCheckInSkipped,
 } from '@/components/workout/SessionCheckInSheet';
@@ -54,17 +49,10 @@ import {
 } from '@/lib/workout/activeSessionFinish';
 import {
   planSessionCheckInDismiss,
-  volumeTrimToastCopy,
-  volumeTrimToastKind,
 } from '@/lib/workout/activeSessionCheckIn';
-import {
-  patchesForApplyTargets,
+import { patchesForApplyTargets,
   patchesForPlateWeight,
-  patchesForUseNext,
-  plateCalcInitialWeight,
-  resolveAddExerciseId,
 } from '@/lib/workout/activeSetInputPatches';
-import { resolveActiveTableSetControls } from '@/lib/workout/activeTableSetControls';
 import {
   buildConsoleSet,
   findNextSet,
@@ -76,10 +64,7 @@ import {
   resolveActiveSetDial,
   resolveFormGuideSheet,
   resolveRepeatLastTarget,
-  resolveSwapCandidatesWhenOpen,
   activeSessionBottomClass,
-  shouldShowReadinessDelta,
-  shouldShowVolumeTrimOffer,
   resolveActiveGoalId,
   activeSessionHasExercises,
   activePostSessionPath,
@@ -87,10 +72,8 @@ import {
   sessionSetStats,
   setInputKey,
   toggleOpenIdx,
-  isOpenIdx,
 } from '@/lib/workout/activeWorkoutHelpers';
 import { prefersReducedMotion } from '@/lib/motion';
-import { compareText } from '@/lib/i18n/formatLocale';
 import { useLocaleFormat } from '@/hooks/useLocaleFormat';
 
 export function ActiveWorkoutPage() {
@@ -467,24 +450,6 @@ export function ActiveWorkoutPage() {
 
   return (
     <div className={`space-y-4 ${activeSessionBottomClass(restTimerActive)}`}>
-      <SessionCheckInSheet
-        open={checkInOpen}
-        onDismiss={({ completed, checkIn }) => {
-          setCheckInOpen(false);
-          const base = computeBodyScores(workoutHistory);
-          const adj = computeBodyScores(workoutHistory, { checkIn });
-          const plan = planSessionCheckInDismiss({
-            completed,
-            baseReadiness: base.readiness,
-            adjReadiness: adj.readiness,
-          });
-          if (plan.markSkipped) markSessionCheckInSkipped();
-          setReadinessBefore(plan.readinessBefore);
-          setReadinessAfter(plan.readinessAfter);
-          if (plan.offerVolumeTrim) setOfferVolumeTrim(true);
-        }}
-      />
-
       <ActiveSessionChrome
         workoutName={activeWorkout.workoutName}
         completedSets={completedSets}
@@ -512,87 +477,51 @@ export function ActiveWorkoutPage() {
           })}
         </p>
       ) : (
-        <div className="space-y-3">
-          {activeWorkout.exercises.map((exLog, exIdx) => {
-            const exercise = getExerciseById(exLog.exerciseId);
-            if (!exercise) return null;
-            const swapCandidates = resolveSwapCandidatesWhenOpen({
-              swapOpenIdx,
-              exIdx,
-              catalog: EXERCISES,
-              current: exercise,
-              compareNames: (a, b) => compareText(a, b, fmt.lang),
-            });
-            /* Desktop's table logs in place. Same `setInputs` map the dock
-               console writes, so switching surface mid-session keeps the
-               half-typed set. Only meaningful when this exercise holds the
-               active set — the table ignores it otherwise. */
-            const tableControls = resolveActiveTableSetControls({
-              nextSet,
-              exIdx,
-              sets: exLog.sets,
-              resolveInput: getSetInput,
-            });
-
-            return (
-              <ActiveExerciseCard
-              goalRange={repRangeForGoal(goalId)}
-                key={`${exLog.exerciseId}-${exIdx}`}
-                exLog={exLog}
-                exIdx={exIdx}
-                exercises={activeWorkout.exercises}
-                exercise={exercise}
-                workoutHistory={workoutHistory}
-                units={units}
-                unitLabel={unitLabel}
-                nextSet={nextSet}
-                nextSetRef={nextSetRef}
-                swapOpen={isOpenIdx(swapOpenIdx, exIdx)}
-                noteOpen={isOpenIdx(noteOpenIdx, exIdx)}
-                swapCandidates={swapCandidates}
-                lastSessionSets={getLastSessionSets}
-                onRepeatLast={() => handleRepeatLast(exIdx)}
-                onFormGuide={() => setFormGuideId(exercise.id)}
-                onToggleSuperset={() => toggleSupersetWithNext(exIdx)}
-                onUnlinkSuperset={() => unlinkSuperset(exIdx)}
-                onToggleNote={() => setNoteOpenIdx((cur) => toggleOpenIdx(cur, exIdx))}
-                onToggleSwap={() => setSwapOpenIdx((cur) => toggleOpenIdx(cur, exIdx))}
-                onRemove={() => {
-                  removeExerciseFromActive(exIdx);
-                  setSwapOpenIdx(null);
-                  setNoteOpenIdx(null);
-                  setSetInputs({});
-                }}
-                onSwapTo={(id) => {
-                  const ex = getExerciseById(id);
-                  replaceExerciseInActive(exIdx, id, ex?.muscleGroups);
-                  setSwapOpenIdx(null);
-                  setSetInputs({});
-                }}
-                onNoteChange={(note) => setExerciseNote(exIdx, note)}
-                onRate={(setIdx, rpe) => rateSet(exIdx, setIdx, rpe)}
-                onApplyAllTargets={() => applyTargetsForExercise(exIdx)}
-                onAddSet={() => addSetToExercise(exIdx)}
-                onRemoveSet={() => {
-                  removeLastPlannedSet(exIdx);
-                  setSetInputs({});
-                }}
-                onStartRest={(seconds) => startRestTimer(seconds)}
-                setInput={tableControls.setInput}
-                onSetInputChange={(field, value) => {
-                  if (!tableControls.canEdit || !nextSet) return;
-                  updateSetInput(exIdx, nextSet.setIdx, field, value);
-                }}
-                onLogSet={(setIdx) => handleLogSet(exIdx, setIdx)}
-                activeSetKind={tableControls.activeSetKind}
-                onSetKindChange={(kind) => {
-                  if (!tableControls.canEdit || !nextSet) return;
-                  setSetKind(exIdx, nextSet.setIdx, kind);
-                }}
-              />
-            );
-          })}
-        </div>
+        <ActiveExerciseList
+          exercises={activeWorkout.exercises}
+          workoutHistory={workoutHistory}
+          units={units}
+          unitLabel={unitLabel}
+          goalId={goalId}
+          nextSet={nextSet}
+          nextSetRef={nextSetRef}
+          swapOpenIdx={swapOpenIdx}
+          noteOpenIdx={noteOpenIdx}
+          lang={fmt.lang}
+          getSetInput={getSetInput}
+          onRepeatLast={handleRepeatLast}
+          onFormGuide={(id) => setFormGuideId(id)}
+          onToggleSuperset={(exIdx) => toggleSupersetWithNext(exIdx)}
+          onUnlinkSuperset={(exIdx) => unlinkSuperset(exIdx)}
+          onToggleNote={(exIdx) => setNoteOpenIdx((cur) => toggleOpenIdx(cur, exIdx))}
+          onToggleSwap={(exIdx) => setSwapOpenIdx((cur) => toggleOpenIdx(cur, exIdx))}
+          onRemove={(exIdx) => {
+            removeExerciseFromActive(exIdx);
+            setSwapOpenIdx(null);
+            setNoteOpenIdx(null);
+            setSetInputs({});
+          }}
+          onSwapTo={(exIdx, id) => {
+            const ex = getExerciseById(id);
+            replaceExerciseInActive(exIdx, id, ex?.muscleGroups);
+            setSwapOpenIdx(null);
+            setSetInputs({});
+          }}
+          onNoteChange={(exIdx, note) => setExerciseNote(exIdx, note)}
+          onRate={(exIdx, setIdx, rpe) => rateSet(exIdx, setIdx, rpe)}
+          onApplyAllTargets={(exIdx) => applyTargetsForExercise(exIdx)}
+          onAddSet={(exIdx) => addSetToExercise(exIdx)}
+          onRemoveSet={(exIdx) => {
+            removeLastPlannedSet(exIdx);
+            setSetInputs({});
+          }}
+          onStartRest={(seconds) => startRestTimer(seconds)}
+          onSetInputChange={(exIdx, setIdx, field, value) =>
+            updateSetInput(exIdx, setIdx, field, value)
+          }
+          onLogSet={(exIdx, setIdx) => handleLogSet(exIdx, setIdx)}
+          onSetKindChange={(exIdx, setIdx, kind) => setSetKind(exIdx, setIdx, kind)}
+        />
       )}
 
         {/*
@@ -607,59 +536,24 @@ export function ActiveWorkoutPage() {
           step the mock does not ask for. Compact keeps the sheet.
         */}
         {!isCompact && (
-          <div className="max-w-[640px] border-t-2 border-border pt-5">
-            <ExercisePicker
-              value={addExerciseId}
-              onChange={setAddExerciseId}
-              placeholder={t('activeAddExerciseInline', {
-                defaultValue: 'Add exercise — search 300+ movements',
-              })}
-            />
-            <button
-              type="button"
-              disabled={!addExerciseId}
-              onClick={() => {
-                const id = resolveAddExerciseId(addExerciseId);
-                if (!id) return;
-                const ex = getExerciseById(id);
-                addExerciseToActive(id, ex?.muscleGroups);
-                setAddExerciseId('');
-              }}
-              className="mt-3 min-h-[40px] border-2 border-border px-4 text-sm font-semibold transition-colors hover:bg-accent-100 disabled:pointer-events-none disabled:border-dashed disabled:text-muted-foreground"
-            >
-              {t('activeAddSelectedExercise', { defaultValue: 'Add selected exercise' })}
-            </button>
-          </div>
+          <ActiveInlineAddExercise
+            addExerciseId={addExerciseId}
+            onAddExerciseIdChange={setAddExerciseId}
+            onAdd={(id, muscleGroups) => {
+              addExerciseToActive(id, muscleGroups);
+            }}
+          />
         )}
 
-      {shouldShowReadinessDelta(readinessBefore, readinessAfter) ? (
-        <div className="border-2 border-border bg-card px-3 py-2 text-xs flex flex-wrap items-center gap-2">
-          <span className="font-medium text-muted-foreground">
-            {t('sessionReadinessDelta', {
-              defaultValue: 'Readiness {{from}} → {{to}}',
-              from: readinessBefore,
-              to: readinessAfter,
-            })}
-          </span>
-          {shouldShowVolumeTrimOffer(offerVolumeTrim, !!plan) ? (
-            <button
-              type="button"
-              className="border-2 border-border bg-background px-3 py-1 text-muted-foreground font-medium hover:border-primary hover:text-foreground"
-              onClick={() => {
-                const next = adjustToday({ type: 'readiness' });
-                const copy = volumeTrimToastCopy(volumeTrimToastKind(!!next));
-                toast({
-                  title: t(copy.titleKey, { defaultValue: copy.titleDefault }),
-                  description: t(copy.descKey, { defaultValue: copy.descDefault }),
-                });
-                setOfferVolumeTrim(false);
-              }}
-            >
-              {t('sessionReduceVolume', { defaultValue: "Reduce today's volume" })}
-            </button>
-          ) : null}
-        </div>
-      ) : null}
+      <ActiveReadinessDeltaStrip
+        readinessBefore={readinessBefore}
+        readinessAfter={readinessAfter}
+        offerVolumeTrim={offerVolumeTrim}
+        hasPlan={!!plan}
+        onReduceVolume={() => adjustToday({ type: 'readiness' })}
+        onDismissOffer={() => setOfferVolumeTrim(false)}
+        toast={toast}
+      />
 
       <SignInPrompt
         className="mt-6"
@@ -667,98 +561,71 @@ export function ActiveWorkoutPage() {
         description="Workouts auto-save to the cloud when you're signed in."
       />
 
-      {formGuideSheet ? (
-        <FormGuideSheet
-          exerciseName={formGuideSheet.exerciseName}
-          exerciseId={formGuideSheet.exerciseId}
-          guide={formGuideSheet.guide}
-          open
-          onClose={() => setFormGuideId(null)}
-        />
-      ) : null}
-
-      {/*
-        One dock, two states, never both. Rest takes the console over rather
-        than being a second fixed panel floating on the set rows it describes —
-        and because the dock is a flex sibling of `main`, neither can overlap
-        the list.
-      */}
-      {dockMode === 'rest' ? (
-        <ScreenDock>
-          <RestTimerBar
-            remaining={restSecondsRemaining}
-            initial={restTimerInitialSeconds}
-            onSkip={stopRestTimer}
-            onAdjust={adjustRestTimer}
-            onPreset={startRestTimer}
-          />
-        </ScreenDock>
-      ) : dockMode === 'console' && consoleSet ? (
-        /* Compact only. Desktop enters the set in the row it belongs to
-           (`SetLogTable`), so a console here would be a second, competing
-           place to type the same number. */
-        <ScreenDock>
-          <LogConsole
-            exerciseName={consoleSet.exerciseName}
-            setNumber={consoleSet.setIdx + 1}
-            totalSets={consoleSet.totalSets}
-            overloadCue={consoleSet.overloadCue}
-            reps={consoleSet.input.reps}
-            weight={consoleSet.input.weight}
-            weightLabel={unitLabel}
-            weightStep={step}
-            kind={consoleSet.kind}
-            onRepsChange={(v) => updateSetInput(consoleSet.exIdx, consoleSet.setIdx, 'reps', v)}
-            onWeightChange={(v) => updateSetInput(consoleSet.exIdx, consoleSet.setIdx, 'weight', v)}
-            onKindChange={(kind) => setSetKind(consoleSet.exIdx, consoleSet.setIdx, kind)}
-            onLog={() => handleLogSet(consoleSet.exIdx, consoleSet.setIdx)}
-            onUseNext={(target) => {
-              for (const p of patchesForUseNext(target)) {
-                updateSetInput(consoleSet.exIdx, consoleSet.setIdx, p.field, p.value);
-              }
-            }}
-          />
-        </ScreenDock>
-      ) : null}
-
-      <AddExerciseSheet
-        open={addExerciseOpen}
-        onClose={() => setAddExerciseOpen(false)}
-        value={addExerciseId}
-        onChange={setAddExerciseId}
-        onConfirm={() => {
-          const id = resolveAddExerciseId(addExerciseId);
-          if (!id) return;
-          const ex = getExerciseById(id);
-          addExerciseToActive(id, ex?.muscleGroups);
-          setAddExerciseId('');
-        }}
-      />
-
-      <PlateCalculatorSheet
-        open={plateCalcOpen}
-        onClose={() => setPlateCalcOpen(false)}
-        initialTarget={plateCalcInitialWeight({
-          nextSet,
-          exercises: activeWorkout.exercises,
-          resolveInput: getSetInput,
-        })}
-        onApplyTarget={(weight) => {
-          if (!nextSet) return;
-          for (const p of patchesForPlateWeight(weight)) {
-            updateSetInput(nextSet.exIdx, nextSet.setIdx, p.field, p.value);
+      <ActiveSessionDock
+        dockMode={dockMode}
+        consoleSet={consoleSet}
+        restSecondsRemaining={restSecondsRemaining}
+        restTimerInitialSeconds={restTimerInitialSeconds}
+        unitLabel={unitLabel}
+        weightStep={step}
+        onSkipRest={stopRestTimer}
+        onAdjustRest={adjustRestTimer}
+        onPresetRest={startRestTimer}
+        onRepsChange={(exIdx, setIdx, reps) => updateSetInput(exIdx, setIdx, 'reps', reps)}
+        onWeightChange={(exIdx, setIdx, weight) => updateSetInput(exIdx, setIdx, 'weight', weight)}
+        onKindChange={(exIdx, setIdx, kind) => setSetKind(exIdx, setIdx, kind)}
+        onLog={(exIdx, setIdx) => handleLogSet(exIdx, setIdx)}
+        onApplyFieldPatches={(exIdx, setIdx, patches) => {
+          for (const p of patches) {
+            updateSetInput(exIdx, setIdx, p.field, p.value);
           }
         }}
       />
-      <WorkoutVictorySheet
-        open={victoryOpen}
-        summary={victorySummary}
-        onOpenChange={setVictoryOpen}
+
+      <ActiveWorkoutSheets
+        checkInOpen={checkInOpen}
+        onCheckInDismiss={({ completed, checkIn }) => {
+          setCheckInOpen(false);
+          const base = computeBodyScores(workoutHistory);
+          const adj = computeBodyScores(workoutHistory, { checkIn });
+          const planDismiss = planSessionCheckInDismiss({
+            completed,
+            baseReadiness: base.readiness,
+            adjReadiness: adj.readiness,
+          });
+          if (planDismiss.markSkipped) markSessionCheckInSkipped();
+          setReadinessBefore(planDismiss.readinessBefore);
+          setReadinessAfter(planDismiss.readinessAfter);
+          if (planDismiss.offerVolumeTrim) setOfferVolumeTrim(true);
+        }}
+        formGuideSheet={formGuideSheet}
+        onCloseFormGuide={() => setFormGuideId(null)}
+        addExerciseOpen={addExerciseOpen}
+        onCloseAddExercise={() => setAddExerciseOpen(false)}
+        addExerciseId={addExerciseId}
+        onAddExerciseIdChange={setAddExerciseId}
+        onAddExerciseConfirmed={(id, muscleGroups) => {
+          addExerciseToActive(id, muscleGroups);
+          setAddExerciseId('');
+        }}
+        plateCalcOpen={plateCalcOpen}
+        onClosePlateCalc={() => setPlateCalcOpen(false)}
+        nextSet={nextSet}
+        exercises={activeWorkout.exercises}
+        resolveInput={getSetInput}
+        onApplyPlateWeight={(exIdx, setIdx, weight) => {
+          for (const p of patchesForPlateWeight(weight)) {
+            updateSetInput(exIdx, setIdx, p.field, p.value);
+          }
+        }}
+        victoryOpen={victoryOpen}
+        victorySummary={victorySummary}
+        onVictoryOpenChange={setVictoryOpen}
         onViewToday={goToday}
         onViewHistory={goHistory}
         debrief={debrief}
         fragments={entryFragments}
-        workoutId={victoryWorkoutId ?? undefined}
+        victoryWorkoutId={victoryWorkoutId}
       />
     </div>
   );

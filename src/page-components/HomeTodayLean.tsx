@@ -32,7 +32,7 @@ import {
   type JourneyState,
 } from '@/lib/missionJourney';
 import type { CompletedWorkoutLog } from '@/types';
-import { runTodayPrimaryAction } from '@/lib/todayPrimaryAction';
+import { runTodayPrimaryAction, isTodayTrainReady } from '@/lib/todayPrimaryAction';
 import { STORAGE_KEYS } from '@/lib/storage/keys';
 import { readRaw } from '@/lib/storage/safeStorage';
 import { peekCoachToday } from '@/lib/coach/peekCoachToday';
@@ -225,7 +225,11 @@ export function HomeTodayLean() {
 
   const justGoMeta: JustGoHeroMeta | null = buildJustGoHeroMeta({
     hasActiveWorkout,
-    trainReady: action.href === '/active' || !!action.startWorkout,
+    trainReady: isTodayTrainReady({
+      href: action.href,
+      hasStartWorkout: !!action.startWorkout,
+      phase: action.phase,
+    }),
     focusLabel:
       focusLabel || t('todaySessionFocus', { defaultValue: 'Training' }),
     coach: peekCoachToday(),

@@ -2,8 +2,7 @@
 
 import { useState } from 'react';
 import Image from 'next/image';
-import Link from 'next/link';
-import { ImageIcon, Share2 } from 'lucide-react';
+import { Share2 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { useLocaleFormat } from '@/hooks/useLocaleFormat';
 import { Button } from '@/components/ui/button';
@@ -15,23 +14,31 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog';
-import { formatDuration } from '@/lib/utils';
 import type { WorkoutVictorySummary } from '@/lib/workout/workoutVictory';
 import {
   formatProgressionInsight,
   progressionInsightKey,
+  shouldShowVictoryBackTodaySecondary,
 } from '@/lib/workout/workoutVictory';
 import { useUnits, weightUnitLabel } from '@/hooks/useUnits';
 import { track } from '@/lib/analytics';
 import { upsertTodayPartial } from '@/lib/mindCheckIns';
 import { getCachedReferralCode } from '@/lib/referral';
 import { SessionDebriefCard } from '@/components/workout/SessionDebriefCard';
+import { VictoryFeelStrip } from '@/components/workout/VictoryFeelStrip';
+import { VictoryBodyDeltaStrip } from '@/components/workout/VictoryBodyDeltaStrip';
+import { VictoryStatsStrip } from '@/components/workout/VictoryStatsStrip';
+import { VictoryNextActionStrip } from '@/components/workout/VictoryNextActionStrip';
 import type { Debrief } from '@/lib/coach/debrief';
 import {
   buildVictoryCardData,
   renderShareCard,
-  shareCardImage,
 } from '@/lib/share/shareCard';
+import {
+  buildVictorySharePayload,
+  nextVictoryShareAfterFile,
+  nextVictoryShareAfterText,
+} from '@/lib/share/victoryShare';
 
 type Props = {
   open: boolean;
@@ -80,14 +87,40 @@ export function WorkoutVictorySheet({
     defaultValue: `Session done: ${summary.workoutName} — ${fmt.num(summary.totalVolume)} ${unitLabel}, ${summary.setCount} sets${summary.streak > 0 ? `, ${summary.streak}-day streak` : ''}.`,
   });
 
+  /**
+   * One Share control: prefer the on-device card when the platform can share
+   * files; otherwise text/clipboard. Dual Share · Share card competed with the
+   * primary Coach/train exit (`.422`). Cancel stops — no silent PNG download.
+   * Fallthrough ladder: `victoryShare` helpers (.452).
+   */
   const handleShare = async () => {
     const refCode = getCachedReferralCode();
-    const origin = typeof window !== 'undefined' ? window.location.origin : 'https://www.missionwinning.com';
-    const shareUrl = refCode
-      ? `${origin}/?ref=${encodeURIComponent(refCode)}`
-      : `${origin}/?utm_source=share&utm_medium=victory`;
-    const fullText = `${shareText} ${shareUrl}`;
+    const origin =
+      typeof window !== 'undefined' ? window.location.origin : 'https://www.missionwinning.com';
+    const { shareUrl, fullText } = buildVictorySharePayload({
+      origin,
+      refCode,
+      shareText,
+    });
 
+    const card = buildVictoryCardData(summary, debrief?.records ?? [], unitLabel);
+    const blob = await renderShareCard(card);
+    let fileResult: 'shared' | 'cancelled' | 'unavailable' = 'unavailable';
+    if (blob && typeof navigator !== 'undefined' && navigator.share) {
+      const file = new File([blob], 'mission-winning.png', { type: 'image/png' });
+      if (navigator.canShare?.({ files: [file] })) {
+        try {
+          await navigator.share({ files: [file], text: fullText });
+          track('share_card_generated', { surface: 'victory', method: 'shared' });
+          fileResult = 'shared';
+        } catch {
+          fileResult = 'cancelled';
+        }
+      }
+    }
+    if (nextVictoryShareAfterFile(fileResult) === 'done') return;
+
+    let textResult: 'shared' | 'cancelled' | 'unavailable' = 'unavailable';
     if (typeof navigator !== 'undefined' && navigator.share) {
       try {
         await navigator.share({
@@ -96,45 +129,27 @@ export function WorkoutVictorySheet({
           url: shareUrl,
         });
         track('workout_shared', { method: 'shared' });
-        return;
+        textResult = 'shared';
       } catch {
-        // user cancelled or failed
+        textResult = 'cancelled';
       }
     }
-    if (typeof navigator !== 'undefined' && navigator.clipboard?.writeText) {
+    const canClipboard = Boolean(
+      typeof navigator !== 'undefined' && navigator.clipboard?.writeText
+    );
+    const next = nextVictoryShareAfterText(textResult, canClipboard);
+    if (next === 'shared') return;
+    if (next === 'clipboard') {
       await navigator.clipboard.writeText(fullText);
       track('workout_shared', { method: 'copied' });
-    } else {
-      track('workout_shared', { method: 'failed' });
-    }
-  };
-
-  // The image variant of share: rendered on this device, sent only by choice.
-  const handleShareCard = async () => {
-    const refCode = getCachedReferralCode();
-    const origin = typeof window !== 'undefined' ? window.location.origin : 'https://www.missionwinning.com';
-    const shareUrl = refCode
-      ? `${origin}/?ref=${encodeURIComponent(refCode)}`
-      : `${origin}/?utm_source=share&utm_medium=victory-card`;
-    const card = buildVictoryCardData(summary, debrief?.records ?? [], unitLabel);
-    const blob = await renderShareCard(card);
-    if (!blob) {
-      track('share_card_generated', { surface: 'victory', method: 'failed' });
       return;
     }
-    const method = await shareCardImage(blob, shareText, shareUrl);
-    track('share_card_generated', { surface: 'victory', method });
+    track('workout_shared', { method: 'failed' });
   };
 
-  /**
-   * Secondary "Back to Today" when the primary next is Coach, session 2, or
-   * Train again — not when the primary is already Today (rest path).
-   * `.412` made session-2 the first-log primary; without this, e2e and athletes
-   * who want Today had no exit except History.
-   */
-  const showBackTodaySecondary =
-    !!summary.nextAction &&
-    !summary.nextAction.href.includes('/log');
+  const showBackTodaySecondary = shouldShowVictoryBackTodaySecondary(
+    summary.nextAction?.href
+  );
 
   const saveFeel = (energy: number) => {
     upsertTodayPartial({ energy, mood: energy });
@@ -181,118 +196,17 @@ export function WorkoutVictorySheet({
           </DialogDescription>
         </DialogHeader>
 
-        <div className="grid grid-cols-2 gap-3 py-2">
-          <div className="border-2 border-border bg-background p-3 text-center">
-            <p className="text-xs font-medium text-muted-foreground">
-              {t('victoryVolume', { defaultValue: 'Volume' })}
-            </p>
-            <p className="text-xl font-semibold tabular-nums text-foreground">
-              {fmt.num(summary.totalVolume)}
-            </p>
-            <p className="text-xs text-muted-foreground">{unitLabel}</p>
-          </div>
-          <div className="border-2 border-border bg-background p-3 text-center">
-            <p className="text-xs font-medium text-muted-foreground">
-              {t('victorySets', { defaultValue: 'Sets' })}
-            </p>
-            <p className="text-xl font-semibold tabular-nums">{summary.setCount}</p>
-            <p className="text-xs text-muted-foreground">
-              {formatDuration(summary.durationSeconds)}
-            </p>
-          </div>
-        </div>
+        <VictoryStatsStrip
+          totalVolume={summary.totalVolume}
+          setCount={summary.setCount}
+          durationSeconds={summary.durationSeconds}
+          unitLabel={unitLabel}
+          formatVolume={(n) => fmt.num(n)}
+        />
 
-        {/*
-          Feel scale: one 2px-ruled strip, five full-height cells — same treatment
-          as session check-in (`.155`). Soft `bg-muted` on `bg-card` was invisible
-          at rest; selected/hover uses primary fill only.
-        */}
-        <div className="border-2 border-border bg-background px-3 py-3 space-y-2">
-          <p className="text-center text-xs text-muted-foreground">
-            {feelSaved
-              ? t('victoryFeelSaved', { defaultValue: 'Logged — feeds readiness on Today.' })
-              : t('victoryFeelPrompt', {
-                  defaultValue: 'How do you feel after this session?',
-                })}
-          </p>
-          {!feelSaved && (
-            <>
-              <div
-                className="flex border-2 border-border"
-                role="group"
-                aria-label={t('victoryFeelPrompt', {
-                  defaultValue: 'How do you feel after this session?',
-                })}
-              >
-                {[1, 2, 3, 4, 5].map((n, i) => (
-                  <button
-                    key={n}
-                    type="button"
-                    onClick={() => saveFeel(n)}
-                    className={`flex-1 min-h-[52px] tap-target text-sm font-semibold text-foreground bg-card hover:bg-primary-fill hover:text-primary-foreground transition-colors ${
-                      i > 0 ? 'border-s-2 border-border' : ''
-                    }`}
-                  >
-                    {n}
-                  </button>
-                ))}
-              </div>
-              <div className="flex justify-between text-[10px] text-muted-foreground px-0.5">
-                <span>{t('victoryFeelLow', { defaultValue: 'Drained' })}</span>
-                <span>{t('victoryFeelHigh', { defaultValue: 'Energized' })}</span>
-              </div>
-            </>
-          )}
-        </div>
+        <VictoryFeelStrip feelSaved={feelSaved} onSaveFeel={saveFeel} />
 
-        {summary.bodyDelta && (
-          <div className="flex flex-wrap items-center justify-center gap-2 border-2 border-border bg-background px-3 py-2 text-xs tabular-nums">
-            <span className="text-muted-foreground me-1">
-              {t('victoryBodyDeltaLabel', { defaultValue: 'What changed' })}
-            </span>
-            <span className="text-status-warn">
-              {t('victoryReadinessDelta', {
-                delta:
-                  summary.bodyDelta.readiness > 0
-                    ? `+${summary.bodyDelta.readiness}`
-                    : `${summary.bodyDelta.readiness}`,
-                defaultValue: `Readiness ${
-                  summary.bodyDelta.readiness > 0
-                    ? `+${summary.bodyDelta.readiness}`
-                    : summary.bodyDelta.readiness
-                }`,
-              })}
-            </span>
-            <span className="text-muted-foreground">·</span>
-            <span className="text-status-danger">
-              {t('victoryStrainDelta', {
-                delta:
-                  summary.bodyDelta.strain > 0
-                    ? `+${summary.bodyDelta.strain}`
-                    : `${summary.bodyDelta.strain}`,
-                defaultValue: `Strain ${
-                  summary.bodyDelta.strain > 0
-                    ? `+${summary.bodyDelta.strain}`
-                    : summary.bodyDelta.strain
-                }`,
-              })}
-            </span>
-            <span className="text-muted-foreground">·</span>
-            <span className="text-primary">
-              {t('victoryRecoveryDelta', {
-                delta:
-                  summary.bodyDelta.recovery > 0
-                    ? `+${summary.bodyDelta.recovery}`
-                    : `${summary.bodyDelta.recovery}`,
-                defaultValue: `Recovery ${
-                  summary.bodyDelta.recovery > 0
-                    ? `+${summary.bodyDelta.recovery}`
-                    : summary.bodyDelta.recovery
-                }`,
-              })}
-            </span>
-          </div>
-        )}
+        {summary.bodyDelta ? <VictoryBodyDeltaStrip bodyDelta={summary.bodyDelta} /> : null}
 
         {debrief && <SessionDebriefCard debrief={debrief} fragments={fragments} />}
 
@@ -318,25 +232,12 @@ export function WorkoutVictorySheet({
           </p>
         )}
 
-        {summary.nextAction && (
-          <div className="border-2 border-primary bg-tint p-3 space-y-2 text-center">
-            <p className="text-xs font-semibold uppercase tracking-[0.08em] text-primary">
-              {t('victoryNextLabel', { defaultValue: 'Next' })}
-            </p>
-            <p className="text-sm text-muted-foreground leading-relaxed">
-              {t(summary.nextAction.reasonKey, {
-                defaultValue: summary.nextAction.defaultReason,
-              })}
-            </p>
-            <Button asChild className="w-full primary-action">
-              <Link href={summary.nextAction.href} onClick={() => onOpenChange(false)}>
-                {t(summary.nextAction.labelKey, {
-                  defaultValue: summary.nextAction.defaultLabel,
-                })}
-              </Link>
-            </Button>
-          </div>
-        )}
+        {summary.nextAction ? (
+          <VictoryNextActionStrip
+            nextAction={summary.nextAction}
+            onNavigate={() => onOpenChange(false)}
+          />
+        ) : null}
 
         <DialogFooter className="flex-col sm:flex-col gap-2 pt-1">
           {!summary.nextAction && (
@@ -369,15 +270,6 @@ export function WorkoutVictorySheet({
             >
               <Share2 className="h-3 w-3" />
               {t('victoryShare', { defaultValue: 'Share' })}
-            </button>
-            <span aria-hidden>·</span>
-            <button
-              type="button"
-              className="inline-flex items-center gap-1 hover:text-foreground underline-offset-2 hover:underline"
-              onClick={handleShareCard}
-            >
-              <ImageIcon className="h-3 w-3" />
-              {t('victoryShareCard', { defaultValue: 'Share card' })}
             </button>
           </div>
         </DialogFooter>

@@ -18,6 +18,25 @@ type StartWorkoutFn = (
   workoutId?: string
 ) => void;
 
+/**
+ * One definition for “Just Go / train is the primary next” on Today.
+ * Lean, full dashboard, and `runTodayPrimaryAction` must agree (.426).
+ */
+export function isTodayTrainReady(opts: {
+  href: string;
+  hasStartWorkout: boolean;
+  phase: JourneyAction['phase'];
+  /** Full-shell primary CTA: also treat basic phase as train-ready. */
+  includeBasicJustGo?: boolean;
+}): boolean {
+  return (
+    opts.href === '/active' ||
+    opts.hasStartWorkout ||
+    opts.phase === 'commissioned' ||
+    (!!opts.includeBasicJustGo && opts.phase === 'basic')
+  );
+}
+
 export type TodayPrimaryActionOpts = {
   hasActiveWorkout: boolean;
   action: JourneyAction;
@@ -61,11 +80,12 @@ export async function runTodayPrimaryAction(opts: TodayPrimaryActionOpts): Promi
     return;
   }
 
-  const trainReady =
-    action.href === '/active' ||
-    !!action.startWorkout ||
-    action.phase === 'commissioned' ||
-    (includeBasicJustGo && action.phase === 'basic');
+  const trainReady = isTodayTrainReady({
+    href: action.href,
+    hasStartWorkout: !!action.startWorkout,
+    phase: action.phase,
+    includeBasicJustGo,
+  });
 
   if (trainReady) {
     const [{ buildJustGoSession }, coachToday] = await Promise.all([

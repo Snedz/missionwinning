@@ -57,7 +57,7 @@ const FOODS: FoodToken[] = [
   { keywords: ['brown rice'], label: 'Brown rice', protein: 5, cals: 215, carbs: 45, fat: 2 },
   { keywords: ['white rice'], label: 'White rice', protein: 4, cals: 200, carbs: 45, fat: 0 },
   { keywords: ['meal prep'], label: 'Meal prep plate', protein: 35, cals: 480, carbs: 40, fat: 12 },
-  { keywords: ['banana'], label: 'Banana', protein: 1, cals: 105, carbs: 27, fat: 0 },
+  { keywords: ['banana', 'bananas'], label: 'Banana', protein: 1, cals: 105, carbs: 27, fat: 0 },
   { keywords: ['apple'], label: 'Apple', protein: 0, cals: 95, carbs: 25, fat: 0 },
   { keywords: ['orange', 'berries', 'berries'], label: 'Fruit', protein: 1, cals: 80, carbs: 20, fat: 0 },
   { keywords: ['beans', 'lentils', 'chickpea', 'chickpeas', 'tofu', 'tempeh'], label: 'Legumes', protein: 14, cals: 180, carbs: 22, fat: 4 },
@@ -102,15 +102,33 @@ const WORD_QTY: Record<string, number> = {
   an: 1,
   one: 1,
   two: 2,
+  couple: 2,
+  pair: 2,
+  few: 3,
   three: 3,
   four: 4,
   five: 5,
   six: 6,
 };
 
+/** Unicode vulgar fractions — one map for mixed + bare (.436/.438). */
+const VULGAR_FRAC: Record<string, number> = {
+  '¼': 0.25,
+  '½': 0.5,
+  '⅓': 1 / 3,
+  '⅔': 2 / 3,
+  '¾': 0.75,
+};
+const VULGAR_CLASS = '¼½⅓⅔¾';
+
 const GLOBAL_PORTION: { pattern: RegExp; scale: number }[] = [
-  { pattern: /\b(large|big|xl|double|extra)\b/i, scale: 1.35 },
-  { pattern: /\b(small|light|half|mini)\b/i, scale: 0.65 },
+  { pattern: /\b(large|big|xl|extra)\b/i, scale: 1.35 },
+  // `double portion` is a qty phrase (→ 2× in findQtyBefore). Bare `double chicken`
+  // still means a large plate (.449).
+  { pattern: /\bdouble\b(?!\s+portions?\b)/i, scale: 1.35 },
+  // `half` is a quantity word (`half a cup`, `half chicken`) — not a plate-size
+  // adjective. Keeping it here double-scaled word-half qty to ~0.65× (.424).
+  { pattern: /\b(small|light|mini)\b/i, scale: 0.65 },
 ];
 
 function globalPortionScale(text: string): number {
@@ -136,6 +154,8 @@ function portionWordScale(word: string): number {
   const w = word.toLowerCase();
   if (/^cups?$/.test(w)) return 1;
   if (/^plates?$/.test(w)) return 1;
+  if (/^bowls?$/.test(w)) return 1;
+  if (/^servings?$/.test(w)) return 1;
   if (/^pieces?$|^pcs?$/.test(w)) return 1;
   if (/^handfuls?$/.test(w)) return 0.5;
   if (/^slices?$/.test(w)) return 0.5;
@@ -146,7 +166,13 @@ function portionWordScale(word: string): number {
 
 /** Shared portion-word token for numbered / word / bare parsers. */
 const PORTION_WORD =
-  'scoops?|scoopfuls?|cups?|pieces?|pcs?|handfuls?|slices?|plates?|tsps?|teaspoons?';
+  'scoops?|scoopfuls?|cups?|pieces?|pcs?|handfuls?|slices?|plates?|bowls?|servings?|tsps?|teaspoons?';
+
+/**
+ * Food keywords that are also portion words (`bowl of rice`). When followed by
+ * `of <food>`, skip the food match so we do not double-count Bowl base (.449).
+ */
+const PORTION_ALSO_FOOD = /^(bowls?|plates?|cups?|scoops?|scoopfuls?|handfuls?|slices?|pieces?|pcs?|servings?)$/i;
 
 function findQtyBefore(text: string, kwStart: number): { qty: number; start: number } {
   const before = text.slice(0, kwStart);
@@ -178,11 +204,110 @@ function findQtyBefore(text: string, kwStart: number): { qty: number; start: num
       return { qty: Math.round((g / 100) * 10) / 10, start: kwStart - ounces[0].length };
     }
   }
+  // Unicode vulgar fractions before ASCII — phone paste often uses ¼ ½ ⅓ ⅔ ¾ (.436/.438)
+  const unicodeMixed = before.match(
+    new RegExp(`(\\d*)([${VULGAR_CLASS}])\\s*(${PORTION_WORD})\\s*(?:of\\s+)?$`, 'i')
+  );
+  if (unicodeMixed) {
+    const whole = unicodeMixed[1] ? parseInt(unicodeMixed[1], 10) : 0;
+    const frac = VULGAR_FRAC[unicodeMixed[2]];
+    if (frac != null && whole >= 0 && whole <= 12) {
+      const scale = portionWordScale(unicodeMixed[3]);
+      const qty = Math.round((whole + frac) * scale * 10) / 10;
+      if (qty > 0 && qty <= 12) {
+        return { qty, start: kwStart - unicodeMixed[0].length };
+      }
+    }
+  }
+  const bareUnicode = before.match(new RegExp(`(\\d*)([${VULGAR_CLASS}])\\s*$`));
+  if (bareUnicode) {
+    const whole = bareUnicode[1] ? parseInt(bareUnicode[1], 10) : 0;
+    const frac = VULGAR_FRAC[bareUnicode[2]];
+    if (frac != null && whole >= 0 && whole <= 12) {
+      const qty = Math.round((whole + frac) * 10) / 10;
+      if (qty > 0 && qty <= 12) {
+        return { qty, start: kwStart - bareUnicode[0].length };
+      }
+    }
+  }
+  // Mixed numbers before bare fractions: "1 1/2 cup rice" must not become
+  // qty 0.5 via matching only the trailing `1/2 cup`.
+  const mixedPortion = before.match(
+    new RegExp(
+      `(\\d+)\\s+(\\d+)\\s*/\\s*(\\d+)\\s*(${PORTION_WORD})\\s*(?:of\\s+)?$`,
+      'i'
+    )
+  );
+  if (mixedPortion) {
+    const whole = parseInt(mixedPortion[1], 10);
+    const num = parseInt(mixedPortion[2], 10);
+    const den = parseInt(mixedPortion[3], 10);
+    if (
+      whole > 0 &&
+      whole <= 12 &&
+      num > 0 &&
+      den > 0 &&
+      den <= 16 &&
+      num < den
+    ) {
+      const scale = portionWordScale(mixedPortion[4]);
+      const qty = Math.round((whole + num / den) * scale * 10) / 10;
+      if (qty > 0 && qty <= 12) {
+        return { qty, start: kwStart - mixedPortion[0].length };
+      }
+    }
+  }
+  const bareMixed = before.match(/(\d+)\s+(\d+)\s*\/\s*(\d+)\s*$/);
+  if (bareMixed) {
+    const whole = parseInt(bareMixed[1], 10);
+    const num = parseInt(bareMixed[2], 10);
+    const den = parseInt(bareMixed[3], 10);
+    if (
+      whole > 0 &&
+      whole <= 12 &&
+      num > 0 &&
+      den > 0 &&
+      den <= 16 &&
+      num < den
+    ) {
+      const qty = Math.round((whole + num / den) * 10) / 10;
+      if (qty > 0 && qty <= 12) {
+        return { qty, start: kwStart - bareMixed[0].length };
+      }
+    }
+  }
+  // Fractions before whole numbers: "1/2 cup rice" must not become qty 2
+  // via the trailing digit of the denominator.
+  const fractionPortion = before.match(
+    new RegExp(`(\\d+)\\s*/\\s*(\\d+)\\s*(${PORTION_WORD})\\s*(?:of\\s+)?$`, 'i')
+  );
+  if (fractionPortion) {
+    const num = parseInt(fractionPortion[1], 10);
+    const den = parseInt(fractionPortion[2], 10);
+    if (num > 0 && den > 0 && den <= 16 && num < den * 8) {
+      const scale = portionWordScale(fractionPortion[3]);
+      const qty = Math.round((num / den) * scale * 10) / 10;
+      if (qty > 0 && qty <= 12) {
+        return { qty, start: kwStart - fractionPortion[0].length };
+      }
+    }
+  }
+  const bareFraction = before.match(/(\d+)\s*\/\s*(\d+)\s*$/);
+  if (bareFraction) {
+    const num = parseInt(bareFraction[1], 10);
+    const den = parseInt(bareFraction[2], 10);
+    if (num > 0 && den > 0 && den <= 16 && num < den * 8) {
+      const qty = Math.round((num / den) * 10) / 10;
+      if (qty > 0 && qty <= 12) {
+        return { qty, start: kwStart - bareFraction[0].length };
+      }
+    }
+  }
   // Numbered portion words: "2 scoops whey", "1 cup rice", "2 handfuls almonds",
   // "3 pieces chicken", "2 slices bread", "a plate of rice", "2 tsp oil"
-  // — optional "of" before the food.
+  // — optional "of" before the food. Leading digit must not be a fraction denom.
   const numberedPortion = before.match(
-    new RegExp(`(\\d+(?:\\.\\d+)?)\\s*(${PORTION_WORD})\\s*(?:of\\s+)?$`, 'i')
+    new RegExp(`(?<![\\d/])(\\d+(?:\\.\\d+)?)\\s*(${PORTION_WORD})\\s*(?:of\\s+)?$`, 'i')
   );
   if (numberedPortion) {
     const n = parseFloat(numberedPortion[1]);
@@ -193,6 +318,104 @@ function findQtyBefore(text: string, kwStart: number): { qty: number; start: num
         start: kwStart - numberedPortion[0].length,
       };
     }
+  }
+  // "one and a half cups" / "2 and a half cups" before the food.
+  // Must run before bare `half cup` — otherwise "one and a half cups" matches
+  // as qty 0.5 via the trailing "half cups" (.424).
+  const andAHalfBefore = before.match(
+    new RegExp(
+      `\\b(a|an|one|two|three|four|five|six|\\d+)\\s+and\\s+a\\s+half\\s+(${PORTION_WORD})\\s*(?:of\\s+)?$`,
+      'i'
+    )
+  );
+  if (andAHalfBefore) {
+    const raw = andAHalfBefore[1].toLowerCase();
+    const n = WORD_QTY[raw] ?? parseFloat(raw);
+    const scale = portionWordScale(andAHalfBefore[2]);
+    if (n > 0 && n <= 12) {
+      const qty = Math.round((n + 0.5) * scale * 10) / 10;
+      if (qty > 0 && qty <= 12) {
+        return { qty, start: kwStart - andAHalfBefore[0].length };
+      }
+    }
+  }
+  // "a cup and a half of rice" — portion word before "and a half"
+  const portionAndAHalf = before.match(
+    new RegExp(
+      `\\b(a|an|one|two|three|four|five|six|\\d+)\\s+(${PORTION_WORD})\\s+and\\s+a\\s+half\\s*(?:of\\s+)?$`,
+      'i'
+    )
+  );
+  if (portionAndAHalf) {
+    const raw = portionAndAHalf[1].toLowerCase();
+    const n = WORD_QTY[raw] ?? parseFloat(raw);
+    const scale = portionWordScale(portionAndAHalf[2]);
+    if (n > 0 && n <= 12) {
+      const qty = Math.round((n + 0.5) * scale * 10) / 10;
+      if (qty > 0 && qty <= 12) {
+        return { qty, start: kwStart - portionAndAHalf[0].length };
+      }
+    }
+  }
+  // Word half + portion: "half a cup of rice", "half cup rice" → 0.5× (.424)
+  // Also "a quarter cup" / "quarter of a cup" → 0.25× (.433)
+  // "a third cup" / "two thirds cup" / "two-thirds cup" / "three quarters cup" (.435/.436)
+  const threeQuarters = before.match(
+    new RegExp(
+      `\\bthree\\s*-?\\s*quarters?(?:\\s+of)?\\s+(?:an?\\s+)?(${PORTION_WORD})\\s*(?:of\\s+)?$`,
+      'i'
+    )
+  );
+  if (threeQuarters) {
+    const scale = portionWordScale(threeQuarters[1]);
+    const qty = Math.round(0.75 * scale * 10) / 10;
+    if (qty > 0 && qty <= 12) {
+      return { qty, start: kwStart - threeQuarters[0].length };
+    }
+  }
+  const thirdsPortion = before.match(
+    new RegExp(
+      `\\b(an?|one|two)?\\s*-?\\s*thirds?(?:\\s+of)?\\s+(?:an?\\s+)?(${PORTION_WORD})\\s*(?:of\\s+)?$`,
+      'i'
+    )
+  );
+  if (thirdsPortion) {
+    const lead = (thirdsPortion[1] ?? 'one').toLowerCase();
+    const n = lead === 'two' ? 2 / 3 : 1 / 3;
+    const scale = portionWordScale(thirdsPortion[2]);
+    const qty = Math.round(n * scale * 10) / 10;
+    if (qty > 0 && qty <= 12) {
+      return { qty, start: kwStart - thirdsPortion[0].length };
+    }
+  }
+  const quarterPortion = before.match(
+    new RegExp(
+      `\\b(?:an?\\s+)?quarter(?:\\s+of)?\\s+(?:an?\\s+)?(${PORTION_WORD})\\s*(?:of\\s+)?$`,
+      'i'
+    )
+  );
+  if (quarterPortion) {
+    const scale = portionWordScale(quarterPortion[1]);
+    const qty = Math.round(0.25 * scale * 10) / 10;
+    if (qty > 0 && qty <= 12) {
+      return { qty, start: kwStart - quarterPortion[0].length };
+    }
+  }
+  // Word half + portion: "half a cup", "half of a cup", "half cup" → 0.5× (.424/.436)
+  const halfPortion = before.match(
+    new RegExp(`\\bhalf\\s+(?:of\\s+)?(?:an?\\s+)?(${PORTION_WORD})\\s*(?:of\\s+)?$`, 'i')
+  );
+  if (halfPortion) {
+    const scale = portionWordScale(halfPortion[1]);
+    const qty = Math.round(0.5 * scale * 10) / 10;
+    if (qty > 0 && qty <= 12) {
+      return { qty, start: kwStart - halfPortion[0].length };
+    }
+  }
+  // Bare "half chicken" / "half a chicken" — quantity, not plate-size adjective
+  const bareHalf = before.match(/\bhalf\s+(?:an?\s+)?$/i);
+  if (bareHalf) {
+    return { qty: 0.5, start: kwStart - bareHalf[0].length };
   }
   // Word + portion: "a cup of rice", "two handfuls of almonds", "a plate of chicken"
   const wordPortion = before.match(
@@ -228,6 +451,11 @@ function findQtyBefore(text: string, kwStart: number): { qty: number; start: num
       return { qty: Math.round(t * 0.5 * 10) / 10, start: kwStart - tbsp[0].length };
     }
   }
+  // "a tablespoon of olive oil" / "tbsp olive oil" — bare tbsp = 1 tbsp scale (.443)
+  const bareTbsp = before.match(/\b(?:(?:a|an)\s+)?(?:tbsp|tablespoons?)\s+(?:of\s+)?$/i);
+  if (bareTbsp) {
+    return { qty: 0.5, start: kwStart - bareTbsp[0].length };
+  }
   // 2 tsp olive oil (same scale as portion-word tsp)
   const tsp = before.match(/(\d+(?:\.\d+)?)\s*(?:tsp|teaspoons?)\s*$/i);
   if (tsp) {
@@ -239,12 +467,73 @@ function findQtyBefore(text: string, kwStart: number): { qty: number; start: num
       };
     }
   }
-  const num = before.match(/(\d{1,2})\s*(?:x\s*)?$/i);
+  const num = before.match(/(?<![\d/])(\d{1,2})\s*(?:x\s*)?$/i);
   if (num) {
     const n = parseInt(num[1], 10);
     if (n >= 1 && n <= 20) {
       return { qty: n, start: kwStart - num[0].length };
     }
+  }
+  // "half a dozen eggs" / "half dozen" / "a half-dozen" → 6 (.446) — before bare dozen
+  const halfDozenQty = before.match(
+    /\b(?:(?:a|an)\s+)?half(?:\s+a|\s*-\s*)?\s*dozen\s+(?:of\s+)?$/i
+  );
+  if (halfDozenQty) {
+    return { qty: 6, start: kwStart - halfDozenQty[0].length };
+  }
+  // "a dozen eggs" / "dozen eggs" → 12 (.446)
+  const dozenQty = before.match(/\b(?:(?:a|an)\s+)?dozen\s+(?:of\s+)?$/i);
+  if (dozenQty) {
+    return { qty: 12, start: kwStart - dozenQty[0].length };
+  }
+  // "a couple of eggs" / "couple eggs" → 2 (.438)
+  const coupleQty = before.match(/\b(?:(?:a|an)\s+)?couple\s+(?:of\s+)?$/i);
+  if (coupleQty) {
+    return { qty: 2, start: kwStart - coupleQty[0].length };
+  }
+  // "a pair of eggs" / "pair eggs" → 2 (.443)
+  const pairQty = before.match(/\b(?:(?:a|an)\s+)?pair\s+(?:of\s+)?$/i);
+  if (pairQty) {
+    return { qty: 2, start: kwStart - pairQty[0].length };
+  }
+  // "a few eggs" / "few almonds" → 3 (.441)
+  const fewQty = before.match(/\b(?:(?:a|an)\s+)?few\s+(?:of\s+)?$/i);
+  if (fewQty) {
+    return { qty: 3, start: kwStart - fewQty[0].length };
+  }
+  // "some eggs" / "some chicken" → 3 (same band as few) (.446)
+  const someQty = before.match(/\b(?:(?:a|an)\s+)?some\s+(?:of\s+)?$/i);
+  if (someQty) {
+    return { qty: 3, start: kwStart - someQty[0].length };
+  }
+  // "several eggs" → 3 (.449)
+  const severalQty = before.match(/\b(?:(?:a|an)\s+)?several\s+(?:of\s+)?$/i);
+  if (severalQty) {
+    return { qty: 3, start: kwStart - severalQty[0].length };
+  }
+  // "a lot of chicken" / "lots|loads|plenty|heap|bunch|ton of …" → 2 (.449/.451)
+  const lotsQty = before.match(
+    /\b(?:a\s+lot|lots|loads|plenty|(?:a\s+)?(?:heap|bunch|ton)s?)\s+(?:of\s+)?$/i
+  );
+  if (lotsQty) {
+    return { qty: 2, start: kwStart - lotsQty[0].length };
+  }
+  // "double portion of rice" → 2 (not GLOBAL 1.35×) (.449)
+  const doublePortionQty = before.match(
+    /\b(?:(?:a|an)\s+)?double\s+portions?\s+(?:of\s+)?$/i
+  );
+  if (doublePortionQty) {
+    return { qty: 2, start: kwStart - doublePortionQty[0].length };
+  }
+  // "a dash/splash/pinch/dab/bit of olive oil" → tsp-scale, not a full serving (.441/.443)
+  const dabQty = before.match(
+    /\b(?:(?:a|an)\s+)?(?:dash|splash|pinch|dab|bit)\s+(?:of\s+)?$/i
+  );
+  if (dabQty) {
+    return {
+      qty: Math.round(portionWordScale('tsp') * 10) / 10,
+      start: kwStart - dabQty[0].length,
+    };
   }
   const word = before.match(/\b(a|an|one|two|three|four|five|six)\s+$/i);
   if (word) {
@@ -274,6 +563,11 @@ function collectHits(text: string): Hit[] {
         const rightOk = end >= text.length || /[\s,+/&-]/.test(text[end] ?? '');
         if (!leftOk || !rightOk) {
           from = idx + 1;
+          continue;
+        }
+        // `bowl of rice` — bowl is a portion word, not Bowl base (.449)
+        if (PORTION_ALSO_FOOD.test(kw) && /^\s+of\s+\w/i.test(text.slice(end))) {
+          from = end;
           continue;
         }
         const { qty, start } = findQtyBefore(text, idx);

@@ -285,7 +285,7 @@ export function MoreSheet({ open, onClose }: { open: boolean; onClose: () => voi
           onClick={onClose}
           className="block bg-primary px-4 py-4 text-primary-foreground"
         >
-          <span className="block text-[11px] font-semibold uppercase tracking-[0.1em] opacity-90">
+          <span className="block text-[11px] font-semibold uppercase tracking-[0.1em] text-primary-foreground">
             {t('navSectionPremium', { defaultValue: 'Premium' })}
           </span>
           <span className="block text-[19px] font-extrabold leading-tight">

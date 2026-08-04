@@ -16,7 +16,7 @@ One screen of truth for any AI tool or human joining cold. Read this, then [AGEN
 
 ---
 
-## Now (2026-08-04 · web `2026.07-unified.418` · Android `1.24.1`)
+## Now (2026-08-04 · web `2026.07-unified.454` · Android `1.24.1`)
 
 > The ONLY "where we are" block in the repo — [ORCHESTRATION.md](ORCHESTRATION.md) points here.
 >
@@ -177,6 +177,42 @@ One screen of truth for any AI tool or human joining cold. Read this, then [AGEN
 > and `.416` dropped `.401` detail (full text remains in LOG.md / archive)
 > and `.417` dropped `.402` detail (full text remains in LOG.md / archive)
 > and `.418` dropped `.403` detail (full text remains in LOG.md / archive)
+> and `.419` dropped `.404` detail (full text remains in LOG.md / archive)
+> and `.420` dropped `.405` detail (full text remains in LOG.md / archive)
+> and `.421` dropped `.406` detail (full text remains in LOG.md / archive)
+> and `.422` dropped `.407` detail (full text remains in LOG.md / archive)
+> and `.423` dropped `.408` detail (full text remains in LOG.md / archive)
+> and `.424` dropped `.409` detail (full text remains in LOG.md / archive)
+> and `.425` dropped `.410` detail (full text remains in LOG.md / archive)
+> and `.426` dropped `.411` detail (full text remains in LOG.md / archive)
+> and `.427` dropped `.412` detail (full text remains in LOG.md / archive)
+> and `.428` dropped `.413` detail (full text remains in LOG.md / archive)
+> and `.429` dropped `.414` detail (full text remains in LOG.md / archive)
+> and `.430` dropped `.415` detail (full text remains in LOG.md / archive)
+> and `.431` dropped `.416` detail (full text remains in LOG.md / archive)
+> and `.432` dropped `.417` detail (full text remains in LOG.md / archive)
+> and `.433` dropped `.418` detail (full text remains in LOG.md / archive)
+> and `.434` dropped `.419` detail (full text remains in LOG.md / archive)
+> and `.435` dropped `.420` detail (full text remains in LOG.md / archive)
+> and `.436` dropped `.421` detail (full text remains in LOG.md / archive)
+> and `.437` dropped `.422` detail (full text remains in LOG.md / archive)
+> and `.438` dropped `.423` detail (full text remains in LOG.md / archive)
+> and `.439` dropped `.424` detail (full text remains in LOG.md / archive)
+> and `.440` dropped `.425` detail (full text remains in LOG.md / archive)
+> and `.441` dropped `.426` detail (full text remains in LOG.md / archive)
+> and `.442` dropped `.427` detail (full text remains in LOG.md / archive)
+> and `.443` dropped `.428` detail (full text remains in LOG.md / archive)
+> and `.444` dropped `.429` detail (full text remains in LOG.md / archive)
+> and `.445` dropped `.430` detail (full text remains in LOG.md / archive)
+> and `.446` dropped `.431` detail (full text remains in LOG.md / archive)
+> and `.447` dropped `.432` detail (full text remains in LOG.md / archive)
+> and `.448` dropped `.433` detail (full text remains in LOG.md / archive)
+> and `.449` dropped `.434` detail (full text remains in LOG.md / archive)
+> and `.450` dropped `.435` detail (full text remains in LOG.md / archive)
+> and `.451` dropped `.436` detail (full text remains in LOG.md / archive)
+> and `.452` dropped `.437` detail (full text remains in LOG.md / archive)
+> and `.453` dropped `.438` detail (full text remains in LOG.md / archive)
+> and `.454` dropped `.439` detail (full text remains in LOG.md / archive)
 > to [CONTEXT-now-2026-07-30.md](docs/archive/CONTEXT-now-2026-07-30.md) after this
 > block reached **79 bullets / 103KB**. A status doc that only grows stops being read.
 
@@ -197,21 +233,21 @@ One screen of truth for any AI tool or human joining cold. Read this, then [AGEN
 > | Migrations | **9 recorded pending** — [LAUNCH_RUNBOOK](docs/LAUNCH_RUNBOOK.md) §3, enforced by `src/lib/migrationLedger.test.ts`. |
 > | gitleaks | **green — and scanning for the first time.** It had never scanned anything: on a `pull_request` event the action lists the PR's commits, the job declared no `permissions:` block, and it 403'd (`pull_requests=read`) before opening a file. Fixed by a `permissions:` block (`.224` carrying `.255`). It scans **only the PR's own commits**, so commit `8ea3527a`'s real Solana treasury address — scrubbed from the working file, still in history — is out of its scope. That finding stands, deliberately not allowlisted; it was never what made this check red. |
 
-- **`.418`:** Landing **photos filled** + form stick geometry rebuild.
-- **`.417`:** Hero palette discovery **scope** — section figures ≠ chapter heroes.
-- **`.416`:** Scout **modernist re-ink** + densified magazine PDF (~27p).
-- **`.415`:** Pattern packs + Learn **18/18** figures + social WebP.
-- **`.414`:** Form media **T1** (52/52 diagrams) + **Learn section densify** (8 figures).
-- **`.413`:** Media craft — form uniqueness + stick kit + T0 de-clone (12 SVGs) + MASCOT modernist lock + coverage report.
-- **`.412`:** Victory **session-2 next** after first log — aligns with week-1 cue (T1.3).
-- **`.411`:** Fuel **edit-before-log** gate for low/rough estimates (T1.4 / #221).
-- **`.410`:** Victory **prescribed honesty** — completed logs keep coach stamp; no freestyle next-load cue.
-- **`.409`:** Active **log-set payload / PR haptic / empty-finish toast** (T2.1).
-- **`.408`:** Active **table set controls** + volume-trim toast copy (T2.1).
-- **`.407`:** Active **set-input patches** — Use next / plate / apply-targets + plate initial weight (T2.1).
-- **`.406`:** Active **check-in dismiss extract** — `planSessionCheckInDismiss` + `volumeTrimToastKind` (T2.1).
-- **`.405`:** Active **session finish extract** — `logSetIsPr` / `planLogSetRest` / `assembleActiveVictory` + wiring guards (T2.1).
-- **`.404`:** Week-1 activation **contract** after composure — session2 First Steps + CTA + Mission Score priority 32 locked by tests (`.291`+`.294` regression net).
+- **`.454`:** Typecheck green — UnitsPref/NextSetTarget mocks + MuscleGroup add callbacks (#254 merge).
+- **`.453`:** Coach chat stream reader peel — SSE loop off CoachChatPanel.
+- **`.452`:** Victory share helpers — cancel-after-file stays done; URL one-home.
+- **`.451`:** NL plenty/loads/heap/bunch/ton + bananas plural — Fuel accuracy continue.
+- **`.450`:** ActiveWorkoutSheets peel — overlay cluster off ActiveWorkoutPage (~660→632).
+- **`.449`:** NL several/lots/double-portion/servings + bowl-of demotion — Fuel accuracy.
+- **`.448`:** CoachChatTranscript + Composer peel — chat panel 349→287.
+- **`.447`:** VictoryStatsStrip + VictoryNextActionStrip — sheet ~290→264.
+- **`.446`:** NL dozen / half-dozen / some qty — Fuel accuracy continue.
+- **`.445`:** Coach chat client helpers — status/stream/context off CoachChatPanel (399→349).
+- **`.444`:** VictoryBodyDeltaStrip peel — body-delta chips off Victory sheet (~316→290).
+- **`.443`:** NL `pair` → 2 + `dab`/`bit` dab-scale + bare tbsp — Fuel accuracy continue.
+- **`.442`:** CoachPlanSessionGrid + `resolveCoachBossSessionId` — boss Start one-home.
+- **`.441`:** NL `few` → 3 + dash/splash/pinch dab scale — Fuel accuracy continue.
+- **`.440`:** ActiveSessionDock peel — rest/console chrome off ActiveWorkoutPage (~686→660).
 - **Horizon W — wedge excellence.** Web craft 1–6 + **Fuel estimate accuracy** (edit-before-log, better NL match, honest photo sources).
 - **Free-first beta (~4 weeks):** LLC + EIN pending — **no Bundle UI** + **full depth unlocked** + **full More nav** (journey train-only deferred) ([docs/FREE_BETA.md](docs/FREE_BETA.md)).
 - **`e2e:visual` is the one dark gate.** Its three baselines were generated **2026-07-22, before the rebrand**, and depicted the old navy/emerald dark design — black grounds, emerald CTAs, rounded corners. Verified by opening one, not inferred from dates. **Deleted**, because a known-wrong baseline is worse than none: the first Linux run would have shown four huge diffs, and the reflex there is `--update-snapshots` without looking, which launders whatever renders that day into truth. `home-reduced.png` **never had a baseline at all**, so the homepage has been silently self-approving since the case was written. **First Linux CI run after billing clears must bootstrap all four** (`npx playwright test --grep @visual --update-snapshots`, then commit the artifact) — it cannot be done on macOS, the pixels will not match.

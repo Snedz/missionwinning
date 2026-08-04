@@ -11,11 +11,14 @@
 | `WeekStrip.tsx` | Week navigation on Coach page |
 | `TodayCoachWeekStrip.tsx` | Compact week strip on Today |
 | `PlanSessionCard.tsx` | Single session card (exercises, start train, optional adjust) |
+| `CoachPlanSessionGrid.tsx` | Sorted week grid + boss Start via `resolveCoachBossSessionId` (`.442`) |
 | `CoachScheduleEditor.tsx` | Days/week + preferred weekdays (Profile + Coach manage) |
 | `CoachManageSheet.tsx` | D12 manage week: adjust · schedule · regenerate · ask |
 | `CoachVoiceCard.tsx` | Weekly voice briefing display |
 | `AdjustSessionSheet.tsx` | Free offline adjust chips (time / BW / avoid) |
 | `CoachChatPanel.tsx` | Premium chat; free = soft tip or form cues for `?ask=` (not brass paywall) |
+| `CoachChatTranscript.tsx` | Premium turn log (`role="log"`) (`.448`) |
+| `CoachChatComposer.tsx` | Premium input + send/stop (`.448`) |
 
 ## Related
 

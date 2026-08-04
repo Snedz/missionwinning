@@ -232,6 +232,24 @@ export function pickVictoryNextAction(opts?: PickVictoryNextActionOpts): Victory
   };
 }
 
+/**
+ * Signed body-delta chip text — one format for readiness / strain / recovery (.429).
+ */
+export function formatVictorySignedDelta(n: number): string {
+  return n > 0 ? `+${n}` : `${n}`;
+}
+
+/**
+ * Secondary "Back to Today" only when the primary next is Coach / Train / session-2 —
+ * not when the primary is already Today (rest path). One boss CTA stays primary;
+ * Today is a quiet escape, never a second outline button (`.422`).
+ */
+export function shouldShowVictoryBackTodaySecondary(
+  nextHref: string | undefined | null
+): boolean {
+  return typeof nextHref === 'string' && nextHref.length > 0 && !nextHref.includes('/log');
+}
+
 export function summarizeWorkoutVictory(
   log: CompletedWorkoutLog,
   streak: number,

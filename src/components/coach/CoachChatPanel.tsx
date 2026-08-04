@@ -6,16 +6,23 @@
  */
 
 import { useEffect, useRef, useState } from 'react';
-import Link from 'next/link';
 import { useTranslation } from 'react-i18next';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { track } from '@/lib/analytics';
 import type { PlanSession } from '@/lib/coach/types';
 import { EXERCISES, ensureFullExerciseCatalog, getExerciseById } from '@/data/exercises';
-import { getFormGuideOrCues } from '@/lib/formGuides';
 import { cn } from '@/lib/utils';
-import { isFreeBeta } from '@/lib/freeBeta';
+import { CoachFreeFormAskPanel } from '@/components/coach/CoachFreeFormAskPanel';
+import { CoachSoftBundleChatTip } from '@/components/coach/CoachSoftBundleChatTip';
+import { CoachChatTranscript } from '@/components/coach/CoachChatTranscript';
+import { CoachChatComposer } from '@/components/coach/CoachChatComposer';
+import {
+  buildCoachChatRequestContext,
+  coachChatCopyForStatus,
+  isCoachChatAbortError,
+  readCoachChatStream,
+} from '@/lib/coach/coachChatClient';
 
 type Turn = { role: 'user' | 'coach'; content: string };
 
@@ -29,98 +36,6 @@ type Props = {
   askExerciseId?: string;
   className?: string;
 };
-
-function FreeFormAskPanel({
-  askExerciseId,
-  className,
-}: {
-  askExerciseId: string;
-  className?: string;
-}) {
-  const { t } = useTranslation();
-  const [name, setName] = useState(askExerciseId);
-  const [cues, setCues] = useState<string[]>([]);
-
-  useEffect(() => {
-    let cancelled = false;
-    void (async () => {
-      await ensureFullExerciseCatalog();
-      if (cancelled) return;
-      const ex = getExerciseById(askExerciseId) ?? EXERCISES.find((e) => e.id === askExerciseId);
-      const guide = getFormGuideOrCues(askExerciseId, { exercise: ex ?? null });
-      setName(ex?.name ?? askExerciseId);
-      setCues(guide?.execute?.slice(0, 4) ?? (ex?.cues ? [ex.cues] : []));
-    })();
-    return () => {
-      cancelled = true;
-    };
-  }, [askExerciseId]);
-
-  return (
-    <Card className={cn('content-card border-2 border-border', className)} data-testid="coach-free-form-ask">
-      <CardHeader className="pb-2">
-        <CardTitle className="text-base">
-          {t('coachFreeFormTitle', {
-            name,
-            defaultValue: `Form cues — ${name}`,
-          })}
-        </CardTitle>
-      </CardHeader>
-      <CardContent className="space-y-3">
-        {cues.length > 0 ? (
-          <ul className="space-y-1.5 text-sm text-foreground">
-            {cues.map((line) => (
-              <li key={line} className="flex gap-2">
-                <span className="text-primary shrink-0">·</span>
-                <span>{line}</span>
-              </li>
-            ))}
-          </ul>
-        ) : (
-          <p className="text-sm text-muted-foreground">
-            {t('coachFreeFormFallback', {
-              defaultValue: 'Open Form guide on the logger for setup and execute tips.',
-            })}
-          </p>
-        )}
-        <p className="text-xs text-muted-foreground">
-          {isFreeBeta()
-            ? t('coachFreeFormChatHintFree', {
-                defaultValue: 'Your weekly plan and Adjust today stay free. Live chat opens later in beta.',
-              })
-            : (
-              <>
-                {t('coachFreeFormChatHint', {
-                  defaultValue: 'Live Q&A chat is Super Bundle — your weekly plan and Adjust today stay free.',
-                })}{' '}
-                <Link href="/bundle" className="text-primary hover:underline">
-                  {t('coachUnlockBundle', { defaultValue: 'Unlock Super Bundle' })}
-                </Link>
-              </>
-            )}
-        </p>
-      </CardContent>
-    </Card>
-  );
-}
-
-function SoftBundleChatTip({ className }: { className?: string }) {
-  const { t } = useTranslation();
-  if (isFreeBeta()) return null;
-  return (
-    <p
-      className={cn('text-center text-xs text-muted-foreground px-1', className)}
-      data-testid="coach-chat-soft-tip"
-    >
-      {t('coachChatSoftTip', {
-        defaultValue: 'Want to ask the coach anything? Chat is Super Bundle.',
-      })}{' '}
-      <Link href="/bundle" className="text-primary hover:underline">
-        {t('coachUnlockBundle', { defaultValue: 'Unlock Super Bundle' })}
-      </Link>
-    </p>
-  );
-}
 
 export function CoachChatPanel({
   premium,
@@ -192,36 +107,10 @@ export function CoachChatPanel({
 
   if (!premium) {
     if (askExerciseId) {
-      return <FreeFormAskPanel askExerciseId={askExerciseId} className={className} />;
+      return <CoachFreeFormAskPanel askExerciseId={askExerciseId} className={className} />;
     }
-    return <SoftBundleChatTip className={className} />;
+    return <CoachSoftBundleChatTip className={className} />;
   }
-
-  const errorMessageForStatus = (status: number) => {
-    if (status === 429) {
-      return t('coachChatRateLimited', {
-        defaultValue: 'Too many messages — wait a moment and try again.',
-      });
-    }
-    if (status === 401) {
-      return t('coachChatUnauthorized', {
-        defaultValue: 'Sign in again to keep chatting with your coach.',
-      });
-    }
-    if (status === 402) {
-      return t('coachChatPremium', {
-        defaultValue: 'Coach chat needs an active Super Bundle.',
-      });
-    }
-    if (status === 503) {
-      return t('coachChatOffline', {
-        defaultValue: 'Coach voice offline — your plan and adjustments still work.',
-      });
-    }
-    return t('coachChatError', {
-      defaultValue: 'Could not reach the coach. Try again.',
-    });
-  };
 
   const failWithUserKept = (message: string, prior: Turn[], coachContent: string, markOffline = false) => {
     if (markOffline) setOffline(true);
@@ -247,24 +136,14 @@ export function CoachChatPanel({
     const prior = turns;
     setTurns([...prior, { role: 'user', content: message }, { role: 'coach', content: '' }]);
 
-    const context = {
+    const context = buildCoachChatRequestContext({
       readiness,
       strain,
       recovery,
-      trainDays14: 0,
       exerciseId,
-      todaySession: todaySession
-        ? {
-            name: todaySession.name,
-            kind: todaySession.kind,
-            estMinutes: todaySession.estMinutes,
-            exercises: todaySession.exercises.slice(0, 12).map((e) => ({
-              id: e.exerciseId,
-              name: EXERCISES.find((x) => x.id === e.exerciseId)?.name ?? e.exerciseId,
-            })),
-          }
-        : undefined,
-    };
+      todaySession,
+      resolveExerciseName: (id) => EXERCISES.find((x) => x.id === id)?.name ?? id,
+    });
 
     abortRef.current?.abort();
     const ac = new AbortController();
@@ -288,7 +167,13 @@ export function CoachChatPanel({
         signal: ac.signal,
       });
       if (!res.ok || !res.body) {
-        failWithUserKept(message, prior, errorMessageForStatus(res.status), res.status === 503);
+        const copy = coachChatCopyForStatus(res.status);
+        failWithUserKept(
+          message,
+          prior,
+          t(copy.key, { defaultValue: copy.defaultValue }),
+          Boolean(copy.markOffline)
+        );
         return;
       }
 
@@ -297,71 +182,39 @@ export function CoachChatPanel({
         grounded: Boolean(exerciseId),
       });
 
-      const reader = res.body.getReader();
-      const decoder = new TextDecoder();
-      let coachText = '';
-      while (true) {
-        const { done, value } = await reader.read();
-        if (done) break;
-        const chunk = decoder.decode(value, { stream: true });
-        if (chunk.includes('[[error:coach_offline]]')) {
-          failWithUserKept(
-            message,
-            prior,
-            t('coachChatOffline', {
-              defaultValue: 'Coach voice offline — your plan and adjustments still work.',
-            }),
-            true
-          );
-          return;
-        }
-        if (chunk.includes('[[error:coach_quota]]')) {
-          // Honest, not apologetic: the limit is real and it resets.
-          failWithUserKept(
-            message,
-            prior,
-            t('coachChatQuota', {
-              defaultValue: "Today's chat limit reached — resets tomorrow. Your plan and logger are unaffected.",
-            }),
-            true
-          );
-          return;
-        }
-        if (chunk.includes('[[error:')) {
-          failWithUserKept(
-            message,
-            prior,
-            t('coachChatError', {
-              defaultValue: 'Could not reach the coach. Try again.',
-            })
-          );
-          return;
-        }
-        coachText += chunk;
-        const snapshot = coachText;
+      const streamResult = await readCoachChatStream(res.body, (snapshot) => {
         setTurns([...prior, { role: 'user', content: message }, { role: 'coach', content: snapshot }]);
-      }
-      if (!coachText.trim()) {
+      });
+      if (streamResult.kind === 'stream_error') {
         failWithUserKept(
           message,
           prior,
-          t('coachChatError', {
-            defaultValue: 'Could not reach the coach. Try again.',
-          })
+          t(streamResult.error.copy.key, {
+            defaultValue: streamResult.error.copy.defaultValue,
+          }),
+          Boolean(streamResult.error.copy.markOffline)
+        );
+        return;
+      }
+      if (streamResult.kind === 'empty') {
+        const copy = coachChatCopyForStatus(0);
+        failWithUserKept(
+          message,
+          prior,
+          t(copy.key, { defaultValue: copy.defaultValue })
         );
       }
     } catch (err) {
-      if (err instanceof Error && err.name === 'AbortError') {
+      if (isCoachChatAbortError(err)) {
         setTurns([...prior, { role: 'user', content: message }]);
         setSendError(t('coachChatStopped', { defaultValue: 'Stopped.' }));
         return;
       }
+      const copy = coachChatCopyForStatus(0);
       failWithUserKept(
         message,
         prior,
-        t('coachChatError', {
-          defaultValue: 'Could not reach the coach. Try again.',
-        })
+        t(copy.key, { defaultValue: copy.defaultValue })
       );
     } finally {
       setSending(false);
@@ -412,78 +265,14 @@ export function CoachChatPanel({
                 </Button>
               </div>
             ) : null}
-            <div
-              ref={logRef}
-              role="log"
-              aria-live="polite"
-              className="max-h-56 overflow-y-auto space-y-2 border-2 border-border p-3 text-sm"
-            >
-              {turns.length === 0 ? (
-                <p className="text-muted-foreground text-xs">
-                  {t('coachChatPlaceholder', {
-                    defaultValue: "Ask about today's session, form, or recovery…",
-                  })}
-                </p>
-              ) : null}
-              {turns.map((turn, i) => (
-                <div
-                  key={`${turn.role}-${i}`}
-                  className={cn(
-                    'rounded-none px-2 py-1.5 whitespace-pre-wrap',
-                    turn.role === 'user'
-                      ? 'border-2 border-primary bg-tint ml-4'
-                      : 'border-2 border-border bg-card mr-4'
-                  )}
-                >
-                  {turn.content}
-                  {sending && turn.role === 'coach' && i === turns.length - 1 ? (
-                    <span
-                      className="inline-block w-1.5 h-3.5 ms-0.5 align-middle bg-primary animate-pulse"
-                      aria-hidden
-                    />
-                  ) : null}
-                </div>
-              ))}
-            </div>
-            <div className="flex gap-2">
-              <label className="sr-only" htmlFor="coach-chat-input">
-                {t('coachChatTitle', { defaultValue: 'Ask your coach' })}
-              </label>
-              <input
-                id="coach-chat-input"
-                type="text"
-                className="flex-1 min-h-[44px] rounded-none border border-border bg-background px-3 text-sm"
-                value={input}
-                disabled={sending}
-                placeholder={t('coachChatPlaceholder', {
-                  defaultValue: "Ask about today's session, form, or recovery…",
-                })}
-                onChange={(e) => setInput(e.target.value)}
-                onKeyDown={(e) => {
-                  if (e.key === 'Enter') void send();
-                }}
-              />
-              {sending ? (
-                <Button
-                  type="button"
-                  variant="outline"
-                  className="min-h-[44px] min-w-[44px]"
-                  onClick={stopStreaming}
-                >
-                  {t('coachChatStop', { defaultValue: 'Stop' })}
-                </Button>
-              ) : (
-                <Button
-                  type="button"
-                  variant="default"
-                  className="min-h-[44px] min-w-[44px]"
-                  disabled={!input.trim()}
-                  onClick={() => void send()}
-                >
-                  {t('coachChatSend', { defaultValue: 'Send' })}
-                </Button>
-              )}
-            </div>
+            <CoachChatTranscript turns={turns} sending={sending} logRef={logRef} />
+            <CoachChatComposer
+              input={input}
+              sending={sending}
+              onInputChange={setInput}
+              onSend={() => void send()}
+              onStop={stopStreaming}
+            />
           </CardContent>
         ) : null}
       </Card>

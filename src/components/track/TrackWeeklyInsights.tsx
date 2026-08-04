@@ -27,7 +27,7 @@ export function TrackWeeklyInsights({ locked = false }: Props) {
     : stats!;
 
   return (
-    <Card className={`content-card border-primary ${locked ? 'opacity-95' : ''}`}>
+    <Card className="content-card border-primary">
       <CardHeader className="pb-2">
         <CardTitle className="text-base">
           {t('trackWeeklyGpsTitle', { defaultValue: 'GPS week at a glance' })}

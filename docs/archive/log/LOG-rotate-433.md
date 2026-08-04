@@ -1,0 +1,3 @@
+## 2026-08-04 — ActiveExerciseCard next-target + menu extract (`.418`)
+
+ActiveExerciseCard still owned the "Next: N × W" branch and menu visibility inline after Loops 20–32 emptied the page of predicates. Extracted `resolveExerciseNextTarget`, `shouldShowLoadPctChip`, `shouldShowSupersetLinkMenuitem`, and `shouldShowExerciseSwapMenuitem` into [`activeWorkoutHelpers.ts`](src/lib/workout/activeWorkoutHelpers.ts) with wiring guards. Prescribed sessions never call `suggestNextSetTarget` (mutant: inject suggest → 0 calls). Overflow UI moved to [`ActiveExerciseMoreMenu.tsx`](src/components/workout/ActiveExerciseMoreMenu.tsx) + [`ActiveSetOptionsMenu.tsx`](src/components/workout/ActiveSetOptionsMenu.tsx) — card **536 → 380** LOC.
