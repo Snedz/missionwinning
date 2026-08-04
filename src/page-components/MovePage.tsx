@@ -91,7 +91,7 @@ export function MovePage() {
         </h3>
       ) : null}
       <div className="grid gap-4 md:grid-cols-2">
-        {flows.map((flow, i) => (
+        {flows.map((flow) => (
           <Card key={flow.id} className="content-card border-2 border-border hover:border-primary transition-colors">
             <CardHeader>
               <CardTitle className="flex items-center gap-2 text-lg">

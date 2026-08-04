@@ -6,7 +6,15 @@ const Table = React.forwardRef<HTMLTableElement, React.HTMLAttributes<HTMLTableE
     // tabIndex so a horizontally scrolling table stays keyboard-reachable
     // (axe scrollable-region-focusable) — zero-data routes never mount wide
     // tables, so seeded Benchmarks is what finally measured this.
-    <div className="relative w-full overflow-auto" tabIndex={0}>
+    // role=region + aria-label name the landmark. eslint jsx-a11y still treats
+    // region as non-interactive; the disable is load-bearing for the axe rule.
+    <div
+      className="relative w-full overflow-auto"
+      role="region"
+      aria-label="Scrollable data table"
+      // eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex -- scrollable-region-focusable
+      tabIndex={0}
+    >
       <table ref={ref} className={cn("w-full caption-bottom text-sm", className)} {...props} />
     </div>
   )

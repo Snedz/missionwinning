@@ -515,4 +515,20 @@ PR: #234
 **Aikido:** `aikido_full_scan` fails without X11 `$DISPLAY`. Noted; continue.
 **Next:** Loop 22 — more seeded a11y; Active extracts; Bundle i18n still refused.
 
+## Loop 22 waves
+
+| Wave | Status | Notes |
+|------|--------|-------|
+| F1 Session check-in a11y | done (`.367`) | Sheet axe green; table region + Move lint |
+| F2 Active extract | pending (`.368`) | `activeSessionEyebrowKind` + `toggleOpenIdx` |
+| F3 Soft chrome / log close | pending (`.369`) | Select + tooltip rounded-none |
+
+## Metrics
+
+| Metric | Loop 21 end | Loop 22 (in progress) |
+|--------|-------------|------------------------|
+| Build | `.366` | **`.367`** |
+| i18n uncovered cap | 16 (Bundle refuse) | **16** (unchanged) |
+
+
 

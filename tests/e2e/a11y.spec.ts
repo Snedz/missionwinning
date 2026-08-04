@@ -758,6 +758,43 @@ test.describe('Accessibility @a11y', () => {
   });
 
   /**
+   * Loop 22 F1 — Session readiness check-in. Zero history never offers the sheet
+   * (W1); seeded history + cleared today's mind check-in surfaces How do you feel?
+   * for axe. (`seedLegacyOnboarding` plants a complete check-in on purpose so
+   * other Active tests are not blocked by the overlay.)
+   */
+  test('axe serious/critical: /active with session check-in open @a11y', async ({
+    page,
+    context,
+    baseURL,
+  }) => {
+    if (!baseURL) throw new Error('baseURL required');
+    const ok = await unlockGate(page, context, baseURL);
+    if (gateRequired() && !ok) {
+      test.skip(true, 'SMOKE_ACCESS_SECRET required to unlock private gate');
+    }
+    await seedLegacyOnboarding(page);
+    await seedHistoryAndMissedCoach(page);
+    await page.evaluate(() => {
+      localStorage.removeItem('mw_mind_checkins');
+      try {
+        sessionStorage.removeItem('mw_session_checkin_skipped');
+      } catch {
+        /* private mode */
+      }
+    });
+    await page.goto('/active', { waitUntil: 'networkidle' });
+    const start = page.getByRole('button', { name: /start workout/i });
+    await expect(start).toBeVisible({ timeout: 15_000 });
+    await expect(start).toBeEnabled({ timeout: 15_000 });
+    await start.click();
+    await expect(
+      page.getByRole('button', { name: /not now/i }).or(page.getByText(/how do you feel/i)).first()
+    ).toBeVisible({ timeout: 15_000 });
+    await axeSerious(page, '/active (session check-in)');
+  });
+
+  /**
    * The assertion axe cannot make.
    *
    * axe-core does not reliably test focus visibility, which is how this suite sat at
