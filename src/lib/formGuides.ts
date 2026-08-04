@@ -2,6 +2,7 @@ import type { FormGuide } from '@/types/formGuide';
 import type { Exercise } from '@/types';
 import { getExerciseById } from '@/data/exercises';
 import { EXTENDED_GUIDES } from '@/lib/formGuidesExtended';
+import { PATTERN_MEDIA_CAPTION, resolvePatternMediaUrl } from '@/lib/formPatterns';
 
 /** Hero movements with instructional diagrams under /public/form-guides/. */
 const FORM_MEDIA_IDS = new Set([
@@ -36,14 +37,52 @@ const FORM_MEDIA_IDS = new Set([
   'front-squat',
   'goblet-squat',
   'jump-squats',
+  // T1 — every structured guide gets a diagram
+  'dead-bug',
+  'thruster',
+  'cable-row',
+  'lateral-raise',
+  'hanging-leg-raise',
+  'box-jump',
+  'skull-crusher',
+  'calf-raise',
+  'leg-press',
+  'band-pull-apart',
+  'superman',
+  'negative-pullup',
+  'crunches',
+  'cat-camel',
+  'couch-stretch',
+  'bear-crawl',
+  'inchworm',
+  'single-leg-glute',
+  'wall-angels',
+  'thread-needle',
+  'frog-pose',
+  'sled-push',
 ]);
 
-function attachFormMedia(exerciseId: string, guide: FormGuide): FormGuide {
-  if (!FORM_MEDIA_IDS.has(exerciseId) || guide.mediaUrl) return guide;
+function attachFormMedia(
+  exerciseId: string,
+  guide: FormGuide,
+  exercise?: Exercise | null
+): FormGuide {
+  if (guide.mediaUrl) return guide;
+  if (FORM_MEDIA_IDS.has(exerciseId)) {
+    return {
+      ...guide,
+      mediaUrl: `/form-guides/${exerciseId}.svg`,
+      mediaType: 'image',
+    };
+  }
+  // Long-tail: honest shared pattern diagram when we have no bespoke SVG.
+  const patternUrl = resolvePatternMediaUrl(exerciseId, exercise);
+  if (!patternUrl) return guide;
   return {
     ...guide,
-    mediaUrl: `/form-guides/${exerciseId}.svg`,
+    mediaUrl: patternUrl,
     mediaType: 'image',
+    mediaCaption: PATTERN_MEDIA_CAPTION,
   };
 }
 
@@ -173,12 +212,15 @@ const MILITARY_GUIDES: Record<string, FormGuide> = {
   },
 };
 
-export function getFormGuide(exerciseId: string, opts?: { military?: boolean }): FormGuide | null {
+export function getFormGuide(
+  exerciseId: string,
+  opts?: { military?: boolean; exercise?: Exercise | null }
+): FormGuide | null {
   if (opts?.military && MILITARY_GUIDES[exerciseId]) {
-    return attachFormMedia(exerciseId, MILITARY_GUIDES[exerciseId]);
+    return attachFormMedia(exerciseId, MILITARY_GUIDES[exerciseId], opts?.exercise);
   }
   const guide = ALL_GUIDES[exerciseId];
-  return guide ? attachFormMedia(exerciseId, guide) : null;
+  return guide ? attachFormMedia(exerciseId, guide, opts?.exercise) : null;
 }
 
 export function hasFormGuide(exerciseId: string): boolean {
@@ -201,16 +243,22 @@ export function getFormGuideOrCues(
   exerciseId: string,
   opts?: { military?: boolean; exercise?: Exercise | null }
 ): FormGuide | null {
-  const structured = getFormGuide(exerciseId, opts);
+  const exercise = opts?.exercise ?? getExerciseById(exerciseId);
+  const structured = getFormGuide(exerciseId, { ...opts, exercise });
   if (structured) return structured;
 
-  const exercise = opts?.exercise ?? getExerciseById(exerciseId);
   const cues = exercise?.cues?.trim();
+  // Pattern art only when we have exercise-specific cues to show under it —
+  // a shared diagram alone is not enough teaching to open the form sheet.
   if (!cues) return null;
 
-  return {
-    setup: ['Set up with stable footing and braced core'],
-    execute: cuesToExecute(cues),
-    breathing: 'Breathe steadily — brace before the hard part',
-  };
+  return attachFormMedia(
+    exerciseId,
+    {
+      setup: ['Set up with stable footing and braced core'],
+      execute: cuesToExecute(cues),
+      breathing: 'Breathe steadily — brace before the hard part',
+    },
+    exercise
+  );
 }

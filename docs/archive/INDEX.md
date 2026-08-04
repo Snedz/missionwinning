@@ -61,6 +61,11 @@ When adding a doc:
 | [log/LOG-rotate-410.md](./log/LOG-rotate-410.md) | `.395` set-options menuitems — rotated for `.410` Victory prescribed |
 | [log/LOG-rotate-411.md](./log/LOG-rotate-411.md) | `.396` disabled opacity solidify — rotated for `.411` Fuel edit-before-log |
 | [log/LOG-rotate-412.md](./log/LOG-rotate-412.md) | `.397` LogConsole a11y — rotated for `.412` Victory session-2 |
+| [log/LOG-rotate-413.md](./log/LOG-rotate-413.md) | `.398` Active weighted-set helpers — rotated for `.413` media craft form excellence |
+| [log/LOG-rotate-414.md](./log/LOG-rotate-414.md) | `.399` FileUploadRow chrome — rotated for `.414` form media T1 |
+| [log/LOG-rotate-415.md](./log/LOG-rotate-415.md) | `.400` opacity exemptions — rotated for `.415` pattern packs |
+| [log/LOG-rotate-416.md](./log/LOG-rotate-416.md) | `.401` beachhead i18n — rotated for `.416` Scout + PDF |
+| [log/LOG-rotate-417.md](./log/LOG-rotate-417.md) | `.402` pack keys — rotated for `.417` hero palette scope |
 | [log/LOG-rotate-406.md](./log/LOG-rotate-406.md) | rotated for .406 Active check-in |
 | [log/LOG-rotate-405.md](./log/LOG-rotate-405.md) | rotated for .405 Active finish extract |
 | [log/LOG-rotate-404.md](./log/LOG-rotate-404.md) | rotated for .404 week-1 activation contract |

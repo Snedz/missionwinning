@@ -1,39 +1,61 @@
-<?xml version="1.0"?>
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 220" fill="none" role="img" aria-label="Goblet squat form: Hold, Sit, Stand">
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 220" fill="none" role="img" aria-label="Goblet squat form: hold, depth, stand">
   <title>Goblet squat form diagram</title>
   <rect width="360" height="220" fill="#f3f2f2"></rect>
-  <text x="60" y="28" text-anchor="middle" fill="#6f6b69" font-family="Archivo, system-ui, sans-serif" font-size="11">Hold</text>
-  <text x="180" y="28" text-anchor="middle" fill="#6f6b69" font-family="Archivo, system-ui, sans-serif" font-size="11">Sit</text>
-  <text x="300" y="28" text-anchor="middle" fill="#6f6b69" font-family="Archivo, system-ui, sans-serif" font-size="11">Stand</text>
+  <text x="60" y="28" text-anchor="middle" fill="#6f6b69" font-family="Archivo, system-ui, sans-serif" font-size="11" letter-spacing="0.5">HOLD</text>
+  <text x="180" y="28" text-anchor="middle" fill="#6f6b69" font-family="Archivo, system-ui, sans-serif" font-size="11" letter-spacing="0.5">DEPTH</text>
+  <text x="300" y="28" text-anchor="middle" fill="#6f6b69" font-family="Archivo, system-ui, sans-serif" font-size="11" letter-spacing="0.5">STAND</text>
   <line x1="20" y1="185" x2="100" y2="185" stroke="#201e1d" stroke-width="2"></line>
   <line x1="140" y1="185" x2="220" y2="185" stroke="#201e1d" stroke-width="2"></line>
   <line x1="260" y1="185" x2="340" y2="185" stroke="#201e1d" stroke-width="2"></line>
-  <g stroke="#201e1d" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-    <circle cx="60" cy="70" r="8"></circle>
-<line x1="60" y1="78" x2="60" y2="125"></line>
-<line x1="60" y1="92" x2="44" y2="108"></line>
-<line x1="60" y1="92" x2="76" y2="108"></line>
-<line x1="60" y1="125" x2="48" y2="165"></line>
-<line x1="60" y1="125" x2="72" y2="165"></line>
+  <g stroke="#201e1d" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none">
+    <circle cx="60" cy="55" r="9"></circle>
+    <line x1="60" y1="55" x2="60" y2="66"></line>
+    <line x1="60" y1="66" x2="60" y2="115"></line>
+    <line x1="60" y1="66" x2="60" y2="66"></line>
+    <line x1="60" y1="66" x2="60" y2="66"></line>
+    <line x1="60" y1="66" x2="50" y2="88"></line>
+    <line x1="50" y1="88" x2="55" y2="78"></line>
+    <line x1="60" y1="66" x2="70" y2="88"></line>
+    <line x1="70" y1="88" x2="65" y2="78"></line>
+    <line x1="60" y1="115" x2="48" y2="175"></line>
+    <line x1="60" y1="115" x2="72" y2="175"></line>
   </g>
-  <g stroke="#201e1d" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-    <circle cx="180" cy="90" r="8"></circle>
-<line x1="180" y1="98" x2="172" y2="130"></line>
-<line x1="172" y1="112" x2="156" y2="118"></line>
-<line x1="172" y1="112" x2="198" y2="110"></line>
-<line x1="172" y1="130" x2="158" y2="165"></line>
-<line x1="172" y1="130" x2="192" y2="165"></line>
+  <rect x="54" y="72" width="12" height="16" fill="none" stroke="#201e1d" stroke-width="2"></rect>
+  <circle cx="60" cy="80" r="3.5" fill="#ec3013"></circle>
+  <text x="60" y="72" text-anchor="middle" fill="#ec3013" font-family="Archivo, system-ui, sans-serif" font-size="8">goblet</text>
+  <g stroke="#201e1d" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none">
+    <circle cx="180" cy="90" r="9"></circle>
+    <line x1="180" y1="90" x2="180" y2="101"></line>
+    <line x1="180" y1="101" x2="180" y2="148"></line>
+    <line x1="180" y1="101" x2="180" y2="101"></line>
+    <line x1="180" y1="101" x2="180" y2="101"></line>
+    <line x1="180" y1="101" x2="168" y2="118"></line>
+    <line x1="168" y1="118" x2="174" y2="108"></line>
+    <line x1="180" y1="101" x2="192" y2="118"></line>
+    <line x1="192" y1="118" x2="186" y2="108"></line>
+    <line x1="180" y1="148" x2="158" y2="165"></line>
+    <line x1="158" y1="165" x2="152" y2="175"></line>
+    <line x1="180" y1="148" x2="202" y2="165"></line>
+    <line x1="202" y1="165" x2="208" y2="175"></line>
   </g>
-  <g stroke="#201e1d" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-    <circle cx="300" cy="70" r="8"></circle>
-<line x1="300" y1="78" x2="300" y2="125"></line>
-<line x1="300" y1="92" x2="284" y2="108"></line>
-<line x1="300" y1="92" x2="316" y2="108"></line>
-<line x1="300" y1="125" x2="288" y2="165"></line>
-<line x1="300" y1="125" x2="312" y2="165"></line>
+  <rect x="174" y="102" width="12" height="16" fill="none" stroke="#201e1d" stroke-width="2"></rect>
+  <circle cx="168" cy="160" r="3.5" fill="#ec3013"></circle>
+  <text x="168" y="152" text-anchor="middle" fill="#ec3013" font-family="Archivo, system-ui, sans-serif" font-size="8">elbows in</text>
+  <g stroke="#201e1d" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none">
+    <circle cx="300" cy="55" r="9"></circle>
+    <line x1="300" y1="55" x2="300" y2="66"></line>
+    <line x1="300" y1="66" x2="300" y2="115"></line>
+    <line x1="300" y1="66" x2="300" y2="66"></line>
+    <line x1="300" y1="66" x2="300" y2="66"></line>
+    <line x1="300" y1="66" x2="290" y2="88"></line>
+    <line x1="290" y1="88" x2="295" y2="78"></line>
+    <line x1="300" y1="66" x2="310" y2="88"></line>
+    <line x1="310" y1="88" x2="305" y2="78"></line>
+    <line x1="300" y1="115" x2="288" y2="175"></line>
+    <line x1="300" y1="115" x2="312" y2="175"></line>
   </g>
-  <path d="M100 110 L120 110" stroke="#ec3013" stroke-width="2" stroke-linecap="round"></path><polygon points="120,106 128,110 120,114" fill="#ec3013"></polygon>
-  <path d="M220 110 L240 110" stroke="#ec3013" stroke-width="2" stroke-linecap="round"></path><polygon points="240,106 248,110 240,114" fill="#ec3013"></polygon>
-  <circle cx="180" cy="130" r="3.5" fill="#ec3013"></circle>
-  <text x="180" y="205" text-anchor="middle" fill="#ec3013" font-family="Archivo, system-ui, sans-serif" font-size="9">chest tall</text>
+  <rect x="294" y="72" width="12" height="16" fill="none" stroke="#201e1d" stroke-width="2"></rect>
+  <path d="M300 150 L300 125" stroke="#ec3013" stroke-width="2" stroke-linecap="round"></path>
+  <polygon points="300,125 304,133 296,133" fill="#ec3013"></polygon>
 </svg>

@@ -36,7 +36,12 @@ const root = path.join(import.meta.dirname, '..', '..');
 const read = (p: string) => readFileSync(path.join(root, p), 'utf8');
 
 /** Files that tell a person or an agent what colour to make something. */
-const SPEC_FILES = ['docs/MEDIA_SYSTEM.md', 'media/FLOW_PROMPTS.md', 'media/manifest.json'];
+const SPEC_FILES = [
+  'docs/MEDIA_SYSTEM.md',
+  'docs/MASCOT.md',
+  'media/FLOW_PROMPTS.md',
+  'media/manifest.json',
+];
 
 /**
  * The palette `.131` retired, named so it cannot come back by copy-paste.

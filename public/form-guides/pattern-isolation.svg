@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 220" fill="none" role="img" aria-label="Shared isolation pattern: start, peak contraction, control return">
+  <title>Isolation pattern form diagram</title>
+  <rect width="360" height="220" fill="#f3f2f2"></rect>
+  <text x="60" y="28" text-anchor="middle" fill="#6f6b69" font-family="Archivo, system-ui, sans-serif" font-size="11" letter-spacing="0.5">START</text>
+  <text x="180" y="28" text-anchor="middle" fill="#6f6b69" font-family="Archivo, system-ui, sans-serif" font-size="11" letter-spacing="0.5">PEAK</text>
+  <text x="300" y="28" text-anchor="middle" fill="#6f6b69" font-family="Archivo, system-ui, sans-serif" font-size="11" letter-spacing="0.5">RETURN</text>
+  <line x1="20" y1="185" x2="100" y2="185" stroke="#201e1d" stroke-width="2"></line>
+  <line x1="140" y1="185" x2="220" y2="185" stroke="#201e1d" stroke-width="2"></line>
+  <line x1="260" y1="185" x2="340" y2="185" stroke="#201e1d" stroke-width="2"></line>
+  <g stroke="#201e1d" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none">
+    <circle cx="60" cy="58" r="9"></circle>
+    <line x1="60" y1="58" x2="60" y2="69"></line>
+    <line x1="60" y1="69" x2="60" y2="115"></line>
+    <line x1="60" y1="69" x2="60" y2="69"></line>
+    <line x1="60" y1="69" x2="60" y2="69"></line>
+    <line x1="60" y1="69" x2="48" y2="145"></line>
+    <line x1="60" y1="69" x2="72" y2="145"></line>
+    <line x1="60" y1="115" x2="50" y2="175"></line>
+    <line x1="60" y1="115" x2="70" y2="175"></line>
+  </g>
+  <circle cx="60" cy="100" r="3.5" fill="#ec3013"></circle>
+  <text x="60" y="92" text-anchor="middle" fill="#ec3013" font-family="Archivo, system-ui, sans-serif" font-size="8">still</text>
+  <g stroke="#201e1d" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none">
+    <circle cx="180" cy="58" r="9"></circle>
+    <line x1="180" y1="58" x2="180" y2="69"></line>
+    <line x1="180" y1="69" x2="180" y2="115"></line>
+    <line x1="180" y1="69" x2="180" y2="69"></line>
+    <line x1="180" y1="69" x2="180" y2="69"></line>
+    <line x1="180" y1="69" x2="168" y2="100"></line>
+    <line x1="168" y1="100" x2="155" y2="80"></line>
+    <line x1="180" y1="69" x2="192" y2="100"></line>
+    <line x1="192" y1="100" x2="205" y2="80"></line>
+    <line x1="180" y1="115" x2="170" y2="175"></line>
+    <line x1="180" y1="115" x2="190" y2="175"></line>
+  </g>
+  <circle cx="180" cy="90" r="3.5" fill="#ec3013"></circle>
+  <text x="180" y="82" text-anchor="middle" fill="#ec3013" font-family="Archivo, system-ui, sans-serif" font-size="8">squeeze</text>
+  <g stroke="#201e1d" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none">
+    <circle cx="300" cy="58" r="9"></circle>
+    <line x1="300" y1="58" x2="300" y2="69"></line>
+    <line x1="300" y1="69" x2="300" y2="115"></line>
+    <line x1="300" y1="69" x2="300" y2="69"></line>
+    <line x1="300" y1="69" x2="300" y2="69"></line>
+    <line x1="300" y1="69" x2="288" y2="140"></line>
+    <line x1="300" y1="69" x2="312" y2="140"></line>
+    <line x1="300" y1="115" x2="290" y2="175"></line>
+    <line x1="300" y1="115" x2="310" y2="175"></line>
+  </g>
+  <path d="M300 95 L300 125" stroke="#ec3013" stroke-width="2" stroke-linecap="round"></path>
+  <polygon points="300,125 296,117 304,117" fill="#ec3013"></polygon>
+  <text x="310" y="110" fill="#ec3013" font-family="Archivo, system-ui, sans-serif" font-size="9">control</text>
+</svg>

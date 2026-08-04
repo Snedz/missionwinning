@@ -7,7 +7,12 @@ export interface FormGuide {
   breathing?: string;
   /** Military-style cue names only when guide is for readiness test prep. */
   militaryStyle?: boolean;
-  /** Public path e.g. `/form-guides/squats.svg`. */
+  /** Public path e.g. `/form-guides/squats.svg` or `/form-guides/pattern-squat.svg`. */
   mediaUrl?: string;
   mediaType?: 'image' | 'video';
+  /**
+   * Optional caption under the diagram. Pattern-pack media should state that
+   * the art is shared — not exercise-specific — so we stay honest mid-set.
+   */
+  mediaCaption?: string;
 }

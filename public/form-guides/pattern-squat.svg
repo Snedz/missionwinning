@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 220" fill="none" role="img" aria-label="Shared squat pattern: stand, depth, drive">
+  <title>Squat pattern form diagram</title>
+  <rect width="360" height="220" fill="#f3f2f2"></rect>
+  <text x="60" y="28" text-anchor="middle" fill="#6f6b69" font-family="Archivo, system-ui, sans-serif" font-size="11" letter-spacing="0.5">STAND</text>
+  <text x="180" y="28" text-anchor="middle" fill="#6f6b69" font-family="Archivo, system-ui, sans-serif" font-size="11" letter-spacing="0.5">DEPTH</text>
+  <text x="300" y="28" text-anchor="middle" fill="#6f6b69" font-family="Archivo, system-ui, sans-serif" font-size="11" letter-spacing="0.5">DRIVE</text>
+  <line x1="20" y1="185" x2="100" y2="185" stroke="#201e1d" stroke-width="2"></line>
+  <line x1="140" y1="185" x2="220" y2="185" stroke="#201e1d" stroke-width="2"></line>
+  <line x1="260" y1="185" x2="340" y2="185" stroke="#201e1d" stroke-width="2"></line>
+  <g stroke="#201e1d" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none">
+    <circle cx="60" cy="55" r="9"></circle>
+    <line x1="60" y1="55" x2="60" y2="66"></line>
+    <line x1="60" y1="66" x2="60" y2="115"></line>
+    <line x1="60" y1="66" x2="60" y2="66"></line>
+    <line x1="60" y1="66" x2="60" y2="66"></line>
+    <line x1="60" y1="66" x2="45" y2="100"></line>
+    <line x1="60" y1="66" x2="75" y2="100"></line>
+    <line x1="60" y1="115" x2="48" y2="175"></line>
+    <line x1="60" y1="115" x2="72" y2="175"></line>
+  </g>
+  <circle cx="60" cy="115" r="3.5" fill="#ec3013"></circle>
+  <text x="60" y="107" text-anchor="middle" fill="#ec3013" font-family="Archivo, system-ui, sans-serif" font-size="8">brace</text>
+  <g stroke="#201e1d" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none">
+    <circle cx="180" cy="90" r="9"></circle>
+    <line x1="180" y1="90" x2="180" y2="101"></line>
+    <line x1="180" y1="101" x2="180" y2="145"></line>
+    <line x1="180" y1="101" x2="180" y2="101"></line>
+    <line x1="180" y1="101" x2="180" y2="101"></line>
+    <line x1="180" y1="101" x2="165" y2="120"></line>
+    <line x1="180" y1="101" x2="195" y2="120"></line>
+    <line x1="180" y1="145" x2="160" y2="165"></line>
+    <line x1="160" y1="165" x2="155" y2="175"></line>
+    <line x1="180" y1="145" x2="200" y2="165"></line>
+    <line x1="200" y1="165" x2="205" y2="175"></line>
+  </g>
+  <circle cx="180" cy="145" r="3.5" fill="#ec3013"></circle>
+  <text x="180" y="137" text-anchor="middle" fill="#ec3013" font-family="Archivo, system-ui, sans-serif" font-size="8">hips</text>
+  <g stroke="#201e1d" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none">
+    <circle cx="300" cy="55" r="9"></circle>
+    <line x1="300" y1="55" x2="300" y2="66"></line>
+    <line x1="300" y1="66" x2="300" y2="115"></line>
+    <line x1="300" y1="66" x2="300" y2="66"></line>
+    <line x1="300" y1="66" x2="300" y2="66"></line>
+    <line x1="300" y1="66" x2="285" y2="100"></line>
+    <line x1="300" y1="66" x2="315" y2="100"></line>
+    <line x1="300" y1="115" x2="288" y2="175"></line>
+    <line x1="300" y1="115" x2="312" y2="175"></line>
+  </g>
+  <path d="M300 150 L300 120" stroke="#ec3013" stroke-width="2" stroke-linecap="round"></path>
+  <polygon points="300,120 304,128 296,128" fill="#ec3013"></polygon>
+  <text x="310" y="135" fill="#ec3013" font-family="Archivo, system-ui, sans-serif" font-size="9">drive</text>
+</svg>

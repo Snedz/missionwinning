@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 220" fill="none" role="img" aria-label="Thread the needle form: setup, reach under, open">
+  <title>Thread the needle form diagram</title>
+  <rect width="360" height="220" fill="#f3f2f2"></rect>
+  <text x="60" y="28" text-anchor="middle" fill="#6f6b69" font-family="Archivo, system-ui, sans-serif" font-size="11" letter-spacing="0.5">SETUP</text>
+  <text x="180" y="28" text-anchor="middle" fill="#6f6b69" font-family="Archivo, system-ui, sans-serif" font-size="11" letter-spacing="0.5">THREAD</text>
+  <text x="300" y="28" text-anchor="middle" fill="#6f6b69" font-family="Archivo, system-ui, sans-serif" font-size="11" letter-spacing="0.5">OPEN</text>
+  <line x1="20" y1="185" x2="100" y2="185" stroke="#201e1d" stroke-width="2"></line>
+  <line x1="140" y1="185" x2="220" y2="185" stroke="#201e1d" stroke-width="2"></line>
+  <line x1="260" y1="185" x2="340" y2="185" stroke="#201e1d" stroke-width="2"></line>
+  <g stroke="#201e1d" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none">
+    <circle cx="80" cy="100" r="9"></circle>
+    <line x1="80" y1="100" x2="80" y2="111"></line>
+    <line x1="80" y1="111" x2="50" y2="125"></line>
+    <line x1="80" y1="111" x2="80" y2="111"></line>
+    <line x1="80" y1="111" x2="80" y2="111"></line>
+    <line x1="80" y1="111" x2="90" y2="155"></line>
+    <line x1="80" y1="111" x2="70" y2="155"></line>
+    <line x1="50" y1="125" x2="40" y2="155"></line>
+    <line x1="40" y1="155" x2="30" y2="165"></line>
+    <line x1="50" y1="125" x2="55" y2="155"></line>
+    <line x1="55" y1="155" x2="48" y2="165"></line>
+  </g>
+  <circle cx="50" cy="125" r="3.5" fill="#ec3013"></circle>
+  <g stroke="#201e1d" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none">
+    <circle cx="175" cy="140" r="9"></circle>
+    <line x1="175" y1="140" x2="175" y2="151"></line>
+    <line x1="175" y1="151" x2="170" y2="130"></line>
+    <line x1="175" y1="151" x2="175" y2="151"></line>
+    <line x1="175" y1="151" x2="175" y2="151"></line>
+    <line x1="175" y1="151" x2="140" y2="155"></line>
+    <line x1="175" y1="151" x2="210" y2="155"></line>
+    <line x1="170" y1="130" x2="160" y2="155"></line>
+    <line x1="160" y1="155" x2="150" y2="165"></line>
+    <line x1="170" y1="130" x2="175" y2="155"></line>
+    <line x1="175" y1="155" x2="168" y2="165"></line>
+  </g>
+  <path d="M190 140 L155 150" stroke="#ec3013" stroke-width="2" stroke-linecap="round"></path>
+  <polygon points="155,150 161.59330706953708,143.95613518625768 163.7910760927161,151.64832676738425" fill="#ec3013"></polygon>
+  <text x="182.5" y="145" fill="#ec3013" font-family="Archivo, system-ui, sans-serif" font-size="9">under</text>
+  <g stroke="#201e1d" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none">
+    <circle cx="300" cy="85" r="9"></circle>
+    <line x1="300" y1="85" x2="300" y2="96"></line>
+    <line x1="300" y1="96" x2="290" y2="125"></line>
+    <line x1="300" y1="96" x2="300" y2="96"></line>
+    <line x1="300" y1="96" x2="300" y2="96"></line>
+    <line x1="300" y1="96" x2="330" y2="70"></line>
+    <line x1="300" y1="96" x2="280" y2="155"></line>
+    <line x1="290" y1="125" x2="280" y2="155"></line>
+    <line x1="280" y1="155" x2="270" y2="165"></line>
+    <line x1="290" y1="125" x2="295" y2="155"></line>
+    <line x1="295" y1="155" x2="288" y2="165"></line>
+  </g>
+  <circle cx="330" cy="70" r="3.5" fill="#ec3013"></circle>
+  <text x="330" y="62" text-anchor="middle" fill="#ec3013" font-family="Archivo, system-ui, sans-serif" font-size="8">open</text>
+</svg>

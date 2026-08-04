@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 220" fill="none" role="img" aria-label="Band pull-apart form: hold, pull apart, return">
+  <title>Band pull-apart form diagram</title>
+  <rect width="360" height="220" fill="#f3f2f2"></rect>
+  <text x="60" y="28" text-anchor="middle" fill="#6f6b69" font-family="Archivo, system-ui, sans-serif" font-size="11" letter-spacing="0.5">HOLD</text>
+  <text x="180" y="28" text-anchor="middle" fill="#6f6b69" font-family="Archivo, system-ui, sans-serif" font-size="11" letter-spacing="0.5">PULL</text>
+  <text x="300" y="28" text-anchor="middle" fill="#6f6b69" font-family="Archivo, system-ui, sans-serif" font-size="11" letter-spacing="0.5">RETURN</text>
+  <line x1="20" y1="185" x2="100" y2="185" stroke="#201e1d" stroke-width="2"></line>
+  <line x1="140" y1="185" x2="220" y2="185" stroke="#201e1d" stroke-width="2"></line>
+  <line x1="260" y1="185" x2="340" y2="185" stroke="#201e1d" stroke-width="2"></line>
+  <g stroke="#201e1d" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none">
+    <circle cx="60" cy="58" r="9"></circle>
+    <line x1="60" y1="58" x2="60" y2="69"></line>
+    <line x1="60" y1="69" x2="60" y2="115"></line>
+    <line x1="60" y1="69" x2="60" y2="69"></line>
+    <line x1="60" y1="69" x2="60" y2="69"></line>
+    <line x1="60" y1="69" x2="40" y2="95"></line>
+    <line x1="60" y1="69" x2="80" y2="95"></line>
+    <line x1="60" y1="115" x2="50" y2="175"></line>
+    <line x1="60" y1="115" x2="70" y2="175"></line>
+  </g>
+  <path d="M40 95 Q60 100 80 95" stroke="#201e1d" stroke-width="2" fill="none"></path>
+  <circle cx="60" cy="98" r="3.5" fill="#ec3013"></circle>
+  <text x="60" y="90" text-anchor="middle" fill="#ec3013" font-family="Archivo, system-ui, sans-serif" font-size="8">band</text>
+  <g stroke="#201e1d" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none">
+    <circle cx="180" cy="58" r="9"></circle>
+    <line x1="180" y1="58" x2="180" y2="69"></line>
+    <line x1="180" y1="69" x2="180" y2="115"></line>
+    <line x1="180" y1="69" x2="180" y2="69"></line>
+    <line x1="180" y1="69" x2="180" y2="69"></line>
+    <line x1="180" y1="69" x2="140" y2="90"></line>
+    <line x1="180" y1="69" x2="220" y2="90"></line>
+    <line x1="180" y1="115" x2="170" y2="175"></line>
+    <line x1="180" y1="115" x2="190" y2="175"></line>
+  </g>
+  <path d="M140 90 Q180 88 220 90" stroke="#201e1d" stroke-width="2" fill="none"></path>
+  <path d="M155 100 L145 90" stroke="#ec3013" stroke-width="2" stroke-linecap="round"></path>
+  <polygon points="145,90 153.48528137423855,92.8284271247462 147.82842712474618,98.48528137423857" fill="#ec3013"></polygon>
+  <path d="M205 100 L215 90" stroke="#ec3013" stroke-width="2" stroke-linecap="round"></path>
+  <polygon points="215,90 212.17157287525382,98.48528137423857 206.51471862576145,92.8284271247462" fill="#ec3013"></polygon>
+  <g stroke="#201e1d" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none">
+    <circle cx="300" cy="58" r="9"></circle>
+    <line x1="300" y1="58" x2="300" y2="69"></line>
+    <line x1="300" y1="69" x2="300" y2="115"></line>
+    <line x1="300" y1="69" x2="300" y2="69"></line>
+    <line x1="300" y1="69" x2="300" y2="69"></line>
+    <line x1="300" y1="69" x2="280" y2="95"></line>
+    <line x1="300" y1="69" x2="320" y2="95"></line>
+    <line x1="300" y1="115" x2="290" y2="175"></line>
+    <line x1="300" y1="115" x2="310" y2="175"></line>
+  </g>
+  <path d="M280 95 Q300 100 320 95" stroke="#201e1d" stroke-width="2" fill="none"></path>
+  <circle cx="300" cy="98" r="3.5" fill="#ec3013"></circle>
+  <text x="300" y="90" text-anchor="middle" fill="#ec3013" font-family="Archivo, system-ui, sans-serif" font-size="8">control</text>
+</svg>

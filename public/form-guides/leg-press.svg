@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 220" fill="none" role="img" aria-label="Leg press form: start, bend knees, press">
+  <title>Leg press form diagram</title>
+  <rect width="360" height="220" fill="#f3f2f2"></rect>
+  <text x="60" y="28" text-anchor="middle" fill="#6f6b69" font-family="Archivo, system-ui, sans-serif" font-size="11" letter-spacing="0.5">START</text>
+  <text x="180" y="28" text-anchor="middle" fill="#6f6b69" font-family="Archivo, system-ui, sans-serif" font-size="11" letter-spacing="0.5">BEND</text>
+  <text x="300" y="28" text-anchor="middle" fill="#6f6b69" font-family="Archivo, system-ui, sans-serif" font-size="11" letter-spacing="0.5">PRESS</text>
+  <line x1="20" y1="185" x2="100" y2="185" stroke="#201e1d" stroke-width="2"></line>
+  <line x1="140" y1="185" x2="220" y2="185" stroke="#201e1d" stroke-width="2"></line>
+  <line x1="260" y1="185" x2="340" y2="185" stroke="#201e1d" stroke-width="2"></line>
+  <rect x="25" y="100" width="55" height="50" fill="none" stroke="#201e1d" stroke-width="2"></rect>
+  <g stroke="#201e1d" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none">
+    <circle cx="45" cy="85" r="9"></circle>
+    <line x1="45" y1="85" x2="45" y2="96"></line>
+    <line x1="45" y1="96" x2="55" y2="130"></line>
+    <line x1="45" y1="96" x2="45" y2="96"></line>
+    <line x1="45" y1="96" x2="45" y2="96"></line>
+    <line x1="55" y1="130" x2="75" y2="120"></line>
+    <line x1="75" y1="120" x2="100" y2="110"></line>
+    <line x1="55" y1="130" x2="80" y2="130"></line>
+    <line x1="80" y1="130" x2="100" y2="125"></line>
+  </g>
+  <rect x="95" y="100" width="20" height="40" fill="none" stroke="#201e1d" stroke-width="2"></rect>
+  <circle cx="100" cy="118" r="3.5" fill="#ec3013"></circle>
+  <text x="100" y="110" text-anchor="middle" fill="#ec3013" font-family="Archivo, system-ui, sans-serif" font-size="8">feet</text>
+  <rect x="145" y="100" width="55" height="50" fill="none" stroke="#201e1d" stroke-width="2"></rect>
+  <g stroke="#201e1d" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none">
+    <circle cx="165" cy="85" r="9"></circle>
+    <line x1="165" y1="85" x2="165" y2="96"></line>
+    <line x1="165" y1="96" x2="175" y2="130"></line>
+    <line x1="165" y1="96" x2="165" y2="96"></line>
+    <line x1="165" y1="96" x2="165" y2="96"></line>
+    <line x1="175" y1="130" x2="200" y2="145"></line>
+    <line x1="200" y1="145" x2="220" y2="130"></line>
+    <line x1="175" y1="130" x2="205" y2="150"></line>
+    <line x1="205" y1="150" x2="220" y2="145"></line>
+  </g>
+  <rect x="215" y="120" width="20" height="40" fill="none" stroke="#201e1d" stroke-width="2"></rect>
+  <path d="M195 115 L210 130" stroke="#ec3013" stroke-width="2" stroke-linecap="round"></path>
+  <polygon points="210,130 201.51471862576145,127.1715728752538 207.17157287525382,121.51471862576143" fill="#ec3013"></polygon>
+  <rect x="265" y="100" width="55" height="50" fill="none" stroke="#201e1d" stroke-width="2"></rect>
+  <g stroke="#201e1d" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none">
+    <circle cx="285" cy="85" r="9"></circle>
+    <line x1="285" y1="85" x2="285" y2="96"></line>
+    <line x1="285" y1="96" x2="295" y2="130"></line>
+    <line x1="285" y1="96" x2="285" y2="96"></line>
+    <line x1="285" y1="96" x2="285" y2="96"></line>
+    <line x1="295" y1="130" x2="315" y2="120"></line>
+    <line x1="315" y1="120" x2="340" y2="110"></line>
+    <line x1="295" y1="130" x2="320" y2="130"></line>
+    <line x1="320" y1="130" x2="340" y2="125"></line>
+  </g>
+  <rect x="335" y="100" width="20" height="40" fill="none" stroke="#201e1d" stroke-width="2"></rect>
+  <path d="M325 140 L335 120" stroke="#ec3013" stroke-width="2" stroke-linecap="round"></path>
+  <polygon points="335,120 335,128.94427190999917 327.84458247200064,125.3665631459995" fill="#ec3013"></polygon>
+  <text x="340" y="130" fill="#ec3013" font-family="Archivo, system-ui, sans-serif" font-size="9">press</text>
+</svg>

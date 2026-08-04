@@ -48,10 +48,19 @@ const root = path.join(path.dirname(fileURLToPath(import.meta.url)), '..');
 const MAX_INK_PCT = 45; // near-black may accent, never dominate a paper page
 const MIN_BRAND_PCT = 1; // the one red has to actually appear
 
-/** Chapter hero paths, read from the guidebook data so new chapters are covered. */
+/**
+ * Chapter **hero** paths only — not every `/learn/` figure on a section.
+ *
+ * `.414` densified section figures under the same `/learn/` prefix. Matching
+ * every `src: '/learn/…'` made this check measure section art as if it were a
+ * chapter opener (and fail on figures that legitimately use less red chrome).
+ * Heroes still live on `heroImage.src`; section art is `figure.src`.
+ */
 export function heroPaths() {
   const src = readFileSync(path.join(root, 'src/data/guidebook/chapters.ts'), 'utf8');
-  const found = [...src.matchAll(/src:\s*'(\/learn\/[^']+)'/g)].map((m) => m[1]);
+  const found = [...src.matchAll(/heroImage:\s*\{[\s\S]*?src:\s*'(\/learn\/[^']+)'/g)].map(
+    (m) => m[1]
+  );
   return [...new Set(found)];
 }
 

@@ -15,7 +15,7 @@ Scout is Mission Winning’s Duolingo-style sticky character — **one silhouett
 | **Name** | Scout (working title; do not ship as “Duo”) |
 | **Silhouette** | Small geometric **falcon/kestrel** — mission / scout energy |
 | **Style** | Flat shapes, few polygons; readable at 24px and 1080px |
-| **Colors** | Navy body `#0a0c10` / near-white `#e8eaed` · emerald accents `#27b07d` · brass honor `#c7a860` |
+| **Colors** | Paper body `#f3f2f2` · ink edges `#201e1d` · mid-grey chevron `#6f6b69` · one red accent `#ec3013` (eye highlight / wing trim). Same Modernist lock as the product — do not use the pre-rebrand palette. |
 | **Job** | Mission briefing companion — invite to log, celebrate Victory, never shame |
 
 ### Personality (lock)
@@ -32,7 +32,7 @@ Scout is Mission Winning’s Duolingo-style sticky character — **one silhouett
 | Scout | Character / companion — social, one empty state, Victory flourish |
 | Form-guide stick figures | Teaching diagrams — **not** Scout; keep instructional SVG language |
 
-Do **not** put Scout inside the emerald MW square as a logo replacement without founder sign-off.
+Do **not** put Scout inside the MW monogram square as a logo replacement without founder sign-off.
 
 ---
 
@@ -41,10 +41,10 @@ Do **not** put Scout inside the emerald MW square as a logo replacement without 
 | Do | Don’t |
 |----|--------|
 | Fixed proportions; same beak / wing chevron every time | Photoreal birds, soft 3D gym mascots |
-| Brass chevron or eye highlight as honor mark | Purple, violet, cream/terracotta |
+| Mid-grey chest chevron + single red eye highlight | Purple, violet, cream/terracotta, second accent hue |
 | Calm pose language (idle / invite / celebrate) | Anger, crying, “you failed” faces |
-| Navy / emerald / brass only | Competitor green-owl clone, gym-bro cartoon |
-| Transparent or navy canvas | Busy photo backgrounds under the character |
+| Paper / ink / one red only | Competitor green-owl clone, gym-bro cartoon, pre-rebrand dark-theme palette |
+| Transparent or solid paper canvas | Busy photo backgrounds under the character |
 
 **Expression set (v1):**
 
@@ -52,7 +52,7 @@ Do **not** put Scout inside the emerald MW square as a logo replacement without 
 |------|------|-----|
 | `scout-idle.webp` | Neutral attention | Default / chrome |
 | `scout-invite.webp` | Open wing / beckon | Empty state + social invite |
-| `scout-celebrate.webp` | Brass flash / lift | Victory / PR |
+| `scout-celebrate.webp` | Quiet lift + red rim | Victory / PR |
 
 ---
 
@@ -75,23 +75,25 @@ Scout copy is **product microcopy**, not Mission Coach chat. Keep Coach LLM voic
 |-------|--------|------|
 | **A** | Social creatives · [SOCIAL_LAUNCH.md](SOCIAL_LAUNCH.md) | Scout on invite / coach posts |
 | **B** | **One** empty state (History — no workouts yet) | Single illustration + one CTA |
-| **C** | Victory flourish | Brass honor moment only |
+| **C** | Victory flourish | Honor moment only (quiet lift — not confetti spam) |
 | **Later** | Push / email (founder-owned) | Same anti-guilt lines |
 
 **Never:** Active / Train logger density, every pillar empty, Coach chat avatar takeover, paywall shame.
 
 ---
 
-## Generation (Google Flow)
+## Generation (Google Flow / Grok Imagine)
 
-**Characters tab (preferred):** create reusable `@Scout` with the full creation prompt in [FLOW_PROMPTS.md](../media/FLOW_PROMPTS.md) § “Google Flow — Create Character”. Project: [Flow Characters](https://labs.google/fx/tools/flow/project/a40c42fd-16e2-49e5-8de5-a8dceb717c7e/characters).
+**Characters tab (preferred):** create reusable `@Scout` with the full creation prompt in [FLOW_PROMPTS.md](../media/FLOW_PROMPTS.md) § “Google Flow — Create Character”. Project: [Flow Characters](https://labs.google.com/fx/tools/flow/project/a40c42fd-16e2-49e5-8de5-a8dceb717c7e/characters).
 
 1. Paste Character creation prompt + Character info.  
 2. Optional: upload `public/brand/mascot/scout-idle.webp` as reference.  
 3. Generate scenes with `@Scout` + action lines (idle / invite / celebrate / loop).  
-4. Drop frames as `mascot-scout-{idle\|invite\|celebrate}-frame.png` into `media/inbox/`.  
+4. Drop frames as `mascot-scout-{idle|invite|celebrate}-frame.png` into `media/inbox/`.  
 5. `npm run media:optimize-inbox` → `public/brand/mascot/`.  
 6. Update manifest; commit optimized WebP only.
+
+Grok Imagine / Cursor image gen is valid for still pose variants — same palette lock, offline → inbox → optimize. Do not put generation keys in Vercel.
 
 ---
 
@@ -109,7 +111,7 @@ Scout copy is **product microcopy**, not Mission Coach chat. Keep Coach LLM voic
 ## Checklist before shipping a new Scout asset
 
 - [ ] Same silhouette as prior kit  
-- [ ] Brand colors only  
+- [ ] Modernist palette only (paper / ink / mid-grey / one red)  
 - [ ] No text baked into the image  
 - [ ] Manifest entry with `kind: mascot`  
 - [ ] Placement allowed by matrix above  

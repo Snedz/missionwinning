@@ -53,10 +53,14 @@ test('the hero set is discovered from the guidebook data, not listed', async () 
   assert.ok(paths.length >= 6, `discovered only ${paths.length} chapter heroes — the parser broke`);
   for (const p of paths) assert.match(p, /^\/learn\/.+\.(webp|png|avif|jpe?g)$/, p);
 
-  // Every chapter with a hero must be covered — the count is read from the same
-  // source the site renders from, so adding a chapter cannot quietly opt out.
-  const declared = [...read('src/data/guidebook/chapters.ts').matchAll(/src:\s*'\/learn\/[^']+'/g)];
-  assert.equal(new Set(declared.map((m) => m[0])).size, paths.length);
+  // Every chapter **heroImage** must be covered — not section `figure.src`
+  // paths (also under `/learn/` after the densify pass).
+  const declared = [
+    ...read('src/data/guidebook/chapters.ts').matchAll(
+      /heroImage:\s*\{[\s\S]*?src:\s*'(\/learn\/[^']+)'/g
+    ),
+  ];
+  assert.equal(new Set(declared.map((m) => m[1])).size, paths.length);
 });
 
 test('no chapter hero is off-palette except the declared debt', async () => {

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 220" fill="none" role="img" aria-label="Dead-bug form: setup, extend, switch">
+  <title>Dead-bug form diagram</title>
+  <rect width="360" height="220" fill="#f3f2f2"></rect>
+  <text x="60" y="28" text-anchor="middle" fill="#6f6b69" font-family="Archivo, system-ui, sans-serif" font-size="11" letter-spacing="0.5">SETUP</text>
+  <text x="180" y="28" text-anchor="middle" fill="#6f6b69" font-family="Archivo, system-ui, sans-serif" font-size="11" letter-spacing="0.5">EXTEND</text>
+  <text x="300" y="28" text-anchor="middle" fill="#6f6b69" font-family="Archivo, system-ui, sans-serif" font-size="11" letter-spacing="0.5">SWITCH</text>
+  <line x1="20" y1="185" x2="100" y2="185" stroke="#201e1d" stroke-width="2"></line>
+  <line x1="140" y1="185" x2="220" y2="185" stroke="#201e1d" stroke-width="2"></line>
+  <line x1="260" y1="185" x2="340" y2="185" stroke="#201e1d" stroke-width="2"></line>
+  <g stroke="#201e1d" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none">
+    <circle cx="55" cy="95" r="9"></circle>
+    <line x1="55" y1="95" x2="55" y2="106"></line>
+    <line x1="55" y1="106" x2="55" y2="145"></line>
+    <line x1="55" y1="106" x2="55" y2="106"></line>
+    <line x1="55" y1="106" x2="55" y2="106"></line>
+    <line x1="55" y1="106" x2="35" y2="120"></line>
+    <line x1="55" y1="106" x2="75" y2="120"></line>
+    <line x1="55" y1="145" x2="40" y2="160"></line>
+    <line x1="40" y1="160" x2="35" y2="175"></line>
+    <line x1="55" y1="145" x2="70" y2="160"></line>
+    <line x1="70" y1="160" x2="75" y2="175"></line>
+  </g>
+  <circle cx="55" cy="145" r="3.5" fill="#ec3013"></circle>
+  <text x="55" y="137" text-anchor="middle" fill="#ec3013" font-family="Archivo, system-ui, sans-serif" font-size="8">ribs down</text>
+  <g stroke="#201e1d" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none">
+    <circle cx="180" cy="95" r="9"></circle>
+    <line x1="180" y1="95" x2="180" y2="106"></line>
+    <line x1="180" y1="106" x2="180" y2="145"></line>
+    <line x1="180" y1="106" x2="180" y2="106"></line>
+    <line x1="180" y1="106" x2="180" y2="106"></line>
+    <line x1="180" y1="106" x2="155" y2="100"></line>
+    <line x1="180" y1="106" x2="205" y2="155"></line>
+    <line x1="180" y1="145" x2="165" y2="160"></line>
+    <line x1="165" y1="160" x2="160" y2="175"></line>
+    <line x1="180" y1="145" x2="210" y2="175"></line>
+  </g>
+  <path d="M200 160 L215 175" stroke="#ec3013" stroke-width="2" stroke-linecap="round"></path>
+  <polygon points="215,175 206.51471862576145,172.17157287525382 212.17157287525382,166.51471862576145" fill="#ec3013"></polygon>
+  <g stroke="#201e1d" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none">
+    <circle cx="300" cy="95" r="9"></circle>
+    <line x1="300" y1="95" x2="300" y2="106"></line>
+    <line x1="300" y1="106" x2="300" y2="145"></line>
+    <line x1="300" y1="106" x2="300" y2="106"></line>
+    <line x1="300" y1="106" x2="300" y2="106"></line>
+    <line x1="300" y1="106" x2="275" y2="155"></line>
+    <line x1="300" y1="106" x2="325" y2="100"></line>
+    <line x1="300" y1="145" x2="315" y2="160"></line>
+    <line x1="315" y1="160" x2="320" y2="175"></line>
+    <line x1="300" y1="145" x2="270" y2="175"></line>
+  </g>
+  <circle cx="300" cy="145" r="3.5" fill="#ec3013"></circle>
+  <text x="300" y="137" text-anchor="middle" fill="#ec3013" font-family="Archivo, system-ui, sans-serif" font-size="8">switch</text>
+</svg>
