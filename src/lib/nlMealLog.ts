@@ -103,6 +103,7 @@ const WORD_QTY: Record<string, number> = {
   one: 1,
   two: 2,
   couple: 2,
+  pair: 2,
   few: 3,
   three: 3,
   four: 4,
@@ -439,6 +440,11 @@ function findQtyBefore(text: string, kwStart: number): { qty: number; start: num
       return { qty: Math.round(t * 0.5 * 10) / 10, start: kwStart - tbsp[0].length };
     }
   }
+  // "a tablespoon of olive oil" / "tbsp olive oil" — bare tbsp = 1 tbsp scale (.443)
+  const bareTbsp = before.match(/\b(?:(?:a|an)\s+)?(?:tbsp|tablespoons?)\s+(?:of\s+)?$/i);
+  if (bareTbsp) {
+    return { qty: 0.5, start: kwStart - bareTbsp[0].length };
+  }
   // 2 tsp olive oil (same scale as portion-word tsp)
   const tsp = before.match(/(\d+(?:\.\d+)?)\s*(?:tsp|teaspoons?)\s*$/i);
   if (tsp) {
@@ -462,13 +468,20 @@ function findQtyBefore(text: string, kwStart: number): { qty: number; start: num
   if (coupleQty) {
     return { qty: 2, start: kwStart - coupleQty[0].length };
   }
+  // "a pair of eggs" / "pair eggs" → 2 (.443)
+  const pairQty = before.match(/\b(?:(?:a|an)\s+)?pair\s+(?:of\s+)?$/i);
+  if (pairQty) {
+    return { qty: 2, start: kwStart - pairQty[0].length };
+  }
   // "a few eggs" / "few almonds" → 3 (.441)
   const fewQty = before.match(/\b(?:(?:a|an)\s+)?few\s+(?:of\s+)?$/i);
   if (fewQty) {
     return { qty: 3, start: kwStart - fewQty[0].length };
   }
-  // "a dash/splash/pinch of olive oil" → tsp-scale dab, not a full serving (.441)
-  const dabQty = before.match(/\b(?:(?:a|an)\s+)?(?:dash|splash|pinch)\s+(?:of\s+)?$/i);
+  // "a dash/splash/pinch/dab/bit of olive oil" → tsp-scale, not a full serving (.441/.443)
+  const dabQty = before.match(
+    /\b(?:(?:a|an)\s+)?(?:dash|splash|pinch|dab|bit)\s+(?:of\s+)?$/i
+  );
   if (dabQty) {
     return {
       qty: Math.round(portionWordScale('tsp') * 10) / 10,

@@ -299,4 +299,26 @@ describe('nlMealLog', () => {
     assert.equal(splash.cals, Math.round(milk.cals * 0.2));
     assert.notEqual(dash.cals, oil.cals, 'dash must not be a full oil serving');
   });
+
+  it('parses pair → 2, dab/bit dab-scale, and bare tbsp (.443)', () => {
+    const egg = estimateMealFromDescription('egg');
+    const oil = estimateMealFromDescription('olive oil');
+    const oneTbsp = estimateMealFromDescription('1 tbsp olive oil');
+    const tspOil = estimateMealFromDescription('1 tsp olive oil');
+    assert.ok(egg && oil && oneTbsp && tspOil);
+    const pair = estimateMealFromDescription('a pair of eggs');
+    const pairBare = estimateMealFromDescription('pair eggs');
+    const dab = estimateMealFromDescription('a dab of olive oil');
+    const bit = estimateMealFromDescription('a bit of olive oil');
+    const bareTbsp = estimateMealFromDescription('a tablespoon of olive oil');
+    const bareTbspShort = estimateMealFromDescription('tbsp olive oil');
+    assert.ok(pair && pairBare && dab && bit && bareTbsp && bareTbspShort);
+    assert.equal(pair.protein, egg.protein * 2);
+    assert.equal(pairBare.protein, egg.protein * 2);
+    assert.equal(dab.cals, tspOil.cals);
+    assert.equal(bit.fat, tspOil.fat);
+    assert.equal(bareTbsp.cals, oneTbsp.cals);
+    assert.equal(bareTbspShort.fat, oneTbsp.fat);
+    assert.notEqual(bareTbsp.cals, oil.cals, 'bare tbsp must not be a full oil serving');
+  });
 });
