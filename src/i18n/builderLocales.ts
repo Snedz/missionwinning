@@ -64,6 +64,26 @@ type BuilderStrings = {
   builderQuickLoadLabel: string;
   builderQuickLoadPlaceholder: string;
   builderQuickLoadButton: string;
+  builderStepStart: string;
+  builderStepArrange: string;
+  builderStepFinish: string;
+  builderEyebrow: string;
+  builderPickStart: string;
+  builderPickStartDesc: string;
+  builderStartBlank: string;
+  builderLoadSaved: string;
+  builderShowLessSaved: string;
+  builderShowAllSaved: string;
+  builderNoSavedDesc: string;
+  builderFinishDesc: string;
+  builderExerciseCount: string;
+  builderBack: string;
+  builderSessionCount: string;
+  builderProOffline: string;
+  builderProLoadFail: string;
+  builderTemplateSearch: string;
+  builderTemplateSearchCount: string;
+  builderProFreeBeta: string;
 };
 
 const en: BuilderStrings = {
@@ -131,6 +151,26 @@ const en: BuilderStrings = {
   builderQuickLoadLabel: 'Quick load (all categories)',
   builderQuickLoadPlaceholder: 'Choose program & session…',
   builderQuickLoadButton: 'Load into builder',
+  builderStepStart: 'Start',
+  builderStepArrange: 'Arrange',
+  builderStepFinish: 'Finish',
+  builderEyebrow: 'Builder',
+  builderPickStart: 'How do you want to start?',
+  builderPickStartDesc: 'Blank session, a program template, or a saved routine.',
+  builderStartBlank: 'Blank workout',
+  builderLoadSaved: 'Load',
+  builderShowLessSaved: 'Show less',
+  builderShowAllSaved: 'Show all {{count}}',
+  builderNoSavedDesc: 'Build a workout and save it — your routines appear here.',
+  builderFinishDesc: 'Name your session and save or start training.',
+  builderExerciseCount: '{{count}} exercises ready',
+  builderBack: 'Back',
+  builderSessionCount: '{{count}} sessions',
+  builderProOffline: 'Offline — premium program list will load when you reconnect.',
+  builderProLoadFail: 'Could not load premium programs. Try again.',
+  builderTemplateSearch: 'Search programs or sessions…',
+  builderTemplateSearchCount: '{{count}} matching',
+  builderProFreeBeta: 'Pro cycles are paused during open beta — free templates stay available.',
 };
 
 const es: BuilderStrings = {

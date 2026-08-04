@@ -158,6 +158,7 @@ const NOTIFICATION_EN: Record<string, string> = {
   wearablesDisconnect: 'Disconnect',
   wearablesManualHint: 'No account? Import Apple / Google JSON or CSV on Track.',
   wearablesOpenTrack: 'Open Track',
+  retry: 'Retry',
 };
 
 const nl = (over: Record<string, string>): Record<string, string> => ({

@@ -55,6 +55,7 @@ When adding a doc:
 | [log/LOG-rotate-300.md](./log/LOG-rotate-300.md) | `.285` progressive overload — rotated for `.300` L5 fillers |
 | [log/LOG-rotate-301.md](./log/LOG-rotate-301.md) | `.286` re-entry dose — rotated for `.301` Coach/History i18n |
 | [log/LOG-rotate-302.md](./log/LOG-rotate-302.md) | `.287` coach why — rotated for `.302` debrief i18n |
+| [log/LOG-rotate-320.md](./log/LOG-rotate-320.md) | `.305` Move zero-state — rotated for `.320` Builder i18n |
 | [log/LOG-rotate-319.md](./log/LOG-rotate-319.md) | `.304` soft chrome + Fuel i18n — rotated for `.319` Library i18n |
 | [log/LOG-rotate-318.md](./log/LOG-rotate-318.md) | `.303` resolveActiveSetDial — rotated for `.318` wearables i18n |
 | [log/LOG-rotate-317.md](./log/LOG-rotate-317.md) | `.302` Victory debrief i18n — rotated for `.317` journal a11y |
