@@ -384,6 +384,31 @@ test.describe('Accessibility @a11y', () => {
   });
 
   /**
+   * Loop 8 R5 — Builder arrange step. Zero-data /builder stays on the pick-start
+   * screen; axe must see draft/arrange chrome after Blank workout.
+   */
+  test('axe serious/critical: /builder after Blank workout @a11y', async ({
+    page,
+    context,
+    baseURL,
+  }) => {
+    if (!baseURL) throw new Error('baseURL required');
+    const ok = await unlockGate(page, context, baseURL);
+    if (gateRequired() && !ok) {
+      test.skip(true, 'SMOKE_ACCESS_SECRET required to unlock private gate');
+    }
+    await seedLegacyOnboarding(page);
+    await page.goto('/builder', { waitUntil: 'domcontentloaded' });
+    const blank = page.getByRole('button', { name: /blank workout/i }).first();
+    await expect(blank).toBeVisible({ timeout: 15_000 });
+    await blank.click();
+    await expect(
+      page.getByRole('button', { name: /add exercise/i }).or(page.getByText(/draft workout/i)).first()
+    ).toBeVisible({ timeout: 10_000 });
+    await axeSerious(page, '/builder (blank draft)');
+  });
+
+  /**
    * The assertion axe cannot make.
    *
    * axe-core does not reliably test focus visibility, which is how this suite sat at

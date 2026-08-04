@@ -205,3 +205,26 @@ PR: #234
 **Aikido:** `aikido_full_scan` still fails without X11 `$DISPLAY`. Noted; continue.
 **Next:** Loop 8 — Coaching/Leaderboard/Welcome/FileUpload leftovers, ProfileOwnerTools, soft chrome, Active extracts; Bundle UI still refused (free-first).
 
+## Loop 8 waves
+
+| Wave | Status | Notes |
+|------|--------|-------|
+| R1 Coaching form | done (`.323`) | Interest-list leftovers; **134→121** |
+| R2 Leaderboard | done (`.324`) | Empty/error chrome; **121→112** |
+| R3–R4 Welcome/upload/owner | done (`.325`) | Session-ready + FileUpload + OwnerTools; **112→92** |
+| R5 Builder blank a11y | done (`.326`) | Seeded axe after Blank workout; Loop 8 living-log close |
+
+## Metrics
+
+| Metric | Loop 7 end | Loop 8 end |
+|--------|------------|------------|
+| Build | `.322` | **`.326`** |
+| i18n uncovered cap | 134 | **92** |
+
+## End of Loop 8
+
+**Delivered:** R1–R5 on `cursor/kaizen-wedge-night-be9b` → PR #234 (`.323`–`.326`).
+**Verified:** i18n @92; Builder blank-draft a11y axe green (`localhost`).
+**Aikido:** `aikido_full_scan` still fails without X11 `$DISPLAY`. Noted; continue.
+**Next:** Loop 9 — Learn/CourseReader, AnalyticsConsent, CoachAdaptDemo leftovers; soft chrome; Active extracts. Bundle UI still refused.
+
