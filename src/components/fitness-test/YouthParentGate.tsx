@@ -243,7 +243,7 @@ export function YouthParentGate({ childAge, onConsented, onCancel }: Props) {
             }}
           />
           {error && (
-            <p id="youth-otp-error" className="text-xs text-red-400 text-center" role="alert">
+            <p id="youth-otp-error" className="text-xs text-destructive text-center" role="alert">
               {error}
             </p>
           )}
@@ -321,7 +321,7 @@ export function YouthParentGate({ childAge, onConsented, onCancel }: Props) {
           </span>
         </label>
         {error && (
-          <p id="youth-request-error" className="text-xs text-red-400" role="alert">
+          <p id="youth-request-error" className="text-xs text-destructive" role="alert">
             {error}
           </p>
         )}

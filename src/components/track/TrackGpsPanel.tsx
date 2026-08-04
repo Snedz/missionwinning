@@ -173,7 +173,7 @@ export function TrackGpsPanel({ onLogged }: { onLogged?: () => void }) {
             </>
           )}
         </div>
-        {error && <p className="text-xs text-red-400">{error}</p>}
+        {error && <p className="text-xs text-destructive">{error}</p>}
         {!tracking && points.length === 0 && !error && (
           <p className="text-xs text-muted-foreground">
             {t('trackGpsHint', {

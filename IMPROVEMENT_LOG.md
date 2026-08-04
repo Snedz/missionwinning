@@ -587,14 +587,22 @@ PR: #234
 |------|--------|-------|
 | I1 Exercise note a11y | done (`.376`) | More → Note textarea axe green |
 | I2 Active extract | done (`.377`) | `exerciseHasPlannedSet` + wiring |
-| I3 Soft chrome / log close | pending (`.378`) | text-red-400 → destructive |
+| I3 Soft chrome / log close | done (`.378`) | Youth/Track/Teacher error ink |
 
 ## Metrics
 
 | Metric | Loop 24 end | Loop 25 (in progress) |
 |--------|-------------|------------------------|
-| Build | `.375` | **`.377`** |
+| Build | `.375` | **`.378`** |
 | i18n uncovered cap | 16 (Bundle refuse) | **16** (unchanged) |
+
+## End of Loop 25
+
+**Delivered:** I1–I3 on `cursor/kaizen-wedge-night-be9b` → PR #234 (`.376`–`.378`).
+**Verified:** exercise note a11y green; exerciseHasPlannedSet unit + wiring; design-system green.
+**Aikido:** `aikido_full_scan` fails without X11 `$DISPLAY`. Noted; continue.
+**Next:** Loop 26 — more seeded a11y; Active extracts; Bundle i18n still refused.
+
 
 
 

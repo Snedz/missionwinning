@@ -214,7 +214,7 @@ function TeacherClassInner({ code: rawCode }: { code: string }) {
               className="w-full rounded-md bg-background border border-border px-3 py-2 font-mono text-lg"
               placeholder="123456"
             />
-            {pinError && <p className="text-xs text-red-400">{pinError}</p>}
+            {pinError && <p className="text-xs text-destructive">{pinError}</p>}
             <Button className="w-full" onClick={() => void tryUnlock(pinInput)}>
               {t('teacherPinUnlock', { defaultValue: 'Unlock dashboard' })}
             </Button>
