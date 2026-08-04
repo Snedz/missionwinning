@@ -115,6 +115,41 @@ type InfoStrings = {
   infoTermsAcceptableUseBody: string;
   infoPrivacySubprocessors: string;
   infoPrivacySubprocessorsBody: string;
+  infoPrivacyCollectLi7: string;
+  infoPrivacyCollectLi8: string;
+  infoPrivacyCollectLi9: string;
+  infoPrivacyLawfulBases: string;
+  infoPrivacyLawfulBasesLi1: string;
+  infoPrivacyLawfulBasesLi2: string;
+  infoPrivacyLawfulBasesLi3: string;
+  infoPrivacyLawfulBasesLi4: string;
+  infoPrivacyHealthData: string;
+  infoPrivacyHealthDataBody: string;
+  infoPrivacyRetention: string;
+  infoPrivacyRetentionLi1: string;
+  infoPrivacyRetentionLi2: string;
+  infoPrivacyRetentionLi3: string;
+  infoPrivacyRetentionLi4: string;
+  infoPrivacyIntlTransfers: string;
+  infoPrivacyIntlTransfersBody: string;
+  infoPrivacyRights: string;
+  infoPrivacyRightsLi1: string;
+  infoPrivacyRightsLi2: string;
+  infoPrivacyRightsLi3: string;
+  infoPrivacyRightsLi4: string;
+  infoPrivacyRightsLi5: string;
+  infoPrivacyRightsLi6: string;
+  infoPrivacyRightsLi7: string;
+  infoPrivacyCookiesRef: string;
+  infoPrivacyCookiesRefBody: string;
+  infoPrivacyChildren: string;
+  infoPrivacyChildrenBody: string;
+  infoPrivacySecurity: string;
+  infoPrivacySecurityBody: string;
+  infoPrivacyChanges: string;
+  infoPrivacyChangesBody: string;
+  infoTermsEuConsumers: string;
+  infoTermsEuConsumersBody: string;
   infoAboutMissionP1: string;
   infoAboutMissionP2: string;
   infoAboutEvidence: string;
@@ -239,12 +274,15 @@ const en: InfoStrings = {
   infoTermsDmcaBody:
     'If you believe content on Mission Winning infringes your copyright, follow the notice process on our DMCA page. We respond to valid notices under the Digital Millennium Copyright Act. Repeat infringers may have accounts terminated.',
   infoTermsDisputesBody:
-    'Except for (a) small-claims court actions and (b) claims for injunctive or other equitable relief to protect intellectual property, any dispute arising out of or relating to these terms or the service will be resolved by binding individual arbitration administered by the American Arbitration Association (AAA) under its Consumer Arbitration Rules. You and Mission Winning LLC waive any right to a jury trial and to participate in a class, collective, or representative action. This agreement is governed by the laws of the United States and the state of formation of Mission Winning LLC, without regard to conflict-of-law rules. If the class waiver is found unenforceable as to a particular claim, that claim must proceed in court and not arbitration.',
+    'Except for (a) small-claims court actions and (b) claims for injunctive or other equitable relief to protect intellectual property, any dispute arising out of or relating to these terms or the service will be resolved by binding individual arbitration administered by the American Arbitration Association (AAA) under its Consumer Arbitration Rules. You and Mission Winning LLC waive any right to a jury trial and to participate in a class, collective, or representative action. This agreement is governed by the laws of the United States and the state of formation of Mission Winning LLC, without regard to conflict-of-law rules. If the class waiver is found unenforceable as to a particular claim, that claim must proceed in court and not arbitration. If you are a consumer habitually resident in the EU, UK, or EEA, this arbitration clause does not apply to you — see the EU/UK consumers section below.',
+  infoTermsEuConsumers: 'EU/UK consumers',
+  infoTermsEuConsumersBody:
+    'If you use Mission Winning as a consumer habitually resident in the European Union, the United Kingdom, or the EEA: the arbitration clause and class-action waiver above do not apply to you. Nothing in these terms deprives you of the protection of mandatory consumer law of your country of residence, and you may bring proceedings in the courts of that country. The European Commission provides an online dispute resolution platform at ec.europa.eu/consumers/odr.',
   infoTermsChangesBody:
     'We may update these terms. Continued use after changes constitutes acceptance. Material changes will be noted in the app or via email where appropriate.',
   infoTermsFoot: 'Mission Winning LLC · support@missionwinning.com · See also',
   infoPrivacyOverviewBody:
-    'Mission Winning ("we", "us") operates the Mission Winning app at missionwinning.com. Privacy is the default: workouts and logs stay on your device until you sign in to sync. Optional product analytics are off until you allow them. This policy explains what we collect, why, and your choices.',
+    'Mission Winning ("we", "us") operates the Mission Winning app at missionwinning.com. The data controller is Mission Winning LLC (contact: support@missionwinning.com; the registered postal address will be published here once our mailing address is live). Privacy is the default: workouts and logs stay on your device until you sign in to sync. Optional product analytics are off until you allow them. This policy explains what we collect, why, under which lawful bases, and your choices.',
   infoPrivacyCollectLi1:
     'Account: email address when you sign in (Apple, Google, Microsoft, Facebook, or magic link).',
   infoPrivacyCollectLi2:
@@ -266,11 +304,11 @@ const en: InfoStrings = {
     'We use the subprocessors listed below. We do not use Meta Pixel or Google Analytics advertising tags in the app. Each vendor has its own privacy terms. Session recording is disabled in our PostHog config. Payment refunds are described on /refunds.',
   infoPrivacySubprocessors: 'Subprocessors',
   infoPrivacySubprocessorsBody:
-    'Supabase (auth/database/hosting); Vercel (app hosting); Stripe and/or PayPal (payments when enabled); Resend (transactional email when enabled); PostHog EU (product analytics only if you allow it); optional OpenAI-compatible LLM provider when operators enable AI coach features (preferred: SpaceXAI/xAI with team Zero Data Retention). We remain the controller for consumer accounts; business customers who need a DPA should request docs/legal/DPA.md via support.',
+    'Supabase (authentication and database); Vercel (app hosting); Stripe and/or PayPal (payments when enabled); Resend (transactional email when enabled); PostHog EU (product analytics, EU-hosted, only if you allow it — session recording disabled); Sentry (error monitoring, with personally identifying fields disabled); Upstash (rate limiting — transient request keys only); browser push services from Google, Mozilla, or Apple (only when you enable notifications); OpenFoodFacts (food and barcode lookup — the query only, never your account data); Solana RPC / Phantom (only when you choose to pay with USDC); optional OpenAI-compatible LLM provider when operators enable AI coach features (preferred: SpaceXAI/xAI with team Zero Data Retention). We remain the controller for consumer accounts; business customers who need a DPA should request docs/legal/DPA.md via support.',
   infoPrivacyChoicesLi1: 'Use the free core without an account (local-only).',
   infoPrivacyChoicesLi2: 'Export or restore device data from Profile → Back up your data.',
   infoPrivacyChoicesLi3:
-    'Request access or deletion of your account and cloud data: support@missionwinning.com — we aim to respond within 30 days.',
+    'Export your cloud data (JSON) or delete your account and cloud data in-app: Profile → Account. Or email support@missionwinning.com — we respond within 30 days.',
   infoPrivacyChoicesLi4:
     'Control product analytics anytime: first-visit banner, or Profile → Privacy & analytics. Browsers with Do Not Track keep analytics off.',
   infoPrivacyLocalFirst: 'Local-first by design',
@@ -278,12 +316,67 @@ const en: InfoStrings = {
     'Training logs, nutrition, and journey progress are stored on your device first. Cloud sync is optional and requires sign-in. We do not sell personal health data. The app harness is open source so you can inspect how privacy works.',
   infoPrivacyAiCoach: 'AI features (disclosure)',
   infoPrivacyAiCoachBody:
-    'Mission Winning discloses that some features may use artificial intelligence. The free core coach (rules-based weekly plan and offline adjustments) does not require an AI API key and does not send your data to a model. When operators enable optional AI features — such as LLM coach chat/voice, daily insight, or photo meal macro estimates — we process limited inputs with a configured provider (recommended: SpaceXAI/xAI). We do not sell that content or use it for ads. When the provider is xAI with team Zero Data Retention (ZDR), xAI does not retain API prompts or outputs at rest (see xAI security FAQ). Cloud sync, payments, email, and product analytics remain separate third parties — ZDR does not replace those policies.',
+    'Mission Winning discloses that some features may use artificial intelligence. The free core coach (rules-based weekly plan and offline adjustments) does not require an AI API key and does not send your data to a model. When operators enable optional AI features — such as LLM coach chat/voice, daily insight, or photo meal macro estimates — we process limited inputs with a configured provider (recommended: SpaceXAI/xAI). We do not sell that content or use it for ads. When the provider is xAI with team Zero Data Retention (ZDR), xAI does not retain API prompts or outputs at rest (see xAI security FAQ). Cloud sync, payments, email, and product analytics remain separate third parties — ZDR does not replace those policies. Coach recommendations are suggestions you can ignore or edit — they are not automated decisions with legal or similarly significant effect (GDPR Art. 22), and any account-level decision is reviewed by a human on request.',
   infoPrivacyCaliforniaBody:
     'We do not sell or share personal information for cross-context behavioral advertising as those terms are defined under the California Consumer Privacy Act (CCPA/CPRA). California residents may request access or deletion of personal information we hold by emailing support@missionwinning.com. We will verify and respond as required by law.',
   infoPrivacyNotMedicalBody:
     'Mission Winning provides educational fitness tools only. Consult a qualified professional before starting new exercise or nutrition programs.',
   infoPrivacyFoot: 'Questions: support@missionwinning.com',
+  infoPrivacyCollectLi7:
+    'Optional push notifications: when you enable them, we store your browser push subscription (endpoint and keys) and — on devices without an account — a random device identifier, your time zone, and schedule preferences. Never your workout history.',
+  infoPrivacyCollectLi8:
+    "Optional AI usage metering: when AI features run, we record usage rows (feature, model, token counts, date) keyed to your account or device identifier — never the content of your prompts or the model's replies.",
+  infoPrivacyCollectLi9:
+    'Crypto checkout: when you pay with USDC, we record the payment intent (wallet address, amount, transaction reference) needed to deliver and support the purchase.',
+  infoPrivacyLawfulBases: 'Lawful bases (GDPR)',
+  infoPrivacyLawfulBasesLi1:
+    'Contract (Art. 6(1)(b)): account creation, cloud sync, premium delivery, and support — processing needed to provide what you asked for.',
+  infoPrivacyLawfulBasesLi2:
+    'Consent (Art. 6(1)(a)): product analytics, marketing attribution, push notifications, and optional AI features such as photo meal estimates — each off until you switch it on, withdrawable anytime.',
+  infoPrivacyLawfulBasesLi3:
+    'Legitimate interests (Art. 6(1)(f)): security, rate limiting, abuse and fraud prevention, and error monitoring — limited to what a user would reasonably expect.',
+  infoPrivacyLawfulBasesLi4:
+    'Legal obligation (Art. 6(1)(c)): payment, tax, and accounting records we must keep by law.',
+  infoPrivacyHealthData: 'Health-related data (Art. 9)',
+  infoPrivacyHealthDataBody:
+    'Workouts, nutrition logs, assessments, body metrics, and mind check-ins are health-related data. Used without an account, they never leave your device. If you sign in to sync, we process them solely to provide the service you request — plans, history, and progress — on the basis of your explicit consent given at sign-up. We never sell health data and never use it for advertising. You can withdraw consent at any time by deleting your account, which deletes your cloud data.',
+  infoPrivacyRetention: 'Data retention',
+  infoPrivacyRetentionLi1:
+    'Cloud data: kept while your account exists; deleting your account deletes it (database-level cascade, effective immediately).',
+  infoPrivacyRetentionLi2:
+    'On-device history: non-training entries (nutrition detail, mind check-ins) are trimmed after 90 days on your device; training history stays until you clear it.',
+  infoPrivacyRetentionLi3: 'Payment records: retained as required by tax and accounting law.',
+  infoPrivacyRetentionLi4:
+    'Waitlist and beta emails: kept until you unsubscribe or ask us to delete them.',
+  infoPrivacyIntlTransfers: 'International transfers',
+  infoPrivacyIntlTransfersBody:
+    "Some subprocessors process data in the United States (Supabase, Vercel, Stripe, Resend, Sentry, xAI). Where GDPR applies, transfers rely on Standard Contractual Clauses or an adequacy decision, with the vendor's data processing agreement in place. Product analytics stay in the EU (PostHog EU-hosted). An EU/UK Article 27 representative has not yet been appointed; until then, contact support@missionwinning.com for any data protection matter.",
+  infoPrivacyRights: 'Your rights (GDPR)',
+  infoPrivacyRightsLi1: 'Access — request a copy of the personal data we hold about you.',
+  infoPrivacyRightsLi2:
+    'Rectification — correct inaccurate data (most records are editable in-app).',
+  infoPrivacyRightsLi3:
+    'Erasure — delete your account and cloud data in-app (Profile → Account) or by email.',
+  infoPrivacyRightsLi4:
+    'Portability — download your cloud data as JSON in-app (Profile → Account) and your device data from Profile → Back up.',
+  infoPrivacyRightsLi5:
+    'Restriction and objection — ask us to limit or stop specific processing, including any processing based on legitimate interests.',
+  infoPrivacyRightsLi6:
+    'Withdraw consent — analytics and other consent-based processing stop going forward; withdrawal does not affect prior lawful processing.',
+  infoPrivacyRightsLi7:
+    'Complain — you can lodge a complaint with your local supervisory authority (EU/UK data protection authority) at any time.',
+  infoPrivacyCookiesRef: 'Cookies & device storage',
+  infoPrivacyCookiesRefBody:
+    "We set no advertising or third-party tracking cookies. Sign-in uses strictly necessary, httpOnly cookies; app data lives in your browser's local storage, on your device. The full inventory — every cookie and storage key, what it is for, and how long it lives — is on the Cookies page at missionwinning.com/cookies.",
+  infoPrivacyChildren: 'Children & youth',
+  infoPrivacyChildrenBody:
+    "Mission Winning is not directed at children under 13, and youth school features require verifiable parental consent before any youth data syncs (consent records are kept server-side). Where local law sets a higher digital-consent age (up to 16 in parts of the EU), we rely on parental consent up to that age. Parents can request deletion of a child's data anytime: support@missionwinning.com.",
+  infoPrivacySecurity: 'Security & breach notification',
+  infoPrivacySecurityBody:
+    'Cloud data is protected with row-level security, verified server-side authentication, httpOnly cookies, rate limiting, and strict transport security. No system is perfectly secure: if a breach affects your personal data, we will notify you without undue delay and, where GDPR applies, notify the competent supervisory authority within 72 hours of becoming aware of it, as Art. 33 requires.',
+  infoPrivacyChanges: 'Changes to this policy',
+  infoPrivacyChangesBody:
+    'This policy is versioned; the date above is the version you accept. Material changes re-prompt for consent in the app before your next sign-in, and are announced in the app or by email where appropriate. Earlier versions are available on request.',
   infoDmcaTitle: 'DMCA / Copyright',
   infoDmcaIntro:
     'Mission Winning respects intellectual property. If you believe material on our service infringes your copyright, send a notice that complies with 17 U.S.C. §512 to our designated agent.',

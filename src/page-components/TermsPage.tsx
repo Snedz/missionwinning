@@ -21,6 +21,7 @@ const TERM_SECTIONS = [
   { id: 'dmca', key: 'infoTermsDmca', bodyKey: 'infoTermsDmcaBody' },
   { id: 'liability', key: 'infoTermsLiability', bodyKey: 'infoTermsLiabilityBody' },
   { id: 'disputes', key: 'infoTermsDisputes', bodyKey: 'infoTermsDisputesBody' },
+  { id: 'eu-consumers', key: 'infoTermsEuConsumers', bodyKey: 'infoTermsEuConsumersBody' },
   { id: 'changes', key: 'infoTermsChanges', bodyKey: 'infoTermsChangesBody' },
 ] as const;
 
