@@ -13,7 +13,7 @@ import { STORAGE_KEYS } from '@/lib/storage/keys';
 import { useRouter } from 'next/navigation';
 import { useTranslation } from 'react-i18next';
 import { toast } from '@/hooks/use-toast';
-import { EXERCISES, ensureFullExerciseCatalog, getExerciseById } from '@/data/exercises';
+import { ensureFullExerciseCatalog, getExerciseById } from '@/data/exercises';
 import { useWorkoutStore } from '@/store/workoutStore';
 import { getFormGuideOrCues } from '@/lib/formGuides';
 import { FormGuideSheet } from '@/components/form/FormGuideSheet';
@@ -24,11 +24,11 @@ import { AddExerciseSheet } from '@/components/workout/AddExerciseSheet';
 import { ScreenDock } from '@/components/layout/ScreenDock';
 import { useIsCompact } from '@/hooks/useIsCompact';
 import { PlateCalculatorSheet } from '@/components/workout/PlateCalculatorSheet';
-import { ActiveExerciseCard } from '@/components/workout/ActiveExerciseCard';
 import { ActiveEmptyState } from '@/components/workout/ActiveEmptyState';
 import { ActiveSessionChrome } from '@/components/workout/ActiveSessionChrome';
 import { ActiveReadinessDeltaStrip } from '@/components/workout/ActiveReadinessDeltaStrip';
 import { ActiveInlineAddExercise } from '@/components/workout/ActiveInlineAddExercise';
+import { ActiveExerciseList } from '@/components/workout/ActiveExerciseList';
 import { LiveHeartRate } from '@/components/workout/LiveHeartRate';
 import { useUnits, weightStep, weightUnitLabel } from '@/hooks/useUnits';
 import {
@@ -56,14 +56,12 @@ import {
 import {
   planSessionCheckInDismiss,
 } from '@/lib/workout/activeSessionCheckIn';
-import {
-  patchesForApplyTargets,
+import { patchesForApplyTargets,
   patchesForPlateWeight,
   patchesForUseNext,
   plateCalcInitialWeight,
   resolveAddExerciseId,
 } from '@/lib/workout/activeSetInputPatches';
-import { resolveActiveTableSetControls } from '@/lib/workout/activeTableSetControls';
 import {
   buildConsoleSet,
   findNextSet,
@@ -75,7 +73,6 @@ import {
   resolveActiveSetDial,
   resolveFormGuideSheet,
   resolveRepeatLastTarget,
-  resolveSwapCandidatesWhenOpen,
   activeSessionBottomClass,
   resolveActiveGoalId,
   activeSessionHasExercises,
@@ -84,10 +81,8 @@ import {
   sessionSetStats,
   setInputKey,
   toggleOpenIdx,
-  isOpenIdx,
 } from '@/lib/workout/activeWorkoutHelpers';
 import { prefersReducedMotion } from '@/lib/motion';
-import { compareText } from '@/lib/i18n/formatLocale';
 import { useLocaleFormat } from '@/hooks/useLocaleFormat';
 
 export function ActiveWorkoutPage() {
@@ -509,87 +504,51 @@ export function ActiveWorkoutPage() {
           })}
         </p>
       ) : (
-        <div className="space-y-3">
-          {activeWorkout.exercises.map((exLog, exIdx) => {
-            const exercise = getExerciseById(exLog.exerciseId);
-            if (!exercise) return null;
-            const swapCandidates = resolveSwapCandidatesWhenOpen({
-              swapOpenIdx,
-              exIdx,
-              catalog: EXERCISES,
-              current: exercise,
-              compareNames: (a, b) => compareText(a, b, fmt.lang),
-            });
-            /* Desktop's table logs in place. Same `setInputs` map the dock
-               console writes, so switching surface mid-session keeps the
-               half-typed set. Only meaningful when this exercise holds the
-               active set — the table ignores it otherwise. */
-            const tableControls = resolveActiveTableSetControls({
-              nextSet,
-              exIdx,
-              sets: exLog.sets,
-              resolveInput: getSetInput,
-            });
-
-            return (
-              <ActiveExerciseCard
-              goalRange={repRangeForGoal(goalId)}
-                key={`${exLog.exerciseId}-${exIdx}`}
-                exLog={exLog}
-                exIdx={exIdx}
-                exercises={activeWorkout.exercises}
-                exercise={exercise}
-                workoutHistory={workoutHistory}
-                units={units}
-                unitLabel={unitLabel}
-                nextSet={nextSet}
-                nextSetRef={nextSetRef}
-                swapOpen={isOpenIdx(swapOpenIdx, exIdx)}
-                noteOpen={isOpenIdx(noteOpenIdx, exIdx)}
-                swapCandidates={swapCandidates}
-                lastSessionSets={getLastSessionSets}
-                onRepeatLast={() => handleRepeatLast(exIdx)}
-                onFormGuide={() => setFormGuideId(exercise.id)}
-                onToggleSuperset={() => toggleSupersetWithNext(exIdx)}
-                onUnlinkSuperset={() => unlinkSuperset(exIdx)}
-                onToggleNote={() => setNoteOpenIdx((cur) => toggleOpenIdx(cur, exIdx))}
-                onToggleSwap={() => setSwapOpenIdx((cur) => toggleOpenIdx(cur, exIdx))}
-                onRemove={() => {
-                  removeExerciseFromActive(exIdx);
-                  setSwapOpenIdx(null);
-                  setNoteOpenIdx(null);
-                  setSetInputs({});
-                }}
-                onSwapTo={(id) => {
-                  const ex = getExerciseById(id);
-                  replaceExerciseInActive(exIdx, id, ex?.muscleGroups);
-                  setSwapOpenIdx(null);
-                  setSetInputs({});
-                }}
-                onNoteChange={(note) => setExerciseNote(exIdx, note)}
-                onRate={(setIdx, rpe) => rateSet(exIdx, setIdx, rpe)}
-                onApplyAllTargets={() => applyTargetsForExercise(exIdx)}
-                onAddSet={() => addSetToExercise(exIdx)}
-                onRemoveSet={() => {
-                  removeLastPlannedSet(exIdx);
-                  setSetInputs({});
-                }}
-                onStartRest={(seconds) => startRestTimer(seconds)}
-                setInput={tableControls.setInput}
-                onSetInputChange={(field, value) => {
-                  if (!tableControls.canEdit || !nextSet) return;
-                  updateSetInput(exIdx, nextSet.setIdx, field, value);
-                }}
-                onLogSet={(setIdx) => handleLogSet(exIdx, setIdx)}
-                activeSetKind={tableControls.activeSetKind}
-                onSetKindChange={(kind) => {
-                  if (!tableControls.canEdit || !nextSet) return;
-                  setSetKind(exIdx, nextSet.setIdx, kind);
-                }}
-              />
-            );
-          })}
-        </div>
+        <ActiveExerciseList
+          exercises={activeWorkout.exercises}
+          workoutHistory={workoutHistory}
+          units={units}
+          unitLabel={unitLabel}
+          goalId={goalId}
+          nextSet={nextSet}
+          nextSetRef={nextSetRef}
+          swapOpenIdx={swapOpenIdx}
+          noteOpenIdx={noteOpenIdx}
+          lang={fmt.lang}
+          getSetInput={getSetInput}
+          onRepeatLast={handleRepeatLast}
+          onFormGuide={(id) => setFormGuideId(id)}
+          onToggleSuperset={(exIdx) => toggleSupersetWithNext(exIdx)}
+          onUnlinkSuperset={(exIdx) => unlinkSuperset(exIdx)}
+          onToggleNote={(exIdx) => setNoteOpenIdx((cur) => toggleOpenIdx(cur, exIdx))}
+          onToggleSwap={(exIdx) => setSwapOpenIdx((cur) => toggleOpenIdx(cur, exIdx))}
+          onRemove={(exIdx) => {
+            removeExerciseFromActive(exIdx);
+            setSwapOpenIdx(null);
+            setNoteOpenIdx(null);
+            setSetInputs({});
+          }}
+          onSwapTo={(exIdx, id) => {
+            const ex = getExerciseById(id);
+            replaceExerciseInActive(exIdx, id, ex?.muscleGroups);
+            setSwapOpenIdx(null);
+            setSetInputs({});
+          }}
+          onNoteChange={(exIdx, note) => setExerciseNote(exIdx, note)}
+          onRate={(exIdx, setIdx, rpe) => rateSet(exIdx, setIdx, rpe)}
+          onApplyAllTargets={(exIdx) => applyTargetsForExercise(exIdx)}
+          onAddSet={(exIdx) => addSetToExercise(exIdx)}
+          onRemoveSet={(exIdx) => {
+            removeLastPlannedSet(exIdx);
+            setSetInputs({});
+          }}
+          onStartRest={(seconds) => startRestTimer(seconds)}
+          onSetInputChange={(exIdx, setIdx, field, value) =>
+            updateSetInput(exIdx, setIdx, field, value)
+          }
+          onLogSet={(exIdx, setIdx) => handleLogSet(exIdx, setIdx)}
+          onSetKindChange={(exIdx, setIdx, kind) => setSetKind(exIdx, setIdx, kind)}
+        />
       )}
 
         {/*

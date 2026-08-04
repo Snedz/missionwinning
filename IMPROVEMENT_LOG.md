@@ -3,7 +3,7 @@
 Session branch: `cursor/kaizen-night-be9b`  
 Started: 2026-08-04 · Web craft only · Modernist system stands  
 Base: `master` @ `2026.07-unified.417`  
-Tip: `2026.07-unified.437` · PR #254  
+Tip: `2026.07-unified.439` · PR #254  
 Prior night: #234 (`.294`–`.403`) + follow-on media/Learn through `.417`
 
 ## Contract
@@ -34,14 +34,15 @@ Pause/restart · week numbers · Fixed vs Flexible · glow FAB · Habits/communi
 
 | Metric | Night start | Tip |
 |--------|-------------|-----|
-| Build | `.417` | **`.437`** |
+| Build | `.417` | **`.439`** |
 | i18n uncovered cap | 16 | **16** |
 | ActiveExerciseCard LOC | 536 | **224** (−312) |
 | HomeTodayDashboard LOC | 785 | **714** (−71) |
-| ActiveWorkoutPage LOC | 765 | **727** (−38) |
+| ActiveWorkoutPage LOC | 765 | **686** (−79) |
 | WorkoutVictorySheet LOC | 387 | **316** (−71) |
+| CoachChatPanel LOC | 492 | **399** (−93) |
 | New axe cases | — | 3 (Coach manage / schedule / adjust) |
-| Fuel unit cases added | — | fraction · mixed · word-half |
+| Fuel unit cases added | — | fraction · mixed · word-half · quarter · thirds · unicode · couple |
 
 ## Decisions / findings
 
@@ -183,11 +184,23 @@ Pause/restart · week numbers · Fixed vs Flexible · glow FAB · Habits/communi
 |------|--------|-------|
 | `.437` | done | FreeFormAsk + SoftTip; panel 492→399 |
 
+### Loop 21 — NL ¼ + couple
+
+| Wave | Status | Notes |
+|------|--------|-------|
+| `.438` | done | shared VULGAR_FRAC +¼; three-quarters hyphen; couple → 2 |
+
+### Loop 22 — Active exercise list
+
+| Wave | Status | Notes |
+|------|--------|-------|
+| `.439` | done | ActiveExerciseList peel; page →686; readiness wiring → strip |
+
 ## Next (founder / later nights)
 
-1. Phone excellence walk of Train → Today → Victory → Coach on tip `.437`.
+1. Phone excellence walk of Train → Today → Victory → Coach on tip `.439`.
 2. Visual baseline bootstrap on Linux when founder ready (not this branch).
 3. Pump D14 only when screenshots arrive — do not invent IA.
 4. Further Fuel accuracy: vision grounding for honest `high` confidence.
 5. More Active/Coach extracts only if they unlock a real test or shrink a hot path.
-6. Soft-chrome ratchet: extend bare-opacity guard to `opacity-90`.
+6. Soft-chrome ratchet: bare opacity-90/95 already banned (`.427`).

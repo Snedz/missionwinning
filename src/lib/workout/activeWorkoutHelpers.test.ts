@@ -395,21 +395,26 @@ describe('rankSwapCandidates', () => {
     );
   });
 
-  it('ActiveWorkoutPage uses resolveSwapCandidatesWhenOpen rather than an open-idx ternary', () => {
-    const src = readFileSync(
+  it('ActiveExerciseList uses resolveSwapCandidatesWhenOpen rather than an open-idx ternary', () => {
+    const list = readFileSync(
+      path.join(import.meta.dirname, '..', '..', 'components', 'workout', 'ActiveExerciseList.tsx'),
+      'utf8'
+    );
+    const page = readFileSync(
       path.join(import.meta.dirname, '..', '..', 'page-components', 'ActiveWorkoutPage.tsx'),
       'utf8'
     );
-    assert.match(src, /resolveSwapCandidatesWhenOpen\(/);
+    assert.match(list, /resolveSwapCandidatesWhenOpen\(/);
+    assert.match(page, /ActiveExerciseList/);
     assert.doesNotMatch(
-      src,
+      list,
       /rankSwapCandidates\(/,
-      'page must call resolveSwapCandidatesWhenOpen, not rankSwapCandidates directly'
+      'list must call resolveSwapCandidatesWhenOpen, not rankSwapCandidates directly'
     );
     assert.doesNotMatch(
-      src,
-      /aShared !== bShared/,
-      'inline muscle-share sort returned — keep one definition in activeWorkoutHelpers'
+      page,
+      /resolveSwapCandidatesWhenOpen\(/,
+      'swap ranking lives in ActiveExerciseList'
     );
   });
 });
@@ -835,9 +840,9 @@ describe('shouldShowReadinessDelta', () => {
     assert.equal(shouldShowReadinessDelta(50, null), false);
   });
 
-  it('ActiveWorkoutPage uses shouldShowReadinessDelta rather than inlining null checks', () => {
+  it('ActiveReadinessDeltaStrip uses shouldShowReadinessDelta rather than inlining null checks', () => {
     const src = readFileSync(
-      path.join(import.meta.dirname, '..', '..', 'page-components', 'ActiveWorkoutPage.tsx'),
+      path.join(import.meta.dirname, '..', '..', 'components', 'workout', 'ActiveReadinessDeltaStrip.tsx'),
       'utf8'
     );
     assert.match(src, /shouldShowReadinessDelta\(/);
@@ -856,9 +861,9 @@ describe('shouldShowVolumeTrimOffer', () => {
     assert.equal(shouldShowVolumeTrimOffer(false, true), false);
   });
 
-  it('ActiveWorkoutPage uses shouldShowVolumeTrimOffer rather than offer && plan', () => {
+  it('ActiveReadinessDeltaStrip uses shouldShowVolumeTrimOffer rather than offer && plan', () => {
     const src = readFileSync(
-      path.join(import.meta.dirname, '..', '..', 'page-components', 'ActiveWorkoutPage.tsx'),
+      path.join(import.meta.dirname, '..', '..', 'components', 'workout', 'ActiveReadinessDeltaStrip.tsx'),
       'utf8'
     );
     assert.match(src, /shouldShowVolumeTrimOffer\(/);
@@ -1044,19 +1049,24 @@ describe('isOpenIdx', () => {
     assert.equal(isOpenIdx(1, 0), false);
   });
 
-  it('ActiveWorkoutPage uses isOpenIdx for note/swap open props', () => {
-    const src = readFileSync(
+  it('ActiveExerciseList uses isOpenIdx for note/swap open props', () => {
+    const list = readFileSync(
+      path.join(import.meta.dirname, '..', '..', 'components', 'workout', 'ActiveExerciseList.tsx'),
+      'utf8'
+    );
+    const page = readFileSync(
       path.join(import.meta.dirname, '..', '..', 'page-components', 'ActiveWorkoutPage.tsx'),
       'utf8'
     );
-    assert.match(src, /isOpenIdx\(/);
+    assert.match(list, /isOpenIdx\(/);
+    assert.match(page, /ActiveExerciseList/);
     assert.doesNotMatch(
-      src,
+      list,
       /swapOpen=\{swapOpenIdx\s*===\s*exIdx\}/,
       'swap open prop must stay inside isOpenIdx'
     );
     assert.doesNotMatch(
-      src,
+      list,
       /noteOpen=\{noteOpenIdx\s*===\s*exIdx\}/,
       'note open prop must stay inside isOpenIdx'
     );

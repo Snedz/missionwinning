@@ -8,6 +8,7 @@
 |------|---------|
 | `ActiveEmptyState.tsx` | No-session shell — start quick workout |
 | `ActiveSessionChrome.tsx` | Session bar — Elapsed/Sets pair, progress, Plates + Finish; **Add exercise is a trigger** for `AddExerciseSheet`, not an inline picker |
+| `ActiveExerciseList.tsx` | Maps session exercises → `ActiveExerciseCard` (swap candidates, table controls, open-idx). Page mounts this instead of inlining the map (`.439`) |
 | `ActiveExerciseCard.tsx` | Dense exercise block — Info → form guide; overflow for Note/Swap/SS/Ask/Remove. **Swap** is `AdaptiveOverlay` + `ExercisePicker` (not an inline max-h-48 list) |
 | `SetLogTable.tsx` | **Desktop** set list — the handoff's table (`Set · Prev · kg · Reps`), inline inputs + inline `Log set` on the active row. Compact uses `SetLogRow` + `LogConsole` instead |
 | `SetLogRow.tsx` | **A read-only record of one set** — `#n · 8 × 60 kg`, kind tag, PR honor, RPE, `Check`. Carries no inputs: entry is `LogConsole` |
