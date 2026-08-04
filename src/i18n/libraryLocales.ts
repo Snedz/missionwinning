@@ -1,6 +1,13 @@
 /** Exercise library filter labels — merged into i18n `common` namespace. */
 
 const LIBRARY_EN: Record<string, string> = {
+  exercisePickerSearch: 'Search exercises…',
+  exercisePickerSelected: 'Selected: {{name}}',
+  exercisePickerEmpty: 'No matches',
+  libraryAddToActive: "Add to today's session",
+  libraryYourHistory: 'Logged in {{count}} sessions',
+  libraryVolumeSpark: 'Volume across recent sessions (oldest → newest)',
+  libraryViewFormGuide: 'View form guide',
   libraryEyebrow: 'Library',
   library: 'Exercise Library',
   librarySubtitle:

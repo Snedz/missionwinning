@@ -28,6 +28,19 @@ type LearnStrings = {
   learnCourseProgress: string;
   learnChapterComplete: string;
   learnChapterNextHint: string;
+  learnFreeIntro: string;
+  learnReadIntro: string;
+  learnPreviewCourse: string;
+  learnLockedHint: string;
+  learnCourseTitle: string;
+  learnCourseSubtitle: string;
+  learnCourseSignIn: string;
+  learnCourseFetchFailed: string;
+  learnCourseFetchFailedDesc: string;
+  learnCourseRetry: string;
+  learnCourseEmptyTitle: string;
+  learnCourseEmptyBeta: string;
+  learnCourseBrowseFree: string;
 };
 
 const en: LearnStrings = {
@@ -60,6 +73,24 @@ const en: LearnStrings = {
   learnChapterComplete: 'Chapter complete — logged to Learn pillar.',
   learnChapterNextHint:
     'Practice what you learned — mobility or a Fuel log compounds the win.',
+  learnFreeIntro: 'Free — read now',
+  learnReadIntro: 'Read intro chapter →',
+  learnPreviewCourse: 'Multi-chapter courses with progress tracking',
+  learnLockedHint:
+    'Free: 6 guidebook chapters + 10 paths. Premium: 4 specialist courses, 16 sections — corrective, coaching, periodization, sports nutrition.',
+  learnCourseTitle: 'Specialist courses',
+  learnCourseSubtitle:
+    'Premium guidebook chapters — corrective, coaching business, periodization, and more.',
+  learnCourseSignIn: 'Sign in with your bundle email to load specialist courses.',
+  learnCourseFetchFailed: 'Courses could not load',
+  learnCourseFetchFailedDesc:
+    'The specialist catalogue is fetched when you open this page, so this is usually the connection rather than your account.',
+  learnCourseRetry: 'Try again',
+  learnCourseEmptyTitle: 'No specialist courses yet',
+  learnCourseEmptyBeta:
+    'The specialist catalogue is still being written. The free learning paths and the guidebook are complete and open to everyone.',
+  learnCourseBrowseFree: 'Browse free paths',
+
 };
 
 const es: LearnStrings = {

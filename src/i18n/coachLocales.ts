@@ -37,6 +37,9 @@ type CoachStrings = {
   coachDaysPerWeek: string;
   coachVoiceTitle: string;
   coachVoiceLoading: string;
+  coachVoiceError: string;
+  coachVoiceOffline: string;
+  coachVoiceErrorDesc: string;
   coachTasterLocked: string;
   coachTasterLockedDesc: string;
   coachTasterFatigueNote: string;
@@ -184,6 +187,9 @@ const en: CoachStrings = {
   coachDaysPerWeek: 'How many days a week?',
   coachVoiceTitle: "Commander's intent",
   coachVoiceLoading: 'Briefing your week…',
+  coachVoiceError: 'Could not load briefing',
+  coachVoiceOffline: 'You appear offline — try again when connected.',
+  coachVoiceErrorDesc: 'Tap retry to load commander intent.',
   coachTasterLocked: 'Your free week is complete',
   coachTasterLockedDesc:
     'You got one free Coach week. Super Bundle unlocks a new plan every Monday, on-demand regeneration, and Commander\'s intent tuned to readiness.',

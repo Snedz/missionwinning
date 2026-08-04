@@ -84,6 +84,7 @@ type BuilderStrings = {
   builderTemplateSearch: string;
   builderTemplateSearchCount: string;
   builderProFreeBeta: string;
+  builderRemoveExercise: string;
 };
 
 const en: BuilderStrings = {
@@ -171,6 +172,9 @@ const en: BuilderStrings = {
   builderTemplateSearch: 'Search programs or sessions…',
   builderTemplateSearchCount: '{{count}} matching',
   builderProFreeBeta: 'Pro cycles are paused during open beta — free templates stay available.',
+  builderRemoveExercise: 'Remove exercise',
+  builderRemoveSet: 'Remove set',
+  builderContinue: 'Continue',
 };
 
 const es: BuilderStrings = {
