@@ -241,4 +241,24 @@ describe('nlMealLog', () => {
     assert.equal(third.protein, Math.round(aCup.protein * (1 / 3)));
     assert.equal(twoThirds.protein, Math.round(aCup.protein * (2 / 3)));
   });
+
+  it('parses unicode fractions + half of / three quarters / hyphen thirds (.436)', () => {
+    const aCup = estimateMealFromDescription('a cup of rice');
+    assert.ok(aCup);
+    const halfU = estimateMealFromDescription('½ cup rice');
+    const threeQ = estimateMealFromDescription('¾ cup rice');
+    const mixedU = estimateMealFromDescription('1½ cups rice');
+    const halfOf = estimateMealFromDescription('half of a cup of rice');
+    const threeQuarters = estimateMealFromDescription('three quarters cup rice');
+    const hyphen = estimateMealFromDescription('two-thirds cup rice');
+    const thirdU = estimateMealFromDescription('⅓ cup rice');
+    assert.ok(halfU && threeQ && mixedU && halfOf && threeQuarters && hyphen && thirdU);
+    assert.equal(halfU.protein, Math.round(aCup.protein * 0.5));
+    assert.equal(threeQ.protein, Math.round(aCup.protein * 0.75));
+    assert.equal(mixedU.protein, Math.round(aCup.protein * 1.5));
+    assert.equal(halfOf.protein, Math.round(aCup.protein * 0.5));
+    assert.equal(threeQuarters.protein, Math.round(aCup.protein * 0.75));
+    assert.equal(hyphen.protein, Math.round(aCup.protein * (2 / 3)));
+    assert.equal(thirdU.protein, Math.round(aCup.protein * (1 / 3)));
+  });
 });
