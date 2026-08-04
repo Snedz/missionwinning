@@ -71,3 +71,8 @@ export function restProgress(initialSeconds: number, remaining: number): number 
   if (initialSeconds <= 0) return 0;
   return Math.max(0, Math.min(1, remaining / initialSeconds));
 }
+
+/** Active log rest: named exercise uses shared resolver, else the 90s fallback. */
+export function restSecondsForExercise(exerciseName: string | undefined, fallback = 90): number {
+  return exerciseName ? resolveRestSeconds(exerciseName) : fallback;
+}

@@ -29,7 +29,7 @@ import { ActiveExerciseCard } from '@/components/workout/ActiveExerciseCard';
 import { ActiveEmptyState } from '@/components/workout/ActiveEmptyState';
 import { ActiveSessionChrome } from '@/components/workout/ActiveSessionChrome';
 import { LiveHeartRate } from '@/components/workout/LiveHeartRate';
-import { resolveRestSeconds } from '@/lib/workout/restTimer';
+import { restSecondsForExercise } from '@/lib/workout/restTimer';
 import { isPersonalRecord } from '@/lib/workout/workoutPr';
 import { shouldRestAfterLog } from '@/lib/workout/superset';
 import { useUnits, weightStep, weightUnitLabel } from '@/hooks/useUnits';
@@ -281,7 +281,7 @@ export function ActiveWorkoutPage() {
     if (!exLog || !set) return;
     const input = override ?? getSetInput(exIdx, setIdx, set.reps, set.weight);
     const exercise = getExerciseById(exLog.exerciseId);
-    const restSec = exercise ? resolveRestSeconds(exercise.name) : 90;
+    const restSec = restSecondsForExercise(exercise?.name);
     const exerciseId = exLog.exerciseId;
     const setKind = set.kind ?? 'normal';
     const isPr = isPersonalRecord(exerciseId, input.reps, input.weight, workoutHistory, setKind);

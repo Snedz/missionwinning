@@ -410,6 +410,6 @@ PR: #234
 | Wave | Status | Notes |
 |------|--------|-------|
 | A1 Assessments result a11y | done (`.352`) | Submit after ≥5 Nos → result axe green |
-| A2 Active extract | pending | |
+| A2 Active extract | done (`.353`) | `restSecondsForExercise` + wiring guard |
 | A3 Soft chrome / log close | pending | |
 
