@@ -138,6 +138,26 @@ const NOTIFICATION_EN: Record<string, string> = {
   profileCommissionedDay: 'Day {{day}} on the path',
   profileSubtitle:
     'Account, units, and preferences. Progress stays on this device unless you sign in.',
+
+  /** Kaizen Loop 7 Q1 — Profile wearables (.318) */
+  wearablesConnected: 'Connected {{provider}}. You can sync now.',
+  wearablesOauthResult: 'Wearables: {{code}}',
+  wearablesSyncOk: 'Synced {{count}} samples ({{track}} Track activities).',
+  wearablesDisconnected: 'Disconnected.',
+  wearablesTitle: 'Wearables',
+  wearablesLead:
+    'Optional. Connect Whoop, Strava, and more when configured. Apple Health and Google Health Connect need the app shell later. Win Score still comes from your logs.',
+  wearablesSignIn: 'Sign in to connect wearable accounts.',
+  wearablesHubPending: 'Needs thin native shell (coming after TWA / iOS).',
+  wearablesBleHint: 'Use live heart rate on the Active workout screen.',
+  wearablesNotConfigured: 'Not configured on this server yet.',
+  wearablesStatusConnected: 'Connected · last sync {{at}}',
+  wearablesStatusAvailable: 'Ready to connect',
+  wearablesConnect: 'Connect',
+  wearablesSync: 'Sync',
+  wearablesDisconnect: 'Disconnect',
+  wearablesManualHint: 'No account? Import Apple / Google JSON or CSV on Track.',
+  wearablesOpenTrack: 'Open Track',
 };
 
 const nl = (over: Record<string, string>): Record<string, string> => ({
