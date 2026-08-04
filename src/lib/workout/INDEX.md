@@ -21,6 +21,7 @@ Root-level `@/lib/{name}` paths re-export from here for compatibility — prefer
 13. `sessionCheckInOffer.ts` — pure W1 gate: never Mind-sheet the first mission (`.293`)
 14. `loggerSpeed.ts` — Enter/Use-next helpers (`.288`)
 15. `activeSessionFinish.ts` — log-set PR/rest + Victory assembly (`.405`)
+16. `activeSessionCheckIn.ts` — check-in dismiss + volume-trim toast kind (`.406`)
 
 ## Tests (colocated)
 
