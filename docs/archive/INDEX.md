@@ -103,6 +103,7 @@ When adding a doc:
 | [log/LOG-rotate-419.md](./log/LOG-rotate-419.md) | `.404` — rotated for `.419` ActiveExerciseCard extract |
 | [log/LOG-rotate-418.md](./log/LOG-rotate-418.md) | `.403` — rotated for `.418` exercisePickerList coverage |
 | [log/LOG-rotate-417.md](./log/LOG-rotate-417.md) | `.402` pack keys — rotated for `.417` hero palette scope |
+| [log/LOG-rotate-418.md](./log/LOG-rotate-418.md) | rotated for `.418` landing photos + form geometry |
 | [log/LOG-rotate-406.md](./log/LOG-rotate-406.md) | rotated for .406 Active check-in |
 | [log/LOG-rotate-405.md](./log/LOG-rotate-405.md) | rotated for .405 Active finish extract |
 | [log/LOG-rotate-404.md](./log/LOG-rotate-404.md) | rotated for .404 week-1 activation contract |

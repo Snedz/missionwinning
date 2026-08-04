@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 220" fill="none" role="img" aria-label="Bird-dog form: setup, extend opposite arm and leg, hold">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 220" fill="none" role="img" aria-label="Bird-dog: setup, extend, hold">
   <title>Bird-dog form diagram</title>
   <rect width="360" height="220" fill="#f3f2f2"></rect>
   <text x="60" y="28" text-anchor="middle" fill="#6f6b69" font-family="Archivo, system-ui, sans-serif" font-size="11" letter-spacing="0.5">SETUP</text>
@@ -9,48 +9,43 @@
   <line x1="140" y1="185" x2="220" y2="185" stroke="#201e1d" stroke-width="2"></line>
   <line x1="260" y1="185" x2="340" y2="185" stroke="#201e1d" stroke-width="2"></line>
   <g stroke="#201e1d" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none">
-    <circle cx="78" cy="95" r="9"></circle>
-    <line x1="78" y1="95" x2="78" y2="106"></line>
-    <line x1="78" y1="106" x2="50" y2="125"></line>
-    <line x1="78" y1="106" x2="78" y2="106"></line>
-    <line x1="78" y1="106" x2="78" y2="106"></line>
-    <line x1="78" y1="106" x2="90" y2="155"></line>
-    <line x1="78" y1="106" x2="70" y2="155"></line>
-    <line x1="50" y1="125" x2="40" y2="145"></line>
-    <line x1="40" y1="145" x2="28" y2="165"></line>
-    <line x1="50" y1="125" x2="55" y2="145"></line>
-    <line x1="55" y1="145" x2="48" y2="165"></line>
+    <circle cx="85" cy="105" r="9"></circle>
+    <line x1="85" y1="105" x2="75" y2="115"></line>
+    <line x1="75" y1="115" x2="50" y2="130"></line>
+    <line x1="75" y1="115" x2="72" y2="118"></line>
+    <line x1="72" y1="118" x2="90" y2="180"></line>
+    <line x1="72" y1="118" x2="70" y2="180"></line>
+    <line x1="50" y1="130" x2="45" y2="170"></line>
+    <line x1="45" y1="170" x2="32" y2="185"></line>
+    <line x1="50" y1="130" x2="55" y2="170"></line>
+    <line x1="55" y1="170" x2="42" y2="185"></line>
   </g>
-  <circle cx="50" cy="125" r="3.5" fill="#ec3013"></circle>
-  <text x="50" y="117" text-anchor="middle" fill="#ec3013" font-family="Archivo, system-ui, sans-serif" font-size="8">brace</text>
   <g stroke="#201e1d" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none">
-    <circle cx="210" cy="88" r="9"></circle>
-    <line x1="210" y1="88" x2="210" y2="99"></line>
-    <line x1="210" y1="99" x2="175" y2="125"></line>
-    <line x1="210" y1="99" x2="210" y2="99"></line>
-    <line x1="210" y1="99" x2="210" y2="99"></line>
-    <line x1="210" y1="99" x2="230" y2="95"></line>
-    <line x1="210" y1="99" x2="195" y2="155"></line>
-    <line x1="175" y1="125" x2="160" y2="145"></line>
-    <line x1="160" y1="145" x2="150" y2="165"></line>
-    <line x1="175" y1="125" x2="145" y2="95"></line>
+    <circle cx="215" cy="95" r="9"></circle>
+    <line x1="215" y1="95" x2="202" y2="110"></line>
+    <line x1="202" y1="110" x2="175" y2="128"></line>
+    <line x1="202" y1="110" x2="198" y2="112"></line>
+    <line x1="198" y1="112" x2="230" y2="100"></line>
+    <line x1="198" y1="112" x2="190" y2="180"></line>
+    <line x1="175" y1="128" x2="165" y2="170"></line>
+    <line x1="165" y1="170" x2="155" y2="185"></line>
+    <line x1="175" y1="128" x2="145" y2="100"></line>
   </g>
-  <path d="M230 110 L245 90" stroke="#ec3013" stroke-width="2" stroke-linecap="round"></path>
-  <polygon points="245,90 243.39999999999998,98.80000000000001 237,94" fill="#ec3013"></polygon>
-  <path d="M145 115 L130 95" stroke="#ec3013" stroke-width="2" stroke-linecap="round"></path>
-  <polygon points="130,95 138,99 131.60000000000002,103.80000000000001" fill="#ec3013"></polygon>
+  <path d="M225 115 L235 95" stroke="#ec3013" stroke-width="2" stroke-linecap="round"></path>
+  <polygon points="235,95 235,103.94427190999916 227.8445824720007,100.3665631459995" fill="#ec3013"></polygon>
+  <path d="M155 120 L140 100" stroke="#ec3013" stroke-width="2" stroke-linecap="round"></path>
+  <polygon points="140,100 148,104 141.60000000000002,108.80000000000001" fill="#ec3013"></polygon>
   <g stroke="#201e1d" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none">
-    <circle cx="325" cy="88" r="9"></circle>
-    <line x1="325" y1="88" x2="325" y2="99"></line>
-    <line x1="325" y1="99" x2="295" y2="125"></line>
-    <line x1="325" y1="99" x2="325" y2="99"></line>
-    <line x1="325" y1="99" x2="325" y2="99"></line>
-    <line x1="325" y1="99" x2="345" y2="95"></line>
-    <line x1="325" y1="99" x2="315" y2="155"></line>
-    <line x1="295" y1="125" x2="280" y2="145"></line>
-    <line x1="280" y1="145" x2="270" y2="165"></line>
-    <line x1="295" y1="125" x2="265" y2="95"></line>
+    <circle cx="335" cy="95" r="9"></circle>
+    <line x1="335" y1="95" x2="322" y2="110"></line>
+    <line x1="322" y1="110" x2="295" y2="128"></line>
+    <line x1="322" y1="110" x2="318" y2="112"></line>
+    <line x1="318" y1="112" x2="350" y2="100"></line>
+    <line x1="318" y1="112" x2="310" y2="180"></line>
+    <line x1="295" y1="128" x2="285" y2="170"></line>
+    <line x1="285" y1="170" x2="275" y2="185"></line>
+    <line x1="295" y1="128" x2="265" y2="100"></line>
   </g>
-  <circle cx="295" cy="125" r="3.5" fill="#ec3013"></circle>
-  <text x="295" y="117" text-anchor="middle" fill="#ec3013" font-family="Archivo, system-ui, sans-serif" font-size="8">level</text>
+  <circle cx="295" cy="128" r="3.5" fill="#ec3013"></circle>
+  <text x="295" y="120" text-anchor="middle" fill="#ec3013" font-family="Archivo, system-ui, sans-serif" font-size="8">level</text>
 </svg>

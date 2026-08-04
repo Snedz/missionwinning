@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 220" fill="none" role="img" aria-label="Band pull-apart form: hold, pull apart, return">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 220" fill="none" role="img" aria-label="Band pull-apart: hold, pull, return">
   <title>Band pull-apart form diagram</title>
   <rect width="360" height="220" fill="#f3f2f2"></rect>
   <text x="60" y="28" text-anchor="middle" fill="#6f6b69" font-family="Archivo, system-ui, sans-serif" font-size="11" letter-spacing="0.5">HOLD</text>
@@ -9,47 +9,57 @@
   <line x1="140" y1="185" x2="220" y2="185" stroke="#201e1d" stroke-width="2"></line>
   <line x1="260" y1="185" x2="340" y2="185" stroke="#201e1d" stroke-width="2"></line>
   <g stroke="#201e1d" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none">
-    <circle cx="60" cy="58" r="9"></circle>
-    <line x1="60" y1="58" x2="60" y2="69"></line>
-    <line x1="60" y1="69" x2="60" y2="115"></line>
-    <line x1="60" y1="69" x2="60" y2="69"></line>
-    <line x1="60" y1="69" x2="60" y2="69"></line>
-    <line x1="60" y1="69" x2="40" y2="95"></line>
-    <line x1="60" y1="69" x2="80" y2="95"></line>
-    <line x1="60" y1="115" x2="50" y2="175"></line>
-    <line x1="60" y1="115" x2="70" y2="175"></line>
+    <circle cx="60" cy="52" r="9"></circle>
+    <line x1="60" y1="52" x2="60" y2="64"></line>
+    <line x1="60" y1="64" x2="60" y2="115"></line>
+    <line x1="60" y1="64" x2="44" y2="70"></line>
+    <line x1="60" y1="64" x2="76" y2="70"></line>
+    <line x1="44" y1="70" x2="32" y2="82"></line>
+    <line x1="32" y1="82" x2="28" y2="80"></line>
+    <line x1="76" y1="70" x2="88" y2="82"></line>
+    <line x1="88" y1="82" x2="92" y2="80"></line>
+    <line x1="60" y1="115" x2="48" y2="145"></line>
+    <line x1="48" y1="145" x2="44" y2="185"></line>
+    <line x1="60" y1="115" x2="72" y2="145"></line>
+    <line x1="72" y1="145" x2="76" y2="185"></line>
   </g>
-  <path d="M40 95 Q60 100 80 95" stroke="#201e1d" stroke-width="2" fill="none"></path>
-  <circle cx="60" cy="98" r="3.5" fill="#ec3013"></circle>
-  <text x="60" y="90" text-anchor="middle" fill="#ec3013" font-family="Archivo, system-ui, sans-serif" font-size="8">band</text>
+  <path d="M28 98 Q60 105 92 98" stroke="#201e1d" stroke-width="2" fill="none"></path>
+  <circle cx="60" cy="102" r="3.5" fill="#ec3013"></circle>
+  <text x="60" y="94" text-anchor="middle" fill="#ec3013" font-family="Archivo, system-ui, sans-serif" font-size="8">band</text>
   <g stroke="#201e1d" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none">
-    <circle cx="180" cy="58" r="9"></circle>
-    <line x1="180" y1="58" x2="180" y2="69"></line>
-    <line x1="180" y1="69" x2="180" y2="115"></line>
-    <line x1="180" y1="69" x2="180" y2="69"></line>
-    <line x1="180" y1="69" x2="180" y2="69"></line>
-    <line x1="180" y1="69" x2="140" y2="90"></line>
-    <line x1="180" y1="69" x2="220" y2="90"></line>
-    <line x1="180" y1="115" x2="170" y2="175"></line>
-    <line x1="180" y1="115" x2="190" y2="175"></line>
+    <circle cx="180" cy="52" r="9"></circle>
+    <line x1="180" y1="52" x2="180" y2="64"></line>
+    <line x1="180" y1="64" x2="180" y2="115"></line>
+    <line x1="180" y1="64" x2="164" y2="70"></line>
+    <line x1="180" y1="64" x2="196" y2="70"></line>
+    <line x1="164" y1="70" x2="144" y2="74"></line>
+    <line x1="144" y1="74" x2="125" y2="95"></line>
+    <line x1="196" y1="70" x2="216" y2="74"></line>
+    <line x1="216" y1="74" x2="235" y2="95"></line>
+    <line x1="180" y1="115" x2="168" y2="145"></line>
+    <line x1="168" y1="145" x2="164" y2="185"></line>
+    <line x1="180" y1="115" x2="192" y2="145"></line>
+    <line x1="192" y1="145" x2="196" y2="185"></line>
   </g>
-  <path d="M140 90 Q180 88 220 90" stroke="#201e1d" stroke-width="2" fill="none"></path>
-  <path d="M155 100 L145 90" stroke="#ec3013" stroke-width="2" stroke-linecap="round"></path>
-  <polygon points="145,90 153.48528137423855,92.8284271247462 147.82842712474618,98.48528137423857" fill="#ec3013"></polygon>
-  <path d="M205 100 L215 90" stroke="#ec3013" stroke-width="2" stroke-linecap="round"></path>
-  <polygon points="215,90 212.17157287525382,98.48528137423857 206.51471862576145,92.8284271247462" fill="#ec3013"></polygon>
+  <path d="M125 95 Q180 92 235 95" stroke="#201e1d" stroke-width="2" fill="none"></path>
+  <path d="M145 110 L130 95" stroke="#ec3013" stroke-width="2" stroke-linecap="round"></path>
+  <polygon points="130,95 138.48528137423855,97.8284271247462 132.82842712474618,103.48528137423857" fill="#ec3013"></polygon>
+  <path d="M215 110 L230 95" stroke="#ec3013" stroke-width="2" stroke-linecap="round"></path>
+  <polygon points="230,95 227.17157287525382,103.48528137423857 221.51471862576145,97.8284271247462" fill="#ec3013"></polygon>
   <g stroke="#201e1d" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none">
-    <circle cx="300" cy="58" r="9"></circle>
-    <line x1="300" y1="58" x2="300" y2="69"></line>
-    <line x1="300" y1="69" x2="300" y2="115"></line>
-    <line x1="300" y1="69" x2="300" y2="69"></line>
-    <line x1="300" y1="69" x2="300" y2="69"></line>
-    <line x1="300" y1="69" x2="280" y2="95"></line>
-    <line x1="300" y1="69" x2="320" y2="95"></line>
-    <line x1="300" y1="115" x2="290" y2="175"></line>
-    <line x1="300" y1="115" x2="310" y2="175"></line>
+    <circle cx="300" cy="52" r="9"></circle>
+    <line x1="300" y1="52" x2="300" y2="64"></line>
+    <line x1="300" y1="64" x2="300" y2="115"></line>
+    <line x1="300" y1="64" x2="284" y2="70"></line>
+    <line x1="300" y1="64" x2="316" y2="70"></line>
+    <line x1="284" y1="70" x2="272" y2="82"></line>
+    <line x1="272" y1="82" x2="268" y2="80"></line>
+    <line x1="316" y1="70" x2="328" y2="82"></line>
+    <line x1="328" y1="82" x2="332" y2="80"></line>
+    <line x1="300" y1="115" x2="288" y2="145"></line>
+    <line x1="288" y1="145" x2="284" y2="185"></line>
+    <line x1="300" y1="115" x2="312" y2="145"></line>
+    <line x1="312" y1="145" x2="316" y2="185"></line>
   </g>
-  <path d="M280 95 Q300 100 320 95" stroke="#201e1d" stroke-width="2" fill="none"></path>
-  <circle cx="300" cy="98" r="3.5" fill="#ec3013"></circle>
-  <text x="300" y="90" text-anchor="middle" fill="#ec3013" font-family="Archivo, system-ui, sans-serif" font-size="8">control</text>
+  <path d="M268 98 Q300 105 332 98" stroke="#201e1d" stroke-width="2" fill="none"></path>
 </svg>

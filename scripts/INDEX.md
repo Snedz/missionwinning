@@ -39,6 +39,7 @@
 | `generate-form-guides-t1.mjs` | `npm run media:form-t1` | T1 SVGs for structured guides that lacked media |
 | `generate-learn-section-figures.mjs` | `npm run media:learn-sections` | Guidebook section teaching figures → `public/learn/*.webp` |
 | `generate-form-patterns.mjs` | `npm run media:form-patterns` | Shared pattern SVGs for long-tail form media |
+| `generate-form-guides-all.mjs` | `npm run media:form-all` | Rebuild **all** form SVGs with corrected stick geometry |
 | `form-kit/stickFigure.mjs` | (import) | Stick-figure primitives for form-guide SVGs |
 | `sync-vercel-env.mjs` | `npm run sync-vercel-env` | Sync env to Vercel |
 | `secrets-scan.mjs` | `npm run secrets:scan` | Gitleaks on working tree ([SECRETS.md](../docs/SECRETS.md)) |
