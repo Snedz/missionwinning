@@ -409,6 +409,31 @@ test.describe('Accessibility @a11y', () => {
   });
 
   /**
+   * Loop 9 S5 — Learn no-matches chrome. Zero-data /learn never types a query;
+   * axe must see empty-search EmptyState after a miss.
+   */
+  test('axe serious/critical: /learn with no search matches @a11y', async ({
+    page,
+    context,
+    baseURL,
+  }) => {
+    if (!baseURL) throw new Error('baseURL required');
+    const ok = await unlockGate(page, context, baseURL);
+    if (gateRequired() && !ok) {
+      test.skip(true, 'SMOKE_ACCESS_SECRET required to unlock private gate');
+    }
+    await seedLegacyOnboarding(page);
+    await page.goto('/learn', { waitUntil: 'domcontentloaded' });
+    const search = page.getByPlaceholder(/search paths or lessons/i).first();
+    await expect(search).toBeVisible({ timeout: 15_000 });
+    await search.fill('zzzz-no-such-path');
+    await expect(page.getByText(/no paths match that search/i).first()).toBeVisible({
+      timeout: 10_000,
+    });
+    await axeSerious(page, '/learn (no search matches)');
+  });
+
+  /**
    * The assertion axe cannot make.
    *
    * axe-core does not reliably test focus visibility, which is how this suite sat at

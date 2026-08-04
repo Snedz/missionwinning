@@ -228,3 +228,26 @@ PR: #234
 **Aikido:** `aikido_full_scan` still fails without X11 `$DISPLAY`. Noted; continue.
 **Next:** Loop 9 — Learn/CourseReader, AnalyticsConsent, CoachAdaptDemo leftovers; soft chrome; Active extracts. Bundle UI still refused.
 
+## Loop 9 waves
+
+| Wave | Status | Notes |
+|------|--------|-------|
+| S1–S2 Learn/consent/demo | done (`.327`) | Learn/CourseReader + AnalyticsConsent + CoachAdaptDemo; **92→69** |
+| S3 Soft chrome | done (`.328`) | FileUpload/History/WeekStrip/Move/Today/Builder solid borders |
+| S4 Active dock extract | done (`.329`) | `resolveActiveDockMode` + wiring guard |
+| S5 Learn no-match a11y | done (`.330`) | Seeded axe on empty search; Loop 9 living-log close |
+
+## Metrics
+
+| Metric | Loop 8 end | Loop 9 end |
+|--------|------------|------------|
+| Build | `.326` | **`.330`** |
+| i18n uncovered cap | 92 | **69** |
+
+## End of Loop 9
+
+**Delivered:** S1–S5 on `cursor/kaizen-wedge-night-be9b` → PR #234 (`.327`–`.330`).
+**Verified:** i18n @69; dock helper unit tests; Learn no-match a11y axe green (`localhost`).
+**Aikido:** `aikido_full_scan` still fails without X11 `$DISPLAY`. Noted; continue.
+**Next:** Loop 10 — remaining uncovered batches (Bundle refused); soft chrome leftovers; more Active extracts; seeded a11y.
+
