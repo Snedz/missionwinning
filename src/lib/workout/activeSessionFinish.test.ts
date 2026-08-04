@@ -158,7 +158,9 @@ describe('assembleActiveVictory', () => {
     });
     assert.equal(out.historyAfter.length, 1);
     assert.equal(out.victorySummary.workoutName, 'Push');
-    assert.equal(out.victorySummary.nextAction?.href, '/coach');
+    // First completed session → session-2 train (`.412`), not Coach.
+    assert.equal(out.victorySummary.nextAction?.href, '/active');
+    assert.equal(out.victorySummary.nextAction?.labelKey, 'week1SecondSessionCta');
     assert.equal(out.pushPatch.lastSessionAt, finished.completedAt);
     assert.equal(out.journal.workoutId, finished.id);
     assert.ok(out.entry.fragments.some((f) => f.includes('Felt strong')));

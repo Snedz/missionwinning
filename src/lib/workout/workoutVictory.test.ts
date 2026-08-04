@@ -11,22 +11,28 @@ import {
 import type { CompletedWorkoutLog } from '@/types';
 
 describe('pickVictoryNextAction', () => {
-  it('prefers Mission Coach for early completed workouts', () => {
+  it('after exactly one log prefers session 2 train over Coach (.412)', () => {
     const a = pickVictoryNextAction({
       completedWorkouts: 1,
       hasCoachPlan: true,
       proteinLoggedToday: false,
     });
-    assert.equal(a.href, '/coach');
-    assert.equal(a.labelKey, 'victoryNextCoachLabel');
+    assert.equal(a.href, '/active');
+    assert.equal(a.labelKey, 'week1SecondSessionCta');
+    assert.match(a.defaultLabel, /session 2/i);
   });
 
-  it(`prefers Coach through workout #${COACH_VICTORY_EARLY_WORKOUTS}`, () => {
+  it(`prefers Coach for workouts 2–${COACH_VICTORY_EARLY_WORKOUTS} (after session-2 window)`, () => {
     const a = pickVictoryNextAction({
-      completedWorkouts: COACH_VICTORY_EARLY_WORKOUTS,
+      completedWorkouts: 2,
       hasCoachPlan: true,
     });
     assert.equal(a.href, '/coach');
+    const lateEarly = pickVictoryNextAction({
+      completedWorkouts: COACH_VICTORY_EARLY_WORKOUTS,
+      hasCoachPlan: true,
+    });
+    assert.equal(lateEarly.href, '/coach');
   });
 
   it('prefers Coach when no plan even after early window', () => {
@@ -202,10 +208,16 @@ describe('summarizeWorkoutVictory', () => {
       totalVolume: 5000,
       exercises: [{ exerciseId: 'bench', sets: [{ reps: 5, weight: 100 }] }],
     };
-    const s = summarizeWorkoutVictory(log, 1, undefined, undefined, undefined, {
+    // First log → session-2 train (.412); Coach for early window after that.
+    const first = summarizeWorkoutVictory(log, 1, undefined, undefined, undefined, {
       completedWorkouts: 1,
       hasCoachPlan: true,
     });
-    assert.equal(s.nextAction?.href, '/coach');
+    assert.equal(first.nextAction?.href, '/active');
+    const second = summarizeWorkoutVictory(log, 1, undefined, undefined, undefined, {
+      completedWorkouts: 2,
+      hasCoachPlan: true,
+    });
+    assert.equal(second.nextAction?.href, '/coach');
   });
 });

@@ -126,7 +126,15 @@ export function WorkoutVictorySheet({
     track('share_card_generated', { surface: 'victory', method });
   };
 
-  const hasCoachNext = summary.nextAction?.href?.includes('/coach');
+  /**
+   * Secondary "Back to Today" when the primary next is Coach, session 2, or
+   * Train again — not when the primary is already Today (rest path).
+   * `.412` made session-2 the first-log primary; without this, e2e and athletes
+   * who want Today had no exit except History.
+   */
+  const showBackTodaySecondary =
+    !!summary.nextAction &&
+    !summary.nextAction.href.includes('/log');
 
   const saveFeel = (energy: number) => {
     upsertTodayPartial({ energy, mood: energy });
@@ -336,7 +344,7 @@ export function WorkoutVictorySheet({
               {t('victoryBackToday', { defaultValue: 'Back to Today' })}
             </Button>
           )}
-          {hasCoachNext && (
+          {showBackTodaySecondary && (
             <button
               type="button"
               className="text-xs text-muted-foreground hover:text-foreground underline-offset-2 hover:underline"
