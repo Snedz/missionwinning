@@ -16,7 +16,7 @@ One screen of truth for any AI tool or human joining cold. Read this, then [AGEN
 
 ---
 
-## Now (2026-08-04 · web `2026.07-unified.382` · Android `1.24.1`)
+## Now (2026-08-04 · web `2026.07-unified.383` · Android `1.24.1`)
 
 > The ONLY "where we are" block in the repo — [ORCHESTRATION.md](ORCHESTRATION.md) points here.
 >
@@ -141,6 +141,7 @@ One screen of truth for any AI tool or human joining cold. Read this, then [AGEN
 > and `.380` dropped `.365` detail (full text remains in LOG.md / archive)
 > and `.381` dropped `.366` detail (full text remains in LOG.md / archive)
 > and `.382` dropped `.367` detail (full text remains in LOG.md / archive)
+> and `.383` dropped `.368` detail (full text remains in LOG.md / archive)
 > to [CONTEXT-now-2026-07-30.md](docs/archive/CONTEXT-now-2026-07-30.md) after this
 > block reached **79 bullets / 103KB**. A status doc that only grows stops being read.
 
@@ -161,6 +162,7 @@ One screen of truth for any AI tool or human joining cold. Read this, then [AGEN
 > | Migrations | **9 recorded pending** — [LAUNCH_RUNBOOK](docs/LAUNCH_RUNBOOK.md) §3, enforced by `src/lib/migrationLedger.test.ts`. |
 > | gitleaks | **green — and scanning for the first time.** It had never scanned anything: on a `pull_request` event the action lists the PR's commits, the job declared no `permissions:` block, and it 403'd (`pull_requests=read`) before opening a file. Fixed by a `permissions:` block (`.224` carrying `.255`). It scans **only the PR's own commits**, so commit `8ea3527a`'s real Solana treasury address — scrubbed from the working file, still in history — is out of its scope. That finding stands, deliberately not allowlisted; it was never what made this check red. |
 
+- **`.383`:** Active `holdsActiveExercise` extract + wiring guard.
 - **`.382`:** Seeded axe on Active set options menu.
 - **`.381`:** Fitness inputs + leaderboard flavor chrome; Loop 26 closed.
 - **`.380`:** Active `firstPlannedSetIdx` extract + wiring guard.
@@ -175,7 +177,6 @@ One screen of truth for any AI tool or human joining cold. Read this, then [AGEN
 - **`.371`:** Active `isOpenIdx` extract + wiring guard.
 - **`.370`:** Seeded axe on Active swap sheet open.
 - **`.369`:** Select + tooltip radius solidify; Loop 22 closed.
-- **`.368`:** Active `activeSessionEyebrowKind` + `toggleOpenIdx` extracts + wiring guards.
 - **Horizon W — wedge excellence.** Web craft 1–6 + **Fuel estimate accuracy** (edit-before-log, better NL match, honest photo sources).
 - **Free-first beta (~4 weeks):** LLC + EIN pending — **no Bundle UI** + **full depth unlocked** + **full More nav** (journey train-only deferred) ([docs/FREE_BETA.md](docs/FREE_BETA.md)).
 - **`e2e:visual` is the one dark gate.** Its three baselines were generated **2026-07-22, before the rebrand**, and depicted the old navy/emerald dark design — black grounds, emerald CTAs, rounded corners. Verified by opening one, not inferred from dates. **Deleted**, because a known-wrong baseline is worse than none: the first Linux run would have shown four huge diffs, and the reflex there is `--update-snapshots` without looking, which launders whatever renders that day into truth. `home-reduced.png` **never had a baseline at all**, so the homepage has been silently self-approving since the case was written. **First Linux CI run after billing clears must bootstrap all four** (`npx playwright test --grep @visual --update-snapshots`, then commit the artifact) — it cannot be done on macOS, the pixels will not match.

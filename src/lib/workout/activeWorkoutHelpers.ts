@@ -621,3 +621,11 @@ export function firstPlannedSetIdx(
 ): number {
   return sets.findIndex((s) => !s.completed);
 }
+
+/** True when this exercise owns the session's next open set. */
+export function holdsActiveExercise(
+  nextSet: { exIdx: number } | null | undefined,
+  exIdx: number
+): boolean {
+  return nextSet?.exIdx === exIdx;
+}

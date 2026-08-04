@@ -37,6 +37,7 @@ import {
   exerciseHasCompletedSet,
   exerciseHasPlannedSet,
   firstPlannedSetIdx,
+  holdsActiveExercise,
 } from './activeWorkoutHelpers.ts';
 import type { CompletedWorkoutLog } from '@/types';
 
@@ -1070,6 +1071,27 @@ describe('firstPlannedSetIdx', () => {
       src,
       /exLog\.sets\.findIndex\(\(s\)\s*=>\s*!s\.completed\)/,
       'first planned index must stay inside firstPlannedSetIdx'
+    );
+  });
+});
+
+describe('holdsActiveExercise', () => {
+  it('matches the next-set exercise index', () => {
+    assert.equal(holdsActiveExercise(null, 0), false);
+    assert.equal(holdsActiveExercise({ exIdx: 1 }, 1), true);
+    assert.equal(holdsActiveExercise({ exIdx: 1 }, 0), false);
+  });
+
+  it('ActiveExerciseCard uses holdsActiveExercise rather than nextSet?.exIdx ===', () => {
+    const src = readFileSync(
+      path.join(import.meta.dirname, '..', '..', 'components', 'workout', 'ActiveExerciseCard.tsx'),
+      'utf8'
+    );
+    assert.match(src, /holdsActiveExercise\(/);
+    assert.doesNotMatch(
+      src,
+      /const holdsActiveSet = nextSet\?\.exIdx\s*===\s*exIdx/,
+      'active-exercise ownership must stay inside holdsActiveExercise'
     );
   });
 });

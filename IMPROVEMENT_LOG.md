@@ -630,14 +630,14 @@ PR: #234
 | Wave | Status | Notes |
 |------|--------|-------|
 | K1 Set options a11y | done (`.382`) | Set options menu axe green |
-| K2 Active extract | pending (`.383`) | `holdsActiveExercise` |
+| K2 Active extract | done (`.383`) | `holdsActiveExercise` + wiring |
 | K3 Soft chrome / log close | pending (`.384`) | BetaAdmin + landing ink |
 
 ## Metrics
 
 | Metric | Loop 26 end | Loop 27 (in progress) |
 |--------|-------------|------------------------|
-| Build | `.381` | **`.382`** |
+| Build | `.381` | **`.383`** |
 | i18n uncovered cap | 16 (Bundle refuse) | **16** (unchanged) |
 
 
