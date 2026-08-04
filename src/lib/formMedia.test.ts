@@ -23,7 +23,16 @@ test('still-only packs stay image when not in VIDEO_IDS', () => {
 });
 
 test('loop pilot packs resolve to video with poster', () => {
-  for (const id of ['air-squat', 'glute-bridge', 'push-ups', 'plank'] as const) {
+  for (const id of [
+    'air-squat',
+    'glute-bridge',
+    'push-ups',
+    'plank',
+    'lunges',
+    'box-jump',
+    'burpees',
+    'kettlebell-swing',
+  ] as const) {
     const pack = resolveFormPackMedia(id);
     assert.equal(pack?.mediaType, 'video', id);
     assert.equal(pack?.mediaUrl, `/form/${id}/side.mp4`, id);
@@ -31,9 +40,9 @@ test('loop pilot packs resolve to video with poster', () => {
   }
 });
 
-test('Form Director regen re-wires burpees and box-jump stills', () => {
-  assert.equal(resolveFormPackMedia('burpees')?.mediaUrl, '/form/burpees/side.webp');
-  assert.equal(resolveFormPackMedia('box-jump')?.mediaUrl, '/form/box-jump/side.webp');
+test('Form Director packs keep poster paths for still-only heroes', () => {
+  assert.equal(resolveFormPackMedia('deadlift')?.mediaUrl, '/form/deadlift/side.webp');
+  assert.equal(resolveFormPackMedia('overhead-press')?.mediaUrl, '/form/overhead-press/side.webp');
 });
 
 test('formPackSidePosterPath is stable', () => {

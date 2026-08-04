@@ -65,6 +65,7 @@ When adding a doc:
 | [log/LOG-rotate-414.md](./log/LOG-rotate-414.md) | `.399` FileUploadRow chrome — rotated for `.414` form media T1 |
 | [log/LOG-rotate-415.md](./log/LOG-rotate-415.md) | `.400` opacity exemptions — rotated for `.415` pattern packs |
 | [log/LOG-rotate-416.md](./log/LOG-rotate-416.md) | `.401` beachhead i18n — rotated for `.416` Scout + PDF |
+| [log/LOG-rotate-471.md](./log/LOG-rotate-471.md) | `.456` — rotated for `.471` (loop wave: lunges/box/burpee/KB). |
 | [log/LOG-rotate-470.md](./log/LOG-rotate-470.md) | `.455` — rotated for `.470` (OHP/row + plank/push loops). |
 | [log/LOG-rotate-469.md](./log/LOG-rotate-469.md) | `.454` — rotated for `.469` (hero regen + loop pilot). |
 | [log/LOG-rotate-468.md](./log/LOG-rotate-468.md) | `.453` — rotated for `.468` (Form Director regen PASS). |
