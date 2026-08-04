@@ -35,6 +35,7 @@ import {
   toggleOpenIdx,
   isOpenIdx,
   exerciseHasCompletedSet,
+  exerciseHasPlannedSet,
 } from './activeWorkoutHelpers.ts';
 import type { CompletedWorkoutLog } from '@/types';
 
@@ -1026,6 +1027,27 @@ describe('exerciseHasCompletedSet', () => {
       src,
       /exLog\.sets\.some\(\(s\)\s*=>\s*s\.completed\)/,
       'completed-set predicate must stay inside exerciseHasCompletedSet'
+    );
+  });
+});
+
+describe('exerciseHasPlannedSet', () => {
+  it('is true when any set is still open', () => {
+    assert.equal(exerciseHasPlannedSet([]), false);
+    assert.equal(exerciseHasPlannedSet([{ completed: true }]), false);
+    assert.equal(exerciseHasPlannedSet([{ completed: true }, { completed: false }]), true);
+  });
+
+  it('ActiveExerciseCard uses exerciseHasPlannedSet rather than sets.some', () => {
+    const src = readFileSync(
+      path.join(import.meta.dirname, '..', '..', 'components', 'workout', 'ActiveExerciseCard.tsx'),
+      'utf8'
+    );
+    assert.match(src, /exerciseHasPlannedSet\(/);
+    assert.doesNotMatch(
+      src,
+      /exLog\.sets\.some\(\(s\)\s*=>\s*!s\.completed\)/,
+      'planned-set predicate must stay inside exerciseHasPlannedSet'
     );
   });
 });

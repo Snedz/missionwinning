@@ -586,14 +586,14 @@ PR: #234
 | Wave | Status | Notes |
 |------|--------|-------|
 | I1 Exercise note a11y | done (`.376`) | More → Note textarea axe green |
-| I2 Active extract | pending (`.377`) | `exerciseHasPlannedSet` |
+| I2 Active extract | done (`.377`) | `exerciseHasPlannedSet` + wiring |
 | I3 Soft chrome / log close | pending (`.378`) | text-red-400 → destructive |
 
 ## Metrics
 
 | Metric | Loop 24 end | Loop 25 (in progress) |
 |--------|-------------|------------------------|
-| Build | `.375` | **`.376`** |
+| Build | `.375` | **`.377`** |
 | i18n uncovered cap | 16 (Bundle refuse) | **16** (unchanged) |
 
 

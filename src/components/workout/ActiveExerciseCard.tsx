@@ -18,7 +18,7 @@ import { AdaptiveOverlay } from '@/components/ui/AdaptiveOverlay';
 import { SetLogRow } from '@/components/workout/SetLogRow';
 import { SetLogTable } from '@/components/workout/SetLogTable';
 import { useIsCompact } from '@/hooks/useIsCompact';
-import { getLastPerformanceForSet, exerciseHasCompletedSet } from '@/lib/workout/activeWorkoutHelpers';
+import { getLastPerformanceForSet, exerciseHasCompletedSet, exerciseHasPlannedSet } from '@/lib/workout/activeWorkoutHelpers';
 import { SET_KINDS, setKindDefaultLabel, setKindLabelKey } from '@/lib/workout/setKind';
 import { getFormGuideOrCues } from '@/lib/formGuides';
 import { lastNotesFor } from '@/lib/journal/cueMemory';
@@ -122,7 +122,7 @@ export function ActiveExerciseCard({
   const [menuOpen, setMenuOpen] = useState(false);
   const [footerOpen, setFooterOpen] = useState(false);
   const hasCompleted = exerciseHasCompletedSet(exLog.sets);
-  const hasPlanned = exLog.sets.some((s) => !s.completed);
+  const hasPlanned = exerciseHasPlannedSet(exLog.sets);
   const restSec = resolveRestSeconds(exercise.name);
   const ssLabel = supersetLabel(exercises, exIdx);
   const hasNext = exIdx < exercises.length - 1;

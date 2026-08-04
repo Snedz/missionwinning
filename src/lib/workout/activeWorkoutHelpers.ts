@@ -607,3 +607,10 @@ export function exerciseHasCompletedSet(
 ): boolean {
   return sets.some((s) => s.completed);
 }
+
+/** True when any set on this exercise is still open to log. */
+export function exerciseHasPlannedSet(
+  sets: { completed: boolean }[]
+): boolean {
+  return sets.some((s) => !s.completed);
+}
