@@ -614,3 +614,10 @@ export function exerciseHasPlannedSet(
 ): boolean {
   return sets.some((s) => !s.completed);
 }
+
+/** Index of the first incomplete set, or -1 when all done. */
+export function firstPlannedSetIdx(
+  sets: { completed: boolean }[]
+): number {
+  return sets.findIndex((s) => !s.completed);
+}

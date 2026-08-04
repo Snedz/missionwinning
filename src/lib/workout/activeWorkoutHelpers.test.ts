@@ -36,6 +36,7 @@ import {
   isOpenIdx,
   exerciseHasCompletedSet,
   exerciseHasPlannedSet,
+  firstPlannedSetIdx,
 } from './activeWorkoutHelpers.ts';
 import type { CompletedWorkoutLog } from '@/types';
 
@@ -1048,6 +1049,27 @@ describe('exerciseHasPlannedSet', () => {
       src,
       /exLog\.sets\.some\(\(s\)\s*=>\s*!s\.completed\)/,
       'planned-set predicate must stay inside exerciseHasPlannedSet'
+    );
+  });
+});
+
+describe('firstPlannedSetIdx', () => {
+  it('returns the first incomplete index or -1', () => {
+    assert.equal(firstPlannedSetIdx([]), -1);
+    assert.equal(firstPlannedSetIdx([{ completed: true }]), -1);
+    assert.equal(firstPlannedSetIdx([{ completed: true }, { completed: false }]), 1);
+  });
+
+  it('ActiveExerciseCard uses firstPlannedSetIdx rather than findIndex', () => {
+    const src = readFileSync(
+      path.join(import.meta.dirname, '..', '..', 'components', 'workout', 'ActiveExerciseCard.tsx'),
+      'utf8'
+    );
+    assert.match(src, /firstPlannedSetIdx\(/);
+    assert.doesNotMatch(
+      src,
+      /exLog\.sets\.findIndex\(\(s\)\s*=>\s*!s\.completed\)/,
+      'first planned index must stay inside firstPlannedSetIdx'
     );
   });
 });

@@ -18,7 +18,7 @@ import { AdaptiveOverlay } from '@/components/ui/AdaptiveOverlay';
 import { SetLogRow } from '@/components/workout/SetLogRow';
 import { SetLogTable } from '@/components/workout/SetLogTable';
 import { useIsCompact } from '@/hooks/useIsCompact';
-import { getLastPerformanceForSet, exerciseHasCompletedSet, exerciseHasPlannedSet } from '@/lib/workout/activeWorkoutHelpers';
+import { getLastPerformanceForSet, exerciseHasCompletedSet, exerciseHasPlannedSet, firstPlannedSetIdx } from '@/lib/workout/activeWorkoutHelpers';
 import { SET_KINDS, setKindDefaultLabel, setKindLabelKey } from '@/lib/workout/setKind';
 import { getFormGuideOrCues } from '@/lib/formGuides';
 import { lastNotesFor } from '@/lib/journal/cueMemory';
@@ -133,7 +133,7 @@ export function ActiveExerciseCard({
   // logbook gets flipped back for. Verbatim from history; absent is silence.
   const lastNote = lastNotesFor(exLog.exerciseId, workoutHistory)[0] ?? null;
 
-  const nextPlannedIdx = exLog.sets.findIndex((s) => !s.completed);
+  const nextPlannedIdx = firstPlannedSetIdx(exLog.sets);
   /**
    * The "Next: N × W" line.
    *

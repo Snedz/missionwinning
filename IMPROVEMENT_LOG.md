@@ -608,14 +608,14 @@ PR: #234
 | Wave | Status | Notes |
 |------|--------|-------|
 | J1 Rest timer a11y | done (`.379`) | Log set → RestTimerBar axe green |
-| J2 Active extract | pending (`.380`) | `firstPlannedSetIdx` |
+| J2 Active extract | done (`.380`) | `firstPlannedSetIdx` + wiring |
 | J3 Soft chrome / log close | pending (`.381`) | Fitness inputs + leaderboard flavor |
 
 ## Metrics
 
 | Metric | Loop 25 end | Loop 26 (in progress) |
 |--------|-------------|------------------------|
-| Build | `.378` | **`.379`** |
+| Build | `.378` | **`.380`** |
 | i18n uncovered cap | 16 (Bundle refuse) | **16** (unchanged) |
 
 
