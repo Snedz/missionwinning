@@ -54,6 +54,7 @@ type CalculatorsStrings = {
   calcPremiumBtn: string;
   calcUnitsFoot: string;
   calcSignInFoot: string;
+  calcPlateExact: string;
 };
 
 const en: CalculatorsStrings = {
@@ -113,6 +114,7 @@ const en: CalculatorsStrings = {
   calcPremiumBtn: 'Unlock premium tools',
   calcUnitsFoot: 'Toggle kg/lbs and cm/in in Profile. Global default is metric.',
   calcSignInFoot: 'Sign in to sync calculator logs and nutrition targets across devices.',
+  calcPlateExact: 'Achieved · exact',
 };
 
 const es: CalculatorsStrings = {

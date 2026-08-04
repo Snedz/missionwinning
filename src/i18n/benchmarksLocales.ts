@@ -40,7 +40,10 @@ type BenchmarksStrings = {
   benchmarksQuickStarters: string;
   benchmarksQuickHabit: string;
   benchmarksSignInFoot: string;
-  benchmarksWeightTimesReps: string;
+  benchmarksQuickStarters: string;
+  benchmarksEyebrow: string;
+  anatomyMapTitle: string;
+  anatomyMapDesc: string;
 };
 
 const en: BenchmarksStrings = {
@@ -86,6 +89,10 @@ const en: BenchmarksStrings = {
   benchmarksQuickHabit: 'Log benchmark habit (+streak)',
   benchmarksSignInFoot: 'Sync benchmark history and PRs across devices.',
   benchmarksWeightTimesReps: '{{weight}} {{unit}} × {{reps}}',
+  benchmarksEyebrow: 'Benchmarks',
+  anatomyMapTitle: 'Muscle balance',
+  anatomyMapDesc: '14-day volume by major group — tap a region for exercises.',
+
 };
 
 const es: BenchmarksStrings = {

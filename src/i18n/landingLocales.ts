@@ -1,6 +1,14 @@
 /** Landing / marketing page copy — merged into i18n `common` namespace. */
 
 const LANDING_EN: Record<string, string> = {
+  compareEyebrow: 'Honest comparison',
+  compareTitle: 'How we compare',
+  compareSubtitle:
+    'Free tiers side by side. We lead with the offline logger and Coach from your logs — not a paywall.',
+  compareTableTitle: 'Free tier at a glance',
+  landingPillarsQuiet:
+    'Fuel, Move, Mind, Track, and Learn deepen the path after Train + Coach — never the pitch.',
+  landingAboutLink: 'About Mission Winning',
   // ── Homepage loop rebuild (log → adapt → anywhere → free → start) ──
   landingHeroEyebrowLoop: 'Free · offline · no account',
   landingHeroLine1: 'Log a set.',

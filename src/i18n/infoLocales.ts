@@ -153,6 +153,9 @@ type InfoStrings = {
   infoCoachingSubmit: string;
   infoCoachingFoot: string;
   infoCoachingDisclaimer: string;
+  aboutEyebrow: string;
+  navPressBrand: string;
+  visionEyebrow: string;
 };
 
 const en: InfoStrings = {
@@ -373,6 +376,9 @@ const en: InfoStrings = {
   infoCoachingFoot: "Free to join. We'll only email you about coaching.",
   infoCoachingDisclaimer:
     'Coaching is education and accountability — results depend on your consistency and circumstances. Always clear new training or nutrition plans with your physician.',
+  aboutEyebrow: 'About',
+  navPressBrand: 'Press / Brand',
+  visionEyebrow: 'Vision',
 };
 
 const es: InfoStrings = {

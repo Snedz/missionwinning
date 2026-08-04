@@ -30,6 +30,12 @@ type NavStrings = {
   fuelScienceCh12: string;
   fuelHighProteinNote: string;
   fuelPremiumRecipesFoot: string;
+  navGuide: string;
+  sourceCode: string;
+  feedback: string;
+  resumeWorkout: string;
+  offlineBannerShort: string;
+  offlineWaitingCount: string;
 };
 
 const en: NavStrings = {
@@ -64,6 +70,12 @@ const en: NavStrings = {
   fuelScienceCh12:
     'Nutrition for bodybuilders (ch.12): Complex carbs fuel training; healthy fats support hormones (15–30% calories). Vitamins/minerals from whole foods; fiber 20–30g+. Post-workout protein + carbs aid recovery. Hydration matters — prioritize local whole foods.',
   fuelPremiumRecipesFoot: 'Seeded from protein science + DASH/Med principles for global accessibility.',
+  navGuide: 'Guide',
+  sourceCode: 'Source',
+  feedback: 'Feedback',
+  resumeWorkout: 'Resume workout',
+  offlineBannerShort: 'Offline — logging still works',
+  offlineWaitingCount: '{{count}} waiting',
 };
 
 const es: NavStrings = {

@@ -38,6 +38,8 @@ export type LeaderboardStrings = {
   leaderboardClassEmptyCta: string;
   leaderboardSquadEmptyTitle: string;
   leaderboardClassNote: string;
+  lbPacerHint: string;
+  lbPacer: string;
 };
 
 const en: LeaderboardStrings = {
@@ -84,6 +86,8 @@ const en: LeaderboardStrings = {
   leaderboardSquadEmptyTitle: 'Add a squad code',
   leaderboardClassNote:
     'Class standings rank best signed-in fitness test per athlete. Demo operators are hidden on this board.',
+  lbPacerHint: 'Pacer — a virtual pace-setter, not a real athlete',
+  lbPacer: 'Pacer',
 };
 
 const es: LeaderboardStrings = {

@@ -178,6 +178,8 @@ const NOTIFICATION_EN: Record<string, string> = {
   analyticsBannerPrivacyLink: 'Privacy policy',
   analyticsBannerStayPrivate: 'Stay private',
   analyticsBannerAllow: 'Allow analytics',
+  cancel: 'Cancel',
+  save: 'Save',
 };
 
 const nl = (over: Record<string, string>): Record<string, string> => ({

@@ -39,6 +39,7 @@ export const BETA_STEP_DEFS = [
 ] as const;
 
 const BETA_EN: Record<string, string> = {
+  betaFootWedge: 'Train anywhere: log from Today offline — no account required. After your first log, open Mission Coach for a week that adapts from sessions alone.',
   betaStep1Title: 'Unlock access',
   betaStep1Body:
     'Open /private (or your invite link) and enter the access code from your invite email. Query ?access= is off in production — type the code on the gate page.',
