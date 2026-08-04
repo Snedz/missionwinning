@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 220" fill="none" role="img" aria-label="Bicep curl: hang, curl, lower">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 220" fill="none" role="img" aria-label="Curl: hang, curl, lower">
   <title>Bicep curl form diagram</title>
   <rect width="360" height="220" fill="#f3f2f2"></rect>
   <text x="60" y="28" text-anchor="middle" fill="#6f6b69" font-family="Archivo, system-ui, sans-serif" font-size="11" letter-spacing="0.5">HANG</text>
@@ -9,54 +9,60 @@
   <line x1="140" y1="185" x2="220" y2="185" stroke="#201e1d" stroke-width="2"></line>
   <line x1="260" y1="185" x2="340" y2="185" stroke="#201e1d" stroke-width="2"></line>
   <g stroke="#201e1d" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none">
-    <circle cx="60" cy="52" r="9"></circle>
-    <line x1="60" y1="52" x2="60" y2="64"></line>
-    <line x1="60" y1="64" x2="60" y2="115"></line>
-    <line x1="60" y1="64" x2="44" y2="70"></line>
-    <line x1="60" y1="64" x2="76" y2="70"></line>
-    <line x1="44" y1="70" x2="40" y2="94"></line>
-    <line x1="40" y1="94" x2="38" y2="112"></line>
-    <line x1="76" y1="70" x2="80" y2="94"></line>
-    <line x1="80" y1="94" x2="82" y2="112"></line>
-    <line x1="60" y1="115" x2="48" y2="145"></line>
-    <line x1="48" y1="145" x2="44" y2="185"></line>
-    <line x1="60" y1="115" x2="72" y2="145"></line>
-    <line x1="72" y1="145" x2="76" y2="185"></line>
+    <circle cx="60" cy="55" r="9"></circle>
+    <line x1="60" y1="55" x2="60" y2="70"></line>
+    <line x1="60" y1="70" x2="60" y2="118"></line>
+    <line x1="60" y1="70" x2="44" y2="76"></line>
+    <line x1="60" y1="70" x2="76" y2="76"></line>
+    <line x1="44" y1="76" x2="42" y2="100"></line>
+    <line x1="42" y1="100" x2="40" y2="130"></line>
+    <line x1="76" y1="76" x2="78" y2="100"></line>
+    <line x1="78" y1="100" x2="80" y2="130"></line>
+    <line x1="60" y1="118" x2="48" y2="150"></line>
+    <line x1="48" y1="150" x2="44" y2="185"></line>
+    <line x1="60" y1="118" x2="72" y2="150"></line>
+    <line x1="72" y1="150" x2="76" y2="185"></line>
   </g>
-  <circle cx="60" cy="100" r="3.5" fill="#ec3013"></circle>
-  <text x="60" y="92" text-anchor="middle" fill="#ec3013" font-family="Archivo, system-ui, sans-serif" font-size="8">pin</text>
+  <circle cx="42" cy="105" r="3.5" fill="#ec3013"></circle>
+  <text x="42" y="97" text-anchor="middle" fill="#ec3013" font-family="Archivo, system-ui, sans-serif" font-size="8">pin</text>
+  <circle cx="40" cy="132" r="5" fill="none" stroke="#201e1d" stroke-width="2"></circle>
+  <circle cx="80" cy="132" r="5" fill="none" stroke="#201e1d" stroke-width="2"></circle>
   <g stroke="#201e1d" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none">
-    <circle cx="180" cy="52" r="9"></circle>
-    <line x1="180" y1="52" x2="180" y2="64"></line>
-    <line x1="180" y1="64" x2="180" y2="115"></line>
-    <line x1="180" y1="64" x2="164" y2="70"></line>
-    <line x1="180" y1="64" x2="196" y2="70"></line>
-    <line x1="164" y1="70" x2="162" y2="92"></line>
-    <line x1="162" y1="92" x2="166" y2="72"></line>
-    <line x1="196" y1="70" x2="198" y2="92"></line>
-    <line x1="198" y1="92" x2="194" y2="72"></line>
-    <line x1="180" y1="115" x2="168" y2="145"></line>
-    <line x1="168" y1="145" x2="164" y2="185"></line>
-    <line x1="180" y1="115" x2="192" y2="145"></line>
-    <line x1="192" y1="145" x2="196" y2="185"></line>
+    <circle cx="180" cy="55" r="9"></circle>
+    <line x1="180" y1="55" x2="180" y2="70"></line>
+    <line x1="180" y1="70" x2="180" y2="118"></line>
+    <line x1="180" y1="70" x2="164" y2="76"></line>
+    <line x1="180" y1="70" x2="196" y2="76"></line>
+    <line x1="164" y1="76" x2="162" y2="105"></line>
+    <line x1="162" y1="105" x2="168" y2="82"></line>
+    <line x1="196" y1="76" x2="198" y2="105"></line>
+    <line x1="198" y1="105" x2="192" y2="82"></line>
+    <line x1="180" y1="118" x2="168" y2="150"></line>
+    <line x1="168" y1="150" x2="164" y2="185"></line>
+    <line x1="180" y1="118" x2="192" y2="150"></line>
+    <line x1="192" y1="150" x2="196" y2="185"></line>
   </g>
-  <circle cx="180" cy="90" r="3.5" fill="#ec3013"></circle>
-  <text x="180" y="82" text-anchor="middle" fill="#ec3013" font-family="Archivo, system-ui, sans-serif" font-size="8">elbows</text>
+  <circle cx="168" cy="84" r="5" fill="none" stroke="#201e1d" stroke-width="2"></circle>
+  <circle cx="192" cy="84" r="5" fill="none" stroke="#201e1d" stroke-width="2"></circle>
+  <circle cx="180" cy="105" r="3.5" fill="#ec3013"></circle>
+  <text x="180" y="97" text-anchor="middle" fill="#ec3013" font-family="Archivo, system-ui, sans-serif" font-size="8">elbows</text>
   <g stroke="#201e1d" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none">
-    <circle cx="300" cy="52" r="9"></circle>
-    <line x1="300" y1="52" x2="300" y2="64"></line>
-    <line x1="300" y1="64" x2="300" y2="115"></line>
-    <line x1="300" y1="64" x2="284" y2="70"></line>
-    <line x1="300" y1="64" x2="316" y2="70"></line>
-    <line x1="284" y1="70" x2="280" y2="94"></line>
-    <line x1="280" y1="94" x2="278" y2="112"></line>
-    <line x1="316" y1="70" x2="320" y2="94"></line>
-    <line x1="320" y1="94" x2="322" y2="112"></line>
-    <line x1="300" y1="115" x2="288" y2="145"></line>
-    <line x1="288" y1="145" x2="284" y2="185"></line>
-    <line x1="300" y1="115" x2="312" y2="145"></line>
-    <line x1="312" y1="145" x2="316" y2="185"></line>
+    <circle cx="300" cy="55" r="9"></circle>
+    <line x1="300" y1="55" x2="300" y2="70"></line>
+    <line x1="300" y1="70" x2="300" y2="118"></line>
+    <line x1="300" y1="70" x2="284" y2="76"></line>
+    <line x1="300" y1="70" x2="316" y2="76"></line>
+    <line x1="284" y1="76" x2="282" y2="100"></line>
+    <line x1="282" y1="100" x2="280" y2="130"></line>
+    <line x1="316" y1="76" x2="318" y2="100"></line>
+    <line x1="318" y1="100" x2="320" y2="130"></line>
+    <line x1="300" y1="118" x2="288" y2="150"></line>
+    <line x1="288" y1="150" x2="284" y2="185"></line>
+    <line x1="300" y1="118" x2="312" y2="150"></line>
+    <line x1="312" y1="150" x2="316" y2="185"></line>
   </g>
-  <path d="M328 90 L328 125" stroke="#ec3013" stroke-width="2" stroke-linecap="round"></path>
-  <polygon points="328,125 324,117 332,117" fill="#ec3013"></polygon>
+  <circle cx="280" cy="132" r="5" fill="none" stroke="#201e1d" stroke-width="2"></circle>
+  <circle cx="320" cy="132" r="5" fill="none" stroke="#201e1d" stroke-width="2"></circle>
+  <path d="M332 88 L332 128" stroke="#ec3013" stroke-width="2" stroke-linecap="round"></path>
+  <polygon points="332,128 328,120 336,120" fill="#ec3013"></polygon>
 </svg>
