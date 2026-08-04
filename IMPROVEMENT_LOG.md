@@ -477,5 +477,18 @@ PR: #234
 |------|--------|-------|
 | D1 Field note jot a11y | done (`.361`) | SessionJotField expanded axe green |
 | D2 Active extract | done (`.362`) | `sessionSetsProgressPct` + wiring guard |
-| D3 Soft chrome / log close | pending | |
+| D3 Soft chrome / log close | done (`.363`) | ToastDescription solid; Loop 20 close |
 
+## Metrics
+
+| Metric | Loop 19 end | Loop 20 end |
+|--------|-------------|-------------|
+| Build | `.360` | **`.363`** |
+| i18n uncovered cap | 16 (Bundle refuse) | **16** (unchanged) |
+
+## End of Loop 20
+
+**Delivered:** D1–D3 on `cursor/kaizen-wedge-night-be9b` → PR #234 (`.361`–`.363`).
+**Verified:** field note jot a11y green; sessionSetsProgressPct unit + wiring; design-system green.
+**Aikido:** `aikido_full_scan` fails without X11 `$DISPLAY`. Noted; continue.
+**Next:** Loop 21 — more seeded a11y; Active extracts; Bundle i18n still refused.
