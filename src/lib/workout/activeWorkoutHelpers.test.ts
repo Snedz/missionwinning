@@ -1394,10 +1394,10 @@ describe('resolveExerciseNextTarget / menu visibility', () => {
       sets: planned,
       prescribed: true,
       lastSets: [{ reps: 8, weight: 90 }],
-      units: 'kg',
+      units: 'metric',
       suggest: () => {
         suggestCalls += 1;
-        return { reps: 99, weight: 99 };
+        return { reps: 99, weight: 99, reason: 'from_last' };
       },
     });
     assert.deepEqual(out, { reps: 5, weight: 100 });
@@ -1409,10 +1409,10 @@ describe('resolveExerciseNextTarget / menu visibility', () => {
       sets: planned,
       prescribed: false,
       lastSets: [{ reps: 8, weight: 90 }],
-      units: 'kg',
-      suggest: () => ({ reps: 8, weight: 92.5 }),
+      units: 'metric',
+      suggest: () => ({ reps: 8, weight: 92.5, reason: 'add_weight' }),
     });
-    assert.deepEqual(out, { reps: 8, weight: 92.5 });
+    assert.deepEqual(out, { reps: 8, weight: 92.5, reason: 'add_weight' });
   });
 
   it('returns null when every set is done or there is no last session', () => {
@@ -1421,7 +1421,7 @@ describe('resolveExerciseNextTarget / menu visibility', () => {
         sets: [{ reps: 5, weight: 100, completed: true }],
         prescribed: false,
         lastSets: [{ reps: 5, weight: 100 }],
-        units: 'kg',
+        units: 'metric',
       }),
       null
     );
@@ -1430,7 +1430,7 @@ describe('resolveExerciseNextTarget / menu visibility', () => {
         sets: planned,
         prescribed: false,
         lastSets: null,
-        units: 'kg',
+        units: 'metric',
       }),
       null
     );

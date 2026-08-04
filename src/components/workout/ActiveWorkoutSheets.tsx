@@ -18,7 +18,7 @@ import {
   resolveAddExerciseId,
 } from '@/lib/workout/activeSetInputPatches';
 import type { WorkoutVictorySummary } from '@/lib/workout/workoutVictory';
-import type { ActiveExerciseLog } from '@/types';
+import type { ActiveExerciseLog, MuscleGroup } from '@/types';
 
 type FormGuideView = {
   exerciseId: string;
@@ -40,7 +40,7 @@ type Props = {
   onCloseAddExercise: () => void;
   addExerciseId: string;
   onAddExerciseIdChange: (id: string) => void;
-  onAddExerciseConfirmed: (id: string, muscleGroups: string[] | undefined) => void;
+  onAddExerciseConfirmed: (id: string, muscleGroups: MuscleGroup[] | undefined) => void;
   plateCalcOpen: boolean;
   onClosePlateCalc: () => void;
   nextSet: { exIdx: number; setIdx: number } | null;

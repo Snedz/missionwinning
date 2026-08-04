@@ -3,7 +3,7 @@
 Session branch: `cursor/kaizen-night-be9b`  
 Started: 2026-08-04 · Web craft only · Modernist system stands  
 Base: `master` @ `2026.07-unified.417`  
-Tip: `2026.07-unified.453` · PR #254  
+Tip: `2026.07-unified.454` · PR #254 · **merged to master (night closed)**  
 Prior night: #234 (`.294`–`.403`) + follow-on media/Learn through `.417`
 
 ## Contract
@@ -34,7 +34,7 @@ Pause/restart · week numbers · Fixed vs Flexible · glow FAB · Habits/communi
 
 | Metric | Night start | Tip |
 |--------|-------------|-----|
-| Build | `.417` | **`.453`** |
+| Build | `.417` | **`.454`** |
 | i18n uncovered cap | 16 | **16** |
 | ActiveExerciseCard LOC | 536 | **224** (−312) |
 | HomeTodayDashboard LOC | 785 | **714** (−71) |
@@ -289,3 +289,7 @@ Pause/restart · week numbers · Fixed vs Flexible · glow FAB · Habits/communi
 4. Further Fuel accuracy: vision grounding for honest `high` confidence.
 5. More Active/Coach extracts only if they unlock a real test or shrink a hot path.
 6. Soft-chrome ratchet: bare opacity-90/95 already banned (`.427`).
+
+## Night close
+
+`.454` typecheck green; founder **Merge and slash (A)** — merge #254 to master; Kaizen Night ends.

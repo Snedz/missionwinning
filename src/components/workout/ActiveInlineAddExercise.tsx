@@ -8,11 +8,12 @@ import { useTranslation } from 'react-i18next';
 import { ExercisePicker } from '@/components/library/ExercisePicker';
 import { resolveAddExerciseId } from '@/lib/workout/activeSetInputPatches';
 import { getExerciseById } from '@/data/exercises';
+import type { MuscleGroup } from '@/types';
 
 type Props = {
   addExerciseId: string;
   onAddExerciseIdChange: (id: string) => void;
-  onAdd: (exerciseId: string, muscleGroups: string[] | undefined) => void;
+  onAdd: (exerciseId: string, muscleGroups: MuscleGroup[] | undefined) => void;
 };
 
 export function ActiveInlineAddExercise({
