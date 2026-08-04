@@ -973,6 +973,30 @@ test.describe('Accessibility @a11y', () => {
   });
 
   /**
+   * Loop 28 L1 — Session overflow discard menu. Zero-data path never opens it;
+   * start session → More session actions, axe Hold-to-confirm discard chrome.
+   */
+  test('axe serious/critical: /active with session more menu open @a11y', async ({
+    page,
+    context,
+    baseURL,
+  }) => {
+    if (!baseURL) throw new Error('baseURL required');
+    const ok = await unlockGate(page, context, baseURL);
+    if (gateRequired() && !ok) {
+      test.skip(true, 'SMOKE_ACCESS_SECRET required to unlock private gate');
+    }
+    await seedLegacyOnboarding(page);
+    await seedReadinessPhase(page);
+    await startEmptyActiveWorkout(page);
+    await page.getByRole('button', { name: /more session actions/i }).first().click();
+    await expect(
+      page.getByRole('button', { name: /discard workout/i }).first()
+    ).toBeVisible({ timeout: 10_000 });
+    await axeSerious(page, '/active (session more menu)');
+  });
+
+  /**
    * The assertion axe cannot make.
    *
    * axe-core does not reliably test focus visibility, which is how this suite sat at

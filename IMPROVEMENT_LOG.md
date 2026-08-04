@@ -647,6 +647,22 @@ PR: #234
 **Aikido:** `aikido_full_scan` fails without X11 `$DISPLAY`. Noted; continue.
 **Next:** Loop 28 — more seeded a11y; Active extracts; Bundle i18n still refused.
 
+## Loop 28 waves
+
+| Wave | Status | Notes |
+|------|--------|-------|
+| L1 Session more menu a11y | done (`.385`) | HoldToConfirm outside role=menu |
+| L2 Active extract | pending (`.386`) | `isActiveSetCell` |
+| L3 Soft chrome / log close | pending (`.387`) | OtpInput status-ok solid |
+
+## Metrics
+
+| Metric | Loop 27 end | Loop 28 (in progress) |
+|--------|-------------|------------------------|
+| Build | `.384` | **`.385`** |
+| i18n uncovered cap | 16 (Bundle refuse) | **16** (unchanged) |
+
+
 
 
 

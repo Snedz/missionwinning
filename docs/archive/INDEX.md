@@ -55,6 +55,7 @@ When adding a doc:
 | [log/LOG-rotate-300.md](./log/LOG-rotate-300.md) | `.285` progressive overload — rotated for `.300` L5 fillers |
 | [log/LOG-rotate-301.md](./log/LOG-rotate-301.md) | `.286` re-entry dose — rotated for `.301` Coach/History i18n |
 | [log/LOG-rotate-302.md](./log/LOG-rotate-302.md) | `.287` coach why — rotated for `.302` debrief i18n |
+| [log/LOG-rotate-385.md](./log/LOG-rotate-385.md) | `.370` — rotated for `.385` Swap sheet a11y (Loop 23 G1) |
 | [log/LOG-rotate-384.md](./log/LOG-rotate-384.md) | `.369` — rotated for `.384` Select tooltip radius (Loop 22 F3) |
 | [log/LOG-rotate-383.md](./log/LOG-rotate-383.md) | `.368` — rotated for `.383` eyebrow + toggleOpenIdx (Loop 22 F2) |
 | [log/LOG-rotate-382.md](./log/LOG-rotate-382.md) | `.367` — rotated for `.382` Session check-in a11y (Loop 22 F1) |

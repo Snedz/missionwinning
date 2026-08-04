@@ -18,7 +18,7 @@ import { AdaptiveOverlay } from '@/components/ui/AdaptiveOverlay';
 import { SetLogRow } from '@/components/workout/SetLogRow';
 import { SetLogTable } from '@/components/workout/SetLogTable';
 import { useIsCompact } from '@/hooks/useIsCompact';
-import { getLastPerformanceForSet, exerciseHasCompletedSet, exerciseHasPlannedSet, firstPlannedSetIdx, holdsActiveExercise } from '@/lib/workout/activeWorkoutHelpers';
+import { getLastPerformanceForSet, exerciseHasCompletedSet, exerciseHasPlannedSet, firstPlannedSetIdx, holdsActiveExercise, isActiveSetCell } from '@/lib/workout/activeWorkoutHelpers';
 import { SET_KINDS, setKindDefaultLabel, setKindLabelKey } from '@/lib/workout/setKind';
 import { getFormGuideOrCues } from '@/lib/formGuides';
 import { lastNotesFor } from '@/lib/journal/cueMemory';
@@ -223,10 +223,8 @@ export function ActiveExerciseCard({
                     aria-label={t('activeCloseMenu', { defaultValue: 'Close menu' })}
                     onClick={() => setMenuOpen(false)}
                   />
-                  <div
-                    role="menu"
-                    className="absolute end-0 top-full z-50 mt-1 min-w-[11rem] border-2 border-border bg-card p-1"
-                  >
+                  <div className="absolute end-0 top-full z-50 mt-1 min-w-[11rem] border-2 border-border bg-card p-1">
+                    <div role="menu">
                     <Link
                       href={`/coach?ask=${encodeURIComponent(exercise.id)}`}
                       role="menuitem"
@@ -285,6 +283,8 @@ export function ActiveExerciseCard({
                         {t('activeSwap', { defaultValue: 'Swap' })}
                       </button>
                     )}
+                    </div>
+                    {/* HoldToConfirm is not a menuitem (aria-busy) — keep it outside role=menu. */}
                     <div className="border-t border-border px-1 pt-1">
                       <HoldToConfirmButton
                         size="sm"
@@ -385,7 +385,7 @@ export function ActiveExerciseCard({
       <CardContent className="space-y-2 p-3 pt-0">
         {isCompact ? (
           exLog.sets.map((set, setIdx) => {
-            const isNext = nextSet?.exIdx === exIdx && nextSet?.setIdx === setIdx;
+            const isNext = isActiveSetCell(nextSet, exIdx, setIdx);
             return (
               <div key={set.id} ref={isNext ? nextSetRef : undefined}>
                 <SetLogRow

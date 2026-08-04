@@ -131,8 +131,10 @@ export function ActiveSessionChrome({
                 {/* Plates moved out to the header, so discard is all that is
                     left in here — which is the right amount for a menu whose
                     only remaining item is destructive. */}
+                {/* Not role=menu — HoldToConfirm is a button with aria-busy,
+                    which axe aria-required-children rejects as a menuitem child.
+                    Single destructive action: plain disclosure panel. */}
                 <div
-                  role="menu"
                   className="absolute end-0 top-full z-50 mt-1 min-w-[11rem] border-2 border-border bg-card p-1"
                 >
                   <HoldToConfirmButton
