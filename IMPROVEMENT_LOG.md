@@ -719,14 +719,22 @@ PR: #234
 |------|--------|-------|
 | O1 Coach ask-form a11y | done (`.394`) | `/coach?ask=` FreeFormAskPanel axe green |
 | O2 Active extract | done (`.395`) | Apply/Remove menuitem helpers + wiring |
-| O3 Soft chrome / log close | pending (`.396`) | Disabled opacity → muted/50 |
+| O3 Soft chrome / log close | done (`.396`) | Unlock/Phantom/Today disabled chrome |
 
 ## Metrics
 
 | Metric | Loop 30 end | Loop 31 (in progress) |
 |--------|-------------|------------------------|
-| Build | `.393` | **`.395`** |
+| Build | `.393` | **`.396`** |
 | i18n uncovered cap | 16 (Bundle refuse) | **16** (unchanged) |
+
+## End of Loop 31
+
+**Delivered:** O1–O3 on `cursor/kaizen-wedge-night-be9b` → PR #234 (`.394`–`.396`).
+**Verified:** ask-form a11y green; menuitem helpers unit + wiring; design-system green.
+**Aikido:** `aikido_full_scan` fails without X11 `$DISPLAY`. Noted; continue.
+**Next:** Loop 32 — more seeded a11y; Active extracts; Bundle i18n still refused.
+
 
 
 

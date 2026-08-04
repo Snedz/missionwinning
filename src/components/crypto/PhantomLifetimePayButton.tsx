@@ -117,7 +117,7 @@ export function PhantomLifetimePayButton({ className = '' }: { className?: strin
     <div className={className}>
       <button
         type="button"
-        className="primary-action w-full border-2 border-primary bg-transparent text-foreground hover:bg-accent-100 disabled:opacity-60"
+        className="primary-action w-full border-2 border-primary bg-transparent text-foreground hover:bg-accent-100 disabled:opacity-50"
         disabled={busy || (isConnected && !isAvailable)}
         onClick={() => void runCheckout()}
       >
