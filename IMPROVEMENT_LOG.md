@@ -455,5 +455,18 @@ PR: #234
 |------|--------|-------|
 | C1 Plate calculator a11y | done (`.358`) | Sheet axe green; mobile Plates aria-label |
 | C2 Active extract | done (`.359`) | `activePostSessionPath` + wiring guard |
-| C3 Soft chrome / log close | pending | |
+| C3 Soft chrome / log close | done (`.360`) | Toast root rounded-none; Loop 19 close |
 
+## Metrics
+
+| Metric | Loop 18 end | Loop 19 end |
+|--------|-------------|-------------|
+| Build | `.357` | **`.360`** |
+| i18n uncovered cap | 16 (Bundle refuse) | **16** (unchanged) |
+
+## End of Loop 19
+
+**Delivered:** C1–C3 on `cursor/kaizen-wedge-night-be9b` → PR #234 (`.358`–`.360`).
+**Verified:** plate calculator a11y green (+ Plates aria-label); activePostSessionPath unit + wiring; design-system green.
+**Aikido:** `aikido_full_scan` fails without X11 `$DISPLAY`. Noted; continue.
+**Next:** Loop 20 — more seeded a11y; Active extracts; Bundle i18n still refused.
