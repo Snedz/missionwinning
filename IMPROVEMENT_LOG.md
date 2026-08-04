@@ -295,3 +295,11 @@ PR: #234
 **Aikido:** `aikido_full_scan` still fails without X11 `$DISPLAY`. Noted; continue.
 **Next:** Loop 12 — soft chrome leftovers (toast destructive, BetaAdmin, secondary/20 cards); more Active extracts; offline-banner / coaching-form seeded a11y; Bundle i18n still refused.
 
+## Loop 12 waves
+
+| Wave | Status | Notes |
+|------|--------|-------|
+| V1 Soft chrome leftovers | done (`.337`) | Toast/BetaAdmin/Benchmarks/Guide/Calc/Builder/Phantom solid |
+| V2 Active body-score deltas extract | pending | |
+| V3 Offline banner seeded a11y + log close | pending | |
+

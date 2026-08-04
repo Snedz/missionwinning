@@ -232,7 +232,7 @@ export function BenchmarksPage() {
             <CardTitle className="text-3xl">{globalStats.totalSessions}</CardTitle>
           </CardHeader>
         </Card>
-        <Card className="content-card border-secondary/20 bg-secondary/5">
+        <Card className="content-card border-secondary">
           <CardHeader className="pb-2">
             <CardDescription className="flex items-center gap-2">
               <Scale className="h-4 w-4 text-secondary" />

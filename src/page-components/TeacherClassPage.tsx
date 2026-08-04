@@ -307,7 +307,7 @@ function TeacherClassInner({ code: rawCode }: { code: string }) {
                     {entries.map((e) => (
                       <li
                         key={`${e.rank}-${e.athleteLabel}`}
-                        className="flex justify-between gap-4 border-b border-border/40 pb-2"
+                        className="flex justify-between gap-4 border-b border-border pb-2"
                       >
                         <span>
                           #{e.rank} {e.athleteLabel}

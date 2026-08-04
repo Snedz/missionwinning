@@ -140,7 +140,7 @@ export function GuidebookChapterPage({ chapterId }: Props) {
       </div>
 
       {allDone && (
-        <Card className="content-card border-primary/40">
+        <Card className="content-card border-primary">
           <CardContent className="py-4 flex flex-wrap items-center justify-between gap-3">
             <p className="text-sm text-primary">
               {t('guidebookChapterComplete', { defaultValue: 'Chapter complete!' })}

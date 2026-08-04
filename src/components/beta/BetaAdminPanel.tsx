@@ -276,7 +276,7 @@ export function BetaAdminPanel({ enabled }: Props) {
           {metrics && (
             <>
               <div
-                className="rounded-lg border border-border/60 bg-background/80 p-3 space-y-2"
+                className="rounded-none border-2 border-border bg-background p-3 space-y-2"
                 data-testid="beta-proof-summary"
               >
                 <div className="text-[10px] uppercase tracking-widest text-muted-foreground font-medium">
@@ -334,7 +334,7 @@ export function BetaAdminPanel({ enabled }: Props) {
                 Readiness {metrics.phaseCounts.readiness} · Commissioned{' '}
                 {metrics.phaseCounts.commissioned}
               </div>
-              <p className="text-[11px] text-muted-foreground leading-relaxed rounded-lg border border-border/40 p-2">
+              <p className="text-[11px] text-muted-foreground leading-relaxed rounded-none border border-border p-2">
                 <span className="font-medium text-foreground">Client I-Day steps</span> (PostHog,
                 after allow): <code className="text-[10px]">iday_started</code> →{' '}
                 <code className="text-[10px]">iday_mission_accepted</code> →{' '}
@@ -352,7 +352,7 @@ export function BetaAdminPanel({ enabled }: Props) {
                 POST_LAUNCH_CADENCE is "read 2 and fix the #1 confusion" — not
                 "read all of them".
               */}
-              <div className="rounded-lg border border-border/50 p-3 text-xs space-y-2">
+              <div className="rounded-none border border-border p-3 text-xs space-y-2">
                 <div className="flex items-center justify-between gap-2">
                   <div className="font-semibold text-foreground">
                     Feedback{feedback ? ` (${feedback.length})` : ''}
@@ -388,7 +388,7 @@ export function BetaAdminPanel({ enabled }: Props) {
                 ) : (
                   <ul className="space-y-3">
                     {feedback.map((note) => (
-                      <li key={`${note.at}-${note.email}`} className="border-t border-border/40 pt-2 first:border-0 first:pt-0">
+                      <li key={`${note.at}-${note.email}`} className="border-t border-border pt-2 first:border-0 first:pt-0">
                         <div className="flex justify-between gap-2 text-[11px] text-muted-foreground">
                           <span className="truncate">{note.name || 'Anonymous'}</span>
                           <span className="tabular-nums shrink-0">{localDateKeyFromIso(note.at)}</span>
@@ -408,7 +408,7 @@ export function BetaAdminPanel({ enabled }: Props) {
                 )}
               </div>
               {metrics.leadSourceTop && metrics.leadSourceTop.length > 0 ? (
-                <div className="rounded-lg border border-border/50 p-3 text-xs space-y-1.5">
+                <div className="rounded-none border border-border p-3 text-xs space-y-1.5">
                   <div className="font-semibold text-foreground">
                     Lead sources ({metrics.leadTotal ?? 0} rows, top {metrics.leadSourceTop.length})
                   </div>
@@ -425,7 +425,7 @@ export function BetaAdminPanel({ enabled }: Props) {
               <div
                 className={`rounded-lg border p-3 text-xs ${
                   metrics.launchReady
-                    ? 'border-primary/40 bg-primary/10 text-primary'
+                    ? 'border-primary bg-accent-100 text-primary'
                     : 'border-[color:var(--status-warning-border)] bg-[color:var(--status-warning-bg)] text-[color:var(--status-warning-fg)]'
                 }`}
               >
@@ -453,7 +453,7 @@ export function BetaAdminPanel({ enabled }: Props) {
         </CardContent>
       </Card>
 
-      <Card className="border-primary/30 bg-primary/5">
+      <Card className="border-primary">
         <CardHeader>
           <CardTitle className="text-base">Invites</CardTitle>
         </CardHeader>
@@ -476,7 +476,7 @@ export function BetaAdminPanel({ enabled }: Props) {
             <p className="text-xs text-primary">≥{gateTarget} signed-up via invites — headcount met.</p>
           )}
 
-          <form onSubmit={(e) => void issueInvite(e)} className="space-y-2 rounded-lg border border-border/50 p-3">
+          <form onSubmit={(e) => void issueInvite(e)} className="space-y-2 rounded-none border border-border p-3">
             <div className="text-xs font-semibold text-foreground">Issue invite</div>
             <label className="block text-xs text-muted-foreground">
               Label (invitee name)
@@ -521,7 +521,7 @@ export function BetaAdminPanel({ enabled }: Props) {
               {invites.rows.map((row) => (
                 <li
                   key={row.id}
-                  className="rounded-lg border border-border/50 p-2.5 text-xs space-y-1.5"
+                  className="rounded-none border border-border p-2.5 text-xs space-y-1.5"
                 >
                   <div className="flex items-start justify-between gap-2">
                     <div>
@@ -567,8 +567,8 @@ function Chip({ ok, label }: { ok: boolean; label: string }) {
     <span
       className={`inline-flex px-2 py-0.5 text-[10px] font-semibold ${
         ok
-          ? 'bg-primary/15 text-primary border border-primary/30'
-          : 'bg-muted text-muted-foreground border border-border/50'
+          ? 'bg-accent-100 text-primary border border-primary'
+          : 'bg-muted text-muted-foreground border border-border'
       }`}
     >
       {label}
@@ -578,7 +578,7 @@ function Chip({ ok, label }: { ok: boolean; label: string }) {
 
 function Stat({ label, value }: { label: string; value: string }) {
   return (
-    <div className="rounded-lg border border-border/50 p-3">
+    <div className="rounded-none border border-border p-3">
       <div className="text-xs text-muted-foreground">{label}</div>
       <div className="font-semibold font-mono">{value}</div>
     </div>
