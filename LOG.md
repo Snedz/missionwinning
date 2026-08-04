@@ -10,6 +10,12 @@ Archive: [2026-06 → 2026-07-20](docs/archive/log/LOG-2026-06_to_2026-07-20.md)
 
 ---
 
+## 2026-08-04 — Active session finish pure extract (`.405`)
+
+`logSetIsPr` + `planLogSetRest` + `assembleActiveVictory` peel PR/rest/Victory
+assembly out of ActiveWorkoutPage (T2.1). Page keeps store toasts and side
+effects; wiring guards prevent re-inline of debrief/PR/rest.
+
 ## 2026-08-04 — Week-1 activation contract after composure (`.404`)
 
 Regression net for `.291` + K1 (`.294`): First Steps still next=`session2` at one
@@ -77,13 +83,4 @@ Kaizen Loop 30 N2. `shouldShowSetOptionsFooter` owns the Set options footer gate
 ## 2026-08-04 — Coach chat seeded a11y (`.391`)
 
 Kaizen Loop 30 N1. Seeded axe on `/coach` with Ask your coach chat open. Cap 16.
-
-## 2026-08-04 — Label and dialog close chrome solidify (`.390`)
-
-Kaizen Loop 29 M3. Soft chrome leftovers:
-
-1. Label peer-disabled: opacity → muted ink
-2. Dialog close: drop opacity/rounded-sm for bordered rounded-none + hover muted
-
-Living log Loop 29 closed. Cap 16.
 

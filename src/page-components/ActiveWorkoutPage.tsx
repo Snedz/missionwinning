@@ -29,20 +29,12 @@ import { ActiveExerciseCard } from '@/components/workout/ActiveExerciseCard';
 import { ActiveEmptyState } from '@/components/workout/ActiveEmptyState';
 import { ActiveSessionChrome } from '@/components/workout/ActiveSessionChrome';
 import { LiveHeartRate } from '@/components/workout/LiveHeartRate';
-import { restSecondsForExercise } from '@/lib/workout/restTimer';
-import { isPersonalRecord } from '@/lib/workout/workoutPr';
-import { shouldRestAfterLog } from '@/lib/workout/superset';
 import { useUnits, weightStep, weightUnitLabel } from '@/hooks/useUnits';
-import { getTrainingStreak } from '@/lib/challenges';
 import {
-  summarizeWorkoutVictory,
-  buildProgressionInsight,
   type WorkoutVictorySummary,
 } from '@/lib/workout/workoutVictory';
 import { WorkoutVictorySheet } from '@/components/workout/WorkoutVictorySheet';
-import { buildDebrief } from '@/lib/coach/debrief';
 import type { Debrief } from '@/lib/coach/debrief';
-import { collectFragments, composeSessionEntry } from '@/lib/journal/composeEntry';
 import { SessionJotField } from '@/components/workout/SessionJotField';
 import { computeBodyScores } from '@/lib/score';
 import { getTodayCheckIn } from '@/lib/mindCheckIns';
@@ -52,6 +44,11 @@ import {
   markSessionCheckInSkipped,
 } from '@/components/workout/SessionCheckInSheet';
 import { useCoachPlan } from '@/hooks/useCoachPlan';
+import {
+  assembleActiveVictory,
+  logSetIsPr,
+  planLogSetRest,
+} from '@/lib/workout/activeSessionFinish';
 import {
   buildConsoleSet,
   findNextSet,
@@ -64,7 +61,6 @@ import {
   resolveFormGuideSheet,
   resolveRepeatLastTarget,
   shouldOfferVolumeTrim,
-  bodyScoreDeltas,
   resolveSwapCandidatesWhenOpen,
   activeSessionBottomClass,
   shouldShowReadinessDelta,
@@ -285,17 +281,27 @@ export function ActiveWorkoutPage() {
     if (!exLog || !set) return;
     const input = override ?? getSetInput(exIdx, setIdx, set.reps, set.weight);
     const exercise = getExerciseById(exLog.exerciseId);
-    const restSec = restSecondsForExercise(exercise?.name);
-    const exerciseId = exLog.exerciseId;
     const setKind = set.kind ?? 'normal';
-    const isPr = isPersonalRecord(exerciseId, input.reps, input.weight, workoutHistory, setKind);
+    const isPr = logSetIsPr({
+      exerciseId: exLog.exerciseId,
+      reps: input.reps,
+      weight: input.weight,
+      setKind,
+      workoutHistory,
+    });
 
     const next = logSetAndAdvance(exIdx, setIdx, input.reps, input.weight, isPr);
     const updatedExercises =
       useWorkoutStore.getState().activeWorkout?.exercises ?? activeWorkout.exercises;
-    const takeRest = shouldRestAfterLog(updatedExercises, exIdx, setIdx, next);
-    if (takeRest) {
-      startRestTimer(restSec);
+    const rest = planLogSetRest({
+      exercisesAfterLog: updatedExercises,
+      exIdx,
+      setIdx,
+      advanceNext: next,
+      exerciseName: exercise?.name,
+    });
+    if (rest.takeRest) {
+      startRestTimer(rest.restSeconds);
     }
 
     if (isPr) {
@@ -318,7 +324,6 @@ export function ActiveWorkoutPage() {
   const handleComplete = () => {
     const historyBefore = workoutHistory;
     const checkIn = getTodayCheckIn();
-    const beforeScores = computeBodyScores(historyBefore, { checkIn });
     // Journal content — read before completeActiveWorkout clears the session.
     const sessionNote = activeWorkout?.sessionNote ?? '';
     const log = completeActiveWorkout();
@@ -332,39 +337,25 @@ export function ActiveWorkoutPage() {
       });
       return;
     }
-    const historyAfter = [log, ...historyBefore];
-    const streak = getTrainingStreak(historyAfter);
-    // The debrief needs the completed log inside the history so load bands see it,
-    // while compareToBaseline excludes it by date. See lib/coach/debrief.ts.
-    const sessionDebrief = buildDebrief({
-      log,
-      history: historyAfter,
-      checkIn,
-      unit: weightUnitLabel(units),
-    });
-    setDebrief(sessionDebrief);
 
-    // The session entry (`.185`): the athlete's fragments — the jot field plus
-    // per-exercise notes — open the entry in their own words; the debrief follows.
-    // No fragments → the entry is exactly the debrief (composeEntry's contract).
-    const entry = composeSessionEntry(
-      sessionDebrief,
-      collectFragments(log, sessionNote, (id) => getExerciseById(id)?.name ?? id.replace(/-/g, ' ')),
-      checkIn
-    );
-    setEntryFragments(entry.fragments);
+    const assembled = assembleActiveVictory({
+      log,
+      historyBefore,
+      checkIn,
+      sessionNote,
+      units,
+      goalId,
+      hasCoachPlan: !!plan,
+      resolveExerciseName: (id) => getExerciseById(id)?.name ?? id.replace(/-/g, ' '),
+    });
+    setDebrief(assembled.debrief);
+    setEntryFragments(assembled.entry.fragments);
 
     // Keep what the coach said. Before `.184` the debrief evaporated when the victory
     // sheet closed — History could never show the entry a session was given.
     void import('@/lib/journal/journalStore').then((m) =>
       m.saveJournalEntry({
-        workoutId: log.id,
-        date: log.completedAt,
-        workoutName: log.workoutName,
-        zone: sessionDebrief.zone,
-        lines: entry.lines,
-        ...(entry.fragments.length > 0 ? { fragments: entry.fragments } : {}),
-        ...(entry.checkIn ? { checkIn: entry.checkIn } : {}),
+        ...assembled.journal,
         savedAt: new Date().toISOString(),
       })
     );
@@ -382,28 +373,8 @@ export function ActiveWorkoutPage() {
      * Fire-and-forget and never prompts: `syncPushSubscription` no-ops without an
      * existing browser subscription, so nobody who has not opted in is touched.
      */
-    void import('@/lib/pushClient').then((m) =>
-      m.syncPushSubscription({
-        lastSessionAt: log.completedAt,
-        lastSessionHigh: sessionDebrief.zone === 'high',
-      })
-    );
-    const afterScores = computeBodyScores(historyAfter, { checkIn });
-    const scoreDeltas = bodyScoreDeltas(beforeScores, afterScores);
-    setVictorySummary(
-      summarizeWorkoutVictory(
-        log,
-        streak,
-        scoreDeltas,
-        buildProgressionInsight(log, units, repRangeForGoal(goalId)),
-        undefined,
-        {
-          completedWorkouts: historyAfter.length,
-          hasCoachPlan: !!plan,
-          strainDelta: scoreDeltas.strain,
-        }
-      )
-    );
+    void import('@/lib/pushClient').then((m) => m.syncPushSubscription(assembled.pushPatch));
+    setVictorySummary(assembled.victorySummary);
     setVictoryWorkoutId(log.id);
     setVictoryOpen(true);
   };
