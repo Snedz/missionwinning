@@ -3,7 +3,7 @@
 Session branch: `cursor/kaizen-night-be9b`  
 Started: 2026-08-04 · Web craft only · Modernist system stands  
 Base: `master` @ `2026.07-unified.417`  
-Tip: `2026.07-unified.423` · PR #254  
+Tip: `2026.07-unified.426` · PR #254  
 Prior night: #234 (`.294`–`.403`) + follow-on media/Learn through `.417`
 
 ## Contract
@@ -18,12 +18,13 @@ Prior night: #234 (`.294`–`.403`) + follow-on media/Learn through `.417`
 | # | Track | Status |
 |---|--------|--------|
 | P0 | Bootstrap | done |
-| P1 | ActiveExerciseCard decomp | done (`.418`) |
-| P2 | Today candidate builder | done (`.419`) |
-| P3 | Fuel estimate accuracy | done (`.420`, deepen `.423`) |
+| P1 | ActiveExerciseCard decomp | done (`.418`, deepen `.425`) |
+| P2 | Today candidate builder | done (`.419`, trainReady `.426`) |
+| P3 | Fuel estimate accuracy | done (`.420`, `.423`, `.424`) |
 | P4 | Coach manage/adjust/schedule axe | done (`.421`) |
 | P5 | Victory one-exit slim | done (`.422`) |
 | P6 | Soft chrome / fillers | done (`.423`) |
+| Cont. | Word-half · footer · trainReady | done (`.424`–`.426`) |
 
 ## Standing refuses
 
@@ -33,21 +34,22 @@ Pause/restart · week numbers · Fixed vs Flexible · glow FAB · Habits/communi
 
 | Metric | Night start | Tip |
 |--------|-------------|-----|
-| Build | `.417` | `.423` |
+| Build | `.417` | **`.426`** |
 | i18n uncovered cap | 16 | **16** |
-| ActiveExerciseCard LOC | 536 | **380** (−156) |
+| ActiveExerciseCard LOC | 536 | **343** (−193) |
 | HomeTodayDashboard LOC | 785 | **714** (−71) |
 | ActiveWorkoutPage LOC | 765 | 765 (untouched this night) |
 | WorkoutVictorySheet LOC | 387 | **376** (−11) |
 | New axe cases | — | 3 (Coach manage / schedule / adjust) |
-| Fuel unit cases added | — | fraction `.420` + mixed `.423` |
+| Fuel unit cases added | — | fraction · mixed · word-half |
 
 ## Decisions / findings
 
-- Active card fat was set menus + next-target predicates — extract to helpers + colocated menus (Loops 20–32 pattern), not page-local copies.
+- Active card fat was set menus + next-target predicates — extract to helpers + colocated menus (Loops 20–32 pattern), not page-local copies; footer peel continues the same pattern (`.425`).
 - Today budget SoT already existed; shell still assembled candidates in JSX — pure `buildTodayCandidates` keeps mount gates identical and locks densest-evening order.
-- NL `1/2 cup` was the denominator trap; `1 1/2 cup` was the next sibling (trailing half match) — mixed numbers before fraction matchers.
+- NL `1/2 cup` was the denominator trap; `1 1/2 cup` was the next sibling (trailing half match); word `half` / `and a half` was GLOBAL_PORTION double-scale — remove `half` from plate adjectives.
 - Victory already had one primary CTA; dual Share · Share card + page-local secondary Today predicate still competed — one Share + `shouldShowVictoryBackTodaySecondary`.
+- Lean omitted commissioned in trainReady while dashboard included it — `isTodayTrainReady` one home (`.426`).
 - MoreSheet Bundle kicker soft chrome ≠ Bundle deepen; solid `text-primary-foreground` only.
 - Aikido MCP often fails (`Cannot autolaunch D-Bus without X11 $DISPLAY`) — note and continue when blocked.
 - Playwright: use `localhost:3000` not `127.0.0.1` against tmux `next-dev-kaizen`.
@@ -96,10 +98,30 @@ Pause/restart · week numbers · Fixed vs Flexible · glow FAB · Habits/communi
 |------|--------|-------|
 | `.423` | done | MoreSheet solid Premium kicker + NL mixed `1 1/2 cup` |
 
+
+### Loop 7 — Fuel word-half
+
+| Wave | Status | Notes |
+|------|--------|-------|
+| `.424` | done | half a cup / and-a-half; half left GLOBAL_PORTION |
+
+### Loop 8 — Active footer
+
+| Wave | Status | Notes |
+|------|--------|-------|
+| `.425` | done | ActiveExerciseFooter + formatPrevSetLabels; card 380→343 |
+
+### Loop 9 — Today trainReady
+
+| Wave | Status | Notes |
+|------|--------|-------|
+| `.426` | done | isTodayTrainReady one-home lean+dashboard+primary |
+
 ## Next (founder / later nights)
 
-1. Phone excellence walk of Train → Today → Victory → Coach on tip `.423`.
+1. Phone excellence walk of Train → Today → Victory → Coach on tip `.426`.
 2. Visual baseline bootstrap on Linux when founder ready (not this branch).
 3. Pump D14 only when screenshots arrive — do not invent IA.
 4. Further Fuel accuracy: vision grounding for honest `high` confidence.
 5. More Active/Coach extracts only if they unlock a real test or shrink a hot path.
+6. Soft-chrome ratchet: extend bare-opacity guard to `opacity-90`.

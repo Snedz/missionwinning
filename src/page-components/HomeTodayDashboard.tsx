@@ -32,7 +32,7 @@ import { getTodayLayout } from "@/hooks/useTodayLayout";
 import { formatStoredGoal, goalPresetValue } from "@/lib/journeyGoals";
 import { useUnits } from "@/hooks/useUnits";
 import { formatRecommendedFocusLine, muscleGroupLabel } from "@/lib/readinessDisplay";
-import { runTodayPrimaryAction } from "@/lib/todayPrimaryAction";
+import { runTodayPrimaryAction, isTodayTrainReady } from "@/lib/todayPrimaryAction";
 import { countHighProteinDaysFromNutritionLog } from "@/lib/nutritionHighProteinDays";
 import { Skeleton, SkeletonBlock, SkeletonCard } from "@/components/ui/Skeleton";
 import { readJson, readRaw } from "@/lib/storage/safeStorage";
@@ -471,8 +471,11 @@ export function HomeTodayDashboard() {
   };
 
   const justGoMeta = useMemo((): JustGoHeroMeta | null => {
-    const trainReady =
-      action.href === '/active' || !!action.startWorkout || action.phase === 'commissioned';
+    const trainReady = isTodayTrainReady({
+      href: action.href,
+      hasStartWorkout: !!action.startWorkout,
+      phase: action.phase,
+    });
     return buildJustGoHeroMeta({
       hasActiveWorkout: !!activeWorkout,
       trainReady,
