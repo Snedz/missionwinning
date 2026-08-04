@@ -7,6 +7,8 @@
 
 Generation is **offline batch** → founder approve → commit static files. There is **no** runtime image-gen API in the product.
 
+**Exercise craft index (Train + public `/exercises`):** browse by **pattern** (squat / hinge / push / pull / core / loco / isolation), show form SVG (bespoke or honest pattern pack), coach language, one-click **Train this**. Hero SVGs may include CSS-in-SVG mid-phase motion (`npm run media:form-motion`). Structured guide floor ≥80 — `src/lib/formGuideCoverage.test.ts`. Coverage snapshot: `npm run media:coverage` → `media/COVERAGE.md`.
+
 **Primary HQ tool for Learn / social / motion:** [Google Flow](https://labs.google/fx/tools/flow) (50 free credits/day on non‑AI plans).  
 **Form guides stay SVG** — do not replace with Flow video or photoreal people.
 

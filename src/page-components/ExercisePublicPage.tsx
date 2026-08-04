@@ -117,6 +117,16 @@ export function ExercisePublicPage({ exercise: raw, jsonLd }: Props) {
           </section>
         )}
 
+        {/* One-click into the free logger — craft-index primary CTA (GrokFilm "Try in Grok"). */}
+        <div className="flex flex-col gap-2 border-2 border-primary bg-tint p-4 sm:flex-row sm:items-center sm:justify-between">
+          <p className="text-sm text-muted-foreground">
+            Free offline logger · no account · no API key
+          </p>
+          <Link href="/welcome" className="primary-action shrink-0 text-center">
+            Train this free →
+          </Link>
+        </div>
+
         {exercise.cues && (
           <section>
             <h2 className="mb-2 font-mono text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
@@ -281,13 +291,13 @@ export function ExercisePublicPage({ exercise: raw, jsonLd }: Props) {
           </section>
         )}
 
-        <div className="space-y-3 border-2 border-primary bg-tint p-5">
+        <div className="space-y-3 border-2 border-border bg-card p-5">
           <p className="text-sm text-muted-foreground">
-            Log sets offline — no account, no AI API key. {EXERCISES.length} free exercise pages in
-            the library.
+            {EXERCISES.length}+ movements in the free library. Log sets offline — Mission Coach
+            shapes the week from history alone.
           </p>
-          <Link href="/welcome" className="primary-action">
-            Track this exercise free →
+          <Link href="/exercises" className="text-sm font-semibold text-primary hover:underline">
+            ← Back to exercise library
           </Link>
         </div>
       </PublicPageShell>
