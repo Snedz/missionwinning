@@ -301,5 +301,18 @@ PR: #234
 |------|--------|-------|
 | V1 Soft chrome leftovers | done (`.337`) | Toast/BetaAdmin/Benchmarks/Guide/Calc/Builder/Phantom solid |
 | V2 Active body-score deltas extract | done (`.338`) | `bodyScoreDeltas` + wiring guard |
-| V3 Offline banner seeded a11y + log close | pending | |
+| V3 Offline banner seeded a11y + log close | done (`.339`) | Seeded axe on OnlineStatusBanner; Loop 12 living-log close |
 
+## Metrics
+
+| Metric | Loop 11 end | Loop 12 end |
+|--------|-------------|-------------|
+| Build | `.336` | **`.339`** |
+| i18n uncovered cap | 16 (Bundle refuse) | **16** (unchanged) |
+
+## End of Loop 12
+
+**Delivered:** V1–V3 on `cursor/kaizen-wedge-night-be9b` → PR #234 (`.337`–`.339`).
+**Verified:** design-system green; bodyScoreDeltas unit + wiring; offline banner a11y axe green (`localhost`).
+**Aikido:** `aikido_full_scan` still fails without X11 `$DISPLAY` when that path is used. Noted; continue.
+**Next:** Loop 13 — coaching-form filled a11y; more Active extracts; residual soft chrome in ui primitives where design gate allows; Bundle i18n still refused.
