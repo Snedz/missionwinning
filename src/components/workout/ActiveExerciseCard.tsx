@@ -7,7 +7,7 @@
 
 import { useState, type RefObject } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Info, Plus, Timer } from 'lucide-react';
+import { Info } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -16,10 +16,19 @@ import { AdaptiveOverlay } from '@/components/ui/AdaptiveOverlay';
 import { SetLogRow } from '@/components/workout/SetLogRow';
 import { SetLogTable } from '@/components/workout/SetLogTable';
 import { ActiveExerciseMoreMenu } from '@/components/workout/ActiveExerciseMoreMenu';
-import { ActiveSetOptionsMenu } from '@/components/workout/ActiveSetOptionsMenu';
+import { ActiveExerciseFooter } from '@/components/workout/ActiveExerciseFooter';
 import { useIsCompact } from '@/hooks/useIsCompact';
-import { getLastPerformanceForSet, exerciseHasCompletedSet, exerciseHasPlannedSet, holdsActiveExercise, isActiveSetCell, activeSetIdxForExercise, shouldShowSetOptionsFooter, firstWeightedLoad, shouldShowLoadPctChip, resolveExerciseNextTarget } from '@/lib/workout/activeWorkoutHelpers';
-import { SET_KINDS, setKindDefaultLabel, setKindLabelKey } from '@/lib/workout/setKind';
+import {
+  exerciseHasCompletedSet,
+  exerciseHasPlannedSet,
+  holdsActiveExercise,
+  isActiveSetCell,
+  activeSetIdxForExercise,
+  firstWeightedLoad,
+  shouldShowLoadPctChip,
+  resolveExerciseNextTarget,
+  formatPrevSetLabels,
+} from '@/lib/workout/activeWorkoutHelpers';
 import { getFormGuideOrCues } from '@/lib/formGuides';
 import { lastNotesFor } from '@/lib/journal/cueMemory';
 import { resolveRestSeconds } from '@/lib/workout/restTimer';
@@ -300,14 +309,11 @@ export function ActiveExerciseCard({
               sets={exLog.sets}
               activeSetIdx={activeSetIdxForExercise(nextSet, exIdx)}
               weightLabel={unitLabel}
-              prevLabels={exLog.sets.map((_, setIdx) => {
-                const last = getLastPerformanceForSet(
-                  workoutHistory,
-                  exLog.exerciseId,
-                  setIdx
-                );
-                return last ? `${last.reps} × ${last.weight}` : null;
-              })}
+              prevLabels={formatPrevSetLabels(
+                workoutHistory,
+                exLog.exerciseId,
+                exLog.sets.length
+              )}
               input={setInput}
               onInputChange={onSetInputChange}
               onLog={() => nextSet && onLogSet(nextSet.setIdx)}
@@ -315,65 +321,22 @@ export function ActiveExerciseCard({
             />
           </div>
         )}
-        <div className="flex flex-nowrap items-center gap-2 pt-1">
-          <Button variant="outline" size="sm" className="min-h-[44px]" onClick={onAddSet}>
-            <Plus className="h-3 w-3 me-1" /> {t('activeAddSet', { defaultValue: 'Add Set' })}
-          </Button>
-          <Button
-            type="button"
-            variant="ghost"
-            size="icon"
-            className="h-11 w-11 shrink-0"
-            aria-label={t('activeStartRest', { seconds: restSec, defaultValue: `${restSec}s Rest` })}
-            onClick={() => onStartRest(restSec)}
-          >
-            <Timer className="h-4 w-4" />
-          </Button>
-          {/*
-            Set kind on desktop. It lives in `LogConsole` on compact, and the
-            console does not render at md+ — so without this, a desktop user
-            cannot mark a warm-up or a drop set at all. The mock renders kinds
-            as tags in the row and puts controls in the overflow, which is what
-            this is; it is not an extra feature.
-          */}
-          {!isCompact && holdsActiveSet && (
-            <div className="flex flex-wrap items-center gap-1">
-              {SET_KINDS.map((k) => (
-                <button
-                  key={k}
-                  type="button"
-                  aria-pressed={activeSetKind === k}
-                  onClick={() => onSetKindChange(k)}
-                  className={cn(
-                    'min-h-[32px] border-2 px-2 text-[11px] font-semibold uppercase tracking-[0.06em] transition-colors',
-                    activeSetKind === k
-                      ? 'border-[hsl(var(--accent-poster))] bg-accent-100 text-foreground'
-                      : 'border-border text-muted-foreground hover:bg-accent-100'
-                  )}
-                >
-                  {t(setKindLabelKey(k), {
-                    defaultValue: k === 'normal' ? 'Work' : setKindDefaultLabel(k),
-                  })}
-                </button>
-              ))}
-            </div>
-          )}
-          {shouldShowSetOptionsFooter({
-            hasLastSets: !!lastSets,
-            hasPlanned,
-            plannedSetCount: exLog.sets.length,
-          }) && (
-            <ActiveSetOptionsMenu
-              open={footerOpen}
-              onOpenChange={setFooterOpen}
-              hasLastSets={!!lastSets}
-              hasPlanned={hasPlanned}
-              plannedSetCount={exLog.sets.length}
-              onApplyAllTargets={onApplyAllTargets}
-              onRemoveSet={onRemoveSet}
-            />
-          )}
-        </div>
+        <ActiveExerciseFooter
+          isCompact={isCompact}
+          holdsActiveSet={holdsActiveSet}
+          restSec={restSec}
+          activeSetKind={activeSetKind}
+          onSetKindChange={onSetKindChange}
+          onAddSet={onAddSet}
+          onStartRest={onStartRest}
+          footerOpen={footerOpen}
+          onFooterOpenChange={setFooterOpen}
+          hasLastSets={!!lastSets}
+          hasPlanned={hasPlanned}
+          plannedSetCount={exLog.sets.length}
+          onApplyAllTargets={onApplyAllTargets}
+          onRemoveSet={onRemoveSet}
+        />
       </CardContent>
     </Card>
   );

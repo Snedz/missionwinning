@@ -51,6 +51,18 @@ export function getLastPerformanceForSet(
   return { reps: match.reps, weight: match.weight };
 }
 
+/** Prev-column labels for the set table — one format, one home (.425). */
+export function formatPrevSetLabels(
+  workoutHistory: CompletedWorkoutLog[],
+  exerciseId: string,
+  setCount: number
+): (string | null)[] {
+  return Array.from({ length: setCount }, (_, setIdx) => {
+    const last = getLastPerformanceForSet(workoutHistory, exerciseId, setIdx);
+    return last ? `${last.reps} × ${last.weight}` : null;
+  });
+}
+
 export function setInputKey(exIdx: number, setIdx: number): string {
   return `${exIdx}-${setIdx}`;
 }

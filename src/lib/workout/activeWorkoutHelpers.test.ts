@@ -7,6 +7,7 @@ import {
   findNextSet,
   getLastPerformanceForSet,
   getLastSessionSets,
+  formatPrevSetLabels,
   nextSetInput,
   planApplyTargets,
   priorCompletedInExercise,
@@ -133,6 +134,25 @@ describe('activeWorkoutHelpers', () => {
       weight: 65,
     });
     assert.equal(getLastPerformanceForSet(hist, 'none', 0), null);
+  });
+
+  it('formatPrevSetLabels builds table prev column (.425)', () => {
+    const hist = historyWith('bench-press', [
+      { reps: 8, weight: 60 },
+      { reps: 6, weight: 65 },
+    ]);
+    assert.deepEqual(formatPrevSetLabels(hist, 'bench-press', 3), [
+      '8 × 60',
+      '6 × 65',
+      '6 × 65',
+    ]);
+    assert.deepEqual(formatPrevSetLabels(hist, 'none', 2), [null, null]);
+    const card = readFileSync(
+      path.join(import.meta.dirname, '..', '..', 'components', 'workout', 'ActiveExerciseCard.tsx'),
+      'utf8'
+    );
+    assert.match(card, /formatPrevSetLabels\(/);
+    assert.doesNotMatch(card, /getLastPerformanceForSet\(/);
   });
 
   it('setInputKey is stable', () => {
@@ -1190,16 +1210,21 @@ describe('shouldShowSetOptionsFooter', () => {
     );
   });
 
-  it('ActiveExerciseCard uses shouldShowSetOptionsFooter rather than an inline or', () => {
-    const src = readFileSync(
+  it('ActiveExerciseFooter uses shouldShowSetOptionsFooter rather than an inline or', () => {
+    const footer = readFileSync(
+      path.join(import.meta.dirname, '..', '..', 'components', 'workout', 'ActiveExerciseFooter.tsx'),
+      'utf8'
+    );
+    const card = readFileSync(
       path.join(import.meta.dirname, '..', '..', 'components', 'workout', 'ActiveExerciseCard.tsx'),
       'utf8'
     );
-    assert.match(src, /shouldShowSetOptionsFooter\(/);
+    assert.match(footer, /shouldShowSetOptionsFooter\(/);
+    assert.match(card, /ActiveExerciseFooter/);
     assert.doesNotMatch(
-      src,
-      /\(\(lastSets\s*&&\s*hasPlanned\)\s*\|\|\s*\(hasPlanned\s*&&\s*exLog\.sets\.length\s*>\s*1\)\)/,
-      'set options footer gate must stay inside shouldShowSetOptionsFooter'
+      card,
+      /shouldShowSetOptionsFooter\(/,
+      'set options footer gate lives in ActiveExerciseFooter'
     );
   });
 });
@@ -1225,12 +1250,22 @@ describe('shouldShowApplyTargetsMenuitem / shouldShowRemoveSetMenuitem', () => {
       path.join(import.meta.dirname, '..', '..', 'components', 'workout', 'ActiveExerciseCard.tsx'),
       'utf8'
     );
+    const footer = readFileSync(
+      path.join(import.meta.dirname, '..', '..', 'components', 'workout', 'ActiveExerciseFooter.tsx'),
+      'utf8'
+    );
     assert.match(more, /shouldShowSupersetLinkMenuitem\(/);
     assert.match(more, /shouldShowExerciseSwapMenuitem\(/);
     assert.match(opts, /shouldShowApplyTargetsMenuitem\(/);
     assert.match(opts, /shouldShowRemoveSetMenuitem\(/);
     assert.match(card, /ActiveExerciseMoreMenu/);
-    assert.match(card, /ActiveSetOptionsMenu/);
+    assert.match(card, /ActiveExerciseFooter/);
+    assert.match(footer, /ActiveSetOptionsMenu/);
+    assert.doesNotMatch(
+      card,
+      /ActiveSetOptionsMenu/,
+      'Set options menu mounts from ActiveExerciseFooter'
+    );
     assert.doesNotMatch(
       card,
       /shouldShowApplyTargetsMenuitem\(/,
