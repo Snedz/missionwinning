@@ -504,3 +504,16 @@ export function resolveSwapCandidatesWhenOpen<
   if (params.swapOpenIdx !== params.exIdx) return [];
   return rankSwapCandidates(params.catalog, params.current, params.compareNames);
 }
+
+/** Bottom padding so the rest dock does not cover the last exercise card. */
+export function activeSessionBottomClass(restTimerActive: boolean): string {
+  return restTimerActive ? 'pb-36 md:pb-28' : 'pb-4';
+}
+
+/** Show the readiness delta strip only when both scores exist and differ. */
+export function shouldShowReadinessDelta(
+  before: number | null,
+  after: number | null
+): boolean {
+  return before != null && after != null && after !== before;
+}

@@ -344,6 +344,6 @@ PR: #234
 | Wave | Status | Notes |
 |------|--------|-------|
 | X1 Programs no-match a11y | done (`.343`) | Hypertrophy × Bodyweight EmptyState axe green |
-| X2 Active extract | pending | |
+| X2 Active extract | done (`.344`) | `activeSessionBottomClass` + `shouldShowReadinessDelta` |
 | X3 Soft chrome / log close | pending | |
 

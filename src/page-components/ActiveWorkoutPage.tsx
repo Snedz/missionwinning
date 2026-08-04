@@ -66,6 +66,8 @@ import {
   shouldOfferVolumeTrim,
   bodyScoreDeltas,
   resolveSwapCandidatesWhenOpen,
+  activeSessionBottomClass,
+  shouldShowReadinessDelta,
   sessionIsCoachPrescribed,
   sessionSetStats,
   setInputKey,
@@ -465,7 +467,7 @@ export function ActiveWorkoutPage() {
   });
 
   return (
-    <div className={`space-y-4 ${restTimerActive ?'pb-36 md:pb-28' : 'pb-4'}`}>
+    <div className={`space-y-4 ${activeSessionBottomClass(restTimerActive)}`}>
       <SessionCheckInSheet
         open={checkInOpen}
         onDismiss={({ completed, checkIn }) => {
@@ -634,7 +636,7 @@ export function ActiveWorkoutPage() {
           </div>
         )}
 
-      {readinessAfter != null && readinessBefore != null && readinessAfter !== readinessBefore ? (
+      {shouldShowReadinessDelta(readinessBefore, readinessAfter) ? (
         <div className="border-2 border-border bg-card px-3 py-2 text-xs flex flex-wrap items-center gap-2">
           <span className="font-medium text-muted-foreground">
             {t('sessionReadinessDelta', {

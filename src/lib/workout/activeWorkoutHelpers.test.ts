@@ -23,6 +23,8 @@ import {
   rankSwapCandidates,
   bodyScoreDeltas,
   resolveSwapCandidatesWhenOpen,
+  activeSessionBottomClass,
+  shouldShowReadinessDelta,
 } from './activeWorkoutHelpers.ts';
 import type { CompletedWorkoutLog } from '@/types';
 
@@ -737,6 +739,48 @@ describe('bodyScoreDeltas', () => {
       src,
       /afterScores\.readiness\s*-\s*beforeScores\.readiness/,
       'Victory body-score deltas must stay inside bodyScoreDeltas'
+    );
+  });
+});
+
+describe('activeSessionBottomClass', () => {
+  it('pads for the rest dock when the timer is active', () => {
+    assert.equal(activeSessionBottomClass(true), 'pb-36 md:pb-28');
+    assert.equal(activeSessionBottomClass(false), 'pb-4');
+  });
+
+  it('ActiveWorkoutPage uses activeSessionBottomClass rather than an inline rest pad ternary', () => {
+    const src = readFileSync(
+      path.join(import.meta.dirname, '..', '..', 'page-components', 'ActiveWorkoutPage.tsx'),
+      'utf8'
+    );
+    assert.match(src, /activeSessionBottomClass\(/);
+    assert.doesNotMatch(
+      src,
+      /restTimerActive\s*\?\s*['"]pb-36/,
+      'rest pad class must stay inside activeSessionBottomClass'
+    );
+  });
+});
+
+describe('shouldShowReadinessDelta', () => {
+  it('requires both scores and a real change', () => {
+    assert.equal(shouldShowReadinessDelta(50, 55), true);
+    assert.equal(shouldShowReadinessDelta(50, 50), false);
+    assert.equal(shouldShowReadinessDelta(null, 55), false);
+    assert.equal(shouldShowReadinessDelta(50, null), false);
+  });
+
+  it('ActiveWorkoutPage uses shouldShowReadinessDelta rather than inlining null checks', () => {
+    const src = readFileSync(
+      path.join(import.meta.dirname, '..', '..', 'page-components', 'ActiveWorkoutPage.tsx'),
+      'utf8'
+    );
+    assert.match(src, /shouldShowReadinessDelta\(/);
+    assert.doesNotMatch(
+      src,
+      /readinessAfter\s*!=\s*null\s*&&\s*readinessBefore\s*!=\s*null/,
+      'readiness delta visibility must stay inside shouldShowReadinessDelta'
     );
   });
 });

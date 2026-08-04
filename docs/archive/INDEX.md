@@ -55,6 +55,7 @@ When adding a doc:
 | [log/LOG-rotate-300.md](./log/LOG-rotate-300.md) | `.285` progressive overload — rotated for `.300` L5 fillers |
 | [log/LOG-rotate-301.md](./log/LOG-rotate-301.md) | `.286` re-entry dose — rotated for `.301` Coach/History i18n |
 | [log/LOG-rotate-302.md](./log/LOG-rotate-302.md) | `.287` coach why — rotated for `.302` debrief i18n |
+| [log/LOG-rotate-344.md](./log/LOG-rotate-344.md) | `.329` — rotated for `.344` — Active dock mode extract |
 | [log/LOG-rotate-343.md](./log/LOG-rotate-343.md) | `.328` — rotated for `.343` — Soft chrome residue (wedge) |
 | [log/LOG-rotate-342.md](./log/LOG-rotate-342.md) | `.327` — rotated for `.342` — Learn + consent + Coach demo i18n |
 | [log/LOG-rotate-341.md](./log/LOG-rotate-341.md) | `.326` — rotated for `.341` — Builder blank-draft a11y |
