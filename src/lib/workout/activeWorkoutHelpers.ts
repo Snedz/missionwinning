@@ -543,13 +543,6 @@ export function resolveActiveGoalId(params: {
   );
 }
 
-/** Whether logging this set should start the rest timer (superset-aware). */
-export function shouldStartRestAfterLog(params: {
-  takeRest: boolean;
-}): boolean {
-  return params.takeRest;
-}
-
 /** True when the active session has at least one exercise to log. */
 export function activeSessionHasExercises(exercises: { length: number } | null | undefined): boolean {
   return (exercises?.length ?? 0) > 0;
