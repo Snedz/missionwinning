@@ -3,7 +3,7 @@
 Session branch: `cursor/kaizen-night-be9b`  
 Started: 2026-08-04 · Web craft only · Modernist system stands  
 Base: `master` @ `2026.07-unified.417`  
-Tip: `2026.07-unified.431` · PR #254  
+Tip: `2026.07-unified.433` · PR #254  
 Prior night: #234 (`.294`–`.403`) + follow-on media/Learn through `.417`
 
 ## Contract
@@ -34,11 +34,11 @@ Pause/restart · week numbers · Fixed vs Flexible · glow FAB · Habits/communi
 
 | Metric | Night start | Tip |
 |--------|-------------|-----|
-| Build | `.417` | **`.431`** |
+| Build | `.417` | **`.433`** |
 | i18n uncovered cap | 16 | **16** |
 | ActiveExerciseCard LOC | 536 | **224** (−312) |
 | HomeTodayDashboard LOC | 785 | **714** (−71) |
-| ActiveWorkoutPage LOC | 765 | 765 (untouched this night) |
+| ActiveWorkoutPage LOC | 765 | **743** (−22) |
 | WorkoutVictorySheet LOC | 387 | **316** (−71) |
 | New axe cases | — | 3 (Coach manage / schedule / adjust) |
 | Fuel unit cases added | — | fraction · mixed · word-half |
@@ -147,9 +147,21 @@ Pause/restart · week numbers · Fixed vs Flexible · glow FAB · Habits/communi
 |------|--------|-------|
 | `.431` | done | ActiveExerciseHeader; card 343→224 |
 
+### Loop 15 — Active readiness strip
+
+| Wave | Status | Notes |
+|------|--------|-------|
+| `.432` | done | ActiveReadinessDeltaStrip; page 765→743 |
+
+### Loop 16 — NL quarter
+
+| Wave | Status | Notes |
+|------|--------|-------|
+| `.433` | done | quarter cup / quarter of a cup → 0.25× |
+
 ## Next (founder / later nights)
 
-1. Phone excellence walk of Train → Today → Victory → Coach on tip `.431`.
+1. Phone excellence walk of Train → Today → Victory → Coach on tip `.433`.
 2. Visual baseline bootstrap on Linux when founder ready (not this branch).
 3. Pump D14 only when screenshots arrive — do not invent IA.
 4. Further Fuel accuracy: vision grounding for honest `high` confidence.

@@ -222,4 +222,14 @@ describe('nlMealLog', () => {
     assert.ok(small);
     assert.equal(small.protein, Math.round(chicken.protein * 0.65));
   });
+
+  it('parses quarter cup — 0.25× not a full cup (.433)', () => {
+    const aCup = estimateMealFromDescription('a cup of rice');
+    const quarter = estimateMealFromDescription('a quarter cup of rice');
+    const quarterOf = estimateMealFromDescription('quarter of a cup rice');
+    assert.ok(aCup && quarter && quarterOf);
+    assert.equal(quarter.protein, Math.round(aCup.protein * 0.25));
+    assert.equal(quarterOf.protein, Math.round(aCup.protein * 0.25));
+    assert.equal(quarter.source, 'matched');
+  });
 });
