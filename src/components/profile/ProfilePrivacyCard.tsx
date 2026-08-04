@@ -10,6 +10,7 @@ import {
   saveAnalyticsPreference,
   type AnalyticsPreference,
 } from '@/lib/analyticsOptOut';
+import { discardPendingAttribution, flushPendingAttribution } from '@/lib/attribution';
 import { initAnalytics, stopAnalyticsCapture } from '@/lib/analytics';
 
 /**
@@ -42,8 +43,14 @@ export function ProfilePrivacyCard() {
     const next: AnalyticsPreference = allowed ? 'allowed' : 'opted_out';
     saveAnalyticsPreference(next);
     setPref(next);
-    if (allowed) initAnalytics();
-    else stopAnalyticsCapture();
+    if (allowed) {
+      // Flush before init so PostHog registers the now-stored first-touch fields.
+      flushPendingAttribution();
+      initAnalytics();
+    } else {
+      discardPendingAttribution();
+      stopAnalyticsCapture();
+    }
   };
 
   const statusLabel = dnt

@@ -2,6 +2,7 @@
 
 type InfoStrings = {
   infoLastUpdated: string;
+  infoLastUpdatedLabel: string;
   infoAboutTitle: string;
   infoAboutSubtitle: string;
   infoTermsTitle: string;
@@ -160,6 +161,7 @@ type InfoStrings = {
 
 const en: InfoStrings = {
   infoLastUpdated: 'Last updated: July 2026',
+  infoLastUpdatedLabel: 'Last updated:',
   infoAboutTitle: 'About Mission Winning',
   infoAboutSubtitle:
     'Free offline logger + Mission Coach from your logs — free core forever; Super Bundle adds depth when you are ready.',

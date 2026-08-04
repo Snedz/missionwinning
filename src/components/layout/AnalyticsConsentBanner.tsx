@@ -9,6 +9,7 @@ import {
   saveAnalyticsPreference,
   shouldShowAnalyticsBanner,
 } from '@/lib/analyticsOptOut';
+import { discardPendingAttribution, flushPendingAttribution } from '@/lib/attribution';
 import { initAnalytics, stopAnalyticsCapture } from '@/lib/analytics';
 
 /**
@@ -31,12 +32,15 @@ export function AnalyticsConsentBanner() {
 
   const stayPrivate = () => {
     saveAnalyticsPreference('opted_out');
+    discardPendingAttribution();
     stopAnalyticsCapture();
     setVisible(false);
   };
 
   const allowAnalytics = () => {
     saveAnalyticsPreference('allowed');
+    // Flush before init so PostHog registers the now-stored first-touch fields.
+    flushPendingAttribution();
     initAnalytics();
     setVisible(false);
   };
