@@ -196,7 +196,18 @@ export function AdaptiveOverlay({
             </button>
           </div>
         )}
-        <div className={cn('flex-1 overflow-y-auto overscroll-contain', bodyClassName)}>
+        {/*
+          tabIndex so the sheet body stays keyboard-reachable when it scrolls
+          (axe scrollable-region-focusable). role=region names the landmark;
+          eslint still flags tabIndex on non-widget roles.
+        */}
+        <div
+          className={cn('flex-1 overflow-y-auto overscroll-contain', bodyClassName)}
+          role="region"
+          aria-label="Dialog content"
+          // eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex -- scrollable-region-focusable
+          tabIndex={0}
+        >
           {children}
         </div>
         {footer ? (

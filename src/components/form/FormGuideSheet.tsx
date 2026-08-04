@@ -151,7 +151,7 @@ function GuideSection({
     <section>
       <h3 className={cn(
         'text-sm font-semibold uppercase tracking-wide mb-2',
-        variant === 'error' ? 'text-red-400/90' : 'text-foreground'
+        variant === 'error' ? 'text-destructive' : 'text-foreground'
       )}>
         {title}
       </h3>

@@ -55,6 +55,7 @@ When adding a doc:
 | [log/LOG-rotate-300.md](./log/LOG-rotate-300.md) | `.285` progressive overload — rotated for `.300` L5 fillers |
 | [log/LOG-rotate-301.md](./log/LOG-rotate-301.md) | `.286` re-entry dose — rotated for `.301` Coach/History i18n |
 | [log/LOG-rotate-302.md](./log/LOG-rotate-302.md) | `.287` coach why — rotated for `.302` debrief i18n |
+| [log/LOG-rotate-373.md](./log/LOG-rotate-373.md) | `.358` — rotated for `.373` Plate calculator a11y (Loop 19 C1) |
 | [log/LOG-rotate-372.md](./log/LOG-rotate-372.md) | `.357` — rotated for `.372` Mind check-in note chrome (Loop 18 B3) |
 | [log/LOG-rotate-371.md](./log/LOG-rotate-371.md) | `.356` — rotated for `.371` Active session has-exercises (Loop 18 B2) |
 | [log/LOG-rotate-370.md](./log/LOG-rotate-370.md) | `.355` — rotated for `.370` Body metrics sheet a11y (Loop 18 B1) |

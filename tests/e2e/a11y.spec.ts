@@ -831,6 +831,41 @@ test.describe('Accessibility @a11y', () => {
   });
 
   /**
+   * Loop 24 H1 — Form guide sheet. Zero-data /active has no Info control;
+   * add push-ups (has form cues), open Form guide, axe the overlay.
+   */
+  test('axe serious/critical: /active with form guide open @a11y', async ({
+    page,
+    context,
+    baseURL,
+  }) => {
+    if (!baseURL) throw new Error('baseURL required');
+    const ok = await unlockGate(page, context, baseURL);
+    if (gateRequired() && !ok) {
+      test.skip(true, 'SMOKE_ACCESS_SECRET required to unlock private gate');
+    }
+    await seedLegacyOnboarding(page);
+    await seedReadinessPhase(page);
+    await startEmptyActiveWorkout(page);
+
+    await page.getByRole('button', { name: /^add exercise$/i }).first().click();
+    const search = page.getByPlaceholder(/search exercises/i);
+    await expect(search).toBeVisible({ timeout: 10_000 });
+    await search.fill('push-ups');
+    await page.getByRole('option', { name: /push-ups/i }).first().click();
+    await page.getByRole('button', { name: /add selected exercise/i }).click();
+    await expect(page.getByRole('button', { name: /^log( set)?$/i }).first()).toBeVisible({
+      timeout: 15_000,
+    });
+
+    await page.getByRole('button', { name: /form guide/i }).first().click();
+    await expect(
+      page.getByText(/key cues|setup|common mistakes|ask coach/i).first()
+    ).toBeVisible({ timeout: 10_000 });
+    await axeSerious(page, '/active (form guide)');
+  });
+
+  /**
    * The assertion axe cannot make.
    *
    * axe-core does not reliably test focus visibility, which is how this suite sat at
