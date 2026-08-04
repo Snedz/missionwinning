@@ -564,6 +564,34 @@ test.describe('Accessibility @a11y', () => {
   });
 
   /**
+   * Loop 15 Y1 — Mind breathing timer running. Zero-data /mind shows idle Start;
+   * axe must see Pause / phase chrome after starting the Box pattern.
+   */
+  test('axe serious/critical: /mind with breathing timer running @a11y', async ({
+    page,
+    context,
+    baseURL,
+  }) => {
+    if (!baseURL) throw new Error('baseURL required');
+    const ok = await unlockGate(page, context, baseURL);
+    if (gateRequired() && !ok) {
+      test.skip(true, 'SMOKE_ACCESS_SECRET required to unlock private gate');
+    }
+    await seedLegacyOnboarding(page);
+    await page.goto('/mind', { waitUntil: 'domcontentloaded' });
+    await expect(page.getByText(/breathing timer/i).first()).toBeVisible({
+      timeout: 15_000,
+    });
+    await page.getByRole('button', { name: /^box$/i }).first().click();
+    // BreathingTimer Start — first Start on the page (guided sessions sit below).
+    await page.getByRole('button', { name: /^start$/i }).first().click();
+    await expect(
+      page.getByRole('button', { name: /pause|stop/i }).or(page.getByText(/inhale|exhale|hold/i)).first()
+    ).toBeVisible({ timeout: 10_000 });
+    await axeSerious(page, '/mind (breathing timer running)');
+  });
+
+  /**
    * The assertion axe cannot make.
    *
    * axe-core does not reliably test focus visibility, which is how this suite sat at

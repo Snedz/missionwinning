@@ -360,3 +360,12 @@ PR: #234
 **Verified:** Programs no-match a11y green; pad/readiness-delta unit + wiring; design-system green.
 **Aikido:** `aikido_full_scan` fails without X11 `$DISPLAY`. Noted; continue.
 **Next:** Loop 15 — Compare story / Mind / Track seeded a11y; more Active extracts; Bundle i18n still refused.
+
+## Loop 15 waves
+
+| Wave | Status | Notes |
+|------|--------|-------|
+| Y1 Mind breathing-timer a11y | done (`.346`) | Box pattern Start → running chrome axe green |
+| Y2 Active extract | pending | |
+| Y3 Soft chrome / log close | pending | |
+
