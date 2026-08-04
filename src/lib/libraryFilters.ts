@@ -1,5 +1,10 @@
 import type { Exercise, ProgramTag } from '@/types';
 import { compareText } from '@/lib/i18n/formatLocale';
+import {
+  FORM_PATTERN_IDS,
+  inferFormPattern,
+  type FormPatternId,
+} from '@/lib/formPatterns';
 
 export type LibraryFilterState = {
   query: string;
@@ -7,6 +12,8 @@ export type LibraryFilterState = {
   tag: ProgramTag | '';
   level: string;
   muscle: string;
+  /** Movement pattern (squat / hinge / push / …) — craft-index axis. */
+  pattern: FormPatternId | '';
 };
 
 export const DEFAULT_LIBRARY_FILTERS: LibraryFilterState = {
@@ -15,7 +22,24 @@ export const DEFAULT_LIBRARY_FILTERS: LibraryFilterState = {
   tag: '',
   level: '',
   muscle: '',
+  pattern: '',
 };
+
+/** Chip labels for the pattern filter (English defaults; i18n at call site). */
+export const PATTERN_FILTER_LABELS: Record<FormPatternId, string> = {
+  squat: 'Squat',
+  hinge: 'Hinge',
+  push: 'Push',
+  pull: 'Pull',
+  core: 'Core',
+  loco: 'Loco',
+  isolation: 'Isolation',
+};
+
+export const PATTERN_FILTER_CHIPS: readonly (FormPatternId | '')[] = [
+  '',
+  ...FORM_PATTERN_IDS,
+] as const;
 
 export function filterExercises(exercises: Exercise[], filters: LibraryFilterState): Exercise[] {
   const q = filters.query.trim().toLowerCase();
@@ -32,7 +56,9 @@ export function filterExercises(exercises: Exercise[], filters: LibraryFilterSta
     const matchMuscle =
       !filters.muscle ||
       e.muscleGroups.some((m) => m.toLowerCase() === filters.muscle.toLowerCase());
-    return matchQ && matchE && matchTag && matchLevel && matchMuscle;
+    const matchPattern =
+      !filters.pattern || inferFormPattern(e.id, e) === filters.pattern;
+    return matchQ && matchE && matchTag && matchLevel && matchMuscle && matchPattern;
   });
 }
 

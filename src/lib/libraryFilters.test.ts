@@ -7,6 +7,7 @@ import {
   filterExercises,
   uniqueMuscleGroups,
 } from './libraryFilters';
+import { inferFormPattern } from './formPatterns';
 
 describe('libraryFilters', () => {
   before(async () => {
@@ -19,6 +20,7 @@ describe('libraryFilters', () => {
       tag: '',
       level: '',
       muscle: '',
+      pattern: '',
     });
     assert.ok(result.length > 0);
     assert.ok(result.every((e) => e.name.toLowerCase().includes('squat')));
@@ -31,6 +33,7 @@ describe('libraryFilters', () => {
       tag: '',
       level: '',
       muscle: '',
+      pattern: '',
     });
     assert.ok(result.length > 0);
     assert.ok(
@@ -48,8 +51,26 @@ describe('libraryFilters', () => {
       tag: '',
       level: '',
       muscle,
+      pattern: '',
     });
     assert.ok(result.every((e) => e.muscleGroups.includes(muscle)));
+  });
+
+  it('filters by movement pattern (hinge)', () => {
+    const result = filterExercises(EXERCISES, {
+      query: '',
+      equipment: '',
+      tag: '',
+      level: '',
+      muscle: '',
+      pattern: 'hinge',
+    });
+    assert.ok(result.length > 0, 'expected hinge-family movements');
+    assert.ok(result.every((e) => inferFormPattern(e.id, e) === 'hinge'));
+    assert.ok(
+      result.some((e) => e.id === 'deadlift' || e.name.toLowerCase().includes('deadlift')),
+      'deadlift should appear under hinge'
+    );
   });
 
   it('counts exercise history appearances', () => {

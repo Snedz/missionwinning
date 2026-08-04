@@ -16,6 +16,8 @@ import { FormGuideSheet } from '@/components/form/FormGuideSheet';
 import { Sparkline } from '@/components/today/Sparkline';
 import { useWorkoutStore } from '@/store/workoutStore';
 import { countsTowardVolume } from '@/lib/workout/setKind';
+import { inferFormPattern } from '@/lib/formPatterns';
+import { PATTERN_FILTER_LABELS } from '@/lib/libraryFilters';
 
 type Props = {
   exercise: Exercise | null;
@@ -56,6 +58,7 @@ export function LibraryDetailSheet({ exercise, open, onOpenChange, onSelectExerc
   }, [exercise, workoutHistory]);
 
   const guide = exercise ? getFormGuideOrCues(exercise.id, { exercise }) : null;
+  const pattern = exercise ? inferFormPattern(exercise.id, exercise) : null;
 
   const addToSession = () => {
     if (!exercise) return;
@@ -84,7 +87,13 @@ export function LibraryDetailSheet({ exercise, open, onOpenChange, onSelectExerc
         size="sm"
         eyebrow={
           exercise
-            ? `${exercise.muscleGroups.join(' · ')} · ${exercise.equipment || 'Various'}`
+            ? [
+                pattern ? PATTERN_FILTER_LABELS[pattern] : null,
+                exercise.muscleGroups.join(' · '),
+                exercise.equipment || 'Various',
+              ]
+                .filter(Boolean)
+                .join(' · ')
             : undefined
         }
         title={exercise?.name}
@@ -94,14 +103,48 @@ export function LibraryDetailSheet({ exercise, open, onOpenChange, onSelectExerc
             <Button variant="default" className="w-full min-h-[52px]" onClick={addToSession}>
               <Plus className="h-4 w-4 mr-2" />
               {activeWorkout
-                ? t('libraryAddToActive', { defaultValue: "Add to today's session" })
-                : t('libraryQuickAdd', { defaultValue: "Quick Add to Today's Workout" })}
+                ? t('libraryAddToActive', { defaultValue: 'Add to session' })
+                : t('libraryTrainThis', { defaultValue: 'Train this' })}
             </Button>
           ) : undefined
         }
       >
           {exercise && (
               <div className="space-y-4">
+                {/* Craft-index detail order: media → coach language → history → alts */}
+                {guide?.mediaUrl && (
+                  <button
+                    type="button"
+                    className="block w-full overflow-hidden border-2 border-border bg-card text-left"
+                    onClick={() => setFormGuideOpen(true)}
+                    aria-label={t('libraryViewFormGuide', { defaultValue: 'View form guide' })}
+                  >
+                    {guide.mediaType === 'video' ? (
+                      <video
+                        className="w-full max-h-48 object-contain"
+                        src={guide.mediaUrl}
+                        muted
+                        playsInline
+                        loop
+                        autoPlay
+                        preload="metadata"
+                      />
+                    ) : (
+                      // eslint-disable-next-line @next/next/no-img-element -- static form SVG under /public
+                      <img
+                        src={guide.mediaUrl}
+                        alt=""
+                        className="w-full max-h-48 object-contain"
+                      />
+                    )}
+                    {guide.mediaCaption ? (
+                      <p className="border-t-2 border-border px-2 py-1.5 text-[10px] text-muted-foreground">
+                        {guide.mediaCaption}
+                      </p>
+                    ) : null}
+                  </button>
+                )}
+
                 <div className="flex flex-wrap gap-1">
                   {(exercise.tags ?? []).map((tagId) => (
                     <Badge key={tagId} variant="outline" className="text-[10px]">
@@ -114,6 +157,44 @@ export function LibraryDetailSheet({ exercise, open, onOpenChange, onSelectExerc
                     </Badge>
                   )}
                 </div>
+
+                {exercise.cues && (
+                  <div className="text-sm">
+                    <p className="font-medium mb-1 font-mono text-[10px] uppercase tracking-wider text-muted-foreground">
+                      {t('libraryKeyCues', { defaultValue: 'Coach language' })}
+                    </p>
+                    <p className="text-muted-foreground">{exercise.cues}</p>
+                  </div>
+                )}
+
+                {guide && (guide.setup.length > 0 || guide.execute.length > 0) && (
+                  <div className="text-sm space-y-2">
+                    {guide.setup.length > 0 && (
+                      <div>
+                        <p className="font-mono text-[10px] uppercase tracking-wider text-muted-foreground mb-1">
+                          {t('libraryFormSetup', { defaultValue: 'Setup' })}
+                        </p>
+                        <ul className="list-disc ps-4 text-muted-foreground space-y-0.5">
+                          {guide.setup.slice(0, 3).map((line) => (
+                            <li key={line}>{line}</li>
+                          ))}
+                        </ul>
+                      </div>
+                    )}
+                    {guide.execute.length > 0 && (
+                      <div>
+                        <p className="font-mono text-[10px] uppercase tracking-wider text-muted-foreground mb-1">
+                          {t('libraryFormExecute', { defaultValue: 'Execute' })}
+                        </p>
+                        <ul className="list-disc ps-4 text-muted-foreground space-y-0.5">
+                          {guide.execute.slice(0, 3).map((line) => (
+                            <li key={line}>{line}</li>
+                          ))}
+                        </ul>
+                      </div>
+                    )}
+                  </div>
+                )}
 
                 {sessionCount > 0 && (
                   <div className="content-card  p-3 text-sm space-y-2">
@@ -135,15 +216,6 @@ export function LibraryDetailSheet({ exercise, open, onOpenChange, onSelectExerc
                         })}
                       </p>
                     )}
-                  </div>
-                )}
-
-                {exercise.cues && (
-                  <div className="text-sm">
-                    <p className="font-medium mb-1">
-                      {t('libraryKeyCues', { defaultValue: 'Key cues' })}
-                    </p>
-                    <p className="text-muted-foreground">{exercise.cues}</p>
                   </div>
                 )}
 
@@ -174,10 +246,10 @@ export function LibraryDetailSheet({ exercise, open, onOpenChange, onSelectExerc
                 {guide && (
                   <Button
                     variant="outline"
-                    className="min-h-[44px] border-2"
+                    className="min-h-[44px] border-2 w-full"
                     onClick={() => setFormGuideOpen(true)}
                   >
-                    {t('libraryViewFormGuide', { defaultValue: 'View form guide' })}
+                    {t('libraryViewFormGuide', { defaultValue: 'Full form guide' })}
                   </Button>
                 )}
               </div>
