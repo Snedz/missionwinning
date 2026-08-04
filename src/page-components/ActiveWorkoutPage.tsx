@@ -47,7 +47,10 @@ import { useCoachPlan } from '@/hooks/useCoachPlan';
 import {
   assembleActiveVictory,
   logSetIsPr,
+  nothingLoggedToastCopy,
   planLogSetRest,
+  planPrHaptic,
+  resolveLogSetPayload,
 } from '@/lib/workout/activeSessionFinish';
 import {
   planSessionCheckInDismiss,
@@ -290,12 +293,17 @@ export function ActiveWorkoutPage() {
   const handleLogSet = (exIdx: number, setIdx: number, override?: { reps: number; weight: number }) => {
     const exLog = activeWorkout?.exercises[exIdx];
     const set = exLog?.sets[setIdx];
-    if (!exLog || !set) return;
-    const input = override ?? getSetInput(exIdx, setIdx, set.reps, set.weight);
-    const exercise = getExerciseById(exLog.exerciseId);
-    const setKind = set.kind ?? 'normal';
+    const payload = resolveLogSetPayload({
+      exerciseId: exLog?.exerciseId,
+      set,
+      override,
+      dial: getSetInput(exIdx, setIdx, set?.reps ?? 10, set?.weight ?? 0),
+    });
+    if (!payload) return;
+    const { exerciseId, setKind, input } = payload;
+    const exercise = getExerciseById(exerciseId);
     const isPr = logSetIsPr({
-      exerciseId: exLog.exerciseId,
+      exerciseId,
       reps: input.reps,
       weight: input.weight,
       setKind,
@@ -304,7 +312,9 @@ export function ActiveWorkoutPage() {
 
     const next = logSetAndAdvance(exIdx, setIdx, input.reps, input.weight, isPr);
     const updatedExercises =
-      useWorkoutStore.getState().activeWorkout?.exercises ?? activeWorkout.exercises;
+      useWorkoutStore.getState().activeWorkout?.exercises ??
+      activeWorkout?.exercises ??
+      [];
     const rest = planLogSetRest({
       exercisesAfterLog: updatedExercises,
       exIdx,
@@ -316,11 +326,10 @@ export function ActiveWorkoutPage() {
       startRestTimer(rest.restSeconds);
     }
 
-    if (isPr) {
-      if (typeof navigator !== 'undefined' && navigator.vibrate) {
-        navigator.vibrate([80, 40, 80]);
-      }
-      // Honor = inline brass PR chip on the set row (Design Orchestration D0).
+    // Honor = inline brass PR chip on the set row (Design Orchestration D0).
+    const haptic = planPrHaptic(isPr);
+    if (haptic && typeof navigator !== 'undefined' && navigator.vibrate) {
+      navigator.vibrate([...haptic]);
     }
     // Routine set feedback = row completion + rest timer (no toast spam).
   };
@@ -340,12 +349,11 @@ export function ActiveWorkoutPage() {
     const sessionNote = activeWorkout?.sessionNote ?? '';
     const log = completeActiveWorkout();
     if (!log) {
+      const empty = nothingLoggedToastCopy();
       toast({
-        title: t('activeNothingLogged', { defaultValue: 'Nothing logged' }),
-        description: t('activeNothingLoggedDesc', {
-          defaultValue: 'Complete at least one set before finishing.',
-        }),
-        variant: 'destructive',
+        title: t(empty.titleKey, { defaultValue: empty.titleDefault }),
+        description: t(empty.descKey, { defaultValue: empty.descDefault }),
+        variant: empty.variant,
       });
       return;
     }
