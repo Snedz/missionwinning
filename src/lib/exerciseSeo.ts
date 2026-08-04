@@ -56,6 +56,29 @@ export function relatedExercises(exercise: Exercise, limit = 6): Exercise[] {
   ).slice(0, limit);
 }
 
+/**
+ * Related by movement pattern first (craft-index mesh), then fill from primary
+ * muscle so the list never looks empty on sparse patterns.
+ */
+export function relatedExercisesByPattern(
+  exercise: Exercise,
+  limit = 6,
+  patternOf: (id: string, ex: Exercise) => string | null
+): Exercise[] {
+  const pattern = patternOf(exercise.id, exercise);
+  const byPattern =
+    pattern == null
+      ? []
+      : EXERCISES.filter(
+          (e) => e.id !== exercise.id && patternOf(e.id, e) === pattern
+        );
+  if (byPattern.length >= limit) return byPattern.slice(0, limit);
+  const seen = new Set(byPattern.map((e) => e.id));
+  seen.add(exercise.id);
+  const fill = relatedExercises(exercise, limit * 2).filter((e) => !seen.has(e.id));
+  return [...byPattern, ...fill].slice(0, limit);
+}
+
 /** Guide chapters that mention training / movement themes for mesh links. */
 export function guideChaptersForExercise(exercise: Exercise): { id: string; title: string }[] {
   const tags = new Set(

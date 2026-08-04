@@ -14,6 +14,8 @@ import {
   uniqueMuscleGroups,
   type LibraryFilterState,
 } from '@/lib/libraryFilters';
+import { inferFormPattern } from '@/lib/formPatterns';
+import { getFormGuideOrCues } from '@/lib/formGuides';
 import { FilterChip } from '@/components/ui/FilterChip';
 import type { ProgramTag } from '@/types';
 import { useLocaleFormat } from '@/hooks/useLocaleFormat';
@@ -97,18 +99,42 @@ export function ExercisesPublicFilter() {
           Showing {filtered.length} of {EXERCISES.length}
         </p>
       </div>
-      <ul className="grid gap-2 sm:grid-cols-2">
-        {filtered.map((ex) => (
-          <li key={ex.id}>
-            <Link
-              href={`/exercises/${ex.id}`}
-              className="content-card pressable-card block px-4 py-3 text-sm"
-            >
-              <span className="font-medium">{ex.name}</span>
-              <span className="text-muted-foreground ml-2">· {ex.muscleGroups.join(', ')}</span>
-            </Link>
-          </li>
-        ))}
+      <ul className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+        {filtered.map((ex, idx) => {
+          const pattern = inferFormPattern(ex.id, ex);
+          const hasForm = !!getFormGuideOrCues(ex.id, { exercise: ex })?.mediaUrl;
+          return (
+            <li key={ex.id}>
+              <Link
+                href={`/exercises/${ex.id}`}
+                className="content-card pressable-card flex h-full flex-col gap-2 px-4 py-3 text-sm"
+              >
+                <div className="flex items-baseline justify-between gap-2">
+                  <span className="font-mono text-[10px] tracking-wider text-muted-foreground tabular-nums">
+                    {String(idx + 1).padStart(3, '0')}
+                  </span>
+                  <span className="font-mono text-[10px] tracking-wider text-primary uppercase">
+                    {hasForm ? (
+                      <span
+                        className="me-1.5 inline-block h-1.5 w-1.5 bg-primary align-middle"
+                        aria-hidden
+                      />
+                    ) : null}
+                    {pattern ? PATTERN_FILTER_LABELS[pattern] : 'Move'}
+                  </span>
+                </div>
+                <span className="font-medium text-foreground">{ex.name}</span>
+                <span className="text-xs text-muted-foreground">
+                  {ex.muscleGroups.join(' · ')}
+                  {ex.equipment ? ` · ${ex.equipment}` : ''}
+                </span>
+                {ex.cues ? (
+                  <span className="line-clamp-2 text-xs text-muted-foreground">{ex.cues}</span>
+                ) : null}
+              </Link>
+            </li>
+          );
+        })}
       </ul>
     </>
   );

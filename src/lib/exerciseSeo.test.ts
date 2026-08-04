@@ -2,6 +2,7 @@ import { describe, it } from 'node:test';
 import assert from 'node:assert/strict';
 import {
   relatedExercises,
+  relatedExercisesByPattern,
   muscleFromSlug,
   muscleHubSlug,
   enrichExerciseForPublic,
@@ -9,6 +10,7 @@ import {
   equipmentHubFromSlug,
 } from '@/lib/exerciseSeo';
 import { EXERCISES } from '@/data/exercises';
+import { inferFormPattern } from '@/lib/formPatterns';
 
 describe('exerciseSeo', () => {
   it('maps muscle hub slugs', () => {
@@ -22,6 +24,21 @@ describe('exerciseSeo', () => {
     const related = relatedExercises(bench, 4);
     assert.ok(related.length > 0);
     assert.ok(related.every((e) => e.id !== bench.id));
+  });
+
+  it('prefers same movement pattern for related mesh', () => {
+    const deadlift = EXERCISES.find((e) => e.id === 'deadlift');
+    assert.ok(deadlift);
+    const related = relatedExercisesByPattern(deadlift!, 6, inferFormPattern);
+    assert.ok(related.length > 0);
+    assert.ok(related.every((e) => e.id !== 'deadlift'));
+    const samePattern = related.filter(
+      (e) => inferFormPattern(e.id, e) === inferFormPattern(deadlift!.id, deadlift!)
+    );
+    assert.ok(
+      samePattern.length >= 1,
+      'at least one related should share the hinge pattern'
+    );
   });
 
   it('enriches thin exercises with alternatives', () => {
