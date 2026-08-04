@@ -486,7 +486,7 @@ export function BetaAdminPanel({ enabled }: Props) {
                 onChange={(ev) => setLabel(ev.target.value)}
                 maxLength={120}
                 required
-                className="mt-1 w-full rounded-md border border-border bg-background px-2 py-1.5 text-sm text-foreground"
+                className="mt-1 w-full rounded-none border border-border bg-background px-2 py-1.5 text-sm text-foreground"
                 placeholder="Alex"
               />
             </label>
@@ -497,14 +497,14 @@ export function BetaAdminPanel({ enabled }: Props) {
                 value={email}
                 onChange={(ev) => setEmail(ev.target.value)}
                 maxLength={320}
-                className="mt-1 w-full rounded-md border border-border bg-background px-2 py-1.5 text-sm text-foreground"
+                className="mt-1 w-full rounded-none border border-border bg-background px-2 py-1.5 text-sm text-foreground"
                 placeholder="alex@example.com"
               />
             </label>
             <button
               type="submit"
               disabled={issuing || !label.trim()}
-              className="rounded-md bg-primary-fill px-3 py-1.5 text-xs font-medium text-primary-foreground disabled:opacity-50"
+              className="rounded-none bg-primary-fill px-3 py-1.5 text-xs font-medium text-primary-foreground disabled:opacity-50"
             >
               {issuing ? 'Issuing…' : 'Issue + copy link'}
             </button>

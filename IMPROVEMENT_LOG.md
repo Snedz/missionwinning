@@ -631,14 +631,22 @@ PR: #234
 |------|--------|-------|
 | K1 Set options a11y | done (`.382`) | Set options menu axe green |
 | K2 Active extract | done (`.383`) | `holdsActiveExercise` + wiring |
-| K3 Soft chrome / log close | pending (`.384`) | BetaAdmin + landing ink |
+| K3 Soft chrome / log close | done (`.384`) | BetaAdmin rounded-none; landing solid |
 
 ## Metrics
 
 | Metric | Loop 26 end | Loop 27 (in progress) |
 |--------|-------------|------------------------|
-| Build | `.381` | **`.383`** |
+| Build | `.381` | **`.384`** |
 | i18n uncovered cap | 16 (Bundle refuse) | **16** (unchanged) |
+
+## End of Loop 27
+
+**Delivered:** K1–K3 on `cursor/kaizen-wedge-night-be9b` → PR #234 (`.382`–`.384`).
+**Verified:** set options a11y green; holdsActiveExercise unit + wiring; design-system green.
+**Aikido:** `aikido_full_scan` fails without X11 `$DISPLAY`. Noted; continue.
+**Next:** Loop 28 — more seeded a11y; Active extracts; Bundle i18n still refused.
+
 
 
 
