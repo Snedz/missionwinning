@@ -6,16 +6,15 @@
  */
 
 import { useEffect, useRef, useState } from 'react';
-import Link from 'next/link';
 import { useTranslation } from 'react-i18next';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { track } from '@/lib/analytics';
 import type { PlanSession } from '@/lib/coach/types';
 import { EXERCISES, ensureFullExerciseCatalog, getExerciseById } from '@/data/exercises';
-import { getFormGuideOrCues } from '@/lib/formGuides';
 import { cn } from '@/lib/utils';
-import { isFreeBeta } from '@/lib/freeBeta';
+import { CoachFreeFormAskPanel } from '@/components/coach/CoachFreeFormAskPanel';
+import { CoachSoftBundleChatTip } from '@/components/coach/CoachSoftBundleChatTip';
 
 type Turn = { role: 'user' | 'coach'; content: string };
 
@@ -29,98 +28,6 @@ type Props = {
   askExerciseId?: string;
   className?: string;
 };
-
-function FreeFormAskPanel({
-  askExerciseId,
-  className,
-}: {
-  askExerciseId: string;
-  className?: string;
-}) {
-  const { t } = useTranslation();
-  const [name, setName] = useState(askExerciseId);
-  const [cues, setCues] = useState<string[]>([]);
-
-  useEffect(() => {
-    let cancelled = false;
-    void (async () => {
-      await ensureFullExerciseCatalog();
-      if (cancelled) return;
-      const ex = getExerciseById(askExerciseId) ?? EXERCISES.find((e) => e.id === askExerciseId);
-      const guide = getFormGuideOrCues(askExerciseId, { exercise: ex ?? null });
-      setName(ex?.name ?? askExerciseId);
-      setCues(guide?.execute?.slice(0, 4) ?? (ex?.cues ? [ex.cues] : []));
-    })();
-    return () => {
-      cancelled = true;
-    };
-  }, [askExerciseId]);
-
-  return (
-    <Card className={cn('content-card border-2 border-border', className)} data-testid="coach-free-form-ask">
-      <CardHeader className="pb-2">
-        <CardTitle className="text-base">
-          {t('coachFreeFormTitle', {
-            name,
-            defaultValue: `Form cues — ${name}`,
-          })}
-        </CardTitle>
-      </CardHeader>
-      <CardContent className="space-y-3">
-        {cues.length > 0 ? (
-          <ul className="space-y-1.5 text-sm text-foreground">
-            {cues.map((line) => (
-              <li key={line} className="flex gap-2">
-                <span className="text-primary shrink-0">·</span>
-                <span>{line}</span>
-              </li>
-            ))}
-          </ul>
-        ) : (
-          <p className="text-sm text-muted-foreground">
-            {t('coachFreeFormFallback', {
-              defaultValue: 'Open Form guide on the logger for setup and execute tips.',
-            })}
-          </p>
-        )}
-        <p className="text-xs text-muted-foreground">
-          {isFreeBeta()
-            ? t('coachFreeFormChatHintFree', {
-                defaultValue: 'Your weekly plan and Adjust today stay free. Live chat opens later in beta.',
-              })
-            : (
-              <>
-                {t('coachFreeFormChatHint', {
-                  defaultValue: 'Live Q&A chat is Super Bundle — your weekly plan and Adjust today stay free.',
-                })}{' '}
-                <Link href="/bundle" className="text-primary hover:underline">
-                  {t('coachUnlockBundle', { defaultValue: 'Unlock Super Bundle' })}
-                </Link>
-              </>
-            )}
-        </p>
-      </CardContent>
-    </Card>
-  );
-}
-
-function SoftBundleChatTip({ className }: { className?: string }) {
-  const { t } = useTranslation();
-  if (isFreeBeta()) return null;
-  return (
-    <p
-      className={cn('text-center text-xs text-muted-foreground px-1', className)}
-      data-testid="coach-chat-soft-tip"
-    >
-      {t('coachChatSoftTip', {
-        defaultValue: 'Want to ask the coach anything? Chat is Super Bundle.',
-      })}{' '}
-      <Link href="/bundle" className="text-primary hover:underline">
-        {t('coachUnlockBundle', { defaultValue: 'Unlock Super Bundle' })}
-      </Link>
-    </p>
-  );
-}
 
 export function CoachChatPanel({
   premium,
@@ -192,9 +99,9 @@ export function CoachChatPanel({
 
   if (!premium) {
     if (askExerciseId) {
-      return <FreeFormAskPanel askExerciseId={askExerciseId} className={className} />;
+      return <CoachFreeFormAskPanel askExerciseId={askExerciseId} className={className} />;
     }
-    return <SoftBundleChatTip className={className} />;
+    return <CoachSoftBundleChatTip className={className} />;
   }
 
   const errorMessageForStatus = (status: number) => {

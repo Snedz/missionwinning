@@ -65,6 +65,7 @@ When adding a doc:
 | [log/LOG-rotate-414.md](./log/LOG-rotate-414.md) | `.399` FileUploadRow chrome — rotated for `.414` form media T1 |
 | [log/LOG-rotate-415.md](./log/LOG-rotate-415.md) | `.400` opacity exemptions — rotated for `.415` pattern packs |
 | [log/LOG-rotate-416.md](./log/LOG-rotate-416.md) | `.401` beachhead i18n — rotated for `.416` Scout + PDF |
+| [log/LOG-rotate-437.md](./log/LOG-rotate-437.md) | `.422` — rotated for `.437` — (rotated for Coach chat peel). |
 | [log/LOG-rotate-436.md](./log/LOG-rotate-436.md) | `.421` — rotated for `.436` — (rotated for NL unicode fractions). |
 | [log/LOG-rotate-435.md](./log/LOG-rotate-435.md) | `.420` — rotated for `.435` — (rotated for NL thirds). |
 | [log/LOG-rotate-434.md](./log/LOG-rotate-434.md) | `.419` — rotated for `.434` — (rotated for Active inline add). |
