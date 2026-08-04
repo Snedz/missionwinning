@@ -24,6 +24,7 @@ Root-level `@/lib/{name}` paths re-export from here for compatibility — prefer
 16. `activeSessionCheckIn.ts` — check-in dismiss + volume-trim toast kind (`.406`)
 17. `activeSetInputPatches.ts` — Use next / plate / apply-targets field patches (`.407`)
 18. `activeTableSetControls.ts` — desktop table set dial + kind projection (`.408`)
+19. `activeWorkoutHelpers.ts` — also `resolveExerciseNextTarget` + loadPct/menu gates (`.418`)
 
 ## Tests (colocated)
 

@@ -689,3 +689,58 @@ export function exerciseHasWeightedSet(
 export function firstWeightedLoad(sets: { weight: number }[]): number {
   return sets.find((s) => s.weight > 0)?.weight ?? 0;
 }
+
+/**
+ * Whether the %1RM chip belongs on the exercise header.
+ * Needs a positive loadPct and at least one weighted set (BW work hides it).
+ */
+export function shouldShowLoadPctChip(
+  loadPct: number | null | undefined,
+  sets: { weight: number }[]
+): boolean {
+  return loadPct != null && loadPct > 0 && exerciseHasWeightedSet(sets);
+}
+
+/** Superset-with-next only when there is a next exercise and none is linked yet. */
+export function shouldShowSupersetLinkMenuitem(
+  hasNextExercise: boolean,
+  alreadySupersetted: boolean
+): boolean {
+  return hasNextExercise && !alreadySupersetted;
+}
+
+/** Swap is for unstarted exercises only — logged work is not rewritten mid-session. */
+export function shouldShowExerciseSwapMenuitem(hasCompletedSet: boolean): boolean {
+  return !hasCompletedSet;
+}
+
+export type ExerciseNextTarget = { reps: number; weight: number };
+
+/**
+ * The "Next: N × W" line for an exercise card.
+ *
+ * Prescribed sessions echo the coach's own numbers. Freestyle uses last-session
+ * progression. A hint that contradicts a prescription is worse than no hint —
+ * so prescribed never runs `suggestNextSetTarget`.
+ */
+export function resolveExerciseNextTarget(params: {
+  sets: { reps: number; weight: number; completed: boolean }[];
+  prescribed: boolean | undefined;
+  lastSets: { reps: number; weight: number }[] | null;
+  units: Parameters<typeof suggestNextSetTarget>[2];
+  goalRange?: { min: number; max: number };
+  suggest?: typeof suggestNextSetTarget;
+}): ExerciseNextTarget | null {
+  const nextPlannedIdx = firstPlannedSetIdx(params.sets);
+  if (nextPlannedIdx < 0) return null;
+  if (params.prescribed) {
+    const set = params.sets[nextPlannedIdx];
+    return { reps: set.reps, weight: set.weight };
+  }
+  if (!params.lastSets) return null;
+  const suggest = params.suggest ?? suggestNextSetTarget;
+  return suggest(params.lastSets, nextPlannedIdx, params.units, {
+    repMin: params.goalRange?.min,
+    repMax: params.goalRange?.max,
+  });
+}

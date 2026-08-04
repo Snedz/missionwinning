@@ -45,6 +45,10 @@ import {
   shouldShowRemoveSetMenuitem,
   exerciseHasWeightedSet,
   firstWeightedLoad,
+  shouldShowLoadPctChip,
+  shouldShowSupersetLinkMenuitem,
+  shouldShowExerciseSwapMenuitem,
+  resolveExerciseNextTarget,
 } from './activeWorkoutHelpers.ts';
 import type { CompletedWorkoutLog } from '@/types';
 
@@ -1088,16 +1092,21 @@ describe('firstPlannedSetIdx', () => {
     assert.equal(firstPlannedSetIdx([{ completed: true }, { completed: false }]), 1);
   });
 
-  it('ActiveExerciseCard uses firstPlannedSetIdx rather than findIndex', () => {
-    const src = readFileSync(
+  it('resolveExerciseNextTarget owns firstPlannedSetIdx; the card does not re-find', () => {
+    const helpers = readFileSync(
+      path.join(import.meta.dirname, 'activeWorkoutHelpers.ts'),
+      'utf8'
+    );
+    const card = readFileSync(
       path.join(import.meta.dirname, '..', '..', 'components', 'workout', 'ActiveExerciseCard.tsx'),
       'utf8'
     );
-    assert.match(src, /firstPlannedSetIdx\(/);
+    assert.match(helpers, /firstPlannedSetIdx\(params\.sets\)/);
+    assert.match(card, /resolveExerciseNextTarget\(/);
     assert.doesNotMatch(
-      src,
+      card,
       /exLog\.sets\.findIndex\(\(s\)\s*=>\s*!s\.completed\)/,
-      'first planned index must stay inside firstPlannedSetIdx'
+      'first planned index must stay inside firstPlannedSetIdx / resolveExerciseNextTarget'
     );
   });
 });
@@ -1204,16 +1213,28 @@ describe('shouldShowApplyTargetsMenuitem / shouldShowRemoveSetMenuitem', () => {
   });
 
   it('ActiveExerciseCard uses the menuitem helpers rather than inline ands', () => {
-    const src = readFileSync(
+    const more = readFileSync(
+      path.join(import.meta.dirname, '..', '..', 'components', 'workout', 'ActiveExerciseMoreMenu.tsx'),
+      'utf8'
+    );
+    const opts = readFileSync(
+      path.join(import.meta.dirname, '..', '..', 'components', 'workout', 'ActiveSetOptionsMenu.tsx'),
+      'utf8'
+    );
+    const card = readFileSync(
       path.join(import.meta.dirname, '..', '..', 'components', 'workout', 'ActiveExerciseCard.tsx'),
       'utf8'
     );
-    assert.match(src, /shouldShowApplyTargetsMenuitem\(/);
-    assert.match(src, /shouldShowRemoveSetMenuitem\(/);
+    assert.match(more, /shouldShowSupersetLinkMenuitem\(/);
+    assert.match(more, /shouldShowExerciseSwapMenuitem\(/);
+    assert.match(opts, /shouldShowApplyTargetsMenuitem\(/);
+    assert.match(opts, /shouldShowRemoveSetMenuitem\(/);
+    assert.match(card, /ActiveExerciseMoreMenu/);
+    assert.match(card, /ActiveSetOptionsMenu/);
     assert.doesNotMatch(
-      src,
-      /\{lastSets\s*&&\s*hasPlanned\s*&&\s*\(/,
-      'Apply targets menuitem must stay inside shouldShowApplyTargetsMenuitem'
+      card,
+      /shouldShowApplyTargetsMenuitem\(/,
+      'Apply targets menuitem lives in ActiveSetOptionsMenu'
     );
   });
 });
@@ -1231,12 +1252,102 @@ describe('exerciseHasWeightedSet / firstWeightedLoad', () => {
       path.join(import.meta.dirname, '..', '..', 'components', 'workout', 'ActiveExerciseCard.tsx'),
       'utf8'
     );
-    assert.match(src, /exerciseHasWeightedSet\(/);
+    assert.match(src, /shouldShowLoadPctChip\(/);
     assert.match(src, /firstWeightedLoad\(/);
     assert.doesNotMatch(
       src,
       /exLog\.sets\.some\(\(s\)\s*=>\s*s\.weight\s*>\s*0\)/,
-      'weighted-set gate must stay inside exerciseHasWeightedSet'
+      'weighted-set gate must stay inside exerciseHasWeightedSet / shouldShowLoadPctChip'
+    );
+    assert.doesNotMatch(
+      src,
+      /exLog\.loadPct\s*!=\s*null\s*&&\s*\n?\s*exLog\.loadPct\s*>\s*0/,
+      'loadPct chip gate must stay inside shouldShowLoadPctChip'
+    );
+  });
+});
+
+describe('resolveExerciseNextTarget / menu visibility', () => {
+  const planned = [
+    { reps: 5, weight: 100, completed: false },
+    { reps: 5, weight: 100, completed: false },
+  ];
+
+  it('prescribed echoes the plan set, never a freestyle suggestion', () => {
+    let suggestCalls = 0;
+    const out = resolveExerciseNextTarget({
+      sets: planned,
+      prescribed: true,
+      lastSets: [{ reps: 8, weight: 90 }],
+      units: 'kg',
+      suggest: () => {
+        suggestCalls += 1;
+        return { reps: 99, weight: 99 };
+      },
+    });
+    assert.deepEqual(out, { reps: 5, weight: 100 });
+    assert.equal(suggestCalls, 0);
+  });
+
+  it('freestyle uses last-session suggestion when incomplete sets remain', () => {
+    const out = resolveExerciseNextTarget({
+      sets: planned,
+      prescribed: false,
+      lastSets: [{ reps: 8, weight: 90 }],
+      units: 'kg',
+      suggest: () => ({ reps: 8, weight: 92.5 }),
+    });
+    assert.deepEqual(out, { reps: 8, weight: 92.5 });
+  });
+
+  it('returns null when every set is done or there is no last session', () => {
+    assert.equal(
+      resolveExerciseNextTarget({
+        sets: [{ reps: 5, weight: 100, completed: true }],
+        prescribed: false,
+        lastSets: [{ reps: 5, weight: 100 }],
+        units: 'kg',
+      }),
+      null
+    );
+    assert.equal(
+      resolveExerciseNextTarget({
+        sets: planned,
+        prescribed: false,
+        lastSets: null,
+        units: 'kg',
+      }),
+      null
+    );
+  });
+
+  it('loadPct chip and menu gates are boolean predicates', () => {
+    assert.equal(shouldShowLoadPctChip(70, [{ weight: 60 }]), true);
+    assert.equal(shouldShowLoadPctChip(70, [{ weight: 0 }]), false);
+    assert.equal(shouldShowLoadPctChip(null, [{ weight: 60 }]), false);
+    assert.equal(shouldShowSupersetLinkMenuitem(true, false), true);
+    assert.equal(shouldShowSupersetLinkMenuitem(true, true), false);
+    assert.equal(shouldShowExerciseSwapMenuitem(false), true);
+    assert.equal(shouldShowExerciseSwapMenuitem(true), false);
+  });
+
+  it('ActiveExerciseCard wires the next-target and menu helpers', () => {
+    const src = readFileSync(
+      path.join(import.meta.dirname, '..', '..', 'components', 'workout', 'ActiveExerciseCard.tsx'),
+      'utf8'
+    );
+    const more = readFileSync(
+      path.join(import.meta.dirname, '..', '..', 'components', 'workout', 'ActiveExerciseMoreMenu.tsx'),
+      'utf8'
+    );
+    assert.match(src, /resolveExerciseNextTarget\(/);
+    assert.match(src, /ActiveExerciseMoreMenu/);
+    assert.match(more, /shouldShowSupersetLinkMenuitem\(/);
+    assert.match(more, /shouldShowExerciseSwapMenuitem\(/);
+    assert.doesNotMatch(
+      src,
+      /suggestNextSetTarget\(/,
+      'freestyle suggestion must stay inside resolveExerciseNextTarget'
     );
   });
 });

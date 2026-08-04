@@ -6,24 +6,23 @@
  */
 
 import { useState, type RefObject } from 'react';
-import Link from 'next/link';
 import { useTranslation } from 'react-i18next';
-import { Info, MoreVertical, Plus, Timer } from 'lucide-react';
+import { Info, Plus, Timer } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { HoldToConfirmButton } from '@/components/ui/HoldToConfirmButton';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { ExercisePicker } from '@/components/library/ExercisePicker';
 import { AdaptiveOverlay } from '@/components/ui/AdaptiveOverlay';
 import { SetLogRow } from '@/components/workout/SetLogRow';
 import { SetLogTable } from '@/components/workout/SetLogTable';
+import { ActiveExerciseMoreMenu } from '@/components/workout/ActiveExerciseMoreMenu';
+import { ActiveSetOptionsMenu } from '@/components/workout/ActiveSetOptionsMenu';
 import { useIsCompact } from '@/hooks/useIsCompact';
-import { getLastPerformanceForSet, exerciseHasCompletedSet, exerciseHasPlannedSet, firstPlannedSetIdx, holdsActiveExercise, isActiveSetCell, activeSetIdxForExercise, shouldShowSetOptionsFooter, shouldShowApplyTargetsMenuitem, shouldShowRemoveSetMenuitem, exerciseHasWeightedSet, firstWeightedLoad } from '@/lib/workout/activeWorkoutHelpers';
+import { getLastPerformanceForSet, exerciseHasCompletedSet, exerciseHasPlannedSet, holdsActiveExercise, isActiveSetCell, activeSetIdxForExercise, shouldShowSetOptionsFooter, firstWeightedLoad, shouldShowLoadPctChip, resolveExerciseNextTarget } from '@/lib/workout/activeWorkoutHelpers';
 import { SET_KINDS, setKindDefaultLabel, setKindLabelKey } from '@/lib/workout/setKind';
 import { getFormGuideOrCues } from '@/lib/formGuides';
 import { lastNotesFor } from '@/lib/journal/cueMemory';
 import { resolveRestSeconds } from '@/lib/workout/restTimer';
-import { suggestNextSetTarget } from '@/lib/workout/nextSetTargets';
 import { supersetLabel } from '@/lib/workout/superset';
 import { cn } from '@/lib/utils';
 import { useLocaleFormat } from '@/hooks/useLocaleFormat';
@@ -133,30 +132,17 @@ export function ActiveExerciseCard({
   // logbook gets flipped back for. Verbatim from history; absent is silence.
   const lastNote = lastNotesFor(exLog.exerciseId, workoutHistory)[0] ?? null;
 
-  const nextPlannedIdx = firstPlannedSetIdx(exLog.sets);
   /**
-   * The "Next: N × W" line.
-   *
-   * On a prescribed exercise this echoes the coach's own numbers. It used to render
-   * `suggestNextSetTarget` unconditionally, so the plan's `loadPct` chip and this
-   * line sat inches apart on the same card disagreeing — 6 reps against a strength
-   * plan's 5, or "add weight" during a deload week. A hint that contradicts the
-   * prescription is worse than no hint.
+   * The "Next: N × W" line — one definition in `resolveExerciseNextTarget`
+   * so prescribed sessions never disagree with the coach chip.
    */
-  const nextTarget =
-    nextPlannedIdx < 0
-      ? null
-      : exLog.prescribed
-        ? {
-            reps: exLog.sets[nextPlannedIdx].reps,
-            weight: exLog.sets[nextPlannedIdx].weight,
-          }
-        : lastSets
-          ? suggestNextSetTarget(lastSets, nextPlannedIdx, units, {
-              repMin: goalRange?.min,
-              repMax: goalRange?.max,
-            })
-          : null;
+  const nextTarget = resolveExerciseNextTarget({
+    sets: exLog.sets,
+    prescribed: exLog.prescribed,
+    lastSets,
+    units,
+    goalRange,
+  });
 
   return (
     <Card
@@ -177,9 +163,7 @@ export function ActiveExerciseCard({
                 {ssLabel}
               </Badge>
             )}
-            {exLog.loadPct != null &&
-              exLog.loadPct > 0 &&
-              exerciseHasWeightedSet(exLog.sets) && (
+            {shouldShowLoadPctChip(exLog.loadPct, exLog.sets) && (
                 <Badge variant="outline" className="text-[10px] tabular-nums">
                   {t('activeLoadPctChip', {
                     pct: exLog.loadPct,
@@ -203,109 +187,19 @@ export function ActiveExerciseCard({
                 <Info className="h-5 w-5" />
               </Button>
             )}
-            <div className="relative">
-              <Button
-                type="button"
-                variant="ghost"
-                size="icon"
-                className="h-11 w-11 tap-target"
-                aria-label={t('activeExerciseMore', { defaultValue: 'More actions' })}
-                aria-expanded={menuOpen}
-                onClick={() => setMenuOpen((v) => !v)}
-              >
-                <MoreVertical className="h-5 w-5" />
-              </Button>
-              {menuOpen && (
-                <>
-                  <button
-                    type="button"
-                    className="fixed inset-0 z-40"
-                    aria-label={t('activeCloseMenu', { defaultValue: 'Close menu' })}
-                    onClick={() => setMenuOpen(false)}
-                  />
-                  <div className="absolute end-0 top-full z-50 mt-1 min-w-[11rem] border-2 border-border bg-card p-1">
-                    <div role="menu">
-                    <Link
-                      href={`/coach?ask=${encodeURIComponent(exercise.id)}`}
-                      role="menuitem"
-                      className="flex min-h-[44px] items-center px-3 text-sm hover:bg-accent-100"
-                      onClick={() => setMenuOpen(false)}
-                    >
-                      {t('activeAskAboutForm', { defaultValue: 'Ask about form' })}
-                    </Link>
-                    {hasNext && !exLog.supersetGroup && (
-                      <button
-                        type="button"
-                        role="menuitem"
-                        className="flex w-full min-h-[44px] items-center px-3 text-sm hover:bg-accent-100 text-start"
-                        onClick={() => {
-                          onToggleSuperset();
-                          setMenuOpen(false);
-                        }}
-                      >
-                        {t('activeSupersetLink', { defaultValue: 'Superset w/ next' })}
-                      </button>
-                    )}
-                    {exLog.supersetGroup && (
-                      <button
-                        type="button"
-                        role="menuitem"
-                        className="flex w-full min-h-[44px] items-center px-3 text-sm hover:bg-accent-100 text-start"
-                        onClick={() => {
-                          onUnlinkSuperset();
-                          setMenuOpen(false);
-                        }}
-                      >
-                        {t('activeSupersetUnlink', { defaultValue: 'Unlink superset' })}
-                      </button>
-                    )}
-                    <button
-                      type="button"
-                      role="menuitem"
-                      className="flex w-full min-h-[44px] items-center px-3 text-sm hover:bg-accent-100 text-start"
-                      onClick={() => {
-                        onToggleNote();
-                        setMenuOpen(false);
-                      }}
-                    >
-                      {t('activeNote', { defaultValue: 'Note' })}
-                    </button>
-                    {!hasCompleted && (
-                      <button
-                        type="button"
-                        role="menuitem"
-                        className="flex w-full min-h-[44px] items-center px-3 text-sm hover:bg-accent-100 text-start"
-                        onClick={() => {
-                          onToggleSwap();
-                          setMenuOpen(false);
-                        }}
-                      >
-                        {t('activeSwap', { defaultValue: 'Swap' })}
-                      </button>
-                    )}
-                    </div>
-                    {/* HoldToConfirm is not a menuitem (aria-busy) — keep it outside role=menu. */}
-                    <div className="border-t border-border px-1 pt-1">
-                      <HoldToConfirmButton
-                        size="sm"
-                        className="w-full justify-start"
-                        label={
-                          hasCompleted
-                            ? t('activeRemoveExerciseLogged', {
-                                defaultValue: 'Remove exercise — discards logged sets',
-                              })
-                            : t('activeRemoveExercise', { defaultValue: 'Remove exercise' })
-                        }
-                        onConfirm={() => {
-                          setMenuOpen(false);
-                          onRemove();
-                        }}
-                      />
-                    </div>
-                  </div>
-                </>
-              )}
-            </div>
+            <ActiveExerciseMoreMenu
+              open={menuOpen}
+              onOpenChange={setMenuOpen}
+              exerciseId={exercise.id}
+              hasNextExercise={hasNext}
+              supersetted={!!exLog.supersetGroup}
+              hasCompletedSet={hasCompleted}
+              onToggleSuperset={onToggleSuperset}
+              onUnlinkSuperset={onUnlinkSuperset}
+              onToggleNote={onToggleNote}
+              onToggleSwap={onToggleSwap}
+              onRemove={onRemove}
+            />
           </div>
         </div>
 
@@ -469,65 +363,15 @@ export function ActiveExerciseCard({
             hasPlanned,
             plannedSetCount: exLog.sets.length,
           }) && (
-            <div className="relative ms-auto">
-              <Button
-                type="button"
-                variant="ghost"
-                size="sm"
-                className="min-h-[44px] text-muted-foreground"
-                aria-expanded={footerOpen}
-                onClick={() => setFooterOpen((v) => !v)}
-              >
-                {/* "Set options", not "More" — this was the last of the three
-                    controls in the app labelled More meaning three different
-                    things, and the tab bar now has one that means the ninth
-                    screen. */}
-                {footerOpen
-                  ? t('activeSetLess', { defaultValue: 'Less' })
-                  : t('activeSetOptions', { defaultValue: 'Set options' })}
-              </Button>
-              {footerOpen && (
-                <>
-                  <button
-                    type="button"
-                    className="fixed inset-0 z-40"
-                    aria-label={t('activeCloseMenu', { defaultValue: 'Close menu' })}
-                    onClick={() => setFooterOpen(false)}
-                  />
-                  <div
-                    role="menu"
-                    className="absolute end-0 bottom-full z-50 mb-1 min-w-[10rem] border-2 border-border bg-card p-1"
-                  >
-                    {shouldShowApplyTargetsMenuitem(!!lastSets, hasPlanned) && (
-                      <button
-                        type="button"
-                        role="menuitem"
-                        className="flex w-full min-h-[44px] items-center px-3 text-sm hover:bg-accent-100 text-start text-primary"
-                        onClick={() => {
-                          onApplyAllTargets();
-                          setFooterOpen(false);
-                        }}
-                      >
-                        {t('activeApplyAllTargets', { defaultValue: 'Apply targets' })}
-                      </button>
-                    )}
-                    {shouldShowRemoveSetMenuitem(hasPlanned, exLog.sets.length) && (
-                      <button
-                        type="button"
-                        role="menuitem"
-                        className="flex w-full min-h-[44px] items-center px-3 text-sm hover:bg-accent-100 text-start text-muted-foreground"
-                        onClick={() => {
-                          onRemoveSet();
-                          setFooterOpen(false);
-                        }}
-                      >
-                        {t('activeRemoveSet', { defaultValue: 'Remove set' })}
-                      </button>
-                    )}
-                  </div>
-                </>
-              )}
-            </div>
+            <ActiveSetOptionsMenu
+              open={footerOpen}
+              onOpenChange={setFooterOpen}
+              hasLastSets={!!lastSets}
+              hasPlanned={hasPlanned}
+              plannedSetCount={exLog.sets.length}
+              onApplyAllTargets={onApplyAllTargets}
+              onRemoveSet={onRemoveSet}
+            />
           )}
         </div>
       </CardContent>
