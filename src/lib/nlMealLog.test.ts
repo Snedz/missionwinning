@@ -179,4 +179,22 @@ describe('nlMealLog', () => {
     assert.ok(twoScoops && whey);
     assert.equal(twoScoops.protein, whey.protein * 2);
   });
+
+  it('parses mixed numbers — 1 1/2 cup is 1.5, not half (.423)', () => {
+    const rice = estimateMealFromDescription('rice');
+    const aCup = estimateMealFromDescription('a cup of rice');
+    const mixed = estimateMealFromDescription('1 1/2 cup rice');
+    const twoCups = estimateMealFromDescription('2 cups rice');
+    const halfCup = estimateMealFromDescription('1/2 cup rice');
+    assert.ok(rice && aCup && mixed && twoCups && halfCup);
+    assert.equal(mixed.protein, Math.round(aCup.protein * 1.5));
+    assert.equal(mixed.cals, Math.round(aCup.cals * 1.5));
+    assert.ok(mixed.protein > halfCup.protein);
+    assert.ok(mixed.protein < twoCups.protein);
+    assert.equal(mixed.source, 'matched');
+    const bareMixed = estimateMealFromDescription('1 1/2 chicken');
+    const chicken = estimateMealFromDescription('chicken');
+    assert.ok(bareMixed && chicken);
+    assert.equal(bareMixed.protein, Math.round(chicken.protein * 1.5));
+  });
 });

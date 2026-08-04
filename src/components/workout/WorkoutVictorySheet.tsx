@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { ImageIcon, Share2 } from 'lucide-react';
+import { Share2 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { useLocaleFormat } from '@/hooks/useLocaleFormat';
 import { Button } from '@/components/ui/button';
@@ -20,6 +20,7 @@ import type { WorkoutVictorySummary } from '@/lib/workout/workoutVictory';
 import {
   formatProgressionInsight,
   progressionInsightKey,
+  shouldShowVictoryBackTodaySecondary,
 } from '@/lib/workout/workoutVictory';
 import { useUnits, weightUnitLabel } from '@/hooks/useUnits';
 import { track } from '@/lib/analytics';
@@ -30,7 +31,6 @@ import type { Debrief } from '@/lib/coach/debrief';
 import {
   buildVictoryCardData,
   renderShareCard,
-  shareCardImage,
 } from '@/lib/share/shareCard';
 
 type Props = {
@@ -80,6 +80,11 @@ export function WorkoutVictorySheet({
     defaultValue: `Session done: ${summary.workoutName} — ${fmt.num(summary.totalVolume)} ${unitLabel}, ${summary.setCount} sets${summary.streak > 0 ? `, ${summary.streak}-day streak` : ''}.`,
   });
 
+  /**
+   * One Share control: prefer the on-device card when the platform can share
+   * files; otherwise text/clipboard. Dual Share · Share card competed with the
+   * primary Coach/train exit (`.422`). Cancel stops — no silent PNG download.
+   */
   const handleShare = async () => {
     const refCode = getCachedReferralCode();
     const origin = typeof window !== 'undefined' ? window.location.origin : 'https://www.missionwinning.com';
@@ -87,6 +92,22 @@ export function WorkoutVictorySheet({
       ? `${origin}/?ref=${encodeURIComponent(refCode)}`
       : `${origin}/?utm_source=share&utm_medium=victory`;
     const fullText = `${shareText} ${shareUrl}`;
+
+    const card = buildVictoryCardData(summary, debrief?.records ?? [], unitLabel);
+    const blob = await renderShareCard(card);
+    if (blob && typeof navigator !== 'undefined' && navigator.share) {
+      const file = new File([blob], 'mission-winning.png', { type: 'image/png' });
+      if (navigator.canShare?.({ files: [file] })) {
+        try {
+          await navigator.share({ files: [file], text: fullText });
+          track('share_card_generated', { surface: 'victory', method: 'shared' });
+          return;
+        } catch {
+          // user cancelled — do not fall through to download or text
+          return;
+        }
+      }
+    }
 
     if (typeof navigator !== 'undefined' && navigator.share) {
       try {
@@ -98,7 +119,7 @@ export function WorkoutVictorySheet({
         track('workout_shared', { method: 'shared' });
         return;
       } catch {
-        // user cancelled or failed
+        // user cancelled or failed — fall through to clipboard
       }
     }
     if (typeof navigator !== 'undefined' && navigator.clipboard?.writeText) {
@@ -109,32 +130,9 @@ export function WorkoutVictorySheet({
     }
   };
 
-  // The image variant of share: rendered on this device, sent only by choice.
-  const handleShareCard = async () => {
-    const refCode = getCachedReferralCode();
-    const origin = typeof window !== 'undefined' ? window.location.origin : 'https://www.missionwinning.com';
-    const shareUrl = refCode
-      ? `${origin}/?ref=${encodeURIComponent(refCode)}`
-      : `${origin}/?utm_source=share&utm_medium=victory-card`;
-    const card = buildVictoryCardData(summary, debrief?.records ?? [], unitLabel);
-    const blob = await renderShareCard(card);
-    if (!blob) {
-      track('share_card_generated', { surface: 'victory', method: 'failed' });
-      return;
-    }
-    const method = await shareCardImage(blob, shareText, shareUrl);
-    track('share_card_generated', { surface: 'victory', method });
-  };
-
-  /**
-   * Secondary "Back to Today" when the primary next is Coach, session 2, or
-   * Train again — not when the primary is already Today (rest path).
-   * `.412` made session-2 the first-log primary; without this, e2e and athletes
-   * who want Today had no exit except History.
-   */
-  const showBackTodaySecondary =
-    !!summary.nextAction &&
-    !summary.nextAction.href.includes('/log');
+  const showBackTodaySecondary = shouldShowVictoryBackTodaySecondary(
+    summary.nextAction?.href
+  );
 
   const saveFeel = (energy: number) => {
     upsertTodayPartial({ energy, mood: energy });
@@ -369,15 +367,6 @@ export function WorkoutVictorySheet({
             >
               <Share2 className="h-3 w-3" />
               {t('victoryShare', { defaultValue: 'Share' })}
-            </button>
-            <span aria-hidden>·</span>
-            <button
-              type="button"
-              className="inline-flex items-center gap-1 hover:text-foreground underline-offset-2 hover:underline"
-              onClick={handleShareCard}
-            >
-              <ImageIcon className="h-3 w-3" />
-              {t('victoryShareCard', { defaultValue: 'Share card' })}
             </button>
           </div>
         </DialogFooter>

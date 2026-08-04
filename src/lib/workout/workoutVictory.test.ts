@@ -6,9 +6,12 @@ import {
   formatProgressionInsight,
   progressionInsightKey,
   pickVictoryNextAction,
+  shouldShowVictoryBackTodaySecondary,
   summarizeWorkoutVictory,
 } from './workoutVictory.ts';
 import type { CompletedWorkoutLog } from '@/types';
+import fs from 'node:fs';
+import path from 'node:path';
 
 describe('pickVictoryNextAction', () => {
   it('after exactly one log prefers session 2 train over Coach (.412)', () => {
@@ -72,6 +75,35 @@ describe('pickVictoryNextAction', () => {
       hasCoachPlan: undefined,
     });
     assert.equal(a.href, '/active');
+  });
+});
+
+describe('shouldShowVictoryBackTodaySecondary', () => {
+  it('hides when primary is already Today (rest path)', () => {
+    assert.equal(shouldShowVictoryBackTodaySecondary('/log'), false);
+    assert.equal(shouldShowVictoryBackTodaySecondary('/log?x=1'), false);
+  });
+
+  it('shows for Coach / Train / session-2 primaries', () => {
+    assert.equal(shouldShowVictoryBackTodaySecondary('/coach'), true);
+    assert.equal(shouldShowVictoryBackTodaySecondary('/active'), true);
+  });
+
+  it('hides when there is no primary next', () => {
+    assert.equal(shouldShowVictoryBackTodaySecondary(undefined), false);
+    assert.equal(shouldShowVictoryBackTodaySecondary(null), false);
+    assert.equal(shouldShowVictoryBackTodaySecondary(''), false);
+  });
+
+  it('WorkoutVictorySheet wires the helper and one Share control (.422)', () => {
+    const src = fs.readFileSync(
+      path.join(import.meta.dirname, '..', '..', 'components', 'workout', 'WorkoutVictorySheet.tsx'),
+      'utf8'
+    );
+    assert.match(src, /shouldShowVictoryBackTodaySecondary/);
+    assert.match(src, /victoryShare/);
+    assert.doesNotMatch(src, /victoryShareCard/);
+    assert.doesNotMatch(src, /ImageIcon/);
   });
 });
 

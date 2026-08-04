@@ -178,6 +178,52 @@ function findQtyBefore(text: string, kwStart: number): { qty: number; start: num
       return { qty: Math.round((g / 100) * 10) / 10, start: kwStart - ounces[0].length };
     }
   }
+  // Mixed numbers before bare fractions: "1 1/2 cup rice" must not become
+  // qty 0.5 via matching only the trailing `1/2 cup`.
+  const mixedPortion = before.match(
+    new RegExp(
+      `(\\d+)\\s+(\\d+)\\s*/\\s*(\\d+)\\s*(${PORTION_WORD})\\s*(?:of\\s+)?$`,
+      'i'
+    )
+  );
+  if (mixedPortion) {
+    const whole = parseInt(mixedPortion[1], 10);
+    const num = parseInt(mixedPortion[2], 10);
+    const den = parseInt(mixedPortion[3], 10);
+    if (
+      whole > 0 &&
+      whole <= 12 &&
+      num > 0 &&
+      den > 0 &&
+      den <= 16 &&
+      num < den
+    ) {
+      const scale = portionWordScale(mixedPortion[4]);
+      const qty = Math.round((whole + num / den) * scale * 10) / 10;
+      if (qty > 0 && qty <= 12) {
+        return { qty, start: kwStart - mixedPortion[0].length };
+      }
+    }
+  }
+  const bareMixed = before.match(/(\d+)\s+(\d+)\s*\/\s*(\d+)\s*$/);
+  if (bareMixed) {
+    const whole = parseInt(bareMixed[1], 10);
+    const num = parseInt(bareMixed[2], 10);
+    const den = parseInt(bareMixed[3], 10);
+    if (
+      whole > 0 &&
+      whole <= 12 &&
+      num > 0 &&
+      den > 0 &&
+      den <= 16 &&
+      num < den
+    ) {
+      const qty = Math.round((whole + num / den) * 10) / 10;
+      if (qty > 0 && qty <= 12) {
+        return { qty, start: kwStart - bareMixed[0].length };
+      }
+    }
+  }
   // Fractions before whole numbers: "1/2 cup rice" must not become qty 2
   // via the trailing digit of the denominator.
   const fractionPortion = before.match(
