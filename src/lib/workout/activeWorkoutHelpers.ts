@@ -638,3 +638,11 @@ export function isActiveSetCell(
 ): boolean {
   return nextSet?.exIdx === exIdx && nextSet?.setIdx === setIdx;
 }
+
+/** Active set index for this exercise, or -1 when another exercise is next. */
+export function activeSetIdxForExercise(
+  nextSet: { exIdx: number; setIdx: number } | null | undefined,
+  exIdx: number
+): number {
+  return nextSet?.exIdx === exIdx ? nextSet.setIdx : -1;
+}

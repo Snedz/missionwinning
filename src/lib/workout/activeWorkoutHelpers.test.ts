@@ -39,6 +39,7 @@ import {
   firstPlannedSetIdx,
   holdsActiveExercise,
   isActiveSetCell,
+  activeSetIdxForExercise,
 } from './activeWorkoutHelpers.ts';
 import type { CompletedWorkoutLog } from '@/types';
 
@@ -1114,6 +1115,27 @@ describe('isActiveSetCell', () => {
       src,
       /nextSet\?\.exIdx\s*===\s*exIdx\s*&&\s*nextSet\?\.setIdx\s*===\s*setIdx/,
       'active set cell compare must stay inside isActiveSetCell'
+    );
+  });
+});
+
+describe('activeSetIdxForExercise', () => {
+  it('returns setIdx for the owning exercise else -1', () => {
+    assert.equal(activeSetIdxForExercise(null, 0), -1);
+    assert.equal(activeSetIdxForExercise({ exIdx: 1, setIdx: 2 }, 1), 2);
+    assert.equal(activeSetIdxForExercise({ exIdx: 1, setIdx: 2 }, 0), -1);
+  });
+
+  it('ActiveExerciseCard uses activeSetIdxForExercise for desktop table', () => {
+    const src = readFileSync(
+      path.join(import.meta.dirname, '..', '..', 'components', 'workout', 'ActiveExerciseCard.tsx'),
+      'utf8'
+    );
+    assert.match(src, /activeSetIdxForExercise\(/);
+    assert.doesNotMatch(
+      src,
+      /activeSetIdx=\{nextSet\?\.exIdx\s*===\s*exIdx\s*\?\s*nextSet\.setIdx\s*:\s*-1\}/,
+      'desktop activeSetIdx must stay inside activeSetIdxForExercise'
     );
   });
 });

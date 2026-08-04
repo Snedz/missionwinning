@@ -674,14 +674,14 @@ PR: #234
 | Wave | Status | Notes |
 |------|--------|-------|
 | M1 Exercise more menu a11y | done (`.388`) | More actions axe green post-menu fix |
-| M2 Active extract | pending (`.389`) | `activeSetIdxForExercise` |
+| M2 Active extract | done (`.389`) | `activeSetIdxForExercise` + wiring |
 | M3 Soft chrome / log close | pending (`.390`) | Label + Dialog close chrome |
 
 ## Metrics
 
 | Metric | Loop 28 end | Loop 29 (in progress) |
 |--------|-------------|------------------------|
-| Build | `.387` | **`.388`** |
+| Build | `.387` | **`.389`** |
 | i18n uncovered cap | 16 (Bundle refuse) | **16** (unchanged) |
 
 

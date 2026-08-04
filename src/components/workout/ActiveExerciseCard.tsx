@@ -18,7 +18,7 @@ import { AdaptiveOverlay } from '@/components/ui/AdaptiveOverlay';
 import { SetLogRow } from '@/components/workout/SetLogRow';
 import { SetLogTable } from '@/components/workout/SetLogTable';
 import { useIsCompact } from '@/hooks/useIsCompact';
-import { getLastPerformanceForSet, exerciseHasCompletedSet, exerciseHasPlannedSet, firstPlannedSetIdx, holdsActiveExercise, isActiveSetCell } from '@/lib/workout/activeWorkoutHelpers';
+import { getLastPerformanceForSet, exerciseHasCompletedSet, exerciseHasPlannedSet, firstPlannedSetIdx, holdsActiveExercise, isActiveSetCell, activeSetIdxForExercise } from '@/lib/workout/activeWorkoutHelpers';
 import { SET_KINDS, setKindDefaultLabel, setKindLabelKey } from '@/lib/workout/setKind';
 import { getFormGuideOrCues } from '@/lib/formGuides';
 import { lastNotesFor } from '@/lib/journal/cueMemory';
@@ -401,10 +401,10 @@ export function ActiveExerciseCard({
         ) : (
           /* Desktop logs in the row, so the ref goes on the table — the
              scroll-into-view target is the exercise, not one set. */
-          <div ref={nextSet?.exIdx === exIdx ? nextSetRef : undefined}>
+          <div ref={holdsActiveExercise(nextSet, exIdx) ? nextSetRef : undefined}>
             <SetLogTable
               sets={exLog.sets}
-              activeSetIdx={nextSet?.exIdx === exIdx ? nextSet.setIdx : -1}
+              activeSetIdx={activeSetIdxForExercise(nextSet, exIdx)}
               weightLabel={unitLabel}
               prevLabels={exLog.sets.map((_, setIdx) => {
                 const last = getLastPerformanceForSet(
