@@ -74,21 +74,32 @@ describe('resolveAddExerciseId', () => {
 });
 
 describe('Active wiring (.407/.434)', () => {
-  it('ActiveWorkoutPage uses the patch helpers; inline add mounts strip', () => {
-    const src = readFileSync(
+  it('patch helpers live with their owners after peels', () => {
+    const page = readFileSync(
       path.join(root, 'src/page-components/ActiveWorkoutPage.tsx'),
+      'utf8'
+    );
+    const dock = readFileSync(
+      path.join(root, 'src/components/workout/ActiveSessionDock.tsx'),
+      'utf8'
+    );
+    const sheets = readFileSync(
+      path.join(root, 'src/components/workout/ActiveWorkoutSheets.tsx'),
       'utf8'
     );
     const inline = readFileSync(
       path.join(root, 'src/components/workout/ActiveInlineAddExercise.tsx'),
       'utf8'
     );
-    assert.match(src, /patchesForUseNext\(/);
-    assert.match(src, /patchesForPlateWeight\(/);
-    assert.match(src, /patchesForApplyTargets\(/);
-    assert.match(src, /plateCalcInitialWeight\(/);
-    assert.match(src, /resolveAddExerciseId\(/);
-    assert.match(src, /ActiveInlineAddExercise/);
+    // Use-next rides the dock console (.440)
+    assert.match(dock, /patchesForUseNext\(/);
+    // Apply-targets + plate fill stay on the page (session handlers)
+    assert.match(page, /patchesForPlateWeight\(/);
+    assert.match(page, /patchesForApplyTargets\(/);
+    // Plate sheet + add-exercise id resolve on the sheets cluster (.450)
+    assert.match(sheets, /plateCalcInitialWeight\(/);
+    assert.match(sheets, /resolveAddExerciseId\(/);
+    assert.match(page, /ActiveInlineAddExercise/);
     assert.match(inline, /resolveAddExerciseId\(/);
   });
 });

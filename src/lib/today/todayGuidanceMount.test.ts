@@ -93,11 +93,23 @@ test('both Today shells render the guidance cards', () => {
  * And it has to be the *shared* decision. Two shells each with their own
  * inline phase test is the same defect one refactor later, which is the whole
  * argument `dayReviewMount.ts` was written to make.
+ *
+ * Lean calls the helpers at the mount site. Dashboard routes guidance through
+ * `buildTodayCandidates` (the pure ladder that already calls both helpers).
  */
 test('both shells ask the shared mount rule rather than re-deriving it', () => {
   for (const shell of SHELLS) {
     const src = read(shell);
-    assert.match(src, /firstStepsMayMount\(/, `${shell} must gate first-steps on the shared rule`);
-    assert.match(src, /reentryCardMayMount\(/, `${shell} must gate re-entry on the shared rule`);
+    const viaLadder = /buildTodayCandidates\(/.test(src);
+    const viaFirst = /firstStepsMayMount\(/.test(src);
+    const viaReentry = /reentryCardMayMount\(/.test(src);
+    assert.ok(
+      viaFirst || viaLadder,
+      `${shell} must gate first-steps on the shared rule (firstStepsMayMount or buildTodayCandidates)`
+    );
+    assert.ok(
+      viaReentry || viaLadder,
+      `${shell} must gate re-entry on the shared rule (reentryCardMayMount or buildTodayCandidates)`
+    );
   }
 });
