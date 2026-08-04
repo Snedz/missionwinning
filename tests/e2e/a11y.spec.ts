@@ -682,6 +682,32 @@ test.describe('Accessibility @a11y', () => {
   });
 
   /**
+   * Loop 19 C1 — Plate calculator sheet. Zero-data /active never opens plates;
+   * axe must see PlateCalculatorPanel after opening from a live session.
+   */
+  test('axe serious/critical: /active with plate calculator open @a11y', async ({
+    page,
+    context,
+    baseURL,
+  }) => {
+    if (!baseURL) throw new Error('baseURL required');
+    const ok = await unlockGate(page, context, baseURL);
+    if (gateRequired() && !ok) {
+      test.skip(true, 'SMOKE_ACCESS_SECRET required to unlock private gate');
+    }
+    await seedLegacyOnboarding(page);
+    await seedReadinessPhase(page);
+    await startEmptyActiveWorkout(page);
+    const plates = page.getByRole('button', { name: /^plates$/i }).first();
+    await expect(plates).toBeVisible({ timeout: 15_000 });
+    await plates.click();
+    await expect(page.getByText(/load the bar|plate calculator/i).first()).toBeVisible({
+      timeout: 10_000,
+    });
+    await axeSerious(page, '/active (plate calculator)');
+  });
+
+  /**
    * The assertion axe cannot make.
    *
    * axe-core does not reliably test focus visibility, which is how this suite sat at

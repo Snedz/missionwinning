@@ -448,3 +448,12 @@ PR: #234
 **Verified:** body metrics sheet a11y green; activeSessionHasExercises unit + wiring; design-system green.
 **Aikido:** `aikido_full_scan` fails without X11 `$DISPLAY`. Noted; continue.
 **Next:** Loop 19 — more seeded a11y; Active extracts; Bundle i18n still refused.
+
+## Loop 19 waves
+
+| Wave | Status | Notes |
+|------|--------|-------|
+| C1 Plate calculator a11y | done (`.358`) | Sheet axe green; mobile Plates aria-label |
+| C2 Active extract | pending | |
+| C3 Soft chrome / log close | pending | |
+

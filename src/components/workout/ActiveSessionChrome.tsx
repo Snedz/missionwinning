@@ -84,6 +84,7 @@ export function ActiveSessionChrome({
             size="sm"
             className="h-11 min-h-[44px] shrink-0 px-3 tap-target"
             onClick={onOpenPlateCalc}
+            aria-label={t('activeOpenPlateCalc', { defaultValue: 'Plates' })}
           >
             <Scale className="h-4 w-4 md:me-1" aria-hidden />
             <span className="hidden md:inline">
