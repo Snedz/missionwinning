@@ -64,7 +64,7 @@ Generation is **offline batch** → founder approve → commit static files. The
 | Joint / cue marks | Mid grey `#6f6b69` dots + short labels |
 | Phase layout | 2–3 poses left→right: **setup → mid → lockout** (or hold) |
 | A11y | `role="img"`, `aria-label`, `<title>` with exercise name |
-| Animation | Optional SMIL/`animate` on 3–5 heroes only; loop, muted, few KB |
+| Animation | Optional CSS-in-SVG mid-phase bob on **16 heroes** (`npm run media:form-motion`); gated on `prefers-reduced-motion: no-preference`; works under `<img src>` |
 
 **Reference asset:** `public/form-guides/push-ups.svg`
 

@@ -1168,3 +1168,4 @@ write('sled-push', 'Sled push form diagram', 'Sled push: lean, drive, finish', [
 ]);
 
 console.log('\nRebuilt all form guides (hand-tuned poses).');
+console.log('Next: npm run media:form-motion  (or use npm run media:form-all which chains it)');

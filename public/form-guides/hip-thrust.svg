@@ -1,5 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 220" fill="none" role="img" aria-label="Hip thrust: setup, drive, lower">
+  <style>
+    /* Hero form motion — only when the athlete allows motion. */
+    @media (prefers-reduced-motion: no-preference) {
+      .form-phase-mid {
+        animation: form-mid-bob 2s ease-in-out infinite;
+        transform-box: fill-box;
+        transform-origin: center bottom;
+      }
+      .form-cue-pulse {
+        animation: form-cue-pulse 2s ease-in-out infinite;
+      }
+    }
+    @keyframes form-mid-bob {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(5px); }
+    }
+    @keyframes form-cue-pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.4; }
+    }
+  </style>
   <title>Hip thrust form diagram</title>
   <rect width="360" height="220" fill="#f3f2f2"></rect>
   <text x="60" y="28" text-anchor="middle" fill="#6f6b69" font-family="Archivo, system-ui, sans-serif" font-size="11" letter-spacing="0.5">SETUP</text>
@@ -20,7 +41,7 @@
     <line x1="88" y1="152" x2="108" y2="185"></line>
   </g>
   <rect x="140" y="120" width="28" height="40" fill="none" stroke="#201e1d" stroke-width="2"></rect>
-  <g stroke="#201e1d" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none">
+  <g class="form-phase-mid" stroke="#201e1d" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none">
     <circle cx="160" cy="95" r="9"></circle>
     <line x1="160" y1="95" x2="172" y2="110"></line>
     <line x1="172" y1="110" x2="212" y2="118"></line>
@@ -30,8 +51,8 @@
     <line x1="232" y1="152" x2="238" y2="185"></line>
     <line x1="212" y1="118" x2="230" y2="185"></line>
   </g>
-  <path d="M208 150 L208 120" stroke="#ec3013" stroke-width="2" stroke-linecap="round"></path>
-  <polygon points="208,120 212,128 204,128" fill="#ec3013"></polygon>
+  <path class="form-cue-pulse" d="M208 150 L208 120" stroke="#ec3013" stroke-width="2" stroke-linecap="round"></path>
+  <polygon class="form-cue-pulse" points="208,120 212,128 204,128" fill="#ec3013"></polygon>
   <text x="218" y="135" fill="#ec3013" font-family="Archivo, system-ui, sans-serif" font-size="9">drive</text>
   <rect x="260" y="125" width="28" height="40" fill="none" stroke="#201e1d" stroke-width="2"></rect>
   <g stroke="#201e1d" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none">
