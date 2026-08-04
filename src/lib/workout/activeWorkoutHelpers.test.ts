@@ -753,6 +753,43 @@ describe('resolveFormGuideSheet', () => {
       'form guide lookup must stay inside resolveFormGuideSheet'
     );
   });
+
+  it('ActiveWorkoutPage mounts ActiveWorkoutSheets for overlay cluster (.450)', () => {
+    const page = readFileSync(
+      path.join(import.meta.dirname, '..', '..', 'page-components', 'ActiveWorkoutPage.tsx'),
+      'utf8'
+    );
+    const sheets = readFileSync(
+      path.join(import.meta.dirname, '..', '..', 'components', 'workout', 'ActiveWorkoutSheets.tsx'),
+      'utf8'
+    );
+    assert.match(page, /ActiveWorkoutSheets/);
+    assert.match(sheets, /SessionCheckInSheet/);
+    assert.match(sheets, /FormGuideSheet/);
+    assert.match(sheets, /AddExerciseSheet/);
+    assert.match(sheets, /PlateCalculatorSheet/);
+    assert.match(sheets, /WorkoutVictorySheet/);
+    assert.doesNotMatch(
+      page,
+      /<FormGuideSheet/,
+      'form guide sheet lives in ActiveWorkoutSheets'
+    );
+    assert.doesNotMatch(
+      page,
+      /<AddExerciseSheet/,
+      'add exercise sheet lives in ActiveWorkoutSheets'
+    );
+    assert.doesNotMatch(
+      page,
+      /<PlateCalculatorSheet/,
+      'plate calculator lives in ActiveWorkoutSheets'
+    );
+    assert.doesNotMatch(
+      page,
+      /<WorkoutVictorySheet/,
+      'victory sheet lives in ActiveWorkoutSheets'
+    );
+  });
 });
 
 describe('shouldOfferVolumeTrim', () => {

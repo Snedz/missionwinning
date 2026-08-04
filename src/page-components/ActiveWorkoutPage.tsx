@@ -16,29 +16,25 @@ import { toast } from '@/hooks/use-toast';
 import { ensureFullExerciseCatalog, getExerciseById } from '@/data/exercises';
 import { useWorkoutStore } from '@/store/workoutStore';
 import { getFormGuideOrCues } from '@/lib/formGuides';
-import { FormGuideSheet } from '@/components/form/FormGuideSheet';
 import { SignInPrompt } from '@/components/auth/SignInPrompt';
-import { AddExerciseSheet } from '@/components/workout/AddExerciseSheet';
 import { useIsCompact } from '@/hooks/useIsCompact';
-import { PlateCalculatorSheet } from '@/components/workout/PlateCalculatorSheet';
 import { ActiveEmptyState } from '@/components/workout/ActiveEmptyState';
 import { ActiveSessionChrome } from '@/components/workout/ActiveSessionChrome';
 import { ActiveReadinessDeltaStrip } from '@/components/workout/ActiveReadinessDeltaStrip';
 import { ActiveInlineAddExercise } from '@/components/workout/ActiveInlineAddExercise';
 import { ActiveExerciseList } from '@/components/workout/ActiveExerciseList';
 import { ActiveSessionDock } from '@/components/workout/ActiveSessionDock';
+import { ActiveWorkoutSheets } from '@/components/workout/ActiveWorkoutSheets';
 import { LiveHeartRate } from '@/components/workout/LiveHeartRate';
 import { useUnits, weightStep, weightUnitLabel } from '@/hooks/useUnits';
 import {
   type WorkoutVictorySummary,
 } from '@/lib/workout/workoutVictory';
-import { WorkoutVictorySheet } from '@/components/workout/WorkoutVictorySheet';
 import type { Debrief } from '@/lib/coach/debrief';
 import { SessionJotField } from '@/components/workout/SessionJotField';
 import { computeBodyScores } from '@/lib/score';
 import { getTodayCheckIn } from '@/lib/mindCheckIns';
 import {
-  SessionCheckInSheet,
   shouldOfferSessionCheckIn,
   markSessionCheckInSkipped,
 } from '@/components/workout/SessionCheckInSheet';
@@ -56,8 +52,6 @@ import {
 } from '@/lib/workout/activeSessionCheckIn';
 import { patchesForApplyTargets,
   patchesForPlateWeight,
-  plateCalcInitialWeight,
-  resolveAddExerciseId,
 } from '@/lib/workout/activeSetInputPatches';
 import {
   buildConsoleSet,
@@ -456,24 +450,6 @@ export function ActiveWorkoutPage() {
 
   return (
     <div className={`space-y-4 ${activeSessionBottomClass(restTimerActive)}`}>
-      <SessionCheckInSheet
-        open={checkInOpen}
-        onDismiss={({ completed, checkIn }) => {
-          setCheckInOpen(false);
-          const base = computeBodyScores(workoutHistory);
-          const adj = computeBodyScores(workoutHistory, { checkIn });
-          const plan = planSessionCheckInDismiss({
-            completed,
-            baseReadiness: base.readiness,
-            adjReadiness: adj.readiness,
-          });
-          if (plan.markSkipped) markSessionCheckInSkipped();
-          setReadinessBefore(plan.readinessBefore);
-          setReadinessAfter(plan.readinessAfter);
-          if (plan.offerVolumeTrim) setOfferVolumeTrim(true);
-        }}
-      />
-
       <ActiveSessionChrome
         workoutName={activeWorkout.workoutName}
         completedSets={completedSets}
@@ -585,16 +561,6 @@ export function ActiveWorkoutPage() {
         description="Workouts auto-save to the cloud when you're signed in."
       />
 
-      {formGuideSheet ? (
-        <FormGuideSheet
-          exerciseName={formGuideSheet.exerciseName}
-          exerciseId={formGuideSheet.exerciseId}
-          guide={formGuideSheet.guide}
-          open
-          onClose={() => setFormGuideId(null)}
-        />
-      ) : null}
-
       <ActiveSessionDock
         dockMode={dockMode}
         consoleSet={consoleSet}
@@ -616,44 +582,50 @@ export function ActiveWorkoutPage() {
         }}
       />
 
-      <AddExerciseSheet
-        open={addExerciseOpen}
-        onClose={() => setAddExerciseOpen(false)}
-        value={addExerciseId}
-        onChange={setAddExerciseId}
-        onConfirm={() => {
-          const id = resolveAddExerciseId(addExerciseId);
-          if (!id) return;
-          const ex = getExerciseById(id);
-          addExerciseToActive(id, ex?.muscleGroups);
+      <ActiveWorkoutSheets
+        checkInOpen={checkInOpen}
+        onCheckInDismiss={({ completed, checkIn }) => {
+          setCheckInOpen(false);
+          const base = computeBodyScores(workoutHistory);
+          const adj = computeBodyScores(workoutHistory, { checkIn });
+          const planDismiss = planSessionCheckInDismiss({
+            completed,
+            baseReadiness: base.readiness,
+            adjReadiness: adj.readiness,
+          });
+          if (planDismiss.markSkipped) markSessionCheckInSkipped();
+          setReadinessBefore(planDismiss.readinessBefore);
+          setReadinessAfter(planDismiss.readinessAfter);
+          if (planDismiss.offerVolumeTrim) setOfferVolumeTrim(true);
+        }}
+        formGuideSheet={formGuideSheet}
+        onCloseFormGuide={() => setFormGuideId(null)}
+        addExerciseOpen={addExerciseOpen}
+        onCloseAddExercise={() => setAddExerciseOpen(false)}
+        addExerciseId={addExerciseId}
+        onAddExerciseIdChange={setAddExerciseId}
+        onAddExerciseConfirmed={(id, muscleGroups) => {
+          addExerciseToActive(id, muscleGroups);
           setAddExerciseId('');
         }}
-      />
-
-      <PlateCalculatorSheet
-        open={plateCalcOpen}
-        onClose={() => setPlateCalcOpen(false)}
-        initialTarget={plateCalcInitialWeight({
-          nextSet,
-          exercises: activeWorkout.exercises,
-          resolveInput: getSetInput,
-        })}
-        onApplyTarget={(weight) => {
-          if (!nextSet) return;
+        plateCalcOpen={plateCalcOpen}
+        onClosePlateCalc={() => setPlateCalcOpen(false)}
+        nextSet={nextSet}
+        exercises={activeWorkout.exercises}
+        resolveInput={getSetInput}
+        onApplyPlateWeight={(exIdx, setIdx, weight) => {
           for (const p of patchesForPlateWeight(weight)) {
-            updateSetInput(nextSet.exIdx, nextSet.setIdx, p.field, p.value);
+            updateSetInput(exIdx, setIdx, p.field, p.value);
           }
         }}
-      />
-      <WorkoutVictorySheet
-        open={victoryOpen}
-        summary={victorySummary}
-        onOpenChange={setVictoryOpen}
+        victoryOpen={victoryOpen}
+        victorySummary={victorySummary}
+        onVictoryOpenChange={setVictoryOpen}
         onViewToday={goToday}
         onViewHistory={goHistory}
         debrief={debrief}
         fragments={entryFragments}
-        workoutId={victoryWorkoutId ?? undefined}
+        victoryWorkoutId={victoryWorkoutId}
       />
     </div>
   );
