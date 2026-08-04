@@ -40,7 +40,7 @@ type BenchmarksStrings = {
   benchmarksQuickStarters: string;
   benchmarksQuickHabit: string;
   benchmarksSignInFoot: string;
-  benchmarksQuickStarters: string;
+  benchmarksWeightTimesReps: string;
   benchmarksEyebrow: string;
   anatomyMapTitle: string;
   anatomyMapDesc: string;

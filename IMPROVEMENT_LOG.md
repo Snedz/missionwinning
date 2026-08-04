@@ -492,3 +492,19 @@ PR: #234
 **Verified:** field note jot a11y green; sessionSetsProgressPct unit + wiring; design-system green.
 **Aikido:** `aikido_full_scan` fails without X11 `$DISPLAY`. Noted; continue.
 **Next:** Loop 21 — more seeded a11y; Active extracts; Bundle i18n still refused.
+
+## Loop 21 waves
+
+| Wave | Status | Notes |
+|------|--------|-------|
+| E1 Add-exercise sheet a11y | done (`.364`) | ExercisePicker search name + listbox structure |
+| E2 Active extract | pending (`.365`) | `activeCoachTipKind` |
+| E3 Soft chrome / log close | pending (`.366`) | Coach chat + briefing-rule |
+
+## Metrics
+
+| Metric | Loop 20 end | Loop 21 (in progress) |
+|--------|-------------|------------------------|
+| Build | `.363` | **`.364`** |
+| i18n uncovered cap | 16 (Bundle refuse) | **16** (unchanged) |
+
