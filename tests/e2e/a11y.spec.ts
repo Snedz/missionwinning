@@ -537,6 +537,33 @@ test.describe('Accessibility @a11y', () => {
   });
 
   /**
+   * Loop 14 X1 — Programs filter miss. Zero-data /programs shows catalog cards;
+   * axe must see EmptyState after Hypertrophy × Bodyweight (no catalog row).
+   */
+  test('axe serious/critical: /programs with no filter matches @a11y', async ({
+    page,
+    context,
+    baseURL,
+  }) => {
+    if (!baseURL) throw new Error('baseURL required');
+    const ok = await unlockGate(page, context, baseURL);
+    if (gateRequired() && !ok) {
+      test.skip(true, 'SMOKE_ACCESS_SECRET required to unlock private gate');
+    }
+    await seedLegacyOnboarding(page);
+    await page.goto('/programs', { waitUntil: 'domcontentloaded' });
+    await expect(page.getByRole('button', { name: /^hypertrophy$/i }).first()).toBeVisible({
+      timeout: 15_000,
+    });
+    await page.getByRole('button', { name: /^hypertrophy$/i }).first().click();
+    await page.getByRole('button', { name: /bodyweight/i }).first().click();
+    await expect(page.getByText(/no programs match those filters/i).first()).toBeVisible({
+      timeout: 10_000,
+    });
+    await axeSerious(page, '/programs (no filter matches)');
+  });
+
+  /**
    * The assertion axe cannot make.
    *
    * axe-core does not reliably test focus visibility, which is how this suite sat at

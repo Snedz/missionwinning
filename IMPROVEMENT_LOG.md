@@ -338,3 +338,12 @@ PR: #234
 **Verified:** coaching filled-form a11y green; swap-when-open unit + wiring; design-system green.
 **Aikido:** `aikido_full_scan` fails without X11 `$DISPLAY`. Noted; continue.
 **Next:** Loop 14 — more seeded a11y (Compare story / Programs filter); Active extracts; Bundle i18n still refused.
+
+## Loop 14 waves
+
+| Wave | Status | Notes |
+|------|--------|-------|
+| X1 Programs no-match a11y | done (`.343`) | Hypertrophy × Bodyweight EmptyState axe green |
+| X2 Active extract | pending | |
+| X3 Soft chrome / log close | pending | |
+
