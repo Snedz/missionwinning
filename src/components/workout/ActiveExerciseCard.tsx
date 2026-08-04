@@ -18,7 +18,7 @@ import { AdaptiveOverlay } from '@/components/ui/AdaptiveOverlay';
 import { SetLogRow } from '@/components/workout/SetLogRow';
 import { SetLogTable } from '@/components/workout/SetLogTable';
 import { useIsCompact } from '@/hooks/useIsCompact';
-import { getLastPerformanceForSet, exerciseHasCompletedSet, exerciseHasPlannedSet, firstPlannedSetIdx, holdsActiveExercise, isActiveSetCell, activeSetIdxForExercise, shouldShowSetOptionsFooter } from '@/lib/workout/activeWorkoutHelpers';
+import { getLastPerformanceForSet, exerciseHasCompletedSet, exerciseHasPlannedSet, firstPlannedSetIdx, holdsActiveExercise, isActiveSetCell, activeSetIdxForExercise, shouldShowSetOptionsFooter, shouldShowApplyTargetsMenuitem, shouldShowRemoveSetMenuitem } from '@/lib/workout/activeWorkoutHelpers';
 import { SET_KINDS, setKindDefaultLabel, setKindLabelKey } from '@/lib/workout/setKind';
 import { getFormGuideOrCues } from '@/lib/formGuides';
 import { lastNotesFor } from '@/lib/journal/cueMemory';
@@ -498,7 +498,7 @@ export function ActiveExerciseCard({
                     role="menu"
                     className="absolute end-0 bottom-full z-50 mb-1 min-w-[10rem] border-2 border-border bg-card p-1"
                   >
-                    {lastSets && hasPlanned && (
+                    {shouldShowApplyTargetsMenuitem(!!lastSets, hasPlanned) && (
                       <button
                         type="button"
                         role="menuitem"
@@ -511,7 +511,7 @@ export function ActiveExerciseCard({
                         {t('activeApplyAllTargets', { defaultValue: 'Apply targets' })}
                       </button>
                     )}
-                    {hasPlanned && exLog.sets.length > 1 && (
+                    {shouldShowRemoveSetMenuitem(hasPlanned, exLog.sets.length) && (
                       <button
                         type="button"
                         role="menuitem"

@@ -661,3 +661,19 @@ export function shouldShowSetOptionsFooter(params: {
     (params.hasPlanned && params.plannedSetCount > 1)
   );
 }
+
+/** Apply targets menuitem — needs last-session sets and open planned work. */
+export function shouldShowApplyTargetsMenuitem(
+  hasLastSets: boolean,
+  hasPlanned: boolean
+): boolean {
+  return hasLastSets && hasPlanned;
+}
+
+/** Remove set menuitem — only when more than one planned set remains. */
+export function shouldShowRemoveSetMenuitem(
+  hasPlanned: boolean,
+  plannedSetCount: number
+): boolean {
+  return hasPlanned && plannedSetCount > 1;
+}

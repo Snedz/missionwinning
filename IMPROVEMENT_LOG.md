@@ -718,14 +718,14 @@ PR: #234
 | Wave | Status | Notes |
 |------|--------|-------|
 | O1 Coach ask-form a11y | done (`.394`) | `/coach?ask=` FreeFormAskPanel axe green |
-| O2 Active extract | pending (`.395`) | Apply/Remove set menuitem helpers |
+| O2 Active extract | done (`.395`) | Apply/Remove menuitem helpers + wiring |
 | O3 Soft chrome / log close | pending (`.396`) | Disabled opacity → muted/50 |
 
 ## Metrics
 
 | Metric | Loop 30 end | Loop 31 (in progress) |
 |--------|-------------|------------------------|
-| Build | `.393` | **`.394`** |
+| Build | `.393` | **`.395`** |
 | i18n uncovered cap | 16 (Bundle refuse) | **16** (unchanged) |
 
 

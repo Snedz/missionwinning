@@ -41,6 +41,8 @@ import {
   isActiveSetCell,
   activeSetIdxForExercise,
   shouldShowSetOptionsFooter,
+  shouldShowApplyTargetsMenuitem,
+  shouldShowRemoveSetMenuitem,
 } from './activeWorkoutHelpers.ts';
 import type { CompletedWorkoutLog } from '@/types';
 
@@ -1167,6 +1169,29 @@ describe('shouldShowSetOptionsFooter', () => {
       src,
       /\(\(lastSets\s*&&\s*hasPlanned\)\s*\|\|\s*\(hasPlanned\s*&&\s*exLog\.sets\.length\s*>\s*1\)\)/,
       'set options footer gate must stay inside shouldShowSetOptionsFooter'
+    );
+  });
+});
+
+describe('shouldShowApplyTargetsMenuitem / shouldShowRemoveSetMenuitem', () => {
+  it('gates Apply targets and Remove set independently', () => {
+    assert.equal(shouldShowApplyTargetsMenuitem(true, true), true);
+    assert.equal(shouldShowApplyTargetsMenuitem(false, true), false);
+    assert.equal(shouldShowRemoveSetMenuitem(true, 2), true);
+    assert.equal(shouldShowRemoveSetMenuitem(true, 1), false);
+  });
+
+  it('ActiveExerciseCard uses the menuitem helpers rather than inline ands', () => {
+    const src = readFileSync(
+      path.join(import.meta.dirname, '..', '..', 'components', 'workout', 'ActiveExerciseCard.tsx'),
+      'utf8'
+    );
+    assert.match(src, /shouldShowApplyTargetsMenuitem\(/);
+    assert.match(src, /shouldShowRemoveSetMenuitem\(/);
+    assert.doesNotMatch(
+      src,
+      /\{lastSets\s*&&\s*hasPlanned\s*&&\s*\(/,
+      'Apply targets menuitem must stay inside shouldShowApplyTargetsMenuitem'
     );
   });
 });
