@@ -187,7 +187,7 @@ export const OtpInput = forwardRef<OtpInputHandle, Props>(function OtpInput(
           onPaste={(e) => handlePaste(i, e)}
           onFocus={(e) => e.target.select()}
           className={cn(
-            'h-12 w-10 sm:w-11 rounded-md border bg-background text-center font-mono text-lg tabular-nums',
+            'h-12 w-10 sm:w-11 rounded-none border bg-background text-center font-mono text-lg tabular-nums',
             'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background',
             'disabled:cursor-not-allowed disabled:opacity-80',
             status === 'success'

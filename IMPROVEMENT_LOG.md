@@ -543,14 +543,22 @@ PR: #234
 |------|--------|-------|
 | G1 Swap sheet a11y | done (`.370`) | Add exercise → More → Swap axe green |
 | G2 Active extract | done (`.371`) | `isOpenIdx` + wiring guard |
-| G3 Soft chrome / log close | pending (`.372`) | Button/Input/Dialog/Otp + oauth borders |
+| G3 Soft chrome / log close | done (`.372`) | Button/Input/Dialog/Otp + oauth solid |
 
 ## Metrics
 
 | Metric | Loop 22 end | Loop 23 (in progress) |
 |--------|-------------|------------------------|
-| Build | `.369` | **`.371`** |
+| Build | `.369` | **`.372`** |
 | i18n uncovered cap | 16 (Bundle refuse) | **16** (unchanged) |
+
+## End of Loop 23
+
+**Delivered:** G1–G3 on `cursor/kaizen-wedge-night-be9b` → PR #234 (`.370`–`.372`).
+**Verified:** swap sheet a11y green; isOpenIdx unit + wiring; design-system green.
+**Aikido:** `aikido_full_scan` fails without X11 `$DISPLAY`. Noted; continue.
+**Next:** Loop 24 — more seeded a11y; Active extracts; Bundle i18n still refused.
+
 
 
 
