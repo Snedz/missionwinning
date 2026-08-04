@@ -9,8 +9,8 @@ Clinical movement demos for Train / library / public exercises.
 | `{exerciseId}/front.webp` | Optional second angle |
 | `pattern-{squat|hinge|push|pull|core|loco|isolation}/side.webp` | Long-tail shared pattern still |
 
-**Pipeline:** Imagine → `media/inbox/form-{id}-side-frame.png` → `npm run media:optimize-inbox` → wire id in `src/lib/formMedia.ts`.
+**Pipeline:** [Form Director](../../media/form-kit/FORM_DIRECTOR.md) sheet → still QA → `media/inbox/form-{id}-side-frame.png` → `npm run media:optimize-inbox` → wire `FORM_PACK_SIDE_IDS` (video only after loop QA).
 
-**Playbook:** [docs/MEDIA_SYSTEM.md](../../docs/MEDIA_SYSTEM.md) · [media/GROK_IMAGINE_PROMPTS.md](../../media/GROK_IMAGINE_PROMPTS.md)
+**Quality reset (`.467`):** loops demoted; `burpees` / `box-jump` / broken patterns demoted. Prefer still-only over glitchy motion.
 
-Do not embed third-party CrossFit or YouTube demos here. MW-owned assets only.
+Do not embed third-party CrossFit or YouTube demos. MW-owned assets only.

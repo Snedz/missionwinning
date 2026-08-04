@@ -31,15 +31,18 @@ export const FORM_PATTERN_IDS: readonly FormPatternId[] = [
 export const PATTERN_MEDIA_CAPTION =
   'Shared movement pattern — cues below are for this exercise';
 
-/** Patterns with clinical Form Index stills under public/form/pattern-{id}/side.webp */
+/**
+ * Patterns with clinical Form Index stills under public/form/pattern-{id}/side.webp.
+ * Demoted (.467): core (was cropped curl), isolation (was side-plank / head fail).
+ * Re-add only after Form Director regen + eyes-on QA.
+ */
 export const FORM_PATTERN_RASTER_IDS = new Set<FormPatternId>([
   'squat',
   'hinge',
   'push',
   'pull',
-  'core',
   'loco',
-  'isolation',
+  // 'core', 'isolation' — wait for Form Director regen
 ]);
 
 /** Public path for a pattern diagram (raster preferred over legacy SVG). */

@@ -16,18 +16,21 @@ test('unknown exercise has no form pack', () => {
   assert.equal(resolveFormPackMedia('not-a-real-lift'), null);
 });
 
-test('getFormGuideOrCues prefers form pack video over still for pilot ids', () => {
+test('getFormGuideOrCues prefers form pack still when videos demoted', () => {
   const guide = getFormGuideOrCues('push-ups');
-  assert.ok(guide?.mediaUrl?.includes('/form/push-ups/side.mp4'), guide?.mediaUrl);
-  assert.equal(guide?.mediaType, 'video');
-  assert.equal(guide?.mediaPosterUrl, '/form/push-ups/side.webp');
+  assert.ok(guide?.mediaUrl?.includes('/form/push-ups/side.webp'), guide?.mediaUrl);
+  assert.equal(guide?.mediaType, 'image');
 });
 
-test('resolveFormPackMedia returns video when FORM_PACK_VIDEO_IDS has id', () => {
+test('quality reset: no form pack videos wired', () => {
   const pack = resolveFormPackMedia('air-squat');
-  assert.equal(pack?.mediaType, 'video');
-  assert.equal(pack?.mediaUrl, '/form/air-squat/side.mp4');
-  assert.equal(pack?.mediaPosterUrl, '/form/air-squat/side.webp');
+  assert.equal(pack?.mediaType, 'image');
+  assert.equal(pack?.mediaUrl, '/form/air-squat/side.webp');
+});
+
+test('demoted cropped stills fall back off form pack', () => {
+  assert.equal(resolveFormPackMedia('burpees'), null);
+  assert.equal(resolveFormPackMedia('box-jump'), null);
 });
 
 test('formPackSidePosterPath is stable', () => {

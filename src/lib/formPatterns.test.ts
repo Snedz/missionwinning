@@ -13,19 +13,20 @@ import { getFormGuideOrCues } from '@/lib/formGuides';
 
 const root = path.join(import.meta.dirname, '..', '..');
 
-test('every pattern has Form Index still + legacy SVG on disk', () => {
+test('every pattern has legacy SVG; raster patterns resolve to form still', () => {
   for (const id of FORM_PATTERN_IDS) {
-    assert.equal(formPatternPath(id), `/form/pattern-${id}/side.webp`);
-    assert.ok(
-      existsSync(path.join(root, 'public', 'form', `pattern-${id}`, 'side.webp')),
-      `missing form/pattern-${id}/side.webp`
-    );
-    // Legacy stick SVG kept for fallback / offline tooling
     assert.ok(
       existsSync(path.join(root, 'public', 'form-guides', `pattern-${id}.svg`)),
       `missing pattern-${id}.svg`
     );
   }
+  // Wired raster patterns (quality-reset set)
+  for (const id of ['squat', 'hinge', 'push', 'pull', 'loco'] as const) {
+    assert.equal(formPatternPath(id), `/form/pattern-${id}/side.webp`);
+  }
+  // Demoted patterns fall back to SVG until Form Director regen
+  assert.equal(formPatternPath('core'), '/form-guides/pattern-core.svg');
+  assert.equal(formPatternPath('isolation'), '/form-guides/pattern-isolation.svg');
 });
 
 test('inferFormPattern maps common families', () => {
@@ -38,12 +39,10 @@ test('inferFormPattern maps common families', () => {
   assert.equal(inferFormPattern('farmer-carry'), 'loco');
 });
 
-test('form pack video wins over pattern for pilot structured guides', () => {
+test('form pack still wins over pattern for pilot structured guides', () => {
   const guide = getFormGuideOrCues('push-ups');
-  // Form Index pack (clinical loop + poster) beats legacy SVG sticks.
-  assert.ok(guide?.mediaUrl?.includes('/form/push-ups/side.mp4'), guide?.mediaUrl);
-  assert.equal(guide?.mediaType, 'video');
-  assert.equal(guide?.mediaPosterUrl, '/form/push-ups/side.webp');
+  assert.ok(guide?.mediaUrl?.includes('/form/push-ups/side.webp'), guide?.mediaUrl);
+  assert.equal(guide?.mediaType, 'image');
 });
 
 test('long-tail cues attach honest pattern caption', () => {

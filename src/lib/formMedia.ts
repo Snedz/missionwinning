@@ -1,12 +1,14 @@
 /**
  * Form Index media — clinical poster/loop packs under /public/form/.
  * Prefer raster form packs over legacy SVG sticks for Train / library.
- * See docs/MEDIA_SYSTEM.md · media/GROK_IMAGINE_PROMPTS.md (Form Index).
+ * See media/form-kit/FORM_DIRECTOR.md (Seedance-class director prompts + QA).
+ *
+ * Quality reset (.467): demote glitchy loops and cropped/wrong stills until
+ * Form Director regen passes eyes-on QA. Prefer still-only over broken video.
  */
 
-/** Shipped exercise ids with public/form/{id}/side.webp */
+/** Exercise ids with shipped public/form/{id}/side.webp that pass framing QA. */
 export const FORM_PACK_SIDE_IDS = new Set([
-  // Pilot loops (also in FORM_PACK_VIDEO_IDS)
   'air-squat',
   'romanian-deadlift',
   'push-ups',
@@ -15,40 +17,22 @@ export const FORM_PACK_SIDE_IDS = new Set([
   'kettlebell-swing',
   'plank',
   'bench-press',
-  // Wave 2 stills
   'deadlift',
   'overhead-press',
   'front-squat',
   'lunges',
-  'burpees',
   'glute-bridge',
   'barbell-row',
-  'box-jump',
+  // Demoted (.467): burpees, box-jump — head crop / hyper-tight frame
 ]);
 
 /**
- * Silent loops under public/form/{id}/side.mp4 (480p Imagine → ship).
- * Prefer MP4 for free-tier pipeline (no ffmpeg WebM required).
+ * Silent loops public/form/{id}/side.mp4 — only after Form Director still PASS
+ * and video physics QA. Empty during quality reset (.467): stills only.
+ * Files may still exist on disk; do not wire until regen.
  */
-export const FORM_PACK_VIDEO_IDS = new Set([
-  // Pilot
-  'air-squat',
-  'romanian-deadlift',
-  'push-ups',
-  'pull-ups',
-  'thruster',
-  'kettlebell-swing',
-  'plank',
-  'bench-press',
-  // Wave 2
-  'deadlift',
-  'overhead-press',
-  'front-squat',
-  'lunges',
-  'burpees',
-  'glute-bridge',
-  'barbell-row',
-  'box-jump',
+export const FORM_PACK_VIDEO_IDS = new Set<string>([
+  // quality reset — re-add only after loop QA
 ]);
 
 export function formPackSidePosterPath(exerciseId: string): string {

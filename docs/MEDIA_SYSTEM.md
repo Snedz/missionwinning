@@ -9,9 +9,11 @@ Generation is **offline batch** → founder approve → commit static files. The
 
 **Exercise Form Index (Train + library + public `/exercises`):** GrokFilm-style browse (pattern / equipment / muscle) → **clinical side poster or short loop** → **Train this free**. Pedagogy borrows CrossFit *movement-standards craft* (full body, full ROM, side camera, short silent loop) — **not** CrossFit IP, embeds, or brand. Host on Vercel static free tier (`public/form/`); **not** Supabase Storage (egress) and **not** YouTube as mid-set primary.
 
-**Default form media:** `/form/{id}/side.webp` (+ optional `side.webm`). Legacy stick SVGs under `/form-guides/` remain as fallback only. Resolve order: form pack → legacy SVG → pattern SVG → text cues. Structured guide floor ≥80 — `src/lib/formGuideCoverage.test.ts`. Coverage: `npm run media:coverage` → `media/COVERAGE.md`.
+**Default form media:** `/form/{id}/side.webp` (+ optional `side.mp4` only after QA). Legacy stick SVGs under `/form-guides/` remain as fallback. Resolve: form pack → pattern raster (when wired) → pattern SVG → text. Structured guide floor ≥80 — `src/lib/formGuideCoverage.test.ts`.
 
-**Primary HQ tool for Learn / social / motion:** [Google Flow](https://labs.google/fx/tools/flow) + [Grok Imagine](https://grok.com/imagine). Form stills: Imagine → `media/inbox/form-{id}-side-frame.png` → `npm run media:optimize-inbox`.
+**Form generation:** [media/form-kit/FORM_DIRECTOR.md](../media/form-kit/FORM_DIRECTOR.md) — Seedance-class director prompts (asset kit → still QA → optional loop). Soft two-line prompts retired (`.467` quality reset). Still-only is a valid ship; glitchy video is not.
+
+**Primary HQ tool for Learn / social / motion:** [Google Flow](https://labs.google/fx/tools/flow) + [Grok Imagine](https://grok.com/imagine). Optional later: same Form Director sheets on Higgsfield Seedance for hard physics.
 
 ---
 
