@@ -653,6 +653,35 @@ test.describe('Accessibility @a11y', () => {
   });
 
   /**
+   * Loop 18 B1 — Body metrics sheet. Zero-data /track shows the card closed;
+   * axe must see the log sheet after Log.
+   */
+  test('axe serious/critical: /track with body metrics sheet open @a11y', async ({
+    page,
+    context,
+    baseURL,
+  }) => {
+    if (!baseURL) throw new Error('baseURL required');
+    const ok = await unlockGate(page, context, baseURL);
+    if (gateRequired() && !ok) {
+      test.skip(true, 'SMOKE_ACCESS_SECRET required to unlock private gate');
+    }
+    await seedLegacyOnboarding(page);
+    await page.goto('/track', { waitUntil: 'domcontentloaded' });
+    const logBtn = page
+      .getByRole('button', { name: /^log$/i })
+      .filter({ hasNotText: /activity/i })
+      .first();
+    await expect(logBtn).toBeVisible({ timeout: 15_000 });
+    await logBtn.scrollIntoViewIfNeeded();
+    await logBtn.click();
+    await expect(
+      page.getByRole('dialog').or(page.getByText(/weight|body fat|waist/i)).first()
+    ).toBeVisible({ timeout: 10_000 });
+    await axeSerious(page, '/track (body metrics sheet)');
+  });
+
+  /**
    * The assertion axe cannot make.
    *
    * axe-core does not reliably test focus visibility, which is how this suite sat at

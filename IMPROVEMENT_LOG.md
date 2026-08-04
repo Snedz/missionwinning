@@ -426,3 +426,12 @@ PR: #234
 **Verified:** Assessments result a11y green; restSecondsForExercise unit + wiring; design-system green.
 **Aikido:** `aikido_full_scan` fails without X11 `$DISPLAY`. Noted; continue.
 **Next:** Loop 18 — more seeded a11y; Active extracts; Bundle i18n still refused.
+
+## Loop 18 waves
+
+| Wave | Status | Notes |
+|------|--------|-------|
+| B1 Body metrics sheet a11y | done (`.355`) | Track Log → BodyMetricsSheet axe green |
+| B2 Active extract | pending | |
+| B3 Soft chrome / log close | pending | |
+
