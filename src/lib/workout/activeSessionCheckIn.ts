@@ -43,3 +43,29 @@ export type VolumeTrimToastKind = 'reduced' | 'no_plan';
 export function volumeTrimToastKind(adjustSucceeded: boolean): VolumeTrimToastKind {
   return adjustSucceeded ? 'reduced' : 'no_plan';
 }
+
+/** i18n keys + defaults for the volume-trim result toast (page still calls `toast`). */
+export type VolumeTrimToastCopy = {
+  titleKey: string;
+  titleDefault: string;
+  descKey: string;
+  descDefault: string;
+};
+
+export function volumeTrimToastCopy(kind: VolumeTrimToastKind): VolumeTrimToastCopy {
+  if (kind === 'reduced') {
+    return {
+      titleKey: 'sessionVolumeReduced',
+      titleDefault: 'Volume reduced',
+      descKey: 'sessionVolumeReducedDesc',
+      descDefault: 'One set trimmed from accessories (min 2). Plan marked Adapted.',
+    };
+  }
+  return {
+    titleKey: 'sessionVolumeNoPlan',
+    titleDefault: 'No coach session today',
+    descKey: 'sessionVolumeNoPlanDesc',
+    descDefault:
+      'Start from Mission Coach for plan volume cuts. Sets here stay yours.',
+  };
+}

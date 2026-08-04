@@ -51,6 +51,7 @@ import {
 } from '@/lib/workout/activeSessionFinish';
 import {
   planSessionCheckInDismiss,
+  volumeTrimToastCopy,
   volumeTrimToastKind,
 } from '@/lib/workout/activeSessionCheckIn';
 import {
@@ -60,6 +61,7 @@ import {
   plateCalcInitialWeight,
   resolveAddExerciseId,
 } from '@/lib/workout/activeSetInputPatches';
+import { resolveActiveTableSetControls } from '@/lib/workout/activeTableSetControls';
 import {
   buildConsoleSet,
   findNextSet,
@@ -513,6 +515,16 @@ export function ActiveWorkoutPage() {
               current: exercise,
               compareNames: (a, b) => compareText(a, b, fmt.lang),
             });
+            /* Desktop's table logs in place. Same `setInputs` map the dock
+               console writes, so switching surface mid-session keeps the
+               half-typed set. Only meaningful when this exercise holds the
+               active set — the table ignores it otherwise. */
+            const tableControls = resolveActiveTableSetControls({
+              nextSet,
+              exIdx,
+              sets: exLog.sets,
+              resolveInput: getSetInput,
+            });
 
             return (
               <ActiveExerciseCard
@@ -558,32 +570,15 @@ export function ActiveWorkoutPage() {
                   setSetInputs({});
                 }}
                 onStartRest={(seconds) => startRestTimer(seconds)}
-                /* Desktop's table logs in place. Same `setInputs` map the dock
-                   console writes, so switching surface mid-session keeps the
-                   half-typed set. Only meaningful when this exercise holds the
-                   active set — the table ignores it otherwise. */
-                setInput={
-                  nextSet && nextSet.exIdx === exIdx && exLog.sets[nextSet.setIdx]
-                    ? getSetInput(
-                        exIdx,
-                        nextSet.setIdx,
-                        exLog.sets[nextSet.setIdx].reps,
-                        exLog.sets[nextSet.setIdx].weight
-                      )
-                    : { reps: 0, weight: 0 }
-                }
+                setInput={tableControls.setInput}
                 onSetInputChange={(field, value) => {
-                  if (!nextSet || nextSet.exIdx !== exIdx) return;
+                  if (!tableControls.canEdit || !nextSet) return;
                   updateSetInput(exIdx, nextSet.setIdx, field, value);
                 }}
                 onLogSet={(setIdx) => handleLogSet(exIdx, setIdx)}
-                activeSetKind={
-                  nextSet && nextSet.exIdx === exIdx
-                    ? (exLog.sets[nextSet.setIdx]?.kind ?? 'normal')
-                    : 'normal'
-                }
+                activeSetKind={tableControls.activeSetKind}
                 onSetKindChange={(kind) => {
-                  if (!nextSet || nextSet.exIdx !== exIdx) return;
+                  if (!tableControls.canEdit || !nextSet) return;
                   setSetKind(exIdx, nextSet.setIdx, kind);
                 }}
               />
@@ -644,26 +639,11 @@ export function ActiveWorkoutPage() {
               className="border-2 border-border bg-background px-3 py-1 text-muted-foreground font-medium hover:border-primary hover:text-foreground"
               onClick={() => {
                 const next = adjustToday({ type: 'readiness' });
-                const kind = volumeTrimToastKind(!!next);
-                if (kind === 'reduced') {
-                  toast({
-                    title: t('sessionVolumeReduced', {
-                      defaultValue: 'Volume reduced',
-                    }),
-                    description: t('sessionVolumeReducedDesc', {
-                      defaultValue: 'One set trimmed from accessories (min 2). Plan marked Adapted.',
-                    }),
-                  });
-                } else {
-                  toast({
-                    title: t('sessionVolumeNoPlan', {
-                      defaultValue: 'No coach session today',
-                    }),
-                    description: t('sessionVolumeNoPlanDesc', {
-                      defaultValue: 'Start from Mission Coach for plan volume cuts. Sets here stay yours.',
-                    }),
-                  });
-                }
+                const copy = volumeTrimToastCopy(volumeTrimToastKind(!!next));
+                toast({
+                  title: t(copy.titleKey, { defaultValue: copy.titleDefault }),
+                  description: t(copy.descKey, { defaultValue: copy.descDefault }),
+                });
                 setOfferVolumeTrim(false);
               }}
             >

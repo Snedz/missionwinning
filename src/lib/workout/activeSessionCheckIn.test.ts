@@ -4,6 +4,7 @@ import { readFileSync } from 'node:fs';
 import path from 'node:path';
 import {
   planSessionCheckInDismiss,
+  volumeTrimToastCopy,
   volumeTrimToastKind,
 } from './activeSessionCheckIn.ts';
 
@@ -50,14 +51,25 @@ describe('volumeTrimToastKind', () => {
   });
 });
 
-describe('Active wiring (.406)', () => {
-  it('ActiveWorkoutPage uses planSessionCheckInDismiss and volumeTrimToastKind', () => {
+describe('volumeTrimToastCopy', () => {
+  it('reduced and no_plan use distinct keys', () => {
+    const reduced = volumeTrimToastCopy('reduced');
+    const noPlan = volumeTrimToastCopy('no_plan');
+    assert.equal(reduced.titleKey, 'sessionVolumeReduced');
+    assert.equal(noPlan.titleKey, 'sessionVolumeNoPlan');
+    assert.notEqual(reduced.descKey, noPlan.descKey);
+  });
+});
+
+describe('Active wiring (.406/.408)', () => {
+  it('ActiveWorkoutPage uses check-in plan + volume-trim toast helpers', () => {
     const src = readFileSync(
       path.join(root, 'src/page-components/ActiveWorkoutPage.tsx'),
       'utf8'
     );
     assert.match(src, /planSessionCheckInDismiss\(/);
     assert.match(src, /volumeTrimToastKind\(/);
+    assert.match(src, /volumeTrimToastCopy\(/);
     assert.doesNotMatch(
       src,
       /shouldOfferVolumeTrim\(/,

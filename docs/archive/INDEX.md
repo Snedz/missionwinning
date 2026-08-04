@@ -56,6 +56,7 @@ When adding a doc:
 | [log/LOG-rotate-301.md](./log/LOG-rotate-301.md) | `.286` re-entry dose — rotated for `.301` Coach/History i18n |
 | [log/LOG-rotate-302.md](./log/LOG-rotate-302.md) | `.287` coach why — rotated for `.302` debrief i18n |
 | [log/LOG-rotate-407.md](./log/LOG-rotate-407.md) | rotated for .407 set-input patches |
+| [log/LOG-rotate-408.md](./log/LOG-rotate-408.md) | `.393` Select chevron chrome — rotated for `.408` table set controls |
 | [log/LOG-rotate-406.md](./log/LOG-rotate-406.md) | rotated for .406 Active check-in |
 | [log/LOG-rotate-405.md](./log/LOG-rotate-405.md) | rotated for .405 Active finish extract |
 | [log/LOG-rotate-404.md](./log/LOG-rotate-404.md) | rotated for .404 week-1 activation contract |
