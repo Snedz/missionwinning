@@ -102,11 +102,22 @@ const WORD_QTY: Record<string, number> = {
   an: 1,
   one: 1,
   two: 2,
+  couple: 2,
   three: 3,
   four: 4,
   five: 5,
   six: 6,
 };
+
+/** Unicode vulgar fractions — one map for mixed + bare (.436/.438). */
+const VULGAR_FRAC: Record<string, number> = {
+  '¼': 0.25,
+  '½': 0.5,
+  '⅓': 1 / 3,
+  '⅔': 2 / 3,
+  '¾': 0.75,
+};
+const VULGAR_CLASS = '¼½⅓⅔¾';
 
 const GLOBAL_PORTION: { pattern: RegExp; scale: number }[] = [
   { pattern: /\b(large|big|xl|double|extra)\b/i, scale: 1.35 },
@@ -180,14 +191,13 @@ function findQtyBefore(text: string, kwStart: number): { qty: number; start: num
       return { qty: Math.round((g / 100) * 10) / 10, start: kwStart - ounces[0].length };
     }
   }
-  // Unicode vulgar fractions before ASCII — phone paste often uses ½ ⅓ ⅔ ¾ (.436)
+  // Unicode vulgar fractions before ASCII — phone paste often uses ¼ ½ ⅓ ⅔ ¾ (.436/.438)
   const unicodeMixed = before.match(
-    new RegExp(`(\\d*)([½⅓⅔¾])\\s*(${PORTION_WORD})\\s*(?:of\\s+)?$`, 'i')
+    new RegExp(`(\\d*)([${VULGAR_CLASS}])\\s*(${PORTION_WORD})\\s*(?:of\\s+)?$`, 'i')
   );
   if (unicodeMixed) {
-    const VULGAR: Record<string, number> = { '½': 0.5, '⅓': 1 / 3, '⅔': 2 / 3, '¾': 0.75 };
     const whole = unicodeMixed[1] ? parseInt(unicodeMixed[1], 10) : 0;
-    const frac = VULGAR[unicodeMixed[2]];
+    const frac = VULGAR_FRAC[unicodeMixed[2]];
     if (frac != null && whole >= 0 && whole <= 12) {
       const scale = portionWordScale(unicodeMixed[3]);
       const qty = Math.round((whole + frac) * scale * 10) / 10;
@@ -196,11 +206,10 @@ function findQtyBefore(text: string, kwStart: number): { qty: number; start: num
       }
     }
   }
-  const bareUnicode = before.match(/(\d*)([½⅓⅔¾])\s*$/);
+  const bareUnicode = before.match(new RegExp(`(\\d*)([${VULGAR_CLASS}])\\s*$`));
   if (bareUnicode) {
-    const VULGAR: Record<string, number> = { '½': 0.5, '⅓': 1 / 3, '⅔': 2 / 3, '¾': 0.75 };
     const whole = bareUnicode[1] ? parseInt(bareUnicode[1], 10) : 0;
-    const frac = VULGAR[bareUnicode[2]];
+    const frac = VULGAR_FRAC[bareUnicode[2]];
     if (frac != null && whole >= 0 && whole <= 12) {
       const qty = Math.round((whole + frac) * 10) / 10;
       if (qty > 0 && qty <= 12) {
@@ -340,7 +349,7 @@ function findQtyBefore(text: string, kwStart: number): { qty: number; start: num
   // "a third cup" / "two thirds cup" / "two-thirds cup" / "three quarters cup" (.435/.436)
   const threeQuarters = before.match(
     new RegExp(
-      `\\bthree\\s+quarters?(?:\\s+of)?\\s+(?:an?\\s+)?(${PORTION_WORD})\\s*(?:of\\s+)?$`,
+      `\\bthree\\s*-?\\s*quarters?(?:\\s+of)?\\s+(?:an?\\s+)?(${PORTION_WORD})\\s*(?:of\\s+)?$`,
       'i'
     )
   );
@@ -446,6 +455,11 @@ function findQtyBefore(text: string, kwStart: number): { qty: number; start: num
     if (n >= 1 && n <= 20) {
       return { qty: n, start: kwStart - num[0].length };
     }
+  }
+  // "a couple of eggs" / "couple eggs" → 2 (.438)
+  const coupleQty = before.match(/\b(?:(?:a|an)\s+)?couple\s+(?:of\s+)?$/i);
+  if (coupleQty) {
+    return { qty: 2, start: kwStart - coupleQty[0].length };
   }
   const word = before.match(/\b(a|an|one|two|three|four|five|six)\s+$/i);
   if (word) {

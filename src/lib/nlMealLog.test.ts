@@ -261,4 +261,19 @@ describe('nlMealLog', () => {
     assert.equal(hyphen.protein, Math.round(aCup.protein * (2 / 3)));
     assert.equal(thirdU.protein, Math.round(aCup.protein * (1 / 3)));
   });
+
+  it('parses ¼, three-quarters hyphen, and couple (.438)', () => {
+    const aCup = estimateMealFromDescription('a cup of rice');
+    const egg = estimateMealFromDescription('egg');
+    assert.ok(aCup && egg);
+    const quarterU = estimateMealFromDescription('¼ cup rice');
+    const threeQHyphen = estimateMealFromDescription('three-quarters cup rice');
+    const couple = estimateMealFromDescription('a couple of eggs');
+    const coupleBare = estimateMealFromDescription('couple eggs');
+    assert.ok(quarterU && threeQHyphen && couple && coupleBare);
+    assert.equal(quarterU.protein, Math.round(aCup.protein * 0.25));
+    assert.equal(threeQHyphen.protein, Math.round(aCup.protein * 0.75));
+    assert.equal(couple.protein, egg.protein * 2);
+    assert.equal(coupleBare.protein, egg.protein * 2);
+  });
 });
