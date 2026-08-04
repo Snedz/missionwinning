@@ -201,7 +201,7 @@ export function ProgramsPage() {
                               <ul className="mt-2 space-y-2 text-muted-foreground pl-1">
                                 {m.sessions.map((s) => (
                                   <li key={s.title}>
-                                    <span className="text-foreground/90 font-medium">
+                                    <span className="text-foreground font-medium">
                                       {s.title}
                                     </span>
                                     <ul className="list-disc pl-4 mt-0.5">

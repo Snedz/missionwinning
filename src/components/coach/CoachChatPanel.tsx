@@ -68,7 +68,7 @@ function FreeFormAskPanel({
       </CardHeader>
       <CardContent className="space-y-3">
         {cues.length > 0 ? (
-          <ul className="space-y-1.5 text-sm text-foreground/90">
+          <ul className="space-y-1.5 text-sm text-foreground">
             {cues.map((line) => (
               <li key={line} className="flex gap-2">
                 <span className="text-primary shrink-0">·</span>

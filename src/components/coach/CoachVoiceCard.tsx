@@ -112,7 +112,7 @@ export function CoachVoiceCard({ plan, bodyScores, premium }: Props) {
             className="py-6 border-0 bg-transparent"
           />
         ) : (
-          <p className="text-sm leading-relaxed text-foreground/90">{displayMessage}</p>
+          <p className="text-sm leading-relaxed text-foreground">{displayMessage}</p>
         )}
       </CardContent>
     </Card>

@@ -323,5 +323,18 @@ PR: #234
 |------|--------|-------|
 | W1 Coaching filled-form a11y | done (`.340`) | Route was outside GATED_ROUTES; filled lead form axe green |
 | W2 Active extract | done (`.341`) | `resolveSwapCandidatesWhenOpen` + wiring guard |
-| W3 Soft chrome / log close | pending | |
+| W3 Soft chrome / log close | done (`.342`) | text-foreground/90 → solid; table muted solid; Loop 13 close |
 
+## Metrics
+
+| Metric | Loop 12 end | Loop 13 end |
+|--------|-------------|-------------|
+| Build | `.339` | **`.342`** |
+| i18n uncovered cap | 16 (Bundle refuse) | **16** (unchanged) |
+
+## End of Loop 13
+
+**Delivered:** W1–W3 on `cursor/kaizen-wedge-night-be9b` → PR #234 (`.340`–`.342`).
+**Verified:** coaching filled-form a11y green; swap-when-open unit + wiring; design-system green.
+**Aikido:** `aikido_full_scan` fails without X11 `$DISPLAY`. Noted; continue.
+**Next:** Loop 14 — more seeded a11y (Compare story / Programs filter); Active extracts; Bundle i18n still refused.

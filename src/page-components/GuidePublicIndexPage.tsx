@@ -34,7 +34,7 @@ export function GuidePublicIndexPage() {
           </div>
           <h2 className="display-section">{meta.prefaceHeading}</h2>
           {meta.preface.map((p) => (
-            <p key={p.slice(0, 40)} className="text-sm leading-relaxed text-foreground/90">
+            <p key={p.slice(0, 40)} className="text-sm leading-relaxed text-foreground">
               {p}
             </p>
           ))}
@@ -45,7 +45,7 @@ export function GuidePublicIndexPage() {
             <span className="eyebrow">{meta.howToEyebrow}</span>
           </div>
           <h2 className="display-section">{meta.howToHeading}</h2>
-          <ol className="list-decimal space-y-2 pl-5 text-sm leading-relaxed text-foreground/90">
+          <ol className="list-decimal space-y-2 pl-5 text-sm leading-relaxed text-foreground">
             {meta.howToUse.map((item) => (
               <li key={item.slice(0, 32)}>{item}</li>
             ))}

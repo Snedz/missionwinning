@@ -114,7 +114,7 @@ export function GuidebookChapterPage({ chapterId }: Props) {
                 <CardContent className="space-y-4">
                   <div className="space-y-3">
                     {renderMagazineBody(section.body, {
-                      paragraphClassName: 'text-sm leading-relaxed text-foreground/90',
+                      paragraphClassName: 'text-sm leading-relaxed text-foreground',
                     })}
                   </div>
                   <GuideSectionExtras section={section} variant="app" />
