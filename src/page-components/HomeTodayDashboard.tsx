@@ -43,6 +43,7 @@ import { FIRST_STEPS_DISMISS_KEY } from "@/lib/today/firstStepsDismissed";
 import { buildTodayCandidates } from "@/lib/today/buildTodayCandidates";
 import { planTodayBlocks, type TodayBlockCandidate } from "@/lib/today/todayBlockBudget";
 import { shouldAppendTodayMoreDetails } from "@/lib/today/shouldAppendTodayMore";
+import { buildTodayHeaderFocusLine } from "@/lib/today/buildTodayHeaderFocusLine";
 import type { TodayBlockKey } from "@/lib/today/todayBlockPriority";
 import { useDismissed } from "@/hooks/useDismissed";
 import { localDateKey } from '@/lib/time/localDate';
@@ -534,15 +535,12 @@ export function HomeTodayDashboard() {
     header: (
       <TodayPageHeader
         today={todayLabel}
-        focusLine={
-          layout.showFocusLine
-            ? `${formatRecommendedFocusLine(recommendedFocus, t)}${
-                userEquip === 'bodyweight'
-                  ? ` · ${t('todayBodyweightTag', { defaultValue: 'bodyweight' })}`
-                  : ''
-              }`
-            : null
-        }
+        focusLine={buildTodayHeaderFocusLine({
+          showFocusLine: layout.showFocusLine,
+          focusLineBase: formatRecommendedFocusLine(recommendedFocus, t),
+          equipment: userEquip,
+          bodyweightTag: t('todayBodyweightTag', { defaultValue: 'bodyweight' }),
+        })}
         streak={streak}
         userEmail={userEmail}
         action={action}
