@@ -629,3 +629,12 @@ export function holdsActiveExercise(
 ): boolean {
   return nextSet?.exIdx === exIdx;
 }
+
+/** True when this set cell is the session's next open set. */
+export function isActiveSetCell(
+  nextSet: { exIdx: number; setIdx: number } | null | undefined,
+  exIdx: number,
+  setIdx: number
+): boolean {
+  return nextSet?.exIdx === exIdx && nextSet?.setIdx === setIdx;
+}

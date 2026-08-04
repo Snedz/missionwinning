@@ -38,6 +38,7 @@ import {
   exerciseHasPlannedSet,
   firstPlannedSetIdx,
   holdsActiveExercise,
+  isActiveSetCell,
 } from './activeWorkoutHelpers.ts';
 import type { CompletedWorkoutLog } from '@/types';
 
@@ -1092,6 +1093,27 @@ describe('holdsActiveExercise', () => {
       src,
       /const holdsActiveSet = nextSet\?\.exIdx\s*===\s*exIdx/,
       'active-exercise ownership must stay inside holdsActiveExercise'
+    );
+  });
+});
+
+describe('isActiveSetCell', () => {
+  it('matches the next-set cell', () => {
+    assert.equal(isActiveSetCell(null, 0, 0), false);
+    assert.equal(isActiveSetCell({ exIdx: 1, setIdx: 2 }, 1, 2), true);
+    assert.equal(isActiveSetCell({ exIdx: 1, setIdx: 2 }, 1, 0), false);
+  });
+
+  it('ActiveExerciseCard uses isActiveSetCell rather than an inline pair compare', () => {
+    const src = readFileSync(
+      path.join(import.meta.dirname, '..', '..', 'components', 'workout', 'ActiveExerciseCard.tsx'),
+      'utf8'
+    );
+    assert.match(src, /isActiveSetCell\(/);
+    assert.doesNotMatch(
+      src,
+      /nextSet\?\.exIdx\s*===\s*exIdx\s*&&\s*nextSet\?\.setIdx\s*===\s*setIdx/,
+      'active set cell compare must stay inside isActiveSetCell'
     );
   });
 });

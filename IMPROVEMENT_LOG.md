@@ -652,14 +652,14 @@ PR: #234
 | Wave | Status | Notes |
 |------|--------|-------|
 | L1 Session more menu a11y | done (`.385`) | HoldToConfirm outside role=menu |
-| L2 Active extract | pending (`.386`) | `isActiveSetCell` |
+| L2 Active extract | done (`.386`) | `isActiveSetCell` + wiring |
 | L3 Soft chrome / log close | pending (`.387`) | OtpInput status-ok solid |
 
 ## Metrics
 
 | Metric | Loop 27 end | Loop 28 (in progress) |
 |--------|-------------|------------------------|
-| Build | `.384` | **`.385`** |
+| Build | `.384` | **`.386`** |
 | i18n uncovered cap | 16 (Bundle refuse) | **16** (unchanged) |
 
 
