@@ -16,7 +16,7 @@ One screen of truth for any AI tool or human joining cold. Read this, then [AGEN
 
 ---
 
-## Now (2026-08-05 · web `2026.07-unified.506` · Android `1.24.1`)
+## Now (2026-08-05 · web `2026.07-unified.507` · Android `1.24.1`)
 
 > The ONLY "where we are" block in the repo — [ORCHESTRATION.md](ORCHESTRATION.md) points here.
 >
@@ -262,7 +262,7 @@ One screen of truth for any AI tool or human joining cold. Read this, then [AGEN
 > and `.501` dropped `.486` detail (full text remains in LOG.md / archive)
 > and `.502` dropped `.487` detail (full text remains in LOG.md / archive)
 > and `.503` dropped `.488` detail (full text remains in LOG.md / archive)
-> and `.505`–`.506` dropped detail (full text remains in LOG.md / archive)
+> and `.505`–`.507` dropped detail (full text remains in LOG.md / archive)
 > to [CONTEXT-now-2026-07-30.md](docs/archive/CONTEXT-now-2026-07-30.md) after this
 > block reached **79 bullets / 103KB**. A status doc that only grows stops being read.
 
@@ -283,6 +283,8 @@ One screen of truth for any AI tool or human joining cold. Read this, then [AGEN
 > | Migrations | **9 recorded pending** — [LAUNCH_RUNBOOK](docs/LAUNCH_RUNBOOK.md) §3, enforced by `src/lib/migrationLedger.test.ts`. |
 > | gitleaks | **green — and scanning for the first time.** It had never scanned anything: on a `pull_request` event the action lists the PR's commits, the job declared no `permissions:` block, and it 403'd (`pull_requests=read`) before opening a file. Fixed by a `permissions:` block (`.224` carrying `.255`). It scans **only the PR's own commits**, so commit `8ea3527a`'s real Solana treasury address — scrubbed from the working file, still in history — is out of its scope. That finding stands, deliberately not allowlisted; it was never what made this check red. |
 
+- **`.507`:** Kaizen — lean Today Mission progress; fuel/pillar milestone badges; Leaderboard in More Wedge.
+- **`.507`:** Kaizen — lean Today Mission progress; fuel/pillar milestone badges; Leaderboard in More Wedge.
 - **`.506`:** Full-launch honesty — leaderboard zero-state + free-beta dual-mode depth unlock; class scope clamped when America parked.
 - **`.505`:** Mission Rewards (XP/ranks/badges) + full-launch override — weekly train goal boss; Victory/Today/Profile; leaderboard on by default.
 - **`.503`:** Kaizen K11 — History list Again + day-replay train retrain.
@@ -303,7 +305,7 @@ One screen of truth for any AI tool or human joining cold. Read this, then [AGEN
 - **The exporter that undid the splitter (`.252`):** `npm run export-locales` and `npm run check-locale-split` disagreed **by construction** — the exporter wrote every namespace **plus** a merged `common.json`, while the splitter trims each namespace to English's keys and deletes `common.json` as `REDUNDANT` (the entire 1,687-key catalogue, repeated fifteen times, and `fetchLocaleHttpOverrides` *preferred* it). `.222` built the splitter **re-runnable** for exactly one stated reason — *"a cleanup that cannot be repeated undoes itself the next time the fill tool runs"* — and it did: `.250` ran the exporter while checking CI steps, committed 394 regenerated files with `git add -A`, and CI caught it on `.222`'s own guards. The mitigations (CI ordering, and remembering) worked *around* the conflict, which also meant the shipped translator files had drifted behind source because nobody could safely re-export. **The fix is that the producer emits what the checker wants:** each namespace trimmed to `Object.keys(entry.stringsFor('en'))` and iterated in that order — dropping foreign keys and stabilising order in one pass, the same two effects from the same rule as the splitter — and no `common.json`. **252,286 out-of-namespace keys** were being written. A guard pins the shared assumption: the splitter reads its schema from `en/*.json`, which *is* the exporter's output, so if it stops deriving from English the exporter's basis is silently void. **Re-exporting exposed two things.** Fifteen `feedbackCard*`/`feedbackSheet*` keys from `.215` had never reached `public/locales` — the drift the conflict caused, now shipped. And `coachWhySteadyWeek`/`coachWhyPlateauDeload` sat in the committed `en/coach.json` but **in no source module at all**, while `loadGuard.ts:42` and `progression.ts:173` still emit them: [`PlanExerciseLine`](src/components/coach/PlanExerciseLine.tsx) renders `i18n.exists(whyKey) ? t(whyKey) : ''`, so the coach decided a week was a plateau deload, wrote down why, and showed the athlete a **blank line** — in all fifteen languages. `progression.test.ts:117` and `loadGuard.test.ts:51` were green throughout, proving the *choice* while nothing proved the *string* (`.184`, one layer down into i18n). Restored, with a guard that **discovers** every `coachWhy*` literal in `src/lib/coach/` rather than enumerating them (`.220`). Tests 1186→1191.
 
 - **Ops:** prod ships via **Vercel Deploy Hook + GitHub webhook** (unmetered, no Actions) — [docs/VERCEL_DEPLOY_CHECKLIST.md](docs/VERCEL_DEPLOY_CHECKLIST.md) §1.1; `deploy-production` is now **manual-only** fallback. **Actions state lives in the Status table above, and only there** — this line has now been wrong in both directions within one night (it claimed "cleared" while jobs were dying at `runner_id: 0`, and the correction claimed "blocked" an hour before billing came back at 00:12 UTC on 2026-08-01). Two places describing one fact is `.178`; the fix is not a better sentence here but **no sentence here**. `npm run gate` stays the faster pre-push check. **Secrets program** + pre-public scrub shipped — [docs/SECRETS.md](docs/SECRETS.md); OSS public-ready (AGPL + CoC) — founder flips GitHub Public — [docs/OPEN_SOURCE.md](docs/OPEN_SOURCE.md). Promote **`.157`** — now on `master`; keep Supabase Site URL on www.
-- Agents **must** ship wedge habit-loop + free acquisition. Refuse new pillars / America / locale farms / F5.
+- Agents **must** ship wedge habit-loop + free acquisition. Full-launch override (2026-08-05) allows rewards + surface honesty; still refuse America marketing / locale farms / F5 / free-logger gates without enable.
 - **Founder:** Accept B on Android + phone excellence → invites → YC F26. **Wire the Deploy Hook webhook** ([checklist §1.1](docs/VERCEL_DEPLOY_CHECKLIST.md)) then promote `.157`; clear Actions billing to restore the PR gate. **Before any list email: set `MAIL_POSTAL_ADDRESS`** (CAN-SPAM footer — confirm the Bizee TX registered-agent address is publishable as a business address, else PO box/CMRA; same address closes the DMCA agent row) — [LEGAL_SAFETY.md](docs/LEGAL_SAFETY.md) §3. Before Public: `npm run secrets:scan`, enable GitHub secret scanning + push protection.
 
 ---

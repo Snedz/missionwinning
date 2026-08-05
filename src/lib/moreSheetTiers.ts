@@ -46,7 +46,7 @@ export const MORE_SHEET_TIER_HREFS: {
     id: 'wedge',
     title: 'Wedge',
     titleKey: 'moreTierWedge',
-    hrefs: ['/history', '/library', '/builder', '/assessments'],
+    hrefs: ['/history', '/leaderboard', '/library', '/builder', '/assessments'],
   },
   {
     id: 'pillars',
@@ -62,10 +62,9 @@ export const MORE_SHEET_TIER_HREFS: {
   },
 ];
 
-/** Foot links: tools first, then company/legal. */
+/** Foot links: tools first, then company/legal. Leaderboard is a full row when enabled. */
 export const MORE_SHEET_QUIET: readonly MoreQuietLink[] = [
   { href: '/calculators', labelKey: 'navCalculators', label: 'Calculators' },
-  { href: '/leaderboard', labelKey: 'navLeaderboard', label: 'Leaderboard' },
   { href: '/learn/guide', labelKey: 'navGuidebook', label: 'Guidebook' },
   { href: '/beta', labelKey: 'navBetaGuide', label: 'Beta guide' },
   { href: '/vision', labelKey: 'navOurMission', label: 'Our mission' },

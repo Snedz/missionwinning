@@ -1,3 +1,35 @@
+# Improvement log — Kaizen Night (2026-08-05 full-launch)
+
+Session branch: `kaizen/night-2026-08-05`  
+Started: 2026-08-05 · post-#299 · build tip **`.507`**  
+Plan: `.hermes/plans/2026-08-05_kaizen-night-plan.md`
+
+## Contract
+
+- Full-launch override active; free logger never gated; no PRIVATE_MODE flip.
+- Small PRs; local gate (CI billing may stay red).
+- Tracks A (rewards) · B (wedge) · C (honesty) · D (docs/debt).
+
+## Status
+
+| # | Item | Status |
+|---|------|--------|
+| A1 | Lean Today rewards card | done `.507` |
+| A2 | fuel/pillar milestone badges | done `.507` |
+| C4 | More Leaderboard Wedge row | done `.507` |
+| D2 | CONTEXT refuse vs override | done `.507` |
+| C2 | Dead parked hrefs | in progress |
+| B1 | One-boss CTA | pending |
+
+## Metrics
+
+| Metric | Start | Now |
+|--------|-------|-----|
+| Build | `.506` | **`.507`** |
+| Unit tests | 1778 | TBD |
+
+---
+
 # Improvement log — Kaizen Night (Horizon W, no Pump)
 
 Session branch: `cursor/kaizen-night-be9b`  

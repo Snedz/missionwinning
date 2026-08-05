@@ -65,6 +65,8 @@ export interface RewardState {
   lastTrainDateKey?: string;
   /** How many distinct ISO weeks the weekly train goal was hit. */
   weeklyGoalWeeksHit: number;
+  /** Lifetime pillar win counts for milestone badges (move/mind/learn). */
+  pillarWins: Partial<Record<'move' | 'mind' | 'track' | 'learn', number>>;
 }
 
 export interface XpAward {

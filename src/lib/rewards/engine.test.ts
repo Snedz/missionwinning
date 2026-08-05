@@ -123,6 +123,50 @@ describe('applyRewardEvents batch', () => {
   });
 });
 
+describe('milestone badges — fuel + pillars', () => {
+  it('grants fuel_steady after 7 distinct fuel days', () => {
+    let state = emptyRewardState();
+    for (let i = 1; i <= 6; i++) {
+      const d = `2026-07-${String(i).padStart(2, '0')}`;
+      state = applyRewardEvent(state, { type: 'fuel_day', dateKey: d }, new Date(`${d}T12:00:00`)).state;
+      assert.ok(!state.badges.includes('fuel_steady'));
+    }
+    const r = applyRewardEvent(
+      state,
+      { type: 'fuel_day', dateKey: '2026-07-07' },
+      new Date('2026-07-07T12:00:00')
+    );
+    assert.ok(r.badgeAwards.some((b) => b.id === 'fuel_steady'));
+  });
+
+  it('grants mobility_kept after 8 move wins', () => {
+    let state = emptyRewardState();
+    for (let i = 0; i < 7; i++) {
+      state = applyRewardEvent(state, {
+        type: 'pillar_win',
+        winId: `m${i}`,
+        pillar: 'move',
+      }).state;
+    }
+    assert.ok(!state.badges.includes('mobility_kept'));
+    const r = applyRewardEvent(state, { type: 'pillar_win', winId: 'm7', pillar: 'move' });
+    assert.ok(r.badgeAwards.some((b) => b.id === 'mobility_kept'));
+    assert.equal(r.state.pillarWins.move, 8);
+  });
+
+  it('grants student after 10 learn wins', () => {
+    let state = emptyRewardState();
+    for (let i = 0; i < 10; i++) {
+      state = applyRewardEvent(state, {
+        type: 'pillar_win',
+        winId: `l${i}`,
+        pillar: 'learn',
+      }).state;
+    }
+    assert.ok(state.badges.includes('student'));
+  });
+});
+
 describe('level math', () => {
   it('levelForXp thresholds', () => {
     assert.equal(levelForXp(0), 1);

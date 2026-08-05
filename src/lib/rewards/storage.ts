@@ -32,7 +32,21 @@ export function loadRewardState(): RewardState {
       typeof raw.weeklyGoalWeeksHit === 'number' && Number.isFinite(raw.weeklyGoalWeeksHit)
         ? Math.max(0, raw.weeklyGoalWeeksHit)
         : 0,
+    pillarWins: normalizePillarWins(raw.pillarWins),
   });
+}
+
+function normalizePillarWins(
+  v: unknown
+): Partial<Record<'move' | 'mind' | 'track' | 'learn', number>> {
+  if (!v || typeof v !== 'object') return {};
+  const o = v as Record<string, unknown>;
+  const out: Partial<Record<'move' | 'mind' | 'track' | 'learn', number>> = {};
+  for (const k of ['move', 'mind', 'track', 'learn'] as const) {
+    const n = o[k];
+    if (typeof n === 'number' && Number.isFinite(n) && n > 0) out[k] = Math.floor(n);
+  }
+  return out;
 }
 
 export function saveRewardState(state: RewardState): void {

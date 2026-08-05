@@ -27,6 +27,7 @@ export function emptyRewardState(now = new Date()): RewardState {
     claimedEventIds: [],
     challengeMedals: [],
     weeklyGoalWeeksHit: 0,
+    pillarWins: {},
   };
 }
 
@@ -183,6 +184,31 @@ function grantBadge(state: RewardState, id: BadgeId, badgeAwards: BadgeAward[]):
   return { ...state, badges: [...state.badges, id] };
 }
 
+function countClaimedFuelDays(claimed: string[]): number {
+  return claimed.filter((id) => /^fuel:\d{4}-\d{2}-\d{2}$/.test(id)).length;
+}
+
+/** After fuel/pillar XP — grant lifetime milestone badges. */
+function grantMilestoneBadges(
+  state: RewardState,
+  badgeAwards: BadgeAward[],
+  opts: { afterFuel?: boolean; afterPillar?: 'move' | 'mind' | 'track' | 'learn' }
+): RewardState {
+  let next = state;
+  if (opts.afterFuel && countClaimedFuelDays(next.claimedEventIds) >= 7) {
+    next = grantBadge(next, 'fuel_steady', badgeAwards);
+  }
+  if (opts.afterPillar) {
+    const counts = { ...next.pillarWins };
+    counts[opts.afterPillar] = (counts[opts.afterPillar] ?? 0) + 1;
+    next = { ...next, pillarWins: counts };
+    if ((counts.move ?? 0) >= 8) next = grantBadge(next, 'mobility_kept', badgeAwards);
+    if ((counts.mind ?? 0) >= 8) next = grantBadge(next, 'still_mind', badgeAwards);
+    if ((counts.learn ?? 0) >= 10) next = grantBadge(next, 'student', badgeAwards);
+  }
+  return next;
+}
+
 function daysBetween(a: string, b: string): number {
   const [ay, am, ad] = a.split('-').map(Number);
   const [by, bm, bd] = b.split('-').map(Number);
@@ -282,9 +308,11 @@ export function applyRewardEvent(stateIn: RewardState, event: RewardEventKind, n
   } else if (event.type === 'fuel_day') {
     state = { ...state, claimedEventIds: pushClaimed(state.claimedEventIds, id) };
     state = grantXp(state, action, day, xpAwards);
+    state = grantMilestoneBadges(state, badgeAwards, { afterFuel: true });
   } else if (event.type === 'pillar_win') {
     state = { ...state, claimedEventIds: pushClaimed(state.claimedEventIds, id) };
     state = grantXp(state, action, day, xpAwards);
+    state = grantMilestoneBadges(state, badgeAwards, { afterPillar: event.pillar });
   } else if (event.type === 'perfect_week') {
     state = { ...state, claimedEventIds: pushClaimed(state.claimedEventIds, id) };
     state = grantXp(state, action, day, xpAwards);
