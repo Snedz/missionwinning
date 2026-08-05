@@ -31,6 +31,7 @@ while the type claims support. Registration happens in `src/hooks/useOutboxDrain
 | `journey.state` | `lib/journeySync.ts` | one per kind | Latest-state; handler re-reads storage |
 | `leaderboard.push` | `lib/leaderboardSync.ts` | one per kind | Snapshot computed at enqueue — queuing a whole history would bloat storage. **Not enqueued at all while the `leaderboard` surface is parked** |
 | `pft.push` | `lib/pftSync.ts` | `session.completedAt` | Per-entity. Inactive while the `america` surface is parked |
+| `nutrition.upsert` | `lib/sync/nutritionSync.ts` | minted per insert | Fuel cloud inserts — was fire-and-forget until framework harden |
 
 **Not on the outbox:** `fuelCoach/fuelSync.ts`. Its `pushFuelPlanToCloud` writes a
 per-user key in *device storage*, not a network — there is no transient failure to

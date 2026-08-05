@@ -3,22 +3,21 @@ import type { UnitsPref } from '@/lib/units';
 import { weightStep, weightUnitLabel } from '@/lib/units';
 import { suggestNextSetTarget } from '@/lib/workout/nextSetTargets';
 import { sessionIsCoachPrescribed } from '@/lib/workout/activeWorkoutHelpers';
-import { week1SecondSessionCue } from '@/lib/activation/week1SecondSession';
 import { getExerciseById } from '@/data/exercises';
+import {
+  COACH_VICTORY_EARLY_WORKOUTS,
+  pickVictoryNextAction,
+  type PickVictoryNextActionOpts,
+  type VictoryNextAction,
+} from '../../../packages/mw-core/src/workout/victory';
+
+export type { VictoryNextAction, PickVictoryNextActionOpts };
+export { COACH_VICTORY_EARLY_WORKOUTS, pickVictoryNextAction };
 
 export type VictoryBodyDelta = {
   readiness: number;
   strain: number;
   recovery: number;
-};
-
-export type VictoryNextAction = {
-  href: string;
-  labelKey: string;
-  /** English fallback for labelKey */
-  defaultLabel: string;
-  reasonKey: string;
-  defaultReason: string;
 };
 
 /**
@@ -154,82 +153,6 @@ export function progressionInsightKey(insight: ProgressionInsight): string {
   return insight.reason === 'add_reps'
     ? 'victoryProgressAddReps'
     : 'victoryProgressHold';
-}
-
-/** Prefer Mission Coach on victory for the first N completed workouts (wedge habit). */
-export const COACH_VICTORY_EARLY_WORKOUTS = 3;
-
-export type PickVictoryNextActionOpts = {
-  proteinLoggedToday?: boolean;
-  strainDelta?: number;
-  /** Workouts completed including the session just finished. */
-  completedWorkouts?: number;
-  /** True when a Mission Coach plan is loaded for the user. */
-  hasCoachPlan?: boolean;
-};
-
-/**
- * One boss next step after a session.
- * Prefer Mission Coach / next train — stay in the Train+Coach wedge (Horizon W).
- *
- * **Week-1 session 2 wins** over the early-Coach CTA (`.412` / T1.3). After exactly
- * one log, Today and First Steps already name "Start session 2" at `/active`
- * (`.291` / `.404`). Victory used to send that athlete to Coach instead — two
- * next bosses for the same habit loop. One definition: `week1SecondSessionCue`.
- */
-export function pickVictoryNextAction(opts?: PickVictoryNextActionOpts): VictoryNextAction {
-  const completed =
-    typeof opts?.completedWorkouts === 'number' ? opts.completedWorkouts : undefined;
-
-  // Exactly one finished session → second session is the boss habit, not Coach.
-  if (completed === 1) {
-    const cue = week1SecondSessionCue({ completedSessions: 1 });
-    if (cue) {
-      return {
-        href: cue.href,
-        labelKey: cue.labelKey,
-        defaultLabel: cue.defaultLabel,
-        reasonKey: cue.reasonKey,
-        defaultReason: cue.defaultReason,
-      };
-    }
-  }
-
-  const early =
-    typeof completed === 'number' &&
-    completed > 0 &&
-    completed <= COACH_VICTORY_EARLY_WORKOUTS;
-  // Explicit plan presence (true or false) → Coach. Early workouts (2–3) → Coach.
-  const wantsCoach = early || opts?.hasCoachPlan === true || opts?.hasCoachPlan === false;
-
-  if (wantsCoach) {
-    return {
-      href: '/coach',
-      labelKey: 'victoryNextCoachLabel',
-      defaultLabel: 'See Mission Coach',
-      reasonKey: 'victoryNextCoachReason',
-      defaultReason: 'Coach adapts your week from this log — no wearable needed.',
-    };
-  }
-
-  // High strain: rest / lighter train — not Mind tourism.
-  if ((opts?.strainDelta ?? 0) >= 5) {
-    return {
-      href: '/log',
-      labelKey: 'victoryNextRestLabel',
-      defaultLabel: 'Back to Today',
-      reasonKey: 'victoryNextRestReason',
-      defaultReason: 'Strain is up — recover, then hit a lighter session when ready.',
-    };
-  }
-
-  return {
-    href: '/active',
-    labelKey: 'victoryNextTrainLabel',
-    defaultLabel: 'Train again',
-    reasonKey: 'victoryNextTrainReason',
-    defaultReason: 'Keep the path alive — Just Go when you’re ready.',
-  };
 }
 
 /**

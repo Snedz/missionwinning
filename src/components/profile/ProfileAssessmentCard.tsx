@@ -94,15 +94,15 @@ export function ProfileAssessmentCard() {
                 onClick={async () => {
                   const u = await getUser();
                   const today = localDateKey();
-                  if (u)
-                    await (
-                      await import('@/lib/supabase')
-                    ).saveNutritionEntry({
+                  if (u) {
+                    const { enqueueNutritionUpsert } = await import('@/lib/sync/nutritionSync');
+                    enqueueNutritionUpsert({
                       date: today,
                       name: 'Assessment Win from Profile',
                       protein: 0,
                       cals: 0,
                     });
+                  }
                   toast({ title: 'Win logged', description: '+1 streak.' });
                 }}
               >

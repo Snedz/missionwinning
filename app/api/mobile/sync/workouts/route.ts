@@ -7,41 +7,16 @@ import { flattenExercises, groupFlatSets, normalizeCloudExercises } from '@/lib/
 import { withApiLogging } from '@/lib/api/withApiLogging';
 import { rateLimitAsync } from '@/lib/rateLimit';
 import { clientIp } from '@/lib/clientIp';
-import { bearerAccessToken, hasMobileAppAccess } from '@/lib/mobileAccess';
+import { requireMobileSyncUser } from '@/lib/mobileSyncAuth';
 import {
   mobileSyncPushBodySchema,
   parseJsonBody,
 } from '@/lib/apiSchemas';
 import { rejectOversizedBody } from '@/lib/requestBodyLimit';
-import { createClient, type SupabaseClient, type User } from '@supabase/supabase-js';
+import type { SupabaseClient } from '@supabase/supabase-js';
 
 type Supabase = SupabaseClient;
 
-type RequireUserResult =
-  | { error: NextResponse }
-  | { supabase: Supabase; user: User; token: string };
-
-async function requireUser(request: NextRequest): Promise<RequireUserResult> {
-  const token = bearerAccessToken(request);
-  if (!token || !(await hasMobileAppAccess(request))) {
-    return { error: NextResponse.json({ error: 'Unauthorized' }, { status: 401 }) } as const;
-  }
-  const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
-  const anon = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
-  if (!url || !anon) {
-    return { error: NextResponse.json({ error: 'Unconfigured' }, { status: 503 }) } as const;
-  }
-  const supabase = createClient(url, anon, {
-    global: { headers: { Authorization: `Bearer ${token}` } },
-  });
-  const {
-    data: { user },
-  } = await supabase.auth.getUser(token);
-  if (!user) {
-    return { error: NextResponse.json({ error: 'Unauthorized' }, { status: 401 }) } as const;
-  }
-  return { supabase, user, token } as const;
-}
 
 export const POST = withApiLogging('mobile/sync/workouts', async (request: NextRequest) => {
   const oversized = rejectOversizedBody(request);
@@ -56,7 +31,7 @@ export const POST = withApiLogging('mobile/sync/workouts', async (request: NextR
     );
   }
 
-  const auth = await requireUser(request);
+  const auth = await requireMobileSyncUser(request);
   if ('error' in auth) return auth.error;
   const { supabase, user } = auth;
 
@@ -102,7 +77,7 @@ export const GET = withApiLogging('mobile/sync/workouts', async (request: NextRe
     );
   }
 
-  const auth = await requireUser(request);
+  const auth = await requireMobileSyncUser(request);
   if ('error' in auth) return auth.error;
   const { supabase, user } = auth;
 

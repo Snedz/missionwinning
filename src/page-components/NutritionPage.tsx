@@ -7,7 +7,8 @@
 import { useState, useEffect, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Button } from '@/components/ui/button';
-import { getUser, saveNutritionEntry, getUserNutritionForDate } from '@/lib/supabase';
+import { getUser, getUserNutritionForDate } from '@/lib/supabase';
+import { enqueueNutritionUpsert } from '@/lib/sync/nutritionSync';
 import { isNonFoodEntryName } from '@/lib/pillarLog';
 import { syncProteinChallengeFromNutrition } from '@/lib/challenges';
 import { FREE_RECIPES } from '@/data/recipes/freeRecipes';
@@ -274,7 +275,7 @@ export function NutritionPage() {
       });
     }
     getUser().then((u) => {
-      if (u) saveNutritionEntry({ date: today, name, protein: p, cals: c, carbs, fat }).catch(() => {});
+      if (u) enqueueNutritionUpsert({ date: today, name, protein: p, cals: c, carbs, fat });
     });
   };
 
@@ -317,14 +318,14 @@ export function NutritionPage() {
     // Best-effort append of corrected macros for signed-in users (API is insert-only).
     getUser().then((u) => {
       if (!u) return;
-      saveNutritionEntry({
+      enqueueNutritionUpsert({
         date: today,
         name: `${label} (edited)`,
         protein: next.protein,
         cals: next.cals,
         carbs: next.carbs,
         fat: next.fat,
-      }).catch(() => {});
+      });
     });
     syncProteinChallengeFromNutrition();
   };

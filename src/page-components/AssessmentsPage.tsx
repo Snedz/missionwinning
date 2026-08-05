@@ -15,7 +15,7 @@ import { useTranslation } from 'react-i18next';
 import { PillarPageShell } from '@/components/layout/PillarPageShell';
 import { useWorkoutStore } from '@/store/workoutStore';
 import { SignInPrompt } from '@/components/auth/SignInPrompt';
-import { saveNutritionEntry } from '@/lib/supabase';
+import { enqueueNutritionUpsert } from '@/lib/sync/nutritionSync';
 import type { WorkoutExerciseTemplate } from '@/types';
 import { writeJson } from '@/lib/storage/safeStorage';
 import { STORAGE_KEYS } from '@/lib/storage/keys';
@@ -122,7 +122,7 @@ export function AssessmentsPage() {
 
     // Save a note to nutrition logs as demo assessment record (or extend table later)
     const today = localDateKey();
-    saveNutritionEntry({ date: today, name: `Assessment: ${risk} risk`, protein: 0, cals: 0 }).catch(() => {});
+    enqueueNutritionUpsert({ date: today, name: `Assessment: ${risk} risk`, protein: 0, cals: 0 });
 
     // Persist last result for profile / history
     writeJson(STORAGE_KEYS.lastAssessment, { risk, notes, date: today });

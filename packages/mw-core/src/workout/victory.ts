@@ -13,22 +13,47 @@ export type VictoryNextAction = {
 export type PickVictoryNextActionOpts = {
   proteinLoggedToday?: boolean;
   strainDelta?: number;
+  /** Workouts completed including the session just finished. */
   completedWorkouts?: number;
+  /** True when a Mission Coach plan is loaded for the user. */
   hasCoachPlan?: boolean;
 };
 
 /**
  * One boss next step after a session.
- * Early / no-plan: Mission Coach (Train+Coach wedge).
+ * Prefer Mission Coach / next train — stay in the Train+Coach wedge (Horizon W).
+ *
+ * **Week-1 session 2 wins** over the early-Coach CTA. After exactly one log,
+ * Today and First Steps already name "Start session 2" at `/active`. Victory
+ * must not send that athlete to Coach — two next bosses for the same habit loop.
+ *
+ * Shared by web (`workoutVictory` re-exports) and Expo. Android Victory is
+ * separate UI but should follow the same habit-loop order.
  */
 export function pickVictoryNextAction(opts?: PickVictoryNextActionOpts): VictoryNextAction {
-  const coachFirst =
-    (typeof opts?.completedWorkouts === 'number' &&
-      opts.completedWorkouts > 0 &&
-      opts.completedWorkouts <= COACH_VICTORY_EARLY_WORKOUTS) ||
-    opts?.hasCoachPlan === false;
+  const completed =
+    typeof opts?.completedWorkouts === 'number' ? opts.completedWorkouts : undefined;
 
-  if (coachFirst) {
+  // Exactly one finished session → second session is the boss habit, not Coach.
+  if (completed === 1) {
+    return {
+      href: '/active',
+      labelKey: 'week1SecondSessionCta',
+      defaultLabel: 'Start session 2',
+      reasonKey: 'week1SecondSessionReason',
+      defaultReason:
+        'One session logged. A second this week locks the loop — Coach builds from the logs, not another pillar.',
+    };
+  }
+
+  const early =
+    typeof completed === 'number' &&
+    completed > 0 &&
+    completed <= COACH_VICTORY_EARLY_WORKOUTS;
+  // Explicit plan presence (true or false) → Coach. Early workouts (2–3) → Coach.
+  const wantsCoach = early || opts?.hasCoachPlan === true || opts?.hasCoachPlan === false;
+
+  if (wantsCoach) {
     return {
       href: '/coach',
       labelKey: 'victoryNextCoachLabel',
@@ -38,29 +63,22 @@ export function pickVictoryNextAction(opts?: PickVictoryNextActionOpts): Victory
     };
   }
 
-  if (!opts?.proteinLoggedToday) {
+  // High strain: rest / lighter train — not Mind tourism.
+  if ((opts?.strainDelta ?? 0) >= 5) {
     return {
-      href: '/bundle',
-      labelKey: 'coachActionLogNutrition',
-      defaultLabel: 'Log protein (web)',
-      reasonKey: 'victoryNextFuelReason',
-      defaultReason: 'Fuel depth lives on web for now — open Bundle or continue on Coach.',
-    };
-  }
-  if ((opts.strainDelta ?? 0) >= 5) {
-    return {
-      href: '/today',
-      labelKey: 'coachActionOpenMind',
+      href: '/log',
+      labelKey: 'victoryNextRestLabel',
       defaultLabel: 'Back to Today',
-      reasonKey: 'victoryNextMindReason',
-      defaultReason: 'Downshift strain — Mind flows are on web; rest and return tomorrow.',
+      reasonKey: 'victoryNextRestReason',
+      defaultReason: 'Strain is up — recover, then hit a lighter session when ready.',
     };
   }
+
   return {
-    href: '/today',
-    labelKey: 'coachActionOpenMove',
-    defaultLabel: 'Back to Today',
-    reasonKey: 'victoryNextMoveReason',
-    defaultReason: 'Mobility depth is on web — keep logging; Coach has your week.',
+    href: '/active',
+    labelKey: 'victoryNextTrainLabel',
+    defaultLabel: 'Train again',
+    reasonKey: 'victoryNextTrainReason',
+    defaultReason: 'Keep the path alive — Just Go when you’re ready.',
   };
 }

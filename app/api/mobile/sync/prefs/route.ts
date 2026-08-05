@@ -6,36 +6,9 @@ import { NextRequest, NextResponse } from 'next/server';
 import { withApiLogging } from '@/lib/api/withApiLogging';
 import { rateLimitAsync } from '@/lib/rateLimit';
 import { clientIp } from '@/lib/clientIp';
-import { bearerAccessToken, hasMobileAppAccess } from '@/lib/mobileAccess';
+import { requireMobileSyncUser } from '@/lib/mobileSyncAuth';
 import { mobileSyncPrefsPushBodySchema, parseJsonBody } from '@/lib/apiSchemas';
 import { rejectOversizedBody } from '@/lib/requestBodyLimit';
-import { createClient, type SupabaseClient, type User } from '@supabase/supabase-js';
-
-type RequireUserResult =
-  | { error: NextResponse }
-  | { supabase: SupabaseClient; user: User };
-
-async function requireUser(request: NextRequest): Promise<RequireUserResult> {
-  const token = bearerAccessToken(request);
-  if (!token || !(await hasMobileAppAccess(request))) {
-    return { error: NextResponse.json({ error: 'Unauthorized' }, { status: 401 }) };
-  }
-  const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
-  const anon = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
-  if (!url || !anon) {
-    return { error: NextResponse.json({ error: 'Unconfigured' }, { status: 503 }) };
-  }
-  const supabase = createClient(url, anon, {
-    global: { headers: { Authorization: `Bearer ${token}` } },
-  });
-  const {
-    data: { user },
-  } = await supabase.auth.getUser(token);
-  if (!user) {
-    return { error: NextResponse.json({ error: 'Unauthorized' }, { status: 401 }) };
-  }
-  return { supabase, user };
-}
 
 export const POST = withApiLogging('mobile/sync/prefs', async (request: NextRequest) => {
   const oversized = rejectOversizedBody(request);
@@ -50,7 +23,7 @@ export const POST = withApiLogging('mobile/sync/prefs', async (request: NextRequ
     );
   }
 
-  const auth = await requireUser(request);
+  const auth = await requireMobileSyncUser(request);
   if ('error' in auth) return auth.error;
   const { supabase, user } = auth;
 
@@ -106,7 +79,7 @@ export const GET = withApiLogging('mobile/sync/prefs', async (request: NextReque
     );
   }
 
-  const auth = await requireUser(request);
+  const auth = await requireMobileSyncUser(request);
   if ('error' in auth) return auth.error;
   const { supabase, user } = auth;
 

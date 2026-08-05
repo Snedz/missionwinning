@@ -23,7 +23,8 @@ import { EXERCISES } from '@/data/exercises';
 import { FREE_STARTER_PROGRAMS } from '@/data/starterPrograms';
 import { formatDuration } from '@/lib/utils';
 import { MAJOR_GROUPS } from '@/lib/muscleGroups';
-import { getUser, saveNutritionEntry, getUserNutritionForDate, type CloudNutritionEntry } from '@/lib/supabase';
+import { getUser, getUserNutritionForDate, type CloudNutritionEntry } from '@/lib/supabase';
+import { enqueueNutritionUpsert } from '@/lib/sync/nutritionSync';
 import { muscleGroupLabel } from '@/lib/readinessDisplay';
 import type { computeReadiness } from '@/lib/score';
 import type { CompletedWorkoutLog, SavedWorkout, WorkoutExerciseTemplate } from '@/types';
@@ -280,7 +281,7 @@ export function TodayProgressSection({
               try {
                 const u = await getUser();
                 const today = localDateKey();
-                if (u) await saveNutritionEntry({ date: today, name: 'Daily Pillar Win (quick log)', protein: 0, cals: 0 });
+                if (u) enqueueNutritionUpsert({ date: today, name: 'Daily Pillar Win (quick log)', protein: 0, cals: 0 });
                 const current = bumpTrainingStreak();
                 setRecentPillarWins(prev => [{name: 'Daily Pillar Win (quick log)', date: today}, ...prev].slice(0,5));
                 alert(`Daily win logged! +1 streak (${current}). ${u ? 'Saved to cloud.' : 'Sign in for cloud sync.'}`);
@@ -290,7 +291,7 @@ export function TodayProgressSection({
               try {
                 const u = await getUser();
                 const today = localDateKey();
-                if (u) await saveNutritionEntry({ date: today, name: 'Quick Mind Win from Home', protein: 0, cals: 0 });
+                if (u) enqueueNutritionUpsert({ date: today, name: 'Quick Mind Win from Home', protein: 0, cals: 0 });
                 const current = bumpTrainingStreak();
                 setRecentPillarWins(prev => [{name: 'Quick Mind Win from Home', date: today}, ...prev].slice(0,5));
                 alert(`Mind win logged! +1 streak (${current}). ${u ? 'Cloud saved.' : ''}`);
@@ -300,7 +301,7 @@ export function TodayProgressSection({
               try {
                 const u = await getUser();
                 const today = localDateKey();
-                if (u) await saveNutritionEntry({ date: today, name: 'Quick Move Win from Home', protein: 0, cals: 0 });
+                if (u) enqueueNutritionUpsert({ date: today, name: 'Quick Move Win from Home', protein: 0, cals: 0 });
                 const current = bumpTrainingStreak();
                 setRecentPillarWins(prev => [{name: 'Quick Move Win from Home', date: today}, ...prev].slice(0,5));
                 alert(`Move win logged! +1 streak (${current}). ${u ? 'Cloud saved.' : ''}`);
@@ -453,10 +454,11 @@ export function TodayProgressSection({
             <Button size="sm" variant="ghost" className="text-xs" onClick={() => { alert('Great protein day logged (demo). Complete real logs in /nutrition for real tracking.'); }}>Log high-protein day</Button>
             <Button size="sm" variant="ghost" className="text-xs" onClick={async () => {
               try {
-                const { getUser, saveNutritionEntry } = await import('@/lib/supabase');
+                const { getUser } = await import('@/lib/supabase');
+                const { enqueueNutritionUpsert } = await import('@/lib/sync/nutritionSync');
                 const u = await getUser();
                 const today = localDateKey();
-                if (u) await saveNutritionEntry({ date: today, name: 'Mind Win: 5-min breath + gratitude', protein: 0, cals: 0 });
+                if (u) enqueueNutritionUpsert({ date: today, name: 'Mind Win: 5-min breath + gratitude', protein: 0, cals: 0 });
                 const cur = bumpTrainingStreak();
                 alert(`Mind Win logged! +1 streak (${cur}). Check Nutrition for the entry.`);
               } catch { /* noop */ }

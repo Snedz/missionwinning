@@ -63,11 +63,12 @@ export async function logPillarWin(
   writeJson(STORAGE_KEYS.pillarWins, [win, ...existing].slice(0, 100));
 
   try {
-    const { getUser, saveNutritionEntry } = await import('@/lib/supabase');
+    const { getUser } = await import('@/lib/supabase');
+    const { enqueueNutritionUpsert } = await import('@/lib/sync/nutritionSync');
     const u = await getUser();
     if (u) {
       const today = localDateKey();
-      await saveNutritionEntry({
+      enqueueNutritionUpsert({
         date: today,
         name: pillarWinEntryName(pillar, title),
         protein: 0,
