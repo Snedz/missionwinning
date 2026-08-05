@@ -24,13 +24,16 @@ at every call site.
 ## Rules
 
 1. Nothing outside this folder calls `localStorage` directly. `eslint.config.js`
-   enforces it as a plain **error** — the `LEGACY_DIRECT_STORAGE` allowlist is gone
-   as of `.128`, so there is no backlog for a new violation to join.
+   enforces it as a plain **error** — both the bare global and
+   `window.localStorage` / `globalThis.localStorage` (framework review: the
+   MemberExpression spelling used to bypass `no-restricted-globals`).
+   `windowLocalStorageGate.test.ts` discovers remaining bypasses.
    `STORAGE_KEYS` is where keys come from; a fixed key inlined as a string literal
    is a bug waiting to be a typo.
 2. `src/lib/backup.ts` is the one exception: export/restore must enumerate raw
    `mw_*` keys at runtime, because a stale registry would silently drop a key from
-   a user's only safety net.
+   a user's only safety net. Zustand persist goes through `persistDedupe.browserStorage`
+   → `safeStorage`, not raw `window.localStorage`.
 3. Writes return `false` when the value did not durably land. Callers that care
    (sync, backup) should react; callers that don't can ignore it.
 4. Storage denied entirely → an in-memory fallback keeps the session working for

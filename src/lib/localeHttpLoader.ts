@@ -11,6 +11,7 @@
  */
 import { LOCALE_FILES } from '@/i18n/localeExportManifest';
 import type { ExportLang } from '@/lib/exportLocales';
+import { readRaw, remove, writeRaw } from '@/lib/storage/safeStorage';
 
 /** Normalize i18n language code (e.g. en-US → en). */
 export function normalizeLocaleCode(lang: string): string {
@@ -52,22 +53,17 @@ export function shouldLoadLocaleHttp(): boolean {
   if (typeof window === 'undefined') return false;
   if (process.env.NEXT_PUBLIC_LOCALE_HTTP === 'false') return false;
 
-  try {
-    const param = new URLSearchParams(window.location.search).get('locale-http');
-    if (param === '1') {
-      window.localStorage.setItem(LOCALE_HTTP_FLAG, '1');
-      return true;
-    }
-    if (param === '0') {
-      window.localStorage.removeItem(LOCALE_HTTP_FLAG);
-      return false;
-    }
-    return window.localStorage.getItem(LOCALE_HTTP_FLAG) === '1';
-  } catch {
-    // Private mode / blocked storage: default to the athlete's side of the
-    // trade, which is not paying for a translator tool.
+  const param = new URLSearchParams(window.location.search).get('locale-http');
+  if (param === '1') {
+    writeRaw(LOCALE_HTTP_FLAG, '1');
+    return true;
+  }
+  if (param === '0') {
+    remove(LOCALE_HTTP_FLAG);
     return false;
   }
+  // safeStorage never throws; memory fallback keeps the opt-in for the tab.
+  return readRaw(LOCALE_HTTP_FLAG) === '1';
 }
 
 export type LocaleHttpFile = {

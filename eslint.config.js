@@ -51,6 +51,23 @@ export default tseslint.config(
             'Use @/lib/storage/safeStorage — a bare localStorage call can throw and blank the page.',
         },
       ],
+      // Framework review: `window.localStorage` / `globalThis.localStorage` did
+      // not trip no-restricted-globals (persistDedupe + localeHttpLoader).
+      'no-restricted-syntax': [
+        'error',
+        {
+          selector:
+            "MemberExpression[object.name='window'][property.name='localStorage']",
+          message:
+            'Use @/lib/storage/safeStorage — window.localStorage bypasses the localStorage gate.',
+        },
+        {
+          selector:
+            "MemberExpression[object.name='globalThis'][property.name='localStorage']",
+          message:
+            'Use @/lib/storage/safeStorage — globalThis.localStorage bypasses the localStorage gate.',
+        },
+      ],
     },
   }
 );

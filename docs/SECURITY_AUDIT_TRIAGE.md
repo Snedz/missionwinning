@@ -51,6 +51,7 @@ No evidence of `SUPABASE_SERVICE_ROLE_KEY` or webhook secrets in client bundles 
 - [ ] If crypto checkout is shelved: remove `@phantom/*` + unused `@solana/*` to shrink surface  
 - [ ] Never force-fix without `e2e:critical` + crypto unit tests green  
 - [x] Nested `postcss` re-checked after `next@16.3.0` (`.489`) — floor guarded in `.491`  
+- [x] Security-audit allowlist ratchet: dropped cleared postcss/sharp/brace-expansion GHSAs; `MAX_ACCEPTED_HIGH` **13 → 9** (framework harden `.504`)
 
 
 ---

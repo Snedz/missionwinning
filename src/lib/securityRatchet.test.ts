@@ -78,14 +78,15 @@ test('the ratchet only moves down', () => {
   /*
    * The high-water mark, recorded as a literal so the assertion cannot drift
    * with the value it is checking. 17 distinct high advisories existed when this
-   * was written; `npm audit fix` cleared four with no breaking change, and 13 is
-   * where it may never rise from.
+   * was written; `npm audit fix` cleared four with no breaking change → 13; then
+   * next@16.3 cleared postcss/sharp/brace-expansion → **9** (framework harden).
+   * The cap may never rise from here without a new reviewed acceptance.
    *
    * `.202` (i18n coverage) and `.209` (bundle budget) are the same shape. The
    * rule they share: a cap that follows reality is not a cap.
    */
   assert.ok(
-    MAX_ACCEPTED_HIGH <= 13,
+    MAX_ACCEPTED_HIGH <= 9,
     `MAX_ACCEPTED_HIGH is ${MAX_ACCEPTED_HIGH}; it may only ever be lowered. Raising it to admit ` +
       'a new advisory is how a gate becomes decoration.'
   );

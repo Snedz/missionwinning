@@ -40,6 +40,7 @@
  */
 
 import type { StateStorage } from 'zustand/middleware';
+import { readRaw, remove, writeRaw } from '@/lib/storage/safeStorage';
 
 /**
  * Wrap a storage so a `setItem` with the value already stored is a no-op.
@@ -88,21 +89,23 @@ export function dedupeWrites(base: StateStorage): StateStorage & { writeCount: (
  * the time the athlete had been training.
  */
 /**
- * `localStorage` when there is a window, an in-memory stand-in otherwise.
+ * Zustand persist adapter over `safeStorage`.
  *
- * The repo's `safeStorage` makes the same promise for the `mw_*` keys — SSR-safe
- * and never throws (`.128`) — and the zustand store needs it for the same
- * reason: the unit lane and the route lane both import this module with no
- * `window`. The first draft returned `undefined!` here and every store test died
- * on `Cannot read properties of undefined (reading 'setItem')`.
+ * Framework review: this used to return bare `window.localStorage`, which
+ * bypassed the eslint `no-restricted-globals` rule (that rule only sees the
+ * identifier `localStorage`, not `window.localStorage`). `safeStorage` is
+ * SSR-safe and never throws — the same promise the unit/route lanes need when
+ * they import this module with no `window`.
  */
 export function browserStorage(): StateStorage {
-  if (typeof window !== 'undefined' && window.localStorage) return window.localStorage;
-  const memory = new Map<string, string>();
   return {
-    getItem: (name) => memory.get(name) ?? null,
-    setItem: (name, value) => void memory.set(name, value),
-    removeItem: (name) => void memory.delete(name),
+    getItem: (name) => readRaw(name),
+    setItem: (name, value) => {
+      writeRaw(name, value);
+    },
+    removeItem: (name) => {
+      remove(name);
+    },
   };
 }
 
