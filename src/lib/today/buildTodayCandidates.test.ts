@@ -74,7 +74,7 @@ describe('buildTodayCandidates', () => {
     assert.ok(basic.includes('coach-invite'));
     assert.ok(basic.includes('encourage'));
 
-    // Flow-7 — early readiness still shows invite (sessions 1–3).
+    // Flow-7 / K3 — early readiness, no plan: invite only (not empty week strip).
     const readinessEarly = buildTodayCandidates(
       densestEvening({
         phase: 'readiness',
@@ -83,13 +83,31 @@ describe('buildTodayCandidates', () => {
         firstStepsDismissed: true,
         totalSessions: 1,
         streak: 0,
+        hasCoachPlan: false,
       })
     ).map((s) => s.key);
     assert.ok(readinessEarly.includes('coach-invite'));
+    assert.ok(!readinessEarly.includes('coach-week'), 'empty week twins invite');
+
+    // K3 — plan present: week strip, not invite.
+    const readinessWithPlan = buildTodayCandidates(
+      densestEvening({
+        phase: 'readiness',
+        showDashboard: true,
+        reentryShow: false,
+        firstStepsDismissed: true,
+        totalSessions: 2,
+        streak: 0,
+        hasCoachPlan: true,
+      })
+    ).map((s) => s.key);
+    assert.ok(readinessWithPlan.includes('coach-week'));
+    assert.ok(!readinessWithPlan.includes('coach-invite'));
 
     const commissioned = buildTodayCandidates(densestEvening()).map((s) => s.key);
     assert.ok(!commissioned.includes('coach-invite'));
     assert.ok(commissioned.includes('coach-today'));
+    assert.ok(commissioned.includes('coach-week'));
   });
 
   it('densest evening keeps session+week on top; dashboard spills', () => {

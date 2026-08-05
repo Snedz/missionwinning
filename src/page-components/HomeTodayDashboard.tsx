@@ -48,6 +48,7 @@ import type { TodayBlockKey } from "@/lib/today/todayBlockPriority";
 import { useDismissed } from "@/hooks/useDismissed";
 import { localDateKey } from '@/lib/time/localDate';
 import { peekCoachToday } from '@/lib/coach/peekCoachToday';
+import { loadPlan } from '@/lib/coach/storage';
 import { buildJustGoHeroMeta, type JustGoHeroMeta } from '@/lib/justGoHeroMeta';
 
 const FirstStepsCard = dynamic(
@@ -151,6 +152,21 @@ export function HomeTodayDashboard() {
   const { dismissed: betaDismissed } = useDismissed(FIRST_STEPS_DISMISS_KEY);
   const [todayLabel, setTodayLabel] = useState('');
   const [belowFoldReady, setBelowFoldReady] = useState(false);
+  /** K3 — coach invite vs week strip; re-read on plan events. */
+  const [hasCoachPlan, setHasCoachPlan] = useState(
+    () => typeof window !== 'undefined' && !!loadPlan()
+  );
+
+  useEffect(() => {
+    const syncPlan = () => setHasCoachPlan(!!loadPlan());
+    syncPlan();
+    window.addEventListener('mw-coach-plan-changed', syncPlan);
+    window.addEventListener('storage', syncPlan);
+    return () => {
+      window.removeEventListener('mw-coach-plan-changed', syncPlan);
+      window.removeEventListener('storage', syncPlan);
+    };
+  }, []);
 
   useEffect(() => {
     const onIdle = () => setBelowFoldReady(true);
@@ -528,6 +544,7 @@ export function HomeTodayDashboard() {
     weekRecap: weekRecap
       ? { hasActivity: weekRecap.hasActivity, isWeekEnd: weekRecap.isWeekEnd }
       : null,
+    hasCoachPlan,
   });
 
   const nodesByKey: Partial<Record<TodayBlockKey, ReactNode>> = {

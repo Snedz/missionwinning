@@ -17,7 +17,7 @@ import {
 } from './week1SecondSession.ts';
 import { pickVictoryNextAction } from '@/lib/workout/workoutVictory';
 import { getFirstSteps, summarizeFirstSteps } from '@/lib/journey/firstSteps';
-import type { JourneyState } from '@/lib/missionJourney';
+import { pickReadinessPrimaryAction, type JourneyState } from '@/lib/missionJourney';
 import {
   buildJustGoHeroMeta,
   resolveJustGoHeroCopy,
@@ -60,6 +60,36 @@ describe('week-1 activation contract after composure (.404)', () => {
     assert.equal(victory.href, cue!.href);
     assert.equal(victory.labelKey, cue!.labelKey);
     assert.equal(victory.reasonKey, cue!.reasonKey);
+  });
+
+  /**
+   * K5 — After first log, phase is readiness; Today dock must agree with
+   * Victory and First Steps (train / session 2), not PAR-Q or guidebook.
+   */
+  it('readiness Today primary after first log is train — agrees Victory + First Steps (K5)', () => {
+    const cue = week1SecondSessionCue({ completedSessions: 1 });
+    assert.ok(cue);
+    const readinessPrimary = pickReadinessPrimaryAction({
+      readiness: { parq: false, streakMet: false, winScoreSeen: true },
+      completedSessions: 1,
+      startWorkout: {
+        name: 'Session 2',
+        exercises: [{ exerciseId: 'air-squat', sets: [{ reps: 10, weight: 0 }] }],
+      },
+    });
+    assert.ok(readinessPrimary);
+    assert.equal(readinessPrimary!.href, '/active');
+    assert.equal(readinessPrimary!.href, cue!.href);
+
+    const victory = pickVictoryNextAction({ completedWorkouts: 1 });
+    assert.equal(victory.href, readinessPrimary!.href);
+
+    const progress = summarizeFirstSteps(
+      getFirstSteps(basicAfterFirstWorkout(), { completedSessions: 1 })
+    );
+    assert.equal(progress.next?.href, readinessPrimary!.href);
+    assert.notEqual(readinessPrimary!.href, '/assessments');
+    assert.notEqual(readinessPrimary!.href, '/learn/guide');
   });
 
   it('pure cue shows only at completedSessions === 1', () => {

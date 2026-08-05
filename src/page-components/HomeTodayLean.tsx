@@ -13,6 +13,7 @@ import { JourneyHero } from '@/components/journey/JourneyHero';
 import { dayReviewMayMount } from '@/lib/today/dayReviewMount';
 import { firstStepsMayMount, reentryCardMayMount } from '@/lib/today/todayGuidanceMount';
 import { todayCoachInviteMayMount } from '@/lib/today/todayCoachInviteMount';
+import { loadPlan } from '@/lib/coach/storage';
 import { FIRST_STEPS_DISMISS_KEY } from '@/lib/today/firstStepsDismissed';
 import { useDismissed } from '@/hooks/useDismissed';
 import { TODAY_BLOCK_PRIORITY as P } from '@/lib/today/todayBlockPriority';
@@ -284,11 +285,12 @@ export function HomeTodayLean() {
     blocks.push({ key: 'day-review', priority: P['day-review'], node: <TodayDayReviewCard /> });
   }
 
-  // Flow-7 — invite survives first log (phase often readiness, not basic).
+  // Flow-7 / K3 — invite when early sessions and no plan (week strip owns plan).
   if (
     todayCoachInviteMayMount({
       phase: journeyState.phase,
       totalSessions: workoutHistory.length,
+      hasCoachPlan: typeof window !== 'undefined' ? !!loadPlan() : false,
     })
   ) {
     blocks.push({

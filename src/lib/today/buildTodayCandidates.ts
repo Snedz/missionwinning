@@ -17,7 +17,10 @@ import {
   firstStepsMayMount,
   reentryCardMayMount,
 } from '@/lib/today/todayGuidanceMount';
-import { todayCoachInviteMayMount } from '@/lib/today/todayCoachInviteMount';
+import {
+  todayCoachInviteMayMount,
+  todayCoachWeekMayMount,
+} from '@/lib/today/todayCoachInviteMount';
 import {
   TODAY_BLOCK_PRIORITY,
   type TodayBlockKey,
@@ -44,6 +47,11 @@ export type BuildTodayCandidatesInput = {
   /** Local hour 0–23 for day-review. */
   hour: number;
   weekRecap: { hasActivity: boolean; isWeekEnd: boolean } | null;
+  /**
+   * Mission Coach plan present on device (K3).
+   * Invite hides when true; readiness week strip shows only when true.
+   */
+  hasCoachPlan?: boolean;
 };
 
 const P = TODAY_BLOCK_PRIORITY;
@@ -76,7 +84,11 @@ export function buildTodayCandidates(input: BuildTodayCandidatesInput): TodayCan
 
   if (
     input.belowFoldReady &&
-    todayCoachInviteMayMount({ phase: input.phase, totalSessions: input.totalSessions })
+    todayCoachInviteMayMount({
+      phase: input.phase,
+      totalSessions: input.totalSessions,
+      hasCoachPlan: input.hasCoachPlan,
+    })
   ) {
     out.push({ key: 'coach-invite', priority: P['coach-invite'] });
   }
@@ -93,7 +105,10 @@ export function buildTodayCandidates(input: BuildTodayCandidatesInput): TodayCan
     out.push({ key: 'week-recap', priority: P['week-recap'] });
   }
 
-  if (input.belowFoldReady && (input.phase === 'readiness' || input.phase === 'commissioned')) {
+  if (
+    input.belowFoldReady &&
+    todayCoachWeekMayMount({ phase: input.phase, hasCoachPlan: input.hasCoachPlan })
+  ) {
     out.push({ key: 'coach-week', priority: P['coach-week'] });
   }
 
