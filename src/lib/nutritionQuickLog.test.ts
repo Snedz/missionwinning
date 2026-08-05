@@ -2,6 +2,7 @@ import { describe, it } from 'node:test';
 import assert from 'node:assert/strict';
 import {
   getRecentFoods,
+  mergeTodayIntoNutritionLog,
   scaleMealMacros,
   summarizeNutritionDays,
   type NutritionLogRow,
@@ -22,6 +23,24 @@ describe('summarizeNutritionDays', () => {
     assert.ok(jul22);
     assert.equal(jul22.cals, 200);
     assert.equal(days[0].entries, 0);
+  });
+});
+
+describe('mergeTodayIntoNutritionLog', () => {
+  it('replaces today and keeps older days', () => {
+    const prev: NutritionLogRow[] = [
+      { name: 'Old', protein: 1, cals: 10, date: '2026-07-20' },
+      { name: 'Stale today', protein: 2, cals: 20, date: '2026-07-24' },
+    ];
+    const next = mergeTodayIntoNutritionLog(
+      prev,
+      [{ name: 'Eggs', protein: 12, cals: 140, meal: 'breakfast' }],
+      '2026-07-24'
+    );
+    assert.equal(next.filter((r) => r.date === '2026-07-24').length, 1);
+    assert.equal(next.find((r) => r.date === '2026-07-24')?.name, 'Eggs');
+    assert.ok(next.some((r) => r.name === 'Old'));
+    assert.ok(!next.some((r) => r.name === 'Stale today'));
   });
 });
 

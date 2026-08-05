@@ -2,6 +2,7 @@
 
 import { useTranslation } from 'react-i18next';
 import type { NutritionDaySummary } from '@/lib/nutritionQuickLog';
+import { formatLocalDateKey } from '@/lib/time/localDate';
 import { cn } from '@/lib/utils';
 
 type Props = {
@@ -27,9 +28,7 @@ export function FuelWeekGlance({ days, todayIso, targetCals }: Props) {
           const h = Math.max(4, Math.round((d.cals / maxBar) * 64));
           const isToday = d.date === todayIso;
           const over = d.cals > targetCals && d.entries > 0;
-          const label = new Date(`${d.date}T12:00:00`).toLocaleDateString(i18n.language, {
-            weekday: 'narrow',
-          });
+          const label = formatLocalDateKey(d.date, i18n.language, { weekday: 'narrow' });
           return (
             <div key={d.date} className="flex-1 flex flex-col items-center gap-1 min-w-0">
               <span className="text-[10px] tabular-nums text-muted-foreground truncate max-w-full">

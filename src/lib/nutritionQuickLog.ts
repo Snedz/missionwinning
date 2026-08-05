@@ -47,6 +47,38 @@ export function pruneNutritionLogToDays(
   });
 }
 
+/**
+ * Replace today's rows in the full log and prune to the retention window.
+ * Pure — NutritionPage single-writer effect stays dumb.
+ */
+export function mergeTodayIntoNutritionLog(
+  prev: NutritionLogRow[],
+  todayEntries: Array<{
+    name: string;
+    protein: number;
+    cals: number;
+    carbs?: number;
+    fat?: number;
+    meal?: string;
+    time?: string;
+  }>,
+  today: string,
+  days = 90
+): NutritionLogRow[] {
+  const older = prev.filter((l) => l.date && l.date !== today);
+  const todayRows: NutritionLogRow[] = todayEntries.map((l) => ({
+    name: l.name,
+    protein: l.protein,
+    cals: l.cals,
+    carbs: l.carbs,
+    fat: l.fat,
+    meal: l.meal,
+    time: l.time,
+    date: today,
+  }));
+  return pruneNutritionLogToDays([...older, ...todayRows], days);
+}
+
 export function getFrequentQuickFoods(
   logs: NutritionLogRow[],
   defaults: readonly QuickFoodTuple[] = DEFAULT_QUICK,
