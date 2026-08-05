@@ -158,3 +158,14 @@ export function formatLocalDateKey(
   if (!y || !m || !d) return key;
   return new Date(y, m - 1, d, 12).toLocaleDateString(locale, opts);
 }
+
+/** Format YYYY-MM for display (month title). */
+export function formatLocalMonthKey(
+  monthKey: string,
+  locale: string,
+  opts: Intl.DateTimeFormatOptions = { month: 'long', year: 'numeric' }
+): string {
+  const [y, m] = monthKey.split('-').map(Number);
+  if (!y || !m) return monthKey;
+  return new Date(y, m - 1, 1).toLocaleDateString(locale, opts);
+}
