@@ -1,49 +1,47 @@
 # Improvement log — Kaizen Night (2026-08-05 full-launch)
 
-Session after #299 Mission Rewards. Plan: `.hermes/plans/2026-08-05_kaizen-night-plan.md`  
-**Tip build:** `2026.07-unified.516` · master tip PR stack **#300–#316**
+Plan: `.hermes/plans/2026-08-05_kaizen-night-plan.md`  
+**Tip:** `2026.07-unified.517` · PRs **#300–#318** on master · unit tests **1802** green  
+Local gate authoritative (GitHub Actions often billing-blocked).
 
 ## Contract
 
-- Full-launch override; free logger never gated; no `PRIVATE_MODE` flip.
-- Small PRs; local gate authoritative (GitHub Actions billing-blocked).
-- Tracks A rewards · B wedge · C honesty · D docs.
+Full-launch override · free logger never gated · no `PRIVATE_MODE` · small PRs · merge when local green.
 
-## Status (this night)
+## Shipped this night
 
-| ID | Item | Build / PR |
-|----|------|------------|
-| A1 | Lean Today Mission progress | `.507` #300 |
-| A2 | fuel_steady / mobility / student / still_mind | `.507` #300 · `.512` #308 |
-| A4 | Victory consume-once Strict Mode | `.509` #304 |
-| A5 | EN rewards i18n Today namespace | `.513` #310 |
-| C4 | More Leaderboard Wedge row | `.507` #300 |
-| C2 | America escape hatches | `.508` #301 |
-| C2b | Share never parked /america | `.511` #307 |
-| C1 | FREE_BETA Unlock + Bundle pins | `.510` #305 |
-| B3 | Coach from-logs honesty pins | `.512` #308 |
-| D2 | CONTEXT refuse vs override | `.507` #300 |
-| docs | CONTEXT dedupe / IMPROVEMENT_LOG | #302–#303 #306 #309 |
+| Build | PR | Summary |
+|-------|-----|---------|
+| `.507` | #300 | Lean Today rewards · milestone badges · More Leaderboard · CONTEXT override |
+| `.508` | #301 | `americaHomeOrFallback` join/teacher/PFT |
+| `.509` | #304 | Victory consume-once Strict Mode |
+| `.510` | #305 | FREE_BETA Unlock + Bundle dual-mode pins |
+| `.511` | #307 | Share text never parked `/america` |
+| `.512` | #308 | still_mind + Coach from-logs pins |
+| `.513` | #310 | EN rewards UI strings |
+| `.514` | #312 | perfect_week spectrum pure + workout emit |
+| `.515` | #314 | perfect_week fuel + pillar apply paths |
+| `.516` | #316 | Challenge Done XP from catalog |
+| `.517` | #318 | EN ranks + badge titles |
 
 ## Metrics
 
-| Metric | Night start | Now |
-|--------|-------------|-----|
-| Build | `.506` | **`.516`** |
-| Unit tests | 1778 | **1802** |
-| Merged PRs | — | **#300–#310** |
+| | Start | Now |
+|--|-------|-----|
+| Build | `.506` | **`.517`** |
+| Tests | 1778 | **1802** |
+| Merged PRs | 0 | **#300–#318** |
 
-## Remaining (next loops)
+## Remaining
 
-- B2 outdoor one-thumb residuals (if any measured friction)
-- perfect_week multi-pillar emit
-- Fat page decomp (HomeTodayDashboard / History / Nutrition)
+- Fat decomp (HomeTodayDashboard / History / Nutrition / Active)
+- Outdoor one-thumb measured friction
 - Android Accept B (founder)
-- Ops: postal, migrations, invites, Actions billing
+- Ops: postal · migrations · invites · Actions billing · visual baseline Linux
 
-## Standing refuses
+## Refuses
 
-`PRIVATE_MODE` · invent traction · gate free logger · America marketing without enable · iOS · wearables-as-score · coin wallet
+`PRIVATE_MODE` · invent traction · gate free logger · America marketing w/o enable · iOS · wearables-as-score · coin wallet
 
 ---
 
