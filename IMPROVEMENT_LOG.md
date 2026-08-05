@@ -18,14 +18,16 @@ Plan: `.hermes/plans/2026-08-05_kaizen-night-plan.md`
 | A2 | fuel/pillar milestone badges | done `.507` |
 | C4 | More Leaderboard Wedge row | done `.507` |
 | D2 | CONTEXT refuse vs override | done `.507` |
-| C2 | Dead parked hrefs | in progress |
+| C2 | Dead parked hrefs | done `.508` |
+| — | americaHomeOrFallback | done `.508` |
 | B1 | One-boss CTA | pending |
 
 ## Metrics
 
 | Metric | Start | Now |
 |--------|-------|-----|
-| Build | `.506` | **`.507`** |
+| Build | `.506` | **`.508`** |
+| Unit tests | 1778 | **1788** |
 | Unit tests | 1778 | TBD |
 
 ---

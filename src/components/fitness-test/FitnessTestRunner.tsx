@@ -28,6 +28,7 @@ import { hasYouthConsent, mergeYouthConsentFromServer, requiresYouthConsent } fr
 import { pushLeaderboardSnapshot } from '@/lib/leaderboardSync';
 import { computeLocalLeaderboardSnapshot } from '@/lib/leaderboard/computeLocalStats';
 import { useWorkoutStore } from '@/store/workoutStore';
+import { americaHomeOrFallback, isAmericaTrackEnabled } from '@/lib/americaConfig';
 
 type Step = 'profile' | 'youth' | 'events' | 'results';
 
@@ -202,9 +203,15 @@ export function FitnessTestRunner() {
           <Button className="w-full" onClick={() => router.push('/benchmarks')}>
             {t('pftBackBenchmarks', { defaultValue: 'Back to Benchmarks' })}
           </Button>
-          <Button variant="outline" className="w-full" onClick={() => router.push('/america')}>
-            {t('pftShareAmerica', { defaultValue: 'National fitness mission →' })}
-          </Button>
+          {isAmericaTrackEnabled() && (
+            <Button
+              variant="outline"
+              className="w-full"
+              onClick={() => router.push(americaHomeOrFallback())}
+            >
+              {t('pftShareAmerica', { defaultValue: 'National fitness mission →' })}
+            </Button>
+          )}
         </CardContent>
       </Card>
     );

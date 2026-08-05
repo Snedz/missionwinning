@@ -22,6 +22,7 @@ import {
 } from '@/lib/schoolClass';
 import { formatClassStandingsCsv } from '@/lib/schoolClassExport';
 import { formatWeekOneChallengeText } from '@/data/pftWeekOneChallenge';
+import { americaHomeOrFallback } from '@/lib/americaConfig';
 
 type ClassStats = {
   code: string;
@@ -219,7 +220,9 @@ function TeacherClassInner({ code: rawCode }: { code: string }) {
               {t('teacherPinUnlock', { defaultValue: 'Unlock dashboard' })}
             </Button>
             <Button variant="ghost" className="w-full" asChild>
-              <Link href="/america">{t('pftBackBenchmarks', { defaultValue: 'Back' })}</Link>
+              <Link href={americaHomeOrFallback()}>
+                {t('pftBackBenchmarks', { defaultValue: 'Back' })}
+              </Link>
             </Button>
           </CardContent>
         </Card>
@@ -247,7 +250,9 @@ function TeacherClassInner({ code: rawCode }: { code: string }) {
             )}
           </div>
           <Button variant="outline" size="sm" asChild>
-            <Link href="/america">/america</Link>
+            <Link href={americaHomeOrFallback()}>
+              {t('pftBackAmerica', { defaultValue: 'National fitness' })}
+            </Link>
           </Button>
         </div>
 

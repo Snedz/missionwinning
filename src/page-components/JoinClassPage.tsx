@@ -8,6 +8,7 @@ import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { joinClass } from '@/lib/schoolClass';
 import { track } from '@/lib/analytics';
+import { americaHomeOrFallback } from '@/lib/americaConfig';
 
 type Props = {
   code: string;
@@ -21,7 +22,7 @@ export function JoinClassPage({ code }: Props) {
     if (joined) {
       track('class_joined', { code: String(joined).slice(0, 32) });
     }
-    router.replace(joined ? `/fitness-test?class=${joined}` : '/america');
+    router.replace(joined ? `/fitness-test?class=${joined}` : americaHomeOrFallback());
   }, [code, router]);
 
   return (

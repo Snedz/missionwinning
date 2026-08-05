@@ -5,6 +5,7 @@ import {
   isAmericaTrackEnabled,
   showMahaCopy,
   getCouncilDeployWarnings,
+  americaHomeOrFallback,
 } from '@/lib/americaConfig';
 
 describe('americaConfig', () => {
@@ -14,6 +15,10 @@ describe('americaConfig', () => {
 
   it('defaults america track disabled (opt-in via NEXT_PUBLIC_AMERICA_TRACK_ENABLED=true)', () => {
     assert.equal(isAmericaTrackEnabled(), false);
+  });
+
+  it('fallback home is benchmarks while track is parked', () => {
+    assert.equal(americaHomeOrFallback(), '/benchmarks');
   });
 
   it('defaults MAHA copy off', () => {
