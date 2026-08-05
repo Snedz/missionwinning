@@ -1,3 +1,4 @@
+| [log/LOG-rotate-504-form.md](./log/LOG-rotate-504-form.md) | rotated oldest for `.504` form reassemble |
 # docs/archive/
 
 > Superseded planning docs moved here when explicitly retired (Wave 9).

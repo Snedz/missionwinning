@@ -74,3 +74,12 @@ Log every rejected generation. Do not re-ship the same glitch.
 | 2026-08-05 | `pull-ups/side.webp` | Feet cut off frame (hard reject); hang-only not chin-over | Demoted from `FORM_PACK_SIDE_IDS` |
 
 Validation protocol: [MOVEMENT_STANDARDS.md](MOVEMENT_STANDARDS.md) (CrossFit demos = reference only).
+
+## 2026-08-05 — Form Director re-assemble (demotes fixed)
+
+| Date | Asset | Notes |
+|------|--------|--------|
+| 2026-08-05 | `overhead-press/side.webp` | Athlete-a lock · two-hand empty-bar lockout · head + full body · PASS → re-wire SIDE_IDS (still-only; no VIDEO) |
+| 2026-08-05 | `pull-ups/side.webp` | Athlete-a lock · dead-hang setup · feet + head in frame · PASS → re-wire SIDE_IDS (still-only; chin-over still hard) |
+
+**Process note:** `npm run media:optimize-inbox` rewrites **every** matching inbox frame. Isolate regen targets before optimize, or `git checkout` other `public/form/*` after a bulk run.

@@ -20,15 +20,15 @@ export const FORM_PACK_SIDE_IDS = new Set([
   'air-squat',
   'romanian-deadlift',
   'push-ups',
-  // demoted .498: feet cut off frame (hard reject); hang-only not chin-over
-  // 'pull-ups',
+  // Form Director regen 2026-08-05 — hang setup, full feet/head; still-only (not chin-over)
+  'pull-ups',
   'thruster',
   'kettlebell-swing',
   'plank',
   'bench-press',
   'deadlift',
-  // demoted .498: single-arm press — wrong exercise for overhead-press id
-  // 'overhead-press',
+  // Form Director regen 2026-08-05 — two-hand empty-bar lockout; still-only (no I2V yet)
+  'overhead-press',
   'front-squat',
   'lunges',
   'glute-bridge',

@@ -10,6 +10,12 @@ Archive: [2026-06 → 2026-07-20](docs/archive/log/LOG-2026-06_to_2026-07-20.md)
 
 ---
 
+## 2026-08-05 — Form Index re-assemble OHP + pull-ups (`.504`)
+
+Re-ship demoted stills (`.498` eyes-on FAIL): overhead-press two-hand empty-bar lockout; pull-ups dead-hang setup with feet/head in frame. Athlete-a Form Director edit → inbox → optimize → re-wire `FORM_PACK_SIDE_IDS` (still-only; no VIDEO). Restored bulk optimize overwrites on other packs.
+
+Mutants: OHP/pull-ups missing from SIDE_IDS after regen → red.
+
 ## 2026-08-05 — Kaizen K11: History day + list retrain (`.503`)
 
 Extend History → Train: session list **Again** (ghost, no wipe of logged active work) + day replay train entries use `logFromTrainJournalId` → same retrain path. Shared `retrainFromLog` on HistoryPage. Pure journal id prefix matches `gatherJournalEntries` `train-${id}`.
@@ -101,10 +107,3 @@ Mutants: POSTCSS_FLOOR 9.0.0 → red; pack/public disagree on hi key → footpri
 `.484` fixed machine-translated `{{peso}}`-style keys, but the extractor used `\w` (ASCII-only in JS). Hindi/Thai/Vietnamese packs still shipped `{{गिनती}}`, `{{นาที}}`, `{{trọng lượng}}` — runtime left literals; the guard skipped them because `got.size === 0`. Rewrote 36 keys (hi 27, vi 7, th 2) to English names; synced `public/locales`. Extractor is now `{{([^}]+)}}` + ASCII-ident check; pin test fails if `\w` returns.
 
 Mutants: restore `\w` extractor → pin red; hi `{{गिनती}}` again → main test red.
-
-
-## 2026-08-05 — Next 16.3.0 + locale public/pack parity (`.489`)
-
-Kaizen night A residual: bump `next` `^16.2.12` → `^16.3.0` (lockfile resolves 16.3.0). Sync `public/locales/**` to `src/i18n/packs` where pack placeholder rewrites from `.484` had not landed on the HTTP override copy (localeFootprint drift: e.g. ja `{{unit}}` vs `{{単位}}`). `formPatterns` test accepts Form Index video packs for front-squat (`.477`) while pinning OHP still-only.
-
-Mutants: public/ja unit as `{{単位}}` again → footprint red; front-squat still-only assert only → pack video green path breaks.
