@@ -24,3 +24,10 @@
 |------|--------|
 | `engine.test.ts` | XP caps, badges, idempotency, weekly goal, comeback |
 | `summary` via engine tests | level progress |
+
+## Perfect week
+
+- `perfectWeek.ts` — pure spectrum rule (train goal + multi-pillar slots)
+- Emitted from `apply.ts` on workout finish, fuel day, and pillar win when earned
+- Grants `full_spectrum` badge via engine `perfect_week` event
+
