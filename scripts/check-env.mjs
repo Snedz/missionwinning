@@ -165,6 +165,20 @@ if (launch && process.env.PRIVATE_MODE !== 'false') {
   warn++;
 }
 
+// CAN-SPAM: invite + list mail hard-refuse without a public postal address (CONTEXT ## Now).
+if (launch && !process.env.MAIL_POSTAL_ADDRESS?.trim()) {
+  console.log(
+    '  ⚠ MAIL_POSTAL_ADDRESS unset — beta invites and list mail cannot send (LAUNCH_RUNBOOK §2; send-beta-invite hard-exits)'
+  );
+  warn++;
+}
+
+if (launch && process.env.NEXT_PUBLIC_FREE_BETA !== 'false' && process.env.NEXT_PUBLIC_FREE_BETA !== '0') {
+  console.log(
+    '  · FREE_BETA is on (default) — Bundle/checkout muted, premium depth unlocked; set NEXT_PUBLIC_FREE_BETA=false after EIN/Stripe'
+  );
+}
+
 const resendFrom = process.env.RESEND_FROM || '';
 if (launch && (!resendFrom || /@resend\.dev\b/i.test(resendFrom))) {
   console.log('  ⚠ RESEND_FROM — set a verified domain From (not onboarding@resend.dev) for launch mail');

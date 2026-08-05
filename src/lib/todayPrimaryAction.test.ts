@@ -71,3 +71,22 @@ describe('isTodayTrainReady', () => {
     );
   });
 });
+
+describe('Today shells pass re-entry doseScale into primary action', () => {
+  it('lean + dashboard call runTodayPrimaryAction with doseScale from reentry', () => {
+    const root = path.join(import.meta.dirname, '..', '..');
+    for (const rel of [
+      'src/page-components/HomeTodayLean.tsx',
+      'src/page-components/HomeTodayDashboard.tsx',
+    ]) {
+      const src = readFileSync(path.join(root, rel), 'utf8');
+      assert.match(src, /runTodayPrimaryAction\(/, rel);
+      assert.match(
+        src,
+        /doseScale:\s*reentry\?\.show\s*\?\s*reentry\.doseScale\s*:\s*1/,
+        `${rel} must ease Just Go when re-entry shows (criterion 4)`
+      );
+    }
+  });
+});
+
