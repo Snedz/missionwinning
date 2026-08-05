@@ -38,7 +38,7 @@ const GATED_ROUTES = [
   '/library',
   '/builder',
   '/profile',
-  '/experience?tier=static',
+
   '/exercises/push-ups',
   // The SEO tail is most of the site's URLs and one exercise page used to represent all
   // of it. One route per template, plus the two info pages every footer links to.

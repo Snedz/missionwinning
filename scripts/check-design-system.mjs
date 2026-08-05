@@ -139,7 +139,17 @@ function walk(dir, out = []) {
     if (entry.isDirectory()) {
       if (entry.name === 'node_modules' || entry.name === '.next') continue;
       walk(rel, out);
-    } else if (/\.tsx?$/.test(entry.name) && !/\.(test|routetest)\.tsx?$/.test(entry.name)) {
+    } else if (
+      /*
+       * `.462` — `.css` joined the walk. `src/components/experience/experience.css`
+       * carried emerald hex, `oklch()` blocks, retired `--brass` semantics and 12
+       * non-zero radii for a full rebrand cycle, invisible to a checker that only
+       * opened `.tsx`/`.ts` plus one hand-named stylesheet. A palette rule that
+       * skips the language palettes are written in checks spellings, not design.
+       */
+      /\.(tsx?|css)$/.test(entry.name) &&
+      !/\.(test|routetest)\.tsx?$/.test(entry.name)
+    ) {
       out.push(rel);
     }
   }
@@ -171,7 +181,13 @@ const RULES = [
      * under this same rule id. That ordering is `.212`'s rule: a guard keyed to
      * one spelling of a defect has only ever tested that spelling.
      */
-    pattern: /#[0-9a-fA-F]{3}(?:[0-9a-fA-F]{3})?\b|\b(?:rgba?|hsla?)\(\s*[0-9.]/g,
+    /*
+     * `oklch(` joined `.462` with the `.css` walk — the experience stylesheet
+     * wrote its swatches in it, a functional form the `.244` widening never
+     * saw because no `.tsx` used it. Same literal-vs-token separator: a digit
+     * after the paren is a hardcoded colour, `oklch(var(--…))` would not match.
+     */
+    pattern: /#[0-9a-fA-F]{3}(?:[0-9a-fA-F]{3})?\b|\b(?:rgba?|hsla?|oklch)\(\s*[0-9.]/g,
     why: 'paper/ink/one-red comes from the tokens in src/index.css — use hsl(var(--…))',
   },
   {
@@ -248,7 +264,9 @@ const RULES = [
     // only way a second typeface enters. Captured and tested for the same
     // backtracking reason as the radius rule above.
     pattern: /font-family:\s*([^;]+)/g,
-    ok: (v) => v.trim().startsWith('var(--font'),
+    // `inherit` is not a second typeface — it is the explicit refusal to name
+    // one (gate.css uses it to reset a button to the page face).
+    ok: (v) => v.trim().startsWith('var(--font') || v.trim() === 'inherit',
     why: 'Archivo only — --font-inter/display/mono all alias --font-archivo',
   },
 ];
@@ -271,7 +289,8 @@ export function scan(files, readFile, ignoreExemptions = false) {
 }
 
 function main() {
-  const files = [...walk('src'), ...walk('app'), 'src/index.css'];
+  // `src/index.css` no longer needs naming by hand — the walk carries `.css`.
+  const files = [...walk('src'), ...walk('app')];
   const findings = scan(files, (f) => readFileSync(path.join(root, f), 'utf8'));
 
   console.log(

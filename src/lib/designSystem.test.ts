@@ -72,6 +72,32 @@ test('a colour is caught in its functional forms too, not only hex', () => {
   assert.equal(scanText('src/x.tsx', "stroke='hsl(var(--accent-poster))'").length, 0);
 });
 
+test('oklch literals are caught — the spelling the experience stylesheet hid in (.462)', () => {
+  assert.equal(scanText('src/x.css', 'color: oklch(0.7 0.15 150);').length, 1, 'oklch literal');
+  assert.equal(scanText('src/x.css', 'color: oklch(var(--ink));').length, 0, 'token spelling');
+});
+
+test('font-family: inherit is a reset, not a second typeface', () => {
+  assert.equal(scanText('src/x.css', 'font-family: inherit;').length, 0);
+  assert.equal(scanText('src/x.css', 'font-family: "Comic Sans MS";').length, 1);
+  assert.equal(scanText('src/x.css', 'font-family: var(--font-archivo);').length, 0);
+});
+
+test('the walk opens .css files — the blind spot that hid a whole off-system page (.462)', () => {
+  /*
+   * Source assertion, because the walk is not exported: the file-extension
+   * filter must include `css`. A mutant reverting the walk to `.tsx`-only
+   * turns this red — and without it, the two fixture tests above would pass
+   * forever against stylesheets the real run never opens.
+   */
+  const scriptSource = read('scripts/check-design-system.mjs');
+  assert.match(
+    scriptSource,
+    /\\\.\(tsx\?\|css\)\$/,
+    'check-design-system must walk .css files — experience.css hid emerald/oklch/12 radii for a full rebrand cycle in exactly this gap'
+  );
+});
+
 test('a chart tooltip with no styling at all is caught', () => {
   /*
    * The hole no colour scan can cover: styling that is **absent**. Every other
