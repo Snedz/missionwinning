@@ -165,6 +165,19 @@ describe('milestone badges — fuel + pillars', () => {
     }
     assert.ok(state.badges.includes('student'));
   });
+
+  it('grants still_mind after 8 mind wins', () => {
+    let state = emptyRewardState();
+    for (let i = 0; i < 8; i++) {
+      state = applyRewardEvent(state, {
+        type: 'pillar_win',
+        winId: `mind${i}`,
+        pillar: 'mind',
+      }).state;
+    }
+    assert.ok(state.badges.includes('still_mind'));
+    assert.equal(state.pillarWins.mind, 8);
+  });
 });
 
 describe('level math', () => {
