@@ -290,7 +290,7 @@ export function HomeTodayDashboard() {
     void load();
   }, [belowFoldReady]);
 
-  // === Today Hub computations (memoized — avoid recompute on every render) ===
+  // === Today computations (memoized — avoid recompute on every render) ===
   // Slim path: stored muscleGroups only — no sync EXERCISES import on first paint.
   const [readiness, setReadiness] = useState(() => computeReadinessFromHistory(workoutHistory));
   const recommendedFocus = useMemo(() => getRecommendedFocus(readiness), [readiness]);
