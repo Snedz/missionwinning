@@ -4,9 +4,9 @@
  * See: app/INDEX.md, src/page-components/INDEX.md
  */
 
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { useTranslation } from 'react-i18next';
 import { FREE_LEARN_PATHS } from '@/data/learnPaths';
 import { localizeLearnPaths } from '@/lib/localizeLearnPaths';
@@ -22,10 +22,18 @@ import { EmptyState } from '@/components/ui/EmptyState';
 import { isFreeBeta } from '@/lib/freeBeta';
 import { STORAGE_KEYS } from '@/lib/storage/keys';
 import { readJson, writeJson } from '@/lib/storage/safeStorage';
+import {
+  parseSeoLearnPathParam,
+  PUBLIC_GUIDE_HREF,
+  stripSeoLearnPathFromSearch,
+} from '@/lib/seoLearnBridge';
+
+const FREE_PATH_IDS = FREE_LEARN_PATHS.map((p) => p.id);
 
 export function LearnPage() {
   const { t } = useTranslation();
   const router = useRouter();
+  const searchParams = useSearchParams();
   const { premium } = usePremium();
   const startWorkout = useWorkoutStore((s) => s.startWorkout);
   const paths = useMemo(
@@ -37,6 +45,19 @@ export function LearnPage() {
   const [completedLessons, setCompletedLessons] = useState<Set<string>>(
     () => new Set(readJson<string[]>(STORAGE_KEYS.learnCompleted, []))
   );
+
+  /** Flow-3: SEO `/paths/[id]` → `/learn?path=` expands that free path once. */
+  const seoPathConsumed = useRef(false);
+  useEffect(() => {
+    if (seoPathConsumed.current) return;
+    const id = parseSeoLearnPathParam(searchParams, FREE_PATH_IDS);
+    if (!id) return;
+    seoPathConsumed.current = true;
+    setExpandedPath(id);
+    router.replace(`/learn${stripSeoLearnPathFromSearch(window.location.search)}`, {
+      scroll: false,
+    });
+  }, [searchParams, router]);
 
   const filteredPaths = useMemo(() => {
     const q = pathQuery.trim().toLowerCase();
@@ -85,11 +106,18 @@ export function LearnPage() {
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <Button variant="default" size="sm" asChild>
-              <Link href="/learn/guide">
-                {t('learnOpenGuidebook', { defaultValue: 'Open Guidebook →' })}
-              </Link>
-            </Button>
+            <div className="flex flex-wrap gap-2">
+              <Button variant="default" size="sm" asChild>
+                <Link href="/learn/guide">
+                  {t('learnOpenGuidebook', { defaultValue: 'Open Guidebook →' })}
+                </Link>
+              </Button>
+              <Button variant="outline" size="sm" asChild>
+                <Link href={PUBLIC_GUIDE_HREF}>
+                  {t('learnOpenMagazine', { defaultValue: 'Magazine (web) →' })}
+                </Link>
+              </Button>
+            </div>
           </CardContent>
         </Card>
 

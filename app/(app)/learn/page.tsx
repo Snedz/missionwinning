@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import dynamic from 'next/dynamic';
+import { Suspense } from 'react';
 import { publicPageMetadata } from '@/lib/seoMetadata';
 import { RouteLoading } from '@/components/layout/RouteLoading';
 
@@ -15,5 +16,9 @@ export const metadata: Metadata = publicPageMetadata({
 });
 
 export default function LearnRoute() {
-  return <LearnPage />;
+  return (
+    <Suspense fallback={<RouteLoading label="Learn" />}>
+      <LearnPage />
+    </Suspense>
+  );
 }

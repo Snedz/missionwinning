@@ -73,13 +73,21 @@ export function GuidePublicIndexPage() {
           ))}
         </section>
 
-        <div className="pt-4 text-center">
+        <div className="flex flex-col items-center gap-3 pt-4 sm:flex-row sm:justify-center">
           <Button asChild variant="default">
             <Link
               href="/welcome"
               onClick={() => track('public_cta_clicked', { target: '/welcome' })}
             >
               {t('magazineStartTraining', { defaultValue: 'Start training' })} →
+            </Link>
+          </Button>
+          <Button asChild variant="outline">
+            <Link
+              href="/learn/guide"
+              onClick={() => track('public_cta_clicked', { target: '/learn/guide' })}
+            >
+              {t('magazineOpenInApp', { defaultValue: 'Track progress in app →' })}
             </Link>
           </Button>
         </div>

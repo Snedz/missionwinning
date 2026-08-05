@@ -23,6 +23,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Button } from '@/components/ui/button';
 import { BookMarked, ChevronRight, Download } from 'lucide-react';
 import { fetchPremiumCatalogJson } from '@/lib/premiumCatalogCache';
+import { PUBLIC_GUIDE_HREF, publicGuideChapterHref } from '@/lib/seoLearnBridge';
 
 export function GuidebookIndexPage() {
   const { t } = useTranslation();
@@ -63,7 +64,7 @@ export function GuidebookIndexPage() {
       title={t('guidebookTitle', { defaultValue: 'Beyond the Basics' })}
       subtitle={t('guidebookSubtitle', {
         defaultValue:
-          'Now with even more content! The Mission Winning guidebook — understand training from the ground up.',
+          'Beyond the Basics — same free chapters as the public magazine, with progress here in the app.',
       })}
       showLegalFooter
     >
@@ -82,13 +83,21 @@ export function GuidebookIndexPage() {
             </div>
             <div className="flex flex-wrap gap-2">
               <Button variant="default" size="sm" asChild>
+                <Link
+                  href={PUBLIC_GUIDE_HREF}
+                  onClick={() => track('guide_read', { page: 'app_to_public_magazine' })}
+                >
+                  {t('guidebookMagazineWeb', { defaultValue: 'Magazine (web) →' })}
+                </Link>
+              </Button>
+              <Button variant="outline" size="sm" asChild>
                 <a
                   href={MAGAZINE_PDF_PATH}
                   download
                   onClick={() => track('guide_pdf_download', { surface: 'learn_guide' })}
                 >
                   <Download className="mr-1.5 h-4 w-4" aria-hidden />
-                  {t('guidebookPdfDownload', { defaultValue: 'Download magazine (PDF)' })}
+                  {t('guidebookPdfDownload', { defaultValue: 'PDF' })}
                 </a>
               </Button>
               <Button variant="outline" size="sm" asChild>
@@ -105,6 +114,9 @@ export function GuidebookIndexPage() {
             const href = isPremiumChapter
               ? `/learn/course?chapter=${encodeURIComponent(chapter.id)}`
               : `/learn/guide/${chapter.id}`;
+            const magazineHref = isPremiumChapter
+              ? null
+              : publicGuideChapterHref(chapter.id);
             return (
               <Card key={chapter.id} className="content-card">
                 <Link href={href} className="block">
@@ -132,6 +144,18 @@ export function GuidebookIndexPage() {
                     </div>
                   </CardHeader>
                 </Link>
+                {magazineHref && (
+                  <CardContent className="pt-0 pb-3">
+                    <Link
+                      href={magazineHref}
+                      className="text-xs font-medium text-primary hover:underline"
+                    >
+                      {t('guidebookChapterMagazine', {
+                        defaultValue: 'Same chapter in magazine (web) →',
+                      })}
+                    </Link>
+                  </CardContent>
+                )}
               </Card>
             );
           })}
