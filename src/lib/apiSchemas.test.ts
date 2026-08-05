@@ -50,6 +50,22 @@ const UUID_2 = '7c1e4b90-2a3d-4f56-8b9c-0d1e2f3a4b5c';
 const SIG = 'z'.repeat(88);
 
 const CASES: Record<string, Case> = {
+  accountDeleteBodySchema: {
+    valid: [{ confirm: 'DELETE', deviceId: 'device-1' }],
+    invalid: [
+      {
+        input: { confirm: 'delete' },
+        because:
+          'the literal is the second confirmation — a console-typed fetch without the exact casing must delete nothing',
+      },
+      { input: {}, because: 'confirm is required' },
+      {
+        input: { confirm: 'DELETE', deviceId: 'x'.repeat(65) },
+        because: 'device ids are client UUIDs; 64 bounds junk',
+      },
+    ],
+  },
+
   checkoutBodySchema: {
     valid: [{ planId: 'lifetime' }, { planId: 'monthly' }, { planId: '12mo' }],
     invalid: [
