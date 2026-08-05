@@ -12,3 +12,12 @@ test('HistoryPage uses formatLocalDateKey, not a page-local formatDayKey', () =>
   assert.match(src, /formatLocalDateKey/);
   assert.doesNotMatch(src, /function formatDayKey/);
 });
+
+test('HistoryDayPage uses formatLocalDateKey, not a page-local formatDay', () => {
+  const src = readFileSync(
+    join(import.meta.dirname, '..', '..', 'page-components', 'HistoryDayPage.tsx'),
+    'utf8'
+  );
+  assert.match(src, /formatLocalDateKey/);
+  assert.doesNotMatch(src, /function formatDay\b/);
+});

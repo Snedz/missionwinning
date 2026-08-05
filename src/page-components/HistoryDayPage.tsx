@@ -28,6 +28,14 @@ import {
   templateFromCompletedLog,
 } from '@/lib/workout/historyRetrain';
 import { track } from '@/lib/analytics';
+import { formatLocalDateKey } from '@/lib/time/localDate';
+
+const LONG_LOCAL_DATE: Intl.DateTimeFormatOptions = {
+  weekday: 'long',
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric',
+};
 import type { JournalPillar } from '@/lib/todayTrends';
 
 type Props = { date: string };
@@ -40,23 +48,6 @@ const PILLAR_LABEL: Record<JournalPillar, string> = {
   track: 'Track',
   learn: 'Learn',
 };
-
-/**
- * `YYYY-MM-DD` → a readable date, built from **local** fields.
- *
- * Never `new Date(key)`: a bare date string parses as UTC midnight, so west of
- * UTC it renders as the previous day — the mirror of `.245`.
- */
-function formatDay(key: string, locale: string): string {
-  const [y, m, d] = key.split('-').map(Number);
-  if (!y || !m || !d) return key;
-  return new Date(y, m - 1, d, 12).toLocaleDateString(locale, {
-    weekday: 'long',
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric',
-  });
-}
 
 export function HistoryDayPage({ date }: Props) {
   const router = useRouter();
@@ -79,7 +70,7 @@ export function HistoryDayPage({ date }: Props) {
   }, [date, workoutHistory, tick]);
 
   const valid = isDayKey(date);
-  const heading = valid ? formatDay(date, i18n.language) : date;
+  const heading = valid ? formatLocalDateKey(date, i18n.language, LONG_LOCAL_DATE) : date;
 
   return (
     <PillarPageShell
@@ -172,7 +163,7 @@ export function HistoryDayPage({ date }: Props) {
               className="flex min-h-[44px] items-center gap-1 border-2 border-border px-3 text-xs text-foreground"
             >
               <ChevronLeft className="h-4 w-4" aria-hidden />
-              {formatDay(record.previous, i18n.language)}
+              {formatLocalDateKey(record.previous, i18n.language, LONG_LOCAL_DATE)}
             </Link>
           ) : (
             <span />
@@ -182,7 +173,7 @@ export function HistoryDayPage({ date }: Props) {
               href={`/history/${record.next}`}
               className="flex min-h-[44px] items-center gap-1 border-2 border-border px-3 text-xs text-foreground"
             >
-              {formatDay(record.next, i18n.language)}
+              {formatLocalDateKey(record.next, i18n.language, LONG_LOCAL_DATE)}
               <ChevronRight className="h-4 w-4" aria-hidden />
             </Link>
           ) : (
