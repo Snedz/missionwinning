@@ -47,3 +47,17 @@ test('paid mute surfaces and depth unlock are both documented in FREE_BETA.md', 
   assert.match(doc, /Unlock depth|premium-entitled|isFreeBetaPremiumUnlocked/i);
   assert.match(doc, /NEXT_PUBLIC_FREE_BETA=false/);
 });
+
+test('UnlockButton mutes under free-beta and still has a paid checkout body', () => {
+  const src = readFileSync(path.join(root, 'src/components/UnlockButton.tsx'), 'utf8');
+  assert.match(src, /if\s*\(\s*isFreeBeta\s*\(\s*\)\s*\)\s*return\s*null/);
+  // When free-beta is off, checkout / waitlist path remains load-bearing.
+  assert.match(src, /createCheckoutForPlan|getStripeCheckoutUrl/);
+  assert.match(src, /grantPremiumDemo|submitLead/);
+});
+
+test('Bundle route redirects when free-beta is on', () => {
+  const src = readFileSync(path.join(root, 'app/bundle/page.tsx'), 'utf8');
+  assert.match(src, /isFreeBeta/);
+  assert.match(src, /redirect\s*\(\s*['"]\/log['"]\s*\)/);
+});
