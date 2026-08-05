@@ -21,3 +21,12 @@ test('HistoryDayPage uses formatLocalDateKey, not a page-local formatDay', () =>
   assert.match(src, /formatLocalDateKey/);
   assert.doesNotMatch(src, /function formatDay\b/);
 });
+
+test('resolveTrendSeries labels via formatLocalDateKey', () => {
+  const src = readFileSync(
+    join(import.meta.dirname, '..', 'trends', 'resolveTrendSeries.ts'),
+    'utf8'
+  );
+  assert.match(src, /formatLocalDateKey/);
+  assert.doesNotMatch(src, /new Date\(y,\s*m\s*-\s*1,\s*d/);
+});

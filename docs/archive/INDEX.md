@@ -25,6 +25,7 @@ When adding a doc:
 
 | File | Absorbed by / note |
 |------|---------------------|
+| [log/LOG-rotate-525.md](./log/LOG-rotate-525.md) | rotated oldest for `.525` trend labels |
 | [log/LOG-rotate-524.md](./log/LOG-rotate-524.md) | rotated oldest for `.524` badge desc / HistoryDay |
 | [log/LOG-rotate-523.md](./log/LOG-rotate-523.md) | rotated oldest for `.523` whatsnew |
 | [log/LOG-rotate-522.md](./log/LOG-rotate-522.md) | rotated oldest for `.522` profile challenges |
