@@ -1,5 +1,6 @@
 /** School / PE class codes — local join + optional cloud sync via Supabase. */
 
+import { americaHomeOrFallback } from '@/lib/americaConfig';
 import { saveSquadCode } from '@/lib/leaderboard/boards';
 import { STORAGE_KEYS, STORAGE_KEY_PREFIXES } from '@/lib/storage/keys';
 import { readJson, readRaw, remove, writeJson, writeRaw } from '@/lib/storage/safeStorage';
@@ -114,7 +115,7 @@ export function teacherDashboardUrl(code: string, pin: string, baseUrl?: string)
 
 export function classJoinUrl(code: string, baseUrl?: string): string {
   const normalized = normalizeClassCode(code);
-  if (!normalized) return '/america';
+  if (!normalized) return americaHomeOrFallback();
   const origin =
     baseUrl ??
     (typeof window !== 'undefined' ? window.location.origin : 'https://www.missionwinning.com');

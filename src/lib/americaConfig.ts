@@ -22,6 +22,14 @@ export function isAmericaTrackEnabled(): boolean {
   return isSurfaceEnabled('america');
 }
 
+/**
+ * Deep-link home for America/PFT when the track is on; otherwise a live surface
+ * so parked athletes never land on a 404 from share/join/back CTAs.
+ */
+export function americaHomeOrFallback(): string {
+  return isAmericaTrackEnabled() ? '/america' : '/benchmarks';
+}
+
 export function showMahaCopy(): boolean {
   return process.env.NEXT_PUBLIC_SHOW_MAHA_COPY === 'true';
 }

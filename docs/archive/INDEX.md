@@ -25,6 +25,7 @@ When adding a doc:
 
 | File | Absorbed by / note |
 |------|---------------------|
+| [log/LOG-rotate-508.md](./log/LOG-rotate-508.md) | rotated oldest for `.508` america fallbacks |
 | [log/LOG-rotate-507.md](./log/LOG-rotate-507.md) | rotated oldest for `.507` kaizen |
 | [log/LOG-rotate-506.md](./log/LOG-rotate-506.md) | rotated oldest for `.506` full-launch honesty |
 | [log/LOG-rotate-505.md](./log/LOG-rotate-505.md) | rotated oldest for `.505` Mission Rewards |
