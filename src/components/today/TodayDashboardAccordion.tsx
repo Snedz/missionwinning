@@ -13,6 +13,8 @@ import type { CompletedWorkoutLog, SavedWorkout } from '@/types';
 import type { ReadinessInfo } from '@/lib/readinessIndex';
 import type { MuscleGroup } from '@/lib/muscleGroups';
 import type { JournalEntry } from '@/lib/todayTrends';
+import type { RewardsSummary } from '@/lib/rewards/summary';
+import { TodayRewardsCard } from '@/components/rewards/TodayRewardsCard';
 
 type PillarStats = {
   moveFlows: number;
@@ -63,6 +65,7 @@ type Props = {
     name: string,
     exercises: { exerciseId: string; sets: { reps: number; weight: number }[] }[]
   ) => void;
+  rewards?: RewardsSummary | null;
 };
 
 export function TodayDashboardAccordion(props: Props) {
@@ -131,14 +134,18 @@ export function TodayDashboardAccordion(props: Props) {
                 challenges={props.challenges}
                 streak={props.streak}
                 todaysWorkout={props.todaysWorkout}
+                rewards={props.rewards}
                 onStartTodaysWorkout={() =>
                   props.onStartStarter(props.todaysWorkout!.name, props.todaysWorkout!.exercises)
                 }
               />
             ) : (
-              <p className="text-sm text-muted-foreground py-2">
-                {t('todayWeekLoading', { defaultValue: 'Loading week…' })}
-              </p>
+              <div className="space-y-4">
+                {props.rewards ? <TodayRewardsCard summary={props.rewards} /> : null}
+                <p className="text-sm text-muted-foreground py-2">
+                  {t('todayWeekLoading', { defaultValue: 'Loading week…' })}
+                </p>
+              </div>
             )}
           </TodaySection>
         );

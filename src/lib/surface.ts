@@ -43,7 +43,7 @@ const PARKED_BY_DEFAULT: readonly Surface[] = [
   'america',
   'school',
   'wearables',
-  'leaderboard',
+  // leaderboard moved to SECONDARY (full-launch 2026-08-05) — on by default
   'cryptoRails',
   'paypal',
 ];
@@ -58,6 +58,7 @@ const SECONDARY_PILLARS: readonly Surface[] = [
   'benchmarks',
   'calculators',
   'programs',
+  'leaderboard',
 ];
 
 function rawList(): string[] {

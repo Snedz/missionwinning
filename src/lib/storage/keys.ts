@@ -38,6 +38,8 @@ export const STORAGE_KEYS = {
    */
   streakLastBump: 'mw_streak_last_bump',
   challenges: 'mw_challenges',
+  /** Mission Rewards — XP, ranks, badges (local-first). */
+  rewards: 'mw_rewards',
   defaultRestSec: 'mw_default_rest_sec',
   activityLog: 'mw_activity_log',
   todaySectionsV1: 'mw_today_sections_v1',

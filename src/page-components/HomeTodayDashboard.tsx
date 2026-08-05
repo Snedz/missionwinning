@@ -15,6 +15,7 @@ import { getTodayCheckIn } from "@/lib/mindCheckIns";
 import type { CoachInsight } from "@/lib/score";
 import { computeReadinessFromHistory } from "@/lib/readinessIndex";
 import { getTrainingStreak } from "@/lib/challenges";
+import { summarizeRewards } from "@/lib/rewards/summary";
 import { getUser, getUserNutritionForDate, type CloudNutritionEntry } from "@/lib/supabase";
 import { JourneyHero } from "@/components/journey/JourneyHero";
 import { ScreenDock } from "@/components/layout/ScreenDock";
@@ -216,6 +217,10 @@ export function HomeTodayDashboard() {
     typeof import('@/lib/todaysWorkout').getTodaysWorkout
   > | null>(null);
   const [challenges, setChallenges] = useState<ReturnType<typeof import('@/lib/challenges').getChallengeProgress>>([]);
+  const rewardsSummary = useMemo(
+    () => summarizeRewards(workoutHistory),
+    [workoutHistory]
+  );
   const [pillarStats, setPillarStats] = useState(() => ({
     moveFlows: 0,
     mindSessions: 0,
@@ -696,6 +701,7 @@ export function HomeTodayDashboard() {
                 setRecentPillarWins={setRecentPillarWins}
                 recent={recent}
                 onStartStarter={onStartStarter}
+                rewards={rewardsSummary}
               />
             ) : null}
           </div>

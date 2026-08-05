@@ -35,9 +35,8 @@ import { redActionCount } from './helpers/redActions';
  *
  * Deliberately not imported from `a11y.spec.ts`: that list also carries the public
  * SEO tail (`/exercises`, `/compare`, `/paths`, `/about`…), which is static content
- * with no user data and therefore no zero state to have. `/leaderboard` is absent
- * because it is parked by default (`PARKED_BY_DEFAULT` in `src/lib/surface.ts`) and
- * 404s — its void is covered by `LeaderboardTable`'s own unit guard instead.
+ * with no user data and therefore no zero state to have. `/leaderboard` is included
+ * under the full-launch override (SECONDARY surface, on by default).
  */
 const APP_ROUTES = [
   '/log',
@@ -46,6 +45,7 @@ const APP_ROUTES = [
   '/nutrition',
   '/history',
   '/benchmarks',
+  '/leaderboard',
   '/track',
   '/move',
   '/mind',
@@ -95,6 +95,10 @@ const RED_ACTION_CAP: Record<string, { cap: number; why: string }> = {
   '/active': { cap: 0, why: 'Empty shell offers Today/Builder as outline routes.' },
   '/history': { cap: 0, why: 'Clean.' },
   '/benchmarks': { cap: 0, why: 'Clean after the EmptyState + starters recut.' },
+  '/leaderboard': {
+    cap: 1,
+    why: 'Sync is the one red action on zero data; boards fill with honest Pacers, not a void header.',
+  },
   '/learn': { cap: 0, why: 'Clean.' },
   '/library': { cap: 0, why: 'Clean.' },
   '/programs': { cap: 0, why: 'Was 2 — both were selected filter chips. `variant="selected"` fixed it.' },

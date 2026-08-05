@@ -226,6 +226,9 @@ export function NutritionPage() {
       }));
       const next = pruneNutritionLogToDays([...older, ...todayRows], 90);
       writeJson(STORAGE_KEYS.nutritionLog, next);
+      if (todayRows.length > 0) {
+        void import('@/lib/rewards/apply').then((m) => m.applyFuelDayReward(today));
+      }
       return next;
     });
   }, [logged, today]);

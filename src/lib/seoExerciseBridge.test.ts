@@ -1,5 +1,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
+import { readFileSync } from 'node:fs';
+import { join } from 'node:path';
 import {
   parseSeoExerciseParam,
   seoExerciseSessionTemplate,
@@ -69,8 +71,6 @@ test('stripSeoExerciseFromSearch removes only the bridge key', () => {
 });
 
 test('ExercisePublicPage primary CTA uses the Train bridge, not bare welcome', () => {
-  const { readFileSync } = require('node:fs') as typeof import('node:fs');
-  const { join } = require('node:path') as typeof import('node:path');
   const src = readFileSync(
     join(import.meta.dirname, '..', 'page-components', 'ExercisePublicPage.tsx'),
     'utf8'

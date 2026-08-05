@@ -127,6 +127,7 @@ export function saveJourneyState(state: JourneyState): void {
     }
     if (!prev.commissionedAt && state.commissionedAt) {
       a.trackJourneyEvent('journey_commissioned', { at: state.commissionedAt });
+      void import('@/lib/rewards/apply').then((m) => m.applyJourneyCommissionedReward());
     }
     a.trackBasicMilestoneChanges(prev.basic, state.basic);
     a.trackReadinessMilestoneChanges(prev.readiness, state.readiness);

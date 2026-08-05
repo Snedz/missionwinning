@@ -7,19 +7,31 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import type { getChallengeProgress } from '@/lib/challenges';
 import { localizedChallengeDesc, localizedChallengeTitle } from '@/lib/challengeI18n';
 import type { TodaysWorkout } from '@/lib/todaysWorkout';
+import { Check } from 'lucide-react';
+import type { RewardsSummary } from '@/lib/rewards/summary';
+import { TodayRewardsCard } from '@/components/rewards/TodayRewardsCard';
 
 type Props = {
   challenges: ReturnType<typeof getChallengeProgress>;
   streak: number;
   todaysWorkout: TodaysWorkout;
   onStartTodaysWorkout: () => void;
+  rewards?: RewardsSummary | null;
 };
 
-export function TodayWeekSection({ challenges, streak, todaysWorkout, onStartTodaysWorkout }: Props) {
+export function TodayWeekSection({
+  challenges,
+  streak,
+  todaysWorkout,
+  onStartTodaysWorkout,
+  rewards,
+}: Props) {
   const { t } = useTranslation();
 
   return (
     <div className="space-y-4 pt-2">
+      {rewards ? <TodayRewardsCard summary={rewards} /> : null}
+
       <Card className="content-card">
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
@@ -36,27 +48,38 @@ export function TodayWeekSection({ challenges, streak, todaysWorkout, onStartTod
           </CardDescription>
         </CardHeader>
         <CardContent className="grid gap-4 md:grid-cols-3">
-          {challenges.map((c) => (
-            <div key={c.id} className="space-y-2">
-              <div className="flex justify-between text-sm">
-                <span className="font-medium">
-                  {localizedChallengeTitle(c.id, c.title, t)}
-                </span>
-                <span className="text-muted-foreground">
-                  {c.current}/{c.target}
-                </span>
+          {challenges.map((c) => {
+            const done = c.current >= c.target;
+            return (
+              <div key={c.id} className="space-y-2">
+                <div className="flex justify-between text-sm">
+                  <span className="font-medium flex items-center gap-1">
+                    {done ? <Check className="h-3.5 w-3.5 text-primary" aria-hidden /> : null}
+                    {localizedChallengeTitle(c.id, c.title, t)}
+                  </span>
+                  <span className="text-muted-foreground">
+                    {done
+                      ? t('rewardChallengeDone', { defaultValue: 'Done' })
+                      : `${c.current}/${c.target}`}
+                  </span>
+                </div>
+                <div className="h-2 bg-muted overflow-hidden border-2 border-border">
+                  <div
+                    className="h-full bg-primary transition-all"
+                    style={{ width: `${c.percent}%` }}
+                  />
+                </div>
+                <p className="text-[10px] text-muted-foreground">
+                  {localizedChallengeDesc(c.id, c.description, t)}
+                  {done
+                    ? t('rewardChallengeXpHint', {
+                        defaultValue: ' · +75 XP earned',
+                      })
+                    : null}
+                </p>
               </div>
-              <div className="h-2 bg-muted overflow-hidden border-2 border-border">
-                <div
-                  className="h-full bg-primary transition-all"
-                  style={{ width: `${c.percent}%` }}
-                />
-              </div>
-              <p className="text-[10px] text-muted-foreground">
-                {localizedChallengeDesc(c.id, c.description, t)}
-              </p>
-            </div>
-          ))}
+            );
+          })}
         </CardContent>
       </Card>
 
