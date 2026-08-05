@@ -334,11 +334,11 @@ export function AssessmentsPage() {
             <div className="text-xs">
               {t('assessResultFoot', {
                 defaultValue:
-                  'Results saved locally + to logs. Use to guide program choice in the Builder / Today hub. Streak +1 on start.',
+                  'Results saved locally + to logs. Use to guide program choice in the Builder / Today. Streak +1 on start.',
               })}
             </div>
             <Button variant="outline" className="mt-2" asChild>
-              <Link href="/log">{t('assessGoToday', { defaultValue: 'Go to Today Hub for all free starters' })}</Link>
+              <Link href="/log">{t('assessGoToday', { defaultValue: 'Go to Today for free starters' })}</Link>
             </Button>
           </CardContent>
         </Card>

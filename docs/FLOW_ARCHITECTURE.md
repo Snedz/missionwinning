@@ -1,7 +1,7 @@
 # Flow architecture — chip floorplan
 
 **Audience:** Founder + agents  
-**Baseline:** web `2026.07-unified.499`+  
+**Baseline:** web `2026.07-unified.500`+  
 **Lens:** Two dies, power domains, buses, critical path, dual-pad hazards  
 **Related:** [JOURNEY.md](JOURNEY.md) · [ARCHITECTURE.md](ARCHITECTURE.md) · [YC_THESIS.md](YC_THESIS.md) · [vision.md](../vision.md)
 
@@ -128,6 +128,9 @@ Horizon W: Train → Today → Victory → Coach excellence.
 | **Flow-6** | Readiness Today boss = train-first (not PAR-Q / guidebook) | **done `.499`** |
 | **Flow-7** | Coach invite mounts early readiness (sessions 1–3) | **done `.499`** |
 | **Flow-8** | Library chrome “Today Hub” → “Today” | **done `.499`** |
+| **K1** | Product language: no user-facing “Today Hub” | **done `.500`** |
+| **K2** | JOURNEY readiness boss = train-first (doc pin) | **done `.500`** |
+| **K4** | Active empty: Today outline > Builder quiet | **done `.500`** |
 
 Defaults until founder overrides: keep full free-beta More depth; public `/guide` stays magazine home; early-journey pillar hide deferred.
 

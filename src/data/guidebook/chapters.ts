@@ -81,7 +81,7 @@ Most general fitness blends all three across the week. A lifter who never trains
 
 Practical recovery levers you can control today: 7–9 hours sleep when possible, protein at most meals, hydration, easy movement on rest days (walks, mobility flows), and honest deloads when readiness rings trend down.
 
-Readiness on the Today hub is a consistency score from your logs — not a medical device. Use it as a nudge to push, maintain, or back off — not as an excuse to skip forever.`,
+Readiness on Today is a consistency score from your logs — not a medical device. Use it as a nudge to push, maintain, or back off — not as an excuse to skip forever.`,
         practiceCTA: { label: 'Open health screen (PAR-Q)', href: '/assessments' },
         relatedExerciseIds: ['bird-dog', 'plank', 'glute-bridge'],
         relatedLearnPathId: 'sleep-recovery',
@@ -372,7 +372,7 @@ Journey phases — Basic Training, Readiness, Commissioned — exist to build ha
 **Learn** — this guidebook and quick education paths.
 
 Each pillar can log a win on Today. Basic Training asks for one win in each — a low bar meant to show the whole app, not exhaust you in week one.`,
-        practiceCTA: { label: 'Open Today hub', href: '/log' },
+        practiceCTA: { label: 'Open Today', href: '/log' },
         relatedLearnPathId: 'mindset-habits',
         sourceRef: 'MW product design',
         table: {

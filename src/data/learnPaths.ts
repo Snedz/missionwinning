@@ -54,11 +54,11 @@ export const FREE_LEARN_PATHS: LearnPath[] = [
         summary: 'Some days you push, some days you maintain — listen to readiness scores.',
         keyPoints: [
           'Rate sets easy / medium / hard in the Active Workout logger',
-          'Readiness rings on Today Hub guide muscle group focus',
+          'Readiness rings on Today guide muscle group focus',
           'Consistency beats perfect intensity every session',
         ],
         actionHref: '/log',
-        actionLabel: 'Check Today Hub',
+        actionLabel: 'Open Today',
       },
     ],
   },
@@ -149,7 +149,7 @@ export const FREE_LEARN_PATHS: LearnPath[] = [
         title: 'Streaks & Identity',
         summary: 'You become what you repeat — small daily wins compound.',
         keyPoints: [
-          'Weekly challenges on Today Hub track train, fuel, volume',
+          'Weekly challenges on Today track train, fuel, volume',
           'Daily check-in (sleep, mood, stress) builds self-awareness',
           'The path is consistency, not perfection',
         ],
@@ -302,7 +302,7 @@ export const FREE_LEARN_PATHS: LearnPath[] = [
         summary: 'Streaks, check-ins, and small wins beat perfect programs nobody follows.',
         keyPoints: [
           'Mind pillar daily check-in builds self-awareness',
-          'Weekly challenges on Today Hub — train, fuel, volume goals',
+          'Weekly challenges on Today — train, fuel, volume goals',
           'Start clients with 2–3 habits, not twelve',
         ],
         actionHref: '/mind',
@@ -414,7 +414,7 @@ export const FREE_LEARN_PATHS: LearnPath[] = [
         summary: 'Noise, space, and neighbors shape exercise selection.',
         keyPoints: [
           'Goblet and DB work for quiet sessions',
-          'Starter programs on Today hub need minimal gear',
+          'Starter programs on Today need minimal gear',
           'Guidebook Ch.3 covers tuning volume',
         ],
         actionHref: '/learn/guide/programming-tuning',

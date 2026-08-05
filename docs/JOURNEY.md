@@ -4,7 +4,7 @@
 
 **Not official DoD product:** Mission Winning is a civilian health PWA. We borrow **structure and discipline** from military onboarding (in-processing → basic training → readiness → duty), not branding, rank, or endorsement.
 
-Related: [vision.md](../vision.md) · [PLAN.md](PLAN.md) · [PROTECTION.md](PROTECTION.md)
+Related: [vision.md](../vision.md) · [PLAN.md](PLAN.md) · [PROTECTION.md](PROTECTION.md) · [FLOW_ARCHITECTURE.md](FLOW_ARCHITECTURE.md)
 
 ---
 
@@ -40,10 +40,10 @@ Analogous to **In-processing Day → Basic Training → Readiness → Commission
 │  I-DAY            BASIC TRAINING    READINESS        COMMISSIONED       │
 │  (Intake)         (First wins)      (Standards)      (Daily duty)       │
 ├─────────────────────────────────────────────────────────────────────────┤
-│  Welcome          1st workout       PAR-Q /          Today Hub only     │
-│  Name & goal      1st fuel log        Assessment       Journey = maint.   │
-│  Equipment        1st move flow       7-day streak     Optional pillars  │
-│  Optional sign-in 1st mind breath    Win Score ≥40    in “More”         │
+│  Welcome          1st workout       Build streak +   Today command      │
+│  Name & goal      (wedge only)        PAR-Q to exit     Journey = maint.   │
+│  Equipment        soft Coach          Win Score        Optional pillars  │
+│  Optional sign-in                     (commission)     in “More”         │
 └─────────────────────────────────────────────────────────────────────────┘
 ```
 
@@ -86,12 +86,14 @@ Analogous to **In-processing Day → Basic Training → Readiness → Commission
 
 | Requirement | App feature | Notes |
 |-------------|-------------|-------|
-| Health screen | `/assessments` PAR-Q (existing) | Required once; store `mw_parq_date` |
+| **Boss pin (Today)** | Train / session 2 / streak commitment at `/active` | **Flow-6:** while `!streakMet`, JourneyHero primary is train — never PAR-Q or guidebook as the dock boss |
+| Health screen | `/assessments` PAR-Q (existing) | Required to *commission*; First Steps + Assessments — not free-logger gate |
 | Baseline | First **Win Score** computed | Show on Today |
 | Commitment | **7-day training streak** OR 5 workouts in 14 days | Uses existing streak logic |
 | Accountability | Enable **daily Mind check-in** prompt (1 tap dismiss) | Optional but encouraged |
 
-**Exit criteria:** PAR-Q complete + streak/commitment met + Win Score visible → **Commissioning ceremony** (short animation + badge).
+**Exit criteria (commissioning only):** PAR-Q complete + streak/commitment met + Win Score visible → **Commissioning ceremony**.  
+Exit criteria are **not** the same as the Today dock primary — see [FLOW_ARCHITECTURE.md](FLOW_ARCHITECTURE.md) readiness boss rule and `pickReadinessPrimaryAction`.
 
 ---
 

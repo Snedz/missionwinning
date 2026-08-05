@@ -86,7 +86,7 @@ Mission Winning disclaimers on Terms and Privacy align with this boundary.`,
         body: `Cover: goal in one sentence, equipment reality, injury history, and how they will log (app or paper). Agree on a minimum viable week before selling a maximal plan.
 
 Point clients at Today’s single next action — not a twelve-tab dashboard.`,
-        practiceCTA: { label: 'Today hub', href: '/log' },
+        practiceCTA: { label: 'Today', href: '/log' },
         sourceRef: 'foundations — onboarding',
       },
       {

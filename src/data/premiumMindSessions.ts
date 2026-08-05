@@ -25,7 +25,7 @@ export const PREMIUM_MIND_SESSIONS: GuidedMindSession[] = [
       { text: 'Acknowledge frustration without judging it.', durationSec: 40 },
       { text: 'List what you CAN do today — mobility, upper, walking.', durationSec: 60 },
       { text: 'Breathe into areas that feel safe, not painful.', durationSec: 60 },
-      { text: 'Commit to one small win on Today hub.', durationSec: 45 },
+      { text: 'Commit to one small win on Today.', durationSec: 45 },
     ],
   },
   {

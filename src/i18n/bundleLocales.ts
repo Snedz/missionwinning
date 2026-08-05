@@ -95,7 +95,7 @@ const en: BundleStrings = {
   bundleOneAppTitle: 'One app — not seven',
   bundleOneAppDesc:
     'Freeletics Super Bundle spans multiple apps. Mission Winning keeps Train, Fuel, Move, Mind, Track, and Learn in one PWA with one Win Score.',
-  bundleWinScoreNote: 'Today hub Win Score ties every pillar together.',
+  bundleWinScoreNote: 'Today Win Score ties every pillar together.',
   bundleCompareTitle: 'Compare standalone vs bundle',
   bundleColPillar: 'Pillar',
   bundleColPremium: 'Premium tier',

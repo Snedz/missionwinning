@@ -345,7 +345,7 @@ const PROGRAM_TEMPLATES_RAW: ProgramTemplate[] = [
       {
         id: "habit-daily",
         name: "Daily Stack",
-        notes: "5-10 min total. Log in Today hub and Nutrition.",
+        notes: "5-10 min total. Log in Today and Nutrition.",
         exercises: [
           ex("cat-camel", 1, 8),
           ex("bird-dog", 1, 6),
@@ -387,7 +387,7 @@ const PROGRAM_TEMPLATES_RAW: ProgramTemplate[] = [
       {
         id: "mind-mob",
         name: "Daily 8-Min Stack",
-        notes: "Do after wake or pre-bed. Log win in Today hub.",
+        notes: "Do after wake or pre-bed. Log win in Today.",
         exercises: [
           ex("cat-camel", 1, 8),
           ex("bird-dog", 1, 6),
@@ -439,7 +439,7 @@ const PROGRAM_TEMPLATES_RAW: ProgramTemplate[] = [
       {
         id: "mob-mind",
         name: "Daily 10-Min Flow",
-        notes: "Do morning or evening. Pair with 2 min breath work. Log in Today hub.",
+        notes: "Do morning or evening. Pair with 2 min breath work. Log in Today.",
         exercises: [
           ex("cat-camel", 1, 10),
           ex("bird-dog", 1, 8),
@@ -493,7 +493,7 @@ const PROGRAM_TEMPLATES_RAW: ProgramTemplate[] = [
       {
         id: "reset-daily",
         name: "Reset Flow",
-        notes: "5-8 min. Log in Nutrition or Today hub.",
+        notes: "5-8 min. Log in Nutrition or Today.",
         exercises: [
           ex("cat-camel", 1, 8),
           ex("glute-bridge", 1, 10),

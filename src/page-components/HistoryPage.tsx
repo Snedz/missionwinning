@@ -297,7 +297,7 @@ export function HistoryPage() {
       <div>
         <p className="text-muted-foreground text-sm">
           <Link href="/log" className="underline">
-            Today Hub
+            {t('navToday', { defaultValue: 'Today' })}
           </Link>
         </p>
         <p className="mt-1 text-muted-foreground">
