@@ -345,14 +345,25 @@ export function getNextAction(workoutHistory: CompletedWorkoutLog[] = []): Journ
     const done = BASIC_STEPS.filter((s) => state.basic[s.key]).length;
     const next = BASIC_STEPS.find((s) => !state.basic[s.key]);
     if (!next) {
-      // Workout done — sync should have advanced; soft Coach invite as bridge.
+      /*
+       * K6 — basic steps complete; sync should already be readiness.
+       * Old soft-Coach boss here fought Flow-6 / Victory (train first).
+       * Fall through to the same readiness primary as the readiness phase.
+       */
+      const readinessPrimary = pickReadinessPrimaryAction({
+        readiness: state.readiness,
+        completedSessions: workoutHistory.length,
+        startWorkout: firstWorkoutTemplate(),
+      });
+      if (readinessPrimary) return readinessPrimary;
       return {
-        label: 'Open Mission Coach',
-        description: 'Your first log unlocks a weekly plan from history alone.',
-        href: '/coach',
+        label: 'Keep training',
+        description: 'Log the next session — Coach builds from history.',
+        href: '/active',
         phase: 'basic',
-        stepLabel: 'Basic Training · Coach',
+        stepLabel: 'Basic Training · Train',
         progressPct: 100,
+        startWorkout: firstWorkoutTemplate(),
       };
     }
     const total = BASIC_STEPS.length;

@@ -68,7 +68,8 @@ When adding a doc:
 | [log/LOG-rotate-498.md](./log/LOG-rotate-498.md)
 - [`.484` rotated for `.499`](log/LOG-rotate-499.md)
 - [`.485` rotated for `.500`](log/LOG-rotate-500.md)
-- [`.486` rotated for `.501`](log/LOG-rotate-501.md) | `.483` — rotated for `.498` (exercise CTA + form demotes). |
+- [`.486` rotated for `.501`](log/LOG-rotate-501.md)
+- [`.487` rotated for `.502`](log/LOG-rotate-502.md) | `.483` — rotated for `.498` (exercise CTA + form demotes). |
 | [log/LOG-rotate-497.md](./log/LOG-rotate-497.md) | `.482` — rotated for `.497` (More sheet tiers). |
 | [log/LOG-rotate-496.md](./log/LOG-rotate-496.md) | `.481` — rotated for `.496` (Guide + Paths handoff). |
 | [log/LOG-rotate-495.md](./log/LOG-rotate-495.md) | `.480` — rotated for `.495` (SEO exercise → Train bridge). |

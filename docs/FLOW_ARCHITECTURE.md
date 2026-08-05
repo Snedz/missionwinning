@@ -1,7 +1,7 @@
 # Flow architecture — chip floorplan
 
 **Audience:** Founder + agents  
-**Baseline:** web `2026.07-unified.501`+  
+**Baseline:** web `2026.07-unified.502`+  
 **Lens:** Two dies, power domains, buses, critical path, dual-pad hazards  
 **Related:** [JOURNEY.md](JOURNEY.md) · [ARCHITECTURE.md](ARCHITECTURE.md) · [YC_THESIS.md](YC_THESIS.md) · [vision.md](../vision.md)
 
@@ -133,6 +133,8 @@ Horizon W: Train → Today → Victory → Coach excellence.
 | **K4** | Active empty: Today outline > Builder quiet | **done `.500`** |
 | **K3** | Coach invite vs week strip (no dual generate CTA) | **done `.501`** |
 | **K5** | Week-1 contract: readiness primary = train | **done `.501`** |
+| **K6** | Basic complete branch no longer bosses Coach | **done `.502`** |
+| **K7** | History “Train this again” → `/active` | **done `.502`** |
 
 Defaults until founder overrides: keep full free-beta More depth; public `/guide` stays magazine home; early-journey pillar hide deferred.
 

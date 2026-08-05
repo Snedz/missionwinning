@@ -83,6 +83,8 @@ export type AnalyticsEvent =
   | 'day_review_quick_log'
   | 'day_review_optin_tapped'
   | 'history_truncated'
+  /** K7 — athlete restarts a past session from History detail. */
+  | 'history_train_again'
   | 'sync_outbox_drained'
   | 'sync_outbox_stuck'
   | 'storage_write_failed'

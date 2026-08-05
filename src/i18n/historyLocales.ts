@@ -39,6 +39,8 @@ type HistoryStrings = {
   historySelectExercise: string;
   historySignInFoot: string;
   historySessionVolume: string;
+  /** K7 — replay completed session in Train. */
+  historyTrainAgain: string;
   historyTableSet: string;
   historyTableReps: string;
   historyTableWeight: string;
@@ -111,6 +113,7 @@ const en: HistoryStrings = {
   historySelectExercise: 'Chart exercise',
   historySignInFoot: 'Sign in (optional) to load full cloud history.',
   historySessionVolume: '{{volume}} {{unit}} total volume',
+  historyTrainAgain: 'Train this again',
   historyTableSet: 'Set',
   historyTableReps: 'Reps',
   historyTableWeight: 'Weight',

@@ -93,4 +93,18 @@ describe('pickReadinessPrimaryAction (Flow-6 train-first)', () => {
       'guidebook must not be a getNextAction primary href'
     );
   });
+
+  it('basic empty-steps branch does not boss Mission Coach (K6)', () => {
+    const src = readFileSync(
+      path.join(import.meta.dirname, 'missionJourney.ts'),
+      'utf8'
+    );
+    // Soft-Coach fallthrough after BASIC_STEPS empty is gone.
+    assert.doesNotMatch(
+      src,
+      /Open Mission Coach/,
+      'basic complete must not primary-pin Coach (Flow-6 / K6)'
+    );
+    assert.match(src, /K6/);
+  });
 });
