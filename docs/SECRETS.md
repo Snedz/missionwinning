@@ -102,6 +102,8 @@ Day-to-day `npm run secrets:scan` uses `--no-git` (working tree only) and allowl
 
 Agents **never** change repository visibility or flip `PRIVATE_MODE`.
 
+**Also on the launch path:** [LAUNCH_RUNBOOK.md](LAUNCH_RUNBOOK.md) §2c (security) · §2d (legal/counsel).
+
 1. [ ] `npm run secrets:scan` clean on current tree  
 2. [ ] Optional: `gitleaks detect --source . -v` on history  
 3. [ ] Confirm scrub: no personal gmail, real Vercel org/project IDs, Supabase ref, treasury private-key paths in docs  

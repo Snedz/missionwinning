@@ -2,7 +2,9 @@
 
 **Metaphor:** Like a C-RAM system, we **detect** threats (audit), **track** exposure (competitive gaps), and **intercept** before they reach production (hardening). This document is the inspection checklist and protection status before Phase E (public launch).
 
-Last updated: 2026-07-22 (red/blue S2 live perimeter + blue harden; S1 2026-07-16; OWASP 2026-07-05)
+Last updated: 2026-08-05 (founder launch §2c security checklist; S2 2026-07-22; OWASP 2026-07-05)
+
+**Founder launch checklist (secrets, smokes, RLS ops):** [LAUNCH_RUNBOOK.md](LAUNCH_RUNBOOK.md) §2c · secrets program [SECRETS.md](SECRETS.md).
 
 ---
 
