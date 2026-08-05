@@ -36,9 +36,15 @@ import { useWorkoutStore, hasLoggedWork } from '@/store/workoutStore';
 import { BrandMonogram } from '@/components/brand/BrandMonogram';
 import { readRaw, writeRaw, remove as removeKey } from '@/lib/storage/safeStorage';
 import { STORAGE_KEYS } from '@/lib/storage/keys';
+import {
+  getAthleteSex,
+  setAthleteSex,
+  type BiologicalSex,
+} from '@/lib/athleteSex';
 
 const EXPERIENCE_VALUES = ['beginner', 'intermediate', 'advanced'] as const;
 const EQUIPMENT_VALUES = ['bodyweight', 'dumbbells', 'full-gym'] as const;
+const SEX_VALUES = ['female', 'male'] as const;
 
 type Step = 'welcome' | 'profile' | 'signin';
 
@@ -53,6 +59,10 @@ export function WelcomePage() {
   const [experience, setExperience] = useState('beginner');
   const [equipment, setEquipment] = useState('bodyweight');
   const [primaryGoal, setPrimaryGoal] = useState(() => goalPresetValue('strength'));
+  /** Unset until chosen — never invent male for standards. */
+  const [sex, setSex] = useState<BiologicalSex | null>(() =>
+    typeof window !== 'undefined' ? getAthleteSex() : null
+  );
 
   const experienceLabel = (value: string) => {
     if (value === 'beginner') return t('welcomeExpBeginner', { defaultValue: 'New to training' });
@@ -66,6 +76,11 @@ export function WelcomePage() {
     return t('welcomeEquipFullGym', { defaultValue: 'Full gym access' });
   };
 
+  const sexLabel = (value: BiologicalSex) =>
+    value === 'female'
+      ? t('calcSexFemale', { defaultValue: 'Female' })
+      : t('calcSexMale', { defaultValue: 'Male' });
+
   useEffect(() => {
     if (!isEdit || typeof window === 'undefined') return;
     setExperience(readRaw(STORAGE_KEYS.experience) || 'beginner');
@@ -75,6 +90,7 @@ export function WelcomePage() {
         readRaw(STORAGE_KEYS.goals) ||
         t('welcomeGoalPlaceholder', { defaultValue: 'Build strength and stay healthy' })
     );
+    setSex(getAthleteSex());
     setStep('profile');
   }, [isEdit, t]);
 
@@ -83,6 +99,7 @@ export function WelcomePage() {
     writeRaw(STORAGE_KEYS.equipment, equipment);
     writeRaw(STORAGE_KEYS.primaryGoal, primaryGoal);
     writeRaw(STORAGE_KEYS.goals, primaryGoal);
+    if (sex) setAthleteSex(sex);
     saveDaysPerWeek(defaultDaysPerWeek(experience));
     scheduleJourneyPush();
   };
@@ -133,15 +150,17 @@ export function WelcomePage() {
   };
 
   const handleProfileNext = () => {
+    if (sex == null) return;
     if (isEdit) {
       finish();
       return;
     }
-    // Days/week defaults from experience — Coach can refine later (D1: 3 questions max).
+    // Days/week defaults from experience — Coach can refine later (D1: ≤4 questions).
     saveDaysPerWeek(defaultDaysPerWeek(experience));
     track('iday_profile_completed', {
       experience,
       equipment,
+      sex,
       daysPerWeek: defaultDaysPerWeek(experience),
     });
     setStep('signin');
@@ -253,16 +272,17 @@ export function WelcomePage() {
                   <h2 className="text-[1.5rem] md:text-[1.75rem] font-semibold tracking-tight mb-1 leading-tight">
                     {isEdit
                       ? t('editJourneyProfile', { defaultValue: 'Edit profile' })
-                      : t('welcomeProfileTitle', { defaultValue: 'Three quick questions' })}
+                      : t('welcomeProfileTitle', { defaultValue: 'A few quick questions' })}
                   </h2>
                   <p className="text-sm text-muted-foreground leading-relaxed">
                     {isEdit
                       ? t('welcomeProfileEditHint', {
                           defaultValue:
-                            'Update experience, equipment, and goal. Changes sync when signed in.',
+                            'Update experience, equipment, sex, and goal. Changes sync when signed in.',
                         })
                       : t('welcomeProfileHint', {
-                          defaultValue: 'So we can suggest a session that matches your gear.',
+                          defaultValue:
+                            'Gear for your first session; sex for honest strength and fuel standards.',
                         })}
                   </p>
                 </div>
@@ -288,6 +308,30 @@ export function WelcomePage() {
                     label: equipmentLabel(value),
                   }))}
                 />
+                <div className="space-y-2">
+                  <p className="text-sm text-muted-foreground">
+                    {t('welcomeSex', { defaultValue: 'Sex (for standards)' })}
+                  </p>
+                  <p className="text-xs text-muted-foreground leading-relaxed">
+                    {t('welcomeSexHint', {
+                      defaultValue:
+                        'Male and female strength, fuel, and fitness-test bands stay separate. Train hard either way.',
+                    })}
+                  </p>
+                  <div className="flex gap-2">
+                    {SEX_VALUES.map((value) => (
+                      <Button
+                        key={value}
+                        type="button"
+                        className="min-h-[44px] flex-1"
+                        variant={sex === value ? 'selected' : 'outline'}
+                        onClick={() => setSex(value)}
+                      >
+                        {sexLabel(value)}
+                      </Button>
+                    ))}
+                  </div>
+                </div>
                 <label className="block space-y-2 text-sm">
                   <span className="text-muted-foreground">
                     {t('welcomePrimaryGoal', { defaultValue: 'Primary goal' })}
@@ -324,11 +368,23 @@ export function WelcomePage() {
                     })}
                   />
                 </label>
-                <button type="button" className="primary-action" onClick={handleProfileNext}>
+                <button
+                  type="button"
+                  className="primary-action"
+                  onClick={handleProfileNext}
+                  disabled={sex == null}
+                >
                   {isEdit
                     ? t('saveProfile', { defaultValue: 'Save profile' })
                     : t('welcomeContinue', { defaultValue: 'Continue' })}
                 </button>
+                {sex == null ? (
+                  <p className="text-xs text-muted-foreground text-center">
+                    {t('welcomeSexRequired', {
+                      defaultValue: 'Select sex to continue — we do not assume male.',
+                    })}
+                  </p>
+                ) : null}
                 <Button
                   variant="ghost"
                   size="sm"

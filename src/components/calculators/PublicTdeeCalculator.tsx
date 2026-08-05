@@ -1,7 +1,12 @@
 'use client';
 
 import { useState } from 'react';
-import { mifflinBmr, ACTIVITY_LEVELS, type CalcSex } from '@/lib/calcHelpers';
+import {
+  mifflinBmr,
+  ACTIVITY_LEVELS,
+  defaultCalcInputs,
+  type CalcSex,
+} from '@/lib/calcHelpers';
 import { getAthleteSex, setAthleteSex } from '@/lib/athleteSex';
 import { useLocaleFormat } from '@/hooks/useLocaleFormat';
 import {
@@ -29,17 +34,22 @@ type Goal = 'cut' | 'maintain' | 'bulk';
  */
 export function PublicTdeeCalculator() {
   const fmt = useLocaleFormat();
+  const initialSex = getAthleteSex();
+  const seed = defaultCalcInputs('metric', initialSex);
   const [units, setUnits] = useState<CalcUnits>('kg');
-  const [sex, setSexState] = useState<CalcSex | null>(() => getAthleteSex());
+  const [sex, setSexState] = useState<CalcSex | null>(() => initialSex);
   const [age, setAge] = useState(28);
-  const [heightCm, setHeightCm] = useState(178);
-  const [bodyweightKg, setBodyweightKg] = useState(78);
+  const [heightCm, setHeightCm] = useState(seed.height);
+  const [bodyweightKg, setBodyweightKg] = useState(seed.bw);
   const [activity, setActivity] = useState<number>(1.55);
   const [goal, setGoal] = useState<Goal>('maintain');
 
   const setSex = (s: CalcSex) => {
     setSexState(s);
     setAthleteSex(s);
+    const next = defaultCalcInputs('metric', s);
+    setHeightCm(next.height);
+    setBodyweightKg(next.bw);
   };
 
   const bmr = sex != null ? mifflinBmr(bodyweightKg, heightCm, age, 'metric', sex) : null;

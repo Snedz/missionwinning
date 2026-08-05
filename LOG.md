@@ -10,6 +10,12 @@ Archive: [2026-06 → 2026-07-20](docs/archive/log/LOG-2026-06_to_2026-07-20.md)
 
 ---
 
+## 2026-08-05 — Mission Women focus layer on I-Day + seeds (`.506`)
+
+Female focus without a second product: I-Day asks sex (unset blocks continue), female-typical calculator/strength demo seeds, Principles “Mission Women focus” lens, Profile badge when female standards active. Logger/Today structure unchanged.
+
+Mutants: defaultCalcInputs female bw ≥ male → red; Welcome continue with sex null → disabled.
+
 ## 2026-08-05 — Cycle-aware coaching MVP (opt-in) (`.505`)
 
 Founder override surface: local-only cycle prefs (`mw_cycle_prefs_v1`), educational phase estimate, soft readiness bias in `computeBodyScores` / coach context (−8 menstrual, −5 late luteal). Profile cycle card + Today chip; free logger never gated. No cloud sync.
@@ -99,10 +105,3 @@ Mutants: restore `#1 Health` / `Share your wins` / `Treat it as a briefing` → 
 Flush checkable-stat grid (217 / 3min / 0 / $0) used `section-seam`, which paints the bottom 2px rule as a **section background**. Opaque `bg-background` cells covered it — the bottom line was missing by construction. Switched to real `border-b-2 border-border`; internal gutters `gap-px` → `gap-0.5` (2px Modernist rules). Guard `landingStatRow.test.ts` pins border + forbids section-seam / gap-px on that block.
 
 Mutants: restore section-seam without border → red; gap-px again → red.
-
-
-## 2026-08-05 — Next nested postcss floor + full pack/public parity (`.491`)
-
-After `.489` next@16.3.0, nested `postcss` is 8.5.23 (past Dependabot #44–#45 / 8.4.31). `nextNestedPostcss.test.ts` floors the lockfile copy and pins `package.json` next ≥16.3. Locale footprint pack↔public agreement discovers **all** pack langs (not only ja/es/de/ar) so hi/vi/th drift from `.490` cannot hide. SECURITY_AUDIT_TRIAGE marks postcss cleared.
-
-Mutants: POSTCSS_FLOOR 9.0.0 → red; pack/public disagree on hi key → footprint red; next `^16.2.12` again → range pin red.

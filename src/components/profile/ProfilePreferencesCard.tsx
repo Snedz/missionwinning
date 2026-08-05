@@ -90,6 +90,14 @@ export function ProfilePreferencesCard({
                 'Used for fuel math, strength standards, and fitness-test bands. Male and female standards stay separate. We do not assume male.',
             })}
           </p>
+          {sex === 'female' ? (
+            <p className="text-xs mt-2 font-medium text-foreground">
+              {t('profileSexFemaleActive', {
+                defaultValue:
+                  'Female standards active — train hard, score honestly (Mission Women focus).',
+              })}
+            </p>
+          ) : null}
         </CardContent>
       </Card>
 

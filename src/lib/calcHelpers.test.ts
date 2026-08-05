@@ -2,6 +2,7 @@ import { describe, it } from 'node:test';
 import assert from 'node:assert/strict';
 import {
   defaultCalcInputs,
+  defaultStrengthDemo,
   epley1rm,
   brzycki1rm,
   mifflinBmr,
@@ -35,6 +36,17 @@ describe('calcHelpers', () => {
   it('returns unit-appropriate defaults', () => {
     assert.equal(defaultCalcInputs('metric').weight, 100);
     assert.equal(defaultCalcInputs('imperial').weight, 225);
+  });
+
+  it('uses female-typical seeds when sex is female', () => {
+    const f = defaultCalcInputs('metric', 'female');
+    const m = defaultCalcInputs('metric', 'male');
+    assert.ok(f.bw < m.bw);
+    assert.ok(f.weight < m.weight);
+    const demoF = defaultStrengthDemo('female');
+    const demoM = defaultStrengthDemo('male');
+    assert.ok(demoF.bodyweightKg < demoM.bodyweightKg);
+    assert.ok(demoF.weightKg < demoM.weightKg);
   });
 
   it('protein target scales by units', () => {

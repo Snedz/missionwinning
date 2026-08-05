@@ -55,7 +55,7 @@ Analogous to **In-processing Day → Basic Training → Readiness → Commission
 |------|-----------|-------------|-------------------|
 | 0.1 | “Welcome, Mission Member” + single **Begin** | Set `mw_journey_started` | New `/welcome` or modal on first visit |
 | 0.2 | **Mission statement** (1 screen, scroll) + “I accept the path” | Log acceptance timestamp | Static copy from vision.md (short) |
-| 0.3 | **3 questions only:** experience, equipment, primary goal | Writes `mw_experience`, `mw_equipment`, `mw_primary_goal` | Move from Profile → dedicated flow |
+| 0.3 | **≤4 questions:** experience, equipment, **sex** (male/female standards), primary goal | Writes `mw_experience`, `mw_equipment`, `mw_athlete_sex`, `mw_primary_goal` | Welcome profile step; sex feeds Fuel/PFT/strength — not a second app |
 | 0.4 | **Gear check:** “What you have today” (bodyweight / dumbbells / full gym) | Filters Today’s workout + library | Same data, simpler UI |
 | 0.5 | Optional: **Sign in for cloud** (skip allowed) | Magic link | One line, not a wall of text |
 

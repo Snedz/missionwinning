@@ -18,6 +18,18 @@ Women’s sport categories exist so female athletes can compete fairly. This pro
 
 Public principles: in-app **Principles** (`/principles`) and About.
 
+## Mission Women focus (lens, not a fork)
+
+**Mission Women** means a **focus layer** for female athletes inside Mission Winning — not a separate install, brand, or “softer” product.
+
+| Same for everyone | Different when sex = female |
+|-------------------|-----------------------------|
+| Free logger, Today boss CTA, Mission Coach | Female BMR / strength ladders / PFT bands |
+| Paper/ink design system | Example loads and I-Day sex → female standards |
+| Train hard, win the week | Optional cycle soft tips; train-hard copy (not “toning”) |
+
+Set sex once on **I-Day** or **Profile**.
+
 ## Cycle-aware coaching (optional)
 
 **Profile → Cycle coaching** (opt-in, off by default):

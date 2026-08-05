@@ -43,23 +43,26 @@ export function MacroCalculator() {
   const heightLabel = heightUnitLabel(units);
   const bwLabel = bodyweightUnitLabel(units);
 
-  const [bw, setBw] = useState(() => defaultCalcInputs(units).bw);
-  const [height, setHeight] = useState(() => defaultCalcInputs(units).height);
-  const [age, setAge] = useState(28);
   const [sex, setSexState] = useState<CalcSex | null>(() => getAthleteSex());
+  const [bw, setBw] = useState(() => defaultCalcInputs(units, getAthleteSex()).bw);
+  const [height, setHeight] = useState(() => defaultCalcInputs(units, getAthleteSex()).height);
+  const [age, setAge] = useState(28);
   const [activity, setActivity] = useState(1.55);
   const [goal, setGoal] = useState<Goal>('maintain');
 
   const setSex = (s: CalcSex) => {
     setSexState(s);
     setAthleteSex(s);
+    const d = defaultCalcInputs(units, s);
+    setBw(d.bw);
+    setHeight(d.height);
   };
 
   useEffect(() => {
-    const d = defaultCalcInputs(units);
+    const d = defaultCalcInputs(units, sex);
     setBw(d.bw);
     setHeight(d.height);
-  }, [units]);
+  }, [units, sex]);
 
   const bmr = sex != null ? mifflinBmr(bw, height, age, units, sex) : null;
   const tdee = bmr != null ? Math.round(bmr * activity) : null;

@@ -104,6 +104,25 @@ export function PrinciplesPage() {
           </InfoSection>
 
           <InfoSection
+            title={t('infoPrinciplesMissionWomen', {
+              defaultValue: 'Mission Women focus',
+            })}
+          >
+            <p className="text-muted-foreground">
+              {t('infoPrinciplesMissionWomenBody', {
+                defaultValue:
+                  'Mission Women is a focus lens inside Mission Winning — not a second app. Same free logger, same Mission Coach, same Train Anywhere path. When sex is female: honest female standards, train-hard framing, optional cycle tips. Not lighter “ladies workouts,” not a pink theme, not a softer product.',
+              })}
+            </p>
+            <p className="text-muted-foreground">
+              {t('infoPrinciplesMissionWomenBody2', {
+                defaultValue:
+                  'Primary job is unchanged: log sets, win the week. Focus differs where truth matters — standards, fuel math, and optional cycle-aware readiness.',
+              })}
+            </p>
+          </InfoSection>
+
+          <InfoSection
             title={t('infoPrinciplesBoundary', {
               defaultValue: 'Educational boundary',
             })}

@@ -41,11 +41,37 @@ export function proteinTargetGrams(bodyweight: number, units: UnitsPref): number
   return Math.round(bodyweight * 1.0);
 }
 
-export function defaultCalcInputs(units: UnitsPref) {
+/**
+ * Seed inputs for calculators / demos.
+ * When sex is female, use female-typical bodyweight and example lift loads so
+ * empty states are not male-as-default. Pure helpers still accept any sex.
+ */
+export function defaultCalcInputs(
+  units: UnitsPref,
+  sex: CalcSex | null | undefined = undefined
+) {
+  if (sex === 'female') {
+    if (units === 'metric') {
+      return { weight: 60, bw: 65, height: 165 };
+    }
+    return { weight: 135, bw: 145, height: 65 };
+  }
   if (units === 'metric') {
     return { weight: 100, bw: 82, height: 178 };
   }
   return { weight: 225, bw: 180, height: 70 };
+}
+
+/** Public strength-standards demo set (bodyweight + lift) by sex. */
+export function defaultStrengthDemo(sex: CalcSex | null | undefined): {
+  bodyweightKg: number;
+  weightKg: number;
+  reps: number;
+} {
+  if (sex === 'female') {
+    return { bodyweightKg: 65, weightKg: 60, reps: 5 };
+  }
+  return { bodyweightKg: 78, weightKg: 100, reps: 5 };
 }
 
 export type MacroGoal = 'cut' | 'maintain' | 'bulk';

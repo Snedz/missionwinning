@@ -8,6 +8,7 @@ import {
   type StandardsSex,
 } from '@/lib/strengthStandards';
 import { getAthleteSex, setAthleteSex } from '@/lib/athleteSex';
+import { defaultStrengthDemo } from '@/lib/calcHelpers';
 import {
   CalcField,
   Seg,
@@ -22,16 +23,26 @@ import {
  * every keystroke re-renders the ladder, no submit.
  */
 export function StrengthStandardsCalculator() {
+  const initialSex = getAthleteSex();
+  const demo = defaultStrengthDemo(initialSex);
   const [units, setUnits] = useState<CalcUnits>('kg');
-  const [sex, setSexState] = useState<StandardsSex | null>(() => getAthleteSex());
+  const [sex, setSexState] = useState<StandardsSex | null>(() => initialSex);
   const [lift, setLift] = useState<StandardsLift>('squat');
-  const [bodyweightKg, setBodyweightKg] = useState(78);
-  const [weightKg, setWeightKg] = useState(100);
-  const [reps, setReps] = useState(5);
+  const [bodyweightKg, setBodyweightKg] = useState(demo.bodyweightKg);
+  const [weightKg, setWeightKg] = useState(demo.weightKg);
+  const [reps, setReps] = useState(demo.reps);
 
   const setSex = (s: StandardsSex) => {
+    const prev = sex;
     setSexState(s);
     setAthleteSex(s);
+    // Only swap demo seeds when athlete had no sex yet or still on the other sex's seed.
+    if (prev == null || prev !== s) {
+      const next = defaultStrengthDemo(s);
+      setBodyweightKg(next.bodyweightKg);
+      setWeightKg(next.weightKg);
+      setReps(next.reps);
+    }
   };
 
   const result =
