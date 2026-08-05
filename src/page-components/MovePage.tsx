@@ -31,7 +31,6 @@ export function MovePage() {
   const [premiumFlows, setPremiumFlows] = useState<MobilityFlow[]>([]);
   const [activeFlowId, setActiveFlowId] = useState<string | null>(null);
   const [refresh, setRefresh] = useState(0);
-  const [premiumOpen, setPremiumOpen] = useState(false);
   const [premiumFetchError, setPremiumFetchError] = useState(false);
   // `.241` — a retry trigger. ErrorState renders no action unless it is handed
   // one, so an unrecoverable error state was a dead end wearing a component.
@@ -163,22 +162,18 @@ export function MovePage() {
         />
       )}
 
+      {/* Same native details/summary idiom as the flow list above — one
+          disclosure pattern per screen, not two. */}
       {!premium && (
-        <div className="space-y-2">
-          <button
-            type="button"
-            className="flex w-full items-center justify-between gap-2 border-2 border-border bg-card px-4 py-3 text-sm min-h-[44px]"
-            onClick={() => setPremiumOpen((v) => !v)}
-          >
+        <details className="group space-y-2">
+          <summary className="flex w-full cursor-pointer list-none items-center justify-between gap-2 border-2 border-border bg-card px-4 py-3 text-sm min-h-[44px] [&::-webkit-details-marker]:hidden">
             <span className="font-semibold text-muted-foreground">
               {t('movePremiumPreview', { defaultValue: 'Premium recovery flows' })}
             </span>
-            <ChevronDown
-              className={`h-4 w-4 text-muted-foreground transition-transform ${premiumOpen ? 'rotate-180' : ''}`}
-            />
-          </button>
-          {premiumOpen && <MoveLockedPreview />}
-        </div>
+            <ChevronDown className="h-4 w-4 text-muted-foreground transition-transform group-open:rotate-180" />
+          </summary>
+          <MoveLockedPreview />
+        </details>
       )}
 
       {recentWins.length > 0 ? (
