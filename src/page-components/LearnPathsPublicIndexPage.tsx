@@ -12,7 +12,9 @@ export function LearnPathsPublicIndexPage() {
     <PublicPageShell
       eyebrow="Free learning paths"
       title="Learn the foundations"
-      subtitle={`${FREE_LEARN_PATHS.length} free paths — progressive overload, protein, mobility, sleep, and more. Open any path in the app with no paywall on the basics.`}
+      subtitle={`${FREE_LEARN_PATHS.length} free paths — progressive overload, protein, mobility, sleep, and more. Open a path, then continue in Learn (same content).`}
+      ctaHref="/learn"
+      ctaLabel="Open Learn"
     >
       <div className="space-y-4">
         {FREE_LEARN_PATHS.map((path) => (

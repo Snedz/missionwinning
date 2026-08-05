@@ -1,6 +1,6 @@
 'use client';
 /**
- * Page: /paths/[id] — public Learn path teaser
+ * Page: /paths/[id] — public Learn path teaser (Flow-3 → /learn?path=)
  */
 
 import Link from 'next/link';
@@ -8,11 +8,13 @@ import { useEffect } from 'react';
 import type { LearnPath } from '@/data/learnPaths';
 import { track } from '@/lib/analytics';
 import { PublicPageShell } from '@/components/public/PublicPageShell';
+import { seoLearnPathOpenHref } from '@/lib/seoLearnBridge';
 
 type Props = { path: LearnPath };
 
 export function LearnPathPublicPage({ path }: Props) {
   const first = path.lessons[0];
+  const openInLearn = seoLearnPathOpenHref(path.id);
 
   useEffect(() => {
     track('guide_read', { chapter: `path:${path.id}` });
@@ -23,6 +25,8 @@ export function LearnPathPublicPage({ path }: Props) {
       eyebrow="Free learning path"
       title={path.title}
       subtitle={path.subtitle}
+      ctaHref={openInLearn}
+      ctaLabel="Open in Learn"
       breadcrumb={
         <Link href="/paths" className="text-primary hover:underline">
           ← All paths
@@ -78,19 +82,24 @@ export function LearnPathPublicPage({ path }: Props) {
 
         <div className="space-y-3 border-2 border-primary bg-tint p-5">
           <p className="text-sm text-muted-foreground">
-            Start free with I-Day (~2 min), then open this path in Learn. Free core needs no AI key.
-            Offline when you install the PWA.
+            Same free path as in the app — open Learn to mark lessons done. No AI key. Offline as a
+            PWA.
           </p>
-          {/* Plain link with `.primary-action`, not `Button variant="default"` wrapping it:
-              utilities beat the components layer, so Button's `rounded-md`/`text-sm` won
-              while `.primary-action`'s `w-full` survived — the CTA rendered at the wrong
-              radius and size and forced itself onto its own row. */}
+          {/* Plain link with `.primary-action` — see Flow-3 seoLearnBridge. */}
+          <Link
+            href={openInLearn}
+            className="primary-action"
+            data-testid="seo-path-open-learn"
+            onClick={() => track('public_cta_clicked', { target: openInLearn, path: path.id })}
+          >
+            Open in Learn →
+          </Link>
           <Link
             href="/welcome"
-            className="primary-action"
+            className="block text-center text-sm font-medium text-primary hover:underline"
             onClick={() => track('public_cta_clicked', { target: '/welcome', path: path.id })}
           >
-            Start free — Begin I-Day
+            New here? Start free (I-Day)
           </Link>
         </div>
     </PublicPageShell>
