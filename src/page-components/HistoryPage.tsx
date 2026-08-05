@@ -75,7 +75,7 @@ import { PillarPageShell } from '@/components/layout/PillarPageShell';
 import { EmptyState } from '@/components/ui/EmptyState';
 import { Input } from '@/components/ui/input';
 import { SegmentedControl } from '@/components/ui/SegmentedControl';
-import { localDateKey, localDateKeyFromIso } from '@/lib/time/localDate';
+import { localDateKey, localDateKeyFromIso, formatLocalDateKey } from '@/lib/time/localDate';
 import { templateFromCompletedLog } from '@/lib/workout/historyRetrain';
 import { track } from '@/lib/analytics';
 
@@ -83,24 +83,6 @@ const HEATMAP_WINDOW_DAYS = 14;
 
 type RangeFilter = '7' | '30' | 'all';
 type HistoryTab = 'calendar' | 'sessions' | 'exercises' | 'journal';
-
-/**
- * `YYYY-MM-DD` → a readable date, built from **local** fields.
- *
- * Deliberately not `new Date(key)`: a bare date string parses as UTC midnight,
- * so west of UTC it renders as the previous day — the mirror of the `.245`
- * defect, and `localDate.ts` already carries the same note about why
- * `previousLocalDateKey` is built this way.
- */
-function formatDayKey(key: string, locale: string): string {
-  const [y, m, d] = key.split('-').map(Number);
-  if (!y || !m || !d) return key;
-  return new Date(y, m - 1, d, 12).toLocaleDateString(locale, {
-    year: 'numeric',
-    month: 'short',
-    day: 'numeric',
-  });
-}
 
 export function HistoryPage() {
   const router = useRouter();
@@ -297,8 +279,8 @@ export function HistoryPage() {
               <span className="text-muted-foreground">
                 {' · '}
                 {t('historyDaysSince', {
-                  date: formatDayKey(dayStats.first, i18n.language),
-                  defaultValue: `since ${formatDayKey(dayStats.first, i18n.language)}`,
+                  date: formatLocalDateKey(dayStats.first, i18n.language),
+                  defaultValue: `since ${formatLocalDateKey(dayStats.first, i18n.language)}`,
                 })}
               </span>
             )}

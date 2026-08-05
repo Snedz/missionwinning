@@ -144,3 +144,17 @@ export function localMonthLeadingBlanks(monthKey: string): number {
   const firstDow = new Date(y, m - 1, 1).getDay(); // 0 Sun … 6 Sat
   return firstDow === 0 ? 6 : firstDow - 1;
 }
+
+/**
+ * Format YYYY-MM-DD for display without UTC midnight shift.
+ * Deliberately not `new Date(key)` — bare date strings parse as UTC midnight.
+ */
+export function formatLocalDateKey(
+  key: string,
+  locale: string,
+  opts: Intl.DateTimeFormatOptions = { year: 'numeric', month: 'short', day: 'numeric' }
+): string {
+  const [y, m, d] = key.split('-').map(Number);
+  if (!y || !m || !d) return key;
+  return new Date(y, m - 1, d, 12).toLocaleDateString(locale, opts);
+}

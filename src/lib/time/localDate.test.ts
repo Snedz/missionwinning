@@ -5,6 +5,7 @@ import {
   localDateKeyFromIso,
   localWeekKey,
   startOfLocalWeek,
+  formatLocalDateKey,
 } from '@/lib/time/localDate';
 
 /**
@@ -150,5 +151,17 @@ describe('startOfLocalWeek', () => {
         'if these agree the test has stopped proving anything — pick a later hour'
       );
     });
+  });
+});
+
+describe('formatLocalDateKey', () => {
+  it('formats YYYY-MM-DD without UTC shift', () => {
+    const s = formatLocalDateKey('2026-08-05', 'en-US');
+    assert.match(s, /2026/);
+    assert.match(s, /Aug|August|5/);
+  });
+
+  it('returns key when malformed', () => {
+    assert.equal(formatLocalDateKey('nope', 'en-US'), 'nope');
   });
 });
