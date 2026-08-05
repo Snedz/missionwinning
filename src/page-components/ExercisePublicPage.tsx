@@ -123,14 +123,19 @@ export function ExercisePublicPage({ exercise: raw, jsonLd }: Props) {
           </section>
         )}
 
-        {/* SEO → habit bridge (Flow-2): open Train with this lift already queued. */}
-        <div className="flex flex-col gap-2 border-2 border-primary bg-tint p-4 sm:flex-row sm:items-center sm:justify-between">
-          <p className="text-sm text-muted-foreground">
+        {/*
+          SEO → habit bridge (Flow-2). Desktop: row with copy + compact CTA.
+          `.primary-action` is `w-full` by default — without `sm:w-auto` it
+          stretches the whole measure and collapses the copy beside it.
+          Ink on tint for body (muted on #fff2ef can go soft on wide displays).
+        */}
+        <div className="flex flex-col gap-3 border-2 border-primary bg-tint p-4 sm:flex-row sm:items-center sm:justify-between sm:gap-6">
+          <p className="min-w-0 flex-1 text-sm leading-snug text-foreground">
             Free offline logger · no account · no API key — logs this movement
           </p>
           <Link
             href={seoExerciseTrainHref(exercise.id)}
-            className="primary-action shrink-0 text-center"
+            className="primary-action w-full shrink-0 justify-center sm:w-auto sm:min-w-[12rem] sm:justify-start sm:px-8"
             data-testid="seo-exercise-train"
           >
             Log this free →

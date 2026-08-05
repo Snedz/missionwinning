@@ -13,6 +13,8 @@ Generation is **offline batch** → founder approve → commit static files. The
 
 **Form generation:** [media/form-kit/FORM_DIRECTOR.md](../media/form-kit/FORM_DIRECTOR.md) — Seedance-class director prompts (asset kit → still QA → optional loop). Soft two-line prompts retired (`.467` quality reset). Still-only is a valid ship; glitchy video is not.
 
+**Eyes-on validation:** [media/form-kit/qa/MOVEMENT_STANDARDS.md](../media/form-kit/qa/MOVEMENT_STANDARDS.md) — compare stills to public movement demos (e.g. CrossFit library / YouTube) as **reference only**; never ship CF embeds/IP. Wrong-exercise demotes leave `FORM_PACK_SIDE_IDS` even if the file stays for regen.
+
 **Primary HQ tool for Learn / social / motion:** [Google Flow](https://labs.google/fx/tools/flow) + [Grok Imagine](https://grok.com/imagine). Optional later: same Form Director sheets on Higgsfield Seedance for hard physics.
 
 ---
