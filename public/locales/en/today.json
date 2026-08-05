@@ -160,5 +160,21 @@
   "coachPlanCta": "Generate this week",
   "coachPlanGenerating": "Building your week…",
   "coachPlanLoad": "Load",
-  "coachPlanRegenerate": "Regenerate"
+  "coachPlanRegenerate": "Regenerate",
+  "rewardTodayTitle": "Mission progress",
+  "rewardTodayRank": "Level {{level}} · {{rank}}",
+  "rewardTodayXpTotal": " · {{xp}} XP",
+  "rewardLevelBar": "Next level",
+  "rewardWeeklyGoal": "Weekly train goal",
+  "rewardWeeklyGoalHint": "Hit your weekly sessions — rest days are part of the plan.",
+  "rewardBadgeCount": "{{count}} badges earned",
+  "rewardVictoryXp": "+{{xp}} XP",
+  "rewardVictoryLevel": " · Level {{level}}",
+  "rewardVictoryBadges": " · {{names}}",
+  "rewardProfileTitle": "Badges & rank",
+  "rewardProfileEmpty": "Log workouts and pillar wins to earn badges. Free forever.",
+  "rewardChallengeDone": "Done",
+  "rewardChallengeXp": "XP when complete",
+  "rewardProfileRank": "Level {{level}} · {{rank}} · {{xp}} XP",
+  "rewardHonor": "Honor"
 }
