@@ -1,7 +1,7 @@
 # Improvement log — Kaizen Night (2026-08-05 full-launch)
 
 Plan: `.hermes/plans/2026-08-05_kaizen-night-plan.md`  
-**Tip:** `2026.07-unified.517` · PRs **#300–#318** on master · unit tests **1802** green  
+**Tip:** `2026.07-unified.518` · PRs **#300–#320** on master · unit tests **1803** green  
 Local gate authoritative (GitHub Actions often billing-blocked).
 
 ## Contract
@@ -23,13 +23,14 @@ Full-launch override · free logger never gated · no `PRIVATE_MODE` · small PR
 | `.515` | #314 | perfect_week fuel + pillar apply paths |
 | `.516` | #316 | Challenge Done XP from catalog |
 | `.517` | #318 | EN ranks + badge titles |
+| `.518` | #320 | Re-entry shame-free copy guard |
 
 ## Metrics
 
 | | Start | Now |
 |--|-------|-----|
-| Build | `.506` | **`.517`** |
-| Tests | 1778 | **1802** |
+| Build | `.506` | **`.518`** |
+| Tests | 1778 | **1803** |
 | Merged PRs | 0 | **#300–#318** |
 
 ## Remaining
