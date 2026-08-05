@@ -22,6 +22,7 @@ import { cn } from '@/lib/utils';
 import type { SetKind } from '@/types';
 import { setKindDefaultLabel, setKindLabelKey } from '@/lib/workout/setKind';
 import {
+  activeSetOfParams,
   shouldOfferUseNext,
   shouldShowSetKindExpand,
   visibleSetKinds,
@@ -158,8 +159,7 @@ export function LogConsole({
         <span className="min-w-0 truncate text-[15px] font-extrabold">{exerciseName}</span>
         <span className="shrink-0 text-[11px] font-semibold uppercase tracking-[0.1em] tabular-nums text-neutral-400">
           {t('activeSetOf', {
-            n: setNumber,
-            total: totalSets,
+            ...activeSetOfParams(setNumber, totalSets),
             defaultValue: `Set ${setNumber} of ${totalSets}`,
           })}
         </span>

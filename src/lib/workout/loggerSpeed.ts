@@ -43,3 +43,16 @@ export function visibleSetKinds(kind: SetKind, expanded: boolean): readonly SetK
 export function shouldShowSetKindExpand(kind: SetKind, expanded: boolean): boolean {
   return !expanded && kind === 'normal';
 }
+
+/**
+ * Interpolation keys for `activeSetOf` — must match the locale template
+ * (`Set {{current}} of {{total}}`). Passing `n` left the ordinal as the
+ * literal `{{current}}` once the pack loaded (defaultValue only applies when
+ * the key is missing).
+ */
+export function activeSetOfParams(
+  setNumber: number,
+  totalSets: number
+): { current: number; total: number } {
+  return { current: setNumber, total: totalSets };
+}
