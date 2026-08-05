@@ -4,7 +4,9 @@
 
 import { loadDaysPerWeek } from '@/lib/coach/schedulePrefs';
 import { getChallengeProgress } from '@/lib/challenges';
+import { getPillarWins } from '@/lib/pillarLog';
 import { applyRewardEvent, applyRewardEvents } from '@/lib/rewards/engine';
+import { shouldAwardPerfectWeek } from '@/lib/rewards/perfectWeek';
 import {
   loadRewardState,
   rememberLastAwards,
@@ -18,6 +20,41 @@ function persist(result: ApplyResult): ApplyResult {
   saveRewardState(result.state);
   rememberLastAwards(result);
   return result;
+}
+
+function fuelDaysThisWeek(weekStart: string, claimed: string[]): number {
+  return claimed.filter((id) => {
+    const m = /^fuel:(\d{4}-\d{2}-\d{2})$/.exec(id);
+    return m != null && m[1]! >= weekStart;
+  }).length;
+}
+
+function distinctPillarsThisWeek(weekStart: string): number {
+  const set = new Set(
+    getPillarWins(100)
+      .filter((w) => localDateKeyFromIso(w.completedAt) >= weekStart)
+      .map((w) => w.pillar)
+  );
+  return set.size;
+}
+
+function maybePerfectWeekEvents(
+  weekStart: string,
+  sessionsThisWeek: number,
+  goal: number,
+  claimed: string[]
+): RewardEventKind[] {
+  if (
+    shouldAwardPerfectWeek({
+      sessionsThisWeek,
+      trainGoal: goal,
+      fuelDaysThisWeek: fuelDaysThisWeek(weekStart, claimed),
+      distinctNonTrainPillars: distinctPillarsThisWeek(weekStart),
+    })
+  ) {
+    return [{ type: 'perfect_week', weekStart }];
+  }
+  return [];
 }
 
 export function applyRewardEventsLive(events: RewardEventKind[]): ApplyResult {
@@ -88,6 +125,9 @@ export function applyWorkoutRewards(
       });
     }
   }
+
+  const claimed = loadRewardState().claimedEventIds;
+  events.push(...maybePerfectWeekEvents(weekStart, sessionsThisWeek, goal, claimed));
 
   return applyRewardEventsLive(events);
 }
