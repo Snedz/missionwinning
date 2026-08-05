@@ -201,5 +201,6 @@
   "rewardBadgeChallenge": "Challenge Cleared",
   "rewardBadgeSpectrum": "Full Spectrum",
   "rewardBadgeComeback": "Comeback",
-  "rewardBadgeCommissioned": "Commissioned"
+  "rewardBadgeCommissioned": "Commissioned",
+  "rewardProfileChallenges": "{{done}}/{{total}} weekly challenges met"
 }
