@@ -284,6 +284,7 @@ One screen of truth for any AI tool or human joining cold. Read this, then [AGEN
 > | gitleaks | **green — and scanning for the first time.** It had never scanned anything: on a `pull_request` event the action lists the PR's commits, the job declared no `permissions:` block, and it 403'd (`pull_requests=read`) before opening a file. Fixed by a `permissions:` block (`.224` carrying `.255`). It scans **only the PR's own commits**, so commit `8ea3527a`'s real Solana treasury address — scrubbed from the working file, still in history — is out of its scope. That finding stands, deliberately not allowlisted; it was never what made this check red. |
 
 - **`.508`:** Kaizen — parked America CTAs fall back to /benchmarks; join/teacher/PFT gated.
+- **`.508`:** Kaizen — parked America CTAs fall back to /benchmarks; join/teacher/PFT gated.
 - **`.507`:** Kaizen — lean Today Mission progress; fuel/pillar milestone badges; Leaderboard in More Wedge.
 - **`.507`:** Kaizen — lean Today Mission progress; fuel/pillar milestone badges; Leaderboard in More Wedge.
 - **`.506`:** Full-launch honesty — leaderboard zero-state + free-beta dual-mode depth unlock; class scope clamped when America parked.
