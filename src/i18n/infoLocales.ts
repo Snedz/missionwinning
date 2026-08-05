@@ -192,6 +192,10 @@ type InfoStrings = {
   americaEyebrow: string;
   learnEyebrow: string;
   feedbackEyebrow: string;
+  joinClassJoining: string;
+  joinClassFailedTitle: string;
+  joinClassFailedDesc: string;
+  joinClassFailedHome: string;
   infoAboutMissionP1: string;
   infoAboutMissionP2: string;
   infoAboutEvidence: string;
@@ -375,6 +379,11 @@ const en: InfoStrings = {
   americaEyebrow: 'America',
   learnEyebrow: 'Learn',
   feedbackEyebrow: 'Feedback',
+  joinClassJoining: 'Joining class…',
+  joinClassFailedTitle: 'That class code did not work',
+  joinClassFailedDesc:
+    'Check the code with your teacher — codes are short letter-number combinations. Nothing was saved.',
+  joinClassFailedHome: 'Go to Today',
   infoTermsChangesBody:
     'We may update these terms. Continued use after changes constitutes acceptance. Material changes will be noted in the app or via email where appropriate.',
   infoTermsFoot: 'Mission Winning LLC · support@missionwinning.com · See also',
