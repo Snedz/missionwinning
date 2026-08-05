@@ -1,36 +1,49 @@
 # Improvement log — Kaizen Night (2026-08-05 full-launch)
 
-Session branch: `kaizen/night-2026-08-05`  
-Started: 2026-08-05 · post-#299 · build tip **`.512`** · PRs #300–#308  
-Plan: `.hermes/plans/2026-08-05_kaizen-night-plan.md`
+Session after #299 Mission Rewards. Plan: `.hermes/plans/2026-08-05_kaizen-night-plan.md`  
+**Tip build:** `2026.07-unified.513` · master tip PR stack **#300–#310**
 
 ## Contract
 
-- Full-launch override active; free logger never gated; no PRIVATE_MODE flip.
-- Small PRs; local gate (CI billing may stay red).
-- Tracks A (rewards) · B (wedge) · C (honesty) · D (docs/debt).
+- Full-launch override; free logger never gated; no `PRIVATE_MODE` flip.
+- Small PRs; local gate authoritative (GitHub Actions billing-blocked).
+- Tracks A rewards · B wedge · C honesty · D docs.
 
-## Status
+## Status (this night)
 
-| # | Item | Status |
-|---|------|--------|
-| A1 | Lean Today rewards card | done `.507` |
-| A2 | fuel/pillar milestone badges | done `.507` |
-| C4 | More Leaderboard Wedge row | done `.507` |
-| D2 | CONTEXT refuse vs override | done `.507` |
-| C2 | Dead parked hrefs | done `.508` |
-| A4 | Victory consume-once | done `.509` |
-| C1 | FREE_BETA Unlock/Bundle pins | done `.510` |
-| — | americaHomeOrFallback | done `.508` |
-| B1 | One-boss CTA | pending |
+| ID | Item | Build / PR |
+|----|------|------------|
+| A1 | Lean Today Mission progress | `.507` #300 |
+| A2 | fuel_steady / mobility / student / still_mind | `.507` #300 · `.512` #308 |
+| A4 | Victory consume-once Strict Mode | `.509` #304 |
+| A5 | EN rewards i18n Today namespace | `.513` #310 |
+| C4 | More Leaderboard Wedge row | `.507` #300 |
+| C2 | America escape hatches | `.508` #301 |
+| C2b | Share never parked /america | `.511` #307 |
+| C1 | FREE_BETA Unlock + Bundle pins | `.510` #305 |
+| B3 | Coach from-logs honesty pins | `.512` #308 |
+| D2 | CONTEXT refuse vs override | `.507` #300 |
+| docs | CONTEXT dedupe / IMPROVEMENT_LOG | #302–#303 #306 #309 |
 
 ## Metrics
 
-| Metric | Start | Now |
-|--------|-------|-----|
-| Build | `.506` | **`.510`** |
-| Unit tests | 1778 | **1788** |
-| Unit tests | 1778 | TBD |
+| Metric | Night start | Now |
+|--------|-------------|-----|
+| Build | `.506` | **`.513`** |
+| Unit tests | 1778 | **~1796** |
+| Merged PRs | — | **#300–#310** |
+
+## Remaining (next loops)
+
+- B2 outdoor one-thumb residuals (if any measured friction)
+- perfect_week multi-pillar emit
+- Fat page decomp (HomeTodayDashboard / History / Nutrition)
+- Android Accept B (founder)
+- Ops: postal, migrations, invites, Actions billing
+
+## Standing refuses
+
+`PRIVATE_MODE` · invent traction · gate free logger · America marketing without enable · iOS · wearables-as-score · coin wallet
 
 ---
 
