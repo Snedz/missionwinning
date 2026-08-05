@@ -1,14 +1,14 @@
 # Improvement log — Kaizen Night (2026-08-05 full-launch)
 
 Plan: `.hermes/plans/2026-08-05_kaizen-night-plan.md`  
-**Tip:** `2026.07-unified.528` · PRs **#300–#336** · unit tests **1820** pass  
+**Tip:** `2026.07-unified.529` · PRs **#300–#338** · unit tests **1822** pass  
 Local gate authoritative (GitHub Actions often billing-blocked).
 
 ## Contract
 
 Full-launch override · free logger never gated · no `PRIVATE_MODE` · small PRs · merge on local green.
 
-## Shipped this night (.507 → .528)
+## Shipped this night (.507 → .529)
 
 | Build | Highlight |
 |-------|-----------|
@@ -21,9 +21,9 @@ Full-launch override · free logger never gated · no `PRIVATE_MODE` · small PR
 
 | | Start | Now |
 |--|-------|-----|
-| Build | `.506` | **`.528`** |
-| Unit tests | 1778 | **1820** (+42) |
-| Merged PRs after #299 | — | **#300–#336** |
+| Build | `.506` | **`.529`** |
+| Unit tests | 1778 | **1822** (+44) |
+| Merged PRs after #299 | — | **#300–#338** |
 
 ## Remaining
 
