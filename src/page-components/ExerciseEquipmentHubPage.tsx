@@ -32,7 +32,7 @@ export function ExerciseEquipmentHubPage({ equipmentLabel, exercises }: Props) {
                 href={`/exercises/${ex.id}`}
                 className="flex justify-between gap-3 border-2 border-border bg-card px-4 py-3 hover:border-primary hover:bg-tint transition-colors"
               >
-                <span className="font-medium">{ex.name}</span>
+                <span className="font-semibold">{ex.name}</span>
                 <span className="text-xs text-muted-foreground shrink-0">
                   {ex.muscleGroups.join(', ')}
                 </span>

@@ -15,7 +15,14 @@ type PillarPageHeaderProps = {
 
 /**
  * In-app page header: optional eyebrow → title + icon → muted subtitle.
- * Uses sentence-case type so pillar screens feel human, not briefing-template.
+ *
+ * Speaks the system's display type: `.eyebrow` + `.display-section` (sentence
+ * case — the caps were Barlow's, and `.display-section` never sets them). This
+ * is the one file that gives all 13 pillar screens and every info page the
+ * rebrand's voice; before it, the app had the palette but a hand-rolled
+ * 600-weight title no other surface used. NO size or weight utility may sit
+ * beside the display class — the utilities layer wins and silently discards
+ * the clamp/weight (`check-display-type.mjs` enforces both).
  */
 export function PillarPageHeader({
   icon: Icon,
@@ -27,12 +34,10 @@ export function PillarPageHeader({
 }: PillarPageHeaderProps) {
   return (
     <div className={cn('space-y-2', className)}>
-      {eyebrow ? (
-        <p className="text-xs font-medium tracking-wide text-muted-foreground">{eyebrow}</p>
-      ) : null}
-      <h1 className="flex items-center gap-3 text-[1.65rem] font-semibold tracking-tight text-foreground md:text-[2rem] leading-tight">
+      {eyebrow ? <p className="eyebrow">{eyebrow}</p> : null}
+      <h1 className="flex items-center gap-3 display-section text-foreground">
         <Icon
-          className={cn('h-6 w-6 shrink-0 text-primary md:h-7 md:w-7', iconClassName)}
+          className={cn('h-6 w-6 shrink-0 text-primary md:h-8 md:w-8', iconClassName)}
           aria-hidden
         />
         <span className="min-w-0">{title}</span>

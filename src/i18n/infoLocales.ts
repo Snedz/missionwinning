@@ -188,6 +188,10 @@ type InfoStrings = {
   accountDeleteHold: string;
   accountDeleteError: string;
   accountDeleteDoneNote: string;
+  toolkitEyebrow: string;
+  americaEyebrow: string;
+  learnEyebrow: string;
+  feedbackEyebrow: string;
   infoAboutMissionP1: string;
   infoAboutMissionP2: string;
   infoAboutEvidence: string;
@@ -367,6 +371,10 @@ const en: InfoStrings = {
   accountDeleteHold: 'Delete account & cloud data',
   accountDeleteError: 'Deletion failed — nothing was partially removed. Try again or email support.',
   accountDeleteDoneNote: 'Account deleted. Your on-device data is untouched.',
+  toolkitEyebrow: 'Toolkit',
+  americaEyebrow: 'America',
+  learnEyebrow: 'Learn',
+  feedbackEyebrow: 'Feedback',
   infoTermsChangesBody:
     'We may update these terms. Continued use after changes constitutes acceptance. Material changes will be noted in the app or via email where appropriate.',
   infoTermsFoot: 'Mission Winning LLC · support@missionwinning.com · See also',

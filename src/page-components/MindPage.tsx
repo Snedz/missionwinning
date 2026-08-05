@@ -82,7 +82,7 @@ export function MindPage() {
       </div>
 
       <div id="mind-guided" className="space-y-3 scroll-mt-20">
-        <h3 className="text-sm font-medium text-muted-foreground">
+        <h3 className="text-sm font-semibold text-muted-foreground">
           {t('mindGuidedFree', { defaultValue: 'Guided sessions' })}
         </h3>
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
@@ -127,7 +127,7 @@ export function MindPage() {
             className="flex w-full items-center justify-between gap-2 border-2 border-border bg-card px-4 py-3 text-sm min-h-[44px]"
             onClick={() => setPremiumOpen((v) => !v)}
           >
-            <span className="font-medium text-muted-foreground">
+            <span className="font-semibold text-muted-foreground">
               {t('mindPremiumPreview', { defaultValue: 'Premium guided sessions' })}
             </span>
             <ChevronDown

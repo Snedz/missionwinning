@@ -71,6 +71,7 @@ export function FeedbackPage() {
     return (
       <InfoPageShell
         icon={MessageSquare}
+        eyebrow={t('feedbackEyebrow', { defaultValue: 'Feedback' })}
         title={t('infoFeedbackThankTitle', { defaultValue: 'Thank you' })}
         subtitle={t('infoFeedbackThankSubtitle', {
           defaultValue: 'Thanks — your notes help us improve the free logger and Coach.',
@@ -83,8 +84,8 @@ export function FeedbackPage() {
                 {t('feedbackThankBadge', { defaultValue: 'Thanks' })}
               </div>
               <div className="text-left max-w-md mx-auto space-y-2 text-sm leading-relaxed">
-                <p className="font-medium">{t('feedbackThankRoadmap', { defaultValue: '✓ Your input shapes what we build next' })}</p>
-                <p className="font-medium">{t('feedbackThankEarly', { defaultValue: '✓ We’ll email when something useful ships' })}</p>
+                <p className="font-semibold">{t('feedbackThankRoadmap', { defaultValue: '✓ Your input shapes what we build next' })}</p>
+                <p className="font-semibold">{t('feedbackThankEarly', { defaultValue: '✓ We’ll email when something useful ships' })}</p>
                 <p className="text-xs text-muted-foreground mt-4">
                   {t('feedbackThankEmail', { defaultValue: 'Check your inbox if you left an email.' })}
                 </p>
@@ -101,6 +102,7 @@ export function FeedbackPage() {
   return (
     <InfoPageShell
       icon={MessageSquare}
+        eyebrow={t('feedbackEyebrow', { defaultValue: 'Feedback' })}
       title={t('infoFeedbackTitle', { defaultValue: 'Feedback' })}
       subtitle={t('infoFeedbackSubtitle', {
         defaultValue:

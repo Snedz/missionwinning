@@ -110,7 +110,7 @@ export function CoachingPage() {
             })}
             aria-label={t('infoCoachingGoalsLabel', { defaultValue: 'Your goals and current training' })}
           />
-          {error && <p className="text-sm font-medium text-primary">{error}</p>}
+          {error && <p className="text-sm font-semibold text-primary">{error}</p>}
           <Button type="submit" size="lg" variant="default" className="w-full" disabled={loading}>
             {loading
               ? t('infoCoachingSending', { defaultValue: 'Sending…' })

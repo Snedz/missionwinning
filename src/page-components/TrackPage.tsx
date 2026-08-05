@@ -107,7 +107,7 @@ export function TrackPage() {
               <CardTitle className="text-sm">{t('trackWeekSessions', { defaultValue: 'This Week' })}</CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold tabular-nums">
+              <div className="text-2xl font-extrabold tabular-nums">
                 {stats.count} {t('sessions', { defaultValue: 'sessions' }).toLowerCase()}
               </div>
             </CardContent>
@@ -117,7 +117,7 @@ export function TrackPage() {
               <CardTitle className="text-sm">{t('trackTotalTime', { defaultValue: 'Total Time' })}</CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold tabular-nums">{stats.totalMin} min</div>
+              <div className="text-2xl font-extrabold tabular-nums">{stats.totalMin} min</div>
             </CardContent>
           </Card>
           <Card className="content-card">
@@ -125,7 +125,7 @@ export function TrackPage() {
               <CardTitle className="text-sm">{t('trackDistance', { defaultValue: 'Distance' })}</CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold tabular-nums">{stats.totalKm.toFixed(1)} km</div>
+              <div className="text-2xl font-extrabold tabular-nums">{stats.totalKm.toFixed(1)} km</div>
             </CardContent>
           </Card>
         </div>
@@ -236,7 +236,7 @@ export function TrackPage() {
                     className="flex items-center justify-between text-sm border-b border-border pb-2"
                   >
                     <div>
-                      <span className="font-medium">{ACTIVITY_LABELS[a.type]}</span>
+                      <span className="font-semibold">{ACTIVITY_LABELS[a.type]}</span>
                       {isGpsActivity(a.notes) && (
                         <span className="ms-1.5 text-[10px] uppercase tracking-wide text-primary font-semibold">
                           GPS

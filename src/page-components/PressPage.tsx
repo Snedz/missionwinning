@@ -118,7 +118,7 @@ export function PressPage() {
                     <Download className="h-4 w-4" />
                   </span>
                   <span className="min-w-0">
-                    <span className="block font-medium text-foreground">{item.label}</span>
+                    <span className="block font-semibold text-foreground">{item.label}</span>
                     <span className="block text-xs text-muted-foreground">{item.hint}</span>
                   </span>
                 </a>
@@ -144,7 +144,7 @@ export function PressPage() {
                       )}
                       style={{ backgroundColor: c.swatch }}
                     />
-                    <p className="font-medium text-foreground">{c.name}</p>
+                    <p className="font-semibold text-foreground">{c.name}</p>
                     <p className="text-xs text-muted-foreground">{c.role}</p>
                     <div className="mt-2 flex flex-wrap items-center gap-2">
                       <code className="text-[11px] text-primary">{c.hex}</code>
