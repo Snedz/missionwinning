@@ -16,7 +16,7 @@ One screen of truth for any AI tool or human joining cold. Read this, then [AGEN
 
 ---
 
-## Now (2026-08-05 · web `2026.07-unified.527` · Android `1.24.1`)
+## Now (2026-08-05 · web `2026.07-unified.528` · Android `1.24.1`)
 
 > The ONLY "where we are" block in the repo — [ORCHESTRATION.md](ORCHESTRATION.md) points here.
 >
@@ -262,7 +262,7 @@ One screen of truth for any AI tool or human joining cold. Read this, then [AGEN
 > and `.501` dropped `.486` detail (full text remains in LOG.md / archive)
 > and `.502` dropped `.487` detail (full text remains in LOG.md / archive)
 > and `.503` dropped `.488` detail (full text remains in LOG.md / archive)
-> and `.505`–`.527` dropped detail (full text remains in LOG.md / archive)
+> and `.505`–`.528` dropped detail (full text remains in LOG.md / archive)
 > to [CONTEXT-now-2026-07-30.md](docs/archive/CONTEXT-now-2026-07-30.md) after this
 > block reached **79 bullets / 103KB**. A status doc that only grows stops being read.
 
@@ -283,7 +283,7 @@ One screen of truth for any AI tool or human joining cold. Read this, then [AGEN
 > | Migrations | **9 recorded pending** — [LAUNCH_RUNBOOK](docs/LAUNCH_RUNBOOK.md) §3, enforced by `src/lib/migrationLedger.test.ts`. |
 > | gitleaks | **green — and scanning for the first time.** It had never scanned anything: on a `pull_request` event the action lists the PR's commits, the job declared no `permissions:` block, and it 403'd (`pull_requests=read`) before opening a file. Fixed by a `permissions:` block (`.224` carrying `.255`). It scans **only the PR's own commits**, so commit `8ea3527a`'s real Solana treasury address — scrubbed from the working file, still in history — is out of its scope. That finding stands, deliberately not allowlisted; it was never what made this check red. |
 
-- **`.527`–`.515`:** nutrition merge helper · fuel date labels · formatLocalMonthKey · HistoryDay · perfect_week.
+- **`.528`–`.515`:** analytics/trends date labels · nutrition merge · fuel labels · formatLocalMonthKey · perfect_week.
 - **`.514`–`.505`:** Mission Rewards economy + full-launch honesty (XP/ranks/badges, leaderboard, free-beta pins, America fallbacks).
 - **`.503`–`.502`:** History retrain + no soft-Coach boss (K11/K6/K7).
 - **`.501`–`.500`:** Coach density, week-1 contract, Today language, Active empty.

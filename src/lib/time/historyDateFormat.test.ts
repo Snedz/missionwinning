@@ -31,11 +31,23 @@ test('resolveTrendSeries labels via formatLocalDateKey', () => {
   assert.doesNotMatch(src, /new Date\(y,\s*m\s*-\s*1,\s*d/);
 });
 
-test("HistoryCalendar month label via formatLocalMonthKey", () => {
+test('HistoryCalendar month label via formatLocalMonthKey', () => {
   const src = readFileSync(
-    join(import.meta.dirname, "..", "..", "components", "history", "HistoryCalendar.tsx"),
-    "utf8"
+    join(import.meta.dirname, '..', '..', 'components', 'history', 'HistoryCalendar.tsx'),
+    'utf8'
   );
   assert.match(src, /formatLocalMonthKey/);
   assert.doesNotMatch(src, /new Date\(y!, m! - 1, 1\)/);
+});
+
+test('historyAnalytics week labels via formatLocalDateKey', () => {
+  const src = readFileSync(join(import.meta.dirname, '..', 'historyAnalytics.ts'), 'utf8');
+  assert.match(src, /formatLocalDateKey/);
+  assert.doesNotMatch(src, /d\.toLocaleDateString\(locale/);
+});
+
+test('todayTrends day buckets via formatLocalDateKey', () => {
+  const src = readFileSync(join(import.meta.dirname, '..', 'todayTrends.ts'), 'utf8');
+  assert.match(src, /formatLocalDateKey/);
+  assert.doesNotMatch(src, /d\.toLocaleDateString\(locale/);
 });
