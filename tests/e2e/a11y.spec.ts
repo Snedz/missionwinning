@@ -49,6 +49,10 @@ const GATED_ROUTES = [
   '/paths',
   '/about',
   '/privacy',
+  // The two legal pages P4 added: the cookie inventory (a table) and the
+  // accessibility statement itself — the one page that must never fail axe.
+  '/cookies',
+  '/accessibility',
   // Three more enabled surfaces that had no axe coverage at all. `.157` widened this
   // list from four signed-in screens to thirteen, but it was never cross-checked
   // against the surface registry — so four of the eight surfaces that are ON by

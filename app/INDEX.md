@@ -42,6 +42,8 @@
 | `/learn/guide` | `GuidebookIndexPage.tsx` | Guidebook |
 | `/coaching` | `CoachingPage.tsx` | **Human** coaching leads — not AI Coach |
 | `/privacy` | `PrivacyPage.tsx` | Privacy policy |
+| `/cookies` | `CookiesPage.tsx` | Cookie & device-storage inventory (data: `src/lib/cookiePolicy.ts`) |
+| `/accessibility` | `AccessibilityPage.tsx` | Accessibility statement (EAA / WCAG 2.1 AA) |
 | `/terms` | `TermsPage.tsx` | Terms of use |
 | `/dmca` | `DmcaPage.tsx` | DMCA / copyright notices |
 | `/refunds` | `RefundsPage.tsx` | Refunds & cancellation |

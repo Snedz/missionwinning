@@ -150,6 +150,37 @@ type InfoStrings = {
   infoPrivacyChangesBody: string;
   infoTermsEuConsumers: string;
   infoTermsEuConsumersBody: string;
+  infoLegalEyebrow: string;
+  infoCookiesTitle: string;
+  infoCookiesOverview: string;
+  infoCookiesOverviewBody: string;
+  infoCookiesNoAdsLi: string;
+  infoCookiesDntLi: string;
+  infoCookiesManageLi: string;
+  infoCookiesInventory: string;
+  infoCookiesColName: string;
+  infoCookiesColKind: string;
+  infoCookiesColCategory: string;
+  infoCookiesColPurpose: string;
+  infoCookiesColRetention: string;
+  infoCookiesCatNecessary: string;
+  infoCookiesCatFunctional: string;
+  infoCookiesCatConsent: string;
+  infoCookiesKindCookie: string;
+  infoCookiesKindLocal: string;
+  infoA11yTitle: string;
+  infoA11yCommitment: string;
+  infoA11yCommitmentBody: string;
+  infoA11yMeasures: string;
+  infoA11yMeasuresLi1: string;
+  infoA11yMeasuresLi2: string;
+  infoA11yMeasuresLi3: string;
+  infoA11yMeasuresLi4: string;
+  infoA11yMeasuresLi5: string;
+  infoA11yLimitations: string;
+  infoA11yLimitationsBody: string;
+  infoA11yFeedback: string;
+  infoA11yFeedbackBody: string;
   infoAboutMissionP1: string;
   infoAboutMissionP2: string;
   infoAboutEvidence: string;
@@ -278,6 +309,49 @@ const en: InfoStrings = {
   infoTermsEuConsumers: 'EU/UK consumers',
   infoTermsEuConsumersBody:
     'If you use Mission Winning as a consumer habitually resident in the European Union, the United Kingdom, or the EEA: the arbitration clause and class-action waiver above do not apply to you. Nothing in these terms deprives you of the protection of mandatory consumer law of your country of residence, and you may bring proceedings in the courts of that country. The European Commission provides an online dispute resolution platform at ec.europa.eu/consumers/odr.',
+  infoLegalEyebrow: 'Legal',
+  infoCookiesTitle: 'Cookies & device storage',
+  infoCookiesOverview: 'Overview',
+  infoCookiesOverviewBody:
+    'Mission Winning stores as little as possible in your browser, and nothing for advertising. Sign-in uses strictly necessary httpOnly cookies; your app data lives in local storage on your device and leaves it only when you sign in to sync. This page lists every cookie and storage key we set.',
+  infoCookiesNoAdsLi:
+    'No advertising cookies, no third-party tracking pixels, no session recording — ever.',
+  infoCookiesDntLi:
+    'Do Not Track is honored: analytics stay off and the consent banner never shows.',
+  infoCookiesManageLi:
+    'Change your analytics choice anytime in Profile → Privacy & analytics; clear site data in your browser to remove everything local.',
+  infoCookiesInventory: 'Full inventory',
+  infoCookiesColName: 'Name',
+  infoCookiesColKind: 'Type',
+  infoCookiesColCategory: 'Category',
+  infoCookiesColPurpose: 'Purpose',
+  infoCookiesColRetention: 'Retention',
+  infoCookiesCatNecessary: 'Strictly necessary',
+  infoCookiesCatFunctional: 'Functional (local-first)',
+  infoCookiesCatConsent: 'Only with your consent',
+  infoCookiesKindCookie: 'Cookie',
+  infoCookiesKindLocal: 'Local storage',
+  infoA11yTitle: 'Accessibility statement',
+  infoA11yCommitment: 'Our commitment',
+  infoA11yCommitmentBody:
+    'Mission Winning aims to conform to WCAG 2.1 level AA across the app and the public site. Training should be usable one-handed, outdoors, on a small screen, by everyone — accessibility is the same discipline, applied consistently.',
+  infoA11yMeasures: 'What we do',
+  infoA11yMeasuresLi1:
+    'Automated axe accessibility checks run on ~30 routes — including open dialogs and sheets — in every release build; serious and critical findings block the release.',
+  infoA11yMeasuresLi2:
+    'Keyboard focus visibility is tested by walking the interface with the Tab key and asserting a visible 2px outline on every stop.',
+  infoA11yMeasuresLi3:
+    'Touch targets are measured against a 44px minimum on the core training screens.',
+  infoA11yMeasuresLi4:
+    'Motion respects prefers-reduced-motion, and color contrast is maintained by a token system checked at build time.',
+  infoA11yMeasuresLi5:
+    'Loading states announce themselves to assistive technology (aria-busy), and status information is never conveyed by color or opacity alone.',
+  infoA11yLimitations: 'Known limitations',
+  infoA11yLimitationsBody:
+    'Some chart visualizations carry simplified text alternatives rather than full data tables, and the downloadable guidebook magazine PDF is not yet fully tagged for screen readers. Both are on the improvement list; the in-app guide chapters are the accessible route to the same content.',
+  infoA11yFeedback: 'Feedback',
+  infoA11yFeedbackBody:
+    'If anything is hard to use with assistive technology, email support@missionwinning.com with the page and what happened — accessibility reports are treated as defects, not requests. EU users may also contact their national market surveillance authority under the European Accessibility Act.',
   infoTermsChangesBody:
     'We may update these terms. Continued use after changes constitutes acceptance. Material changes will be noted in the app or via email where appropriate.',
   infoTermsFoot: 'Mission Winning LLC · support@missionwinning.com · See also',
