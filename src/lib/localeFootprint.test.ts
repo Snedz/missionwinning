@@ -130,22 +130,38 @@ test('the shipped packs and the public files do not disagree', () => {
    * `.178`, applied to data rather than code. Three copies of a string is three
    * chances to drift, and a drifted copy is invisible until someone switches
    * language. Values must match where both hold a key.
+   *
+   * Discover every pack file rather than enumerate a sample (`.220`). `.489`
+   * fixed ja public/pack drift from `.484` placeholders; `.490` fixed hi/vi/th
+   * Unicode keys — both would have been invisible while this test only sampled
+   * ja/es/de/ar.
    */
+  const packsDir = path.join(root, 'src/i18n/packs');
+  const packLangs = readdirSync(packsDir)
+    .filter((f) => f.endsWith('.json'))
+    .map((f) => f.replace(/\.json$/, ''))
+    .filter((lang) => lang !== 'en');
+  assert.ok(packLangs.length >= 10, `expected many pack langs, got ${packLangs.length}`);
+
   const disagreements: string[] = [];
-  for (const lang of ['ja', 'es', 'de', 'ar']) {
+  for (const lang of packLangs) {
     const packPath = `src/i18n/packs/${lang}.json`;
-    if (!existsSync(path.join(root, packPath))) continue;
     const pack = readJson(packPath);
+    const langDir = path.join(root, LOCALES, lang);
+    if (!existsSync(langDir)) {
+      disagreements.push(`${lang}:missing-public-dir`);
+      continue;
+    }
 
     const merged: Record<string, string> = {};
-    for (const f of readdirSync(path.join(root, LOCALES, lang))) {
+    for (const f of readdirSync(langDir)) {
       if (f.endsWith('.json')) Object.assign(merged, readJson(`${LOCALES}/${lang}/${f}`));
     }
     for (const [k, v] of Object.entries(pack)) {
       if (k in merged && merged[k] !== v) disagreements.push(`${lang}:${k}`);
     }
   }
-  assert.deepEqual(disagreements.slice(0, 6), [], 'a copy drifted — one of them is now lying');
+  assert.deepEqual(disagreements.slice(0, 8), [], 'a copy drifted — one of them is now lying');
 });
 
 /**
