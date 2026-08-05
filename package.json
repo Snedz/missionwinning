@@ -110,7 +110,7 @@
     "@types/web-push": "^3.6.4",
     "autoprefixer": "^10.4.20",
     "chrome-launcher": "^1.2.1",
-    "eslint": "^9.21.0",
+    "eslint": "^10.8.0",
     "eslint-config-next": "^16.2.7",
     "eslint-plugin-jsx-a11y": "^6.10.2",
     "eslint-plugin-react-hooks": "^5.1.0",
