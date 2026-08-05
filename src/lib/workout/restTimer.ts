@@ -72,6 +72,17 @@ export function restProgress(initialSeconds: number, remaining: number): number 
   return Math.max(0, Math.min(1, remaining / initialSeconds));
 }
 
+/**
+ * Outdoor glance: last seconds before "Go" should read as urgency without
+ * reading the digits (accent on ink ground). Pure so RestTimerBar and tests
+ * share one threshold.
+ */
+export const REST_FINAL_SECONDS = 10;
+
+export function isRestFinalSeconds(remaining: number): boolean {
+  return Number.isFinite(remaining) && remaining > 0 && remaining <= REST_FINAL_SECONDS;
+}
+
 /** Active log rest: named exercise uses shared resolver, else the 90s fallback. */
 export function restSecondsForExercise(exerciseName: string | undefined, fallback = 90): number {
   return exerciseName ? resolveRestSeconds(exerciseName) : fallback;

@@ -4,10 +4,12 @@ import {
   FALLBACK_REST_SECONDS,
   formatRestClock,
   getSuggestedRestSeconds,
+  isRestFinalSeconds,
   resolveRestSeconds,
   restSecondsForExercise,
   resolveStartRestSeconds,
   restProgress,
+  REST_FINAL_SECONDS,
 } from '@/lib/workout/restTimer';
 import { readFileSync } from 'node:fs';
 import path from 'node:path';
@@ -27,6 +29,14 @@ describe('restTimer', () => {
   it('computes progress ratio', () => {
     assert.equal(restProgress(90, 45), 0.5);
     assert.equal(restProgress(90, 0), 0);
+  });
+
+  it('flags final outdoor seconds for accent glance', () => {
+    assert.equal(isRestFinalSeconds(REST_FINAL_SECONDS), true);
+    assert.equal(isRestFinalSeconds(1), true);
+    assert.equal(isRestFinalSeconds(REST_FINAL_SECONDS + 1), false);
+    assert.equal(isRestFinalSeconds(0), false);
+    assert.equal(isRestFinalSeconds(-1), false);
   });
 
   it('resolveRestSeconds uses max of suggested and default', () => {
