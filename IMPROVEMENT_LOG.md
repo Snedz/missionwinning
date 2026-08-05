@@ -1,47 +1,46 @@
 # Improvement log — Kaizen Night (2026-08-05 full-launch)
 
 Plan: `.hermes/plans/2026-08-05_kaizen-night-plan.md`  
-**Tip:** `2026.07-unified.521` · PRs **#300–#326** · unit tests **1809** pass  
-Local gate authoritative (Actions often billing-blocked).
+**Tip:** `2026.07-unified.522` · PRs **#300–#328** · unit tests **1810** pass  
+Local gate authoritative (GitHub Actions often billing-blocked).
 
 ## Contract
 
 Full-launch override · free logger never gated · no `PRIVATE_MODE` · small PRs · merge on local green.
 
-## Shipped (.507 → .520)
+## Shipped this night (.507 → .522)
 
-| Build | PR | What |
-|-------|-----|------|
-| `.507` | #300 | Lean Today rewards, milestones, More Leaderboard |
-| `.508` | #301 | americaHomeOrFallback |
-| `.509` | #304 | Victory consume-once |
-| `.510` | #305 | FREE_BETA Unlock/Bundle pins |
-| `.511` | #307 | Share never parked /america |
-| `.512` | #308 | still_mind + Coach from-logs |
-| `.513` | #310 | EN rewards UI strings |
-| `.514`–`.515` | #312–#314 | perfect_week spectrum + all apply paths |
-| `.516` | #316 | Challenge Done XP catalog |
-| `.517` | #318 | EN ranks + badges |
-| `.518` | #320 | Re-entry shame-free guard |
-| `.519` | #322 | sumHistoryVolume + LOG .504 hole |
-| `.520` | #324 | rewards INDEX perfect week |
-| `.521` | #326 | formatLocalDateKey shared |
+| Build | Highlight |
+|-------|-----------|
+| `.507` | Lean Today rewards, milestone badges, More Leaderboard |
+| `.508` | americaHomeOrFallback (no parked 404s) |
+| `.509` | Victory XP consume-once (Strict Mode) |
+| `.510` | FREE_BETA Unlock + Bundle dual-mode pins |
+| `.511` | Share never hard-codes parked /america |
+| `.512` | still_mind + Coach from-logs honesty |
+| `.513`–`.517` | EN rewards i18n, ranks, badges |
+| `.514`–`.515` | perfect_week spectrum + all apply paths |
+| `.516` | Challenge Done XP from catalog |
+| `.518` | Re-entry shame-free copy guard |
+| `.519` | sumHistoryVolume + LOG .504 continuity |
+| `.520` | rewards INDEX perfect week |
+| `.521` | formatLocalDateKey shared |
+| `.522` | Profile weekly challenges-met line |
 
 ## Metrics
 
 | | Start | Now |
 |--|-------|-----|
-| Build | `.506` | **`.521`** |
-| Tests | 1778 | **1809** |
-| Net PRs | — | **~25** (#300–#324 incl docs) |
+| Build | `.506` | **`.522`** |
+| Unit tests | 1778 | **1810** (+32) |
+| Merged PRs after #299 | — | **#300–#328** |
 
-## Remaining for later loops
+## Remaining
 
-- Fat page decomp (History / Nutrition / Active / HomeTodayDashboard further)
-- Phone dogfood of rewards path
-- Founder ops (postal, migrations, invites, billing)
-- Android Accept B
-- Visual baseline on Linux CI when billing works
+- Further fat decomp (Nutrition / Active / Dashboard)
+- Phone dogfood rewards path
+- Founder: postal, migrations, invites, Actions billing, Android Accept B
+- Visual baselines on Linux when billing works
 
 ## Refuses
 
