@@ -6,6 +6,7 @@
 
 import { useEffect, useMemo, useState } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { useTranslation } from 'react-i18next';
 import { useLocaleFormat } from '@/hooks/useLocaleFormat';
 import { Calendar, Dumbbell, History as HistoryIcon, SearchX, Timer, Trophy } from 'lucide-react';
@@ -67,7 +68,7 @@ import {
   sweepDaysWithData,
 } from '@/lib/journey/daysWithData';
 import { getExercisesWithBenchmarkData } from '@/lib/benchmarks';
-import { useWorkoutStore } from '@/store/workoutStore';
+import { hasLoggedWork, useWorkoutStore } from '@/store/workoutStore';
 import type { CompletedWorkoutLog } from '@/types';
 import { getUser, getUserNutritionForDate, type CloudNutritionEntry } from '@/lib/supabase';
 import { PillarPageShell } from '@/components/layout/PillarPageShell';
@@ -75,6 +76,8 @@ import { EmptyState } from '@/components/ui/EmptyState';
 import { Input } from '@/components/ui/input';
 import { SegmentedControl } from '@/components/ui/SegmentedControl';
 import { localDateKey, localDateKeyFromIso } from '@/lib/time/localDate';
+import { templateFromCompletedLog } from '@/lib/workout/historyRetrain';
+import { track } from '@/lib/analytics';
 
 const HEATMAP_WINDOW_DAYS = 14;
 
@@ -100,12 +103,15 @@ function formatDayKey(key: string, locale: string): string {
 }
 
 export function HistoryPage() {
+  const router = useRouter();
   const { t, i18n } = useTranslation();
   const fmt = useLocaleFormat();
   const units = useUnits();
   const unitLabel = weightUnitLabel(units);
   const workoutHistory = useWorkoutStore((s) => s.workoutHistory);
   const loadFromCloud = useWorkoutStore((s) => s.loadFromCloud);
+  const startWorkout = useWorkoutStore((s) => s.startWorkout);
+  const activeWorkout = useWorkoutStore((s) => s.activeWorkout);
   const [selected, setSelected] = useState<CompletedWorkoutLog | null>(null);
   const [cloudSynced, setCloudSynced] = useState(false);
   const [syncing, setSyncing] = useState(false);
@@ -665,6 +671,32 @@ export function HistoryPage() {
                   );
                 })}
               </div>
+              {/* K7 — return path: replay this session in Train. */}
+              {templateFromCompletedLog(selected) ? (
+                <div className="pt-2 border-t-2 border-border">
+                  <Button
+                    type="button"
+                    className="w-full min-h-[44px] primary-action"
+                    onClick={() => {
+                      const template = templateFromCompletedLog(selected);
+                      if (!template) return;
+                      if (hasLoggedWork(activeWorkout)) {
+                        setSelected(null);
+                        router.push('/active');
+                        return;
+                      }
+                      startWorkout(template.name, template.exercises);
+                      track('history_train_again', {
+                        exerciseCount: template.exercises.length,
+                      });
+                      setSelected(null);
+                      router.push('/active');
+                    }}
+                  >
+                    {t('historyTrainAgain', { defaultValue: 'Train this again' })}
+                  </Button>
+                </div>
+              ) : null}
             </>
           )}
         </DialogContent>
