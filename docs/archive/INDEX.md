@@ -65,6 +65,7 @@ When adding a doc:
 | [log/LOG-rotate-414.md](./log/LOG-rotate-414.md) | `.399` FileUploadRow chrome — rotated for `.414` form media T1 |
 | [log/LOG-rotate-415.md](./log/LOG-rotate-415.md) | `.400` opacity exemptions — rotated for `.415` pattern packs |
 | [log/LOG-rotate-416.md](./log/LOG-rotate-416.md) | `.401` beachhead i18n — rotated for `.416` Scout + PDF |
+| [log/LOG-rotate-489.md](./log/LOG-rotate-489.md) | `.474` — rotated for `.489` (next 16.3.0 + locale public/pack parity). |
 | [log/LOG-rotate-488.md](./log/LOG-rotate-488.md) | `.473` — rotated for `.488` (i18n call-site alias guard). |
 | [log/LOG-rotate-487.md](./log/LOG-rotate-487.md) | `.472` — rotated for `.487` (free-beta mute guard). |
 | [log/LOG-rotate-486.md](./log/LOG-rotate-486.md) | `.471` — rotated for `.486` (rest Skip fill). |

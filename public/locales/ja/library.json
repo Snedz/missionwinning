@@ -21,7 +21,7 @@
   "libraryLevelBeginner": "初心者",
   "libraryLevelIntermediate": "中級",
   "libraryLevelAdvanced": "高度な",
-  "libraryShowingCount": "{{total}}中{{表示}}を表示中",
+  "libraryShowingCount": "{{shown}}中{{total}}を表示中",
   "libraryKeyCues": "主な手がかり:",
   "libraryCuesComing": "この動きのフォームキューが間もなく登場します。",
   "libraryAlternatives": "代替案:",

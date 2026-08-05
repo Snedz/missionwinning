@@ -21,7 +21,7 @@
   "historyChartsEmpty": "记录锻炼以查看趋势。",
   "historyHeatmapTitle": "肌群热图",
   "historyHeatmapDesc": "按组划分的成交量 — 过去 {{days}} 天。 颜色越深=工作量越大； 浅绿色=准备训练。",
-  "historyHeatVolume": "{{卷}}卷",
+  "historyHeatVolume": "{{volume}}卷",
   "historyHeatDaysRest": "训练后 {{days}}d",
   "historyHeatNoData": "没有最新数据",
   "historySelectExercise": "图表练习",

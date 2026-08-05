@@ -45,7 +45,7 @@
   "calcPlatePerSide": "Per side",
   "calcPlateTotal": "Total on bar: {{weight}} {{unit}}",
   "calcPlateRemainder": "Cannot load exactly — {{remainder}}{{unit}} short of target",
-  "calcPlateApply": "استخدم {{الوزن}} {{وحدة}}",
+  "calcPlateApply": "استخدم {{weight}} {{unit}}",
   "calcPremiumTitle": "الآلات الحاسبة المتميزة",
   "calcPremiumDesc": "Super Bundle unlocks periodization blocks, contest prep macros, and client tools that sync to your log.",
   "calcPremiumLink": "View bundle",

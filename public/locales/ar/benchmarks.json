@@ -38,5 +38,5 @@
   "benchmarksQuickStarters": "جميع المبتدئين مجانًا في اليوم →",
   "benchmarksQuickHabit": "Log benchmark habit (+streak)",
   "benchmarksSignInFoot": "Sync benchmark history and PRs across devices.",
-  "benchmarksWeightTimesReps": "{{الوزن}} {{وحدة}} × {{ممثلين}}"
+  "benchmarksWeightTimesReps": "{{weight}} {{unit}} × {{reps}}"
 }

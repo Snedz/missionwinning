@@ -53,7 +53,7 @@
   "builderNoPrograms": "No programs in this category.",
   "builderDetails": "Details",
   "builderSaveAll": "すべて保存 ({{count}})",
-  "builderSessionMeta": "{{演習}} 演習 · {{セット}} セット",
+  "builderSessionMeta": "{{exercises}} 演習 · {{sets}} セット",
   "builderTemplateLoadFail": "テンプレートデータの読み込みに失敗しました。 開発サーバーを再起動します。",
   "builderStyleFilter": "スタイル：",
   "builderFilterAll": "全て",
