@@ -49,6 +49,13 @@ Legend:
 | `leads/unsubscribe` | GET | public token | 20/min/IP | HMAC `NUDGE_SECRET` |
 | `journey/welcome` | POST | session | 5/min/IP | one-time welcome email |
 
+### Account (GDPR)
+
+| Route | Methods | Auth | Rate | Body |
+|-------|---------|------|------|------|
+| `account/export` | GET | session | 3/5min/user | Art. 20 — every owned table as JSON attachment; wearable tokens redacted (`src/lib/accountDataServer.ts`) |
+| `account/delete` | POST | session | 2/5min/user | Art. 17 — Zod `accountDeleteBodySchema` (`confirm: 'DELETE'`); email-keyed cleanups then `auth.admin.deleteUser` cascade; no migration needed |
+
 ### Coach
 
 | Route | Methods | Auth | Rate | Body |

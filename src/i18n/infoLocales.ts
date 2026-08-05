@@ -181,6 +181,13 @@ type InfoStrings = {
   infoA11yLimitationsBody: string;
   infoA11yFeedback: string;
   infoA11yFeedbackBody: string;
+  accountExportCloud: string;
+  accountExportCloudError: string;
+  accountDangerTitle: string;
+  accountDangerDesc: string;
+  accountDeleteHold: string;
+  accountDeleteError: string;
+  accountDeleteDoneNote: string;
   infoAboutMissionP1: string;
   infoAboutMissionP2: string;
   infoAboutEvidence: string;
@@ -352,6 +359,14 @@ const en: InfoStrings = {
   infoA11yFeedback: 'Feedback',
   infoA11yFeedbackBody:
     'If anything is hard to use with assistive technology, email support@missionwinning.com with the page and what happened — accessibility reports are treated as defects, not requests. EU users may also contact their national market surveillance authority under the European Accessibility Act.',
+  accountExportCloud: 'Download my cloud data',
+  accountExportCloudError: 'Export failed — try again in a few minutes.',
+  accountDangerTitle: 'Danger zone',
+  accountDangerDesc:
+    'Deletes your account and all cloud data — workouts, nutrition, plans, everything synced. Immediate and irreversible. Data on this device stays until you clear it (see Back up your data).',
+  accountDeleteHold: 'Delete account & cloud data',
+  accountDeleteError: 'Deletion failed — nothing was partially removed. Try again or email support.',
+  accountDeleteDoneNote: 'Account deleted. Your on-device data is untouched.',
   infoTermsChangesBody:
     'We may update these terms. Continued use after changes constitutes acceptance. Material changes will be noted in the app or via email where appropriate.',
   infoTermsFoot: 'Mission Winning LLC · support@missionwinning.com · See also',

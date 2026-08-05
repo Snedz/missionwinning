@@ -43,6 +43,27 @@ Public while private gate is on. See [OPS_MONITORING.md](OPS_MONITORING.md).
 
 ---
 
+## Account (GDPR)
+
+### `GET /api/account/export`
+
+| | |
+|--|--|
+| Auth | session (cookie) |
+| Rate | 3 / 5 min / user |
+| Response | JSON attachment: every table the account owns (`EXPORT_TABLES` in [src/lib/accountDataRegistry.ts](../src/lib/accountDataRegistry.ts)), rows capped at 5000/table with a `truncated` marker. `wearable_connections.access_token`/`refresh_token` are redacted — secrets ride in no export. **401** no session · **503** admin not configured · **502** opaque on read failure |
+
+### `POST /api/account/delete`
+
+| | |
+|--|--|
+| Auth | session (cookie) |
+| Rate | 2 / 5 min / user |
+| Body | Zod `accountDeleteBodySchema` — `{ confirm: 'DELETE', deviceId? }` |
+| Behavior | Email-keyed cleanups first (`leads`, `checkout_recovery` deleted; `beta_invites` anonymized; orphan `enrollments` by email), anonymous device rows (`push_subscriptions`, `llm_usage` where `user_id is null`), then `auth.admin.deleteUser` — which cascades all 16 user-keyed tables. **No migration required**: every user-keyed table already declares `on delete cascade` from `auth.users`. Any failed step aborts **before** the cascade and returns **502** — success is never reported on a partial deletion. Completeness is enforced by `src/lib/accountDataCompleteness.test.ts`, which discovers tables from `supabase/migrations/` and fails on any table with no export/deletion story. |
+
+---
+
 ## Beta invites
 
 ### `POST /api/beta/invites/landed`
