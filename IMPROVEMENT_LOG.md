@@ -1,7 +1,7 @@
 # Improvement log — Kaizen Night (2026-08-05 full-launch)
 
 Session after #299 Mission Rewards. Plan: `.hermes/plans/2026-08-05_kaizen-night-plan.md`  
-**Tip build:** `2026.07-unified.515` · master tip PR stack **#300–#314**
+**Tip build:** `2026.07-unified.516` · master tip PR stack **#300–#316**
 
 ## Contract
 
@@ -29,8 +29,8 @@ Session after #299 Mission Rewards. Plan: `.hermes/plans/2026-08-05_kaizen-night
 
 | Metric | Night start | Now |
 |--------|-------------|-----|
-| Build | `.506` | **`.515`** |
-| Unit tests | 1778 | **1801** |
+| Build | `.506` | **`.516`** |
+| Unit tests | 1778 | **1802** |
 | Merged PRs | — | **#300–#310** |
 
 ## Remaining (next loops)
