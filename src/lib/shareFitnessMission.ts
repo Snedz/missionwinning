@@ -1,4 +1,4 @@
-import { showMahaCopy } from '@/lib/americaConfig';
+import { americaHomeOrFallback, isAmericaTrackEnabled, showMahaCopy } from '@/lib/americaConfig';
 import { awardLabel, type FitnessTestSession } from '@/lib/presidentialFitnessTest';
 import { classJoinUrl } from '@/lib/schoolClass';
 
@@ -21,6 +21,13 @@ function siteUrl(path: string, opts?: ShareLinkOpts): string {
   }
 }
 
+/** Share landing for America track — never hard-code parked /america. */
+function americaSharePath(): string {
+  if (showMahaCopy() && isAmericaTrackEnabled()) return '/america';
+  if (isAmericaTrackEnabled()) return americaHomeOrFallback();
+  return '/fitness-test';
+}
+
 export function buildPftShareText(
   session: FitnessTestSession,
   classCode?: string | null,
@@ -29,9 +36,9 @@ export function buildPftShareText(
   const tier = awardLabel(session.overallTier);
   const mode = session.mode === 'mini' ? 'mini fitness test' : 'Presidential Fitness Test';
   const classLine = classCode ? ` Class: ${classCode}.` : '';
-  const link = siteUrl(showMahaCopy() ? '/america' : '/fitness-test', opts);
+  const link = siteUrl(americaSharePath(), opts);
 
-  if (showMahaCopy()) {
+  if (showMahaCopy() && isAmericaTrackEnabled()) {
     return (
       `I earned ${tier} on the ${mode} with Mission Winning — inspiring kids to get moving and restoring a culture of strength, health, and fitness. Let's Make America Healthy Again!${classLine} ${link}`
     );
@@ -41,10 +48,10 @@ export function buildPftShareText(
 }
 
 export function buildCommissioningShareText(useMaha?: boolean, opts?: ShareLinkOpts): string {
-  const maha = useMaha ?? showMahaCopy();
+  const maha = (useMaha ?? showMahaCopy()) && isAmericaTrackEnabled();
   if (maha) {
     return (
-      `I completed Basic Training on Mission Winning — commissioned and ready to move every day. Let's Make America Healthy Again! ${siteUrl('/america', opts)}`
+      `I completed Basic Training on Mission Winning — commissioned and ready to move every day. Let's Make America Healthy Again! ${siteUrl(americaHomeOrFallback(), opts)}`
     );
   }
   return `I completed Basic Training on Mission Winning — commissioned and on the path to health. ${siteUrl('/', opts)}`;
