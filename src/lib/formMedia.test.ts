@@ -17,8 +17,9 @@ test('unknown exercise has no form pack', () => {
 });
 
 test('still-only packs stay image when not in VIDEO_IDS', () => {
-  const guide = getFormGuideOrCues('front-squat');
-  assert.ok(guide?.mediaUrl?.includes('/form/front-squat/side.webp'), guide?.mediaUrl);
+  // front-squat is looped (.477); OHP remains still-only
+  const guide = getFormGuideOrCues('overhead-press');
+  assert.ok(guide?.mediaUrl?.includes('/form/overhead-press/side.webp'), guide?.mediaUrl);
   assert.equal(guide?.mediaType, 'image');
 });
 
@@ -33,6 +34,12 @@ test('loop pilot packs resolve to video with poster', () => {
     'burpees',
     'kettlebell-swing',
     'thruster',
+    'deadlift',
+    'romanian-deadlift',
+    'front-squat',
+    'barbell-row',
+    'bench-press',
+    'landmine-press',
   ] as const) {
     const pack = resolveFormPackMedia(id);
     assert.equal(pack?.mediaType, 'video', id);
@@ -41,22 +48,23 @@ test('loop pilot packs resolve to video with poster', () => {
   }
 });
 
-test('empty-bar collar fix stills stay image (no loop until I2V)', () => {
-  for (const id of ['overhead-press', 'deadlift', 'front-squat', 'barbell-row'] as const) {
+test('stills without PASS loop stay image', () => {
+  // OHP behind-head FAIL; pull-ups head-crop at top FAIL — hang still only
+  for (const id of ['overhead-press', 'pull-ups'] as const) {
     const pack = resolveFormPackMedia(id);
     assert.equal(pack?.mediaType, 'image', id);
     assert.equal(pack?.mediaUrl, `/form/${id}/side.webp`, id);
   }
 });
 
-test('Form Director packs keep poster paths for still-only heroes', () => {
-  assert.equal(resolveFormPackMedia('front-squat')?.mediaUrl, '/form/front-squat/side.webp');
-  assert.equal(resolveFormPackMedia('barbell-row')?.mediaUrl, '/form/barbell-row/side.webp');
-  assert.equal(resolveFormPackMedia('front-squat')?.mediaType, 'image');
+test('Form Director still-only heroes keep poster paths', () => {
+  assert.equal(resolveFormPackMedia('overhead-press')?.mediaUrl, '/form/overhead-press/side.webp');
+  assert.equal(resolveFormPackMedia('overhead-press')?.mediaType, 'image');
+  assert.equal(resolveFormPackMedia('pull-ups')?.mediaType, 'image');
 });
 
-test('landmine family still packs are still-only', () => {
-  for (const id of ['landmine-press', 'landmine-row', 'landmine-squat'] as const) {
+test('landmine siblings without pilot loop stay still-only', () => {
+  for (const id of ['landmine-row', 'landmine-squat'] as const) {
     const pack = resolveFormPackMedia(id);
     assert.equal(pack?.mediaType, 'image', id);
     assert.equal(pack?.mediaUrl, `/form/${id}/side.webp`, id);

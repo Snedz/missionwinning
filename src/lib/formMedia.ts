@@ -49,9 +49,16 @@ export const FORM_PACK_VIDEO_IDS = new Set<string>([
   'kettlebell-swing',
   // Empty-bar pilot still has clean still+loop (.472 thruster)
   'thruster',
-  // Demoted (.474): OHP + deadlift loops were from plated stills with broken collars
-  // Still-only until I2V from empty-bar stills: overhead-press, deadlift,
-  // front-squat, RDL, bench, barbell-row, pull-ups, landmines
+  // Empty-bar / directed I2V from PASS stills (.476–.478)
+  'deadlift',
+  'romanian-deadlift',
+  'front-squat',
+  'barbell-row',
+  'bench-press',
+  // Landmine pilot (.479) — pivot fixed, arc press
+  'landmine-press',
+  // Still-only: overhead-press (behind-head path), pull-ups (head crop at top),
+  // landmine-row, landmine-squat
 ]);
 
 export function formPackSidePosterPath(exerciseId: string): string {

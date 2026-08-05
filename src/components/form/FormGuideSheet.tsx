@@ -4,6 +4,11 @@ import Link from 'next/link';
 import { useTranslation } from 'react-i18next';
 import type { FormGuide } from '@/types/formGuide';
 import { AdaptiveOverlay } from '@/components/ui/AdaptiveOverlay';
+import { usePrefersReducedMotion } from '@/hooks/usePrefersReducedMotion';
+import {
+  formGuideStillUrl,
+  resolveFormGuideMediaMode,
+} from '@/lib/formGuideMedia';
 import { cn } from '@/lib/utils';
 
 interface FormGuideSheetProps {
@@ -115,13 +120,28 @@ function FormGuideMedia({
   caption?: string;
   poster?: string;
 }) {
-  if (type === 'video') {
+  const prefersReducedMotion = usePrefersReducedMotion();
+  const mode = resolveFormGuideMediaMode({
+    mediaType: type,
+    prefersReducedMotion,
+  });
+  const defaultCaption =
+    type === 'video'
+      ? 'Side view · full range of motion'
+      : 'Form demo';
+
+  if (mode === 'video-autoplay') {
     return (
       <figure className="overflow-hidden border-2 border-border bg-card">
+        {/*
+          Autoplay muted loop — mid-set teaching must not require a play tap.
+          Controls stay for pause / scrub; reduced motion uses the still path.
+        */}
         <video
-          className="w-full max-h-64 object-contain bg-background"
+          className="w-full max-h-80 object-contain bg-background"
           src={url}
           poster={poster}
+          autoPlay
           controls
           playsInline
           muted
@@ -132,24 +152,25 @@ function FormGuideMedia({
           <track kind="captions" srcLang="en" label="Captions" />
         </video>
         <figcaption className="border-t-2 border-border px-3 py-1.5 text-center text-xs text-muted-foreground">
-          {caption ?? 'Side view · full range of motion'}
+          {caption ?? defaultCaption}
         </figcaption>
       </figure>
     );
   }
 
+  const stillSrc = formGuideStillUrl({ mediaType: type, url, poster });
   return (
     <figure className="overflow-hidden border-2 border-border bg-card">
       {/* Form Index posters + legacy SVG under /public — plain img is intentional. */}
       <img
-        src={url}
+        src={stillSrc}
         alt={`${name} form demo, side view`}
         loading="lazy"
         decoding="async"
-        className="mx-auto w-full max-h-64 object-contain bg-background"
+        className="mx-auto w-full max-h-80 object-contain bg-background"
       />
       <figcaption className="border-t-2 border-border px-3 py-1.5 text-center text-xs text-muted-foreground">
-        {caption ?? 'Form demo'}
+        {caption ?? defaultCaption}
       </figcaption>
     </figure>
   );

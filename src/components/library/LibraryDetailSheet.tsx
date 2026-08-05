@@ -12,8 +12,13 @@ import type { Exercise } from '@/types';
 import { PROGRAM_TAG_LABELS } from '@/data/exerciseEnrichment';
 import { countExerciseHistory } from '@/lib/libraryFilters';
 import { getFormGuideOrCues } from '@/lib/formGuides';
+import {
+  formGuideStillUrl,
+  resolveFormGuideMediaMode,
+} from '@/lib/formGuideMedia';
 import { FormGuideSheet } from '@/components/form/FormGuideSheet';
 import { Sparkline } from '@/components/today/Sparkline';
+import { usePrefersReducedMotion } from '@/hooks/usePrefersReducedMotion';
 import { useWorkoutStore } from '@/store/workoutStore';
 import { countsTowardVolume } from '@/lib/workout/setKind';
 import { inferFormPattern } from '@/lib/formPatterns';
@@ -41,6 +46,7 @@ export function LibraryDetailSheet({
 }: Props) {
   const { t } = useTranslation();
   const router = useRouter();
+  const prefersReducedMotion = usePrefersReducedMotion();
   const workoutHistory = useWorkoutStore((s) => s.workoutHistory);
   const activeWorkout = useWorkoutStore((s) => s.activeWorkout);
   const addExerciseToActive = useWorkoutStore((s) => s.addExerciseToActive);
@@ -69,6 +75,22 @@ export function LibraryDetailSheet({
   }, [exercise, workoutHistory]);
 
   const guide = exercise ? getFormGuideOrCues(exercise.id, { exercise }) : null;
+  const guideMediaType = guide?.mediaType ?? 'image';
+  const guideMediaMode =
+    guide?.mediaUrl != null
+      ? resolveFormGuideMediaMode({
+          mediaType: guideMediaType,
+          prefersReducedMotion,
+        })
+      : null;
+  const guideStillSrc =
+    guide?.mediaUrl != null
+      ? formGuideStillUrl({
+          mediaType: guideMediaType,
+          url: guide.mediaUrl,
+          poster: guide.mediaPosterUrl,
+        })
+      : null;
   const pattern = exercise ? inferFormPattern(exercise.id, exercise) : null;
 
   const neighborNav = useMemo(() => {
@@ -164,14 +186,14 @@ export function LibraryDetailSheet({
                   </div>
                 )}
                 {/* Craft-index detail order: media → coach language → history → alts */}
-                {guide?.mediaUrl && (
+                {guide?.mediaUrl && guideMediaMode && guideStillSrc && (
                   <button
                     type="button"
                     className="block w-full overflow-hidden border-2 border-border bg-card text-left"
                     onClick={() => setFormGuideOpen(true)}
                     aria-label={t('libraryViewFormGuide', { defaultValue: 'View form guide' })}
                   >
-                    {guide.mediaType === 'video' ? (
+                    {guideMediaMode === 'video-autoplay' ? (
                       <video
                         className="w-full max-h-56 object-contain bg-background"
                         src={guide.mediaUrl}
@@ -183,9 +205,9 @@ export function LibraryDetailSheet({
                         preload="metadata"
                       />
                     ) : (
-                      // Form Index poster / legacy SVG under /public — plain img is intentional.
+                      // Form Index poster / reduced-motion still / legacy SVG — plain img intentional.
                       <img
-                        src={guide.mediaUrl}
+                        src={guideStillSrc}
                         alt=""
                         className="w-full max-h-56 object-contain bg-background"
                       />

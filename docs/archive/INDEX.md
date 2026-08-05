@@ -65,6 +65,12 @@ When adding a doc:
 | [log/LOG-rotate-414.md](./log/LOG-rotate-414.md) | `.399` FileUploadRow chrome — rotated for `.414` form media T1 |
 | [log/LOG-rotate-415.md](./log/LOG-rotate-415.md) | `.400` opacity exemptions — rotated for `.415` pattern packs |
 | [log/LOG-rotate-416.md](./log/LOG-rotate-416.md) | `.401` beachhead i18n — rotated for `.416` Scout + PDF |
+| [log/LOG-rotate-481.md](./log/LOG-rotate-481.md) | `.466` — rotated for `.481` (form media parity + rest meter). |
+| [log/LOG-rotate-480.md](./log/LOG-rotate-480.md) | `.465` — rotated for `.480` (form guide autoplay). |
+| [log/LOG-rotate-479.md](./log/LOG-rotate-479.md) | `.464` — rotated for `.479` (landmine-press loop pilot). |
+| [log/LOG-rotate-478.md](./log/LOG-rotate-478.md) | `.463` — rotated for `.478` (bench loop + pull-ups still-only). |
+| [log/LOG-rotate-477.md](./log/LOG-rotate-477.md) | `.462` — rotated for `.477` (empty-bar front-squat/RDL/row loops). |
+| [log/LOG-rotate-476.md](./log/LOG-rotate-476.md) | `.461` — rotated for `.476` (empty-bar deadlift loop). |
 | [log/LOG-rotate-475.md](./log/LOG-rotate-475.md) | `.460` — rotated for `.475` (RDL bar-axis fix). |
 | [log/LOG-rotate-474.md](./log/LOG-rotate-474.md) | `.459` — rotated for `.474` (empty-bar collar fix). |
 | [log/LOG-rotate-473.md](./log/LOG-rotate-473.md) | `.458` — rotated for `.473` (landmine family + stills). |

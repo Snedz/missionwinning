@@ -49,10 +49,19 @@ Log every rejected generation. Do not re-ship the same glitch.
 | 2026-08-04 | `front-squat` · `deadlift` · `barbell-row` stills | Empty bar, no collar hardware (.474) |
 | 2026-08-04 | `romanian-deadlift/side.webp` (pre-fix) | Bar read as through thighs / wrong grip axis | FAIL → regen bar clearly anterior to legs (.475) |
 | 2026-08-04 | `romanian-deadlift/side.webp` | Mid-hinge, bar in front of legs, empty bar L–R axis (.475) |
+| 2026-08-04 | `deadlift/side.mp4` | Empty-bar I2V from cleaned lockout still; bar anterior; head in frame (.476) | PASS → VIDEO_IDS |
+| 2026-08-04 | `overhead-press/side.mp4` (I2V ×2 from empty-bar still) | Mid-rep bar behind head / traps (behind-neck path) | FAIL — still-only |
+| 2026-08-04 | `front-squat/side.mp4` | Empty-bar I2V; front rack held stand↔depth (.477) | PASS → VIDEO_IDS |
+| 2026-08-04 | `romanian-deadlift/side.mp4` | Empty-bar I2V; hinge↔stand; bar anterior (.477) | PASS → VIDEO_IDS |
+| 2026-08-04 | `barbell-row/side.mp4` | Empty-bar I2V; row path outside body (.477) | PASS → VIDEO_IDS |
+| 2026-08-04 | `bench-press/side.mp4` | I2V lower/press; bar on chest not through torso (.478) | PASS → VIDEO_IDS |
+| 2026-08-04 | `pull-ups/side.mp4` (I2V from hang still) | Head crop into bar at top of pull | FAIL — still-only hang |
+| 2026-08-04 | `landmine-press/side.mp4` | I2V arc press; floor pivot fixed (.479) | PASS → VIDEO_IDS |
 
 ## Known hard cases
 
-- **Chin-over pull-up:** model often returns dead hang — ship hang as setup still if top fails twice.
+- **Chin-over pull-up:** model often returns dead hang, or crops the head into the bar at the top (`.478`). Ship hang as setup still; still-only is valid teaching.
 - **Front rack + side camera:** plates hide head — prefer empty/light bar and explicit “head not behind plates”.
 - **Barbell row:** model often puts bar on back (good-morning) — insist “bar outside body toward ribs, not on back”.
 - **Collar / clip geometry:** models invent multi-prong hubs (3 clips from side). **Default empty bar; never spring collars.**
+- **OHP lower path:** I2V from lockout still repeatedly puts the bar **behind** the head / on traps. Prefer still-only until a front-rack path passes frame QA; stronger “in front of face only” lock is not enough alone.
