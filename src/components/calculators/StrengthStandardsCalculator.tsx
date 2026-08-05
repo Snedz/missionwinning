@@ -7,6 +7,7 @@ import {
   type StandardsLift,
   type StandardsSex,
 } from '@/lib/strengthStandards';
+import { getAthleteSex, setAthleteSex } from '@/lib/athleteSex';
 import {
   CalcField,
   Seg,
@@ -22,13 +23,19 @@ import {
  */
 export function StrengthStandardsCalculator() {
   const [units, setUnits] = useState<CalcUnits>('kg');
-  const [sex, setSex] = useState<StandardsSex>('male');
+  const [sex, setSexState] = useState<StandardsSex | null>(() => getAthleteSex());
   const [lift, setLift] = useState<StandardsLift>('squat');
   const [bodyweightKg, setBodyweightKg] = useState(78);
   const [weightKg, setWeightKg] = useState(100);
   const [reps, setReps] = useState(5);
 
-  const result = standardsResult({ sex, lift, bodyweightKg, weightKg, reps });
+  const setSex = (s: StandardsSex) => {
+    setSexState(s);
+    setAthleteSex(s);
+  };
+
+  const result =
+    sex != null ? standardsResult({ sex, lift, bodyweightKg, weightKg, reps }) : null;
   const unitLabel = units;
 
   return (
@@ -47,7 +54,7 @@ export function StrengthStandardsCalculator() {
         />
         <Seg
           name="ss-sex"
-          legend="Body"
+          legend="Sex"
           value={sex}
           options={[
             { value: 'male', label: 'Male' },
@@ -55,6 +62,12 @@ export function StrengthStandardsCalculator() {
           ]}
           onChange={setSex}
         />
+        {sex == null && (
+          <p className="max-w-md text-[13px] leading-relaxed text-muted-foreground">
+            Select sex for the correct ladder — female and male standards differ. We do not assume
+            male.
+          </p>
+        )}
         <CalcField
           id="ss-bw"
           label={`Bodyweight (${unitLabel})`}
@@ -105,48 +118,57 @@ export function StrengthStandardsCalculator() {
       </div>
 
       <div aria-live="polite">
-        <p className="eyebrow-live mb-2 tabular-nums">
-          {STANDARDS_LIFT_NAMES[lift]} · e1RM {displayWeight(result.oneRmKg, units)} {unitLabel} ·{' '}
-          {result.ratio.toFixed(2)}× bodyweight
-        </p>
-        <p className="display-mega text-poster">{result.levelLabel}</p>
-        <p className="mt-4 max-w-[48ch] text-[15px] leading-relaxed text-muted-foreground">
-          {result.nextLevel === undefined
-            ? 'Top of this ladder. Keep the log honest and enjoy the view.'
-            : `${displayWeight(result.toNextKg ?? 0, units)} ${unitLabel} on the estimated single to reach ${result.nextLevel} at this bodyweight.`}
-        </p>
-        <table className="mt-7 w-full text-sm">
-          <thead>
-            <tr className="border-b-2 border-border text-left">
-              <th className="py-2 pr-2 font-semibold">Level</th>
-              <th className="py-2 pr-2 text-right font-semibold">× bodyweight</th>
-              <th className="py-2 text-right font-semibold">Threshold ({unitLabel})</th>
-            </tr>
-          </thead>
-          <tbody>
-            {result.rows.map((row) => (
-              <tr
-                key={row.level}
-                className={
-                  row.current
-                    ? 'border-b border-border bg-tint font-semibold'
-                    : 'border-b border-border'
-                }
-              >
-                <td className="py-2 pr-2">{row.level}</td>
-                <td className="py-2 pr-2 text-right tabular-nums">{row.multiplier}×</td>
-                <td className="py-2 text-right tabular-nums">
-                  {displayWeight(row.thresholdKg, units)}
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-        <p className="mt-3 text-[13px] leading-relaxed text-muted-foreground">
-          Population-level conventions for adults, barbell lifts, full range of motion. Age, limb
-          lengths, and training history all bend the ladder — the trend in your own log matters
-          more than the label.
-        </p>
+        {result == null || sex == null ? (
+          <p className="max-w-[48ch] text-[15px] leading-relaxed text-muted-foreground">
+            Choose sex to grade this set against the correct standards ladder.
+          </p>
+        ) : (
+          <>
+            <p className="eyebrow-live mb-2 tabular-nums">
+              {STANDARDS_LIFT_NAMES[lift]} · {sex === 'female' ? 'Female' : 'Male'} standards · e1RM{' '}
+              {displayWeight(result.oneRmKg, units)} {unitLabel} · {result.ratio.toFixed(2)}×
+              bodyweight
+            </p>
+            <p className="display-mega text-poster">{result.levelLabel}</p>
+            <p className="mt-4 max-w-[48ch] text-[15px] leading-relaxed text-muted-foreground">
+              {result.nextLevel === undefined
+                ? 'Top of this ladder. Keep the log honest and enjoy the view.'
+                : `${displayWeight(result.toNextKg ?? 0, units)} ${unitLabel} on the estimated single to reach ${result.nextLevel} at this bodyweight.`}
+            </p>
+            <table className="mt-7 w-full text-sm">
+              <thead>
+                <tr className="border-b-2 border-border text-left">
+                  <th className="py-2 pr-2 font-semibold">Level</th>
+                  <th className="py-2 pr-2 text-right font-semibold">× bodyweight</th>
+                  <th className="py-2 text-right font-semibold">Threshold ({unitLabel})</th>
+                </tr>
+              </thead>
+              <tbody>
+                {result.rows.map((row) => (
+                  <tr
+                    key={row.level}
+                    className={
+                      row.current
+                        ? 'border-b border-border bg-tint font-semibold'
+                        : 'border-b border-border'
+                    }
+                  >
+                    <td className="py-2 pr-2">{row.level}</td>
+                    <td className="py-2 pr-2 text-right tabular-nums">{row.multiplier}×</td>
+                    <td className="py-2 text-right tabular-nums">
+                      {displayWeight(row.thresholdKg, units)}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+            <p className="mt-3 text-[13px] leading-relaxed text-muted-foreground">
+              Population-level conventions for adults, barbell lifts, full range of motion. Age,
+              limb lengths, and training history all bend the ladder — the trend in your own log
+              matters more than the label.
+            </p>
+          </>
+        )}
       </div>
     </div>
   );

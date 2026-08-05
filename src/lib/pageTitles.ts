@@ -4,6 +4,7 @@
 
 export const STATIC_PAGE_TITLES: Record<string, { label: string; labelKey?: string }> = {
   '/about': { label: 'About', labelKey: 'about' },
+  '/principles': { label: 'Principles', labelKey: 'principlesEyebrow' },
   '/terms': { label: 'Terms', labelKey: 'termsOfService' },
   '/privacy': { label: 'Privacy', labelKey: 'privacyPolicy' },
   '/dmca': { label: 'DMCA', labelKey: 'infoDmcaTitle' },

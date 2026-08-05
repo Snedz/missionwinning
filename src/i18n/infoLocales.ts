@@ -246,7 +246,7 @@ const en: InfoStrings = {
   infoPrivacyCollectLi1:
     'Account: email address when you sign in (Apple, Google, Microsoft, Facebook, or magic link).',
   infoPrivacyCollectLi2:
-    'Health & fitness data you enter: workouts, nutrition logs, assessments, journey progress, preferences (units, language, goals).',
+    'Health & fitness data you enter: workouts, nutrition logs, assessments, journey progress, preferences (units, language, goals, sex for standards). Optional cycle coaching prefs stay on-device when enabled and are not cloud-synced.',
   infoPrivacyCollectLi3:
     'Optional product analytics: typed product events (e.g. journey milestones, checkout) only if you allow analytics. No session recording, no autocapture of form fields.',
   infoPrivacyCollectLi4:

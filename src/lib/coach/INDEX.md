@@ -19,8 +19,9 @@
 8e. `resolveCoachBossSessionId.ts` — which session gets filled Start on `/coach` (today pending else next)
 8f. `coachChatClient.ts` — HTTP status → copy + stream `[[error:…]]` + request context + `readCoachChatStream` (.445/.453)
 9. `storage.ts` — `loadPlan`, `savePlan`, taster flags, device id
-10. `contextBuilder.ts` — `readLocalCoachContext`, assembles from localStorage + history
+10. `contextBuilder.ts` — `readLocalCoachContext`, assembles from localStorage + history (optional cycle readiness bias via `cyclePrefs`)
 11. `planVoiceServer.ts` — LLM/rules voice for weekly briefing (used by API route)
+    — cycle phase is **not** sent to LLMs; soft bias only through readiness scores
 12. `rng.ts` — `mulberry32`, `hashString` (deterministic variety)
 13. `adjust.ts` — free offline “adjust today” (time / bodyweight / avoid group; scales `loadPct`)
 14. Related: `src/lib/coachChatServer.ts` — premium chat prompts + parse (API `/api/coach/chat`)

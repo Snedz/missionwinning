@@ -19,6 +19,7 @@ import { getUser, getUserNutritionForDate, type CloudNutritionEntry } from "@/li
 import { JourneyHero } from "@/components/journey/JourneyHero";
 import { ScreenDock } from "@/components/layout/ScreenDock";
 import { TodayPageHeader } from "@/components/today/TodayPageHeader";
+import { TodayCycleChip } from "@/components/today/TodayCycleChip";
 import {
   Dialog,
   DialogContent,
@@ -550,20 +551,23 @@ export function HomeTodayDashboard() {
   const nodesByKey: Partial<Record<TodayBlockKey, ReactNode>> = {
     beta: <FirstStepsCard state={state} />,
     header: (
-      <TodayPageHeader
-        today={todayLabel}
-        focusLine={buildTodayHeaderFocusLine({
-          showFocusLine: layout.showFocusLine,
-          focusLineBase: formatRecommendedFocusLine(recommendedFocus, t),
-          equipment: userEquip,
-          bodyweightTag: t('todayBodyweightTag', { defaultValue: 'bodyweight' }),
-        })}
-        streak={streak}
-        userEmail={userEmail}
-        action={action}
-        showEditToday={layout.showDetailsAccordion}
-        onEditToday={() => setEditTodayOpen(true)}
-      />
+      <div className="space-y-3">
+        <TodayPageHeader
+          today={todayLabel}
+          focusLine={buildTodayHeaderFocusLine({
+            showFocusLine: layout.showFocusLine,
+            focusLineBase: formatRecommendedFocusLine(recommendedFocus, t),
+            equipment: userEquip,
+            bodyweightTag: t('todayBodyweightTag', { defaultValue: 'bodyweight' }),
+          })}
+          streak={streak}
+          userEmail={userEmail}
+          action={action}
+          showEditToday={layout.showDetailsAccordion}
+          onEditToday={() => setEditTodayOpen(true)}
+        />
+        <TodayCycleChip />
+      </div>
     ),
     intent: <CommandersIntent />,
     reentry: reentry ? <TodayReentryCard reentry={reentry} /> : null,

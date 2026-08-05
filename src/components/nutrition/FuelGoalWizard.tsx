@@ -13,6 +13,7 @@ import {
   defaultCalcInputs,
   type CalcSex,
 } from '@/lib/calcHelpers';
+import { getAthleteSex, setAthleteSex } from '@/lib/athleteSex';
 import { saveMacroTargets } from '@/lib/macroTargets';
 import { latest as latestBodyMetrics } from '@/lib/bodyMetrics';
 import {
@@ -52,29 +53,37 @@ export function FuelGoalWizard({ onApplied }: Props) {
   );
   const [height, setHeight] = useState(() => defaultCalcInputs(units).height);
   const [age, setAge] = useState(28);
-  const [sex, setSex] = useState<CalcSex>('male');
+  const [sex, setSexState] = useState<CalcSex | null>(() => getAthleteSex());
   const [activity, setActivity] = useState(1.55);
   const [details, setDetails] = useState(false);
   const [flash, setFlash] = useState(false);
 
+  const setSex = (s: CalcSex) => {
+    setSexState(s);
+    setAthleteSex(s);
+  };
+
   const openWizard = () => {
     setBw(defaultBodyweightForWizard(units, latestBodyMetrics()?.weightKg));
     setHeight(defaultCalcInputs(units).height);
+    setSexState(getAthleteSex());
     setGoal(loadFuelGoalChoice() ?? 'maintain');
     setOpen(true);
   };
 
   const preview = useMemo(
     () =>
-      computeGoalTargets({
-        goal,
-        bodyweight: bw,
-        height,
-        age,
-        sex,
-        activity,
-        units,
-      }),
+      sex == null
+        ? null
+        : computeGoalTargets({
+            goal,
+            bodyweight: bw,
+            height,
+            age,
+            sex,
+            activity,
+            units,
+          }),
     [goal, bw, height, age, sex, activity, units]
   );
 
@@ -95,6 +104,7 @@ export function FuelGoalWizard({ onApplied }: Props) {
   };
 
   const apply = () => {
+    if (preview == null || sex == null) return;
     const next = {
       cals: preview.cals,
       protein: preview.protein,
@@ -202,18 +212,46 @@ export function FuelGoalWizard({ onApplied }: Props) {
         </div>
       </div>
 
+      <div>
+        <label className="text-xs text-muted-foreground" htmlFor="fuel-goal-sex">
+          {t('calcSexLabel', { defaultValue: 'Sex' })}
+        </label>
+        <select
+          id="fuel-goal-sex"
+          value={sex ?? ''}
+          onChange={(e) => {
+            const v = e.target.value;
+            if (v === 'male' || v === 'female') setSex(v);
+          }}
+          className="mt-0.5 h-10 w-full border border-input bg-background px-2 text-sm"
+        >
+          <option value="" disabled>
+            {t('calcSexSelect', { defaultValue: 'Select…' })}
+          </option>
+          <option value="male">{t('calcSexMale', { defaultValue: 'Male' })}</option>
+          <option value="female">{t('calcSexFemale', { defaultValue: 'Female' })}</option>
+        </select>
+        {sex == null ? (
+          <p className="mt-1 text-[11px] text-muted-foreground">
+            {t('calcSexRequired', {
+              defaultValue: 'Select sex for honest BMR — we do not assume male.',
+            })}
+          </p>
+        ) : null}
+      </div>
+
       <button
         type="button"
         className="text-xs text-muted-foreground underline-offset-2 hover:underline"
         onClick={() => setDetails((d) => !d)}
       >
         {details
-          ? t('fuelGoalHideDetails', { defaultValue: 'Hide height, age, sex' })
-          : t('fuelGoalShowDetails', { defaultValue: 'Height, age, sex' })}
+          ? t('fuelGoalHideDetails', { defaultValue: 'Hide height & age' })
+          : t('fuelGoalShowDetails', { defaultValue: 'Height & age' })}
       </button>
 
       {details ? (
-        <div className="grid grid-cols-3 gap-2">
+        <div className="grid grid-cols-2 gap-2">
           <div>
             <label className="text-xs text-muted-foreground" htmlFor="fuel-goal-h">
               {t('calcHeightLabel', {
@@ -243,43 +281,42 @@ export function FuelGoalWizard({ onApplied }: Props) {
               className="h-10 mt-0.5 tabular-nums"
             />
           </div>
-          <div>
-            <label className="text-xs text-muted-foreground" htmlFor="fuel-goal-sex">
-              {t('calcSexLabel', { defaultValue: 'Sex' })}
-            </label>
-            <select
-              id="fuel-goal-sex"
-              value={sex}
-              onChange={(e) => setSex(e.target.value as CalcSex)}
-              className="mt-0.5 h-10 w-full  border border-input bg-background px-2 text-sm"
-            >
-              <option value="male">{t('calcSexMale', { defaultValue: 'Male' })}</option>
-              <option value="female">{t('calcSexFemale', { defaultValue: 'Female' })}</option>
-            </select>
-          </div>
         </div>
       ) : null}
 
       <div className="border-2 border-border bg-background px-3 py-2 text-xs space-y-1">
         <p className="font-medium tabular-nums">
-          {t('fuelGoalPreview', {
-            cals: preview.cals,
-            protein: preview.protein,
-            defaultValue: `${preview.cals} kcal · ${preview.protein}g protein`,
-          })}
+          {preview == null
+            ? t('calcSexRequiredResults', {
+                defaultValue: 'Choose sex above to see BMR, TDEE, and macro targets.',
+              })
+            : t('fuelGoalPreview', {
+                cals: preview.cals,
+                protein: preview.protein,
+                defaultValue: `${preview.cals} kcal · ${preview.protein}g protein`,
+              })}
         </p>
-        <p className="text-muted-foreground tabular-nums">
-          {t('fuelGoalPreviewMacros', {
-            carbs: preview.carbs,
-            fat: preview.fat,
-            tdee: preview.tdee,
-            defaultValue: `${preview.carbs}g C · ${preview.fat}g F · TDEE ~${preview.tdee}`,
-          })}
-        </p>
+        {preview != null ? (
+          <p className="text-muted-foreground tabular-nums">
+            {t('fuelGoalPreviewMacros', {
+              carbs: preview.carbs,
+              fat: preview.fat,
+              tdee: preview.tdee,
+              defaultValue: `${preview.carbs}g C · ${preview.fat}g F · TDEE ~${preview.tdee}`,
+            })}
+          </p>
+        ) : null}
       </div>
 
       <div className="flex flex-wrap gap-2">
-        <Button type="button" variant="default" size="sm" className="h-9" onClick={apply}>
+        <Button
+          type="button"
+          variant="default"
+          size="sm"
+          className="h-9"
+          onClick={apply}
+          disabled={preview == null || sex == null}
+        >
           {t('fuelApplyGoalTargets', { defaultValue: 'Apply targets' })}
         </Button>
         <Button type="button" variant="outline" size="sm" className="h-9" onClick={() => setOpen(false)}>

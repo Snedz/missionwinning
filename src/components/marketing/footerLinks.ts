@@ -46,6 +46,11 @@ const LEARN: FooterLink[] = [
 
 const COMPANY: FooterLink[] = [
   { href: '/about', labelKey: 'footerCompanyAbout', defaultValue: 'About' },
+  {
+    href: '/principles',
+    labelKey: 'footerCompanyPrinciples',
+    defaultValue: 'Principles',
+  },
   { href: '/press', labelKey: 'footerCompanyPress', defaultValue: 'Press / Brand' },
   { href: '/vision', labelKey: 'footerCompanyVision', defaultValue: 'Vision' },
   { href: '/feedback', labelKey: 'footerCompanyFeedback', defaultValue: 'Feedback' },

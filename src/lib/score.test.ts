@@ -118,4 +118,10 @@ describe('computeBodyScores check-in modifiers', () => {
     assert.ok(adj.readiness > base.readiness);
     assert.ok(adj.readiness - base.readiness <= 15);
   });
+
+  it('applies optional educational cycle readinessBias after check-in', () => {
+    const base = computeBodyScores([]);
+    const adj = computeBodyScores([], { readinessBias: -8 });
+    assert.equal(adj.readiness, Math.max(0, base.readiness - 8));
+  });
 });

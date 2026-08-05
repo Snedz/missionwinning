@@ -98,6 +98,13 @@ export const STORAGE_KEYS = {
   operatorName: 'mw_operator_name',
   units: 'mw_units',
   unitsExplicit: 'mw_units_explicit',
+  /** Biological sex for BMR / strength standards / PFT — unset until chosen. */
+  athleteSex: 'mw_athlete_sex',
+  /**
+   * Optional cycle coaching prefs (local-only, opt-in). Sensitive health-adjacent data —
+   * never push to cloud in MVP.
+   */
+  cyclePrefs: 'mw_cycle_prefs_v1',
   langExplicit: 'mw_lang_explicit',
   regionDefaults: 'mw_region_defaults_v1',
   remindersPref: 'mw_reminders_pref',

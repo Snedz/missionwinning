@@ -28,6 +28,7 @@ import { hasYouthConsent, mergeYouthConsentFromServer, requiresYouthConsent } fr
 import { pushLeaderboardSnapshot } from '@/lib/leaderboardSync';
 import { computeLocalLeaderboardSnapshot } from '@/lib/leaderboard/computeLocalStats';
 import { useWorkoutStore } from '@/store/workoutStore';
+import { getAthleteSex, setAthleteSex } from '@/lib/athleteSex';
 
 type Step = 'profile' | 'youth' | 'events' | 'results';
 
@@ -44,7 +45,7 @@ export function FitnessTestRunner() {
 
   const [step, setStep] = useState<Step>('profile');
   const [age, setAge] = useState('14');
-  const [sex, setSex] = useState<FitnessSex>('male');
+  const [sex, setSexState] = useState<FitnessSex | null>(() => getAthleteSex());
   const [values, setValues] = useState<Record<string, string>>({});
   const [session, setSession] = useState<ReturnType<typeof scoreFitnessTestSession> | null>(null);
   const [youthConsented, setYouthConsented] = useState(false);
@@ -64,7 +65,13 @@ export function FitnessTestRunner() {
 
   const ageNum = parseInt(age, 10);
 
+  const setSex = (s: FitnessSex) => {
+    setSexState(s);
+    setAthleteSex(s);
+  };
+
   const proceedFromProfile = () => {
+    if (sex == null) return;
     if (!Number.isFinite(ageNum) || ageNum < 6) return;
     if (requiresYouthConsent(ageNum) && !youthConsented) {
       setStep('youth');
@@ -74,6 +81,7 @@ export function FitnessTestRunner() {
   };
 
   const handleScore = () => {
+    if (sex == null) return;
     if (!Number.isFinite(ageNum) || ageNum < 6) return;
     if (requiresYouthConsent(ageNum) && !youthConsented) {
       setStep('youth');
@@ -240,19 +248,33 @@ export function FitnessTestRunner() {
               />
             </label>
             <label className="block space-y-1 text-sm">
-              <span>{t('pftSex', { defaultValue: 'Scoring group' })}</span>
+              <span>{t('pftSex', { defaultValue: 'Sex (scoring standards)' })}</span>
               <select
-                value={sex}
-                onChange={(e) => setSex(e.target.value as FitnessSex)}
+                value={sex ?? ''}
+                onChange={(e) => {
+                  const v = e.target.value;
+                  if (v === 'male' || v === 'female') setSex(v);
+                }}
                 className="w-full rounded-none bg-background border border-border px-3 py-2"
               >
+                <option value="" disabled>
+                  {t('calcSexSelect', { defaultValue: 'Select…' })}
+                </option>
                 <option value="male">{t('pftSexMale', { defaultValue: 'Male standards' })}</option>
                 <option value="female">
                   {t('pftSexFemale', { defaultValue: 'Female standards' })}
                 </option>
               </select>
             </label>
-            <Button className="w-full" onClick={proceedFromProfile}>
+            {sex == null ? (
+              <p className="text-xs text-muted-foreground">
+                {t('pftSexRequired', {
+                  defaultValue:
+                    'Select male or female standards. We do not assume male.',
+                })}
+              </p>
+            ) : null}
+            <Button className="w-full" onClick={proceedFromProfile} disabled={sex == null}>
               {t('pftContinue', { defaultValue: 'Continue to events' })}
             </Button>
           </>

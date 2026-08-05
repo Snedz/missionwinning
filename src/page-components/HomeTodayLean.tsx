@@ -21,6 +21,7 @@ import { planTodayBlocks, type TodayBlockCandidate } from '@/lib/today/todayBloc
 import { ScreenDock } from '@/components/layout/ScreenDock';
 import { computeReentry } from '@/lib/reentry';
 import { TodayPageHeader } from '@/components/today/TodayPageHeader';
+import { TodayCycleChip } from '@/components/today/TodayCycleChip';
 import { useActiveWorkoutPulse } from '@/hooks/useActiveWorkoutPulse';
 import {
   readTrainingStreakFromStorage,
@@ -259,13 +260,16 @@ export function HomeTodayLean() {
       priority: P.header,
       pinned: true,
       node: (
-        <TodayPageHeader
-          today={todayLabel}
-          streak={streak}
-          userEmail={null}
-          action={action}
-          showEditToday={false}
-        />
+        <div className="space-y-3">
+          <TodayPageHeader
+            today={todayLabel}
+            streak={streak}
+            userEmail={null}
+            action={action}
+            showEditToday={false}
+          />
+          <TodayCycleChip />
+        </div>
       ),
     },
   ];

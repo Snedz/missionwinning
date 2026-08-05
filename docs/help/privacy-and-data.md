@@ -15,6 +15,7 @@ Mission Winning stores most workout and preference data **on your device** first
 | School class metadata | Partial | Yes (teacher-created classes) |
 | PFT scores (class) | — | Yes when synced |
 | Wearable sync (optional) | — | Only if you connect a provider (tokens + samples) |
+| Cycle coaching prefs (optional) | Yes (opt-in) | **No** — local only in current product |
 
 ## Wearables (optional)
 

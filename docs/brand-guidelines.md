@@ -43,6 +43,20 @@ Full thesis + cite table: [EXERCISE_AS_MEDICINE.md](EXERCISE_AS_MEDICINE.md).
 
 Consumer hook stays **Train Anywhere / free logger + Mission Coach**. Evidence language belongs in About, Learn, founder narrative — not the company one-liner.
 
+### Sex, fair categories, and female athletes
+
+Public principles: [missionwinning.com/principles](https://www.missionwinning.com/principles) · Help: [docs/help/fair-standards-and-sex.md](help/fair-standards-and-sex.md).
+
+| OK | Not OK |
+|----|--------|
+| Sex (male / female) for BMR, strength ladders, PE/PFT bands | Silent male default that mis-scores women |
+| “Female standards” / first-class female ladders | Erasing sex for “inclusive” scoring that lies about the ladder |
+| Fair competition: women’s categories keep male and female standards separate | Culture-war homepage; attack copy; “women-only app” (we serve all athletes) |
+| Optional cycle cues as **educational**, opt-in, never gate free logging | Diagnose/treat hormones, fertility product claims, “fix your cycle”, cloud-sync of cycle data without privacy review |
+| Female athletes as athletes in examples and copy | Gym-bro erasure; pink-niche tokenism |
+
+Landing hero stays Train Anywhere / free logger + Mission Coach. Principles live on `/principles` and About — not as a campaign takeover of the wedge pitch.
+
 ---
 
 ## Colors

@@ -33,6 +33,7 @@ Use this table when filling Apple Privacy Nutrition Labels / Google Play Data sa
 | Product analytics (opt-in) | Typed funnel events | PostHog EU only if allowed | Banner / Profile → Privacy; DNT keeps off |
 | Payment / purchase history | Super Bundle | Stripe and/or PayPal when enabled | Billing portal / support |
 | Optional AI coach context | Chat/voice/daily insight when operators enable LLM | OpenAI-compatible provider (preferred SpaceXAI/xAI + ZDR) | Feature only when enabled; free rules coach needs no key |
+| Cycle coaching prefs (optional) | Soft readiness tips when athlete opts in | **On-device only** (no cloud sync in MVP) | Profile → Cycle coaching Off; clear site data |
 | Advertising ID / AAID / IDFA | — | **Not collected** | N/A |
 | Cross-app tracking pixels | — | **Not used** (no Meta Pixel / GA ads) | N/A |
 

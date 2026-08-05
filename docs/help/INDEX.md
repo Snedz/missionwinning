@@ -9,6 +9,7 @@ Plain-language guides for athletes, parents, and teachers. English only for now;
 | [mission-coach.md](mission-coach.md) | Premium weekly AI training plan |
 | [fuel-and-nutrition.md](fuel-and-nutrition.md) | Logging food, barcode scan, photo estimate |
 | [fitness-test-and-school.md](fitness-test-and-school.md) | Presidential Fitness Test + PE class codes |
+| [fair-standards-and-sex.md](fair-standards-and-sex.md) | Sex-based standards, fair categories, female athletes |
 | [premium-and-billing.md](premium-and-billing.md) | Super Bundle, what's free, restoring access |
 | [privacy-and-data.md](privacy-and-data.md) | Where your data lives, backup, youth consent, optional wearables |
 | [../WEARABLES.md](../WEARABLES.md) | Developer wearables strategy (Apple, Google, Whoop, …) |

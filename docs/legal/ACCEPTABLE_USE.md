@@ -60,6 +60,8 @@ You must **not** use the Software, hosted services, generated content, or any de
 
 Class codes, parental consent flows, and Presidential Fitness–style tools are for legitimate education and coaching only. Do not collect youth data without required consent. Do not use youth features for advertising profiles or sale of children’s data.
 
+Scoring bands for fitness tests use **sex (male / female)** as selected by the athlete or coach for that session. Do not misuse school or PE tools to falsify standards categories or to collect sensitive data beyond what legitimate PE coaching requires.
+
 ---
 
 ## 4. Self-hosted and modified copies

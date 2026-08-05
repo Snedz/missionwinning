@@ -30,6 +30,7 @@ import {
   mifflinBmr,
   proteinTargetGrams,
 } from '@/lib/calcHelpers';
+import { getAthleteSex, setAthleteSex } from '@/lib/athleteSex';
 import { saveMacroTargets } from '@/lib/macroTargets';
 
 type Goal = 'maintain' | 'cut' | 'bulk';
@@ -45,9 +46,14 @@ export function MacroCalculator() {
   const [bw, setBw] = useState(() => defaultCalcInputs(units).bw);
   const [height, setHeight] = useState(() => defaultCalcInputs(units).height);
   const [age, setAge] = useState(28);
-  const [sex, setSex] = useState<CalcSex>('male');
+  const [sex, setSexState] = useState<CalcSex | null>(() => getAthleteSex());
   const [activity, setActivity] = useState(1.55);
   const [goal, setGoal] = useState<Goal>('maintain');
+
+  const setSex = (s: CalcSex) => {
+    setSexState(s);
+    setAthleteSex(s);
+  };
 
   useEffect(() => {
     const d = defaultCalcInputs(units);
@@ -55,15 +61,27 @@ export function MacroCalculator() {
     setHeight(d.height);
   }, [units]);
 
-  const bmr = mifflinBmr(bw, height, age, units, sex);
-  const tdee = Math.round(bmr * activity);
+  const bmr = sex != null ? mifflinBmr(bw, height, age, units, sex) : null;
+  const tdee = bmr != null ? Math.round(bmr * activity) : null;
   const targetCals =
-    goal === 'cut' ? Math.round(tdee * 0.85) : goal === 'bulk' ? Math.round(tdee * 1.1) : tdee;
+    tdee == null
+      ? null
+      : goal === 'cut'
+        ? Math.round(tdee * 0.85)
+        : goal === 'bulk'
+          ? Math.round(tdee * 1.1)
+          : tdee;
   const protein = proteinTargetGrams(bw, units);
-  const fat = Math.round((targetCals * 0.25) / 9);
-  const carbs = Math.max(0, Math.round((targetCals - protein * 4 - fat * 9) / 4));
+  const fat = targetCals != null ? Math.round((targetCals * 0.25) / 9) : null;
+  const carbs =
+    targetCals != null && fat != null
+      ? Math.max(0, Math.round((targetCals - protein * 4 - fat * 9) / 4))
+      : null;
 
   const macroSplit = useMemo(() => {
+    if (fat == null || carbs == null) {
+      return { proteinPct: 0, carbsPct: 0, fatPct: 0 };
+    }
     const pCals = protein * 4;
     const cCals = carbs * 4;
     const fCals = fat * 9;
@@ -92,6 +110,7 @@ export function MacroCalculator() {
   };
 
   const applyTargets = () => {
+    if (targetCals == null || carbs == null || fat == null) return;
     /*
      * `.206` — a target is not a meal.
      *
@@ -195,6 +214,13 @@ export function MacroCalculator() {
                 </Button>
               ))}
             </div>
+            {sex == null && (
+              <p className="mt-1 text-xs text-muted-foreground">
+                {t('calcSexRequired', {
+                  defaultValue: 'Select sex for honest BMR — we do not assume male.',
+                })}
+              </p>
+            )}
           </div>
           <div>
             <Label>{t('calcActivityLabel', { defaultValue: 'Activity level' })}</Label>
@@ -230,60 +256,79 @@ export function MacroCalculator() {
         </div>
 
         <div className="pt-3 border-t space-y-4">
-          {/* These are results, not budgets. The rings they replace drew arcs
-              against invented ceilings (protein/200, carbs/300) — an arc that
-              implied progress toward a target the calculator never set. A
-              numeral states the answer without inventing a denominator. */}
-          <div className="grid grid-cols-2 gap-x-4 gap-y-5 border-t-2 border-border pt-4 sm:grid-cols-4">
-            <ScoreNumeral
-              label={t('calcTargetCals', { defaultValue: 'Target Calories' })}
-              value={targetCals}
-              caption={`BMR ${bmr} · TDEE ${tdee}`}
-              size="md"
-            />
-            <ScoreNumeral
-              label={t('calcProtein', { defaultValue: 'Protein' })}
-              value={`${protein}g`}
-              size="md"
-            />
-            <ScoreNumeral
-              label={t('calcCarbs', { defaultValue: 'Carbs' })}
-              value={`${carbs}g`}
-              size="md"
-            />
-            <ScoreNumeral label={t('calcFat', { defaultValue: 'Fat' })} value={`${fat}g`} size="md" />
-          </div>
+          {sex == null || targetCals == null || bmr == null || tdee == null || carbs == null || fat == null ? (
+            <p className="border-t-2 border-border pt-4 text-sm text-muted-foreground">
+              {t('calcSexRequiredResults', {
+                defaultValue: 'Choose sex above to see BMR, TDEE, and macro targets.',
+              })}
+            </p>
+          ) : (
+            <>
+              {/* These are results, not budgets. The rings they replace drew arcs
+                  against invented ceilings (protein/200, carbs/300) — an arc that
+                  implied progress toward a target the calculator never set. A
+                  numeral states the answer without inventing a denominator. */}
+              <div className="grid grid-cols-2 gap-x-4 gap-y-5 border-t-2 border-border pt-4 sm:grid-cols-4">
+                <ScoreNumeral
+                  label={t('calcTargetCals', { defaultValue: 'Target Calories' })}
+                  value={targetCals}
+                  caption={`BMR ${bmr} · TDEE ${tdee}`}
+                  size="md"
+                />
+                <ScoreNumeral
+                  label={t('calcProtein', { defaultValue: 'Protein' })}
+                  value={`${protein}g`}
+                  size="md"
+                />
+                <ScoreNumeral
+                  label={t('calcCarbs', { defaultValue: 'Carbs' })}
+                  value={`${carbs}g`}
+                  size="md"
+                />
+                <ScoreNumeral
+                  label={t('calcFat', { defaultValue: 'Fat' })}
+                  value={`${fat}g`}
+                  size="md"
+                />
+              </div>
 
-          <div className="space-y-1">
-            {/* Three segments, one hue: the accent ramp steps dark → light so
-                protein / carbs / fat stay distinguishable without sky, amber
-                and rose — which were three unrelated colours doing the job of
-                one scale. Labels flip to ink on the lighter two steps. */}
-            <div className="flex h-4 overflow-hidden text-[10px] font-semibold">
-              <div
-                className="bg-accent-700 flex items-center justify-center text-primary-foreground"
-                style={{ width: `${macroSplit.proteinPct}%` }}
-              >
-                {macroSplit.proteinPct > 12 ? `P ${macroSplit.proteinPct}%` : ''}
+              <div className="space-y-1">
+                {/* Three segments, one hue: the accent ramp steps dark → light so
+                    protein / carbs / fat stay distinguishable without sky, amber
+                    and rose — which were three unrelated colours doing the job of
+                    one scale. Labels flip to ink on the lighter two steps. */}
+                <div className="flex h-4 overflow-hidden text-[10px] font-semibold">
+                  <div
+                    className="bg-accent-700 flex items-center justify-center text-primary-foreground"
+                    style={{ width: `${macroSplit.proteinPct}%` }}
+                  >
+                    {macroSplit.proteinPct > 12 ? `P ${macroSplit.proteinPct}%` : ''}
+                  </div>
+                  <div
+                    className="bg-accent-400 flex items-center justify-center text-accent-900"
+                    style={{ width: `${macroSplit.carbsPct}%` }}
+                  >
+                    {macroSplit.carbsPct > 12 ? `C ${macroSplit.carbsPct}%` : ''}
+                  </div>
+                  <div
+                    className="bg-accent-200 flex items-center justify-center text-accent-900"
+                    style={{ width: `${macroSplit.fatPct}%` }}
+                  >
+                    {macroSplit.fatPct > 12 ? `F ${macroSplit.fatPct}%` : ''}
+                  </div>
+                </div>
               </div>
-              <div
-                className="bg-accent-400 flex items-center justify-center text-accent-900"
-                style={{ width: `${macroSplit.carbsPct}%` }}
-              >
-                {macroSplit.carbsPct > 12 ? `C ${macroSplit.carbsPct}%` : ''}
-              </div>
-              <div
-                className="bg-accent-200 flex items-center justify-center text-accent-900"
-                style={{ width: `${macroSplit.fatPct}%` }}
-              >
-                {macroSplit.fatPct > 12 ? `F ${macroSplit.fatPct}%` : ''}
-              </div>
-            </div>
-          </div>
+            </>
+          )}
         </div>
 
         <div className="flex flex-wrap gap-2">
-          <Button size="sm" variant="default" onClick={applyTargets}>
+          <Button
+            size="sm"
+            variant="default"
+            onClick={applyTargets}
+            disabled={sex == null || targetCals == null}
+          >
             {t('calcApplyTargets', { defaultValue: 'Apply targets to Fuel' })}
           </Button>
           <Button size="sm" variant="outline" asChild>

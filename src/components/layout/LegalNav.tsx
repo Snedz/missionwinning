@@ -24,6 +24,9 @@ export function LegalNav({
       <Link href="/about" className={linkClassName}>
         {t('about', { defaultValue: 'About' })}
       </Link>
+      <Link href="/principles" className={linkClassName}>
+        {t('principlesEyebrow', { defaultValue: 'Principles' })}
+      </Link>
       {includeBeta && (
         <Link href="/beta" className={linkClassName}>
           {t('navBetaGuide', { defaultValue: 'Beta guide' })}

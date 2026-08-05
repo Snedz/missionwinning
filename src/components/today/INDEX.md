@@ -7,6 +7,7 @@
 | File | Purpose |
 |------|---------|
 | `TodayPageHeader.tsx` | Greeting, date, journey phase |
+| `TodayCycleChip.tsx` | Optional educational cycle tip when Profile cycle coaching is on |
 | `TodayDashboardAccordion.tsx` | Health/journal/week/progress accordion (readiness+) |
 | `TodayDashboardHeader.tsx` | Mission Score ScoreNumeral + MetricsRow; trends collapsed |
 | `TodayHealthSection.tsx` | Readiness, strain, recovery metrics |

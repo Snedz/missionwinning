@@ -184,6 +184,11 @@ export type BodyScoresOpts = {
   pillarWins?: number;
   /** Today's subjective check-in — bounded readiness modifier (±15). */
   checkIn?: Pick<MindCheckIn, 'sleep' | 'mood' | 'stress' | 'energy' | 'soreness'> | null;
+  /**
+   * Soft educational cycle bias (e.g. −8 menstrual). Applied after check-in,
+   * then readiness is re-clamped 0–100. Never gates free logging.
+   */
+  readinessBias?: number;
 };
 
 /**
@@ -203,9 +208,13 @@ export function computeBodyScores(
   else if (opts?.assessmentRisk === 'moderate') readiness = Math.max(30, readiness - 10);
 
   // Wave 11: subjective check-in modifier (pure, capped)
+  const bias =
+    typeof opts?.readinessBias === 'number' && Number.isFinite(opts.readinessBias)
+      ? opts.readinessBias
+      : 0;
   readiness = Math.min(
     100,
-    Math.max(0, readiness + checkInReadinessDelta(opts?.checkIn ?? null))
+    Math.max(0, readiness + checkInReadinessDelta(opts?.checkIn ?? null) + bias)
   );
 
   const last7 = workoutHistory.filter(

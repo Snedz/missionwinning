@@ -8,6 +8,8 @@ import { loadBands } from '@/lib/coach/load';
 import { getOrCreateDeviceId } from '@/lib/coach/storage';
 import { loadPreferredDays, loadDaysPerWeek } from '@/lib/coach/schedulePrefs';
 import { getTodayCheckIn } from '@/lib/mindCheckIns';
+import { cycleReadinessBias, loadCyclePrefs } from '@/lib/cyclePrefs';
+import { localDateKey } from '@/lib/time/localDate';
 import { readRaw } from '@/lib/storage/safeStorage';
 import { STORAGE_KEYS } from '@/lib/storage/keys';
 
@@ -23,6 +25,11 @@ export function buildCoachContextFromInputs(params: {
   preferredDays?: number[];
   /** Pass false to skip reading today's check-in (tests / SSR). Default true on client. */
   includeCheckIn?: boolean;
+  /**
+   * Pass false to skip opt-in cycle readiness bias (tests / SSR).
+   * Default true on client when cycle prefs are enabled.
+   */
+  includeCycleBias?: boolean;
 }): CoachContext {
   const experience = (params.experience ?? 'beginner') as CoachContext['experience'];
   const equipment = mapStorageEquipment(params.equipment ?? 'bodyweight');
@@ -38,6 +45,11 @@ export function buildCoachContextFromInputs(params: {
         ? getTodayCheckIn()
         : null;
 
+  const readinessBias =
+    params.includeCycleBias === false || typeof window === 'undefined'
+      ? 0
+      : cycleReadinessBias(loadCyclePrefs(), localDateKey());
+
   return {
     experience,
     equipment,
@@ -49,6 +61,7 @@ export function buildCoachContextFromInputs(params: {
     bodyScores: computeBodyScores(params.history, {
       assessmentRisk: params.assessmentRisk,
       checkIn,
+      readinessBias: readinessBias !== 0 ? readinessBias : undefined,
     }),
     units,
     assessmentRisk: params.assessmentRisk,

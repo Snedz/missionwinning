@@ -27,6 +27,7 @@ import { openBillingPortal } from '@/lib/payments';
 import { ProfileAccountCard } from '@/components/profile/ProfileAccountCard';
 import { ProfileRemindersCard } from '@/components/profile/ProfileRemindersCard';
 import { ProfilePreferencesCard } from '@/components/profile/ProfilePreferencesCard';
+import { ProfileCycleCard } from '@/components/profile/ProfileCycleCard';
 import { ProfileAssessmentCard } from '@/components/profile/ProfileAssessmentCard';
 import { ProfileBetaJourneyCard } from '@/components/profile/ProfileBetaJourneyCard';
 import { ProfileJourneyCard } from '@/components/profile/ProfileJourneyCard';
@@ -345,6 +346,8 @@ export function ProfilePage() {
         onGoalsChange={setGoals}
         onSaveGoals={saveGoals}
       />
+
+      <ProfileCycleCard />
 
       <ProfileAssessmentCard />
 

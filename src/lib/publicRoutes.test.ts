@@ -9,6 +9,7 @@ import {
 describe('publicRoutes', () => {
   it('bypasses info and marketing paths pre-I-Day', () => {
     assert.equal(isJourneyBypassPath('/about'), true);
+    assert.equal(isJourneyBypassPath('/principles'), true);
     assert.equal(isJourneyBypassPath('/feedback'), true);
     assert.equal(isJourneyBypassPath('/calculators'), true);
     assert.equal(isJourneyBypassPath('/press'), true);
@@ -22,6 +23,7 @@ describe('publicRoutes', () => {
 
   it('allows private gate public paths', () => {
     assert.equal(isPrivateGatePublicPath('/vision'), true);
+    assert.equal(isPrivateGatePublicPath('/principles'), true);
     assert.equal(isPrivateGatePublicPath('/beta'), true);
     assert.equal(isPrivateGatePublicPath('/press'), true);
     assert.equal(isPrivateGatePublicPath('/log'), false);

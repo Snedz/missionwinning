@@ -10,6 +10,18 @@ Archive: [2026-06 → 2026-07-20](docs/archive/log/LOG-2026-06_to_2026-07-20.md)
 
 ---
 
+## 2026-08-05 — Cycle-aware coaching MVP (opt-in) (`.505`)
+
+Founder override surface: local-only cycle prefs (`mw_cycle_prefs_v1`), educational phase estimate, soft readiness bias in `computeBodyScores` / coach context (−8 menstrual, −5 late luteal). Profile cycle card + Today chip; free logger never gated. No cloud sync.
+
+Mutants: enabled false → bias 0; day 1 menstrual → −8; day 8 follicular → 0.
+
+## 2026-08-05 — Fair-by-sex standards + women-friendly product (`.504`)
+
+Visible principles (`/principles`, About, footer, brand, help, AUP note): every athlete welcome; performance tools use biological sex (male/female); no men in women’s standards categories; female ladders first-class. Shared `athleteSex` pref (unset ≠ male) wired into Profile, Fuel goal wizard, macro/TDEE/strength calculators, and PFT — no silent male default. Cycle-aware coaching deferred to a later founder-confirmed PR.
+
+Mutants: getAthleteSex without set → null; female/male ladders still diverge in strengthStandards tests.
+
 ## 2026-08-05 — Kaizen K11: History day + list retrain (`.503`)
 
 Extend History → Train: session list **Again** (ghost, no wipe of logged active work) + day replay train entries use `logFromTrainJournalId` → same retrain path. Shared `retrainFromLog` on HistoryPage. Pure journal id prefix matches `gatherJournalEntries` `train-${id}`.
@@ -94,17 +106,3 @@ Mutants: restore section-seam without border → red; gap-px again → red.
 After `.489` next@16.3.0, nested `postcss` is 8.5.23 (past Dependabot #44–#45 / 8.4.31). `nextNestedPostcss.test.ts` floors the lockfile copy and pins `package.json` next ≥16.3. Locale footprint pack↔public agreement discovers **all** pack langs (not only ja/es/de/ar) so hi/vi/th drift from `.490` cannot hide. SECURITY_AUDIT_TRIAGE marks postcss cleared.
 
 Mutants: POSTCSS_FLOOR 9.0.0 → red; pack/public disagree on hi key → footprint red; next `^16.2.12` again → range pin red.
-
-
-## 2026-08-05 — Unicode pack placeholder guard (`.490`)
-
-`.484` fixed machine-translated `{{peso}}`-style keys, but the extractor used `\w` (ASCII-only in JS). Hindi/Thai/Vietnamese packs still shipped `{{गिनती}}`, `{{นาที}}`, `{{trọng lượng}}` — runtime left literals; the guard skipped them because `got.size === 0`. Rewrote 36 keys (hi 27, vi 7, th 2) to English names; synced `public/locales`. Extractor is now `{{([^}]+)}}` + ASCII-ident check; pin test fails if `\w` returns.
-
-Mutants: restore `\w` extractor → pin red; hi `{{गिनती}}` again → main test red.
-
-
-## 2026-08-05 — Next 16.3.0 + locale public/pack parity (`.489`)
-
-Kaizen night A residual: bump `next` `^16.2.12` → `^16.3.0` (lockfile resolves 16.3.0). Sync `public/locales/**` to `src/i18n/packs` where pack placeholder rewrites from `.484` had not landed on the HTTP override copy (localeFootprint drift: e.g. ja `{{unit}}` vs `{{単位}}`). `formPatterns` test accepts Form Index video packs for front-squat (`.477`) while pinning OHP still-only.
-
-Mutants: public/ja unit as `{{単位}}` again → footprint red; front-squat still-only assert only → pack video green path breaks.

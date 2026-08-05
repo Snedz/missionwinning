@@ -70,6 +70,7 @@ export const MORE_SHEET_QUIET: readonly MoreQuietLink[] = [
   { href: '/beta', labelKey: 'navBetaGuide', label: 'Beta guide' },
   { href: '/vision', labelKey: 'navOurMission', label: 'Our mission' },
   { href: '/about', labelKey: 'about', label: 'About' },
+  { href: '/principles', labelKey: 'principlesEyebrow', label: 'Principles' },
   { href: '/terms', labelKey: 'termsOfService', label: 'Terms' },
   { href: '/privacy', labelKey: 'privacyPolicy', label: 'Privacy' },
   { href: '/dmca', labelKey: 'infoDmcaTitle', label: 'DMCA' },

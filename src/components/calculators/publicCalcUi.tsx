@@ -17,7 +17,8 @@ export function Seg<T extends string>({
 }: {
   name: string;
   legend: string;
-  value: T;
+  /** Null = nothing selected yet (e.g. sex unset — never invent male). */
+  value: T | null;
   options: readonly { value: T; label: string }[];
   onChange: (v: T) => void;
 }) {

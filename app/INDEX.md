@@ -42,6 +42,7 @@
 | `/learn/guide` | `GuidebookIndexPage.tsx` | Guidebook |
 | `/coaching` | `CoachingPage.tsx` | **Human** coaching leads — not AI Coach |
 | `/privacy` | `PrivacyPage.tsx` | Privacy policy |
+| `/principles` | `PrinciplesPage.tsx` | Fair categories & sex-based standards |
 | `/terms` | `TermsPage.tsx` | Terms of use |
 | `/dmca` | `DmcaPage.tsx` | DMCA / copyright notices |
 | `/refunds` | `RefundsPage.tsx` | Refunds & cancellation |

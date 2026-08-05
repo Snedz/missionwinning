@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { mifflinBmr, ACTIVITY_LEVELS, type CalcSex } from '@/lib/calcHelpers';
+import { getAthleteSex, setAthleteSex } from '@/lib/athleteSex';
 import { useLocaleFormat } from '@/hooks/useLocaleFormat';
 import {
   CalcField,
@@ -29,19 +30,34 @@ type Goal = 'cut' | 'maintain' | 'bulk';
 export function PublicTdeeCalculator() {
   const fmt = useLocaleFormat();
   const [units, setUnits] = useState<CalcUnits>('kg');
-  const [sex, setSex] = useState<CalcSex>('male');
+  const [sex, setSexState] = useState<CalcSex | null>(() => getAthleteSex());
   const [age, setAge] = useState(28);
   const [heightCm, setHeightCm] = useState(178);
   const [bodyweightKg, setBodyweightKg] = useState(78);
   const [activity, setActivity] = useState<number>(1.55);
   const [goal, setGoal] = useState<Goal>('maintain');
 
-  const bmr = mifflinBmr(bodyweightKg, heightCm, age, 'metric', sex);
-  const tdee = Math.round(bmr * activity);
-  const cals = goal === 'cut' ? Math.round(tdee * 0.85) : goal === 'bulk' ? Math.round(tdee * 1.1) : tdee;
+  const setSex = (s: CalcSex) => {
+    setSexState(s);
+    setAthleteSex(s);
+  };
+
+  const bmr = sex != null ? mifflinBmr(bodyweightKg, heightCm, age, 'metric', sex) : null;
+  const tdee = bmr != null ? Math.round(bmr * activity) : null;
+  const cals =
+    tdee == null
+      ? null
+      : goal === 'cut'
+        ? Math.round(tdee * 0.85)
+        : goal === 'bulk'
+          ? Math.round(tdee * 1.1)
+          : tdee;
   const protein = Math.round(bodyweightKg * 1.8);
-  const fat = Math.round((cals * 0.25) / 9);
-  const carbs = Math.max(0, Math.round((cals - protein * 4 - fat * 9) / 4));
+  const fat = cals != null ? Math.round((cals * 0.25) / 9) : null;
+  const carbs =
+    cals != null && fat != null
+      ? Math.max(0, Math.round((cals - protein * 4 - fat * 9) / 4))
+      : null;
 
   const unitLabel = units;
   const heightDisplay = units === 'lb' ? Math.round(heightCm / 2.54) : heightCm;
@@ -62,7 +78,7 @@ export function PublicTdeeCalculator() {
         />
         <Seg
           name="td-sex"
-          legend="Body"
+          legend="Sex"
           value={sex}
           options={[
             { value: 'male', label: 'Male' },
@@ -70,6 +86,11 @@ export function PublicTdeeCalculator() {
           ]}
           onChange={setSex}
         />
+        {sex == null && (
+          <p className="max-w-md text-[13px] leading-relaxed text-muted-foreground">
+            Select sex for Mifflin–St Jeor BMR. We do not assume male.
+          </p>
+        )}
         <div className="grid max-w-md grid-cols-2 gap-5">
           <CalcField
             id="td-age"
@@ -123,6 +144,12 @@ export function PublicTdeeCalculator() {
       </div>
 
       <div aria-live="polite">
+        {cals == null || tdee == null || bmr == null || fat == null || carbs == null ? (
+          <p className="max-w-[48ch] text-[15px] leading-relaxed text-muted-foreground">
+            Choose sex to see BMR, maintenance calories, and macro targets.
+          </p>
+        ) : (
+          <>
         <p className="eyebrow-live mb-2">Daily target</p>
         <p className="display-mega text-poster tabular-nums">
           {fmt.num(cals)} <span className="text-2xl text-muted-foreground">kcal</span>
@@ -161,6 +188,8 @@ export function PublicTdeeCalculator() {
           two weeks, watch the trend in your log, then adjust. Educational tool, not medical
           advice.
         </p>
+          </>
+        )}
       </div>
     </div>
   );

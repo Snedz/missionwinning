@@ -57,6 +57,26 @@ export function AboutPage() {
             </p>
           </InfoSection>
 
+          <InfoSection
+            title={t('infoAboutFairCategories', {
+              defaultValue: 'Fair categories & female athletes',
+            })}
+          >
+            <p className="text-muted-foreground">
+              {t('infoAboutFairCategoriesBody', {
+                defaultValue:
+                  'Every athlete is welcome. Fuel math, strength standards, and fitness-test bands use biological sex (male / female) so scoring stays honest. Female standards are first-class. Women’s sport categories exist for fair competition — we keep those standards separate in our tools.',
+              })}
+            </p>
+            <p className="text-muted-foreground">
+              <Link href="/principles" className="text-primary hover:underline">
+                {t('infoAboutPrinciplesLink', {
+                  defaultValue: 'Read our principles →',
+                })}
+              </Link>
+            </p>
+          </InfoSection>
+
           {isAmericaTrackEnabled() && (
             <InfoSection title={t('infoAboutNational', { defaultValue: 'National fitness (U.S.)' })}>
               <CouncilLeadershipBlock />
@@ -124,6 +144,10 @@ export function AboutPage() {
               {' · '}
               <Link href="/press" className="text-primary hover:underline">
                 {t('navPressBrand', { defaultValue: 'Press / Brand' })}
+              </Link>
+              {' · '}
+              <Link href="/principles" className="text-primary hover:underline">
+                {t('principlesEyebrow', { defaultValue: 'Principles' })}
               </Link>
               {isAmericaTrackEnabled() && (
                 <>

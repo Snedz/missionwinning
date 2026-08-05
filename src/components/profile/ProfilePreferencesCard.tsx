@@ -1,9 +1,15 @@
 'use client';
 
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { ProfileLanguageSwitcher } from '@/components/profile/ProfileLanguageSwitcher';
+import {
+  getAthleteSex,
+  setAthleteSex,
+  type BiologicalSex,
+} from '@/lib/athleteSex';
 
 type ProfilePreferencesCardProps = {
   units: 'metric' | 'imperial';
@@ -21,6 +27,12 @@ export function ProfilePreferencesCard({
   onSaveGoals,
 }: ProfilePreferencesCardProps) {
   const { t } = useTranslation();
+  const [sex, setSexState] = useState<BiologicalSex | null>(() => getAthleteSex());
+
+  const chooseSex = (s: BiologicalSex) => {
+    setSexState(s);
+    setAthleteSex(s);
+  };
 
   return (
     <>
@@ -48,6 +60,36 @@ export function ProfilePreferencesCard({
           <div className="text-xs mt-2 text-muted-foreground">
             Affects calculators and future logs. (Global default metric for accessibility.)
           </div>
+        </CardContent>
+      </Card>
+
+      <Card className="content-card">
+        <CardHeader>
+          <CardTitle>{t('profileSexTitle', { defaultValue: 'Sex' })}</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="flex gap-2">
+            <Button
+              className="min-h-[44px] flex-1"
+              variant={sex === 'male' ? 'selected' : 'outline'}
+              onClick={() => chooseSex('male')}
+            >
+              {t('calcSexMale', { defaultValue: 'Male' })}
+            </Button>
+            <Button
+              className="min-h-[44px] flex-1"
+              variant={sex === 'female' ? 'selected' : 'outline'}
+              onClick={() => chooseSex('female')}
+            >
+              {t('calcSexFemale', { defaultValue: 'Female' })}
+            </Button>
+          </div>
+          <p className="text-xs mt-2 text-muted-foreground">
+            {t('profileSexHint', {
+              defaultValue:
+                'Used for fuel math, strength standards, and fitness-test bands. Male and female standards stay separate. We do not assume male.',
+            })}
+          </p>
         </CardContent>
       </Card>
 
