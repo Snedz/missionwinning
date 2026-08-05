@@ -7,6 +7,7 @@ import {
   isRestFinalSeconds,
   restProgress,
   saveDefaultRestSeconds,
+  shouldShowRestPresets,
 } from '@/lib/workout/restTimer';
 import { cn } from '@/lib/utils';
 
@@ -41,6 +42,7 @@ export function RestTimerBar({
   const progress = restProgress(initial, remaining);
   const clock = formatRestClock(remaining);
   const finalSeconds = isRestFinalSeconds(remaining);
+  const showPresets = shouldShowRestPresets(remaining);
 
   return (
     <div
@@ -104,36 +106,50 @@ export function RestTimerBar({
         <button type="button" className={inkButton} onClick={() => onAdjust(15)}>
           {t('activeRestAdd15', { defaultValue: '+15s' })}
         </button>
-        {/* Kept as exactly "Skip" — logger-depth matches /^skip$/i. */}
-        <button type="button" className={cn(inkButton, 'ms-auto gap-1')} onClick={onSkip}>
+        {/* Label stays exactly "Skip" — logger-depth / a11y match /^skip$/i.
+            Final ≤10s: filled accent so outdoor thumbs hit the bright control. */}
+        <button
+          type="button"
+          className={cn(
+            inkButton,
+            'ms-auto gap-1',
+            finalSeconds &&
+              'border-accent-400 bg-accent-400 text-neutral-900 hover:bg-accent-300 hover:text-neutral-900 active:bg-accent-400'
+          )}
+          onClick={onSkip}
+          data-testid="rest-skip"
+        >
           <SkipForward className="h-4 w-4" aria-hidden />
           {t('activeRestSkip', { defaultValue: 'Skip' })}
         </button>
       </div>
 
-      {/* Presets are a phone affordance — the mock's rest dock carries only
-          +15s and Skip. Hidden, not removed: compact still needs them. */}
-      <div className="flex flex-wrap items-center gap-1 px-4 pb-3 pt-2 md:hidden">
-        <span className="me-1 text-[11px] uppercase tracking-[0.08em] text-neutral-400">
-          {t('activeRestDefault', { defaultValue: 'Default' })}
-        </span>
-        {[60, 90, 120, 180].map((sec) => (
-          <button
-            key={sec}
-            type="button"
-            /* 44px, not 36 — these are pressed one-handed between sets like
-               everything else in the logger. `first-90` sweeps `main`, and the
-               dock is not in `main`, which is why they stayed undersized. */
-            className="min-h-[44px] px-2.5 text-xs font-semibold text-neutral-300 transition-colors hover:bg-neutral-800 hover:text-neutral-100"
-            onClick={() => {
-              onPreset(sec);
-              saveDefaultRestSeconds(sec);
-            }}
-          >
-            {sec}s
-          </button>
-        ))}
-      </div>
+      {/* Presets: phone only; hide in final seconds so Skip is the only bright CTA. */}
+      {showPresets ? (
+        <div className="flex flex-wrap items-center gap-1 px-4 pb-3 pt-2 md:hidden">
+          <span className="me-1 text-[11px] uppercase tracking-[0.08em] text-neutral-400">
+            {t('activeRestDefault', { defaultValue: 'Default' })}
+          </span>
+          {[60, 90, 120, 180].map((sec) => (
+            <button
+              key={sec}
+              type="button"
+              /* 44px, not 36 — these are pressed one-handed between sets like
+                 everything else in the logger. `first-90` sweeps `main`, and the
+                 dock is not in `main`, which is why they stayed undersized. */
+              className="min-h-[44px] px-2.5 text-xs font-semibold text-neutral-300 transition-colors hover:bg-neutral-800 hover:text-neutral-100"
+              onClick={() => {
+                onPreset(sec);
+                saveDefaultRestSeconds(sec);
+              }}
+            >
+              {sec}s
+            </button>
+          ))}
+        </div>
+      ) : (
+        <div className="pb-3 md:hidden" aria-hidden />
+      )}
     </div>
   );
 }
