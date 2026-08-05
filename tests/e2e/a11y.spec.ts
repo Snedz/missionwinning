@@ -1180,6 +1180,8 @@ test.describe('Accessibility @a11y', () => {
     await expect(page.getByRole('button', { name: /^work$/i }).first()).toBeVisible({
       timeout: 15_000,
     });
+    // Outdoor console collapses kinds to Work + Kind expand (.482)
+    await page.getByTestId('log-console-expand-kinds').click();
     await expect(page.getByRole('button', { name: /^warmup$/i }).first()).toBeVisible();
     await axeSerious(page, '/active (log console set kinds)');
   });

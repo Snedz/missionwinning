@@ -15,12 +15,17 @@
  * done.
  */
 
+import { useState } from 'react';
 import { Check, Minus, Plus } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { cn } from '@/lib/utils';
 import type { SetKind } from '@/types';
-import { SET_KINDS, setKindDefaultLabel, setKindLabelKey } from '@/lib/workout/setKind';
-import { shouldOfferUseNext } from '@/lib/workout/loggerSpeed';
+import { setKindDefaultLabel, setKindLabelKey } from '@/lib/workout/setKind';
+import {
+  shouldOfferUseNext,
+  shouldShowSetKindExpand,
+  visibleSetKinds,
+} from '@/lib/workout/loggerSpeed';
 
 /** Progressive-overload strip under the exercise name (last · next · why). */
 export type LogConsoleOverloadCue = {
@@ -134,6 +139,8 @@ export function LogConsole({
   onUseNext,
 }: Props) {
   const { t } = useTranslation();
+  /** Outdoor default: Work only. Expand once to pick warmup/fail/drop. */
+  const [kindsExpanded, setKindsExpanded] = useState(false);
   const lastLine = overloadCue?.lastLine ?? null;
   const nextLine = overloadCue?.nextLine ?? null;
   const reasonLine = overloadCue?.reasonLine ?? null;
@@ -142,6 +149,8 @@ export function LogConsole({
   const legacyLine = !hasStructured ? targetLine : null;
   const offerUseNext =
     !!onUseNext && shouldOfferUseNext(reps, weight, nextTarget ?? undefined);
+  const kindOptions = visibleSetKinds(kind, kindsExpanded);
+  const showKindExpand = shouldShowSetKindExpand(kind, kindsExpanded);
 
   return (
     <div className="border-t-2 border-neutral-900 bg-neutral-900 px-4 pb-4 pt-3.5 text-neutral-100">
@@ -197,11 +206,14 @@ export function LogConsole({
         </button>
       ) : null}
 
-      {/* Set kind moved here from the row's "More" expander: this is where the
-          set is being defined, and it was one of three controls in the app
-          labelled "More" meaning three different things. */}
-      <div className="mt-3 flex flex-wrap gap-1">
-        {SET_KINDS.map((k) => (
+      {/* Set kind: outdoor path collapses to Work + expand so reps/weight/Log
+          stay in the thumb zone. Non-work kinds force the full strip. */}
+      <div
+        id="log-console-set-kinds"
+        className="mt-3 flex flex-wrap gap-1"
+        data-testid="log-console-set-kinds"
+      >
+        {kindOptions.map((k) => (
           <button
             key={k}
             type="button"
@@ -219,6 +231,18 @@ export function LogConsole({
             })}
           </button>
         ))}
+        {showKindExpand ? (
+          <button
+            type="button"
+            onClick={() => setKindsExpanded(true)}
+            className="min-h-[44px] border-2 border-neutral-700 px-2.5 text-[11px] font-semibold uppercase tracking-[0.06em] text-neutral-300 transition-colors hover:bg-neutral-800"
+            data-testid="log-console-expand-kinds"
+            aria-expanded={false}
+            aria-controls="log-console-set-kinds"
+          >
+            {t('activeSetKindMore', { defaultValue: 'Kind' })}
+          </button>
+        ) : null}
       </div>
 
       <div className="mt-3 flex items-end gap-3">
@@ -284,7 +308,8 @@ export function LogConsole({
       <button
         type="button"
         onClick={onLog}
-        className="mt-3 flex min-h-[52px] w-full items-center gap-2 bg-[hsl(var(--accent-poster))] px-4 text-[19px] font-extrabold text-background transition-colors hover:bg-[hsl(var(--primary-fill))]"
+        data-testid="log-console-log-set"
+        className="primary-action mt-3 flex min-h-[52px] w-full items-center gap-2 bg-[hsl(var(--accent-poster))] px-4 text-[19px] font-extrabold text-background transition-colors hover:bg-[hsl(var(--primary-fill))]"
       >
         <span className="flex-1 text-start">{t('activeLogSet', { defaultValue: 'Log set' })}</span>
         <Check className="h-5 w-5 shrink-0" aria-hidden />

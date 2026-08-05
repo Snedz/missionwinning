@@ -74,6 +74,8 @@ type ActiveWorkoutStrings = {
   activeOverloadPrescribed: string;
   /** One-tap fill console from progressive-overload / coach next (.288). */
   activeUseNextTarget: string;
+  /** Expand collapsed set-kind chips on outdoor console (.482). */
+  activeSetKindMore: string;
   /** Compact console set ordinal ("Set 2 of 4"). */
   activeSetOf: string;
   activeDecreaseReps: string;
@@ -263,6 +265,7 @@ const en: ActiveWorkoutStrings = {
   activeOverloadFromLast: 'From last time',
   activeOverloadPrescribed: 'Coach plan',
   activeUseNextTarget: 'Use next target',
+  activeSetKindMore: 'Kind',
   activeSetOf: 'Set {{current}} of {{total}}',
   activeDecreaseReps: 'Decrease reps',
   activeIncreaseReps: 'Increase reps',
@@ -389,6 +392,7 @@ const es: ActiveWorkoutStrings = {
   activeOverloadFromLast: 'De la última vez',
   activeOverloadPrescribed: 'Plan del coach',
   activeUseNextTarget: 'Usar el siguiente objetivo',
+  activeSetKindMore: 'Tipo',
   victoryProgressAddWeight: 'Siguiente: +{{step}} {{unit}} en {{name}} (tope del rango)',
   victoryProgressAddReps: 'Siguiente: {{reps}} × {{weight}} {{unit}} en {{name}}',
   victoryProgressHold: 'Siguiente: mantén {{reps}} × {{weight}} {{unit}} en {{name}}',
@@ -443,6 +447,7 @@ const fr: ActiveWorkoutStrings = {
   activeOverloadFromLast: 'De la dernière fois',
   activeOverloadPrescribed: 'Plan coach',
   activeUseNextTarget: 'Utiliser la cible suivante',
+  activeSetKindMore: 'Type',
   victoryProgressAddWeight: 'Suite : +{{step}} {{unit}} sur {{name}} (haut de fourchette)',
   victoryProgressAddReps: 'Suite : {{reps}} × {{weight}} {{unit}} sur {{name}}',
   victoryProgressHold: 'Suite : maintiens {{reps}} × {{weight}} {{unit}} sur {{name}}',
@@ -572,6 +577,7 @@ const de: ActiveWorkoutStrings = {
   activeOverloadHold: 'Halten',
   activeOverloadFromLast: 'Vom letzten Mal',
   activeOverloadPrescribed: 'Coach-Plan',
+  activeSetKindMore: 'Art',
   activeElapsed: 'Verstrichen',
   activeSetsLabel: 'Sätze',
   activeNoWorkout: 'Kein aktives Training',

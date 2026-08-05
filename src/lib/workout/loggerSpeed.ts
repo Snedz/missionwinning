@@ -3,6 +3,8 @@
  * Pure — keep mid-set paths under three intentional taps.
  */
 
+import { SET_KINDS, type SetKind } from '@/lib/workout/setKind';
+
 /** True when the console already holds the progressive-overload / plan target. */
 export function consoleMatchesTarget(
   reps: number,
@@ -24,4 +26,20 @@ export function shouldOfferUseNext(
 ): boolean {
   if (!target) return false;
   return !consoleMatchesTarget(reps, weight, target);
+}
+
+/**
+ * Outdoor density: four 44px set-kind chips sat above reps/weight and pushed
+ * Log set out of the easy thumb zone for the default path (work set).
+ * Collapsed = selected kind only (+ expand control in UI). Expanded = all kinds.
+ * Non-normal kinds always expand so the selection stays visible among peers.
+ */
+export function visibleSetKinds(kind: SetKind, expanded: boolean): readonly SetKind[] {
+  if (expanded || kind !== 'normal') return SET_KINDS;
+  return ['normal'];
+}
+
+/** Show the expand control when collapsed on a work set. */
+export function shouldShowSetKindExpand(kind: SetKind, expanded: boolean): boolean {
+  return !expanded && kind === 'normal';
 }
