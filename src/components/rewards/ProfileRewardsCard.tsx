@@ -32,11 +32,20 @@ export function ProfileRewardsCard() {
           })}
         </CardDescription>
       </CardHeader>
-      <CardContent>
+      <CardContent className="space-y-3">
+        {summary.challengesTotal > 0 ? (
+          <p className="text-xs text-muted-foreground" data-testid="profile-rewards-challenges">
+            {t('rewardProfileChallenges', {
+              done: summary.challengesComplete,
+              total: summary.challengesTotal,
+              defaultValue: `${summary.challengesComplete}/${summary.challengesTotal} weekly challenges met`,
+            })}
+          </p>
+        ) : null}
         {summary.badges.length === 0 ? (
           <p className="text-sm text-muted-foreground">
             {t('rewardProfileEmpty', {
-              defaultValue: 'Complete your first workout to earn First Blood.',
+              defaultValue: 'Log workouts and pillar wins to earn badges. Free forever.',
             })}
           </p>
         ) : (
