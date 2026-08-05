@@ -19,7 +19,7 @@ wants it to go: a club with points, tiers, collectible gear, boards, and eventua
 
 | Source | What we take | What we leave |
 |--------|-------------|---------------|
-| **Williams F1 WClub** | 4-tier ladder (Grid 50–299 · Podium 300–699 · Champion 700–1499 · Legend 1500+); dashboard = tier card + progress bar ("240 pts to Podium Tier") + short "Next ways to earn" list with `+N` chips; Driver Card (helmet style · backdrop · race number · tier chip · edit/share); badges collected per event **unlock more card customization**; double-points event weeks; arcade of small domain-tied games (predictions ≈ 5 pts, "Tyre or Lower" quiz) | Purchase-based earning (+0.5/£1), sweepstakes/prize draws, crypto partner branding |
+| **Williams F1 WClub** | 4-tier ladder (Grid 50–299 · Podium 300–699 · Champion 700–1499 · Legend 1500+); dashboard = tier card + progress bar ("240 pts to Podium Tier") + short "Next ways to earn" list with `+N` chips; Driver Card (helmet style · backdrop · race number · tier chip · edit/share) with a **card editor** — live preview + category tabs + Save — whose unlocks are **grouped into collections** by season/source; badges collected per event **unlock more card customization**; double-points event weeks; arcade of small domain-tied games (predictions ≈ 5 pts, "Tyre or Lower" quiz, "Circuit Breaker") | Purchase-based earning (+0.5/£1), sweepstakes/prize draws, sponsor-presented games, crypto partner branding |
 | **Duolingo leagues** | ~30-person cohorts matched by activity level — winnable at any user count, no geography needed | Relegation + demotion-threat pushes (violates our tone contract) |
 | **Gran Turismo** | Country/region identity as something you *contribute to* (Nations Cup); rating separate from participation points | Skill rating as public hierarchy |
 | **Zwift** | Dual progression: levels auto-unlock cosmetics; effort-earned currency is optional and cosmetic-only | Spendable-currency shop (deferred; maybe never) |
@@ -146,12 +146,17 @@ consistent 3×/week athlete reaches T2 in ~6–8 weeks, T3 in ~4–5 months, T4 
 
 - **Collection → customization loop** (WClub model): monthly/campaign badges unlock
   additional Athlete Card options over time; the collection *is* the customization economy.
+  Collectibles group into **collections by source** — the tier set (tier-named items, like
+  WClub's "Grid Helmet"), seasonal/campaign sets, badge-unlocked sets — so the collection
+  screen reads as a shelf with provenance, not a grid of loot.
   **No spendable currency in v1** — unlocks are deterministic; a Drops-style shop is a
   possible later phase and may never be needed.
 - **Athlete Card** (Driver Card analog): avatar gear + backdrop + call-sign number (00–99) +
   `operatorName` (existing, 24 chars) + tier chip + join date; edit and share actions. Built
   as an extension of [`share/shareCard.ts`](../src/lib/share/shareCard.ts) (1080×1350 canvas,
-  `BRAND_HEX` cross-check stays). Share out only.
+  `BRAND_HEX` cross-check stays). Share out only. **Editor spec** (from the reference):
+  live card preview on top · category tabs (Gear / Backdrop / Number) · items listed under
+  their collection headings · explicit Save.
 - **Avatar art direction:** helmet-first is the working direction (fits Train Anywhere kit
   culture); final taxonomy and all display naming are a **founder branding decision**
   (Kalligator open). Mechanics are taxonomy-independent. v1 = curated static sets shipped as
@@ -242,6 +247,10 @@ peer. The MW adaptation, when its time comes:
   "Williams IQ" / "Tyre or Lower" analog). Weekly self-prediction games are noted with a
   sandbagging caveat (predicting your own adherence invites under-planning). Step-runner /
   rep-rhythm games only after avatars v2/3D.
+- Reference scale: WClub runs **3+ small games** (Tyre or Lower, Pit Wall Predictions,
+  Circuit Breaker), each with a per-game board showing **points and tier** together —
+  identity travels with rank. **Game-local streaks** are fine (they are game state, never
+  the app streak, and never appear in nudges). Sponsor-presented games: not adopted.
 
 ## Refused
 
