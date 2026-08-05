@@ -8,36 +8,27 @@
  * home that did not exist, and reading it felt like an answer.
  *
  * So this asserts the thing the comment claimed. Every path of an enabled
- * surface is in the bottom bar, the rail, `MoreSheet`'s quiet links, or
- * `NAV_EXEMPT` — and `NAV_EXEMPT` costs a written reason, which makes an
- * unreachable screen a founder decision on the record instead of rot.
+ * surface is in the bottom bar, the rail, More quiet links (`moreSheetTiers`),
+ * More sheet rows, or `NAV_EXEMPT` — and `NAV_EXEMPT` costs a written reason,
+ * which makes an unreachable screen a founder decision on the record instead of rot.
  *
- * Source-text reading, same idiom and same justification as
- * `surfaceReality.test.ts`: `QUIET_LINKS` is a module-private const in a
- * `'use client'` component, and a grep that fails loudly beats importing React
- * into a node test to get at it.
+ * Flow-4 moved quiet links out of `MoreSheet.tsx` into `moreSheetTiers.ts` —
+ * import the one definition rather than grepping a deleted private const.
  */
 
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { readFileSync } from 'node:fs';
-import path from 'node:path';
 import { PRIMARY_NAV } from '@/lib/primaryNav';
 import { RAIL_GROUPS } from '@/lib/navConfig';
+import { moreSheetQuietForNav, moreSheetRowHrefs } from '@/lib/moreSheetTiers';
 import { SURFACE_PATHS, isSurfaceEnabled, isPathEnabled, type Surface } from '@/lib/surface';
 
-const root = path.join(import.meta.dirname, '..', '..');
-const read = (p: string) => readFileSync(path.join(root, p), 'utf8');
-
-const MORE_SHEET = 'src/components/layout/MoreSheet.tsx';
-
-/** The quiet-links block, read out of the component that owns it. */
-function quietLinkHrefs(): string[] {
-  const src = read(MORE_SHEET);
-  const start = src.indexOf('const QUIET_LINKS');
-  assert.notEqual(start, -1, `${MORE_SHEET} no longer declares QUIET_LINKS — this guard is pointing at the wrong file`);
-  const block = src.slice(start, src.indexOf('];', start));
-  return [...block.matchAll(/href:\s*'([^']+)'/g)].map((m) => m[1]);
+/** Quiet foot links + full More sheet rows (both are real navigation). */
+function moreNavHrefs(): string[] {
+  return [
+    ...moreSheetQuietForNav().map((l) => l.href),
+    ...moreSheetRowHrefs(),
+  ];
 }
 
 /**
@@ -62,7 +53,7 @@ const NAV_EXEMPT: { path: string; reason: string }[] = [
   },
   {
     path: '/guide',
-    reason: 'Alias of /learn/guide, which is in QUIET_LINKS. One destination needs one nav entry.',
+    reason: 'Alias of /learn/guide, which is in More quiet links. One destination needs one nav entry.',
   },
 ];
 
@@ -72,7 +63,7 @@ const isPage = (p: string) => !p.startsWith('/api');
 test('every enabled screen is reachable from somewhere in the app', () => {
   const railHrefs = RAIL_GROUPS.flatMap((g) => g.hrefs);
   const primaryHrefs = PRIMARY_NAV.map((i) => i.href);
-  const reachable = new Set([...primaryHrefs, ...railHrefs, ...quietLinkHrefs()]);
+  const reachable = new Set([...primaryHrefs, ...railHrefs, ...moreNavHrefs()]);
 
   const stranded: string[] = [];
   for (const [surface, paths] of Object.entries(SURFACE_PATHS) as [Surface, readonly string[]][]) {
@@ -109,7 +100,7 @@ test('every NAV_EXEMPT row describes a real, live gap', () => {
   const reachable = new Set([
     ...PRIMARY_NAV.map((i) => i.href),
     ...RAIL_GROUPS.flatMap((g) => g.hrefs),
-    ...quietLinkHrefs(),
+    ...moreNavHrefs(),
   ]);
   for (const { path: p } of NAV_EXEMPT) {
     assert.ok(

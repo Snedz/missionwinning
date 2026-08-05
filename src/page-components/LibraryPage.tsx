@@ -167,7 +167,7 @@ export function LibraryPage() {
     >
       <p className="text-muted-foreground text-sm">
         <Link href="/log" className="underline">
-          {t('libraryTodayHub', { defaultValue: 'Today Hub' })}
+          {t('libraryTodayHub', { defaultValue: 'Today' })}
         </Link>
         {' · '}
         <Link href="/builder" className="underline">

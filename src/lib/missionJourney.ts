@@ -10,6 +10,7 @@ import { readRaw, writeRaw } from '@/lib/storage/safeStorage';
 import { STORAGE_KEYS, WORKOUT_STORE_KEY } from '@/lib/storage/keys';
 /* `.223` — the one definition, shared with `betaMetricsServer`. See that module. */
 import { allBasicDone } from '@/lib/journey/basicComplete';
+import { week1SecondSessionCue } from '@/lib/activation/week1SecondSession';
 
 export type JourneyPhase = 'i-day' | 'basic' | 'readiness' | 'commissioned';
 
@@ -370,45 +371,23 @@ export function getNextAction(workoutHistory: CompletedWorkoutLog[] = []): Journ
   }
 
   if (state.phase === 'readiness') {
-    if (!state.readiness.parq) {
-      return {
-        label: 'Complete health screen',
-        description: 'PAR-Q assessment — required before full training load.',
-        href: '/assessments',
-        phase: 'readiness',
-        stepLabel: 'Readiness · Health screen',
-        progressPct: 33,
-      };
-    }
-    if (!state.readiness.streakMet) {
-      // Avoid guidebook chapter catalog on cold path — generic guide CTA when incomplete.
-      let guideSectionsDone = 0;
-      try {
-        const raw = JSON.parse(readRaw('mw_guidebook_progress') || '[]') as unknown[];
-        guideSectionsDone = Array.isArray(raw) ? raw.length : 0;
-      } catch {
-        guideSectionsDone = 0;
-      }
-      if (guideSectionsDone < 6) {
-        return {
-          label: 'Continue the guidebook',
-          description: 'Build your training foundation — read one section, then train.',
-          href: '/learn/guide',
-          phase: 'readiness',
-          stepLabel: 'Readiness · Guidebook',
-          progressPct: 50,
-        };
-      }
-      return {
-        label: 'Keep your training streak',
-        description: '7-day streak or 5 workouts in 14 days — build the habit.',
-        href: '/active',
-        phase: 'readiness',
-        stepLabel: 'Readiness · Commitment',
-        progressPct: 66,
-        startWorkout: firstWorkoutTemplate(),
-      };
-    }
+    /*
+     * Flow-6 — habit critical path wins while commitment is open.
+     *
+     * After the first log, sync leaves `basic` for `readiness`. The old ladder
+     * put PAR-Q then guidebook on JourneyHero before train — Victory and First
+     * Steps already boss session 2 at `/active`. Two dies, two clocks.
+     *
+     * PAR-Q stays required to *commission* (detectReadinessMilestones). It is
+     * not the free-logger boss. Guidebook lives in First Steps / Learn / More,
+     * never as Today primary while `!streakMet`.
+     */
+    const readinessPrimary = pickReadinessPrimaryAction({
+      readiness: state.readiness,
+      completedSessions: workoutHistory.length,
+      startWorkout: firstWorkoutTemplate(),
+    });
+    if (readinessPrimary) return readinessPrimary;
   }
 
   if (state.phase === 'commissioned') {
@@ -435,6 +414,58 @@ export function getNextAction(workoutHistory: CompletedWorkoutLog[] = []): Journ
 function daysSinceCommission(iso?: string): number {
   if (!iso) return 1;
   return Math.max(1, Math.floor((Date.now() - new Date(iso).getTime()) / 86400000));
+}
+
+/**
+ * Pure readiness boss pin for Today (Flow-6).
+ *
+ * While streak/commitment is open → train (session-2 copy at exactly one log).
+ * After commitment, if PAR-Q still open → health screen (commissioning path).
+ * Never returns `/learn/guide` as primary.
+ */
+export function pickReadinessPrimaryAction(opts: {
+  readiness: JourneyReadinessMilestones;
+  completedSessions: number;
+  startWorkout: NonNullable<JourneyAction['startWorkout']>;
+}): JourneyAction | null {
+  const { readiness, completedSessions, startWorkout } = opts;
+
+  if (!readiness.streakMet) {
+    const week1 = week1SecondSessionCue({ completedSessions });
+    if (week1) {
+      return {
+        label: week1.defaultLabel,
+        description: week1.defaultReason,
+        href: week1.href,
+        phase: 'readiness',
+        stepLabel: 'Readiness · Session 2',
+        progressPct: 40,
+        startWorkout,
+      };
+    }
+    return {
+      label: 'Keep your training streak',
+      description: '7-day streak or 5 workouts in 14 days — build the habit.',
+      href: '/active',
+      phase: 'readiness',
+      stepLabel: 'Readiness · Commitment',
+      progressPct: 66,
+      startWorkout,
+    };
+  }
+
+  if (!readiness.parq) {
+    return {
+      label: 'Complete health screen',
+      description: 'PAR-Q assessment — required before full training load.',
+      href: '/assessments',
+      phase: 'readiness',
+      stepLabel: 'Readiness · Health screen',
+      progressPct: 80,
+    };
+  }
+
+  return null;
 }
 
 export function getPhaseLabel(phase: JourneyPhase): string {
