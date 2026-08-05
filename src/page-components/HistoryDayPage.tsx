@@ -15,12 +15,19 @@
 
 import { useEffect, useMemo, useState } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { useTranslation } from 'react-i18next';
 import { CalendarDays, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 import { PillarPageShell } from '@/components/layout/PillarPageShell';
-import { useWorkoutStore } from '@/store/workoutStore';
+import { hasLoggedWork, useWorkoutStore } from '@/store/workoutStore';
 import { buildDayRecord, isDayKey } from '@/lib/journey/dayRecord';
 import { sweepDaysWithData } from '@/lib/journey/daysWithData';
+import {
+  logFromTrainJournalId,
+  templateFromCompletedLog,
+} from '@/lib/workout/historyRetrain';
+import { track } from '@/lib/analytics';
 import type { JournalPillar } from '@/lib/todayTrends';
 
 type Props = { date: string };
@@ -52,8 +59,11 @@ function formatDay(key: string, locale: string): string {
 }
 
 export function HistoryDayPage({ date }: Props) {
+  const router = useRouter();
   const { t, i18n } = useTranslation();
   const workoutHistory = useWorkoutStore((s) => s.workoutHistory);
+  const startWorkout = useWorkoutStore((s) => s.startWorkout);
+  const activeWorkout = useWorkoutStore((s) => s.activeWorkout);
   const [tick, setTick] = useState(0);
 
   // Sweep first: a session logged this visit should be navigable without a
@@ -105,23 +115,53 @@ export function HistoryDayPage({ date }: Props) {
           </p>
         ) : (
           <ol className="space-y-2">
-            {record.entries.map((e) => (
-              <li key={e.id} className="border-2 border-border p-3">
-                <div className="flex items-baseline justify-between gap-3">
-                  <span className="text-[10px] uppercase tracking-wide text-muted-foreground">
-                    {t(`pillar_${e.pillar}`, { defaultValue: PILLAR_LABEL[e.pillar] })}
-                  </span>
-                  <span className="text-[11px] tabular-nums text-muted-foreground">
-                    {new Date(e.at).toLocaleTimeString(i18n.language, {
-                      hour: 'numeric',
-                      minute: '2-digit',
-                    })}
-                  </span>
-                </div>
-                <div className="text-sm font-semibold text-foreground">{e.title}</div>
-                {e.detail && <div className="text-xs text-muted-foreground">{e.detail}</div>}
-              </li>
-            ))}
+            {record.entries.map((e) => {
+              const trainLog =
+                e.pillar === 'train'
+                  ? logFromTrainJournalId(e.id, workoutHistory)
+                  : null;
+              const canRetrain = trainLog ? !!templateFromCompletedLog(trainLog) : false;
+              return (
+                <li key={e.id} className="border-2 border-border p-3">
+                  <div className="flex items-baseline justify-between gap-3">
+                    <span className="text-[10px] uppercase tracking-wide text-muted-foreground">
+                      {t(`pillar_${e.pillar}`, { defaultValue: PILLAR_LABEL[e.pillar] })}
+                    </span>
+                    <span className="text-[11px] tabular-nums text-muted-foreground">
+                      {new Date(e.at).toLocaleTimeString(i18n.language, {
+                        hour: 'numeric',
+                        minute: '2-digit',
+                      })}
+                    </span>
+                  </div>
+                  <div className="text-sm font-semibold text-foreground">{e.title}</div>
+                  {e.detail && <div className="text-xs text-muted-foreground">{e.detail}</div>}
+                  {canRetrain && trainLog ? (
+                    <Button
+                      type="button"
+                      variant="outline"
+                      size="sm"
+                      className="mt-2 min-h-[44px]"
+                      onClick={() => {
+                        const template = templateFromCompletedLog(trainLog);
+                        if (!template) return;
+                        if (hasLoggedWork(activeWorkout)) {
+                          router.push('/active');
+                          return;
+                        }
+                        startWorkout(template.name, template.exercises);
+                        track('history_train_again', {
+                          exerciseCount: template.exercises.length,
+                        });
+                        router.push('/active');
+                      }}
+                    >
+                      {t('historyTrainAgain', { defaultValue: 'Train this again' })}
+                    </Button>
+                  ) : null}
+                </li>
+              );
+            })}
           </ol>
         )}
 

@@ -113,6 +113,21 @@ export function HistoryPage() {
   const startWorkout = useWorkoutStore((s) => s.startWorkout);
   const activeWorkout = useWorkoutStore((s) => s.activeWorkout);
   const [selected, setSelected] = useState<CompletedWorkoutLog | null>(null);
+
+  /** K7/K11 — start freestyle from a finished log; never wipe a logged session. */
+  const retrainFromLog = (log: CompletedWorkoutLog) => {
+    const template = templateFromCompletedLog(log);
+    if (!template) return;
+    if (hasLoggedWork(activeWorkout)) {
+      setSelected(null);
+      router.push('/active');
+      return;
+    }
+    startWorkout(template.name, template.exercises);
+    track('history_train_again', { exerciseCount: template.exercises.length });
+    setSelected(null);
+    router.push('/active');
+  };
   const [cloudSynced, setCloudSynced] = useState(false);
   const [syncing, setSyncing] = useState(false);
   const [pillarWins, setPillarWins] = useState<CloudNutritionEntry[]>([]);
@@ -467,17 +482,32 @@ export function HistoryPage() {
                       </span>
                     </p>
                   </div>
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    className="shrink-0"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      setSelected(log);
-                    }}
-                  >
-                    {t('historyDetails', { defaultValue: 'Details' })}
-                  </Button>
+                  <div className="flex shrink-0 items-center gap-0.5">
+                    {templateFromCompletedLog(log) ? (
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        className="min-h-[44px]"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          retrainFromLog(log);
+                        }}
+                      >
+                        {t('historyTrainAgainShort', { defaultValue: 'Again' })}
+                      </Button>
+                    ) : null}
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      className="min-h-[44px]"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setSelected(log);
+                      }}
+                    >
+                      {t('historyDetails', { defaultValue: 'Details' })}
+                    </Button>
+                  </div>
                 </CardContent>
               </Card>
             ))}
@@ -677,21 +707,7 @@ export function HistoryPage() {
                   <Button
                     type="button"
                     className="w-full min-h-[44px] primary-action"
-                    onClick={() => {
-                      const template = templateFromCompletedLog(selected);
-                      if (!template) return;
-                      if (hasLoggedWork(activeWorkout)) {
-                        setSelected(null);
-                        router.push('/active');
-                        return;
-                      }
-                      startWorkout(template.name, template.exercises);
-                      track('history_train_again', {
-                        exerciseCount: template.exercises.length,
-                      });
-                      setSelected(null);
-                      router.push('/active');
-                    }}
+                    onClick={() => retrainFromLog(selected)}
                   >
                     {t('historyTrainAgain', { defaultValue: 'Train this again' })}
                   </Button>

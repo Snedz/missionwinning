@@ -1,5 +1,5 @@
 /**
- * History → Train bridge (K7).
+ * History → Train bridge (K7 · K11).
  *
  * Replay a completed log as a freestyle session template — same lift ids and
  * set counts, last logged weights/reps as starting targets. Pure: no store.
@@ -11,6 +11,25 @@ export type HistoryRetrainTemplate = {
   name: string;
   exercises: WorkoutExerciseTemplate[];
 };
+
+/** Journal day-record ids for train rows are `train-${CompletedWorkoutLog.id}`. */
+export const TRAIN_JOURNAL_ID_PREFIX = 'train-';
+
+/**
+ * Resolve a day-replay train entry to a completed log.
+ * Null when not a train journal id or log is missing/tombstoned.
+ */
+export function logFromTrainJournalId(
+  journalId: string,
+  history: readonly CompletedWorkoutLog[]
+): CompletedWorkoutLog | null {
+  if (!journalId.startsWith(TRAIN_JOURNAL_ID_PREFIX)) return null;
+  const id = journalId.slice(TRAIN_JOURNAL_ID_PREFIX.length);
+  if (!id) return null;
+  const log = history.find((w) => w.id === id);
+  if (!log || log.deletedAt) return null;
+  return log;
+}
 
 /**
  * Build a startWorkout template from a finished session.
