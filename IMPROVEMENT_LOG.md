@@ -1,45 +1,46 @@
 # Improvement log — Kaizen Night (2026-08-05 full-launch)
 
 Plan: `.hermes/plans/2026-08-05_kaizen-night-plan.md`  
-**Tip:** `2026.07-unified.519` · PRs **#300–#322** on master · unit tests **1805** green  
-Local gate authoritative (GitHub Actions often billing-blocked).
+**Tip:** `2026.07-unified.520` · PRs **#300–#324** · unit tests **1806** pass  
+Local gate authoritative (Actions often billing-blocked).
 
 ## Contract
 
-Full-launch override · free logger never gated · no `PRIVATE_MODE` · small PRs · merge when local green.
+Full-launch override · free logger never gated · no `PRIVATE_MODE` · small PRs · merge on local green.
 
-## Shipped this night
+## Shipped (.507 → .520)
 
-| Build | PR | Summary |
-|-------|-----|---------|
-| `.507` | #300 | Lean Today rewards · milestone badges · More Leaderboard · CONTEXT override |
-| `.508` | #301 | `americaHomeOrFallback` join/teacher/PFT |
-| `.509` | #304 | Victory consume-once Strict Mode |
-| `.510` | #305 | FREE_BETA Unlock + Bundle dual-mode pins |
-| `.511` | #307 | Share text never parked `/america` |
-| `.512` | #308 | still_mind + Coach from-logs pins |
+| Build | PR | What |
+|-------|-----|------|
+| `.507` | #300 | Lean Today rewards, milestones, More Leaderboard |
+| `.508` | #301 | americaHomeOrFallback |
+| `.509` | #304 | Victory consume-once |
+| `.510` | #305 | FREE_BETA Unlock/Bundle pins |
+| `.511` | #307 | Share never parked /america |
+| `.512` | #308 | still_mind + Coach from-logs |
 | `.513` | #310 | EN rewards UI strings |
-| `.514` | #312 | perfect_week spectrum pure + workout emit |
-| `.515` | #314 | perfect_week fuel + pillar apply paths |
-| `.516` | #316 | Challenge Done XP from catalog |
-| `.517` | #318 | EN ranks + badge titles |
-| `.518` | #320 | Re-entry shame-free copy guard |
-| `.519` | #322 | sumHistoryVolume + LOG .504 continuity |
+| `.514`–`.515` | #312–#314 | perfect_week spectrum + all apply paths |
+| `.516` | #316 | Challenge Done XP catalog |
+| `.517` | #318 | EN ranks + badges |
+| `.518` | #320 | Re-entry shame-free guard |
+| `.519` | #322 | sumHistoryVolume + LOG .504 hole |
+| `.520` | #324 | rewards INDEX perfect week |
 
 ## Metrics
 
 | | Start | Now |
 |--|-------|-----|
-| Build | `.506` | **`.519`** |
-| Tests | 1778 | **1805** |
-| Merged PRs | 0 | **#300–#318** |
+| Build | `.506` | **`.520`** |
+| Tests | 1778 | **1806** |
+| Net PRs | — | **~25** (#300–#324 incl docs) |
 
-## Remaining
+## Remaining for later loops
 
-- Fat decomp (HomeTodayDashboard / History / Nutrition / Active)
-- Outdoor one-thumb measured friction
-- Android Accept B (founder)
-- Ops: postal · migrations · invites · Actions billing · visual baseline Linux
+- Fat page decomp (History / Nutrition / Active / HomeTodayDashboard further)
+- Phone dogfood of rewards path
+- Founder ops (postal, migrations, invites, billing)
+- Android Accept B
+- Visual baseline on Linux CI when billing works
 
 ## Refuses
 
