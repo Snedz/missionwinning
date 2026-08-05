@@ -6,7 +6,6 @@
  */
 
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { repRangeForGoal } from '@/lib/coach/progression';
 import { parseGoalPresetId } from '@/lib/journeyGoals';
 import { readRaw } from '@/lib/storage/safeStorage';
 import { STORAGE_KEYS } from '@/lib/storage/keys';
@@ -57,18 +56,18 @@ import {
 import {
   planSessionCheckInDismiss,
 } from '@/lib/workout/activeSessionCheckIn';
-import { patchesForApplyTargets,
-  patchesForPlateWeight,
-} from '@/lib/workout/activeSetInputPatches';
+import { patchesForPlateWeight } from '@/lib/workout/activeSetInputPatches';
+import {
+  planExerciseTargetPatches,
+  resolveSessionSetDial,
+  setDialTemplateDefaults,
+} from '@/lib/workout/activeSetDial';
 import {
   buildConsoleSet,
   findNextSet,
-  getLastPerformanceForSet,
   getLastSessionSets,
   nextSetInput,
-  planApplyTargets,
   resolveActiveDockMode,
-  resolveActiveSetDial,
   resolveFormGuideSheet,
   resolveRepeatLastTarget,
   activeSessionBottomClass,
@@ -227,58 +226,28 @@ export function ActiveWorkoutPage() {
     }
   }, [nextSet]);
 
-  /**
-   * What the reps/weight fields start at for one set.
-   *
-   * **Order matters, and it used to be wrong.** The plan's prescription arrives as
-   * `defaultReps`/`defaultWeight`, and it used to sit *last* — behind
-   * `suggestNextSetTarget`, which knows nothing about the athlete's goal (it assumed
-   * 8–12 for everyone), nothing about RPE, and has no concept of a deload. So a
-   * strength plan of 3×5 prefilled as 6, and on a back-off week the coach said
-   * "×0.9" while the logger silently said "add a rep".
-   *
-   * Now a prescribed exercise prefills its prescription. The suggestion engine still
-   * runs for freestyle work, where there is no plan to respect — which is the only
-   * division of labour that leaves both engines doing what they are good at.
-   */
-  // Resolved the same way coach/contextBuilder does, so the logger's suggestions and
-  // the plan's prescriptions are talking about the same goal.
+  // Same resolution as coach/contextBuilder — logger suggestions and plan prescriptions share one goal.
   const goalId = resolveActiveGoalId({
     primaryGoal: readRaw(STORAGE_KEYS.primaryGoal),
     goals: readRaw(STORAGE_KEYS.goals),
     parseGoalPresetId,
   });
 
-  /*
-   * `.201` — these handlers used `activeWorkout!` six times.
-   *
-   * Every one was true in practice (they only fire from a rendered session), but
-   * this is the one screen the product promises never breaks, and an assertion
-   * is a promise the compiler stops checking. A store cleared by a sync, a
-   * tombstone or a second tab arriving mid-tap turns `!` into a TypeError on the
-   * render path — and with no nested `error.tsx`, that blanks the whole route.
-   * Narrowed once per handler, returning the same values the callers already
-   * handle.
+  /**
+   * Dial for one set — prescribed vs freestyle wiring lives in `activeSetDial`
+   * so this page cannot reorder history into a coached prescription.
    */
-  const getSetInput = (exIdx: number, setIdx: number, defaultReps: number, defaultWeight: number) => {
-    const exLog = activeWorkout?.exercises[exIdx];
-    if (!exLog) return { reps: defaultReps, weight: defaultWeight };
-    const exerciseId = exLog.exerciseId;
-    const range = repRangeForGoal(goalId);
-    return resolveActiveSetDial({
-      manual: setInputs[setInputKey(exIdx, setIdx)],
-      prescribed: exLog.prescribed,
+  const getSetInput = (exIdx: number, setIdx: number, defaultReps: number, defaultWeight: number) =>
+    resolveSessionSetDial({
+      exLog: activeWorkout?.exercises[exIdx],
+      setIdx,
       defaultReps,
       defaultWeight,
-      sets: exLog.sets,
-      setIdx,
-      lastSets: exLog.prescribed ? null : getLastSessionSets(workoutHistory, exerciseId),
+      manual: setInputs[setInputKey(exIdx, setIdx)],
+      workoutHistory,
       units,
-      repMin: range.min,
-      repMax: range.max,
-      lastPerformance: getLastPerformanceForSet(workoutHistory, exerciseId, setIdx),
+      goalId,
     });
-  };
 
   const updateSetInput = (exIdx: number, setIdx: number, field: 'reps' | 'weight', value: number) => {
     const key = setInputKey(exIdx, setIdx);
@@ -291,7 +260,8 @@ export function ActiveWorkoutPage() {
      * rewrote the weight to 0.
      */
     const set = activeWorkout?.exercises[exIdx]?.sets[setIdx];
-    const resolved = getSetInput(exIdx, setIdx, set?.reps ?? 10, set?.weight ?? 0);
+    const defaults = setDialTemplateDefaults(set);
+    const resolved = getSetInput(exIdx, setIdx, defaults.defaultReps, defaults.defaultWeight);
     setSetInputs((prev) => ({
       ...prev,
       // `prev[key]`, never the render closure — "Apply targets" fires two
@@ -330,11 +300,12 @@ export function ActiveWorkoutPage() {
   const handleLogSet = (exIdx: number, setIdx: number, override?: { reps: number; weight: number }) => {
     const exLog = activeWorkout?.exercises[exIdx];
     const set = exLog?.sets[setIdx];
+    const defaults = setDialTemplateDefaults(set);
     const payload = resolveLogSetPayload({
       exerciseId: exLog?.exerciseId,
       set,
       override,
-      dial: getSetInput(exIdx, setIdx, set?.reps ?? 10, set?.weight ?? 0),
+      dial: getSetInput(exIdx, setIdx, defaults.defaultReps, defaults.defaultWeight),
     });
     if (!payload) return;
     const { exerciseId, setKind, input } = payload;
@@ -438,24 +409,18 @@ export function ActiveWorkoutPage() {
 
   /**
    * "Apply targets" — fill every unlogged set at once.
-   *
-   * On a prescribed exercise this restores the coach's numbers, which is what the
-   * athlete means when they tap it during a plan session. Only freestyle work falls
-   * through to the suggestion engine, and then within the goal's rep range.
+   * Patch planning is pure (`planExerciseTargetPatches`); page only writes inputs.
    */
   const applyTargetsForExercise = (exIdx: number) => {
     if (!activeWorkout) return;
     const exLog = activeWorkout.exercises[exIdx];
-    const range = repRangeForGoal(goalId);
-    const targets = planApplyTargets({
+    for (const { setIdx, patches } of planExerciseTargetPatches({
       prescribed: exLog.prescribed,
       sets: exLog.sets,
       lastSets: getLastSessionSets(workoutHistory, exLog.exerciseId),
       units,
-      repMin: range.min,
-      repMax: range.max,
-    });
-    for (const { setIdx, patches } of patchesForApplyTargets(targets)) {
+      goalId,
+    })) {
       for (const p of patches) {
         updateSetInput(exIdx, setIdx, p.field, p.value);
       }

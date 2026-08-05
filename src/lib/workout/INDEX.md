@@ -25,6 +25,7 @@ Root-level `@/lib/{name}` paths re-export from here for compatibility — prefer
 17. `activeSetInputPatches.ts` — Use next / plate / apply-targets field patches (`.407`)
 18. `activeTableSetControls.ts` — desktop table set dial + kind projection (`.408`)
 19. `activeWorkoutHelpers.ts` — also `resolveExerciseNextTarget` + loadPct/menu gates (`.418`); `formatPrevSetLabels` + footer peel (`.425`)
+20. `activeSetDial.ts` — session dial wiring + Apply-targets patches (getSetInput / applyTargets peel · `.504`)
 
 ## Tests (colocated)
 
@@ -42,6 +43,7 @@ Root-level `@/lib/{name}` paths re-export from here for compatibility — prefer
 | `activeWorkoutHelpers.test.ts` | Next set, last session stats |
 | `sessionCheckInOffer.test.ts` | First-mission never offers check-in (`.293`) |
 | `loggerSpeed.test.ts` | Use-next offer rules (`.288`) |
+| `activeSetDial.test.ts` | Prescribed vs freestyle dial, template defaults, apply-target patches (`.504`) |
 
 ## UI & integration (not in this folder)
 
