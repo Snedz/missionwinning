@@ -16,6 +16,8 @@ test('en/today.json carries core reward* athlete strings', () => {
     'rewardRank1',
     'rewardRank10',
     'rewardBadgeFirstBlood',
+    'whatsNewBulletRewardsTitle',
+    'whatsNewBulletRewardsBody',
   ]) {
     assert.equal(typeof j[k], 'string', k);
     assert.ok(j[k].length > 0, k);
