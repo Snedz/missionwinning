@@ -8,11 +8,13 @@ Most vibe-coded apps ship **two** layers (UI + database). A real product needs *
 
 ---
 
-## Scorecard (2026-07-20)
+## Scorecard (2026-08-05)
+
+Layer-1 depth and decompose backlog: [FRAMEWORK_REVIEW.md](FRAMEWORK_REVIEW.md) (selective rebuild only — no framework rewrite).
 
 | # | Layer | Status | Owner | Evidence | Gap / next |
 |---|-------|--------|-------|----------|------------|
-| 1 | Frontend foundations | **Strong** | Agent | Next/React/Zustand, design system, e2e | PWA offline gated until `PRIVATE_MODE=false` |
+| 1 | Frontend foundations | **Strong** | Agent | Next 16.3 / React 19.2 / Zustand, design system, e2e — [FRAMEWORK_REVIEW.md](FRAMEWORK_REVIEW.md) | PWA offline gated until `PRIVATE_MODE=false`; fat Train/Today modules (decompose, don’t rewrite) |
 | 2 | APIs / backend logic | **Strong** | Agent | `app/api/`, `src/lib/`, Zod, `withApiLogging` | Free-core still local-first by design |
 | 3 | Database / storage | **Strong** | Both | Supabase migrations + selective sync | Anonymous users: client backup only → [BACKUP_RESTORE.md](BACKUP_RESTORE.md) |
 | 4 | Auth / permissions | **Strong** | Both | Supabase auth, private gate, premium server checks | Founder secret hygiene ([PROTECTION.md](PROTECTION.md)) |

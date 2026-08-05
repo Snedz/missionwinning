@@ -34,6 +34,7 @@ User guides in plain language (no code paths):
 | [CACHE_LADDER.md](CACHE_LADDER.md) | Browser / CDN / Redis / Postgres — ideal vs MW |
 | [BACKUP_RESTORE.md](BACKUP_RESTORE.md) | User export + Supabase operator recovery |
 | [ARCHITECTURE.md](ARCHITECTURE.md) | Layers, state, request lifecycle |
+| [FRAMEWORK_REVIEW.md](FRAMEWORK_REVIEW.md) | Stack fitness review · fat modules · selective-decompose backlog |
 | [FLOW_ARCHITECTURE.md](FLOW_ARCHITECTURE.md) | Site IA chip floorplan — dies, buses, critical path, dual pads |
 | [NATIVE_MOBILE.md](NATIVE_MOBILE.md) | Expo prototype (reference only) |
 | [ANDROID_NATIVE.md](ANDROID_NATIVE.md) | Android Compose get-started + AI orchestration |

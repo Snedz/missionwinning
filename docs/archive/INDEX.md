@@ -267,6 +267,7 @@ When adding a doc:
 | [log/LOG-rotate-272.md](./log/LOG-rotate-272.md) | rotated for `.272` |
 | [log/LOG-rotate-271.md](./log/LOG-rotate-271.md) | rotated for `.271` |
 | [log/LOG-rotate-270.md](./log/LOG-rotate-270.md) | rotated 2026-08-03 for `.270` Fuel estimate craft |
+| [log/LOG-rotate-framework-review-2026-08-05.md](./log/LOG-rotate-framework-review-2026-08-05.md) | `.489` Next 16.3 + locale parity — rotated for framework review docs entry |
 | [log/LOG-2026-08-01-rotate-269.md](./log/LOG-2026-08-01-rotate-269.md) | oldest LOG entry rotated 2026-08-03 for `.269` |
 | [log/LOG-2026-08-01-rotate-268.md](./log/LOG-2026-08-01-rotate-268.md) | `.252` (exporter undid the splitter) — rotated 2026-08-03 for `.268` guide-hero re-ink |
 | [log/LOG-hero-audit-rotate-2026-08-03.md](./log/LOG-hero-audit-rotate-2026-08-03.md) | `.247` (days logged / caps) — rotated 2026-08-03 for `.263` hero audit entry |

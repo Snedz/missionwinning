@@ -30,6 +30,7 @@
 | File | Purpose |
 |------|---------|
 | [ARCHITECTURE.md](ARCHITECTURE.md) | System design, layers, state |
+| [FRAMEWORK_REVIEW.md](FRAMEWORK_REVIEW.md) | Stack fitness · fat modules · ranked decompose backlog (2026-08-05) |
 | [OPEN_SOURCE.md](OPEN_SOURCE.md) | AGPL posture · public flip · what stays secret |
 | [SECRETS.md](SECRETS.md) | Secrets program · vaults · gitleaks · rotate-on-leak |
 | [FREE_BETA.md](FREE_BETA.md) | Free-first beta mute (LLC/EIN window) — hide all paid UI |

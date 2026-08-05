@@ -181,6 +181,11 @@ Details: [PROTECTION.md](PROTECTION.md), [OWASP_AUDIT.md](OWASP_AUDIT.md).
 
 ## Related
 
+- [FRAMEWORK_REVIEW.md](FRAMEWORK_REVIEW.md) — stack fitness, fat modules, ranked backlog (no rewrite)
 - [API.md](API.md) — HTTP reference
 - [CONTRIBUTING.md](../CONTRIBUTING.md) — how to add code
 - [app/INDEX.md](../app/INDEX.md) — route map
+
+### Build note (Serwist)
+
+Production builds use `next build --webpack` because `@serwist/next` injects a webpack plugin; Next 16’s default Turbopack prod build rejects that. Dev stays on Turbopack (`next dev`). Detail: [FRAMEWORK_REVIEW.md](FRAMEWORK_REVIEW.md).

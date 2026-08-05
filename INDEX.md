@@ -68,6 +68,7 @@
 | Post-launch cadence | [docs/POST_LAUNCH_CADENCE.md](docs/POST_LAUNCH_CADENCE.md) | — |
 | **User help** | [docs/help/INDEX.md](docs/help/INDEX.md) | — |
 | **Architecture** | [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) | — |
+| **Framework / stack fitness** | [docs/FRAMEWORK_REVIEW.md](docs/FRAMEWORK_REVIEW.md) | Framework rewrite; Tailwind 4 / Remix / Vite migrations |
 | **API reference** | [docs/API.md](docs/API.md), [app/api/INDEX.md](app/api/INDEX.md) | — |
 | **Contributing** | [CONTRIBUTING.md](CONTRIBUTING.md) | — |
 | **Doc hub (all audiences)** | [docs/README.md](docs/README.md) | — |
