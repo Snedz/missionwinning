@@ -1,6 +1,6 @@
 'use client';
 /**
- * Page: /feedback — user feedback form
+ * Page: /feedback — product friction notes (not a testimonial farm)
  * See: app/INDEX.md, src/page-components/INDEX.md
  */
 
@@ -27,10 +27,9 @@ export function FeedbackPage() {
   const [form, setForm] = useState({
     name: '',
     email: '',
-    results: '',
-    testimonial: '',
-    rating: '5',
-    massiveAction: '',
+    friction: '',
+    expected: '',
+    nextWant: '',
   });
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -42,22 +41,20 @@ export function FeedbackPage() {
     writeJson(STORAGE_KEYS.betaFeedback, [...existing, entry]);
     // Through the outbox, not a direct call whose result gets discarded: these notes
     // are the beta's interview record, and a phone with no signal is the normal case.
-    // The device copy above is the receipt; the outbox owns delivery and retry.
     enqueueFeedback(
       {
-        name: form.name || 'Beta Contributor',
+        name: form.name || 'Tester',
         email: form.email,
-        goals: `Results: ${form.results}\nTestimonial: ${form.testimonial}\nRating: ${form.rating}\nMassive action: ${form.massiveAction}`,
-        /*
-         * `.214` — one tag, because there has only ever been one.
-         * `submitLead` computes `source = lead.source || lead.package_interest`
-         * and writes that single value to both columns, so the old
-         * `'beta-feedback'` was discarded on every submission ever made. The
-         * founder read path filters on this constant.
-         */
+        goals: [
+          `Friction: ${form.friction}`,
+          form.expected ? `Expected: ${form.expected}` : null,
+          form.nextWant ? `Want next: ${form.nextWant}` : null,
+        ]
+          .filter(Boolean)
+          .join('\n'),
         package_interest: FEEDBACK_SOURCE_TAG,
         source: FEEDBACK_SOURCE_TAG,
-        message: form.testimonial,
+        message: form.friction,
       },
       at
     );
@@ -78,22 +75,27 @@ export function FeedbackPage() {
         variant="sections"
       >
         <Card className="bg-card text-center">
-            <CardContent className="pt-8 pb-8 space-y-4">
-              <div className="inline-flex items-center gap-2 border-2 border-border bg-card px-4 py-1 text-sm text-foreground">
-                {t('feedbackThankBadge', { defaultValue: 'Thanks' })}
-              </div>
-              <div className="text-left max-w-md mx-auto space-y-2 text-sm leading-relaxed">
-                <p className="font-medium">{t('feedbackThankRoadmap', { defaultValue: '✓ Your input shapes what we build next' })}</p>
-                <p className="font-medium">{t('feedbackThankEarly', { defaultValue: '✓ We’ll email when something useful ships' })}</p>
-                <p className="text-xs text-muted-foreground mt-4">
-                  {t('feedbackThankEmail', { defaultValue: 'Check your inbox if you left an email.' })}
-                </p>
-              </div>
-              <Button size="lg" variant="default" onClick={() => router.push('/log')}>
-                {t('feedbackBackToday', { defaultValue: 'Back to Today' })}
-              </Button>
-            </CardContent>
-          </Card>
+          <CardContent className="pt-8 pb-8 space-y-4">
+            <div className="inline-flex items-center gap-2 border-2 border-border bg-card px-4 py-1 text-sm text-foreground">
+              {t('feedbackThankBadge', { defaultValue: 'Thanks' })}
+            </div>
+            <div className="text-left max-w-md mx-auto space-y-2 text-sm leading-relaxed">
+              <p className="font-medium">
+                {t('feedbackThankRoadmap', {
+                  defaultValue: '✓ We read every note — friction first',
+                })}
+              </p>
+              <p className="font-medium">
+                {t('feedbackThankEarly', {
+                  defaultValue: '✓ If you left email, we may follow up on a fix',
+                })}
+              </p>
+            </div>
+            <Button size="lg" variant="default" onClick={() => router.push('/log')}>
+              {t('feedbackBackToday', { defaultValue: 'Back to Today' })}
+            </Button>
+          </CardContent>
+        </Card>
       </InfoPageShell>
     );
   }
@@ -103,117 +105,110 @@ export function FeedbackPage() {
       icon={MessageSquare}
       title={t('infoFeedbackTitle', { defaultValue: 'Feedback' })}
       subtitle={t('infoFeedbackSubtitle', {
-        defaultValue:
-          'What worked, what didn’t, and what you want next. We read every note.',
+        defaultValue: 'What confused you, what broke, and what we should fix next. We read every note.',
       })}
       variant="sections"
       showLegalFooter
     >
       <Card className="bg-card">
-          <CardHeader>
-            <CardTitle className="text-base font-semibold">
-              {t('infoFeedbackFormTitle', { defaultValue: 'Tell us how it’s going' })}
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <form onSubmit={handleSubmit} className="space-y-6">
-              <div className="grid md:grid-cols-2 gap-4">
-                <div>
-                  <Label>{t('feedbackNameLabel', { defaultValue: 'Full name (optional)' })}</Label>
-                  <Input
-                    value={form.name}
-                    onChange={(e) => setForm({ ...form, name: e.target.value })}
-                    placeholder={t('feedbackNamePlaceholder', { defaultValue: 'Alex Rivera' })}
-                    className="mt-1"
-                  />
-                </div>
-                <div>
-                  <Label>{t('feedbackEmailLabel', { defaultValue: 'Email (for follow-up)' })}</Label>
-                  <Input
-                    type="email"
-                    value={form.email}
-                    onChange={(e) => setForm({ ...form, email: e.target.value })}
-                    placeholder={t('feedbackEmailPlaceholder', { defaultValue: 'you@winning.com' })}
-                    required
-                    className="mt-1"
-                  />
-                </div>
-              </div>
-
+        <CardHeader>
+          <CardTitle className="text-base font-semibold">
+            {t('infoFeedbackFormTitle', { defaultValue: 'What should we fix?' })}
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <form onSubmit={handleSubmit} className="space-y-6">
+            <div className="grid md:grid-cols-2 gap-4">
               <div>
-                <Label>{t('feedbackResultsLabel', { defaultValue: 'Key results so far' })}</Label>
-                <textarea
-                  className="mt-1 w-full h-24 border-2 border-border bg-background px-4 py-3 text-sm placeholder:text-muted-foreground focus:outline-none focus:border-foreground"
-                  value={form.results}
-                  onChange={(e) => setForm({ ...form, results: e.target.value })}
-                  placeholder={t('feedbackResultsPlaceholder', {
-                    defaultValue: 'Added 25kg to squat in 6 weeks. Energy through the roof.',
-                  })}
-                  required
+                <Label>{t('feedbackNameLabel', { defaultValue: 'Name (optional)' })}</Label>
+                <Input
+                  value={form.name}
+                  onChange={(e) => setForm({ ...form, name: e.target.value })}
+                  placeholder={t('feedbackNamePlaceholder', { defaultValue: 'Alex' })}
+                  className="mt-1"
                 />
               </div>
-
               <div>
-                <Label>{t('feedbackTestimonialLabel', { defaultValue: 'Your testimonial' })}</Label>
-                <textarea
-                  className="mt-1 w-full h-28 border-2 border-border bg-background px-4 py-3 text-sm placeholder:text-muted-foreground focus:outline-none focus:border-foreground"
-                  value={form.testimonial}
-                  onChange={(e) => setForm({ ...form, testimonial: e.target.value })}
-                  placeholder={t('feedbackTestimonialPlaceholder', {
-                    defaultValue: 'Stop waiting. The free tracker alone got me consistent...',
-                  })}
-                  required
+                <Label>
+                  {t('feedbackEmailLabel', { defaultValue: 'Email (optional, for follow-up)' })}
+                </Label>
+                <Input
+                  type="email"
+                  value={form.email}
+                  onChange={(e) => setForm({ ...form, email: e.target.value })}
+                  placeholder={t('feedbackEmailPlaceholder', { defaultValue: 'you@example.com' })}
+                  className="mt-1"
                 />
               </div>
+            </div>
 
-              <div className="grid md:grid-cols-2 gap-4">
-                <div>
-                  <Label>{t('feedbackRatingLabel', { defaultValue: 'Rate your results (1–5)' })}</Label>
-                  <div className="flex gap-2 mt-2">
-                    {['1', '2', '3', '4', '5'].map((r) => (
-                      <Button
-                        key={r}
-                        type="button"
-                        size="sm"
-                        variant={form.rating === r ? 'selected' : 'outline'}
-                        onClick={() => setForm({ ...form, rating: r })}
-                      >
-                        {r}
-                      </Button>
-                    ))}
-                  </div>
-                </div>
-                <div>
-                  <Label>{t('feedbackActionLabel', { defaultValue: 'Biggest action you took' })}</Label>
-                  <Input
-                    value={form.massiveAction}
-                    onChange={(e) => setForm({ ...form, massiveAction: e.target.value })}
-                    placeholder={t('feedbackActionPlaceholder', {
-                      defaultValue: 'Finally ran the 5x5 program start to finish.',
-                    })}
-                    className="mt-1"
-                  />
-                </div>
-              </div>
-
-              <Button type="submit" size="lg" variant="default" className="w-full" disabled={loading}>
-                {loading
-                  ? t('feedbackSubmitting', { defaultValue: 'Submitting…' })
-                  : t('feedbackSubmit', { defaultValue: 'Submit feedback' })}
-              </Button>
-              <p className="text-[10px] text-center text-muted-foreground">
-                {t('feedbackFootnote', {
-                  defaultValue: 'Your words may be featured (anonymized or with permission).',
+            <div>
+              <Label>
+                {t('feedbackFrictionLabel', {
+                  defaultValue: 'What confused you or broke? (required)',
                 })}
-              </p>
-            </form>
-          </CardContent>
-        </Card>
+              </Label>
+              <textarea
+                className="mt-1 w-full h-28 border-2 border-border bg-background px-4 py-3 text-sm placeholder:text-muted-foreground focus:outline-none focus:border-foreground"
+                value={form.friction}
+                onChange={(e) => setForm({ ...form, friction: e.target.value })}
+                placeholder={t('feedbackFrictionPlaceholder', {
+                  defaultValue:
+                    'e.g. Rest timer was hard to find mid-set outdoors. Or: Coach week ignored my missed day.',
+                })}
+                required
+              />
+            </div>
+
+            <div>
+              <Label>
+                {t('feedbackExpectedLabel', { defaultValue: 'What did you expect instead? (optional)' })}
+              </Label>
+              <textarea
+                className="mt-1 w-full h-20 border-2 border-border bg-background px-4 py-3 text-sm placeholder:text-muted-foreground focus:outline-none focus:border-foreground"
+                value={form.expected}
+                onChange={(e) => setForm({ ...form, expected: e.target.value })}
+                placeholder={t('feedbackExpectedPlaceholder', {
+                  defaultValue: 'e.g. One big Skip button after the set, not three presets.',
+                })}
+              />
+            </div>
+
+            <div>
+              <Label>
+                {t('feedbackNextWantLabel', {
+                  defaultValue: 'One thing to improve next (optional)',
+                })}
+              </Label>
+              <Input
+                value={form.nextWant}
+                onChange={(e) => setForm({ ...form, nextWant: e.target.value })}
+                placeholder={t('feedbackNextWantPlaceholder', {
+                  defaultValue: 'e.g. Clearer set kind labels on phone.',
+                })}
+                className="mt-1"
+              />
+            </div>
+
+            <Button type="submit" size="lg" variant="default" className="w-full" disabled={loading}>
+              {loading
+                ? t('feedbackSubmitting', { defaultValue: 'Submitting…' })
+                : t('feedbackSubmit', { defaultValue: 'Submit feedback' })}
+            </Button>
+            <p className="text-[10px] text-center text-muted-foreground">
+              {t('feedbackFootnote', {
+                defaultValue:
+                  'We may quote a short note with your permission. No polished testimonial required.',
+              })}
+            </p>
+          </form>
+        </CardContent>
+      </Card>
 
       <SignInPrompt
         nextPath="/feedback"
         description={t('feedbackSignInDesc', {
-          defaultValue: 'Sign in to link feedback to your journey and sync across devices.',
+          defaultValue: 'Sign in if you want this linked to your account — optional.',
         })}
       />
     </InfoPageShell>

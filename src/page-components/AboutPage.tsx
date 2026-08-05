@@ -43,7 +43,7 @@ export function AboutPage() {
             <p className="text-muted-foreground">
               {t('infoAboutMissionP2', {
                 defaultValue:
-                  'Accessible, science-based training and nutrition tools for everyone, everywhere — from city gyms to rural areas with minimal equipment. Train smart. Win daily. No borders.',
+                  'Train anywhere with bodyweight or minimal gear first. Mission Coach builds the week from what you actually logged — not from a wearable. Educational tools only, not medical care.',
               })}
             </p>
           </InfoSection>
@@ -52,7 +52,7 @@ export function AboutPage() {
             <p className="text-muted-foreground">
               {t('infoAboutEvidenceBody', {
                 defaultValue:
-                  'Hundreds of clinical trials support exercise for mild to moderate depressive symptoms — often comparable to medication in research settings. Yet most mental health professionals never received formal training in prescribing exercise, so advice stays “just go work out.” Mission Winning turns training into a clear, adaptive weekly plan you can follow on any phone. We do not diagnose or treat depression; this is educational fitness, not clinical care.',
+                  'Evidence supports structured exercise for mood and energy in research settings — but most advice stays “just go work out.” We turn that into a weekly plan you can follow on any phone. We do not diagnose or treat depression; this is educational fitness, not clinical care.',
               })}
             </p>
           </InfoSection>
@@ -74,7 +74,7 @@ export function AboutPage() {
             <p className="text-muted-foreground">
               {t('infoAboutBusinessBody', {
                 defaultValue:
-                  'Operated by Mission Winning LLC (for-profit) for the app, programs, and coaching. A separate nonprofit foundation is planned to support free access, scholarships for coaches in underserved regions, and mission-driven initiatives.',
+                  'Operated by Mission Winning LLC for the app, programs, and coaching. Free core stays free; paid Super Bundle funds deeper Coach and pillar tools when you want them.',
               })}
             </p>
           </InfoSection>

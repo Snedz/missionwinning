@@ -33,11 +33,6 @@ export const FREE_LEARN_PATHS: LearnPath[] = [
           'Track sessions — what gets measured gets improved',
           'Recovery is part of progress — not optional',
         ],
-      body: [
-        'Muscles adapt when you gradually increase stress — weight, reps, or quality. Treat it as a briefing: one idea, one action.',
-        'Practice the key points on your next session. Log honestly — what gets measured improves.',
-        'When ready, use the action link below to apply progressive overload inside the free core.',
-      ],
         actionLabel: 'Log a workout',
         actionHref: '/active',
       },
@@ -51,11 +46,6 @@ export const FREE_LEARN_PATHS: LearnPath[] = [
           'Use the Library filters to find exercises by equipment',
         ],
         actionHref: '/library',
-      body: [
-        'Squat, hinge, push, pull, carry — build the foundation before isolation. Treat it as a briefing: one idea, one action.',
-        'Practice the key points on your next session. Log honestly — what gets measured improves.',
-        'When ready, use the action link below to apply compound movements first inside the free core.',
-      ],
         actionLabel: 'Browse Library',
       },
       {
@@ -68,11 +58,6 @@ export const FREE_LEARN_PATHS: LearnPath[] = [
           'Consistency beats perfect intensity every session',
         ],
         actionHref: '/log',
-      body: [
-        'Some days you push, some days you maintain — listen to readiness scores. Treat it as a briefing: one idea, one action.',
-        'Practice the key points on your next session. Log honestly — what gets measured improves.',
-        'When ready, use the action link below to apply rpe & auto-regulation inside the free core.',
-      ],
         actionLabel: 'Check Today Hub',
       },
     ],
@@ -93,11 +78,6 @@ export const FREE_LEARN_PATHS: LearnPath[] = [
           'Combine plant sources for complete amino profiles',
         ],
         actionHref: '/nutrition',
-      body: [
-        'Adequate protein supports muscle repair, satiety, and recovery. Treat it as a briefing: one idea, one action.',
-        'Practice the key points on your next session. Log honestly — what gets measured improves.',
-        'When ready, use the action link below to apply protein priority inside the free core.',
-      ],
         actionLabel: 'Log today\'s protein',
       },
       {
@@ -110,11 +90,6 @@ export const FREE_LEARN_PATHS: LearnPath[] = [
           'No fad elimination required for real results',
         ],
         actionHref: '/nutrition',
-      body: [
-        'Rice, beans, eggs, chicken, oats, vegetables — accessible worldwide. Treat it as a briefing: one idea, one action.',
-        'Practice the key points on your next session. Log honestly — what gets measured improves.',
-        'When ready, use the action link below to apply whole foods, common ingredients inside the free core.',
-      ],
         actionLabel: 'Open Nutrition',
       },
     ],
@@ -135,11 +110,6 @@ export const FREE_LEARN_PATHS: LearnPath[] = [
           'Pair with training — open hips before squats',
         ],
         actionHref: '/move',
-      body: [
-        '5–10 minutes of mobility beats occasional long sessions. Treat it as a briefing: one idea, one action.',
-        'Practice the key points on your next session. Log honestly — what gets measured improves.',
-        'When ready, use the action link below to apply daily movement minimum inside the free core.',
-      ],
         actionLabel: 'Start a Flow',
       },
       {
@@ -152,11 +122,6 @@ export const FREE_LEARN_PATHS: LearnPath[] = [
           'Assessments pillar tracks readiness and risk',
         ],
         actionHref: '/assessments',
-      body: [
-        'Address asymmetry and desk posture before they become injury. Treat it as a briefing: one idea, one action.',
-        'Practice the key points on your next session. Log honestly — what gets measured improves.',
-        'When ready, use the action link below to apply corrective mindset inside the free core.',
-      ],
         actionLabel: 'Take Assessment',
       },
     ],
@@ -177,11 +142,6 @@ export const FREE_LEARN_PATHS: LearnPath[] = [
           'One minute before a set can improve form quality',
         ],
         actionHref: '/mind',
-      body: [
-        'Controlled breathing reduces stress and improves focus before training. Treat it as a briefing: one idea, one action.',
-        'Practice the key points on your next session. Log honestly — what gets measured improves.',
-        'When ready, use the action link below to apply breath as anchor inside the free core.',
-      ],
         actionLabel: 'Try Breathing Timer',
       },
       {
@@ -194,12 +154,6 @@ export const FREE_LEARN_PATHS: LearnPath[] = [
           'The path is consistency, not perfection',
         ],
         actionHref: '/log',
-      body: [
-        'You become what you repeat — small daily wins compound. Treat it as a briefing: one idea, one action.',
-        'Research often links consistent exercise with better energy and mood for many people — the product job is a plan you can stick to, not a diagnosis. Educational fitness only.',
-        'Practice the key points on your next session. Log honestly — what gets measured improves.',
-        'When ready, use the action link below to apply streaks & identity inside the free core.',
-      ],
         actionLabel: 'View Challenges',
       },
     ],
@@ -220,11 +174,6 @@ export const FREE_LEARN_PATHS: LearnPath[] = [
           'When in doubt, consult a qualified professional',
         ],
         actionHref: '/assessments',
-      body: [
-        'Screen before intense training — safety first, always. Treat it as a briefing: one idea, one action.',
-        'Practice the key points on your next session. Log honestly — what gets measured improves.',
-        'When ready, use the action link below to apply par-q & readiness inside the free core.',
-      ],
         actionLabel: 'Start Assessment',
       },
       {
@@ -237,11 +186,6 @@ export const FREE_LEARN_PATHS: LearnPath[] = [
           'Use metric or imperial — global by default',
         ],
         actionHref: '/benchmarks',
-      body: [
-        'Track strength over time — estimated and actual rep maxes. Treat it as a briefing: one idea, one action.',
-        'Practice the key points on your next session. Log honestly — what gets measured improves.',
-        'When ready, use the action link below to apply benchmarks & 1rm inside the free core.',
-      ],
         actionLabel: 'View Benchmarks',
       },
     ],
@@ -262,11 +206,6 @@ export const FREE_LEARN_PATHS: LearnPath[] = [
           'Use Assessments pillar + Move flows before heavy training blocks',
         ],
         actionHref: '/assessments',
-      body: [
-        'Observe posture, gait, and key movement patterns before adding load. Treat it as a briefing: one idea, one action.',
-        'Practice the key points on your next session. Log honestly — what gets measured improves.',
-        'When ready, use the action link below to apply static & dynamic assessment inside the free core.',
-      ],
         actionLabel: 'Run Assessment',
       },
       {
@@ -279,11 +218,6 @@ export const FREE_LEARN_PATHS: LearnPath[] = [
           'Library tag "Corrective" filters prehab movements',
         ],
         actionHref: '/library',
-      body: [
-        'Wake up dormant muscles (glutes, scapular stabilizers) then use them in compound lifts. Treat it as a briefing: one idea, one action.',
-        'Practice the key points on your next session. Log honestly — what gets measured improves.',
-        'When ready, use the action link below to apply activation before integration inside the free core.',
-      ],
         actionLabel: 'Corrective Library',
       },
       {
@@ -296,11 +230,6 @@ export const FREE_LEARN_PATHS: LearnPath[] = [
           'Refer out when pain is sharp, radiating, or worsening',
         ],
         actionHref: '/builder',
-      body: [
-        'Correctives support strength — they replace training only when pain or dysfunction demands it. Treat it as a briefing: one idea, one action.',
-        'Practice the key points on your next session. Log honestly — what gets measured improves.',
-        'When ready, use the action link below to apply layering correctives into programs inside the free core.',
-      ],
         actionLabel: 'Load Corrective Template',
       },
     ],
@@ -321,11 +250,6 @@ export const FREE_LEARN_PATHS: LearnPath[] = [
           'Program templates in Builder span beginner 5×5 to advanced blocks',
         ],
         actionHref: '/builder',
-      body: [
-        'Beginners thrive on simple linear overload; intermediates benefit from varied stress. Treat it as a briefing: one idea, one action.',
-        'Practice the key points on your next session. Log honestly — what gets measured improves.',
-        'When ready, use the action link below to apply linear vs undulating progression inside the free core.',
-      ],
         actionLabel: 'Browse Templates',
       },
       {
@@ -338,11 +262,6 @@ export const FREE_LEARN_PATHS: LearnPath[] = [
           'Deload every 4–8 weeks or when readiness/ recovery scores crash',
         ],
         actionHref: '/log',
-      body: [
-        'The training triangle — adjust one lever at a time, not all three at once. Treat it as a briefing: one idea, one action.',
-        'Practice the key points on your next session. Log honestly — what gets measured improves.',
-        'When ready, use the action link below to apply volume, intensity, frequency inside the free core.',
-      ],
         actionLabel: 'Check Recovery Score',
       },
       {
@@ -355,11 +274,6 @@ export const FREE_LEARN_PATHS: LearnPath[] = [
           'Match nutrition and sleep to training phase in Fuel pillar',
         ],
         actionHref: '/nutrition',
-      body: [
-        'Short blocks to bring up a lift or muscle group without abandoning the whole program. Treat it as a briefing: one idea, one action.',
-        'Practice the key points on your next session. Log honestly — what gets measured improves.',
-        'When ready, use the action link below to apply specialization & peaking inside the free core.',
-      ],
         actionLabel: 'Fuel for Training Phase',
       },
     ],
@@ -380,11 +294,6 @@ export const FREE_LEARN_PATHS: LearnPath[] = [
           'Mission Winning tools support coaching — they don\'t replace professional judgment',
         ],
         actionHref: '/assessments',
-      body: [
-        'Coaches educate and program; they do not diagnose, prescribe meds, or replace clinicians. Treat it as a briefing: one idea, one action.',
-        'Practice the key points on your next session. Log honestly — what gets measured improves.',
-        'When ready, use the action link below to apply scope of practice inside the free core.',
-      ],
         actionLabel: 'Review PAR-Q',
       },
       {
@@ -397,11 +306,6 @@ export const FREE_LEARN_PATHS: LearnPath[] = [
           'Start clients with 2–3 habits, not twelve',
         ],
         actionHref: '/mind',
-      body: [
-        'Streaks, check-ins, and small wins beat perfect programs nobody follows. Treat it as a briefing: one idea, one action.',
-        'Practice the key points on your next session. Log honestly — what gets measured improves.',
-        'When ready, use the action link below to apply behavior change & adherence inside the free core.',
-      ],
         actionLabel: 'Daily Check-In',
       },
       {
@@ -414,11 +318,6 @@ export const FREE_LEARN_PATHS: LearnPath[] = [
           'Celebrate process metrics (sessions completed) not only scale weight',
         ],
         actionHref: '/coaching',
-      body: [
-        'Log workouts, review trends, adjust based on data and conversation. Treat it as a briefing: one idea, one action.',
-        'Practice the key points on your next session. Log honestly — what gets measured improves.',
-        'When ready, use the action link below to apply progress tracking & feedback loops inside the free core.',
-      ],
         actionLabel: 'Coaching Inquiry',
       },
     ],
@@ -439,11 +338,6 @@ export const FREE_LEARN_PATHS: LearnPath[] = [
           'Caffeine cutoff 8+ hours before sleep if sensitive',
         ],
         actionHref: '/mind',
-      body: [
-        'Consistent schedule and environment beat expensive gadgets for most people. Treat it as a briefing: one idea, one action.',
-        'Practice the key points on your next session. Log honestly — what gets measured improves.',
-        'When ready, use the action link below to apply sleep hygiene basics inside the free core.',
-      ],
         actionLabel: 'Sleep Wind-Down Session',
       },
       {
@@ -456,11 +350,6 @@ export const FREE_LEARN_PATHS: LearnPath[] = [
           'Move pillar Recovery Wind-Down after hard sessions',
         ],
         actionHref: '/move',
-      body: [
-        'Easy movement clears soreness better than complete couch lock. Treat it as a briefing: one idea, one action.',
-        'Practice the key points on your next session. Log honestly — what gets measured improves.',
-        'When ready, use the action link below to apply active recovery days inside the free core.',
-      ],
         actionLabel: 'Recovery Flow',
       },
       {
@@ -473,11 +362,6 @@ export const FREE_LEARN_PATHS: LearnPath[] = [
           'Guidebook Ch.1 covers adaptation science',
         ],
         actionHref: '/learn/guide/human-performance',
-      body: [
-        'Use trends, not one bad morning, to decide push vs deload. Treat it as a briefing: one idea, one action.',
-        'Practice the key points on your next session. Log honestly — what gets measured improves.',
-        'When ready, use the action link below to apply readiness signals inside the free core.',
-      ],
         actionLabel: 'Guidebook Ch.1',
       },
       {
@@ -490,11 +374,6 @@ export const FREE_LEARN_PATHS: LearnPath[] = [
           'Hydrate early; taper fluids before sleep if bathroom wakes you',
         ],
         actionHref: '/nutrition',
-      body: [
-        'Protein and carbs support repair; dehydration impairs sleep. Treat it as a briefing: one idea, one action.',
-        'Practice the key points on your next session. Log honestly — what gets measured improves.',
-        'When ready, use the action link below to apply nutrition for recovery inside the free core.',
-      ],
         actionLabel: 'Log Fuel',
       },
     ],
@@ -515,11 +394,6 @@ export const FREE_LEARN_PATHS: LearnPath[] = [
           'Floor space beats fancy machines',
         ],
         actionHref: '/library',
-      body: [
-        'Bands, a door anchor, and adjustable dumbbells cover most beginners. Treat it as a briefing: one idea, one action.',
-        'Practice the key points on your next session. Log honestly — what gets measured improves.',
-        'When ready, use the action link below to apply tier 1 equipment inside the free core.',
-      ],
         actionLabel: 'Filter by Equipment',
       },
       {
@@ -532,11 +406,6 @@ export const FREE_LEARN_PATHS: LearnPath[] = [
           'Skip gimmick devices; invest in load',
         ],
         actionHref: '/builder',
-      body: [
-        'Barbell and rack when you outgrow dumbbells — buy used when possible. Treat it as a briefing: one idea, one action.',
-        'Practice the key points on your next session. Log honestly — what gets measured improves.',
-        'When ready, use the action link below to apply tier 2 upgrades inside the free core.',
-      ],
         actionLabel: 'Build a Program',
       },
       {
@@ -549,11 +418,6 @@ export const FREE_LEARN_PATHS: LearnPath[] = [
           'Guidebook Ch.3 covers tuning volume',
         ],
         actionHref: '/learn/guide/programming-tuning',
-      body: [
-        'Noise, space, and neighbors shape exercise selection. Treat it as a briefing: one idea, one action.',
-        'Practice the key points on your next session. Log honestly — what gets measured improves.',
-        'When ready, use the action link below to apply programming at home inside the free core.',
-      ],
         actionLabel: 'Guidebook Ch.3',
       },
       {
@@ -566,11 +430,6 @@ export const FREE_LEARN_PATHS: LearnPath[] = [
           'Use smith or DB when learning new lifts',
         ],
         actionHref: '/active',
-      body: [
-        'Use safeties, avoid true max singles alone, favor submaximal work. Treat it as a briefing: one idea, one action.',
-        'Practice the key points on your next session. Log honestly — what gets measured improves.',
-        'When ready, use the action link below to apply safety without a spotter inside the free core.',
-      ],
         actionLabel: 'Log Safely',
       },
     ],

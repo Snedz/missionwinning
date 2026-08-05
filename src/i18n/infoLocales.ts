@@ -167,17 +167,17 @@ const en: InfoStrings = {
   infoPrivacyTitle: 'Privacy Policy',
   infoVisionTitle: 'Mission Winning Vision',
   infoVisionSubtitle:
-    'The guiding document for the free global everything app for health. Core mission free for all. Super Bundle for synergy.',
+    'Free offline logger + Mission Coach from your logs. Super Bundle deepens the other pillars — it never gates the logger.',
   infoBetaTitle: 'Start here',
   infoBetaSubtitle:
     'Private beta — help us validate I-Day → first workout → Mission Coach before public launch.',
-  infoFeedbackTitle: 'Share your wins',
+  infoFeedbackTitle: 'Feedback',
   infoFeedbackSubtitle:
-    "Tell us what results you're seeing, what worked, and what to build next. Beta founders shape the roadmap.",
+    'What confused you, what broke, and what we should fix next. We read every note.',
   infoFeedbackThankTitle: 'Thank you',
   infoFeedbackThankSubtitle:
-    'Your feedback helps make the free core and Super Bundle better for the global mission.',
-  infoFeedbackFormTitle: 'Beta founders feedback',
+    'Thanks — your notes help us improve the free logger and Coach.',
+  infoFeedbackFormTitle: 'What should we fix?',
   infoCoachingTitle: 'A coach in your corner',
   infoCoachingSubtitle:
     "We're building a small 1:1 coaching program on top of the free core. Tell us about your goals — no commitment, no payment today.",
@@ -213,7 +213,7 @@ const en: InfoStrings = {
   infoAboutMore: 'More',
   infoAboutContact: 'Contact',
   infoVisionCorePromise: 'Core promise: free forever for the mission',
-  infoVisionSuperApp: 'The super app structure',
+  infoVisionSuperApp: 'Six pillars',
   infoVisionSuperBundle: 'Super Bundle',
   infoProfileHelpTitle: 'Help & legal',
   infoTermsAgreementBody:
@@ -229,7 +229,7 @@ const en: InfoStrings = {
     'Premium purchases (Super Bundle and related paid features) are subject to checkout terms and our Refunds & cancellation policy. Cancel subscriptions anytime via Profile → Manage billing. Contact support@missionwinning.com for billing issues.',
   infoTermsAcceptableUse: 'Acceptable use',
   infoTermsAcceptableUseBody:
-    'You must follow our Acceptable Use Policy (repository docs/legal/ACCEPTABLE_USE.md and related rules): no unlawful use, no unauthorized access, no scraping or redistributing premium content, and no abuse of APIs or youth/school features. We may suspend accounts that violate these rules.',
+    'No unlawful use, no unauthorized access, no scraping or redistributing premium content, and no abuse of APIs or youth/school features. We may suspend accounts that violate these rules. For billing or safety issues, email support@missionwinning.com.',
   infoTermsLiabilityBody:
     'To the fullest extent permitted by law, Mission Winning LLC is not liable for injuries, health outcomes, or indirect damages arising from use of the app. The service is provided "as is."',
   infoTermsUserContentBody:
@@ -321,12 +321,12 @@ const en: InfoStrings = {
   infoAboutMissionP1:
     'Mission Winning is a free offline workout logger with adaptive Mission Coach plans from your logs — no wearable required. Super Bundle unlocks Coach depth and specialist education; logging stays free forever.',
   infoAboutMissionP2:
-    'Accessible, science-based training and nutrition tools for everyone, everywhere — from city gyms to rural areas with minimal equipment. Train smart. Win daily. No borders.',
+    'Train anywhere with bodyweight or minimal gear first. Mission Coach builds the week from what you actually logged — not from a wearable. Educational tools only, not medical care.',
   infoAboutEvidenceBody:
-    'Hundreds of clinical trials support exercise for mild to moderate depressive symptoms — often comparable to medication in research settings. Yet most mental health professionals never received formal training in prescribing exercise, so advice stays “just go work out.” Mission Winning turns training into a clear, adaptive weekly plan you can follow on any phone. We do not diagnose or treat depression; this is educational fitness, not clinical care.',
+    'Evidence supports structured exercise for mood and energy in research settings — but most advice stays “just go work out.” We turn that into a weekly plan you can follow on any phone. We do not diagnose or treat depression; this is educational fitness, not clinical care.',
   infoAboutAmericaLink: 'Presidential Fitness Test & youth movement →',
   infoAboutBusinessBody:
-    'Operated by Mission Winning LLC (for-profit) for the app, programs, and coaching. A separate nonprofit foundation is planned to support free access, scholarships for coaches in underserved regions, and mission-driven initiatives.',
+    'Operated by Mission Winning LLC for the app, programs, and coaching. Free core stays free; paid Super Bundle funds deeper Coach and pillar tools when you want them.',
   infoAboutDisclaimerEducational:
     'Educational only. Mission Winning provides practical training education and tools. We are not a federally recognized or accredited certifying agency. Completion grants a Mission Winning Certificate of Educational Achievement only.',
   infoAboutDisclaimerGov:
@@ -336,29 +336,29 @@ const en: InfoStrings = {
   infoAboutNationalLink: 'National fitness',
   infoAboutContactBody: 'support@missionwinning.com · hello@missionwinning.com for coaching inquiries.',
   infoAboutCopyright: '© Mission Winning. Global by design. PWA — works offline anywhere.',
-  infoVisionLead: 'The #1 Health "Everything App" for the World',
+  infoVisionLead: 'Train anywhere. Coach from what you actually logged.',
   infoVisionP1:
-    'Mission Winning exists to be the entrance to the path — the clear, evidence-based guide to the right way to build lifelong health, strength, resilience, and well-being for every human on Earth. It is the alternative to the path of destruction: average habits, excuses, short-term fixes, mediocrity, and the slow decline that comes from inconsistent or misguided approaches to the body and mind.',
+    'Mission Winning is the entrance to the path: free forever workout logging (no account) plus Mission Coach — fatigue-aware weekly plans from your history alone, no wearable required.',
   infoVisionP2:
-    'We are building the everything app for health. Not another fragmented tool, but a unified, synergistic ecosystem where training, nutrition, mobility, mindfulness, activity tracking, and learning reinforce each other. One app. One mission. Accessible to everyone, everywhere — regardless of money, location, resources, or background.',
+    'Super Bundle adds Coach depth and the other pillars when you want them. It funds the mission — it never gates the free logger. Educational tools and a daily habit — not medical care.',
   infoVisionCoreP1:
-    'The fundamentals that make the world healthier must be available to all, with no money barrier.',
-  infoVisionCoreLi1: 'Workout tracking (the core mission) is 100% free, forever.',
-  infoVisionCoreLi2: 'Basic exercise library (bodyweight/minimal-equipment focused, global-friendly).',
-  infoVisionCoreLi3: 'Basic nutrition logging and accessible recipes.',
-  infoVisionCoreLi4: 'Basic assessments, streaks, challenges, and habit tools.',
+    'The fundamentals that make people healthier should have no price of admission.',
+  infoVisionCoreLi1: 'Workout tracking is free forever — no account required to start.',
+  infoVisionCoreLi2: 'Exercise library focused on bodyweight and minimal gear.',
+  infoVisionCoreLi3: 'Mission Coach weekly plans from your logs alone.',
+  infoVisionCoreLi4: 'Offline-first PWA — installable, works without a store.',
   infoVisionCoreLi5:
-    'Full PWA experience: installable, offline-first, low-data, works on any device/browser anywhere.',
+    'Fuel, Move, Mind, Track, and Learn deepen the path — they are not the pitch.',
   infoVisionCoreQuote:
     '"Those with no money should be able to utilize it to track workouts. The core mission should be available for everyone in the world."',
   infoVisionSuperAppP1:
-    'Inspired by successful freemium + bundle models (notably Freeletics), Mission Winning is structured as modular "universes" or pillars. Each route/section is accessible (free entry points and basics for everyone) yet serves as a revenue stream through premium layers and the Super Bundle.',
+    'One product, six pillars: free entry on each, premium depth where it earns its keep. We pitch Train + Mission Coach first — not an everything-app laundry list.',
   infoVisionSuperAppP2:
-    'The pillars: Train (free tracker + premium Coach), Fuel (nutrition), Move (mobility + yoga), Mind (mindfulness), Track (activity), Learn (education programs).',
+    'Train · Fuel · Move · Mind · Track · Learn. Different fronts, one goal: stay strong enough to show up.',
   infoVisionSuperBundleBody:
-    'The flagship offering. One subscription unlocks premium depth across multiple (or all) pillars — "X premium tools for the price of 1–2." Modeled directly on Freeletics: 50% off introductory pricing for first 6–12 months, annual discounts, "X apps for the price of 1".',
+    'One subscription for Coach depth and the other pillars when you want them. The free logger stays free — Super Bundle deepens, never gates.',
   infoVisionFoot:
-    'Full details in vision.md in the project root. This page is a summary. The app exists to serve this vision.',
+    'This page is a public summary of our product direction. The free logger is never gated.',
   infoCoachingError:
     'Could not submit right now. Try again or email support@missionwinning.com',
   coachingEyebrow: 'Coaching',
@@ -388,7 +388,7 @@ const es: InfoStrings = {
   infoPrivacyTitle: 'Política de privacidad',
   infoVisionTitle: 'Visión de Mission Winning',
   infoBetaTitle: 'Empieza aquí',
-  infoFeedbackTitle: 'Comparte tus logros',
+  infoFeedbackTitle: 'Comentarios',
   infoCoachingTitle: 'Un coach a tu lado',
   infoProgramsTitle: 'Programas Learn',
   infoProfileHelpTitle: 'Ayuda y legal',
@@ -404,12 +404,12 @@ const es: InfoStrings = {
   infoPrivacyNotMedicalBody:
     'Mission Winning ofrece herramientas educativas de fitness solamente. Consulta a un profesional calificado antes de comenzar nuevos programas.',
   infoAboutMissionP1:
-    'Mission Winning es la app global todo-en-uno de salud y entrenamiento. Rastreador gratuito + educación premium y coaching.',
+    'Mission Winning es un registrador de entrenamientos gratuito sin conexión, con Mission Coach a partir de tus logs — sin wearables.',
   infoAboutMissionP2:
-    'Herramientas accesibles y basadas en ciencia para todos, en todas partes. Entrena inteligente. Gana a diario.',
-  infoVisionLead: 'La app de salud "todo en uno" #1 para el mundo',
+    'Entrena en cualquier sitio con peso corporal o material mínimo. Herramientas educativas, no atención médica.',
+  infoVisionLead: 'Entrena donde sea. Coach a partir de lo que realmente registraste.',
   infoVisionCoreP1:
-    'Los fundamentos que hacen al mundo más saludable deben estar disponibles para todos, sin barrera de dinero.',
+    'Los fundamentos que hacen a la gente más saludable no deben tener precio de entrada.',
 };
 
 const zh: InfoStrings = {
@@ -418,7 +418,7 @@ const zh: InfoStrings = {
   infoTermsTitle: '使用条款',
   infoPrivacyTitle: '隐私政策',
   infoBetaTitle: '从这里开始',
-  infoFeedbackTitle: '分享你的成果',
+  infoFeedbackTitle: '反馈',
   infoProfileHelpTitle: '帮助与法律',
 };
 

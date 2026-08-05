@@ -73,10 +73,10 @@ const COMPARE_ROWS: Row[] = [
   },
   {
     feature: 'API key required',
-    mw: 'No — Just Go is free and local',
+    mw: 'No — free logger is local, no key',
     hevy: '—',
     strong: '—',
-    source: 'vs Forge Fitness BYOK Pro (2026)',
+    source: 'vs tools that require a paid model key (2026)',
   },
   {
     feature: 'Rest timer / PRs / progression (free)',
