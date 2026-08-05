@@ -399,7 +399,7 @@ export function ProfilePage() {
 
       <Card className="bg-card">
         <CardContent className="pt-6">
-          <p className="mb-3 text-xs font-medium tracking-wide text-muted-foreground">
+          <p className="mb-3 text-xs font-semibold tracking-wide text-muted-foreground">
             {t('infoProfileHelpTitle', { defaultValue: 'Help & legal' })}
           </p>
           <LegalNav />

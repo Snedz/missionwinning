@@ -60,7 +60,7 @@ export function LearnPathPublicPage({ path }: Props) {
               <li key={lesson.id} className="space-y-1">
                 <div className="flex gap-2 text-foreground">
                   <span className="tabular-nums text-muted-foreground">{i + 1}.</span>
-                  <span className="font-medium">{lesson.title}</span>
+                  <span className="font-semibold">{lesson.title}</span>
                 </div>
                 {lesson.body && lesson.body.length > 0 ? (
                   <div className="pl-5 space-y-1.5 text-muted-foreground leading-relaxed">

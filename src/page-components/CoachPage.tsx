@@ -91,7 +91,7 @@ export function CoachPage({ askExerciseId }: CoachPageProps = {}) {
 
       {!loading && locked && plan && (
         <div className="space-y-4">
-          <p className="text-sm font-medium text-muted-foreground">{weekEyebrow}</p>
+          <p className="text-sm font-semibold text-muted-foreground">{weekEyebrow}</p>
           <WeekStrip weekStart={weekStart} sessions={plan.sessions} todayOffset={todayOffset} />
           <p className="text-sm text-muted-foreground text-center leading-relaxed">
             {t('coachLockedWeekSummary', {
@@ -176,7 +176,7 @@ export function CoachPage({ askExerciseId }: CoachPageProps = {}) {
       {plan && !locked && (
         <div className="space-y-6">
           <div>
-            <p className="mb-3 text-sm font-medium text-muted-foreground">{weekEyebrow}</p>
+            <p className="mb-3 text-sm font-semibold text-muted-foreground">{weekEyebrow}</p>
             <WeekStrip weekStart={weekStart} sessions={plan.sessions} todayOffset={todayOffset} />
             {weekDose && weekDose.sessionCount > 0 && (
               <p className="mt-3 text-center text-sm text-muted-foreground" data-testid="coach-week-dose">

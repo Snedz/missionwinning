@@ -30,6 +30,16 @@ const ROOTS = ['src', 'app'];
 const DISPLAY = /\b(display-hero|display-section|display-mega)\b/;
 /** Tailwind font-size utilities, including responsive variants and arbitrary values. */
 const SIZE = /(?:^|\s)(?:[a-z]+:)*text-(?:xs|sm|base|lg|[2-9]?xl|\[[^\]]*\])(?=\s|$)/;
+/**
+ * `.462` — the same nullification, on the weight axis. The display classes set
+ * Archivo 800; a `font-semibold` beside one wins in the utilities layer and
+ * quietly renders 600 — exactly how `PillarPageHeader` would have re-inked 30
+ * screens at the wrong weight the day it adopted `.display-section`. The list
+ * is closed because these are Tailwind's named weights; `font-extrabold` is
+ * excluded (it restates the value the class already sets — harmless).
+ */
+const WEIGHT =
+  /(?:^|\s)(?:[a-z]+:)*font-(?:thin|extralight|light|normal|medium|semibold|bold|black)(?=\s|$)/;
 
 /** Every className="..." / className={`...`} literal in a file. */
 function classStrings(source) {
@@ -200,7 +210,8 @@ for (const r of ROOTS) {
     const source = fs.readFileSync(file, 'utf8');
     if (!DISPLAY.test(source)) continue;
     for (const { value, index } of classStrings(source)) {
-      if (!DISPLAY.test(value) || !SIZE.test(value)) continue;
+      if (!DISPLAY.test(value)) continue;
+      if (!SIZE.test(value) && !WEIGHT.test(value)) continue;
       violations.push({
         file: path.relative(root, file),
         line: source.slice(0, index).split('\n').length,
@@ -229,14 +240,15 @@ if (violations.length === 0) {
 }
 
 console.error(
-  `\n${violations.length} display class(es) nullified by a size utility:\n`
+  `\n${violations.length} display class(es) nullified by a size or weight utility:\n`
 );
 for (const v of violations) {
   console.error(`  ${v.file}:${v.line}`);
   console.error(`    ${v.value}\n`);
 }
 console.error(
-  'A `text-*` utility beats the display class and discards its clamp(). Drop the size,\n' +
-    'or use `font-display` if you want the face at a custom size.\n'
+  'A `text-*` or `font-*` weight utility beats the display class and discards its\n' +
+    'clamp()/800 weight. Drop the utility, or use `font-display` for the face at a\n' +
+    'custom size.\n'
 );
 process.exit(1);

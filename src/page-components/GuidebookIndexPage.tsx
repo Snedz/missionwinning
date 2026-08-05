@@ -60,6 +60,7 @@ export function GuidebookIndexPage() {
   return (
     <PillarPageShell
       icon={BookMarked}
+      eyebrow={t('learnEyebrow', { defaultValue: 'Learn' })}
       title={t('guidebookTitle', { defaultValue: 'Beyond the Basics' })}
       subtitle={t('guidebookSubtitle', {
         defaultValue:
@@ -70,10 +71,10 @@ export function GuidebookIndexPage() {
         <Card className="content-card border-primary">
           <CardContent className="py-4 flex flex-wrap items-center justify-between gap-3">
             <div>
-              <p className="text-sm font-medium text-primary">
+              <p className="text-sm font-semibold text-primary">
                 {t('guidebookProgress', { defaultValue: 'Your progress' })}
               </p>
-              <p className="text-2xl font-bold tabular-nums">
+              <p className="text-2xl font-extrabold tabular-nums">
                 {stats.done}/{stats.totalSections}{' '}
                 <span className="text-sm font-normal text-muted-foreground">
                   ({stats.pct}%)

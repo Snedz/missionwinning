@@ -26,6 +26,7 @@ export function CalculatorsPage() {
   return (
     <PillarPageShell
       icon={Calculator}
+      eyebrow={t('toolkitEyebrow', { defaultValue: 'Toolkit' })}
       title={t('calcTitle', { defaultValue: 'Calculators' })}
       subtitle={t('calcSubtitle', {
         defaultValue: freeBeta

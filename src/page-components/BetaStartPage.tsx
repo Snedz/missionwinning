@@ -74,7 +74,7 @@ export function BetaStartPage() {
                 {String(step.n).padStart(2, '0')}
               </span>
               <div className="min-w-0 flex-1 space-y-1">
-                <h2 className="text-sm font-medium text-foreground">{t(step.titleKey)}</h2>
+                <h2 className="text-sm font-semibold text-foreground">{t(step.titleKey)}</h2>
                 <p className="text-sm text-muted-foreground leading-relaxed">{t(step.bodyKey)}</p>
                 <Link
                   href={step.href}

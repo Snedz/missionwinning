@@ -170,7 +170,7 @@ export function MovePage() {
             className="flex w-full items-center justify-between gap-2 border-2 border-border bg-card px-4 py-3 text-sm min-h-[44px]"
             onClick={() => setPremiumOpen((v) => !v)}
           >
-            <span className="font-medium text-muted-foreground">
+            <span className="font-semibold text-muted-foreground">
               {t('movePremiumPreview', { defaultValue: 'Premium recovery flows' })}
             </span>
             <ChevronDown

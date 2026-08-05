@@ -266,7 +266,7 @@ export function BuilderPage() {
               {i > 0 && <ChevronRight className="h-4 w-4 text-muted-foreground" />}
               <button type="button"
                 onClick={() => n < step && setStep(n)}
-                className={` px-3 py-1 text-xs font-medium border ${
+                className={` px-3 py-1 text-xs font-semibold border ${
                   active
                     ? 'border-primary bg-accent-100 text-primary'
                     : done
@@ -303,7 +303,7 @@ export function BuilderPage() {
             className="content-card border-2 border-border p-5 md:p-6 space-y-4"
           >
         <div className="flex flex-wrap items-center justify-between gap-2">
-          <h3 className="text-xl font-bold flex items-center gap-2">
+          <h3 className="text-xl font-extrabold flex items-center gap-2">
             <Layers className="h-6 w-6 text-primary" />
             {t('builderTemplatesTitle', { defaultValue: 'Program Templates' })}
           </h3>
@@ -333,7 +333,7 @@ export function BuilderPage() {
                 className={
                   templateCategory === value
                     ? ' border border-primary bg-accent-100 px-4 py-2 text-sm font-semibold text-primary'
-                    : ' border-2 border-border bg-card px-4 py-2 text-sm font-medium text-muted-foreground hover:text-foreground'
+                    : ' border-2 border-border bg-card px-4 py-2 text-sm font-semibold text-muted-foreground hover:text-foreground'
                 }
               >
                 {t(key, { defaultValue: fallback })}
@@ -359,7 +359,7 @@ export function BuilderPage() {
               <Card key={w.id} className="content-card pressable-card">
                 <CardContent className="flex items-center justify-between p-4">
                   <div>
-                    <p className="font-medium">{w.name}</p>
+                    <p className="font-semibold">{w.name}</p>
                     <p className="text-sm text-muted-foreground">
                       {t('builderSavedMeta', {
                         count: w.exercises.length,
@@ -541,7 +541,7 @@ export function BuilderPage() {
               <div className="space-y-3">
                 {detailProgram.sessions.map((session) => (
                   <div key={session.id} className="border p-3 text-sm">
-                    <p className="font-medium">{session.name}</p>
+                    <p className="font-semibold">{session.name}</p>
                     {session.notes && (
                       <p className="text-muted-foreground mt-1">{session.notes}</p>
                     )}
