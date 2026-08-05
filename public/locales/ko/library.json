@@ -21,7 +21,7 @@
   "libraryLevelBeginner": "초보자",
   "libraryLevelIntermediate": "중급",
   "libraryLevelAdvanced": "고급의",
-  "libraryShowingCount": "{{total}} 중 {{shown}} 표시 중",
+  "libraryShowingCount": "{{shown}} 중 {{total}} 표시 중",
   "libraryKeyCues": "주요 단서:",
   "libraryCuesComing": "이 동작에 대한 양식 신호가 곧 제공될 예정입니다.",
   "libraryAlternatives": "대안:",

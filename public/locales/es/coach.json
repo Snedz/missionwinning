@@ -54,7 +54,7 @@
   "coachSessionDone": "Hecho",
   "coachSessionMissed": "Omitido",
   "coachSessionSwapped": "Adaptada",
-  "coachEstMinutes": "{{minutos}} minutos",
+  "coachEstMinutes": "{{minutes}} minutos",
   "coachVoiceDefault": "Esta semana equilibra la sobrecarga progresiva con la recuperación. Realiza cada sesión con intención y registra tus series.",
   "coachVoiceDeload": "La tensión es elevada; trate esto como una semana de consolidación. Mismos movimientos, cargas un poco más ligeras.",
   "coachVoiceRecovery": "La preparación es menor: priorice la movilidad y los representantes de calidad. La fuerza regresa cuando te recuperas.",

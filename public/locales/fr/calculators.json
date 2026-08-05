@@ -7,7 +7,7 @@
   "calc1rmTitle": "Estimé 1RM",
   "calc1rmHint": "Idéal pour 1 à 10 répétitions. Des ensembles plus lourds donnent des estimations plus fiables.",
   "calc1rmAlt": "Estimation alternative (Brzycki) : {{alt}} {{unit}}",
-  "calcWeightLabel": "Poids ({{unité}})",
+  "calcWeightLabel": "Poids ({{unit}})",
   "calcRepsLabel": "Représentantes",
   "calc1rmFoot": "Formule d'Épley. Utiliser comme point de départ. Testez soigneusement le vrai 1RM.",
   "calcMacroTitle": "Estimateur Macro & TDEE",

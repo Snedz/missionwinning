@@ -38,5 +38,5 @@
   "benchmarksQuickStarters": "今日のすべての無料スターター→",
   "benchmarksQuickHabit": "ベンチマークの習慣をログに記録 (+ ストリーク)",
   "benchmarksSignInFoot": "デバイス間でベンチマーク履歴と PR を同期します。",
-  "benchmarksWeightTimesReps": "{{体重}} {{単位}} × {{担当者}}"
+  "benchmarksWeightTimesReps": "{{weight}} {{unit}} × {{reps}}"
 }

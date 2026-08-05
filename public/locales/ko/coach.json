@@ -54,7 +54,7 @@
   "coachSessionDone": "완료",
   "coachSessionMissed": "놓친",
   "coachSessionSwapped": "적응됨",
-  "coachEstMinutes": "{{분}}분",
+  "coachEstMinutes": "{{minutes}}분",
   "coachVoiceDefault": "이번 주에는 점진적인 과부하와 회복의 균형을 맞춥니다. 각 세션을 의도적으로 진행하고 세트를 기록하세요.",
   "coachVoiceDeload": "긴장감이 높아집니다. 이번 주를 통합 주간으로 취급하세요. 동일한 움직임, 약간 더 가벼운 하중.",
   "coachVoiceRecovery": "준비 상태가 낮습니다. 이동성과 품질 담당자를 우선시합니다. 회복하면 힘이 돌아옵니다.",

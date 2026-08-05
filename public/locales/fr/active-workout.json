@@ -19,7 +19,7 @@
   "activeChooseExercise": "Choisir un exercice…",
   "activeEmptyExercises": "Ajoutez des exercices ci-dessus pour enregistrer des séries.",
   "activeFormGuide": "Guide de forme",
-  "activeLoadPctChip": "{{pct}}% · {{poids}} {{unité}}",
+  "activeLoadPctChip": "{{pct}}% · {{weight}} {{unit}}",
   "activeAddSet": "Ajouter une série",
   "activeStartRest": "Repos {{seconds}} s",
   "activeLogSet": "Enregistrer la série",

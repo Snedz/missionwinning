@@ -19,7 +19,7 @@
   "pftBack": "뒤쪽에",
   "pftResultsTitle": "체력 테스트 결과",
   "pftOverallAward": "종합상",
-  "pftClassRank": "{{code}} 클래스의 #{{순위}}",
+  "pftClassRank": "{{code}} 클래스의 #{{rank}}",
   "pftViewClassBoard": "클래스 순위 보기 →",
   "pftBackBenchmarks": "벤치마크로 돌아가기",
   "pftShareAmerica": "국민체력 미션 →",

@@ -54,7 +54,7 @@
   "coachSessionDone": "Xong",
   "coachSessionMissed": "Bỏ lỡ",
   "coachSessionSwapped": "Chuyển thể",
-  "coachEstMinutes": "{{phút}} phút",
+  "coachEstMinutes": "{{minutes}} phút",
   "coachVoiceDefault": "Tuần này cân bằng tình trạng quá tải tiến triển với việc phục hồi. Hãy thực hiện từng phiên một cách có mục đích và ghi lại các tập của bạn.",
   "coachVoiceDeload": "Căng thẳng tăng cao - hãy coi đây như một tuần củng cố. Chuyển động tương tự, tải nhẹ hơn một chút.",
   "coachVoiceRecovery": "Mức độ sẵn sàng thấp hơn — ưu tiên tính di động và đại diện chất lượng. Sức mạnh sẽ trở lại khi bạn hồi phục.",

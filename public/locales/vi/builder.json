@@ -53,7 +53,7 @@
   "builderNoPrograms": "Không có chương trình trong danh mục này.",
   "builderDetails": "Chi tiết",
   "builderSaveAll": "Lưu tất cả ({{count}})",
-  "builderSessionMeta": "{{bài tập}} bài tập · {{bộ}} bộ",
+  "builderSessionMeta": "{{exercises}} bài tập · {{sets}} bộ",
   "builderTemplateLoadFail": "Dữ liệu mẫu không tải được. Khởi động lại máy chủ dev.",
   "builderStyleFilter": "Phong cách:",
   "builderFilterAll": "Tất cả",

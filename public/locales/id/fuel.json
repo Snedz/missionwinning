@@ -24,7 +24,7 @@
   "fuelCloudLoaded": "Cloud dimuat (hanya saat masuk)",
   "fuelNoEntries": "Belum ada entri. Gunakan log cepat atau kustom.",
   "fuelTotals": "Total",
-  "fuelTotalsLine": "{{protein}}g protein • {{kals}} kkal",
+  "fuelTotalsLine": "{{protein}}g protein • {{cals}} kkal",
   "fuelLocalNote": "Data disimpan lokal (sinkron saat masuk). Integrasi penuh di kursus Nutrisi berbayar.",
   "fuelFreeRecipesTitle": "Resep gratis ({{count}} — misi inti)",
   "fuelPremiumRecipesTitle": "Resep premium (Super Bundle)",

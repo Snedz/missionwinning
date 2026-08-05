@@ -38,5 +38,5 @@
   "benchmarksQuickStarters": "今日所有免费入门 →",
   "benchmarksQuickHabit": "记录基准测试习惯（+streak）",
   "benchmarksSignInFoot": "跨设备同步基准测试历史记录和 PR。",
-  "benchmarksWeightTimesReps": "{{重量}} {{单位}} × {{次数}}"
+  "benchmarksWeightTimesReps": "{{weight}} {{unit}} × {{reps}}"
 }
