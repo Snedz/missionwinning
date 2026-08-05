@@ -19,6 +19,7 @@
 import type { CompletedWorkoutLog } from '@/types';
 import { series as bodyMetricSeries } from '@/lib/bodyMetrics';
 import { buildTodayTrends, lastDayBuckets } from '@/lib/todayTrends';
+import { formatLocalDateKey } from '@/lib/time/localDate';
 import { trendMetric, type TrendMetricDef } from './trendMetrics';
 import type { TrendQuery } from './parseTrendQuery';
 
@@ -46,11 +47,9 @@ export interface ResolvedTrend {
  * repeating "T"s is not an axis.
  */
 function labelFor(key: string, windowDays: number, locale: string): string {
-  const [y, m, d] = key.split('-').map(Number);
-  const date = new Date(y, m - 1, d, 12);
   return windowDays <= 7
-    ? date.toLocaleDateString(locale, { weekday: 'narrow' })
-    : date.toLocaleDateString(locale, { month: 'numeric', day: 'numeric' });
+    ? formatLocalDateKey(key, locale, { weekday: 'narrow' })
+    : formatLocalDateKey(key, locale, { month: 'numeric', day: 'numeric' });
 }
 
 export function resolveTrendSeries(
