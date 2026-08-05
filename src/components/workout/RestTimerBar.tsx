@@ -67,6 +67,7 @@ export function RestTimerBar({
         </span>
         {/* Accent-400, not poster: on an ink ground the brighter ramp step is
             the one that reads. Track is neutral-700 for the same reason. */}
+        {/* Desktop meter — thin, same row as clock (handoff mock). */}
         <div className="hidden h-1.5 flex-1 overflow-hidden bg-neutral-700 sm:block">
           <div
             className="h-full bg-accent-400 transition-[width] duration-1000 linear motion-reduce:transition-none"
@@ -75,7 +76,8 @@ export function RestTimerBar({
         </div>
       </div>
 
-      <div className="h-1.5 overflow-hidden bg-neutral-700 mx-4 mt-2 sm:hidden">
+      {/* Phone outdoors: thicker meter under the 56–72px clock — glance without reading digits. */}
+      <div className="h-2.5 overflow-hidden bg-neutral-700 mx-4 mt-2 sm:hidden">
         <div
           className="h-full bg-accent-400 transition-[width] duration-1000 linear motion-reduce:transition-none"
           style={{ width: `${Math.round(progress * 100)}%` }}
