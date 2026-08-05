@@ -12,11 +12,9 @@
  * above a blank page), shipped, on a real route.
  *
  * **This is a source guard rather than a render test on purpose.**
- * `/leaderboard` is in `PARKED_BY_DEFAULT` (`src/lib/surface.ts`), so it 404s and
- * `tests/e2e/zero-state.spec.ts` — which would otherwise catch exactly this —
- * cannot reach it. A parked surface is still shipped code; `surfaceReality.test.ts`
- * exists because two things had already drifted out from under exactly that
- * assumption. When the surface unparks, the e2e sweep takes over and this can go.
+ * `/leaderboard` is on by default under the full-launch override (SECONDARY
+ * surface). `tests/e2e/zero-state.spec.ts` also sweeps it; this unit guard
+ * still catches header-over-void regressions without a browser.
  */
 
 import { test } from 'node:test';

@@ -25,6 +25,7 @@ When adding a doc:
 
 | File | Absorbed by / note |
 |------|---------------------|
+| [log/LOG-rotate-506.md](./log/LOG-rotate-506.md) | rotated oldest for `.506` full-launch honesty |
 | [log/LOG-rotate-505.md](./log/LOG-rotate-505.md) | rotated oldest for `.505` Mission Rewards |
 | [log/LOG-rotate-504-form.md](./log/LOG-rotate-504-form.md) | rotated oldest for `.504` form reassemble |
 | [log/LOG-2026-06_to_2026-07-20.md](./log/LOG-2026-06_to_2026-07-20.md) | Rotated out of root LOG.md (rotation rule: ≤15 entries at root) |

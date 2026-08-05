@@ -32,6 +32,8 @@ import { PillarPageShell } from '@/components/layout/PillarPageShell';
 import { EmptyState } from '@/components/ui/EmptyState';
 import { ErrorState } from '@/components/ui/ErrorState';
 import { getJoinedClassCode, getTeacherPin } from '@/lib/schoolClass';
+import { visibleLeaderboardScopes } from '@/lib/leaderboard/boards';
+import { isAmericaTrackEnabled } from '@/lib/americaConfig';
 
 export function LeaderboardPage() {
  const { t } = useTranslation();
@@ -45,8 +47,10 @@ export function LeaderboardPage() {
  return parseLeaderboardBoardId(searchParams.get('board')) ?? 'mission-score';
  });
  const [scope, setScope] = useState<LeaderboardScope>(() => {
- return parseLeaderboardScope(searchParams.get('scope')) ?? 'global';
- });
+     const requested = parseLeaderboardScope(searchParams.get('scope')) ?? 'global';
+     const allowed = new Set(visibleLeaderboardScopes().map((s) => s.id));
+     return allowed.has(requested) ? requested : 'global';
+   });
  const [cloud, setCloud] = useState<Awaited<ReturnType<typeof fetchCloudLeaderboardSnapshots>>>([]);
  const [classRows, setClassRows] = useState<ClassLeaderboardRow[]>([]);
  const [classCode, setClassCode] = useState('');
@@ -348,18 +352,18 @@ export function LeaderboardPage() {
  </label>
  </div>
 
- {scope === 'class' && !classCode && (
- <EmptyState
- icon={Trophy}
- title={t('leaderboardClassEmptyTitle', { defaultValue: 'Join a PE class' })}
- description={t('leaderboardClassScopeHint', {
- defaultValue:
- 'Join a PE class on /america to see class standings here. Class board uses signed-in fitness test results.',
- })}
- actionLabel={t('leaderboardClassEmptyCta', { defaultValue: 'Open America track' })}
- href="/america"
- />
- )}
+ {scope === 'class' && isAmericaTrackEnabled() && !classCode && (
+         <EmptyState
+           icon={Trophy}
+           title={t('leaderboardClassEmptyTitle', { defaultValue: 'Join a PE class' })}
+           description={t('leaderboardClassScopeHint', {
+             defaultValue:
+               'Join a PE class on /america to see class standings here. Class board uses signed-in fitness test results.',
+           })}
+           actionLabel={t('leaderboardClassEmptyCta', { defaultValue: 'Open America track' })}
+           href="/america"
+         />
+       )}
 
  {scope === 'friends' && !squadCode && (
  <EmptyState

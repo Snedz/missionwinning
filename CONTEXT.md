@@ -16,7 +16,7 @@ One screen of truth for any AI tool or human joining cold. Read this, then [AGEN
 
 ---
 
-## Now (2026-08-05 · web `2026.07-unified.505` · Android `1.24.1`)
+## Now (2026-08-05 · web `2026.07-unified.506` · Android `1.24.1`)
 
 > The ONLY "where we are" block in the repo — [ORCHESTRATION.md](ORCHESTRATION.md) points here.
 >
@@ -263,6 +263,7 @@ One screen of truth for any AI tool or human joining cold. Read this, then [AGEN
 > and `.502` dropped `.487` detail (full text remains in LOG.md / archive)
 > and `.503` dropped `.488` detail (full text remains in LOG.md / archive)
 > and `.505` dropped detail (full text remains in LOG.md / archive)
+> and `.506` dropped detail (full text remains in LOG.md / archive)
 > to [CONTEXT-now-2026-07-30.md](docs/archive/CONTEXT-now-2026-07-30.md) after this
 > block reached **79 bullets / 103KB**. A status doc that only grows stops being read.
 
@@ -283,6 +284,7 @@ One screen of truth for any AI tool or human joining cold. Read this, then [AGEN
 > | Migrations | **9 recorded pending** — [LAUNCH_RUNBOOK](docs/LAUNCH_RUNBOOK.md) §3, enforced by `src/lib/migrationLedger.test.ts`. |
 > | gitleaks | **green — and scanning for the first time.** It had never scanned anything: on a `pull_request` event the action lists the PR's commits, the job declared no `permissions:` block, and it 403'd (`pull_requests=read`) before opening a file. Fixed by a `permissions:` block (`.224` carrying `.255`). It scans **only the PR's own commits**, so commit `8ea3527a`'s real Solana treasury address — scrubbed from the working file, still in history — is out of its scope. That finding stands, deliberately not allowlisted; it was never what made this check red. |
 
+- **`.506`:** Full-launch honesty — leaderboard zero-state + free-beta dual-mode depth unlock pins; class scope clamped when America parked.
 - **`.505`:** Mission Rewards (XP/ranks/badges) + full-launch override — weekly train goal boss; Victory/Today/Profile wired; leaderboard on by default.
 - **`.503`:** Kaizen K11 — History list Again + day-replay train retrain.
 - **`.502`:** Kaizen K6/K7 — basic no soft-Coach boss; History Train this again.
