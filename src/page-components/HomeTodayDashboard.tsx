@@ -48,7 +48,7 @@ import { shouldAppendTodayMoreDetails } from "@/lib/today/shouldAppendTodayMore"
 import { buildTodayHeaderFocusLine } from "@/lib/today/buildTodayHeaderFocusLine";
 import type { TodayBlockKey } from "@/lib/today/todayBlockPriority";
 import { useDismissed } from "@/hooks/useDismissed";
-import { localDateKey } from '@/lib/time/localDate';
+import { formatLocalDateKey, localDateKey } from '@/lib/time/localDate';
 import { peekCoachToday } from '@/lib/coach/peekCoachToday';
 import { loadPlan } from '@/lib/coach/storage';
 import { buildJustGoHeroMeta, type JustGoHeroMeta } from '@/lib/justGoHeroMeta';
@@ -182,7 +182,7 @@ export function HomeTodayDashboard() {
 
   useEffect(() => {
     setTodayLabel(
-      new Date().toLocaleDateString(i18n.language, {
+      formatLocalDateKey(localDateKey(), i18n.language, {
         weekday: 'long',
         month: 'short',
         day: 'numeric',
