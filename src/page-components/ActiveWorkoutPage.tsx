@@ -10,11 +10,18 @@ import { repRangeForGoal } from '@/lib/coach/progression';
 import { parseGoalPresetId } from '@/lib/journeyGoals';
 import { readRaw } from '@/lib/storage/safeStorage';
 import { STORAGE_KEYS } from '@/lib/storage/keys';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { useTranslation } from 'react-i18next';
 import { toast } from '@/hooks/use-toast';
 import { ensureFullExerciseCatalog, getExerciseById } from '@/data/exercises';
-import { useWorkoutStore } from '@/store/workoutStore';
+import { useWorkoutStore, hasLoggedWork } from '@/store/workoutStore';
+import {
+  parseSeoExerciseParam,
+  seoExerciseSessionTemplate,
+  shouldAddSeoExerciseToActive,
+  shouldStartSeoExerciseSession,
+  stripSeoExerciseFromSearch,
+} from '@/lib/seoExerciseBridge';
 import { getFormGuideOrCues } from '@/lib/formGuides';
 import { SignInPrompt } from '@/components/auth/SignInPrompt';
 import { useIsCompact } from '@/hooks/useIsCompact';
@@ -78,6 +85,7 @@ import { useLocaleFormat } from '@/hooks/useLocaleFormat';
 
 export function ActiveWorkoutPage() {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const { t } = useTranslation();
   const fmt = useLocaleFormat();
   const isCompact = useIsCompact();
@@ -91,6 +99,7 @@ export function ActiveWorkoutPage() {
   const restTimerActive = useWorkoutStore((s) => s.restTimerActive);
   const restTimerInitialSeconds = useWorkoutStore((s) => s.restTimerInitialSeconds);
   const startEmptyWorkout = useWorkoutStore((s) => s.startEmptyWorkout);
+  const startWorkout = useWorkoutStore((s) => s.startWorkout);
   const cancelActiveWorkout = useWorkoutStore((s) => s.cancelActiveWorkout);
   const completeActiveWorkout = useWorkoutStore((s) => s.completeActiveWorkout);
   const addExerciseToActive = useWorkoutStore((s) => s.addExerciseToActive);
@@ -116,6 +125,51 @@ export function ActiveWorkoutPage() {
   useEffect(() => {
     void ensureFullExerciseCatalog();
   }, []);
+
+  /**
+   * Flow-2 — SEO `/exercises/[id]` lands here with `?exercise=`. After persist
+   * rehydrates: start a single-lift session if nothing is logged; if work is
+   * already logged, append the lift when missing. Then strip the query so a
+   * refresh cannot re-fire `startWorkout`.
+   */
+  const seoExerciseConsumed = useRef(false);
+  useEffect(() => {
+    if (!hasHydrated || seoExerciseConsumed.current) return;
+    const id = parseSeoExerciseParam(searchParams);
+    if (!id) return;
+    seoExerciseConsumed.current = true;
+
+    const logged = hasLoggedWork(activeWorkout);
+    const activeIds = activeWorkout?.exercises.map((e) => e.exerciseId) ?? [];
+
+    void ensureFullExerciseCatalog().then(() => {
+      const ex = getExerciseById(id);
+      if (!ex) {
+        router.replace(`/active${stripSeoExerciseFromSearch(window.location.search)}`);
+        return;
+      }
+      if (shouldStartSeoExerciseSession({ exerciseId: id, hasLoggedWork: logged })) {
+        const session = seoExerciseSessionTemplate(id, ex.name);
+        startWorkout(session.name, session.exercises);
+      } else if (
+        shouldAddSeoExerciseToActive({
+          exerciseId: id,
+          hasLoggedWork: logged,
+          activeExerciseIds: activeIds,
+        })
+      ) {
+        addExerciseToActive(id, ex.muscleGroups);
+      }
+      router.replace(`/active${stripSeoExerciseFromSearch(window.location.search)}`);
+    });
+  }, [
+    hasHydrated,
+    searchParams,
+    activeWorkout,
+    startWorkout,
+    addExerciseToActive,
+    router,
+  ]);
 
   const [addExerciseId, setAddExerciseId] = useState('');
   const [setInputs, setSetInputs] = useState<Record<string, { reps: number; weight: number }>>({});

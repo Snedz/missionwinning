@@ -18,6 +18,7 @@ import { PATTERN_FILTER_LABELS } from '@/lib/libraryFilters';
 import { templatesUsingExercise } from '@/lib/exerciseUsage';
 import { PublicPageShell } from '@/components/public/PublicPageShell';
 import { ExercisePageBeacon } from '@/components/public/ExercisePageBeacon';
+import { seoExerciseTrainHref } from '@/lib/seoExerciseBridge';
 import type { Exercise } from '@/types';
 
 type Props = {
@@ -63,6 +64,8 @@ export function ExercisePublicPage({ exercise: raw, jsonLd }: Props) {
         eyebrow="Free exercise library"
         title={exercise.name}
         subtitle={subtitleParts.join(' · ')}
+        ctaHref={seoExerciseTrainHref(exercise.id)}
+        ctaLabel="Log this free"
         breadcrumb={
           <>
             <Link href="/exercises" className="text-primary hover:underline">
@@ -120,13 +123,17 @@ export function ExercisePublicPage({ exercise: raw, jsonLd }: Props) {
           </section>
         )}
 
-        {/* One-click into the free logger — craft-index primary CTA (GrokFilm "Try in Grok"). */}
+        {/* SEO → habit bridge (Flow-2): open Train with this lift already queued. */}
         <div className="flex flex-col gap-2 border-2 border-primary bg-tint p-4 sm:flex-row sm:items-center sm:justify-between">
           <p className="text-sm text-muted-foreground">
-            Free offline logger · no account · no API key
+            Free offline logger · no account · no API key — logs this movement
           </p>
-          <Link href="/welcome" className="primary-action shrink-0 text-center">
-            Train this free →
+          <Link
+            href={seoExerciseTrainHref(exercise.id)}
+            className="primary-action shrink-0 text-center"
+            data-testid="seo-exercise-train"
+          >
+            Log this free →
           </Link>
         </div>
 

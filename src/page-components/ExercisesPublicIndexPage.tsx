@@ -18,7 +18,9 @@ export async function ExercisesPublicIndexPage() {
     <PublicPageShell
       eyebrow="Think like a coach"
       title="Exercise library"
-      subtitle={`${EXERCISES.length} movements with form diagrams and coach language — filter by pattern, open a lift, train free.`}
+      subtitle={`${EXERCISES.length} movements with form diagrams and coach language — open a lift, then log it free offline.`}
+      ctaHref="/welcome"
+      ctaLabel="Start free"
       maxWidth="4xl"
     >
       <section>
