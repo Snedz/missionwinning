@@ -10,6 +10,7 @@ import {
   resolveStartRestSeconds,
   restProgress,
   REST_FINAL_SECONDS,
+  shouldShowRestPresets,
 } from '@/lib/workout/restTimer';
 import { readFileSync } from 'node:fs';
 import path from 'node:path';
@@ -37,6 +38,12 @@ describe('restTimer', () => {
     assert.equal(isRestFinalSeconds(REST_FINAL_SECONDS + 1), false);
     assert.equal(isRestFinalSeconds(0), false);
     assert.equal(isRestFinalSeconds(-1), false);
+  });
+
+  it('hides rest presets in final seconds so Skip owns the thumb', () => {
+    assert.equal(shouldShowRestPresets(90), true);
+    assert.equal(shouldShowRestPresets(REST_FINAL_SECONDS), false);
+    assert.equal(shouldShowRestPresets(1), false);
   });
 
   it('resolveRestSeconds uses max of suggested and default', () => {

@@ -153,6 +153,7 @@ Nice-to-have only if it slowed you:
 | `.481` | Rest meter under the big clock is **thick** enough to read outdoors without the digits |
 | `.482` | Log console defaults to **Work + Kind** (not four kind chips). Kind expands Warmup/Fail/Drop |
 | `.485` | Rest clock turns **accent** in the last ~10s (outdoor “about to go” without reading digits) |
+| `.486` | Rest **Skip** fills accent in last 10s; presets hide so one bright thumb target |
 
 Also Horizon W: one-thumb outdoors · one clear next session · coach week earned · re-entry after a gap · ≤90s first open not a chore list.
 

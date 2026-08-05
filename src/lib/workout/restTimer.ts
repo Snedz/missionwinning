@@ -83,6 +83,11 @@ export function isRestFinalSeconds(remaining: number): boolean {
   return Number.isFinite(remaining) && remaining > 0 && remaining <= REST_FINAL_SECONDS;
 }
 
+/** Final-seconds dock: hide preset chips so Skip is the only bright CTA. */
+export function shouldShowRestPresets(remaining: number): boolean {
+  return !isRestFinalSeconds(remaining);
+}
+
 /** Active log rest: named exercise uses shared resolver, else the 90s fallback. */
 export function restSecondsForExercise(exerciseName: string | undefined, fallback = 90): number {
   return exerciseName ? resolveRestSeconds(exerciseName) : fallback;
