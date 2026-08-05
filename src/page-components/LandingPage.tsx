@@ -191,9 +191,14 @@ export function LandingPage() {
 
       {/* ── CHECKABLE FACTS ─────────────────────────────────────────────
           The stat row from the handoff: figures a visitor can verify, set in
-          tabular numerals on 2px rules. No traction claims (hard rule 3). */}
-      <section className="section-seam" aria-label="At a glance">
-        <div className="mx-auto grid max-w-6xl grid-cols-2 gap-px bg-border px-0 sm:grid-cols-4">
+          tabular numerals on 2px rules. No traction claims (hard rule 3).
+
+          Flush grid (no vertical padding): do NOT use `section-seam` as the only
+          bottom rule — that paints a background image children cover. Use a real
+          `border-b-2` so the line stays visible under opaque `bg-background` cells.
+          Internal gutters are `gap-0.5` (2px), not `gap-px` (1px). */}
+      <section className="border-b-2 border-border" aria-label="At a glance">
+        <div className="mx-auto grid max-w-6xl grid-cols-2 gap-0.5 bg-border sm:grid-cols-4">
           {[
             {
               k: 'landingStatExercisesV',
