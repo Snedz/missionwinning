@@ -141,7 +141,7 @@ Nice-to-have only if it slowed you:
 - …
 ```
 
-**Poke list for recent craft (www ≥ `.292`):**
+**Poke list for recent craft (www ≥ `.292`; Form Index + outdoor logger through `.482`):**
 
 | Build | Check on phone |
 |-------|----------------|
@@ -149,8 +149,13 @@ Nice-to-have only if it slowed you:
 | `.290` | Victory “Next: …” after a real session (BW line if you have bodyweight work) |
 | `.291` | After **one** finished workout, Today / First Steps push **session 2**, not Fuel |
 | `.292` | Rest after a set feels ~90s+ for compounds (not a bare 30s if something started without a duration) |
+| `.476`–`.479` | Form Index: open form mid-set on **deadlift / front-squat / bench** — silent **loop autoplays** (no play tap). OHP / pull-ups may be still-only (not a bug if still teaches) |
+| `.481` | Rest meter under the big clock is **thick** enough to read outdoors without the digits |
+| `.482` | Log console defaults to **Work + Kind** (not four kind chips). Kind expands Warmup/Fail/Drop |
 
 Also Horizon W: one-thumb outdoors · one clear next session · coach week earned · re-entry after a gap · ≤90s first open not a chore list.
+
+**Still founder-only (agents cannot complete):** set `MAIL_POSTAL_ADDRESS` · apply pending Supabase migrations · flip `PRIVATE_MODE` · live Stripe / EIN · recruit ≥10.
 
 - [ ] Dogfood notes taken on current build (paste to agent or keep; at least **#1 friction** written down)
 - [ ] Hero flow QA'd on a real phone: teaser → access → I-Day → first workout → Victory → Coach/Today
