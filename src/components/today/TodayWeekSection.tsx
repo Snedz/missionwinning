@@ -10,6 +10,7 @@ import type { TodaysWorkout } from '@/lib/todaysWorkout';
 import { Check } from 'lucide-react';
 import type { RewardsSummary } from '@/lib/rewards/summary';
 import { TodayRewardsCard } from '@/components/rewards/TodayRewardsCard';
+import { XP_BY_ACTION } from '@/lib/rewards/catalog';
 
 type Props = {
   challenges: ReturnType<typeof getChallengeProgress>;
@@ -27,6 +28,7 @@ export function TodayWeekSection({
   rewards,
 }: Props) {
   const { t } = useTranslation();
+  const challengeXp = XP_BY_ACTION.challenge_complete;
 
   return (
     <div className="space-y-4 pt-2">
@@ -73,7 +75,8 @@ export function TodayWeekSection({
                   {localizedChallengeDesc(c.id, c.description, t)}
                   {done
                     ? t('rewardChallengeXpHint', {
-                        defaultValue: ' · +75 XP earned',
+                        xp: challengeXp,
+                        defaultValue: ` · +${challengeXp} XP earned`,
                       })
                     : null}
                 </p>

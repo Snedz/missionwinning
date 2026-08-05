@@ -176,5 +176,6 @@
   "rewardChallengeDone": "Done",
   "rewardChallengeXp": "XP when complete",
   "rewardProfileRank": "Level {{level}} · {{rank}} · {{xp}} XP",
-  "rewardHonor": "Honor"
+  "rewardHonor": "Honor",
+  "rewardChallengeXpHint": " · +{{xp}} XP earned"
 }
