@@ -43,7 +43,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     ...(isFreeBeta() ? [] : ['/bundle']),
     '/compare',
     '/press',
-    '/experience',
+
     '/terms',
     '/privacy',
     '/cookies',
