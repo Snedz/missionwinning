@@ -1,7 +1,7 @@
 # Flow architecture — chip floorplan
 
 **Audience:** Founder + agents  
-**Baseline:** web `2026.07-unified.493`+  
+**Baseline:** web `2026.07-unified.499`+  
 **Lens:** Two dies, power domains, buses, critical path, dual-pad hazards  
 **Related:** [JOURNEY.md](JOURNEY.md) · [ARCHITECTURE.md](ARCHITECTURE.md) · [YC_THESIS.md](YC_THESIS.md) · [vision.md](../vision.md)
 
@@ -125,8 +125,13 @@ Horizon W: Train → Today → Victory → Coach excellence.
 | **Flow-3** | Guide + Paths single content handoff | **done `.496`** |
 | **Flow-4** | More sheet tiers (Wedge / Pillars / You) | **done `.497`** |
 | **Flow-5** | Founder phone dogfood critical path only | founder |
+| **Flow-6** | Readiness Today boss = train-first (not PAR-Q / guidebook) | **done `.499`** |
+| **Flow-7** | Coach invite mounts early readiness (sessions 1–3) | **done `.499`** |
+| **Flow-8** | Library chrome “Today Hub” → “Today” | **done `.499`** |
 
 Defaults until founder overrides: keep full free-beta More depth; public `/guide` stays magazine home; early-journey pillar hide deferred.
+
+**Readiness boss rule (Flow-6):** while `!streakMet`, JourneyHero primary is train (`/active`, week-1 session-2 copy at exactly one log). PAR-Q remains required to *commission*; guidebook stays First Steps / Learn / More — never Today primary on the open commitment window.
 
 ---
 

@@ -17,6 +17,7 @@ import {
   firstStepsMayMount,
   reentryCardMayMount,
 } from '@/lib/today/todayGuidanceMount';
+import { todayCoachInviteMayMount } from '@/lib/today/todayCoachInviteMount';
 import {
   TODAY_BLOCK_PRIORITY,
   type TodayBlockKey,
@@ -73,7 +74,10 @@ export function buildTodayCandidates(input: BuildTodayCandidatesInput): TodayCan
     out.push({ key: 'freshness', priority: P.freshness });
   }
 
-  if (input.belowFoldReady && input.totalSessions >= 1 && input.phase === 'basic') {
+  if (
+    input.belowFoldReady &&
+    todayCoachInviteMayMount({ phase: input.phase, totalSessions: input.totalSessions })
+  ) {
     out.push({ key: 'coach-invite', priority: P['coach-invite'] });
   }
 

@@ -13,7 +13,7 @@ const LIBRARY_EN: Record<string, string> = {
   library: 'Exercise Library',
   librarySubtitle:
     '{{count}}+ movements with cues and alternatives. Bodyweight and minimal equipment prioritized.',
-  libraryTodayHub: 'Today Hub',
+  libraryTodayHub: 'Today',
   libraryProgramTemplates: 'Program templates',
   libraryPremiumUnlocked: ' — full library unlocked.',
   libraryFreeCatalog: ' — free core includes the full catalog.',
@@ -75,7 +75,7 @@ const LIBRARY_ES: Record<string, string> = {
   ...LIBRARY_EN,
   librarySubtitle:
     '{{count}}+ movimientos con indicaciones y alternativas. Prioridad a peso corporal y equipo mínimo.',
-  libraryTodayHub: 'Centro de hoy',
+  libraryTodayHub: 'Hoy',
   libraryProgramTemplates: 'Plantillas de programa',
   libraryPremiumUnlocked: ' — biblioteca completa desbloqueada.',
   libraryFreeCatalog: ' — el núcleo gratuito incluye el catálogo completo.',

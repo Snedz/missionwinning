@@ -74,6 +74,19 @@ describe('buildTodayCandidates', () => {
     assert.ok(basic.includes('coach-invite'));
     assert.ok(basic.includes('encourage'));
 
+    // Flow-7 — early readiness still shows invite (sessions 1–3).
+    const readinessEarly = buildTodayCandidates(
+      densestEvening({
+        phase: 'readiness',
+        showDashboard: true,
+        reentryShow: false,
+        firstStepsDismissed: true,
+        totalSessions: 1,
+        streak: 0,
+      })
+    ).map((s) => s.key);
+    assert.ok(readinessEarly.includes('coach-invite'));
+
     const commissioned = buildTodayCandidates(densestEvening()).map((s) => s.key);
     assert.ok(!commissioned.includes('coach-invite'));
     assert.ok(commissioned.includes('coach-today'));
