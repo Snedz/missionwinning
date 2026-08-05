@@ -1,6 +1,6 @@
 'use client';
 
-import { localDateKey } from '@/lib/time/localDate';
+import { formatLocalDateKey, localDateKey } from '@/lib/time/localDate';
 import { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Button } from '@/components/ui/button';
@@ -197,9 +197,7 @@ export function FuelWeightStrip({ todayIso, refreshKey = 0, onLogged }: Props) {
           {weekSeries.map((p) => {
             const h = Math.max(4, Math.round(((p.value - minW) / span) * 28) + 4);
             const isToday = p.date === todayIso;
-            const label = new Date(`${p.date}T12:00:00`).toLocaleDateString(i18n.language, {
-              weekday: 'narrow',
-            });
+            const label = formatLocalDateKey(p.date, i18n.language, { weekday: 'narrow' });
             const disp = Math.round(kgToDisplay(p.value, units) * 10) / 10;
             return (
               <div key={p.date} className="flex-1 flex flex-col items-center gap-0.5 min-w-0">

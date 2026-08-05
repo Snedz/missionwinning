@@ -33,6 +33,7 @@ import {
   getYesterdayEntries,
   parseNutritionLog,
   pruneNutritionLogToDays,
+  mergeTodayIntoNutritionLog,
   summarizeNutritionDays,
 } from '@/lib/nutritionQuickLog';
 import { FuelWeekGlance } from '@/components/nutrition/FuelWeekGlance';
@@ -213,20 +214,9 @@ export function NutritionPage() {
   /** Single writer: merge today's list into full history + device storage. */
   useEffect(() => {
     setAllLogs((prev) => {
-      const older = prev.filter((l) => l.date && l.date !== today);
-      const todayRows = logged.map((l) => ({
-        name: l.name,
-        protein: l.protein,
-        cals: l.cals,
-        carbs: l.carbs,
-        fat: l.fat,
-        meal: l.meal,
-        time: l.time,
-        date: today,
-      }));
-      const next = pruneNutritionLogToDays([...older, ...todayRows], 90);
+      const next = mergeTodayIntoNutritionLog(prev, logged, today, 90);
       writeJson(STORAGE_KEYS.nutritionLog, next);
-      if (todayRows.length > 0) {
+      if (logged.length > 0) {
         void import('@/lib/rewards/apply').then((m) => m.applyFuelDayReward(today));
       }
       return next;

@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import type { NutritionLogRow } from '@/lib/nutritionQuickLog';
 import { compareKeys } from '@/lib/i18n/formatLocale';
+import { formatLocalDateKey } from '@/lib/time/localDate';
 
 type Props = {
   logs: NutritionLogRow[];
@@ -64,7 +65,7 @@ export function FuelPastDaysCard({ logs, todayIso, onCopyDayToToday }: Props) {
           {byDate.map(([date, rows]) => {
             const protein = rows.reduce((s, r) => s + (r.protein || 0), 0);
             const cals = rows.reduce((s, r) => s + (r.cals || 0), 0);
-            const label = new Date(`${date}T12:00:00`).toLocaleDateString(i18n.language, {
+            const label = formatLocalDateKey(date, i18n.language, {
               weekday: 'short',
               month: 'short',
               day: 'numeric',
