@@ -1,46 +1,48 @@
 # Improvement log — Kaizen Night (2026-08-05 full-launch)
 
 Plan: `.hermes/plans/2026-08-05_kaizen-night-plan.md`  
-**Tip:** `2026.07-unified.522` · PRs **#300–#328** · unit tests **1810** pass  
+**Tip:** `2026.07-unified.525` · PRs **#300–#332** · unit tests **1812** pass  
 Local gate authoritative (GitHub Actions often billing-blocked).
 
 ## Contract
 
 Full-launch override · free logger never gated · no `PRIVATE_MODE` · small PRs · merge on local green.
 
-## Shipped this night (.507 → .522)
+## Shipped this night (.507 → .525)
 
 | Build | Highlight |
 |-------|-----------|
 | `.507` | Lean Today rewards, milestone badges, More Leaderboard |
-| `.508` | americaHomeOrFallback (no parked 404s) |
-| `.509` | Victory XP consume-once (Strict Mode) |
+| `.508` | americaHomeOrFallback |
+| `.509` | Victory XP consume-once |
 | `.510` | FREE_BETA Unlock + Bundle dual-mode pins |
-| `.511` | Share never hard-codes parked /america |
-| `.512` | still_mind + Coach from-logs honesty |
-| `.513`–`.517` | EN rewards i18n, ranks, badges |
+| `.511` | Share never parked /america |
+| `.512` | still_mind + Coach from-logs |
+| `.513`–`.517` | EN rewards / ranks / badges i18n |
 | `.514`–`.515` | perfect_week spectrum + all apply paths |
 | `.516` | Challenge Done XP from catalog |
 | `.518` | Re-entry shame-free copy guard |
 | `.519` | sumHistoryVolume + LOG .504 continuity |
 | `.520` | rewards INDEX perfect week |
-| `.521` | formatLocalDateKey shared |
-| `.522` | Profile weekly challenges-met line |
+| `.521`–`.525` | formatLocalDateKey cascade (History, HistoryDay, trends) |
+| `.522` | Profile weekly challenges-met |
+| `.523` | WhatsNew EN rewards |
+| `.524` | badge desc EN |
 
 ## Metrics
 
 | | Start | Now |
 |--|-------|-----|
-| Build | `.506` | **`.522`** |
-| Unit tests | 1778 | **1810** (+32) |
-| Merged PRs after #299 | — | **#300–#328** |
+| Build | `.506` | **`.525`** |
+| Unit tests | 1778 | **1812** (+34) |
+| Merged PRs after #299 | — | **#300–#332** |
 
 ## Remaining
 
-- Further fat decomp (Nutrition / Active / Dashboard)
+- Fat decomp (Nutrition / Active / Dashboard further)
 - Phone dogfood rewards path
 - Founder: postal, migrations, invites, Actions billing, Android Accept B
-- Visual baselines on Linux when billing works
+- Visual baselines on Linux when CI runs
 
 ## Refuses
 
