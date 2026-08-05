@@ -1,7 +1,7 @@
 # Improvement log — Kaizen Night (2026-08-05 full-launch)
 
 Plan: `.hermes/plans/2026-08-05_kaizen-night-plan.md`  
-**Tip:** `2026.07-unified.520` · PRs **#300–#324** · unit tests **1806** pass  
+**Tip:** `2026.07-unified.521` · PRs **#300–#326** · unit tests **1809** pass  
 Local gate authoritative (Actions often billing-blocked).
 
 ## Contract
@@ -25,13 +25,14 @@ Full-launch override · free logger never gated · no `PRIVATE_MODE` · small PR
 | `.518` | #320 | Re-entry shame-free guard |
 | `.519` | #322 | sumHistoryVolume + LOG .504 hole |
 | `.520` | #324 | rewards INDEX perfect week |
+| `.521` | #326 | formatLocalDateKey shared |
 
 ## Metrics
 
 | | Start | Now |
 |--|-------|-----|
-| Build | `.506` | **`.520`** |
-| Tests | 1778 | **1806** |
+| Build | `.506` | **`.521`** |
+| Tests | 1778 | **1809** |
 | Net PRs | — | **~25** (#300–#324 incl docs) |
 
 ## Remaining for later loops
