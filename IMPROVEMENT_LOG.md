@@ -15,7 +15,7 @@ Full-launch override · free logger never gated · no `PRIVATE_MODE` · small PR
 | `.507` | Lean Today rewards, milestone badges, More Leaderboard |
 | `.508`–`.512` | America fallbacks, Victory Strict Mode, FREE_BETA pins, share honesty, still_mind |
 | `.513`–`.520` | EN rewards i18n, perfect_week, challenge XP, re-entry guard, volume helper, INDEX |
-| `.521`–`.528` | formatLocalDateKey/MonthKey cascade (History, day, trends, analytics, fuel) + nutrition merge |
+| `.521`–`.529` | formatLocal* cascade (History→Today header) + nutrition merge |
 
 ## Metrics
 
