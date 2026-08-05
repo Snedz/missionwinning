@@ -28,12 +28,14 @@
 3. **Enable CodeQL:** repo **Settings → Security → Code scanning** — turn on GitHub CodeQL (upload fails until enabled; workflow soft until then).
 4. **Promote Production (if www drifts again):** Actions → **Deploy production** → `workflow_dispatch`, **or** `vercel promote <ready-master-dpl> --yes`, **or** Vercel dashboard → Promote.
 5. Confirm you can see the project dashboard and Production deploys from `master`.
-6. After promote, check Profile footer / `/api/health` matches `src/lib/buildInfo.ts` (expect **`2026.07-unified.104`+** — do not assume until verified). Smoke anonymous: `/guide` → Start free opens `/welcome` (no 307 to `/private`); `/magazine/beyond-the-basics.pdf` downloads; `/locales/en/common.json` returns 200; `/log` still redirects to `/private`.
+6. After promote, check Profile footer / `/api/health` matches `src/lib/buildInfo.ts` (expect **`2026.07-unified.498`+** — do not assume until verified). Smoke anonymous: `/guide` → Start free opens `/welcome` (no 307 to `/private`); `/magazine/beyond-the-basics.pdf` downloads; `/locales/en/common.json` returns 200; `/log` still redirects to `/private` while gated.
 
 - [x] GitHub Actions billing cleared (CI jobs no longer die in ~2–5s) — **cleared 2026-07-22; re-check if regress**
 - [x] `VERCEL_TOKEN` confirmed working for Deploy production (`.104` Deploy green 2026-07-22)
 - [ ] CodeQL / code scanning enabled (Settings → Security) — workflow soft until then
-- [x] Production shows **`.104`+** on `/api/health` (agent-verified 2026-07-22)
+- [x] Production showed **`.104`+** on `/api/health` (agent-verified 2026-07-22)
+- [ ] Production shows **`.498`+** after next promote / Deploy Hook catch-up (Vercel may lag `master`)
+- [ ] Deploy Hook still fires on `master` push (or manual promote when www drifts)
 - [x] I can open the Vercel project and deploy (GitHub integration / CLI promote)
 
 ## §2 — Environment & database (~45 min, one-time)
@@ -115,6 +117,50 @@ Scorecard: [docs/PRODUCTION_STACK.md](PRODUCTION_STACK.md). Recovery: [docs/BACK
 - **Also before flip:** Android Accept B Pass — [apps/android/FOUNDER_ACCEPT.md](../apps/android/FOUNDER_ACCEPT.md) 15-min path → [SHIP_INTERNAL.md](../apps/android/SHIP_INTERNAL.md)
 - **Aikido (optional but recommended):** MCP issues permissions + `AIKIDO_SECRET_KEY` — [AIKIDO.md](AIKIDO.md)
 
+## §2c — Security pre-launch (before public flip)
+
+> **Not “unhackable.”** Defense-in-depth: secrets out of git, RLS + no service_role in the browser, API auth, webhook signatures, smokes after deploy. Spine: [PROTECTION.md](PROTECTION.md) · [SECRETS.md](SECRETS.md) · [OWASP_AUDIT.md](OWASP_AUDIT.md) · [SECURITY.md](../SECURITY.md).
+
+1. **Secrets scan (working tree):**
+   ```bash
+   npm run secrets:scan
+   ```
+2. **Optional history scan before repo Public:**
+   ```bash
+   gitleaks detect --source . -v
+   ```
+   Rotate any credential that ever appeared in history.
+3. **GitHub → Settings → Security:** enable **Code scanning (CodeQL)** if not already; enable **Secret scanning** + **Push protection** when the plan allows (stronger on Public).
+4. **Vercel Production env (names only in docs):** confirm `SUPABASE_SERVICE_ROLE_KEY`, Stripe secrets, `PRIVATE_ACCESS_SECRET`, `CRON_SECRET` are **Sensitive** / server-only — never `NEXT_PUBLIC_*`. Confirm `DEMO_PREMIUM=false` and `PRIVATE_ALLOW_QUERY_ACCESS` is not `true`.
+5. **After each Production deploy:**
+   ```bash
+   SMOKE_BASE_URL=https://www.missionwinning.com npm run security-smoke
+   SMOKE_BASE_URL=https://www.missionwinning.com npm run rate-limit-smoke
+   ```
+6. **Sentry:** set `NEXT_PUBLIC_SENTRY_DSN` or explicitly defer with a written reason.
+7. **Support:** watch `support@missionwinning.com` for subject `SECURITY` ([SECURITY.md](../SECURITY.md)).
+
+- [ ] `npm run secrets:scan` clean on the machine used for public-flip prep
+- [ ] Optional full-history gitleaks; any hits rotated
+- [ ] CodeQL / code scanning enabled
+- [ ] Secret scanning + push protection enabled (or scheduled for Public flip)
+- [ ] Vercel Sensitive: service role / Stripe / gate secrets not client-exposed; `DEMO_PREMIUM=false`
+- [ ] Post-deploy `security-smoke` + `rate-limit-smoke` green on www
+- [ ] Sentry DSN live **or** deferred with reason
+- [ ] Support inbox monitored for security reports
+
+**DB isolation (ties to §2 migrations):** user data is protected by **Supabase RLS** + **never shipping `service_role` to the client**. Pending migrations 10–17 still block return-loop / week-4 correctness / Android sync — apply them before treating cloud sync as production-ready.
+
+## §2d — Legal / counsel (before first real charge)
+
+> Agents draft; **counsel** owns enforceability. Pack: [legal/COUNSEL_BRIEF.md](legal/COUNSEL_BRIEF.md) · frozen EN text in [legal/exports/](legal/exports/) · [PAY_READY_LEGAL.md](PAY_READY_LEGAL.md) · [LEGAL_SAFETY.md](LEGAL_SAFETY.md).
+
+- [ ] Fill entity blanks in [COUNSEL_BRIEF.md](legal/COUNSEL_BRIEF.md) (formation state, officers, EIN)
+- [ ] Decide public **postal address** (Bizee RA publishable vs PO box/CMRA); set `MAIL_POSTAL_ADDRESS` on Vercel Production + Preview
+- [ ] File **DMCA agent** at [copyright.gov](https://www.copyright.gov/dmca-directory/); put exact name/email/postal on `/dmca`
+- [ ] Outside counsel review of Terms + Privacy + Refunds (+ DMCA agent block) before first real Stripe/PayPal/USDC charge
+- [ ] Optional: trademark clearance; cyber liability quote before school/enterprise (do not claim “insured” in Privacy until bound)
+
 ---
 
 ## §3 — Beta: 10 real users (target: **2026-08-02**)
@@ -141,23 +187,27 @@ Nice-to-have only if it slowed you:
 - …
 ```
 
-**Poke list for recent craft (www ≥ `.292`; Form Index + outdoor logger through `.482`):**
+**Poke list for recent craft (prefer local `npm run dev` if Vercel lags; www ≥ `.498` when promoted):**
 
-| Build | Check on phone |
+| Build | Check on phone / desktop |
 |-------|----------------|
 | `.285`–`.289` | Last · Next · why; Enter logs set; Use next when dial ≠ target; next set carries what you just did |
 | `.290` | Victory “Next: …” after a real session (BW line if you have bodyweight work) |
 | `.291` | After **one** finished workout, Today / First Steps push **session 2**, not Fuel |
 | `.292` | Rest after a set feels ~90s+ for compounds (not a bare 30s if something started without a duration) |
-| `.476`–`.479` | Form Index: open form mid-set on **deadlift / front-squat / bench** — silent **loop autoplays** (no play tap). OHP / pull-ups may be still-only (not a bug if still teaches) |
+| `.476`–`.479` | Form Index: open form mid-set on **deadlift / front-squat / bench** — silent **loop autoplays** when wired. **OHP / pull-ups** may be **SVG** (wrong stills demoted `.498` — not a bug) |
 | `.481` | Rest meter under the big clock is **thick** enough to read outdoors without the digits |
 | `.482` | Log console defaults to **Work + Kind** (not four kind chips). Kind expands Warmup/Fail/Drop |
 | `.485` | Rest clock turns **accent** in the last ~10s (outdoor “about to go” without reading digits) |
 | `.486` | Rest **Skip** fills accent in last 10s; presets hide so one bright thumb target |
+| `.494`–`.497` | Footer Product: **Start free** first, **How Coach adapts**; More sheet tiers **Wedge · Pillars · You** (not a tab dump) |
+| `.495` | `/exercises/{id}` → **Log this free** starts Train with that lift (`?exercise=`) |
+| `.496` | `/paths/{id}` → **Open in Learn** expands that path; magazine ↔ app guide links |
+| `.498` | Desktop exercise orange strip: **copy + button side-by-side** (not full-width button crushing text) |
 
 Also Horizon W: one-thumb outdoors · one clear next session · coach week earned · re-entry after a gap · ≤90s first open not a chore list.
 
-**Still founder-only (agents cannot complete):** set `MAIL_POSTAL_ADDRESS` · apply pending Supabase migrations · flip `PRIVATE_MODE` · live Stripe / EIN · recruit ≥10.
+**Still founder-only (agents cannot complete):** set `MAIL_POSTAL_ADDRESS` · apply pending Supabase migrations · flip `PRIVATE_MODE` · live Stripe / EIN · recruit ≥10 · counsel review · secrets/history scan before Public.
 
 - [ ] Dogfood notes taken on current build (paste to agent or keep; at least **#1 friction** written down)
 - [ ] Hero flow QA'd on a real phone: teaser → access → I-Day → first workout → Victory → Coach/Today
