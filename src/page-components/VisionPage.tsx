@@ -1,7 +1,7 @@
 'use client';
 /**
- * Page: /vision — vision statement page
- * See: app/INDEX.md, src/page-components/INDEX.md
+ * Page: /vision — public product direction (must track vision.md, not pitch-deck slop)
+ * See: app/INDEX.md, vision.md, docs/YC_THESIS.md
  */
 
 import { useTranslation } from 'react-i18next';
@@ -18,6 +18,14 @@ const VISION_CORE_ITEMS = [
   'infoVisionCoreLi5',
 ] as const;
 
+const VISION_CORE_DEFAULTS: Record<(typeof VISION_CORE_ITEMS)[number], string> = {
+  infoVisionCoreLi1: 'Workout tracking is free forever — no account required to start.',
+  infoVisionCoreLi2: 'Exercise library focused on bodyweight and minimal gear.',
+  infoVisionCoreLi3: 'Mission Coach weekly plans from your logs alone.',
+  infoVisionCoreLi4: 'Offline-first PWA — installable, works without a store.',
+  infoVisionCoreLi5: 'Fuel, Move, Mind, Track, and Learn deepen the path — they are not the pitch.',
+};
+
 export function VisionPage() {
   const { t } = useTranslation();
   const freeBeta = isFreeBeta();
@@ -30,43 +38,45 @@ export function VisionPage() {
       subtitle={t('infoVisionSubtitle', {
         defaultValue: freeBeta
           ? 'Free offline logger + Mission Coach from your logs — health fundamentals without a paywall.'
-          : 'Free offline logger + Mission Coach from your logs. Super Bundle adds depth — never gates the logger.',
+          : 'Free offline logger + Mission Coach from your logs. Super Bundle deepens the other pillars — it never gates the logger.',
       })}
       footer={<InfoPageFooter showLegal showToday showBundle={!freeBeta} />}
     >
       <p className="text-muted-foreground leading-relaxed">
         <strong className="text-foreground">
           {t('infoVisionLead', {
-            defaultValue: freeBeta
-              ? 'Train anywhere. Coach from what you actually logged.'
-              : 'Train anywhere. Coach from what you actually logged.',
+            defaultValue: 'Train anywhere. Coach from what you actually logged.',
           })}
         </strong>
       </p>
       <p className="text-muted-foreground leading-relaxed">
         {t('infoVisionP1', {
           defaultValue:
-            'Mission Winning is the entrance to the path — a clear, evidence-based way to build strength and resilience. Start with the free logger; Mission Coach shapes the week from your history.',
+            'Mission Winning is the entrance to the path: free forever workout logging (no account) plus Mission Coach — fatigue-aware weekly plans from your history alone, no wearable required.',
         })}
       </p>
       <p className="text-muted-foreground leading-relaxed">
         {t('infoVisionP2', {
           defaultValue: freeBeta
             ? 'One mission: make the fundamentals free. Fuel, Move, Mind, and Learn deepen the path when you are ready — they are not the pitch.'
-            : 'One mission: free logger forever. Super Bundle funds Coach depth and the other pillars — never a gate on logging.',
+            : 'Super Bundle adds Coach depth and the other pillars when you want them. It funds the mission — it never gates the free logger. Educational tools — not medical care.',
         })}
       </p>
 
-      <InfoSection title={t('infoVisionCorePromise', { defaultValue: 'Core promise: free forever for the mission' })}>
+      <InfoSection
+        title={t('infoVisionCorePromise', {
+          defaultValue: 'Core promise: free forever for the mission',
+        })}
+      >
         <p className="text-muted-foreground">
           {t('infoVisionCoreP1', {
             defaultValue:
-              'The fundamentals that make the world healthier must be available to all, with no money barrier.',
+              'The fundamentals that make people healthier should have no price of admission.',
           })}
         </p>
         <ul className="list-disc pl-5 space-y-2 text-muted-foreground">
           {VISION_CORE_ITEMS.map((key) => (
-            <li key={key}>{t(key, { defaultValue: key })}</li>
+            <li key={key}>{t(key, { defaultValue: VISION_CORE_DEFAULTS[key] })}</li>
           ))}
         </ul>
         <p className="text-muted-foreground italic">
@@ -77,36 +87,36 @@ export function VisionPage() {
         </p>
       </InfoSection>
 
-      <InfoSection title={t('infoVisionSuperApp', { defaultValue: 'The super app structure' })}>
+      <InfoSection title={t('infoVisionSuperApp', { defaultValue: 'Six pillars' })}>
         <p className="text-muted-foreground">
           {t('infoVisionSuperAppP1', {
             defaultValue:
-              'Inspired by successful freemium + bundle models, Mission Winning is structured as modular pillars with free entry points and premium depth.',
+              'One product, six pillars: free entry on each, premium depth where it earns its keep. We pitch Train + Mission Coach first — not an everything-app laundry list.',
           })}
         </p>
         <p className="text-muted-foreground">
           {t('infoVisionSuperAppP2', {
             defaultValue:
-              'The pillars: Train, Fuel, Move, Mind, Track, Learn.',
+              'Train · Fuel · Move · Mind · Track · Learn. Different fronts, one goal: stay strong enough to show up.',
           })}
         </p>
       </InfoSection>
 
       {!freeBeta && (
-      <InfoSection title={t('infoVisionSuperBundle', { defaultValue: 'Super Bundle' })}>
-        <p className="text-muted-foreground">
-          {t('infoVisionSuperBundleBody', {
-            defaultValue:
-              'The flagship offering. One subscription unlocks premium depth across multiple pillars.',
-          })}
-        </p>
-      </InfoSection>
+        <InfoSection title={t('infoVisionSuperBundle', { defaultValue: 'Super Bundle' })}>
+          <p className="text-muted-foreground">
+            {t('infoVisionSuperBundleBody', {
+              defaultValue:
+                'One subscription for Coach depth and the other pillars when you want them. The free logger stays free — Super Bundle deepens, never gates.',
+            })}
+          </p>
+        </InfoSection>
       )}
 
       <p className="text-xs text-muted-foreground">
         {t('infoVisionFoot', {
           defaultValue:
-            'Full details in vision.md in the project root. This page is a summary. The app exists to serve this vision.',
+            'This page is a public summary of our product direction. The free logger is never gated.',
         })}
       </p>
     </InfoPageShell>
