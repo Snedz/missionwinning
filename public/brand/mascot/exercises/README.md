@@ -1,33 +1,27 @@
-# Scout exercise pilots (examples)
+# Mascot exercise pilots (croco kit)
 
-**Status:** craft pilot — **not** Form Index teaching media.  
-Clinical Train form stays photoreal/clinical packs under `/form/{id}/` (see [docs/MEDIA_SYSTEM.md](../../../../docs/MEDIA_SYSTEM.md), [docs/MASCOT.md](../../../../docs/MASCOT.md)).
+**Mascot:** Mission Winning croco (Totodile-inspired craft character)  
+**Identity anchor:** session JPEG **34** — calm / escalating / crash-out sheet  
+**Extracted idle:** `/brand/mascot/croco-idle.webp` (calm panel from 34)  
+**Kit refs:** `media/form-kit/refs/mascot-croco-sheet-34.jpg`, `mascot-croco-idle-from-34.jpg`, `mascot-croco-turnaround-35.jpg`
 
-Scout is the mission companion (invite / celebrate / empty state). These loops explore **mascot-led exercise demos** for social, Victory flourishes, or Learn fun — not mid-set standards.
+Scout (falcon) is **retired**. Do not use scout-* for new work.
 
-## Assets (v1 pilots · 2026-08-05)
+## Pilots (2026-08-05)
 
-| Exercise | Still | Loop (6s) |
-|----------|-------|-----------|
+| Exercise | Still | Loop |
+|----------|--------|------|
 | Air squat | `air-squat-still.webp` | `air-squat.mp4` |
 | Push-ups | `push-ups-still.webp` | `push-ups.mp4` |
 | Overhead press | `overhead-press-still.webp` | `overhead-press.mp4` |
 
-**Source:** Scout idle identity → pose stills → I2V.  
-**Style target:** flat geometric falcon, paper/ink/one red eye. Pose fidelity varies by model (squat is hardest).
+## Rules
 
-## Do not
+- **Not** Form Index teaching media (`/form/{id}/` stays clinical).
+- Always seed pose gens from **JPEG 34 calm extract** (or turnaround 35) for identity.
+- Personality: Tom-the-lizard energy + croco calm/X-eye craft — brief, chaotic-capable, not Scout falcon.
+- Product name TBD in `docs/MASCOT.md` (replace Scout section when founder names it).
 
-- Wire these into `FORM_PACK_SIDE_IDS` / `FORM_PACK_VIDEO_IDS`
-- Replace clinical form posters mid-set
-- Ship multi-MB raws outside this folder without compress
+## IP note
 
-## Next if founders like them
-
-1. Eyes-on QA each loop for morph / wrong motion  
-2. Compress with handbrake/ffmpeg if >500KB  
-3. Optional social cutdowns (9:16)  
-4. Manifest rows under `kind: mascot-exercise`  
-5. Keep form teaching separate forever  
-
-Raw frames/video also under `media/inbox/mascot-exercise-*`.
+Craft look is Totodile-*inspired* from founder direction; ship as **original MW croco**, not “official Totodile.” Avoid product copy saying Totodile.

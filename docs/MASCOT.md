@@ -1,10 +1,12 @@
-# Scout — Mission Winning brand mascot
+# Mission Winning brand mascot (croco)
 
 **Audience:** Founder, agents, press, social.  
 **Brand colors / voice:** [brand-guidelines.md](brand-guidelines.md) · **Media pipeline:** [MEDIA_SYSTEM.md](MEDIA_SYSTEM.md) · **Flow prompts:** [`media/FLOW_PROMPTS.md`](../media/FLOW_PROMPTS.md)  
 **Assets:** `/brand/mascot/` · **Manifest:** [`media/manifest.json`](../media/manifest.json)
 
-Scout is Mission Winning’s Duolingo-style sticky character — **one silhouette, one job** — adapted to MW voice. Scout is **not** the Mission Coach LLM and **does not** replace the MW monogram logo.
+**Scout (geometric falcon) is retired.** The live craft mascot is a **blue croco** kit (Totodile-*inspired* original MW character — do **not** ship the word “Totodile” in product copy). Working name TBD; assets use `croco-*` until named.
+
+The mascot is **not** the Mission Coach LLM and **does not** replace the MW monogram logo.
 
 ---
 
@@ -12,11 +14,13 @@ Scout is Mission Winning’s Duolingo-style sticky character — **one silhouett
 
 | | |
 |--|--|
-| **Name** | Scout (working title; do not ship as “Duo”) |
-| **Silhouette** | Small geometric **falcon/kestrel** — mission / scout energy |
-| **Style** | Flat shapes, few polygons; readable at 24px and 1080px |
-| **Colors** | Paper body `#f3f2f2` · ink edges `#201e1d` · mid-grey chevron `#6f6b69` · one red accent `#ec3013` (eye highlight / wing trim). Same Modernist lock as the product — do not use the pre-rebrand palette. |
+| **Name** | TBD (internal: croco kit; never “Duo”; never “Totodile” in UI) |
+| **Silhouette** | Small cartoon **crocodile** — cream belly, red dorsal spikes, bold eyes (X-eye calm set or open-eye turnaround) |
+| **Style** | Flat sticker/cartoon, readable at 24px and 1080px |
+| **Colors** | Blue body · cream belly · red spikes · black outlines · paper ground `#f3f2f2`. One red accent for spikes/emotion — MW vermillion family, not a second brand hue |
 | **Job** | Mission briefing companion — invite to log, celebrate Victory, never shame |
+| **Identity anchor** | **JPEG 34** — three-panel sheet (calm / escalating / crash-out). Calm panel = default. Kit: `media/form-kit/refs/mascot-croco-sheet-34.jpg` · idle extract `public/brand/mascot/croco-idle.webp` · turnaround `mascot-croco-turnaround-35.jpg` |
+| **Personality craft** | Totodile energy + Tom-the-lizard (Hoppers) vibe — clear, brief, can escalate; never guilt-trips |
 
 ### Personality (lock)
 
@@ -29,10 +33,10 @@ Scout is Mission Winning’s Duolingo-style sticky character — **one silhouett
 | Mark | Role |
 |------|------|
 | `/brand/logo-icon.svg` (MW monogram) | Primary logo — press, favicon, wordmark |
-| Scout | Character / companion — social, one empty state, Victory flourish |
-| Form-guide stick figures | Teaching diagrams — **not** Scout; keep instructional SVG language |
+| Croco mascot | Character / companion — social, empty state, Victory, optional exercise pilots |
+| Form-guide stick figures | Teaching diagrams — **not** the mascot; clinical Form Index stays separate |
 
-Do **not** put Scout inside the MW monogram square as a logo replacement without founder sign-off.
+Do **not** put the mascot inside the MW monogram square as a logo replacement without founder sign-off.
 
 ---
 
@@ -40,19 +44,20 @@ Do **not** put Scout inside the MW monogram square as a logo replacement without
 
 | Do | Don’t |
 |----|--------|
-| Fixed proportions; same beak / wing chevron every time | Photoreal birds, soft 3D gym mascots |
-| Mid-grey chest chevron + single red eye highlight | Purple, violet, cream/terracotta, second accent hue |
-| Calm pose language (idle / invite / celebrate) | Anger, crying, “you failed” faces |
-| Paper / ink / one red only | Competitor green-owl clone, gym-bro cartoon, pre-rebrand dark-theme palette |
-| Transparent or solid paper canvas | Busy photo backgrounds under the character |
+| Fixed proportions; same snout / red spikes every time | Photoreal crocs, soft 3D gym mascots, literal Pokémon product art |
+| Blue + cream + red spikes; black outline | Purple, violet, second brand palette |
+| Calm / invite / celebrate (see JPEG 34 ladder) | Guilt, “you failed,” streak shame |
+| Paper canvas `#f3f2f2` | Busy photo backgrounds under the character |
 
-**Expression set (v1):**
+**Expression set (craft v1 — croco):**
 
 | File | Pose | Use |
 |------|------|-----|
-| `scout-idle.webp` | Neutral attention | Default / chrome |
-| `scout-invite.webp` | Open wing / beckon | Empty state + social invite |
-| `scout-celebrate.webp` | Quiet lift + red rim | Victory / PR |
+| `croco-idle.webp` | Calm (from JPEG 34 left panel) | Default / identity lock |
+| `exercises/*-still.webp` + `*.mp4` | Exercise pilots | Social / Victory fun — **not** Form Index |
+| `scout-*.webp` | **Retired** falcon kit | Do not use for new work |
+
+**Always re-anchor pose gens to JPEG 34 calm extract** (`croco-idle.webp` / `mascot-croco-idle-from-34.jpg`).
 
 ---
 
@@ -65,7 +70,7 @@ Do **not** put Scout inside the MW monogram square as a logo replacement without
 | Social invite | “Train anywhere. Free logger.” | Paywall guilt, competitor dunks |
 | Rest / quiet day | “Mission still open when you’re ready.” | “Don’t break the chain.” |
 
-Scout copy is **product microcopy**, not Mission Coach chat. Keep Coach LLM voice separate.
+Mascot copy is **product microcopy**, not Mission Coach chat. Keep Coach LLM voice separate.
 
 ---
 
@@ -73,9 +78,10 @@ Scout copy is **product microcopy**, not Mission Coach chat. Keep Coach LLM voic
 
 | Phase | Where | Rule |
 |-------|--------|------|
-| **A** | Social creatives · [SOCIAL_LAUNCH.md](SOCIAL_LAUNCH.md) | Scout on invite / coach posts |
+| **A** | Social creatives · [SOCIAL_LAUNCH.md](SOCIAL_LAUNCH.md) | Croco on invite / coach posts |
 | **B** | **One** empty state (History — no workouts yet) | Single illustration + one CTA |
-| **C** | Victory flourish | Honor moment only (quiet lift — not confetti spam) |
+| **C** | Victory flourish | Honor moment only (not confetti spam) |
+| **Pilot** | Exercise loops under `mascot/exercises/` | Fun demos — never replace `/form/{id}/` clinical packs |
 | **Later** | Push / email (founder-owned) | Same anti-guilt lines |
 
 **Never:** Active / Train logger density, every pillar empty, Coach chat avatar takeover, paywall shame.
