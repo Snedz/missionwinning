@@ -13,7 +13,7 @@ import {
 import type { LucideIcon } from 'lucide-react';
 import type { JournalEntry, JournalPillar } from '@/lib/todayTrends';
 import { cn } from '@/lib/utils';
-import { localDateKey, localDateKeyFromIso } from '@/lib/time/localDate';
+import { formatJournalWhen } from '@/lib/time/localDate';
 
 const PILLAR_META: Record<
   JournalPillar,
@@ -32,21 +32,6 @@ type Props = {
   locale: string;
   className?: string;
 };
-
-function formatWhen(at: string, locale: string): string {
-  const d = new Date(at);
-  // Unparseable: there is no local day to derive, and truncating to ten
-  // characters only makes a malformed value look like a date. Show it as-is.
-  if (Number.isNaN(d.getTime())) return at;
-  const today = localDateKey();
-  // `.241` — `today` is a local key, so the comparison needs one too. The UTC
-  // date half made an evening entry east of UTC read as another day, printing a
-  // date where the athlete should have seen a time.
-  const day = localDateKeyFromIso(at);
-  const time = d.toLocaleTimeString(locale, { hour: 'numeric', minute: '2-digit' });
-  if (day === today) return time;
-  return d.toLocaleDateString(locale, { month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' });
-}
 
 export function TodayJournalStrip({ entries, locale, className }: Props) {
   const { t } = useTranslation();
@@ -94,7 +79,7 @@ export function TodayJournalStrip({ entries, locale, className }: Props) {
                 <span>{t(meta.labelKey, { defaultValue: entry.pillar })}</span>
                 <span aria-hidden>·</span>
                 <time dateTime={entry.at} className="tabular-nums">
-                  {formatWhen(entry.at, locale)}
+                  {formatJournalWhen(entry.at, locale)}
                 </time>
               </div>
               <p className="truncate text-sm font-semibold">{entry.title}</p>
