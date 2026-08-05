@@ -16,6 +16,7 @@ import type { CoachInsight } from "@/lib/score";
 import { computeReadinessFromHistory } from "@/lib/readinessIndex";
 import { getTrainingStreak } from "@/lib/challenges";
 import { summarizeRewards } from "@/lib/rewards/summary";
+import { sumHistoryVolume } from "@/lib/workout/historyVolume";
 import { getUser, getUserNutritionForDate, type CloudNutritionEntry } from "@/lib/supabase";
 import { JourneyHero } from "@/components/journey/JourneyHero";
 import { ScreenDock } from "@/components/layout/ScreenDock";
@@ -205,7 +206,7 @@ export function HomeTodayDashboard() {
   // keystroke in the customise dialog, every idle-callback state flip. History
   // only changes when a session is logged, which is what the dependency says.
   const totalVolume = useMemo(
-    () => workoutHistory.reduce((sum, w) => sum + w.totalVolume, 0),
+    () => sumHistoryVolume(workoutHistory),
     [workoutHistory]
   );
 

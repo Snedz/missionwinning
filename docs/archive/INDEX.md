@@ -25,6 +25,7 @@ When adding a doc:
 
 | File | Absorbed by / note |
 |------|---------------------|
+| [log/LOG-rotate-519.md](./log/LOG-rotate-519.md) | rotated oldest for `.519` volume |
 | [log/LOG-rotate-518.md](./log/LOG-rotate-518.md) | rotated oldest for `.518` reentry |
 | [log/LOG-rotate-517.md](./log/LOG-rotate-517.md) | rotated oldest for `.517` ranks EN |
 | [log/LOG-rotate-516.md](./log/LOG-rotate-516.md) | rotated oldest for `.516` challenge XP |
@@ -38,6 +39,7 @@ When adding a doc:
 | [log/LOG-rotate-508.md](./log/LOG-rotate-508.md) | rotated oldest for `.508` america fallbacks |
 | [log/LOG-rotate-507.md](./log/LOG-rotate-507.md) | rotated oldest for `.507` kaizen |
 | [log/LOG-rotate-506.md](./log/LOG-rotate-506.md) | rotated oldest for `.506` full-launch honesty |
+| [log/LOG-rotate-504-placeholder.md](./log/LOG-rotate-504-placeholder.md) | `.504` label continuity (side-branch form ship) |
 | [log/LOG-rotate-505.md](./log/LOG-rotate-505.md) | rotated oldest for `.505` Mission Rewards |
 | [log/LOG-rotate-504-form.md](./log/LOG-rotate-504-form.md) | rotated oldest for `.504` form reassemble |
 | [log/LOG-2026-06_to_2026-07-20.md](./log/LOG-2026-06_to_2026-07-20.md) | Rotated out of root LOG.md (rotation rule: ≤15 entries at root) |
