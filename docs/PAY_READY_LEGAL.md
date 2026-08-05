@@ -4,7 +4,7 @@
 
 **Live consumer pages:** [/terms](https://missionwinning.com/terms) · [/privacy](https://missionwinning.com/privacy) · [/refunds](https://missionwinning.com/refunds) · [/dmca](https://missionwinning.com/dmca)
 
-**Related:** [LEGAL_SAFETY.md](LEGAL_SAFETY.md) · [LLC_AND_PAYMENTS.md](LLC_AND_PAYMENTS.md) · [PRE_REVENUE_CHECKLIST.md](PRE_REVENUE_CHECKLIST.md) · [COMPLIANCE.md](COMPLIANCE.md) · [legal/DPA.md](legal/DPA.md) · [legal/MSA_TEMPLATE.md](legal/MSA_TEMPLATE.md) · [STRIPE_DISPUTE_OPS.md](STRIPE_DISPUTE_OPS.md)
+**Related:** [LEGAL_SAFETY.md](LEGAL_SAFETY.md) · [LLC_AND_PAYMENTS.md](LLC_AND_PAYMENTS.md) · [PRE_REVENUE_CHECKLIST.md](PRE_REVENUE_CHECKLIST.md) · [COMPLIANCE.md](COMPLIANCE.md) · [legal/DPA.md](legal/DPA.md) · [legal/MSA_TEMPLATE.md](legal/MSA_TEMPLATE.md) · [STRIPE_DISPUTE_OPS.md](STRIPE_DISPUTE_OPS.md) · **Counsel pack:** [legal/COUNSEL_BRIEF.md](legal/COUNSEL_BRIEF.md) · [legal/exports/](legal/exports/)
 
 ---
 
