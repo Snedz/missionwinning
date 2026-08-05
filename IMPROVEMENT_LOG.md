@@ -1,7 +1,7 @@
 # Improvement log — Kaizen Night (2026-08-05 full-launch)
 
 Session branch: `kaizen/night-2026-08-05`  
-Started: 2026-08-05 · post-#299 · build tip **`.507`**  
+Started: 2026-08-05 · post-#299 · build tip **`.512`** · PRs #300–#308  
 Plan: `.hermes/plans/2026-08-05_kaizen-night-plan.md`
 
 ## Contract
@@ -39,7 +39,7 @@ Plan: `.hermes/plans/2026-08-05_kaizen-night-plan.md`
 Session branch: `cursor/kaizen-night-be9b`  
 Started: 2026-08-04 · Web craft only · Modernist system stands  
 Base: `master` @ `2026.07-unified.417`  
-Tip: `2026.07-unified.454` · PR #254 · **merged to master (night closed)**  
+Tip: `2026.07-unified.512` · PR #254 · **merged to master (night closed)**  
 Prior night: #234 (`.294`–`.403`) + follow-on media/Learn through `.417`
 
 ## Contract
