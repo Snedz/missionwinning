@@ -202,5 +202,7 @@
   "rewardBadgeSpectrum": "Full Spectrum",
   "rewardBadgeComeback": "Comeback",
   "rewardBadgeCommissioned": "Commissioned",
-  "rewardProfileChallenges": "{{done}}/{{total}} weekly challenges met"
+  "rewardProfileChallenges": "{{done}}/{{total}} weekly challenges met",
+  "whatsNewBulletRewardsTitle": "Mission progress",
+  "whatsNewBulletRewardsBody": "Earn XP and badges from real logs — weekly train goal is the boss consistency signal."
 }

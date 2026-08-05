@@ -16,7 +16,7 @@ One screen of truth for any AI tool or human joining cold. Read this, then [AGEN
 
 ---
 
-## Now (2026-08-05 · web `2026.07-unified.522` · Android `1.24.1`)
+## Now (2026-08-05 · web `2026.07-unified.523` · Android `1.24.1`)
 
 > The ONLY "where we are" block in the repo — [ORCHESTRATION.md](ORCHESTRATION.md) points here.
 >
@@ -262,7 +262,7 @@ One screen of truth for any AI tool or human joining cold. Read this, then [AGEN
 > and `.501` dropped `.486` detail (full text remains in LOG.md / archive)
 > and `.502` dropped `.487` detail (full text remains in LOG.md / archive)
 > and `.503` dropped `.488` detail (full text remains in LOG.md / archive)
-> and `.505`–`.522` dropped detail (full text remains in LOG.md / archive)
+> and `.505`–`.523` dropped detail (full text remains in LOG.md / archive)
 > to [CONTEXT-now-2026-07-30.md](docs/archive/CONTEXT-now-2026-07-30.md) after this
 > block reached **79 bullets / 103KB**. A status doc that only grows stops being read.
 
@@ -283,17 +283,8 @@ One screen of truth for any AI tool or human joining cold. Read this, then [AGEN
 > | Migrations | **9 recorded pending** — [LAUNCH_RUNBOOK](docs/LAUNCH_RUNBOOK.md) §3, enforced by `src/lib/migrationLedger.test.ts`. |
 > | gitleaks | **green — and scanning for the first time.** It had never scanned anything: on a `pull_request` event the action lists the PR's commits, the job declared no `permissions:` block, and it 403'd (`pull_requests=read`) before opening a file. Fixed by a `permissions:` block (`.224` carrying `.255`). It scans **only the PR's own commits**, so commit `8ea3527a`'s real Solana treasury address — scrubbed from the working file, still in history — is out of its scope. That finding stands, deliberately not allowlisted; it was never what made this check red. |
 
-- **`.522`–`.515`:** Profile challenges line · formatLocalDateKey · rewards INDEX · perfect_week. formatLocalDateKey · rewards INDEX · volume · re-entry · perfect_week. rewards INDEX · volume helper · re-entry · EN ranks · perfect_week. volume helper · re-entry shame-free · EN ranks · perfect_week paths. re-entry shame-free pin · EN ranks/badges · perfect_week paths. EN ranks/badges + challenge XP catalog + perfect_week fuel/pillar paths. challenge XP catalog SoT + perfect_week fuel/pillar paths.
-- **`.514`:** Kaizen — perfect_week spectrum + full_spectrum badge emit.
-- **`.513`:** Kaizen — EN rewards i18n keys on Today namespace.
-- **`.512`:** Kaizen — still_mind badge + Coach from-logs honesty pins.
-- **`.511`:** Kaizen — share text never hard-codes parked /america.
-- **`.510`:** Kaizen — free-beta Unlock/Bundle dual-mode pins.
-- **`.509`:** Kaizen — Victory rewards consume-once (Strict Mode safe).
-- **`.508`:** Kaizen — parked America CTAs fall back to /benchmarks; join/teacher/PFT gated.
-- **`.507`:** Kaizen — lean Today Mission progress; fuel/pillar milestone badges; Leaderboard in More Wedge.
-- **`.506`:** Full-launch honesty — leaderboard zero-state + free-beta dual-mode depth unlock; class scope clamped when America parked.
-- **`.505`:** Mission Rewards (XP/ranks/badges) + full-launch override — weekly train goal boss; Victory/Today/Profile; leaderboard on by default.
+- **`.523`–`.515`:** WhatsNew EN · Profile challenges · formatLocalDateKey · rewards INDEX · perfect_week paths.
+- **`.514`–`.505`:** Mission Rewards economy + full-launch honesty (XP/ranks/badges, leaderboard, free-beta pins, America fallbacks).
 - **`.503`–`.502`:** History retrain + no soft-Coach boss (K11/K6/K7).
 - **`.501`–`.500`:** Coach density, week-1 contract, Today language, Active empty.
 - **`.499`–`.474`:** readiness train-first, dual-pad bridges, docs/i18n residual.
