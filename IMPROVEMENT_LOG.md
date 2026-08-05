@@ -1,29 +1,29 @@
 # Improvement log — Kaizen Night (2026-08-05 full-launch)
 
 Plan: `.hermes/plans/2026-08-05_kaizen-night-plan.md`  
-**Tip:** `2026.07-unified.529` · PRs **#300–#338** · unit tests **1822** pass  
+**Tip:** `2026.07-unified.531` · PRs **#300–#342** · unit tests **1828** pass  
 Local gate authoritative (GitHub Actions often billing-blocked).
 
 ## Contract
 
 Full-launch override · free logger never gated · no `PRIVATE_MODE` · small PRs · merge on local green.
 
-## Shipped this night (.507 → .529)
+## Shipped this night (.507 → .531)
 
 | Build | Highlight |
 |-------|-----------|
 | `.507` | Lean Today rewards, milestone badges, More Leaderboard |
 | `.508`–`.512` | America fallbacks, Victory Strict Mode, FREE_BETA pins, share honesty, still_mind |
 | `.513`–`.520` | EN rewards i18n, perfect_week, challenge XP, re-entry guard, volume helper, INDEX |
-| `.521`–`.529` | formatLocal* cascade (History→Today header) + nutrition merge |
+| `.521`–`.531` | formatLocal* cascade (History→Today header) + nutrition merge |
 
 ## Metrics
 
 | | Start | Now |
 |--|-------|-----|
 | Build | `.506` | **`.529`** |
-| Unit tests | 1778 | **1822** (+44) |
-| Merged PRs after #299 | — | **#300–#338** |
+| Unit tests | 1778 | **1828** (+50) |
+| Merged PRs after #299 | — | **#300–#342** |
 
 ## Remaining
 
