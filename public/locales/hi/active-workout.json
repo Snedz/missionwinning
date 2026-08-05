@@ -5,7 +5,7 @@
   "activeNoWorkout": "No Active Workout",
   "activeNoWorkoutDesc": "Start a quick workout from Today or launch a saved routine from the builder.",
   "activeStartWorkout": "Start Workout",
-  "activeSetsCompleted": "{{किया गया}}/{{कुल}} सेट पूरा हो गया",
+  "activeSetsCompleted": "{{done}}/{{total}} सेट पूरा हो गया",
   "activeCancel": "Cancel",
   "activeFinish": "Finish",
   "activeCoachNotes": "Coach Notes",
