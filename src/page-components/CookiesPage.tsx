@@ -66,7 +66,15 @@ export function CookiesPage() {
       </InfoSection>
 
       <InfoSection id="inventory" title={t('infoCookiesInventory', { defaultValue: 'Full inventory' })}>
-        <div className="overflow-x-auto">
+        {/* A horizontal-scroll region must be keyboard-reachable (axe
+            scrollable-region-focusable): tabIndex puts it in the tab order so
+            arrow keys can pan the table without a pointer. */}
+        <div
+          className="overflow-x-auto"
+          tabIndex={0}
+          role="region"
+          aria-label={t('infoCookiesInventory', { defaultValue: 'Full inventory' })}
+        >
           <table className="w-full min-w-[640px] text-left text-xs">
             <thead>
               <tr className="border-b-2 border-border text-muted-foreground">
