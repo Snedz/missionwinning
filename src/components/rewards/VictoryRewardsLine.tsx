@@ -4,12 +4,15 @@ import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { badgeDef } from '@/lib/rewards/catalog';
 import type { LastAwardsSnapshot } from '@/lib/rewards/storage';
-import { consumeLastAwards, peekLastAwards } from '@/lib/rewards/storage';
+import { consumeLastAwards } from '@/lib/rewards/storage';
 import type { BadgeId } from '@/lib/rewards/types';
 
 /**
  * Compact Victory line — XP + optional badge names. Consumes the last awards
  * snapshot once so a second open of the sheet does not re-celebrate.
+ *
+ * Strict Mode remounts must not lose the snapshot: peek-then-consume races
+ * with a second effect that peeks empty. Prefer consume once into state.
  */
 export function VictoryRewardsLine({ active }: { active: boolean }) {
   const { t } = useTranslation();
@@ -17,10 +20,10 @@ export function VictoryRewardsLine({ active }: { active: boolean }) {
 
   useEffect(() => {
     if (!active) return;
-    const peeked = peekLastAwards();
-    if (!peeked) return;
-    setSnap(peeked);
-    consumeLastAwards();
+    setSnap((prev) => {
+      if (prev) return prev;
+      return consumeLastAwards();
+    });
   }, [active]);
 
   if (!snap || (snap.xpGained <= 0 && snap.badgeIds.length === 0)) return null;
