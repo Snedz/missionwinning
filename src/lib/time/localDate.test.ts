@@ -7,6 +7,8 @@ import {
   startOfLocalWeek,
   formatLocalDateKey,
   formatLocalMonthKey,
+  formatJournalWhen,
+  formatLocalClockTime,
 } from '@/lib/time/localDate';
 
 /**
@@ -176,5 +178,26 @@ describe("formatLocalMonthKey", () => {
 
   it("returns key when malformed", () => {
     assert.equal(formatLocalMonthKey("nope", "en-US"), "nope");
+  });
+});
+
+describe("formatJournalWhen", () => {
+  it("returns time-only for same local day", () => {
+    const now = new Date(2026, 7, 5, 18, 0, 0);
+    const at = new Date(2026, 7, 5, 9, 30, 0).toISOString();
+    const s = formatJournalWhen(at, "en-US", now);
+    assert.match(s, /9|30|AM|PM|a|p/i);
+    assert.doesNotMatch(s, /Aug|August|2026/);
+  });
+
+  it("returns raw string when unparseable", () => {
+    assert.equal(formatJournalWhen("not-a-date", "en-US"), "not-a-date");
+  });
+});
+
+describe("formatLocalClockTime", () => {
+  it("returns a non-empty clock string", () => {
+    const s = formatLocalClockTime(new Date(2026, 7, 5, 14, 5, 0), "en-US");
+    assert.ok(s.length > 0);
   });
 });

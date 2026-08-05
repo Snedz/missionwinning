@@ -169,3 +169,31 @@ export function formatLocalMonthKey(
   if (!y || !m) return monthKey;
   return new Date(y, m - 1, 1).toLocaleDateString(locale, opts);
 }
+
+/** Clock time only — fuel log stamps, etc. */
+export function formatLocalClockTime(
+  d: Date = new Date(),
+  locale?: string,
+  opts: Intl.DateTimeFormatOptions = { hour: '2-digit', minute: '2-digit' }
+): string {
+  return d.toLocaleTimeString(locale, opts);
+}
+
+/**
+ * Journal strip "when" — time-only if same local day as `now`, else short date+time.
+ * Unparseable ISO returns the raw string (do not fake a date).
+ */
+export function formatJournalWhen(at: string, locale: string, now: Date = new Date()): string {
+  const d = new Date(at);
+  if (Number.isNaN(d.getTime())) return at;
+  const today = localDateKey(now);
+  const day = localDateKeyFromIso(at);
+  const time = d.toLocaleTimeString(locale, { hour: 'numeric', minute: '2-digit' });
+  if (day === today) return time;
+  return d.toLocaleDateString(locale, {
+    month: 'short',
+    day: 'numeric',
+    hour: 'numeric',
+    minute: '2-digit',
+  });
+}

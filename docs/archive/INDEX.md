@@ -25,6 +25,7 @@ When adding a doc:
 
 | File | Absorbed by / note |
 |------|---------------------|
+| [log/LOG-rotate-530.md](./log/LOG-rotate-530.md) | rotated oldest for `.530` journal when |
 | [log/LOG-rotate-529.md](./log/LOG-rotate-529.md) | rotated oldest for `.529` Today header |
 | [log/LOG-rotate-528.md](./log/LOG-rotate-528.md) | rotated oldest for `.528` analytics labels |
 | [log/LOG-rotate-527.md](./log/LOG-rotate-527.md) | rotated oldest for `.527` nutrition merge |

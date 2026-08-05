@@ -53,7 +53,7 @@ import { PillarPageShell } from '@/components/layout/PillarPageShell';
 import { useToast } from '@/hooks/use-toast';
 import { readRaw, writeJson, writeRaw } from '@/lib/storage/safeStorage';
 import { STORAGE_KEYS } from '@/lib/storage/keys';
-import { localDateKey } from '@/lib/time/localDate';
+import { formatLocalClockTime, localDateKey } from '@/lib/time/localDate';
 
 const freeRecipes = FREE_RECIPES;
 const QUICK_FOODS = DEFAULT_QUICK_FOODS;
@@ -169,7 +169,7 @@ export function NutritionPage() {
               cals: c.cals,
               carbs: c.carbs,
               fat: c.fat,
-              time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+              time: formatLocalClockTime(),
             }));
             setLogged((prev) => {
               const combined = [...prev, ...mapped.filter((m) => !prev.some((p) => p.name === m.name))];
@@ -250,7 +250,7 @@ export function NutritionPage() {
       carbs,
       fat,
       meal,
-      time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+      time: formatLocalClockTime(),
     };
     setLogged((prev) => [...prev, entry]);
     setFuelStreak(bumpFuelLogStreak());
@@ -432,7 +432,7 @@ export function NutritionPage() {
           cals: c.cals,
           carbs: c.carbs,
           fat: c.fat,
-          time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+          time: formatLocalClockTime(),
         }));
         setLogged((prev) => [
           ...prev,
