@@ -255,7 +255,7 @@ const en: InfoStrings = {
     'Optional AI coach context: only when operators enable the coach LLM — a minimal summary (scores, streak, focus, session names), not full set-by-set workout history.',
   infoPrivacyCollectLi6:
     'Optional meal photos: when you use photo meal logging, the image is sent to our estimate API to suggest macros; we do not use meal photos for advertising and do not keep them as a long-term photo library.',
-  infoPrivacyUseLi1: 'Provide and personalize your training journey (Today hub, recommendations).',
+  infoPrivacyUseLi1: 'Provide and personalize your training journey (Today, recommendations).',
   infoPrivacyUseLi2: 'Sync across devices when signed in (Supabase cloud database).',
   infoPrivacyUseLi3: 'Process premium enrollments and support requests.',
   infoPrivacyUseLi4:

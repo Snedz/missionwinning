@@ -1,4 +1,4 @@
-/** Today hub UI copy — merged into i18n `common` namespace. */
+/** Today screen UI copy — merged into i18n `common` namespace. */
 
 type TodayStrings = {
   todayBasicEncouragement: string;
@@ -393,7 +393,7 @@ const en: TodayStrings = {
   coachActionStartWorkout: 'Start workout',
   coachActionGoBuilder: 'Go to Builder',
   coachActionLogNutrition: 'Log nutrition',
-  coachActionViewToday: 'View Today hub',
+  coachActionViewToday: 'View Today',
   victoryNextCoachLabel: 'See Mission Coach',
   victoryNextCoachReason: 'Coach adapts your week from this log — no wearable needed.',
   todayPillarScoreByPillar: 'Mission Score by Pillar',

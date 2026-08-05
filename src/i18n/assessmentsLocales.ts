@@ -13,14 +13,14 @@ const ASSESS_EN: Record<string, string> = {
   assessResultTitle: 'Assessment Result',
   assessRecommendations: 'Recommendations (click to start a matching free starter + log win):',
   assessResultFoot:
-    'Results saved locally + to logs. Use to guide program choice in the Builder / Today hub. Streak +1 on start.',
+    'Results saved locally + to logs. Use to guide program choice in the Builder / Today. Streak +1 on start.',
   assessSignInFoot: 'Keep assessment history synced when you sign in.',
   assessYes: 'Yes',
   assessNo: 'No',
   assessUnsure: 'Unsure',
   assessDetailsPlaceholder: 'details',
   assessStartPrefix: 'Start',
-  assessGoToday: 'Go to Today Hub for all free starters',
+  assessGoToday: 'Go to Today for free starters',
   assessQ_chest_pain:
     'Have you experienced any chest pain associated with either exercise or stress?',
   assessQ_shortness_breath:

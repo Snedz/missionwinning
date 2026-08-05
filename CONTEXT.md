@@ -16,7 +16,7 @@ One screen of truth for any AI tool or human joining cold. Read this, then [AGEN
 
 ---
 
-## Now (2026-08-05 · web `2026.07-unified.499` · Android `1.24.1`)
+## Now (2026-08-05 · web `2026.07-unified.500` · Android `1.24.1`)
 
 > The ONLY "where we are" block in the repo — [ORCHESTRATION.md](ORCHESTRATION.md) points here.
 >
@@ -258,6 +258,7 @@ One screen of truth for any AI tool or human joining cold. Read this, then [AGEN
 > and `.497` dropped `.482` detail (full text remains in LOG.md / archive)
 > and `.498` dropped `.483` detail (full text remains in LOG.md / archive)
 > and `.499` dropped `.484` detail (full text remains in LOG.md / archive)
+> and `.500` dropped `.485` detail (full text remains in LOG.md / archive)
 > to [CONTEXT-now-2026-07-30.md](docs/archive/CONTEXT-now-2026-07-30.md) after this
 > block reached **79 bullets / 103KB**. A status doc that only grows stops being read.
 
@@ -278,10 +279,9 @@ One screen of truth for any AI tool or human joining cold. Read this, then [AGEN
 > | Migrations | **9 recorded pending** — [LAUNCH_RUNBOOK](docs/LAUNCH_RUNBOOK.md) §3, enforced by `src/lib/migrationLedger.test.ts`. |
 > | gitleaks | **green — and scanning for the first time.** It had never scanned anything: on a `pull_request` event the action lists the PR's commits, the job declared no `permissions:` block, and it 403'd (`pull_requests=read`) before opening a file. Fixed by a `permissions:` block (`.224` carrying `.255`). It scans **only the PR's own commits**, so commit `8ea3527a`'s real Solana treasury address — scrubbed from the working file, still in history — is out of its scope. That finding stands, deliberately not allowlisted; it was never what made this check red. |
 
-- **`.499`:** Flow-6/7/8 — readiness Today boss = train-first; coach invite early readiness; Library “Today”.
-- **`.498`:** Exercise CTA desktop layout + demote wrong OHP/pull-up form stills.
-- **`.497`:** More sheet tiers — Wedge / Pillars / You (not rail mirror).
-- **`.496`–`.494`:** Guide/Paths handoff, SEO→Train, flow architecture + footer pins.
+- **`.500`:** Kaizen K1/K2/K4 — no “Today Hub” product language; JOURNEY train-first pin; Active empty hierarchy.
+- **`.499`:** Flow-6/7/8 — readiness train-first; coach invite early readiness; Library “Today”.
+- **`.498`–`.494`:** form demotes, More tiers, dual-pad bridges, flow architecture.
 - **`.493`–`.474`:** docs anti-slop, landing rule, i18n/outdoor residual.
 - **Horizon W — wedge excellence.** Web craft 1–6 + **Fuel estimate accuracy** (edit-before-log, better NL match, honest photo sources).
 - **Free-first beta (~4 weeks):** LLC + EIN pending — **no Bundle UI** + **full depth unlocked** + **full More nav** (journey train-only deferred) ([docs/FREE_BETA.md](docs/FREE_BETA.md)).

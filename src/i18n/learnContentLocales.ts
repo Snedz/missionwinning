@@ -21,7 +21,7 @@ const es: ContentOverrides = {
   'learnLesson_sb-2_action': 'Explorar biblioteca',
   'learnLesson_sb-3_title': 'RPE y autorregulación',
   'learnLesson_sb-3_summary': 'Algunos días empujas, otros mantienes — escucha las puntuaciones de readiness.',
-  'learnLesson_sb-3_action': 'Ver Today Hub',
+  'learnLesson_sb-3_action': 'Ver Hoy',
 
   'learnPath_nutrition-101_title': 'Nutrición 101',
   'learnPath_nutrition-101_subtitle': 'Combustible para la misión — proteína, alimentos reales, acceso global',
@@ -81,7 +81,7 @@ const zh: ContentOverrides = {
   'learnLesson_sb-2_title': '复合动作优先',
   'learnLesson_sb-2_action': '浏览动作库',
   'learnLesson_sb-3_title': 'RPE 与自我调节',
-  'learnLesson_sb-3_action': '查看 Today Hub',
+  'learnLesson_sb-3_action': '查看今日',
 
   'learnPath_nutrition-101_title': '营养 101',
   'learnPath_nutrition-101_subtitle': '为使命供能——蛋白质、天然食物、全球可及',

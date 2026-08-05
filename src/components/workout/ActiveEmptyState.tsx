@@ -91,13 +91,17 @@ export function ActiveEmptyState({
         onAction={hydrated ? onStart : undefined}
         actionDisabled={!hydrated}
       />
-      <div className="flex flex-wrap gap-3 text-sm">
+      {/* Flow-9 / K4 — one secondary hierarchy: Today outline, Builder quiet. */}
+      <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-sm">
         <Button variant="outline" className="min-h-[44px]" asChild>
           <a href="/log">{t('activeGoToday', { defaultValue: 'Today' })}</a>
         </Button>
-        <Button variant="outline" className="min-h-[44px]" asChild>
-          <a href="/builder">{t('activeGoBuilder', { defaultValue: 'Builder' })}</a>
-        </Button>
+        <a
+          href="/builder"
+          className="min-h-[44px] inline-flex items-center text-muted-foreground underline-offset-2 hover:text-foreground hover:underline"
+        >
+          {t('activeGoBuilder', { defaultValue: 'Builder' })}
+        </a>
       </div>
       <WorkoutVictorySheet
         open={victoryOpen}
