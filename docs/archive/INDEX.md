@@ -65,6 +65,7 @@ When adding a doc:
 | [log/LOG-rotate-414.md](./log/LOG-rotate-414.md) | `.399` FileUploadRow chrome — rotated for `.414` form media T1 |
 | [log/LOG-rotate-415.md](./log/LOG-rotate-415.md) | `.400` opacity exemptions — rotated for `.415` pattern packs |
 | [log/LOG-rotate-416.md](./log/LOG-rotate-416.md) | `.401` beachhead i18n — rotated for `.416` Scout + PDF |
+| [log/LOG-rotate-494.md](./log/LOG-rotate-494.md) | `.479` — rotated for `.494` (flow architecture + footer pinout). |
 | [log/LOG-rotate-493.md](./log/LOG-rotate-493.md) | `.478` — rotated for `.493` (public docs anti-slop). |
 | [log/LOG-rotate-492.md](./log/LOG-rotate-492.md) | `.477` — rotated for `.492` (landing At-a-glance bottom rule). |
 | [log/LOG-rotate-491.md](./log/LOG-rotate-491.md) | `.476` — rotated for `.491` (next nested postcss + pack/public all-lang). |

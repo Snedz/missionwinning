@@ -25,10 +25,16 @@ export type FooterGroup = {
   links: FooterLink[];
 };
 
+/**
+ * Product column — ingress first, then compare, then marketing Coach story.
+ * “How Coach adapts” is landing `/#coach` (adapt argument), not Mission Coach `/coach`
+ * and never human 1:1 `/coaching`. See docs/FLOW_ARCHITECTURE.md.
+ */
 const PRODUCT: FooterLink[] = [
-  { href: '/#coach', labelKey: 'footerProductCoach', defaultValue: 'Coach' },
-  { href: '/bundle', labelKey: 'footerProductBundle', defaultValue: 'Super Bundle' },
+  { href: '/welcome', labelKey: 'footerProductStart', defaultValue: 'Start free' },
   { href: '/compare', labelKey: 'footerProductCompare', defaultValue: 'Compare' },
+  { href: '/#coach', labelKey: 'footerProductCoach', defaultValue: 'How Coach adapts' },
+  { href: '/bundle', labelKey: 'footerProductBundle', defaultValue: 'Super Bundle' },
 ];
 
 const LEARN: FooterLink[] = [
