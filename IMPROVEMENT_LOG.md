@@ -20,6 +20,7 @@ Plan: `.hermes/plans/2026-08-05_kaizen-night-plan.md`
 | D2 | CONTEXT refuse vs override | done `.507` |
 | C2 | Dead parked hrefs | done `.508` |
 | A4 | Victory consume-once | done `.509` |
+| C1 | FREE_BETA Unlock/Bundle pins | done `.510` |
 | — | americaHomeOrFallback | done `.508` |
 | B1 | One-boss CTA | pending |
 
@@ -27,7 +28,7 @@ Plan: `.hermes/plans/2026-08-05_kaizen-night-plan.md`
 
 | Metric | Start | Now |
 |--------|-------|-----|
-| Build | `.506` | **`.508`** |
+| Build | `.506` | **`.510`** |
 | Unit tests | 1778 | **1788** |
 | Unit tests | 1778 | TBD |
 
