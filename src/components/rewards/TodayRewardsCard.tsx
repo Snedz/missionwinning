@@ -43,7 +43,7 @@ export function TodayRewardsCard({ summary }: Props) {
               {summary.levelInto}/{summary.levelNeed}
             </span>
           </div>
-          <div className="h-2 bg-muted overflow-hidden border-2 border-border">
+          <div className="h-2 bg-muted overflow-hidden border-2 border-border" role="progressbar" aria-valuenow={Math.round(summary.levelRatio * 100)} aria-valuemin={0} aria-valuemax={100} aria-label={t('rewardLevelBar', { defaultValue: 'Next level' })}>
             <div
               className="h-full bg-primary transition-all"
               style={{ width: `${Math.round(summary.levelRatio * 100)}%` }}
@@ -61,7 +61,7 @@ export function TodayRewardsCard({ summary }: Props) {
               {summary.weeklyTrainCurrent}/{summary.weeklyTrainGoal}
             </span>
           </div>
-          <div className="h-2 bg-muted overflow-hidden border-2 border-border">
+          <div className="h-2 bg-muted overflow-hidden border-2 border-border" role="progressbar" aria-valuenow={summary.weeklyTrainPercent} aria-valuemin={0} aria-valuemax={100} aria-label={t('rewardWeeklyGoal', { defaultValue: 'Weekly train goal' })}>
             <div
               className="h-full bg-primary transition-all"
               style={{ width: `${summary.weeklyTrainPercent}%` }}
@@ -73,6 +73,16 @@ export function TodayRewardsCard({ summary }: Props) {
             })}
           </p>
         </div>
+
+        {summary.challengesTotal > 0 ? (
+          <p className="text-xs text-muted-foreground" data-testid="today-rewards-challenges">
+            {t('rewardProfileChallenges', {
+              done: summary.challengesComplete,
+              total: summary.challengesTotal,
+              defaultValue: `${summary.challengesComplete}/${summary.challengesTotal} weekly challenges met`,
+            })}
+          </p>
+        ) : null}
 
         {summary.badges.length > 0 ? (
           <p className="text-xs text-muted-foreground">
