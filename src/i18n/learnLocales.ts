@@ -47,7 +47,7 @@ const en: LearnStrings = {
   learnTitle: 'Learn & Master',
   learnSubtitle:
     '{{count}} free education paths — evidence-based foundations plus specialist intros. Premium unlocks full programs (Super Bundle).',
-  learnDone: '✓ Done',
+  learnDone: 'Done',
   learnMarkComplete: 'Mark complete',
   learnSampleTitle: 'Try it — free sample workout',
   learnSampleBtn: 'Start Bodyweight Sample →',

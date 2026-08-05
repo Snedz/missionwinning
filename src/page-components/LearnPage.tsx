@@ -17,11 +17,47 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { PillarPageShell } from '@/components/layout/PillarPageShell';
 import { logPillarWin } from '@/lib/pillarLog';
-import { ChevronDown, ChevronUp, BookOpen, BookMarked } from 'lucide-react';
+import {
+  BarChart3,
+  Bandage,
+  BookMarked,
+  BookOpen,
+  Brain,
+  CalendarRange,
+  Check,
+  ChevronDown,
+  ChevronUp,
+  Dumbbell,
+  Flower2,
+  HeartHandshake,
+  Home,
+  Moon,
+  UtensilsCrossed,
+  type LucideIcon,
+} from 'lucide-react';
+
 import { EmptyState } from '@/components/ui/EmptyState';
 import { isFreeBeta } from '@/lib/freeBeta';
 import { STORAGE_KEYS } from '@/lib/storage/keys';
 import { readJson, writeJson } from '@/lib/storage/safeStorage';
+
+/**
+ * Lucide over emoji (design system: one icon family, ink-colored). The data
+ * schema keeps its emoji `icon` field — Android and localization read it —
+ * this map is the web presentation only; unknown ids fall back to BookOpen.
+ */
+const PATH_ICONS: Record<string, LucideIcon> = {
+  'strength-basics': Dumbbell,
+  'nutrition-101': UtensilsCrossed,
+  'mobility-longevity': Flower2,
+  'mindset-habits': Brain,
+  'assessments-path': BarChart3,
+  'corrective-foundations': Bandage,
+  'periodization-design': CalendarRange,
+  'coaching-client-success': HeartHandshake,
+  'sleep-recovery': Moon,
+  'home-gym-budget': Home,
+};
 
 export function LearnPage() {
   const { t } = useTranslation();
@@ -101,7 +137,7 @@ export function LearnPage() {
             placeholder={t('learnSearchPlaceholder', {
               defaultValue: 'Search paths or lessons…',
             })}
-            className="w-full  border-2 border-border bg-background px-3 py-2.5 min-h-[44px] text-sm"
+            className="w-full border-2 border-border bg-background px-3 py-2.5 min-h-[44px] text-sm"
           />
           {filteredPaths.length === 0 && (
             <EmptyState
@@ -117,6 +153,7 @@ export function LearnPage() {
           {filteredPaths.map((path) => {
             const open = expandedPath === path.id;
             const doneCount = path.lessons.filter((l) => completedLessons.has(l.id)).length;
+            const PathIcon = PATH_ICONS[path.id] ?? BookOpen;
             return (
               <Card key={path.id} className="content-card">
                 <button
@@ -127,7 +164,7 @@ export function LearnPage() {
                   <CardHeader className="flex flex-row items-center justify-between py-4">
                     <div>
                       <CardTitle className="text-lg flex items-center gap-2">
-                        <span>{path.icon}</span>
+                        <PathIcon className="h-5 w-5 shrink-0 text-primary" aria-hidden />
                         {path.title}
                       </CardTitle>
                       <CardDescription>{path.subtitle}</CardDescription>
@@ -141,14 +178,15 @@ export function LearnPage() {
                   </CardHeader>
                 </button>
                 {open && (
-                  <CardContent className="space-y-4 pt-0 border-t border-border">
+                  <CardContent className="space-y-4 pt-0 border-t-2 border-border">
                     {path.lessons.map((lesson) => (
-                      <div key={lesson.id} className="p-4  bg-card space-y-2">
+                      <div key={lesson.id} className="p-4 bg-card space-y-2">
                         <div className="flex items-start justify-between gap-2">
                           <h3 className="font-semibold">{lesson.title}</h3>
                           {completedLessons.has(lesson.id) && (
-                            <span className="text-xs text-primary shrink-0">
-                              {t('learnDone', { defaultValue: '✓ Done' })}
+                            <span className="flex items-center gap-1 text-xs text-primary shrink-0">
+                              <Check className="h-3.5 w-3.5" aria-hidden />
+                              {t('learnDone', { defaultValue: 'Done' })}
                             </span>
                           )}
                         </div>
