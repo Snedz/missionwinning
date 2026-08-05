@@ -204,5 +204,18 @@
   "rewardBadgeCommissioned": "Commissioned",
   "rewardProfileChallenges": "{{done}}/{{total}} weekly challenges met",
   "whatsNewBulletRewardsTitle": "Mission progress",
-  "whatsNewBulletRewardsBody": "Earn XP and badges from real logs — weekly train goal is the boss consistency signal."
+  "whatsNewBulletRewardsBody": "Earn XP and badges from real logs — weekly train goal is the boss consistency signal.",
+  "rewardBadgeFirstBloodDesc": "Finished your first workout.",
+  "rewardBadgeWeekOneDesc": "Three sessions in your first seven days.",
+  "rewardBadgeConsistentDesc": "Hit your weekly train goal four separate weeks.",
+  "rewardBadgeIron25Desc": "Twenty-five finished workouts.",
+  "rewardBadgeIron100Desc": "One hundred finished workouts.",
+  "rewardBadgeFuelSteadyDesc": "Seven fuel days logged.",
+  "rewardBadgeMobilityDesc": "Eight Move wins.",
+  "rewardBadgeStillMindDesc": "Eight Mind sessions.",
+  "rewardBadgeStudentDesc": "Ten Learn wins.",
+  "rewardBadgeChallengeDesc": "Completed a weekly challenge.",
+  "rewardBadgeSpectrumDesc": "Train plus every other pillar in one week.",
+  "rewardBadgeComebackDesc": "Trained again after a week or more away.",
+  "rewardBadgeCommissionedDesc": "Completed the Mission Journey path."
 }

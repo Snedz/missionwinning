@@ -16,6 +16,8 @@ test('en/today.json carries core reward* athlete strings', () => {
     'rewardRank1',
     'rewardRank10',
     'rewardBadgeFirstBlood',
+    'rewardBadgeFirstBloodDesc',
+    'rewardBadgeSpectrumDesc',
     'whatsNewBulletRewardsTitle',
     'whatsNewBulletRewardsBody',
   ]) {
