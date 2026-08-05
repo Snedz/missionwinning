@@ -123,7 +123,7 @@ Horizon W: Train → Today → Victory → Coach excellence.
 | **Flow-1** | Footer Product: Start free first; Coach → “How Coach adapts” | **done `.494`** |
 | **Flow-2** | Exercises → Train bridge (`/active?exercise=`) | **done `.495`** |
 | **Flow-3** | Guide + Paths single content handoff | **done `.496`** |
-| **Flow-4** | More sheet tiers (Wedge / Pillars / Account) | pending |
+| **Flow-4** | More sheet tiers (Wedge / Pillars / You) | **done `.497`** |
 | **Flow-5** | Founder phone dogfood critical path only | founder |
 
 Defaults until founder overrides: keep full free-beta More depth; public `/guide` stays magazine home; early-journey pillar hide deferred.
@@ -143,6 +143,7 @@ New pillars · America · locale farms · rebrand · `PRIVATE_MODE` flip · inve
 | Tabs | `src/lib/primaryNav.ts` |
 | Rail + More registry | `src/lib/navConfig.ts` |
 | Footer / public nav | `src/components/marketing/footerLinks.ts` |
+| More sheet tiers | `src/lib/moreSheetTiers.ts` |
 | Journey | `src/lib/missionJourney.ts`, `docs/JOURNEY.md` |
 | Surface parking | `src/lib/surface.ts` |
 | Private gate | `src/lib/privateGate.ts`, `src/lib/publicRoutes.ts` |

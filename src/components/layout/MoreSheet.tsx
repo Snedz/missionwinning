@@ -1,12 +1,12 @@
 'use client';
 
 /**
- * The fifth tab — a door to the nine signed-in screens that have no tab.
+ * The fifth tab — a door to screens that have no tab.
  *
- * Built from `railGroupsForNav()`, so the rail, the tab bar and this sheet all
- * describe the same thirteen screens from one declaration. The four routes
- * already in the tab bar are filtered out: a row that repeats the button two
- * inches below it is dead weight.
+ * **Flow-4 tiers** (`moreSheetTiersForNav`): Wedge · Pillars · You — not a
+ * mirror of the desktop rail. Tab routes never appear as rows. Quiet foot
+ * links cover tools + legal. Labels resolve through the same nav registry as
+ * the rail so names cannot disagree.
  *
  * Rows carry a live figure on the right where an honest one exists, so the
  * sheet reads as a status board rather than a menu. Where there is no honest
@@ -30,8 +30,8 @@ import { ChevronRight } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { cn } from '@/lib/utils';
 import { AdaptiveOverlay } from '@/components/ui/AdaptiveOverlay';
-import { MOBILE_TAB_HREFS } from '@/lib/primaryNav';
-import { railGroupsForNav, MORE_NAV } from '@/lib/navConfig';
+import { MORE_NAV } from '@/lib/navConfig';
+import { moreSheetQuietForNav, moreSheetTiersForNav } from '@/lib/moreSheetTiers';
 import { isPathEnabled } from '@/lib/surface';
 import { isFreeBeta } from '@/lib/freeBeta';
 import { MeterBar } from '@/components/ui/MeterBar';
@@ -42,20 +42,6 @@ import { syncJourneyPhase } from '@/lib/missionJourney';
 import { APP_BUILD_LABEL } from '@/lib/buildInfo';
 import { isWhatsNewUnseen } from '@/lib/whatsNew';
 import { useWorkoutStore } from '@/store/workoutStore';
-
-/** Quiet links below the groups — reachable, but not screens the rail counts. */
-const QUIET_LINKS: { href: string; labelKey: string; label: string }[] = [
-  { href: '/calculators', labelKey: 'navCalculators', label: 'Calculators' },
-  { href: '/leaderboard', labelKey: 'navLeaderboard', label: 'Leaderboard' },
-  { href: '/learn/guide', labelKey: 'navGuidebook', label: 'Guidebook' },
-  { href: '/beta', labelKey: 'navBetaGuide', label: 'Beta guide' },
-  { href: '/vision', labelKey: 'navOurMission', label: 'Our mission' },
-  { href: '/about', labelKey: 'about', label: 'About' },
-  { href: '/terms', labelKey: 'termsOfService', label: 'Terms' },
-  { href: '/privacy', labelKey: 'privacyPolicy', label: 'Privacy' },
-  { href: '/dmca', labelKey: 'infoDmcaTitle', label: 'DMCA' },
-  { href: '/refunds', labelKey: 'infoRefundsTitle', label: 'Refunds' },
-];
 
 /**
  * Live figures, read once when the sheet opens.
@@ -112,22 +98,11 @@ export function MoreSheet({ open, onClose }: { open: boolean; onClose: () => voi
   const figures = useMoreFigures(open);
 
   /**
-   * Computed during render, not in an effect. `railGroupsForNav()` is sync, and
-   * this whole module is already behind a dynamic import — so deferring it only
-   * bought one frame of an open sheet with nothing in it.
+   * Computed during render, not in an effect. `moreSheetTiersForNav()` is sync,
+   * and this whole module is already behind a dynamic import — so deferring it
+   * only bought one frame of an open sheet with nothing in it.
    */
-  const groups = useMemo(
-    () =>
-      railGroupsForNav()
-        .map((group) => ({
-          ...group,
-          items: group.items.filter(
-            (item) => !(MOBILE_TAB_HREFS as readonly string[]).includes(item.href)
-          ),
-        }))
-        .filter((group) => group.items.length > 0),
-    []
-  );
+  const groups = useMemo(() => moreSheetTiersForNav(), []);
 
   /**
    * The checklist, read when the sheet opens.
@@ -159,14 +134,14 @@ export function MoreSheet({ open, onClose }: { open: boolean; onClose: () => voi
 
   const bundle = MORE_NAV.find((i) => i.href === '/bundle');
   const showBundle = !isFreeBeta() && isPathEnabled('/bundle') && bundle;
-  const quiet = QUIET_LINKS.filter((l) => isPathEnabled(l.href));
+  const quiet = useMemo(() => moreSheetQuietForNav(), []);
 
   return (
     <AdaptiveOverlay
       open={open}
       onClose={onClose}
       size="sm"
-      eyebrow={t('navMoreEyebrow', { defaultValue: 'All screens' })}
+      eyebrow={t('navMoreEyebrow', { defaultValue: 'More' })}
       title={t('appName', { defaultValue: 'Mission Winning' })}
       bodyClassName="pb-2"
     >

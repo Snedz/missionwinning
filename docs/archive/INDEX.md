@@ -65,6 +65,7 @@ When adding a doc:
 | [log/LOG-rotate-414.md](./log/LOG-rotate-414.md) | `.399` FileUploadRow chrome — rotated for `.414` form media T1 |
 | [log/LOG-rotate-415.md](./log/LOG-rotate-415.md) | `.400` opacity exemptions — rotated for `.415` pattern packs |
 | [log/LOG-rotate-416.md](./log/LOG-rotate-416.md) | `.401` beachhead i18n — rotated for `.416` Scout + PDF |
+| [log/LOG-rotate-497.md](./log/LOG-rotate-497.md) | `.482` — rotated for `.497` (More sheet tiers). |
 | [log/LOG-rotate-496.md](./log/LOG-rotate-496.md) | `.481` — rotated for `.496` (Guide + Paths handoff). |
 | [log/LOG-rotate-495.md](./log/LOG-rotate-495.md) | `.480` — rotated for `.495` (SEO exercise → Train bridge). |
 | [log/LOG-rotate-494.md](./log/LOG-rotate-494.md) | `.479` — rotated for `.494` (flow architecture + footer pinout). |
