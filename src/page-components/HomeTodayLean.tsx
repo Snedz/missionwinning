@@ -40,6 +40,7 @@ import { readRaw } from '@/lib/storage/safeStorage';
 import { peekCoachToday } from '@/lib/coach/peekCoachToday';
 import { buildJustGoHeroMeta, type JustGoHeroMeta } from '@/lib/justGoHeroMeta';
 import type { RewardsSummary } from '@/lib/rewards/summary';
+import { formatLocalDateKey, localDateKey } from '@/lib/time/localDate';
 
 /**
  * The evening card reaches the lean shell too — `.192` shipped it dashboard-only,
@@ -182,7 +183,7 @@ export function HomeTodayLean() {
 
   useEffect(() => {
     setTodayLabel(
-      new Date().toLocaleDateString(i18n.language, {
+      formatLocalDateKey(localDateKey(), i18n.language, {
         weekday: 'long',
         month: 'short',
         day: 'numeric',
