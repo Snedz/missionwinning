@@ -19,6 +19,7 @@ Plan: `.hermes/plans/2026-08-05_kaizen-night-plan.md`
 | C4 | More Leaderboard Wedge row | done `.507` |
 | D2 | CONTEXT refuse vs override | done `.507` |
 | C2 | Dead parked hrefs | done `.508` |
+| A4 | Victory consume-once | done `.509` |
 | — | americaHomeOrFallback | done `.508` |
 | B1 | One-boss CTA | pending |
 
