@@ -30,3 +30,12 @@ test('resolveTrendSeries labels via formatLocalDateKey', () => {
   assert.match(src, /formatLocalDateKey/);
   assert.doesNotMatch(src, /new Date\(y,\s*m\s*-\s*1,\s*d/);
 });
+
+test("HistoryCalendar month label via formatLocalMonthKey", () => {
+  const src = readFileSync(
+    join(import.meta.dirname, "..", "..", "components", "history", "HistoryCalendar.tsx"),
+    "utf8"
+  );
+  assert.match(src, /formatLocalMonthKey/);
+  assert.doesNotMatch(src, /new Date\(y!, m! - 1, 1\)/);
+});

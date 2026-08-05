@@ -26,7 +26,7 @@ import { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { ChevronLeft, ChevronRight, Dumbbell } from 'lucide-react';
 import type { CompletedWorkoutLog } from '@/types';
-import { localDateKeyFromIso, localMonthKey, shiftLocalMonth } from '@/lib/time/localDate';
+import { localDateKeyFromIso, localMonthKey, shiftLocalMonth, formatLocalMonthKey } from '@/lib/time/localDate';
 import { buildMonthGrid, trainedDayKeys, type MonthDay } from '@/lib/history/monthGrid';
 import { cn } from '@/lib/utils';
 
@@ -81,13 +81,10 @@ export function HistoryCalendar({ history, loggedKeys }: Props) {
     });
   }, [history, loggedKeys, monthKey]);
 
-  const monthLabel = useMemo(() => {
-    const [y, m] = monthKey.split('-').map(Number);
-    return new Date(y!, m! - 1, 1).toLocaleDateString(i18n.language, {
-      month: 'long',
-      year: 'numeric',
-    });
-  }, [monthKey, i18n.language]);
+  const monthLabel = useMemo(
+    () => formatLocalMonthKey(monthKey, i18n.language),
+    [monthKey, i18n.language]
+  );
 
   /*
    * Weekday initials derived, not hardcoded. `WeekStrip` and `Skeleton` each

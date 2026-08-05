@@ -6,6 +6,7 @@ import {
   localWeekKey,
   startOfLocalWeek,
   formatLocalDateKey,
+  formatLocalMonthKey,
 } from '@/lib/time/localDate';
 
 /**
@@ -163,5 +164,17 @@ describe('formatLocalDateKey', () => {
 
   it('returns key when malformed', () => {
     assert.equal(formatLocalDateKey('nope', 'en-US'), 'nope');
+  });
+});
+
+describe("formatLocalMonthKey", () => {
+  it("formats YYYY-MM", () => {
+    const s = formatLocalMonthKey("2026-08", "en-US");
+    assert.match(s, /2026/);
+    assert.match(s, /Aug|August/);
+  });
+
+  it("returns key when malformed", () => {
+    assert.equal(formatLocalMonthKey("nope", "en-US"), "nope");
   });
 });
