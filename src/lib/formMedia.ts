@@ -7,18 +7,28 @@
  * Form Director regen passes eyes-on QA. Prefer still-only over broken video.
  */
 
-/** Exercise ids with shipped public/form/{id}/side.webp that pass framing QA. */
+/**
+ * Exercise ids with shipped public/form/{id}/side.webp that pass framing QA.
+ * Eyes-on demotes (.498): wrong exercise or hard-reject crop must leave this set
+ * even if the file remains on disk for regen reference.
+ *
+ * Validation: compare still to movement standard (side view, full ROM phase,
+ * correct implement) — CrossFit library / YouTube demos are **reference only**
+ * (no CF embeds/IP). See media/form-kit/qa/MOVEMENT_STANDARDS.md.
+ */
 export const FORM_PACK_SIDE_IDS = new Set([
   'air-squat',
   'romanian-deadlift',
   'push-ups',
-  'pull-ups',
+  // demoted .498: feet cut off frame (hard reject); hang-only not chin-over
+  // 'pull-ups',
   'thruster',
   'kettlebell-swing',
   'plank',
   'bench-press',
   'deadlift',
-  'overhead-press',
+  // demoted .498: single-arm press — wrong exercise for overhead-press id
+  // 'overhead-press',
   'front-squat',
   'lunges',
   'glute-bridge',
@@ -57,8 +67,7 @@ export const FORM_PACK_VIDEO_IDS = new Set<string>([
   'bench-press',
   // Landmine pilot (.479) — pivot fixed, arc press
   'landmine-press',
-  // Still-only: overhead-press (behind-head path), pull-ups (head crop at top),
-  // landmine-row, landmine-squat
+  // Still-only / demoted stills: overhead-press, pull-ups, landmine-row/squat
 ]);
 
 export function formPackSidePosterPath(exerciseId: string): string {

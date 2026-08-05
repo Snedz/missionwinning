@@ -65,3 +65,12 @@ Log every rejected generation. Do not re-ship the same glitch.
 - **Barbell row:** model often puts bar on back (good-morning) — insist “bar outside body toward ribs, not on back”.
 - **Collar / clip geometry:** models invent multi-prong hubs (3 clips from side). **Default empty bar; never spring collars.**
 - **OHP lower path:** I2V from lockout still repeatedly puts the bar **behind** the head / on traps. Prefer still-only until a front-rack path passes frame QA; stronger “in front of face only” lock is not enough alone.
+
+## 2026-08-05 — Eyes-on wrong exercise / crop (.498)
+
+| Date | Asset | Reason | Action |
+|------|--------|--------|--------|
+| 2026-08-05 | `overhead-press/side.webp` | Single-arm barbell press — wrong exercise for OHP id | Demoted from `FORM_PACK_SIDE_IDS` |
+| 2026-08-05 | `pull-ups/side.webp` | Feet cut off frame (hard reject); hang-only not chin-over | Demoted from `FORM_PACK_SIDE_IDS` |
+
+Validation protocol: [MOVEMENT_STANDARDS.md](MOVEMENT_STANDARDS.md) (CrossFit demos = reference only).

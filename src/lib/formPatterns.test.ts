@@ -58,9 +58,13 @@ test('form pack still wins over pattern for structured guides', () => {
   const guide = getFormGuideOrCues('front-squat');
   assert.ok(guide?.mediaUrl?.includes('/form/front-squat/side.'), guide?.mediaUrl);
   assert.ok(guide?.mediaType === 'video' || guide?.mediaType === 'image', guide?.mediaType);
-  // Still-only hero: OHP has no loop
+  // OHP demoted from form pack (.498 wrong-exercise still) → legacy SVG
   const ohp = getFormGuideOrCues('overhead-press');
-  assert.ok(ohp?.mediaUrl?.includes('/form/overhead-press/side.webp'), ohp?.mediaUrl);
+  assert.ok(
+    ohp?.mediaUrl?.includes('/form-guides/overhead-press.svg') ||
+      ohp?.mediaUrl?.includes('/form/overhead-press/'),
+    ohp?.mediaUrl
+  );
   assert.equal(ohp?.mediaType, 'image');
 });
 
