@@ -9,7 +9,7 @@ import {
   type ReadinessStatusKey,
 } from '@/lib/muscleGroups';
 import type { CompletedWorkoutLog } from '@/types';
-import { localDateKey, localWeekKey, startOfLocalWeek } from '@/lib/time/localDate';
+import { localDateKey, localWeekKey, startOfLocalWeek, formatLocalDateKey } from '@/lib/time/localDate';
 
 export interface WeeklyVolumePoint {
   weekStart: string;
@@ -46,7 +46,7 @@ function recentWeekStarts(count: number, locale = 'en'): { key: string; label: s
     const key = localDateKey(d);
     weeks.push({
       key,
-      label: d.toLocaleDateString(locale, { month: 'short', day: 'numeric' }),
+      label: formatLocalDateKey(key, locale, { month: 'short', day: 'numeric' }),
     });
   }
   return weeks;

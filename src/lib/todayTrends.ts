@@ -1,7 +1,7 @@
 import type { CompletedWorkoutLog } from '@/types';
 import { STORAGE_KEYS } from '@/lib/storage/keys';
 import { readJson } from '@/lib/storage/safeStorage';
-import { localDateKey, localDateKeyFromIso } from '@/lib/time/localDate';
+import { localDateKey, localDateKeyFromIso, formatLocalDateKey } from '@/lib/time/localDate';
 import { compareKeys, EN_ONLY_SURFACE, formatLocalNumber } from '@/lib/i18n/formatLocale';
 
 export type TrendMetricId = 'volume' | 'sessions' | 'protein' | 'active';
@@ -35,9 +35,10 @@ export function lastDayBuckets(count: number, locale = 'en'): { key: string; lab
     const d = new Date();
     d.setHours(12, 0, 0, 0);
     d.setDate(d.getDate() - i);
+    const key = localDateKey(d);
     days.push({
-      key: localDateKey(d),
-      label: d.toLocaleDateString(locale, { weekday: 'narrow' }),
+      key,
+      label: formatLocalDateKey(key, locale, { weekday: 'narrow' }),
     });
   }
   return days;
