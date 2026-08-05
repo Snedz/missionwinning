@@ -48,6 +48,8 @@ const COMPANY: FooterLink[] = [
 const LEGAL: FooterLink[] = [
   { href: '/privacy', labelKey: 'footerLegalPrivacy', defaultValue: 'Privacy' },
   { href: '/terms', labelKey: 'footerLegalTerms', defaultValue: 'Terms' },
+  { href: '/cookies', labelKey: 'footerLegalCookies', defaultValue: 'Cookies' },
+  { href: '/accessibility', labelKey: 'footerLegalA11y', defaultValue: 'Accessibility' },
   { href: '/dmca', labelKey: 'footerLegalDmca', defaultValue: 'DMCA' },
   { href: '/refunds', labelKey: 'footerLegalRefunds', defaultValue: 'Refunds' },
 ];
