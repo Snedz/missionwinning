@@ -39,6 +39,7 @@ import { STORAGE_KEYS } from '@/lib/storage/keys';
 import { readRaw } from '@/lib/storage/safeStorage';
 import { peekCoachToday } from '@/lib/coach/peekCoachToday';
 import { buildJustGoHeroMeta, type JustGoHeroMeta } from '@/lib/justGoHeroMeta';
+import type { RewardsSummary } from '@/lib/rewards/summary';
 
 /**
  * The evening card reaches the lean shell too — `.192` shipped it dashboard-only,
@@ -66,6 +67,12 @@ const FirstStepsCard = dynamic(
 
 const TodayReentryCard = dynamic(
   () => import('@/components/today/TodayReentryCard').then((m) => m.TodayReentryCard),
+  { ssr: false }
+);
+
+/** After first session — rank + weekly goal; cold path stays free of rewards chunk. */
+const TodayRewardsCard = dynamic(
+  () => import('@/components/rewards/TodayRewardsCard').then((m) => m.TodayRewardsCard),
   { ssr: false }
 );
 
@@ -116,10 +123,27 @@ export function HomeTodayLean() {
    * the clock, and starting null keeps the chunk off the cold path.
    */
   const [reentry, setReentry] = useState<ReturnType<typeof computeReentry> | null>(null);
+  const [rewardsSummary, setRewardsSummary] = useState<RewardsSummary | null>(null);
   const { dismissed: betaDismissed } = useDismissed(FIRST_STEPS_DISMISS_KEY);
 
   useEffect(() => {
     setReentry(computeReentry(workoutHistory, Date.now()));
+  }, [workoutHistory]);
+
+  /** Rewards after first log — dynamic import keeps cold path free of rewards graph. */
+  useEffect(() => {
+    if (workoutHistory.length === 0) {
+      setRewardsSummary(null);
+      return;
+    }
+    let cancelled = false;
+    void import('@/lib/rewards/summary').then(({ summarizeRewards }) => {
+      if (cancelled) return;
+      setRewardsSummary(summarizeRewards(workoutHistory));
+    });
+    return () => {
+      cancelled = true;
+    };
   }, [workoutHistory]);
 
   const refreshFromStorage = useCallback(() => {
@@ -278,6 +302,14 @@ export function HomeTodayLean() {
       priority: P.reentry,
       pinned: true,
       node: <TodayReentryCard reentry={reentry} />,
+    });
+  }
+
+  if (rewardsSummary && workoutHistory.length > 0) {
+    blocks.push({
+      key: 'rewards',
+      priority: P.rewards,
+      node: <TodayRewardsCard summary={rewardsSummary} />,
     });
   }
 

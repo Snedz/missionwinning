@@ -17,6 +17,7 @@ test('More tiers are Wedge · Pillars · You with declared hrefs', () => {
   );
   const wedge = MORE_SHEET_TIER_HREFS.find((t) => t.id === 'wedge')!;
   assert.ok(wedge.hrefs.includes('/history'));
+  assert.ok(wedge.hrefs.includes('/leaderboard'), 'leaderboard is a Wedge row when surface on');
   assert.ok(wedge.hrefs.includes('/library'));
   assert.ok(wedge.hrefs.includes('/builder'));
   const pillars = MORE_SHEET_TIER_HREFS.find((t) => t.id === 'pillars')!;
@@ -33,6 +34,7 @@ test('resolved tiers never include a mobile tab href', () => {
     assert.ok(!rows.includes(tab), `${tab} is a tab — must not appear in More rows`);
   }
   assert.ok(rows.includes('/history'));
+  assert.ok(rows.includes('/leaderboard'));
   assert.ok(rows.includes('/profile'));
 });
 
@@ -54,6 +56,7 @@ test('quiet foot keeps legal without duplicating full rows', () => {
   for (const q of quiet) {
     assert.ok(!rows.has(q.href), `${q.href} should not be both a row and quiet`);
   }
+  assert.ok(!quiet.some((q) => q.href === '/leaderboard'), 'leaderboard is a full row, not quiet');
   assert.ok(quiet.some((q) => q.href === '/privacy'));
   assert.ok(quiet.some((q) => q.href === '/terms'));
 });

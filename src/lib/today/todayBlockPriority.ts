@@ -27,6 +27,7 @@ export type TodayBlockKey =
   | 'beta'
   | 'header'
   | 'reentry'
+  | 'rewards'
   | 'coach-today'
   | 'coach-week'
   | 'day-review'
@@ -43,6 +44,8 @@ export const TODAY_BLOCK_PRIORITY: Record<TodayBlockKey, number> = {
   beta: 0,
   header: 1,
   reentry: 2,
+  /** Weekly goal + rank — after re-entry, before coach ceremony. */
+  rewards: 4,
 
   // What to do now.
   'coach-today': 12,
