@@ -25,6 +25,7 @@ When adding a doc:
 
 | File | Absorbed by / note |
 |------|---------------------|
+| [log/LOG-rotate-515.md](./log/LOG-rotate-515.md) | rotated oldest for `.515` perfect week paths |
 | [log/LOG-rotate-514.md](./log/LOG-rotate-514.md) | rotated oldest for `.514` perfect week |
 | [log/LOG-rotate-513.md](./log/LOG-rotate-513.md) | rotated oldest for `.513` rewards i18n |
 | [log/LOG-rotate-512.md](./log/LOG-rotate-512.md) | rotated oldest for `.512` still_mind/coach |

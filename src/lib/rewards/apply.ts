@@ -15,6 +15,7 @@ import {
 import type { ApplyResult, RewardEventKind } from '@/lib/rewards/types';
 import type { CompletedWorkoutLog } from '@/types';
 import { localDateKeyFromIso, localWeekKey } from '@/lib/time/localDate';
+import { readWorkoutHistoryFromStorage } from '@/lib/workout/workoutPersistLite';
 
 function persist(result: ApplyResult): ApplyResult {
   saveRewardState(result.state);
@@ -133,7 +134,18 @@ export function applyWorkoutRewards(
 }
 
 export function applyFuelDayReward(dateKey: string): ApplyResult {
-  return applyRewardEventsLive([{ type: 'fuel_day', dateKey }]);
+  const events: RewardEventKind[] = [{ type: 'fuel_day', dateKey }];
+  if (typeof window !== 'undefined') {
+    const weekStart = localWeekKey();
+    const history = readWorkoutHistoryFromStorage();
+    const sessionsThisWeek = history.filter(
+      (w) => localDateKeyFromIso(w.completedAt) >= weekStart
+    ).length;
+    const goal = loadDaysPerWeek();
+    const claimed = [...loadRewardState().claimedEventIds, `fuel:${dateKey}`];
+    events.push(...maybePerfectWeekEvents(weekStart, sessionsThisWeek, goal, claimed));
+  }
+  return applyRewardEventsLive(events);
 }
 
 export function applyPillarWinReward(
@@ -146,6 +158,15 @@ export function applyPillarWinReward(
     if (c.current >= c.target) {
       events.push({ type: 'challenge_complete', challengeId: c.id, weekStart });
     }
+  }
+  if (typeof window !== 'undefined') {
+    const history = readWorkoutHistoryFromStorage();
+    const sessionsThisWeek = history.filter(
+      (w) => localDateKeyFromIso(w.completedAt) >= weekStart
+    ).length;
+    const goal = loadDaysPerWeek();
+    const claimed = loadRewardState().claimedEventIds;
+    events.push(...maybePerfectWeekEvents(weekStart, sessionsThisWeek, goal, claimed));
   }
   return applyRewardEventsLive(events);
 }
