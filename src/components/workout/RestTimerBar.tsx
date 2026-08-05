@@ -2,7 +2,12 @@
 
 import { useTranslation } from 'react-i18next';
 import { SkipForward } from 'lucide-react';
-import { formatRestClock, restProgress, saveDefaultRestSeconds } from '@/lib/workout/restTimer';
+import {
+  formatRestClock,
+  isRestFinalSeconds,
+  restProgress,
+  saveDefaultRestSeconds,
+} from '@/lib/workout/restTimer';
 import { cn } from '@/lib/utils';
 
 type Props = {
@@ -35,6 +40,7 @@ export function RestTimerBar({
 
   const progress = restProgress(initial, remaining);
   const clock = formatRestClock(remaining);
+  const finalSeconds = isRestFinalSeconds(remaining);
 
   return (
     <div
@@ -52,6 +58,7 @@ export function RestTimerBar({
       role="timer"
       aria-live="polite"
       aria-label={`${t('activeRestTitle', { defaultValue: 'Rest' })} ${clock}`}
+      data-rest-final={finalSeconds ? 'true' : undefined}
     >
       {/* `md:contents` dissolves these wrappers into the root's row, so desktop
           gets the mock's single line — REST · clock · meter · +15s · Skip —
@@ -61,8 +68,14 @@ export function RestTimerBar({
           {t('activeRestTitle', { defaultValue: 'Rest' })}
         </span>
         {/* 30px on desktop, per the mock — the 72px numeral is a phone-at-
-            arm's-length decision, and it is absurd on a 1440px window. */}
-        <span className="font-extrabold leading-none tabular-nums text-[56px] sm:text-[72px] md:text-[30px]">
+            arm's-length decision, and it is absurd on a 1440px window.
+            Final ≤10s: accent on ink for outdoor "about to go" without digits. */}
+        <span
+          className={cn(
+            'font-extrabold leading-none tabular-nums text-[56px] sm:text-[72px] md:text-[30px]',
+            finalSeconds ? 'text-accent-400' : 'text-neutral-100'
+          )}
+        >
           {clock}
         </span>
         {/* Accent-400, not poster: on an ink ground the brighter ramp step is

@@ -152,6 +152,7 @@ Nice-to-have only if it slowed you:
 | `.476`–`.479` | Form Index: open form mid-set on **deadlift / front-squat / bench** — silent **loop autoplays** (no play tap). OHP / pull-ups may be still-only (not a bug if still teaches) |
 | `.481` | Rest meter under the big clock is **thick** enough to read outdoors without the digits |
 | `.482` | Log console defaults to **Work + Kind** (not four kind chips). Kind expands Warmup/Fail/Drop |
+| `.485` | Rest clock turns **accent** in the last ~10s (outdoor “about to go” without reading digits) |
 
 Also Horizon W: one-thumb outdoors · one clear next session · coach week earned · re-entry after a gap · ≤90s first open not a chore list.
 

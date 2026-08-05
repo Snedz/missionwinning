@@ -65,6 +65,7 @@ When adding a doc:
 | [log/LOG-rotate-414.md](./log/LOG-rotate-414.md) | `.399` FileUploadRow chrome — rotated for `.414` form media T1 |
 | [log/LOG-rotate-415.md](./log/LOG-rotate-415.md) | `.400` opacity exemptions — rotated for `.415` pattern packs |
 | [log/LOG-rotate-416.md](./log/LOG-rotate-416.md) | `.401` beachhead i18n — rotated for `.416` Scout + PDF |
+| [log/LOG-rotate-485.md](./log/LOG-rotate-485.md) | `.470` — rotated for `.485` (rest final-seconds glance). |
 | [log/LOG-rotate-484.md](./log/LOG-rotate-484.md) | `.469` — rotated for `.484` (locale pack placeholders). |
 | [log/LOG-rotate-483.md](./log/LOG-rotate-483.md) | `.468` — rotated for `.483` (set ordinal interpolation). |
 | [log/LOG-rotate-482.md](./log/LOG-rotate-482.md) | `.467` — rotated for `.482` (outdoor set-kind collapse). |
