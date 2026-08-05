@@ -24,9 +24,14 @@ function withSurfaces<T>(value: string | undefined, fn: () => T): T {
 test('surface', async (t) => {
   await t.test('legal / hardware / payment-rail surface is parked by default', () => {
     withSurfaces(undefined, () => {
-      for (const s of ['america', 'school', 'wearables', 'leaderboard', 'cryptoRails', 'paypal'] as Surface[]) {
+      for (const s of ['america', 'school', 'wearables', 'cryptoRails', 'paypal'] as Surface[]) {
         assert.equal(isSurfaceEnabled(s), false, `${s} should be parked by default`);
       }
+      assert.equal(
+        isSurfaceEnabled('leaderboard'),
+        true,
+        'leaderboard is on by default under full-launch override (honest Pacers)'
+      );
     });
   });
 
@@ -121,7 +126,7 @@ test('surface', async (t) => {
     withSurfaces(undefined, () => {
       assert.equal(isPathEnabled('/america'), false);
       assert.equal(isPathEnabled('/api/wearables/status'), false);
-      assert.equal(isPathEnabled('/leaderboard'), false);
+      assert.equal(isPathEnabled('/leaderboard'), true);
       assert.equal(isPathEnabled('/move'), true);
       assert.equal(isPathEnabled('/active'), true);
     });

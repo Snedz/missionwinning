@@ -13,6 +13,7 @@
 | Domain | Key files | Notes |
 |--------|-----------|-------|
 | **Scoring / Today** | `score.ts`, `crossPillarCoach.ts`, `pillarScoreInputs.ts`, `readinessIndex.ts`, `exerciseMuscleMap.ts` | Readiness, Win Score, coach insight |
+| **Mission Rewards** | [`rewards/`](rewards/INDEX.md) | XP, ranks, badges from real logs — never gates logger |
 | **Mission Coach (daily)** | `coachDailyServer.ts` | LLM daily insight API — not weekly plan |
 | **Mission Coach (weekly)** | `coach/` subfolder | Plan engine — see [coach/INDEX.md](coach/INDEX.md) |
 | **Coach sync** | `coachSync.ts` | Cloud push for coach plan |

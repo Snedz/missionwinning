@@ -18,6 +18,7 @@ import { countsTowardVolume } from "@/lib/workout/setKind";
 import { advanceAfterLog } from "@/lib/workout/superset";
 import { getUserWorkoutHistory, getUserWorkoutsUpdatedSince, getUser } from "@/lib/supabase";
 import { recordWorkoutCompleted } from "@/lib/challenges";
+import { applyWorkoutRewards } from "@/lib/rewards/apply";
 import { scheduleLeaderboardPush } from "@/lib/leaderboardSync";
 import { mapCloudToLocal, mergeWorkoutHistoriesDetailed } from "@/lib/workout/workoutMerge";
 import { track } from "@/lib/analytics";
@@ -258,6 +259,8 @@ export const useWorkoutStore = create<WorkoutState>()(
         }));
 
         recordWorkoutCompleted(log);
+        // Rewards after history includes this log (totalWorkoutsAfter).
+        applyWorkoutRewards(log, get().workoutHistory);
 
         if (isFirstWorkout) track("first_workout_completed");
         track("workout_completed", {

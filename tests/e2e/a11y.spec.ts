@@ -22,13 +22,10 @@ const GATED_ROUTES = [
   // this list covered four of them, so the tranche the Modernist rebrand recut
   // screen-by-screen had no axe coverage at all — the same shape of gap as the
   // SEO tail below, where one exercise page used to stand for ~250 URLs.
-  // Only /leaderboard is parked (`PARKED_BY_DEFAULT`), so only it 404s. This comment
-  // used to name /benchmarks too — but that is a SECONDARY pillar, on unless
-  // `NEXT_PUBLIC_SURFACES=wedge`, so it serves 200 and is a nav screen
-  // (`navConfig.ts:110`). It sat excluded from axe on a stated-but-false premise,
-  // inside the very list `.157` widened to close this kind of gap. The claim is now
-  // asserted in `src/lib/surfaceReality.test.ts` instead of trusted in prose.
+  // Full-launch (2026-08-05): leaderboard is a SECONDARY surface (on by default).
+  // America/wearables/school remain parked. Coverage asserted in surfaceReality.test.ts.
   '/benchmarks',
+  '/leaderboard',
   '/history',
   '/move',
   '/mind',

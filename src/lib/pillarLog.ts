@@ -63,6 +63,13 @@ export async function logPillarWin(
   writeJson(STORAGE_KEYS.pillarWins, [win, ...existing].slice(0, 100));
 
   try {
+    const { applyPillarWinReward } = await import('@/lib/rewards/apply');
+    applyPillarWinReward(win.id, pillar);
+  } catch {
+    // rewards optional — never block the win
+  }
+
+  try {
     const { getUser, saveNutritionEntry } = await import('@/lib/supabase');
     const u = await getUser();
     if (u) {

@@ -29,6 +29,7 @@ import { VictoryFeelStrip } from '@/components/workout/VictoryFeelStrip';
 import { VictoryBodyDeltaStrip } from '@/components/workout/VictoryBodyDeltaStrip';
 import { VictoryStatsStrip } from '@/components/workout/VictoryStatsStrip';
 import { VictoryNextActionStrip } from '@/components/workout/VictoryNextActionStrip';
+import { VictoryRewardsLine } from '@/components/rewards/VictoryRewardsLine';
 import type { Debrief } from '@/lib/coach/debrief';
 import {
   buildVictoryCardData,
@@ -203,6 +204,8 @@ export function WorkoutVictorySheet({
           unitLabel={unitLabel}
           formatVolume={(n) => fmt.num(n)}
         />
+
+        <VictoryRewardsLine active={open} />
 
         <VictoryFeelStrip feelSaved={feelSaved} onSaveFeel={saveFeel} />
 

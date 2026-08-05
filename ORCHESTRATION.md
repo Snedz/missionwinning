@@ -14,6 +14,19 @@ Do not use old chat plans as source of truth — prefer this file + PLAN + LOG.
 
 **Status lives in exactly one place: [CONTEXT.md](CONTEXT.md) `## Now`.** Update it there on every ship (same commit as the LOG entry) — do not restate status here. Founder launch detail: [docs/LAUNCH_RUNBOOK.md](docs/LAUNCH_RUNBOOK.md).
 
+### Founder override — full launch (2026-08-05)
+
+**Launch with everything** — agents may build full product surface (including **Mission Rewards** XP/ranks/badges, leaderboard honesty, pillar completeness). Wedge excellence remains required; free logger never gated.
+
+| Still required | Still forbidden |
+|----------------|-----------------|
+| Horizon W excellence criteria on phone | Gate free logger |
+| Free-first mute pay until EIN | Agents invent traction or flip `PRIVATE_MODE` |
+| Honest empty states / no wallpaper unlocks | America/wearables without enable or legal |
+| One concern per PR; ship protocol | Fake leaderboard humans without Pacer label |
+
+Rewards domain: `src/lib/rewards/`. Plan: `.hermes/plans/2026-08-05_163500-full-launch-everything.md`.
+
 ### Founder override — pre-EIN craft window (2026-08-03)
 
 **≥10 beta users is no longer a build freeze.** REDTEAM A5 remains a *launch/public-flip* signal, not a ban on product work. EIN/payments may take weeks — use the window for **excellence craft, habit loop, return channel, and launch prep**.

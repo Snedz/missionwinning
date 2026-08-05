@@ -29,6 +29,14 @@ export type WhatsNewBullet = {
  */
 export const WHATS_NEW_BULLETS: readonly WhatsNewBullet[] = [
   {
+    id: 'mission-rewards',
+    titleKey: 'whatsNewBulletRewardsTitle',
+    titleDefault: 'Mission progress',
+    bodyKey: 'whatsNewBulletRewardsBody',
+    bodyDefault:
+      'Earn XP and badges from real sessions. Weekly train goal is the boss consistency signal — not a punishing daily streak.',
+  },
+  {
     id: 'history-exercises',
     titleKey: 'whatsNewBulletHistoryTitle',
     titleDefault: 'Exercises in History',
