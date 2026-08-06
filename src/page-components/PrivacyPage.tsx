@@ -43,6 +43,7 @@ const PRIVACY_SECTIONS = [
       'infoPrivacyChoicesLi4',
     ],
   },
+  { id: 'deletion', key: 'infoPrivacyDeletion', bodyKey: 'infoPrivacyDeletionBody' },
   { id: 'california', key: 'infoPrivacyCalifornia', bodyKey: 'infoPrivacyCaliforniaBody' },
   { id: 'not-medical', key: 'infoPrivacyNotMedical', bodyKey: 'infoPrivacyNotMedicalBody' },
 ] as const;
