@@ -313,7 +313,7 @@ export function HistoryPage() {
       {workoutHistory.length === 0 ? (
         <EmptyState
           icon={Dumbbell}
-          illustrationSrc="/brand/mascot/scout-invite.webp"
+          illustrationSrc="/brand/mascot/kalligator-invite.webp"
           illustrationAlt=""
           title={t('historyEmptyTitle', { defaultValue: 'No sessions yet' })}
           description={t('historyEmptyDesc', {

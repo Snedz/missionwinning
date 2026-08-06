@@ -29,7 +29,7 @@ Generation is **offline batch** → founder approve → commit static files. The
 | `public/learn/` | Guidebook / Learn figures | WebP (+ AVIF when large) | `{chapterId}-hero.webp` or `{sectionId}.webp` |
 | `public/social/` | Launch / invite creatives | PNG/WebP 1080² or 1080×1350; short WebM OK | `{campaign}-{variant}.webp` |
 | `public/brand/` | Logos / OG default | SVG / PNG | unchanged — see brand kit |
-| `public/brand/mascot/` | Scout character kit | WebP | `scout-{idle\|invite\|celebrate}.webp` |
+| `public/brand/mascot/` | Kalligator character kit | WebP | `kalligator-{idle\|invite\|celebrate}.webp` |
 | `media/inbox/` | Raw Flow / Imagine exports (gitignored binaries OK as drafts) | PNG / MP4 / WebM | `{kind}-{id}-raw.*` |
 
 **Size budgets**
@@ -48,7 +48,7 @@ Generation is **offline batch** → founder approve → commit static files. The
 
 | Field | Values |
 |-------|--------|
-| `id` | Stable id (usually exerciseId, chapterId, or `scout-idle`) |
+| `id` | Stable id (usually exerciseId, chapterId, or `kalligator-idle`) |
 | `kind` | `form` \| `learn` \| `art` \| `social` \| `mascot` |
 | `path` | Public URL path |
 | `status` | `draft` \| `shipped` |
@@ -174,11 +174,11 @@ npm run media:optimize-inbox
 | **1** | Manifest + instructional form SVGs + Learn figure slots | Shipped (`.121`) |
 | **2** | Social folder + Android form-guide reuse | Shipped (`.121`) |
 | **3** | Google Flow primary HQ path + inbox optimize + prompt pack | Shipped |
-| **4** | Scout mascot bible + kit + History empty + Victory flourish | Shipped |
+| **4** | Kalligator mascot bible + kit + History empty + Victory flourish | Shipped |
 | **5** | Form craft excellence — stick kit, uniqueness guards, T0 de-clone, coverage report, MASCOT modernist lock | Shipped (`.413`) |
 | **6** | T1 SVGs — every structured form guide has a diagram (52 guides / 52 SVGs) | Shipped (`.414`) |
 | **6b** | Learn section densify — paper/ink teaching figures (18/18 free sections) | Shipped (`.414`–`.415`) |
 | **7** | Pattern packs (7) for long-tail + honest caption · social WebP | Shipped (`.415`) |
-| **8** | Scout modernist re-ink · magazine PDF densify · PDF builder `load` settle | Shipped (`.416`) |
+| **8** | Kalligator modernist re-ink · magazine PDF densify · PDF builder `load` settle | Shipped (`.416`) |
 
 **Form Index craft loop:** inventory → Imagine clinical side still (`form-{id}-side-frame`) → `npm run media:optimize-inbox` → wire `FORM_PACK_SIDE_IDS` → library card poster + sheet. Optional later: image→video loop → WebM. Coverage: [`media/COVERAGE.md`](../media/COVERAGE.md).

@@ -2,7 +2,7 @@
 
 **Purpose:** Copy-paste posts, filming shot list, and channel rules for beta → public.  
 **Visual assets:** Brand logos, colors, OG image → [/press](https://www.missionwinning.com/press) · [brand-guidelines.md](brand-guidelines.md)  
-**Mascot:** Scout — [MASCOT.md](MASCOT.md) · `/brand/mascot/`  
+**Mascot:** Kalligator — [MASCOT.md](MASCOT.md) · `/brand/mascot/`  
 **Social creatives:** `public/social/` · playbook [MEDIA_SYSTEM.md](MEDIA_SYSTEM.md) · manifest [`media/manifest.json`](../media/manifest.json)  
 **Rule:** Social gets people into I-Day → first workout. No paid ads until week-4 retention holds.  
 **Capital:** [PRELAUNCH_CAPITAL.md](PRELAUNCH_CAPITAL.md) · outreach help: [OUTREACH_VA_BRIEF.md](OUTREACH_VA_BRIEF.md)  
@@ -16,13 +16,13 @@
 |------|------|-----|
 | [/social/invite-square.webp](https://www.missionwinning.com/social/invite-square.webp) | 1080×1080 | Invite / beta DM share background — overlay copy in editor |
 | [/social/coach-story.webp](https://www.missionwinning.com/social/coach-story.webp) | 1080×1920 | Stories / Reels canvas |
-| [/brand/mascot/scout-invite.webp](https://www.missionwinning.com/brand/mascot/scout-invite.webp) | Scout invite | Overlay on invite posts — “Train anywhere. Free logger.” |
-| [/brand/mascot/scout-celebrate.webp](https://www.missionwinning.com/brand/mascot/scout-celebrate.webp) | Scout celebrate | Victory / “set locked” posts |
-| [/brand/mascot/scout-idle.webp](https://www.missionwinning.com/brand/mascot/scout-idle.webp) | Scout idle | Neutral companion still |
+| [/brand/mascot/kalligator-invite.webp](https://www.missionwinning.com/brand/mascot/kalligator-invite.webp) | Kalligator invite | Overlay on invite posts — “Train anywhere. Free logger.” |
+| [/brand/mascot/kalligator-celebrate.webp](https://www.missionwinning.com/brand/mascot/kalligator-celebrate.webp) | Kalligator celebrate | Victory / “set locked” posts |
+| [/brand/mascot/kalligator-idle.webp](https://www.missionwinning.com/brand/mascot/kalligator-idle.webp) | Kalligator idle | Neutral companion still |
 
-**HQ refresh:** spend Google Flow’s 50 free daily credits (Veo Lite) using [media/FLOW_PROMPTS.md](../media/FLOW_PROMPTS.md) (mascot queue first if refining Scout) → `media/inbox/` → `npm run media:optimize-inbox`. Never use Scout for guilt/streak-shame copy.
+**HQ refresh:** spend Google Flow’s 50 free daily credits (Veo Lite) using [media/FLOW_PROMPTS.md](../media/FLOW_PROMPTS.md) (mascot queue first if refining Kalligator) → `media/inbox/` → `npm run media:optimize-inbox`. Never use Kalligator for guilt/streak-shame copy.
 
-**Scout caption beats (anti-guilt):**
+**Kalligator caption beats (anti-guilt):**
 
 ```
 No session yet. Start when ready.

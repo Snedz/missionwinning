@@ -329,33 +329,33 @@
       "notes": "Grok Imagine 2026-08-04 \u2014 progressive-load arcs 9:16 story canvas; overlay copy in editor (.463)"
     },
     {
-      "id": "scout-idle",
+      "id": "kalligator-idle",
       "kind": "mascot",
-      "path": "/brand/mascot/scout-idle.webp",
+      "path": "/brand/mascot/kalligator-idle.webp",
       "status": "shipped",
       "promptId": "grok-mascot-idle",
-      "notes": "Grok Imagine 2026-08-04 \u2014 geometric falcon idle; paper/ink/red eye (.463)"
+      "notes": "Grok Imagine 2026-08-04 \u2014 geometric crocodile idle; paper/ink/red eye (.463)"
     },
     {
-      "id": "scout-invite",
+      "id": "kalligator-invite",
       "kind": "mascot",
-      "path": "/brand/mascot/scout-invite.webp",
+      "path": "/brand/mascot/kalligator-invite.webp",
       "status": "shipped",
       "promptId": "grok-mascot-invite",
       "notes": "Grok Imagine 2026-08-04 \u2014 open-wing beckon; matches idle proportions (.463)"
     },
     {
-      "id": "scout-celebrate",
+      "id": "kalligator-celebrate",
       "kind": "mascot",
-      "path": "/brand/mascot/scout-celebrate.webp",
+      "path": "/brand/mascot/kalligator-celebrate.webp",
       "status": "shipped",
       "promptId": "grok-mascot-celebrate",
       "notes": "Grok Imagine 2026-08-04 \u2014 wings lift + thin red rim; set-locked energy (.463)"
     },
     {
-      "id": "scout-mark",
+      "id": "kalligator-mark",
       "kind": "mascot",
-      "path": "/brand/mascot/scout-mark.svg",
+      "path": "/brand/mascot/kalligator-mark.svg",
       "status": "shipped",
       "promptId": "flow-mascot-mark",
       "notes": "Hand SVG tiny mark \u2014 not logo replacement"

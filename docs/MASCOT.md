@@ -1,10 +1,12 @@
-# Scout — Mission Winning brand mascot
+# Kalligator — Mission Winning brand mascot
 
 **Audience:** Founder, agents, press, social.  
 **Brand colors / voice:** [brand-guidelines.md](brand-guidelines.md) · **Media pipeline:** [MEDIA_SYSTEM.md](MEDIA_SYSTEM.md) · **Flow prompts:** [`media/FLOW_PROMPTS.md`](../media/FLOW_PROMPTS.md)  
 **Assets:** `/brand/mascot/` · **Manifest:** [`media/manifest.json`](../media/manifest.json)
 
-Scout is Mission Winning’s Duolingo-style sticky character — **one silhouette, one job** — adapted to MW voice. Scout is **not** the Mission Coach LLM and **does not** replace the MW monogram logo.
+**Kalligator** is Mission Winning’s sticky companion character — **one silhouette, one job**. Kalligator is **not** the Mission Coach LLM and **does not** replace the MW monogram logo.
+
+> **Renamed from Scout (falcon kit retired `.542`).** Do not ship Scout assets or “Duo” naming.
 
 ---
 
@@ -12,27 +14,28 @@ Scout is Mission Winning’s Duolingo-style sticky character — **one silhouett
 
 | | |
 |--|--|
-| **Name** | Scout (working title; do not ship as “Duo”) |
-| **Silhouette** | Small geometric **falcon/kestrel** — mission / scout energy |
-| **Style** | Flat shapes, few polygons; readable at 24px and 1080px |
-| **Colors** | Paper body `#f3f2f2` · ink edges `#201e1d` · mid-grey chevron `#6f6b69` · one red accent `#ec3013` (eye highlight / wing trim). Same Modernist lock as the product — do not use the pre-rebrand palette. |
+| **Name** | **Kalligator** |
+| **Silhouette** | Cute cartoon **crocodile / alligator** — bold snout, cream belly, red back spines |
+| **Style** | Flat sticker shapes, thick ink outline; readable at 48px and 1080px |
+| **Colors** | Teal body · cream belly · red back spines · ink outlines · paper field. Character teal/cream is an allowed **mascot exception** to UI chrome (product chrome stays paper/ink/one red). |
 | **Job** | Mission briefing companion — invite to log, celebrate Victory, never shame |
 
 ### Personality (lock)
 
-1. Clear, brief, respectful of time — speaks like a mission briefing.  
+1. Clear, brief, respectful of time — mission briefing energy.  
 2. Celebrates the log (“set locked”) more than it nags absence.  
-3. Never shames missed days; max tone = “Mission still open when you’re ready.”
+3. Never shames missed days; max tone = “Mission still open when you’re ready.”  
+4. “Crash-out” celebrate pose is **playful joy**, not rage-quit or streak guilt.
 
 ### Relationship to marks
 
 | Mark | Role |
 |------|------|
 | `/brand/logo-icon.svg` (MW monogram) | Primary logo — press, favicon, wordmark |
-| Scout | Character / companion — social, one empty state, Victory flourish |
-| Form-guide stick figures | Teaching diagrams — **not** Scout; keep instructional SVG language |
+| Kalligator | Character / companion — social, one empty state, Victory flourish |
+| Form-guide stick figures | Teaching diagrams — **not** Kalligator |
 
-Do **not** put Scout inside the MW monogram square as a logo replacement without founder sign-off.
+Do **not** put Kalligator inside the MW monogram square as a logo replacement without founder sign-off.
 
 ---
 
@@ -40,19 +43,19 @@ Do **not** put Scout inside the MW monogram square as a logo replacement without
 
 | Do | Don’t |
 |----|--------|
-| Fixed proportions; same beak / wing chevron every time | Photoreal birds, soft 3D gym mascots |
-| Mid-grey chest chevron + single red eye highlight | Purple, violet, cream/terracotta, second accent hue |
-| Calm pose language (idle / invite / celebrate) | Anger, crying, “you failed” faces |
-| Paper / ink / one red only | Competitor green-owl clone, gym-bro cartoon, pre-rebrand dark-theme palette |
+| Fixed proportions; same snout / spines / belly every time | Photoreal crocs, soft 3D gym mascots |
+| Cream belly + red spines + teal body | Purple, gold glitter, competitor owl clone |
+| Calm → invite → celebrate pose language | Anger at the athlete, crying, “you failed” faces |
 | Transparent or solid paper canvas | Busy photo backgrounds under the character |
 
-**Expression set (v1):**
+**Expression set (v1) — from sheet `mascot-croco-sheet-34`:**
 
 | File | Pose | Use |
 |------|------|-----|
-| `scout-idle.webp` | Neutral attention | Default / chrome |
-| `scout-invite.webp` | Open wing / beckon | Empty state + social invite |
-| `scout-celebrate.webp` | Quiet lift + red rim | Victory / PR |
+| `kalligator-idle.webp` | Calm / composed | Default companion still |
+| `kalligator-invite.webp` | Escalating / ready (fist) | Empty History + social invite |
+| `kalligator-celebrate.webp` | Crash-out joy (stars) | Victory flourish only |
+| `kalligator-mark.svg` | Simple head mark | Optional small chrome |
 
 ---
 
@@ -62,10 +65,10 @@ Do **not** put Scout inside the MW monogram square as a logo replacement without
 |---------|----|--------|
 | Empty History / first week | “No session yet. Start when ready.” | “You abandoned your mission.” |
 | Victory | “Set locked. Win logged.” | Streak shame / guilt |
-| Social invite | “Train anywhere. Free logger.” | Paywall guilt, competitor dunks |
+| Social invite | “Train anywhere. Free logger.” | Paywall guilt |
 | Rest / quiet day | “Mission still open when you’re ready.” | “Don’t break the chain.” |
 
-Scout copy is **product microcopy**, not Mission Coach chat. Keep Coach LLM voice separate.
+Kalligator copy is **product microcopy**, not Mission Coach chat.
 
 ---
 
@@ -73,45 +76,30 @@ Scout copy is **product microcopy**, not Mission Coach chat. Keep Coach LLM voic
 
 | Phase | Where | Rule |
 |-------|--------|------|
-| **A** | Social creatives · [SOCIAL_LAUNCH.md](SOCIAL_LAUNCH.md) | Scout on invite / coach posts |
+| **A** | Social creatives · [SOCIAL_LAUNCH.md](SOCIAL_LAUNCH.md) | Kalligator on invite / coach posts |
 | **B** | **One** empty state (History — no workouts yet) | Single illustration + one CTA |
-| **C** | Victory flourish | Honor moment only (quiet lift — not confetti spam) |
+| **C** | Victory flourish | Honor moment only — not confetti spam |
 | **Later** | Push / email (founder-owned) | Same anti-guilt lines |
 
 **Never:** Active / Train logger density, every pillar empty, Coach chat avatar takeover, paywall shame.
 
 ---
 
-## Generation (Google Flow / Grok Imagine)
+## Generation
 
-**Characters tab (preferred):** create reusable `@Scout` with the full creation prompt in [FLOW_PROMPTS.md](../media/FLOW_PROMPTS.md) § “Google Flow — Create Character”. Project: [Flow Characters](https://labs.google.com/fx/tools/flow/project/a40c42fd-16e2-49e5-8de5-a8dceb717c7e/characters).
+1. Prefer sheet continuity with `media/inbox/mascot-croco-sheet-34.jpg` as identity lock.  
+2. New poses: drop `mascot-kalligator-{idle|invite|celebrate}-frame.png` into `media/inbox/`.  
+3. `npm run media:optimize-inbox` → `public/brand/mascot/`.  
+4. Update manifest; commit optimized WebP only.
 
-1. Paste Character creation prompt + Character info.  
-2. Optional: upload `public/brand/mascot/scout-idle.webp` as reference.  
-3. Generate scenes with `@Scout` + action lines (idle / invite / celebrate / loop).  
-4. Drop frames as `mascot-scout-{idle|invite|celebrate}-frame.png` into `media/inbox/`.  
-5. `npm run media:optimize-inbox` → `public/brand/mascot/`.  
-6. Update manifest; commit optimized WebP only.
-
-Grok Imagine / Cursor image gen is valid for still pose variants — same palette lock, offline → inbox → optimize. Do not put generation keys in Vercel.
+Legacy `mascot-scout-*` inbox names still map to **kalligator-*** outputs in optimize-inbox (rename bridge).
 
 ---
 
-## Duolingo pattern → MW
+## Checklist before shipping a new Kalligator asset
 
-| Duo | MW |
-|-----|-----|
-| One sticky owl | One sticky Scout |
-| Guilt / streak harassment | Celebrate logs; invite without shame |
-| Everywhere | Social → one empty → Victory only |
-| Meme personality | Calm competence + dry wit |
-
----
-
-## Checklist before shipping a new Scout asset
-
-- [ ] Same silhouette as prior kit  
-- [ ] Modernist palette only (paper / ink / mid-grey / one red)  
-- [ ] No text baked into the image  
+- [ ] Same croco silhouette as kit  
+- [ ] Teal / cream / red spines / ink only  
+- [ ] No text baked into the image (sheet labels stripped when cropping)  
 - [ ] Manifest entry with `kind: mascot`  
 - [ ] Placement allowed by matrix above  

@@ -5,7 +5,7 @@
  * Naming:
  *   learn-{id}-frame.png|jpg|webp  → public/learn/{id}-hero.webp
  *   social-{id}-frame.png|…        → public/social/{id}.webp
- *   mascot-scout-{pose}-frame.png  → public/brand/mascot/scout-{pose}.webp
+ *   mascot-kalligator-{pose}-frame.png  → public/brand/mascot/kalligator-{pose}.webp
  *   form-{id}-side-frame.png       → public/form/{id}/side.webp
  *   form-{id}-front-frame.png      → public/form/{id}/front.webp
  *   form-pattern-{name}-side-frame → public/form/pattern-{name}/side.webp
@@ -71,14 +71,17 @@ function resolveTarget(fileName) {
       publicPath: `/social/${id}.webp`,
     };
   }
-  // mascot-scout-idle-frame → scout-idle
+  // mascot-kalligator-idle-frame → kalligator-idle
   if (base.startsWith('mascot-')) {
     let id = base.slice('mascot-'.length).replace(/-frame$/, '').replace(/-raw$/, '');
-    // Allow mascot-scout-idle or mascot-idle → scout-idle
-    if (!id.startsWith('scout-') && !id.startsWith('scout')) {
-      id = id.startsWith('scout') ? id : `scout-${id}`;
+    // mascot-kalligator-idle | mascot-idle → kalligator-idle
+    if (id.startsWith('scout')) {
+      id = id.replace(/^scout-?/, 'kalligator-');
     }
-    if (id === 'scout') id = 'scout-idle';
+    if (!id.startsWith('kalligator-') && !id.startsWith('kalligator')) {
+      id = id.startsWith('kalligator') ? id : `kalligator-${id}`;
+    }
+    if (id === 'kalligator') id = 'kalligator-idle';
     return {
       kind: 'mascot',
       out: path.join(root, 'public', 'brand', 'mascot', `${id}.webp`),

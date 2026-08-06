@@ -124,11 +124,11 @@ paper on red — the red one reserved for poster moments, never decoration.
 | Pair the wordmark with Archivo 800 | Substitute another face in official lockups |
 | Credit "Mission Winning" in coverage | Imply partnership or endorsement without permission |
 
-## Mascot — Scout
+## Mascot — Kalligator
 
 **Full bible:** [MASCOT.md](MASCOT.md) · **Assets:** `/brand/mascot/` · **Flow prompts:** [`media/FLOW_PROMPTS.md`](../media/FLOW_PROMPTS.md)
 
-Scout is a geometric falcon/kestrel companion (mission briefing personality). Celebrates logs; never shame. Social → one empty state → Victory only — not the Train logger, not a logo replacement for the MW monogram.
+Kalligator is a cartoon crocodile/alligator companion (mission briefing personality). Celebrates logs; never shame. Social → one empty state → Victory only — not the Train logger, not a logo replacement for the MW monogram. (Scout falcon kit retired.)
 
 ---
 
