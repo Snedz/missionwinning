@@ -25,6 +25,7 @@ When adding a doc:
 
 | File | Absorbed by / note |
 |------|---------------------|
+| [log/LOG-rotate-533.md](./log/LOG-rotate-533.md) | rotated oldest for `.533` Mind depth |
 | [log/LOG-rotate-532.md](./log/LOG-rotate-532.md) | rotated oldest for `.532` Move depth |
 | [log/LOG-rotate-531.md](./log/LOG-rotate-531.md) | rotated oldest for `.531` Today rewards a11y |
 | [log/LOG-rotate-530.md](./log/LOG-rotate-530.md) | rotated oldest for `.530` journal when |

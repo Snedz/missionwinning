@@ -227,5 +227,14 @@
   "moveCollectionShoulders": "Shoulders & T-spine",
   "moveCollectionLong": "15+ min deep",
   "moveCollectionEmpty": "No flows in this collection — try All flows.",
-  "moveCollections": "Collections"
+  "moveCollections": "Collections",
+  "mindCollectionAll": "All sessions",
+  "mindCollectionPre": "Pre-session",
+  "mindCollectionPost": "After training",
+  "mindCollectionSleep": "Sleep",
+  "mindCollectionStress": "Stress reset",
+  "mindCollectionFocus": "Focus",
+  "mindCollectionTravel": "Travel / hotel",
+  "mindCollections": "Collections",
+  "mindCollectionEmpty": "No sessions in this collection — try All sessions."
 }
