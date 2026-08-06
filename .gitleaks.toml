@@ -45,4 +45,6 @@ regexes = [
   '''landingJourneyPhase[0-9]Desc''',
   '''landingJourneyPhase[0-9]Name''',
   '''magazinePreface_[0-9]''',
+  '''rewardBadge[A-Za-z0-9]+Desc''',
+  '''rewardBadge[A-Za-z0-9]+Name''',
 ]
