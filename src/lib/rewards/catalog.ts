@@ -39,6 +39,11 @@ export interface BadgeDef {
   descDefault: string;
 }
 
+/** Public path for badge medallion art (SVG). */
+export function badgeIconPath(id: BadgeId): string {
+  return `/rewards/badges/${id}.svg`;
+}
+
 export const BADGE_DEFS: readonly BadgeDef[] = [
   {
     id: 'first_blood',

@@ -4,7 +4,7 @@ import { Medal } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { BADGE_DEFS } from '@/lib/rewards/catalog';
+import { BADGE_DEFS, badgeIconPath } from '@/lib/rewards/catalog';
 import type { BadgeId } from '@/lib/rewards/types';
 import { summarizeRewards } from '@/lib/rewards/summary';
 import { useWorkoutStore } from '@/store/workoutStore';
@@ -53,19 +53,28 @@ export function ProfileRewardsCard() {
             {BADGE_DEFS.filter((b) => owned.has(b.id as BadgeId)).map((b) => (
               <li
                 key={b.id}
-                className="border-2 border-border bg-card px-3 py-2 flex items-start justify-between gap-2"
+                className="border-2 border-border bg-card px-3 py-2 flex items-start gap-3"
               >
-                <div>
-                  <p className="text-sm font-medium">
-                    {t(b.titleKey, { defaultValue: b.titleDefault })}
-                  </p>
+                <img
+                  src={badgeIconPath(b.id)}
+                  alt=""
+                  width={40}
+                  height={40}
+                  className="shrink-0 border border-border"
+                />
+                <div className="min-w-0 flex-1">
+                  <div className="flex items-start justify-between gap-2">
+                    <p className="text-sm font-medium">
+                      {t(b.titleKey, { defaultValue: b.titleDefault })}
+                    </p>
+                    {b.rarity === 'honor' ? (
+                      <Badge variant="honor">{t('rewardHonor', { defaultValue: 'Honor' })}</Badge>
+                    ) : null}
+                  </div>
                   <p className="text-[10px] text-muted-foreground">
                     {t(b.descKey, { defaultValue: b.descDefault })}
                   </p>
                 </div>
-                {b.rarity === 'honor' ? (
-                  <Badge variant="honor">{t('rewardHonor', { defaultValue: 'Honor' })}</Badge>
-                ) : null}
               </li>
             ))}
           </ul>

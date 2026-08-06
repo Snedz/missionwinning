@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="challenge_cleared">
+  <rect width="64" height="64" fill="#f3f2f2"/>
+  <rect x="6" y="6" width="52" height="52" fill="none" stroke="#201e1d" stroke-width="2"/>
+  <rect x="12" y="12" width="40" height="40" fill="#f3f2f2" stroke="#201e1d" stroke-width="1.5"/>
+  <path d="M32 14 L36 26 L48 26 L38 34 L42 46 L32 38 L22 46 L26 34 L16 26 L28 26 Z" fill="#ec3013"/>
+</svg>

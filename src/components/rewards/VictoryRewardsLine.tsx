@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { badgeDef } from '@/lib/rewards/catalog';
+import { badgeDef, badgeIconPath } from '@/lib/rewards/catalog';
 import type { LastAwardsSnapshot } from '@/lib/rewards/storage';
 import { consumeLastAwards } from '@/lib/rewards/storage';
 import type { BadgeId } from '@/lib/rewards/types';
@@ -41,28 +41,44 @@ export function VictoryRewardsLine({ active }: { active: boolean }) {
     .filter(Boolean);
 
   return (
-    <p
-      className="text-center text-sm font-medium text-foreground border-2 border-border bg-card px-3 py-2"
+    <div
+      className="text-center text-sm font-medium text-foreground border-2 border-border bg-card px-3 py-2 space-y-2"
       data-testid="victory-rewards-line"
     >
-      {snap.xpGained > 0
-        ? t('rewardVictoryXp', {
-            xp: snap.xpGained,
-            defaultValue: `+${snap.xpGained} XP`,
-          })
-        : null}
-      {leveled
-        ? t('rewardVictoryLevel', {
-            level: snap.levelAfter,
-            defaultValue: ` · Level ${snap.levelAfter}`,
-          })
-        : null}
-      {badgeNames.length > 0
-        ? t('rewardVictoryBadges', {
-            names: badgeNames.join(' · '),
-            defaultValue: ` · ${badgeNames.join(' · ')}`,
-          })
-        : null}
-    </p>
+      <p>
+        {snap.xpGained > 0
+          ? t('rewardVictoryXp', {
+              xp: snap.xpGained,
+              defaultValue: `+${snap.xpGained} XP`,
+            })
+          : null}
+        {leveled
+          ? t('rewardVictoryLevel', {
+              level: snap.levelAfter,
+              defaultValue: ` · Level ${snap.levelAfter}`,
+            })
+          : null}
+        {badgeNames.length > 0
+          ? t('rewardVictoryBadges', {
+              names: badgeNames.join(' · '),
+              defaultValue: ` · ${badgeNames.join(' · ')}`,
+            })
+          : null}
+      </p>
+      {snap.badgeIds.length > 0 ? (
+        <div className="flex flex-wrap items-center justify-center gap-2" aria-hidden>
+          {snap.badgeIds.slice(0, 4).map((id) => (
+            <img
+              key={id}
+              src={badgeIconPath(id as BadgeId)}
+              alt=""
+              width={32}
+              height={32}
+              className="border border-border"
+            />
+          ))}
+        </div>
+      ) : null}
+    </div>
   );
 }
