@@ -55,13 +55,13 @@ export function TrackWeeklyInsights({ locked = false }: Props) {
           </div>
         </div>
         {locked && (
-          <div className="border border-primary bg-accent-100 p-3 text-sm space-y-2">
+          <div className="border-2 border-border bg-muted p-3 text-sm space-y-2">
             <p className="text-muted-foreground">
               {t('trackWeeklyGpsLocked', {
                 defaultValue: 'Weekly GPS distance and average pace — Super Bundle.',
               })}
             </p>
-            <Button variant="default" size="sm" asChild>
+            <Button variant="outline" size="sm" className="min-h-[44px] tap-target" asChild>
               <Link href="/bundle">{t('trackExploreBundle', { defaultValue: 'See Super Bundle' })}</Link>
             </Button>
           </div>

@@ -128,6 +128,7 @@ export function TrackGpsPanel({ onLogged }: { onLogged?: () => void }) {
                 type="button"
                 size="sm"
                 variant={gpsType === act ? 'selected' : 'outline'}
+                className="min-h-[44px] tap-target"
                 disabled={tracking}
                 onClick={() => setGpsType(act)}
               >
@@ -149,7 +150,7 @@ export function TrackGpsPanel({ onLogged }: { onLogged?: () => void }) {
           )}
         </div>
         {paceSeries.length >= 2 && <TrackPaceChart data={paceSeries} />}
-        <p className="text-sm text-muted-foreground">
+        <p className="text-sm text-muted-foreground" role="status" aria-live="polite">
           {tracking
             ? t('trackGpsRecording', {
                 count: points.length,
@@ -159,21 +160,40 @@ export function TrackGpsPanel({ onLogged }: { onLogged?: () => void }) {
         </p>
         <div className="flex gap-2 flex-wrap">
           {!tracking ? (
-            <Button size="sm" variant="outline" onClick={startTracking}>
+            <Button
+              size="sm"
+              variant="outline"
+              className="min-h-[44px] tap-target"
+              onClick={startTracking}
+            >
               {t('trackGpsStart', { defaultValue: 'Start GPS' })}
             </Button>
           ) : (
             <>
-              <Button size="sm" variant="outline" onClick={stopTracking}>
+              <Button
+                size="sm"
+                variant="outline"
+                className="min-h-[44px] tap-target"
+                onClick={stopTracking}
+              >
                 {t('trackGpsStop', { defaultValue: 'Stop' })}
               </Button>
-              <Button size="sm" variant="default" onClick={saveSession}>
+              <Button
+                size="sm"
+                variant="default"
+                className="primary-action min-h-[44px] tap-target"
+                onClick={saveSession}
+              >
                 {t('trackGpsSave', { defaultValue: 'Save to log' })}
               </Button>
             </>
           )}
         </div>
-        {error && <p className="text-xs text-destructive">{error}</p>}
+        {error && (
+          <p className="text-xs text-destructive" role="alert">
+            {error}
+          </p>
+        )}
         {!tracking && points.length === 0 && !error && (
           <p className="text-xs text-muted-foreground">
             {t('trackGpsHint', {
