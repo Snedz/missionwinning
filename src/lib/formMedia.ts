@@ -20,15 +20,15 @@ export const FORM_PACK_SIDE_IDS = new Set([
   'air-squat',
   'romanian-deadlift',
   'push-ups',
-  // demoted .498: feet cut off frame (hard reject); hang-only not chin-over
-  // 'pull-ups',
+  // Hang setup still — chin-over still hard for model; full feet in frame (.540 re-QA)
+  'pull-ups',
   'thruster',
   'kettlebell-swing',
   'plank',
   'bench-press',
   'deadlift',
-  // demoted .498: single-arm press — wrong exercise for overhead-press id
-  // 'overhead-press',
+  // Two-hand empty-bar lockout still (.540 re-QA after .498 wrong-exercise demote)
+  'overhead-press',
   'front-squat',
   'lunges',
   'glute-bridge',
@@ -67,7 +67,8 @@ export const FORM_PACK_VIDEO_IDS = new Set<string>([
   'bench-press',
   // Landmine pilot (.479) — pivot fixed, arc press
   'landmine-press',
-  // Still-only / demoted stills: overhead-press, pull-ups, landmine-row/squat
+  // Still-only: overhead-press (I2V behind-neck FAIL), pull-ups (top crop FAIL),
+  // landmine-row/squat (no loop pilot)
 ]);
 
 export function formPackSidePosterPath(exerciseId: string): string {
