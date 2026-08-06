@@ -112,12 +112,15 @@ export function RestTimerBar({
           type="button"
           className={cn(
             inkButton,
-            'ms-auto gap-1',
+            'ms-auto gap-1 min-w-[5.5rem]',
             finalSeconds &&
               'border-accent-400 bg-accent-400 text-neutral-900 hover:bg-accent-300 hover:text-neutral-900 active:bg-accent-400'
           )}
           onClick={onSkip}
           data-testid="rest-skip"
+          aria-label={t('activeRestSkipAria', {
+            defaultValue: finalSeconds ? 'Skip rest — go' : 'Skip rest',
+          })}
         >
           <SkipForward className="h-4 w-4" aria-hidden />
           {t('activeRestSkip', { defaultValue: 'Skip' })}

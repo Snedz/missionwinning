@@ -18,7 +18,7 @@ export function VictoryFeelStrip({ feelSaved, onSaveFeel }: Props) {
     <div className="border-2 border-border bg-background px-3 py-3 space-y-2">
       <p className="text-center text-xs text-muted-foreground">
         {feelSaved
-          ? t('victoryFeelSaved', { defaultValue: 'Logged — feeds readiness on Today.' })
+          ? t('victoryFeelSaved', { defaultValue: 'Saved for readiness.' })
           : t('victoryFeelPrompt', {
               defaultValue: 'How do you feel after this session?',
             })}
