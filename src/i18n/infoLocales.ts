@@ -155,15 +155,84 @@ type InfoStrings = {
   infoCoachingDisclaimer: string;
   aboutEyebrow: string;
   navPressBrand: string;
+
+  infoTermsEligibility: string;
+  infoTermsEligibilityBody: string;
+  infoTermsRelated: string;
+  infoTermsRelatedBody: string;
+  infoPrivacyRegions: string;
+  infoPrivacyRegionsBody: string;
+  infoUsageTitle: string;
+  infoUsageLead: string;
+  infoUsagePurpose: string;
+  infoUsagePurposeBody: string;
+  infoUsagePermitted: string;
+  infoUsagePermittedBody: string;
+  infoUsageProhibited: string;
+  infoUsageProhibitedLi1: string;
+  infoUsageProhibitedLi2: string;
+  infoUsageProhibitedLi3: string;
+  infoUsageProhibitedLi4: string;
+  infoUsageProhibitedLi5: string;
+  infoUsageProhibitedLi6: string;
+  infoUsageYouth: string;
+  infoUsageYouthBody: string;
+  infoUsageSelfHost: string;
+  infoUsageSelfHostBody: string;
+  infoUsageEnforcement: string;
+  infoUsageEnforcementBody: string;
+  infoUsageReport: string;
+  infoUsageReportBody: string;
+  infoUsageFoot: string;
+  infoRegionsTitle: string;
+  infoRegionsSummary: string;
+  infoRegionsSummaryBody: string;
+  infoRegionsSupported: string;
+  infoRegionsSupportedBody: string;
+  infoRegionsNotSupported: string;
+  infoRegionsNotSupportedBody: string;
+  infoRegionsWhatCounts: string;
+  infoRegionsWhatCountsBody: string;
+  infoRegionsOss: string;
+  infoRegionsOssBody: string;
+  infoRegionsEnforcement: string;
+  infoRegionsEnforcementBody: string;
+  infoRegionsIsoListLabel: string;
+  infoRegionsFoot: string;
+  infoServiceTermsTitle: string;
+  infoServiceLead: string;
+  infoServiceScope: string;
+  infoServiceScopeBody: string;
+  infoServiceFreeCore: string;
+  infoServiceFreeCoreBody: string;
+  infoServiceBundle: string;
+  infoServiceBundleBody: string;
+  infoServiceCoach: string;
+  infoServiceCoachBody: string;
+  infoServiceAndroid: string;
+  infoServiceAndroidBody: string;
+  infoServiceHumanCoach: string;
+  infoServiceHumanCoachBody: string;
+  infoServiceRegions: string;
+  infoServiceRegionsBody: string;
+  infoServiceOrder: string;
+  infoServiceOrderBody: string;
+  infoServiceFoot: string;
+  infoTermsIndemnification: string;
+  infoTermsIndemnificationBody: string;
+  infoTermsGoverningLaw: string;
+  infoTermsGoverningLawBody: string;
+  infoPrivacyDeletion: string;
+  infoPrivacyDeletionBody: string;
   visionEyebrow: string;
 };
 
 const en: InfoStrings = {
-  infoLastUpdated: 'Last updated: July 2026',
+  infoLastUpdated: 'Last updated: August 2026',
   infoAboutTitle: 'About Mission Winning',
   infoAboutSubtitle:
     'Free offline logger + Mission Coach from your logs — free core forever; Super Bundle adds depth when you are ready.',
-  infoTermsTitle: 'Terms of Use',
+  infoTermsTitle: 'Terms of Service',
   infoPrivacyTitle: 'Privacy Policy',
   infoVisionTitle: 'Mission Winning Vision',
   infoVisionSubtitle:
@@ -183,7 +252,7 @@ const en: InfoStrings = {
     "We're building a small 1:1 coaching program on top of the free core. Tell us about your goals — no commitment, no payment today.",
   infoProgramsTitle: 'Learn programs',
   infoProgramsSubtitle:
-    'Premium practical education as part of the Super Bundle. Free core tools and intros for everyone worldwide.',
+    'Premium practical education as part of the Super Bundle. Free core tools for supported regions; Europe is not supported for the hosted service.',
   infoProgramsLegacy:
     'Legacy catalog — the Learn pillar has moved to /learn. See Super Bundle for full access.',
   infoSkipToday: 'Skip to Today',
@@ -217,9 +286,9 @@ const en: InfoStrings = {
   infoVisionSuperBundle: 'Super Bundle',
   infoProfileHelpTitle: 'Help & legal',
   infoTermsAgreementBody:
-    'By using Mission Winning, you agree to these terms. If you do not agree, do not use the app.',
+    'By accessing or using Mission Winning’s hosted apps, websites, or accounts, you agree to these Terms of Service, the Usage Policy, Supported Regions, Service-Specific Terms, Privacy Policy, and any applicable refund or DMCA notices. If you do not agree, do not use the hosted service. These documents are consumer product terms operated by Mission Winning LLC — not legal advice to you.',
   infoTermsServiceBody:
-    'Mission Winning provides workout tracking, nutrition logging, education content, and optional premium programs. The free core is offered at our discretion; premium features may require purchase.',
+    'Mission Winning provides a free offline workout logger, Mission Coach planning tools, nutrition and other pillar features, education content, optional Super Bundle premium depth, and related websites and apps. The free core logger is offered so you can track training without paywall; premium features may require purchase. We may modify, suspend, or discontinue features with reasonable notice where practicable. Service-Specific Terms apply to Super Bundle, optional AI Coach features, Android distribution, and human coaching interest lists.',
   infoTermsEducationalBody:
     'Content is for general educational purposes. We are not a medical provider or accredited certifying agency. Certificates indicate educational achievement only, not professional licensure. You assume risk for physical activity; consult a physician before starting new programs.',
   infoTermsAccountsLi1: 'Provide accurate information; keep your email access secure.',
@@ -229,20 +298,26 @@ const en: InfoStrings = {
     'Premium purchases (Super Bundle and related paid features) are subject to checkout terms and our Refunds & cancellation policy. Cancel subscriptions anytime via Profile → Manage billing. Contact support@missionwinning.com for billing issues.',
   infoTermsAcceptableUse: 'Acceptable use',
   infoTermsAcceptableUseBody:
-    'No unlawful use, no unauthorized access, no scraping or redistributing premium content, and no abuse of APIs or youth/school features. We may suspend accounts that violate these rules. For billing or safety issues, email support@missionwinning.com.',
+    'You must follow the Usage Policy (Acceptable Use) at /usage. In short: no unlawful use; no unauthorized access; no scraping or redistributing premium content; no CSAM, illegal deepfakes, fraud, harassment, or infrastructure abuse; no presenting Mission Winning as medical diagnosis or emergency care; no abuse of youth/school features. We may suspend or terminate accounts that violate these rules. Report abuse to support@missionwinning.com (subject: AUP abuse).',
   infoTermsLiabilityBody:
-    'To the fullest extent permitted by law, Mission Winning LLC is not liable for injuries, health outcomes, or indirect damages arising from use of the app. The service is provided "as is."',
+    'To the fullest extent permitted by law, Mission Winning LLC and its suppliers provide the Service “as is” and “as available,” without warranties of any kind, express or implied. We are not liable for personal injury, health outcomes, lost profits, indirect, incidental, special, consequential, or punitive damages, device data loss, third-party outages (including payment or hosting providers), or errors in optional AI outputs. Except for liability that cannot be limited under applicable law, our total liability for all claims arising out of or related to the Service or these Terms in any twelve (12) month period will not exceed the amount you paid to Mission Winning LLC for the hosted service in the twelve (12) months before the claim (or USD $0 if you paid nothing). You assume the risks of physical activity; content is educational, not medical advice.',
   infoTermsUserContentBody:
     'You may upload or submit content such as meal photos, activity import files, backups, text, or other materials (“User Content”). You retain ownership of your User Content. You grant Mission Winning LLC a worldwide, non-exclusive, royalty-free license to host, process, and display User Content solely to operate and improve the service. You represent that you have all rights needed to submit User Content and that it does not infringe others’ rights or violate law. Do not upload illegal, harmful, or infringing material.',
   infoTermsDmcaBody:
     'If you believe content on Mission Winning infringes your copyright, follow the notice process on our DMCA page. We respond to valid notices under the Digital Millennium Copyright Act. Repeat infringers may have accounts terminated.',
   infoTermsDisputesBody:
-    'Except for (a) small-claims court actions and (b) claims for injunctive or other equitable relief to protect intellectual property, any dispute arising out of or relating to these terms or the service will be resolved by binding individual arbitration administered by the American Arbitration Association (AAA) under its Consumer Arbitration Rules. You and Mission Winning LLC waive any right to a jury trial and to participate in a class, collective, or representative action. This agreement is governed by the laws of the United States and the state of formation of Mission Winning LLC, without regard to conflict-of-law rules. If the class waiver is found unenforceable as to a particular claim, that claim must proceed in court and not arbitration.',
+    'Except for (a) small-claims court actions and (b) claims for injunctive or other equitable relief to protect intellectual property, any dispute arising out of or relating to these Terms or the Service will be resolved by binding individual arbitration administered by the American Arbitration Association (AAA) under its Consumer Arbitration Rules, seated in the United States. You and Mission Winning LLC waive any right to a jury trial and to participate in a class, collective, or representative action. If the class waiver is found unenforceable as to a particular claim, that claim must proceed in court and not arbitration. You use the hosted service only if you are in a Supported Region.',
   infoTermsChangesBody:
     'We may update these terms. Continued use after changes constitutes acceptance. Material changes will be noted in the app or via email where appropriate.',
   infoTermsFoot: 'Mission Winning LLC · support@missionwinning.com · See also',
+  infoTermsEligibility: 'Eligibility & Supported Regions',
+  infoTermsEligibilityBody:
+    'You must be able to form a binding contract where you live and meet any age requirements we publish (including parental/guardian consent for youth features). The hosted Mission Winning consumer service is offered only in Supported Regions. We do not support Europe (including France, the EEA, the UK, and Switzerland), Canada, or Organisation of Islamic Cooperation (OIC) member states — see /regions. We do not offer accounts, paid Super Bundle, cloud sync as a supported product, or official support in those places. Signup and checkout are hard-blocked when your connection country matches the block list. If you are in an unsupported region, do not create a hosted account or purchase; self-hosted open-source use is described on /regions and remains your responsibility.',
+  infoTermsRelated: 'Related policies',
+  infoTermsRelatedBody:
+    'These Terms incorporate by reference: Usage Policy (/usage), Supported Regions (/regions), Service-Specific Terms (/service-terms), Privacy Policy (/privacy), Refunds & cancellation (/refunds), and DMCA (/dmca). Service-Specific Terms control over these general Terms only on product-specific points they cover.',
   infoPrivacyOverviewBody:
-    'Mission Winning ("we", "us") operates the Mission Winning app at missionwinning.com. Privacy is the default: workouts and logs stay on your device until you sign in to sync. Optional product analytics are off until you allow them. This policy explains what we collect, why, and your choices.',
+    'Mission Winning (“we”, “us”) is operated by Mission Winning LLC and provides the Mission Winning apps and websites (including missionwinning.com). Privacy is the default: workouts and logs stay on your device until you sign in to sync. Optional product analytics are off until you allow them. This policy explains what we collect, why, and your choices for the hosted consumer service. The hosted service is not offered in Europe — see Supported Regions. This policy is not a GDPR Article 13/14 notice for EEA/UK residents because we do not support those regions as customers of the hosted service.',
   infoPrivacyCollectLi1:
     'Account: email address when you sign in (Apple, Google, Microsoft, Facebook, or magic link).',
   infoPrivacyCollectLi2:
@@ -264,11 +339,11 @@ const en: InfoStrings = {
     'We use the subprocessors listed below. We do not use Meta Pixel or Google Analytics advertising tags in the app. Each vendor has its own privacy terms. Session recording is disabled in our PostHog config. Payment refunds are described on /refunds.',
   infoPrivacySubprocessors: 'Subprocessors',
   infoPrivacySubprocessorsBody:
-    'Supabase (auth/database/hosting); Vercel (app hosting); Stripe and/or PayPal (payments when enabled); Resend (transactional email when enabled); PostHog EU (product analytics only if you allow it); optional OpenAI-compatible LLM provider when operators enable AI coach features (preferred: SpaceXAI/xAI with team Zero Data Retention). We remain the controller for consumer accounts; business customers who need a DPA should request docs/legal/DPA.md via support.',
+    'Supabase (auth/database/hosting); Vercel (app hosting); Stripe and/or PayPal (payments when enabled); Resend (transactional email when enabled); PostHog (product analytics only if you allow it — configured without session recording; we do not target European consumer accounts); optional OpenAI-compatible LLM provider when operators enable AI coach features (preferred: SpaceXAI/xAI with team Zero Data Retention). We remain the controller for consumer accounts in Supported Regions. Business customers outside consumer B2C who need a DPA may request docs/legal/DPA.md via support. We do not operate the hosted consumer service as a GDPR-covered offering for EEA/UK/Swiss residents.',
   infoPrivacyChoicesLi1: 'Use the free core without an account (local-only).',
   infoPrivacyChoicesLi2: 'Export or restore device data from Profile → Back up your data.',
   infoPrivacyChoicesLi3:
-    'Request access or deletion of your account and cloud data: support@missionwinning.com — we aim to respond within 30 days.',
+    'Request access or deletion of your account and cloud data: support@missionwinning.com — see Data deletion & retention (erase within 30 days of a verified request, with legal exceptions).',
   infoPrivacyChoicesLi4:
     'Control product analytics anytime: first-visit banner, or Profile → Privacy & analytics. Browsers with Do Not Track keep analytics off.',
   infoPrivacyLocalFirst: 'Local-first by design',
@@ -335,7 +410,7 @@ const en: InfoStrings = {
     'Always consult qualified medical professionals before starting new training or nutrition protocols. Results vary. This is not medical, legal, or licensing advice.',
   infoAboutNationalLink: 'National fitness',
   infoAboutContactBody: 'support@missionwinning.com · hello@missionwinning.com for coaching inquiries.',
-  infoAboutCopyright: '© Mission Winning. Global by design. PWA — works offline anywhere.',
+  infoAboutCopyright: '© Mission Winning LLC. Hosted service: Supported Regions only (Europe not supported). Free logger is local-first on your device.',
   infoVisionLead: 'Train anywhere. Coach from what you actually logged.',
   infoVisionP1:
     'Mission Winning is the entrance to the path: free forever workout logging (no account) plus Mission Coach — fatigue-aware weekly plans from your history alone, no wearable required.',
@@ -378,6 +453,105 @@ const en: InfoStrings = {
     'Coaching is education and accountability — results depend on your consistency and circumstances. Always clear new training or nutrition plans with your physician.',
   aboutEyebrow: 'About',
   navPressBrand: 'Press / Brand',
+
+  infoPrivacyRegions: 'Supported Regions & territorial scope',
+  infoPrivacyRegionsBody:
+    'The hosted Mission Winning consumer service is directed to users in Supported Regions. Europe is not supported: we do not offer the hosted service to residents of the EEA, the United Kingdom, Switzerland, or associated territories listed on /regions. If you are in an unsupported region, do not create an account or send us personal data expecting a supported customer relationship. Open-source self-hosting is separate and is your responsibility. We may process limited technical data (such as IP-derived country signals) to enforce regional availability and fraud prevention. California residents see CCPA rights below. We do not sell personal information for cross-context behavioral advertising.',
+  infoUsageTitle: 'Usage Policy',
+  infoUsageLead:
+    'This Usage Policy (Acceptable Use) applies with the Terms of Service. Hosted service availability is limited by Supported Regions.',
+  infoUsagePurpose: 'Purpose',
+  infoUsagePurposeBody:
+    'Keep the free training mission safe. Open source builds trust; it does not license abuse of people, systems, or the law. This policy applies to the Mission Winning application, APIs, hosted services, and use of the open-source codebase in connection with our marks or hosted interconnect.',
+  infoUsagePermitted: 'Permitted use',
+  infoUsagePermittedBody:
+    'You may use Mission Winning to track workouts, nutrition, mobility, mind, and learning for yourself or people you coach with their consent; run a self-hosted or modified copy under the project license; and contribute improvements that respect privacy, safety, and the free-core mission — subject to Supported Regions for the hosted service.',
+  infoUsageProhibited: 'Prohibited use',
+  infoUsageProhibitedLi1:
+    'Illegal deepfakes and non-consensual synthetic media; sexualized synthetic media of minors; AI impersonation for fraud, harassment, or unlawful deception.',
+  infoUsageProhibitedLi2:
+    'Child sexual abuse material (CSAM) — create, possess, upload, request, or distribute. We report confirmed CSAM to authorities and providers as required by law.',
+  infoUsageProhibitedLi3:
+    'Fraud, phishing, payment abuse, coupon/PIN theft, money laundering, or other financial crime.',
+  infoUsageProhibitedLi4:
+    'Present Mission Winning as medical diagnosis, emergency care, or licensed clinical advice; promote dangerous self-harm or illegal drug distribution schemes.',
+  infoUsageProhibitedLi5:
+    'Unauthorized access, scanning, malware, DDoS, credential stuffing, bypassing rate limits/auth, or large-scale scraping of premium content.',
+  infoUsageProhibitedLi6:
+    'Threats, stalking, doxxing, targeted harassment, or other illegal content in your jurisdiction.',
+  infoUsageYouth: 'Youth and school features',
+  infoUsageYouthBody:
+    'Class codes, parental consent flows, and fitness-test-style tools (when enabled) are for legitimate education and coaching only. Do not collect youth data without required consent. Do not use youth features for advertising profiles or sale of children’s data.',
+  infoUsageSelfHost: 'Self-hosted and modified copies',
+  infoUsageSelfHostBody:
+    'If you run a fork or self-hosted instance, you remain responsible for lawful operation and license compliance. Do not strip this policy or license notices to enable prohibited use. Hosted Mission Winning operators may refuse to interconnect with instances used for prohibited purposes. Self-hosting does not make you a supported hosted customer in unsupported regions.',
+  infoUsageEnforcement: 'Enforcement',
+  infoUsageEnforcementBody:
+    'Mission Winning LLC may suspend or terminate accounts, remove content, revoke API access, block abusive IPs, and preserve/share information with law enforcement when legally required. Nothing here limits rights that cannot be waived under applicable law in Supported Regions.',
+  infoUsageReport: 'Reporting',
+  infoUsageReportBody:
+    'Security/vulnerabilities: see SECURITY.md in the repository. AUP abuse: support@missionwinning.com (subject: AUP abuse). Legal: support@missionwinning.com (subject: Legal).',
+  infoUsageFoot: 'Report abuse: support@missionwinning.com (subject: AUP abuse) · See also',
+  infoRegionsTitle: 'Supported Regions',
+  infoRegionsSummary: 'Summary',
+  infoRegionsSummaryBody:
+    'Mission Winning’s hosted consumer service (website, PWA accounts, cloud sync, Super Bundle checkout, and our distributed Android product) is not available in Europe (including France), Canada, or Organisation of Islamic Cooperation (OIC) member states. Primary market: United States. Cloudflare edge rules plus in-app signup/checkout hard blocks enforce this.',
+  infoRegionsSupported: 'Where we operate',
+  infoRegionsSupportedBody:
+    'We offer the hosted service to users outside the excluded European territories — including the United States and other non-European countries where we choose to operate and where payment and infrastructure partners allow. Availability of payments, app stores, or specific features may still vary by country inside Supported Regions.',
+  infoRegionsNotSupported: 'Europe is not supported',
+  infoRegionsNotSupportedBody:
+    'We do not support: (1) Europe — EEA, United Kingdom, Switzerland, France, and associated territories; (2) Canada; (3) all 57 Organisation of Islamic Cooperation member states. Do not create a hosted account, purchase Super Bundle, or expect customer support if you reside there. Signup and checkout are hard-blocked in-app when your CDN country matches these lists (in addition to Cloudflare). We do not appoint an EU/UK GDPR representative for this consumer offering.',
+  infoRegionsWhatCounts: 'What “hosted service” means',
+  infoRegionsWhatCountsBody:
+    'Hosted service includes: missionwinning.com and related domains we operate; cloud accounts and sync; paid Super Bundle and billing; official Android builds we distribute; email support as a customer. Device-local free logging without an account is software that may run on a phone anywhere, but it is not a supported hosted customer relationship in excluded regions, and cloud features remain unsupported there.',
+  infoRegionsOss: 'Open source',
+  infoRegionsOssBody:
+    'The project license (see repository LICENSE) may allow you to run modified software yourself. Self-hosting is your infrastructure and your compliance burden. It does not entitle you to Mission Winning LLC accounts, payments, trademarks, or support in unsupported regions.',
+  infoRegionsEnforcement: 'How we may enforce',
+  infoRegionsEnforcementBody:
+    'Enforcement layers: Cloudflare geo rules; CDN country on /api/geo; hard 403 on /api/checkout and crypto checkout; SignInPanel and UnlockButton refuse hosted signup/pay when blocked. We may also use billing country, payment method, account profile, and self-declared residence. Circumventing regional limits (false address, VPN abuse for payments, etc.) is a Terms and Usage Policy violation.',
+  infoRegionsIsoListLabel: 'Reference ISO country codes used in product logic (UK normalized to GB):',
+  infoRegionsFoot: 'Questions about eligibility: support@missionwinning.com · See also',
+  infoServiceTermsTitle: 'Service-Specific Terms',
+  infoServiceLead:
+    'These terms supplement the general Terms of Service for particular Mission Winning products. If they conflict on a product-specific point, these terms control for that product.',
+  infoServiceScope: 'Scope',
+  infoServiceScopeBody:
+    'These Service-Specific Terms cover the free core logger, Super Bundle, Mission Coach (including optional AI features), Android app distribution, and optional human coaching interest lists. General Terms, Usage Policy, Supported Regions, Privacy, Refunds, and DMCA still apply.',
+  infoServiceFreeCore: 'Free core logger',
+  infoServiceFreeCoreBody:
+    'Workout logging without paywall is a core product promise: Super Bundle must not gate basic logging. Free core is provided “as is,” may change, and does not include a guaranteed uptime SLA. Local-first storage is the default until you sign in to sync. Free core does not create a medical care relationship.',
+  infoServiceBundle: 'Super Bundle',
+  infoServiceBundleBody:
+    'Super Bundle is an optional paid subscription or lifetime purchase that unlocks premium depth (for example Coach depth and additional pillar content) as described at checkout and in-product. It does not sell “pay to win” competition advantages. Pricing, taxes, and taxes display follow the checkout provider. Refunds and cancellation are governed by /refunds. We may change premium catalog contents over time while keeping the free logger ungated.',
+  infoServiceCoach: 'Mission Coach & optional AI',
+  infoServiceCoachBody:
+    'Rules-based Mission Coach plans are educational programming tools from your logs — not a licensed trainer in your jurisdiction and not medical advice. When operators enable optional AI features (chat, voice, daily insight, photo meal estimates), limited inputs may be sent to a configured provider as described in the Privacy Policy. AI outputs can be wrong; verify form, load, and nutrition decisions yourself. You must not use Coach features to seek emergency help.',
+  infoServiceAndroid: 'Android app',
+  infoServiceAndroidBody:
+    'Official Android builds we distribute are part of the hosted service footprint and follow Supported Regions. Store billing (Google Play) may apply its own refund rules in addition to /refunds. Do not sideload unofficial builds and expect the same security or support. We do not currently offer an iOS App Store product unless separately announced.',
+  infoServiceHumanCoach: 'Human coaching interest list',
+  infoServiceHumanCoachBody:
+    'The /coaching form is an interest list for possible 1:1 coaching — not a purchase and not a guarantee of acceptance. Any future paid coaching engagement will use a separate agreement. Educational accountability only; clear new training with your physician.',
+  infoServiceRegions: 'Regions',
+  infoServiceRegionsBody:
+    'All service lines above that depend on Mission Winning LLC hosting, accounts, or payments are limited to Supported Regions. Europe is not supported. See /regions.',
+  infoServiceOrder: 'Order of documents',
+  infoServiceOrderBody:
+    'For a conflict on a product-specific point: (1) a signed Order Form or checkout disclosure for that purchase, (2) these Service-Specific Terms, (3) Terms of Service, (4) Usage Policy, (5) Privacy Policy. Refunds policy controls refund timing. Supported Regions controls geographic eligibility.',
+  infoServiceFoot: 'Mission Winning LLC · support@missionwinning.com · See also',
+
+  infoTermsIndemnification: 'Indemnification',
+  infoTermsIndemnificationBody:
+    'You will defend, indemnify, and hold harmless Mission Winning LLC and its officers, members, employees, and agents from and against any third-party claims, damages, losses, and reasonable attorneys fees arising out of or related to: (a) your User Content; (b) your use or misuse of the Service; (c) your violation of these Terms, the Usage Policy, or Supported Regions; (d) your violation of law or third-party rights; or (e) injury or claims arising from your training, nutrition, or other health decisions. This does not require you to indemnify us for our willful misconduct.',
+  infoTermsGoverningLaw: 'Governing law',
+  infoTermsGoverningLawBody:
+    'These Terms and any dispute arising out of them are governed by the laws of the State of Texas and the United States, without regard to conflict-of-law rules. Mission Winning is operated by Mission Winning LLC, a Texas limited liability company. The United Nations Convention on Contracts for the International Sale of Goods does not apply. Subject to the arbitration agreement below, exclusive venue for permitted court actions is the state or federal courts located in Texas, United States.',
+  infoPrivacyDeletion: 'Data deletion and retention',
+  infoPrivacyDeletionBody:
+    'After we verify a deletion request from the account holder (email support@missionwinning.com with subject Data deletion from the account email), we will delete account-linked personal data we control in our cloud systems within thirty (30) days, except where retention is required or permitted by law (for example tax or accounting records for paid transactions, fraud or security investigations, or legal holds) or where a processor must retain records under its own legal duties. Ordinary backups are removed on normal rotation. Data stored only on your device is under your control (clear storage or uninstall). Self-hosted copies are the operators responsibility. California residents also see CCPA rights below.',
+
   visionEyebrow: 'Vision',
 };
 

@@ -40,6 +40,15 @@ export function LegalNav({
       <Link href="/privacy" className={linkClassName}>
         {t('privacyPolicy', { defaultValue: 'Privacy Policy' })}
       </Link>
+      <Link href="/usage" className={linkClassName}>
+        {t('infoUsageTitle', { defaultValue: 'Usage Policy' })}
+      </Link>
+      <Link href="/regions" className={linkClassName}>
+        {t('infoRegionsTitle', { defaultValue: 'Supported Regions' })}
+      </Link>
+      <Link href="/service-terms" className={linkClassName}>
+        {t('infoServiceTermsTitle', { defaultValue: 'Service-Specific Terms' })}
+      </Link>
       <Link href="/dmca" className={linkClassName}>
         {t('infoDmcaTitle', { defaultValue: 'DMCA / Copyright' })}
       </Link>

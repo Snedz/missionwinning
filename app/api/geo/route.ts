@@ -1,12 +1,17 @@
 /**
- * Geo hint for first-visit language/units defaults.
- * Auth: public | Rate: 60/min/IP | Headers: x-vercel-ip-country / cf-ipcountry
+ * Geo hint for first-visit language/units defaults + territory hard-block flag.
+ * Auth: public | Rate: 60/min/IP | Headers: cf-ipcountry / x-vercel-ip-country
  */
 import { NextRequest, NextResponse } from 'next/server';
 import { withApiLogging } from '@/lib/api/withApiLogging';
 import { clientIp } from '@/lib/clientIp';
 import { rateLimitAsync } from '@/lib/rateLimit';
 import { resolveRegionDefaults } from '@/lib/regionDefaults';
+import {
+  countryFromRequestHeaders,
+  getTerritoryBlockReason,
+  TERRITORY_BLOCK_MESSAGES,
+} from '@/lib/legal/supportedRegions';
 
 export const GET = withApiLogging('geo', async (request: NextRequest) => {
   const ip = clientIp(request);
@@ -19,8 +24,8 @@ export const GET = withApiLogging('geo', async (request: NextRequest) => {
   }
 
   const countryHeader =
-    request.headers.get('x-vercel-ip-country') ||
     request.headers.get('cf-ipcountry') ||
+    request.headers.get('x-vercel-ip-country') ||
     request.headers.get('x-country-code');
 
   const defaults = resolveRegionDefaults({
@@ -28,16 +33,24 @@ export const GET = withApiLogging('geo', async (request: NextRequest) => {
     acceptLanguage: request.headers.get('accept-language'),
   });
 
+  const cdnCountry = countryFromRequestHeaders(request.headers);
+  const blockReason = cdnCountry ? getTerritoryBlockReason(cdnCountry) : null;
+  const blocked = blockReason != null;
+
   return NextResponse.json(
     {
-      country: defaults.country,
+      country: cdnCountry ?? defaults.country,
       language: defaults.language,
       units: defaults.units,
       source: countryHeader ? 'cdn' : 'accept-language',
+      blocked,
+      blockReason: blockReason,
+      blockMessage: blockReason ? TERRITORY_BLOCK_MESSAGES[blockReason] : null,
     },
     {
       headers: {
-        'Cache-Control': 'private, max-age=3600',
+        // Territory flags must not stick across VPN/travel in the same browser hour.
+        'Cache-Control': 'private, no-store',
       },
     }
   );

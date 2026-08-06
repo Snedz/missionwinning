@@ -1,12 +1,14 @@
 /**
  * Create a Stripe Checkout Session for Super Bundle.
- * Auth: session (signed-in) | Rate: 10/min | See: docs/STRIPE_PREMIUM_SETUP.md
+ * Auth: session (signed-in) | Rate: 10/min | Territory hard block (Europe/OIC/CA)
+ * See: docs/STRIPE_PREMIUM_SETUP.md
  */
 import { NextRequest, NextResponse } from 'next/server';
 import { withApiLogging } from '@/lib/api/withApiLogging';
 import { checkoutBodySchema, parseJsonBody } from '@/lib/apiSchemas';
 import { createCheckoutSession } from '@/lib/checkoutServer';
 import { clientIp } from '@/lib/clientIp';
+import { hostedServiceAccessFromHeaders } from '@/lib/legal/supportedRegions';
 import { rateLimitAsync } from '@/lib/rateLimit';
 import { getUserFromRequest } from '@/lib/supabaseRequestAuth';
 
@@ -19,6 +21,19 @@ export const POST = withApiLogging('checkout', async (req: NextRequest) => {
         status: 429,
         headers: { 'Retry-After': String(limited.retryAfterSec ?? 60) },
       }
+    );
+  }
+
+  const territory = hostedServiceAccessFromHeaders(req.headers);
+  if (!territory.allowed) {
+    return NextResponse.json(
+      {
+        error: territory.message,
+        code: territory.code,
+        reason: territory.reason,
+        country: territory.country,
+      },
+      { status: 403 }
     );
   }
 

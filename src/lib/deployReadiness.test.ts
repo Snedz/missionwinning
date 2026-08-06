@@ -19,7 +19,7 @@ describe('deployReadiness', () => {
     const r = getDeployReadinessReport();
     // `.240` 28→29 with `firstSteps`; `.241` 29→30 with `zeroState` (435→450);
     // `.243` 30→31 with `notification` (450→465). `.281` 31→32 with `whatsNew`
-    // (465→480). `.545` 32→33 with `rewards` (480→495). Pinned rather than
+    // (465→480). `.548` 32→33 with `rewards` (480→495). Pinned rather than
     // derived on purpose: a namespace silently dropping out of the export plan
     // is how a language loses a screen, and a test that recomputed the number
     // from the same manifest could not see it.

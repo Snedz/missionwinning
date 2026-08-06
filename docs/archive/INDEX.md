@@ -25,7 +25,10 @@ When adding a doc:
 
 | File | Absorbed by / note |
 |------|---------------------|
-| [log/LOG-rotate-545.md](./log/LOG-rotate-545.md) | `.530` journal/fuel clock stamps — rotated for `.545` D14 screenshot wave |
+| [log/LOG-rotate-548.md](./log/LOG-rotate-548.md) | `.533` Mind depth — rotated for `.548` D14 screenshot wave |
+| [log/LOG-rotate-547.md](./log/LOG-rotate-547.md) | rotated oldest for `.547` Texas clauses |
+| [log/LOG-rotate-546.md](./log/LOG-rotate-546.md) | rotated oldest for `.546` territory block |
+| [log/LOG-rotate-545.md](./log/LOG-rotate-545.md) | rotated oldest for `.545` legal pack |
 | [log/LOG-rotate-544.md](./log/LOG-rotate-544.md) | rotated oldest for `.544` pricing review |
 | [log/LOG-rotate-543.md](./log/LOG-rotate-543.md) | rotated oldest for `.543` badge art |
 | [log/LOG-rotate-542.md](./log/LOG-rotate-542.md) | rotated oldest for `.542` Kalligator |

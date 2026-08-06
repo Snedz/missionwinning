@@ -58,7 +58,7 @@ const root = path.join(path.dirname(fileURLToPath(import.meta.url)), '..');
  * inside the same PR that introduced the ratchet. Every future move is down.
  */
 /**
- * `.545` repaid the debt: the Aug-5 wave (`.505`–`.543`) had grown this to 48
+ * `.548` repaid the debt: the Aug-5 wave (`.505`–`.543`) had grown this to 48
  * — three times the cap, with CI red on the step and nobody watching the lane.
  * 45 keys moved into catalogs; the three that remain are flag-variant dynamic
  * defaults (`isFreeBeta()` ternaries) that a static catalog value would

@@ -1,8 +1,10 @@
 # Acceptable Use Policy — Mission Winning
 
-This Acceptable Use Policy (AUP) applies to the Mission Winning application, APIs, hosted services, and any use of the open-source codebase (the “Software”). By using the Software or services, you agree to these rules in addition to the [Terms of Use](https://missionwinning.com/terms).
+**Live page:** [missionwinning.com/usage](https://missionwinning.com/usage) · **Supported Regions:** [/regions](https://missionwinning.com/regions) (**Europe is not supported**).
 
-**Purpose:** Keep the free global health mission safe. Open source builds trust; it does not license abuse.
+This Acceptable Use Policy (AUP) applies to the Mission Winning application, APIs, hosted services, and any use of the open-source codebase (the “Software”). By using the Software or services, you agree to these rules in addition to the [Terms of Service](https://missionwinning.com/terms).
+
+**Purpose:** Keep the free training mission safe in Supported Regions. Open source builds trust; it does not license abuse.
 
 ---
 

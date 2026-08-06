@@ -2,11 +2,20 @@
 
 **Not legal advice.** This doc is operational hygiene for Mission Winning: what we disclose, what data we touch, and founder checklists before relying on arbitration/DMCA language in a dispute. Have counsel review material Terms changes.
 
-**Live pages:** [`/privacy`](https://missionwinning.com/privacy) · [`/terms`](https://missionwinning.com/terms) · [`/dmca`](https://missionwinning.com/dmca) · [`/refunds`](https://missionwinning.com/refunds)
+**Live pages:** [`/privacy`](https://missionwinning.com/privacy) · [`/terms`](https://missionwinning.com/terms) · [`/usage`](https://missionwinning.com/usage) · [`/regions`](https://missionwinning.com/regions) · [`/service-terms`](https://missionwinning.com/service-terms) · [`/dmca`](https://missionwinning.com/dmca) · [`/refunds`](https://missionwinning.com/refunds)
 
 **Related:** [LLC_AND_PAYMENTS.md](LLC_AND_PAYMENTS.md) · [TWA_MOBILE_PLAYBOOK.md](TWA_MOBILE_PLAYBOOK.md) · [help/privacy-and-data.md](help/privacy-and-data.md) · [COMPLIANCE.md](COMPLIANCE.md) (control monitor — not a certification) · [PAY_READY_LEGAL.md](PAY_READY_LEGAL.md) (six docs before payments) · [legal/COUNSEL_BRIEF.md](legal/COUNSEL_BRIEF.md) (outside counsel engagement pack)
 
 ---
+
+## 0. Territory (founder policy)
+
+**Hosted service is not available in:**
+- **Europe** (EEA, UK, Switzerland, France, associated territories)
+- **Canada**
+- **Organisation of Islamic Cooperation (OIC)** — all 57 member states
+
+Live policy: [`/regions`](https://missionwinning.com/regions). Product logic: `src/lib/legal/supportedRegions.ts`. Edge: Cloudflare (founder). In-app hard block: signup (`SignInPanel`) + checkout (`/api/checkout`, crypto intent/confirm, `UnlockButton`). Not a substitute for counsel review of geo-blocking/enforcement.
 
 ## 1. Risk areas covered
 
@@ -30,7 +39,7 @@ Use this table when filling Apple Privacy Nutrition Labels / Google Play Data sa
 | Fitness / workout logs | Training, Win Score, coach rules | Supabase when signed in | Export/restore Profile; delete account |
 | Nutrition / meal logs | Fuel pillar | Supabase when signed in | Same |
 | Photos (meal estimate) | Optional photo → macro estimate API | Estimate API / optional LLM path when enabled; **not** an ad photo library | Feature opt-in (user picks photo); see Privacy collect |
-| Product analytics (opt-in) | Typed funnel events | PostHog EU only if allowed | Banner / Profile → Privacy; DNT keeps off |
+| Product analytics (opt-in) | Typed funnel events | PostHog only if allowed (not targeted at EU consumer accounts) | Banner / Profile → Privacy; DNT keeps off |
 | Payment / purchase history | Super Bundle | Stripe and/or PayPal when enabled | Billing portal / support |
 | Optional AI coach context | Chat/voice/daily insight when operators enable LLM | OpenAI-compatible provider (preferred SpaceXAI/xAI + ZDR) | Feature only when enabled; free rules coach needs no key |
 | Advertising ID / AAID / IDFA | — | **Not collected** | N/A |
@@ -45,9 +54,12 @@ Use this table when filling Apple Privacy Nutrition Labels / Google Play Data sa
 - [ ] **Business postal address — blocks all list email.** CAN-SPAM §7704(a)(5) requires a valid physical postal address in every commercial email footer. Confirm with **Bizee** (Texas registered agent) whether their RA address may be published as the business mailing address — RA addresses often accept only service of process and state correspondence, and the terms may forbid advertising it. If not permitted, a USPS PO box or a CMRA private mailbox both satisfy the rule. Then set `MAIL_POSTAL_ADDRESS` in Vercel ([ENV.md](ENV.md)) — until it is set, waitlist confirmations drop to text-only and the launch broadcast + beta-invite senders refuse to run by design. **Same address serves the DMCA row below** — decide once.
 - [ ] Register designated DMCA agent at [copyright.gov DMCA directory](https://www.copyright.gov/dmca-directory/) (~$6); put **exact** name, email, and postal address on `/dmca` (replace interim placeholder — same address as the CAN-SPAM row above)
 - [ ] Update support mailbox auto-reply to mention DMCA notices → `/dmca` + agent email
-- [ ] Counsel review of Terms arbitration + class waiver (AAA Consumer Rules, governing law = Mission Winning LLC formation state)
-- [ ] Confirm formation state in [LLC_AND_PAYMENTS.md](LLC_AND_PAYMENTS.md) and keep Terms “state of formation” language accurate
+- [ ] Counsel review of Terms arbitration + class waiver (AAA Consumer Rules, **governing law = Texas** — Mission Winning LLC)
+- [x] Formation state in Terms: **State of Texas** / Mission Winning LLC (Texas) — agent draft `.547`; counsel still recommended
 - [ ] CCPA: we do not sell/share for cross-context ads — Privacy California section; respond to access/deletion at `support@missionwinning.com`
+- [x] Data deletion SLA on Privacy: erase cloud personal data **within 30 days** of verified request (legal exceptions) — `.547`
+- [x] Liability cap: fees paid in prior **12 months** (or $0 if free) — `.547`
+- [x] User indemnification section on Terms — `.547`
 - [ ] At native Play Internal time: fill Play Data safety from §2 (Compose wedge answers also in [apps/android/PLAY_LISTING.md](../apps/android/PLAY_LISTING.md)); App Privacy labels when iOS opens
 - [ ] Cyber liability insurance quote (~$200–600/yr ballpark — verify with broker); bind before school/enterprise or data at scale — see [PAY_READY_LEGAL.md](PAY_READY_LEGAL.md)
 - [ ] Do not claim “we are insured” in Privacy until a policy exists
@@ -72,7 +84,7 @@ Source of truth: [EXERCISE_AS_MEDICINE.md](EXERCISE_AS_MEDICINE.md). Aligns with
 
 | Surface | Path |
 |---------|------|
-| Privacy / Terms / DMCA UI | `src/page-components/PrivacyPage.tsx`, `TermsPage.tsx`, `DmcaPage.tsx` |
+| Privacy / Terms / Usage / Regions / Service terms / DMCA UI | `PrivacyPage`, `TermsPage`, `UsagePolicyPage`, `SupportedRegionsPage`, `ServiceTermsPage`, `DmcaPage`, `RefundsPage` |
 | Copy | `src/i18n/infoLocales.ts` |
 | Landing AI line | `src/i18n/landingLocales.ts` (`landingProofNoAiKey`) |
 | Public routes | `src/lib/publicRoutes.ts`, `app/sitemap.ts` |

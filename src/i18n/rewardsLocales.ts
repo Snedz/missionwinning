@@ -1,7 +1,7 @@
 /**
  * Mission Rewards UI copy — merged into i18n `common` namespace.
  *
- * Extracted from `defaultValue`-only call sites (`.545`): the rewards surface
+ * Extracted from `defaultValue`-only call sites (`.548`): the rewards surface
  * shipped in `.505`–`.531` with keys that existed in no catalog, so all 15
  * languages silently rendered English. Values here are the exact strings the
  * components carried; translations arrive as pack overlays.

@@ -381,7 +381,7 @@ engine (preferred days + adapt already cover flexible miss recovery).
 **Refused:** in-app notification inbox; sale countdowns; invented stats; scraping
 `LOG.md` into the product UI.
 
-### Wave D14 — Screenshot batch: the daily loop closes (Horizon W · `.545` · 2026-08-06)
+### Wave D14 — Screenshot batch: the daily loop closes (Horizon W · `.548` · 2026-08-06)
 
 **Reference:** founder screenshot batches 2026-08-06 — Pump Club home (update dialog, week strip, LOG ACTIVITY card, AI FAB), Apple Journal (WHOOP-walk auto-entry + "How was your walk yesterday?" + Insights counters), Everfit nutrition ad, plus a marketing set (Ladder / HWPO / Ibex / JuggernautAI / Reshape).
 
