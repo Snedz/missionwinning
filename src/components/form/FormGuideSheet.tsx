@@ -50,7 +50,7 @@ export function FormGuideSheet({
           <button
             type="button"
             onClick={onClose}
-            className="w-full min-h-[52px] bg-primary-fill text-[17px] font-semibold text-white transition-colors hover:bg-primary-fill-hover"
+            className="primary-action w-full min-h-[52px] tap-target bg-primary-fill text-[17px] font-semibold text-white transition-colors hover:bg-primary-fill-hover"
           >
             {t('gotItStartSet', { defaultValue: 'Got it — start set' })}
           </button>

@@ -24,17 +24,20 @@ export function ContinuityStrip({ suggestions, className }: Props) {
 
   return (
     <section
-      className={cn('border-2 border-border bg-card p-4 space-y-3', className)}
+      className={cn(
+        'border-2 border-border bg-card p-4 space-y-3 mt-1',
+        className
+      )}
       data-testid="continuity-strip"
-      aria-label={t('continuityTitle', { defaultValue: 'Keep the mission moving' })}
+      aria-label={t('continuityTitle', { defaultValue: 'After training' })}
     >
       <div>
         <h2 className="text-sm font-semibold text-foreground">
-          {t('continuityTitle', { defaultValue: 'Keep the mission moving' })}
+          {t('continuityTitle', { defaultValue: 'After training' })}
         </h2>
         <p className="text-xs text-muted-foreground mt-0.5">
           {t('continuitySubtitle', {
-            defaultValue: 'One app — recovery, focus, and fuel that match your training.',
+            defaultValue: 'Move, mind, or fuel when you want them.',
           })}
         </p>
       </div>
