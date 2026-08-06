@@ -42,7 +42,10 @@
 | `/learn/guide` | `GuidebookIndexPage.tsx` | Guidebook |
 | `/coaching` | `CoachingPage.tsx` | **Human** coaching leads — not AI Coach |
 | `/privacy` | `PrivacyPage.tsx` | Privacy policy |
-| `/terms` | `TermsPage.tsx` | Terms of use |
+| `/terms` | `TermsPage.tsx` | Terms of Service |
+| `/usage` | `UsagePolicyPage.tsx` | Usage / Acceptable Use |
+| `/regions` | `SupportedRegionsPage.tsx` | Supported Regions (Europe not supported) |
+| `/service-terms` | `ServiceTermsPage.tsx` | Service-Specific Terms |
 | `/dmca` | `DmcaPage.tsx` | DMCA / copyright notices |
 | `/refunds` | `RefundsPage.tsx` | Refunds & cancellation |
 | `/welcome` | `WelcomePage.tsx` | I-Day onboarding (also `app/welcome/`) |

@@ -29,6 +29,24 @@ export function AppLegalFooter({ className = '', showBuild = false, buildLabel }
         <span aria-hidden className="text-border">
           ·
         </span>
+        <Link href="/usage" className="hover:text-primary transition-colors">
+          {t('infoUsageTitle', { defaultValue: 'Usage' })}
+        </Link>
+        <span aria-hidden className="text-border">
+          ·
+        </span>
+        <Link href="/regions" className="hover:text-primary transition-colors">
+          {t('infoRegionsTitle', { defaultValue: 'Regions' })}
+        </Link>
+        <span aria-hidden className="text-border">
+          ·
+        </span>
+        <Link href="/service-terms" className="hover:text-primary transition-colors">
+          {t('infoServiceTermsTitle', { defaultValue: 'Service terms' })}
+        </Link>
+        <span aria-hidden className="text-border">
+          ·
+        </span>
         <Link href="/dmca" className="hover:text-primary transition-colors">
           {t('infoDmcaTitle', { defaultValue: 'DMCA / Copyright' })}
         </Link>

@@ -2,7 +2,7 @@
 
 **Not legal advice.** Documents protect the business under the code — counsel should review before disputes. Templates from the internet protect nobody; this pack is Mission Winning–specific.
 
-**Live consumer pages:** [/terms](https://missionwinning.com/terms) · [/privacy](https://missionwinning.com/privacy) · [/refunds](https://missionwinning.com/refunds) · [/dmca](https://missionwinning.com/dmca)
+**Live consumer pages:** [/terms](https://missionwinning.com/terms) · [/privacy](https://missionwinning.com/privacy) · [/usage](https://missionwinning.com/usage) · [/regions](https://missionwinning.com/regions) · [/service-terms](https://missionwinning.com/service-terms) · [/refunds](https://missionwinning.com/refunds) · [/dmca](https://missionwinning.com/dmca)
 
 **Related:** [LEGAL_SAFETY.md](LEGAL_SAFETY.md) · [LLC_AND_PAYMENTS.md](LLC_AND_PAYMENTS.md) · [PRE_REVENUE_CHECKLIST.md](PRE_REVENUE_CHECKLIST.md) · [COMPLIANCE.md](COMPLIANCE.md) · [legal/DPA.md](legal/DPA.md) · [legal/MSA_TEMPLATE.md](legal/MSA_TEMPLATE.md) · [STRIPE_DISPUTE_OPS.md](STRIPE_DISPUTE_OPS.md) · **Counsel pack:** [legal/COUNSEL_BRIEF.md](legal/COUNSEL_BRIEF.md) · [legal/exports/](legal/exports/)
 
@@ -12,8 +12,11 @@
 
 | # | Document | Status | Where | Owner |
 |---|----------|--------|-------|-------|
-| 1 | Terms of Service / Use | **Live** | `/terms` · `TermsPage` · `infoLocales` | Agent draft · Founder counsel review |
-| 2 | Privacy Policy | **Live** | `/privacy` · deletion SLA 30 days · subprocessors | Agent · Founder |
+| 1 | Terms of Service / Use | **Live** | `/terms` · `TermsPage` · `infoLocales` · **Europe not supported** | Agent draft · Founder counsel review |
+| 2 | Privacy Policy | **Live** | `/privacy` · deletion SLA 30 days · subprocessors · territorial scope | Agent · Founder |
+| 2b | Usage Policy (AUP) | **Live** | `/usage` · [legal/ACCEPTABLE_USE.md](legal/ACCEPTABLE_USE.md) | Agent · Founder |
+| 2c | Supported Regions | **Live** | `/regions` · Europe excluded · `src/lib/legal/supportedRegions.ts` | Agent · Founder |
+| 2d | Service-Specific Terms | **Live** | `/service-terms` · Bundle / Coach / Android | Agent · Founder |
 | 3 | Data Processing Agreement | **Template** | [legal/DPA.md](legal/DPA.md) — B2B/school only | Agent template · Founder per deal |
 | 4 | Refund Policy | **Live** | `/refunds` · 14-day defaults | Agent · Founder ops |
 | 5 | Master Service Agreement | **Template** | [legal/MSA_TEMPLATE.md](legal/MSA_TEMPLATE.md) — not consumer footer | Agent template · Founder per deal |

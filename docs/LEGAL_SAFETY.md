@@ -2,11 +2,15 @@
 
 **Not legal advice.** This doc is operational hygiene for Mission Winning: what we disclose, what data we touch, and founder checklists before relying on arbitration/DMCA language in a dispute. Have counsel review material Terms changes.
 
-**Live pages:** [`/privacy`](https://missionwinning.com/privacy) · [`/terms`](https://missionwinning.com/terms) · [`/dmca`](https://missionwinning.com/dmca) · [`/refunds`](https://missionwinning.com/refunds)
+**Live pages:** [`/privacy`](https://missionwinning.com/privacy) · [`/terms`](https://missionwinning.com/terms) · [`/usage`](https://missionwinning.com/usage) · [`/regions`](https://missionwinning.com/regions) · [`/service-terms`](https://missionwinning.com/service-terms) · [`/dmca`](https://missionwinning.com/dmca) · [`/refunds`](https://missionwinning.com/refunds)
 
 **Related:** [LLC_AND_PAYMENTS.md](LLC_AND_PAYMENTS.md) · [TWA_MOBILE_PLAYBOOK.md](TWA_MOBILE_PLAYBOOK.md) · [help/privacy-and-data.md](help/privacy-and-data.md) · [COMPLIANCE.md](COMPLIANCE.md) (control monitor — not a certification) · [PAY_READY_LEGAL.md](PAY_READY_LEGAL.md) (six docs before payments) · [legal/COUNSEL_BRIEF.md](legal/COUNSEL_BRIEF.md) (outside counsel engagement pack)
 
 ---
+
+## 0. Territory (founder policy)
+
+**Europe is not supported** for the hosted consumer service (EEA, UK, Switzerland, associated territories). Live policy: [`/regions`](https://missionwinning.com/regions). Product logic: `src/lib/legal/supportedRegions.ts`. Not a substitute for counsel review of geo-blocking/enforcement.
 
 ## 1. Risk areas covered
 
@@ -30,7 +34,7 @@ Use this table when filling Apple Privacy Nutrition Labels / Google Play Data sa
 | Fitness / workout logs | Training, Win Score, coach rules | Supabase when signed in | Export/restore Profile; delete account |
 | Nutrition / meal logs | Fuel pillar | Supabase when signed in | Same |
 | Photos (meal estimate) | Optional photo → macro estimate API | Estimate API / optional LLM path when enabled; **not** an ad photo library | Feature opt-in (user picks photo); see Privacy collect |
-| Product analytics (opt-in) | Typed funnel events | PostHog EU only if allowed | Banner / Profile → Privacy; DNT keeps off |
+| Product analytics (opt-in) | Typed funnel events | PostHog only if allowed (not targeted at EU consumer accounts) | Banner / Profile → Privacy; DNT keeps off |
 | Payment / purchase history | Super Bundle | Stripe and/or PayPal when enabled | Billing portal / support |
 | Optional AI coach context | Chat/voice/daily insight when operators enable LLM | OpenAI-compatible provider (preferred SpaceXAI/xAI + ZDR) | Feature only when enabled; free rules coach needs no key |
 | Advertising ID / AAID / IDFA | — | **Not collected** | N/A |
@@ -72,7 +76,7 @@ Source of truth: [EXERCISE_AS_MEDICINE.md](EXERCISE_AS_MEDICINE.md). Aligns with
 
 | Surface | Path |
 |---------|------|
-| Privacy / Terms / DMCA UI | `src/page-components/PrivacyPage.tsx`, `TermsPage.tsx`, `DmcaPage.tsx` |
+| Privacy / Terms / Usage / Regions / Service terms / DMCA UI | `PrivacyPage`, `TermsPage`, `UsagePolicyPage`, `SupportedRegionsPage`, `ServiceTermsPage`, `DmcaPage`, `RefundsPage` |
 | Copy | `src/i18n/infoLocales.ts` |
 | Landing AI line | `src/i18n/landingLocales.ts` (`landingProofNoAiKey`) |
 | Public routes | `src/lib/publicRoutes.ts`, `app/sitemap.ts` |

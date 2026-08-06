@@ -4,12 +4,14 @@
  * See: app/INDEX.md, src/page-components/INDEX.md
  */
 
+import Link from 'next/link';
 import { useTranslation } from 'react-i18next';
 import { Shield } from 'lucide-react';
 import { InfoPageShell, InfoSection } from '@/components/layout/InfoPageShell';
 
 const PRIVACY_SECTIONS = [
   { id: 'overview', key: 'infoPrivacyOverview', bodyKey: 'infoPrivacyOverviewBody' },
+  { id: 'regions', key: 'infoPrivacyRegions', bodyKey: 'infoPrivacyRegionsBody' },
   { id: 'local-first', key: 'infoPrivacyLocalFirst', bodyKey: 'infoPrivacyLocalFirstBody' },
   {
     id: 'collect',
@@ -57,7 +59,7 @@ export function PrivacyPage() {
     <InfoPageShell
       icon={Shield}
       title={t('infoPrivacyTitle', { defaultValue: 'Privacy Policy' })}
-      lastUpdated={t('infoLastUpdated', { defaultValue: 'Last updated: July 2026' })}
+      lastUpdated={t('infoLastUpdated', { defaultValue: 'Last updated: August 2026' })}
       showLegalFooter
       jumpLinks={jumpLinks}
     >
@@ -74,15 +76,31 @@ export function PrivacyPage() {
               ))}
             </ul>
           ) : (
-            <p className="text-muted-foreground">
-              {t(section.bodyKey, { defaultValue: section.bodyKey })}
-            </p>
+            <>
+              <p className="text-muted-foreground">
+                {t(section.bodyKey, { defaultValue: section.bodyKey })}
+              </p>
+              {section.id === 'regions' && (
+                <p className="mt-2">
+                  <Link href="/regions" className="text-primary hover:underline text-sm">
+                    {t('infoRegionsTitle', { defaultValue: 'Supported Regions' })} →
+                  </Link>
+                </p>
+              )}
+            </>
           )}
         </InfoSection>
       ))}
 
       <p className="text-xs text-muted-foreground pt-2">
-        {t('infoPrivacyFoot', { defaultValue: 'Questions: support@missionwinning.com' })}
+        {t('infoPrivacyFoot', { defaultValue: 'Questions: support@missionwinning.com' })}{' '}
+        <Link href="/terms" className="text-primary hover:underline">
+          {t('termsOfService', { defaultValue: 'Terms of Service' })}
+        </Link>
+        {' · '}
+        <Link href="/regions" className="text-primary hover:underline">
+          {t('infoRegionsTitle', { defaultValue: 'Supported Regions' })}
+        </Link>
       </p>
     </InfoPageShell>
   );

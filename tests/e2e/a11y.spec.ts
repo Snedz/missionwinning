@@ -46,6 +46,10 @@ const GATED_ROUTES = [
   '/paths',
   '/about',
   '/privacy',
+  '/terms',
+  '/usage',
+  '/regions',
+  '/service-terms',
   // Three more enabled surfaces that had no axe coverage at all. `.157` widened this
   // list from four signed-in screens to thirteen, but it was never cross-checked
   // against the surface registry — so four of the eight surfaces that are ON by
