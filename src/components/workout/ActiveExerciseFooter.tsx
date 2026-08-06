@@ -78,10 +78,10 @@ export function ActiveExerciseFooter({
               aria-pressed={activeSetKind === k}
               onClick={() => onSetKindChange(k)}
               className={cn(
-                'min-h-[32px] border-2 px-2 text-[11px] font-semibold uppercase tracking-[0.06em] transition-colors',
+                'min-h-[44px] border-2 px-2 text-[11px] font-semibold uppercase tracking-[0.06em] transition-colors tap-target',
                 activeSetKind === k
-                  ? 'border-[hsl(var(--accent-poster))] bg-accent-100 text-foreground'
-                  : 'border-border text-muted-foreground hover:bg-accent-100'
+                  ? 'border-[hsl(var(--accent-poster))] bg-muted text-foreground'
+                  : 'border-border text-muted-foreground hover:bg-muted'
               )}
             >
               {t(setKindLabelKey(k), {
