@@ -86,17 +86,37 @@ export type NothingLoggedToastCopy = {
   titleDefault: string;
   descKey: string;
   descDefault: string;
-  variant: 'destructive';
+  /** Prefer default — empty finish is guidance, not an error. */
+  variant: 'default';
 };
 
 export function nothingLoggedToastCopy(): NothingLoggedToastCopy {
   return {
     titleKey: 'activeNothingLogged',
-    titleDefault: 'Nothing logged',
+    titleDefault: 'Log a set first',
     descKey: 'activeNothingLoggedDesc',
-    descDefault: 'Complete at least one set before finishing.',
-    variant: 'destructive',
+    descDefault: 'Finish unlocks after at least one completed set.',
+    variant: 'default',
   };
+}
+
+/**
+ * Why Finish must not open Victory. Pure — page toasts and keeps the session.
+ * `null` means finish is allowed (store still may return null if race-cleared).
+ */
+export type FinishBlockedReason = 'no_sets';
+
+export function finishBlockedReason(
+  exercises: { sets: { completed: boolean }[] }[] | null | undefined
+): FinishBlockedReason | null {
+  if (!exercises?.length) return 'no_sets';
+  let completed = 0;
+  for (const ex of exercises) {
+    for (const s of ex.sets) {
+      if (s.completed) completed++;
+    }
+  }
+  return completed === 0 ? 'no_sets' : null;
 }
 
 export type LogSetRestPlan = {

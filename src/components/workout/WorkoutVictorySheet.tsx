@@ -32,6 +32,7 @@ import { VictoryNextActionStrip } from '@/components/workout/VictoryNextActionSt
 import { VictorySecondaryLinks } from '@/components/workout/VictorySecondaryLinks';
 import { VictoryRewardsLine } from '@/components/rewards/VictoryRewardsLine';
 import { buildVictorySecondaryLinks } from '@/lib/workout/victorySecondaryLinks';
+import { shouldCollapseVictoryDetails } from '@/lib/workout/victoryLayout';
 import { parseNutritionLog } from '@/lib/nutritionQuickLog';
 import { readRaw } from '@/lib/storage/safeStorage';
 import { STORAGE_KEYS } from '@/lib/storage/keys';
@@ -177,6 +178,40 @@ export function WorkoutVictorySheet({
     summary.nextAction?.href
   );
 
+  const collapseDetails = shouldCollapseVictoryDetails({
+    hasBodyDelta: Boolean(summary.bodyDelta),
+    hasDebrief: Boolean(debrief),
+    fragmentCount: fragments?.length ?? 0,
+    hasProgression: Boolean(summary.progressionInsight),
+  });
+
+  const detailsBlock = (
+    <>
+      {summary.bodyDelta ? <VictoryBodyDeltaStrip bodyDelta={summary.bodyDelta} /> : null}
+      {debrief && <SessionDebriefCard debrief={debrief} fragments={fragments} />}
+      {summary.progressionInsight ? (
+        <p className="text-center text-sm text-muted-foreground px-2 leading-relaxed">
+          {t(progressionInsightKey(summary.progressionInsight), {
+            step: summary.progressionInsight.step,
+            unit: summary.progressionInsight.unit,
+            name: summary.progressionInsight.exerciseName,
+            reps: summary.progressionInsight.reps,
+            weight: summary.progressionInsight.weight,
+            defaultValue: formatProgressionInsight(summary.progressionInsight),
+          })}
+        </p>
+      ) : null}
+      {summary.streak > 0 && (
+        <p className="text-center text-sm text-muted-foreground">
+          {t('victoryStreak', {
+            count: summary.streak,
+            defaultValue: `${summary.streak}-day streak`,
+          })}
+        </p>
+      )}
+    </>
+  );
+
   const saveFeel = (energy: number) => {
     upsertTodayPartial({ energy, mood: energy });
     // The journal entry for THIS session, not just today's check-in. Both are
@@ -234,32 +269,6 @@ export function WorkoutVictorySheet({
 
         <VictoryFeelStrip feelSaved={feelSaved} onSaveFeel={saveFeel} />
 
-        {summary.bodyDelta ? <VictoryBodyDeltaStrip bodyDelta={summary.bodyDelta} /> : null}
-
-        {debrief && <SessionDebriefCard debrief={debrief} fragments={fragments} />}
-
-        {summary.progressionInsight ? (
-          <p className="text-center text-sm text-muted-foreground px-2 leading-relaxed">
-            {t(progressionInsightKey(summary.progressionInsight), {
-              step: summary.progressionInsight.step,
-              unit: summary.progressionInsight.unit,
-              name: summary.progressionInsight.exerciseName,
-              reps: summary.progressionInsight.reps,
-              weight: summary.progressionInsight.weight,
-              defaultValue: formatProgressionInsight(summary.progressionInsight),
-            })}
-          </p>
-        ) : null}
-
-        {summary.streak > 0 && (
-          <p className="text-center text-sm text-muted-foreground">
-            {t('victoryStreak', {
-              count: summary.streak,
-              defaultValue: `${summary.streak}-day streak — nice consistency`,
-            })}
-          </p>
-        )}
-
         {summary.nextAction ? (
           <VictoryNextActionStrip
             nextAction={summary.nextAction}
@@ -271,6 +280,17 @@ export function WorkoutVictorySheet({
           links={secondaryLinks}
           onNavigate={() => onOpenChange(false)}
         />
+
+        {collapseDetails ? (
+          <details className="group border-t-2 border-border pt-3">
+            <summary className="cursor-pointer list-none text-center text-xs font-medium text-muted-foreground min-h-[44px] flex items-center justify-center hover:text-foreground [&::-webkit-details-marker]:hidden">
+              {t('victorySessionDetails', { defaultValue: 'Session details' })}
+            </summary>
+            <div className="mt-3 space-y-3">{detailsBlock}</div>
+          </details>
+        ) : (
+          detailsBlock
+        )}
 
         <DialogFooter className="flex-col sm:flex-col gap-2 pt-1">
           {!summary.nextAction && (

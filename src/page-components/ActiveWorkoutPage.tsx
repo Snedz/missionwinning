@@ -48,6 +48,7 @@ import {
 import { useCoachPlan } from '@/hooks/useCoachPlan';
 import {
   assembleActiveVictory,
+  finishBlockedReason,
   logSetIsPr,
   nothingLoggedToastCopy,
   planLogSetRest,
@@ -380,6 +381,17 @@ export function ActiveWorkoutPage() {
   };
 
   const handleComplete = () => {
+    const blocked = finishBlockedReason(activeWorkout?.exercises);
+    if (blocked) {
+      const empty = nothingLoggedToastCopy();
+      toast({
+        title: t(empty.titleKey, { defaultValue: empty.titleDefault }),
+        description: t(empty.descKey, { defaultValue: empty.descDefault }),
+        variant: empty.variant,
+      });
+      return;
+    }
+
     const historyBefore = workoutHistory;
     const checkIn = getTodayCheckIn();
     // Journal content — read before completeActiveWorkout clears the session.

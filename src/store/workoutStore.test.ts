@@ -125,12 +125,12 @@ test('workoutStore', async (t) => {
     assert.equal(log?.exercises[0]?.prescribed, true);
   });
 
-  await t.test('finishing with nothing logged discards instead of saving an empty session', () => {
+  await t.test('finishing with nothing logged keeps the session (no empty Victory)', () => {
     const store = useWorkoutStore.getState();
     store.startWorkout('Push', template());
     const log = useWorkoutStore.getState().completeActiveWorkout();
     assert.equal(log, null);
-    assert.equal(useWorkoutStore.getState().activeWorkout, null);
+    assert.ok(useWorkoutStore.getState().activeWorkout, 'empty Finish must not discard the session');
     assert.equal(useWorkoutStore.getState().workoutHistory.length, 0);
   });
 
