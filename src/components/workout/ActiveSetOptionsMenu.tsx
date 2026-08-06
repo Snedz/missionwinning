@@ -38,8 +38,9 @@ export function ActiveSetOptionsMenu({
         type="button"
         variant="ghost"
         size="sm"
-        className="min-h-[44px] text-muted-foreground"
+        className="min-h-[44px] text-muted-foreground tap-target"
         aria-expanded={open}
+        aria-haspopup="menu"
         onClick={() => onOpenChange(!open)}
       >
         {open
@@ -62,7 +63,7 @@ export function ActiveSetOptionsMenu({
               <button
                 type="button"
                 role="menuitem"
-                className="flex w-full min-h-[44px] items-center px-3 text-sm hover:bg-accent-100 text-start text-primary"
+                className="flex w-full min-h-[44px] items-center px-3 text-sm hover:bg-muted text-start text-primary"
                 onClick={() => {
                   onApplyAllTargets();
                   onOpenChange(false);
@@ -75,7 +76,7 @@ export function ActiveSetOptionsMenu({
               <button
                 type="button"
                 role="menuitem"
-                className="flex w-full min-h-[44px] items-center px-3 text-sm hover:bg-accent-100 text-start text-muted-foreground"
+                className="flex w-full min-h-[44px] items-center px-3 text-sm hover:bg-muted text-start text-muted-foreground"
                 onClick={() => {
                   onRemoveSet();
                   onOpenChange(false);

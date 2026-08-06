@@ -70,7 +70,7 @@ export function ActiveExerciseMoreMenu({
               <Link
                 href={`/coach?ask=${encodeURIComponent(exerciseId)}`}
                 role="menuitem"
-                className="flex min-h-[44px] items-center px-3 text-sm hover:bg-accent-100"
+                className="flex min-h-[44px] items-center px-3 text-sm hover:bg-muted"
                 onClick={() => onOpenChange(false)}
               >
                 {t('activeAskAboutForm', { defaultValue: 'Ask about form' })}
@@ -79,7 +79,7 @@ export function ActiveExerciseMoreMenu({
                 <button
                   type="button"
                   role="menuitem"
-                  className="flex w-full min-h-[44px] items-center px-3 text-sm hover:bg-accent-100 text-start"
+                  className="flex w-full min-h-[44px] items-center px-3 text-sm hover:bg-muted text-start"
                   onClick={() => {
                     onToggleSuperset();
                     onOpenChange(false);
@@ -92,7 +92,7 @@ export function ActiveExerciseMoreMenu({
                 <button
                   type="button"
                   role="menuitem"
-                  className="flex w-full min-h-[44px] items-center px-3 text-sm hover:bg-accent-100 text-start"
+                  className="flex w-full min-h-[44px] items-center px-3 text-sm hover:bg-muted text-start"
                   onClick={() => {
                     onUnlinkSuperset();
                     onOpenChange(false);
@@ -104,7 +104,7 @@ export function ActiveExerciseMoreMenu({
               <button
                 type="button"
                 role="menuitem"
-                className="flex w-full min-h-[44px] items-center px-3 text-sm hover:bg-accent-100 text-start"
+                className="flex w-full min-h-[44px] items-center px-3 text-sm hover:bg-muted text-start"
                 onClick={() => {
                   onToggleNote();
                   onOpenChange(false);
@@ -116,7 +116,7 @@ export function ActiveExerciseMoreMenu({
                 <button
                   type="button"
                   role="menuitem"
-                  className="flex w-full min-h-[44px] items-center px-3 text-sm hover:bg-accent-100 text-start"
+                  className="flex w-full min-h-[44px] items-center px-3 text-sm hover:bg-muted text-start"
                   onClick={() => {
                     onToggleSwap();
                     onOpenChange(false);
@@ -126,7 +126,7 @@ export function ActiveExerciseMoreMenu({
                 </button>
               )}
             </div>
-            <div className="border-t border-border px-1 pt-1">
+            <div className="border-t-2 border-border px-1 pt-1">
               <HoldToConfirmButton
                 size="sm"
                 className="w-full justify-start"

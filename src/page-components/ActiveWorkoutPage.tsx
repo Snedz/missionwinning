@@ -82,6 +82,7 @@ import {
   toggleOpenIdx,
 } from '@/lib/workout/activeWorkoutHelpers';
 import { prefersReducedMotion } from '@/lib/motion';
+import { shouldScrollAfterRestEnds } from '@/lib/workout/restTimer';
 import { useLocaleFormat } from '@/hooks/useLocaleFormat';
 
 export function ActiveWorkoutPage() {
@@ -227,6 +228,21 @@ export function ActiveWorkoutPage() {
       });
     }
   }, [nextSet]);
+
+  /** Rest skip / timer end: nextSet often unchanged — force scroll back to the console target. */
+  const prevRestActive = useRef(false);
+  useEffect(() => {
+    if (
+      shouldScrollAfterRestEnds(prevRestActive.current, restTimerActive) &&
+      nextSetRef.current
+    ) {
+      nextSetRef.current.scrollIntoView({
+        behavior: prefersReducedMotion() ? 'auto' : 'smooth',
+        block: 'nearest',
+      });
+    }
+    prevRestActive.current = restTimerActive;
+  }, [restTimerActive]);
 
   /**
    * What the reps/weight fields start at for one set.

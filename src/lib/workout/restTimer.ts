@@ -88,6 +88,14 @@ export function shouldShowRestPresets(remaining: number): boolean {
   return !isRestFinalSeconds(remaining);
 }
 
+/**
+ * When rest ends (skip or timer hit 0), re-scroll the next set into view —
+ * nextSet identity often does not change, so the nextSet effect alone won't fire.
+ */
+export function shouldScrollAfterRestEnds(wasActive: boolean, isActive: boolean): boolean {
+  return wasActive === true && isActive === false;
+}
+
 /** Active log rest: named exercise uses shared resolver, else the 90s fallback. */
 export function restSecondsForExercise(exerciseName: string | undefined, fallback = 90): number {
   return exerciseName ? resolveRestSeconds(exerciseName) : fallback;
