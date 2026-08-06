@@ -31,6 +31,9 @@ on:
 jobs:
   apply:
     runs-on: ubuntu-latest
+    # Founder: create GH Environment "production" with required reviewers when repo is Public.
+    # Holds DB URL power — never run from untrusted automation.
+    environment: production
     steps:
       - uses: actions/checkout@v5
 

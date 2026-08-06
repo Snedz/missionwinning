@@ -56,9 +56,10 @@ curl -sS -H "Cookie: $COOKIE" \
 When the private gate opens for public mobile:
 
 1. Clear or omit `mw.privateAccessCookie` for release builds (do not bake secrets into Play AAB).
-2. Prefer signed-in Supabase Bearer (`AuthRepository` + OTP on Account) for multi-device sync — **auth is live**, not a stub.
-3. Anonymous coach seed may use public `/api/mobile/coach/*` when `PRIVATE_MODE` is false; otherwise cookie/Bearer.
-4. Keep offline Room path forever — free train without account.
+2. Prefer signed-in Supabase Bearer (`AuthRepository` + OTP on Account) for multi-device sync — **auth is live**, not a stub. **Production / Play builds must not bake `PRIVATE_ACCESS_COOKIE`** — proxy accepts verified Bearer under PRIVATE_MODE (web `.539`).
+3. Anonymous coach seed may use public `/api/mobile/coach/*` when `PRIVATE_MODE` is false; otherwise cookie or Bearer.
+4. `local.properties` cookie is **dev emergency only** (emulator against gated prod). Never commit real cookies; never ship them in release `BuildConfig`.
+5. Keep offline Room path forever — free train without account.
 
 ## Security
 

@@ -85,6 +85,8 @@
 | [PHANTOM_USDC_CHECKOUT.md](PHANTOM_USDC_CHECKOUT.md) | Lifetime Phantom Solana USDC |
 | [OWASP_AUDIT.md](OWASP_AUDIT.md) | OWASP Top 10 sweep |
 | [SECURITY_PUBLIC_OSS_AUDIT_2026-08.md](SECURITY_PUBLIC_OSS_AUDIT_2026-08.md) | Public OSS readiness audit (2026-08-05) |
+| [SECURITY_REVIEW_PASS_2026-08.md](SECURITY_REVIEW_PASS_2026-08.md) | Technical review pass after enhance plan |
+| [SECURITY_SERVICE_ROLE_MAP.md](SECURITY_SERVICE_ROLE_MAP.md) | Service-role call sites inventory |
 | [AIKIDO.md](AIKIDO.md) | Aikido Cursor MCP + GitHub Actions CRITICAL-deps gate |
 | [COMPLIANCE.md](COMPLIANCE.md) | SOC2/ISO/HIPAA map-only control monitor (not a certification) |
 | [SECURITY_AUDIT_TRIAGE.md](SECURITY_AUDIT_TRIAGE.md) | npm audit high triage (Phantom/Solana) |

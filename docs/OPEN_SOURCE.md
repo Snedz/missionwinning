@@ -50,6 +50,20 @@ Agents never change repository visibility. Full checklist: [SECRETS.md § Pre-pu
 
 ---
 
+## Self-host / fork fail-closed (operators)
+
+| Misconfig | Expected behavior |
+|-----------|-------------------|
+| No `CRON_SECRET` | Cron routes **503** (not open) |
+| No `PRIVATE_ACCESS_SECRET` while PRIVATE_MODE | Gate/password unlock broken — do not open admin by default |
+| `DEMO_PREMIUM=true` in production | Deploy readiness / premium refuse |
+| No Supabase RLS applied | **Unsafe** — run migrations; see [SECURITY_SERVICE_ROLE_MAP.md](SECURITY_SERVICE_ROLE_MAP.md) |
+| Missing webhook secrets | Stripe/PayPal webhooks **401/503** |
+
+Security program: [SECURITY_PUBLIC_OSS_AUDIT_2026-08.md](SECURITY_PUBLIC_OSS_AUDIT_2026-08.md) · [SECURITY_REVIEW_PASS_2026-08.md](SECURITY_REVIEW_PASS_2026-08.md) · `npm run security:check` (secrets scan + npm audit high).
+
+---
+
 ## CI while open
 
 - **PR gate:** [`.github/workflows/ci.yml`](../.github/workflows/ci.yml) — lint, typecheck, unit tests, production build.

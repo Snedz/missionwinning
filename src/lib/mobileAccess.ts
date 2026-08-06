@@ -3,15 +3,10 @@
  */
 import type { NextRequest } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
-import { extractSupabaseAccessToken } from '@/lib/supabaseAuthCookies';
+import { extractSupabaseAccessTokenFromRequest, bearerAccessToken } from '@/lib/authAccessToken';
 import { hasPrivateAccessCookie } from '@/lib/privateGate';
 
-export function bearerAccessToken(request: NextRequest): string | null {
-  const h = request.headers.get('authorization');
-  if (!h?.toLowerCase().startsWith('bearer ')) return null;
-  const token = h.slice(7).trim();
-  return token.length > 0 ? token : null;
-}
+export { bearerAccessToken };
 
 export async function hasMobileAppAccess(request: NextRequest): Promise<boolean> {
   const secret = process.env.PRIVATE_ACCESS_SECRET;
@@ -21,8 +16,7 @@ export async function hasMobileAppAccess(request: NextRequest): Promise<boolean>
   const anon = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
   if (!url || !anon) return false;
 
-  const accessToken =
-    bearerAccessToken(request) ?? extractSupabaseAccessToken(request.cookies);
+  const accessToken = extractSupabaseAccessTokenFromRequest(request);
   if (!accessToken) return false;
 
   const supabase = createClient(url, anon);

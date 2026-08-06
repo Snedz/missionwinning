@@ -140,7 +140,7 @@ No new phase numbers — Android's horizons live in [ANDROID_NATIVE.md](ANDROID_
 
 | # | Risk / item | Owner | Note |
 |---|-------------|-------|------|
-| R1 | **Perimeter blocker:** with `PRIVATE_MODE` on (currently on in prod), `proxy.ts` rejects Bearer-only requests before any route runs; Android dev builds bake a `PRIVATE_ACCESS_COOKIE` from `local.properties` — not a GA posture | Founder + API lane | Pre-GA options: `PRIVATE_MODE=false` at launch · allowlist `/api/mobile` while gated · teach the gate to read Bearer · clients mint the cookie via `POST /api/private-access/session` |
+| R1 | ~~Perimeter: Bearer rejected at proxy~~ | — | **Mitigated `.539`:** verified Bearer or cookie JWT via `getUser()`. Bake-cookie = dev only — never Play release. |
 | R2 | Per-IP rate limits vs carrier CGNAT (many users, one egress IP) | API lane | Review before invites |
 | R3 | Clients don't honor `Retry-After` on 429 | Android lane | → UXL-V5 |
 | R4 | Expo `app.json` claims `com.missionwinning.app` — the Compose release applicationId | Hygiene | Never build/submit Expo; rename or drop the prototype's ID |

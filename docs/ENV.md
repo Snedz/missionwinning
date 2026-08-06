@@ -217,7 +217,7 @@ Three things caused the full site to appear public even when the gate was deploy
 2. **Your browser cookie:** If you previously used `?access=SECRET` or signed in, your browser bypassed the gate while anonymous visitors were blocked.
 3. **PWA cache:** An installed PWA may serve an old cached landing page. Clear site data or uninstall the PWA after enabling the gate.
 
-The gate now requires the **`mw_private_access` cookie** (from password, `?access=`, or **verified sign-in** via `POST /api/private-access/session` after OAuth/magic-link). Supabase browser sessions live in **localStorage**, so the proxy cannot see them — the auth callback mints the gate cookie after `getUser()` succeeds. `PRIVATE_ALLOW_AUTH_BYPASS` remains an optional middleware JWT path; prefer the session mint.
+The gate now requires the **`mw_private_access` cookie** (from password, `?access=`, or **verified sign-in** via `POST /api/private-access/session` after OAuth/magic-link) **or** a **verified Supabase access token** (`Authorization: Bearer` or `sb-*` auth cookies) checked with `getUser()` in `hasVerifiedSupabaseUser` (`.539` / F1). Supabase browser sessions often live in **localStorage**, so the web auth callback still mints the gate cookie for HTML navigations. `PRIVATE_ALLOW_AUTH_BYPASS` is **deprecated** (no longer required for JWT gate access).
 
 ---
 

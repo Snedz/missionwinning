@@ -63,4 +63,35 @@ describe('isPublicApiPathWhileGated', () => {
     assert.equal(isPublicApiPathWhileGated('/api/health'), true);
     assert.equal(isPublicApiPathWhileGated('/api/beta/invites/landed'), true);
   });
+
+  it('does not allowlist mobile or premium catalogs (Bearer/cookie at gate instead)', () => {
+    assert.equal(isPublicApiPathWhileGated('/api/mobile/workouts'), false);
+    assert.equal(isPublicApiPathWhileGated('/api/mobile/sync/workouts'), false);
+    assert.equal(isPublicApiPathWhileGated('/api/premium/recipes'), false);
+    assert.equal(isPublicApiPathWhileGated('/api/premium/mind'), false);
+  });
+
+  it('PUBLIC_API_PATHS_WHILE_GATED is an intentional frozen set', async () => {
+    const { PUBLIC_API_PATHS_WHILE_GATED } = await import('./privateGate.ts');
+    assert.deepEqual(
+      [...PUBLIC_API_PATHS_WHILE_GATED].sort(),
+      [
+        '/api/beta/invites/landed',
+        '/api/cron/day-review',
+        '/api/cron/nudges',
+        '/api/cron/weekly-digest',
+        '/api/cron/wind-down',
+        '/api/crypto-checkout',
+        '/api/geo',
+        '/api/health',
+        '/api/leads',
+        '/api/leads/unsubscribe',
+        '/api/nudges/unsubscribe',
+        '/api/paypal-webhook',
+        '/api/premium/status',
+        '/api/private-access',
+        '/api/stripe-webhook',
+      ].sort()
+    );
+  });
 });
