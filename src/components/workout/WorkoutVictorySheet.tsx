@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import Image from 'next/image';
 import { Share2 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
@@ -29,7 +29,13 @@ import { VictoryFeelStrip } from '@/components/workout/VictoryFeelStrip';
 import { VictoryBodyDeltaStrip } from '@/components/workout/VictoryBodyDeltaStrip';
 import { VictoryStatsStrip } from '@/components/workout/VictoryStatsStrip';
 import { VictoryNextActionStrip } from '@/components/workout/VictoryNextActionStrip';
+import { VictorySecondaryLinks } from '@/components/workout/VictorySecondaryLinks';
 import { VictoryRewardsLine } from '@/components/rewards/VictoryRewardsLine';
+import { buildVictorySecondaryLinks } from '@/lib/workout/victorySecondaryLinks';
+import { parseNutritionLog } from '@/lib/nutritionQuickLog';
+import { readRaw } from '@/lib/storage/safeStorage';
+import { STORAGE_KEYS } from '@/lib/storage/keys';
+import { localDateKey } from '@/lib/time/localDate';
 import type { Debrief } from '@/lib/coach/debrief';
 import {
   buildVictoryCardData,
@@ -76,6 +82,25 @@ export function WorkoutVictorySheet({
   const units = useUnits();
   const unitLabel = weightUnitLabel(units);
   const [feelSaved, setFeelSaved] = useState(false);
+
+  const secondaryLinks = useMemo(() => {
+    if (!summary?.nextAction) return [];
+    let proteinLoggedToday = false;
+    try {
+      const today = localDateKey();
+      const rows = parseNutritionLog(readRaw(STORAGE_KEYS.nutritionLog));
+      proteinLoggedToday = rows.some(
+        (r) => r.date === today && (Number(r.protein) || 0) > 0
+      );
+    } catch {
+      proteinLoggedToday = false;
+    }
+    return buildVictorySecondaryLinks({
+      primaryHref: summary.nextAction.href,
+      proteinLoggedToday,
+      strainDelta: summary.bodyDelta?.strain,
+    });
+  }, [summary]);
 
   if (!summary) return null;
 
@@ -241,6 +266,11 @@ export function WorkoutVictorySheet({
             onNavigate={() => onOpenChange(false)}
           />
         ) : null}
+
+        <VictorySecondaryLinks
+          links={secondaryLinks}
+          onNavigate={() => onOpenChange(false)}
+        />
 
         <DialogFooter className="flex-col sm:flex-col gap-2 pt-1">
           {!summary.nextAction && (
