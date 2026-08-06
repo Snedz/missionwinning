@@ -99,9 +99,10 @@ export function FuelTodayLogCard({
             icon={UtensilsCrossed}
             title={t('fuelEmptyTitle', { defaultValue: 'No meals logged today' })}
             description={t('fuelNoEntries', {
-              defaultValue:
-                'Describe what you ate above, or tap Log food — always review macros before logging.',
+              defaultValue: 'Log food above, or open Log food for a full entry.',
             })}
+            actionLabel={t('fuelEmptyCta', { defaultValue: 'Log food' })}
+            href="#fuel-log"
           />
         ) : (
           orderedKeys.map((mealKey) => {
@@ -159,7 +160,7 @@ export function FuelTodayLogCard({
                               type="button"
                               variant="ghost"
                               size="sm"
-                              className="h-8 w-8 p-0"
+                              className="h-11 w-11 p-0 tap-target"
                               aria-label={t('fuelEditEntry', { defaultValue: 'Edit entry' })}
                               onClick={() => startEdit(index, l)}
                             >
@@ -169,14 +170,14 @@ export function FuelTodayLogCard({
                               type="button"
                               variant="ghost"
                               size="sm"
-                              className="h-8 px-2 text-[11px]"
+                              className="h-11 min-h-[44px] px-2 text-[11px] tap-target"
                               onClick={() => onSaveMeal(l)}
                             >
                               {t('fuelSaveMeal', { defaultValue: 'Save' })}
                             </Button>
                             <HoldToConfirmButton
                               size="sm"
-                              className="h-7 w-7"
+                              className="h-11 w-11 tap-target"
                               label={t('fuelDeleteMealEntry', { defaultValue: 'Delete meal entry' })}
                               icon={<Trash2 className="h-3.5 w-3.5" />}
                               onConfirm={() => onRemoveEntry(index)}

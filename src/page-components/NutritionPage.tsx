@@ -516,6 +516,7 @@ export function NutritionPage() {
         </div>
         <FuelWeekGlance days={weekDays} todayIso={today} targetCals={targetCals} />
         <FuelWeightStrip todayIso={today} />
+        <div id="fuel-log" className="scroll-mt-20">
         <FuelQuickLogPanel
           activeMeal={activeMeal}
           onActiveMealChange={setActiveMeal}
@@ -534,6 +535,7 @@ export function NutritionPage() {
           yesterdayMeals={yesterdayMeals}
           onRepeatYesterday={handleRepeatYesterday}
         />
+        </div>
       </FuelMacroOverview>
 
       <div>
