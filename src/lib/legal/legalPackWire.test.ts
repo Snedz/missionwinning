@@ -53,3 +53,22 @@ test('signup and checkout hard-block territory', () => {
   assert.match(geo, /blocked/);
   assert.match(geo, /blockReason/);
 });
+
+test('Terms liability cap, Texas law, indemnify; Privacy 30-day deletion', () => {
+  const terms = readFileSync(join(root, 'src/page-components/TermsPage.tsx'), 'utf8');
+  assert.match(terms, /indemnification/);
+  assert.match(terms, /governing-law/);
+  assert.match(terms, /infoTermsLiability/);
+
+  const privacy = readFileSync(join(root, 'src/page-components/PrivacyPage.tsx'), 'utf8');
+  assert.match(privacy, /infoPrivacyDeletion/);
+  assert.match(privacy, /deletion/);
+
+  const locales = readFileSync(join(root, 'src/i18n/infoLocales.ts'), 'utf8');
+  assert.match(locales, /twelve \(12\) month/);
+  assert.match(locales, /State of Texas/);
+  assert.match(locales, /Texas limited liability company/);
+  assert.match(locales, /indemnify/);
+  assert.match(locales, /thirty \(30\) days/);
+  assert.match(locales, /required or permitted by law/);
+});

@@ -218,6 +218,12 @@ type InfoStrings = {
   infoServiceOrder: string;
   infoServiceOrderBody: string;
   infoServiceFoot: string;
+  infoTermsIndemnification: string;
+  infoTermsIndemnificationBody: string;
+  infoTermsGoverningLaw: string;
+  infoTermsGoverningLawBody: string;
+  infoPrivacyDeletion: string;
+  infoPrivacyDeletionBody: string;
   visionEyebrow: string;
 };
 
@@ -294,13 +300,13 @@ const en: InfoStrings = {
   infoTermsAcceptableUseBody:
     'You must follow the Usage Policy (Acceptable Use) at /usage. In short: no unlawful use; no unauthorized access; no scraping or redistributing premium content; no CSAM, illegal deepfakes, fraud, harassment, or infrastructure abuse; no presenting Mission Winning as medical diagnosis or emergency care; no abuse of youth/school features. We may suspend or terminate accounts that violate these rules. Report abuse to support@missionwinning.com (subject: AUP abuse).',
   infoTermsLiabilityBody:
-    'To the fullest extent permitted by law, Mission Winning LLC is not liable for injuries, health outcomes, or indirect damages arising from use of the app. The service is provided "as is."',
+    'To the fullest extent permitted by law, Mission Winning LLC and its suppliers provide the Service “as is” and “as available,” without warranties of any kind, express or implied. We are not liable for personal injury, health outcomes, lost profits, indirect, incidental, special, consequential, or punitive damages, device data loss, third-party outages (including payment or hosting providers), or errors in optional AI outputs. Except for liability that cannot be limited under applicable law, our total liability for all claims arising out of or related to the Service or these Terms in any twelve (12) month period will not exceed the amount you paid to Mission Winning LLC for the hosted service in the twelve (12) months before the claim (or USD $0 if you paid nothing). You assume the risks of physical activity; content is educational, not medical advice.',
   infoTermsUserContentBody:
     'You may upload or submit content such as meal photos, activity import files, backups, text, or other materials (“User Content”). You retain ownership of your User Content. You grant Mission Winning LLC a worldwide, non-exclusive, royalty-free license to host, process, and display User Content solely to operate and improve the service. You represent that you have all rights needed to submit User Content and that it does not infringe others’ rights or violate law. Do not upload illegal, harmful, or infringing material.',
   infoTermsDmcaBody:
     'If you believe content on Mission Winning infringes your copyright, follow the notice process on our DMCA page. We respond to valid notices under the Digital Millennium Copyright Act. Repeat infringers may have accounts terminated.',
   infoTermsDisputesBody:
-    'Except for (a) small-claims court actions and (b) claims for injunctive or other equitable relief to protect intellectual property, any dispute arising out of or relating to these terms or the service will be resolved by binding individual arbitration administered by the American Arbitration Association (AAA) under its Consumer Arbitration Rules. You and Mission Winning LLC waive any right to a jury trial and to participate in a class, collective, or representative action. This agreement is governed by the laws of the United States and the state of formation of Mission Winning LLC, without regard to conflict-of-law rules. The United Nations Convention on Contracts for the International Sale of Goods does not apply. If the class waiver is found unenforceable as to a particular claim, that claim must proceed in court and not arbitration. You use the service only if you are in a Supported Region (Europe is not supported).',
+    'Except for (a) small-claims court actions and (b) claims for injunctive or other equitable relief to protect intellectual property, any dispute arising out of or relating to these Terms or the Service will be resolved by binding individual arbitration administered by the American Arbitration Association (AAA) under its Consumer Arbitration Rules, seated in the United States. You and Mission Winning LLC waive any right to a jury trial and to participate in a class, collective, or representative action. If the class waiver is found unenforceable as to a particular claim, that claim must proceed in court and not arbitration. You use the hosted service only if you are in a Supported Region.',
   infoTermsChangesBody:
     'We may update these terms. Continued use after changes constitutes acceptance. Material changes will be noted in the app or via email where appropriate.',
   infoTermsFoot: 'Mission Winning LLC · support@missionwinning.com · See also',
@@ -337,7 +343,7 @@ const en: InfoStrings = {
   infoPrivacyChoicesLi1: 'Use the free core without an account (local-only).',
   infoPrivacyChoicesLi2: 'Export or restore device data from Profile → Back up your data.',
   infoPrivacyChoicesLi3:
-    'Request access or deletion of your account and cloud data: support@missionwinning.com — we aim to respond within 30 days.',
+    'Request access or deletion of your account and cloud data: support@missionwinning.com — see Data deletion & retention (erase within 30 days of a verified request, with legal exceptions).',
   infoPrivacyChoicesLi4:
     'Control product analytics anytime: first-visit banner, or Profile → Privacy & analytics. Browsers with Do Not Track keep analytics off.',
   infoPrivacyLocalFirst: 'Local-first by design',
@@ -535,6 +541,16 @@ const en: InfoStrings = {
   infoServiceOrderBody:
     'For a conflict on a product-specific point: (1) a signed Order Form or checkout disclosure for that purchase, (2) these Service-Specific Terms, (3) Terms of Service, (4) Usage Policy, (5) Privacy Policy. Refunds policy controls refund timing. Supported Regions controls geographic eligibility.',
   infoServiceFoot: 'Mission Winning LLC · support@missionwinning.com · See also',
+
+  infoTermsIndemnification: 'Indemnification',
+  infoTermsIndemnificationBody:
+    'You will defend, indemnify, and hold harmless Mission Winning LLC and its officers, members, employees, and agents from and against any third-party claims, damages, losses, and reasonable attorneys fees arising out of or related to: (a) your User Content; (b) your use or misuse of the Service; (c) your violation of these Terms, the Usage Policy, or Supported Regions; (d) your violation of law or third-party rights; or (e) injury or claims arising from your training, nutrition, or other health decisions. This does not require you to indemnify us for our willful misconduct.',
+  infoTermsGoverningLaw: 'Governing law',
+  infoTermsGoverningLawBody:
+    'These Terms and any dispute arising out of them are governed by the laws of the State of Texas and the United States, without regard to conflict-of-law rules. Mission Winning is operated by Mission Winning LLC, a Texas limited liability company. The United Nations Convention on Contracts for the International Sale of Goods does not apply. Subject to the arbitration agreement below, exclusive venue for permitted court actions is the state or federal courts located in Texas, United States.',
+  infoPrivacyDeletion: 'Data deletion and retention',
+  infoPrivacyDeletionBody:
+    'After we verify a deletion request from the account holder (email support@missionwinning.com with subject Data deletion from the account email), we will delete account-linked personal data we control in our cloud systems within thirty (30) days, except where retention is required or permitted by law (for example tax or accounting records for paid transactions, fraud or security investigations, or legal holds) or where a processor must retain records under its own legal duties. Ordinary backups are removed on normal rotation. Data stored only on your device is under your control (clear storage or uninstall). Self-hosted copies are the operators responsibility. California residents also see CCPA rights below.',
 
   visionEyebrow: 'Vision',
 };

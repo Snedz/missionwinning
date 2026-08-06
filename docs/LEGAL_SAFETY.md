@@ -54,9 +54,12 @@ Use this table when filling Apple Privacy Nutrition Labels / Google Play Data sa
 - [ ] **Business postal address — blocks all list email.** CAN-SPAM §7704(a)(5) requires a valid physical postal address in every commercial email footer. Confirm with **Bizee** (Texas registered agent) whether their RA address may be published as the business mailing address — RA addresses often accept only service of process and state correspondence, and the terms may forbid advertising it. If not permitted, a USPS PO box or a CMRA private mailbox both satisfy the rule. Then set `MAIL_POSTAL_ADDRESS` in Vercel ([ENV.md](ENV.md)) — until it is set, waitlist confirmations drop to text-only and the launch broadcast + beta-invite senders refuse to run by design. **Same address serves the DMCA row below** — decide once.
 - [ ] Register designated DMCA agent at [copyright.gov DMCA directory](https://www.copyright.gov/dmca-directory/) (~$6); put **exact** name, email, and postal address on `/dmca` (replace interim placeholder — same address as the CAN-SPAM row above)
 - [ ] Update support mailbox auto-reply to mention DMCA notices → `/dmca` + agent email
-- [ ] Counsel review of Terms arbitration + class waiver (AAA Consumer Rules, governing law = Mission Winning LLC formation state)
-- [ ] Confirm formation state in [LLC_AND_PAYMENTS.md](LLC_AND_PAYMENTS.md) and keep Terms “state of formation” language accurate
+- [ ] Counsel review of Terms arbitration + class waiver (AAA Consumer Rules, **governing law = Texas** — Mission Winning LLC)
+- [x] Formation state in Terms: **State of Texas** / Mission Winning LLC (Texas) — agent draft `.547`; counsel still recommended
 - [ ] CCPA: we do not sell/share for cross-context ads — Privacy California section; respond to access/deletion at `support@missionwinning.com`
+- [x] Data deletion SLA on Privacy: erase cloud personal data **within 30 days** of verified request (legal exceptions) — `.547`
+- [x] Liability cap: fees paid in prior **12 months** (or $0 if free) — `.547`
+- [x] User indemnification section on Terms — `.547`
 - [ ] At native Play Internal time: fill Play Data safety from §2 (Compose wedge answers also in [apps/android/PLAY_LISTING.md](../apps/android/PLAY_LISTING.md)); App Privacy labels when iOS opens
 - [ ] Cyber liability insurance quote (~$200–600/yr ballpark — verify with broker); bind before school/enterprise or data at scale — see [PAY_READY_LEGAL.md](PAY_READY_LEGAL.md)
 - [ ] Do not claim “we are insured” in Privacy until a policy exists
