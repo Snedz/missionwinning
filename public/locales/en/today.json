@@ -217,5 +217,15 @@
   "rewardBadgeChallengeDesc": "Completed a weekly challenge.",
   "rewardBadgeSpectrumDesc": "Train plus every other pillar in one week.",
   "rewardBadgeComebackDesc": "Trained again after a week or more away.",
-  "rewardBadgeCommissionedDesc": "Completed the Mission Journey path."
+  "rewardBadgeCommissionedDesc": "Completed the Mission Journey path.",
+  "moveCollectionAll": "All flows",
+  "moveCollectionPostLegs": "After lower body",
+  "moveCollectionDesk": "Desk athlete",
+  "moveCollectionPre": "Pre-session prime",
+  "moveCollectionTravel": "Travel / hotel",
+  "moveCollectionYoga": "Yoga-lite mobility",
+  "moveCollectionShoulders": "Shoulders & T-spine",
+  "moveCollectionLong": "15+ min deep",
+  "moveCollectionEmpty": "No flows in this collection — try All flows.",
+  "moveCollections": "Collections"
 }

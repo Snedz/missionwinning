@@ -4,7 +4,7 @@
  * See: app/INDEX.md, src/page-components/INDEX.md
  */
 
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useLocaleFormat } from '@/hooks/useLocaleFormat';
 import { MOBILITY_FLOWS } from '@/data/mobilityFlows';
@@ -22,6 +22,13 @@ import { ErrorState } from '@/components/ui/ErrorState';
 import { useToast } from '@/hooks/use-toast';
 import { fetchPremiumCatalogJson } from '@/lib/premiumCatalogCache';
 import { isFreeBeta } from '@/lib/freeBeta';
+import { getContentInventory } from '@/lib/contentInventory';
+import {
+  filterFlowsByCollection,
+  MOVE_COLLECTIONS,
+  type MoveCollectionId,
+} from '@/lib/move/filterFlows';
+import { cn } from '@/lib/utils';
 
 export function MovePage() {
   const { t } = useTranslation();
@@ -33,9 +40,9 @@ export function MovePage() {
   const [refresh, setRefresh] = useState(0);
   const [premiumOpen, setPremiumOpen] = useState(false);
   const [premiumFetchError, setPremiumFetchError] = useState(false);
-  // `.241` — a retry trigger. ErrorState renders no action unless it is handed
-  // one, so an unrecoverable error state was a dead end wearing a component.
   const [premiumRetry, setPremiumRetry] = useState(0);
+  const [collectionId, setCollectionId] = useState<MoveCollectionId>('all');
+  const inv = getContentInventory();
 
   useEffect(() => {
     if (!premium) {
@@ -59,11 +66,17 @@ export function MovePage() {
       });
   }, [premium, premiumRetry, t, toast]);
 
-  const freeFlows = MOBILITY_FLOWS;
-  const activeFlow = [...freeFlows, ...premiumFlows].find((f) => f.id === activeFlowId);
-  const recentWins = typeof window !== 'undefined'
-    ? getPillarWins(5).filter((w) => w.pillar === 'move')
-    : [];
+  const freeFlows = useMemo(
+    () => filterFlowsByCollection(MOBILITY_FLOWS, collectionId),
+    [collectionId]
+  );
+  const filteredPremium = useMemo(
+    () => filterFlowsByCollection(premiumFlows, collectionId),
+    [premiumFlows, collectionId]
+  );
+  const activeFlow = [...MOBILITY_FLOWS, ...premiumFlows].find((f) => f.id === activeFlowId);
+  const recentWins =
+    typeof window !== 'undefined' ? getPillarWins(5).filter((w) => w.pillar === 'move') : [];
 
   void refresh;
 
@@ -90,31 +103,38 @@ export function MovePage() {
           {label}
         </h3>
       ) : null}
-      <div className="grid gap-4 md:grid-cols-2">
-        {flows.map((flow) => (
-          <Card key={flow.id} className="content-card border-2 border-border hover:border-primary transition-colors">
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2 text-lg">
-                <Clock className="h-4 w-4 text-primary" />
-                {flow.name}
-              </CardTitle>
-              <CardDescription>{flow.focus}</CardDescription>
-            </CardHeader>
-            <CardContent className="flex items-center justify-between gap-4">
-              <span className="text-sm text-muted-foreground tabular-nums">
-                {flow.durationMin} min · {flow.steps.length} steps
-              </span>
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => setActiveFlowId(flow.id)}
-              >
-                {t('moveStartFlow', { defaultValue: 'Start Flow' })}
-              </Button>
-            </CardContent>
-          </Card>
-        ))}
-      </div>
+      {flows.length === 0 ? (
+        <p className="text-sm text-muted-foreground">
+          {t('moveCollectionEmpty', {
+            defaultValue: 'No flows in this collection — try All flows.',
+          })}
+        </p>
+      ) : (
+        <div className="grid gap-4 md:grid-cols-2">
+          {flows.map((flow) => (
+            <Card
+              key={flow.id}
+              className="content-card border-2 border-border hover:border-primary transition-colors"
+            >
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2 text-lg">
+                  <Clock className="h-4 w-4 text-primary" />
+                  {flow.name}
+                </CardTitle>
+                <CardDescription>{flow.focus}</CardDescription>
+              </CardHeader>
+              <CardContent className="flex items-center justify-between gap-4">
+                <span className="text-sm text-muted-foreground tabular-nums">
+                  {flow.durationMin} min · {flow.steps.length} steps
+                </span>
+                <Button variant="outline" size="sm" onClick={() => setActiveFlowId(flow.id)}>
+                  {t('moveStartFlow', { defaultValue: 'Start Flow' })}
+                </Button>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+      )}
     </div>
   );
 
@@ -123,25 +143,57 @@ export function MovePage() {
       icon={Wind}
       eyebrow={t('moveEyebrow', { defaultValue: 'Move' })}
       title={t('moveTitle', { defaultValue: 'Mobility' })}
-      subtitle={t('moveSubtitle', {
+      subtitle={t('moveSubtitleDepth', {
+        free: inv.move.free,
+        premium: inv.move.premium,
         defaultValue: isFreeBeta()
-          ? 'Guided mobility flows with timers — mostly bodyweight.'
-          : 'Guided mobility flows with timers. Super Bundle adds longer recovery flows when paid depth is on.',
+          ? `${inv.move.free} free flows · ${inv.unlockedTotal.move} unlocked in open beta (timers, mostly bodyweight).`
+          : `${inv.move.free} free flows · Super Bundle adds ${inv.move.premium} longer recovery flows.`,
       })}
     >
-      {renderFlowGrid(freeFlows, t('moveFreeFlows', { defaultValue: 'Mobility flows' }))}
+      <div className="flex gap-2 overflow-x-auto pb-1 -mx-1 px-1" role="tablist" aria-label={t('moveCollections', { defaultValue: 'Collections' })}>
+        {MOVE_COLLECTIONS.map((c) => {
+          const selected = collectionId === c.id;
+          return (
+            <button
+              key={c.id}
+              type="button"
+              role="tab"
+              aria-selected={selected}
+              className={cn(
+                'shrink-0 min-h-[44px] border-2 px-3 text-sm font-medium transition-colors',
+                selected
+                  ? 'border-primary bg-primary text-primary-foreground'
+                  : 'border-border bg-card text-foreground hover:border-primary'
+              )}
+              onClick={() => setCollectionId(c.id)}
+            >
+              {t(c.titleKey, { defaultValue: c.titleDefault })}
+            </button>
+          );
+        })}
+      </div>
 
-      {premium && premiumFlows.length > 0 && (
+      {renderFlowGrid(
+        freeFlows,
+        t('moveFreeFlowsCount', {
+          count: freeFlows.length,
+          defaultValue: `Mobility flows (${freeFlows.length})`,
+        })
+      )}
+
+      {premium && filteredPremium.length > 0 && (
         <details className="group" open>
           <summary className="flex cursor-pointer list-none items-center justify-between gap-2 py-2 min-h-[44px] [&::-webkit-details-marker]:hidden">
             <span className="text-sm font-semibold text-foreground">
-              {t('movePremiumFlows', { defaultValue: 'More recovery flows' })}
+              {t('movePremiumFlowsCount', {
+                count: filteredPremium.length,
+                defaultValue: `More recovery flows (${filteredPremium.length})`,
+              })}
             </span>
             <ChevronDown className="h-4 w-4 text-muted-foreground transition-transform group-open:rotate-180" />
           </summary>
-          <div className="pt-2">
-            {renderFlowGrid(premiumFlows, '', true)}
-          </div>
+          <div className="pt-2">{renderFlowGrid(filteredPremium, '', true)}</div>
         </details>
       )}
 
@@ -171,7 +223,10 @@ export function MovePage() {
             onClick={() => setPremiumOpen((v) => !v)}
           >
             <span className="font-medium text-muted-foreground">
-              {t('movePremiumPreview', { defaultValue: 'Premium recovery flows' })}
+              {t('movePremiumPreviewCount', {
+                count: inv.move.premium,
+                defaultValue: `Premium recovery flows (${inv.move.premium})`,
+              })}
             </span>
             <ChevronDown
               className={`h-4 w-4 text-muted-foreground transition-transform ${premiumOpen ? 'rotate-180' : ''}`}

@@ -3,53 +3,69 @@ import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import {
-  PREMIUM_INVENTORY,
-  PREMIUM_MIND_SESSION_COUNT,
-  PREMIUM_MOVE_FLOW_COUNT,
-} from '@/data/premiumInventory';
-import { FREE_RECIPE_COUNT, PREMIUM_RECIPE_COUNT } from '@/data/recipes/catalogMeta';
-import { FREE_RECIPES } from '@/data/recipes/freeRecipes';
+  CONTENT_FLOORS,
+  flowTotalDurationSec,
+  getContentInventory,
+  premiumInventoryIsConsistent,
+} from '@/lib/contentInventory';
+import { MOBILITY_FLOWS } from '@/data/mobilityFlows';
+import { GUIDED_MIND_SESSIONS } from '@/data/guidedMindSessions';
 
-function countIdFields(relativePath: string): number {
-  const abs = join(process.cwd(), relativePath);
-  const src = readFileSync(abs, 'utf8');
-  // Prefer id: '...' object entries in session/flow arrays
-  const matches = src.match(/\bid:\s*['"][a-z0-9-]+['"]/g);
-  return matches?.length ?? 0;
+const root = join(import.meta.dirname, '..', '..');
+
+function countIdsInFile(rel: string): number {
+  const t = readFileSync(join(root, rel), 'utf8');
+  return [...t.matchAll(/\bid:\s*['"]([^'"]+)['"]/g)].length;
 }
 
-function countRecipeNames(relativePath: string): number {
-  const abs = join(process.cwd(), relativePath);
-  const src = readFileSync(abs, 'utf8');
-  return (src.match(/"name":\s*"/g) || []).length;
-}
-
-/**
- * Standing advertised-vs-actual guard (reads sources as text to avoid server-only).
- */
-describe('contentInventory honesty', () => {
-  it('free recipe count matches FREE_RECIPES length', () => {
-    assert.equal(FREE_RECIPES.length, FREE_RECIPE_COUNT);
-    assert.equal(FREE_RECIPE_COUNT, 20);
+describe('contentInventory', () => {
+  it('meets current Super Bundle depth floors', () => {
+    const inv = getContentInventory();
+    assert.ok(inv.move.free >= CONTENT_FLOORS.moveFree, `move free ${inv.move.free}`);
+    assert.ok(inv.move.premium >= CONTENT_FLOORS.movePremium, `move prem ${inv.move.premium}`);
+    assert.ok(inv.mind.free >= CONTENT_FLOORS.mindFree, `mind free ${inv.mind.free}`);
+    assert.ok(inv.mind.premium >= CONTENT_FLOORS.mindPremium, `mind prem ${inv.mind.premium}`);
+    assert.ok(inv.recipes.free >= CONTENT_FLOORS.recipesFree);
+    assert.ok(inv.recipes.premium >= CONTENT_FLOORS.recipesPremium);
+    assert.ok(inv.learn.premiumSections >= CONTENT_FLOORS.learnPremiumSections);
   });
 
-  it('premium recipe count matches premiumRecipes data', () => {
-    const n = countRecipeNames('src/data/recipes/premiumRecipes.ts');
-    assert.equal(n, PREMIUM_RECIPE_COUNT);
-    assert.equal(PREMIUM_INVENTORY.recipes, PREMIUM_RECIPE_COUNT);
+  it('free arrays match inventory free counts', () => {
+    const inv = getContentInventory();
+    assert.equal(inv.move.free, MOBILITY_FLOWS.length);
+    assert.equal(inv.mind.free, GUIDED_MIND_SESSIONS.length);
   });
 
-  it('mind session inventory matches data file', () => {
-    const n = countIdFields('src/data/premiumMindSessions.ts');
-    assert.equal(n, PREMIUM_MIND_SESSION_COUNT);
-    assert.equal(PREMIUM_INVENTORY.mindSessions, n);
-    assert.equal(n, 22);
+  it('premium constants match server catalog id counts', () => {
+    const inv = getContentInventory();
+    assert.equal(inv.move.premium, countIdsInFile('src/data/premiumMobilityFlows.ts'));
+    assert.equal(inv.mind.premium, countIdsInFile('src/data/premiumMindSessions.ts'));
   });
 
-  it('move flow inventory matches data file', () => {
-    const n = countIdFields('src/data/premiumMobilityFlows.ts');
-    assert.equal(n, PREMIUM_MOVE_FLOW_COUNT);
-    assert.equal(PREMIUM_INVENTORY.moveFlows, n);
-    assert.equal(n, 18);
+  it('PREMIUM_INVENTORY object is internally consistent', () => {
+    assert.equal(premiumInventoryIsConsistent(), true);
+  });
+
+  it('every free mobility flow has meaningful duration', () => {
+    for (const flow of MOBILITY_FLOWS) {
+      const sec = flowTotalDurationSec(flow.steps);
+      assert.ok(sec >= 180, `${flow.id} only ${sec}s`);
+      assert.ok(flow.steps.length >= 4, `${flow.id} too few steps`);
+    }
+  });
+
+  it('every free mind session has steps and minutes', () => {
+    for (const s of GUIDED_MIND_SESSIONS) {
+      assert.ok(s.steps.length >= 2, s.id);
+      assert.ok(s.minutes >= 1, s.id);
+      const sec = flowTotalDurationSec(s.steps);
+      assert.ok(sec >= 60, `${s.id} only ${sec}s`);
+    }
+  });
+
+  it('unlocked totals are free+premium', () => {
+    const inv = getContentInventory();
+    assert.equal(inv.unlockedTotal.move, inv.move.free + inv.move.premium);
+    assert.equal(inv.unlockedTotal.mind, inv.mind.free + inv.mind.premium);
   });
 });
