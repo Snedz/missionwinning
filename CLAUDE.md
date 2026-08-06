@@ -193,7 +193,8 @@ This repo has paid repeatedly for checks that could not fail. Before adding a te
 | Env / secrets | [docs/ENV.md](docs/ENV.md), [docs/SECRETS.md](docs/SECRETS.md), [.env.example](.env.example) |
 | Security | [docs/PROTECTION.md](docs/PROTECTION.md), [docs/OWASP_AUDIT.md](docs/OWASP_AUDIT.md), [SECURITY.md](SECURITY.md) |
 | Design system | [docs/DESIGN_SYSTEM.md](docs/DESIGN_SYSTEM.md), [docs/DESIGN_ORCHESTRATION.md](docs/DESIGN_ORCHESTRATION.md) |
-| Android | [docs/ANDROID_NATIVE.md](docs/ANDROID_NATIVE.md), [apps/android/AGENTS.md](apps/android/AGENTS.md) |
+| Mobile native (Android + iOS) | [docs/MOBILE_PLAYBOOK.md](docs/MOBILE_PLAYBOOK.md), [docs/ANDROID_NATIVE.md](docs/ANDROID_NATIVE.md), [apps/android/AGENTS.md](apps/android/AGENTS.md) |
+| UX process / standards | [docs/UX_PLAYBOOK.md](docs/UX_PLAYBOOK.md) |
 | Everything else | [docs/README.md](docs/README.md), [INDEX.md](INDEX.md) §2 |
 
 ---

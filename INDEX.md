@@ -37,7 +37,8 @@
 | Legal safety (AI / Terms / DMCA / labels) | [docs/LEGAL_SAFETY.md](docs/LEGAL_SAFETY.md), `/privacy`, `/terms`, `/dmca` | Session chat plans as counsel substitute |
 | **Counsel engagement pack** | [docs/legal/COUNSEL_BRIEF.md](docs/legal/COUNSEL_BRIEF.md), [docs/legal/exports/](docs/legal/exports/) (frozen EN legal text) | Agents inventing formation state / postal; marking DMCA filed without founder |
 | Pay-ready legal (six docs) | [docs/PAY_READY_LEGAL.md](docs/PAY_READY_LEGAL.md), `/refunds`, [docs/legal/](docs/legal/) | Claiming enterprise SLAs on consumer Bundle |
-| Mobile / native apps | [docs/ANDROID_NATIVE.md](docs/ANDROID_NATIVE.md), [`apps/android`](apps/android), [apps/android/ARCHITECTURE.md](apps/android/ARCHITECTURE.md) | Expo/TWA as the Android product; starting iOS before Android Phase 1 ([docs/IOS_PLAYBOOK.md](docs/IOS_PLAYBOOK.md)) |
+| Mobile / native apps | [docs/MOBILE_PLAYBOOK.md](docs/MOBILE_PLAYBOOK.md), [docs/ANDROID_NATIVE.md](docs/ANDROID_NATIVE.md), [`apps/android`](apps/android), [apps/android/ARCHITECTURE.md](apps/android/ARCHITECTURE.md) | Expo/TWA as the Android product; starting iOS before Android Phase 1 ([docs/IOS_PLAYBOOK.md](docs/IOS_PLAYBOOK.md)) |
+| UX process / design standards | [docs/UX_PLAYBOOK.md](docs/UX_PLAYBOOK.md) + [docs/DESIGN_ORCHESTRATION.md](docs/DESIGN_ORCHESTRATION.md) | Projects with no problem-register entry; hi-fi mockups outside code |
 | Mobile (Expo prototype) | [docs/NATIVE_MOBILE.md](docs/NATIVE_MOBILE.md), [`apps/mobile`](apps/mobile) | Shipping Expo to Play as the product |
 | Mobile (TWA optional) | [docs/TWA_MOBILE_PLAYBOOK.md](docs/TWA_MOBILE_PLAYBOOK.md) | Using TWA instead of Compose native |
 | Wearables (Horizon 3) | [docs/WEARABLES.md](docs/WEARABLES.md) | Live OAuth/hubs until retention unlock |
@@ -72,7 +73,7 @@
 | **Contributing** | [CONTRIBUTING.md](CONTRIBUTING.md) | — |
 | **Doc hub (all audiences)** | [docs/README.md](docs/README.md) | — |
 
-**Phase naming trap:** Journey “Phase 0–3” ([docs/JOURNEY.md](docs/JOURNEY.md)) ≠ build phases A–I ([docs/PLAN.md](docs/PLAN.md)) ≠ PFT sub-phases G1–G8.
+**Phase naming trap:** Journey “Phase 0–3” ([docs/JOURNEY.md](docs/JOURNEY.md)) ≠ build phases A–I ([docs/PLAN.md](docs/PLAN.md)) ≠ PFT sub-phases G1–G8 ≠ Android horizons A–F ([docs/ANDROID_NATIVE.md](docs/ANDROID_NATIVE.md)). Mobile work uses named gates (Accept B · week-4 · iOS lane open), not new numbers.
 
 ---
 
@@ -136,7 +137,9 @@ Root keeps only the spine: README · CONTEXT · AGENTS · INDEX · vision · ORC
 | [docs/PRE_REVENUE_CHECKLIST.md](docs/PRE_REVENUE_CHECKLIST.md) | Take-a-dollar gate · interim sole-prop · dispute shield |
 | [docs/STRIPE_DISPUTE_OPS.md](docs/STRIPE_DISPUTE_OPS.md) | Chargeback alerts · Radar · thresholds |
 | [docs/archive/SOFT_LAUNCH_DAY.md](docs/archive/SOFT_LAUNCH_DAY.md) | Public flip day |
-| [docs/TWA_MOBILE_PLAYBOOK.md](docs/TWA_MOBILE_PLAYBOOK.md) | Deferred Play/iOS shells |
+| [docs/MOBILE_PLAYBOOK.md](docs/MOBILE_PLAYBOOK.md) | Native mobile umbrella (stack · process · UX laws) |
+| [docs/UX_PLAYBOOK.md](docs/UX_PLAYBOOK.md) | UX operating system (problem register · standards · research ops) |
+| [docs/TWA_MOBILE_PLAYBOOK.md](docs/TWA_MOBILE_PLAYBOOK.md) | Optional web-PWA Play packaging (iOS shell superseded) |
 | [docs/WEARABLES.md](docs/WEARABLES.md) | Multi-vendor wearables (Apple, Google, Whoop, …) |
 | [docs/LAUNCH_RUNBOOK.md](docs/LAUNCH_RUNBOOK.md) | Founder critical path |
 | [docs/VERCEL_DEPLOY_CHECKLIST.md](docs/VERCEL_DEPLOY_CHECKLIST.md) | Deploy steps |

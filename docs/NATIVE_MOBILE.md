@@ -1,6 +1,6 @@
-# Native Android + iOS (Expo)
+# Expo prototype (flow reference — not the product)
 
-**Status:** Expo prototype / flow reference only. **Play product path is Kotlin Compose** — see [ANDROID_NATIVE.md](ANDROID_NATIVE.md). iOS deferred: [IOS_PLAYBOOK.md](IOS_PLAYBOOK.md).  
+**Status:** Expo prototype / flow reference only. **Play product path is Kotlin Compose** — see [ANDROID_NATIVE.md](ANDROID_NATIVE.md). iOS deferred: [IOS_PLAYBOOK.md](IOS_PLAYBOOK.md). Umbrella plan: [MOBILE_PLAYBOOK.md](MOBILE_PLAYBOOK.md).  
 **Code:** [`apps/mobile`](../apps/mobile) · shared pure TS [`packages/mw-core`](../packages/mw-core)  
 **Thesis:** [YC_THESIS.md](YC_THESIS.md) · **Legal:** [LEGAL_SAFETY.md](LEGAL_SAFETY.md) · **LLC:** [LLC_AND_PAYMENTS.md](LLC_AND_PAYMENTS.md)
 
@@ -34,26 +34,15 @@ Super Bundle uses **Stripe Checkout on the web** (`/bundle` via `expo-web-browse
 
 ---
 
-## EAS Build / store submission (founder)
+## Store submission — do not use Expo for this
 
-1. Create LLC + Apple Developer ($99) + Google Play Console ([LLC_AND_PAYMENTS.md](LLC_AND_PAYMENTS.md)).
-2. Install EAS CLI: `npm i -g eas-cli` → `eas login` → from `apps/mobile`: `eas init` (replace `extra.eas.projectId` in `app.json`).
-3. Builds:
-   - Internal: `npm run eas:build:ios` / `eas:build:android` (preview profile)
-   - Production: `npm run eas:build:production`
-4. Submit: fill `eas.json` → `submit.production` placeholders → `eas submit -p ios` / `-p android`.
-5. Store Data safety / privacy nutrition labels from [LEGAL_SAFETY.md](LEGAL_SAFETY.md) §2.
-6. Listing copy (wedge):
-
-> **Mission Winning** — Adaptive AI training coach for people who train at home or in a park. Free offline workout logging (no account required). Weekly plans that adapt from your logs alone — no wearable required.
-
-Privacy / Terms / Refunds: `https://www.missionwinning.com/privacy` · `/terms` · `/refunds`
+Historical Expo/EAS notes removed 2026-08-06. Do **not** build or submit Expo to any store: Android ships from `apps/android` ([ANDROID_NATIVE.md](ANDROID_NATIVE.md)); iOS is native SwiftUI at its gate ([IOS_PLAYBOOK.md](IOS_PLAYBOOK.md)). The Expo `app.json` still claims `com.missionwinning.app` — the same applicationId as the Compose release build; see the bundle-ID collision item in [MOBILE_PLAYBOOK.md](MOBILE_PLAYBOOK.md) §10.
 
 ---
 
 ## TWA (optional, not the product)
 
-[TWA_MOBILE_PLAYBOOK.md](TWA_MOBILE_PLAYBOOK.md) remains for packaging the **web** PWA if needed. The shipped product path is Expo native.
+[TWA_MOBILE_PLAYBOOK.md](TWA_MOBILE_PLAYBOOK.md) remains for packaging the **web** PWA if needed. The shipped Android product path is Compose native ([ANDROID_NATIVE.md](ANDROID_NATIVE.md)).
 
 ---
 

@@ -2,7 +2,7 @@
 
 **Date:** 2026-07-10  
 **Purpose:** Competitive steal/avoid matrices + MW gap analysis before the visual system refresh and surface rebuilds.  
-**Companions:** [UX_UNIFIED_PLAN.md](../UX_UNIFIED_PLAN.md) · [ROADMAP_V4_EXPERIENCE.md](archive/ROADMAP_V4_EXPERIENCE.md) · [STRATEGY.md](STRATEGY.md) · [DESIGN_SYSTEM.md](DESIGN_SYSTEM.md)
+**Companions:** [UX_UNIFIED_PLAN.md](archive/UX_UNIFIED_PLAN.md) · [ROADMAP_V4_EXPERIENCE.md](archive/ROADMAP_V4_EXPERIENCE.md) · [STRATEGY.md](STRATEGY.md) · [DESIGN_SYSTEM.md](DESIGN_SYSTEM.md)
 
 **Brand lock:** Dark navy canvas · emerald = action · brass = honor/PR/rank. Steal structure and behavior — never competitor palettes (Hevy blue, WHOOP violet).
 
@@ -354,6 +354,92 @@ Brand palette swap · WHOOP clone · Hevy social · Horizon-0 teardown · gating
 
 ---
 
+## Wave 8 — Coach platforms + adaptive consumer + complaint mining (2026-08-06)
+
+**Method:** live web — vendor sites/help centers, app-store listings, review aggregators (Capterra/G2/GetApp/JustUseApp/Trustpilot), Reddit roundups, press; quotes are close paraphrase of named sources. **Thesis:** the client experience of human-coach platforms is the bar Mission Coach must clear; the top-chart adaptive apps show exactly where trust breaks; and the category's complaint mine hands MW its positioning for free. Steal structure and behavior, never palettes (web is Modernist since D5). Umbrella: [MOBILE_PLAYBOOK.md](MOBILE_PLAYBOOK.md) · standards: [UX_PLAYBOOK.md](UX_PLAYBOOK.md).
+
+### Coach-platform client apps — Trainerize · TrueCoach · Everfit (B2B, trainer pays)
+
+All three client apps are locked shells without a coach invite; trainer pays ~$1–6/client/mo for software, client pays the human $150–400/mo for the part software doesn't do — reading logs, adjusting, noticing, answering. Every one of those loops terminates at a human dashboard; Mission Coach closes them in software at zero marginal cost. Their own AI (Trainerize/Everfit AI workout builders) drafts programs *for the coach* — conceding adaptation is the valuable act while keeping a human in the loop.
+
+| Steal | Avoid |
+|-------|--------|
+| Everfit's 4-tab client IA: **Today / Coaching / Inbox / You** — maps ~1:1 onto an AI-coach app | Invite-gated brick (no coach = empty app; MW is self-serve from minute one) |
+| Checkmark-per-set + **auto-popping prescribed rest timer** (Everfit); rest bound to the programmed sequence (Trainerize) | Notification overload — Trainerize clients turn all pushes off in month one |
+| TrueCoach **Exercise History one tap from the exercise you're doing** — "what did I lift last time," when it matters | Data captivity — history lives in the trainer's account and dies with their subscription |
+| Results-vs-prescription entry: the prescription *is* the form (TrueCoach) | Messaging as the weakest limb (stuck/unsent messages — Everfit's top client complaint) |
+| Per-exercise comment threads + client notes (pain, machine settings, band color) — the AI's cues should live at exercise level | Habits crowding the workout calendar (TrueCoach complaint) |
+| Compliance-drop trigger (TrueCoach: −20% → "Needs Attention") — a ready spec for Mission Coach's proactive check-in | Post-redesign navigation confusion — never rebuild the workout reader out from under users |
+| Consultation/PAR-Q forms folded into first-run so day one feels personalized | Everfit's missing basic: **no auto-fill of previous weights** — a top store complaint |
+
+### Adaptive consumer — Fitbod · Runna · Ladder (+ Peloton IQ, Centr)
+
+Scale check: Ladder raised $105M+, ~$180/yr, no free tier, **no Android**; Fitbod ≈ #16 top-grossing US Health & Fitness (~$2M/mo est.), $15.99/mo *just to log*; Runna exited to Strava within ~3 years. **Nobody in the charts combines free permanent logger + individually adaptive weekly coaching + explanation-first UI + Android-native. That intersection is empty — it is MW's.**
+
+| Steal | Avoid |
+|-------|--------|
+| Fitbod's paywall order: the full first workout is generated and visible **before** the ask (MW's free logger is the extreme version; show Coach week 1 rendered before any upsell) | Black-box adaptation — Fitbod's dominant complaint: selections read as random, early loads visibly wrong; an unexplained change reads as a bug even when correct |
+| **State + intent, combined:** Fitbod shows recovery state (per-muscle %), Runna states session intent ("tempo, X pace, because Y") — nobody does both; MW's adapt beats should say *what changed and why* ("pull volume +10% — 3 clean pull sessions logged") | Overcooking from optimistic inputs — Runna's injury discourse (TechRadar, r/running) came from seeding intensity off best-case PBs; default conservative, deload built in |
+| Runna's **rebase ritual**: one miss changes nothing; repeated misses → check-in that re-anchors the plan to where you are; illness window + gradual return phase | Hard paywall before durable value (Runna/Ladder/Fitbod all sub-only) — churned users have nothing to come back to |
+| Ladder's zero-decision execution: open → today's session → press play; strict sequencing, auto-advancing rest, next move announced | **Expiring the user's own history** — Ladder's 3-replay favorites + weekly reset is the most user-hostile mechanic found; logged data is permanently the athlete's |
+| Week-based streaks vs your own goal (Fitbod), points for *completing planned sessions* (Runna Levels) — celebrate log-proven facts only | Second-class second platforms — Ladder iOS-only; Peloton IQ locked to $2k hardware; Fitbod's Android lagged years. Android is MW's primary, not a port |
+
+Peloton IQ (Oct 2025) validates AI strength coaching going mainstream — then tethers it to new hardware and raises prices; Centr is the everything-app warning label (broad, celebrity-fronted, zero adaptivity). Both are the inverse of "adapts from your logs alone, any gym, no device."
+
+### Complaint taxonomy — review mining across the category (ranked by evidence volume)
+
+| # | Theme | Exemplars | MW implication (register) |
+|---|-------|-----------|---------------------------|
+| 1 | **Paywall creep on retention primitives** | Hevy: history graphs >90 days paid; Strong: CSV export of your own logs paid; Boostcamp: exercise *swap* paid | Free logger never caps routines, history, or export — the hard rule is a market position (P5) |
+| 2 | **Data loss / sync failure** | JEFIT user lost ~70 sessions; Strong's dual-SSO empty-account trap; Trainerize "didn't save the workout" | Offline-first + durable outbox + one identity across SSO + visible sync state (P3) |
+| 3 | **Taps-per-set jank** | "finish a set, unlock, find exercise, tap, tap, save — half your rest is gone" | 1–2 taps per set, previous-set prefill, auto rest; instrument taps-per-set (P1) |
+| 4 | **Adaptation feels random** | Fitbod progression criticism; Freeletics "carbon-copy weeks", repeats exercises users flagged impossible | Legible AI: every delta states its reason; veto levers; visibly reacts to feedback (P4) |
+| 5 | **Trial/billing dark patterns** | Freeletics silent post-trial charge + countdown discounts; H&F refund rate 4.71% (2nd worst category) | No-card trial posture, one honest price, pre-charge clarity |
+| 6 | **Notification spam + streak shame** | BJHP 2025 study (58,881 posts): streak resets "erase months of effort", guilt pushes → avoidance | No punitive streaks; opt-in, concrete notifications; warm re-entry (P2) — peer-reviewed backing |
+| 7 | **Bloat / cluttered nav** | JEFIT ads + popups; TrueCoach redesign "floods with stimuli" | One job per tab; pillars stay out of the logging path |
+| 8 | **Offline breakage** | JEFIT server-first, dead in dead zones; Fitness+ downloads that won't launch offline | MW home turf — "train-anywhere" is literal (P3) |
+| 9 | **Ads in the training path** | JEFIT interstitials; even paid Ladder's self-promos draw complaints | Zero ads in the training path, ever |
+| 10 | **Poor swap/scaling flows** | Boostcamp paywalls swap; Ladder assumes gym competency; Freeletics ignores "can't do this" | First-class free swap that remembers constraints |
+| 11 | **Wearable integration jank** (not dependency) | Runna–Garmin mismatches, premium-gated sync; Strong's stagnant Watch app | "No watch required" sidesteps the whole failure class |
+| 12 | **Trainer-platform quality floor** | TrueCoach/Everfit/Trainerize client apps crash mid-set; tolerated only because the *coach* chose them | An athlete-side app this good is a wedge into coached athletes later |
+
+**Drop-off shape:** day-30 median 3–12% vs leaders ~25%; 38% of stated cancellations are motivational, 25% defect to a free alternative; lapse is seasonal and predictable (Strava's "Quitter's Day"). **The highest-leverage unowned retention feature is a designed comeback** — auto-deload, welcome-back session, zero guilt; only Fitbod quietly deloads after a break and nobody markets the grace. MW's re-entry work (`src/lib/reentry.ts`) is the right bet — say it out loud.
+
+**Onboarding bar:** essentially nobody lets you train before an account (Strong iOS partially, local-only); Fitbod is the craft benchmark (3 questions → generated doable workout → projection → soft paywall); Freeletics is the cautionary tale (long quiz → hard paywall → countdown discount). MW's I-Day (3 questions, skippable sign-in, finishes *into* a session, ≤6 taps to a logged set) is already ahead of the field — protect it with the existing budgets.
+
+### Competitor register (standing — future waves append rows)
+
+| Name | Category | Positioning | Pricing model | Onboarding pattern | Complaint themes | Detail |
+|------|----------|-------------|---------------|--------------------|------------------|--------|
+| ABC Trainerize | Coach platform | "#1 personal training software" | Trainer pays $9–248/mo by roster + add-ons | Trainer invite email → forms → app | Crashes mid-log, sluggish UI, notification overload | Wave 8 |
+| TrueCoach | Coach platform | Minimalist 1:1 strength coaching | Trainer pays $30–165/mo; no free tier | Invite → profile form; empty until programmed | Redesign confusion, video upload fails, message glitches | Wave 8 |
+| Everfit | Coach platform | Automation-forward challenger | Trainer free ≤5 clients; $16–255/mo + modules | Public invite link → onboarding flow → populated Today | Stuck messages, no weight auto-fill, lag | Wave 8 |
+| Fitbod | Adaptive consumer | Algorithmic gym planner | $15.99/mo · $95.99/yr; no free tier | 14 steps → generated workout → soft paywall | Black-box selections, erratic early loads, price | Wave 8 |
+| Runna | Adaptive consumer (run) | "#1 running plans"; Strava-owned | $17.99/mo · ~$119.99/yr; hard paywall | Deep quiz → paywall → calendar plan | Aggressive paces/injury discourse, price, watch bugs | Wave 8 |
+| Ladder | Coach-led consumer | Team strength, daily plan | $29.99/mo · $179.99/yr; no-card trial | 3-screen quiz → team → press play | Price, iOS-only, fixed programming, expiring history | Wave 8 |
+| Peloton App | Content library | Classes + new AI (IQ) | $12.99–28.99/mo; IQ features hardware-gated | Class browse | AI locked to hardware; price raises | Wave 8 |
+| Centr | Everything app | Celebrity → longevity content | $29.99/mo · $149.99/yr | Program pick | Broad, shallow, zero adaptivity | Wave 8 |
+| JEFIT | Freemium logger | Big-library logger | Free + ads; Elite $69.99/yr | Short profile, ads day one | Server-first offline breakage, ads, clutter, sync loss | Wave 8 |
+| Boostcamp | Program logger | Real programs catalog | Free; Pro $59.99/yr | Pick a program | Swap paywalled, analytics gated | Wave 8 |
+| Caliber | Hybrid coaching | Free plans + human 1:1 | Free; humans $200–467/mo | Plan setup | Human tier = 10× app pricing | Wave 8 |
+| Hevy · Strong · Freeletics · NTC · WHOOP/Bevel · Forge · TrainHeroic | Loggers / coach apps / metric homes | — | — | — | — | Waves 1–7 |
+
+### Positioning angles (evidence-backed, for marketing surfaces)
+
+1. **"Your history is yours. Free. Forever."** — strikes the category's monetization nerve (history caps, export paywalls, swap paywalls); converts the 25% defect-to-free churn flow into acquisition. Incumbents can't match it without detonating revenue.
+2. **"Never lose a set."** — offline-first + outbox vs documented data-loss stories; a testable, reviewable promise.
+3. **"A coach that shows its work."** — the white space is *legible* AI, not smarter AI; trust, not sophistication, is the retention variable.
+4. **"Miss two weeks? We planned for that."** — no streaks to break, welcome-back that ramps down before up; peer-reviewed backing (BJHP 2025).
+5. **"The coach is in the app, not behind it." / "The log is the check-in."** — vs the $150–400/mo human layer; adaptation tonight, not at next week's check-in form.
+6. **"No watch. No ads. No card."** — three category irritants, one line.
+
+### Register + guardrail updates
+
+- Confirms [UX_PLAYBOOK.md](UX_PLAYBOOK.md) P1–P5 with external evidence (P1 onboarding bar · P2 BJHP shame study · P3 data-loss taxonomy · P4 black-box complaints · P5 paywall-creep taxonomy).
+- Execution guardrails adopted: default-quiet notifications · never crash mid-set (category's worst reviews) · always prefill last weights · never redesign the workout reader abruptly · zero ads in the training path · no expiring history, ever.
+
+---
+
 ## Sources folded in
 
 - Internal: UX_UNIFIED_PLAN (Bevel/Freeletics), ROADMAP_V4_EXPERIENCE (no teardown)  
@@ -364,3 +450,4 @@ Brand palette swap · WHOOP clone · Hevy social · Horizon-0 teardown · gating
 - Wave 5: CTA integrity + list density/search
 - Wave 6: TrainHeroic athlete gym + % load (not coach SaaS)
 - Wave 7: Design Excellence OS — steal/avoid/own synthesis + craft waves D0–D3
+- Wave 8: trainerize.com + help center · truecoach.co + help center · everfit.io + help center · help.fitbod.me + sensai.fit · runna.com/support.runna.com + press.strava.com · joinladder.com + garagegymreviews.com · investor.onepeloton.com · Capterra/G2/GetApp/JustUseApp/Trustpilot review mining · quickcoach.fit pricing 2026 · Sheen et al. 2025 *BJHP* (58,881-post study, via UCL News) · RevenueCat State of Subscription Apps · Sensor Tower US charts

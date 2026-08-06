@@ -1,6 +1,6 @@
 # Android TWA / thin native playbook
 
-**Status:** Optional packaging only. **Product path is Expo native** — see [NATIVE_MOBILE.md](NATIVE_MOBILE.md) (`apps/mobile`).  
+**Status:** Optional packaging only. **Product path is native Compose** ([ANDROID_NATIVE.md](ANDROID_NATIVE.md)); iOS is native SwiftUI at its gate ([IOS_PLAYBOOK.md](IOS_PLAYBOOK.md)). Umbrella: [MOBILE_PLAYBOOK.md](MOBILE_PLAYBOOK.md).  
 **Companion:** [REDTEAM.md](REDTEAM.md) A1 · [STRATEGY.md](STRATEGY.md) · [docs/POST_LAUNCH_CADENCE.md](POST_LAUNCH_CADENCE.md)
 
 ---
@@ -10,7 +10,7 @@
 | Signal | Action |
 |--------|--------|
 | Beta/public users repeatedly drop saying “is there an app?” / won’t install PWA | Start **Android TWA** |
-| TWA live + week-4 retention still holds | Consider thin **iOS** shell (Capacitor/TestFlight) |
+| TWA live + week-4 retention still holds | Superseded — iOS ships native SwiftUI at its gate ([IOS_PLAYBOOK.md](IOS_PLAYBOOK.md)); no WebView shell |
 | Retention &lt;10% and nobody asks for an app | **Do not build native** — fix Today / Coach / first-workout loop |
 
 Full dual native (React Native / Flutter rewrite) is the highest-risk use of capital for this product.
@@ -42,6 +42,8 @@ When evidence clears:
 ---
 
 ## Thin iOS shell (only after TWA proves demand)
+
+**Superseded 2026-08-06:** iOS is locked to native SwiftUI ([IOS_PLAYBOOK.md](IOS_PLAYBOOK.md)) — no Capacitor/WebView shell. Retained for history only.
 
 1. Apple Developer account under LLC ($99/yr)  
 2. Capacitor (or similar) WebView shell pointing at production URL  

@@ -112,26 +112,27 @@ Exit criteria are **not** the same as the Today dock primary — see [FLOW_ARCHI
 
 ## Navigation simplification (Phase F1)
 
-### Mobile (keep — already good)
+### Mobile (shipped)
+
+Pinned by `MOBILE_TAB_HREFS` in `src/lib/primaryNav.ts` (+ unit test):
 
 | Tab | Role |
 |-----|------|
-| Today | Command center |
-| Train | Active workout + quick start |
-| Fuel | Nutrition log |
-| Track | Activity |
-| You | Profile, Journey status, settings |
+| Today (`/log`) | Command center |
+| Train (`/active`) | Active workout + quick start |
+| Coach (`/coach`) | AI weekly plan |
+| Fuel (`/nutrition`) | Nutrition log |
+| More (sheet) | Track, You, Move, Mind, Learn, History, … |
 
 ### Desktop / “More” menu
 
 Replace 14 sidebar items with:
 
 ```
-TODAY | TRAIN | FUEL | TRACK | YOU
-                              └─ More ▾
-                                   Move · Mind · Learn · History
-                                   Library · Builder · Assessments
-                                   Super Bundle · Vision
+TODAY | TRAIN | COACH | FUEL | MORE ▾
+                                Track · You · Move · Mind · Learn
+                                History · Library · Builder · Assessments
+                                Super Bundle · Vision
 ```
 
 **Implementation:** `AppLayout` — collapsed sidebar mode + `MoreSheet` component.
