@@ -25,6 +25,7 @@ When adding a doc:
 
 | File | Absorbed by / note |
 |------|---------------------|
+| [log/LOG-rotate-558.md](./log/LOG-rotate-558.md) | rotated oldest for `.558` move/mind |
 | [log/LOG-rotate-557.md](./log/LOG-rotate-557.md) | rotated oldest for `.557` fuel |
 | [log/LOG-rotate-556.md](./log/LOG-rotate-556.md) | rotated oldest for `.556` today/coach |
 | [log/LOG-rotate-555.md](./log/LOG-rotate-555.md) | rotated oldest for `.555` set table |

@@ -104,11 +104,23 @@ export function MovePage() {
         </h3>
       ) : null}
       {flows.length === 0 ? (
-        <p className="text-sm text-muted-foreground">
-          {t('moveCollectionEmpty', {
-            defaultValue: 'No flows in this collection — try All flows.',
-          })}
-        </p>
+        <div className="border-y-2 border-border py-4 space-y-3">
+          <p className="text-sm text-muted-foreground">
+            {t('moveCollectionEmpty', {
+              defaultValue: 'No flows in this collection.',
+            })}
+          </p>
+          {collectionId !== 'all' ? (
+            <Button
+              type="button"
+              variant="outline"
+              className="min-h-[44px] tap-target"
+              onClick={() => setCollectionId('all')}
+            >
+              {t('moveCollectionShowAll', { defaultValue: 'Show all flows' })}
+            </Button>
+          ) : null}
+        </div>
       ) : (
         <div className="grid gap-4 md:grid-cols-2">
           {flows.map((flow) => (
@@ -127,8 +139,13 @@ export function MovePage() {
                 <span className="text-sm text-muted-foreground tabular-nums">
                   {flow.durationMin} min · {flow.steps.length} steps
                 </span>
-                <Button variant="outline" size="sm" onClick={() => setActiveFlowId(flow.id)}>
-                  {t('moveStartFlow', { defaultValue: 'Start Flow' })}
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="min-h-[44px] tap-target"
+                  onClick={() => setActiveFlowId(flow.id)}
+                >
+                  {t('moveStartFlow', { defaultValue: 'Start' })}
                 </Button>
               </CardContent>
             </Card>
@@ -151,6 +168,10 @@ export function MovePage() {
           : `${inv.move.free} free flows · Super Bundle adds ${inv.move.premium} longer recovery flows.`,
       })}
     >
+      <div
+        id="move-flows"
+        className="scroll-mt-20 space-y-6"
+      >
       <div className="flex gap-2 overflow-x-auto pb-1 -mx-1 px-1" role="tablist" aria-label={t('moveCollections', { defaultValue: 'Collections' })}>
         {MOVE_COLLECTIONS.map((c) => {
           const selected = collectionId === c.id;
@@ -161,7 +182,7 @@ export function MovePage() {
               role="tab"
               aria-selected={selected}
               className={cn(
-                'shrink-0 min-h-[44px] border-2 px-3 text-sm font-medium transition-colors',
+                'shrink-0 min-h-[44px] border-2 px-3 text-sm font-medium transition-colors tap-target',
                 selected
                   ? 'border-primary bg-primary text-primary-foreground'
                   : 'border-border bg-card text-foreground hover:border-primary'
@@ -181,6 +202,7 @@ export function MovePage() {
           defaultValue: `Mobility flows (${freeFlows.length})`,
         })
       )}
+      </div>
 
       {premium && filteredPremium.length > 0 && (
         <details className="group" open>
@@ -210,7 +232,7 @@ export function MovePage() {
           onAction={() => setPremiumRetry((n) => n + 1)}
           title={t('movePremiumFetchFailed', { defaultValue: 'Could not load premium flows' })}
           description={t('movePremiumOffline', {
-            defaultValue: 'Premium recovery flows unavailable offline — free flows below still work.',
+            defaultValue: 'Premium recovery flows unavailable offline — free flows above still work.',
           })}
         />
       )}
@@ -240,7 +262,7 @@ export function MovePage() {
         <Card className="content-card">
           <CardHeader>
             <CardTitle className="text-base">
-              {t('moveRecentWins', { defaultValue: 'Recent Move Wins' })}
+              {t('moveRecentWins', { defaultValue: 'Recent sessions' })}
             </CardTitle>
           </CardHeader>
           <CardContent className="text-sm space-y-1">
@@ -254,12 +276,12 @@ export function MovePage() {
       ) : (
         <EmptyState
           icon={Wind}
-          title={t('moveEmptyTitle', { defaultValue: 'No Move sessions logged yet' })}
+          title={t('moveEmptyTitle', { defaultValue: 'No mobility sessions yet' })}
           description={t('moveEmptyDesc', {
-            defaultValue: 'Start a free mobility flow — your first win shows here.',
+            defaultValue: 'Start a free flow — your first session shows here.',
           })}
           actionLabel={t('moveEmptyCta', { defaultValue: 'Browse free flows' })}
-          onAction={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+          href="#move-flows"
         />
       )}
     </PillarPageShell>
