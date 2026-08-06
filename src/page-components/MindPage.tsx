@@ -4,7 +4,7 @@
  * See: app/INDEX.md, src/page-components/INDEX.md
  */
 
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useLocaleFormat } from '@/hooks/useLocaleFormat';
 import { BreathingTimer } from '@/components/pillars/BreathingTimer';
@@ -24,6 +24,13 @@ import { Brain, ChevronDown } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { fetchPremiumCatalogJson } from '@/lib/premiumCatalogCache';
 import { isFreeBeta } from '@/lib/freeBeta';
+import { getContentInventory } from '@/lib/contentInventory';
+import {
+  filterMindByCollection,
+  MIND_COLLECTIONS,
+  type MindCollectionId,
+} from '@/lib/mind/filterSessions';
+import { cn } from '@/lib/utils';
 
 export function MindPage() {
   const { t } = useTranslation();
@@ -35,9 +42,9 @@ export function MindPage() {
   const [refresh, setRefresh] = useState(0);
   const [premiumOpen, setPremiumOpen] = useState(false);
   const [premiumFetchError, setPremiumFetchError] = useState(false);
-  // `.241` — a retry trigger. ErrorState renders no action unless it is handed
-  // one, so an unrecoverable error state was a dead end wearing a component.
   const [premiumRetry, setPremiumRetry] = useState(0);
+  const [collectionId, setCollectionId] = useState<MindCollectionId>('all');
+  const inv = getContentInventory();
 
   useEffect(() => {
     setRecentWins(getPillarWins(5).filter((w) => w.pillar === 'mind'));
@@ -65,15 +72,26 @@ export function MindPage() {
       });
   }, [premium, premiumRetry, t, toast]);
 
+  const freeSessions = useMemo(
+    () => filterMindByCollection(GUIDED_MIND_SESSIONS, collectionId),
+    [collectionId]
+  );
+  const filteredPremium = useMemo(
+    () => filterMindByCollection(premiumSessions, collectionId),
+    [premiumSessions, collectionId]
+  );
+
   return (
     <PillarPageShell
       icon={Brain}
       eyebrow={t('mindEyebrow', { defaultValue: 'Mind' })}
       title={t('mindTitle', { defaultValue: 'Mind' })}
-      subtitle={t('mindSubtitle', {
+      subtitle={t('mindSubtitleDepth', {
+        free: inv.mind.free,
+        premium: inv.mind.premium,
         defaultValue: isFreeBeta()
-          ? 'Breathing, check-in, and short guided sessions — keep recovery simple.'
-          : 'Breathing, check-in, and guided sessions. Super Bundle adds deeper timed sessions when paid depth is on.',
+          ? `${inv.mind.free} free guided sessions · ${inv.unlockedTotal.mind} unlocked in open beta — breathing + check-in included.`
+          : `${inv.mind.free} free guided sessions · Super Bundle adds ${inv.mind.premium} deeper timed sessions.`,
       })}
     >
       <div className="grid gap-6 lg:grid-cols-2">
@@ -81,15 +99,53 @@ export function MindPage() {
         <DailyCheckIn />
       </div>
 
+      <div
+        className="flex gap-2 overflow-x-auto pb-1 -mx-1 px-1"
+        role="tablist"
+        aria-label={t('mindCollections', { defaultValue: 'Collections' })}
+      >
+        {MIND_COLLECTIONS.map((c) => {
+          const selected = collectionId === c.id;
+          return (
+            <button
+              key={c.id}
+              type="button"
+              role="tab"
+              aria-selected={selected}
+              className={cn(
+                'shrink-0 min-h-[44px] border-2 px-3 text-sm font-medium transition-colors',
+                selected
+                  ? 'border-primary bg-primary text-primary-foreground'
+                  : 'border-border bg-card text-foreground hover:border-primary'
+              )}
+              onClick={() => setCollectionId(c.id)}
+            >
+              {t(c.titleKey, { defaultValue: c.titleDefault })}
+            </button>
+          );
+        })}
+      </div>
+
       <div id="mind-guided" className="space-y-3 scroll-mt-20">
         <h3 className="text-sm font-medium text-muted-foreground">
-          {t('mindGuidedFree', { defaultValue: 'Guided sessions' })}
+          {t('mindGuidedFreeCount', {
+            count: freeSessions.length,
+            defaultValue: `Guided sessions (${freeSessions.length})`,
+          })}
         </h3>
-        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-          {GUIDED_MIND_SESSIONS.map((s) => (
-            <GuidedMindSessionRunner key={s.id} session={s} onLogged={() => setRefresh((r) => r + 1)} />
-          ))}
-        </div>
+        {freeSessions.length === 0 ? (
+          <p className="text-sm text-muted-foreground">
+            {t('mindCollectionEmpty', {
+              defaultValue: 'No sessions in this collection — try All sessions.',
+            })}
+          </p>
+        ) : (
+          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+            {freeSessions.map((s) => (
+              <GuidedMindSessionRunner key={s.id} session={s} onLogged={() => setRefresh((r) => r + 1)} />
+            ))}
+          </div>
+        )}
       </div>
 
       {premiumFetchError && premium && (
@@ -104,16 +160,19 @@ export function MindPage() {
         />
       )}
 
-      {premium && premiumSessions.length > 0 && (
+      {premium && filteredPremium.length > 0 && (
         <details className="group space-y-3" open>
           <summary className="flex cursor-pointer list-none items-center justify-between gap-2 py-1 min-h-[44px] [&::-webkit-details-marker]:hidden">
             <h3 className="text-sm font-semibold text-primary uppercase tracking-wide">
-              {t('mindPremiumSessions', { defaultValue: 'Premium guided sessions' })}
+              {t('mindPremiumSessionsCount', {
+                count: filteredPremium.length,
+                defaultValue: `Premium guided sessions (${filteredPremium.length})`,
+              })}
             </h3>
             <ChevronDown className="h-4 w-4 text-muted-foreground transition-transform group-open:rotate-180" />
           </summary>
           <div className="grid gap-4 md:grid-cols-2">
-            {premiumSessions.map((s) => (
+            {filteredPremium.map((s) => (
               <GuidedMindSessionRunner key={s.id} session={s} onLogged={() => setRefresh((r) => r + 1)} />
             ))}
           </div>
@@ -128,7 +187,10 @@ export function MindPage() {
             onClick={() => setPremiumOpen((v) => !v)}
           >
             <span className="font-medium text-muted-foreground">
-              {t('mindPremiumPreview', { defaultValue: 'Premium guided sessions' })}
+              {t('mindPremiumPreviewCount', {
+                count: inv.mind.premium,
+                defaultValue: `Premium guided sessions (${inv.mind.premium})`,
+              })}
             </span>
             <ChevronDown
               className={`h-4 w-4 text-muted-foreground transition-transform ${premiumOpen ? 'rotate-180' : ''}`}

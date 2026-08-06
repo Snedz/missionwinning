@@ -20,8 +20,8 @@ import {
 export const CONTENT_FLOORS = {
   moveFree: 24,
   movePremium: 28,
-  mindFree: 10,
-  mindPremium: 22,
+  mindFree: 24,
+  mindPremium: 34,
   recipesFree: 20,
   recipesPremium: 102,
   learnPremiumSections: 16,
