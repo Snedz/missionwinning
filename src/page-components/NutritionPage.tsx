@@ -67,6 +67,7 @@ export function NutritionPage() {
   const workoutHistory = useWorkoutStore((s) => s.workoutHistory);
   const [premiumRecipes, setPremiumRecipes] = useState<Recipe[]>([]);
   const [premiumFetchError, setPremiumFetchError] = useState(false);
+  const [premiumRetry, setPremiumRetry] = useState(0);
   /** Base targets (edited/saved); rings use adapted values when train-match is on. */
   const [targetCals, setTargetCals] = useState(DEFAULT_MACRO_TARGETS.cals);
   const [targetProtein, setTargetProtein] = useState(DEFAULT_MACRO_TARGETS.protein);
@@ -201,7 +202,7 @@ export function NutritionPage() {
           variant: 'destructive',
         });
       });
-  }, [premium, t, toast]);
+  }, [premium, premiumRetry, t, toast]);
 
   useEffect(() => {
     setFuelStreak(getFuelLogStreak());
@@ -557,6 +558,7 @@ export function NutritionPage() {
             premium={premium}
             premiumRecipes={premiumRecipes}
             premiumFetchError={premiumFetchError}
+            onRetryPremium={() => setPremiumRetry((n) => n + 1)}
             onLogRecipe={(draft) =>
               addEntry(draft.name, draft.protein, draft.cals, draft.carbs, draft.fat)
             }

@@ -30,6 +30,7 @@ import { track } from '@/lib/analytics';
 import { CoachAdaptBanner } from '@/components/coach/CoachAdaptBanner';
 import { summarizeWeekDose } from '@/lib/coach/weekDose';
 import { sessionContinuity } from '@/lib/coach/programContinuity';
+import { buildSessionWhyLine } from '@/lib/coach/sessionWhyLine';
 import { isFreeBeta } from '@/lib/freeBeta';
 
 export function CoachTodayCard() {
@@ -66,6 +67,16 @@ export function CoachTodayCard() {
     () => sessionContinuity(workoutHistory, plan),
     [workoutHistory, plan]
   );
+
+  const sessionWhy = useMemo(() => {
+    if (!todaySession) return null;
+    return buildSessionWhyLine({
+      kind: todaySession.kind,
+      focusGroups: todaySession.focusGroups,
+      leadWhyKey: todaySession.exercises[0]?.whyKey,
+      loadZone: bands.ratio === null ? null : bands.zone,
+    });
+  }, [todaySession, bands.ratio, bands.zone]);
 
   const weekDose = plan ? summarizeWeekDose(plan) : null;
   const doseIntent =
@@ -170,6 +181,14 @@ export function CoachTodayCard() {
               </p>
             )}
             <p className="font-semibold">{todaySession.name}</p>
+            {sessionWhy && (
+              <p className="text-xs text-muted-foreground leading-relaxed" data-testid="coach-session-why">
+                {t(sessionWhy.messageKey, {
+                  ...sessionWhy.params,
+                  defaultValue: sessionWhy.defaultValue,
+                })}
+              </p>
+            )}
 
             {/* What the coach actually prescribed, before the athlete walks to the
                 gym. The data has always existed on PlanExercise; Today only ever
