@@ -58,7 +58,7 @@ export function ActiveExerciseFooter({
         type="button"
         variant="ghost"
         size="icon"
-        className="h-11 w-11 shrink-0"
+        className="h-11 w-11 shrink-0 tap-target"
         aria-label={t('activeStartRest', { seconds: restSec, defaultValue: `${restSec}s Rest` })}
         onClick={() => onStartRest(restSec)}
       >
