@@ -77,6 +77,11 @@ export function buildTodayCandidates(input: BuildTodayCandidatesInput): TodayCan
     out.push({ key: 'reentry', priority: P.reentry, pinned: true });
   }
 
+  /** Cross-pillar next steps after first train (Super Bundle depth / UX_PLAYBOOK web-now). */
+  if (input.totalSessions > 0) {
+    out.push({ key: 'continuity', priority: P.continuity });
+  }
+
   if (input.showDashboard) {
     out.push({ key: 'dashboard', priority: P.dashboard });
     out.push({ key: 'freshness', priority: P.freshness });

@@ -48,7 +48,9 @@ import { shouldAppendTodayMoreDetails } from "@/lib/today/shouldAppendTodayMore"
 import { buildTodayHeaderFocusLine } from "@/lib/today/buildTodayHeaderFocusLine";
 import type { TodayBlockKey } from "@/lib/today/todayBlockPriority";
 import { useDismissed } from "@/hooks/useDismissed";
-import { formatLocalDateKey, localDateKey } from '@/lib/time/localDate';
+import { formatLocalDateKey, localDateKey, localDateKeyFromIso } from '@/lib/time/localDate';
+import { buildContinuitySuggestions } from '@/lib/today/continuityStrip';
+import { ContinuityStrip } from '@/components/today/ContinuityStrip';
 import { peekCoachToday } from '@/lib/coach/peekCoachToday';
 import { loadPlan } from '@/lib/coach/storage';
 import { buildJustGoHeroMeta, type JustGoHeroMeta } from '@/lib/justGoHeroMeta';
@@ -222,6 +224,25 @@ export function HomeTodayDashboard() {
     () => summarizeRewards(workoutHistory),
     [workoutHistory]
   );
+
+  const continuitySuggestions = useMemo(() => {
+    const live = workoutHistory.filter((w) => !w.deletedAt);
+    if (live.length === 0) return [];
+    const last = [...live].sort((a, b) =>
+      a.completedAt < b.completedAt ? 1 : a.completedAt > b.completedAt ? -1 : 0
+    )[0];
+    const focus = new Set<string>();
+    for (const ex of last?.exercises ?? []) {
+      for (const m of ex.muscleGroups ?? []) focus.add(m);
+    }
+    const today = localDateKey();
+    const trainedToday = live.some((w) => localDateKeyFromIso(w.completedAt) === today);
+    return buildContinuitySuggestions({
+      hasTrainHistory: true,
+      lastFocusGroups: [...focus],
+      trainedToday,
+    });
+  }, [workoutHistory]);
   const [pillarStats, setPillarStats] = useState(() => ({
     moveFlows: 0,
     mindSessions: 0,
@@ -573,6 +594,10 @@ export function HomeTodayDashboard() {
     ),
     intent: <CommandersIntent />,
     reentry: reentry ? <TodayReentryCard reentry={reentry} /> : null,
+    continuity:
+      continuitySuggestions.length > 0 ? (
+        <ContinuityStrip suggestions={continuitySuggestions} />
+      ) : null,
     dashboard: (
       <TodayDashboardHeader
         missionScore={score}
