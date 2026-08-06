@@ -236,5 +236,21 @@
   "mindCollectionFocus": "Focus",
   "mindCollectionTravel": "Travel / hotel",
   "mindCollections": "Collections",
-  "mindCollectionEmpty": "No sessions in this collection — try All sessions."
+  "mindCollectionEmpty": "No sessions in this collection — try All sessions.",
+  "continuityTitle": "Keep the mission moving",
+  "continuitySubtitle": "One app — recovery, focus, and fuel that match your training.",
+  "continuityMovePostLegs": "Post-legs mobility",
+  "continuityMovePostLegsWhy": "Open hips and quads after lower body work.",
+  "continuityMoveShoulders": "Shoulders & T-spine",
+  "continuityMoveShouldersWhy": "Keep pressing and pulling joints happy.",
+  "continuityMoveRecover": "Recovery mobility",
+  "continuityMoveRecoverWhy": "A short flow helps the next session feel better.",
+  "continuityMovePrep": "Pre-session prime",
+  "continuityMovePrepWhy": "Open up before you train — or use it as an active rest day.",
+  "continuityMindDownshift": "Post-training downshift",
+  "continuityMindDownshiftWhy": "Shift from strain to recovery in a few minutes.",
+  "continuityMindFocus": "Pre-workout focus",
+  "continuityMindFocusWhy": "Two minutes to clear noise before the first set.",
+  "continuityFuelProtein": "Log protein",
+  "continuityFuelProteinWhy": "Fuel the session you just earned."
 }

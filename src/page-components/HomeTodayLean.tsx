@@ -40,7 +40,8 @@ import { readRaw } from '@/lib/storage/safeStorage';
 import { peekCoachToday } from '@/lib/coach/peekCoachToday';
 import { buildJustGoHeroMeta, type JustGoHeroMeta } from '@/lib/justGoHeroMeta';
 import type { RewardsSummary } from '@/lib/rewards/summary';
-import { formatLocalDateKey, localDateKey } from '@/lib/time/localDate';
+import { formatLocalDateKey, localDateKey, localDateKeyFromIso } from '@/lib/time/localDate';
+import { buildContinuitySuggestions } from '@/lib/today/continuityStrip';
 
 /**
  * The evening card reaches the lean shell too — `.192` shipped it dashboard-only,
@@ -74,6 +75,11 @@ const TodayReentryCard = dynamic(
 /** After first session — rank + weekly goal; cold path stays free of rewards chunk. */
 const TodayRewardsCard = dynamic(
   () => import('@/components/rewards/TodayRewardsCard').then((m) => m.TodayRewardsCard),
+  { ssr: false }
+);
+
+const ContinuityStrip = dynamic(
+  () => import('@/components/today/ContinuityStrip').then((m) => m.ContinuityStrip),
   { ssr: false }
 );
 
@@ -312,6 +318,29 @@ export function HomeTodayLean() {
       priority: P.rewards,
       node: <TodayRewardsCard summary={rewardsSummary} />,
     });
+  }
+
+  if (workoutHistory.length > 0) {
+    const live = workoutHistory.filter((w) => !w.deletedAt);
+    const last = [...live].sort((a, b) => (a.completedAt < b.completedAt ? 1 : a.completedAt > b.completedAt ? -1 : 0))[0];
+    const focus = new Set<string>();
+    for (const ex of last?.exercises ?? []) {
+      for (const m of ex.muscleGroups ?? []) focus.add(m);
+    }
+    const today = localDateKey();
+    const trainedToday = live.some((w) => localDateKeyFromIso(w.completedAt) === today);
+    const continuity = buildContinuitySuggestions({
+      hasTrainHistory: true,
+      lastFocusGroups: [...focus],
+      trainedToday,
+    });
+    if (continuity.length > 0) {
+      blocks.push({
+        key: 'continuity',
+        priority: P.continuity,
+        node: <ContinuityStrip suggestions={continuity} />,
+      });
+    }
   }
 
   if (mayShowDayReview) {

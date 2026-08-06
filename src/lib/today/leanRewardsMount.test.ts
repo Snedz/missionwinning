@@ -12,6 +12,11 @@ test('rewards block is priced after reentry, before coach-today', () => {
   assert.ok(TODAY_BLOCK_PRIORITY.rewards < TODAY_BLOCK_PRIORITY['coach-today']);
 });
 
+test('continuity is after rewards, before coach-today', () => {
+  assert.ok(TODAY_BLOCK_PRIORITY.continuity > TODAY_BLOCK_PRIORITY.rewards);
+  assert.ok(TODAY_BLOCK_PRIORITY.continuity < TODAY_BLOCK_PRIORITY['coach-today']);
+});
+
 test('HomeTodayLean dynamically loads TodayRewardsCard after history', () => {
   const src = readFileSync(
     join(import.meta.dirname, '..', '..', 'page-components', 'HomeTodayLean.tsx'),
@@ -22,4 +27,14 @@ test('HomeTodayLean dynamically loads TodayRewardsCard after history', () => {
   assert.match(src, /workoutHistory\.length > 0/);
   // Cold path: rewards via dynamic import, not static store of rewards engine
   assert.match(src, /dynamic\([\s\S]*TodayRewardsCard/);
+});
+
+test('HomeTodayLean mounts ContinuityStrip after first train', () => {
+  const src = readFileSync(
+    join(import.meta.dirname, '..', '..', 'page-components', 'HomeTodayLean.tsx'),
+    'utf8'
+  );
+  assert.match(src, /ContinuityStrip/);
+  assert.match(src, /buildContinuitySuggestions/);
+  assert.match(src, /key: 'continuity'/);
 });

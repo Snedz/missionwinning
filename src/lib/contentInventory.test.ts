@@ -10,6 +10,7 @@ import {
 } from '@/lib/contentInventory';
 import { MOBILITY_FLOWS } from '@/data/mobilityFlows';
 import { GUIDED_MIND_SESSIONS } from '@/data/guidedMindSessions';
+import { FREE_RECIPES } from '@/data/recipes/freeRecipes';
 
 const root = join(import.meta.dirname, '..', '..');
 
@@ -34,6 +35,7 @@ describe('contentInventory', () => {
     const inv = getContentInventory();
     assert.equal(inv.move.free, MOBILITY_FLOWS.length);
     assert.equal(inv.mind.free, GUIDED_MIND_SESSIONS.length);
+    assert.equal(inv.recipes.free, FREE_RECIPES.length);
   });
 
   it('premium constants match server catalog id counts', () => {

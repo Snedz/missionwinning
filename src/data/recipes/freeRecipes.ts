@@ -209,5 +209,205 @@ export const FREE_RECIPES: Recipe[] = [
     "ingredients": "200g firm tofu, miso paste, green onion, seaweed, bok choy or spinach",
     "instructions": "Simmer veg in water, whisk miso off heat, add cubed tofu.",
     "tip": "Light recovery meal. Hydrating and easy to digest."
-  }
+  },
+{
+    "name": "Tuna Rice Pack Bowl",
+    "protein": 42,
+    "cals": 520,
+    "carbs": 55,
+    "fat": 12,
+    "ingredients": "1 can tuna in water, 200g cooked rice, cucumber, soy sauce or salsa, optional egg",
+    "instructions": "Drain tuna, fold into rice with veg. Season lightly. Optional soft egg on top.",
+    "tip": "Pantry staple for travel and late nights. Complete-ish protein with rice + egg if added."
+  },
+  {
+    "name": "Lentil Tomato Stew",
+    "protein": 24,
+    "cals": 400,
+    "carbs": 55,
+    "fat": 8,
+    "ingredients": "200g cooked lentils, canned tomatoes, onion, garlic, cumin, spinach, olive oil",
+    "instructions": "Sauté onion/garlic, add lentils + tomatoes + spice, wilt spinach. Serve hot.",
+    "tip": "Budget plant protein. Pair with yogurt or egg if you want a fuller amino profile."
+  },
+  {
+    "name": "Turkey Wrap Lunch",
+    "protein": 36,
+    "cals": 430,
+    "carbs": 38,
+    "fat": 14,
+    "ingredients": "2 whole-wheat wraps, 120g turkey slices, lettuce, tomato, mustard or hummus",
+    "instructions": "Layer turkey and veg, roll tight. Slice in half for grab-and-go.",
+    "tip": "No cook. Easy high-protein office lunch."
+  },
+  {
+    "name": "Chickpea Scramble",
+    "protein": 22,
+    "cals": 360,
+    "carbs": 40,
+    "fat": 12,
+    "ingredients": "1 can chickpeas mashed, turmeric, onion, peppers, spinach, olive oil",
+    "instructions": "Sauté veg, add mashed chickpeas + spice until hot. Serve with toast optional.",
+    "tip": "Egg-free morning option. Add feta if dairy is fine for extra protein."
+  },
+  {
+    "name": "Pork Tenderloin + Potatoes",
+    "protein": 40,
+    "cals": 560,
+    "carbs": 45,
+    "fat": 18,
+    "ingredients": "150g pork tenderloin, 250g potatoes, green beans, olive oil, herbs",
+    "instructions": "Roast pork and potatoes; steam beans. Slice pork and plate.",
+    "tip": "Classic post-lift plate. Keep pork lean cuts for better macros."
+  },
+  {
+    "name": "Shrimp Stir-Fry Rice",
+    "protein": 34,
+    "cals": 480,
+    "carbs": 50,
+    "fat": 12,
+    "ingredients": "150g shrimp, 200g mixed stir-fry veg, 180g cooked rice, garlic, soy, sesame oil",
+    "instructions": "Stir-fry shrimp and veg hot and fast. Serve over rice.",
+    "tip": "Fast cooking protein. Don't overcook shrimp — pull when pink."
+  },
+  {
+    "name": "Black Bean Burrito Bowl",
+    "protein": 28,
+    "cals": 520,
+    "carbs": 68,
+    "fat": 14,
+    "ingredients": "1 can black beans, 200g rice, salsa, corn, avocado, lime, cilantro",
+    "instructions": "Warm beans, build bowl with rice and toppings. Squeeze lime.",
+    "tip": "Plant-forward volume meal. Greek yogurt dollop bumps protein."
+  },
+  {
+    "name": "Chicken Tortilla Soup Simple",
+    "protein": 38,
+    "cals": 420,
+    "carbs": 30,
+    "fat": 14,
+    "ingredients": "150g shredded chicken, broth, canned tomatoes, black beans, corn, chili spice, lime",
+    "instructions": "Simmer all 15 min. Finish lime. Optional tortilla strips.",
+    "tip": "High volume, hydrating recovery meal after hard sessions."
+  },
+  {
+    "name": "Egg Fried Rice Athlete",
+    "protein": 28,
+    "cals": 520,
+    "carbs": 58,
+    "fat": 16,
+    "ingredients": "250g cold cooked rice, 3 eggs, frozen peas/carrots, soy, green onion, oil",
+    "instructions": "Scramble eggs, add rice and veg, season. Hot wok or pan.",
+    "tip": "Uses leftover rice. Great late-night training fuel."
+  },
+  {
+    "name": "Cod + Green Beans + Rice",
+    "protein": 36,
+    "cals": 450,
+    "carbs": 45,
+    "fat": 10,
+    "ingredients": "160g white fish, 200g green beans, 180g rice, lemon, olive oil",
+    "instructions": "Bake or pan fish, steam beans, plate with rice and lemon.",
+    "tip": "Lean complete protein. Easy on digestion before morning sessions."
+  },
+  {
+    "name": "Overnight Protein Oats Jar",
+    "protein": 32,
+    "cals": 420,
+    "carbs": 48,
+    "fat": 10,
+    "ingredients": "60g oats, 25g whey or greek yogurt, milk or water, berries, cinnamon",
+    "instructions": "Mix night before in jar. Stir in morning. No cook.",
+    "tip": "Pre-built breakfast for early alarms. Adjust liquid for thickness."
+  },
+  {
+    "name": "Steak Bites + Sweet Potato",
+    "protein": 42,
+    "cals": 580,
+    "carbs": 40,
+    "fat": 22,
+    "ingredients": "150g sirloin cubes, 250g sweet potato, broccoli, oil, salt, pepper",
+    "instructions": "Roast sweet potato and broccoli; sear steak bites hot and fast.",
+    "tip": "Higher iron meal for hard training blocks. Keep portions honest."
+  },
+  {
+    "name": "Hummus Chicken Pita",
+    "protein": 34,
+    "cals": 480,
+    "carbs": 44,
+    "fat": 16,
+    "ingredients": "1 large pita, 100g chicken, 3 tbsp hummus, cucumber, tomato",
+    "instructions": "Warm pita, spread hummus, fill chicken and veg.",
+    "tip": "Balanced macros without a full kitchen. Good travel option."
+  },
+  {
+    "name": "Edamame Rice Bowl",
+    "protein": 26,
+    "cals": 440,
+    "carbs": 55,
+    "fat": 12,
+    "ingredients": "150g shelled edamame, 200g rice, sesame, soy, shredded carrot, green onion",
+    "instructions": "Warm edamame, toss with rice and toppings.",
+    "tip": "Solid plant protein base. Add egg or tuna if you need more protein."
+  },
+  {
+    "name": "Baked Potato Cottage Load",
+    "protein": 32,
+    "cals": 480,
+    "carbs": 55,
+    "fat": 12,
+    "ingredients": "1 large baked potato, 200g cottage cheese, chives, pepper, optional salsa",
+    "instructions": "Split hot potato, load cottage cheese and toppings.",
+    "tip": "Cheap, filling, high casein. Excellent evening meal."
+  },
+  {
+    "name": "Sardine Toast Plate",
+    "protein": 30,
+    "cals": 420,
+    "carbs": 28,
+    "fat": 20,
+    "ingredients": "1 can sardines, 2 slices whole grain toast, lemon, greens, olive oil",
+    "instructions": "Toast bread, top sardines, lemon, side salad.",
+    "tip": "Omega-3 dense and no cook. Strong micronutrient density per dollar."
+  },
+  {
+    "name": "Turkey Chili Single Pot",
+    "protein": 40,
+    "cals": 500,
+    "carbs": 40,
+    "fat": 16,
+    "ingredients": "150g ground turkey, beans, tomatoes, onion, chili powder, cumin",
+    "instructions": "Brown turkey, add remaining, simmer 20 min. Batch friendly.",
+    "tip": "Meal prep king. Freeze portions for busy weeks."
+  },
+  {
+    "name": "Banana Protein Pancakes 2-Ingredient+",
+    "protein": 28,
+    "cals": 380,
+    "carbs": 42,
+    "fat": 8,
+    "ingredients": "1 banana, 2 eggs, 20g oats optional, cinnamon, cooking spray",
+    "instructions": "Blend, cook small pancakes on nonstick. Top yogurt optional.",
+    "tip": "Fast breakfast after morning lifts. Keep heat medium to avoid burning."
+  },
+  {
+    "name": "Quinoa Chicken Salad Cold",
+    "protein": 38,
+    "cals": 490,
+    "carbs": 42,
+    "fat": 16,
+    "ingredients": "120g chicken, 150g cooked quinoa, cucumber, tomato, olive oil, lemon, herbs",
+    "instructions": "Toss cold ingredients. Make ahead for work fridge.",
+    "tip": "Travels well. Complete plant+animal protein mix."
+  },
+  {
+    "name": "Microwave Mug Egg Oats",
+    "protein": 24,
+    "cals": 350,
+    "carbs": 35,
+    "fat": 12,
+    "ingredients": "40g oats, 2 eggs, splash milk, salt, cheese optional, microwave-safe mug",
+    "instructions": "Mix, microwave 60–90s stirring once. Don't overcook.",
+    "tip": "Dorm/hotel friendly. Protein + carbs with one dish."
+  },
 ];
