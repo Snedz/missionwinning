@@ -10,16 +10,7 @@
  * every set on one row, the active row carrying its own inputs and its own
  * Log set, so the whole exercise is legible at a glance and nothing is docked.
  *
- * The mock's markup is the spec:
- *
- *   <table class="table" style="max-width:640px">
- *     <thead><tr><th width:44>Set</th><th>Prev</th>
- *                <th width:90>kg</th><th width:80>Reps</th><th width:110></th></tr>
- *     active row: background accent-100 + box-shadow inset 2px 0 0 accent
- *                 inputs 72px / 60px, inline `btn-primary` Log set
- *
- * Column order is the mock's — Prev before the inputs, so the number you are
- * beating is read before the number you are typing.
+ * Completed rows mirror compact `SetLogRow` cues (primary edge, check, a11y).
  */
 
 import { Check } from 'lucide-react';
@@ -46,7 +37,7 @@ const cell = 'px-2 py-2 align-middle';
 
 /** 2px rules and radius 0 come from the system; width is the mock's. */
 const numberInput =
-  'h-9 border-2 border-border bg-background px-2 text-center text-sm font-semibold tabular-nums ' +
+  'h-11 min-h-[44px] border-2 border-border bg-background px-2 text-center text-sm font-semibold tabular-nums ' +
   'focus:outline-none focus:ring-2 focus:ring-ring';
 
 export function SetLogTable({
@@ -77,8 +68,6 @@ export function SetLogTable({
           <th scope="col" className={cn(cell, 'w-20 text-start')}>
             {t('activeColReps', { defaultValue: 'Reps' })}
           </th>
-          {/* Empty header over the action column — the mock's `width:110` th.
-              Labelled for screen readers rather than left silent. */}
           <th scope="col" className={cn(cell, 'w-[110px]')}>
             <span className="sr-only">{t('activeColAction', { defaultValue: 'Action' })}</span>
           </th>
@@ -88,20 +77,27 @@ export function SetLogTable({
         {sets.map((set, setIdx) => {
           const isActive = setIdx === activeSetIdx;
           const kind = set.kind ?? ('normal' as SetKind);
+          const completed = Boolean(set.completed);
 
           return (
             <tr
               key={set.id}
+              data-set-complete={completed ? 'true' : 'false'}
               className={cn(
                 'border-b border-border',
-                // The mock's `background:accent-100; box-shadow:inset 2px 0 0 accent`.
-                // `is-active-row` already carries exactly that pair.
-                isActive ? 'is-active-row' : 'text-muted-foreground'
+                isActive && 'is-active-row',
+                completed && !isActive && 'bg-muted/40 text-foreground',
+                !completed && !isActive && 'text-muted-foreground'
               )}
             >
               <th
                 scope="row"
-                className={cn(cell, 'text-start', isActive ? 'font-extrabold' : 'font-normal')}
+                className={cn(
+                  cell,
+                  'text-start',
+                  isActive || completed ? 'font-extrabold' : 'font-normal',
+                  completed && !isActive && 'border-s-[3px] border-s-primary'
+                )}
               >
                 {setIdx + 1}
               </th>
@@ -146,12 +142,10 @@ export function SetLogTable({
                     />
                   </td>
                   <td className={cn(cell, 'text-end')}>
-                    {/* `--primary-fill`, not poster: this label is 14px, and
-                        poster red only clears AA at display sizes. */}
                     <button
                       type="button"
                       onClick={onLog}
-                      className="min-h-[36px] bg-primary-fill px-3.5 py-1.5 text-sm font-semibold text-primary-foreground transition-colors hover:bg-[hsl(var(--primary-fill-hover))]"
+                      className="primary-action min-h-[44px] tap-target bg-primary-fill px-3.5 py-1.5 text-sm font-semibold text-primary-foreground transition-colors hover:bg-[hsl(var(--primary-fill-hover))]"
                     >
                       {t('activeLogSet', { defaultValue: 'Log set' })}
                     </button>
@@ -159,8 +153,12 @@ export function SetLogTable({
                 </>
               ) : (
                 <>
-                  <td className={cell}>{set.completed ? set.weight : '—'}</td>
-                  <td className={cell}>{set.completed ? set.reps : set.reps}</td>
+                  <td className={cn(cell, completed && 'font-semibold')}>
+                    {completed ? set.weight : '—'}
+                  </td>
+                  <td className={cn(cell, completed && 'font-semibold')}>
+                    {completed ? set.reps : set.reps}
+                  </td>
                   <td className={cn(cell, 'text-end')}>
                     <div className="flex items-center justify-end gap-1.5">
                       {kind !== 'normal' && (
@@ -174,17 +172,14 @@ export function SetLogTable({
                       {set.isPr && (
                         <Badge variant="honor">{t('activePrBadge', { defaultValue: 'PR' })}</Badge>
                       )}
-                      {/* Rating stays available on desktop — it is the input
-                          Coach learns from, and losing it here would make the
-                          two surfaces differ in data, not just in layout. */}
-                      {set.completed && !set.isPr && !set.rpe && (
+                      {completed && !set.isPr && !set.rpe && (
                         <div className="flex items-center gap-0.5">
                           {(['easy', 'med', 'hard'] as const).map((r) => (
                             <button
                               key={r}
                               type="button"
                               onClick={() => onRate(setIdx, r)}
-                              className="border-2 border-border px-1.5 py-0.5 text-[11px] font-semibold hover:bg-accent-100"
+                              className="min-h-[44px] min-w-[44px] border-2 border-border px-1.5 text-[11px] font-semibold hover:bg-muted tap-target"
                             >
                               {t(
                                 r === 'easy'
@@ -198,13 +193,22 @@ export function SetLogTable({
                           ))}
                         </div>
                       )}
-                      {set.completed && set.rpe && (
+                      {completed && set.rpe && (
                         <span className="text-[11px] capitalize text-muted-foreground">
                           {set.rpe}
                         </span>
                       )}
-                      {set.completed && (
-                        <Check className="h-4 w-4 shrink-0 text-primary" aria-hidden />
+                      {completed && (
+                        <>
+                          <Check
+                            className="h-4 w-4 shrink-0 text-primary"
+                            aria-hidden
+                            data-testid="set-table-logged-check"
+                          />
+                          <span className="sr-only">
+                            {t('activeSetLoggedSr', { defaultValue: 'Logged' })}
+                          </span>
+                        </>
                       )}
                     </div>
                   </td>

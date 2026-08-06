@@ -16,7 +16,7 @@ One screen of truth for any AI tool or human joining cold. Read this, then [AGEN
 
 ---
 
-## Now (2026-08-06 · web `2026.07-unified.554` · Android `1.24.1`)
+## Now (2026-08-06 · web `2026.07-unified.555` · Android `1.24.1`)
 
 > The ONLY "where we are" block in the repo — [ORCHESTRATION.md](ORCHESTRATION.md) points here.
 >
@@ -284,6 +284,7 @@ One screen of truth for any AI tool or human joining cold. Read this, then [AGEN
 > | gitleaks | **green — and scanning for the first time.** It had never scanned anything: on a `pull_request` event the action lists the PR's commits, the job declared no `permissions:` block, and it 403'd (`pull_requests=read`) before opening a file. Fixed by a `permissions:` block (`.224` carrying `.255`). It scans **only the PR's own commits**, so commit `8ea3527a`'s real Solana treasury address — scrubbed from the working file, still in history — is out of its scope. That finding stands, deliberately not allowlisted; it was never what made this check red. |
 
 - **`.544`–`.543`:** Pricing review (hold prices) + badge medallions.
+- **`.555`:** Kaizen SetLogTable complete parity + coach band plain.
 - **`.554`:** Kaizen LogConsole tap-targets + plain set-logged i18n.
 - **`.553`:** Kaizen Continuity plain copy + form/inline/footer 44px.
 - **`.552`:** Kaizen rest-end scroll next set; Active menu muted hover.
@@ -297,7 +298,6 @@ One screen of truth for any AI tool or human joining cold. Read this, then [AGEN
 - **`.542`:** Kalligator mascot replaces Scout (Victory + History).
 - **`.540`:** Form pack re-wire OHP + pull-ups stills (eyes-on PASS).
 - **`.534`–`.532`:** Super Bundle depth D1 (Move/Mind/Fuel free floors + continuity).
-- **`.531`–`.515`:** Today rewards a11y · journal when · fuel clock · formatLocal* · perfect_week.
 - **`.514`–`.505`:** Mission Rewards economy + full-launch honesty (XP/ranks/badges, leaderboard, free-beta pins, America fallbacks).
 - **Horizon W + full-launch override (2026-08-05).** Wedge excellence still required; agents may ship rewards + full surface honesty. Fuel estimate accuracy remains.
 - **Free-first beta (~4 weeks):** LLC + EIN pending — **no Bundle UI** + **full depth unlocked** + **full More nav** (journey train-only deferred) ([docs/FREE_BETA.md](docs/FREE_BETA.md)).

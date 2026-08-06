@@ -57,7 +57,7 @@ export function CoachTodayCard() {
           })
         : bands.zone === 'light'
           ? t('coachTodayBandLight', {
-              defaultValue: 'Your last week is lighter than your month — room to add.',
+              defaultValue: 'Last week is lighter than your month.',
             })
           : t('coachTodayBandSteady', {
               defaultValue: 'Your week is tracking with your month.',
