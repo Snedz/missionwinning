@@ -230,7 +230,8 @@ const en: ActiveWorkoutStrings = {
   activeSetLogged: 'Set logged!',
   activeSetLoggedDesc: '{{reps}} × {{weight}} — {{rest}}s rest',
   activeWorkoutComplete: 'Workout complete!',
-  activeNothingLogged: 'Nothing logged',
+  activeNothingLogged: 'Log a set first',
+  activeNothingLoggedDesc: 'Finish unlocks after at least one completed set.',
   activeReps: 'Reps',
   activeWeight: 'lbs',
   activeRpeEasy: 'Easy',
@@ -276,7 +277,6 @@ const en: ActiveWorkoutStrings = {
   victoryProgressHold: 'Next: hold {{reps}} × {{weight}} {{unit}} on {{name}}',
   victoryProgressAddRepsBw: 'Next: {{reps}} reps on {{name}}',
   victoryProgressHoldBw: 'Next: hold {{reps}} on {{name}}',
-  activeNothingLoggedDesc: 'Complete at least one set before finishing.',
   victoryShareText:
     'Session done: {{name}} — {{volume}} {{unit}}, {{sets}} sets.',
   victoryTitle: 'Session locked',

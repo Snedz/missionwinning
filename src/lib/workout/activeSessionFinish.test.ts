@@ -4,6 +4,7 @@ import { readFileSync } from 'node:fs';
 import path from 'node:path';
 import {
   assembleActiveVictory,
+  finishBlockedReason,
   logSetIsPr,
   nothingLoggedToastCopy,
   planLogSetRest,
@@ -87,11 +88,39 @@ describe('planPrHaptic + nothingLoggedToastCopy', () => {
     assert.deepEqual(planPrHaptic(true), [...PR_HAPTIC_PATTERN]);
   });
 
-  it('empty finish toast is destructive with stable keys', () => {
+  it('empty finish toast is guidance with stable keys', () => {
     const copy = nothingLoggedToastCopy();
-    assert.equal(copy.variant, 'destructive');
+    assert.equal(copy.variant, 'default');
     assert.equal(copy.titleKey, 'activeNothingLogged');
     assert.equal(copy.descKey, 'activeNothingLoggedDesc');
+    assert.match(copy.titleDefault, /set/i);
+  });
+
+  it('finishBlockedReason is no_sets until a set is completed', () => {
+    assert.equal(finishBlockedReason(null), 'no_sets');
+    assert.equal(finishBlockedReason([]), 'no_sets');
+    assert.equal(
+      finishBlockedReason([
+        {
+          sets: [
+            { completed: false },
+            { completed: false },
+          ],
+        },
+      ]),
+      'no_sets'
+    );
+    assert.equal(
+      finishBlockedReason([
+        {
+          sets: [
+            { completed: true },
+            { completed: false },
+          ],
+        },
+      ]),
+      null
+    );
   });
 });
 
@@ -179,6 +208,7 @@ describe('Active page wiring (.405/.409)', () => {
     assert.match(src, /resolveLogSetPayload\(/);
     assert.match(src, /planPrHaptic\(/);
     assert.match(src, /nothingLoggedToastCopy\(/);
+    assert.match(src, /finishBlockedReason\(/);
     assert.doesNotMatch(
       src,
       /isPersonalRecord\(/,

@@ -226,8 +226,7 @@ export const useWorkoutStore = create<WorkoutState>()(
           .filter((ex) => ex.sets.length > 0);
 
         if (exercises.length === 0) {
-          syncActiveFlag(null);
-          set({ activeWorkout: null, elapsedSeconds: 0 });
+          // Keep the active session — empty Finish is a no-op, not a discard.
           return null;
         }
 
