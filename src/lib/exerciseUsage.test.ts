@@ -79,6 +79,48 @@ describe('templatesUsingExercise — template coverage and the pro filter', () =
   });
 });
 
+describe('the `pro` filter', () => {
+  it('currently matches nothing — the catalog has no "pro" category', () => {
+    /*
+     * Found by mutation: flipping `if (tmpl.category === 'pro') continue;` to a
+     * no-op changes **nothing**, because no template in `programTemplates.ts`
+     * carries that category — it holds only `beginner` (41) and `advanced` (11).
+     * The guard is unreachable defensive code, and the comment above it
+     * ("Beginner free templates only") describes an intent the data does not
+     * express: advanced templates are indexed too.
+     *
+     * Pinned rather than deleted, because the fix is a product decision, not a
+     * test one. If a `pro` template is ever added this test fails and forces the
+     * question: should it be indexed, and is `advanced` on the right side of the
+     * line? Recording the state is honest; asserting the filter "works" when it
+     * has never once fired would not be.
+     */
+    const categories = new Set(PROGRAM_TEMPLATES.map((t) => t.category));
+    assert.ok(
+      !categories.has('pro'),
+      'a "pro" template now exists — decide whether the exercise index should show it'
+    );
+
+    const advanced = PROGRAM_TEMPLATES.filter(
+      (t) => t.category === 'advanced' && t.sessions.some((s) => s.exercises.some((e) => e.exerciseId))
+    );
+    assert.ok(advanced.length > 0, 'precondition: advanced templates exist');
+
+    // Advanced templates are reachable through the index today. That is the
+    // behaviour, whether or not it matches the comment.
+    const indexed = new Set<string>();
+    for (const id of ALL_IDS) {
+      for (const hit of templatesUsingExercise(id, NO_LIMIT)) {
+        if (hit.kind === 'template') indexed.add(hit.name);
+      }
+    }
+    assert.ok(
+      advanced.some((t) => indexed.has(t.name)),
+      'advanced templates are indexed — if that changed, the filter did'
+    );
+  });
+});
+
 describe('templatesUsingExercise — de-duplication', () => {
   it('lists a template once even when it programs the exercise in several sessions', () => {
     // Discovered, not hardcoded: find a free template that repeats an exercise id.

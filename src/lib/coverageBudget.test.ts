@@ -43,8 +43,15 @@ const HIGH_WATER = {
    * 393 for four more Playwright Coach/Profile sheets — see
    * `FLOORS.untestedFiles`. 407 for Kaizen peels (Active list/dock/sheets,
    * Victory strips, CoachChat peels) that landed without a floor bump.
+   *
+   * **406 in `.548`** — the first move down in a while, and it came with a
+   * finding: the live count had drifted to 411 by `.544` and 415 by `.547`
+   * while the floor still read 407, so the gate step had been failing on
+   * `master` unnoticed. Eleven logic modules got real tests to pay it back.
+   * The lesson is not about the number: a ratchet nobody runs is a ratchet
+   * that reports nothing, which is `.219`'s saturated `npm audit` again.
    */
-  untestedFiles: 407,
+  untestedFiles: 406,
   /**
    * Held at its original value on purpose — see the note at `FLOORS.linePct`.
    * Reaching a previously-unloaded file *lowers* this, because its unexecuted

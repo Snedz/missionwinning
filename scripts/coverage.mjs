@@ -88,8 +88,22 @@ const FLOORS = {
    *
    * That split is the point of the ratchet: it does not stop the number moving,
    * it makes somebody look at what moved it.
+   *
+   * Lowered 407 → 406 in `.548`, and the interesting part is what the number was
+   * before: **411 on `.544` and 415 on `.547`** — the floor had been breached for
+   * several ships and nobody looked, because this step only runs in `npm run
+   * gate` and in a CI lane that is not currently firing. The ratchet worked
+   * exactly as designed and was simply not being read.
+   *
+   * The D14 wave added one file of its own (`TodayLogWeekStrip.tsx`, a
+   * Playwright-covered strip whose logic lives in the unit-tested
+   * `today/logWeek.ts`) and repaid the rest with real tests for eleven logic
+   * modules: challenge i18n keys, exercise usage, the referral and invite code
+   * alphabets, guide chapter navigation, guidebook progress, coach schedule
+   * prefs, leaderboard boards and the demo pacers, route metadata, readiness
+   * display, privacy consent versioning and the count-up animation.
    */
-  untestedFiles: 407,
+  untestedFiles: 406,
   /**
    * Line % across the files that *are* loaded. Must not fall.
    *
