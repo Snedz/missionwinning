@@ -50,27 +50,47 @@ type Props = {
 export function SetLogRow({ setNumber, set, isNext, weightLabel, onRate }: Props) {
   const { t } = useTranslation();
   const kind = set.kind ?? 'normal';
+  const line = formatLoggedSetLine(
+    set.reps,
+    set.weight,
+    weightLabel,
+    t('activeSetBodyweight', { defaultValue: 'BW' })
+  );
+  const rowLabel = set.completed
+    ? t('activeSetRowCompleteAria', {
+        n: setNumber,
+        line,
+        defaultValue: `Set ${setNumber} logged: ${line}`,
+      })
+    : isNext
+      ? t('activeSetRowNextAria', {
+          n: setNumber,
+          defaultValue: `Set ${setNumber} — in the console`,
+        })
+      : t('activeSetRowPlannedAria', {
+          n: setNumber,
+          reps: set.reps,
+          defaultValue: `Set ${setNumber} planned — ${set.reps} reps`,
+        });
 
   return (
     <div
+      role="listitem"
+      aria-label={rowLabel}
+      aria-current={isNext ? 'true' : undefined}
       className={cn(
-        'flex min-h-[44px] flex-wrap items-center gap-x-3 gap-y-1 border-b border-border px-1 py-2',
-        isNext && 'is-active-row'
+        'flex min-h-[44px] flex-wrap items-center gap-x-3 gap-y-1 border-b border-border px-1 py-2 transition-colors',
+        isNext && 'is-active-row',
+        set.completed && 'border-s-[3px] border-s-primary bg-muted/40 ps-2'
       )}
+      data-set-complete={set.completed ? 'true' : 'false'}
     >
       <span className="w-[22px] shrink-0 text-[13px] font-semibold tabular-nums text-muted-foreground">
         #{setNumber}
       </span>
 
       {set.completed ? (
-        <span className="text-[15px] font-semibold tabular-nums">
-          {formatLoggedSetLine(
-            set.reps,
-            set.weight,
-            weightLabel,
-            t('activeSetBodyweight', { defaultValue: 'BW' })
-          )}
-        </span>
+        <span className="text-[15px] font-semibold tabular-nums text-foreground">{line}</span>
       ) : (
         <span className="text-[15px] tabular-nums text-muted-foreground">
           {isNext
@@ -98,8 +118,6 @@ export function SetLogRow({ setNumber, set, isNext, weightLabel, onRate }: Props
       {set.isPr && (
         <Tooltip>
           <TooltipTrigger asChild>
-            {/* The honor tier, and one of only two places it is allowed —
-                accent-800 fill with the ★ the Badge renders itself. */}
             <Badge variant="honor">{t('activePrBadge', { defaultValue: 'PR' })}</Badge>
           </TooltipTrigger>
           <TooltipContent>
@@ -136,7 +154,14 @@ export function SetLogRow({ setNumber, set, isNext, weightLabel, onRate }: Props
               {set.rpe}
             </Badge>
           )}
-          <Check className="h-4 w-4 shrink-0 text-primary" aria-hidden />
+          <Check
+            className="h-4 w-4 shrink-0 text-primary"
+            aria-hidden
+            data-testid="set-logged-check"
+          />
+          <span className="sr-only">
+            {t('activeSetLoggedSr', { defaultValue: 'Logged' })}
+          </span>
         </div>
       )}
     </div>

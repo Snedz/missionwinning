@@ -42,7 +42,7 @@ export function AddExerciseSheet({ open, onClose, value, onChange, onConfirm }: 
         <Button
           type="button"
           variant="default"
-          className="w-full min-h-[52px]"
+          className="primary-action w-full min-h-[52px] tap-target"
           disabled={!value}
           // Kept verbatim: `logger-depth` and `first-90` both drive this name.
           aria-label={t('activeAddSelectedExercise', {
