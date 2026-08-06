@@ -83,7 +83,7 @@ export function TodayDashboardCustomize({ prefs, onChange }: Props) {
               <button
                 type="button"
                 onClick={() => toggle(id)}
-                className={`flex-1 px-3 py-1.5 text-xs font-semibold border-2 transition-colors min-h-[36px] text-left ${
+                className={`flex-1 px-3 py-1.5 text-xs font-semibold border-2 transition-colors min-h-[44px] text-left tap-target ${
                   on
                     ? 'bg-tint border-primary text-primary'
                     : 'bg-card border-border text-muted-foreground hover:border-foreground'

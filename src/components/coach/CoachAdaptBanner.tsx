@@ -140,7 +140,7 @@ export function CoachAdaptBanner({ plan, compact, todayOffset, onAdjustToday }: 
         <div className="pt-1 space-y-2">
           <p className="text-xs text-foreground">
             {t('coachAdaptReentryLead', {
-              defaultValue: 'Ready to get back on the path?',
+              defaultValue: 'Ready to train again?',
             })}
           </p>
           <div className="flex flex-wrap gap-2">
