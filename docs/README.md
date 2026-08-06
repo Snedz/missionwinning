@@ -35,8 +35,11 @@ User guides in plain language (no code paths):
 | [BACKUP_RESTORE.md](BACKUP_RESTORE.md) | User export + Supabase operator recovery |
 | [ARCHITECTURE.md](ARCHITECTURE.md) | Layers, state, request lifecycle |
 | [FLOW_ARCHITECTURE.md](FLOW_ARCHITECTURE.md) | Site IA chip floorplan — dies, buses, critical path, dual pads |
+| [MOBILE_PLAYBOOK.md](MOBILE_PLAYBOOK.md) | Native mobile umbrella — stack, backbone, UX laws, gates |
+| [UX_PLAYBOOK.md](UX_PLAYBOOK.md) | UX operating system — process, standards, problem register |
 | [NATIVE_MOBILE.md](NATIVE_MOBILE.md) | Expo prototype (reference only) |
 | [ANDROID_NATIVE.md](ANDROID_NATIVE.md) | Android Compose get-started + AI orchestration |
+| [IOS_PLAYBOOK.md](IOS_PLAYBOOK.md) | iOS playbook — deferred until Accept B + week-4 + founder gate |
 | [API_MOBILE.md](API_MOBILE.md) | `/api/mobile/*` Coach + workouts |
 | [API.md](API.md) | All API routes — auth, rate limits, schemas |
 | [../CONTRIBUTING.md](../CONTRIBUTING.md) | Setup, PR workflow, where to put code |

@@ -1,6 +1,6 @@
 # iOS Playbook
 
-**Status: DEFERRED.** Do **not** start `apps/ios` or parallel iOS agent chats while the Android wedge is in flight. This file exists so that when the gate opens, iOS starts in one session with zero re-derivation — not as permission to start now.
+**Status: DEFERRED.** Do **not** start `apps/ios` or parallel iOS agent chats while the Android wedge is in flight. This file exists so that when the gate opens, iOS starts in one session with zero re-derivation — not as permission to start now. Umbrella: [MOBILE_PLAYBOOK.md](MOBILE_PLAYBOOK.md).
 
 ## Trigger gate (all must hold)
 
@@ -19,7 +19,7 @@
 - **API:** [openapi-mobile.yaml](openapi-mobile.yaml) is canonical — same Bearer auth, sync v2 (revision + tombstones + cursor pull), premium status. Optional: generate a Swift client (`swift-openapi-generator`) rather than hand-rolling.
 - **Auth:** Supabase Auth REST, email 6-digit OTP — mirror Android's `SupabaseAuthClient` flow. Sign-in optional; the free offline logger never requires an account.
 - **Billing:** StoreKit 2 subscription for the Super Bundle (`super_bundle_monthly` / `_yearly` analogs) → server verification endpoint (new: `/api/mobile/premium/appstore-purchase`, modeled on `play-purchase`) → `enrollments.provider = 'appstore'`.
-- **Design tokens:** navy `#0a0c10` · emerald `#27b07d` · brass `#c7a860`; Barlow Condensed / Inter / IBM Plex Mono — source: [brand-guidelines.md](brand-guidelines.md) and Android's `core/designsystem` `MwColors.kt`. When `packages/mw-core/tokens/brand.json` exists (planned), generate the asset catalog from it.
+- **Design tokens:** target the web **Modernist** system — paper/ink, exactly three reds, Archivo, radius 0 ([DESIGN_SYSTEM.md](DESIGN_SYSTEM.md)). Do **not** copy Android's interim navy/emerald palette (pre-rebrand; founder override 2026-07-25 — see [MOBILE_PLAYBOOK.md](MOBILE_PLAYBOOK.md) §5). When `packages/mw-core/tokens/brand.json` exists (planned), generate the asset catalog from it. *(Amended 2026-08-06: was navy/emerald/brass, written before the Modernist rebrand.)*
 
 ## Scope at open (wedge only)
 

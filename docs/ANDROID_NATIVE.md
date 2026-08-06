@@ -17,7 +17,7 @@ Web PWA at www stays for SEO / Get Selected. Do **not** ship Expo/TWA as the And
 |-------|--------|
 | UI | Jetpack Compose + Mw designsystem (Barlow / Inter / Plex Mono) |
 | Presentation | ViewModel + `StateFlow` UiState (UDF) + **Hilt** |
-| Local | Room (SoT) + DataStore prefs + **sync outbox** |
+| Local | Room (SoT — prefs live in a Room `prefs` table, no DataStore) + **sync outbox** |
 | Network | OkHttp + Kotlinx Serialization vs OpenAPI |
 | Auth | Supabase (optional); offline works without account |
 | Coach | HTTP `/api/mobile/coach/*` + Room seed — **never** reimplement `planEngine` in Kotlin |
@@ -148,5 +148,6 @@ Internal testing → Data safety ([LEGAL_SAFETY.md](LEGAL_SAFETY.md)) → [apps/
 
 ## Related
 
+- Cross-platform umbrella (stack decision record · UX laws · risks): [MOBILE_PLAYBOOK.md](MOBILE_PLAYBOOK.md)  
 - Expo prototype: [NATIVE_MOBILE.md](NATIVE_MOBILE.md) (demoted to reference)  
 - Optional TWA packaging of **web**: [TWA_MOBILE_PLAYBOOK.md](TWA_MOBILE_PLAYBOOK.md) — not this product path  
