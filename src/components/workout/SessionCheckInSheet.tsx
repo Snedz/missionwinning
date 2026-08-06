@@ -135,13 +135,11 @@ export function SessionCheckInSheet({ open, onDismiss }: Props) {
       initialFocusRef={firstControlRef}
       bodyClassName="p-5 space-y-4"
       footer={
-        /* Pinned, and Skip keeps its full height. The sheet is skippable by
-           design; a shrunken escape route is a dark pattern. */
         <div className="flex flex-col gap-2">
           <Button
             type="button"
             variant="default"
-            className="w-full min-h-[52px] tap-target"
+            className="primary-action w-full min-h-[52px] tap-target"
             onClick={save}
           >
             {t('sessionCheckInSave', { defaultValue: 'Save & continue' })}
@@ -149,7 +147,7 @@ export function SessionCheckInSheet({ open, onDismiss }: Props) {
           <Button
             type="button"
             variant="outline"
-            className="w-full min-h-[52px] border-2 border-foreground tap-target"
+            className="w-full min-h-[52px] border-2 border-border tap-target"
             onClick={skip}
           >
             {t('sessionCheckInSkip', { defaultValue: 'Not now' })}
