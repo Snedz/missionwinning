@@ -47,6 +47,7 @@ describe('buildTodayCandidates', () => {
       'header',
       'intent',
       'reentry',
+      'continuity',
       'dashboard',
       'freshness',
       'day-review',
