@@ -24,6 +24,7 @@ import {
   signInWithOAuth,
   type OAuthProvider,
 } from '@/lib/supabase';
+import { fetchTerritoryAccess } from '@/lib/legal/territoryAccessClient';
 
 type SignInPanelProps = {
   /** Called after magic link is sent or user skips (Welcome flow). */
@@ -100,6 +101,8 @@ export function SignInPanel({
   const [message, setMessage] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [linkSent, setLinkSent] = useState(false);
+  const [territoryBlocked, setTerritoryBlocked] = useState(false);
+  const [territoryMessage, setTerritoryMessage] = useState<string | null>(null);
 
   const configured = isSupabaseConfigured();
   const oauthProviders = getEnabledOAuthProviders();
@@ -115,6 +118,23 @@ export function SignInPanel({
     }
   }, []);
 
+  useEffect(() => {
+    let cancelled = false;
+    void fetchTerritoryAccess().then((t) => {
+      if (cancelled) return;
+      if (t.blocked) {
+        setTerritoryBlocked(true);
+        setTerritoryMessage(
+          t.message ||
+            'Hosted accounts are not available in your region. See Supported Regions.'
+        );
+      }
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
   const ensureConsent = (): boolean => {
     if (!consent) {
       setError('Please accept the Terms of Service and Privacy Policy to continue.');
@@ -128,6 +148,12 @@ export function SignInPanel({
     setError(null);
     setMessage(null);
     if (!ensureConsent()) return;
+    const territory = await fetchTerritoryAccess();
+    if (territory.blocked) {
+      setTerritoryBlocked(true);
+      setTerritoryMessage(territory.message);
+      return;
+    }
     if (!configured) {
       setError('Cloud sign-in is not configured yet. You can continue without an account.');
       return;
@@ -158,6 +184,12 @@ export function SignInPanel({
     }
 
     if (!ensureConsent()) return;
+    const territory = await fetchTerritoryAccess();
+    if (territory.blocked) {
+      setTerritoryBlocked(true);
+      setTerritoryMessage(territory.message);
+      return;
+    }
     if (!configured) {
       setError('Cloud sign-in is not configured yet.');
       return;
@@ -178,6 +210,34 @@ export function SignInPanel({
       setLoading(null);
     }
   };
+
+  if (territoryBlocked) {
+    return (
+      <div className={compact ? 'space-y-4' : 'space-y-5'}>
+        <p
+          role="alert"
+          className="text-sm text-foreground bg-background border-2 border-border px-3 py-3"
+        >
+          {territoryMessage}
+        </p>
+        <p className="text-xs text-muted-foreground">
+          You can still use the free offline logger without an account.{' '}
+          <Link href="/regions" className="text-primary underline underline-offset-2">
+            Supported Regions
+          </Link>
+          {' · '}
+          <Link href="/terms" className="text-primary underline underline-offset-2">
+            Terms
+          </Link>
+        </p>
+        {allowSkip && onComplete && (
+          <Button type="button" variant="outline" className="w-full h-12" onClick={() => onComplete()}>
+            {skipLabel}
+          </Button>
+        )}
+      </div>
+    );
+  }
 
   if (linkSent && message) {
     return (

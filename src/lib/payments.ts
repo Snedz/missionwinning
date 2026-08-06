@@ -126,7 +126,11 @@ export function isCheckoutSessionsEnabled(): boolean {
 
 export type CreateCheckoutForPlanResult =
   | { ok: true; url: string }
-  | { ok: false; code: 'auth_required' | 'unavailable' | 'error'; message: string }
+  | {
+      ok: false
+      code: 'auth_required' | 'unavailable' | 'error' | 'territory_blocked'
+      message: string
+    }
 
 /**
  * Start Checkout Sessions for a Super Bundle plan. Caller redirects to `url` on success.
@@ -152,6 +156,15 @@ export async function createCheckoutForPlan(
         ok: false,
         code: 'auth_required',
         message: data.error || 'Sign in required to checkout',
+      }
+    }
+    if (res.status === 403 || data.code === 'territory_blocked') {
+      return {
+        ok: false,
+        code: 'territory_blocked',
+        message:
+          data.error ||
+          'Hosted checkout is not available in your region. See Supported Regions.',
       }
     }
     if (res.status === 503) {

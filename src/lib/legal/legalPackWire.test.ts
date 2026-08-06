@@ -16,8 +16,9 @@ test('legal pack routes and Europe policy are wired', () => {
   assert.match(privacy, /infoPrivacyRegions/);
 
   const locales = readFileSync(join(root, 'src/i18n/infoLocales.ts'), 'utf8');
-  assert.match(locales, /Europe is not supported/);
-  assert.match(locales, /Supported Regions/);
+  assert.match(locales, /Europe/);
+  assert.match(locales, /Organisation of Islamic Cooperation|OIC/);
+  assert.match(locales, /Canada/);
 
   const pub = readFileSync(join(root, 'src/lib/publicRoutes.ts'), 'utf8');
   assert.match(pub, /\/usage/);
@@ -30,4 +31,25 @@ test('legal pack routes and Europe policy are wired', () => {
       route
     );
   }
+});
+
+test('signup and checkout hard-block territory', () => {
+  const checkout = readFileSync(join(root, 'app/api/checkout/route.ts'), 'utf8');
+  assert.match(checkout, /hostedServiceAccessFromHeaders/);
+  assert.match(checkout, /territory_blocked|403/);
+
+  const intent = readFileSync(join(root, 'app/api/crypto-checkout/intent/route.ts'), 'utf8');
+  assert.match(intent, /hostedServiceAccessFromHeaders/);
+
+  const signIn = readFileSync(join(root, 'src/components/auth/SignInPanel.tsx'), 'utf8');
+  assert.match(signIn, /fetchTerritoryAccess/);
+  assert.match(signIn, /territoryBlocked/);
+
+  const unlock = readFileSync(join(root, 'src/components/UnlockButton.tsx'), 'utf8');
+  assert.match(unlock, /fetchTerritoryAccess/);
+  assert.match(unlock, /territory_blocked|territoryBlocked/);
+
+  const geo = readFileSync(join(root, 'app/api/geo/route.ts'), 'utf8');
+  assert.match(geo, /blocked/);
+  assert.match(geo, /blockReason/);
 });

@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { ArrowUpRight, Check, Loader2 } from 'lucide-react';
 import {
@@ -14,6 +14,7 @@ import {
 import { submitLead } from '@/lib/supabase';
 import { track } from '@/lib/analytics';
 import { isFreeBeta } from '@/lib/freeBeta';
+import { fetchTerritoryAccess } from '@/lib/legal/territoryAccessClient';
 
 interface Props {
   productId?: string;
@@ -37,6 +38,7 @@ const IS_DEV = process.env.NODE_ENV === 'development';
  * - Prefer Checkout Sessions (`planId` + NEXT_PUBLIC_STRIPE_CHECKOUT) → same-tab redirect.
  * - Else Payment Link (env or prop).
  * - Otherwise founders waitlist (dev: grantPremiumDemo).
+ * - Territory hard block (Europe / OIC / Canada) — no Payment Link bypass.
  */
 export function UnlockButton({
   productId,
@@ -55,6 +57,25 @@ export function UnlockButton({
   const [checkoutBusy, setCheckoutBusy] = useState(false);
   const [checkoutError, setCheckoutError] = useState<string | null>(null);
   const [waitlistError, setWaitlistError] = useState<string | null>(null);
+  const [territoryBlocked, setTerritoryBlocked] = useState(false);
+  const [territoryMessage, setTerritoryMessage] = useState<string | null>(null);
+
+  useEffect(() => {
+    let cancelled = false;
+    void fetchTerritoryAccess().then((t) => {
+      if (cancelled) return;
+      if (t.blocked) {
+        setTerritoryBlocked(true);
+        setTerritoryMessage(
+          t.message ||
+            'Hosted checkout is not available in your region. See Supported Regions.'
+        );
+      }
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   // Free-first beta: no checkout / waitlist / Bundle CTAs.
   if (isFreeBeta()) return null;
@@ -62,15 +83,37 @@ export function UnlockButton({
   const program = productId ? PROGRAM_PRICES[productId] : null;
   const amount = price || program?.price;
   const itemTitle =
-    title || program?.title || (isSubscription ? 'Mission Winning Super Bundle' : 'Mission Winning Program');
+    title ||
+    program?.title ||
+    (isSubscription ? 'Mission Winning Super Bundle' : 'Mission Winning Program');
   const checkoutUrl =
-    stripeCheckoutUrl ?? getStripeCheckoutUrl(productId || (isSubscription ? 'super-bundle' : undefined));
+    stripeCheckoutUrl ??
+    getStripeCheckoutUrl(productId || (isSubscription ? 'super-bundle' : undefined));
 
   const useSessions = Boolean(planId) && isCheckoutSessionsEnabled();
   const hasLiveCheckout = useSessions || Boolean(checkoutUrl);
 
   const checkoutLabel =
-    label || (isSubscription ? `Unlock the Super Bundle${amount ? ` — $${amount}/mo` : ''}` : `Unlock${amount ? ` — $${amount}` : ''}`);
+    label ||
+    (isSubscription
+      ? `Unlock the Super Bundle${amount ? ` — $${amount}/mo` : ''}`
+      : `Unlock${amount ? ` — $${amount}` : ''}`);
+
+  if (territoryBlocked) {
+    return (
+      <div className={`border-2 border-border bg-card p-4 space-y-2 ${className}`}>
+        <p className="text-sm text-foreground font-medium" role="alert">
+          {territoryMessage}
+        </p>
+        <p className="text-xs text-muted-foreground">
+          The free offline logger still works on your device without an account.{' '}
+          <Link href="/regions" className="text-primary hover:underline">
+            Supported Regions
+          </Link>
+        </p>
+      </div>
+    );
+  }
 
   const handleWaitlist = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -79,11 +122,6 @@ export function UnlockButton({
 
     setWaitlistError(null);
 
-    // `submitLead` never throws — it catches internally and reports failure through
-    // `{ ok }` (src/lib/supabase.ts). The old code wrapped it in try/catch and threw
-    // the result away, so a dropped lead rendered as "You're on the founders list."
-    // and still fired `waitlist_joined`: the address was lost, the athlete believed
-    // otherwise, and the signup metric counted a row that did not exist.
     const result = await submitLead({
       name: '',
       email,
@@ -97,7 +135,9 @@ export function UnlockButton({
       return;
     }
 
-    track('waitlist_joined', { product: productId || (isSubscription ? 'super-bundle' : 'premium') });
+    track('waitlist_joined', {
+      product: productId || (isSubscription ? 'super-bundle' : 'premium'),
+    });
 
     if (IS_DEV) grantPremiumDemo(productId || (isSubscription ? 'super-bundle' : undefined));
 
@@ -114,6 +154,13 @@ export function UnlockButton({
       mode: useSessions ? 'checkout_session' : 'payment_link',
     });
 
+    const territory = await fetchTerritoryAccess();
+    if (territory.blocked) {
+      setTerritoryBlocked(true);
+      setTerritoryMessage(territory.message);
+      return;
+    }
+
     if (useSessions && planId) {
       setCheckoutBusy(true);
       const result = await createCheckoutForPlan(planId);
@@ -125,7 +172,15 @@ export function UnlockButton({
       }
 
       if (result.code === 'auth_required') {
-        setCheckoutError('Sign in on Profile with the email you will pay with, then try again.');
+        setCheckoutError(
+          'Sign in on Profile with the email you will pay with, then try again.'
+        );
+        return;
+      }
+
+      if (result.code === 'territory_blocked') {
+        setTerritoryBlocked(true);
+        setTerritoryMessage(result.message);
         return;
       }
 
@@ -189,9 +244,7 @@ export function UnlockButton({
 
   if (submitted) {
     return (
-      <div
-        className={`border-2 border-primary bg-background p-4 text-center ${className}`}
-      >
+      <div className={`border-2 border-primary bg-background p-4 text-center ${className}`}>
         <p className="inline-flex items-center gap-1.5 font-semibold text-primary">
           <Check className="h-4 w-4" /> You&apos;re on the founders list.
         </p>
@@ -203,32 +256,24 @@ export function UnlockButton({
   }
 
   return (
-    <form onSubmit={handleWaitlist} className={className}>
-      <div className="flex flex-col gap-2">
-        <input
-          type="email"
-          required
-          placeholder="you@example.com"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          aria-label="Email for the founders waitlist"
-          className="tap-target w-full min-h-[44px] border-2 border-border bg-background px-3.5 py-2.5 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-foreground"
-        />
-        <button type="submit" disabled={submitting} className="primary-action disabled:opacity-50">
-          {submitting ? 'Joining…' : 'Join the founders waitlist'}
-        </button>
-      </div>
+    <form onSubmit={handleWaitlist} className={`space-y-3 ${className}`}>
+      <input
+        type="email"
+        required
+        autoComplete="email"
+        placeholder="you@email.com"
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
+        className="w-full border-2 border-border bg-background px-3 py-3 text-sm min-h-[44px]"
+      />
+      <button type="submit" className="primary-action w-full" disabled={submitting || !email.trim()}>
+        {submitting ? 'Joining…' : 'Join founders list'}
+      </button>
       {waitlistError && (
-        <p className="mt-2 text-center text-xs text-destructive" role="alert">
+        <p className="text-center text-xs text-destructive" role="alert">
           {waitlistError}
         </p>
       )}
-      <p className="mt-2 text-center text-[11px] leading-relaxed text-muted-foreground">
-        Checkout opens soon. Founders get the launch discount first — and the free core stays free
-        either way.
-      </p>
     </form>
   );
 }
-
-export { UnlockButton as PayPalCheckoutButton };

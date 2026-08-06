@@ -1,104 +1,262 @@
 /**
  * Hosted Mission Winning service territory (consumer product).
- * Founder policy 2026-08: **Europe is not supported**.
+ * Founder policy 2026-08:
+ * - Europe not supported (EEA, UK, CH + associated)
+ * - Organisation of Islamic Cooperation (OIC) 57 member states not supported
+ * - Canada not supported
+ * - France not supported (also in Europe list)
  *
- * Not legal advice. Maps ISO 3166-1 alpha-2 → supported / excluded for
- * product copy, signup honesty, and future billing-country checks.
+ * Cloudflare already blocks many of these at the edge; this module is the
+ * in-app hard block for signup + checkout (defense in depth).
+ *
+ * Not legal advice.
  */
 
 /** EEA + UK + Switzerland + common associated European microstates/territories. */
 export const EUROPE_UNSUPPORTED_ISO2 = [
-  // EEA / EU core
-  'AT', // Austria
-  'BE', // Belgium
-  'BG', // Bulgaria
-  'HR', // Croatia
-  'CY', // Cyprus
-  'CZ', // Czechia
-  'DK', // Denmark
-  'EE', // Estonia
-  'FI', // Finland
-  'FR', // France
-  'DE', // Germany
-  'GR', // Greece
-  'HU', // Hungary
-  'IE', // Ireland
-  'IT', // Italy
-  'LV', // Latvia
-  'LT', // Lithuania
-  'LU', // Luxembourg
-  'MT', // Malta
-  'NL', // Netherlands
-  'PL', // Poland
-  'PT', // Portugal
-  'RO', // Romania
-  'SK', // Slovakia
-  'SI', // Slovenia
-  'ES', // Spain
-  'SE', // Sweden
-  // EEA non-EU
-  'IS', // Iceland
-  'LI', // Liechtenstein
-  'NO', // Norway
-  // UK + CH
-  'GB', // United Kingdom
-  'UK', // alias sometimes seen in billing
-  'CH', // Switzerland
-  // Microstates / commonly treated with Europe for consumer geo policy
-  'AD', // Andorra
-  'MC', // Monaco
-  'SM', // San Marino
-  'VA', // Vatican
-  'AX', // Åland
-  'FO', // Faroe Islands
-  'GI', // Gibraltar
-  'GG', // Guernsey
-  'IM', // Isle of Man
-  'JE', // Jersey
-  'SJ', // Svalbard and Jan Mayen
+  'AT',
+  'BE',
+  'BG',
+  'HR',
+  'CY',
+  'CZ',
+  'DK',
+  'EE',
+  'FI',
+  'FR', // France (explicit founder exclusion)
+  'DE',
+  'GR',
+  'HU',
+  'IE',
+  'IT',
+  'LV',
+  'LT',
+  'LU',
+  'MT',
+  'NL',
+  'PL',
+  'PT',
+  'RO',
+  'SK',
+  'SI',
+  'ES',
+  'SE',
+  'IS',
+  'LI',
+  'NO',
+  'GB',
+  'UK',
+  'CH',
+  'AD',
+  'MC',
+  'SM',
+  'VA',
+  'AX',
+  'FO',
+  'GI',
+  'GG',
+  'IM',
+  'JE',
+  'SJ',
 ] as const;
 
-export type EuropeUnsupportedIso2 = (typeof EUROPE_UNSUPPORTED_ISO2)[number];
+/**
+ * Organisation of Islamic Cooperation — 57 member states (ISO 3166-1 alpha-2).
+ * Palestine uses PS. Türkiye uses TR.
+ */
+export const OIC_UNSUPPORTED_ISO2 = [
+  'AF', // Afghanistan
+  'AL', // Albania
+  'DZ', // Algeria
+  'AZ', // Azerbaijan
+  'BH', // Bahrain
+  'BD', // Bangladesh
+  'BJ', // Benin
+  'BN', // Brunei
+  'BF', // Burkina Faso
+  'CM', // Cameroon
+  'TD', // Chad
+  'KM', // Comoros
+  'CI', // Côte d'Ivoire
+  'DJ', // Djibouti
+  'EG', // Egypt
+  'GA', // Gabon
+  'GM', // Gambia
+  'GN', // Guinea
+  'GW', // Guinea-Bissau
+  'GY', // Guyana
+  'ID', // Indonesia
+  'IR', // Iran
+  'IQ', // Iraq
+  'JO', // Jordan
+  'KZ', // Kazakhstan
+  'KW', // Kuwait
+  'KG', // Kyrgyzstan
+  'LB', // Lebanon
+  'LY', // Libya
+  'MY', // Malaysia
+  'MV', // Maldives
+  'ML', // Mali
+  'MR', // Mauritania
+  'MA', // Morocco
+  'MZ', // Mozambique
+  'NE', // Niger
+  'NG', // Nigeria
+  'OM', // Oman
+  'PK', // Pakistan
+  'PS', // Palestine
+  'QA', // Qatar
+  'SA', // Saudi Arabia
+  'SN', // Senegal
+  'SL', // Sierra Leone
+  'SO', // Somalia
+  'SD', // Sudan
+  'SR', // Suriname
+  'SY', // Syria
+  'TJ', // Tajikistan
+  'TG', // Togo
+  'TN', // Tunisia
+  'TR', // Türkiye
+  'TM', // Turkmenistan
+  'UG', // Uganda
+  'AE', // United Arab Emirates
+  'UZ', // Uzbekistan
+  'YE', // Yemen
+] as const;
+
+/** Additional founder exclusions outside Europe/OIC. */
+export const EXTRA_UNSUPPORTED_ISO2 = [
+  'CA', // Canada
+] as const;
+
+export type TerritoryBlockReason = 'europe' | 'oic' | 'canada' | 'unknown_edge';
 
 const EUROPE_SET = new Set<string>(EUROPE_UNSUPPORTED_ISO2.map((c) => c.toUpperCase()));
+const OIC_SET = new Set<string>(OIC_UNSUPPORTED_ISO2.map((c) => c.toUpperCase()));
+const EXTRA_SET = new Set<string>(EXTRA_UNSUPPORTED_ISO2.map((c) => c.toUpperCase()));
 
-/** Normalize free-text / billing country codes. */
+/** Normalize free-text / billing / CDN country codes. */
 export function normalizeCountryIso2(raw: string | null | undefined): string | null {
   if (raw == null) return null;
   const t = raw.trim().toUpperCase();
   if (!t) return null;
-  // common aliases
   if (t === 'UK') return 'GB';
+  if (t === 'XX' || t === 'T1') return t; // Cloudflare unknown / Tor
   if (t.length === 2 && /^[A-Z]{2}$/.test(t)) return t;
   return null;
 }
 
-/** True if ISO2 is in the Europe-not-supported set. */
 export function isEuropeanTerritory(countryRaw: string | null | undefined): boolean {
   const iso = normalizeCountryIso2(countryRaw);
-  if (!iso) return false;
-  return EUROPE_SET.has(iso) || EUROPE_SET.has(countryRaw!.trim().toUpperCase());
+  if (!iso || iso === 'XX' || iso === 'T1') return false;
+  return EUROPE_SET.has(iso);
+}
+
+export function isOicMemberTerritory(countryRaw: string | null | undefined): boolean {
+  const iso = normalizeCountryIso2(countryRaw);
+  if (!iso || iso === 'XX' || iso === 'T1') return false;
+  return OIC_SET.has(iso);
+}
+
+export function getTerritoryBlockReason(
+  countryRaw: string | null | undefined
+): TerritoryBlockReason | null {
+  const iso = normalizeCountryIso2(countryRaw);
+  if (!iso) return null;
+  if (iso === 'XX' || iso === 'T1') return 'unknown_edge';
+  if (iso === 'CA' || EXTRA_SET.has(iso)) return 'canada';
+  if (EUROPE_SET.has(iso)) return 'europe';
+  if (OIC_SET.has(iso)) return 'oic';
+  return null;
+}
+
+/** True when this ISO is on the founder hard-block list (incl. CF unknown/Tor). */
+export function isHostedServiceTerritoryBlocked(countryRaw: string | null | undefined): boolean {
+  return getTerritoryBlockReason(countryRaw) != null;
 }
 
 /**
- * Hosted consumer service (accounts, cloud sync, Super Bundle checkout, Android
- * store product as we distribute it) is offered only outside Europe.
- * Unknown / missing country → treat as *not confirmed supported* for gated
- * actions that require a jurisdiction (payments); local free logger remains
- * available on device without an account.
+ * Hosted consumer service allowed for known, non-blocked countries only.
+ * Unknown/missing country → not confirmed supported (strict for payments UI that
+ * already has a CDN country; APIs use {@link hostedServiceAccessFromHeaders}).
  */
 export function isHostedServiceSupportedCountry(countryRaw: string | null | undefined): boolean {
   const iso = normalizeCountryIso2(countryRaw);
-  if (!iso) return false;
-  return !isEuropeanTerritory(iso);
+  if (!iso || iso === 'XX' || iso === 'T1') return false;
+  return !isHostedServiceTerritoryBlocked(iso);
 }
 
-/** Human-readable short labels for the Supported Regions page. */
+export type HostedServiceAccess =
+  | { allowed: true; country: string | null }
+  | {
+      allowed: false;
+      country: string | null;
+      reason: TerritoryBlockReason;
+      code: 'territory_blocked';
+      message: string;
+    };
+
+export const TERRITORY_BLOCK_MESSAGES: Record<TerritoryBlockReason, string> = {
+  europe:
+    'Mission Winning’s hosted service is not available in Europe (including France, the EEA, the UK, and Switzerland).',
+  oic: 'Mission Winning’s hosted service is not available in Organisation of Islamic Cooperation member states.',
+  canada: 'Mission Winning’s hosted service is not available in Canada.',
+  unknown_edge:
+    'We could not confirm a supported region for this connection. Hosted signup and checkout are unavailable.',
+};
+
+/** Read CDN country from request headers (Cloudflare / Vercel). */
+export function countryFromRequestHeaders(headers: {
+  get(name: string): string | null;
+}): string | null {
+  return normalizeCountryIso2(
+    headers.get('cf-ipcountry') ||
+      headers.get('x-vercel-ip-country') ||
+      headers.get('x-country-code')
+  );
+}
+
+/**
+ * Hard block for signup + checkout APIs.
+ * - Known blocked country → deny
+ * - XX / T1 (CF unknown / Tor) → deny
+ * - Missing header (local dev, no CDN) → allow (Cloudflare already edges prod)
+ */
+export function hostedServiceAccessFromHeaders(headers: {
+  get(name: string): string | null;
+}): HostedServiceAccess {
+  const raw =
+    headers.get('cf-ipcountry') ||
+    headers.get('x-vercel-ip-country') ||
+    headers.get('x-country-code');
+  const country = normalizeCountryIso2(raw);
+
+  if (!country) {
+    return { allowed: true, country: null };
+  }
+
+  const reason = getTerritoryBlockReason(country);
+  if (reason) {
+    return {
+      allowed: false,
+      country,
+      reason,
+      code: 'territory_blocked',
+      message: TERRITORY_BLOCK_MESSAGES[reason],
+    };
+  }
+
+  return { allowed: true, country };
+}
+
 export const REGION_POLICY = {
   primaryMarket: 'United States',
-  /** One-line product posture */
   summary:
-    'Mission Winning’s hosted consumer service is offered outside Europe. Residents of the EEA, the United Kingdom, Switzerland, and listed associated territories are not supported.',
-  excludedLabel: 'Europe (EEA, United Kingdom, Switzerland, and associated territories)',
+    'Mission Winning’s hosted consumer service is not available in Europe (including France), Canada, or Organisation of Islamic Cooperation (OIC) member states. Edge blocking (Cloudflare) plus in-app signup/checkout hard blocks enforce this.',
+  excludedLabel:
+    'Europe (EEA, UK, Switzerland, France), Canada, and OIC member states (57)',
   supportEmail: 'support@missionwinning.com',
 } as const;
+
+/** Count pin — OIC membership is 57. */
+export const OIC_MEMBER_COUNT = 57;

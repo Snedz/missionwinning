@@ -25,6 +25,7 @@ When adding a doc:
 
 | File | Absorbed by / note |
 |------|---------------------|
+| [log/LOG-rotate-546.md](./log/LOG-rotate-546.md) | rotated oldest for `.546` territory block |
 | [log/LOG-rotate-545.md](./log/LOG-rotate-545.md) | rotated oldest for `.545` legal pack |
 | [log/LOG-rotate-544.md](./log/LOG-rotate-544.md) | rotated oldest for `.544` pricing review |
 | [log/LOG-rotate-543.md](./log/LOG-rotate-543.md) | rotated oldest for `.543` badge art |
