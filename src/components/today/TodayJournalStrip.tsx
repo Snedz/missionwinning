@@ -71,7 +71,7 @@ export function TodayJournalStrip({ entries, locale, className }: Props) {
           <Link
             key={entry.id}
             href={meta.href}
-            className="flex min-h-[44px] items-start gap-3 border-b border-border px-1 py-2.5 transition-colors hover:bg-accent-100"
+            className="flex min-h-[44px] items-start gap-3 border-b border-border px-1 py-2.5 transition-colors hover:bg-muted"
           >
             <Icon className="mt-0.5 h-4 w-4 shrink-0 text-muted-foreground" aria-hidden />
             <div className="min-w-0 flex-1">
