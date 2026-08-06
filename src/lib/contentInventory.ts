@@ -27,7 +27,7 @@ export const CONTENT_FLOORS = {
   recipesPremium: 102,
   learnPremiumSections: 16,
   /** Eyes-on form pack side stills (FORM_PACK_SIDE_IDS). */
-  formPackSide: 19,
+  formPackSide: 18,
 } as const;
 
 export type ContentInventory = {

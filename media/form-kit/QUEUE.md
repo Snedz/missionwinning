@@ -1,39 +1,39 @@
 # Form Index — generation queue (resume)
 
-**Status:** `.540` restored OHP + pull-ups stills from disk re-QA.  
-**Blocker for new pixels:** no image-gen API key in agent env (`COACH_LLM_API_KEY` unset). Use Grok Imagine UI or set key.
+**Status:** `.541` honesty pass — demoted failing landmine-row + pattern-hinge.  
+**Blocker for new pixels:** no image-gen API key in agent env. Use Grok Imagine UI.
 
-## Shipped pack
+## Shipped pack (after .541)
 
 | Kind | Count | Notes |
 |------|-------|--------|
-| SIDE stills | **19** | includes OHP + pull-ups still-only |
-| VIDEO loops | **15** | no OHP/pull-up loops |
+| SIDE stills | **18** | OHP + pull-ups still-only; landmine-row out |
+| VIDEO loops | **15** | unchanged |
+| Pattern rasters | squat, push, pull, loco, core, isolation | **hinge → SVG** until regen |
 
 ## Next stills (priority)
 
 | # | Id | Prompt | Export |
 |---|-----|--------|--------|
-| 1 | (optional) athlete-a match refresh OHP | `prompts/still-overhead-press.md` | `media/inbox/form-overhead-press-side-frame.png` |
-| 2 | (optional) chin-over pull-ups | `prompts/still-pull-ups.md` | `media/inbox/form-pull-ups-side-frame.png` |
-| 3 | Spot-check pack | MOVEMENT_STANDARDS checklist | — |
+| 1 | `landmine-row` | `prompts/still-landmine-row.md` | `media/inbox/form-landmine-row-side-frame.png` |
+| 2 | `pattern-hinge` | `prompts/still-pattern-hinge.md` | `media/inbox/form-pattern-hinge-side-frame.png` |
+| 3 | Optional chin-over `pull-ups` | `prompts/still-pull-ups.md` | hang already ships |
+| 4 | Optional athlete-a identity unify | — | — |
 
 ## Pipeline
 
 ```
-1. Open Grok Imagine (or xAI image) with refs:
-   media/form-kit/refs/athlete-a-side.webp
-   media/form-kit/refs/prop-barbell-sheet.webp (barbell lifts)
-2. Paste director block from prompts/still-*.md
+1. Grok Imagine + refs (athlete-a-side, prop-barbell as needed)
+2. Paste director block from prompts/
 3. Save PNG as media/inbox/form-{id}-side-frame.png
 4. npm run media:optimize-inbox
 5. Vision QA vs FORM_DIRECTOR hard rejects
-6. PASS → ensure FORM_PACK_SIDE_IDS has id; FAIL → FAIL.md
-7. I2V only from PASS stills → VIDEO_IDS only after video QA
+6. PASS → wire SIDE_IDS / FORM_PATTERN_RASTER_IDS
+7. I2V only from PASS stills
 ```
 
 ## Never
 
-- Wire VIDEO for OHP/pull-ups until behind-neck / head-crop fixed  
-- Bulk parallel gens without eyes-on  
-- Ship single-arm as OHP  
+- Wire VIDEO for OHP/pull-ups until video QA  
+- Ship landmine with floating free-end  
+- Ship pattern stills with cropped heads  
