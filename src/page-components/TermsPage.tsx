@@ -11,15 +11,21 @@ import { InfoPageShell, InfoSection } from '@/components/layout/InfoPageShell';
 
 const TERM_SECTIONS = [
   { id: 'agreement', key: 'infoTermsAgreement', bodyKey: 'infoTermsAgreementBody' },
+  { id: 'eligibility', key: 'infoTermsEligibility', bodyKey: 'infoTermsEligibilityBody' },
   { id: 'service', key: 'infoTermsService', bodyKey: 'infoTermsServiceBody' },
   { id: 'educational', key: 'infoTermsEducational', bodyKey: 'infoTermsEducationalBody' },
-  { id: 'accounts', key: 'infoTermsAccounts', listKeys: ['infoTermsAccountsLi1', 'infoTermsAccountsLi2', 'infoTermsAccountsLi3'] },
+  {
+    id: 'accounts',
+    key: 'infoTermsAccounts',
+    listKeys: ['infoTermsAccountsLi1', 'infoTermsAccountsLi2', 'infoTermsAccountsLi3'],
+  },
   { id: 'premium', key: 'infoTermsPremium', bodyKey: 'infoTermsPremiumBody' },
   { id: 'acceptable-use', key: 'infoTermsAcceptableUse', bodyKey: 'infoTermsAcceptableUseBody' },
   { id: 'user-content', key: 'infoTermsUserContent', bodyKey: 'infoTermsUserContentBody' },
   { id: 'dmca', key: 'infoTermsDmca', bodyKey: 'infoTermsDmcaBody' },
   { id: 'liability', key: 'infoTermsLiability', bodyKey: 'infoTermsLiabilityBody' },
   { id: 'disputes', key: 'infoTermsDisputes', bodyKey: 'infoTermsDisputesBody' },
+  { id: 'related', key: 'infoTermsRelated', bodyKey: 'infoTermsRelatedBody' },
   { id: 'changes', key: 'infoTermsChanges', bodyKey: 'infoTermsChangesBody' },
 ] as const;
 
@@ -34,8 +40,8 @@ export function TermsPage() {
   return (
     <InfoPageShell
       icon={Scale}
-      title={t('infoTermsTitle', { defaultValue: 'Terms of Use' })}
-      lastUpdated={t('infoLastUpdated', { defaultValue: 'Last updated: July 2026' })}
+      title={t('infoTermsTitle', { defaultValue: 'Terms of Service' })}
+      lastUpdated={t('infoLastUpdated', { defaultValue: 'Last updated: August 2026' })}
       showLegalFooter
       jumpLinks={jumpLinks}
     >
@@ -68,6 +74,40 @@ export function TermsPage() {
                   <Link href="/refunds" className="text-primary hover:underline text-sm">
                     {t('infoRefundsTitle', { defaultValue: 'Refunds & cancellation' })} →
                   </Link>
+                  {' · '}
+                  <Link href="/service-terms" className="text-primary hover:underline text-sm">
+                    {t('infoServiceTermsTitle', { defaultValue: 'Service-Specific Terms' })} →
+                  </Link>
+                </p>
+              )}
+              {section.id === 'acceptable-use' && (
+                <p className="mt-2">
+                  <Link href="/usage" className="text-primary hover:underline text-sm">
+                    {t('infoUsageTitle', { defaultValue: 'Usage Policy' })} →
+                  </Link>
+                </p>
+              )}
+              {section.id === 'eligibility' && (
+                <p className="mt-2">
+                  <Link href="/regions" className="text-primary hover:underline text-sm">
+                    {t('infoRegionsTitle', { defaultValue: 'Supported Regions' })} →
+                  </Link>
+                </p>
+              )}
+              {section.id === 'related' && (
+                <p className="mt-2 flex flex-wrap gap-x-3 gap-y-1 text-sm">
+                  <Link href="/usage" className="text-primary hover:underline">
+                    {t('infoUsageTitle', { defaultValue: 'Usage Policy' })}
+                  </Link>
+                  <Link href="/regions" className="text-primary hover:underline">
+                    {t('infoRegionsTitle', { defaultValue: 'Supported Regions' })}
+                  </Link>
+                  <Link href="/service-terms" className="text-primary hover:underline">
+                    {t('infoServiceTermsTitle', { defaultValue: 'Service-Specific Terms' })}
+                  </Link>
+                  <Link href="/privacy" className="text-primary hover:underline">
+                    {t('privacyPolicy', { defaultValue: 'Privacy Policy' })}
+                  </Link>
                 </p>
               )}
             </>
@@ -76,9 +116,23 @@ export function TermsPage() {
       ))}
 
       <p className="text-xs text-muted-foreground pt-2">
-        {t('infoTermsFoot', { defaultValue: 'Mission Winning LLC · support@missionwinning.com · See also' })}{' '}
+        {t('infoTermsFoot', {
+          defaultValue: 'Mission Winning LLC · support@missionwinning.com · See also',
+        })}{' '}
         <Link href="/privacy" className="text-primary hover:underline">
           {t('privacyPolicy', { defaultValue: 'Privacy Policy' })}
+        </Link>
+        {' · '}
+        <Link href="/usage" className="text-primary hover:underline">
+          {t('infoUsageTitle', { defaultValue: 'Usage Policy' })}
+        </Link>
+        {' · '}
+        <Link href="/regions" className="text-primary hover:underline">
+          {t('infoRegionsTitle', { defaultValue: 'Supported Regions' })}
+        </Link>
+        {' · '}
+        <Link href="/service-terms" className="text-primary hover:underline">
+          {t('infoServiceTermsTitle', { defaultValue: 'Service-Specific Terms' })}
         </Link>
         {' · '}
         <Link href="/refunds" className="text-primary hover:underline">
