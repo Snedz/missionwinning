@@ -3,9 +3,11 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { useTranslation } from 'react-i18next';
-import { ChevronDown } from 'lucide-react';
+import { ChevronDown, UtensilsCrossed } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
+import { EmptyState } from '@/components/ui/EmptyState';
+import { ErrorState } from '@/components/ui/ErrorState';
 import { FuelMealPlanCard } from '@/components/nutrition/FuelMealPlanCard';
 import {
   MealEstimateDraft,
@@ -25,6 +27,8 @@ type Props = {
   premiumRecipes: Recipe[];
   premiumFetchError: boolean;
   onLogRecipe: (draft: MealDraftFields) => void;
+  /** Optional retry when premium catalog fails */
+  onRetryPremium?: () => void;
 };
 
 function recipeToDraft(r: Recipe): MealDraftFields {
@@ -43,6 +47,7 @@ export function FuelRecipesPanel({
   premiumRecipes,
   premiumFetchError,
   onLogRecipe,
+  onRetryPremium,
 }: Props) {
   const { t } = useTranslation();
   const freeBeta = isFreeBeta();
@@ -76,66 +81,26 @@ export function FuelRecipesPanel({
         <CardHeader>
           <CardTitle className="text-base font-semibold">
             {t('fuelFreeRecipesTitle', {
-              count: FREE_RECIPE_COUNT,
-              defaultValue: `Recipes (${FREE_RECIPE_COUNT})`,
+              count: freeRecipes.length || FREE_RECIPE_COUNT,
+              defaultValue: `Recipes (${freeRecipes.length || FREE_RECIPE_COUNT})`,
             })}
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-2">
-          {freeRecipes.map((r, i) => (
-            <details key={i} className="group border-2 border-border  p-3 bg-card">
-              <summary className="flex cursor-pointer list-none items-center justify-between gap-2 [&::-webkit-details-marker]:hidden">
-                <div className="min-w-0">
-                  <div className="font-semibold text-sm">{r.name}</div>
-                  <div className="text-xs text-muted-foreground tabular-nums">
-                    {r.protein}g protein · {r.cals} kcal
-                  </div>
-                </div>
-                <div className="flex items-center gap-2 shrink-0">
-                  <Button
-                    size="sm"
-                    variant="default"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      pickRecipe(r);
-                    }}
-                  >
-                    {t('fuelUseRecipe', { defaultValue: 'Use' })}
-                  </Button>
-                  <ChevronDown className="h-4 w-4 text-muted-foreground transition-transform group-open:rotate-180" />
-                </div>
-              </summary>
-              <div className="text-xs mt-2 pt-2 border-t border-border text-muted-foreground leading-relaxed">
-                {r.ingredients}
-              </div>
-            </details>
-          ))}
-        </CardContent>
-      </Card>
-
-      {premiumFetchError && premium && (
-        <p className="text-xs text-muted-foreground  border border-dashed border-border px-3 py-2">
-          {t('fuelPremiumOffline', {
-            defaultValue: 'Premium recipes unavailable offline — free recipes above still work.',
-          })}
-        </p>
-      )}
-
-      {premium ? (
-        <Card className="bg-card">
-          <CardHeader>
-            <CardTitle className="text-base font-semibold">
-              {t('fuelPremiumRecipesTitle', {
-                defaultValue: freeBeta
-                  ? 'More recipes'
-                  : 'Premium recipes',
+          {freeRecipes.length === 0 ? (
+            <EmptyState
+              icon={UtensilsCrossed}
+              className="py-6"
+              title={t('fuelRecipesEmptyTitle', { defaultValue: 'No recipes loaded' })}
+              description={t('fuelRecipesEmptyDesc', {
+                defaultValue:
+                  'You can still log meals manually above — recipes will return on refresh.',
               })}
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-2">
-            {premiumRecipes.map((r, i) => (
+            />
+          ) : (
+            freeRecipes.map((r, i) => (
               <details key={i} className="group border-2 border-border  p-3 bg-card">
-                <summary className="flex cursor-pointer list-none items-start justify-between gap-2 [&::-webkit-details-marker]:hidden">
+                <summary className="flex cursor-pointer list-none items-center justify-between gap-2 [&::-webkit-details-marker]:hidden">
                   <div className="min-w-0">
                     <div className="font-semibold text-sm">{r.name}</div>
                     <div className="text-xs text-muted-foreground tabular-nums">
@@ -156,15 +121,89 @@ export function FuelRecipesPanel({
                     <ChevronDown className="h-4 w-4 text-muted-foreground transition-transform group-open:rotate-180" />
                   </div>
                 </summary>
-                <div className="mt-2 pt-2 border-t border-border space-y-1">
-                  <div className="text-xs text-muted-foreground leading-relaxed">{r.ingredients}</div>
-                  <div className="text-xs leading-relaxed">{r.instructions}</div>
-                  {r.tip ? (
-                    <div className="text-[11px] text-muted-foreground italic">{r.tip}</div>
-                  ) : null}
+                <div className="text-xs mt-2 pt-2 border-t border-border text-muted-foreground leading-relaxed">
+                  {r.ingredients}
                 </div>
               </details>
-            ))}
+            ))
+          )}
+        </CardContent>
+      </Card>
+
+      {premiumFetchError && premium && (
+        <ErrorState
+          className="py-6"
+          title={t('fuelPremiumFetchFailed', {
+            defaultValue: 'Could not load premium recipes',
+          })}
+          description={t('fuelPremiumOffline', {
+            defaultValue: 'Premium recipes unavailable offline — free recipes above still work.',
+          })}
+          actionLabel={
+            onRetryPremium
+              ? t('fuelPremiumRetry', { defaultValue: 'Try again' })
+              : undefined
+          }
+          onAction={onRetryPremium}
+        />
+      )}
+
+      {premium && !premiumFetchError ? (
+        <Card className="bg-card">
+          <CardHeader>
+            <CardTitle className="text-base font-semibold">
+              {t('fuelPremiumRecipesTitleCount', {
+                count: premiumRecipes.length || PREMIUM_RECIPE_COUNT,
+                defaultValue: freeBeta
+                  ? `More recipes (${premiumRecipes.length || PREMIUM_RECIPE_COUNT})`
+                  : `Premium recipes (${premiumRecipes.length || PREMIUM_RECIPE_COUNT})`,
+              })}
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-2">
+            {premiumRecipes.length === 0 ? (
+              <p className="text-sm text-muted-foreground">
+                {t('fuelPremiumRecipesEmpty', {
+                  defaultValue:
+                    'No premium recipes in this response — free list above still works.',
+                })}
+              </p>
+            ) : (
+              premiumRecipes.map((r, i) => (
+                <details key={i} className="group border-2 border-border  p-3 bg-card">
+                  <summary className="flex cursor-pointer list-none items-start justify-between gap-2 [&::-webkit-details-marker]:hidden">
+                    <div className="min-w-0">
+                      <div className="font-semibold text-sm">{r.name}</div>
+                      <div className="text-xs text-muted-foreground tabular-nums">
+                        {r.protein}g protein · {r.cals} kcal
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-2 shrink-0">
+                      <Button
+                        size="sm"
+                        variant="default"
+                        onClick={(e) => {
+                          e.preventDefault();
+                          pickRecipe(r);
+                        }}
+                      >
+                        {t('fuelUseRecipe', { defaultValue: 'Use' })}
+                      </Button>
+                      <ChevronDown className="h-4 w-4 text-muted-foreground transition-transform group-open:rotate-180" />
+                    </div>
+                  </summary>
+                  <div className="mt-2 pt-2 border-t border-border space-y-1">
+                    <div className="text-xs text-muted-foreground leading-relaxed">
+                      {r.ingredients}
+                    </div>
+                    <div className="text-xs leading-relaxed">{r.instructions}</div>
+                    {r.tip ? (
+                      <div className="text-[11px] text-muted-foreground italic">{r.tip}</div>
+                    ) : null}
+                  </div>
+                </details>
+              ))
+            )}
             <div className="text-xs text-muted-foreground leading-relaxed">
               {t('fuelPremiumRecipesFoot', {
                 defaultValue: 'Practical plates with protein first — edit macros before logging.',
@@ -172,7 +211,7 @@ export function FuelRecipesPanel({
             </div>
           </CardContent>
         </Card>
-      ) : freeBeta ? null : (
+      ) : freeBeta || premium ? null : (
         <Card className="card-elevated">
           <CardHeader>
             <CardTitle>
