@@ -10,6 +10,7 @@ import {
   resolveStartRestSeconds,
   restProgress,
   REST_FINAL_SECONDS,
+  shouldScrollAfterRestEnds,
   shouldShowRestPresets,
 } from '@/lib/workout/restTimer';
 import { readFileSync } from 'node:fs';
@@ -38,6 +39,13 @@ describe('restTimer', () => {
     assert.equal(isRestFinalSeconds(REST_FINAL_SECONDS + 1), false);
     assert.equal(isRestFinalSeconds(0), false);
     assert.equal(isRestFinalSeconds(-1), false);
+  });
+
+  it('scrolls next set only when rest transitions active → idle', () => {
+    assert.equal(shouldScrollAfterRestEnds(true, false), true);
+    assert.equal(shouldScrollAfterRestEnds(false, false), false);
+    assert.equal(shouldScrollAfterRestEnds(true, true), false);
+    assert.equal(shouldScrollAfterRestEnds(false, true), false);
   });
 
   it('hides rest presets in final seconds so Skip owns the thumb', () => {
