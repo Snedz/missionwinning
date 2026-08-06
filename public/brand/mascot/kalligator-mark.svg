@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Kalligator">
+  <!-- Simple mark: teal croco head silhouette + one red spine tip -->
+  <rect width="64" height="64" fill="#f3f2f2"/>
+  <ellipse cx="30" cy="34" rx="22" ry="16" fill="#3d8ea8"/>
+  <ellipse cx="36" cy="36" rx="14" ry="11" fill="#f0e6c8"/>
+  <path d="M14 28 L20 18 L26 28 Z" fill="#ec3013"/>
+  <path d="M24 26 L30 16 L34 26 Z" fill="#ec3013"/>
+  <circle cx="22" cy="30" r="3.2" fill="#201e1d"/>
+  <circle cx="22.8" cy="29.2" r="1" fill="#f3f2f2"/>
+  <path d="M8 36 Q4 38 8 40 L14 38 Z" fill="#3d8ea8"/>
+  <path d="M40 42 L48 44 L46 48 L38 46 Z" fill="#3d8ea8"/>
+</svg>

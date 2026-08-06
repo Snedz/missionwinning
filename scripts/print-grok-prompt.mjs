@@ -33,31 +33,30 @@ vermillion red arcs suggesting progressive load, mid-grey detail marks. Clinical
 telemetry mood — not gamification fireworks. No readable text, no logos, no faces,
 no gym-bro, no medical charts. Square composition for Coach / plan story.`,
   },
-  'grok-mascot-idle': {
+  'grok-mascot-kalligator-idle': {
     aspect: '1:1',
-    file: 'media/inbox/mascot-scout-idle-frame.png',
-    body: `Mission Winning brand mascot Scout. Small geometric falcon/kestrel character,
-flat 2D shapes, paper body #f3f2f2, ink edge lines #201e1d, the one red accent
-#ec3013, mid-grey chest chevron #6f6b69. Neutral attention pose, calm competence,
-mission briefing companion. Centered on solid paper ground. No text, no logos,
-no photoreal feathers, no purple, no cute crying face. Readable silhouette for
-app empty states. Three-quarter front view.`,
+    file: 'media/inbox/mascot-kalligator-idle-frame.png',
+    body: `Mission Winning brand mascot Kalligator. Cute cartoon crocodile/alligator,
+flat sticker shapes, teal body, cream belly, red back spines,
+ink outlines, paper ground. Calm composed pose, X-eye optional soft
+expression, mission briefing companion. Centered, full character in frame. No text,
+no logos, no photoreal scales, no purple. Readable silhouette for app empty states.`,
   },
-  'grok-mascot-invite': {
+  'grok-mascot-kalligator-invite': {
     aspect: '1:1',
-    file: 'media/inbox/mascot-scout-invite-frame.png',
-    body: `Mission Winning brand mascot Scout. Same geometric falcon/kestrel as idle —
-identical proportions. Invite pose: one wing slightly open as a beckon, calm
-friendly attention, vermillion red #ec3013, mid grey chevron #6f6b69. Paper
-canvas #f3f2f2. Not desperate, not guilt-tripping. No text, no logos, no photoreal.`,
+    file: 'media/inbox/mascot-kalligator-invite-frame.png',
+    body: `Mission Winning brand mascot Kalligator. Same crocodile proportions as idle kit.
+Invite / ready pose: slight forward energy, fist pump or open arms beckon, calm friendly
+attention — not desperate. Teal body, cream belly, red spines, paper canvas.
+No text, no logos, no photoreal, no guilt-trip face.`,
   },
-  'grok-mascot-celebrate': {
+  'grok-mascot-kalligator-celebrate': {
     aspect: '1:1',
-    file: 'media/inbox/mascot-scout-celebrate-frame.png',
-    body: `Mission Winning brand mascot Scout. Same geometric falcon/kestrel — identical
-proportions. Celebrate pose: subtle lift, mid-grey detail flash #6f6b69, vermillion
-red rim #ec3013, victory without fireworks spam. Paper canvas #f3f2f2. "Set locked"
-energy. No text, no logos, no photoreal, no streak-shame expression.`,
+    file: 'media/inbox/mascot-kalligator-celebrate-frame.png',
+    body: `Mission Winning brand mascot Kalligator. Same crocodile proportions. Celebrate /
+joyful "crash-out" pose: big smile, arms up, optional small red stars — victory joy not rage.
+"Set locked" energy. Teal body, cream belly, red spines, paper canvas. No text,
+no logos, no streak-shame expression.`,
   },
 };
 

@@ -204,14 +204,14 @@ export function WorkoutVictorySheet({
         <DialogHeader className="text-center space-y-3 victory-reveal">
           <div className="mx-auto relative h-16 w-16 overflow-hidden border-2 border-border bg-card">
             <Image
-              src="/brand/mascot/scout-celebrate.webp"
+              src="/brand/mascot/kalligator-celebrate.webp"
               alt=""
               width={64}
               height={64}
               className="h-full w-full object-cover"
             />
             <span className="sr-only">
-              {t('victoryScoutCue', { defaultValue: 'Session saved.' })}
+              {t('victoryMascotCue', { defaultValue: 'Session saved.' })}
             </span>
           </div>
           <DialogTitle className="text-2xl font-semibold tracking-tight">

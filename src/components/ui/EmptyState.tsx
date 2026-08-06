@@ -17,7 +17,7 @@ type EmptyStateProps = {
   actionDisabled?: boolean;
   className?: string;
   /**
-   * Optional Scout (or other) illustration — use on at most one empty surface.
+   * Optional mascot (Kalligator) illustration — use on at most one empty surface.
    * See docs/MASCOT.md — never spam Train logger.
    */
   illustrationSrc?: string;

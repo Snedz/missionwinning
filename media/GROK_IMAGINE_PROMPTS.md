@@ -57,9 +57,9 @@ npm run media:optimize-inbox
 |---|-----|--------|----------------|----------|
 | 1 | Social invite | **1:1** | `social-invite-frame.png` | `public/social/invite.webp` (or keep slug `invite` after optimize) |
 | 2 | Social coach | **1:1** | `social-coach-frame.png` | `public/social/coach.webp` |
-| 3 | Scout idle | **1:1** | `mascot-scout-idle-frame.png` | `public/brand/mascot/scout-idle.webp` |
-| 4 | Scout invite | **1:1** | `mascot-scout-invite-frame.png` | `public/brand/mascot/scout-invite.webp` |
-| 5 | Scout celebrate | **1:1** | `mascot-scout-celebrate-frame.png` | `public/brand/mascot/scout-celebrate.webp` |
+| 3 | Kalligator idle | **1:1** | `mascot-kalligator-idle-frame.png` | `public/brand/mascot/kalligator-idle.webp` |
+| 4 | Kalligator invite | **1:1** | `mascot-kalligator-invite-frame.png` | `public/brand/mascot/kalligator-invite.webp` |
+| 5 | Kalligator celebrate | **1:1** | `mascot-kalligator-celebrate-frame.png` | `public/brand/mascot/kalligator-celebrate.webp` |
 
 > **optimize-inbox** maps `social-{id}-frame` → `public/social/{id}.webp`.  
 > Use ids `invite` and `coach` if you want paths `invite.webp` / `coach.webp`.  
@@ -104,52 +104,52 @@ no gym-bro, no medical charts. Square composition for Coach / plan story.
 
 **Export:** `media/inbox/social-coach-story-frame.png`
 
-### A3 — Scout idle (`promptId: grok-mascot-idle`)
+### A3 — Kalligator idle (`promptId: grok-mascot-kalligator-idle`)
 
 **Aspect:** 1:1 · see [docs/MASCOT.md](../docs/MASCOT.md)
 
 ```
 [BRAND BLOCK]
 
-Mission Winning brand mascot Scout. Small geometric falcon/kestrel character,
+Mission Winning brand mascot Kalligator. Cute cartoon crocodile/alligator character,
 flat 2D shapes, paper body #f3f2f2, ink edge lines #201e1d, the one red accent
-#ec3013, mid-grey chest chevron #6f6b69. Neutral attention pose, calm competence,
+#ec3013, mid-grey cream belly #6f6b69. Neutral attention pose, calm competence,
 mission briefing companion. Centered on solid paper ground. No text, no logos,
-no photoreal feathers, no purple, no cute crying face. Readable silhouette for
+no photoreal scales, no purple, no cute crying face. Readable silhouette for
 app empty states. Three-quarter front view.
 ```
 
-**Export:** `media/inbox/mascot-scout-idle-frame.png`
+**Export:** `media/inbox/mascot-kalligator-idle-frame.png`
 
-### A4 — Scout invite (`promptId: grok-mascot-invite`)
+### A4 — Kalligator invite (`promptId: grok-mascot-kalligator-invite`)
 
 **Aspect:** 1:1
 
 ```
 [BRAND BLOCK]
 
-Mission Winning brand mascot Scout. Same geometric falcon/kestrel as idle —
-identical proportions. Invite pose: one wing slightly open as a beckon, calm
-friendly attention, vermillion red #ec3013, mid grey chevron #6f6b69. Paper
+Mission Winning brand mascot Kalligator. Same crocodile proportions as idle —
+identical proportions. Invite pose: slight forward energy / open arms or fist beckon, calm
+friendly attention, vermillion red #ec3013, cream belly #6f6b69. Paper
 canvas #f3f2f2. Not desperate, not guilt-tripping. No text, no logos, no photoreal.
 ```
 
-**Export:** `media/inbox/mascot-scout-invite-frame.png`
+**Export:** `media/inbox/mascot-kalligator-invite-frame.png`
 
-### A5 — Scout celebrate (`promptId: grok-mascot-celebrate`)
+### A5 — Kalligator celebrate (`promptId: grok-mascot-kalligator-celebrate`)
 
 **Aspect:** 1:1
 
 ```
 [BRAND BLOCK]
 
-Mission Winning brand mascot Scout. Same geometric falcon/kestrel — identical
+Mission Winning brand mascot Kalligator. Same crocodile proportions — identical
 proportions. Celebrate pose: subtle lift, mid-grey detail flash #6f6b69, vermillion
 red rim #ec3013, victory without fireworks spam. Paper canvas #f3f2f2. “Set locked”
 energy. No text, no logos, no photoreal, no streak-shame expression.
 ```
 
-**Export:** `media/inbox/mascot-scout-celebrate-frame.png`
+**Export:** `media/inbox/mascot-kalligator-celebrate-frame.png`
 
 ---
 
@@ -157,18 +157,18 @@ energy. No text, no logos, no photoreal, no streak-shame expression.
 
 | # | Job | Aspect | Length | Inbox |
 |---|-----|--------|--------|-------|
-| 1 | Scout loop | 1:1 or 9:16 | 6s | `social-scout-loop-raw.mp4` + optional `-frame.png` |
+| 1 | Kalligator loop | 1:1 or 9:16 | 6s | `social-kalligator-loop-raw.mp4` + optional `-frame.png` |
 | 2 | Invite motion | 9:16 | 6s | `social-invite-raw.mp4` + `social-invite-frame.png` |
 | 3 | Coach motion | 1:1 | 6s | `social-coach-raw.mp4` + `social-coach-story-frame.png` |
 
 **Ship policy:** Prefer **best frame still** first. Do not commit multi-MB raw MP4s. WebM product wiring is optional follow-up.
 
-### B1 — Scout loop (`promptId: grok-social-scout-loop`)
+### B1 — Kalligator loop (`promptId: grok-social-kalligator-loop`)
 
 ```
 [BRAND BLOCK]
 
-Mission Winning brand mascot Scout. Geometric falcon/kestrel, flat paper / vermillion
+Mission Winning brand mascot Kalligator. Geometric crocodile/alligator, flat paper / vermillion
 red / mid grey, subtle nod and mid-grey chevron flash on paper field. Loopable
 micro-motion, clinical calm. No text, no logos, no photoreal. 6 second loop.
 ```
@@ -230,7 +230,7 @@ ls -la media/inbox/*frame* media/inbox/*raw* 2>/dev/null
 npm run media:optimize-inbox
 
 # 3. Eyes on output
-# public/social/*.webp · public/brand/mascot/scout-*.webp
+# public/social/*.webp · public/brand/mascot/kalligator-*.webp
 
 # 4. Manifest notes example
 # "notes": "Grok Imagine 2026-08-04 · promptId grok-social-invite"
@@ -243,7 +243,7 @@ npm run media:optimize-inbox
 - [ ] Paper ground reads next to Archivo / ink UI  
 - [ ] One red only; no second accent  
 - [ ] No fake text / logos  
-- [ ] Scout: geometric bird, chest chevron, calm eye  
+- [ ] Kalligator: geometric bird, cream belly, calm eye  
 - [ ] Works at ~390px width  
 - [ ] Founder OK → `status: shipped`  
 
@@ -267,6 +267,6 @@ Agent helper (optional later): `node scripts/print-grok-prompt.mjs grok-social-i
 |------|--------|
 | Stills while in Grok already | **Grok Imagine** (this file) |
 | Free daily video credits | Google Flow Veo Lite ([FLOW_PROMPTS.md](FLOW_PROMPTS.md)) |
-| Scout character lock | Flow Characters tab + MASCOT.md, or Imagine with strict paste |
+| Kalligator character lock | Flow Characters tab + MASCOT.md, or Imagine with strict paste |
 
 Same inbox, same optimize, same manifest.

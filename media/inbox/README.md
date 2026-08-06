@@ -14,7 +14,7 @@ Studio: [grok.com/imagine](https://grok.com/imagine).
 | Learn still/frame | `learn-human-performance-frame.png` |
 | Social still/frame | `social-invite-square-frame.png` · `social-coach-story-frame.png` |
 | Social video | `social-invite-raw.mp4` (optional; keep local — do not commit multi-MB) |
-| Mascot (Scout) | `mascot-scout-idle-frame.png` · `mascot-scout-invite-frame.png` · `mascot-scout-celebrate-frame.png` |
+| Mascot (Kalligator) | `mascot-kalligator-idle-frame.png` · `mascot-kalligator-invite-frame.png` · `mascot-kalligator-celebrate-frame.png` |
 | Form Index poster | `form-{exerciseId}-side-frame.png` → `public/form/{id}/side.webp` |
 | Form Index front | `form-{exerciseId}-front-frame.png` → `public/form/{id}/front.webp` |
 
