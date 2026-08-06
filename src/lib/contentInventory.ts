@@ -19,9 +19,9 @@ import {
 /** Depth plan D1 floors (see .hermes/plans/*super-bundle-depth*). Current = shipped floor. */
 export const CONTENT_FLOORS = {
   moveFree: 24,
-  movePremium: 28,
+  movePremium: 40,
   mindFree: 24,
-  mindPremium: 34,
+  mindPremium: 48,
   recipesFree: 40,
   recipesPremium: 102,
   learnPremiumSections: 16,
