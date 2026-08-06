@@ -12,9 +12,10 @@ test('rewards block is priced after reentry, before coach-today', () => {
   assert.ok(TODAY_BLOCK_PRIORITY.rewards < TODAY_BLOCK_PRIORITY['coach-today']);
 });
 
-test('continuity is after rewards, before coach-today', () => {
+test('continuity is after coach session/week (what-to-train stays boss)', () => {
   assert.ok(TODAY_BLOCK_PRIORITY.continuity > TODAY_BLOCK_PRIORITY.rewards);
-  assert.ok(TODAY_BLOCK_PRIORITY.continuity < TODAY_BLOCK_PRIORITY['coach-today']);
+  assert.ok(TODAY_BLOCK_PRIORITY.continuity > TODAY_BLOCK_PRIORITY['coach-today']);
+  assert.ok(TODAY_BLOCK_PRIORITY.continuity > TODAY_BLOCK_PRIORITY['coach-week']);
 });
 
 test('HomeTodayLean dynamically loads TodayRewardsCard after history', () => {

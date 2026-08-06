@@ -177,6 +177,7 @@ export function PlateCalculatorPanel({ initialTarget, onApplyTarget, compact }: 
           <Button
             variant="default"
             size="block"
+            className="primary-action min-h-[52px] tap-target w-full"
             onClick={() => onApplyTarget(result.achievedWeight)}
           >
             {t('calcPlateApply', {

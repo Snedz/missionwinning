@@ -25,6 +25,7 @@ When adding a doc:
 
 | File | Absorbed by / note |
 |------|---------------------|
+| [log/LOG-rotate-551.md](./log/LOG-rotate-551.md) | rotated oldest for `.551` today/plate |
 | [log/LOG-rotate-550.md](./log/LOG-rotate-550.md) | rotated oldest for `.550` kaizen |
 | [log/LOG-rotate-549.md](./log/LOG-rotate-549.md) | rotated oldest for `.549` set/sheet kaizen |
 | [log/LOG-rotate-548.md](./log/LOG-rotate-548.md) | rotated oldest for `.548` victory kaizen |
