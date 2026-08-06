@@ -118,6 +118,7 @@ Root keeps only the spine (README · CONTEXT · AGENTS · INDEX · vision · ORC
 
 | File | Purpose |
 |------|---------|
+| [PRICING_REVIEW_2026-08.md](PRICING_REVIEW_2026-08.md) | Super Bundle pricing review — hold Option A (2026-08-05) |
 | [STRATEGY.md](STRATEGY.md) | Business plan · pricing · book plan |
 | [PLAN.md](PLAN.md) | Build phases A–I |
 | [REDTEAM.md](REDTEAM.md) | Assumptions audit |
