@@ -73,10 +73,10 @@ export function CourseReader({ chapters, initialChapterId }: Props) {
               key={ch.id}
               type="button"
               onClick={() => setChapterId(ch.id)}
-              className={`w-full text-left  border px-3 py-2 text-sm transition-colors ${
+              className={`w-full text-left border-2 px-3 py-2 text-sm transition-colors min-h-[44px] tap-target ${
                 active
-                  ? 'border-primary bg-accent-100'
-                  : 'border-border hover:border-primary'
+                  ? 'border-primary bg-muted'
+                  : 'border-border hover:border-primary hover:bg-muted'
               }`}
             >
               <div className="font-medium">
@@ -126,13 +126,14 @@ export function CourseReader({ chapters, initialChapterId }: Props) {
                     </p>
                   ))}
                   <div className="flex flex-wrap gap-2 pt-2">
-                    <Button size="sm" variant="default" asChild>
+                    <Button size="sm" variant="default" className="min-h-[44px] tap-target" asChild>
                       <Link href={section.practiceCTA.href}>{section.practiceCTA.label}</Link>
                     </Button>
                     {!done && (
                       <Button
                         size="sm"
                         variant="outline"
+                        className="min-h-[44px] tap-target"
                         onClick={() => completeSection(section.id, section.title)}
                       >
                         {t('guidebookMarkRead', { defaultValue: 'Mark section read' })}
