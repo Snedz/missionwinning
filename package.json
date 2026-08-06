@@ -26,6 +26,7 @@
     "verify-premium": "node scripts/verify-stripe-enrollment.mjs --check-gates",
     "security-audit": "node scripts/security-audit.mjs",
     "secrets:scan": "node scripts/secrets-scan.mjs",
+    "security:check": "npm run secrets:scan && npm audit --audit-level=high",
     "compliance:status": "tsx scripts/compliance-status.ts",
     "e2e": "node scripts/e2e-smoke.mjs",
     "e2e:critical": "playwright test --config=playwright.config.ts --grep-invert \"@a11y|@visual\"",
@@ -59,7 +60,8 @@
     "android:assemble": "cd apps/android && ./gradlew :app:assembleDebug",
     "send-beta-invite": "node --env-file=.env.local scripts/send-beta-invite.ts",
     "check-design-system": "node scripts/check-design-system.mjs",
-    "check-locale-split": "node scripts/split-locale-packs.mjs --check"
+    "check-locale-split": "node scripts/split-locale-packs.mjs --check",
+    "security:check": "npm run secrets:scan && npm audit --audit-level=high"
   },
   "dependencies": {
     "@phantom/react-sdk": "^2.0.2",

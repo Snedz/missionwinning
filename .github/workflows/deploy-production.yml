@@ -30,6 +30,8 @@ concurrency:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    # Founder: create GH Environment "production" with required reviewers when repo is Public.
+    environment: production
     steps:
       - uses: actions/checkout@v5
 

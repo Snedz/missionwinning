@@ -18,8 +18,8 @@ Contract: [openapi-mobile.yaml](openapi-mobile.yaml) · Guide: [ANDROID_NATIVE.m
 | Mode | How Android connects |
 |------|----------------------|
 | **Offline** | Room seed (`LocalCoachSeed`) — **always works**, no network |
-| **Network coach** | When `PRIVATE_MODE` is not `true`, coach bootstrap is cookie-free (Bearer optional). When private, need gate cookie **or** Supabase Bearer |
-| **Sync** | Always requires signed-in Bearer |
+| **Network coach** | When `PRIVATE_MODE` is not `true`, coach bootstrap is cookie-free (Bearer optional). When private: **gate cookie** or **verified Supabase Bearer/cookie JWT** at the proxy (`.539`) — routes still apply their own auth. |
+| **Sync** | Always requires signed-in Bearer (and gate pass when PRIVATE_MODE) |
 
 ### Debug `local.properties` (gitignored)
 
