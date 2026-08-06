@@ -111,6 +111,7 @@ export function FuelRecipesPanel({
                     <Button
                       size="sm"
                       variant="default"
+                      className="min-h-[44px] tap-target"
                       onClick={(e) => {
                         e.preventDefault();
                         pickRecipe(r);

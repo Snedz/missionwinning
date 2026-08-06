@@ -95,15 +95,19 @@ export function FoodSearchBar({ onSelect, initialQuery = '', compact = false }: 
           {t('fuelSearchLoading', { defaultValue: 'Searching…' })}
         </p>
       )}
-      {error && !loading && <p className="text-xs text-muted-foreground">{error}</p>}
+      {error && !loading && (
+        <p className="text-xs text-muted-foreground" role="status">
+          {error}
+        </p>
+      )}
       {items.length > 0 && (
         <ul className="border-2 border-border divide-y divide-border overflow-hidden max-h-56 overflow-y-auto">
           {items.map((item, idx) => (
             <li key={item.id}>
               <button
                 type="button"
-                className={`w-full text-left px-3 py-2.5 hover:bg-accent-100 transition-colors min-h-[44px] ${
-                  idx === 0 ? 'bg-accent-100' : ''
+                className={`w-full text-left px-3 py-2.5 hover:bg-muted transition-colors min-h-[44px] tap-target ${
+                  idx === 0 ? 'bg-muted' : ''
                 }`}
                 onClick={() => {
                   onSelect(item);
