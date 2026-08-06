@@ -15,6 +15,7 @@ import {
   PREMIUM_MOVE_FLOW_COUNT,
   PREMIUM_INVENTORY,
 } from '@/data/premiumInventory';
+import { FORM_PACK_SIDE_IDS, FORM_PACK_VIDEO_IDS } from '@/lib/formMedia';
 
 /** Depth plan D1 floors (see .hermes/plans/*super-bundle-depth*). Current = shipped floor. */
 export const CONTENT_FLOORS = {
@@ -25,6 +26,8 @@ export const CONTENT_FLOORS = {
   recipesFree: 40,
   recipesPremium: 102,
   learnPremiumSections: 16,
+  /** Eyes-on form pack side stills (FORM_PACK_SIDE_IDS). */
+  formPackSide: 16,
 } as const;
 
 export type ContentInventory = {
@@ -32,6 +35,7 @@ export type ContentInventory = {
   mind: { free: number; premium: number };
   recipes: { free: number; premium: number };
   learn: { premiumSections: number };
+  formPack: { side: number; video: number };
   /** Combined free+premium usable under FREE_BETA unlock. */
   unlockedTotal: {
     move: number;
@@ -48,12 +52,15 @@ export function getContentInventory(): ContentInventory {
   const mindPremium = PREMIUM_MIND_SESSION_COUNT;
   const recipesPremium = PREMIUM_RECIPE_COUNT;
   const learnPremium = PREMIUM_LEARN_SECTION_COUNT;
+  const formSide = FORM_PACK_SIDE_IDS.size;
+  const formVideo = FORM_PACK_VIDEO_IDS.size;
 
   return {
     move: { free: moveFree, premium: movePremium },
     mind: { free: mindFree, premium: mindPremium },
     recipes: { free: recipesFree, premium: recipesPremium },
     learn: { premiumSections: learnPremium },
+    formPack: { side: formSide, video: formVideo },
     unlockedTotal: {
       move: moveFree + movePremium,
       mind: mindFree + mindPremium,

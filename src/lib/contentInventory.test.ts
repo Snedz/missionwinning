@@ -29,6 +29,7 @@ describe('contentInventory', () => {
     assert.ok(inv.recipes.free >= CONTENT_FLOORS.recipesFree);
     assert.ok(inv.recipes.premium >= CONTENT_FLOORS.recipesPremium);
     assert.ok(inv.learn.premiumSections >= CONTENT_FLOORS.learnPremiumSections);
+    assert.ok(inv.formPack.side >= CONTENT_FLOORS.formPackSide, `form side ${inv.formPack.side}`);
   });
 
   it('free arrays match inventory free counts', () => {
