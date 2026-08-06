@@ -49,7 +49,7 @@ Lead with **logger + Mission Coach** (concrete, sharp, competitive). The six-pil
 | **Bundle 12-month** | $59/yr (~$4.92/mo) | **The founders offer.** Push everyone here: annual cash flow, retention, honest 50%+ savings story. First 500 customers keep this price for life ("Founders 500"). |
 | **Lifetime founders** | $149 one-time | Cash-flow bootstrap during beta; cap at 100–200 units, then retire. |
 
-Rules: the current `bundleConfig.ts` tiers (3mo/$33, 12mo/$96, lifetime/$149) should be simplified toward the above when Stripe links are created — final call is the founder's; **never discount the monthly** (it's the anchor); raise prices for *new* customers as premium depth ships (founders keep theirs — that's the loyalty story).
+Rules: `bundleConfig.ts` already uses monthly/$11.99, 12mo/$59, lifetime/$149 — keep Stripe Prices aligned; **never discount the monthly** (it's the anchor); raise prices for *new* customers as premium depth ships (founders keep theirs — that's the loyalty story). See [PRICING_REVIEW_2026-08.md](PRICING_REVIEW_2026-08.md).
 
 **Why subscription-with-lifetime-escape**: subscription fatigue is the wedge customer's defining trait. Offering a fair annual + a capped lifetime converts exactly the people who refuse monthlies, without giving up recurring revenue as default.
 
