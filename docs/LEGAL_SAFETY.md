@@ -10,7 +10,12 @@
 
 ## 0. Territory (founder policy)
 
-**Europe is not supported** for the hosted consumer service (EEA, UK, Switzerland, associated territories). Live policy: [`/regions`](https://missionwinning.com/regions). Product logic: `src/lib/legal/supportedRegions.ts`. Not a substitute for counsel review of geo-blocking/enforcement.
+**Hosted service is not available in:**
+- **Europe** (EEA, UK, Switzerland, France, associated territories)
+- **Canada**
+- **Organisation of Islamic Cooperation (OIC)** — all 57 member states
+
+Live policy: [`/regions`](https://missionwinning.com/regions). Product logic: `src/lib/legal/supportedRegions.ts`. Edge: Cloudflare (founder). In-app hard block: signup (`SignInPanel`) + checkout (`/api/checkout`, crypto intent/confirm, `UnlockButton`). Not a substitute for counsel review of geo-blocking/enforcement.
 
 ## 1. Risk areas covered
 

@@ -306,7 +306,7 @@ const en: InfoStrings = {
   infoTermsFoot: 'Mission Winning LLC · support@missionwinning.com · See also',
   infoTermsEligibility: 'Eligibility & Supported Regions',
   infoTermsEligibilityBody:
-    'You must be able to form a binding contract where you live and meet any age requirements we publish (including parental/guardian consent for youth features). The hosted Mission Winning consumer service is offered only in Supported Regions. Europe is not supported: we do not offer accounts, paid Super Bundle, cloud sync as a supported product, or official support to residents of the European Economic Area (EEA), the United Kingdom, Switzerland, or associated territories listed on /regions. If you are in an unsupported region, do not create a hosted account or purchase; self-hosted open-source use is described on /regions and remains your responsibility. We may refuse, suspend, or terminate access based on residence, billing country, IP, payment method, or self-declared location.',
+    'You must be able to form a binding contract where you live and meet any age requirements we publish (including parental/guardian consent for youth features). The hosted Mission Winning consumer service is offered only in Supported Regions. We do not support Europe (including France, the EEA, the UK, and Switzerland), Canada, or Organisation of Islamic Cooperation (OIC) member states — see /regions. We do not offer accounts, paid Super Bundle, cloud sync as a supported product, or official support in those places. Signup and checkout are hard-blocked when your connection country matches the block list. If you are in an unsupported region, do not create a hosted account or purchase; self-hosted open-source use is described on /regions and remains your responsibility.',
   infoTermsRelated: 'Related policies',
   infoTermsRelatedBody:
     'These Terms incorporate by reference: Usage Policy (/usage), Supported Regions (/regions), Service-Specific Terms (/service-terms), Privacy Policy (/privacy), Refunds & cancellation (/refunds), and DMCA (/dmca). Service-Specific Terms control over these general Terms only on product-specific points they cover.',
@@ -489,13 +489,13 @@ const en: InfoStrings = {
   infoRegionsTitle: 'Supported Regions',
   infoRegionsSummary: 'Summary',
   infoRegionsSummaryBody:
-    'Mission Winning’s hosted consumer service (website, PWA accounts, cloud sync, Super Bundle checkout, and our distributed Android product) is offered outside Europe. Primary market: United States. Residents of Europe are not supported customers of the hosted service.',
+    'Mission Winning’s hosted consumer service (website, PWA accounts, cloud sync, Super Bundle checkout, and our distributed Android product) is not available in Europe (including France), Canada, or Organisation of Islamic Cooperation (OIC) member states. Primary market: United States. Cloudflare edge rules plus in-app signup/checkout hard blocks enforce this.',
   infoRegionsSupported: 'Where we operate',
   infoRegionsSupportedBody:
     'We offer the hosted service to users outside the excluded European territories — including the United States and other non-European countries where we choose to operate and where payment and infrastructure partners allow. Availability of payments, app stores, or specific features may still vary by country inside Supported Regions.',
   infoRegionsNotSupported: 'Europe is not supported',
   infoRegionsNotSupportedBody:
-    'We do not support the European Economic Area (EEA), the United Kingdom, Switzerland, or associated territories listed below. Do not create a hosted account, purchase Super Bundle, or expect customer support if you reside there. We are not offering the hosted service as a product directed at those markets and do not appoint an EU/UK GDPR representative for this consumer offering.',
+    'We do not support: (1) Europe — EEA, United Kingdom, Switzerland, France, and associated territories; (2) Canada; (3) all 57 Organisation of Islamic Cooperation member states. Do not create a hosted account, purchase Super Bundle, or expect customer support if you reside there. Signup and checkout are hard-blocked in-app when your CDN country matches these lists (in addition to Cloudflare). We do not appoint an EU/UK GDPR representative for this consumer offering.',
   infoRegionsWhatCounts: 'What “hosted service” means',
   infoRegionsWhatCountsBody:
     'Hosted service includes: missionwinning.com and related domains we operate; cloud accounts and sync; paid Super Bundle and billing; official Android builds we distribute; email support as a customer. Device-local free logging without an account is software that may run on a phone anywhere, but it is not a supported hosted customer relationship in excluded regions, and cloud features remain unsupported there.',
@@ -504,7 +504,7 @@ const en: InfoStrings = {
     'The project license (see repository LICENSE) may allow you to run modified software yourself. Self-hosting is your infrastructure and your compliance burden. It does not entitle you to Mission Winning LLC accounts, payments, trademarks, or support in unsupported regions.',
   infoRegionsEnforcement: 'How we may enforce',
   infoRegionsEnforcementBody:
-    'We may use billing country, payment method, account profile, IP-derived signals, app-store storefront, and self-declared residence to refuse signup, block checkout, suspend accounts, or limit features. Circumventing regional limits (false address, VPN abuse for payments, etc.) is a Terms and Usage Policy violation.',
+    'Enforcement layers: Cloudflare geo rules; CDN country on /api/geo; hard 403 on /api/checkout and crypto checkout; SignInPanel and UnlockButton refuse hosted signup/pay when blocked. We may also use billing country, payment method, account profile, and self-declared residence. Circumventing regional limits (false address, VPN abuse for payments, etc.) is a Terms and Usage Policy violation.',
   infoRegionsIsoListLabel: 'Reference ISO country codes used in product logic (UK normalized to GB):',
   infoRegionsFoot: 'Questions about eligibility: support@missionwinning.com · See also',
   infoServiceTermsTitle: 'Service-Specific Terms',
