@@ -44,22 +44,18 @@ Any NO → log in [FAIL.md](FAIL.md), **remove id from `FORM_PACK_SIDE_IDS`**, k
 
 ---
 
-## Known demotes (.498 eyes-on)
+## Known demotes (.498 eyes-on) — superseded by .540 re-QA
 
 | Id | Issue | Action |
 |----|--------|--------|
-| `overhead-press` | Single-arm press — wrong exercise | Demoted from SIDE_IDS |
-| `pull-ups` | Feet cut off frame; hang not chin-over | Demoted from SIDE_IDS |
-
-Re-ship only after Form Director still PASS + checklist above.
-
----
+| `overhead-press` | Was single-arm wrong exercise | **Re-shipped `.540`** two-hand empty-bar lockout still-only |
+| `pull-ups` | Was feet cropped | **Re-shipped `.540`** hang setup still-only (full feet) |
 
 ## Regen order (when founder unblocks image gen)
 
-1. Fix `overhead-press` — two hands, empty bar, lockout or mid-press, head clear  
-2. Fix `pull-ups` — full body hang or chin-over, feet in frame  
+1. Optional athlete-a identity refresh for OHP/pull-ups if brand match needed  
+2. Chin-over pull-up attempt (hang is already valid)  
 3. Spot-check remaining pack against CF movement demos (reference only)  
-4. I2V only from PASS stills  
+4. I2V only from PASS stills — never wire OHP/pull-up video until video QA  
 
 Do not bulk-wire VIDEO_IDS without video QA.

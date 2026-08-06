@@ -73,4 +73,21 @@ Log every rejected generation. Do not re-ship the same glitch.
 | 2026-08-05 | `overhead-press/side.webp` | Single-arm barbell press — wrong exercise for OHP id | Demoted from `FORM_PACK_SIDE_IDS` |
 | 2026-08-05 | `pull-ups/side.webp` | Feet cut off frame (hard reject); hang-only not chin-over | Demoted from `FORM_PACK_SIDE_IDS` |
 
-Validation protocol: [MOVEMENT_STANDARDS.md](MOVEMENT_STANDARDS.md) (CrossFit demos = reference only).
+## 2026-08-05 — Resume Form Index (.540 re-QA)
+
+Disk stills re-checked with native vision (Form Director checklist):
+
+| Date | Asset | Notes | Action |
+|------|--------|--------|--------|
+| 2026-08-05 | `overhead-press/side.webp` | Two-hand empty-bar lockout, side profile, full head+feet, clean sleeves | **PASS still-only** → re-wired SIDE_IDS (no VIDEO — I2V behind-neck history) |
+| 2026-08-05 | `pull-ups/side.webp` | Dead hang setup, full feet in frame, head clear | **PASS hang setup still** → re-wired SIDE_IDS (no VIDEO — top crop history) |
+
+### Next gen queue (needs Grok Imagine / founder image gen — no COACH_LLM key in agent env)
+
+1. Optional refresh OHP if identity drift vs athlete-a (current stills OK to ship)  
+2. Optional chin-over pull-up attempt (hang is valid ship)  
+3. Spot-check remaining pack vs MOVEMENT_STANDARDS  
+4. I2V only from PASS stills — OHP/pull-ups stay still-only until video QA passes  
+
+Prompts: `media/form-kit/prompts/still-overhead-press.md`, `still-pull-ups.md`  
+Export naming: `media/inbox/form-{id}-side-frame.png` → `npm run media:optimize-inbox`
