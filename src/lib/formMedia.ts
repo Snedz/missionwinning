@@ -36,9 +36,10 @@ export const FORM_PACK_SIDE_IDS = new Set([
   // Form Director regen (.468) — eyes-on PASS
   'burpees',
   'box-jump',
-  // Landmine family stills (.473) — eyes-on PASS, still-only
+  // Landmine family stills (.473) — press PASS; squat PASS (.541);
+  // row demoted .541 (floating free-end / unclear floor pivot)
   'landmine-press',
-  'landmine-row',
+  // 'landmine-row',
   'landmine-squat',
 ]);
 

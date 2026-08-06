@@ -4,6 +4,7 @@ import { existsSync } from 'node:fs';
 import path from 'node:path';
 import {
   FORM_PATTERN_IDS,
+  FORM_PATTERN_RASTER_IDS,
   formPatternPath,
   inferFormPattern,
   resolvePatternMediaUrl,
@@ -13,20 +14,23 @@ import { getFormGuideOrCues } from '@/lib/formGuides';
 
 const root = path.join(import.meta.dirname, '..', '..');
 
-test('every pattern has legacy SVG; raster patterns resolve to form still', () => {
+test('every pattern has legacy SVG; wired rasters resolve to form still', () => {
   for (const id of FORM_PATTERN_IDS) {
     assert.ok(
       existsSync(path.join(root, 'public', 'form-guides', `pattern-${id}.svg`)),
       `missing pattern-${id}.svg`
     );
   }
-  for (const id of FORM_PATTERN_IDS) {
+  for (const id of FORM_PATTERN_RASTER_IDS) {
     assert.equal(formPatternPath(id), `/form/pattern-${id}/side.webp`);
     assert.ok(
       existsSync(path.join(root, 'public', 'form', `pattern-${id}`, 'side.webp')),
       `missing form/pattern-${id}/side.webp`
     );
   }
+  // Demoted hinge falls back to SVG
+  assert.equal(formPatternPath('hinge'), '/form-guides/pattern-hinge.svg');
+  assert.ok(!FORM_PATTERN_RASTER_IDS.has('hinge'));
 });
 
 test('inferFormPattern maps common families', () => {

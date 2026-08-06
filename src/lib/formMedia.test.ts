@@ -49,8 +49,15 @@ test('loop pilot packs resolve to video with poster', () => {
   }
 });
 
+test('landmine-press stays still or video; landmine-squat still-only; row demoted', () => {
+  assert.ok(resolveFormPackMedia('landmine-press'));
+  const squat = resolveFormPackMedia('landmine-squat');
+  assert.equal(squat?.mediaType, 'image');
+  assert.equal(resolveFormPackMedia('landmine-row'), null);
+});
+
 test('landmine siblings without pilot loop stay still-only', () => {
-  for (const id of ['landmine-row', 'landmine-squat'] as const) {
+  for (const id of ['landmine-squat'] as const) {
     const pack = resolveFormPackMedia(id);
     assert.equal(pack?.mediaType, 'image', id);
     assert.equal(pack?.mediaUrl, `/form/${id}/side.webp`, id);

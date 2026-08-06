@@ -91,3 +91,15 @@ Disk stills re-checked with native vision (Form Director checklist):
 
 Prompts: `media/form-kit/prompts/still-overhead-press.md`, `still-pull-ups.md`  
 Export naming: `media/inbox/form-{id}-side-frame.png` → `npm run media:optimize-inbox`
+
+## 2026-08-05 — Spot-check honesty pass (.541)
+
+| Date | Asset | Reason | Action |
+|------|--------|--------|--------|
+| 2026-08-05 | `landmine-row/side.webp` | Free end with plates floats mid-air — floor pivot not readable; reads poorly as teaching landmine row | Demoted from `FORM_PACK_SIDE_IDS` |
+| 2026-08-05 | `pattern-hinge/side.webp` | Head cropped at top (hard reject); tight crop | Demoted from `FORM_PATTERN_RASTER_IDS` → SVG fallback |
+| 2026-08-05 | `landmine-squat/side.webp` | Goblet landmine squat, floor end clear, full body | PASS still-only (keep) |
+| 2026-08-05 | `romanian-deadlift/side.webp` | Empty bar anterior, mid-hinge, full body | PASS (keep) |
+| 2026-08-05 | `thruster/side.webp` | Front-rack squat bottom, empty bar, head clear | PASS (keep) |
+
+Regen priority: landmine-row (`prompts/still-landmine-row.md`), pattern-hinge (`prompts/still-pattern-hinge.md`).
