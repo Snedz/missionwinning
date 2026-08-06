@@ -113,6 +113,20 @@ curl -sI https://www.missionwinning.com/api/school/class/MWTEST/leaderboard
 | Youth consent client localStorage | Medium — server verify fail-closed; client PFT skip is UX-only until consent-status gate |
 | Daily-insight with gate cookie | Medium cost surface — Accepted while PRIVATE_MODE; tighten per-user after flip |
 
+## Residual risks (2026-08-05 public OSS readiness)
+
+Full write-up: [SECURITY_PUBLIC_OSS_AUDIT_2026-08.md](SECURITY_PUBLIC_OSS_AUDIT_2026-08.md).
+
+| Risk | Severity | Status |
+|------|----------|--------|
+| Git history secrets (tree scan ≠ history) | Critical if present | Founder: full `gitleaks detect --source . -v` before Public |
+| Mobile Bearer blocked at proxy while PRIVATE_MODE (R1) | High (config/GA) | Confirmed — fix before Android GA / public API; not a “source leak” |
+| workflow_dispatch deploy/sync/migrate secret power | Medium (ops) | Environment protection when repo Public |
+| npm high via Solana/Phantom | Medium (deps) | Accept while crypto optional — triage doc |
+| gitleaks FP on reward badge i18n keys | Low | Allowlist in `.gitleaks.toml` (2026-08-05) |
+| CodeQL/gitleaks CI may not run (billing) | Ops | Local scan + GH native scanning when Public |
+| Public flip expands attack knowledge | High if flip without checklist | SECRETS pre-public + this audit |
+
 ## Residual risks (2026-07-22 red/blue S2)
 
 | Risk | Severity | Status |
