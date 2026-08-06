@@ -113,7 +113,7 @@ export function MindPage() {
               role="tab"
               aria-selected={selected}
               className={cn(
-                'shrink-0 min-h-[44px] border-2 px-3 text-sm font-medium transition-colors',
+                'shrink-0 min-h-[44px] border-2 px-3 text-sm font-medium transition-colors tap-target',
                 selected
                   ? 'border-primary bg-primary text-primary-foreground'
                   : 'border-border bg-card text-foreground hover:border-primary'
@@ -134,11 +134,22 @@ export function MindPage() {
           })}
         </h3>
         {freeSessions.length === 0 ? (
-          <p className="text-sm text-muted-foreground">
-            {t('mindCollectionEmpty', {
-              defaultValue: 'No sessions in this collection — try All sessions.',
-            })}
-          </p>
+          <div className="border-y-2 border-border py-4 space-y-3">
+            <p className="text-sm text-muted-foreground">
+              {t('mindCollectionEmpty', {
+                defaultValue: 'No sessions in this collection.',
+              })}
+            </p>
+            {collectionId !== 'all' ? (
+              <button
+                type="button"
+                className="min-h-[44px] border-2 border-border px-3 text-sm font-semibold tap-target hover:bg-muted"
+                onClick={() => setCollectionId('all')}
+              >
+                {t('mindCollectionShowAll', { defaultValue: 'Show all sessions' })}
+              </button>
+            ) : null}
+          </div>
         ) : (
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
             {freeSessions.map((s) => (
@@ -204,7 +215,7 @@ export function MindPage() {
         <Card className="content-card">
           <CardHeader>
             <CardTitle className="text-base">
-              {t('mindRecentWins', { defaultValue: 'Recent Mind Wins' })}
+              {t('mindRecentWins', { defaultValue: 'Recent sessions' })}
             </CardTitle>
           </CardHeader>
           <CardContent className="text-sm space-y-1">
@@ -218,14 +229,12 @@ export function MindPage() {
       ) : (
         <EmptyState
           icon={Brain}
-          title={t('mindEmptyTitle', { defaultValue: 'No mind sessions logged yet' })}
+          title={t('mindEmptyTitle', { defaultValue: 'No mind sessions yet' })}
           description={t('mindEmptyDesc', {
-            defaultValue: 'Try a guided session or breathing timer — your first win shows here.',
+            defaultValue: 'Try a guided session or breathing — your first session shows here.',
           })}
           actionLabel={t('mindEmptyCta', { defaultValue: 'Browse guided sessions' })}
-          onAction={() =>
-            document.getElementById('mind-guided')?.scrollIntoView({ behavior: 'smooth' })
-          }
+          href="#mind-guided"
         />
       )}
     </PillarPageShell>
