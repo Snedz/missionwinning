@@ -34,7 +34,7 @@ export function TrackGpsLockedPreview() {
         <p className="text-sm text-muted-foreground">
           {t('trackGpsPremiumDesc', {
             defaultValue:
-              'Record outdoor walks and runs with live distance — MapMy-style, Super Bundle.',
+              'Outdoor walks and runs with live distance — Super Bundle.',
           })}
         </p>
         <div className="relative  border-2 border-border bg-card p-3">
@@ -45,7 +45,7 @@ export function TrackGpsLockedPreview() {
             {t('trackGpsPreviewChart', { defaultValue: 'Live pace chart while you move' })}
           </p>
         </div>
-        <div className="grid grid-cols-3 gap-2 text-center text-sm  border border-primary bg-accent-100 p-3">
+        <div className="grid grid-cols-3 gap-2 text-center text-sm border-2 border-border bg-muted p-3">
           <div>
             <div className="font-bold tabular-nums">2</div>
             <div className="text-xs text-muted-foreground">
@@ -65,12 +65,12 @@ export function TrackGpsLockedPreview() {
         </div>
         <p className="text-xs text-muted-foreground">
           {t('trackGpsLockedHint', {
-            defaultValue: 'Free tier keeps manual logging and JSON import. Premium unlocks GPS + weekly pace stats.',
+            defaultValue: 'Manual log and import stay free. Super Bundle adds GPS and weekly pace.',
           })}
         </p>
         <div className="flex flex-wrap gap-2">
           <UnlockButton productId="super-bundle" planId="12mo" price="59" title="Super Bundle" isSubscription />
-          <Button variant="outline" size="sm" asChild>
+          <Button variant="outline" size="sm" className="min-h-[44px] tap-target" asChild>
             <Link href="/bundle">{t('trackExploreBundle', { defaultValue: 'See Super Bundle' })}</Link>
           </Button>
         </div>

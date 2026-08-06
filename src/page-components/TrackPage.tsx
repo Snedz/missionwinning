@@ -134,11 +134,12 @@ export function TrackPage() {
 
         <TrackWeeklyInsights locked={!premium} key={refresh} />
 
+      <div id="track-log" className="scroll-mt-20">
       <Card className="card-elevated">
           <CardHeader>
             <CardTitle>{t('trackLogTitle', { defaultValue: 'Log Activity' })}</CardTitle>
             <CardDescription>
-              {t('trackLogDesc', { defaultValue: 'No GPS needed — manual entry works offline anywhere.' })}
+              {t('trackLogDesc', { defaultValue: 'No GPS needed — manual entry works offline.' })}
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
@@ -150,6 +151,7 @@ export function TrackPage() {
                     key={act}
                     size="sm"
                     variant={type === act ? 'selected' : 'outline'}
+                    className="min-h-[44px] tap-target"
                     onClick={() => setType(act)}
                   >
                     {ACTIVITY_LABELS[act]}
@@ -193,15 +195,20 @@ export function TrackPage() {
                 value={notes}
                 onChange={(e) => setNotes(e.target.value)}
                 placeholder={t('trackNotesPlaceholder', {
-                  defaultValue: 'Morning park loop, felt great',
+                  defaultValue: 'Morning park loop',
                 })}
               />
             </div>
-            <Button variant="default" onClick={handleLog}>
-              {t('trackLogBtn', { defaultValue: 'Log Activity' })}
+            <Button
+              variant="default"
+              className="primary-action min-h-[52px] tap-target w-full sm:w-auto"
+              onClick={handleLog}
+            >
+              {t('trackLogBtn', { defaultValue: 'Log activity' })}
             </Button>
           </CardContent>
         </Card>
+        </div>
 
         <ActivityImportPanel onImported={() => setRefresh((r) => r + 1)} />
 
@@ -222,20 +229,19 @@ export function TrackPage() {
                 icon={MapPin}
                 title={t('trackEmptyTitle', { defaultValue: 'No activities this week' })}
                 description={t('trackEmptyWeek', {
-                  defaultValue:
-                    'Optional this week: log a walk or run above. Core mission is Train + Fuel — Track adds when you are ready.',
+                  defaultValue: 'Log a walk or run above when you want — optional beside Train.',
                 })}
-                actionLabel={t('trackLogBtn', { defaultValue: 'Log Activity' })}
-                onAction={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+                actionLabel={t('trackLogBtn', { defaultValue: 'Log activity' })}
+                href="#track-log"
               />
             ) : (
               <ul className="space-y-2">
                 {weekActivities.map((a) => (
                   <li
                     key={a.id}
-                    className="flex items-center justify-between text-sm border-b border-border pb-2"
+                    className="flex items-center justify-between text-sm border-b border-border pb-2 min-h-[44px] gap-2"
                   >
-                    <div>
+                    <div className="min-w-0">
                       <span className="font-medium">{ACTIVITY_LABELS[a.type]}</span>
                       {isGpsActivity(a.notes) && (
                         <span className="ms-1.5 text-[10px] uppercase tracking-wide text-primary font-semibold">
@@ -249,11 +255,11 @@ export function TrackPage() {
                       {a.distanceKm != null && (
                         <span className="text-muted-foreground"> · {a.distanceKm} km</span>
                       )}
-                      {a.notes && <div className="text-xs text-muted-foreground">{a.notes}</div>}
+                      {a.notes && <div className="text-xs text-muted-foreground truncate">{a.notes}</div>}
                     </div>
                     <HoldToConfirmButton
                       size="sm"
-                      className="h-9 w-9"
+                      className="h-11 w-11 tap-target shrink-0"
                       label={t('trackDeleteActivity', { defaultValue: 'Delete activity' })}
                       icon={<Trash2 className="h-4 w-4" />}
                       onConfirm={() => handleDelete(a.id)}
