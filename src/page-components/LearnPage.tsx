@@ -107,21 +107,21 @@ export function LearnPage() {
           </CardHeader>
           <CardContent>
             <div className="flex flex-wrap gap-2">
-              <Button variant="default" size="sm" asChild>
+              <Button variant="default" size="sm" className="min-h-[44px] tap-target" asChild>
                 <Link href="/learn/guide">
-                  {t('learnOpenGuidebook', { defaultValue: 'Open Guidebook →' })}
+                  {t('learnOpenGuidebook', { defaultValue: 'Open Guidebook' })}
                 </Link>
               </Button>
-              <Button variant="outline" size="sm" asChild>
+              <Button variant="outline" size="sm" className="min-h-[44px] tap-target" asChild>
                 <Link href={PUBLIC_GUIDE_HREF}>
-                  {t('learnOpenMagazine', { defaultValue: 'Magazine (web) →' })}
+                  {t('learnOpenMagazine', { defaultValue: 'Magazine (web)' })}
                 </Link>
               </Button>
             </div>
           </CardContent>
         </Card>
 
-        <div className="space-y-3">
+        <div id="learn-paths" className="space-y-3 scroll-mt-20">
           <input
             type="search"
             value={pathQuery}
@@ -129,14 +129,17 @@ export function LearnPage() {
             placeholder={t('learnSearchPlaceholder', {
               defaultValue: 'Search paths or lessons…',
             })}
-            className="w-full  border-2 border-border bg-background px-3 py-2.5 min-h-[44px] text-sm"
+            className="w-full border-2 border-border bg-background px-3 py-2.5 min-h-[44px] text-sm"
+            aria-label={t('learnSearchPlaceholder', {
+              defaultValue: 'Search paths or lessons…',
+            })}
           />
           {filteredPaths.length === 0 && (
             <EmptyState
               icon={BookOpen}
-              title={t('learnNoMatches', { defaultValue: 'No paths match that search.' })}
+              title={t('learnNoMatches', { defaultValue: 'No paths match' })}
               description={t('learnNoMatchesDesc', {
-                defaultValue: 'Try a different keyword, or clear search to see all free paths.',
+                defaultValue: 'Try another keyword, or clear search.',
               })}
               actionLabel={t('learnClearSearch', { defaultValue: 'Clear search' })}
               onAction={() => setPathQuery('')}
@@ -149,7 +152,8 @@ export function LearnPage() {
               <Card key={path.id} className="content-card">
                 <button
                   type="button"
-                  className="w-full text-left"
+                  className="w-full text-left min-h-[44px] tap-target"
+                  aria-expanded={open}
                   onClick={() => setExpandedPath(open ? null : path.id)}
                 >
                   <CardHeader className="flex flex-row items-center justify-between py-4">
@@ -171,12 +175,12 @@ export function LearnPage() {
                 {open && (
                   <CardContent className="space-y-4 pt-0 border-t border-border">
                     {path.lessons.map((lesson) => (
-                      <div key={lesson.id} className="p-4  bg-card space-y-2">
+                      <div key={lesson.id} className="p-4 bg-card space-y-2 border-2 border-border">
                         <div className="flex items-start justify-between gap-2">
                           <h3 className="font-semibold">{lesson.title}</h3>
                           {completedLessons.has(lesson.id) && (
                             <span className="text-xs text-primary shrink-0">
-                              {t('learnDone', { defaultValue: '✓ Done' })}
+                              {t('learnDone', { defaultValue: 'Done' })}
                             </span>
                           )}
                         </div>
@@ -188,7 +192,7 @@ export function LearnPage() {
                         </ul>
                         <div className="flex gap-2 flex-wrap pt-2">
                           {lesson.actionHref && lesson.actionLabel && (
-                            <Button size="sm" variant="outline" asChild>
+                            <Button size="sm" variant="outline" className="min-h-[44px] tap-target" asChild>
                               <Link href={lesson.actionHref}>{lesson.actionLabel}</Link>
                             </Button>
                           )}
@@ -196,6 +200,7 @@ export function LearnPage() {
                             <Button
                               size="sm"
                               variant="ghost"
+                              className="min-h-[44px] tap-target"
                               onClick={() => markLessonDone(lesson.id, lesson.title)}
                             >
                               {t('learnMarkComplete', { defaultValue: 'Mark complete' })}
@@ -221,6 +226,7 @@ export function LearnPage() {
             <Button
               variant="outline"
               size="sm"
+              className="min-h-[44px] tap-target"
               onClick={() => {
                 startWorkout('Learn Sample — Bodyweight', [
                   { exerciseId: 'push-ups', sets: [{ reps: 10, weight: 0 }] },
@@ -230,7 +236,7 @@ export function LearnPage() {
                 router.push('/active');
               }}
             >
-              {t('learnSampleBtn', { defaultValue: 'Start Bodyweight Sample →' })}
+              {t('learnSampleBtn', { defaultValue: 'Start bodyweight sample' })}
             </Button>
           </CardContent>
         </Card>
@@ -248,9 +254,9 @@ export function LearnPage() {
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <Button variant="outline" size="sm" asChild>
+              <Button variant="outline" size="sm" className="min-h-[44px] tap-target" asChild>
                 <Link href="/learn/course">
-                  {t('learnOpenCourses', { defaultValue: 'Open specialist courses →' })}
+                  {t('learnOpenCourses', { defaultValue: 'Open specialist courses' })}
                 </Link>
               </Button>
             </CardContent>

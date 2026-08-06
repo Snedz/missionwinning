@@ -39,15 +39,15 @@ export function LearnLockedPreview() {
           })}
         </p>
         {intro && (
-          <div className="border border-primary bg-accent-100 p-4 space-y-2">
+          <div className="border-2 border-border bg-muted p-4 space-y-2">
             <p className="text-xs uppercase tracking-wide text-primary">
               {t('learnFreeIntro', { defaultValue: 'Free — read now' })}
             </p>
             <p className="font-semibold">{intro.title}</p>
             <p className="text-sm text-muted-foreground">{intro.subtitle}</p>
-            <Button variant="default" size="sm" asChild>
+            <Button variant="default" size="sm" className="min-h-[44px] tap-target" asChild>
               <Link href={`/learn/guide/${intro.id}`}>
-                {t('learnReadIntro', { defaultValue: 'Read intro chapter →' })}
+                {t('learnReadIntro', { defaultValue: 'Read intro chapter' })}
               </Link>
             </Button>
           </div>
@@ -73,8 +73,7 @@ export function LearnLockedPreview() {
         </p>
         <div className="flex flex-wrap gap-2">
           <UnlockButton productId="super-bundle" planId="12mo" price="59" title="Super Bundle" isSubscription />
-
-          <Button variant="outline" size="sm" asChild>
+          <Button variant="outline" size="sm" className="min-h-[44px] tap-target" asChild>
             <Link href="/bundle">{t('trackExploreBundle', { defaultValue: 'See Super Bundle' })}</Link>
           </Button>
         </div>
