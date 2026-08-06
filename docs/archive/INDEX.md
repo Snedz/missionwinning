@@ -25,6 +25,7 @@ When adding a doc:
 
 | File | Absorbed by / note |
 |------|---------------------|
+| [log/LOG-rotate-543.md](./log/LOG-rotate-543.md) | rotated oldest for `.543` badge art |
 | [log/LOG-rotate-542.md](./log/LOG-rotate-542.md) | rotated oldest for `.542` Kalligator |
 | [log/LOG-rotate-541.md](./log/LOG-rotate-541.md) | rotated oldest for `.541` form honesty |
 | [log/LOG-rotate-540.md](./log/LOG-rotate-540.md) | rotated oldest for `.540` form pack |

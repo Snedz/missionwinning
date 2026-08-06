@@ -31,3 +31,10 @@
 - Emitted from `apply.ts` on workout finish, fuel day, and pillar win when earned
 - Grants `full_spectrum` badge via engine `perfect_week` event
 
+## Badge art
+
+- Medallions: `public/rewards/badges/{id}.svg` (modernist paper/ink/red)
+- Regenerate: `node scripts/generate-reward-badges.mjs`
+- Resolve path: `badgeIconPath(id)` in `catalog.ts`
+- UI: Profile collection + Victory award strip
+
