@@ -47,12 +47,15 @@ export const TODAY_BLOCK_PRIORITY: Record<TodayBlockKey, number> = {
   reentry: 2,
   /** Weekly goal + rank — after re-entry, before coach ceremony. */
   rewards: 4,
-  /** Cross-pillar next steps after first train (Super Bundle depth). */
-  continuity: 6,
 
-  // What to do now.
+  // What to do now (session outranks cross-pillar suggestions).
   'coach-today': 12,
   'coach-week': 14,
+  /**
+   * Cross-pillar next steps after first train (Super Bundle depth).
+   * After coach session/week so “what to train” stays the boss CTA (.551).
+   */
+  continuity: 16,
   'day-review': 15,
 
   // What it is for.

@@ -16,7 +16,7 @@ One screen of truth for any AI tool or human joining cold. Read this, then [AGEN
 
 ---
 
-## Now (2026-08-06 · web `2026.07-unified.550` · Android `1.24.1`)
+## Now (2026-08-06 · web `2026.07-unified.551` · Android `1.24.1`)
 
 > The ONLY "where we are" block in the repo — [ORCHESTRATION.md](ORCHESTRATION.md) points here.
 >
@@ -284,6 +284,7 @@ One screen of truth for any AI tool or human joining cold. Read this, then [AGEN
 > | gitleaks | **green — and scanning for the first time.** It had never scanned anything: on a `pull_request` event the action lists the PR's commits, the job declared no `permissions:` block, and it 403'd (`pull_requests=read`) before opening a file. Fixed by a `permissions:` block (`.224` carrying `.255`). It scans **only the PR's own commits**, so commit `8ea3527a`'s real Solana treasury address — scrubbed from the working file, still in history — is out of its scope. That finding stands, deliberately not allowlisted; it was never what made this check red. |
 
 - **`.544`–`.543`:** Pricing review (hold prices) + badge medallions.
+- **`.551`:** Kaizen coach-today > continuity; plate Apply primary.
 - **`.550`:** Kaizen rest Skip a11y + plain Victory feel/streak copy.
 - **`.549`:** Kaizen set-complete row + sheet primary CTAs.
 - **`.548`:** Kaizen Victory Peak-End + empty Finish keeps session.
@@ -292,7 +293,6 @@ One screen of truth for any AI tool or human joining cold. Read this, then [AGEN
 - **`.545`:** Legal pack — Europe not supported; /usage /regions /service-terms.
 - **`.542`:** Kalligator mascot replaces Scout (Victory + History).
 - **`.540`:** Form pack re-wire OHP + pull-ups stills (eyes-on PASS).
-- **`.538`:** Victory secondary Super Bundle links + formPack inventory.
 - **`.537`:** Coach session why line + Fuel empty/error honesty.
 - **`.536`:** ContinuityStrip on full Today Dashboard (web-first UX).
 - **`.535`:** Super Bundle depth — premium Move 40 + Mind 48 (D1 targets).
