@@ -52,6 +52,10 @@ export type BuildTodayCandidatesInput = {
    * Invite hides when true; readiness week strip shows only when true.
    */
   hasCoachPlan?: boolean;
+  /** A recent session journal entry is still awaiting the athlete's words. */
+  reflectInvite: boolean;
+  /** A workout is in progress — the quick-add link is noise mid-session. */
+  hasActiveWorkout: boolean;
 };
 
 const P = TODAY_BLOCK_PRIORITY;
@@ -117,8 +121,30 @@ export function buildTodayCandidates(input: BuildTodayCandidatesInput): TodayCan
     out.push({ key: 'coach-week', priority: P['coach-week'] });
   }
 
+  /*
+   * The log-driven week mounts exactly where the coach week may not — the same
+   * predicate negated, imported rather than restated, so the two strips can
+   * never both mount or both vanish. Needs at least one session or the strip
+   * is seven blank cells claiming nothing.
+   */
+  if (
+    input.belowFoldReady &&
+    input.totalSessions > 0 &&
+    !todayCoachWeekMayMount({ phase: input.phase, hasCoachPlan: input.hasCoachPlan })
+  ) {
+    out.push({ key: 'log-week', priority: P['log-week'] });
+  }
+
   if (input.belowFoldReady && input.phase === 'commissioned') {
     out.push({ key: 'coach-today', priority: P['coach-today'] });
+  }
+
+  if (input.belowFoldReady && input.reflectInvite) {
+    out.push({ key: 'reflect', priority: P.reflect });
+  }
+
+  if (input.belowFoldReady && input.showDashboard && !input.hasActiveWorkout) {
+    out.push({ key: 'log-activity', priority: P['log-activity'] });
   }
 
   if (input.belowFoldReady && (input.phase === 'readiness' || input.phase === 'commissioned')) {

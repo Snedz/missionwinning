@@ -156,6 +156,16 @@ type TodayStrings = {
   todayQuickBundleDesc: string;
   todayQuickNightDesc: string;
   todayQuickDawnDesc: string;
+  todayQuickTrackDesc: string;
+  /** D14 — log-driven week strip (planless cohorts) + quick-add + reflect. */
+  todayLogWeekTitle: string;
+  todayLogActivityTitle: string;
+  todayLogActivityBody: string;
+  todayReflectEyebrow: string;
+  todayReflectTitle: string;
+  todayReflectBody: string;
+  continuityTitle: string;
+  continuitySubtitle: string;
   coachPlanTitle: string;
   coachPlanDesc: string;
   coachPlanPremiumDesc: string;
@@ -421,6 +431,15 @@ const en: TodayStrings = {
   todayQuickBundleDesc: 'Coach depth — logger stays free',
   todayQuickNightDesc: '22:00–05:00 sessions',
   todayQuickDawnDesc: '05:00–08:00 sessions',
+  todayQuickTrackDesc: 'Walks, runs & activities',
+  todayLogWeekTitle: 'This week so far',
+  todayLogActivityTitle: 'Log an activity',
+  todayLogActivityBody: 'Walks, runs, rides — extra work counts here.',
+  todayReflectEyebrow: 'Journal',
+  todayReflectTitle: 'How was {{name}}?',
+  todayReflectBody: 'Add your own words — they stay on this device.',
+  continuityTitle: 'Keep the mission moving',
+  continuitySubtitle: 'One app — recovery, focus, and fuel that match your training.',
   coachPlanTitle: 'AI Coach — weekly plan',
   coachPlanDesc: 'Three sessions tuned to readiness, strain, and your equipment.',
   coachPlanPremiumDesc: 'Premium generates a fatigue-aware week you can load into the logger.',
@@ -680,6 +699,7 @@ const es: TodayStrings = {
 };
 
 const zh: TodayStrings = {
+  ...en,
   todayWeekRecapTitle: en.todayWeekRecapTitle,
   todayWeekRecapBody: en.todayWeekRecapBody,
   todayWeekRecapShareCard: en.todayWeekRecapShareCard,
@@ -917,6 +937,7 @@ const zh: TodayStrings = {
 };
 
 const id: TodayStrings = {
+  ...en,
   todayWeekRecapTitle: en.todayWeekRecapTitle,
   todayWeekRecapBody: en.todayWeekRecapBody,
   todayWeekRecapShareCard: en.todayWeekRecapShareCard,
@@ -1168,6 +1189,7 @@ const id: TodayStrings = {
 };
 
 const th: TodayStrings = {
+  ...en,
   todayWeekRecapTitle: en.todayWeekRecapTitle,
   todayWeekRecapBody: en.todayWeekRecapBody,
   todayWeekRecapShareCard: en.todayWeekRecapShareCard,
@@ -1409,6 +1431,7 @@ const th: TodayStrings = {
 };
 
 const ar: TodayStrings = {
+  ...en,
   todayWeekRecapTitle: en.todayWeekRecapTitle,
   todayWeekRecapBody: en.todayWeekRecapBody,
   todayWeekRecapShareCard: en.todayWeekRecapShareCard,

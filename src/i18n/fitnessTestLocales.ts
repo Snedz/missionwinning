@@ -3,6 +3,7 @@
 type FitnessTestStrings = {
   pftSectionTitle: string;
   pftSectionDesc: string;
+  pftBackAmerica: string;
   pftLatestResult: string;
   pftTakeFull: string;
   pftTakeMini: string;
@@ -132,6 +133,7 @@ type FitnessTestStrings = {
 };
 
 const en: FitnessTestStrings = {
+  pftBackAmerica: 'National fitness',
   pftSectionTitle: 'Presidential Fitness Test',
   pftSectionDesc:
     "Classic youth fitness events — curl-ups, push-ups, sit-and-reach, mile run, and pull-ups. Free for families and schools. Inspired by America's tradition of moving with purpose.",

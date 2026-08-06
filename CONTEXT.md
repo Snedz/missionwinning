@@ -16,7 +16,7 @@ One screen of truth for any AI tool or human joining cold. Read this, then [AGEN
 
 ---
 
-## Now (2026-08-05 · web `2026.07-unified.544` · Android `1.24.1`)
+## Now (2026-08-06 · web `2026.07-unified.545` · Android `1.24.1`)
 
 > The ONLY "where we are" block in the repo — [ORCHESTRATION.md](ORCHESTRATION.md) points here.
 >
@@ -283,10 +283,8 @@ One screen of truth for any AI tool or human joining cold. Read this, then [AGEN
 > | Migrations | **9 recorded pending** — [LAUNCH_RUNBOOK](docs/LAUNCH_RUNBOOK.md) §3, enforced by `src/lib/migrationLedger.test.ts`. |
 > | gitleaks | **green — and scanning for the first time.** It had never scanned anything: on a `pull_request` event the action lists the PR's commits, the job declared no `permissions:` block, and it 403'd (`pull_requests=read`) before opening a file. Fixed by a `permissions:` block (`.224` carrying `.255`). It scans **only the PR's own commits**, so commit `8ea3527a`'s real Solana treasury address — scrubbed from the working file, still in history — is out of its scope. That finding stands, deliberately not allowlisted; it was never what made this check red. |
 
-- **`.544`–`.543`:** Pricing review (hold prices) + badge medallions.
-- **`.542`:** Kalligator mascot replaces Scout (Victory + History).
-- **`.541`:** Form honesty — demote landmine-row + pattern-hinge.
-- **`.540`:** Form pack re-wire OHP + pull-ups stills (eyes-on PASS).
+- **`.545` (D14 wave):** PWA update-ready toast (dark until flip) · log-driven week strip where the coach strip can't mount · Today→`/track` quick-add · 48h "How was {{name}}?" journal invite (+ `/history?tab=journal`) · journal counters on /mind · fuel logged-day averages · i18n coverage debt 48→3 repaid (new `rewards` namespace; th/zh/id/ar today bodies now spread `...en`).
+- **`.544`–`.540`:** Pricing review + badge medallions · Kalligator mascot · form-pack honesty (landmine/hinge demote, OHP/pull-ups re-wire).
 - **`.539`:** Security F1 — private gate accepts verified Bearer JWT.
 - **`.538`:** Victory secondary Super Bundle links + formPack inventory.
 - **`.537`:** Coach session why line + Fuel empty/error honesty.

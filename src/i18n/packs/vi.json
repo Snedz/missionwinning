@@ -985,5 +985,7 @@
   "youthVerifyCta": "Xác minh và tiếp tục",
   "youthVerifyPending": "Nhập mã gồm 6 chữ số từ email chấp thuận của phụ huynh.",
   "youthVerifySent": "Chúng tôi đã gửi email cho phụ huynh/người giám hộ của bạn một mã gồm 6 chữ số và liên kết xác nhận. Nhập mã vào đây để tiếp tục.",
-  "youthVerifyTitle": "Nhập mã xác minh"
+  "youthVerifyTitle": "Nhập mã xác minh",
+  "guidebookMagazineWeb": "Tạp chí (web) →",
+  "guidebookChapterMagazine": "Cùng chương trong tạp chí (web) →"
 }

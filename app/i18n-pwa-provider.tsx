@@ -16,6 +16,7 @@ import { readRaw, remove, writeRaw } from '@/lib/storage/safeStorage';
 // supabase-js is NOT imported here — auth listener loads it after idle.
 import i18n, { hydrateI18nResources } from '@/i18n';
 import { toast } from '@/hooks/use-toast';
+import { wireUpdatePrompt } from '@/lib/pwa/updatePrompt';
 
 const OnlineStatusBanner = dynamic(
   () =>
@@ -145,7 +146,31 @@ export function I18nPwaProvider({ children }: { children: React.ReactNode }) {
       });
       return;
     }
-    void navigator.serviceWorker.register('/sw.js').catch(() => { /* noop */ });
+    // Announce "update ready" once per page load; reload is button-only (the
+    // offline spec owns the automatic reload path via reloadOnOnline).
+    const announceUpdate = () => {
+      void import('@/components/ui/toast').then(({ ToastAction }) => {
+        const reload = i18n.t('pwaUpdateReload', { defaultValue: 'Reload' });
+        toast({
+          title: i18n.t('pwaUpdateReadyTitle', { defaultValue: 'Update ready' }),
+          description: i18n.t('pwaUpdateReadyBody', {
+            defaultValue: 'A new version of Mission Winning is on this device.',
+          }),
+          duration: 60_000,
+          action: (
+            <ToastAction altText={reload} onClick={() => window.location.reload()}>
+              {reload}
+            </ToastAction>
+          ),
+        });
+      });
+    };
+    void navigator.serviceWorker
+      .register('/sw.js')
+      .then((reg) => {
+        wireUpdatePrompt(reg, () => !!navigator.serviceWorker.controller, announceUpdate);
+      })
+      .catch(() => { /* noop */ });
   }, []);
 
   // Auth listener after idle — dynamic-import supabase-js so it is off first paint.

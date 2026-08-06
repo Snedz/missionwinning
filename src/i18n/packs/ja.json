@@ -945,5 +945,7 @@
   "youthVerifyCta": "確認して続行",
   "youthVerifyPending": "保護者の同意メールに記載されている 6 桁のコードを入力します。",
   "youthVerifySent": "保護者に 6 桁のコードと確認用リンクを電子メールで送信しました。 続行するには、ここにコードを入力してください。",
-  "youthVerifyTitle": "確認コードを入力してください"
+  "youthVerifyTitle": "確認コードを入力してください",
+  "guidebookMagazineWeb": "マガジン（ウェブ）→",
+  "guidebookChapterMagazine": "マガジンで同じ章へ（ウェブ）→"
 }

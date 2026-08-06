@@ -87,7 +87,7 @@ export function TodayRewardsCard({ summary }: Props) {
         {summary.badges.length > 0 ? (
           <p className="text-xs text-muted-foreground">
             {t('rewardBadgeCount', {
-              count: summary.badges.length,
+              n: summary.badges.length,
               defaultValue: `${summary.badges.length} badges earned`,
             })}
           </p>

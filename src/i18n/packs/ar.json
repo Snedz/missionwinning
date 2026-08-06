@@ -571,5 +571,14 @@
   "welcomeSignInTitle": "حفظ التقدم — اختيارك",
   "welcomeSkipSignIn": "تخطي - انتقل إلى اليوم",
   "welcomeSubtitle": "حدد المسار الخاص بك، ثم سجل جلستك الأولى. خطوة واحدة في كل مرة - يعرض اليوم دائمًا الإجراء التالي.",
-  "welcomeTitle": "مرحباً بك، عضو البعثة"
+  "welcomeTitle": "مرحباً بك، عضو البعثة",
+  "todayQuickTrackDesc": "المشي والجري والأنشطة",
+  "todayLogWeekTitle": "هذا الأسبوع حتى الآن",
+  "todayLogActivityTitle": "سجّل نشاطًا",
+  "todayLogActivityBody": "مشي، جري، دراجة — الجهد الإضافي يُحتسب هنا.",
+  "todayReflectEyebrow": "اليوميات",
+  "todayReflectTitle": "كيف كانت {{name}}؟",
+  "todayReflectBody": "أضف كلماتك أنت — تبقى على هذا الجهاز.",
+  "guidebookMagazineWeb": "المجلة (ويب) →",
+  "guidebookChapterMagazine": "الفصل نفسه في المجلة (ويب) →"
 }

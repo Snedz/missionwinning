@@ -177,7 +177,7 @@ export function MovePage() {
       {renderFlowGrid(
         freeFlows,
         t('moveFreeFlowsCount', {
-          count: freeFlows.length,
+          n: freeFlows.length,
           defaultValue: `Mobility flows (${freeFlows.length})`,
         })
       )}
@@ -187,7 +187,7 @@ export function MovePage() {
           <summary className="flex cursor-pointer list-none items-center justify-between gap-2 py-2 min-h-[44px] [&::-webkit-details-marker]:hidden">
             <span className="text-sm font-semibold text-foreground">
               {t('movePremiumFlowsCount', {
-                count: filteredPremium.length,
+                n: filteredPremium.length,
                 defaultValue: `More recovery flows (${filteredPremium.length})`,
               })}
             </span>
@@ -224,7 +224,7 @@ export function MovePage() {
           >
             <span className="font-medium text-muted-foreground">
               {t('movePremiumPreviewCount', {
-                count: inv.move.premium,
+                n: inv.move.premium,
                 defaultValue: `Premium recovery flows (${inv.move.premium})`,
               })}
             </span>

@@ -275,5 +275,7 @@
   "magazineSubtitle": "Mission Winning — читать",
   "magazineTitle": "За пределами основ",
   "moreGuidebookDesc": "Beyond the Basics — глубокая справка",
-  "navGuidebook": "Путеводитель"
+  "navGuidebook": "Путеводитель",
+  "guidebookMagazineWeb": "Журнал (веб) →",
+  "guidebookChapterMagazine": "Та же глава в журнале (веб) →"
 }

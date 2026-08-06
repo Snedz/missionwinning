@@ -57,7 +57,16 @@ const root = path.join(path.dirname(fileURLToPath(import.meta.url)), '..');
  * This is the *only* legitimate reason for the cap to increase, and it happened
  * inside the same PR that introduced the ratchet. Every future move is down.
  */
-const MAX_UNCOVERED_KEYS = 16;
+/**
+ * `.545` repaid the debt: the Aug-5 wave (`.505`–`.543`) had grown this to 48
+ * — three times the cap, with CI red on the step and nobody watching the lane.
+ * 45 keys moved into catalogs; the three that remain are flag-variant dynamic
+ * defaults (`isFreeBeta()` ternaries) that a static catalog value would
+ * flatten: `fuelPremiumRecipesTitleCount`, `mindSubtitleDepth`,
+ * `moveSubtitleDepth`. Covering those means splitting them into per-variant
+ * keys — do that, then lower this to 0.
+ */
+const MAX_UNCOVERED_KEYS = 3;
 
 /** Components whose user-visible text is not translated, each with a reason. */
 const SKIP_UNTRANSLATED: { file: string; why: string }[] = [

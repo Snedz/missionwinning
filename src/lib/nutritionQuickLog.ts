@@ -201,4 +201,21 @@ export function summarizeNutritionDays(
   return out;
 }
 
+/**
+ * Averages over days that have at least one entry — never over the full window.
+ * Dividing by 7 when only 3 days were logged reports a deficit the athlete does
+ * not have; the caller labels the result with `loggedDays` for the same reason.
+ */
+export function averageNutritionOverLoggedDays(
+  days: readonly NutritionDaySummary[]
+): { loggedDays: number; avgCals: number; avgProtein: number } | null {
+  const logged = days.filter((d) => d.entries > 0);
+  if (logged.length === 0) return null;
+  return {
+    loggedDays: logged.length,
+    avgCals: Math.round(logged.reduce((s, d) => s + d.cals, 0) / logged.length),
+    avgProtein: Math.round(logged.reduce((s, d) => s + d.protein, 0) / logged.length),
+  };
+}
+
 export { DEFAULT_QUICK as DEFAULT_QUICK_FOODS };

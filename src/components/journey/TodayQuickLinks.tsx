@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { useTranslation } from 'react-i18next';
-import { ChevronRight, History, Moon, Sparkles, Sunrise, Trophy } from 'lucide-react';
+import { ChevronRight, History, MapPin, Moon, Sparkles, Sunrise, Trophy } from 'lucide-react';
 import { isFreeBeta } from '@/lib/freeBeta';
 
 const linkClass =
@@ -20,7 +20,8 @@ export function TodayQuickLinks({ compact = false }: TodayQuickLinksProps) {
 
   return (
     <div className="space-y-3">
-      <div className={`grid grid-cols-1 gap-3 ${compact || isFreeBeta() ?'sm:grid-cols-2' : 'sm:grid-cols-3'}`}>
+      {/* Three cards without the Bundle (3-up), four with it (2×2). */}
+      <div className={`grid grid-cols-1 gap-3 ${showBundle ? 'sm:grid-cols-2' : 'sm:grid-cols-3'}`}>
         <Link
           href="/leaderboard"
           className={linkClass}
@@ -52,6 +53,24 @@ export function TodayQuickLinks({ compact = false }: TodayQuickLinksProps) {
             </div>
             <div className="text-xs text-muted-foreground truncate">
               {t('todayQuickHistoryDesc', { defaultValue: 'Volume, 1RM & muscle map' })}
+            </div>
+          </div>
+          <ChevronRight className="h-4 w-4 text-muted-foreground group-hover:text-foreground" />
+        </Link>
+
+        <Link
+          href="/track"
+          className={linkClass}
+        >
+          <div className="flex h-10 w-10 shrink-0 items-center justify-center border-2 border-border bg-background">
+            <MapPin className="h-5 w-5 text-muted-foreground" />
+          </div>
+          <div className="flex-1 min-w-0">
+            <div className="font-semibold text-sm">
+              {t('navTrack', { defaultValue: 'Track' })}
+            </div>
+            <div className="text-xs text-muted-foreground truncate">
+              {t('todayQuickTrackDesc', { defaultValue: 'Walks, runs & activities' })}
             </div>
           </div>
           <ChevronRight className="h-4 w-4 text-muted-foreground group-hover:text-foreground" />

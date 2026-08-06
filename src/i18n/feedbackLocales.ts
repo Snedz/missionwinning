@@ -22,6 +22,13 @@ const FEEDBACK_EN: Record<string, string> = {
   feedbackThankEmail: 'Watch your email for updates + community drops.',
   feedbackBackToday: 'Back to Today',
   feedbackSignInDesc: 'Sign in to link feedback to your journey and sync across devices.',
+  feedbackFrictionLabel: 'What confused you or broke? (required)',
+  feedbackFrictionPlaceholder:
+    'e.g. Rest timer was hard to find mid-set outdoors. Or: Coach week ignored my missed day.',
+  feedbackExpectedLabel: 'What did you expect instead? (optional)',
+  feedbackExpectedPlaceholder: 'e.g. One big Skip button after the set, not three presets.',
+  feedbackNextWantLabel: 'One thing to improve next (optional)',
+  feedbackNextWantPlaceholder: 'e.g. Clearer set kind labels on phone.',
 
   /*
    * `.215` — the Profile card and its sheet. Separate keys from the `/feedback`

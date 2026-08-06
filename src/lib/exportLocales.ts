@@ -33,6 +33,7 @@ import { growthStringsFor } from '@/i18n/growthLocales';
 import { coachStringsFor } from '@/i18n/coachLocales';
 import { betaStringsFor } from '@/i18n/betaLocales';
 import { gateStringsFor } from '@/i18n/gateLocales';
+import { rewardsStringsFor } from '@/i18n/rewardsLocales';
 import { learnContentStringsFor } from '@/i18n/learnContentLocales';
 import { APP_LANGS, type AppLang } from '@/i18n/appLangs';
 import { withLocalePack } from '@/i18n/localePacks';
@@ -258,6 +259,12 @@ export const LOCALE_EXPORTS: LocaleExportEntry[] = [
     namespace: 'gate',
     filename: 'gate.json',
     stringsFor: packWrap(gateStringsFor),
+    langs: EXPORT_LANGS,
+  },
+  {
+    namespace: 'rewards',
+    filename: 'rewards.json',
+    stringsFor: packWrap(rewardsStringsFor as (l: string) => Record<string, string>),
     langs: EXPORT_LANGS,
   },
   {

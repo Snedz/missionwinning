@@ -1,6 +1,7 @@
 import { describe, it } from 'node:test';
 import assert from 'node:assert/strict';
 import {
+  averageNutritionOverLoggedDays,
   getRecentFoods,
   mergeTodayIntoNutritionLog,
   scaleMealMacros,
@@ -23,6 +24,43 @@ describe('summarizeNutritionDays', () => {
     assert.ok(jul22);
     assert.equal(jul22.cals, 200);
     assert.equal(days[0].entries, 0);
+  });
+});
+
+describe('averageNutritionOverLoggedDays', () => {
+  it('divides by logged days only, never the full window', () => {
+    const logs: NutritionLogRow[] = [
+      { name: 'Eggs', protein: 12, cals: 140, date: '2026-07-24' },
+      { name: 'Rice', protein: 4, cals: 200, date: '2026-07-24' },
+      { name: 'Oats', protein: 10, cals: 300, date: '2026-07-22' },
+    ];
+    const days = summarizeNutritionDays(logs, '2026-07-24', 7);
+    const avg = averageNutritionOverLoggedDays(days);
+    assert.ok(avg);
+    // Two logged days out of seven: (340 + 300) / 2, (16 + 10) / 2.
+    assert.equal(avg.loggedDays, 2);
+    assert.equal(avg.avgCals, 320);
+    assert.equal(avg.avgProtein, 13);
+  });
+
+  it('every logged day participates in the average', () => {
+    const logs: NutritionLogRow[] = [
+      { name: 'A', protein: 10, cals: 100, date: '2026-07-24' },
+      { name: 'B', protein: 30, cals: 700, date: '2026-07-23' },
+      { name: 'C', protein: 20, cals: 400, date: '2026-07-21' },
+    ];
+    const days = summarizeNutritionDays(logs, '2026-07-24', 7);
+    const avg = averageNutritionOverLoggedDays(days);
+    assert.ok(avg);
+    assert.equal(avg.loggedDays, 3);
+    assert.equal(avg.avgCals, 400);
+    assert.equal(avg.avgProtein, 20);
+  });
+
+  it('returns null when nothing is logged', () => {
+    const days = summarizeNutritionDays([], '2026-07-24', 7);
+    assert.equal(averageNutritionOverLoggedDays(days), null);
+    assert.equal(averageNutritionOverLoggedDays([]), null);
   });
 });
 

@@ -31,11 +31,14 @@ export type TodayBlockKey =
   | 'continuity'
   | 'coach-today'
   | 'coach-week'
+  | 'log-week'
   | 'day-review'
   | 'intent'
   | 'dashboard'
   | 'week-recap'
   | 'coach-invite'
+  | 'reflect'
+  | 'log-activity'
   | 'encourage'
   | 'freshness'
   | 'guidebook';
@@ -53,6 +56,8 @@ export const TODAY_BLOCK_PRIORITY: Record<TodayBlockKey, number> = {
   // What to do now.
   'coach-today': 12,
   'coach-week': 14,
+  /** The week from logs — substitutes coach-week wherever a plan cannot. */
+  'log-week': 16,
   'day-review': 15,
 
   // What it is for.
@@ -69,6 +74,10 @@ export const TODAY_BLOCK_PRIORITY: Record<TodayBlockKey, number> = {
 
   // Invitations and depth — always behind the thing they point at.
   'coach-invite': 40,
+  /** Timely beats evergreen: the 48h reflect window outranks the standing link. */
+  reflect: 42,
+  /** A link, not information — spilling to Today details is its designed home. */
+  'log-activity': 44,
   encourage: 50,
   freshness: 60,
   guidebook: 70,

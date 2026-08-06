@@ -5,6 +5,7 @@
  */
 
 import { useEffect, useMemo, useState } from 'react';
+import Link from 'next/link';
 import { useTranslation } from 'react-i18next';
 import { useLocaleFormat } from '@/hooks/useLocaleFormat';
 import { BreathingTimer } from '@/components/pillars/BreathingTimer';
@@ -18,6 +19,9 @@ import { EmptyState } from '@/components/ui/EmptyState';
 import { ErrorState } from '@/components/ui/ErrorState';
 import { getPillarWins } from '@/lib/pillarLog';
 import type { PillarWin } from '@/lib/pillarLog';
+import { summarizeJournal, type JournalSummary } from '@/lib/journal/journalInsights';
+import { listJournalEntries } from '@/lib/journal/journalStore';
+import { loadCheckIns } from '@/lib/mindCheckIns';
 import { GUIDED_MIND_SESSIONS } from '@/data/guidedMindSessions';
 import { GuidedMindSessionRunner } from '@/components/pillars/GuidedMindSessionRunner';
 import { Brain, ChevronDown } from 'lucide-react';
@@ -48,6 +52,12 @@ export function MindPage() {
 
   useEffect(() => {
     setRecentWins(getPillarWins(5).filter((w) => w.pillar === 'mind'));
+  }, [refresh]);
+
+  // In an effect, not during render — both stores read the device.
+  const [journal, setJournal] = useState<JournalSummary | null>(null);
+  useEffect(() => {
+    setJournal(summarizeJournal(listJournalEntries(), loadCheckIns()));
   }, [refresh]);
 
   useEffect(() => {
@@ -129,7 +139,7 @@ export function MindPage() {
       <div id="mind-guided" className="space-y-3 scroll-mt-20">
         <h3 className="text-sm font-medium text-muted-foreground">
           {t('mindGuidedFreeCount', {
-            count: freeSessions.length,
+            n: freeSessions.length,
             defaultValue: `Guided sessions (${freeSessions.length})`,
           })}
         </h3>
@@ -165,7 +175,7 @@ export function MindPage() {
           <summary className="flex cursor-pointer list-none items-center justify-between gap-2 py-1 min-h-[44px] [&::-webkit-details-marker]:hidden">
             <h3 className="text-sm font-semibold text-primary uppercase tracking-wide">
               {t('mindPremiumSessionsCount', {
-                count: filteredPremium.length,
+                n: filteredPremium.length,
                 defaultValue: `Premium guided sessions (${filteredPremium.length})`,
               })}
             </h3>
@@ -188,7 +198,7 @@ export function MindPage() {
           >
             <span className="font-medium text-muted-foreground">
               {t('mindPremiumPreviewCount', {
-                count: inv.mind.premium,
+                n: inv.mind.premium,
                 defaultValue: `Premium guided sessions (${inv.mind.premium})`,
               })}
             </span>
@@ -198,6 +208,59 @@ export function MindPage() {
           </button>
           {premiumOpen && <MindLockedPreview />}
         </div>
+      )}
+
+      {/* Counts only — no streaks, no goals. Absent until the first journaled
+          day; the journal's own empty state lives on the timeline. */}
+      {journal && journal.daysJournaled > 0 && (
+        <Card className="content-card">
+          <CardHeader>
+            <CardTitle className="text-base">
+              {t('mindJournalTitle', { defaultValue: 'Your journal' })}
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-3 text-sm">
+            <div className="flex flex-wrap gap-x-8 gap-y-2">
+              <div>
+                <div className="text-xl font-extrabold tabular-nums">{journal.entries}</div>
+                <div className="text-xs text-muted-foreground">
+                  {journal.atCap
+                    ? t('mindJournalEntriesCapped', {
+                        n: journal.entries,
+                        defaultValue: `Last ${journal.entries} sessions`,
+                      })
+                    : t('mindJournalEntriesLabel', { defaultValue: 'Session entries' })}
+                </div>
+              </div>
+              <div>
+                <div className="text-xl font-extrabold tabular-nums">{journal.daysJournaled}</div>
+                <div className="text-xs text-muted-foreground">
+                  {t('mindJournalDaysLabel', { defaultValue: 'Days journaled' })}
+                </div>
+              </div>
+              <div>
+                <div className="text-xl font-extrabold tabular-nums">{journal.entriesThisYear}</div>
+                <div className="text-xs text-muted-foreground">
+                  {t('mindJournalThisYearLabel', { defaultValue: 'Entries this year' })}
+                </div>
+              </div>
+            </div>
+            {journal.wordsWritten > 0 && (
+              <p className="text-xs text-muted-foreground">
+                {t('mindJournalWords', {
+                  n: journal.wordsWritten,
+                  defaultValue: `${journal.wordsWritten} words in your own voice`,
+                })}
+              </p>
+            )}
+            <Link
+              href="/history?tab=journal"
+              className="inline-block text-sm font-semibold underline underline-offset-4 hover:no-underline"
+            >
+              {t('mindJournalOpen', { defaultValue: 'Open journal →' })}
+            </Link>
+          </CardContent>
+        </Card>
       )}
 
       {recentWins.length > 0 ? (

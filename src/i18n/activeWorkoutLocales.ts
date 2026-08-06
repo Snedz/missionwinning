@@ -93,7 +93,7 @@ type ActiveWorkoutStrings = {
   /** Victory sheet (`.296`). */
   victoryShareText: string;
   victoryTitle: string;
-  victoryScoutCue: string;
+  victoryMascotCue: string;
   victoryVolume: string;
   victorySets: string;
   victoryFeelSaved: string;
@@ -280,7 +280,7 @@ const en: ActiveWorkoutStrings = {
   victoryShareText:
     'Session done: {{name}} — {{volume}} {{unit}}, {{sets}} sets.',
   victoryTitle: 'Session locked',
-  victoryScoutCue: 'Session saved.',
+  victoryMascotCue: 'Session saved.',
   victoryVolume: 'Volume',
   victorySets: 'Sets',
   victoryFeelSaved: 'Logged — feeds readiness on Today.',

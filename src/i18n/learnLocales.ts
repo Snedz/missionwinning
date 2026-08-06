@@ -16,6 +16,8 @@ type LearnStrings = {
   learnExpandedBanner: string;
   learnExpandedDesc: string;
   learnOpenGuidebook: string;
+  learnOpenMagazine: string;
+  magazineOpenInApp: string;
   learnSearchPlaceholder: string;
   learnNoMatches: string;
   learnNoMatchesDesc: string;
@@ -60,6 +62,8 @@ const en: LearnStrings = {
   learnExpandedDesc:
     'Six free chapters on performance, movement, and programming — practical, not hype.',
   learnOpenGuidebook: 'Open Guidebook →',
+  learnOpenMagazine: 'Magazine (web) →',
+  magazineOpenInApp: 'Track progress in app →',
   learnSearchPlaceholder: 'Search paths or lessons…',
   learnNoMatches: 'No paths match that search.',
   learnNoMatchesDesc: 'Try a different keyword, or clear search to see all free paths.',

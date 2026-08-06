@@ -789,5 +789,14 @@
   "youthVerifyCta": "ยืนยันและดำเนินการต่อ",
   "youthVerifyPending": "กรอกรหัส 6 หลักจากอีเมลยินยอมของผู้ปกครอง",
   "youthVerifySent": "เราได้ส่งรหัส 6 หลักให้พ่อแม่/ผู้ปกครองของคุณทางอีเมลและยืนยันลิงก์ ป้อนรหัสที่นี่เพื่อดำเนินการต่อ",
-  "youthVerifyTitle": "ป้อนรหัสยืนยัน"
+  "youthVerifyTitle": "ป้อนรหัสยืนยัน",
+  "todayQuickTrackDesc": "เดิน วิ่ง และกิจกรรมต่าง ๆ",
+  "todayLogWeekTitle": "สัปดาห์นี้จนถึงตอนนี้",
+  "todayLogActivityTitle": "บันทึกกิจกรรม",
+  "todayLogActivityBody": "เดิน วิ่ง ปั่นจักรยาน — งานส่วนเพิ่มนับที่นี่",
+  "todayReflectEyebrow": "บันทึกประจำวัน",
+  "todayReflectTitle": "{{name}} เป็นอย่างไรบ้าง?",
+  "todayReflectBody": "เพิ่มคำพูดของคุณเอง — เก็บไว้ในเครื่องนี้เท่านั้น",
+  "guidebookMagazineWeb": "นิตยสาร (เว็บ) →",
+  "guidebookChapterMagazine": "บทเดียวกันในนิตยสาร (เว็บ) →"
 }

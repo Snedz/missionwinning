@@ -12,7 +12,10 @@ import { useTranslation } from 'react-i18next';
 import { JourneyHero } from '@/components/journey/JourneyHero';
 import { dayReviewMayMount } from '@/lib/today/dayReviewMount';
 import { firstStepsMayMount, reentryCardMayMount } from '@/lib/today/todayGuidanceMount';
-import { todayCoachInviteMayMount } from '@/lib/today/todayCoachInviteMount';
+import {
+  todayCoachInviteMayMount,
+  todayCoachWeekMayMount,
+} from '@/lib/today/todayCoachInviteMount';
 import { loadPlan } from '@/lib/coach/storage';
 import { FIRST_STEPS_DISMISS_KEY } from '@/lib/today/firstStepsDismissed';
 import { useDismissed } from '@/hooks/useDismissed';
@@ -83,6 +86,12 @@ const ContinuityStrip = dynamic(
   { ssr: false }
 );
 
+/** The week from logs — basic/planless athletes have no coach week to show. */
+const TodayLogWeekStrip = dynamic(
+  () => import('@/components/today/TodayLogWeekStrip').then((m) => m.TodayLogWeekStrip),
+  { ssr: false }
+);
+
 const SSR_ACTION: JourneyAction = {
   label: 'Begin I-Day',
   description: 'Where the journey begins — in-processing takes about 2 minutes.',
@@ -147,6 +156,27 @@ export function HomeTodayLean() {
     void import('@/lib/rewards/summary').then(({ summarizeRewards }) => {
       if (cancelled) return;
       setRewardsSummary(summarizeRewards(workoutHistory));
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, [workoutHistory]);
+
+  /** Latest session entry still awaiting words — dynamic, same cold-path rule. */
+  const [reflectEntry, setReflectEntry] = useState<{ workoutName: string } | null>(null);
+  useEffect(() => {
+    if (workoutHistory.length === 0) {
+      setReflectEntry(null);
+      return;
+    }
+    let cancelled = false;
+    void Promise.all([
+      import('@/lib/journal/journalStore'),
+      import('@/lib/today/journalReflectMount'),
+    ]).then(([{ listJournalEntries }, { journalReflectMayMount }]) => {
+      if (cancelled) return;
+      const latest = listJournalEntries(1)[0] ?? null;
+      setReflectEntry(journalReflectMayMount(latest) ? latest : null);
     });
     return () => {
       cancelled = true;
@@ -277,10 +307,11 @@ export function HomeTodayLean() {
    * different ways, and the lean one belongs to the cohort least able to absorb
    * a feed: an athlete who has not yet finished their first workout.
    *
-   * Nothing spills today — five blocks against a budget of seven. That is the
-   * point. The budget is here so the *next* card has to argue for its slot
-   * instead of being a free `+1`, which is the whole history of the other shell.
+   * Little spills today against the budget of six. That is the point. The
+   * budget is here so the *next* card has to argue for its slot instead of
+   * being a free `+1`, which is the whole history of the other shell.
    */
+  const hasCoachPlan = typeof window !== 'undefined' ? !!loadPlan() : false;
   const blocks: TodayBlockCandidate<React.ReactNode>[] = [
     ...(firstStepsMayMount({ phase: journeyState.phase, dismissed: betaDismissed })
       ? [{ key: 'beta', priority: P.beta, pinned: true, node: <FirstStepsCard state={journeyState} /> }]
@@ -343,6 +374,20 @@ export function HomeTodayLean() {
     }
   }
 
+  // The week so far — after "what to do next" (continuity), before the evening
+  // review. Same negated predicate as the dashboard shell: wherever the coach
+  // week may not mount, the log week serves instead.
+  if (
+    workoutHistory.length > 0 &&
+    !todayCoachWeekMayMount({ phase: journeyState.phase, hasCoachPlan })
+  ) {
+    blocks.push({
+      key: 'log-week',
+      priority: P['log-week'],
+      node: <TodayLogWeekStrip history={workoutHistory} />,
+    });
+  }
+
   if (mayShowDayReview) {
     blocks.push({ key: 'day-review', priority: P['day-review'], node: <TodayDayReviewCard /> });
   }
@@ -352,7 +397,7 @@ export function HomeTodayLean() {
     todayCoachInviteMayMount({
       phase: journeyState.phase,
       totalSessions: workoutHistory.length,
-      hasCoachPlan: typeof window !== 'undefined' ? !!loadPlan() : false,
+      hasCoachPlan,
     })
   ) {
     blocks.push({
@@ -372,6 +417,35 @@ export function HomeTodayLean() {
           <p className="text-[15px] font-semibold leading-snug text-foreground">
             {t('todayCoachInviteTitle', {
               defaultValue: 'Turn your logs into this week’s plan',
+            })}
+          </p>
+        </a>
+      ),
+    });
+  }
+
+  // "How was <session>?" — the 48h invitation to put words on the latest entry.
+  if (reflectEntry) {
+    blocks.push({
+      key: 'reflect',
+      priority: P.reflect,
+      node: (
+        <a
+          href="/history?tab=journal"
+          className="block border-y-2 border-border py-3.5 transition-colors hover:bg-muted"
+        >
+          <p className="mb-0.5 text-[11px] font-semibold uppercase tracking-[0.1em] text-muted-foreground">
+            {t('todayReflectEyebrow', { defaultValue: 'Journal' })}
+          </p>
+          <p className="text-[15px] font-semibold leading-snug text-foreground">
+            {t('todayReflectTitle', {
+              name: reflectEntry.workoutName,
+              defaultValue: `How was ${reflectEntry.workoutName}?`,
+            })}
+          </p>
+          <p className="text-xs text-muted-foreground mt-1 leading-relaxed">
+            {t('todayReflectBody', {
+              defaultValue: 'Add your own words — they stay on this device.',
             })}
           </p>
         </a>

@@ -23,6 +23,11 @@ type MoveStrings = {
   movePremiumRetry: string;
   movePreviewPlayer: string;
   moveLockedHint: string;
+  moveCollections: string;
+  moveCollectionEmpty: string;
+  moveFreeFlowsCount: string;
+  movePremiumFlowsCount: string;
+  movePremiumPreviewCount: string;
 };
 
 const en: MoveStrings = {
@@ -49,6 +54,12 @@ const en: MoveStrings = {
   movePreviewPlayer: 'Timed cues — Pliability-style recovery flows',
   moveLockedHint:
     'Free tier includes 10 flows. Premium adds 11 longer protocols — post-lift, morning open, low-back friendly, and athlete recovery.',
+  moveCollections: 'Collections',
+  moveCollectionEmpty: 'No flows in this collection — try All flows.',
+  // `n`, not `count` — i18next treats `count` as a plural selector.
+  moveFreeFlowsCount: 'Mobility flows ({{n}})',
+  movePremiumFlowsCount: 'More recovery flows ({{n}})',
+  movePremiumPreviewCount: 'Premium recovery flows ({{n}})',
 };
 
 const es: MoveStrings = {

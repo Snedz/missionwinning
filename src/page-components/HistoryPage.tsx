@@ -6,7 +6,7 @@
 
 import { useEffect, useMemo, useState } from 'react';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { useTranslation } from 'react-i18next';
 import { useLocaleFormat } from '@/hooks/useLocaleFormat';
 import { Calendar, Dumbbell, History as HistoryIcon, SearchX, Timer, Trophy } from 'lucide-react';
@@ -86,6 +86,7 @@ type HistoryTab = 'calendar' | 'sessions' | 'exercises' | 'journal';
 
 export function HistoryPage() {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const { t, i18n } = useTranslation();
   const fmt = useLocaleFormat();
   const units = useUnits();
@@ -117,7 +118,11 @@ export function HistoryPage() {
   const [nameQuery, setNameQuery] = useState('');
   const [range, setRange] = useState<RangeFilter>('30');
   const [visibleCount, setVisibleCount] = useState(30);
-  const [tab, setTab] = useState<HistoryTab>('sessions');
+  // Deep link for Today's journal cards; only 'journal' is honored so a bad
+  // query string cannot select a tab that does not exist.
+  const [tab, setTab] = useState<HistoryTab>(() =>
+    searchParams.get('tab') === 'journal' ? 'journal' : 'sessions'
+  );
 
   /*
    * Days the athlete used the app without lifting.

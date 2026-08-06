@@ -557,5 +557,14 @@
   "welcomeSignInTitle": "Simpan kemajuan — pilihan Anda",
   "welcomeSkipSignIn": "Lewati — buka Hari Ini",
   "welcomeSubtitle": "Tetapkan jalur Anda, lalu catat sesi pertama Anda. Selangkah demi selangkah — Hari ini selalu menampilkan tindakan selanjutnya.",
-  "welcomeTitle": "Selamat datang, Anggota Misi"
+  "welcomeTitle": "Selamat datang, Anggota Misi",
+  "todayQuickTrackDesc": "Jalan, lari & aktivitas",
+  "todayLogWeekTitle": "Minggu ini sejauh ini",
+  "todayLogActivityTitle": "Catat aktivitas",
+  "todayLogActivityBody": "Jalan, lari, bersepeda — kerja ekstra dihitung di sini.",
+  "todayReflectEyebrow": "Jurnal",
+  "todayReflectTitle": "Bagaimana {{name}}?",
+  "todayReflectBody": "Tambahkan kata-katamu sendiri — tetap di perangkat ini.",
+  "guidebookMagazineWeb": "Majalah (web) →",
+  "guidebookChapterMagazine": "Bab yang sama di majalah (web) →"
 }

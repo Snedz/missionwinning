@@ -651,5 +651,14 @@
   "welcomeSignInTitle": "保存进度——您的选择",
   "welcomeSkipSignIn": "跳过 — 转到今天",
   "welcomeSubtitle": "设置您的路径，然后记录您的第一个会话。 一次一步——今天总是显示下一步行动。",
-  "welcomeTitle": "欢迎，使命成员"
+  "welcomeTitle": "欢迎，使命成员",
+  "todayQuickTrackDesc": "步行、跑步与活动",
+  "todayLogWeekTitle": "本周至今",
+  "todayLogActivityTitle": "记录一项活动",
+  "todayLogActivityBody": "步行、跑步、骑行——额外的努力都算在这里。",
+  "todayReflectEyebrow": "日志",
+  "todayReflectTitle": "{{name}}感觉如何？",
+  "todayReflectBody": "写下你自己的话——只保存在本设备上。",
+  "guidebookMagazineWeb": "杂志（网页）→",
+  "guidebookChapterMagazine": "在杂志中查看同一章（网页）→"
 }

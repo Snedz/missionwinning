@@ -52,6 +52,9 @@ export const BOOTSTRAP_EN: Record<string, string> = {
   landingFaqWhoA:
     'Anyone who wants a disciplined, evidence-based path — from a garage gym to a park with only floor space.',
   install: 'Install App (PWA)',
+  pwaUpdateReadyTitle: 'Update ready',
+  pwaUpdateReadyBody: 'A new version of Mission Winning is on this device.',
+  pwaUpdateReload: 'Reload',
   signOut: 'Sign Out',
   language: 'Language',
 };

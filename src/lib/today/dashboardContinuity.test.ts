@@ -15,6 +15,8 @@ test('dashboard candidates include continuity after first sessions', () => {
     streak: 1,
     hour: 12,
     weekRecap: null,
+    reflectInvite: false,
+    hasActiveWorkout: false,
   }).map((s) => s.key);
   assert.ok(keys.includes('continuity'));
 });
@@ -30,6 +32,8 @@ test('no continuity before first session', () => {
     streak: 0,
     hour: 12,
     weekRecap: null,
+    reflectInvite: false,
+    hasActiveWorkout: false,
   }).map((s) => s.key);
   assert.ok(!keys.includes('continuity'));
 });

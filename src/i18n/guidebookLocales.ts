@@ -7,6 +7,8 @@ import { withLocalePack } from '@/i18n/localePacks';
 const GUIDEBOOK_CONTENT_EN = buildGuidebookContentLocaleKeys();
 
 const GUIDEBOOK_EN: Record<string, string> = {
+  guidebookMagazineWeb: 'Magazine (web) →',
+  guidebookChapterMagazine: 'Same chapter in magazine (web) →',
   guidebookTitle: 'Beyond the Basics',
   guidebookSubtitle:
     'Now with even more content! The Mission Winning guidebook — understand training from the ground up.',

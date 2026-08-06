@@ -35,6 +35,19 @@ type MindStrings = {
   mindPremiumRetry: string;
   mindPreviewPlayer: string;
   mindLockedHint: string;
+  /** D14 — journal counters + discoverability (the journal lives under /history). */
+  mindJournalTitle: string;
+  mindJournalEntriesLabel: string;
+  mindJournalEntriesCapped: string;
+  mindJournalDaysLabel: string;
+  mindJournalThisYearLabel: string;
+  mindJournalWords: string;
+  mindJournalOpen: string;
+  mindCollections: string;
+  mindCollectionEmpty: string;
+  mindGuidedFreeCount: string;
+  mindPremiumSessionsCount: string;
+  mindPremiumPreviewCount: string;
 };
 
 const en: MindStrings = {
@@ -74,6 +87,20 @@ const en: MindStrings = {
   mindPreviewPlayer: 'Press play — timed cues walk you through each step',
   mindLockedHint:
     'Free tier includes 10 guided sessions. Premium adds 17 deeper timed sessions — focus, recovery, race calm, and travel resets.',
+  mindJournalTitle: 'Your journal',
+  mindJournalEntriesLabel: 'Session entries',
+  mindJournalEntriesCapped: 'Last {{n}} sessions',
+  mindJournalDaysLabel: 'Days journaled',
+  mindJournalThisYearLabel: 'Entries this year',
+  mindJournalWords: '{{n}} words in your own voice',
+  mindJournalOpen: 'Open journal →',
+  mindCollections: 'Collections',
+  mindCollectionEmpty: 'No sessions in this collection — try All sessions.',
+  // `n`, not `count` — i18next treats `count` as a plural selector (see
+  // feedbackSheetRemaining for the incident this spelling avoids).
+  mindGuidedFreeCount: 'Guided sessions ({{n}})',
+  mindPremiumSessionsCount: 'Premium guided sessions ({{n}})',
+  mindPremiumPreviewCount: 'Premium guided sessions ({{n}})',
 };
 
 const es: MindStrings = {

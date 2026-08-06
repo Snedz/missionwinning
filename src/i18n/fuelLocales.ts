@@ -176,6 +176,11 @@ type FuelStrings = {
   fuelClearDayHint: string;
   fuelClearTodaysMeals: string;
   fuelWeekGlance: string;
+  fuelWeekAvgLine: string;
+  fuelRecipesEmptyTitle: string;
+  fuelRecipesEmptyDesc: string;
+  fuelPremiumRetry: string;
+  fuelPremiumRecipesEmpty: string;
   fuelWeightTitle: string;
   fuelWeight7d: string;
   fuelWeightNoTrend: string;
@@ -382,6 +387,11 @@ const en: FuelStrings = {
   fuelClearDayHint: 'Clears every meal logged today. Hold to confirm.',
   fuelClearTodaysMeals: "Clear today's meals",
   fuelWeekGlance: 'Last 7 days',
+  fuelWeekAvgLine: 'Avg over {{days}} logged days: {{cals}} kcal · {{protein}}g protein',
+  fuelRecipesEmptyTitle: 'No recipes loaded',
+  fuelRecipesEmptyDesc: 'You can still log meals manually above — recipes will return on refresh.',
+  fuelPremiumRetry: 'Try again',
+  fuelPremiumRecipesEmpty: 'No premium recipes in this response — free list above still works.',
   fuelWeightTitle: 'Weight',
   fuelWeight7d: '7d',
   fuelWeightNoTrend: 'Log a few days for trend',

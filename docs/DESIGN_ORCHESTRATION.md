@@ -381,6 +381,22 @@ engine (preferred days + adapt already cover flexible miss recovery).
 **Refused:** in-app notification inbox; sale countdowns; invented stats; scraping
 `LOG.md` into the product UI.
 
+### Wave D14 — Screenshot batch: the daily loop closes (Horizon W · `.545` · 2026-08-06)
+
+**Reference:** founder screenshot batches 2026-08-06 — Pump Club home (update dialog, week strip, LOG ACTIVITY card, AI FAB), Apple Journal (WHOOP-walk auto-entry + "How was your walk yesterday?" + Insights counters), Everfit nutrition ad, plus a marketing set (Ladder / HWPO / Ibex / JuggernautAI / Reshape).
+
+| Track | Work |
+|-------|------|
+| **Update prompt** | `src/lib/pwa/updatePrompt.ts` — "Update ready · Reload" toast when a new SW installs over a controlled page; button-only reload; dark until `PRIVATE_MODE` flips |
+| **Log week strip** | `src/lib/today/logWeek.ts` + `TodayLogWeekStrip` — monthGrid `DayMark` at week scale, mounted exactly where `todayCoachWeekMayMount` says no; **no missed state, no numerals** |
+| **Quick-add** | Dashed `/track` card on Today (`log-activity` @44, hidden mid-workout, lean skipped for W2) + Track quick link |
+| **Reflect** | `journalReflectMount.ts` @42 — 48h invite to add words to the latest wordless session entry; `/history?tab=journal` deep link; structurally self-retiring |
+| **Journal counters** | `journalInsights.ts` on `/mind` — entries (cap-honest), days journaled, this-year, athlete-voice words; Fuel week glance gains logged-day averages |
+
+**Already existed (no work):** first-steps checklist (D7), badges/ranks (Mission Rewards), coach week strip, e1RM history, nutrition depth.
+
+**Refused:** AI FAB (one boss CTA — ScreenDock); coach community feed/comments (device-first privacy, no social backend); program "Phase 1" bars (blocked on plan durability — `programContinuity.ts`); red ✕ missed days (fourth sighting); pricing anchors / trials / lead magnets / HSA-FSA (EIN pending, landing frozen) — marketing patterns filed in [seo/competitors/2026-08-06-landing-patterns.md](../seo/competitors/2026-08-06-landing-patterns.md), no invented numbers.
+
 ---
 
 ## Web ↔ Android parity matrix

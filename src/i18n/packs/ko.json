@@ -947,5 +947,7 @@
   "youthVerifyCta": "확인 및 계속",
   "youthVerifyPending": "부모 동의 이메일에 있는 6자리 코드를 입력하세요.",
   "youthVerifySent": "귀하의 부모/보호자에게 6자리 코드와 링크 확인 이메일을 보냈습니다. 계속하려면 여기에 코드를 입력하세요.",
-  "youthVerifyTitle": "인증코드를 입력하세요"
+  "youthVerifyTitle": "인증코드를 입력하세요",
+  "guidebookMagazineWeb": "매거진 (웹) →",
+  "guidebookChapterMagazine": "매거진의 같은 챕터 (웹) →"
 }

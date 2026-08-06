@@ -1,7 +1,10 @@
 'use client';
 
 import { useTranslation } from 'react-i18next';
-import type { NutritionDaySummary } from '@/lib/nutritionQuickLog';
+import {
+  averageNutritionOverLoggedDays,
+  type NutritionDaySummary,
+} from '@/lib/nutritionQuickLog';
 import { formatLocalDateKey } from '@/lib/time/localDate';
 import { cn } from '@/lib/utils';
 
@@ -17,6 +20,7 @@ export function FuelWeekGlance({ days, todayIso, targetCals }: Props) {
   if (!days.some((d) => d.entries > 0)) return null;
 
   const maxBar = Math.max(targetCals, ...days.map((d) => d.cals), 1);
+  const avg = averageNutritionOverLoggedDays(days);
 
   return (
     <div className="border-2 border-border bg-card px-3 py-3 space-y-2">
@@ -64,6 +68,16 @@ export function FuelWeekGlance({ days, todayIso, targetCals }: Props) {
           );
         })}
       </div>
+      {avg && (
+        <p className="text-[11px] tabular-nums text-muted-foreground">
+          {t('fuelWeekAvgLine', {
+            days: avg.loggedDays,
+            cals: avg.avgCals,
+            protein: avg.avgProtein,
+            defaultValue: `Avg over ${avg.loggedDays} logged days: ${avg.avgCals} kcal · ${avg.avgProtein}g protein`,
+          })}
+        </p>
+      )}
     </div>
   );
 }

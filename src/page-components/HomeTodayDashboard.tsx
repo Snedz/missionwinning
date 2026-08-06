@@ -8,6 +8,7 @@
 import { useRouter } from 'next/navigation';
 import { useEffect, useMemo, useState, type ReactNode } from "react";
 import dynamic from "next/dynamic";
+import { Plus } from 'lucide-react';
 import { useTranslation } from "react-i18next";
 import { useWorkoutStore } from "@/store/workoutStore";
 import { getRecommendedFocus, computeWinScore, computeBodyScores, getCoachInsight } from "@/lib/score";
@@ -77,6 +78,11 @@ const CoachTodayCard = dynamic(
 
 const TodayCoachWeekStrip = dynamic(
   () => import('@/components/coach/TodayCoachWeekStrip').then((m) => m.TodayCoachWeekStrip),
+  { ssr: false, loading: () => <SkeletonBlock className="h-14 w-full" /> }
+);
+
+const TodayLogWeekStrip = dynamic(
+  () => import('@/components/today/TodayLogWeekStrip').then((m) => m.TodayLogWeekStrip),
   { ssr: false, loading: () => <SkeletonBlock className="h-14 w-full" /> }
 );
 
@@ -483,6 +489,24 @@ export function HomeTodayDashboard() {
     };
   }, [belowFoldReady, workoutHistory, i18n.language]);
 
+  // The latest session entry still awaiting the athlete's words (48h window).
+  const [reflectEntry, setReflectEntry] = useState<{ workoutName: string } | null>(null);
+  useEffect(() => {
+    if (!belowFoldReady) return;
+    let cancelled = false;
+    void Promise.all([
+      import('@/lib/journal/journalStore'),
+      import('@/lib/today/journalReflectMount'),
+    ]).then(([{ listJournalEntries }, { journalReflectMayMount }]) => {
+      if (cancelled) return;
+      const latest = listJournalEntries(1)[0] ?? null;
+      setReflectEntry(journalReflectMayMount(latest) ? latest : null);
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, [belowFoldReady, workoutHistory]);
+
 
   // Onboarding via I-Day journey (Profile fields synced from /welcome).
   // Read in an effect, not during render: a render-time storage read makes the
@@ -572,6 +596,8 @@ export function HomeTodayDashboard() {
       ? { hasActivity: weekRecap.hasActivity, isWeekEnd: weekRecap.isWeekEnd }
       : null,
     hasCoachPlan,
+    reflectInvite: !!reflectEntry,
+    hasActiveWorkout: !!activeWorkout,
   });
 
   const nodesByKey: Partial<Record<TodayBlockKey, ReactNode>> = {
@@ -641,7 +667,50 @@ export function HomeTodayDashboard() {
     'day-review': <TodayDayReviewCard />,
     'week-recap': weekRecap ? <TodayWeekRecapCard recap={weekRecap} /> : null,
     'coach-week': <TodayCoachWeekStrip />,
+    'log-week': <TodayLogWeekStrip history={workoutHistory} />,
     'coach-today': <CoachTodayCard />,
+    reflect: reflectEntry ? (
+      <a
+        href="/history?tab=journal"
+        className="block border-y-2 border-border py-3.5 text-sm transition-colors hover:bg-muted"
+      >
+        <p className="mb-0.5 text-[11px] font-semibold uppercase tracking-[0.1em] text-muted-foreground">
+          {t('todayReflectEyebrow', { defaultValue: 'Journal' })}
+        </p>
+        <p className="text-[15px] font-semibold leading-snug text-foreground">
+          {t('todayReflectTitle', {
+            name: reflectEntry.workoutName,
+            defaultValue: `How was ${reflectEntry.workoutName}?`,
+          })}
+        </p>
+        <p className="text-xs text-muted-foreground mt-1 leading-relaxed">
+          {t('todayReflectBody', {
+            defaultValue: 'Add your own words — they stay on this device.',
+          })}
+        </p>
+      </a>
+    ) : null,
+    'log-activity': (
+      <a
+        href="/track"
+        className="flex min-h-[56px] items-center gap-3 border-2 border-dashed border-border px-4 py-3 transition-colors hover:bg-muted"
+      >
+        <Plus className="h-4 w-4 shrink-0 text-muted-foreground" aria-hidden />
+        <span className="min-w-0">
+          <span className="block text-[11px] font-semibold uppercase tracking-[0.1em] text-muted-foreground">
+            {t('navTrack', { defaultValue: 'Track' })}
+          </span>
+          <span className="block text-[15px] font-semibold leading-snug text-foreground">
+            {t('todayLogActivityTitle', { defaultValue: 'Log an activity' })}
+          </span>
+          <span className="block text-xs text-muted-foreground mt-0.5">
+            {t('todayLogActivityBody', {
+              defaultValue: 'Walks, runs, rides — extra work counts here.',
+            })}
+          </span>
+        </span>
+      </a>
+    ),
     guidebook: <GuidebookContinueCard />,
     encourage: (
       <p className="text-center text-sm text-muted-foreground px-4">
