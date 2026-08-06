@@ -219,8 +219,11 @@ export function LogConsole({
             type="button"
             aria-pressed={kind === k}
             onClick={() => onKindChange(k)}
+            aria-label={t(setKindLabelKey(k), {
+              defaultValue: k === 'normal' ? 'Work' : setKindDefaultLabel(k),
+            })}
             className={cn(
-              'min-h-[44px] border-2 px-2.5 text-[11px] font-semibold uppercase tracking-[0.06em] transition-colors',
+              'min-h-[44px] border-2 px-2.5 text-[11px] font-semibold uppercase tracking-[0.06em] transition-colors tap-target',
               kind === k
                 ? 'border-accent-400 bg-accent-400 text-neutral-900'
                 : 'border-neutral-700 text-neutral-300 hover:bg-neutral-800'
@@ -235,7 +238,7 @@ export function LogConsole({
           <button
             type="button"
             onClick={() => setKindsExpanded(true)}
-            className="min-h-[44px] border-2 border-neutral-700 px-2.5 text-[11px] font-semibold uppercase tracking-[0.06em] text-neutral-300 transition-colors hover:bg-neutral-800"
+            className="min-h-[44px] border-2 border-neutral-700 px-2.5 text-[11px] font-semibold uppercase tracking-[0.06em] text-neutral-300 transition-colors hover:bg-neutral-800 tap-target"
             data-testid="log-console-expand-kinds"
             aria-expanded={false}
             aria-controls="log-console-set-kinds"
@@ -269,7 +272,7 @@ export function LogConsole({
             <button
               type="button"
               onClick={() => onWeightChange(weightStep > 0 ? weightStep : 5)}
-              className="flex h-[52px] w-full items-center justify-center border-2 border-neutral-700 bg-foreground text-[22px] font-extrabold text-neutral-100"
+              className="flex h-[52px] w-full items-center justify-center border-2 border-neutral-700 bg-foreground text-[22px] font-extrabold text-neutral-100 tap-target"
               aria-label={t('activeSetBodyweightAddLoad', {
                 defaultValue: 'Bodyweight — tap to add load',
               })}
