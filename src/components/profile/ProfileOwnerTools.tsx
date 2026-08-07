@@ -8,6 +8,7 @@ import { SUPER_BUNDLE_PRICE } from '@/lib/payments';
 import { getJourneyEvents } from '@/lib/journeyAnalytics';
 import { STORAGE_KEY_PREFIXES } from '@/lib/storage/keys';
 import { keysWithPrefix, readRaw } from '@/lib/storage/safeStorage';
+import { toast } from '@/hooks/use-toast';
 
 export function ProfileOwnerTools() {
   const { t } = useTranslation();
@@ -63,6 +64,7 @@ export function ProfileOwnerTools() {
         <CardContent>
           <Button
             variant="outline"
+            className="min-h-[44px] tap-target"
             onClick={() => {
               const events = getJourneyEvents();
               const legacy = keysWithPrefix(STORAGE_KEY_PREFIXES.event).map((k) => ({
@@ -71,9 +73,14 @@ export function ProfileOwnerTools() {
               }));
               console.log('Mission Winning Journey Events:', events);
               console.log('Legacy mw_event_* keys:', legacy);
-              alert(
-                `${events.length} journey events (${events.filter((e) => e.name === 'journey_phase_complete').length} phase completes). See console for details.`
-              );
+              toast({
+                title: t('demoAnalyticsToast', { defaultValue: 'Events logged to console' }),
+                description: t('demoAnalyticsToastDesc', {
+                  count: events.length,
+                  phases: events.filter((e) => e.name === 'journey_phase_complete').length,
+                  defaultValue: `${events.length} journey events (${events.filter((e) => e.name === 'journey_phase_complete').length} phase completes).`,
+                }),
+              });
             }}
           >
             {t('viewEvents', { defaultValue: 'View Tracked Events (console)' })}

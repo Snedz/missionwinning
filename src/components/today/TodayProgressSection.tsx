@@ -276,37 +276,57 @@ export function TodayProgressSection({
 
             {SHOW_TODAY_FOUNDER_TOOLS && (
               <>
-            <Button size="sm" variant="ghost" className="text-xs mt-1" onClick={async () => {
+            <Button size="sm" variant="ghost" className="text-xs mt-1 min-h-[44px] tap-target" onClick={async () => {
               try {
                 const u = await getUser();
                 const today = localDateKey();
                 if (u) await saveNutritionEntry({ date: today, name: 'Daily Pillar Win (quick log)', protein: 0, cals: 0 });
                 const current = bumpTrainingStreak();
                 setRecentPillarWins(prev => [{name: 'Daily Pillar Win (quick log)', date: today}, ...prev].slice(0,5));
-                alert(`Daily win logged! +1 streak (${current}). ${u ? 'Saved to cloud.' : 'Sign in for cloud sync.'}`);
+                toast({
+                  title: t('todayFounderWinLogged', { defaultValue: 'Win logged' }),
+                  description: t('todayFounderStreakCloud', {
+                    streak: current,
+                    defaultValue: u
+                      ? `Streak ${current}. Saved to cloud.`
+                      : `Streak ${current}. Sign in to sync.`,
+                  }),
+                });
               } catch { /* noop */ }
             }}>Log Daily Pillar Win (+streak + cloud)</Button>
-            <Button size="sm" variant="ghost" className="text-xs mt-1" onClick={async () => {
+            <Button size="sm" variant="ghost" className="text-xs mt-1 min-h-[44px] tap-target" onClick={async () => {
               try {
                 const u = await getUser();
                 const today = localDateKey();
                 if (u) await saveNutritionEntry({ date: today, name: 'Quick Mind Win from Home', protein: 0, cals: 0 });
                 const current = bumpTrainingStreak();
                 setRecentPillarWins(prev => [{name: 'Quick Mind Win from Home', date: today}, ...prev].slice(0,5));
-                alert(`Mind win logged! +1 streak (${current}). ${u ? 'Cloud saved.' : ''}`);
+                toast({
+                  title: t('todayFounderMindLogged', { defaultValue: 'Mind win logged' }),
+                  description: t('todayFounderStreakOnly', {
+                    streak: current,
+                    defaultValue: `Streak ${current}.`,
+                  }),
+                });
               } catch { /* noop */ }
             }}>Log Mind Win (+streak + cloud)</Button>
-            <Button size="sm" variant="ghost" className="text-xs mt-1" onClick={async () => {
+            <Button size="sm" variant="ghost" className="text-xs mt-1 min-h-[44px] tap-target" onClick={async () => {
               try {
                 const u = await getUser();
                 const today = localDateKey();
                 if (u) await saveNutritionEntry({ date: today, name: 'Quick Move Win from Home', protein: 0, cals: 0 });
                 const current = bumpTrainingStreak();
                 setRecentPillarWins(prev => [{name: 'Quick Move Win from Home', date: today}, ...prev].slice(0,5));
-                alert(`Move win logged! +1 streak (${current}). ${u ? 'Cloud saved.' : ''}`);
+                toast({
+                  title: t('todayFounderMoveLogged', { defaultValue: 'Move win logged' }),
+                  description: t('todayFounderStreakOnly', {
+                    streak: current,
+                    defaultValue: `Streak ${current}.`,
+                  }),
+                });
               } catch { /* noop */ }
             }}>Log Move Win (+streak + cloud)</Button>
-            <Button size="sm" variant="outline" className="text-xs mt-1" onClick={async () => {
+            <Button size="sm" variant="outline" className="text-xs mt-1 min-h-[44px] tap-target" onClick={async () => {
               try {
                 const u = await getUser();
                 if (u) {
@@ -314,9 +334,14 @@ export function TodayProgressSection({
                   const cloud = await getUserNutritionForDate(today);
                   const wins = cloud.filter((w: CloudNutritionEntry) => /win|assessment|mobility|mind/i.test(w.name || ''));
                   setRecentPillarWins(wins.slice(0, 5));
-                  alert('Pillar wins refreshed from cloud.');
+                  toast({ title: t('todayFounderWinsRefreshed', { defaultValue: 'Wins refreshed' }) });
                 } else {
-                  alert('Sign in to load cloud wins.');
+                  toast({
+                    title: t('todayFounderSignInWins', { defaultValue: 'Sign in required' }),
+                    description: t('todayFounderSignInWinsDesc', {
+                      defaultValue: 'Sign in to load cloud wins.',
+                    }),
+                  });
                 }
               } catch { /* noop */ }
             }}>Refresh pillar wins from cloud</Button>
@@ -440,36 +465,64 @@ export function TodayProgressSection({
             })}
           </div>
           <div className="col-span-2 flex gap-2 mt-1 flex-wrap">
-            <Button size="sm" variant="outline" className="text-xs" onClick={() => router.push('/leaderboard')}>
+            <Button size="sm" variant="outline" className="text-xs min-h-[44px] tap-target" onClick={() => router.push('/leaderboard')}>
               {t('todayViewLeaderboard', { defaultValue: 'View leaderboard' })}
             </Button>
             {SHOW_TODAY_FOUNDER_TOOLS && (
               <>
-            <Button size="sm" variant="ghost" className="text-xs" onClick={() => {
+            <Button size="sm" variant="ghost" className="text-xs min-h-[44px] tap-target" onClick={() => {
               const current = bumpTrainingStreak();
-              alert(`Win logged! Streak now ${current}. Refresh or complete a workout to update.`); 
+              toast({
+                title: t('todayFounderWinLogged', { defaultValue: 'Win logged' }),
+                description: t('todayFounderStreakOnly', {
+                  streak: current,
+                  defaultValue: `Streak ${current}.`,
+                }),
+              }); 
               router.refresh(); 
             }}>Log a daily win +1 streak</Button>
-            <Button size="sm" variant="ghost" className="text-xs" onClick={() => { alert('Great protein day logged (demo). Complete real logs in /nutrition for real tracking.'); }}>Log high-protein day</Button>
-            <Button size="sm" variant="ghost" className="text-xs" onClick={async () => {
+            <Button size="sm" variant="ghost" className="text-xs min-h-[44px] tap-target" onClick={() => { toast({
+                  title: t('todayFounderProteinDemo', { defaultValue: 'Demo only' }),
+                  description: t('todayFounderProteinDemoDesc', {
+                    defaultValue: 'Log real meals in Fuel for tracking.',
+                  }),
+                }); }}>Log high-protein day</Button>
+            <Button size="sm" variant="ghost" className="text-xs min-h-[44px] tap-target" onClick={async () => {
               try {
                 const { getUser, saveNutritionEntry } = await import('@/lib/supabase');
                 const u = await getUser();
                 const today = localDateKey();
                 if (u) await saveNutritionEntry({ date: today, name: 'Mind Win: 5-min breath + gratitude', protein: 0, cals: 0 });
                 const cur = bumpTrainingStreak();
-                alert(`Mind Win logged! +1 streak (${cur}). Check Nutrition for the entry.`);
+                toast({
+                  title: t('todayFounderMindLogged', { defaultValue: 'Mind win logged' }),
+                  description: t('todayFounderStreakOnly', {
+                    streak: cur,
+                    defaultValue: `Streak ${cur}.`,
+                  }),
+                });
               } catch { /* noop */ }
             }}>Log Mind Win (+streak + cloud)</Button>
             <Button size="sm" variant="ghost" className="text-xs min-h-[44px] tap-target" onClick={() => onStartStarter("Daily Mobility Circuit (Free)", freeStarters.find(s => s.name.includes("Mobility"))?.exercises || [])}>Quick mobility</Button>
-            <Button size="sm" variant="ghost" className="text-xs" onClick={() => {
+            <Button size="sm" variant="ghost" className="text-xs min-h-[44px] tap-target" onClick={() => {
               const current = bumpTrainingStreak();
-              alert(`Mobility habit logged! +1 to streak (${current} days). Synergy with Move pillar builds the path.`);
+              toast({
+                title: t('todayFounderMobilityLogged', { defaultValue: 'Mobility habit logged' }),
+                description: t('todayFounderStreakOnly', {
+                  streak: current,
+                  defaultValue: `Streak ${current}.`,
+                }),
+              });
               router.refresh();
             }}>Log Mobility Habit (+streak)</Button>
             <Button size="sm" variant="ghost" className="text-xs min-h-[44px] tap-target" onClick={() => onStartStarter("Daily Mobility + Mind Habit", freeStarters.find(s => s.name.includes("Mind Habit"))?.exercises || [])}>Start daily habit stack</Button>
-            <Button size="sm" variant="ghost" className="text-xs" onClick={() => {
-              alert('Log a post-mobility recovery snack in Nutrition (e.g. yogurt bowl). Builds Fuel + Move synergy.');
+            <Button size="sm" variant="ghost" className="text-xs min-h-[44px] tap-target" onClick={() => {
+              toast({
+                title: t('todayFounderSnackHint', { defaultValue: 'Open Fuel' }),
+                description: t('todayFounderSnackHintDesc', {
+                  defaultValue: 'Log a recovery snack when you are ready.',
+                }),
+              });
               router.push('/nutrition');
             }}>Log recovery snack</Button>
               </>
