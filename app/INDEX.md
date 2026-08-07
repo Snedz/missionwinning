@@ -92,4 +92,9 @@
 ## Do not open
 
 - Deleted: `app/api/coach/plan/route.ts` — use `plan-voice` + client `src/lib/coach/`
-- Empty ghost dirs (`app/about/`, etc.) were **removed** — all page routes live under `app/(app)/`
+- Empty ghost dirs were **removed** — signed-in page routes live under `app/(app)/`.
+  **Exception (`.595`):** `app/about/` and `app/vision/` are real, deliberate top-level
+  routes. They render marketing chrome (`PublicPageShell`), not the app shell, because
+  the landing footer links to them from every public page — a visitor clicking "About"
+  must not land inside a signed-in nav rail. URLs are unchanged; route groups do not
+  affect paths.

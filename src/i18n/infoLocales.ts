@@ -233,6 +233,10 @@ type InfoStrings = {
   americaEyebrow: string;
   learnEyebrow: string;
   feedbackEyebrow: string;
+  joinClassLoading: string;
+  joinClassFailedTitle: string;
+  joinClassFailedDesc: string;
+  joinClassFailedHome: string;
 };
 
 const en: InfoStrings = {
@@ -610,6 +614,11 @@ const en: InfoStrings = {
   americaEyebrow: 'America',
   learnEyebrow: 'Learn',
   feedbackEyebrow: 'Feedback',
+  joinClassLoading: 'Joining class…',
+  joinClassFailedTitle: 'That class code did not work',
+  joinClassFailedDesc:
+    'Check the code with your teacher — codes are short letter-number combinations. Nothing was saved.',
+  joinClassFailedHome: 'Go to Today',
   infoPrivacyChanges: 'Changes to this policy',
   infoPrivacyChangesBody:
     'This policy is versioned; the date above is the version you accept. Material changes re-prompt for consent in the app before your next sign-in, and are announced in the app or by email where appropriate. Earlier versions are available on request.',
