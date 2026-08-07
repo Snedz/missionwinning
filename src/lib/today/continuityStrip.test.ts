@@ -53,10 +53,34 @@ describe('buildContinuitySuggestions', () => {
     const s = buildContinuitySuggestions({
       hasTrainHistory: true,
       trainedToday: false,
+      localHour: 12,
     });
     assert.ok(s.length >= 1);
     assert.ok(!s.some((x) => /missed|fail|guilt/i.test(x.titleDefault + x.reasonDefault)));
     assert.ok(s.some((x) => x.href.includes('pre-session') || x.href.includes('pre-lift')));
+  });
+
+  it('evening after train deep-links sleep-week series', () => {
+    const s = buildContinuitySuggestions({
+      hasTrainHistory: true,
+      trainedToday: true,
+      lastFocusGroups: ['Quads'],
+      localHour: 21,
+    });
+    const mind = s.find((x) => x.kind === 'mind');
+    assert.ok(mind);
+    assert.equal(mind!.href, '/mind?collection=sleep-week');
+    assert.equal(mind!.collectionId, 'sleep-week');
+  });
+
+  it('evening rest day prioritizes sleep-week mind', () => {
+    const s = buildContinuitySuggestions({
+      hasTrainHistory: true,
+      trainedToday: false,
+      localHour: 22,
+    });
+    assert.equal(s[0]?.kind, 'mind');
+    assert.equal(s[0]?.href, '/mind?collection=sleep-week');
   });
 });
 
