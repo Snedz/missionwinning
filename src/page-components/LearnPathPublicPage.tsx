@@ -92,7 +92,7 @@ export function LearnPathPublicPage({ path }: Props) {
             data-testid="seo-path-open-learn"
             onClick={() => track('public_cta_clicked', { target: openInLearn, path: path.id })}
           >
-            Open in Learn →
+            Open in Learn
           </Link>
           <Link
             href="/welcome"

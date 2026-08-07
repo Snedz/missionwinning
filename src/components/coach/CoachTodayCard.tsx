@@ -237,8 +237,7 @@ export function CoachTodayCard() {
         <Link href="/coach" className="text-xs text-primary hover:underline block text-center min-h-[44px] leading-[44px]">
           {locked && !freeBeta
             ? t('coachViewLockedPlan', { defaultValue: 'View last week' })
-            : t('coachViewPlan', { defaultValue: 'View full week' })}{' '}
-          →
+            : t('coachViewPlan', { defaultValue: 'View full week' })}
         </Link>
       </CardContent>
     </Card>

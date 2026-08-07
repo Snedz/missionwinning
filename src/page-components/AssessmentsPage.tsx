@@ -318,7 +318,7 @@ export function AssessmentsPage() {
                 {result.recommendations.map((r, i) => (
                   <Button key={i} size="sm" variant="outline" onClick={() => startRecommended(r)}>
                     {t('assessStartPrefix', { defaultValue: 'Start' })}:{' '}
-                    {r.length > 45 ? `${r.slice(0, 42)}...` : r} →
+                    {r.length > 45 ? `${r.slice(0, 42)}...` : r}
                   </Button>
                 ))}
               </div>

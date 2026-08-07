@@ -24,8 +24,8 @@ export function TodayCoachWeekStrip() {
               {t('coachWeekOverview', { defaultValue: 'Mission Coach · this week' })}
             </span>
           </span>
-          <Link href="/coach" className="text-xs text-primary hover:underline font-normal">
-            {t('coachViewPlan', { defaultValue: 'View full week' })} →
+          <Link href="/coach" className="text-xs text-primary hover:underline font-normal min-h-[44px] inline-flex items-center tap-target">
+            {t('coachViewPlan', { defaultValue: 'View full week' })}
           </Link>
         </CardTitle>
       </CardHeader>

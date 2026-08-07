@@ -236,7 +236,7 @@ export function WelcomePage() {
                   </p>
                 </div>
 
-                <button type="button" className="primary-action" onClick={handleBegin}>
+                <button type="button" className="primary-action min-h-[52px] w-full" onClick={handleBegin}>
                   {t('welcomeBegin', { defaultValue: 'Continue' })}
                 </button>
               </>
@@ -324,7 +324,7 @@ export function WelcomePage() {
                     })}
                   />
                 </label>
-                <button type="button" className="primary-action" onClick={handleProfileNext}>
+                <button type="button" className="primary-action min-h-[52px] w-full" onClick={handleProfileNext}>
                   {isEdit
                     ? t('saveProfile', { defaultValue: 'Save profile' })
                     : t('welcomeContinue', { defaultValue: 'Continue' })}

@@ -84,7 +84,7 @@ export function PrivacyPage() {
               {section.id === 'regions' && (
                 <p className="mt-2">
                   <Link href="/regions" className="text-primary hover:underline text-sm">
-                    {t('infoRegionsTitle', { defaultValue: 'Supported Regions' })} →
+                    {t('infoRegionsTitle', { defaultValue: 'Supported Regions' })}
                   </Link>
                 </p>
               )}

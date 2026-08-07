@@ -228,7 +228,7 @@ export function ProgramsPage() {
                   <p className="text-muted-foreground">{t(prog.disclaimerKey)}</p>
                   <div className="flex flex-wrap gap-3">
                     <Link href="/feedback" className="text-primary hover:underline text-xs">
-                      Share feedback →
+                      Share feedback
                     </Link>
                     <Button
                       size="sm"

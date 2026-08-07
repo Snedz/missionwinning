@@ -122,7 +122,7 @@ export function FuelQuickLogPanel({
                   type="button"
                   variant="ghost"
                   size="sm"
-                  className="h-8 w-8 p-0  text-muted-foreground"
+                  className="h-11 w-11 p-0 tap-target text-muted-foreground"
                   aria-label={t('fuelEditThenLog', { defaultValue: 'Edit servings then log' })}
                   onClick={() => openDraftFromChip(name, p, c, carbs, fat)}
                 >

@@ -46,7 +46,7 @@ export function MilitaryReadinessSection() {
           </div>
         ))}
         <Button asChild variant="outline" className="w-full min-h-[44px] border-border">
-          <Link href="/active">Train for standards →</Link>
+          <Link href="/active">Train for standards</Link>
         </Button>
         <p className="text-[10px] text-muted-foreground text-center pt-1">
           Civilian health app — not affiliated with any armed service. Form guides use test-prep language here only.

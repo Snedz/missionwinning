@@ -67,32 +67,32 @@ export function TermsPage() {
               {section.id === 'dmca' && (
                 <p className="mt-2">
                   <Link href="/dmca" className="text-primary hover:underline text-sm">
-                    {t('infoDmcaTitle', { defaultValue: 'DMCA / Copyright' })} →
+                    {t('infoDmcaTitle', { defaultValue: 'DMCA / Copyright' })}
                   </Link>
                 </p>
               )}
               {section.id === 'premium' && (
                 <p className="mt-2">
                   <Link href="/refunds" className="text-primary hover:underline text-sm">
-                    {t('infoRefundsTitle', { defaultValue: 'Refunds & cancellation' })} →
+                    {t('infoRefundsTitle', { defaultValue: 'Refunds & cancellation' })}
                   </Link>
                   {' · '}
                   <Link href="/service-terms" className="text-primary hover:underline text-sm">
-                    {t('infoServiceTermsTitle', { defaultValue: 'Service-Specific Terms' })} →
+                    {t('infoServiceTermsTitle', { defaultValue: 'Service-Specific Terms' })}
                   </Link>
                 </p>
               )}
               {section.id === 'acceptable-use' && (
                 <p className="mt-2">
                   <Link href="/usage" className="text-primary hover:underline text-sm">
-                    {t('infoUsageTitle', { defaultValue: 'Usage Policy' })} →
+                    {t('infoUsageTitle', { defaultValue: 'Usage Policy' })}
                   </Link>
                 </p>
               )}
               {section.id === 'eligibility' && (
                 <p className="mt-2">
                   <Link href="/regions" className="text-primary hover:underline text-sm">
-                    {t('infoRegionsTitle', { defaultValue: 'Supported Regions' })} →
+                    {t('infoRegionsTitle', { defaultValue: 'Supported Regions' })}
                   </Link>
                 </p>
               )}
