@@ -81,11 +81,11 @@ export function LiveHeartRate() {
       </div>
       {supported &&
         (deviceName ? (
-          <Button type="button" size="sm" variant="ghost" onClick={disconnect}>
+          <Button type="button" size="sm" variant="ghost" className="min-h-[44px] tap-target" onClick={disconnect}>
             {t('liveHrDisconnect', { defaultValue: 'Disconnect' })}
           </Button>
         ) : (
-          <Button type="button" size="sm" variant="outline" onClick={() => void connect()}>
+          <Button type="button" size="sm" variant="outline" className="min-h-[44px] tap-target" onClick={() => void connect()}>
             {t('liveHrConnect', { defaultValue: 'Connect HR' })}
           </Button>
         ))}

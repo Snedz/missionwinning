@@ -133,20 +133,20 @@ export function GuidedStepPlayer({
             })}
           </p>
           <div className="flex gap-2 flex-wrap">
-            <Button asChild variant="onInk" size="sm">
+            <Button asChild variant="onInk" size="sm" className="min-h-[44px] tap-target">
               <Link href="/nutrition">{t('coachActionLogNutrition', { defaultValue: 'Log Fuel' })}</Link>
             </Button>
-            <Button asChild variant="onInk" size="sm">
+            <Button asChild variant="onInk" size="sm" className="min-h-[44px] tap-target">
               <Link href="/learn/guide">{t('coachActionOpenLearn', { defaultValue: 'Open Learn' })}</Link>
             </Button>
-            <Button asChild variant="onInk" size="sm">
+            <Button asChild variant="onInk" size="sm" className="min-h-[44px] tap-target">
               <Link href="/log">{t('coachActionViewToday', { defaultValue: 'Back to Today' })}</Link>
             </Button>
-            <Button variant="onInkSolid" onClick={handleReset}>
+            <Button variant="onInkSolid" className="min-h-[44px] tap-target" onClick={handleReset}>
               {t('guidedSessionRepeat', { defaultValue: 'Repeat' })}
             </Button>
             {onExit && (
-              <Button variant="onInk" onClick={onExit}>
+              <Button variant="onInk" className="min-h-[44px] tap-target" onClick={onExit}>
                 {t('guidedSessionBack', { defaultValue: 'Back' })}
               </Button>
             )}
@@ -306,17 +306,17 @@ export function GuidedStepPlayer({
           )}
           {state.status !== 'idle' && (
             <>
-              <Button variant="onInk" size={isCompact ? 'sm' : 'default'} onClick={handleSkip} aria-label={t('guidedSessionSkip', { defaultValue: 'Skip step' })}>
+              <Button variant="onInk" size={isCompact ? 'sm' : 'default'} className="min-h-[44px] tap-target" onClick={handleSkip} aria-label={t('guidedSessionSkip', { defaultValue: 'Skip step' })}>
                 <SkipForward className="h-4 w-4 mr-2" aria-hidden />
                 {t('guidedSessionSkip', { defaultValue: 'Skip' })}
               </Button>
-              <Button variant="onInk" size="sm" onClick={handleReset}>
+              <Button variant="onInk" size="sm" className="min-h-[44px] tap-target" onClick={handleReset}>
                 {t('guidedSessionReset', { defaultValue: 'Reset' })}
               </Button>
             </>
           )}
           {onExit && state.status === 'idle' && (
-            <Button variant="ghost" size="sm" onClick={onExit}>
+            <Button variant="ghost" size="sm" className="min-h-[44px] tap-target" onClick={onExit}>
               {t('guidedSessionBack', { defaultValue: 'Back' })}
             </Button>
           )}
