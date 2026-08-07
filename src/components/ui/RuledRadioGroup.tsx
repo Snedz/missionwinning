@@ -65,7 +65,7 @@ export function RuledRadioGroup({
                     // not poster: white on #ec3013 is 4.19:1 and this label is
                     // 14px, so poster would fail AA — the same split `.141`
                     // made for Today's field.
-                    'border-[hsl(var(--accent-poster))] bg-accent-100 font-semibold text-primary ' +
+                    'border-[hsl(var(--accent-poster))] bg-muted font-semibold text-primary ' +
                     'md:border-[hsl(var(--primary-fill))] md:bg-primary-fill md:text-primary-foreground'
                   : 'border-border hover:bg-muted'
               )}

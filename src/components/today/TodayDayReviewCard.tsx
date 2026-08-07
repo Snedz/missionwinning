@@ -55,7 +55,7 @@ export function TodayDayReviewCard() {
   return (
     <section className="content-card border-border p-4 space-y-3" aria-label={t('todayDayReviewTitle', { defaultValue: 'Day in review' })}>
       <div className="flex items-start gap-3">
-        <div className="flex h-10 w-10 shrink-0 items-center justify-center bg-accent-100 text-accent-900">
+        <div className="flex h-10 w-10 shrink-0 items-center justify-center bg-muted border-2 border-border text-foreground">
           <Moon className="h-5 w-5" aria-hidden />
         </div>
         <div className="min-w-0 flex-1">

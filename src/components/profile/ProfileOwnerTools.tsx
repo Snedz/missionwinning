@@ -30,7 +30,7 @@ export function ProfileOwnerTools() {
 
   return (
     <>
-      <Card className="content-card border-primary bg-accent-100">
+      <Card className="content-card border-primary bg-muted">
         <CardHeader>
           <CardTitle>
             {t('revenueSnapshot', { defaultValue: 'Super Bundle Snapshot (Demo)' })}
@@ -50,7 +50,7 @@ export function ProfileOwnerTools() {
             Bundle sustains the free core for the global mission. Track real via Supabase later.
           </div>
           <div className="text-[10px] mt-1">
-            Members who join the bundle help make the free path available worldwide. Share wins →
+            Members who join the bundle help make the free path available worldwide. Share wins
             /feedback.
           </div>
         </CardContent>

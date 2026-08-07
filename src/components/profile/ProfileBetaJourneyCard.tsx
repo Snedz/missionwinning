@@ -25,7 +25,7 @@ export function ProfileBetaJourneyCard({
   const { t } = useTranslation();
 
   return (
-    <Card className="content-card border-primary bg-accent-100">
+    <Card className="content-card border-primary bg-muted">
       <CardHeader>
         <CardTitle>{t('betaJourneyProgress', { defaultValue: 'Beta journey progress' })}</CardTitle>
       </CardHeader>
