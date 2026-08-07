@@ -124,7 +124,7 @@ Rule: **if behavior isn't obvious from the spec, attach a debug-build walkthroug
 | Color + motion tokens | `src/index.css` `:root` (web) · `MwColors.kt` / `MwMotion.kt` (Android) · planned `packages/mw-core/tokens/brand.json` single source ([MOBILE_PLAYBOOK.md](MOBILE_PLAYBOOK.md) §5) |
 | Type styles | Archivo scale + `.display-*` classes ([DESIGN_SYSTEM.md](DESIGN_SYSTEM.md)) · Android `Type.kt` |
 | Icons | lucide on web (no emoji as UI); committed vectors on Android |
-| Illustration / mascot | Scout, sparingly — victory + empty-state moments only, never mascot spam |
+| Illustration / mascot | Kalligator, sparingly — social · one empty state · Victory only, never mascot spam ([MASCOT.md](MASCOT.md)) |
 | Fonts | Committed files (web Archivo; Android TTFs under `core/designsystem/res/font/`) |
 | Reusable components | `src/components/*` folder INDEX files; Android debug `DesignSystemGalleryScreen` |
 | Export formats | webp for raster; SVG/vector-first; no new binary formats without need |
