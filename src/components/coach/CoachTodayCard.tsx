@@ -145,7 +145,7 @@ export function CoachTodayCard() {
                   'Premium eases later sessions when load runs high so you recover without quitting the week.',
               })}
             </p>
-            <Button asChild variant="outline" size="sm" className="w-full">
+            <Button asChild variant="outline" size="sm" className="w-full min-h-[44px] tap-target">
               <Link href="/bundle">{t('coachUnlockBundle', { defaultValue: 'Unlock Super Bundle' })}</Link>
             </Button>
           </>
@@ -216,7 +216,7 @@ export function CoachTodayCard() {
             {bandLine && <p className="text-[11px] text-muted-foreground">{bandLine}</p>}
             {todaySession.status !== 'done' && (
               <>
-                <Button variant="outline" size="sm" className="w-full" onClick={startToday}>
+                <Button variant="outline" size="sm" className="w-full min-h-[44px] tap-target" onClick={startToday}>
                   {t('coachStartSession', { defaultValue: 'Start this session' })}
                 </Button>
                 <Link

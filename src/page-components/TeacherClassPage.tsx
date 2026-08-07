@@ -216,10 +216,10 @@ function TeacherClassInner({ code: rawCode }: { code: string }) {
               placeholder="123456"
             />
             {pinError && <p className="text-xs text-destructive">{pinError}</p>}
-            <Button className="w-full" onClick={() => void tryUnlock(pinInput)}>
+            <Button className="w-full min-h-[44px] tap-target" onClick={() => void tryUnlock(pinInput)}>
               {t('teacherPinUnlock', { defaultValue: 'Unlock dashboard' })}
             </Button>
-            <Button variant="ghost" className="w-full" asChild>
+            <Button variant="ghost" className="w-full min-h-[44px] tap-target" asChild>
               <Link href={americaHomeOrFallback()}>
                 {t('pftBackBenchmarks', { defaultValue: 'Back' })}
               </Link>

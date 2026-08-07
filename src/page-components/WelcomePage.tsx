@@ -332,7 +332,7 @@ export function WelcomePage() {
                 <Button
                   variant="ghost"
                   size="sm"
-                  className="w-full"
+                  className="w-full min-h-[44px] tap-target"
                   onClick={() => (isEdit ? router.push('/profile') : setStep('welcome'))}
                 >
                   <ChevronLeft className="h-4 w-4 mr-1" />{' '}
@@ -412,7 +412,7 @@ export function WelcomePage() {
                 >
                   {t('welcomeSkipSignIn', { defaultValue: 'Skip — start training' })}
                 </button>
-                <Button variant="ghost" size="sm" className="w-full" onClick={() => setStep('profile')}>
+                <Button variant="ghost" size="sm" className="w-full min-h-[44px] tap-target" onClick={() => setStep('profile')}>
                   <ChevronLeft className="h-4 w-4 mr-1" />{' '}
                   {t('welcomeBack', { defaultValue: 'Back' })}
                 </Button>

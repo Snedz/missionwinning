@@ -161,7 +161,7 @@ export function GuidebookChapterPage({ chapterId }: Props) {
       )}
 
       <div className="fixed bottom-0 left-0 right-0 p-4 bg-background border-t border-border md:hidden z-40">
-        <Button className="w-full" variant="default" asChild>
+        <Button className="w-full min-h-[44px] tap-target" variant="default" asChild>
           <Link href={chapter.sections[0]?.practiceCTA.href ?? '/log'}>
             {t('guidebookPracticeInApp', { defaultValue: 'Practice in app' })}
           </Link>

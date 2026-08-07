@@ -294,7 +294,7 @@ export function WorkoutVictorySheet({
 
         <DialogFooter className="flex-col sm:flex-col gap-2 pt-1">
           {!summary.nextAction && (
-            <Button variant="outline" className="w-full" onClick={onViewToday}>
+            <Button variant="outline" className="w-full min-h-[44px] tap-target" onClick={onViewToday}>
               {t('victoryBackToday', { defaultValue: 'Back to Today' })}
             </Button>
           )}
