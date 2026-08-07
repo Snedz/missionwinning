@@ -49,7 +49,7 @@ export function ProfileFeedbackCard() {
         <Button
           type="button"
           variant="outline"
-          className="min-h-[44px] w-full"
+          className="min-h-[44px] w-full tap-target"
           onClick={() => setOpen(true)}
         >
           {t('feedbackCardOpen', { defaultValue: 'Send feedback' })}

@@ -295,7 +295,7 @@ export function AssessmentsPage() {
         >
           <CardHeader>
             <CardTitle>
-              {t('assessResultTitle', { defaultValue: 'Assessment Result' })}:{' '}
+              {t('assessResultTitle', { defaultValue: 'Assessment result' })}:{' '}
               <span className="uppercase">
                 {result.riskLevel === 'low'
                   ? t('riskLow', { defaultValue: 'Low risk' })
