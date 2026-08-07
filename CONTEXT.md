@@ -241,7 +241,7 @@ One screen of truth for any AI tool or human joining cold. Read this, then [AGEN
 > | Migrations | **9 recorded pending** — [LAUNCH_RUNBOOK](docs/LAUNCH_RUNBOOK.md) §3, enforced by `src/lib/migrationLedger.test.ts`. |
 > | gitleaks | **green — and scanning for the first time.** It had never scanned anything: on a `pull_request` event the action lists the PR's commits, the job declared no `permissions:` block, and it 403'd (`pull_requests=read`) before opening a file. Fixed by a `permissions:` block (`.224` carrying `.255`). It scans **only the PR's own commits**, so commit `8ea3527a`'s real Solana treasury address — scrubbed from the working file, still in history — is out of its scope. That finding stands, deliberately not allowlisted; it was never what made this check red. |
 
-- **`.462`:** (`2026.07-unified.462`) Legal industry-standard (GDPR policy + `/cookies` + `/accessibility` + consent re-prompt + account export/delete) + app voice recut (PillarPageHeader display type, Track recut, `/experience` retired, `.css` design guard).
+- **`.462`:** (`2026.07-unified.462`) Legal & privacy to industry standard — GDPR policy rewrite, `/cookies` + `/accessibility`, consent re-prompt (versions 2026-08-04), attribution behind consent, account export/delete (Art. 17/20, no migration).
 - **`.461`:** Library multi-select session studio — Train selected (max 12).
 - **`.460`:** Public Train this free CTA + craft index coverage truth.
 - **`.459`:** Structured form guides 66→82 + coverage ratchet.
