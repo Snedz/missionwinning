@@ -75,6 +75,7 @@ export function FirstStepsCard({ state }: { state: JourneyState }) {
           max={progress.total}
           segments={progress.total}
           size="sm"
+          className="min-h-[44px] tap-target"
           readout={`${progress.done} / ${progress.total}`}
         />
       </div>

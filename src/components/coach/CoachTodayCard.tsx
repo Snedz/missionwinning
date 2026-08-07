@@ -129,7 +129,12 @@ export function CoachTodayCard() {
                 defaultValue: 'Generate a weekly plan from your logs — no wearable required.',
               })}
             </p>
-            <Button variant="outline" size="sm" onClick={() => generate()}>
+            <Button
+              variant="outline"
+              size="sm"
+              className="min-h-[44px] tap-target"
+              onClick={() => generate()}
+            >
               {t('coachGenerateWeek', { defaultValue: 'Generate this week' })}
             </Button>
           </>
@@ -158,7 +163,12 @@ export function CoachTodayCard() {
                   'Open beta keeps Coach open. Generate the next week from your latest logs.',
               })}
             </p>
-            <Button variant="outline" size="sm" onClick={() => generate()}>
+            <Button
+              variant="outline"
+              size="sm"
+              className="min-h-[44px] tap-target"
+              onClick={() => generate()}
+            >
               {t('coachGenerateWeek', { defaultValue: 'Generate this week' })}
             </Button>
           </>

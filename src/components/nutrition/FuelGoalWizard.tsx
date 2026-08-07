@@ -116,7 +116,7 @@ export function FuelGoalWizard({ onApplied }: Props) {
           type="button"
           variant="outline"
           size="sm"
-          className="h-8 text-xs"
+          className="min-h-[44px] tap-target h-8 text-xs"
           onClick={openWizard}
         >
           {t('fuelGoalWizardCta', { defaultValue: 'Set from goal' })}
@@ -180,7 +180,7 @@ export function FuelGoalWizard({ onApplied }: Props) {
             step={0.1}
             value={bw}
             onChange={(e) => setBw(parseFloat(e.target.value) || 0)}
-            className="h-10 mt-0.5 tabular-nums"
+            className="min-h-[44px] h-11 mt-0.5 tabular-nums"
           />
         </div>
         <div className="col-span-2 sm:col-span-2">
@@ -191,7 +191,7 @@ export function FuelGoalWizard({ onApplied }: Props) {
             id="fuel-goal-act"
             value={activity}
             onChange={(e) => setActivity(parseFloat(e.target.value))}
-            className="mt-0.5 h-10 w-full  border border-input bg-background px-2 text-sm"
+            className="mt-0.5 min-h-[44px] h-11 w-full border border-input bg-background px-2 text-sm"
           >
             {activityLevelsList().map((a) => (
               <option key={a.key} value={a.value}>
@@ -226,7 +226,7 @@ export function FuelGoalWizard({ onApplied }: Props) {
               type="number"
               value={height}
               onChange={(e) => setHeight(parseFloat(e.target.value) || 0)}
-              className="h-10 mt-0.5 tabular-nums"
+              className="min-h-[44px] h-11 mt-0.5 tabular-nums"
             />
           </div>
           <div>
@@ -240,7 +240,7 @@ export function FuelGoalWizard({ onApplied }: Props) {
               max={100}
               value={age}
               onChange={(e) => setAge(parseInt(e.target.value, 10) || 28)}
-              className="h-10 mt-0.5 tabular-nums"
+              className="min-h-[44px] h-11 mt-0.5 tabular-nums"
             />
           </div>
           <div>
@@ -251,7 +251,7 @@ export function FuelGoalWizard({ onApplied }: Props) {
               id="fuel-goal-sex"
               value={sex}
               onChange={(e) => setSex(e.target.value as CalcSex)}
-              className="mt-0.5 h-10 w-full  border border-input bg-background px-2 text-sm"
+              className="mt-0.5 min-h-[44px] h-11 w-full border border-input bg-background px-2 text-sm"
             >
               <option value="male">{t('calcSexMale', { defaultValue: 'Male' })}</option>
               <option value="female">{t('calcSexFemale', { defaultValue: 'Female' })}</option>

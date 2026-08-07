@@ -147,7 +147,7 @@ export function TodayProgressSection({
                     <Button
                       size="sm"
                       variant="outline"
-                      className="mt-1 text-xs w-full"
+                      className="min-h-[44px] tap-target mt-1 text-xs w-full"
                       onClick={() => {
                         const template = matchingEx.map(ex => ({ exerciseId: ex.id, sets: [{ reps: 8, weight: 0 }] }));
                         startWorkout(`${groupLabel} Focus`, template);
@@ -535,7 +535,11 @@ export function TodayProgressSection({
       {typeof window !== 'undefined' && !window.matchMedia('(display-mode: standalone)').matches && (
         <div className="p-3 border-2 border-border bg-card text-sm flex items-center justify-between gap-3">
           <span>{t('todayInstallPwa', { defaultValue: 'Install Mission Winning for offline use anywhere (PWA).' })}</span>
-          <Button size="sm" variant="outline" onClick={() => {
+          <Button
+            size="sm"
+            variant="outline"
+            className="min-h-[44px] tap-target"
+            onClick={() => {
             const mw = window as MwWindow;
             const trig = mw.triggerPwaInstall;
             if (trig) trig();
@@ -550,7 +554,10 @@ export function TodayProgressSection({
                   }),
                 });
             }
-          }}>{t('todayInstallNow', { defaultValue: 'Install Now' })}</Button>
+          }}
+          >
+            {t('todayInstallNow', { defaultValue: 'Install Now' })}
+          </Button>
         </div>
       )}
 

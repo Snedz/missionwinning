@@ -415,7 +415,7 @@ export function PhotoMealLogger({ onLogEstimate }: Props) {
             type="button"
             variant="outline"
             size="sm"
-            className=""
+            className="min-h-[44px] tap-target "
             onClick={() => cameraInputRef.current?.click()}
           >
             <Camera className="h-4 w-4" />

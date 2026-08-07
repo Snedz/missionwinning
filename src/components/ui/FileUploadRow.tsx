@@ -96,7 +96,7 @@ export function FileUploadRow({
                 type="button"
                 size="sm"
                 variant="ghost"
-                className="h-7 text-xs px-2"
+                className="min-h-[44px] tap-target h-7 text-xs px-2"
                 onClick={onCancel}
               >
                 <Square className="h-3 w-3" />
@@ -148,7 +148,7 @@ export function FileUploadRow({
               {error || t('uploadFailed', { defaultValue: 'Upload failed.' })}
             </p>
             {onRetry && (
-              <Button type="button" size="sm" variant="outline" className="h-7 text-xs" onClick={onRetry}>
+              <Button type="button" size="sm" variant="outline" className="min-h-[44px] tap-target h-7 text-xs" onClick={onRetry}>
                 <RotateCcw className="h-3 w-3" />
                 {t('uploadRetry', { defaultValue: 'Retry' })}
               </Button>

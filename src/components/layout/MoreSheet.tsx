@@ -141,6 +141,7 @@ export function MoreSheet({ open, onClose }: { open: boolean; onClose: () => voi
       open={open}
       onClose={onClose}
       size="sm"
+      className="min-h-[44px] tap-target"
       eyebrow={t('navMoreEyebrow', { defaultValue: 'More' })}
       title={t('appName', { defaultValue: 'Mission Winning' })}
       bodyClassName="pb-2"
@@ -174,6 +175,7 @@ export function MoreSheet({ open, onClose }: { open: boolean; onClose: () => voi
                   max={stepProgress.total}
                   segments={stepProgress.total}
                   size="sm"
+                  className="min-h-[44px] tap-target"
                   readout={`${stepProgress.done} / ${stepProgress.total}`}
                 />
               </div>

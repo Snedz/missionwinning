@@ -120,7 +120,7 @@ export function GuideApexShell({
               type="button"
               variant="outline"
               size="sm"
-              className="lg:hidden"
+              className="min-h-[44px] tap-target lg:hidden"
               onClick={openToc}
               aria-label={t('magazineOpenContents', { defaultValue: 'Open contents' })}
             >

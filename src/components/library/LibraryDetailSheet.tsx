@@ -130,6 +130,7 @@ export function LibraryDetailSheet({
         open={open && !!exercise}
         onClose={() => onOpenChange(false)}
         size="sm"
+        className="min-h-[44px] tap-target"
         eyebrow={
           exercise
             ? [
