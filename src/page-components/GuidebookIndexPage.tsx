@@ -82,15 +82,15 @@ export function GuidebookIndexPage() {
               </p>
             </div>
             <div className="flex flex-wrap gap-2">
-              <Button variant="default" size="sm" asChild>
+              <Button variant="default" size="sm" className="min-h-[44px] tap-target" asChild>
                 <Link
                   href={PUBLIC_GUIDE_HREF}
                   onClick={() => track('guide_read', { page: 'app_to_public_magazine' })}
                 >
-                  {t('guidebookMagazineWeb', { defaultValue: 'Magazine (web) →' })}
+                  {t('guidebookMagazineWeb', { defaultValue: 'Magazine (web)' })}
                 </Link>
               </Button>
-              <Button variant="outline" size="sm" asChild>
+              <Button variant="outline" size="sm" className="min-h-[44px] tap-target" asChild>
                 <a
                   href={MAGAZINE_PDF_PATH}
                   download
@@ -100,8 +100,8 @@ export function GuidebookIndexPage() {
                   {t('guidebookPdfDownload', { defaultValue: 'PDF' })}
                 </a>
               </Button>
-              <Button variant="outline" size="sm" asChild>
-                <Link href="/learn">{t('guidebookQuickPaths', { defaultValue: 'Quick paths →' })}</Link>
+              <Button variant="outline" size="sm" className="min-h-[44px] tap-target" asChild>
+                <Link href="/learn">{t('guidebookQuickPaths', { defaultValue: 'Quick paths' })}</Link>
               </Button>
             </div>
           </CardContent>
@@ -119,7 +119,7 @@ export function GuidebookIndexPage() {
               : publicGuideChapterHref(chapter.id);
             return (
               <Card key={chapter.id} className="content-card">
-                <Link href={href} className="block">
+                <Link href={href} className="block min-h-[44px] tap-target">
                   <CardHeader className="flex flex-row items-center justify-between py-4">
                     <div className="space-y-1">
                       <CardTitle className="text-lg flex items-center gap-2">
@@ -151,7 +151,7 @@ export function GuidebookIndexPage() {
                       className="text-xs font-medium text-primary hover:underline"
                     >
                       {t('guidebookChapterMagazine', {
-                        defaultValue: 'Same chapter in magazine (web) →',
+                        defaultValue: 'Same chapter in magazine (web)',
                       })}
                     </Link>
                   </CardContent>
