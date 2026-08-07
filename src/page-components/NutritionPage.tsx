@@ -54,6 +54,8 @@ import { useToast } from '@/hooks/use-toast';
 import { readRaw, writeJson, writeRaw } from '@/lib/storage/safeStorage';
 import { STORAGE_KEYS } from '@/lib/storage/keys';
 import { formatLocalClockTime, localDateKey } from '@/lib/time/localDate';
+import { getContentInventory } from '@/lib/contentInventory';
+import { isFreeBeta } from '@/lib/freeBeta';
 
 const freeRecipes = FREE_RECIPES;
 const QUICK_FOODS = DEFAULT_QUICK_FOODS;
@@ -444,6 +446,7 @@ export function NutritionPage() {
   };
 
   const weekDays = summarizeNutritionDays(allLogs, today, 7);
+  const inv = getContentInventory();
 
   return (
     <PillarPageShell
@@ -451,8 +454,12 @@ export function NutritionPage() {
       icon={UtensilsCrossed}
       eyebrow={t('fuelEyebrow', { defaultValue: 'Fuel' })}
       title={t('fuelTitle', { defaultValue: 'What you ate' })}
-      subtitle={t('fuelSubtitle', {
-        defaultValue: 'Log meals, hit protein, keep it simple — works offline on this device.',
+      subtitle={t('fuelSubtitleDepth', {
+        free: inv.recipes.free,
+        premium: inv.recipes.premium,
+        defaultValue: isFreeBeta()
+          ? `${inv.recipes.free} free recipes · ${inv.unlockedTotal.recipes} unlocked in open beta — log offline on this device.`
+          : `${inv.recipes.free} free recipes · Super Bundle adds ${inv.recipes.premium} more. Log offline on this device.`,
       })}
       headerActions={
         fuelStreak > 0 ? (

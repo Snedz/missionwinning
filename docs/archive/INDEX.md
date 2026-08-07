@@ -25,6 +25,7 @@ When adding a doc:
 
 | File | Absorbed by / note |
 |------|---------------------|
+| [log/LOG-rotate-592.md](./log/LOG-rotate-592.md) | rotated oldest for `.592` lean continuity |
 | [log/LOG-rotate-591.md](./log/LOG-rotate-591.md) | rotated oldest for `.591` evening continuity |
 | [log/LOG-rotate-590.md](./log/LOG-rotate-590.md) | rotated oldest for `.590` sleep-week |
 | [log/LOG-rotate-589.md](./log/LOG-rotate-589.md) | rotated oldest for `.589` mind series |
