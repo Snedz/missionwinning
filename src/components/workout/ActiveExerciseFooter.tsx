@@ -51,7 +51,7 @@ export function ActiveExerciseFooter({
 
   return (
     <div className="flex flex-nowrap items-center gap-2 pt-1">
-      <Button variant="outline" size="sm" className="min-h-[44px]" onClick={onAddSet}>
+      <Button variant="outline" size="sm" className="min-h-[44px] tap-target" onClick={onAddSet}>
         <Plus className="h-3 w-3 me-1" /> {t('activeAddSet', { defaultValue: 'Add Set' })}
       </Button>
       <Button
