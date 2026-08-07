@@ -75,10 +75,25 @@ test.describe('Phase H hero flows @gate', () => {
     await expect(page.getByPlaceholder(/search exercises/i)).toBeVisible();
     await page.keyboard.press('Escape');
 
+    /*
+     * `.548` changed this contract deliberately — "empty Finish no longer
+     * discards active workout; calm 'Log a set first' toast" — and this case was
+     * never updated, so it asserted the pre-`.548` product on both counts: the
+     * old copy (`/nothing logged/i`) and the old outcome (session cleared, back
+     * to the empty shell). Red ever since, unseen because the hero lane runs in
+     * no CI workflow that is currently firing.
+     *
+     * Note the i18n key kept its old name (`activeNothingLogged`) while its
+     * value became "Log a set first", so grepping the key would have agreed with
+     * the stale assertion.
+     *
+     * Asserted now: the toast appears **and the session survives** — losing a
+     * session to a mis-tapped Finish is the defect `.548` fixed, so that is the
+     * half worth guarding.
+     */
     await page.getByRole('button', { name: /finish/i }).first().click();
-    await expect(page.getByText(/nothing logged/i).first()).toBeVisible({ timeout: 10_000 });
-    // completeActiveWorkout with zero sets clears the session — back to empty shell.
-    await expect(page.getByRole('button', { name: /start workout/i })).toBeVisible({
+    await expect(page.getByText(/log a set first/i).first()).toBeVisible({ timeout: 10_000 });
+    await expect(page.getByRole('button', { name: /^add exercise$/i })).toBeVisible({
       timeout: 10_000,
     });
   });

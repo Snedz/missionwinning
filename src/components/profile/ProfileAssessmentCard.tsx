@@ -86,7 +86,8 @@ export function ProfileAssessmentCard() {
                 className="min-h-[44px] tap-target"
                 onClick={() => launchFromAssessment(lastAssessment.risk)}
               >
-                {t('profileStartStarter', { risk: lastAssessment.risk, defaultValue: `Start starter (${lastAssessment.risk} risk)` })}
+                {t('profileStartStarter', {
+                  risk: lastAssessment.risk, defaultValue: `Start starter (${lastAssessment.risk} risk)` })}
               </Button>
               <Button
                 size="sm"

@@ -74,6 +74,8 @@ type HistoryStrings = {
   journalEditPlaceholder: string;
   journalSave: string;
   journalCancel: string;
+  /** Kaizen History empty honesty — cross-link to Fuel (`.561`). */
+  historyViewFuel: string;
 };
 
 const en: HistoryStrings = {
@@ -147,6 +149,7 @@ const en: HistoryStrings = {
   journalEditPlaceholder: 'One note per line — your words, kept verbatim.',
   journalSave: 'Save',
   journalCancel: 'Cancel',
+  historyViewFuel: 'View in Fuel',
 };
 
 const es: HistoryStrings = {

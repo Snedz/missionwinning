@@ -23,14 +23,24 @@ const read = (p: string) => readFileSync(path.join(root, p), 'utf8');
 const SCRIPT = 'scripts/i18n-coverage.ts';
 
 /**
- * The worst it has ever been, recorded on 2026-07-30.
+ * The cap this guard permits — held in **lockstep** with the live
+ * `MAX_UNCOVERED_KEYS`, the way `coverageBudget.test.ts` holds its floors.
  *
- * 665 at first measurement; 710 after `.202` gave five components their first
- * `useTranslation`, which made 42 previously-hardcoded strings *visible* to the
- * counter for the first time. That is the only reason this number has ever gone
- * up, and it is documented at the constant itself.
+ * It used to record the worst the count had ever been (665 at first
+ * measurement; 710 after `.202` made 42 hardcoded strings visible to the counter
+ * for the first time). As a *permission* that reading was wrong. The assertion
+ * is `cap <= HIGH_WATER`, so while the live cap sat at 16 this guard would have
+ * stayed green through a raise to 710 — a **44× loosening**, on the one ratchet
+ * that had already been breached three times in a month (16 → 48 during the
+ * Aug-5 wave, 58 by `.561`). A guard whose limit is 44× the thing it guards is
+ * not measuring that thing; it is the `.219` saturated-`npm audit` shape, where
+ * a check spends its whole life unable to fail.
+ *
+ * Lockstep restores the property that makes the sibling ratchets work: raising
+ * the cap now requires editing this file *and* the script in the same commit,
+ * where a reviewer can see both halves of the decision.
  */
-const HIGH_WATER = 710;
+const HIGH_WATER = 0;
 
 function declaredCap(): number {
   const m = /const MAX_UNCOVERED_KEYS = (\d+);/.exec(read(SCRIPT));

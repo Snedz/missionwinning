@@ -23,6 +23,27 @@ type MoveStrings = {
   movePremiumRetry: string;
   movePreviewPlayer: string;
   moveLockedHint: string;
+  /**
+   * Kaizen collection empties + counted headings (`.558`). The `*Count` values
+   * interpolate i18next's `count`, which the call sites already pass — the
+   * shipped `defaultValue` built the same number with a JS template literal, so
+   * every language rendered the English frame around it.
+   */
+  moveCollections: string;
+  moveCollectionShowAll: string;
+  moveCollectionEmpty: string;
+  moveFreeFlowsCount: string;
+  movePremiumFlowsCount: string;
+  movePremiumPreviewCount: string;
+  /**
+   * Split from a single `moveSubtitleDepth` whose `defaultValue` was an
+   * `isFreeBeta()` ternary. One catalog value cannot hold two sentences, so the
+   * key stayed uncatalogued and both variants shipped English in all 15
+   * languages. Two keys, two literal call sites — a computed key would be
+   * invisible to `i18n-coverage` instead of covered by it.
+   */
+  moveSubtitleDepthBeta: string;
+  moveSubtitleDepthPaid: string;
 };
 
 const en: MoveStrings = {
@@ -49,6 +70,16 @@ const en: MoveStrings = {
   movePreviewPlayer: 'Timed cues — Pliability-style recovery flows',
   moveLockedHint:
     'Free tier includes 10 flows. Premium adds 11 longer protocols — post-lift, morning open, low-back friendly, and athlete recovery.',
+  moveCollections: 'Collections',
+  moveCollectionShowAll: 'Show all flows',
+  moveCollectionEmpty: 'No flows in this collection.',
+  moveFreeFlowsCount: 'Mobility flows ({{count}})',
+  movePremiumFlowsCount: 'More recovery flows ({{count}})',
+  movePremiumPreviewCount: 'Premium recovery flows ({{count}})',
+  moveSubtitleDepthBeta:
+    '{{free}} free flows · {{unlocked}} unlocked in open beta (timers, mostly bodyweight).',
+  moveSubtitleDepthPaid:
+    '{{free}} free flows · Super Bundle adds {{premium}} longer recovery flows.',
 };
 
 const es: MoveStrings = {

@@ -233,6 +233,7 @@ type InfoStrings = {
   americaEyebrow: string;
   learnEyebrow: string;
   feedbackEyebrow: string;
+  infoPrivacyRegionsLink: string;
   joinClassLoading: string;
   joinClassFailedTitle: string;
   joinClassFailedDesc: string;
@@ -678,6 +679,7 @@ const en: InfoStrings = {
   infoTermsEuConsumersBody:
     'If you use Mission Winning as a consumer habitually resident in the European Union, the United Kingdom, or the EEA: the arbitration clause and class-action waiver above do not apply to you. Nothing in these terms deprives you of the protection of mandatory consumer law of your country of residence, and you may bring proceedings in the courts of that country. The European Commission provides an online dispute resolution platform at ec.europa.eu/consumers/odr.',
 
+  infoPrivacyRegionsLink: 'Where we offer the service',
 };
 
 const es: InfoStrings = {

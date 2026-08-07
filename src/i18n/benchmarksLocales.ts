@@ -44,6 +44,13 @@ type BenchmarksStrings = {
   benchmarksEyebrow: string;
   anatomyMapTitle: string;
   anatomyMapDesc: string;
+  militaryReadinessTitle: string;
+  militaryReadinessDesc: string;
+  militaryReadinessCta: string;
+  militaryReadinessFoot: string;
+  benchmarksHabitLogged: string;
+  benchmarksHabitLoggedDesc: string;
+  benchmarksEmptyCta: string;
 };
 
 const en: BenchmarksStrings = {
@@ -93,6 +100,13 @@ const en: BenchmarksStrings = {
   anatomyMapTitle: 'Muscle balance',
   anatomyMapDesc: '14-day volume by major group — tap a region for exercises.',
 
+  militaryReadinessTitle: 'Readiness test prep',
+  militaryReadinessDesc: 'Optional standards for push-ups, pull-ups, deadlift, and loaded carries — service fitness prep. Mission Winning remains for everyone (free core forever).',
+  militaryReadinessCta: 'Train for standards',
+  militaryReadinessFoot: 'Civilian health app — not affiliated with any armed service.',
+  benchmarksHabitLogged: 'Habit logged',
+  benchmarksHabitLoggedDesc: 'Streak {{streak}}. Finish a session to update charts.',
+  benchmarksEmptyCta: 'Open Today',
 };
 
 const es: BenchmarksStrings = {

@@ -43,7 +43,19 @@ test.describe('Logger depth @gate', () => {
     await expect(rest).toBeVisible({ timeout: 10_000 });
     await expect(rest).toContainText(/rest/i);
 
-    await page.getByRole('button', { name: /^skip$/i }).click();
+    /*
+     * `.550` gave this button an `aria-label` for outdoor a11y — and an
+     * `aria-label` *replaces* the accessible name rather than supplementing it,
+     * so the name became "Skip rest" / "Skip rest — go" and the anchored
+     * `/^skip$/i` stopped matching. The case has been red ever since, unseen
+     * because the hero lane runs in no CI workflow that is currently firing.
+     *
+     * The test id is the stable handle here: the visible word and the announced
+     * label are both design surface that kaizen passes are expected to change,
+     * and neither should be able to break the assertion that skipping rest ends
+     * the timer.
+     */
+    await page.getByTestId('rest-skip').click();
     await expect(rest).toBeHidden({ timeout: 5_000 });
 
     await page.getByRole('button', { name: /^finish$/i }).click();

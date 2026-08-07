@@ -129,6 +129,13 @@ type FitnessTestStrings = {
   youthVerifyNetwork: string;
   youthSending: string;
   schoolJoinedTeacherNote: string;
+  /**
+   * Teacher class back-link. The `america` surface is parked, so this string is
+   * unreachable in production today — catalogued anyway, because the coverage
+   * check reads source, and an uncatalogued key is debt whether or not the
+   * route is currently served.
+   */
+  pftBackAmerica: string;
 };
 
 const en: FitnessTestStrings = {
@@ -279,6 +286,7 @@ const en: FitnessTestStrings = {
   youthVerifyNetwork: 'Could not verify right now. Check your connection and try again.',
   youthSending: 'Sending…',
   schoolJoinedTeacherNote: 'Complete a fitness test while signed in to sync your score. Teachers view standings on the class dashboard.',
+  pftBackAmerica: 'National fitness',
 };
 
 const es: FitnessTestStrings = {

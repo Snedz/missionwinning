@@ -285,12 +285,15 @@ export function TodayProgressSection({
                 setRecentPillarWins(prev => [{name: 'Daily Pillar Win (quick log)', date: today}, ...prev].slice(0,5));
                 toast({
                   title: t('todayFounderWinLogged', { defaultValue: 'Win logged' }),
-                  description: t('todayFounderStreakCloud', {
-                    streak: current,
-                    defaultValue: u
-                      ? `Streak ${current}. Saved to cloud.`
-                      : `Streak ${current}. Sign in to sync.`,
-                  }),
+                  description: u
+                    ? t('todayFounderStreakCloudSaved', {
+                        streak: current,
+                        defaultValue: `Streak ${current}. Saved to cloud.`,
+                      })
+                    : t('todayFounderStreakCloudSignIn', {
+                        streak: current,
+                        defaultValue: `Streak ${current}. Sign in to sync.`,
+                      }),
                 });
               } catch { /* noop */ }
             }}>{t('todayFounderLogDailyWin', { defaultValue: 'Log daily pillar win' })}</Button>

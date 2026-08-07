@@ -195,6 +195,17 @@ type FuelStrings = {
   fuelGoalAppliedDesc: string;
   fuelHideMore: string;
   fuelShowMore: string;
+  /** Kaizen Fuel empty CTA + recipe-panel honesty (`.557`). */
+  fuelSubtitleDepthBeta: string;
+  fuelSubtitleDepthPaid: string;
+  fuelEmptyCta: string;
+  fuelRecipesEmptyTitle: string;
+  fuelRecipesEmptyDesc: string;
+  fuelPremiumRetry: string;
+  fuelPremiumRecipesEmpty: string;
+  /** Split from a `freeBeta` ternary default — see moveLocales. */
+  fuelPremiumRecipesTitleCountBeta: string;
+  fuelPremiumRecipesTitleCountPaid: string;
 };
 
 const en: FuelStrings = {
@@ -401,6 +412,18 @@ const en: FuelStrings = {
   fuelGoalAppliedDesc: '{{cals}} kcal · {{protein}}g protein',
   fuelHideMore: 'Hide search & recipes',
   fuelShowMore: 'Search, barcode & recipes',
+  fuelSubtitleDepthBeta:
+    '{{free}} free recipes · {{unlocked}} unlocked in open beta — log offline on this device.',
+  fuelSubtitleDepthPaid:
+    '{{free}} free recipes · Super Bundle adds {{premium}} more. Log offline on this device.',
+  fuelEmptyCta: 'Log food',
+  fuelRecipesEmptyTitle: 'No recipes loaded',
+  fuelRecipesEmptyDesc: 'Log meals manually above — recipes return on refresh.',
+  fuelPremiumRetry: 'Try again',
+  fuelPremiumRecipesEmpty:
+    'No premium recipes in this response — free list above still works.',
+  fuelPremiumRecipesTitleCountBeta: 'More recipes ({{count}})',
+  fuelPremiumRecipesTitleCountPaid: 'Premium recipes ({{count}})',
 };
 
 const es: FuelStrings = {

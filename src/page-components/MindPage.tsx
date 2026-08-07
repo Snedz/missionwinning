@@ -102,13 +102,19 @@ export function MindPage() {
       icon={Brain}
       eyebrow={t('mindEyebrow', { defaultValue: 'Mind' })}
       title={t('mindTitle', { defaultValue: 'Mind' })}
-      subtitle={t('mindSubtitleDepth', {
-        free: inv.mind.free,
-        premium: inv.mind.premium,
-        defaultValue: isFreeBeta()
-          ? `${inv.mind.free} free guided sessions · ${inv.unlockedTotal.mind} unlocked in open beta — breathing + check-in included.`
-          : `${inv.mind.free} free guided sessions · Super Bundle adds ${inv.mind.premium} deeper timed sessions.`,
-      })}
+      subtitle={
+        isFreeBeta()
+          ? t('mindSubtitleDepthBeta', {
+              free: inv.mind.free,
+              unlocked: inv.unlockedTotal.mind,
+              defaultValue: `${inv.mind.free} free guided sessions · ${inv.unlockedTotal.mind} unlocked in open beta — breathing + check-in included.`,
+            })
+          : t('mindSubtitleDepthPaid', {
+              free: inv.mind.free,
+              premium: inv.mind.premium,
+              defaultValue: `${inv.mind.free} free guided sessions · Super Bundle adds ${inv.mind.premium} deeper timed sessions.`,
+            })
+      }
     >
       <div className="grid gap-6 lg:grid-cols-2">
         <BreathingTimer />

@@ -244,6 +244,31 @@ type TodayStrings = {
   todayMissionScoreTip: string;
   todayMoreSummary: string;
   todaySessionFocus: string;
+  /** ContinuityStrip on the full Today dashboard (`.536`). */
+  continuityTitle: string;
+  continuitySubtitle: string;
+  todayFounderStreakCloudSaved: string;
+  todayFounderStreakCloudSignIn: string;
+  todayFounderWinLogged: string;
+  todayFounderStreakOnly: string;
+  todayFounderLogDailyWin: string;
+  todayFounderMindLogged: string;
+  todayFounderLogMindWin: string;
+  todayFounderMoveLogged: string;
+  todayFounderLogMoveWin: string;
+  todayFounderWinsRefreshed: string;
+  todayFounderSignInWins: string;
+  todayFounderSignInWinsDesc: string;
+  todayFounderRefreshWins: string;
+  todayFounderLogStreak: string;
+  todayFounderProteinDemo: string;
+  todayFounderProteinDemoDesc: string;
+  todayFounderLogProtein: string;
+  todayFounderMobilityLogged: string;
+  todayFounderLogMobility: string;
+  todayFounderSnackHint: string;
+  todayFounderSnackHintDesc: string;
+  todayFounderLogSnack: string;
 };
 
 const en: TodayStrings = {
@@ -506,6 +531,30 @@ const en: TodayStrings = {
   todayMissionScoreTip: 'Daily score from all six pillars. Log training, fuel, move, mind, track, and learn to raise it.',
   todayMoreSummary: 'Today details',
   todaySessionFocus: 'Training',
+  continuityTitle: 'After training',
+  continuitySubtitle: 'Move, mind, or fuel when you want them.',
+  todayFounderStreakCloudSaved: 'Streak {{streak}}. Saved to cloud.',
+  todayFounderStreakCloudSignIn: 'Streak {{streak}}. Sign in to sync.',
+  todayFounderWinLogged: 'Win logged',
+  todayFounderStreakOnly: 'Streak {{streak}}.',
+  todayFounderLogDailyWin: 'Log daily pillar win',
+  todayFounderMindLogged: 'Mind win logged',
+  todayFounderLogMindWin: 'Log mind win',
+  todayFounderMoveLogged: 'Move win logged',
+  todayFounderLogMoveWin: 'Log move win',
+  todayFounderWinsRefreshed: 'Wins refreshed',
+  todayFounderSignInWins: 'Sign in required',
+  todayFounderSignInWinsDesc: 'Sign in to load cloud wins.',
+  todayFounderRefreshWins: 'Refresh pillar wins',
+  todayFounderLogStreak: 'Log daily win',
+  todayFounderProteinDemo: 'Demo only',
+  todayFounderProteinDemoDesc: 'Log real meals in Fuel for tracking.',
+  todayFounderLogProtein: 'Log high-protein day',
+  todayFounderMobilityLogged: 'Mobility habit logged',
+  todayFounderLogMobility: 'Log mobility habit',
+  todayFounderSnackHint: 'Open Fuel',
+  todayFounderSnackHintDesc: 'Log a recovery snack when you are ready.',
+  todayFounderLogSnack: 'Log recovery snack',
 };
 
 const coachPlanDefaults = {
@@ -680,6 +729,30 @@ const es: TodayStrings = {
 };
 
 const zh: TodayStrings = {
+  todayFounderStreakCloudSaved: en.todayFounderStreakCloudSaved,
+  todayFounderStreakCloudSignIn: en.todayFounderStreakCloudSignIn,
+  todayFounderWinLogged: en.todayFounderWinLogged,
+  todayFounderStreakOnly: en.todayFounderStreakOnly,
+  todayFounderLogDailyWin: en.todayFounderLogDailyWin,
+  todayFounderMindLogged: en.todayFounderMindLogged,
+  todayFounderLogMindWin: en.todayFounderLogMindWin,
+  todayFounderMoveLogged: en.todayFounderMoveLogged,
+  todayFounderLogMoveWin: en.todayFounderLogMoveWin,
+  todayFounderWinsRefreshed: en.todayFounderWinsRefreshed,
+  todayFounderSignInWins: en.todayFounderSignInWins,
+  todayFounderSignInWinsDesc: en.todayFounderSignInWinsDesc,
+  todayFounderRefreshWins: en.todayFounderRefreshWins,
+  todayFounderLogStreak: en.todayFounderLogStreak,
+  todayFounderProteinDemo: en.todayFounderProteinDemo,
+  todayFounderProteinDemoDesc: en.todayFounderProteinDemoDesc,
+  todayFounderLogProtein: en.todayFounderLogProtein,
+  todayFounderMobilityLogged: en.todayFounderMobilityLogged,
+  todayFounderLogMobility: en.todayFounderLogMobility,
+  todayFounderSnackHint: en.todayFounderSnackHint,
+  todayFounderSnackHintDesc: en.todayFounderSnackHintDesc,
+  todayFounderLogSnack: en.todayFounderLogSnack,
+  continuityTitle: en.continuityTitle,
+  continuitySubtitle: en.continuitySubtitle,
   todayWeekRecapTitle: en.todayWeekRecapTitle,
   todayWeekRecapBody: en.todayWeekRecapBody,
   todayWeekRecapShareCard: en.todayWeekRecapShareCard,
@@ -917,6 +990,30 @@ const zh: TodayStrings = {
 };
 
 const id: TodayStrings = {
+  todayFounderStreakCloudSaved: en.todayFounderStreakCloudSaved,
+  todayFounderStreakCloudSignIn: en.todayFounderStreakCloudSignIn,
+  todayFounderWinLogged: en.todayFounderWinLogged,
+  todayFounderStreakOnly: en.todayFounderStreakOnly,
+  todayFounderLogDailyWin: en.todayFounderLogDailyWin,
+  todayFounderMindLogged: en.todayFounderMindLogged,
+  todayFounderLogMindWin: en.todayFounderLogMindWin,
+  todayFounderMoveLogged: en.todayFounderMoveLogged,
+  todayFounderLogMoveWin: en.todayFounderLogMoveWin,
+  todayFounderWinsRefreshed: en.todayFounderWinsRefreshed,
+  todayFounderSignInWins: en.todayFounderSignInWins,
+  todayFounderSignInWinsDesc: en.todayFounderSignInWinsDesc,
+  todayFounderRefreshWins: en.todayFounderRefreshWins,
+  todayFounderLogStreak: en.todayFounderLogStreak,
+  todayFounderProteinDemo: en.todayFounderProteinDemo,
+  todayFounderProteinDemoDesc: en.todayFounderProteinDemoDesc,
+  todayFounderLogProtein: en.todayFounderLogProtein,
+  todayFounderMobilityLogged: en.todayFounderMobilityLogged,
+  todayFounderLogMobility: en.todayFounderLogMobility,
+  todayFounderSnackHint: en.todayFounderSnackHint,
+  todayFounderSnackHintDesc: en.todayFounderSnackHintDesc,
+  todayFounderLogSnack: en.todayFounderLogSnack,
+  continuityTitle: en.continuityTitle,
+  continuitySubtitle: en.continuitySubtitle,
   todayWeekRecapTitle: en.todayWeekRecapTitle,
   todayWeekRecapBody: en.todayWeekRecapBody,
   todayWeekRecapShareCard: en.todayWeekRecapShareCard,
@@ -1168,6 +1265,30 @@ const id: TodayStrings = {
 };
 
 const th: TodayStrings = {
+  todayFounderStreakCloudSaved: en.todayFounderStreakCloudSaved,
+  todayFounderStreakCloudSignIn: en.todayFounderStreakCloudSignIn,
+  todayFounderWinLogged: en.todayFounderWinLogged,
+  todayFounderStreakOnly: en.todayFounderStreakOnly,
+  todayFounderLogDailyWin: en.todayFounderLogDailyWin,
+  todayFounderMindLogged: en.todayFounderMindLogged,
+  todayFounderLogMindWin: en.todayFounderLogMindWin,
+  todayFounderMoveLogged: en.todayFounderMoveLogged,
+  todayFounderLogMoveWin: en.todayFounderLogMoveWin,
+  todayFounderWinsRefreshed: en.todayFounderWinsRefreshed,
+  todayFounderSignInWins: en.todayFounderSignInWins,
+  todayFounderSignInWinsDesc: en.todayFounderSignInWinsDesc,
+  todayFounderRefreshWins: en.todayFounderRefreshWins,
+  todayFounderLogStreak: en.todayFounderLogStreak,
+  todayFounderProteinDemo: en.todayFounderProteinDemo,
+  todayFounderProteinDemoDesc: en.todayFounderProteinDemoDesc,
+  todayFounderLogProtein: en.todayFounderLogProtein,
+  todayFounderMobilityLogged: en.todayFounderMobilityLogged,
+  todayFounderLogMobility: en.todayFounderLogMobility,
+  todayFounderSnackHint: en.todayFounderSnackHint,
+  todayFounderSnackHintDesc: en.todayFounderSnackHintDesc,
+  todayFounderLogSnack: en.todayFounderLogSnack,
+  continuityTitle: en.continuityTitle,
+  continuitySubtitle: en.continuitySubtitle,
   todayWeekRecapTitle: en.todayWeekRecapTitle,
   todayWeekRecapBody: en.todayWeekRecapBody,
   todayWeekRecapShareCard: en.todayWeekRecapShareCard,
@@ -1409,6 +1530,30 @@ const th: TodayStrings = {
 };
 
 const ar: TodayStrings = {
+  todayFounderStreakCloudSaved: en.todayFounderStreakCloudSaved,
+  todayFounderStreakCloudSignIn: en.todayFounderStreakCloudSignIn,
+  todayFounderWinLogged: en.todayFounderWinLogged,
+  todayFounderStreakOnly: en.todayFounderStreakOnly,
+  todayFounderLogDailyWin: en.todayFounderLogDailyWin,
+  todayFounderMindLogged: en.todayFounderMindLogged,
+  todayFounderLogMindWin: en.todayFounderLogMindWin,
+  todayFounderMoveLogged: en.todayFounderMoveLogged,
+  todayFounderLogMoveWin: en.todayFounderLogMoveWin,
+  todayFounderWinsRefreshed: en.todayFounderWinsRefreshed,
+  todayFounderSignInWins: en.todayFounderSignInWins,
+  todayFounderSignInWinsDesc: en.todayFounderSignInWinsDesc,
+  todayFounderRefreshWins: en.todayFounderRefreshWins,
+  todayFounderLogStreak: en.todayFounderLogStreak,
+  todayFounderProteinDemo: en.todayFounderProteinDemo,
+  todayFounderProteinDemoDesc: en.todayFounderProteinDemoDesc,
+  todayFounderLogProtein: en.todayFounderLogProtein,
+  todayFounderMobilityLogged: en.todayFounderMobilityLogged,
+  todayFounderLogMobility: en.todayFounderLogMobility,
+  todayFounderSnackHint: en.todayFounderSnackHint,
+  todayFounderSnackHintDesc: en.todayFounderSnackHintDesc,
+  todayFounderLogSnack: en.todayFounderLogSnack,
+  continuityTitle: en.continuityTitle,
+  continuitySubtitle: en.continuitySubtitle,
   todayWeekRecapTitle: en.todayWeekRecapTitle,
   todayWeekRecapBody: en.todayWeekRecapBody,
   todayWeekRecapShareCard: en.todayWeekRecapShareCard,

@@ -160,7 +160,8 @@ export function BenchmarksPage() {
         <Button size="sm" variant="ghost" className="min-h-[44px] tap-target" onClick={() => {
           try {
             const cur = bumpTrainingStreak();
-            toast({ title: t('benchmarksHabitLogged', { defaultValue: 'Habit logged' }), description: t('benchmarksHabitLoggedDesc', { count: cur, defaultValue: `Streak ${cur}. Finish a session to update charts.` }) });
+            toast({ title: t('benchmarksHabitLogged', { defaultValue: 'Habit logged' }), description: t('benchmarksHabitLoggedDesc', {
+            streak: cur, count: cur, defaultValue: `Streak ${cur}. Finish a session to update charts.` }) });
           } catch { /* noop */ }
         }}>{t('benchmarksQuickHabit', { defaultValue: 'Log benchmark habit (+streak)' })}</Button>
       </CardContent>

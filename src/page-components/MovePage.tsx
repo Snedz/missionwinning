@@ -173,13 +173,19 @@ export function MovePage() {
       icon={Wind}
       eyebrow={t('moveEyebrow', { defaultValue: 'Move' })}
       title={t('moveTitle', { defaultValue: 'Mobility' })}
-      subtitle={t('moveSubtitleDepth', {
-        free: inv.move.free,
-        premium: inv.move.premium,
-        defaultValue: isFreeBeta()
-          ? `${inv.move.free} free flows · ${inv.unlockedTotal.move} unlocked in open beta (timers, mostly bodyweight).`
-          : `${inv.move.free} free flows · Super Bundle adds ${inv.move.premium} longer recovery flows.`,
-      })}
+      subtitle={
+        isFreeBeta()
+          ? t('moveSubtitleDepthBeta', {
+              free: inv.move.free,
+              unlocked: inv.unlockedTotal.move,
+              defaultValue: `${inv.move.free} free flows · ${inv.unlockedTotal.move} unlocked in open beta (timers, mostly bodyweight).`,
+            })
+          : t('moveSubtitleDepthPaid', {
+              free: inv.move.free,
+              premium: inv.move.premium,
+              defaultValue: `${inv.move.free} free flows · Super Bundle adds ${inv.move.premium} longer recovery flows.`,
+            })
+      }
     >
       <div
         id="move-flows"

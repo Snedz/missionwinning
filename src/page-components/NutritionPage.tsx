@@ -454,13 +454,19 @@ export function NutritionPage() {
       icon={UtensilsCrossed}
       eyebrow={t('fuelEyebrow', { defaultValue: 'Fuel' })}
       title={t('fuelTitle', { defaultValue: 'What you ate' })}
-      subtitle={t('fuelSubtitleDepth', {
-        free: inv.recipes.free,
-        premium: inv.recipes.premium,
-        defaultValue: isFreeBeta()
-          ? `${inv.recipes.free} free recipes · ${inv.unlockedTotal.recipes} unlocked in open beta — log offline on this device.`
-          : `${inv.recipes.free} free recipes · Super Bundle adds ${inv.recipes.premium} more. Log offline on this device.`,
-      })}
+      subtitle={
+        isFreeBeta()
+          ? t('fuelSubtitleDepthBeta', {
+              free: inv.recipes.free,
+              unlocked: inv.unlockedTotal.recipes,
+              defaultValue: `${inv.recipes.free} free recipes · ${inv.unlockedTotal.recipes} unlocked in open beta — log offline on this device.`,
+            })
+          : t('fuelSubtitleDepthPaid', {
+              free: inv.recipes.free,
+              premium: inv.recipes.premium,
+              defaultValue: `${inv.recipes.free} free recipes · Super Bundle adds ${inv.recipes.premium} more. Log offline on this device.`,
+            })
+      }
       headerActions={
         fuelStreak > 0 ? (
           <span className="border border-primary bg-muted px-3 py-1 text-xs font-semibold text-primary shrink-0">

@@ -86,6 +86,7 @@ const PROGRAMS_EN: Record<string, string> = {
   progCondBullet4: 'Test protocols and Log-based conditioning tracking',
   progCondDisclaimer:
     'Educational content for training professionals and dedicated athletes.',
+  programsShareFeedback: 'Share feedback',
 };
 
 const PROGRAMS_ES: Record<string, string> = {

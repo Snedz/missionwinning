@@ -251,7 +251,8 @@ export function UnlockButton({
           <Check className="h-4 w-4" /> {t('unlockFoundersListed', { defaultValue: "You're on the founders list." })}
         </p>
         <p className="mt-1 text-xs text-muted-foreground">
-          {t('unlockFoundersEmail', { email, defaultValue: `We'll email ${email} when checkout opens.` })}
+          {t('unlockFoundersEmail', {
+                  email, defaultValue: `We'll email ${email} when checkout opens.` })}
         </p>
       </div>
     );

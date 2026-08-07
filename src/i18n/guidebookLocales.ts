@@ -29,6 +29,10 @@ const GUIDEBOOK_EN: Record<string, string> = {
   moreGuidebookDesc: 'Beyond the Basics — deep reference',
   guideLanguage: 'Language',
   learnPremiumBadge: 'Premium',
+  /** Kaizen Guidebook chrome — magazine cross-links (`.561`). */
+  guidebookMagazineWeb: 'Magazine (web)',
+  guidebookChapterMagazine: 'Same chapter in magazine (web)',
+  magazineOpenInApp: 'Track progress in app →',
   ...GUIDEBOOK_CONTENT_EN,
 };
 
