@@ -55,8 +55,8 @@ export function CoachAdaptBanner({ plan, compact, todayOffset, onAdjustToday }: 
         // handoff. It was a tinted box with a hairline border, which read as
         // one more panel rather than as the plan telling you it changed.
         compact
-          ? 'border-s-[3px] border-s-[hsl(var(--accent-poster))] bg-accent-100 px-3 py-2 space-y-1'
-          : 'border-s-[3px] border-s-[hsl(var(--accent-poster))] bg-accent-100 px-4 py-3 space-y-2'
+          ? 'border-s-[3px] border-s-[hsl(var(--accent-poster))] bg-muted px-3 py-2 space-y-1'
+          : 'border-s-[3px] border-s-[hsl(var(--accent-poster))] bg-muted px-4 py-3 space-y-2'
       }
       data-testid="coach-adapt-banner"
     >

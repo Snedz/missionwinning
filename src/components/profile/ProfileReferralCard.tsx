@@ -123,7 +123,7 @@ export function ProfileReferralCard({ signedIn }: Props) {
             {badge ? (
               <p
                 className={cn(
-                  'inline-flex  border border-border bg-accent-100 px-3 py-1',
+                  'inline-flex  border border-border bg-muted px-3 py-1',
                   'text-xs font-medium uppercase tracking-wide text-accent-900'
                 )}
               >
