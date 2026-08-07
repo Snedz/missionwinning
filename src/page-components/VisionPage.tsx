@@ -1,13 +1,16 @@
 'use client';
 /**
- * Page: /vision — public product direction (must track vision.md, not pitch-deck slop)
+ * Page: /vision — public product direction (must track vision.md, not
+ * pitch-deck slop). Editorial body; chrome comes from PublicPageShell in
+ * app/vision/page.tsx.
  * See: app/INDEX.md, vision.md, docs/YC_THESIS.md
+ *
+ * Recut from `list-disc` bullets and an untreated italic quote onto the
+ * landing's idioms — numbered `card-section` rules, ruled rows, a real
+ * pull-quote in the display face. Every string is the key it already was.
  */
 
 import { useTranslation } from 'react-i18next';
-import { Compass } from 'lucide-react';
-import { InfoPageFooter } from '@/components/layout/InfoPageFooter';
-import { InfoPageShell, InfoSection } from '@/components/layout/InfoPageShell';
 import { isFreeBeta } from '@/lib/freeBeta';
 
 const VISION_CORE_ITEMS = [
@@ -31,86 +34,91 @@ export function VisionPage() {
   const freeBeta = isFreeBeta();
 
   return (
-    <InfoPageShell
-      icon={Compass}
-      eyebrow={t('visionEyebrow', { defaultValue: 'Vision' })}
-      title={t('infoVisionTitle', { defaultValue: 'Mission Winning Vision' })}
-      subtitle={t('infoVisionSubtitle', {
-        defaultValue: freeBeta
-          ? 'Free offline logger + Mission Coach from your logs — health fundamentals without a paywall.'
-          : 'Free offline logger + Mission Coach from your logs. Super Bundle deepens the other pillars — it never gates the logger.',
-      })}
-      footer={<InfoPageFooter showLegal showToday showBundle={!freeBeta} />}
-    >
-      <p className="text-muted-foreground leading-relaxed">
-        <strong className="text-foreground">
+    <div className="space-y-10">
+      <section className="space-y-4">
+        <p className="text-lg font-semibold leading-relaxed text-foreground">
           {t('infoVisionLead', {
             defaultValue: 'Train anywhere. Coach from what you actually logged.',
           })}
-        </strong>
-      </p>
-      <p className="text-muted-foreground leading-relaxed">
-        {t('infoVisionP1', {
-          defaultValue:
-            'Mission Winning is the entrance to the path: free forever workout logging (no account) plus Mission Coach — fatigue-aware weekly plans from your history alone, no wearable required.',
-        })}
-      </p>
-      <p className="text-muted-foreground leading-relaxed">
-        {t('infoVisionP2', {
-          defaultValue: freeBeta
-            ? 'One mission: make the fundamentals free. Fuel, Move, Mind, and Learn deepen the path when you are ready — they are not the pitch.'
-            : 'Super Bundle adds Coach depth and the other pillars when you want them. It funds the mission — it never gates the free logger. Educational tools — not medical care.',
-        })}
-      </p>
+        </p>
+        <p className="text-base leading-relaxed text-muted-foreground">
+          {t('infoVisionP1', {
+            defaultValue:
+              'Mission Winning is the entrance to the path: free forever workout logging (no account) plus Mission Coach — fatigue-aware weekly plans from your history alone, no wearable required.',
+          })}
+        </p>
+        <p className="text-base leading-relaxed text-muted-foreground">
+          {t('infoVisionP2', {
+            defaultValue: freeBeta
+              ? 'One mission: make the fundamentals free. Fuel, Move, Mind, and Learn deepen the path when you are ready — they are not the pitch.'
+              : 'Super Bundle adds Coach depth and the other pillars when you want them. It funds the mission — it never gates the free logger. Educational tools — not medical care.',
+          })}
+        </p>
+      </section>
 
-      <InfoSection
-        title={t('infoVisionCorePromise', {
-          defaultValue: 'Core promise: free forever for the mission',
-        })}
-      >
-        <p className="text-muted-foreground">
+      <section className="card-section space-y-4 pt-6">
+        <p className="section-index">01</p>
+        <h2 className="font-display text-2xl font-extrabold tracking-[-0.015em] text-foreground">
+          {t('infoVisionCorePromise', {
+            defaultValue: 'Core promise: free forever for the mission',
+          })}
+        </h2>
+        <p className="text-base leading-relaxed text-muted-foreground">
           {t('infoVisionCoreP1', {
             defaultValue:
               'The fundamentals that make people healthier should have no price of admission.',
           })}
         </p>
-        <ul className="list-disc pl-5 space-y-2 text-muted-foreground">
+        {/* Ruled rows, not list-disc — the system separates with 2px rules. */}
+        <ul className="divide-y-2 divide-border border-y-2 border-border">
           {VISION_CORE_ITEMS.map((key) => (
-            <li key={key}>{t(key, { defaultValue: VISION_CORE_DEFAULTS[key] })}</li>
+            <li key={key} className="py-3 text-sm leading-relaxed text-muted-foreground">
+              {t(key, { defaultValue: VISION_CORE_DEFAULTS[key] })}
+            </li>
           ))}
         </ul>
-        <p className="text-muted-foreground italic">
-          {t('infoVisionCoreQuote', {
-            defaultValue:
-              '"Those with no money should be able to utilize it to track workouts. The core mission should be available for everyone in the world."',
-          })}
-        </p>
-      </InfoSection>
+        <blockquote className="border-s-2 border-primary ps-4">
+          <p className="font-display text-xl font-extrabold leading-snug text-foreground">
+            {t('infoVisionCoreQuote', {
+              defaultValue:
+                '"Those with no money should be able to utilize it to track workouts. The core mission should be available for everyone in the world."',
+            })}
+          </p>
+        </blockquote>
+      </section>
 
-      <InfoSection title={t('infoVisionSuperApp', { defaultValue: 'Six pillars' })}>
-        <p className="text-muted-foreground">
+      <section className="card-section space-y-4 pt-6">
+        <p className="section-index">02</p>
+        <h2 className="font-display text-2xl font-extrabold tracking-[-0.015em] text-foreground">
+          {t('infoVisionSuperApp', { defaultValue: 'Six pillars' })}
+        </h2>
+        <p className="text-base leading-relaxed text-muted-foreground">
           {t('infoVisionSuperAppP1', {
             defaultValue:
               'One product, six pillars: free entry on each, premium depth where it earns its keep. We pitch Train + Mission Coach first — not an everything-app laundry list.',
           })}
         </p>
-        <p className="text-muted-foreground">
+        <p className="text-base leading-relaxed text-muted-foreground">
           {t('infoVisionSuperAppP2', {
             defaultValue:
               'Train · Fuel · Move · Mind · Track · Learn. Different fronts, one goal: stay strong enough to show up.',
           })}
         </p>
-      </InfoSection>
+      </section>
 
       {!freeBeta && (
-        <InfoSection title={t('infoVisionSuperBundle', { defaultValue: 'Super Bundle' })}>
-          <p className="text-muted-foreground">
+        <section className="card-section space-y-4 pt-6">
+          <p className="section-index">03</p>
+          <h2 className="font-display text-2xl font-extrabold tracking-[-0.015em] text-foreground">
+            {t('infoVisionSuperBundle', { defaultValue: 'Super Bundle' })}
+          </h2>
+          <p className="text-base leading-relaxed text-muted-foreground">
             {t('infoVisionSuperBundleBody', {
               defaultValue:
                 'One subscription for Coach depth and the other pillars when you want them. The free logger stays free — Super Bundle deepens, never gates.',
             })}
           </p>
-        </InfoSection>
+        </section>
       )}
 
       <p className="text-xs text-muted-foreground">
@@ -119,6 +127,6 @@ export function VisionPage() {
             'This page is a public summary of our product direction. The free logger is never gated.',
         })}
       </p>
-    </InfoPageShell>
+    </div>
   );
 }
