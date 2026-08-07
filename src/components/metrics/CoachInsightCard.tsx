@@ -57,7 +57,7 @@ export function CoachInsightCard({
         <Button
           variant="outline"
           size="sm"
-          className="shrink-0"
+          className="min-h-[44px] tap-target shrink-0"
           disabled={loading}
           onClick={() => router.push(actionPath)}
         >

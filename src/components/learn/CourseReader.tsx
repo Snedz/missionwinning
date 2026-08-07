@@ -59,7 +59,7 @@ export function CourseReader({ chapters, initialChapterId }: Props) {
   return (
     <div className="grid gap-6 lg:grid-cols-[220px_1fr]">
       <nav className="space-y-2" aria-label={t('learnCourseNav', { defaultValue: 'Course chapters' })}>
-        <Button variant="ghost" size="sm" asChild className="-ml-2">
+        <Button variant="ghost" size="sm" asChild className="min-h-[44px] tap-target -ml-2">
           <Link href="/learn">
             <ArrowLeft className="h-4 w-4 mr-1" />
             {t('learnBack', { defaultValue: 'Learn' })}
@@ -169,10 +169,10 @@ export function CourseReader({ chapters, initialChapterId }: Props) {
                 })}
               </p>
               <div className="flex flex-wrap gap-2">
-                <Button asChild variant="outline" size="sm">
+                <Button asChild variant="outline" size="sm" className="min-h-[44px] tap-target">
                   <Link href="/move">{t('coachActionOpenMove', { defaultValue: 'Open Move' })}</Link>
                 </Button>
-                <Button asChild variant="outline" size="sm">
+                <Button asChild variant="outline" size="sm" className="min-h-[44px] tap-target">
                   <Link href="/nutrition">{t('coachActionLogNutrition', { defaultValue: 'Log Fuel' })}</Link>
                 </Button>
               </div>

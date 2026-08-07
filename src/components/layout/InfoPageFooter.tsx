@@ -27,12 +27,12 @@ export function InfoPageFooter({
       {showLegal && <AppLegalFooter className="py-0" />}
       <div className="flex flex-wrap items-center justify-center gap-2 shrink-0">
         {showToday && (
-          <Button asChild variant="outline" size="sm">
+          <Button asChild variant="outline" size="sm" className="min-h-[44px] tap-target">
             <Link href="/log">{todayLabel}</Link>
           </Button>
         )}
         {bundleVisible && (
-          <Button asChild variant="default" size="sm">
+          <Button asChild variant="default" size="sm" className="min-h-[44px] tap-target">
             <Link href="/bundle">Super Bundle</Link>
           </Button>
         )}

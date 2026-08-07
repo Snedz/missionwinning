@@ -73,6 +73,7 @@ export function AdjustSessionSheet({ open, onClose, onAdjust }: Props) {
       open={open}
       onClose={handleClose}
       size="sm"
+      className="min-h-[44px] tap-target"
       title={t('coachAdjustTitle', { defaultValue: "Adjust today's session" })}
       bodyClassName="p-5 space-y-5"
     >
