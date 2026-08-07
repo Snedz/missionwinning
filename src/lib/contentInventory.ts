@@ -21,7 +21,7 @@ import { FORM_PACK_SIDE_IDS, FORM_PACK_VIDEO_IDS } from '@/lib/formMedia';
 export const CONTENT_FLOORS = {
   moveFree: 32,
   movePremium: 40,
-  mindFree: 24,
+  mindFree: 32,
   mindPremium: 48,
   recipesFree: 40,
   recipesPremium: 102,
