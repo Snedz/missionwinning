@@ -46,7 +46,7 @@ export function FormGuideSheet({
       eyebrow={t('formGuideTitle', { defaultValue: 'Form guide' })}
       title={exerciseName}
       footer={
-        <div className="min-h-[44px] tap-target space-y-2">
+        <div className="space-y-2">
           <button
             type="button"
             onClick={onClose}
