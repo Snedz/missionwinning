@@ -16,7 +16,7 @@ One screen of truth for any AI tool or human joining cold. Read this, then [AGEN
 
 ---
 
-## Now (2026-08-07 · web `2026.07-unified.570` · Android `1.24.1`)
+## Now (2026-08-07 · web `2026.07-unified.571` · Android `1.24.1`)
 
 > The ONLY "where we are" block in the repo — [ORCHESTRATION.md](ORCHESTRATION.md) points here.
 >
@@ -284,6 +284,7 @@ One screen of truth for any AI tool or human joining cold. Read this, then [AGEN
 > | gitleaks | **green — and scanning for the first time.** It had never scanned anything: on a `pull_request` event the action lists the PR's commits, the job declared no `permissions:` block, and it 403'd (`pull_requests=read`) before opening a file. Fixed by a `permissions:` block (`.224` carrying `.255`). It scans **only the PR's own commits**, so commit `8ea3527a`'s real Solana treasury address — scrubbed from the working file, still in history — is out of its scope. That finding stands, deliberately not allowlisted; it was never what made this check red. |
 
 - **`.544`–`.543`:** Pricing review (hold prices) + badge medallions.
+- **`.571`:** Kaizen founder tool labels i18n + profile prefs plain.
 - **`.570`:** Fix assessment win bumps streak; assess CTAs plain.
 - **`.569`:** Kaizen Profile/military i18n hard-English kill.
 - **`.568`:** Fix kill alert() cheerleading on Today founder tools + Profile owner.
@@ -296,8 +297,6 @@ One screen of truth for any AI tool or human joining cold. Read this, then [AGEN
 - **`.561`:** Kaizen Guidebook chrome + History/journal empty honesty.
 - **`.560`:** Kaizen Learn paths 44px + locked muted + course nav.
 - **`.559`:** Kaizen Track empty CTA + GPS 44px + muted lock teasers.
-- **`.558`:** Kaizen Move/Mind collection empty CTA + anchors.
-- **`.557`:** Kaizen Fuel empty CTA + search muted + log row 44px.
 - **`.556`:** Kaizen Today muted hovers + plain coach reentry.
 - **Horizon W + full-launch override (2026-08-05).** Wedge excellence still required; agents may ship rewards + full surface honesty. Fuel estimate accuracy remains.
 - **Free-first beta (~4 weeks):** LLC + EIN pending — **no Bundle UI** + **full depth unlocked** + **full More nav** (journey train-only deferred) ([docs/FREE_BETA.md](docs/FREE_BETA.md)).

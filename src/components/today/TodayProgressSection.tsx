@@ -293,7 +293,7 @@ export function TodayProgressSection({
                   }),
                 });
               } catch { /* noop */ }
-            }}>Log Daily Pillar Win (+streak + cloud)</Button>
+            }}>{t('todayFounderLogDailyWin', { defaultValue: 'Log daily pillar win' })}</Button>
             <Button size="sm" variant="ghost" className="text-xs mt-1 min-h-[44px] tap-target" onClick={async () => {
               try {
                 const u = await getUser();
@@ -309,7 +309,7 @@ export function TodayProgressSection({
                   }),
                 });
               } catch { /* noop */ }
-            }}>Log Mind Win (+streak + cloud)</Button>
+            }}>{t('todayFounderLogMindWin', { defaultValue: 'Log mind win' })}</Button>
             <Button size="sm" variant="ghost" className="text-xs mt-1 min-h-[44px] tap-target" onClick={async () => {
               try {
                 const u = await getUser();
@@ -325,7 +325,7 @@ export function TodayProgressSection({
                   }),
                 });
               } catch { /* noop */ }
-            }}>Log Move Win (+streak + cloud)</Button>
+            }}>{t('todayFounderLogMoveWin', { defaultValue: 'Log move win' })}</Button>
             <Button size="sm" variant="outline" className="text-xs mt-1 min-h-[44px] tap-target" onClick={async () => {
               try {
                 const u = await getUser();
@@ -344,7 +344,7 @@ export function TodayProgressSection({
                   });
                 }
               } catch { /* noop */ }
-            }}>Refresh pillar wins from cloud</Button>
+            }}>{t('todayFounderRefreshWins', { defaultValue: 'Refresh pillar wins' })}</Button>
               </>
             )}
           </CardContent>
@@ -355,11 +355,11 @@ export function TodayProgressSection({
       <Card className="border-2 border-border">
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
-            <Trophy className="h-5 w-5 text-primary" /> {t('todayYourWins', { defaultValue: 'Your Wins & Streaks' })}
+            <Trophy className="h-5 w-5 text-primary" /> {t('todayYourWins', { defaultValue: 'Your wins' })}
           </CardTitle>
           <CardDescription>
             {t('todayYourWinsDesc', {
-              defaultValue: 'Milestones earned from your logs — streaks and volume feed your Win Score.',
+              defaultValue: 'Milestones from your logs — streaks and volume feed Mission Score.',
             })}
           </CardDescription>
         </CardHeader>
@@ -461,7 +461,7 @@ export function TodayProgressSection({
           <div className="col-span-2 text-xs text-muted-foreground">
             {t('todayWinBadgeFoot', {
               defaultValue:
-                'Log wins daily — streaks & volume feed your Mission Score. Full cross-pillar challenges in updates.',
+                'Log wins daily. Streaks and volume feed Mission Score.',
             })}
           </div>
           <div className="col-span-2 flex gap-2 mt-1 flex-wrap">
@@ -480,13 +480,13 @@ export function TodayProgressSection({
                 }),
               }); 
               router.refresh(); 
-            }}>Log a daily win +1 streak</Button>
+            }}>{t('todayFounderLogStreak', { defaultValue: 'Log daily win' })}</Button>
             <Button size="sm" variant="ghost" className="text-xs min-h-[44px] tap-target" onClick={() => { toast({
                   title: t('todayFounderProteinDemo', { defaultValue: 'Demo only' }),
                   description: t('todayFounderProteinDemoDesc', {
                     defaultValue: 'Log real meals in Fuel for tracking.',
                   }),
-                }); }}>Log high-protein day</Button>
+                }); }}>{t('todayFounderLogProtein', { defaultValue: 'Log high-protein day' })}</Button>
             <Button size="sm" variant="ghost" className="text-xs min-h-[44px] tap-target" onClick={async () => {
               try {
                 const { getUser, saveNutritionEntry } = await import('@/lib/supabase');
@@ -502,7 +502,7 @@ export function TodayProgressSection({
                   }),
                 });
               } catch { /* noop */ }
-            }}>Log Mind Win (+streak + cloud)</Button>
+            }}>{t('todayFounderLogMindWin', { defaultValue: 'Log mind win' })}</Button>
             <Button size="sm" variant="ghost" className="text-xs min-h-[44px] tap-target" onClick={() => onStartStarter("Daily Mobility Circuit (Free)", freeStarters.find(s => s.name.includes("Mobility"))?.exercises || [])}>Quick mobility</Button>
             <Button size="sm" variant="ghost" className="text-xs min-h-[44px] tap-target" onClick={() => {
               const current = bumpTrainingStreak();
@@ -514,7 +514,7 @@ export function TodayProgressSection({
                 }),
               });
               router.refresh();
-            }}>Log Mobility Habit (+streak)</Button>
+            }}>{t('todayFounderLogMobility', { defaultValue: 'Log mobility habit' })}</Button>
             <Button size="sm" variant="ghost" className="text-xs min-h-[44px] tap-target" onClick={() => onStartStarter("Daily Mobility + Mind Habit", freeStarters.find(s => s.name.includes("Mind Habit"))?.exercises || [])}>Start daily habit stack</Button>
             <Button size="sm" variant="ghost" className="text-xs min-h-[44px] tap-target" onClick={() => {
               toast({
@@ -524,7 +524,7 @@ export function TodayProgressSection({
                 }),
               });
               router.push('/nutrition');
-            }}>Log recovery snack</Button>
+            }}>{t('todayFounderLogSnack', { defaultValue: 'Log recovery snack' })}</Button>
               </>
             )}
           </div>
