@@ -58,7 +58,7 @@ export function TodayQuickLinks({ compact = false }: TodayQuickLinksProps) {
         </Link>
 
         {showBundle && (
-        <Link href="/bundle" className={`${linkClass} border-border bg-accent-100`}>
+        <Link href="/bundle" className={`${linkClass} border-border bg-muted`}>
           <div className="flex h-10 w-10 shrink-0 items-center justify-center border-2 border-border bg-background">
             <Sparkles className="h-5 w-5 text-accent-900" />
           </div>

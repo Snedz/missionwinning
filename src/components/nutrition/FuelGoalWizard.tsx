@@ -155,7 +155,7 @@ export function FuelGoalWizard({ onApplied }: Props) {
             className={cn(
               ' px-3 py-1.5 text-xs font-medium border transition-colors',
               goal === g
-                ? 'border-primary bg-accent-100 text-primary'
+                ? 'border-primary bg-muted text-primary'
                 : 'border-border text-muted-foreground hover:bg-card'
             )}
           >

@@ -91,8 +91,8 @@ export function ExercisePicker({
                 role="option"
                 aria-selected={value === ex.id}
                 className={cn(
-                  'w-full min-h-[56px] px-3 py-2.5 text-start text-sm hover:bg-card',
-                  value === ex.id && 'bg-accent-100 text-primary'
+                  'w-full min-h-[56px] px-3 py-2.5 text-start text-sm hover:bg-muted tap-target',
+                  value === ex.id && 'bg-muted text-primary border-s-[3px] border-s-primary'
                 )}
                 onClick={() => {
                   onChange(ex.id);
