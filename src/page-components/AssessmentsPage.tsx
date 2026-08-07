@@ -310,13 +310,18 @@ export function AssessmentsPage() {
             <div>
               <div className="font-semibold mb-2">
                 {t('assessRecommendations', {
-                  defaultValue:
-                    'Recommendations (click to start a matching free starter + log win):',
+                  defaultValue: 'Recommendations — tap to start a free starter:',
                 })}
               </div>
               <div className="flex flex-wrap gap-2">
                 {result.recommendations.map((r, i) => (
-                  <Button key={i} size="sm" variant="outline" onClick={() => startRecommended(r)}>
+                  <Button
+                    key={i}
+                    size="sm"
+                    variant="outline"
+                    className="min-h-[44px] tap-target"
+                    onClick={() => startRecommended(r)}
+                  >
                     {t('assessStartPrefix', { defaultValue: 'Start' })}:{' '}
                     {r.length > 45 ? `${r.slice(0, 42)}...` : r}
                   </Button>

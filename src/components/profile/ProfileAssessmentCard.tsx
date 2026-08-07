@@ -10,6 +10,7 @@ import { STORAGE_KEYS } from '@/lib/storage/keys';
 import { readJson } from '@/lib/storage/safeStorage';
 import { toast } from '@/hooks/use-toast';
 import { localDateKey } from '@/lib/time/localDate';
+import { bumpTrainingStreak } from '@/lib/streaks';
 
 type LastAssessment = {
   risk: string;
@@ -103,7 +104,14 @@ export function ProfileAssessmentCard() {
                       protein: 0,
                       cals: 0,
                     });
-                  toast({ title: t('todayFounderWinLogged', { defaultValue: 'Win logged' }), description: t('todayFounderStreakOnly', { streak: 1, defaultValue: 'Streak updated.' }) });
+                  const streak = bumpTrainingStreak();
+                  toast({
+                    title: t('todayFounderWinLogged', { defaultValue: 'Win logged' }),
+                    description: t('todayFounderStreakOnly', {
+                      streak,
+                      defaultValue: `Streak ${streak}.`,
+                    }),
+                  });
                 }}
               >
                 {t('profileLogAssessmentWin', { defaultValue: 'Log assessment win' })}

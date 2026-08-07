@@ -200,13 +200,15 @@ export function FitnessTestRunner() {
             labelKey="pftShareResult"
             defaultLabel="Share my results"
           />
-          <Button className="w-full" onClick={() => router.push('/benchmarks')}>
+          <Button className="w-full min-h-[44px] tap-target"
+            onClick={() => router.push('/benchmarks')}
+          >
             {t('pftBackBenchmarks', { defaultValue: 'Back to Benchmarks' })}
           </Button>
           {isAmericaTrackEnabled() && (
             <Button
               variant="outline"
-              className="w-full"
+              className="w-full min-h-[44px] tap-target"
               onClick={() => router.push(americaHomeOrFallback())}
             >
               {t('pftShareAmerica', { defaultValue: 'National fitness mission' })}
