@@ -91,7 +91,7 @@ export function FeedbackPage() {
                 })}
               </p>
             </div>
-            <Button size="lg" variant="default" onClick={() => router.push('/log')}>
+            <Button size="lg" variant="default" className="min-h-[52px] tap-target" onClick={() => router.push('/log')}>
               {t('feedbackBackToday', { defaultValue: 'Back to Today' })}
             </Button>
           </CardContent>
@@ -190,7 +190,7 @@ export function FeedbackPage() {
               />
             </div>
 
-            <Button type="submit" size="lg" variant="default" className="w-full" disabled={loading}>
+            <Button type="submit" size="lg" variant="default" className="w-full min-h-[52px] tap-target" disabled={loading}>
               {loading
                 ? t('feedbackSubmitting', { defaultValue: 'Submitting…' })
                 : t('feedbackSubmit', { defaultValue: 'Submit feedback' })}

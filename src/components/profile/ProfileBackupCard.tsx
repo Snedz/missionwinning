@@ -74,7 +74,7 @@ export function ProfileBackupCard() {
         <div className="flex flex-col gap-2 sm:flex-row">
           <Button
             variant="outline"
-            className="min-h-[44px]"
+            className="min-h-[44px] tap-target"
             onClick={() => {
               downloadBackup();
               track('backup_exported');
@@ -84,7 +84,7 @@ export function ProfileBackupCard() {
           </Button>
           <Button
             variant="outline"
-            className="min-h-[44px]"
+            className="min-h-[44px] tap-target"
             onClick={() => {
               setShowDrop(true);
               clear();
