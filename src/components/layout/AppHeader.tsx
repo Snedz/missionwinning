@@ -97,7 +97,7 @@ export function AppHeader({
             onClick={onOpenMore}
             aria-expanded={moreOpen}
             aria-haspopup="dialog"
-            className="flex flex-1 min-w-0 items-center gap-3 text-start hover:bg-accent-100 transition-colors -ms-1 ps-1 py-1"
+            className="flex flex-1 min-w-0 items-center gap-3 text-start hover:bg-muted transition-colors -ms-1 ps-1 py-1"
           >
             {brand}
           </button>

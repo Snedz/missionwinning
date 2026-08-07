@@ -67,7 +67,7 @@ export function BarcodeLookup({ onSelect }: Props) {
           className="font-mono"
         />
       </div>
-      <Button type="button" variant="outline" disabled={loading} onClick={lookup} className="min-h-[40px]">
+      <Button type="button" variant="outline" disabled={loading} onClick={lookup} className="min-h-[44px] tap-target">
         {loading
           ? t('fuelSearchLoading', { defaultValue: 'Searching…' })
           : t('fuelBarcodeLookup', { defaultValue: 'Look up' })}

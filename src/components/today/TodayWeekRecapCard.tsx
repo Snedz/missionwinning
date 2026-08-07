@@ -87,7 +87,7 @@ export function TodayWeekRecapCard({ recap }: Props) {
  // read `debrief.train` without a non-null assertion on every line.
  if (!full || !debrief) {
  return (
- <section className="content-card border-border bg-accent-100 p-4 space-y-3">
+ <section className="content-card border-border bg-muted p-4 space-y-3">
  <div className="flex items-start gap-3">
  <div className="flex h-10 w-10 shrink-0 items-center justify-center border-2 border-border bg-card text-accent-900">
  <CalendarDays className="h-5 w-5" aria-hidden />

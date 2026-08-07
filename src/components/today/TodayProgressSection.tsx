@@ -113,7 +113,7 @@ export function TodayProgressSection({
             ))}
             {savedWorkouts.length === 0 && (
               <Button variant="ghost" size="sm" onClick={() => router.push('/builder')}>
-                {t('todayBuildCustom', { defaultValue: 'Build a custom session →' })}
+                {t('todayBuildCustom', { defaultValue: 'Build a custom session' })}
               </Button>
             )}
           </div>
@@ -154,7 +154,7 @@ export function TodayProgressSection({
                         router.push("/active");
                       }}
                     >
-                      {t('todayTrainGroup', { group: groupLabel, defaultValue: `Train ${groupLabel} now →` })}
+                      {t('todayTrainGroup', { group: groupLabel, defaultValue: `Train ${groupLabel} now` })}
                     </Button>
                   )}
                 </div>
@@ -182,7 +182,7 @@ export function TodayProgressSection({
           </div>
           <div className="text-muted-foreground">{t('todayRecommendedBody', { defaultValue: 'Start with a simple full-body or split from Builder, or launch a program template. Complete sessions to level up your Win Score.' })}</div>
           <Button variant="outline" size="sm" onClick={() => router.push('/builder')}>
-            {t('todayGoBuilder', { defaultValue: 'Go to Builder / Choose Template →' })}
+            {t('todayGoBuilder', { defaultValue: 'Open builder' })}
           </Button>
         </CardContent>
       </Card>
@@ -255,7 +255,7 @@ export function TodayProgressSection({
               <div>
                 {t('todayAssessmentNone', { defaultValue: 'No assessment yet.' })}{' '}
                 <a href="/assessments" className="underline">
-                  {t('todayAssessmentTake', { defaultValue: 'Take free Readiness Assessment →' })}
+                  {t('todayAssessmentTake', { defaultValue: 'Take readiness assessment' })}
                 </a>
               </div>
             )}
@@ -267,7 +267,7 @@ export function TodayProgressSection({
                   {recentPillarWins.map((w, i) => <li key={i}>{w.name} {w.date && `(${w.date})`}</li>)}
                 </ul>
                 <a href="/nutrition" className="underline">
-                  {t('todaySeeNutritionLink', { defaultValue: 'See full in Nutrition →' })}
+                  {t('todaySeeNutritionLink', { defaultValue: 'See full in Fuel' })}
                 </a>
               </div>
             ) : (
@@ -441,7 +441,7 @@ export function TodayProgressSection({
           </div>
           <div className="col-span-2 flex gap-2 mt-1 flex-wrap">
             <Button size="sm" variant="outline" className="text-xs" onClick={() => router.push('/leaderboard')}>
-              {t('todayViewLeaderboard', { defaultValue: 'View Leaderboard →' })}
+              {t('todayViewLeaderboard', { defaultValue: 'View leaderboard' })}
             </Button>
             {SHOW_TODAY_FOUNDER_TOOLS && (
               <>
@@ -461,17 +461,17 @@ export function TodayProgressSection({
                 alert(`Mind Win logged! +1 streak (${cur}). Check Nutrition for the entry.`);
               } catch { /* noop */ }
             }}>Log Mind Win (+streak + cloud)</Button>
-            <Button size="sm" variant="ghost" className="text-xs" onClick={() => onStartStarter("Daily Mobility Circuit (Free)", freeStarters.find(s => s.name.includes("Mobility"))?.exercises || [])}>Quick Mobility Win →</Button>
+            <Button size="sm" variant="ghost" className="text-xs min-h-[44px] tap-target" onClick={() => onStartStarter("Daily Mobility Circuit (Free)", freeStarters.find(s => s.name.includes("Mobility"))?.exercises || [])}>Quick mobility</Button>
             <Button size="sm" variant="ghost" className="text-xs" onClick={() => {
               const current = bumpTrainingStreak();
               alert(`Mobility habit logged! +1 to streak (${current} days). Synergy with Move pillar builds the path.`);
               router.refresh();
             }}>Log Mobility Habit (+streak)</Button>
-            <Button size="sm" variant="ghost" className="text-xs" onClick={() => onStartStarter("Daily Mobility + Mind Habit", freeStarters.find(s => s.name.includes("Mind Habit"))?.exercises || [])}>Start Daily Habit Stack →</Button>
+            <Button size="sm" variant="ghost" className="text-xs min-h-[44px] tap-target" onClick={() => onStartStarter("Daily Mobility + Mind Habit", freeStarters.find(s => s.name.includes("Mind Habit"))?.exercises || [])}>Start daily habit stack</Button>
             <Button size="sm" variant="ghost" className="text-xs" onClick={() => {
               alert('Log a post-mobility recovery snack in Nutrition (e.g. yogurt bowl). Builds Fuel + Move synergy.');
               router.push('/nutrition');
-            }}>Log Recovery Snack (Fuel + Move) →</Button>
+            }}>Log recovery snack</Button>
               </>
             )}
           </div>
@@ -527,7 +527,7 @@ export function TodayProgressSection({
             ))}
           </div>
           <Button variant="link" className="mt-2 px-0" onClick={() => router.push("/history")}>
-            {t('todayViewHistory', { defaultValue: 'View full history →' })}
+            {t('todayViewHistory', { defaultValue: 'View full history' })}
           </Button>
         </div>
       )}

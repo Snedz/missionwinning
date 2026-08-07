@@ -154,8 +154,12 @@ export function CourseReader({ chapters, initialChapterId }: Props) {
                   {t('learnChapterComplete', { defaultValue: 'Chapter complete — logged to Learn pillar.' })}
                 </p>
                 {chapterIndex < chapters.length - 1 ? (
-                  <Button size="sm" onClick={() => setChapterId(chapters[chapterIndex + 1]!.id)}>
-                    {t('guidebookNextChapter', { defaultValue: 'Next chapter →' })}
+                  <Button
+                    size="sm"
+                    className="min-h-[44px] tap-target"
+                    onClick={() => setChapterId(chapters[chapterIndex + 1]!.id)}
+                  >
+                    {t('guidebookNextChapter', { defaultValue: 'Next chapter' })}
                   </Button>
                 ) : null}
               </div>
