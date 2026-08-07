@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import Link from 'next/link';
 import { Mail } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -90,10 +91,12 @@ function FacebookIcon({ className }: { className?: string }) {
 export function SignInPanel({
   onComplete,
   allowSkip = false,
-  skipLabel = 'Skip — continue without account',
+  skipLabel: skipLabelProp,
   nextPath = '/log',
   compact = false,
 }: SignInPanelProps) {
+  const { t } = useTranslation();
+  const skipLabel = skipLabelProp ?? t('signInSkip', { defaultValue: 'Skip — continue without account' });
   const [email, setEmail] = useState('');
   const [consent, setConsent] = useState(false);
   const [consentLocked, setConsentLocked] = useState(false);
@@ -250,24 +253,24 @@ export function SignInPanel({
           {message}
         </p>
         <p className="text-xs text-muted-foreground">
-          Open the link on this device to sync. You can continue exploring meanwhile.
+          {t('signInLinkHint', { defaultValue: 'Open the link on this device to sync. You can keep using the app meanwhile.' })}
         </p>
         <div className="flex flex-col gap-2">
           {onComplete && (
-            <Button type="button" className="w-full h-12" onClick={() => onComplete()}>
-              Continue
+            <Button type="button" className="w-full min-h-[52px] tap-target h-12" onClick={() => onComplete()}>
+              {t('continue', { defaultValue: 'Continue' })}
             </Button>
           )}
           <Button
             type="button"
             variant="ghost"
-            className="w-full"
+            className="w-full min-h-[44px] tap-target"
             onClick={() => {
               setLinkSent(false);
               setMessage(null);
             }}
           >
-            Use a different email
+            {t('signInDifferentEmail', { defaultValue: 'Use a different email' })}
           </Button>
         </div>
       </div>
@@ -288,7 +291,7 @@ export function SignInPanel({
       */}
       {!configured && (
         <p className="text-xs text-status-warn border-2 border-[hsl(var(--status-warn))] px-3 py-2">
-          Demo mode — add Supabase keys to enable cloud sync and social sign-in.
+          {t('signInDemoMode', { defaultValue: 'Demo mode — add Supabase keys to enable cloud sync and social sign-in.' })}
         </p>
       )}
 
@@ -298,48 +301,48 @@ export function SignInPanel({
             <Button
               type="button"
               variant="outline"
-              className="oauth-btn oauth-btn-apple w-full h-12 text-[15px] font-medium"
+              className="oauth-btn oauth-btn-apple w-full min-h-[48px] h-12 text-[15px] font-medium tap-target"
               disabled={!!loading}
               onClick={() => handleOAuth('apple')}
             >
               <AppleIcon className="h-5 w-5" />
-              {loading === 'apple' ? 'Redirecting…' : 'Continue with Apple'}
+              {loading === 'apple' ? t('signInRedirecting', { defaultValue: 'Redirecting…' }) : t('signInApple', { defaultValue: 'Continue with Apple' })}
             </Button>
           )}
           {isGoogleOAuthEnabled() && (
             <Button
               type="button"
               variant="outline"
-              className="oauth-btn oauth-btn-google w-full h-12 text-[15px] font-medium"
+              className="oauth-btn oauth-btn-google w-full min-h-[48px] h-12 text-[15px] font-medium tap-target"
               disabled={!!loading}
               onClick={() => handleOAuth('google')}
             >
               <GoogleIcon className="h-5 w-5" />
-              {loading === 'google' ? 'Redirecting…' : 'Continue with Google'}
+              {loading === 'google' ? t('signInRedirecting', { defaultValue: 'Redirecting…' }) : t('signInGoogle', { defaultValue: 'Continue with Google' })}
             </Button>
           )}
           {isAzureOAuthEnabled() && (
             <Button
               type="button"
               variant="outline"
-              className="oauth-btn oauth-btn-azure w-full h-12 text-[15px] font-medium"
+              className="oauth-btn oauth-btn-azure w-full min-h-[48px] h-12 text-[15px] font-medium tap-target"
               disabled={!!loading}
               onClick={() => handleOAuth('azure')}
             >
               <MicrosoftIcon className="h-5 w-5" />
-              {loading === 'azure' ? 'Redirecting…' : 'Continue with Microsoft'}
+              {loading === 'azure' ? t('signInRedirecting', { defaultValue: 'Redirecting…' }) : t('signInMicrosoft', { defaultValue: 'Continue with Microsoft' })}
             </Button>
           )}
           {isFacebookOAuthEnabled() && (
             <Button
               type="button"
               variant="outline"
-              className="oauth-btn oauth-btn-facebook w-full h-12 text-[15px] font-medium"
+              className="oauth-btn oauth-btn-facebook w-full min-h-[48px] h-12 text-[15px] font-medium tap-target"
               disabled={!!loading}
               onClick={() => handleOAuth('facebook')}
             >
               <FacebookIcon className="h-5 w-5" />
-              {loading === 'facebook' ? 'Redirecting…' : 'Continue with Facebook'}
+              {loading === 'facebook' ? t('signInRedirecting', { defaultValue: 'Redirecting…' }) : t('signInFacebook', { defaultValue: 'Continue with Facebook' })}
             </Button>
           )}
         </div>
@@ -347,7 +350,7 @@ export function SignInPanel({
 
       {showOAuth && (
         <div className="auth-divider">
-          <span>or use email</span>
+          <span>{t('signInOrEmail', { defaultValue: 'or use email' })}</span>
         </div>
       )}
 

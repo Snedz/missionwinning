@@ -101,7 +101,7 @@ export function CoachManageSheet({
             <div className="pt-2">
               <HoldToConfirmButton
                 variant="destructive"
-                className="w-full"
+                className="w-full min-h-[44px] tap-target"
                 label={t('coachRegenerateWeekPlan', {
                   defaultValue: 'Regenerate week plan',
                 })}
@@ -116,7 +116,7 @@ export function CoachManageSheet({
           <Button
             type="button"
             variant="ghost"
-            className="w-full min-h-[44px]"
+            className="w-full min-h-[44px] tap-target"
             onClick={handleClose}
           >
             {t('coachManageCancel', { defaultValue: 'Cancel' })}
@@ -147,7 +147,7 @@ export function CoachManageSheet({
           <Button
             type="button"
             variant="outline"
-            className="w-full min-h-[44px]"
+            className="w-full min-h-[44px] tap-target"
             onClick={() => {
               setPanel('menu');
               setScheduleDirty(false);
