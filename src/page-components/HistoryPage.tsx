@@ -317,7 +317,7 @@ export function HistoryPage() {
           illustrationAlt=""
           title={t('historyEmptyTitle', { defaultValue: 'No sessions yet' })}
           description={t('historyEmptyDesc', {
-            defaultValue: 'Log one set from Today — History fills from what you finish.',
+            defaultValue: 'Log one set from Today — finished sessions land here.',
           })}
           actionLabel={t('historyStartWorkout', { defaultValue: 'Open Today' })}
           href="/log"
@@ -353,7 +353,7 @@ export function HistoryPage() {
                 <div className="space-y-2">
                   {exerciseIds.length > 1 && (
                     <Select value={activeChartId} onValueChange={setChartExerciseId}>
-                      <SelectTrigger className="w-full">
+                      <SelectTrigger className="w-full min-h-[44px]">
                         <SelectValue
                           placeholder={t('historySelectExercise', {
                             defaultValue: 'Chart exercise',
@@ -393,7 +393,10 @@ export function HistoryPage() {
               placeholder={t('historySearchPlaceholder', {
                 defaultValue: 'Search by workout name…',
               })}
-              className="sm:flex-1"
+              className="sm:flex-1 min-h-[44px]"
+              aria-label={t('historySearchPlaceholder', {
+                defaultValue: 'Search by workout name…',
+              })}
             />
             <div className="flex flex-wrap gap-1.5">
               {(
@@ -412,8 +415,8 @@ export function HistoryPage() {
                   }}
                   className={
                     range === value
-                      ? 'min-h-[44px] border-2 border-transparent bg-primary-fill px-3 text-xs font-semibold text-primary-foreground'
-                      : 'min-h-[44px] border-2 border-border px-3 text-xs font-semibold text-muted-foreground hover:bg-foreground/[0.07]'
+                      ? 'min-h-[44px] tap-target border-2 border-transparent bg-primary-fill px-3 text-xs font-semibold text-primary-foreground'
+                      : 'min-h-[44px] tap-target border-2 border-border px-3 text-xs font-semibold text-muted-foreground hover:bg-muted'
                   }
                 >
                   {t(`historyRange${value}`, { defaultValue: label })}
@@ -422,16 +425,11 @@ export function HistoryPage() {
             </div>
           </div>
           {filteredHistory.length === 0 ? (
-            /* `.241` — was a centred muted sentence with no way out, while
-               `LibraryPage:369` solved the identical case with an EmptyState and
-               a clear-filters action. A filter miss the user cannot undo without
-               guessing which control caused it is a dead end. */
             <EmptyState
               icon={SearchX}
-              title={t('historyNoMatches', { defaultValue: 'No sessions match these filters' })}
+              title={t('historyNoMatches', { defaultValue: 'No sessions match' })}
               description={t('historyNoMatchesDesc', {
-                defaultValue:
-                  'Nothing in this range matches that search. Widen the range or clear the search to see everything you have logged.',
+                defaultValue: 'Widen the range or clear search.',
               })}
               actionLabel={t('historyClearFilters', { defaultValue: 'Clear filters' })}
               onAction={() => {
@@ -537,8 +535,8 @@ export function HistoryPage() {
                     ({fmt.longDate(w.date || new Date().toISOString())})
                   </span>
                 </span>
-                <Link href="/nutrition" className="text-xs underline">
-                  View in Nutrition →
+                <Link href="/nutrition" className="text-xs underline min-h-[44px] inline-flex items-center tap-target">
+                  {t('historyViewFuel', { defaultValue: 'View in Fuel' })}
                 </Link>
               </div>
             ))}

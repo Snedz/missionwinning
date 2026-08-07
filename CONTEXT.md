@@ -16,7 +16,7 @@ One screen of truth for any AI tool or human joining cold. Read this, then [AGEN
 
 ---
 
-## Now (2026-08-06 · web `2026.07-unified.560` · Android `1.24.1`)
+## Now (2026-08-06 · web `2026.07-unified.561` · Android `1.24.1`)
 
 > The ONLY "where we are" block in the repo — [ORCHESTRATION.md](ORCHESTRATION.md) points here.
 >
@@ -284,6 +284,7 @@ One screen of truth for any AI tool or human joining cold. Read this, then [AGEN
 > | gitleaks | **green — and scanning for the first time.** It had never scanned anything: on a `pull_request` event the action lists the PR's commits, the job declared no `permissions:` block, and it 403'd (`pull_requests=read`) before opening a file. Fixed by a `permissions:` block (`.224` carrying `.255`). It scans **only the PR's own commits**, so commit `8ea3527a`'s real Solana treasury address — scrubbed from the working file, still in history — is out of its scope. That finding stands, deliberately not allowlisted; it was never what made this check red. |
 
 - **`.544`–`.543`:** Pricing review (hold prices) + badge medallions.
+- **`.561`:** Kaizen Guidebook chrome + History/journal empty honesty.
 - **`.560`:** Kaizen Learn paths 44px + locked muted + course nav.
 - **`.559`:** Kaizen Track empty CTA + GPS 44px + muted lock teasers.
 - **`.558`:** Kaizen Move/Mind collection empty CTA + anchors.
@@ -298,7 +299,6 @@ One screen of truth for any AI tool or human joining cold. Read this, then [AGEN
 - **`.549`:** Kaizen set-complete row + sheet primary CTAs.
 - **`.548`:** Kaizen Victory Peak-End + empty Finish keeps session.
 - **`.547`:** Terms liability cap + Texas law + indemnify; Privacy 30-day deletion.
-- **`.546`:** Territory hard block Europe+OIC57+Canada signup/checkout.
 - **Horizon W + full-launch override (2026-08-05).** Wedge excellence still required; agents may ship rewards + full surface honesty. Fuel estimate accuracy remains.
 - **Free-first beta (~4 weeks):** LLC + EIN pending — **no Bundle UI** + **full depth unlocked** + **full More nav** (journey train-only deferred) ([docs/FREE_BETA.md](docs/FREE_BETA.md)).
 - **`e2e:visual` is the one dark gate.** Its three baselines were generated **2026-07-22, before the rebrand**, and depicted the old navy/emerald dark design — black grounds, emerald CTAs, rounded corners. Verified by opening one, not inferred from dates. **Deleted**, because a known-wrong baseline is worse than none: the first Linux run would have shown four huge diffs, and the reflex there is `--update-snapshots` without looking, which launders whatever renders that day into truth. `home-reduced.png` **never had a baseline at all**, so the homepage has been silently self-approving since the case was written. **First Linux CI run after billing clears must bootstrap all four** (`npx playwright test --grep @visual --update-snapshots`, then commit the artifact) — it cannot be done on macOS, the pixels will not match.

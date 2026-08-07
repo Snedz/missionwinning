@@ -92,9 +92,10 @@ export function JournalTimeline() {
         icon={BookOpen}
         title={t('journalEmptyTitle', { defaultValue: 'No journal entries yet' })}
         description={t('journalEmptyDesc', {
-          defaultValue:
-            'Finish a session and its debrief is kept here. Jot a field note mid-workout and it opens the entry in your own words.',
+          defaultValue: 'Finish a session — debriefs and field notes land here.',
         })}
+        actionLabel={t('historyStartWorkout', { defaultValue: 'Open Today' })}
+        href="/log"
       />
     );
   }
