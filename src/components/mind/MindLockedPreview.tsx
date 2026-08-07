@@ -57,7 +57,7 @@ export function MindLockedPreview() {
         <div className="flex flex-wrap gap-2">
           <UnlockButton productId="super-bundle" planId="12mo" price="59" title="Super Bundle" isSubscription />
 
-          <Button variant="outline" size="sm" asChild>
+          <Button variant="outline" size="sm" className="min-h-[44px] tap-target" asChild>
             <Link href="/bundle">{t('trackExploreBundle', { defaultValue: 'See Super Bundle' })}</Link>
           </Button>
         </div>
