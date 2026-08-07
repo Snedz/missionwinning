@@ -196,7 +196,7 @@ export function FitnessTestRunner() {
           </ul>
           <ShareFitnessButton
             text={shareText}
-            className="w-full"
+            className="w-full min-h-[44px] tap-target"
             labelKey="pftShareResult"
             defaultLabel="Share my results"
           />
@@ -261,7 +261,7 @@ export function FitnessTestRunner() {
                 </option>
               </select>
             </label>
-            <Button className="w-full" onClick={proceedFromProfile}>
+            <Button className="w-full min-h-[44px] tap-target" onClick={proceedFromProfile}>
               {t('pftContinue', { defaultValue: 'Continue to events' })}
             </Button>
           </>
@@ -284,7 +284,7 @@ export function FitnessTestRunner() {
             <Button className="w-full bg-[hsl(var(--status-info))] hover:bg-card" onClick={handleScore}>
               {t('pftScore', { defaultValue: 'Score my test' })}
             </Button>
-            <Button variant="ghost" className="w-full" onClick={() => setStep('profile')}>
+            <Button variant="ghost" className="w-full min-h-[44px] tap-target" onClick={() => setStep('profile')}>
               {t('pftBack', { defaultValue: 'Back' })}
             </Button>
           </>

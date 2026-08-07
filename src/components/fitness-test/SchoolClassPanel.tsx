@@ -193,7 +193,7 @@ export function SchoolClassPanel() {
             placeholder={t('schoolNamePlaceholder', { defaultValue: 'Mrs. Smith — 5th Grade PE' })}
             className="w-full rounded-none bg-background border border-border px-3 py-2 text-sm"
           />
-          <Button variant="outline" className="w-full" onClick={() => void handleCreate()}>
+          <Button variant="outline" className="w-full min-h-[44px] tap-target" onClick={() => void handleCreate()}>
             {t('schoolCreate', { defaultValue: 'Generate class code' })}
           </Button>
           {createdCode && (
@@ -222,7 +222,7 @@ export function SchoolClassPanel() {
                 </Button>
               </div>
             </div>
-            <Button size="sm" variant="outline" className="w-full" asChild>
+            <Button size="sm" variant="outline" className="w-full min-h-[44px] tap-target" asChild>
               <Link href={teacherDashboardUrl(createdCode, createdPin ?? getTeacherPin(createdCode) ?? '')}>
                 {t('schoolTeacherDashboard', { defaultValue: 'Teacher dashboard' })}
               </Link>

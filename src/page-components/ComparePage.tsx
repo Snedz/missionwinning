@@ -209,7 +209,7 @@ export function ComparePage() {
               CTA on the highest-intent comparison page read "Begin", matching neither its
               own defaultValue nor any other Start-free button on the site. `welcomeBegin`
               belongs to the Welcome flow, where it means "continue". */}
-          <Link href="/welcome" className="primary-action sm:w-auto sm:px-10">
+          <Link href="/welcome" className="primary-action min-h-[52px] tap-target sm:w-auto sm:px-10">
             {t('landingNavStart', { defaultValue: 'Start free' })}
           </Link>
           {!isFreeBeta() && (

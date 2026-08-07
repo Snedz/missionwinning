@@ -62,7 +62,7 @@ export function GuideApexShell({
         onNavigate={() => setTocOpen(false)}
       />
       <div className="mt-8 space-y-2 border-t border-border pt-6">
-        <Button asChild variant="default" size="sm" className="w-full">
+        <Button asChild variant="default" size="sm" className="w-full min-h-[44px] tap-target">
           <a
             href={pdfHref}
             download
@@ -92,7 +92,7 @@ export function GuideApexShell({
             </>
           ) : null}
         </p>
-        <Button asChild variant="outline" size="sm" className="w-full">
+        <Button asChild variant="outline" size="sm" className="w-full min-h-[44px] tap-target">
           <Link href={`/guide/print?lang=${lang}`}>
             {t('magazinePrintView', { defaultValue: 'Print view' })}
           </Link>
