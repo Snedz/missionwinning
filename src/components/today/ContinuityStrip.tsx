@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { useTranslation } from 'react-i18next';
-import { ArrowRight, Brain, UtensilsCrossed, Wind } from 'lucide-react';
+import { Brain, UtensilsCrossed, Wind } from 'lucide-react';
 import type { ContinuitySuggestion } from '@/lib/today/continuityStrip';
 import { cn } from '@/lib/utils';
 
@@ -59,7 +59,6 @@ export function ContinuityStrip({ suggestions, className }: Props) {
                     {t(s.reasonKey, { defaultValue: s.reasonDefault })}
                   </span>
                 </span>
-                <ArrowRight className="h-4 w-4 shrink-0 text-muted-foreground" aria-hidden />
               </Link>
             </li>
           );

@@ -212,14 +212,14 @@ export function pickVictoryNextAction(opts?: PickVictoryNextActionOpts): Victory
     };
   }
 
-  // High strain: rest / lighter train — not Mind tourism.
+  // High strain: recovery mind with collection deep-link (not Mind tourism generic).
   if ((opts?.strainDelta ?? 0) >= 5) {
     return {
-      href: '/log',
-      labelKey: 'victoryNextRestLabel',
-      defaultLabel: 'Back to Today',
-      reasonKey: 'victoryNextRestReason',
-      defaultReason: 'Strain is up — recover, then hit a lighter session when ready.',
+      href: '/mind?collection=post-train',
+      labelKey: 'victoryNextRecoverMindLabel',
+      defaultLabel: 'Post-train downshift',
+      reasonKey: 'victoryNextRecoverMindReason',
+      defaultReason: 'Strain is up — a short downshift before the next load.',
     };
   }
 

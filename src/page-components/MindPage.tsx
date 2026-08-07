@@ -5,6 +5,7 @@
  */
 
 import { useEffect, useMemo, useState } from 'react';
+import { useSearchParams } from 'next/navigation';
 import { useTranslation } from 'react-i18next';
 import { useLocaleFormat } from '@/hooks/useLocaleFormat';
 import { BreathingTimer } from '@/components/pillars/BreathingTimer';
@@ -28,6 +29,7 @@ import { getContentInventory } from '@/lib/contentInventory';
 import {
   filterMindByCollection,
   MIND_COLLECTIONS,
+  parseMindCollectionParam,
   type MindCollectionId,
 } from '@/lib/mind/filterSessions';
 import { cn } from '@/lib/utils';
@@ -36,6 +38,7 @@ export function MindPage() {
   const { t } = useTranslation();
   const fmt = useLocaleFormat();
   const { toast } = useToast();
+  const searchParams = useSearchParams();
   const { premium } = usePremium();
   const [premiumSessions, setPremiumSessions] = useState<GuidedMindSession[]>([]);
   const [recentWins, setRecentWins] = useState<PillarWin[]>([]);
@@ -43,8 +46,18 @@ export function MindPage() {
   const [premiumOpen, setPremiumOpen] = useState(false);
   const [premiumFetchError, setPremiumFetchError] = useState(false);
   const [premiumRetry, setPremiumRetry] = useState(0);
-  const [collectionId, setCollectionId] = useState<MindCollectionId>('all');
+  const [collectionId, setCollectionId] = useState<MindCollectionId>(() =>
+    parseMindCollectionParam(
+      typeof window !== 'undefined'
+        ? new URLSearchParams(window.location.search).get('collection')
+        : null
+    )
+  );
   const inv = getContentInventory();
+
+  useEffect(() => {
+    setCollectionId(parseMindCollectionParam(searchParams.get('collection')));
+  }, [searchParams]);
 
   useEffect(() => {
     setRecentWins(getPillarWins(5).filter((w) => w.pillar === 'mind'));

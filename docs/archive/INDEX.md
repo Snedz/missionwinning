@@ -25,6 +25,7 @@ When adding a doc:
 
 | File | Absorbed by / note |
 |------|---------------------|
+| [log/LOG-rotate-583.md](./log/LOG-rotate-583.md) | rotated oldest for `.583` continuity |
 | [log/LOG-rotate-582.md](./log/LOG-rotate-582.md) | rotated oldest for `.582` formguide |
 | [log/LOG-rotate-581.md](./log/LOG-rotate-581.md) | rotated oldest for `.581` overlay fix |
 | [log/LOG-rotate-580.md](./log/LOG-rotate-580.md) | rotated oldest for `.580` size-sm residual |

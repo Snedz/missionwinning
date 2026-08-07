@@ -5,6 +5,7 @@ import {
   filterFlowsByCollection,
   flowMatchesCollection,
   MOVE_COLLECTIONS,
+  parseMoveCollectionParam,
 } from '@/lib/move/filterFlows';
 
 const sample: MobilityFlow[] = [
@@ -46,7 +47,10 @@ describe('filterFlows', () => {
 
   it('long-form requires min minutes', () => {
     const out = filterFlowsByCollection(sample, 'long-form');
-    assert.deepEqual(out.map((f) => f.id), ['c']);
+    assert.deepEqual(
+      out.map((f) => f.id),
+      ['c']
+    );
   });
 
   it('desk collection', () => {
@@ -69,5 +73,10 @@ describe('filterFlows', () => {
     };
     const def = MOVE_COLLECTIONS.find((c) => c.id === 'recover-after-lower')!;
     assert.equal(flowMatchesCollection(bare, def), true);
+  });
+
+  it('parseMoveCollectionParam hydrates deep links', () => {
+    assert.equal(parseMoveCollectionParam('recover-after-lower'), 'recover-after-lower');
+    assert.equal(parseMoveCollectionParam('nope'), 'all');
   });
 });

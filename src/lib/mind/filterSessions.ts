@@ -51,3 +51,12 @@ export function filterMindByCollection(
   const def = MIND_COLLECTIONS.find((c) => c.id === collectionId) ?? MIND_COLLECTIONS[0];
   return sessions.filter((s) => mindMatchesCollection(s, def));
 }
+
+/** Hydrate Mind page from ?collection= deep links (ContinuityStrip). */
+export function parseMindCollectionParam(
+  raw: string | null | undefined
+): MindCollectionId {
+  if (!raw) return 'all';
+  const id = raw.trim() as MindCollectionId;
+  return MIND_COLLECTIONS.some((c) => c.id === id) ? id : 'all';
+}
