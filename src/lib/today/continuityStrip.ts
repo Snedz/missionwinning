@@ -49,7 +49,7 @@ function mindHref(collection: string): string {
  * Priority when trained today:
  * 1. Large protein gap → fuel first
  * 2. Focus-matched move collection deep-link
- * 3. Mind post-train / prep
+ * 3. Mind post-train — or sleep-week series when evening hour
  */
 export function buildContinuitySuggestions(opts: {
   hasTrainHistory: boolean;
@@ -62,6 +62,11 @@ export function buildContinuitySuggestions(opts: {
    * When ≥ 40g and trained today, fuel is prioritized first.
    */
   proteinGapG?: number;
+  /**
+   * Local hour 0–23. Evening (20–23 or 0–4) prefers sleep-week series
+   * over generic post-train mind when trained today.
+   */
+  localHour?: number;
 }): ContinuitySuggestion[] {
   if (!opts.hasTrainHistory) return [];
 
@@ -71,6 +76,11 @@ export function buildContinuitySuggestions(opts: {
     typeof opts.proteinGapG === 'number' && Number.isFinite(opts.proteinGapG)
       ? opts.proteinGapG
       : 0;
+  const hour =
+    typeof opts.localHour === 'number' && Number.isFinite(opts.localHour)
+      ? ((Math.floor(opts.localHour) % 24) + 24) % 24
+      : null;
+  const isEvening = hour != null && (hour >= 20 || hour <= 4);
 
   const fuel: ContinuitySuggestion = {
     kind: 'fuel',
@@ -79,6 +89,26 @@ export function buildContinuitySuggestions(opts: {
     titleDefault: 'Log protein',
     reasonKey: 'continuityFuelProteinWhy',
     reasonDefault: 'Fuel the session you just earned.',
+  };
+
+  const mindPostTrain: ContinuitySuggestion = {
+    kind: 'mind',
+    href: mindHref('post-train'),
+    collectionId: 'post-train',
+    titleKey: 'continuityMindDownshift',
+    titleDefault: 'Post-training downshift',
+    reasonKey: 'continuityMindDownshiftWhy',
+    reasonDefault: 'Shift from strain to recovery in a few minutes.',
+  };
+
+  const mindSleepWeek: ContinuitySuggestion = {
+    kind: 'mind',
+    href: mindHref('sleep-week'),
+    collectionId: 'sleep-week',
+    titleKey: 'continuityMindSleepWeek',
+    titleDefault: 'Sleep week series',
+    reasonKey: 'continuityMindSleepWeekWhy',
+    reasonDefault: 'Evening is for repair — start or continue the sleep-week sequence.',
   };
 
   if (opts.trainedToday) {
@@ -100,15 +130,6 @@ export function buildContinuitySuggestions(opts: {
         reasonKey: 'continuityMovePostLegsWhy',
         reasonDefault: 'Open hips and quads after lower body work.',
       });
-      out.push({
-        kind: 'mind',
-        href: mindHref('post-train'),
-        collectionId: 'post-train',
-        titleKey: 'continuityMindDownshift',
-        titleDefault: 'Post-training downshift',
-        reasonKey: 'continuityMindDownshiftWhy',
-        reasonDefault: 'Shift from strain to recovery in a few minutes.',
-      });
     } else if (isUpperPush(groups) || isUpperPull(groups)) {
       out.push({
         kind: 'move',
@@ -118,15 +139,6 @@ export function buildContinuitySuggestions(opts: {
         titleDefault: 'Shoulders & T-spine',
         reasonKey: 'continuityMoveShouldersWhy',
         reasonDefault: 'Keep pressing and pulling joints happy.',
-      });
-      out.push({
-        kind: 'mind',
-        href: mindHref('post-train'),
-        collectionId: 'post-train',
-        titleKey: 'continuityMindDownshift',
-        titleDefault: 'Post-training downshift',
-        reasonKey: 'continuityMindDownshiftWhy',
-        reasonDefault: 'Shift from strain to recovery in a few minutes.',
       });
     } else {
       out.push({
@@ -138,40 +150,46 @@ export function buildContinuitySuggestions(opts: {
         reasonKey: 'continuityMoveRecoverWhy',
         reasonDefault: 'A short flow helps the next session feel better.',
       });
-      out.push({
-        kind: 'mind',
-        href: mindHref('post-train'),
-        collectionId: 'post-train',
-        titleKey: 'continuityMindDownshift',
-        titleDefault: 'Post-training downshift',
-        reasonKey: 'continuityMindDownshiftWhy',
-        reasonDefault: 'Shift from strain to recovery in a few minutes.',
-      });
     }
+
+    out.push(isEvening ? mindSleepWeek : mindPostTrain);
 
     if (!out.some((x) => x.kind === 'fuel')) {
       out.push(fuel);
     }
   } else {
     // Has history but not trained today — gentle prep, not shame
-    out.push({
-      kind: 'move',
-      href: moveHref('pre-session'),
-      collectionId: 'pre-session',
-      titleKey: 'continuityMovePrep',
-      titleDefault: 'Pre-session prime',
-      reasonKey: 'continuityMovePrepWhy',
-      reasonDefault: 'Open up before you train — or use it as an active rest day.',
-    });
-    out.push({
-      kind: 'mind',
-      href: mindHref('pre-lift'),
-      collectionId: 'pre-lift',
-      titleKey: 'continuityMindFocus',
-      titleDefault: 'Pre-workout focus',
-      reasonKey: 'continuityMindFocusWhy',
-      reasonDefault: 'Two minutes to clear noise before the first set.',
-    });
+    if (isEvening) {
+      out.push(mindSleepWeek);
+      out.push({
+        kind: 'move',
+        href: moveHref('pre-session'),
+        collectionId: 'pre-session',
+        titleKey: 'continuityMovePrep',
+        titleDefault: 'Pre-session prime',
+        reasonKey: 'continuityMovePrepWhy',
+        reasonDefault: 'Open up before you train — or use it as an active rest day.',
+      });
+    } else {
+      out.push({
+        kind: 'move',
+        href: moveHref('pre-session'),
+        collectionId: 'pre-session',
+        titleKey: 'continuityMovePrep',
+        titleDefault: 'Pre-session prime',
+        reasonKey: 'continuityMovePrepWhy',
+        reasonDefault: 'Open up before you train — or use it as an active rest day.',
+      });
+      out.push({
+        kind: 'mind',
+        href: mindHref('pre-lift'),
+        collectionId: 'pre-lift',
+        titleKey: 'continuityMindFocus',
+        titleDefault: 'Pre-workout focus',
+        reasonKey: 'continuityMindFocusWhy',
+        reasonDefault: 'Two minutes to clear noise before the first set.',
+      });
+    }
   }
 
   // Cap at 3; de-dupe by kind keeping first
@@ -195,6 +213,7 @@ export function pickContinuityNextAction(opts: {
   trainedToday?: boolean;
   lastFocusGroups?: string[];
   proteinGapG?: number;
+  localHour?: number;
 }): ContinuitySuggestion | null {
   const list = buildContinuitySuggestions(opts);
   return list[0] ?? null;

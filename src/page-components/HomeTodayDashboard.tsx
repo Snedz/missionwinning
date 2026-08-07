@@ -241,6 +241,7 @@ export function HomeTodayDashboard() {
       hasTrainHistory: true,
       lastFocusGroups: [...focus],
       trainedToday,
+      localHour: new Date().getHours(),
     });
   }, [workoutHistory]);
   const [pillarStats, setPillarStats] = useState(() => ({
