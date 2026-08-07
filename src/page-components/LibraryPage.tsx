@@ -481,7 +481,7 @@ export function LibraryPage() {
                   setDetailId(ex.id);
                 }}
               >
-                {t('libraryViewDetails', { defaultValue: 'View details →' })}
+                {t('libraryViewDetails', { defaultValue: 'View details' })}
               </Button>
             </CardContent>
           </Card>

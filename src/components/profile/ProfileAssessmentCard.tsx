@@ -74,7 +74,7 @@ export function ProfileAssessmentCard() {
             <div className="flex gap-2 flex-wrap">
               <Button
                 size="sm"
-                className="min-h-[44px]"
+                className="min-h-[44px] tap-target"
                 variant="outline"
                 onClick={() => router.push('/assessments')}
               >
@@ -82,14 +82,14 @@ export function ProfileAssessmentCard() {
               </Button>
               <Button
                 size="sm"
-                className="min-h-[44px]"
+                className="min-h-[44px] tap-target"
                 onClick={() => launchFromAssessment(lastAssessment.risk)}
               >
-                Start recommended starter for {lastAssessment.risk} risk →
+                {t('profileStartStarter', { risk: lastAssessment.risk, defaultValue: `Start starter (${lastAssessment.risk} risk)` })}
               </Button>
               <Button
                 size="sm"
-                className="min-h-[44px]"
+                className="min-h-[44px] tap-target"
                 variant="ghost"
                 onClick={async () => {
                   const u = await getUser();

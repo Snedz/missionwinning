@@ -61,14 +61,14 @@ export function AnalyticsConsentBanner() {
           </p>
         </div>
         <div className="flex shrink-0 gap-2">
-          <Button type="button" size="sm" className="min-h-[40px]" onClick={stayPrivate}>
+          <Button type="button" size="sm" className="min-h-[44px] tap-target" onClick={stayPrivate}>
             {t('analyticsBannerStayPrivate', { defaultValue: 'Stay private' })}
           </Button>
           <Button
             type="button"
             size="sm"
             variant="outline"
-            className="min-h-[40px]"
+            className="min-h-[44px] tap-target"
             onClick={allowAnalytics}
           >
             {t('analyticsBannerAllow', { defaultValue: 'Allow analytics' })}

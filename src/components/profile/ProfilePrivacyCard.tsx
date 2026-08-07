@@ -88,7 +88,7 @@ export function ProfilePrivacyCard() {
               type="button"
               size="sm"
               variant={pref === 'opted_out' || pref === null ? 'selected' : 'outline'}
-              className="min-h-[40px]"
+              className="min-h-[44px] tap-target"
               onClick={() => setAllowed(false)}
             >
               {t('privacyKeepPrivate', { defaultValue: 'Keep analytics off' })}
@@ -97,7 +97,7 @@ export function ProfilePrivacyCard() {
               type="button"
               size="sm"
               variant={pref === 'allowed' ? 'selected' : 'outline'}
-              className="min-h-[40px]"
+              className="min-h-[44px] tap-target"
               onClick={() => setAllowed(true)}
             >
               {t('privacyAllowAnalytics', { defaultValue: 'Allow product analytics' })}

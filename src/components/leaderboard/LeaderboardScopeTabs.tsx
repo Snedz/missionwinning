@@ -23,7 +23,7 @@ export function LeaderboardScopeTabs({ scope, onScopeChange, scopeLabel }: Props
             type="button"
             onClick={() => onScopeChange(s.id)}
             className={cn(
-              'shrink-0 border-2 px-3.5 py-2 text-xs font-medium transition-colors min-h-[36px]',
+              'shrink-0 border-2 px-3.5 py-2 text-xs font-medium transition-colors min-h-[44px] tap-target',
               scope === s.id
                 ? 'border-primary bg-primary-fill text-primary-foreground'
                 : 'border-border bg-card text-muted-foreground hover:border-foreground'
