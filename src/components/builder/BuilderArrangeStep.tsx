@@ -133,7 +133,7 @@ export function BuilderArrangeStep({
             <Button
               onClick={onAddExercise}
               disabled={!selectedExerciseId}
-              className="min-h-[44px] shrink-0"
+              className="min-h-[44px] shrink-0 tap-target"
             >
               <Plus className="h-4 w-4" />
               {t('builderAdd', { defaultValue: 'Add' })}
@@ -141,13 +141,13 @@ export function BuilderArrangeStep({
           </div>
         )}
 
-        <Button variant="outline" size="sm" className="text-xs" onClick={onQuickMobility}>
+        <Button variant="outline" size="sm" className="text-xs min-h-[44px] tap-target" onClick={onQuickMobility}>
           {t('builderQuickMobility', {
-            defaultValue: '+ Quick Add Free Mobility Warm-up (5 moves)',
+            defaultValue: 'Add mobility warm-up (5 moves)',
           })}
         </Button>
-        <Button variant="ghost" size="sm" className="text-xs ml-2" onClick={onLoadHabitStack}>
-          {t('builderLoadHabitStack', { defaultValue: 'Load Free Habit/Mobility Stack' })}
+        <Button variant="ghost" size="sm" className="text-xs ml-2 min-h-[44px] tap-target" onClick={onLoadHabitStack}>
+          {t('builderLoadHabitStack', { defaultValue: 'Load habit + mobility stack' })}
         </Button>
 
         {exercises.map((ex, exIndex) => {

@@ -255,7 +255,7 @@ export function CoachChatPanel({
                   type="button"
                   size="sm"
                   variant="outline"
-                  className="min-h-[44px]"
+                  className="min-h-[44px] tap-target"
                   onClick={() => {
                     setOffline(false);
                     setSendError(null);
