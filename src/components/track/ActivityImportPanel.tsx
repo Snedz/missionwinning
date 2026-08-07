@@ -164,7 +164,7 @@ export function ActivityImportPanel({ onImported }: Props) {
             type="button"
             variant="ghost"
             size="sm"
-            className="text-xs"
+            className="text-xs min-h-[44px] tap-target"
             onClick={() => {
               void navigator.clipboard?.writeText(HEALTH_IMPORT_SAMPLE);
               setStatus(
@@ -178,7 +178,7 @@ export function ActivityImportPanel({ onImported }: Props) {
             type="button"
             variant="ghost"
             size="sm"
-            className="text-xs"
+            className="text-xs min-h-[44px] tap-target"
             onClick={() => {
               void navigator.clipboard?.writeText(HEALTH_IMPORT_CSV_SAMPLE);
               setStatus(

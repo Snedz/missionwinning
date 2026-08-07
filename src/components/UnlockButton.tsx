@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import Link from 'next/link';
 import { ArrowUpRight, Check, Loader2 } from 'lucide-react';
 import {
@@ -51,6 +52,7 @@ export function UnlockButton({
   planId,
   onSuccess,
 }: Props) {
+  const { t } = useTranslation();
   const [email, setEmail] = useState('');
   const [submitted, setSubmitted] = useState(false);
   const [submitting, setSubmitting] = useState(false);
@@ -203,14 +205,14 @@ export function UnlockButton({
       <div className={className}>
         <button
           type="button"
-          className="primary-action w-full disabled:opacity-50"
+          className="primary-action w-full min-h-[52px] tap-target disabled:opacity-50"
           disabled={checkoutBusy}
           onClick={() => void startCheckout()}
         >
           {checkoutBusy ? (
             <>
               <Loader2 className="h-4 w-4 animate-spin" />
-              Starting checkout…
+              {t('unlockStartingCheckout', { defaultValue: 'Starting checkout…' })}
             </>
           ) : (
             <>
@@ -220,12 +222,12 @@ export function UnlockButton({
           )}
         </button>
         <p className="mt-2 text-center text-[11px] text-muted-foreground">
-          Secure checkout by Stripe · Card · Apple Pay · Google Pay · PayPal · USDC
+          {t('unlockSecureCheckout', { defaultValue: 'Secure checkout by Stripe · Card · Apple Pay · Google Pay · PayPal · USDC' })}
         </p>
         <p className="mt-1 text-center text-[11px] text-muted-foreground">
-          14-day money-back on first paid charge —{' '}
+          {t('unlockMoneyBack', { defaultValue: '14-day money-back on first paid charge' })} —{' '}
           <Link href="/refunds" className="text-primary hover:underline">
-            Refunds
+            {t('infoRefundsTitle', { defaultValue: 'Refunds' })}
           </Link>
         </p>
         {checkoutError && (
@@ -233,7 +235,7 @@ export function UnlockButton({
             {checkoutError}{' '}
             {checkoutError.includes('Sign in') && (
               <Link href="/profile" className="underline underline-offset-2">
-                Open Profile
+                {t('unlockOpenProfile', { defaultValue: 'Open Profile' })}
               </Link>
             )}
           </p>
@@ -246,10 +248,10 @@ export function UnlockButton({
     return (
       <div className={`border-2 border-primary bg-background p-4 text-center ${className}`}>
         <p className="inline-flex items-center gap-1.5 font-semibold text-primary">
-          <Check className="h-4 w-4" /> You&apos;re on the founders list.
+          <Check className="h-4 w-4" /> {t('unlockFoundersListed', { defaultValue: "You're on the founders list." })}
         </p>
         <p className="mt-1 text-xs text-muted-foreground">
-          We&apos;ll email {email} when checkout opens. Founders lock in the launch discount.
+          {t('unlockFoundersEmail', { email, defaultValue: `We'll email ${email} when checkout opens.` })}
         </p>
       </div>
     );
@@ -266,8 +268,8 @@ export function UnlockButton({
         onChange={(e) => setEmail(e.target.value)}
         className="w-full border-2 border-border bg-background px-3 py-3 text-sm min-h-[44px]"
       />
-      <button type="submit" className="primary-action w-full" disabled={submitting || !email.trim()}>
-        {submitting ? 'Joining…' : 'Join founders list'}
+      <button type="submit" className="primary-action w-full min-h-[52px] tap-target" disabled={submitting || !email.trim()}>
+        {submitting ? t('unlockJoining', { defaultValue: 'Joining…' }) : t('unlockJoinFounders', { defaultValue: 'Join founders list' })}
       </button>
       {waitlistError && (
         <p className="text-center text-xs text-destructive" role="alert">

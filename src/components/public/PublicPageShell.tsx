@@ -143,7 +143,7 @@ export function PublicPageShell({
               text link by design (`.104`), which left these pages with nothing to press
               above the fold — on a free product. Each page's own closing CTA is the
               second, which is the two-per-page ceiling first-90.spec.ts asserts for `/`. */}
-          <Link href={ctaHref} className="primary-action mt-8 max-w-sm sm:w-auto sm:px-10">
+          <Link href={ctaHref} className="primary-action min-h-[52px] tap-target mt-8 max-w-sm sm:w-auto sm:px-10">
             {ctaLabel}
           </Link>
           {breadcrumb && (
