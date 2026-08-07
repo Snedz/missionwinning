@@ -65,6 +65,7 @@ When adding a doc:
 | [log/LOG-rotate-414.md](./log/LOG-rotate-414.md) | `.399` FileUploadRow chrome — rotated for `.414` form media T1 |
 | [log/LOG-rotate-415.md](./log/LOG-rotate-415.md) | `.400` opacity exemptions — rotated for `.415` pattern packs |
 | [log/LOG-rotate-416.md](./log/LOG-rotate-416.md) | `.401` beachhead i18n — rotated for `.416` Scout + PDF |
+| [log/LOG-rotate-463.md](./log/LOG-rotate-463.md) | `.448` — rotated for `.463` (app voice recut). |
 | [log/LOG-rotate-462.md](./log/LOG-rotate-462.md) | `.447` — rotated for `.462` (legal + app voice recut). |
 | [log/LOG-rotate-461.md](./log/LOG-rotate-461.md) | `.446` — rotated for `.461` (library session studio). |
 | [log/LOG-rotate-460.md](./log/LOG-rotate-460.md) | `.445` — rotated for `.460` (craft CTA + coverage). |
