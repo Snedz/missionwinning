@@ -41,7 +41,7 @@ export function FuelMealPlanCard() {
           <p className="text-xs text-muted-foreground tabular-nums">
             {baseTargets.cals} kcal · {baseTargets.protein}g protein · {baseTargets.carbs}g carbs
           </p>
-          <Button variant="default" size="sm" onClick={() => generate()}>
+          <Button variant="default" size="sm" className="min-h-[44px] tap-target" onClick={() => generate()}>
             {t('fuelCoachGenerate', { defaultValue: 'Generate meal plan' })}
           </Button>
         </CardContent>
@@ -55,7 +55,7 @@ export function FuelMealPlanCard() {
         <CardTitle className="text-base">
           {t('fuelCoachWeekTitle', { defaultValue: 'Your adaptive meal plan' })}
         </CardTitle>
-        <Button variant="outline" size="sm" onClick={() => regenerate()} aria-label={t('fuelCoachRegenerate', { defaultValue: 'Regenerate plan' })}>
+        <Button variant="outline" size="sm" className="min-h-[44px] tap-target" onClick={() => regenerate()} aria-label={t('fuelCoachRegenerate', { defaultValue: 'Regenerate plan' })}>
           <RefreshCw className="h-4 w-4 mr-1" aria-hidden />
           {t('fuelCoachRegenerate', { defaultValue: 'Regenerate' })}
         </Button>

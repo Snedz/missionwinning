@@ -279,10 +279,10 @@ export function FuelGoalWizard({ onApplied }: Props) {
       </div>
 
       <div className="flex flex-wrap gap-2">
-        <Button type="button" variant="default" size="sm" className="h-9" onClick={apply}>
+        <Button type="button" variant="default" size="sm" className="min-h-[44px] h-11 tap-target" onClick={apply}>
           {t('fuelApplyGoalTargets', { defaultValue: 'Apply targets' })}
         </Button>
-        <Button type="button" variant="outline" size="sm" className="h-9" onClick={() => setOpen(false)}>
+        <Button type="button" variant="outline" size="sm" className="min-h-[44px] h-11 tap-target" onClick={() => setOpen(false)}>
           {t('cancel', { defaultValue: 'Cancel' })}
         </Button>
       </div>

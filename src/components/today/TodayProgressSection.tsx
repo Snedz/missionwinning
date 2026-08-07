@@ -100,19 +100,19 @@ export function TodayProgressSection({
         <CardContent className="space-y-3">
           <div className="flex flex-wrap gap-2">
             {freeStarters.slice(0, 6).map((s, i) => (
-              <Button key={i} variant="outline" size="sm" onClick={() => onStartStarter(s.name, s.exercises)}>
+              <Button key={i} variant="outline" size="sm" className="min-h-[44px] tap-target" onClick={() => onStartStarter(s.name, s.exercises)}>
                 {s.name}
               </Button>
             ))}
           </div>
           <div className="flex flex-wrap gap-2">
             {savedWorkouts.slice(0, 3).map((w) => (
-              <Button key={w.id} variant="outline" size="sm" onClick={() => handleStartSaved(w.id)}>
+              <Button key={w.id} variant="outline" size="sm" className="min-h-[44px] tap-target" onClick={() => handleStartSaved(w.id)}>
                 {w.name}
               </Button>
             ))}
             {savedWorkouts.length === 0 && (
-              <Button variant="ghost" size="sm" onClick={() => router.push('/builder')}>
+              <Button variant="ghost" size="sm" className="min-h-[44px] tap-target" onClick={() => router.push('/builder')}>
                 {t('todayBuildCustom', { defaultValue: 'Build a custom session' })}
               </Button>
             )}
@@ -181,7 +181,7 @@ export function TodayProgressSection({
               : t('todayWithEquipment', { defaultValue: 'with available equipment' })}
           </div>
           <div className="text-muted-foreground">{t('todayRecommendedBody', { defaultValue: 'Start with a simple full-body or split from Builder, or launch a program template. Complete sessions to level up your Win Score.' })}</div>
-          <Button variant="outline" size="sm" onClick={() => router.push('/builder')}>
+          <Button variant="outline" size="sm" className="min-h-[44px] tap-target" onClick={() => router.push('/builder')}>
             {t('todayGoBuilder', { defaultValue: 'Open builder' })}
           </Button>
         </CardContent>
