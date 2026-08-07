@@ -120,10 +120,10 @@ export function ProgramsPage() {
       {filteredPrograms.length === 0 && (
         <EmptyState
           icon={SearchX}
-          title={t('programsNoMatchTitle', { defaultValue: 'No programs match those filters' })}
+          title={t('programsNoMatchTitle', { defaultValue: 'No programs match' })}
           description={t('programsNoMatchBody', {
             defaultValue:
-              'Nothing in the catalog fits that combination of goal and equipment yet. Clear the filters to see all programs.',
+              'Nothing matches. Clear filters to see all programs.',
           })}
           actionLabel={t('programsClearFilters', { defaultValue: 'Clear filters' })}
           onAction={() => {
@@ -228,13 +228,13 @@ export function ProgramsPage() {
                   <p className="text-muted-foreground">{t(prog.disclaimerKey)}</p>
                   <div className="flex flex-wrap gap-3">
                     <Link href="/feedback" className="text-primary hover:underline text-xs">
-                      Share feedback
+                      {t('programsShareFeedback', { defaultValue: 'Share feedback' })}
                     </Link>
                     <Button
                       size="sm"
                       variant="outline"
                       onClick={() => exportProgramPDF(prog)}
-                      className="text-xs h-7"
+                      className="text-xs min-h-[44px] tap-target"
                     >
                       {t('programsDownloadSummary', { defaultValue: 'Download summary' })}
                     </Button>

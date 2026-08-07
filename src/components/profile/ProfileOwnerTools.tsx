@@ -47,12 +47,16 @@ export function ProfileOwnerTools() {
             <span className="font-mono text-primary">${fmt.num(estRevenue)}</span>
           </div>
           <div className="text-xs text-muted-foreground">
-            {t('avgTicket', { price: SUPER_BUNDLE_PRICE, defaultValue: `Avg bundle ~$${SUPER_BUNDLE_PRICE}/mo` })} — Super
-            Bundle sustains the free core for the global mission. Track real via Supabase later.
+            {t('avgTicket', { price: SUPER_BUNDLE_PRICE, defaultValue: `Avg bundle ~$${SUPER_BUNDLE_PRICE}/mo` })}
+            {' — '}
+            {t('ownerToolsBundleFoot', {
+              defaultValue: 'Demo figures only. Free core stays free.',
+            })}
           </div>
-          <div className="text-[10px] mt-1">
-            Members who join the bundle help make the free path available worldwide. Share wins
-            /feedback.
+          <div className="text-[10px] mt-1 text-muted-foreground">
+            {t('ownerToolsShareFoot', {
+              defaultValue: 'Share wins and feedback when you ship.',
+            })}
           </div>
         </CardContent>
       </Card>
@@ -85,9 +89,10 @@ export function ProfileOwnerTools() {
           >
             {t('viewEvents', { defaultValue: 'View Tracked Events (console)' })}
           </Button>
-          <div className="text-xs mt-2">
-            Tracks journey phases, milestones, bundle CTAs, feedback, and installs. Syncs to
-            Supabase when signed in.
+          <div className="text-xs mt-2 text-muted-foreground">
+            {t('ownerToolsEventsFoot', {
+              defaultValue: 'Journey events, milestones, and installs. Syncs when signed in.',
+            })}
           </div>
         </CardContent>
       </Card>
