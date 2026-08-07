@@ -237,11 +237,11 @@ function TeacherClassInner({ code: rawCode }: { code: string }) {
           <div>
             <div className="flex items-center gap-2 text-muted-foreground mb-1">
               <Flag className="h-5 w-5" />
-              <span className="text-xs uppercase tracking-widest font-medium">
+              <span className="text-xs uppercase tracking-widest font-semibold">
                 {t('teacherDashboardKicker', { defaultValue: 'Teacher dashboard' })}
               </span>
             </div>
-            <h1 className="text-2xl font-bold tracking-tight">{className}</h1>
+            <h1 className="text-2xl font-extrabold tracking-tight">{className}</h1>
             <p className="text-sm text-muted-foreground mt-1 font-mono">{code}</p>
             {isCreator && (
               <p className="text-xs text-primary mt-1">
@@ -270,7 +270,7 @@ function TeacherClassInner({ code: rawCode }: { code: string }) {
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-3xl font-bold">{stats?.uniqueAthletes ?? 0}</p>
+                  <p className="text-3xl font-extrabold">{stats?.uniqueAthletes ?? 0}</p>
                 </CardContent>
               </Card>
               <Card className="content-card">
@@ -280,7 +280,7 @@ function TeacherClassInner({ code: rawCode }: { code: string }) {
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-3xl font-bold">{stats?.totalTests ?? 0}</p>
+                  <p className="text-3xl font-extrabold">{stats?.totalTests ?? 0}</p>
                 </CardContent>
               </Card>
               <Card className="content-card">
@@ -290,7 +290,7 @@ function TeacherClassInner({ code: rawCode }: { code: string }) {
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-3xl font-bold">{stats?.tierCounts?.presidential ?? 0}</p>
+                  <p className="text-3xl font-extrabold">{stats?.tierCounts?.presidential ?? 0}</p>
                 </CardContent>
               </Card>
             </div>

@@ -84,7 +84,7 @@ export function AmericaPage() {
           <Card className="content-card">
             <CardContent className="pt-6 text-center space-y-2">
               <Users className="h-8 w-8 mx-auto text-muted-foreground" />
-              <p className="font-medium text-sm">
+              <p className="font-semibold text-sm">
                 {t('americaKids', { defaultValue: 'Kids & schools' })}
               </p>
               <p className="text-xs text-muted-foreground">
@@ -97,7 +97,7 @@ export function AmericaPage() {
           <Card className="content-card">
             <CardContent className="pt-6 text-center space-y-2">
               <Flag className="h-8 w-8 mx-auto text-muted-foreground" />
-              <p className="font-medium text-sm">
+              <p className="font-semibold text-sm">
                 {t('americaPft', { defaultValue: 'Presidential Fitness Test' })}
               </p>
               <p className="text-xs text-muted-foreground">
@@ -110,7 +110,7 @@ export function AmericaPage() {
           <Card className="content-card">
             <CardContent className="pt-6 text-center space-y-2">
               <Heart className="h-8 w-8 mx-auto text-primary" />
-              <p className="font-medium text-sm">
+              <p className="font-semibold text-sm">
                 {t('americaFree', { defaultValue: 'Free forever' })}
               </p>
               <p className="text-xs text-muted-foreground">
@@ -125,7 +125,7 @@ export function AmericaPage() {
         <Card className="content-card border-dashed">
           <CardContent className="py-6 flex flex-col sm:flex-row items-center justify-between gap-4">
             <div>
-              <p className="font-medium">{t('americaYouthMode', { defaultValue: 'Youth mode' })}</p>
+              <p className="font-semibold">{t('americaYouthMode', { defaultValue: 'Youth mode' })}</p>
               <p className="text-sm text-muted-foreground">
                 {t('americaYouthModeDesc', {
                   defaultValue: 'Simplified focus for athletes under 18 (local preference).',

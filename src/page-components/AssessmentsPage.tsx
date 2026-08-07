@@ -203,7 +203,7 @@ export function AssessmentsPage() {
           <CardContent className="space-y-4">
             {questions.map((item) => (
               <div key={item.key} className="space-y-1">
-                <div className="text-sm font-medium">
+                <div className="text-sm font-semibold">
                   {t(`assessQ_${item.key}`, { defaultValue: item.key })}
                 </div>
                 <div className="flex gap-2 flex-wrap">
@@ -257,7 +257,7 @@ export function AssessmentsPage() {
             ))}
           </div>
           <div className="rounded-none border border-border bg-card p-3">
-            <div className="font-medium text-primary">
+            <div className="font-semibold text-primary">
               {t('assessCoachFocus', { defaultValue: 'Coach Focus:' })}{' '}
               {t(stages[selectedStage].focusKey, { defaultValue: '' })}
             </div>

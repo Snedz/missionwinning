@@ -80,12 +80,12 @@ export function FeedbackPage() {
               {t('feedbackThankBadge', { defaultValue: 'Thanks' })}
             </div>
             <div className="text-left max-w-md mx-auto space-y-2 text-sm leading-relaxed">
-              <p className="font-medium">
+              <p className="font-semibold">
                 {t('feedbackThankRoadmap', {
                   defaultValue: '✓ We read every note — friction first',
                 })}
               </p>
-              <p className="font-medium">
+              <p className="font-semibold">
                 {t('feedbackThankEarly', {
                   defaultValue: '✓ If you left email, we may follow up on a fix',
                 })}

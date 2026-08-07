@@ -187,7 +187,7 @@ export function ProgramsPage() {
                               key={m.index}
                               className="border-2 border-border bg-card px-3 py-2 text-sm"
                             >
-                              <summary className="cursor-pointer font-medium list-none flex justify-between gap-2">
+                              <summary className="cursor-pointer font-semibold list-none flex justify-between gap-2">
                                 <span>
                                   {t('programsModuleLabel', {
                                     defaultValue: `Module ${m.index}`,
@@ -201,7 +201,7 @@ export function ProgramsPage() {
                               <ul className="mt-2 space-y-2 text-muted-foreground pl-1">
                                 {m.sessions.map((s) => (
                                   <li key={s.title}>
-                                    <span className="text-foreground font-medium">
+                                    <span className="text-foreground font-semibold">
                                       {s.title}
                                     </span>
                                     <ul className="list-disc pl-4 mt-0.5">

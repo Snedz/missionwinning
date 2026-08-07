@@ -71,10 +71,10 @@ export function GuidebookIndexPage() {
         <Card className="content-card border-primary">
           <CardContent className="py-4 flex flex-wrap items-center justify-between gap-3">
             <div>
-              <p className="text-sm font-medium text-primary">
+              <p className="text-sm font-semibold text-primary">
                 {t('guidebookProgress', { defaultValue: 'Your progress' })}
               </p>
-              <p className="text-2xl font-bold tabular-nums">
+              <p className="text-2xl font-extrabold tabular-nums">
                 {stats.done}/{stats.totalSections}{' '}
                 <span className="text-sm font-normal text-muted-foreground">
                   ({stats.pct}%)
@@ -148,7 +148,7 @@ export function GuidebookIndexPage() {
                   <CardContent className="pt-0 pb-3">
                     <Link
                       href={magazineHref}
-                      className="text-xs font-medium text-primary hover:underline"
+                      className="text-xs font-semibold text-primary hover:underline"
                     >
                       {t('guidebookChapterMagazine', {
                         defaultValue: 'Same chapter in magazine (web)',
