@@ -73,7 +73,7 @@ export function BuilderArrangeStep({
       </CardHeader>
       <CardContent className="space-y-4">
         {sessionNotes && (
-          <div className="border border-primary bg-accent-100 px-4 py-3 text-sm text-muted-foreground">
+          <div className="border border-primary bg-muted px-4 py-3 text-sm text-muted-foreground">
             <span className="font-medium text-foreground">
               {t('builderProgramNotes', { defaultValue: 'Program notes:' })}{' '}
             </span>

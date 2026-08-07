@@ -79,7 +79,7 @@ export function GuidePublicIndexPage() {
               href="/welcome"
               onClick={() => track('public_cta_clicked', { target: '/welcome' })}
             >
-              {t('magazineStartTraining', { defaultValue: 'Start training' })} →
+              {t('magazineStartTraining', { defaultValue: 'Start training' })}
             </Link>
           </Button>
           <Button asChild variant="outline">
@@ -87,7 +87,7 @@ export function GuidePublicIndexPage() {
               href="/learn/guide"
               onClick={() => track('public_cta_clicked', { target: '/learn/guide' })}
             >
-              {t('magazineOpenInApp', { defaultValue: 'Track progress in app →' })}
+              {t('magazineOpenInApp', { defaultValue: 'Track progress in app' })}
             </Link>
           </Button>
         </div>

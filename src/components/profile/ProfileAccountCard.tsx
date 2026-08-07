@@ -33,7 +33,7 @@ export function ProfileAccountCard({
         {authError ? (
           <p
             role="alert"
-            className="border border-destructive bg-accent-100 px-3 py-2 text-sm text-[hsl(var(--status-danger))]"
+            className="border-2 border-destructive bg-card px-3 py-2 text-sm text-[hsl(var(--status-danger))]"
           >
             {authError}
           </p>

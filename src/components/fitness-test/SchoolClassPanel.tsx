@@ -159,13 +159,13 @@ export function SchoolClassPanel() {
             </p>
             <Button size="sm" variant="outline" asChild>
               <Link href={`/leaderboard?board=presidential-fitness&scope=class&class=${joined}`}>
-                {t('schoolViewStandings', { defaultValue: 'Class standings →' })}
+                {t('schoolViewStandings', { defaultValue: 'Class standings' })}
               </Link>
             </Button>
             <div className="flex flex-wrap gap-2">
               <Button size="sm" variant="outline" asChild>
                 <Link href={`/school/class/${joined}`}>
-                  {t('schoolTeacherDashboard', { defaultValue: 'Teacher dashboard →' })}
+                  {t('schoolTeacherDashboard', { defaultValue: 'Teacher dashboard' })}
                 </Link>
               </Button>
               <Button size="sm" variant="ghost" onClick={handleLeave}>
@@ -224,7 +224,7 @@ export function SchoolClassPanel() {
             </div>
             <Button size="sm" variant="outline" className="w-full" asChild>
               <Link href={teacherDashboardUrl(createdCode, createdPin ?? getTeacherPin(createdCode) ?? '')}>
-                {t('schoolTeacherDashboard', { defaultValue: 'Teacher dashboard →' })}
+                {t('schoolTeacherDashboard', { defaultValue: 'Teacher dashboard' })}
               </Link>
             </Button>
             {createdPin && (

@@ -136,7 +136,7 @@ export function BundlePage() {
       {/* Thin hero */}
       <div className="hero-field section-seam relative">
         <div className="relative z-[1] mx-auto max-w-4xl space-y-3 px-5 pb-10 pt-10">
-          <Badge className="w-fit border-border bg-accent-100 text-accent-900 hover:bg-accent-100">
+          <Badge className="w-fit border-border bg-muted text-accent-900 hover:bg-muted">
             {t("bundleUrgencyBadge")}
           </Badge>
           <PillarPageHeader
