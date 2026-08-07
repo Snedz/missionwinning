@@ -176,6 +176,7 @@ export function BundlePage() {
                     type="button"
                     variant="outline"
                     size="sm"
+                    className="min-h-[44px] tap-target"
                     onClick={() => {
                       setUnlockTimedOut(false);
                       refetch();
@@ -193,7 +194,7 @@ export function BundlePage() {
                 </p>
               )}
               {premium && (
-                <Button asChild variant="default" size="sm">
+                <Button asChild variant="default" size="sm" className="min-h-[44px] tap-target">
                   <Link href="/coach">{t('coachViewPlan', { defaultValue: 'View full week' })}</Link>
                 </Button>
               )}

@@ -147,7 +147,7 @@ export function CoachPage({ askExerciseId }: CoachPageProps = {}) {
               )}
             </ul>
             <UnlockButton productId="super-bundle" planId="12mo" price="59" title="Super Bundle" isSubscription />
-            <Button asChild variant="outline" className="w-full">
+            <Button asChild variant="outline" className="w-full min-h-[44px] tap-target">
               <Link href="/bundle">{t('coachCompareBundle', { defaultValue: 'Compare Super Bundle' })}</Link>
             </Button>
             <p className="text-center text-xs text-muted-foreground leading-relaxed">
@@ -282,8 +282,8 @@ export function CoachPage({ askExerciseId }: CoachPageProps = {}) {
 
       {todaySession && (
         <p className="text-xs text-center text-muted-foreground">
-          <Link href="/log" className="text-primary hover:underline">
-            ← {t('navToday', { defaultValue: 'Today' })}
+          <Link href="/log" className="text-primary hover:underline min-h-[44px] inline-flex items-center tap-target">
+            {t('navToday', { defaultValue: 'Today' })}
           </Link>
         </p>
       )}

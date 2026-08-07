@@ -22,20 +22,21 @@ export function ProfilePremiumCard({ premium, billingBusy, onManageBilling }: Pr
   return (
     <Card className="content-card">
       <CardHeader>
-        <CardTitle>{t('premiumStatus', { defaultValue: 'Premium Status' })}</CardTitle>
+        <CardTitle>{t('premiumStatus', { defaultValue: 'Premium status' })}</CardTitle>
       </CardHeader>
       <CardContent>
         {premium ? (
           <div className="space-y-3">
             <div className="text-primary font-medium">
               {t('premiumUnlocked', {
-                defaultValue: '✓ Premium unlocked (via Super Bundle or demo request)',
+                defaultValue: 'Premium unlocked (Super Bundle or demo)',
               })}
             </div>
             <Button
               type="button"
               variant="outline"
               size="sm"
+              className="min-h-[44px] tap-target"
               disabled={billingBusy}
               onClick={onManageBilling}
             >
@@ -48,9 +49,9 @@ export function ProfilePremiumCard({ premium, billingBusy, onManageBilling }: Pr
           <div>
             {t('noPremium', {
               defaultValue:
-                'Free tier active. Unlock full library cues, deep nutrition, mobility flows, mind sessions, advanced programs, and analytics via the Super Bundle or specialist programs.',
+                'Free tier active. Super Bundle adds Coach depth, deeper library, and specialist programs. Logger stays free.',
             })}
-            <Button className="mt-2" onClick={() => router.push('/bundle')}>
+            <Button className="mt-2 min-h-[44px] tap-target" onClick={() => router.push('/bundle')}>
               {t('exploreBundle', { defaultValue: 'Explore Super Bundle' })}
             </Button>
           </div>
