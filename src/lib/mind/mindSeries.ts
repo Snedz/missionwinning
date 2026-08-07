@@ -22,7 +22,15 @@ export const MIND_SERIES: MindSeriesDef[] = [
     titleDefault: 'Sleep week (series)',
     tag: 'series-sleep-week',
     collectionId: 'sleep-week',
-    sessionIds: ['sleep-week-night-1', 'sleep-week-night-2', 'sleep-week-night-3'],
+    sessionIds: [
+      'sleep-week-night-1',
+      'sleep-week-night-2',
+      'sleep-week-night-3',
+      'sleep-week-night-4',
+      'sleep-week-night-5',
+      'sleep-week-night-6',
+      'sleep-week-night-7',
+    ],
   },
 ];
 

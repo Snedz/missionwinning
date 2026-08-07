@@ -12,16 +12,24 @@ function countPremiumMindIds(): number {
   return (src.match(/^\s*id:\s*'/gm) ?? []).length;
 }
 
-test('D2 mind premium floor is 56 and constants match file', () => {
-  assert.equal(CONTENT_FLOORS.mindPremium, 56);
-  assert.equal(PREMIUM_MIND_SESSION_COUNT, 56);
-  assert.equal(countPremiumMindIds(), 56);
-  assert.equal(getContentInventory().mind.premium, 56);
+test('D2 mind premium floor is 60 and constants match file', () => {
+  assert.equal(CONTENT_FLOORS.mindPremium, 60);
+  assert.equal(PREMIUM_MIND_SESSION_COUNT, 60);
+  assert.equal(countPremiumMindIds(), 60);
+  assert.equal(getContentInventory().mind.premium, 60);
 });
 
 test('sleep-week series seed sessions exist', () => {
   const src = readFileSync(join(root, 'src/data/premiumMindSessions.ts'), 'utf8');
-  for (const id of ['sleep-week-night-1', 'sleep-week-night-2', 'sleep-week-night-3']) {
+  for (const id of [
+    'sleep-week-night-1',
+    'sleep-week-night-2',
+    'sleep-week-night-3',
+    'sleep-week-night-4',
+    'sleep-week-night-5',
+    'sleep-week-night-6',
+    'sleep-week-night-7',
+  ]) {
     assert.match(src, new RegExp(`id: '${id}'`));
   }
   assert.match(src, /series-sleep-week/);

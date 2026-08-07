@@ -28,6 +28,10 @@ test('mind series defines ordered sleep-week nights', () => {
     'sleep-week-night-1',
     'sleep-week-night-2',
     'sleep-week-night-3',
+    'sleep-week-night-4',
+    'sleep-week-night-5',
+    'sleep-week-night-6',
+    'sleep-week-night-7',
   ]);
   assert.equal(MIND_SERIES.length, 1);
 });
