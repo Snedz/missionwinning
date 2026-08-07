@@ -24,6 +24,7 @@ export function RefundsPage() {
   return (
     <InfoPageShell
       icon={Receipt}
+      eyebrow={t('infoLegalEyebrow', { defaultValue: 'Legal' })}
       title={t('infoRefundsTitle', { defaultValue: 'Refunds & cancellation' })}
       lastUpdated={t('infoLastUpdated', { defaultValue: 'Last updated: July 2026' })}
       showLegalFooter

@@ -66,6 +66,7 @@ export function GuidebookChapterPage({ chapterId }: Props) {
   return (
     <PillarPageShell
       icon={BookMarked}
+      eyebrow={t('learnEyebrow', { defaultValue: 'Learn' })}
       title={chapter.title}
       subtitle={chapter.subtitle}
       className="pb-24"

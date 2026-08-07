@@ -40,6 +40,7 @@ export function UsagePolicyPage() {
   return (
     <InfoPageShell
       icon={ShieldAlert}
+      eyebrow={t('infoLegalEyebrow', { defaultValue: 'Legal' })}
       title={t('infoUsageTitle', { defaultValue: 'Usage Policy' })}
       lastUpdated={t('infoLastUpdated', { defaultValue: 'Last updated: August 2026' })}
       showLegalFooter

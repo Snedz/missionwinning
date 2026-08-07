@@ -189,7 +189,8 @@ export function AssessmentsPage() {
   // No paywall on the mission fundamentals.
 
   return (
-    <PillarPageShell icon={ClipboardList} title={t('assessTitle', { defaultValue: 'Readiness Assessment' })} subtitle={t('assessSubtitle', {
+    <PillarPageShell icon={ClipboardList}
+      eyebrow={t('toolkitEyebrow', { defaultValue: 'Toolkit' })} title={t('assessTitle', { defaultValue: 'Readiness Assessment' })} subtitle={t('assessSubtitle', {
         defaultValue:
           'Free core tool. Based on standard health history and ParQ-style questions. Answer honestly for personalized guidance.',
       })}

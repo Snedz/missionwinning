@@ -31,6 +31,7 @@ export function AmericaPage() {
     return (
       <InfoPageShell
         icon={Flag}
+      eyebrow={t('americaEyebrow', { defaultValue: 'America' })}
         title={t('americaHeroTitle', { defaultValue: 'Strength for the next generation' })}
         variant="sections"
       >
@@ -71,6 +72,7 @@ export function AmericaPage() {
   return (
     <InfoPageShell
       icon={Flag}
+      eyebrow={t('americaEyebrow', { defaultValue: 'America' })}
       iconClassName="text-muted-foreground"
       title={t('americaHeroTitle', { defaultValue: 'Strength for the next generation' })}
       subtitle={heroBody}

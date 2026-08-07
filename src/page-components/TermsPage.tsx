@@ -43,6 +43,7 @@ export function TermsPage() {
   return (
     <InfoPageShell
       icon={Scale}
+      eyebrow={t('infoLegalEyebrow', { defaultValue: 'Legal' })}
       title={t('infoTermsTitle', { defaultValue: 'Terms of Service' })}
       lastUpdated={t('infoLastUpdated', { defaultValue: 'Last updated: August 2026' })}
       showLegalFooter

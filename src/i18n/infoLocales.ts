@@ -227,6 +227,12 @@ type InfoStrings = {
   infoPrivacyDeletion: string;
   infoPrivacyDeletionBody: string;
   visionEyebrow: string;
+  /** Briefing kickers for the shell header (`.eyebrow`). */
+  infoLegalEyebrow: string;
+  toolkitEyebrow: string;
+  americaEyebrow: string;
+  learnEyebrow: string;
+  feedbackEyebrow: string;
 };
 
 const en: InfoStrings = {
@@ -600,6 +606,10 @@ const en: InfoStrings = {
   infoCookiesTitle: 'Cookies & device storage',
   infoLastUpdatedLabel: 'Last updated:',
   infoLegalEyebrow: 'Legal',
+  toolkitEyebrow: 'Toolkit',
+  americaEyebrow: 'America',
+  learnEyebrow: 'Learn',
+  feedbackEyebrow: 'Feedback',
   infoPrivacyChanges: 'Changes to this policy',
   infoPrivacyChangesBody:
     'This policy is versioned; the date above is the version you accept. Material changes re-prompt for consent in the app before your next sign-in, and are announced in the app or by email where appropriate. Earlier versions are available on request.',

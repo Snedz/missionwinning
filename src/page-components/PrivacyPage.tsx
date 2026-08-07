@@ -105,6 +105,7 @@ export function PrivacyPage() {
   return (
     <InfoPageShell
       icon={Shield}
+      eyebrow={t('infoLegalEyebrow', { defaultValue: 'Legal' })}
       title={t('infoPrivacyTitle', { defaultValue: 'Privacy Policy' })}
       lastUpdated={`${t('infoLastUpdatedLabel', { defaultValue: 'Last updated:' })} ${CURRENT_PRIVACY_VERSION}`}
       showLegalFooter

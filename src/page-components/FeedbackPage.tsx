@@ -68,6 +68,7 @@ export function FeedbackPage() {
     return (
       <InfoPageShell
         icon={MessageSquare}
+      eyebrow={t('feedbackEyebrow', { defaultValue: 'Feedback' })}
         title={t('infoFeedbackThankTitle', { defaultValue: 'Thank you' })}
         subtitle={t('infoFeedbackThankSubtitle', {
           defaultValue: 'Thanks — your notes help us improve the free logger and Coach.',
@@ -103,6 +104,7 @@ export function FeedbackPage() {
   return (
     <InfoPageShell
       icon={MessageSquare}
+      eyebrow={t('feedbackEyebrow', { defaultValue: 'Feedback' })}
       title={t('infoFeedbackTitle', { defaultValue: 'Feedback' })}
       subtitle={t('infoFeedbackSubtitle', {
         defaultValue: 'What confused you, what broke, and what we should fix next. We read every note.',

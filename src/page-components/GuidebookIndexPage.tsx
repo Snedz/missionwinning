@@ -61,6 +61,7 @@ export function GuidebookIndexPage() {
   return (
     <PillarPageShell
       icon={BookMarked}
+      eyebrow={t('learnEyebrow', { defaultValue: 'Learn' })}
       title={t('guidebookTitle', { defaultValue: 'Beyond the Basics' })}
       subtitle={t('guidebookSubtitle', {
         defaultValue:

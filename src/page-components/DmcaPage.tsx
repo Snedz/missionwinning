@@ -30,6 +30,7 @@ export function DmcaPage() {
   return (
     <InfoPageShell
       icon={Copyright}
+      eyebrow={t('infoLegalEyebrow', { defaultValue: 'Legal' })}
       title={t('infoDmcaTitle', { defaultValue: 'DMCA / Copyright' })}
       lastUpdated={t('infoLastUpdated', { defaultValue: 'Last updated: July 2026' })}
       showLegalFooter
