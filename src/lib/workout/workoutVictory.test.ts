@@ -58,14 +58,15 @@ describe('pickVictoryNextAction', () => {
     assert.equal(a.href, '/coach');
   });
 
-  it('sends high strain to Today rest — not Mind tourism', () => {
+  it('sends high strain to mind post-train collection — not generic tourism', () => {
     const a = pickVictoryNextAction({
       proteinLoggedToday: true,
       strainDelta: 8,
       completedWorkouts: 10,
-      // omit hasCoachPlan so we exercise the rest branch
+      // omit hasCoachPlan so we exercise the recovery branch
     });
-    assert.equal(a.href, '/log');
+    assert.equal(a.href, '/mind?collection=post-train');
+    assert.equal(a.labelKey, 'victoryNextRecoverMindLabel');
   });
 
   it('falls back to train when no plan and low strain outside early window', () => {
@@ -85,9 +86,10 @@ describe('shouldShowVictoryBackTodaySecondary', () => {
     assert.equal(shouldShowVictoryBackTodaySecondary('/log?x=1'), false);
   });
 
-  it('shows for Coach / Train / session-2 primaries', () => {
+  it('shows for Coach / Train / recovery mind primaries', () => {
     assert.equal(shouldShowVictoryBackTodaySecondary('/coach'), true);
     assert.equal(shouldShowVictoryBackTodaySecondary('/active'), true);
+    assert.equal(shouldShowVictoryBackTodaySecondary('/mind?collection=post-train'), true);
   });
 
   it('hides when there is no primary next', () => {
