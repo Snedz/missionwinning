@@ -93,9 +93,10 @@ export function FuelRecipesPanel({
               className="py-6"
               title={t('fuelRecipesEmptyTitle', { defaultValue: 'No recipes loaded' })}
               description={t('fuelRecipesEmptyDesc', {
-                defaultValue:
-                  'You can still log meals manually above — recipes will return on refresh.',
+                defaultValue: 'Log meals manually above — recipes return on refresh.',
               })}
+              actionLabel={t('fuelEmptyCta', { defaultValue: 'Log food' })}
+              href="#fuel-log"
             />
           ) : (
             freeRecipes.map((r, i) => (

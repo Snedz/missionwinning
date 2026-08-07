@@ -339,6 +339,7 @@ export function LeaderboardPage() {
  {t('leaderboardSquadCode', { defaultValue: 'Squad code (for Squad tab)' })}
  </span>
  <input
+ id="leaderboard-squad"
  value={squadCode}
  onChange={(e) => setSquadCode(e.target.value.toUpperCase())}
  onBlur={() => {
@@ -371,8 +372,10 @@ export function LeaderboardPage() {
  title={t('leaderboardSquadEmptyTitle', { defaultValue: 'Add a squad code' })}
  description={t('leaderboardSquadHint', {
  defaultValue:
- 'Set a squad code above to compare with others using the same code. Try ALPHA or BRAVO to see demo squad members.',
+ 'Enter a code above (try ALPHA or BRAVO for demos).',
  })}
+ actionLabel={t('leaderboardSquadEmptyCta', { defaultValue: 'Focus squad code' })}
+ onAction={() => document.getElementById('leaderboard-squad')?.focus()}
  />
  )}
 
