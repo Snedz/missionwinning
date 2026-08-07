@@ -12,6 +12,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { PillarPageShell } from '@/components/layout/PillarPageShell';
 import { EmptyState } from '@/components/ui/EmptyState';
+import { ScoreNumeral } from '@/components/ui/ScoreNumeral';
 import {
   ACTIVITY_LABELS,
   type ActivityType,
@@ -101,34 +102,35 @@ export function TrackPage() {
           : 'Log walks, runs, and rides. Super Bundle can add GPS depth when paid depth is on.',
       })}
     >
-        <div className="grid gap-4 md:grid-cols-3">
-          <Card className="content-card">
-            <CardHeader className="pb-2">
-              <CardTitle className="text-sm">{t('trackWeekSessions', { defaultValue: 'This Week' })}</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-extrabold tabular-nums">
-                {stats.count} {t('sessions', { defaultValue: 'sessions' }).toLowerCase()}
-              </div>
-            </CardContent>
-          </Card>
-          <Card className="content-card">
-            <CardHeader className="pb-2">
-              <CardTitle className="text-sm">{t('trackTotalTime', { defaultValue: 'Total Time' })}</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-extrabold tabular-nums">{stats.totalMin} min</div>
-            </CardContent>
-          </Card>
-          <Card className="content-card">
-            <CardHeader className="pb-2">
-              <CardTitle className="text-sm">{t('trackDistance', { defaultValue: 'Distance' })}</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-extrabold tabular-nums">{stats.totalKm.toFixed(1)} km</div>
-            </CardContent>
-          </Card>
-        </div>
+        {/*
+         * One stat band on a 2px rule — the recut the card ladder was written
+         * for (`card-section`: "the default once a screen is recut"). Three
+         * boxed cards said three topics; one ruled band says one fact with
+         * three numbers, and `ScoreNumeral` is the system's numeral rather
+         * than a hand-rolled `text-2xl`.
+         */}
+        <section className="card-section">
+          <div className="grid grid-cols-3 gap-4">
+            <ScoreNumeral
+              size="md"
+              label={t('trackWeekSessions', { defaultValue: 'This Week' })}
+              value={stats.count}
+              caption={t('sessions', { defaultValue: 'sessions' }).toLowerCase()}
+            />
+            <ScoreNumeral
+              size="md"
+              label={t('trackTotalTime', { defaultValue: 'Total Time' })}
+              value={stats.totalMin}
+              caption="min"
+            />
+            <ScoreNumeral
+              size="md"
+              label={t('trackDistance', { defaultValue: 'Distance' })}
+              value={stats.totalKm.toFixed(1)}
+              caption="km"
+            />
+          </div>
+        </section>
 
         <TrackGpsPanel onLogged={() => setRefresh((r) => r + 1)} />
 
@@ -239,7 +241,7 @@ export function TrackPage() {
                 {weekActivities.map((a) => (
                   <li
                     key={a.id}
-                    className="flex items-center justify-between text-sm border-b border-border pb-2 min-h-[44px] gap-2"
+                    className="flex items-center justify-between text-sm border-b-2 border-border pb-2 min-h-[44px] gap-2"
                   >
                     <div className="min-w-0">
                       <span className="font-semibold">{ACTIVITY_LABELS[a.type]}</span>

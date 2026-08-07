@@ -17,7 +17,23 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { PillarPageShell } from '@/components/layout/PillarPageShell';
 import { logPillarWin } from '@/lib/pillarLog';
-import { ChevronDown, ChevronUp, BookOpen, BookMarked } from 'lucide-react';
+import {
+  BarChart3,
+  Bandage,
+  BookMarked,
+  BookOpen,
+  Brain,
+  CalendarRange,
+  ChevronDown,
+  ChevronUp,
+  Dumbbell,
+  Flower2,
+  HeartHandshake,
+  Home,
+  Moon,
+  UtensilsCrossed,
+  type LucideIcon,
+} from 'lucide-react';
 import { EmptyState } from '@/components/ui/EmptyState';
 import { isFreeBeta } from '@/lib/freeBeta';
 import { STORAGE_KEYS } from '@/lib/storage/keys';
@@ -29,6 +45,24 @@ import {
 } from '@/lib/seoLearnBridge';
 
 const FREE_PATH_IDS = FREE_LEARN_PATHS.map((p) => p.id);
+
+/**
+ * Lucide over emoji (design system: one icon family, ink-coloured). The data
+ * schema keeps its emoji `icon` field — Android and localization read it — so
+ * this map is the web presentation only; an unknown id falls back to BookOpen.
+ */
+const PATH_ICONS: Record<string, LucideIcon> = {
+  'strength-basics': Dumbbell,
+  'nutrition-101': UtensilsCrossed,
+  'mobility-longevity': Flower2,
+  'mindset-habits': Brain,
+  'assessments-path': BarChart3,
+  'corrective-foundations': Bandage,
+  'periodization-design': CalendarRange,
+  'coaching-client-success': HeartHandshake,
+  'sleep-recovery': Moon,
+  'home-gym-budget': Home,
+};
 
 export function LearnPage() {
   const { t } = useTranslation();
@@ -148,6 +182,7 @@ export function LearnPage() {
           {filteredPaths.map((path) => {
             const open = expandedPath === path.id;
             const doneCount = path.lessons.filter((l) => completedLessons.has(l.id)).length;
+            const PathIcon = PATH_ICONS[path.id] ?? BookOpen;
             return (
               <Card key={path.id} className="content-card">
                 <button
@@ -159,7 +194,7 @@ export function LearnPage() {
                   <CardHeader className="flex flex-row items-center justify-between py-4">
                     <div>
                       <CardTitle className="text-lg flex items-center gap-2">
-                        <span>{path.icon}</span>
+                        <PathIcon className="h-5 w-5 shrink-0 text-primary" aria-hidden />
                         {path.title}
                       </CardTitle>
                       <CardDescription>{path.subtitle}</CardDescription>
@@ -173,7 +208,7 @@ export function LearnPage() {
                   </CardHeader>
                 </button>
                 {open && (
-                  <CardContent className="space-y-4 pt-0 border-t border-border">
+                  <CardContent className="space-y-4 pt-0 border-t-2 border-border">
                     {path.lessons.map((lesson) => (
                       <div key={lesson.id} className="p-4 bg-card space-y-2 border-2 border-border">
                         <div className="flex items-start justify-between gap-2">

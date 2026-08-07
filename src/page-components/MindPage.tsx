@@ -44,7 +44,6 @@ export function MindPage() {
   const [premiumSessions, setPremiumSessions] = useState<GuidedMindSession[]>([]);
   const [recentWins, setRecentWins] = useState<PillarWin[]>([]);
   const [refresh, setRefresh] = useState(0);
-  const [premiumOpen, setPremiumOpen] = useState(false);
   const [premiumFetchError, setPremiumFetchError] = useState(false);
   const [premiumRetry, setPremiumRetry] = useState(0);
   const [collectionId, setCollectionId] = useState<MindCollectionId>(() =>
@@ -223,25 +222,21 @@ export function MindPage() {
         </details>
       )}
 
+      {/* Native details/summary — the same idiom as the premium-sessions
+          disclosure above, so this screen has one disclosure pattern, not two. */}
       {!premium && (
-        <div className="space-y-2">
-          <button
-            type="button"
-            className="flex w-full items-center justify-between gap-2 border-2 border-border bg-card px-4 py-3 text-sm min-h-[44px]"
-            onClick={() => setPremiumOpen((v) => !v)}
-          >
+        <details className="group space-y-2">
+          <summary className="flex w-full cursor-pointer list-none items-center justify-between gap-2 border-2 border-border bg-card px-4 py-3 text-sm min-h-[44px] [&::-webkit-details-marker]:hidden">
             <span className="font-semibold text-muted-foreground">
               {t('mindPremiumPreviewCount', {
                 count: inv.mind.premium,
                 defaultValue: `Premium guided sessions (${inv.mind.premium})`,
               })}
             </span>
-            <ChevronDown
-              className={`h-4 w-4 text-muted-foreground transition-transform ${premiumOpen ? 'rotate-180' : ''}`}
-            />
-          </button>
-          {premiumOpen && <MindLockedPreview />}
-        </div>
+            <ChevronDown className="h-4 w-4 text-muted-foreground transition-transform group-open:rotate-180" />
+          </summary>
+          <MindLockedPreview />
+        </details>
       )}
 
       {recentWins.length > 0 ? (
