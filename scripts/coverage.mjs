@@ -89,17 +89,25 @@ const FLOORS = {
    * That split is the point of the ratchet: it does not stop the number moving,
    * it makes somebody look at what moved it.
    *
-   * 407 → 405. The floor had been **breached on `master` since `.544`** (411,
+   * 407 → 390. The floor had been **breached on `master` since `.544`** (411,
    * then 415 by `.561`) and nothing said so, because this step runs only in
    * `npm run gate` and in a PR workflow — and nothing at all runs on a push to
-   * `master`. Thirteen logic modules now have colocated tests (challengeI18n,
-   * coach/schedulePrefs, exerciseUsage, guidePublic, guidebookProgress,
-   * inviteCode, leaderboard/boards, leaderboard/demoPopulation, motion,
-   * privacyConsent, readinessDisplay, referralCode, routeMetadata); the new
-   * `src/i18n/rewardsLocales.ts` is a catalogue with no logic and adds one back.
-   * Repaid, not loosened — 405 is measured, with no slack deliberately.
+   * `master`, which is the hole `ratchets.yml` closes.
+   *
+   * Ten logic modules gained colocated tests here (coach/schedulePrefs,
+   * guidePublic, guidebookProgress, inviteCode, leaderboard/boards,
+   * leaderboard/demoPopulation, motion, readinessDisplay, referralCode,
+   * routeMetadata) — three more were written twice, because `master` added
+   * `challengeI18n`, `exerciseUsage` and `privacyConsent` independently while
+   * this branch was open; those took master's copy. `src/i18n/rewardsLocales.ts`
+   * is a catalogue with no logic and adds one back.
+   *
+   * **390 is measured against `.594` after merging, not carried over.** An
+   * earlier revision of this branch set 405 against `.561`; master's own
+   * repayment moved the real number, so the floor was re-derived rather than
+   * re-asserted. Repaid, not loosened, with no slack deliberately.
    */
-  untestedFiles: 405,
+  untestedFiles: 390,
   /**
    * Line % across the files that *are* loaded. Must not fall.
    *

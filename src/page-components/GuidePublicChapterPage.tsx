@@ -131,7 +131,7 @@ export function GuidePublicChapterPage({ chapter: chapterProp, prev, next, jsonL
             </div>
             <Link href="/exercises" className="inline-block text-sm text-primary hover:underline">
               {t('guidePublicBrowseAllExercises', {
-                defaultValue: 'Browse all exercises →',
+                defaultValue: 'Browse all exercises',
               })}
             </Link>
           </section>
@@ -153,12 +153,12 @@ export function GuidePublicChapterPage({ chapter: chapterProp, prev, next, jsonL
               href={`/guide/${nextLocalized.id}`}
               className="text-right text-sm text-primary hover:underline"
             >
-              {nextLocalized.title} →
+              {nextLocalized.title}
             </Link>
           ) : (
             <Button asChild variant="default">
               <Link href="/welcome">
-                {t('magazineStartFree', { defaultValue: 'Start free' })} →
+                {t('magazineStartFree', { defaultValue: 'Start free' })}
               </Link>
             </Button>
           )}

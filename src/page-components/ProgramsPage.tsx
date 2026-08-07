@@ -120,10 +120,10 @@ export function ProgramsPage() {
       {filteredPrograms.length === 0 && (
         <EmptyState
           icon={SearchX}
-          title={t('programsNoMatchTitle', { defaultValue: 'No programs match those filters' })}
+          title={t('programsNoMatchTitle', { defaultValue: 'No programs match' })}
           description={t('programsNoMatchBody', {
             defaultValue:
-              'Nothing in the catalog fits that combination of goal and equipment yet. Clear the filters to see all programs.',
+              'Nothing matches. Clear filters to see all programs.',
           })}
           actionLabel={t('programsClearFilters', { defaultValue: 'Clear filters' })}
           onAction={() => {
@@ -187,7 +187,7 @@ export function ProgramsPage() {
                               key={m.index}
                               className="border-2 border-border bg-card px-3 py-2 text-sm"
                             >
-                              <summary className="cursor-pointer font-medium list-none flex justify-between gap-2">
+                              <summary className="cursor-pointer font-semibold list-none flex justify-between gap-2">
                                 <span>
                                   {t('programsModuleLabel', {
                                     defaultValue: `Module ${m.index}`,
@@ -201,7 +201,7 @@ export function ProgramsPage() {
                               <ul className="mt-2 space-y-2 text-muted-foreground pl-1">
                                 {m.sessions.map((s) => (
                                   <li key={s.title}>
-                                    <span className="text-foreground font-medium">
+                                    <span className="text-foreground font-semibold">
                                       {s.title}
                                     </span>
                                     <ul className="list-disc pl-4 mt-0.5">
@@ -228,13 +228,13 @@ export function ProgramsPage() {
                   <p className="text-muted-foreground">{t(prog.disclaimerKey)}</p>
                   <div className="flex flex-wrap gap-3">
                     <Link href="/feedback" className="text-primary hover:underline text-xs">
-                      Share feedback →
+                      {t('programsShareFeedback', { defaultValue: 'Share feedback' })}
                     </Link>
                     <Button
                       size="sm"
                       variant="outline"
                       onClick={() => exportProgramPDF(prog)}
-                      className="text-xs h-7"
+                      className="text-xs min-h-[44px] tap-target"
                     >
                       {t('programsDownloadSummary', { defaultValue: 'Download summary' })}
                     </Button>

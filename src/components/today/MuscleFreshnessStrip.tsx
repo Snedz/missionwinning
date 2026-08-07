@@ -64,7 +64,7 @@ export function MuscleFreshnessStrip({ rows, className }: Props) {
               role="listitem"
               className={cn(
                 'min-w-[4.5rem] shrink-0 border-2 px-2.5 py-1.5 text-center',
-                row.recommended ? 'border-border bg-accent-100' : 'border-border'
+                row.recommended ? 'border-border bg-muted' : 'border-border'
               )}
             >
               <div className="text-[10px] font-semibold uppercase tracking-wide">{label}</div>

@@ -15,6 +15,7 @@ import {
   type KeyboardEvent as ReactKeyboardEvent,
   type ReactNode,
 } from 'react';
+import { useTranslation } from 'react-i18next';
 import { cn } from '@/lib/utils';
 import { buttonVariants } from '@/components/ui/button';
 import type { VariantProps } from 'class-variance-authority';
@@ -58,6 +59,7 @@ export function HoldToConfirmButton({
   icon,
   holdHint,
 }: HoldToConfirmButtonProps) {
+  const { t } = useTranslation();
   const reactId = useId();
   const [progress, setProgress] = useState(0);
   const [holding, setHolding] = useState(false);
@@ -72,8 +74,11 @@ export function HoldToConfirmButton({
   const hint =
     holdHint ??
     (armed
-      ? 'Press again to confirm'
-      : `Hold ${holdMs}ms to confirm. Release early to cancel.`);
+      ? t('holdConfirmAgain', { defaultValue: 'Press again to confirm' })
+      : t('holdConfirmHint', {
+          ms: holdMs,
+          defaultValue: `Hold ${holdMs}ms to confirm. Release early to cancel.`,
+        }));
 
   const stopHold = useCallback((completed: boolean) => {
     if (rafRef.current != null) {

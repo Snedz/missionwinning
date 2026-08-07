@@ -34,8 +34,8 @@ export function CompareStoryPage({ story }: { story: CompareStory }) {
               key={b.label}
               className="grid sm:grid-cols-[8rem_1fr_1fr] gap-2 border-2 border-border bg-card px-4 py-3 text-sm"
             >
-              <span className="text-muted-foreground font-medium">{b.label}</span>
-              <span className="text-primary font-medium">{b.mw}</span>
+              <span className="text-muted-foreground font-semibold">{b.label}</span>
+              <span className="text-primary font-semibold">{b.mw}</span>
               <span className="text-muted-foreground">{b.them}</span>
             </div>
           ))}
@@ -59,8 +59,8 @@ export function CompareStoryPage({ story }: { story: CompareStory }) {
         )}
 
         {story.verdict ? (
-          <p className="border-2 border-border bg-accent-100 px-4 py-3 text-sm text-foreground">
-            <span className="font-medium text-accent-900">Verdict: </span>
+          <p className="border-2 border-border bg-muted px-4 py-3 text-sm text-foreground">
+            <span className="font-semibold text-accent-900">Verdict: </span>
             {story.verdict}
           </p>
         ) : null}

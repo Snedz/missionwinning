@@ -10,6 +10,7 @@ import { STORAGE_KEYS } from '@/lib/storage/keys';
 import { readJson } from '@/lib/storage/safeStorage';
 import { toast } from '@/hooks/use-toast';
 import { localDateKey } from '@/lib/time/localDate';
+import { bumpTrainingStreak } from '@/lib/streaks';
 
 type LastAssessment = {
   risk: string;
@@ -60,21 +61,21 @@ export function ProfileAssessmentCard() {
   return (
     <Card className="content-card">
       <CardHeader>
-        <CardTitle>Readiness Assessment</CardTitle>
+        <CardTitle>{t('profileAssessmentTitle', { defaultValue: 'Readiness assessment' })}</CardTitle>
       </CardHeader>
       <CardContent className="space-y-3 text-sm">
         {lastAssessment ? (
           <>
             <div>
-              <span className="font-medium">Last result:</span>{' '}
-              <span className="uppercase font-semibold">{lastAssessment.risk}</span> risk
+              <span className="font-medium">{t('profileAssessmentLast', { defaultValue: 'Last result:' })}</span>{' '}
+              <span className="uppercase font-semibold">{lastAssessment.risk}</span> {t('profileAssessmentRisk', { defaultValue: 'risk' })}
               <span className="text-xs text-muted-foreground ml-2">({lastAssessment.date})</span>
             </div>
             <div className="text-muted-foreground">{lastAssessment.notes}</div>
             <div className="flex gap-2 flex-wrap">
               <Button
                 size="sm"
-                className="min-h-[44px]"
+                className="min-h-[44px] tap-target"
                 variant="outline"
                 onClick={() => router.push('/assessments')}
               >
@@ -82,14 +83,15 @@ export function ProfileAssessmentCard() {
               </Button>
               <Button
                 size="sm"
-                className="min-h-[44px]"
+                className="min-h-[44px] tap-target"
                 onClick={() => launchFromAssessment(lastAssessment.risk)}
               >
-                Start recommended starter for {lastAssessment.risk} risk →
+                {t('profileStartStarter', {
+                  risk: lastAssessment.risk, defaultValue: `Start starter (${lastAssessment.risk} risk)` })}
               </Button>
               <Button
                 size="sm"
-                className="min-h-[44px]"
+                className="min-h-[44px] tap-target"
                 variant="ghost"
                 onClick={async () => {
                   const u = await getUser();
@@ -103,32 +105,42 @@ export function ProfileAssessmentCard() {
                       protein: 0,
                       cals: 0,
                     });
-                  toast({ title: 'Win logged', description: '+1 streak.' });
+                  const streak = bumpTrainingStreak();
+                  toast({
+                    title: t('todayFounderWinLogged', { defaultValue: 'Win logged' }),
+                    description: t('todayFounderStreakOnly', {
+                      streak,
+                      defaultValue: `Streak ${streak}.`,
+                    }),
+                  });
                 }}
               >
-                Log assessment win (+cloud)
+                {t('profileLogAssessmentWin', { defaultValue: 'Log assessment win' })}
               </Button>
             </div>
           </>
         ) : (
           <div>
-            No assessment yet.{' '}
+            {t('todayAssessmentNone', { defaultValue: 'No assessment yet.' })}{' '}
             <Button
               size="sm"
-              className="min-h-[44px]"
+              className="min-h-[44px] tap-target"
               variant="outline"
               onClick={() => router.push('/assessments')}
             >
               {t('takeAssessment', { defaultValue: 'Take the free Readiness Assessment' })}
             </Button>
             <div className="text-xs mt-1 text-muted-foreground">
-              ParQ-style screen + stage of change. Results guide safe free starters (always
-              available).
+              {t('profileAssessmentHint', {
+                defaultValue: 'Short screen + stage of change. Guides free starters.',
+              })}
             </div>
           </div>
         )}
         <div className="text-[10px] text-muted-foreground">
-          Core free forever. Premium adds history, deeper coaching forms, and saved programs.
+          {t('profileAssessmentFoot', {
+            defaultValue: 'Core free forever. Premium adds history and deeper coaching.',
+          })}
         </div>
       </CardContent>
     </Card>

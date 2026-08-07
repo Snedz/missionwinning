@@ -294,14 +294,14 @@ export function WorkoutVictorySheet({
 
         <DialogFooter className="flex-col sm:flex-col gap-2 pt-1">
           {!summary.nextAction && (
-            <Button variant="outline" className="w-full" onClick={onViewToday}>
+            <Button variant="outline" className="w-full min-h-[44px] tap-target" onClick={onViewToday}>
               {t('victoryBackToday', { defaultValue: 'Back to Today' })}
             </Button>
           )}
           {showBackTodaySecondary && (
             <button
               type="button"
-              className="text-xs text-muted-foreground hover:text-foreground underline-offset-2 hover:underline"
+              className="text-xs text-muted-foreground hover:text-foreground underline-offset-2 hover:underline min-h-[44px] inline-flex items-center tap-target"
               onClick={onViewToday}
             >
               {t('victoryBackToday', { defaultValue: 'Back to Today' })}
@@ -310,7 +310,7 @@ export function WorkoutVictorySheet({
           <div className="flex flex-wrap items-center justify-center gap-x-3 gap-y-1 text-[11px] text-muted-foreground">
             <button
               type="button"
-              className="hover:text-foreground underline-offset-2 hover:underline"
+              className="hover:text-foreground underline-offset-2 hover:underline min-h-[44px] inline-flex items-center tap-target"
               onClick={onViewHistory}
             >
               {t('victoryViewHistory', { defaultValue: 'History' })}
@@ -318,7 +318,7 @@ export function WorkoutVictorySheet({
             <span aria-hidden>·</span>
             <button
               type="button"
-              className="inline-flex items-center gap-1 hover:text-foreground underline-offset-2 hover:underline"
+              className="inline-flex items-center gap-1 hover:text-foreground underline-offset-2 hover:underline min-h-[44px] tap-target"
               onClick={handleShare}
             >
               <Share2 className="h-3 w-3" />

@@ -67,7 +67,7 @@ export function Sidebar() {
                             'relative flex min-h-[44px] flex-col items-center gap-1 px-2 py-2 transition-colors lg:flex-row lg:gap-3 lg:px-3',
                             isActive
                               ? 'is-active-row text-primary'
-                              : 'text-muted-foreground hover:bg-accent-100 hover:text-foreground'
+                              : 'text-muted-foreground hover:bg-muted hover:text-foreground'
                           )}
                         >
                           <Icon className="h-5 w-5 shrink-0" aria-hidden />

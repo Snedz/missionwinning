@@ -25,6 +25,39 @@ When adding a doc:
 
 | File | Absorbed by / note |
 |------|---------------------|
+| [log/LOG-rotate-594.md](./log/LOG-rotate-594.md) | rotated oldest for `.594` app voice recut |
+| [log/LOG-rotate-593.md](./log/LOG-rotate-593.md) | rotated oldest for `.593` legal |
+| [log/LOG-rotate-592.md](./log/LOG-rotate-592.md) | rotated oldest for `.592` lean continuity |
+| [log/LOG-rotate-591.md](./log/LOG-rotate-591.md) | rotated oldest for `.591` evening continuity |
+| [log/LOG-rotate-590.md](./log/LOG-rotate-590.md) | rotated oldest for `.590` sleep-week |
+| [log/LOG-rotate-589.md](./log/LOG-rotate-589.md) | rotated oldest for `.589` mind series |
+| [log/LOG-rotate-588.md](./log/LOG-rotate-588.md) | rotated oldest for `.588` mind prem |
+| [log/LOG-rotate-587.md](./log/LOG-rotate-587.md) | rotated oldest for `.587` move prem D2 |
+| [log/LOG-rotate-586.md](./log/LOG-rotate-586.md) | rotated oldest for `.586` fuel free D2 |
+| [log/LOG-rotate-585.md](./log/LOG-rotate-585.md) | rotated oldest for `.585` mind free D2 |
+| [log/LOG-rotate-584.md](./log/LOG-rotate-584.md) | rotated oldest for `.584` move free D2 |
+| [log/LOG-rotate-583.md](./log/LOG-rotate-583.md) | rotated oldest for `.583` continuity |
+| [log/LOG-rotate-582.md](./log/LOG-rotate-582.md) | rotated oldest for `.582` formguide |
+| [log/LOG-rotate-581.md](./log/LOG-rotate-581.md) | rotated oldest for `.581` overlay fix |
+| [log/LOG-rotate-580.md](./log/LOG-rotate-580.md) | rotated oldest for `.580` size-sm residual |
+| [log/LOG-rotate-579.md](./log/LOG-rotate-579.md) | rotated oldest for `.579` today/fuel |
+| [log/LOG-rotate-578.md](./log/LOG-rotate-578.md) | rotated oldest for `.578` active session |
+| [log/LOG-rotate-577.md](./log/LOG-rotate-577.md) | rotated oldest for `.577` join/builder |
+| [log/LOG-rotate-576.md](./log/LOG-rotate-576.md) | rotated oldest for `.576` locked/victory |
+| [log/LOG-rotate-575.md](./log/LOG-rotate-575.md) | rotated oldest for `.575` signin/hold |
+| [log/LOG-rotate-574.md](./log/LOG-rotate-574.md) | rotated oldest for `.574` full-width CTAs |
+| [log/LOG-rotate-573.md](./log/LOG-rotate-573.md) | rotated oldest for `.573` unlock/public |
+| [log/LOG-rotate-572.md](./log/LOG-rotate-572.md) | rotated oldest for `.572` profile/coach hits |
+| [log/LOG-rotate-571.md](./log/LOG-rotate-571.md) | rotated oldest for `.571` founder i18n |
+| [log/LOG-rotate-570.md](./log/LOG-rotate-570.md) | rotated oldest for `.570` streak fix |
+| [log/LOG-rotate-569.md](./log/LOG-rotate-569.md) | rotated oldest for `.569` i18n |
+| [log/LOG-rotate-568.md](./log/LOG-rotate-568.md) | rotated oldest for `.568` no-alert |
+| [log/LOG-rotate-567.md](./log/LOG-rotate-567.md) | rotated oldest for `.567` empty CTAs |
+| [log/LOG-rotate-566.md](./log/LOG-rotate-566.md) | rotated oldest for `.566` CTA arrows |
+| [log/LOG-rotate-565.md](./log/LOG-rotate-565.md) | rotated oldest for `.565` residual |
+| [log/LOG-rotate-564.md](./log/LOG-rotate-564.md) | rotated oldest for `.564` photo/adapt |
+| [log/LOG-rotate-563.md](./log/LOG-rotate-563.md) | rotated oldest for `.563` picker |
+| [log/LOG-rotate-562.md](./log/LOG-rotate-562.md) | rotated oldest for `.562` today chrome |
 | [log/LOG-rotate-561.md](./log/LOG-rotate-561.md) | rotated oldest for `.561` guide/history |
 | [log/LOG-rotate-560.md](./log/LOG-rotate-560.md) | rotated oldest for `.560` learn |
 | [log/LOG-rotate-559.md](./log/LOG-rotate-559.md) | rotated oldest for `.559` track |
@@ -330,6 +363,7 @@ When adding a doc:
 | [log/LOG-2026-08-01-rotate-268.md](./log/LOG-2026-08-01-rotate-268.md) | `.252` (exporter undid the splitter) — rotated 2026-08-03 for `.268` guide-hero re-ink |
 | [log/LOG-hero-audit-rotate-2026-08-03.md](./log/LOG-hero-audit-rotate-2026-08-03.md) | `.247` (days logged / caps) — rotated 2026-08-03 for `.263` hero audit entry |
 | [log/LOG-rotate-562.md](./log/LOG-rotate-562.md) | `.547` (Terms liability cap / Privacy 30-day deletion) — rotated 2026-08-07 for `.562` ratchet repayment |
+| [log/LOG-rotate-595.md](./log/LOG-rotate-595.md) | `.580` (Kaizen coach/track/journey 44px residual) — rotated 2026-08-07 for `.595` ratchet repayment |
 | [SETUP.md](./SETUP.md) | Stale PayPal-first setup — superseded by [docs/PRE_REVENUE_CHECKLIST.md](../PRE_REVENUE_CHECKLIST.md) + [docs/LLC_AND_PAYMENTS.md](../LLC_AND_PAYMENTS.md) |
 
 Canonical live launch path: root **[LAUNCH_RUNBOOK.md](../LAUNCH_RUNBOOK.md)** + [docs/SOCIAL_LAUNCH.md](../SOCIAL_LAUNCH.md) (copy kit).

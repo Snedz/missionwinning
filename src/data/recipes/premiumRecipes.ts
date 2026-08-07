@@ -1030,5 +1030,85 @@ export const PREMIUM_RECIPES: Recipe[] = [
     "ingredients": "Lean beef, sweet potato cubes, peppers, eggs optional",
     "instructions": "Cook potato first, add beef and veg, top with fried egg.",
     "tip": "Hearty refeed meal for hard training blocks."
+  },
+  {
+    "name": "Post-Sleep-Week Protein Bowl",
+    "protein": 40,
+    "cals": 480,
+    "carbs": 45,
+    "fat": 14,
+    "ingredients": "150g chicken or tofu, 200g rice, steamed veg, yogurt drizzle",
+    "instructions": "Plate rice, protein, veg. Add plain yogurt for casein evening finish.",
+    "tip": "Pairs with sleep-week nights — keep dinner simple after late sessions."
+  },
+  {
+    "name": "Hotel Microwave Cod Plate",
+    "protein": 34,
+    "cals": 390,
+    "carbs": 35,
+    "fat": 12,
+    "ingredients": "Frozen white fish fillet, microwave rice pouch, frozen veg, lemon, salt",
+    "instructions": "Microwave fish and veg per package; heat rice; plate with lemon.",
+    "tip": "Travel premium option without a full kitchen."
+  },
+  {
+    "name": "Casein Berry Night Bowl",
+    "protein": 36,
+    "cals": 340,
+    "carbs": 30,
+    "fat": 8,
+    "ingredients": "300g cottage cheese or greek yogurt, berries, cinnamon, optional honey drizzle",
+    "instructions": "Mix cold. No cook. Optional chia sprinkle.",
+    "tip": "Slow protein before sleep-week nights 5–7."
+  },
+  {
+    "name": "Tempeh Rice Bowl Spicy",
+    "protein": 30,
+    "cals": 470,
+    "carbs": 50,
+    "fat": 16,
+    "ingredients": "150g tempeh, 200g rice, chili paste, cucumber, greens, oil",
+    "instructions": "Pan-sear tempeh, plate over rice with crunchy veg.",
+    "tip": "Plant complete when paired with rice. Cuisine hole-fill."
+  },
+  {
+    "name": "Smoked Salmon Bagel Plate",
+    "protein": 28,
+    "cals": 450,
+    "carbs": 40,
+    "fat": 18,
+    "ingredients": "1 bagel, 80g smoked salmon, cream cheese light, cucumber, lemon",
+    "instructions": "Toast bagel, spread cheese, layer salmon and cucumber.",
+    "tip": "Brunch-style high protein without cooking heat."
+  },
+  {
+    "name": "Chickpea Pasta Bolognese Light",
+    "protein": 32,
+    "cals": 520,
+    "carbs": 55,
+    "fat": 14,
+    "ingredients": "80g chickpea pasta dry, turkey or lentils 120g, tomato sauce, herbs",
+    "instructions": "Cook pasta, brown protein, simmer sauce, combine.",
+    "tip": "Higher-protein pasta option for Bundle depth without junk volume."
+  },
+  {
+    "name": "Miso Soup + Tofu + Rice Side",
+    "protein": 24,
+    "cals": 400,
+    "carbs": 50,
+    "fat": 10,
+    "ingredients": "Miso paste, silken or firm tofu 150g, wakame optional, 180g rice, green onion",
+    "instructions": "Heat broth (do not boil hard after miso), add tofu, serve with rice.",
+    "tip": "Light evening meal when heavy food fights sleep-week goals."
+  },
+  {
+    "name": "Turkey Meatball Zucchini Skillet",
+    "protein": 38,
+    "cals": 420,
+    "carbs": 18,
+    "fat": 20,
+    "ingredients": "150g turkey meatballs or mince, zucchini, tomato, garlic, oil, parmesan optional",
+    "instructions": "Cook turkey, add zucchini and tomato, simmer until soft.",
+    "tip": "Lower-carb dinner option after high-carb lunch."
   }
 ];

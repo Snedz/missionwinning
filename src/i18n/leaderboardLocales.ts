@@ -40,9 +40,11 @@ export type LeaderboardStrings = {
   leaderboardClassNote: string;
   lbPacerHint: string;
   lbPacer: string;
+  leaderboardSquadEmptyCta: string;
 };
 
 const en: LeaderboardStrings = {
+  leaderboardSquadEmptyCta: 'Focus squad code',
   navLeaderboard: 'Leaderboard',
   leaderboardRankings: 'Rankings',
   leaderboardTitle: 'Leaderboard',

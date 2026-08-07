@@ -102,3 +102,12 @@ export function filterFlowsByCollection(
   const def = MOVE_COLLECTIONS.find((c) => c.id === collectionId) ?? MOVE_COLLECTIONS[0];
   return flows.filter((f) => flowMatchesCollection(f, def));
 }
+
+/** Hydrate Move page from ?collection= deep links (ContinuityStrip). */
+export function parseMoveCollectionParam(
+  raw: string | null | undefined
+): MoveCollectionId {
+  if (!raw) return 'all';
+  const id = raw.trim() as MoveCollectionId;
+  return MOVE_COLLECTIONS.some((c) => c.id === id) ? id : 'all';
+}

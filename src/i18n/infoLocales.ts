@@ -1,6 +1,8 @@
 /** Info, legal, and marketing-in-app page chrome — merged into i18n `common` namespace. */
 
 type InfoStrings = {
+  /** GDPR / cookies / a11y pack keys may extend beyond the core list. */
+  [key: string]: string;
   infoLastUpdated: string;
   infoAboutTitle: string;
   infoAboutSubtitle: string;
@@ -225,6 +227,13 @@ type InfoStrings = {
   infoPrivacyDeletion: string;
   infoPrivacyDeletionBody: string;
   visionEyebrow: string;
+  /** Briefing kickers for the shell header (`.eyebrow`). */
+  infoLegalEyebrow: string;
+  toolkitEyebrow: string;
+  americaEyebrow: string;
+  learnEyebrow: string;
+  feedbackEyebrow: string;
+  infoPrivacyRegionsLink: string;
 };
 
 const en: InfoStrings = {
@@ -306,7 +315,7 @@ const en: InfoStrings = {
   infoTermsDmcaBody:
     'If you believe content on Mission Winning infringes your copyright, follow the notice process on our DMCA page. We respond to valid notices under the Digital Millennium Copyright Act. Repeat infringers may have accounts terminated.',
   infoTermsDisputesBody:
-    'Except for (a) small-claims court actions and (b) claims for injunctive or other equitable relief to protect intellectual property, any dispute arising out of or relating to these Terms or the Service will be resolved by binding individual arbitration administered by the American Arbitration Association (AAA) under its Consumer Arbitration Rules, seated in the United States. You and Mission Winning LLC waive any right to a jury trial and to participate in a class, collective, or representative action. If the class waiver is found unenforceable as to a particular claim, that claim must proceed in court and not arbitration. You use the hosted service only if you are in a Supported Region.',
+    'Except for (a) small-claims court actions and (b) claims for injunctive or other equitable relief to protect intellectual property, any dispute arising out of or relating to these Terms or the Service will be resolved by binding individual arbitration administered by the American Arbitration Association (AAA) under its Consumer Arbitration Rules, seated in the United States. You and Mission Winning LLC waive any right to a jury trial and to participate in a class, collective, or representative action. If the class waiver is found unenforceable as to a particular claim, that claim must proceed in court and not arbitration. You use the hosted service only if you are in a Supported Region. EU and UK consumers: see EU/UK consumers below — the arbitration clause and class waiver do not apply to you.',
   infoTermsChangesBody:
     'We may update these terms. Continued use after changes constitutes acceptance. Material changes will be noted in the app or via email where appropriate.',
   infoTermsFoot: 'Mission Winning LLC · support@missionwinning.com · See also',
@@ -339,7 +348,7 @@ const en: InfoStrings = {
     'We use the subprocessors listed below. We do not use Meta Pixel or Google Analytics advertising tags in the app. Each vendor has its own privacy terms. Session recording is disabled in our PostHog config. Payment refunds are described on /refunds.',
   infoPrivacySubprocessors: 'Subprocessors',
   infoPrivacySubprocessorsBody:
-    'Supabase (auth/database/hosting); Vercel (app hosting); Stripe and/or PayPal (payments when enabled); Resend (transactional email when enabled); PostHog (product analytics only if you allow it — configured without session recording; we do not target European consumer accounts); optional OpenAI-compatible LLM provider when operators enable AI coach features (preferred: SpaceXAI/xAI with team Zero Data Retention). We remain the controller for consumer accounts in Supported Regions. Business customers outside consumer B2C who need a DPA may request docs/legal/DPA.md via support. We do not operate the hosted consumer service as a GDPR-covered offering for EEA/UK/Swiss residents.',
+    'Supabase (authentication and database); Vercel (app hosting); Stripe and/or PayPal (payments when enabled); Resend (transactional email when enabled); PostHog EU (product analytics, EU-hosted, only if you allow it — session recording disabled); Sentry (error monitoring, with personally identifying fields disabled); Upstash (rate limiting — transient request keys only); browser push services from Google, Mozilla, or Apple (only when you enable notifications); OpenFoodFacts (food and barcode lookup — the query only, never your account data); Solana RPC / Phantom (only when you choose to pay with USDC); optional OpenAI-compatible LLM provider when operators enable AI coach features (preferred: SpaceXAI/xAI with team Zero Data Retention). We remain the controller for consumer accounts; business customers who need a DPA should request docs/legal/DPA.md via support.',
   infoPrivacyChoicesLi1: 'Use the free core without an account (local-only).',
   infoPrivacyChoicesLi2: 'Export or restore device data from Profile → Back up your data.',
   infoPrivacyChoicesLi3:
@@ -553,6 +562,115 @@ const en: InfoStrings = {
     'After we verify a deletion request from the account holder (email support@missionwinning.com with subject Data deletion from the account email), we will delete account-linked personal data we control in our cloud systems within thirty (30) days, except where retention is required or permitted by law (for example tax or accounting records for paid transactions, fraud or security investigations, or legal holds) or where a processor must retain records under its own legal duties. Ordinary backups are removed on normal rotation. Data stored only on your device is under your control (clear storage or uninstall). Self-hosted copies are the operators responsibility. California residents also see CCPA rights below.',
 
   visionEyebrow: 'Vision',
+  // --- GDPR / legal pack keys from .462 slice ---
+  infoA11yCommitment: 'Our commitment',
+  infoA11yCommitmentBody:
+    'Mission Winning aims to conform to WCAG 2.1 level AA across the app and the public site. Training should be usable one-handed, outdoors, on a small screen, by everyone — accessibility is the same discipline, applied consistently.',
+  infoA11yFeedback: 'Feedback',
+  infoA11yFeedbackBody:
+    'If anything is hard to use with assistive technology, email support@missionwinning.com with the page and what happened — accessibility reports are treated as defects, not requests. EU users may also contact their national market surveillance authority under the European Accessibility Act.',
+  infoA11yLimitations: 'Known limitations',
+  infoA11yLimitationsBody:
+    'Some chart visualizations carry simplified text alternatives rather than full data tables, and the downloadable guidebook magazine PDF is not yet fully tagged for screen readers. Both are on the improvement list; the in-app guide chapters are the accessible route to the same content.',
+  infoA11yMeasures: 'What we do',
+  infoA11yMeasuresLi1:
+    'Automated axe accessibility checks run on ~30 routes — including open dialogs and sheets — in every release build; serious and critical findings block the release.',
+  infoA11yMeasuresLi2:
+    'Keyboard focus visibility is tested by walking the interface with the Tab key and asserting a visible 2px outline on every stop.',
+  infoA11yMeasuresLi3:
+    'Touch targets are measured against a 44px minimum on the core training screens.',
+  infoA11yMeasuresLi4:
+    'Motion respects prefers-reduced-motion, and color contrast is maintained by a token system checked at build time.',
+  infoA11yMeasuresLi5:
+    'Loading states announce themselves to assistive technology (aria-busy), and status information is never conveyed by color or opacity alone.',
+  infoA11yTitle: 'Accessibility statement',
+  infoCookiesCatConsent: 'Only with your consent',
+  infoCookiesCatFunctional: 'Functional (local-first)',
+  infoCookiesCatNecessary: 'Strictly necessary',
+  infoCookiesColCategory: 'Category',
+  infoCookiesColKind: 'Type',
+  infoCookiesColName: 'Name',
+  infoCookiesColPurpose: 'Purpose',
+  infoCookiesColRetention: 'Retention',
+  infoCookiesDntLi:
+    'Do Not Track is honored: analytics stay off and the consent banner never shows.',
+  infoCookiesInventory: 'Full inventory',
+  infoCookiesKindCookie: 'Cookie',
+  infoCookiesKindLocal: 'Local storage',
+  infoCookiesManageLi:
+    'Change your analytics choice anytime in Profile → Privacy & analytics; clear site data in your browser to remove everything local.',
+  infoCookiesNoAdsLi:
+    'No advertising cookies, no third-party tracking pixels, no session recording — ever.',
+  infoCookiesOverview: 'Overview',
+  infoCookiesOverviewBody:
+    'Mission Winning stores as little as possible in your browser, and nothing for advertising. Sign-in uses strictly necessary httpOnly cookies; your app data lives in local storage on your device and leaves it only when you sign in to sync. This page lists every cookie and storage key we set.',
+  infoCookiesTitle: 'Cookies & device storage',
+  infoLastUpdatedLabel: 'Last updated:',
+  infoLegalEyebrow: 'Legal',
+  toolkitEyebrow: 'Toolkit',
+  americaEyebrow: 'America',
+  learnEyebrow: 'Learn',
+  feedbackEyebrow: 'Feedback',
+  infoPrivacyChanges: 'Changes to this policy',
+  infoPrivacyChangesBody:
+    'This policy is versioned; the date above is the version you accept. Material changes re-prompt for consent in the app before your next sign-in, and are announced in the app or by email where appropriate. Earlier versions are available on request.',
+  infoPrivacyChildren: 'Children & youth',
+  infoPrivacyChildrenBody:
+    "Mission Winning is not directed at children under 13, and youth school features require verifiable parental consent before any youth data syncs (consent records are kept server-side). Where local law sets a higher digital-consent age (up to 16 in parts of the EU), we rely on parental consent up to that age. Parents can request deletion of a child's data anytime: support@missionwinning.com.",
+  infoPrivacyCollectLi7:
+    'Optional push notifications: when you enable them, we store your browser push subscription (endpoint and keys) and — on devices without an account — a random device identifier, your time zone, and schedule preferences. Never your workout history.',
+  infoPrivacyCollectLi8:
+    "Optional AI usage metering: when AI features run, we record usage rows (feature, model, token counts, date) keyed to your account or device identifier — never the content of your prompts or the model's replies.",
+  infoPrivacyCollectLi9:
+    'Crypto checkout: when you pay with USDC, we record the payment intent (wallet address, amount, transaction reference) needed to deliver and support the purchase.',
+  infoPrivacyCookiesRef: 'Cookies & device storage',
+  infoPrivacyCookiesRefBody:
+    "We set no advertising or third-party tracking cookies. Sign-in uses strictly necessary, httpOnly cookies; app data lives in your browser's local storage, on your device. The full inventory — every cookie and storage key, what it is for, and how long it lives — is on the Cookies page at missionwinning.com/cookies.",
+  infoPrivacyHealthData: 'Health-related data (Art. 9)',
+  infoPrivacyHealthDataBody:
+    'Workouts, nutrition logs, assessments, body metrics, and mind check-ins are health-related data. Used without an account, they never leave your device. If you sign in to sync, we process them solely to provide the service you request — plans, history, and progress — on the basis of your explicit consent given at sign-up. We never sell health data and never use it for advertising. You can withdraw consent at any time by deleting your account, which deletes your cloud data.',
+  infoPrivacyIntlTransfers: 'International transfers',
+  infoPrivacyIntlTransfersBody:
+    "Some subprocessors process data in the United States (Supabase, Vercel, Stripe, Resend, Sentry, xAI). Where GDPR applies, transfers rely on Standard Contractual Clauses or an adequacy decision, with the vendor's data processing agreement in place. Product analytics stay in the EU (PostHog EU-hosted). An EU/UK Article 27 representative has not yet been appointed; until then, contact support@missionwinning.com for any data protection matter.",
+  infoPrivacyLawfulBases: 'Lawful bases (GDPR)',
+  infoPrivacyLawfulBasesLi1:
+    'Contract (Art. 6(1)(b)): account creation, cloud sync, premium delivery, and support — processing needed to provide what you asked for.',
+  infoPrivacyLawfulBasesLi2:
+    'Consent (Art. 6(1)(a)): product analytics, marketing attribution, push notifications, and optional AI features such as photo meal estimates — each off until you switch it on, withdrawable anytime.',
+  infoPrivacyLawfulBasesLi3:
+    'Legitimate interests (Art. 6(1)(f)): security, rate limiting, abuse and fraud prevention, and error monitoring — limited to what a user would reasonably expect.',
+  infoPrivacyLawfulBasesLi4:
+    'Legal obligation (Art. 6(1)(c)): payment, tax, and accounting records we must keep by law.',
+  infoPrivacyRetention: 'Data retention',
+  infoPrivacyRetentionLi1:
+    'Cloud data: kept while your account exists; deleting your account deletes it (database-level cascade, effective immediately).',
+  infoPrivacyRetentionLi2:
+    'On-device history: non-training entries (nutrition detail, mind check-ins) are trimmed after 90 days on your device; training history stays until you clear it.',
+  infoPrivacyRetentionLi3: 'Payment records: retained as required by tax and accounting law.',
+  infoPrivacyRetentionLi4:
+    'Waitlist and beta emails: kept until you unsubscribe or ask us to delete them.',
+  infoPrivacyRights: 'Your rights (GDPR)',
+  infoPrivacyRightsLi1: 'Access — request a copy of the personal data we hold about you.',
+  infoPrivacyRightsLi2:
+    'Rectification — correct inaccurate data (most records are editable in-app).',
+  infoPrivacyRightsLi3:
+    'Erasure — delete your account and cloud data in-app (Profile → Account) or by email.',
+  infoPrivacyRightsLi4:
+    'Portability — download your cloud data as JSON in-app (Profile → Account) and your device data from Profile → Back up.',
+  infoPrivacyRightsLi5:
+    'Restriction and objection — ask us to limit or stop specific processing, including any processing based on legitimate interests.',
+  infoPrivacyRightsLi6:
+    'Withdraw consent — analytics and other consent-based processing stop going forward; withdrawal does not affect prior lawful processing.',
+  infoPrivacyRightsLi7:
+    'Complain — you can lodge a complaint with your local supervisory authority (EU/UK data protection authority) at any time.',
+  infoPrivacySecurity: 'Security & breach notification',
+  infoPrivacySecurityBody:
+    'Cloud data is protected with row-level security, verified server-side authentication, httpOnly cookies, rate limiting, and strict transport security. No system is perfectly secure: if a breach affects your personal data, we will notify you without undue delay and, where GDPR applies, notify the competent supervisory authority within 72 hours of becoming aware of it, as Art. 33 requires.',
+  infoTermsEuConsumers: 'EU/UK consumers',
+  infoTermsEuConsumersBody:
+    'If you use Mission Winning as a consumer habitually resident in the European Union, the United Kingdom, or the EEA: the arbitration clause and class-action waiver above do not apply to you. Nothing in these terms deprives you of the protection of mandatory consumer law of your country of residence, and you may bring proceedings in the courts of that country. The European Commission provides an online dispute resolution platform at ec.europa.eu/consumers/odr.',
+
+  infoPrivacyRegionsLink: 'Where we offer the service',
 };
 
 const es: InfoStrings = {

@@ -54,7 +54,7 @@ export function TodayJournalStrip({ entries, locale, className }: Props) {
           href="/mind"
           className="inline-flex min-h-[44px] items-center border-2 border-border px-4 text-sm font-semibold text-foreground transition-colors hover:bg-muted"
         >
-          {t('todayJournalViewMind', { defaultValue: 'Log check-in →' })}
+          {t('todayJournalViewMind', { defaultValue: 'Log check-in' })}
         </Link>
       </div>
     );

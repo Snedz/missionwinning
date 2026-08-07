@@ -33,6 +33,7 @@ export function SupportedRegionsPage() {
   return (
     <InfoPageShell
       icon={Globe2}
+      eyebrow={t('infoLegalEyebrow', { defaultValue: 'Legal' })}
       title={t('infoRegionsTitle', { defaultValue: 'Supported Regions' })}
       lastUpdated={t('infoLastUpdated', { defaultValue: 'Last updated: August 2026' })}
       showLegalFooter

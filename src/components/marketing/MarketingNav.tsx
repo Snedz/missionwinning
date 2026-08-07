@@ -73,7 +73,7 @@ export function MarketingNav({ variant = 'full', className }: MarketingNavProps)
               so an onClick-only CTA does nothing until React hydrates and crawlers see no
               link at all. Visible at every width — the primary conversion action must not
               move a tap deeper on the viewport most visitors arrive on. */}
-          <Button asChild variant="ghost" className="tap-target text-sm font-medium">
+          <Button asChild variant="ghost" className="tap-target min-h-[44px] text-sm font-medium">
             <Link href="/welcome">{t('landingNavStart', { defaultValue: 'Start free' })}</Link>
           </Button>
 

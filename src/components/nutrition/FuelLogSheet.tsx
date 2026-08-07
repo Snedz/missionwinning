@@ -232,7 +232,7 @@ export function FuelLogSheet({
             <div
               className={
                 estimateMeta.source === 'rough' || estimateMeta.confidence === 'low'
-                  ? 'border-2 border-primary bg-accent-100 p-3 space-y-1.5'
+                  ? 'border-2 border-primary bg-muted p-3 space-y-1.5'
                   : 'border-2 border-border bg-card p-3 space-y-1.5'
               }
             >

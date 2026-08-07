@@ -11,8 +11,11 @@ export type PrivacyConsent = {
   privacyVersion: string;
 };
 
-const CURRENT_TERMS_VERSION = '2025-06-29';
-const CURRENT_PRIVACY_VERSION = '2025-06-29';
+// Bump on material policy changes — pages render these as their "Last updated"
+// date, and hasValidPrivacyConsent() re-prompts every device whose stored
+// record predates them. One source: date shown === version consented to.
+const CURRENT_TERMS_VERSION = '2026-08-04';
+const CURRENT_PRIVACY_VERSION = '2026-08-04';
 
 export function loadPrivacyConsent(): PrivacyConsent | null {
   return readJson<PrivacyConsent | null>(CONSENT_KEY, null);

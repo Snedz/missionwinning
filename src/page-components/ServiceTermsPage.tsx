@@ -29,6 +29,7 @@ export function ServiceTermsPage() {
   return (
     <InfoPageShell
       icon={FileStack}
+      eyebrow={t('infoLegalEyebrow', { defaultValue: 'Legal' })}
       title={t('infoServiceTermsTitle', { defaultValue: 'Service-Specific Terms' })}
       lastUpdated={t('infoLastUpdated', { defaultValue: 'Last updated: August 2026' })}
       showLegalFooter
@@ -47,14 +48,14 @@ export function ServiceTermsPage() {
           {section.id === 'super-bundle' && (
             <p className="mt-2">
               <Link href="/refunds" className="text-primary hover:underline text-sm">
-                {t('infoRefundsTitle', { defaultValue: 'Refunds & cancellation' })} →
+                {t('infoRefundsTitle', { defaultValue: 'Refunds & cancellation' })}
               </Link>
             </p>
           )}
           {section.id === 'regions' && (
             <p className="mt-2">
               <Link href="/regions" className="text-primary hover:underline text-sm">
-                {t('infoRegionsTitle', { defaultValue: 'Supported Regions' })} →
+                {t('infoRegionsTitle', { defaultValue: 'Supported Regions' })}
               </Link>
             </p>
           )}

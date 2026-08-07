@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Share2 } from 'lucide-react';
+import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { shareText } from '@/lib/shareFitnessMission';
 import { track } from '@/lib/analytics';
@@ -35,13 +36,13 @@ export function ShareFitnessButton({
 
   const label =
     status === 'copied'
-      ? t('shareCopied', { defaultValue: 'Copied!' })
+      ? t('shareCopied', { defaultValue: 'Copied' })
       : status === 'shared'
-        ? t('shareSent', { defaultValue: 'Shared!' })
+        ? t('shareSent', { defaultValue: 'Shared' })
         : t(labelKey, { defaultValue: defaultLabel });
 
   return (
-    <Button type="button" variant={variant} className={className} onClick={() => void onShare()}>
+    <Button type="button" variant={variant} className={cn("min-h-[44px] tap-target", className)} onClick={() => void onShare()}>
       <Share2 className="h-4 w-4 mr-2" />
       {label}
     </Button>

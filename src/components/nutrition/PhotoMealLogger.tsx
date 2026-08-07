@@ -210,7 +210,7 @@ export function PhotoMealLogger({ onLogEstimate }: Props) {
   return (
     <div className="content-card p-5 space-y-4 page-enter">
       <div className="flex items-start gap-3">
-        <div className="flex h-11 w-11 shrink-0 items-center justify-center  bg-accent-100 border border-primary">
+        <div className="flex h-11 w-11 shrink-0 items-center justify-center bg-muted border-2 border-border">
           <Camera className="h-5 w-5 text-primary" />
         </div>
         <div className="min-w-0 flex-1">
@@ -218,14 +218,14 @@ export function PhotoMealLogger({ onLogEstimate }: Props) {
             <h3 className="font-semibold text-base">
               {t('photoLogTitle', { defaultValue: 'Log from photo' })}
             </h3>
-            <span className="text-[10px] font-semibold uppercase tracking-[0.08em] text-accent-900 px-1.5 py-0.5 bg-accent-100">
+            <span className="text-[10px] font-semibold uppercase tracking-[0.08em] text-muted-foreground px-1.5 py-0.5 border-2 border-border">
               Beta
             </span>
           </div>
           <p className="text-sm text-muted-foreground mt-1 leading-relaxed">
             {t('photoLogDesc', {
               defaultValue:
-                'Snap a meal for a rough estimate. Prefer database matches and always edit before logging.',
+                'Snap a meal for a rough estimate. Prefer database matches; edit before you log.',
             })}
           </p>
         </div>
@@ -267,10 +267,10 @@ export function PhotoMealLogger({ onLogEstimate }: Props) {
           </div>
           {phase === 'preview' && (
             <div className="flex flex-wrap gap-2">
-              <Button type="button" size="sm" onClick={() => void runEstimate(file)}>
+              <Button type="button" size="sm" className="min-h-[44px] tap-target" onClick={() => void runEstimate(file)}>
                 {t('photoLogAnalyze', { defaultValue: 'Analyze' })}
               </Button>
-              <Button type="button" size="sm" variant="outline" onClick={reset}>
+              <Button type="button" size="sm" variant="outline" className="min-h-[44px] tap-target" onClick={reset}>
                 {t('photoLogRetake', { defaultValue: 'Choose another photo' })}
               </Button>
             </div>
@@ -415,7 +415,7 @@ export function PhotoMealLogger({ onLogEstimate }: Props) {
             type="button"
             variant="outline"
             size="sm"
-            className=""
+            className="min-h-[44px] tap-target "
             onClick={() => cameraInputRef.current?.click()}
           >
             <Camera className="h-4 w-4" />

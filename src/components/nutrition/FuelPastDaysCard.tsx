@@ -75,7 +75,7 @@ export function FuelPastDaysCard({ logs, todayIso, onCopyDayToToday }: Props) {
                 key={date}
                 className="border-2 border-border px-3 py-2"
               >
-                <summary className="flex cursor-pointer list-none items-center justify-between gap-2 min-h-[40px] [&::-webkit-details-marker]:hidden">
+                <summary className="flex cursor-pointer list-none items-center justify-between gap-2 min-h-[44px] tap-target [&::-webkit-details-marker]:hidden">
                   <span className="text-sm font-medium">
                     {label}
                     <span className="ms-2 text-xs font-normal text-muted-foreground tabular-nums">

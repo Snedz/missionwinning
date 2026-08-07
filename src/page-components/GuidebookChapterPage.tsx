@@ -66,6 +66,7 @@ export function GuidebookChapterPage({ chapterId }: Props) {
   return (
     <PillarPageShell
       icon={BookMarked}
+      eyebrow={t('learnEyebrow', { defaultValue: 'Learn' })}
       title={chapter.title}
       subtitle={chapter.subtitle}
       className="pb-24"
@@ -84,7 +85,7 @@ export function GuidebookChapterPage({ chapterId }: Props) {
       {chapter.quickPathId && (
         <Button variant="link" size="sm" className="px-0 h-auto -mt-4" asChild>
           <Link href="/learn">
-            {t('guidebookQuickVersion', { defaultValue: '5-minute quick path →' })}
+            {t('guidebookQuickVersion', { defaultValue: '5-minute quick path' })}
           </Link>
         </Button>
       )}
@@ -148,7 +149,7 @@ export function GuidebookChapterPage({ chapterId }: Props) {
             {BEYOND_NEXT_CHAPTER(chapterId) ? (
               <Button size="sm" asChild>
                 <Link href={`/learn/guide/${BEYOND_NEXT_CHAPTER(chapterId)}`}>
-                  {t('guidebookNextChapter', { defaultValue: 'Next chapter →' })}
+                  {t('guidebookNextChapter', { defaultValue: 'Next chapter' })}
                 </Link>
               </Button>
             ) : (
@@ -161,7 +162,7 @@ export function GuidebookChapterPage({ chapterId }: Props) {
       )}
 
       <div className="fixed bottom-0 left-0 right-0 p-4 bg-background border-t border-border md:hidden z-40">
-        <Button className="w-full" variant="default" asChild>
+        <Button className="w-full min-h-[44px] tap-target" variant="default" asChild>
           <Link href={chapter.sections[0]?.practiceCTA.href ?? '/log'}>
             {t('guidebookPracticeInApp', { defaultValue: 'Practice in app' })}
           </Link>

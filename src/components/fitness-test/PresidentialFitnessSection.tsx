@@ -62,7 +62,7 @@ export function PresidentialFitnessSection() {
  )}
  <div className="flex flex-col sm:flex-row gap-2">
  <Button asChild className="min-h-[44px] bg-[hsl(var(--status-info))] hover:bg-card">
- <Link href="/fitness-test">{t('pftTakeFull', { defaultValue: 'Take the full test →' })}</Link>
+ <Link href="/fitness-test">{t('pftTakeFull', { defaultValue: 'Take the full test' })}</Link>
  </Button>
  <Button asChild variant="outline" className="min-h-[44px] border-border">
  <Link href={`/fitness-test?mode=mini`}>
@@ -74,7 +74,7 @@ export function PresidentialFitnessSection() {
  </Button>
  <Button asChild variant="outline" className="min-h-[44px] border-border">
  <Link href="/leaderboard?board=presidential-fitness">
- {t('pftLeaderboard', { defaultValue: 'PFT leaderboard →' })}
+ {t('pftLeaderboard', { defaultValue: 'PFT leaderboard' })}
  </Link>
  </Button>
  </div>

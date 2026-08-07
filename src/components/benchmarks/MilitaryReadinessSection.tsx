@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import { useTranslation } from 'react-i18next';
 import { Shield } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -20,6 +21,7 @@ import { isAmericaTrackEnabled } from '@/lib/americaConfig';
  * it, the way the sibling already works.
  */
 export function MilitaryReadinessSection() {
+  const { t } = useTranslation();
   if (!isAmericaTrackEnabled()) return null;
 
   return (
@@ -27,12 +29,13 @@ export function MilitaryReadinessSection() {
       <CardHeader>
         <CardTitle className="flex items-center gap-2 text-muted-foreground">
           <Shield className="h-5 w-5" />
-          Readiness test prep
+          {t('militaryReadinessTitle', { defaultValue: 'Readiness test prep' })}
         </CardTitle>
         <CardDescription className="text-base leading-relaxed">
-          Optional standards for push-ups, pull-ups, deadlift, and loaded carries — for members
-          preparing for service fitness tests. The rest of Mission Winning is for{' '}
-          <strong>everyone worldwide</strong> building lifelong health (free core forever).
+          {t('militaryReadinessDesc', {
+            defaultValue:
+              'Optional standards for push-ups, pull-ups, deadlift, and loaded carries — service fitness prep. Mission Winning remains for everyone (free core forever).',
+          })}
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-3">
@@ -46,10 +49,10 @@ export function MilitaryReadinessSection() {
           </div>
         ))}
         <Button asChild variant="outline" className="w-full min-h-[44px] border-border">
-          <Link href="/active">Train for standards →</Link>
+          <Link href="/active">{t('militaryReadinessCta', { defaultValue: 'Train for standards' })}</Link>
         </Button>
         <p className="text-[10px] text-muted-foreground text-center pt-1">
-          Civilian health app — not affiliated with any armed service. Form guides use test-prep language here only.
+          {t('militaryReadinessFoot', { defaultValue: 'Civilian health app — not affiliated with any armed service.' })}
         </p>
       </CardContent>
     </Card>

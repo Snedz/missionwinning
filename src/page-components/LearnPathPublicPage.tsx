@@ -64,7 +64,7 @@ export function LearnPathPublicPage({ path }: Props) {
               <li key={lesson.id} className="space-y-1">
                 <div className="flex gap-2 text-foreground">
                   <span className="tabular-nums text-muted-foreground">{i + 1}.</span>
-                  <span className="font-medium">{lesson.title}</span>
+                  <span className="font-semibold">{lesson.title}</span>
                 </div>
                 {lesson.body && lesson.body.length > 0 ? (
                   <div className="pl-5 space-y-1.5 text-muted-foreground leading-relaxed">
@@ -92,11 +92,11 @@ export function LearnPathPublicPage({ path }: Props) {
             data-testid="seo-path-open-learn"
             onClick={() => track('public_cta_clicked', { target: openInLearn, path: path.id })}
           >
-            Open in Learn →
+            Open in Learn
           </Link>
           <Link
             href="/welcome"
-            className="block text-center text-sm font-medium text-primary hover:underline"
+            className="block text-center text-sm font-semibold text-primary hover:underline"
             onClick={() => track('public_cta_clicked', { target: '/welcome', path: path.id })}
           >
             New here? Start free (I-Day)

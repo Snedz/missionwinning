@@ -136,7 +136,7 @@ export function BundlePage() {
       {/* Thin hero */}
       <div className="hero-field section-seam relative">
         <div className="relative z-[1] mx-auto max-w-4xl space-y-3 px-5 pb-10 pt-10">
-          <Badge className="w-fit border-border bg-accent-100 text-accent-900 hover:bg-accent-100">
+          <Badge className="w-fit border-border bg-muted text-accent-900 hover:bg-muted">
             {t("bundleUrgencyBadge")}
           </Badge>
           <PillarPageHeader
@@ -159,7 +159,7 @@ export function BundlePage() {
           <Card className="border-primary/40 bg-primary/10">
             <CardContent className="space-y-3 pt-6">
               {premium ? (
-                <p className="text-sm font-medium text-primary">
+                <p className="text-sm font-semibold text-primary">
                   {t('bundleCheckoutSuccess', {
                     defaultValue: 'Premium active — Mission Coach and bundle content are unlocked.',
                   })}
@@ -176,6 +176,7 @@ export function BundlePage() {
                     type="button"
                     variant="outline"
                     size="sm"
+                    className="min-h-[44px] tap-target"
                     onClick={() => {
                       setUnlockTimedOut(false);
                       refetch();
@@ -185,7 +186,7 @@ export function BundlePage() {
                   </Button>
                 </>
               ) : (
-                <p className="flex items-center gap-2 text-sm font-medium text-primary">
+                <p className="flex items-center gap-2 text-sm font-semibold text-primary">
                   <Loader2 className="h-4 w-4 shrink-0 animate-spin" aria-hidden />
                   {t('bundleCheckoutUnlocking', {
                     defaultValue: 'Unlocking your Super Bundle…',
@@ -193,7 +194,7 @@ export function BundlePage() {
                 </p>
               )}
               {premium && (
-                <Button asChild variant="default" size="sm">
+                <Button asChild variant="default" size="sm" className="min-h-[44px] tap-target">
                   <Link href="/coach">{t('coachViewPlan', { defaultValue: 'View full week' })}</Link>
                 </Button>
               )}
@@ -249,7 +250,7 @@ export function BundlePage() {
                     "flex h-auto flex-col items-start gap-0.5 border-2 border-border bg-card px-3 py-3 text-left data-[state=active]:border-primary data-[state=active]:bg-tint"
                   )}
                 >
-                  <span className="text-xs font-medium sm:text-sm">{label}</span>
+                  <span className="text-xs font-semibold sm:text-sm">{label}</span>
                   <span className="font-display text-lg font-semibold tabular-nums leading-none">
                     ${p.price}
                   </span>
@@ -312,7 +313,7 @@ export function BundlePage() {
                     <p className="text-sm text-muted-foreground">{billingLineFor(id, p.price)}</p>
 
                     {vsSeparateSavings > 0 && (
-                      <p className="text-sm font-medium text-primary">
+                      <p className="text-sm font-semibold text-primary">
                         {t("bundleVsSeparate", { percent: vsSeparateSavings })}
                       </p>
                     )}
@@ -393,7 +394,7 @@ export function BundlePage() {
 
         {/* Quiet compare — below fold, one table */}
         <details className="group">
-          <summary className="cursor-pointer list-none text-sm font-medium text-muted-foreground marker:content-none hover:text-foreground">
+          <summary className="cursor-pointer list-none text-sm font-semibold text-muted-foreground marker:content-none hover:text-foreground">
             <span className="flex items-center justify-between gap-4">
               {t("bundleCompareTitle")}
               <span className="transition-transform group-open:rotate-45">+</span>
@@ -403,12 +404,12 @@ export function BundlePage() {
             <table className="w-full text-sm">
               <thead>
                 <tr className="border-b-2 border-border bg-card">
-                  <th className="p-3 text-start font-medium">{t("bundleColPillar")}</th>
-                  <th className="hidden p-3 text-start font-medium sm:table-cell">
+                  <th className="p-3 text-start font-semibold">{t("bundleColPillar")}</th>
+                  <th className="hidden p-3 text-start font-semibold sm:table-cell">
                     {t("bundleColPremium")}
                   </th>
-                  <th className="p-3 text-end font-medium">{t("bundleColMonthly")}</th>
-                  <th className="p-3 text-center font-medium">{t("bundleColIncluded")}</th>
+                  <th className="p-3 text-end font-semibold">{t("bundleColMonthly")}</th>
+                  <th className="p-3 text-center font-semibold">{t("bundleColIncluded")}</th>
                 </tr>
               </thead>
               <tbody>
@@ -417,7 +418,7 @@ export function BundlePage() {
                   return (
                     <tr key={pillar.id} className="border-b border-border last:border-0">
                       <td className="p-3">
-                        <p className="font-medium">{keys ? t(keys.nameKey) : pillar.name}</p>
+                        <p className="font-semibold">{keys ? t(keys.nameKey) : pillar.name}</p>
                         <p className="text-xs text-muted-foreground sm:hidden">
                           {keys ? t(keys.premiumKey) : pillar.premium}
                         </p>
@@ -434,7 +435,7 @@ export function BundlePage() {
                     </tr>
                   );
                 })}
-                <tr className="border-t-2 border-border bg-tint font-medium">
+                <tr className="border-t-2 border-border bg-tint font-semibold">
                   <td className="p-3" colSpan={2}>
                     {t("bundleRowTotal")}
                   </td>

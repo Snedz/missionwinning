@@ -133,7 +133,7 @@ export function FitnessTestRunner() {
           inputMode={eventId === 'mile_run' ? 'text' : 'decimal'}
           value={values[eventId] ?? ''}
           onChange={(e) => setValues((v) => ({ ...v, [eventId]: e.target.value }))}
-          className="w-full rounded-none bg-background border border-border px-3 py-2"
+          className="w-full min-h-[44px] rounded-none bg-background border border-border px-3 py-2"
           placeholder={placeholder}
         />
       </label>
@@ -169,14 +169,14 @@ export function FitnessTestRunner() {
               </p>
               <Button
                 variant="link"
-                className="text-xs text-primary p-0 h-auto mt-1"
+                className="text-xs text-primary p-0 h-auto mt-1 min-h-[44px] tap-target"
                 onClick={() =>
                   router.push(
                     `/leaderboard?board=presidential-fitness&scope=class&class=${classRank.code}`
                   )
                 }
               >
-                {t('pftViewClassBoard', { defaultValue: 'View class standings →' })}
+                {t('pftViewClassBoard', { defaultValue: 'View class standings' })}
               </Button>
             </div>
           )}
@@ -196,20 +196,22 @@ export function FitnessTestRunner() {
           </ul>
           <ShareFitnessButton
             text={shareText}
-            className="w-full"
+            className="w-full min-h-[44px] tap-target"
             labelKey="pftShareResult"
             defaultLabel="Share my results"
           />
-          <Button className="w-full" onClick={() => router.push('/benchmarks')}>
+          <Button className="w-full min-h-[44px] tap-target"
+            onClick={() => router.push('/benchmarks')}
+          >
             {t('pftBackBenchmarks', { defaultValue: 'Back to Benchmarks' })}
           </Button>
           {isAmericaTrackEnabled() && (
             <Button
               variant="outline"
-              className="w-full"
+              className="w-full min-h-[44px] tap-target"
               onClick={() => router.push(americaHomeOrFallback())}
             >
-              {t('pftShareAmerica', { defaultValue: 'National fitness mission →' })}
+              {t('pftShareAmerica', { defaultValue: 'National fitness mission' })}
             </Button>
           )}
         </CardContent>
@@ -243,7 +245,7 @@ export function FitnessTestRunner() {
                 max={120}
                 value={age}
                 onChange={(e) => setAge(e.target.value)}
-                className="w-full rounded-none bg-background border border-border px-3 py-2"
+                className="w-full min-h-[44px] rounded-none bg-background border border-border px-3 py-2"
               />
             </label>
             <label className="block space-y-1 text-sm">
@@ -251,7 +253,7 @@ export function FitnessTestRunner() {
               <select
                 value={sex}
                 onChange={(e) => setSex(e.target.value as FitnessSex)}
-                className="w-full rounded-none bg-background border border-border px-3 py-2"
+                className="w-full min-h-[44px] rounded-none bg-background border border-border px-3 py-2"
               >
                 <option value="male">{t('pftSexMale', { defaultValue: 'Male standards' })}</option>
                 <option value="female">
@@ -259,7 +261,7 @@ export function FitnessTestRunner() {
                 </option>
               </select>
             </label>
-            <Button className="w-full" onClick={proceedFromProfile}>
+            <Button className="w-full min-h-[44px] tap-target" onClick={proceedFromProfile}>
               {t('pftContinue', { defaultValue: 'Continue to events' })}
             </Button>
           </>
@@ -282,7 +284,7 @@ export function FitnessTestRunner() {
             <Button className="w-full bg-[hsl(var(--status-info))] hover:bg-card" onClick={handleScore}>
               {t('pftScore', { defaultValue: 'Score my test' })}
             </Button>
-            <Button variant="ghost" className="w-full" onClick={() => setStep('profile')}>
+            <Button variant="ghost" className="w-full min-h-[44px] tap-target" onClick={() => setStep('profile')}>
               {t('pftBack', { defaultValue: 'Back' })}
             </Button>
           </>

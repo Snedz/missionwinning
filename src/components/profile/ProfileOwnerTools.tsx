@@ -8,6 +8,7 @@ import { SUPER_BUNDLE_PRICE } from '@/lib/payments';
 import { getJourneyEvents } from '@/lib/journeyAnalytics';
 import { STORAGE_KEY_PREFIXES } from '@/lib/storage/keys';
 import { keysWithPrefix, readRaw } from '@/lib/storage/safeStorage';
+import { toast } from '@/hooks/use-toast';
 
 export function ProfileOwnerTools() {
   const { t } = useTranslation();
@@ -30,7 +31,7 @@ export function ProfileOwnerTools() {
 
   return (
     <>
-      <Card className="content-card border-primary bg-accent-100">
+      <Card className="content-card border-primary bg-muted">
         <CardHeader>
           <CardTitle>
             {t('revenueSnapshot', { defaultValue: 'Super Bundle Snapshot (Demo)' })}
@@ -46,12 +47,16 @@ export function ProfileOwnerTools() {
             <span className="font-mono text-primary">${fmt.num(estRevenue)}</span>
           </div>
           <div className="text-xs text-muted-foreground">
-            {t('avgTicket', { price: SUPER_BUNDLE_PRICE, defaultValue: `Avg bundle ~$${SUPER_BUNDLE_PRICE}/mo` })} — Super
-            Bundle sustains the free core for the global mission. Track real via Supabase later.
+            {t('avgTicket', { price: SUPER_BUNDLE_PRICE, defaultValue: `Avg bundle ~$${SUPER_BUNDLE_PRICE}/mo` })}
+            {' — '}
+            {t('ownerToolsBundleFoot', {
+              defaultValue: 'Demo figures only. Free core stays free.',
+            })}
           </div>
-          <div className="text-[10px] mt-1">
-            Members who join the bundle help make the free path available worldwide. Share wins →
-            /feedback.
+          <div className="text-[10px] mt-1 text-muted-foreground">
+            {t('ownerToolsShareFoot', {
+              defaultValue: 'Share wins and feedback when you ship.',
+            })}
           </div>
         </CardContent>
       </Card>
@@ -63,6 +68,7 @@ export function ProfileOwnerTools() {
         <CardContent>
           <Button
             variant="outline"
+            className="min-h-[44px] tap-target"
             onClick={() => {
               const events = getJourneyEvents();
               const legacy = keysWithPrefix(STORAGE_KEY_PREFIXES.event).map((k) => ({
@@ -71,16 +77,22 @@ export function ProfileOwnerTools() {
               }));
               console.log('Mission Winning Journey Events:', events);
               console.log('Legacy mw_event_* keys:', legacy);
-              alert(
-                `${events.length} journey events (${events.filter((e) => e.name === 'journey_phase_complete').length} phase completes). See console for details.`
-              );
+              toast({
+                title: t('demoAnalyticsToast', { defaultValue: 'Events logged to console' }),
+                description: t('demoAnalyticsToastDesc', {
+                  count: events.length,
+                  phases: events.filter((e) => e.name === 'journey_phase_complete').length,
+                  defaultValue: `${events.length} journey events (${events.filter((e) => e.name === 'journey_phase_complete').length} phase completes).`,
+                }),
+              });
             }}
           >
             {t('viewEvents', { defaultValue: 'View Tracked Events (console)' })}
           </Button>
-          <div className="text-xs mt-2">
-            Tracks journey phases, milestones, bundle CTAs, feedback, and installs. Syncs to
-            Supabase when signed in.
+          <div className="text-xs mt-2 text-muted-foreground">
+            {t('ownerToolsEventsFoot', {
+              defaultValue: 'Journey events, milestones, and installs. Syncs when signed in.',
+            })}
           </div>
         </CardContent>
       </Card>

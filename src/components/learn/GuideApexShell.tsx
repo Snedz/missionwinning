@@ -62,7 +62,7 @@ export function GuideApexShell({
         onNavigate={() => setTocOpen(false)}
       />
       <div className="mt-8 space-y-2 border-t border-border pt-6">
-        <Button asChild variant="default" size="sm" className="w-full">
+        <Button asChild variant="default" size="sm" className="w-full min-h-[44px] tap-target">
           <a
             href={pdfHref}
             download
@@ -92,7 +92,7 @@ export function GuideApexShell({
             </>
           ) : null}
         </p>
-        <Button asChild variant="outline" size="sm" className="w-full">
+        <Button asChild variant="outline" size="sm" className="w-full min-h-[44px] tap-target">
           <Link href={`/guide/print?lang=${lang}`}>
             {t('magazinePrintView', { defaultValue: 'Print view' })}
           </Link>
@@ -120,7 +120,7 @@ export function GuideApexShell({
               type="button"
               variant="outline"
               size="sm"
-              className="lg:hidden"
+              className="min-h-[44px] tap-target lg:hidden"
               onClick={openToc}
               aria-label={t('magazineOpenContents', { defaultValue: 'Open contents' })}
             >
@@ -129,7 +129,7 @@ export function GuideApexShell({
             </Button>
             <Link
               href="/welcome"
-              className="inline-flex min-h-[40px] shrink-0 items-center bg-primary-fill px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-primary-fill-hover"
+              className="inline-flex min-h-[44px] shrink-0 items-center bg-primary-fill px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-primary-fill-hover tap-target"
             >
               {t('magazineStartFree', { defaultValue: 'Start free' })}
             </Link>

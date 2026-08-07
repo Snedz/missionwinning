@@ -57,6 +57,7 @@ import { SignInPrompt } from "@/components/auth/SignInPrompt";
 import { AnatomyHeatMap } from "@/components/history/AnatomyHeatMap";
 import { buildMuscleHeatmap } from "@/lib/historyAnalytics";
 import { bumpTrainingStreak } from "@/lib/streaks";
+import { toast } from "@/hooks/use-toast";
 
 export function BenchmarksPage() {
   const { t } = useTranslation();
@@ -132,34 +133,35 @@ export function BenchmarksPage() {
         <CardDescription>
           {t('benchmarksQuickDesc', {
             defaultValue:
-              'Start a short session focused on common benchmark lifts. Log sets → see progress here next time. Bumps streak on launch.',
+              'Start a short session focused on common benchmark lifts. Log sets see progress here next time. Bumps streak on launch.',
           })}
         </CardDescription>
       </CardHeader>
       <CardContent className="flex flex-wrap gap-2">
-        <Button size="sm" variant="outline" onClick={() => {
+        <Button size="sm" variant="outline" className="min-h-[44px] tap-target" onClick={() => {
           const store = useWorkoutStore.getState();
           store.startWorkout("Bench Benchmark", [{ exerciseId: "bench-press", sets: [{ reps: 5, weight: 0 }, { reps: 5, weight: 0 }, { reps: 3, weight: 0 }] }]);
           bumpTrainingStreak();
           router.push('/active');
-        }}>{t('benchmarksQuickBench', { defaultValue: 'Bench 5/3/1 style →' })}</Button>
-        <Button size="sm" variant="outline" onClick={() => {
+        }}>{t('benchmarksQuickBench', { defaultValue: 'Bench 5/3/1 style' })}</Button>
+        <Button size="sm" variant="outline" className="min-h-[44px] tap-target" onClick={() => {
           const store = useWorkoutStore.getState();
           store.startWorkout("Squat Benchmark", [{ exerciseId: "squats", sets: [{ reps: 5, weight: 0 }, { reps: 5, weight: 0 }, { reps: 3, weight: 0 }] }]);
           bumpTrainingStreak();
           router.push('/active');
-        }}>{t('benchmarksQuickSquat', { defaultValue: 'Squat working sets →' })}</Button>
-        <Button size="sm" variant="outline" onClick={() => {
+        }}>{t('benchmarksQuickSquat', { defaultValue: 'Squat working sets' })}</Button>
+        <Button size="sm" variant="outline" className="min-h-[44px] tap-target" onClick={() => {
           const store = useWorkoutStore.getState();
           store.startWorkout("Deadlift Benchmark", [{ exerciseId: "deadlift", sets: [{ reps: 3, weight: 0 }, { reps: 3, weight: 0 }] }]);
           bumpTrainingStreak();
           router.push('/active');
-        }}>{t('benchmarksQuickDeadlift', { defaultValue: 'Deadlift pulls →' })}</Button>
-        <Button size="sm" variant="outline" onClick={() => router.push('/log')}>{t('benchmarksQuickStarters', { defaultValue: 'All free starters in Today →' })}</Button>
-        <Button size="sm" variant="ghost" onClick={() => {
+        }}>{t('benchmarksQuickDeadlift', { defaultValue: 'Deadlift pulls' })}</Button>
+        <Button size="sm" variant="outline" className="min-h-[44px] tap-target" onClick={() => router.push('/log')}>{t('benchmarksQuickStarters', { defaultValue: 'All free starters in Today' })}</Button>
+        <Button size="sm" variant="ghost" className="min-h-[44px] tap-target" onClick={() => {
           try {
             const cur = bumpTrainingStreak();
-            alert(`Benchmark habit logged! Streak +1 (${cur}). Complete the session to update charts.`);
+            toast({ title: t('benchmarksHabitLogged', { defaultValue: 'Habit logged' }), description: t('benchmarksHabitLoggedDesc', {
+            streak: cur, count: cur, defaultValue: `Streak ${cur}. Finish a session to update charts.` }) });
           } catch { /* noop */ }
         }}>{t('benchmarksQuickHabit', { defaultValue: 'Log benchmark habit (+streak)' })}</Button>
       </CardContent>
@@ -178,8 +180,10 @@ export function BenchmarksPage() {
           title={t('benchmarksEmptyTitle', { defaultValue: 'No benchmark data yet' })}
           description={t('benchmarksEmptyDesc', {
             defaultValue:
-              'Complete workouts with logged sets to build estimated 1RMs. Log a set at 1 rep to record an actual 1RM for comparison.',
+              'Log sets on big lifts to build estimated 1RMs. A true 1-rep set records actual 1RM.',
           })}
+          actionLabel={t('benchmarksEmptyCta', { defaultValue: 'Open Today' })}
+          href="/log"
         />
         {quickStarters}
         <MilitaryReadinessSection />
@@ -484,11 +488,11 @@ export function BenchmarksPage() {
                       return (
                         <TableRow key={s.exerciseId}
                           className={
-                            s.exerciseId === activeId ? "bg-accent-100" : "cursor-pointer"
+                            s.exerciseId === activeId ? "bg-muted" : "cursor-pointer"
                           }
                           onClick={() => setSelectedId(s.exerciseId)}
                         >
-                          <TableCell className="font-medium">
+                          <TableCell className="font-semibold">
                             {ex?.name ?? s.exerciseId}
                           </TableCell>
                           <TableCell>{s.sessionCount}</TableCell>

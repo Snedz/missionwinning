@@ -19,12 +19,12 @@ import { FORM_PACK_SIDE_IDS, FORM_PACK_VIDEO_IDS } from '@/lib/formMedia';
 
 /** Depth plan D1 floors (see .hermes/plans/*super-bundle-depth*). Current = shipped floor. */
 export const CONTENT_FLOORS = {
-  moveFree: 24,
-  movePremium: 40,
-  mindFree: 24,
-  mindPremium: 48,
-  recipesFree: 40,
-  recipesPremium: 102,
+  moveFree: 32,
+  movePremium: 48,
+  mindFree: 32,
+  mindPremium: 60,
+  recipesFree: 48,
+  recipesPremium: 110,
   learnPremiumSections: 16,
   /** Eyes-on form pack side stills (FORM_PACK_SIDE_IDS). */
   formPackSide: 18,

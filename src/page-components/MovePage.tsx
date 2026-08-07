@@ -5,6 +5,7 @@
  */
 
 import { useEffect, useMemo, useState } from 'react';
+import { useSearchParams } from 'next/navigation';
 import { useTranslation } from 'react-i18next';
 import { useLocaleFormat } from '@/hooks/useLocaleFormat';
 import { MOBILITY_FLOWS } from '@/data/mobilityFlows';
@@ -26,6 +27,7 @@ import { getContentInventory } from '@/lib/contentInventory';
 import {
   filterFlowsByCollection,
   MOVE_COLLECTIONS,
+  parseMoveCollectionParam,
   type MoveCollectionId,
 } from '@/lib/move/filterFlows';
 import { cn } from '@/lib/utils';
@@ -34,6 +36,7 @@ export function MovePage() {
   const { t } = useTranslation();
   const fmt = useLocaleFormat();
   const { toast } = useToast();
+  const searchParams = useSearchParams();
   const { premium, loading: premiumLoading } = usePremium();
   const [premiumFlows, setPremiumFlows] = useState<MobilityFlow[]>([]);
   const [activeFlowId, setActiveFlowId] = useState<string | null>(null);
@@ -41,8 +44,18 @@ export function MovePage() {
   const [premiumOpen, setPremiumOpen] = useState(false);
   const [premiumFetchError, setPremiumFetchError] = useState(false);
   const [premiumRetry, setPremiumRetry] = useState(0);
-  const [collectionId, setCollectionId] = useState<MoveCollectionId>('all');
+  const [collectionId, setCollectionId] = useState<MoveCollectionId>(() =>
+    parseMoveCollectionParam(
+      typeof window !== 'undefined'
+        ? new URLSearchParams(window.location.search).get('collection')
+        : null
+    )
+  );
   const inv = getContentInventory();
+
+  useEffect(() => {
+    setCollectionId(parseMoveCollectionParam(searchParams.get('collection')));
+  }, [searchParams]);
 
   useEffect(() => {
     if (!premium) {
@@ -188,9 +201,12 @@ export function MovePage() {
               role="tab"
               aria-selected={selected}
               className={cn(
-                'shrink-0 min-h-[44px] border-2 px-3 text-sm font-medium transition-colors tap-target',
+                'shrink-0 min-h-[44px] border-2 px-3 text-sm font-semibold transition-colors tap-target',
+                // `is-active-tab`, not a red fill: a selection is not an action
+                // (`.240`). `bg-primary` here read as a red action on a screen
+                // whose cap is zero — the same defect `/programs` fixed.
                 selected
-                  ? 'border-primary bg-primary text-primary-foreground'
+                  ? 'is-active-tab border-primary text-foreground'
                   : 'border-border bg-card text-foreground hover:border-primary'
               )}
               onClick={() => setCollectionId(c.id)}
@@ -250,7 +266,7 @@ export function MovePage() {
             className="flex w-full items-center justify-between gap-2 border-2 border-border bg-card px-4 py-3 text-sm min-h-[44px]"
             onClick={() => setPremiumOpen((v) => !v)}
           >
-            <span className="font-medium text-muted-foreground">
+            <span className="font-semibold text-muted-foreground">
               {t('movePremiumPreviewCount', {
                 count: inv.move.premium,
                 defaultValue: `Premium recovery flows (${inv.move.premium})`,

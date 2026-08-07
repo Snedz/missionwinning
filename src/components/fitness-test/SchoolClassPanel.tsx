@@ -159,13 +159,13 @@ export function SchoolClassPanel() {
             </p>
             <Button size="sm" variant="outline" asChild>
               <Link href={`/leaderboard?board=presidential-fitness&scope=class&class=${joined}`}>
-                {t('schoolViewStandings', { defaultValue: 'Class standings →' })}
+                {t('schoolViewStandings', { defaultValue: 'Class standings' })}
               </Link>
             </Button>
             <div className="flex flex-wrap gap-2">
               <Button size="sm" variant="outline" asChild>
                 <Link href={`/school/class/${joined}`}>
-                  {t('schoolTeacherDashboard', { defaultValue: 'Teacher dashboard →' })}
+                  {t('schoolTeacherDashboard', { defaultValue: 'Teacher dashboard' })}
                 </Link>
               </Button>
               <Button size="sm" variant="ghost" onClick={handleLeave}>
@@ -193,7 +193,7 @@ export function SchoolClassPanel() {
             placeholder={t('schoolNamePlaceholder', { defaultValue: 'Mrs. Smith — 5th Grade PE' })}
             className="w-full rounded-none bg-background border border-border px-3 py-2 text-sm"
           />
-          <Button variant="outline" className="w-full" onClick={() => void handleCreate()}>
+          <Button variant="outline" className="w-full min-h-[44px] tap-target" onClick={() => void handleCreate()}>
             {t('schoolCreate', { defaultValue: 'Generate class code' })}
           </Button>
           {createdCode && (
@@ -222,9 +222,9 @@ export function SchoolClassPanel() {
                 </Button>
               </div>
             </div>
-            <Button size="sm" variant="outline" className="w-full" asChild>
+            <Button size="sm" variant="outline" className="w-full min-h-[44px] tap-target" asChild>
               <Link href={teacherDashboardUrl(createdCode, createdPin ?? getTeacherPin(createdCode) ?? '')}>
-                {t('schoolTeacherDashboard', { defaultValue: 'Teacher dashboard →' })}
+                {t('schoolTeacherDashboard', { defaultValue: 'Teacher dashboard' })}
               </Link>
             </Button>
             {createdPin && (

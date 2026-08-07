@@ -89,7 +89,7 @@ export function AdjustSessionSheet({ open, onClose, onAdjust }: Props) {
                   key={minutes}
                   type="button"
                   variant="outline"
-                  className="min-h-[44px] border-2"
+                  className="min-h-[44px] border-2 tap-target"
                   onClick={() => apply({ type: 'time', minutes })}
                 >
                   {t('coachAdjustMinutes', { minutes, defaultValue: `${minutes} min` })}
@@ -103,7 +103,7 @@ export function AdjustSessionSheet({ open, onClose, onAdjust }: Props) {
             <Button
               type="button"
               variant="outline"
-              className="min-h-[44px] border-2"
+              className="min-h-[44px] border-2 tap-target"
               onClick={() => apply({ type: 'equipment', equipment: 'bodyweight' })}
             >
               {t('coachAdjustBodyweight', { defaultValue: 'No equipment today' })}
@@ -115,7 +115,7 @@ export function AdjustSessionSheet({ open, onClose, onAdjust }: Props) {
             <Button
               type="button"
               variant="outline"
-              className="min-h-[44px] border-2"
+              className="min-h-[44px] border-2 tap-target"
               onClick={() => setHurtMode(true)}
             >
               {t('coachAdjustPickArea', { defaultValue: 'Pick the area' })}

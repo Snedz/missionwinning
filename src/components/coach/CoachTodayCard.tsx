@@ -129,7 +129,12 @@ export function CoachTodayCard() {
                 defaultValue: 'Generate a weekly plan from your logs — no wearable required.',
               })}
             </p>
-            <Button variant="outline" size="sm" onClick={() => generate()}>
+            <Button
+              variant="outline"
+              size="sm"
+              className="min-h-[44px] tap-target"
+              onClick={() => generate()}
+            >
               {t('coachGenerateWeek', { defaultValue: 'Generate this week' })}
             </Button>
           </>
@@ -145,7 +150,7 @@ export function CoachTodayCard() {
                   'Premium eases later sessions when load runs high so you recover without quitting the week.',
               })}
             </p>
-            <Button asChild variant="outline" size="sm" className="w-full">
+            <Button asChild variant="outline" size="sm" className="w-full min-h-[44px] tap-target">
               <Link href="/bundle">{t('coachUnlockBundle', { defaultValue: 'Unlock Super Bundle' })}</Link>
             </Button>
           </>
@@ -158,7 +163,12 @@ export function CoachTodayCard() {
                   'Open beta keeps Coach open. Generate the next week from your latest logs.',
               })}
             </p>
-            <Button variant="outline" size="sm" onClick={() => generate()}>
+            <Button
+              variant="outline"
+              size="sm"
+              className="min-h-[44px] tap-target"
+              onClick={() => generate()}
+            >
               {t('coachGenerateWeek', { defaultValue: 'Generate this week' })}
             </Button>
           </>
@@ -216,7 +226,7 @@ export function CoachTodayCard() {
             {bandLine && <p className="text-[11px] text-muted-foreground">{bandLine}</p>}
             {todaySession.status !== 'done' && (
               <>
-                <Button variant="outline" size="sm" className="w-full" onClick={startToday}>
+                <Button variant="outline" size="sm" className="w-full min-h-[44px] tap-target" onClick={startToday}>
                   {t('coachStartSession', { defaultValue: 'Start this session' })}
                 </Button>
                 <Link
@@ -237,8 +247,7 @@ export function CoachTodayCard() {
         <Link href="/coach" className="text-xs text-primary hover:underline block text-center min-h-[44px] leading-[44px]">
           {locked && !freeBeta
             ? t('coachViewLockedPlan', { defaultValue: 'View last week' })
-            : t('coachViewPlan', { defaultValue: 'View full week' })}{' '}
-          →
+            : t('coachViewPlan', { defaultValue: 'View full week' })}
         </Link>
       </CardContent>
     </Card>

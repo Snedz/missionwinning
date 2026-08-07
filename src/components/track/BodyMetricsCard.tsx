@@ -87,7 +87,13 @@ export function BodyMetricsCard({ refreshKey = 0, onChanged }: Props) {
             })}
           </CardDescription>
         </div>
-        <Button type="button" size="sm" variant="outline" onClick={() => setOpen(true)}>
+        <Button
+          type="button"
+          size="sm"
+          variant="outline"
+          className="min-h-[44px] tap-target"
+          onClick={() => setOpen(true)}
+        >
           {t('bodyMetricsLog', { defaultValue: 'Log' })}
         </Button>
       </CardHeader>
@@ -121,7 +127,7 @@ export function BodyMetricsCard({ refreshKey = 0, onChanged }: Props) {
               onClick={() => setMetric(key)}
               className={`px-2.5 py-1 text-[11px] border ${
                 metric === key
-                  ? 'border-primary bg-accent-100 text-primary'
+                  ? 'border-primary bg-muted text-primary'
                   : 'border-border text-muted-foreground'
               }`}
             >

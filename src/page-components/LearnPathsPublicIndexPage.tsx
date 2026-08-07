@@ -26,7 +26,7 @@ export function LearnPathsPublicIndexPage() {
             <p className="font-semibold">{path.title}</p>
             <p className="text-sm text-muted-foreground mt-1">{path.subtitle}</p>
             <p className="text-xs text-primary mt-2">
-              {path.lessons.length} lessons · free teaser →
+              {path.lessons.length} lessons · free teaser
             </p>
           </Link>
         ))}

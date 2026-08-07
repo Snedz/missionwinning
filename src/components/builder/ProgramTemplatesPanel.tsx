@@ -215,7 +215,7 @@ export function ProgramTemplatesPanel({
 
   if (PROGRAM_TEMPLATES.length === 0) {
     return (
-      <div className="border-2 border-primary bg-accent-100 p-6 text-center text-sm">
+      <div className="border-2 border-primary bg-muted p-6 text-center text-sm">
         {t('builderTemplateLoadFail', {
           defaultValue: 'Template data failed to load. Restart the dev server.',
         })}
@@ -227,7 +227,7 @@ export function ProgramTemplatesPanel({
     <div className="space-y-4">
       {proLoadError && category === 'pro' && premium ? (
         <div role="alert"
-          className="border-2 border-primary bg-accent-100 p-4 text-sm space-y-2"
+          className="border-2 border-primary bg-muted p-4 text-sm space-y-2"
         >
           <p>
             {typeof navigator !== 'undefined' && !navigator.onLine

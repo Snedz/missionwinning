@@ -189,7 +189,8 @@ export function AssessmentsPage() {
   // No paywall on the mission fundamentals.
 
   return (
-    <PillarPageShell icon={ClipboardList} title={t('assessTitle', { defaultValue: 'Readiness Assessment' })} subtitle={t('assessSubtitle', {
+    <PillarPageShell icon={ClipboardList}
+      eyebrow={t('toolkitEyebrow', { defaultValue: 'Toolkit' })} title={t('assessTitle', { defaultValue: 'Readiness Assessment' })} subtitle={t('assessSubtitle', {
         defaultValue:
           'Free core tool. Based on standard health history and ParQ-style questions. Answer honestly for personalized guidance.',
       })}
@@ -203,7 +204,7 @@ export function AssessmentsPage() {
           <CardContent className="space-y-4">
             {questions.map((item) => (
               <div key={item.key} className="space-y-1">
-                <div className="text-sm font-medium">
+                <div className="text-sm font-semibold">
                   {t(`assessQ_${item.key}`, { defaultValue: item.key })}
                 </div>
                 <div className="flex gap-2 flex-wrap">
@@ -257,7 +258,7 @@ export function AssessmentsPage() {
             ))}
           </div>
           <div className="rounded-none border border-border bg-card p-3">
-            <div className="font-medium text-primary">
+            <div className="font-semibold text-primary">
               {t('assessCoachFocus', { defaultValue: 'Coach Focus:' })}{' '}
               {t(stages[selectedStage].focusKey, { defaultValue: '' })}
             </div>
@@ -287,7 +288,7 @@ export function AssessmentsPage() {
           className={cn(
             'content-card border-2',
             result.riskLevel === 'high'
-              ? 'border-primary bg-accent-100'
+              ? 'border-primary bg-muted'
               : result.riskLevel === 'moderate'
                 ? 'border-primary'
                 : 'border-border'
@@ -295,7 +296,7 @@ export function AssessmentsPage() {
         >
           <CardHeader>
             <CardTitle>
-              {t('assessResultTitle', { defaultValue: 'Assessment Result' })}:{' '}
+              {t('assessResultTitle', { defaultValue: 'Assessment result' })}:{' '}
               <span className="uppercase">
                 {result.riskLevel === 'low'
                   ? t('riskLow', { defaultValue: 'Low risk' })
@@ -310,15 +311,20 @@ export function AssessmentsPage() {
             <div>
               <div className="font-semibold mb-2">
                 {t('assessRecommendations', {
-                  defaultValue:
-                    'Recommendations (click to start a matching free starter + log win):',
+                  defaultValue: 'Recommendations — tap to start a free starter:',
                 })}
               </div>
               <div className="flex flex-wrap gap-2">
                 {result.recommendations.map((r, i) => (
-                  <Button key={i} size="sm" variant="outline" onClick={() => startRecommended(r)}>
+                  <Button
+                    key={i}
+                    size="sm"
+                    variant="outline"
+                    className="min-h-[44px] tap-target"
+                    onClick={() => startRecommended(r)}
+                  >
                     {t('assessStartPrefix', { defaultValue: 'Start' })}:{' '}
-                    {r.length > 45 ? `${r.slice(0, 42)}...` : r} →
+                    {r.length > 45 ? `${r.slice(0, 42)}...` : r}
                   </Button>
                 ))}
               </div>

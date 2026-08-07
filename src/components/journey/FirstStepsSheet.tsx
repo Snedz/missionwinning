@@ -62,6 +62,7 @@ export function FirstStepsSheet({ open, onClose, steps, progress }: Props) {
           max={progress.total}
           segments={progress.total}
           size="sm"
+          className="min-h-[44px] tap-target"
           readout={`${progress.done} / ${progress.total}`}
         />
 

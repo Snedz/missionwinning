@@ -123,7 +123,7 @@ export function MealEstimateDraft({
     <div
       className={cn(
         ' border p-4 space-y-3',
-        low || needsAthleteEdit ? 'border-primary bg-accent-100' : 'border-border bg-card',
+        low || needsAthleteEdit ? 'border-primary bg-muted' : 'border-border bg-card',
         className
       )}
     >

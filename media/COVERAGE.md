@@ -1,17 +1,17 @@
 # Media coverage report
 
-Generated: 2026-08-04
+Generated: 2026-08-06
 
 ## Summary
 
 | Metric | Count |
 |--------|------:|
-| Exercises (catalog) | 220 |
-| Structured text guides | 83 |
+| Exercises (catalog) | 229 |
+| Structured text guides | 94 |
 | Form SVGs on disk | 59 |
 | · of which pattern packs | 7 |
 | FORM_MEDIA_IDS wired | 52 |
-| Guides without SVG | 31 |
+| Guides without SVG | 42 |
 | Orphan SVGs (not media, not pattern) | 0 |
 | FORM_MEDIA missing file | 0 |
 | Guidebook chapter heroes | 6 |
@@ -34,6 +34,17 @@ Generated: 2026-08-04
 - `incline-bench`
 - `jumping-jack`
 - `kettlebell-swing-2h`
+- `landmine-antirotation-press`
+- `landmine-hack-squat`
+- `landmine-meadows-row`
+- `landmine-press`
+- `landmine-rdl`
+- `landmine-reverse-lunge`
+- `landmine-rotation`
+- `landmine-row`
+- `landmine-single-arm-press`
+- `landmine-squat`
+- `landmine-thruster`
 - `leg-curl`
 - `leg-extension`
 - `lunge-with-reach`
@@ -90,9 +101,9 @@ Section figures:
 
 ## Next craft tiers
 
-1. **Pattern-backed is intentional** — structured guides without a bespoke SVG use `pattern-*.svg` + honest caption (not a defect).
-2. **Optional T1** — bespoke SVGs for high-frequency long-tail (list above) when pattern art feels thin mid-set.
-3. **Hero motion** — already on 16 lifts via `npm run media:form-motion`.
+1. **T1** — SVGs for guides without media (list above).
+2. **T2** — next coach/library frequency lifts.
+3. **T3** — pattern packs for long-tail cues-only exercises.
 4. **Learn** — unique section diagrams beyond form-guide reuse.
 
 _Playbook: [docs/MEDIA_SYSTEM.md](../docs/MEDIA_SYSTEM.md)_

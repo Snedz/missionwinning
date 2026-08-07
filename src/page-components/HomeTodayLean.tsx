@@ -333,6 +333,7 @@ export function HomeTodayLean() {
       hasTrainHistory: true,
       lastFocusGroups: [...focus],
       trainedToday,
+      localHour: new Date().getHours(),
     });
     if (continuity.length > 0) {
       blocks.push({
@@ -360,7 +361,7 @@ export function HomeTodayLean() {
       priority: P['coach-invite'],
       node: (
         /* Recut to the shipped system: 2px rules, no hairline at 40%, and
-           `font-semibold` — Archivo loads 400/600/800, so `font-medium` was
+           `font-semibold` — Archivo loads 400/600/800, so `font-semibold` was
            synthesising a weight the face does not have. */
         <a
           href="/coach"

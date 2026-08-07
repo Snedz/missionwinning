@@ -110,8 +110,8 @@ export function CoachingPage() {
             })}
             aria-label={t('infoCoachingGoalsLabel', { defaultValue: 'Your goals and current training' })}
           />
-          {error && <p className="text-sm font-medium text-primary">{error}</p>}
-          <Button type="submit" size="lg" variant="default" className="w-full" disabled={loading}>
+          {error && <p className="text-sm font-semibold text-primary">{error}</p>}
+          <Button type="submit" size="lg" variant="default" className="w-full min-h-[52px] tap-target" disabled={loading}>
             {loading
               ? t('infoCoachingSending', { defaultValue: 'Sending…' })
               : t('infoCoachingSubmit', { defaultValue: 'Join the coaching interest list' })}

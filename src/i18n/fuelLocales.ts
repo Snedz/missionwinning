@@ -196,6 +196,8 @@ type FuelStrings = {
   fuelHideMore: string;
   fuelShowMore: string;
   /** Kaizen Fuel empty CTA + recipe-panel honesty (`.557`). */
+  fuelSubtitleDepthBeta: string;
+  fuelSubtitleDepthPaid: string;
   fuelEmptyCta: string;
   fuelRecipesEmptyTitle: string;
   fuelRecipesEmptyDesc: string;
@@ -410,10 +412,13 @@ const en: FuelStrings = {
   fuelGoalAppliedDesc: '{{cals}} kcal · {{protein}}g protein',
   fuelHideMore: 'Hide search & recipes',
   fuelShowMore: 'Search, barcode & recipes',
+  fuelSubtitleDepthBeta:
+    '{{free}} free recipes · {{unlocked}} unlocked in open beta — log offline on this device.',
+  fuelSubtitleDepthPaid:
+    '{{free}} free recipes · Super Bundle adds {{premium}} more. Log offline on this device.',
   fuelEmptyCta: 'Log food',
   fuelRecipesEmptyTitle: 'No recipes loaded',
-  fuelRecipesEmptyDesc:
-    'You can still log meals manually above — recipes will return on refresh.',
+  fuelRecipesEmptyDesc: 'Log meals manually above — recipes return on refresh.',
   fuelPremiumRetry: 'Try again',
   fuelPremiumRecipesEmpty:
     'No premium recipes in this response — free list above still works.',

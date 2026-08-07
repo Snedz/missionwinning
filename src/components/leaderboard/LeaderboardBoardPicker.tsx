@@ -39,7 +39,7 @@ export function LeaderboardBoardPicker({ boardId, onBoardChange }: Props) {
             className={cn(
               'border-2 p-3 text-left transition-colors min-h-[72px]',
               active && b.theme === 'night' && 'border-border bg-card',
-              active && b.theme === 'dawn' && 'border-border bg-accent-100',
+              active && b.theme === 'dawn' && 'border-border bg-muted',
               active && !themed && 'border-primary bg-tint',
               !active && 'border-border bg-card hover:border-foreground'
             )}

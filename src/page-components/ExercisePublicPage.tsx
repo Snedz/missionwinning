@@ -138,7 +138,7 @@ export function ExercisePublicPage({ exercise: raw, jsonLd }: Props) {
             className="primary-action w-full shrink-0 justify-center sm:w-auto sm:min-w-[12rem] sm:justify-start sm:px-8"
             data-testid="seo-exercise-train"
           >
-            Log this free →
+            Log this free
           </Link>
         </div>
 
@@ -227,7 +227,7 @@ export function ExercisePublicPage({ exercise: raw, jsonLd }: Props) {
 
         {safety ? (
           <section className="border-2 border-border bg-card px-4 py-3 text-sm text-muted-foreground">
-            <span className="font-medium text-foreground">Safety: </span>
+            <span className="font-semibold text-foreground">Safety: </span>
             {safety}
           </section>
         ) : null}
@@ -298,7 +298,7 @@ export function ExercisePublicPage({ exercise: raw, jsonLd }: Props) {
               {guides.map((g) => (
                 <li key={g.id}>
                   <Link href={`/guide/${g.id}`} className="text-primary hover:underline">
-                    {g.title} →
+                    {g.title}
                   </Link>
                 </li>
               ))}

@@ -262,7 +262,7 @@ export function LeaderboardPage() {
  className={cn(
  'inline-flex items-center gap-1.5 border-2 px-3 py-1.5 transition-colors',
  boardId === 'dawns-early-light'
- ? 'border-border bg-accent-100 text-accent-900'
+ ? 'border-border bg-muted text-accent-900'
  : 'border-border text-muted-foreground hover:border-foreground'
  )}
  >
@@ -279,7 +279,7 @@ export function LeaderboardPage() {
  boardTheme === 'night'
  ? 'border-2 border-border bg-card p-4 md:p-5'
  : boardTheme === 'dawn'
- ? 'border-2 border-border bg-accent-100 p-4 md:p-5'
+ ? 'border-2 border-border bg-muted p-4 md:p-5'
  : 'border-2 border-border bg-card p-4 md:p-5'
  }
  >
@@ -309,7 +309,7 @@ export function LeaderboardPage() {
  {ranked.yourRank != null && (
  <>
  {' · '}
- <span className="text-primary font-medium">
+ <span className="text-primary font-semibold">
  {t('leaderboardYourRank', { defaultValue: 'Your rank' })} #{ranked.yourRank}
  </span>
  </>
@@ -339,6 +339,7 @@ export function LeaderboardPage() {
  {t('leaderboardSquadCode', { defaultValue: 'Squad code (for Squad tab)' })}
  </span>
  <input
+ id="leaderboard-squad"
  value={squadCode}
  onChange={(e) => setSquadCode(e.target.value.toUpperCase())}
  onBlur={() => {
@@ -371,8 +372,10 @@ export function LeaderboardPage() {
  title={t('leaderboardSquadEmptyTitle', { defaultValue: 'Add a squad code' })}
  description={t('leaderboardSquadHint', {
  defaultValue:
- 'Set a squad code above to compare with others using the same code. Try ALPHA or BRAVO to see demo squad members.',
+ 'Enter a code above (try ALPHA or BRAVO for demos).',
  })}
+ actionLabel={t('leaderboardSquadEmptyCta', { defaultValue: 'Focus squad code' })}
+ onAction={() => document.getElementById('leaderboard-squad')?.focus()}
  />
  )}
 

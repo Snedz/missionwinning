@@ -145,7 +145,7 @@ export function LibraryDetailSheet({
         bodyClassName="p-5"
         footer={
           exercise ? (
-            <Button variant="default" className="w-full min-h-[52px]" onClick={addToSession}>
+            <Button variant="default" className="w-full min-h-[52px] tap-target" onClick={addToSession}>
               <Plus className="h-4 w-4 mr-2" />
               {activeWorkout
                 ? t('libraryAddToActive', { defaultValue: 'Add to session' })
@@ -162,7 +162,7 @@ export function LibraryDetailSheet({
                       type="button"
                       variant="outline"
                       size="sm"
-                      className="min-h-[44px] min-w-[44px] border-2 px-2"
+                      className="min-h-[44px] min-w-[44px] border-2 px-2 tap-target"
                       disabled={!neighborNav.prevId}
                       aria-label={t('libraryPrevExercise', { defaultValue: 'Previous exercise' })}
                       onClick={() => neighborNav.prevId && onSelectExercise(neighborNav.prevId)}
@@ -176,7 +176,7 @@ export function LibraryDetailSheet({
                       type="button"
                       variant="outline"
                       size="sm"
-                      className="min-h-[44px] min-w-[44px] border-2 px-2"
+                      className="min-h-[44px] min-w-[44px] border-2 px-2 tap-target"
                       disabled={!neighborNav.nextId}
                       aria-label={t('libraryNextExercise', { defaultValue: 'Next exercise' })}
                       onClick={() => neighborNav.nextId && onSelectExercise(neighborNav.nextId)}

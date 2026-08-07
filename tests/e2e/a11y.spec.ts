@@ -14,6 +14,7 @@ const GATED_ROUTES = [
   '/',
   '/welcome',
   '/log',
+  '/leaderboard',
   '/coach',
   '/bundle',
   '/active',
@@ -22,10 +23,13 @@ const GATED_ROUTES = [
   // this list covered four of them, so the tranche the Modernist rebrand recut
   // screen-by-screen had no axe coverage at all — the same shape of gap as the
   // SEO tail below, where one exercise page used to stand for ~250 URLs.
-  // Full-launch (2026-08-05): leaderboard is a SECONDARY surface (on by default).
-  // America/wearables/school remain parked. Coverage asserted in surfaceReality.test.ts.
+  // Only /leaderboard is parked (`PARKED_BY_DEFAULT`), so only it 404s. This comment
+  // used to name /benchmarks too — but that is a SECONDARY pillar, on unless
+  // `NEXT_PUBLIC_SURFACES=wedge`, so it serves 200 and is a nav screen
+  // (`navConfig.ts:110`). It sat excluded from axe on a stated-but-false premise,
+  // inside the very list `.157` widened to close this kind of gap. The claim is now
+  // asserted in `src/lib/surfaceReality.test.ts` instead of trusted in prose.
   '/benchmarks',
-  '/leaderboard',
   '/history',
   '/move',
   '/mind',
@@ -35,7 +39,6 @@ const GATED_ROUTES = [
   '/library',
   '/builder',
   '/profile',
-  '/experience?tier=static',
   '/exercises/push-ups',
   // The SEO tail is most of the site's URLs and one exercise page used to represent all
   // of it. One route per template, plus the two info pages every footer links to.
@@ -46,10 +49,10 @@ const GATED_ROUTES = [
   '/paths',
   '/about',
   '/privacy',
-  '/terms',
-  '/usage',
-  '/regions',
-  '/service-terms',
+  // The two legal pages P4 added: the cookie inventory (a table) and the
+  // accessibility statement itself — the one page that must never fail axe.
+  '/cookies',
+  '/accessibility',
   // Three more enabled surfaces that had no axe coverage at all. `.157` widened this
   // list from four signed-in screens to thirteen, but it was never cross-checked
   // against the surface registry — so four of the eight surfaces that are ON by
@@ -1181,8 +1184,6 @@ test.describe('Accessibility @a11y', () => {
     await expect(page.getByRole('button', { name: /^work$/i }).first()).toBeVisible({
       timeout: 15_000,
     });
-    // Outdoor console collapses kinds to Work + Kind expand (.482)
-    await page.getByTestId('log-console-expand-kinds').click();
     await expect(page.getByRole('button', { name: /^warmup$/i }).first()).toBeVisible();
     await axeSerious(page, '/active (log console set kinds)');
   });

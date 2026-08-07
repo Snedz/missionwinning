@@ -164,7 +164,7 @@ export function WelcomePage() {
         <span className="text-base font-semibold tracking-tight sm:text-lg">
           Mission Winning
         </span>
-        <span className="ms-auto text-xs font-medium text-muted-foreground">
+        <span className="ms-auto text-xs font-semibold text-muted-foreground">
           {isEdit
             ? t('editJourneyProfile', { defaultValue: 'Edit profile' })
             : t('welcomeIDay', { defaultValue: 'Get started' })}
@@ -188,7 +188,7 @@ export function WelcomePage() {
                 style={{ width: `${((stepIndex + 1) / STEP_ORDER.length) * 100}%` }}
               />
             </div>
-            <p className="text-xs font-medium text-muted-foreground tabular-nums shrink-0">
+            <p className="text-xs font-semibold text-muted-foreground tabular-nums shrink-0">
               {t('welcomeProgressMono', {
                 step: stepIndex + 1,
                 total: STEP_ORDER.length,
@@ -207,7 +207,7 @@ export function WelcomePage() {
             {step === 'welcome' && (
               <>
                 <div className="space-y-4">
-                  <p className="text-xs font-medium tracking-wide text-primary">
+                  <p className="text-xs font-semibold tracking-wide text-primary">
                     {t('welcomeKicker', { defaultValue: 'About two minutes' })}
                   </p>
                   <h1 className="text-[1.85rem] md:text-[2.35rem] font-semibold tracking-tight leading-[1.15]">
@@ -222,10 +222,10 @@ export function WelcomePage() {
                 </div>
 
                 <div className="card-boss px-4 py-3.5 space-y-1.5">
-                  <p className="text-xs font-medium text-muted-foreground">
+                  <p className="text-xs font-semibold text-muted-foreground">
                     {t('welcomePreviewLabel', { defaultValue: 'Your first session is ready' })}
                   </p>
-                  <p className="text-sm font-medium text-foreground">
+                  <p className="text-sm font-semibold text-foreground">
                     {t('welcomePreviewSessionName', {
                       defaultValue: firstSession.name,
                       name: firstSession.name,
@@ -236,7 +236,7 @@ export function WelcomePage() {
                   </p>
                 </div>
 
-                <button type="button" className="primary-action" onClick={handleBegin}>
+                <button type="button" className="primary-action min-h-[52px] w-full" onClick={handleBegin}>
                   {t('welcomeBegin', { defaultValue: 'Continue' })}
                 </button>
               </>
@@ -245,7 +245,7 @@ export function WelcomePage() {
             {step === 'profile' && (
               <>
                 <div>
-                  <p className="mb-2 text-xs font-medium tracking-wide text-muted-foreground">
+                  <p className="mb-2 text-xs font-semibold tracking-wide text-muted-foreground">
                     {isEdit
                       ? t('editJourneyProfile', { defaultValue: 'Edit profile' })
                       : t('welcomeProfileEyebrow', { defaultValue: 'About you' })}
@@ -324,7 +324,7 @@ export function WelcomePage() {
                     })}
                   />
                 </label>
-                <button type="button" className="primary-action" onClick={handleProfileNext}>
+                <button type="button" className="primary-action min-h-[52px] w-full" onClick={handleProfileNext}>
                   {isEdit
                     ? t('saveProfile', { defaultValue: 'Save profile' })
                     : t('welcomeContinue', { defaultValue: 'Continue' })}
@@ -332,7 +332,7 @@ export function WelcomePage() {
                 <Button
                   variant="ghost"
                   size="sm"
-                  className="w-full"
+                  className="w-full min-h-[44px] tap-target"
                   onClick={() => (isEdit ? router.push('/profile') : setStep('welcome'))}
                 >
                   <ChevronLeft className="h-4 w-4 mr-1" />{' '}
@@ -344,7 +344,7 @@ export function WelcomePage() {
             {step === 'signin' && (
               <>
                 <div>
-                  <p className="mb-2 text-xs font-medium tracking-wide text-muted-foreground">
+                  <p className="mb-2 text-xs font-semibold tracking-wide text-muted-foreground">
                     {t('welcomeSignInEyebrow', { defaultValue: 'Optional' })}
                   </p>
                   <h2 className="text-[1.5rem] md:text-[1.75rem] font-semibold tracking-tight mb-1 leading-tight">
@@ -358,10 +358,10 @@ export function WelcomePage() {
                   </p>
                 </div>
                 <div className="card-boss px-4 py-3.5 space-y-1.5">
-                  <p className="text-xs font-medium text-muted-foreground">
+                  <p className="text-xs font-semibold text-muted-foreground">
                     {t('welcomeSessionReadyEyebrow', { defaultValue: 'Up next' })}
                   </p>
-                  <p className="text-sm font-medium">
+                  <p className="text-sm font-semibold">
                     {t('welcomeSessionReadyTitle', {
                       defaultValue: 'Your first session is ready',
                     })}
@@ -412,7 +412,7 @@ export function WelcomePage() {
                 >
                   {t('welcomeSkipSignIn', { defaultValue: 'Skip — start training' })}
                 </button>
-                <Button variant="ghost" size="sm" className="w-full" onClick={() => setStep('profile')}>
+                <Button variant="ghost" size="sm" className="w-full min-h-[44px] tap-target" onClick={() => setStep('profile')}>
                   <ChevronLeft className="h-4 w-4 mr-1" />{' '}
                   {t('welcomeBack', { defaultValue: 'Back' })}
                 </Button>

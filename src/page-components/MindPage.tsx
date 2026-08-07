@@ -5,6 +5,7 @@
  */
 
 import { useEffect, useMemo, useState } from 'react';
+import { useSearchParams } from 'next/navigation';
 import { useTranslation } from 'react-i18next';
 import { useLocaleFormat } from '@/hooks/useLocaleFormat';
 import { BreathingTimer } from '@/components/pillars/BreathingTimer';
@@ -28,14 +29,17 @@ import { getContentInventory } from '@/lib/contentInventory';
 import {
   filterMindByCollection,
   MIND_COLLECTIONS,
+  parseMindCollectionParam,
   type MindCollectionId,
 } from '@/lib/mind/filterSessions';
+import { mindSeriesByCollectionId, orderSessionsForSeries } from '@/lib/mind/mindSeries';
 import { cn } from '@/lib/utils';
 
 export function MindPage() {
   const { t } = useTranslation();
   const fmt = useLocaleFormat();
   const { toast } = useToast();
+  const searchParams = useSearchParams();
   const { premium } = usePremium();
   const [premiumSessions, setPremiumSessions] = useState<GuidedMindSession[]>([]);
   const [recentWins, setRecentWins] = useState<PillarWin[]>([]);
@@ -43,8 +47,18 @@ export function MindPage() {
   const [premiumOpen, setPremiumOpen] = useState(false);
   const [premiumFetchError, setPremiumFetchError] = useState(false);
   const [premiumRetry, setPremiumRetry] = useState(0);
-  const [collectionId, setCollectionId] = useState<MindCollectionId>('all');
+  const [collectionId, setCollectionId] = useState<MindCollectionId>(() =>
+    parseMindCollectionParam(
+      typeof window !== 'undefined'
+        ? new URLSearchParams(window.location.search).get('collection')
+        : null
+    )
+  );
   const inv = getContentInventory();
+
+  useEffect(() => {
+    setCollectionId(parseMindCollectionParam(searchParams.get('collection')));
+  }, [searchParams]);
 
   useEffect(() => {
     setRecentWins(getPillarWins(5).filter((w) => w.pillar === 'mind'));
@@ -76,10 +90,12 @@ export function MindPage() {
     () => filterMindByCollection(GUIDED_MIND_SESSIONS, collectionId),
     [collectionId]
   );
-  const filteredPremium = useMemo(
-    () => filterMindByCollection(premiumSessions, collectionId),
-    [premiumSessions, collectionId]
-  );
+  const filteredPremium = useMemo(() => {
+    const filtered = filterMindByCollection(premiumSessions, collectionId);
+    const series = mindSeriesByCollectionId(collectionId);
+    return series ? orderSessionsForSeries(filtered, series) : filtered;
+  }, [premiumSessions, collectionId]);
+  const activeSeries = mindSeriesByCollectionId(collectionId);
 
   return (
     <PillarPageShell
@@ -119,9 +135,12 @@ export function MindPage() {
               role="tab"
               aria-selected={selected}
               className={cn(
-                'shrink-0 min-h-[44px] border-2 px-3 text-sm font-medium transition-colors tap-target',
+                'shrink-0 min-h-[44px] border-2 px-3 text-sm font-semibold transition-colors tap-target',
+                // `is-active-tab`, not a red fill: a selection is not an action
+                // (`.240`). `bg-primary` here read as a second red action on a
+                // screen whose cap is one — the same defect `/programs` fixed.
                 selected
-                  ? 'border-primary bg-primary text-primary-foreground'
+                  ? 'is-active-tab border-primary text-foreground'
                   : 'border-border bg-card text-foreground hover:border-primary'
               )}
               onClick={() => setCollectionId(c.id)}
@@ -132,8 +151,25 @@ export function MindPage() {
         })}
       </div>
 
+      {activeSeries ? (
+        <div
+          className="border-2 border-border bg-card p-4 space-y-1"
+          data-testid="mind-series-banner"
+        >
+          <p className="text-sm font-semibold text-foreground">
+            {t(activeSeries.titleKey, { defaultValue: activeSeries.titleDefault })}
+          </p>
+          <p className="text-xs text-muted-foreground">
+            {t('mindSeriesSleepWeekBlurb', {
+              count: activeSeries.sessionIds.length,
+              defaultValue: `A ${activeSeries.sessionIds.length}-night sequence — do nights in order when you can. Premium sessions only.`,
+            })}
+          </p>
+        </div>
+      ) : null}
+
       <div id="mind-guided" className="space-y-3 scroll-mt-20">
-        <h3 className="text-sm font-medium text-muted-foreground">
+        <h3 className="text-sm font-semibold text-muted-foreground">
           {t('mindGuidedFreeCount', {
             count: freeSessions.length,
             defaultValue: `Guided sessions (${freeSessions.length})`,
@@ -203,7 +239,7 @@ export function MindPage() {
             className="flex w-full items-center justify-between gap-2 border-2 border-border bg-card px-4 py-3 text-sm min-h-[44px]"
             onClick={() => setPremiumOpen((v) => !v)}
           >
-            <span className="font-medium text-muted-foreground">
+            <span className="font-semibold text-muted-foreground">
               {t('mindPremiumPreviewCount', {
                 count: inv.mind.premium,
                 defaultValue: `Premium guided sessions (${inv.mind.premium})`,

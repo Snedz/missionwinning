@@ -5,6 +5,7 @@
  */
 
 import { useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useRouter } from 'next/navigation';
 import { joinClass } from '@/lib/schoolClass';
 import { track } from '@/lib/analytics';
@@ -15,6 +16,7 @@ type Props = {
 };
 
 export function JoinClassPage({ code }: Props) {
+  const { t } = useTranslation();
   const router = useRouter();
 
   useEffect(() => {
@@ -27,7 +29,7 @@ export function JoinClassPage({ code }: Props) {
 
   return (
     <div className="min-h-[40vh] flex items-center justify-center text-muted-foreground">
-      Joining class…
+      {t('joinClassLoading', { defaultValue: 'Joining class…' })}
     </div>
   );
 }

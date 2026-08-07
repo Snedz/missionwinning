@@ -238,7 +238,7 @@
   "fuelQuickLogTitle": "Registro rápido (alimentos comuns)",
   "fuelRecents": "Recente",
   "fuelRecentsHint": "Toque para registrar · lápis para ajustar as porções primeiro",
-  "fuelRecipesEmptyDesc": "Pode continuar a registar refeições manualmente acima — as receitas voltam ao atualizar.",
+  "fuelRecipesEmptyDesc": "Registe refeições manualmente acima — as receitas voltam ao atualizar.",
   "fuelRecipesEmptyTitle": "Nenhuma receita carregada",
   "fuelRepeatYesterday": "Repita ontem ({{count}} itens)",
   "fuelSavedMeals": "Refeições salvas",

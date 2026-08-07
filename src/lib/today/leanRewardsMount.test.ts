@@ -38,4 +38,5 @@ test('HomeTodayLean mounts ContinuityStrip after first train', () => {
   assert.match(src, /ContinuityStrip/);
   assert.match(src, /buildContinuitySuggestions/);
   assert.match(src, /key: 'continuity'/);
+  assert.match(src, /localHour:\s*new Date\(\)\.getHours\(\)/);
 });

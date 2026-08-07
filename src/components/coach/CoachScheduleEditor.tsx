@@ -77,7 +77,7 @@ export function CoachScheduleEditor({ onChange }: Props) {
               type="button"
               size="sm"
               variant={daysPerWeek === n ? 'selected' : 'outline'}
-              className={`min-h-[44px] min-w-[44px] ${daysPerWeek === n ? 'bg-primary hover:bg-primary-fill-hover' : ''}`}
+              className={`min-h-[44px] min-w-[44px] tap-target ${daysPerWeek === n ? 'bg-primary hover:bg-primary-fill-hover' : ''}`}
               onClick={() => setDays(n)}
             >
               {n}
@@ -103,7 +103,7 @@ export function CoachScheduleEditor({ onChange }: Props) {
                 type="button"
                 size="sm"
                 variant={on ? 'selected' : 'outline'}
-                className={`min-h-[44px] ${on ? 'bg-primary hover:bg-primary-fill-hover' : ''}`}
+                className={`min-h-[44px] tap-target ${on ? 'bg-primary hover:bg-primary-fill-hover' : ''}`}
                 aria-pressed={on}
                 onClick={() => togglePreferred(offset)}
               >

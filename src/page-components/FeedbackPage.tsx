@@ -68,6 +68,7 @@ export function FeedbackPage() {
     return (
       <InfoPageShell
         icon={MessageSquare}
+      eyebrow={t('feedbackEyebrow', { defaultValue: 'Feedback' })}
         title={t('infoFeedbackThankTitle', { defaultValue: 'Thank you' })}
         subtitle={t('infoFeedbackThankSubtitle', {
           defaultValue: 'Thanks — your notes help us improve the free logger and Coach.',
@@ -80,18 +81,18 @@ export function FeedbackPage() {
               {t('feedbackThankBadge', { defaultValue: 'Thanks' })}
             </div>
             <div className="text-left max-w-md mx-auto space-y-2 text-sm leading-relaxed">
-              <p className="font-medium">
+              <p className="font-semibold">
                 {t('feedbackThankRoadmap', {
                   defaultValue: '✓ We read every note — friction first',
                 })}
               </p>
-              <p className="font-medium">
+              <p className="font-semibold">
                 {t('feedbackThankEarly', {
                   defaultValue: '✓ If you left email, we may follow up on a fix',
                 })}
               </p>
             </div>
-            <Button size="lg" variant="default" onClick={() => router.push('/log')}>
+            <Button size="lg" variant="default" className="min-h-[52px] tap-target" onClick={() => router.push('/log')}>
               {t('feedbackBackToday', { defaultValue: 'Back to Today' })}
             </Button>
           </CardContent>
@@ -103,6 +104,7 @@ export function FeedbackPage() {
   return (
     <InfoPageShell
       icon={MessageSquare}
+      eyebrow={t('feedbackEyebrow', { defaultValue: 'Feedback' })}
       title={t('infoFeedbackTitle', { defaultValue: 'Feedback' })}
       subtitle={t('infoFeedbackSubtitle', {
         defaultValue: 'What confused you, what broke, and what we should fix next. We read every note.',
@@ -190,7 +192,7 @@ export function FeedbackPage() {
               />
             </div>
 
-            <Button type="submit" size="lg" variant="default" className="w-full" disabled={loading}>
+            <Button type="submit" size="lg" variant="default" className="w-full min-h-[52px] tap-target" disabled={loading}>
               {loading
                 ? t('feedbackSubmitting', { defaultValue: 'Submitting…' })
                 : t('feedbackSubmit', { defaultValue: 'Submit feedback' })}

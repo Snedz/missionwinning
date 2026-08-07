@@ -61,6 +61,25 @@ type CoreStrings = {
   about: string;
   leaderboardRankings: string;
   today: string;
+  signInSkip: string;
+  signInLinkHint: string;
+  continue: string;
+  signInDifferentEmail: string;
+  signInDemoMode: string;
+  signInRedirecting: string;
+  signInApple: string;
+  signInGoogle: string;
+  signInMicrosoft: string;
+  signInFacebook: string;
+  signInOrEmail: string;
+  formGuideReadyPosition: string;
+  formGuideCaptionVideo: string;
+  formGuideCaptionStill: string;
+  formGuideMediaAria: string;
+  formGuideCaptionsTrack: string;
+  formGuideStillAlt: string;
+  holdConfirmAgain: string;
+  holdConfirmHint: string;
 };
 
 const en: CoreStrings = {
@@ -124,6 +143,25 @@ const en: CoreStrings = {
   about: 'About',
   leaderboardRankings: 'Rankings',
   today: 'Today',
+  signInSkip: 'Skip — continue without account',
+  signInLinkHint: 'Open the link on this device to sync. You can keep using the app meanwhile.',
+  continue: 'Continue',
+  signInDifferentEmail: 'Use a different email',
+  signInDemoMode: 'Demo mode — add Supabase keys to enable cloud sync and social sign-in.',
+  signInRedirecting: 'Redirecting…',
+  signInApple: 'Continue with Apple',
+  signInGoogle: 'Continue with Google',
+  signInMicrosoft: 'Continue with Microsoft',
+  signInFacebook: 'Continue with Facebook',
+  signInOrEmail: 'or use email',
+  formGuideReadyPosition: 'Ready position',
+  formGuideCaptionVideo: 'Side view · full range of motion',
+  formGuideCaptionStill: 'Form demo',
+  formGuideMediaAria: '{{name}} form demo',
+  formGuideCaptionsTrack: 'Captions',
+  formGuideStillAlt: '{{name}} form demo, side view',
+  holdConfirmAgain: 'Press again to confirm',
+  holdConfirmHint: 'Hold {{ms}}ms to confirm. Release early to cancel.',
 };
 
 const de: CoreStrings = {

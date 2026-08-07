@@ -69,6 +69,14 @@ type BundleStrings = {
   bundleUsdcNote: string;
   bundleUnlockLifetimeCta: string;
   bundleRefundNote: string;
+  unlockStartingCheckout: string;
+  unlockSecureCheckout: string;
+  unlockMoneyBack: string;
+  unlockOpenProfile: string;
+  unlockFoundersListed: string;
+  unlockFoundersEmail: string;
+  unlockJoining: string;
+  unlockJoinFounders: string;
 };
 
 const en: BundleStrings = {
@@ -146,6 +154,14 @@ const en: BundleStrings = {
   bundleUsdcNote: 'Base USDC is a payment rail — not the product.',
   bundleUnlockLifetimeCta: 'Unlock lifetime Super Bundle',
   bundleRefundNote: 'Questions on access? Contact support from Profile.',
+  unlockStartingCheckout: 'Starting checkout…',
+  unlockSecureCheckout: 'Secure checkout by Stripe · Card · Apple Pay · Google Pay · PayPal · USDC',
+  unlockMoneyBack: '14-day money-back on first paid charge',
+  unlockOpenProfile: 'Open Profile',
+  unlockFoundersListed: "You're on the founders list.",
+  unlockFoundersEmail: "We'll email {{email}} when checkout opens.",
+  unlockJoining: 'Joining…',
+  unlockJoinFounders: 'Join founders list',
 };
 
 const es: BundleStrings = {

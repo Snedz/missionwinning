@@ -91,7 +91,7 @@ export function CoachPage({ askExerciseId }: CoachPageProps = {}) {
 
       {!loading && locked && plan && (
         <div className="space-y-4">
-          <p className="text-sm font-medium text-muted-foreground">{weekEyebrow}</p>
+          <p className="text-sm font-semibold text-muted-foreground">{weekEyebrow}</p>
           <WeekStrip weekStart={weekStart} sessions={plan.sessions} todayOffset={todayOffset} />
           <p className="text-sm text-muted-foreground text-center leading-relaxed">
             {t('coachLockedWeekSummary', {
@@ -147,7 +147,7 @@ export function CoachPage({ askExerciseId }: CoachPageProps = {}) {
               )}
             </ul>
             <UnlockButton productId="super-bundle" planId="12mo" price="59" title="Super Bundle" isSubscription />
-            <Button asChild variant="outline" className="w-full">
+            <Button asChild variant="outline" className="w-full min-h-[44px] tap-target">
               <Link href="/bundle">{t('coachCompareBundle', { defaultValue: 'Compare Super Bundle' })}</Link>
             </Button>
             <p className="text-center text-xs text-muted-foreground leading-relaxed">
@@ -176,7 +176,7 @@ export function CoachPage({ askExerciseId }: CoachPageProps = {}) {
       {plan && !locked && (
         <div className="space-y-6">
           <div>
-            <p className="mb-3 text-sm font-medium text-muted-foreground">{weekEyebrow}</p>
+            <p className="mb-3 text-sm font-semibold text-muted-foreground">{weekEyebrow}</p>
             <WeekStrip weekStart={weekStart} sessions={plan.sessions} todayOffset={todayOffset} />
             {weekDose && weekDose.sessionCount > 0 && (
               <p className="mt-3 text-center text-sm text-muted-foreground" data-testid="coach-week-dose">
@@ -282,8 +282,8 @@ export function CoachPage({ askExerciseId }: CoachPageProps = {}) {
 
       {todaySession && (
         <p className="text-xs text-center text-muted-foreground">
-          <Link href="/log" className="text-primary hover:underline">
-            ← {t('navToday', { defaultValue: 'Today' })}
+          <Link href="/log" className="text-primary hover:underline min-h-[44px] inline-flex items-center tap-target">
+            {t('navToday', { defaultValue: 'Today' })}
           </Link>
         </p>
       )}

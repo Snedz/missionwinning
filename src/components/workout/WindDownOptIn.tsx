@@ -123,18 +123,18 @@ export function WindDownOptIn() {
       </p>
       <div className="mt-2 flex flex-wrap gap-2">
         {mode === 'offer' ? (
-          <Button size="sm" variant="outline" className="min-h-[44px]" onClick={enable}>
+          <Button size="sm" variant="outline" className="min-h-[44px] tap-target" onClick={enable}>
             {t('windDownEnable', { defaultValue: 'Turn on evening notes' })}
           </Button>
         ) : (
-          <Button size="sm" variant="outline" className="min-h-[44px]" onClick={install}>
+          <Button size="sm" variant="outline" className="min-h-[44px] tap-target" onClick={install}>
             {t('windDownInstallFirst', { defaultValue: 'Add to Home Screen first' })}
           </Button>
         )}
         <Button
           size="sm"
           variant="ghost"
-          className="min-h-[44px]"
+          className="min-h-[44px] tap-target"
           onClick={() => {
             remember();
             setMode('hidden');

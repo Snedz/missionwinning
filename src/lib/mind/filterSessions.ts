@@ -11,7 +11,8 @@ export type MindCollectionId =
   | 'sleep'
   | 'stress'
   | 'focus'
-  | 'travel';
+  | 'travel'
+  | 'sleep-week';
 
 export type MindCollectionDef = {
   id: MindCollectionId;
@@ -25,6 +26,12 @@ export const MIND_COLLECTIONS: MindCollectionDef[] = [
   { id: 'pre-lift', titleKey: 'mindCollectionPre', titleDefault: 'Pre-session', tags: ['pre-lift', 'focus'] },
   { id: 'post-train', titleKey: 'mindCollectionPost', titleDefault: 'After training', tags: ['post-train', 'recovery'] },
   { id: 'sleep', titleKey: 'mindCollectionSleep', titleDefault: 'Sleep', tags: ['sleep'] },
+  {
+    id: 'sleep-week',
+    titleKey: 'mindSeriesSleepWeek',
+    titleDefault: 'Sleep week (series)',
+    tags: ['series-sleep-week'],
+  },
   { id: 'stress', titleKey: 'mindCollectionStress', titleDefault: 'Stress reset', tags: ['stress', 'anxiety'] },
   { id: 'focus', titleKey: 'mindCollectionFocus', titleDefault: 'Focus', tags: ['focus'] },
   { id: 'travel', titleKey: 'mindCollectionTravel', titleDefault: 'Travel / hotel', tags: ['travel'] },
@@ -50,4 +57,13 @@ export function filterMindByCollection(
 ): GuidedMindSession[] {
   const def = MIND_COLLECTIONS.find((c) => c.id === collectionId) ?? MIND_COLLECTIONS[0];
   return sessions.filter((s) => mindMatchesCollection(s, def));
+}
+
+/** Hydrate Mind page from ?collection= deep links (ContinuityStrip). */
+export function parseMindCollectionParam(
+  raw: string | null | undefined
+): MindCollectionId {
+  if (!raw) return 'all';
+  const id = raw.trim() as MindCollectionId;
+  return MIND_COLLECTIONS.some((c) => c.id === id) ? id : 'all';
 }

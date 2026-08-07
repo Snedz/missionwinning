@@ -136,6 +136,7 @@ type FitnessTestStrings = {
    * route is currently served.
    */
   pftBackAmerica: string;
+  joinClassLoading: string;
 };
 
 const en: FitnessTestStrings = {
@@ -287,6 +288,7 @@ const en: FitnessTestStrings = {
   youthSending: 'Sending…',
   schoolJoinedTeacherNote: 'Complete a fitness test while signed in to sync your score. Teachers view standings on the class dashboard.',
   pftBackAmerica: 'National fitness',
+  joinClassLoading: 'Joining class…',
 };
 
 const es: FitnessTestStrings = {
