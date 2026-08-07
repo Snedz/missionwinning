@@ -130,7 +130,6 @@ export function LibraryDetailSheet({
         open={open && !!exercise}
         onClose={() => onOpenChange(false)}
         size="sm"
-        className="min-h-[44px] tap-target"
         eyebrow={
           exercise
             ? [
@@ -163,7 +162,7 @@ export function LibraryDetailSheet({
                       type="button"
                       variant="outline"
                       size="sm"
-                      className="min-h-[44px] min-w-[44px] border-2 px-2"
+                      className="min-h-[44px] min-w-[44px] border-2 px-2 tap-target"
                       disabled={!neighborNav.prevId}
                       aria-label={t('libraryPrevExercise', { defaultValue: 'Previous exercise' })}
                       onClick={() => neighborNav.prevId && onSelectExercise(neighborNav.prevId)}
@@ -177,7 +176,7 @@ export function LibraryDetailSheet({
                       type="button"
                       variant="outline"
                       size="sm"
-                      className="min-h-[44px] min-w-[44px] border-2 px-2"
+                      className="min-h-[44px] min-w-[44px] border-2 px-2 tap-target"
                       disabled={!neighborNav.nextId}
                       aria-label={t('libraryNextExercise', { defaultValue: 'Next exercise' })}
                       onClick={() => neighborNav.nextId && onSelectExercise(neighborNav.nextId)}

@@ -106,7 +106,7 @@ export function FileUploadRow({
             {onRemove && !inFlight && (
               <button
                 type="button"
-                className="text-muted-foreground hover:text-foreground p-0.5"
+                className="min-h-[44px] min-w-[44px] inline-flex items-center justify-center text-muted-foreground hover:text-foreground tap-target p-0.5"
                 aria-label={t('uploadRemove', { defaultValue: 'Remove' })}
                 onClick={onRemove}
               >

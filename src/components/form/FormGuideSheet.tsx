@@ -83,7 +83,9 @@ export function FormGuideSheet({
                 'text-sm font-semibold uppercase tracking-wide mb-2',
                 guide.militaryStyle ? 'text-status-warn' : 'text-primary'
               )}>
-                {guide.militaryStyle ? 'Ready position' : guide.readyPosition}
+                {guide.militaryStyle
+                  ? t('formGuideReadyPosition', { defaultValue: 'Ready position' })
+                  : guide.readyPosition}
               </h3>
               {!guide.militaryStyle && (
                 <p className="text-muted-foreground text-base">{guide.readyPosition}</p>
@@ -120,6 +122,7 @@ function FormGuideMedia({
   caption?: string;
   poster?: string;
 }) {
+  const { t } = useTranslation();
   const prefersReducedMotion = usePrefersReducedMotion();
   const mode = resolveFormGuideMediaMode({
     mediaType: type,
@@ -127,8 +130,8 @@ function FormGuideMedia({
   });
   const defaultCaption =
     type === 'video'
-      ? 'Side view · full range of motion'
-      : 'Form demo';
+      ? t('formGuideCaptionVideo', { defaultValue: 'Side view · full range of motion' })
+      : t('formGuideCaptionStill', { defaultValue: 'Form demo' });
 
   if (mode === 'video-autoplay') {
     return (
@@ -147,9 +150,16 @@ function FormGuideMedia({
           muted
           loop
           preload="metadata"
-          aria-label={`${name} form demo`}
+          aria-label={t('formGuideMediaAria', {
+            name,
+            defaultValue: `${name} form demo`,
+          })}
         >
-          <track kind="captions" srcLang="en" label="Captions" />
+          <track
+            kind="captions"
+            srcLang="en"
+            label={t('formGuideCaptionsTrack', { defaultValue: 'Captions' })}
+          />
         </video>
         <figcaption className="border-t-2 border-border px-3 py-1.5 text-center text-xs text-muted-foreground">
           {caption ?? defaultCaption}
@@ -164,7 +174,10 @@ function FormGuideMedia({
       {/* Form Index posters + legacy SVG under /public — plain img is intentional. */}
       <img
         src={stillSrc}
-        alt={`${name} form demo, side view`}
+        alt={t('formGuideStillAlt', {
+          name,
+          defaultValue: `${name} form demo, side view`,
+        })}
         loading="lazy"
         decoding="async"
         className="mx-auto w-full max-h-80 object-contain bg-background"
