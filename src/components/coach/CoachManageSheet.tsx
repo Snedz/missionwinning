@@ -134,7 +134,7 @@ export function CoachManageSheet({
           {canRegenerate && scheduleDirty ? (
             <HoldToConfirmButton
               variant="default"
-              className="w-full primary-action"
+              className="w-full primary-action min-h-[52px] tap-target"
               label={t('coachRemapThisWeek', {
                 defaultValue: 'Remap this week',
               })}

@@ -132,7 +132,7 @@ export function AmericaPage() {
                 })}
               </p>
             </div>
-            <Button variant={youth ? 'selected' : 'outline'} onClick={toggleYouth}>
+            <Button variant={youth ? 'selected' : 'outline'} className="min-h-[44px] tap-target" onClick={toggleYouth}>
               {youth
                 ? t('americaYouthOn', { defaultValue: 'Youth mode on' })
                 : t('americaYouthOff', { defaultValue: 'Enable youth mode' })}
@@ -141,13 +141,13 @@ export function AmericaPage() {
         </Card>
 
         <div className="flex flex-col sm:flex-row gap-3 justify-center">
-          <Button asChild size="lg" className="bg-[hsl(var(--status-info))] hover:bg-card">
+          <Button asChild size="lg" className="min-h-[52px] tap-target bg-[hsl(var(--status-info))] hover:bg-card">
             <Link href="/fitness-test">{t('americaCtaTest', { defaultValue: 'Take the fitness test' })}</Link>
           </Button>
-          <Button asChild size="lg" variant="outline">
+          <Button asChild size="lg" variant="outline" className="min-h-[52px] tap-target">
             <Link href="/welcome">{t('americaCtaWelcome', { defaultValue: 'Start I-Day journey' })}</Link>
           </Button>
-          <Button asChild size="lg" variant="ghost">
+          <Button asChild size="lg" variant="ghost" className="min-h-[52px] tap-target">
             <Link href="/log">{t('americaCtaToday', { defaultValue: 'Go to Today' })}</Link>
           </Button>
         </div>
