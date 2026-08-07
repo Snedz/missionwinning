@@ -244,7 +244,7 @@ export function HistoryPage() {
       })}
     >
       <div className="border-2 border-border bg-card px-4 py-3 space-y-1">
-        <p className="text-xs font-medium tracking-wide text-muted-foreground">
+        <p className="text-xs font-semibold tracking-wide text-muted-foreground">
           {t('historyMissionStory', { defaultValue: 'At a glance' })}
         </p>
         <p className="text-sm text-foreground leading-relaxed">{briefingLine}</p>
@@ -605,7 +605,7 @@ export function HistoryPage() {
                   return (
                     <div key={ex.exerciseId} className="space-y-2">
                       <div className="flex items-center gap-2">
-                        <h4 className="font-medium">{exercise?.name ?? ex.exerciseId}</h4>
+                        <h4 className="font-semibold">{exercise?.name ?? ex.exerciseId}</h4>
                         {exercise?.muscleGroups.map((mg) => (
                           <Badge key={mg} variant="muscle" className="text-[10px]">
                             {mg}

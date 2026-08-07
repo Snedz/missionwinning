@@ -29,6 +29,7 @@ export function ServiceTermsPage() {
   return (
     <InfoPageShell
       icon={FileStack}
+      eyebrow={t('infoLegalEyebrow', { defaultValue: 'Legal' })}
       title={t('infoServiceTermsTitle', { defaultValue: 'Service-Specific Terms' })}
       lastUpdated={t('infoLastUpdated', { defaultValue: 'Last updated: August 2026' })}
       showLegalFooter

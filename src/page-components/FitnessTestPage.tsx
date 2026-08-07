@@ -27,6 +27,7 @@ function FitnessTestInner() {
   return (
     <PillarPageShell
       icon={Shield}
+      eyebrow={t('americaEyebrow', { defaultValue: 'America' })}
       title={t('pftPageTitle', { defaultValue: 'Presidential Fitness Test' })}
       subtitle={t('pftPageSubtitle', {
         defaultValue: 'Log your events, earn Presidential / National / Participant awards.',

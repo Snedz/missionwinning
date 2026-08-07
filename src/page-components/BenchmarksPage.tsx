@@ -491,7 +491,7 @@ export function BenchmarksPage() {
                           }
                           onClick={() => setSelectedId(s.exerciseId)}
                         >
-                          <TableCell className="font-medium">
+                          <TableCell className="font-semibold">
                             {ex?.name ?? s.exerciseId}
                           </TableCell>
                           <TableCell>{s.sessionCount}</TableCell>

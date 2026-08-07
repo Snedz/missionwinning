@@ -227,7 +227,7 @@ export function ExercisePublicPage({ exercise: raw, jsonLd }: Props) {
 
         {safety ? (
           <section className="border-2 border-border bg-card px-4 py-3 text-sm text-muted-foreground">
-            <span className="font-medium text-foreground">Safety: </span>
+            <span className="font-semibold text-foreground">Safety: </span>
             {safety}
           </section>
         ) : null}

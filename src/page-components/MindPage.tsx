@@ -129,9 +129,12 @@ export function MindPage() {
               role="tab"
               aria-selected={selected}
               className={cn(
-                'shrink-0 min-h-[44px] border-2 px-3 text-sm font-medium transition-colors tap-target',
+                'shrink-0 min-h-[44px] border-2 px-3 text-sm font-semibold transition-colors tap-target',
+                // `is-active-tab`, not a red fill: a selection is not an action
+                // (`.240`). `bg-primary` here read as a second red action on a
+                // screen whose cap is one — the same defect `/programs` fixed.
                 selected
-                  ? 'border-primary bg-primary text-primary-foreground'
+                  ? 'is-active-tab border-primary text-foreground'
                   : 'border-border bg-card text-foreground hover:border-primary'
               )}
               onClick={() => setCollectionId(c.id)}
@@ -160,7 +163,7 @@ export function MindPage() {
       ) : null}
 
       <div id="mind-guided" className="space-y-3 scroll-mt-20">
-        <h3 className="text-sm font-medium text-muted-foreground">
+        <h3 className="text-sm font-semibold text-muted-foreground">
           {t('mindGuidedFreeCount', {
             count: freeSessions.length,
             defaultValue: `Guided sessions (${freeSessions.length})`,
@@ -230,7 +233,7 @@ export function MindPage() {
             className="flex w-full items-center justify-between gap-2 border-2 border-border bg-card px-4 py-3 text-sm min-h-[44px]"
             onClick={() => setPremiumOpen((v) => !v)}
           >
-            <span className="font-medium text-muted-foreground">
+            <span className="font-semibold text-muted-foreground">
               {t('mindPremiumPreviewCount', {
                 count: inv.mind.premium,
                 defaultValue: `Premium guided sessions (${inv.mind.premium})`,

@@ -26,7 +26,15 @@
 import { spawnSync } from 'node:child_process';
 import { readFileSync } from 'node:fs';
 
-const LABEL_RE = /APP_BUILD_LABEL\s*=\s*'([^']+)'/;
+/*
+ * Both quote styles, deliberately. This matched `'…'` only, and a formatter
+ * pass rewrote `buildInfo.ts` to double quotes — after which the check could
+ * not read the label at all and died on "Could not read APP_BUILD_LABEL"
+ * rather than comparing anything. A gate step that cannot see its input is
+ * `.220`'s defect: it stops asking the question without anyone deciding to
+ * stop. The label's quoting is a formatter's business, not this guard's.
+ */
+const LABEL_RE = /APP_BUILD_LABEL\s*=\s*['"]([^'"]+)['"]/;
 
 function git(...args) {
   const r = spawnSync('git', args, { encoding: 'utf8' });

@@ -309,7 +309,7 @@ export function LeaderboardPage() {
  {ranked.yourRank != null && (
  <>
  {' · '}
- <span className="text-primary font-medium">
+ <span className="text-primary font-semibold">
  {t('leaderboardYourRank', { defaultValue: 'Your rank' })} #{ranked.yourRank}
  </span>
  </>
