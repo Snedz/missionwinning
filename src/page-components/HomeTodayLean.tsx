@@ -333,6 +333,7 @@ export function HomeTodayLean() {
       hasTrainHistory: true,
       lastFocusGroups: [...focus],
       trainedToday,
+      localHour: new Date().getHours(),
     });
     if (continuity.length > 0) {
       blocks.push({
