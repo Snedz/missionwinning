@@ -178,10 +178,8 @@ const LANDING_EN: Record<string, string> = {
   footerGroupLegal: 'Legal',
   footerProductPath: 'The path',
   footerProductPillars: 'Pillars',
-  footerProductStart: 'Start free',
   footerProductBundle: 'Super Bundle',
   footerProductCompare: 'Compare',
-  footerProductCoach: 'How Coach adapts',
   footerLearnGuide: 'Guide',
   footerLearnExercises: 'Exercises',
   footerLearnPaths: 'Paths',
@@ -191,6 +189,8 @@ const LANDING_EN: Record<string, string> = {
   footerCompanyFeedback: 'Feedback',
   footerLegalPrivacy: 'Privacy',
   footerLegalTerms: 'Terms',
+  footerLegalCookies: 'Cookies',
+  footerLegalA11y: 'Accessibility',
   footerDisclaimer:
     'Educational fitness tools — not medical advice. Consult a physician before starting any training program.',
   coachDemoTitle: 'Mission Coach',
@@ -298,6 +298,8 @@ const LANDING_ES: Record<string, string> = {
   footerCompanyFeedback: 'Feedback',
   footerLegalPrivacy: 'Privacidad',
   footerLegalTerms: 'Términos',
+  footerLegalCookies: 'Cookies',
+  footerLegalA11y: 'Accesibilidad',
   footerDisclaimer:
     'Herramientas educativas de fitness — no es consejo médico. Consulta a un médico antes de empezar cualquier programa.',
 };

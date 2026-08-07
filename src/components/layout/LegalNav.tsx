@@ -40,14 +40,11 @@ export function LegalNav({
       <Link href="/privacy" className={linkClassName}>
         {t('privacyPolicy', { defaultValue: 'Privacy Policy' })}
       </Link>
-      <Link href="/usage" className={linkClassName}>
-        {t('infoUsageTitle', { defaultValue: 'Usage Policy' })}
+      <Link href="/cookies" className={linkClassName}>
+        {t('infoCookiesTitle', { defaultValue: 'Cookies & device storage' })}
       </Link>
-      <Link href="/regions" className={linkClassName}>
-        {t('infoRegionsTitle', { defaultValue: 'Supported Regions' })}
-      </Link>
-      <Link href="/service-terms" className={linkClassName}>
-        {t('infoServiceTermsTitle', { defaultValue: 'Service-Specific Terms' })}
+      <Link href="/accessibility" className={linkClassName}>
+        {t('infoA11yTitle', { defaultValue: 'Accessibility statement' })}
       </Link>
       <Link href="/dmca" className={linkClassName}>
         {t('infoDmcaTitle', { defaultValue: 'DMCA / Copyright' })}

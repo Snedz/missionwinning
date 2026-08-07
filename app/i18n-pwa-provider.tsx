@@ -88,9 +88,13 @@ if (typeof window !== 'undefined') {
 export function I18nPwaProvider({ children }: { children: React.ReactNode }) {
   const [showOfflineBanner, setShowOfflineBanner] = useState(false);
 
-  // First-touch UTM / referrer / ?ref= / ?invite= (local only until lead submit or analytics allow).
+  // First-touch attribution. Ref/invite persist (honoring the clicked link is
+  // strictly necessary); utm/referrer/landing reach storage only with analytics
+  // consent — held in memory otherwise and flushed if the user allows this session.
   useEffect(() => {
-    const { referralLanded, inviteLanded, attribution } = captureAttribution();
+    const { referralLanded, inviteLanded, attribution } = captureAttribution(undefined, {
+      persistMarketing: isAnalyticsAllowed(),
+    });
     if (referralLanded) track('referral_landed');
     if (inviteLanded) {
       track('beta_invite_landed');
