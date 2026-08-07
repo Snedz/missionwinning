@@ -29,7 +29,11 @@ Three gate steps were red on `master` and nothing reported it, because **no work
 
 **Not closed, founder-owned:** Actions is not assigning runners (`runner_id: 0`, ~3s death), so neither PR CI nor `ratchets.yml` can fire until the spending limit clears. Branch protection likewise. The **bundle budget stays red** — its own optimisation change, with chunk-level analysis now in hand.
 
-Mutants: 9 killed. Tests 2049 → 2152.
+**Two hero `@gate` specs restored — the kaizen programme had been breaking its own guards.** Three were red on `master`; the causes are three different mechanisms with one shape, *a deliberate UX change silently invalidating a hero test that no CI lane was running*. `.550` gave the rest-Skip button an `aria-label`, which **replaces** the accessible name, so an anchored `/^skip$/i` stopped matching — in the same file, a few lines below a comment that read *"Label stays exactly 'Skip' — logger-depth / a11y match /^skip$/i"*. `.548` changed empty-Finish behaviour and copy ("nothing logged" → "Log a set first", session now **kept**), and the spec still asserted the pre-`.548` product on both counts; note the i18n key kept its old name `activeNothingLogged` while its value changed, so grepping the key agreed with the stale assertion. Both now assert the current contract — `logger-depth` keys off `data-testid`, since the visible word and the announced label are both surface a kaizen pass is expected to change.
+
+**The third is left red on purpose.** `workout complete updates Mission Score` fails because the score band now sits inside a collapsed disclosure: the span resolves — a collapsed container keeps content in the DOM — and reports `hidden` forever. A first repair probed with `if (await details.count())`, which is a point-in-time question with no waiting against a `dynamic(..., { ssr: false })` mount, so it skipped silently and failed one line later — `CLAUDE.md` §6's *assert preconditions, never skip past them*, reproduced inside a repair for a test nobody was running. Waiting on `getByRole('group', { name: /today details/i })` then found nothing, so the disclosure is not the shape the a11y snapshot implied. Cause known, repair not landed; reverted rather than shipped half-working.
+
+Mutants: 12 killed — the 9 above, plus toast copy → red, `data-testid="rest-skip"` renamed → red, disclosure summary label changed → red. Tests 2049 → 2152.
 
 ## 2026-08-07 — About/Vision editorial + JoinClass shell (`.595`)
 

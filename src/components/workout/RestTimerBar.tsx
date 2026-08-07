@@ -106,7 +106,18 @@ export function RestTimerBar({
         <button type="button" className={inkButton} onClick={() => onAdjust(15)}>
           {t('activeRestAdd15', { defaultValue: '+15s' })}
         </button>
-        {/* Label stays exactly "Skip" — logger-depth / a11y match /^skip$/i.
+        {/* This comment used to read "Label stays exactly 'Skip' — logger-depth /
+            a11y match /^skip$/i", and then `.550` added the `aria-label` below.
+            An `aria-label` *replaces* the accessible name rather than adding to
+            it, so `getByRole('button', { name: /^skip$/i })` stopped matching the
+            moment that line landed — in this same file, a few lines down, with
+            the contract written above it. The hero spec has been red ever since,
+            unseen because the e2e lane runs in no CI workflow that is firing.
+
+            `logger-depth` now keys off `data-testid` instead: the visible word
+            and the announced label are both design surface a kaizen pass is
+            expected to change, and neither should be able to break the assertion
+            that skipping rest ends the timer.
             Final ≤10s: filled accent so outdoor thumbs hit the bright control. */}
         <button
           type="button"
