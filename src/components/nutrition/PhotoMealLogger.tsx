@@ -267,10 +267,10 @@ export function PhotoMealLogger({ onLogEstimate }: Props) {
           </div>
           {phase === 'preview' && (
             <div className="flex flex-wrap gap-2">
-              <Button type="button" size="sm" onClick={() => void runEstimate(file)}>
+              <Button type="button" size="sm" className="min-h-[44px] tap-target" onClick={() => void runEstimate(file)}>
                 {t('photoLogAnalyze', { defaultValue: 'Analyze' })}
               </Button>
-              <Button type="button" size="sm" variant="outline" onClick={reset}>
+              <Button type="button" size="sm" variant="outline" className="min-h-[44px] tap-target" onClick={reset}>
                 {t('photoLogRetake', { defaultValue: 'Choose another photo' })}
               </Button>
             </div>

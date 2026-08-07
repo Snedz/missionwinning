@@ -147,7 +147,7 @@ export function FuelWeightStrip({ todayIso, refreshKey = 0, onLogged }: Props) {
           </p>
         </div>
         {!open ? (
-          <Button type="button" variant="ghost" size="sm" className="h-8 text-xs -ms-3" onClick={openLog}>
+          <Button type="button" variant="ghost" size="sm" className="min-h-[44px] h-11 text-xs -ms-3 tap-target" onClick={openLog}>
             {t('fuelWeightLog', { defaultValue: 'Log weight' })}
           </Button>
         ) : null}
@@ -183,10 +183,10 @@ export function FuelWeightStrip({ todayIso, refreshKey = 0, onLogged }: Props) {
               autoFocus
             />
           </div>
-          <Button type="button" variant="default" size="sm" className="h-10" onClick={save}>
+          <Button type="button" variant="default" size="sm" className="min-h-[44px] h-11 tap-target" onClick={save}>
             {t('save', { defaultValue: 'Save' })}
           </Button>
-          <Button type="button" variant="outline" size="sm" className="h-10" onClick={() => setOpen(false)}>
+          <Button type="button" variant="outline" size="sm" className="min-h-[44px] h-11 tap-target" onClick={() => setOpen(false)}>
             {t('cancel', { defaultValue: 'Cancel' })}
           </Button>
         </div>

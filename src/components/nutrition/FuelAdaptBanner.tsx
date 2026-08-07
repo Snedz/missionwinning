@@ -76,7 +76,7 @@ export function FuelAdaptBanner({
           type="button"
           variant="ghost"
           size="sm"
-          className="h-7 text-[11px] shrink-0"
+          className="min-h-[44px] shrink-0 tap-target text-[11px]"
           onClick={() => onToggleAdapt(!adaptEnabled)}
         >
           {adaptEnabled

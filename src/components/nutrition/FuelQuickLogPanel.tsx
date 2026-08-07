@@ -113,7 +113,7 @@ export function FuelQuickLogPanel({
                 <Button
                   variant="secondary"
                   size="sm"
-                  className="text-xs "
+                  className="text-xs min-h-[44px] tap-target "
                   onClick={() => onQuickLog(name, p, c, carbs, fat)}
                 >
                   {name}
@@ -158,7 +158,7 @@ export function FuelQuickLogPanel({
               type="button"
               size="sm"
               variant={activeMeal === m ? 'selected' : 'outline'}
-              className="h-8 text-xs "
+              className="min-h-[44px] h-11 text-xs tap-target "
               onClick={() => onActiveMealChange(m)}
             >
               {mealLabel(m)}
@@ -242,7 +242,7 @@ export function FuelQuickLogPanel({
               key={name}
               variant="outline"
               size="sm"
-              className="text-xs "
+              className="text-xs min-h-[44px] tap-target "
               onClick={() => onQuickLog(name, p, c, carbs, fat)}
             >
               {name}
@@ -262,7 +262,7 @@ export function FuelQuickLogPanel({
                 key={m.id}
                 variant="secondary"
                 size="sm"
-                className="text-xs "
+                className="text-xs min-h-[44px] tap-target "
                 onClick={() => onQuickLog(m.name, m.protein, m.cals, m.carbs, m.fat)}
               >
                 {m.name}

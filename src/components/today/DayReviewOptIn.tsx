@@ -150,22 +150,14 @@ export function DayReviewOptIn() {
             </option>
           ))}
         </select>
-        {/* `variant="outline"` and a 44px floor, not the default fill.
-            The default is `bg-primary-fill` — poster red — which put a **second
-            red CTA on Today**, competing with the one docked action the whole
-            screen is built around. It passed the one-primary-action e2e test
-            because that test counts elements with the `.primary-action` class,
-            and this button never had the class; it only had the colour. And
-            `size="sm"` is 36px, which the ≥44px sweep never saw because the
-            sweep was scoped to `/active`. Two tests, both green, neither
-            measuring what it was named for. */}
-        <Button variant="outline" size="sm" className="min-h-[44px]" onClick={enable}>
+        {/* Outline + 44px — never a second primary-fill red on Today. */}
+        <Button variant="outline" size="sm" className="min-h-[44px] tap-target" onClick={enable}>
           {t('dayReviewOptInEnable', { defaultValue: 'Turn on' })}
         </Button>
         <Button
           variant="ghost"
           size="sm"
-          className="min-h-[44px]"
+          className="min-h-[44px] tap-target"
           onClick={() => {
             remember();
             setMode('hidden');

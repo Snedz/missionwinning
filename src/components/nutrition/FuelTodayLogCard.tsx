@@ -85,7 +85,7 @@ export function FuelTodayLogCard({
           {t('fuelTodayLogTitle', { defaultValue: "Today's meals" })}
         </CardTitle>
         <div className="flex gap-2 flex-wrap justify-end">
-          <Button variant="outline" size="sm" onClick={onLoadCloud}>
+          <Button variant="outline" size="sm" className="min-h-[44px] tap-target" onClick={onLoadCloud}>
             {t('fuelLoadCloud', { defaultValue: 'Load from cloud' })}
           </Button>
           {cloudStatus ? (
@@ -211,6 +211,7 @@ export function FuelTodayLogCard({
           >
             <HoldToConfirmButton
               size="sm"
+              className="min-h-[44px] tap-target"
               label={t('fuelClearTodaysMeals', { defaultValue: "Clear today's meals" })}
               onConfirm={onClearDay}
             />
