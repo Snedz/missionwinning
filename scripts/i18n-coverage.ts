@@ -56,8 +56,27 @@ const root = path.join(path.dirname(fileURLToPath(import.meta.url)), '..');
  *
  * This is the *only* legitimate reason for the cap to increase, and it happened
  * inside the same PR that introduced the ratchet. Every future move is down.
+ *
+ * ## Why it is now 0
+ *
+ * The Aug-5 rewards wave (`.505`–`.543`) shipped `src/components/rewards/`
+ * against a locale pack that never landed, and the kaizen sweep (`.548`–`.561`)
+ * added more — 58 keys existed in no EN pack, nearly four times this cap, on a
+ * lane no workflow was evaluating. Every one of them rendered its English
+ * `defaultValue` in all 15 languages.
+ *
+ * All 58 now sit in catalogs. Four keys that previously *could not* be
+ * catalogued — `moveSubtitleDepth`, `mindSubtitleDepth`,
+ * `fuelPremiumRecipesTitleCount`, `activeRestSkipAria` — were single keys whose
+ * `defaultValue` was a runtime ternary (`isFreeBeta()`, `finalSeconds`); one
+ * catalog value cannot hold two sentences, so each was split into two keys with
+ * two literal call sites. A computed key (`t(cond ? 'a' : 'b')`) would have gone
+ * *invisible* to this counter rather than covered by it — worse than the debt.
+ *
+ * Zero is the honest floor now, and it is the only cap value that cannot quietly
+ * absorb a regression.
  */
-const MAX_UNCOVERED_KEYS = 16;
+const MAX_UNCOVERED_KEYS = 0;
 
 /** Components whose user-visible text is not translated, each with a reason. */
 const SKIP_UNTRANSLATED: { file: string; why: string }[] = [

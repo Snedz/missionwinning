@@ -41,6 +41,8 @@ type LearnStrings = {
   learnCourseEmptyTitle: string;
   learnCourseEmptyBeta: string;
   learnCourseBrowseFree: string;
+  /** Kaizen Learn magazine link (`.560`). */
+  learnOpenMagazine: string;
 };
 
 const en: LearnStrings = {
@@ -90,7 +92,7 @@ const en: LearnStrings = {
   learnCourseEmptyBeta:
     'The specialist catalogue is still being written. The free learning paths and the guidebook are complete and open to everyone.',
   learnCourseBrowseFree: 'Browse free paths',
-
+  learnOpenMagazine: 'Magazine (web)',
 };
 
 const es: LearnStrings = {

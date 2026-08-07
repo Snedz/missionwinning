@@ -48,6 +48,15 @@ const FEEDBACK_EN: Record<string, string> = {
   feedbackSheetSentBody: 'Queued. It sends when you have a connection — you can close the app.',
   feedbackSheetSentAnon: 'No email, so there is no way to reply — but it was read.',
   feedbackSheetDone: 'Close',
+  /** Structured beta-feedback prompts on `/feedback`. */
+  feedbackFrictionLabel: 'What confused you or broke? (required)',
+  feedbackFrictionPlaceholder:
+    'e.g. Rest timer was hard to find mid-set outdoors. Or: Coach week ignored my missed day.',
+  feedbackExpectedLabel: 'What did you expect instead? (optional)',
+  feedbackExpectedPlaceholder:
+    'e.g. One big Skip button after the set, not three presets.',
+  feedbackNextWantLabel: 'One thing to improve next (optional)',
+  feedbackNextWantPlaceholder: 'e.g. Clearer set kind labels on phone.',
 };
 
 const FEEDBACK_ES: Record<string, string> = {

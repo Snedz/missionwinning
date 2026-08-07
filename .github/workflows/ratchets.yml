@@ -1,0 +1,100 @@
+# Ratchets — the only workflow that runs on a push to `master`.
+#
+# ## Why this exists
+#
+# Every other workflow triggers on `pull_request`, `workflow_dispatch`, or a
+# cron, and production ships through a Vercel Deploy Hook + GitHub webhook that
+# bypasses Actions entirely. So a merge — or a direct push — reached production
+# with **no automated gate at all**, and the ratchets recorded that: the coverage
+# floor sat breached from `.544` (411) through `.561` (415) against a floor of
+# 407, and i18n uncovered keys reached 58 against a cap of 16, both unnoticed.
+# `LOG.md` had already written the conclusion — *"two ratchets were both found
+# red on `master` in the same session, for the same reason — the gate is not
+# being run."*
+#
+# ## Why it is not just a `push:` trigger on ci.yml
+#
+# `ci.yml`'s exclusion of master pushes is deliberate and its header says so:
+# standard runners are free only on public repos, this repo went private on
+# 2026-08-02, and the remaining minutes are reserved for deploy-production.yml.
+# Adding `push:` there would run a full production build plus 53 hero e2e on
+# every merge — precisely the spend that decision avoided.
+#
+# So this workflow runs the **no-build half of `npm run gate`** and nothing else:
+# no `next build`, no Playwright, no browsers to install. Those stay on PR CI
+# (build, bundle budget, hero e2e) and in ci-extended (Android, Lighthouse,
+# visual, smokes). The two checks that actually drifted — coverage and i18n —
+# need no build, which is what makes closing this hole cheap.
+#
+# ## What this does NOT close
+#
+# PR CI is still not a *required* check. Branch protection on `master` is a
+# repository setting, founder-owned, and until it is on, a direct push is
+# gated only by this workflow rather than blocked. That is a smaller hole than
+# the one this closes, and it is named here rather than left implied.
+name: Ratchets
+
+on:
+  push:
+    branches: [master]
+  workflow_dispatch:
+
+concurrency:
+  group: ratchets-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  # Deliberately no `env:` block — this job never builds or serves the app, so
+  # it is exempted in `src/lib/workflowBuildEnv.test.ts` (NOT_THIS_APP). Adding
+  # the build placeholders here would put credential-shaped values in a job that
+  # has no use for them.
+  ratchets:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: '22'
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      # Order mirrors scripts/gate.mjs steps 2-14, minus the build and
+      # everything downstream of it. `check-build-label` is intentionally absent:
+      # it compares a branch's APP_BUILD_LABEL against its base, and on a push to
+      # master there is no base to compare against.
+      - name: Lint
+        run: npm run lint
+
+      - name: Typecheck
+        run: npm run typecheck
+
+      - name: Unit tests
+        run: npm test
+
+      - name: Route contract tests
+        run: npm run test:routes
+
+      # The two that drifted. Both read the tree rather than a build artifact.
+      - name: Coverage floors
+        run: npm run coverage
+
+      - name: i18n parity
+        run: npm run i18n:parity
+
+      - name: i18n coverage
+        run: npm run i18n:coverage
+
+      - name: Design system
+        run: npm run check-design-system
+
+      - name: Locale split
+        run: npm run check-locale-split
+
+      - name: Display type
+        run: npm run check-display-type
+
+      - name: Token sync (web ↔ Android)
+        run: npm run check-token-sync

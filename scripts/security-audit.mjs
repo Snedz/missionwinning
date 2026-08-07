@@ -46,28 +46,10 @@ import process from 'node:process';
  */
 const ACCEPTED = [
   {
-    id: 'GHSA-6g55-p6wh-862q',
-    pkg: 'postcss',
-    why: 'Arbitrary file read via attacker-controlled sourceMappingURL. No fixed version is published. postcss runs at build time over our own stylesheets — there is no path by which a user supplies CSS to it.',
-    fixWhen: 'A postcss release above the advisory range exists; it is a devDependency and a nested dep of next.',
-  },
-  {
-    id: 'GHSA-r28c-9q8g-f849',
-    pkg: 'postcss',
-    why: 'Path traversal in source-map auto-loading. Same reasoning and same build-time-only reach as the advisory above.',
-    fixWhen: 'A postcss release above the advisory range exists.',
-  },
-  {
-    id: 'GHSA-f88m-g3jw-g9cj',
-    pkg: 'sharp',
-    why: 'Inherited libvips CVEs. No fixed version is published. sharp is used by Next image optimisation, and every image this app optimises is a local asset committed to the repo — no remote or user-supplied image reaches it.',
-    fixWhen: 'sharp >= 0.35.0 ships. Re-check whenever remote image sources are enabled — that would change the exposure, not just the version.',
-  },
-  {
-    id: 'GHSA-mh99-v99m-4gvg',
-    pkg: 'brace-expansion',
-    why: 'DoS via unbounded expansion. Reached only through eslint, glob and lighthouse — build and lint tooling run on our own repository, never on user input.',
-    fixWhen: 'The transitive dependents pick up a patched range; `npm audit fix` cannot reach it today.',
+    id: 'GHSA-5p4m-2wfm-xmqj',
+    pkg: 'js-yaml',
+    why: 'Quadratic CPU consumption resolving !!omap; CVE-2026-59870 is not backported to 3.x or 4.x. Transitive through eslint -> @eslint/eslintrc only, and `npm ls js-yaml --omit=dev` is empty, so it is absent from the production tree. The vulnerable path is YAML config parsing; this repo configures eslint with a flat `eslint.config.js` and has no .eslintrc.yml anywhere, so the parser is never handed YAML at all — let alone attacker-supplied YAML.',
+    fixWhen: '@eslint/eslintrc picks up a patched js-yaml, or eslint drops the eslintrc compatibility layer. Re-check if a YAML eslint config is ever introduced — that changes the reach, not just the version.',
   },
   {
     id: 'GHSA-3gc7-fjrx-p6mg',
@@ -101,7 +83,7 @@ const ACCEPTED = [
  * allowlist longer than the cap would let an unreviewed advisory in behind a
  * reviewed one.
  */
-export const MAX_ACCEPTED_HIGH = 13;
+export const MAX_ACCEPTED_HIGH = 10;
 
 const acceptedIds = new Set(ACCEPTED.map((a) => a.id));
 

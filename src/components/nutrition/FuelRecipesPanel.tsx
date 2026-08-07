@@ -153,12 +153,15 @@ export function FuelRecipesPanel({
         <Card className="bg-card">
           <CardHeader>
             <CardTitle className="text-base font-semibold">
-              {t('fuelPremiumRecipesTitleCount', {
-                count: premiumRecipes.length || PREMIUM_RECIPE_COUNT,
-                defaultValue: freeBeta
-                  ? `More recipes (${premiumRecipes.length || PREMIUM_RECIPE_COUNT})`
-                  : `Premium recipes (${premiumRecipes.length || PREMIUM_RECIPE_COUNT})`,
-              })}
+              {freeBeta
+                ? t('fuelPremiumRecipesTitleCountBeta', {
+                    count: premiumRecipes.length || PREMIUM_RECIPE_COUNT,
+                    defaultValue: `More recipes (${premiumRecipes.length || PREMIUM_RECIPE_COUNT})`,
+                  })
+                : t('fuelPremiumRecipesTitleCountPaid', {
+                    count: premiumRecipes.length || PREMIUM_RECIPE_COUNT,
+                    defaultValue: `Premium recipes (${premiumRecipes.length || PREMIUM_RECIPE_COUNT})`,
+                  })}
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-2">

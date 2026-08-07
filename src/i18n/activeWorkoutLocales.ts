@@ -194,6 +194,21 @@ type ActiveWorkoutStrings = {
   liveHrHint: string;
   liveHrDisconnect: string;
   liveHrConnect: string;
+  /**
+   * Kaizen set-row + rest a11y (`.549`–`.555`). These are screen-reader labels,
+   * which is exactly why an untranslated `defaultValue` is worse here than on
+   * visible copy: a sighted user sees the surrounding UI in their language and
+   * the label is silent, so nothing looks wrong while the announcement is English.
+   */
+  activeSetLoggedSr: string;
+  activeSetRowCompleteAria: string;
+  activeSetRowNextAria: string;
+  activeSetRowPlannedAria: string;
+  victoryMascotCue: string;
+  victorySessionDetails: string;
+  /** Split from a `finalSeconds` ternary default — see moveLocales. */
+  activeRestSkipAriaFinal: string;
+  activeRestSkipAriaPlain: string;
 };
 
 const en: ActiveWorkoutStrings = {
@@ -378,6 +393,14 @@ const en: ActiveWorkoutStrings = {
   liveHrHint: 'Optional Polar / Wahoo chest strap — not used in Win Score.',
   liveHrDisconnect: 'Disconnect',
   liveHrConnect: 'Connect HR',
+  activeSetLoggedSr: 'Logged',
+  activeSetRowCompleteAria: 'Set {{n}} logged: {{line}}',
+  activeSetRowNextAria: 'Set {{n}} — in the console',
+  activeSetRowPlannedAria: 'Set {{n}} planned — {{reps}} reps',
+  victoryMascotCue: 'Session saved.',
+  victorySessionDetails: 'Session details',
+  activeRestSkipAriaFinal: 'Skip rest — go',
+  activeRestSkipAriaPlain: 'Skip rest',
 };
 
 const es: ActiveWorkoutStrings = {

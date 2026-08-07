@@ -109,6 +109,10 @@ type Job = {
  */
 const NOT_THIS_APP: { id: string; why: string }[] = [
   {
+    id: 'ratchets.yml:*',
+    why: 'The no-build half of the gate, on a push to master — lint, typecheck, unit, route contract, coverage, i18n, design system, locale split, display type, token sync. It never runs `next build` and never serves a page; the placeholders exist to make a *served* app behave, so here they would be credential-shaped values in a job with no runtime.',
+  },
+  {
     id: 'aikido.yml:*',
     why: 'Third-party security scanner. It reads the repository and never builds or serves the app, so app env would only be a credential-shaped thing sitting in a scanner job.',
   },

@@ -118,9 +118,11 @@ export function RestTimerBar({
           )}
           onClick={onSkip}
           data-testid="rest-skip"
-          aria-label={t('activeRestSkipAria', {
-            defaultValue: finalSeconds ? 'Skip rest — go' : 'Skip rest',
-          })}
+          aria-label={
+            finalSeconds
+              ? t('activeRestSkipAriaFinal', { defaultValue: 'Skip rest — go' })
+              : t('activeRestSkipAriaPlain', { defaultValue: 'Skip rest' })
+          }
         >
           <SkipForward className="h-4 w-4" aria-hidden />
           {t('activeRestSkip', { defaultValue: 'Skip' })}

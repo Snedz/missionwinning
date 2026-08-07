@@ -35,6 +35,16 @@ type MindStrings = {
   mindPremiumRetry: string;
   mindPreviewPlayer: string;
   mindLockedHint: string;
+  /** Kaizen collection empties + counted headings (`.558`) — see moveLocales. */
+  mindCollections: string;
+  mindCollectionShowAll: string;
+  mindCollectionEmpty: string;
+  mindGuidedFreeCount: string;
+  mindPremiumSessionsCount: string;
+  mindPremiumPreviewCount: string;
+  /** Split from an `isFreeBeta()` ternary default — see moveLocales. */
+  mindSubtitleDepthBeta: string;
+  mindSubtitleDepthPaid: string;
 };
 
 const en: MindStrings = {
@@ -74,6 +84,16 @@ const en: MindStrings = {
   mindPreviewPlayer: 'Press play — timed cues walk you through each step',
   mindLockedHint:
     'Free tier includes 10 guided sessions. Premium adds 17 deeper timed sessions — focus, recovery, race calm, and travel resets.',
+  mindCollections: 'Collections',
+  mindCollectionShowAll: 'Show all sessions',
+  mindCollectionEmpty: 'No sessions in this collection.',
+  mindGuidedFreeCount: 'Guided sessions ({{count}})',
+  mindPremiumSessionsCount: 'Premium guided sessions ({{count}})',
+  mindPremiumPreviewCount: 'Premium guided sessions ({{count}})',
+  mindSubtitleDepthBeta:
+    '{{free}} free guided sessions · {{unlocked}} unlocked in open beta — breathing + check-in included.',
+  mindSubtitleDepthPaid:
+    '{{free}} free guided sessions · Super Bundle adds {{premium}} deeper timed sessions.',
 };
 
 const es: MindStrings = {

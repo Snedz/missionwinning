@@ -44,6 +44,7 @@ export function hydrateI18nResources(instance: typeof i18n): Promise<void> {
       { mergeGateStrings },
       { mergeBetaStrings },
       { mergeGrowthStrings },
+      { mergeRewardsStrings },
     ] = await Promise.all([
       import('@/i18n/coreLocales'),
       import('@/i18n/tier2Locales'),
@@ -79,6 +80,7 @@ export function hydrateI18nResources(instance: typeof i18n): Promise<void> {
       import('@/i18n/gateLocales'),
       import('@/i18n/betaLocales'),
       import('@/i18n/growthLocales'),
+      import('@/i18n/rewardsLocales'),
     ]);
 
     // Seed EN base from existing bundle so we don't wipe bootstrap keys
@@ -135,6 +137,7 @@ export function hydrateI18nResources(instance: typeof i18n): Promise<void> {
       mergeGateStrings(resources[lang], lang);
       mergeBetaStrings(resources[lang], lang);
       mergeGrowthStrings(resources[lang], lang);
+      mergeRewardsStrings(resources[lang], lang);
     }
 
     const { applyLocalePack } = await import('@/i18n/localePacks');

@@ -19,11 +19,15 @@ describe('deployReadiness', () => {
     const r = getDeployReadinessReport();
     // `.240` 28→29 with `firstSteps`; `.241` 29→30 with `zeroState` (435→450);
     // `.243` 30→31 with `notification` (450→465). `.281` 31→32 with `whatsNew`
-    // (465→480). Pinned rather than derived on purpose: a namespace silently
-    // dropping out of the export plan is how a language loses a screen, and a
-    // test that recomputed the number from the same manifest could not see it.
-    assert.equal(r.localeFiles, 480);
-    assert.equal(r.localeNamespaces, 32);
+    // (465→480). 32→33 with `rewards` (480→495): the rewards surface shipped in
+    // `.505`–`.543` and its pack never landed, so 17 keys resolved to no
+    // catalogue and rendered English in all 15 languages — this assertion is
+    // what a namespace *arriving* looks like. Pinned rather than derived on
+    // purpose: a namespace silently dropping out of the export plan is how a
+    // language loses a screen, and a test that recomputed the number from the
+    // same manifest could not see it.
+    assert.equal(r.localeFiles, 495);
+    assert.equal(r.localeNamespaces, 33);
     assert.ok(r.minTodayKeys >= 100);
     assert.equal(r.target, 'ci');
   });

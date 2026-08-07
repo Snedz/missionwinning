@@ -88,8 +88,18 @@ const FLOORS = {
    *
    * That split is the point of the ratchet: it does not stop the number moving,
    * it makes somebody look at what moved it.
+   *
+   * 407 → 405. The floor had been **breached on `master` since `.544`** (411,
+   * then 415 by `.561`) and nothing said so, because this step runs only in
+   * `npm run gate` and in a PR workflow — and nothing at all runs on a push to
+   * `master`. Thirteen logic modules now have colocated tests (challengeI18n,
+   * coach/schedulePrefs, exerciseUsage, guidePublic, guidebookProgress,
+   * inviteCode, leaderboard/boards, leaderboard/demoPopulation, motion,
+   * privacyConsent, readinessDisplay, referralCode, routeMetadata); the new
+   * `src/i18n/rewardsLocales.ts` is a catalogue with no logic and adds one back.
+   * Repaid, not loosened — 405 is measured, with no slack deliberately.
    */
-  untestedFiles: 407,
+  untestedFiles: 405,
   /**
    * Line % across the files that *are* loaded. Must not fall.
    *

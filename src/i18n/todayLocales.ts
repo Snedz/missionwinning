@@ -244,6 +244,9 @@ type TodayStrings = {
   todayMissionScoreTip: string;
   todayMoreSummary: string;
   todaySessionFocus: string;
+  /** ContinuityStrip on the full Today dashboard (`.536`). */
+  continuityTitle: string;
+  continuitySubtitle: string;
 };
 
 const en: TodayStrings = {
@@ -506,6 +509,8 @@ const en: TodayStrings = {
   todayMissionScoreTip: 'Daily score from all six pillars. Log training, fuel, move, mind, track, and learn to raise it.',
   todayMoreSummary: 'Today details',
   todaySessionFocus: 'Training',
+  continuityTitle: 'After training',
+  continuitySubtitle: 'Move, mind, or fuel when you want them.',
 };
 
 const coachPlanDefaults = {
@@ -680,6 +685,8 @@ const es: TodayStrings = {
 };
 
 const zh: TodayStrings = {
+  continuityTitle: en.continuityTitle,
+  continuitySubtitle: en.continuitySubtitle,
   todayWeekRecapTitle: en.todayWeekRecapTitle,
   todayWeekRecapBody: en.todayWeekRecapBody,
   todayWeekRecapShareCard: en.todayWeekRecapShareCard,
@@ -917,6 +924,8 @@ const zh: TodayStrings = {
 };
 
 const id: TodayStrings = {
+  continuityTitle: en.continuityTitle,
+  continuitySubtitle: en.continuitySubtitle,
   todayWeekRecapTitle: en.todayWeekRecapTitle,
   todayWeekRecapBody: en.todayWeekRecapBody,
   todayWeekRecapShareCard: en.todayWeekRecapShareCard,
@@ -1168,6 +1177,8 @@ const id: TodayStrings = {
 };
 
 const th: TodayStrings = {
+  continuityTitle: en.continuityTitle,
+  continuitySubtitle: en.continuitySubtitle,
   todayWeekRecapTitle: en.todayWeekRecapTitle,
   todayWeekRecapBody: en.todayWeekRecapBody,
   todayWeekRecapShareCard: en.todayWeekRecapShareCard,
@@ -1409,6 +1420,8 @@ const th: TodayStrings = {
 };
 
 const ar: TodayStrings = {
+  continuityTitle: en.continuityTitle,
+  continuitySubtitle: en.continuitySubtitle,
   todayWeekRecapTitle: en.todayWeekRecapTitle,
   todayWeekRecapBody: en.todayWeekRecapBody,
   todayWeekRecapShareCard: en.todayWeekRecapShareCard,

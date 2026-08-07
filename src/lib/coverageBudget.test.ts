@@ -42,9 +42,11 @@ const HIGH_WATER = {
    * Playwright-covered UI, two were logic and got tests. D11–D13 raised it to
    * 393 for four more Playwright Coach/Profile sheets — see
    * `FLOORS.untestedFiles`. 407 for Kaizen peels (Active list/dock/sheets,
-   * Victory strips, CoachChat peels) that landed without a floor bump.
+   * Victory strips, CoachChat peels) that landed without a floor bump. 405 once
+   * thirteen logic modules got colocated tests — see `FLOORS.untestedFiles` for
+   * why the number had drifted to 415 on `master` unnoticed.
    */
-  untestedFiles: 407,
+  untestedFiles: 405,
   /**
    * Held at its original value on purpose — see the note at `FLOORS.linePct`.
    * Reaching a previously-unloaded file *lowers* this, because its unexecuted

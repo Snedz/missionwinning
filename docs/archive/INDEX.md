@@ -329,6 +329,7 @@ When adding a doc:
 | [log/LOG-2026-08-01-rotate-269.md](./log/LOG-2026-08-01-rotate-269.md) | oldest LOG entry rotated 2026-08-03 for `.269` |
 | [log/LOG-2026-08-01-rotate-268.md](./log/LOG-2026-08-01-rotate-268.md) | `.252` (exporter undid the splitter) — rotated 2026-08-03 for `.268` guide-hero re-ink |
 | [log/LOG-hero-audit-rotate-2026-08-03.md](./log/LOG-hero-audit-rotate-2026-08-03.md) | `.247` (days logged / caps) — rotated 2026-08-03 for `.263` hero audit entry |
+| [log/LOG-rotate-562.md](./log/LOG-rotate-562.md) | `.547` (Terms liability cap / Privacy 30-day deletion) — rotated 2026-08-07 for `.562` ratchet repayment |
 | [SETUP.md](./SETUP.md) | Stale PayPal-first setup — superseded by [docs/PRE_REVENUE_CHECKLIST.md](../PRE_REVENUE_CHECKLIST.md) + [docs/LLC_AND_PAYMENTS.md](../LLC_AND_PAYMENTS.md) |
 
 Canonical live launch path: root **[LAUNCH_RUNBOOK.md](../LAUNCH_RUNBOOK.md)** + [docs/SOCIAL_LAUNCH.md](../SOCIAL_LAUNCH.md) (copy kit).
