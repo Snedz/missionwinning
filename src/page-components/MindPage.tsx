@@ -130,8 +130,11 @@ export function MindPage() {
               aria-selected={selected}
               className={cn(
                 'shrink-0 min-h-[44px] border-2 px-3 text-sm font-semibold transition-colors tap-target',
+                // `is-active-tab`, not a red fill: a selection is not an action
+                // (`.240`). `bg-primary` here read as a second red action on a
+                // screen whose cap is one — the same defect `/programs` fixed.
                 selected
-                  ? 'border-primary bg-primary text-primary-foreground'
+                  ? 'is-active-tab border-primary text-foreground'
                   : 'border-border bg-card text-foreground hover:border-primary'
               )}
               onClick={() => setCollectionId(c.id)}
