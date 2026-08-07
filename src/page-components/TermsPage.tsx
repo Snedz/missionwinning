@@ -27,6 +27,7 @@ const TERM_SECTIONS = [
   { id: 'liability', key: 'infoTermsLiability', bodyKey: 'infoTermsLiabilityBody' },
   { id: 'governing-law', key: 'infoTermsGoverningLaw', bodyKey: 'infoTermsGoverningLawBody' },
   { id: 'disputes', key: 'infoTermsDisputes', bodyKey: 'infoTermsDisputesBody' },
+  { id: 'eu-consumers', key: 'infoTermsEuConsumers', bodyKey: 'infoTermsEuConsumersBody' },
   { id: 'related', key: 'infoTermsRelated', bodyKey: 'infoTermsRelatedBody' },
   { id: 'changes', key: 'infoTermsChanges', bodyKey: 'infoTermsChangesBody' },
 ] as const;

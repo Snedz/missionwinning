@@ -81,10 +81,9 @@
 |------|-------|
 | `ProfilePage.tsx` | `/profile` — thin shell; cards in `src/components/profile/` |
 | `PrivacyPage.tsx` | `/privacy` |
+| `CookiesPage.tsx` | `/cookies` |
+| `AccessibilityPage.tsx` | `/accessibility` |
 | `TermsPage.tsx` | `/terms` |
-| `UsagePolicyPage.tsx` | `/usage` |
-| `SupportedRegionsPage.tsx` | `/regions` |
-| `ServiceTermsPage.tsx` | `/service-terms` |
 | `DmcaPage.tsx` | `/dmca` |
 | `RefundsPage.tsx` | `/refunds` |
 | `FeedbackPage.tsx` | `/feedback` |

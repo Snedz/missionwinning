@@ -4,10 +4,10 @@
  * See: app/INDEX.md, src/page-components/INDEX.md
  */
 
-import Link from 'next/link';
 import { useTranslation } from 'react-i18next';
 import { Shield } from 'lucide-react';
 import { InfoPageShell, InfoSection } from '@/components/layout/InfoPageShell';
+import { CURRENT_PRIVACY_VERSION } from '@/lib/privacyConsent';
 
 const PRIVACY_SECTIONS = [
   { id: 'overview', key: 'infoPrivacyOverview', bodyKey: 'infoPrivacyOverviewBody' },
@@ -23,16 +23,58 @@ const PRIVACY_SECTIONS = [
       'infoPrivacyCollectLi4',
       'infoPrivacyCollectLi5',
       'infoPrivacyCollectLi6',
+      'infoPrivacyCollectLi7',
+      'infoPrivacyCollectLi8',
+      'infoPrivacyCollectLi9',
     ],
   },
+  {
+    id: 'lawful-bases',
+    key: 'infoPrivacyLawfulBases',
+    listKeys: [
+      'infoPrivacyLawfulBasesLi1',
+      'infoPrivacyLawfulBasesLi2',
+      'infoPrivacyLawfulBasesLi3',
+      'infoPrivacyLawfulBasesLi4',
+    ],
+  },
+  { id: 'health-data', key: 'infoPrivacyHealthData', bodyKey: 'infoPrivacyHealthDataBody' },
   {
     id: 'use',
     key: 'infoPrivacyUse',
     listKeys: ['infoPrivacyUseLi1', 'infoPrivacyUseLi2', 'infoPrivacyUseLi3', 'infoPrivacyUseLi4'],
   },
   { id: 'ai-coach', key: 'infoPrivacyAiCoach', bodyKey: 'infoPrivacyAiCoachBody' },
+  {
+    id: 'retention',
+    key: 'infoPrivacyRetention',
+    listKeys: [
+      'infoPrivacyRetentionLi1',
+      'infoPrivacyRetentionLi2',
+      'infoPrivacyRetentionLi3',
+      'infoPrivacyRetentionLi4',
+    ],
+  },
   { id: 'third-parties', key: 'infoPrivacyThirdParties', bodyKey: 'infoPrivacyThirdPartiesBody' },
   { id: 'subprocessors', key: 'infoPrivacySubprocessors', bodyKey: 'infoPrivacySubprocessorsBody' },
+  {
+    id: 'intl-transfers',
+    key: 'infoPrivacyIntlTransfers',
+    bodyKey: 'infoPrivacyIntlTransfersBody',
+  },
+  {
+    id: 'rights',
+    key: 'infoPrivacyRights',
+    listKeys: [
+      'infoPrivacyRightsLi1',
+      'infoPrivacyRightsLi2',
+      'infoPrivacyRightsLi3',
+      'infoPrivacyRightsLi4',
+      'infoPrivacyRightsLi5',
+      'infoPrivacyRightsLi6',
+      'infoPrivacyRightsLi7',
+    ],
+  },
   {
     id: 'choices',
     key: 'infoPrivacyChoices',
@@ -43,8 +85,12 @@ const PRIVACY_SECTIONS = [
       'infoPrivacyChoicesLi4',
     ],
   },
+  { id: 'cookies', key: 'infoPrivacyCookiesRef', bodyKey: 'infoPrivacyCookiesRefBody' },
+  { id: 'children', key: 'infoPrivacyChildren', bodyKey: 'infoPrivacyChildrenBody' },
+  { id: 'security-breach', key: 'infoPrivacySecurity', bodyKey: 'infoPrivacySecurityBody' },
   { id: 'deletion', key: 'infoPrivacyDeletion', bodyKey: 'infoPrivacyDeletionBody' },
   { id: 'california', key: 'infoPrivacyCalifornia', bodyKey: 'infoPrivacyCaliforniaBody' },
+  { id: 'changes', key: 'infoPrivacyChanges', bodyKey: 'infoPrivacyChangesBody' },
   { id: 'not-medical', key: 'infoPrivacyNotMedical', bodyKey: 'infoPrivacyNotMedicalBody' },
 ] as const;
 
@@ -60,7 +106,7 @@ export function PrivacyPage() {
     <InfoPageShell
       icon={Shield}
       title={t('infoPrivacyTitle', { defaultValue: 'Privacy Policy' })}
-      lastUpdated={t('infoLastUpdated', { defaultValue: 'Last updated: August 2026' })}
+      lastUpdated={`${t('infoLastUpdatedLabel', { defaultValue: 'Last updated:' })} ${CURRENT_PRIVACY_VERSION}`}
       showLegalFooter
       jumpLinks={jumpLinks}
     >
@@ -77,31 +123,22 @@ export function PrivacyPage() {
               ))}
             </ul>
           ) : (
-            <>
-              <p className="text-muted-foreground">
-                {t(section.bodyKey, { defaultValue: section.bodyKey })}
-              </p>
+            <p className="text-muted-foreground">
+              {t(section.bodyKey, { defaultValue: section.bodyKey })}
               {section.id === 'regions' && (
-                <p className="mt-2">
-                  <Link href="/regions" className="text-primary hover:underline text-sm">
-                    {t('infoRegionsTitle', { defaultValue: 'Supported Regions' })}
-                  </Link>
-                </p>
+                <span className="mt-2 block">
+                  <a href="/regions" className="text-primary underline-offset-2 hover:underline">
+                    {t('infoPrivacyRegionsLink', { defaultValue: 'Where we offer the service' })}
+                  </a>
+                </span>
               )}
-            </>
+            </p>
           )}
         </InfoSection>
       ))}
 
       <p className="text-xs text-muted-foreground pt-2">
-        {t('infoPrivacyFoot', { defaultValue: 'Questions: support@missionwinning.com' })}{' '}
-        <Link href="/terms" className="text-primary hover:underline">
-          {t('termsOfService', { defaultValue: 'Terms of Service' })}
-        </Link>
-        {' · '}
-        <Link href="/regions" className="text-primary hover:underline">
-          {t('infoRegionsTitle', { defaultValue: 'Supported Regions' })}
-        </Link>
+        {t('infoPrivacyFoot', { defaultValue: 'Questions: support@missionwinning.com' })}
       </p>
     </InfoPageShell>
   );

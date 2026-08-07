@@ -6,6 +6,8 @@ export const JOURNEY_BYPASS_PATHS = [
   '/about',
   '/terms',
   '/privacy',
+  '/cookies',
+  '/accessibility',
   '/dmca',
   '/refunds',
   '/usage',
@@ -34,6 +36,9 @@ export const PRIVATE_GATE_PUBLIC_PATHS = [
   '/welcome',
   '/privacy',
   '/terms',
+  /** A cookie policy unreachable pre-consent / pre-gate is a defect. */
+  '/cookies',
+  '/accessibility',
   '/dmca',
   '/refunds',
   '/usage',
