@@ -23,7 +23,6 @@ const SCREENSHOT_ROUTES = [
   '/builder',
   '/guide/human-performance',
   '/exercises/squats',
-  '/experience',
 ];
 
 const VIEWPORTS = [
