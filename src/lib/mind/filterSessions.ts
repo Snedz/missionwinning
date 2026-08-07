@@ -11,7 +11,8 @@ export type MindCollectionId =
   | 'sleep'
   | 'stress'
   | 'focus'
-  | 'travel';
+  | 'travel'
+  | 'sleep-week';
 
 export type MindCollectionDef = {
   id: MindCollectionId;
@@ -25,6 +26,12 @@ export const MIND_COLLECTIONS: MindCollectionDef[] = [
   { id: 'pre-lift', titleKey: 'mindCollectionPre', titleDefault: 'Pre-session', tags: ['pre-lift', 'focus'] },
   { id: 'post-train', titleKey: 'mindCollectionPost', titleDefault: 'After training', tags: ['post-train', 'recovery'] },
   { id: 'sleep', titleKey: 'mindCollectionSleep', titleDefault: 'Sleep', tags: ['sleep'] },
+  {
+    id: 'sleep-week',
+    titleKey: 'mindSeriesSleepWeek',
+    titleDefault: 'Sleep week (series)',
+    tags: ['series-sleep-week'],
+  },
   { id: 'stress', titleKey: 'mindCollectionStress', titleDefault: 'Stress reset', tags: ['stress', 'anxiety'] },
   { id: 'focus', titleKey: 'mindCollectionFocus', titleDefault: 'Focus', tags: ['focus'] },
   { id: 'travel', titleKey: 'mindCollectionTravel', titleDefault: 'Travel / hotel', tags: ['travel'] },
