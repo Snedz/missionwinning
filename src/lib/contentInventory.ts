@@ -23,7 +23,7 @@ export const CONTENT_FLOORS = {
   movePremium: 40,
   mindFree: 32,
   mindPremium: 48,
-  recipesFree: 40,
+  recipesFree: 48,
   recipesPremium: 102,
   learnPremiumSections: 16,
   /** Eyes-on form pack side stills (FORM_PACK_SIDE_IDS). */

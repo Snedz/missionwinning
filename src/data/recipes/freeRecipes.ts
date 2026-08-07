@@ -410,4 +410,84 @@ export const FREE_RECIPES: Recipe[] = [
     "instructions": "Mix, microwave 60–90s stirring once. Don't overcook.",
     "tip": "Dorm/hotel friendly. Protein + carbs with one dish."
   },
+  {
+    "name": "Tuna Rice Packet Bowl",
+    "protein": 38,
+    "cals": 460,
+    "carbs": 48,
+    "fat": 10,
+    "ingredients": "1 pouch tuna in water, 200g cooked rice, cucumber, soy or hot sauce, green onion",
+    "instructions": "Warm rice, flake tuna on top, add crunch and sauce. No pan required if rice is leftover.",
+    "tip": "Travel staple. Complete protein with shelf-stable fish."
+  },
+  {
+    "name": "Lentil Egg Skillet",
+    "protein": 30,
+    "cals": 440,
+    "carbs": 42,
+    "fat": 14,
+    "ingredients": "200g cooked lentils, 2 eggs, spinach, onion, spices, oil",
+    "instructions": "Warm lentils with onion and spinach, crack eggs on top, cover until set.",
+    "tip": "Budget plant + animal protein. High fiber for satiety."
+  },
+  {
+    "name": "Greek Chicken Wrap Cold",
+    "protein": 36,
+    "cals": 470,
+    "carbs": 38,
+    "fat": 16,
+    "ingredients": "1 wrap, 120g chicken, 80g greek yogurt or tzatziki, tomato, cucumber, lettuce",
+    "instructions": "Spread yogurt, fill chicken and veg, roll tight. Make ahead for fridge.",
+    "tip": "One-hand meal after training. Yogurt adds casein."
+  },
+  {
+    "name": "Shrimp Garlic Pasta Light",
+    "protein": 34,
+    "cals": 520,
+    "carbs": 55,
+    "fat": 14,
+    "ingredients": "150g shrimp, 80g dry pasta cooked, garlic, olive oil, parsley, lemon, chili flake",
+    "instructions": "Sauté garlic and shrimp, toss pasta with oil and lemon. Finish parsley.",
+    "tip": "Fast complete protein. Keep oil measured for fat targets."
+  },
+  {
+    "name": "Black Bean Sweet Potato Hash",
+    "protein": 22,
+    "cals": 430,
+    "carbs": 62,
+    "fat": 10,
+    "ingredients": "250g sweet potato cubes, 150g black beans, onion, salsa, optional egg on top",
+    "instructions": "Roast or pan-cook potato, add beans and salsa. Top fried egg if you need protein.",
+    "tip": "Plant-forward carb meal. Add egg or greek yogurt to hit protein floor."
+  },
+  {
+    "name": "Whey Rice Cake Stack",
+    "protein": 28,
+    "cals": 320,
+    "carbs": 36,
+    "fat": 6,
+    "ingredients": "1 scoop whey, water or milk, 3 rice cakes, banana or berries, peanut butter thin",
+    "instructions": "Shake whey, assemble rice cakes with fruit and thin PB, drink shake alongside.",
+    "tip": "Emergency high-protein snack when kitchen is closed."
+  },
+  {
+    "name": "Turkey Apple Cheese Plate",
+    "protein": 32,
+    "cals": 400,
+    "carbs": 28,
+    "fat": 16,
+    "ingredients": "120g turkey slices, 1 apple, 40g cheese, handful crackers or rice cakes, mustard",
+    "instructions": "Plate cold. No cook. Balance turkey, fruit, and cheese.",
+    "tip": "Desk lunch that actually hits protein without a microwave."
+  },
+  {
+    "name": "Tofu Scramble Toast",
+    "protein": 26,
+    "cals": 410,
+    "carbs": 38,
+    "fat": 14,
+    "ingredients": "200g firm tofu, turmeric, spinach, 2 toast, oil, salt, pepper",
+    "instructions": "Crumble and pan tofu with spices and spinach. Serve on toast.",
+    "tip": "Plant option for free tier. Pair with dairy or egg if you need more leucine."
+  },
 ];
