@@ -54,8 +54,8 @@ export function SignInPrompt({
           type="button"
           variant="outline"
           size="sm"
-          className="min-h-[44px]"
-          onClick={() => setExpanded((v) => !v)}
+          className="min-h-[44px] tap-target"
+            onClick={() => setExpanded((v) => !v)}
         >
           {expanded
             ? t('signInCollapse', { defaultValue: 'Hide sign-in' })

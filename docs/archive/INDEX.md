@@ -25,6 +25,7 @@ When adding a doc:
 
 | File | Absorbed by / note |
 |------|---------------------|
+| [log/LOG-rotate-581.md](./log/LOG-rotate-581.md) | rotated oldest for `.581` overlay fix |
 | [log/LOG-rotate-580.md](./log/LOG-rotate-580.md) | rotated oldest for `.580` size-sm residual |
 | [log/LOG-rotate-579.md](./log/LOG-rotate-579.md) | rotated oldest for `.579` today/fuel |
 | [log/LOG-rotate-578.md](./log/LOG-rotate-578.md) | rotated oldest for `.578` active session |
