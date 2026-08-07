@@ -117,7 +117,7 @@ export function DayReviewOptIn() {
           })}
         </p>
         <p className="mt-1 text-xs text-muted-foreground">
-          {t('dayReviewOptInInstallHow', { defaultValue: 'Share → Add to Home Screen.' })}
+          {t('dayReviewOptInInstallHow', { defaultValue: 'Share, then Add to Home Screen.' })}
         </p>
       </div>
     );

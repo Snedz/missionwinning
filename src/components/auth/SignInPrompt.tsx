@@ -45,8 +45,8 @@ export function SignInPrompt({
           </div>
           <p className="text-xs text-muted-foreground mt-1 leading-relaxed">{copy}</p>
         </div>
-        <Link href="/profile" className="text-xs text-primary hover:underline shrink-0 pt-0.5">
-          {t('yourProfile', { defaultValue: 'Profile' })} →
+        <Link href="/profile" className="text-xs text-primary hover:underline shrink-0 pt-0.5 min-h-[44px] inline-flex items-center tap-target">
+          {t('yourProfile', { defaultValue: 'Profile' })}
         </Link>
       </div>
       <div className="mt-3 flex flex-wrap gap-2">

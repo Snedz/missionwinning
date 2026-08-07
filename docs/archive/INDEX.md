@@ -25,6 +25,7 @@ When adding a doc:
 
 | File | Absorbed by / note |
 |------|---------------------|
+| [log/LOG-rotate-566.md](./log/LOG-rotate-566.md) | rotated oldest for `.566` CTA arrows |
 | [log/LOG-rotate-565.md](./log/LOG-rotate-565.md) | rotated oldest for `.565` residual |
 | [log/LOG-rotate-564.md](./log/LOG-rotate-564.md) | rotated oldest for `.564` photo/adapt |
 | [log/LOG-rotate-563.md](./log/LOG-rotate-563.md) | rotated oldest for `.563` picker |

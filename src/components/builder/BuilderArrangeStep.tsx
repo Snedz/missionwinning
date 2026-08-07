@@ -236,7 +236,7 @@ export function BuilderArrangeStep({
                           <Tooltip>
                             <TooltipTrigger asChild>
                               <Button variant="ghost" size="icon"
-                                className="h-8 w-8"
+                                className="h-11 w-11 tap-target"
                                 onClick={() => onRemoveSet(ex.key, i)} disabled={ex.sets.length <= 1} aria-label={t('builderRemoveSet', { defaultValue: 'Remove set' })}
                               >
                                 <Trash2 className="h-3 w-3" />

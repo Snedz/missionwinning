@@ -27,8 +27,8 @@ export function JourneyStrip({ action }: { action: JourneyAction }) {
     return (
       <div className="flex items-center justify-between text-xs text-muted-foreground py-2">
         <span className="font-medium text-muted-foreground">{action.stepLabel}</span>
-        <a href="/leaderboard" className="text-muted-foreground hover:text-foreground hover:underline">
-          {t('todayRankings', { defaultValue: 'Rankings' })} →
+        <a href="/leaderboard" className="text-muted-foreground hover:text-foreground hover:underline min-h-[44px] inline-flex items-center tap-target">
+          {t('todayRankings', { defaultValue: 'Rankings' })}
         </a>
       </div>
     );
