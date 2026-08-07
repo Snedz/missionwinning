@@ -63,7 +63,7 @@ export function AboutPage() {
               <p className="text-muted-foreground">
                 <Link href="/america" className="text-muted-foreground hover:underline">
                   {t('infoAboutAmericaLink', {
-                    defaultValue: 'Presidential Fitness Test & youth movement →',
+                    defaultValue: 'Presidential Fitness Test & youth movement',
                   })}
                 </Link>
               </p>

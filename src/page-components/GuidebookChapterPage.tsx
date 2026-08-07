@@ -84,7 +84,7 @@ export function GuidebookChapterPage({ chapterId }: Props) {
       {chapter.quickPathId && (
         <Button variant="link" size="sm" className="px-0 h-auto -mt-4" asChild>
           <Link href="/learn">
-            {t('guidebookQuickVersion', { defaultValue: '5-minute quick path →' })}
+            {t('guidebookQuickVersion', { defaultValue: '5-minute quick path' })}
           </Link>
         </Button>
       )}
@@ -148,7 +148,7 @@ export function GuidebookChapterPage({ chapterId }: Props) {
             {BEYOND_NEXT_CHAPTER(chapterId) ? (
               <Button size="sm" asChild>
                 <Link href={`/learn/guide/${BEYOND_NEXT_CHAPTER(chapterId)}`}>
-                  {t('guidebookNextChapter', { defaultValue: 'Next chapter →' })}
+                  {t('guidebookNextChapter', { defaultValue: 'Next chapter' })}
                 </Link>
               </Button>
             ) : (

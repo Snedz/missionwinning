@@ -176,7 +176,7 @@ export function FitnessTestRunner() {
                   )
                 }
               >
-                {t('pftViewClassBoard', { defaultValue: 'View class standings →' })}
+                {t('pftViewClassBoard', { defaultValue: 'View class standings' })}
               </Button>
             </div>
           )}
@@ -209,7 +209,7 @@ export function FitnessTestRunner() {
               className="w-full"
               onClick={() => router.push(americaHomeOrFallback())}
             >
-              {t('pftShareAmerica', { defaultValue: 'National fitness mission →' })}
+              {t('pftShareAmerica', { defaultValue: 'National fitness mission' })}
             </Button>
           )}
         </CardContent>

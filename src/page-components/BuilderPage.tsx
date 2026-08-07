@@ -268,7 +268,7 @@ export function BuilderPage() {
                 onClick={() => n < step && setStep(n)}
                 className={` px-3 py-1 text-xs font-medium border ${
                   active
-                    ? 'border-primary bg-accent-100 text-primary'
+                    ? 'border-primary bg-muted text-primary'
                     : done
                       ? 'border-border text-foreground'
                       : 'border-border text-muted-foreground'
@@ -332,7 +332,7 @@ export function BuilderPage() {
                 onClick={() => setTemplateCategory(value)}
                 className={
                   templateCategory === value
-                    ? ' border border-primary bg-accent-100 px-4 py-2 text-sm font-semibold text-primary'
+                    ? ' border border-primary bg-muted px-4 py-2 text-sm font-semibold text-primary'
                     : ' border-2 border-border bg-card px-4 py-2 text-sm font-medium text-muted-foreground hover:text-foreground'
                 }
               >

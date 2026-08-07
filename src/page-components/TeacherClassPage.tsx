@@ -327,7 +327,7 @@ function TeacherClassInner({ code: rawCode }: { code: string }) {
                 <div className="flex flex-wrap gap-2 mt-4">
                   <Button variant="outline" size="sm" asChild>
                     <Link href={`/leaderboard?board=presidential-fitness&scope=class&class=${code}`}>
-                      {t('teacherOpenLeaderboard', { defaultValue: 'Open PFT leaderboard →' })}
+                      {t('teacherOpenLeaderboard', { defaultValue: 'Open PFT leaderboard' })}
                     </Link>
                   </Button>
                   <Button variant="outline" size="sm" className="gap-1.5" onClick={downloadStandingsCsv}>

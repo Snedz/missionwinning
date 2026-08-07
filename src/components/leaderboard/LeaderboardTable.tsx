@@ -57,7 +57,7 @@ export function LeaderboardTable({ entries, unit, yourRank, theme = 'default' }:
       className={cn(
         'border-2 overflow-hidden',
         theme === 'night' && 'border-border bg-card',
-        theme === 'dawn' && 'border-border bg-accent-100',
+        theme === 'dawn' && 'border-border bg-muted',
         theme === 'default' && 'border-border bg-card'
       )}
     >
@@ -76,7 +76,7 @@ export function LeaderboardTable({ entries, unit, yourRank, theme = 'default' }:
               className={cn(
                 'grid grid-cols-[2.5rem_1fr_4.5rem_3.5rem] gap-2 px-3 py-2.5 items-center text-sm',
                 e.isYou && theme === 'night' && 'bg-card border-s-2 border-s-foreground',
-                e.isYou && theme === 'dawn' && 'bg-accent-100 border-s-2 border-s-primary',
+                e.isYou && theme === 'dawn' && 'bg-muted border-s-2 border-s-primary',
                 e.isYou && theme === 'default' && 'bg-tint border-s-2 border-s-primary',
                 rank <= 3 && !e.isYou && 'bg-background'
               )}

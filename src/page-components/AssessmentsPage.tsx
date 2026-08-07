@@ -287,7 +287,7 @@ export function AssessmentsPage() {
           className={cn(
             'content-card border-2',
             result.riskLevel === 'high'
-              ? 'border-primary bg-accent-100'
+              ? 'border-primary bg-muted'
               : result.riskLevel === 'moderate'
                 ? 'border-primary'
                 : 'border-border'

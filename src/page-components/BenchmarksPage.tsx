@@ -132,7 +132,7 @@ export function BenchmarksPage() {
         <CardDescription>
           {t('benchmarksQuickDesc', {
             defaultValue:
-              'Start a short session focused on common benchmark lifts. Log sets → see progress here next time. Bumps streak on launch.',
+              'Start a short session focused on common benchmark lifts. Log sets see progress here next time. Bumps streak on launch.',
           })}
         </CardDescription>
       </CardHeader>
@@ -142,20 +142,20 @@ export function BenchmarksPage() {
           store.startWorkout("Bench Benchmark", [{ exerciseId: "bench-press", sets: [{ reps: 5, weight: 0 }, { reps: 5, weight: 0 }, { reps: 3, weight: 0 }] }]);
           bumpTrainingStreak();
           router.push('/active');
-        }}>{t('benchmarksQuickBench', { defaultValue: 'Bench 5/3/1 style →' })}</Button>
+        }}>{t('benchmarksQuickBench', { defaultValue: 'Bench 5/3/1 style' })}</Button>
         <Button size="sm" variant="outline" onClick={() => {
           const store = useWorkoutStore.getState();
           store.startWorkout("Squat Benchmark", [{ exerciseId: "squats", sets: [{ reps: 5, weight: 0 }, { reps: 5, weight: 0 }, { reps: 3, weight: 0 }] }]);
           bumpTrainingStreak();
           router.push('/active');
-        }}>{t('benchmarksQuickSquat', { defaultValue: 'Squat working sets →' })}</Button>
+        }}>{t('benchmarksQuickSquat', { defaultValue: 'Squat working sets' })}</Button>
         <Button size="sm" variant="outline" onClick={() => {
           const store = useWorkoutStore.getState();
           store.startWorkout("Deadlift Benchmark", [{ exerciseId: "deadlift", sets: [{ reps: 3, weight: 0 }, { reps: 3, weight: 0 }] }]);
           bumpTrainingStreak();
           router.push('/active');
-        }}>{t('benchmarksQuickDeadlift', { defaultValue: 'Deadlift pulls →' })}</Button>
-        <Button size="sm" variant="outline" onClick={() => router.push('/log')}>{t('benchmarksQuickStarters', { defaultValue: 'All free starters in Today →' })}</Button>
+        }}>{t('benchmarksQuickDeadlift', { defaultValue: 'Deadlift pulls' })}</Button>
+        <Button size="sm" variant="outline" onClick={() => router.push('/log')}>{t('benchmarksQuickStarters', { defaultValue: 'All free starters in Today' })}</Button>
         <Button size="sm" variant="ghost" onClick={() => {
           try {
             const cur = bumpTrainingStreak();
@@ -484,7 +484,7 @@ export function BenchmarksPage() {
                       return (
                         <TableRow key={s.exerciseId}
                           className={
-                            s.exerciseId === activeId ? "bg-accent-100" : "cursor-pointer"
+                            s.exerciseId === activeId ? "bg-muted" : "cursor-pointer"
                           }
                           onClick={() => setSelectedId(s.exerciseId)}
                         >

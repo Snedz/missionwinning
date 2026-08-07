@@ -262,7 +262,7 @@ export function LeaderboardPage() {
  className={cn(
  'inline-flex items-center gap-1.5 border-2 px-3 py-1.5 transition-colors',
  boardId === 'dawns-early-light'
- ? 'border-border bg-accent-100 text-accent-900'
+ ? 'border-border bg-muted text-accent-900'
  : 'border-border text-muted-foreground hover:border-foreground'
  )}
  >
@@ -279,7 +279,7 @@ export function LeaderboardPage() {
  boardTheme === 'night'
  ? 'border-2 border-border bg-card p-4 md:p-5'
  : boardTheme === 'dawn'
- ? 'border-2 border-border bg-accent-100 p-4 md:p-5'
+ ? 'border-2 border-border bg-muted p-4 md:p-5'
  : 'border-2 border-border bg-card p-4 md:p-5'
  }
  >
