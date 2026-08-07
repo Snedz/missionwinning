@@ -32,6 +32,7 @@ import {
   parseMindCollectionParam,
   type MindCollectionId,
 } from '@/lib/mind/filterSessions';
+import { mindSeriesByCollectionId, orderSessionsForSeries } from '@/lib/mind/mindSeries';
 import { cn } from '@/lib/utils';
 
 export function MindPage() {
@@ -89,10 +90,12 @@ export function MindPage() {
     () => filterMindByCollection(GUIDED_MIND_SESSIONS, collectionId),
     [collectionId]
   );
-  const filteredPremium = useMemo(
-    () => filterMindByCollection(premiumSessions, collectionId),
-    [premiumSessions, collectionId]
-  );
+  const filteredPremium = useMemo(() => {
+    const filtered = filterMindByCollection(premiumSessions, collectionId);
+    const series = mindSeriesByCollectionId(collectionId);
+    return series ? orderSessionsForSeries(filtered, series) : filtered;
+  }, [premiumSessions, collectionId]);
+  const activeSeries = mindSeriesByCollectionId(collectionId);
 
   return (
     <PillarPageShell
@@ -138,6 +141,23 @@ export function MindPage() {
           );
         })}
       </div>
+
+      {activeSeries ? (
+        <div
+          className="border-2 border-border bg-card p-4 space-y-1"
+          data-testid="mind-series-banner"
+        >
+          <p className="text-sm font-semibold text-foreground">
+            {t(activeSeries.titleKey, { defaultValue: activeSeries.titleDefault })}
+          </p>
+          <p className="text-xs text-muted-foreground">
+            {t('mindSeriesSleepWeekBlurb', {
+              count: activeSeries.sessionIds.length,
+              defaultValue: `A ${activeSeries.sessionIds.length}-night sequence — do nights in order when you can. Premium sessions only.`,
+            })}
+          </p>
+        </div>
+      ) : null}
 
       <div id="mind-guided" className="space-y-3 scroll-mt-20">
         <h3 className="text-sm font-medium text-muted-foreground">
