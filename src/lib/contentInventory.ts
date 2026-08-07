@@ -19,7 +19,7 @@ import { FORM_PACK_SIDE_IDS, FORM_PACK_VIDEO_IDS } from '@/lib/formMedia';
 
 /** Depth plan D1 floors (see .hermes/plans/*super-bundle-depth*). Current = shipped floor. */
 export const CONTENT_FLOORS = {
-  moveFree: 24,
+  moveFree: 32,
   movePremium: 40,
   mindFree: 24,
   mindPremium: 48,
