@@ -46,12 +46,6 @@ import process from 'node:process';
  */
 const ACCEPTED = [
   {
-    id: 'GHSA-5p4m-2wfm-xmqj',
-    pkg: 'js-yaml',
-    why: 'Quadratic CPU consumption resolving !!omap; CVE-2026-59870 is not backported to 3.x or 4.x. Transitive through eslint -> @eslint/eslintrc only, and `npm ls js-yaml --omit=dev` is empty, so it is absent from the production tree. The vulnerable path is YAML config parsing; this repo configures eslint with a flat `eslint.config.js` and has no .eslintrc.yml anywhere, so the parser is never handed YAML at all — let alone attacker-supplied YAML.',
-    fixWhen: '@eslint/eslintrc picks up a patched js-yaml, or eslint drops the eslintrc compatibility layer. Re-check if a YAML eslint config is ever introduced — that changes the reach, not just the version.',
-  },
-  {
     id: 'GHSA-3gc7-fjrx-p6mg',
     pkg: 'bigint-buffer',
     why: 'Buffer overflow in toBigIntLE(). Enters via @solana/spl-token. The only fix npm offers is a breaking downgrade of the payment SDK.',
@@ -83,7 +77,7 @@ const ACCEPTED = [
  * allowlist longer than the cap would let an unreviewed advisory in behind a
  * reviewed one.
  */
-export const MAX_ACCEPTED_HIGH = 10;
+export const MAX_ACCEPTED_HIGH = 9;
 
 const acceptedIds = new Set(ACCEPTED.map((a) => a.id));
 

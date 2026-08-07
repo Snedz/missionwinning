@@ -81,10 +81,14 @@ test('the ratchet only moves down', () => {
    * was written; `npm audit fix` cleared four with no breaking change, and 13 is
    * where it may never rise from.
    *
-   * `.562`: 13 → 10. Four allowlisted advisories cleared upstream (two postcss,
-   * sharp, brace-expansion) and one new one arrived (js-yaml, dev-only), so the
-   * list is ten. Lowered in lockstep with `MAX_ACCEPTED_HIGH` rather than left
-   * at 13, because a ceiling three above the live value is three advisories of
+   * `.596`: 13 → 9. Four allowlisted advisories cleared upstream (two postcss,
+   * sharp, brace-expansion). Two more arrived mid-branch — js-yaml and nanoid —
+   * and **both were fixed rather than admitted**: `npm audit fix
+   * --package-lock-only` moved js-yaml 4.3.0 → 4.3.1 and nanoid 3.3.16 → 3.3.18,
+   * clearing them outright. That is the branch this guard's error message asks
+   * for ("Fix it, or add it to ACCEPTED"), and it is why the allowlist shrank
+   * instead of growing. Lowered in lockstep with `MAX_ACCEPTED_HIGH` rather than
+   * left at 13, because a ceiling four above the live value is four advisories of
    * silent headroom — the same defect this ship fixed in `i18nCoverage.test.ts`,
    * which sat at 710 against a cap of 16.
    *
@@ -92,7 +96,7 @@ test('the ratchet only moves down', () => {
    * rule they share: a cap that follows reality is not a cap.
    */
   assert.ok(
-    MAX_ACCEPTED_HIGH <= 10,
+    MAX_ACCEPTED_HIGH <= 9,
     `MAX_ACCEPTED_HIGH is ${MAX_ACCEPTED_HIGH}; it may only ever be lowered. Raising it to admit ` +
       'a new advisory is how a gate becomes decoration.'
   );

@@ -25,6 +25,7 @@ When adding a doc:
 
 | File | Absorbed by / note |
 |------|---------------------|
+| [log/LOG-rotate-595.md](./log/LOG-rotate-595.md) | rotated oldest for `.595` About/Vision editorial |
 | [log/LOG-rotate-594.md](./log/LOG-rotate-594.md) | rotated oldest for `.594` app voice recut |
 | [log/LOG-rotate-593.md](./log/LOG-rotate-593.md) | rotated oldest for `.593` legal |
 | [log/LOG-rotate-592.md](./log/LOG-rotate-592.md) | rotated oldest for `.592` lean continuity |
@@ -364,6 +365,7 @@ When adding a doc:
 | [log/LOG-hero-audit-rotate-2026-08-03.md](./log/LOG-hero-audit-rotate-2026-08-03.md) | `.247` (days logged / caps) — rotated 2026-08-03 for `.263` hero audit entry |
 | [log/LOG-rotate-562.md](./log/LOG-rotate-562.md) | `.547` (Terms liability cap / Privacy 30-day deletion) — rotated 2026-08-07 for `.562` ratchet repayment |
 | [log/LOG-rotate-595.md](./log/LOG-rotate-595.md) | `.580` (Kaizen coach/track/journey 44px residual) — rotated 2026-08-07 for `.595` ratchet repayment |
+| [log/LOG-rotate-596.md](./log/LOG-rotate-596.md) | `.581` (AdaptiveOverlay misuse + adjust/form sheet cleanup) — rotated 2026-08-07 for `.596` ratchet repayment |
 | [SETUP.md](./SETUP.md) | Stale PayPal-first setup — superseded by [docs/PRE_REVENUE_CHECKLIST.md](../PRE_REVENUE_CHECKLIST.md) + [docs/LLC_AND_PAYMENTS.md](../LLC_AND_PAYMENTS.md) |
 
 Canonical live launch path: root **[LAUNCH_RUNBOOK.md](../LAUNCH_RUNBOOK.md)** + [docs/SOCIAL_LAUNCH.md](../SOCIAL_LAUNCH.md) (copy kit).
