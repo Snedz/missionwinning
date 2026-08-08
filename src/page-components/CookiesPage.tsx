@@ -12,7 +12,7 @@
 import { useTranslation } from 'react-i18next';
 import { Cookie } from 'lucide-react';
 import { InfoPageShell, InfoSection } from '@/components/layout/InfoPageShell';
-import { CURRENT_PRIVACY_VERSION } from '@/lib/privacyConsent';
+import { PRIVACY_DISPLAY_DATE } from '@/lib/privacyConsent';
 import { STORAGE_INVENTORY, type StorageCategory, type StorageEntryKind } from '@/lib/cookiePolicy';
 
 export function CookiesPage() {
@@ -33,7 +33,7 @@ export function CookiesPage() {
       icon={Cookie}
       eyebrow={t('infoLegalEyebrow', { defaultValue: 'Legal' })}
       title={t('infoCookiesTitle', { defaultValue: 'Cookies & device storage' })}
-      lastUpdated={`${t('infoLastUpdatedLabel', { defaultValue: 'Last updated:' })} ${CURRENT_PRIVACY_VERSION}`}
+      lastUpdated={`${t('infoLastUpdatedLabel', { defaultValue: 'Last updated:' })} ${PRIVACY_DISPLAY_DATE}`}
       showLegalFooter
     >
       <InfoSection id="overview" title={t('infoCookiesOverview', { defaultValue: 'Overview' })}>
