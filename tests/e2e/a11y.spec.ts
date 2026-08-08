@@ -39,6 +39,7 @@ const GATED_ROUTES = [
   '/library',
   '/builder',
   '/profile',
+  '/account',
   '/exercises/push-ups',
   // The SEO tail is most of the site's URLs and one exercise page used to represent all
   // of it. One route per template, plus the two info pages every footer links to.
@@ -176,12 +177,13 @@ test.describe('Accessibility @a11y', () => {
   }
 
   /**
-   * `/profile` is in the list above, but the feedback sheet is closed on load —
+   * `/account` is in the list above, but the feedback sheet is closed on load —
    * so the route passing says nothing about the overlay. `.215` adds a textarea,
    * a labelled input and a dialog to the app's most-used settings screen; axe
-   * has to see them open or the coverage is nominal.
+   * has to see them open or the coverage is nominal. The card moved from
+   * `/profile` to `/account` in the `.606` split; the sheet did not change.
    */
-  test('axe serious/critical: /profile with the feedback sheet open @a11y', async ({
+  test('axe serious/critical: /account with the feedback sheet open @a11y', async ({
     page,
     context,
     baseURL,
@@ -192,14 +194,14 @@ test.describe('Accessibility @a11y', () => {
       test.skip(true, 'SMOKE_ACCESS_SECRET required to unlock private gate');
     }
     await seedLegacyOnboarding(page);
-    await page.goto('/profile', { waitUntil: 'networkidle' });
+    await page.goto('/account', { waitUntil: 'networkidle' });
     // Prefer the card CTA (outline) — scroll past referral chrome first.
     const feedback = page.locator('main').getByRole('button', { name: /send feedback/i });
     await feedback.scrollIntoViewIfNeeded();
     await expect(feedback).toBeVisible();
     await feedback.click();
     await expect(page.getByRole('dialog')).toBeVisible({ timeout: 10_000 });
-    await axeSerious(page, '/profile (feedback sheet)');
+    await axeSerious(page, '/account (feedback sheet)');
   });
 
   /**

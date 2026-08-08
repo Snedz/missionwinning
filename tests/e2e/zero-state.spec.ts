@@ -55,6 +55,7 @@ const APP_ROUTES = [
   '/assessments',
   '/programs',
   '/profile',
+  '/account',
 ];
 
 /**
@@ -122,8 +123,12 @@ const RED_ACTION_CAP: Record<string, { cap: number; why: string }> = {
     why: 'D12: only today’s PlanSessionCard uses filled Start; other days outline; Regenerate lives in Manage sheet.',
   },
   '/profile': {
+    cap: 0,
+    why: 'The Athlete Page is a record, not a task — red means "do this now" and nothing here does. Call-sign Save is outline on purpose; Rule 1 is met by the input, the Save and the Account link. Settings (and their magic-link red) moved to /account in `.606`.',
+  },
+  '/account': {
     cap: 1,
-    why: 'Send magic link is the one red; Continue/Save Goals/backup demoted. Day chips use selected without bg-primary.',
+    why: 'Send magic link is the one red, inherited from /profile before the `.606` split; Continue/Save Goals/backup demoted. Day chips use selected without bg-primary.',
   },
 
   '/mind': {

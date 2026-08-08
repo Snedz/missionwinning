@@ -359,7 +359,8 @@ test.describe('First 90 seconds @gate', () => {
    */
   test('every control in the feedback sheet is thumb-sized @gate', async ({ page }) => {
     await seedLegacyOnboarding(page);
-    await page.goto('/profile', { waitUntil: 'networkidle' });
+    // The card moved with the settings in the `.606` /profile split.
+    await page.goto('/account', { waitUntil: 'networkidle' });
     await page.getByRole('button', { name: /send feedback/i }).click();
     await expect(page.getByRole('dialog')).toBeVisible();
     await expectThumbSized(page, 'feedback sheet', DIALOG_CONTROL_SELECTOR);
