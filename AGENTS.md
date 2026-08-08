@@ -14,6 +14,7 @@ Works in Cursor, Claude Code, Grok, Copilot, Gemini, and other agents — tool-a
 4. Read the `INDEX.md` in the folder you are about to edit.
 5. Prefer indexed paths over repo-wide grep for planning docs.
 6. Do not use old chat plans as source of truth — use `ORCHESTRATION.md`, `docs/PLAN.md`, and `LOG.md`.
+7. Private continuity (diary, strategy full text, Mission Control dashboard): mount `ops/` / mission-ops — [docs/OPS_LOCAL.md](docs/OPS_LOCAL.md). Run `npm run ops:dashboard` locally when available.
 
 **Horizon rule:** **Horizon W (now)** — agents **must** ship Train / Today / Victory / Coach wedge excellence until founder phone sign-off. ≥10 beta is a **public-flip** gate after that — not a build freeze. Refuse new pillars / locales / America / F5 unless the founder explicitly overrides.
 

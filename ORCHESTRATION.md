@@ -2,8 +2,8 @@
 
 **Audience:** Founder + AI agents  
 **Build baseline:** `2026.07-unified.90`+  
-**#1 metric (year one):** week-4 retained weekly loggers — [docs/STRATEGY.md](docs/STRATEGY.md)  
-**Constitution:** [vision.md](vision.md) · **YC wedge:** [docs/YC_THESIS.md](docs/YC_THESIS.md) · **Crypto = rail:** [docs/CRYPTO_RAILS_THESIS.md](docs/CRYPTO_RAILS_THESIS.md) · **Risk filter:** [docs/REDTEAM.md](docs/REDTEAM.md) · **Build phases:** [docs/PLAN.md](docs/PLAN.md) · **Launch:** [docs/LAUNCH_RUNBOOK.md](docs/LAUNCH_RUNBOOK.md)
+**#1 metric (year one):** week-4 retained weekly loggers — [docs/THESIS.md](docs/THESIS.md)  
+**Constitution:** [vision.md](vision.md) · **Wedge / public truth:** [docs/THESIS.md](docs/THESIS.md) · **Crypto = rail:** [docs/CRYPTO_RAILS_THESIS.md](docs/CRYPTO_RAILS_THESIS.md) · **Risk notes:** product stubs + private mission-ops (`strategy/REDTEAM`) · **Build phases:** [docs/PLAN.md](docs/PLAN.md) · **Launch:** [docs/LAUNCH_RUNBOOK.md](docs/LAUNCH_RUNBOOK.md)
 
 Use this file to decide **what to work on next** and **what is forbidden until metrics unlock**.  
 Do not use old chat plans as source of truth — prefer this file + PLAN + LOG.
@@ -122,7 +122,7 @@ flowchart TB
 | 1 | Vercel Production: `SUPABASE_SERVICE_ROLE_KEY`, `DEMO_PREMIUM=false`, rotated `PRIVATE_ACCESS_SECRET` | [docs/LAUNCH_RUNBOOK.md](docs/LAUNCH_RUNBOOK.md) §2 |
 | 2 | Stripe monthly / 12-mo $59 / lifetime $149 links + `STRIPE_WEBHOOK_SECRET` — **after EIN** (free-first beta now) | [docs/STRIPE_PREMIUM_SETUP.md](docs/STRIPE_PREMIUM_SETUP.md), [docs/FREE_BETA.md](docs/FREE_BETA.md) |
 | 3 | **Dogfood notes** on current build (2–5 min; paste #1 friction to agents) | [docs/LAUNCH_RUNBOOK.md](docs/LAUNCH_RUNBOOK.md) **§3a** |
-| 4 | Recruit ≥10 beta users **(after excellence pass + postal)** | [docs/STRATEGY.md](docs/STRATEGY.md), [docs/BETA_INVITE.md](docs/BETA_INVITE.md) |
+| 4 | Recruit ≥10 beta users **(after excellence pass + postal)** | [docs/BETA_INVITE.md](docs/BETA_INVITE.md), [docs/THESIS.md](docs/THESIS.md) |
 | 5 | **Gates (the one home for these numbers): I-Day ≥80%, Basic Training ≥60%.** Basic Training means **first workout completed** ([docs/JOURNEY.md](docs/JOURNEY.md) Phase 1) — Horizon W retired the 5/5 scavenger hunt. `.605`: this gate had carried three different values across three files (≥40% 5/5, ≥60% 5/5, first-workout-only); other docs now point here rather than restate. | Profile beta panel, [docs/JOURNEY.md](docs/JOURNEY.md) Phase 1 |
 | 6 | Mobile hero QA: Welcome → first set → Victory → Coach (with dogfood notes) | Manual + `npm run e2e:critical` + §3a |
 | 7 | `LAUNCH_STRICT=true npm run launch-verify` against prod | Scripts |
@@ -158,7 +158,7 @@ flowchart TB
 
 **Wall metric:** week-4 retained weekly loggers — measure via [docs/POST_LAUNCH_CADENCE.md](docs/POST_LAUNCH_CADENCE.md).
 
-If &lt;10% across two cohorts → **stop acquisition**, 10 interviews, fix or cut ([docs/REDTEAM.md](docs/REDTEAM.md) A4).
+If &lt;10% across two cohorts → **stop acquisition**, 10 interviews, fix or cut (REDTEAM A4 — full memo in private mission-ops).
 
 | Cadence | Action |
 |---------|--------|
@@ -273,12 +273,12 @@ Founder-only lanes (never delegated): accounts/secrets, pricing, legal filings, 
 
 ## YC application gate (Horizon: apply only after retention)
 
-**Do not apply to YC (or claim traction) until all of the below hold.** Thesis + skeleton: [docs/YC_THESIS.md](docs/YC_THESIS.md). Agents never flip `PRIVATE_MODE` or invent numbers.
+**Do not apply to YC (or claim traction) until all of the below hold.** Public summary: [docs/THESIS.md](docs/THESIS.md). Full YC memo: private mission-ops. Agents never flip `PRIVATE_MODE` or invent numbers.
 
 | Gate | Target |
 |------|--------|
 | Real users | ≥100 completed ≥1 workout |
-| Week-4 retained weekly loggers | ≥10% of activated cohort ([docs/STRATEGY.md](docs/STRATEGY.md)) |
+| Week-4 retained weekly loggers | ≥10% of activated cohort ([docs/THESIS.md](docs/THESIS.md)) |
 | Paid signal | ≥10 Super Bundle or lifetime |
 | Demo | 60s: I-Day → log → Coach adapts week |
 | Interviews | 20 written “why I almost quit” notes |
@@ -294,7 +294,7 @@ Pitch the **Train + Mission Coach wedge** — not “everything app.” Constitu
 
 - Build phases A–I detail: [docs/PLAN.md](docs/PLAN.md)  
 - Where we are: [CONTEXT.md](CONTEXT.md) `## Now` — the only status block ([docs/archive/VISION_STATUS-2026-07-23.md](docs/archive/VISION_STATUS-2026-07-23.md) is the retired scorecard)  
-- YC wedge / apply bar: [docs/YC_THESIS.md](docs/YC_THESIS.md)  
+- YC wedge / apply bar: [docs/THESIS.md](docs/THESIS.md) (full apply pack → mission-ops)  
 - Crypto rails (not product): [docs/CRYPTO_RAILS_THESIS.md](docs/CRYPTO_RAILS_THESIS.md)  
 - Post-launch metric SQL: [docs/POST_LAUNCH_CADENCE.md](docs/POST_LAUNCH_CADENCE.md)  
 - Shipped chronology: [LOG.md](LOG.md)  

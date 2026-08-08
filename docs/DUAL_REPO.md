@@ -23,19 +23,24 @@ Sync helper: `npm run ops:sync` → copies templates + listed INTERNAL files int
 
 ## Ops repo (private)
 
-Suggested layout after `npm run ops:sync` and a first push:
+Layout (private `Snedz/mission-ops` / local `ops/`):
 
 ```text
 mission-ops/
-  README.md
-  CLASSIFICATION.md          # copy of policy
-  VISION_LONG_EVERYTHING.md  # long-term WeChat-scale thesis
-  FOUNDER_CRITICAL_PATH.md   # users / money / legal this week
-  STATUS_PRIVATE.md          # founder blockers not for public CONTEXT
-  INTERNAL_MANIFEST.md       # files that must not ship public
-  strategy/                  # copies of STRATEGY, REDTEAM, …
-  archive/                   # old memos
+  README.md · AGENTS.md
+  CONTINUITY/                # diary, sessions, decisions, prompts, CURRENT
+  dashboard/                 # local Mission Control UI (npm run ops:dashboard)
+  standards/                 # multi-model, best practices, dev/prod
+  strategy/                  # full STRATEGY, REDTEAM, YC, pricing, …
+  history/EVOLUTION.md
+  production/STATUS_PRIVATE.md
+  FOUNDER_CRITICAL_PATH.md
+  VISION_LONG_EVERYTHING.md
+  INTERNAL_MANIFEST.md
+  scripts/new-session.mjs
 ```
+
+War-room docs in the **product** tree are stubs only (`RELOCATED_TO_MISSION_OPS`). Full text is here.
 
 Create the empty private repo once (founder-only):
 

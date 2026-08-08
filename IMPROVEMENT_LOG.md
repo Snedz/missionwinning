@@ -1,7 +1,9 @@
 # Improvement log — Kaizen Night (2026-08-05 full-launch)
 
-Plan: `.hermes/plans/2026-08-05_kaizen-night-plan.md`  
-**Tip:** `2026.07-unified.531` · PRs **#300–#342** · unit tests **1828** pass  
+**Historical snapshot** — living continuity (sessions, diary, decisions, Mission Control dashboard) now lives in **private mission-ops** `CONTINUITY/` (local `ops/`). Session plans under `.hermes/` are local-only and not product truth.
+
+Plan (local only): `.hermes/plans/2026-08-05_kaizen-night-plan.md`  
+**Tip at time of write:** `2026.07-unified.531` · PRs **#300–#342** · unit tests **1828** pass  
 Local gate authoritative (GitHub Actions often billing-blocked).
 
 ## Contract

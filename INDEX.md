@@ -132,8 +132,8 @@ Root keeps only the spine: README · CONTEXT · AGENTS · INDEX · vision · ORC
 | File | Purpose |
 |------|---------|
 | [vision.md](vision.md) | Constitution |
-| [docs/STRATEGY.md](docs/STRATEGY.md) | Business plan |
-| [docs/REDTEAM.md](docs/REDTEAM.md) | Assumptions audit |
+| [docs/STRATEGY.md](docs/STRATEGY.md) | **Stub** — full business plan in private mission-ops |
+| [docs/REDTEAM.md](docs/REDTEAM.md) | **Stub** — full assumptions audit in private mission-ops |
 | [docs/PLAN.md](docs/PLAN.md) | Build roadmap |
 | [LOG.md](LOG.md) | Dev log |
 | [docs/JOURNEY.md](docs/JOURNEY.md) | Mission journey UX |

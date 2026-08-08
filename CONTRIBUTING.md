@@ -12,7 +12,7 @@ Thank you for helping build a healthier world. This guide is for developers and 
 
 ## Prerequisites
 
-- Node.js 20+ (project tested on current LTS)
+- **Node.js 22** (matches CI)
 - npm
 - Optional: Supabase project, Stripe test keys (see [docs/ENV.md](docs/ENV.md))
 
@@ -34,7 +34,7 @@ Open http://localhost:3000 — unlock `/private` if `PRIVATE_MODE=true`.
 |---------|---------|
 | `npm run dev` | Local dev server |
 | `npm run typecheck` | TypeScript check (`tsc --noEmit`, includes tests) |
-| `npm test` | Unit tests (`src/lib/**/*.test.ts`) |
+| `npm test` | Unit tests (`src/**/*.test.ts` + `packages/mw-core`) |
 | `npm run build` | Production build + typecheck |
 | `npm run lint` | ESLint |
 | `npm run e2e` | Playwright (needs `SMOKE_BASE_URL`) |

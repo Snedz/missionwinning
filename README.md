@@ -7,49 +7,36 @@
 
 Adaptive AI coaching for train-anywhere athletes — free offline workout logging (no account required), and weekly plans that adapt from your logs alone (no wearable required).
 
-**AI agents:** read [AGENTS.md](AGENTS.md) then [INDEX.md](INDEX.md) first.
+The free logger is never gated. Premium deepens the path; it does not close the door.
 
-**Mission:** Make the fundamentals of getting stronger accessible worldwide. The free logger is never gated. See [vision.md](vision.md) for the full constitution.
+---
 
-## Open source & privacy (trust)
+## Why this exists
 
-Mission Winning is open source so anyone can inspect how the free core works, improve the harness, and verify our privacy claims.
+The best training outcomes have always come from a coach who knows you. That privilege should not require a gym membership, a wearable, or another stacked subscription. Mission Winning is the free core of that coach — on any phone, offline first, bodyweight-friendly.
 
-| Commitment | Detail |
-|------------|--------|
-| **License** | [AGPL-3.0](LICENSE) — network use requires sharing corresponding source |
-| **Source** | [github.com/Snedz/missionwinning](https://github.com/Snedz/missionwinning) — see [docs/OPEN_SOURCE.md](docs/OPEN_SOURCE.md) |
-| **Conduct** | [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md) |
-| **Acceptable use** | [docs/legal/ACCEPTABLE_USE.md](docs/legal/ACCEPTABLE_USE.md) |
-| **Security / secrets** | [SECURITY.md](SECURITY.md) · [docs/SECRETS.md](docs/SECRETS.md) — keys stay with operators, never in git |
-| **Local-first** | Workouts, nutrition, and journey progress stay on-device until you sign in to sync |
-| **Product analytics** | **Off by default** until you allow them. No session recording, no autocapture. Do Not Track is respected |
-| **Optional AI coach** | Rules by default (no API key). Operators may enable LLM voice with Zero Data Retention — see [docs/ENV.md](docs/ENV.md) |
-| **Free core** | Tracking and foundational tools stay free forever — never paywalled |
+**Constitution:** [vision.md](vision.md) · **One-page product truth:** [docs/THESIS.md](docs/THESIS.md)
 
-Hosted secrets and production keys stay with operators — they are never committed. Run `npm run secrets:scan` before contributing env-related changes.
-
-## Documentation
-
-**[docs/README.md](docs/README.md)** — hub for all audiences:
-
-- **Athletes & teachers** — [docs/help/](docs/help/INDEX.md)
-- **Developers** — [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md), [docs/API.md](docs/API.md), [CONTRIBUTING.md](CONTRIBUTING.md)
-- **AI agents** — [AGENTS.md](AGENTS.md) + [INDEX.md](INDEX.md)
-- **Ops** — [docs/ENV.md](docs/ENV.md), [docs/VERCEL_DEPLOY_CHECKLIST.md](docs/VERCEL_DEPLOY_CHECKLIST.md), [LOG.md](LOG.md)
+---
 
 ## What you get
 
-- **Train** — Offline-first workout logger (sets, RPE, rest timer), library, history, victory loop
-- **Mission Coach** — Weekly plans that adapt when life happens, from workout history alone
-- **Today** — Daily dashboard tying the habit loop together
-- **Fuel / Move / Mind / Track / Learn** — Supporting pillars around the Train + Coach wedge
-- **PWA** — Installable, works offline; no app-store tax for the web product
-- **Android** — Native Compose app under [`apps/android`](apps/android)
+| Surface | What it does |
+|---------|----------------|
+| **Train** | Offline-first set logger (RPE, rest timer, victory) |
+| **Mission Coach** | Weekly plans from logs alone — fatigue-aware, no wearable required |
+| **Today** | One clear next action (route `/log`) |
+| **Fuel · Move · Mind · Track · Learn** | Supporting pillars (free basics; depth grows with retention) |
+| **You** | Athlete identity & earned record (`/profile`) — settings on `/account` |
+| **PWA + Android** | Web installable worldwide; native Compose under `apps/android` |
 
 Built with Next.js, TypeScript, Tailwind, Zustand, Supabase.
 
-## Getting started
+---
+
+## Quick start
+
+**Node.js 22** (CI). npm.
 
 ```bash
 git clone https://github.com/Snedz/missionwinning.git
@@ -59,25 +46,66 @@ npm install
 npm run dev
 ```
 
-Open http://localhost:3000. Unlock `/private` if `PRIVATE_MODE=true`.
+Open http://localhost:3000. Unlock `/private` if `PRIVATE_MODE` is on.
 
 | Command | Purpose |
 |---------|---------|
 | `npm run dev` | Local dev server |
-| `npm run typecheck` | TypeScript check |
-| `npm test` | Unit tests |
+| `npm run typecheck` | TypeScript |
+| `npm test` | Unit tests (`src/**` + `packages/mw-core`) |
 | `npm run build` | Production build |
 | `npm run lint` | ESLint |
-| `npm run secrets:scan` | Gitleaks scan (working tree) |
-| `npm run gate` | Local CI gate while Actions may be blocked |
+| `npm run secrets:scan` | Gitleaks (working tree) |
+| `npm run gate` | Full local CI gate |
 
-## Data storage
+---
 
-Workout data starts on-device for instant offline use and syncs to Supabase when signed in. Core tracking stays free. See [vision.md](vision.md).
+## Documentation
+
+**[docs/README.md](docs/README.md)** — hub for all audiences.
+
+| Audience | Start |
+|----------|--------|
+| Athletes | [docs/help/](docs/help/INDEX.md) |
+| Developers | [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) · [docs/API.md](docs/API.md) · [CONTRIBUTING.md](CONTRIBUTING.md) |
+| **AI agents** | **[CONTEXT.md](CONTEXT.md)** first → [AGENTS.md](AGENTS.md) → [INDEX.md](INDEX.md) → [ORCHESTRATION.md](ORCHESTRATION.md) |
+| Platform contracts | [docs/contracts/](docs/contracts/INDEX.md) |
+| Security / OSS | [docs/OPEN_SOURCE.md](docs/OPEN_SOURCE.md) · [docs/SECRETS.md](docs/SECRETS.md) · [docs/CLASSIFICATION.md](docs/CLASSIFICATION.md) |
+
+Ship history: [LOG.md](LOG.md). Status lives only in `CONTEXT.md` `## Now`.
+
+---
+
+## For AI agents
+
+1. Read **CONTEXT.md** (status + hard rules).  
+2. **AGENTS.md** (conventions) then **INDEX.md** (routing).  
+3. **ORCHESTRATION.md** (what is allowed *now*).  
+4. Folder `INDEX.md` for the area you edit.  
+5. Prefer [docs/contracts/](docs/contracts/INDEX.md) for identity / economy / modules.  
+
+Do not use chat session plans as product truth. Do not invent traction. Do not flip `PRIVATE_MODE`. War-room strategy full text is **not** in this tree (stubs only) — private ops when mounted.
+
+---
+
+## Open source & privacy
+
+| Commitment | Detail |
+|------------|--------|
+| **License** | [AGPL-3.0](LICENSE) |
+| **Secrets** | Never in git — [docs/SECRETS.md](docs/SECRETS.md) · `npm run secrets:scan` |
+| **Local-first** | Workouts stay on-device until sign-in sync |
+| **Analytics** | Off until the user allows; no session replay; DNT respected |
+| **AI coach** | Rules by default; optional LLM with Zero Data Retention when configured |
+| **Classification** | [docs/CLASSIFICATION.md](docs/CLASSIFICATION.md) — public product vs private ops |
+
+Private founder continuity (diary, strategy memos, local Mission Control dashboard) lives outside this public tree — see [docs/DUAL_REPO.md](docs/DUAL_REPO.md) and [docs/OPS_LOCAL.md](docs/OPS_LOCAL.md).
+
+---
 
 ## Contributing
 
-See [CONTRIBUTING.md](CONTRIBUTING.md) and [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md). Do not commit secrets — [docs/SECRETS.md](docs/SECRETS.md).
+See [CONTRIBUTING.md](CONTRIBUTING.md) and [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md).
 
 ## License
 

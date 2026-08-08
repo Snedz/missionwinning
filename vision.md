@@ -10,7 +10,7 @@
 | **Entry today** | Free forever workout logging (no account) plus Mission Coach — fatigue-aware weekly plans from workout history alone, no wearable required. Train anywhere. Win daily. |
 | **Boundary** | Educational tools and a daily supplement — not medical care, not a replacement for human coaches or clinicians. |
 
-YC / go-to-market wedge (never collapse with north star): [docs/YC_THESIS.md](docs/YC_THESIS.md).
+YC / go-to-market wedge (never collapse with north star): [docs/THESIS.md](docs/THESIS.md) (full YC memo → private mission-ops).
 
 ### Team Humanity — different fronts, one goal
 
@@ -165,7 +165,7 @@ This vision is the filter for every decision. If it doesn't serve free global ac
 
 ### YC wedge vs constitution
 
-This file is the **long-term constitution** (Team Humanity north star, six pillars, free forever, global access, the coach that grows with you). Near-term go-to-market and any YC application pitch the **Train + Mission Coach wedge** first — free offline logger + adaptive plans from logs (no wearable) — with Fuel/Move/Mind/Learn as expansion after week-4 retention. The Primer-shaped arc (privilege → entry → lifelong coach) plus Consumer AI market timing **connect** wedge and constitution; they do not replace the wedge one-liner with “everything app” or “civilization.” Agents: do not tear down this vision to match the pitch; do not pitch “everything app” or Team Humanity as the company one-liner. See [docs/YC_THESIS.md](docs/YC_THESIS.md) § Mission / Vision / Values · Team Humanity · RFS fit matrix · Narrative arc · [docs/STRATEGY.md](docs/STRATEGY.md).
+This file is the **long-term constitution** (Team Humanity north star, six pillars, free forever, global access, the coach that grows with you). Near-term go-to-market and any YC application pitch the **Train + Mission Coach wedge** first — free offline logger + adaptive plans from logs (no wearable) — with Fuel/Move/Mind/Learn as expansion after week-4 retention. The Primer-shaped arc (privilege → entry → lifelong coach) plus Consumer AI market timing **connect** wedge and constitution; they do not replace the wedge one-liner with “everything app” or “civilization.” Agents: do not tear down this vision to match the pitch; do not pitch “everything app” or Team Humanity as the company one-liner. See [docs/THESIS.md](docs/THESIS.md). Full fundraising / strategy memos live in private mission-ops, not this public tree.
 
 ### Decade map (metrics-gated, constitution unchanged)
 
