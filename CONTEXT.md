@@ -16,7 +16,7 @@ One screen of truth for any AI tool or human joining cold. Read this, then [AGEN
 
 ---
 
-## Now (2026-08-08 · web `2026.07-unified.598` · Android `1.24.1`)
+## Now (2026-08-08 · web `2026.07-unified.599` · Android `1.24.1`)
 
 > The ONLY "where we are" block in the repo — [ORCHESTRATION.md](ORCHESTRATION.md) points here.
 >
@@ -265,6 +265,7 @@ One screen of truth for any AI tool or human joining cold. Read this, then [AGEN
 > and `.505`–`.545` dropped detail (full text remains in LOG.md / archive)
 > and `.597` dropped `.543`–`.544` detail (full text remains in LOG.md / archive)
 > and `.598` dropped `.583` detail (full text remains in LOG.md / archive)
+> and `.599` dropped `.584` detail (full text remains in LOG.md / archive)
 > to [CONTEXT-now-2026-07-30.md](docs/archive/CONTEXT-now-2026-07-30.md) after this
 > block reached **79 bullets / 103KB**. A status doc that only grows stops being read.
 
@@ -298,7 +299,7 @@ One screen of truth for any AI tool or human joining cold. Read this, then [AGEN
 - **`.587`:** content Move premium D2 40→48 (+8 long flows).
 - **`.586`:** content Fuel free D2 40→48 (+8 recipes).
 - **`.585`:** content Mind free D2 24→32 (+8 tagged sessions).
-- **`.584`:** content Move free D2 24→32 (+8 tagged flows).
+- **`.599`:** **A Postgres error reaching a client, past a guard that could not see it.** `app/api/mobile/workouts/route.ts:84` returned `syncError: error.message` at HTTP **200** — CLAUDE.md §5 forbids it by name. The guard `.filter()`d a **6-entry `LEAKY` list over 69 routes** (an allowlist wearing the name of a scan) *and* keyed on `error:` + `status: 500`, so it missed the live defect on both axes — wrong path, wrong key, wrong status. Rewritten to **discover** every `app/api/**/route.ts` and match any error object reaching a body under any key at any status. It found **two more** on its first run: `journey/nudge:94` leaked the mail provider message (identifier `sendError` — a *third* spelling axis), fixed; `health:53` kept as the one reasoned `LEAK_OK` (behind `?deep=1` **and** `Bearer CRON_SECRET`). Matcher falsified in-file against the shapes that shipped. 3 mutants; tests 2172→2174. **Taken ahead of the planned order** — live disclosure fix, most contained of the four remaining.
 - **`.598`:** **A button that says "start" must start a session.** `CoachAdaptBanner` rendered "Start this session" as a bare `<Link href="/active">` — which starts nothing and lands on `ActiveEmptyState` ("No session running"), on the one surface built to restart a lapsed athlete. And the re-entry dose was applied on **one of four** start paths, so `TodayReentryCard` promised "about 50% of usual sets" while the Coach card beneath it started the full session. One definition now (`.178`): `resolveCoachSessionStart` owns refuse-if-done + re-entry read + scaling; `useStartCoachSession` is wiring. My first draft put the hook after two early returns (Rules-of-Hooks) and the guard's own staleness mirror went red on an exemption the refactor had made theatre — both caught before commit. Coverage floor 390→391 through the documented escape hatch, reasoned in `FLOORS`. 4 mutants; tests 2158→2172.
 - **`.582`:** Kaizen FormGuide i18n + library overlay fix + upload remove 44px.
 - **Horizon W + full-launch override (2026-08-05).** Wedge excellence still required; agents may ship rewards + full surface honesty. Fuel estimate accuracy remains.
