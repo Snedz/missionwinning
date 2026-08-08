@@ -21,9 +21,6 @@ const GUIDEBOOK_EN: Record<string, string> = {
   guidebookPracticeInApp: 'Practice in app',
   guidebookContinue: 'Continue guidebook',
   guidebookPdfDownload: 'Download magazine (PDF)',
-  learnExpandedBanner: 'Now with even more content!',
-  learnExpandedDesc:
-    'Beyond the Basics guidebook — 6 chapters on performance science, movement, programming, and more. Evidence-based, free core.',
   learnOpenGuidebook: 'Open Guidebook →',
   navGuidebook: 'Guidebook',
   moreGuidebookDesc: 'Beyond the Basics — deep reference',
@@ -50,9 +47,6 @@ const GUIDEBOOK_ES: Record<string, string> = {
   guidebookPracticeInApp: 'Practicar en la app',
   guidebookContinue: 'Continuar guía',
   guidebookPdfDownload: 'Descargar revista (PDF)',
-  learnExpandedBanner: '¡Ahora con aún más contenido!',
-  learnExpandedDesc:
-    'Guía Más allá de lo básico — 6 capítulos sobre ciencia del rendimiento, movimiento y programación. Basado en evidencia, núcleo gratis.',
   learnOpenGuidebook: 'Abrir guía →',
   navGuidebook: 'Guía',
   moreGuidebookDesc: 'Referencia profunda — Más allá de lo básico',

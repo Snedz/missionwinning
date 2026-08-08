@@ -28,6 +28,59 @@ type RewardsStrings = {
   rewardVictoryBadges: string;
   rewardChallengeDone: string;
   rewardChallengeXpHint: string;
+  /**
+   * Rank titles, one per `RANKS` level in `rewards/catalog.ts`, plus the past-10
+   * fallback. **These were authored nowhere until `.606`** — `catalog.ts` emitted
+   * `titleKey: 'rewardRank1'` and the keys existed only in a stale committed
+   * `public/locales/en/today.json`, so a fresh export dropped them and every
+   * athlete outside English read their rank in English. Exactly `.252`'s
+   * `coachWhySteadyWeek` defect: a key the app renders, present in the shipped
+   * pack, defined in no source module. `rewardsKeyParity.test.ts` now derives the
+   * required set from `RANKS` so a new level cannot ship without its title.
+   */
+  rewardRank1: string;
+  rewardRank2: string;
+  rewardRank3: string;
+  rewardRank4: string;
+  rewardRank5: string;
+  rewardRank6: string;
+  rewardRank7: string;
+  rewardRank8: string;
+  rewardRank9: string;
+  rewardRank10: string;
+  rewardRankMax: string;
+  /**
+   * Badge titles and descriptions, one pair per `BADGE_DEFS` entry. Same `.606`
+   * repair as the ranks above: `catalog.ts` emitted all 26 keys, no catalog
+   * defined any of them, and they survived only in a stale committed export —
+   * so every badge an athlete earned read in English in all fifteen languages.
+   */
+  rewardBadgeFirstBlood: string;
+  rewardBadgeFirstBloodDesc: string;
+  rewardBadgeWeekOne: string;
+  rewardBadgeWeekOneDesc: string;
+  rewardBadgeConsistent: string;
+  rewardBadgeConsistentDesc: string;
+  rewardBadgeIron25: string;
+  rewardBadgeIron25Desc: string;
+  rewardBadgeIron100: string;
+  rewardBadgeIron100Desc: string;
+  rewardBadgeFuelSteady: string;
+  rewardBadgeFuelSteadyDesc: string;
+  rewardBadgeMobility: string;
+  rewardBadgeMobilityDesc: string;
+  rewardBadgeStillMind: string;
+  rewardBadgeStillMindDesc: string;
+  rewardBadgeStudent: string;
+  rewardBadgeStudentDesc: string;
+  rewardBadgeChallenge: string;
+  rewardBadgeChallengeDesc: string;
+  rewardBadgeSpectrum: string;
+  rewardBadgeSpectrumDesc: string;
+  rewardBadgeComeback: string;
+  rewardBadgeComebackDesc: string;
+  rewardBadgeCommissioned: string;
+  rewardBadgeCommissionedDesc: string;
 };
 
 const en: RewardsStrings = {
@@ -48,6 +101,43 @@ const en: RewardsStrings = {
   rewardVictoryBadges: ' · {{names}}',
   rewardChallengeDone: 'Done',
   rewardChallengeXpHint: ' · +{{xp}} XP earned',
+  rewardRank1: 'Pathfinder',
+  rewardRank2: 'Regular',
+  rewardRank3: 'Operator',
+  rewardRank4: 'Steady Hand',
+  rewardRank5: 'Path Keeper',
+  rewardRank6: 'Mission Ready',
+  rewardRank7: 'Field Guide',
+  rewardRank8: 'Iron Path',
+  rewardRank9: 'Long Haul',
+  rewardRank10: 'Lifelong',
+  rewardRankMax: 'Lifelong',
+  rewardBadgeFirstBlood: 'First Blood',
+  rewardBadgeFirstBloodDesc: 'Finished your first workout.',
+  rewardBadgeWeekOne: 'Week One',
+  rewardBadgeWeekOneDesc: 'Three sessions in your first seven days.',
+  rewardBadgeConsistent: 'Consistent',
+  rewardBadgeConsistentDesc: 'Hit your weekly train goal four separate weeks.',
+  rewardBadgeIron25: 'Iron Log 25',
+  rewardBadgeIron25Desc: 'Twenty-five finished workouts.',
+  rewardBadgeIron100: 'Iron Log 100',
+  rewardBadgeIron100Desc: 'One hundred finished workouts.',
+  rewardBadgeFuelSteady: 'Fuel Steady',
+  rewardBadgeFuelSteadyDesc: 'Seven fuel days logged.',
+  rewardBadgeMobility: 'Mobility Kept',
+  rewardBadgeMobilityDesc: 'Eight Move wins.',
+  rewardBadgeStillMind: 'Still Mind',
+  rewardBadgeStillMindDesc: 'Eight Mind sessions.',
+  rewardBadgeStudent: 'Student',
+  rewardBadgeStudentDesc: 'Ten Learn wins.',
+  rewardBadgeChallenge: 'Challenge Cleared',
+  rewardBadgeChallengeDesc: 'Completed a weekly challenge.',
+  rewardBadgeSpectrum: 'Full Spectrum',
+  rewardBadgeSpectrumDesc: 'Train plus every other pillar in one week.',
+  rewardBadgeComeback: 'Comeback',
+  rewardBadgeComebackDesc: 'Trained again after a week or more away.',
+  rewardBadgeCommissioned: 'Commissioned',
+  rewardBadgeCommissionedDesc: 'Completed the Mission Journey path.',
 };
 
 const LOCALES: Partial<Record<string, Partial<RewardsStrings>>> = {};
