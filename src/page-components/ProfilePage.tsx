@@ -350,7 +350,7 @@ export function ProfilePage() {
 
       <ProfileRewardsCard />
 
-      {/* `.609` — the card sits beside the trophy case it makes wearable. */}
+      {/* `.610` — the card sits beside the trophy case it makes wearable. */}
       <ProfileAthleteCard />
 
       <ProfileAssessmentCard />

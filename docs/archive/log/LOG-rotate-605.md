@@ -1,4 +1,6 @@
-# Rotated for .605
+# LOG rotation — `.590`, rotated by `.605`
+
+Rotated out of [LOG.md](../../../LOG.md) when `.605` took the fifteenth slot. Rotation moves; it never deletes.
 
 ## 2026-08-07 — content: Sleep-week nights 4–7 complete series (`.590`)
 

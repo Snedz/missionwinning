@@ -2,7 +2,7 @@
 /**
  * Training load, from logs alone — the second beat of the wedge, made visible.
  *
- * `.607` — `coach/load.ts` has computed Foster session-RPE and an EWMA
+ * `.608` — `coach/load.ts` has computed Foster session-RPE and an EWMA
  * acute:chronic workload ratio since it was written, and **no screen ever showed
  * it.** It reached planning (`loadGuard`, cap-only), the LLM context, and one
  * post-session debrief line, but an athlete could not go and look at it. That is

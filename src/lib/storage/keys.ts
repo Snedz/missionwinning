@@ -40,7 +40,7 @@ export const STORAGE_KEYS = {
   challenges: 'mw_challenges',
   /** Mission Rewards — XP, ranks, badges (local-first). */
   rewards: 'mw_rewards',
-  /** `.609` — Athlete Card cosmetic picks. Device-local; never synced, never published. */
+  /** `.610` — Athlete Card cosmetic picks. Device-local; never synced, never published. */
   athleteCard: 'mw_athlete_card',
   defaultRestSec: 'mw_default_rest_sec',
   activityLog: 'mw_activity_log',

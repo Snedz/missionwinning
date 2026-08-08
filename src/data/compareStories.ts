@@ -1,7 +1,7 @@
 /**
  * Public compare narrative stories — server-safe (no 'use client').
  *
- * `.605` — the exercise-page count is interpolated, never typed. These stories
+ * `.606` — the exercise-page count is interpolated, never typed. These stories
  * advertised **217** free exercise pages in four places against a real deduped
  * catalog of 228, so every comparison page understated the product to a reader
  * who had come specifically to compare. `contentFloors.ts` is a literal with no

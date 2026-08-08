@@ -1,7 +1,7 @@
 # Rotated for .607
 
-## 2026-08-07 — fix: Lean Today evening continuity + Fuel depth subtitle (`.592`)
+## 2026-08-07 — feat: evening sleep-week continuity + Fuel premium 102→110 (`.591`)
 
-HomeTodayLean passes localHour (parity with dashboard). Fuel subtitle shows free/premium recipe inventory counts.
+Continuity uses localHour: evening → /mind?collection=sleep-week. HomeToday passes hour. +8 premium recipes; PREMIUM_RECIPE_COUNT + floors = 110.
 
-Mutants: HomeTodayLean without localHour → red; NutritionPage without fuelSubtitleDepth → red.
+Mutants: evening train without sleep-week mind href → red; PREMIUM_RECIPE_COUNT < 110 → red.

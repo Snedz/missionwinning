@@ -88,7 +88,7 @@ describe('computeWinScore', () => {
 });
 
 /**
- * `.606` — the Mission Score is a weekly grade, so a quiet week must read as one.
+ * `.607` — the Mission Score is a weekly grade, so a quiet week must read as one.
  *
  * It did not. `totalSessions` and `totalVolume` were lifetime at both call sites,
  * `savedCount` counted templates saved ever, and the Learn term came from three

@@ -12,7 +12,7 @@ export type PrivacyConsent = {
 };
 
 /**
- * Two dates, on purpose (`.608`).
+ * Two dates, on purpose (`.609`).
  *
  * These used to be one constant each, doing two jobs: the pages rendered it as
  * "Last updated", and `hasValidPrivacyConsent()` compared it. The old comment

@@ -23,7 +23,7 @@ export function loadOperatorName(): string {
 }
 
 /**
- * `.610` — a name now has to pass a check before it is stored.
+ * `.611` — a name now has to pass a check before it is stored.
  *
  * This used to be `trim().slice(0, 24)` and nothing else, on the one string this
  * product publishes to other people. Returns the rejection so the caller can say
@@ -68,7 +68,7 @@ export function computeLocalLeaderboardSnapshot(
   const pft = loadLocalPftScore();
 
   /*
-   * `.606` — the leaderboard shares `computeWinScore`, so it shared the defect:
+   * `.607` — the leaderboard shares `computeWinScore`, so it shared the defect:
    * lifetime sessions and volume made a third of every ranked score permanent, and
    * a board that never decays ranks tenure rather than this week.
    *

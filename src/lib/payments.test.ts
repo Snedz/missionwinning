@@ -170,7 +170,7 @@ test('the advertised bundle price is a plain decimal string', () => {
 });
 
 /**
- * `.605` — the bundle page understated everything it sells.
+ * `.606` — the bundle page understated everything it sells.
  *
  * `BUNDLE_PILLARS` carried hand-typed counts, and every one of them had drifted
  * *downward* against shipped content: 40 free recipes against 48, 102+ premium

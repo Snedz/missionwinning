@@ -63,7 +63,7 @@ export function getRecommendedFocus(readiness: Record<MuscleGroup, ReadinessInfo
  * Compute the Mission Score (0-100) with cross-pillar weighting.
  * Train ~40%, Fuel ~15%, Move/Mind/Track/Learn ~45% combined (holistic super app).
  *
- * **Every input is this week's. That is the whole contract.** (`.606`)
+ * **Every input is this week's. That is the whole contract.** (`.607`)
  *
  * It was not. `totalSessions` and `totalVolume` were **lifetime** sums at both call
  * sites, `savedCount` counted templates saved ever, and `learnLessons` came from

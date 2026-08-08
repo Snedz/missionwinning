@@ -1,5 +1,5 @@
 /**
- * The Learn pillar used to pay out forever (`.606`).
+ * The Learn pillar used to pay out forever (`.607`).
  *
  * `countLearnLessonsThisWeek` unioned three **lifetime** localStorage id sets —
  * `learnCompleted`, `premiumCourseProgress`, `guidebookProgress` — and returned

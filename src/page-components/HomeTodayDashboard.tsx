@@ -377,7 +377,7 @@ export function HomeTodayDashboard() {
   }, [workoutHistory.length, pillarStats.proteinDays]);
 
   /*
-   * Mission Score — **this week only** (`.606`).
+   * Mission Score — **this week only** (`.607`).
    *
    * This used to pass `totalSessions` and `totalVolume`, which are lifetime, into a
    * score that resets weekly. Those two variables still exist above and are still

@@ -11,7 +11,7 @@
  * day from the same clock the fixtures use is what makes "at 19:00" mean the
  * evening *of the seeded day* rather than of one particular Thursday.
  *
- * `.612` moved this out of `first-90.spec.ts` because a second spec needs it,
+ * `.613` moved this out of `first-90.spec.ts` because a second spec needs it,
  * and two copies of a clock rule is how the two drift apart.
  */
 export function fixedTimeAt(hour: number): Date {

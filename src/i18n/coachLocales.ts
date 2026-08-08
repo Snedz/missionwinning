@@ -40,7 +40,7 @@ type CoachStrings = {
   coachVoiceError: string;
   coachVoiceOffline: string;
   coachVoiceErrorDesc: string;
-  /** `.607` — the load band. `coachLoadUnmeasured*` is the honest pre-evidence state. */
+  /** `.608` — the load band. `coachLoadUnmeasured*` is the honest pre-evidence state. */
   coachLoadTitle: string;
   coachLoadUnmeasured: string;
   coachLoadUnmeasuredBody: string;

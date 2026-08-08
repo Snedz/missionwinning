@@ -323,7 +323,7 @@ export function LeaderboardPage() {
  <label className="space-y-1">
  <span className="text-xs text-muted-foreground">
  {/*
- `.610` — "Call sign" → "Name" on the one input other people see. REDTEAM A7
+ `.611` — "Call sign" → "Name" on the one input other people see. REDTEAM A7
  rates the military register IMPORTANT and notes it is "copy, not architecture
  — cheap to soften"; a visible identity layer is exactly where that stops being
  true. So the shared surface goes neutral while I-Day / Commissioned / Operator

@@ -1,7 +1,7 @@
 /**
  * The Athlete Card's cosmetics — a pure function of tier, deliberately not a table.
  *
- * `.609` — the identity hole. Before this, 1 of 19 profile cards was identity, there
+ * `.610` — the identity hole. Before this, 1 of 19 profile cards was identity, there
  * was no avatar, no display name on `/profile`, no public profile, and rank and
  * badges lived in `localStorage` where nobody — including a second device — could
  * ever see them. The product had ten ranks and thirteen medallions and no way to

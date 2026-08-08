@@ -103,7 +103,7 @@ test('the resolved ids ride along, so a card can be inspected without painting i
 });
 
 /**
- * The bundle invariant, asserted as a dependency edge (`.611`).
+ * The bundle invariant, asserted as a dependency edge (`.612`).
  *
  * `/active` renders `WorkoutVictorySheet` → `shareCard.ts`. If `shareCard.ts`
  * ever imports this module, the whole cosmetics catalog lands back in `/active`'s

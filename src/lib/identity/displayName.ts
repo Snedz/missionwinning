@@ -1,5 +1,5 @@
 /**
- * What a display name may be before it reaches a board (`.610`).
+ * What a display name may be before it reaches a board (`.611`).
  *
  * `/leaderboard` has published a 24-character free-text name to every signed-in
  * user since the full-launch override, with **no validation of any kind** —

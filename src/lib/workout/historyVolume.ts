@@ -13,7 +13,7 @@ export function sumHistoryVolume(history: readonly CompletedWorkoutLog[]): numbe
 }
 
 /**
- * The two Mission Score inputs that must be **this week's** (`.606`).
+ * The two Mission Score inputs that must be **this week's** (`.607`).
  *
  * Both call sites used to pass `workoutHistory.length` and `sumHistoryVolume(...)`
  * — lifetime figures — into a score documented as a weekly grade that resets, which

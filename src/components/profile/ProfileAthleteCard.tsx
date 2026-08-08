@@ -1,6 +1,6 @@
 'use client';
 /**
- * The Athlete Card — the identity surface `/profile` never had (`.609`).
+ * The Athlete Card — the identity surface `/profile` never had (`.610`).
  *
  * Before this, one of nineteen profile cards was identity and the rest were
  * switches. Rank and badges existed but lived in a private trophy case: no avatar,

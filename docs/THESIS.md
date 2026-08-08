@@ -77,7 +77,7 @@ It is currently **uncomputable** — the `mw_week4_retention()` migration is una
 
 ## 8. Copy waiting on founder sign-off
 
-Positioning is founder-owned and `ORCHESTRATION.md` forbids landing redesign as agent work, so **none of this is merged**. It is one sentence added in four places, not a redesign. `.607` shipped the product side — the load band is now on `/coach` with its honest pre-evidence state — so the claim is true before it is made.
+Positioning is founder-owned and `ORCHESTRATION.md` forbids landing redesign as agent work, so **none of this is merged**. It is one sentence added in four places, not a redesign. `.608` shipped the product side — the load band is now on `/coach` with its honest pre-evidence state — so the claim is true before it is made.
 
 | Where | Today | Proposed second beat |
 |---|---|---|

@@ -54,7 +54,7 @@ describe('privacyConsent', () => {
   });
 
   /**
-   * `.608` — the display date and the consent version were one constant, which
+   * `.609` — the display date and the consent version were one constant, which
    * made every prose edit a global re-consent prompt. Nobody edits a policy
    * under that rule, and a stale privacy page is the exact failure the consent
    * record exists to prevent.

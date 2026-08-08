@@ -1,5 +1,5 @@
 /**
- * The load band must refuse to speak before it has evidence (`.607`).
+ * The load band must refuse to speak before it has evidence (`.608`).
  *
  * This is the branch that matters. Anyone can render a number once `loadBands`
  * produces one; the value of the whole feature is that on day three it says "not

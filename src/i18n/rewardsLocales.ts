@@ -28,7 +28,7 @@ type RewardsStrings = {
   rewardVictoryBadges: string;
   rewardChallengeDone: string;
   rewardChallengeXpHint: string;
-  /** `.609` — the Athlete Card. Picks-from-sets identity; no free text, no uploads. */
+  /** `.610` — the Athlete Card. Picks-from-sets identity; no free text, no uploads. */
   athleteCardTitle: string;
   athleteCardBody: string;
   athleteCardFrame: string;

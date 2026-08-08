@@ -1,7 +1,7 @@
 /**
  * What the athlete is allowed to be told about their training load, and when.
  *
- * `.607` — `coach/load.ts` has implemented Foster session-RPE and an EWMA
+ * `.608` — `coach/load.ts` has implemented Foster session-RPE and an EWMA
  * acute:chronic workload ratio from logged sets alone since it was written, and
  * **no screen has ever shown it.** `loadBands` reaches `loadGuard` (planning),
  * `contextBuilder` (LLM context) and `debrief` (one post-session moment); there is

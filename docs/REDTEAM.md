@@ -6,7 +6,7 @@
 
 ## 1. Assumptions audit
 
-### Re-run 2026-08-08 (`.605`) — first since this doc was written
+### Re-run 2026-08-08 (`.606`) — first since this doc was written
 
 §5 says re-check the load-bearing assumptions against their falsifying evidence before any big bet. That had not happened in 37 days. Status only; the original text below is unchanged, because an assumption audit that edits its own history stops being evidence.
 

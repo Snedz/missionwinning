@@ -1,7 +1,7 @@
 /**
  * The Athlete Card — web side: storage for the picks, and the card's data.
  *
- * `.609`. The rules live in `packages/mw-core/src/identity/athleteCard.ts` because
+ * `.610`. The rules live in `packages/mw-core/src/identity/athleteCard.ts` because
  * Android needs the identical mapping; this file is the browser's half — reading the
  * athlete's picks out of local storage and turning rank, tier and badges into the
  * same `ShareCardData` shape the victory and recap cards already use.
@@ -88,7 +88,7 @@ export function buildAthleteCardData(
     prLine: shown.length > 0 ? shown.map((b) => b.titleDefault).join(' · ') : null,
     footer: 'missionwinning.com — free logger, no account',
     // Bound to painters here rather than in the renderer, so the frame and
-    // backdrop catalog stays out of every other share surface's bundle (`.611`).
+    // backdrop catalog stays out of every other share surface's bundle (`.612`).
     cosmetics: cardCosmetics(resolved.frame, resolved.backdrop),
   };
 }

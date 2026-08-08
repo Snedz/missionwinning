@@ -33,7 +33,7 @@ describe('contentInventory', () => {
   });
 
   /**
-   * `.605` — the guidebook floor is enforced here rather than through
+   * `.606` — the guidebook floor is enforced here rather than through
    * `getContentInventory()`, because `chapters.ts` is ~29 KB of prose and the
    * getter is imported by client code. A test-only import keeps the floor honest
    * at zero bundle cost. See the note on `CONTENT_FLOORS.guidebookFreeChapters`.

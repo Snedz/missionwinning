@@ -55,7 +55,7 @@ export interface ShareCardData {
   prLine: string | null;
   footer: string;
   /**
-   * `.609` — earned cosmetics for the Athlete Card. **Optional on purpose:** the
+   * `.610` — earned cosmetics for the Athlete Card. **Optional on purpose:** the
    * victory and recap cards pass nothing and must keep rendering exactly as they
    * did, so the frame and backdrop are additive layers around the existing paint,
    * not a rewrite of it.
@@ -68,9 +68,9 @@ export interface ShareCardData {
 }
 
 /**
- * The earned layers, as painters rather than ids (`.611`).
+ * The earned layers, as painters rather than ids (`.612`).
  *
- * `.609` put the ids here and branched on them inside `renderShareCard`, which
+ * `.610` put the ids here and branched on them inside `renderShareCard`, which
  * meant every route that renders *any* share card compiled the whole cosmetics
  * catalog. `/active` renders `WorkoutVictorySheet`, so it paid 1.1 KB gzipped for
  * frames and backdrops a victory card can never have — measurable, and on a route
@@ -222,7 +222,7 @@ export function renderShareCard(data: ShareCardData): Promise<Blob | null> {
   ctx.fillRect(0, 0, SHARE_CARD_WIDTH, SHARE_CARD_HEIGHT);
 
   /*
-   * `.609` — earned backdrop, painted under everything.
+   * `.610` — earned backdrop, painted under everything.
    *
    * Structural, never ornamental: the design system allows no gradients, glows or
    * shadows, so what an athlete unlocks is the system's own vocabulary getting
@@ -275,7 +275,7 @@ export function renderShareCard(data: ShareCardData): Promise<Blob | null> {
   ctx.font = font(34, 600);
   ctx.fillText(data.footer, 72, layout.footerY);
 
-  // Earned frame last, over everything — it is the card's edge (`.609`).
+  // Earned frame last, over everything — it is the card's edge (`.610`).
   data.cosmetics?.paintFrame(ctx);
 
   return new Promise((resolve) => {

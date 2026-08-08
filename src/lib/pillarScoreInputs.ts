@@ -34,7 +34,7 @@ function countPillarWinsThisWeek(pillar: PillarType): number {
 }
 
 /**
- * `.606` — this used to union three **lifetime** id sets (`learnCompleted`,
+ * `.607` — this used to union three **lifetime** id sets (`learnCompleted`,
  * `premiumCourseProgress`, `guidebookProgress`) and return `min(total, 10)`. No
  * date filter at all, directly beneath `countPillarWinsThisWeek`, which has a
  * careful local-week filter and a `.241` comment about UTC frames. Five lessons

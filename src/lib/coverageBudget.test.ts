@@ -49,7 +49,7 @@ const HIGH_WATER = {
    * over from an earlier revision of this branch. 391 for `.598`'s
    * `useStartCoachSession` — a wiring-only hook whose decision lives in the
    * unit-tested `resolveCoachSessionStart`; see `FLOORS.untestedFiles`. 392 for
-   * `.607`'s `CoachLoadBand`, the same shape again: a wiring-only card whose one
+   * `.608`'s `CoachLoadBand`, the same shape again: a wiring-only card whose one
    * real decision — refusing to show a load ratio inside the 14-day evidence
    * window — lives in `loadBandView.ts`, which shipped with a test and three
    * killed mutants in the same commit.

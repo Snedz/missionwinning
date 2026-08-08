@@ -1,5 +1,5 @@
 /**
- * What the Athlete Card is allowed to claim (`.609`).
+ * What the Athlete Card is allowed to claim (`.610`).
  *
  * This card leaves the device as a PNG with the athlete's name on it and lands in a
  * group chat. Every other share surface in this repo already has an honesty rule

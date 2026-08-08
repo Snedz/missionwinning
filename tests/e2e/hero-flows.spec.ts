@@ -135,7 +135,7 @@ test.describe('Phase H hero flows @gate', () => {
     await seedReadinessPhase(page);
 
     /*
-     * Pin the hour, because otherwise this test asks what time it is (`.612`).
+     * Pin the hour, because otherwise this test asks what time it is (`.613`).
      *
      * Today's block budget is `TODAY_MAX_TOP_LEVEL_BLOCKS = 6` and `dashboard`
      * is priority 32 — behind `day-review` (15, mounts from 18:00) and

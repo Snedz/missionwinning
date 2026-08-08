@@ -1,15 +1,15 @@
 /**
- * The earned frames and backdrops, and the only place they are painted (`.611`).
+ * The earned frames and backdrops, and the only place they are painted (`.612`).
  *
  * **Why this is its own module rather than three branches inside `renderShareCard`.**
  *
- * `.609` shipped these as `if (backdrop === 'grid') …` chains in `shareCard.ts`.
+ * `.610` shipped these as `if (backdrop === 'grid') …` chains in `shareCard.ts`.
  * That file is imported by `WorkoutVictorySheet`, which renders on `/active`, so
  * webpack compiled the whole catalog into `/active`'s entry — 1.1 KB gzipped of
  * frames and backdrops that a victory card, which passes no cosmetics at all,
  * can never reach. `/active` is already over its bundle budget, and the repo's
  * standing rule is that initial JS only ratchets down. Measured, not assumed:
- * `/active` went 443.5 → 444.6 KB across `.609`, and the `rule-field` and
+ * `/active` went 443.5 → 444.6 KB across `.610`, and the `rule-field` and
  * `poster-block` string literals were greppable in
  * `.next/static/chunks/app/(app)/active/page-*.js`.
  *

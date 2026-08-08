@@ -38,7 +38,7 @@ export const BUNDLE_DISCOUNT_NOTE =
  * Pillars included in the Super Bundle (Freeletics 7-in-1 model → our unified super app).
  *
  * Counts are interpolated from `CONTENT_FLOORS`, never typed by hand. Every
- * hand-typed number here had drifted *downward* against shipped content by `.605`
+ * hand-typed number here had drifted *downward* against shipped content by `.606`
  * — 40 free recipes against 48, 102+ premium against 110, 24 mobility flows
  * against 32, 40 premium flows against 48, 24 mind sessions against 32. The
  * bundle page understating what it sells is a strange way to fail, but it is the

@@ -203,7 +203,7 @@ export function CoachPage({ askExerciseId }: CoachPageProps = {}) {
 
           <CoachVoiceCard plan={plan} bodyScores={ctx.bodyScores} premium={premium} />
 
-          {/* `.607` — the load model was computed everywhere and shown nowhere. */}
+          {/* `.608` — the load model was computed everywhere and shown nowhere. */}
           <CoachLoadBand />
 
           {/* Form deep-link (?ask=): show free cues / chat near top */}

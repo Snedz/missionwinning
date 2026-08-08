@@ -1,5 +1,5 @@
 /**
- * The Athlete Card may only show what the athlete earned (`.609`).
+ * The Athlete Card may only show what the athlete earned (`.610`).
  *
  * `resolveCardCosmetics` is the entire security model of a local cosmetic system.
  * The config is athlete-editable — `localStorage` today, a `jsonb` column the day a

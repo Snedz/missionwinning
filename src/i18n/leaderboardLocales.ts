@@ -8,7 +8,7 @@ export type LeaderboardStrings = {
   leaderboardSync: string;
   leaderboardOperators: string;
   leaderboardYourRank: string;
-  /** `.610` — the public input is "Name"; `leaderboardCallSign` is retired copy. */
+  /** `.611` — the public input is "Name"; `leaderboardCallSign` is retired copy. */
   leaderboardDisplayName: string;
   leaderboardNamePlaceholder: string;
   leaderboardNameReserved: string;

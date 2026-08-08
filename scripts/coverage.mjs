@@ -118,7 +118,7 @@ const FLOORS = {
    * logic inside the React boundary where no unit test can reach it — a worse
    * trade for the same count.
    *
-   * **391 → 392 for `CoachLoadBand` (`.607`).** Same shape as `.598`, same escape
+   * **391 → 392 for `CoachLoadBand` (`.608`).** Same shape as `.598`, same escape
    * hatch, stated for the same reason. The card is **wiring only**: the one
    * decision that matters — refusing to show a load ratio inside the 14-day
    * evidence window, and saying how many days are left instead — lives in
