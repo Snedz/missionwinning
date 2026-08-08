@@ -2,6 +2,7 @@ import { test, expect } from '@playwright/test';
 import { gateRequired, unlockGate } from './helpers/gate';
 import { seedLegacyOnboarding, seedReadinessPhase } from './helpers/journey';
 import { startEmptyActiveWorkout } from './helpers/active';
+import { UNCONTENDED_HOUR, fixedTimeAt } from './helpers/fixedClock';
 
 test.describe('Phase H hero flows @gate', () => {
   test.beforeEach(async ({ page, context, baseURL }) => {
@@ -132,6 +133,30 @@ test.describe('Phase H hero flows @gate', () => {
     await expect(page).toHaveURL(/\/log/);
     // Full dashboard (Mission Score) needs readiness phase + live basic milestone evidence.
     await seedReadinessPhase(page);
+
+    /*
+     * Pin the hour, because otherwise this test asks what time it is (`.612`).
+     *
+     * Today's block budget is `TODAY_MAX_TOP_LEVEL_BLOCKS = 6` and `dashboard`
+     * is priority 32 — behind `day-review` (15, mounts from 18:00) and
+     * `week-recap` (30, mounts when the week has activity **or it is the
+     * week-end**). Kaizen K1 (`.294`) chose that ordering deliberately so the
+     * Mission Score spills into "Today details" on the densest evening rather
+     * than crowding today's session. Spilled, the band renders inside a
+     * collapsed `<details>`: present in the DOM, `hidden` forever.
+     *
+     * So from 18:00 on a week-end this test was reading a real product decision
+     * as a failure. It went red on a Saturday evening having passed all day, in
+     * exactly the shape `.211` hit and `helpers/fixedClock` documents — and the
+     * three commits open at the time were blamed first, because a wall-clock
+     * dependency looks like whatever landed most recently.
+     *
+     * Pinned to a morning hour the block set is uncontended and the band is
+     * above the fold, which is the state this test is named for. The evening
+     * layout is `first-90.spec.ts`'s job — it pins 9:00 *and* 19:00 and asserts
+     * the budget at both.
+     */
+    await page.clock.setFixedTime(fixedTimeAt(UNCONTENDED_HOUR));
     await page.goto('/log', { waitUntil: 'domcontentloaded' });
 
     /*
