@@ -371,6 +371,7 @@ When adding a doc:
 | [log/LOG-rotate-599.md](./log/LOG-rotate-599.md) | `.584` (content Move free D2 24→32) — rotated 2026-08-08 for `.599` API error-leak guard |
 | [log/LOG-rotate-600.md](./log/LOG-rotate-600.md) | `.585` (content Mind free D2 24→32) — rotated 2026-08-08 for `.600` offline honesty |
 | [log/LOG-rotate-601.md](./log/LOG-rotate-601.md) | `.586` (content Fuel free D2 40→48) — rotated 2026-08-08 for `.601` missed-day narration |
+| [log/LOG-rotate-602.md](./log/LOG-rotate-602.md) | `.587` (content Move premium D2 40→48) — rotated 2026-08-08 for `.602` Today honest numbers |
 | [SETUP.md](./SETUP.md) | Stale PayPal-first setup — superseded by [docs/PRE_REVENUE_CHECKLIST.md](../PRE_REVENUE_CHECKLIST.md) + [docs/LLC_AND_PAYMENTS.md](../LLC_AND_PAYMENTS.md) |
 
 Canonical live launch path: root **[LAUNCH_RUNBOOK.md](../LAUNCH_RUNBOOK.md)** + [docs/SOCIAL_LAUNCH.md](../SOCIAL_LAUNCH.md) (copy kit).

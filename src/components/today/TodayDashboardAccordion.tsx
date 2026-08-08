@@ -15,6 +15,7 @@ import type { MuscleGroup } from '@/lib/muscleGroups';
 import type { JournalEntry } from '@/lib/todayTrends';
 import type { RewardsSummary } from '@/lib/rewards/summary';
 import { TodayRewardsCard } from '@/components/rewards/TodayRewardsCard';
+import { ErrorState } from '@/components/ui/ErrorState';
 
 type PillarStats = {
   moveFlows: number;
@@ -48,6 +49,8 @@ type Props = {
   locale: string;
   challenges: ReturnType<typeof import('@/lib/challenges').getChallengeProgress>;
   todaysWorkout: import('@/lib/todaysWorkout').TodaysWorkout | null;
+  /** The dynamic-import chain that produces `todaysWorkout` rejected. */
+  weekLoadFailed?: boolean;
   savedWorkouts: SavedWorkout[];
   readiness: Record<MuscleGroup, ReadinessInfo>;
   totalSessions: number;
@@ -139,8 +142,35 @@ export function TodayDashboardAccordion(props: Props) {
                   props.onStartStarter(props.todaysWorkout!.name, props.todaysWorkout!.exercises)
                 }
               />
-            ) : (
+            ) : props.weekLoadFailed ? (
+              /*
+                The branch that did not exist. This was `todaysWorkout ? … :
+                "Loading week…"` with no third case, so a failed chunk load left
+                a permanent spinner-in-prose — and the loader had no `.catch`, so
+                nothing even knew it had failed. `ErrorState` renders no retry
+                unless handed an `onAction`, so it gets one.
+              */
               <div className="space-y-4">
+                {props.rewards ? <TodayRewardsCard summary={props.rewards} /> : null}
+                <ErrorState
+                  title={t('todayWeekFailedTitle', { defaultValue: 'Could not load this week' })}
+                  description={t('todayWeekFailedDesc', {
+                    defaultValue:
+                      'The connection dropped while fetching it. Your logged sessions are safe on this device.',
+                  })}
+                  actionLabel={t('todayWeekFailedRetry', { defaultValue: 'Try again' })}
+                  onAction={() => window.location.reload()}
+                />
+              </div>
+            ) : (
+              /*
+                `aria-busy` because this region *is* busy. `.253`: a placeholder
+                that does not declare itself is invisible to a screen reader and
+                to the a11y suite's `settle()`, which waits on
+                `[aria-busy="true"]` — so the axe scan could measure this panel
+                mid-load and call the page settled.
+              */
+              <div className="space-y-4" aria-busy="true">
                 {props.rewards ? <TodayRewardsCard summary={props.rewards} /> : null}
                 <p className="text-sm text-muted-foreground py-2">
                   {t('todayWeekLoading', { defaultValue: 'Loading week…' })}
