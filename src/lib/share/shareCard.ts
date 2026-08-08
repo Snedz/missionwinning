@@ -25,12 +25,19 @@ import type {
   CardFrameId,
 } from '../../../packages/mw-core/src/identity/athleteCard';
 
-/** From BRAND_HEX in scripts/check-token-sync.mjs — paper/ink/poster/red-700. */
+/**
+ * From BRAND_HEX in scripts/check-token-sync.mjs — paper/ink/poster/red-700.
+ *
+ * Exported for `./cardCosmetics`, which paints the earned layers and must use
+ * these exact values. They stay declared *here* on purpose: `check-token-sync`
+ * greps this file, and `check-design-system` allowlists this path for raw hex.
+ * Moving them to a shared palette module would quietly drop both guards.
+ */
 const PAPER = '#f3f2f2';
-const INK = '#201e1d';
-const POSTER = '#ec3013';
-const RED_700 = '#ae1800';
-const MUTED = '#5f5e5d';
+export const INK = '#201e1d';
+export const POSTER = '#ec3013';
+export const RED_700 = '#ae1800';
+export const MUTED = '#5f5e5d';
 
 export const SHARE_CARD_WIDTH = 1080;
 export const SHARE_CARD_HEIGHT = 1350;
@@ -57,7 +64,29 @@ export interface ShareCardData {
    * tier. The painter trusts what it is handed — that is why resolution is a
    * separate, tested step rather than something done here.
    */
-  cosmetics?: { frame: CardFrameId; backdrop: CardBackdropId };
+  cosmetics?: ShareCardCosmetics;
+}
+
+/**
+ * The earned layers, as painters rather than ids (`.611`).
+ *
+ * `.609` put the ids here and branched on them inside `renderShareCard`, which
+ * meant every route that renders *any* share card compiled the whole cosmetics
+ * catalog. `/active` renders `WorkoutVictorySheet`, so it paid 1.1 KB gzipped for
+ * frames and backdrops a victory card can never have — measurable, and on a route
+ * already over its bundle budget. Handing the painters in keeps the catalog in the
+ * graph of the one surface that uses it.
+ *
+ * The ids ride along because they are what tests and debugging read; nothing in
+ * the renderer branches on them.
+ */
+export interface ShareCardCosmetics {
+  readonly frame: CardFrameId;
+  readonly backdrop: CardBackdropId;
+  /** Painted under everything, immediately after the paper ground. */
+  paintBackdrop(ctx: CanvasRenderingContext2D): void;
+  /** Painted last, over everything — it is the card's edge. */
+  paintFrame(ctx: CanvasRenderingContext2D): void;
 }
 
 function formatDuration(seconds: number): string {
@@ -133,7 +162,8 @@ export function buildRecapCardData(debrief: WeeklyDebrief, unitLabel: string): S
   };
 }
 
-const FOOTER_BASELINE = SHARE_CARD_HEIGHT - 80;
+/** Exported for `./cardCosmetics` — the rule field stops here, not at the edge. */
+export const FOOTER_BASELINE = SHARE_CARD_HEIGHT - 80;
 const STATS_TOP = 500;
 const STAT_ROW_HEIGHT = 190;
 const COLUMN_X = [72, SHARE_CARD_WIDTH / 2 + 12];
@@ -171,57 +201,6 @@ export function computeCardLayout(statCount: number, hasPr: boolean): CardLayout
   };
 }
 
-/** Earned backdrops (`.609`). Paper is the default and paints nothing extra. */
-function paintBackdrop(ctx: CanvasRenderingContext2D, backdrop: CardBackdropId): void {
-  if (backdrop === 'paper') return;
-  ctx.save();
-  if (backdrop === 'grid') {
-    ctx.strokeStyle = MUTED;
-    ctx.globalAlpha = 0.14;
-    ctx.lineWidth = 2;
-    for (let x = 72; x < SHARE_CARD_WIDTH; x += 108) {
-      ctx.beginPath();
-      ctx.moveTo(x, 0);
-      ctx.lineTo(x, SHARE_CARD_HEIGHT);
-      ctx.stroke();
-    }
-  } else if (backdrop === 'rule-field') {
-    ctx.fillStyle = MUTED;
-    ctx.globalAlpha = 0.12;
-    for (let y = 420; y < FOOTER_BASELINE; y += 54) ctx.fillRect(0, y, SHARE_CARD_WIDTH, 2);
-  } else if (backdrop === 'poster-block') {
-    ctx.fillStyle = POSTER;
-    ctx.globalAlpha = 0.1;
-    ctx.fillRect(0, SHARE_CARD_HEIGHT - 420, SHARE_CARD_WIDTH, 420);
-  }
-  ctx.restore();
-}
-
-/** Earned frames (`.609`). Hairline is the default and paints nothing extra. */
-function paintFrame(ctx: CanvasRenderingContext2D, frame: CardFrameId): void {
-  if (frame === 'hairline') return;
-  ctx.save();
-  if (frame === 'rule') {
-    ctx.strokeStyle = INK;
-    ctx.lineWidth = 4;
-    ctx.strokeRect(24, 24, SHARE_CARD_WIDTH - 48, SHARE_CARD_HEIGHT - 48);
-  } else if (frame === 'double-rule') {
-    ctx.strokeStyle = INK;
-    ctx.lineWidth = 4;
-    ctx.strokeRect(24, 24, SHARE_CARD_WIDTH - 48, SHARE_CARD_HEIGHT - 48);
-    ctx.lineWidth = 2;
-    ctx.strokeRect(40, 40, SHARE_CARD_WIDTH - 80, SHARE_CARD_HEIGHT - 80);
-  } else if (frame === 'poster') {
-    ctx.strokeStyle = RED_700;
-    ctx.lineWidth = 8;
-    ctx.strokeRect(20, 20, SHARE_CARD_WIDTH - 40, SHARE_CARD_HEIGHT - 40);
-    ctx.strokeStyle = INK;
-    ctx.lineWidth = 2;
-    ctx.strokeRect(44, 44, SHARE_CARD_WIDTH - 88, SHARE_CARD_HEIGHT - 88);
-  }
-  ctx.restore();
-}
-
 /**
  * Paint the card. 1080×1350 (portrait 4:5 — the share-sheet-friendly ratio), paper
  * ground, ink type, one poster-red band. Small text never uses poster red — 3.78:1
@@ -250,7 +229,7 @@ export function renderShareCard(data: ShareCardData): Promise<Blob | null> {
    * denser — a grid, then a rule field, then a poster block. Off-palette is
    * impossible here because these are the only four values in the file.
    */
-  if (data.cosmetics) paintBackdrop(ctx, data.cosmetics.backdrop);
+  data.cosmetics?.paintBackdrop(ctx);
 
   // Poster-red kicker band with paper text (large type — poster red is legal here).
   ctx.fillStyle = POSTER;
@@ -297,7 +276,7 @@ export function renderShareCard(data: ShareCardData): Promise<Blob | null> {
   ctx.fillText(data.footer, 72, layout.footerY);
 
   // Earned frame last, over everything — it is the card's edge (`.609`).
-  if (data.cosmetics) paintFrame(ctx, data.cosmetics.frame);
+  data.cosmetics?.paintFrame(ctx);
 
   return new Promise((resolve) => {
     try {

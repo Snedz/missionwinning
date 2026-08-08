@@ -129,7 +129,7 @@ export function ProfileAthleteCard() {
                 key={f}
                 type="button"
                 variant={config.frame === f ? 'selected' : 'outline'}
-                size="sm"
+                className="min-h-[44px] tap-target"
                 aria-pressed={config.frame === f}
                 onClick={() => update({ ...config, frame: f })}
               >
@@ -149,7 +149,7 @@ export function ProfileAthleteCard() {
                 key={b}
                 type="button"
                 variant={config.backdrop === b ? 'selected' : 'outline'}
-                size="sm"
+                className="min-h-[44px] tap-target"
                 aria-pressed={config.backdrop === b}
                 onClick={() => update({ ...config, backdrop: b })}
               >
@@ -173,7 +173,7 @@ export function ProfileAthleteCard() {
                   key={b.id}
                   type="button"
                   variant={config.badges.includes(b.id) ? 'selected' : 'outline'}
-                  size="sm"
+                  className="min-h-[44px] tap-target"
                   aria-pressed={config.badges.includes(b.id)}
                   onClick={() => toggleBadge(b.id)}
                 >
@@ -184,7 +184,18 @@ export function ProfileAthleteCard() {
           </fieldset>
         )}
 
-        <Button type="button" onClick={onShare} disabled={busy} className="w-full">
+        {/*
+          `outline`, not the default fill: `/profile`'s one red action is "Send
+          magic link", and the zero-state cap is one per screen. Shipping this as
+          the default variant put a second red on the route and turned
+          `zero-state.spec.ts` red — sharing a card is a thing you may do, not the
+          thing the screen is asking for.
+
+          `size="block"` rather than `className="w-full"` — it is this system's
+          full-width size (h-11, label at the padding edge), and h-11 is also the
+          44px the thumb sweep requires. The default h-10 was 4px short.
+        */}
+        <Button type="button" variant="outline" size="block" onClick={onShare} disabled={busy}>
           <Share2 className="mr-2 h-4 w-4" aria-hidden="true" />
           {busy
             ? t('athleteCardSharing', { defaultValue: 'Preparing…' })

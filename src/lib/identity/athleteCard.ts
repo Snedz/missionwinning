@@ -29,6 +29,7 @@ import { readJson, writeJson } from '@/lib/storage/safeStorage';
 import type { RewardsSummary } from '@/lib/rewards/summary';
 import { ownedBadgeDefs } from '@/lib/rewards/summary';
 import type { ShareCardData } from '@/lib/share/shareCard';
+import { cardCosmetics } from '@/lib/share/cardCosmetics';
 
 export type { AthleteCardConfig };
 export { DEFAULT_CARD_CONFIG, tierForLevel };
@@ -65,8 +66,8 @@ export function buildAthleteCardData(
   summary: RewardsSummary,
   operatorName: string
 ): ShareCardData {
-  const cosmetics = resolveAthleteCard(summary);
-  const shown = ownedBadgeDefs(summary.badges).filter((b) => cosmetics.badges.includes(b.id));
+  const resolved = resolveAthleteCard(summary);
+  const shown = ownedBadgeDefs(summary.badges).filter((b) => resolved.badges.includes(b.id));
 
   const stats = [
     { label: 'Rank', value: summary.rankTitleDefault },
@@ -86,6 +87,8 @@ export function buildAthleteCardData(
     stats,
     prLine: shown.length > 0 ? shown.map((b) => b.titleDefault).join(' · ') : null,
     footer: 'missionwinning.com — free logger, no account',
-    cosmetics,
+    // Bound to painters here rather than in the renderer, so the frame and
+    // backdrop catalog stays out of every other share surface's bundle (`.611`).
+    cosmetics: cardCosmetics(resolved.frame, resolved.backdrop),
   };
 }
