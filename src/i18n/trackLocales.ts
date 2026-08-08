@@ -114,7 +114,7 @@ const en: TrackStrings = {
   trackTotalTime: 'Total Time',
   trackDistance: 'Distance',
   trackLogTitle: 'Log Activity',
-  trackLogDesc: 'No GPS needed — manual entry works offline anywhere.',
+  trackLogDesc: 'No GPS needed — type it in, and it stays on this device.',
   trackTypeLabel: 'Type',
   trackDurationLabel: 'Duration (minutes)',
   trackDistanceLabel: 'Distance km (optional)',

@@ -21,6 +21,7 @@
  *    offers the install instead.
  */
 
+import { isOfflineInstallable } from '@/lib/offlineCapability';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Button } from '@/components/ui/button';
@@ -62,7 +63,10 @@ export function WindDownOptIn() {
         typeof navigator !== 'undefined' &&
         /iPad|iPhone|iPod/.test(navigator.userAgent) &&
         !('PushManager' in window);
-      if (iosLike) setMode('install');
+      // `.603` — see DayReviewOptIn: no installable PWA, and an installed shell would
+      // still have no worker to subscribe through. Do not offer a prerequisite that
+      // changes nothing when it is satisfied.
+      if (iosLike && isOfflineInstallable()) setMode('install');
     })();
     return () => {
       cancelled = true;

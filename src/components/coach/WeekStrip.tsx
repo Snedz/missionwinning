@@ -21,21 +21,34 @@ type Props = {
 function SessionGlyph({
   done,
   kind,
+  missed,
 }: {
   done: boolean;
   kind: PlanSession['kind'] | undefined;
+  /** A missed day is behind you — it must not compete with live days for the eye. */
+  missed?: boolean;
 }) {
   // A done cell is an ink fill, so its check has to be light or it disappears.
   if (done) {
     return <Check className="mt-1 h-3.5 w-3.5 text-neutral-100" aria-hidden strokeWidth={2.5} />;
   }
+  /*
+   * `.601` — a missed day drew its glyph in `text-primary`, the same accent a
+   * live day uses, directly beside the struck-through label that exists to say
+   * the opposite. The strikethrough is the intended calm treatment (`.127`
+   * de-emphasises missed days "by border not opacity", because dimming the
+   * container also dims the label past 4.5:1); an accent glyph fought it, so
+   * the loudest thing in the row was the day the athlete did not train.
+   * Muted keeps it readable — "behind you, not hidden from you".
+   */
+  const tone = missed ? 'text-muted-foreground' : 'text-primary';
   if (kind === 'conditioning') {
-    return <Zap className="mt-1 h-3.5 w-3.5 text-primary" aria-hidden />;
+    return <Zap className={cn('mt-1 h-3.5 w-3.5', tone)} aria-hidden />;
   }
   if (kind === 'recovery') {
     return <Wind className="mt-1 h-3.5 w-3.5 text-muted-foreground" aria-hidden />;
   }
-  return <Dumbbell className="mt-1 h-3.5 w-3.5 text-primary" aria-hidden />;
+  return <Dumbbell className={cn('mt-1 h-3.5 w-3.5', tone)} aria-hidden />;
 }
 
 export function WeekStrip({ sessions, todayOffset }: Props) {
@@ -92,7 +105,7 @@ export function WeekStrip({ sessions, todayOffset }: Props) {
             </span>
             {session ? (
               <>
-                <SessionGlyph done={done} kind={session.kind} />
+                <SessionGlyph done={done} kind={session.kind} missed={missed} />
                 {done && (
                   <span className="text-[9px] font-semibold text-neutral-100">
                     {t('coachSessionDone', { defaultValue: 'Done' })}

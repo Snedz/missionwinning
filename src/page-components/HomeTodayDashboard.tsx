@@ -255,6 +255,8 @@ export function HomeTodayDashboard() {
     fuelCoachActive: 0,
     fuelCoachCarbBump: 0,
   }));
+  const [weekLoadFailed, setWeekLoadFailed] = useState(false);
+
   useEffect(() => {
     if (!belowFoldReady) return;
     let cancelled = false;
@@ -276,7 +278,17 @@ export function HomeTodayDashboard() {
       setNightSessions(countSessionsInHourRange(workoutHistory, 22, 5));
       setDawnSessions(countSessionsInHourRange(workoutHistory, 5, 8));
       setTodaysWorkout(getTodaysWorkout());
-    })();
+    })().catch(() => {
+      /*
+       * These are four dynamic `import()`s and the chain had no catch, so a
+       * chunk that fails to load left `todaysWorkout` null forever and the
+       * accordion sat on "Loading week…" with no error branch and no retry —
+       * a spinner that is really a dead end. A flaky connection is exactly
+       * when this happens, and with the service worker gated there is no cache
+       * to serve the chunk from, so the two defects compound.
+       */
+      if (!cancelled) setWeekLoadFailed(true);
+    });
     return () => {
       cancelled = true;
     };
@@ -603,6 +615,9 @@ export function HomeTodayDashboard() {
       <TodayDashboardHeader
         missionScore={score}
         scores={bodyScores}
+        /* Until the below-fold work resolves, `bodyScores` is a seeded
+           50/50/50 — say "not measured yet", never publish the placeholder. */
+        pending={!belowFoldReady}
         sessions={totalSessions}
         trends={todayTrends}
         coachLine={t(coachInsight.messageKey, {
@@ -716,6 +731,7 @@ export function HomeTodayDashboard() {
                 locale={i18n.language}
                 challenges={challenges}
                 todaysWorkout={todaysWorkout}
+        weekLoadFailed={weekLoadFailed}
                 savedWorkouts={savedWorkouts}
                 readiness={readiness}
                 totalSessions={totalSessions}

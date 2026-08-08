@@ -191,9 +191,36 @@ export function adaptPlan(plan: CoachPlan, ctx: CoachContext, today: string): Co
     assign(strengthDays);
     assign(otherDays);
 
-    sessions = [...doneSessions, ...reassigned];
-    // Missed days that were re-spread away are dropped from the list so the
-    // week strip does not keep painting "Missed" on days the plan left.
+    /*
+     * Missed days stay in the week.
+     *
+     * This used to be `[...doneSessions, ...reassigned]`, on the reasoning that
+     * dropping them stopped the week strip "painting Missed on days the plan
+     * left". But **nothing left those days.** Branch A above re-opens the
+     * *missed* sessions themselves, so it must filter `placedIds` or the same
+     * session shows twice; this branch re-spreads `remaining` — the still-future
+     * sessions — and never touches `missed` at all. There was no duplicate to
+     * avoid, so the filter deleted the only record that a day was missed.
+     *
+     * The cost was the whole adaptation story. `summarizeCoachAdaptations` reads
+     * `status === 'missed'`, so it saw none: no "Life happened…" beat,
+     * `hasCoachAdaptationSignal` false, `CoachAdaptBanner` returning `null` — in
+     * the file whose own header calls the banner "demo-critical: partners must
+     * see log/miss → week changed in ≤60s" — and no re-entry block. The athlete
+     * missed Monday and the week quietly got smaller with nothing said.
+     *
+     * The beat's own copy proves the intent: *"Life happened — missed {days}.
+     * **Remaining days are re-spread** so the week still fits."* That sentence
+     * describes this branch exactly, and this branch was the one case that could
+     * never render it.
+     *
+     * Keeping them is also what the rest of the app already expects. A missed
+     * session renders with the deliberate calm treatment `PlanSessionCard`
+     * documents — dashed border, "Missed" badge, never dimmed past contrast —
+     * because "it is behind you, not hidden from you (Horizon W criterion 4)".
+     * Hiding it is not kindness; it is the plan losing the athlete's week.
+     */
+    sessions = [...doneSessions, ...missed, ...reassigned];
   }
 
   // Low readiness swap today

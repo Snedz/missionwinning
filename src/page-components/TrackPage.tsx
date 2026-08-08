@@ -141,7 +141,7 @@ export function TrackPage() {
           <CardHeader>
             <CardTitle>{t('trackLogTitle', { defaultValue: 'Log Activity' })}</CardTitle>
             <CardDescription>
-              {t('trackLogDesc', { defaultValue: 'No GPS needed — manual entry works offline.' })}
+              {t('trackLogDesc', { defaultValue: 'No GPS needed — type it in, and it stays on this device.' })}
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">

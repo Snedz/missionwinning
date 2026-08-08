@@ -133,9 +133,32 @@ test.describe('Phase H hero flows @gate', () => {
     // Full dashboard (Mission Score) needs readiness phase + live basic milestone evidence.
     await seedReadinessPhase(page);
     await page.goto('/log', { waitUntil: 'domcontentloaded' });
-    await expect(
-      page.getByText(/mission score|win score|cross-pillar/i).first()
-    ).toBeVisible({ timeout: 20_000 });
+
+    /*
+     * Keyed to the visible band, not to the words.
+     *
+     * This asserted `getByText(/mission score|win score|cross-pillar/i).first()`
+     * and was red from `.596` onward — recorded there as "cause known, repair not
+     * landed". The cause is the `.first()`: `TodayHealthSection` renders the
+     * literal "Cross-pillar Mission Score" inside a `TodaySection`, which is a
+     * native `<details>` with `defaultOpen={false}`. A collapsed `<details>`
+     * keeps its content in the DOM, so that node resolves, sorts first, and
+     * reports `hidden` forever — while the real score band a few hundred pixels
+     * above it was visible the whole time. The product was never broken.
+     *
+     * `.596`'s repair attempt probed `getByRole('group', { name: /today
+     * details/i })`, which found nothing: a `<details>` *is* exposed as a group,
+     * but it is named by its `<summary>` — here "Health scores" — so the name
+     * never existed. Hence a `data-testid` on the band itself, per this file's
+     * own precedent of keying off test ids wherever the visible word is
+     * something a kaizen pass is expected to change.
+     */
+    const band = page.getByTestId('today-score-band');
+    await expect(band).toBeVisible({ timeout: 20_000 });
+
+    // And the thing the test is actually named for: a real number, not an
+    // em-dash placeholder, after a session has been logged.
+    await expect(band).toHaveText(/\d/, { timeout: 20_000 });
   });
 
   test('sign-in sync prompt visible on Fuel', async ({ page }) => {

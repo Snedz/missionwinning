@@ -18,15 +18,13 @@ import { useMemo } from 'react';
 import { PlanExerciseLine } from '@/components/coach/PlanExerciseLine';
 import { loadBands } from '@/lib/coach/load';
 import { useUnits, weightUnitLabel } from '@/hooks/useUnits';
-import { planSessionToTemplates } from '@/lib/coach/planSessionTemplates';
-import { useRouter } from 'next/navigation';
+import { useStartCoachSession } from '@/hooks/useStartCoachSession';
 import { useTranslation } from 'react-i18next';
 import { Sparkles } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { useCoachPlan } from '@/hooks/useCoachPlan';
 import { useWorkoutStore } from '@/store/workoutStore';
-import { track } from '@/lib/analytics';
 import { CoachAdaptBanner } from '@/components/coach/CoachAdaptBanner';
 import { summarizeWeekDose } from '@/lib/coach/weekDose';
 import { sessionContinuity } from '@/lib/coach/programContinuity';
@@ -35,9 +33,8 @@ import { isFreeBeta } from '@/lib/freeBeta';
 
 export function CoachTodayCard() {
   const { t } = useTranslation();
-  const router = useRouter();
   const { plan, todaySession, loading, locked, generate } = useCoachPlan();
-  const startWorkout = useWorkoutStore((s) => s.startWorkout);
+  const startCoachSession = useStartCoachSession();
   const workoutHistory = useWorkoutStore((s) => s.workoutHistory);
   const units = useUnits();
   const unitLabel = weightUnitLabel(units);
@@ -91,10 +88,8 @@ export function CoachTodayCard() {
   if (loading) return null;
 
   const startToday = () => {
-    if (!todaySession || todaySession.status === 'done') return;
-    startWorkout(todaySession.name, planSessionToTemplates(todaySession));
-    track('coach_session_started', { kind: todaySession.kind, from: 'home' });
-    router.push('/active');
+    if (!todaySession) return;
+    startCoachSession(todaySession, { from: 'home' });
   };
 
   const freeBeta = isFreeBeta();

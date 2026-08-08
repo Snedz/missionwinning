@@ -90,8 +90,13 @@ export const POST = withApiLogging('journey/nudge', async(request: NextRequest) 
   });
 
   if (sendError) {
+    // Detail to the log, opaque code out (CLAUDE.md §5). This returned the mail
+    // provider's own message to the caller; the client cannot act on it, and it
+    // names upstream infrastructure. Found by the rewritten leak scan in `.602`
+    // — the previous guard was keyed to the identifier `error`, so `sendError`
+    // was a third spelling it could not see, on top of the wrong key and status.
     console.error('journey nudge send', sendError);
-    return NextResponse.json({ ok: false, error: sendError.message }, { status: 500 });
+    return NextResponse.json({ ok: false, error: 'send_failed' }, { status: 500 });
   }
 
   return NextResponse.json({ ok: true, step: stepLabel, label });

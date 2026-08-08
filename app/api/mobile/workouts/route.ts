@@ -81,7 +81,19 @@ export const POST = withApiLogging('mobile/workouts', async (request: NextReques
     .single();
 
   if (error) {
-    return NextResponse.json({ ...localAck, syncError: error.message });
+    /*
+     * Opaque code out, detail to the log (CLAUDE.md §5). This returned
+     * `error.message` verbatim — a Postgres message names tables, columns and
+     * constraints, so the failure path handed anyone who could reach the
+     * endpoint a free schema map. It went out at the default **200** under the
+     * key `syncError`, which is also why `outboxResilience`'s guard missed it:
+     * that check matched `error:` plus `status: 500`, and this was neither.
+     *
+     * The client's contract is unchanged — it only needs to know the cloud
+     * write did not land, which `synced: false` in `localAck` already says.
+     */
+    console.error('mobile/workouts insert', error);
+    return NextResponse.json({ ...localAck, syncError: 'sync_failed' });
   }
 
   return NextResponse.json({

@@ -137,7 +137,7 @@ export function AboutPage() {
         </p>
         <p className="text-xs text-muted-foreground">
           {t('infoAboutCopyright', {
-            defaultValue: '© Mission Winning. Global by design. PWA — works offline anywhere.',
+            defaultValue: '© Mission Winning. Global by design. Your training stays on your device.',
           })}
         </p>
       </EditorialSection>
