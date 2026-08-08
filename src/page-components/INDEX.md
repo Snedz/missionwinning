@@ -79,7 +79,8 @@
 
 | File | Route |
 |------|-------|
-| `ProfilePage.tsx` | `/profile` — thin shell; cards in `src/components/profile/` |
+| `ProfilePage.tsx` | `/profile` — the Athlete Page: identity, career line, badge shelf |
+| `AccountPage.tsx` | `/account` — settings; cards in `src/components/profile/` |
 | `PrivacyPage.tsx` | `/privacy` |
 | `CookiesPage.tsx` | `/cookies` |
 | `AccessibilityPage.tsx` | `/accessibility` |

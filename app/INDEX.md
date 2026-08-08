@@ -19,7 +19,8 @@
 | `/active` | Train | `ActiveWorkoutPage.tsx` |
 | `/nutrition` | Fuel | `NutritionPage.tsx` |
 | `/track` | Track | `TrackPage.tsx` |
-| `/profile` | You | `ProfilePage.tsx` |
+| `/profile` | You | `ProfilePage.tsx` — the Athlete Page (identity · career line · badge shelf) |
+| `/account` | Account | `AccountPage.tsx` — settings, notifications, billing, backup |
 
 ### Train deeper
 

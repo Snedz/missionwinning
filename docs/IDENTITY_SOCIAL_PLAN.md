@@ -154,7 +154,7 @@ Numbered to interleave with [CLUB_PLAN.md](CLUB_PLAN.md)'s C-phases, which own t
 |---|---|---|---|
 | **S0** | This document + [DESIGN_RESEARCH.md](DESIGN_RESEARCH.md) Wave 9 + INDEX rows | W — docs only, no gate spent | — |
 | ~~**S1**~~ | **Shipped `.605`.** C1–C4 and C7 as executable guards against today's code — `domainBoundary.ts` + `domainBoundary.test.ts`, and the `club-identity` tone axis. No feature, no route, no string | W craft window | 12 mutants killed |
-| **S2** | **Account / You split.** `/profile` settings move to Account; You becomes a page with Identity + The line + the existing shelf. Local only, no server, no sharing beyond the shipped card | W craft window — founder go line; genuine refine of a 413-line settings screen | Kill if the page has nothing on it for a 3-session athlete — that is the D8 void rule, and it applies to the newest screen first |
+| ~~**S2**~~ | **Shipped `.606`.** Settings moved to `/account`; `/profile` is the Athlete Page — Identity (call sign, first session) + The line (`careerLine.ts`) + the shipped badge shelf. Local only, no server, no projection | W craft window | The D8 void rule is met by The line, which is never empty after one session and states what it will hold before that. `/profile` pinned at **0** red actions — a record is not a task |
 | **S3** | **The table + page kits v1** (3–5 kits, picks-from-sets, local) | After S2 lands and C6 exists | Kill if <25% of weekly actives ever change a default |
 | **S4** | **Public projection + Athlete Page share** — C5 enforced, still no boards, no graph | [CLUB_PLAN.md](CLUB_PLAN.md) C2 shipped (ledger + card) | Kill on any moderation incident the projection was supposed to make impossible |
 | **S5** | **Squad** — invite by code/link, squad-only board | [CLUB_PLAN.md](CLUB_PLAN.md) C3 gate, unchanged: moderation basics + eligibility + cohorts live | CLUB_PLAN C3 criteria; plus **any measurable drop in sessions logged per weekly active** — the Wave 9 §9.1 failure, instrumented |
@@ -194,10 +194,9 @@ A feed · comments · DMs · **Top 8 or any friend ranking** · follower counts 
 
 **Still open:**
 
-4. **S2 go/no-go** — split Account from You.
-5. **Strike the T4 season-start boost** from [CLUB_PLAN.md](CLUB_PLAN.md)? Recommended yes (Wave 9 §9.5).
-6. **Re-cut positioning angle 1** — "free forever" is now Bevel's line too, in writing. Recommended replacement: **free, on Android, from your logs alone, offline, no watch, no account.**
-7. **Naming** — Athlete Page / call sign / page kit are internal names, consistent with [CLUB_PLAN.md](CLUB_PLAN.md)'s brand-agnostic invariant 10. Display names remain a founder branding call.
+4. **Strike the T4 season-start boost** from [CLUB_PLAN.md](CLUB_PLAN.md)? Recommended yes (Wave 9 §9.5).
+5. **Re-cut positioning angle 1** — "free forever" is now Bevel's line too, in writing. Recommended replacement: **free, on Android, from your logs alone, offline, no watch, no account.**
+6. **Naming** — Athlete Page / call sign / page kit are internal names, consistent with [CLUB_PLAN.md](CLUB_PLAN.md)'s brand-agnostic invariant 10. Display names remain a founder branding call.
 
 ## 10. Why this is inside the horizon gate
 
