@@ -122,5 +122,10 @@
   "youthConfirmOk": "Consentement vérifié. Redirection vers le test de condition physique…",
   "youthConfirmCrossDevice": "Consentement enregistré sur le compte de l'athlète. Ils peuvent continuer sur n’importe quel appareil connecté.",
   "youthConfirmError": "Lien expiré ou invalide. Demandez à votre parent de soumettre à nouveau son consentement.",
-  "youthConfirmBack": "Retour au test de condition physique"
+  "youthConfirmBack": "Retour au test de condition physique",
+  "youthSendFailed": "Could not send the verification email. Try again shortly.",
+  "youthVerifyNetwork": "Could not verify right now. Check your connection and try again.",
+  "youthSending": "Sending…",
+  "schoolJoinedTeacherNote": "Complete a fitness test while signed in to sync your score. Teachers view standings on the class dashboard.",
+  "pftBackAmerica": "Condition physique nationale"
 }

@@ -48,13 +48,11 @@ const HIGH_WATER = {
    * 415 unnoticed, and why 390 is measured against `.594` rather than carried
    * over from an earlier revision of this branch. 391 for `.598`'s
    * `useStartCoachSession` — a wiring-only hook whose decision lives in the
-   * unit-tested `resolveCoachSessionStart`; see `FLOORS.untestedFiles`. 392 for
-   * `.608`'s `CoachLoadBand`, the same shape again: a wiring-only card whose one
-   * real decision — refusing to show a load ratio inside the 14-day evidence
-   * window — lives in `loadBandView.ts`, which shipped with a test and three
-   * killed mutants in the same commit.
+   * unit-tested `resolveCoachSessionStart`; see `FLOORS.untestedFiles`. 394 for
+   * `.606`'s Account/You split — four Playwright-covered surfaces; the logic
+   * behind them is unit-tested and therefore absent from this count.
    */
-  untestedFiles: 392,
+  untestedFiles: 395,
   /**
    * Held at its original value on purpose — see the note at `FLOORS.linePct`.
    * Reaching a previously-unloaded file *lowers* this, because its unexecuted

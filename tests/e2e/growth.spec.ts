@@ -64,14 +64,15 @@ test.describe('Growth surfaces', () => {
    * `e2e:critical` had never run. Seeding is what makes the test about the
    * referral card instead of about the redirect.
    */
-  test('profile signed-out shows referral invite card', async ({ page }) => {
+  test('account signed-out shows referral invite card', async ({ page }) => {
+    // The referral card moved with the settings in the `.606` /profile split.
     await seedLegacyOnboarding(page);
-    await page.goto('/profile', { waitUntil: 'domcontentloaded' });
+    await page.goto('/account', { waitUntil: 'domcontentloaded' });
     expect(
       new URL(page.url()).pathname,
-      'still being redirected away from /profile — the seed did not take, and the ' +
+      'still being redirected away from /account — the seed did not take, and the ' +
         'assertion below would be measuring onboarding again'
-    ).toBe('/profile');
+    ).toBe('/account');
     await expect(page.locator('body')).toContainText(
       /invite a friend|invita|code|sign in|iniciar/i
     );

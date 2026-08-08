@@ -27,5 +27,11 @@
   "fuelHighProteinNote": "Hari protein tinggi meningkatkan",
   "fuelScienceCh5": "Wawasan protein (bab 5): Penting untuk pertumbuhan, perbaikan, enzim, hormon. Klien aktif ~1.6–2.2g/kg. Protein lengkap; waktu di sekitar latihan. Resep di bawah mengikuti prinsip ini.",
   "fuelScienceCh12": "Nutrisi bodybuilder (bab 12): Karb kompleks untuk energi; lemak sehat untuk hormon (15–30% kalori). Vitamin/mineral dari makanan utuh; serat 20–30g+. Protein+karb pasca latihan. Hidrasi penting — utamakan makanan lokal.",
-  "fuelPremiumRecipesFoot": "Dari sains protein + prinsip DASH/Med untuk akses global."
+  "fuelPremiumRecipesFoot": "Dari sains protein + prinsip DASH/Med untuk akses global.",
+  "navGuide": "Guide",
+  "sourceCode": "Source",
+  "feedback": "Feedback",
+  "resumeWorkout": "Resume workout",
+  "offlineBannerShort": "Offline — logging still works",
+  "offlineWaitingCount": "{{count}} waiting"
 }

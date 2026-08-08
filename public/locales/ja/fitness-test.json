@@ -122,5 +122,10 @@
   "youthConfirmOk": "同意が確認されました。 体力テストにリダイレクトしています…",
   "youthConfirmCrossDevice": "同意はアスリートのアカウントに保存されました。 サインインしている任意のデバイスで続行できます。",
   "youthConfirmError": "リンクの有効期限が切れているか無効です。 保護者に同意を再提出してもらいます。",
-  "youthConfirmBack": "体力テストに戻る"
+  "youthConfirmBack": "体力テストに戻る",
+  "youthSendFailed": "Could not send the verification email. Try again shortly.",
+  "youthVerifyNetwork": "Could not verify right now. Check your connection and try again.",
+  "youthSending": "Sending…",
+  "schoolJoinedTeacherNote": "Complete a fitness test while signed in to sync your score. Teachers view standings on the class dashboard.",
+  "pftBackAmerica": "National fitness"
 }

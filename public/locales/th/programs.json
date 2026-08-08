@@ -1,4 +1,12 @@
 {
+  "programsEyebrow": "Programs",
+  "programsCatalogIntro": "Specialist education outlines below. Free core tools live in Learn and the public guide.",
+  "programsCurriculumOutline": "Curriculum outline",
+  "programsModuleLabel": "Module {{n}}",
+  "programsFreeNote": "Free education path",
+  "programsNoMatchTitle": "No programs match those filters",
+  "programsNoMatchBody": "Nothing in the catalog fits that combination of goal and equipment yet. Clear the filters to see all programs.",
+  "programsClearFilters": "Clear filters",
   "programsFilterGoal": "กรองตามเป้าหมาย:",
   "programsFilterEquip": "อุปกรณ์:",
   "programsGoalAll": "ทั้งหมด",
@@ -65,5 +73,6 @@
   "progCondBullet2": "ระเบียบการปรับอากาศที่เสริมความแข็งแกร่ง (ไม่ทำลาย)",
   "progCondBullet3": "บล็อกปริมาณมากที่ได้รับแรงบันดาลใจจาก HWPO + การจัดการการกู้คืน",
   "progCondBullet4": "โปรโตคอลทดสอบและการติดตามการปรับสภาพตามบันทึก",
-  "progCondDisclaimer": "เนื้อหาการศึกษาสำหรับผู้เชี่ยวชาญด้านการฝึกอบรมและนักกีฬาที่ทุ่มเท"
+  "progCondDisclaimer": "เนื้อหาการศึกษาสำหรับผู้เชี่ยวชาญด้านการฝึกอบรมและนักกีฬาที่ทุ่มเท",
+  "programsShareFeedback": "Share feedback"
 }

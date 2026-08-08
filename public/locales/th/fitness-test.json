@@ -122,5 +122,10 @@
   "youthConfirmOk": "ได้รับความยินยอมแล้ว กำลังเปลี่ยนเส้นทางไปยังการทดสอบสมรรถภาพร่างกาย...",
   "youthConfirmCrossDevice": "บันทึกความยินยอมไว้ในบัญชีนักกีฬาแล้ว พวกเขาสามารถดำเนินการต่อบนอุปกรณ์ที่ลงชื่อเข้าใช้ใด ๆ",
   "youthConfirmError": "ลิงก์หมดอายุหรือไม่ถูกต้อง ขอให้ผู้ปกครองส่งความยินยอมอีกครั้ง",
-  "youthConfirmBack": "กลับไปทดสอบสมรรถภาพร่างกาย"
+  "youthConfirmBack": "กลับไปทดสอบสมรรถภาพร่างกาย",
+  "youthSendFailed": "Could not send the verification email. Try again shortly.",
+  "youthVerifyNetwork": "Could not verify right now. Check your connection and try again.",
+  "youthSending": "Sending…",
+  "schoolJoinedTeacherNote": "Complete a fitness test while signed in to sync your score. Teachers view standings on the class dashboard.",
+  "pftBackAmerica": "National fitness"
 }

@@ -25,9 +25,15 @@ describe('deployReadiness', () => {
     // what a namespace *arriving* looks like. Pinned rather than derived on
     // purpose: a namespace silently dropping out of the export plan is how a
     // language loses a screen, and a test that recomputed the number from the
-    // same manifest could not see it.
-    assert.equal(r.localeFiles, 495);
-    assert.equal(r.localeNamespaces, 33);
+    // same manifest could not see it. `.606` 33→34 with `athlete` (495→510) for
+    // the Account/You split — and the same ship found the *rewards* pack had a
+    // second hole this counter cannot see: `rewards` was in the export plan, so
+    // this number was right, while 26 badge and rank keys emitted from
+    // `catalog.ts` were defined in no catalogue at all and survived only in a
+    // stale committed export. Counting namespaces proves a pack ships; only
+    // `rewardsKeyParity.test.ts` proves the pack is complete.
+    assert.equal(r.localeFiles, 510);
+    assert.equal(r.localeNamespaces, 34);
     assert.ok(r.minTodayKeys >= 100);
     assert.equal(r.target, 'ci');
   });

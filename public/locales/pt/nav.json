@@ -27,5 +27,11 @@
   "fuelHighProteinNote": "Dias com alta proteína impulsionam seu",
   "fuelScienceCh5": "Insight sobre proteínas (livro didático capítulo 5): Essencial para crescimento, reparo, enzimas e hormônios. Clientes ativos geralmente precisam de 1,6–2,2g/kg. Utilize proteínas completas; consumo de tempo em torno dos treinos. A variedade cobre aminoácidos essenciais – as receitas abaixo seguem estes princípios.",
   "fuelScienceCh12": "Nutrição para fisiculturistas (cap.12): Carboidratos complexos alimentam o treinamento; gorduras saudáveis ​​sustentam os hormônios (15–30% de calorias). Vitaminas/minerais de alimentos integrais; fibra 20–30g +. Proteínas + carboidratos pós-treino ajudam na recuperação. A hidratação é importante – priorize alimentos integrais locais.",
-  "fuelPremiumRecipesFoot": "Semeado a partir da ciência das proteínas + princípios DASH/Med para acessibilidade global."
+  "fuelPremiumRecipesFoot": "Semeado a partir da ciência das proteínas + princípios DASH/Med para acessibilidade global.",
+  "navGuide": "Guide",
+  "sourceCode": "Source",
+  "feedback": "Feedback",
+  "resumeWorkout": "Resume workout",
+  "offlineBannerShort": "Offline — logging still works",
+  "offlineWaitingCount": "{{count}} waiting"
 }

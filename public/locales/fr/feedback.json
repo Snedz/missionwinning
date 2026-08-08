@@ -34,5 +34,11 @@
   "feedbackSheetSentTitle": "Got it",
   "feedbackSheetSentBody": "Queued. It sends when you have a connection — you can close the app.",
   "feedbackSheetSentAnon": "No email, so there is no way to reply — but it was read.",
-  "feedbackSheetDone": "Close"
+  "feedbackSheetDone": "Close",
+  "feedbackFrictionLabel": "Qu’est-ce qui vous a dérouté ou n’a pas marché ? (obligatoire)",
+  "feedbackFrictionPlaceholder": "ex. Le minuteur de repos était difficile à trouver entre les séries en extérieur. Ou : la semaine du Coach a ignoré mon jour manqué.",
+  "feedbackExpectedLabel": "À quoi vous attendiez-vous à la place ? (facultatif)",
+  "feedbackExpectedPlaceholder": "ex. Un gros bouton Passer après la série, pas trois préréglages.",
+  "feedbackNextWantLabel": "Une chose à améliorer ensuite (facultatif)",
+  "feedbackNextWantPlaceholder": "ex. Des libellés de type de série plus clairs sur mobile."
 }

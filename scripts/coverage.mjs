@@ -86,6 +86,20 @@ const FLOORS = {
    * helpers under `src/lib/workout/*` and coach chat stay unit-tested. Form-guide
    * quality PR only ships SVG + scripts (outside this universe).
    *
+   *
+   * 394 → 395 on the merge with `.613`, which landed its own identity layer
+   * (`ProfileAthleteCard`) into `/profile` while this split was in flight; that
+   * card now sits on the Athlete Page and is Playwright-covered there.
+   *
+   * Raised 391 → 394 for the `.614` Account/You split: `ProfilePage` (rebuilt as
+   * the Athlete Page), `AccountPage` (the settings it left behind),
+   * `AthleteIdentityCard` and `CareerLineCard`. All four are Playwright-covered
+   * — `/profile` and `/account` are both in `a11y.spec.ts` GATED_ROUTES and in
+   * `zero-state.spec.ts` APP_ROUTES, which render them with zero data and pin an
+   * exact red-action count. The logic they display is *not* in the number: the
+   * derivation got `careerLine.test.ts` (10 cases) and the catalogue got
+   * `athleteLocales.test.ts` (5), so both load under `npm test` and neither
+   * counts here.
    * That split is the point of the ratchet: it does not stop the number moving,
    * it makes somebody look at what moved it.
    *
@@ -128,7 +142,7 @@ const FLOORS = {
    * The component itself is Playwright-covered by the `/coach` a11y and hero
    * cases.
    */
-  untestedFiles: 392,
+  untestedFiles: 395,
   /**
    * Line % across the files that *are* loaded. Must not fall.
    *

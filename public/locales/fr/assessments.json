@@ -59,5 +59,9 @@
   "assessRecModerate2": "Construisez d'abord avec Bodyweight & Dumbbell Starter.",
   "assessRecHigh1": "Commencez par le bloc Correctif et Mobilité.",
   "assessRecHigh2": "Consultez un médecin.",
-  "assessRecHigh3": "Utilisez des options à faible impact et surveillez les symptômes."
+  "assessRecHigh3": "Utilisez des options à faible impact et surveillez les symptômes.",
+  "submitAssessment": "Submit Assessment",
+  "riskLow": "Low risk",
+  "riskModerate": "Moderate risk",
+  "riskHigh": "High risk"
 }

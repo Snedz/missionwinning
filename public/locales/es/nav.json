@@ -27,5 +27,11 @@
   "fuelHighProteinNote": "Los días altos en proteína impulsan tu",
   "fuelScienceCh5": "Conocimiento de proteínas (libro de texto, capítulo 5): esencial para el crecimiento, la reparación, las enzimas y las hormonas. Los clientes activos suelen necesitar entre 1,6 y 2,2 g/kg. Utilice proteínas completas; Consumo de tiempo alrededor de los entrenamientos. La variedad cubre aminoácidos esenciales; las recetas a continuación siguen estos principios.",
   "fuelScienceCh12": "Nutrición para culturistas (cap.12): Los carbohidratos complejos alimentan el entrenamiento; Las grasas saludables apoyan las hormonas (15-30% de calorías). Vitaminas/minerales de alimentos integrales; fibra 20-30 g+. Las proteínas + carbohidratos post-entrenamiento ayudan a la recuperación. La hidratación importa: priorice los alimentos integrales locales.",
-  "fuelPremiumRecipesFoot": "Semilla de la ciencia de las proteínas + principios DASH/Med para la accesibilidad global."
+  "fuelPremiumRecipesFoot": "Semilla de la ciencia de las proteínas + principios DASH/Med para la accesibilidad global.",
+  "navGuide": "Guide",
+  "sourceCode": "Source",
+  "feedback": "Feedback",
+  "resumeWorkout": "Resume workout",
+  "offlineBannerShort": "Offline — logging still works",
+  "offlineWaitingCount": "{{count}} waiting"
 }

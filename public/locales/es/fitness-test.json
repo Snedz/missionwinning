@@ -122,5 +122,10 @@
   "youthConfirmOk": "Consentimiento verificado. Redirigiendo a la prueba de aptitud física...",
   "youthConfirmCrossDevice": "Consentimiento guardado en la cuenta del atleta. Pueden continuar en cualquier dispositivo en el que hayan iniciado sesión.",
   "youthConfirmError": "Enlace caducado o no válido. Pídele a tus padres que vuelvan a enviar el consentimiento.",
-  "youthConfirmBack": "Volver a la prueba de aptitud"
+  "youthConfirmBack": "Volver a la prueba de aptitud",
+  "youthSendFailed": "Could not send the verification email. Try again shortly.",
+  "youthVerifyNetwork": "Could not verify right now. Check your connection and try again.",
+  "youthSending": "Sending…",
+  "schoolJoinedTeacherNote": "Complete a fitness test while signed in to sync your score. Teachers view standings on the class dashboard.",
+  "pftBackAmerica": "Aptitud nacional"
 }

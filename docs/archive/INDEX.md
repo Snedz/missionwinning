@@ -382,6 +382,7 @@ When adding a doc:
 | [log/LOG-rotate-611.md](./log/LOG-rotate-611.md) | rotated 2026-08-08 for `.611` display-name check |
 | [log/LOG-rotate-612.md](./log/LOG-rotate-612.md) | rotated 2026-08-08 for `.612` Athlete Card costs |
 | [log/LOG-rotate-613.md](./log/LOG-rotate-613.md) | `.598` + `.597` — rotated 2026-08-08 for `.613` the clock-dependent hero spec. Holds **two** sections: merging master's `.605` pushed the log to 24 entries against a budget of 15, so `.598` rotated alongside `.597` rather than minting a filename for a label nobody shipped |
+| [log/LOG-rotate-614.md](./log/LOG-rotate-614.md) | `.599` (Postgres error reaching a client) — rotated 2026-08-08 for `.614` Account/You split |
 | [VISION_STATUS-2026-07-23.md](./VISION_STATUS-2026-07-23.md) | The per-pillar vision scorecard, retired `.605`. Last truly refreshed at `.109` and **495 ships stale** by the time it was archived — a second home for status that `ORCHESTRATION.md` asked for on every ship and no check enforced. Status now lives only in [CONTEXT.md](../../CONTEXT.md) `## Now`; the vision-vs-reality *framing* moved to [docs/THESIS.md](../THESIS.md) |
 | [SETUP.md](./SETUP.md) | Stale PayPal-first setup — superseded by [docs/PRE_REVENUE_CHECKLIST.md](../PRE_REVENUE_CHECKLIST.md) + [docs/LLC_AND_PAYMENTS.md](../LLC_AND_PAYMENTS.md) |
 

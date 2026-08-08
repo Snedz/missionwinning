@@ -51,5 +51,6 @@
   "calcPremiumLink": "Voir le forfait",
   "calcPremiumBtn": "Débloquez des outils premium",
   "calcUnitsFoot": "Basculez kg/lbs et cm/in dans Profil. La valeur par défaut globale est métrique.",
-  "calcSignInFoot": "Connectez-vous pour synchroniser les journaux de la calculatrice et les objectifs nutritionnels sur tous les appareils."
+  "calcSignInFoot": "Connectez-vous pour synchroniser les journaux de la calculatrice et les objectifs nutritionnels sur tous les appareils.",
+  "calcPlateExact": "Achieved · exact"
 }

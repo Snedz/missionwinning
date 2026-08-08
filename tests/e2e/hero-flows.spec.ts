@@ -192,8 +192,9 @@ test.describe('Phase H hero flows @gate', () => {
     expect(body).toMatch(/sign in|iniciar sesión|sync|sincroniza/i);
   });
 
-  test('language switch on profile', async ({ page }) => {
-    await page.goto('/profile', { waitUntil: 'networkidle' });
+  test('language switch on account', async ({ page }) => {
+    // ProfilePreferencesCard carries the switcher, and it moved to /account in `.606`.
+    await page.goto('/account', { waitUntil: 'networkidle' });
     const langSelect = page.getByLabel(/change language/i);
     await expect(langSelect).toBeVisible({ timeout: 15_000 });
     await langSelect.selectOption('es');

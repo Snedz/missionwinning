@@ -122,5 +122,10 @@
   "youthConfirmOk": "Consent verified. 체력 테스트로 리디렉션 중…",
   "youthConfirmCrossDevice": "Consent saved to the athlete account. They can continue on any signed-in device.",
   "youthConfirmError": "링크가 만료되었거나 유효하지 않습니다. Ask your parent to resubmit consent.",
-  "youthConfirmBack": "체력 테스트로 돌아가기"
+  "youthConfirmBack": "체력 테스트로 돌아가기",
+  "youthSendFailed": "Could not send the verification email. Try again shortly.",
+  "youthVerifyNetwork": "Could not verify right now. Check your connection and try again.",
+  "youthSending": "Sending…",
+  "schoolJoinedTeacherNote": "Complete a fitness test while signed in to sync your score. Teachers view standings on the class dashboard.",
+  "pftBackAmerica": "National fitness"
 }

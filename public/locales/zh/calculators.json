@@ -51,5 +51,6 @@
   "calcPremiumLink": "查看捆绑包",
   "calcPremiumBtn": "解锁高级工具",
   "calcUnitsFoot": "在配置文件中切换公斤/磅和厘米/英寸。 全局默认为公制。",
-  "calcSignInFoot": "登录以跨设备同步计算器日志和营养目标。"
+  "calcSignInFoot": "登录以跨设备同步计算器日志和营养目标。",
+  "calcPlateExact": "Achieved · exact"
 }

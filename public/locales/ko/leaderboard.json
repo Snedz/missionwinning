@@ -1,4 +1,5 @@
 {
+  "leaderboardSquadEmptyCta": "Focus squad code",
   "navLeaderboard": "Leaderboard",
   "leaderboardRankings": "순위",
   "leaderboardTitle": "리더보드",
@@ -6,6 +7,13 @@
   "leaderboardSync": "동조",
   "leaderboardOperators": "운영자",
   "leaderboardYourRank": "당신의 순위",
+  "leaderboardDisplayName": "Name",
+  "leaderboardNamePlaceholder": "Your name",
+  "leaderboardNameReserved": "That name could be mistaken for Mission Winning staff. Pick another.",
+  "leaderboardNameLink": "Names cannot contain links or addresses.",
+  "leaderboardNameTooLong": "That name is too long.",
+  "leaderboardNameEmpty": "Pick a name to show on the board.",
+  "leaderboardNameUnsafe": "That name contains characters we cannot show on a shared board.",
   "leaderboardCallSign": "호출부호",
   "leaderboardSquadCode": "분대 코드(분대 탭용)",
   "leaderboardSquadHint": "위의 분대 코드를 설정하여 동일한 코드를 사용하는 다른 분대와 비교할 수 있습니다. 데모팀 구성원을 보려면 ALPHA 또는 BRAVO를 사용해 보세요.",
@@ -26,5 +34,16 @@
   "lbBoardDawnsEarlyLight": "새벽의 이른 빛으로",
   "lbNightSessions": "야간 세션",
   "lbDawnSessions": "새벽 세션",
-  "lbYou": "너"
+  "lbYou": "너",
+  "leaderboardEyebrow": "Leaderboard",
+  "leaderboardLoadError": "Could not refresh standings",
+  "leaderboardOffline": "You appear offline. Local ranks still show below when available.",
+  "leaderboardLoadErrorDesc": "Cloud sync failed. Retry when the network is ready.",
+  "leaderboardClassEmptyTitle": "Join a PE class",
+  "leaderboardClassScopeHint": "Join a PE class on /america to see class standings here. Class board uses signed-in fitness test results.",
+  "leaderboardClassEmptyCta": "Open America track",
+  "leaderboardSquadEmptyTitle": "Add a squad code",
+  "leaderboardClassNote": "Class standings rank best signed-in fitness test per athlete. Demo operators are hidden on this board.",
+  "lbPacerHint": "Pacer — a virtual pace-setter, not a real athlete",
+  "lbPacer": "Pacer"
 }

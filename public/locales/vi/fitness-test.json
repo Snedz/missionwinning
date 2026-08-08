@@ -122,5 +122,10 @@
   "youthConfirmOk": "Đã xác minh sự đồng ý. Đang chuyển hướng tới bài kiểm tra thể lực…",
   "youthConfirmCrossDevice": "Sự đồng ý được lưu vào tài khoản vận động viên. Họ có thể tiếp tục trên mọi thiết bị đã đăng nhập.",
   "youthConfirmError": "Liên kết đã hết hạn hoặc không hợp lệ. Hãy yêu cầu cha mẹ bạn gửi lại sự đồng ý.",
-  "youthConfirmBack": "Quay lại bài kiểm tra thể lực"
+  "youthConfirmBack": "Quay lại bài kiểm tra thể lực",
+  "youthSendFailed": "Could not send the verification email. Try again shortly.",
+  "youthVerifyNetwork": "Could not verify right now. Check your connection and try again.",
+  "youthSending": "Sending…",
+  "schoolJoinedTeacherNote": "Complete a fitness test while signed in to sync your score. Teachers view standings on the class dashboard.",
+  "pftBackAmerica": "National fitness"
 }

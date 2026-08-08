@@ -59,5 +59,9 @@
   "assessRecModerate2": "最初にボディウェイトとダンベルスターターを使用して構築します。",
   "assessRecHigh1": "矯正と可動性のブロックから始めます。",
   "assessRecHigh2": "医師に相談してください。",
-  "assessRecHigh3": "影響の少ないオプションを使用し、症状を監視してください。"
+  "assessRecHigh3": "影響の少ないオプションを使用し、症状を監視してください。",
+  "submitAssessment": "Submit Assessment",
+  "riskLow": "Low risk",
+  "riskModerate": "Moderate risk",
+  "riskHigh": "High risk"
 }

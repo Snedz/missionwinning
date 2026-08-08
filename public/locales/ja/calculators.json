@@ -51,5 +51,6 @@
   "calcPremiumLink": "バンドルを見る",
   "calcPremiumBtn": "プレミアムツールのロックを解除する",
   "calcUnitsFoot": "プロファイルで kg/lbs と cm/in を切り替えます。 グローバルのデフォルトはメトリックです。",
-  "calcSignInFoot": "サインインして、デバイス間で計算ログと栄養目標を同期します。"
+  "calcSignInFoot": "サインインして、デバイス間で計算ログと栄養目標を同期します。",
+  "calcPlateExact": "Achieved · exact"
 }

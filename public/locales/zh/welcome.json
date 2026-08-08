@@ -49,5 +49,12 @@
   "welcomeSkipSignIn": "跳过 — 转到今天",
   "welcomeRemindersOptIn": "通过电子邮件向我发送培训提醒（存在连续风险，下一步）。 可选 — 随时取消订阅。",
   "editJourneyProfile": "编辑旅程资料",
-  "saveProfile": "保存个人资料"
+  "saveProfile": "保存个人资料",
+  "welcomeProgressLabel": "Progress, step {{step}} of {{total}}",
+  "welcomeProgressMono": "{{step}} / {{total}}",
+  "welcomePreviewLabel": "Your first session is ready",
+  "welcomePreviewSessionName": "{{name}}",
+  "welcomeSessionReadyEyebrow": "Up next",
+  "welcomeSessionReadyTitle": "Your first session is ready",
+  "welcomeSessionReadyBody": "{{name}} · {{count}} exercises for your gear. Skip sign-in to start logging right away."
 }

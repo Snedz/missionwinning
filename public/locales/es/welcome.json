@@ -49,5 +49,12 @@
   "welcomeSkipSignIn": "Ir a hoy",
   "welcomeRemindersOptIn": "Recordatorios de capacitación por correo electrónico (racha en riesgo, siguiente paso). Opcional: cancela la suscripción en cualquier momento.",
   "editJourneyProfile": "Editar perfil del viaje",
-  "saveProfile": "Guardar perfil"
+  "saveProfile": "Guardar perfil",
+  "welcomeProgressLabel": "Progress, step {{step}} of {{total}}",
+  "welcomeProgressMono": "{{step}} / {{total}}",
+  "welcomePreviewLabel": "Your first session is ready",
+  "welcomePreviewSessionName": "{{name}}",
+  "welcomeSessionReadyEyebrow": "Up next",
+  "welcomeSessionReadyTitle": "Your first session is ready",
+  "welcomeSessionReadyBody": "{{name}} · {{count}} exercises for your gear. Skip sign-in to start logging right away."
 }

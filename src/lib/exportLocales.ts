@@ -26,6 +26,7 @@ import { firstStepsStringsFor } from '@/i18n/firstStepsLocales';
 import { whatsNewStringsFor } from '@/i18n/whatsNewLocales';
 import { zeroStateStringsFor } from '@/i18n/zeroStateLocales';
 import { notificationStringsFor } from '@/i18n/notificationLocales';
+import { athleteStringsFor } from '@/i18n/athleteLocales';
 import { programsStringsFor } from '@/i18n/programsLocales';
 import { libraryStringsFor } from '@/i18n/libraryLocales';
 import { landingStringsFor } from '@/i18n/landingLocales';
@@ -217,6 +218,12 @@ export const LOCALE_EXPORTS: LocaleExportEntry[] = [
     namespace: 'notification',
     filename: 'notification.json',
     stringsFor: packWrap(notificationStringsFor),
+    langs: EXPORT_LANGS,
+  },
+  {
+    namespace: 'athlete',
+    filename: 'athlete.json',
+    stringsFor: packWrap(athleteStringsFor),
     langs: EXPORT_LANGS,
   },
   {

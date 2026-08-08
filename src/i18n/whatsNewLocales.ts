@@ -17,6 +17,9 @@ const WHATS_NEW_EN: Record<string, string> = {
   whatsNewMoreRow: 'What’s new',
   whatsNewMoreUnseen: 'New',
 
+  whatsNewBulletRewardsTitle: 'Mission progress',
+  whatsNewBulletRewardsBody:
+    'Earn XP and badges from real sessions. Weekly train goal is the boss consistency signal — not a punishing daily streak.',
   whatsNewBulletHistoryTitle: 'Exercises in History',
   whatsNewBulletHistoryBody:
     'Open History → Exercises for lift trends without digging through session lists.',

@@ -1,4 +1,12 @@
 {
+  "programsEyebrow": "Programs",
+  "programsCatalogIntro": "Specialist education outlines below. Free core tools live in Learn and the public guide.",
+  "programsCurriculumOutline": "Curriculum outline",
+  "programsModuleLabel": "Module {{n}}",
+  "programsFreeNote": "Free education path",
+  "programsNoMatchTitle": "No programs match those filters",
+  "programsNoMatchBody": "Nothing in the catalog fits that combination of goal and equipment yet. Clear the filters to see all programs.",
+  "programsClearFilters": "Clear filters",
   "programsFilterGoal": "Nach Ziel filtern:",
   "programsFilterEquip": "Equipment:",
   "programsGoalAll": "Alle",
@@ -65,5 +73,6 @@
   "progCondBullet2": "Conditioning protocols that complement (not destroy) strength",
   "progCondBullet3": "HWPO-inspired high-volume blocks + recovery management",
   "progCondBullet4": "Test protocols and Log-based conditioning tracking",
-  "progCondDisclaimer": "Educational content for training professionals and dedicated athletes."
+  "progCondDisclaimer": "Educational content for training professionals and dedicated athletes.",
+  "programsShareFeedback": "Share feedback"
 }

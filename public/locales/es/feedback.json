@@ -34,5 +34,11 @@
   "feedbackSheetSentTitle": "Got it",
   "feedbackSheetSentBody": "Queued. It sends when you have a connection — you can close the app.",
   "feedbackSheetSentAnon": "No email, so there is no way to reply — but it was read.",
-  "feedbackSheetDone": "Close"
+  "feedbackSheetDone": "Close",
+  "feedbackFrictionLabel": "¿Qué te confundió o falló? (obligatorio)",
+  "feedbackFrictionPlaceholder": "p. ej. El temporizador de descanso era difícil de encontrar entre series al aire libre. O: la semana del Coach ignoró mi día perdido.",
+  "feedbackExpectedLabel": "¿Qué esperabas en su lugar? (opcional)",
+  "feedbackExpectedPlaceholder": "p. ej. Un botón grande de Saltar después de la serie, no tres opciones.",
+  "feedbackNextWantLabel": "Una cosa que mejorar a continuación (opcional)",
+  "feedbackNextWantPlaceholder": "p. ej. Etiquetas de tipo de serie más claras en el móvil."
 }

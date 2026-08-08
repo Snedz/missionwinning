@@ -51,5 +51,6 @@
   "calcPremiumLink": "View bundle",
   "calcPremiumBtn": "Unlock premium tools",
   "calcUnitsFoot": "Toggle kg/lbs and cm/in in Profile. Global default is metric.",
-  "calcSignInFoot": "Sign in to sync calculator logs and nutrition targets across devices."
+  "calcSignInFoot": "Sign in to sync calculator logs and nutrition targets across devices.",
+  "calcPlateExact": "Achieved · exact"
 }
