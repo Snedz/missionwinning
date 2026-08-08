@@ -106,8 +106,19 @@ const FLOORS = {
    * earlier revision of this branch set 405 against `.561`; master's own
    * repayment moved the real number, so the floor was re-derived rather than
    * re-asserted. Repaid, not loosened, with no slack deliberately.
+   *
+   * **390 → 391 for `useStartCoachSession` (`.598`).** One new file, and it is
+   * the escape hatch this message describes rather than a quiet drift, so the
+   * reason is here where a reviewer sees it: the hook is **wiring only**. Every
+   * decision it used to hold — the `done` guard, the re-entry read, the dose
+   * scaling — was pulled out into `resolveCoachSessionStart`, which is pure and
+   * carries five dedicated cases in `coachSessionStart.test.ts`. Its sibling
+   * `src/lib/coach/coachSessionStart.ts` shipped in the same change *with* a
+   * test, which is why this is +1 and not +2. The alternative was leaving the
+   * logic inside the React boundary where no unit test can reach it — a worse
+   * trade for the same count.
    */
-  untestedFiles: 390,
+  untestedFiles: 391,
   /**
    * Line % across the files that *are* loaded. Must not fall.
    *

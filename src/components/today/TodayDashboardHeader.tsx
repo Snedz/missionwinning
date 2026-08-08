@@ -13,6 +13,8 @@ import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip
 interface Props {
   missionScore: number;
   scores: BodyScores;
+  /** Scores are still placeholders — show em-dashes, not seeded numbers. */
+  pending?: boolean;
   trends?: TodayTrends;
   /** One coach briefing line under the score (D2). */
   coachLine?: string;
@@ -28,6 +30,7 @@ interface Props {
 export function TodayDashboardHeader({
   missionScore,
   scores,
+  pending,
   trends,
   coachLine,
   sessions,
@@ -65,11 +68,16 @@ export function TodayDashboardHeader({
         <TooltipTrigger asChild>
           {/* No focus-ring classes: the global :focus-visible rule in index.css
               already covers raw buttons, and a second one draws twice. */}
-          <button type="button" className="today-score-layout block w-full text-left">
+          <button
+            type="button"
+            data-testid="today-score-band"
+            className="today-score-layout block w-full text-left"
+          >
             <MetricsRow
               scores={scores}
               missionScore={displayScore}
               sessions={sessions}
+              pending={pending}
               embedded
               size={metricsSize}
             />

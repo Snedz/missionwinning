@@ -18,6 +18,11 @@ interface MetricsRowProps {
    * to keep the old always-show-a-number behaviour (demos, computed previews).
    */
   sessions?: number;
+  /**
+   * The caller is still resolving these figures and is passing placeholders.
+   * Renders em-dashes regardless of `sessions` — a seeded 50 is not a reading.
+   */
+  pending?: boolean;
   demo?: boolean;
   embedded?: boolean;
   size?: 'sm' | 'md' | 'lg';
@@ -27,6 +32,7 @@ export function MetricsRow({
   scores,
   missionScore,
   sessions,
+  pending,
   demo,
   embedded,
   size = 'md',
@@ -48,10 +54,19 @@ export function MetricsRow({
    * `sessions` undefined keeps the old behaviour for callers that are showing a
    * demo or a computed figure on purpose.
    */
-  const measured = sessions === undefined || sessions > 0;
+  /*
+   * `pending` is the second way a figure can be unmeasured, and the guard above
+   * could not see it. `sessions > 0` asks "has this athlete trained", but
+   * `HomeTodayDashboard` seeds a literal `{ readiness: 50, strain: 50,
+   * recovery: 50 }` until its below-fold work resolves — so a returning athlete
+   * cleared the `sessions` test and read three fabricated scores, captioned
+   * "Train smart / Moderate load / Rebuilding", as measurements of their body.
+   * Exactly the lie the comment above describes, arriving down a different road.
+   */
+  const measured = !pending && (sessions === undefined || sessions > 0);
   // computeBodyScores needs more history than one session can give; a recovery
   // figure before then is arithmetic on nothing.
-  const recoveryMeasured = sessions === undefined || sessions >= 3;
+  const recoveryMeasured = !pending && (sessions === undefined || sessions >= 3);
 
   const cells = [
     ...(missionScore === undefined

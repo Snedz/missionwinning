@@ -24,6 +24,7 @@
  * rather than re-derive a control flow.
  */
 
+import { isOfflineInstallable } from '@/lib/offlineCapability';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Button } from '@/components/ui/button';
@@ -57,6 +58,10 @@ export function DayReviewOptIn() {
           hasPush,
           supported: m.isPushSupported(),
           iosNeedsInstall:
+            // `.603` — offering install-to-unlock-notifications is false twice over while
+            // the worker is gated: nothing is installable, and an installed shell still has
+            // no service worker to subscribe through. Same flag the SW registration uses.
+            isOfflineInstallable() &&
             typeof navigator !== 'undefined' &&
             /iPad|iPhone|iPod/.test(navigator.userAgent) &&
             !('PushManager' in window),

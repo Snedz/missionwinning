@@ -413,9 +413,9 @@ const en: FuelStrings = {
   fuelHideMore: 'Hide search & recipes',
   fuelShowMore: 'Search, barcode & recipes',
   fuelSubtitleDepthBeta:
-    '{{free}} free recipes · {{unlocked}} unlocked in open beta — log offline on this device.',
+    '{{free}} free recipes · {{unlocked}} unlocked in open beta — meals stay on this device.',
   fuelSubtitleDepthPaid:
-    '{{free}} free recipes · Super Bundle adds {{premium}} more. Log offline on this device.',
+    '{{free}} free recipes · Super Bundle adds {{premium}} more. Meals stay on this device.',
   fuelEmptyCta: 'Log food',
   fuelRecipesEmptyTitle: 'No recipes loaded',
   fuelRecipesEmptyDesc: 'Log meals manually above — recipes return on refresh.',

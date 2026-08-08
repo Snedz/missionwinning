@@ -21,7 +21,7 @@
 
 import { describe, it } from 'node:test';
 import assert from 'node:assert/strict';
-import { readFileSync } from 'node:fs';
+import { readFileSync, readdirSync, statSync } from 'node:fs';
 import path from 'node:path';
 import { capQueue, type OutboxOp } from '@/lib/sync/outbox';
 
@@ -191,26 +191,115 @@ describe('the cron routes', () => {
   });
 });
 
+/**
+ * A Postgres message must never reach a client.
+ *
+ * This check used to `.filter()` a **six-entry `LEAKY` list** over a repo with
+ * sixty-nine `route.ts` files — an allowlist wearing the name of a scan, so it
+ * could only ever re-check the six routes somebody had already fixed. And its
+ * matcher was `/error:\s*error\.message\s*\},\s*\{\s*status:\s*500/`, keyed to
+ * one property name and one status code.
+ *
+ * Both halves failed on the same live defect. `app/api/mobile/workouts/route.ts`
+ * returned `{ ...localAck, syncError: error.message }` — a raw Postgres message,
+ * at the default **200**. It was not in the list, and it would have passed the
+ * regex even if it had been: `syncError`, not `error`; 200, not 500. Exactly the
+ * two shapes CLAUDE.md §6 names — *"a name claiming a scope wider than its
+ * enumeration"* and *"a guard keyed to one spelling of a defect"* — in one guard,
+ * over a rule from §5.
+ *
+ * So: discover every route, and match `error.message` reaching a response body
+ * regardless of property name or status.
+ */
 describe('server errors', () => {
-  const LEAKY = [
-    'app/api/mobile/sync/prefs/route.ts',
-    'app/api/mobile/sync/routines/route.ts',
-    'app/api/mobile/sync/workouts/route.ts',
-    'app/api/mobile/sync/customs/route.ts',
-    'app/api/youth/consent-notify/route.ts',
-    'app/api/mobile/telemetry/route.ts',
+  /** Every HTTP handler in the app, found rather than listed. */
+  function routeFiles(dir = 'app/api', out: string[] = []): string[] {
+    for (const entry of readdirSync(path.join(root, dir))) {
+      const rel = `${dir}/${entry}`;
+      if (statSync(path.join(root, rel)).isDirectory()) routeFiles(rel, out);
+      else if (entry === 'route.ts') out.push(rel);
+    }
+    return out;
+  }
+
+  /**
+   * A Supabase/Postgres error object reaching `NextResponse.json`, under any key
+   * and at any status. Covers `error:`, `syncError:`, shorthand, and template
+   * interpolation — the spellings the old single pattern could not see.
+   */
+  const LEAK = /(?:[A-Za-z_$][\w$]*\s*:\s*|\$\{\s*|\.\.\.[^,}]*,\s*)(?:\w*[Ee]rror)\.message\b/;
+
+  /**
+   * Routes allowed to echo a message, each with a written reason. Empty today —
+   * kept as the mechanism so the next exception is a reviewable decision rather
+   * than a silent edit, in the shape `navTruth.NAV_EXEMPT` uses.
+   */
+  const LEAK_OK: { file: string; reason: string }[] = [
+    {
+      file: 'app/api/health/route.ts',
+      reason:
+        'Deep readiness probe for the founder’s uptime monitor. The Supabase detail is reachable ' +
+        'only with `?deep=1` *and* `Authorization: Bearer CRON_SECRET` — the handler 401s before ' +
+        'that line otherwise — and it is truncated to 120 chars. Telling an authenticated operator ' +
+        'why the database ping failed is the endpoint’s entire purpose; an opaque code here would ' +
+        'make the probe useless without protecting anyone.',
+    },
   ];
 
   it('never return the database its own words', () => {
-    const offenders = LEAKY.filter((f) =>
-      /error:\s*error\.message\s*\}\s*,\s*\{\s*status:\s*500/.test(stripComments(read(f)))
-    );
+    const files = routeFiles();
+    // The old list was six. If discovery ever collapses to something that small
+    // again, the guard has stopped guarding and should say so loudly.
+    assert.ok(files.length > 50, `only found ${files.length} route files — discovery is broken`);
+
+    const offenders = files.filter((f) => {
+      if (LEAK_OK.some((e) => e.file === f)) return false;
+      const src = stripComments(read(f));
+      // Only the part that gets sent — a `console.error(error.message)` is the
+      // correct destination for the detail and must not be flagged.
+      return src
+        .split('\n')
+        .some((line) => !/console\.(error|warn|log)/.test(line) && LEAK.test(line));
+    });
+
     assert.deepEqual(
       offenders,
       [],
-      'a Postgres error message names tables, columns and constraints — a free schema map ' +
-        `for anyone probing the endpoint:\n  ${offenders.join('\n  ')}`
+      'a Postgres error message names tables, columns and constraints — a free schema map for ' +
+        `anyone probing the endpoint. Log it, return an opaque code:\n  ${offenders.join('\n  ')}`
     );
+  });
+
+  it('every LEAK_OK row is live and reasoned', () => {
+    const files = new Set(routeFiles());
+    for (const { file, reason } of LEAK_OK) {
+      assert.ok(reason.trim().length > 0, `${file} has no reason`);
+      assert.ok(files.has(file), `${file} is exempted but is not a route — the row exempts nothing`);
+      assert.ok(
+        LEAK.test(stripComments(read(file))),
+        `${file} is exempted but no longer leaks — delete the row so the list stays real gaps`
+      );
+    }
+  });
+
+  it('the matcher sees the spellings the old one missed', () => {
+    // Falsification in the file: the pattern is asserted against the exact
+    // shapes that shipped, so narrowing it back to `error:` + 500 goes red here
+    // rather than silently un-guarding sixty-nine routes.
+    for (const shape of [
+      'return NextResponse.json({ error: error.message }, { status: 500 });',
+      'return NextResponse.json({ ...localAck, syncError: error.message });',
+      'return NextResponse.json({ detail: dbError.message }, { status: 400 });',
+      'return NextResponse.json({ msg: `failed: ${error.message}` });',
+    ]) {
+      assert.ok(LEAK.test(shape), `matcher does not catch: ${shape}`);
+    }
+    for (const safe of [
+      "return NextResponse.json({ error: 'sync_failed' });",
+      'return NextResponse.json({ ok: true });',
+    ]) {
+      assert.ok(!LEAK.test(safe), `matcher false-positives on: ${safe}`);
+    }
   });
 });
 

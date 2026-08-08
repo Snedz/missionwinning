@@ -4,6 +4,7 @@
  * See: app/INDEX.md, src/page-components/INDEX.md
  */
 
+import { isOfflineInstallable } from '@/lib/offlineCapability';
 import Link from 'next/link';
 import { useTranslation } from 'react-i18next';
 import { ChevronRight, Rocket } from 'lucide-react';
@@ -89,10 +90,20 @@ export function BetaStartPage() {
         </ol>
 
         <p className="text-xs text-muted-foreground leading-relaxed border-t-2 border-border pt-6">
-          {t('betaFootWedge', {
-            defaultValue:
-              'Train anywhere: log from Today offline — no account required. After your first log, open Mission Coach for a week that adapts from sessions alone.',
-          })}
+          {/*
+            The first screen an invited tester sees. "log from Today offline" is
+            a promise this build cannot keep while the service worker is gated,
+            and it is the one claim they are most likely to go and test.
+          */}
+          {isOfflineInstallable()
+            ? t('betaFootWedge', {
+                defaultValue:
+                  'Train anywhere: log from Today offline — no account required. After your first log, open Mission Coach for a week that adapts from sessions alone.',
+              })
+            : t('betaFootWedgeNoSw', {
+                defaultValue:
+                  'Train anywhere: log from Today with no account required. Lose signal mid-session and logging keeps going — it syncs when you are back. After your first log, open Mission Coach for a week that adapts from sessions alone.',
+              })}
         </p>
       </div>
     </InfoPageShell>

@@ -1,5 +1,6 @@
 'use client';
 
+import { isOfflineInstallable } from '@/lib/offlineCapability';
 import { useRouter } from 'next/navigation';
 import {
   Check,
@@ -534,8 +535,22 @@ export function TodayProgressSection({
         </CardContent>
       </Card>
 
-      {/* PWA Install Banner (kept, now in context of daily use) */}
-      {typeof window !== 'undefined' && !window.matchMedia('(display-mode: standalone)').matches && (
+      {/*
+        PWA Install Banner (kept, now in context of daily use).
+
+        `isOfflineInstallable()` first: this said "Install Mission Winning for
+        offline use anywhere (PWA)" to **every** browser visitor, on the daily
+        command screen, while `next.config.js` was shipping no service worker at
+        all — so the app was not installable and nothing was cached. Tapping it
+        found no `deferredPwaPrompt` and dead-ended in a toast telling the
+        athlete to use their browser menu, which would have installed a shell
+        with zero offline capability. The feature is real and gated, not gone
+        (`PRODUCTION_STACK.md` L10); the banner returns by itself, already true,
+        when the flip builds the worker.
+      */}
+      {isOfflineInstallable() &&
+        typeof window !== 'undefined' &&
+        !window.matchMedia('(display-mode: standalone)').matches && (
         <div className="p-3 border-2 border-border bg-card text-sm flex items-center justify-between gap-3">
           <span>{t('todayInstallPwa', { defaultValue: 'Install Mission Winning for offline use anywhere (PWA).' })}</span>
           <Button

@@ -227,6 +227,9 @@ type TodayStrings = {
   todayFreshReady: string;
   todayFreshRecovering: string;
   todayWeekLoading: string;
+  todayWeekFailedTitle: string;
+  todayWeekFailedDesc: string;
+  todayWeekFailedRetry: string;
   todayTrendsDetails: string;
   todayDayReviewTitle: string;
   todayDayReviewBedLogged: string;
@@ -514,6 +517,10 @@ const en: TodayStrings = {
   todayFreshReady: 'ready',
   todayFreshRecovering: 'recovering',
   todayWeekLoading: 'Loading week…',
+  todayWeekFailedTitle: 'Could not load this week',
+  todayWeekFailedDesc:
+    'The connection dropped while fetching it. Your logged sessions are safe on this device.',
+  todayWeekFailedRetry: 'Try again',
   todayTrendsDetails: 'Trends',
   todayDayReviewTitle: 'Day in review',
   todayDayReviewBedLogged: 'Bed time logged — stays on this device.',
@@ -729,6 +736,9 @@ const es: TodayStrings = {
 };
 
 const zh: TodayStrings = {
+  todayWeekFailedTitle: en.todayWeekFailedTitle,
+  todayWeekFailedDesc: en.todayWeekFailedDesc,
+  todayWeekFailedRetry: en.todayWeekFailedRetry,
   todayFounderStreakCloudSaved: en.todayFounderStreakCloudSaved,
   todayFounderStreakCloudSignIn: en.todayFounderStreakCloudSignIn,
   todayFounderWinLogged: en.todayFounderWinLogged,
@@ -990,6 +1000,9 @@ const zh: TodayStrings = {
 };
 
 const id: TodayStrings = {
+  todayWeekFailedTitle: en.todayWeekFailedTitle,
+  todayWeekFailedDesc: en.todayWeekFailedDesc,
+  todayWeekFailedRetry: en.todayWeekFailedRetry,
   todayFounderStreakCloudSaved: en.todayFounderStreakCloudSaved,
   todayFounderStreakCloudSignIn: en.todayFounderStreakCloudSignIn,
   todayFounderWinLogged: en.todayFounderWinLogged,
@@ -1265,6 +1278,9 @@ const id: TodayStrings = {
 };
 
 const th: TodayStrings = {
+  todayWeekFailedTitle: en.todayWeekFailedTitle,
+  todayWeekFailedDesc: en.todayWeekFailedDesc,
+  todayWeekFailedRetry: en.todayWeekFailedRetry,
   todayFounderStreakCloudSaved: en.todayFounderStreakCloudSaved,
   todayFounderStreakCloudSignIn: en.todayFounderStreakCloudSignIn,
   todayFounderWinLogged: en.todayFounderWinLogged,
@@ -1530,6 +1546,9 @@ const th: TodayStrings = {
 };
 
 const ar: TodayStrings = {
+  todayWeekFailedTitle: en.todayWeekFailedTitle,
+  todayWeekFailedDesc: en.todayWeekFailedDesc,
+  todayWeekFailedRetry: en.todayWeekFailedRetry,
   todayFounderStreakCloudSaved: en.todayFounderStreakCloudSaved,
   todayFounderStreakCloudSignIn: en.todayFounderStreakCloudSignIn,
   todayFounderWinLogged: en.todayFounderWinLogged,

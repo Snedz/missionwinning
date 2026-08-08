@@ -46,9 +46,11 @@ const HIGH_WATER = {
    * ten logic modules got colocated tests here and `master` repaid three more
    * independently — see `FLOORS.untestedFiles` for why the number had drifted to
    * 415 unnoticed, and why 390 is measured against `.594` rather than carried
-   * over from an earlier revision of this branch.
+   * over from an earlier revision of this branch. 391 for `.598`'s
+   * `useStartCoachSession` — a wiring-only hook whose decision lives in the
+   * unit-tested `resolveCoachSessionStart`; see `FLOORS.untestedFiles`.
    */
-  untestedFiles: 390,
+  untestedFiles: 391,
   /**
    * Held at its original value on purpose — see the note at `FLOORS.linePct`.
    * Reaching a previously-unloaded file *lowers* this, because its unexecuted

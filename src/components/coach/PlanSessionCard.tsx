@@ -4,15 +4,12 @@
  * See: src/components/coach/INDEX.md
  */
 
-import { useRouter } from 'next/navigation';
 import { PlanExerciseLine } from '@/components/coach/PlanExerciseLine';
-import { planSessionToTemplates } from '@/lib/coach/planSessionTemplates';
+import { useStartCoachSession } from '@/hooks/useStartCoachSession';
 import { useTranslation } from 'react-i18next';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { useWorkoutStore } from '@/store/workoutStore';
-import { track } from '@/lib/analytics';
 import type { PlanSession } from '@/lib/coach/types';
 import { useUnits, weightUnitLabel } from '@/hooks/useUnits';
 import { cn } from '@/lib/utils';
@@ -39,16 +36,13 @@ export function PlanSessionCard({
   onAdjust,
 }: Props) {
   const { t } = useTranslation();
-  const router = useRouter();
+  const startCoachSession = useStartCoachSession();
   const units = useUnits();
-  const startWorkout = useWorkoutStore((s) => s.startWorkout);
   const unit = weightUnitLabel(units);
   const primary = isPrimaryStart ?? isToday;
 
   const start = () => {
-    startWorkout(session.name, planSessionToTemplates(session));
-    track('coach_session_started', { kind: session.kind, dayOffset: session.dayOffset });
-    router.push('/active');
+    startCoachSession(session, { from: 'coach' });
   };
 
   return (
