@@ -37,6 +37,7 @@ export function hydrateI18nResources(instance: typeof i18n): Promise<void> {
       { mergeWhatsNewStrings },
       { mergeZeroStateStrings },
       { mergeNotificationStrings },
+      { mergeAthleteStrings },
       { mergeProgramsStrings },
       { mergeCoachStrings },
       { mergeLibraryStrings },
@@ -73,6 +74,7 @@ export function hydrateI18nResources(instance: typeof i18n): Promise<void> {
       import('@/i18n/whatsNewLocales'),
       import('@/i18n/zeroStateLocales'),
       import('@/i18n/notificationLocales'),
+      import('@/i18n/athleteLocales'),
       import('@/i18n/programsLocales'),
       import('@/i18n/coachLocales'),
       import('@/i18n/libraryLocales'),
@@ -129,6 +131,7 @@ export function hydrateI18nResources(instance: typeof i18n): Promise<void> {
       mergeWhatsNewStrings(resources[lang], lang);
       mergeZeroStateStrings(resources[lang], lang);
       mergeNotificationStrings(resources[lang], lang);
+      mergeAthleteStrings(resources[lang], lang);
       mergeProgramsStrings(resources[lang], lang);
       mergeCoachStrings(resources[lang], lang);
       mergeLibraryStrings(resources[lang], lang);

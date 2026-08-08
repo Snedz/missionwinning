@@ -60,6 +60,7 @@ export const LOCALE_FILES = [
   { namespace: 'whatsNew', filename: 'whats-new.json' },
   { namespace: 'zeroState', filename: 'zero-state.json' },
   { namespace: 'notification', filename: 'notification.json' },
+  { namespace: 'athlete', filename: 'athlete.json' },
   { namespace: 'programs', filename: 'programs.json' },
   { namespace: 'library', filename: 'library.json' },
   { namespace: 'landing', filename: 'landing.json' },

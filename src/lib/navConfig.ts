@@ -12,6 +12,7 @@ import {
   History,
   MapPin,
   PenTool,
+  Settings,
   Shield,
   Sparkles,
   Trophy,
@@ -142,6 +143,14 @@ export const MORE_NAV: NavLinkItem[] = [
     descriptionKey: 'moreBundleDesc',
     description: 'Premium pillars',
   },
+  {
+    href: '/account',
+    labelKey: 'navAccount',
+    label: 'Account',
+    icon: Settings,
+    descriptionKey: 'moreAccountDesc',
+    description: 'Settings, notifications, backup',
+  },
 ];
 
 export type NavSection = {
@@ -188,7 +197,7 @@ export const RAIL_GROUPS: { id: string; title: string; titleKey: string; hrefs: 
     id: 'toolkit',
     title: 'Toolkit',
     titleKey: 'navGroupToolkit',
-    hrefs: ['/assessments', '/library', '/builder', '/profile'],
+    hrefs: ['/assessments', '/library', '/builder', '/profile', '/account'],
   },
 ];
 

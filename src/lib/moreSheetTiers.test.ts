@@ -25,7 +25,7 @@ test('More tiers are Wedge · Pillars · You with declared hrefs', () => {
   assert.ok(pillars.hrefs.includes('/learn'));
   assert.ok(!pillars.hrefs.includes('/nutrition'), 'Fuel is a tab — not a More row');
   const you = MORE_SHEET_TIER_HREFS.find((t) => t.id === 'you')!;
-  assert.deepEqual([...you.hrefs], ['/profile']);
+  assert.deepEqual([...you.hrefs], ['/profile', '/account']);
 });
 
 test('resolved tiers never include a mobile tab href', () => {

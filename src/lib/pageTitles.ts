@@ -28,6 +28,7 @@ export const ROUTE_LABELS: { href: string; label: string; labelKey: string }[] =
   { href: '/nutrition', labelKey: 'navFuel', label: 'Fuel' },
   { href: '/track', labelKey: 'navTrack', label: 'Track' },
   { href: '/profile', labelKey: 'navYou', label: 'You' },
+  { href: '/account', labelKey: 'navAccount', label: 'Account' },
   { href: '/move', labelKey: 'navMove', label: 'Move' },
   { href: '/mind', labelKey: 'navMind', label: 'Mind' },
   { href: '/learn', labelKey: 'navLearn', label: 'Learn' },

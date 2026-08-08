@@ -1,0 +1,147 @@
+/**
+ * The Athlete Page and the Account split — merged into `common`.
+ *
+ * `.606` split `/profile` in two: the settings became `/account`, and `/profile`
+ * became the record the nav label "You" always claimed
+ * (docs/IDENTITY_SOCIAL_PLAN.md S2). Both halves are new user-facing surface, so
+ * both need catalog entries rather than inline `defaultValue` alone —
+ * `i18n-coverage.ts` runs at a cap of **0** since `.596`, and an uncovered key
+ * fails the gate on the commit that introduces it.
+ *
+ * Same English-first `Record<string, string>` shape as
+ * [`notificationLocales`](./notificationLocales.ts): every language falls back to
+ * `EN`, so a language can carry the lines that matter to it without a fifteen-way
+ * pass blocking the wave. The beachhead languages (es/fr/pt) are translated here;
+ * the rest inherit English until a translation pass reaches them, which
+ * `i18n:parity` permits for a non-core namespace and reports rather than fails.
+ *
+ * **Register note.** These strings are counts, never verdicts. "Volume moved",
+ * not "score"; "Best week", not "rank". `dayReview.ts` holds a standing ruling
+ * against a 0–100 judgment and CLUB_PLAN keeps the odometer framing — a label
+ * here that implied a grade would quietly reopen both.
+ */
+
+const ATHLETE_EN: Record<string, string> = {
+  // --- /profile — the Athlete Page ---
+  athletePageTitle: 'Your record',
+  athletePageSubtitle: 'Everything you have logged, counted honestly. Yours, on this device.',
+  athletePageSettingsTitle: 'Settings',
+  athletePageSettingsLink: 'Account & settings',
+
+  // --- Identity ---
+  athleteIdentityTitle: 'Call sign',
+  athleteIdentitySave: 'Save',
+  athleteIdentitySince: 'Training here since {{date}}',
+  athleteIdentityNoStart: 'Your first logged session starts the record.',
+  athleteIdentitySaved: 'Saved on this device.',
+
+  // --- The line ---
+  careerLineTitle: 'Your record',
+  careerLineEmpty:
+    'Log a session and this fills in — sessions, volume moved, exercises, your best week, days trained.',
+  careerLineSessions: 'Sessions',
+  careerLineVolume: 'Volume moved',
+  careerLineExercises: 'Exercises',
+  careerLineBestWeek: 'Best week',
+  careerLineDays: 'Days trained',
+
+  // --- /account ---
+  accountEyebrow: 'Account',
+  accountTitle: 'Settings',
+  accountSubtitle:
+    'Sign-in, units, notifications and backup. Progress stays on this device unless you sign in.',
+  navAccount: 'Account',
+  moreAccountDesc: 'Settings, notifications, backup',
+};
+
+const al = (over: Record<string, string>): Record<string, string> => ({
+  ...ATHLETE_EN,
+  ...over,
+});
+
+const BY_LANG: Record<string, Record<string, string>> = {
+  en: ATHLETE_EN,
+  es: al({
+    athletePageTitle: 'Tu registro',
+    athletePageSubtitle: 'Todo lo que has registrado, contado con honestidad. Tuyo, en este dispositivo.',
+    athletePageSettingsTitle: 'Ajustes',
+    athletePageSettingsLink: 'Cuenta y ajustes',
+    athleteIdentityTitle: 'Indicativo',
+    athleteIdentitySave: 'Guardar',
+    athleteIdentitySince: 'Entrenando aquí desde {{date}}',
+    athleteIdentityNoStart: 'Tu primera sesión registrada abre el registro.',
+    athleteIdentitySaved: 'Guardado en este dispositivo.',
+    careerLineTitle: 'Tu registro',
+    careerLineEmpty:
+      'Registra una sesión y esto se completa: sesiones, volumen movido, ejercicios, tu mejor semana y días entrenados.',
+    careerLineSessions: 'Sesiones',
+    careerLineVolume: 'Volumen movido',
+    careerLineExercises: 'Ejercicios',
+    careerLineBestWeek: 'Mejor semana',
+    careerLineDays: 'Días entrenados',
+    accountEyebrow: 'Cuenta',
+    accountTitle: 'Ajustes',
+    accountSubtitle:
+      'Inicio de sesión, unidades, notificaciones y copia de seguridad. Tu progreso permanece en este dispositivo salvo que inicies sesión.',
+    navAccount: 'Cuenta',
+    moreAccountDesc: 'Ajustes, notificaciones, copia de seguridad',
+  }),
+  fr: al({
+    athletePageTitle: 'Ton relevé',
+    athletePageSubtitle: 'Tout ce que tu as enregistré, compté honnêtement. À toi, sur cet appareil.',
+    athletePageSettingsTitle: 'Réglages',
+    athletePageSettingsLink: 'Compte et réglages',
+    athleteIdentityTitle: 'Indicatif',
+    athleteIdentitySave: 'Enregistrer',
+    athleteIdentitySince: 'Ici à l’entraînement depuis le {{date}}',
+    athleteIdentityNoStart: 'Ta première séance enregistrée ouvre le relevé.',
+    athleteIdentitySaved: 'Enregistré sur cet appareil.',
+    careerLineTitle: 'Ton relevé',
+    careerLineEmpty:
+      'Enregistre une séance et tout se remplit : séances, volume déplacé, exercices, ta meilleure semaine et jours d’entraînement.',
+    careerLineSessions: 'Séances',
+    careerLineVolume: 'Volume déplacé',
+    careerLineExercises: 'Exercices',
+    careerLineBestWeek: 'Meilleure semaine',
+    careerLineDays: 'Jours d’entraînement',
+    accountEyebrow: 'Compte',
+    accountTitle: 'Réglages',
+    accountSubtitle:
+      'Connexion, unités, notifications et sauvegarde. Ta progression reste sur cet appareil sauf si tu te connectes.',
+    navAccount: 'Compte',
+    moreAccountDesc: 'Réglages, notifications, sauvegarde',
+  }),
+  pt: al({
+    athletePageTitle: 'O teu registo',
+    athletePageSubtitle: 'Tudo o que registaste, contado com honestidade. Teu, neste dispositivo.',
+    athletePageSettingsTitle: 'Definições',
+    athletePageSettingsLink: 'Conta e definições',
+    athleteIdentityTitle: 'Indicativo',
+    athleteIdentitySave: 'Guardar',
+    athleteIdentitySince: 'A treinar aqui desde {{date}}',
+    athleteIdentityNoStart: 'A tua primeira sessão registada abre o registo.',
+    athleteIdentitySaved: 'Guardado neste dispositivo.',
+    careerLineTitle: 'O teu registo',
+    careerLineEmpty:
+      'Regista uma sessão e isto preenche-se: sessões, volume movido, exercícios, a tua melhor semana e dias treinados.',
+    careerLineSessions: 'Sessões',
+    careerLineVolume: 'Volume movido',
+    careerLineExercises: 'Exercícios',
+    careerLineBestWeek: 'Melhor semana',
+    careerLineDays: 'Dias treinados',
+    accountEyebrow: 'Conta',
+    accountTitle: 'Definições',
+    accountSubtitle:
+      'Início de sessão, unidades, notificações e cópia de segurança. O teu progresso fica neste dispositivo a não ser que inicies sessão.',
+    navAccount: 'Conta',
+    moreAccountDesc: 'Definições, notificações, cópia de segurança',
+  }),
+};
+
+export function athleteStringsFor(lang: string): Record<string, string> {
+  return BY_LANG[lang] ?? BY_LANG.en!;
+}
+
+export function mergeAthleteStrings(common: Record<string, string>, lang: string): void {
+  Object.assign(common, athleteStringsFor(lang));
+}

@@ -76,7 +76,7 @@ const PUSH_PREFERENCES: {
 
 const ROW_MODULE = 'src/lib/pushSubscriptionRow.ts';
 const CLIENT_MODULE = 'src/lib/pushClient.ts';
-const CADENCE_READER = 'src/page-components/ProfilePage.tsx';
+const CADENCE_READER = 'src/page-components/AccountPage.tsx';
 
 test('every push preference survives the whole chain to the column', () => {
   const rowSrc = stripComments(read(ROW_MODULE));

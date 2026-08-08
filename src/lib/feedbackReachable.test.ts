@@ -38,7 +38,7 @@ function stripComments(src: string): string {
   return src.replace(/\/\*[\s\S]*?\*\//g, '').replace(/^[ \t]*\/\/.*$/gm, '');
 }
 
-const PROFILE_PAGE = 'src/page-components/ProfilePage.tsx';
+const PROFILE_PAGE = 'src/page-components/AccountPage.tsx';
 const CARD = 'src/components/profile/ProfileFeedbackCard.tsx';
 const SHEET = 'src/components/profile/FeedbackSheet.tsx';
 const SHELL = 'src/components/layout/AppLayout.tsx';
@@ -49,7 +49,7 @@ const SCHEMA = 'src/lib/apiSchemas.ts';
 
 test('the feedback card is rendered, and not gated to the founder', () => {
   const page = stripComments(read(PROFILE_PAGE));
-  assert.match(page, /<ProfileFeedbackCard\s*\/>/, 'the card must actually be mounted on Profile');
+  assert.match(page, /<ProfileFeedbackCard\s*\/>/, 'the card must actually be mounted on Account');
 
   /*
    * `ownerTools &&` is how `BetaAdminPanel` and `ProfileOwnerTools` are gated on
@@ -91,7 +91,7 @@ test('the shell records the screen trail', () => {
 
 test('the trail collapses repeats and stays bounded', () => {
   // Next re-runs effects on re-render as well as on navigation. Without the
-  // collapse, sitting on Profile flushes the previous route out of the trail.
+  // collapse, sitting on Account flushes the previous route out of the trail.
   assert.deepEqual(pushScreen(['/log', '/profile'], '/profile'), ['/log', '/profile']);
 
   let trail: string[] = [];
@@ -102,7 +102,7 @@ test('the trail collapses repeats and stays bounded', () => {
 
 test('the previous screen is the last different one, or nothing', () => {
   assert.equal(previousScreen(['/log', '/active', '/profile'], '/profile'), '/active');
-  // Not a fallback to `current`: a first visit that lands on Profile genuinely
+  // Not a fallback to `current`: a first visit that lands on Account genuinely
   // has no previous screen, and inventing one puts a wrong route on a bug report.
   assert.equal(previousScreen(['/profile'], '/profile'), null);
   assert.equal(previousScreen([], '/profile'), null);

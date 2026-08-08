@@ -58,7 +58,7 @@ export const MORE_SHEET_TIER_HREFS: {
     id: 'you',
     title: 'You',
     titleKey: 'moreTierYou',
-    hrefs: ['/profile'],
+    hrefs: ['/profile', '/account'],
   },
 ];
 
