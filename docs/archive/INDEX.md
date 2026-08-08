@@ -369,6 +369,7 @@ When adding a doc:
 | [log/LOG-rotate-597.md](./log/LOG-rotate-597.md) | `.582` (Kaizen FormGuide i18n + library overlay + upload 44px) — rotated 2026-08-08 for `.597` RPE unstamp |
 | [log/LOG-rotate-598.md](./log/LOG-rotate-598.md) | `.583` (continuity collection deep-links + high-strain Victory mind) — rotated 2026-08-08 for `.598` coach start paths |
 | [log/LOG-rotate-599.md](./log/LOG-rotate-599.md) | `.584` (content Move free D2 24→32) — rotated 2026-08-08 for `.599` API error-leak guard |
+| [log/LOG-rotate-600.md](./log/LOG-rotate-600.md) | `.585` (content Mind free D2 24→32) — rotated 2026-08-08 for `.600` offline honesty |
 | [SETUP.md](./SETUP.md) | Stale PayPal-first setup — superseded by [docs/PRE_REVENUE_CHECKLIST.md](../PRE_REVENUE_CHECKLIST.md) + [docs/LLC_AND_PAYMENTS.md](../LLC_AND_PAYMENTS.md) |
 
 Canonical live launch path: root **[LAUNCH_RUNBOOK.md](../LAUNCH_RUNBOOK.md)** + [docs/SOCIAL_LAUNCH.md](../SOCIAL_LAUNCH.md) (copy kit).

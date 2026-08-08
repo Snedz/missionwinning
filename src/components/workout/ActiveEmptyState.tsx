@@ -1,5 +1,6 @@
 'use client';
 
+import { isOfflineInstallable } from '@/lib/offlineCapability';
 import { Dumbbell, Timer } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { Button } from '@/components/ui/button';
@@ -62,9 +63,23 @@ export function ActiveEmptyState({
         icon={Dumbbell}
         eyebrow={t('activeEyebrow', { defaultValue: 'Train' })}
         title={t('activeTitle', { defaultValue: 'Active workout' })}
-        subtitle={t('activeEmptySubtitle', {
-          defaultValue: 'Log sets with rest timers, PRs, and form cues — offline ready.',
-        })}
+        subtitle={
+          /*
+            Two literal keys, not a ternary `defaultValue` — a computed key is
+            invisible to `i18n-coverage`'s counter, which is why `.596` had to
+            split six of them. "Offline ready" is true of the feature and false
+            of this build while the gate is up; the fallback states the part
+            that holds without a service worker.
+          */
+          isOfflineInstallable()
+            ? t('activeEmptySubtitle', {
+                defaultValue: 'Log sets with rest timers, PRs, and form cues — offline ready.',
+              })
+            : t('activeEmptySubtitleNoSw', {
+                defaultValue:
+                  'Log sets with rest timers, PRs, and form cues. Lose signal mid-session and logging keeps going.',
+              })
+        }
       />
       <EmptyState
         icon={Timer}

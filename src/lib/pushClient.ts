@@ -17,6 +17,7 @@
  * again. Everything that can fail without user input is checked *before* the prompt.
  */
 
+import { isOfflineInstallable } from '@/lib/offlineCapability';
 import { getOrCreateDeviceId } from '@/lib/coach/storage';
 import { loadDaysPerWeek } from '@/lib/coach/schedulePrefs';
 import { track } from '@/lib/analytics';
@@ -71,6 +72,19 @@ export function isPushSupported(): boolean {
   if (!vapidPublicKey()) return false;
   // Serwist disabled in dev / private mode — avoid false UX
   if (process.env.NODE_ENV !== 'production') return false;
+  /*
+   * …and disabled in a *production* build whenever the private gate is up,
+   * which `NODE_ENV` alone cannot see. Without this the check was one env var
+   * away from being wrong: the day `NEXT_PUBLIC_VAPID_PUBLIC_KEY` is set while
+   * `PRIVATE_MODE` is still on, every branch above passes, the push UI renders,
+   * and `subscribePush()` awaits `navigator.serviceWorker.ready` — which never
+   * resolves, because no worker was ever built, and there is no timeout on that
+   * await. Latent rather than live today only because VAPID is unset.
+   *
+   * Same flag the SW registration itself keys on, so "can we push" and "is
+   * there a worker to push through" cannot disagree.
+   */
+  if (!isOfflineInstallable()) return false;
   return true;
 }
 

@@ -40,6 +40,14 @@ export const BETA_STEP_DEFS = [
 
 const BETA_EN: Record<string, string> = {
   betaFootWedge: 'Train anywhere: log from Today offline — no account required. After your first log, open Mission Coach for a week that adapts from sessions alone.',
+  /*
+   * Shown while the build ships no service worker, so "log offline" would be a
+   * promise the tester can falsify on the first screen they ever see. States the
+   * part that is true without one: the store persists locally and every cloud
+   * write rides the durable outbox, so an open session survives a signal drop.
+   */
+  betaFootWedgeNoSw:
+    'Train anywhere: log from Today with no account required. Lose signal mid-session and logging keeps going — it syncs when you are back. After your first log, open Mission Coach for a week that adapts from sessions alone.',
   betaStep1Title: 'Unlock access',
   betaStep1Body:
     'Open /private (or your invite link) and enter the access code from your invite email. Query ?access= is off in production — type the code on the gate page.',

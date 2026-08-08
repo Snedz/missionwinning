@@ -134,6 +134,7 @@ type ActiveWorkoutStrings = {
   activeCoachNotesHighEffort: string;
   activeDiscardWorkout: string;
   activeEmptySubtitle: string;
+  activeEmptySubtitleNoSw: string;
   activeExerciseMore: string;
   activeEyebrow: string;
   activeGoBuilder: string;
@@ -335,6 +336,8 @@ const en: ActiveWorkoutStrings = {
   activeCoachNotesHighEffort: 'Hard sets stacking up — leave a little in the tank if form slips.',
   activeDiscardWorkout: 'Discard workout',
   activeEmptySubtitle: 'Log sets with rest timers, PRs, and form cues — offline ready.',
+  activeEmptySubtitleNoSw:
+    'Log sets with rest timers, PRs, and form cues. Lose signal mid-session and logging keeps going.',
   activeExerciseMore: 'More actions',
   activeEyebrow: 'Train',
   activeGoBuilder: 'Builder',

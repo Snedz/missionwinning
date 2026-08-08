@@ -16,7 +16,7 @@ One screen of truth for any AI tool or human joining cold. Read this, then [AGEN
 
 ---
 
-## Now (2026-08-08 · web `2026.07-unified.599` · Android `1.24.1`)
+## Now (2026-08-08 · web `2026.07-unified.600` · Android `1.24.1`)
 
 > The ONLY "where we are" block in the repo — [ORCHESTRATION.md](ORCHESTRATION.md) points here.
 >
@@ -266,6 +266,7 @@ One screen of truth for any AI tool or human joining cold. Read this, then [AGEN
 > and `.597` dropped `.543`–`.544` detail (full text remains in LOG.md / archive)
 > and `.598` dropped `.583` detail (full text remains in LOG.md / archive)
 > and `.599` dropped `.584` detail (full text remains in LOG.md / archive)
+> and `.600` dropped `.585` detail (full text remains in LOG.md / archive)
 > to [CONTEXT-now-2026-07-30.md](docs/archive/CONTEXT-now-2026-07-30.md) after this
 > block reached **79 bullets / 103KB**. A status doc that only grows stops being read.
 
@@ -298,7 +299,7 @@ One screen of truth for any AI tool or human joining cold. Read this, then [AGEN
 - **`.588`:** content Mind premium D2 48→56 + sleep-week series seed.
 - **`.587`:** content Move premium D2 40→48 (+8 long flows).
 - **`.586`:** content Fuel free D2 40→48 (+8 recipes).
-- **`.585`:** content Mind free D2 24→32 (+8 tagged sessions).
+- **`.600`:** **The app promised offline the build does not ship — the feature stays, the tense was the defect.** Serwist is disabled while the gate is up, so production has **no service worker**; yet Today offered "Install … for offline use anywhere", the invite landing said "log from Today offline", and the logger said "offline ready". `CONTEXT` documented this and **no string knew it**. Offline is constitutional (`vision.md` "offline-first", "free offline logger") and already scheduled on at the flip — nothing removed. `NEXT_PUBLIC_PWA_ENABLED` **already existed**, derived in `next.config.js` from the same `pwaDisabled` that builds Serwist; new `isOfflineInstallable()` wraps it so claims are true now *and* after the flip with no copy edit to remember. Crucially the guard separates **capability claims** (false today) from **network-state messages** — `OnlineStatusBanner`'s "Offline — logging still works" is *true* with no worker (persist + outbox), so over-gating it is its own lie and a mutant proves it. Also closed: `isPushSupported()` was one env var from offering push with no worker to subscribe through. **Recorded for the flip:** `cacheOnNavigation` + the `pages` buckets will store 24h of authenticated HTML/RSC and there is **no `caches.delete()` in the repo** — `.211` closed `/api/` only. 4 mutants; tests 2174→2183.
 - **`.599`:** **A Postgres error reaching a client, past a guard that could not see it.** `app/api/mobile/workouts/route.ts:84` returned `syncError: error.message` at HTTP **200** — CLAUDE.md §5 forbids it by name. The guard `.filter()`d a **6-entry `LEAKY` list over 69 routes** (an allowlist wearing the name of a scan) *and* keyed on `error:` + `status: 500`, so it missed the live defect on both axes — wrong path, wrong key, wrong status. Rewritten to **discover** every `app/api/**/route.ts` and match any error object reaching a body under any key at any status. It found **two more** on its first run: `journey/nudge:94` leaked the mail provider message (identifier `sendError` — a *third* spelling axis), fixed; `health:53` kept as the one reasoned `LEAK_OK` (behind `?deep=1` **and** `Bearer CRON_SECRET`). Matcher falsified in-file against the shapes that shipped. 3 mutants; tests 2172→2174. **Taken ahead of the planned order** — live disclosure fix, most contained of the four remaining.
 - **`.598`:** **A button that says "start" must start a session.** `CoachAdaptBanner` rendered "Start this session" as a bare `<Link href="/active">` — which starts nothing and lands on `ActiveEmptyState` ("No session running"), on the one surface built to restart a lapsed athlete. And the re-entry dose was applied on **one of four** start paths, so `TodayReentryCard` promised "about 50% of usual sets" while the Coach card beneath it started the full session. One definition now (`.178`): `resolveCoachSessionStart` owns refuse-if-done + re-entry read + scaling; `useStartCoachSession` is wiring. My first draft put the hook after two early returns (Rules-of-Hooks) and the guard's own staleness mirror went red on an exemption the refactor had made theatre — both caught before commit. Coverage floor 390→391 through the documented escape hatch, reasoned in `FLOORS`. 4 mutants; tests 2158→2172.
 - **`.582`:** Kaizen FormGuide i18n + library overlay fix + upload remove 44px.
