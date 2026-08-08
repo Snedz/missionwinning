@@ -1,4 +1,13 @@
-/** Public compare narrative stories — server-safe (no 'use client'). */
+/**
+ * Public compare narrative stories — server-safe (no 'use client').
+ *
+ * `.605` — the exercise-page count is interpolated, never typed. These stories
+ * advertised **217** free exercise pages in four places against a real deduped
+ * catalog of 228, so every comparison page understated the product to a reader
+ * who had come specifically to compare. `contentFloors.ts` is a literal with no
+ * imports, so deriving it costs nothing on these public routes.
+ */
+import { CONTENT_FLOORS } from '@/lib/contentFloors';
 
 export type CompareStoryBodySection = {
   heading: string;
@@ -56,7 +65,7 @@ export const COMPARE_STORIES: CompareStory[] = [
       },
       { label: 'Cost', mw: 'Free, no account', them: 'Free, and it shows' },
     ],
-    proof: '217 free exercise pages · offline · no account · nothing to install',
+    proof: `${CONTENT_FLOORS.exercisePages} free exercise pages · offline · no account · nothing to install`,
     ctaNote: 'Start with the free logger. Nothing here is official test guidance.',
     body: [
       {
@@ -89,7 +98,7 @@ export const COMPARE_STORIES: CompareStory[] = [
       { label: 'Privacy model', mw: 'Offline-first PWA; sync optional', them: 'On-device + BYOK to providers' },
       { label: 'Platform', mw: 'Installable web app worldwide', them: 'iPhone beta first' },
     ],
-    proof: '217 free exercise pages · offline · no account · no AI billing surprise',
+    proof: `${CONTENT_FLOORS.exercisePages} free exercise pages · offline · no account · no AI billing surprise`,
     ctaNote: 'Lead with the free tracker — Bundle adds Coach depth when you want it.',
     body: [
       {
@@ -115,14 +124,14 @@ export const COMPARE_STORIES: CompareStory[] = [
     eyebrow: 'vs Freeletics Super Bundle',
     title: 'Six pillars in one app',
     subtitle:
-      'Freeletics sells a multi-app story. Mission Winning keeps Train, Fuel, Move, Mind, Track, and Learn in one install with one Win Score.',
+      'Freeletics sells a multi-app story. Mission Winning keeps Train, Fuel, Move, Mind, Track, and Learn in one install with one Mission Score.',
     bullets: [
       { label: 'Apps to install', mw: 'One PWA', them: 'Partner / multi-app unlock' },
       { label: 'Free core', mw: 'Full logger + library forever', them: 'Strong brand; paid depth' },
       { label: 'Nutrition + mind + mobility', mw: 'Same app, same score', them: 'Often separate products' },
       { label: 'Offline', mw: 'Designed for weak signal', them: 'Varies by surface' },
     ],
-    proof: 'One Win Score ties every pillar — not seven subscriptions.',
+    proof: 'One Mission Score ties every pillar — not seven subscriptions.',
     ctaNote: 'Free tracker stays free. Super Bundle unlocks Coach and deeper pillar content.',
     body: [
       {
@@ -135,7 +144,7 @@ export const COMPARE_STORIES: CompareStory[] = [
       {
         heading: 'Where Mission Winning leads',
         paragraphs: [
-          'One installable PWA holds Train, Fuel, Move, Mind, Track, and Learn. Win Score weights the whole person — not six separate streaks.',
+          'One installable PWA holds Train, Fuel, Move, Mind, Track, and Learn. Mission Score weights the whole person — not six separate streaks.',
           'The free core is permanent. Super Bundle funds depth; it does not redefine “free.”',
         ],
       },
@@ -154,7 +163,7 @@ export const COMPARE_STORIES: CompareStory[] = [
       { label: 'Readiness', mw: 'Muscle freshness from your logs', them: 'Guesswork' },
       { label: 'Cost', mw: '$0 forever on the core', them: '“Free” until the sheet breaks' },
     ],
-    proof: 'Log a set → Win Score ticks. That’s the loop.',
+    proof: 'Log a set → Mission Score ticks. That’s the loop.',
     ctaNote: 'Start free in under two minutes. No email wall on the logger.',
     body: [
       {
@@ -184,7 +193,7 @@ export const COMPARE_STORIES: CompareStory[] = [
       { label: 'Account required', mw: 'No — works offline', them: 'Yes for full product' },
       { label: 'Six pillars', mw: 'Train + Fuel + Move + Mind + Track + Learn', them: 'Primarily training log' },
     ],
-    proof: 'No account · offline PWA · free exercise pages · one Win Score',
+    proof: 'No account · offline PWA · free exercise pages · one Mission Score',
     ctaNote: 'If you only want a gym log with friends, Hevy is fine. If free forever offline is the bar, start here.',
     body: [
       {
@@ -213,9 +222,9 @@ export const COMPARE_STORIES: CompareStory[] = [
       { label: 'Free routines', mw: 'Unlimited', them: 'Hard free caps' },
       { label: 'Offline', mw: 'Designed as PWA offline', them: 'App-store native' },
       { label: 'No account', mw: 'Supported', them: 'Account-centric' },
-      { label: 'Holistic score', mw: 'Win Score across pillars', them: 'Training-focused' },
+      { label: 'Holistic score', mw: 'Mission Score across pillars', them: 'Training-focused' },
     ],
-    proof: 'Free core forever · 217 exercise pages · offline logging',
+    proof: `Free core forever · ${CONTENT_FLOORS.exercisePages} exercise pages · offline logging`,
     ctaNote: 'Start free — no store fees, no routine cap.',
     body: [
       {
@@ -245,7 +254,7 @@ export const COMPARE_STORIES: CompareStory[] = [
       { label: 'Offline', mw: 'PWA first', them: 'Varies' },
       { label: 'Progression', mw: 'Next-set targets + PRs free', them: 'Mixed free/paid' },
     ],
-    proof: 'Public exercises + free logger + Win Score',
+    proof: 'Public exercises + free logger + Mission Score',
     ctaNote: 'Browse the free library, then log without an account.',
     body: [
       {
@@ -331,7 +340,7 @@ export const COMPARE_STORIES: CompareStory[] = [
       'StrongLifts popularized simple linear progression. Mission Winning includes free 5×5-style starters plus a full free library and multi-pillar scoring.',
     bullets: [
       { label: '5×5 path', mw: 'Free Full Body Starter (5×5)', them: 'Core product focus' },
-      { label: 'Exercise variety', mw: '217 free exercise pages', them: 'Narrow barbell set' },
+      { label: 'Exercise variety', mw: `${CONTENT_FLOORS.exercisePages} free exercise pages`, them: 'Narrow barbell set' },
       { label: 'Beyond barbell', mw: 'Bodyweight + DB + offline', them: 'Barbell-first' },
       { label: 'Lifecycle', mw: 'Free forever core', them: 'App + program brand' },
     ],

@@ -10,6 +10,9 @@
 
 import { STORAGE_KEYS, STORAGE_KEY_PREFIXES } from '@/lib/storage/keys';
 import { writeRaw } from '@/lib/storage/safeStorage';
+// Literal-only module by design — importing `contentInventory` here would drag the
+// whole catalog graph onto every route that prices anything. See contentFloors.ts.
+import { CONTENT_FLOORS } from '@/lib/contentFloors';
 
 /** Super Bundle plan IDs — keep in sync with BUNDLE_PLANS in bundleConfig.ts. */
 export type CheckoutPlanId = 'monthly' | '12mo' | 'lifetime';
@@ -31,7 +34,16 @@ export const SUPER_BUNDLE_TITLE = 'Mission Winning Super Bundle (All Premium Pil
 export const BUNDLE_DISCOUNT_NOTE =
   'Founders annual ~$4.92/mo ($59/yr) · monthly $11.99 · lifetime $149 — free core forever'
 
-/** Pillars included in the Super Bundle (Freeletics 7-in-1 model → our unified super app). */
+/**
+ * Pillars included in the Super Bundle (Freeletics 7-in-1 model → our unified super app).
+ *
+ * Counts are interpolated from `CONTENT_FLOORS`, never typed by hand. Every
+ * hand-typed number here had drifted *downward* against shipped content by `.605`
+ * — 40 free recipes against 48, 102+ premium against 110, 24 mobility flows
+ * against 32, 40 premium flows against 48, 24 mind sessions against 32. The
+ * bundle page understating what it sells is a strange way to fail, but it is the
+ * same failure as overstating: the copy stopped tracking the catalog.
+ */
 export const BUNDLE_PILLARS = [
   {
     id: 'train',
@@ -44,24 +56,24 @@ export const BUNDLE_PILLARS = [
   {
     id: 'fuel',
     name: 'Fuel',
-    free: 'Macro log, water, 40 free recipes',
-    premium: '102+ premium recipes, meal plans, coaching sync',
+    free: `Macro log, water, ${CONTENT_FLOORS.recipesFree} free recipes`,
+    premium: `${CONTENT_FLOORS.recipesPremium} premium recipes, meal plans, coaching sync`,
     standalone: '$10/mo',
     route: '/nutrition',
   },
   {
     id: 'move',
     name: 'Move',
-    free: '24 guided mobility flows + timer',
-    premium: '40 premium recovery flows — press play, follow cues',
+    free: `${CONTENT_FLOORS.moveFree} guided mobility flows + timer`,
+    premium: `${CONTENT_FLOORS.movePremium} premium recovery flows — press play, follow cues`,
     standalone: '$9/mo',
     route: '/move',
   },
   {
     id: 'mind',
     name: 'Mind',
-    free: 'Breathing timer + 24 guided sessions',
-    premium: '48 premium guided sessions — timed player with pause/skip',
+    free: `Breathing timer + ${CONTENT_FLOORS.mindFree} guided sessions`,
+    premium: `${CONTENT_FLOORS.mindPremium} premium guided sessions — timed player with pause/skip`,
     standalone: '$7/mo',
     route: '/mind',
   },
@@ -76,8 +88,8 @@ export const BUNDLE_PILLARS = [
   {
     id: 'learn',
     name: 'Learn',
-    free: 'Education paths + 6-chapter guidebook',
-    premium: '16 premium Learn sections with chapter progress',
+    free: `Education paths + ${CONTENT_FLOORS.guidebookFreeChapters}-chapter guidebook`,
+    premium: `${CONTENT_FLOORS.learnPremiumSections} premium Learn sections with chapter progress`,
     standalone: '$12/mo',
     route: '/learn',
   },

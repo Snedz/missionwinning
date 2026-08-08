@@ -66,7 +66,9 @@ We adopt Bevel's *presentation* philosophy:
 
 # Mission Winning Vision
 
-**The #1 Health "Everything App" for the World**
+**Human capability is infrastructure — the free adaptive coaching layer for anyone with a phone.**
+
+> **On the phrase that used to sit here.** This heading read *"The #1 Health 'Everything App' for the World"* until `.605` — the exact phrase [docs/YC_THESIS.md](docs/YC_THESIS.md) bans as the company line, sitting at the top of the constitution that governs every other file. The ambition is real and it is kept, one section down and in the decade map, where it is a destination rather than a description. What a reader met first was a promise the product cannot keep today: [docs/REDTEAM.md](docs/REDTEAM.md)'s own 1-star review is about precisely this gap — *"a six-room house where five rooms are wallpaper photos of rooms."* Lead with what is true now; the everything app is where the path goes.
 
 Mission Winning exists to be the entrance to the path — the clear, evidence-based guide to the *right way* to build lifelong health, strength, resilience, and well-being for every human on Earth. It is the alternative to the path of destruction: average habits, excuses, short-term fixes, mediocrity, and the slow decline that comes from inconsistent or misguided approaches to the body and mind.
 

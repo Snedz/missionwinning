@@ -89,7 +89,7 @@ Bundle monthly $11.99 ≈ **80% off** that stack; annual ~$4.92/mo is stronger. 
 
 | Issue | Where | Fix |
 |-------|--------|-----|
-| STRATEGY still says bundleConfig has **3mo/$33, 12mo/$96** | STRATEGY.md L52 | Update to monthly/$11.99, 12mo/$59, lifetime/$149 (code already simplified) |
+| ~~STRATEGY still says bundleConfig has **3mo/$33, 12mo/$96**~~ — **fixed; this row was itself the stale one.** `.605` checked: STRATEGY.md L52 already reads monthly/$11.99, 12mo/$59, lifetime/$149 and points here. A drift table that is not re-checked becomes a second source of drift. | STRATEGY.md L52 | Done — no action |
 | `BUNDLE_PILLARS` free/premium blurbs outdated | `payments.ts` | Refresh to contentInventory (e.g. Fuel free **40** recipes not 20; Move free **24** not 10; Mind free **24** not 10) |
 | Fuel free count in older docs | various | Prefer inventory / catalogMeta |
 | Founders 500 / lifetime cap | STRATEGY only | Decide: implement counters or soften to “founders pricing while early” |

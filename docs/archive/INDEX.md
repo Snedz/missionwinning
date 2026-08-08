@@ -374,6 +374,8 @@ When adding a doc:
 | [log/LOG-rotate-602.md](./log/LOG-rotate-602.md) | `.587` (content Move premium D2 40→48) — rotated 2026-08-08 for `.602` Today honest numbers |
 | [log/LOG-rotate-603.md](./log/LOG-rotate-603.md) | `.588` (content Mind premium D2 48→56) — rotated 2026-08-08 for `.603` offline honesty remainder |
 | [log/LOG-rotate-604.md](./log/LOG-rotate-604.md) | `.589` (Mind sleep-week series rail) — rotated 2026-08-08 for `.604` verification run + `.602` correction |
+| [log/LOG-rotate-605.md](./log/LOG-rotate-605.md) | `.590` (Sleep-week nights 4–7) — rotated 2026-08-08 for `.605` the idea, stated once |
+| [VISION_STATUS-2026-07-23.md](./VISION_STATUS-2026-07-23.md) | The per-pillar vision scorecard, retired `.605`. Last truly refreshed at `.109` and **495 ships stale** by the time it was archived — a second home for status that `ORCHESTRATION.md` asked for on every ship and no check enforced. Status now lives only in [CONTEXT.md](../../CONTEXT.md) `## Now`; the vision-vs-reality *framing* moved to [docs/THESIS.md](../THESIS.md) |
 | [SETUP.md](./SETUP.md) | Stale PayPal-first setup — superseded by [docs/PRE_REVENUE_CHECKLIST.md](../PRE_REVENUE_CHECKLIST.md) + [docs/LLC_AND_PAYMENTS.md](../LLC_AND_PAYMENTS.md) |
 
 Canonical live launch path: root **[LAUNCH_RUNBOOK.md](../LAUNCH_RUNBOOK.md)** + [docs/SOCIAL_LAUNCH.md](../SOCIAL_LAUNCH.md) (copy kit).

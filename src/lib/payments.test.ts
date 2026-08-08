@@ -22,7 +22,9 @@ import {
   getStripeCheckoutUrl,
   PROGRAM_PRICES,
   SUPER_BUNDLE_PRICE,
+  BUNDLE_PILLARS,
 } from './payments.ts';
+import { CONTENT_FLOORS } from './contentFloors.ts';
 import { setTestEnv } from './testEnv.ts';
 
 const realFetch = globalThis.fetch;
@@ -164,5 +166,76 @@ test('the advertised bundle price is a plain decimal string', () => {
     assert.match(p.price, /^\d+(\.\d{2})?$/, `${id} price`);
     assert.ok(p.title.length > 0, `${id} title`);
     assert.match(p.currency, /^[a-z]{3}$/i, `${id} currency`);
+  }
+});
+
+/**
+ * `.605` — the bundle page understated everything it sells.
+ *
+ * `BUNDLE_PILLARS` carried hand-typed counts, and every one of them had drifted
+ * *downward* against shipped content: 40 free recipes against 48, 102+ premium
+ * against 110, 24 mobility flows against 32, 40 premium flows against 48, 24 mind
+ * sessions against 32. Six content ships (`.583`–`.588`) each raised a floor and
+ * none of them touched the page that advertises the floor.
+ *
+ * Two halves, because either alone can pass over the defect.
+ *
+ * The **source** half is the one that generalises: no digit may be typed into a
+ * `free:`/`premium:` blurb at all. That fails on the *next* hand-typed count
+ * whatever its value, which a value-comparison test cannot do — a test asserting
+ * "the string says 48" goes green the moment someone writes 48 by hand, and then
+ * red for the wrong reason on the next content ship. Prices (`standalone:`) are
+ * excluded on purpose: they are not counts and do not track a catalog.
+ *
+ * The **runtime** half catches the opposite mutation — deleting the count from a
+ * blurb entirely, which the source scan would happily call clean.
+ */
+test('bundle pillar copy derives its counts and never hard-codes one', async () => {
+  const { readFileSync } = await import('node:fs');
+  const path = await import('node:path');
+  const src = readFileSync(
+    path.join(import.meta.dirname, 'payments.ts'),
+    'utf8'
+  );
+  const block = src.slice(
+    src.indexOf('export const BUNDLE_PILLARS'),
+    src.indexOf('] as const', src.indexOf('export const BUNDLE_PILLARS'))
+  );
+  assert.ok(block.length > 0, 'BUNDLE_PILLARS block not found — this guard is reading nothing');
+
+  const blurbs = [...block.matchAll(/^\s*(free|premium):\s*(.+?),\s*$/gm)];
+  assert.ok(blurbs.length >= 12, `expected both blurbs for all six pillars, found ${blurbs.length}`);
+
+  for (const [, field, value] of blurbs) {
+    // Strip every `${...}` interpolation, then any surviving digit was typed by hand.
+    const literalOnly = value.replace(/\$\{[^}]*\}/g, '');
+    assert.doesNotMatch(
+      literalOnly,
+      /\d/,
+      `${field} blurb hard-codes a number (${value.trim()}) — interpolate CONTENT_FLOORS instead. ` +
+        'Every hand-typed count in this array had gone stale against the catalog by .605.'
+    );
+  }
+});
+
+test('the derived counts actually reach the rendered blurbs', () => {
+  const byId = Object.fromEntries(BUNDLE_PILLARS.map((p) => [p.id, p]));
+  const expectations: [string, 'free' | 'premium', number][] = [
+    ['fuel', 'free', CONTENT_FLOORS.recipesFree],
+    ['fuel', 'premium', CONTENT_FLOORS.recipesPremium],
+    ['move', 'free', CONTENT_FLOORS.moveFree],
+    ['move', 'premium', CONTENT_FLOORS.movePremium],
+    ['mind', 'free', CONTENT_FLOORS.mindFree],
+    ['mind', 'premium', CONTENT_FLOORS.mindPremium],
+    ['learn', 'premium', CONTENT_FLOORS.learnPremiumSections],
+  ];
+  for (const [id, field, count] of expectations) {
+    const pillar = byId[id];
+    assert.ok(pillar, `${id} pillar missing from BUNDLE_PILLARS`);
+    assert.match(
+      pillar[field],
+      new RegExp(`\\b${count}\\b`),
+      `${id}.${field} should state the ${count} from CONTENT_FLOORS — got "${pillar[field]}"`
+    );
   }
 });
