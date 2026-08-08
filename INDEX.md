@@ -43,9 +43,9 @@
 | Mobile (Expo prototype) | [docs/NATIVE_MOBILE.md](docs/NATIVE_MOBILE.md), [`apps/mobile`](apps/mobile) | Shipping Expo to Play as the product |
 | Mobile (TWA optional) | [docs/TWA_MOBILE_PLAYBOOK.md](docs/TWA_MOBILE_PLAYBOOK.md) | Using TWA instead of Compose native |
 | Wearables (Horizon 3) | [docs/WEARABLES.md](docs/WEARABLES.md) | Live OAuth/hubs until retention unlock |
-| Premium / conversion | [docs/REDTEAM.md](docs/REDTEAM.md), [docs/STRATEGY.md](docs/STRATEGY.md) | — |
-| **YC / product wedge** | [docs/YC_THESIS.md](docs/YC_THESIS.md), [docs/STRATEGY.md](docs/STRATEGY.md) | Pitching “everything app” as the company; [vision.md](vision.md) is constitution, not the YC one-liner |
-| **Accelerator apps (Jul–Aug 2026)** | [docs/ACCELERATOR_SPRINT.md](docs/ACCELERATOR_SPRINT.md); paste answers local-only — [docs/applications/README.md](docs/applications/README.md) | Fabricating traction; Cardano pivot; flipping `PRIVATE_MODE` for demos; committing paste packs |
+| Premium / conversion | [docs/FREE_BETA.md](docs/FREE_BETA.md), [docs/STRIPE_PREMIUM_SETUP.md](docs/STRIPE_PREMIUM_SETUP.md); strategy/redteam full text → mission-ops | Recreating REDTEAM/STRATEGY full memos in product git |
+| **YC / product wedge** | Product: [docs/THESIS.md](docs/THESIS.md) · [vision.md](vision.md). Full YC/STRATEGY memos: private mission-ops (stubs at [docs/YC_THESIS.md](docs/YC_THESIS.md) / [docs/STRATEGY.md](docs/STRATEGY.md)) | Pitching “everything app” as the company; recreating full war-room text in product git |
+| **Accelerator apps (Jul–Aug 2026)** | Stub [docs/ACCELERATOR_SPRINT.md](docs/ACCELERATOR_SPRINT.md); paste answers local-only — [docs/applications/README.md](docs/applications/README.md); full sprint in mission-ops | Fabricating traction; committing paste packs or full accelerator answers |
 | Journey UX (I-Day → Commissioned) | [docs/JOURNEY.md](docs/JOURNEY.md) | Build phases in [docs/PLAN.md](docs/PLAN.md) (different “phase”) |
 | **Site flow / IA (chip floorplan)** | [docs/FLOW_ARCHITECTURE.md](docs/FLOW_ARCHITECTURE.md) — dies, buses, critical path, dual pads | Landing redesigns; “everything hub”; conflating `/coach` with `/coaching` |
 | UI unification | [UX_UNIFIED_PLAN.md](docs/archive/UX_UNIFIED_PLAN.md) | — |
@@ -55,7 +55,9 @@
 | **Free-first beta (LLC wait)** | [docs/FREE_BETA.md](docs/FREE_BETA.md) + [docs/LLC_AND_PAYMENTS.md](docs/LLC_AND_PAYMENTS.md) §1d | Showing Bundle/checkout while FREE_BETA on |
 | **Return loop for anonymous athletes** | [docs/RETURN_LOOP_PLAN.md](docs/RETURN_LOOP_PLAN.md) + [src/lib/reentry.ts](src/lib/reentry.ts) | Account-gated push/nudges as the retention answer; streak-loss copy |
 | **Club / points / tiers / boards / arcade (plan)** | [docs/CLUB_PLAN.md](docs/CLUB_PLAN.md) | Building any phase without its entry gate + founder line; loss/relegation mechanics; purchasable points; gamified theater |
-| **You surface / profile / social boundary (plan)** | [docs/IDENTITY_SOCIAL_PLAN.md](docs/IDENTITY_SOCIAL_PLAN.md) | A feed; Top 8 / friend ranking; user CSS; free text on public surfaces; any Social→Log import (contract C1) |
+| **You surface / profile / social boundary (plan)** | [docs/IDENTITY_SOCIAL_PLAN.md](docs/IDENTITY_SOCIAL_PLAN.md) · identity code [src/lib/identity/INDEX.md](src/lib/identity/INDEX.md) | A feed; Top 8 / friend ranking; user CSS; free text on public surfaces; any Social→Log import (contract C1) |
+| **Platform contracts (identity / economy / modules / AI)** | [docs/contracts/INDEX.md](docs/contracts/INDEX.md) | Building games/metaverse product surfaces before week-4; second user systems per module |
+| **Classification / dual-repo / open safely** | [docs/CLASSIFICATION.md](docs/CLASSIFICATION.md), [docs/DUAL_REPO.md](docs/DUAL_REPO.md), `npm run ops:sync` | Committing `ops/` or `.hermes/`; putting STRATEGY war-room detail in public product git long-term |
 | **Design proposal brief (third)** | [docs/DESIGN_PROPOSAL_3.md](docs/DESIGN_PROPOSAL_3.md) | Re-opening IA, routes or tokens — those are settled, not wireframe |
 | UI/UX audit (hero flows) | [docs/DESIGN_REVIEW.md](docs/DESIGN_REVIEW.md) | Landing redesigns while beta gates red |
 | SEO / growth analytics | [docs/SEO_ANALYTICS.md](docs/SEO_ANALYTICS.md), [docs/LIGHTHOUSE_BASELINE.md](docs/LIGHTHOUSE_BASELINE.md) | — |
@@ -66,8 +68,8 @@
 | Beta testers | [docs/BETA_INVITE.md](docs/BETA_INVITE.md) | — |
 | Security | [docs/PROTECTION.md](docs/PROTECTION.md), [docs/OWASP_AUDIT.md](docs/OWASP_AUDIT.md), [docs/COMPLIANCE.md](docs/COMPLIANCE.md), [docs/AIKIDO.md](docs/AIKIDO.md) | Certification claims / Vanta substitutes as “done” |
 | Vercel deploy | [docs/VERCEL_DEPLOY_CHECKLIST.md](docs/VERCEL_DEPLOY_CHECKLIST.md) | — |
-| **Open source** | [docs/OPEN_SOURCE.md](docs/OPEN_SOURCE.md), [LICENSE](LICENSE), [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md), [CONTRIBUTING.md](CONTRIBUTING.md) | Flipping `PRIVATE_MODE`; inventing a new license |
-| **Secrets / keys** | [docs/SECRETS.md](docs/SECRETS.md), [docs/ENV.md](docs/ENV.md), [SECURITY.md](SECURITY.md) | Committing `.env.local`; pasting live keys into docs |
+| **Open source** | [docs/OPEN_SOURCE.md](docs/OPEN_SOURCE.md), [docs/CLASSIFICATION.md](docs/CLASSIFICATION.md), [docs/DUAL_REPO.md](docs/DUAL_REPO.md), [docs/SECURITY_PUBLIC_OSS_AUDIT_2026-08-08.md](docs/SECURITY_PUBLIC_OSS_AUDIT_2026-08-08.md), [LICENSE](LICENSE), [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md), [CONTRIBUTING.md](CONTRIBUTING.md) | Flipping `PRIVATE_MODE`; inventing a new license; public monorepo with war-room docs |
+| **Secrets / keys** | [docs/SECRETS.md](docs/SECRETS.md), [docs/ENV.md](docs/ENV.md), [SECURITY.md](SECURITY.md) | Committing `.env.local`; pasting live keys into docs; tracking `.hermes/` or `ops/` |
 | **Production / ops maturity (13 layers)** | [docs/PRODUCTION_STACK.md](docs/PRODUCTION_STACK.md), [docs/BACKUP_RESTORE.md](docs/BACKUP_RESTORE.md), [docs/CACHE_LADDER.md](docs/CACHE_LADDER.md) | Feature roadmaps; claiming all 13 “done” |
 | Pre-launch checklist | [docs/LAUNCH_RUNBOOK.md](docs/LAUNCH_RUNBOOK.md) | `docs/archive/PRE_LAUNCH_PLAN.md` — **superseded 2026-07-19**, was routed here until `.170` |
 | Post-launch cadence | [docs/POST_LAUNCH_CADENCE.md](docs/POST_LAUNCH_CADENCE.md) | — |
@@ -88,7 +90,8 @@
 | Routes & API | [app/INDEX.md](app/INDEX.md) | Next.js pages and API handlers |
 | Business logic | [src/lib/INDEX.md](src/lib/INDEX.md) | Pure TS domain code |
 | Mission Coach engine | [src/lib/coach/INDEX.md](src/lib/coach/INDEX.md) | Weekly plan prediction |
-| Shared pure TS (web + native) | [packages/mw-core/INDEX.md](packages/mw-core/INDEX.md) | adaptSummary, seed plan, victory |
+| Mission Identity (web) | [src/lib/identity/INDEX.md](src/lib/identity/INDEX.md) | Call sign, Athlete Card storage |
+| Shared pure TS (web + native) | [packages/mw-core/INDEX.md](packages/mw-core/INDEX.md) | coach, workout, identity, economy, module contracts |
 | Native Expo app | [apps/mobile/INDEX.md](apps/mobile/INDEX.md) | Flow prototype only (not Play product) |
 | Android Compose app | [apps/android/INDEX.md](apps/android/INDEX.md) | Play product path — Train + Coach |
 | Fuel Coach engine | [src/lib/fuelCoach/INDEX.md](src/lib/fuelCoach/INDEX.md) | Adaptive meal plan |
@@ -129,8 +132,8 @@ Root keeps only the spine: README · CONTEXT · AGENTS · INDEX · vision · ORC
 | File | Purpose |
 |------|---------|
 | [vision.md](vision.md) | Constitution |
-| [docs/STRATEGY.md](docs/STRATEGY.md) | Business plan |
-| [docs/REDTEAM.md](docs/REDTEAM.md) | Assumptions audit |
+| [docs/STRATEGY.md](docs/STRATEGY.md) | **Stub** — full business plan in private mission-ops |
+| [docs/REDTEAM.md](docs/REDTEAM.md) | **Stub** — full assumptions audit in private mission-ops |
 | [docs/PLAN.md](docs/PLAN.md) | Build roadmap |
 | [LOG.md](LOG.md) | Dev log |
 | [docs/JOURNEY.md](docs/JOURNEY.md) | Mission journey UX |

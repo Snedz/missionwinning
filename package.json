@@ -9,7 +9,7 @@
     "start": "next start",
     "lint": "eslint app src --max-warnings 0",
     "typecheck": "tsc --noEmit",
-    "test": "tsx --test \"src/**/*.test.ts\"",
+    "test": "tsx --test \"src/**/*.test.ts\" \"packages/mw-core/src/**/*.test.ts\"",
     "test:routes": "tsx --conditions=react-server --test \"src/**/*.routetest.ts\"",
     "coverage": "node scripts/coverage.mjs",
     "export-locales": "tsx scripts/export-locale-json.ts",
@@ -62,7 +62,9 @@
     "send-beta-invite": "node --env-file=.env.local scripts/send-beta-invite.ts",
     "check-design-system": "node scripts/check-design-system.mjs",
     "check-locale-split": "node scripts/split-locale-packs.mjs --check",
-    "security:check": "npm run secrets:scan && npm audit --audit-level=high"
+    "ops:sync": "node scripts/sync-ops-pack.mjs",
+    "ops:dashboard": "npm --prefix ops/dashboard run dev",
+    "ops:session": "node ops/scripts/new-session.mjs"
   },
   "dependencies": {
     "@phantom/react-sdk": "^2.0.2",

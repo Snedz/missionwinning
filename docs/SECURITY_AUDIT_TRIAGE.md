@@ -1,8 +1,8 @@
 # npm audit triage — Mission Winning
 
-**Date:** 2026-07-16  
+**Date:** 2026-07-16 · **Re-checked 2026-08-08** (public OSS prep)  
 **Command:** `npm run security-audit` (`npm audit --audit-level=high`)  
-**Snapshot:** ~11 high severity advisories reported (mostly Solana/Phantom graph)
+**Snapshot:** still ~11 high / 10 moderate (mostly Solana/Phantom graph). No force-fix. See [SECURITY_PUBLIC_OSS_AUDIT_2026-08-08.md](SECURITY_PUBLIC_OSS_AUDIT_2026-08-08.md).
 
 ---
 

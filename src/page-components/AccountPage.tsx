@@ -22,6 +22,7 @@ import { useMissionJourney } from '@/hooks/useMissionJourney';
 import { daysSinceCommission } from '@/lib/missionJourney';
 import { getBetaFunnelMetrics } from '@/lib/journeyAnalytics';
 import { BetaAdminPanel } from '@/components/beta/BetaAdminPanel';
+import { FounderStatusBoard } from '@/components/profile/FounderStatusBoard';
 import { scheduleJourneyPush } from '@/lib/journeySync';
 import { LegalNav } from '@/components/layout/LegalNav';
 import { PillarPageShell } from '@/components/layout/PillarPageShell';
@@ -363,6 +364,8 @@ export function AccountPage() {
         nudgeSent={nudgeSent}
         onEmailNudge={handleEmailNudge}
       />
+
+      {ownerTools && <FounderStatusBoard />}
 
       {ownerTools && <BetaAdminPanel enabled={!!email} />}
 

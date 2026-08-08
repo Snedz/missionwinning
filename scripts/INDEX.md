@@ -43,6 +43,7 @@
 | `form-kit/stickFigure.mjs` | (import) | Stick-figure primitives for form-guide SVGs |
 | `sync-vercel-env.mjs` | `npm run sync-vercel-env` | Sync env to Vercel |
 | `secrets-scan.mjs` | `npm run secrets:scan` | Gitleaks on working tree ([SECRETS.md](../docs/SECRETS.md)) |
+| `sync-ops-pack.mjs` | `npm run ops:sync` | Stage INTERNAL + founder critical path into gitignored `ops/` for private mission-ops ([DUAL_REPO.md](../docs/DUAL_REPO.md)) |
 
 ## Related (not here)
 
