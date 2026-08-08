@@ -153,7 +153,7 @@ Numbered to interleave with [CLUB_PLAN.md](CLUB_PLAN.md)'s C-phases, which own t
 | Phase | Scope | Entry gate | Kill criterion |
 |---|---|---|---|
 | **S0** | This document + [DESIGN_RESEARCH.md](DESIGN_RESEARCH.md) Wave 9 + INDEX rows | W — docs only, no gate spent | — |
-| ~~**S1**~~ | **Shipped `.597`.** C1–C4 and C7 as executable guards against today's code — `domainBoundary.ts` + `domainBoundary.test.ts`, and the `club-identity` tone axis. No feature, no route, no string | W craft window | 12 mutants killed |
+| ~~**S1**~~ | **Shipped `.605`.** C1–C4 and C7 as executable guards against today's code — `domainBoundary.ts` + `domainBoundary.test.ts`, and the `club-identity` tone axis. No feature, no route, no string | W craft window | 12 mutants killed |
 | **S2** | **Account / You split.** `/profile` settings move to Account; You becomes a page with Identity + The line + the existing shelf. Local only, no server, no sharing beyond the shipped card | W craft window — founder go line; genuine refine of a 413-line settings screen | Kill if the page has nothing on it for a 3-session athlete — that is the D8 void rule, and it applies to the newest screen first |
 | **S3** | **The table + page kits v1** (3–5 kits, picks-from-sets, local) | After S2 lands and C6 exists | Kill if <25% of weekly actives ever change a default |
 | **S4** | **Public projection + Athlete Page share** — C5 enforced, still no boards, no graph | [CLUB_PLAN.md](CLUB_PLAN.md) C2 shipped (ledger + card) | Kill on any moderation incident the projection was supposed to make impossible |

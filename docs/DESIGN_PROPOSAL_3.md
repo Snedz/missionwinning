@@ -35,7 +35,7 @@ The founder's framing is that the website is a wireframe. Taken precisely, that 
 | 3 | RTL | `src/page-components/`, `src/components/` | — | PR |
 | 4 | Lint | eslint + `check-design-system` | gate 3, 11 | green gate |
 | 5 | Functional verification | unit + route contract + e2e | gate 5, 6, 17 | green gate |
-| 6 | **CDC — clock-domain crossing** | **Log domain ↔ Social domain** | C1–C4, C7 — [`domainBoundary.test.ts`](../src/lib/domainBoundary.test.ts) + the `club-identity` tone axis | green gate (`.597`) |
+| 6 | **CDC — clock-domain crossing** | **Log domain ↔ Social domain** | C1–C4, C7 — [`domainBoundary.test.ts`](../src/lib/domainBoundary.test.ts) + the `club-identity` tone axis | green gate (`.605`) |
 | 7 | Floorplan / place-and-route | dies, tabs, rail, More tiers | route contract tests | [FLOW_ARCHITECTURE.md](FLOW_ARCHITECTURE.md) |
 | 8 | DRC — design rule check | `check-design-system`, `check-token-sync`, `check-display-type`, `check-locale-split` | gate 11–14 | green gate |
 | 9 | LVS — layout vs schematic | **docs match the built thing** | `gateDocParity`, `contextBudget`, `migrationLedger` | green gate |
@@ -45,7 +45,7 @@ The founder's framing is that the website is a wireframe. Taken precisely, that 
 
 **Two things fell out of writing it down.**
 
-**Stage 6 was empty, and now is not.** There had never been a second clock domain, so there had never been a crossing check. Identity and social introduce one. That was the substantive gap this programme found, and it is why the contracts shipped in `.597` **before** the feature they govern rather than alongside it — writing them first is also what caught the fact that the contract as first drafted contradicted its own architecture diagram ([IDENTITY_SOCIAL_PLAN.md](IDENTITY_SOCIAL_PLAN.md) §5).
+**Stage 6 was empty, and now is not.** There had never been a second clock domain, so there had never been a crossing check. Identity and social introduce one. That was the substantive gap this programme found, and it is why the contracts shipped in `.605` **before** the feature they govern rather than alongside it — writing them first is also what caught the fact that the contract as first drafted contradicted its own architecture diagram ([IDENTITY_SOCIAL_PLAN.md](IDENTITY_SOCIAL_PLAN.md) §5).
 
 **Stage 9 is the one this repo keeps re-learning.** LVS asks whether the thing you drew is the thing you built. `.596` found a documented 16-step gate that ran 18 steps and omitted a ratchet that had been breached since `.544` — a map that could not see a step, so the step stopped being run. Proposal 3 must not create new prose that nothing checks. **Every claim it makes about a state should map to an existing helper or come with the guard that would enforce it.**
 
