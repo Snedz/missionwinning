@@ -105,9 +105,27 @@ describe('"This week" can fail visibly', () => {
 
 describe('the hero gate keys off the visible band', () => {
   /**
-   * `.596` shipped this spec knowingly red. The repair is not a product change:
-   * the score band was visible all along, and the spec was picking a hidden
-   * duplicate out of a collapsed `<details>`.
+   * `.604` corrects the story `.602` told here. Read this before trusting the
+   * assertions below, because their *reason* changed even though they did not.
+   *
+   * `.602` said this spec had been red since `.596` and that keying off a test
+   * id repaired it. Measured on the first real Playwright run this branch could
+   * do — the sandbox had no matching browser binary, and `npm run gate` aborts
+   * at the bundle budget three steps before the e2e lane — **`master`'s version
+   * passes, 71/71.** The old locator was never broken.
+   *
+   * The inference was backwards. `.first()` resolves in DOM order, and
+   * `TodayDashboardHeader`, which renders `MetricsRow`'s literal "Mission Score"
+   * label inside the band, sits *above* `TodayHealthSection`'s collapsed
+   * `<details>` — so `.first()` was selecting the **visible** node, not the
+   * hidden duplicate. The cited facts were all true; only the conclusion was
+   * not, which is the failure mode worth naming: an explanation good enough that
+   * nobody reproduced the defect it explained.
+   *
+   * These assertions stay because the test id is better on its own merits — it
+   * names the band instead of matching prose a kaizen pass is expected to
+   * change, and the spec additionally asserts a real digit, which the old
+   * assertion never did.
    */
   it('asserts a test id rather than a text regex that can match hidden copy', () => {
     const spec = stripComments(read('tests/e2e/hero-flows.spec.ts'));
@@ -115,7 +133,8 @@ describe('the hero gate keys off the visible band', () => {
     assert.doesNotMatch(
       spec,
       /getByText\(\/mission score\|win score\|cross-pillar\/i\)\.first\(\)/,
-      'the broad regex + .first() is what selected the hidden copy inside the collapsed section'
+      'the broad regex matches prose in two places and orders them by DOM position — a locator whose ' +
+        'correctness depends on which copy renders first is one reorder away from asserting nothing'
     );
   });
 
@@ -128,9 +147,11 @@ describe('the hero gate keys off the visible band', () => {
   });
 
   it('the hidden duplicate really is inside a collapsed native details', () => {
-    // The premise of the whole repair. If "Health scores" ever defaults open,
-    // or stops being a <details>, the old locator would have started passing on
-    // its own and this reasoning needs re-reading.
+    // Why the prose locator is fragile rather than why it failed — see `.604`.
+    // A second, permanently-hidden "Cross-pillar Mission Score" exists in the
+    // DOM, and only DOM order keeps the regex off it. If "Health scores" ever
+    // defaults open, or stops being a <details>, or simply moves above the
+    // band, that margin is gone — so pin the shape the reasoning rests on.
     const section = stripComments(read('src/components/journey/TodaySection.tsx'));
     assert.match(section, /<details/, 'TodaySection is a native <details> — that is why it is named by its summary');
     const accordion = stripComments(read('src/components/today/TodayDashboardAccordion.tsx'));
