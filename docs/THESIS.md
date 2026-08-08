@@ -75,7 +75,20 @@ It is currently **uncomputable** — the `mw_week4_retention()` migration is una
 3. **Pricing.** Six decisions still open in [docs/PRICING_REVIEW_2026-08.md](PRICING_REVIEW_2026-08.md), including whether "Founders 500" and the lifetime cap stay marketing-only — neither is coded.
 4. **The cofounder gap**, for any competitive accelerator batch.
 
-## 8. Standing rules
+## 8. Copy waiting on founder sign-off
+
+Positioning is founder-owned and `ORCHESTRATION.md` forbids landing redesign as agent work, so **none of this is merged**. It is one sentence added in four places, not a redesign. `.607` shipped the product side — the load band is now on `/coach` with its honest pre-evidence state — so the claim is true before it is made.
+
+| Where | Today | Proposed second beat |
+|---|---|---|
+| `LandingPage.tsx:158-169` | H1 *"Log a set. / Your week rewrites itself."* | Keep the H1. Add beneath the stat tiles: *"And it reads your training load the way a strap would — without one."* |
+| `README.md:6-8` | *"…weekly plans that adapt from your logs alone (no wearable required)."* | *"…weekly plans that adapt from your logs alone — including a training-load reading most apps need a $300 strap for."* |
+| `docs/brand-guidelines.md:18-20` medium boilerplate | *"…adaptive Mission Coach from your logs — no wearable required."* | Same, plus: *"Load and readiness are computed from logged sets, and stay silent until there are two weeks of them."* |
+| `docs/YC_THESIS.md:78` YC form answer | *"…weekly plans that adapt from logs alone (no wearable required)."* | Append: *"including acute:chronic training load, which the category sells hardware for."* |
+
+Three constraints on whatever wording is chosen. It must stay **descriptive** — load, not recovery, not physiology, not a prediction (`REDTEAM` A8, and `load.ts`'s own header). It must not displace *"actually free"*, which is the phrase the ICP research found people using. And it is **not an SEO target**: `seo/keywords/opportunity-brief-2026-07-19.md:14` measured these terms at ~10–20 searches/month. This is conversion copy and the hook for a community post.
+
+## 9. Standing rules
 
 - The free logger is never gated. Ever. (Hard rule 2 — the unlock condition in the do-not-build table is the word *Never*.)
 - Agents never flip `PRIVATE_MODE`, never invent traction, never mark founder tasks done.
