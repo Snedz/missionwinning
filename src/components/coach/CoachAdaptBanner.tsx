@@ -8,7 +8,8 @@ import {
   summarizeCoachAdaptations,
   todaySessionWhyKeys,
 } from '@/lib/coach/adaptSummary';
-import { coachAdaptReentryIsPrescribed } from '@/lib/coach/coachAdaptReentry';
+import { coachAdaptReentrySession } from '@/lib/coach/coachAdaptReentry';
+import { useStartCoachSession } from '@/hooks/useStartCoachSession';
 
 type Props = {
   plan: CoachPlan;
@@ -31,6 +32,10 @@ type Props = {
  */
 export function CoachAdaptBanner({ plan, compact, todayOffset, onAdjustToday }: Props) {
   const { t, i18n } = useTranslation();
+  // Above the early returns below — this component bails in two places before
+  // the re-entry block renders, and a hook after a conditional return is a
+  // Rules-of-Hooks violation that only shows up once the bail path is taken.
+  const startCoachSession = useStartCoachSession();
   const beats = summarizeCoachAdaptations(plan);
   const whyKeys =
     !compact && typeof todayOffset === 'number'
@@ -46,7 +51,7 @@ export function CoachAdaptBanner({ plan, compact, todayOffset, onAdjustToday }: 
   const visibleBeats = compact ? beats.slice(0, 1) : beats.slice(0, 3);
   const missedCount = plan.sessions.filter((s) => s.status === 'missed').length;
   const showReentry = !compact && missedCount > 0;
-  const reentryIsCoach = coachAdaptReentryIsPrescribed(plan, todayOffset);
+  const reentrySession = coachAdaptReentrySession(plan, todayOffset);
 
   return (
     <div
@@ -148,16 +153,31 @@ export function CoachAdaptBanner({ plan, compact, todayOffset, onAdjustToday }: 
               K1 / `.278` honesty: when Mission Coach still has a live session
               today, the primary re-entry is that session — not freestyle Just Go.
             */}
-            <Link
-              href="/active"
-              className="inline-flex min-h-[44px] items-center border-2 border-border bg-primary-fill px-3 text-sm font-medium text-primary-foreground tap-target"
-            >
-              {reentryIsCoach
-                ? t('coachStartSession', {
-                    defaultValue: 'Start this session',
-                  })
-                : t('coachAdaptJustGo', { defaultValue: 'Just Go — log one set' })}
-            </Link>
+            {reentrySession ? (
+              /*
+                A button, not a link. This said "Start this session" over
+                `<Link href="/active">`, which starts nothing — `/active` with no
+                active workout renders `ActiveEmptyState`, so the athlete tapped
+                the one red control on a re-entry banner and landed on "No
+                session running". Starting it here also runs the re-entry dose,
+                which is the whole point of the surface it sits on.
+              */
+              <button
+                type="button"
+                onClick={() => startCoachSession(reentrySession, { from: 'reentry' })}
+                className="inline-flex min-h-[44px] items-center border-2 border-border bg-primary-fill px-3 text-sm font-medium text-primary-foreground tap-target"
+              >
+                {t('coachStartSession', { defaultValue: 'Start this session' })}
+              </button>
+            ) : (
+              /* Freestyle: `/active` is the destination, and picking exercises there is the point. */
+              <Link
+                href="/active"
+                className="inline-flex min-h-[44px] items-center border-2 border-border bg-primary-fill px-3 text-sm font-medium text-primary-foreground tap-target"
+              >
+                {t('coachAdaptJustGo', { defaultValue: 'Just Go — log one set' })}
+              </Link>
+            )}
             <Link
               href="/log"
               className="inline-flex min-h-[44px] items-center border-2 border-border px-3 text-sm text-muted-foreground hover:text-foreground tap-target"

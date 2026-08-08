@@ -16,7 +16,7 @@ One screen of truth for any AI tool or human joining cold. Read this, then [AGEN
 
 ---
 
-## Now (2026-08-08 · web `2026.07-unified.597` · Android `1.24.1`)
+## Now (2026-08-08 · web `2026.07-unified.598` · Android `1.24.1`)
 
 > The ONLY "where we are" block in the repo — [ORCHESTRATION.md](ORCHESTRATION.md) points here.
 >
@@ -264,6 +264,7 @@ One screen of truth for any AI tool or human joining cold. Read this, then [AGEN
 > and `.503` dropped `.488` detail (full text remains in LOG.md / archive)
 > and `.505`–`.545` dropped detail (full text remains in LOG.md / archive)
 > and `.597` dropped `.543`–`.544` detail (full text remains in LOG.md / archive)
+> and `.598` dropped `.583` detail (full text remains in LOG.md / archive)
 > to [CONTEXT-now-2026-07-30.md](docs/archive/CONTEXT-now-2026-07-30.md) after this
 > block reached **79 bullets / 103KB**. A status doc that only grows stops being read.
 
@@ -298,7 +299,7 @@ One screen of truth for any AI tool or human joining cold. Read this, then [AGEN
 - **`.586`:** content Fuel free D2 40→48 (+8 recipes).
 - **`.585`:** content Mind free D2 24→32 (+8 tagged sessions).
 - **`.584`:** content Move free D2 24→32 (+8 tagged flows).
-- **`.583`:** Continuity collection deep-links + high-strain Victory mind.
+- **`.598`:** **A button that says "start" must start a session.** `CoachAdaptBanner` rendered "Start this session" as a bare `<Link href="/active">` — which starts nothing and lands on `ActiveEmptyState` ("No session running"), on the one surface built to restart a lapsed athlete. And the re-entry dose was applied on **one of four** start paths, so `TodayReentryCard` promised "about 50% of usual sets" while the Coach card beneath it started the full session. One definition now (`.178`): `resolveCoachSessionStart` owns refuse-if-done + re-entry read + scaling; `useStartCoachSession` is wiring. My first draft put the hook after two early returns (Rules-of-Hooks) and the guard's own staleness mirror went red on an exemption the refactor had made theatre — both caught before commit. Coverage floor 390→391 through the documented escape hatch, reasoned in `FLOORS`. 4 mutants; tests 2158→2172.
 - **`.582`:** Kaizen FormGuide i18n + library overlay fix + upload remove 44px.
 - **Horizon W + full-launch override (2026-08-05).** Wedge excellence still required; agents may ship rewards + full surface honesty. Fuel estimate accuracy remains.
 - **Free-first beta (~4 weeks):** LLC + EIN pending — **no Bundle UI** + **full depth unlocked** + **full More nav** (journey train-only deferred) ([docs/FREE_BETA.md](docs/FREE_BETA.md)).
