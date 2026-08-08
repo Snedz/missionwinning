@@ -459,12 +459,12 @@ export function NutritionPage() {
           ? t('fuelSubtitleDepthBeta', {
               free: inv.recipes.free,
               unlocked: inv.unlockedTotal.recipes,
-              defaultValue: `${inv.recipes.free} free recipes · ${inv.unlockedTotal.recipes} unlocked in open beta — log offline on this device.`,
+              defaultValue: `${inv.recipes.free} free recipes · ${inv.unlockedTotal.recipes} unlocked in open beta — meals stay on this device.`,
             })
           : t('fuelSubtitleDepthPaid', {
               free: inv.recipes.free,
               premium: inv.recipes.premium,
-              defaultValue: `${inv.recipes.free} free recipes · Super Bundle adds ${inv.recipes.premium} more. Log offline on this device.`,
+              defaultValue: `${inv.recipes.free} free recipes · Super Bundle adds ${inv.recipes.premium} more. Meals stay on this device.`,
             })
       }
       headerActions={

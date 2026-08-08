@@ -108,6 +108,16 @@ describe('capability claims are gated', () => {
       key: 'betaFootWedge',
       note: 'invite landing — the first screen a tester sees',
     },
+    {
+      file: 'src/components/today/DayReviewOptIn.tsx',
+      key: 'dayReviewOptInInstall',
+      note: 'iOS: "add to home screen and an evening review can find you here"',
+    },
+    {
+      file: 'src/components/workout/WindDownOptIn.tsx',
+      key: 'windDownInstallFirst',
+      note: 'iOS: "Add to Home Screen first" as the stated push prerequisite',
+    },
   ];
 
   for (const { file, key, note } of CLAIMS) {
@@ -128,8 +138,18 @@ describe('capability claims are gated', () => {
    * hides the product's best property from beta testers. The `NoSw` variants
    * say what holds without a worker: an open session survives a signal drop.
    */
-  it('each gated claim has a narrower-truth fallback', () => {
-    for (const { file, key } of CLAIMS.filter((c) => c.key !== 'todayInstallPwa')) {
+  /**
+   * Claims with nothing honest to say in their place, which therefore render
+   * *nothing* while the worker is gated. All three offer an install; there is
+   * no narrower version of "you can install this" when you cannot.
+   *
+   * The rest must degrade rather than vanish — hiding a true capability is its
+   * own way of misinforming a tester about what the product does.
+   */
+  const HIDDEN_ENTIRELY = ['todayInstallPwa', 'dayReviewOptInInstall', 'windDownInstallFirst'];
+
+  it('each gated claim either degrades to a truth or is an install offer', () => {
+    for (const { file, key } of CLAIMS.filter((c) => !HIDDEN_ENTIRELY.includes(c.key))) {
       const src = stripComments(read(file));
       assert.match(
         src,
@@ -152,6 +172,15 @@ describe('network-state messages are left alone', () => {
       reason:
         '"Offline — logging still works" is accurate with no SW: the store persists to device ' +
         'storage and writes ride the durable outbox, so an open session keeps logging and syncs later.',
+    },
+    {
+      file: 'src/page-components/PrivacyPage.tsx',
+      reason:
+        'infoPrivacyCollectLi4 — "the free core works offline; data stays on your device until you ' +
+        'sign in to sync" — is a statement about **localStorage**, not about the service worker, and ' +
+        'it is true either way. `.603` came within one edit of gating it: the audit that found the ' +
+        'real /vision claim reported it under this key’s line number, and the plan inherited that. ' +
+        'Recorded so the next sweep of the word "offline" does not take out a true privacy disclosure.',
     },
   ];
 
