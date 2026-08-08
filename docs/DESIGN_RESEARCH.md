@@ -440,6 +440,79 @@ Peloton IQ (Oct 2025) validates AI strength coaching going mainstream — then t
 
 ---
 
+## Wave 9 — Identity, social and the earned record (2026-08-08)
+
+**Method:** live web — primary vendor pages (help centres, pricing tables, programme FAQs) preferred over aggregators; peer-reviewed sources for every behavioural claim. **Nine founder reference screenshots** seeded the wave: Freeletics Super Bundle · Williams F1 WClub · a step-challenge concept (Walk With Hood) · Runna · Everfit · HWPO · Bevel · and **two brand MySpace revivals** (Wendy's, Pizza Hut). **Thesis:** the founder's reference set is not asking for a feed. Read together it asks for one thing the product does not have — **a page that is unmistakably yours** — and the fitness-social literature says the feed is the part to leave behind. Companion plan: [IDENTITY_SOCIAL_PLAN.md](IDENTITY_SOCIAL_PLAN.md); economy: [CLUB_PLAN.md](CLUB_PLAN.md).
+
+### 9.1 The finding that reframes the question
+
+Kolnes et al. 2026 (*PMC12938745*, n=225 active club runners, mixed-methods, validated instruments) found that Strava's motivational impact is **context dependent** — it enhances training through feedback, routine and connection, *and* introduces pressure, comparison and stress, particularly during injury or reduced performance. One result matters more to this product than the headline:
+
+> Runners who had **deleted training sessions** because they perceived their pace as slow scored higher on other-avoidance goals.
+
+**In Strava a logged run is a post. In Mission Winning a logged set is the Coach's input.** [`src/lib/coach/`](../src/lib/coach/INDEX.md) derives the weekly plan from logs alone — there is no wearable to cross-check against. So an athlete who omits or deletes an unflattering session does not merely curate a profile; they feed the planner a false training history, and the planner then prescribes for an athlete who does not exist.
+
+Social comparison is therefore not only off-brand here. It is an **input-integrity attack on the core algorithm**, and it is the reason the social layer needs an architectural boundary rather than a tone guideline. Contracts: [IDENTITY_SOCIAL_PLAN.md](IDENTITY_SOCIAL_PLAN.md) §Contracts.
+
+### 9.2 Gamification — what the evidence actually supports
+
+| Source | Finding | What it licenses |
+|---|---|---|
+| Mazeas et al. 2022, *JMIR* (16 RCTs, n=2407) | Gamification on PA behaviour **Hedges g=0.42** (95% CI 0.14–0.69); **g=0.23** (0.05–0.41) vs *active* controls running an equivalent non-gamified intervention; **g=0.15** (0.07–0.23) at follow-up averaging 14 weeks post-intervention | Build it — the effect is real, generalises across age/sex/BMI and chronic-disease status, and **persists after the intervention ends, so it is not a novelty effect**. But the durable effect is *small*. Points may support the habit loop; they may never be the retention thesis |
+
+The confidence interval at follow-up (0.07–0.23) is the number to plan against, not the headline 0.42. It is consistent with [CLUB_PLAN.md](CLUB_PLAN.md)'s kill criteria being written *before* the mechanic ships, and it argues against ever moving budget from wedge excellence to reward surface.
+
+### 9.3 The reference screenshots, decoded
+
+| Reference | What it is actually demonstrating | Verdict |
+|---|---|---|
+| **Wendy's + Pizza Hut MySpace pages** | Two national brands paying for nostalgia for an **authored page** — profile-as-canvas, "in your extended network", Top 8, interests table. Neither revival features a feed | **Take the page.** The `You` surface becomes an authored Athlete Page |
+| **MySpace Top 8** | Ranking your friends publicly. Documented as a status and drama device (*Us Weekly* 2024; *Metro* 2017; large anecdotal record) | **Refuse.** Same shape as the missed-day ✕ refused in D7, D8 and D11 |
+| **Williams F1 WClub** | 4 tiers (Grid · Podium · Champion · Legend), points from engagement, Driver Card, arcade, collectibles | Already the basis of [CLUB_PLAN.md](CLUB_PLAN.md) — **with one correction below** |
+| **Walk With Hood** (concept) | Squad step-challenge: QR/link invite, per-squad board, share-achievement card | Invite and share-card mechanics are usable; the ranked-friends board is C3-gated and stays off the logging path |
+| **Freeletics Super Bundle** | Six-to-seven separate apps sold as one subscription (Calm, MapMyFitness, Skill Yoga, pliability, Waking Up, Freeletics Nutrition) at −50% | **MW's structural advantage, sharpened.** Their bundle is a billing wrapper over six logins; MW's six pillars share one Mission Score and one log. Their own forum carries users asking how to even access pliability |
+| **Runna** | Goal-first plan picker (Marathon / Half / 10K / 5K / Get Fit) with duration + distance chips | The clearest IA for goal selection seen in the set; relevant to Coach onboarding, not to identity |
+| **Everfit** | Meal-plan cards with per-item macros and check affordances | Fuel density reference; already covered Wave 8 |
+| **HWPO** | "No magic. No lies. No shortcuts." — brand voice as the entire ad | Confirms the register MW already runs. No action |
+| **Bevel** | **"$0 per year — best all-in-one health app"** | **A live threat to positioning angle 1. See below** |
+
+### 9.4 Correction to Wave 8 — the free-forever line is no longer ours alone
+
+Wave 8 (two days before this one) listed positioning angle 1 as *"Your history is yours. Free. Forever."*, on the reasoning that incumbents "can't match it without detonating revenue." **One did.** Verified at Bevel's own pricing page (`help.bevel.health/en/articles/11583937`):
+
+- Free includes Recovery, Sleep, Strain, Stress, Nutrition Tracking, **Strength Builder (700+ exercises)**, Energy Bank, Fitness Tracking, Health Monitors, Cycle Tracking, Journal, Watch app, widgets — **and AI food logging and AI workout-template generation**.
+- Paid (`Pro`, $14.99/mo · $99.99/yr) is only Bevel Intelligence, Health Records, Biological Age.
+- They publish the **ratchet in writing**: *"any feature included in Free today will always remain free. We will never move an existing Free feature behind a paywall."* Existing annual subscribers keep their price in perpetuity.
+
+That is the same structural promise MW makes, made first, in public, by a competitor with ~500k downloads and a 4.8 rating. **What survives, and is now the sharper claim:** Bevel is iOS + Apple Watch — it is a *wearable-derived* product, and its scores are computed from sensors MW deliberately does not require. MW's defensible line is not "free" on its own; it is **free, on Android, from logs alone, offline, with no watch and no account.** Angle 1 should be re-cut accordingly, and angle 6 ("No watch. No ads. No card.") promoted above it.
+
+### 9.5 Correction to CLUB_PLAN — WClub tiers reset, and ours do not
+
+[CLUB_PLAN.md](CLUB_PLAN.md) adopts WClub's ladder and adds a *"T4 season-start boost (positive-sum carryover)"*. Verified at `williamsf1.com/wclub-education`, the WClub FAQ states: **"Your tier resets at the start of each season"** and *"Users who reached legend tier will get a boost at the start of the next season as a reward for reaching the top."*
+
+The boost exists **because everything resets** — it compensates a Legend for losing their ladder. CLUB_PLAN invariant 3 makes MW points **monotonic**: nothing resets, nothing is revoked. Importing the boost without the reset turns a compensation mechanic into a compounding head start for whoever ranked highest last season — rich-get-richer, in a product whose entire tone contract is anti-hierarchy. **Recommendation: strike the T4 season-start boost.** Positive-only double-points weeks (open to everyone) survive unchanged.
+
+Also unverified: CLUB_PLAN's specific bands *"Grid 50–299 · Podium 300–699 · Champion 700–1499 · Legend 1500+"*. The education page names the four tiers and publishes **no thresholds**; a separate Williams article confirms **Podium = 300** only. Three of the four numbers are uncorroborated and should not be presented as sourced. They are in any case provisional at 0 users.
+
+### 9.6 Source verification
+
+Claims were checked at source, not accepted from search snippets. Recorded so the next wave does not re-litigate them.
+
+| Claim | Source | Verdict |
+|---|---|---|
+| Gamification on PA: g=0.42; g=0.23 vs active control; g=0.15 at follow-up | Mazeas et al. 2022, *JMIR* 24(1):e26779 | **Verified** — primary, peer-reviewed, 16 RCTs |
+| Strava use → deleted sessions over slow pace, ↑ other-avoidance goals | Kolnes et al. 2026, *PMC12938745*, n=225 | **Verified** — primary, peer-reviewed |
+| Bevel free tier + never-repaywall promise + Pro pricing | `help.bevel.health` pricing article | **Verified** — vendor primary |
+| WClub 4 tiers, seasonal reset, Legend boost, engagement-and-purchase earning | `williamsf1.com/wclub-education` | **Verified** — vendor primary |
+| Freeletics Super Bundle = 6→7 apps, one subscription | `freeletics.com/en/` + vendor blog + own forum | **Verified** — vendor primary |
+| MySpace Top 8 as status/drama device | *Us Weekly* 2024, *Metro* 2017, broad anecdotal record | **Weak-verified** — journalistic and anecdotal, no study found. Treated as a design caution, not evidence |
+| CLUB_PLAN's Grid/Champion/Legend point bands | — | **Unverified** — see §9.5 |
+| *"Strava Challenges (2022) improved 90-day retention 18% → 32%, +28% DAU, +15% subs"* | `lucid.now` blog | **REJECTED.** Uncited; Strava Challenges shipped years before 2022; supported by a quote attributed to an unlocatable "Dr. Emily Chen". **Do not cite this figure anywhere.** It is the most-repeated number in the fitness-retention content mill and it has no visible provenance |
+
+**Standing rule this wave adds:** a retention statistic with no primary source is treated as absent. Vendor marketing blogs are not sources for competitor metrics.
+
+---
+
 ## Sources folded in
 
 - Internal: UX_UNIFIED_PLAN (Bevel/Freeletics), ROADMAP_V4_EXPERIENCE (no teardown)  
@@ -450,4 +523,5 @@ Peloton IQ (Oct 2025) validates AI strength coaching going mainstream — then t
 - Wave 5: CTA integrity + list density/search
 - Wave 6: TrainHeroic athlete gym + % load (not coach SaaS)
 - Wave 7: Design Excellence OS — steal/avoid/own synthesis + craft waves D0–D3
+- Wave 9: Mazeas et al. 2022 *JMIR* 24(1):e26779 · Kolnes et al. 2026 *PMC12938745* · help.bevel.health pricing · williamsf1.com/wclub-education · freeletics.com + forum.freeletics.com · Us Weekly / Metro on MySpace Top 8 · nine founder reference screenshots. **One source rejected** — see §9.6
 - Wave 8: trainerize.com + help center · truecoach.co + help center · everfit.io + help center · help.fitbod.me + sensai.fit · runna.com/support.runna.com + press.strava.com · joinladder.com + garagegymreviews.com · investor.onepeloton.com · Capterra/G2/GetApp/JustUseApp/Trustpilot review mining · quickcoach.fit pricing 2026 · Sheen et al. 2025 *BJHP* (58,881-post study, via UCL News) · RevenueCat State of Subscription Apps · Sensor Tower US charts

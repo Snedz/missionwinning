@@ -94,7 +94,8 @@
 | [LIGHTHOUSE_BASELINE.md](LIGHTHOUSE_BASELINE.md) | Lighthouse baselines |
 | [ROADMAP_V4_EXPERIENCE.md](archive/ROADMAP_V4_EXPERIENCE.md) | Experience build v4 |
 | [DESIGN_ORCHESTRATION.md](DESIGN_ORCHESTRATION.md) | Design excellence OS — emotion arc, quality bars, D0–D3 waves |
-| [DESIGN_RESEARCH.md](DESIGN_RESEARCH.md) | Competitive UI research + steal/avoid |
+| [DESIGN_RESEARCH.md](DESIGN_RESEARCH.md) | Competitive UI research + steal/avoid · Wave 9 = identity/social + **source verification** |
+| [DESIGN_PROPOSAL_3.md](DESIGN_PROPOSAL_3.md) | Brief for the final design proposal — what is wireframe vs settled; the design flow as a chip flow |
 | [DESIGN_SYSTEM.md](DESIGN_SYSTEM.md) | Runtime tokens, shells, ProgressRing, motion |
 | [DESIGN_REVIEW.md](DESIGN_REVIEW.md) | Hero-flow UI/UX audit checklist (quarterly + pre-flip) |
 | [DESTRUCTIVE_UX.md](DESTRUCTIVE_UX.md) | Hold-to-confirm delete language |
@@ -124,6 +125,7 @@ Root keeps only the spine (README · CONTEXT · AGENTS · INDEX · vision · ORC
 | [REDTEAM.md](REDTEAM.md) | Assumptions audit |
 | [JOURNEY.md](JOURNEY.md) | Mission journey UX (I-Day → Commissioned) |
 | [CLUB_PLAN.md](CLUB_PLAN.md) | Club: points · tiers · collectibles · boards · arcade (phased plan, no code) |
+| [IDENTITY_SOCIAL_PLAN.md](IDENTITY_SOCIAL_PLAN.md) | The `You` surface · Athlete Page · the Log↔Social domain boundary and its contracts |
 | [LAUNCH_RUNBOOK.md](LAUNCH_RUNBOOK.md) | Founder critical path |
 | [ENV.md](ENV.md) | Environment variables |
 | [PROTECTION.md](PROTECTION.md) | Security checklist |
