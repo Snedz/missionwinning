@@ -376,6 +376,7 @@ When adding a doc:
 | [log/LOG-rotate-604.md](./log/LOG-rotate-604.md) | `.589` (Mind sleep-week series rail) — rotated 2026-08-08 for `.604` verification run + `.602` correction |
 | [log/LOG-rotate-605.md](./log/LOG-rotate-605.md) | `.590` (Sleep-week nights 4–7) — rotated 2026-08-08 for `.605` the idea, stated once |
 | [log/LOG-rotate-606.md](./log/LOG-rotate-606.md) | `.591` (evening sleep-week continuity) — rotated 2026-08-08 for `.606` the Mission Score decays |
+| [log/LOG-rotate-607.md](./log/LOG-rotate-607.md) | `.592` (Lean Today evening continuity) — rotated 2026-08-08 for `.607` the load model gets a screen |
 | [VISION_STATUS-2026-07-23.md](./VISION_STATUS-2026-07-23.md) | The per-pillar vision scorecard, retired `.605`. Last truly refreshed at `.109` and **495 ships stale** by the time it was archived — a second home for status that `ORCHESTRATION.md` asked for on every ship and no check enforced. Status now lives only in [CONTEXT.md](../../CONTEXT.md) `## Now`; the vision-vs-reality *framing* moved to [docs/THESIS.md](../THESIS.md) |
 | [SETUP.md](./SETUP.md) | Stale PayPal-first setup — superseded by [docs/PRE_REVENUE_CHECKLIST.md](../PRE_REVENUE_CHECKLIST.md) + [docs/LLC_AND_PAYMENTS.md](../LLC_AND_PAYMENTS.md) |
 

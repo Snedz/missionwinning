@@ -40,6 +40,15 @@ type CoachStrings = {
   coachVoiceError: string;
   coachVoiceOffline: string;
   coachVoiceErrorDesc: string;
+  /** `.607` — the load band. `coachLoadUnmeasured*` is the honest pre-evidence state. */
+  coachLoadTitle: string;
+  coachLoadUnmeasured: string;
+  coachLoadUnmeasuredBody: string;
+  coachLoadBody: string;
+  coachLoadDisclaimer: string;
+  coachLoadZoneLight: string;
+  coachLoadZoneSteady: string;
+  coachLoadZoneHigh: string;
   coachTasterLocked: string;
   coachTasterLockedDesc: string;
   coachTasterFatigueNote: string;
@@ -150,6 +159,17 @@ const en: CoachStrings = {
   coachPageTitle: 'Mission Coach',
   coachPageSubtitle:
     'Weekly plans from your workout logs alone — no wearable. Adapts when you miss or crush a session.',
+  coachLoadTitle: 'Training load',
+  coachLoadUnmeasured: 'Not enough history yet',
+  coachLoadUnmeasuredBody:
+    'Keep logging — about {{days}} more days of training and this compares your last week against your own baseline.',
+  coachLoadBody:
+    'Last week against your 4-week baseline: {{ratio}}×. Built from your logged sets — no wearable involved.',
+  coachLoadDisclaimer:
+    'A description of your recent workload, not a medical or recovery reading.',
+  coachLoadZoneLight: 'Lighter than your recent normal',
+  coachLoadZoneSteady: 'In line with your recent normal',
+  coachLoadZoneHigh: 'Above your recent normal',
   coachWeekEyebrow: "THIS WEEK'S MISSION",
   coachGenerateWeek: 'Generate this week',
   coachGenerateWeekHint: 'Generate a weekly plan from your logs — no wearable required.',
