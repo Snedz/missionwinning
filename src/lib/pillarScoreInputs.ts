@@ -33,12 +33,22 @@ function countPillarWinsThisWeek(pillar: PillarType): number {
   ).length;
 }
 
+/**
+ * `.606` — this used to union three **lifetime** id sets (`learnCompleted`,
+ * `premiumCourseProgress`, `guidebookProgress`) and return `min(total, 10)`. No
+ * date filter at all, directly beneath `countPillarWinsThisWeek`, which has a
+ * careful local-week filter and a `.241` comment about UTC frames. Five lessons
+ * finished once paid the Learn pillar its full ~10 points **forever**.
+ *
+ * The fix is to stop having a second implementation: all three completion paths
+ * already log a `'learn'` pillar win — `LearnPage.markLessonDone`,
+ * `GuidebookChapterPage.completeSection` and `CourseReader` (course + per-chapter)
+ * — so the dated counter beside it was always the right reader. One definition per
+ * domain rule (`.178`); the id sets stay where they belong, as *progress* state for
+ * rendering ticks, not as a scoring input.
+ */
 function countLearnLessonsThisWeek(): number {
-  const completed = readJson<string[]>(STORAGE_KEYS.learnCompleted, []);
-  const premium = readJson<string[]>(STORAGE_KEYS.premiumCourseProgress, []);
-  const guide = readJson<string[]>(STORAGE_KEYS.guidebookProgress, []);
-  const total = new Set([...completed, ...premium, ...guide]).size;
-  return Math.min(total, 10);
+  return countPillarWinsThisWeek('learn');
 }
 
 /** Gather cross-pillar weekly stats from local storage (offline-first). */

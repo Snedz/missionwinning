@@ -1,6 +1,7 @@
 import { gatherWeeklyPillarStats } from '@/lib/pillarScoreInputs';
 import { getTrainingStreak } from '@/lib/challenges';
 import { computeWinScore } from '@/lib/score';
+import { countSessionsThisWeek, sumVolumeThisWeek } from '@/lib/workout/historyVolume';
 import { tierToScore } from '@/lib/presidentialFitnessTest';
 import type { CompletedWorkoutLog } from '@/types';
 import type { LeaderboardBoardId, LeaderboardSnapshot } from './types';
@@ -42,19 +43,33 @@ export function computeLocalLeaderboardSnapshot(
   const geo = resolveGeoFromLocale(locale);
   const weekly = gatherWeeklyPillarStats();
   const streak = getTrainingStreak(workoutHistory);
-  const totalSessions = workoutHistory.length;
-  const totalVolume = workoutHistory.reduce((s, w) => s + w.totalVolume, 0);
   const fuelDays = highProteinDaysThisWeek();
   const nightSessions = countSessionsInHourRange(workoutHistory, 22, 5);
   const dawnSessions = countSessionsInHourRange(workoutHistory, 5, 8);
   const pft = loadLocalPftScore();
 
+  /*
+   * `.606` — the leaderboard shares `computeWinScore`, so it shared the defect:
+   * lifetime sessions and volume made a third of every ranked score permanent, and
+   * a board that never decays ranks tenure rather than this week.
+   *
+   * The two lifetime locals that used to be computed here are gone rather than
+   * renamed: nothing else read them. The snapshot publishes `weekly.weekVolume`
+   * (challenge-derived) for the weekly-volume board and never reported a career
+   * total — so the weekly figure was already sitting in this function while the
+   * score was handed the lifetime one.
+   *
+   * The score deliberately uses `sumVolumeThisWeek(workoutHistory)` and not
+   * `weekly.weekVolume`, so one athlete gets one Mission Score whether it is
+   * computed here or on Today. Those two weekly volumes *should* agree — history is
+   * the source of truth, the challenge counter is a running tally — and reconciling
+   * them to one reader is its own change, noted rather than smuggled in here.
+   */
   const winScore = computeWinScore({
     streak,
     highProteinDays: fuelDays,
-    totalSessions,
-    totalVolume,
-    savedCount,
+    sessionsThisWeek: countSessionsThisWeek(workoutHistory),
+    volumeThisWeek: sumVolumeThisWeek(workoutHistory),
     moveFlows: weekly.moveFlows,
     mindSessions: weekly.mindSessions,
     trackActivities: weekly.trackActivities,

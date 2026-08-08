@@ -16,7 +16,11 @@ import type { CoachInsight } from "@/lib/score";
 import { computeReadinessFromHistory } from "@/lib/readinessIndex";
 import { getTrainingStreak } from "@/lib/challenges";
 import { summarizeRewards } from "@/lib/rewards/summary";
-import { sumHistoryVolume } from "@/lib/workout/historyVolume";
+import {
+  sumHistoryVolume,
+  countSessionsThisWeek,
+  sumVolumeThisWeek,
+} from "@/lib/workout/historyVolume";
 import { getUser, getUserNutritionForDate, type CloudNutritionEntry } from "@/lib/supabase";
 import { JourneyHero } from "@/components/journey/JourneyHero";
 import { ScreenDock } from "@/components/layout/ScreenDock";
@@ -372,15 +376,26 @@ export function HomeTodayDashboard() {
     // eslint-disable-next-line react-hooks/exhaustive-deps -- proteinDays / history length intentionally re-read localStorage when fuel or sessions change
   }, [workoutHistory.length, pillarStats.proteinDays]);
 
-  // Win/Mission Score via util
+  /*
+   * Mission Score — **this week only** (`.606`).
+   *
+   * This used to pass `totalSessions` and `totalVolume`, which are lifetime, into a
+   * score that resets weekly. Those two variables still exist above and are still
+   * correct for what else reads them: the `sessions` prop below is the `.602`
+   * em-dash guard, whose question really is "has this athlete *ever* trained", and
+   * the below-fold stats card genuinely wants career totals. Only the score's
+   * inputs changed — which is why the parameters were renamed rather than
+   * re-pointed, so passing the wrong one is now a type error.
+   */
+  const sessionsThisWeek = useMemo(() => countSessionsThisWeek(workoutHistory), [workoutHistory]);
+  const volumeThisWeek = useMemo(() => sumVolumeThisWeek(workoutHistory), [workoutHistory]);
   const scoreBreakdown = useMemo(
     () =>
       computeWinScore({
         streak,
         highProteinDays: Math.max(highProteinDays, pillarStats.proteinDays),
-        totalSessions,
-        totalVolume,
-        savedCount: savedWorkouts.length,
+        sessionsThisWeek,
+        volumeThisWeek,
         moveFlows: pillarStats.moveFlows,
         mindSessions: pillarStats.mindSessions,
         trackActivities: pillarStats.trackActivities,
@@ -392,9 +407,8 @@ export function HomeTodayDashboard() {
       streak,
       highProteinDays,
       pillarStats,
-      totalSessions,
-      totalVolume,
-      savedWorkouts.length,
+      sessionsThisWeek,
+      volumeThisWeek,
     ]
   );
   const score = scoreBreakdown.total;
