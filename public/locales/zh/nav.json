@@ -27,5 +27,11 @@
   "fuelHighProteinNote": "高蛋白质日提升你的",
   "fuelScienceCh5": "蛋白质要点（教材第5章）：对生长、修复、酶和激素至关重要。活跃者常需 1.6–2.2g/kg。摄入完整蛋白；训练前后补充。下方食谱遵循这些原则。",
   "fuelScienceCh12": "健美营养（第12章）：复合碳水供能；健康脂肪支持激素（15–30% 热量）。全食物维生素矿物质；纤维 20–30g+。练后蛋白+碳水助恢复。重视补水 — 优先本地全食物。",
-  "fuelPremiumRecipesFoot": "基于蛋白质科学与 DASH/地中海原则，全球可及。"
+  "fuelPremiumRecipesFoot": "基于蛋白质科学与 DASH/地中海原则，全球可及。",
+  "navGuide": "Guide",
+  "sourceCode": "Source",
+  "feedback": "Feedback",
+  "resumeWorkout": "Resume workout",
+  "offlineBannerShort": "Offline — logging still works",
+  "offlineWaitingCount": "{{count}} waiting"
 }

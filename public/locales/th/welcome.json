@@ -47,7 +47,14 @@
   "welcomeSignInTitle": "Save progress — your choice",
   "welcomeSignInSubtitle": "Sign in with Google or email to sync across devices. Skip anytime — local progress still works.",
   "welcomeSkipSignIn": "Skip — start training",
-  "welcomeRemindersOptIn": "Email me training reminders (streak at risk, next step). Optional — unsubscribe anytime.",
+  "welcomeRemindersOptIn": "Email me if I go quiet, and a recap after my first week. Never more than one every two days — unsubscribe anytime.",
   "editJourneyProfile": "Edit journey profile",
-  "saveProfile": "Save profile"
+  "saveProfile": "Save profile",
+  "welcomeProgressLabel": "Progress, step {{step}} of {{total}}",
+  "welcomeProgressMono": "{{step}} / {{total}}",
+  "welcomePreviewLabel": "Your first session is ready",
+  "welcomePreviewSessionName": "{{name}}",
+  "welcomeSessionReadyEyebrow": "Up next",
+  "welcomeSessionReadyTitle": "Your first session is ready",
+  "welcomeSessionReadyBody": "{{name}} · {{count}} exercises for your gear. Skip sign-in to start logging right away."
 }

@@ -1,4 +1,6 @@
 {
+  "betaFootWedge": "Train anywhere: log from Today offline — no account required. After your first log, open Mission Coach for a week that adapts from sessions alone.",
+  "betaFootWedgeNoSw": "Train anywhere: log from Today with no account required. Lose signal mid-session and logging keeps going — it syncs when you are back. After your first log, open Mission Coach for a week that adapts from sessions alone.",
   "betaStep1Title": "Unlock access",
   "betaStep1Body": "Open /private (or your invite link) and enter the access code from your invite email. Query ?access= is off in production — type the code on the gate page.",
   "betaStep1Cta": "Enter access code",

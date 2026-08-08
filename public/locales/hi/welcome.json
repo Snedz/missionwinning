@@ -49,5 +49,12 @@
   "welcomeSkipSignIn": "छोड़ें - आज पर जाएँ",
   "welcomeRemindersOptIn": "मुझे प्रशिक्षण अनुस्मारक ईमेल करें (जोखिम पर लकीर, अगला चरण)। वैकल्पिक - किसी भी समय सदस्यता समाप्त करें।",
   "editJourneyProfile": "यात्रा प्रोफ़ाइल संपादित करें",
-  "saveProfile": "प्रोफ़ाइल बचा"
+  "saveProfile": "प्रोफ़ाइल बचा",
+  "welcomeProgressLabel": "Progress, step {{step}} of {{total}}",
+  "welcomeProgressMono": "{{step}} / {{total}}",
+  "welcomePreviewLabel": "Your first session is ready",
+  "welcomePreviewSessionName": "{{name}}",
+  "welcomeSessionReadyEyebrow": "Up next",
+  "welcomeSessionReadyTitle": "Your first session is ready",
+  "welcomeSessionReadyBody": "{{name}} · {{count}} exercises for your gear. Skip sign-in to start logging right away."
 }

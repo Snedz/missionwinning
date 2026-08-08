@@ -1,4 +1,12 @@
 {
+  "programsEyebrow": "Programs",
+  "programsCatalogIntro": "Specialist education outlines below. Free core tools live in Learn and the public guide.",
+  "programsCurriculumOutline": "Curriculum outline",
+  "programsModuleLabel": "Module {{n}}",
+  "programsFreeNote": "Free education path",
+  "programsNoMatchTitle": "No programs match those filters",
+  "programsNoMatchBody": "Nothing in the catalog fits that combination of goal and equipment yet. Clear the filters to see all programs.",
+  "programsClearFilters": "Clear filters",
   "programsFilterGoal": "目標でフィルタリングします:",
   "programsFilterEquip": "装置：",
   "programsGoalAll": "全て",
@@ -65,5 +73,6 @@
   "progCondBullet2": "強度を補う（破壊しない）コンディショニングプロトコル",
   "progCondBullet3": "HWPO からインスピレーションを得た大容量ブロック + リカバリ管理",
   "progCondBullet4": "テストプロトコルとログベースのコンディショニング追跡",
-  "progCondDisclaimer": "トレーニング専門家や熱心なアスリート向けの教育コンテンツ。"
+  "progCondDisclaimer": "トレーニング専門家や熱心なアスリート向けの教育コンテンツ。",
+  "programsShareFeedback": "Share feedback"
 }

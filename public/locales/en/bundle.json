@@ -20,7 +20,7 @@
   "bundleUnlockCta": "Unlock Super Bundle",
   "bundleOneAppTitle": "One app — not seven",
   "bundleOneAppDesc": "Freeletics Super Bundle spans multiple apps. Mission Winning keeps Train, Fuel, Move, Mind, Track, and Learn in one PWA with one Win Score.",
-  "bundleWinScoreNote": "Today hub Win Score ties every pillar together.",
+  "bundleWinScoreNote": "Today Win Score ties every pillar together.",
   "bundleCompareTitle": "Compare standalone vs bundle",
   "bundleColPillar": "Pillar",
   "bundleColPremium": "Premium tier",
@@ -65,5 +65,13 @@
   "bundlePayMethods": "Card · Apple Pay · Google Pay · USDC",
   "bundleUsdcNote": "Base USDC is a payment rail — not the product.",
   "bundleUnlockLifetimeCta": "Unlock lifetime Super Bundle",
-  "bundleRefundNote": "Questions on access? Contact support from Profile."
+  "bundleRefundNote": "Questions on access? Contact support from Profile.",
+  "unlockStartingCheckout": "Starting checkout…",
+  "unlockSecureCheckout": "Secure checkout by Stripe · Card · Apple Pay · Google Pay · PayPal · USDC",
+  "unlockMoneyBack": "14-day money-back on first paid charge",
+  "unlockOpenProfile": "Open Profile",
+  "unlockFoundersListed": "You're on the founders list.",
+  "unlockFoundersEmail": "We'll email {{email}} when checkout opens.",
+  "unlockJoining": "Joining…",
+  "unlockJoinFounders": "Join founders list"
 }

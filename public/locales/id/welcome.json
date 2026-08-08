@@ -49,5 +49,12 @@
   "welcomeSkipSignIn": "Lewati — buka Hari Ini",
   "welcomeRemindersOptIn": "Kirimkan email kepada saya pengingat pelatihan (berisiko beruntun, langkah selanjutnya). Opsional — berhenti berlangganan kapan saja.",
   "editJourneyProfile": "Edit profil perjalanan",
-  "saveProfile": "Simpan profil"
+  "saveProfile": "Simpan profil",
+  "welcomeProgressLabel": "Progress, step {{step}} of {{total}}",
+  "welcomeProgressMono": "{{step}} / {{total}}",
+  "welcomePreviewLabel": "Your first session is ready",
+  "welcomePreviewSessionName": "{{name}}",
+  "welcomeSessionReadyEyebrow": "Up next",
+  "welcomeSessionReadyTitle": "Your first session is ready",
+  "welcomeSessionReadyBody": "{{name}} · {{count}} exercises for your gear. Skip sign-in to start logging right away."
 }

@@ -59,5 +59,9 @@
   "assessRecModerate2": "Trước tiên hãy xây dựng với Bodyweight & Dumbbell Starter.",
   "assessRecHigh1": "Bắt đầu với khối Corrective & Mobility.",
   "assessRecHigh2": "Tham khảo ý kiến ​​bác sĩ.",
-  "assessRecHigh3": "Sử dụng các tùy chọn tác động thấp và theo dõi các triệu chứng."
+  "assessRecHigh3": "Sử dụng các tùy chọn tác động thấp và theo dõi các triệu chứng.",
+  "submitAssessment": "Submit Assessment",
+  "riskLow": "Low risk",
+  "riskModerate": "Moderate risk",
+  "riskHigh": "High risk"
 }

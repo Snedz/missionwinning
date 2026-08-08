@@ -1,4 +1,12 @@
 {
+  "programsEyebrow": "Programs",
+  "programsCatalogIntro": "Specialist education outlines below. Free core tools live in Learn and the public guide.",
+  "programsCurriculumOutline": "Curriculum outline",
+  "programsModuleLabel": "Module {{n}}",
+  "programsFreeNote": "Free education path",
+  "programsNoMatchTitle": "No programs match those filters",
+  "programsNoMatchBody": "Nothing in the catalog fits that combination of goal and equipment yet. Clear the filters to see all programs.",
+  "programsClearFilters": "Clear filters",
   "programsFilterGoal": "Lọc theo mục tiêu:",
   "programsFilterEquip": "Thiết bị:",
   "programsGoalAll": "Tất cả",
@@ -65,5 +73,6 @@
   "progCondBullet2": "Các giao thức điều hòa bổ sung (không phá hủy) sức mạnh",
   "progCondBullet3": "Quản lý khôi phục + khối khối lượng lớn lấy cảm hứng từ HWPO",
   "progCondBullet4": "Các giao thức kiểm tra và theo dõi điều kiện dựa trên nhật ký",
-  "progCondDisclaimer": "Nội dung giáo dục dành cho các chuyên gia đào tạo và vận động viên tận tâm."
+  "progCondDisclaimer": "Nội dung giáo dục dành cho các chuyên gia đào tạo và vận động viên tận tâm.",
+  "programsShareFeedback": "Share feedback"
 }

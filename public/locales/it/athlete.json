@@ -1,0 +1,23 @@
+{
+  "athletePageTitle": "Your record",
+  "athletePageSubtitle": "Everything you have logged, counted honestly. Yours, on this device.",
+  "athletePageSettingsTitle": "Settings",
+  "athletePageSettingsLink": "Account & settings",
+  "athleteIdentityTitle": "Call sign",
+  "athleteIdentitySave": "Save",
+  "athleteIdentitySince": "Training here since {{date}}",
+  "athleteIdentityNoStart": "Your first logged session starts the record.",
+  "athleteIdentitySaved": "Saved on this device.",
+  "careerLineTitle": "Your record",
+  "careerLineEmpty": "Log a session and this fills in — sessions, volume moved, exercises, your best week, days trained.",
+  "careerLineSessions": "Sessions",
+  "careerLineVolume": "Volume moved",
+  "careerLineExercises": "Exercises",
+  "careerLineBestWeek": "Best week",
+  "careerLineDays": "Days trained",
+  "accountEyebrow": "Account",
+  "accountTitle": "Settings",
+  "accountSubtitle": "Sign-in, units, notifications and backup. Progress stays on this device unless you sign in.",
+  "navAccount": "Account",
+  "moreAccountDesc": "Settings, notifications, backup"
+}

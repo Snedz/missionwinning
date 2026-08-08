@@ -47,7 +47,14 @@
   "welcomeSignInTitle": "Fortschritt speichern — deine Wahl",
   "welcomeSignInSubtitle": "Melde dich mit Google oder E-Mail an zum Synchronisieren. Überspringe jederzeit — lokaler Fortschritt funktioniert.",
   "welcomeSkipSignIn": "Überspringen — Training starten",
-  "welcomeRemindersOptIn": "Schick mir Trainingserinnerungen (Serie in Gefahr, nächster Schritt). Optional — Abmeldung mit einem Klick.",
+  "welcomeRemindersOptIn": "Schreib mir, wenn ich still werde, und eine Bilanz nach meiner ersten Woche. Nie mehr als eine alle zwei Tage — Abmeldung mit einem Klick.",
   "editJourneyProfile": "Reiseprofil bearbeiten",
-  "saveProfile": "Profil speichern"
+  "saveProfile": "Profil speichern",
+  "welcomeProgressLabel": "Progress, step {{step}} of {{total}}",
+  "welcomeProgressMono": "{{step}} / {{total}}",
+  "welcomePreviewLabel": "Your first session is ready",
+  "welcomePreviewSessionName": "{{name}}",
+  "welcomeSessionReadyEyebrow": "Up next",
+  "welcomeSessionReadyTitle": "Your first session is ready",
+  "welcomeSessionReadyBody": "{{name}} · {{count}} exercises for your gear. Skip sign-in to start logging right away."
 }

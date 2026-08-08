@@ -51,5 +51,6 @@
   "calcPremiumLink": "Ver paquete",
   "calcPremiumBtn": "Desbloquea herramientas premium",
   "calcUnitsFoot": "Alternar kg/lbs y cm/in en Perfil. El valor predeterminado global es métrico.",
-  "calcSignInFoot": "Inicie sesión para sincronizar los registros de la calculadora y los objetivos de nutrición en todos los dispositivos."
+  "calcSignInFoot": "Inicie sesión para sincronizar los registros de la calculadora y los objetivos de nutrición en todos los dispositivos.",
+  "calcPlateExact": "Achieved · exact"
 }

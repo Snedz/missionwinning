@@ -51,5 +51,6 @@
   "calcPremiumLink": "Xem gói",
   "calcPremiumBtn": "Mở khóa các công cụ cao cấp",
   "calcUnitsFoot": "Chuyển đổi kg/lbs và cm/in trong Hồ sơ. Mặc định toàn cầu là số liệu.",
-  "calcSignInFoot": "Đăng nhập để đồng bộ hóa nhật ký máy tính và mục tiêu dinh dưỡng trên các thiết bị."
+  "calcSignInFoot": "Đăng nhập để đồng bộ hóa nhật ký máy tính và mục tiêu dinh dưỡng trên các thiết bị.",
+  "calcPlateExact": "Achieved · exact"
 }

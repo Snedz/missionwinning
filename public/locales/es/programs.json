@@ -1,4 +1,12 @@
 {
+  "programsEyebrow": "Programs",
+  "programsCatalogIntro": "Specialist education outlines below. Free core tools live in Learn and the public guide.",
+  "programsCurriculumOutline": "Curriculum outline",
+  "programsModuleLabel": "Module {{n}}",
+  "programsFreeNote": "Free education path",
+  "programsNoMatchTitle": "No programs match those filters",
+  "programsNoMatchBody": "Nothing in the catalog fits that combination of goal and equipment yet. Clear the filters to see all programs.",
+  "programsClearFilters": "Clear filters",
   "programsFilterGoal": "Filtrar por objetivo:",
   "programsFilterEquip": "Equipo:",
   "programsGoalAll": "Todos",
@@ -65,5 +73,6 @@
   "progCondBullet2": "Protocolos de acondicionamiento que complementan (no destruyen) la fuerza.",
   "progCondBullet3": "Bloques de gran volumen inspirados en HWPO + gestión de recuperación",
   "progCondBullet4": "Protocolos de prueba y seguimiento de acondicionamiento basado en registros",
-  "progCondDisclaimer": "Contenido educativo para profesionales del entrenamiento y deportistas dedicados."
+  "progCondDisclaimer": "Contenido educativo para profesionales del entrenamiento y deportistas dedicados.",
+  "programsShareFeedback": "Share feedback"
 }

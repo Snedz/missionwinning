@@ -51,5 +51,6 @@
   "calcPremiumLink": "번들 보기",
   "calcPremiumBtn": "프리미엄 도구 잠금 해제",
   "calcUnitsFoot": "프로필에서 kg/lbs 및 cm/in를 전환합니다. 전역 기본값은 미터법입니다.",
-  "calcSignInFoot": "여러 기기에서 계산기 로그와 영양 목표를 동기화하려면 로그인하세요."
+  "calcSignInFoot": "여러 기기에서 계산기 로그와 영양 목표를 동기화하려면 로그인하세요.",
+  "calcPlateExact": "Achieved · exact"
 }

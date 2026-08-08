@@ -59,5 +59,9 @@
   "assessRecModerate2": "สร้างด้วย Bodyweight & Dumbbell Starter ก่อน",
   "assessRecHigh1": "เริ่มต้นด้วยบล็อก Corrective & Mobility",
   "assessRecHigh2": "ปรึกษาแพทย์.",
-  "assessRecHigh3": "ใช้ตัวเลือกที่มีแรงกระแทกต่ำและติดตามอาการ"
+  "assessRecHigh3": "ใช้ตัวเลือกที่มีแรงกระแทกต่ำและติดตามอาการ",
+  "submitAssessment": "Submit Assessment",
+  "riskLow": "Low risk",
+  "riskModerate": "Moderate risk",
+  "riskHigh": "High risk"
 }

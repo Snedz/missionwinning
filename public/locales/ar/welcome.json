@@ -49,5 +49,12 @@
   "welcomeSkipSignIn": "تخطي - انتقل إلى اليوم",
   "welcomeRemindersOptIn": "أرسل لي تذكيرات تدريبية عبر البريد الإلكتروني (الخط في خطر، الخطوة التالية). اختياري — إلغاء الاشتراك في أي وقت.",
   "editJourneyProfile": "تحرير ملف تعريف الرحلة",
-  "saveProfile": "حفظ الملف الشخصي"
+  "saveProfile": "حفظ الملف الشخصي",
+  "welcomeProgressLabel": "Progress, step {{step}} of {{total}}",
+  "welcomeProgressMono": "{{step}} / {{total}}",
+  "welcomePreviewLabel": "Your first session is ready",
+  "welcomePreviewSessionName": "{{name}}",
+  "welcomeSessionReadyEyebrow": "Up next",
+  "welcomeSessionReadyTitle": "Your first session is ready",
+  "welcomeSessionReadyBody": "{{name}} · {{count}} exercises for your gear. Skip sign-in to start logging right away."
 }
