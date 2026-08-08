@@ -339,8 +339,28 @@ export const useWorkoutStore = create<WorkoutState>()(
         }
       },
 
+      /**
+       * The only path any UI logs a set through (`ActiveWorkoutPage.tsx`), so
+       * whatever it decides about RPE is what the Coach sees for every athlete.
+       *
+       * It used to pass `'med'`. That one literal made the whole effort signal
+       * fiction: `SetLogRow`/`SetLogTable` render the Easy/Med/Hard buttons only
+       * when `!set.rpe`, so a stamped set could never offer them — while
+       * `ActiveSessionChrome` told the athlete "Rate Easy / Med / Hard after each
+       * set so Coach can learn." Downstream, `coach/progression.ts`'s `allEasy` /
+       * `anyHardOnTwoPlus` / `allHard` branches and `coach/load.ts`'s `sessionRpe`
+       * were structurally unreachable: the load-up and deload decisions could not
+       * fire, and session RPE was the constant 7 for everyone forever.
+       *
+       * `progression.test.ts` was green throughout, because it passes RPE values
+       * in directly — the choice was proven while nothing proved the *input*.
+       *
+       * So: log the set unrated and let the athlete say. An unrated set still has
+       * a home — `hasMixedOrMed` treats a missing rating as inconclusive and the
+       * plan holds, which is the correct read of "no signal".
+       */
       logSetAndAdvance: (exerciseIndex, setIndex, reps, weight, isPr) => {
-        get().logSet(exerciseIndex, setIndex, reps, weight, 'med', isPr);
+        get().logSet(exerciseIndex, setIndex, reps, weight, undefined, isPr);
         const aw = get().activeWorkout;
         if (!aw) return null;
         return advanceAfterLog(aw.exercises, exerciseIndex, setIndex);

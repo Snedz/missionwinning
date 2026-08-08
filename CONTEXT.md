@@ -16,7 +16,7 @@ One screen of truth for any AI tool or human joining cold. Read this, then [AGEN
 
 ---
 
-## Now (2026-08-07 · web `2026.07-unified.596` · Android `1.24.1`)
+## Now (2026-08-08 · web `2026.07-unified.597` · Android `1.24.1`)
 
 > The ONLY "where we are" block in the repo — [ORCHESTRATION.md](ORCHESTRATION.md) points here.
 >
@@ -263,6 +263,7 @@ One screen of truth for any AI tool or human joining cold. Read this, then [AGEN
 > and `.502` dropped `.487` detail (full text remains in LOG.md / archive)
 > and `.503` dropped `.488` detail (full text remains in LOG.md / archive)
 > and `.505`–`.545` dropped detail (full text remains in LOG.md / archive)
+> and `.597` dropped `.543`–`.544` detail (full text remains in LOG.md / archive)
 > to [CONTEXT-now-2026-07-30.md](docs/archive/CONTEXT-now-2026-07-30.md) after this
 > block reached **79 bullets / 103KB**. A status doc that only grows stops being read.
 
@@ -283,7 +284,7 @@ One screen of truth for any AI tool or human joining cold. Read this, then [AGEN
 > | Migrations | **9 recorded pending** — [LAUNCH_RUNBOOK](docs/LAUNCH_RUNBOOK.md) §3, enforced by `src/lib/migrationLedger.test.ts`. |
 > | gitleaks | **green — and scanning for the first time.** It had never scanned anything: on a `pull_request` event the action lists the PR's commits, the job declared no `permissions:` block, and it 403'd (`pull_requests=read`) before opening a file. Fixed by a `permissions:` block (`.224` carrying `.255`). It scans **only the PR's own commits**, so commit `8ea3527a`'s real Solana treasury address — scrubbed from the working file, still in history — is out of its scope. That finding stands, deliberately not allowlisted; it was never what made this check red. |
 
-- **`.544`–`.543`:** Pricing review (hold prices) + badge medallions.
+- **`.597`:** **The Coach could not learn from effort.** `logSetAndAdvance` — the only path any UI logs through — stamped every set `rpe: 'med'`. Both render sites gate the Easy/Med/Hard buttons on `!set.rpe`, so the controls were unreachable on every set ever logged, while `ActiveSessionChrome` asked athletes to "Rate Easy / Med / Hard so Coach can learn." Downstream, `progression.ts`'s `allEasy`/`anyHardOnTwoPlus`/`allHard` branches could not fire and `load.ts`'s `sessionRpe` was the constant 7 — criterion 3 resting on a value nobody supplied. **2152 tests green over it**, because `progression.test.ts` passes RPE straight in: the decision was proven, the input was not. New `setRating.test.ts` drives the real store into the real planner (easy→`coachWhyLoadUp`, hard→`coachWhyDeload`) and scans for a literal rating over the whole `Rpe` union, not the one spelling. `progression.ts:249`'s unreachable fallback recorded, not fixed — it is a policy change. 4 mutants; tests 2152→2158.
 - **`.596`:** **No workflow ran on a push to `master`** — all trigger on `pull_request`/`workflow_dispatch`/cron and prod ships via a Deploy Hook bypassing Actions, so merges reached production ungated. New `ratchets.yml` runs the no-build gate there. i18n **141→0** (cap 16→0), measured on a clean `origin/master` worktree — nearly 9× the cap, every key rendering English in all 15 languages; six ternary-`defaultValue` keys split into literal per-variant pairs. Coverage **415→390** (floor 407→390), breached since `.544`. `i18nCoverage.test.ts` held `HIGH_WATER=710` against a cap of 16 — a **44× loosening stayed green**; now lockstep, dependency ratchet 13→**9** (js-yaml + nanoid arrived mid-branch and were *fixed* via a lockfile bump, not admitted). `CLAUDE.md` claimed a 16-step gate that runs 18 and omitted **Coverage floors**; `gateDocParity.test.ts` derives it. Tests 2152. **Third rebase, third label collision** (`.545`→`.548`, `.562`→`.595`, `.595`→`.596`) — label and `LOG-rotate-<label>.md` both derive from the contested *incoming* label; naming the archive after the entry it contains is proposed, not taken. **Still open:** Actions assigns no runners (`runner_id: 0`); branch protection; bundle budget — its own PR.
 - **`.595`:** (`2026.07-unified.595`) About/Vision on `PublicPageShell` with editorial bodies (existing copy) + JoinClass branded shell and error path.
 - **`.594`:** (`2026.07-unified.594`) App voice recut — PillarPageHeader onto `.display-section`/`.eyebrow` (~30 screens), weight sweep + ratchet, Track onto `card-section`+`ScoreNumeral`, Learn/Mind/Move idioms, `/experience` retired, design guard walks `.css`.

@@ -366,6 +366,7 @@ When adding a doc:
 | [log/LOG-rotate-562.md](./log/LOG-rotate-562.md) | `.547` (Terms liability cap / Privacy 30-day deletion) — rotated 2026-08-07 for `.562` ratchet repayment |
 | [log/LOG-rotate-595.md](./log/LOG-rotate-595.md) | `.580` (Kaizen coach/track/journey 44px residual) — rotated 2026-08-07 for `.595` ratchet repayment |
 | [log/LOG-rotate-596.md](./log/LOG-rotate-596.md) | `.581` (AdaptiveOverlay misuse + adjust/form sheet cleanup) — rotated 2026-08-07 for `.596` ratchet repayment |
+| [log/LOG-rotate-597.md](./log/LOG-rotate-597.md) | `.582` (Kaizen FormGuide i18n + library overlay + upload 44px) — rotated 2026-08-08 for `.597` RPE unstamp |
 | [SETUP.md](./SETUP.md) | Stale PayPal-first setup — superseded by [docs/PRE_REVENUE_CHECKLIST.md](../PRE_REVENUE_CHECKLIST.md) + [docs/LLC_AND_PAYMENTS.md](../LLC_AND_PAYMENTS.md) |
 
 Canonical live launch path: root **[LAUNCH_RUNBOOK.md](../LAUNCH_RUNBOOK.md)** + [docs/SOCIAL_LAUNCH.md](../SOCIAL_LAUNCH.md) (copy kit).
