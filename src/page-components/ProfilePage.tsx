@@ -28,6 +28,7 @@ import { ProfileAccountCard } from '@/components/profile/ProfileAccountCard';
 import { ProfileRemindersCard } from '@/components/profile/ProfileRemindersCard';
 import { ProfilePreferencesCard } from '@/components/profile/ProfilePreferencesCard';
 import { ProfileRewardsCard } from '@/components/rewards/ProfileRewardsCard';
+import { ProfileAthleteCard } from '@/components/profile/ProfileAthleteCard';
 import { ProfileAssessmentCard } from '@/components/profile/ProfileAssessmentCard';
 import { ProfileBetaJourneyCard } from '@/components/profile/ProfileBetaJourneyCard';
 import { ProfileJourneyCard } from '@/components/profile/ProfileJourneyCard';
@@ -348,6 +349,9 @@ export function ProfilePage() {
       />
 
       <ProfileRewardsCard />
+
+      {/* `.609` — the card sits beside the trophy case it makes wearable. */}
+      <ProfileAthleteCard />
 
       <ProfileAssessmentCard />
 
