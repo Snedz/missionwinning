@@ -4,6 +4,7 @@ import { seedLegacyOnboarding, seedEveningReview } from './helpers/journey';
 import { DIALOG_CONTROL_SELECTOR, expectThumbSized } from './helpers/thumbSweep';
 import { expectOneRedAction } from './helpers/redActions';
 import { TODAY_MAX_TOP_LEVEL_BLOCKS } from '../../src/lib/today/todayBlockBudget';
+import { fixedTimeAt } from './helpers/fixedClock';
 
 /**
  * The first 90 seconds, as a budget rather than an opinion.
@@ -17,24 +18,7 @@ import { TODAY_MAX_TOP_LEVEL_BLOCKS } from '../../src/lib/today/todayBlockBudget
 /** Taps from a cold /welcome to a set on the board. Lower is better; never raise this. */
 const TAP_BUDGET = 6;
 
-/**
- * The pinned clock must land on the day the fixtures were seeded.
- *
- * `.211` — these three cases hardcoded `2026-07-30` while `seedEveningReview`
- * writes its check-in under the **real** current date. They passed all evening
- * and failed the moment the clock rolled past midnight, because the day-review
- * card looked for a day the fixture had not seeded and `composeDayReview`
- * correctly returned null.
- *
- * A test with a date literal in it is a test with an expiry date. Deriving the
- * day from the same clock the fixtures use is what makes "at 19:00" mean the
- * evening *of the seeded day* rather than of one particular Thursday.
- */
-function fixedTimeAt(hour: number): Date {
-  const d = new Date();
-  d.setHours(hour, 30, 0, 0);
-  return d;
-}
+/* The pinned clock and why it is derived, not literal: `helpers/fixedClock`. */
 
 test.describe('First 90 seconds @gate', () => {
   test.beforeEach(async ({ page, context, baseURL }) => {

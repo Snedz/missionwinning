@@ -81,9 +81,28 @@ type RewardsStrings = {
   rewardBadgeComebackDesc: string;
   rewardBadgeCommissioned: string;
   rewardBadgeCommissionedDesc: string;
+  /** `.610` — the Athlete Card. Picks-from-sets identity; no free text, no uploads. */
+  athleteCardTitle: string;
+  athleteCardBody: string;
+  athleteCardFrame: string;
+  athleteCardBackdrop: string;
+  athleteCardBadges: string;
+  athleteCardShare: string;
+  athleteCardSharing: string;
+  athleteCardShareText: string;
+  athleteCardPrivacy: string;
 };
 
 const en: RewardsStrings = {
+  athleteCardTitle: 'Your card',
+  athleteCardBody: '{{rank}} · tier {{tier}}. Training unlocks more of the card.',
+  athleteCardFrame: 'Frame',
+  athleteCardBackdrop: 'Backdrop',
+  athleteCardBadges: 'Badges — pick up to {{slots}}',
+  athleteCardShare: 'Share your card',
+  athleteCardSharing: 'Preparing…',
+  athleteCardShareText: 'On the path.',
+  athleteCardPrivacy: 'Rendered on this device and shared only if you send it. Nothing is uploaded.',
   rewardProfileTitle: 'Badges & rank',
   rewardProfileRank: 'Level {{level}} · {{rank}} · {{xp}} XP',
   rewardProfileChallenges: '{{done}}/{{total}} weekly challenges met',

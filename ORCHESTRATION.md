@@ -123,7 +123,7 @@ flowchart TB
 | 2 | Stripe monthly / 12-mo $59 / lifetime $149 links + `STRIPE_WEBHOOK_SECRET` — **after EIN** (free-first beta now) | [docs/STRIPE_PREMIUM_SETUP.md](docs/STRIPE_PREMIUM_SETUP.md), [docs/FREE_BETA.md](docs/FREE_BETA.md) |
 | 3 | **Dogfood notes** on current build (2–5 min; paste #1 friction to agents) | [docs/LAUNCH_RUNBOOK.md](docs/LAUNCH_RUNBOOK.md) **§3a** |
 | 4 | Recruit ≥10 beta users **(after excellence pass + postal)** | [docs/STRATEGY.md](docs/STRATEGY.md), [docs/BETA_INVITE.md](docs/BETA_INVITE.md) |
-| 5 | Gates: I-Day ≥80%, Basic Training ≥60% | Profile beta panel, [docs/PLAN.md](docs/PLAN.md) F4 |
+| 5 | **Gates (the one home for these numbers): I-Day ≥80%, Basic Training ≥60%.** Basic Training means **first workout completed** ([docs/JOURNEY.md](docs/JOURNEY.md) Phase 1) — Horizon W retired the 5/5 scavenger hunt. `.605`: this gate had carried three different values across three files (≥40% 5/5, ≥60% 5/5, first-workout-only); other docs now point here rather than restate. | Profile beta panel, [docs/JOURNEY.md](docs/JOURNEY.md) Phase 1 |
 | 6 | Mobile hero QA: Welcome → first set → Victory → Coach (with dogfood notes) | Manual + `npm run e2e:critical` + §3a |
 | 7 | `LAUNCH_STRICT=true npm run launch-verify` against prod | Scripts |
 | 8 | Public flip day (after gates) | [docs/archive/SOFT_LAUNCH_DAY.md](docs/archive/SOFT_LAUNCH_DAY.md) + [docs/archive/PUBLIC_FLIP_CHECKLIST.md](docs/archive/PUBLIC_FLIP_CHECKLIST.md) |
@@ -133,7 +133,7 @@ flowchart TB
 
 - Hero-flow / gate / premium 403 regressions
 - Beta invite / founder panel / launch-verify + **growth-smoke** clarity
-- Keep CI green; docs match reality (build label, VISION_STATUS, LAUNCH_READY)
+- Keep CI green; docs match reality (build label, LAUNCH_READY)
 - Public-flip offline/SW checklist maintenance
 - Production-stack scorecard + rate-limit smoke script + backup runbook (no new pillars)
 - Residual wedge polish
@@ -199,7 +199,7 @@ Unlock **only after** week-4 retention holds.
 - Quality: hero Playwright, premium 403 matrix, sync fuzz, ErrorState, a11y quarterly  
 - Perf: Today/Active/Landing budgets; lazy charts/catalog  
 - Trust: original Learn wording (A9); real quotes only; help FAQ from support  
-- Docs: PLAN / VISION_STATUS / LOG / CONTEXT.md `## Now` / build label on every ship  
+- Docs: LOG / CONTEXT.md `## Now` / build label on every ship — the three hard rule 5 *enforces* (`check-build-label`). `.605` removed `VISION_STATUS` from this line and archived it: a per-pillar scorecard is a second home for status, this line asked for it every ship, nothing checked it, and it went **495 ships** without an update while still reading as current. An unenforced item inside an enforced list is how the unenforced one dies. PLAN's phase table moves with the phase, not with every ship.  
 
 ---
 
@@ -293,7 +293,7 @@ Pitch the **Train + Mission Coach wedge** — not “everything app.” Constitu
 ## Related
 
 - Build phases A–I detail: [docs/PLAN.md](docs/PLAN.md)  
-- Vision scorecard: [docs/VISION_STATUS.md](docs/VISION_STATUS.md)  
+- Where we are: [CONTEXT.md](CONTEXT.md) `## Now` — the only status block ([docs/archive/VISION_STATUS-2026-07-23.md](docs/archive/VISION_STATUS-2026-07-23.md) is the retired scorecard)  
 - YC wedge / apply bar: [docs/YC_THESIS.md](docs/YC_THESIS.md)  
 - Crypto rails (not product): [docs/CRYPTO_RAILS_THESIS.md](docs/CRYPTO_RAILS_THESIS.md)  
 - Post-launch metric SQL: [docs/POST_LAUNCH_CADENCE.md](docs/POST_LAUNCH_CADENCE.md)  

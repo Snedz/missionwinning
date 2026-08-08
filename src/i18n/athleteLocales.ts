@@ -34,6 +34,13 @@ const ATHLETE_EN: Record<string, string> = {
   athleteIdentitySince: 'Training here since {{date}}',
   athleteIdentityNoStart: 'Your first logged session starts the record.',
   athleteIdentitySaved: 'Saved on this device.',
+  athleteIdentityRejectEmpty: 'Pick a call sign first.',
+  athleteIdentityRejectLong: 'Too long — 24 characters at most.',
+  athleteIdentityRejectReserved:
+    'That one reads as the app or its staff. Pick something that is yours.',
+  athleteIdentityRejectLink: 'No links or addresses in a call sign.',
+  athleteIdentityRejectUnsafe:
+    'That contains characters that break a shared list. Try letters and numbers.',
 
   // --- The line ---
   careerLineTitle: 'Your record',
@@ -71,6 +78,13 @@ const BY_LANG: Record<string, Record<string, string>> = {
     athleteIdentitySince: 'Entrenando aquí desde {{date}}',
     athleteIdentityNoStart: 'Tu primera sesión registrada abre el registro.',
     athleteIdentitySaved: 'Guardado en este dispositivo.',
+    athleteIdentityRejectEmpty: 'Elige primero un indicativo.',
+    athleteIdentityRejectLong: 'Demasiado largo: 24 caracteres como máximo.',
+    athleteIdentityRejectReserved:
+      'Ese parece la app o su equipo. Elige uno que sea tuyo.',
+    athleteIdentityRejectLink: 'Sin enlaces ni direcciones en un indicativo.',
+    athleteIdentityRejectUnsafe:
+      'Contiene caracteres que rompen una lista compartida. Usa letras y números.',
     careerLineTitle: 'Tu registro',
     careerLineEmpty:
       'Registra una sesión y esto se completa: sesiones, volumen movido, ejercicios, tu mejor semana y días entrenados.',
@@ -96,6 +110,13 @@ const BY_LANG: Record<string, Record<string, string>> = {
     athleteIdentitySince: 'Ici à l’entraînement depuis le {{date}}',
     athleteIdentityNoStart: 'Ta première séance enregistrée ouvre le relevé.',
     athleteIdentitySaved: 'Enregistré sur cet appareil.',
+    athleteIdentityRejectEmpty: 'Choisis d’abord un indicatif.',
+    athleteIdentityRejectLong: 'Trop long — 24 caractères au maximum.',
+    athleteIdentityRejectReserved:
+      'Celui-là passe pour l’app ou son équipe. Choisis-en un qui soit le tien.',
+    athleteIdentityRejectLink: 'Pas de liens ni d’adresses dans un indicatif.',
+    athleteIdentityRejectUnsafe:
+      'Il contient des caractères qui cassent une liste partagée. Utilise lettres et chiffres.',
     careerLineTitle: 'Ton relevé',
     careerLineEmpty:
       'Enregistre une séance et tout se remplit : séances, volume déplacé, exercices, ta meilleure semaine et jours d’entraînement.',
@@ -121,6 +142,13 @@ const BY_LANG: Record<string, Record<string, string>> = {
     athleteIdentitySince: 'A treinar aqui desde {{date}}',
     athleteIdentityNoStart: 'A tua primeira sessão registada abre o registo.',
     athleteIdentitySaved: 'Guardado neste dispositivo.',
+    athleteIdentityRejectEmpty: 'Escolhe primeiro um indicativo.',
+    athleteIdentityRejectLong: 'Demasiado longo — 24 caracteres no máximo.',
+    athleteIdentityRejectReserved:
+      'Esse parece a app ou a equipa. Escolhe um que seja teu.',
+    athleteIdentityRejectLink: 'Sem links nem endereços num indicativo.',
+    athleteIdentityRejectUnsafe:
+      'Contém caracteres que quebram uma lista partilhada. Usa letras e números.',
     careerLineTitle: 'O teu registo',
     careerLineEmpty:
       'Regista uma sessão e isto preenche-se: sessões, volume movido, exercícios, a tua melhor semana e dias treinados.',

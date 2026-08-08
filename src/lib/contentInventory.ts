@@ -17,18 +17,13 @@ import {
 } from '@/data/premiumInventory';
 import { FORM_PACK_SIDE_IDS, FORM_PACK_VIDEO_IDS } from '@/lib/formMedia';
 
-/** Depth plan D1 floors (see .hermes/plans/*super-bundle-depth*). Current = shipped floor. */
-export const CONTENT_FLOORS = {
-  moveFree: 32,
-  movePremium: 48,
-  mindFree: 32,
-  mindPremium: 60,
-  recipesFree: 48,
-  recipesPremium: 110,
-  learnPremiumSections: 16,
-  /** Eyes-on form pack side stills (FORM_PACK_SIDE_IDS). */
-  formPackSide: 18,
-} as const;
+/**
+ * The floors now live in `contentFloors.ts` — a literal with no imports — so a
+ * module that only needs to *state* a count does not have to value-import the
+ * catalogs above to get one. Re-exported here so existing call sites are
+ * unchanged. See that file for why the split exists.
+ */
+export { CONTENT_FLOORS } from '@/lib/contentFloors';
 
 export type ContentInventory = {
   move: { free: number; premium: number };

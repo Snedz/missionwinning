@@ -7,7 +7,7 @@
 import { useTranslation } from 'react-i18next';
 import { Shield } from 'lucide-react';
 import { InfoPageShell, InfoSection } from '@/components/layout/InfoPageShell';
-import { CURRENT_PRIVACY_VERSION } from '@/lib/privacyConsent';
+import { PRIVACY_DISPLAY_DATE } from '@/lib/privacyConsent';
 
 const PRIVACY_SECTIONS = [
   { id: 'overview', key: 'infoPrivacyOverview', bodyKey: 'infoPrivacyOverviewBody' },
@@ -107,7 +107,7 @@ export function PrivacyPage() {
       icon={Shield}
       eyebrow={t('infoLegalEyebrow', { defaultValue: 'Legal' })}
       title={t('infoPrivacyTitle', { defaultValue: 'Privacy Policy' })}
-      lastUpdated={`${t('infoLastUpdatedLabel', { defaultValue: 'Last updated:' })} ${CURRENT_PRIVACY_VERSION}`}
+      lastUpdated={`${t('infoLastUpdatedLabel', { defaultValue: 'Last updated:' })} ${PRIVACY_DISPLAY_DATE}`}
       showLegalFooter
       jumpLinks={jumpLinks}
     >

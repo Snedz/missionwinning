@@ -31,6 +31,7 @@ import { PillarPageShell } from '@/components/layout/PillarPageShell';
 import { AppLegalFooter } from '@/components/layout/AppLegalFooter';
 import { APP_BUILD_LABEL } from '@/lib/buildInfo';
 import { ProfileRewardsCard } from '@/components/rewards/ProfileRewardsCard';
+import { ProfileAthleteCard } from '@/components/profile/ProfileAthleteCard';
 import { AthleteIdentityCard } from '@/components/profile/AthleteIdentityCard';
 import { CareerLineCard } from '@/components/profile/CareerLineCard';
 import { useMissionJourney } from '@/hooks/useMissionJourney';
@@ -77,6 +78,11 @@ export function ProfilePage() {
       <AthleteIdentityCard career={career} />
 
       <CareerLineCard career={career} />
+
+      {/* `.610`'s card, landed on master while this split was in flight. It is the
+          share artifact CLUB_PLAN specced; the shelf beneath is what it makes
+          wearable. Both belong on the record, not in settings. */}
+      <ProfileAthleteCard />
 
       <ProfileRewardsCard />
 

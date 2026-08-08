@@ -85,10 +85,10 @@ Optional US national-fitness side track (`NEXT_PUBLIC_AMERICA_TRACK_ENABLED`). D
 |------|--------|
 | Beta cohort | ≥10 real users |
 | I-Day completion | ≥80% |
-| Basic Training 5/5 | ≥60% |
+| Basic Training (first workout) | see [ORCHESTRATION.md](../ORCHESTRATION.md) Horizon 0 task 5 |
 | Commissioned in 14 days | ≥25% stretch |
 
-**Do not set `PRIVATE_MODE=false` until Basic Training ≥60% in beta.**
+**Do not set `PRIVATE_MODE=false` until the Basic Training gate in [ORCHESTRATION.md](../ORCHESTRATION.md) Horizon 0 task 5 is met.** That row is the single home for the number — `.606` found this gate stated three different ways in three files.
 
 ### Security & infra gates
 

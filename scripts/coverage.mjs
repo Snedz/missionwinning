@@ -87,7 +87,11 @@ const FLOORS = {
    * quality PR only ships SVG + scripts (outside this universe).
    *
    *
-   * Raised 391 → 394 for the `.606` Account/You split: `ProfilePage` (rebuilt as
+   * 394 → 395 on the merge with `.613`, which landed its own identity layer
+   * (`ProfileAthleteCard`) into `/profile` while this split was in flight; that
+   * card now sits on the Athlete Page and is Playwright-covered there.
+   *
+   * Raised 391 → 394 for the `.614` Account/You split: `ProfilePage` (rebuilt as
    * the Athlete Page), `AccountPage` (the settings it left behind),
    * `AthleteIdentityCard` and `CareerLineCard`. All four are Playwright-covered
    * — `/profile` and `/account` are both in `a11y.spec.ts` GATED_ROUTES and in
@@ -127,8 +131,18 @@ const FLOORS = {
    * test, which is why this is +1 and not +2. The alternative was leaving the
    * logic inside the React boundary where no unit test can reach it — a worse
    * trade for the same count.
+   *
+   * **391 → 392 for `CoachLoadBand` (`.608`).** Same shape as `.598`, same escape
+   * hatch, stated for the same reason. The card is **wiring only**: the one
+   * decision that matters — refusing to show a load ratio inside the 14-day
+   * evidence window, and saying how many days are left instead — lives in
+   * `src/lib/coach/loadBandView.ts`, which shipped in this change *with* a test
+   * carrying three cases and three killed mutants (speak anyway; never speak;
+   * `daysRemaining` collapsing to a blank 0). That is why this is +1 and not +2.
+   * The component itself is Playwright-covered by the `/coach` a11y and hero
+   * cases.
    */
-  untestedFiles: 394,
+  untestedFiles: 395,
   /**
    * Line % across the files that *are* loaded. Must not fall.
    *

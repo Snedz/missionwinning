@@ -1,6 +1,7 @@
 import { gatherWeeklyPillarStats } from '@/lib/pillarScoreInputs';
 import { getTrainingStreak } from '@/lib/challenges';
 import { computeWinScore } from '@/lib/score';
+import { countSessionsThisWeek, sumVolumeThisWeek } from '@/lib/workout/historyVolume';
 import { tierToScore } from '@/lib/presidentialFitnessTest';
 import type { CompletedWorkoutLog } from '@/types';
 import type { LeaderboardBoardId, LeaderboardSnapshot } from './types';
@@ -9,6 +10,11 @@ import { loadSquadCode, SQUAD_CODE_KEY } from './boards';
 import { resolveGeoFromLocale } from './regions';
 import { readRaw, writeRaw } from '@/lib/storage/safeStorage';
 import { I18N_LANG_KEY, STORAGE_KEYS } from '@/lib/storage/keys';
+import {
+  DISPLAY_NAME_MAX,
+  checkDisplayName,
+  type DisplayNameCheck,
+} from '@/lib/identity/displayName';
 
 const OPERATOR_NAME_KEY = STORAGE_KEYS.operatorName;
 
@@ -16,8 +22,22 @@ export function loadOperatorName(): string {
   return readRaw(OPERATOR_NAME_KEY)?.trim() || 'Mission Operator';
 }
 
-export function saveOperatorName(name: string): void {
-  writeRaw(OPERATOR_NAME_KEY, name.trim().slice(0, 24));
+/**
+ * `.611` — a name now has to pass a check before it is stored.
+ *
+ * This used to be `trim().slice(0, 24)` and nothing else, on the one string this
+ * product publishes to other people. Returns the rejection so the caller can say
+ * *why* — silently keeping the old name is the kind of "nothing happened" that reads
+ * as a broken input.
+ *
+ * Rejection leaves the previous name in place rather than blanking it: an athlete
+ * who typos should not lose the name they had.
+ */
+export function saveOperatorName(name: string): DisplayNameCheck {
+  const verdict = checkDisplayName(name);
+  if (!verdict.ok) return verdict;
+  writeRaw(OPERATOR_NAME_KEY, name.trim().slice(0, DISPLAY_NAME_MAX));
+  return verdict;
 }
 
 export { loadSquadCode, saveSquadCode } from './boards';
@@ -42,19 +62,33 @@ export function computeLocalLeaderboardSnapshot(
   const geo = resolveGeoFromLocale(locale);
   const weekly = gatherWeeklyPillarStats();
   const streak = getTrainingStreak(workoutHistory);
-  const totalSessions = workoutHistory.length;
-  const totalVolume = workoutHistory.reduce((s, w) => s + w.totalVolume, 0);
   const fuelDays = highProteinDaysThisWeek();
   const nightSessions = countSessionsInHourRange(workoutHistory, 22, 5);
   const dawnSessions = countSessionsInHourRange(workoutHistory, 5, 8);
   const pft = loadLocalPftScore();
 
+  /*
+   * `.607` — the leaderboard shares `computeWinScore`, so it shared the defect:
+   * lifetime sessions and volume made a third of every ranked score permanent, and
+   * a board that never decays ranks tenure rather than this week.
+   *
+   * The two lifetime locals that used to be computed here are gone rather than
+   * renamed: nothing else read them. The snapshot publishes `weekly.weekVolume`
+   * (challenge-derived) for the weekly-volume board and never reported a career
+   * total — so the weekly figure was already sitting in this function while the
+   * score was handed the lifetime one.
+   *
+   * The score deliberately uses `sumVolumeThisWeek(workoutHistory)` and not
+   * `weekly.weekVolume`, so one athlete gets one Mission Score whether it is
+   * computed here or on Today. Those two weekly volumes *should* agree — history is
+   * the source of truth, the challenge counter is a running tally — and reconciling
+   * them to one reader is its own change, noted rather than smuggled in here.
+   */
   const winScore = computeWinScore({
     streak,
     highProteinDays: fuelDays,
-    totalSessions,
-    totalVolume,
-    savedCount,
+    sessionsThisWeek: countSessionsThisWeek(workoutHistory),
+    volumeThisWeek: sumVolumeThisWeek(workoutHistory),
     moveFlows: weekly.moveFlows,
     mindSessions: weekly.mindSessions,
     trackActivities: weekly.trackActivities,

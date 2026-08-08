@@ -23,7 +23,6 @@ export interface WinScoreBreakdown {
   protein: number;
   sessions: number;
   volume: number;
-  saved: number;
   /** Cross-pillar contributions (Phase C) */
   move: number;
   mind: number;
@@ -61,15 +60,44 @@ export function getRecommendedFocus(readiness: Record<MuscleGroup, ReadinessInfo
 }
 
 /**
- * Compute composite Win / Mission Score (0-100) with cross-pillar weighting.
+ * Compute the Mission Score (0-100) with cross-pillar weighting.
  * Train ~40%, Fuel ~15%, Move/Mind/Track/Learn ~45% combined (holistic super app).
+ *
+ * **Every input is this week's. That is the whole contract.** (`.607`)
+ *
+ * It was not. `totalSessions` and `totalVolume` were **lifetime** sums at both call
+ * sites, `savedCount` counted templates saved ever, and `learnLessons` came from
+ * three undated localStorage id sets — so **≈32 of 100 points never decayed**. A
+ * lapsed athlete who trained twenty times months ago and did nothing this week
+ * scored about what someone mid-way through a hard training week scored, and the
+ * number rose on the first session of their life and then simply stayed there.
+ * `docs/CLUB_PLAN.md` calls this "a weekly grade that resets" and reserves the
+ * odometer role for points; a third of the grade was an odometer.
+ *
+ * That made it the one flattering number in a codebase built on the opposite
+ * instinct — em-dashes rather than invented zeros, `null` under 14 days in
+ * `coach/load.ts`, `adapt.ts` earning its banner by diffing.
+ *
+ * **The parameter names changed on purpose.** `totalSessions` → `sessionsThisWeek`,
+ * `totalVolume` → `volumeThisWeek`. A rename is the guard: a call site that still
+ * has a lifetime figure in hand now fails typecheck instead of quietly passing it.
+ *
+ * **Weighting is equipment-neutral by constitution.** `docs/CLUB_PLAN.md`: *"a
+ * bodyweight athlete in a Lagos park earns exactly what a barbell athlete earns for
+ * the same consistency. Effort is counted in sessions, not kilograms."* So days and
+ * sessions carry Train (28 of 40) and tonnage is a small bonus (4) — raising the
+ * volume weight to make training "outrank" mobility would have priced the ICP out
+ * of its own score. Train still outranks the tap-driven pillars: three training days
+ * beat a week of four mobility flows, which is the property that was wanted.
  */
 export function computeWinScore(params: {
+  /** Current training streak in days — decays on its own, so it may exceed 7. */
   streak: number;
   highProteinDays: number;
-  totalSessions: number;
-  totalVolume: number;
-  savedCount: number;
+  /** Sessions logged **this week**. Never a lifetime count — see the header. */
+  sessionsThisWeek: number;
+  /** Volume logged **this week**. Never a lifetime sum — see the header. */
+  volumeThisWeek: number;
   /** Weekly pillar activity (from gatherWeeklyPillarStats) */
   moveFlows?: number;
   mindSessions?: number;
@@ -82,9 +110,8 @@ export function computeWinScore(params: {
   const {
     streak,
     highProteinDays,
-    totalSessions,
-    totalVolume,
-    savedCount,
+    sessionsThisWeek,
+    volumeThisWeek,
     moveFlows = 0,
     mindSessions = 0,
     trackActivities = 0,
@@ -93,13 +120,12 @@ export function computeWinScore(params: {
     fuelCoachActive = 0,
   } = params;
 
-  // Train pillar (~40 pts)
-  const streakPart = Math.min(streak, 7) / 7 * 10;
-  const trainDaysPart = Math.min(trainDaysThisWeek, 7) / 7 * 8;
-  const sessionsPart = Math.min(totalSessions, 20) / 20 * 10;
-  const volumePart = Math.min(totalVolume, 8000) / 8000 * 8;
-  const savedPart = savedCount >= 3 ? 4 : savedCount >= 1 ? 2 : 0;
-  const trainTotal = Math.round(streakPart + trainDaysPart + sessionsPart + volumePart + savedPart);
+  // Train pillar (~40 pts) — days and sessions lead; tonnage is a bonus, not the grade.
+  const trainDaysPart = Math.min(trainDaysThisWeek, 7) / 7 * 16;
+  const sessionsPart = Math.min(sessionsThisWeek, 5) / 5 * 12;
+  const streakPart = Math.min(streak, 7) / 7 * 8;
+  const volumePart = Math.min(volumeThisWeek, 8000) / 8000 * 4;
+  const trainTotal = Math.round(streakPart + trainDaysPart + sessionsPart + volumePart);
 
   // Fuel (~15 pts)
   const proteinPart = Math.min(highProteinDays, 7) / 7 * 15;
@@ -133,7 +159,6 @@ export function computeWinScore(params: {
     protein: fuelTotal,
     sessions: Math.round(sessionsPart),
     volume: Math.round(volumePart),
-    saved: savedPart,
     move: moveTotal,
     mind: mindTotal,
     track: trackTotal,

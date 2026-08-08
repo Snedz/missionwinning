@@ -6,6 +6,27 @@
 
 ## 1. Assumptions audit
 
+### Re-run 2026-08-08 (`.606`) — first since this doc was written
+
+§5 says re-check the load-bearing assumptions against their falsifying evidence before any big bet. That had not happened in 37 days. Status only; the original text below is unchanged, because an assumption audit that edits its own history stops being evidence.
+
+| | Assumption | Status |
+|---|---|---|
+| **A1** | PWA adoption without an app store | **Untested and untestable today.** `PRIVATE_MODE` disables the service worker, so the app is not installable and cannot be offline-validated. Zero of the 1,000 landing visitors this falsifier needs have arrived. |
+| **A2** | Conversion on premium depth that is "mostly placeholders" | **Premise is now out of date, in our favour.** Shipped since: 110 premium recipes, 48 premium mobility flows, 60 premium Mind sessions, 16 premium Learn sections (`src/lib/contentFloors.ts`). It is no longer "recipes and a promise." The *conversion* half is still unfalsified — checkout has never been open. |
+| **A3** | Solo founder + agents can hold a six-pillar quality bar | **Mixed, and the honest read is "not evenly."** Train, Coach and Fuel are genuinely deep. Move and Mind are two catalogs behind one shared timer; Track is a form; Learn is ~5,300 words. Their i18n is 6–9 keys each, so they render English in every locale. The bar holds where the wedge is and sags where the story is. |
+| **A4** | Week-4 retention | **Cannot be evaluated — the metric is uncomputable.** `mw_week4_retention()` is unapplied, so even ten users would produce no readable number. This is worse than "unknown": the falsifier has no instrument. |
+| **A5** | The founder gets distribution unblocked | **FIRED, and still firing.** The falsifier was "14 days after this doc lands, still no deployed URL or no 10 beta users." It is day 37 with 0 of 10 invites issued; the cohort target of 2026-08-02 passed. Per the assumption's own instruction, *the constraint is founder behaviour, not the product* — and the prescribed response, "consider a hard rule of no new features until N users," has not been adopted. |
+
+**New assumption this plan had been smuggling in, now named:**
+
+**A15. A fifteen-language product can exclude its own language markets from payment and still be a global thesis.** `src/lib/legal/supportedRegions.ts` blocks checkout for the EEA, UK, Switzerland, all 57 OIC states and Canada — which removes the paying markets for `de`, `it`, `fr`, `ar` and `id` (Indonesia is OIC), and much of `es`/`pt`. The product is argued for Lagos, Mumbai and Jakarta; the till is open in roughly none of those places. No document in the repo argues this tradeoff — it was a compliance decision that never met the market thesis.
+*Falsifying evidence*: first paid cohort is >80% US, or a supported-region user cannot be found in any community the ICP research names. If falsified: either narrow the language build to where we can transact, or restate the thesis as "free everywhere, paid where licensed" and say so on the pricing page.
+
+**Also worth recording against the pre-mortem.** Months 1–3 predicted *"two more Claude sessions added features to /learn 'while we waited.'"* Builds `.597`–`.604` were craft and correctness work — real defects, honestly fixed, shipped while distribution stayed blocked. The prediction was directionally right about where effort went.
+
+---
+
 ### LOAD-BEARING — if wrong, the plan fails
 
 **A1. People will adopt a fitness tracker distributed as a PWA, without an app store.**

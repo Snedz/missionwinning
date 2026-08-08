@@ -16,6 +16,7 @@ import { WeekStrip } from '@/components/coach/WeekStrip';
 import { CoachPlanSessionGrid } from '@/components/coach/CoachPlanSessionGrid';
 import { AdjustSessionSheet } from '@/components/coach/AdjustSessionSheet';
 import { CoachAdaptBanner } from '@/components/coach/CoachAdaptBanner';
+import { CoachLoadBand } from '@/components/coach/CoachLoadBand';
 import { CoachManageSheet } from '@/components/coach/CoachManageSheet';
 import { UnlockButton } from '@/components/UnlockButton';
 import { EmptyState } from '@/components/ui/EmptyState';
@@ -201,6 +202,9 @@ export function CoachPage({ askExerciseId }: CoachPageProps = {}) {
           />
 
           <CoachVoiceCard plan={plan} bodyScores={ctx.bodyScores} premium={premium} />
+
+          {/* `.608` — the load model was computed everywhere and shown nowhere. */}
+          <CoachLoadBand />
 
           {/* Form deep-link (?ask=): show free cues / chat near top */}
           {askExerciseId ? (
