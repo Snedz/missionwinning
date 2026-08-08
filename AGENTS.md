@@ -82,6 +82,8 @@ npm run check-env    # verify .env.local
 - Treat `.claude/skills/` as app architecture — design/marketing skills only (see `.claude/skills/README.md`).
 - Use `src/locales/` — deprecated; runtime i18n is `src/i18n/`.
 - Open empty ghost dirs under `app/about/`, etc. — live routes are in `app/(app)/` (see `app/INDEX.md`).
+- Commit `.hermes/`, `ops/`, or accelerator paste packs — LOCAL/INTERNAL ([docs/CLASSIFICATION.md](docs/CLASSIFICATION.md)).
+- Use session plans (`.hermes`, `~/.grok/sessions`, `~/.cursor/plans`) as product truth — use ORCHESTRATION + [docs/contracts/](docs/contracts/INDEX.md) + LOG.
 
 ---
 

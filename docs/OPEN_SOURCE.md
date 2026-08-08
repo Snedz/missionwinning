@@ -15,7 +15,7 @@ Mission Winning is open source so anyone can inspect the free core, improve the 
 | Web PWA (Next.js) | App routes, UI, coach/fuel logic under AGPL-3.0 |
 | Shared core | [`packages/mw-core`](../packages/mw-core) — pure TS used by web + Android |
 | Android Compose | [`apps/android`](../apps/android) — same license |
-| Docs | Product, architecture, help, and most strategy docs in-repo |
+| Docs | Product, architecture, help, contracts, design — **not** war-room strategy (stubs only; full text in private mission-ops) |
 
 AGPL §13: operators who modify and run a network service must offer corresponding source. The live app footer links to this GitHub repo (**Source**).
 
@@ -38,15 +38,24 @@ Also: [ENV.md](ENV.md), [PROTECTION.md](PROTECTION.md).
 
 ## Public GitHub flip (founder-only)
 
-Agents never change repository visibility. Full checklist: [SECRETS.md § Pre-public flip](SECRETS.md).
+Agents never change repository visibility. Full checklist: [SECRETS.md § Pre-public flip](SECRETS.md) · [DUAL_REPO.md](DUAL_REPO.md) · [CLASSIFICATION.md](CLASSIFICATION.md).
 
-1. `npm run secrets:scan` clean; optional history `gitleaks detect --source . -v`.
-2. Accelerator **paste packs** stay local (`docs/applications/*` gitignored — see [applications/README.md](applications/README.md)). Do not re-commit them.
-3. Enable GitHub **Secret scanning** + **Push protection**.
-4. GitHub → Settings → **Change repository visibility → Public**.
-5. Optional: add topics (`agpl-3.0`, `pwa`, `fitness`, `nextjs`) and verify the README license badge.
+1. Confirm private **mission-ops** is current (`npm run ops:sync` skips stubs; push full `strategy/` from local ops).
+2. War-room + GTM memos are **stubs** in product tip (`RELOCATED_TO_MISSION_OPS`) — enforced by `classificationGuard.test.ts`.
+3. Confirm `.hermes/` and `ops/` are gitignored and untracked.
+4. `npm run secrets:scan` clean (**0** findings); optional history `gitleaks detect --source . -v`.
+5. Read history residual in [SECRETS.md](SECRETS.md) § History residual (treasury pubkey).
+6. Accelerator **paste packs** stay local (`docs/applications/*` gitignored — see [applications/README.md](applications/README.md)).
+7. Enable GitHub **Secret scanning** + **Push protection** (free once Public).
+8. Prefer GitHub **Environments** with required reviewers for `deploy-production` / `sync-vercel-env` / `apply-migration` ([VERCEL_DEPLOY_CHECKLIST.md](VERCEL_DEPLOY_CHECKLIST.md)).
+9. GitHub → Settings → **Change repository visibility → Public** (founder only).
+10. Optional: topics (`agpl-3.0`, `pwa`, `fitness`, `nextjs`) and LICENSE badge.
+
+**Cleanup shipped 2026-08-08** — scrub + dual-repo structure. **Visibility flip remains founder-owned.**
 
 `PRIVATE_MODE` (site gate) is unrelated to GitHub visibility — do not flip it as part of going open source.
+
+**Dual-repo:** product code is this tree; INTERNAL strategy lives in private `mission-ops` (local staging: `ops/`).
 
 ---
 

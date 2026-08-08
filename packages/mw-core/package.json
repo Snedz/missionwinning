@@ -8,7 +8,10 @@
   "exports": {
     ".": "./src/index.ts",
     "./coach": "./src/coach/index.ts",
-    "./workout": "./src/workout/index.ts"
+    "./workout": "./src/workout/index.ts",
+    "./identity": "./src/identity/index.ts",
+    "./economy": "./src/economy/index.ts",
+    "./module": "./src/module/index.ts"
   },
   "scripts": {
     "typecheck": "tsc --noEmit"

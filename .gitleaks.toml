@@ -47,4 +47,7 @@ regexes = [
   '''magazinePreface_[0-9]''',
   '''rewardBadge[A-Za-z0-9]+Desc''',
   '''rewardBadge[A-Za-z0-9]+Name''',
+  # i18n / nav key names, not API secrets (generic-api-key FP)
+  '''footerLegalA11y''',
+  '''labelKey:\s*'[a-zA-Z0-9_]+'''',
 ]

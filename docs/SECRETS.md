@@ -86,6 +86,16 @@ If history still contains `.env.local.save` or similar, **rotate** any credentia
 
 Day-to-day `npm run secrets:scan` uses `--no-git` (working tree only) and allowlists gitignored `.env.local` / build dirs — it is not a substitute for the history scan above.
 
+### History residual (2026-08-08 audit)
+
+| Item | In tip? | In history? | Action |
+|------|---------|-------------|--------|
+| Gitleaks full-history scan (756 commits) | — | 2× FP `footerLegalA11y` only (allowlisted) | None |
+| Solana treasury **pubkey** `57CE…bdPjM` | Scrubbed from live docs | **Yes** (old LOG) | Public receive address risk only; confirm private key never committed; optional rotate treasury if key exposure uncertain |
+| Live Stripe / Supabase / LLM keys | No | Not found by gitleaks | Still rotate if you ever pasted into chat or a commit |
+| `docs/applications/*` paste packs | gitignored | Keep untracked | — |
+
+Do **not** rewrite `master` history unless a **private key** or live production secret is proven in a commit.
 ---
 
 ## Rotate-on-leak checklist
@@ -102,15 +112,19 @@ Day-to-day `npm run secrets:scan` uses `--no-git` (working tree only) and allowl
 
 Agents **never** change repository visibility or flip `PRIVATE_MODE`.
 
-**Also on the launch path:** [LAUNCH_RUNBOOK.md](LAUNCH_RUNBOOK.md) §2c (security) · §2d (legal/counsel).
+**Also on the launch path:** [LAUNCH_RUNBOOK.md](LAUNCH_RUNBOOK.md) §2c (security) · §2d (legal/counsel).  
+**Classification / dual-repo:** [CLASSIFICATION.md](CLASSIFICATION.md) · [DUAL_REPO.md](DUAL_REPO.md).
 
-1. [ ] `npm run secrets:scan` clean on current tree  
-2. [ ] Optional: `gitleaks detect --source . -v` on history  
-3. [ ] Confirm scrub: no personal gmail, real Vercel org/project IDs, Supabase ref, treasury private-key paths in docs  
-4. [ ] Confirm `docs/applications/` paste packs are gitignored (only README tracked) — not world-readable on Public  
-5. [ ] GitHub → Settings → **Code security** → enable **Secret scanning** + **Push protection** (free on public repos)  
-6. [ ] Optional: enable Code scanning (CodeQL workflow is schedule/dispatch only)  
-7. [ ] GitHub → Settings → **Change repository visibility → Public**  
-8. [ ] Do **not** flip `PRIVATE_MODE` as part of going open source  
+1. [ ] `npm run ops:sync` and push `ops/` to private `mission-ops`  
+2. [ ] INTERNAL war-room docs relocated or accepted risk (STRATEGY, REDTEAM, capital, outreach)  
+3. [ ] `.hermes/` and `ops/` untracked (guard: `classificationGuard.test.ts`)  
+4. [ ] `npm run secrets:scan` clean on current tree  
+5. [ ] Optional: `gitleaks detect --source . -v` on history  
+6. [ ] Confirm scrub: no personal gmail, real Vercel org/project IDs, Supabase ref, treasury private-key paths in docs  
+7. [ ] Confirm `docs/applications/` paste packs are gitignored (only README tracked) — not world-readable on Public  
+8. [ ] GitHub → Settings → **Code security** → enable **Secret scanning** + **Push protection** (free on public repos)  
+9. [ ] Optional: enable Code scanning (CodeQL workflow is schedule/dispatch only)  
+10. [ ] GitHub → Settings → **Change repository visibility → Public**  
+11. [ ] Do **not** flip `PRIVATE_MODE` as part of going open source  
 
 See [OPEN_SOURCE.md](OPEN_SOURCE.md).

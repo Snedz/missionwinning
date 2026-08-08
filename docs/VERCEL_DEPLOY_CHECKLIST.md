@@ -49,6 +49,22 @@ The webhook only fires on *new* pushes, so a commit merged before setup needs on
 2. `npx vercel deploy --prod --yes` from a clean checkout, or
 3. `vercel promote <preview-url> --yes`.
 
+### 1.3 Public open source — protect dispatch workflows
+
+When the GitHub repo is **Public**, anyone with write access (or a leaked PAT) can run
+`workflow_dispatch` jobs that inject production secrets (`deploy-production`,
+`sync-vercel-env`, `apply-migration`).
+
+**Founder setup (once):**
+
+1. Prefer the **Deploy Hook** (§1.1) for day-to-day prod — no Actions secrets on the hot path.
+2. GitHub → Settings → **Environments** → create `production`.
+3. Require **reviewers** (yourself) on that environment.
+4. Point the dispatch workflows that hold deploy/DB secrets at `environment: production`
+   (or keep them manual-only and rarely used).
+
+See [OPEN_SOURCE.md](OPEN_SOURCE.md) pre-public checklist.
+
 ### 1.3 Verify what is actually live
 
 `APP_BUILD_LABEL` (`src/lib/buildInfo.ts`) is rendered on Profile, so the deployed label is

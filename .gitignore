@@ -83,3 +83,9 @@ apps/android/keystore.properties
 apps/android/*.jks
 apps/android/*.keystore
 apps/android/upload-keystore.jks
+
+# LOCAL session plans (never product git)
+.hermes/
+
+# LOCAL staging for private mission-ops (never product git)
+ops/
