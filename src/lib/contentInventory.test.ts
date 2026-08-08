@@ -32,6 +32,46 @@ describe('contentInventory', () => {
     assert.ok(inv.formPack.side >= CONTENT_FLOORS.formPackSide, `form side ${inv.formPack.side}`);
   });
 
+  /**
+   * `.606` — the guidebook floor is enforced here rather than through
+   * `getContentInventory()`, because `chapters.ts` is ~29 KB of prose and the
+   * getter is imported by client code. A test-only import keeps the floor honest
+   * at zero bundle cost. See the note on `CONTENT_FLOORS.guidebookFreeChapters`.
+   *
+   * The same number is what the sitemap emits — `app/sitemap.ts` maps this exact
+   * array to `/guide/<id>` — so a chapter added without moving the floor would
+   * silently make the bundle page understate the guidebook, which is the drift
+   * this commit was fixing everywhere else.
+   */
+  it('the free guidebook chapter floor matches the shipped array', async () => {
+    const { BEYOND_THE_BASICS_CHAPTERS } = await import('@/data/guidebook/chapters');
+    assert.ok(
+      BEYOND_THE_BASICS_CHAPTERS.length >= CONTENT_FLOORS.guidebookFreeChapters,
+      `guidebook has ${BEYOND_THE_BASICS_CHAPTERS.length} chapters, floor claims ` +
+        `${CONTENT_FLOORS.guidebookFreeChapters}`
+    );
+  });
+
+  /**
+   * The exercise-page floor, awaited the way the sitemap awaits it.
+   *
+   * Reading `EXERCISES` without `ensureFullExerciseCatalog()` yields 126 and would
+   * make this guard assert against the base catalog while the claim is about the
+   * full one — the exact mistake `app/sitemap.ts:25-31` documents having shipped.
+   * Dedupe is asserted separately from length, because 254 raw entries collapsing
+   * to 228 is the part a future catalog merge is most likely to get wrong.
+   */
+  it('the exercise-page floor matches the deduped catalog the sitemap emits', async () => {
+    const { EXERCISES, ensureFullExerciseCatalog } = await import('@/data/exercises');
+    await ensureFullExerciseCatalog();
+    const unique = new Set(EXERCISES.map((e) => e.id));
+    assert.equal(unique.size, EXERCISES.length, 'catalog contains duplicate ids after the splice');
+    assert.ok(
+      unique.size >= CONTENT_FLOORS.exercisePages,
+      `catalog has ${unique.size} unique exercises, floor claims ${CONTENT_FLOORS.exercisePages}`
+    );
+  });
+
   it('free arrays match inventory free counts', () => {
     const inv = getContentInventory();
     assert.equal(inv.move.free, MOBILITY_FLOWS.length);

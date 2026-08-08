@@ -8,11 +8,12 @@
 
 0. [CONTEXT.md](CONTEXT.md) — **boot file**: current status (`## Now`), trap terms, hard rules
 1. [AGENTS.md](AGENTS.md) — conventions, glossary, commands
-2. [vision.md](vision.md) — product constitution
-3. [ORCHESTRATION.md](ORCHESTRATION.md) — **what to do next** (horizons 0–3, gates, kill criteria)
-4. [docs/PLAN.md](docs/PLAN.md) — build phases A–I detail
-5. [LOG.md](LOG.md) — chronological dev log (newest first; older entries in `docs/archive/log/`)
-6. Everything below — only when your task requires it
+2. [docs/THESIS.md](docs/THESIS.md) — **what the product is, on one page**: three layers, the two-beat wedge, ICP, what is actually shipped, the honest moat
+3. [vision.md](vision.md) — product constitution (the north star, decade horizon — *not* the pitch)
+4. [ORCHESTRATION.md](ORCHESTRATION.md) — **what to do next** (horizons 0–3, gates, kill criteria)
+5. [docs/PLAN.md](docs/PLAN.md) — build phases A–I detail
+6. [LOG.md](LOG.md) — chronological dev log (newest first; older entries in `docs/archive/log/`)
+7. Everything below — only when your task requires it
 
 ---
 
@@ -61,7 +62,7 @@
 | Stripe + premium | [docs/STRIPE_PREMIUM_SETUP.md](docs/STRIPE_PREMIUM_SETUP.md) | — |
 | Phantom USDC lifetime | [docs/PHANTOM_USDC_CHECKOUT.md](docs/PHANTOM_USDC_CHECKOUT.md) | — |
 | Crypto rails (strategy) | [docs/CRYPTO_RAILS_THESIS.md](docs/CRYPTO_RAILS_THESIS.md) | — |
-| Vision scorecard | [docs/VISION_STATUS.md](docs/VISION_STATUS.md) | — |
+| Where we are (status) | [CONTEXT.md](CONTEXT.md) `## Now` | Reading the retired vision scorecard as current — it is archived, 495 ships stale |
 | Beta testers | [docs/BETA_INVITE.md](docs/BETA_INVITE.md) | — |
 | Security | [docs/PROTECTION.md](docs/PROTECTION.md), [docs/OWASP_AUDIT.md](docs/OWASP_AUDIT.md), [docs/COMPLIANCE.md](docs/COMPLIANCE.md), [docs/AIKIDO.md](docs/AIKIDO.md) | Certification claims / Vanta substitutes as “done” |
 | Vercel deploy | [docs/VERCEL_DEPLOY_CHECKLIST.md](docs/VERCEL_DEPLOY_CHECKLIST.md) | — |
@@ -153,4 +154,4 @@ Root keeps only the spine: README · CONTEXT · AGENTS · INDEX · vision · ORC
 | [docs/archive/SETUP.md](docs/archive/SETUP.md) | One-time setup — **archived, stale PayPal-first** |
 | [docs/PROTECTION.md](docs/PROTECTION.md) | Security checklist |
 | [docs/COMPLIANCE.md](docs/COMPLIANCE.md) | SOC2/ISO/HIPAA map-only control monitor (not a certification) |
-| [docs/VISION_STATUS.md](docs/VISION_STATUS.md) | Vision scorecard |
+| ~~docs/VISION_STATUS.md~~ | **Archived `.605`** → [docs/archive/VISION_STATUS-2026-07-23.md](docs/archive/VISION_STATUS-2026-07-23.md). Status lives only in [CONTEXT.md](CONTEXT.md) `## Now` |

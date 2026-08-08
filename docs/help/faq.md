@@ -16,8 +16,8 @@ Any modern browser — iPhone Safari, Android Chrome, desktop. Install to home s
 
 ## Today and scoring
 
-**What is Win Score?**  
-A 0–100 daily score from training, fuel, move, mind, and track activity — designed to reward consistency.
+**What is the Mission Score?**  
+A 0–100 grade for **this week**, built from all six pillars — train, fuel, move, mind, track and learn. It measures consistency, not fitness, and it resets each week so a good week always starts from the same place. (Older docs and screenshots call it "Win Score"; same number, earlier name.)
 
 **What is readiness?**  
 An estimate of how recovered your muscles are based on recent training — shown on Today.

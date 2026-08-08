@@ -20,13 +20,24 @@ import type { PersonalRecord } from '@/lib/coach/progress';
 import type { WorkoutVictorySummary } from '@/lib/workout/workoutVictory';
 import type { WeeklyDebrief } from '@/lib/weeklyDebrief';
 import { EN_ONLY_SURFACE, formatLocalNumber } from '@/lib/i18n/formatLocale';
+import type {
+  CardBackdropId,
+  CardFrameId,
+} from '../../../packages/mw-core/src/identity/athleteCard';
 
-/** From BRAND_HEX in scripts/check-token-sync.mjs — paper/ink/poster/red-700. */
+/**
+ * From BRAND_HEX in scripts/check-token-sync.mjs — paper/ink/poster/red-700.
+ *
+ * Exported for `./cardCosmetics`, which paints the earned layers and must use
+ * these exact values. They stay declared *here* on purpose: `check-token-sync`
+ * greps this file, and `check-design-system` allowlists this path for raw hex.
+ * Moving them to a shared palette module would quietly drop both guards.
+ */
 const PAPER = '#f3f2f2';
-const INK = '#201e1d';
-const POSTER = '#ec3013';
-const RED_700 = '#ae1800';
-const MUTED = '#5f5e5d';
+export const INK = '#201e1d';
+export const POSTER = '#ec3013';
+export const RED_700 = '#ae1800';
+export const MUTED = '#5f5e5d';
 
 export const SHARE_CARD_WIDTH = 1080;
 export const SHARE_CARD_HEIGHT = 1350;
@@ -43,6 +54,39 @@ export interface ShareCardData {
   /** Present only when a genuine record exists — never invented. */
   prLine: string | null;
   footer: string;
+  /**
+   * `.610` — earned cosmetics for the Athlete Card. **Optional on purpose:** the
+   * victory and recap cards pass nothing and must keep rendering exactly as they
+   * did, so the frame and backdrop are additive layers around the existing paint,
+   * not a rewrite of it.
+   *
+   * Only ever set from `resolveAthleteCard`, which clamps picks to the athlete's
+   * tier. The painter trusts what it is handed — that is why resolution is a
+   * separate, tested step rather than something done here.
+   */
+  cosmetics?: ShareCardCosmetics;
+}
+
+/**
+ * The earned layers, as painters rather than ids (`.612`).
+ *
+ * `.610` put the ids here and branched on them inside `renderShareCard`, which
+ * meant every route that renders *any* share card compiled the whole cosmetics
+ * catalog. `/active` renders `WorkoutVictorySheet`, so it paid 1.1 KB gzipped for
+ * frames and backdrops a victory card can never have — measurable, and on a route
+ * already over its bundle budget. Handing the painters in keeps the catalog in the
+ * graph of the one surface that uses it.
+ *
+ * The ids ride along because they are what tests and debugging read; nothing in
+ * the renderer branches on them.
+ */
+export interface ShareCardCosmetics {
+  readonly frame: CardFrameId;
+  readonly backdrop: CardBackdropId;
+  /** Painted under everything, immediately after the paper ground. */
+  paintBackdrop(ctx: CanvasRenderingContext2D): void;
+  /** Painted last, over everything — it is the card's edge. */
+  paintFrame(ctx: CanvasRenderingContext2D): void;
 }
 
 function formatDuration(seconds: number): string {
@@ -118,7 +162,8 @@ export function buildRecapCardData(debrief: WeeklyDebrief, unitLabel: string): S
   };
 }
 
-const FOOTER_BASELINE = SHARE_CARD_HEIGHT - 80;
+/** Exported for `./cardCosmetics` — the rule field stops here, not at the edge. */
+export const FOOTER_BASELINE = SHARE_CARD_HEIGHT - 80;
 const STATS_TOP = 500;
 const STAT_ROW_HEIGHT = 190;
 const COLUMN_X = [72, SHARE_CARD_WIDTH / 2 + 12];
@@ -176,6 +221,16 @@ export function renderShareCard(data: ShareCardData): Promise<Blob | null> {
   ctx.fillStyle = PAPER;
   ctx.fillRect(0, 0, SHARE_CARD_WIDTH, SHARE_CARD_HEIGHT);
 
+  /*
+   * `.610` — earned backdrop, painted under everything.
+   *
+   * Structural, never ornamental: the design system allows no gradients, glows or
+   * shadows, so what an athlete unlocks is the system's own vocabulary getting
+   * denser — a grid, then a rule field, then a poster block. Off-palette is
+   * impossible here because these are the only four values in the file.
+   */
+  data.cosmetics?.paintBackdrop(ctx);
+
   // Poster-red kicker band with paper text (large type — poster red is legal here).
   ctx.fillStyle = POSTER;
   ctx.fillRect(0, 0, SHARE_CARD_WIDTH, 140);
@@ -219,6 +274,9 @@ export function renderShareCard(data: ShareCardData): Promise<Blob | null> {
   ctx.fillStyle = MUTED;
   ctx.font = font(34, 600);
   ctx.fillText(data.footer, 72, layout.footerY);
+
+  // Earned frame last, over everything — it is the card's edge (`.610`).
+  data.cosmetics?.paintFrame(ctx);
 
   return new Promise((resolve) => {
     try {

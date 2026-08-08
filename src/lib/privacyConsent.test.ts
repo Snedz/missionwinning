@@ -1,8 +1,10 @@
 import { describe, it, beforeEach, afterEach } from 'node:test';
 import assert from 'node:assert/strict';
 import {
-  CURRENT_PRIVACY_VERSION,
-  CURRENT_TERMS_VERSION,
+  PRIVACY_CONSENT_VERSION,
+  PRIVACY_DISPLAY_DATE,
+  TERMS_CONSENT_VERSION,
+  TERMS_DISPLAY_DATE,
   hasValidPrivacyConsent,
   loadPrivacyConsent,
   savePrivacyConsent,
@@ -40,9 +42,61 @@ describe('privacyConsent', () => {
     }
   });
 
-  it('versions are ISO dates — pages render them as the Last updated date', () => {
-    assert.match(CURRENT_TERMS_VERSION, /^\d{4}-\d{2}-\d{2}$/);
-    assert.match(CURRENT_PRIVACY_VERSION, /^\d{4}-\d{2}-\d{2}$/);
+  it('all four dates are ISO', () => {
+    for (const [name, v] of [
+      ['TERMS_DISPLAY_DATE', TERMS_DISPLAY_DATE],
+      ['PRIVACY_DISPLAY_DATE', PRIVACY_DISPLAY_DATE],
+      ['TERMS_CONSENT_VERSION', TERMS_CONSENT_VERSION],
+      ['PRIVACY_CONSENT_VERSION', PRIVACY_CONSENT_VERSION],
+    ] as const) {
+      assert.match(v, /^\d{4}-\d{2}-\d{2}$/, name);
+    }
+  });
+
+  /**
+   * `.609` — the display date and the consent version were one constant, which
+   * made every prose edit a global re-consent prompt. Nobody edits a policy
+   * under that rule, and a stale privacy page is the exact failure the consent
+   * record exists to prevent.
+   *
+   * The invariant: a user may never be asked to accept a version the page has
+   * not yet admitted to publishing. So the consent version may lag the shown
+   * date (prose edits since the last material change) but must never lead it.
+   */
+  it('the consent version never leads the date the page displays', () => {
+    assert.ok(
+      PRIVACY_CONSENT_VERSION <= PRIVACY_DISPLAY_DATE,
+      `privacy consent version ${PRIVACY_CONSENT_VERSION} is newer than the displayed ` +
+        `${PRIVACY_DISPLAY_DATE} — a material change must also update the date on the page`
+    );
+    assert.ok(TERMS_CONSENT_VERSION <= TERMS_DISPLAY_DATE, 'same for terms');
+  });
+
+  /**
+   * The structural half, and the one that actually holds the fix in place.
+   *
+   * Every assertion above passes just as well when the two constants are equal —
+   * which they are today — so none of them can see the coupling come back. This
+   * reads the source: `hasValidPrivacyConsent` must not mention a display date.
+   * Reintroduce one and editing prose starts logging people out of their own
+   * consent again, silently, with the whole suite green.
+   */
+  it('consent validity does not read the displayed dates', async () => {
+    const { readFileSync } = await import('node:fs');
+    const path = await import('node:path');
+    const src = readFileSync(
+      path.join(import.meta.dirname, 'privacyConsent.ts'),
+      'utf8'
+    );
+    const start = src.indexOf('export function hasValidPrivacyConsent');
+    assert.notEqual(start, -1, 'hasValidPrivacyConsent not found — this guard is reading nothing');
+    const body = src.slice(start, src.indexOf('\n}', start));
+    assert.doesNotMatch(
+      body,
+      /DISPLAY_DATE/,
+      'hasValidPrivacyConsent compares a display date — that is the coupling .608 removed'
+    );
+    assert.match(body, /CONSENT_VERSION/, 'it must still compare the consent versions');
   });
 
   it('no stored record → no valid consent', () => {
@@ -51,10 +105,10 @@ describe('privacyConsent', () => {
 
   it('savePrivacyConsent records the current versions and validates', () => {
     const record = savePrivacyConsent();
-    assert.equal(record.termsVersion, CURRENT_TERMS_VERSION);
-    assert.equal(record.privacyVersion, CURRENT_PRIVACY_VERSION);
+    assert.equal(record.termsVersion, TERMS_CONSENT_VERSION);
+    assert.equal(record.privacyVersion, PRIVACY_CONSENT_VERSION);
     assert.equal(hasValidPrivacyConsent(), true);
-    assert.equal(loadPrivacyConsent()?.privacyVersion, CURRENT_PRIVACY_VERSION);
+    assert.equal(loadPrivacyConsent()?.privacyVersion, PRIVACY_CONSENT_VERSION);
   });
 
   it('a record from an older policy version re-prompts (no date literals — stale derives from current)', () => {
@@ -62,8 +116,8 @@ describe('privacyConsent', () => {
       STORAGE_KEYS.privacyConsent,
       JSON.stringify({
         acceptedAt: new Date().toISOString(),
-        termsVersion: CURRENT_TERMS_VERSION,
-        privacyVersion: `${CURRENT_PRIVACY_VERSION}-old`,
+        termsVersion: TERMS_CONSENT_VERSION,
+        privacyVersion: `${PRIVACY_CONSENT_VERSION}-old`,
       })
     );
     assert.equal(hasValidPrivacyConsent(), false);
@@ -74,8 +128,8 @@ describe('privacyConsent', () => {
       STORAGE_KEYS.privacyConsent,
       JSON.stringify({
         acceptedAt: new Date().toISOString(),
-        termsVersion: `${CURRENT_TERMS_VERSION}-old`,
-        privacyVersion: CURRENT_PRIVACY_VERSION,
+        termsVersion: `${TERMS_CONSENT_VERSION}-old`,
+        privacyVersion: PRIVACY_CONSENT_VERSION,
       })
     );
     assert.equal(hasValidPrivacyConsent(), false);

@@ -272,7 +272,7 @@ Work **before** `PRIVATE_MODE=false`. Can overlap with PROTECTION P0.
 |--------|--------|
 | I-Day completion (started → finished) | ≥80% |
 | First workout within 24h of I-Day | ≥50% |
-| Basic Training complete (5/5) | ≥40% within 7 days |
+| Basic Training complete (**first workout**, per Phase 1 above) | see [ORCHESTRATION.md](../ORCHESTRATION.md) Horizon 0 task 5 |
 | Commissioned within 14 days | ≥25% |
 | Support tickets “where do I start?” | →0 |
 
