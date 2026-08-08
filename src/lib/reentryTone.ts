@@ -14,7 +14,7 @@
  */
 
 export interface ToneViolation {
-  rule: 'absence-length' | 'streak-loss';
+  rule: 'absence-length' | 'streak-loss' | 'club-identity';
   match: string;
 }
 
@@ -35,6 +35,24 @@ const ABSENCE_LENGTH = /\b\d+\s*-?\s*(day|days|week|weeks|month|months)\b/i;
  */
 const STREAK_LOSS = /\bstreaks?\b/i;
 
+/**
+ * Standing never travels in the return channel.
+ *
+ * `CLUB_PLAN.md` invariant 6 said this about points; the club plan has since grown
+ * tiers, badges, boards and squads, and the reason covers all of them. A nudge is
+ * read by someone who is *not* in the app, and "you've dropped to third" converts
+ * an absence into a standing they must come back to defend. That is loss aversion
+ * pointed at a lapsed athlete — the same mechanic `STREAK_LOSS` already refuses,
+ * arriving under a different noun.
+ *
+ * Deliberately narrower than the club's own vocabulary. `points` and `level` are
+ * **not** matched: "three points of contact" and "level the bar" are ordinary
+ * training language, and a term list that cries wolf on legitimate copy is a term
+ * list someone eventually switches off. The words here have no innocent reading in
+ * a re-entry message.
+ */
+const CLUB_IDENTITY = /\b(xp|rank(?:ed|ing|s)?|tiers?|leaderboards?|badges?|squads?)\b/i;
+
 /** Every violation in a piece of copy, empty when it is clean. */
 export function findToneViolations(text: string): ToneViolation[] {
   const out: ToneViolation[] = [];
@@ -42,6 +60,8 @@ export function findToneViolations(text: string): ToneViolation[] {
   if (absence) out.push({ rule: 'absence-length', match: absence[0] });
   const streak = STREAK_LOSS.exec(text);
   if (streak) out.push({ rule: 'streak-loss', match: streak[0] });
+  const club = CLUB_IDENTITY.exec(text);
+  if (club) out.push({ rule: 'club-identity', match: club[0] });
   return out;
 }
 
