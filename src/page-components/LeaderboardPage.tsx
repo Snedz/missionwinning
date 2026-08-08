@@ -21,6 +21,7 @@ import {
  loadSquadCode,
  saveSquadCode,
 } from '@/lib/leaderboard/computeLocalStats';
+import { DISPLAY_NAME_MAX, type DisplayNameRejection } from '@/lib/identity/displayName';
 import { fetchCloudLeaderboardSnapshots, pushLeaderboardSnapshot } from '@/lib/leaderboardSync';
 import type { LeaderboardBoardId, LeaderboardScope } from '@/lib/leaderboard/types';
 import { parseLeaderboardBoardId, parseLeaderboardScope } from '@/lib/leaderboard/types';
@@ -55,6 +56,7 @@ export function LeaderboardPage() {
  const [classRows, setClassRows] = useState<ClassLeaderboardRow[]>([]);
  const [classCode, setClassCode] = useState('');
  const [operatorName, setOperatorName] = useState(loadOperatorName);
+ const [nameError, setNameError] = useState<DisplayNameRejection | null>(null);
  const [squadCode, setSquadCode] = useState(loadSquadCode);
  const [syncing, setSyncing] = useState(false);
  const [loadError, setLoadError] = useState(false);
@@ -320,19 +322,52 @@ export function LeaderboardPage() {
  <div className="grid gap-3 sm:grid-cols-2">
  <label className="space-y-1">
  <span className="text-xs text-muted-foreground">
- {t('leaderboardCallSign', { defaultValue: 'Call sign' })}
+ {/*
+ `.610` — "Call sign" → "Name" on the one input other people see. REDTEAM A7
+ rates the military register IMPORTANT and notes it is "copy, not architecture
+ — cheap to soften"; a visible identity layer is exactly where that stops being
+ true. So the shared surface goes neutral while I-Day / Commissioned / Operator
+ stay on the athlete's own screens, where they motivate rather than announce.
+ */}
+ {t('leaderboardDisplayName', { defaultValue: 'Name' })}
  </span>
  <input
  value={operatorName}
  onChange={(e) => setOperatorName(e.target.value)}
  onBlur={() => {
- saveOperatorName(operatorName);
+ const verdict = saveOperatorName(operatorName);
+ if (!verdict.ok) {
+ setNameError(verdict.reason ?? null);
+ // Put the stored name back — a rejected edit must not look accepted.
+ setOperatorName(loadOperatorName());
+ return;
+ }
+ setNameError(null);
  void refresh();
  }}
- maxLength={24}
- placeholder="Your name"
+ maxLength={DISPLAY_NAME_MAX}
+ aria-invalid={nameError !== null}
+ aria-describedby={nameError ? 'operator-name-error' : undefined}
+ placeholder={t('leaderboardNamePlaceholder', { defaultValue: 'Your name' })}
  className="w-full min-h-[44px] border-2 border-border bg-background px-3 py-2 text-sm focus:outline-none focus:border-foreground"
  />
+ {nameError && (
+ <p id="operator-name-error" role="status" className="text-xs text-primary">
+ {nameError === 'reserved'
+ ? t('leaderboardNameReserved', {
+ defaultValue: 'That name could be mistaken for Mission Winning staff. Pick another.',
+ })
+ : nameError === 'link'
+ ? t('leaderboardNameLink', { defaultValue: 'Names cannot contain links or addresses.' })
+ : nameError === 'too-long'
+ ? t('leaderboardNameTooLong', { defaultValue: 'That name is too long.' })
+ : nameError === 'empty'
+ ? t('leaderboardNameEmpty', { defaultValue: 'Pick a name to show on the board.' })
+ : t('leaderboardNameUnsafe', {
+ defaultValue: 'That name contains characters we cannot show on a shared board.',
+ })}
+ </p>
+ )}
  </label>
  <label className="space-y-1">
  <span className="text-xs text-muted-foreground">

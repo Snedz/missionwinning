@@ -10,6 +10,11 @@ import { loadSquadCode, SQUAD_CODE_KEY } from './boards';
 import { resolveGeoFromLocale } from './regions';
 import { readRaw, writeRaw } from '@/lib/storage/safeStorage';
 import { I18N_LANG_KEY, STORAGE_KEYS } from '@/lib/storage/keys';
+import {
+  DISPLAY_NAME_MAX,
+  checkDisplayName,
+  type DisplayNameCheck,
+} from '@/lib/identity/displayName';
 
 const OPERATOR_NAME_KEY = STORAGE_KEYS.operatorName;
 
@@ -17,8 +22,22 @@ export function loadOperatorName(): string {
   return readRaw(OPERATOR_NAME_KEY)?.trim() || 'Mission Operator';
 }
 
-export function saveOperatorName(name: string): void {
-  writeRaw(OPERATOR_NAME_KEY, name.trim().slice(0, 24));
+/**
+ * `.610` — a name now has to pass a check before it is stored.
+ *
+ * This used to be `trim().slice(0, 24)` and nothing else, on the one string this
+ * product publishes to other people. Returns the rejection so the caller can say
+ * *why* — silently keeping the old name is the kind of "nothing happened" that reads
+ * as a broken input.
+ *
+ * Rejection leaves the previous name in place rather than blanking it: an athlete
+ * who typos should not lose the name they had.
+ */
+export function saveOperatorName(name: string): DisplayNameCheck {
+  const verdict = checkDisplayName(name);
+  if (!verdict.ok) return verdict;
+  writeRaw(OPERATOR_NAME_KEY, name.trim().slice(0, DISPLAY_NAME_MAX));
+  return verdict;
 }
 
 export { loadSquadCode, saveSquadCode } from './boards';

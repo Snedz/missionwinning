@@ -8,6 +8,14 @@ export type LeaderboardStrings = {
   leaderboardSync: string;
   leaderboardOperators: string;
   leaderboardYourRank: string;
+  /** `.610` — the public input is "Name"; `leaderboardCallSign` is retired copy. */
+  leaderboardDisplayName: string;
+  leaderboardNamePlaceholder: string;
+  leaderboardNameReserved: string;
+  leaderboardNameLink: string;
+  leaderboardNameTooLong: string;
+  leaderboardNameEmpty: string;
+  leaderboardNameUnsafe: string;
   leaderboardCallSign: string;
   leaderboardSquadCode: string;
   leaderboardSquadHint: string;
@@ -53,6 +61,13 @@ const en: LeaderboardStrings = {
   leaderboardSync: 'Sync',
   leaderboardOperators: 'operators',
   leaderboardYourRank: 'Your rank',
+  leaderboardDisplayName: 'Name',
+  leaderboardNamePlaceholder: 'Your name',
+  leaderboardNameReserved: 'That name could be mistaken for Mission Winning staff. Pick another.',
+  leaderboardNameLink: 'Names cannot contain links or addresses.',
+  leaderboardNameTooLong: 'That name is too long.',
+  leaderboardNameEmpty: 'Pick a name to show on the board.',
+  leaderboardNameUnsafe: 'That name contains characters we cannot show on a shared board.',
   leaderboardCallSign: 'Call sign',
   leaderboardSquadCode: 'Squad code (for Squad tab)',
   leaderboardSquadHint:
