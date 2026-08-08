@@ -135,7 +135,14 @@ inflate a private number but cannot insta-mint a ranked account).
 ## Tiers and collectibles
 
 Four tiers, cumulative-lifetime, monotonic (invariant 3). Provisional thresholds sized so a
-consistent 3×/week athlete reaches T2 in ~6–8 weeks, T3 in ~4–5 months, T4 in about a year:
+consistent 3×/week athlete reaches T2 in ~6–8 weeks, T3 in ~4–5 months, T4 in about a year.
+
+> **Source note (2026-08-08).** The WClub bands quoted in the reference table above —
+> *Grid 50–299 · Podium 300–699 · Champion 700–1499 · Legend 1500+* — are **not corroborated**.
+> The WClub education page names the four tiers and publishes no thresholds; only
+> **Podium = 300** is confirmed, in a separate Williams article. Three of the four numbers
+> should not be presented as sourced ([DESIGN_RESEARCH.md](DESIGN_RESEARCH.md) Wave 9 §9.5).
+> MW's own thresholds below are provisional at 0 users regardless, so nothing downstream moves.
 
 | Tier | Threshold | Unlocks (deterministic, Zwift-style) |
 |---|---|---|
@@ -170,7 +177,13 @@ consistent 3×/week athlete reaches T2 in ~6–8 weeks, T3 in ~4–5 months, T4 
   ("240 pts to T3") + a short **"Next ways to earn"** list — at most 3 rows, driven by the
   athlete's *incomplete weekly challenges*, each with a quiet `+N` chip. One screen, no feed.
 - Later live-ops (C4+, tone-checked): positive-only **double-points weeks** (boost presence,
-  never punish absence) and a T4 **season-start boost** (positive-sum carryover).
+  never punish absence). ~~and a T4 **season-start boost** (positive-sum carryover)~~ —
+  **struck 2026-08-08, pending founder confirmation** ([DESIGN_RESEARCH.md](DESIGN_RESEARCH.md)
+  Wave 9 §9.5). Verified at `williamsf1.com/wclub-education`: WClub's boost exists **because
+  its tiers reset every season** — it compensates a Legend for losing the ladder. Invariant 3
+  makes MW points monotonic, so nothing resets, and the same mechanic without its precondition
+  is a compounding head start for whoever ranked highest last season. Imported the reward,
+  not the reason.
 
 ## Boards — phased, each with an N precondition
 
@@ -288,7 +301,11 @@ any code, migration, or schedule in this PR.
 6. **Premium stance** — recommendation: points/tiers/boards free forever; premium never
    touches earn rates; cosmetic-only premium extras remain a post-PMF pricing question.
 7. **Arcade vision amendment** — whether/when to amend [vision.md](../vision.md) for C7.
-8. **Ready-to-paste ORCHESTRATION rows** (when a phase activates, founder adds to the
+8. **Confirm the T4 season-start boost is struck** (Tiers section above) — recommended yes.
+9. **Athlete Card → Athlete Page.** The card's editor spec here still stands, but the surface it
+   lives on is now planned in [IDENTITY_SOCIAL_PLAN.md](IDENTITY_SOCIAL_PLAN.md), which also owns
+   the Log↔Social boundary contracts (C1–C9) that gate every board phase in this document.
+10. **Ready-to-paste ORCHESTRATION rows** (when a phase activates, founder adds to the
    Do-not-build / bets tables):
    `| Club boards (C3+) | Horizon 2 bet — entry gates in docs/CLUB_PLAN.md; kill: opt-in <20% or week-4 drop |`
    `| Arcade (C7) | Vision amendment |`
