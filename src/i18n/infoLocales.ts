@@ -21,6 +21,7 @@ type InfoStrings = {
   infoCoachingSubtitle: string;
   infoProgramsTitle: string;
   infoProgramsSubtitle: string;
+  infoProgramsSubtitleBrief: string;
   infoProgramsLegacy: string;
   infoSkipToday: string;
   infoBetaNeedTitle: string;
@@ -272,6 +273,7 @@ const en: InfoStrings = {
   infoProgramsTitle: 'Learn programs',
   infoProgramsSubtitle:
     'Premium practical education as part of the Super Bundle. Free core tools for supported regions; Europe, Canada, Ukraine, and OIC member states are not supported for the hosted service.',
+  infoProgramsSubtitleBrief: 'Program outlines. Free paths live in Learn.',
   infoProgramsLegacy:
     'Legacy catalog — the Learn pillar has moved to /learn. See Super Bundle for full access.',
   infoSkipToday: 'Skip to Today',

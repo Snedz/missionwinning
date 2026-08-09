@@ -8,7 +8,7 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import Link from 'next/link';
 import { Calculator } from 'lucide-react';
-import { Card, CardContent } from '@/components/ui/card';
+import { Card } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { PillarPageShell } from '@/components/layout/PillarPageShell';
 import { SignInPrompt } from '@/components/auth/SignInPrompt';
@@ -28,22 +28,21 @@ export function CalculatorsPage() {
       icon={Calculator}
       eyebrow={t('toolkitEyebrow', { defaultValue: 'Toolkit' })}
       title={t('calcTitle', { defaultValue: 'Calculators' })}
-      subtitle={t('calcSubtitle', {
-        defaultValue: freeBeta
-          ? 'Free 1RM, macro, and plate tools — no account required.'
-          : 'Free 1RM, macro, and plate tools. Super Bundle unlocks advanced periodization and client sync.',
+      subtitle={t('calcSubtitleBrief', {
+        defaultValue: '1RM, macros, plates — free tools, no account required.',
       })}
       showLegalFooter
     >
+      {/* Field manual: tabs + tool first; premium upsell folded. */}
       <Tabs defaultValue="1rm" className="w-full">
         <TabsList className="grid grid-cols-3 h-auto p-1 w-full sm:w-auto">
-          <TabsTrigger value="1rm" className="py-2.5 text-xs sm:text-sm">
+          <TabsTrigger value="1rm" className="min-h-[44px] py-2.5 text-xs sm:text-sm">
             {t('calcTab1rm', { defaultValue: '1RM' })}
           </TabsTrigger>
-          <TabsTrigger value="macros" className="py-2.5 text-xs sm:text-sm">
+          <TabsTrigger value="macros" className="min-h-[44px] py-2.5 text-xs sm:text-sm">
             {t('calcTabMacros', { defaultValue: 'Macros' })}
           </TabsTrigger>
-          <TabsTrigger value="plates" className="py-2.5 text-xs sm:text-sm">
+          <TabsTrigger value="plates" className="min-h-[44px] py-2.5 text-xs sm:text-sm">
             {t('calcTabPlates', { defaultValue: 'Plates' })}
           </TabsTrigger>
         </TabsList>
@@ -75,31 +74,34 @@ export function CalculatorsPage() {
       </p>
 
       {!freeBeta && (
-      <Card className="content-card border-primary">
-        <CardContent className="pt-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-          <div className="space-y-1">
-            <p className="font-semibold text-primary">
-              {t('calcPremiumTitle', { defaultValue: 'Premium calculators' })}
-            </p>
-            <p className="text-sm text-muted-foreground">
-              {t('calcPremiumDesc', {
-                defaultValue:
-                  'Super Bundle unlocks periodization blocks, contest prep macros, and client tools that sync to your log.',
-              })}{' '}
-              <Link href="/bundle" className="text-primary underline underline-offset-2">
-                {t('calcPremiumLink', { defaultValue: 'View bundle' })}
-              </Link>
-            </p>
+        <details className="group border-2 border-border bg-card">
+          <summary className="flex min-h-[44px] cursor-pointer list-none items-center px-4 py-3 text-sm font-semibold text-muted-foreground [&::-webkit-details-marker]:hidden">
+            {t('calcMorePremium', { defaultValue: 'Premium calculator depth' })}
+          </summary>
+          <div className="flex flex-col gap-4 border-t-2 border-border p-4 sm:flex-row sm:items-center sm:justify-between">
+            <div className="space-y-1">
+              <p className="font-semibold">
+                {t('calcPremiumTitle', { defaultValue: 'Premium calculators' })}
+              </p>
+              <p className="text-sm text-muted-foreground">
+                {t('calcPremiumDesc', {
+                  defaultValue:
+                    'Super Bundle unlocks periodization blocks, contest prep macros, and client tools that sync to your log.',
+                })}{' '}
+                <Link href="/bundle" className="text-primary underline underline-offset-2">
+                  {t('calcPremiumLink', { defaultValue: 'View bundle' })}
+                </Link>
+              </p>
+            </div>
+            <UnlockButton
+              productId="super-bundle"
+              planId="12mo"
+              isSubscription
+              label={t('calcPremiumBtn', { defaultValue: 'Unlock premium tools' })}
+              className="shrink-0"
+            />
           </div>
-          <UnlockButton
-            productId="super-bundle"
-            planId="12mo"
-            isSubscription
-            label={t('calcPremiumBtn', { defaultValue: 'Unlock premium tools' })}
-            className="shrink-0"
-          />
-        </CardContent>
-      </Card>
+        </details>
       )}
 
       <SignInPrompt

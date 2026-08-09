@@ -52,38 +52,31 @@ export function ProgramsPage() {
       icon={BookOpen}
       eyebrow={t('programsEyebrow', { defaultValue: 'Programs' })}
       title={t('infoProgramsTitle', { defaultValue: 'Learn programs' })}
-      subtitle={t('infoProgramsSubtitle', {
-        defaultValue: freeBeta
-          ? 'Free education paths and program intros for everyone worldwide.'
-          : 'Premium practical education as part of the Super Bundle. Free core tools and intros for everyone worldwide.',
+      subtitle={t('infoProgramsSubtitleBrief', {
+        defaultValue: 'Program outlines. Free paths live in Learn.',
       })}
       variant="sections"
       showLegalFooter
     >
-      <Card className="content-card">
-        <CardContent className="pt-6 text-sm text-muted-foreground">
-          {t('programsCatalogIntro', {
-            defaultValue: freeBeta
-              ? 'Specialist education outlines below. Free core tools live in Learn and the public guide.'
-              : 'Specialist education outlines below. Free core tools live in Learn and the public guide. Super Bundle unlocks full premium depth.',
-          })}{' '}
-          {/* Underlined at rest, not only on hover: this link sits inside a
-              muted-foreground paragraph, so colour was the sole cue distinguishing
-              it — WCAG 1.4.1, and axe `link-in-text-block` at serious. Hover-only
-              underline is invisible to keyboard and touch users alike. */}
-          <Link href="/learn" className="text-primary underline underline-offset-2">
-            /learn
-          </Link>
-          {!freeBeta && (
-            <>
-              {' · '}
-              <Link href="/bundle" className="text-primary hover:underline">
-                Super Bundle
-              </Link>
-            </>
-          )}
-        </CardContent>
-      </Card>
+      {/* Field manual: filters + catalog first; intro demoted to one quiet line. */}
+      <p className="text-xs text-muted-foreground">
+        {t('programsCatalogIntro', {
+          defaultValue: freeBeta
+            ? 'Specialist education outlines below. Free core tools live in Learn and the public guide.'
+            : 'Specialist education outlines below. Free core tools live in Learn and the public guide. Super Bundle unlocks full premium depth.',
+        })}{' '}
+        <Link href="/learn" className="text-primary underline underline-offset-2">
+          /learn
+        </Link>
+        {!freeBeta && (
+          <>
+            {' · '}
+            <Link href="/bundle" className="text-primary underline underline-offset-2">
+              Super Bundle
+            </Link>
+          </>
+        )}
+      </p>
 
       <div className="flex flex-wrap gap-3 text-sm">
         <span className="text-muted-foreground self-center">
@@ -94,6 +87,7 @@ export function ProgramsPage() {
             key={g.value}
             size="sm"
             variant={filterGoal === g.value ? 'selected' : 'outline'}
+            className="min-h-[44px] tap-target"
             onClick={() => setFilterGoal(g.value)}
           >
             {t(g.labelKey, { defaultValue: g.value })}
@@ -107,6 +101,7 @@ export function ProgramsPage() {
             key={e.value}
             size="sm"
             variant={filterEquip === e.value ? 'selected' : 'outline'}
+            className="min-h-[44px] tap-target"
             onClick={() => setFilterEquip(e.value)}
           >
             {t(e.labelKey, { defaultValue: e.value })}

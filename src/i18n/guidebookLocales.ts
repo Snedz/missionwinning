@@ -10,6 +10,8 @@ const GUIDEBOOK_EN: Record<string, string> = {
   guidebookTitle: 'Beyond the Basics',
   guidebookSubtitle:
     'Now with even more content! The Mission Winning guidebook — understand training from the ground up.',
+  guidebookSubtitleBrief: 'Free chapters with progress here. Magazine and PDF when you want them.',
+  guidebookMoreTools: 'Progress, magazine & PDF',
   guidebookProgress: 'Your progress',
   guidebookQuickPaths: 'Quick paths →',
   guidebookBack: 'Guidebook',
