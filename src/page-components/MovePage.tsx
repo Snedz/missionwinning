@@ -22,7 +22,6 @@ import { EmptyState } from '@/components/ui/EmptyState';
 import { ErrorState } from '@/components/ui/ErrorState';
 import { useToast } from '@/hooks/use-toast';
 import { fetchPremiumCatalogJson } from '@/lib/premiumCatalogCache';
-import { isFreeBeta } from '@/lib/freeBeta';
 import { getContentInventory } from '@/lib/contentInventory';
 import {
   filterFlowsByCollection,
@@ -173,19 +172,9 @@ export function MovePage() {
       icon={Wind}
       eyebrow={t('moveEyebrow', { defaultValue: 'Move' })}
       title={t('moveTitle', { defaultValue: 'Mobility' })}
-      subtitle={
-        isFreeBeta()
-          ? t('moveSubtitleDepthBeta', {
-              free: inv.move.free,
-              unlocked: inv.unlockedTotal.move,
-              defaultValue: `${inv.move.free} free flows · ${inv.unlockedTotal.move} unlocked in open beta (timers, mostly bodyweight).`,
-            })
-          : t('moveSubtitleDepthPaid', {
-              free: inv.move.free,
-              premium: inv.move.premium,
-              defaultValue: `${inv.move.free} free flows · Super Bundle adds ${inv.move.premium} longer recovery flows.`,
-            })
-      }
+      subtitle={t('moveSubtitleBrief', {
+        defaultValue: 'Pick a free flow. Timers and bodyweight — premium later if you want.',
+      })}
     >
       <div
         id="move-flows"
@@ -227,9 +216,9 @@ export function MovePage() {
       </div>
 
       {premium && filteredPremium.length > 0 && (
-        <details className="group" open>
-          <summary className="flex cursor-pointer list-none items-center justify-between gap-2 py-2 min-h-[44px] [&::-webkit-details-marker]:hidden">
-            <span className="text-sm font-semibold text-foreground">
+        <details className="group border-2 border-border bg-card">
+          <summary className="flex min-h-[44px] cursor-pointer list-none items-center justify-between gap-2 px-4 py-3 text-sm font-semibold text-foreground [&::-webkit-details-marker]:hidden">
+            <span>
               {t('movePremiumFlowsCount', {
                 count: filteredPremium.length,
                 defaultValue: `More recovery flows (${filteredPremium.length})`,
@@ -237,7 +226,9 @@ export function MovePage() {
             </span>
             <ChevronDown className="h-4 w-4 text-muted-foreground transition-transform group-open:rotate-180" />
           </summary>
-          <div className="pt-2">{renderFlowGrid(filteredPremium, '', true)}</div>
+          <div className="border-t-2 border-border p-4">
+            {renderFlowGrid(filteredPremium, '', true)}
+          </div>
         </details>
       )}
 
@@ -281,20 +272,18 @@ export function MovePage() {
       )}
 
       {recentWins.length > 0 ? (
-        <Card className="content-card">
-          <CardHeader>
-            <CardTitle className="text-base">
-              {t('moveRecentWins', { defaultValue: 'Recent sessions' })}
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="text-sm space-y-1">
+        <details className="group border-2 border-border bg-card">
+          <summary className="flex min-h-[44px] cursor-pointer list-none items-center px-4 py-3 text-sm font-semibold text-muted-foreground [&::-webkit-details-marker]:hidden">
+            {t('moveRecentWins', { defaultValue: 'Recent sessions' })}
+          </summary>
+          <div className="space-y-1 border-t-2 border-border px-4 py-3 text-sm text-muted-foreground">
             {recentWins.map((w) => (
-              <div key={w.id} className="text-muted-foreground">
+              <div key={w.id}>
                 {fmt.date(w.completedAt)} — {w.title}
               </div>
             ))}
-          </CardContent>
-        </Card>
+          </div>
+        </details>
       ) : (
         <EmptyState
           icon={Wind}

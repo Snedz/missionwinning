@@ -3,6 +3,7 @@
 type BuilderStrings = {
   builderTitle: string;
   builderSubtitle: string;
+  builderSubtitleBrief: string;
   builderTemplatesTitle: string;
   builderTemplatesFoot: string;
   builderProgramCount: string;
@@ -93,6 +94,7 @@ const en: BuilderStrings = {
   builderTitle: 'Workout Builder',
   builderSubtitle:
     'Use the Beginner, Advanced, or Pro tabs below, then click Load on a session. Premium unlocks bodybuilding, corrective & conditioning specialist programs.',
+  builderSubtitleBrief: 'Three steps: start, arrange, train.',
   builderTemplatesTitle: 'Program Templates',
   builderTemplatesFoot: 'Includes new free bodyweight + mobility circuits (vision core)',
   builderProgramCount: '{{count}} programs',

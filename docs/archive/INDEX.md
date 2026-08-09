@@ -25,6 +25,7 @@ When adding a doc:
 
 | File | Absorbed by / note |
 |------|---------------------|
+| [log/LOG-rotate-627.md](./log/LOG-rotate-627.md) | rotated oldest for `.627` Feel Wave 3 |
 | [log/LOG-rotate-595.md](./log/LOG-rotate-595.md) | rotated oldest for `.595` About/Vision editorial |
 | [log/LOG-rotate-594.md](./log/LOG-rotate-594.md) | rotated oldest for `.594` app voice recut |
 | [log/LOG-rotate-593.md](./log/LOG-rotate-593.md) | rotated oldest for `.593` legal |

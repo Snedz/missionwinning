@@ -117,44 +117,11 @@ export function LearnPage() {
       icon={BookOpen}
       eyebrow={t('learnEyebrow', { defaultValue: 'Learn' })}
       title={t('learnTitle', { defaultValue: 'Learn' })}
-      subtitle={t('learnSubtitle', {
-        count: FREE_LEARN_PATHS.length,
-        defaultValue: isFreeBeta()
-          ? `${FREE_LEARN_PATHS.length} education paths — foundations first, specialist intros included.`
-          : `${FREE_LEARN_PATHS.length} free education paths. Super Bundle unlocks full programs when paid depth is on.`,
+      subtitle={t('learnSubtitleBrief', {
+        defaultValue: 'Free paths first. Guide and Bundle depth when you want them.',
       })}
     >
-        <Card className="bg-card">
-          <CardHeader>
-            <CardTitle className="text-base flex items-center gap-2 font-semibold">
-              <BookMarked className="h-4 w-4 text-primary" />
-              {t('learnExpandedBanner', {
-                defaultValue: 'Beyond the Basics',
-              })}
-            </CardTitle>
-            <CardDescription className="leading-relaxed">
-              {t('learnExpandedDesc', {
-                defaultValue:
-                  'Six free chapters on performance, movement, and programming — practical, not hype.',
-              })}
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="flex flex-wrap gap-2">
-              <Button variant="default" size="sm" className="min-h-[44px] tap-target" asChild>
-                <Link href="/learn/guide">
-                  {t('learnOpenGuidebook', { defaultValue: 'Open Guidebook' })}
-                </Link>
-              </Button>
-              <Button variant="outline" size="sm" className="min-h-[44px] tap-target" asChild>
-                <Link href={PUBLIC_GUIDE_HREF}>
-                  {t('learnOpenMagazine', { defaultValue: 'Magazine (web)' })}
-                </Link>
-              </Button>
-            </div>
-          </CardContent>
-        </Card>
-
+        {/* Field manual: paths first — guide/premium no longer own the fold. */}
         <div id="learn-paths" className="space-y-3 scroll-mt-20">
           <input
             type="search"
@@ -251,54 +218,90 @@ export function LearnPage() {
           })}
         </div>
 
-        <Card className="content-card border-primary">
-          <CardHeader>
-            <CardTitle className="text-base">
-              {t('learnSampleTitle', { defaultValue: 'Try it — free sample workout' })}
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <Button
-              variant="outline"
-              size="sm"
-              className="min-h-[44px] tap-target"
-              onClick={() => {
-                startWorkout('Learn Sample — Bodyweight', [
-                  { exerciseId: 'push-ups', sets: [{ reps: 10, weight: 0 }] },
-                  { exerciseId: 'squats', sets: [{ reps: 12, weight: 0 }] },
-                  { exerciseId: 'plank', sets: [{ reps: 30, weight: 0 }] },
-                ]);
-                router.push('/active');
-              }}
-            >
-              {t('learnSampleBtn', { defaultValue: 'Start bodyweight sample' })}
-            </Button>
-          </CardContent>
-        </Card>
-
-        {premium ? (
-          <Card className="content-card border-primary">
-            <CardHeader>
-              <CardTitle className="text-base">
-                {t('learnPremiumTitle', { defaultValue: 'Premium Specialist Programs' })}
-              </CardTitle>
-              <CardDescription>
-                {t('learnPremiumCourseDesc', {
-                  defaultValue: 'Multi-chapter specialist courses with progress that survives reload.',
+        <details className="group border-2 border-border bg-card">
+          <summary className="flex min-h-[44px] cursor-pointer list-none items-center gap-2 px-4 py-3 text-sm font-semibold text-foreground [&::-webkit-details-marker]:hidden">
+            <BookMarked className="h-4 w-4 text-primary" aria-hidden />
+            {t('learnMoreLearn', { defaultValue: 'Guide, sample & premium' })}
+          </summary>
+          <div className="space-y-4 border-t-2 border-border p-4">
+            <div>
+              <p className="eyebrow mb-1 text-primary">
+                {t('learnExpandedBanner', { defaultValue: 'Beyond the Basics' })}
+              </p>
+              <p className="mb-3 text-sm text-muted-foreground">
+                {t('learnExpandedDesc', {
+                  defaultValue:
+                    'Six free chapters on performance, movement, and programming — practical, not hype.',
                 })}
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <Button variant="outline" size="sm" className="min-h-[44px] tap-target" asChild>
-                <Link href="/learn/course">
-                  {t('learnOpenCourses', { defaultValue: 'Open specialist courses' })}
-                </Link>
+              </p>
+              <div className="flex flex-wrap gap-2">
+                <Button variant="outline" size="sm" className="min-h-[44px] tap-target" asChild>
+                  <Link href="/learn/guide">
+                    {t('learnOpenGuidebook', { defaultValue: 'Open Guidebook' })}
+                  </Link>
+                </Button>
+                <Button variant="outline" size="sm" className="min-h-[44px] tap-target" asChild>
+                  <Link href={PUBLIC_GUIDE_HREF}>
+                    {t('learnOpenMagazine', { defaultValue: 'Magazine (web)' })}
+                  </Link>
+                </Button>
+              </div>
+            </div>
+
+            <div className="border-t-2 border-border pt-4">
+              <p className="mb-2 text-sm font-semibold">
+                {t('learnSampleTitle', { defaultValue: 'Try it — free sample workout' })}
+              </p>
+              <Button
+                variant="outline"
+                size="sm"
+                className="min-h-[44px] tap-target"
+                onClick={() => {
+                  startWorkout('Learn Sample — Bodyweight', [
+                    { exerciseId: 'push-ups', sets: [{ reps: 10, weight: 0 }] },
+                    { exerciseId: 'squats', sets: [{ reps: 12, weight: 0 }] },
+                    { exerciseId: 'plank', sets: [{ reps: 30, weight: 0 }] },
+                  ]);
+                  router.push('/active');
+                }}
+              >
+                {t('learnSampleBtn', { defaultValue: 'Start bodyweight sample' })}
               </Button>
-            </CardContent>
-          </Card>
-        ) : (
-          <LearnLockedPreview />
-        )}
+            </div>
+
+            {premium ? (
+              <div className="border-t-2 border-border pt-4">
+                <p className="mb-1 text-sm font-semibold">
+                  {t('learnPremiumTitle', { defaultValue: 'Premium Specialist Programs' })}
+                </p>
+                <p className="mb-3 text-sm text-muted-foreground">
+                  {t('learnPremiumCourseDesc', {
+                    defaultValue:
+                      'Multi-chapter specialist courses with progress that survives reload.',
+                  })}
+                </p>
+                <Button variant="outline" size="sm" className="min-h-[44px] tap-target" asChild>
+                  <Link href="/learn/course">
+                    {t('learnOpenCourses', { defaultValue: 'Open specialist courses' })}
+                  </Link>
+                </Button>
+              </div>
+            ) : (
+              <div className="border-t-2 border-border pt-4">
+                <LearnLockedPreview />
+              </div>
+            )}
+
+            <p className="text-xs text-muted-foreground">
+              {t('learnSubtitle', {
+                count: FREE_LEARN_PATHS.length,
+                defaultValue: isFreeBeta()
+                  ? `${FREE_LEARN_PATHS.length} education paths — foundations first.`
+                  : `${FREE_LEARN_PATHS.length} free education paths. Super Bundle unlocks full programs when paid depth is on.`,
+              })}
+            </p>
+          </div>
+        </details>
     </PillarPageShell>
   );
 }

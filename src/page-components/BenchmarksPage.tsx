@@ -170,8 +170,12 @@ export function BenchmarksPage() {
 
   if (workoutHistory.length === 0 || exerciseIds.length === 0) {
     return (
-      <PillarPageShell icon={Shield} eyebrow={t('benchmarksEyebrow', { defaultValue: 'Benchmarks' })} title={t('benchmarksTitle', { defaultValue: 'Benchmarks' })} subtitle={t('benchmarksSubtitle', {
-          defaultValue: 'Statistics, rep maxes, estimated vs actual, and progress over time.',
+      <PillarPageShell
+        icon={Shield}
+        eyebrow={t('benchmarksEyebrow', { defaultValue: 'Benchmarks' })}
+        title={t('benchmarksTitle', { defaultValue: 'Benchmarks' })}
+        subtitle={t('benchmarksSubtitleBrief', {
+          defaultValue: 'Rep maxes from your logs. Other tests when you want them.',
         })}
         showLegalFooter
       >
@@ -186,21 +190,29 @@ export function BenchmarksPage() {
           href="/log"
         />
         {quickStarters}
-        <MilitaryReadinessSection />
-        <PresidentialFitnessSection />
+        <details className="group border-2 border-border bg-card">
+          <summary className="flex min-h-[44px] cursor-pointer list-none items-center px-4 py-3 text-sm font-semibold text-foreground [&::-webkit-details-marker]:hidden">
+            {t('benchmarksMoreTests', { defaultValue: 'Military & youth tests' })}
+          </summary>
+          <div className="space-y-4 border-t-2 border-border p-4">
+            <MilitaryReadinessSection />
+            <PresidentialFitnessSection />
+          </div>
+        </details>
       </PillarPageShell>
     );
   }
 
   return (
-    <PillarPageShell icon={Shield} eyebrow={t('benchmarksEyebrow', { defaultValue: 'Benchmarks' })} title={t('benchmarksTitle', { defaultValue: 'Benchmarks' })} subtitle={t('benchmarksSubtitle', {
-        defaultValue: 'Statistics, rep maxes, estimated vs actual, and progress over time.',
+    <PillarPageShell
+      icon={Shield}
+      eyebrow={t('benchmarksEyebrow', { defaultValue: 'Benchmarks' })}
+      title={t('benchmarksTitle', { defaultValue: 'Benchmarks' })}
+      subtitle={t('benchmarksSubtitleBrief', {
+        defaultValue: 'Rep maxes from your logs. Other tests when you want them.',
       })}
       showLegalFooter
     >
-      <MilitaryReadinessSection />
-      <PresidentialFitnessSection />
-
       <Card className="content-card">
         <CardHeader>
           <CardTitle className="text-base">
@@ -520,9 +532,20 @@ export function BenchmarksPage() {
 
       {quickStarters}
 
+      <details className="group border-2 border-border bg-card">
+        <summary className="flex min-h-[44px] cursor-pointer list-none items-center px-4 py-3 text-sm font-semibold text-foreground [&::-webkit-details-marker]:hidden">
+          {t('benchmarksMoreTests', { defaultValue: 'Military & youth tests' })}
+        </summary>
+        <div className="space-y-4 border-t-2 border-border p-4">
+          <MilitaryReadinessSection />
+          <PresidentialFitnessSection />
+        </div>
+      </details>
+
       <SignInPrompt
         className="mt-6"
-        nextPath="/benchmarks" description={t('benchmarksSignInFoot', {
+        nextPath="/benchmarks"
+        description={t('benchmarksSignInFoot', {
           defaultValue: 'Sync benchmark history and PRs across devices.',
         })}
       />

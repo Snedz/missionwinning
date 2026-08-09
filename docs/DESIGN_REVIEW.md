@@ -63,6 +63,7 @@ Review on a 390×844 phone viewport first (the Playwright target); desktop secon
 
 | Date | Reviewer | Flows | Issues filed |
 |------|----------|-------|--------------|
+| 2026-08-09 | Agent (Feel Wave 3 · .627) | Learn, Move, Mind, Library, Builder, Benchmarks, Leaderboard | Paths/free-first; premium+tests folded; brief More rail chrome. Field manual A complete. |
 | 2026-08-09 | Agent (Feel Wave 2 · .626) | Fuel, History, Coach | Log-first Fuel; heatmaps/coach depth folded. Field manual A. |
 | 2026-08-09 | Agent (Account Field manual · .625) | `/account` | Day-one stack open; More settings folds secondary cards. |
 | 2026-08-09 | Agent (You Field manual · .624) | `/profile` | Identity hero-first; edit under details; 0 red. Continues Field manual from .619. |

@@ -13,7 +13,6 @@ import { DailyCheckIn } from '@/components/pillars/DailyCheckIn';
 import { MindLockedPreview } from '@/components/mind/MindLockedPreview';
 import { usePremium } from '@/hooks/usePremium';
 import type { GuidedMindSession } from '@/data/guidedMindSessions';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { PillarPageShell } from '@/components/layout/PillarPageShell';
 import { EmptyState } from '@/components/ui/EmptyState';
 import { ErrorState } from '@/components/ui/ErrorState';
@@ -24,7 +23,6 @@ import { GuidedMindSessionRunner } from '@/components/pillars/GuidedMindSessionR
 import { Brain, ChevronDown } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { fetchPremiumCatalogJson } from '@/lib/premiumCatalogCache';
-import { isFreeBeta } from '@/lib/freeBeta';
 import { getContentInventory } from '@/lib/contentInventory';
 import {
   filterMindByCollection,
@@ -102,24 +100,13 @@ export function MindPage() {
       icon={Brain}
       eyebrow={t('mindEyebrow', { defaultValue: 'Mind' })}
       title={t('mindTitle', { defaultValue: 'Mind' })}
-      subtitle={
-        isFreeBeta()
-          ? t('mindSubtitleDepthBeta', {
-              free: inv.mind.free,
-              unlocked: inv.unlockedTotal.mind,
-              defaultValue: `${inv.mind.free} free guided sessions · ${inv.unlockedTotal.mind} unlocked in open beta — breathing + check-in included.`,
-            })
-          : t('mindSubtitleDepthPaid', {
-              free: inv.mind.free,
-              premium: inv.mind.premium,
-              defaultValue: `${inv.mind.free} free guided sessions · Super Bundle adds ${inv.mind.premium} deeper timed sessions.`,
-            })
-      }
+      subtitle={t('mindSubtitleBrief', {
+        defaultValue: 'Check in, then breathe or run a free guided session.',
+      })}
     >
-      <div className="grid gap-6 lg:grid-cols-2">
-        <BreathingTimer />
-        <DailyCheckIn />
-      </div>
+      {/* Field manual: check-in is the return channel — first job on Mind. */}
+      <DailyCheckIn />
+      <BreathingTimer />
 
       <div
         className="flex gap-2 overflow-x-auto pb-1 -mx-1 px-1"
@@ -214,17 +201,17 @@ export function MindPage() {
       )}
 
       {premium && filteredPremium.length > 0 && (
-        <details className="group space-y-3" open>
-          <summary className="flex cursor-pointer list-none items-center justify-between gap-2 py-1 min-h-[44px] [&::-webkit-details-marker]:hidden">
-            <h3 className="text-sm font-semibold text-primary uppercase tracking-wide">
+        <details className="group border-2 border-border bg-card">
+          <summary className="flex min-h-[44px] cursor-pointer list-none items-center justify-between gap-2 px-4 py-3 text-sm font-semibold text-foreground [&::-webkit-details-marker]:hidden">
+            <span>
               {t('mindPremiumSessionsCount', {
                 count: filteredPremium.length,
                 defaultValue: `Premium guided sessions (${filteredPremium.length})`,
               })}
-            </h3>
+            </span>
             <ChevronDown className="h-4 w-4 text-muted-foreground transition-transform group-open:rotate-180" />
           </summary>
-          <div className="grid gap-4 md:grid-cols-2">
+          <div className="grid gap-4 border-t-2 border-border p-4 md:grid-cols-2">
             {filteredPremium.map((s) => (
               <GuidedMindSessionRunner key={s.id} session={s} onLogged={() => setRefresh((r) => r + 1)} />
             ))}
@@ -254,20 +241,18 @@ export function MindPage() {
       )}
 
       {recentWins.length > 0 ? (
-        <Card className="content-card">
-          <CardHeader>
-            <CardTitle className="text-base">
-              {t('mindRecentWins', { defaultValue: 'Recent sessions' })}
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="text-sm space-y-1">
+        <details className="group border-2 border-border bg-card">
+          <summary className="flex min-h-[44px] cursor-pointer list-none items-center px-4 py-3 text-sm font-semibold text-muted-foreground [&::-webkit-details-marker]:hidden">
+            {t('mindRecentWins', { defaultValue: 'Recent sessions' })}
+          </summary>
+          <div className="space-y-1 border-t-2 border-border px-4 py-3 text-sm text-muted-foreground">
             {recentWins.map((w) => (
-              <div key={w.id} className="text-muted-foreground">
+              <div key={w.id}>
                 {fmt.date(w.completedAt)} — {w.title}
               </div>
             ))}
-          </CardContent>
-        </Card>
+          </div>
+        </details>
       ) : (
         <EmptyState
           icon={Brain}

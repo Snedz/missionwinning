@@ -43,7 +43,6 @@ import {
   templatesFromLibraryPick,
   toggleLibraryPick,
 } from '@/lib/librarySessionPick';
-import { usePremium } from '@/hooks/usePremium';
 import { useWorkoutStore } from '@/store/workoutStore';
 import type { ProgramTag } from '@/types';
 import { cn } from '@/lib/utils';
@@ -73,7 +72,6 @@ export function LibraryPage() {
   const { t } = useTranslation();
   const fmt = useLocaleFormat();
   const router = useRouter();
-  const { premium } = usePremium();
   const activeWorkout = useWorkoutStore((s) => s.activeWorkout);
   const startWorkout = useWorkoutStore((s) => s.startWorkout);
   const addExerciseToActive = useWorkoutStore((s) => s.addExerciseToActive);
@@ -160,22 +158,18 @@ export function LibraryPage() {
       icon={Dumbbell}
       eyebrow={t('libraryEyebrow', { defaultValue: 'Library' })}
       title={t('library', { defaultValue: 'Exercise Library' })}
-      subtitle={t('librarySubtitle', {
-        count: EXERCISES.length,
-        defaultValue: `${EXERCISES.length}+ movements with cues and alternatives. Bodyweight and minimal equipment prioritized.`,
+      subtitle={t('librarySubtitleBrief', {
+        defaultValue: 'Search movements. Filters when you need them.',
       })}
     >
-      <p className="text-muted-foreground text-sm">
-        <Link href="/log" className="underline">
+      <p className="text-xs text-muted-foreground">
+        <Link href="/log" className="underline underline-offset-2 hover:text-foreground">
           {t('libraryTodayHub', { defaultValue: 'Today' })}
         </Link>
         {' · '}
-        <Link href="/builder" className="underline">
+        <Link href="/builder" className="underline underline-offset-2 hover:text-foreground">
           {t('libraryProgramTemplates', { defaultValue: 'Program templates' })}
         </Link>
-        {premium
-          ? t('libraryPremiumUnlocked', { defaultValue: ' — full library unlocked.' })
-          : t('libraryFreeCatalog', { defaultValue: ' — free core includes the full catalog.' })}
       </p>
 
       <div className="sticky top-0 z-10 -mx-1 space-y-2 border-b-2 border-border bg-background py-2">

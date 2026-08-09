@@ -3,6 +3,8 @@
 type BenchmarksStrings = {
   benchmarksTitle: string;
   benchmarksSubtitle: string;
+  benchmarksSubtitleBrief: string;
+  benchmarksMoreTests: string;
   benchmarksEmptyTitle: string;
   benchmarksEmptyDesc: string;
   benchmarksExercisesTracked: string;
@@ -56,6 +58,8 @@ type BenchmarksStrings = {
 const en: BenchmarksStrings = {
   benchmarksTitle: 'Benchmarks',
   benchmarksSubtitle: 'Statistics, rep maxes, estimated vs actual, and progress over time.',
+  benchmarksSubtitleBrief: 'Rep maxes from your logs. Other tests when you want them.',
+  benchmarksMoreTests: 'Military & youth tests',
   benchmarksEmptyTitle: 'No benchmark data yet',
   benchmarksEmptyDesc:
     'Complete workouts with logged sets to build estimated 1RMs. Log a set at 1 rep to record an actual 1RM for comparison.',

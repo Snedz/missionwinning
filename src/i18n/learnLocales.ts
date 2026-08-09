@@ -5,6 +5,8 @@ import { learnContentStringsFor } from './learnContentLocales';
 type LearnStrings = {
   learnTitle: string;
   learnSubtitle: string;
+  learnSubtitleBrief: string;
+  learnMoreLearn: string;
   learnDone: string;
   learnMarkComplete: string;
   learnSampleTitle: string;
@@ -49,6 +51,8 @@ const en: LearnStrings = {
   learnTitle: 'Learn & Master',
   learnSubtitle:
     '{{count}} free education paths — evidence-based foundations plus specialist intros. Premium unlocks full programs (Super Bundle).',
+  learnSubtitleBrief: 'Free paths first. Guide and Bundle depth when you want them.',
+  learnMoreLearn: 'Guide, sample & premium',
   learnDone: '✓ Done',
   learnMarkComplete: 'Mark complete',
   learnSampleTitle: 'Try it — free sample workout',
