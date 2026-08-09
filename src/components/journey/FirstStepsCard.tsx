@@ -53,10 +53,11 @@ export function FirstStepsCard({ state }: { state: JourneyState }) {
         className="flex w-full items-start gap-3 p-4 text-left transition-colors hover:bg-muted"
       >
         <div className="min-w-0 flex-1">
-          <p className="text-[11px] font-semibold uppercase tracking-[0.1em] text-muted-foreground">
+          {/* Field manual: eyebrow → title; dismiss stays quiet below. */}
+          <p className="eyebrow text-muted-foreground">
             {t('firstStepsEyebrow', { defaultValue: 'Your first steps' })}
           </p>
-          <h2 id="first-steps-heading" className="mt-0.5 text-[17px] font-extrabold leading-snug">
+          <h2 id="first-steps-heading" className="mt-0.5 text-[17px] font-extrabold leading-snug text-foreground">
             {progress.next
               ? t(progress.next.titleKey, { defaultValue: progress.next.title })
               : t('firstStepsEyebrow', { defaultValue: 'Your first steps' })}
@@ -92,7 +93,7 @@ export function FirstStepsCard({ state }: { state: JourneyState }) {
         <button
           type="button"
           onClick={dismiss}
-          className="min-h-[44px] w-full px-4 text-left text-[13px] font-semibold uppercase tracking-[0.08em] text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+          className="min-h-[44px] w-full px-4 text-left text-xs text-muted-foreground underline-offset-2 transition-colors hover:bg-muted hover:text-foreground hover:underline"
         >
           {t('firstStepsDismissToMore', { defaultValue: 'Hide from Today — keep it under More' })}
         </button>

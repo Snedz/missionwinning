@@ -3,9 +3,17 @@
  * Full catalogs hydrate async via hydrateI18nResources().
  */
 
+import { BETA_EN } from '@/i18n/betaLocales';
+
 export const BOOTSTRAP_EN: Record<string, string> = {
+  ...BETA_EN,
   appName: 'Mission Winning',
   tagline: 'Train anywhere. Win daily.',
+  infoBetaTitle: 'Start here',
+  infoBetaSubtitleBrief: 'I-Day → first workout → Mission Coach. Start with the primary path.',
+  infoBetaMoreSteps: 'What we need & more steps',
+  infoBetaNeedTitle: 'What we need from you',
+  infoSkipToday: 'Skip to Today',
   navToday: 'Today',
   navTrain: 'Train',
   navFuel: 'Fuel',

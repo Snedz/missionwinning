@@ -163,7 +163,8 @@
   color: var(--g-ink);
   caret-color: var(--g-accent);
   background: var(--g-surface);
-  border: 1px solid var(--g-divider);
+  /* 2px rules — design-system radius 0; matches product chrome. */
+  border: 2px solid var(--g-divider);
   border-radius: 0;
 }
 .gate-input::placeholder {
@@ -263,9 +264,13 @@
   border-top: 2px solid var(--g-divider);
   padding-top: 21px;
 }
-.gate-details summary {
+.gate-details summary,
+.gate-details-summary {
   cursor: pointer;
   list-style: none;
+  min-height: 44px;
+  display: flex;
+  align-items: center;
   font-size: 13px;
   letter-spacing: 0.08em;
   text-transform: uppercase;
