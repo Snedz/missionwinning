@@ -14,6 +14,8 @@
 import Base from '../layouts/Base.astro';
 import Section from '../components/Section.astro';
 import CtaSlot from '../components/CtaSlot.astro';
+import LogToPlanDemo from '../components/LogToPlanDemo.astro';
+import CoachAdaptDemo from '../components/CoachAdaptDemo.astro';
 import { CONTENT_FLOORS } from '@/lib/contentFloors';
 import { landingStringsFor, LANDING_FAQ_KEYS } from '@/i18n/landingLocales';
 import { COMPARE_STORIES } from '@/data/compareStories';
@@ -121,21 +123,10 @@ const navLinks = [
           <CtaSlot class="mt-10 max-w-[420px]" />
         </div>
 
-        <!-- Demo slot. Fixed min-height on purpose: PR D drops LogToPlanHero in
-             here, and a slot that grows when it arrives is a layout shift on the
-             most-linked page in the product. -->
-        <div
-          class="flex min-h-[420px] flex-col justify-center border-2 border-rule bg-card p-6"
-          data-demo-slot
-        >
-          <p class="eyebrow">{t.heroDemoLabel ?? 'Demo · same engine as the app'}</p>
-          <p class="mt-4 text-[17px] font-semibold">{t.heroDemoExercise ?? 'Squat · today'}</p>
-          <p class="mt-3 max-w-[42ch] text-[15px] leading-[1.5] text-quiet">
-            {t.heroDemoWhyToday ??
-              'Last squat session you finished 3 × 12 at 80 kg, so today asks for more load.'}
-          </p>
-          <p class="eyebrow mt-6">Interactive demo lands with the island port</p>
-        </div>
+        <!-- The live demo. Its no-JS state is computed at build time from the
+             same engine, so the slot is correct before any script runs and does
+             not change height when one does. -->
+        <LogToPlanDemo />
       </div>
     </Section>
 
@@ -170,14 +161,7 @@ const navLinks = [
             leaving you behind a schedule you already broke.
           </p>
         </div>
-        <div class="border-2 border-rule bg-card p-6" data-adapt-slot>
-          <p class="eyebrow">{t.coachDemoLabel ?? 'Demo · a week, adapted'}</p>
-          <p class="mt-4 max-w-[46ch] text-[15px] leading-[1.5]">
-            {t.coachDemoAdaptedWhy ??
-              'Wednesday is gone, so upper body moved to Thursday and conditioning to Saturday. Same week, same dose.'}
-          </p>
-          <p class="eyebrow mt-6">Interactive demo lands with the island port</p>
-        </div>
+        <CoachAdaptDemo />
       </div>
     </Section>
 

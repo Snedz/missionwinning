@@ -11,7 +11,7 @@ Astro 7 + Tailwind 4, **static output**, deployed to Cloudflare Pages. No adapte
 |------|------|
 | `src/pages/` | Routes. One `.astro` file per URL |
 | `src/layouts/Base.astro` | `<head>`, font preload, canonical, OG |
-| `src/components/` | Page pieces. `CtaSlot.astro` is the one action |
+| `src/components/` | Page pieces. `CtaSlot.astro` is the one action; `LogToPlanDemo` and `CoachAdaptDemo` are the two live islands |
 | `src/styles/tokens.css` | **GENERATED** — do not edit. `npm run www:tokens` |
 | `src/styles/global.css` | The `@theme` block, type tiers, rhythm, motion |
 | `public/fonts/` | Archivo variable, latin, weight axis only |
@@ -23,7 +23,7 @@ Driven by `npm --prefix`, **not** npm workspaces — the root `package.json` dec
 ```bash
 npm run www              # dev server
 npm run www:build        # static build → dist/
-npm run www:check        # class contract + JS budget
+npm run www:check        # astro check + class contract + JS budget + rhythm
 npm run www:tokens       # regenerate tokens.css from src/index.css
 ```
 
@@ -46,4 +46,5 @@ Nothing here is enforced by prose. The gate stays at **18 steps** — the two sc
 - **One red action per page.** The poster field carries the red; a nested action inverts to paper so the field does not add a second.
 - **Renders complete with JavaScript disabled.** The reference that set the visual bar fails this by 8365pt of empty scroll; this surface carries ~250 SEO URLs and cannot.
 - **Desktop and compact are two compositions**, not one reflow — the same rule the app's `useIsCompact()` draws at 768px.
+- **Islands are vanilla, not React.** `@astrojs/react` would put react + react-dom (~45KB gzipped) on a marketing page for two small state machines; both demos together ship **1.6KB**. `LogToPlanDemo` runs the real engine — `suggestNextSetTarget`, the same function `/active` calls — and computes its no-JS state at build time, so the fallback cannot drift the way the app's hardcoded `8 × 82.5 kg` can. `CoachAdaptDemo` runs **no** engine: its two weeks are literal arrays, exactly as in the app, and its copy must never imply otherwise.
 - **Do not import from `src/` at runtime.** Build-time frontmatter only. `src/i18n/landingLocales.ts` in particular is one 52KB module whose 15 packs cannot be tree-shaken.

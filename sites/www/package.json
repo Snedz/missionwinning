@@ -9,13 +9,15 @@
     "build": "astro build",
     "preview": "astro preview",
     "typecheck": "astro check",
-    "check": "node ../../scripts/www-class-contract.mjs && node ../../scripts/www-bundle-budget.mjs && node ../../scripts/www-rhythm.mjs"
+    "check": "astro check && node ../../scripts/www-class-contract.mjs && node ../../scripts/www-bundle-budget.mjs && node ../../scripts/www-rhythm.mjs"
   },
   "dependencies": {
     "astro": "^7.2.0"
   },
   "devDependencies": {
+    "@astrojs/check": "^0.9.10",
     "@tailwindcss/vite": "^4.3.3",
-    "tailwindcss": "^4.3.3"
+    "tailwindcss": "^4.3.3",
+    "typescript": "^6.0.3"
   }
 }

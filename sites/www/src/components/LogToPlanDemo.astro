@@ -1,0 +1,183 @@
+---
+/*
+ * The homepage signature: the visitor logs a session and watches the next one
+ * change. Ported from src/components/landing/LogToPlanHero.tsx, keeping the two
+ * rules that made it what it is — it runs the real engine, and the visitor
+ * performs the claim rather than reading it.
+ *
+ * Ported to vanilla JS, not React, and that is the whole reason it fits.
+ * @astrojs/react would put react + react-dom on a marketing page for one small
+ * state machine: ~45KB gzipped against a 20KB budget that ratchets down only.
+ * The interaction is a three-element array and two buttons. The engine —
+ * `suggestNextSetTarget` — is pure TypeScript with a four-file closure and zero
+ * third-party dependencies, so it ships either way. What React would have
+ * bought here is a render loop we do not need.
+ *
+ * The no-JS state is computed AT BUILD TIME by calling the same function, which
+ * is strictly better than the app's fallback: that one hardcodes `8 × 82.5 kg`
+ * and its own comment admits it "will silently drift if DEFAULT_REP_MIN or
+ * weightStep ever changes". Here it cannot drift, because it is not a literal.
+ */
+import { suggestNextSetTarget, type SetSnapshot } from '@/lib/workout/nextSetTargets';
+import { weightUnitLabel, type UnitsPref } from '@/lib/units';
+
+/** Last session: every working set finished at the top of the range. */
+const LAST_SESSION: SetSnapshot[] = [
+  { reps: 12, weight: 80 },
+  { reps: 12, weight: 80 },
+  { reps: 12, weight: 80 },
+];
+
+const UNITS: UnitsPref = 'metric';
+const UNIT = weightUnitLabel(UNITS);
+const PLANNED_SETS = 3;
+
+// Build-time, from the real engine. If this ever returns null the demo has no
+// honest thing to show, and rendering a plausible-looking number instead is the
+// invented-proof failure the brand guidelines forbid.
+const todayTarget = suggestNextSetTarget(LAST_SESSION, 0, UNITS);
+if (!todayTarget) throw new Error('LogToPlanDemo: engine returned no target for the seed session');
+
+const todayLabel = `${todayTarget.reps} × ${todayTarget.weight} ${UNIT}`;
+---
+
+<div
+  class="flex min-h-[420px] flex-col border-2 border-rule bg-card p-5"
+  data-log-demo
+  data-unit={UNIT}
+  data-planned={PLANNED_SETS}
+  data-seed={JSON.stringify(LAST_SESSION)}
+>
+  <div class="flex items-baseline justify-between gap-3">
+    <p class="eyebrow">Squat · today</p>
+    <p class="eyebrow" data-count>0/{PLANNED_SETS}</p>
+  </div>
+
+  <ul class="mt-4 flex flex-col gap-1.5" data-sets>
+    {Array.from({ length: PLANNED_SETS }, (_, i) => (
+      <li
+        class={`flex items-center gap-3 border-2 px-3 py-2.5 transition-colors duration-200 ${
+          i === 0 ? 'border-red bg-tint' : 'border-rule bg-paper'
+        }`}
+        data-set={i}
+      >
+        <span class="w-4 shrink-0 text-[13px] font-semibold tabular-nums text-quiet">{i + 1}</span>
+        <span
+          class={`text-[15px] font-semibold tabular-nums ${i === 0 ? 'text-ink' : 'text-quiet'}`}
+          data-set-label
+        >
+          {todayLabel}
+        </span>
+        <span class="ml-auto hidden text-[15px] font-extrabold text-red" data-check aria-hidden="true">✓</span>
+      </li>
+    ))}
+  </ul>
+
+  <!-- The payoff. Before: why today asks for this. After: what it changed. -->
+  <div class="mt-4 min-h-[4.5rem] border-2 border-rule bg-paper px-3 py-2.5" aria-live="polite" data-why>
+    <p class="text-[14px] leading-[1.5] text-quiet">
+      Last squat session you finished 3 × 12 at 80 {UNIT}, so today asks for more load.
+    </p>
+  </div>
+
+  <!-- Not `.primary-action`: the hero CTA and the closing field own this page's
+       red, and a third would dilute both. Measured by the red-action guard. -->
+  <button
+    type="button"
+    class="mt-4 flex min-h-[44px] w-full items-center justify-center gap-2 border-2 border-red bg-tint py-3 text-[15px] font-semibold text-ink transition-colors hover:bg-red hover:text-paper"
+    data-log
+  >
+    Log set <span class="tabular-nums text-quiet" data-log-target>{todayLabel}</span>
+  </button>
+
+  <a
+    href="/welcome"
+    class="mt-2 hidden min-h-[44px] w-full items-center justify-center gap-2 border-2 border-red bg-tint py-3 text-[15px] font-semibold text-ink transition-colors hover:bg-red hover:text-paper"
+    data-start
+  >
+    Do this with your own numbers →
+  </a>
+
+  <button
+    type="button"
+    class="mt-2 hidden min-h-[44px] w-full text-[13px] text-quiet underline underline-offset-4 hover:text-ink"
+    data-replay
+  >
+    Replay
+  </button>
+
+  <p class="eyebrow mt-4">Demo · same engine as the app</p>
+</div>
+
+<script>
+  import { suggestNextSetTarget } from '@/lib/workout/nextSetTargets';
+
+  /*
+   * ~50 lines of DOM instead of a framework. The engine import is the only
+   * dependency, and it is the point: every number below comes from the same
+   * function `/active` calls, so "plans from your logs" is demonstrated rather
+   * than asserted.
+   */
+  const root = document.querySelector<HTMLElement>('[data-log-demo]');
+  if (root) {
+    const unit = root.dataset.unit ?? 'kg';
+    const planned = Number(root.dataset.planned ?? 3);
+    const seed = JSON.parse(root.dataset.seed ?? '[]');
+
+    const rows = [...root.querySelectorAll<HTMLElement>('[data-set]')];
+    const count = root.querySelector<HTMLElement>('[data-count]');
+    const why = root.querySelector<HTMLElement>('[data-why]');
+    const logBtn = root.querySelector<HTMLElement>('[data-log]');
+    const startBtn = root.querySelector<HTMLElement>('[data-start]');
+    const replayBtn = root.querySelector<HTMLElement>('[data-replay]');
+
+    const fmt = (t: { reps: number; weight: number }) => `${t.reps} × ${t.weight} ${unit}`;
+    const today = suggestNextSetTarget(seed, 0, 'metric');
+
+    let logged: { reps: number; weight: number }[] = [];
+
+    function render() {
+      if (!today) return;
+      const done = logged.length >= planned;
+      if (count) count.textContent = `${logged.length}/${planned}`;
+
+      rows.forEach((row, i) => {
+        const isDone = i < logged.length;
+        const isNext = i === logged.length && !done;
+        row.className =
+          'flex items-center gap-3 border-2 px-3 py-2.5 transition-colors duration-200 ' +
+          (isDone ? 'border-rule bg-paper' : isNext ? 'border-red bg-tint' : 'border-rule bg-paper');
+        row.querySelector<HTMLElement>('[data-check]')?.classList.toggle('hidden', !isDone);
+        const label = row.querySelector<HTMLElement>('[data-set-label]');
+        if (label) label.className = `text-[15px] font-semibold tabular-nums ${isDone || isNext ? 'text-ink' : 'text-quiet'}`;
+      });
+
+      const next = logged.length ? suggestNextSetTarget(logged, 0, 'metric') : null;
+      if (why) {
+        why.innerHTML = done && next
+          ? `<p class="text-[14px] leading-[1.5] text-quiet"><span class="eyebrow eyebrow-live">Next session</span> <span class="tabular-nums text-ink">${fmt(next)}</span> — one more rep than today, because you finished all three sets.</p>`
+          : `<p class="text-[14px] leading-[1.5] text-quiet">Last squat session you finished 3 × 12 at 80 ${unit}, so today asks for more load.</p>`;
+      }
+
+      logBtn?.classList.toggle('hidden', done);
+      logBtn?.classList.toggle('flex', !done);
+      startBtn?.classList.toggle('hidden', !done);
+      startBtn?.classList.toggle('flex', done);
+      replayBtn?.classList.toggle('hidden', !done);
+      replayBtn?.classList.toggle('block', done);
+    }
+
+    logBtn?.addEventListener('click', () => {
+      if (!today || logged.length >= planned) return;
+      logged = [...logged, { reps: today.reps, weight: today.weight }];
+      render();
+    });
+
+    replayBtn?.addEventListener('click', () => {
+      logged = [];
+      render();
+    });
+
+    render();
+  }
+</script>

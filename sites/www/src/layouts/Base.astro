@@ -23,6 +23,13 @@ const canonical = new URL(Astro.url.pathname, Astro.site).href;
          default #fff flashes against #f3f2f2 on every navigation. -->
     <meta name="theme-color" content="#f3f2f2" />
 
+    <!-- Same marks as the app: one brand, two surfaces. Both are copied rather
+         than linked because this site deploys to a different host — a relative
+         path to the Next app's /public would 404 on Cloudflare, and a
+         cross-origin link would be a request to another domain for an icon. -->
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+
     <!-- One weight axis, latin subset, 34.9KB. The width axis (62–125) would
          take it to 88.0KB — measured — and condensed display is 2-of-4 in the
          references, so it is an option this surface declines for v1.

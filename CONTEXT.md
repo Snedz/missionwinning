@@ -16,7 +16,7 @@ One screen of truth for any AI tool or human joining cold. Read this, then [AGEN
 
 ---
 
-## Now (2026-08-09 · web `2026.07-unified.638` · Android `1.24.1`)
+## Now (2026-08-09 · web `2026.07-unified.639` · Android `1.24.1`)
 
 > The ONLY "where we are" block in the repo — [ORCHESTRATION.md](ORCHESTRATION.md) points here.
 >
@@ -298,6 +298,7 @@ One screen of truth for any AI tool or human joining cold. Read this, then [AGEN
 - **`.631`:** (`2026.07-unified.631`) **Feel Wave 7** — Landing FAQ 44px; About/Vision display-section; Library/Press tap floor.
 - **`.632`:** (`2026.07-unified.632`) **Feel Wave 8** — Beta bootstrap keys (no raw i18n flash); private gate taps; First Steps quiet dismiss.
 - **`.633`:** (`2026.07-unified.633`) **Feel Wave 9** — Builder Field manual: 44px steps, Blank/Start own red, Save outline.
+- **`.639`:** (`2026.07-unified.639`) **WWW live islands** — both demos ported to **vanilla, not React** (~45KB of react/react-dom for two state machines vs **1.6KB** shipped). Hero demo still runs the real `suggestNextSetTarget`; its no-JS state is computed at build time, so it cannot drift like the app's hardcoded fallback. `CoachAdaptDemo` runs **no** engine — literal weeks, recorded so nobody upgrades the claim. Renders complete with JS off. [sites/www/INDEX.md](sites/www/INDEX.md).
 - **`.638`:** (`2026.07-unified.638`) **WWW homepage** — ten sections, compact and desktop as separate compositions (rails crop at the edge; no hamburger). Copy/counts imported from the app at build time, never typed. Still **zero JS**. Rhythm guard rewritten after two of its own defects, then caught a real one: closed `<details>` children keep a layout box under `content-visibility: hidden`, so it was measuring invisible text. 8 boundaries, all in band. [DESIGN_PROPOSAL_WWW.md](docs/DESIGN_PROPOSAL_WWW.md).
 - **`.637`:** (`2026.07-unified.637`) **WWW surface scaffold** — `sites/www/` (Astro 7 + Tailwind 4, static, `npm --prefix`, zero JS). Tokens **generated** from `src/index.css` and gate-checked as a third target; gate now **19 steps** (15 = www build + checks, moved out of CI-only because `ciTruth` says a workflow-only check is unchecked while Actions is blocked). Rhythm measured, not asserted — caught its own 418px statement gap. Ban list = 3 new rules, `scope: WWW_ONLY`. 20 mutants. [DESIGN_PROPOSAL_WWW.md](docs/DESIGN_PROPOSAL_WWW.md).
 - **`.636`:** (`2026.07-unified.636`) **Global legal posture** — multi-jurisdiction sanctions/trade controls; no US-primary / OFAC-only consumer voice; commercial exclusions unchanged. Counsel export global freeze. **Not legal advice.**
