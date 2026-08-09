@@ -180,7 +180,7 @@ export function LibraryPage() {
               placeholder={t('librarySearchPlaceholder', { defaultValue: 'Search name or muscle...' })}
               value={filters.query}
               onChange={(e) => setFilter('query', e.target.value)}
-              className="pl-9"
+              className="min-h-[44px] pl-9"
             />
           </div>
           <Button
@@ -356,10 +356,18 @@ export function LibraryPage() {
             </div>
 
             <div className="flex gap-2 pt-2">
-              <Button variant="outline" className="flex-1" onClick={clearFilters}>
+              <Button
+                variant="outline"
+                className="min-h-[44px] flex-1 tap-target"
+                onClick={clearFilters}
+              >
                 {t('libraryClearFilters', { defaultValue: 'Clear filters' })}
               </Button>
-              <Button variant="default" className="flex-1" onClick={() => setFiltersOpen(false)}>
+              <Button
+                variant="default"
+                className="primary-action min-h-[44px] flex-1 tap-target"
+                onClick={() => setFiltersOpen(false)}
+              >
                 {t('libraryApplyFilters', { defaultValue: 'Done' })}
               </Button>
             </div>

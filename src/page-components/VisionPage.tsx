@@ -36,7 +36,8 @@ export function VisionPage() {
   return (
     <div className="space-y-10">
       <section className="space-y-4">
-        <p className="text-lg font-semibold leading-relaxed text-foreground">
+        {/* Field manual: lead in display face, body quiet. */}
+        <p className="display-section max-w-[22ch] text-balance text-foreground">
           {t('infoVisionLead', {
             defaultValue: 'Train anywhere. Coach from what you actually logged.',
           })}
@@ -58,7 +59,7 @@ export function VisionPage() {
 
       <section className="card-section space-y-4 pt-6">
         <p className="section-index">01</p>
-        <h2 className="font-display text-2xl font-extrabold tracking-[-0.015em] text-foreground">
+        <h2 className="display-section max-w-[24ch] text-balance text-foreground">
           {t('infoVisionCorePromise', {
             defaultValue: 'Core promise: free forever for the mission',
           })}
@@ -89,7 +90,7 @@ export function VisionPage() {
 
       <section className="card-section space-y-4 pt-6">
         <p className="section-index">02</p>
-        <h2 className="font-display text-2xl font-extrabold tracking-[-0.015em] text-foreground">
+        <h2 className="display-section max-w-[24ch] text-balance text-foreground">
           {t('infoVisionSuperApp', { defaultValue: 'Six pillars' })}
         </h2>
         <p className="text-base leading-relaxed text-muted-foreground">
@@ -109,7 +110,7 @@ export function VisionPage() {
       {!freeBeta && (
         <section className="card-section space-y-4 pt-6">
           <p className="section-index">03</p>
-          <h2 className="font-display text-2xl font-extrabold tracking-[-0.015em] text-foreground">
+          <h2 className="display-section max-w-[24ch] text-balance text-foreground">
             {t('infoVisionSuperBundle', { defaultValue: 'Super Bundle' })}
           </h2>
           <p className="text-base leading-relaxed text-muted-foreground">

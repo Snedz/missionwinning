@@ -30,9 +30,7 @@ function EditorialSection({
   return (
     <section className="card-section space-y-4 pt-6">
       <p className="section-index">{index}</p>
-      <h2 className="font-display text-2xl font-extrabold tracking-[-0.015em] text-foreground">
-        {title}
-      </h2>
+      <h2 className="display-section max-w-[22ch] text-balance text-foreground">{title}</h2>
       {children}
     </section>
   );

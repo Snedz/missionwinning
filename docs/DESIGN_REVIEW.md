@@ -63,6 +63,7 @@ Review on a 390×844 phone viewport first (the Playwright target); desktop secon
 
 | Date | Reviewer | Flows | Issues filed |
 |------|----------|-------|--------------|
+| 2026-08-09 | Agent (Feel Wave 7 · .631) | Landing FAQ, About, Vision, Library, Press | Public residual display type + 44px taps. |
 | 2026-08-09 | Agent (Feel Wave 6 · .630) | Welcome, Beta start | Entry path briefing type; primary CTA first; 44px goal chips. |
 | 2026-08-09 | Agent (Feel Wave 5 · .629) | Guidebook chapter, Learn course, Coaching, Feedback, History day | Red discipline + form-first utility + EmptyState. |
 | 2026-08-09 | Agent (Feel Wave 4 · .628) | Track, Assessments, Calculators, Guidebook, Programs | Track log-first; toolkit residual folded. Field manual A complete on More toolkit. |
