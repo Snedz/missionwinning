@@ -10,13 +10,15 @@
 
 ## 0. Territory (founder policy)
 
-**Hosted service is not available in:**
+**Platform posture:** global consumer product (Alibaba-style multi-market), not a single-country “home market.” Entity remains Mission Winning LLC (Texas) for governing law — that is formation fact, not marketing focus.
+
+**Hosted service commercial exclusions:**
 - **Europe** (EEA, UK, Switzerland, France, associated territories)
 - **Canada**
-- **Ukraine** (commercial product exclusion — **not** an OFAC comprehensive country embargo of free Ukraine)
+- **Ukraine** (commercial product exclusion — not marketed as single-country sanctions compliance)
 - **Organisation of Islamic Cooperation (OIC)** — all 57 member states
 
-**Sanctions honesty (counsel):** US OFAC comprehensively restricts certain **occupied regions** of Ukraine (Crimea / DNR / LNR) and heavily targets Russia-linked actors — it does **not** require blocking all of sovereign Ukraine. Founder chose **UA-only** as a commercial exclusion while **RU/BY remain open** in product logic (asymmetric vs US foreign-policy posture; pin in tests). Do not market the UA block as “sanctions compliance.”
+**Sanctions honesty (counsel):** Consumer copy uses **multi-jurisdiction** sanctions / export / trade-control language (restricted-party lists and laws where we and partners operate) — not a US-only OFAC voice. Founder chose **UA-only** as a commercial exclusion while **RU/BY remain open** in product logic (pin in tests). Do not market the UA block as “sanctions compliance.” Counsel may still map partner obligations under individual regimes (including US/EU/UN lists) offline.
 
 Live policy: [`/regions`](https://missionwinning.com/regions). Product logic: `src/lib/legal/supportedRegions.ts`. Edge: Cloudflare (founder — add **UA**). In-app hard block: signup (`SignInPanel`) + checkout (`/api/checkout`, crypto intent/confirm, `UnlockButton`). Not a substitute for counsel review of geo-blocking/enforcement.
 

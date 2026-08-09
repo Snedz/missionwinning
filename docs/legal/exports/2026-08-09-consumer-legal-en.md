@@ -1,4 +1,6 @@
-# Consumer legal pack (English) — export 2026-08-09
+# Consumer legal pack (English) — export 2026-08-09 (historical)
+
+> **Superseded** by [2026-08-09-consumer-legal-global-en.md](2026-08-09-consumer-legal-global-en.md) — global multi-jurisdiction sanctions posture (not US-primary / OFAC-only).
 
 **Not legal advice.** Snapshot after Ukraine commercial exclusion + sanctions clause + full consumer refresh.
 **Entity:** Mission Winning LLC (Texas).

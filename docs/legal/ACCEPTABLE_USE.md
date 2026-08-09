@@ -59,7 +59,7 @@ You must **not** use the Software, hosted services, generated content, or any de
 ### 2.7 Territory and sanctions abuse
 
 - Using the **hosted** Service from an unsupported region in violation of Supported Regions
-- Using the Service in a way that would cause Mission Winning LLC to violate U.S. sanctions or export controls (including comprehensively embargoed jurisdictions and other persons or destinations restricted under applicable U.S. sanctions or export control programs)
+- Using the Service in a way that would cause Mission Winning LLC or its partners to violate applicable sanctions, export-control, or trade-control laws (including comprehensively restricted jurisdictions and other persons or destinations restricted under those programs)
 - Circumventing regional limits for signup or payments (false address, VPN abuse for billing, etc.)
 
 ---
