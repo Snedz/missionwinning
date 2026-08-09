@@ -121,6 +121,9 @@ const ATHLETE_EN: Record<string, string> = {
   accountTitle: 'Settings',
   accountSubtitle:
     'Sign-in, units, notifications and backup. Progress stays on this device unless you sign in.',
+  accountPrimaryHint: 'What you need day to day',
+  accountMoreSettings: 'More settings',
+  accountOwnerSection: 'Owner tools',
   navAccount: 'Account',
   moreAccountDesc: 'Settings, notifications, backup',
 
