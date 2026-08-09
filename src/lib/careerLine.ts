@@ -107,3 +107,28 @@ export function computeCareerLine(history: readonly CompletedWorkoutLog[]): Care
 export function hasCareer(line: CareerLine): boolean {
   return line.sessions > 0;
 }
+
+/**
+ * The signature line on the Athlete Page — derived counts only, never rank/XP.
+ *
+ * S2.5 (You composition): the identity block needs one sentence that is present
+ * after a single session so the page reads as a person, not a stack of empty
+ * shelves. Callers format with i18n; this returns the numbers only so locales
+ * never re-derive which fields belong on the line.
+ */
+export type CareerSignature = {
+  sessions: number;
+  bestWeek: number;
+  daysTrained: number;
+  distinctExercises: number;
+};
+
+export function careerSignature(line: CareerLine): CareerSignature | null {
+  if (!hasCareer(line)) return null;
+  return {
+    sessions: line.sessions,
+    bestWeek: line.bestWeek,
+    daysTrained: line.daysTrained,
+    distinctExercises: line.distinctExercises,
+  };
+}

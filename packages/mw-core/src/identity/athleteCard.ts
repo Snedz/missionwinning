@@ -36,6 +36,12 @@ export interface AthleteCardConfig {
   backdrop: CardBackdropId;
   /** Badge ids the athlete chose to show. Capped by tier; order is theirs. */
   badges: string[];
+  /**
+   * Display number 00–99 (CLUB_PLAN Athlete Card). Always available — identity,
+   * not a tier unlock. `null` = unset. Optional on the type so older stores and
+   * partial writes still parse; resolution always returns a clamped value.
+   */
+  callSignNumber?: number | null;
 }
 
 /** The defaults every athlete has from their first session. Never locked. */
@@ -43,7 +49,49 @@ export const DEFAULT_CARD_CONFIG: AthleteCardConfig = {
   frame: 'hairline',
   backdrop: 'paper',
   badges: [],
+  callSignNumber: null,
 };
+
+/**
+ * Clamp a stored call-sign number to 0–99, or `null` if unset/invalid.
+ * Accepts integers and 1–2 digit decimal strings; never invents a number.
+ */
+export function clampCallSignNumber(raw: unknown): number | null {
+  if (raw === null || raw === undefined || raw === '') return null;
+  let n: number;
+  if (typeof raw === 'string') {
+    const t = raw.trim();
+    if (!/^\d{1,2}$/.test(t)) return null;
+    n = Number(t);
+  } else if (typeof raw === 'number') {
+    n = raw;
+  } else {
+    return null;
+  }
+  if (!Number.isFinite(n)) return null;
+  const i = Math.trunc(n);
+  if (i < 0 || i > 99) return null;
+  return i;
+}
+
+/** Zero-padded `00`–`99` for display and share titles. */
+export function formatCallSignNumber(n: number): string {
+  return String(n).padStart(2, '0');
+}
+
+/**
+ * Share-card / hero title: optional `07  Name`. Number first so two athletes with
+ * the same call sign still read as different people at a glance.
+ */
+export function formatAthleteCardTitle(
+  name: string,
+  callSignNumber: number | null | undefined
+): string {
+  const base = (name ?? '').trim() || 'Athlete';
+  const n = clampCallSignNumber(callSignNumber);
+  if (n === null) return base;
+  return `${formatCallSignNumber(n)}  ${base}`;
+}
 
 const FRAMES_BY_TIER: Record<CardTier, CardFrameId[]> = {
   1: ['hairline'],
@@ -121,5 +169,8 @@ export function resolveCardCosmetics(
   // De-dupe before slicing, or a repeated pick spends two shelf slots on one badge.
   const badges = [...new Set(picked)].slice(0, badgeSlots(tier));
 
-  return { frame, backdrop, badges };
+  // Number is identity, not tier-gated — but a hand-edited 100 must not render.
+  const callSignNumber = clampCallSignNumber(config?.callSignNumber);
+
+  return { frame, backdrop, badges, callSignNumber };
 }

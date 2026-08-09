@@ -84,6 +84,8 @@ type RewardsStrings = {
   /** `.610` — the Athlete Card. Picks-from-sets identity; no free text, no uploads. */
   athleteCardTitle: string;
   athleteCardBody: string;
+  athleteCardPreviewKicker: string;
+  athleteCardPreviewFrame: string;
   athleteCardFrame: string;
   athleteCardBackdrop: string;
   athleteCardBadges: string;
@@ -96,6 +98,8 @@ type RewardsStrings = {
 const en: RewardsStrings = {
   athleteCardTitle: 'Your card',
   athleteCardBody: '{{rank}} · tier {{tier}}. Training unlocks more of the card.',
+  athleteCardPreviewKicker: 'On the path',
+  athleteCardPreviewFrame: '{{frame}} · {{backdrop}}',
   athleteCardFrame: 'Frame',
   athleteCardBackdrop: 'Backdrop',
   athleteCardBadges: 'Badges — pick up to {{slots}}',

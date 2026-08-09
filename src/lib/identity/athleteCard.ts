@@ -20,6 +20,7 @@
 
 import {
   DEFAULT_CARD_CONFIG,
+  formatAthleteCardTitle,
   resolveCardCosmetics,
   tierForLevel,
   type AthleteCardConfig,
@@ -32,15 +33,27 @@ import type { ShareCardData } from '@/lib/share/shareCard';
 import { cardCosmetics } from '@/lib/share/cardCosmetics';
 
 export type { AthleteCardConfig };
-export { DEFAULT_CARD_CONFIG, tierForLevel };
+export {
+  DEFAULT_CARD_CONFIG,
+  tierForLevel,
+  formatAthleteCardTitle,
+  formatCallSignNumber,
+  clampCallSignNumber,
+} from '../../../packages/mw-core/src/identity/athleteCard';
 
 /** Raw picks as stored. Always run through `resolveAthleteCard` before rendering. */
 export function loadAthleteCardConfig(): AthleteCardConfig {
   return readJson<AthleteCardConfig>(STORAGE_KEYS.athleteCard, DEFAULT_CARD_CONFIG);
 }
 
+/** Fired after a card pick write so sibling editors on `/profile` stay in step. */
+export const ATHLETE_CARD_CHANGED = 'mw-athlete-card';
+
 export function saveAthleteCardConfig(config: AthleteCardConfig): void {
   writeJson(STORAGE_KEYS.athleteCard, config);
+  if (typeof window !== 'undefined') {
+    window.dispatchEvent(new Event(ATHLETE_CARD_CHANGED));
+  }
 }
 
 /**
@@ -83,7 +96,7 @@ export function buildAthleteCardData(
 
   return {
     kicker: 'ON THE PATH',
-    title: operatorName,
+    title: formatAthleteCardTitle(operatorName, resolved.callSignNumber),
     stats,
     prLine: shown.length > 0 ? shown.map((b) => b.titleDefault).join(' · ') : null,
     footer: 'missionwinning.com — free logger, no account',

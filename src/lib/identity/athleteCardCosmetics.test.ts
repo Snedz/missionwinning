@@ -23,6 +23,9 @@ import assert from 'node:assert/strict';
 import {
   DEFAULT_CARD_CONFIG,
   badgeSlots,
+  clampCallSignNumber,
+  formatAthleteCardTitle,
+  formatCallSignNumber,
   resolveCardCosmetics,
   tierForLevel,
   unlockedBackdrops,
@@ -125,6 +128,36 @@ describe('resolveCardCosmetics — the clamp', () => {
       assert.equal(resolved.frame, DEFAULT_CARD_CONFIG.frame);
       assert.equal(resolved.backdrop, DEFAULT_CARD_CONFIG.backdrop);
       assert.deepEqual(resolved.badges, []);
+      assert.equal(resolved.callSignNumber, null);
     }
+  });
+
+  it('clamps call-sign number to 0–99 and never invents one', () => {
+    assert.equal(resolveCardCosmetics({ callSignNumber: 7 }, 1).callSignNumber, 7);
+    assert.equal(resolveCardCosmetics({ callSignNumber: 0 }, 1).callSignNumber, 0);
+    assert.equal(resolveCardCosmetics({ callSignNumber: 99 }, 1).callSignNumber, 99);
+    assert.equal(resolveCardCosmetics({ callSignNumber: 100 }, 1).callSignNumber, null);
+    assert.equal(resolveCardCosmetics({ callSignNumber: -1 }, 1).callSignNumber, null);
+    assert.equal(resolveCardCosmetics({ callSignNumber: 7.5 }, 1).callSignNumber, 7);
+    assert.equal(resolveCardCosmetics({}, 1).callSignNumber, null);
+  });
+});
+
+describe('call-sign number formatting', () => {
+  it('pads to two digits and builds titles without inventing a number', () => {
+    assert.equal(formatCallSignNumber(7), '07');
+    assert.equal(formatCallSignNumber(0), '00');
+    assert.equal(formatCallSignNumber(99), '99');
+    assert.equal(formatAthleteCardTitle('Ada', 7), '07  Ada');
+    assert.equal(formatAthleteCardTitle('Ada', null), 'Ada');
+    assert.equal(formatAthleteCardTitle('  ', null), 'Athlete');
+  });
+
+  it('clamp accepts 1–2 digit strings and rejects junk', () => {
+    assert.equal(clampCallSignNumber('07'), 7);
+    assert.equal(clampCallSignNumber('99'), 99);
+    assert.equal(clampCallSignNumber('100'), null);
+    assert.equal(clampCallSignNumber('nope'), null);
+    assert.equal(clampCallSignNumber(undefined), null);
   });
 });

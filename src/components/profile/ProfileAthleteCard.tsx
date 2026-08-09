@@ -20,7 +20,7 @@
  * there is no palette to go off.
  */
 
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { IdCard, Share2 } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -29,7 +29,9 @@ import { useWorkoutStore } from '@/store/workoutStore';
 import { summarizeRewards, ownedBadgeDefs } from '@/lib/rewards/summary';
 import { loadOperatorName } from '@/lib/leaderboard/computeLocalStats';
 import {
+  ATHLETE_CARD_CHANGED,
   buildAthleteCardData,
+  formatAthleteCardTitle,
   loadAthleteCardConfig,
   saveAthleteCardConfig,
   tierForLevel,
@@ -63,7 +65,20 @@ export function ProfileAthleteCard() {
   const workoutHistory = useWorkoutStore((s) => s.workoutHistory);
   const summary = useMemo(() => summarizeRewards(workoutHistory), [workoutHistory]);
   const [config, setConfig] = useState<AthleteCardConfig>(() => loadAthleteCardConfig());
+  const [operatorName, setOperatorName] = useState('');
   const [busy, setBusy] = useState(false);
+
+  // Identity card writes number/name; this editor writes frames. Same page, two
+  // stores of truth — re-read on the shared event so the live preview cannot lie.
+  useEffect(() => {
+    const reload = () => {
+      setConfig(loadAthleteCardConfig());
+      setOperatorName(loadOperatorName());
+    };
+    reload();
+    window.addEventListener(ATHLETE_CARD_CHANGED, reload);
+    return () => window.removeEventListener(ATHLETE_CARD_CHANGED, reload);
+  }, []);
 
   const tier = tierForLevel(summary.level);
   const frames = unlockedFrames(tier);
@@ -102,8 +117,10 @@ export function ProfileAthleteCard() {
     }
   };
 
+  const previewTitle = formatAthleteCardTitle(operatorName, config.callSignNumber);
+
   return (
-    <Card>
+    <Card className="bg-card" data-testid="athlete-card-editor">
       <CardHeader className="pb-2">
         <CardTitle className="flex items-center gap-2 text-base">
           <IdCard className="h-4 w-4" aria-hidden="true" />
@@ -111,13 +128,32 @@ export function ProfileAthleteCard() {
         </CardTitle>
       </CardHeader>
       <CardContent className="space-y-4">
-        <p className="text-sm text-muted-foreground">
-          {t('athleteCardBody', {
-            rank: summary.rankTitleDefault,
-            tier,
-            defaultValue: `${summary.rankTitleDefault} · tier ${tier}. Training unlocks more of the card.`,
-          })}
-        </p>
+        {/*
+          Live preview — the CLUB_PLAN editor pattern (preview on top, picks below).
+          Paper/ink poster strip only: no canvas, no share-catalog weight on idle paint.
+        */}
+        <div
+          className="border border-border bg-background p-4"
+          data-testid="athlete-card-preview"
+          aria-hidden="true"
+        >
+          <p className="eyebrow text-primary">{t('athleteCardPreviewKicker', { defaultValue: 'On the path' })}</p>
+          <p className="mt-2 text-xl font-extrabold tracking-tight">{previewTitle}</p>
+          <p className="mt-1 text-sm text-muted-foreground">
+            {t('athleteCardBody', {
+              rank: summary.rankTitleDefault,
+              tier,
+              defaultValue: `${summary.rankTitleDefault} · tier ${tier}. Training unlocks more of the card.`,
+            })}
+          </p>
+          <p className="mt-3 text-xs text-muted-foreground">
+            {t('athleteCardPreviewFrame', {
+              frame: FRAME_LABEL[config.frame] ?? config.frame,
+              backdrop: BACKDROP_LABEL[config.backdrop] ?? config.backdrop,
+              defaultValue: `${FRAME_LABEL[config.frame] ?? config.frame} · ${BACKDROP_LABEL[config.backdrop] ?? config.backdrop}`,
+            })}
+          </p>
+        </div>
 
         <fieldset className="space-y-2">
           <legend className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">

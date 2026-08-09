@@ -9,9 +9,15 @@
  * exactly backwards for a product whose whole social thesis is
  * profile-not-feed (docs/IDENTITY_SOCIAL_PLAN.md).
  *
- * Storage is unchanged and shared: `saveOperatorName` is still the single
- * writer, so this editor and the leaderboard's read the same value and cannot
- * drift.
+ * **S2.5** adds the call-sign number (00–99, CLUB_PLAN Athlete Card) and a
+ * derived signature line so the first viewport reads as a person, not a
+ * settings remnant. Number is picks-from-set, stored with card cosmetics,
+ * always available (not tier-gated). Signature is career counts only — never
+ * rank or XP (C4 spirit on-surface).
+ *
+ * Storage is unchanged and shared for the name: `saveOperatorName` is still the
+ * single writer. Number rides `athleteCard` config so share and this editor
+ * cannot drift.
  *
  * **No red action.** This is a record, not a task — red means "do this now"
  * (DESIGN_REVIEW colour semantics), and a name field never does. The Save is an
@@ -25,15 +31,27 @@
  * reason gets its own line.
  */
 
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { loadOperatorName, saveOperatorName } from '@/lib/leaderboard/computeLocalStats';
 import { DISPLAY_NAME_MAX, type DisplayNameRejection } from '@/lib/identity/displayName';
+import {
+  ATHLETE_CARD_CHANGED,
+  clampCallSignNumber,
+  formatAthleteCardTitle,
+  formatCallSignNumber,
+  loadAthleteCardConfig,
+  saveAthleteCardConfig,
+  type AthleteCardConfig,
+} from '@/lib/identity/athleteCard';
 import { formatLocalDateKey } from '@/lib/time/localDate';
-import type { CareerLine } from '@/lib/careerLine';
+import { formatLocalNumber } from '@/lib/i18n/formatLocale';
+import { careerSignature, type CareerLine } from '@/lib/careerLine';
+
+const NUMBER_OPTIONS: number[] = Array.from({ length: 100 }, (_, i) => i);
 
 export function AthleteIdentityCard({ career }: { career: CareerLine }) {
   // `i18n.language`, never the ambient locale — `localeFormat.test.ts` discovers
@@ -41,12 +59,26 @@ export function AthleteIdentityCard({ career }: { career: CareerLine }) {
   // exactly the kind of number that renders wrong for a whole timezone band.
   const { t, i18n } = useTranslation();
   const [callSign, setCallSign] = useState('');
+  const [number, setNumber] = useState<number | null>(null);
   const [saved, setSaved] = useState(false);
   const [rejection, setRejection] = useState<DisplayNameRejection | null>(null);
 
   // localStorage is client-only; reading during render would differ between the
-  // server pass and the first client pass.
-  useEffect(() => setCallSign(loadOperatorName()), []);
+  // server pass and the first client pass. Also re-read when the card editor
+  // writes cosmetics so a shared number cannot fork across the two cards.
+  useEffect(() => {
+    const reload = () => {
+      setCallSign(loadOperatorName());
+      setNumber(clampCallSignNumber(loadAthleteCardConfig().callSignNumber));
+    };
+    reload();
+    window.addEventListener(ATHLETE_CARD_CHANGED, reload);
+    return () => window.removeEventListener(ATHLETE_CARD_CHANGED, reload);
+  }, []);
+
+  const sig = useMemo(() => careerSignature(career), [career]);
+  const heroTitle = formatAthleteCardTitle(callSign, number);
+  const hasName = callSign.trim().length > 0;
 
   const commit = () => {
     const verdict = saveOperatorName(callSign);
@@ -57,6 +89,13 @@ export function AthleteIdentityCard({ career }: { career: CareerLine }) {
     }
     setRejection(null);
     setCallSign(loadOperatorName());
+
+    const next: AthleteCardConfig = {
+      ...loadAthleteCardConfig(),
+      callSignNumber: clampCallSignNumber(number),
+    };
+    saveAthleteCardConfig(next);
+    setNumber(clampCallSignNumber(next.callSignNumber));
     setSaved(true);
   };
 
@@ -79,42 +118,100 @@ export function AthleteIdentityCard({ career }: { career: CareerLine }) {
     }
   };
 
+  const n = (value: number) => formatLocalNumber(value, i18n.language);
+
   return (
-    <Card className="bg-card">
+    <Card className="bg-card" data-testid="athlete-identity-card">
       <CardContent className="pt-6">
-        <p className="eyebrow mb-3">{t('athleteIdentityTitle', { defaultValue: 'Call sign' })}</p>
+        <p className="eyebrow mb-2">{t('athleteIdentityTitle', { defaultValue: 'Call sign' })}</p>
 
-        <label htmlFor="athlete-call-sign" className="sr-only">
-          {t('athleteIdentityTitle', { defaultValue: 'Call sign' })}
-        </label>
-        <div className="flex flex-wrap items-center gap-2">
-          <Input
-            id="athlete-call-sign"
-            value={callSign}
-            maxLength={DISPLAY_NAME_MAX}
-            onChange={(e) => {
-              setCallSign(e.target.value);
-              setSaved(false);
-              setRejection(null);
-            }}
-            onBlur={commit}
-            className="max-w-[16rem]"
-          />
-          <Button variant="outline" onClick={commit} className="tap-target">
-            {t('athleteIdentitySave', { defaultValue: 'Save' })}
-          </Button>
-        </div>
-
-        <p className="mt-3 text-sm text-muted-foreground">
-          {career.firstSessionOn
-            ? t('athleteIdentitySince', {
-                date: formatLocalDateKey(career.firstSessionOn, i18n.language),
-                defaultValue: `Training here since ${formatLocalDateKey(career.firstSessionOn, i18n.language)}`,
-              })
-            : t('athleteIdentityNoStart', {
-                defaultValue: 'Your first logged session starts the record.',
-              })}
+        {/* First-viewport hero: who you are, before any form controls. */}
+        <p
+          className="display-section text-foreground"
+          data-testid="athlete-identity-hero"
+        >
+          {hasName
+            ? heroTitle
+            : t('athleteIdentityHeroEmpty', { defaultValue: 'Pick a call sign' })}
         </p>
+
+        {sig ? (
+          <p className="mt-2 text-sm text-muted-foreground" data-testid="athlete-signature">
+            {t('careerSignature', {
+              sessions: n(sig.sessions),
+              bestWeek: n(sig.bestWeek),
+              days: n(sig.daysTrained),
+              defaultValue: `${n(sig.sessions)} sessions · best week ${n(sig.bestWeek)} · ${n(sig.daysTrained)} days`,
+            })}
+          </p>
+        ) : (
+          <p className="mt-2 text-sm text-muted-foreground">
+            {t('athleteIdentityNoStart', {
+              defaultValue: 'Your first logged session starts the record.',
+            })}
+          </p>
+        )}
+
+        {career.firstSessionOn && (
+          <p className="mt-1 text-xs text-muted-foreground">
+            {t('athleteIdentitySince', {
+              date: formatLocalDateKey(career.firstSessionOn, i18n.language),
+              defaultValue: `Training here since ${formatLocalDateKey(career.firstSessionOn, i18n.language)}`,
+            })}
+          </p>
+        )}
+
+        <div className="mt-5 space-y-3 border-t border-border pt-5">
+          <div className="flex flex-wrap items-end gap-2">
+            <div className="space-y-1">
+              <label htmlFor="athlete-call-number" className="text-xs font-semibold text-muted-foreground">
+                {t('athleteIdentityNumber', { defaultValue: 'Number' })}
+              </label>
+              <select
+                id="athlete-call-number"
+                value={number === null ? '' : String(number)}
+                onChange={(e) => {
+                  const v = e.target.value;
+                  setNumber(v === '' ? null : clampCallSignNumber(v));
+                  setSaved(false);
+                }}
+                className="min-h-[44px] min-w-[5.5rem] rounded-none border border-border bg-background px-3 text-sm tabular-nums tap-target"
+                aria-label={t('athleteIdentityNumber', { defaultValue: 'Number' })}
+              >
+                <option value="">
+                  {t('athleteIdentityNumberNone', { defaultValue: '—' })}
+                </option>
+                {NUMBER_OPTIONS.map((opt) => (
+                  <option key={opt} value={String(opt)}>
+                    {formatCallSignNumber(opt)}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            <div className="min-w-[12rem] flex-1 space-y-1">
+              <label htmlFor="athlete-call-sign" className="text-xs font-semibold text-muted-foreground">
+                {t('athleteIdentityNameLabel', { defaultValue: 'Name' })}
+              </label>
+              <Input
+                id="athlete-call-sign"
+                value={callSign}
+                maxLength={DISPLAY_NAME_MAX}
+                onChange={(e) => {
+                  setCallSign(e.target.value);
+                  setSaved(false);
+                  setRejection(null);
+                }}
+                onBlur={commit}
+                className="max-w-none"
+              />
+            </div>
+
+            <Button variant="outline" onClick={commit} className="tap-target min-h-[44px]">
+              {t('athleteIdentitySave', { defaultValue: 'Save' })}
+            </Button>
+          </div>
+        </div>
 
         {rejection && (
           <p className="mt-2 text-sm text-primary" role="alert">

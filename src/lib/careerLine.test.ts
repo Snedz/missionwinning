@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { computeCareerLine, hasCareer, EMPTY_CAREER_LINE } from './careerLine';
+import { computeCareerLine, hasCareer, careerSignature, EMPTY_CAREER_LINE } from './careerLine';
 import type { CompletedWorkoutLog } from '@/types';
 
 /**
@@ -129,4 +129,18 @@ test('negative and zero loads do not subtract from tonnage', () => {
 
 test('the anchor really is a Monday, so the week assertions mean what they say', () => {
   assert.equal(MONDAY.getDay(), 1);
+});
+
+test('signature is null before any session and carries counts after', () => {
+  assert.equal(careerSignature(EMPTY_CAREER_LINE), null);
+  const line = computeCareerLine([
+    log({ completedAt: dayAt(0) }),
+    log({ completedAt: dayAt(1) }),
+  ]);
+  const sig = careerSignature(line);
+  assert.ok(sig);
+  assert.equal(sig.sessions, 2);
+  assert.equal(sig.daysTrained, 2);
+  assert.equal(sig.bestWeek, line.bestWeek);
+  assert.equal(sig.distinctExercises, line.distinctExercises);
 });
