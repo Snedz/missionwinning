@@ -259,23 +259,27 @@ export function BuilderPage() {
       })}
       showLegalFooter
     >
-      <div className="flex items-center gap-2 text-sm">
+      {/* Field manual: step rail is wayfinding only — no red here. */}
+      <div className="flex flex-wrap items-center gap-2 text-sm" role="navigation" aria-label="Builder steps">
         {stepLabels.map((label, i) => {
           const n = (i + 1) as 1 | 2 | 3;
           const active = step === n;
           const done = step > n;
           return (
             <div key={label} className="flex items-center gap-2">
-              {i > 0 && <ChevronRight className="h-4 w-4 text-muted-foreground" />}
-              <button type="button"
+              {i > 0 && <ChevronRight className="h-4 w-4 text-muted-foreground" aria-hidden />}
+              <button
+                type="button"
                 onClick={() => n < step && setStep(n)}
-                className={` px-3 py-1 text-xs font-semibold border ${
+                className={`min-h-[44px] border-2 px-3 py-2 text-xs font-semibold tap-target ${
                   active
                     ? 'border-primary bg-muted text-primary'
                     : done
                       ? 'border-border text-foreground'
                       : 'border-border text-muted-foreground'
-                }`} disabled={n > step}
+                }`}
+                disabled={n > step}
+                aria-current={active ? 'step' : undefined}
               >
                 {n}. {label}
               </button>
@@ -296,29 +300,34 @@ export function BuilderPage() {
               </CardDescription>
             </CardHeader>
             <CardContent className="flex flex-wrap gap-2">
-              <Button variant="default" onClick={startBlank}>
+              <Button
+                variant="default"
+                className="primary-action min-h-[44px] tap-target"
+                onClick={startBlank}
+              >
                 {t('builderStartBlank', { defaultValue: 'Blank workout' })}
               </Button>
             </CardContent>
           </Card>
 
-          <section id="program-templates"
-            className="content-card border-2 border-border p-5 md:p-6 space-y-4"
+          <section
+            id="program-templates"
+            className="content-card space-y-4 border-2 border-border p-5 md:p-6"
           >
         <div className="flex flex-wrap items-center justify-between gap-2">
-          <h3 className="text-xl font-extrabold flex items-center gap-2">
-            <Layers className="h-6 w-6 text-primary" />
+          <h3 className="flex items-center gap-2 text-xl font-extrabold">
+            <Layers className="h-6 w-6 text-primary" aria-hidden />
             {t('builderTemplatesTitle', { defaultValue: 'Program Templates' })}
           </h3>
           <Badge variant="secondary">
             {t('builderProgramCount', { defaultValue: 'Free programs' })}
           </Badge>
-          <span className="text-xs text-primary">
-            {t('builderTemplatesFoot', {
-              defaultValue: 'Includes new free bodyweight + mobility circuits (vision core)',
-            })}
-          </span>
         </div>
+        <p className="text-xs text-muted-foreground">
+          {t('builderTemplatesFoot', {
+            defaultValue: 'Includes new free bodyweight + mobility circuits (vision core)',
+          })}
+        </p>
 
         <Tabs value={templateCategory}
           onValueChange={(v) => setTemplateCategory(v as ProgramCategory)}
@@ -331,12 +340,16 @@ export function BuilderPage() {
                 ['pro', 'builderTabPro', 'Pro'],
               ] as const
             ).map(([value, key, fallback]) => (
-              <button key={value} type="button" role="tab" aria-selected={templateCategory === value}
+              <button
+                key={value}
+                type="button"
+                role="tab"
+                aria-selected={templateCategory === value}
                 onClick={() => setTemplateCategory(value)}
                 className={
                   templateCategory === value
-                    ? ' border border-primary bg-muted px-4 py-2 text-sm font-semibold text-primary'
-                    : ' border-2 border-border bg-card px-4 py-2 text-sm font-semibold text-muted-foreground hover:text-foreground'
+                    ? 'min-h-[44px] border-2 border-primary bg-muted px-4 py-2 text-sm font-semibold text-primary tap-target'
+                    : 'min-h-[44px] border-2 border-border bg-card px-4 py-2 text-sm font-semibold text-muted-foreground hover:text-foreground tap-target'
                 }
               >
                 {t(key, { defaultValue: fallback })}
@@ -371,7 +384,12 @@ export function BuilderPage() {
                       })}
                     </p>
                   </div>
-                  <Button size="sm" variant="outline" onClick={() => loadSaved(w)}>
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    className="min-h-[44px] tap-target"
+                    onClick={() => loadSaved(w)}
+                  >
                     {t('builderLoadSaved', { defaultValue: 'Load' })}
                   </Button>
                 </CardContent>
@@ -379,8 +397,10 @@ export function BuilderPage() {
             ))}
           </div>
           {savedWorkouts.length > 6 && (
-            <Button variant="ghost" size="sm"
-              className="mt-2 w-full"
+            <Button
+              variant="ghost"
+              size="sm"
+              className="mt-2 min-h-[44px] w-full tap-target"
               onClick={() => setShowAllSaved((v) => !v)}
             >
               {showAllSaved
@@ -497,8 +517,12 @@ export function BuilderPage() {
             <Label htmlFor="workout-name-finish">
               {t('builderWorkoutName', { defaultValue: 'Workout name' })}
             </Label>
-            <Input id="workout-name-finish" placeholder={t('builderWorkoutNamePlaceholder', { defaultValue: 'e.g. Push Day A' })} value={workoutName}
+            <Input
+              id="workout-name-finish"
+              placeholder={t('builderWorkoutNamePlaceholder', { defaultValue: 'e.g. Push Day A' })}
+              value={workoutName}
               onChange={(e) => setWorkoutName(e.target.value)}
+              className="min-h-[44px]"
             />
           </div>
           <p className="text-sm text-muted-foreground">
@@ -507,14 +531,27 @@ export function BuilderPage() {
               defaultValue: `${exercises.length} exercises ready`,
             })}
           </p>
-          <div className="sticky bottom-0 -mx-1 border-t-2 border-border bg-background py-3 flex gap-2">
-            <Button variant="outline" onClick={() => setStep(2)}>
+          {/* Field manual: Start owns red (train now); Save is outline. */}
+          <div className="sticky bottom-0 -mx-1 flex flex-wrap gap-2 border-t-2 border-border bg-background py-3">
+            <Button
+              variant="outline"
+              className="min-h-[44px] tap-target"
+              onClick={() => setStep(2)}
+            >
               {t('builderBack', { defaultValue: 'Back' })}
             </Button>
-            <Button variant="default" className="flex-1 primary-action" onClick={handleSave}>
+            <Button
+              variant="outline"
+              className="min-h-[44px] flex-1 tap-target"
+              onClick={handleSave}
+            >
               {t('builderSaveWorkout', { defaultValue: 'Save workout' })}
             </Button>
-            <Button variant="secondary" onClick={handleStart}>
+            <Button
+              variant="default"
+              className="primary-action min-h-[44px] flex-1 tap-target"
+              onClick={handleStart}
+            >
               {t('builderStartWorkout', { defaultValue: 'Start workout' })}
             </Button>
           </div>

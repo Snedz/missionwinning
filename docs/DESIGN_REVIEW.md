@@ -63,6 +63,7 @@ Review on a 390×844 phone viewport first (the Playwright target); desktop secon
 
 | Date | Reviewer | Flows | Issues filed |
 |------|----------|-------|--------------|
+| 2026-08-09 | Agent (Feel Wave 9 · .633) | Builder | Step rail 44px; Blank/Start red; Save outline. |
 | 2026-08-09 | Agent (Feel Wave 8 · .632) | Beta, private gate, First Steps | Dogfood residual: bootstrap keys, gate taps, quiet dismiss. |
 | 2026-08-09 | Agent (Feel Wave 7 · .631) | Landing FAQ, About, Vision, Library, Press | Public residual display type + 44px taps. |
 | 2026-08-09 | Agent (Feel Wave 6 · .630) | Welcome, Beta start | Entry path briefing type; primary CTA first; 44px goal chips. |

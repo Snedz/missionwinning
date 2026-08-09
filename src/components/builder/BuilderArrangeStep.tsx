@@ -265,7 +265,8 @@ export function BuilderArrangeStep({
             {t('builderBack', { defaultValue: 'Back' })}
           </Button>
           <Button variant="default"
-            className="flex-1 primary-action" disabled={exercises.length === 0}
+            className="primary-action min-h-[44px] flex-1 tap-target"
+            disabled={exercises.length === 0}
             onClick={onContinue}
           >
             {t('builderContinue', { defaultValue: 'Continue' })}
