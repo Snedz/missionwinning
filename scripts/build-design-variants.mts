@@ -44,6 +44,28 @@ const ROOT = path.join(__dirname, '..');
 const ASSETS = path.join(ROOT, '.cache/design-variants');
 const OUT = path.join(ROOT, 'docs/design/variants');
 
+/*
+ * Published artifact URLs, so the board's click-throughs work for anyone it is
+ * shared with rather than only for someone with the repo checked out. Committed
+ * rather than passed in, because a link map that lives in a shell history is a
+ * link map that goes stale silently — the same reason the ban list and the
+ * budgets are inline consts.
+ *
+ * Re-publishing a variant keeps its URL (same file path), so these are stable.
+ * A variant with no entry falls back to its relative filename, which is correct
+ * when the board is opened from disk.
+ */
+const PUBLISHED: Record<string, string> = {
+  'a1-modernist': 'https://claude.ai/code/artifact/139c30b2-c91d-452b-87a6-e4f6c5d97e5f',
+  'b1-sport': 'https://claude.ai/code/artifact/9fb03134-c054-48d7-a0ba-0f202093649e',
+  'b2-archivo-ground': 'https://claude.ai/code/artifact/a1668b45-eba3-41a5-a288-b03299f956e4',
+  'b3-free': 'https://claude.ai/code/artifact/bba23ced-77d4-40c5-aae2-b714d65a28ae',
+  'c1-dossier': 'https://claude.ai/code/artifact/c674506e-d8ef-4718-959b-ffb7a1c59524',
+  'c2-instrument': 'https://claude.ai/code/artifact/dc5f9246-6e16-4b7f-9fcf-1b05efe31d73',
+  'c3-cinematic': 'https://claude.ai/code/artifact/228dd7f1-2744-4573-ac32-1ec26037d6fe',
+  'c4-zine': 'https://claude.ai/code/artifact/a6e4f85a-c34c-4ddf-b182-b95197a8f1e7',
+};
+
 /* The wght+wdth Archivo. The repo's own woff2 carries the weight axis only, so
    condensed and expanded cuts would be synthesised — which is a different
    typeface, badly drawn. This copy is the only source of the width axis. */
@@ -441,7 +463,7 @@ h2{margin:4rem 0 0;font-size:14px;font-weight:700;letter-spacing:.12em;text-tran
 <header>
   <h1>Eight directions for the marketing surface</h1>
   <p class="sub">Every one renders the same DOM and the same copy from <code>sites/www/src/lib/homeContent.ts</code>, and the generator asserts their visible text is identical before writing. The only variable is art direction — so what you are comparing is the design, not the page.</p>
-  <p class="sub">All eight use the same three photographs, because those are the only three that exist. The treatment differs; the frames do not.</p>
+  <p class="sub">All eight use the same three photographs, because those are the only three that exist. The treatment differs; the frames do not.</p>\n  <p class="sub">Each card opens its published page. The same files sit next to this one in <code>docs/design/variants/</code> if you have the repo.</p>
 </header>
 
 ${[...byFamily.entries()]
@@ -450,7 +472,7 @@ ${[...byFamily.entries()]
 <div class="grid">
 ${list
   .map(
-    (t) => `  <a class="cell" href="${t.id}.html">
+    (t) => `  <a class="cell" href="${PUBLISHED[t.id] ?? `${t.id}.html`}">
     <span class="sw">${swatches(t.css)}</span>
     <span class="n">${esc(t.name)}</span>
     ${t.leash ? `<span class="leash">${esc(t.leash)}</span>` : ''}
@@ -475,7 +497,7 @@ ${list
 
 /** Every asset must be inline. A design artifact that needs a network is one
     that stops opening — the reason www-spec-sheet.html is built this way. */
-function assertSelfContained(html: string, label: string) {
+function assertSelfContained(html: string, label: string, allowLinks = false) {
   const refs = [
     ...html.matchAll(/\b(?:src|href)="([^"]+)"/g),
     ...html.matchAll(/url\(([^)]+)\)/g),
@@ -483,7 +505,12 @@ function assertSelfContained(html: string, label: string) {
     .map((m) => m[1].replace(/^['"]|['"]$/g, ''))
     .filter((u) => !u.startsWith('data:') && !/^[a-z0-9-]+\.html$/i.test(u));
 
-  const external = refs.filter((u) => !u.startsWith('#'));
+  // `allowLinks` is for the board only: it is an index OF published pages, so
+  // its hrefs are the point. Assets are still required to be inline — the rule
+  // that matters is "this file renders with no network", not "no URL appears".
+  const external = refs
+    .filter((u) => !u.startsWith('#'))
+    .filter((u) => !(allowLinks && /^https:\/\//.test(u)));
   if (external.length) {
     throw new Error(`${label}: ${external.length} external reference(s): ${external.slice(0, 4).join(', ')}`);
   }
@@ -530,7 +557,7 @@ function main() {
   }
 
   const boardHtml = board();
-  assertSelfContained(boardHtml, 'index');
+  assertSelfContained(boardHtml, 'index', true);
   fs.writeFileSync(path.join(OUT, 'index.html'), boardHtml);
 
   // The property the whole board rests on.
