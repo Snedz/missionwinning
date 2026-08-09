@@ -29,7 +29,9 @@ npm run www:tokens       # regenerate tokens.css from src/index.css
 
 ## What is guarded, and where
 
-Nothing here is enforced by prose. The gate stays at **18 steps** — the two scripts that already run in it were extended to walk this directory, rather than a new step being added, because `gateDocParity.test.ts` asserts `CLAUDE.md`'s numbered list is exactly `1..N`.
+Nothing here is enforced by prose. The gate is **19 steps**: the token-sync and design-system guards were *extended in place* to walk this directory rather than gaining steps of their own, and step 15 was added for the checks that need build output.
+
+> This paragraph said "stays at 18 steps" until `.640`. That was the plan — avoid a step, avoid renumbering `CLAUDE.md` — and `ciTruth.test.ts` overruled it: while Actions is billing-blocked a workflow-only check is not being checked at all, so `www:gate` had to move into `npm run gate`. `CLAUDE.md` was updated and this line was not. **A map of the gate that cannot see a step is how the step stops being run** — `.596` found a documented 16-step gate running 18, and this is the same defect two files later.
 
 | Check | Where it runs | Catches |
 |-------|--------------|---------|

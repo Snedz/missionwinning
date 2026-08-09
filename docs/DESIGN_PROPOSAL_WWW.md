@@ -189,14 +189,16 @@ Judged against the existing bars ([DESIGN_PROPOSAL_3.md](DESIGN_PROPOSAL_3.md) �
 ## 12. Verification
 
 ```bash
-npm run gate                              # all 18 steps stay green — 11 and 14 now also cover sites/www
+npm run gate                              # 19 steps — 11 and 14 now also cover sites/www; 15 is the www build
 npm --prefix sites/www run build          # Astro static build
 npm --prefix sites/www run check          # class contract · JS budget
 npm run www:tokens && git diff --exit-code sites/www/src/styles/tokens.css   # generated file is current
 npx playwright test --config sites/www/playwright.config.ts                  # 390×844 and 1440×900
 ```
 
-The gate **stays at 18 steps**: the token-sync and design-system guards are extended in place, so the steps that already run them cover the new directory. Adding a step would fire `gateDocParity.test.ts`, which parses `CLAUDE.md`'s numbered list and asserts the ordinals are exactly `1..N`.
+The gate is **19 steps**. The token-sync and design-system guards are extended in place, so the steps that already run them cover the new directory — but the class contract, the JS budget and the rhythm check read build output, and they needed a step of their own (15).
+
+This section originally said the gate would *stay* at 18, on the reasoning that a new step fires `gateDocParity.test.ts` and forces a `CLAUDE.md` renumber. `ciTruth.test.ts` overruled it during the build: while Actions is billing-blocked, a check whose only home is a workflow **is not being checked at all**, and its failure message says to move it into `npm run gate`, *"which is the only thing that actually runs"*. Avoiding a doc edit was not a good enough reason to leave three guards unrun.
 
 Plus: a `surface-split`-style spec asserting compact and desktop are structurally different (not one reflow); axe on every route; the red-budget spec from §8 guard 3; and a **no-JS render test** for acceptance bar 9.
 
