@@ -12,6 +12,8 @@ type InfoStrings = {
   infoVisionSubtitle: string;
   infoBetaTitle: string;
   infoBetaSubtitle: string;
+  infoBetaSubtitleBrief: string;
+  infoBetaMoreSteps: string;
   infoFeedbackTitle: string;
   infoFeedbackSubtitle: string;
   infoFeedbackSubtitleBrief: string;
@@ -262,6 +264,8 @@ const en: InfoStrings = {
   infoBetaTitle: 'Start here',
   infoBetaSubtitle:
     'Private beta — help us validate I-Day → first workout → Mission Coach before public launch.',
+  infoBetaSubtitleBrief: 'I-Day → first workout → Mission Coach. Start with the primary path.',
+  infoBetaMoreSteps: 'What we need & more steps',
   infoFeedbackTitle: 'Feedback',
   infoFeedbackSubtitle:
     'What confused you, what broke, and what we should fix next. We read every note.',

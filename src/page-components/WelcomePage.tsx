@@ -206,23 +206,24 @@ export function WelcomePage() {
         >
             {step === 'welcome' && (
               <>
+                {/* Field manual: briefing type — eyebrow → display → one red. */}
                 <div className="space-y-4">
-                  <p className="text-xs font-semibold tracking-wide text-primary">
+                  <p className="eyebrow text-primary">
                     {t('welcomeKicker', { defaultValue: 'About two minutes' })}
                   </p>
-                  <h1 className="text-[1.85rem] md:text-[2.35rem] font-semibold tracking-tight leading-[1.15]">
+                  <h1 className="display-section max-w-[16ch] text-balance text-foreground">
                     {t('welcomeTitle', { defaultValue: 'Welcome' })}
                   </h1>
-                  <p className="text-muted-foreground text-base leading-relaxed max-w-md">
-                    {t('welcomeSubtitle', {
+                  <p className="max-w-md text-base leading-relaxed text-muted-foreground">
+                    {t('welcomeSubtitleBrief', {
                       defaultValue:
-                        'Free offline logging, forever. Answer a few questions, then log your first session — Today always shows what to do next.',
+                        'A few questions, then log your first session. Free offline logging — forever.',
                     })}
                   </p>
                 </div>
 
-                <div className="card-boss px-4 py-3.5 space-y-1.5">
-                  <p className="text-xs font-semibold text-muted-foreground">
+                <div className="card-elevated space-y-1.5 px-4 py-3.5">
+                  <p className="eyebrow text-muted-foreground">
                     {t('welcomePreviewLabel', { defaultValue: 'Your first session is ready' })}
                   </p>
                   <p className="text-sm font-semibold text-foreground">
@@ -231,12 +232,16 @@ export function WelcomePage() {
                       name: firstSession.name,
                     })}
                   </p>
-                  <p className="text-sm text-muted-foreground leading-relaxed">
+                  <p className="text-sm leading-relaxed text-muted-foreground">
                     {firstSessionNames.join(' · ')}
                   </p>
                 </div>
 
-                <button type="button" className="primary-action min-h-[52px] w-full" onClick={handleBegin}>
+                <button
+                  type="button"
+                  className="primary-action min-h-[52px] w-full tap-target"
+                  onClick={handleBegin}
+                >
                   {t('welcomeBegin', { defaultValue: 'Continue' })}
                 </button>
               </>
@@ -244,18 +249,18 @@ export function WelcomePage() {
 
             {step === 'profile' && (
               <>
-                <div>
-                  <p className="mb-2 text-xs font-semibold tracking-wide text-muted-foreground">
+                <div className="space-y-2">
+                  <p className="eyebrow text-muted-foreground">
                     {isEdit
                       ? t('editJourneyProfile', { defaultValue: 'Edit profile' })
                       : t('welcomeProfileEyebrow', { defaultValue: 'About you' })}
                   </p>
-                  <h2 className="text-[1.5rem] md:text-[1.75rem] font-semibold tracking-tight mb-1 leading-tight">
+                  <h2 className="display-section max-w-[18ch] text-balance text-foreground">
                     {isEdit
                       ? t('editJourneyProfile', { defaultValue: 'Edit profile' })
                       : t('welcomeProfileTitle', { defaultValue: 'Three quick questions' })}
                   </h2>
-                  <p className="text-sm text-muted-foreground leading-relaxed">
+                  <p className="text-sm leading-relaxed text-muted-foreground">
                     {isEdit
                       ? t('welcomeProfileEditHint', {
                           defaultValue:
@@ -308,6 +313,7 @@ export function WelcomePage() {
                           type="button"
                           size="sm"
                           variant={selected ? 'selected' : 'outline'}
+                          className="min-h-[44px] tap-target"
                           onClick={() => setPrimaryGoal(value)}
                         >
                           {t(labelKey, { defaultValue: GOAL_PRESET_DEFAULTS[id] })}
@@ -324,7 +330,11 @@ export function WelcomePage() {
                     })}
                   />
                 </label>
-                <button type="button" className="primary-action min-h-[52px] w-full" onClick={handleProfileNext}>
+                <button
+                  type="button"
+                  className="primary-action min-h-[52px] w-full tap-target"
+                  onClick={handleProfileNext}
+                >
                   {isEdit
                     ? t('saveProfile', { defaultValue: 'Save profile' })
                     : t('welcomeContinue', { defaultValue: 'Continue' })}
@@ -343,22 +353,23 @@ export function WelcomePage() {
 
             {step === 'signin' && (
               <>
-                <div>
-                  <p className="mb-2 text-xs font-semibold tracking-wide text-muted-foreground">
+                <div className="space-y-2">
+                  <p className="eyebrow text-muted-foreground">
                     {t('welcomeSignInEyebrow', { defaultValue: 'Optional' })}
                   </p>
-                  <h2 className="text-[1.5rem] md:text-[1.75rem] font-semibold tracking-tight mb-1 leading-tight">
+                  <h2 className="display-section max-w-[18ch] text-balance text-foreground">
                     {t('welcomeSignInTitle', { defaultValue: 'Save progress — your choice' })}
                   </h2>
-                  <p className="text-sm text-muted-foreground leading-relaxed">
+                  <p className="text-sm leading-relaxed text-muted-foreground">
                     {t('welcomeSignInSubtitle', {
                       defaultValue:
                         'Sign in with Google or email to sync across devices. Skip anytime — local progress still works.',
                     })}
                   </p>
                 </div>
-                <div className="card-boss px-4 py-3.5 space-y-1.5">
-                  <p className="text-xs font-semibold text-muted-foreground">
+                {/* Elevated, not boss — Skip owns the only red on this step. */}
+                <div className="card-elevated space-y-1.5 px-4 py-3.5">
+                  <p className="eyebrow text-muted-foreground">
                     {t('welcomeSessionReadyEyebrow', { defaultValue: 'Up next' })}
                   </p>
                   <p className="text-sm font-semibold">
@@ -366,7 +377,7 @@ export function WelcomePage() {
                       defaultValue: 'Your first session is ready',
                     })}
                   </p>
-                  <p className="text-sm text-muted-foreground leading-relaxed">
+                  <p className="text-sm leading-relaxed text-muted-foreground">
                     {t('welcomeSessionReadyBody', {
                       defaultValue: `${firstSession.name} · ${firstSessionNames.length} exercises for your gear. Skip sign-in to start logging right away.`,
                       name: firstSession.name,
@@ -407,7 +418,7 @@ export function WelcomePage() {
                 </div>
                 <button
                   type="button"
-                  className="primary-action min-h-[52px] w-full text-[19px]"
+                  className="primary-action min-h-[52px] w-full tap-target text-[19px]"
                   onClick={finish}
                 >
                   {t('welcomeSkipSignIn', { defaultValue: 'Skip — start training' })}

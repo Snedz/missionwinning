@@ -45,6 +45,7 @@ type WelcomeStrings = {
   navBetaGuide: string;
   welcomeTitle: string;
   welcomeSubtitle: string;
+  welcomeSubtitleBrief: string;
   welcomeBegin: string;
   welcomeAccept: string;
   welcomeContinue: string;
@@ -110,6 +111,8 @@ const en: WelcomeStrings = {
   welcomeTitle: 'Welcome, Mission Member',
   welcomeSubtitle:
     'Set your path, then log your first session. One step at a time — Today always shows the next action.',
+  welcomeSubtitleBrief:
+    'A few questions, then log your first session. Free offline logging — forever.',
   welcomeBegin: 'Begin',
   welcomeAccept: 'I accept the path',
   welcomeContinue: 'Continue',
