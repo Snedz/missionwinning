@@ -7,6 +7,7 @@ Visual artifacts that a markdown file cannot carry. Prose and decisions live in 
 | [`www-spec-sheet.html`](www-spec-sheet.html) | The www design proposal rendered **in the system it specifies** — type tiers at live `clamp()` sizes, the rhythm ruler drawn to scale, the seven motion moves running, both page-map compositions. Open it in a browser. | [DESIGN_PROPOSAL_WWW.md](../DESIGN_PROPOSAL_WWW.md) |
 | [`www-wireframes.png`](www-wireframes.png) | Compact (390) and desktop (1440) compositions, side by side — the same content as the spec sheet's §06, as an image so it reads in a diff, on a phone, and in a PR. | same |
 | [`www-rhythm-ruler.png`](www-rhythm-ruler.png) | The section-boundary argument drawn to actual scale: today's 160px against the proposed 256px and 576px, against the measured 190–450pt reference band. | same |
+| [`GROK_IMAGE_PACK.md`](GROK_IMAGE_PACK.md) | The photography handoff — twelve slots for Grok Imagine Image 2.0, as an ordered **thread script** rather than a list, because Image 2.0 has no seed parameter and consistency comes only from multi-reference plus thread continuity. Prompts, aspect ratios and destination paths. | [DESIGN_RESEARCH.md](../DESIGN_RESEARCH.md) §11.5 sets the coverage the slots exist to reach |
 
 ## Why the HTML is self-contained (161 KB)
 
@@ -16,6 +17,7 @@ The PNGs are rendered **from that file**, at `deviceScaleFactor: 2`, by the same
 
 ## Rules
 
-- **Rendered output only.** No source of truth lives here — if a value in `www-spec-sheet.html` disagrees with `src/index.css`, the CSS wins and the sheet is stale.
+- **Rendered output only** — with one deliberate exception, `GROK_IMAGE_PACK.md`, which is an instruction sheet for a human at a browser. It is here because it is a design artifact keyed to slots on a page, not because it renders anything. **No agent in this repo can run it:** `api.x.ai` and every third-party router that hosts the model are egress-blocked, verified, so the files come down through a browser or not at all.
+- No source of truth lives here — if a value in `www-spec-sheet.html` disagrees with `src/index.css`, the CSS wins and the sheet is stale.
 - **Not scanned by the design-system guard.** `check-design-system.mjs` walks `src`, `app` and `sites/www`; `docs/` is outside it. That is deliberate — the sheet prints literal brand hexes *as its content* (the swatch tables), the same exemption `PressPage.tsx` carries for the same reason.
 - **The published copy is an Artifact**, private until shared: https://claude.ai/code/artifact/f5d8df0f-f987-4cf6-80ac-b118c3404554 — same file, so redeploying it from `docs/design/www-spec-sheet.html` keeps the URL.
