@@ -183,6 +183,7 @@ export function PrivateTeaserClient({ initialInvite = '' }: Props) {
       </header>
       <hr className="gate-rule" />
 
+      {/* Field manual: eyebrow → display → one red (invite = enter beta; cold = notify). */}
       <main className="gate-main">
         <div className="gate-col">
           <h1 className="gate-h1">
@@ -284,8 +285,9 @@ export function PrivateTeaserClient({ initialInvite = '' }: Props) {
                 </form>
               )}
 
+              {/* Access code secondary — never competes with Notify me red. */}
               <details className="gate-details" open={false}>
-                <summary>
+                <summary className="gate-details-summary">
                   {t('gateAccessSummary', { defaultValue: 'Have a beta access code?' })}
                 </summary>
                 <form onSubmit={handleSubmit}>

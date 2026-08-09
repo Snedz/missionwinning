@@ -38,7 +38,12 @@ export const BETA_STEP_DEFS = [
   },
 ] as const;
 
-const BETA_EN: Record<string, string> = {
+/**
+ * English beta guide strings — also merged into `BOOTSTRAP_EN` so `/beta` first
+ * paint never shows bare keys while hydrateResources is still in flight
+ * (dogfood Wave 8 · `.632`).
+ */
+export const BETA_EN: Record<string, string> = {
   betaFootWedge: 'Train anywhere: log from Today offline — no account required. After your first log, open Mission Coach for a week that adapts from sessions alone.',
   /*
    * Shown while the build ships no service worker, so "log offline" would be a

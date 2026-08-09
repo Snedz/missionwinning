@@ -89,3 +89,5 @@ apps/android/upload-keystore.jks
 
 # LOCAL staging for private mission-ops (never product git)
 ops/
+.gstack/
+.local-preview/

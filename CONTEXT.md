@@ -16,7 +16,7 @@ One screen of truth for any AI tool or human joining cold. Read this, then [AGEN
 
 ---
 
-## Now (2026-08-09 · web `2026.07-unified.631` · Android `1.24.1`)
+## Now (2026-08-09 · web `2026.07-unified.632` · Android `1.24.1`)
 
 > The ONLY "where we are" block in the repo — [ORCHESTRATION.md](ORCHESTRATION.md) points here.
 >
@@ -301,6 +301,7 @@ One screen of truth for any AI tool or human joining cold. Read this, then [AGEN
 - **`.629`:** (`2026.07-unified.629`) **Feel Wave 5** — Guidebook chapter red discipline; Learn course / Coaching / Feedback briefs; History day EmptyState.
 - **`.630`:** (`2026.07-unified.630`) **Feel Wave 6** — Welcome briefing type + 44px chips; Beta primary-first. Entry path Field manual.
 - **`.631`:** (`2026.07-unified.631`) **Feel Wave 7** — Landing FAQ 44px; About/Vision display-section; Library/Press tap floor.
+- **`.632`:** (`2026.07-unified.632`) **Feel Wave 8** — Beta bootstrap keys (no raw i18n flash); private gate taps; First Steps quiet dismiss.
 - **`.622`:** (`2026.07-unified.622`) **You S3b — kits + C5 DTO.** Stack/Field/Ledger/Poster page kits (token composition, tier-gated); C5 public projection pure shape.
 - **`.621`:** (`2026.07-unified.621`) **You S3a — the table + C6.** MySpace interests table (4 pick rows, local); kit manifest C6 guard; 0 red on `/profile`.
 - **`.620`:** (`2026.07-unified.620`) **You S2.5 — authored composition.** `/profile` hero: call sign · **00–99 number** · career **signature** · live card preview.
