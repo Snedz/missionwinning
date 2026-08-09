@@ -41,69 +41,22 @@ import StagePhoto from '../components/StagePhoto.astro';
 import LogToPlanDemo from '../components/LogToPlanDemo.astro';
 import CoachAdaptDemo from '../components/CoachAdaptDemo.astro';
 import { appUrl } from '../lib/appLinks';
-import { CONTENT_FLOORS } from '@/lib/contentFloors';
-import { landingStringsFor, LANDING_FAQ_KEYS } from '@/i18n/landingLocales';
-import { COMPARE_STORIES } from '@/data/compareStories';
-
-const t = landingStringsFor('en');
-
-// Checkable facts only — no traction claims (hard rule 3). `exercisePages` is a
-// floor asserted against the real catalogue by contentInventory.test.ts, so copy
-// written from it can only ever under-promise.
-const stats = [
-  { figure: String(CONTENT_FLOORS.exercisePages), label: 'Exercises, bodyweight and minimal gear first' },
-  { figure: '3min', label: 'From landing to your first logged set' },
-  { figure: '0', label: 'Wearables, accounts or app stores required' },
-  { figure: '$0', label: 'The logger, forever — not a trial' },
-];
+import {
+  META, HERO, STATS, STATEMENTS, ADAPT, ANYWHERE, FREE_CORE, COMPARE, QUESTIONS, NAV_LINKS,
+} from '../lib/homeContent';
 
 /*
- * The three documentary shots that exist, used as grounds rather than
- * thumbnails. Each appears twice with a different crop — the honest description
- * of a set of three photographs asked to carry a page that wants twelve.
- * docs/design/GROK_IMAGE_PACK.md specifies the rest; a slot with no photograph
- * renders an honest empty frame, never a stand-in.
+ * Copy, counts and section content come from ../lib/homeContent — the single
+ * source the eight art-direction variants under docs/design/variants/ also
+ * read. They lived here until `.643`, which was fine while there was one
+ * rendering of them; with nine, copy living in the page that renders it makes
+ * the comparison board meaningless the first time either side is edited.
  */
-const anywhere = [
-  {
-    base: '/photo/phone-bench',
-    alt: 'A phone resting on a gym bench between sets',
-    title: 'Offline first',
-    body: 'Sets save on the device the moment you log them. Signal is optional; the log is not.',
-  },
-  {
-    base: '/photo/home-rack',
-    alt: 'A loaded barbell on a home rack',
-    title: 'Your gear, not a gym',
-    body: 'Tell it what you have — a bar, two bands, nothing — and the week is built from that.',
-  },
-  {
-    base: '/photo/bare-wrist',
-    alt: 'A bare wrist gripping a barbell',
-    title: 'No wearable',
-    body: 'The plan comes from logged sets, so nothing needs charging for it to work.',
-  },
-];
-
-const freeCore = [
-  { term: 'The logger', def: 'Sets, reps, RPE, rest timers, supersets, PRs.' },
-  { term: 'Mission Coach', def: 'A week built from your logs, regenerated every week.' },
-  { term: `${CONTENT_FLOORS.exercisePages} exercises`, def: 'Bodyweight and minimal gear first, with form cues.' },
-  { term: 'No account', def: 'Works offline. Nothing to install, nothing to sign up for.' },
-];
-
-const navLinks = [
-  { href: '/#adapt', label: 'Coach' },
-  { href: '/#anywhere', label: 'Anywhere' },
-  { href: '/#free', label: 'Free core' },
-  { href: '/#compare', label: 'Compare' },
-  { href: '/#questions', label: 'Questions' },
-];
 ---
 
 <Base
-  title="Train Anywhere. Win Daily. — Mission Winning"
-  description="Free offline workout logger plus adaptive Mission Coach from your logs — no wearable required. Free core forever. Works offline, anywhere."
+  title={META.title}
+  description={META.description}
 >
   <!-- 00 NAV. Sits on the photographic hero, so it starts transparent with paper
        type and swaps to a paper bar once the hero is behind you. The swap is a
@@ -126,7 +79,7 @@ const navLinks = [
            and a hamburger on a one-page scroll is chrome pretending to be
            navigation. -->
       <nav class="ml-8 hidden items-center gap-6 md:flex">
-        {navLinks.map((l) => (
+        {NAV_LINKS.map((l) => (
           <a href={l.href} class="text-[15px] font-semibold hover:underline">{l.label}</a>
         ))}
       </nav>
@@ -151,14 +104,12 @@ const navLinks = [
       <div class="stage-body mx-auto w-full max-w-6xl">
         <div class="grid gap-10 lg:grid-cols-[1.05fr_0.95fr] lg:items-end lg:gap-14">
           <div>
-            <p class="eyebrow eyebrow-live">{t.landingHeroEyebrow ?? 'Free · offline · no account'}</p>
+            <p class="eyebrow eyebrow-live">{HERO.eyebrow}</p>
             <h1 class="display-hero-www rise mt-5 max-w-[15ch]">
-              <span>Log a set.</span>
-              <span>Your week rewrites itself.</span>
+              {HERO.lines.map((line) => <span>{line}</span>)}
             </h1>
             <p class="mt-6 max-w-[54ch] text-[19px] leading-[1.5] text-quiet">
-              A workout logger that turns what you actually did into next week&rsquo;s plan. No
-              wearable, no gym, no account &mdash; and the logger is free forever.
+              {HERO.body}
             </p>
             <CtaSlot class="mt-9 max-w-[420px]" />
           </div>
@@ -186,7 +137,7 @@ const navLinks = [
         drift
       />
       <div class="stage-body mx-auto w-full max-w-6xl">
-        <p class="display-statement wipe"><span>A missed day is not a failed plan.</span></p>
+        <p class="display-statement wipe"><span>{STATEMENTS.missed}</span></p>
       </div>
     </section>
 
@@ -195,7 +146,7 @@ const navLinks = [
     <Section rule={false}>
       <p class="eyebrow">At a glance</p>
       <dl class="mt-8 grid grid-cols-2 gap-0.5 border-2 border-rule bg-rule sm:grid-cols-4">
-        {stats.map((s) => (
+        {STATS.map((s) => (
           <div class="flex flex-col gap-3 bg-paper p-6">
             <!-- `data-stat-figure`, not `data-count`: LogToPlanDemo already owns
                  a bare `data-count` for its 0/3 progress line, and a global
@@ -214,11 +165,10 @@ const navLinks = [
     <Section id="adapt">
       <div class="grid gap-10 lg:grid-cols-2 lg:items-start lg:gap-14">
         <div>
-          <p class="eyebrow">When you miss</p>
-          <h2 class="display-section mt-4 max-w-[24ch]">A missed day is not a failed plan</h2>
+          <p class="eyebrow">{ADAPT.eyebrow}</p>
+          <h2 class="display-section mt-4 max-w-[24ch]">{ADAPT.heading}</h2>
           <p class="mt-6 max-w-[62ch] text-[17px] leading-[1.6] text-quiet">
-            Sleep badly, travel, lose a week &mdash; Mission Coach reshapes what is left instead of
-            leaving you behind a schedule you already broke.
+            {ADAPT.body}
           </p>
         </div>
         <CoachAdaptDemo />
@@ -236,12 +186,12 @@ const navLinks = [
          152px against a 190–450 band. -->
     <section id="anywhere" class="rule-top px-5 py-section sm:px-8 lg:py-section-lg">
       <div class="mx-auto max-w-6xl">
-        <p class="eyebrow">Where you train</p>
-        <h2 class="display-section mt-4 max-w-[24ch]">Built for one bar of signal and no rack</h2>
+        <p class="eyebrow">{ANYWHERE.eyebrow}</p>
+        <h2 class="display-section mt-4 max-w-[24ch]">{ANYWHERE.heading}</h2>
       </div>
 
       <div class="mt-12 grid gap-0.5 bg-rule md:grid-cols-3">
-        {anywhere.map((p, i) => (
+        {ANYWHERE.panels.map((p, i) => (
           <figure class="stage on-dark relative flex min-h-[78svh] items-end md:min-h-[86svh]">
             <StagePhoto base={p.base} alt={p.alt} position={i === 1 ? '50% 60%' : '50% 45%'} drift />
             <figcaption class="stage-body slab w-full px-5 py-6 sm:px-6">
@@ -261,10 +211,10 @@ const navLinks = [
          the page still spends exactly one red control. -->
     <section id="free" class="ground-ink px-5 py-section sm:px-8 lg:py-section-lg">
       <div class="mx-auto max-w-6xl">
-        <p class="eyebrow">The free core</p>
-        <h2 class="display-section mt-4 max-w-[24ch]">Free is the mission, not the trial</h2>
+        <p class="eyebrow">{FREE_CORE.eyebrow}</p>
+        <h2 class="display-section mt-4 max-w-[24ch]">{FREE_CORE.heading}</h2>
         <dl class="mt-10 divide-y-2 divide-rule border-y-2 border-rule">
-          {freeCore.map((row) => (
+          {FREE_CORE.rows.map((row) => (
             <div class="grid gap-2 py-5 sm:grid-cols-[14rem_1fr] sm:gap-8">
               <dt class="text-[17px] font-extrabold tracking-[-0.01em]">{row.term}</dt>
               <dd class="max-w-[62ch] text-[16px] leading-[1.6] text-quiet">{row.def}</dd>
@@ -272,8 +222,7 @@ const navLinks = [
           ))}
         </dl>
         <p class="mt-6 max-w-[62ch] text-[15px] leading-[1.6] text-quiet">
-          Fuel, Move, Mind, Track and Learn deepen the path after Train + Coach &mdash; never the
-          pitch.
+          {FREE_CORE.footnote}
         </p>
         <CtaSlot variant="quiet" class="mt-9" />
       </div>
@@ -284,10 +233,10 @@ const navLinks = [
          the rail has something to be a rail about. The ten pages themselves stay
          on the Next app — see ../lib/appLinks. -->
     <Section id="compare">
-      <p class="eyebrow">Honest comparison</p>
-      <h2 class="display-section mt-4 max-w-[24ch]">Read the one that sounds like you</h2>
+      <p class="eyebrow">{COMPARE.eyebrow}</p>
+      <h2 class="display-section mt-4 max-w-[24ch]">{COMPARE.heading}</h2>
       <div class="mt-10 rail">
-        {COMPARE_STORIES.map((story) => (
+        {COMPARE.stories.map((story) => (
           <a
             href={appUrl(`/compare/${story.slug}`)}
             class="flex flex-col gap-3 border-2 border-rule bg-card p-5 hover:bg-tint"
@@ -299,21 +248,21 @@ const navLinks = [
           </a>
         ))}
       </div>
-      <p class="eyebrow mt-4">{COMPARE_STORIES.length} stories · scroll</p>
+      <p class="eyebrow mt-4">{COMPARE.stories.length} stories · scroll</p>
     </Section>
 
     <!-- 08 QUESTIONS. `<details>`, so it opens with JavaScript disabled. -->
     <Section id="questions">
-      <p class="eyebrow">Straight answers</p>
-      <h2 class="display-section mt-4 max-w-[24ch]">Questions worth asking first</h2>
+      <p class="eyebrow">{QUESTIONS.eyebrow}</p>
+      <h2 class="display-section mt-4 max-w-[24ch]">{QUESTIONS.heading}</h2>
       <div class="mt-10 max-w-3xl divide-y-2 divide-rule border-y-2 border-rule">
-        {LANDING_FAQ_KEYS.map((item) => (
+        {QUESTIONS.items.map((item) => (
           <details class="faq py-2">
             <summary class="flex items-center gap-4 py-3 text-[17px] font-extrabold tracking-[-0.01em]">
-              {t[item.qKey] ?? item.qDefault}
+              {item.q}
             </summary>
             <p class="max-w-[62ch] pb-4 text-[16px] leading-[1.6] text-quiet">
-              {t[item.aKey] ?? item.aDefault}
+              {item.a}
             </p>
           </details>
         ))}
@@ -326,7 +275,7 @@ const navLinks = [
        for display, short of the 4.5:1 small text needs. --primary is 6.5:1. -->
   <footer class="poster-field px-5 py-statement sm:px-8 lg:py-statement-lg">
     <div class="mx-auto max-w-6xl">
-      <p class="display-statement wipe"><span>One set is the whole beginning.</span></p>
+      <p class="display-statement wipe"><span>{STATEMENTS.close}</span></p>
       <CtaSlot class="mt-10 max-w-[420px]" />
     </div>
   </footer>
