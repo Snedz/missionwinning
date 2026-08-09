@@ -25,8 +25,9 @@ describe('athlete table catalog', () => {
         assert.match(pick, /^[a-z][a-z0-9-]*$/, `pick id shape: ${pick}`);
       }
     }
+    const rowIds = ATHLETE_TABLE_ROWS.map((r) => r.id as string);
     assert.ok(
-      !ATHLETE_TABLE_ROWS.some((r) => r.id === 'anthem' || r.id === 'bio'),
+      !rowIds.includes('anthem') && !rowIds.includes('bio'),
       'anthem/bio free-text rows must not ship until C5 public rules exist'
     );
   });

@@ -22,7 +22,6 @@ import {
   DEFAULT_CARD_CONFIG,
   formatAthleteCardTitle,
   resolveCardCosmetics,
-  tierForLevel,
   type AthleteCardConfig,
 } from '../../../packages/mw-core/src/identity/athleteCard';
 import { STORAGE_KEYS } from '@/lib/storage/keys';

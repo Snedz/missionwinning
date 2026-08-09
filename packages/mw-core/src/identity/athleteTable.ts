@@ -56,9 +56,10 @@ export type AthleteTablePicks = {
   readonly [K in AthleteTableRowId]?: string | null;
 };
 
-const PICKS_BY_ROW: Record<AthleteTableRowId, ReadonlySet<string>> = Object.fromEntries(
-  ATHLETE_TABLE_ROWS.map((row) => [row.id, new Set<string>(row.picks)])
-) as Record<AthleteTableRowId, ReadonlySet<string>>;
+const PICKS_BY_ROW = {} as Record<AthleteTableRowId, ReadonlySet<string>>;
+for (const row of ATHLETE_TABLE_ROWS) {
+  PICKS_BY_ROW[row.id] = new Set<string>(row.picks);
+}
 
 const ROW_IDS = new Set<string>(ATHLETE_TABLE_ROWS.map((r) => r.id));
 
