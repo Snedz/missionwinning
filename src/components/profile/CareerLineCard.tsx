@@ -28,10 +28,12 @@ export function CareerLineCard({ career }: { career: CareerLine }) {
 
   if (!hasCareer(career)) {
     return (
-      <Card className="bg-card">
+      <Card className="border-2 border-border bg-card">
         <CardContent className="pt-6">
-          <p className="eyebrow mb-3">{t('careerLineTitle', { defaultValue: 'Your record' })}</p>
-          <p className="text-sm text-muted-foreground">
+          <p className="eyebrow mb-3 text-primary">
+            {t('careerLineTitle', { defaultValue: 'Your record' })}
+          </p>
+          <p className="text-sm leading-relaxed text-muted-foreground">
             {t('careerLineEmpty', {
               defaultValue:
                 'Log a session and this fills in — sessions, volume moved, exercises, your best week, days trained.',
@@ -71,13 +73,17 @@ export function CareerLineCard({ career }: { career: CareerLine }) {
   ];
 
   return (
-    <Card className="bg-card">
+    <Card className="border-2 border-border bg-card">
       <CardContent className="pt-6">
-        <p className="eyebrow mb-4">{t('careerLineTitle', { defaultValue: 'Your record' })}</p>
+        <p className="eyebrow mb-4 text-primary">
+          {t('careerLineTitle', { defaultValue: 'Your record' })}
+        </p>
         <dl className="grid grid-cols-2 gap-x-4 gap-y-5 sm:grid-cols-3">
           {rows.map((row) => (
             <div key={row.key}>
-              <dt className="eyebrow text-muted-foreground">{row.label}</dt>
+              <dt className="text-[10px] font-semibold uppercase tracking-[0.1em] text-muted-foreground">
+                {row.label}
+              </dt>
               <dd className="mt-1 text-2xl font-extrabold tabular-nums">{row.value}</dd>
             </div>
           ))}
