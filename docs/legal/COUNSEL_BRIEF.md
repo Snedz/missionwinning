@@ -97,7 +97,7 @@ Aligned with live Privacy + [LEGAL_SAFETY.md](../LEGAL_SAFETY.md) §2. Confirm a
 | **Ukraine (`UA`)** | **Product block** | **Commercial only** — not OFAC country embargo of free Ukraine |
 | OIC 57 | Product block | Commercial |
 | Russia (`RU`) / Belarus (`BY`) | **Still open** | Founder asymmetry vs US foreign-policy posture — **please opine** |
-| Crimea / Donetsk / Luhansk / Kherson / Zaporizhzhia (occupied UA) | No reliable CDN map to oblast | Named in Terms sanctions + Regions + AUP; contractual right to refuse under sanctions/export clause |
+| Destinations restricted under U.S. sanctions/export programs | No reliable CDN map in many cases | Generic contractual right to refuse under sanctions/export clause (do **not** list sub-national place names in consumer copy) |
 
 Live code: `src/lib/legal/supportedRegions.ts`. Tests pin **RU/BY allowed**.
 
