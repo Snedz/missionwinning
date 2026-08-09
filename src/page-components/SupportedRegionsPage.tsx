@@ -52,7 +52,7 @@ export function SupportedRegionsPage() {
       jumpLinks={jumpLinks}
     >
       <p className="text-sm text-muted-foreground -mt-2 mb-4 border-2 border-border bg-muted/40 p-3">
-        <strong className="text-foreground">{REGION_POLICY.primaryMarket} primary.</strong>{' '}
+        <strong className="text-foreground">{REGION_POLICY.marketPosture} platform.</strong>{' '}
         {REGION_POLICY.summary}
       </p>
 

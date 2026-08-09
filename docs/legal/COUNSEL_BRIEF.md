@@ -84,7 +84,7 @@ Aligned with live Privacy + [LEGAL_SAFETY.md](../LEGAL_SAFETY.md) §2. Confirm a
 | Full AUP (internal) | not public route | [ACCEPTABLE_USE.md](ACCEPTABLE_USE.md) — short summary in Terms only |
 | DPA / MSA | templates only | [DPA.md](DPA.md) · [MSA_TEMPLATE.md](MSA_TEMPLATE.md) — B2B later |
 
-**Frozen text:** [exports/2026-08-09-consumer-legal-en.md](exports/2026-08-09-consumer-legal-en.md) (Ukraine refresh; supersedes 2026-08-04/05/06 snapshots for live copy)
+**Frozen text:** [exports/2026-08-09-consumer-legal-global-en.md](exports/2026-08-09-consumer-legal-global-en.md) (**current** — global multi-jurisdiction sanctions posture; supersedes 2026-08-09 OFAC-centric freeze and earlier snapshots)
 
 ---
 
@@ -94,10 +94,12 @@ Aligned with live Privacy + [LEGAL_SAFETY.md](../LEGAL_SAFETY.md) §2. Confirm a
 |-----------|--------|------|
 | Europe (EEA/UK/CH/FR+) | Product block | GDPR representative not appointed |
 | Canada | Product block | Commercial |
-| **Ukraine (`UA`)** | **Product block** | **Commercial only** — not OFAC country embargo of free Ukraine |
+| **Ukraine (`UA`)** | **Product block** | **Commercial only** — not marketed as single-regime sanctions |
 | OIC 57 | Product block | Commercial |
-| Russia (`RU`) / Belarus (`BY`) | **Still open** | Founder asymmetry vs US foreign-policy posture — **please opine** |
-| Crimea / DNR / LNR | No reliable CDN map | Contractual right to refuse under sanctions/export clause |
+| Russia (`RU`) / Belarus (`BY`) | **Still open** | Founder asymmetry — **please opine** |
+| Multi-jurisdiction sanctions / trade controls | Contractual + partner | Consumer copy is **global** (restricted-party lists / applicable law where we + partners operate) — not US-only OFAC framing. Do **not** list sub-national place names in consumer copy |
+
+**Market posture:** global platform (not “Primary market: United States”). Texas governing law remains entity formation fact.
 
 Live code: `src/lib/legal/supportedRegions.ts`. Tests pin **RU/BY allowed**.
 
@@ -123,7 +125,7 @@ Live code: `src/lib/legal/supportedRegions.ts`. Tests pin **RU/BY allowed**.
 
 1. Is AAA Consumer Arbitration + class waiver appropriate for our free + freemium fitness PWA? Any Texas-specific issues?  
 2. Is the **Ukraine commercial exclusion** wording adequate? Any risk in **not** blocking Russia/Belarus while blocking UA?  
-3. Is the new **sanctions / export / SDN** clause appropriate for a mass-market fitness PWA (no formal SDN screening product)?  
+3. Is the **global multi-jurisdiction sanctions / export / restricted-party** clause appropriate for a mass-market fitness PWA (no formal list-screening product)? Any need to re-insert jurisdiction-specific lists for partner contracts?  
 4. 14-day refund windows for monthly / annual / lifetime (incl. USDC manual refunds) — any consumer-protection gaps?  
 5. Is interim DMCA agent + “postal TBD” fatal to safe harbor until filing?  
 6. Minimum age / COPPA: what to publish now while youth is off?  

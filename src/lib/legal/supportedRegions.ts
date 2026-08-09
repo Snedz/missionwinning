@@ -1,19 +1,19 @@
 /**
  * Hosted Mission Winning service territory (consumer product).
- * Founder policy 2026-08:
+ * Global product with founder commercial exclusions (2026-08):
  * - Europe not supported (EEA, UK, CH + associated)
  * - Organisation of Islamic Cooperation (OIC) 57 member states not supported
  * - Canada not supported
- * - Ukraine not supported (commercial exclusion — not an OFAC comprehensive embargo)
+ * - Ukraine not supported (commercial product exclusion — not marketed as
+ *   single-country sanctions compliance)
  * - France not supported (also in Europe list)
  *
  * Cloudflare already blocks many of these at the edge; this module is the
  * in-app hard block for signup + checkout (defense in depth).
  *
- * Not legal advice. Blocking sovereign Ukraine is a product-availability choice;
- * US OFAC comprehensive geographic restrictions for Ukraine-related programs
- * focus on occupied regions (Crimea / DNR / LNR) and Russia-linked targets —
- * not a blanket ban on free Ukraine. Do not market the UA block as “sanctions.”
+ * Not legal advice. Consumer-facing copy uses multi-jurisdiction sanctions /
+ * trade-control language (global platform posture). Do not market the UA
+ * commercial block as “sanctions compliance.” RU/BY remain open by founder choice.
  */
 
 /** EEA + UK + Switzerland + common associated European microstates/territories. */
@@ -135,7 +135,7 @@ export const OIC_UNSUPPORTED_ISO2 = [
  */
 export const EXTRA_UNSUPPORTED_ISO2 = [
   'CA', // Canada
-  'UA', // Ukraine (commercial — not OFAC country embargo)
+  'UA', // Ukraine (commercial exclusion — not marketed as sanctions)
 ] as const;
 
 export type TerritoryBlockReason =
@@ -271,9 +271,10 @@ export function hostedServiceAccessFromHeaders(headers: {
 }
 
 export const REGION_POLICY = {
-  primaryMarket: 'United States',
+  /** Platform posture for consumer Regions page — not a single-country “home market.” */
+  marketPosture: 'Global',
   summary:
-    'Mission Winning’s hosted consumer service is not available in Europe (including France), Canada, Ukraine, or Organisation of Islamic Cooperation (OIC) member states. Edge blocking (Cloudflare) plus in-app signup/checkout hard blocks enforce this.',
+    'Mission Winning’s hosted consumer service is a global product with commercial exclusions in Europe (including France), Canada, Ukraine, and Organisation of Islamic Cooperation (OIC) member states. Edge blocking (Cloudflare) plus in-app signup/checkout hard blocks enforce this.',
   excludedLabel:
     'Europe (EEA, UK, Switzerland, France), Canada, Ukraine, and OIC member states (57)',
   supportEmail: 'support@missionwinning.com',

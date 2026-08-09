@@ -25,6 +25,9 @@ When adding a doc:
 
 | File | Absorbed by / note |
 |------|---------------------|
+| [log/LOG-rotate-636.md](./log/LOG-rotate-636.md) | rotated oldest for `.636` global legal posture |
+| [log/LOG-rotate-635.md](./log/LOG-rotate-635.md) | rotated oldest for `.635` sanctions no place names |
+| [log/LOG-rotate-634.md](./log/LOG-rotate-634.md) | rotated oldest for `.634` sanctions occupied regions |
 | [log/LOG-rotate-633.md](./log/LOG-rotate-633.md) | rotated oldest for `.633` Feel Wave 9 |
 | [log/LOG-rotate-632.md](./log/LOG-rotate-632.md) | rotated oldest for `.632` Feel Wave 8 |
 | [log/LOG-rotate-631.md](./log/LOG-rotate-631.md) | rotated oldest for `.631` Feel Wave 7 |
