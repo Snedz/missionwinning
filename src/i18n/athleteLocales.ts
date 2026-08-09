@@ -24,12 +24,16 @@
 const ATHLETE_EN: Record<string, string> = {
   // --- /profile — the Athlete Page ---
   athletePageTitle: 'Your record',
-  athletePageSubtitle: 'Everything you have logged, counted honestly. Yours, on this device.',
+  athletePageSubtitle: 'Authored here. Counted honestly. Yours on this device.',
   athletePageSettingsTitle: 'Settings',
   athletePageSettingsLink: 'Account & settings',
 
   // --- Identity ---
   athleteIdentityTitle: 'Call sign',
+  athleteIdentityNameLabel: 'Name',
+  athleteIdentityNumber: 'Number',
+  athleteIdentityNumberNone: '—',
+  athleteIdentityHeroEmpty: 'Pick a call sign',
   athleteIdentitySave: 'Save',
   athleteIdentitySince: 'Training here since {{date}}',
   athleteIdentityNoStart: 'Your first logged session starts the record.',
@@ -46,11 +50,70 @@ const ATHLETE_EN: Record<string, string> = {
   careerLineTitle: 'Your record',
   careerLineEmpty:
     'Log a session and this fills in — sessions, volume moved, exercises, your best week, days trained.',
+  careerSignature: '{{sessions}} sessions · best week {{bestWeek}} · {{days}} days',
   careerLineSessions: 'Sessions',
   careerLineVolume: 'Volume moved',
   careerLineExercises: 'Exercises',
   careerLineBestWeek: 'Best week',
   careerLineDays: 'Days trained',
+
+  // --- The table (S3 MySpace interests) ---
+  athleteTableTitle: 'About training',
+  athleteTableBody: 'Who you are as an athlete — picks only, stays on this device.',
+  athleteTableUnset: '—',
+  athleteTableSave: 'Save',
+  athleteTableSaved: 'Saved on this device.',
+  athleteTableRow_trainingStyle: 'Training style',
+  athleteTableRow_homeGym: 'Home gym',
+  athleteTableRow_goToLift: 'Go-to lift',
+  athleteTableRow_workingOn: 'Currently working on',
+  // picks — keys match AthleteTableCard pickLabelKey (hyphens → underscores)
+  athleteTablePick_trainingStyle_strength: 'Strength',
+  athleteTablePick_trainingStyle_hybrid: 'Hybrid',
+  athleteTablePick_trainingStyle_conditioning: 'Conditioning',
+  athleteTablePick_trainingStyle_bodyweight: 'Bodyweight',
+  athleteTablePick_trainingStyle_power: 'Power',
+  athleteTablePick_homeGym_full_gym: 'Full gym',
+  athleteTablePick_homeGym_rack_bars: 'Rack + bars',
+  athleteTablePick_homeGym_dumbbells: 'Dumbbells',
+  athleteTablePick_homeGym_bands: 'Bands',
+  athleteTablePick_homeGym_bodyweight_only: 'Bodyweight only',
+  athleteTablePick_homeGym_travel: 'Hotel / travel',
+  athleteTablePick_goToLift_squat: 'Squat',
+  athleteTablePick_goToLift_deadlift: 'Deadlift',
+  athleteTablePick_goToLift_bench: 'Bench',
+  athleteTablePick_goToLift_press: 'Press',
+  athleteTablePick_goToLift_pull_up: 'Pull-up',
+  athleteTablePick_goToLift_row: 'Row',
+  athleteTablePick_goToLift_other_compound: 'Other compound',
+  athleteTablePick_workingOn_strength: 'Strength',
+  athleteTablePick_workingOn_hypertrophy: 'Hypertrophy',
+  athleteTablePick_workingOn_conditioning: 'Conditioning',
+  athleteTablePick_workingOn_skill: 'Skill',
+  athleteTablePick_workingOn_consistency: 'Consistency',
+  athleteTablePick_workingOn_comeback: 'Comeback',
+
+  // --- Page kits (S3b) ---
+  athleteKitTitle: 'Page kit',
+  athleteKitBody: 'How this page is laid out. Training unlocks more kits.',
+  athleteKitSaved: 'Layout saved on this device.',
+  athleteKitLocked: 'T{{tier}}',
+  athleteKit_default: 'Stack',
+  athleteKit_field: 'Field',
+  athleteKit_ledger: 'Ledger',
+  athleteKit_poster: 'Poster',
+
+  // --- Share page + private note (.623) ---
+  athletePageShareTitle: 'Share page',
+  athletePageShareBody:
+    'Renders on this device and leaves only if you send it. No public link yet.',
+  athletePageShareAction: 'Share your page',
+  athletePageShareBusy: 'Preparing…',
+  athletePageShareText: 'My Athlete Page — Mission Winning.',
+  athletePrivateNoteTitle: 'Private note',
+  athletePrivateNoteBody: 'For you only on this device. Never on share cards or public pages.',
+  athletePrivateNoteSave: 'Save note',
+  athletePrivateNoteSaved: 'Saved on this device only.',
 
   // --- /account ---
   accountEyebrow: 'Account',
@@ -81,10 +144,14 @@ const BY_LANG: Record<string, Record<string, string>> = {
   en: ATHLETE_EN,
   es: al({
     athletePageTitle: 'Tu registro',
-    athletePageSubtitle: 'Todo lo que has registrado, contado con honestidad. Tuyo, en este dispositivo.',
+    athletePageSubtitle: 'Escrito aquí. Contado con honestidad. Tuyo en este dispositivo.',
     athletePageSettingsTitle: 'Ajustes',
     athletePageSettingsLink: 'Cuenta y ajustes',
     athleteIdentityTitle: 'Indicativo',
+    athleteIdentityNameLabel: 'Nombre',
+    athleteIdentityNumber: 'Número',
+    athleteIdentityNumberNone: '—',
+    athleteIdentityHeroEmpty: 'Elige un indicativo',
     athleteIdentitySave: 'Guardar',
     athleteIdentitySince: 'Entrenando aquí desde {{date}}',
     athleteIdentityNoStart: 'Tu primera sesión registrada abre el registro.',
@@ -97,6 +164,7 @@ const BY_LANG: Record<string, Record<string, string>> = {
     athleteIdentityRejectUnsafe:
       'Contiene caracteres que rompen una lista compartida. Usa letras y números.',
     careerLineTitle: 'Tu registro',
+    careerSignature: '{{sessions}} sesiones · mejor semana {{bestWeek}} · {{days}} días',
     careerLineEmpty:
       'Registra una sesión y esto se completa: sesiones, volumen movido, ejercicios, tu mejor semana y días entrenados.',
     careerLineSessions: 'Sesiones',
@@ -113,10 +181,14 @@ const BY_LANG: Record<string, Record<string, string>> = {
   }),
   fr: al({
     athletePageTitle: 'Ton relevé',
-    athletePageSubtitle: 'Tout ce que tu as enregistré, compté honnêtement. À toi, sur cet appareil.',
+    athletePageSubtitle: 'Écrit ici. Compté honnêtement. À toi, sur cet appareil.',
     athletePageSettingsTitle: 'Réglages',
     athletePageSettingsLink: 'Compte et réglages',
     athleteIdentityTitle: 'Indicatif',
+    athleteIdentityNameLabel: 'Nom',
+    athleteIdentityNumber: 'Numéro',
+    athleteIdentityNumberNone: '—',
+    athleteIdentityHeroEmpty: 'Choisis un indicatif',
     athleteIdentitySave: 'Enregistrer',
     athleteIdentitySince: 'Ici à l’entraînement depuis le {{date}}',
     athleteIdentityNoStart: 'Ta première séance enregistrée ouvre le relevé.',
@@ -129,6 +201,7 @@ const BY_LANG: Record<string, Record<string, string>> = {
     athleteIdentityRejectUnsafe:
       'Il contient des caractères qui cassent une liste partagée. Utilise lettres et chiffres.',
     careerLineTitle: 'Ton relevé',
+    careerSignature: '{{sessions}} séances · meilleure semaine {{bestWeek}} · {{days}} jours',
     careerLineEmpty:
       'Enregistre une séance et tout se remplit : séances, volume déplacé, exercices, ta meilleure semaine et jours d’entraînement.',
     careerLineSessions: 'Séances',
@@ -145,10 +218,14 @@ const BY_LANG: Record<string, Record<string, string>> = {
   }),
   pt: al({
     athletePageTitle: 'O teu registo',
-    athletePageSubtitle: 'Tudo o que registaste, contado com honestidade. Teu, neste dispositivo.',
+    athletePageSubtitle: 'Escrito aqui. Contado com honestidade. Teu neste dispositivo.',
     athletePageSettingsTitle: 'Definições',
     athletePageSettingsLink: 'Conta e definições',
     athleteIdentityTitle: 'Indicativo',
+    athleteIdentityNameLabel: 'Nome',
+    athleteIdentityNumber: 'Número',
+    athleteIdentityNumberNone: '—',
+    athleteIdentityHeroEmpty: 'Escolhe um indicativo',
     athleteIdentitySave: 'Guardar',
     athleteIdentitySince: 'A treinar aqui desde {{date}}',
     athleteIdentityNoStart: 'A tua primeira sessão registada abre o registo.',
@@ -161,6 +238,7 @@ const BY_LANG: Record<string, Record<string, string>> = {
     athleteIdentityRejectUnsafe:
       'Contém caracteres que quebram uma lista partilhada. Usa letras e números.',
     careerLineTitle: 'O teu registo',
+    careerSignature: '{{sessions}} sessões · melhor semana {{bestWeek}} · {{days}} dias',
     careerLineEmpty:
       'Regista uma sessão e isto preenche-se: sessões, volume movido, exercícios, a tua melhor semana e dias treinados.',
     careerLineSessions: 'Sessões',

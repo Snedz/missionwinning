@@ -392,3 +392,7 @@ Canonical live launch path: root **[LAUNCH_RUNBOOK.md](../LAUNCH_RUNBOOK.md)** +
 | [log/LOG-rotate-617.md](./log/LOG-rotate-617.md) | `.602` (Today inventing numbers) — rotated 2026-08-08 for `.617` pre-design gate hygiene |
 | [log/LOG-rotate-618.md](./log/LOG-rotate-618.md) | rotated 2026-08-09 for `.618` Ukraine + legal refresh |
 | [log/LOG-rotate-619.md](./log/LOG-rotate-619.md) | rotated 2026-08-09 for `.619` hero feel Field manual |
+| [log/LOG-rotate-620.md](./log/LOG-rotate-620.md) | rotated 2026-08-09 for `.620` You S2.5 composition |
+| [log/LOG-rotate-621.md](./log/LOG-rotate-621.md) | rotated 2026-08-09 for `.621` You S3a table + C6 |
+| [log/LOG-rotate-622.md](./log/LOG-rotate-622.md) | rotated 2026-08-09 for `.622` You S3b kits + C5 DTO |
+| [log/LOG-rotate-623.md](./log/LOG-rotate-623.md) | rotated 2026-08-09 for `.623` You S4a page share + private note |

@@ -349,6 +349,44 @@
     @apply h-0.5 flex-1 bg-border;
   }
 
+  /*
+   * Athlete Page kits (C6 / S3b) — composition only, token colours only.
+   * Class names are closed: pageKitClasses.ts maps kits here; never free CSS.
+   */
+  .athlete-page-kit {
+    @apply space-y-6;
+  }
+  .athlete-page-kit--stack {
+    @apply space-y-6;
+  }
+  .athlete-page-kit--field {
+    @apply space-y-4 border-l-2 border-primary pl-4;
+  }
+  .athlete-page-kit--ledger {
+    @apply space-y-3;
+  }
+  .athlete-page-kit--ledger [data-athlete-block] {
+    @apply border-t-2 border-border pt-4 first:border-t-0 first:pt-0;
+  }
+  .athlete-page-kit--poster {
+    @apply space-y-6;
+  }
+  .athlete-page-kit--poster .athlete-page-kit__band {
+    @apply poster-field border border-border p-4;
+  }
+  .athlete-page-kit-accent--primary {
+    --athlete-kit-rule: hsl(var(--primary));
+  }
+  .athlete-page-kit-accent--poster {
+    --athlete-kit-rule: hsl(var(--accent-poster));
+  }
+  .athlete-page-kit-accent--ink {
+    --athlete-kit-rule: hsl(var(--foreground));
+  }
+  .athlete-page-kit--field {
+    border-left-color: var(--athlete-kit-rule, hsl(var(--primary)));
+  }
+
   /* ── Marketing field textures (single-paint, mobile-cheap) ───────── */
 
   /* Flat paper — the gradient field is retired; rules and the grid organize. */

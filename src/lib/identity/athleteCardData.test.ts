@@ -131,3 +131,17 @@ test('the name is the title, and the card carries no session claim', async () =>
   assert.ok(card.stats.some((s) => s.value === 'Steady Hand'), 'rank leads — it is what was earned');
   assert.match(card.footer, /free logger/);
 });
+
+test('a call-sign number prefixes the share title', async () => {
+  const { buildAthleteCardData, saveAthleteCardConfig } = await import('@/lib/identity/athleteCard');
+  saveAthleteCardConfig({ frame: 'hairline', backdrop: 'paper', badges: [], callSignNumber: 7 });
+  const card = buildAthleteCardData(summary({ level: 1 }), 'Ada');
+  assert.equal(card.title, '07  Ada');
+});
+
+test('an out-of-range call-sign number never reaches the share title', async () => {
+  const { buildAthleteCardData, saveAthleteCardConfig } = await import('@/lib/identity/athleteCard');
+  saveAthleteCardConfig({ frame: 'hairline', backdrop: 'paper', badges: [], callSignNumber: 100 });
+  const card = buildAthleteCardData(summary({ level: 1 }), 'Ada');
+  assert.equal(card.title, 'Ada', 'a forged number must not paint onto a PNG');
+});

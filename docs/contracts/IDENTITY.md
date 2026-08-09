@@ -1,8 +1,8 @@
 # Contract: Mission Identity
 
 **Version:** 1.0.0  
-**Status:** Partially implemented (Athlete Card, display name, Account/You split)  
-**Horizon:** Kernel — safe to deepen types anytime; public projection gated (S4)
+**Status:** Athlete Page S2–S3b local (card, table, kits, C5 DTO). Public URL gated (S4)  
+**Horizon:** Kernel — safe to deepen types anytime; public surface gated (S4 + Club C2)
 
 ---
 
@@ -24,7 +24,8 @@ One portable athlete identity across health, club standing, share-out cards, and
 | `deviceId` | Local | Offline athlete; see coach types `DEVICE_ID_KEY` |
 | `userId` | Cloud (Supabase auth) | Optional until sign-in |
 | Call sign / `operatorName` | Local (+ board when projected) | 24 chars; validated — see `src/lib/identity/displayName.ts` |
-| Athlete Card config | Local picks | Frames/backdrops/badges clamped by tier — `mw-core` `resolveCardCosmetics` |
+| Call-sign number | Local (+ share title when set) | 00–99; always available; `clampCallSignNumber` — not tier-gated |
+| Athlete Card config | Local picks | Frames/backdrops/badges clamped by tier · number optional — `mw-core` `resolveCardCosmetics` |
 
 ## Surfaces
 
@@ -41,6 +42,8 @@ One portable athlete identity across health, club standing, share-out cards, and
 |-------|-------------------|------------|------------|
 | Call sign | When boards/S4 | Yes | Yes |
 | Career line (derived) | Optional later | Optional | Yes |
+| Interests table picks | Picks only (S4) | Optional later | Yes (S3a) |
+| Page kit id | Picks only (S4) | Optional later | Yes (`default` until S3b) |
 | Badge shelf (owned ids) | Picks only | Picks only | Yes |
 | Free-text bio | **Never** | **Never** | Allowed later under C5 |
 | Workout log rows | **Never** | Session share is separate deliberate act | Yes |

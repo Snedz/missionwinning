@@ -1,0 +1,110 @@
+'use client';
+/**
+ * Page kit picker — curated composition, not a stylesheet (C6).
+ *
+ * Unlocks follow the same tier ladder as card frames. Locked kits are listed
+ * but not selectable, so the athlete sees what training opens without a shop.
+ */
+
+import { useEffect, useMemo, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { Card, CardContent } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { useWorkoutStore } from '@/store/workoutStore';
+import { summarizeRewards } from '@/lib/rewards/summary';
+import { tierForLevel } from '@/lib/identity/athleteCard';
+import {
+  ATHLETE_PAGE_CHANGED,
+  loadAthletePageConfig,
+  PAGE_KITS,
+  saveAthletePageConfig,
+  unlockedPageKits,
+  type AthletePageConfig,
+} from '@/lib/identity/athleteProfile';
+
+const KIT_LABEL_DEFAULT: Record<string, string> = {
+  default: 'Stack',
+  field: 'Field',
+  ledger: 'Ledger',
+  poster: 'Poster',
+};
+
+export function AthletePageKitCard() {
+  const { t } = useTranslation();
+  const workoutHistory = useWorkoutStore((s) => s.workoutHistory);
+  const summary = useMemo(() => summarizeRewards(workoutHistory), [workoutHistory]);
+  const tier = tierForLevel(summary.level);
+  const unlocked = useMemo(() => unlockedPageKits(tier), [tier]);
+  const unlockedIds = useMemo(() => new Set(unlocked.map((k) => k.id)), [unlocked]);
+
+  const [kitId, setKitId] = useState('default');
+  const [saved, setSaved] = useState(false);
+
+  useEffect(() => {
+    const reload = () => setKitId(loadAthletePageConfig().kitId);
+    reload();
+    window.addEventListener(ATHLETE_PAGE_CHANGED, reload);
+    return () => window.removeEventListener(ATHLETE_PAGE_CHANGED, reload);
+  }, []);
+
+  const pick = (id: string) => {
+    if (!unlockedIds.has(id)) return;
+    setKitId(id);
+    const current = loadAthletePageConfig();
+    const next: AthletePageConfig = { ...current, kitId: id };
+    saveAthletePageConfig(next);
+    setSaved(true);
+  };
+
+  return (
+    <Card className="bg-card" data-testid="athlete-page-kit-card">
+      <CardContent className="pt-6">
+        <p className="eyebrow mb-1">{t('athleteKitTitle', { defaultValue: 'Page kit' })}</p>
+        <p className="mb-4 text-sm text-muted-foreground">
+          {t('athleteKitBody', {
+            defaultValue: 'How this page is laid out. Training unlocks more kits.',
+          })}
+        </p>
+
+        <div className="flex flex-wrap gap-2">
+          {PAGE_KITS.map((kit) => {
+            const open = unlockedIds.has(kit.id);
+            const selected = kitId === kit.id;
+            return (
+              <Button
+                key={kit.id}
+                type="button"
+                variant={selected ? 'selected' : 'outline'}
+                className="min-h-[44px] tap-target"
+                disabled={!open}
+                aria-pressed={selected}
+                aria-label={t(`athleteKit_${kit.id}`, {
+                  defaultValue: KIT_LABEL_DEFAULT[kit.id] ?? kit.id,
+                })}
+                onClick={() => pick(kit.id)}
+              >
+                {t(`athleteKit_${kit.id}`, {
+                  defaultValue: KIT_LABEL_DEFAULT[kit.id] ?? kit.id,
+                })}
+                {!open && (
+                  <span className="ml-1 text-xs text-muted-foreground">
+                    {t('athleteKitLocked', {
+                      tier: kit.minTier,
+                      defaultValue: `T${kit.minTier}`,
+                    })}
+                  </span>
+                )}
+              </Button>
+            );
+          })}
+        </div>
+
+        {saved && (
+          <p className="mt-3 text-sm text-muted-foreground" role="status">
+            {t('athleteKitSaved', { defaultValue: 'Layout saved on this device.' })}
+          </p>
+        )}
+      </CardContent>
+    </Card>
+  );
+}

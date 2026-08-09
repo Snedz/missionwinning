@@ -6,18 +6,13 @@
  * "You". The settings moved to `/account`; what stayed is the part that is
  * actually yours — docs/IDENTITY_SOCIAL_PLAN.md §3.
  *
- * Three blocks, in the order the plan sets: **Identity** (call sign and when you
- * started), **The line** (what you have done, from `workoutHistory` alone), and
- * **The shelf** (the badge medallions that already shipped). Page kits and the
- * interests table are S3 and wait on the third design proposal; nothing here
- * anticipates them.
+ * Blocks: Identity · Line · Table · Kit · Card · Shelf · **Page share** · **Private
+ * note**. Kits are C6 compositions. Page share is share-OUT PNG (S4a); public URL
+ * is S4b (Club C2). Private note is local free text only (C5).
  *
  * **This page is Social-domain and may read rewards.** What it may never do is
  * appear on the logging path — `domainBoundary.test.ts` C3 keeps `/profile` out
  * of `MOBILE_TAB_HREFS`, and no planner or logger module imports it.
- *
- * Local only. No server call, no projection, no share beyond the shipped card —
- * those are S4 and gated on CLUB_PLAN C2.
  *
  * See: app/INDEX.md, src/page-components/INDEX.md
  */
@@ -34,10 +29,22 @@ import { ProfileRewardsCard } from '@/components/rewards/ProfileRewardsCard';
 import { ProfileAthleteCard } from '@/components/profile/ProfileAthleteCard';
 import { AthleteIdentityCard } from '@/components/profile/AthleteIdentityCard';
 import { CareerLineCard } from '@/components/profile/CareerLineCard';
+import { AthleteTableCard } from '@/components/profile/AthleteTableCard';
+import { AthletePageKitCard } from '@/components/profile/AthletePageKitCard';
+import { AthletePrivateNoteCard } from '@/components/profile/AthletePrivateNoteCard';
+import { AthletePageShareCard } from '@/components/profile/AthletePageShareCard';
 import { useMissionJourney } from '@/hooks/useMissionJourney';
 import { daysSinceCommission } from '@/lib/missionJourney';
 import { useWorkoutStore } from '@/store/workoutStore';
 import { computeCareerLine, EMPTY_CAREER_LINE } from '@/lib/careerLine';
+import { summarizeRewards } from '@/lib/rewards/summary';
+import {
+  ATHLETE_PAGE_CHANGED,
+  pageKitById,
+  resolveStoredAthletePage,
+} from '@/lib/identity/athleteProfile';
+import { pageKitLayoutClass } from '@/lib/identity/pageKitClasses';
+import { cn } from '@/lib/utils';
 
 export function ProfilePage() {
   const { t } = useTranslation();
@@ -51,12 +58,31 @@ export function ProfilePage() {
    * the card render its own zero state until then.
    */
   const [ready, setReady] = useState(false);
+  const [kitId, setKitId] = useState('default');
   useEffect(() => setReady(true), []);
+
+  const summary = useMemo(
+    () => (ready ? summarizeRewards(workoutHistory) : null),
+    [ready, workoutHistory]
+  );
+
+  useEffect(() => {
+    if (!ready || !summary) return;
+    const reload = () => {
+      setKitId(resolveStoredAthletePage(summary.level).kitId);
+    };
+    reload();
+    window.addEventListener(ATHLETE_PAGE_CHANGED, reload);
+    return () => window.removeEventListener(ATHLETE_PAGE_CHANGED, reload);
+  }, [ready, summary]);
 
   const career = useMemo(
     () => (ready ? computeCareerLine(workoutHistory) : EMPTY_CAREER_LINE),
     [ready, workoutHistory]
   );
+
+  const kit = pageKitById(kitId);
+  const kitClass = pageKitLayoutClass(kit);
 
   return (
     <PillarPageShell
@@ -70,34 +96,55 @@ export function ProfilePage() {
               defaultValue: `Day ${daysSinceCommission(state.commissionedAt)} on the path`,
             })
           : t('athletePageSubtitle', {
-              defaultValue: 'Everything you have logged, counted honestly. Yours, on this device.',
+              defaultValue: 'Authored here. Counted honestly. Yours on this device.',
             })
       }
       footer={<AppLegalFooter showBuild buildLabel={APP_BUILD_LABEL} />}
     >
-      <AthleteIdentityCard career={career} />
+      <div className={cn(kitClass)} data-testid="athlete-page-kit-root" data-page-kit={kitId}>
+        <div className="athlete-page-kit__band" data-athlete-block>
+          <AthleteIdentityCard career={career} />
+        </div>
 
-      <CareerLineCard career={career} />
+        <div data-athlete-block>
+          <CareerLineCard career={career} />
+        </div>
 
-      {/* `.610`'s card, landed on master while this split was in flight. It is the
-          share artifact CLUB_PLAN specced; the shelf beneath is what it makes
-          wearable. Both belong on the record, not in settings. */}
-      <ProfileAthleteCard />
+        <div data-athlete-block>
+          <AthleteTableCard />
+        </div>
 
-      <ProfileRewardsCard />
+        <div data-athlete-block>
+          <AthletePageKitCard />
+        </div>
 
-      {/* Settings left this page in `.606`. A quiet text link, not a red action —
-          the one red on this route belongs to the identity card's Save. */}
-      <Card className="bg-card">
-        <CardContent className="pt-6">
-          <p className="mb-3 text-xs font-semibold tracking-wide text-muted-foreground">
-            {t('athletePageSettingsTitle', { defaultValue: 'Settings' })}
-          </p>
-          <Link href="/account" className="text-sm font-semibold text-primary underline">
-            {t('athletePageSettingsLink', { defaultValue: 'Account & settings' })}
-          </Link>
-        </CardContent>
-      </Card>
+        <div data-athlete-block>
+          <ProfileAthleteCard />
+        </div>
+
+        <div data-athlete-block>
+          <ProfileRewardsCard />
+        </div>
+
+        <div data-athlete-block>
+          <AthletePageShareCard />
+        </div>
+
+        <div data-athlete-block>
+          <AthletePrivateNoteCard />
+        </div>
+
+        <Card className="bg-card" data-athlete-block>
+          <CardContent className="pt-6">
+            <p className="mb-3 text-xs font-semibold tracking-wide text-muted-foreground">
+              {t('athletePageSettingsTitle', { defaultValue: 'Settings' })}
+            </p>
+            <Link href="/account" className="text-sm font-semibold text-primary underline">
+              {t('athletePageSettingsLink', { defaultValue: 'Account & settings' })}
+            </Link>
+          </CardContent>
+        </Card>
+      </div>
     </PillarPageShell>
   );
 }

@@ -42,6 +42,13 @@ export const STORAGE_KEYS = {
   rewards: 'mw_rewards',
   /** `.610` — Athlete Card cosmetic picks. Device-local; never synced, never published. */
   athleteCard: 'mw_athlete_card',
+  /** `.621` — Athlete Page authored config (table picks + kit id). Local only until S4. */
+  athletePage: 'mw_athlete_page',
+  /**
+   * `.623` — private note. Local free text only; never on public projection or share
+   * (C5). Key name is grepped by privateNoteBoundary.test.ts.
+   */
+  athletePrivateNote: 'mw_athlete_private_note',
   defaultRestSec: 'mw_default_rest_sec',
   activityLog: 'mw_activity_log',
   todaySectionsV1: 'mw_today_sections_v1',
