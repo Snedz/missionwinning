@@ -15,7 +15,7 @@
 | 1 | Terms of Service / Use | **Live** | `/terms` · `TermsPage` · `infoLocales` · **Europe not supported** | Agent draft · Founder counsel review |
 | 2 | Privacy Policy | **Live** | `/privacy` · deletion SLA 30 days · subprocessors · territorial scope | Agent · Founder |
 | 2b | Usage Policy (AUP) | **Live** | `/usage` · [legal/ACCEPTABLE_USE.md](legal/ACCEPTABLE_USE.md) | Agent · Founder |
-| 2c | Supported Regions | **Live** | `/regions` · Europe excluded · `src/lib/legal/supportedRegions.ts` | Agent · Founder |
+| 2c | Supported Regions | **Live** | `/regions` · Europe, Canada, **Ukraine**, OIC excluded · `src/lib/legal/supportedRegions.ts` | Agent · Founder |
 | 2d | Service-Specific Terms | **Live** | `/service-terms` · Bundle / Coach / Android | Agent · Founder |
 | 3 | Data Processing Agreement | **Template** | [legal/DPA.md](legal/DPA.md) — B2B/school only | Agent template · Founder per deal |
 | 4 | Refund Policy | **Live** | `/refunds` · 14-day defaults | Agent · Founder ops |

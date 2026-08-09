@@ -22,6 +22,7 @@ const SECTIONS = [
       'infoUsageProhibitedLi4',
       'infoUsageProhibitedLi5',
       'infoUsageProhibitedLi6',
+      'infoUsageProhibitedLi7',
     ],
   },
   { id: 'youth', key: 'infoUsageYouth', bodyKey: 'infoUsageYouthBody' },

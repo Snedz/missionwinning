@@ -24,12 +24,24 @@ describe('supportedRegions hard block', () => {
     }
   });
 
-  it('excludes UK, Switzerland, Canada', () => {
+  it('excludes UK, Switzerland, Canada, Ukraine', () => {
     assert.equal(isHostedServiceTerritoryBlocked('GB'), true);
     assert.equal(isHostedServiceTerritoryBlocked('UK'), true);
     assert.equal(isHostedServiceTerritoryBlocked('CH'), true);
     assert.equal(isHostedServiceTerritoryBlocked('CA'), true);
     assert.equal(getTerritoryBlockReason('CA'), 'canada');
+    assert.equal(isHostedServiceTerritoryBlocked('UA'), true);
+    assert.equal(getTerritoryBlockReason('UA'), 'ukraine');
+  });
+
+  it('founder asymmetry: Russia and Belarus remain commercially open', () => {
+    // Documented founder choice (UA-only). Do not "fix" by blocking RU/BY without
+    // updating REGION_POLICY, legal copy, and counsel brief in the same change.
+    for (const c of ['RU', 'BY']) {
+      assert.equal(isHostedServiceTerritoryBlocked(c), false, c);
+      assert.equal(isHostedServiceSupportedCountry(c), true, c);
+      assert.equal(getTerritoryBlockReason(c), null, c);
+    }
   });
 
   it('excludes OIC members (sample + count)', () => {
@@ -77,6 +89,15 @@ describe('supportedRegions hard block', () => {
       get: (n) => (n === 'cf-ipcountry' ? 'SA' : null),
     });
     assert.equal(denyOic.allowed, false);
+
+    const denyUa = hostedServiceAccessFromHeaders({
+      get: (n) => (n === 'cf-ipcountry' ? 'UA' : null),
+    });
+    assert.equal(denyUa.allowed, false);
+    if (!denyUa.allowed) {
+      assert.equal(denyUa.reason, 'ukraine');
+      assert.match(denyUa.message, /Ukraine/i);
+    }
   });
 
   it('countryFromRequestHeaders prefers cf-ipcountry', () => {
@@ -95,6 +116,7 @@ describe('supportedRegions hard block', () => {
   it('policy summary names all founder exclusions', () => {
     assert.match(REGION_POLICY.summary, /Europe/i);
     assert.match(REGION_POLICY.summary, /Canada/i);
+    assert.match(REGION_POLICY.summary, /Ukraine/i);
     assert.match(REGION_POLICY.summary, /Islamic Cooperation|OIC/i);
   });
 

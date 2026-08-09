@@ -19,6 +19,8 @@ test('legal pack routes and Europe policy are wired', () => {
   assert.match(locales, /Europe/);
   assert.match(locales, /Organisation of Islamic Cooperation|OIC/);
   assert.match(locales, /Canada/);
+  assert.match(locales, /Ukraine/);
+  assert.match(terms, /sanctions/);
 
   const pub = readFileSync(join(root, 'src/lib/publicRoutes.ts'), 'utf8');
   assert.match(pub, /\/usage/);

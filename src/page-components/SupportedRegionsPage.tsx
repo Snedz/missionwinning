@@ -1,13 +1,19 @@
 'use client';
+
 /**
- * Page: /regions — Supported Regions (Europe not supported)
+ * Page: /regions — Supported Regions (Europe, Canada, Ukraine, OIC not supported)
  */
 
 import Link from 'next/link';
 import { useTranslation } from 'react-i18next';
 import { Globe2 } from 'lucide-react';
 import { InfoPageShell, InfoSection } from '@/components/layout/InfoPageShell';
-import { EUROPE_UNSUPPORTED_ISO2, REGION_POLICY } from '@/lib/legal/supportedRegions';
+import {
+  EUROPE_UNSUPPORTED_ISO2,
+  EXTRA_UNSUPPORTED_ISO2,
+  OIC_UNSUPPORTED_ISO2,
+  REGION_POLICY,
+} from '@/lib/legal/supportedRegions';
 
 const SECTIONS = [
   { id: 'summary', key: 'infoRegionsSummary', bodyKey: 'infoRegionsSummaryBody' },
@@ -18,6 +24,13 @@ const SECTIONS = [
   { id: 'enforcement', key: 'infoRegionsEnforcement', bodyKey: 'infoRegionsEnforcementBody' },
 ] as const;
 
+function sortedCodes(list: readonly string[]): string {
+  return [...list]
+    .filter((c) => c !== 'UK')
+    .sort()
+    .join(', ');
+}
+
 export function SupportedRegionsPage() {
   const { t } = useTranslation();
   const jumpLinks = SECTIONS.map((s) => ({
@@ -25,10 +38,9 @@ export function SupportedRegionsPage() {
     label: t(s.key, { defaultValue: s.key }),
   }));
 
-  const codes = [...EUROPE_UNSUPPORTED_ISO2]
-    .filter((c) => c !== 'UK')
-    .sort()
-    .join(', ');
+  const europeCodes = sortedCodes(EUROPE_UNSUPPORTED_ISO2);
+  const extraCodes = sortedCodes(EXTRA_UNSUPPORTED_ISO2);
+  const oicCodes = sortedCodes(OIC_UNSUPPORTED_ISO2);
 
   return (
     <InfoPageShell
@@ -48,12 +60,30 @@ export function SupportedRegionsPage() {
         <InfoSection key={section.id} id={section.id} title={t(section.key, { defaultValue: section.key })}>
           <p className="text-muted-foreground">{t(section.bodyKey, { defaultValue: section.bodyKey })}</p>
           {section.id === 'not-supported' && (
-            <p className="mt-3 text-xs text-muted-foreground font-mono break-words">
-              {t('infoRegionsIsoListLabel', {
-                defaultValue: 'Reference ISO country codes (non-exhaustive aliases included in product logic):',
-              })}{' '}
-              {codes}
-            </p>
+            <div className="mt-3 space-y-3 text-xs text-muted-foreground font-mono break-words">
+              <p>
+                <span className="text-foreground font-sans font-semibold not-italic">
+                  {t('infoRegionsIsoEuropeLabel', { defaultValue: 'Europe (ISO):' })}
+                </span>{' '}
+                {europeCodes}
+              </p>
+              <p>
+                <span className="text-foreground font-sans font-semibold not-italic">
+                  {t('infoRegionsIsoExtraLabel', {
+                    defaultValue: 'Canada & Ukraine (ISO):',
+                  })}
+                </span>{' '}
+                {extraCodes}
+              </p>
+              <p>
+                <span className="text-foreground font-sans font-semibold not-italic">
+                  {t('infoRegionsIsoOicLabel', {
+                    defaultValue: 'OIC member states (ISO, 57):',
+                  })}
+                </span>{' '}
+                {oicCodes}
+              </p>
+            </div>
           )}
         </InfoSection>
       ))}

@@ -4,12 +4,16 @@
  * - Europe not supported (EEA, UK, CH + associated)
  * - Organisation of Islamic Cooperation (OIC) 57 member states not supported
  * - Canada not supported
+ * - Ukraine not supported (commercial exclusion — not an OFAC comprehensive embargo)
  * - France not supported (also in Europe list)
  *
  * Cloudflare already blocks many of these at the edge; this module is the
  * in-app hard block for signup + checkout (defense in depth).
  *
- * Not legal advice.
+ * Not legal advice. Blocking sovereign Ukraine is a product-availability choice;
+ * US OFAC comprehensive geographic restrictions for Ukraine-related programs
+ * focus on occupied regions (Crimea / DNR / LNR) and Russia-linked targets —
+ * not a blanket ban on free Ukraine. Do not market the UA block as “sanctions.”
  */
 
 /** EEA + UK + Switzerland + common associated European microstates/territories. */
@@ -124,12 +128,22 @@ export const OIC_UNSUPPORTED_ISO2 = [
   'YE', // Yemen
 ] as const;
 
-/** Additional founder exclusions outside Europe/OIC. */
+/**
+ * Additional founder commercial exclusions outside Europe/OIC.
+ * Reasons are mapped per-code in {@link getTerritoryBlockReason} — do not assume
+ * every entry is "canada".
+ */
 export const EXTRA_UNSUPPORTED_ISO2 = [
   'CA', // Canada
+  'UA', // Ukraine (commercial — not OFAC country embargo)
 ] as const;
 
-export type TerritoryBlockReason = 'europe' | 'oic' | 'canada' | 'unknown_edge';
+export type TerritoryBlockReason =
+  | 'europe'
+  | 'oic'
+  | 'canada'
+  | 'ukraine'
+  | 'unknown_edge';
 
 const EUROPE_SET = new Set<string>(EUROPE_UNSUPPORTED_ISO2.map((c) => c.toUpperCase()));
 const OIC_SET = new Set<string>(OIC_UNSUPPORTED_ISO2.map((c) => c.toUpperCase()));
@@ -164,7 +178,13 @@ export function getTerritoryBlockReason(
   const iso = normalizeCountryIso2(countryRaw);
   if (!iso) return null;
   if (iso === 'XX' || iso === 'T1') return 'unknown_edge';
-  if (iso === 'CA' || EXTRA_SET.has(iso)) return 'canada';
+  if (iso === 'CA') return 'canada';
+  if (iso === 'UA') return 'ukraine';
+  if (EXTRA_SET.has(iso)) {
+    // Future EXTRA codes must get an explicit branch above — never silently
+    // mislabel (the prior bug mapped every EXTRA entry to "canada").
+    return 'unknown_edge';
+  }
   if (EUROPE_SET.has(iso)) return 'europe';
   if (OIC_SET.has(iso)) return 'oic';
   return null;
@@ -201,6 +221,7 @@ export const TERRITORY_BLOCK_MESSAGES: Record<TerritoryBlockReason, string> = {
     'Mission Winning’s hosted service is not available in Europe (including France, the EEA, the UK, and Switzerland).',
   oic: 'Mission Winning’s hosted service is not available in Organisation of Islamic Cooperation member states.',
   canada: 'Mission Winning’s hosted service is not available in Canada.',
+  ukraine: 'Mission Winning’s hosted service is not available in Ukraine.',
   unknown_edge:
     'We could not confirm a supported region for this connection. Hosted signup and checkout are unavailable.',
 };
@@ -252,9 +273,9 @@ export function hostedServiceAccessFromHeaders(headers: {
 export const REGION_POLICY = {
   primaryMarket: 'United States',
   summary:
-    'Mission Winning’s hosted consumer service is not available in Europe (including France), Canada, or Organisation of Islamic Cooperation (OIC) member states. Edge blocking (Cloudflare) plus in-app signup/checkout hard blocks enforce this.',
+    'Mission Winning’s hosted consumer service is not available in Europe (including France), Canada, Ukraine, or Organisation of Islamic Cooperation (OIC) member states. Edge blocking (Cloudflare) plus in-app signup/checkout hard blocks enforce this.',
   excludedLabel:
-    'Europe (EEA, UK, Switzerland, France), Canada, and OIC member states (57)',
+    'Europe (EEA, UK, Switzerland, France), Canada, Ukraine, and OIC member states (57)',
   supportEmail: 'support@missionwinning.com',
 } as const;
 

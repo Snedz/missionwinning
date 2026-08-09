@@ -160,6 +160,8 @@ type InfoStrings = {
 
   infoTermsEligibility: string;
   infoTermsEligibilityBody: string;
+  infoTermsSanctions: string;
+  infoTermsSanctionsBody: string;
   infoTermsRelated: string;
   infoTermsRelatedBody: string;
   infoPrivacyRegions: string;
@@ -177,6 +179,7 @@ type InfoStrings = {
   infoUsageProhibitedLi4: string;
   infoUsageProhibitedLi5: string;
   infoUsageProhibitedLi6: string;
+  infoUsageProhibitedLi7: string;
   infoUsageYouth: string;
   infoUsageYouthBody: string;
   infoUsageSelfHost: string;
@@ -200,6 +203,9 @@ type InfoStrings = {
   infoRegionsEnforcement: string;
   infoRegionsEnforcementBody: string;
   infoRegionsIsoListLabel: string;
+  infoRegionsIsoEuropeLabel: string;
+  infoRegionsIsoExtraLabel: string;
+  infoRegionsIsoOicLabel: string;
   infoRegionsFoot: string;
   infoServiceTermsTitle: string;
   infoServiceLead: string;
@@ -265,7 +271,7 @@ const en: InfoStrings = {
     "We're building a small 1:1 coaching program on top of the free core. Tell us about your goals — no commitment, no payment today.",
   infoProgramsTitle: 'Learn programs',
   infoProgramsSubtitle:
-    'Premium practical education as part of the Super Bundle. Free core tools for supported regions; Europe is not supported for the hosted service.',
+    'Premium practical education as part of the Super Bundle. Free core tools for supported regions; Europe, Canada, Ukraine, and OIC member states are not supported for the hosted service.',
   infoProgramsLegacy:
     'Legacy catalog — the Learn pillar has moved to /learn. See Super Bundle for full access.',
   infoSkipToday: 'Skip to Today',
@@ -325,12 +331,15 @@ const en: InfoStrings = {
   infoTermsFoot: 'Mission Winning LLC · support@missionwinning.com · See also',
   infoTermsEligibility: 'Eligibility & Supported Regions',
   infoTermsEligibilityBody:
-    'You must be able to form a binding contract where you live and meet any age requirements we publish (including parental/guardian consent for youth features). The hosted Mission Winning consumer service is offered only in Supported Regions. We do not support Europe (including France, the EEA, the UK, and Switzerland), Canada, or Organisation of Islamic Cooperation (OIC) member states — see /regions. We do not offer accounts, paid Super Bundle, cloud sync as a supported product, or official support in those places. Signup and checkout are hard-blocked when your connection country matches the block list. If you are in an unsupported region, do not create a hosted account or purchase; self-hosted open-source use is described on /regions and remains your responsibility.',
+    'You must be able to form a binding contract where you live and meet any age requirements we publish (including parental/guardian consent for youth features). The hosted Mission Winning consumer service is offered only in Supported Regions. We do not support Europe (including France, the EEA, the UK, and Switzerland), Canada, Ukraine, or Organisation of Islamic Cooperation (OIC) member states — see /regions. We do not offer accounts, paid Super Bundle, cloud sync as a supported product, or official support in those places. Signup and checkout are hard-blocked when your connection country matches the block list. If you are in an unsupported region, do not create a hosted account or purchase; self-hosted open-source use is described on /regions and remains your responsibility.',
+  infoTermsSanctions: 'Sanctions, export controls & prohibited persons',
+  infoTermsSanctionsBody:
+    'You represent that you are not a person or entity designated on the U.S. Treasury OFAC Specially Designated Nationals and Blocked Persons List (or any successor list), and that you will not use the Service in any way that would cause Mission Winning LLC to violate U.S. sanctions or export control law. We may refuse, suspend, or terminate access where we reasonably believe U.S. law forbids providing the Service — including comprehensively embargoed jurisdictions and occupied regions of Ukraine (Crimea, Donetsk, and Luhansk) under applicable executive orders — even when automated country detection is imperfect. Our commercial Supported Regions exclusions (including Ukraine as a whole) are product-availability rules and are not a claim that free Ukraine is under a comprehensive OFAC country embargo. You remain responsible for complying with laws that apply to you.',
   infoTermsRelated: 'Related policies',
   infoTermsRelatedBody:
     'These Terms incorporate by reference: Usage Policy (/usage), Supported Regions (/regions), Service-Specific Terms (/service-terms), Privacy Policy (/privacy), Refunds & cancellation (/refunds), and DMCA (/dmca). Service-Specific Terms control over these general Terms only on product-specific points they cover.',
   infoPrivacyOverviewBody:
-    'Mission Winning (“we”, “us”) is operated by Mission Winning LLC and provides the Mission Winning apps and websites (including missionwinning.com). Privacy is the default: workouts and logs stay on your device until you sign in to sync. Optional product analytics are off until you allow them. This policy explains what we collect, why, and your choices for the hosted consumer service. The hosted service is not offered in Europe — see Supported Regions. This policy is not a GDPR Article 13/14 notice for EEA/UK residents because we do not support those regions as customers of the hosted service.',
+    'Mission Winning (“we”, “us”) is operated by Mission Winning LLC and provides the Mission Winning apps and websites (including missionwinning.com). Privacy is the default: workouts and logs stay on your device until you sign in to sync. Optional product analytics are off until you allow them. This policy explains what we collect, why, and your choices for the hosted consumer service. The hosted service is not offered in Europe, Canada, Ukraine, or OIC member states — see Supported Regions. This policy is not a GDPR Article 13/14 notice for EEA/UK residents because we do not support those regions as customers of the hosted service.',
   infoPrivacyCollectLi1:
     'Account: email address when you sign in (Apple, Google, Microsoft, Facebook, or magic link).',
   infoPrivacyCollectLi2:
@@ -404,7 +413,7 @@ const en: InfoStrings = {
     'Email support@missionwinning.com with the subject “Refund request”, the email used at checkout, plan type (monthly / 12-mo / lifetime), approximate purchase date, and payment method (Stripe or Phantom). We aim to respond within a few business days.',
   infoRefundsAbuse: 'Abuse & chargebacks',
   infoRefundsAbuseBody:
-    'We may refuse repeat refund requests that appear abusive. Opening a chargeback without contacting support first may delay resolution. Fraudulent payments may result in account termination.',
+    'We may refuse repeat refund requests that appear abusive. Opening a chargeback without contacting support first may delay resolution. Fraudulent payments may result in account termination. Purchases made while you are in an unsupported region (or while circumventing Supported Regions) may be cancelled and refunded as a policy or compliance correction; we are not required to provide ongoing premium access in unsupported regions.',
   infoRefundsFoot: 'See also',
   infoAboutMissionP1:
     'Mission Winning is a free offline workout logger with adaptive Mission Coach plans from your logs — no wearable required. Super Bundle unlocks Coach depth and specialist education; logging stays free forever.',
@@ -423,7 +432,8 @@ const en: InfoStrings = {
     'Always consult qualified medical professionals before starting new training or nutrition protocols. Results vary. This is not medical, legal, or licensing advice.',
   infoAboutNationalLink: 'National fitness',
   infoAboutContactBody: 'support@missionwinning.com · hello@missionwinning.com for coaching inquiries.',
-  infoAboutCopyright: '© Mission Winning LLC. Hosted service: Supported Regions only (Europe not supported). Free logger is local-first on your device.',
+  infoAboutCopyright:
+    '© Mission Winning LLC. Hosted service: Supported Regions only (Europe, Canada, Ukraine, and OIC member states not supported). Free logger is local-first on your device.',
   infoVisionLead: 'Train anywhere. Coach from what you actually logged.',
   infoVisionP1:
     'Mission Winning is the entrance to the path: free forever workout logging (no account) plus Mission Coach — fatigue-aware weekly plans from your history alone, no wearable required.',
@@ -469,7 +479,7 @@ const en: InfoStrings = {
 
   infoPrivacyRegions: 'Supported Regions & territorial scope',
   infoPrivacyRegionsBody:
-    'The hosted Mission Winning consumer service is directed to users in Supported Regions. Europe is not supported: we do not offer the hosted service to residents of the EEA, the United Kingdom, Switzerland, or associated territories listed on /regions. If you are in an unsupported region, do not create an account or send us personal data expecting a supported customer relationship. Open-source self-hosting is separate and is your responsibility. We may process limited technical data (such as IP-derived country signals) to enforce regional availability and fraud prevention. California residents see CCPA rights below. We do not sell personal information for cross-context behavioral advertising.',
+    'The hosted Mission Winning consumer service is directed to users in Supported Regions. We do not offer the hosted service to residents of Europe (EEA, United Kingdom, Switzerland, France, and associated territories), Canada, Ukraine, or Organisation of Islamic Cooperation (OIC) member states — see /regions. If you are in an unsupported region, do not create an account or send us personal data expecting a supported customer relationship. Open-source self-hosting is separate and is your responsibility. We may process limited technical data (such as IP-derived country signals) to enforce regional availability, fraud prevention, and legal compliance. California residents see CCPA rights below. We do not sell personal information for cross-context behavioral advertising.',
   infoUsageTitle: 'Usage Policy',
   infoUsageLead:
     'This Usage Policy (Acceptable Use) applies with the Terms of Service. Hosted service availability is limited by Supported Regions.',
@@ -492,6 +502,8 @@ const en: InfoStrings = {
     'Unauthorized access, scanning, malware, DDoS, credential stuffing, bypassing rate limits/auth, or large-scale scraping of premium content.',
   infoUsageProhibitedLi6:
     'Threats, stalking, doxxing, targeted harassment, or other illegal content in your jurisdiction.',
+  infoUsageProhibitedLi7:
+    'Using the hosted Service from an unsupported region in violation of Supported Regions, or using the Service in a way that would cause Mission Winning LLC to violate U.S. sanctions or export controls (including comprehensively embargoed jurisdictions and occupied regions of Ukraine under applicable law).',
   infoUsageYouth: 'Youth and school features',
   infoUsageYouthBody:
     'Class codes, parental consent flows, and fitness-test-style tools (when enabled) are for legitimate education and coaching only. Do not collect youth data without required consent. Do not use youth features for advertising profiles or sale of children’s data.',
@@ -508,13 +520,13 @@ const en: InfoStrings = {
   infoRegionsTitle: 'Supported Regions',
   infoRegionsSummary: 'Summary',
   infoRegionsSummaryBody:
-    'Mission Winning’s hosted consumer service (website, PWA accounts, cloud sync, Super Bundle checkout, and our distributed Android product) is not available in Europe (including France), Canada, or Organisation of Islamic Cooperation (OIC) member states. Primary market: United States. Cloudflare edge rules plus in-app signup/checkout hard blocks enforce this.',
+    'Mission Winning’s hosted consumer service (website, PWA accounts, cloud sync, Super Bundle checkout, and our distributed Android product) is not available in Europe (including France), Canada, Ukraine, or Organisation of Islamic Cooperation (OIC) member states. Primary market: United States. Cloudflare edge rules plus in-app signup/checkout hard blocks enforce this. Ukraine is a commercial product exclusion — not a statement that free Ukraine is under a comprehensive U.S. OFAC country embargo.',
   infoRegionsSupported: 'Where we operate',
   infoRegionsSupportedBody:
-    'We offer the hosted service to users outside the excluded European territories — including the United States and other non-European countries where we choose to operate and where payment and infrastructure partners allow. Availability of payments, app stores, or specific features may still vary by country inside Supported Regions.',
-  infoRegionsNotSupported: 'Europe is not supported',
+    'We offer the hosted service outside the excluded territories — including the United States and other countries where we choose to operate and where payment and infrastructure partners allow. Availability of payments, app stores, or specific features may still vary by country inside Supported Regions.',
+  infoRegionsNotSupported: 'Where we do not support the hosted service',
   infoRegionsNotSupportedBody:
-    'We do not support: (1) Europe — EEA, United Kingdom, Switzerland, France, and associated territories; (2) Canada; (3) all 57 Organisation of Islamic Cooperation member states. Do not create a hosted account, purchase Super Bundle, or expect customer support if you reside there. Signup and checkout are hard-blocked in-app when your CDN country matches these lists (in addition to Cloudflare). We do not appoint an EU/UK GDPR representative for this consumer offering.',
+    'We do not support: (1) Europe — EEA, United Kingdom, Switzerland, France, and associated territories; (2) Canada; (3) Ukraine; (4) all 57 Organisation of Islamic Cooperation member states. Do not create a hosted account, purchase Super Bundle, or expect customer support if you reside there. Signup and checkout are hard-blocked in-app when your CDN country matches these lists (in addition to Cloudflare). We do not appoint an EU/UK GDPR representative for this consumer offering. Separately, U.S. law may forbid service in comprehensively embargoed jurisdictions and certain occupied regions; we may refuse access for legal compliance even when automated detection is imperfect.',
   infoRegionsWhatCounts: 'What “hosted service” means',
   infoRegionsWhatCountsBody:
     'Hosted service includes: missionwinning.com and related domains we operate; cloud accounts and sync; paid Super Bundle and billing; official Android builds we distribute; email support as a customer. Device-local free logging without an account is software that may run on a phone anywhere, but it is not a supported hosted customer relationship in excluded regions, and cloud features remain unsupported there.',
@@ -525,6 +537,9 @@ const en: InfoStrings = {
   infoRegionsEnforcementBody:
     'Enforcement layers: Cloudflare geo rules; CDN country on /api/geo; hard 403 on /api/checkout and crypto checkout; SignInPanel and UnlockButton refuse hosted signup/pay when blocked. We may also use billing country, payment method, account profile, and self-declared residence. Circumventing regional limits (false address, VPN abuse for payments, etc.) is a Terms and Usage Policy violation.',
   infoRegionsIsoListLabel: 'Reference ISO country codes used in product logic (UK normalized to GB):',
+  infoRegionsIsoEuropeLabel: 'Europe (ISO):',
+  infoRegionsIsoExtraLabel: 'Canada & Ukraine (ISO):',
+  infoRegionsIsoOicLabel: 'OIC member states (ISO, 57):',
   infoRegionsFoot: 'Questions about eligibility: support@missionwinning.com · See also',
   infoServiceTermsTitle: 'Service-Specific Terms',
   infoServiceLead:
@@ -549,7 +564,7 @@ const en: InfoStrings = {
     'The /coaching form is an interest list for possible 1:1 coaching — not a purchase and not a guarantee of acceptance. Any future paid coaching engagement will use a separate agreement. Educational accountability only; clear new training with your physician.',
   infoServiceRegions: 'Regions',
   infoServiceRegionsBody:
-    'All service lines above that depend on Mission Winning LLC hosting, accounts, or payments are limited to Supported Regions. Europe is not supported. See /regions.',
+    'All service lines above that depend on Mission Winning LLC hosting, accounts, or payments are limited to Supported Regions. Europe, Canada, Ukraine, and OIC member states are not supported. See /regions.',
   infoServiceOrder: 'Order of documents',
   infoServiceOrderBody:
     'For a conflict on a product-specific point: (1) a signed Order Form or checkout disclosure for that purchase, (2) these Service-Specific Terms, (3) Terms of Service, (4) Usage Policy, (5) Privacy Policy. Refunds policy controls refund timing. Supported Regions controls geographic eligibility.',

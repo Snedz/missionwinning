@@ -13,9 +13,12 @@
 **Hosted service is not available in:**
 - **Europe** (EEA, UK, Switzerland, France, associated territories)
 - **Canada**
+- **Ukraine** (commercial product exclusion — **not** an OFAC comprehensive country embargo of free Ukraine)
 - **Organisation of Islamic Cooperation (OIC)** — all 57 member states
 
-Live policy: [`/regions`](https://missionwinning.com/regions). Product logic: `src/lib/legal/supportedRegions.ts`. Edge: Cloudflare (founder). In-app hard block: signup (`SignInPanel`) + checkout (`/api/checkout`, crypto intent/confirm, `UnlockButton`). Not a substitute for counsel review of geo-blocking/enforcement.
+**Sanctions honesty (counsel):** US OFAC comprehensively restricts certain **occupied regions** of Ukraine (Crimea / DNR / LNR) and heavily targets Russia-linked actors — it does **not** require blocking all of sovereign Ukraine. Founder chose **UA-only** as a commercial exclusion while **RU/BY remain open** in product logic (asymmetric vs US foreign-policy posture; pin in tests). Do not market the UA block as “sanctions compliance.”
+
+Live policy: [`/regions`](https://missionwinning.com/regions). Product logic: `src/lib/legal/supportedRegions.ts`. Edge: Cloudflare (founder — add **UA**). In-app hard block: signup (`SignInPanel`) + checkout (`/api/checkout`, crypto intent/confirm, `UnlockButton`). Not a substitute for counsel review of geo-blocking/enforcement.
 
 ## 1. Risk areas covered
 

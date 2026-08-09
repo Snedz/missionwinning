@@ -21,6 +21,11 @@ const TERM_SECTIONS = [
   },
   { id: 'premium', key: 'infoTermsPremium', bodyKey: 'infoTermsPremiumBody' },
   { id: 'acceptable-use', key: 'infoTermsAcceptableUse', bodyKey: 'infoTermsAcceptableUseBody' },
+  {
+    id: 'sanctions',
+    key: 'infoTermsSanctions',
+    bodyKey: 'infoTermsSanctionsBody',
+  },
   { id: 'user-content', key: 'infoTermsUserContent', bodyKey: 'infoTermsUserContentBody' },
   { id: 'indemnification', key: 'infoTermsIndemnification', bodyKey: 'infoTermsIndemnificationBody' },
   { id: 'dmca', key: 'infoTermsDmca', bodyKey: 'infoTermsDmcaBody' },

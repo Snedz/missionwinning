@@ -390,3 +390,4 @@ When adding a doc:
 Canonical live launch path: root **[LAUNCH_RUNBOOK.md](../LAUNCH_RUNBOOK.md)** + [docs/SOCIAL_LAUNCH.md](../SOCIAL_LAUNCH.md) (copy kit).
 | [log/LOG-rotate-616.md](./log/LOG-rotate-616.md) | rotated for `.616` Mission Control |
 | [log/LOG-rotate-617.md](./log/LOG-rotate-617.md) | `.602` (Today inventing numbers) — rotated 2026-08-08 for `.617` pre-design gate hygiene |
+| [log/LOG-rotate-618.md](./log/LOG-rotate-618.md) | rotated 2026-08-09 for `.618` Ukraine + legal refresh |
