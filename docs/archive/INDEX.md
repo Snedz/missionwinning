@@ -396,3 +396,4 @@ Canonical live launch path: root **[LAUNCH_RUNBOOK.md](../LAUNCH_RUNBOOK.md)** +
 | [log/LOG-rotate-621.md](./log/LOG-rotate-621.md) | rotated 2026-08-09 for `.621` You S3a table + C6 |
 | [log/LOG-rotate-622.md](./log/LOG-rotate-622.md) | rotated 2026-08-09 for `.622` You S3b kits + C5 DTO |
 | [log/LOG-rotate-623.md](./log/LOG-rotate-623.md) | rotated 2026-08-09 for `.623` You S4a page share + private note |
+| [log/LOG-rotate-624.md](./log/LOG-rotate-624.md) | rotated 2026-08-09 for `.624` You Field manual |

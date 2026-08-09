@@ -35,6 +35,7 @@ const ATHLETE_EN: Record<string, string> = {
   athleteIdentityNumberNone: '—',
   athleteIdentityHeroEmpty: 'Pick a call sign',
   athleteIdentitySave: 'Save',
+  athleteIdentityEdit: 'Edit call sign',
   athleteIdentitySince: 'Training here since {{date}}',
   athleteIdentityNoStart: 'Your first logged session starts the record.',
   athleteIdentitySaved: 'Saved on this device.',

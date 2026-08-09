@@ -134,12 +134,15 @@ export function ProfilePage() {
           <AthletePrivateNoteCard />
         </div>
 
-        <Card className="bg-card" data-athlete-block>
+        <Card className="border-2 border-border bg-card" data-athlete-block>
           <CardContent className="pt-6">
-            <p className="mb-3 text-xs font-semibold tracking-wide text-muted-foreground">
+            <p className="eyebrow mb-3 text-muted-foreground">
               {t('athletePageSettingsTitle', { defaultValue: 'Settings' })}
             </p>
-            <Link href="/account" className="text-sm font-semibold text-primary underline">
+            <Link
+              href="/account"
+              className="inline-flex min-h-[44px] items-center text-sm font-semibold text-muted-foreground underline underline-offset-2 hover:text-foreground"
+            >
               {t('athletePageSettingsLink', { defaultValue: 'Account & settings' })}
             </Link>
           </CardContent>

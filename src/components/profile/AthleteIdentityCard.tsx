@@ -121,11 +121,17 @@ export function AthleteIdentityCard({ career }: { career: CareerLine }) {
   const n = (value: number) => formatLocalNumber(value, i18n.language);
 
   return (
-    <Card className="bg-card" data-testid="athlete-identity-card">
-      <CardContent className="pt-6">
-        <p className="eyebrow mb-2">{t('athleteIdentityTitle', { defaultValue: 'Call sign' })}</p>
+    /*
+     * Field manual (hero-feel A) on You: first viewport is the person — eyebrow,
+     * display title, signature. Editors live under a disclosure so the page
+     * reads as authored identity, not a settings form. Save stays outline (0 red).
+     */
+    <Card className="border-2 border-border bg-card" data-testid="athlete-identity-card">
+      <CardContent className="space-y-3 pt-6">
+        <p className="eyebrow text-primary">
+          {t('athleteIdentityTitle', { defaultValue: 'Call sign' })}
+        </p>
 
-        {/* First-viewport hero: who you are, before any form controls. */}
         <p
           className="display-section text-foreground"
           data-testid="athlete-identity-hero"
@@ -136,7 +142,7 @@ export function AthleteIdentityCard({ career }: { career: CareerLine }) {
         </p>
 
         {sig ? (
-          <p className="mt-2 text-sm text-muted-foreground" data-testid="athlete-signature">
+          <p className="text-sm leading-relaxed text-muted-foreground" data-testid="athlete-signature">
             {t('careerSignature', {
               sessions: n(sig.sessions),
               bestWeek: n(sig.bestWeek),
@@ -145,7 +151,7 @@ export function AthleteIdentityCard({ career }: { career: CareerLine }) {
             })}
           </p>
         ) : (
-          <p className="mt-2 text-sm text-muted-foreground">
+          <p className="text-sm leading-relaxed text-muted-foreground">
             {t('athleteIdentityNoStart', {
               defaultValue: 'Your first logged session starts the record.',
             })}
@@ -153,7 +159,7 @@ export function AthleteIdentityCard({ career }: { career: CareerLine }) {
         )}
 
         {career.firstSessionOn && (
-          <p className="mt-1 text-xs text-muted-foreground">
+          <p className="text-xs text-muted-foreground">
             {t('athleteIdentitySince', {
               date: formatLocalDateKey(career.firstSessionOn, i18n.language),
               defaultValue: `Training here since ${formatLocalDateKey(career.firstSessionOn, i18n.language)}`,
@@ -161,69 +167,74 @@ export function AthleteIdentityCard({ career }: { career: CareerLine }) {
           </p>
         )}
 
-        <div className="mt-5 space-y-3 border-t border-border pt-5">
-          <div className="flex flex-wrap items-end gap-2">
-            <div className="space-y-1">
-              <label htmlFor="athlete-call-number" className="text-xs font-semibold text-muted-foreground">
-                {t('athleteIdentityNumber', { defaultValue: 'Number' })}
-              </label>
-              <select
-                id="athlete-call-number"
-                value={number === null ? '' : String(number)}
-                onChange={(e) => {
-                  const v = e.target.value;
-                  setNumber(v === '' ? null : clampCallSignNumber(v));
-                  setSaved(false);
-                }}
-                className="min-h-[44px] min-w-[5.5rem] rounded-none border border-border bg-background px-3 text-sm tabular-nums tap-target"
-                aria-label={t('athleteIdentityNumber', { defaultValue: 'Number' })}
-              >
-                <option value="">
-                  {t('athleteIdentityNumberNone', { defaultValue: '—' })}
-                </option>
-                {NUMBER_OPTIONS.map((opt) => (
-                  <option key={opt} value={String(opt)}>
-                    {formatCallSignNumber(opt)}
+        <details className="group border-t-2 border-border pt-4">
+          <summary className="flex min-h-[44px] cursor-pointer list-none items-center text-sm font-semibold text-muted-foreground hover:text-foreground [&::-webkit-details-marker]:hidden">
+            {t('athleteIdentityEdit', { defaultValue: 'Edit call sign' })}
+          </summary>
+          <div className="mt-3 space-y-3">
+            <div className="flex flex-wrap items-end gap-2">
+              <div className="space-y-1">
+                <label htmlFor="athlete-call-number" className="text-xs font-semibold text-muted-foreground">
+                  {t('athleteIdentityNumber', { defaultValue: 'Number' })}
+                </label>
+                <select
+                  id="athlete-call-number"
+                  value={number === null ? '' : String(number)}
+                  onChange={(e) => {
+                    const v = e.target.value;
+                    setNumber(v === '' ? null : clampCallSignNumber(v));
+                    setSaved(false);
+                  }}
+                  className="min-h-[44px] min-w-[5.5rem] rounded-none border-2 border-border bg-background px-3 text-sm tabular-nums tap-target"
+                  aria-label={t('athleteIdentityNumber', { defaultValue: 'Number' })}
+                >
+                  <option value="">
+                    {t('athleteIdentityNumberNone', { defaultValue: '—' })}
                   </option>
-                ))}
-              </select>
+                  {NUMBER_OPTIONS.map((opt) => (
+                    <option key={opt} value={String(opt)}>
+                      {formatCallSignNumber(opt)}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              <div className="min-w-[12rem] flex-1 space-y-1">
+                <label htmlFor="athlete-call-sign" className="text-xs font-semibold text-muted-foreground">
+                  {t('athleteIdentityNameLabel', { defaultValue: 'Name' })}
+                </label>
+                <Input
+                  id="athlete-call-sign"
+                  value={callSign}
+                  maxLength={DISPLAY_NAME_MAX}
+                  onChange={(e) => {
+                    setCallSign(e.target.value);
+                    setSaved(false);
+                    setRejection(null);
+                  }}
+                  onBlur={commit}
+                  className="max-w-none"
+                />
+              </div>
+
+              <Button variant="outline" onClick={commit} className="tap-target min-h-[44px]">
+                {t('athleteIdentitySave', { defaultValue: 'Save' })}
+              </Button>
             </div>
 
-            <div className="min-w-[12rem] flex-1 space-y-1">
-              <label htmlFor="athlete-call-sign" className="text-xs font-semibold text-muted-foreground">
-                {t('athleteIdentityNameLabel', { defaultValue: 'Name' })}
-              </label>
-              <Input
-                id="athlete-call-sign"
-                value={callSign}
-                maxLength={DISPLAY_NAME_MAX}
-                onChange={(e) => {
-                  setCallSign(e.target.value);
-                  setSaved(false);
-                  setRejection(null);
-                }}
-                onBlur={commit}
-                className="max-w-none"
-              />
-            </div>
+            {rejection && (
+              <p className="text-sm text-primary" role="alert">
+                {rejectionText(rejection)}
+              </p>
+            )}
 
-            <Button variant="outline" onClick={commit} className="tap-target min-h-[44px]">
-              {t('athleteIdentitySave', { defaultValue: 'Save' })}
-            </Button>
+            {saved && (
+              <p className="text-sm text-muted-foreground" role="status">
+                {t('athleteIdentitySaved', { defaultValue: 'Saved on this device.' })}
+              </p>
+            )}
           </div>
-        </div>
-
-        {rejection && (
-          <p className="mt-2 text-sm text-primary" role="alert">
-            {rejectionText(rejection)}
-          </p>
-        )}
-
-        {saved && (
-          <p className="mt-2 text-sm text-muted-foreground" role="status">
-            {t('athleteIdentitySaved', { defaultValue: 'Saved on this device.' })}
-          </p>
-        )}
+        </details>
       </CardContent>
     </Card>
   );
