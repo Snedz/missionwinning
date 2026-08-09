@@ -20,6 +20,7 @@
  */
 import { suggestNextSetTarget, type SetSnapshot } from '@/lib/workout/nextSetTargets';
 import { weightUnitLabel, type UnitsPref } from '@/lib/units';
+import { START_URL } from '../lib/appLinks';
 
 /** Last session: every working set finished at the top of the range. */
 const LAST_SESSION: SetSnapshot[] = [
@@ -90,8 +91,10 @@ const todayLabel = `${todayTarget.reps} × ${todayTarget.weight} ${UNIT}`;
     Log set <span class="tabular-nums text-quiet" data-log-target>{todayLabel}</span>
   </button>
 
+  <!-- `/welcome` is a Next route; this build emits one HTML file, so a relative
+       path here 404s on Cloudflare. See ../lib/appLinks. -->
   <a
-    href="/welcome"
+    href={START_URL}
     class="mt-2 hidden min-h-[44px] w-full items-center justify-center gap-2 border-2 border-red bg-tint py-3 text-[15px] font-semibold text-ink transition-colors hover:bg-red hover:text-paper"
     data-start
   >

@@ -71,7 +71,8 @@ const CHECKS = [
   'e2e:visual',
   'security-audit',
   'secrets:scan',
-  // The www surface: build, then class contract + JS budget + rhythm. Named as
+  // The www surface: build, then class contract + link contract + JS budget +
+  // rhythm. Named as
   // `www:gate` because that is the single entry point both scripts/gate.mjs
   // (step 15) and ci.yml's `www` job invoke — gateEnvParity.test.ts compares
   // those two by script name, so a split entry point would read as drift.

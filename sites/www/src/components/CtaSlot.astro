@@ -12,6 +12,8 @@
  * production build. The default is the honest one — while PRIVATE_MODE is on,
  * `Start free` would send a visitor to a redirect.
  */
+import { INVITE_URL, START_URL } from '../lib/appLinks';
+
 interface Props {
   variant?: 'primary' | 'quiet';
   class?: string;
@@ -22,7 +24,11 @@ const { variant = 'primary', class: className = '' } = Astro.props;
 const gated = import.meta.env.PUBLIC_PRIVATE_MODE !== 'false';
 
 const label = gated ? 'Get an invite' : 'Start free — no account';
-const href = gated ? '/#invite' : '/welcome';
+// Both targets live in ../lib/appLinks — the gated branch used to be `/#invite`
+// against a fragment that exists nowhere, and the flipped branch `/welcome`
+// against a route this build does not emit. See that file for why they are
+// absolute.
+const href = gated ? INVITE_URL : START_URL;
 
 // A reassurance line under the button, not buried in a paragraph — TrainHeroic's
 // "14-Day Free Trial. No Credit Card Required." move. The copy is already

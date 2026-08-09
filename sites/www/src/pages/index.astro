@@ -16,6 +16,7 @@ import Section from '../components/Section.astro';
 import CtaSlot from '../components/CtaSlot.astro';
 import LogToPlanDemo from '../components/LogToPlanDemo.astro';
 import CoachAdaptDemo from '../components/CoachAdaptDemo.astro';
+import { appUrl } from '../lib/appLinks';
 import { CONTENT_FLOORS } from '@/lib/contentFloors';
 import { landingStringsFor, LANDING_FAQ_KEYS } from '@/i18n/landingLocales';
 import { COMPARE_STORIES } from '@/data/compareStories';
@@ -213,10 +214,14 @@ const navLinks = [
     <Section id="compare">
       <p class="eyebrow">Honest comparison</p>
       <h2 class="display-section mt-4 max-w-[24ch]">Read the one that sounds like you</h2>
+      <!-- The ten stories are Next routes with their own metadata and JSON-LD;
+           they stay there (ORCHESTRATION: no SEO URL moves). A relative
+           `/compare/{slug}` would 404 on this deployment — the link contract
+           guard found all ten on its first run. -->
       <div class="mt-10 rail">
         {COMPARE_STORIES.map((story) => (
           <a
-            href={`/compare/${story.slug}`}
+            href={appUrl(`/compare/${story.slug}`)}
             class="flex flex-col gap-3 border-2 border-rule bg-card p-5 hover:bg-tint"
           >
             <span class="eyebrow">{story.eyebrow}</span>
