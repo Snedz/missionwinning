@@ -1,0 +1,271 @@
+@import 'tailwindcss';
+@import './tokens.css';
+
+/*
+ * The www surface — handoff design_handoff_www_static.
+ *
+ * Colours come from tokens.css, which is GENERATED from src/index.css. Nothing
+ * here may introduce one; check-design-system walks this file and
+ * check-token-sync compares the generated block hex-for-hex.
+ *
+ * What IS authored here is the rhythm and the two type tiers the app does not
+ * have. Copying src/index.css's @layer components wholesale would have brought
+ * the app's section spacing with it, and that spacing is the one thing the
+ * reference measurements say is wrong (Wave 10 §10.4).
+ */
+
+@font-face {
+  font-family: 'Archivo Variable';
+  src: url('/fonts/archivo-var.woff2') format('woff2');
+  font-weight: 100 900;
+  font-display: swap;
+  font-style: normal;
+}
+
+@theme {
+  --color-paper: hsl(var(--background));
+  --color-ink: hsl(var(--foreground));
+  --color-card: hsl(var(--card));
+  --color-quiet: hsl(var(--muted-foreground));
+  --color-rule: hsl(var(--border));
+  --color-poster: hsl(var(--accent-poster));
+  --color-fill: hsl(var(--primary-fill));
+  --color-red: hsl(var(--primary));
+  --color-tint: hsl(var(--accent-tint));
+
+  --font-www: 'Archivo Variable', system-ui, sans-serif;
+
+  /*
+   * Section rhythm. Measured, not chosen: Wave 10 §10.4 found reference
+   * spacing is bimodal — clusters 27–46pt, section boundaries 190–450pt,
+   * statement boundaries 540–830pt, with nothing in between. The app's
+   * marketing sections give a ~160px boundary, below every reference p90.
+   *
+   * A boundary is the SUM of two paddings, which is what the references were
+   * measured as (text block to text block). So the value that matters is the
+   * pair, and these are picked to land the pair inside the band:
+   *
+   *   section  ↔ section    128 + 128 = 256px   (band 190–450) ✓
+   *   section  ↔ statement  128 + 416 = 544px   (band 540–830) ✓
+   *
+   * The first draft used 288px for the statement and measured 418px — inside
+   * neither band. Caught by scripts/www-rhythm.mjs, which is why that script
+   * exists rather than this comment being the only record of the intent.
+   *
+   * Desktop only. Wave 10 measured the references at 1440pt and nowhere else,
+   * so there is no mobile band to hit; the compact values are the desktop ones
+   * scaled to the viewport, and the rhythm guard asserts at 1440 alone rather
+   * than inventing a number it cannot source.
+   */
+  --spacing-section: 6rem; /* 96 compact */
+  --spacing-section-lg: 8rem; /* 128 desktop */
+  --spacing-statement: 12rem; /* 192 compact */
+  --spacing-statement-lg: 26rem; /* 416 desktop */
+
+  --radius-none: var(--radius);
+}
+
+@layer base {
+  html {
+    /* The app is light-only; the dark theme was retired in .131. Declaring it
+       stops a dark-mode browser painting form controls and scrollbars for a
+       theme this design does not have. */
+    color-scheme: light;
+  }
+
+  body {
+    background-color: hsl(var(--background));
+    color: hsl(var(--foreground));
+    font-family: var(--font-www);
+    font-weight: 400;
+    font-size: 17px;
+    line-height: 1.55;
+    text-wrap: pretty;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* One global focus ring, as in the app: per-component rings render two
+     indicators. .primary-action overrides to ink because its fill is the ring
+     colour. */
+  :focus-visible {
+    outline: 3px solid hsl(var(--ring));
+    outline-offset: 2px;
+  }
+}
+
+@layer components {
+  /* ── Type tiers ────────────────────────────────────────────────
+     display-hero / display-section / display-mega are copied verbatim from
+     src/index.css so the two surfaces cannot drift. Wave 10 §10.2 measured
+     reference display type at 70–100pt and section heads at 30–40pt against
+     the app's shipped 76 and 48 — the scale was already at the bar, and the
+     first draft of this file inflating it to 168px was the error §10.1 records.
+
+     Two tiers are new. Both are argued in DESIGN_PROPOSAL_WWW §3. */
+
+  .eyebrow {
+    font-size: 13px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: hsl(var(--muted-foreground));
+    font-feature-settings: 'tnum' 1;
+  }
+
+  .eyebrow-live {
+    color: hsl(var(--primary));
+  }
+
+  .display-hero {
+    font-weight: 800;
+    line-height: 1.06;
+    letter-spacing: -0.02em;
+    font-size: clamp(2.625rem, 6vw, 4.75rem);
+    text-wrap: balance;
+  }
+
+  .display-section {
+    font-weight: 800;
+    line-height: 1.12;
+    letter-spacing: -0.015em;
+    font-size: clamp(1.9rem, 4.5vw, 3rem);
+    text-wrap: balance;
+  }
+
+  /* Ceiling raised 4.5rem → 6rem. It is the stat tier and it capped BELOW
+     display-hero, so a headline outranked a number; both references with a
+     stat tier invert that (TrainHeroic sets 500,000+ at 100pt above its own
+     70pt hero). tabular-nums so a counting figure cannot jitter. */
+  .display-mega {
+    font-weight: 800;
+    line-height: 1;
+    letter-spacing: -0.02em;
+    font-variant-numeric: tabular-nums;
+    font-size: clamp(2.5rem, 7vw, 6rem);
+  }
+
+  /* New. Prose, so 0.94 leading and an 18ch measure — not display-mega with
+     different words, which is numerals and would put tabular-nums on a
+     sentence. Uncapped, a 96px line runs past reading comfort and the
+     statement stops landing as one block. */
+  .display-statement {
+    font-weight: 800;
+    line-height: 0.94;
+    letter-spacing: -0.025em;
+    font-size: clamp(2.75rem, 7vw, 6rem);
+    max-width: 18ch;
+    text-wrap: balance;
+  }
+
+  /* ── Structure ──────────────────────────────────────────────── */
+
+  /* 2px, never a hairline — `gap-px` was rejected in the app for the same
+     reason and the same value. */
+  .rule-top {
+    border-top: 2px solid hsl(var(--border));
+  }
+
+  .primary-action {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 0.5rem;
+    min-height: 52px;
+    padding-inline: 1.5rem;
+    background-color: hsl(var(--accent-poster));
+    color: hsl(var(--primary-foreground));
+    font-weight: 800;
+    font-size: 19px;
+    text-align: left;
+    transition: background-color 150ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .primary-action:hover {
+    background-color: hsl(var(--primary-fill));
+  }
+
+  /* The ring is the same red as this fill, so the focus indicator is ink or it
+     disappears into what it sits on. */
+  .primary-action:focus-visible {
+    outline: 3px solid hsl(var(--foreground));
+    outline-offset: 3px;
+  }
+
+  /* The one red field per page. Two classes, one idea, split purely on text
+     size — the same rule src/index.css draws, and for the same measured reason:
+
+       .poster-close  --accent-poster #ec3013  paper on it is 4.19:1
+                      → clears large text (3:1), FAILS small text (4.5:1)
+       .poster-field  --primary       #ae1800  paper on it is 6.5:1
+                      → carries a kicker and a sub-line legibly
+
+     Nothing on #ec3013 reaches 4.5:1, not even pure white. So a closing field
+     that carries a CTA and a reassurance line has to be the deeper red. The
+     first build of this page used .poster-close with a 13px eyebrow on it, and
+     the eyebrow's muted-foreground is an ink value: it rendered as dark grey on
+     red and was all but invisible. Caught by looking at the render, which is
+     what DESIGN_SYSTEM.md already warns about in prose. */
+  .poster-close,
+  .poster-field {
+    color: hsl(var(--background));
+  }
+
+  .poster-close {
+    background-color: hsl(var(--accent-poster));
+  }
+
+  .poster-field {
+    background-color: hsl(var(--primary));
+  }
+
+  /* Inside either field the eyebrow is paper, never muted ink. */
+  .poster-close .eyebrow,
+  .poster-field .eyebrow {
+    color: hsl(var(--background));
+  }
+
+  .poster-close .primary-action,
+  .poster-field .primary-action {
+    background-color: hsl(var(--background));
+    color: hsl(var(--foreground));
+  }
+
+  .poster-close .primary-action:hover,
+  .poster-field .primary-action:hover {
+    background-color: hsl(var(--card));
+  }
+
+  /* ── Motion ─────────────────────────────────────────────────────
+     One easing token, as in the app: cubic-bezier(.22, 1, .36, 1). */
+
+  .reveal {
+    opacity: 0;
+    transform: translateY(14px);
+    transition:
+      opacity 0.55s cubic-bezier(0.22, 1, 0.36, 1),
+      transform 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .reveal-visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/*
+ * Ported verbatim from src/index.css, including its lesson: the one animation
+ * most likely to matter to someone was the one that had been left out of this
+ * block. Anything added above goes in here in the same commit.
+ */
+@media (prefers-reduced-motion: reduce) {
+  .reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+
+  .primary-action {
+    transition: none;
+  }
+}

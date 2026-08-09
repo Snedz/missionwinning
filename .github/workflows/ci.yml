@@ -166,3 +166,49 @@ jobs:
         env:
           SMOKE_BASE_URL: http://127.0.0.1:3000
         run: npm run e2e:gate
+
+  # The www surface (sites/www) — a different application: Astro static output
+  # for Cloudflare Pages, not Next.js for Vercel. Its own node_modules, its own
+  # Tailwind major. Kept a separate job so a marketing-site failure names itself
+  # instead of appearing as "build-and-test failed", and so it does not extend
+  # the critical path of the app's build.
+  #
+  # No `env:` block on purpose: NEXT_PUBLIC_* means nothing to Astro, and
+  # workflowBuildEnv.test.ts exempts this job by id for that reason.
+  www:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      # Root install first: the site imports src/lib/contentFloors.ts at build
+      # time, and the checks below are root scripts.
+      - name: Install root dependencies
+        run: npm ci
+
+      - name: Install www dependencies
+        run: npm --prefix sites/www ci
+
+      # Regenerate and diff rather than trust the committed file. tokens.css is
+      # generated from src/index.css; if someone edits the CSS without running
+      # `npm run www:tokens`, the committed copy is stale and every colour on the
+      # marketing site is silently a build behind.
+      - name: Tokens are current
+        run: |
+          npm run www:tokens
+          git diff --exit-code sites/www/src/styles/tokens.css
+
+      # The rhythm guard renders the built page, so the browser is needed
+      # before the build+check step. It serves dist itself on an ephemeral
+      # port — no server to start here, no port to collide with the app job.
+      - name: Install Playwright chromium
+        run: npx playwright install --with-deps chromium
+
+      # Same entry point the local gate uses (step 15), so the two cannot drift
+      # — gateEnvParity.test.ts compares the script names in both.
+      - name: Build + checks
+        run: npm run www:gate

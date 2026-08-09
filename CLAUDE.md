@@ -98,16 +98,18 @@ cd apps/android && ./gradlew :app:assembleDebug
 
 Node 22 (CI). PR CI is [.github/workflows/ci.yml](.github/workflows/ci.yml); minutes-heavy jobs (critical e2e, Android, Lighthouse) are manual/weekly in `ci-extended.yml`. A push to `master` runs [.github/workflows/ratchets.yml](.github/workflows/ratchets.yml) — the no-build half of the gate, and the only workflow on that path. **Whether Actions is currently running is recorded in exactly one place — `CONTEXT.md` `## Now`** — do not restate it elsewhere.
 
-### `npm run gate` — 18 steps, in order
+### `npm run gate` — 19 steps, in order
 
 `scripts/gate.mjs` runs everything CI would, on your machine, and builds with `PRIVATE_MODE=false` so the service worker compiles (the offline spec needs one). It starts and stops its own production server.
 
 1. Port unoccupied · 2. Build label + hard rule 5 · 3. Lint · 4. Typecheck · 5. Unit tests
 6. Route contract tests · 7. **Coverage floors** · 8. i18n parity · 9. i18n coverage
 10. Dependency advisories · 11. Design system · 12. Locale split · 13. Display type
-14. Token sync (web ↔ Android) · 15. Production build · 16. Bundle budget
-17. Hero e2e (`@gate`) · 18. Accessibility (`@a11y`)
+14. Token sync (web ↔ www ↔ Android) · 15. **WWW build + checks** · 16. Production build
+17. Bundle budget · 18. Hero e2e (`@gate`) · 19. Accessibility (`@a11y`)
 
+> Step 15 covers `sites/www` (the marketing surface). Steps 11 and 14 cover it too — those two scripts were widened to walk the directory rather than gaining steps of their own, so only the checks that need build output are a separate step.
+>
 > This list said **16 steps** until `.562`, and omitted **Coverage floors** entirely — the one ratchet that had been silently breached on `master` since `.544`. The port guard was missing too. A map of the gate that cannot see a step is how the step stops being run; `scripts/gate.mjs` numbers every step it executes, so the count is checkable against a single `npm run gate` run.
 
 Not covered: `npm run e2e:visual` (needs deliberate Linux baselines) and Lighthouse (needs Chrome).

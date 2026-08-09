@@ -1,0 +1,49 @@
+# sites/www — the public marketing site
+
+**Surface:** `design_handoff_www_static` — pre-sign-in marketing only. Not the desktop app, not the mobile app.
+**Spec:** [docs/DESIGN_PROPOSAL_WWW.md](../../docs/DESIGN_PROPOSAL_WWW.md) · **Reference bar:** [docs/DESIGN_RESEARCH.md](../../docs/DESIGN_RESEARCH.md) §Wave 10 · **Commissioned:** founder override 2026-08-09
+
+Astro 7 + Tailwind 4, **static output**, deployed to Cloudflare Pages. No adapter, no CMS, no server.
+
+## Layout
+
+| Path | Role |
+|------|------|
+| `src/pages/` | Routes. One `.astro` file per URL |
+| `src/layouts/Base.astro` | `<head>`, font preload, canonical, OG |
+| `src/components/` | Page pieces. `CtaSlot.astro` is the one action |
+| `src/styles/tokens.css` | **GENERATED** — do not edit. `npm run www:tokens` |
+| `src/styles/global.css` | The `@theme` block, type tiers, rhythm, motion |
+| `public/fonts/` | Archivo variable, latin, weight axis only |
+
+## Commands
+
+Driven by `npm --prefix`, **not** npm workspaces — the root `package.json` declares none, and adding one would rewrite `package-lock.json` and hoist Astro/Tailwind against the app's pinned `tailwindcss@^3.4.17`. `apps/mobile` and `ops/dashboard` set the precedent.
+
+```bash
+npm run www              # dev server
+npm run www:build        # static build → dist/
+npm run www:check        # class contract + JS budget
+npm run www:tokens       # regenerate tokens.css from src/index.css
+```
+
+## What is guarded, and where
+
+Nothing here is enforced by prose. The gate stays at **18 steps** — the two scripts that already run in it were extended to walk this directory, rather than a new step being added, because `gateDocParity.test.ts` asserts `CLAUDE.md`'s numbered list is exactly `1..N`.
+
+| Check | Where it runs | Catches |
+|-------|--------------|---------|
+| `check-token-sync` | gate step 14 | A brand colour here drifting from `src/index.css`. Fails loudly if `tokens.css` is missing or carries none of the checked colours — a `—` in every row would otherwise pass while checking two surfaces of three |
+| `check-design-system` | gate step 11 | Off-palette hex, raw radius, glow, second typeface, **and** the founder ban list: gradients, emoji-as-icon, centred section roots. The last three carry `scope: WWW_ONLY` — run repo-wide they report 312 findings in the app, ~250 of them legitimate `text-center` and every `→`/`✓`, which this product sets as type |
+| `www-class-contract` | `www:check` | A class referenced in source with no rule in the built CSS. The island failure mode: a missing `.eyebrow` or `.reveal` renders invisible content and nothing fails |
+| `www-bundle-budget` | `www:check` | Gzipped initial JS over 20KB. Ratchets down only; a missing `dist` is a hard failure, never a skip |
+| `www-rhythm` | manual / CI | The spec's central claim — section boundaries inside 190–450px, statement boundaries 540–830px, measured at 1440 the same way the references were |
+
+## Rules
+
+- **No hex, no digit, no colour literal.** Colours come from `tokens.css`; content counts come from `src/lib/contentFloors.ts`, which is literal-only with zero imports. Typing `228` here is how the app's landing page ended up claiming `217` in fifteen locale packs against a catalogue of 228.
+- **`tokens.css` is generated and committed.** Editing it by hand is drift and the gate fails on it. Change `src/index.css`, then `npm run www:tokens`.
+- **One red action per page.** The poster field carries the red; a nested action inverts to paper so the field does not add a second.
+- **Renders complete with JavaScript disabled.** The reference that set the visual bar fails this by 8365pt of empty scroll; this surface carries ~250 SEO URLs and cannot.
+- **Desktop and compact are two compositions**, not one reflow — the same rule the app's `useIsCompact()` draws at 768px.
+- **Do not import from `src/` at runtime.** Build-time frontmatter only. `src/i18n/landingLocales.ts` in particular is one 52KB module whose 15 packs cannot be tree-shaken.

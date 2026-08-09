@@ -1,0 +1,46 @@
+---
+import '../styles/global.css';
+
+interface Props {
+  title: string;
+  description: string;
+}
+
+const { title, description } = Astro.props;
+const canonical = new URL(Astro.url.pathname, Astro.site).href;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+
+    <!-- Paper, not white. The browser paints this before first paint, and the
+         default #fff flashes against #f3f2f2 on every navigation. -->
+    <meta name="theme-color" content="#f3f2f2" />
+
+    <!-- One weight axis, latin subset, 34.9KB. The width axis (62–125) would
+         take it to 88.0KB — measured — and condensed display is 2-of-4 in the
+         references, so it is an option this surface declines for v1.
+         DESIGN_PROPOSAL_WWW §11.3. -->
+    <link
+      rel="preload"
+      href="/fonts/archivo-var.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+  </head>
+  <body>
+    <slot />
+  </body>
+</html>

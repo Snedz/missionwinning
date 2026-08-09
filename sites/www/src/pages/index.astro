@@ -1,0 +1,100 @@
+---
+/*
+ * Pipeline proof, not the homepage.
+ *
+ * PR B stands up the workspace, the generated tokens and the guards; the ten
+ * sections and both compositions are PR C. What this page has to demonstrate is
+ * that the chain holds end to end: generated tokens → Tailwind v4 @theme →
+ * static HTML with no client JS, the two new type tiers rendering at their
+ * measured sizes, the statement rhythm, and exactly one red control on the page.
+ */
+import Base from '../layouts/Base.astro';
+import CtaSlot from '../components/CtaSlot.astro';
+import { CONTENT_FLOORS } from '../../../../src/lib/contentFloors';
+
+// Every figure is checkable and comes from the floors module, which is
+// literal-only with zero imports. Typing 228 here is how the landing page ended
+// up saying 217 in fifteen locale packs against a catalogue of 228.
+const stats = [
+  { figure: String(CONTENT_FLOORS.exercisePages), label: 'Exercises, bodyweight and minimal gear first' },
+  { figure: '3min', label: 'From landing to your first logged set' },
+  { figure: '0', label: 'Wearables, accounts or app stores required' },
+  { figure: '$0', label: 'The logger, forever — not a trial' },
+];
+---
+
+<Base
+  title="Train Anywhere. Win Daily. — Mission Winning"
+  description="Free offline workout logger plus adaptive Mission Coach from your logs — no wearable required. Free core forever. Works offline, anywhere."
+>
+  <header class="border-b-2 border-rule">
+    <div class="mx-auto flex max-w-6xl items-center gap-4 px-5 py-4 sm:px-8">
+      <a href="/" class="flex items-center gap-3">
+        <span
+          class="flex h-8 w-8 items-center justify-center bg-ink text-[13px] font-extrabold tracking-[-0.04em] text-paper"
+          >MW</span
+        >
+        <span class="text-[15px] font-extrabold tracking-[-0.01em]">Mission Winning</span>
+      </a>
+      <CtaSlot variant="quiet" class="ml-auto" />
+    </div>
+  </header>
+
+  <main>
+    <!-- 01 LOG — the hero. display-hero unchanged from src/index.css: Wave 10
+         measured the app already at the reference bar (76px against a 70–100pt
+         median), so this tier is inherited, not re-cut. -->
+    <section class="px-5 py-section sm:px-8 lg:py-section-lg">
+      <div class="mx-auto max-w-6xl">
+        <p class="eyebrow eyebrow-live">Free · offline · no account</p>
+        <h1 class="display-hero mt-6 max-w-[18ch]">Log a set. Your week rewrites itself.</h1>
+        <p class="mt-6 max-w-[62ch] text-[19px] leading-[1.5] text-quiet">
+          A workout logger that turns what you actually did into next week&rsquo;s plan. No wearable,
+          no gym, no account &mdash; and the logger is free forever.
+        </p>
+        <CtaSlot class="mt-10 max-w-[420px]" />
+      </div>
+    </section>
+
+    <!-- 02 STATEMENT — the new rhythm tier. py-statement is 176/288px, so the
+         boundary against its neighbours lands at 352/576px, inside the measured
+         540–830pt band. This is the delta the phone screenshots were showing. -->
+    <section class="rule-top px-5 py-statement sm:px-8 lg:py-statement-lg">
+      <div class="mx-auto max-w-6xl">
+        <p class="display-statement">A missed day is not a failed plan.</p>
+      </div>
+    </section>
+
+    <!-- 03 AT A GLANCE — the gutters ARE the rules: 2px gap over a rule-coloured
+         parent. gap-px was rejected in the app for being a hairline. -->
+    <section class="rule-top px-5 py-section sm:px-8 lg:py-section-lg">
+      <div class="mx-auto max-w-6xl">
+        <p class="eyebrow">At a glance</p>
+        <dl class="mt-8 grid grid-cols-2 gap-0.5 border-2 border-rule bg-rule sm:grid-cols-4">
+          {
+            stats.map((s) => (
+              <div class="flex flex-col gap-3 bg-paper p-6">
+                <dt class="display-mega text-poster">{s.figure}</dt>
+                <dd class="eyebrow">{s.label}</dd>
+              </div>
+            ))
+          }
+        </dl>
+      </div>
+    </section>
+  </main>
+
+  <!-- 09 START — the page's one red field. The nested action inverts to paper,
+       so the field carries the red and the page keeps exactly one red control
+       (the hero's). Measured by the ported redActions helper.
+
+       poster-FIELD, not poster-close: it carries a 13px reassurance line under
+       the CTA, and paper on #ec3013 is 4.19:1 — fine for display, short of the
+       4.5:1 small text needs. The deeper --primary is 6.5:1. -->
+  <footer class="poster-field px-5 py-statement sm:px-8 lg:py-statement-lg">
+    <div class="mx-auto max-w-6xl">
+      <p class="display-statement">One set is the whole beginning.</p>
+      <CtaSlot class="mt-10 max-w-[420px]" />
+    </div>
+  </footer>
+</Base>

@@ -98,3 +98,9 @@ jobs:
 
       - name: Token sync (web ↔ Android)
         run: npm run check-token-sync
+
+      # The www surface's static checks. No build needed for these two, which is
+      # this workflow's stated criterion — check-design-system now walks
+      # sites/www, and check-token-sync compares its generated tokens against
+      # src/index.css. Both are already listed above; this comment records that
+      # the coverage widened rather than a step being added.

@@ -16,7 +16,7 @@ One screen of truth for any AI tool or human joining cold. Read this, then [AGEN
 
 ---
 
-## Now (2026-08-09 · web `2026.07-unified.636` · Android `1.24.1`)
+## Now (2026-08-09 · web `2026.07-unified.637` · Android `1.24.1`)
 
 > The ONLY "where we are" block in the repo — [ORCHESTRATION.md](ORCHESTRATION.md) points here.
 >
@@ -292,17 +292,13 @@ One screen of truth for any AI tool or human joining cold. Read this, then [AGEN
 > | Migrations | **9 recorded pending** — [LAUNCH_RUNBOOK](docs/LAUNCH_RUNBOOK.md) §3, enforced by `src/lib/migrationLedger.test.ts`. |
 > | gitleaks | **green — and scanning for the first time.** It had never scanned anything: on a `pull_request` event the action lists the PR's commits, the job declared no `permissions:` block, and it 403'd (`pull_requests=read`) before opening a file. Fixed by a `permissions:` block (`.224` carrying `.255`). It scans **only the PR's own commits**, so commit `8ea3527a`'s real Solana treasury address — scrubbed from the working file, still in history — is out of its scope. That finding stands, deliberately not allowlisted; it was never what made this check red. |
 
-- **`.623`:** (`2026.07-unified.623`) **You S4a — page share-out + private note.** PNG from C5 DTO (no free text); private note local-only with boundary grep; public URL still S4b/CLUB C2. [IDENTITY_SOCIAL_PLAN.md](docs/IDENTITY_SOCIAL_PLAN.md).
-- **`.624`:** (`2026.07-unified.624`) **You Field manual** — Athlete identity hero-first; edit call sign under details; 0 red on `/profile`.
-- **`.625`:** (`2026.07-unified.625`) **Account Field manual** — primary stack open; More settings disclosure; owner tools grouped. Reachable: referral, feedback, billing.
-- **`.626`:** (`2026.07-unified.626`) **Feel Wave 2** — Fuel log-first; History heatmaps folded; Coach depth under disclosure. Field manual A continues.
-- **`.627`:** (`2026.07-unified.627`) **Feel Wave 3** — Learn paths-first; Move/Mind free-first; Library/Builder/Benchmarks/Leaderboard brief chrome; military tests folded. Field manual A complete across shell.
 - **`.628`:** (`2026.07-unified.628`) **Feel Wave 4** — Track log-first; Assessments/Calculators/Guidebook/Programs toolkit residual. Field manual A complete on More toolkit.
 - **`.629`:** (`2026.07-unified.629`) **Feel Wave 5** — Guidebook chapter red discipline; Learn course / Coaching / Feedback briefs; History day EmptyState.
 - **`.630`:** (`2026.07-unified.630`) **Feel Wave 6** — Welcome briefing type + 44px chips; Beta primary-first. Entry path Field manual.
 - **`.631`:** (`2026.07-unified.631`) **Feel Wave 7** — Landing FAQ 44px; About/Vision display-section; Library/Press tap floor.
 - **`.632`:** (`2026.07-unified.632`) **Feel Wave 8** — Beta bootstrap keys (no raw i18n flash); private gate taps; First Steps quiet dismiss.
 - **`.633`:** (`2026.07-unified.633`) **Feel Wave 9** — Builder Field manual: 44px steps, Blank/Start own red, Save outline.
+- **`.637`:** (`2026.07-unified.637`) **WWW surface scaffold** — `sites/www/` (Astro 7 + Tailwind 4, static, `npm --prefix`, zero JS). Tokens **generated** from `src/index.css` and gate-checked as a third target; gate now **19 steps** (15 = www build + checks, moved out of CI-only because `ciTruth` says a workflow-only check is unchecked while Actions is blocked). Rhythm measured, not asserted — caught its own 418px statement gap. Ban list = 3 new rules, `scope: WWW_ONLY`. 20 mutants. [DESIGN_PROPOSAL_WWW.md](docs/DESIGN_PROPOSAL_WWW.md).
 - **`.636`:** (`2026.07-unified.636`) **Global legal posture** — multi-jurisdiction sanctions/trade controls; no US-primary / OFAC-only consumer voice; commercial exclusions unchanged. Counsel export global freeze. **Not legal advice.**
 - **`.635`:** (`2026.07-unified.635`) **Sanctions/export** — generic only (no sub-national place names). `.634` naming reverted. **Not legal advice.**
 - **`.622`:** (`2026.07-unified.622`) **You S3b — kits + C5 DTO.** Stack/Field/Ledger/Poster page kits (token composition, tier-gated); C5 public projection pure shape.
