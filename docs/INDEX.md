@@ -99,8 +99,9 @@
 | [LIGHTHOUSE_BASELINE.md](LIGHTHOUSE_BASELINE.md) | Lighthouse baselines |
 | [ROADMAP_V4_EXPERIENCE.md](archive/ROADMAP_V4_EXPERIENCE.md) | Experience build v4 |
 | [DESIGN_ORCHESTRATION.md](DESIGN_ORCHESTRATION.md) | Design excellence OS — emotion arc, quality bars, D0–D3 waves |
-| [DESIGN_RESEARCH.md](DESIGN_RESEARCH.md) | Competitive UI research + steal/avoid · Wave 9 = identity/social + **source verification** |
-| [DESIGN_PROPOSAL_3.md](DESIGN_PROPOSAL_3.md) | Brief for the final design proposal — what is wireframe vs settled; the design flow as a chip flow |
+| [DESIGN_RESEARCH.md](DESIGN_RESEARCH.md) | Competitive UI research + steal/avoid · Wave 9 = identity/social + **source verification** · Wave 10 = the www quality bar, **measured** from 1440pt captures |
+| [DESIGN_PROPOSAL_3.md](DESIGN_PROPOSAL_3.md) | Brief for the final design proposal — what is wireframe vs settled; the design flow as a chip flow. **App surfaces** |
+| [DESIGN_PROPOSAL_WWW.md](DESIGN_PROPOSAL_WWW.md) | Proposal for the **www surface** on Astro — type scale, rhythm, motion, page map, guards. Not commissioned (needs the Horizon W override) |
 | [DESIGN_SYSTEM.md](DESIGN_SYSTEM.md) | Runtime tokens, shells, ProgressRing, motion |
 | [DESIGN_REVIEW.md](DESIGN_REVIEW.md) | Hero-flow UI/UX audit checklist (quarterly + pre-flip) |
 | [DESTRUCTIVE_UX.md](DESTRUCTIVE_UX.md) | Hold-to-confirm delete language |
