@@ -16,7 +16,7 @@ One screen of truth for any AI tool or human joining cold. Read this, then [AGEN
 
 ---
 
-## Now (2026-08-09 · web `2026.07-unified.625` · Android `1.24.1`)
+## Now (2026-08-09 · web `2026.07-unified.626` · Android `1.24.1`)
 
 > The ONLY "where we are" block in the repo — [ORCHESTRATION.md](ORCHESTRATION.md) points here.
 >
@@ -295,10 +295,10 @@ One screen of truth for any AI tool or human joining cold. Read this, then [AGEN
 - **`.623`:** (`2026.07-unified.623`) **You S4a — page share-out + private note.** PNG from C5 DTO (no free text); private note local-only with boundary grep; public URL still S4b/CLUB C2. [IDENTITY_SOCIAL_PLAN.md](docs/IDENTITY_SOCIAL_PLAN.md).
 - **`.624`:** (`2026.07-unified.624`) **You Field manual** — Athlete identity hero-first; edit call sign under details; 0 red on `/profile`.
 - **`.625`:** (`2026.07-unified.625`) **Account Field manual** — primary stack open; More settings disclosure; owner tools grouped. Reachable: referral, feedback, billing.
+- **`.626`:** (`2026.07-unified.626`) **Feel Wave 2** — Fuel log-first; History heatmaps folded; Coach depth under disclosure. Field manual A continues.
 - **`.622`:** (`2026.07-unified.622`) **You S3b — kits + C5 DTO.** Stack/Field/Ledger/Poster page kits (token composition, tier-gated); C5 public projection pure shape.
 - **`.621`:** (`2026.07-unified.621`) **You S3a — the table + C6.** MySpace interests table (4 pick rows, local); kit manifest C6 guard; 0 red on `/profile`.
 - **`.620`:** (`2026.07-unified.620`) **You S2.5 — authored composition.** `/profile` hero: call sign · **00–99 number** · career **signature** · live card preview.
-- **`.616`:** (`2026.07-unified.616`) Mission Control diary click-through + product build pulse; Account **FounderStatusBoard** (owner tools) → `npm run ops:dashboard`.
 - **`.617`:** (`2026.07-unified.617`) Pre-design gate hygiene — FounderStatusBoard import test (coverage floor) + i18n keys; hero `@gate` / a11y re-verified before design pass. Bundle budget still own PR.
 - **`.618`:** (`2026.07-unified.618`) **Ukraine commercial exclusion** + consumer legal refresh — Terms sanctions clause; Regions/Privacy/AUP/Service-Terms/Refunds; `UA` hard-block. Not OFAC country embargo; RU/BY still open (founder). Counsel export 2026-08-09. **Not legal advice.**
 - **`.619`:** (`2026.07-unified.619`) **Hero feel Field manual** — Today briefing hierarchy; Active Finish demoted (Log set owns red); Victory/Coach composition; B/C presets catalogued for later Personal AI density choice.

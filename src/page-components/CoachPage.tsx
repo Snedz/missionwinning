@@ -175,12 +175,13 @@ export function CoachPage({ askExerciseId }: CoachPageProps = {}) {
       )}
 
       {plan && !locked && (
-        <div className="space-y-6">
+        <div className="space-y-5">
+          {/* Field manual: week + adapt first; voice/load/chat secondary. */}
           <div>
-            <p className="mb-3 text-sm font-semibold text-muted-foreground">{weekEyebrow}</p>
+            <p className="eyebrow mb-3 text-primary">{weekEyebrow}</p>
             <WeekStrip weekStart={weekStart} sessions={plan.sessions} todayOffset={todayOffset} />
             {weekDose && weekDose.sessionCount > 0 && (
-              <p className="mt-3 text-center text-sm text-muted-foreground" data-testid="coach-week-dose">
+              <p className="mt-3 text-sm text-muted-foreground" data-testid="coach-week-dose">
                 {t('coachWeekDose', {
                   count: weekDose.sessionCount,
                   intent: t(doseIntentKey, { defaultValue: doseIntentDefault }),
@@ -201,11 +202,6 @@ export function CoachPage({ askExerciseId }: CoachPageProps = {}) {
             }
           />
 
-          <CoachVoiceCard plan={plan} bodyScores={ctx.bodyScores} premium={premium} />
-
-          {/* `.608` — the load model was computed everywhere and shown nowhere. */}
-          <CoachLoadBand />
-
           {/* Form deep-link (?ask=): show free cues / chat near top */}
           {askExerciseId ? (
             <div id="coach-chat">
@@ -223,7 +219,7 @@ export function CoachPage({ askExerciseId }: CoachPageProps = {}) {
           <div className="flex flex-wrap items-center gap-3">
             <button
               type="button"
-              className="text-sm text-primary min-h-[44px] hover:underline"
+              className="min-h-[44px] text-sm text-muted-foreground hover:text-foreground hover:underline"
               onClick={() => setManageOpen(true)}
             >
               {t('coachManageWeek', { defaultValue: 'Manage this week' })}
@@ -231,7 +227,7 @@ export function CoachPage({ askExerciseId }: CoachPageProps = {}) {
             {todaySession && todaySession.status !== 'done' && !adjustOpen ? (
               <button
                 type="button"
-                className="text-sm text-muted-foreground min-h-[44px] hover:underline"
+                className="min-h-[44px] text-sm text-muted-foreground hover:underline"
                 onClick={() => setAdjustOpen(true)}
               >
                 {t('coachAdjustToday', { defaultValue: 'Adjust today' })}
@@ -256,31 +252,32 @@ export function CoachPage({ askExerciseId }: CoachPageProps = {}) {
             onRegenerate={() => generate()}
           />
 
-          {/* Free Coach hero: week sessions before any Bundle upsell.
-              Two columns from sm up, per the handoff — a week of sessions is a
-              grid you scan, not a stack you scroll. */}
           <CoachPlanSessionGrid
             sessions={plan.sessions}
             todayOffset={todayOffset}
             onAdjustToday={() => setAdjustOpen(true)}
           />
 
-          {!askExerciseId ? (
-            <div id="coach-chat">
-              <CoachChatPanel
-                premium={premium}
-                readiness={ctx.bodyScores.readiness}
-                strain={ctx.bodyScores.strain}
-                recovery={ctx.bodyScores.recovery}
-                todaySession={todaySession}
-              />
+          <details className="group border-2 border-border bg-card">
+            <summary className="flex min-h-[44px] cursor-pointer list-none items-center px-4 py-3 text-sm font-semibold text-foreground [&::-webkit-details-marker]:hidden">
+              {t('coachMoreDepth', { defaultValue: 'Voice, load & chat' })}
+            </summary>
+            <div className="space-y-4 border-t-2 border-border p-4">
+              <CoachVoiceCard plan={plan} bodyScores={ctx.bodyScores} premium={premium} />
+              <CoachLoadBand />
+              {!askExerciseId ? (
+                <div id="coach-chat">
+                  <CoachChatPanel
+                    premium={premium}
+                    readiness={ctx.bodyScores.readiness}
+                    strain={ctx.bodyScores.strain}
+                    recovery={ctx.bodyScores.recovery}
+                    todaySession={todaySession}
+                  />
+                </div>
+              ) : null}
             </div>
-          ) : null}
-          {/*
-            Regenerate stays in Manage sheet as the hold-confirm path.
-            Keeping a second red/destructive on the page fought the one-red rule.
-            Premium athletes still reach it via Manage → Regenerate.
-          */}
+          </details>
         </div>
       )}
 

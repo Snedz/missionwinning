@@ -1,0 +1,17 @@
+## 2026-08-08 — A name goes to strangers with nothing checking it (`.611`)
+
+**`/leaderboard` has published a 24-character free-text name to every signed-in user since the full-launch override, and `saveOperatorName` was `trim().slice(0, 24)`.** No validation of any kind, on the one string this product shows other people. `CLUB_PLAN.md:188` says a reserved-word list and a report flow *"must ship with the first public board"*; the board shipped and they did not. There is still no moderation infrastructure anywhere in `src/` — a grep for `profanity|reservedWord|blocklist|denylist|moderat` returns only unrelated "moderate load" labels.
+
+**What this is honestly for.** Not a profanity filter. A word list pretending to catch slurs across fifteen languages would be theatre — it would miss most of them, flag innocent words in languages nobody here reads, and leave everyone believing names are screened. That is `.219`'s shape: a check that exists, is documented, and cannot do the job it is named for. So the module says what it does not do, and **a test asserts that an ordinary rude word passes**, which will start failing the moment someone adds a word list without updating the copy.
+
+What it does cover is the tractable half, and it is the half that actually hurts at small N. **Impersonation** — "Mission Winning Support" beside a score is a phishing surface, not a rude word — and **injection**: URLs, emails, control characters, zero-width joiners, and bidi overrides, one of which reverses every row rendered after it. Matching folds homoglyphs and leetspeak first, because `4dmin`, `аdmin` (Cyrillic а) and `s u p p o r t` all defeat a naive `includes()` and are exactly what an impersonator types.
+
+**My first matcher was wrong and this file's own test caught it.** Everything matched as a substring, so `Rooted Oak` contained `root` and `Officially Tired` contained `official`. Telling a real person their name is reserved is its own failure, and a filter that does it gets turned off. Generic authority words now match on **word boundaries**; only the brand terms — long enough not to collide — match the collapsed form, because `MissionWinningSupport` has no spaces to bound.
+
+**Rejection says why.** `saveOperatorName` returns the verdict instead of silently keeping the old value, the input restores the stored name so a rejected edit cannot look accepted, and the reason renders in `--primary` with `aria-invalid` and `aria-describedby`.
+
+**"Call sign" → "Name".** REDTEAM A7 rates the military register IMPORTANT and notes it is *"copy, not architecture — cheap to soften"*. A visible identity layer is exactly where that stops being true, so the one input other people see goes neutral while I-Day, Commissioned and Operator stay on the athlete's own screens. The ten ranks needed no change — `catalog.ts:167` already calls them *"civilian-friendly … with light mission flavor"*.
+
+Mutants: 4 killed — folding removed so leetspeak and homoglyphs walk through → red; word-boundary reverted to substring so real names are rejected → red; the unsafe-character check removed → red; the single-letter rejoin removed so `s u p p o r t` passes → red. Tests 2238 → 2246.
+
+**Not done here.** The server-side half — the eligibility trigger, `board_visible`, opt-in default OFF and the age band — is the rest of Step 2 and needs a migration. Nine are already unapplied, so it would ship inert; it is queued rather than half-landed.

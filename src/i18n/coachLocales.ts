@@ -108,6 +108,7 @@ type CoachStrings = {
   coachChatOpen: string;
   /** D12 — manage-week sheet */
   coachManageWeek: string;
+  coachMoreDepth: string;
   coachChangeSchedule: string;
   coachAskCoach: string;
   coachScheduleRemapNote: string;
@@ -267,6 +268,7 @@ const en: CoachStrings = {
   coachChatOffline: 'Coach voice offline — your plan and adjustments still work.',
   coachChatOpen: 'Ask your coach',
   coachManageWeek: 'Manage this week',
+  coachMoreDepth: 'Voice, load & chat',
   coachChangeSchedule: 'Change schedule',
   coachAskCoach: 'Ask coach',
   coachScheduleRemapNote:

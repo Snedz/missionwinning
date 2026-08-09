@@ -378,10 +378,15 @@ export function HistoryPage() {
                   />
                 </div>
               </div>
-              <div className="space-y-4 border-t-2 border-border pt-4">
-                <AnatomyHeatMap cells={heatmapCells} />
-                <MuscleHeatmap cells={heatmapCells} windowDays={HEATMAP_WINDOW_DAYS} />
-              </div>
+              <details className="group border-2 border-border bg-card">
+                <summary className="flex min-h-[44px] cursor-pointer list-none items-center px-4 py-3 text-sm font-semibold text-foreground [&::-webkit-details-marker]:hidden">
+                  {t('historyHeatmaps', { defaultValue: 'Muscle heatmaps' })}
+                </summary>
+                <div className="space-y-4 border-t-2 border-border p-4">
+                  <AnatomyHeatMap cells={heatmapCells} />
+                  <MuscleHeatmap cells={heatmapCells} windowDays={HEATMAP_WINDOW_DAYS} />
+                </div>
+              </details>
             </div>
           ) : (
           <>
@@ -698,8 +703,11 @@ export function HistoryPage() {
         </DialogContent>
       </Dialog>
 
-      <p className="mt-6 text-center text-sm text-muted-foreground">
-        <Link href="/profile" className="text-primary hover:underline">
+      <p className="mt-6 text-center text-xs text-muted-foreground">
+        <Link
+          href="/account"
+          className="underline underline-offset-2 hover:text-foreground"
+        >
           {t('historySignInFoot', { defaultValue: 'Sign in (optional) to load full cloud history.' })}
         </Link>
       </p>
