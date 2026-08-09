@@ -39,7 +39,7 @@ Not three revisions of one product. Getting this wrong is what `.159` repaired.
 | `design_handoff_modernist_rebrand` | Landing / marketing, pre-sign-in | D5 (`.130`–`.138`) |
 | `design_handoff_missionwinning_modernist` | **The desktop app** | D5 (`.139`–`.149`) |
 | `design_handoff_mobile_app` | **The mobile app** | D6 (`.150`–`.158`) |
-| `design_handoff_www_static` | **The public marketing site**, pre-sign-in, on Astro — re-cuts handoff 1's surface onto a static stack | **Commissioned** 2026-08-09 — [DESIGN_PROPOSAL_WWW.md](DESIGN_PROPOSAL_WWW.md), unblocked by the [www surface founder override](../ORCHESTRATION.md#founder-override--www-surface-on-astro-2026-08-09) |
+| `design_handoff_www_static` | **The public marketing site**, pre-sign-in, on Astro — re-cuts handoff 1's surface onto a static stack. Route map is [DESIGN_PROPOSAL_WWW.md](DESIGN_PROPOSAL_WWW.md) §11 **plus `/start`**, added `.642`: a dedicated conversion page, beyond the original seven and named here rather than implied, on the [Wave 11 §11.4](DESIGN_RESEARCH.md) finding that a landing page is CTA discipline rather than a shorter homepage. Additive — moves no SEO URL | **Commissioned** 2026-08-09 — unblocked by the [www surface founder override](../ORCHESTRATION.md#founder-override--www-surface-on-astro-2026-08-09) |
 
 The bundled screenshots are **examples, not targets** — each design is responsive
 within its own band, and neither is pinned to the width it was drawn at. The one

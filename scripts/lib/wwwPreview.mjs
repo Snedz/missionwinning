@@ -44,18 +44,37 @@ export function serveDist() {
   return new Promise((resolve, reject) => {
     const server = http.createServer((req, res) => {
       const rel = decodeURIComponent((req.url || '/').split('?')[0]);
-      const file = path.join(DIST, rel.endsWith('/') ? `${rel}index.html` : rel);
+      const base = path.join(DIST, rel);
       // Traversal cannot matter here — this process drives every request — but a
       // server willing to read outside its root is not a thing to leave lying
       // around in a repo where someone may reuse it.
-      if (!file.startsWith(DIST)) return void res.writeHead(403).end();
-      fs.readFile(file, (err, body) => {
-        if (err) return void res.writeHead(404).end();
-        res.writeHead(200, {
-          'content-type': MIME[path.extname(file)] || 'application/octet-stream',
+      if (!base.startsWith(DIST)) return void res.writeHead(403).end();
+
+      /*
+       * Extensionless routes, the way the host resolves them.
+       *
+       * `trailingSlash: 'never'` means every link on the site points at `/start`,
+       * and Astro writes `dist/start/index.html`. Cloudflare Pages serves that
+       * pair; a naive readFile on `dist/start` hits a directory and 404s — which
+       * is a guard failing on its own server rather than on the site, and it is
+       * how a page ends up quietly excluded from a sweep.
+       */
+      const candidates = rel.endsWith('/')
+        ? [path.join(base, 'index.html')]
+        : [base, path.join(base, 'index.html'), `${base}.html`];
+
+      const tryNext = (i) => {
+        if (i >= candidates.length) return void res.writeHead(404).end();
+        const file = candidates[i];
+        fs.readFile(file, (err, body) => {
+          if (err) return void tryNext(i + 1);
+          res.writeHead(200, {
+            'content-type': MIME[path.extname(file)] || 'application/octet-stream',
+          });
+          res.end(body);
         });
-        res.end(body);
-      });
+      };
+      tryNext(0);
     });
     server.on('error', reject);
     server.listen(0, '127.0.0.1', () => resolve(server));
@@ -87,6 +106,28 @@ export async function launch() {
 export const URL_ARG = process.argv[2] || process.env.WWW_BASE_URL || null;
 
 /**
+ * Every route this build emits, discovered from `dist` rather than listed.
+ *
+ * A guard that measures a hardcoded `/` stops covering the site the moment a
+ * second page lands — which is exactly what happened when `/start` was added,
+ * and is the enumeration-vs-discovery failure CLAUDE.md §6 names. `trailingSlash:
+ * 'never'`, so `foo/index.html` serves at `/foo` and `index.html` at `/`.
+ */
+export function emittedRoutes() {
+  const out = [];
+  const walk = (dir, prefix) => {
+    for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
+      const full = path.join(dir, entry.name);
+      if (entry.isDirectory()) walk(full, `${prefix}${entry.name}/`);
+      else if (entry.name === 'index.html') out.push(prefix === '' ? '/' : `/${prefix.slice(0, -1)}`);
+      else if (entry.name.endsWith('.html')) out.push(`/${prefix}${entry.name.replace(/\.html$/, '')}`);
+    }
+  };
+  walk(DIST, '');
+  return out.sort();
+}
+
+/**
  * Serve, launch, navigate. Returns everything the caller needs plus a `done()`
  * that closes both, so neither guard can leak a browser on a failure path.
  *
@@ -94,7 +135,7 @@ export const URL_ARG = process.argv[2] || process.env.WWW_BASE_URL || null;
  * Wave 11 both measured ten captures at 1440 and nothing at any other width, so
  * a guard asserting at another viewport would be asserting an invented number.
  */
-export async function openPreview({ label, viewport = { width: 1440, height: 900 } } = {}) {
+export async function openPreview({ label, route = '/', viewport = { width: 1440, height: 900 } } = {}) {
   if (!URL_ARG && !fs.existsSync(path.join(DIST, 'index.html'))) {
     console.error(
       '\n✗ sites/www/dist/index.html not found.\n' +
@@ -105,7 +146,10 @@ export async function openPreview({ label, viewport = { width: 1440, height: 900
   }
 
   const server = URL_ARG ? null : await serveDist();
-  const url = URL_ARG || `http://127.0.0.1:${server.address().port}/`;
+  const origin = URL_ARG ? URL_ARG.replace(/\/$/, '') : `http://127.0.0.1:${server.address().port}`;
+  // `trailingSlash: 'never'` in astro.config, but the built-in server maps a
+  // trailing slash to index.html, so both spellings resolve either way.
+  const url = route === '/' ? `${origin}/` : `${origin}${route}`;
 
   const browser = await launch();
   const page = await browser.newPage({ viewport });

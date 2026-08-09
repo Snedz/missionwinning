@@ -26,14 +26,36 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const root = path.join(__dirname, '..');
 const DIST = path.join(root, 'sites/www/dist');
 
-/** Route → budget in KB of gzipped initial JS. Ratchet down only. */
+/**
+ * Route → budget in KB of gzipped initial JS. Ratchet down only.
+ *
+ * Routes are DISCOVERED from dist (below) and looked up here. A route with no
+ * entry is a hard failure, not a skip: this file used to carry a `ROUTE_HTML`
+ * map alongside the budgets, so `/start` landed and was measured by nothing —
+ * the enumeration-vs-discovery failure CLAUDE.md §6 names, in the one script
+ * whose header already argued against skipping.
+ */
 const BUDGETS_KB = {
   '/': 20,
+  '/start': 20,
 };
 
-const ROUTE_HTML = {
-  '/': 'index.html',
-};
+/** Every route the build emits, as route → dist-relative HTML path. */
+function discoverRoutes() {
+  const out = {};
+  const walk = (dir, prefix) => {
+    for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
+      const full = path.join(dir, entry.name);
+      if (entry.isDirectory()) walk(full, `${prefix}${entry.name}/`);
+      else if (entry.name === 'index.html')
+        out[prefix === '' ? '/' : `/${prefix.slice(0, -1)}`] = `${prefix}index.html`;
+      else if (entry.name.endsWith('.html'))
+        out[`/${prefix}${entry.name.replace(/\.html$/, '')}`] = `${prefix}${entry.name}`;
+    }
+  };
+  walk(DIST, '');
+  return out;
+}
 
 function initialScripts(htmlPath) {
   const html = fs.readFileSync(htmlPath, 'utf8');
@@ -62,17 +84,28 @@ function main() {
   let over = false;
   const rows = [];
 
-  for (const [route, file] of Object.entries(ROUTE_HTML)) {
-    const htmlPath = path.join(DIST, file);
-    if (!fs.existsSync(htmlPath)) {
-      console.error(
-        `\n✗ ${file} not found under sites/www/dist.\n` +
-          '  Run `npm --prefix sites/www run build` first. Refusing to report a\n' +
-          '  budget it could not measure — that is a green that means nothing.\n',
-      );
-      throw new Error(`www-bundle-budget: missing ${file}`);
-    }
+  if (!fs.existsSync(DIST)) {
+    console.error(
+      '\n✗ sites/www/dist not found.\n' +
+        '  Run `npm --prefix sites/www run build` first. Refusing to report a\n' +
+        '  budget it could not measure — that is a green that means nothing.\n',
+    );
+    throw new Error('www-bundle-budget: no dist');
+  }
 
+  const routes = discoverRoutes();
+  const unbudgeted = Object.keys(routes).filter((r) => !(r in BUDGETS_KB));
+  if (unbudgeted.length) {
+    console.error(
+      `\n✗ ${unbudgeted.length} route(s) the build emits have no budget: ${unbudgeted.join(', ')}\n` +
+        '  Add a BUDGETS_KB entry. A route measured by nothing is how a page ships\n' +
+        '  with a framework on it and every check stays green.\n',
+    );
+    throw new Error(`www-bundle-budget: unbudgeted route(s) ${unbudgeted.join(', ')}`);
+  }
+
+  for (const [route, file] of Object.entries(routes)) {
+    const htmlPath = path.join(DIST, file);
     const { external, inline } = initialScripts(htmlPath);
     const buffers = [
       ...external.map((rel) => fs.readFileSync(path.join(DIST, rel))),

@@ -35,13 +35,20 @@ const DIST = path.join(root, 'sites/www/dist');
  * Classes that are markers, not styles — they exist to be queried, never to
  * paint. Each needs a reason, in the idiom check-design-system's ALLOWLIST uses:
  * an exemption without one is a disabled check.
+ *
+ * **Empty, and that is the correct state.** This list held exactly one entry,
+ * `reveal-visible`, whose own stated reason was that it "is never in a source
+ * class attribute at build time" — which is precisely the condition under which
+ * this check never looks at it. The entry could not be reached by the code that
+ * consults it, and it was also wrong on the facts: `.reveal-visible` IS in the
+ * built CSS, so it would have passed on the ordinary path anyway.
+ *
+ * That is the `.220` shape, in miniature and inside a guard: a row that reads
+ * like an exemption, does nothing, and makes the list look load-bearing. The
+ * mechanism is kept because a class applied only at runtime is a real case that
+ * will recur — an entry added here must be one that would otherwise FAIL.
  */
-const MARKERS = [
-  {
-    name: 'reveal-visible',
-    why: 'Applied by the scroll-reveal island at runtime, so it is never in a source class attribute at build time; it IS defined in global.css.',
-  },
-];
+const MARKERS = [];
 
 function walk(dir, out = []) {
   if (!fs.existsSync(dir)) return out;

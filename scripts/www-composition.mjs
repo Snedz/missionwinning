@@ -34,7 +34,7 @@
  *
  * Usage: node scripts/www-composition.mjs [url]
  */
-import { openPreview, URL_ARG } from './lib/wwwPreview.mjs';
+import { emittedRoutes, openPreview, URL_ARG } from './lib/wwwPreview.mjs';
 
 /*
  * DESIGN_RESEARCH.md §11.5. Each cites the band it sits below.
@@ -54,8 +54,8 @@ const FLOORS = {
 /** Union resolution. 8px is ~0.3% of the 1440 width — finer than the floors. */
 const CELL = 8;
 
-async function main() {
-  const { page, errors, done } = await openPreview({ label: 'www-composition' });
+async function measure(route) {
+  const { page, errors, done } = await openPreview({ label: 'www-composition', route });
 
   // Lazy images below the fold never decode during a scripted visit, and an
   // undecoded image still has layout — but scrolling first also settles any
@@ -158,14 +158,11 @@ async function main() {
   }, CELL);
 
   await done();
+  return { route, measured, errors };
+}
 
-  if (errors.length) {
-    console.error(`\n✗ page errors during measurement:\n  ${errors.join('\n  ')}\n`);
-    process.exitCode = 1;
-    return;
-  }
-
-  const rows = [
+function rowsFor(measured) {
+  return [
     {
       name: 'image area, first fold',
       got: `${measured.foldImagePct.toFixed(1)}%`,
@@ -195,34 +192,60 @@ async function main() {
       band: 'refs 40–100% of spans',
     },
   ];
+}
 
-  console.log(
-    `\nwww composition — ${URL_ARG || 'dist'} at ${measured.vw}px · ` +
-      `page ${measured.pageH}px · ${measured.images} image(s)\n`,
-  );
-  console.log('Metric                     Measured   Floor    Reference             Status');
-  console.log('-'.repeat(78));
-  for (const r of rows) {
+async function main() {
+  // Discovered, never listed: a guard hardcoded to `/` stops covering the site
+  // the moment a second page lands, which is exactly what `/start` would have
+  // done. An explicit url argument measures only that url.
+  const routes = URL_ARG ? ['/'] : emittedRoutes();
+  if (!routes.length) throw new Error('www-composition: dist emitted no routes');
+
+  let failed = 0;
+
+  for (const route of routes) {
+    const { measured, errors } = await measure(route);
+
+    if (errors.length) {
+      console.error(`\n✗ ${route} — page errors during measurement:\n  ${errors.join('\n  ')}\n`);
+      failed += 1;
+      continue;
+    }
+
+    const rows = rowsFor(measured);
+
     console.log(
-      `${r.name.padEnd(26)} ${r.got.padEnd(10)} ${r.floor.padEnd(8)} ${r.band.padEnd(21)} ${r.ok ? 'OK' : 'UNDER'}`,
+      `\nwww composition — ${URL_ARG || 'dist'}${route === '/' ? '/' : route} at ${measured.vw}px · ` +
+        `page ${measured.pageH}px · ${measured.images} image(s)\n`,
     );
-  }
-  if (measured.fullBleed.length) {
-    console.log(`\n  full-bleed heights: ${measured.fullBleed.join(' · ')}px`);
+    console.log('Metric                     Measured   Floor    Reference             Status');
+    console.log('-'.repeat(78));
+    for (const r of rows) {
+      console.log(
+        `${r.name.padEnd(26)} ${r.got.padEnd(10)} ${r.floor.padEnd(8)} ${r.band.padEnd(21)} ${r.ok ? 'OK' : 'UNDER'}`,
+      );
+    }
+    if (measured.fullBleed.length) {
+      console.log(`\n  full-bleed heights: ${measured.fullBleed.join(' · ')}px`);
+    }
+
+    const under = rows.filter((r) => !r.ok);
+    if (under.length) {
+      console.error(`\n✗ ${route}: ${under.length} composition floor(s) not met.`);
+      failed += 1;
+    }
   }
 
-  const under = rows.filter((r) => !r.ok);
-  if (under.length) {
+  if (failed) {
     console.error(
-      `\n✗ ${under.length} composition floor(s) not met.\n` +
-        '  DESIGN_RESEARCH §11.5 sets these below the measured reference band, so\n' +
+      '\n  DESIGN_RESEARCH §11.5 sets these below the measured reference band, so\n' +
         '  falling under one is a regression, not a stylistic disagreement.\n',
     );
     process.exitCode = 1;
     return;
   }
 
-  console.log('\n✓ composition floors met.\n');
+  console.log(`\n✓ composition floors met on ${routes.length} route(s): ${routes.join(' · ')}\n`);
 }
 
 main();
