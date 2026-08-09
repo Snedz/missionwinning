@@ -1,25 +1,78 @@
 ---
 /*
- * Pipeline proof, not the homepage.
+ * The homepage — ten sections, compact and desktop as separate compositions.
  *
- * PR B stands up the workspace, the generated tokens and the guards; the ten
- * sections and both compositions are PR C. What this page has to demonstrate is
- * that the chain holds end to end: generated tokens → Tailwind v4 @theme →
- * static HTML with no client JS, the two new type tiers rendering at their
- * measured sizes, the statement rhythm, and exactly one red control on the page.
+ * Section order is unchanged from src/page-components/LandingPage.tsx, whose
+ * own header states it: "log → adapt → anywhere → free → start. That sequence
+ * is real, so the page can be read top to bottom as one argument." Wave 10
+ * measured the type scale as already at the reference bar; what changed here is
+ * the rhythm (§10.4) and the motion.
+ *
+ * Every string comes from the app's locale pack and every number from the
+ * floors module — build-time imports, never shipped to the browser.
  */
 import Base from '../layouts/Base.astro';
+import Section from '../components/Section.astro';
 import CtaSlot from '../components/CtaSlot.astro';
-import { CONTENT_FLOORS } from '../../../../src/lib/contentFloors';
+import { CONTENT_FLOORS } from '@/lib/contentFloors';
+import { landingStringsFor, LANDING_FAQ_KEYS } from '@/i18n/landingLocales';
+import { COMPARE_STORIES } from '@/data/compareStories';
 
-// Every figure is checkable and comes from the floors module, which is
-// literal-only with zero imports. Typing 228 here is how the landing page ended
-// up saying 217 in fifteen locale packs against a catalogue of 228.
+const t = landingStringsFor('en');
+
+// Checkable facts only — no traction claims (hard rule 3). `exercisePages` is a
+// floor asserted against the real catalogue by contentInventory.test.ts, so copy
+// written from it can only ever under-promise.
 const stats = [
   { figure: String(CONTENT_FLOORS.exercisePages), label: 'Exercises, bodyweight and minimal gear first' },
   { figure: '3min', label: 'From landing to your first logged set' },
   { figure: '0', label: 'Wearables, accounts or app stores required' },
   { figure: '$0', label: 'The logger, forever — not a trial' },
+];
+
+// The three documentary shots that exist. GrayscalePhoto's rule holds here: a
+// slot with no photograph renders an honest captioned frame, never a stand-in.
+const anywhere = [
+  {
+    base: '/photo/phone-bench',
+    alt: 'A phone resting on a gym bench between sets',
+    title: 'Offline first',
+    body: 'Sets save on the device the moment you log them. Signal is optional; the log is not.',
+  },
+  {
+    base: '/photo/home-rack',
+    alt: 'A loaded barbell on a home rack',
+    title: 'Your gear, not a gym',
+    body: 'Tell it what you have — a bar, two bands, nothing — and the week is built from that.',
+  },
+  {
+    base: '/photo/bare-wrist',
+    alt: 'A bare wrist gripping a barbell',
+    title: 'No wearable',
+    body: 'The plan comes from logged sets, so nothing needs charging for it to work.',
+  },
+];
+
+const freeCore = [
+  { term: 'The logger', def: 'Sets, reps, RPE, rest timers, supersets, PRs.' },
+  { term: 'Mission Coach', def: 'A week built from your logs, regenerated every week.' },
+  { term: `${CONTENT_FLOORS.exercisePages} exercises`, def: 'Bodyweight and minimal gear first, with form cues.' },
+  { term: 'No account', def: 'Works offline. Nothing to install, nothing to sign up for.' },
+];
+
+/*
+ * No ticker on this page. `march` is in the motion vocabulary, but the ten
+ * sections in DESIGN_PROPOSAL_WWW §6 do not include one, and a decorative band
+ * between section 08 and the close is a scope the rhythm guard has to reason
+ * about for no argumentative gain. The move stays available; this page does not
+ * spend it.
+ */
+const navLinks = [
+  { href: '/#adapt', label: 'Coach' },
+  { href: '/#anywhere', label: 'Anywhere' },
+  { href: '/#free', label: 'Free core' },
+  { href: '/#compare', label: 'Compare' },
+  { href: '/#questions', label: 'Questions' },
 ];
 ---
 
@@ -27,73 +80,197 @@ const stats = [
   title="Train Anywhere. Win Daily. — Mission Winning"
   description="Free offline workout logger plus adaptive Mission Coach from your logs — no wearable required. Free core forever. Works offline, anywhere."
 >
-  <header class="border-b-2 border-rule">
+  <!-- 00 NAV. The CTA repeats here in its quiet variant: the page spends its one
+       red control on the hero, not on chrome. -->
+  <header class="sticky top-0 z-50 border-b-2 border-rule bg-paper">
     <div class="mx-auto flex max-w-6xl items-center gap-4 px-5 py-4 sm:px-8">
-      <a href="/" class="flex items-center gap-3">
+      <a href="/" class="flex shrink-0 items-center gap-3">
         <span
           class="flex h-8 w-8 items-center justify-center bg-ink text-[13px] font-extrabold tracking-[-0.04em] text-paper"
           >MW</span
         >
         <span class="text-[15px] font-extrabold tracking-[-0.01em]">Mission Winning</span>
       </a>
-      <CtaSlot variant="quiet" class="ml-auto" />
+      <!-- Desktop composition: five links. Compact drops them entirely rather
+           than hiding them behind a menu button — a marketing page is a scroll,
+           and a hamburger on a one-page scroll is chrome pretending to be
+           navigation. -->
+      <nav class="ml-8 hidden items-center gap-6 md:flex">
+        {navLinks.map((l) => (
+          <a href={l.href} class="text-[15px] font-semibold hover:underline">{l.label}</a>
+        ))}
+      </nav>
+      <CtaSlot variant="quiet" class="ml-auto shrink-0" />
     </div>
   </header>
 
   <main>
-    <!-- 01 LOG — the hero. display-hero unchanged from src/index.css: Wave 10
-         measured the app already at the reference bar (76px against a 70–100pt
-         median), so this tier is inherited, not re-cut. -->
-    <section class="px-5 py-section sm:px-8 lg:py-section-lg">
-      <div class="mx-auto max-w-6xl">
-        <p class="eyebrow eyebrow-live">Free · offline · no account</p>
-        <h1 class="display-hero mt-6 max-w-[18ch]">Log a set. Your week rewrites itself.</h1>
-        <p class="mt-6 max-w-[62ch] text-[19px] leading-[1.5] text-quiet">
-          A workout logger that turns what you actually did into next week&rsquo;s plan. No wearable,
-          no gym, no account &mdash; and the logger is free forever.
-        </p>
-        <CtaSlot class="mt-10 max-w-[420px]" />
-      </div>
-    </section>
+    <!-- 01 LOG. Desktop splits 1.05fr/0.95fr with the live demo on the right;
+         compact stacks and the demo follows the CTA. The demo slot reserves its
+         height either way so the island landing in PR D shifts nothing. -->
+    <Section rule={false} class="!pt-16 lg:!pt-24">
+      <div class="grid gap-12 lg:grid-cols-[1.05fr_0.95fr] lg:items-start lg:gap-14">
+        <div>
+          <p class="eyebrow eyebrow-live">{t.landingHeroEyebrow ?? 'Free · offline · no account'}</p>
+          <h1 class="display-hero mt-6 max-w-[18ch]">Log a set. Your week rewrites itself.</h1>
+          <p class="mt-6 max-w-[62ch] text-[19px] leading-[1.5] text-quiet">
+            A workout logger that turns what you actually did into next week&rsquo;s plan. No
+            wearable, no gym, no account &mdash; and the logger is free forever. Works offline,
+            anywhere you train.
+          </p>
+          <CtaSlot class="mt-10 max-w-[420px]" />
+        </div>
 
-    <!-- 02 STATEMENT — the new rhythm tier. py-statement is 176/288px, so the
-         boundary against its neighbours lands at 352/576px, inside the measured
-         540–830pt band. This is the delta the phone screenshots were showing. -->
-    <section class="rule-top px-5 py-statement sm:px-8 lg:py-statement-lg">
-      <div class="mx-auto max-w-6xl">
-        <p class="display-statement">A missed day is not a failed plan.</p>
+        <!-- Demo slot. Fixed min-height on purpose: PR D drops LogToPlanHero in
+             here, and a slot that grows when it arrives is a layout shift on the
+             most-linked page in the product. -->
+        <div
+          class="flex min-h-[420px] flex-col justify-center border-2 border-rule bg-card p-6"
+          data-demo-slot
+        >
+          <p class="eyebrow">{t.heroDemoLabel ?? 'Demo · same engine as the app'}</p>
+          <p class="mt-4 text-[17px] font-semibold">{t.heroDemoExercise ?? 'Squat · today'}</p>
+          <p class="mt-3 max-w-[42ch] text-[15px] leading-[1.5] text-quiet">
+            {t.heroDemoWhyToday ??
+              'Last squat session you finished 3 × 12 at 80 kg, so today asks for more load.'}
+          </p>
+          <p class="eyebrow mt-6">Interactive demo lands with the island port</p>
+        </div>
       </div>
-    </section>
+    </Section>
 
-    <!-- 03 AT A GLANCE — the gutters ARE the rules: 2px gap over a rule-coloured
-         parent. gap-px was rejected in the app for being a hairline. -->
-    <section class="rule-top px-5 py-section sm:px-8 lg:py-section-lg">
-      <div class="mx-auto max-w-6xl">
-        <p class="eyebrow">At a glance</p>
-        <dl class="mt-8 grid grid-cols-2 gap-0.5 border-2 border-rule bg-rule sm:grid-cols-4">
-          {
-            stats.map((s) => (
-              <div class="flex flex-col gap-3 bg-paper p-6">
-                <dt class="display-mega text-poster">{s.figure}</dt>
-                <dd class="eyebrow">{s.label}</dd>
-              </div>
-            ))
-          }
-        </dl>
+    <!-- 02 STATEMENT. One sentence owns the screen. The rhythm tier that did not
+         exist before this handoff. -->
+    <Section tier="statement">
+      <p class="display-statement wipe"><span>A missed day is not a failed plan.</span></p>
+    </Section>
+
+    <!-- 03 AT A GLANCE. The gutters ARE the rules — 2px gap over a rule-coloured
+         parent. `gap-px` was rejected in the app for being a hairline. -->
+    <Section>
+      <p class="eyebrow">At a glance</p>
+      <dl class="mt-8 grid grid-cols-2 gap-0.5 border-2 border-rule bg-rule sm:grid-cols-4">
+        {stats.map((s) => (
+          <div class="flex flex-col gap-3 bg-paper p-6">
+            <dt class="display-mega text-poster">{s.figure}</dt>
+            <dd class="eyebrow">{s.label}</dd>
+          </div>
+        ))}
+      </dl>
+    </Section>
+
+    <!-- 04 ADAPT -->
+    <Section id="adapt">
+      <div class="grid gap-10 lg:grid-cols-2 lg:items-start lg:gap-14">
+        <div>
+          <p class="eyebrow">When you miss</p>
+          <h2 class="display-section mt-4 max-w-[24ch]">A missed day is not a failed plan</h2>
+          <p class="mt-6 max-w-[62ch] text-[17px] leading-[1.6] text-quiet">
+            Sleep badly, travel, lose a week &mdash; Mission Coach reshapes what is left instead of
+            leaving you behind a schedule you already broke.
+          </p>
+        </div>
+        <div class="border-2 border-rule bg-card p-6" data-adapt-slot>
+          <p class="eyebrow">{t.coachDemoLabel ?? 'Demo · a week, adapted'}</p>
+          <p class="mt-4 max-w-[46ch] text-[15px] leading-[1.5]">
+            {t.coachDemoAdaptedWhy ??
+              'Wednesday is gone, so upper body moved to Thursday and conditioning to Saturday. Same week, same dose.'}
+          </p>
+          <p class="eyebrow mt-6">Interactive demo lands with the island port</p>
+        </div>
       </div>
-    </section>
+    </Section>
+
+    <!-- 05 ANYWHERE. Desktop 3-up; compact a peeking rail. -->
+    <Section id="anywhere">
+      <p class="eyebrow">Where you train</p>
+      <h2 class="display-section mt-4 max-w-[24ch]">Built for one bar of signal and no rack</h2>
+
+      <div class="mt-10 rail md:grid md:grid-cols-3 md:gap-6 md:overflow-visible md:!mx-0 md:!px-0">
+        {anywhere.map((p) => (
+          <figure class="photo">
+            <div class="aspect-[4/5] overflow-hidden border-2 border-rule">
+              <picture>
+                <source srcset={`${p.base}.avif`} type="image/avif" />
+                <source srcset={`${p.base}.webp`} type="image/webp" />
+                <img src={`${p.base}.webp`} alt={p.alt} loading="lazy" decoding="async" width="800" height="1000" />
+              </picture>
+            </div>
+            <figcaption class="mt-4">
+              <p class="text-[17px] font-extrabold tracking-[-0.01em]">{p.title}</p>
+              <p class="mt-2 max-w-[40ch] text-[15px] leading-[1.5] text-quiet">{p.body}</p>
+            </figcaption>
+          </figure>
+        ))}
+      </div>
+    </Section>
+
+    <!-- 06 FREE. A definition list divided by 2px rules, not a checkmark farm. -->
+    <Section id="free">
+      <p class="eyebrow">The free core</p>
+      <h2 class="display-section mt-4 max-w-[24ch]">Free is the mission, not the trial</h2>
+      <dl class="mt-10 divide-y-2 divide-rule border-y-2 border-rule">
+        {freeCore.map((row) => (
+          <div class="grid gap-2 py-5 sm:grid-cols-[14rem_1fr] sm:gap-8">
+            <dt class="text-[17px] font-extrabold tracking-[-0.01em]">{row.term}</dt>
+            <dd class="max-w-[62ch] text-[16px] leading-[1.6] text-quiet">{row.def}</dd>
+          </div>
+        ))}
+      </dl>
+      <p class="mt-6 max-w-[62ch] text-[15px] leading-[1.6] text-quiet">
+        Fuel, Move, Mind, Track and Learn deepen the path after Train + Coach &mdash; never the
+        pitch.
+      </p>
+    </Section>
+
+    <!-- 07 COMPARE RAIL. The crop is the affordance: the next card is cut by the
+         viewport edge rather than announced by an arrow. Ten real stories, so
+         the rail has something to be a rail about. -->
+    <Section id="compare">
+      <p class="eyebrow">Honest comparison</p>
+      <h2 class="display-section mt-4 max-w-[24ch]">Read the one that sounds like you</h2>
+      <div class="mt-10 rail">
+        {COMPARE_STORIES.map((story) => (
+          <a
+            href={`/compare/${story.slug}`}
+            class="flex flex-col gap-3 border-2 border-rule bg-card p-5 hover:bg-tint"
+          >
+            <span class="eyebrow">{story.eyebrow}</span>
+            <span class="text-[17px] font-extrabold leading-[1.2] tracking-[-0.01em]">
+              {story.title}
+            </span>
+          </a>
+        ))}
+      </div>
+      <p class="eyebrow mt-4">{COMPARE_STORIES.length} stories · scroll</p>
+    </Section>
+
+    <!-- 08 QUESTIONS. `<details>`, so it opens with JavaScript disabled. -->
+    <Section id="questions">
+      <p class="eyebrow">Straight answers</p>
+      <h2 class="display-section mt-4 max-w-[24ch]">Questions worth asking first</h2>
+      <div class="mt-10 max-w-3xl divide-y-2 divide-rule border-y-2 border-rule">
+        {LANDING_FAQ_KEYS.map((item) => (
+          <details class="faq py-2">
+            <summary class="flex items-center gap-4 py-3 text-[17px] font-extrabold tracking-[-0.01em]">
+              {t[item.qKey] ?? item.qDefault}
+            </summary>
+            <p class="max-w-[62ch] pb-4 text-[16px] leading-[1.6] text-quiet">
+              {t[item.aKey] ?? item.aDefault}
+            </p>
+          </details>
+        ))}
+      </div>
+    </Section>
+
   </main>
 
-  <!-- 09 START — the page's one red field. The nested action inverts to paper,
-       so the field carries the red and the page keeps exactly one red control
-       (the hero's). Measured by the ported redActions helper.
-
-       poster-FIELD, not poster-close: it carries a 13px reassurance line under
-       the CTA, and paper on #ec3013 is 4.19:1 — fine for display, short of the
-       4.5:1 small text needs. The deeper --primary is 6.5:1. -->
+  <!-- 09 START. The page's one red field. poster-FIELD, not poster-close: it
+       carries a 13px reassurance line, and paper on #ec3013 is 4.19:1 — fine
+       for display, short of the 4.5:1 small text needs. --primary is 6.5:1. -->
   <footer class="poster-field px-5 py-statement sm:px-8 lg:py-statement-lg">
     <div class="mx-auto max-w-6xl">
-      <p class="display-statement">One set is the whole beginning.</p>
+      <p class="display-statement wipe"><span>One set is the whole beginning.</span></p>
       <CtaSlot class="mt-10 max-w-[420px]" />
     </div>
   </footer>

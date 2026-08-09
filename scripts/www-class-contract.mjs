@@ -72,13 +72,32 @@ function sourceClasses(src) {
     ...src.matchAll(/class(?:Name)?\s*=\s*\{`([^`]*)`\}/g),
   ];
   for (const m of attrs) {
-    const value = m[1];
+    /*
+     * Strip `${…}` spans BEFORE splitting on whitespace.
+     *
+     * Filtering token-by-token instead — the first version of this — reads the
+     * inside of an interpolation as class names: `${rule ? 'rule-top' : ''}`
+     * splits into `${rule`, `?`, `'rule-top'`, `:`, `''}`, and only the first
+     * and last carry a brace, so the guard reported `.?` and `.:` as undefined
+     * classes. A check that invents findings gets muted as fast as one that
+     * misses them.
+     *
+     * The expression's own class names are not recovered — they are dynamic by
+     * definition. They are counted, and the count is printed, so the blind spot
+     * is visible rather than assumed to be empty.
+     */
+    let value = m[1];
+    const interpolations = value.match(/\$\{[^}]*\}/g);
+    if (interpolations) {
+      dynamic += interpolations.length;
+      value = value.replace(/\$\{[^}]*\}/g, ' ');
+    }
+
     for (const raw of value.split(/\s+/)) {
       const token = raw.trim();
       if (!token) continue;
-      // `${...}` interpolation and bare `{expr}` cannot be resolved statically.
-      // Counted and reported rather than silently dropped — a check that
-      // quietly ignores what it cannot read is measuring the easy half.
+      // A leftover brace means an interpolation this regex could not close —
+      // nested braces, most likely. Count it, do not guess at it.
       if (token.includes('$') || token.includes('{') || token.includes('}')) {
         dynamic += 1;
         continue;

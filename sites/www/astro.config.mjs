@@ -1,4 +1,5 @@
 // @ts-check
+import { fileURLToPath } from 'node:url';
 import { defineConfig } from 'astro/config';
 import tailwind from '@tailwindcss/vite';
 
@@ -26,5 +27,17 @@ export default defineConfig({
   },
   vite: {
     plugins: [tailwind()],
+    resolve: {
+      alias: {
+        // Build-time only. Astro frontmatter reads the app's copy and catalogue
+        // modules (landingLocales, compareStories, contentFloors) so the two
+        // surfaces cannot say different things — compareStories itself imports
+        // `@/lib/contentFloors`, so the alias has to resolve here as well as in
+        // tsconfig. Nothing under this alias may be imported by an island:
+        // landingLocales alone is one 52KB module whose 15 packs do not
+        // tree-shake, and wwwSurface.test.ts fails the build if it is.
+        '@': fileURLToPath(new URL('../../src', import.meta.url)),
+      },
+    },
   },
 });

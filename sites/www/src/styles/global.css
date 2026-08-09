@@ -62,6 +62,9 @@
   --spacing-statement: 12rem; /* 192 compact */
   --spacing-statement-lg: 26rem; /* 416 desktop */
 
+  /* The page gutter, as a token because the rail bleeds by exactly it. */
+  --gutter: 1.25rem;
+
   --radius-none: var(--radius);
 }
 
@@ -251,6 +254,130 @@
     opacity: 1;
     transform: translateY(0);
   }
+
+  /* `wipe` — statement lines reveal from the baseline up. The one move taken
+     from La Huella, and the only new keyframe on this surface. Scroll-driven
+     where the browser supports it (Chromium, Safari 26+); everywhere else the
+     @supports block below never applies and the line is simply visible, which
+     is the correct fallback for a page whose content must not depend on JS. */
+  .wipe > * {
+    display: block;
+  }
+
+  @supports (animation-timeline: view()) {
+    @media (prefers-reduced-motion: no-preference) {
+      .wipe > * {
+        animation: wipe-in 520ms cubic-bezier(0.22, 1, 0.36, 1) both;
+        animation-timeline: view();
+        animation-range: entry 5% cover 28%;
+      }
+    }
+  }
+
+  @keyframes wipe-in {
+    from {
+      clip-path: inset(0 0 110% 0);
+    }
+    to {
+      clip-path: inset(0 0 0 0);
+    }
+  }
+
+  /* `rail` — horizontal scroll-snap. The crop IS the affordance: the next card
+     is cut by the viewport edge rather than announced by an arrow, which is
+     what all four references do. Zero JS; the progress rule is a native
+     scrollbar replacement drawn by the browser's own scroll position. */
+  .rail {
+    display: flex;
+    gap: 2px;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+    /* Bleed to the viewport edge so the crop reads as "more", not "cut off". */
+    margin-inline: calc(var(--gutter) * -1);
+    padding-inline: var(--gutter);
+  }
+
+  .rail::-webkit-scrollbar {
+    display: none;
+  }
+
+  .rail > * {
+    flex: 0 0 78%;
+    scroll-snap-align: start;
+  }
+
+  @media (min-width: 768px) {
+    .rail > * {
+      flex-basis: 30%;
+    }
+  }
+
+  @media (min-width: 1200px) {
+    .rail > * {
+      flex-basis: 19%;
+    }
+  }
+
+  /* `march` — the caps ticker. 32s linear, copied from src/index.css. */
+  .ticker {
+    overflow: hidden;
+  }
+
+  .ticker-track {
+    display: flex;
+    width: max-content;
+    animation: ticker-scroll 32s linear infinite;
+  }
+
+  @keyframes ticker-scroll {
+    from {
+      transform: translateX(0);
+    }
+    to {
+      transform: translateX(-50%);
+    }
+  }
+
+  /* Photography: black and white, always. `grayscale(1)` alone goes flat on
+     paper, hence the contrast lift — the same two values GrayscalePhoto uses. */
+  .photo img {
+    filter: grayscale(1) contrast(1.08);
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  /* An honest empty frame, never a stock stand-in: a neutral block captioned
+     with the shot it is waiting for. Same decision GrayscalePhoto makes, and
+     for the same reason — a placeholder that looks like a photo is far harder
+     to notice and remove later than one that looks like a gap. */
+  .photo-pending {
+    background-color: hsl(var(--card));
+    border: 2px solid hsl(var(--border));
+  }
+
+  /* `<details>` accordion — zero JS. */
+  .faq summary {
+    cursor: pointer;
+    list-style: none;
+    min-height: 44px;
+  }
+
+  .faq summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .faq summary::after {
+    content: '+';
+    margin-left: auto;
+    font-weight: 800;
+  }
+
+  .faq[open] summary::after {
+    content: '–';
+  }
 }
 
 /*
@@ -267,5 +394,27 @@
 
   .primary-action {
     transition: none;
+  }
+
+  /* Every move on this surface, not most of them. src/index.css records why
+     that distinction matters: the one animation there most likely to hurt
+     someone — a 6px shake on a failed access code — was the only one missing
+     from its reduced-motion block. Anything added above is added here in the
+     same commit. `.rail` is deliberately absent: scroll-snap is user-driven,
+     not animation, and disabling it would remove a control rather than a
+     motion. */
+  .wipe > * {
+    animation: none;
+    clip-path: none;
+  }
+
+  .ticker-track {
+    animation: none;
+  }
+}
+
+@media (min-width: 640px) {
+  :root {
+    --gutter: 2rem;
   }
 }

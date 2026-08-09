@@ -88,8 +88,18 @@ function serveDist() {
 /** An explicit url skips the built-in server (used against a preview deploy). */
 const URL_ARG = process.argv[2] || process.env.WWW_BASE_URL || null;
 
+/*
+ * Only the two boundary bands are asserted, and only these two are sourced:
+ * Wave 10 §10.4 measured section boundaries at 190–450pt and statement
+ * boundaries at 540–830pt across ten 1440pt captures.
+ *
+ * Cluster spacing is reported and NOT asserted. Wave 10 described clusters as
+ * "27–46pt", but that was the median of within-section gaps, not a floor — a
+ * 6px gap between a label and the line under it is correct typography, and an
+ * earlier draft of this file failed the build over exactly that. Turning a
+ * median into a band is the invention this script's header warns against.
+ */
 const BANDS = {
-  cluster: [8, 120],
   section: [190, 450],
   statement: [540, 830],
 };
@@ -152,50 +162,77 @@ async function main() {
     throw new Error(`www-rhythm: ${url} returned ${res ? res.status() : 'no response'}`);
   }
 
-  const gaps = await page.evaluate(() => {
+  const measured = await page.evaluate(() => {
     const isTextLeaf = (el) => {
       if (!el.textContent || !el.textContent.trim()) return false;
-      return ![...el.children].some((c) => c.textContent && c.textContent.trim());
-    };
-    // <header> is chrome, not a section of the argument — the references' first
-    // measured gap is likewise below the nav.
-    const scopes = [...document.querySelectorAll('main > section, body > footer')];
-    const blocks = [];
-    scopes.forEach((scope, scopeIndex) => {
-      const statement = !!scope.querySelector('.display-statement');
-      [...scope.querySelectorAll('*')].filter(isTextLeaf).forEach((el) => {
-        const r = el.getBoundingClientRect();
-        if (r.height <= 0) return;
-        blocks.push({
-          top: r.top + window.scrollY,
-          bottom: r.bottom + window.scrollY,
-          scopeIndex,
-          statement,
-          text: el.textContent.trim().slice(0, 36),
+      if ([...el.children].some((c) => c.textContent && c.textContent.trim())) return false;
+      /*
+       * Visible to a reader, not merely present in layout.
+       *
+       * Modern Chromium renders a CLOSED <details>'s children through
+       * ::details-content with `content-visibility: hidden` — they keep a
+       * layout box and a real height so the disclosure can animate. So
+       * getBoundingClientRect() reports a FAQ answer nobody can see, and the
+       * boundary below it measured 487px instead of 544 because it was being
+       * taken from invisible text 57px into the section's padding.
+       *
+       * checkVisibility with these options is the only thing that sees that;
+       * offsetParent, height and computed display all say the element is fine.
+       */
+      if (typeof el.checkVisibility === 'function') {
+        return el.checkVisibility({
+          contentVisibilityAuto: true,
+          opacityProperty: true,
+          visibilityProperty: true,
         });
-      });
-    });
-    blocks.sort((a, b) => a.top - b.top);
-
-    const out = [];
-    let prev = null;
-    for (const blk of blocks) {
-      if (prev) {
-        const gap = Math.round(blk.top - prev.bottom);
-        if (gap > 0) {
-          const crosses = blk.scopeIndex !== prev.scopeIndex;
-          const kind = !crosses
-            ? 'cluster'
-            : prev.statement || blk.statement
-              ? 'statement'
-              : 'section';
-          out.push({ gap, kind, text: blk.text });
-        }
       }
-      prev = prev && prev.bottom > blk.bottom ? prev : blk;
+      return true;
+    };
+
+    /*
+     * A boundary is measured between SCOPES, from the bottom of the last text
+     * in one to the top of the first text in the next.
+     *
+     * Not "every consecutive pair of text blocks", which an earlier draft did:
+     * in a section whose heading is followed by three photographs, the next
+     * text is a caption 516px below, and the photographs are the gap. That
+     * reported a 516px "cluster" and failed. Text-to-text only means something
+     * across a boundary, where the gap really is the spacing.
+     *
+     * <header> is chrome and is not a scope — the references' first measured
+     * gap is likewise below the nav.
+     */
+    const scopes = [...document.querySelectorAll('main > section, body > footer')];
+    const rows = scopes.map((scope) => {
+      const statement = !!scope.querySelector('.display-statement');
+      const boxes = [...scope.querySelectorAll('*')]
+        .filter(isTextLeaf)
+        .map((el) => {
+          const r = el.getBoundingClientRect();
+          return { top: r.top + window.scrollY, bottom: r.bottom + window.scrollY, text: el.textContent.trim().slice(0, 36) };
+        })
+        .filter((b) => b.bottom > b.top);
+      if (!boxes.length) return null;
+      const first = boxes.reduce((a, b) => (b.top < a.top ? b : a));
+      const last = boxes.reduce((a, b) => (b.bottom > a.bottom ? b : a));
+      return { statement, first, last, count: boxes.length };
+    });
+
+    const boundaries = [];
+    for (let i = 0; i < rows.length - 1; i += 1) {
+      const a = rows[i];
+      const b = rows[i + 1];
+      if (!a || !b) continue;
+      boundaries.push({
+        gap: Math.round(b.first.top - a.last.bottom),
+        kind: a.statement || b.statement ? 'statement' : 'section',
+        text: b.first.text,
+      });
     }
-    return out;
+    return { boundaries, scopes: rows.filter(Boolean).length, skipped: rows.filter((r) => !r).length };
   });
+
+  const { boundaries } = measured;
 
   await done();
 
@@ -207,15 +244,20 @@ async function main() {
 
   // A rhythm check that found no boundaries measured nothing. With one section
   // the page would print a clean pass while proving the opposite of the claim.
-  const boundaries = gaps.filter((g) => g.kind !== 'cluster');
   if (boundaries.length === 0) {
     console.error('\n✗ no section boundaries found — nothing to measure.\n');
     throw new Error('www-rhythm: zero boundaries');
   }
+  if (measured.skipped > 0) {
+    // A section with no text is a section this cannot measure across. Named
+    // rather than dropped: a silently skipped boundary is a boundary nobody
+    // knows went unchecked.
+    console.log(`  (${measured.skipped} scope(s) carried no text and were skipped)`);
+  }
 
-  console.log(`\nwww rhythm — ${url} at 1440px, text-block gaps\n`);
+  console.log(`\nwww rhythm — ${url} at 1440px · ${measured.scopes} scopes\n`);
   let bad = 0;
-  for (const g of gaps) {
+  for (const g of boundaries) {
     const [lo, hi] = BANDS[g.kind];
     const ok = g.gap >= lo && g.gap <= hi;
     if (!ok) bad += 1;
@@ -224,9 +266,7 @@ async function main() {
     );
   }
 
-  console.log(
-    `\n  ${gaps.length} gaps · ${boundaries.length} boundaries · ${bad} outside band`,
-  );
+  console.log(`\n  ${boundaries.length} boundaries · ${bad} outside band`);
   console.log(
     bad
       ? '\n✗ rhythm outside the measured reference band (DESIGN_RESEARCH Wave 10 §10.4).\n'

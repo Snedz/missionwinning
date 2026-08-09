@@ -27,6 +27,7 @@ When adding a doc:
 |------|---------------------|
 | [log/LOG-rotate-636.md](./log/LOG-rotate-636.md) | rotated oldest for `.636` global legal posture |
 | [log/LOG-rotate-637.md](./log/LOG-rotate-637.md) | rotated oldest for `.637` www surface scaffold |
+| [log/LOG-rotate-638.md](./log/LOG-rotate-638.md) | rotated oldest for `.638` www homepage |
 | [log/LOG-rotate-635.md](./log/LOG-rotate-635.md) | rotated oldest for `.635` sanctions no place names |
 | [log/LOG-rotate-634.md](./log/LOG-rotate-634.md) | rotated oldest for `.634` sanctions occupied regions |
 | [log/LOG-rotate-633.md](./log/LOG-rotate-633.md) | rotated oldest for `.633` Feel Wave 9 |
