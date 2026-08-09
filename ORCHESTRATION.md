@@ -27,6 +27,19 @@ Do not use old chat plans as source of truth — prefer this file + PLAN + LOG.
 
 Rewards domain: `src/lib/rewards/`. Plan: `.hermes/plans/2026-08-05_163500-full-launch-everything.md`.
 
+### Founder override — www surface on Astro (2026-08-09)
+
+**"Landing redesign" is no longer agent-forbidden.** Agents may build the **public marketing site** as a static Astro + Tailwind tree at `sites/www/`, deployed to Cloudflare Pages, per [docs/DESIGN_PROPOSAL_WWW.md](docs/DESIGN_PROPOSAL_WWW.md). Handoff `design_handoff_www_static` is **commissioned** — it is a fourth surface, not a revision of the desktop or mobile app.
+
+| Still required | Still forbidden |
+|----------------|-----------------|
+| Tokens **generated** from `src/index.css` — never a second source | Moving any of the ~250 SEO URLs (they stay in Next.js this handoff) |
+| One red action per page, **measured** not asserted | IA changes, route renames, token changes |
+| Renders complete with JavaScript disabled | Agents invent traction or flip `PRIVATE_MODE` |
+| One concern per PR; ship protocol | Gate the free logger |
+
+Scope note: this override is **narrow by design**. Everything else on the Horizon W forbidden list below stays forbidden.
+
 ### Founder override — pre-EIN craft window (2026-08-03)
 
 **≥10 beta users is no longer a build freeze.** REDTEAM A5 remains a *launch/public-flip* signal, not a ban on product work. EIN/payments may take weeks — use the window for **excellence craft, habit loop, return channel, and launch prep**.
@@ -103,7 +116,7 @@ flowchart TB
 
 **Agent-allowed:** All of the above + hero e2e + CI + LOG/CONTEXT sync.
 
-**Agent-forbidden (unless explicit founder override):** New pillar depth, America/PFT, locale body farms, guidebook expansion, landing redesign, wearables, Android F5, YC thesis churn as daily work.
+**Agent-forbidden (unless explicit founder override):** New pillar depth, America/PFT, locale body farms, guidebook expansion, wearables, Android F5, YC thesis churn as daily work. — *`landing redesign` was struck 2026-08-09; see the [www surface override](#founder-override--www-surface-on-astro-2026-08-09) above, which is narrow and leaves the rest of this list intact.*
 
 **Done when:** Founder phone path says pass → then Horizon 0 flip prep (recruit ≥10).
 

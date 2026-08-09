@@ -1,10 +1,10 @@
 # DESIGN_PROPOSAL_WWW.md — the www surface, on Astro
 
-**Lane:** Design / Brand · **Horizon:** W (craft window) · **Status:** proposal — **not commissioned**, see §11
+**Lane:** Design / Brand · **Horizon:** W (craft window) · **Status:** **commissioned 2026-08-09** — [founder override](../ORCHESTRATION.md#founder-override--www-surface-on-astro-2026-08-09)
 **Surface:** `design_handoff_www_static` — the **public marketing site**, pre-sign-in. Not the desktop app, not the mobile app.
 **Governs:** the type scale, spacing rhythm, motion vocabulary, page map and build for a static marketing site
 **Companions:** [DESIGN_RESEARCH.md](DESIGN_RESEARCH.md) §Wave 10 (the measured quality bar) · [DESIGN_SYSTEM.md](DESIGN_SYSTEM.md) + [brand-guidelines.md](brand-guidelines.md) (tokens — **the** source of truth) · [DESIGN_PROPOSAL_3.md](DESIGN_PROPOSAL_3.md) (the *app* composition pass — a different surface) · [DESIGN_ORCHESTRATION.md](DESIGN_ORCHESTRATION.md) (handoff registry)
-**Live spec sheet:** https://claude.ai/code/artifact/f5d8df0f-f987-4cf6-80ac-b118c3404554 — the same specification, rendered *in* the system it specifies: the type tiers at real size against live `clamp()`, the rhythm ruler drawn to scale, the motion vocabulary running, and both page-map compositions. Private until shared.
+**Spec sheet:** [`docs/design/www-spec-sheet.html`](design/www-spec-sheet.html) — the same specification, rendered *in* the system it specifies: the type tiers at real size against live `clamp()`, the rhythm ruler drawn to scale, the motion vocabulary running, and both page-map compositions. Self-contained, zero external references, opens offline. Wireframes and ruler also as PNG — [design/INDEX.md](design/INDEX.md). Published copy (private until shared): https://claude.ai/code/artifact/f5d8df0f-f987-4cf6-80ac-b118c3404554
 
 > **Surface collision, resolved before it happens.** [DESIGN_ORCHESTRATION.md](DESIGN_ORCHESTRATION.md) records three handoffs and warns in bold that they are *three surfaces, not three revisions of one product*. This is a **fourth**, and it re-cuts the surface handoff 1 owned (`design_handoff_modernist_rebrand` — landing / marketing) onto a new stack. It is **not** [DESIGN_PROPOSAL_3.md](DESIGN_PROPOSAL_3.md), which is a composition pass over the *app*. `.159` happened because a surface was left implicit; this file states it in the header and in the registry row.
 
@@ -113,7 +113,7 @@ Routes: `/` · `/about` · `/vision` · `/compare` + 10 stories · `/press` · `
 ## 7. Build
 
 - **Astro + Tailwind + Cloudflare Pages**, as briefed. Static output, no CMS. Three islands only — `LogToPlanHero`, `CoachAdaptDemo`, the rail counter. **JS budget < 20KB**, ratcheting down like [`bundle-budget.mjs`](../scripts/bundle-budget.mjs).
-- **Lives at `sites/www/` in this monorepo**, not a separate repo, so the token guard can reach it.
+- **Lives at `sites/www/` in this monorepo**, not a separate repo, so the token guard can reach it. Driven by **`npm --prefix sites/www`**, not npm workspaces — the root `package.json` declares none, `packages/mw-core` is consumed by relative path, and `apps/mobile` / `ops/dashboard` already use `--prefix`. Adding a `workspaces` array would rewrite `package-lock.json` and hoist Astro/Tailwind against the app's pinned `tailwindcss@^3.4.17`. The isolated `node_modules` is also what lets this site use Tailwind v4 while the app stays on v3.
 - **Scope: the marketing shell only.** The 228 exercise pages, 6 guide chapters, 4 paths and 3 calculators **stay in Next.js at their current URLs**. Zero SEO-URL movement in this handoff.
 - **Tokens are generated, never retyped.** A new `scripts/build-marketing-tokens.mjs` emits `sites/www/src/styles/tokens.css` from the `:root` block of [`src/index.css`](../src/index.css); `check-token-sync.mjs` gains a third target. This is `.178` — *one fact, one home* — applied to the failure this repo keeps paying for (`.605`: one gate carrying three values in three files).
 - **Numbers come from [`contentFloors.ts`](../src/lib/contentFloors.ts)**, which is literal-only with zero imports, so Astro can import it directly. **This fixes the live drift**: the landing page and all 15 locale packs still say `217 exercises` against a catalog of 228. No digit is typed into a blurb.
@@ -180,7 +180,7 @@ Judged against the existing bars ([DESIGN_PROPOSAL_3.md](DESIGN_PROPOSAL_3.md) �
 
 ## 11. Open decisions — before commissioning
 
-1. **The horizon override.** [ORCHESTRATION.md](../ORCHESTRATION.md) Horizon W lists **"landing redesign"** as agent-forbidden without an explicit founder override. This document is docs-only and lands without one; **`sites/www/` cannot be created until that line exists.** The craft window opened 2026-08-03 and a full-launch override landed 2026-08-05, so this is a line to write, not a case to argue.
+1. ~~**The horizon override.**~~ **Closed 2026-08-09** — the founder struck `landing redesign` from the Horizon W forbidden list and commissioned `design_handoff_www_static`. The override is deliberately narrow; the rest of that list stands.
 2. **Photography.** Three documentary shots exist (`bare-wrist`, `home-rack`, `phone-bench`); the map wants ~12. Type, data and the live demo carry §01–09 without them, so this does not block — but §05 is thin until it is answered. Separately: `public/learn/*.webp` chapter heroes are still in the **retired navy/emerald palette** (`CONTEXT.md` `.254`) and must not be reused.
 3. **Variable Archivo?** Condensed display is 2-of-4 in the references (§3). Adopting `Archivo[wdth,wght]` buys a condensed statement tier at the cost of a larger font payload on routes already under a bundle ratchet. Recommend **no** for v1; revisit if §02/§09 read thin at 96px.
 4. **i18n.** 15 locales translate client-side on one URL today. Static Astro forces the choice: EN-only (recommended, matches the existing 250 SEO routes) or locale-prefixed routes + hreflang (Horizon 3 depth).
@@ -189,11 +189,14 @@ Judged against the existing bars ([DESIGN_PROPOSAL_3.md](DESIGN_PROPOSAL_3.md) �
 ## 12. Verification
 
 ```bash
-npm run gate                       # all 18 steps stay green
-npm run -w sites/www build         # Astro static build
-npm run -w sites/www check         # token sync · design system · ban list · JS budget
-npx playwright test --config sites/www/playwright.config.ts   # 390×844 and 1440×900
+npm run gate                              # all 18 steps stay green — 11 and 14 now also cover sites/www
+npm --prefix sites/www run build          # Astro static build
+npm --prefix sites/www run check          # class contract · JS budget
+npm run www:tokens && git diff --exit-code sites/www/src/styles/tokens.css   # generated file is current
+npx playwright test --config sites/www/playwright.config.ts                  # 390×844 and 1440×900
 ```
+
+The gate **stays at 18 steps**: the token-sync and design-system guards are extended in place, so the steps that already run them cover the new directory. Adding a step would fire `gateDocParity.test.ts`, which parses `CLAUDE.md`'s numbered list and asserts the ordinals are exactly `1..N`.
 
 Plus: a `surface-split`-style spec asserting compact and desktop are structurally different (not one reflow); axe on every route; the red-budget spec from §8 guard 3; and a **no-JS render test** for acceptance bar 9.
 
