@@ -1,19 +1,43 @@
 ---
 /*
- * The homepage — ten sections, compact and desktop as separate compositions.
+ * The homepage. Nine sections, compact and desktop as separate compositions.
  *
- * Section order is unchanged from src/page-components/LandingPage.tsx, whose
- * own header states it: "log → adapt → anywhere → free → start. That sequence
- * is real, so the page can be read top to bottom as one argument." Wave 10
- * measured the type scale as already at the reference bar; what changed here is
- * the rhythm (§10.4) and the motion.
+ * Section order is unchanged from src/page-components/LandingPage.tsx, whose own
+ * header states it: "log → adapt → anywhere → free → start. That sequence is
+ * real, so the page can be read top to bottom as one argument."
  *
- * Every string comes from the app's locale pack and every number from the
- * floors module — build-time imports, never shipped to the browser.
+ * What changed at `.641` is the composition, and Wave 11 is why. The first build
+ * matched the reference type scale (§10.2) and the reference rhythm (§10.4) and
+ * still rendered as a wireframe, because nothing had ever measured the axis that
+ * actually separates the two: **imagery**. References run 76–81% image area and
+ * put a photograph under 81–100% of the first screen; this page ran ~4% and ~0%.
+ *
+ * Ground plan, and it is sourced rather than chosen (§11.3). No reference
+ * alternates ground per section — changes run 0–6 across a whole page, and the
+ * pages that change most do it to introduce exactly ONE contrasting field. So:
+ *
+ *   01 hero        photographic ground   ← image at the top
+ *   02 statement   photographic ground   ← image at a statement moment
+ *   03 at a glance paper (the dominant ground)
+ *   04 adapt       paper
+ *   05 anywhere    photographic band
+ *   06 free core   INK — the one contrasting field, about two-thirds down
+ *   07 compare     paper
+ *   08 questions   paper
+ *   09 close       red
+ *
+ * The action repeats on the cadence §11.4 measured (Freeletics Nutrition runs
+ * one string every 740–1000pt) but only ONE instance is red. The others invert
+ * to paper or ink. Repeating the action is the brief; repeating the red would
+ * break the one-red-action contract, and the two are separable.
+ *
+ * Every string comes from the app's locale pack and every number from the floors
+ * module — build-time imports, never shipped to the browser.
  */
 import Base from '../layouts/Base.astro';
 import Section from '../components/Section.astro';
 import CtaSlot from '../components/CtaSlot.astro';
+import StagePhoto from '../components/StagePhoto.astro';
 import LogToPlanDemo from '../components/LogToPlanDemo.astro';
 import CoachAdaptDemo from '../components/CoachAdaptDemo.astro';
 import { appUrl } from '../lib/appLinks';
@@ -33,8 +57,13 @@ const stats = [
   { figure: '$0', label: 'The logger, forever — not a trial' },
 ];
 
-// The three documentary shots that exist. GrayscalePhoto's rule holds here: a
-// slot with no photograph renders an honest captioned frame, never a stand-in.
+/*
+ * The three documentary shots that exist, used as grounds rather than
+ * thumbnails. Each appears twice with a different crop — the honest description
+ * of a set of three photographs asked to carry a page that wants twelve.
+ * docs/design/GROK_IMAGE_PACK.md specifies the rest; a slot with no photograph
+ * renders an honest empty frame, never a stand-in.
+ */
 const anywhere = [
   {
     base: '/photo/phone-bench',
@@ -63,13 +92,6 @@ const freeCore = [
   { term: 'No account', def: 'Works offline. Nothing to install, nothing to sign up for.' },
 ];
 
-/*
- * No ticker on this page. `march` is in the motion vocabulary, but the ten
- * sections in DESIGN_PROPOSAL_WWW §6 do not include one, and a decorative band
- * between section 08 and the close is a scope the rhythm guard has to reason
- * about for no argumentative gain. The move stays available; this page does not
- * spend it.
- */
 const navLinks = [
   { href: '/#adapt', label: 'Coach' },
   { href: '/#anywhere', label: 'Anywhere' },
@@ -83,14 +105,19 @@ const navLinks = [
   title="Train Anywhere. Win Daily. — Mission Winning"
   description="Free offline workout logger plus adaptive Mission Coach from your logs — no wearable required. Free core forever. Works offline, anywhere."
 >
-  <!-- 00 NAV. The CTA repeats here in its quiet variant: the page spends its one
-       red control on the hero, not on chrome. -->
-  <header class="sticky top-0 z-50 border-b-2 border-rule bg-paper">
+  <!-- 00 NAV. Sits on the photographic hero, so it starts transparent with paper
+       type and swaps to a paper bar once the hero is behind you. The swap is a
+       class toggled by an IntersectionObserver on a 1px sentinel — no scroll
+       handler, nothing that runs per frame. -->
+  <header
+    class="on-dark fixed inset-x-0 top-0 z-50 border-b-2 border-transparent transition-colors duration-200"
+    data-nav
+  >
     <div class="mx-auto flex max-w-6xl items-center gap-4 px-5 py-4 sm:px-8">
       <a href="/" class="flex shrink-0 items-center gap-3">
         <span
-          class="flex h-8 w-8 items-center justify-center bg-ink text-[13px] font-extrabold tracking-[-0.04em] text-paper"
-          >MW</span
+          class="flex h-8 w-8 items-center justify-center bg-paper text-[13px] font-extrabold tracking-[-0.04em] text-ink"
+          data-nav-mark>MW</span
         >
         <span class="text-[15px] font-extrabold tracking-[-0.01em]">Mission Winning</span>
       </a>
@@ -108,43 +135,75 @@ const navLinks = [
   </header>
 
   <main>
-    <!-- 01 LOG. Desktop splits 1.05fr/0.95fr with the live demo on the right;
-         compact stacks and the demo follows the CTA. The demo slot reserves its
-         height either way so the island landing in PR D shifts nothing. -->
-    <Section rule={false} class="!pt-16 lg:!pt-24">
-      <div class="grid gap-12 lg:grid-cols-[1.05fr_0.95fr] lg:items-start lg:gap-14">
-        <div>
-          <p class="eyebrow eyebrow-live">{t.landingHeroEyebrow ?? 'Free · offline · no account'}</p>
-          <h1 class="display-hero mt-6 max-w-[18ch]">Log a set. Your week rewrites itself.</h1>
-          <p class="mt-6 max-w-[62ch] text-[19px] leading-[1.5] text-quiet">
-            A workout logger that turns what you actually did into next week&rsquo;s plan. No
-            wearable, no gym, no account &mdash; and the logger is free forever. Works offline,
-            anywhere you train.
-          </p>
-          <CtaSlot class="mt-10 max-w-[420px]" />
+    <!-- 01 LOG. The photograph is the ground and the headline is on it. Wave 11
+         §11.3: six of ten reference captures put an image under 80–100% of the
+         first 900pt, and 40–100% of their text spans fall inside an image box. -->
+    <!-- The demo's negative bottom margin (below) pulls the hero's last text
+         down by 80px, which comes straight out of the boundary to the statement
+         that follows. `lg:pb-56` pays it back and then some — the rhythm guard
+         read 438px against a 540–830 statement band before it did. -->
+    <section class="stage on-dark flex min-h-[92svh] flex-col justify-end px-5 pb-14 pt-32 sm:px-8 lg:pb-56 lg:pt-40">
+      <StagePhoto
+        base="/photo/home-rack"
+        alt="A loaded barbell on a home rack"
+        position="52% 38%"
+      />
+      <div class="stage-body mx-auto w-full max-w-6xl">
+        <div class="grid gap-10 lg:grid-cols-[1.05fr_0.95fr] lg:items-end lg:gap-14">
+          <div>
+            <p class="eyebrow eyebrow-live">{t.landingHeroEyebrow ?? 'Free · offline · no account'}</p>
+            <h1 class="display-hero-www rise mt-5 max-w-[15ch]">
+              <span>Log a set.</span>
+              <span>Your week rewrites itself.</span>
+            </h1>
+            <p class="mt-6 max-w-[54ch] text-[19px] leading-[1.5] text-quiet">
+              A workout logger that turns what you actually did into next week&rsquo;s plan. No
+              wearable, no gym, no account &mdash; and the logger is free forever.
+            </p>
+            <CtaSlot class="mt-9 max-w-[420px]" />
+          </div>
+
+          <!-- The demo overlaps the lower edge of the photograph rather than
+               sitting in a column beside it. Its no-JS state is computed at
+               build time from the same engine, so the slot is correct before any
+               script runs and does not change height when one does. -->
+          <!-- `ground-paper` re-establishes the light palette inside a section
+               that inverted it. Without it the card renders its own eyebrow and
+               quiet text paper-on-paper, which is what the first render did. -->
+          <div class="ground-paper lg:mb-[-5rem]">
+            <LogToPlanDemo />
+          </div>
         </div>
-
-        <!-- The live demo. Its no-JS state is computed at build time from the
-             same engine, so the slot is correct before any script runs and does
-             not change height when one does. -->
-        <LogToPlanDemo />
       </div>
-    </Section>
+    </section>
 
-    <!-- 02 STATEMENT. One sentence owns the screen. The rhythm tier that did not
-         exist before this handoff. -->
-    <Section tier="statement">
-      <p class="display-statement wipe"><span>A missed day is not a failed plan.</span></p>
-    </Section>
+    <!-- 02 STATEMENT. The second image ground, at the statement moment. -->
+    <section class="stage on-dark flex min-h-[62svh] items-center px-5 py-statement sm:px-8 lg:py-statement-lg">
+      <StagePhoto
+        base="/photo/bare-wrist"
+        alt=""
+        position="50% 30%"
+        drift
+      />
+      <div class="stage-body mx-auto w-full max-w-6xl">
+        <p class="display-statement wipe"><span>A missed day is not a failed plan.</span></p>
+      </div>
+    </section>
 
-    <!-- 03 AT A GLANCE. The gutters ARE the rules — 2px gap over a rule-coloured
-         parent. `gap-px` was rejected in the app for being a hairline. -->
-    <Section>
+    <!-- 03 AT A GLANCE. Back to paper, the dominant ground. The gutters ARE the
+         rules — 2px gap over a rule-coloured parent. -->
+    <Section rule={false}>
       <p class="eyebrow">At a glance</p>
       <dl class="mt-8 grid grid-cols-2 gap-0.5 border-2 border-rule bg-rule sm:grid-cols-4">
         {stats.map((s) => (
           <div class="flex flex-col gap-3 bg-paper p-6">
-            <dt class="display-mega text-poster">{s.figure}</dt>
+            <!-- `data-stat-figure`, not `data-count`: LogToPlanDemo already owns
+                 a bare `data-count` for its 0/3 progress line, and a global
+                 querySelectorAll('[data-count]') here picked it up. It happened
+                 to be harmless — a bare attribute reads as '' and fails the
+                 numeric test below — which is the kind of luck that stops being
+                 luck the day someone gives that attribute a value. -->
+            <dt class="display-mega text-poster" data-stat-figure={s.figure}>{s.figure}</dt>
             <dd class="eyebrow">{s.label}</dd>
           </div>
         ))}
@@ -166,58 +225,67 @@ const navLinks = [
       </div>
     </Section>
 
-    <!-- 05 ANYWHERE. Desktop 3-up; compact a peeking rail. -->
-    <Section id="anywhere">
-      <p class="eyebrow">Where you train</p>
-      <h2 class="display-section mt-4 max-w-[24ch]">Built for one bar of signal and no rack</h2>
+    <!-- 05 ANYWHERE. Three photographic panels edge to edge, no gaps and no
+         borders, each captioned in a hard-edged slab ON the picture. The caption
+         being the last text inside the panel is also what keeps the following
+         rhythm boundary honest: an image with no text below it gets swallowed
+         into the gap, which is a failure mode www-rhythm.mjs records. -->
+    <!-- The bottom padding is not decoration. The last text in this scope is a
+         caption sitting ON the photograph, so without it the boundary to the
+         next section measures from the panel's bottom edge and came in at
+         152px against a 190–450 band. -->
+    <section id="anywhere" class="rule-top px-5 py-section sm:px-8 lg:py-section-lg">
+      <div class="mx-auto max-w-6xl">
+        <p class="eyebrow">Where you train</p>
+        <h2 class="display-section mt-4 max-w-[24ch]">Built for one bar of signal and no rack</h2>
+      </div>
 
-      <div class="mt-10 rail md:grid md:grid-cols-3 md:gap-6 md:overflow-visible md:!mx-0 md:!px-0">
-        {anywhere.map((p) => (
-          <figure class="photo">
-            <div class="aspect-[4/5] overflow-hidden border-2 border-rule">
-              <picture>
-                <source srcset={`${p.base}.avif`} type="image/avif" />
-                <source srcset={`${p.base}.webp`} type="image/webp" />
-                <img src={`${p.base}.webp`} alt={p.alt} loading="lazy" decoding="async" width="800" height="1000" />
-              </picture>
-            </div>
-            <figcaption class="mt-4">
-              <p class="text-[17px] font-extrabold tracking-[-0.01em]">{p.title}</p>
-              <p class="mt-2 max-w-[40ch] text-[15px] leading-[1.5] text-quiet">{p.body}</p>
+      <div class="mt-12 grid gap-0.5 bg-rule md:grid-cols-3">
+        {anywhere.map((p, i) => (
+          <figure class="stage on-dark relative flex min-h-[78svh] items-end md:min-h-[86svh]">
+            <StagePhoto base={p.base} alt={p.alt} position={i === 1 ? '50% 60%' : '50% 45%'} drift />
+            <figcaption class="stage-body slab w-full px-5 py-6 sm:px-6">
+              <p class="text-[19px] font-extrabold tracking-[-0.01em]">{p.title}</p>
+              <p class="mt-2 max-w-[36ch] text-[15px] leading-[1.5] text-quiet">{p.body}</p>
             </figcaption>
           </figure>
         ))}
       </div>
-    </Section>
+    </section>
 
-    <!-- 06 FREE. A definition list divided by 2px rules, not a checkmark farm. -->
-    <Section id="free">
-      <p class="eyebrow">The free core</p>
-      <h2 class="display-section mt-4 max-w-[24ch]">Free is the mission, not the trial</h2>
-      <dl class="mt-10 divide-y-2 divide-rule border-y-2 border-rule">
-        {freeCore.map((row) => (
-          <div class="grid gap-2 py-5 sm:grid-cols-[14rem_1fr] sm:gap-8">
-            <dt class="text-[17px] font-extrabold tracking-[-0.01em]">{row.term}</dt>
-            <dd class="max-w-[62ch] text-[16px] leading-[1.6] text-quiet">{row.def}</dd>
-          </div>
-        ))}
-      </dl>
-      <p class="mt-6 max-w-[62ch] text-[15px] leading-[1.6] text-quiet">
-        Fuel, Move, Mind, Track and Learn deepen the path after Train + Coach &mdash; never the
-        pitch.
-      </p>
-    </Section>
+    <!-- 06 FREE. The one contrasting field, about two-thirds down — the shape
+         §11.3 measured (Freeletics Nutrition's light band at y=2550, TrainHeroic
+         B's accent band at y=3150). Ink, not a new colour: --foreground used as
+         a ground, so check-token-sync and check-design-system see nothing new.
+         It also carries the mid-page repeat of the action, inverted to paper so
+         the page still spends exactly one red control. -->
+    <section id="free" class="ground-ink px-5 py-section sm:px-8 lg:py-section-lg">
+      <div class="mx-auto max-w-6xl">
+        <p class="eyebrow">The free core</p>
+        <h2 class="display-section mt-4 max-w-[24ch]">Free is the mission, not the trial</h2>
+        <dl class="mt-10 divide-y-2 divide-rule border-y-2 border-rule">
+          {freeCore.map((row) => (
+            <div class="grid gap-2 py-5 sm:grid-cols-[14rem_1fr] sm:gap-8">
+              <dt class="text-[17px] font-extrabold tracking-[-0.01em]">{row.term}</dt>
+              <dd class="max-w-[62ch] text-[16px] leading-[1.6] text-quiet">{row.def}</dd>
+            </div>
+          ))}
+        </dl>
+        <p class="mt-6 max-w-[62ch] text-[15px] leading-[1.6] text-quiet">
+          Fuel, Move, Mind, Track and Learn deepen the path after Train + Coach &mdash; never the
+          pitch.
+        </p>
+        <CtaSlot variant="quiet" class="mt-9" />
+      </div>
+    </section>
 
     <!-- 07 COMPARE RAIL. The crop is the affordance: the next card is cut by the
          viewport edge rather than announced by an arrow. Ten real stories, so
-         the rail has something to be a rail about. -->
+         the rail has something to be a rail about. The ten pages themselves stay
+         on the Next app — see ../lib/appLinks. -->
     <Section id="compare">
       <p class="eyebrow">Honest comparison</p>
       <h2 class="display-section mt-4 max-w-[24ch]">Read the one that sounds like you</h2>
-      <!-- The ten stories are Next routes with their own metadata and JSON-LD;
-           they stay there (ORCHESTRATION: no SEO URL moves). A relative
-           `/compare/{slug}` would 404 on this deployment — the link contract
-           guard found all ten on its first run. -->
       <div class="mt-10 rail">
         {COMPARE_STORIES.map((story) => (
           <a
@@ -251,7 +319,6 @@ const navLinks = [
         ))}
       </div>
     </Section>
-
   </main>
 
   <!-- 09 START. The page's one red field. poster-FIELD, not poster-close: it
@@ -263,4 +330,86 @@ const navLinks = [
       <CtaSlot class="mt-10 max-w-[420px]" />
     </div>
   </footer>
+
+  <script>
+    /*
+     * Two moves that CSS cannot do alone, in ~1KB and with no framework.
+     *
+     * 1. The nav swaps ground when the photographic hero leaves. An
+     *    IntersectionObserver on a sentinel, not a scroll handler — nothing here
+     *    runs per frame.
+     * 2. The stat figures count up once, when they first come into view.
+     *    `animateCount` is COPIED from src/lib/motion.ts rather than imported:
+     *    wwwSurface.test.ts asserts this surface never imports app code at
+     *    runtime, and a 20-line easing function is not worth a bundle edge.
+     *    `.display-mega` already sets tabular-nums so the figure cannot jitter.
+     */
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    // --- nav ground swap ----------------------------------------------------
+    const nav = document.querySelector<HTMLElement>('[data-nav]');
+    const hero = document.querySelector<HTMLElement>('main > section');
+    if (nav && hero) {
+      const onDark = () => {
+        nav.classList.add('on-dark');
+        nav.classList.remove('bg-paper', 'border-rule');
+        nav.classList.add('border-transparent');
+      };
+      const onPaper = () => {
+        nav.classList.remove('on-dark', 'border-transparent');
+        nav.classList.add('bg-paper', 'border-rule');
+      };
+      new IntersectionObserver(
+        ([entry]) => (entry.isIntersecting ? onDark() : onPaper()),
+        // Fire when the hero's bottom passes the nav's own height.
+        { rootMargin: '-72px 0px 0px 0px', threshold: 0 },
+      ).observe(hero);
+    }
+
+    // --- stat count-up ------------------------------------------------------
+    function animateCount(
+      from: number,
+      to: number,
+      durationMs: number,
+      onFrame: (value: number) => void,
+    ) {
+      if (reduced || from === to) {
+        onFrame(to);
+        return;
+      }
+      const start = performance.now();
+      const tick = (now: number) => {
+        const t = Math.min(1, (now - start) / durationMs);
+        const eased = 1 - Math.pow(1 - t, 3);
+        onFrame(Math.round(from + (to - from) * eased));
+        if (t < 1) requestAnimationFrame(tick);
+      };
+      requestAnimationFrame(tick);
+    }
+
+    const figures = [...document.querySelectorAll<HTMLElement>('[data-stat-figure]')];
+    if (figures.length) {
+      const observer = new IntersectionObserver(
+        (entries) => {
+          for (const entry of entries) {
+            if (!entry.isIntersecting) continue;
+            const el = entry.target as HTMLElement;
+            observer.unobserve(el);
+
+            // Only figures that are a plain number count. `3min` and `$0` carry
+            // a unit, and animating a string by slicing digits out of it is how
+            // a stat ends up briefly reading `$0` as `0`.
+            const raw = el.dataset.statFigure ?? '';
+            if (!/^\d+$/.test(raw)) continue;
+            const target = Number(raw);
+            animateCount(0, target, 900, (v) => {
+              el.textContent = String(v);
+            });
+          }
+        },
+        { threshold: 0.6 },
+      );
+      for (const el of figures) observer.observe(el);
+    }
+  </script>
 </Base>

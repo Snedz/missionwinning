@@ -147,6 +147,20 @@
     font-size: clamp(2.5rem, 7vw, 6rem);
   }
 
+  /* The marketing hero runs to the TOP of the measured band rather than sitting
+     at its floor. Wave 10 §10.2: reference display type at 1440pt spans 70–100pt
+     (Freeletics 74, CoD 69.7, La Huella 96, TrainHeroic 100). The app ships 76 —
+     inside the band, at the bottom of it. This is the one page whose whole job
+     is a first impression, so it takes the ceiling. Not a new claim: the same
+     band, at the other end. */
+  .display-hero-www {
+    font-weight: 800;
+    line-height: 0.98;
+    letter-spacing: -0.03em;
+    font-size: clamp(2.75rem, 6.6vw, 6rem);
+    text-wrap: balance;
+  }
+
   /* New. Prose, so 0.94 leading and an 18ch measure — not display-mega with
      different words, which is numerals and would put tabular-nums on a
      sentence. Uncapped, a 96px line runs past reading comfort and the
@@ -283,6 +297,63 @@
     }
   }
 
+  /* `drift` — a photographic ground scales very slightly as it crosses the
+     viewport. Same mechanism as `.wipe`: scroll-driven, zero JS, behind
+     @supports so a browser without view() timelines simply gets a still image
+     rather than a broken one. 1.06 is deliberately small — this is the move
+     that reads as cheap the instant it is visible, and the reference captures
+     cannot tell us a value because print captures have no motion (§10.7). */
+  @supports (animation-timeline: view()) {
+    @media (prefers-reduced-motion: no-preference) {
+      .drift img {
+        animation: drift-in linear both;
+        animation-timeline: view();
+        animation-range: cover 0% cover 100%;
+      }
+    }
+  }
+
+  @keyframes drift-in {
+    from {
+      transform: scale(1.06) translateY(-1.2%);
+    }
+    to {
+      transform: scale(1) translateY(1.2%);
+    }
+  }
+
+  /* The hero's lines arrive in sequence on load rather than all at once. Two
+     lines, 90ms apart — enough to read as deliberate, short enough that nobody
+     waits for it. Not scroll-driven: this one fires above the fold, where there
+     is no scroll to drive it. */
+  @media (prefers-reduced-motion: no-preference) {
+    .rise > * {
+      display: block;
+      animation: rise-in 620ms cubic-bezier(0.22, 1, 0.36, 1) both;
+    }
+
+    .rise > *:nth-child(2) {
+      animation-delay: 90ms;
+    }
+
+    .rise > *:nth-child(3) {
+      animation-delay: 180ms;
+    }
+  }
+
+  @keyframes rise-in {
+    from {
+      opacity: 0;
+      transform: translateY(0.38em);
+      clip-path: inset(0 0 110% 0);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+      clip-path: inset(-0.25em 0 -0.25em 0);
+    }
+  }
+
   /* `rail` — horizontal scroll-snap. The crop IS the affordance: the next card
      is cut by the viewport edge rather than announced by an arrow, which is
      what all four references do. Zero JS; the progress rule is a native
@@ -349,6 +420,162 @@
     object-fit: cover;
   }
 
+  /* ── Photographic grounds ───────────────────────────────────────
+     Wave 11 is the reason this block exists. The first build of this page put
+     three photographs in a 4:5 grid and measured **~4%** image area against a
+     reference band of 76–81%, and ~0% above the fold against 81–100%. Six of
+     ten captures put an image under 80–100% of the first screen. That, not the
+     type scale and not the rhythm, is why the page rendered as a wireframe.
+
+     `.stage` is a section that IS a photograph: the image is the ground and the
+     type sits on it. Wave 11 §11.3 — 40–100% of reference text spans fall
+     inside an image box, so photography beside copy matches the area number and
+     misses the register entirely. */
+  .stage {
+    position: relative;
+    isolation: isolate;
+  }
+
+  .stage-media,
+  .stage-media img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  .stage-media img {
+    object-fit: cover;
+    /* Darker than `.photo` because type sits on this one. `filter` is the whole
+       treatment: a scrim would be a gradient, and gradients are blocked on this
+       surface by the founder ban list with no allowlist row. A hard-edged slab
+       (`.slab` below) does the local legibility work instead, which is the more
+       modernist answer anyway — this design has no soft edges anywhere else. */
+    filter: grayscale(1) contrast(1.25) brightness(0.42);
+  }
+
+  .stage-body {
+    position: relative;
+    z-index: 1;
+  }
+
+  /* Paper type on a darkened photograph. Same token as the ink ground, so there
+     is exactly one definition of "type on something dark" on this surface. */
+  .on-dark,
+  .ground-ink {
+    color: hsl(var(--background));
+  }
+
+  .ground-ink {
+    background-color: hsl(var(--foreground));
+  }
+
+  /* A hard-edged block of ground under a caption. Not a scrim, not a blur, no
+     radius — the same 0 radius and 2px logic as everything else. */
+  .slab {
+    background-color: hsl(var(--foreground) / 0.86);
+  }
+}
+
+/*
+ * UNLAYERED, deliberately.
+ *
+ * Tailwind v4 emits utilities into a layer that comes AFTER @layer components,
+ * and layer order beats specificity — so `.ground-ink .text-quiet` written
+ * inside @layer components loses to a bare `.text-quiet`, however specific it
+ * is. Unlayered CSS beats every layer, which is the only place an inversion of
+ * the utility palette can actually live.
+ *
+ * These invert only what would otherwise be ink-on-ink: quiet text, rules, and
+ * the eyebrow (whose muted-foreground is an ink value — the same trap that
+ * rendered a 13px eyebrow as dark grey on red at .638, caught by looking at the
+ * render rather than by any prose rule).
+ */
+.ground-ink .text-quiet,
+.on-dark .text-quiet,
+.ground-ink .eyebrow,
+.on-dark .eyebrow {
+  color: hsl(var(--background) / 0.74);
+}
+
+.ground-ink .eyebrow-live,
+.on-dark .eyebrow-live {
+  color: hsl(var(--background));
+}
+
+.ground-ink .border-rule,
+.on-dark .border-rule,
+.ground-ink .divide-rule > * + *,
+.on-dark .divide-rule > * + * {
+  border-color: hsl(var(--background) / 0.34);
+}
+
+.ground-ink .bg-rule,
+.on-dark .bg-rule {
+  background-color: hsl(var(--background) / 0.34);
+}
+
+/* The quiet CTA draws itself with a 2px ink border, which on a photographic
+   ground is a black line on a dark picture — present in the DOM, invisible on
+   screen, and different in every crop. Caught by looking at the compact render,
+   where the nav sits over the darkest part of the frame. */
+.ground-ink .border-ink,
+.on-dark .border-ink {
+  border-color: hsl(var(--background));
+}
+
+/*
+ * Four utilities, and deliberately not more.
+ *
+ * The first draft also inverted `.bg-paper` and `.text-ink`, on the theory that
+ * everything on a dark ground should flip. Rendering it showed why that is
+ * wrong: `bg-paper` and `text-ink` are what an author writes when they want a
+ * PAPER block on a dark ground — the nav monogram, and two rows of the hero
+ * demo — so inverting them turned the deliberate light elements dark. Only the
+ * utilities that would otherwise be ink-on-ink belong here: quiet text, the
+ * eyebrow (whose muted-foreground is an ink value), rules, and rule fills.
+ *
+ * `.text-poster` needed no rule at all: poster red on ink is 3.75:1, which
+ * clears large text, and the only thing using it on a dark ground is the 96px
+ * stat figure.
+ */
+
+/*
+ * A paper card nested inside a dark section. The inversion above reaches every
+ * descendant, and this is a real case rather than a hypothetical: the hero demo
+ * is a paper card sitting on a photographic ground, and the first render of it
+ * painted its own labels paper-on-paper — invisible.
+ *
+ * Same specificity as the inversion (0,2,0), declared after it, so source order
+ * decides and this wins wherever both match.
+ */
+.ground-paper .text-quiet {
+  color: hsl(var(--muted-foreground));
+}
+
+.ground-paper .eyebrow {
+  color: hsl(var(--muted-foreground));
+}
+
+.ground-paper .eyebrow-live {
+  color: hsl(var(--primary));
+}
+
+.ground-paper .border-rule,
+.ground-paper .divide-rule > * + * {
+  border-color: hsl(var(--border));
+}
+
+.ground-paper .bg-rule {
+  background-color: hsl(var(--border));
+}
+
+.ground-paper .border-ink {
+  border-color: hsl(var(--foreground));
+}
+
+@layer components {
+
   /* An honest empty frame, never a stock stand-in: a neutral block captioned
      with the shot it is waiting for. Same decision GrayscalePhoto makes, and
      for the same reason — a placeholder that looks like a photo is far harder
@@ -410,6 +637,22 @@
 
   .ticker-track {
     animation: none;
+  }
+
+  /* Added with the moves themselves, in the same commit, as the note above
+     requires. `.rise` children must stay `display: block` — the animation is
+     off but the line breaking is layout, not motion. */
+  .rise > * {
+    display: block;
+    animation: none;
+    opacity: 1;
+    transform: none;
+    clip-path: none;
+  }
+
+  .drift img {
+    animation: none;
+    transform: none;
   }
 }
 

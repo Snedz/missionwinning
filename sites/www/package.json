@@ -9,7 +9,7 @@
     "build": "astro build",
     "preview": "astro preview",
     "typecheck": "astro check",
-    "check": "astro check && node ../../scripts/www-class-contract.mjs && node ../../scripts/www-link-contract.mjs && node ../../scripts/www-bundle-budget.mjs && node ../../scripts/www-rhythm.mjs"
+    "check": "astro check && node ../../scripts/www-class-contract.mjs && node ../../scripts/www-link-contract.mjs && node ../../scripts/www-bundle-budget.mjs && node ../../scripts/www-rhythm.mjs && node ../../scripts/www-composition.mjs"
   },
   "dependencies": {
     "astro": "^7.2.0"

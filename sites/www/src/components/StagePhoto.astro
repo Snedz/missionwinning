@@ -1,0 +1,54 @@
+---
+/*
+ * A photograph used as a ground rather than as an illustration.
+ *
+ * Wave 11 §11.3 is the argument: 40–100% of reference text spans sit inside an
+ * image box, and the captures that read as designed carry full-width images
+ * 480–1135pt tall, 1–7 per page. A photograph in a card beside the copy matches
+ * the image-area number and misses the register completely.
+ *
+ * Honest limit, recorded because it will be visible before it is fixed: the
+ * three photographs that exist are 900×1125 **portrait**. Cropped to a 1440-wide
+ * landscape band they are being upscaled, and they are soft. The `brightness`
+ * in `.stage-media img` hides much of it and the type carries the frame, but
+ * this is a stopgap — docs/design/GROK_IMAGE_PACK.md specifies 2:1 and 20:9
+ * slots at 2K for exactly the bands that are soft today. A slot with no
+ * photograph renders an honest empty frame, never a stock stand-in, which is
+ * the same call GrayscalePhoto makes in the app.
+ */
+interface Props {
+  /** Basename under public/photo, without extension. Omit for a pending frame. */
+  base?: string;
+  alt?: string;
+  /** CSS object-position, so one photograph can serve two slots without
+      reading as the same picture twice. */
+  position?: string;
+  /** Scroll-linked scale. Off for the hero, which is on screen at load. */
+  drift?: boolean;
+  class?: string;
+}
+
+const { base, alt = '', position = '50% 50%', drift = false, class: className = '' } = Astro.props;
+---
+
+<div class={`stage-media ${drift ? 'drift' : ''} ${className}`} aria-hidden={base ? undefined : 'true'}>
+  {
+    base ? (
+      <picture>
+        <source srcset={`${base}.avif`} type="image/avif" />
+        <source srcset={`${base}.webp`} type="image/webp" />
+        <img
+          src={`${base}.webp`}
+          alt={alt}
+          loading="lazy"
+          decoding="async"
+          width="900"
+          height="1125"
+          style={`object-position: ${position}`}
+        />
+      </picture>
+    ) : (
+      <div class="photo-pending h-full w-full" />
+    )
+  }
+</div>
