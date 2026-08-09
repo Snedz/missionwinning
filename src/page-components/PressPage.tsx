@@ -60,7 +60,7 @@ function CopyButton({ text, className }: { text: string; className?: string }) {
       type="button"
       onClick={() => void handleCopy()}
       className={cn(
-        'inline-flex items-center gap-1.5 border-2 border-border bg-card px-3 py-1.5 text-xs text-muted-foreground transition-colors hover:border-primary hover:text-foreground',
+        'inline-flex min-h-[44px] items-center gap-1.5 border-2 border-border bg-card px-3 py-2 text-xs text-muted-foreground transition-colors hover:border-primary hover:text-foreground tap-target',
         className
       )}
     >

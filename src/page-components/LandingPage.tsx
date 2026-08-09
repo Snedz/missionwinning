@@ -388,7 +388,7 @@ export function LandingPage() {
                   ref={(el) => {
                     faqSummaryRefs.current[index] = el;
                   }}
-                  className="cursor-pointer list-none text-sm font-semibold marker:content-none focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-foreground"
+                  className="flex min-h-[44px] cursor-pointer list-none items-center text-sm font-semibold marker:content-none focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-foreground"
                   onClick={(e) => {
                     e.preventDefault();
                     setOpenFaq((prev) => (prev === f.qKey ? null : f.qKey));
