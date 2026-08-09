@@ -195,6 +195,8 @@ type FuelStrings = {
   fuelGoalAppliedDesc: string;
   fuelHideMore: string;
   fuelShowMore: string;
+  fuelSubtitleBrief: string;
+  fuelMoreTools: string;
   /** Kaizen Fuel empty CTA + recipe-panel honesty (`.557`). */
   fuelSubtitleDepthBeta: string;
   fuelSubtitleDepthPaid: string;
@@ -412,6 +414,8 @@ const en: FuelStrings = {
   fuelGoalAppliedDesc: '{{cals}} kcal · {{protein}}g protein',
   fuelHideMore: 'Hide search & recipes',
   fuelShowMore: 'Search, barcode & recipes',
+  fuelSubtitleBrief: 'Log meals on this device. Targets and recipes when you need them.',
+  fuelMoreTools: 'Targets, week & weight',
   fuelSubtitleDepthBeta:
     '{{free}} free recipes · {{unlocked}} unlocked in open beta — meals stay on this device.',
   fuelSubtitleDepthPaid:

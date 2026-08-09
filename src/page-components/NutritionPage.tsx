@@ -95,7 +95,7 @@ export function NutritionPage() {
   const [fuelStreak, setFuelStreak] = useState(0);
   const [nlMealText, setNlMealText] = useState('');
   const [nlPreview, setNlPreview] = useState<ReturnType<typeof estimateMealFromDescription>>(null);
-  const [moreOpen, setMoreOpen] = useState(false);
+
   const [savedMeals, setSavedMeals] = useState<SavedMealPreset[]>(() =>
     typeof window !== 'undefined' ? listMealPresets() : []
   );
@@ -454,22 +454,12 @@ export function NutritionPage() {
       icon={UtensilsCrossed}
       eyebrow={t('fuelEyebrow', { defaultValue: 'Fuel' })}
       title={t('fuelTitle', { defaultValue: 'What you ate' })}
-      subtitle={
-        isFreeBeta()
-          ? t('fuelSubtitleDepthBeta', {
-              free: inv.recipes.free,
-              unlocked: inv.unlockedTotal.recipes,
-              defaultValue: `${inv.recipes.free} free recipes · ${inv.unlockedTotal.recipes} unlocked in open beta — meals stay on this device.`,
-            })
-          : t('fuelSubtitleDepthPaid', {
-              free: inv.recipes.free,
-              premium: inv.recipes.premium,
-              defaultValue: `${inv.recipes.free} free recipes · Super Bundle adds ${inv.recipes.premium} more. Meals stay on this device.`,
-            })
-      }
+      subtitle={t('fuelSubtitleBrief', {
+        defaultValue: 'Log meals on this device. Targets and recipes when you need them.',
+      })}
       headerActions={
         fuelStreak > 0 ? (
-          <span className="border border-primary bg-muted px-3 py-1 text-xs font-semibold text-primary shrink-0">
+          <span className="shrink-0 border-2 border-border bg-muted px-3 py-1 text-xs font-semibold tabular-nums text-foreground">
             {t('fuelLogStreak', {
               count: fuelStreak,
               defaultValue: `${fuelStreak}-day log streak`,
@@ -478,58 +468,8 @@ export function NutritionPage() {
         ) : undefined
       }
     >
-      <FuelMacroOverview
-        totalCals={totalCals}
-        targetCals={dayTargets.cals}
-        totalProtein={totalProtein}
-        targetProtein={dayTargets.protein}
-        totalCarbs={totalCarbs}
-        carbsTarget={carbsTarget}
-        totalFat={totalFat}
-        fatTarget={fatTarget}
-        water={water}
-      >
-        <FuelAdaptBanner
-          load={dayAdapt.load}
-          isAdapted={dayAdapt.isAdapted}
-          note={dayAdapt.note}
-          deltaSummary={adaptDelta}
-          adaptEnabled={adaptEnabled}
-          onToggleAdapt={handleToggleAdapt}
-        />
-        <div className="space-y-2">
-          <FuelTargetsEditor
-            targetCals={targetCals}
-            targetProtein={targetProtein}
-            targetCarbs={targetCarbs}
-            targetFat={targetFat}
-            onSaved={(next) => {
-              setTargetCals(next.cals);
-              setTargetProtein(next.protein);
-              setTargetCarbs(next.carbs);
-              setTargetFat(next.fat);
-            }}
-          />
-          <FuelGoalWizard
-            onApplied={(next) => {
-              setTargetCals(next.cals);
-              setTargetProtein(next.protein);
-              setTargetCarbs(next.carbs);
-              setTargetFat(next.fat);
-              toast({
-                title: t('fuelGoalApplied', { defaultValue: 'Goal targets applied' }),
-                description: t('fuelGoalAppliedDesc', {
-                  cals: next.cals,
-                  protein: next.protein,
-                  defaultValue: `${next.cals} kcal · ${next.protein}g protein`,
-                }),
-              });
-            }}
-          />
-        </div>
-        <FuelWeekGlance days={weekDays} todayIso={today} targetCals={targetCals} />
-        <FuelWeightStrip todayIso={today} />
-        <div id="fuel-log" className="scroll-mt-20">
+      {/* Field manual: log first — macros/targets no longer block the fold. */}
+      <div id="fuel-log" className="scroll-mt-20 space-y-4">
         <FuelQuickLogPanel
           activeMeal={activeMeal}
           onActiveMealChange={setActiveMeal}
@@ -548,38 +488,7 @@ export function NutritionPage() {
           yesterdayMeals={yesterdayMeals}
           onRepeatYesterday={handleRepeatYesterday}
         />
-        </div>
-      </FuelMacroOverview>
-
-      <div>
-        <Button
-          type="button"
-          variant="ghost"
-          size="sm"
-          className="text-muted-foreground"
-          onClick={() => setMoreOpen((o) => !o)}
-        >
-          {moreOpen
-            ? t('fuelHideMore', { defaultValue: 'Hide search & recipes' })
-            : t('fuelShowMore', { defaultValue: 'Search, barcode & recipes' })}
-        </Button>
       </div>
-
-      {moreOpen && (
-        <>
-          <FuelMoreTools onLogFood={addEntry} />
-          <FuelRecipesPanel
-            freeRecipes={freeRecipes}
-            premium={premium}
-            premiumRecipes={premiumRecipes}
-            premiumFetchError={premiumFetchError}
-            onRetryPremium={() => setPremiumRetry((n) => n + 1)}
-            onLogRecipe={(draft) =>
-              addEntry(draft.name, draft.protein, draft.cals, draft.carbs, draft.fat)
-            }
-          />
-        </>
-      )}
 
       <FuelTodayLogCard
         logged={logged}
@@ -610,6 +519,101 @@ export function NutritionPage() {
           );
         }}
       />
+
+      <FuelMacroOverview
+        totalCals={totalCals}
+        targetCals={dayTargets.cals}
+        totalProtein={totalProtein}
+        targetProtein={dayTargets.protein}
+        totalCarbs={totalCarbs}
+        carbsTarget={carbsTarget}
+        totalFat={totalFat}
+        fatTarget={fatTarget}
+        water={water}
+      >
+        <FuelAdaptBanner
+          load={dayAdapt.load}
+          isAdapted={dayAdapt.isAdapted}
+          note={dayAdapt.note}
+          deltaSummary={adaptDelta}
+          adaptEnabled={adaptEnabled}
+          onToggleAdapt={handleToggleAdapt}
+        />
+      </FuelMacroOverview>
+
+      <details className="group border-2 border-border bg-card">
+        <summary className="flex min-h-[44px] cursor-pointer list-none items-center px-4 py-3 text-sm font-semibold text-foreground [&::-webkit-details-marker]:hidden">
+          {t('fuelMoreTools', { defaultValue: 'Targets, week & weight' })}
+        </summary>
+        <div className="space-y-4 border-t-2 border-border p-4">
+          <FuelTargetsEditor
+            targetCals={targetCals}
+            targetProtein={targetProtein}
+            targetCarbs={targetCarbs}
+            targetFat={targetFat}
+            onSaved={(next) => {
+              setTargetCals(next.cals);
+              setTargetProtein(next.protein);
+              setTargetCarbs(next.carbs);
+              setTargetFat(next.fat);
+            }}
+          />
+          <FuelGoalWizard
+            onApplied={(next) => {
+              setTargetCals(next.cals);
+              setTargetProtein(next.protein);
+              setTargetCarbs(next.carbs);
+              setTargetFat(next.fat);
+              toast({
+                title: t('fuelGoalApplied', { defaultValue: 'Goal targets applied' }),
+                description: t('fuelGoalAppliedDesc', {
+                  cals: next.cals,
+                  protein: next.protein,
+                  defaultValue: `${next.cals} kcal · ${next.protein}g protein`,
+                }),
+              });
+            }}
+          />
+          <FuelWeekGlance days={weekDays} todayIso={today} targetCals={targetCals} />
+          <FuelWeightStrip todayIso={today} />
+        </div>
+      </details>
+
+      <details className="group border-2 border-border bg-card">
+        <summary className="flex min-h-[44px] cursor-pointer list-none items-center px-4 py-3 text-sm font-semibold text-foreground [&::-webkit-details-marker]:hidden">
+          {t('fuelShowMore', { defaultValue: 'Search, barcode & recipes' })}
+        </summary>
+        <div className="space-y-4 border-t-2 border-border p-4">
+          <FuelMoreTools onLogFood={addEntry} />
+          <FuelRecipesPanel
+            freeRecipes={freeRecipes}
+            premium={premium}
+            premiumRecipes={premiumRecipes}
+            premiumFetchError={premiumFetchError}
+            onRetryPremium={() => setPremiumRetry((n) => n + 1)}
+            onLogRecipe={(draft) =>
+              addEntry(draft.name, draft.protein, draft.cals, draft.carbs, draft.fat)
+            }
+          />
+          {isFreeBeta() ? (
+            <p className="text-xs text-muted-foreground">
+              {t('fuelSubtitleDepthBeta', {
+                free: inv.recipes.free,
+                unlocked: inv.unlockedTotal.recipes,
+                defaultValue: `${inv.recipes.free} free recipes · ${inv.unlockedTotal.recipes} unlocked in open beta.`,
+              })}
+            </p>
+          ) : (
+            <p className="text-xs text-muted-foreground">
+              {t('fuelSubtitleDepthPaid', {
+                free: inv.recipes.free,
+                premium: inv.recipes.premium,
+                defaultValue: `${inv.recipes.free} free recipes · Super Bundle adds ${inv.recipes.premium} more.`,
+              })}
+            </p>
+          )}
+        </div>
+      </details>
 
       <FuelPastDaysCard
         logs={allLogs}

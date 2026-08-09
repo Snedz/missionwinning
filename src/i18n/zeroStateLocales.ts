@@ -24,6 +24,7 @@ const ZERO_STATE_EN: Record<string, string> = {
   historyTabJournal: 'Journal',
   historyTabsLabel: 'History view',
   historyTrendsDesc: 'Volume, estimated 1RM, and muscle heatmap',
+  historyHeatmaps: 'Muscle heatmaps',
   historyCalendarLabel: 'Training calendar',
   historyCalPrev: 'Previous month',
   historyCalNext: 'Next month',

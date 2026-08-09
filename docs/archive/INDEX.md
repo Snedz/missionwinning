@@ -398,3 +398,4 @@ Canonical live launch path: root **[LAUNCH_RUNBOOK.md](../LAUNCH_RUNBOOK.md)** +
 | [log/LOG-rotate-623.md](./log/LOG-rotate-623.md) | rotated 2026-08-09 for `.623` You S4a page share + private note |
 | [log/LOG-rotate-624.md](./log/LOG-rotate-624.md) | rotated 2026-08-09 for `.624` You Field manual |
 | [log/LOG-rotate-625.md](./log/LOG-rotate-625.md) | rotated 2026-08-09 for `.625` Account Field manual |
+| [log/LOG-rotate-626.md](./log/LOG-rotate-626.md) | rotated 2026-08-09 for `.626` Feel Wave 2 |
