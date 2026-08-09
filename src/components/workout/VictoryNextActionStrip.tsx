@@ -18,16 +18,20 @@ export function VictoryNextActionStrip({ nextAction, onNavigate }: Props) {
   const { t } = useTranslation();
 
   return (
-    <div className="border-2 border-primary bg-tint p-3 space-y-2 text-center">
-      <p className="text-xs font-semibold uppercase tracking-[0.08em] text-primary">
+    /*
+     * Field manual honor beat: one red next, quiet reason — not a second poster
+     * border fighting the title. Earned exit, not confetti chrome.
+     */
+    <div className="poster-field space-y-2.5 p-4 text-start">
+      <p className="poster-kicker text-[11px] font-semibold uppercase tracking-[0.12em]">
         {t('victoryNextLabel', { defaultValue: 'Next' })}
       </p>
-      <p className="text-sm text-muted-foreground leading-relaxed">
+      <p className="poster-sub text-sm leading-relaxed">
         {t(nextAction.reasonKey, {
           defaultValue: nextAction.defaultReason,
         })}
       </p>
-      <Button asChild className="w-full primary-action">
+      <Button asChild className="primary-action w-full min-h-[52px]">
         <Link href={nextAction.href} onClick={onNavigate}>
           {t(nextAction.labelKey, {
             defaultValue: nextAction.defaultLabel,

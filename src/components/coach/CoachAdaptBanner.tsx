@@ -67,9 +67,10 @@ export function CoachAdaptBanner({ plan, compact, todayOffset, onAdjustToday }: 
     >
       <p
         className={
+          // Field manual clarity: adapt reads as an explanation kicker, not a toast.
           compact
-            ? 'text-[10px] uppercase tracking-[0.12em] font-semibold text-accent-900'
-            : 'text-[11px] uppercase tracking-[0.12em] font-semibold text-accent-900'
+            ? 'eyebrow text-[10px] text-accent-900'
+            : 'eyebrow text-accent-900'
         }
       >
         {t('coachAdaptHeadline', {
@@ -77,7 +78,7 @@ export function CoachAdaptBanner({ plan, compact, todayOffset, onAdjustToday }: 
         })}
       </p>
       {visibleBeats.length > 0 ? (
-        <ul className={compact ? 'space-y-1' : 'space-y-1.5'}>
+        <ul className={compact ? 'space-y-1' : 'space-y-1.5 text-[15px] leading-snug'}>
           {visibleBeats.map((beat) => (
             <li
               key={beat.key}

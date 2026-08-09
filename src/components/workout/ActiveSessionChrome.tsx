@@ -72,12 +72,13 @@ export function ActiveSessionChrome({
           'border-b-2 border-border',
         ].join(' ')}
       >
-        <p className="text-[11px] font-semibold uppercase tracking-[0.1em] text-primary">
-          {sessionEyebrow}
-        </p>
-        <div className="mt-0.5 flex flex-nowrap items-center gap-2 min-w-0">
+        {/* Field manual: mono intent eyebrow + session name. Log set (dock/row)
+            is the one red under load — Finish stays outline so chrome does not
+            compete with the set. */}
+        <p className="eyebrow text-primary">{sessionEyebrow}</p>
+        <div className="mt-0.5 flex min-w-0 flex-nowrap items-center gap-2">
           <div className="min-w-0 flex-1">
-            <h1 className="truncate text-[1.4rem] font-extrabold leading-[1.1] md:text-[1.7rem]">
+            <h1 className="truncate font-display text-[1.35rem] font-extrabold leading-[1.08] tracking-[-0.015em] md:text-[1.65rem]">
               {workoutName}
             </h1>
             <p className="mt-0.5 truncate text-[11px] text-muted-foreground">{coachTip}</p>
@@ -99,9 +100,9 @@ export function ActiveSessionChrome({
           </Button>
 
           <Button
-            variant="default"
+            variant="outline"
             size="sm"
-            className="h-11 min-h-[44px] shrink-0 gap-1 px-3 tap-target"
+            className="h-11 min-h-[44px] shrink-0 gap-1 border-2 border-foreground px-3 tap-target"
             onClick={onFinish}
           >
             <Check className="h-4 w-4" />
