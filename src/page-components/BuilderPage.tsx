@@ -250,9 +250,12 @@ export function BuilderPage() {
   ];
 
   return (
-    <PillarPageShell icon={PenTool} eyebrow={t('builderEyebrow', { defaultValue: 'Builder' })} title={t('builderTitle', { defaultValue: 'Workout Builder' })} subtitle={t('builderSubtitle', {
-        defaultValue:
-          'Build a session in three steps — pick a start, arrange exercises, then save or train.',
+    <PillarPageShell
+      icon={PenTool}
+      eyebrow={t('builderEyebrow', { defaultValue: 'Builder' })}
+      title={t('builderTitle', { defaultValue: 'Workout Builder' })}
+      subtitle={t('builderSubtitleBrief', {
+        defaultValue: 'Three steps: start, arrange, train.',
       })}
       showLegalFooter
     >

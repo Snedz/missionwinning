@@ -45,6 +45,7 @@ type MindStrings = {
   /** Split from an `isFreeBeta()` ternary default — see moveLocales. */
   mindSubtitleDepthBeta: string;
   mindSubtitleDepthPaid: string;
+  mindSubtitleBrief: string;
   mindSeriesSleepWeekBlurb: string;
 };
 
@@ -95,6 +96,7 @@ const en: MindStrings = {
     '{{free}} free guided sessions · {{unlocked}} unlocked in open beta — breathing + check-in included.',
   mindSubtitleDepthPaid:
     '{{free}} free guided sessions · Super Bundle adds {{premium}} deeper timed sessions.',
+  mindSubtitleBrief: 'Check in, then breathe or run a free guided session.',
   mindSeriesSleepWeekBlurb: 'A {{count}}-night sequence — do nights in order when you can. Premium sessions only.',
 };
 

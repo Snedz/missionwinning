@@ -5,6 +5,7 @@ export type LeaderboardStrings = {
   leaderboardRankings: string;
   leaderboardTitle: string;
   leaderboardSubtitle: string;
+  leaderboardSubtitleBrief: string;
   leaderboardSync: string;
   leaderboardOperators: string;
   leaderboardYourRank: string;
@@ -58,6 +59,7 @@ const en: LeaderboardStrings = {
   leaderboardTitle: 'Leaderboard',
   leaderboardSubtitle:
     'Compare Mission Operators globally, by region, country, locale, or squad.',
+  leaderboardSubtitleBrief: 'Optional ranks. Training first — never required.',
   leaderboardSync: 'Sync',
   leaderboardOperators: 'operators',
   leaderboardYourRank: 'Your rank',

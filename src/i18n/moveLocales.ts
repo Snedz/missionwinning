@@ -44,6 +44,7 @@ type MoveStrings = {
    */
   moveSubtitleDepthBeta: string;
   moveSubtitleDepthPaid: string;
+  moveSubtitleBrief: string;
 };
 
 const en: MoveStrings = {
@@ -80,6 +81,7 @@ const en: MoveStrings = {
     '{{free}} free flows · {{unlocked}} unlocked in open beta (timers, mostly bodyweight).',
   moveSubtitleDepthPaid:
     '{{free}} free flows · Super Bundle adds {{premium}} longer recovery flows.',
+  moveSubtitleBrief: 'Pick a free flow. Timers and bodyweight — premium later if you want.',
 };
 
 const es: MoveStrings = {

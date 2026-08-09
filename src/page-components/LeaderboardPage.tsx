@@ -202,8 +202,8 @@ export function LeaderboardPage() {
  icon={Trophy}
  eyebrow={t('leaderboardEyebrow', { defaultValue: 'Leaderboard' })}
  title={t('leaderboardTitle', { defaultValue: 'Leaderboard' })}
- subtitle={t('leaderboardSubtitle', {
- defaultValue: 'Optional rankings by region, country, or squad — training first, never required.',
+ subtitle={t('leaderboardSubtitleBrief', {
+ defaultValue: 'Optional ranks. Training first — never required.',
  })}
  showLegalFooter
  className="pb-8"

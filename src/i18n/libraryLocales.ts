@@ -13,6 +13,7 @@ const LIBRARY_EN: Record<string, string> = {
   library: 'Exercise Library',
   librarySubtitle:
     '{{count}}+ movements with cues and alternatives. Bodyweight and minimal equipment prioritized.',
+  librarySubtitleBrief: 'Search movements. Filters when you need them.',
   libraryTodayHub: 'Today',
   libraryProgramTemplates: 'Program templates',
   libraryPremiumUnlocked: ' — full library unlocked.',
