@@ -59,6 +59,17 @@ const ATHLETE_EN: Record<string, string> = {
     'Sign-in, units, notifications and backup. Progress stays on this device unless you sign in.',
   navAccount: 'Account',
   moreAccountDesc: 'Settings, notifications, backup',
+
+  // --- Founder status (owner tools) ---
+  founderStatusTitle: 'Mission status',
+  founderStatusBuild: 'Build',
+  founderStatusFreeLogger: 'Free logger',
+  founderStatusFreeLoggerValue: 'Never gated',
+  founderStatusOpsHint:
+    'Project diary, strategy memos, and agent handoff live in private Mission Control on your machine — not in this app (keeps war-room content off production).',
+  founderStatusOpsCmd: 'npm run ops:dashboard\n# → http://localhost:5173',
+  founderStatusFoot:
+    'Beta funnel metrics stay in the panel above when signed in. Ship history: root LOG.md · status: CONTEXT.md.',
 };
 
 const al = (over: Record<string, string>): Record<string, string> => ({
