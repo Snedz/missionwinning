@@ -1,6 +1,6 @@
 # Acceptable Use Policy — Mission Winning
 
-**Live page:** [missionwinning.com/usage](https://missionwinning.com/usage) · **Supported Regions:** [/regions](https://missionwinning.com/regions) (**Europe is not supported**).
+**Live page:** [missionwinning.com/usage](https://missionwinning.com/usage) · **Supported Regions:** [/regions](https://missionwinning.com/regions) (**Europe, Canada, Ukraine, and OIC member states are not supported**).
 
 This Acceptable Use Policy (AUP) applies to the Mission Winning application, APIs, hosted services, and any use of the open-source codebase (the “Software”). By using the Software or services, you agree to these rules in addition to the [Terms of Service](https://missionwinning.com/terms).
 
@@ -55,6 +55,12 @@ You must **not** use the Software, hosted services, generated content, or any de
 
 - Threats, stalking, doxxing, or targeted harassment
 - Content that is illegal in your jurisdiction (hate crimes, trafficking facilitation, etc.)
+
+### 2.7 Territory and sanctions abuse
+
+- Using the **hosted** Service from an unsupported region in violation of Supported Regions
+- Using the Service in a way that would cause Mission Winning LLC to violate U.S. sanctions or export controls (including comprehensively embargoed jurisdictions and occupied regions of Ukraine under applicable law)
+- Circumventing regional limits for signup or payments (false address, VPN abuse for billing, etc.)
 
 ---
 

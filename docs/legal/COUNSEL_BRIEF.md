@@ -84,7 +84,22 @@ Aligned with live Privacy + [LEGAL_SAFETY.md](../LEGAL_SAFETY.md) §2. Confirm a
 | Full AUP (internal) | not public route | [ACCEPTABLE_USE.md](ACCEPTABLE_USE.md) — short summary in Terms only |
 | DPA / MSA | templates only | [DPA.md](DPA.md) · [MSA_TEMPLATE.md](MSA_TEMPLATE.md) — B2B later |
 
-**Frozen text:** [exports/2026-08-04-consumer-legal-en.md](exports/2026-08-04-consumer-legal-en.md)
+**Frozen text:** [exports/2026-08-09-consumer-legal-en.md](exports/2026-08-09-consumer-legal-en.md) (Ukraine refresh; supersedes 2026-08-04/05/06 snapshots for live copy)
+
+---
+
+## 5b. Territory policy (2026-08-09) — founder-locked, counsel must see
+
+| Exclusion | Status | Note |
+|-----------|--------|------|
+| Europe (EEA/UK/CH/FR+) | Product block | GDPR representative not appointed |
+| Canada | Product block | Commercial |
+| **Ukraine (`UA`)** | **Product block** | **Commercial only** — not OFAC country embargo of free Ukraine |
+| OIC 57 | Product block | Commercial |
+| Russia (`RU`) / Belarus (`BY`) | **Still open** | Founder asymmetry vs US foreign-policy posture — **please opine** |
+| Crimea / DNR / LNR | No reliable CDN map | Contractual right to refuse under sanctions/export clause |
+
+Live code: `src/lib/legal/supportedRegions.ts`. Tests pin **RU/BY allowed**.
 
 ---
 
@@ -95,20 +110,22 @@ Aligned with live Privacy + [LEGAL_SAFETY.md](../LEGAL_SAFETY.md) §2. Confirm a
 | Published physical postal address | **Open** — blocks list email + DMCA postal line |
 | copyright.gov DMCA agent filing | **Open** — page says interim |
 | Counsel review of arbitration / class waiver | **Open** |
-| Formation state printed in Terms | Uses “state of formation” placeholder language |
+| Formation state printed in Terms | **Texas** stated in live Terms (.547+) — confirm against formation docs |
 | Cyber liability insurance | Not purchased; do not claim in Privacy |
 | Free-beta: Bundle UI muted | Refunds still describe Super Bundle for when pay is on |
 | Youth / COPPA full policy | Parked surfaces; light language only |
+| Cloudflare edge rule for **UA** | **Founder ops** after product ship |
+| UA-only vs RU open | **Founder accepted** — counsel review recommended |
 
 ---
 
 ## 7. Founder questions for counsel call
 
-1. Is AAA Consumer Arbitration + class waiver appropriate for our free + freemium fitness PWA? Any state-specific issues?  
-2. Should governing law name a specific state once LLC is filed?  
-3. 14-day refund windows for monthly / annual / lifetime (incl. USDC manual refunds) — any consumer-protection gaps?  
-4. Is interim DMCA agent + “postal TBD” fatal to safe harbor until filing?  
-5. Should full Acceptable Use be a public page or stay summarized in Terms?  
+1. Is AAA Consumer Arbitration + class waiver appropriate for our free + freemium fitness PWA? Any Texas-specific issues?  
+2. Is the **Ukraine commercial exclusion** wording adequate? Any risk in **not** blocking Russia/Belarus while blocking UA?  
+3. Is the new **sanctions / export / SDN** clause appropriate for a mass-market fitness PWA (no formal SDN screening product)?  
+4. 14-day refund windows for monthly / annual / lifetime (incl. USDC manual refunds) — any consumer-protection gaps?  
+5. Is interim DMCA agent + “postal TBD” fatal to safe harbor until filing?  
 6. Minimum age / COPPA: what to publish now while youth is off?  
 7. Cookie / local-storage disclosure: separate notice or Privacy section only?  
 8. Exercise-as-medicine / mood research citations on marketing pages — any required modifications?  
@@ -120,11 +137,11 @@ Aligned with live Privacy + [LEGAL_SAFETY.md](../LEGAL_SAFETY.md) §2. Confirm a
 ## 8. Attachments checklist for counsel email
 
 - [ ] This brief  
-- [ ] [exports/2026-08-04-consumer-legal-en.md](exports/2026-08-04-consumer-legal-en.md)  
-- [ ] [LEGAL_SAFETY.md](../LEGAL_SAFETY.md)  
+- [ ] [exports/2026-08-09-consumer-legal-en.md](exports/2026-08-09-consumer-legal-en.md)  
+- [ ] [LEGAL_SAFETY.md](../LEGAL_SAFETY.md) §0 territory  
 - [ ] [PAY_READY_LEGAL.md](../PAY_READY_LEGAL.md)  
 - [ ] [EXERCISE_AS_MEDICINE.md](../EXERCISE_AS_MEDICINE.md) (claim boundaries)  
-- [ ] Screenshots: free logger, free-beta mute, checkout (if any), Coach  
+- [ ] Screenshots: free logger, free-beta mute, checkout (if any), Coach, `/regions`  
 - [ ] Entity docs / formation certificate (**founder**)  
 - [ ] Proposed public postal address (**founder**)
 
