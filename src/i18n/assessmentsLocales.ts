@@ -4,6 +4,8 @@ const ASSESS_EN: Record<string, string> = {
   assessTitle: 'Readiness Assessment',
   assessSubtitle:
     'Free core tool. Based on standard health history and ParQ-style questions. Answer honestly for personalized guidance.',
+  assessSubtitleBrief: 'Answer the screen. Stage prompts when you want them.',
+  assessMoreStage: 'Stage of change & prompts',
   assessFormTitle: 'Quick Health & Lifestyle Screen',
   assessStageTitle: 'Stage of Change + Coaching Prompts',
   assessDisclaimer:

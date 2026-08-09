@@ -63,104 +63,103 @@ export function GuidebookIndexPage() {
       icon={BookMarked}
       eyebrow={t('learnEyebrow', { defaultValue: 'Learn' })}
       title={t('guidebookTitle', { defaultValue: 'Beyond the Basics' })}
-      subtitle={t('guidebookSubtitle', {
-        defaultValue:
-          'Beyond the Basics — same free chapters as the public magazine, with progress here in the app.',
+      subtitle={t('guidebookSubtitleBrief', {
+        defaultValue: 'Free chapters with progress here. Magazine and PDF when you want them.',
       })}
       showLegalFooter
     >
-        <Card className="content-card border-primary">
-          <CardContent className="py-4 flex flex-wrap items-center justify-between gap-3">
-            <div>
-              <p className="text-sm font-semibold text-primary">
-                {t('guidebookProgress', { defaultValue: 'Your progress' })}
-              </p>
-              <p className="text-2xl font-extrabold tabular-nums">
-                {stats.done}/{stats.totalSections}{' '}
-                <span className="text-sm font-normal text-muted-foreground">
-                  ({stats.pct}%)
-                </span>
-              </p>
-            </div>
-            <div className="flex flex-wrap gap-2">
-              <Button variant="default" size="sm" className="min-h-[44px] tap-target" asChild>
-                <Link
-                  href={PUBLIC_GUIDE_HREF}
-                  onClick={() => track('guide_read', { page: 'app_to_public_magazine' })}
-                >
-                  {t('guidebookMagazineWeb', { defaultValue: 'Magazine (web)' })}
-                </Link>
-              </Button>
-              <Button variant="outline" size="sm" className="min-h-[44px] tap-target" asChild>
-                <a
-                  href={MAGAZINE_PDF_PATH}
-                  download
-                  onClick={() => track('guide_pdf_download', { surface: 'learn_guide' })}
-                >
-                  <Download className="mr-1.5 h-4 w-4" aria-hidden />
-                  {t('guidebookPdfDownload', { defaultValue: 'PDF' })}
-                </a>
-              </Button>
-              <Button variant="outline" size="sm" className="min-h-[44px] tap-target" asChild>
-                <Link href="/learn">{t('guidebookQuickPaths', { defaultValue: 'Quick paths' })}</Link>
-              </Button>
-            </div>
-          </CardContent>
-        </Card>
-
+      {/* Field manual: chapter list first; progress + magazine/PDF under details. */}
       <div className="space-y-3">
-          {chapters.map((chapter) => {
-            const prog = getChapterProgress(chapter.id, completed);
-            const isPremiumChapter = premiumChapters.some((c) => c.id === chapter.id);
-            const href = isPremiumChapter
-              ? `/learn/course?chapter=${encodeURIComponent(chapter.id)}`
-              : `/learn/guide/${chapter.id}`;
-            const magazineHref = isPremiumChapter
-              ? null
-              : publicGuideChapterHref(chapter.id);
-            return (
-              <Card key={chapter.id} className="content-card">
-                <Link href={href} className="block min-h-[44px] tap-target">
-                  <CardHeader className="flex flex-row items-center justify-between py-4">
-                    <div className="space-y-1">
-                      <CardTitle className="text-lg flex items-center gap-2">
-                        <span className="text-muted-foreground text-sm font-mono">
-                          CH {chapter.number}
-                        </span>
-                        <span>{chapter.icon}</span>
-                        {chapter.title}
-                        {isPremiumChapter && (
-                          <span className="text-[10px] uppercase tracking-wide text-primary font-normal">
-                            {t('learnPremiumBadge', { defaultValue: 'Premium' })}
-                          </span>
-                        )}
-                      </CardTitle>
-                      <CardDescription>{chapter.subtitle}</CardDescription>
-                    </div>
-                    <div className="flex items-center gap-2 shrink-0">
-                      <span className="text-xs text-primary tabular-nums">
-                        {prog.done}/{prog.total}
+        {chapters.map((chapter) => {
+          const prog = getChapterProgress(chapter.id, completed);
+          const isPremiumChapter = premiumChapters.some((c) => c.id === chapter.id);
+          const href = isPremiumChapter
+            ? `/learn/course?chapter=${encodeURIComponent(chapter.id)}`
+            : `/learn/guide/${chapter.id}`;
+          const magazineHref = isPremiumChapter ? null : publicGuideChapterHref(chapter.id);
+          return (
+            <Card key={chapter.id} className="content-card">
+              <Link href={href} className="block min-h-[44px] tap-target">
+                <CardHeader className="flex flex-row items-center justify-between py-4">
+                  <div className="space-y-1">
+                    <CardTitle className="text-lg flex items-center gap-2">
+                      <span className="text-muted-foreground text-sm font-mono">
+                        CH {chapter.number}
                       </span>
-                      <ChevronRight className="h-4 w-4 text-muted-foreground" />
-                    </div>
-                  </CardHeader>
-                </Link>
-                {magazineHref && (
-                  <CardContent className="pt-0 pb-3">
-                    <Link
-                      href={magazineHref}
-                      className="text-xs font-semibold text-primary hover:underline"
-                    >
-                      {t('guidebookChapterMagazine', {
-                        defaultValue: 'Same chapter in magazine (web)',
-                      })}
-                    </Link>
-                  </CardContent>
-                )}
-              </Card>
-            );
-          })}
+                      <span>{chapter.icon}</span>
+                      {chapter.title}
+                      {isPremiumChapter && (
+                        <span className="text-[10px] uppercase tracking-wide text-primary font-normal">
+                          {t('learnPremiumBadge', { defaultValue: 'Premium' })}
+                        </span>
+                      )}
+                    </CardTitle>
+                    <CardDescription>{chapter.subtitle}</CardDescription>
+                  </div>
+                  <div className="flex items-center gap-2 shrink-0">
+                    <span className="text-xs text-primary tabular-nums">
+                      {prog.done}/{prog.total}
+                    </span>
+                    <ChevronRight className="h-4 w-4 text-muted-foreground" />
+                  </div>
+                </CardHeader>
+              </Link>
+              {magazineHref && (
+                <CardContent className="pt-0 pb-3">
+                  <Link
+                    href={magazineHref}
+                    className="text-xs font-semibold text-primary underline underline-offset-2 hover:text-foreground"
+                  >
+                    {t('guidebookChapterMagazine', {
+                      defaultValue: 'Same chapter in magazine (web)',
+                    })}
+                  </Link>
+                </CardContent>
+              )}
+            </Card>
+          );
+        })}
+      </div>
+
+      <details className="group border-2 border-border bg-card">
+        <summary className="flex min-h-[44px] cursor-pointer list-none items-center px-4 py-3 text-sm font-semibold text-muted-foreground [&::-webkit-details-marker]:hidden">
+          {t('guidebookMoreTools', { defaultValue: 'Progress, magazine & PDF' })}
+        </summary>
+        <div className="flex flex-wrap items-center justify-between gap-3 border-t-2 border-border p-4">
+          <div>
+            <p className="text-sm font-semibold">
+              {t('guidebookProgress', { defaultValue: 'Your progress' })}
+            </p>
+            <p className="text-2xl font-extrabold tabular-nums">
+              {stats.done}/{stats.totalSections}{' '}
+              <span className="text-sm font-normal text-muted-foreground">({stats.pct}%)</span>
+            </p>
+          </div>
+          <div className="flex flex-wrap gap-2">
+            <Button variant="outline" size="sm" className="min-h-[44px] tap-target" asChild>
+              <Link
+                href={PUBLIC_GUIDE_HREF}
+                onClick={() => track('guide_read', { page: 'app_to_public_magazine' })}
+              >
+                {t('guidebookMagazineWeb', { defaultValue: 'Magazine (web)' })}
+              </Link>
+            </Button>
+            <Button variant="outline" size="sm" className="min-h-[44px] tap-target" asChild>
+              <a
+                href={MAGAZINE_PDF_PATH}
+                download
+                onClick={() => track('guide_pdf_download', { surface: 'learn_guide' })}
+              >
+                <Download className="mr-1.5 h-4 w-4" aria-hidden />
+                {t('guidebookPdfDownload', { defaultValue: 'PDF' })}
+              </a>
+            </Button>
+            <Button variant="outline" size="sm" className="min-h-[44px] tap-target" asChild>
+              <Link href="/learn">{t('guidebookQuickPaths', { defaultValue: 'Quick paths' })}</Link>
+            </Button>
+          </div>
         </div>
+      </details>
     </PillarPageShell>
   );
 }

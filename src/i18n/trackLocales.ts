@@ -3,6 +3,9 @@
 type TrackStrings = {
   trackTitle: string;
   trackSubtitle: string;
+  trackSubtitleBrief: string;
+  trackMoreGpsImport: string;
+  trackMoreBodyWearables: string;
   trackWeekSessions: string;
   trackTotalTime: string;
   trackDistance: string;
@@ -110,6 +113,9 @@ const en: TrackStrings = {
   trackTitle: 'Track Activity',
   trackSubtitle:
     'Free manual activity log — walk, run, bike, hike. Premium adds GPS and advanced stats (MapMy-style, Super Bundle).',
+  trackSubtitleBrief: 'Log a walk or run. GPS and extras when you want them.',
+  trackMoreGpsImport: 'GPS, insights & import',
+  trackMoreBodyWearables: 'Body, wearables & trends',
   trackWeekSessions: 'This Week',
   trackTotalTime: 'Total Time',
   trackDistance: 'Distance',

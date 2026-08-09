@@ -34,7 +34,6 @@ import { ProgressPhotosCard } from '@/components/track/ProgressPhotosCard';
 import { usePremium } from '@/hooks/usePremium';
 import { MapPin, Trash2 } from 'lucide-react';
 import { HoldToConfirmButton } from '@/components/ui/HoldToConfirmButton';
-import { isFreeBeta } from '@/lib/freeBeta';
 import { localDateKey } from '@/lib/time/localDate';
 
 export function TrackPage() {
@@ -61,9 +60,10 @@ export function TrackPage() {
   }, []);
 
   const weekActivities = typeof window !== 'undefined' ? getActivitiesForWeek() : [];
-  const stats = typeof window !== 'undefined'
-    ? getWeeklyStats()
-    : { count: 0, totalMin: 0, totalKm: 0, byType: {} };
+  const stats =
+    typeof window !== 'undefined'
+      ? getWeeklyStats()
+      : { count: 0, totalMin: 0, totalKm: 0, byType: {} };
 
   const handleLog = () => {
     if (durationMin < 1) return;
@@ -96,52 +96,45 @@ export function TrackPage() {
       icon={MapPin}
       eyebrow={t('trackEyebrow', { defaultValue: 'Track' })}
       title={t('trackTitle', { defaultValue: 'Activity' })}
-      subtitle={t('trackSubtitle', {
-        defaultValue: isFreeBeta()
-          ? 'Log walks, runs, and rides — simple weekly totals.'
-          : 'Log walks, runs, and rides. Super Bundle can add GPS depth when paid depth is on.',
+      subtitle={t('trackSubtitleBrief', {
+        defaultValue: 'Log a walk or run. GPS and extras when you want them.',
       })}
     >
-        {/*
-         * One stat band on a 2px rule — the recut the card ladder was written
-         * for (`card-section`: "the default once a screen is recut"). Three
-         * boxed cards said three topics; one ruled band says one fact with
-         * three numbers, and `ScoreNumeral` is the system's numeral rather
-         * than a hand-rolled `text-2xl`.
-         */}
-        <section className="card-section">
-          <div className="grid grid-cols-3 gap-4">
-            <ScoreNumeral
-              size="md"
-              label={t('trackWeekSessions', { defaultValue: 'This Week' })}
-              value={stats.count}
-              caption={t('sessions', { defaultValue: 'sessions' }).toLowerCase()}
-            />
-            <ScoreNumeral
-              size="md"
-              label={t('trackTotalTime', { defaultValue: 'Total Time' })}
-              value={stats.totalMin}
-              caption="min"
-            />
-            <ScoreNumeral
-              size="md"
-              label={t('trackDistance', { defaultValue: 'Distance' })}
-              value={stats.totalKm.toFixed(1)}
-              caption="km"
-            />
-          </div>
-        </section>
-
-        <TrackGpsPanel onLogged={() => setRefresh((r) => r + 1)} />
-
-        <TrackWeeklyInsights locked={!premium} key={refresh} />
+      {/*
+       * Field manual: week band + log form + this-week list own the fold.
+       * GPS / import / wearables / body extras fold under disclosures.
+       */}
+      <section className="card-section">
+        <div className="grid grid-cols-3 gap-4">
+          <ScoreNumeral
+            size="md"
+            label={t('trackWeekSessions', { defaultValue: 'This Week' })}
+            value={stats.count}
+            caption={t('sessions', { defaultValue: 'sessions' }).toLowerCase()}
+          />
+          <ScoreNumeral
+            size="md"
+            label={t('trackTotalTime', { defaultValue: 'Total Time' })}
+            value={stats.totalMin}
+            caption="min"
+          />
+          <ScoreNumeral
+            size="md"
+            label={t('trackDistance', { defaultValue: 'Distance' })}
+            value={stats.totalKm.toFixed(1)}
+            caption="km"
+          />
+        </div>
+      </section>
 
       <div id="track-log" className="scroll-mt-20">
-      <Card className="card-elevated">
+        <Card className="card-elevated">
           <CardHeader>
             <CardTitle>{t('trackLogTitle', { defaultValue: 'Log Activity' })}</CardTitle>
             <CardDescription>
-              {t('trackLogDesc', { defaultValue: 'No GPS needed — type it in, and it stays on this device.' })}
+              {t('trackLogDesc', {
+                defaultValue: 'No GPS needed — type it in, and it stays on this device.',
+              })}
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
@@ -210,68 +203,84 @@ export function TrackPage() {
             </Button>
           </CardContent>
         </Card>
-        </div>
-
-        <ActivityImportPanel onImported={() => setRefresh((r) => r + 1)} />
-
-        {/* Flag-gated: NEXT_PUBLIC_WEARABLES — Strava connect/sync/disconnect */}
-        <ProfileWearablesCard signedIn={signedIn} />
-
-        <TrendAskCard history={workoutHistory} />
-        <BodyMetricsCard refreshKey={refresh} onChanged={() => setRefresh((r) => r + 1)} />
-        <ProgressPhotosCard />
+      </div>
 
       <Card className="content-card">
-          <CardHeader>
-            <CardTitle>{t('trackWeekLogTitle', { defaultValue: "This Week's Log" })}</CardTitle>
-          </CardHeader>
-          <CardContent>
-            {weekActivities.length === 0 ? (
-              <EmptyState
-                icon={MapPin}
-                title={t('trackEmptyTitle', { defaultValue: 'No activities this week' })}
-                description={t('trackEmptyWeek', {
-                  defaultValue: 'Log a walk or run above when you want — optional beside Train.',
-                })}
-                actionLabel={t('trackLogBtn', { defaultValue: 'Log activity' })}
-                href="#track-log"
-              />
-            ) : (
-              <ul className="space-y-2">
-                {weekActivities.map((a) => (
-                  <li
-                    key={a.id}
-                    className="flex items-center justify-between text-sm border-b-2 border-border pb-2 min-h-[44px] gap-2"
-                  >
-                    <div className="min-w-0">
-                      <span className="font-semibold">{ACTIVITY_LABELS[a.type]}</span>
-                      {isGpsActivity(a.notes) && (
-                        <span className="ms-1.5 text-[10px] uppercase tracking-wide text-primary font-semibold">
-                          GPS
-                        </span>
-                      )}
-                      <span className="text-muted-foreground">
-                        {' '}
-                        · {a.date} · {a.durationMin} min
+        <CardHeader>
+          <CardTitle>{t('trackWeekLogTitle', { defaultValue: "This Week's Log" })}</CardTitle>
+        </CardHeader>
+        <CardContent>
+          {weekActivities.length === 0 ? (
+            <EmptyState
+              icon={MapPin}
+              title={t('trackEmptyTitle', { defaultValue: 'No activities this week' })}
+              description={t('trackEmptyWeek', {
+                defaultValue: 'Log a walk or run above when you want — optional beside Train.',
+              })}
+              actionLabel={t('trackLogBtn', { defaultValue: 'Log activity' })}
+              href="#track-log"
+            />
+          ) : (
+            <ul className="space-y-2">
+              {weekActivities.map((a) => (
+                <li
+                  key={a.id}
+                  className="flex items-center justify-between text-sm border-b-2 border-border pb-2 min-h-[44px] gap-2"
+                >
+                  <div className="min-w-0">
+                    <span className="font-semibold">{ACTIVITY_LABELS[a.type]}</span>
+                    {isGpsActivity(a.notes) && (
+                      <span className="ms-1.5 text-[10px] uppercase tracking-wide text-primary font-semibold">
+                        GPS
                       </span>
-                      {a.distanceKm != null && (
-                        <span className="text-muted-foreground"> · {a.distanceKm} km</span>
-                      )}
-                      {a.notes && <div className="text-xs text-muted-foreground truncate">{a.notes}</div>}
-                    </div>
-                    <HoldToConfirmButton
-                      size="sm"
-                      className="h-11 w-11 tap-target shrink-0"
-                      label={t('trackDeleteActivity', { defaultValue: 'Delete activity' })}
-                      icon={<Trash2 className="h-4 w-4" />}
-                      onConfirm={() => handleDelete(a.id)}
-                    />
-                  </li>
-                ))}
-              </ul>
-            )}
-          </CardContent>
-        </Card>
+                    )}
+                    <span className="text-muted-foreground">
+                      {' '}
+                      · {a.date} · {a.durationMin} min
+                    </span>
+                    {a.distanceKm != null && (
+                      <span className="text-muted-foreground"> · {a.distanceKm} km</span>
+                    )}
+                    {a.notes && (
+                      <div className="text-xs text-muted-foreground truncate">{a.notes}</div>
+                    )}
+                  </div>
+                  <HoldToConfirmButton
+                    size="sm"
+                    className="h-11 w-11 tap-target shrink-0"
+                    label={t('trackDeleteActivity', { defaultValue: 'Delete activity' })}
+                    icon={<Trash2 className="h-4 w-4" />}
+                    onConfirm={() => handleDelete(a.id)}
+                  />
+                </li>
+              ))}
+            </ul>
+          )}
+        </CardContent>
+      </Card>
+
+      <details className="group border-2 border-border bg-card">
+        <summary className="flex min-h-[44px] cursor-pointer list-none items-center px-4 py-3 text-sm font-semibold text-foreground [&::-webkit-details-marker]:hidden">
+          {t('trackMoreGpsImport', { defaultValue: 'GPS, insights & import' })}
+        </summary>
+        <div className="space-y-4 border-t-2 border-border p-4">
+          <TrackGpsPanel onLogged={() => setRefresh((r) => r + 1)} />
+          <TrackWeeklyInsights locked={!premium} key={refresh} />
+          <ActivityImportPanel onImported={() => setRefresh((r) => r + 1)} />
+        </div>
+      </details>
+
+      <details className="group border-2 border-border bg-card">
+        <summary className="flex min-h-[44px] cursor-pointer list-none items-center px-4 py-3 text-sm font-semibold text-muted-foreground [&::-webkit-details-marker]:hidden">
+          {t('trackMoreBodyWearables', { defaultValue: 'Body, wearables & trends' })}
+        </summary>
+        <div className="space-y-4 border-t-2 border-border p-4">
+          <ProfileWearablesCard signedIn={signedIn} />
+          <TrendAskCard history={workoutHistory} />
+          <BodyMetricsCard refreshKey={refresh} onChanged={() => setRefresh((r) => r + 1)} />
+          <ProgressPhotosCard />
+        </div>
+      </details>
     </PillarPageShell>
   );
 }

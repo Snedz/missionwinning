@@ -3,6 +3,8 @@
 type CalculatorsStrings = {
   calcTitle: string;
   calcSubtitle: string;
+  calcSubtitleBrief: string;
+  calcMorePremium: string;
   calcTab1rm: string;
   calcTabMacros: string;
   calcTabPlates: string;
@@ -61,6 +63,8 @@ const en: CalculatorsStrings = {
   calcTitle: 'Calculators',
   calcSubtitle:
     'Free 1RM, macro, and plate tools. Super Bundle unlocks advanced periodization and client sync.',
+  calcSubtitleBrief: '1RM, macros, plates — free tools, no account required.',
+  calcMorePremium: 'Premium calculator depth',
   calcTab1rm: '1RM',
   calcTabMacros: 'Macros',
   calcTabPlates: 'Plates',

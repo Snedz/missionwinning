@@ -189,13 +189,16 @@ export function AssessmentsPage() {
   // No paywall on the mission fundamentals.
 
   return (
-    <PillarPageShell icon={ClipboardList}
-      eyebrow={t('toolkitEyebrow', { defaultValue: 'Toolkit' })} title={t('assessTitle', { defaultValue: 'Readiness Assessment' })} subtitle={t('assessSubtitle', {
-        defaultValue:
-          'Free core tool. Based on standard health history and ParQ-style questions. Answer honestly for personalized guidance.',
+    <PillarPageShell
+      icon={ClipboardList}
+      eyebrow={t('toolkitEyebrow', { defaultValue: 'Toolkit' })}
+      title={t('assessTitle', { defaultValue: 'Readiness Assessment' })}
+      subtitle={t('assessSubtitleBrief', {
+        defaultValue: 'Answer the screen. Stage prompts when you want them.',
       })}
       showLegalFooter
     >
+      {/* Field manual: health form first; stage coaching under disclosure. */}
       {!result && (
         <Card className="content-card">
           <CardHeader>
@@ -213,7 +216,11 @@ export function AssessmentsPage() {
                     { opt: 'no', label: t('assessNo', { defaultValue: 'No' }) },
                     { opt: 'unsure', label: t('assessUnsure', { defaultValue: 'Unsure' }) },
                   ].map(({ opt, label }) => (
-                    <Button key={opt} size="sm" variant={answers[item.key] === opt ? 'selected' : 'outline'}
+                    <Button
+                      key={opt}
+                      size="sm"
+                      variant={answers[item.key] === opt ? 'selected' : 'outline'}
+                      className="min-h-[44px] tap-target"
                       onClick={() => handleAnswer(item.key, opt)}
                     >
                       {label}
@@ -221,7 +228,8 @@ export function AssessmentsPage() {
                   ))}
                   {item.key === 'smoke' || item.key === 'sleep' || item.key === 'energy' ? (
                     <input
-                      className="border border-border rounded-none px-2 text-sm" placeholder={t('assessDetailsPlaceholder', { defaultValue: 'details' })}
+                      className="border-2 border-border rounded-none px-2 text-sm min-h-[44px]"
+                      placeholder={t('assessDetailsPlaceholder', { defaultValue: 'details' })}
                       onBlur={(e) =>
                         handleAnswer(item.key, e.target.value || answers[item.key] || '')
                       }
@@ -230,7 +238,11 @@ export function AssessmentsPage() {
                 </div>
               </div>
             ))}
-            <Button className="mt-4 w-full" onClick={submitAssessment} disabled={Object.keys(answers).length < 5}>
+            <Button
+              className="mt-4 w-full min-h-[44px] tap-target primary-action"
+              onClick={submitAssessment}
+              disabled={Object.keys(answers).length < 5}
+            >
               {t('submitAssessment', { defaultValue: 'Submit Assessment' })}
             </Button>
             <div className="text-xs text-muted-foreground">
@@ -243,21 +255,28 @@ export function AssessmentsPage() {
         </Card>
       )}
 
-      <Card className="content-card">
-        <CardHeader>
-          <CardTitle>{t('assessStageTitle', { defaultValue: 'Stage of Change + Coaching Prompts' })}</CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-3 text-sm">
+      <details className="group border-2 border-border bg-card">
+        <summary className="flex min-h-[44px] cursor-pointer list-none items-center px-4 py-3 text-sm font-semibold text-muted-foreground [&::-webkit-details-marker]:hidden">
+          {t('assessMoreStage', { defaultValue: 'Stage of change & prompts' })}
+        </summary>
+        <div className="space-y-3 border-t-2 border-border p-4 text-sm">
+          <p className="text-sm font-semibold text-foreground">
+            {t('assessStageTitle', { defaultValue: 'Stage of Change + Coaching Prompts' })}
+          </p>
           <div className="flex flex-wrap gap-2">
             {stages.map((s, i) => (
-              <Button key={s.shortKey} size="sm" variant={selectedStage === i ? 'selected' : 'outline'}
+              <Button
+                key={s.shortKey}
+                size="sm"
+                variant={selectedStage === i ? 'selected' : 'outline'}
+                className="min-h-[44px] tap-target"
                 onClick={() => setSelectedStage(i)}
               >
                 {t(s.shortKey, { defaultValue: s.shortKey })}
               </Button>
             ))}
           </div>
-          <div className="rounded-none border border-border bg-card p-3">
+          <div className="rounded-none border-2 border-border bg-card p-3">
             <div className="font-semibold text-primary">
               {t('assessCoachFocus', { defaultValue: 'Coach Focus:' })}{' '}
               {t(stages[selectedStage].focusKey, { defaultValue: '' })}
@@ -274,8 +293,8 @@ export function AssessmentsPage() {
                 'OARS in practice: Open questions, Affirm strengths, Reflect back, Summarize. Match approach to readiness.',
             })}
           </div>
-        </CardContent>
-      </Card>
+        </div>
+      </details>
 
       {result && (
         <Card
