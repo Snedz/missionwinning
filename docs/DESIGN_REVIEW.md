@@ -63,6 +63,7 @@ Review on a 390×844 phone viewport first (the Playwright target); desktop secon
 
 | Date | Reviewer | Flows | Issues filed |
 |------|----------|-------|--------------|
+| 2026-08-09 | Agent (Account Field manual · .625) | `/account` | Day-one stack open; More settings folds secondary cards. |
 | 2026-08-09 | Agent (You Field manual · .624) | `/profile` | Identity hero-first; edit under details; 0 red. Continues Field manual from .619. |
 | 2026-08-09 | Agent (hero feel · .619) | Today, Active, Victory, Coach | Field manual composition: briefing hierarchy; Finish outline on Active; Victory poster-field next; Coach adapt kicker. B/C presets catalogued not shipped. |
 | 2026-08-06 | Agent (web-first UX · .536–.538) | Today, Victory, Coach, Fuel | Continuity on both Today shells; Coach session why (Wave 8); Fuel Empty/Error; Victory secondary Super Bundle links (one primary CTA). Ritual: design better = laws-as-checks; think better = problem register; communicate better = honest inventory; impact = one-app continuity vs multi-app Super Bundle. |

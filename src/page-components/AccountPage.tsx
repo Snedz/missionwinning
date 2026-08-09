@@ -307,6 +307,12 @@ export function AccountPage() {
   const ownerTools = showOwnerTools();
 
   return (
+    /*
+     * Field manual on Account: day-one stack stays open (sign-in · return channel ·
+     * prefs). Secondary cards collapse under "More settings" so the page is a
+     * utility briefing, not a card wall. Owner tools stay reachably grouped.
+     * Red-action rules on this route are unchanged (magic-link / billing own red).
+     */
     <PillarPageShell
       icon={Settings}
       eyebrow={t('accountEyebrow', { defaultValue: 'Account' })}
@@ -318,11 +324,16 @@ export function AccountPage() {
               defaultValue: `Day ${daysSinceCommission(state.commissionedAt)} on the path`,
             })
           : t('accountSubtitle', {
-              defaultValue: 'Sign-in, units, notifications and backup. Progress stays on this device unless you sign in.',
+              defaultValue:
+                'Sign-in, units, notifications and backup. Progress stays on this device unless you sign in.',
             })
       }
       footer={<AppLegalFooter showBuild buildLabel={APP_BUILD_LABEL} />}
     >
+      <p className="eyebrow text-primary -mt-2">
+        {t('accountPrimaryHint', { defaultValue: 'What you need day to day' })}
+      </p>
+
       <ProfileAccountCard
         email={email}
         ownerTools={ownerTools}
@@ -354,30 +365,11 @@ export function AccountPage() {
         onSaveGoals={saveGoals}
       />
 
-      <ProfileAssessmentCard />
+      {/* Reachable without expanding: referral invite, feedback, privacy, backup
+          (e2e + product promise). Everything else folds under More settings. */}
+      <ProfileReferralCard signedIn={Boolean(email)} />
 
-      <ProfileBetaJourneyCard
-        funnel={funnel}
-        email={email}
-        isCommissioned={isCommissioned}
-        nudgeLoading={nudgeLoading}
-        nudgeSent={nudgeSent}
-        onEmailNudge={handleEmailNudge}
-      />
-
-      {ownerTools && <FounderStatusBoard />}
-
-      {ownerTools && <BetaAdminPanel enabled={!!email} />}
-
-      <ProfileJourneyCard
-        isOnboarded={isOnboarded}
-        experience={experience}
-        equipment={equipment}
-        primaryGoal={primaryGoal}
-        goals={goals}
-        daysPerWeek={daysPerWeek}
-        onDaysPerWeekChange={setDaysPerWeek}
-      />
+      <ProfileFeedbackCard />
 
       <ProfilePremiumCard
         premium={premium}
@@ -385,31 +377,62 @@ export function AccountPage() {
         onManageBilling={handleManageBilling}
       />
 
-      {ownerTools && <ProfileOwnerTools />}
+      <details className="group border-2 border-border bg-card">
+        <summary className="flex min-h-[44px] cursor-pointer list-none items-center px-4 py-3 text-sm font-semibold text-foreground [&::-webkit-details-marker]:hidden">
+          {t('accountMoreSettings', { defaultValue: 'More settings' })}
+        </summary>
+        <div className="space-y-6 border-t-2 border-border px-4 py-4">
+          <ProfileAssessmentCard />
 
-      <ProfileReferralCard signedIn={Boolean(email)} />
+          <ProfileBetaJourneyCard
+            funnel={funnel}
+            email={email}
+            isCommissioned={isCommissioned}
+            nudgeLoading={nudgeLoading}
+            nudgeSent={nudgeSent}
+            onEmailNudge={handleEmailNudge}
+          />
 
-      <ProfileWearablesCard signedIn={Boolean(email)} />
+          <ProfileJourneyCard
+            isOnboarded={isOnboarded}
+            experience={experience}
+            equipment={equipment}
+            primaryGoal={primaryGoal}
+            goals={goals}
+            daysPerWeek={daysPerWeek}
+            onDaysPerWeekChange={setDaysPerWeek}
+          />
 
-      {/* Not behind `ownerTools` and not behind `email`. `.204`'s lesson was
-          that a control mounted in one shell is a control half the athletes
-          cannot see; a feedback button only the founder can reach is the same
-          defect with the stakes inverted. */}
-      <ProfileFeedbackCard />
+          <ProfileWearablesCard signedIn={Boolean(email)} />
 
-      <ProfileWhatsNewCard />
+          <ProfileWhatsNewCard />
 
-      <ProfilePrivacyCard />
+          <ProfilePrivacyCard />
 
-      <SyncStatusRow />
+          <SyncStatusRow />
 
-      <ProfileBackupCard />
+          <ProfileBackupCard />
 
-      <ProfileImportCard />
+          <ProfileImportCard />
+        </div>
+      </details>
 
-      <Card className="bg-card">
+      {ownerTools ? (
+        <details className="group border-2 border-border bg-card">
+          <summary className="flex min-h-[44px] cursor-pointer list-none items-center px-4 py-3 text-sm font-semibold text-foreground [&::-webkit-details-marker]:hidden">
+            {t('accountOwnerSection', { defaultValue: 'Owner tools' })}
+          </summary>
+          <div className="space-y-6 border-t-2 border-border p-4">
+            <FounderStatusBoard />
+            <BetaAdminPanel enabled={!!email} />
+            <ProfileOwnerTools />
+          </div>
+        </details>
+      ) : null}
+
+      <Card className="border-2 border-border bg-card">
         <CardContent className="pt-6">
-          <p className="mb-3 text-xs font-semibold tracking-wide text-muted-foreground">
+          <p className="eyebrow mb-3 text-muted-foreground">
             {t('infoProfileHelpTitle', { defaultValue: 'Help & legal' })}
           </p>
           <LegalNav />
