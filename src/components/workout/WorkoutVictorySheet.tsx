@@ -249,10 +249,10 @@ export function WorkoutVictorySheet({
               {t('victoryMascotCue', { defaultValue: 'Session saved.' })}
             </span>
           </div>
-          <DialogTitle className="text-2xl font-semibold tracking-tight">
+          <DialogTitle className="font-display text-2xl font-extrabold tracking-[-0.015em]">
             {t('victoryTitle', { defaultValue: 'Session locked' })}
           </DialogTitle>
-          <DialogDescription className="text-base text-muted-foreground leading-relaxed">
+          <DialogDescription className="text-sm leading-relaxed text-muted-foreground">
             {summary.workoutName}
           </DialogDescription>
         </DialogHeader>

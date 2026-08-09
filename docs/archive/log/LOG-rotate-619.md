@@ -1,0 +1,24 @@
+## 2026-08-08 — The verification run, and a claim that outran it (`.604`)
+
+**`.602` claimed a repair it did not make. Corrected here, with the measurement that corrects it.**
+
+The wave `.597`–`.603` shipped with four gate steps unrun — production build, bundle budget, hero e2e `@gate`, accessibility `@a11y`. This entry is what happened when they were finally executed, and the answer is not what the branch said.
+
+**Why they had never run.** Two independent reasons, and both are worth writing down because either alone hides the lane. First, `npm run gate` aborts on the first failure and **step 16, the bundle budget, has been red since before `.596`** — so steps 17 and 18 are unreachable on this branch *and on `master`*, and have been for the whole time the budget has been over. A gate that stops before its last two steps is a gate with two steps nobody runs. Second, this sandbox has Chromium build **1194** while `@playwright/test@1.61.1` resolves build **1228**, and the CDN is proxy-blocked — every browser test died at launch in 3 ms, which reads in the output like a wall of product failures. Note `hasChromium()` (`scripts/gate.mjs:126`) probes `chromium.executablePath()`, the *full browser*; headless runs launch `chrome-headless-shell`, a different binary it never asks about. Here both were absent so the guard would have fired, but it can pass with the shell missing.
+
+**Measured, branch and `master`, on identical `PRIVATE_MODE=false` + gate `BUILD_ENV` builds:** hero `@gate` **71/71 on both**. `@a11y` **63 passed / 8 failed on both — the same eight**.
+
+**So the hero test `.602` said it repaired was already green.** `.596` recorded `workout complete updates Mission Score` as "left red on purpose"; `.602` accepted that, diagnosed it, and claimed the fix. Master's version passes. The reasoning was **inverted**: `.first()` resolves in DOM order, and `TodayDashboardHeader` — which renders `MetricsRow`'s literal "Mission Score" label — sits *above* `TodayHealthSection`'s collapsed `<details>`. `.first()` was selecting the **visible** band all along, not the hidden duplicate. Every fact `.602` cited is true (a collapsed `<details>` does keep its content in the DOM; it is named by its `<summary>`, so `.596`'s `role=group` probe was looking for a name that never existed) — the conclusion drawn from them was not. The shape is this repo's oldest one: a defect explained rather than reproduced, and the explanation believed because it was a good one.
+
+**The `.602` code change stays, on merits rather than as a repair.** Keying off `data-testid="today-score-band"` names the band instead of matching prose a kaizen pass is expected to change, and it additionally asserts a real digit after a logged workout — which the old assertion never did. It passes. Only the claim was wrong, and `.602`'s entry, the guard's rationale comments, and the PR body are corrected to say so. Its "hero spec reverted → red" mutant did fire, but against the **unit** guard that greps the spec text, never against Playwright — which could not run at all at that time. A mutant killed by a source-text assertion is not a mutant killed by the behaviour.
+
+**Eight serious a11y violations, pre-existing and now measured** (`.605` fixes them; recorded here so the number is not lost):
+
+- 7 × `/active with … open` — `aria-required-parent`. `SetLogRow.tsx:78` emits `role="listitem"`; its container in `ActiveExerciseCard.tsx:176` is a plain `<div>`, and the only `role="list"` in all of `src/` is in `MuscleFreshnessStrip.tsx`, an unrelated Today component. Plain `/active` passes because the empty state has no set rows — the violation needs a seeded workout, which is why every "sheet open" case fails and the bare route does not.
+- 1 × `/leaderboard` — `scrollable-region-focusable` on `<ul class="max-h-[min(52vh,420px)] overflow-y-auto">`. The same rule `.200` caught the first time a11y ever ran, in a different component.
+
+Reproduced identically on a clean `origin/master` build, so this wave neither caused nor worsened them — `.597` was the suspect, since unstamping RPE makes the Easy/Med/Hard controls render inside those very rows for the first time, but the failing rule is about the rows' *ancestry*, which the wave never touched.
+
+**Bundle budget: unchanged by this wave, and not raised.** Branch `/` 254.6 · `/log` 282.1 · `/active` 443.6 KB; `master` 254.5 · 282.1 · 443.4, with identical chunk hashes on `/log`. Seven commits moved it ~0.2 KB against a ~10.7 KB standing overage. `bundle-budget.mjs` says *"Lower these whenever you win; never raise them"*, so the caps stand and the optimisation remains its own change.
+
+Tests unchanged at 2203; this commit corrects a record and adds no behaviour. Mutants: none claimed — the corrections here are assertions of fact, and the one guard touched had its rationale rewritten, not its coverage changed.

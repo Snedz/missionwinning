@@ -33,23 +33,27 @@ export function TodayPageHeader({
   const { t } = useTranslation();
 
   return (
-    <header className="space-y-3">
+    /*
+     * Field manual composition (hero-feel A): mono eyebrow → display → quiet
+     * meta → journey strip. The red Start lives in JourneyHero / dock, not here.
+     */
+    <header className="space-y-2.5">
       <div className="flex items-start justify-between gap-3">
         <div className="min-w-0 space-y-1">
-          <p className="text-[11px] font-semibold uppercase tracking-[0.1em] text-primary">
-            {today}
-          </p>
-          <h1 className="text-[2.1rem] font-extrabold leading-[1.05] tracking-[-0.01em] md:text-[2.5rem]">
+          <p className="eyebrow text-primary">{today}</p>
+          <h1 className="display-section text-foreground">
             {t('today', { defaultValue: 'Today' })}
           </h1>
           {focusLine ? (
-            <p className="text-sm leading-relaxed text-muted-foreground">{focusLine}</p>
+            <p className="max-w-[28rem] text-sm leading-relaxed text-muted-foreground">
+              {focusLine}
+            </p>
           ) : null}
         </div>
         {showEditToday && onEditToday && (
           <button
             type="button"
-            className="shrink-0 inline-flex items-center gap-1.5 min-h-[44px] border-2 border-foreground bg-transparent px-3 text-sm font-semibold transition-colors hover:bg-muted"
+            className="shrink-0 inline-flex min-h-[44px] items-center gap-1.5 border-2 border-border bg-transparent px-3 text-sm font-semibold text-muted-foreground transition-colors hover:border-foreground hover:bg-muted hover:text-foreground"
             onClick={onEditToday}
           >
             <LayoutGrid className="h-4 w-4" />
@@ -57,10 +61,8 @@ export function TodayPageHeader({
           </button>
         )}
       </div>
-      {/* One meta line, per the handoff: streak tag · Rankings · sync state.
-          These were three stacked blocks, which pushed the next action — the
-          only thing on this screen that matters — further below the fold. */}
-      <div className="flex flex-wrap items-center gap-x-2.5 gap-y-1.5 text-sm text-muted-foreground">
+      {/* Meta stays one line and small so the docked Start is the job of the fold. */}
+      <div className="flex flex-wrap items-center gap-x-2.5 gap-y-1 text-xs text-muted-foreground">
         {streak > 0 && (
           <>
             <StreakChip streak={streak} variant="inline" />
