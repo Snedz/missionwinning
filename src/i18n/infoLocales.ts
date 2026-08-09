@@ -14,11 +14,13 @@ type InfoStrings = {
   infoBetaSubtitle: string;
   infoFeedbackTitle: string;
   infoFeedbackSubtitle: string;
+  infoFeedbackSubtitleBrief: string;
   infoFeedbackThankTitle: string;
   infoFeedbackThankSubtitle: string;
   infoFeedbackFormTitle: string;
   infoCoachingTitle: string;
   infoCoachingSubtitle: string;
+  infoCoachingSubtitleBrief: string;
   infoProgramsTitle: string;
   infoProgramsSubtitle: string;
   infoProgramsSubtitleBrief: string;
@@ -263,6 +265,7 @@ const en: InfoStrings = {
   infoFeedbackTitle: 'Feedback',
   infoFeedbackSubtitle:
     'What confused you, what broke, and what we should fix next. We read every note.',
+  infoFeedbackSubtitleBrief: 'What broke or confused you. We read every note.',
   infoFeedbackThankTitle: 'Thank you',
   infoFeedbackThankSubtitle:
     'Thanks — your notes help us improve the free logger and Coach.',
@@ -270,6 +273,7 @@ const en: InfoStrings = {
   infoCoachingTitle: 'A coach in your corner',
   infoCoachingSubtitle:
     "We're building a small 1:1 coaching program on top of the free core. Tell us about your goals — no commitment, no payment today.",
+  infoCoachingSubtitleBrief: 'Tell us your goals. No commitment, no payment today.',
   infoProgramsTitle: 'Learn programs',
   infoProgramsSubtitle:
     'Premium practical education as part of the Super Bundle. Free core tools for supported regions; Europe, Canada, Ukraine, and OIC member states are not supported for the hosted service.',

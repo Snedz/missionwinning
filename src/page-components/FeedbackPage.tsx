@@ -10,7 +10,6 @@ import { useRouter } from 'next/navigation';
 import { useTranslation } from 'react-i18next';
 import { MessageSquare } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { InfoPageShell } from '@/components/layout/InfoPageShell';
@@ -68,35 +67,32 @@ export function FeedbackPage() {
     return (
       <InfoPageShell
         icon={MessageSquare}
-      eyebrow={t('feedbackEyebrow', { defaultValue: 'Feedback' })}
+        eyebrow={t('feedbackEyebrow', { defaultValue: 'Feedback' })}
         title={t('infoFeedbackThankTitle', { defaultValue: 'Thank you' })}
         subtitle={t('infoFeedbackThankSubtitle', {
           defaultValue: 'Thanks — your notes help us improve the free logger and Coach.',
         })}
         variant="sections"
       >
-        <Card className="bg-card text-center">
-          <CardContent className="pt-8 pb-8 space-y-4">
-            <div className="inline-flex items-center gap-2 border-2 border-border bg-card px-4 py-1 text-sm text-foreground">
-              {t('feedbackThankBadge', { defaultValue: 'Thanks' })}
-            </div>
-            <div className="text-left max-w-md mx-auto space-y-2 text-sm leading-relaxed">
-              <p className="font-semibold">
-                {t('feedbackThankRoadmap', {
-                  defaultValue: '✓ We read every note — friction first',
-                })}
-              </p>
-              <p className="font-semibold">
-                {t('feedbackThankEarly', {
-                  defaultValue: '✓ If you left email, we may follow up on a fix',
-                })}
-              </p>
-            </div>
-            <Button size="lg" variant="default" className="min-h-[52px] tap-target" onClick={() => router.push('/log')}>
-              {t('feedbackBackToday', { defaultValue: 'Back to Today' })}
-            </Button>
-          </CardContent>
-        </Card>
+        {/* Field manual: one exit, no badge farm. */}
+        <div className="content-card space-y-4 p-6 text-center sm:p-8">
+          <p className="text-sm text-muted-foreground">
+            {t('feedbackThankRoadmap', {
+              defaultValue: 'We read every note — friction first.',
+            })}{' '}
+            {t('feedbackThankEarly', {
+              defaultValue: 'If you left email, we may follow up on a fix.',
+            })}
+          </p>
+          <Button
+            size="lg"
+            variant="default"
+            className="primary-action min-h-[52px] tap-target"
+            onClick={() => router.push('/log')}
+          >
+            {t('feedbackBackToday', { defaultValue: 'Back to Today' })}
+          </Button>
+        </div>
       </InfoPageShell>
     );
   }
@@ -106,20 +102,17 @@ export function FeedbackPage() {
       icon={MessageSquare}
       eyebrow={t('feedbackEyebrow', { defaultValue: 'Feedback' })}
       title={t('infoFeedbackTitle', { defaultValue: 'Feedback' })}
-      subtitle={t('infoFeedbackSubtitle', {
-        defaultValue: 'What confused you, what broke, and what we should fix next. We read every note.',
+      subtitle={t('infoFeedbackSubtitleBrief', {
+        defaultValue: 'What broke or confused you. We read every note.',
       })}
       variant="sections"
       showLegalFooter
     >
-      <Card className="bg-card">
-        <CardHeader>
-          <CardTitle className="text-base font-semibold">
-            {t('infoFeedbackFormTitle', { defaultValue: 'What should we fix?' })}
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          <form onSubmit={handleSubmit} className="space-y-6">
+      {/* Field manual: form is the page — no competing header card. */}
+      <form onSubmit={handleSubmit} className="content-card space-y-6 p-6 sm:p-8">
+        <p className="text-sm font-semibold">
+          {t('infoFeedbackFormTitle', { defaultValue: 'What should we fix?' })}
+        </p>
             <div className="grid md:grid-cols-2 gap-4">
               <div>
                 <Label>{t('feedbackNameLabel', { defaultValue: 'Name (optional)' })}</Label>
@@ -192,20 +185,24 @@ export function FeedbackPage() {
               />
             </div>
 
-            <Button type="submit" size="lg" variant="default" className="w-full min-h-[52px] tap-target" disabled={loading}>
-              {loading
-                ? t('feedbackSubmitting', { defaultValue: 'Submitting…' })
-                : t('feedbackSubmit', { defaultValue: 'Submit feedback' })}
-            </Button>
-            <p className="text-[10px] text-center text-muted-foreground">
-              {t('feedbackFootnote', {
-                defaultValue:
-                  'We may quote a short note with your permission. No polished testimonial required.',
-              })}
-            </p>
-          </form>
-        </CardContent>
-      </Card>
+        <Button
+          type="submit"
+          size="lg"
+          variant="default"
+          className="primary-action w-full min-h-[52px] tap-target"
+          disabled={loading}
+        >
+          {loading
+            ? t('feedbackSubmitting', { defaultValue: 'Submitting…' })
+            : t('feedbackSubmit', { defaultValue: 'Submit feedback' })}
+        </Button>
+        <p className="text-center text-[10px] text-muted-foreground">
+          {t('feedbackFootnote', {
+            defaultValue:
+              'We may quote a short note with your permission. No polished testimonial required.',
+          })}
+        </p>
+      </form>
 
       <SignInPrompt
         nextPath="/feedback"

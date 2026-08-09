@@ -53,8 +53,8 @@ export function LearnCoursePage() {
       icon={BookOpen}
       eyebrow={t('learnEyebrow', { defaultValue: 'Learn' })}
       title={t('learnCourseTitle', { defaultValue: 'Specialist courses' })}
-      subtitle={t('learnCourseSubtitle', {
-        defaultValue: 'Premium guidebook chapters — corrective, coaching business, periodization, and more.',
+      subtitle={t('learnCourseSubtitleBrief', {
+        defaultValue: 'Specialist courses when unlocked. Free paths live on Learn.',
       })}
     >
       {loading && <SkeletonCard />}

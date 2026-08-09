@@ -52,9 +52,8 @@ export function CoachingPage() {
       icon={Users}
       eyebrow={t('coachingEyebrow', { defaultValue: 'Coaching' })}
       title={t('infoCoachingTitle', { defaultValue: 'A coach in your corner' })}
-      subtitle={t('infoCoachingSubtitle', {
-        defaultValue:
-          "We're building a small 1:1 coaching program on top of the free core. Tell us about your goals — no commitment, no payment today.",
+      subtitle={t('infoCoachingSubtitleBrief', {
+        defaultValue: 'Tell us your goals. No commitment, no payment today.',
       })}
       variant="sections"
       showLegalFooter
@@ -74,7 +73,11 @@ export function CoachingPage() {
                   'Thanks — your note is with the founder, who reads every one. Replies come by email, and it is a one-person shop, so give it a few days.',
               })}
             </p>
-            <Button variant="default" onClick={() => router.push('/log')}>
+            <Button
+              variant="default"
+              className="primary-action min-h-[52px] tap-target"
+              onClick={() => router.push('/log')}
+            >
               {t('infoBackToday', { defaultValue: 'Back to Today' })}
             </Button>
           </CardContent>
@@ -111,7 +114,13 @@ export function CoachingPage() {
             aria-label={t('infoCoachingGoalsLabel', { defaultValue: 'Your goals and current training' })}
           />
           {error && <p className="text-sm font-semibold text-primary">{error}</p>}
-          <Button type="submit" size="lg" variant="default" className="w-full min-h-[52px] tap-target" disabled={loading}>
+          <Button
+            type="submit"
+            size="lg"
+            variant="default"
+            className="primary-action w-full min-h-[52px] tap-target"
+            disabled={loading}
+          >
             {loading
               ? t('infoCoachingSending', { defaultValue: 'Sending…' })
               : t('infoCoachingSubmit', { defaultValue: 'Join the coaching interest list' })}

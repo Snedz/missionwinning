@@ -119,14 +119,16 @@ export function GuidebookChapterPage({ chapterId }: Props) {
                     })}
                   </div>
                   <GuideSectionExtras section={section} variant="app" />
+                  {/* Field manual: section actions stay outline — sticky Practice owns red. */}
                   <div className="flex flex-wrap gap-2 pt-2">
-                    <Button size="sm" variant="default" asChild>
+                    <Button size="sm" variant="outline" className="min-h-[44px] tap-target" asChild>
                       <Link href={section.practiceCTA.href}>{section.practiceCTA.label}</Link>
                     </Button>
                     {!done && (
                       <Button
                         size="sm"
                         variant="outline"
+                        className="min-h-[44px] tap-target"
                         onClick={() => completeSection(section.id, section.title)}
                       >
                         {t('guidebookMarkRead', { defaultValue: 'Mark section read' })}
@@ -141,28 +143,29 @@ export function GuidebookChapterPage({ chapterId }: Props) {
       </div>
 
       {allDone && (
-        <Card className="content-card border-primary">
-          <CardContent className="py-4 flex flex-wrap items-center justify-between gap-3">
-            <p className="text-sm text-primary">
-              {t('guidebookChapterComplete', { defaultValue: 'Chapter complete!' })}
-            </p>
+        <details open className="group border-2 border-border bg-card">
+          <summary className="flex min-h-[44px] cursor-pointer list-none items-center px-4 py-3 text-sm font-semibold text-foreground [&::-webkit-details-marker]:hidden">
+            {t('guidebookChapterComplete', { defaultValue: 'Chapter complete!' })}
+          </summary>
+          <div className="flex flex-wrap items-center justify-between gap-3 border-t-2 border-border p-4">
             {BEYOND_NEXT_CHAPTER(chapterId) ? (
-              <Button size="sm" asChild>
+              <Button size="sm" variant="outline" className="min-h-[44px] tap-target" asChild>
                 <Link href={`/learn/guide/${BEYOND_NEXT_CHAPTER(chapterId)}`}>
                   {t('guidebookNextChapter', { defaultValue: 'Next chapter' })}
                 </Link>
               </Button>
             ) : (
-              <Button size="sm" variant="outline" asChild>
+              <Button size="sm" variant="outline" className="min-h-[44px] tap-target" asChild>
                 <Link href="/learn/guide">{t('guidebookBack', { defaultValue: 'Back to guidebook' })}</Link>
               </Button>
             )}
-          </CardContent>
-        </Card>
+          </div>
+        </details>
       )}
 
-      <div className="fixed bottom-0 left-0 right-0 p-4 bg-background border-t border-border md:hidden z-40">
-        <Button className="w-full min-h-[44px] tap-target" variant="default" asChild>
+      {/* Sole red on phone: practice in app. */}
+      <div className="fixed bottom-0 left-0 right-0 z-40 border-t-2 border-border bg-background p-4 md:hidden">
+        <Button className="primary-action w-full min-h-[44px] tap-target" variant="default" asChild>
           <Link href={chapter.sections[0]?.practiceCTA.href ?? '/log'}>
             {t('guidebookPracticeInApp', { defaultValue: 'Practice in app' })}
           </Link>

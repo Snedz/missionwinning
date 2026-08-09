@@ -20,6 +20,7 @@ import { useTranslation } from 'react-i18next';
 import { CalendarDays, ChevronLeft, ChevronRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { PillarPageShell } from '@/components/layout/PillarPageShell';
+import { EmptyState } from '@/components/ui/EmptyState';
 import { hasLoggedWork, useWorkoutStore } from '@/store/workoutStore';
 import { buildDayRecord, isDayKey } from '@/lib/journey/dayRecord';
 import { sweepDaysWithData } from '@/lib/journey/daysWithData';
@@ -101,9 +102,15 @@ export function HistoryDayPage({ date }: Props) {
             data), so reaching here means the day was never logged — and saying
             "nothing recorded" is true, where "you did nothing" would not be.
           */
-          <p className="border-2 border-border p-3 text-sm text-muted-foreground">
-            {t('historyDayEmpty', { defaultValue: 'Nothing was recorded on this day.' })}
-          </p>
+          <EmptyState
+            icon={CalendarDays}
+            title={t('historyDayEmptyTitle', { defaultValue: 'Nothing logged this day' })}
+            description={t('historyDayEmpty', {
+              defaultValue: 'Nothing was recorded on this day.',
+            })}
+            actionLabel={t('historyDayEmptyCta', { defaultValue: 'Open Today' })}
+            href="/log"
+          />
         ) : (
           <ol className="space-y-2">
             {record.entries.map((e) => {
@@ -181,7 +188,10 @@ export function HistoryDayPage({ date }: Props) {
           )}
         </nav>
 
-        <Link href="/history" className="inline-block text-xs text-primary underline">
+        <Link
+          href="/history"
+          className="inline-block text-xs text-primary underline underline-offset-2"
+        >
           {t('historyDayBack', { defaultValue: 'Back to history' })}
         </Link>
       </div>

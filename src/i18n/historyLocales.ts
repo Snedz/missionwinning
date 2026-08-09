@@ -24,6 +24,8 @@ type HistoryStrings = {
   historyDayEyebrow: string;
   historyDayPosition: string;
   historyDayEmpty: string;
+  historyDayEmptyTitle: string;
+  historyDayEmptyCta: string;
   historyDayBadDate: string;
   historyDayBack: string;
   historyDayToday: string;
@@ -101,6 +103,8 @@ const en: HistoryStrings = {
   historyDayEyebrow: 'On this day',
   historyDayPosition: 'Day {{index}} of {{total}} logged',
   historyDayEmpty: 'Nothing was recorded on this day.',
+  historyDayEmptyTitle: 'Nothing logged this day',
+  historyDayEmptyCta: 'Open Today',
   historyDayBadDate: 'That is not a date. Pick a day from your history.',
   historyDayBack: 'Back to history',
   historyDayToday: 'replay today',

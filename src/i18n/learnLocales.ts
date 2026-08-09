@@ -36,6 +36,7 @@ type LearnStrings = {
   learnLockedHint: string;
   learnCourseTitle: string;
   learnCourseSubtitle: string;
+  learnCourseSubtitleBrief: string;
   learnCourseSignIn: string;
   learnCourseFetchFailed: string;
   learnCourseFetchFailedDesc: string;
@@ -87,6 +88,7 @@ const en: LearnStrings = {
   learnCourseTitle: 'Specialist courses',
   learnCourseSubtitle:
     'Premium guidebook chapters — corrective, coaching business, periodization, and more.',
+  learnCourseSubtitleBrief: 'Specialist courses when unlocked. Free paths live on Learn.',
   learnCourseSignIn: 'Sign in with your bundle email to load specialist courses.',
   learnCourseFetchFailed: 'Courses could not load',
   learnCourseFetchFailedDesc:
