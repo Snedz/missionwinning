@@ -73,7 +73,7 @@
     "@radix-ui/react-select": "^2.3.7",
     "@radix-ui/react-slot": "^1.1.2",
     "@radix-ui/react-tabs": "^1.1.21",
-    "@radix-ui/react-toast": "^1.2.6",
+    "@radix-ui/react-toast": "^1.2.23",
     "@radix-ui/react-tooltip": "^1.2.13",
     "@sentry/nextjs": "^10.63.0",
     "@serwist/next": "^9.5.11",
