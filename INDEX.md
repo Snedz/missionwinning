@@ -45,6 +45,7 @@
 | Wearables (Horizon 3) | [docs/WEARABLES.md](docs/WEARABLES.md) | Live OAuth/hubs until retention unlock |
 | Premium / conversion | [docs/FREE_BETA.md](docs/FREE_BETA.md), [docs/STRIPE_PREMIUM_SETUP.md](docs/STRIPE_PREMIUM_SETUP.md); strategy/redteam full text → mission-ops | Recreating REDTEAM/STRATEGY full memos in product git |
 | **YC / product wedge** | Product: [docs/THESIS.md](docs/THESIS.md) · [vision.md](vision.md). Full YC/STRATEGY memos: private mission-ops (stubs at [docs/YC_THESIS.md](docs/YC_THESIS.md) / [docs/STRATEGY.md](docs/STRATEGY.md)) | Pitching “everything app” as the company; recreating full war-room text in product git |
+| **Creative monopoly / Zero to One filter** | [docs/CREATIVE_MONOPOLY.md](docs/CREATIVE_MONOPOLY.md) — trait scores, contrarian secret, beachhead of 10, founder checklist | Declaring a moat we do not have; using Z21 to justify pillars/landing/social feed |
 | **Accelerator apps (Jul–Aug 2026)** | Stub [docs/ACCELERATOR_SPRINT.md](docs/ACCELERATOR_SPRINT.md); paste answers local-only — [docs/applications/README.md](docs/applications/README.md); full sprint in mission-ops | Fabricating traction; committing paste packs or full accelerator answers |
 | Journey UX (I-Day → Commissioned) | [docs/JOURNEY.md](docs/JOURNEY.md) | Build phases in [docs/PLAN.md](docs/PLAN.md) (different “phase”) |
 | **Site flow / IA (chip floorplan)** | [docs/FLOW_ARCHITECTURE.md](docs/FLOW_ARCHITECTURE.md) — dies, buses, critical path, dual pads | Landing redesigns; “everything hub”; conflating `/coach` with `/coaching` |

@@ -78,6 +78,7 @@
 | [TRACK_D_GO_LIVE.md](archive/TRACK_D_GO_LIVE.md) | Go-live verify commands (`launch-verify`, Stripe, Supabase) |
 | [POST_LAUNCH_CADENCE.md](POST_LAUNCH_CADENCE.md) | Week-4 retention wall + weekly ops |
 | **[THESIS.md](THESIS.md)** | **Start here for the idea.** What the product is on one page: three layers, the two-beat wedge, ICP, what is actually shipped vs thin, the honest moat, the open questions |
+| [CREATIVE_MONOPOLY.md](CREATIVE_MONOPOLY.md) | Zero to One filter: trait scores, contrarian secret, beachhead of 10, founder checklist (not a second roadmap) |
 | [YC_THESIS.md](YC_THESIS.md) | YC wedge: Train + Coach one-liner, competition, traction bar (apply only after gates) |
 | [EXERCISE_AS_MEDICINE.md](EXERCISE_AS_MEDICINE.md) | Evidence thesis: structured exercise vs vague advice; claim hygiene (not a depression product) |
 | [CRYPTO_RAILS_THESIS.md](CRYPTO_RAILS_THESIS.md) | Crypto = payment rail (not product); Horizon now/next/never |
