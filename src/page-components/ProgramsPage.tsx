@@ -16,10 +16,12 @@ import {
   PROGRAM_CATALOG,
   PROGRAM_EQUIP_FILTERS,
   PROGRAM_GOAL_FILTERS,
+  PROGRAMS_FREE_BETA_BULLET_KEYS,
+  programsEnFloor,
   type ProgramCatalogEntry,
 } from '@/i18n/programsLocales';
 import { getCurriculum } from '@/data/programCurricula';
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import { isFreeBeta } from '@/lib/freeBeta';
 
 export function ProgramsPage() {
@@ -28,6 +30,23 @@ export function ProgramsPage() {
   const [filterEquip, setFilterEquip] = useState<string>('All');
   const freeBeta = isFreeBeta();
 
+  /**
+   * Catalog strings live in async-hydrated packs. Without EN floors, first paint
+   * shows raw keys (`progPtBullet5`). Free beta also rewrites pay-merch bullets.
+   */
+  const catalogLine = useCallback(
+    (key: string) => {
+      if (freeBeta) {
+        const open = PROGRAMS_FREE_BETA_BULLET_KEYS[key];
+        if (open) {
+          return t(open.openBetaKey, { defaultValue: open.en });
+        }
+      }
+      return t(key, { defaultValue: programsEnFloor(key) });
+    },
+    [freeBeta, t]
+  );
+
   const filteredPrograms = PROGRAM_CATALOG.filter((prog) => {
     const goalMatch = filterGoal === 'All' || prog.goalFilter === filterGoal;
     const equipMatch = filterEquip === 'All' || prog.equipFilter === filterEquip;
@@ -35,9 +54,9 @@ export function ProgramsPage() {
   });
 
   const exportProgramPDF = (prog: ProgramCatalogEntry) => {
-    const title = t(prog.titleKey);
-    const bullets = prog.bulletKeys.map((k) => `- ${t(k)}`).join('\n');
-    const content = `${title}\n${t(prog.durationKey)} • ${t(prog.priceKey)}\n\nWhat You Get:\n${bullets}\n\n${t(prog.disclaimerKey)}\n\nMission Winning — free training platform.`;
+    const title = catalogLine(prog.titleKey);
+    const bullets = prog.bulletKeys.map((k) => `- ${catalogLine(k)}`).join('\n');
+    const content = `${title}\n${catalogLine(prog.durationKey)} • ${catalogLine(prog.priceKey)}\n\nWhat You Get:\n${bullets}\n\n${catalogLine(prog.disclaimerKey)}\n\nMission Winning — free training platform.`;
     const blob = new Blob([content], { type: 'text/plain' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
@@ -94,7 +113,7 @@ export function ProgramsPage() {
             className="min-h-[44px] tap-target"
             onClick={() => setFilterGoal(g.value)}
           >
-            {t(g.labelKey, { defaultValue: g.value })}
+            {t(g.labelKey, { defaultValue: programsEnFloor(g.labelKey) || g.value })}
           </Button>
         ))}
         <span className="text-muted-foreground self-center ml-2">
@@ -108,7 +127,7 @@ export function ProgramsPage() {
             className="min-h-[44px] tap-target"
             onClick={() => setFilterEquip(e.value)}
           >
-            {t(e.labelKey, { defaultValue: e.value })}
+            {t(e.labelKey, { defaultValue: programsEnFloor(e.labelKey) || e.value })}
           </Button>
         ))}
       </div>
@@ -138,17 +157,17 @@ export function ProgramsPage() {
             <CardHeader>
                 <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
                 <div>
-                  <CardTitle className="text-xl">{t(prog.titleKey)}</CardTitle>
+                  <CardTitle className="text-xl">{catalogLine(prog.titleKey)}</CardTitle>
                   <div className="text-primary mt-1 text-sm">
-                    {t(prog.durationKey)}
-                    {!freeBeta && <> • {t(prog.priceKey)} one-time</>}
+                    {catalogLine(prog.durationKey)}
+                    {!freeBeta && <> • {catalogLine(prog.priceKey)} one-time</>}
                   </div>
                 </div>
                 {!freeBeta && (
                 <UnlockButton
                   productId={prog.productId}
-                  price={t(prog.priceKey).replace('$', '')}
-                  title={t(prog.titleKey)}
+                  price={catalogLine(prog.priceKey).replace('$', '')}
+                  title={catalogLine(prog.titleKey)}
                   className="mt-2"
                 />
                 )}
@@ -165,7 +184,7 @@ export function ProgramsPage() {
                       {prog.bulletKeys.map((key) => (
                         <li key={key} className="flex gap-3 text-sm">
                           <Check className="h-5 w-5 text-[hsl(var(--status-ok))] flex-shrink-0 mt-0.5" />{' '}
-                          {t(key)}
+                          {catalogLine(key)}
                         </li>
                       ))}
                     </ul>
@@ -224,7 +243,7 @@ export function ProgramsPage() {
                       ? t('programsFreeNote', { defaultValue: 'Free education path' })
                       : t('programsBundleNote', { defaultValue: 'Free intro — full in Super Bundle' })}
                   </div>
-                  <p className="text-muted-foreground">{t(prog.disclaimerKey)}</p>
+                  <p className="text-muted-foreground">{catalogLine(prog.disclaimerKey)}</p>
                   <div className="flex flex-wrap gap-3">
                     <Link href="/feedback" className="text-primary hover:underline text-xs">
                       {t('programsShareFeedback', { defaultValue: 'Share feedback' })}

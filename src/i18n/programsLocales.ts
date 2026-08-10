@@ -42,6 +42,9 @@ const PROGRAMS_EN: Record<string, string> = {
   progPtBullet3: '50+ ready-to-use templates (strength, hypertrophy, fat loss, corrective)',
   progPtBullet4: 'Business basics: how to actually get and keep clients',
   progPtBullet5: 'Premium unlocks in Mission Winning (advanced programming, nutrition planner)',
+  /** Free-beta: no premium merch in education bullets (depth already open). */
+  progPtBullet5OpenBeta:
+    'Advanced programming and nutrition planner tools in the app',
   progPtBullet6: 'Certificate of Educational Achievement upon completion review',
   progPtDisclaimer:
     'This is premium education and skill development. Not a replacement for an accredited certification from an issuing body.',
@@ -75,6 +78,7 @@ const PROGRAMS_EN: Record<string, string> = {
   progBizBullet3: 'Client onboarding, retention, and results systems',
   progBizBullet4: 'Scaling to group programs, online, or your own facility',
   progBizBullet5: 'Premium business features inside Mission Winning',
+  progBizBullet5OpenBeta: 'Business tools for coaches in the app',
   progBizDisclaimer:
     'Business and programming education. Success depends on execution, market, and effort.',
   progOnlineTitle: 'Online Coaching Mastery',
@@ -243,6 +247,26 @@ export function programsStringsFor(lang: string): Record<string, string> {
 export function mergeProgramsStrings(common: Record<string, string>, lang: string): void {
   Object.assign(common, programsStringsFor(lang));
 }
+
+/** EN floors for catalog keys before async i18n hydrate — never paint raw `prog*` keys. */
+export function programsEnFloor(key: string): string {
+  return PROGRAMS_EN[key] ?? key;
+}
+
+/**
+ * Free-beta rewrites of pay-merch bullets. Keys that stay product education
+ * (e.g. “premium education” disclaimer) are not rewritten.
+ */
+export const PROGRAMS_FREE_BETA_BULLET_KEYS: Record<string, { openBetaKey: string; en: string }> = {
+  progPtBullet5: {
+    openBetaKey: 'progPtBullet5OpenBeta',
+    en: 'Advanced programming and nutrition planner tools in the app',
+  },
+  progBizBullet5: {
+    openBetaKey: 'progBizBullet5OpenBeta',
+    en: 'Business tools for coaches in the app',
+  },
+};
 
 /** Internal filter values → i18n keys for display labels. */
 export const PROGRAM_GOAL_FILTERS = [
