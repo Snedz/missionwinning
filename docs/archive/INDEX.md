@@ -33,6 +33,7 @@ When adding a doc:
 | [log/LOG-rotate-641.md](./log/LOG-rotate-641.md) | rotated oldest for `.641` www composition |
 | [log/LOG-rotate-642.md](./log/LOG-rotate-642.md) | rotated oldest for `.642` www /start |
 | [log/LOG-rotate-643.md](./log/LOG-rotate-643.md) | rotated oldest for `.643` design variants board |
+| [log/LOG-rotate-644.md](./log/LOG-rotate-644.md) | rotated oldest for `.644` three concepts from zero |
 | [log/LOG-rotate-635.md](./log/LOG-rotate-635.md) | rotated oldest for `.635` sanctions no place names |
 | [log/LOG-rotate-634.md](./log/LOG-rotate-634.md) | rotated oldest for `.634` sanctions occupied regions |
 | [log/LOG-rotate-633.md](./log/LOG-rotate-633.md) | rotated oldest for `.633` Feel Wave 9 |
