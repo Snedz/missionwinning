@@ -22,6 +22,7 @@ import {
   setKindDefaultLabel,
   setKindLabelKey,
 } from '@/lib/workout/setKind';
+import { rpeDefaultLabel, rpeLabelKey } from '@/lib/workout/rpeLabel';
 import { formatLoggedSetLine } from '@/lib/workout/activeWorkoutHelpers';
 import { cn } from '@/lib/utils';
 
@@ -138,10 +139,7 @@ export function SetLogRow({ setNumber, set, isNext, weightLabel, onRate }: Props
                     className="h-11 min-h-[44px] min-w-[44px] px-2 text-xs tap-target"
                     onClick={() => onRate(r)}
                   >
-                    {t(
-                      r === 'easy' ? 'activeRpeEasy' : r === 'med' ? 'activeRpeMed' : 'activeRpeHard',
-                      { defaultValue: r }
-                    )}
+                    {t(rpeLabelKey(r), { defaultValue: rpeDefaultLabel(r) })}
                   </Button>
                 </TooltipTrigger>
                 <TooltipContent>
@@ -150,8 +148,8 @@ export function SetLogRow({ setNumber, set, isNext, weightLabel, onRate }: Props
               </Tooltip>
             ))
           ) : (
-            <Badge variant="outline" className="text-xs capitalize">
-              {set.rpe}
+            <Badge variant="outline" className="text-xs">
+              {t(rpeLabelKey(set.rpe), { defaultValue: rpeDefaultLabel(set.rpe) })}
             </Badge>
           )}
           <Check

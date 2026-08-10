@@ -18,6 +18,7 @@ import { useTranslation } from 'react-i18next';
 import { Badge } from '@/components/ui/badge';
 import type { LoggedSet, SetKind } from '@/types';
 import { setKindBadgeClass, setKindDefaultLabel, setKindLabelKey } from '@/lib/workout/setKind';
+import { rpeDefaultLabel, rpeLabelKey } from '@/lib/workout/rpeLabel';
 import { cn } from '@/lib/utils';
 
 type Props = {
@@ -181,21 +182,16 @@ export function SetLogTable({
                               onClick={() => onRate(setIdx, r)}
                               className="min-h-[44px] min-w-[44px] border-2 border-border px-1.5 text-[11px] font-semibold hover:bg-muted tap-target"
                             >
-                              {t(
-                                r === 'easy'
-                                  ? 'activeRpeEasy'
-                                  : r === 'med'
-                                    ? 'activeRpeMed'
-                                    : 'activeRpeHard',
-                                { defaultValue: r }
-                              )}
+                              {t(rpeLabelKey(r), { defaultValue: rpeDefaultLabel(r) })}
                             </button>
                           ))}
                         </div>
                       )}
                       {completed && set.rpe && (
-                        <span className="text-[11px] capitalize text-muted-foreground">
-                          {set.rpe}
+                        <span className="text-[11px] text-muted-foreground">
+                          {t(rpeLabelKey(set.rpe), {
+                            defaultValue: rpeDefaultLabel(set.rpe),
+                          })}
                         </span>
                       )}
                       {completed && (
