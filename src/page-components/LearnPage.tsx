@@ -69,6 +69,7 @@ export function LearnPage() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const { premium } = usePremium();
+  const freeBeta = isFreeBeta();
   const startWorkout = useWorkoutStore((s) => s.startWorkout);
   const paths = useMemo(
     () => localizeLearnPaths(FREE_LEARN_PATHS, t),
@@ -117,9 +118,16 @@ export function LearnPage() {
       icon={BookOpen}
       eyebrow={t('learnEyebrow', { defaultValue: 'Learn' })}
       title={t('learnTitle', { defaultValue: 'Learn' })}
-      subtitle={t('learnSubtitleBrief', {
-        defaultValue: 'Free paths first. Guide and Bundle depth when you want them.',
-      })}
+      subtitle={
+        freeBeta
+          ? t('learnSubtitleBriefOpenBeta', {
+              defaultValue:
+                'Free paths first. Guidebook and specialist depth when you want them.',
+            })
+          : t('learnSubtitleBrief', {
+              defaultValue: 'Free paths first. Guide and Bundle depth when you want them.',
+            })
+      }
     >
         {/* Field manual: paths first — guide/premium no longer own the fold. */}
         <div id="learn-paths" className="space-y-3 scroll-mt-20">
@@ -221,7 +229,9 @@ export function LearnPage() {
         <details className="group border-2 border-border bg-card">
           <summary className="flex min-h-[44px] cursor-pointer list-none items-center gap-2 px-4 py-3 text-sm font-semibold text-foreground [&::-webkit-details-marker]:hidden">
             <BookMarked className="h-4 w-4 text-primary" aria-hidden />
-            {t('learnMoreLearn', { defaultValue: 'Guide, sample & premium' })}
+            {freeBeta
+              ? t('learnMoreLearnOpenBeta', { defaultValue: 'Guide, sample & more' })
+              : t('learnMoreLearn', { defaultValue: 'Guide, sample & premium' })}
           </summary>
           <div className="space-y-4 border-t-2 border-border p-4">
             <div>
@@ -272,7 +282,13 @@ export function LearnPage() {
             {premium ? (
               <div className="border-t-2 border-border pt-4">
                 <p className="mb-1 text-sm font-semibold">
-                  {t('learnPremiumTitle', { defaultValue: 'Premium Specialist Programs' })}
+                  {freeBeta
+                    ? t('learnPremiumTitleOpenBeta', {
+                        defaultValue: 'Specialist Programs',
+                      })
+                    : t('learnPremiumTitle', {
+                        defaultValue: 'Premium Specialist Programs',
+                      })}
                 </p>
                 <p className="mb-3 text-sm text-muted-foreground">
                   {t('learnPremiumCourseDesc', {
@@ -293,12 +309,15 @@ export function LearnPage() {
             )}
 
             <p className="text-xs text-muted-foreground">
-              {t('learnSubtitle', {
-                count: FREE_LEARN_PATHS.length,
-                defaultValue: isFreeBeta()
-                  ? `${FREE_LEARN_PATHS.length} education paths — foundations first.`
-                  : `${FREE_LEARN_PATHS.length} free education paths. Super Bundle unlocks full programs when paid depth is on.`,
-              })}
+              {freeBeta
+                ? t('learnSubtitleOpenBeta', {
+                    count: FREE_LEARN_PATHS.length,
+                    defaultValue: `${FREE_LEARN_PATHS.length} education paths — foundations first. Guidebook and specialist courses open in open beta.`,
+                  })
+                : t('learnSubtitle', {
+                    count: FREE_LEARN_PATHS.length,
+                    defaultValue: `${FREE_LEARN_PATHS.length} free education paths. Super Bundle unlocks full programs when paid depth is on.`,
+                  })}
             </p>
           </div>
         </details>

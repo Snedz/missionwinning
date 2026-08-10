@@ -16,7 +16,7 @@ One screen of truth for any AI tool or human joining cold. Read this, then [AGEN
 
 ---
 
-## Now (2026-08-10 · web `2026.07-unified.654` · Android `1.24.1`)
+## Now (2026-08-10 · web `2026.07-unified.655` · Android `1.24.1`)
 
 > The ONLY "where we are" block in the repo — [ORCHESTRATION.md](ORCHESTRATION.md) points here.
 >
@@ -292,10 +292,10 @@ One screen of truth for any AI tool or human joining cold. Read this, then [AGEN
 > | Migrations | **9 recorded pending** — [LAUNCH_RUNBOOK](docs/LAUNCH_RUNBOOK.md) §3, enforced by `src/lib/migrationLedger.test.ts`. |
 > | gitleaks | **green — and scanning for the first time.** It had never scanned anything: on a `pull_request` event the action lists the PR's commits, the job declared no `permissions:` block, and it 403'd (`pull_requests=read`) before opening a file. Fixed by a `permissions:` block (`.224` carrying `.255`). It scans **only the PR's own commits**, so commit `8ea3527a`'s real Solana treasury address — scrubbed from the working file, still in history — is out of its scope. That finding stands, deliberately not allowlisted; it was never what made this check red. |
 
+- **`.655`:** (`2026.07-unified.655`) **Learn free-beta mute** — Learn shell never pitches Super Bundle / premium pay chrome in open beta.
 - **`.654`:** (`2026.07-unified.654`) **Press + Vision free-beta mute** — press kit + vision six-pillars never pitch Super Bundle / premium depth in open beta.
 - **`.653`:** (`2026.07-unified.653`) **Legal English floors** — Regions/Service-Terms never paint raw info* keys on first paint.
 - **`.652`:** (`2026.07-unified.652`) **About free-beta mute** — company page never pitch Super Bundle in open beta.
-- **`.651`:** (`2026.07-unified.651`) **Score foot free-beta mute** — pillar score foot never paints Super Bundle in open beta.
 
 
 

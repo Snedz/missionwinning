@@ -5,13 +5,19 @@ import { learnContentStringsFor } from './learnContentLocales';
 type LearnStrings = {
   learnTitle: string;
   learnSubtitle: string;
+  /** Free-beta: no Super Bundle / premium pay pitch (pack would override defaultValue). */
+  learnSubtitleOpenBeta: string;
   learnSubtitleBrief: string;
+  learnSubtitleBriefOpenBeta: string;
   learnMoreLearn: string;
+  learnMoreLearnOpenBeta: string;
   learnDone: string;
   learnMarkComplete: string;
   learnSampleTitle: string;
   learnSampleBtn: string;
   learnPremiumTitle: string;
+  /** Free-beta: specialist depth unlocked — no "Premium" merchandising word. */
+  learnPremiumTitleOpenBeta: string;
   learnPremiumDesc: string;
   learnPremiumBtn: string;
   learnEyebrow: string;
@@ -52,13 +58,18 @@ const en: LearnStrings = {
   learnTitle: 'Learn & Master',
   learnSubtitle:
     '{{count}} free education paths — evidence-based foundations plus specialist intros. Premium unlocks full programs (Super Bundle).',
+  learnSubtitleOpenBeta:
+    '{{count}} education paths — foundations first. Guidebook and specialist courses open in open beta.',
   learnSubtitleBrief: 'Free paths first. Guide and Bundle depth when you want them.',
+  learnSubtitleBriefOpenBeta: 'Free paths first. Guidebook and specialist depth when you want them.',
   learnMoreLearn: 'Guide, sample & premium',
+  learnMoreLearnOpenBeta: 'Guide, sample & more',
   learnDone: '✓ Done',
   learnMarkComplete: 'Mark complete',
   learnSampleTitle: 'Try it — free sample workout',
   learnSampleBtn: 'Start Bodyweight Sample →',
   learnPremiumTitle: 'Premium Specialist Programs',
+  learnPremiumTitleOpenBeta: 'Specialist Programs',
   learnPremiumDesc:
     'Full PT+Nutrition, Bodybuilding, Corrective, Business, Coaching, Conditioning.',
   learnPremiumBtn: 'Learn & Master Bundle (All Programs)',
