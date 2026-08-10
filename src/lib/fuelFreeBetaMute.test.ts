@@ -20,6 +20,12 @@ test('FuelRecipesPanel free-beta uses open-beta empty/error recipe keys', () => 
   assert.match(src, /isFreeBeta|freeBeta/);
 });
 
+test('NutritionPage toast free-beta uses open-beta fetch-failed key', () => {
+  const src = readFileSync(join(root, 'src/page-components/NutritionPage.tsx'), 'utf8');
+  assert.match(src, /fuelPremiumFetchFailedOpenBeta/);
+  assert.match(src, /isFreeBeta/);
+});
+
 test('fuelLocales EN open-beta recipe strings omit premium merch', () => {
   const src = readFileSync(join(root, 'src/i18n/fuelLocales.ts'), 'utf8');
   for (const key of [

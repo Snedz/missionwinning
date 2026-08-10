@@ -16,7 +16,7 @@ One screen of truth for any AI tool or human joining cold. Read this, then [AGEN
 
 ---
 
-## Now (2026-08-10 · web `2026.07-unified.661` · Android `1.24.1`)
+## Now (2026-08-10 · web `2026.07-unified.662` · Android `1.24.1`)
 
 > The ONLY "where we are" block in the repo — [ORCHESTRATION.md](ORCHESTRATION.md) points here.
 >
@@ -292,10 +292,10 @@ One screen of truth for any AI tool or human joining cold. Read this, then [AGEN
 > | Migrations | **9 recorded pending** — [LAUNCH_RUNBOOK](docs/LAUNCH_RUNBOOK.md) §3, enforced by `src/lib/migrationLedger.test.ts`. |
 > | gitleaks | **green — and scanning for the first time.** It had never scanned anything: on a `pull_request` event the action lists the PR's commits, the job declared no `permissions:` block, and it 403'd (`pull_requests=read`) before opening a file. Fixed by a `permissions:` block (`.224` carrying `.255`). It scans **only the PR's own commits**, so commit `8ea3527a`'s real Solana treasury address — scrubbed from the working file, still in history — is out of its scope. That finding stands, deliberately not allowlisted; it was never what made this check red. |
 
+- **`.662`:** (`2026.07-unified.662`) **Fuel toast free-beta mute** — recipe fetch toast never says “premium” under open beta.
 - **`.661`:** (`2026.07-unified.661`) **Move + Mind free-beta empty mute** — never “premium” fetch/offline chrome under open beta.
 - **`.660`:** (`2026.07-unified.660`) **Fuel free-beta recipe empty mute** — Fuel never paints “premium recipes” empty/offline under open beta.
 - **`.659`:** (`2026.07-unified.659`) **Programs catalog floors + free-beta bullets** — never raw prog* keys; no Premium unlocks merch in open beta.
-- **`.658`:** (`2026.07-unified.658`) **Landing FAQ JSON-LD free-beta mute** — landing FAQ schema never pitches Super Bundle in open beta.
 
 
 

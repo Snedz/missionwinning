@@ -197,7 +197,13 @@ export function NutritionPage() {
         setPremiumRecipes([]);
         setPremiumFetchError(true);
         toast({
-          title: t('fuelPremiumFetchFailed', { defaultValue: 'Could not load premium recipes' }),
+          title: isFreeBeta()
+            ? t('fuelPremiumFetchFailedOpenBeta', {
+                defaultValue: 'Could not load extra recipes',
+              })
+            : t('fuelPremiumFetchFailed', {
+                defaultValue: 'Could not load premium recipes',
+              }),
           description: t('fuelPremiumFetchFailedDesc', {
             defaultValue: 'Free recipes still work. Check your connection and try again.',
           }),
