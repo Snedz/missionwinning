@@ -45,6 +45,8 @@ type MoveStrings = {
   moveSubtitleDepthBeta: string;
   moveSubtitleDepthPaid: string;
   moveSubtitleBrief: string;
+  /** Free-beta: no premium pay teaser on the shell (pack overrides defaultValue). */
+  moveSubtitleBriefOpenBeta: string;
 };
 
 const en: MoveStrings = {
@@ -82,6 +84,8 @@ const en: MoveStrings = {
   moveSubtitleDepthPaid:
     '{{free}} free flows · Super Bundle adds {{premium}} longer recovery flows.',
   moveSubtitleBrief: 'Pick a free flow. Timers and bodyweight — premium later if you want.',
+  moveSubtitleBriefOpenBeta:
+    'Pick a free flow. Timers and bodyweight — recovery depth open in open beta.',
 };
 
 const es: MoveStrings = {

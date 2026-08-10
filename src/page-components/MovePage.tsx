@@ -30,6 +30,7 @@ import {
   type MoveCollectionId,
 } from '@/lib/move/filterFlows';
 import { cn } from '@/lib/utils';
+import { isFreeBeta } from '@/lib/freeBeta';
 
 export function MovePage() {
   const { t } = useTranslation();
@@ -37,6 +38,7 @@ export function MovePage() {
   const { toast } = useToast();
   const searchParams = useSearchParams();
   const { premium, loading: premiumLoading } = usePremium();
+  const freeBeta = isFreeBeta();
   const [premiumFlows, setPremiumFlows] = useState<MobilityFlow[]>([]);
   const [activeFlowId, setActiveFlowId] = useState<string | null>(null);
   const [refresh, setRefresh] = useState(0);
@@ -172,9 +174,17 @@ export function MovePage() {
       icon={Wind}
       eyebrow={t('moveEyebrow', { defaultValue: 'Move' })}
       title={t('moveTitle', { defaultValue: 'Mobility' })}
-      subtitle={t('moveSubtitleBrief', {
-        defaultValue: 'Pick a free flow. Timers and bodyweight — premium later if you want.',
-      })}
+      subtitle={
+        freeBeta
+          ? t('moveSubtitleBriefOpenBeta', {
+              defaultValue:
+                'Pick a free flow. Timers and bodyweight — recovery depth open in open beta.',
+            })
+          : t('moveSubtitleBrief', {
+              defaultValue:
+                'Pick a free flow. Timers and bodyweight — premium later if you want.',
+            })
+      }
     >
       <div
         id="move-flows"
