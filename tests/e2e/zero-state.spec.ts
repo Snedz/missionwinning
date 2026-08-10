@@ -93,7 +93,11 @@ const RED_ACTION_CAP: Record<string, { cap: number; why: string }> = {
   // Just Go variant, so `/log` and `/active` genuinely paint no red here. That is
   // a property of *this* seeded state, which is the point of pinning it.
   '/log': { cap: 0, why: 'Docked hero is the grey Just Go variant before any data exists.' },
-  '/active': { cap: 0, why: 'Empty shell offers Today/Builder as outline routes.' },
+  '/active': {
+    cap: 0,
+    why:
+      'Docked poster-field Start inverts the nested button to paper (same as Today hero); red is the field. EmptyState has no CTA; Today/Builder stay outline. Count stays 0 by design.',
+  },
   '/history': { cap: 0, why: 'Clean.' },
   '/benchmarks': { cap: 0, why: 'Clean after the EmptyState + starters recut.' },
   '/leaderboard': {

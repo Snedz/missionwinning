@@ -63,7 +63,8 @@ Review on a 390×844 phone viewport first (the Playwright target); desktop secon
 
 | Date | Reviewer | Flows | Issues filed |
 |------|----------|-------|--------------|
-| 2026-08-09 | Agent (CX/UX/UI hero walk · .637) | Welcome→Active→Victory→Today→Coach; reentry; zero | **S1 fixed:** raw i18n on readiness Today (focus / body labels / coach line). Pass: cold set ≤4 taps; Victory one NEXT; reentry no shame; First Steps advances after finish. Residual S2: empty Active outline Start (EmptyState design). |
+| 2026-08-09 | Agent (empty Active dock · .638) | `/active` zero | Closed `.637` S2: EmptyState invite-only; docked poster-field Start; Today/Builder secondary. |
+| 2026-08-09 | Agent (CX/UX/UI hero walk · .637) | Welcome→Active→Victory→Today→Coach; reentry; zero | **S1 fixed:** raw i18n on readiness Today. Residual empty Active Start → closed in `.638`. |
 | 2026-08-09 | Agent (Feel Wave 9 · .633) | Builder | Step rail 44px; Blank/Start red; Save outline. |
 | 2026-08-09 | Agent (Feel Wave 8 · .632) | Beta, private gate, First Steps | Dogfood residual: bootstrap keys, gate taps, quiet dismiss. |
 | 2026-08-09 | Agent (Feel Wave 7 · .631) | Landing FAQ, About, Vision, Library, Press | Public residual display type + 44px taps. |

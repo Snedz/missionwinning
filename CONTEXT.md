@@ -16,7 +16,7 @@ One screen of truth for any AI tool or human joining cold. Read this, then [AGEN
 
 ---
 
-## Now (2026-08-09 · web `2026.07-unified.637` · Android `1.24.1`)
+## Now (2026-08-09 · web `2026.07-unified.638` · Android `1.24.1`)
 
 > The ONLY "where we are" block in the repo — [ORCHESTRATION.md](ORCHESTRATION.md) points here.
 >
@@ -292,8 +292,8 @@ One screen of truth for any AI tool or human joining cold. Read this, then [AGEN
 > | Migrations | **9 recorded pending** — [LAUNCH_RUNBOOK](docs/LAUNCH_RUNBOOK.md) §3, enforced by `src/lib/migrationLedger.test.ts`. |
 > | gitleaks | **green — and scanning for the first time.** It had never scanned anything: on a `pull_request` event the action lists the PR's commits, the job declared no `permissions:` block, and it 403'd (`pull_requests=read`) before opening a file. Fixed by a `permissions:` block (`.224` carrying `.255`). It scans **only the PR's own commits**, so commit `8ea3527a`'s real Solana treasury address — scrubbed from the working file, still in history — is out of its scope. That finding stands, deliberately not allowlisted; it was never what made this check red. |
 
+- **`.638`:** (`2026.07-unified.638`) **Empty Active dock** — poster-field Start under the thumb; EmptyState invite-only. Closes `.637` CX residual S2.
 - **`.637`:** (`2026.07-unified.637`) **CX hero walk** — readiness Today no longer paints raw i18n (`todayReadinessPrime` / body labels / `coachInsightSteady`); catalog defaults + `focusLine` for coach line. [DESIGN_REVIEW.md](docs/DESIGN_REVIEW.md).
-- **`.624`:** (`2026.07-unified.624`) **You Field manual** — Athlete identity hero-first; edit call sign under details; 0 red on `/profile`.
 - **`.625`:** (`2026.07-unified.625`) **Account Field manual** — primary stack open; More settings disclosure; owner tools grouped. Reachable: referral, feedback, billing.
 - **`.626`:** (`2026.07-unified.626`) **Feel Wave 2** — Fuel log-first; History heatmaps folded; Coach depth under disclosure. Field manual A continues.
 - **`.627`:** (`2026.07-unified.627`) **Feel Wave 3** — Learn paths-first; Move/Mind free-first; Library/Builder/Benchmarks/Leaderboard brief chrome; military tests folded. Field manual A complete across shell.

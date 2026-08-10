@@ -25,6 +25,7 @@ When adding a doc:
 
 | File | Absorbed by / note |
 |------|---------------------|
+| [log/LOG-rotate-638.md](./log/LOG-rotate-638.md) | rotated oldest for `.638` empty Active dock |
 | [log/LOG-rotate-637.md](./log/LOG-rotate-637.md) | rotated oldest for `.637` CX Today i18n |
 | [log/LOG-rotate-636.md](./log/LOG-rotate-636.md) | rotated oldest for `.636` global legal posture |
 | [log/LOG-rotate-635.md](./log/LOG-rotate-635.md) | rotated oldest for `.635` sanctions no place names |

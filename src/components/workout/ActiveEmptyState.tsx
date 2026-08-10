@@ -1,10 +1,11 @@
 'use client';
 
 import { isOfflineInstallable } from '@/lib/offlineCapability';
-import { Dumbbell, Timer } from 'lucide-react';
+import { ChevronRight, Dumbbell, Timer } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { Button } from '@/components/ui/button';
 import { EmptyState } from '@/components/ui/EmptyState';
+import { ScreenDock } from '@/components/layout/ScreenDock';
 import { PillarPageHeader } from '@/components/layout/PillarPageHeader';
 import { WorkoutVictorySheet } from '@/components/workout/WorkoutVictorySheet';
 import type { Debrief } from '@/lib/coach/debrief';
@@ -81,6 +82,11 @@ export function ActiveEmptyState({
               })
         }
       />
+      {/*
+        Invite only — no outline Start in the card. `.637` CX residual: empty
+        Active had no red primary (EmptyState deliberately demotes CTAs). The
+        one start action lives in the dock below, same as Today's hero.
+      */}
       <EmptyState
         icon={Timer}
         title={
@@ -98,13 +104,6 @@ export function ActiveEmptyState({
                 defaultValue: 'Reading the last workout saved on this device.',
               })
         }
-        actionLabel={
-          hydrated
-            ? t('activeStartWorkout', { defaultValue: 'Start workout' })
-            : t('activeLoadingSession', { defaultValue: 'Restoring session…' })
-        }
-        onAction={hydrated ? onStart : undefined}
-        actionDisabled={!hydrated}
       />
       {/* Flow-9 / K4 — one secondary hierarchy: Today outline, Builder quiet. */}
       <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-sm">
@@ -118,6 +117,41 @@ export function ActiveEmptyState({
           {t('activeGoBuilder', { defaultValue: 'Builder' })}
         </a>
       </div>
+      {/*
+        Compact dock owns the one red Start. Desktop `ScreenDock` renders in
+        place (same as Today), so the poster field still leads under the invite.
+      */}
+      <ScreenDock>
+        <div className="poster-field px-4 pb-4 pt-3.5">
+          <p className="poster-kicker mb-2 text-[11px] font-semibold uppercase tracking-[0.12em]">
+            {t('activeEyebrow', { defaultValue: 'Train' })}
+          </p>
+          <p className="poster-sub mb-2.5 line-clamp-1 text-sm leading-relaxed">
+            {hydrated
+              ? t('activeNoWorkoutDesc', {
+                  defaultValue:
+                    'Start here, or open Today for the session already planned for you.',
+                })
+              : t('activeLoadingSessionDesc', {
+                  defaultValue: 'Reading the last workout saved on this device.',
+                })}
+          </p>
+          <button
+            type="button"
+            onClick={onStart}
+            disabled={!hydrated}
+            className="primary-action min-h-[52px] w-full text-[19px] disabled:opacity-60"
+            aria-busy={hydrated ? undefined : true}
+          >
+            <span className="flex-1 text-start">
+              {hydrated
+                ? t('activeStartWorkout', { defaultValue: 'Start workout' })
+                : t('activeLoadingSession', { defaultValue: 'Restoring session…' })}
+            </span>
+            <ChevronRight className="ms-auto h-5 w-5 shrink-0" aria-hidden />
+          </button>
+        </div>
+      </ScreenDock>
       <WorkoutVictorySheet
         open={victoryOpen}
         summary={victorySummary}
