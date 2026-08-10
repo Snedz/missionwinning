@@ -16,7 +16,7 @@ One screen of truth for any AI tool or human joining cold. Read this, then [AGEN
 
 ---
 
-## Now (2026-08-09 · web `2026.07-unified.639` · Android `1.24.1`)
+## Now (2026-08-09 · web `2026.07-unified.640` · Android `1.24.1`)
 
 > The ONLY "where we are" block in the repo — [ORCHESTRATION.md](ORCHESTRATION.md) points here.
 >
@@ -292,9 +292,10 @@ One screen of truth for any AI tool or human joining cold. Read this, then [AGEN
 > | Migrations | **9 recorded pending** — [LAUNCH_RUNBOOK](docs/LAUNCH_RUNBOOK.md) §3, enforced by `src/lib/migrationLedger.test.ts`. |
 > | gitleaks | **green — and scanning for the first time.** It had never scanned anything: on a `pull_request` event the action lists the PR's commits, the job declared no `permissions:` block, and it 403'd (`pull_requests=read`) before opening a file. Fixed by a `permissions:` block (`.224` carrying `.255`). It scans **only the PR's own commits**, so commit `8ea3527a`'s real Solana treasury address — scrubbed from the working file, still in history — is out of its scope. That finding stands, deliberately not allowlisted; it was never what made this check red. |
 
-- **`.639`:** (`2026.07-unified.639`) **Migration founder pack** — [docs/MIGRATION_FOUNDER_PACK.md](docs/MIGRATION_FOUNDER_PACK.md) P1–P10 + week-4 proof; Move free-beta subtitle guard. Apply pack before trusting invite ledger / week-4.
-- **`.638`:** (`2026.07-unified.638`) **Empty Active dock** — poster-field Start under the thumb; EmptyState invite-only. Closes `.637` CX residual S2.
-- **`.637`:** (`2026.07-unified.637`) **CX hero walk** — readiness Today no longer paints raw i18n; catalog defaults + `focusLine` for coach line.
+- **`.640`:** (`2026.07-unified.640`) **Active empty Start** — Just Go + re-entry dose when history exists (not blank board after a gap). Free-beta Train tab excellence.
+- **`.639`:** (`2026.07-unified.639`) **Migration founder pack** — [docs/MIGRATION_FOUNDER_PACK.md](docs/MIGRATION_FOUNDER_PACK.md) P1–P10 + week-4 proof; Move free-beta subtitle guard.
+- **`.638`:** (`2026.07-unified.638`) **Empty Active dock** — poster-field Start under the thumb; EmptyState invite-only.
+
 - **`.626`:** (`2026.07-unified.626`) **Feel Wave 2** — Fuel log-first; History heatmaps folded; Coach depth under disclosure. Field manual A continues.
 - **`.627`:** (`2026.07-unified.627`) **Feel Wave 3** — Learn paths-first; Move/Mind free-first; Library/Builder/Benchmarks/Leaderboard brief chrome; military tests folded. Field manual A complete across shell.
 - **`.628`:** (`2026.07-unified.628`) **Feel Wave 4** — Track log-first; Assessments/Calculators/Guidebook/Programs toolkit residual. Field manual A complete on More toolkit.

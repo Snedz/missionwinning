@@ -84,6 +84,11 @@ import {
 import { prefersReducedMotion } from '@/lib/motion';
 import { shouldScrollAfterRestEnds } from '@/lib/workout/restTimer';
 import { useLocaleFormat } from '@/hooks/useLocaleFormat';
+import { computeReentry } from '@/lib/reentry';
+import { resolveActiveEmptyStart } from '@/lib/workout/resolveActiveEmptyStart';
+import { getRecommendedFocus, computeReadiness } from '@/lib/score';
+import { loadCoachTodayOptional } from '@/lib/coach/loadCoachTodayOptional';
+import { track } from '@/lib/analytics';
 
 export function ActiveWorkoutPage() {
   const router = useRouter();
@@ -504,11 +509,48 @@ export function ActiveWorkoutPage() {
     router.push(activePostSessionPath('history'));
   };
 
+  const handleEmptyStart = async () => {
+    /*
+     * Free-beta excellence: Train tab Start should not dump a returning athlete
+     * into a blank board after a gap. Seed Just Go (coach day when present) and
+     * apply re-entry dose — same rules as Today's primary CTA. Cold devices still
+     * get freestyle empty.
+     */
+    const equipment = readRaw(STORAGE_KEYS.equipment) || 'bodyweight';
+    const readiness = computeReadiness(workoutHistory);
+    const focus = getRecommendedFocus(readiness);
+    const coachToday = await loadCoachTodayOptional();
+    const start = resolveActiveEmptyStart({
+      history: workoutHistory,
+      units,
+      equipment,
+      focus,
+      readiness,
+      coachToday,
+    });
+    if (start.kind === 'just_go') {
+      startWorkout(start.name, start.exercises);
+      track('just_go_started', {
+        source: start.source,
+        focus: focus.group,
+        doseScale: start.doseScale,
+        from: 'active_empty',
+      });
+      return;
+    }
+    startEmptyWorkout();
+  };
+
+  const reentryHint = computeReentry(workoutHistory, Date.now());
+
   if (!activeWorkout) {
     return (
       <ActiveEmptyState
-        onStart={() => startEmptyWorkout()}
+        onStart={() => {
+          void handleEmptyStart();
+        }}
         hydrated={hasHydrated}
+        reentryDoseScale={reentryHint.show ? reentryHint.doseScale : undefined}
         victoryOpen={victoryOpen}
         victorySummary={victorySummary}
         onVictoryOpenChange={setVictoryOpen}

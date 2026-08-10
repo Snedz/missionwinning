@@ -15,6 +15,11 @@ type Props = {
   onStart: () => void;
   /** When false, Start is disabled until Zustand persist rehydrates. */
   hydrated?: boolean;
+  /**
+   * Re-entry dose from history gap (&lt; 1 when returning after a lapse).
+   * Dock copy names the easier first session back.
+   */
+  reentryDoseScale?: number;
   victoryOpen: boolean;
   victorySummary: WorkoutVictorySummary | null;
   onVictoryOpenChange: (open: boolean) => void;
@@ -31,6 +36,7 @@ type Props = {
 export function ActiveEmptyState({
   onStart,
   hydrated = true,
+  reentryDoseScale,
   victoryOpen,
   victorySummary,
   onVictoryOpenChange,
@@ -41,6 +47,8 @@ export function ActiveEmptyState({
   onViewHistory,
 }: Props) {
   const { t } = useTranslation();
+  const easedBack =
+    typeof reentryDoseScale === 'number' && reentryDoseScale > 0 && reentryDoseScale < 1;
 
   return (
     /*
@@ -127,14 +135,19 @@ export function ActiveEmptyState({
             {t('activeEyebrow', { defaultValue: 'Train' })}
           </p>
           <p className="poster-sub mb-2.5 line-clamp-1 text-sm leading-relaxed">
-            {hydrated
-              ? t('activeNoWorkoutDesc', {
-                  defaultValue:
-                    'Start here, or open Today for the session already planned for you.',
-                })
-              : t('activeLoadingSessionDesc', {
+            {!hydrated
+              ? t('activeLoadingSessionDesc', {
                   defaultValue: 'Reading the last workout saved on this device.',
-                })}
+                })
+              : easedBack
+                ? t('activeReentryStartDesc', {
+                    defaultValue:
+                      'Smaller first session back — finishable, then the week rebuilds.',
+                  })
+                : t('activeNoWorkoutDesc', {
+                    defaultValue:
+                      'Start here, or open Today for the session already planned for you.',
+                  })}
           </p>
           <button
             type="button"
@@ -144,9 +157,11 @@ export function ActiveEmptyState({
             aria-busy={hydrated ? undefined : true}
           >
             <span className="flex-1 text-start">
-              {hydrated
-                ? t('activeStartWorkout', { defaultValue: 'Start workout' })
-                : t('activeLoadingSession', { defaultValue: 'Restoring session…' })}
+              {!hydrated
+                ? t('activeLoadingSession', { defaultValue: 'Restoring session…' })
+                : easedBack
+                  ? t('activeReentryStart', { defaultValue: 'Start easier session' })
+                  : t('activeStartWorkout', { defaultValue: 'Start workout' })}
             </span>
             <ChevronRight className="ms-auto h-5 w-5 shrink-0" aria-hidden />
           </button>
