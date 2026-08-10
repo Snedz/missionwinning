@@ -7,6 +7,7 @@
 import { useTranslation } from 'react-i18next';
 import { Shield } from 'lucide-react';
 import { InfoPageShell, InfoSection } from '@/components/layout/InfoPageShell';
+import { infoEnFloor } from '@/i18n/infoEnFloor';
 import { PRIVACY_DISPLAY_DATE } from '@/lib/privacyConsent';
 
 const PRIVACY_SECTIONS = [
@@ -99,7 +100,7 @@ export function PrivacyPage() {
 
   const jumpLinks = PRIVACY_SECTIONS.map((s) => ({
     id: s.id,
-    label: t(s.key, { defaultValue: s.key }),
+    label: t(s.key, { defaultValue: infoEnFloor(s.key) }),
   }));
 
   return (
@@ -115,17 +116,17 @@ export function PrivacyPage() {
         <InfoSection
           key={section.id}
           id={section.id}
-          title={t(section.key, { defaultValue: section.key })}
+          title={t(section.key, { defaultValue: infoEnFloor(section.key) })}
         >
           {'listKeys' in section ? (
             <ul className="list-disc pl-5 space-y-2 text-muted-foreground">
               {section.listKeys.map((liKey) => (
-                <li key={liKey}>{t(liKey, { defaultValue: liKey })}</li>
+                <li key={liKey}>{t(liKey, { defaultValue: infoEnFloor(liKey) })}</li>
               ))}
             </ul>
           ) : (
             <p className="text-muted-foreground">
-              {t(section.bodyKey, { defaultValue: section.bodyKey })}
+              {t(section.bodyKey, { defaultValue: infoEnFloor(section.bodyKey) })}
               {section.id === 'regions' && (
                 <span className="mt-2 block">
                   <a href="/regions" className="text-primary underline-offset-2 hover:underline">

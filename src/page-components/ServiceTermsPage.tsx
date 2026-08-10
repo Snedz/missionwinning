@@ -7,6 +7,7 @@ import Link from 'next/link';
 import { useTranslation } from 'react-i18next';
 import { FileStack } from 'lucide-react';
 import { InfoPageShell, InfoSection } from '@/components/layout/InfoPageShell';
+import { infoEnFloor } from '@/i18n/infoEnFloor';
 
 const SECTIONS = [
   { id: 'scope', key: 'infoServiceScope', bodyKey: 'infoServiceScopeBody' },
@@ -23,7 +24,7 @@ export function ServiceTermsPage() {
   const { t } = useTranslation();
   const jumpLinks = SECTIONS.map((s) => ({
     id: s.id,
-    label: t(s.key, { defaultValue: s.key }),
+    label: t(s.key, { defaultValue: infoEnFloor(s.key) }),
   }));
 
   return (
@@ -43,8 +44,8 @@ export function ServiceTermsPage() {
       </p>
 
       {SECTIONS.map((section) => (
-        <InfoSection key={section.id} id={section.id} title={t(section.key, { defaultValue: section.key })}>
-          <p className="text-muted-foreground">{t(section.bodyKey, { defaultValue: section.bodyKey })}</p>
+        <InfoSection key={section.id} id={section.id} title={t(section.key, { defaultValue: infoEnFloor(section.key) })}>
+          <p className="text-muted-foreground">{t(section.bodyKey, { defaultValue: infoEnFloor(section.bodyKey) })}</p>
           {section.id === 'super-bundle' && (
             <p className="mt-2">
               <Link href="/refunds" className="text-primary hover:underline text-sm">

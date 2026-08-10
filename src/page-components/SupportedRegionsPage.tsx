@@ -8,6 +8,7 @@ import Link from 'next/link';
 import { useTranslation } from 'react-i18next';
 import { Globe2 } from 'lucide-react';
 import { InfoPageShell, InfoSection } from '@/components/layout/InfoPageShell';
+import { infoEnFloor } from '@/i18n/infoEnFloor';
 import {
   EUROPE_UNSUPPORTED_ISO2,
   EXTRA_UNSUPPORTED_ISO2,
@@ -35,7 +36,7 @@ export function SupportedRegionsPage() {
   const { t } = useTranslation();
   const jumpLinks = SECTIONS.map((s) => ({
     id: s.id,
-    label: t(s.key, { defaultValue: s.key }),
+    label: t(s.key, { defaultValue: infoEnFloor(s.key) }),
   }));
 
   const europeCodes = sortedCodes(EUROPE_UNSUPPORTED_ISO2);
@@ -57,8 +58,8 @@ export function SupportedRegionsPage() {
       </p>
 
       {SECTIONS.map((section) => (
-        <InfoSection key={section.id} id={section.id} title={t(section.key, { defaultValue: section.key })}>
-          <p className="text-muted-foreground">{t(section.bodyKey, { defaultValue: section.bodyKey })}</p>
+        <InfoSection key={section.id} id={section.id} title={t(section.key, { defaultValue: infoEnFloor(section.key) })}>
+          <p className="text-muted-foreground">{t(section.bodyKey, { defaultValue: infoEnFloor(section.bodyKey) })}</p>
           {section.id === 'not-supported' && (
             <div className="mt-3 space-y-3 text-xs text-muted-foreground font-mono break-words">
               <p>

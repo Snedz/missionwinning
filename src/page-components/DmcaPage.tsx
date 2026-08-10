@@ -8,6 +8,7 @@ import Link from 'next/link';
 import { useTranslation } from 'react-i18next';
 import { Copyright } from 'lucide-react';
 import { InfoPageShell, InfoSection } from '@/components/layout/InfoPageShell';
+import { infoEnFloor } from '@/i18n/infoEnFloor';
 
 const DMCA_NOTICE_LIS = [
   'infoDmcaNoticeLi1',
@@ -58,7 +59,7 @@ export function DmcaPage() {
       >
         <ul className="list-disc pl-5 space-y-2 text-muted-foreground">
           {DMCA_NOTICE_LIS.map((liKey) => (
-            <li key={liKey}>{t(liKey, { defaultValue: liKey })}</li>
+            <li key={liKey}>{t(liKey, { defaultValue: infoEnFloor(liKey) })}</li>
           ))}
         </ul>
       </InfoSection>

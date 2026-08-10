@@ -8,6 +8,7 @@ import Link from 'next/link';
 import { useTranslation } from 'react-i18next';
 import { Scale } from 'lucide-react';
 import { InfoPageShell, InfoSection } from '@/components/layout/InfoPageShell';
+import { infoEnFloor } from '@/i18n/infoEnFloor';
 
 const TERM_SECTIONS = [
   { id: 'agreement', key: 'infoTermsAgreement', bodyKey: 'infoTermsAgreementBody' },
@@ -42,7 +43,7 @@ export function TermsPage() {
 
   const jumpLinks = TERM_SECTIONS.map((s) => ({
     id: s.id,
-    label: t(s.key, { defaultValue: s.key }),
+    label: t(s.key, { defaultValue: infoEnFloor(s.key) }),
   }));
 
   return (
@@ -58,18 +59,18 @@ export function TermsPage() {
         <InfoSection
           key={section.id}
           id={section.id}
-          title={t(section.key, { defaultValue: section.key })}
+          title={t(section.key, { defaultValue: infoEnFloor(section.key) })}
         >
           {'listKeys' in section ? (
             <ul className="list-disc pl-5 space-y-2 text-muted-foreground">
               {section.listKeys.map((liKey) => (
-                <li key={liKey}>{t(liKey, { defaultValue: liKey })}</li>
+                <li key={liKey}>{t(liKey, { defaultValue: infoEnFloor(liKey) })}</li>
               ))}
             </ul>
           ) : (
             <>
               <p className="text-muted-foreground">
-                {t(section.bodyKey, { defaultValue: section.bodyKey })}
+                {t(section.bodyKey, { defaultValue: infoEnFloor(section.bodyKey) })}
               </p>
               {section.id === 'dmca' && (
                 <p className="mt-2">
