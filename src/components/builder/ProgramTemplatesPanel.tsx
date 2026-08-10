@@ -231,12 +231,23 @@ export function ProgramTemplatesPanel({
         >
           <p>
             {typeof navigator !== 'undefined' && !navigator.onLine
-              ? t('builderProOffline', {
-                  defaultValue: 'Offline — premium program list will load when you reconnect.',
-                })
-              : t('builderProLoadFail', {
-                  defaultValue: 'Could not load premium programs. Try again.',
-                })}
+              ? isFreeBeta()
+                ? t('builderProOfflineOpenBeta', {
+                    defaultValue:
+                      'Offline — pro program list will load when you reconnect. Free templates still work.',
+                  })
+                : t('builderProOffline', {
+                    defaultValue:
+                      'Offline — premium program list will load when you reconnect.',
+                  })
+              : isFreeBeta()
+                ? t('builderProLoadFailOpenBeta', {
+                    defaultValue:
+                      'Could not load pro programs. Try again — free templates still work.',
+                  })
+                : t('builderProLoadFail', {
+                    defaultValue: 'Could not load premium programs. Try again.',
+                  })}
           </p>
           <button type="button"
             className="text-primary text-sm underline min-h-[44px]"

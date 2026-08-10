@@ -82,6 +82,9 @@ type BuilderStrings = {
   builderSessionCount: string;
   builderProOffline: string;
   builderProLoadFail: string;
+  /** Free-beta: depth unlocked — no “premium” load/offline merch. */
+  builderProOfflineOpenBeta: string;
+  builderProLoadFailOpenBeta: string;
   builderTemplateSearch: string;
   builderTemplateSearchCount: string;
   builderProFreeBeta: string;
@@ -173,6 +176,9 @@ const en: BuilderStrings = {
   builderSessionCount: '{{count}} sessions',
   builderProOffline: 'Offline — premium program list will load when you reconnect.',
   builderProLoadFail: 'Could not load premium programs. Try again.',
+  builderProOfflineOpenBeta:
+    'Offline — pro program list will load when you reconnect. Free templates still work.',
+  builderProLoadFailOpenBeta: 'Could not load pro programs. Try again — free templates still work.',
   builderTemplateSearch: 'Search programs or sessions…',
   builderTemplateSearchCount: '{{count}} matching',
   builderProFreeBeta: 'Pro cycles are paused during open beta — free templates stay available.',

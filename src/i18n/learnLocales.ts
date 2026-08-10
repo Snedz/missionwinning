@@ -31,6 +31,8 @@ type LearnStrings = {
   learnPremiumCourseDesc: string;
   learnOpenCourses: string;
   learnCourseEmpty: string;
+  /** Free-beta: depth unlocked — no “premium” empty merch. */
+  learnCourseEmptyOpenBeta: string;
   learnCourseNav: string;
   learnBack: string;
   learnCourseProgress: string;
@@ -85,6 +87,7 @@ const en: LearnStrings = {
   learnPremiumCourseDesc: 'Multi-chapter specialist courses with progress that survives reload.',
   learnOpenCourses: 'Open specialist courses →',
   learnCourseEmpty: 'No premium courses available.',
+  learnCourseEmptyOpenBeta: 'No specialist courses available yet.',
   learnCourseNav: 'Course chapters',
   learnBack: 'Learn',
   learnCourseProgress: 'Chapter progress',

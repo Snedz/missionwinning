@@ -13,6 +13,7 @@ import {
 } from '@/lib/learnCourseProgress';
 import { logPillarWin } from '@/lib/pillarLog';
 import { track } from '@/lib/analytics';
+import { isFreeBeta } from '@/lib/freeBeta';
 import { ArrowLeft, Check } from 'lucide-react';
 
 type Props = {
@@ -22,6 +23,7 @@ type Props = {
 
 export function CourseReader({ chapters, initialChapterId }: Props) {
   const { t } = useTranslation();
+  const freeBeta = isFreeBeta();
   const [chapterId, setChapterId] = useState(initialChapterId ?? chapters[0]?.id ?? '');
   const [completed, setCompleted] = useState<Set<string>>(() => loadPremiumCourseProgress());
 
@@ -37,7 +39,11 @@ export function CourseReader({ chapters, initialChapterId }: Props) {
   if (!chapter) {
     return (
       <p className="text-muted-foreground">
-        {t('learnCourseEmpty', { defaultValue: 'No premium courses available.' })}
+        {freeBeta
+          ? t('learnCourseEmptyOpenBeta', {
+              defaultValue: 'No specialist courses available yet.',
+            })
+          : t('learnCourseEmpty', { defaultValue: 'No premium courses available.' })}
       </p>
     );
   }
