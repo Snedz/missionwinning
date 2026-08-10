@@ -12,6 +12,7 @@ import { ErrorState } from '@/components/ui/ErrorState';
 import type { CoachPlan } from '@/lib/coach/types';
 import type { BodyScores } from '@/lib/score';
 import { getOrCreateDeviceId } from '@/lib/coach/storage';
+import { coachVoiceLine } from '@/lib/coach/coachVoiceDefaults';
 
 type VoiceResponse = {
   message: string;
@@ -79,9 +80,11 @@ export function CoachVoiceCard({ plan, bodyScores, premium }: Props) {
 
   if (!plan) return null;
 
+  // Rules path returns i18n keys — English floors so hydrate never paints
+  // "coachVoiceDeload" as the briefing (.647). LLM path is already prose.
   const displayMessage =
     voice?.source === 'rules' && voice.message.startsWith('coach')
-      ? t(voice.message, { defaultValue: voice.message })
+      ? coachVoiceLine(voice.message, t)
       : voice?.message;
 
   return (
