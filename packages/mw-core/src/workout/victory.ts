@@ -1,6 +1,10 @@
 /**
  * One boss next step after a session — web + native share this shape.
  * Prefer Mission Coach early; never send free logger users to Bundle for fuel.
+ *
+ * **Week-1 session 2 wins** over the early-Coach CTA (aligned with web `.412`).
+ * After exactly one log, the habit loop is a second train at `/active`, not
+ * Coach. Inlined here so mw-core stays free of app `src/` imports.
  */
 
 export const COACH_VICTORY_EARLY_WORKOUTS = 3;
@@ -23,17 +27,32 @@ export type PickVictoryNextActionOpts = {
 
 /**
  * One boss next step after a session.
- * Early / no-plan: Mission Coach (Train+Coach wedge).
- * Fuel → `/nutrition` (never Bundle). High strain → Today rest, not Mind tourism.
+ * Early / plan known: Mission Coach (Train+Coach wedge), except session 2.
+ * High strain → post-train Mind collection (not generic tourism).
+ * Fuel stays a secondary link when primary is Coach/Train — never Bundle.
  */
 export function pickVictoryNextAction(opts?: PickVictoryNextActionOpts): VictoryNextAction {
   const completed =
     typeof opts?.completedWorkouts === 'number' ? opts.completedWorkouts : undefined;
 
-  const early =
-    typeof completed === 'number' && completed > 0 && completed <= COACH_VICTORY_EARLY_WORKOUTS;
+  // Exactly one finished session → second session is the boss habit, not Coach.
+  if (completed === 1) {
+    return {
+      href: '/active',
+      labelKey: 'week1SecondSessionCta',
+      defaultLabel: 'Start session 2',
+      reasonKey: 'week1SecondSessionReason',
+      defaultReason:
+        'One session logged. A second this week locks the loop — Coach builds from the logs, not another pillar.',
+    };
+  }
 
-  // Explicit plan presence or early window → Coach (matches web workoutVictory.ts wedge).
+  const early =
+    typeof completed === 'number' &&
+    completed > 0 &&
+    completed <= COACH_VICTORY_EARLY_WORKOUTS;
+
+  // Explicit plan presence (true or false) → Coach. Early workouts (2–3) → Coach.
   const wantsCoach = early || opts?.hasCoachPlan === true || opts?.hasCoachPlan === false;
 
   if (wantsCoach) {
@@ -46,6 +65,18 @@ export function pickVictoryNextAction(opts?: PickVictoryNextActionOpts): Victory
     };
   }
 
+  // High strain: recovery mind with collection deep-link (matches web workoutVictory).
+  if ((opts?.strainDelta ?? 0) >= 5) {
+    return {
+      href: '/mind?collection=post-train',
+      labelKey: 'victoryNextRecoverMindLabel',
+      defaultLabel: 'Post-train downshift',
+      reasonKey: 'victoryNextRecoverMindReason',
+      defaultReason: 'Strain is up — a short downshift before the next load.',
+    };
+  }
+
+  // Late freestyle with protein still open: free Fuel logger (never Bundle).
   if (!opts?.proteinLoggedToday) {
     return {
       href: '/nutrition',
@@ -53,16 +84,6 @@ export function pickVictoryNextAction(opts?: PickVictoryNextActionOpts): Victory
       defaultLabel: 'Log protein',
       reasonKey: 'victoryNextFuelReason',
       defaultReason: 'Fuel the session you just earned — free logger, no paywall.',
-    };
-  }
-
-  if ((opts?.strainDelta ?? 0) >= 5) {
-    return {
-      href: '/log',
-      labelKey: 'victoryNextRestLabel',
-      defaultLabel: 'Back to Today',
-      reasonKey: 'victoryNextRestReason',
-      defaultReason: 'Strain is up — recover, then hit a lighter session when ready.',
     };
   }
 

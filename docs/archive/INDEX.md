@@ -25,6 +25,7 @@ When adding a doc:
 
 | File | Absorbed by / note |
 |------|---------------------|
+| [log/LOG-rotate-641.md](./log/LOG-rotate-641.md) | rotated oldest for `.641` victory single source |
 | [log/LOG-rotate-640.md](./log/LOG-rotate-640.md) | rotated oldest for `.640` active empty Just Go |
 | [log/LOG-rotate-639.md](./log/LOG-rotate-639.md) | rotated oldest for `.639` migration pack |
 | [log/LOG-rotate-638.md](./log/LOG-rotate-638.md) | rotated oldest for `.638` empty Active dock |
