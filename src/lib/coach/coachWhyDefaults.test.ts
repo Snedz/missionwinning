@@ -47,4 +47,13 @@ describe('coachWhyDefaults', () => {
     assert.match(src, /coachWhyLine/);
     assert.doesNotMatch(src, /i18n\.exists\(key\)\s*\?\s*t\(key\)\s*:\s*''/);
   });
+
+  it('PlanExerciseLine uses coachWhyLine not i18n.exists blanking', () => {
+    const src = readFileSync(
+      join(root, 'src/components/coach/PlanExerciseLine.tsx'),
+      'utf8'
+    );
+    assert.match(src, /coachWhyLine/);
+    assert.doesNotMatch(src, /i18n\.exists/);
+  });
 });

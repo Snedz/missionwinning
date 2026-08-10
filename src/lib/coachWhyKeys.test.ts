@@ -9,11 +9,10 @@
  * `src/i18n/coachLocales.ts` at all.
  *
  * Nothing broke loudly, which is the problem.
- * [`PlanExerciseLine`](../components/coach/PlanExerciseLine.tsx) renders
- * `i18n.exists(ex.whyKey) ? t(ex.whyKey) : ''`, so a missing key is not a raw
- * key on screen — it is a **blank line**. The coach decided the week was a
- * plateau deload, wrote down why, and told the athlete nothing. In all fifteen
- * languages, for as long as those keys have been absent.
+ * [`PlanExerciseLine`](../components/coach/PlanExerciseLine.tsx) used to render
+ * `i18n.exists(ex.whyKey) ? t(ex.whyKey) : ''` (blank on missing pack / hydrate).
+ * `.645` floors catalogued keys via `coachWhyLine`, but locale packs must still
+ * define every engine key so non-English athletes get real copy — not only EN floors.
  *
  * The existing tests made it worse rather than catching it:
  * `progression.test.ts:117` and `loadGuard.test.ts:51` both assert the engine

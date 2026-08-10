@@ -3,13 +3,15 @@
 /**
  * One prescribed exercise: what to do, and why.
  *
- * Extracted from `PlanSessionCard` so Today can show the same three facts without a
- * second copy of the `i18n.exists` guard below — the guard is the whole reason this
- * is a component rather than two similar JSX blocks.
+ * Extracted from `PlanSessionCard` so Today shows the same three facts.
+ * Why copy uses `coachWhyLine` (English floors) — same contract as CoachAdaptBanner
+ * (`.642` / `.645`). Never blank on hydrate when the engine emitted a catalogued key;
+ * never paint a bare key for unknown legacy keys (`coachWhyCompound`).
  */
 
 import { useTranslation } from 'react-i18next';
 import { getExerciseById } from '@/data/exercises';
+import { coachWhyLine } from '@/lib/coach/coachWhyDefaults';
 import type { PlanExercise } from '@/lib/coach/types';
 
 type Props = {
@@ -21,7 +23,7 @@ type Props = {
 };
 
 export function PlanExerciseLine({ ex, unit, compact = false }: Props) {
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
   const name = getExerciseById(ex.exerciseId)?.name ?? ex.exerciseId;
 
   const load =
@@ -31,14 +33,7 @@ export function PlanExerciseLine({ ex, unit, compact = false }: Props) {
         ? ` @ ${ex.weight}${unit}`
         : '';
 
-  /*
-   * `i18n.exists`, not a falsy `defaultValue`: i18next treats `defaultValue: ''` as
-   * absent and hands back the key. That is how `coachWhyCompound` — a key baked into
-   * plans persisted by an older build — printed raw on screen under a real set, and
-   * since plans regenerate only weekly it showed for days. A missing rationale is
-   * strictly better than machine text.
-   */
-  const why = i18n.exists(ex.whyKey) ? t(ex.whyKey) : '';
+  const why = coachWhyLine(ex.whyKey, t);
 
   return (
     <li className={compact ? '' : 'border-b border-border pb-2 last:border-0'}>
