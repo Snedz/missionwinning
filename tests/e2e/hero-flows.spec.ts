@@ -213,13 +213,11 @@ test.describe('Wave 5 public CTA integrity', () => {
     }
   });
 
-  test('compare forge story links to welcome', async ({ page }) => {
+  test('retired compare hub redirects to welcome', async ({ page }) => {
     const res = await page.goto('/compare/forge', { waitUntil: 'domcontentloaded' });
-    expect(res?.status()).toBe(200);
-    await expect(page.getByRole('link', { name: /start free/i }).first()).toHaveAttribute(
-      'href',
-      '/welcome'
-    );
+    // Permanent redirect away from competitor comparison surface (.668)
+    expect([301, 307, 308].includes(res?.status() ?? 0) || page.url().includes('/welcome')).toBeTruthy();
+    await expect(page).toHaveURL(/\/welcome/);
   });
 
   test('learn path teaser CTA goes to welcome', async ({ page }) => {

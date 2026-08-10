@@ -3,7 +3,6 @@ import { siteBaseUrl } from '@/lib/seoMetadata';
 import { BEYOND_THE_BASICS_CHAPTERS } from '@/data/guidebook/chapters';
 import { EXERCISES, ensureFullExerciseCatalog } from '@/data/exercises';
 import { FREE_LEARN_PATHS } from '@/data/learnPaths';
-import { COMPARE_STORIES } from '@/data/compareStories';
 import { MAJOR_GROUPS } from '@/lib/muscleGroups';
 import { EQUIPMENT_HUBS, muscleHubSlug } from '@/lib/exerciseSeo';
 import { isPathEnabled } from '@/lib/surface';
@@ -41,7 +40,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     // `/bundle` is deliberately absent during the free beta: it 307s to `/`, and a
     // sitemap should only carry URLs that answer 200. Re-add it with the paid surfaces.
     ...(isFreeBeta() ? [] : ['/bundle']),
-    '/compare',
     '/press',
     '/terms',
     '/privacy',
@@ -74,13 +72,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     lastModified: now,
     changeFrequency: path === '' ? ('weekly' as const) : ('monthly' as const),
     priority: path === '' ? 1 : 0.7,
-  }));
-
-  const compareEntries = COMPARE_STORIES.map((s) => ({
-    url: `${base}/compare/${s.slug}`,
-    lastModified: now,
-    changeFrequency: 'monthly' as const,
-    priority: 0.65,
   }));
 
   const guideEntries = BEYOND_THE_BASICS_CHAPTERS.map((ch) => ({
@@ -120,7 +111,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   return [
     ...staticEntries,
-    ...compareEntries,
     ...(isPathEnabled('/guide') ? guideEntries : []),
     ...exerciseEntries,
     ...muscleHubs,

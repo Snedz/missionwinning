@@ -9,14 +9,14 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { footerGroups } from '@/components/marketing/footerLinks';
 
-test('Product footer is Start free → Compare → How Coach adapts (Bundle optional)', () => {
+test('Product footer is Start free → How Coach adapts (Bundle optional; no competitor compare)', () => {
   const product = footerGroups().find((g) => g.titleKey === 'footerGroupProduct');
   assert.ok(product);
   const hrefs = product!.links.map((l) => l.href);
   assert.equal(hrefs[0], '/welcome', 'ingress first');
-  assert.equal(hrefs[1], '/compare');
-  assert.equal(hrefs[2], '/#coach');
+  assert.equal(hrefs[1], '/#coach');
   // Bundle may be filtered under free-beta
+  assert.ok(!hrefs.includes('/compare'), 'competitor compare hub removed');
   assert.ok(!hrefs.includes('/coaching'), 'never human coaching in Product');
   assert.ok(!hrefs.includes('/coach'), 'app Mission Coach is not the marketing adapt anchor');
 });

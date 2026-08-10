@@ -217,10 +217,7 @@ export function BundlePage() {
           <p className="text-xs text-muted-foreground">
             {t('bundleStoryProof', {
               defaultValue: 'Product proof: Today briefing · Just Go · rest · PRs — free forever.',
-            })}{' '}
-            <Link href="/compare" className="text-primary hover:underline">
-              {t('bundleStoryCompare', { defaultValue: 'See comparisons' })}
-            </Link>
+            })}
           </p>
         </section>
 

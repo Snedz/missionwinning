@@ -45,8 +45,6 @@ const GATED_ROUTES = [
   // of it. One route per template, plus the two info pages every footer links to.
   '/exercises',
   '/exercises/muscle/chest',
-  '/compare',
-  '/compare/forge',
   '/paths',
   '/about',
   '/privacy',

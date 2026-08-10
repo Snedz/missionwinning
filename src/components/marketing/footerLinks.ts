@@ -26,13 +26,13 @@ export type FooterGroup = {
 };
 
 /**
- * Product column — ingress first, then compare, then marketing Coach story.
- * “How Coach adapts” is landing `/#coach` (adapt argument), not Mission Coach `/coach`
- * and never human 1:1 `/coaching`. See docs/FLOW_ARCHITECTURE.md.
+ * Product column — ingress first, then marketing Coach story.
+ * Competitor compare hub removed (.668). “How Coach adapts” is landing `/#coach`
+ * (adapt argument), not Mission Coach `/coach` and never human 1:1 `/coaching`.
+ * See docs/FLOW_ARCHITECTURE.md.
  */
 const PRODUCT: FooterLink[] = [
   { href: '/welcome', labelKey: 'footerProductStart', defaultValue: 'Start free' },
-  { href: '/compare', labelKey: 'footerProductCompare', defaultValue: 'Compare' },
   { href: '/#coach', labelKey: 'footerProductCoach', defaultValue: 'How Coach adapts' },
   { href: '/bundle', labelKey: 'footerProductBundle', defaultValue: 'Super Bundle' },
 ];
@@ -88,7 +88,6 @@ export function primaryNavLinks(): FooterLink[] {
     { href: '/exercises', labelKey: 'footerLearnExercises', defaultValue: 'Exercises' },
     { href: '/guide', labelKey: 'footerLearnGuide', defaultValue: 'Guide' },
     { href: '/paths', labelKey: 'footerLearnPaths', defaultValue: 'Paths' },
-    { href: '/compare', labelKey: 'footerProductCompare', defaultValue: 'Compare' },
     ...(isFreeBeta()
       ? []
       : [{ href: '/bundle', labelKey: 'footerProductBundle', defaultValue: 'Super Bundle' }]),

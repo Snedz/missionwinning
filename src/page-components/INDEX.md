@@ -55,8 +55,6 @@
 | File | Route |
 |------|-------|
 | `BundlePage.tsx` | `/bundle` |
-| `ComparePage.tsx` | `/compare` |
-| `CompareStoryPage.tsx` | `/compare/[slug]` |
 | `LearnPathsPublicIndexPage.tsx` | `/paths` |
 | `LearnPathPublicPage.tsx` | `/paths/[id]` |
 | `ExerciseMuscleHubPage.tsx` | `/exercises/muscle/[group]` |

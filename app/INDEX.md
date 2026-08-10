@@ -56,8 +56,7 @@
 |-----|------|
 | `/` | `app/page.tsx` → `LandingPage` |
 | `/bundle` | `app/bundle/page.tsx` → `BundlePage` (marketing chrome) |
-| `/compare` | `app/compare/page.tsx` → `ComparePage` (marketing chrome) |
-| `/compare/[slug]` | `CompareStoryPage` — forge / freeletics / spreadsheet |
+| `/compare` · `/compare/*` | **Removed (.668)** — permanent redirect to `/welcome` (no competitor comparison hub) |
 | `/guide`, `/exercises` | Public SEO pages |
 | `/press` | `app/press/page.tsx` → `PressPage` (brand & media kit) |
 | `/guide` (Apex reader) | `GuidePublicIndexPage` — Contents sidebar + language switcher |

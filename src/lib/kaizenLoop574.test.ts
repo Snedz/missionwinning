@@ -13,11 +13,6 @@ test('Victory and CoachToday full-width buttons are 44px', () => {
   assert.match(c, /w-full min-h-\[44px\] tap-target/);
 });
 
-test('Compare Start free is 52px primary-action', () => {
-  const src = readFileSync(join(root, 'src/page-components/ComparePage.tsx'), 'utf8');
-  assert.match(src, /primary-action min-h-\[52px\]/);
-});
-
 test('PFT runner and school panel full-width CTAs are 44px', () => {
   const pft = readFileSync(
     join(root, 'src/components/fitness-test/FitnessTestRunner.tsx'),

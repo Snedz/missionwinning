@@ -103,8 +103,6 @@ test.describe('First 90 seconds @gate', () => {
     '/exercises/push-ups',
     '/exercises/muscle/chest',
     '/exercises/equipment/bodyweight',
-    '/compare',
-    '/compare/forge',
     '/paths',
     // One representative for the public calculators template (Phase 2 rebrand).
     '/calculators/1rm',

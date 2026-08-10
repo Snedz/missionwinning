@@ -34,7 +34,7 @@ import { redActionCount } from './helpers/redActions';
  * Every signed-in route a zero-data athlete can reach.
  *
  * Deliberately not imported from `a11y.spec.ts`: that list also carries the public
- * SEO tail (`/exercises`, `/compare`, `/paths`, `/about`…), which is static content
+ * SEO tail (`/exercises`, `/paths`, `/about`…), which is static content
  * with no user data and therefore no zero state to have. `/leaderboard` is included
  * under the full-launch override (SECONDARY surface, on by default).
  */

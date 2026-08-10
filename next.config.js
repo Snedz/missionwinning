@@ -53,6 +53,16 @@ const nextConfig = {
   env: {
     NEXT_PUBLIC_PWA_ENABLED: pwaDisabled ? 'false' : 'true',
   },
+  /**
+   * Competitor comparison hub removed (.668) — permanent redirect to Start free.
+   * Keeps old SEO/external links from soft-404ing.
+   */
+  async redirects() {
+    return [
+      { source: '/compare', destination: '/welcome', permanent: true },
+      { source: '/compare/:path*', destination: '/welcome', permanent: true },
+    ];
+  },
   async headers() {
     return [
       {

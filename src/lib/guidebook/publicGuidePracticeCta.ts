@@ -11,7 +11,6 @@ const PUBLIC_SAFE = new Set([
   '/welcome',
   '/beta',
   '/bundle',
-  '/compare',
   '/guide',
   '/exercises',
   '/paths',
@@ -76,8 +75,7 @@ export function publicGuidePracticeCta(
     PUBLIC_SAFE.has(href) ||
     href.startsWith('/exercises/') ||
     href.startsWith('/guide/') ||
-    href.startsWith('/paths/') ||
-    href.startsWith('/compare/')
+    href.startsWith('/paths/')
   ) {
     if (href === '/welcome') {
       return {
