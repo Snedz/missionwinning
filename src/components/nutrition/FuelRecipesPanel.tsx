@@ -135,12 +135,26 @@ export function FuelRecipesPanel({
       {premiumFetchError && premium && (
         <ErrorState
           className="py-6"
-          title={t('fuelPremiumFetchFailed', {
-            defaultValue: 'Could not load premium recipes',
-          })}
-          description={t('fuelPremiumOffline', {
-            defaultValue: 'Premium recipes unavailable offline — free recipes above still work.',
-          })}
+          title={
+            freeBeta
+              ? t('fuelPremiumFetchFailedOpenBeta', {
+                  defaultValue: 'Could not load extra recipes',
+                })
+              : t('fuelPremiumFetchFailed', {
+                  defaultValue: 'Could not load premium recipes',
+                })
+          }
+          description={
+            freeBeta
+              ? t('fuelPremiumOfflineOpenBeta', {
+                  defaultValue:
+                    'Extra recipes unavailable offline — free recipes above still work.',
+                })
+              : t('fuelPremiumOffline', {
+                  defaultValue:
+                    'Premium recipes unavailable offline — free recipes above still work.',
+                })
+          }
           actionLabel={
             onRetryPremium
               ? t('fuelPremiumRetry', { defaultValue: 'Try again' })
@@ -168,10 +182,15 @@ export function FuelRecipesPanel({
           <CardContent className="space-y-2">
             {premiumRecipes.length === 0 ? (
               <p className="text-sm text-muted-foreground">
-                {t('fuelPremiumRecipesEmpty', {
-                  defaultValue:
-                    'No premium recipes in this response — free list above still works.',
-                })}
+                {freeBeta
+                  ? t('fuelPremiumRecipesEmptyOpenBeta', {
+                      defaultValue:
+                        'Extra recipes could not load — free list above still works. Try again when you are online.',
+                    })
+                  : t('fuelPremiumRecipesEmpty', {
+                      defaultValue:
+                        'No premium recipes in this response — free list above still works.',
+                    })}
               </p>
             ) : (
               premiumRecipes.map((r, i) => (

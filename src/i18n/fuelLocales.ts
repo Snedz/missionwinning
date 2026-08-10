@@ -205,6 +205,10 @@ type FuelStrings = {
   fuelRecipesEmptyDesc: string;
   fuelPremiumRetry: string;
   fuelPremiumRecipesEmpty: string;
+  /** Free-beta: depth unlocked — no “premium” empty/error merch. */
+  fuelPremiumRecipesEmptyOpenBeta: string;
+  fuelPremiumFetchFailedOpenBeta: string;
+  fuelPremiumOfflineOpenBeta: string;
   /** Split from a `freeBeta` ternary default — see moveLocales. */
   fuelPremiumRecipesTitleCountBeta: string;
   fuelPremiumRecipesTitleCountPaid: string;
@@ -426,6 +430,11 @@ const en: FuelStrings = {
   fuelPremiumRetry: 'Try again',
   fuelPremiumRecipesEmpty:
     'No premium recipes in this response — free list above still works.',
+  fuelPremiumRecipesEmptyOpenBeta:
+    'Extra recipes could not load — free list above still works. Try again when you are online.',
+  fuelPremiumFetchFailedOpenBeta: 'Could not load extra recipes',
+  fuelPremiumOfflineOpenBeta:
+    'Extra recipes unavailable offline — free recipes above still work.',
   fuelPremiumRecipesTitleCountBeta: 'More recipes ({{count}})',
   fuelPremiumRecipesTitleCountPaid: 'Premium recipes ({{count}})',
 };
