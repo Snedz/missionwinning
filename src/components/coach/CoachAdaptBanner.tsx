@@ -9,6 +9,7 @@ import {
   todaySessionWhyKeys,
 } from '@/lib/coach/adaptSummary';
 import { coachAdaptReentrySession } from '@/lib/coach/coachAdaptReentry';
+import { coachWhyLine } from '@/lib/coach/coachWhyDefaults';
 import { useStartCoachSession } from '@/hooks/useStartCoachSession';
 
 type Props = {
@@ -31,7 +32,7 @@ type Props = {
  * `.287`: day-named adapt beats + today's prescription why keys (why panel).
  */
 export function CoachAdaptBanner({ plan, compact, todayOffset, onAdjustToday }: Props) {
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
   // Above the early returns below — this component bails in two places before
   // the re-entry block renders, and a hook after a conditional return is a
   // Rules-of-Hooks violation that only shows up once the bail path is taken.
@@ -118,7 +119,8 @@ export function CoachAdaptBanner({ plan, compact, todayOffset, onAdjustToday }: 
           </p>
           <ul className="space-y-1">
             {whyKeys.map((key) => {
-              const line = i18n.exists(key) ? t(key) : '';
+              // English floors — bootstrap/hydrate must not blank the why panel (.642).
+              const line = coachWhyLine(key, t);
               if (!line) return null;
               return (
                 <li key={key} className="text-xs leading-relaxed text-muted-foreground">
