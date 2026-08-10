@@ -54,26 +54,71 @@ export function AssessmentsPage() {
     { key: 'lifestyle' },
   ] as const;
 
+  /** English floors — shortKey used to be bare "stagePre" (never in locale packs). */
   const stages = [
     {
-      shortKey: 'stagePre',
+      nameKey: 'assessStagePreName',
+      nameDefault: 'Pre-Contemplation (Not Ready)',
       focusKey: 'assessStagePreFocus',
-      questionKeys: ['assessStagePreQ1', 'assessStagePreQ2'] as const,
+      focusDefault: 'Build awareness without pressure. Evoke curiosity and values.',
+      questions: [
+        {
+          key: 'assessStagePreQ1',
+          defaultValue: 'What do you enjoy about your current habits?',
+        },
+        {
+          key: 'assessStagePreQ2',
+          defaultValue: 'How do you view your health or energy 5 years from now?',
+        },
+      ],
     },
     {
-      shortKey: 'stageCont',
+      nameKey: 'assessStageContName',
+      nameDefault: 'Contemplation (Getting Ready)',
       focusKey: 'assessStageContFocus',
-      questionKeys: ['assessStageContQ1', 'assessStageContQ2'] as const,
+      focusDefault: 'Normalize ambivalence. Explore benefits and barriers.',
+      questions: [
+        {
+          key: 'assessStageContQ1',
+          defaultValue: 'What might be some benefits if you made this change?',
+        },
+        {
+          key: 'assessStageContQ2',
+          defaultValue: 'What feels hardest about starting?',
+        },
+      ],
     },
     {
-      shortKey: 'stagePrep',
+      nameKey: 'assessStagePrepName',
+      nameDefault: 'Preparation / Action',
       focusKey: 'assessStagePrepFocus',
-      questionKeys: ['assessStagePrepQ1', 'assessStagePrepQ2'] as const,
+      focusDefault: 'Strengthen confidence. Reinforce progress. Small wins + autonomy.',
+      questions: [
+        {
+          key: 'assessStagePrepQ1',
+          defaultValue: "What's one small step you could take this week?",
+        },
+        {
+          key: 'assessStagePrepQ2',
+          defaultValue: "What's been working best so far?",
+        },
+      ],
     },
     {
-      shortKey: 'stageMaint',
+      nameKey: 'assessStageMaintName',
+      nameDefault: 'Maintenance',
       focusKey: 'assessStageMaintFocus',
-      questionKeys: ['assessStageMaintQ1', 'assessStageMaintQ2'] as const,
+      focusDefault: 'Support autonomy, mastery, relapse prevention. New goals.',
+      questions: [
+        {
+          key: 'assessStageMaintQ1',
+          defaultValue: 'How do you maintain progress when life gets stressful?',
+        },
+        {
+          key: 'assessStageMaintQ2',
+          defaultValue: 'What new goals feel inspiring now?',
+        },
+      ],
     },
   ] as const;
   const [selectedStage, setSelectedStage] = useState(0);
@@ -266,24 +311,26 @@ export function AssessmentsPage() {
           <div className="flex flex-wrap gap-2">
             {stages.map((s, i) => (
               <Button
-                key={s.shortKey}
+                key={s.nameKey}
                 size="sm"
                 variant={selectedStage === i ? 'selected' : 'outline'}
                 className="min-h-[44px] tap-target"
                 onClick={() => setSelectedStage(i)}
               >
-                {t(s.shortKey, { defaultValue: s.shortKey })}
+                {t(s.nameKey, { defaultValue: s.nameDefault })}
               </Button>
             ))}
           </div>
           <div className="rounded-none border-2 border-border bg-card p-3">
             <div className="font-semibold text-primary">
               {t('assessCoachFocus', { defaultValue: 'Coach Focus:' })}{' '}
-              {t(stages[selectedStage].focusKey, { defaultValue: '' })}
+              {t(stages[selectedStage].focusKey, {
+                defaultValue: stages[selectedStage].focusDefault,
+              })}
             </div>
             <ul className="list-disc pl-5 mt-1 text-muted-foreground">
-              {stages[selectedStage].questionKeys.map((qKey) => (
-                <li key={qKey}>{t(qKey, { defaultValue: qKey })}</li>
+              {stages[selectedStage].questions.map((q) => (
+                <li key={q.key}>{t(q.key, { defaultValue: q.defaultValue })}</li>
               ))}
             </ul>
           </div>
