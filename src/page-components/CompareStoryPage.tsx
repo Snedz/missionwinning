@@ -8,11 +8,15 @@ import { Button } from '@/components/ui/button';
 import { PublicPageShell } from '@/components/public/PublicPageShell';
 import { EXERCISES } from '@/data/exercises';
 import type { CompareStory } from '@/data/compareStories';
+import { compareStoryForSurface } from '@/data/compareStories';
+import { isFreeBeta } from '@/lib/freeBeta';
 
 export type { CompareStory };
 export { COMPARE_STORIES, getCompareStory } from '@/data/compareStories';
 
-export function CompareStoryPage({ story }: { story: CompareStory }) {
+export function CompareStoryPage({ story: raw }: { story: CompareStory }) {
+  const story = compareStoryForSurface(raw, isFreeBeta());
+
   return (
     <PublicPageShell
       eyebrow={story.eyebrow}

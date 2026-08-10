@@ -367,3 +367,41 @@ export const COMPARE_STORIES: CompareStory[] = [
 export function getCompareStory(slug: string): CompareStory | undefined {
   return COMPARE_STORIES.find((s) => s.slug === slug);
 }
+
+/**
+ * Free-beta mute for public compare stories.
+ * Rewrites *our* Super Bundle merchandising; keeps competitor product names
+ * (e.g. “Freeletics Super Bundle”, “Their Super Bundle framing”).
+ */
+export function muteOurSuperBundleMerch(text: string): string {
+  return text
+    .replace(
+      /Super Bundle unlocks Coach and deeper pillar content\./g,
+      'Open beta unlocks Coach and deeper pillar tools free while we grow.'
+    )
+    .replace(
+      // Curly or straight quotes around free — story body uses “free.”
+      /Super Bundle funds depth; it does not redefine .?free.?\./g,
+      'Paid depth can fund the mission later; it does not redefine “free.”'
+    )
+    .replace(
+      /Mission Coach and Super Bundle add depth without rewriting the free promise\./g,
+      'Mission Coach and pillar tools add depth without rewriting the free promise.'
+    );
+}
+
+export function compareStoryForSurface(
+  story: CompareStory,
+  freeBeta: boolean
+): CompareStory {
+  if (!freeBeta) return story;
+  return {
+    ...story,
+    ctaNote: muteOurSuperBundleMerch(story.ctaNote),
+    body: story.body?.map((section) => ({
+      ...section,
+      paragraphs: section.paragraphs.map(muteOurSuperBundleMerch),
+    })),
+    verdict: story.verdict ? muteOurSuperBundleMerch(story.verdict) : story.verdict,
+  };
+}
