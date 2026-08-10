@@ -8,15 +8,11 @@ import Link from 'next/link';
 import { useTranslation } from 'react-i18next';
 import type { CoachInsight } from '@/lib/score';
 import { cn } from '@/lib/utils';
-
-const PILLAR_CHIP: Record<string, string> = {
-  '/move': 'Move',
-  '/nutrition': 'Fuel',
-  '/mind': 'Mind',
-  '/track': 'Track',
-  '/learn': 'Learn',
-  '/learn/course': 'Learn',
-};
+import {
+  focusFromInsightParams,
+  translateCoachActionLabel,
+  translateCoachInsightLine,
+} from '@/lib/readinessDisplay';
 
 type Props = {
   suggestions: CoachInsight[];
@@ -31,24 +27,33 @@ export function CrossPillarCoachChips({ suggestions, className }: Props) {
     <div className={cn('flex flex-wrap gap-2', className)}>
       {suggestions.map((s) => {
         const path = s.actionPath ?? '/log';
-        const pillar = PILLAR_CHIP[path] ?? 'Action';
         const actionLabel = s.actionLabelKey
-          ? t(s.actionLabelKey, { defaultValue: pillar })
-          : pillar;
+          ? translateCoachActionLabel(s.actionLabelKey, t)
+          : t('todayCoachChipAction', { defaultValue: 'Open' });
+        // English floors — chips used to default message to the action label,
+        // so hydrate painted "Open Move pillar" instead of the insight line (.644).
+        const focus = focusFromInsightParams(s.messageParams);
         const message = s.messageKey
-          ? t(s.messageKey, {
-              defaultValue: actionLabel,
-              ...(s.messageParams ?? {}),
-            })
+          ? translateCoachInsightLine(
+              {
+                messageKey: s.messageKey,
+                messageParams: s.messageParams,
+                actionLabelKey: s.actionLabelKey,
+                actionPath: path,
+              },
+              focus,
+              t
+            )
           : actionLabel;
+        // Chip label is short action; full insight on title for long floors.
         return (
           <Link
             key={`${path}-${s.messageKey}`}
             href={path}
             className="inline-flex items-center min-h-[44px] tap-target border border-primary bg-tint px-3 py-1 text-xs font-semibold text-primary hover:bg-primary hover:text-primary-foreground transition-colors"
-            title={actionLabel}
+            title={message}
           >
-            {message}
+            {actionLabel}
           </Link>
         );
       })}
