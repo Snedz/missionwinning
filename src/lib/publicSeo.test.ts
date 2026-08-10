@@ -8,6 +8,7 @@ import {
   webSiteJsonLd,
 } from '@/lib/publicSeo';
 import { BUNDLE_PLANS } from '@/lib/bundleConfig';
+import { LANDING_FAQ_KEYS, landingFaqKeysForSurface } from '@/i18n/landingLocales';
 
 describe('publicSeo', () => {
   it('organization has name and url', () => {
@@ -42,7 +43,17 @@ describe('publicSeo', () => {
   it('faq page has questions from landing keys', () => {
     const f = faqPageJsonLd();
     assert.equal(f['@type'], 'FAQPage');
-    assert.ok(f.mainEntity.length >= 4);
+    assert.ok(f.mainEntity.length >= 3);
     assert.ok(f.mainEntity[0].name.length > 5);
+  });
+
+  it('free-beta FAQ JSON-LD omits Super Bundle question', () => {
+    // isFreeBeta() defaults ON unless NEXT_PUBLIC_FREE_BETA is false.
+    const keys = landingFaqKeysForSurface();
+    assert.ok(keys.every((f) => f.qKey !== 'landingFaqBundleQ'));
+    assert.ok(keys.length < LANDING_FAQ_KEYS.length);
+    const f = faqPageJsonLd();
+    const blob = JSON.stringify(f);
+    assert.doesNotMatch(blob, /Super Bundle/i);
   });
 });

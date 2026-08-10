@@ -28,7 +28,6 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useTranslation } from 'react-i18next';
 import dynamic from 'next/dynamic';
-import { LANDING_FAQ_KEYS } from '@/i18n/landingLocales';
 import { LogToPlanHeroFallback } from '@/components/landing/LogToPlanHero';
 import { MarketingNav } from '@/components/marketing/MarketingNav';
 import { MarketingFooter } from '@/components/marketing/MarketingFooter';
@@ -36,6 +35,7 @@ import { Reveal } from '@/components/marketing/Reveal';
 import { GrayscalePhoto } from '@/components/marketing/GrayscalePhoto';
 import { ArrowRight } from 'lucide-react';
 import { isFreeBeta } from '@/lib/freeBeta';
+import { landingFaqKeysForSurface } from '@/i18n/landingLocales';
 
 const LogToPlanHero = dynamic(
   () => import('@/components/landing/LogToPlanHero').then((m) => m.LogToPlanHero),
@@ -47,9 +47,8 @@ const CoachAdaptDemo = dynamic(
   { ssr: false, loading: () => <div className="min-h-[8rem]" aria-hidden /> }
 );
 
-const FAQ = isFreeBeta()
-  ? LANDING_FAQ_KEYS.filter((f) => f.qKey !== 'landingFaqBundleQ')
-  : LANDING_FAQ_KEYS;
+/** Same free-beta filter as FAQ JSON-LD — one list, two surfaces. */
+const FAQ = landingFaqKeysForSurface();
 
 /**
  * What the free core actually is. Each line is checkable — no aspirations, no

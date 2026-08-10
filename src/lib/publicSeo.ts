@@ -1,7 +1,7 @@
 import type { GuideChapter } from '@/data/guidebook/types';
 import type { Exercise } from '@/types';
 import { BUNDLE_PLANS, type BundlePlanId } from '@/lib/bundleConfig';
-import { LANDING_FAQ_KEYS, landingStringsFor } from '@/i18n/landingLocales';
+import { landingFaqKeysForSurface, landingStringsFor } from '@/i18n/landingLocales';
 import { siteBaseUrl } from '@/lib/seoMetadata';
 
 export function organizationJsonLd(baseUrl = siteBaseUrl()) {
@@ -49,7 +49,7 @@ export function faqPageJsonLd(baseUrl = siteBaseUrl()) {
   return {
     '@context': 'https://schema.org',
     '@type': 'FAQPage',
-    mainEntity: LANDING_FAQ_KEYS.map((f) => ({
+    mainEntity: landingFaqKeysForSurface().map((f) => ({
       '@type': 'Question',
       name: en[f.qKey] || f.qKey,
       acceptedAnswer: {

@@ -25,6 +25,7 @@ When adding a doc:
 
 | File | Absorbed by / note |
 |------|---------------------|
+| [log/LOG-rotate-658.md](./log/LOG-rotate-658.md) | rotated oldest for `.658` landing FAQ JSON-LD free-beta mute |
 | [log/LOG-rotate-657.md](./log/LOG-rotate-657.md) | rotated oldest for `.657` Programs free-beta mute |
 | [log/LOG-rotate-656.md](./log/LOG-rotate-656.md) | rotated oldest for `.656` Move free-beta mute |
 | [log/LOG-rotate-655.md](./log/LOG-rotate-655.md) | rotated oldest for `.655` Learn free-beta mute |

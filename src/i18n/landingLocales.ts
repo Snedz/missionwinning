@@ -1,5 +1,7 @@
 /** Landing / marketing page copy — merged into i18n `common` namespace. */
 
+import { isFreeBeta } from '@/lib/freeBeta';
+
 const LANDING_EN: Record<string, string> = {
   compareEyebrow: 'Honest comparison',
   compareTitle: 'How we compare',
@@ -1002,3 +1004,14 @@ export const LANDING_FAQ_KEYS = [
       'Anyone who wants a disciplined, evidence-based path — from a garage gym to a park with only floor space.',
   },
 ] as const;
+
+/**
+ * FAQ keys for landing UI + FAQPage JSON-LD.
+ * Free beta drops Super Bundle merch so schema matches the visible accordion.
+ */
+export function landingFaqKeysForSurface(): (typeof LANDING_FAQ_KEYS)[number][] {
+  if (isFreeBeta()) {
+    return LANDING_FAQ_KEYS.filter((f) => f.qKey !== 'landingFaqBundleQ');
+  }
+  return [...LANDING_FAQ_KEYS];
+}
