@@ -11,5 +11,7 @@ test('MovePage wires collections + content inventory', () => {
   assert.match(src, /filterFlowsByCollection/);
   assert.match(src, /MOVE_COLLECTIONS/);
   assert.match(src, /getContentInventory/);
-  assert.match(src, /moveSubtitleDepth/);
+  // Free-beta Field manual: brief free-first subtitle (not depth/count cosplay).
+  assert.match(src, /moveSubtitleBrief/);
+  assert.doesNotMatch(src, /moveSubtitleDepth/);
 });

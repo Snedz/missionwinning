@@ -92,7 +92,7 @@
 
 - [x] Env vars set (incl. service role, DEMO_PREMIUM=false, Resend, Stripe webhook secret, Payment Links)
 - [x] All migrations run through **20260720_referrals** (push + week-4 RPC)
-- [ ] **Migrations 10–17 above are NOT applied.** The two `20260728_*` gate the anonymous return loop and the correctness of the boss metric; the four `20260721_*` gate Android sync; `20260730_wind_down_nudge` gates the `.176` evening push; `20260731_llm_usage` gates LLM spend metering; `20260801_day_review_push` gates the `.194` day-review push. **#16 and #17 appeared in no checklist at all until `.203` — they were on disk and recorded nowhere**, which is the failure `migrationLedger.test.ts` now makes impossible. None of the first five appeared in any founder checklist until `.170`; #15 was in none until `.179`. A CI path exists once the `SUPABASE_DB_URL` repo secret is set — `apply-migration.yml` (fixed in #129 to say why it fails instead of a DNS error).
+- [ ] **Migrations from §2 item 9 onward are NOT applied** (beta invites → day-review push). **One-sitting pack:** [MIGRATION_FOUNDER_PACK.md](MIGRATION_FOUNDER_PACK.md) (P1–P10 = files `20260721_*` … `20260801_day_review_push.sql`). The two `20260728_*` gate the anonymous return loop and the correctness of the boss metric (tombstones); the `20260721_*` set gates invite ledger + Android sync; `20260730_wind_down_nudge` / `20260801_day_review_push` gate evening pushes; `20260731_llm_usage` gates LLM spend metering. **After tombstone migration:** run `supabase/checks/week4_retention_proof.sql`. CI path: `apply-migration.yml` when `SUPABASE_DB_URL` is set.
 - [x] Deployed URL loads and shows the new private teaser page
 - [x] Digest dry-run + live send OK (`sent:true` with Resend)
 
