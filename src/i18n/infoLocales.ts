@@ -138,6 +138,7 @@ type InfoStrings = {
   infoVisionLead: string;
   infoVisionP1: string;
   infoVisionP2: string;
+  infoVisionP2OpenBeta: string;
   infoVisionCoreP1: string;
   infoVisionCoreLi1: string;
   infoVisionCoreLi2: string;
@@ -146,6 +147,7 @@ type InfoStrings = {
   infoVisionCoreLi5: string;
   infoVisionCoreQuote: string;
   infoVisionSuperAppP1: string;
+  infoVisionSuperAppP1OpenBeta: string;
   infoVisionSuperAppP2: string;
   infoVisionSuperBundleBody: string;
   infoVisionFoot: string;
@@ -455,6 +457,8 @@ const en: InfoStrings = {
     'Mission Winning is the entrance to the path: free forever workout logging (no account) plus Mission Coach — fatigue-aware weekly plans from your history alone, no wearable required.',
   infoVisionP2:
     'Super Bundle adds Coach depth and the other pillars when you want them. It funds the mission — it never gates the free logger. Educational tools and a daily habit — not medical care.',
+  infoVisionP2OpenBeta:
+    'One mission: make the fundamentals free. Fuel, Move, Mind, and Learn deepen the path when you are ready — they are not the pitch.',
   infoVisionCoreP1:
     'The fundamentals that make people healthier should have no price of admission.',
   infoVisionCoreLi1: 'Workout tracking is free forever — no account required to start.',
@@ -467,6 +471,8 @@ const en: InfoStrings = {
     '"Those with no money should be able to utilize it to track workouts. The core mission should be available for everyone in the world."',
   infoVisionSuperAppP1:
     'One product, six pillars: free entry on each, premium depth where it earns its keep. We pitch Train + Mission Coach first — not an everything-app laundry list.',
+  infoVisionSuperAppP1OpenBeta:
+    'One product, six pillars: free entry on each. We pitch Train + Mission Coach first — not an everything-app laundry list.',
   infoVisionSuperAppP2:
     'Train · Fuel · Move · Mind · Track · Learn. Different fronts, one goal: stay strong enough to show up.',
   infoVisionSuperBundleBody:

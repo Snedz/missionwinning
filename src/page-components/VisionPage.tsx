@@ -49,11 +49,15 @@ export function VisionPage() {
           })}
         </p>
         <p className="text-base leading-relaxed text-muted-foreground">
-          {t('infoVisionP2', {
-            defaultValue: freeBeta
-              ? 'One mission: make the fundamentals free. Fuel, Move, Mind, and Learn deepen the path when you are ready — they are not the pitch.'
-              : 'Super Bundle adds Coach depth and the other pillars when you want them. It funds the mission — it never gates the free logger. Educational tools — not medical care.',
-          })}
+          {freeBeta
+            ? t('infoVisionP2OpenBeta', {
+                defaultValue:
+                  'One mission: make the fundamentals free. Fuel, Move, Mind, and Learn deepen the path when you are ready — they are not the pitch.',
+              })
+            : t('infoVisionP2', {
+                defaultValue:
+                  'Super Bundle adds Coach depth and the other pillars when you want them. It funds the mission — it never gates the free logger. Educational tools — not medical care.',
+              })}
         </p>
       </section>
 
@@ -94,10 +98,15 @@ export function VisionPage() {
           {t('infoVisionSuperApp', { defaultValue: 'Six pillars' })}
         </h2>
         <p className="text-base leading-relaxed text-muted-foreground">
-          {t('infoVisionSuperAppP1', {
-            defaultValue:
-              'One product, six pillars: free entry on each, premium depth where it earns its keep. We pitch Train + Mission Coach first — not an everything-app laundry list.',
-          })}
+          {freeBeta
+            ? t('infoVisionSuperAppP1OpenBeta', {
+                defaultValue:
+                  'One product, six pillars: free entry on each. We pitch Train + Mission Coach first — not an everything-app laundry list.',
+              })
+            : t('infoVisionSuperAppP1', {
+                defaultValue:
+                  'One product, six pillars: free entry on each, premium depth where it earns its keep. We pitch Train + Mission Coach first — not an everything-app laundry list.',
+              })}
         </p>
         <p className="text-base leading-relaxed text-muted-foreground">
           {t('infoVisionSuperAppP2', {
