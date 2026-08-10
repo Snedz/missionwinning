@@ -85,8 +85,10 @@ export function TodayRewardsCard({ summary }: Props) {
         ) : null}
 
         {summary.badges.length > 0 ? (
-          <p className="text-xs text-muted-foreground">
+          <p className="text-xs text-muted-foreground" data-testid="today-rewards-badges">
             {t('rewardBadgeCount', {
+              // Locale packs use {{n}} (not {{count}}) — both supplied so neither path paints raw.
+              n: summary.badges.length,
               count: summary.badges.length,
               defaultValue: `${summary.badges.length} badges earned`,
             })}
