@@ -63,6 +63,7 @@ Review on a 390×844 phone viewport first (the Playwright target); desktop secon
 
 | Date | Reviewer | Flows | Issues filed |
 |------|----------|-------|--------------|
+| 2026-08-09 | Agent (CX/UX/UI hero walk · .637) | Welcome→Active→Victory→Today→Coach; reentry; zero | **S1 fixed:** raw i18n on readiness Today (focus / body labels / coach line). Pass: cold set ≤4 taps; Victory one NEXT; reentry no shame; First Steps advances after finish. Residual S2: empty Active outline Start (EmptyState design). |
 | 2026-08-09 | Agent (Feel Wave 9 · .633) | Builder | Step rail 44px; Blank/Start red; Save outline. |
 | 2026-08-09 | Agent (Feel Wave 8 · .632) | Beta, private gate, First Steps | Dogfood residual: bootstrap keys, gate taps, quiet dismiss. |
 | 2026-08-09 | Agent (Feel Wave 7 · .631) | Landing FAQ, About, Vision, Library, Press | Public residual display type + 44px taps. |
@@ -89,6 +90,14 @@ Review on a 390×844 phone viewport first (the Playwright target); desktop secon
 | 2026-07-21 | Agent (Horizon 0) | `/`→gate, Welcome, `/log`, `/active`→Victory, `/coach` | Fixed in-sprint (no separate Issues): invite→`/private` friction; gate invitee expand; beta guide/banner wedge (Train→Coach); Coach empty-state “Unlock” vs Generate mismatch; ES/FR gate “everything app” subtitle → wedge. Post-flip residual: landing proof-chip density only (Batch C shipped in `.103`). |
 | 2026-07-22 | Agent (H0 residual) | Landing hero density; invite smoke SSR; hero Mission Score e2e | Landing chips/trust row collapsed (one subtitle + one CTA). Invitee `data-mw-invitee` SSR for gate-smoke. Mission Score path fail-closed via Active. `@visual` Linux baselines soft in CI. |
 | 2026-07-22 | Agent (.95) | Public `/guide` chapter CTAs | Wired `publicGuidePracticeCta` so anonymous practice links never dump into gated `/log`/`/nutrition` etc. Magazine body shared renderer. |
+
+### 2026-08-09 CX/UX/UI hero pass ritual (`.637`)
+
+- **Design better:** measure what the athlete *reads* (raw keys, competing CTAs), not class names alone — poster-field red lives on the field, not the nested button.
+- **Think better:** composition waves closed chrome; residual excellence risk was honesty of copy under bootstrap hydrate.
+- **Communicate better:** findings table with severity; kill false positives (Today “no red” when dock is poster-field).
+- **Create more impact:** one S1 on the post-session Today beat (Peak-End → reopen) beats another peripheral Feel Wave.
+- **Next wave differently:** founder phone excellence walk on Horizon W 1–5 before more surface polish.
 
 ### 2026-07-22 Design Orchestration D0 pass notes
 

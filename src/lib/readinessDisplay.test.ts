@@ -16,7 +16,11 @@
 
 import { describe, it } from 'node:test';
 import assert from 'node:assert/strict';
-import { formatRecommendedFocusLine, muscleGroupLabel } from '@/lib/readinessDisplay';
+import {
+  formatRecommendedFocusLine,
+  muscleGroupLabel,
+  translateCoachInsightLine,
+} from '@/lib/readinessDisplay';
 import {
   MUSCLE_GROUP_I18N,
   type MuscleGroup,
@@ -95,14 +99,37 @@ describe('formatRecommendedFocusLine', () => {
     const group = GROUPS[0];
     const t = from({ todayRecommendedFocusLine: '{{group}} · {{status}}' });
     const line = formatRecommendedFocusLine(focusFor(group), t);
-    // Group falls back to its own name; the status has no pack entry and no
-    // catalog copy behind it, so it surfaces as the key — visible, not blank.
-    assert.equal(line, `${group} · ${STATUS}`);
+    // Group falls back to its own name; status uses the English catalog, never
+    // the raw key (bootstrap / missing-pack path).
+    assert.equal(line, `${group} · Prime for growth`);
   });
 
-  it('passes the status key through so an untranslated status is still visible copy', () => {
+  it('never paints a raw status key when the pack is empty', () => {
     const focus = focusFor(GROUPS[0]);
     const line = formatRecommendedFocusLine(focus, missing);
-    assert.ok(line.includes(focus.statusKey), 'the status must appear even with no pack');
+    assert.ok(
+      !line.includes(focus.statusKey),
+      `leaked status key into "${line}"`
+    );
+    assert.ok(
+      line.includes('Prime for growth'),
+      `expected English catalog status in "${line}"`
+    );
+  });
+});
+
+describe('translateCoachInsightLine', () => {
+  it('interpolates focusLine and never returns the message key as the athlete copy', () => {
+    const insight = {
+      messageKey: 'coachInsightSteady',
+      messageParams: { focusGroup: 'Chest', focusStatusKey: 'todayReadinessPrime' },
+      actionLabelKey: 'coachActionViewToday',
+      actionPath: '/log',
+    };
+    const line = translateCoachInsightLine(insight, focusFor(GROUPS[0]), missing);
+    assert.ok(!line.includes('coachInsightSteady'), `raw key in "${line}"`);
+    assert.ok(!line.includes('todayReadinessPrime'), `raw status in "${line}"`);
+    assert.ok(line.includes('Prime for growth'), `missing focus in "${line}"`);
+    assert.ok(/Steady progress/i.test(line), `missing steady copy in "${line}"`);
   });
 });

@@ -37,7 +37,11 @@ import { useMissionJourney } from "@/hooks/useMissionJourney";
 import { getTodayLayout } from "@/hooks/useTodayLayout";
 import { formatStoredGoal, goalPresetValue } from "@/lib/journeyGoals";
 import { useUnits } from "@/hooks/useUnits";
-import { formatRecommendedFocusLine, muscleGroupLabel } from "@/lib/readinessDisplay";
+import {
+  formatRecommendedFocusLine,
+  muscleGroupLabel,
+  translateCoachInsightLine,
+} from "@/lib/readinessDisplay";
 import { runTodayPrimaryAction, isTodayTrainReady } from "@/lib/todayPrimaryAction";
 import { countHighProteinDaysFromNutritionLog } from "@/lib/nutritionHighProteinDays";
 import { Skeleton, SkeletonBlock, SkeletonCard } from "@/components/ui/Skeleton";
@@ -634,10 +638,7 @@ export function HomeTodayDashboard() {
         pending={!belowFoldReady}
         sessions={totalSessions}
         trends={todayTrends}
-        coachLine={t(coachInsight.messageKey, {
-          ...coachInsight.messageParams,
-          defaultValue: coachInsight.messageKey,
-        })}
+        coachLine={translateCoachInsightLine(coachInsight, recommendedFocus, t)}
       />
     ),
     freshness: (

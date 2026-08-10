@@ -3,6 +3,7 @@
 import { useTranslation } from 'react-i18next';
 import { Card, CardContent } from '@/components/ui/card';
 import { ScoreNumeral } from '@/components/ui/ScoreNumeral';
+import { bodyScoreLabel } from '@/lib/readinessDisplay';
 import { cn } from '@/lib/utils';
 import type { BodyScores } from '@/lib/score';
 
@@ -87,7 +88,7 @@ export function MetricsRow({
       label: t('todayMetricReadiness', { defaultValue: 'Readiness' }),
       value: measured ? scores.readiness : null,
       caption: measured
-        ? t(scores.readinessLabelKey, { defaultValue: scores.readinessLabelKey })
+        ? bodyScoreLabel(scores.readinessLabelKey, t)
         : t('todayScoreNotMeasured', { defaultValue: 'Not measured' }),
       emphasis: false,
     },
@@ -96,7 +97,7 @@ export function MetricsRow({
       label: t('todayMetricStrain', { defaultValue: 'Strain' }),
       value: measured ? scores.strain : null,
       caption: measured
-        ? t(scores.strainLabelKey, { defaultValue: scores.strainLabelKey })
+        ? bodyScoreLabel(scores.strainLabelKey, t)
         : t('todayScoreAfterFirstLog', { defaultValue: 'After your first log' }),
       emphasis: false,
     },
@@ -105,7 +106,7 @@ export function MetricsRow({
       label: t('todayMetricRecovery', { defaultValue: 'Recovery' }),
       value: recoveryMeasured ? scores.recovery : null,
       caption: recoveryMeasured
-        ? t(scores.recoveryLabelKey, { defaultValue: scores.recoveryLabelKey })
+        ? bodyScoreLabel(scores.recoveryLabelKey, t)
         : t('todayScoreNeedsSessions', { defaultValue: 'Needs 3 sessions' }),
       emphasis: false,
     },
