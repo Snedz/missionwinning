@@ -45,11 +45,15 @@ export function AboutPage() {
     <div className="space-y-10">
       <EditorialSection index="01" title={t('infoAboutMission', { defaultValue: 'Our mission' })}>
         <p className="text-base leading-relaxed text-muted-foreground">
-          {t('infoAboutMissionP1', {
-            defaultValue: freeBeta
-              ? 'Mission Winning is a free offline workout logger with adaptive Mission Coach plans from your logs — no wearable required. Logging stays free forever.'
-              : 'Mission Winning is a free offline workout logger with adaptive Mission Coach plans from your logs — no wearable required. Super Bundle unlocks Coach depth and specialist education; logging stays free forever.',
-          })}
+          {freeBeta
+            ? t('infoAboutMissionP1OpenBeta', {
+                defaultValue:
+                  'Mission Winning is a free offline workout logger with adaptive Mission Coach plans from your logs — no wearable required. Logging stays free forever.',
+              })
+            : t('infoAboutMissionP1', {
+                defaultValue:
+                  'Mission Winning is a free offline workout logger with adaptive Mission Coach plans from your logs — no wearable required. Super Bundle unlocks Coach depth and specialist education; logging stays free forever.',
+              })}
         </p>
         <p className="text-base leading-relaxed text-muted-foreground">
           {t('infoAboutMissionP2', {
@@ -92,10 +96,15 @@ export function AboutPage() {
         title={t('infoAboutBusiness', { defaultValue: 'Business structure' })}
       >
         <p className="text-base leading-relaxed text-muted-foreground">
-          {t('infoAboutBusinessBody', {
-            defaultValue:
-              'Operated by Mission Winning LLC for the app, programs, and coaching. Free core stays free; paid Super Bundle funds deeper Coach and pillar tools when you want them.',
-          })}
+          {freeBeta
+            ? t('infoAboutBusinessBodyOpenBeta', {
+                defaultValue:
+                  'Operated by Mission Winning LLC. Open beta — full tools free while we grow with you. The logger stays free forever.',
+              })
+            : t('infoAboutBusinessBody', {
+                defaultValue:
+                  'Operated by Mission Winning LLC for the app, programs, and coaching. Free core stays free; paid Super Bundle funds deeper Coach and pillar tools when you want them.',
+              })}
         </p>
       </EditorialSection>
 

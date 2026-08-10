@@ -122,11 +122,13 @@ type InfoStrings = {
   infoPrivacySubprocessors: string;
   infoPrivacySubprocessorsBody: string;
   infoAboutMissionP1: string;
+  infoAboutMissionP1OpenBeta: string;
   infoAboutMissionP2: string;
   infoAboutEvidence: string;
   infoAboutEvidenceBody: string;
   infoAboutAmericaLink: string;
   infoAboutBusinessBody: string;
+  infoAboutBusinessBodyOpenBeta: string;
   infoAboutDisclaimerEducational: string;
   infoAboutDisclaimerGov: string;
   infoAboutDisclaimerMedical: string;
@@ -427,6 +429,8 @@ const en: InfoStrings = {
   infoRefundsFoot: 'See also',
   infoAboutMissionP1:
     'Mission Winning is a free offline workout logger with adaptive Mission Coach plans from your logs — no wearable required. Super Bundle unlocks Coach depth and specialist education; logging stays free forever.',
+  infoAboutMissionP1OpenBeta:
+    'Mission Winning is a free offline workout logger with adaptive Mission Coach plans from your logs — no wearable required. Logging stays free forever.',
   infoAboutMissionP2:
     'Train anywhere with bodyweight or minimal gear first. Mission Coach builds the week from what you actually logged — not from a wearable. Educational tools only, not medical care.',
   infoAboutEvidenceBody:
@@ -434,6 +438,8 @@ const en: InfoStrings = {
   infoAboutAmericaLink: 'Presidential Fitness Test & youth movement →',
   infoAboutBusinessBody:
     'Operated by Mission Winning LLC for the app, programs, and coaching. Free core stays free; paid Super Bundle funds deeper Coach and pillar tools when you want them.',
+  infoAboutBusinessBodyOpenBeta:
+    'Operated by Mission Winning LLC. Open beta — full tools free while we grow with you. The logger stays free forever.',
   infoAboutDisclaimerEducational:
     'Educational only. Mission Winning provides practical training education and tools. We are not a federally recognized or accredited certifying agency. Completion grants a Mission Winning Certificate of Educational Achievement only.',
   infoAboutDisclaimerGov:
