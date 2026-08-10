@@ -67,11 +67,16 @@ export function PillarScoreBreakdown({ breakdown }: { breakdown: WinScoreBreakdo
         })}
       </div>
       <p className="text-xs leading-relaxed text-muted-foreground">
-        {t('todayPillarScoreFoot', {
-          defaultValue: freeBeta
-            ? 'Training carries most of the score. Other tools add a little when you use them — nothing is paywalled in open beta.'
-            : 'Training carries most of the score. Other tools add a little when you use them. Logger stays free forever.',
-        })}
+        {/* Pack string used to mention Super Bundle and won over freeBeta defaultValue (.651). */}
+        {freeBeta
+          ? t('todayPillarScoreFootOpenBeta', {
+              defaultValue:
+                'Training carries most of the score. Other tools add a little when you use them — nothing is paywalled in open beta.',
+            })
+          : t('todayPillarScoreFoot', {
+              defaultValue:
+                'Training carries most of the score. Other tools add a little when you use them. Logger stays free forever.',
+            })}
       </p>
     </div>
   );

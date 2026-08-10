@@ -25,6 +25,7 @@ When adding a doc:
 
 | File | Absorbed by / note |
 |------|---------------------|
+| [log/LOG-rotate-651.md](./log/LOG-rotate-651.md) | rotated oldest for `.651` score foot free-beta mute |
 | [log/LOG-rotate-650.md](./log/LOG-rotate-650.md) | rotated oldest for `.650` badge count i18n |
 | [log/LOG-rotate-649.md](./log/LOG-rotate-649.md) | rotated oldest for `.649` assessments stage honesty |
 | [log/LOG-rotate-648.md](./log/LOG-rotate-648.md) | rotated oldest for `.648` logger RPE floors |

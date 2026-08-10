@@ -141,6 +141,7 @@ type TodayStrings = {
   todayPillarTrack: string;
   todayPillarLearn: string;
   todayPillarScoreFoot: string;
+  todayPillarScoreFootOpenBeta: string;
   todayTrendsTitle: string;
   todayTrendVolume: string;
   todayTrendSessions: string;
@@ -432,7 +433,9 @@ const en: TodayStrings = {
   todayPillarTrack: 'Track',
   todayPillarLearn: 'Learn',
   todayPillarScoreFoot:
-    'Holistic scoring — all six pillars contribute. Super Bundle deepens each route; free core counts for everyone.',
+    'Training carries most of the score. Other tools add a little when you use them. Logger stays free forever.',
+  todayPillarScoreFootOpenBeta:
+    'Training carries most of the score. Other tools add a little when you use them — nothing is paywalled in open beta.',
   todayTrendsTitle: '7-day trends',
   todayTrendVolume: 'Volume',
   todayTrendSessions: 'Sessions',
@@ -725,7 +728,9 @@ const es: TodayStrings = {
   todayPillarTrack: 'Registrar',
   todayPillarLearn: 'Aprender',
   todayPillarScoreFoot:
-    'Puntuación holística — los seis pilares contribuyen. Super Bundle profundiza cada ruta; el núcleo gratis cuenta para todos.',
+    'El entrenamiento pesa más. Otras herramientas suman un poco cuando las usas. El logger es gratis para siempre.',
+  todayPillarScoreFootOpenBeta:
+    'El entrenamiento pesa más. Otras herramientas suman un poco — nada de paywall en la beta abierta.',
   coachPlanTitle: 'Coach IA — plan semanal',
   coachPlanDesc: 'Tres sesiones según preparación, carga y equipo.',
   coachPlanPremiumDesc: 'Premium genera una semana consciente de la fatiga para el registro.',
@@ -980,7 +985,8 @@ const zh: TodayStrings = {
   todayPillarMind: '心理',
   todayPillarTrack: '追踪',
   todayPillarLearn: '学习',
-  todayPillarScoreFoot: '整体评分 — 六大支柱共同贡献。Super Bundle 深化各路线；免费核心人人可用。',
+  todayPillarScoreFoot: '训练占分数的大部分。其他工具在使用时加一点。记录器永远免费。',
+  todayPillarScoreFootOpenBeta: '训练占分数的大部分。其他工具在使用时加一点 — 公开测试期间无付费墙。',
   todayTrendsTitle: '7 日趋势',
   todayTrendVolume: '训练量',
   todayTrendSessions: '次数',
@@ -1258,7 +1264,9 @@ const id: TodayStrings = {
   todayPillarTrack: 'Track',
   todayPillarLearn: 'Belajar',
   todayPillarScoreFoot:
-    'Skor holistik — enam pilar berkontribusi. Super Bundle memperdalam setiap rute; inti gratis untuk semua.',
+    'Latihan membawa skor terbesar. Alat lain menambah sedikit saat dipakai. Logger gratis selamanya.',
+  todayPillarScoreFootOpenBeta:
+    'Latihan membawa skor terbesar. Alat lain menambah sedikit — tanpa paywall di open beta.',
   todayTrendsTitle: 'Tren 7 hari',
   todayTrendVolume: 'Volume',
   todayTrendSessions: 'Sesi',
@@ -1526,7 +1534,9 @@ const th: TodayStrings = {
   todayPillarTrack: 'Track',
   todayPillarLearn: 'เรียนรู้',
   todayPillarScoreFoot:
-    'คะแนนรวม — หกเสาหลักมีส่วน Super Bundle ลึกขึ้นในแต่ละเส้นทาง เหล่าฟรีนับทุกคน',
+    'การฝึกมีน้ำหนักมากที่สุด เครื่องมืออื่นเติมเล็กน้อยเมื่อใช้ ตัวบันทึกฟรีตลอดไป',
+  todayPillarScoreFootOpenBeta:
+    'การฝึกมีน้ำหนักมากที่สุด เครื่องมืออื่นเติมเล็กน้อย — ไม่มีเพย์วอลล์ในช่วงเบตาเปิด',
   todayTrendsTitle: 'แนวโน้ม 7 วัน',
   todayTrendVolume: 'ปริมาณ',
   todayTrendSessions: 'เซสชัน',
@@ -1793,7 +1803,9 @@ const ar: TodayStrings = {
   todayPillarTrack: 'تتبّع',
   todayPillarLearn: 'تعلّم',
   todayPillarScoreFoot:
-    'تقييم شامل — الركائز الست تساهم. Super Bundle يعمّق كل مسار؛ النواة المجانية للجميع.',
+    'التدريب يحمل معظم النقاط. الأدوات الأخرى تضيف قليلاً عند استخدامها. المسجّل مجاني إلى الأبد.',
+  todayPillarScoreFootOpenBeta:
+    'التدريب يحمل معظم النقاط. الأدوات الأخرى تضيف قليلاً — بلا جدار دفع في البيتا المفتوحة.',
   todayTrendsTitle: 'اتجاهات 7 أيام',
   todayTrendVolume: 'الحجم',
   todayTrendSessions: 'الجلسات',
@@ -1967,7 +1979,9 @@ const LOCALES: Partial<Record<string, TodayStrings>> = {
     todayPillarTrack: 'Suivre',
     todayPillarLearn: 'Apprendre',
     todayPillarScoreFoot:
-      'Score holistique — les six piliers comptent. Super Bundle approfondit chaque voie ; le noyau gratuit compte pour tous.',
+      'L’entraînement pèse le plus. Les autres outils ajoutent un peu quand vous les utilisez. Le journal reste gratuit pour toujours.',
+    todayPillarScoreFootOpenBeta:
+      'L’entraînement pèse le plus. Les autres outils ajoutent un peu — rien n’est paywallé en open beta.',
     coachPlanTitle: 'Coach IA — plan hebdomadaire',
     coachPlanDesc: 'Trois séances selon préparation, charge et matériel.',
     coachPlanPremiumDesc: 'Premium génère une semaine sensible à la fatigue pour le journal.',
@@ -2132,7 +2146,9 @@ const LOCALES: Partial<Record<string, TodayStrings>> = {
     todayPillarTrack: 'Tracken',
     todayPillarLearn: 'Lernen',
     todayPillarScoreFoot:
-      'Ganzheitlicher Score — alle sechs Säulen zählen. Super Bundle vertieft jeden Weg; der kostenlose Kern zählt für alle.',
+      'Training trägt den Score am meisten. Andere Tools geben etwas dazu, wenn du sie nutzt. Der Logger bleibt für immer kostenlos.',
+    todayPillarScoreFootOpenBeta:
+      'Training trägt den Score am meisten. Andere Tools geben etwas dazu — in der Open Beta ohne Paywall.',
     coachPlanTitle: 'KI-Coach — Wochenplan',
     coachPlanDesc: 'Drei Einheiten nach Bereitschaft, Belastung und Equipment.',
     coachPlanPremiumDesc: 'Premium erzeugt eine ermüdungssensible Woche fürs Journal.',
