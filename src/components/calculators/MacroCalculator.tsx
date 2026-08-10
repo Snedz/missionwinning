@@ -23,6 +23,7 @@ import {
   bodyweightUnitLabel,
   weightUnitLabel,
 } from '@/hooks/useUnits';
+import { isFreeBeta } from '@/lib/freeBeta';
 import {
   ACTIVITY_LEVELS,
   type CalcSex,
@@ -292,10 +293,15 @@ export function MacroCalculator() {
         </div>
 
         <p className="text-[10px] text-muted-foreground">
-          {t('calcMacroFoot', {
-            defaultValue:
-              'Rough Mifflin-St Jeor + activity. Premium programs add phase and body-comp adjustments.',
-          })}
+          {isFreeBeta()
+            ? t('calcMacroFootOpenBeta', {
+                defaultValue:
+                  'Rough Mifflin-St Jeor + activity. Starting estimates — refine with Fuel logs over time.',
+              })
+            : t('calcMacroFoot', {
+                defaultValue:
+                  'Rough Mifflin-St Jeor + activity. Premium programs add phase and body-comp adjustments.',
+              })}
         </p>
       </CardContent>
     </>

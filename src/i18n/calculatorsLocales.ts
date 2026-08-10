@@ -36,6 +36,8 @@ type CalculatorsStrings = {
   calcFat: string;
   calcCarbs: string;
   calcMacroFoot: string;
+  /** Free-beta: free tools only — no Premium programs pitch. */
+  calcMacroFootOpenBeta: string;
   calcApplyTargets: string;
   calcViewFuel: string;
   calcToastApplied: string;
@@ -97,6 +99,8 @@ const en: CalculatorsStrings = {
   calcCarbs: 'Carbs',
   calcMacroFoot:
     'Rough Mifflin-St Jeor + activity. Premium programs add phase and body-comp adjustments.',
+  calcMacroFootOpenBeta:
+    'Rough Mifflin-St Jeor + activity. Starting estimates — refine with Fuel logs over time.',
   calcApplyTargets: 'Apply targets to Fuel',
   calcViewFuel: 'Open Fuel',
   calcToastApplied: 'Targets applied',
