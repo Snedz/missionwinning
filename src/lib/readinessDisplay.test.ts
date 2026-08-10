@@ -132,4 +132,51 @@ describe('translateCoachInsightLine', () => {
     assert.ok(line.includes('Prime for growth'), `missing focus in "${line}"`);
     assert.ok(/Steady progress/i.test(line), `missing steady copy in "${line}"`);
   });
+
+  it('covers cross-pillar insight keys with English floors', () => {
+    for (const key of [
+      'coachInsightNeedMove',
+      'coachInsightNeedFuel',
+      'coachInsightNeedMind',
+      'coachInsightSynergyMove',
+      'coachInsightNeedTrack',
+      'coachInsightNeedLearn',
+      'coachInsightSynergyMultipillar',
+    ] as const) {
+      const line = translateCoachInsightLine(
+        { messageKey: key, actionLabelKey: 'coachActionOpenMove', actionPath: '/move' },
+        focusFor(GROUPS[0]),
+        missing
+      );
+      assert.notEqual(line, key, `raw key for ${key}`);
+      assert.ok(line.length > 10, `empty floor for ${key}`);
+    }
+  });
+});
+
+describe('translateCoachActionLabel', () => {
+  it('never paints a bare action key when the pack is empty', async () => {
+    const { translateCoachActionLabel, COACH_ACTION_LABEL_DEFAULTS } = await import(
+      './readinessDisplay.ts'
+    );
+    for (const [key, floor] of Object.entries(COACH_ACTION_LABEL_DEFAULTS)) {
+      const line = translateCoachActionLabel(key, missing);
+      assert.equal(line, floor);
+    }
+  });
+});
+
+describe('useDailyCoachInsight wiring', () => {
+  it('uses English floors not defaultValue: messageKey', () => {
+    const { readFileSync } = require('node:fs') as typeof import('node:fs');
+    const { join } = require('node:path') as typeof import('node:path');
+    const src = readFileSync(
+      join(import.meta.dirname, '..', 'hooks', 'useDailyCoachInsight.ts'),
+      'utf8'
+    );
+    assert.match(src, /translateCoachInsightLine/);
+    assert.match(src, /translateCoachActionLabel/);
+    assert.doesNotMatch(src, /defaultValue:\s*fallback\.messageKey/);
+    assert.doesNotMatch(src, /defaultValue:\s*fallback\.actionLabelKey/);
+  });
 });

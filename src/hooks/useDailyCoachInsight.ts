@@ -9,6 +9,11 @@ import { useTranslation } from 'react-i18next';
 import type { CoachInsight } from '@/lib/score';
 import type { DailyCoachContext } from '@/lib/coachDailyServer';
 import { localDateKey } from '@/lib/time/localDate';
+import {
+  focusFromInsightParams,
+  translateCoachActionLabel,
+  translateCoachInsightLine,
+} from '@/lib/readinessDisplay';
 
 type CoachDisplay = {
   message: string;
@@ -22,30 +27,35 @@ function cacheKey() {
   return `mw_coach_${localDateKey()}`;
 }
 
+function localInsightCopy(fallback: CoachInsight, t: (k: string, o?: Record<string, unknown>) => string) {
+  const focus = focusFromInsightParams(fallback.messageParams);
+  return {
+    message: translateCoachInsightLine(fallback, focus, t),
+    actionLabel: translateCoachActionLabel(fallback.actionLabelKey, t),
+  };
+}
+
 export function useDailyCoachInsight(
   context: Omit<DailyCoachContext, 'fallback'> | null,
   fallback: CoachInsight
 ): CoachDisplay {
   const { t } = useTranslation();
-  const [state, setState] = useState<CoachDisplay>(() => ({
-    message: '',
-    actionLabel: t(fallback.actionLabelKey, { defaultValue: fallback.actionLabelKey }),
-    actionPath: fallback.actionPath,
-    source: 'local',
-    loading: true,
-  }));
+  const [state, setState] = useState<CoachDisplay>(() => {
+    const local = localInsightCopy(fallback, t);
+    return {
+      message: local.message,
+      actionLabel: local.actionLabel,
+      actionPath: fallback.actionPath,
+      source: 'local',
+      loading: true,
+    };
+  });
 
   useEffect(() => {
     if (!context) return;
 
     const params = { ...(fallback.messageParams ?? {}) };
-    const localMessage = t(fallback.messageKey, {
-      ...params,
-      defaultValue: fallback.messageKey,
-    });
-    const localLabel = t(fallback.actionLabelKey, {
-      defaultValue: fallback.actionLabelKey,
-    });
+    const { message: localMessage, actionLabel: localLabel } = localInsightCopy(fallback, t);
 
     const cached = typeof window !== 'undefined' ? sessionStorage.getItem(cacheKey()) : null;
     if (cached) {
@@ -90,18 +100,26 @@ export function useDailyCoachInsight(
                 source: 'llm',
                 loading: false,
               }
-            : {
-                message: t(data.messageKey ?? fallback.messageKey, {
-                  ...params,
-                  defaultValue: localMessage,
-                }),
-                actionLabel: t(data.actionLabelKey ?? fallback.actionLabelKey, {
-                  defaultValue: localLabel,
-                }),
-                actionPath: data.actionPath ?? fallback.actionPath,
-                source: 'rules',
-                loading: false,
-              };
+            : (() => {
+                const key = data.messageKey ?? fallback.messageKey;
+                const actionKey = data.actionLabelKey ?? fallback.actionLabelKey;
+                const resolved = localInsightCopy(
+                  {
+                    messageKey: key,
+                    messageParams: params,
+                    actionLabelKey: actionKey,
+                    actionPath: data.actionPath ?? fallback.actionPath,
+                  },
+                  t
+                );
+                return {
+                  message: resolved.message || localMessage,
+                  actionLabel: resolved.actionLabel || localLabel,
+                  actionPath: data.actionPath ?? fallback.actionPath,
+                  source: 'rules' as const,
+                  loading: false,
+                };
+              })();
 
         setState(next);
         sessionStorage.setItem(cacheKey(), JSON.stringify(next));

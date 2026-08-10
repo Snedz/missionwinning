@@ -55,8 +55,57 @@ export function muscleGroupLabel(group: MuscleGroup, t: TranslateFn): string {
   return t(MUSCLE_GROUP_I18N[group], { defaultValue: group });
 }
 
+/** Action labels on coach insight cards / cross-pillar chips. */
+export const COACH_ACTION_LABEL_DEFAULTS: Record<string, string> = {
+  coachActionRecoveryFlow: 'Try recovery flow',
+  coachActionOpenMove: 'Open Move pillar',
+  coachActionOpenMind: 'Open Mind pillar',
+  coachActionOpenTrack: 'Open Track pillar',
+  coachActionOpenLearn: 'Open Learn courses',
+  coachActionOpenFuel: 'Open Fuel Coach',
+  coachActionStartWorkout: 'Start workout',
+  coachActionGoBuilder: 'Go to Builder',
+  coachActionLogNutrition: 'Log nutrition',
+  coachActionViewToday: 'View Today',
+};
+
 /**
- * Translate a rule-based coach insight for the Today score band.
+ * Message floors for rule + cross-pillar insights. `focusLine` is interpolated
+ * for primed/steady; other keys are static English matching todayLocales EN.
+ */
+export function coachInsightMessageDefaults(focusLine: string): Record<string, string> {
+  return {
+    coachInsightHighRisk:
+      'Your assessment flagged elevated risk. Prioritize recovery, mobility, and light movement today.',
+    coachInsightHighStrain:
+      'High training load with low recovery. A mobility or rest day will help you come back stronger.',
+    coachInsightPrimed: `You're primed to train. ${focusLine}.`,
+    coachInsightSolidRecovery:
+      'Recovery is solid — good day to push volume on your focus groups or hit a benchmark session.',
+    coachInsightLowReadiness:
+      'Readiness is low — life happens. Keep today lighter, Just Go for one set, or try a short Mind breath. Getting back on the path beats a perfect week.',
+    coachInsightSteady: `Steady progress. ${focusLine} when you're ready.`,
+    coachInsightNeedMove:
+      'Training load is building — add mobility today to protect joints and stay on the path.',
+    coachInsightNeedFuel:
+      "You're training hard but protein is lagging. Log Fuel today to recover and grow.",
+    coachInsightNeedMind:
+      'Recovery is under stress. A short Mind session can help sleep, focus, and sticking with training — educational habit tools, not clinical care.',
+    coachInsightSynergyMove:
+      'Strong training week — pair it with mobility so you keep progressing without breakdown.',
+    coachInsightNeedTrack:
+      "You're training consistently — log an outdoor walk or run in Track to complete the picture.",
+    coachInsightNeedLearn:
+      "You're active across pillars — open a specialist course in Learn to deepen the stack.",
+    coachInsightSynergyMultipillar:
+      'Multi-pillar week — your Mission Score reflects Train + recovery + learning together.',
+    coachInsightFuelCoachSynergy:
+      "Heavy training logged — Fuel Coach added +{{carbs}}g carbs to today's plan.",
+  };
+}
+
+/**
+ * Translate a rule-based coach insight for the Today score band + daily card.
  *
  * Locale strings use `{{focusLine}}` (see todayLocales). `getCoachInsight`
  * used to pass `focusGroup` / `focusStatusKey`, which never interpolated, and
@@ -69,22 +118,31 @@ export function translateCoachInsightLine(
   t: TranslateFn
 ): string {
   const focusLine = formatRecommendedFocusLine(focus, t);
-  const defaults: Record<string, string> = {
-    coachInsightHighRisk:
-      'Your assessment shows high risk. Prioritize recovery, mobility, and light movement today.',
-    coachInsightHighStrain:
-      'High strain with low recovery. A mobility or rest day helps you come back stronger.',
-    coachInsightPrimed: `You're primed to train. ${focusLine}.`,
-    coachInsightSolidRecovery:
-      'Solid recovery — a good day to add volume on target groups or a reference session.',
-    coachInsightLowReadiness:
-      'Low readiness. Log protein in Fuel, try Mind, or keep today light.',
-    coachInsightSteady: `Steady progress. ${focusLine} when you're ready.`,
-  };
+  const defaults = coachInsightMessageDefaults(focusLine);
+  const floor = defaults[insight.messageKey] ?? insight.messageKey;
   return t(insight.messageKey, {
     ...(insight.messageParams ?? {}),
     focusLine,
-    defaultValue: defaults[insight.messageKey] ?? insight.messageKey,
+    defaultValue: floor,
+  });
+}
+
+/**
+ * Focus when only messageParams exist (API / daily-insight hook).
+ * Falls back to Legs / Prime so floors still interpolate.
+ */
+export function focusFromInsightParams(
+  params?: Record<string, string>
+): RecommendedFocus {
+  const group = (params?.focusGroup as MuscleGroup) || 'Legs';
+  const statusKey =
+    (params?.focusStatusKey as ReadinessStatusKey) || 'todayReadinessPrime';
+  return { group, statusKey };
+}
+
+export function translateCoachActionLabel(actionLabelKey: string, t: TranslateFn): string {
+  return t(actionLabelKey, {
+    defaultValue: COACH_ACTION_LABEL_DEFAULTS[actionLabelKey] ?? actionLabelKey,
   });
 }
 
