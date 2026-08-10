@@ -3,6 +3,9 @@
 const PROGRAMS_EN: Record<string, string> = {
   programsEyebrow: 'Programs',
   programsCatalogIntro:
+    'Specialist education outlines below. Free core tools live in Learn and the public guide. Super Bundle unlocks full premium depth.',
+  /** Free-beta: no Super Bundle pitch (pack would override a freeBeta defaultValue). */
+  programsCatalogIntroOpenBeta:
     'Specialist education outlines below. Free core tools live in Learn and the public guide.',
   programsCurriculumOutline: 'Curriculum outline',
   programsModuleLabel: 'Module {{n}}',
@@ -24,6 +27,11 @@ const PROGRAMS_EN: Record<string, string> = {
   programsWhatYouGet: 'What you get',
   programsBundleNote: 'Free intro — full in Super Bundle',
   programsDownloadSummary: 'Download summary',
+  /** Paid foot merch — muted in free beta. */
+  programsFootBundle:
+    'Bundle all programs for significant discount (coming soon). Existing purchasers get notified of updates.',
+  programsFootOpenBeta:
+    'Education outlines for every track. Free core paths live in Learn — share feedback if something is unclear.',
   progPtTitle: 'Elite Personal Training Education + Nutrition',
   progPtPrice: '$497',
   progPtDuration: 'Self-paced • ~40 hours core content',

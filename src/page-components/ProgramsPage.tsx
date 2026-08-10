@@ -60,11 +60,15 @@ export function ProgramsPage() {
     >
       {/* Field manual: filters + catalog first; intro demoted to one quiet line. */}
       <p className="text-xs text-muted-foreground">
-        {t('programsCatalogIntro', {
-          defaultValue: freeBeta
-            ? 'Specialist education outlines below. Free core tools live in Learn and the public guide.'
-            : 'Specialist education outlines below. Free core tools live in Learn and the public guide. Super Bundle unlocks full premium depth.',
-        })}{' '}
+        {freeBeta
+          ? t('programsCatalogIntroOpenBeta', {
+              defaultValue:
+                'Specialist education outlines below. Free core tools live in Learn and the public guide.',
+            })
+          : t('programsCatalogIntro', {
+              defaultValue:
+                'Specialist education outlines below. Free core tools live in Learn and the public guide. Super Bundle unlocks full premium depth.',
+            })}{' '}
         <Link href="/learn" className="text-primary underline underline-offset-2">
           /learn
         </Link>
@@ -242,8 +246,15 @@ export function ProgramsPage() {
       </div>
 
       <p className="text-center text-xs text-muted-foreground max-w-md mx-auto">
-        Bundle all programs for significant discount (coming soon). Existing purchasers get notified
-        of updates.
+        {freeBeta
+          ? t('programsFootOpenBeta', {
+              defaultValue:
+                'Education outlines for every track. Free core paths live in Learn — share feedback if something is unclear.',
+            })
+          : t('programsFootBundle', {
+              defaultValue:
+                'Bundle all programs for significant discount (coming soon). Existing purchasers get notified of updates.',
+            })}
       </p>
     </InfoPageShell>
   );
