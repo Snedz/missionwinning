@@ -20,6 +20,9 @@ type MoveStrings = {
   moveEmptyCta: string;
   movePremiumFetchFailed: string;
   movePremiumFetchFailedDesc: string;
+  /** Free-beta: depth unlocked — no “premium” empty/error merch. */
+  movePremiumFetchFailedOpenBeta: string;
+  movePremiumOfflineOpenBeta: string;
   movePremiumRetry: string;
   movePreviewPlayer: string;
   moveLockedHint: string;
@@ -69,6 +72,9 @@ const en: MoveStrings = {
   moveEmptyCta: 'Browse free flows',
   movePremiumFetchFailed: 'Could not load premium flows',
   movePremiumFetchFailedDesc: 'Free flows still work. Check your connection and try again.',
+  movePremiumFetchFailedOpenBeta: 'Could not load extra recovery flows',
+  movePremiumOfflineOpenBeta:
+    'Extra recovery flows unavailable offline — free flows above still work.',
   movePremiumRetry: 'Try again',
   movePreviewPlayer: 'Timed cues — Pliability-style recovery flows',
   moveLockedHint:

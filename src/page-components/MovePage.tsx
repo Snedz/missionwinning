@@ -71,14 +71,20 @@ export function MovePage() {
         setPremiumFlows([]);
         setPremiumFetchError(true);
         toast({
-          title: t('movePremiumFetchFailed', { defaultValue: 'Could not load premium flows' }),
+          title: freeBeta
+            ? t('movePremiumFetchFailedOpenBeta', {
+                defaultValue: 'Could not load extra recovery flows',
+              })
+            : t('movePremiumFetchFailed', {
+                defaultValue: 'Could not load premium flows',
+              }),
           description: t('movePremiumFetchFailedDesc', {
             defaultValue: 'Free flows still work. Check your connection and try again.',
           }),
           variant: 'destructive',
         });
       });
-  }, [premium, premiumRetry, t, toast]);
+  }, [premium, premiumRetry, t, toast, freeBeta]);
 
   const freeFlows = useMemo(
     () => filterFlowsByCollection(MOBILITY_FLOWS, collectionId),
@@ -253,10 +259,26 @@ export function MovePage() {
           className="py-6"
           actionLabel={t('movePremiumRetry', { defaultValue: 'Try again' })}
           onAction={() => setPremiumRetry((n) => n + 1)}
-          title={t('movePremiumFetchFailed', { defaultValue: 'Could not load premium flows' })}
-          description={t('movePremiumOffline', {
-            defaultValue: 'Premium recovery flows unavailable offline — free flows above still work.',
-          })}
+          title={
+            freeBeta
+              ? t('movePremiumFetchFailedOpenBeta', {
+                  defaultValue: 'Could not load extra recovery flows',
+                })
+              : t('movePremiumFetchFailed', {
+                  defaultValue: 'Could not load premium flows',
+                })
+          }
+          description={
+            freeBeta
+              ? t('movePremiumOfflineOpenBeta', {
+                  defaultValue:
+                    'Extra recovery flows unavailable offline — free flows above still work.',
+                })
+              : t('movePremiumOffline', {
+                  defaultValue:
+                    'Premium recovery flows unavailable offline — free flows above still work.',
+                })
+          }
         />
       )}
 

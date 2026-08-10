@@ -32,6 +32,7 @@ import {
 } from '@/lib/mind/filterSessions';
 import { mindSeriesByCollectionId, orderSessionsForSeries } from '@/lib/mind/mindSeries';
 import { cn } from '@/lib/utils';
+import { isFreeBeta } from '@/lib/freeBeta';
 
 export function MindPage() {
   const { t } = useTranslation();
@@ -39,6 +40,7 @@ export function MindPage() {
   const { toast } = useToast();
   const searchParams = useSearchParams();
   const { premium } = usePremium();
+  const freeBeta = isFreeBeta();
   const [premiumSessions, setPremiumSessions] = useState<GuidedMindSession[]>([]);
   const [recentWins, setRecentWins] = useState<PillarWin[]>([]);
   const [refresh, setRefresh] = useState(0);
@@ -75,14 +77,20 @@ export function MindPage() {
         setPremiumSessions([]);
         setPremiumFetchError(true);
         toast({
-          title: t('mindPremiumFetchFailed', { defaultValue: 'Could not load premium sessions' }),
+          title: freeBeta
+            ? t('mindPremiumFetchFailedOpenBeta', {
+                defaultValue: 'Could not load extra guided sessions',
+              })
+            : t('mindPremiumFetchFailed', {
+                defaultValue: 'Could not load premium sessions',
+              }),
           description: t('mindPremiumFetchFailedDesc', {
             defaultValue: 'Free mind tools still work. Check your connection and try again.',
           }),
           variant: 'destructive',
         });
       });
-  }, [premium, premiumRetry, t, toast]);
+  }, [premium, premiumRetry, t, toast, freeBeta]);
 
   const freeSessions = useMemo(
     () => filterMindByCollection(GUIDED_MIND_SESSIONS, collectionId),
@@ -193,10 +201,26 @@ export function MindPage() {
           className="py-6"
           actionLabel={t('mindPremiumRetry', { defaultValue: 'Try again' })}
           onAction={() => setPremiumRetry((n) => n + 1)}
-          title={t('mindPremiumFetchFailed', { defaultValue: 'Could not load premium sessions' })}
-          description={t('mindPremiumOffline', {
-            defaultValue: 'Premium sessions unavailable offline — free tools above still work.',
-          })}
+          title={
+            freeBeta
+              ? t('mindPremiumFetchFailedOpenBeta', {
+                  defaultValue: 'Could not load extra guided sessions',
+                })
+              : t('mindPremiumFetchFailed', {
+                  defaultValue: 'Could not load premium sessions',
+                })
+          }
+          description={
+            freeBeta
+              ? t('mindPremiumOfflineOpenBeta', {
+                  defaultValue:
+                    'Extra sessions unavailable offline — free tools above still work.',
+                })
+              : t('mindPremiumOffline', {
+                  defaultValue:
+                    'Premium sessions unavailable offline — free tools above still work.',
+                })
+          }
         />
       )}
 
@@ -204,10 +228,15 @@ export function MindPage() {
         <details className="group border-2 border-border bg-card">
           <summary className="flex min-h-[44px] cursor-pointer list-none items-center justify-between gap-2 px-4 py-3 text-sm font-semibold text-foreground [&::-webkit-details-marker]:hidden">
             <span>
-              {t('mindPremiumSessionsCount', {
-                count: filteredPremium.length,
-                defaultValue: `Premium guided sessions (${filteredPremium.length})`,
-              })}
+              {freeBeta
+                ? t('mindPremiumSessionsCountOpenBeta', {
+                    count: filteredPremium.length,
+                    defaultValue: `More guided sessions (${filteredPremium.length})`,
+                  })
+                : t('mindPremiumSessionsCount', {
+                    count: filteredPremium.length,
+                    defaultValue: `Premium guided sessions (${filteredPremium.length})`,
+                  })}
             </span>
             <ChevronDown className="h-4 w-4 text-muted-foreground transition-transform group-open:rotate-180" />
           </summary>

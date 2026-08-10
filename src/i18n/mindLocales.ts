@@ -32,6 +32,10 @@ type MindStrings = {
   mindEmptyCta: string;
   mindPremiumFetchFailed: string;
   mindPremiumFetchFailedDesc: string;
+  /** Free-beta: depth unlocked — no “premium” empty/error merch. */
+  mindPremiumFetchFailedOpenBeta: string;
+  mindPremiumOfflineOpenBeta: string;
+  mindPremiumSessionsCountOpenBeta: string;
   mindPremiumRetry: string;
   mindPreviewPlayer: string;
   mindLockedHint: string;
@@ -82,6 +86,9 @@ const en: MindStrings = {
   mindEmptyCta: 'Browse guided sessions',
   mindPremiumFetchFailed: 'Could not load premium sessions',
   mindPremiumFetchFailedDesc: 'Free mind tools still work. Check your connection and try again.',
+  mindPremiumFetchFailedOpenBeta: 'Could not load extra guided sessions',
+  mindPremiumOfflineOpenBeta:
+    'Extra sessions unavailable offline — free tools above still work.',
   mindPremiumRetry: 'Try again',
   mindPreviewPlayer: 'Press play — timed cues walk you through each step',
   mindLockedHint:
@@ -91,6 +98,7 @@ const en: MindStrings = {
   mindCollectionEmpty: 'No sessions in this collection.',
   mindGuidedFreeCount: 'Guided sessions ({{count}})',
   mindPremiumSessionsCount: 'Premium guided sessions ({{count}})',
+  mindPremiumSessionsCountOpenBeta: 'More guided sessions ({{count}})',
   mindPremiumPreviewCount: 'Premium guided sessions ({{count}})',
   mindSubtitleDepthBeta:
     '{{free}} free guided sessions · {{unlocked}} unlocked in open beta — breathing + check-in included.',
