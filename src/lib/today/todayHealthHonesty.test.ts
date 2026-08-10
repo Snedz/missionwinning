@@ -27,3 +27,24 @@ test('PillarScoreBreakdown never defaults pillar labels to raw keys', () => {
   assert.match(src, /labelDefault:\s*'Train'/);
   assert.doesNotMatch(src, /defaultValue:\s*key\s*\}/);
 });
+
+test('TodayProgressSection never defaults readiness status to raw statusKey', () => {
+  const src = readFileSync(
+    join(root, 'src/components/today/TodayProgressSection.tsx'),
+    'utf8'
+  );
+  assert.match(src, /readinessStatusDefault/);
+  assert.doesNotMatch(src, /defaultValue:\s*r\.statusKey/);
+});
+
+test('TodayJournalStrip never defaults pillar labels to entry.pillar', () => {
+  const src = readFileSync(
+    join(root, 'src/components/today/TodayJournalStrip.tsx'),
+    'utf8'
+  );
+  // Strip comments — docs may name the old defaultValue: entry.pillar defect.
+  const code = src.replace(/\/\*[\s\S]*?\*\//g, '').replace(/^\s*\/\/.*$/gm, '');
+  assert.match(src, /labelDefault:\s*'Train'/);
+  assert.doesNotMatch(code, /defaultValue:\s*entry\.pillar/);
+  assert.match(code, /defaultValue:\s*meta\.labelDefault/);
+});

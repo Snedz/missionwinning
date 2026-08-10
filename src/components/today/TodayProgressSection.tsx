@@ -25,7 +25,7 @@ import { FREE_STARTER_PROGRAMS } from '@/data/starterPrograms';
 import { formatDuration } from '@/lib/utils';
 import { MAJOR_GROUPS } from '@/lib/muscleGroups';
 import { getUser, saveNutritionEntry, getUserNutritionForDate, type CloudNutritionEntry } from '@/lib/supabase';
-import { muscleGroupLabel } from '@/lib/readinessDisplay';
+import { muscleGroupLabel, readinessStatusDefault } from '@/lib/readinessDisplay';
 import type { computeReadiness } from '@/lib/score';
 import type { CompletedWorkoutLog, SavedWorkout, WorkoutExerciseTemplate } from '@/types';
 import { useWorkoutStore } from '@/store/workoutStore';
@@ -142,7 +142,7 @@ export function TodayProgressSection({
                   <div className={isPrime ? "text-primary" : "text-muted-foreground"}>
                     {r.days === 99
                       ? t('todayNoRecentData', { defaultValue: 'No recent data' })
-                      : `${t('todayDaysRest', { days: r.days, defaultValue: `${r.days}d rest` })} — ${t(r.statusKey, { defaultValue: r.statusKey })}`}
+                      : `${t('todayDaysRest', { days: r.days, defaultValue: `${r.days}d rest` })} — ${t(r.statusKey, { defaultValue: readinessStatusDefault(r.statusKey) })}`}
                   </div>
                   {isPrime && matchingEx.length > 0 && (
                     <Button

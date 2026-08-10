@@ -17,14 +17,20 @@ import { formatJournalWhen } from '@/lib/time/localDate';
 
 const PILLAR_META: Record<
   JournalPillar,
-  { icon: LucideIcon; labelKey: keyof import('@/i18n/todayLocales').TodayStrings; href: string }
+  {
+    icon: LucideIcon;
+    labelKey: keyof import('@/i18n/todayLocales').TodayStrings;
+    /** English floor — never fall back to the pillar id (raw "train" on hydrate). */
+    labelDefault: string;
+    href: string;
+  }
 > = {
-  train: { icon: Dumbbell, labelKey: 'todayPillarTrain', href: '/history' },
-  fuel: { icon: UtensilsCrossed, labelKey: 'todayPillarFuel', href: '/nutrition' },
-  move: { icon: Wind, labelKey: 'todayPillarMove', href: '/move' },
-  mind: { icon: Brain, labelKey: 'todayPillarMind', href: '/mind' },
-  track: { icon: MapPin, labelKey: 'todayPillarTrack', href: '/track' },
-  learn: { icon: BookOpen, labelKey: 'todayPillarLearn', href: '/learn' },
+  train: { icon: Dumbbell, labelKey: 'todayPillarTrain', labelDefault: 'Train', href: '/history' },
+  fuel: { icon: UtensilsCrossed, labelKey: 'todayPillarFuel', labelDefault: 'Fuel', href: '/nutrition' },
+  move: { icon: Wind, labelKey: 'todayPillarMove', labelDefault: 'Move', href: '/move' },
+  mind: { icon: Brain, labelKey: 'todayPillarMind', labelDefault: 'Mind', href: '/mind' },
+  track: { icon: MapPin, labelKey: 'todayPillarTrack', labelDefault: 'Track', href: '/track' },
+  learn: { icon: BookOpen, labelKey: 'todayPillarLearn', labelDefault: 'Learn', href: '/learn' },
 };
 
 type Props = {
@@ -76,7 +82,7 @@ export function TodayJournalStrip({ entries, locale, className }: Props) {
             <Icon className="mt-0.5 h-4 w-4 shrink-0 text-muted-foreground" aria-hidden />
             <div className="min-w-0 flex-1">
               <div className="flex items-center gap-2 text-[10px] font-semibold uppercase tracking-[0.08em] text-muted-foreground">
-                <span>{t(meta.labelKey, { defaultValue: entry.pillar })}</span>
+                <span>{t(meta.labelKey, { defaultValue: meta.labelDefault })}</span>
                 <span aria-hidden>·</span>
                 <time dateTime={entry.at} className="tabular-nums">
                   {formatJournalWhen(entry.at, locale)}

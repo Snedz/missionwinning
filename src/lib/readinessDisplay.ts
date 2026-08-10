@@ -34,7 +34,8 @@ export const BODY_SCORE_LABEL_DEFAULTS: Record<string, string> = {
   todayBodyFullyRecovered: 'Fully recovered',
 };
 
-function readinessStatusDefault(key: string): string {
+/** English floor for a readiness status key — never the raw key on hydrate. */
+export function readinessStatusDefault(key: string): string {
   return READINESS_STATUS_DEFAULTS[key as ReadinessStatusKey] ?? key;
 }
 
