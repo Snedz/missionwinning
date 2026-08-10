@@ -155,10 +155,15 @@ export function MindPage() {
             {t(activeSeries.titleKey, { defaultValue: activeSeries.titleDefault })}
           </p>
           <p className="text-xs text-muted-foreground">
-            {t('mindSeriesSleepWeekBlurb', {
-              count: activeSeries.sessionIds.length,
-              defaultValue: `A ${activeSeries.sessionIds.length}-night sequence — do nights in order when you can. Premium sessions only.`,
-            })}
+            {freeBeta
+              ? t('mindSeriesSleepWeekBlurbOpenBeta', {
+                  count: activeSeries.sessionIds.length,
+                  defaultValue: `A ${activeSeries.sessionIds.length}-night sequence — do nights in order when you can.`,
+                })
+              : t('mindSeriesSleepWeekBlurb', {
+                  count: activeSeries.sessionIds.length,
+                  defaultValue: `A ${activeSeries.sessionIds.length}-night sequence — do nights in order when you can. Premium sessions only.`,
+                })}
           </p>
         </div>
       ) : null}

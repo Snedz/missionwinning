@@ -51,6 +51,8 @@ type MindStrings = {
   mindSubtitleDepthPaid: string;
   mindSubtitleBrief: string;
   mindSeriesSleepWeekBlurb: string;
+  /** Free-beta: depth unlocked — no “Premium sessions only” pitch. */
+  mindSeriesSleepWeekBlurbOpenBeta: string;
 };
 
 const en: MindStrings = {
@@ -105,7 +107,10 @@ const en: MindStrings = {
   mindSubtitleDepthPaid:
     '{{free}} free guided sessions · Super Bundle adds {{premium}} deeper timed sessions.',
   mindSubtitleBrief: 'Check in, then breathe or run a free guided session.',
-  mindSeriesSleepWeekBlurb: 'A {{count}}-night sequence — do nights in order when you can. Premium sessions only.',
+  mindSeriesSleepWeekBlurb:
+    'A {{count}}-night sequence — do nights in order when you can. Premium sessions only.',
+  mindSeriesSleepWeekBlurbOpenBeta:
+    'A {{count}}-night sequence — do nights in order when you can.',
 };
 
 const es: MindStrings = {

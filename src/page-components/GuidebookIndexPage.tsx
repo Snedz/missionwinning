@@ -24,10 +24,12 @@ import { Button } from '@/components/ui/button';
 import { BookMarked, ChevronRight, Download } from 'lucide-react';
 import { fetchPremiumCatalogJson } from '@/lib/premiumCatalogCache';
 import { PUBLIC_GUIDE_HREF, publicGuideChapterHref } from '@/lib/seoLearnBridge';
+import { isFreeBeta } from '@/lib/freeBeta';
 
 export function GuidebookIndexPage() {
   const { t } = useTranslation();
   const { premium } = usePremium();
+  const freeBeta = isFreeBeta();
   const [premiumChapters, setPremiumChapters] = useState<GuideChapter[]>([]);
   const [completed, setCompleted] = useState<Set<string>>(() => loadGuidebookProgress());
 
@@ -90,7 +92,9 @@ export function GuidebookIndexPage() {
                       {chapter.title}
                       {isPremiumChapter && (
                         <span className="text-[10px] uppercase tracking-wide text-primary font-normal">
-                          {t('learnPremiumBadge', { defaultValue: 'Premium' })}
+                          {freeBeta
+                            ? t('learnPremiumBadgeOpenBeta', { defaultValue: 'Specialist' })
+                            : t('learnPremiumBadge', { defaultValue: 'Premium' })}
                         </span>
                       )}
                     </CardTitle>

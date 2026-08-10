@@ -194,6 +194,8 @@ const NOTIFICATION_EN: Record<string, string> = {
   profileLogAssessmentWin: 'Log assessment win',
   profileAssessmentHint: 'Short screen + stage of change. Guides free starters.',
   profileAssessmentFoot: 'Core free forever. Premium adds history and deeper coaching.',
+  profileAssessmentFootOpenBeta:
+    'Core free forever. Open beta unlocks history depth and deeper coaching tools.',
   ownerToolsBundleFoot: 'Demo figures only. Free core stays free.',
   ownerToolsShareFoot: 'Share wins and feedback when you ship.',
   ownerToolsEventsFoot: 'Journey events, milestones, and installs. Syncs when signed in.',

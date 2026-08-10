@@ -11,6 +11,7 @@ import { readJson } from '@/lib/storage/safeStorage';
 import { toast } from '@/hooks/use-toast';
 import { localDateKey } from '@/lib/time/localDate';
 import { bumpTrainingStreak } from '@/lib/streaks';
+import { isFreeBeta } from '@/lib/freeBeta';
 
 type LastAssessment = {
   risk: string;
@@ -27,6 +28,7 @@ export function ProfileAssessmentCard() {
   const router = useRouter();
   const startWorkout = useWorkoutStore((s) => s.startWorkout);
   const lastAssessment = getLastAssessment();
+  const freeBeta = isFreeBeta();
 
   const launchFromAssessment = (risk: string) => {
     let name = 'Daily Mobility + Mind Habit';
@@ -138,9 +140,14 @@ export function ProfileAssessmentCard() {
           </div>
         )}
         <div className="text-[10px] text-muted-foreground">
-          {t('profileAssessmentFoot', {
-            defaultValue: 'Core free forever. Premium adds history and deeper coaching.',
-          })}
+          {freeBeta
+            ? t('profileAssessmentFootOpenBeta', {
+                defaultValue:
+                  'Core free forever. Open beta unlocks history depth and deeper coaching tools.',
+              })
+            : t('profileAssessmentFoot', {
+                defaultValue: 'Core free forever. Premium adds history and deeper coaching.',
+              })}
         </div>
       </CardContent>
     </Card>
