@@ -8,6 +8,8 @@ type TodayStrings = {
   todaySectionWeekDesc: string;
   todayWeeklyChallenges: string;
   todayWeeklyChallengesDesc: string;
+  /** Free-beta: free-core goals without “premium” pay contrast. */
+  todayWeeklyChallengesDescOpenBeta: string;
   todayDayStreak: string;
   todayStartWorkout: string;
   todaySectionProgress: string;
@@ -284,6 +286,8 @@ const en: TodayStrings = {
   todaySectionWeekDesc: 'Challenges and daily workout',
   todayWeeklyChallenges: 'Weekly Challenges',
   todayWeeklyChallengesDesc: 'Train + Fuel + volume goals this week. Free core — no premium required.',
+  todayWeeklyChallengesDescOpenBeta:
+    'Train + Fuel + volume goals this week. Free core — open beta unlocks depth across the app.',
   todayDayStreak: '{{count}}-day streak',
   todayStartWorkout: "Start Today's Workout",
   todaySectionProgress: 'Progress & tools',

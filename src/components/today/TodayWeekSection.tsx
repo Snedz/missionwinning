@@ -11,6 +11,7 @@ import { Check } from 'lucide-react';
 import type { RewardsSummary } from '@/lib/rewards/summary';
 import { TodayRewardsCard } from '@/components/rewards/TodayRewardsCard';
 import { XP_BY_ACTION } from '@/lib/rewards/catalog';
+import { isFreeBeta } from '@/lib/freeBeta';
 
 type Props = {
   challenges: ReturnType<typeof getChallengeProgress>;
@@ -28,6 +29,7 @@ export function TodayWeekSection({
   rewards,
 }: Props) {
   const { t } = useTranslation();
+  const freeBeta = isFreeBeta();
   const challengeXp = XP_BY_ACTION.challenge_complete;
 
   return (
@@ -44,9 +46,15 @@ export function TodayWeekSection({
             </span>
           </CardTitle>
           <CardDescription>
-            {t('todayWeeklyChallengesDesc', {
-              defaultValue: 'Train + Fuel + volume goals this week. Free core — no premium required.',
-            })}
+            {freeBeta
+              ? t('todayWeeklyChallengesDescOpenBeta', {
+                  defaultValue:
+                    'Train + Fuel + volume goals this week. Free core — open beta unlocks depth across the app.',
+                })
+              : t('todayWeeklyChallengesDesc', {
+                  defaultValue:
+                    'Train + Fuel + volume goals this week. Free core — no premium required.',
+                })}
           </CardDescription>
         </CardHeader>
         <CardContent className="grid gap-4 md:grid-cols-3">
