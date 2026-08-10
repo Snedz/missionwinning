@@ -50,6 +50,14 @@ const STRUCTURE = {
   },
 } as const;
 
+/* Published artifact URLs, committed so the board works for anyone it is shared
+   with rather than only with the repo checked out. Republishing keeps the URL. */
+const PUBLISHED: Record<string, string> = {
+  '01-the-week': 'https://claude.ai/code/artifact/c603c759-682a-4fcb-a1ce-b8e34317902e',
+  '02-anywhere': 'https://claude.ai/code/artifact/a640c6fe-111b-416b-829f-96b651eca77a',
+  '03-field-manual': 'https://claude.ai/code/artifact/d6fa9ffe-5163-4e83-baf6-35719ac2c928',
+};
+
 const CONCEPTS = [
   { id: '01-the-week', name: 'The Week', mod: () => import('./01-the-week.mts') },
   { id: '02-anywhere', name: 'Anywhere', mod: () => import('./02-anywhere.mts') },
@@ -81,7 +89,10 @@ function assertSelfContained(html: string, id: string) {
     ...html.matchAll(/url\(([^)]+)\)/g),
   ]
     .map((m) => m[1].replace(/^['"]|['"]$/g, ''))
-    .filter((u) => !u.startsWith('data:') && !u.startsWith('#') && !/^[a-z0-9-]+\.html$/i.test(u));
+    .filter((u) => !u.startsWith('data:') && !u.startsWith('#') && !/^[a-z0-9-]+\.html$/i.test(u))
+    // The board is an index OF published pages — its hrefs are the point. The
+    // rule that matters is "renders with no network", not "no URL appears".
+    .filter((u) => !(id === 'index' && /^https:\/\//.test(u)));
   if (refs.length) throw new Error(`${id}: external reference(s) ${refs.slice(0, 3).join(', ')}`);
 
   const ids = new Set([...html.matchAll(/\sid="([^"]+)"/g)].map((m) => m[1]));
@@ -130,7 +141,9 @@ async function main() {
     fs.writeFileSync(file, html);
     console.log(`  ${c.id.padEnd(20)} ${(fs.statSync(file).size / 1024).toFixed(0).padStart(4)} KB`);
   }
-  fs.writeFileSync(path.join(OUT, 'index.html'), boardHtml());
+  const board = boardHtml();
+  assertSelfContained(board, 'index');
+  fs.writeFileSync(path.join(OUT, 'index.html'), board);
   console.log(
     `\n✓ ${CONCEPTS.length} concepts · assets inline · claims within the ban list · ` +
       'structurally distinct from each other and from the shipped page\n',
@@ -148,7 +161,7 @@ function boardHtml(): string {
     .map((c) => {
       const con = CONCEPTS.find((x) => x.id === c);
       return con
-        ? `<th><a href="${c}.html">${con.name}</a><span>${c}</span></th>`
+        ? `<th><a href="${PUBLISHED[c] ?? `${c}.html`}">${con.name}</a><span>${c}</span></th>`
         : `<th class="was">Shipped today<span>sites/www</span></th>`;
     })
     .join('');
@@ -194,11 +207,11 @@ all three and produced eight versions of one wireframe — the sharing was the f
 three different page architectures, each written for its own shape.</p>
 
 <div class="grid">
-  <a class="card" href="01-the-week.html"><span class="n">01</span><h2>The Week</h2>
+  <a class="card" href="${PUBLISHED['01-the-week']}"><span class="n">01</span><h2>The Week</h2>
     <p>The product is the page. Log a set in the first screen and watch the week answer. Scrolling reveals consequences, not sections.</p></a>
-  <a class="card" href="02-anywhere.html"><span class="n">02</span><h2>Anywhere</h2>
+  <a class="card" href="${PUBLISHED['02-anywhere']}"><span class="n">02</span><h2>Anywhere</h2>
     <p>One session, five places, one pinned stage. The ground changes under you; the plan in the corner does not.</p></a>
-  <a class="card" href="03-field-manual.html"><span class="n">03</span><h2>Field Manual</h2>
+  <a class="card" href="${PUBLISHED['03-field-manual']}"><span class="n">03</span><h2>Field Manual</h2>
     <p>A document, not a scroll. Opens on a contents page. You look things up, and you may never reach the bottom.</p></a>
 </div>
 
