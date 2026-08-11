@@ -8,10 +8,11 @@ import { useState } from 'react';
 import dynamic from 'next/dynamic';
 import Link from 'next/link';
 import { useTranslation } from 'react-i18next';
-import { Sparkles } from 'lucide-react';
+import { ChevronRight, Sparkles } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { PillarPageShell } from '@/components/layout/PillarPageShell';
+import { ScreenDock } from '@/components/layout/ScreenDock';
 import { WeekStrip } from '@/components/coach/WeekStrip';
 import { CoachPlanSessionGrid } from '@/components/coach/CoachPlanSessionGrid';
 import { AdjustSessionSheet } from '@/components/coach/AdjustSessionSheet';
@@ -104,17 +105,40 @@ export function CoachPage({ askExerciseId }: CoachPageProps = {}) {
         </div>
       )}
 
-      {/* Free beta: never hard-lock Coach — offer a fresh week */}
+      {/* Free beta: never hard-lock Coach — offer a fresh week.
+          Invite only in EmptyState; one red Generate lives in ScreenDock (1A). */}
       {!loading && locked && freeBeta && (
-        <EmptyState
-          icon={Sparkles}
-          title={t('coachGenerateEmptyTitle', { defaultValue: 'Ready for a new week?' })}
-          description={t('coachFreeBetaNextWeek', {
-            defaultValue: 'Generate next week from your latest logs. Free while beta is open.',
-          })}
-          actionLabel={t('coachGenerateWeek', { defaultValue: 'Generate this week' })}
-          onAction={() => generate()}
-        />
+        <>
+          <EmptyState
+            icon={Sparkles}
+            title={t('coachGenerateEmptyTitle', { defaultValue: 'Ready for a new week?' })}
+            description={t('coachFreeBetaNextWeek', {
+              defaultValue: 'Generate next week from your latest logs. Free while beta is open.',
+            })}
+          />
+          <ScreenDock>
+            <div className="poster-field px-4 pb-4 pt-3.5">
+              <p className="poster-kicker mb-2 text-[11px] font-semibold uppercase tracking-[0.12em]">
+                {weekEyebrow}
+              </p>
+              <p className="poster-sub mb-2.5 line-clamp-2 text-sm leading-relaxed">
+                {t('coachFreeBetaNextWeek', {
+                  defaultValue: 'Generate next week from your latest logs. Free while beta is open.',
+                })}
+              </p>
+              <button
+                type="button"
+                onClick={() => generate()}
+                className="primary-action min-h-[52px] w-full text-[19px]"
+              >
+                <span className="flex-1 text-start">
+                  {t('coachGenerateWeek', { defaultValue: 'Generate this week' })}
+                </span>
+                <ChevronRight className="ms-auto h-5 w-5 shrink-0" aria-hidden />
+              </button>
+            </div>
+          </ScreenDock>
+        </>
       )}
 
       {!loading && locked && !freeBeta && (
@@ -160,18 +184,45 @@ export function CoachPage({ askExerciseId }: CoachPageProps = {}) {
         </Card>
       )}
 
+      {/* Field manual 1A: EmptyState is invite only (outline CTAs demoted by design).
+          Boss Generate docks in poster-field — same chrome as Active empty Start. */}
       {!loading && !plan && !locked && (
-        <EmptyState
-          icon={Sparkles}
-          title={t('coachGenerateEmptyTitle', { defaultValue: 'No plan this week' })}
-          description={t('coachGenerateEmptyDesc', {
-            defaultValue: freeBeta
-              ? 'One week from your logs. Free every week — no wearable.'
-              : 'One week from your logs. Free every week; Bundle adds chat and regenerate.',
-          })}
-          actionLabel={t('coachGenerateWeek', { defaultValue: 'Generate this week' })}
-          onAction={() => generate()}
-        />
+        <>
+          <EmptyState
+            icon={Sparkles}
+            title={t('coachGenerateEmptyTitle', { defaultValue: 'No plan this week' })}
+            description={t('coachGenerateEmptyDesc', {
+              defaultValue: freeBeta
+                ? 'One week from your logs. Free every week — no wearable.'
+                : 'One week from your logs. Free every week; Bundle adds chat and regenerate.',
+            })}
+          />
+          <ScreenDock>
+            <div className="poster-field px-4 pb-4 pt-3.5">
+              <p className="poster-kicker mb-2 text-[11px] font-semibold uppercase tracking-[0.12em]">
+                {weekEyebrow}
+              </p>
+              <p className="poster-sub mb-2.5 line-clamp-2 text-sm leading-relaxed">
+                {t('coachGenerateEmptyDesc', {
+                  defaultValue: freeBeta
+                    ? 'One week from your logs. Free every week — no wearable.'
+                    : 'One week from your logs. Free every week; Bundle adds chat and regenerate.',
+                })}
+              </p>
+              <button
+                type="button"
+                onClick={() => generate()}
+                className="primary-action min-h-[52px] w-full text-[19px]"
+                data-testid="coach-generate-dock"
+              >
+                <span className="flex-1 text-start">
+                  {t('coachGenerateWeek', { defaultValue: 'Generate this week' })}
+                </span>
+                <ChevronRight className="ms-auto h-5 w-5 shrink-0" aria-hidden />
+              </button>
+            </div>
+          </ScreenDock>
+        </>
       )}
 
       {plan && !locked && (

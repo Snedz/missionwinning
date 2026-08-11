@@ -65,4 +65,16 @@ describe('WorkoutVictorySheet wires victoryShare helpers (.452)', () => {
       'share URL lives in buildVictorySharePayload'
     );
   });
+
+  it('shows fail-only recovery on method:failed — not cancel (design 2A)', () => {
+    const src = readFileSync(
+      path.join(import.meta.dirname, '..', '..', 'components', 'workout', 'WorkoutVictorySheet.tsx'),
+      'utf8'
+    );
+    assert.match(src, /shareFailHint/);
+    assert.match(src, /victory-share-fail/);
+    assert.match(src, /victoryShareFailed/);
+    assert.match(src, /method: 'failed'/);
+    assert.match(src, /setShareFailHint\(true\)/);
+  });
 });
