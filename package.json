@@ -17,6 +17,7 @@
     "check-token-sync": "node scripts/check-token-sync.mjs",
     "check-display-type": "node scripts/check-display-type.mjs",
     "check-build-label": "node scripts/check-build-label.mjs",
+    "check-excellence-gate": "tsx scripts/check-excellence-gate.ts",
     "relabel": "node scripts/relabel.mjs",
     "predeploy": "tsx scripts/pre-deploy-smoke.ts",
     "gate-smoke": "tsx scripts/gate-smoke.ts",

@@ -32,8 +32,58 @@ import { isOfflineInstallable } from '@/lib/offlineCapability';
 
 const root = path.join(import.meta.dirname, '..', '..');
 const read = (p: string) => readFileSync(path.join(root, p), 'utf8');
-const stripComments = (src: string) =>
-  src.replace(/\/\*[\s\S]*?\*\//g, '').replace(/^[ \t]*\/\/.*$/gm, '');
+
+/**
+ * Strip line and block comments without touching string literals.
+ *
+ * A naive block-comment regex is wrong here: CSP in next.config.js carries
+ * `https://*.supabase.co`, and the slash-star in that URL starts a false block
+ * comment that swallows the `env.NEXT_PUBLIC_PWA_ENABLED` assignment (the
+ * load-bearing line this suite asserts). That went red after any later
+ * block-comment closer in the file sealed the accidental span — e.g. the `.668`
+ * redirects JSDoc.
+ */
+function stripComments(src: string): string {
+  let out = '';
+  let i = 0;
+  while (i < src.length) {
+    const c = src[i];
+    const n = src[i + 1];
+    if (c === '"' || c === "'" || c === '`') {
+      const q = c;
+      out += c;
+      i += 1;
+      while (i < src.length) {
+        if (src[i] === '\\' && i + 1 < src.length) {
+          out += src[i] + src[i + 1];
+          i += 2;
+          continue;
+        }
+        out += src[i];
+        if (src[i] === q) {
+          i += 1;
+          break;
+        }
+        i += 1;
+      }
+      continue;
+    }
+    if (c === '/' && n === '/') {
+      i += 2;
+      while (i < src.length && src[i] !== '\n') i += 1;
+      continue;
+    }
+    if (c === '/' && n === '*') {
+      i += 2;
+      while (i + 1 < src.length && !(src[i] === '*' && src[i + 1] === '/')) i += 1;
+      i += 2;
+      continue;
+    }
+    out += c;
+    i += 1;
+  }
+  return out;
+}
 
 describe('the offline capability flag', () => {
   /**

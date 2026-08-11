@@ -132,6 +132,7 @@ function hasChromium() {
 // three-minute build wastes the build, and an unbumped label is what makes two
 // branches announce the same version.
 run('Build label + hard rule 5', 'npm', ['run', 'check-build-label']);
+run('Excellence gate (Horizon W result)', 'npm', ['run', 'check-excellence-gate']);
 run('Lint', 'npm', ['run', 'lint']);
 run('Typecheck', 'npm', ['run', 'typecheck']);
 run('Unit tests', 'npm', ['test']);

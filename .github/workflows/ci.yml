@@ -59,6 +59,12 @@ jobs:
       - name: Build label + hard rule 5
         run: npm run check-build-label
 
+      # Horizon W process ratchet — surface paths need RESULT status:pass or
+      # Excellence-Override trailer. Same base...HEAD shape as check-build-label;
+      # needs full history (fetch-depth above).
+      - name: Excellence gate
+        run: npm run check-excellence-gate
+
       - name: Display type
         run: npm run check-display-type
 

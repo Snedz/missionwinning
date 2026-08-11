@@ -107,6 +107,10 @@ flowchart TB
 
 **Done when:** Founder phone path says pass → then Horizon 0 flip prep (recruit ≥10).
 
+**Where sign-off is written:** [docs/EXCELLENCE_RESULT.md](docs/EXCELLENCE_RESULT.md) — one home for `status: unscored | pass | fail`. `CONTEXT.md` `## Now` points at it in one bullet. Android Accept B stays separate ([apps/android/FOUNDER_ACCEPT.md](apps/android/FOUNDER_ACCEPT.md)).
+
+**Agent stop-rule (process ratchet):** while RESULT status is not `pass`, PRs that change **surface** paths fail `npm run check-excellence-gate` / PR CI unless the commit (or PR body) carries `Excellence-Override: <reason>`. Wedge paths (Train / Today / Coach logger+plan) still ship. Hotfixes on surface need the trailer. Local `EXCELLENCE_OVERRIDE=1` is ignored in CI.
+
 ---
 
 ## Horizon 0 — Launch unblock (after excellence sign-off)

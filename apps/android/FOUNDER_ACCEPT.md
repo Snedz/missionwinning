@@ -1,5 +1,9 @@
 # Founder accept checklist — Android wedge
 
+**Web Horizon W excellence is separate.** Machine status for invites lives in
+[docs/EXCELLENCE_RESULT.md](../../docs/EXCELLENCE_RESULT.md) (web phone path). This
+file is Android Accept B only — do not treat Accept B pass as RESULT `status: pass`.
+
 Use on an emulator (`MW_Phone_API36`) or physical phone after:
 
 ```bash
