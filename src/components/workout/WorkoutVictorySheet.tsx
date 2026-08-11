@@ -259,6 +259,7 @@ export function WorkoutVictorySheet({
 
         <VictoryStatsStrip
           totalVolume={summary.totalVolume}
+          totalReps={summary.totalReps}
           setCount={summary.setCount}
           durationSeconds={summary.durationSeconds}
           unitLabel={unitLabel}

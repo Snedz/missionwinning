@@ -7,7 +7,7 @@ export const DAILY_XP_SOFT_CAP = 200;
 export const CLAIMED_EVENT_CAP = 400;
 
 export const XP_BY_ACTION: Record<RewardActionId, number> = {
-  workout_finish: 50,
+  workout_finish: 45,
   weekly_train_goal: 100,
   fuel_day: 15,
   pillar_move: 15,
@@ -15,7 +15,8 @@ export const XP_BY_ACTION: Record<RewardActionId, number> = {
   pillar_track: 15,
   pillar_learn: 20,
   challenge_complete: 75,
-  journey_first_workout: 100,
+  /** Stacks with workout_finish on session 1 — keep first week under level 2. */
+  journey_first_workout: 30,
   journey_commissioned: 200,
   perfect_week_bonus: 50,
 };
@@ -166,7 +167,7 @@ export function badgeDef(id: BadgeId): BadgeDef {
  */
 export const RANKS: readonly RankDef[] = [
   { level: 1, xpMin: 0, titleKey: 'rewardRank1', titleDefault: 'Pathfinder' },
-  { level: 2, xpMin: 100, titleKey: 'rewardRank2', titleDefault: 'Regular' },
+  { level: 2, xpMin: 150, titleKey: 'rewardRank2', titleDefault: 'Regular' },
   { level: 3, xpMin: 250, titleKey: 'rewardRank3', titleDefault: 'Operator' },
   { level: 4, xpMin: 500, titleKey: 'rewardRank4', titleDefault: 'Steady Hand' },
   { level: 5, xpMin: 900, titleKey: 'rewardRank5', titleDefault: 'Path Keeper' },

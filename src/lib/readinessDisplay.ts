@@ -3,6 +3,7 @@ import {
   type MuscleGroup,
   type ReadinessStatusKey,
 } from '@/lib/muscleGroups';
+import { interpolateTemplate } from '@/lib/i18n/firstPaintString';
 import type { CoachInsight, RecommendedFocus } from '@/lib/score';
 
 type TranslateFn = (key: string, options?: Record<string, unknown>) => string;
@@ -121,11 +122,15 @@ export function translateCoachInsightLine(
   const focusLine = formatRecommendedFocusLine(focus, t);
   const defaults = coachInsightMessageDefaults(focusLine);
   const floor = defaults[insight.messageKey] ?? insight.messageKey;
-  return t(insight.messageKey, {
+  const out = t(insight.messageKey, {
     ...(insight.messageParams ?? {}),
     focusLine,
     defaultValue: floor,
   });
+  if (!out || out === insight.messageKey || out.includes('{{')) {
+    return interpolateTemplate(floor, { focusLine, ...(insight.messageParams ?? {}) });
+  }
+  return out;
 }
 
 /**

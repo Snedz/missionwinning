@@ -11,8 +11,6 @@ import { normalizeAppLang } from '@/i18n/appLangs';
 import {
   LANG_EXPLICIT_KEY,
   REGION_DEFAULTS_APPLIED_KEY,
-  UNITS_EXPLICIT_KEY,
-  UNITS_STORAGE_KEY,
   type RegionDefaults,
 } from '@/lib/regionDefaults';
 import { readRaw, writeRaw } from '@/lib/storage/safeStorage';
@@ -33,17 +31,9 @@ export function RegionDefaultsBoot() {
         const data = (await res.json()) as GeoResponse;
         if (cancelled) return;
 
-        const unitsExplicit = readRaw(UNITS_EXPLICIT_KEY) === '1';
         const langExplicit = readRaw(LANG_EXPLICIT_KEY) === '1';
-        const hasUnits = readRaw(UNITS_STORAGE_KEY);
 
-        if (!unitsExplicit && !hasUnits && (data.units === 'metric' || data.units === 'imperial')) {
-          writeRaw(UNITS_STORAGE_KEY, data.units);
-          window.dispatchEvent(
-            new StorageEvent('storage', { key: UNITS_STORAGE_KEY, newValue: data.units })
-          );
-        }
-
+        // Units stay metric until the athlete chooses imperial in Account.
         if (!langExplicit && data.language) {
           const lng = normalizeAppLang(data.language);
           // Override navigator-only first paint with region default.

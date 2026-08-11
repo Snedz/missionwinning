@@ -249,7 +249,7 @@ const en: ActiveWorkoutStrings = {
   activeNothingLogged: 'Log a set first',
   activeNothingLoggedDesc: 'Finish unlocks after at least one completed set.',
   activeReps: 'Reps',
-  activeWeight: 'lbs',
+  activeWeight: 'Weight',
   activeRpeEasy: 'Easy',
   activeRpeMed: 'Med',
   activeRpeHard: 'Hard',

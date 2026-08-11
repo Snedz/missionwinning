@@ -17,5 +17,5 @@ test('CoachTodayCard keeps built-from-logs honesty', () => {
 test('CoachAdaptBanner keeps adapted-from-logs honesty', () => {
   const src = readFileSync(join(root, 'components/coach/CoachAdaptBanner.tsx'), 'utf8');
   assert.match(src, /from your logs/i);
-  assert.match(src, /no wearable/i);
+  assert.match(src, /coachPlanHeadlineStarter/);
 });

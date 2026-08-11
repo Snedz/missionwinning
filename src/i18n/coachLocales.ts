@@ -17,6 +17,7 @@ type CoachStrings = {
   coachTodayMission: string;
   coachWeekOverview: string;
   coachAdaptHeadline: string;
+  coachPlanHeadlineStarter: string;
   coachAdaptMissedNote: string;
   coachAdaptSwappedNote: string;
   coachAdaptLoggedNote: string;
@@ -183,7 +184,8 @@ const en: CoachStrings = {
   coachViewPlan: 'View full week',
   coachTodayMission: 'Mission Coach · adapts from logs',
   coachWeekOverview: 'Mission Coach · this week',
-  coachAdaptHeadline: 'Adapted from your logs — no wearable needed',
+  coachAdaptHeadline: 'Updated from your logs — no wearable needed',
+  coachPlanHeadlineStarter: 'Rules-based week from your gear and schedule',
   coachAdaptMissedNote:
     'Life happened — {{count}} session(s) missed. Remaining days are re-spread so the week still fits. No shame; just continue.',
   coachAdaptSwappedNote:

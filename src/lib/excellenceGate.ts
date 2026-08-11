@@ -176,7 +176,6 @@ export const KNOWN_TOP_LEVELS: Readonly<Record<string, 'wedge' | 'surface'>> = {
   // apps/android (native product — surface until web excellence pass; Accept B separate)
   'apps/android/app': 'surface',
   'apps/android/benchmark': 'surface',
-  'apps/android/build': 'surface',
   'apps/android/core': 'surface',
   'apps/android/feature': 'surface',
   'apps/android/gradle': 'surface',

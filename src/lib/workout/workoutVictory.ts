@@ -10,6 +10,7 @@ import {
   type VictoryNextAction as VictoryNextActionCore,
   type PickVictoryNextActionOpts as PickVictoryNextActionOptsCore,
 } from '../../../packages/mw-core/src/workout/victory';
+import { sumWorkingReps } from '@/lib/workout/volumeDisplay';
 
 export type VictoryBodyDelta = {
   readiness: number;
@@ -40,6 +41,8 @@ export type ProgressionInsight = {
 export interface WorkoutVictorySummary {
   workoutName: string;
   totalVolume: number;
+  /** Working-set reps — used when tonnage is 0 (bodyweight). */
+  totalReps: number;
   durationSeconds: number;
   setCount: number;
   exerciseCount: number;
@@ -195,6 +198,7 @@ export function summarizeWorkoutVictory(
   return {
     workoutName: log.workoutName,
     totalVolume: log.totalVolume,
+    totalReps: sumWorkingReps(log.exercises),
     durationSeconds: log.durationSeconds,
     setCount,
     exerciseCount: log.exercises.length,

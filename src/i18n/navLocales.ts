@@ -55,7 +55,7 @@ const en: NavStrings = {
   navMind: 'Mind',
   navLearn: 'Learn',
   navBuilder: 'Builder',
-  navCoach: 'AI weekly plan',
+  navCoach: 'Weekly plan',
   navLibrary: 'Library',
   navHistory: 'History',
   navLeaderboard: 'Leaderboard',
