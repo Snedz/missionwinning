@@ -38,6 +38,7 @@ When adding a doc:
 | [log/LOG-rotate-658.md](./log/LOG-rotate-658.md) | rotated oldest for `.658` landing FAQ JSON-LD free-beta mute |
 | [log/LOG-rotate-657.md](./log/LOG-rotate-657.md) | rotated oldest for `.657` Programs free-beta mute |
 | [log/LOG-rotate-656.md](./log/LOG-rotate-656.md) | rotated oldest for `.656` Move free-beta mute |
+| [log/LOG-rotate-671.md](./log/LOG-rotate-671.md) | rotated oldest for `.671` PWA start_url private gate |
 | [log/LOG-rotate-655.md](./log/LOG-rotate-655.md) | rotated oldest for `.655` Learn free-beta mute |
 | [log/LOG-rotate-654.md](./log/LOG-rotate-654.md) | rotated oldest for `.654` press+vision free-beta mute |
 | [log/LOG-rotate-653.md](./log/LOG-rotate-653.md) | rotated oldest for `.653` legal English floors |

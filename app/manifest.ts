@@ -9,8 +9,11 @@ export default function manifest(): MetadataRoute.Manifest {
     short_name: 'Mission Winning',
     description:
       'Free offline workout logger + adaptive Mission Coach from your logs — free core forever, works offline anywhere.',
+    // id pins install identity — do not change without product sign-off.
     id: '/log',
-    start_url: '/log',
+    // Cold PWA launch under PRIVATE_MODE: /log is gated and soft-bounces to /private.
+    // Start on the gate-public access screen so invitees land without losing path.
+    start_url: '/private',
     scope: '/',
     display: 'standalone',
     orientation: 'portrait',
