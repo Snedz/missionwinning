@@ -78,6 +78,13 @@ describe('the private gate redirect (PRIVATE_MODE=true)', () => {
     assert.equal(to.searchParams.get('src'), 'push', 'unrelated query params survive too');
   });
 
+  it('records /coach for post-I-Day wedge navigation', async () => {
+    const to = await redirectFor('/coach');
+    assert.ok(to);
+    assert.equal(to.pathname, '/private');
+    assert.equal(to.searchParams.get('next'), '/coach');
+  });
+
   it('does not name / as a destination — that is where the gate already sends you', async () => {
     const to = await redirectFor('/');
     assert.ok(to);

@@ -10,6 +10,7 @@ import {
   grantPrivateAccessFromSession,
   navigateAfterPrivateGateUnlock,
 } from '@/lib/grantPrivateAccessFromSession';
+import { privateGateReturnPath } from '@/lib/privateGateReturn';
 import { submitLead } from '@/lib/supabase';
 import { track } from '@/lib/analytics';
 
@@ -42,10 +43,9 @@ export function PrivateTeaserClient({ initialInvite = '' }: Props) {
         const ok = await grantPrivateAccessFromSession();
         if (cancelled) return;
         if (ok) {
-          const next = searchParams.get('next')?.trim();
-          const dest =
-            next && next.startsWith('/') && !next.startsWith('//') ? next : '/';
-          navigateAfterPrivateGateUnlock(dest);
+          navigateAfterPrivateGateUnlock(
+            privateGateReturnPath(searchParams.get('next'))
+          );
           return;
         }
       } finally {
@@ -73,10 +73,9 @@ export function PrivateTeaserClient({ initialInvite = '' }: Props) {
       });
 
       if (res.ok) {
-        const next = searchParams.get('next')?.trim();
-        const dest =
-          next && next.startsWith('/') && !next.startsWith('//') ? next : '/';
-        navigateAfterPrivateGateUnlock(dest);
+        navigateAfterPrivateGateUnlock(
+          privateGateReturnPath(searchParams.get('next'))
+        );
         return;
       } else {
         const data = await res.json().catch(() => ({}));
