@@ -7,7 +7,7 @@
 
 - **Mute pay:** no Super Bundle, checkout, founders pricing, Play subscribe, crypto Lifetime CTAs, Unlock CTAs.
 - **Unlock depth:** treat everyone as premium-entitled — Coach chat, Fuel Coach, GPS catalogs, Move/Mind/Learn premium sessions, adapt depth. No $ credits wallet.
-- **Full More nav:** journey i-day/basic train-only focus is deferred — More shows Recover / Train deeper / Learn (still no Bundle) so all pillars are discoverable.
+- **More nav:** Bundle stays muted. F-004 (`.695`) demotes the More/rail **Pillars** tier until the first logged workout (`workoutHistory.length` / `basic.workout`); Wedge + You stay. After first workout, pillars reappear (progressive disclosure — not a permanent hide).
 - Show: logger, Today, Victory, Coach week + depth, free + unlocked pillar tools, Guide.
 - Frame: “Open beta — full platform free while we grow with you.”
 
@@ -39,7 +39,7 @@ Then grandfather early beta users with founders price / enrollment grants — no
 - [`src/lib/freeBeta.ts`](../src/lib/freeBeta.ts) · [`src/lib/premiumServer.ts`](../src/lib/premiumServer.ts) (`isPremiumBypassEnabled`)
 - [`src/hooks/usePremium.ts`](../src/hooks/usePremium.ts) — premium true while free beta
 - `/api/premium/*` + Coach chat/voice — bypass enrollment
-- [`src/lib/navConfig.ts`](../src/lib/navConfig.ts) — `extendedNavSectionsForPhase` full More when free beta
+- [`src/lib/navConfig.ts`](../src/lib/navConfig.ts) · [`src/lib/moreSheetTiers.ts`](../src/lib/moreSheetTiers.ts) — Pillars demoted until first workout (F-004)
 - [`UnlockButton`](../src/components/UnlockButton.tsx) → `null` when free beta
 - `/bundle` → redirect `/log`
 - Android Coach: `MwFreeBeta.ENABLED || auth.premium`; no Play subscribe banner

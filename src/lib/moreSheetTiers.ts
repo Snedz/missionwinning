@@ -85,23 +85,35 @@ const RAIL_LABEL_OVERRIDES: Record<string, { label: string; labelKey: string }> 
 
 const TAB_SET = new Set<string>(MOBILE_TAB_HREFS);
 
+export type MoreSheetNavOpts = {
+  /**
+   * F-004 — when false, drop the Pillars tier (Move · Mind · Track · Learn)
+   * until the athlete has a first logged workout. Default **true** so inventory
+   * guards and SSR see the full map; call sites pass the live journey signal.
+   */
+  hasFirstWorkout?: boolean;
+};
+
 /**
  * Resolve More sheet tiers for the current surface parking / free-beta world.
  * Empty tiers are dropped. Tab routes never appear as rows.
  */
-export function moreSheetTiersForNav(): MoreSheetTier[] {
-  return MORE_SHEET_TIER_HREFS.map((tier) => ({
-    id: tier.id,
-    title: tier.title,
-    titleKey: tier.titleKey,
-    items: tier.hrefs
-      .filter((href) => !TAB_SET.has(href) && isPathEnabled(href))
-      .map((href) => {
-        const base = NAV_BY_HREF.get(href);
-        if (!base) throw new Error(`MORE_SHEET_TIER_HREFS: no nav item for ${href}`);
-        return { ...base, ...(RAIL_LABEL_OVERRIDES[href] ?? {}) };
-      }),
-  })).filter((tier) => tier.items.length > 0);
+export function moreSheetTiersForNav(opts?: MoreSheetNavOpts): MoreSheetTier[] {
+  const revealPillars = opts?.hasFirstWorkout !== false;
+  return MORE_SHEET_TIER_HREFS.filter((tier) => revealPillars || tier.id !== 'pillars')
+    .map((tier) => ({
+      id: tier.id,
+      title: tier.title,
+      titleKey: tier.titleKey,
+      items: tier.hrefs
+        .filter((href) => !TAB_SET.has(href) && isPathEnabled(href))
+        .map((href) => {
+          const base = NAV_BY_HREF.get(href);
+          if (!base) throw new Error(`MORE_SHEET_TIER_HREFS: no nav item for ${href}`);
+          return { ...base, ...(RAIL_LABEL_OVERRIDES[href] ?? {}) };
+        }),
+    }))
+    .filter((tier) => tier.items.length > 0);
 }
 
 export function moreSheetQuietForNav(): MoreQuietLink[] {
@@ -109,6 +121,6 @@ export function moreSheetQuietForNav(): MoreQuietLink[] {
 }
 
 /** Every href that is a full row in the More sheet (for guards / inventory). */
-export function moreSheetRowHrefs(): string[] {
-  return moreSheetTiersForNav().flatMap((t) => t.items.map((i) => i.href));
+export function moreSheetRowHrefs(opts?: MoreSheetNavOpts): string[] {
+  return moreSheetTiersForNav(opts).flatMap((t) => t.items.map((i) => i.href));
 }

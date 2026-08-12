@@ -205,24 +205,35 @@ const NAV_BY_HREF = new Map<string, NavLinkItem>(
   [...PRIMARY_NAV, ...MORE_NAV].map((i) => [i.href, i])
 );
 
+export type RailNavOpts = {
+  /**
+   * F-004 — when false, drop the Pillars rail group until first logged workout.
+   * Default **true** for inventory/SSR; Sidebar passes the live signal.
+   */
+  hasFirstWorkout?: boolean;
+};
+
 /**
  * Rail groups resolved to items, with parked surfaces dropped and any group
  * that empties out removed — same rule the header menu already follows, since
  * a rail entry that 404s is worse than no entry.
  */
-export function railGroupsForNav(): NavSection[] {
-  return RAIL_GROUPS.map((group) => ({
-    id: group.id,
-    title: group.title,
-    titleKey: group.titleKey,
-    items: group.hrefs
-      .filter((href) => isPathEnabled(href))
-      .map((href) => {
-        const base = NAV_BY_HREF.get(href);
-        if (!base) throw new Error(`RAIL_GROUPS: no nav item for ${href}`);
-        return { ...base, ...(RAIL_LABEL_OVERRIDES[href] ?? {}) };
-      }),
-  })).filter((group) => group.items.length > 0);
+export function railGroupsForNav(opts?: RailNavOpts): NavSection[] {
+  const revealPillars = opts?.hasFirstWorkout !== false;
+  return RAIL_GROUPS.filter((group) => revealPillars || group.id !== 'pillars')
+    .map((group) => ({
+      id: group.id,
+      title: group.title,
+      titleKey: group.titleKey,
+      items: group.hrefs
+        .filter((href) => isPathEnabled(href))
+        .map((href) => {
+          const base = NAV_BY_HREF.get(href);
+          if (!base) throw new Error(`RAIL_GROUPS: no nav item for ${href}`);
+          return { ...base, ...(RAIL_LABEL_OVERRIDES[href] ?? {}) };
+        }),
+    }))
+    .filter((group) => group.items.length > 0);
 }
 
 export const ALL_NAV = [...PRIMARY_NAV, ...MORE_NAV];

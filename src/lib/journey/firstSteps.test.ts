@@ -62,11 +62,21 @@ test('an empty checklist never reports itself complete', () => {
   assert.ok(progress.next, 'a card with no next step has nothing to say and must not render');
 });
 
+test('F-004: before first workout the checklist is workout-only (no pillar options wall)', () => {
+  const steps = getFirstSteps(stateWith({}));
+  assert.deepEqual(
+    steps.map((s) => s.key),
+    ['workout'],
+    'Fuel/Mind/Move/Learn/PAR-Q must wait until basic.workout — C5≤90s progressive disclosure'
+  );
+  assert.equal(summarizeFirstSteps(steps).next?.key, 'workout');
+});
+
 test('every step maps to a milestone the app already detects', () => {
   // Discovering, not enumerating: each step's `done` must actually respond to
   // the state it claims to read. A step wired to nothing would sit unchecked
   // forever and the athlete would never learn why.
-  // session2 only mounts after first workout — compare by key, not index.
+  // session2 + pillars only mount after first workout — compare by key, not index.
   const all = getFirstSteps(
     stateWith({ workout: true, fuel: true, move: true, mind: true, learn: true }, true),
     { completedSessions: 2 }
@@ -83,11 +93,13 @@ test('every step maps to a milestone the app already detects', () => {
   }
   assert.ok(byKey(all, 'session2')?.done, 'session2 complete at 2 sessions');
   assert.equal(byKey(none, 'session2'), undefined, 'session2 absent before first workout');
+  assert.equal(byKey(none, 'fuel'), undefined, 'pillar steps absent before first workout (F-004)');
   assert.equal(summarizeFirstSteps(all).complete, true);
 });
 
 test('every step carries a reason, not just a label', () => {
-  for (const step of getFirstSteps(stateWith({}))) {
+  // After first workout the full discovery list is present — reason lines matter there.
+  for (const step of getFirstSteps(stateWith({ workout: true }), { completedSessions: 1 })) {
     assert.ok(
       step.why.trim().length > 30,
       `step '${step.key}' has no real reason line — the reason is the difference between ` +

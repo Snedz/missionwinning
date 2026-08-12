@@ -16,7 +16,7 @@ One screen of truth for any AI tool or human joining cold. Read this, then [AGEN
 
 ---
 
-## Now (2026-08-12 · web `2026.07-unified.694` · Android `1.24.1`)
+## Now (2026-08-12 · web `2026.07-unified.695` · Android `1.24.1`)
 
 > The ONLY "where we are" block in the repo — [ORCHESTRATION.md](ORCHESTRATION.md) points here.
 >
@@ -282,6 +282,7 @@ One screen of truth for any AI tool or human joining cold. Read this, then [AGEN
 > and `.692` dropped `.632` detail (full text remains in LOG.md / archive)
 > and `.693` dropped `.633` detail (full text remains in LOG.md / archive)
 > and `.694` dropped `.619` detail (full text remains in LOG.md / archive)
+> and `.695` dropped `.606` detail (full text remains in LOG.md / archive)
 > to [CONTEXT-now-2026-07-30.md](docs/archive/CONTEXT-now-2026-07-30.md) after this
 > block reached **79 bullets / 103KB**. A status doc that only grows stops being read.
 
@@ -303,6 +304,7 @@ One screen of truth for any AI tool or human joining cold. Read this, then [AGEN
 > | gitleaks | **green — and scanning for the first time.** It had never scanned anything: on a `pull_request` event the action lists the PR's commits, the job declared no `permissions:` block, and it 403'd (`pull_requests=read`) before opening a file. Fixed by a `permissions:` block (`.224` carrying `.255`). It scans **only the PR's own commits**, so commit `8ea3527a`'s real Solana treasury address — scrubbed from the working file, still in history — is out of its scope. That finding stands, deliberately not allowlisted; it was never what made this check red. |
 
 - **Excellence:** unscored · — · [docs/EXCELLENCE_RESULT.md](docs/EXCELLENCE_RESULT.md) — Horizon W phone sign-off home; surface PRs need `status: pass` or `Excellence-Override` (`.669`).
+- **`.695`:** (`2026.07-unified.695`) **Demote six-pillar chrome until first workout** — First Steps workout-only + More/rail Pillars hidden pre-`basic.workout` / `workoutHistory.length` (F-004 C5≤90s; no shell redesign).
 - **`.694`:** (`2026.07-unified.694`) **Active set-table density (F-003)** — Prev row anchor + ambient running rest; dense ink `LogConsole`; sole poster-red Log set; ≥44px taps (one-thumb; not faster-than-Strong/Hevy).
 - **`.693`:** (`2026.07-unified.693`) **Coach log-cited why-this-week** — adapt/generate rationale cites log inputs · rule · effect on `CoachAdaptBanner` / Coach week (W1 inspectability; no chat chrome).
 - **`.692`:** (`2026.07-unified.692`) **Production smoke ratchet** — CI + gate-smoke lock privacy/terms English floors + `/compare` → `/welcome` (no product redo of `.653`/`.668`).
@@ -318,9 +320,8 @@ One screen of truth for any AI tool or human joining cold. Read this, then [AGEN
 - **`.636`:** (`2026.07-unified.636`) **Global legal posture** — multi-jurisdiction sanctions/trade controls; no US-primary / OFAC-only consumer voice; commercial exclusions unchanged. Counsel export global freeze. **Not legal advice.**
 - **`.635`:** (`2026.07-unified.635`) **Sanctions/export** — generic only (no sub-national place names). `.634` naming reverted. **Not legal advice.**
 - **`.618`:** (`2026.07-unified.618`) **Ukraine commercial exclusion** + consumer legal refresh — Terms sanctions clause; Regions/Privacy/AUP/Service-Terms/Refunds; `UA` hard-block. Not OFAC country embargo; RU/BY still open (founder). Counsel export 2026-08-09. **Not legal advice.**
-- **`.606`:** **The idea, stated once — and the numbers that state it.** New **[docs/THESIS.md](docs/THESIS.md)** is the one page (three layers · wedge · ICP · honest deep/shallow table · moat · open questions) and it *points* rather than restates. **The wedge gains a second beat:** free logger stays the lead, and `coach/load.ts`'s Foster sRPE + EWMA acute:chronic ratio — shipped, log-derived, `null` under 14 days, cap-only into planning — becomes the sentence after it. Beat one is a **policy** (`REDTEAM` §3: copyable in a quarter); beat two is a capability that was in **no public surface**. Copy is founder-owned → sign-off, not a landing edit. **Seven contradictions closed:** the constitution's H1 was the exact "everything app" phrase `YC_THESIS` bans; Win/Mission Score (the FAQ also said *daily* and listed 5 of 6 pillars); the Basic Training gate held **three values in three files** (`ORCHESTRATION` is now its one home); the `PRICING_REVIEW` drift row described a drift that no longer existed — *the drift table had gone stale.* **`VISION_STATUS` archived at 495 ships stale** — `ORCHESTRATION` asked for it every ship inside a list where only three items are enforced, and the unenforced one died. **Every hand-typed product count had drifted downward**: 40/48 free recipes, 102+/110 premium, 24/32 flows, 40/48 premium flows, 24/32 Mind, and **217/228** exercise pages in four compare places. New `contentFloors.ts` (a literal, no imports — deriving used to cost bundle weight on routes already over budget). Guard is a **source scan** (no digit may be typed into a blurb) + a runtime half; the scan found a sixth count I had missed. **`REDTEAM` §1 re-run, first in 37 days:** A2 stale *in our favour*, **A4 has no instrument** (`mw_week4_retention()` unapplied), **A5 fired and still firing** (day 37, 0/10 invites), new **A15** — 15 languages vs a checkout that blocks the EEA/UK/CH/57 OIC states/Canada. 3 mutants; tests 2203→2207.
 - **Horizon W + full-launch override (2026-08-05).** Wedge excellence still required; agents may ship rewards + full surface honesty. Fuel estimate accuracy remains.
-- **Free-first beta (~4 weeks):** LLC + EIN pending — **no Bundle UI** + **full depth unlocked** + **full More nav** (journey train-only deferred) ([docs/FREE_BETA.md](docs/FREE_BETA.md)).
+- **Free-first beta (~4 weeks):** LLC + EIN pending — **no Bundle UI** + **full depth unlocked**; More/rail **Pillars demoted until first workout** (F-004 / `.695`) — still no Bundle ([docs/FREE_BETA.md](docs/FREE_BETA.md)).
 - **`e2e:visual` is the one dark gate.** Its three baselines were generated **2026-07-22, before the rebrand**, and depicted the old navy/emerald dark design — black grounds, emerald CTAs, rounded corners. Verified by opening one, not inferred from dates. **Deleted**, because a known-wrong baseline is worse than none: the first Linux run would have shown four huge diffs, and the reflex there is `--update-snapshots` without looking, which launders whatever renders that day into truth. `home-reduced.png` **never had a baseline at all**, so the homepage has been silently self-approving since the case was written. **First Linux CI run after billing clears must bootstrap all four** (`npx playwright test --grep @visual --update-snapshots`, then commit the artifact) — it cannot be done on macOS, the pixels will not match.
 
 

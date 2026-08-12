@@ -50,6 +50,20 @@ test('moreSheetTiersForNav returns non-empty items with labels', () => {
   }
 });
 
+test('F-004: Pillars tier demoted until hasFirstWorkout', () => {
+  const before = moreSheetTiersForNav({ hasFirstWorkout: false });
+  assert.ok(!before.some((t) => t.id === 'pillars'), 'Pillars tier hidden pre-first-workout');
+  assert.ok(before.some((t) => t.id === 'wedge'), 'Wedge rows stay (History/Library/…)');
+  assert.ok(before.some((t) => t.id === 'you'), 'You tier stays');
+  const rows = moreSheetRowHrefs({ hasFirstWorkout: false });
+  for (const href of ['/move', '/mind', '/track', '/learn']) {
+    assert.ok(!rows.includes(href), `${href} must not be a More row before first workout`);
+  }
+
+  const after = moreSheetTiersForNav({ hasFirstWorkout: true });
+  assert.ok(after.some((t) => t.id === 'pillars'), 'Pillars return after first workout');
+});
+
 test('quiet foot keeps legal without duplicating full rows', () => {
   const quiet = moreSheetQuietForNav();
   const rows = new Set(moreSheetRowHrefs());
@@ -69,4 +83,9 @@ test('MoreSheet consumes moreSheetTiersForNav, not railGroupsForNav', () => {
   assert.match(src, /moreSheetTiersForNav/);
   assert.doesNotMatch(src, /railGroupsForNav\(\)/);
   assert.match(src, /moreSheetQuietForNav/);
+  assert.match(
+    src,
+    /moreSheetTiersForNav\(\{\s*hasFirstWorkout\s*\}\)/,
+    'MoreSheet must pass the first-workout gate — default-true would keep the options wall'
+  );
 });
