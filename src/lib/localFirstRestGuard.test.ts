@@ -85,25 +85,66 @@ describe('localFirstRestGuard', () => {
     }
   });
 
-  it('Active log-set → rest does not await fetch/outbox before startRestTimer', () => {
+  it('Active log-set → rest does not await fetch/outbox/auth before startRestTimer', () => {
     const page = read('src/page-components/ActiveWorkoutPage.tsx');
     const fn = page.match(
       /const handleLogSet[\s\S]*?startRestTimer\(rest\.restSeconds\);[\s\S]*?\n {2}\};/
     );
     assert.ok(fn, 'handleLogSet rest block missing');
     const body = fn![0];
-    assert.doesNotMatch(body, /await\s+fetch\b/);
-    assert.doesNotMatch(body, /flushOutbox|await\s+.*[Ss]ync/);
+    // Mid-set must stay sync — no await of any kind (session-expired / sync
+    // fail-open; Kaizen Strong acceptance).
+    assert.doesNotMatch(body, /\bawait\b/);
+    assert.doesNotMatch(body, /\basync\b/);
+    assert.doesNotMatch(body, /getUser|getSession|flushOutbox|flush\s*\(/);
     assert.match(body, /planLogSetRest/);
     assert.match(body, /startRestTimer\(rest\.restSeconds\)/);
   });
 
-  it('store startRestTimer is synchronous set() only', () => {
+  it('store logSet + logSetAndAdvance + startRestTimer never await network/auth', () => {
     const store = read('src/store/workoutStore.ts');
-    const block = store.match(/startRestTimer:\s*\([^)]*\)\s*=>\s*\{[\s\S]*?\n\s*\},/);
-    assert.ok(block, 'startRestTimer missing');
-    assert.doesNotMatch(block![0], /\bawait\b/);
-    assert.doesNotMatch(block![0], /\bfetch\b/);
-    assert.match(block![0], /resolveStartRestSeconds/);
+    const logSet = store.match(/logSet:\s*\([^)]*\)\s*=>\s*\{[\s\S]*?\n\s*\},/);
+    const advance = store.match(
+      /logSetAndAdvance:\s*\([^)]*\)\s*=>\s*\{[\s\S]*?\n\s*\},/
+    );
+    const rest = store.match(/startRestTimer:\s*\([^)]*\)\s*=>\s*\{[\s\S]*?\n\s*\},/);
+    assert.ok(logSet, 'logSet missing');
+    assert.ok(advance, 'logSetAndAdvance missing');
+    assert.ok(rest, 'startRestTimer missing');
+    for (const [name, block] of [
+      ['logSet', logSet![0]],
+      ['logSetAndAdvance', advance![0]],
+      ['startRestTimer', rest![0]],
+    ] as const) {
+      assert.doesNotMatch(block, /\bawait\b/, `${name} must not await`);
+      assert.doesNotMatch(block, /\bfetch\b/, `${name} must not fetch`);
+      assert.doesNotMatch(
+        block,
+        /getUser|getSession|flushOutbox|flush\s*\(/,
+        `${name} must not touch auth/sync`
+      );
+    }
+    assert.match(rest![0], /resolveStartRestSeconds/);
+  });
+
+  it('Active SignInPrompt fails open when getUser rejects (session expired)', () => {
+    const prompt = read('src/components/auth/SignInPrompt.tsx');
+    assert.match(
+      prompt,
+      /getUser\(\)[\s\S]*?\.catch\(\s*\(\)\s*=>\s*setSignedIn\(false\)\s*\)/,
+      'expired/rejected auth must set signedIn=false, never leave null forever'
+    );
+    // Prompt chrome must not disable Log / rest — it is informational only.
+    assert.doesNotMatch(prompt, /\bdisabled\b/);
+  });
+
+  it('LogConsole Log set has no disabled / online gate', () => {
+    const consoleSrc = read('src/components/workout/LogConsole.tsx');
+    const logBtn = consoleSrc.match(
+      /data-testid="log-console-log-set"[\s\S]*?<\/button>/
+    );
+    assert.ok(logBtn, 'Log set button missing');
+    assert.doesNotMatch(logBtn![0], /\bdisabled\b/);
+    assert.doesNotMatch(consoleSrc, /navigator\.onLine|getUser|flushOutbox/);
   });
 });
