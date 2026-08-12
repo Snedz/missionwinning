@@ -138,6 +138,21 @@ describe('localFirstRestGuard', () => {
     assert.doesNotMatch(prompt, /\bdisabled\b/);
   });
 
+  it('Today dashboard auth lookup fails open (status only; never gates Start)', () => {
+    const dash = read('src/page-components/HomeTodayDashboard.tsx');
+    assert.match(
+      dash,
+      /getUser\(\)[\s\S]*?\.catch\(\s*\(\)\s*=>\s*\{[\s\S]*?setUserEmail\(null\)/,
+      'Today header email lookup must catch rejected getUser'
+    );
+    // Below-fold cloud load must not abort local pillar wins on auth throw.
+    assert.match(
+      dash,
+      /try\s*\{\s*u\s*=\s*await getUser\(\);\s*\}\s*catch/,
+      'below-fold getUser must be try/catch so local wins still load'
+    );
+  });
+
   it('LogConsole Log set has no disabled / online gate', () => {
     const consoleSrc = read('src/components/workout/LogConsole.tsx');
     const logBtn = consoleSrc.match(
