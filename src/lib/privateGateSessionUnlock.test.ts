@@ -60,8 +60,13 @@ test('session unlock does not soft-navigate before the gate cookie is confirmed'
   );
   assert.match(
     client,
-    /navigateAfterPrivateGateUnlock\(/,
-    'post-unlock navigation must go through navigateAfterPrivateGateUnlock (window.location.assign)'
+    /navigateAfterPrivateGateUnlock\(\s*privateGateReturnPath\(/,
+    'post-unlock must hard-navigate via navigateAfterPrivateGateUnlock(privateGateReturnPath(...))'
+  );
+  assert.doesNotMatch(
+    client,
+    /navigateAfterPrivateGateUnlock\(\s*['"`/]/,
+    'navigateAfterPrivateGateUnlock must not take a raw path literal — sanitize via privateGateReturnPath'
   );
 
   const nav = stripComments(read('src/lib/grantPrivateAccessFromSession.ts'));
