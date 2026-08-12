@@ -36,7 +36,11 @@ import { useWorkoutStore, hasLoggedWork } from '@/store/workoutStore';
 import { BrandMonogram } from '@/components/brand/BrandMonogram';
 import { readRaw, writeRaw, remove as removeKey } from '@/lib/storage/safeStorage';
 import { STORAGE_KEYS } from '@/lib/storage/keys';
-import { navigateAfterPrivateGateUnlock } from '@/lib/privateGateNavigate';
+import {
+  isClientPrivateGateEnabled,
+  navigateAfterPrivateGateUnlock,
+} from '@/lib/privateGateNavigate';
+import { GATED_WWW_HONESTY } from '@/lib/gatedWwwHonesty';
 
 const EXPERIENCE_VALUES = ['beginner', 'intermediate', 'advanced'] as const;
 const EQUIPMENT_VALUES = ['bodyweight', 'dumbbells', 'full-gym'] as const;
@@ -146,6 +150,7 @@ export function WelcomePage() {
         .map((ex) => getExerciseById(ex.exerciseId)?.name ?? ex.exerciseId),
     [firstSession]
   );
+  const gateOn = isClientPrivateGateEnabled();
 
   return (
     <div className="relative min-h-screen text-foreground flex flex-col bg-background">
@@ -157,7 +162,9 @@ export function WelcomePage() {
         <span className="ms-auto text-xs font-semibold text-muted-foreground">
           {isEdit
             ? t('editJourneyProfile', { defaultValue: 'Edit profile' })
-            : t('welcomeIDay', { defaultValue: 'Get started' })}
+            : gateOn
+              ? t('gateEyebrow', { defaultValue: GATED_WWW_HONESTY.gateEyebrow })
+              : t('welcomeIDay', { defaultValue: 'Get started' })}
         </span>
       </header>
 
@@ -199,17 +206,32 @@ export function WelcomePage() {
                 {/* Field manual: briefing type — eyebrow → display → one red. */}
                 <div className="space-y-4">
                   <p className="eyebrow text-primary">
-                    {t('welcomeKicker', { defaultValue: 'About two minutes' })}
+                    {gateOn
+                      ? t('welcomeGateKicker', {
+                          defaultValue: GATED_WWW_HONESTY.welcomeKicker,
+                        })
+                      : t('welcomeKicker', { defaultValue: 'About two minutes' })}
                   </p>
                   <h1 className="display-section max-w-[16ch] text-balance text-foreground">
                     {t('welcomeTitle', { defaultValue: 'Welcome' })}
                   </h1>
                   <p className="max-w-md text-base leading-relaxed text-muted-foreground">
-                    {t('welcomeSubtitleBrief', {
-                      defaultValue:
-                        'A few questions, then log your first session. Free offline logging — forever.',
-                    })}
+                    {gateOn
+                      ? t('welcomeGateSubtitleBrief', {
+                          defaultValue: GATED_WWW_HONESTY.welcomeSubtitleBrief,
+                        })
+                      : t('welcomeSubtitleBrief', {
+                          defaultValue:
+                            'A few questions, then log your first session. Free offline logging — forever.',
+                        })}
                   </p>
+                  {gateOn && (
+                    <p className="max-w-md text-sm leading-relaxed text-muted-foreground">
+                      {t('gateWedgeTeaser', {
+                        defaultValue: GATED_WWW_HONESTY.gateWedgeTeaser,
+                      })}
+                    </p>
+                  )}
                 </div>
 
                 <div className="card-elevated space-y-1.5 px-4 py-3.5">

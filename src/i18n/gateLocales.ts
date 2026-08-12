@@ -1,11 +1,14 @@
 /** Private gate + offline fallback copy — full APP_LANGS records. */
 
 const GATE_EN: Record<string, string> = {
-  gateEyebrow: 'Invite-only open beta',
+  // F-008 — EN source of truth also lives in `gatedWwwHonesty.ts` (guarded).
+  gateEyebrow: 'Invite-only private beta',
   gateTitle1: 'Train anywhere.',
   gateTitle2: 'Win daily.',
   gateSubtitle:
-    'Free offline workout logging plus Mission Coach — weekly plans from your logs alone, no wearable. Full tools free for invited testers; the logger stays free forever.',
+    'After your invite: log sets on Train (offline, no account). Mission Coach builds your week from those logs alone — no wearable.',
+  gateWedgeTeaser:
+    'Train logging + Mission Coach from your logs — that is what opens after invite.',
   gateFooterTagline: 'free core forever',
   gateWaitlistTitle: 'Get an invite',
   gateWaitlistPlaceholder: 'you@example.com',
@@ -19,6 +22,8 @@ const GATE_EN: Record<string, string> = {
   gateAccessPlaceholder: 'Enter code from your invite',
   gateAccessSubmit: 'Enter the beta',
   gateAccessChecking: 'Checking…',
+  gateCheckingSession: 'Confirming invite access…',
+  gateLoading: 'Opening the invite gate…',
   gateInviteEyebrow: 'Beta invite',
   gateInviteHeadline: "You're invited — enter your access code to join the beta.",
   gateInviteSubtitle:
@@ -34,11 +39,11 @@ const GATE_EN: Record<string, string> = {
 
 const GATE_ES: Record<string, string> = {
   ...GATE_EN,
-  gateEyebrow: 'Beta abierta solo por invitación',
+  gateEyebrow: 'Beta privada solo por invitación',
   gateTitle1: 'Entrena en cualquier lugar.',
   gateTitle2: 'Gana a diario.',
   gateSubtitle:
-    'Registro offline gratis + Mission Coach desde tus logs (sin wearable). Herramientas completas gratis para invitados; el logger es gratis para siempre.',
+    'Tras tu invitación: registra series en Train (offline, sin cuenta). Mission Coach arma tu semana solo desde esos logs — sin wearable.',
   gateWaitlistTitle: 'Pide una invitación',
   gateWaitlistPlaceholder: 'tu@correo.com',
   gateWaitlistSubmit: 'Avísame',
@@ -63,11 +68,11 @@ const GATE_ES: Record<string, string> = {
 
 const GATE_FR: Record<string, string> = {
   ...GATE_EN,
-  gateEyebrow: 'Bêta ouverte sur invitation',
+  gateEyebrow: 'Bêta privée sur invitation',
   gateTitle1: 'Entraînez-vous partout.',
   gateTitle2: 'Gagnez chaque jour.',
   gateSubtitle:
-    'Journal offline gratuit + Mission Coach depuis vos logs (sans wearable). Outils complets gratuits pour les invités ; le logger reste gratuit pour toujours.',
+    'Après invitation : journalisez sur Train (hors ligne, sans compte). Mission Coach construit la semaine à partir de ces logs seuls — sans wearable.',
   gateWaitlistTitle: 'Demander une invitation',
   gateWaitlistSubmit: 'Me prévenir',
   gateWaitlistSubmitting: 'Inscription…',
@@ -85,11 +90,11 @@ const GATE_FR: Record<string, string> = {
 
 const GATE_PT: Record<string, string> = {
   ...GATE_EN,
-  gateEyebrow: 'Beta aberta só por convite',
+  gateEyebrow: 'Beta privada só por convite',
   gateTitle1: 'Treine em qualquer lugar.',
   gateTitle2: 'Vença todo dia.',
   gateSubtitle:
-    'Registro offline grátis + Mission Coach a partir dos seus logs (sem wearable). Ferramentas completas grátis para convidados; o logger fica grátis para sempre.',
+    'Depois do convite: registre séries no Train (offline, sem conta). Mission Coach monta a semana só a partir desses logs — sem wearable.',
   gateWaitlistTitle: 'Peça um convite',
   gateWaitlistSubmit: 'Avise-me',
   gateWaitlistSubmitting: 'Entrando…',
@@ -107,11 +112,11 @@ const GATE_PT: Record<string, string> = {
 
 const GATE_DE: Record<string, string> = {
   ...GATE_EN,
-  gateEyebrow: 'Offene Beta nur auf Einladung',
+  gateEyebrow: 'Private Beta nur auf Einladung',
   gateTitle1: 'Überall trainieren.',
   gateTitle2: 'Täglich gewinnen.',
   gateSubtitle:
-    'Kostenloses Offline-Logging + Mission Coach aus deinen Logs (ohne Wearable). Volle Tools gratis für Eingeladene; der Logger bleibt für immer gratis.',
+    'Nach Einladung: Sätze in Train loggen (offline, ohne Konto). Mission Coach baut die Woche nur aus diesen Logs — ohne Wearable.',
   gateWaitlistTitle: 'Einladung anfragen',
   gateWaitlistSubmit: 'Benachrichtigen',
   gateWaitlistSubmitting: 'Beitritt…',
@@ -129,7 +134,7 @@ const GATE_DE: Record<string, string> = {
 
 const GATE_IT: Record<string, string> = {
   ...GATE_EN,
-  gateEyebrow: 'Beta aperta solo su invito',
+  gateEyebrow: 'Beta privata solo su invito',
   gateTitle1: 'Allena ovunque.',
   gateTitle2: 'Vinci ogni giorno.',
   gateWaitlistTitle: 'Avvisami al lancio',
@@ -144,7 +149,7 @@ const GATE_IT: Record<string, string> = {
 
 const GATE_RU: Record<string, string> = {
   ...GATE_EN,
-  gateEyebrow: 'Открытая бета по приглашению',
+  gateEyebrow: 'Закрытая бета по приглашению',
   gateTitle1: 'Тренируйся где угодно.',
   gateTitle2: 'Побеждай каждый день.',
   gateWaitlistTitle: 'Уведомить о запуске',
@@ -159,7 +164,7 @@ const GATE_RU: Record<string, string> = {
 
 const GATE_JA: Record<string, string> = {
   ...GATE_EN,
-  gateEyebrow: '招待制オープンベータ',
+  gateEyebrow: '招待制プライベートベータ',
   gateTitle1: 'どこでもトレーニング。',
   gateTitle2: '毎日勝つ。',
   gateWaitlistTitle: 'ローンチ時に通知',
@@ -174,7 +179,7 @@ const GATE_JA: Record<string, string> = {
 
 const GATE_KO: Record<string, string> = {
   ...GATE_EN,
-  gateEyebrow: '초대 전용 오픈 베타',
+  gateEyebrow: '초대 전용 프라이빗 베타',
   gateTitle1: '어디서나 훈련하세요.',
   gateTitle2: '매일 승리하세요.',
   gateWaitlistTitle: '출시 알림 받기',
@@ -189,7 +194,7 @@ const GATE_KO: Record<string, string> = {
 
 const GATE_ZH: Record<string, string> = {
   ...GATE_EN,
-  gateEyebrow: '仅邀请开放测试',
+  gateEyebrow: '仅邀请私人测试',
   gateTitle1: '随处训练。',
   gateTitle2: '每日取胜。',
   gateWaitlistTitle: '上线时通知我',
@@ -204,7 +209,7 @@ const GATE_ZH: Record<string, string> = {
 
 const GATE_TH: Record<string, string> = {
   ...GATE_EN,
-  gateEyebrow: 'โอเพนเบต้าเฉพาะผู้ได้รับเชิญ',
+  gateEyebrow: 'เบต้าส่วนตัวเฉพาะผู้ได้รับเชิญ',
   gateTitle1: 'ฝึกได้ทุกที่',
   gateTitle2: 'ชนะทุกวัน',
   gateWaitlistTitle: 'แจ้งเมื่อเปิดตัว',
@@ -219,7 +224,7 @@ const GATE_TH: Record<string, string> = {
 
 const GATE_VI: Record<string, string> = {
   ...GATE_EN,
-  gateEyebrow: 'Beta mở chỉ theo lời mời',
+  gateEyebrow: 'Beta riêng chỉ theo lời mời',
   gateTitle1: 'Tập luyện mọi nơi.',
   gateTitle2: 'Chiến thắng mỗi ngày.',
   gateWaitlistTitle: 'Báo khi ra mắt',
@@ -234,7 +239,7 @@ const GATE_VI: Record<string, string> = {
 
 const GATE_HI: Record<string, string> = {
   ...GATE_EN,
-  gateEyebrow: 'केवल आमंत्रण ओपन बीटा',
+  gateEyebrow: 'केवल आमंत्रण निजी बीटा',
   gateTitle1: 'कहीं भी ट्रेन करें।',
   gateTitle2: 'रोज जीतें।',
   gateWaitlistTitle: 'लॉन्च पर सूचित करें',
@@ -249,7 +254,7 @@ const GATE_HI: Record<string, string> = {
 
 const GATE_ID: Record<string, string> = {
   ...GATE_EN,
-  gateEyebrow: 'Beta terbuka hanya undangan',
+  gateEyebrow: 'Beta privat hanya undangan',
   gateTitle1: 'Latihan di mana saja.',
   gateTitle2: 'Menang setiap hari.',
   gateWaitlistTitle: 'Beritahu saat peluncuran',
@@ -264,7 +269,7 @@ const GATE_ID: Record<string, string> = {
 
 const GATE_AR: Record<string, string> = {
   ...GATE_EN,
-  gateEyebrow: 'بيتا مفتوحة بالدعوة فقط',
+  gateEyebrow: 'بيتا خاصة بالدعوة فقط',
   gateTitle1: 'تدرب في أي مكان.',
   gateTitle2: 'انتصِر يوميًا.',
   gateWaitlistTitle: 'أبلغني عند الإطلاق',

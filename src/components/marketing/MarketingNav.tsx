@@ -8,6 +8,8 @@ import { BrandMonogram } from '@/components/brand/BrandMonogram';
 import { PublicNavMenu } from '@/components/public/PublicNavMenu';
 import { footerGroups, primaryNavLinks } from '@/components/marketing/footerLinks';
 import { PublicStatusBar } from '@/components/public/PublicStatusBar';
+import { isClientPrivateGateEnabled } from '@/lib/privateGateNavigate';
+import { GATED_WWW_HONESTY } from '@/lib/gatedWwwHonesty';
 
 type MarketingNavProps = {
   /** full = site links + primary CTA; compact = logo + primary CTA only */
@@ -20,6 +22,13 @@ export function MarketingNav({ variant = 'full', className }: MarketingNavProps)
   const navLinks = primaryNavLinks();
   const legalLinks =
     footerGroups().find((g) => g.titleKey === 'footerGroupLegal')?.links ?? [];
+  const gateOn = isClientPrivateGateEnabled();
+  const ctaHref = gateOn ? '/private' : '/welcome';
+  const ctaLabel = gateOn
+    ? t('landingNavStartGated', {
+        defaultValue: GATED_WWW_HONESTY.landingNavStartGated,
+      })
+    : t('landingNavStart', { defaultValue: 'Start free' });
 
   return (
     <nav
@@ -74,7 +83,7 @@ export function MarketingNav({ variant = 'full', className }: MarketingNavProps)
               link at all. Visible at every width — the primary conversion action must not
               move a tap deeper on the viewport most visitors arrive on. */}
           <Button asChild variant="ghost" className="tap-target min-h-[44px] text-sm font-medium">
-            <Link href="/welcome">{t('landingNavStart', { defaultValue: 'Start free' })}</Link>
+            <Link href={ctaHref}>{ctaLabel}</Link>
           </Button>
 
           <PublicNavMenu
@@ -86,8 +95,8 @@ export function MarketingNav({ variant = 'full', className }: MarketingNavProps)
               ...l,
               defaultValue: t(l.labelKey, { defaultValue: l.defaultValue }),
             }))}
-            ctaHref="/welcome"
-            ctaLabel={t('landingNavStart', { defaultValue: 'Start free' })}
+            ctaHref={ctaHref}
+            ctaLabel={ctaLabel}
             menuLabel={t('navMenuLabel', { defaultValue: 'Menu' })}
             closeLabel={t('navMenuClose', { defaultValue: 'Close menu' })}
           />
