@@ -1,0 +1,44 @@
+/**
+ * Client navigation that respects the private gate cookie check in proxy.ts.
+ * Soft client routing from gate-public pages (/welcome) can render gated routes
+ * without re-evaluating the access cookie — same class as PrivateTeaserClient
+ * soft-replace after unlock.
+ */
+import { isPrivateGatePublicPath } from '@/lib/publicRoutes';
+
+/** Build-time mirror of `isPrivateModeEnabled()` — see next.config.js `env`. */
+export function isClientPrivateGateEnabled(): boolean {
+  return process.env.NEXT_PUBLIC_PRIVATE_GATE === 'true';
+}
+
+/** Pure decision — testable without a browser `window`. */
+export function privateGateRequiresHardNavigation(destination: string): boolean {
+  const path = destination.startsWith('/') ? destination : `/${destination}`;
+  return isClientPrivateGateEnabled() && !isPrivateGatePublicPath(path);
+}
+
+/**
+ * Navigate to a destination after leaving a gate-public flow (I-Day finish).
+ * When the private gate is on and the destination is gated, forces a document
+ * navigation so proxy.ts can redirect to `/private?next=…` without a cookie.
+ */
+export function navigateAfterPrivateGateUnlock(
+  destination: string,
+  softNavigate?: (path: string) => void
+): void {
+  if (typeof window === 'undefined') return;
+
+  const path = destination.startsWith('/') ? destination : `/${destination}`;
+
+  if (privateGateRequiresHardNavigation(path)) {
+    window.location.assign(path);
+    return;
+  }
+
+  if (softNavigate) {
+    softNavigate(path);
+    return;
+  }
+
+  window.location.assign(path);
+}

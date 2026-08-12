@@ -36,6 +36,7 @@ import { useWorkoutStore, hasLoggedWork } from '@/store/workoutStore';
 import { BrandMonogram } from '@/components/brand/BrandMonogram';
 import { readRaw, writeRaw, remove as removeKey } from '@/lib/storage/safeStorage';
 import { STORAGE_KEYS } from '@/lib/storage/keys';
+import { navigateAfterPrivateGateUnlock } from '@/lib/privateGateNavigate';
 
 const EXPERIENCE_VALUES = ['beginner', 'intermediate', 'advanced'] as const;
 const EQUIPMENT_VALUES = ['bodyweight', 'dumbbells', 'full-gym'] as const;
@@ -88,9 +89,11 @@ export function WelcomePage() {
   };
 
   const finish = () => {
+    const go = (path: string) => navigateAfterPrivateGateUnlock(path, router.push);
+
     if (isEdit) {
       saveProfileFields();
-      router.push('/profile');
+      go('/profile');
       return;
     }
     saveProfileFields();
@@ -110,7 +113,7 @@ export function WelcomePage() {
      * on the device, send them to it instead of over it.
      */
     if (hasLoggedWork(useWorkoutStore.getState().activeWorkout)) {
-      router.push('/active');
+      go('/active');
       return;
     }
     // W1: land in the previewed session — no Today detour before first sweat.
@@ -118,10 +121,10 @@ export function WelcomePage() {
     if (session.exercises.length > 0) {
       useWorkoutStore.getState().startWorkout(session.name, session.exercises);
       track('just_go_started', { source: session.source, focus: session.focusGroup });
-      router.push('/active');
+      go('/active');
       return;
     }
-    router.push('/log');
+    go('/log');
   };
 
   const handleBegin = () => {
