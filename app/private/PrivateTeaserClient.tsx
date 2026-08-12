@@ -7,6 +7,7 @@ import { useTranslation } from 'react-i18next';
 import { Check } from 'lucide-react';
 import { AppLegalFooter } from '@/components/layout/AppLegalFooter';
 import { grantPrivateAccessFromSession } from '@/lib/grantPrivateAccessFromSession';
+import { sanitizeNextPath } from '@/lib/safeRedirect';
 import { submitLead } from '@/lib/supabase';
 import { track } from '@/lib/analytics';
 
@@ -38,10 +39,7 @@ export function PrivateTeaserClient({ initialInvite = '' }: Props) {
       const ok = await grantPrivateAccessFromSession();
       if (cancelled) return;
       if (ok) {
-        const next = searchParams.get('next')?.trim();
-        const dest =
-          next && next.startsWith('/') && !next.startsWith('//') ? next : '/';
-        router.replace(dest);
+        router.replace(sanitizeNextPath(searchParams.get('next'), '/'));
         router.refresh();
         return;
       }
@@ -68,10 +66,7 @@ export function PrivateTeaserClient({ initialInvite = '' }: Props) {
       });
 
       if (res.ok) {
-        const next = searchParams.get('next')?.trim();
-        const dest =
-          next && next.startsWith('/') && !next.startsWith('//') ? next : '/';
-        router.push(dest);
+        router.push(sanitizeNextPath(searchParams.get('next'), '/'));
         router.refresh();
       } else {
         const data = await res.json().catch(() => ({}));

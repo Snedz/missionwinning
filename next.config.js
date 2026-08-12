@@ -56,11 +56,21 @@ const nextConfig = {
   /**
    * Competitor comparison hub removed (.668) — permanent redirect to Start free.
    * Keeps old SEO/external links from soft-404ing.
+   *
+   * Dead route aliases (.673) — Mission Control audit: /today, /train, /dashboard,
+   * /app, /login, /pricing soft-404'd with no redirects. Canonical: Today = /log,
+   * Train = /active. /pricing and /login → Start free (no pay surface).
    */
   async redirects() {
     return [
       { source: '/compare', destination: '/welcome', permanent: true },
       { source: '/compare/:path*', destination: '/welcome', permanent: true },
+      { source: '/today', destination: '/log', permanent: true },
+      { source: '/train', destination: '/active', permanent: true },
+      { source: '/dashboard', destination: '/log', permanent: true },
+      { source: '/app', destination: '/log', permanent: true },
+      { source: '/login', destination: '/welcome', permanent: true },
+      { source: '/pricing', destination: '/welcome', permanent: true },
     ];
   },
   async headers() {
