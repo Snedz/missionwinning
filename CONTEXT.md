@@ -16,7 +16,7 @@ One screen of truth for any AI tool or human joining cold. Read this, then [AGEN
 
 ---
 
-## Now (2026-08-11 · web `2026.07-unified.670` · Android `1.24.1`)
+## Now (2026-08-12 · web `2026.07-unified.671` · Android `1.24.1`)
 
 > The ONLY "where we are" block in the repo — [ORCHESTRATION.md](ORCHESTRATION.md) points here.
 >
@@ -293,6 +293,7 @@ One screen of truth for any AI tool or human joining cold. Read this, then [AGEN
 > | gitleaks | **green — and scanning for the first time.** It had never scanned anything: on a `pull_request` event the action lists the PR's commits, the job declared no `permissions:` block, and it 403'd (`pull_requests=read`) before opening a file. Fixed by a `permissions:` block (`.224` carrying `.255`). It scans **only the PR's own commits**, so commit `8ea3527a`'s real Solana treasury address — scrubbed from the working file, still in history — is out of its scope. That finding stands, deliberately not allowlisted; it was never what made this check red. |
 
 - **Excellence:** unscored · — · [docs/EXCELLENCE_RESULT.md](docs/EXCELLENCE_RESULT.md) — Horizon W phone sign-off home; surface PRs need `status: pass` or `Excellence-Override` (`.669`).
+- **`.671`:** (`2026.07-unified.671`) **`/beta` first-paint i18n** — `firstPaintString` + `betaLine` English floors so `betaStep*` keys never flash on SSR/hydrate.
 - **`.670`:** (`2026.07-unified.670`) **Hero design** — Coach empty docks poster-field Generate (mirror Active); Victory share fail-only recovery line (not cancel).
 - **`.669`:** (`2026.07-unified.669`) **Excellence RESULT + agent stop-rule** — `excellenceGate` path policy + `check-excellence-gate` on gate/PR CI; wedge still ships while unscored.
 - **`.668`:** (`2026.07-unified.668`) **Competitor compare removed** — `/compare` redirects to Start free; no Hevy/Strong/etc. comparison hub.
@@ -304,7 +305,6 @@ One screen of truth for any AI tool or human joining cold. Read this, then [AGEN
 - **`.627`:** (`2026.07-unified.627`) **Feel Wave 3** — Learn paths-first; Move/Mind free-first; Library/Builder/Benchmarks/Leaderboard brief chrome; military tests folded. Field manual A complete across shell.
 - **`.628`:** (`2026.07-unified.628`) **Feel Wave 4** — Track log-first; Assessments/Calculators/Guidebook/Programs toolkit residual. Field manual A complete on More toolkit.
 - **`.629`:** (`2026.07-unified.629`) **Feel Wave 5** — Guidebook chapter red discipline; Learn course / Coaching / Feedback briefs; History day EmptyState.
-- **`.630`:** (`2026.07-unified.630`) **Feel Wave 6** — Welcome briefing type + 44px chips; Beta primary-first. Entry path Field manual.
 - **`.631`:** (`2026.07-unified.631`) **Feel Wave 7** — Landing FAQ 44px; About/Vision display-section; Library/Press tap floor.
 - **`.632`:** (`2026.07-unified.632`) **Feel Wave 8** — Beta bootstrap keys (no raw i18n flash); private gate taps; First Steps quiet dismiss.
 - **`.633`:** (`2026.07-unified.633`) **Feel Wave 9** — Builder Field manual: 44px steps, Blank/Start own red, Save outline.
