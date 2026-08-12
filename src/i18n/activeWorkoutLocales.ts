@@ -110,8 +110,6 @@ type ActiveWorkoutStrings = {
   victoryViewHistory: string;
   victoryShare: string;
   victoryShareCard: string;
-  /** Design review 2A — only when share + clipboard both fail (not cancel). */
-  victoryShareFailed: string;
   /** Pre-session check-in sheet (`.296`). */
   sessionCheckInEyebrow: string;
   sessionCheckInTitle: string;
@@ -251,7 +249,7 @@ const en: ActiveWorkoutStrings = {
   activeNothingLogged: 'Log a set first',
   activeNothingLoggedDesc: 'Finish unlocks after at least one completed set.',
   activeReps: 'Reps',
-  activeWeight: 'lbs',
+  activeWeight: 'Weight',
   activeRpeEasy: 'Easy',
   activeRpeMed: 'Med',
   activeRpeHard: 'Hard',
@@ -315,8 +313,6 @@ const en: ActiveWorkoutStrings = {
   victoryViewHistory: 'History',
   victoryShare: 'Share',
   victoryShareCard: 'Share card',
-  victoryShareFailed:
-    'Couldn’t share from this browser. Tap Share again, or copy from History later.',
   sessionCheckInEyebrow: 'Before you train',
   sessionCheckInTitle: 'How do you feel?',
   sessionCheckInSave: 'Save & continue',
