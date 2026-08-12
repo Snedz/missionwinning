@@ -307,11 +307,25 @@ export function regenerateFutureSessions(plan: CoachPlan, ctx: CoachContext, tod
     .filter(({ dayOffset }) => dayOffset >= todayOffset)
     .map(({ day, dayOffset }) => buildSession(day, dayOffset, plan.weekStart, ctx, rng));
 
+  const sessions = [...doneSessions, ...future];
+
+  /*
+   * Same class of bug as `.207` on `adaptPlan`: this always returned
+   * `revision + 1`, and `useCoachPlan` saves when the revision moves then
+   * listens synchronously for `mw-coach-plan-changed`. On Today — free beta
+   * counts as premium, strain ≥ 70 triggers this path — every refresh rewrote
+   * the plan, re-fired the event, and recurse until the renderer stack blew
+   * (Chrome Aw, Snap! code 9 on /log).
+   */
+  if (sessionsEqual(plan.sessions, sessions) && plan.equipmentProfile === ctx.equipment) {
+    return plan;
+  }
+
   return {
     ...plan,
     revision: plan.revision + 1,
     equipmentProfile: ctx.equipment,
-    sessions: [...doneSessions, ...future],
+    sessions,
     generatedAt: new Date().toISOString(),
   };
 }
