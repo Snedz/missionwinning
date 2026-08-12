@@ -5,10 +5,18 @@
 
 ---
 
+## MatrAIx copy gates (Growth / Beta)
+
+- [ ] **F-005 — no social Feed merchandising** — Train+Coach / free forever offline logger only on SEO + SOCIAL_LAUNCH paths. No in-app Feed / community / everything-app as hero.
+- [ ] **F-016 — no Bundle-as-hero** — free forever offline logger leads; Super Bundle never gates the logger; checkout is deep secondary only (post-flip).
+- [ ] **F-008 — gated honesty** — while `PRIVATE_MODE=true`, invite-only / private beta framing only. No open-beta or "we're live/public" status claims.
+
+---
+
 ## Blockers before landing / brand merge
 
 - [ ] **THESIS.md §8 second-beat landing copy** — needs founder sign-off. Do **not** merge landing redesign that uses second-beat language until approved. Flag for Landing / README / brand / YC one-liner consistency.
-- [ ] **YC one-liner + README hero** — must stay Train+Coach wedge only (free forever offline logger, no account + Mission Coach from logs, no wearable). Reject “everything app / six pillars / superapp” framing as hero.
+- [ ] **YC one-liner + README hero** — must stay Train+Coach wedge only (free forever offline logger, no account + Mission Coach from logs, no wearable). Reject "everything app / six pillars / superapp" framing as hero.
 - [ ] **America / MAHA legal** — any America/MAHA positioning or captions require legal/founder review before use. Do not ship as SEO or launch hero.
 - [ ] **Medical / evidence second-wave captions** — any claims that sound clinical, diagnostic, or outcome-guaranteeing need founder + (if used) counsel review. Default: lifestyle / training language only.
 
@@ -18,7 +26,7 @@
 
 - [ ] `PRIVATE_MODE=false`
 - [ ] Founder PWA smoke pass (install, offline logger, Coach path)
-- [ ] Soft language audited: no “we’re live” / traction while gated
+- [ ] Soft language audited: no "we're live" / traction while gated; F-005/F-016 re-read
 - [ ] Waitlist broadcast: dry-run only until founder sends
 - [ ] Product Hunt / Show HN / community kits re-read for invented metrics (none allowed)
 
@@ -27,8 +35,8 @@
 ## Before compare SEO go-live
 
 - [ ] Craft re-ships `/compare` (route currently removed)
-- [ ] Story pages match honest differentiation (no fake “users love us”)
-- [ ] Name-collision watch for other “Mission” fitness apps reviewed once more
+- [ ] Story pages match honest differentiation (no fake "users love us"; no Feed-as-MW feature)
+- [ ] Name-collision watch for other "Mission" fitness apps reviewed once more
 
 ---
 
@@ -47,5 +55,6 @@
 | THESIS §8 second-beat | Founder | pending | — |
 | America/MAHA | Founder / legal | pending | — |
 | Medical/evidence captions | Founder | pending | — |
+| F-005 / F-016 / F-008 Growth copy | Founder / Growth | pending | — |
 | Phase B kits publish | Founder | blocked on PRIVATE_MODE + PWA | — |
 | `/compare` re-ship | Wedge Craft | pending | — |
