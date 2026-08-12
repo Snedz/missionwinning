@@ -28,6 +28,7 @@ When adding a doc:
 | [log/LOG-rotate-659-for-685.md](./log/LOG-rotate-659-for-685.md) | rotated 2026-08-12 for `.685` preserve next= through private gate |
 | [log/LOG-rotate-661-for-690.md](./log/LOG-rotate-661-for-690.md) | rotated 2026-08-12 for `.690` admin invite share → /private |
 | [log/LOG-rotate-662-for-691.md](./log/LOG-rotate-662-for-691.md) | rotated 2026-08-12 for `.691` Welcome Skip hard-nav private gate |
+| [log/LOG-rotate-665-for-694.md](./log/LOG-rotate-665-for-694.md) | rotated 2026-08-12 for `.694` Active set-table density |
 | [log/LOG-rotate-664-for-693.md](./log/LOG-rotate-664-for-693.md) | rotated 2026-08-12 for `.693` Coach log-cited why-this-week |
 | [log/LOG-rotate-663-for-692.md](./log/LOG-rotate-663-for-692.md) | rotated 2026-08-12 for `.692` production smoke ratchet |
 | [log/LOG-rotate-658-for-684.md](./log/LOG-rotate-658-for-684.md) | rotated 2026-08-12 for `.684` private gate session-unlock fail-open |
