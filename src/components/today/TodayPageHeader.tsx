@@ -5,6 +5,7 @@ import { useTranslation } from 'react-i18next';
 import type { JourneyAction } from '@/lib/missionJourney';
 import { JourneyStrip } from '@/components/journey/JourneyHero';
 import { StreakChip } from '@/components/today/StreakChip';
+import { LOCAL_FIRST_COPY } from '@/lib/localFirstCopy';
 
 interface Props {
   today: string;
@@ -73,16 +74,15 @@ export function TodayPageHeader({
         )}
         <span>
           {!userEmail ? (
-            <>
-              <a href="/profile" className="underline underline-offset-2 hover:text-foreground">
-                {t('signInLink', { defaultValue: 'Sign in' })}
-              </a>{' '}
+            <a href="/profile" className="underline underline-offset-2 hover:text-foreground">
               {t('signInOptional', {
-                defaultValue: 'optional — progress stays on this device.',
+                defaultValue: LOCAL_FIRST_COPY.todaySignInOptional,
               })}
-            </>
+            </a>
           ) : (
-            t('cloudSyncOn', { defaultValue: 'Cloud sync on.' })
+            t('cloudSyncOn', {
+              defaultValue: LOCAL_FIRST_COPY.todayBackupWhenOnline,
+            })
           )}
         </span>
       </div>

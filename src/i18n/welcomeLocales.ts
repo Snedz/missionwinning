@@ -118,7 +118,7 @@ const en: WelcomeStrings = {
   welcomeContinue: 'Continue',
   welcomeSignInTitle: 'Save progress — your choice',
   welcomeSignInSubtitle:
-    'Sign in with Google or email to sync across devices. Skip anytime — local progress still works.',
+    'Logging works on this device with no account. Sign in only if you want the same log on another device — Skip anytime.',
   welcomeSkipSignIn: 'Skip — start training',
   welcomeRemindersOptIn:
     'Email me if I go quiet, and a recap after my first week. Never more than one every two days — unsubscribe anytime.',

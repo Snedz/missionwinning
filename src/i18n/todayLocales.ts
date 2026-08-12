@@ -360,7 +360,7 @@ const en: TodayStrings = {
   todayAssessmentTake: 'Take free Readiness Assessment →',
   todayRecentPillarWinsLabel: 'Recent pillar wins:',
   todaySeeNutritionLink: 'See full in Nutrition →',
-  todayPillarWinEmpty: 'Log wins from Move or Mind (saves to cloud when signed in).',
+  todayPillarWinEmpty: 'Log wins from Move or Mind — they stay on this device.',
   todayMuscleChest: 'Chest',
   todayMuscleBack: 'Back',
   todayMuscleLegs: 'Legs',
@@ -547,8 +547,10 @@ const en: TodayStrings = {
   todaySessionFocus: 'Training',
   continuityTitle: 'After training',
   continuitySubtitle: 'Move, mind, or fuel when you want them.',
-  todayFounderStreakCloudSaved: 'Streak {{streak}}. Saved to cloud.',
-  todayFounderStreakCloudSignIn: 'Streak {{streak}}. Sign in to sync.',
+  todayFounderStreakCloudSaved:
+    'Streak {{streak}}. Saved on this device — backup when online.',
+  todayFounderStreakCloudSignIn:
+    'Streak {{streak}}. Stays on this device — sign in optional.',
   todayFounderWinLogged: 'Win logged',
   todayFounderStreakOnly: 'Streak {{streak}}.',
   todayFounderLogDailyWin: 'Log daily pillar win',
@@ -557,8 +559,9 @@ const en: TodayStrings = {
   todayFounderMoveLogged: 'Move win logged',
   todayFounderLogMoveWin: 'Log move win',
   todayFounderWinsRefreshed: 'Wins refreshed',
-  todayFounderSignInWins: 'Sign in required',
-  todayFounderSignInWinsDesc: 'Sign in to load cloud wins.',
+  todayFounderSignInWins: 'Sign in optional',
+  todayFounderSignInWinsDesc:
+    'Cloud wins need a signed-in backup — local logs still work.',
   todayFounderRefreshWins: 'Refresh pillar wins',
   todayFounderLogStreak: 'Log daily win',
   todayFounderProteinDemo: 'Demo only',

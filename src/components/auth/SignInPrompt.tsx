@@ -9,6 +9,11 @@ import { getUser } from '@/lib/supabase';
 import { SignInPanel } from '@/components/auth/SignInPanel';
 
 type SignInPromptProps = {
+  /**
+   * Collapsed title. Active passes a device-first title so mid-session chrome
+   * does not hero "Save progress to cloud" (MatrAIx F-001).
+   */
+  title?: string;
   /** Shown under the title when collapsed. */
   description?: string;
   nextPath?: string;
@@ -16,6 +21,7 @@ type SignInPromptProps = {
 };
 
 export function SignInPrompt({
+  title,
   description,
   nextPath = '/profile',
   className = '',
@@ -30,6 +36,9 @@ export function SignInPrompt({
 
   if (signedIn === null || signedIn) return null;
 
+  const heading =
+    title ??
+    t('saveProgressCloud', { defaultValue: 'Save progress to cloud' });
   const copy =
     description ??
     t('signInPromptDefault', {
@@ -40,9 +49,7 @@ export function SignInPrompt({
     <div className={`auth-panel border-2 border-border bg-card p-4 ${className}`}>
       <div className="flex items-start justify-between gap-3">
         <div>
-          <div className="font-medium text-primary text-sm">
-            {t('saveProgressCloud', { defaultValue: 'Save progress to cloud' })}
-          </div>
+          <div className="font-semibold text-primary text-sm">{heading}</div>
           <p className="text-xs text-muted-foreground mt-1 leading-relaxed">{copy}</p>
         </div>
         <Link href="/profile" className="text-xs text-primary hover:underline shrink-0 pt-0.5 min-h-[44px] inline-flex items-center tap-target">
