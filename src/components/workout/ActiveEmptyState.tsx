@@ -10,6 +10,7 @@ import { PillarPageHeader } from '@/components/layout/PillarPageHeader';
 import { WorkoutVictorySheet } from '@/components/workout/WorkoutVictorySheet';
 import type { Debrief } from '@/lib/coach/debrief';
 import type { WorkoutVictorySummary } from '@/lib/workout/workoutVictory';
+import { LOCAL_FIRST_COPY } from '@/lib/localFirstCopy';
 
 type Props = {
   onStart: () => void;
@@ -99,14 +100,15 @@ export function ActiveEmptyState({
         icon={Timer}
         title={
           hydrated
-            ? t('activeNoWorkout', { defaultValue: 'No session running' })
+            ? t('activeNoWorkout', {
+                defaultValue: LOCAL_FIRST_COPY.activeNoWorkout,
+              })
             : t('activeLoadingSession', { defaultValue: 'Restoring session…' })
         }
         description={
           hydrated
             ? t('activeNoWorkoutDesc', {
-                defaultValue:
-                  'Start here, or open Today for the session already planned for you.',
+                defaultValue: LOCAL_FIRST_COPY.activeNoWorkoutDesc,
               })
             : t('activeLoadingSessionDesc', {
                 defaultValue: 'Reading the last workout saved on this device.',
@@ -145,8 +147,7 @@ export function ActiveEmptyState({
                       'Smaller first session back — finishable, then the week rebuilds.',
                   })
                 : t('activeNoWorkoutDesc', {
-                    defaultValue:
-                      'Start here, or open Today for the session already planned for you.',
+                    defaultValue: LOCAL_FIRST_COPY.activeNoWorkoutDesc,
                   })}
           </p>
           <button

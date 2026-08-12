@@ -129,10 +129,10 @@ const en: CoreStrings = {
   emailNextStepSent: 'Check your inbox for your next step.',
   signInOptional: 'Sign in optional — progress stays on this device.',
   signInLink: 'Sign in',
-  cloudSyncOn: 'Cloud sync on.',
+  cloudSyncOn: 'Sets save on this device — backup when online.',
   welcomeSignInTitle: 'Save progress — your choice',
   welcomeSignInSubtitle:
-    'Sign in with Google or email to sync across devices. Skip anytime — local progress still works.',
+    'Logging works on this device with no account. Sign in only if you want the same log on another device — Skip anytime.',
   commandersIntent: "Today's focus",
   saveProgressCloud: 'Save progress to cloud',
   signInPromptExpand: 'Sign in with Google or email',

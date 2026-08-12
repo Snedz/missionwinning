@@ -16,7 +16,7 @@ One screen of truth for any AI tool or human joining cold. Read this, then [AGEN
 
 ---
 
-## Now (2026-08-12 · web `2026.07-unified.695` · Android `1.24.1`)
+## Now (2026-08-12 · web `2026.07-unified.696` · Android `1.24.1`)
 
 > The ONLY "where we are" block in the repo — [ORCHESTRATION.md](ORCHESTRATION.md) points here.
 >
@@ -283,6 +283,7 @@ One screen of truth for any AI tool or human joining cold. Read this, then [AGEN
 > and `.693` dropped `.633` detail (full text remains in LOG.md / archive)
 > and `.694` dropped `.619` detail (full text remains in LOG.md / archive)
 > and `.695` dropped `.606` detail (full text remains in LOG.md / archive)
+> and `.696` dropped `.635` detail (full text remains in LOG.md / archive)
 > to [CONTEXT-now-2026-07-30.md](docs/archive/CONTEXT-now-2026-07-30.md) after this
 > block reached **79 bullets / 103KB**. A status doc that only grows stops being read.
 
@@ -304,6 +305,7 @@ One screen of truth for any AI tool or human joining cold. Read this, then [AGEN
 > | gitleaks | **green — and scanning for the first time.** It had never scanned anything: on a `pull_request` event the action lists the PR's commits, the job declared no `permissions:` block, and it 403'd (`pull_requests=read`) before opening a file. Fixed by a `permissions:` block (`.224` carrying `.255`). It scans **only the PR's own commits**, so commit `8ea3527a`'s real Solana treasury address — scrubbed from the working file, still in history — is out of its scope. That finding stands, deliberately not allowlisted; it was never what made this check red. |
 
 - **Excellence:** unscored · — · [docs/EXCELLENCE_RESULT.md](docs/EXCELLENCE_RESULT.md) — Horizon W phone sign-off home; surface PRs need `status: pass` or `Excellence-Override` (`.669`).
+- **`.696`:** (`2026.07-unified.696`) **Local-first set-log + rest** — Today/Active empty + SignIn/status copy device-first; rest path ungated by sync (F-001).
 - **`.695`:** (`2026.07-unified.695`) **Demote six-pillar chrome until first workout** — First Steps workout-only + More/rail Pillars hidden pre-`basic.workout` / `workoutHistory.length`; I-Day → Today one Start (F-004 C5≤90s; no shell redesign).
 - **`.694`:** (`2026.07-unified.694`) **Active set-table density (F-003)** — Prev row anchor + ambient running rest; dense ink `LogConsole`; sole poster-red Log set; ≥44px taps (one-thumb; not faster-than-Strong/Hevy).
 - **`.693`:** (`2026.07-unified.693`) **Coach log-cited why-this-week** — adapt/generate rationale cites log inputs · rule · effect on `CoachAdaptBanner` / Coach week (W1 inspectability; no chat chrome).
@@ -318,7 +320,6 @@ One screen of truth for any AI tool or human joining cold. Read this, then [AGEN
 - **`.670`:** (`2026.07-unified.670`) **Hero design** — Coach empty docks poster-field Generate (mirror Active); Victory share fail-only recovery line (not cancel).
 - **`.669`:** (`2026.07-unified.669`) **Excellence RESULT + agent stop-rule** — `excellenceGate` path policy + `check-excellence-gate` on gate/PR CI; wedge still ships while unscored.
 - **`.636`:** (`2026.07-unified.636`) **Global legal posture** — multi-jurisdiction sanctions/trade controls; no US-primary / OFAC-only consumer voice; commercial exclusions unchanged. Counsel export global freeze. **Not legal advice.**
-- **`.635`:** (`2026.07-unified.635`) **Sanctions/export** — generic only (no sub-national place names). `.634` naming reverted. **Not legal advice.**
 - **`.618`:** (`2026.07-unified.618`) **Ukraine commercial exclusion** + consumer legal refresh — Terms sanctions clause; Regions/Privacy/AUP/Service-Terms/Refunds; `UA` hard-block. Not OFAC country embargo; RU/BY still open (founder). Counsel export 2026-08-09. **Not legal advice.**
 - **Horizon W + full-launch override (2026-08-05).** Wedge excellence still required; agents may ship rewards + full surface honesty. Fuel estimate accuracy remains.
 - **Free-first beta (~4 weeks):** LLC + EIN pending — **no Bundle UI** + **full depth unlocked**; More/rail **Pillars demoted until first workout** (F-004 / `.695`) — still no Bundle ([docs/FREE_BETA.md](docs/FREE_BETA.md)).

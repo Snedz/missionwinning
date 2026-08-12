@@ -137,6 +137,9 @@ type ActiveWorkoutStrings = {
   activeDiscardWorkout: string;
   activeEmptySubtitle: string;
   activeEmptySubtitleNoSw: string;
+  /** Mid-session optional sign-in — device-first (F-001). */
+  activeSignInTitle: string;
+  activeSignInDesc: string;
   activeExerciseMore: string;
   activeEyebrow: string;
   activeGoBuilder: string;
@@ -219,8 +222,9 @@ const en: ActiveWorkoutStrings = {
   activeCoachSessionEyebrow: 'Mission Coach session',
   activeElapsed: 'Elapsed',
   activeSetsLabel: 'Sets',
-  activeNoWorkout: 'No Active Workout',
-  activeNoWorkoutDesc: 'Start a quick workout from Today or launch a saved routine from the builder.',
+  activeNoWorkout: 'No session running',
+  activeNoWorkoutDesc:
+    'Start here, or open Today for the session already planned for you. Sets and rest save on this device.',
   activeStartWorkout: 'Start Workout',
   activeSetsCompleted: '{{done}}/{{total}} sets completed',
   activeCancel: 'Cancel',
@@ -342,6 +346,9 @@ const en: ActiveWorkoutStrings = {
   activeEmptySubtitle: 'Log sets with rest timers, PRs, and form cues — offline ready.',
   activeEmptySubtitleNoSw:
     'Log sets with rest timers, PRs, and form cues. Lose signal mid-session and logging keeps going.',
+  activeSignInTitle: 'Sets save on this device',
+  activeSignInDesc:
+    'Logging and rest work offline. Sign in only if you want the same log on another device.',
   activeExerciseMore: 'More actions',
   activeEyebrow: 'Train',
   activeGoBuilder: 'Builder',

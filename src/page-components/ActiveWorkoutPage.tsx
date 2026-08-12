@@ -24,6 +24,7 @@ import {
 } from '@/lib/seoExerciseBridge';
 import { getFormGuideOrCues } from '@/lib/formGuides';
 import { SignInPrompt } from '@/components/auth/SignInPrompt';
+import { LOCAL_FIRST_COPY } from '@/lib/localFirstCopy';
 import { useIsCompact } from '@/hooks/useIsCompact';
 import { ActiveEmptyState } from '@/components/workout/ActiveEmptyState';
 import { ActiveSessionChrome } from '@/components/workout/ActiveSessionChrome';
@@ -682,7 +683,12 @@ export function ActiveWorkoutPage() {
       <SignInPrompt
         className="mt-6"
         nextPath="/active"
-        description="Workouts auto-save to the cloud when you're signed in."
+        title={t('activeSignInTitle', {
+          defaultValue: LOCAL_FIRST_COPY.activeSignInTitle,
+        })}
+        description={t('activeSignInDesc', {
+          defaultValue: LOCAL_FIRST_COPY.activeSignInDesc,
+        })}
       />
 
       <ActiveSessionDock

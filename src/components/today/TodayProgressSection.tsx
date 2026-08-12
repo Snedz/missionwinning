@@ -34,6 +34,7 @@ import { StreakChip } from '@/components/today/StreakChip';
 import { bumpTrainingStreak } from '@/lib/streaks';
 import { toast } from '@/hooks/use-toast';
 import { localDateKey } from '@/lib/time/localDate';
+import { LOCAL_FIRST_COPY } from '@/lib/localFirstCopy';
 
 type MwWindow = Window & {
   triggerPwaInstall?: () => Promise<void>;
@@ -272,7 +273,11 @@ export function TodayProgressSection({
                 </a>
               </div>
             ) : (
-              <div>{t('todayPillarWinEmpty', { defaultValue: 'Log wins from Move or Mind (saves to cloud when signed in).' })}</div>
+              <div>
+                {t('todayPillarWinEmpty', {
+                  defaultValue: LOCAL_FIRST_COPY.todayPillarWinEmpty,
+                })}
+              </div>
             )}
 
             {SHOW_TODAY_FOUNDER_TOOLS && (
@@ -289,11 +294,11 @@ export function TodayProgressSection({
                   description: u
                     ? t('todayFounderStreakCloudSaved', {
                         streak: current,
-                        defaultValue: `Streak ${current}. Saved to cloud.`,
+                        defaultValue: `Streak ${current}. Saved on this device — backup when online.`,
                       })
                     : t('todayFounderStreakCloudSignIn', {
                         streak: current,
-                        defaultValue: `Streak ${current}. Sign in to sync.`,
+                        defaultValue: `Streak ${current}. Stays on this device — sign in optional.`,
                       }),
                 });
               } catch { /* noop */ }
@@ -341,9 +346,12 @@ export function TodayProgressSection({
                   toast({ title: t('todayFounderWinsRefreshed', { defaultValue: 'Wins refreshed' }) });
                 } else {
                   toast({
-                    title: t('todayFounderSignInWins', { defaultValue: 'Sign in required' }),
+                    title: t('todayFounderSignInWins', {
+                      defaultValue: 'Sign in optional',
+                    }),
                     description: t('todayFounderSignInWinsDesc', {
-                      defaultValue: 'Sign in to load cloud wins.',
+                      defaultValue:
+                        'Cloud wins need a signed-in backup — local logs still work.',
                     }),
                   });
                 }
