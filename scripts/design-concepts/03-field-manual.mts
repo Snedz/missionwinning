@@ -24,6 +24,7 @@
  */
 import { CONTENT_FLOORS } from '@/lib/contentFloors';
 import { fontFaces, photo } from './assets.mjs';
+import { INVITE_URL } from '../../sites/www/src/lib/appLinks.ts';
 
 const N = CONTENT_FLOORS.exercisePages;
 
@@ -179,7 +180,7 @@ const ENTRIES: Entry[] = [
     body: `
       <p>Access is invite-only while the beta runs. Leaving an address gets you two emails and
       nothing else — one when the beta opens, one at launch.</p>
-      <p><a class="action" href="#">Request an invite &rarr;</a></p>`,
+      <p><a class="action" href="${INVITE_URL}">Request an invite &rarr;</a></p>`,
   },
 ];
 

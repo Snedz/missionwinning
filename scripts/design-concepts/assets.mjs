@@ -1,5 +1,5 @@
 /**
- * Shared *assets* for the three concepts — fonts and photographs only.
+ * Shared *assets* for the concept documents — fonts and photographs only.
  *
  * Note what is NOT here: no DOM, no stylesheet, no content module, no layout
  * helpers. The last exploration board shared all of those and the result was

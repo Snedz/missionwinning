@@ -12,7 +12,7 @@ Astro 7 + Tailwind 4, **static output**, deployed to Cloudflare Pages. No adapte
 | `src/pages/` | Routes. One `.astro` file per URL — `index.astro` (the homepage) and `start.astro` (the conversion page) |
 | `src/layouts/Base.astro` | `<head>`, font preload, canonical, OG |
 | `src/components/` | Page pieces. `CtaSlot.astro` is the one action; `StagePhoto.astro` makes a photograph a ground; `LogToPlanDemo` and `CoachAdaptDemo` are the two live islands |
-| `src/lib/appLinks.ts` | Every link that leaves this build. One home, because the host split is undecided |
+| `src/lib/appLinks.ts` | Every link that leaves this build (`INVITE_URL`, `HOME_URL`, `START_URL`). One home, because the host split is undecided |
 | `src/styles/tokens.css` | **GENERATED** — do not edit. `npm run www:tokens` |
 | `src/styles/global.css` | The `@theme` block, type tiers, rhythm, motion |
 | `public/fonts/` | Archivo variable, latin, weight axis only |

@@ -1,16 +1,16 @@
 <!doctype html><html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Three concepts — Mission Winning</title>
+<title>Three architectures, and the landing they fuse into — Mission Winning</title>
 <style>
 :root{--bg:#0d0e10;--fg:#eceff2;--dim:#8c949e;--line:#23262b;--sig:#ffb000}
 *,*::before,*::after{box-sizing:border-box}
 body{margin:0;background:var(--bg);color:var(--fg);
   font:16px/1.6 ui-sans-serif,system-ui,sans-serif;-webkit-font-smoothing:antialiased}
 .wrap{max-width:76rem;margin:0 auto;padding:clamp(3rem,8vw,6rem) clamp(1.1rem,4vw,2rem) 6rem}
-h1{font-size:clamp(2rem,5vw,3.4rem);line-height:1.03;letter-spacing:-.03em;margin:0;max-width:20ch}
+h1{font-size:clamp(2rem,5vw,3.4rem);line-height:1.03;letter-spacing:-.03em;margin:0;max-width:22ch}
 .lede{color:var(--dim);max-width:64ch;margin:1.4rem 0 0;font-size:17px}
 .grid{display:grid;gap:1px;background:var(--line);border:1px solid var(--line);margin:3rem 0 0}
-@media(min-width:820px){.grid{grid-template-columns:repeat(3,1fr)}}
+@media(min-width:820px){.grid{grid-template-columns:repeat(2,1fr)}}
 .card{background:var(--bg);padding:1.6rem;display:flex;flex-direction:column;gap:.7rem;text-decoration:none;color:inherit}
 .card:hover{background:#131519}
 .card .n{font:600 12px/1 ui-monospace,monospace;letter-spacing:.2em;text-transform:uppercase;color:var(--sig)}
@@ -27,10 +27,12 @@ tbody th{color:var(--dim);font-weight:400;white-space:nowrap;width:11rem}
 .note{margin:3rem 0 0;border-left:2px solid var(--sig);padding-left:1rem;color:var(--dim);font-size:14.5px;max-width:70ch}
 .note b{color:var(--fg);font-weight:600}
 </style></head><body><div class="wrap">
-<h1>Three concepts, from zero</h1>
-<p class="lede">No shared structure, no shared stylesheet, no shared copy. The previous board shared
-all three and produced eight versions of one wireframe — the sharing was the failure. These are
-three different page architectures, each written for its own shape.</p>
+<h1>Three architectures, and the landing they fuse into</h1>
+<p class="lede">01–03 share nothing — no DOM, no stylesheet, no copy. That was the point: the
+previous board shared all three and produced eight versions of one wireframe. 04 is the
+continuous-scroll landing for a first-time visitor, restyled into one deepened-modernist
+system. The homepage stays the A1 modernist direction. The build still refuses to write if
+any two rows of the table match.</p>
 
 <div class="grid">
   <a class="card" href="https://claude.ai/code/artifact/c603c759-682a-4fcb-a1ce-b8e34317902e"><span class="n">01</span><h2>The Week</h2>
@@ -39,15 +41,18 @@ three different page architectures, each written for its own shape.</p>
     <p>One session, five places, one pinned stage. The ground changes under you; the plan in the corner does not.</p></a>
   <a class="card" href="https://claude.ai/code/artifact/d6fa9ffe-5163-4e83-baf6-35719ac2c928"><span class="n">03</span><h2>Field Manual</h2>
     <p>A document, not a scroll. Opens on a contents page. You look things up, and you may never reach the bottom.</p></a>
+  <a class="card" href="04-combined.html"><span class="n">04</span><h2>Combined landing</h2>
+    <p>The fusion, in this order: pinned arrival, then the live week, then the manual, then the invite. One type system. Real links.</p></a>
 </div>
 
 <table>
   <caption>Structural distinctness — asserted at build time, not claimed</caption>
-  <thead><tr><th></th><th class="was">Shipped today<span>sites/www</span></th><th><a href="https://claude.ai/code/artifact/c603c759-682a-4fcb-a1ce-b8e34317902e">The Week</a><span>01-the-week</span></th><th><a href="https://claude.ai/code/artifact/a640c6fe-111b-416b-829f-96b651eca77a">Anywhere</a><span>02-anywhere</span></th><th><a href="https://claude.ai/code/artifact/d6fa9ffe-5163-4e83-baf6-35719ac2c928">Field Manual</a><span>03-field-manual</span></th></tr></thead>
-  <tbody><tr><th scope="row">First screen</th><td class="was">claim over photograph</td><td>live instrument, no headline and no photograph</td><td>a place, 05:12, one line</td><td>a contents page</td></tr><tr><th scope="row">Narrative shape</th><td class="was">product → proof</td><td>do → consequence → invitation</td><td>journey → recognition → invitation</td><td>index → branch</td></tr><tr><th scope="row">Templates</th><td class="was">1 template × 9 sections</td><td>3 one-off sections, no template</td><td>5 chapters over one pinned stage</td><td>9 entries, one disclosure pattern</td></tr><tr><th scope="row">Where the software is</th><td class="was">two inline demos</td><td>IS the page</td><td>a persistent HUD that never changes</td><td>specification tables</td></tr><tr><th scope="row">Navigation</th><td class="was">single scroll</td><td>one continuous interaction</td><td>pinned linear, chaptered</td><td>hub and spoke</td></tr><tr><th scope="row">Reader’s verb</th><td class="was">scroll</td><td>press</td><td>scroll</td><td>look up</td></tr><tr><th scope="row">JavaScript</th><td class="was">optional</td><td>required</td><td>required, structurally</td><td>none</td></tr></tbody>
+  <thead><tr><th></th><th class="was">Shipped today<span>sites/www</span></th><th><a href="https://claude.ai/code/artifact/c603c759-682a-4fcb-a1ce-b8e34317902e">The Week</a><span>01-the-week</span></th><th><a href="https://claude.ai/code/artifact/a640c6fe-111b-416b-829f-96b651eca77a">Anywhere</a><span>02-anywhere</span></th><th><a href="https://claude.ai/code/artifact/d6fa9ffe-5163-4e83-baf6-35719ac2c928">Field Manual</a><span>03-field-manual</span></th><th><a href="04-combined.html">Combined landing</a><span>04-combined</span></th></tr></thead>
+  <tbody><tr><th scope="row">First screen</th><td class="was">claim over photograph</td><td>live instrument, no headline and no photograph</td><td>a place, 05:12, one line</td><td>a contents page</td><td>pinned cinematic arrival, 05:12 garage</td></tr><tr><th scope="row">Narrative shape</th><td class="was">product → proof</td><td>do → consequence → invitation</td><td>journey → recognition → invitation</td><td>index → branch</td><td>atmosphere → instrument → reference → invitation</td></tr><tr><th scope="row">Templates</th><td class="was">1 template × 9 sections</td><td>3 one-off sections, no template</td><td>5 chapters over one pinned stage</td><td>9 entries, one disclosure pattern</td><td>3 movements, one scroll, one type system</td></tr><tr><th scope="row">Where the software is</th><td class="was">two inline demos</td><td>IS the page</td><td>a persistent HUD that never changes</td><td>specification tables</td><td>HUD then live engine then spec tables</td></tr><tr><th scope="row">Navigation</th><td class="was">single scroll</td><td>one continuous interaction</td><td>pinned linear, chaptered</td><td>hub and spoke</td><td>continuous scroll, three verbs in sequence</td></tr><tr><th scope="row">Reader’s verb</th><td class="was">scroll</td><td>press</td><td>scroll</td><td>look up</td><td>scroll, then press, then look up</td></tr><tr><th scope="row">JavaScript</th><td class="was">optional</td><td>required</td><td>required, structurally</td><td>none</td><td>required for pin and logger; manual is none</td></tr></tbody>
 </table>
 
 <p class="note"><b>What this table is for.</b> The build refuses to write if any two of these rows
-match, or if any axis is identical across all three. The eight-variant board that preceded this
+match, or if any axis is identical across the whole concept set. 04 is a fusion, so it has its
+own honest row rather than a weakened check. The eight-variant board that preceded 01–03
 would have failed it on every row — which is exactly why it exists.</p>
 </div></body></html>

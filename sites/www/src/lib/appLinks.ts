@@ -25,7 +25,19 @@
  * preview app without a code change.
  */
 
-const APP_ORIGIN = import.meta.env.PUBLIC_APP_ORIGIN || 'https://www.missionwinning.com';
+/*
+ * `import.meta.env` is a Vite/Astro inject. Node (the concept builders run
+ * under `tsx`) has `import.meta` but no `.env`, and reading a missing object
+ * throws — which is how a marketing HTML generator would be unable to name
+ * the one URL it is not allowed to invent.
+ */
+const APP_ORIGIN = (
+  (import.meta as ImportMeta & { env?: { PUBLIC_APP_ORIGIN?: string } }).env?.PUBLIC_APP_ORIGIN ||
+  'https://www.missionwinning.com'
+).replace(/\/$/, '');
+
+/** The marketing homepage on this origin. Wordmark and "Homepage" point here. */
+export const HOME_URL = APP_ORIGIN;
 
 /** A route that lives on the Next app, not in this build. */
 export function appUrl(pathname: `/${string}`): string {

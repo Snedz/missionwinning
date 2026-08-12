@@ -16,7 +16,7 @@ One screen of truth for any AI tool or human joining cold. Read this, then [AGEN
 
 ---
 
-## Now (2026-08-09 · web `2026.07-unified.644` · Android `1.24.1`)
+## Now (2026-08-12 · web `2026.07-unified.699` · Android `1.24.1`)
 
 > The ONLY "where we are" block in the repo — [ORCHESTRATION.md](ORCHESTRATION.md) points here.
 >
@@ -272,6 +272,7 @@ One screen of truth for any AI tool or human joining cold. Read this, then [AGEN
 > and `.602` dropped `.587` detail (full text remains in LOG.md / archive)
 > and `.603` dropped `.588` detail (full text remains in LOG.md / archive)
 > and `.614` dropped `.594` detail (full text remains in LOG.md / archive)
+> and `.699` dropped `.628` detail (full text remains in LOG.md / archive)
 > to [CONTEXT-now-2026-07-30.md](docs/archive/CONTEXT-now-2026-07-30.md) after this
 > block reached **79 bullets / 103KB**. A status doc that only grows stops being read.
 
@@ -292,7 +293,7 @@ One screen of truth for any AI tool or human joining cold. Read this, then [AGEN
 > | Migrations | **9 recorded pending** — [LAUNCH_RUNBOOK](docs/LAUNCH_RUNBOOK.md) §3, enforced by `src/lib/migrationLedger.test.ts`. |
 > | gitleaks | **green — and scanning for the first time.** It had never scanned anything: on a `pull_request` event the action lists the PR's commits, the job declared no `permissions:` block, and it 403'd (`pull_requests=read`) before opening a file. Fixed by a `permissions:` block (`.224` carrying `.255`). It scans **only the PR's own commits**, so commit `8ea3527a`'s real Solana treasury address — scrubbed from the working file, still in history — is out of its scope. That finding stands, deliberately not allowlisted; it was never what made this check red. |
 
-- **`.628`:** (`2026.07-unified.628`) **Feel Wave 4** — Track log-first; Assessments/Calculators/Guidebook/Programs toolkit residual. Field manual A complete on More toolkit.
+- **`.699`:** (`2026.07-unified.699`) **Combined landing concept** — [docs/design/concepts/04-combined.html](docs/design/concepts/04-combined.html). One continuous-scroll landing for first-time visitors: **02 pin → 01 instrument → 03 manual → invite**, restyled into one deepened-modernist system (paper/ink/three reds; Barlow Condensed / IBM Plex Mono / Inter — Archivo stays the homepage). Homepage remains A1 `sites/www`. Engine numbers from `suggestNextSetTarget` at build time. CTAs are `INVITE_URL` + homepage — a bare `href="#"` now **fails the concept build** (the `.640` hole: `#` was filtered as a fragment). 04 gets its own STRUCTURE row rather than a weakened distinctness check. Evidence thesis only in closed manual entry 07.
 - **`.629`:** (`2026.07-unified.629`) **Feel Wave 5** — Guidebook chapter red discipline; Learn course / Coaching / Feedback briefs; History day EmptyState.
 - **`.630`:** (`2026.07-unified.630`) **Feel Wave 6** — Welcome briefing type + 44px chips; Beta primary-first. Entry path Field manual.
 - **`.631`:** (`2026.07-unified.631`) **Feel Wave 7** — Landing FAQ 44px; About/Vision display-section; Library/Press tap floor.
