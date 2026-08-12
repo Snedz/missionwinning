@@ -16,7 +16,7 @@ One screen of truth for any AI tool or human joining cold. Read this, then [AGEN
 
 ---
 
-## Now (2026-08-12 · web `2026.07-unified.685` · Android `1.24.1`)
+## Now (2026-08-12 · web `2026.07-unified.689` · Android `1.24.1`)
 
 > The ONLY "where we are" block in the repo — [ORCHESTRATION.md](ORCHESTRATION.md) points here.
 >
@@ -276,6 +276,7 @@ One screen of truth for any AI tool or human joining cold. Read this, then [AGEN
 > and `.680` dropped `.626` detail (full text remains in LOG.md / archive)
 > and `.684` dropped `.627` detail (full text remains in LOG.md / archive)
 > and `.685` dropped `.628` detail (full text remains in LOG.md / archive)
+> and `.689` dropped `.629` detail (full text remains in LOG.md / archive)
 > to [CONTEXT-now-2026-07-30.md](docs/archive/CONTEXT-now-2026-07-30.md) after this
 > block reached **79 bullets / 103KB**. A status doc that only grows stops being read.
 
@@ -297,6 +298,7 @@ One screen of truth for any AI tool or human joining cold. Read this, then [AGEN
 > | gitleaks | **green — and scanning for the first time.** It had never scanned anything: on a `pull_request` event the action lists the PR's commits, the job declared no `permissions:` block, and it 403'd (`pull_requests=read`) before opening a file. Fixed by a `permissions:` block (`.224` carrying `.255`). It scans **only the PR's own commits**, so commit `8ea3527a`'s real Solana treasury address — scrubbed from the working file, still in history — is out of its scope. That finding stands, deliberately not allowlisted; it was never what made this check red. |
 
 - **Excellence:** unscored · — · [docs/EXCELLENCE_RESULT.md](docs/EXCELLENCE_RESULT.md) — Horizon W phone sign-off home; surface PRs need `status: pass` or `Excellence-Override` (`.669`).
+- **`.689`:** (`2026.07-unified.689`) **Today loading skeleton md width parity** — `TodayDashboardLoading` adds `md:max-w-none` to match Lean/Dashboard; no AppLayout shell redesign. Wedge reserved `.686`–`.688` (#453/#462/#470); master tip `.685` landed (#455).
 - **`.685`:** (`2026.07-unified.685`) **Preserve next= through private gate** — `/private` unlock redirect reads `?next=` via `privateGateReturnPath` (layout no longer hardcodes `/`) (W1).
 - **`.684`:** (`2026.07-unified.684`) **Private gate session-unlock fail-open** — bounded `/private` session recovery; probe-confirmed cookie + hard nav; code-only invitees reach access-code form (W1).
 - **`.680`:** (`2026.07-unified.680`) **Guidebook wedge CTAs** — Ch4 Getting Started + magazine `1.4.3` practice lines pitch Train log + Mission Coach from logs; originality logged; Learn heroes still parked.
@@ -307,7 +309,6 @@ One screen of truth for any AI tool or human joining cold. Read this, then [AGEN
 
 
 
-- **`.629`:** (`2026.07-unified.629`) **Feel Wave 5** — Guidebook chapter red discipline; Learn course / Coaching / Feedback briefs; History day EmptyState.
 - **`.630`:** (`2026.07-unified.630`) **Feel Wave 6** — Welcome briefing type + 44px chips; Beta primary-first. Entry path Field manual.
 - **`.631`:** (`2026.07-unified.631`) **Feel Wave 7** — Landing FAQ 44px; About/Vision display-section; Library/Press tap floor.
 - **`.632`:** (`2026.07-unified.632`) **Feel Wave 8** — Beta bootstrap keys (no raw i18n flash); private gate taps; First Steps quiet dismiss.
