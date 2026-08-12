@@ -135,15 +135,15 @@ export function PlanSessionCard({
       </CardHeader>
       <CardContent className="space-y-3">
         {sessionRationale ? (
+          /*
+           * Quiet inset on the boss card — ink primary edge (not poster) so it
+           * does not compete with Start. No eyebrow: the input label alone
+           * carries the log cite (Design polish on `.699`).
+           */
           <div
-            className="space-y-1.5 border-s-[3px] border-s-[hsl(var(--accent-poster))] bg-muted px-3 py-2"
+            className="space-y-1.5 border-s-[3px] border-s-primary bg-muted px-3 py-2"
             data-testid="coach-session-rationale"
           >
-            <p className="eyebrow text-[10px] text-accent-900">
-              {t('coachWhySessionEyebrow', {
-                defaultValue: 'Why this session — from your logs',
-              })}
-            </p>
             <p className="text-xs text-muted-foreground leading-relaxed">
               <span className="font-medium text-foreground">
                 {t('coachRationaleInputLabel', { defaultValue: 'From your logs' })}
