@@ -21,13 +21,14 @@ test('GuidebookIndexPage free-beta uses open-beta specialist badge', () => {
   assert.match(src, /isFreeBeta|freeBeta/);
 });
 
-test('ProfileAssessmentCard free-beta uses open-beta foot', () => {
+test('ProfileAssessmentCard free-beta hides pay-adjacent foot', () => {
   const src = readFileSync(
     join(root, 'src/components/profile/ProfileAssessmentCard.tsx'),
     'utf8'
   );
-  assert.match(src, /profileAssessmentFootOpenBeta/);
   assert.match(src, /isFreeBeta|freeBeta/);
+  assert.match(src, /!freeBeta/);
+  assert.doesNotMatch(src, /profileAssessmentFootOpenBeta/);
 });
 
 test('EN open-beta strings omit Premium pay merch', () => {

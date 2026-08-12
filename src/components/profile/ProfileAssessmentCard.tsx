@@ -140,14 +140,11 @@ export function ProfileAssessmentCard() {
           </div>
         )}
         <div className="text-[10px] text-muted-foreground">
-          {freeBeta
-            ? t('profileAssessmentFootOpenBeta', {
-                defaultValue:
-                  'Core free forever. Open beta unlocks history depth and deeper coaching tools.',
-              })
-            : t('profileAssessmentFoot', {
+          {!freeBeta
+            ? t('profileAssessmentFoot', {
                 defaultValue: 'Core free forever. Premium adds history and deeper coaching.',
-              })}
+              })
+            : null}
         </div>
       </CardContent>
     </Card>

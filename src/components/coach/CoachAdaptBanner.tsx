@@ -42,6 +42,7 @@ export function CoachAdaptBanner({ plan, compact, todayOffset, onAdjustToday }: 
     !compact && typeof todayOffset === 'number'
       ? todaySessionWhyKeys(plan, todayOffset)
       : [];
+  const adaptedFromLogs = hasCoachAdaptationSignal(plan);
   if (!hasCoachAdaptationSignal(plan) && beats.length === 0 && whyKeys.length === 0) {
     return null;
   }
@@ -74,9 +75,13 @@ export function CoachAdaptBanner({ plan, compact, todayOffset, onAdjustToday }: 
             : 'eyebrow text-accent-900'
         }
       >
-        {t('coachAdaptHeadline', {
-          defaultValue: 'Adapted from your logs — no wearable needed',
-        })}
+        {adaptedFromLogs
+          ? t('coachAdaptHeadline', {
+              defaultValue: 'Updated from your logs — no wearable needed',
+            })
+          : t('coachPlanHeadlineStarter', {
+              defaultValue: 'Rules-based week from your gear and schedule',
+            })}
       </p>
       {visibleBeats.length > 0 ? (
         <ul className={compact ? 'space-y-1' : 'space-y-1.5 text-[15px] leading-snug'}>
@@ -97,7 +102,7 @@ export function CoachAdaptBanner({ plan, compact, todayOffset, onAdjustToday }: 
             </li>
           ))}
         </ul>
-      ) : beats.length === 0 && whyKeys.length === 0 ? (
+      ) : beats.length === 0 && whyKeys.length === 0 && adaptedFromLogs ? (
         <p
           className={
             compact
