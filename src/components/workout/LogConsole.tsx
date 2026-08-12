@@ -1,18 +1,14 @@
 'use client';
 
 /**
- * The logger's one console — the only place a set is entered.
+ * The logger's one console — the only place a set is entered (compact).
  *
- * Every planned set used to render its own control band: `#n`, two 44px
- * steppers around a reps field, two more around a weight field, and a Log
- * button. That is ~340px of controls inside 326px of content width, so the band
- * was wrapped in `overflow-x-auto` and **the Log button sat off-screen until
- * you dragged it into view** — mid-set, one-handed, holding a bar. Four planned
- * sets rendered four of them.
+ * Strong/Hevy density on ink: metric steppers under the thumb, one poster-red
+ * Log set, no filled accent chrome competing with it (kind / Use next stay
+ * outline-ink). Kind strip collapses to Work + expand so Log stays in the
+ * easy thumb zone (F-003 / MatrAIx).
  *
- * One console, on the ink ground, docked under the thumb. The list above it
- * becomes what it always should have been: a read-only record of what you have
- * done.
+ * See: src/components/workout/INDEX.md
  */
 
 import { useState } from 'react';
@@ -65,6 +61,10 @@ type Props = {
 const stepper =
   'flex h-[52px] w-12 shrink-0 items-center justify-center text-neutral-100 transition-colors hover:bg-neutral-800 active:bg-neutral-700';
 
+/** Selected kind / secondary CTA on ink — never filled accent (Log set owns red). */
+const inkChip =
+  'min-h-[44px] border-2 px-2.5 text-[11px] font-semibold uppercase tracking-[0.06em] transition-colors tap-target';
+
 function Field({
   label,
   value,
@@ -91,7 +91,7 @@ function Field({
 }) {
   return (
     <div className="min-w-0 flex-1">
-      <span className="mb-1 block text-[11px] font-semibold uppercase tracking-[0.1em] text-neutral-400">
+      <span className="mb-0.5 block text-[11px] font-semibold uppercase tracking-[0.1em] text-neutral-400">
         {label}
       </span>
       <div className="flex items-stretch border-2 border-neutral-700">
@@ -154,7 +154,10 @@ export function LogConsole({
   const showKindExpand = shouldShowSetKindExpand(kind, kindsExpanded);
 
   return (
-    <div className="border-t-2 border-neutral-900 bg-neutral-900 px-4 pb-4 pt-3.5 text-neutral-100">
+    <div
+      className="border-t-2 border-neutral-900 bg-neutral-900 px-3 pb-3 pt-2.5 text-neutral-100"
+      data-testid="log-console"
+    >
       <div className="flex items-baseline justify-between gap-3">
         <span className="min-w-0 truncate text-[15px] font-extrabold">{exerciseName}</span>
         <span className="shrink-0 text-[11px] font-semibold uppercase tracking-[0.1em] tabular-nums text-neutral-400">
@@ -166,7 +169,7 @@ export function LogConsole({
       </div>
 
       {hasStructured ? (
-        <div className="mt-1.5 space-y-0.5 text-xs tabular-nums leading-snug">
+        <div className="mt-1 space-y-0.5 text-xs tabular-nums leading-snug">
           {lastLine ? (
             <p className="truncate text-neutral-400">
               <span className="me-1.5 font-semibold uppercase tracking-[0.06em] text-neutral-500">
@@ -176,8 +179,8 @@ export function LogConsole({
             </p>
           ) : null}
           {nextLine ? (
-            <p className="truncate text-neutral-200">
-              <span className="me-1.5 font-semibold uppercase tracking-[0.06em] text-accent-400">
+            <p className="truncate text-neutral-100">
+              <span className="me-1.5 font-semibold uppercase tracking-[0.06em] text-neutral-400">
                 {t('activeOverloadNextLabel', { defaultValue: 'Next' })}
               </span>
               {nextLine}
@@ -197,7 +200,7 @@ export function LogConsole({
         <button
           type="button"
           onClick={() => onUseNext!(nextTarget)}
-          className="mt-2 min-h-[44px] w-full border-2 border-accent-400 px-3 text-start text-sm font-semibold text-accent-400 tap-target"
+          className="mt-1.5 min-h-[44px] w-full border-2 border-neutral-500 px-3 text-start text-sm font-semibold text-neutral-100 tap-target hover:bg-neutral-800"
           data-testid="log-console-use-next"
         >
           {t('activeUseNextTarget', {
@@ -207,10 +210,10 @@ export function LogConsole({
       ) : null}
 
       {/* Set kind: outdoor path collapses to Work + expand so reps/weight/Log
-          stay in the thumb zone. Non-work kinds force the full strip. */}
+          stay in the thumb zone. Selected = ink fill, never accent fill. */}
       <div
         id="log-console-set-kinds"
-        className="mt-3 flex flex-wrap gap-1"
+        className="mt-2 flex flex-wrap gap-1"
         data-testid="log-console-set-kinds"
       >
         {kindOptions.map((k) => (
@@ -223,9 +226,9 @@ export function LogConsole({
               defaultValue: k === 'normal' ? 'Work' : setKindDefaultLabel(k),
             })}
             className={cn(
-              'min-h-[44px] border-2 px-2.5 text-[11px] font-semibold uppercase tracking-[0.06em] transition-colors tap-target',
+              inkChip,
               kind === k
-                ? 'border-accent-400 bg-accent-400 text-neutral-900'
+                ? 'border-neutral-100 bg-neutral-100 text-neutral-900'
                 : 'border-neutral-700 text-neutral-300 hover:bg-neutral-800'
             )}
           >
@@ -238,7 +241,7 @@ export function LogConsole({
           <button
             type="button"
             onClick={() => setKindsExpanded(true)}
-            className="min-h-[44px] border-2 border-neutral-700 px-2.5 text-[11px] font-semibold uppercase tracking-[0.06em] text-neutral-300 transition-colors hover:bg-neutral-800 tap-target"
+            className={cn(inkChip, 'border-neutral-700 text-neutral-300 hover:bg-neutral-800')}
             data-testid="log-console-expand-kinds"
             aria-expanded={false}
             aria-controls="log-console-set-kinds"
@@ -248,7 +251,7 @@ export function LogConsole({
         ) : null}
       </div>
 
-      <div className="mt-3 flex items-end gap-3">
+      <div className="mt-2 flex items-end gap-2.5">
         <Field
           label={t('activeReps', { defaultValue: 'Reps' })}
           value={reps}
@@ -266,7 +269,7 @@ export function LogConsole({
         />
         {weight <= 0 ? (
           <div className="min-w-0 flex-1">
-            <span className="mb-1 block text-[11px] font-semibold uppercase tracking-[0.1em] text-neutral-400">
+            <span className="mb-0.5 block text-[11px] font-semibold uppercase tracking-[0.1em] text-neutral-400">
               {weightLabel}
             </span>
             <button
@@ -306,13 +309,12 @@ export function LogConsole({
         )}
       </div>
 
-      {/* Poster red, and the only fill this size in the app: every line on it is
-          display-grade, which is the one case #ec3013 clears. */}
+      {/* Sole poster-red primary on the hero Active log path (compact dock). */}
       <button
         type="button"
         onClick={onLog}
         data-testid="log-console-log-set"
-        className="primary-action mt-3 flex min-h-[52px] w-full items-center gap-2 bg-[hsl(var(--accent-poster))] px-4 text-[19px] font-extrabold text-background transition-colors hover:bg-[hsl(var(--primary-fill))]"
+        className="primary-action mt-2.5 flex min-h-[52px] w-full items-center gap-2 bg-[hsl(var(--accent-poster))] px-4 text-[19px] font-extrabold text-background transition-colors hover:bg-[hsl(var(--primary-fill))]"
       >
         <span className="flex-1 text-start">{t('activeLogSet', { defaultValue: 'Log set' })}</span>
         <Check className="h-5 w-5 shrink-0" aria-hidden />

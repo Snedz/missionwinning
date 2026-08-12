@@ -3,12 +3,9 @@
 /**
  * The desktop logger's set list — a table, per handoff 2.
  *
- * The desktop app and the mobile app are two designs (see
- * `src/hooks/useIsCompact.ts`). On a phone, entry is one docked `LogConsole`,
- * because ~340px of steppers does not fit in 326px of content. A 1440px window
- * has no such constraint, and the desktop handoff draws the thing that fits it:
- * every set on one row, the active row carrying its own inputs and its own
- * Log set, so the whole exercise is legible at a glance and nothing is docked.
+ * Strong/Hevy density: Set · Prev · weight · Reps, tabular nums, one inline
+ * Log set on the active row (sole red primary at md+). Compact uses
+ * `SetLogRow` + docked `LogConsole` instead — never both entry paths.
  *
  * Completed rows mirror compact `SetLogRow` cues (primary edge, check, a11y).
  */
@@ -34,9 +31,9 @@ type Props = {
   onRate: (setIdx: number, rpe: 'easy' | 'med' | 'hard') => void;
 };
 
-const cell = 'px-2 py-2 align-middle';
+const cell = 'px-2 py-1.5 align-middle';
 
-/** 2px rules and radius 0 come from the system; width is the mock's. */
+/** 2px rules and radius 0 come from the system; width is the mock's. ≥44px taps. */
 const numberInput =
   'h-11 min-h-[44px] border-2 border-border bg-background px-2 text-center text-sm font-semibold tabular-nums ' +
   'focus:outline-none focus:ring-2 focus:ring-ring';
@@ -54,22 +51,22 @@ export function SetLogTable({
   const { t } = useTranslation();
 
   return (
-    <table className="w-full max-w-[640px] border-collapse text-sm">
+    <table className="w-full max-w-[640px] border-collapse text-sm" data-testid="set-log-table">
       <thead>
         <tr className="border-b-2 border-border text-[11px] font-semibold uppercase tracking-[0.1em] text-muted-foreground">
-          <th scope="col" className={cn(cell, 'w-11 text-start')}>
+          <th scope="col" className={cn(cell, 'w-10 text-start')}>
             {t('activeColSet', { defaultValue: 'Set' })}
           </th>
           <th scope="col" className={cn(cell, 'text-start')}>
             {t('activeColPrev', { defaultValue: 'Prev' })}
           </th>
-          <th scope="col" className={cn(cell, 'w-[90px] text-start')}>
+          <th scope="col" className={cn(cell, 'w-[88px] text-start')}>
             {weightLabel}
           </th>
-          <th scope="col" className={cn(cell, 'w-20 text-start')}>
+          <th scope="col" className={cn(cell, 'w-[4.5rem] text-start')}>
             {t('activeColReps', { defaultValue: 'Reps' })}
           </th>
-          <th scope="col" className={cn(cell, 'w-[110px]')}>
+          <th scope="col" className={cn(cell, 'w-[6.5rem]')}>
             <span className="sr-only">{t('activeColAction', { defaultValue: 'Action' })}</span>
           </th>
         </tr>
@@ -143,10 +140,12 @@ export function SetLogTable({
                     />
                   </td>
                   <td className={cn(cell, 'text-end')}>
+                    {/* Sole red primary on desktop Active log path. */}
                     <button
                       type="button"
                       onClick={onLog}
-                      className="primary-action min-h-[44px] tap-target bg-primary-fill px-3.5 py-1.5 text-sm font-semibold text-primary-foreground transition-colors hover:bg-[hsl(var(--primary-fill-hover))]"
+                      data-testid="set-table-log-set"
+                      className="primary-action min-h-[44px] tap-target bg-[hsl(var(--accent-poster))] px-3 py-1.5 text-sm font-extrabold text-background transition-colors hover:bg-[hsl(var(--primary-fill))]"
                     >
                       {t('activeLogSet', { defaultValue: 'Log set' })}
                     </button>
@@ -161,7 +160,7 @@ export function SetLogTable({
                     {completed ? set.reps : set.reps}
                   </td>
                   <td className={cn(cell, 'text-end')}>
-                    <div className="flex items-center justify-end gap-1.5">
+                    <div className="flex items-center justify-end gap-1">
                       {kind !== 'normal' && (
                         <Badge
                           variant="outline"

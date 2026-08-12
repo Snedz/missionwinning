@@ -2,11 +2,9 @@
 /**
  * One set in the active workout list — a read-only record, not a control band.
  *
- * It used to carry the whole input apparatus per set: `#n`, two 44px steppers
- * around a reps field, two more around a weight field, and a Log button —
- * ~340px inside 326px, so it lived in an `overflow-x-auto` with Log off-screen,
- * once per planned set. Entry moved to `LogConsole`; this renders what
- * happened, and what is still to come.
+ * Strong/Hevy density: metric-first (`8 × 60 kg`), not prose ("In the console").
+ * Entry stays in `LogConsole`; this is what happened / what is planned. Rows stay
+ * ≥44px; RPE taps stay ≥44px. No filled red here — Log set owns poster-red.
  *
  * See: src/components/workout/INDEX.md
  */
@@ -80,33 +78,37 @@ export function SetLogRow({ setNumber, set, isNext, weightLabel, onRate }: Props
       aria-label={rowLabel}
       aria-current={isNext ? 'true' : undefined}
       className={cn(
-        'flex min-h-[44px] flex-wrap items-center gap-x-3 gap-y-1 border-b border-border px-1 py-2 transition-colors',
+        'flex min-h-[44px] flex-nowrap items-center gap-x-2.5 border-b border-border px-0.5 py-1.5 transition-colors',
         isNext && 'is-active-row',
         set.completed && 'border-s-[3px] border-s-primary bg-muted/40 ps-2'
       )}
       data-set-complete={set.completed ? 'true' : 'false'}
     >
-      <span className="w-[22px] shrink-0 text-[13px] font-semibold tabular-nums text-muted-foreground">
-        #{setNumber}
+      <span
+        className={cn(
+          'w-[1.25rem] shrink-0 text-[13px] font-semibold tabular-nums',
+          set.completed || isNext ? 'text-foreground' : 'text-muted-foreground'
+        )}
+      >
+        {setNumber}
       </span>
 
-      {set.completed ? (
-        <span className="text-[15px] font-semibold tabular-nums text-foreground">{line}</span>
-      ) : (
-        <span className="text-[15px] tabular-nums text-muted-foreground">
-          {isNext
-            ? t('activeSetInConsole', { defaultValue: 'In the console' })
-            : t('activeSetPlanned', {
-                reps: set.reps,
-                defaultValue: `${set.reps} planned`,
-              })}
-        </span>
-      )}
+      {/* Metric-first — Strong/Hevy set table feel; no "In the console" chrome. */}
+      <span
+        className={cn(
+          'min-w-0 flex-1 truncate text-[15px] tabular-nums',
+          set.completed && 'font-semibold text-foreground',
+          !set.completed && isNext && 'font-semibold text-foreground',
+          !set.completed && !isNext && 'text-muted-foreground'
+        )}
+      >
+        {line}
+      </span>
 
       {kind !== 'normal' && (
         <Tooltip>
           <TooltipTrigger asChild>
-            <Badge variant="outline" className={cn('text-[10px] uppercase', setKindBadgeClass(kind))}>
+            <Badge variant="outline" className={cn('shrink-0 text-[10px] uppercase', setKindBadgeClass(kind))}>
               {t(setKindLabelKey(kind), { defaultValue: setKindDefaultLabel(kind) })}
             </Badge>
           </TooltipTrigger>
@@ -119,7 +121,9 @@ export function SetLogRow({ setNumber, set, isNext, weightLabel, onRate }: Props
       {set.isPr && (
         <Tooltip>
           <TooltipTrigger asChild>
-            <Badge variant="honor">{t('activePrBadge', { defaultValue: 'PR' })}</Badge>
+            <Badge variant="honor" className="shrink-0">
+              {t('activePrBadge', { defaultValue: 'PR' })}
+            </Badge>
           </TooltipTrigger>
           <TooltipContent>
             {t('activePrTip', { defaultValue: 'Personal record for this exercise' })}
@@ -128,7 +132,7 @@ export function SetLogRow({ setNumber, set, isNext, weightLabel, onRate }: Props
       )}
 
       {set.completed && (
-        <div className="ms-auto flex items-center gap-1">
+        <div className="ms-auto flex shrink-0 items-center gap-0.5">
           {!set.rpe ? (
             (['easy', 'med', 'hard'] as const).map((r) => (
               <Tooltip key={r}>
@@ -136,7 +140,7 @@ export function SetLogRow({ setNumber, set, isNext, weightLabel, onRate }: Props
                   <Button
                     variant="outline"
                     size="sm"
-                    className="h-11 min-h-[44px] min-w-[44px] px-2 text-xs tap-target"
+                    className="h-11 min-h-[44px] min-w-[44px] px-1.5 text-[11px] tap-target"
                     onClick={() => onRate(r)}
                   >
                     {t(rpeLabelKey(r), { defaultValue: rpeDefaultLabel(r) })}
