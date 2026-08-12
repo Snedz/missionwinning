@@ -16,7 +16,7 @@ One screen of truth for any AI tool or human joining cold. Read this, then [AGEN
 
 ---
 
-## Now (2026-08-12 · web `2026.07-unified.691` · Android `1.24.1`)
+## Now (2026-08-12 · web `2026.07-unified.692` · Android `1.24.1`)
 
 > The ONLY "where we are" block in the repo — [ORCHESTRATION.md](ORCHESTRATION.md) points here.
 >
@@ -279,6 +279,7 @@ One screen of truth for any AI tool or human joining cold. Read this, then [AGEN
 > and `.689` dropped `.629` detail (full text remains in LOG.md / archive)
 > and `.690` dropped `.630` detail (full text remains in LOG.md / archive)
 > and `.691` dropped `.631` detail (full text remains in LOG.md / archive)
+> and `.692` dropped `.632` detail (full text remains in LOG.md / archive)
 > to [CONTEXT-now-2026-07-30.md](docs/archive/CONTEXT-now-2026-07-30.md) after this
 > block reached **79 bullets / 103KB**. A status doc that only grows stops being read.
 
@@ -300,6 +301,7 @@ One screen of truth for any AI tool or human joining cold. Read this, then [AGEN
 > | gitleaks | **green — and scanning for the first time.** It had never scanned anything: on a `pull_request` event the action lists the PR's commits, the job declared no `permissions:` block, and it 403'd (`pull_requests=read`) before opening a file. Fixed by a `permissions:` block (`.224` carrying `.255`). It scans **only the PR's own commits**, so commit `8ea3527a`'s real Solana treasury address — scrubbed from the working file, still in history — is out of its scope. That finding stands, deliberately not allowlisted; it was never what made this check red. |
 
 - **Excellence:** unscored · — · [docs/EXCELLENCE_RESULT.md](docs/EXCELLENCE_RESULT.md) — Horizon W phone sign-off home; surface PRs need `status: pass` or `Excellence-Override` (`.669`).
+- **`.692`:** (`2026.07-unified.692`) **Production smoke ratchet** — CI + gate-smoke lock privacy/terms English floors + `/compare` → `/welcome` (no product redo of `.653`/`.668`).
 - **`.691`:** (`2026.07-unified.691`) **Welcome Skip hard-nav** — I-Day finish uses `window.location.assign` when gate on so proxy demands cookie (no soft bypass) (W1).
 - **`.690`:** (`2026.07-unified.690`) **Admin invite share → `/private`** — `buildInviteShareLink` matches email `/private?invite=` path so invitee chrome paints (W1).
 - **`.689`:** (`2026.07-unified.689`) **Today loading skeleton md width parity** — `TodayDashboardLoading` adds `md:max-w-none` to match Lean/Dashboard; no AppLayout shell redesign. Wedge reserved `.686`–`.688` (#453/#462/#470); master tip `.685` landed (#455).
@@ -313,7 +315,6 @@ One screen of truth for any AI tool or human joining cold. Read this, then [AGEN
 
 
 
-- **`.632`:** (`2026.07-unified.632`) **Feel Wave 8** — Beta bootstrap keys (no raw i18n flash); private gate taps; First Steps quiet dismiss.
 - **`.633`:** (`2026.07-unified.633`) **Feel Wave 9** — Builder Field manual: 44px steps, Blank/Start own red, Save outline.
 - **`.636`:** (`2026.07-unified.636`) **Global legal posture** — multi-jurisdiction sanctions/trade controls; no US-primary / OFAC-only consumer voice; commercial exclusions unchanged. Counsel export global freeze. **Not legal advice.**
 - **`.635`:** (`2026.07-unified.635`) **Sanctions/export** — generic only (no sub-national place names). `.634` naming reverted. **Not legal advice.**

@@ -214,10 +214,12 @@ test.describe('Wave 5 public CTA integrity', () => {
   });
 
   test('retired compare hub redirects to welcome', async ({ page }) => {
-    const res = await page.goto('/compare/forge', { waitUntil: 'domcontentloaded' });
-    // Permanent redirect away from competitor comparison surface (.668)
-    expect([301, 307, 308].includes(res?.status() ?? 0) || page.url().includes('/welcome')).toBeTruthy();
-    await expect(page).toHaveURL(/\/welcome/);
+    // Hub index and stories both redirect (.668); gate-smoke curls the same perimeter.
+    for (const path of ['/compare', '/compare/forge']) {
+      const res = await page.goto(path, { waitUntil: 'domcontentloaded' });
+      expect([301, 307, 308].includes(res?.status() ?? 0) || page.url().includes('/welcome')).toBeTruthy();
+      await expect(page).toHaveURL(/\/welcome/);
+    }
   });
 
   test('learn path teaser CTA goes to welcome', async ({ page }) => {
