@@ -1,0 +1,106 @@
+---
+/*
+ * A document, not a template. Concept 03's architecture, in A1.
+ *
+ * Opens on a contents list. Entries expand in place with `<details>` — no
+ * JavaScript, which is the control the other two movements break. You may
+ * never reach the bottom.
+ *
+ * Ruled-stock lines were a gradient and are illegal here. Density comes from
+ * 2px rules, spec tables, and the contents list — the same structure, drawn
+ * with the system instead of a second typeface.
+ *
+ * Entry 07 is the only place evidence language is permitted on this page
+ * (brand-guidelines.md: not in a landing hero; About / Learn / founder
+ * narrative). It is behind a closed disclosure.
+ */
+import StagePhoto from './StagePhoto.astro';
+import { MANUAL } from '../lib/weekContent';
+---
+
+<div class="manual">
+  <header class="border-b-2 border-ink pb-6">
+    <p class="eyebrow">Document · Field manual · Edition one</p>
+    <h2 class="display-section mt-3 max-w-[16ch]">Look it up. You may never reach the bottom.</h2>
+    <p class="mt-4 max-w-[54ch] text-[17px] leading-[1.6] text-quiet">
+      A manual gives a different verb than a scroll. This is a tool that came with
+      documentation, not a lifestyle brand.
+    </p>
+  </header>
+
+  <nav class="mt-10" aria-label="Contents">
+    <p class="eyebrow">Contents</p>
+    <ol class="mt-4">
+      {MANUAL.map((e) => (
+        <li>
+          <a
+            href={`#e${e.n}`}
+            class="flex items-baseline gap-4 border-b-2 border-rule py-2 no-underline hover:text-red"
+          >
+            <span class="eyebrow eyebrow-live w-8 shrink-0">{e.n}</span>
+            <span class="text-[19px] font-extrabold tracking-[-0.01em]">{e.title}</span>
+          </a>
+        </li>
+      ))}
+    </ol>
+  </nav>
+
+  <div class="mt-4">
+    {MANUAL.map((e) => (
+      <article class="border-b-2 border-rule" id={`e${e.n}`}>
+        <details class="faq" open={e.open}>
+          <summary class="flex items-start gap-4 py-6">
+            <span class="eyebrow eyebrow-live mt-1 w-8 shrink-0">{e.n}</span>
+            <span class="min-w-0 flex-1">
+              <span class="block text-[22px] font-extrabold leading-[1.1] tracking-[-0.015em] sm:text-[28px]">
+                {e.title}
+              </span>
+              <span class="mt-2 block max-w-[52ch] text-[15px] font-normal leading-[1.5] text-quiet">
+                {e.standfirst}
+              </span>
+            </span>
+          </summary>
+          <div class="grid gap-6 pb-8 md:grid-cols-[12rem_1fr] md:gap-10 md:pl-12">
+            <aside class="border-t-2 border-rule pt-3 text-[13px] leading-[1.5] text-quiet">
+              {e.margin}
+            </aside>
+            <div class="max-w-[66ch]">
+              {e.paragraphs.map((p) => (
+                <p class="mb-4 text-[16px] leading-[1.6]">{p}</p>
+              ))}
+              {e.pull && (
+                <p class="display-section mb-4 mt-6 max-w-[20ch]">{e.pull}</p>
+              )}
+              {e.spec && (
+                <table class="mb-4 w-full border-collapse text-[14px]">
+                  <tbody>
+                    {e.spec.map((row) => (
+                      <tr class="border-t-2 border-rule">
+                        <th class="w-[11rem] py-2 pr-4 text-left align-top font-semibold text-quiet">
+                          {row.th}
+                        </th>
+                        <td class="py-2 align-top">{row.td}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              )}
+              {e.note && (
+                <p class="border-l-2 border-red pl-4 text-[14px] leading-[1.55] text-quiet">
+                  {e.note}
+                </p>
+              )}
+            </div>
+          </div>
+        </details>
+      </article>
+    ))}
+  </div>
+
+  <figure class="stage on-dark relative mt-12 min-h-[38vh]">
+    <StagePhoto base="/photo/home-rack" alt="A loaded barbell on a home rack" position="50% 60%" />
+    <figcaption class="stage-body slab px-5 py-4">
+      <p class="eyebrow">Plate I · Typical installation — domestic, minimal gear</p>
+    </figcaption>
+  </figure>
+</div>

@@ -132,6 +132,21 @@ test('poster-close carries display type only; small text goes on poster-field', 
   }
 });
 
+function wwwAstroFiles(): string[] {
+  const dir = path.join(root, 'sites/www/src');
+  if (!existsSync(dir)) return [];
+  const files: string[] = [];
+  const walk = (d: string) => {
+    for (const e of readdirSync(d, { withFileTypes: true })) {
+      const full = path.join(d, e.name);
+      if (e.isDirectory()) walk(full);
+      else if (/\.astro$/.test(e.name)) files.push(full);
+    }
+  };
+  walk(dir);
+  return files;
+}
+
 test('the www surface never imports app code at runtime', () => {
   /*
    * Build-time frontmatter may read src/lib/contentFloors.ts — that is the point,
@@ -140,16 +155,74 @@ test('the www surface never imports app code at runtime', () => {
    * whose fifteen packs cannot be tree-shaken (dynamic BY_LANG indexing plus
    * `...LANDING_EN` spread inheritance), so a single client-side import ships
    * every locale to a visitor who reads one.
+   *
+   * Discovered, not listed: a two-file enumeration went stale the day `/week`
+   * landed. Walking every `.astro` file is the same shape as the poster-close
+   * check above it.
    */
-  const files = ['sites/www/src/pages/index.astro', 'sites/www/src/components/CtaSlot.astro'];
+  const files = wwwAstroFiles();
+  assert.ok(files.length > 0, 'no .astro files found — this check would pass over nothing');
   for (const file of files) {
-    if (!existsSync(path.join(root, file))) continue;
-    const src = read(file);
+    const src = readFileSync(file, 'utf8');
     const clientDirective = /client:(load|idle|visible|only|media)/.test(src);
     const importsLocales = /from ['"][^'"]*i18n\/[^'"]*Locales['"]/.test(src);
     assert.ok(
       !(clientDirective && importsLocales),
-      `${file} hydrates a component AND imports a locale pack — that ships all 15 packs to the browser`
+      `${path.relative(root, file)} hydrates a component AND imports a locale pack — that ships all 15 packs to the browser`
     );
   }
+});
+
+test('/week is a terminal landing with a real link home', () => {
+  /*
+   * The unbuilt request from the `.644` session: combine the three concepts
+   * into one continuous-scroll page, with INVITE_URL as the action and a link
+   * to the homepage. A landing whose CTA is still `/#invite` or whose home
+   * link is missing is the `.640` defect on a new route.
+   */
+  const page = read('sites/www/src/pages/week.astro');
+  assert.match(page, /\bterminal\b/, '/week must terminate at the private gate, not hand off to /start');
+  assert.match(page, /href="\/"/, '/week must link to the homepage');
+  assert.match(
+    read('sites/www/src/components/CtaSlot.astro'),
+    /INVITE_URL/,
+    'CtaSlot is the one home for the invite URL — /week must not type a second one'
+  );
+  assert.equal(
+    (page.match(/<CtaSlot\b[^>]*\bterminal/g) ?? []).length >= 1,
+    true,
+    '/week must pass terminal to CtaSlot so the action is INVITE_URL'
+  );
+});
+
+test('/week copy does not invent traction or a before-after', () => {
+  /*
+   * Same ban as the homepage (`.640`). The combined landing is three verbs,
+   * not a pitch. A mutant that adds "we're live" or "gym-bro" must go red.
+   */
+  const copy = [
+    read('sites/www/src/lib/weekContent.ts'),
+    read('sites/www/src/pages/week.astro'),
+    read('sites/www/src/components/WeekBreak.astro'),
+    read('sites/www/src/components/AnywherePin.astro'),
+    read('sites/www/src/components/FieldManual.astro'),
+  ].join('\n');
+  assert.doesNotMatch(copy, /\b\d[\d,.]*\s*(athletes|users|sign-?ups)\b/i);
+  assert.doesNotMatch(copy, /we're live/i);
+  assert.doesNotMatch(copy, /before[\s-]*after/i);
+  assert.doesNotMatch(copy, /gym-bro/i);
+});
+
+test('/week anywhere movement keeps three photographs and two plates', () => {
+  /*
+   * Concept 02's honest greybox: five places, three frames in the repo.
+   * Dropping a photograph to "simplify" the pin is how the page becomes a
+   * wireframe again — the composition floor would still pass on the hero
+   * alone. Count the optional `photo:` fields inside CHAPTERS.
+   */
+  const src = read('sites/www/src/lib/weekContent.ts');
+  const block = src.slice(src.indexOf('export const CHAPTERS'), src.indexOf('export type SpecRow'));
+  const photos = block.match(/photo:/g) ?? [];
+  assert.equal(photos.length, 3, `CHAPTERS has ${photos.length} photographs; the greybox is three frames, five places`);
+  assert.match(src, /export const PIN/, '/week HUD copy must live next to the week it displays');
 });

@@ -38,6 +38,7 @@ const DIST = path.join(root, 'sites/www/dist');
 const BUDGETS_KB = {
   '/': 20,
   '/start': 20,
+  '/week': 20,
 };
 
 /** Every route the build emits, as route → dist-relative HTML path. */

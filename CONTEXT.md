@@ -16,7 +16,7 @@ One screen of truth for any AI tool or human joining cold. Read this, then [AGEN
 
 ---
 
-## Now (2026-08-09 · web `2026.07-unified.644` · Android `1.24.1`)
+## Now (2026-08-12 · web `2026.07-unified.698` · Android `1.24.1`)
 
 > The ONLY "where we are" block in the repo — [ORCHESTRATION.md](ORCHESTRATION.md) points here.
 >
@@ -272,6 +272,7 @@ One screen of truth for any AI tool or human joining cold. Read this, then [AGEN
 > and `.602` dropped `.587` detail (full text remains in LOG.md / archive)
 > and `.603` dropped `.588` detail (full text remains in LOG.md / archive)
 > and `.614` dropped `.594` detail (full text remains in LOG.md / archive)
+> and `.698` dropped `.628` detail (full text remains in LOG.md / archive)
 > to [CONTEXT-now-2026-07-30.md](docs/archive/CONTEXT-now-2026-07-30.md) after this
 > block reached **79 bullets / 103KB**. A status doc that only grows stops being read.
 
@@ -292,7 +293,7 @@ One screen of truth for any AI tool or human joining cold. Read this, then [AGEN
 > | Migrations | **9 recorded pending** — [LAUNCH_RUNBOOK](docs/LAUNCH_RUNBOOK.md) §3, enforced by `src/lib/migrationLedger.test.ts`. |
 > | gitleaks | **green — and scanning for the first time.** It had never scanned anything: on a `pull_request` event the action lists the PR's commits, the job declared no `permissions:` block, and it 403'd (`pull_requests=read`) before opening a file. Fixed by a `permissions:` block (`.224` carrying `.255`). It scans **only the PR's own commits**, so commit `8ea3527a`'s real Solana treasury address — scrubbed from the working file, still in history — is out of its scope. That finding stands, deliberately not allowlisted; it was never what made this check red. |
 
-- **`.628`:** (`2026.07-unified.628`) **Feel Wave 4** — Track log-first; Assessments/Calculators/Guidebook/Programs toolkit residual. Field manual A complete on More toolkit.
+- **`.698`:** (`2026.07-unified.698`) **WWW `/week`** — the three `.644` concepts as one continuous-scroll landing in the A1 language. Homepage at `/` is unchanged. `/week` keeps the three verbs (press · scroll · look up) as three movements, not three skins: live logger + authored broken-week picker on a photographic ground; five full-bleed places with a sticky unchanging HUD (no Lenis); field manual as `<details>` with no JS. Invite CTA is `INVITE_URL`; wordmark links home. Archivo only — the concept board's second faces are illegal on `sites/www`.
 - **`.629`:** (`2026.07-unified.629`) **Feel Wave 5** — Guidebook chapter red discipline; Learn course / Coaching / Feedback briefs; History day EmptyState.
 - **`.630`:** (`2026.07-unified.630`) **Feel Wave 6** — Welcome briefing type + 44px chips; Beta primary-first. Entry path Field manual.
 - **`.631`:** (`2026.07-unified.631`) **Feel Wave 7** — Landing FAQ 44px; About/Vision display-section; Library/Press tap floor.

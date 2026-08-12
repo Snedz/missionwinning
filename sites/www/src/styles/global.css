@@ -475,6 +475,150 @@
   .slab {
     background-color: hsl(var(--foreground) / 0.86);
   }
+
+  /* ── /week: broken-week picker ────────────────────────────────
+     `:has()` makes the radio the state machine, so this movement needs no
+     JS. Without `:has()` every week stays visible — the honest fallback,
+     not an empty box. Selected pick is tint + ink rule, never a second
+     red fill (the closing field owns that). */
+  .break-week {
+    display: grid;
+  }
+
+  .break-pick:has(:checked) {
+    border-color: hsl(var(--foreground));
+    background-color: hsl(var(--accent-tint));
+  }
+
+  @supports selector(:has(*)) {
+    .break-week {
+      display: none;
+    }
+
+    .break:has([value='miss']:checked) .break-week[data-for='miss'],
+    .break:has([value='travel']:checked) .break-week[data-for='travel'],
+    .break:has([value='gone']:checked) .break-week[data-for='gone'] {
+      display: grid;
+    }
+  }
+
+  /* ── /week: anywhere chapters ─────────────────────────────────
+     Five stacked full-bleed plates, not one sticky stage swapping
+     grounds. JS-off still walks every place. The HUD is a slab, not a
+     blur — `backdrop-blur` is the glow/elevation rule. */
+  .pin {
+    position: relative;
+    background-color: hsl(var(--foreground));
+  }
+
+  .pin-chrome {
+    position: sticky;
+    top: 4.75rem;
+    z-index: 3;
+    height: 0;
+  }
+
+  .pin-hud {
+    position: absolute;
+    top: 0.75rem;
+    right: clamp(1.25rem, 3vw, 2rem);
+    width: min(19rem, 74vw);
+    border: 2px solid hsl(var(--background) / 0.34);
+    background-color: hsl(var(--foreground) / 0.86);
+    padding: 1rem;
+  }
+
+  .pin-hud-week {
+    list-style: none;
+    margin: 0.7rem 0 0;
+    padding: 0;
+  }
+
+  .pin-hud-week li {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.28rem 0;
+    border-top: 2px solid hsl(var(--background) / 0.34);
+    font-size: 13px;
+    font-weight: 600;
+  }
+
+  .pin-hud-week li:first-child {
+    border-top: 0;
+    font-weight: 800;
+  }
+
+  .pin-hud-foot {
+    margin-top: 0.7rem;
+  }
+
+  .pin-ticks {
+    display: flex;
+    gap: 0.4rem;
+    margin-top: 0.8rem;
+  }
+
+  .pin-ticks b {
+    display: block;
+    width: 2.2rem;
+    height: 2px;
+    background-color: hsl(var(--background) / 0.34);
+  }
+
+  .pin-ticks b[data-on] {
+    background-color: hsl(var(--accent-poster));
+  }
+
+  .pin-chapter {
+    position: relative;
+    isolation: isolate;
+    display: flex;
+    min-height: 100svh;
+    align-items: flex-end;
+    padding: 0 clamp(1.25rem, 3vw, 2rem) clamp(4.5rem, 12vh, 8rem);
+  }
+
+  .pin-chapter-plate {
+    background-color: hsl(var(--foreground));
+  }
+
+  /* Flush left, cropped by the frame — `text-center` is banned on this
+     surface, and a corner-parked ghost at 5% opacity was the first-render
+     failure on the original concept (empty top two thirds). */
+  .pin-ghost {
+    position: absolute;
+    inset: 0;
+    margin: 0;
+    overflow: hidden;
+    padding: 18vh 5vw 0;
+    font-size: min(22vw, 12rem);
+    font-weight: 800;
+    line-height: 0.8;
+    letter-spacing: -0.03em;
+    text-transform: uppercase;
+    color: hsl(var(--background) / 0.1);
+  }
+
+  .pin-copy {
+    position: relative;
+    z-index: 1;
+    max-width: 42rem;
+  }
+
+  .pin-note {
+    margin-top: 1.1rem;
+    max-width: 38ch;
+    font-size: 16.5px;
+    line-height: 1.55;
+    color: hsl(var(--background) / 0.74);
+  }
+
+  @media (max-width: 767px) {
+    .pin-hud {
+      display: none;
+    }
+  }
 }
 
 /*
@@ -653,6 +797,10 @@
   .drift img {
     animation: none;
     transform: none;
+  }
+
+  .pin-ticks b {
+    transition: none;
   }
 }
 
