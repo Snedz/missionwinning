@@ -33,6 +33,6 @@ test('Start free pad exists with stable key', () => {
   const product = footerGroups().find((g) => g.titleKey === 'footerGroupProduct');
   const start = product!.links.find((l) => l.href === '/welcome');
   assert.ok(start);
-  assert.equal(start!.defaultValue, 'Start free');
+  assert.equal(start!.defaultValue, 'Begin I-Day');
   assert.equal(start!.labelKey, 'footerProductStart');
 });

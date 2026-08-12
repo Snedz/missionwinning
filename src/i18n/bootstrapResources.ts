@@ -9,8 +9,8 @@ export const BOOTSTRAP_EN: Record<string, string> = {
   ...BETA_EN,
   appName: 'Mission Winning',
   tagline: 'Train anywhere. Win daily.',
-  infoBetaTitle: 'Start here',
-  infoBetaSubtitleBrief: 'I-Day → first workout → Mission Coach. Start with the primary path.',
+  infoBetaTitle: 'Invite-only beta',
+  infoBetaSubtitleBrief: 'Access code → I-Day → first workout → Mission Coach. Start with the primary path.',
   infoBetaMoreSteps: 'What we need & more steps',
   infoBetaNeedTitle: 'What we need from you',
   infoSkipToday: 'Skip to Today',
@@ -45,7 +45,7 @@ export const BOOTSTRAP_EN: Record<string, string> = {
   todayCoachInviteTitle: 'Generate a free week of Mission Coach',
   todayCoachInviteBody:
     'Adaptive plan from your gear and days/week — free every week, no API key required.',
-  landingNavStart: 'Start free',
+  landingNavStart: 'Begin I-Day',
   landingFaqEyebrow: 'Straight answers',
   landingFaqFreeQ: 'Is the free version actually complete?',
   landingFaqFreeA:

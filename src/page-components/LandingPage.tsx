@@ -172,7 +172,7 @@ export function LandingPage() {
               className="primary-action max-w-sm sm:w-auto sm:max-w-none sm:px-10"
               onClick={() => router.push('/welcome')}
             >
-              {t('landingNavStart', { defaultValue: 'Start free' })}
+              {t('landingNavStart', { defaultValue: 'Begin I-Day' })}
               <ArrowRight className="h-5 w-5" />
             </button>
             <p className="mt-4 max-w-md text-sm leading-relaxed text-muted-foreground">
@@ -339,7 +339,7 @@ export function LandingPage() {
             <p className="mb-8 max-w-md text-base leading-relaxed text-muted-foreground">
               {t('landingFreeBody', {
                 defaultValue: isFreeBeta()
-                  ? 'Logging and Mission Coach plans from your logs stay free — no account required. Open beta means full tools while we grow with you.'
+                  ? 'Invite-only beta — full platform free for testers. Logging and Mission Coach from your logs stay free; begin with I-Day after your access code.'
                   : 'Logging stays free forever. Super Bundle adds Coach depth when you want it — it never gates the logger.',
               })}
             </p>
@@ -425,7 +425,7 @@ export function LandingPage() {
               className="primary-action max-w-sm sm:w-auto sm:max-w-none sm:px-12"
               onClick={() => router.push('/welcome')}
             >
-              {t('landingFinalCtaButton', { defaultValue: 'Start free — no account' })}
+              {t('landingFinalCtaButton', { defaultValue: 'Begin I-Day' })}
               <ArrowRight className="h-5 w-5" />
             </button>
             <p className="mt-4 text-sm text-background">

@@ -32,7 +32,7 @@ export type FooterGroup = {
  * See docs/FLOW_ARCHITECTURE.md.
  */
 const PRODUCT: FooterLink[] = [
-  { href: '/welcome', labelKey: 'footerProductStart', defaultValue: 'Start free' },
+  { href: '/welcome', labelKey: 'footerProductStart', defaultValue: 'Begin I-Day' },
   { href: '/#coach', labelKey: 'footerProductCoach', defaultValue: 'How Coach adapts' },
   { href: '/bundle', labelKey: 'footerProductBundle', defaultValue: 'Super Bundle' },
 ];

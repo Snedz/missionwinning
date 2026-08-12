@@ -23,9 +23,9 @@ export function BetaStartPage() {
   return (
     <InfoPageShell
       icon={Rocket}
-      title={t('infoBetaTitle', { defaultValue: 'Start here' })}
+      title={t('infoBetaTitle', { defaultValue: 'Invite-only beta' })}
       subtitle={t('infoBetaSubtitleBrief', {
-        defaultValue: 'I-Day → first workout → Mission Coach. Start with the primary path.',
+        defaultValue: 'Access code → I-Day → first workout → Mission Coach. Start with the primary path.',
       })}
       variant="sections"
       footer={

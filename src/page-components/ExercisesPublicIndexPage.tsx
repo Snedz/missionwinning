@@ -20,7 +20,7 @@ export async function ExercisesPublicIndexPage() {
       title="Exercise library"
       subtitle={`${EXERCISES.length} movements with form diagrams and coach language — open a lift, then log it free offline.`}
       ctaHref="/welcome"
-      ctaLabel="Start free"
+      ctaLabel="Begin I-Day"
       maxWidth="4xl"
     >
       <section>

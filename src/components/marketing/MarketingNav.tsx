@@ -74,7 +74,7 @@ export function MarketingNav({ variant = 'full', className }: MarketingNavProps)
               link at all. Visible at every width — the primary conversion action must not
               move a tap deeper on the viewport most visitors arrive on. */}
           <Button asChild variant="ghost" className="tap-target min-h-[44px] text-sm font-medium">
-            <Link href="/welcome">{t('landingNavStart', { defaultValue: 'Start free' })}</Link>
+            <Link href="/welcome">{t('landingNavStart', { defaultValue: 'Begin I-Day' })}</Link>
           </Button>
 
           <PublicNavMenu
@@ -87,7 +87,7 @@ export function MarketingNav({ variant = 'full', className }: MarketingNavProps)
               defaultValue: t(l.labelKey, { defaultValue: l.defaultValue }),
             }))}
             ctaHref="/welcome"
-            ctaLabel={t('landingNavStart', { defaultValue: 'Start free' })}
+            ctaLabel={t('landingNavStart', { defaultValue: 'Begin I-Day' })}
             menuLabel={t('navMenuLabel', { defaultValue: 'Menu' })}
             closeLabel={t('navMenuClose', { defaultValue: 'Close menu' })}
           />

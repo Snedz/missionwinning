@@ -47,7 +47,7 @@ export type PublicPageShellProps = {
   eyebrow: string;
   title: string;
   subtitle?: string;
-  /** Primary conversion CTA — defaults to Start free → /welcome. */
+  /** Primary conversion CTA — defaults to Begin I-Day → /welcome. */
   ctaHref?: string;
   ctaLabel?: string;
   /** Body measure; the header matches it. Default `3xl`, index pages use `4xl`. */
@@ -62,7 +62,7 @@ export function PublicPageShell({
   title,
   subtitle,
   ctaHref = '/welcome',
-  ctaLabel = 'Start free',
+  ctaLabel = 'Begin I-Day',
   maxWidth = '3xl',
   breadcrumb,
   children,

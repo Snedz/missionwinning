@@ -9,7 +9,7 @@
 - **Unlock depth:** treat everyone as premium-entitled — Coach chat, Fuel Coach, GPS catalogs, Move/Mind/Learn premium sessions, adapt depth. No $ credits wallet.
 - **Full More nav:** journey i-day/basic train-only focus is deferred — More shows Recover / Train deeper / Learn (still no Bundle) so all pillars are discoverable.
 - Show: logger, Today, Victory, Coach week + depth, free + unlocked pillar tools, Guide.
-- Frame: “Open beta — full platform free while we grow with you.”
+- Frame: invite-only access — full platform free for invited testers (`PRIVATE_MODE` still gates `/log` until public flip).
 
 ## Flags
 
