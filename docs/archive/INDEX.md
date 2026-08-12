@@ -25,6 +25,7 @@ When adding a doc:
 
 | File | Absorbed by / note |
 |------|---------------------|
+| [log/LOG-rotate-658-for-684.md](./log/LOG-rotate-658-for-684.md) | rotated 2026-08-12 for `.684` private gate session-unlock fail-open |
 | [log/LOG-rotate-668.md](./log/LOG-rotate-668.md) | rotated oldest for `.668` competitor compare removed |
 | [log/LOG-rotate-667.md](./log/LOG-rotate-667.md) | rotated oldest for `.667` Compare stories free-beta mute |
 | [log/LOG-rotate-666.md](./log/LOG-rotate-666.md) | rotated oldest for `.666` Calculators macro foot free-beta mute |
