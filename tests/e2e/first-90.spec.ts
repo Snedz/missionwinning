@@ -49,9 +49,17 @@ test.describe('First 90 seconds @gate', () => {
       'Skip sign-in'
     );
 
+    // F-004 / Hevy: I-Day lands on Today with one Start — not empty feed, not Active dump.
+    await expect(page).toHaveURL(/\/log/, { timeout: 15_000 });
+    await expect(page.locator('.primary-action')).toHaveCount(1);
+    await tap(
+      page.locator('.primary-action').first(),
+      'Start first workout'
+    );
+
     await expect(page).toHaveURL(/\/active/, { timeout: 15_000 });
 
-    // Nothing may stand between arriving and logging. A check-in sheet here would be
+    // Nothing may stand between Start and logging. A check-in sheet here would be
     // an interstitial on the very first session (W1) — assert it is absent rather
     // than dismissing it, which is what made this regress before.
     await expect(

@@ -26,8 +26,11 @@ wall ORCHESTRATION C5 (≤90s) forbids — not a missing feature.
   `hasFirstWorkout: false`; MoreSheet + Sidebar pass `workoutHistory.length > 0`
   (the signal `detectBasicMilestones` already uses). No AppLayout/shell redesign,
   no landing rewrite, no new pillar chrome.
+- **Hevy acceptance:** I-Day finish lands on **Today (`/log`)** with one
+  JourneyHero Start (no auto-started Active dump). Resume `/active` only when
+  `hasLoggedWork`. first-90 / hero-flows updated (Still ≤6 taps).
 - Guards: `firstSteps.test.ts` + `moreSheetTiers.test.ts` + `pillarChromeGate.test.ts`
-  (pure demotion + wiring source-scan).
+  (pure demotion + wiring + Welcome→`/log` source-scan).
 
 Label `.695` (rebases onto master `.694` / #475 F-003). Excellence-Override below.
 

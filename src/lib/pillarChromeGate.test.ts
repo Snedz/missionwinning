@@ -45,3 +45,18 @@ test('MoreSheet gate signal is workout history length (same as basic.workout)', 
   assert.match(src, /hasFirstWorkout/);
   assert.match(src, /workoutHistory\.length/);
 });
+
+test('I-Day finish lands on Today (/log), not an auto-started Active session', () => {
+  const src = read('src/page-components/WelcomePage.tsx');
+  const finish = src.slice(src.indexOf('const finish ='), src.indexOf('const handleBegin'));
+  assert.match(
+    finish,
+    /go\(\s*['"`]\/log['"`]\s*\)/,
+    'Hevy / F-004: post-signup must open Today with one Start'
+  );
+  assert.doesNotMatch(
+    finish,
+    /startWorkout\(/,
+    'finish must not dump into Active with a side-effect session'
+  );
+});
