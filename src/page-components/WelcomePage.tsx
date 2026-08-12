@@ -102,25 +102,12 @@ export function WelcomePage() {
     /*
      * `.204` — never let onboarding take a session away.
      *
-     * `startWorkout` replaces `activeWorkout` outright, and its other seventeen
-     * call sites are all a user tapping "start this workout", where replacing is
-     * exactly what was asked for. This one is not: it is a side effect of
-     * finishing I-Day, and a returning athlete can reach it by accident —
-     * `/` renders marketing for anyone past the gate, its only prominent CTA is
-     * "Start free", and that leads here.
-     *
-     * So the preview session is a courtesy, not a mandate. If there is real work
-     * on the device, send them to it instead of over it.
+     * If there is real logged work on the device, resume it. Otherwise F-004 /
+     * Hevy rage: land on **Today** with one Start (JourneyHero + first-workout
+     * template) — not an auto-started Active session, not an empty feed, not a
+     * six-pillar wall. Start stays one tap; the free logger is never gated.
      */
     if (hasLoggedWork(useWorkoutStore.getState().activeWorkout)) {
-      go('/active');
-      return;
-    }
-    // W1: land in the previewed session — no Today detour before first sweat.
-    const session = previewJustGoForEquipment(equipment);
-    if (session.exercises.length > 0) {
-      useWorkoutStore.getState().startWorkout(session.name, session.exercises);
-      track('just_go_started', { source: session.source, focus: session.focusGroup });
       go('/active');
       return;
     }

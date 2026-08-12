@@ -98,11 +98,23 @@ export function MoreSheet({ open, onClose }: { open: boolean; onClose: () => voi
   const figures = useMoreFigures(open);
 
   /**
+   * F-004 — same first-workout signal as Basic Training (`workoutHistory.length`,
+   * which `detectBasicMilestones` uses for `basic.workout`). Before hydrate,
+   * keep pillars hidden so a cold I-Day open does not flash the options wall.
+   */
+  const hasHydrated = useWorkoutStore((s) => s.hasHydrated);
+  const completedSessions = useWorkoutStore((s) => s.workoutHistory.length);
+  const hasFirstWorkout = hasHydrated && completedSessions > 0;
+
+  /**
    * Computed during render, not in an effect. `moreSheetTiersForNav()` is sync,
    * and this whole module is already behind a dynamic import — so deferring it
    * only bought one frame of an open sheet with nothing in it.
    */
-  const groups = useMemo(() => moreSheetTiersForNav(), []);
+  const groups = useMemo(
+    () => moreSheetTiersForNav({ hasFirstWorkout }),
+    [hasFirstWorkout]
+  );
 
   /**
    * The checklist, read when the sheet opens.
@@ -113,7 +125,6 @@ export function MoreSheet({ open, onClose }: { open: boolean; onClose: () => voi
    * open-gated timing as `useMoreFigures` — off-screen work for a sheet nobody
    * opened is the `.210` shape.
    */
-  const completedSessions = useWorkoutStore((s) => s.workoutHistory.length);
   const [firstSteps, setFirstSteps] = useState<ReturnType<typeof getFirstSteps>>([]);
   useEffect(() => {
     if (!open) return;

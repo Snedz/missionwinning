@@ -68,17 +68,14 @@ describe('isUsableActiveWorkout', () => {
 /**
  * `.204` — onboarding must not take a session away.
  *
- * `startWorkout` replaces `activeWorkout` outright, which is correct at its
- * seventeen other call sites: each is an athlete tapping "start this workout".
- * `WelcomePage.finish()` is the exception — there the call is a side effect of
- * finishing I-Day, and a returning athlete reaches it by accident, because `/`
- * renders marketing for anyone past the gate and its only prominent CTA leads
- * back into onboarding.
+ * `startWorkout` replaces `activeWorkout` outright, which is correct when the
+ * athlete taps Start. I-Day finish no longer auto-starts a preview (F-004 /
+ * Hevy): it lands on Today. `hasLoggedWork` still decides whether finish
+ * resumes an in-progress Active session instead of Today.
  *
  * The line is a **completed set**, not the existence of a session. A session
- * started and abandoned with nothing logged is noise, and refusing to replace it
- * would strand the athlete on a stale screen; a completed set is the first thing
- * the app holds that the athlete cannot reproduce from memory.
+ * started and abandoned with nothing logged is noise; a completed set is the
+ * first thing the app holds that the athlete cannot reproduce from memory.
  */
 describe('hasLoggedWork', () => {
   const set = (completed: boolean) => ({ id: 's1', reps: 5, weight: 100, completed });
@@ -122,18 +119,23 @@ describe('hasLoggedWork', () => {
  * correct decision shipped with no caller.
  */
 describe('the onboarding call site', () => {
-  it('checks for logged work before starting the preview session', () => {
+  it('F-004: I-Day finish lands on Today — does not auto-start a preview session', () => {
     const src = readFileSync(
       path.join(import.meta.dirname, '..', 'page-components', 'WelcomePage.tsx'),
       'utf8'
     );
     const finish = src.slice(src.indexOf('const finish ='), src.indexOf('const handleBegin'));
-    const guard = finish.indexOf('hasLoggedWork');
-    const start = finish.indexOf('startWorkout(');
-    assert.ok(guard !== -1, 'WelcomePage.finish() must ask whether there is work to protect');
     assert.ok(
-      guard < start,
-      'the check must run before startWorkout(), or it protects nothing'
+      finish.includes('hasLoggedWork'),
+      'WelcomePage.finish() must ask whether there is work to resume on /active'
+    );
+    assert.ok(
+      /go\(\s*['"`]\/log['"`]\s*\)/.test(finish),
+      'default I-Day finish must land on Today (/log) with one Start — Hevy rage / C5'
+    );
+    assert.ok(
+      !finish.includes('startWorkout('),
+      'finish must not auto-start a preview session — Start lives on JourneyHero'
     );
   });
 });

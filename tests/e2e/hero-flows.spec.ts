@@ -26,7 +26,7 @@ test.describe('Phase H hero flows @gate', () => {
     }
   });
 
-  test('I-Day skip lands in active session (W1)', async ({ page }) => {
+  test('I-Day skip lands on Today with one Start (F-004 / Hevy)', async ({ page }) => {
     await page.goto('/welcome', { waitUntil: 'domcontentloaded' });
     const begin = page.getByRole('button', { name: /^begin$/i }).first();
     await expect(begin).toBeVisible({ timeout: 10_000 });
@@ -35,10 +35,13 @@ test.describe('Phase H hero flows @gate', () => {
     const cont = page.getByRole('button', { name: /continue|continuar/i }).first();
     await expect(cont).toBeVisible({ timeout: 10_000 });
     await cont.click();
-    // Sign-in skip → /active with session
+    // Sign-in skip → Today with one primary Start (not Active dump / not pillar wall)
     const skip = page.getByRole('button', { name: /skip|omitir|first session/i }).first();
     await expect(skip).toBeVisible({ timeout: 10_000 });
     await skip.click();
+    await expect(page).toHaveURL(/\/log/, { timeout: 15_000 });
+    await expect(page.locator('.primary-action')).toHaveCount(1);
+    await page.locator('.primary-action').first().click();
     await expect(page).toHaveURL(/\/active/, { timeout: 15_000 });
     // Widened with the console recut in `.153` — see the note in first-90.
     await expect(page.getByRole('button', { name: /^log( set)?$/i }).first()).toBeVisible({

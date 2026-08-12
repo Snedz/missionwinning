@@ -20,6 +20,8 @@
  * Order is by what actually helps first, not by pillar hierarchy: first log,
  * **second log (week-1 habit)**, then optional pillars, then the health screen.
  * `.291` inserted session 2 so Fuel is no longer the default next after one set.
+ * F-004: pillar + PAR-Q rows stay off the list until `b.workout` — progressive
+ * disclosure so I-Day / early Basic is not a six-item options wall (C5≤90s).
  */
 
 import type { JourneyState } from '@/lib/missionJourney';
@@ -70,19 +72,22 @@ export function getFirstSteps(state: JourneyState, opts?: GetFirstStepsOpts): Fi
     },
   ];
 
+  // F-004 / C5≤90s: before the first log, the checklist is *only* that log —
+  // Fuel/Mind/Move/Learn/PAR-Q were an options wall that competed with Train.
+  // Progressive disclosure: pillar discovery returns after `b.workout` (same
+  // signal as `allBasicDone` / Basic Training). Still never a gate.
+  if (!b.workout) return steps;
+
   // Week-1 activation: second train before Fuel/Mind tourism (Horizon W).
-  // Only after the first log exists — otherwise the card still leads with workout.
-  if (b.workout) {
-    steps.push({
-      key: 'session2',
-      done: week1SecondSessionDone(sessions),
-      href: '/active',
-      titleKey: 'firstStepSession2Title',
-      title: 'Log a second session',
-      whyKey: 'firstStepSession2Why',
-      why: 'Two sessions in week one locks the habit. Coach builds from the logs — not every pillar at once.',
-    });
-  }
+  steps.push({
+    key: 'session2',
+    done: week1SecondSessionDone(sessions),
+    href: '/active',
+    titleKey: 'firstStepSession2Title',
+    title: 'Log a second session',
+    whyKey: 'firstStepSession2Why',
+    why: 'Two sessions in week one locks the habit. Coach builds from the logs — not every pillar at once.',
+  });
 
   steps.push(
     {

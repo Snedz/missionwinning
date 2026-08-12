@@ -9,6 +9,7 @@ import { useTranslation } from 'react-i18next';
 import { railGroupsForNav } from '@/lib/navConfig';
 import { APP_BUILD_LABEL } from '@/lib/buildInfo';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
+import { useWorkoutStore } from '@/store/workoutStore';
 
 function pathActive(pathname: string, href: string): boolean {
   if (href === '/log') return pathname === '/log' || pathname === '/';
@@ -28,7 +29,14 @@ export function Sidebar() {
   const pathname = usePathname();
   const { t } = useTranslation();
   const hasActiveWorkout = useActiveWorkoutPulse();
-  const groups = useMemo(() => railGroupsForNav(), []);
+  // F-004 — demote Pillars rail until first logged workout (same store signal as More).
+  const hasFirstWorkout = useWorkoutStore(
+    (s) => s.hasHydrated && s.workoutHistory.length > 0
+  );
+  const groups = useMemo(
+    () => railGroupsForNav({ hasFirstWorkout }),
+    [hasFirstWorkout]
+  );
 
   return (
     <aside className="hidden md:flex h-full w-[72px] lg:w-[210px] shrink-0 flex-col border-e-2 border-border bg-card">

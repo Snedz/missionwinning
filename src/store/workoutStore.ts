@@ -715,12 +715,11 @@ export function isUsableActiveWorkout(value: unknown): boolean {
 /**
  * Has the athlete actually put work into this session?
  *
- * `.204` — `startWorkout` overwrites `activeWorkout` unconditionally, and
- * `WelcomePage.finish()` calls it. `/` renders the marketing landing for anyone
- * past the gate with no "you have journey state, go to /log" branch, so a
- * returning tester opening the site from history sees marketing, taps its only
- * prominent CTA, re-runs onboarding — and the session they had in progress is
- * gone with no prompt.
+ * `.204` — `startWorkout` overwrites `activeWorkout` unconditionally. I-Day
+ * finish no longer calls it (F-004 lands on Today), but any other auto-start
+ * path still can. `/` renders the marketing landing for anyone past the gate
+ * with no "you have journey state, go to /log" branch, so a returning tester
+ * opening the site from history can re-enter onboarding — protect logged work.
  *
  * A session that exists is not the same as a session worth protecting: one
  * started and abandoned without a single logged set is noise, and refusing to
