@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { redirect } from 'next/navigation';
 import { LandingPage } from '@/page-components/LandingPage';
+import { siteDescription } from '@/lib/offlineCapability';
 import { hasServerPrivateAccess } from '@/lib/privateGateServer';
 import { publicPageMetadata } from '@/lib/seoMetadata';
 import {
@@ -12,8 +13,7 @@ import {
 
 export const metadata: Metadata = publicPageMetadata({
   title: 'Train Anywhere. Win Daily.',
-  description:
-    'Free offline workout logger + adaptive Mission Coach from your logs — no wearable required. Free core forever. Works offline, anywhere.',
+  description: siteDescription(),
   path: '/',
 });
 

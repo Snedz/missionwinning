@@ -2,6 +2,11 @@ import type { Metadata, Viewport } from 'next';
 import { Archivo } from 'next/font/google';
 import '../src/index.css';
 import { DeferredToaster } from '@/components/layout/DeferredToaster';
+import {
+  openGraphDescription,
+  siteDescription,
+  twitterDescription,
+} from '@/lib/offlineCapability';
 import { I18nPwaProvider } from './i18n-pwa-provider';
 
 // Modernist: Archivo is the ONLY face — body 400, emphasis 600, display 800.
@@ -20,16 +25,14 @@ export const metadata: Metadata = {
     default: 'Mission Winning — Train Anywhere. Win Daily.',
     template: '%s · Mission Winning',
   },
-  description:
-    'Free offline workout logger + adaptive Mission Coach from your logs — no wearable required. Free core forever. Works offline, anywhere.',
+  description: siteDescription(),
   metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'https://www.missionwinning.com'),
   openGraph: {
     type: 'website',
     locale: 'en_US',
     siteName: 'Mission Winning',
     title: 'Mission Winning — Train Anywhere. Win Daily.',
-    description:
-      'Free workout tracking, nutrition, mobility, mind, and learning — one path forward. Works offline. Mission Coach plans your week.',
+    description: openGraphDescription(),
     images: [
       {
         url: '/brand/og-default.png',
@@ -42,8 +45,7 @@ export const metadata: Metadata = {
   twitter: {
     card: 'summary_large_image',
     title: 'Mission Winning — Train Anywhere. Win Daily.',
-    description:
-      'Free workout tracking, nutrition, mobility, mind, and learning — one path forward. Works offline.',
+    description: twitterDescription(),
     images: ['/brand/og-default.png'],
   },
   icons: {

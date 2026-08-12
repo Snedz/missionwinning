@@ -1,6 +1,7 @@
 import type { GuideChapter } from '@/data/guidebook/types';
 import type { Exercise } from '@/types';
 import { BUNDLE_PLANS, type BundlePlanId } from '@/lib/bundleConfig';
+import { softwareApplicationDescription } from '@/lib/offlineCapability';
 import { landingFaqKeysForSurface, landingStringsFor } from '@/i18n/landingLocales';
 import { siteBaseUrl } from '@/lib/seoMetadata';
 
@@ -39,8 +40,7 @@ export function softwareApplicationJsonLd(baseUrl = siteBaseUrl()) {
       priceCurrency: 'USD',
     },
     url: baseUrl,
-    description:
-      'Free offline workout logger PWA with adaptive Mission Coach from your logs — no wearable required.',
+    description: softwareApplicationDescription(),
   };
 }
 

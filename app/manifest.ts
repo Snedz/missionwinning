@@ -1,4 +1,5 @@
 import type { MetadataRoute } from 'next';
+import { manifestDescription } from '@/lib/offlineCapability';
 
 // Installable PWA manifest (vision.md: "Full PWA experience: installable,
 // offline-first, low-data, works on any device/browser anywhere").
@@ -7,8 +8,7 @@ export default function manifest(): MetadataRoute.Manifest {
   return {
     name: 'Mission Winning — Train Anywhere. Win Daily.',
     short_name: 'Mission Winning',
-    description:
-      'Free offline workout logger + adaptive Mission Coach from your logs — free core forever, works offline anywhere.',
+    description: manifestDescription(),
     id: '/log',
     start_url: '/log',
     scope: '/',

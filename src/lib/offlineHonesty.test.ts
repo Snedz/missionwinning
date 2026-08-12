@@ -258,3 +258,81 @@ describe('push cannot be offered without a worker to push through', () => {
     );
   });
 });
+
+describe('meta and manifest capability claims are gated', () => {
+  /**
+   * Manifest, root OG/Twitter, landing JSON-LD, and /beta metadata are what
+   * crawlers and "Add to Home Screen" surfaces read. They stayed unconditional
+   * after `.615` gated the in-app UI — the defect this row closes.
+   */
+  const META_SURFACES: { file: string; helpers: string[]; note: string }[] = [
+    {
+      file: 'app/manifest.ts',
+      helpers: ['manifestDescription'],
+      note: 'PWA manifest description',
+    },
+    {
+      file: 'app/layout.tsx',
+      helpers: ['siteDescription', 'openGraphDescription', 'twitterDescription'],
+      note: 'root description + OG + Twitter',
+    },
+    {
+      file: 'app/page.tsx',
+      helpers: ['siteDescription'],
+      note: 'landing publicPageMetadata description',
+    },
+    {
+      file: 'src/lib/publicSeo.ts',
+      helpers: ['softwareApplicationDescription'],
+      note: 'SoftwareApplication JSON-LD',
+    },
+    {
+      file: 'app/(app)/beta/page.tsx',
+      helpers: ['betaRouteDescription'],
+      note: '/beta route metadata',
+    },
+  ];
+
+  const INLINE_CLAIM =
+    /works offline|offline-first|installable|log offline|offline ready|offline anywhere/i;
+
+  for (const { file, helpers, note } of META_SURFACES) {
+    it(`${file} sources descriptions from offlineCapability (${note})`, () => {
+      const src = stripComments(read(file));
+      for (const helper of helpers) {
+        assert.match(
+          src,
+          new RegExp(helper),
+          `${file} must call ${helper}() — do not embed capability copy inline`
+        );
+      }
+      assert.doesNotMatch(
+        src,
+        INLINE_CLAIM,
+        `${file} still embeds an offline/install capability claim — route it through ` +
+          '`src/lib/offlineCapability.ts`'
+      );
+    });
+  }
+
+  it('offlineCapability meta helpers gate on isOfflineInstallable()', () => {
+    const src = stripComments(read('src/lib/offlineCapability.ts'));
+    for (const helper of [
+      'siteDescription',
+      'manifestDescription',
+      'openGraphDescription',
+      'twitterDescription',
+      'softwareApplicationDescription',
+      'betaRouteDescription',
+    ]) {
+      assert.match(
+        src,
+        new RegExp(
+          `export function ${helper}\\([\\s\\S]*?isOfflineInstallable\\(\\)[\\s\\S]*?\\}`,
+          'm'
+        ),
+        `${helper}() must branch on isOfflineInstallable()`
+      );
+    }
+  });
+});

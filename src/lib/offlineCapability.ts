@@ -45,3 +45,45 @@
 export function isOfflineInstallable(): boolean {
   return process.env.NEXT_PUBLIC_PWA_ENABLED === 'true';
 }
+
+/** Root `<meta name="description">` and landing `publicPageMetadata` description. */
+export function siteDescription(): string {
+  return isOfflineInstallable()
+    ? 'Free offline workout logger + adaptive Mission Coach from your logs — no wearable required. Free core forever. Works offline, anywhere.'
+    : 'Free workout logger + adaptive Mission Coach from your logs — no wearable required. Free core forever.';
+}
+
+/** PWA manifest `description` — installability/offline only when a worker ships. */
+export function manifestDescription(): string {
+  return isOfflineInstallable()
+    ? 'Free offline workout logger + adaptive Mission Coach from your logs — free core forever, works offline anywhere.'
+    : 'Free workout logger + adaptive Mission Coach from your logs — free core forever, no account required.';
+}
+
+/** Default Open Graph description (root layout + inherited pages). */
+export function openGraphDescription(): string {
+  return isOfflineInstallable()
+    ? 'Free workout tracking, nutrition, mobility, mind, and learning — one path forward. Works offline. Mission Coach plans your week.'
+    : 'Free workout tracking, nutrition, mobility, mind, and learning — one path forward. Mission Coach plans your week.';
+}
+
+/** Default Twitter card description (root layout + inherited pages). */
+export function twitterDescription(): string {
+  return isOfflineInstallable()
+    ? 'Free workout tracking, nutrition, mobility, mind, and learning — one path forward. Works offline.'
+    : 'Free workout tracking, nutrition, mobility, mind, and learning — one path forward.';
+}
+
+/** `SoftwareApplication` JSON-LD on the landing graph. */
+export function softwareApplicationDescription(): string {
+  return isOfflineInstallable()
+    ? 'Free offline workout logger PWA with adaptive Mission Coach from your logs — no wearable required.'
+    : 'Free workout logger with adaptive Mission Coach from your logs — no wearable required.';
+}
+
+/** `/beta` route metadata — first screen many invited testers bookmark. */
+export function betaRouteDescription(): string {
+  return isOfflineInstallable()
+    ? 'Beta start guide — log from Today offline, open Mission Coach after your first session.'
+    : 'Beta start guide — log from Today with no account; Mission Coach adapts your week after your first session.';
+}
