@@ -80,6 +80,11 @@ test('WelcomePage.finish() must not router.push after completeIDay into gated ro
     /router\.push\(\s*['"`]\/(?:active|log|profile|coach)/,
     'finish() must not soft-navigate to gated wedge routes after completeIDay — proxy.ts never re-runs'
   );
+  assert.doesNotMatch(
+    finish,
+    /grantPrivateAccess|private-access|PRIVATE_ACCESS/,
+    'finish() must not mint a gate unlock — hard-nav lets proxy demand the real cookie'
+  );
 });
 
 test('build exposes NEXT_PUBLIC_PRIVATE_GATE (httpOnly cookie invisible to JS)', () => {

@@ -21,8 +21,11 @@ export function privateGateRequiresHardNavigation(destination: string): boolean 
 
 /**
  * Navigate to a destination after leaving a gate-public flow (I-Day finish).
- * When the private gate is on and the destination is gated, forces a document
- * navigation so proxy.ts can redirect to `/private?next=…` without a cookie.
+ *
+ * Mission Control shape (option 2): I-Day localStorage (`completeIDay`) is fine;
+ * we do **not** mint a gate cookie or require unlock before Skip. Hard-nav to
+ * gated routes when PRIVATE_MODE is on so proxy.ts demands the real cookie —
+ * no fake unlock, no soft `router.push` bypass.
  */
 export function navigateAfterPrivateGateUnlock(
   destination: string,
