@@ -152,7 +152,10 @@ export function CoachAdaptBanner({
               {t('coachRationaleEffectLabel', { defaultValue: 'Expected effect' })}
               {': '}
             </span>
-            {t(rationale.effectKey, { defaultValue: rationale.effectDefault })}
+            {t(rationale.effectKey, {
+              ...rationale.effectParams,
+              defaultValue: rationale.effectDefault,
+            })}
           </p>
         </div>
       ) : null}

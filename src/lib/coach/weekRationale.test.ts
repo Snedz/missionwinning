@@ -120,10 +120,28 @@ describe('buildWeekRationale', () => {
     );
     assert.ok(r);
     assert.equal(r!.kind, 'generate-week');
+    assert.equal(r!.inputKey, 'coachRationaleGenerateInput');
     assert.match(r!.inputDefault, /8 workout/);
     assert.match(r!.inputDefault, /bodyweight/);
     assert.match(r!.ruleDefault, /Weekly generate/i);
     assert.match(r!.effectDefault, /2 sessions/);
+  });
+
+  it('clean-start generate avoids “0 workouts” theater', () => {
+    const r = buildWeekRationale(
+      plan([
+        session({
+          id: 'a',
+          status: 'planned',
+          exercises: [ex('coachWhyRecovery')],
+        }),
+      ]),
+      { loggedWorkoutCount: 0 }
+    );
+    assert.ok(r);
+    assert.equal(r!.inputKey, 'coachRationaleGenerateInputFresh');
+    assert.doesNotMatch(r!.inputDefault, /\b0\b/);
+    assert.match(r!.inputDefault, /clean start/i);
   });
 
   it('missed takes priority over deload whyKeys', () => {

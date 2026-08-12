@@ -61,9 +61,11 @@ type CoachStrings = {
   coachRationaleHoldEffect: string;
   coachRationaleHoldCompact: string;
   coachRationaleGenerateInput: string;
+  coachRationaleGenerateInputFresh: string;
   coachRationaleGenerateRule: string;
   coachRationaleGenerateEffect: string;
   coachRationaleGenerateCompact: string;
+  coachRationaleGenerateCompactFresh: string;
   coachAdaptKeepVersion: string;
   coachWeekDose: string;
   coachWeekDoseStrength: string;
@@ -288,12 +290,16 @@ const en: CoachStrings = {
     'Logs say consolidate → hold load → same weight, better quality.',
   coachRationaleGenerateInput:
     '{{count}} workout(s) in your log · {{days}} training days · {{gear}}.',
+  coachRationaleGenerateInputFresh:
+    '{{days}} training days · {{gear}} — week shaped from your schedule and gear (clean start).',
   coachRationaleGenerateRule:
     'Weekly generate — split and sessions from logs and gear, not a wearable.',
   coachRationaleGenerateEffect:
-    'Sessions on the calendar — miss or crush a day and the plan flexes.',
+    '{{sessions}} sessions on the calendar — miss or crush a day and the plan flexes.',
   coachRationaleGenerateCompact:
     '{{count}} logged workouts → weekly generate → {{sessions}} sessions this week.',
+  coachRationaleGenerateCompactFresh:
+    '{{days}} days · {{gear}} → weekly generate → {{sessions}} sessions this week.',
   coachAdaptKeepVersion: 'Adjust or keep my version of today',
   coachWeekDose:
     'This week’s dose: {{count}} sessions · {{intent}} · ~{{minutes}} min',

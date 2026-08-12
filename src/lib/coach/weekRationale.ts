@@ -40,6 +40,7 @@ export type CoachWeekRationale = {
   ruleDefault: string;
   effectKey: string;
   effectDefault: string;
+  effectParams?: Record<string, string | number>;
   /** One-line compact form (Today card / compact banner). */
   compactKey: string;
   compactDefault: string;
@@ -264,26 +265,38 @@ export function buildWeekRationale(
   const days = plan.daysPerWeek;
   const gear = equipmentLabel(plan.equipmentProfile);
   const logCount = hints.loggedWorkoutCount ?? 0;
-  const inputDefault =
-    logCount > 0
-      ? `${logCount} workout(s) in your log · ${days} training days · ${gear}.`
-      : `${days} training days · ${gear} — week shaped from your log history (or a clean start).`;
+  const sessions = plan.sessions.length;
+
+  if (logCount > 0) {
+    return {
+      kind: 'generate-week',
+      inputKey: 'coachRationaleGenerateInput',
+      inputDefault: `${logCount} workout(s) in your log · ${days} training days · ${gear}.`,
+      inputParams: { count: logCount, days, gear },
+      ruleKey: 'coachRationaleGenerateRule',
+      ruleDefault: 'Weekly generate — split and sessions from logs and gear, not a wearable.',
+      effectKey: 'coachRationaleGenerateEffect',
+      effectDefault: `${sessions} sessions on the calendar — miss or crush a day and the plan flexes.`,
+      effectParams: { sessions },
+      compactKey: 'coachRationaleGenerateCompact',
+      compactDefault: `${logCount} logged workouts → weekly generate → ${sessions} sessions this week.`,
+      compactParams: { count: logCount, days, gear, sessions },
+    };
+  }
 
   return {
     kind: 'generate-week',
-    inputKey: 'coachRationaleGenerateInput',
-    inputDefault,
-    inputParams: { count: logCount, days, gear },
+    inputKey: 'coachRationaleGenerateInputFresh',
+    inputDefault: `${days} training days · ${gear} — week shaped from your schedule and gear (clean start).`,
+    inputParams: { days, gear },
     ruleKey: 'coachRationaleGenerateRule',
     ruleDefault: 'Weekly generate — split and sessions from logs and gear, not a wearable.',
     effectKey: 'coachRationaleGenerateEffect',
-    effectDefault: `${plan.sessions.length} sessions on the calendar — miss or crush a day and the plan flexes.`,
-    compactKey: 'coachRationaleGenerateCompact',
-    compactDefault:
-      logCount > 0
-        ? `${logCount} logged workouts → weekly generate → ${plan.sessions.length} sessions this week.`
-        : `${days} days/${gear} → weekly generate → ${plan.sessions.length} sessions this week.`,
-    compactParams: { count: logCount, days, gear, sessions: plan.sessions.length },
+    effectDefault: `${sessions} sessions on the calendar — miss or crush a day and the plan flexes.`,
+    effectParams: { sessions },
+    compactKey: 'coachRationaleGenerateCompactFresh',
+    compactDefault: `${days} days · ${gear} → weekly generate → ${sessions} sessions this week.`,
+    compactParams: { days, gear, sessions },
   };
 }
 
