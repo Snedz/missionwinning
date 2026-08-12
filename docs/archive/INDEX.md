@@ -25,7 +25,7 @@ When adding a doc:
 
 | File | Absorbed by / note |
 |------|---------------------|
-| [log/LOG-rotate-673.md](./log/LOG-rotate-673.md) | rotated oldest for `.673` press kit internal path leak |
+| [log/LOG-rotate-674.md](./log/LOG-rotate-674.md) | rotated oldest for `.674` press kit internal path leak |
 | [log/LOG-rotate-668.md](./log/LOG-rotate-668.md) | rotated oldest for `.668` competitor compare removed |
 | [log/LOG-rotate-667.md](./log/LOG-rotate-667.md) | rotated oldest for `.667` Compare stories free-beta mute |
 | [log/LOG-rotate-666.md](./log/LOG-rotate-666.md) | rotated oldest for `.666` Calculators macro foot free-beta mute |
