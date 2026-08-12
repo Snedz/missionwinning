@@ -15,6 +15,7 @@
 8. `adapt.ts` — `adaptPlan`, missed sessions, readiness swap, equipment change
 8b. `adaptSummary.ts` — re-exports from `packages/mw-core` (shared with Expo)
 8c. `weekDose.ts` — plain-language weekly “dose” (session count · intent · minutes) for Coach UI
+8c2. `weekRationale.ts` — log-cited why-this-week / adapt rationale (inputs · rule · effect) for Coach inspectability (`.693`)
 8d. `coachAdaptReentry.ts` — pure: adapt-banner re-entry is coach day vs freestyle Just Go
 8e. `resolveCoachBossSessionId.ts` — which session gets filled Start on `/coach` (today pending else next)
 8f. `coachChatClient.ts` — HTTP status → copy + stream `[[error:…]]` + request context + `readCoachChatStream` (.445/.453)
@@ -44,6 +45,7 @@ Shared client: `src/lib/coachLlmClient.ts` (also used by `coachDailyServer.ts` +
 | `resolveCoachBossSessionId.test.ts` | Boss Start pick + grid wiring |
 | `coachChatClient.test.ts` | Status copy · stream tags · request context + panel wiring |
 | `weekDose.test.ts` | Session counts + strength/mixed intent labels |
+| `weekRationale.test.ts` | Log-cited adapt / why-this-week (inputs · rule · effect) + banner/page wiring |
 
 ## Tests (colocated)
 

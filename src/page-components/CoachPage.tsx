@@ -246,6 +246,11 @@ export function CoachPage({ askExerciseId }: CoachPageProps = {}) {
           <CoachAdaptBanner
             plan={plan}
             todayOffset={todayOffset}
+            showWeekRationale
+            rationaleHints={{
+              loggedWorkoutCount: ctx.history.length,
+              loadZone: ctx.loadZone ?? null,
+            }}
             onAdjustToday={
               todaySession && todaySession.status !== 'done'
                 ? () => setAdjustOpen(true)

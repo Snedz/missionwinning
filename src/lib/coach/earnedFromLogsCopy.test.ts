@@ -19,3 +19,11 @@ test('CoachAdaptBanner keeps adapted-from-logs honesty', () => {
   assert.match(src, /from your logs/i);
   assert.match(src, /no wearable/i);
 });
+
+test('CoachAdaptBanner surfaces log-cited week rationale', () => {
+  const src = readFileSync(join(root, 'components/coach/CoachAdaptBanner.tsx'), 'utf8');
+  assert.match(src, /buildWeekRationale/);
+  assert.match(src, /coachRationaleInputLabel|From your logs/);
+  assert.match(src, /coachRationaleRuleLabel|Rule applied/);
+  assert.match(src, /coachRationaleEffectLabel|Expected effect/);
+});
