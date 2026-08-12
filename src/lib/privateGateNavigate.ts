@@ -1,8 +1,10 @@
 /**
  * Client navigation that respects the private gate cookie check in proxy.ts.
- * Soft client routing from gate-public pages (/welcome) can render gated routes
- * without re-evaluating the access cookie — same class as PrivateTeaserClient
- * soft-replace after unlock.
+ *
+ * Beta Field (live www `.618`, pre-fix): Welcome Skip called `router.push('/active')`
+ * after `completeIDay()` — localStorage held `mw_journey_state`, no Set-Cookie, yet
+ * `/active`/`/log`/`/coach` rendered client-side while `curl` still 307→`/private`.
+ * Soft nav from gate-public `/welcome` never re-ran proxy.ts.
  */
 import { isPrivateGatePublicPath } from '@/lib/publicRoutes';
 
