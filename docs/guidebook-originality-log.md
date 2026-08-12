@@ -86,6 +86,16 @@ Original AI-generated chapter heroes (brand prompt pack) and instructional SVG c
 | ch5-s2 figure | section figure | MW instructional SVG `/form-guides/plank.svg` | 2026-07-23 |
 | ch6-s2 figure | section figure | MW instructional SVG `/form-guides/pull-ups.svg` | 2026-07-23 |
 
+## Wedge CTA refine (2026-08-12)
+
+| Section ID | Source ref (topic only) | Writer | Date |
+|------------|-------------------------|--------|------|
+| ch4-s1 | MW product — wedge onboarding (Train+Coach) | Mission Winning | 2026-08-12 |
+| ch4-s2 | MW product — wedge onboarding (Train+Coach) | Mission Winning | 2026-08-12 |
+| ch4-s3 | MW product — wedge onboarding (Train+Coach) | Mission Winning | 2026-08-12 |
+| mag-preface | MW product — magazine practice → log/Today/Coach | Mission Winning | 2026-08-12 |
+| mag-how-to | MW product — magazine practice → log/Today/Coach | Mission Winning | 2026-08-12 |
+
 ## Localized editions
 
 Translations in `src/i18n/packs/{lang}.json` and guidebook locale overlays are **translations of Mission Winning original English**, not ISSA text. Regenerated via `npm run i18n:fill`.
