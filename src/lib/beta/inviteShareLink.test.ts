@@ -19,36 +19,63 @@ import { buildInviteShareLink, inviteTotals } from './inviteShareLink.ts';
 
 const CODE = 'MW-B-ABCDE';
 
-test('carries the access secret and the invite code', () => {
+test('lands on /private with the invite code (same shape as the beta email)', () => {
   const url = new URL(
     buildInviteShareLink(CODE, {
       PRIVATE_ACCESS_SECRET: 's3cret',
       NEXT_PUBLIC_SITE_URL: 'https://www.missionwinning.com',
     })
   );
-  assert.equal(url.origin + url.pathname, 'https://www.missionwinning.com/');
-  assert.equal(url.searchParams.get('access'), 's3cret');
+  assert.equal(url.origin + url.pathname, 'https://www.missionwinning.com/private');
   assert.equal(url.searchParams.get('invite'), CODE);
+  assert.equal(
+    url.searchParams.get('access'),
+    null,
+    'production rejects ?access= unless PRIVATE_ALLOW_QUERY_ACCESS=true'
+  );
 });
 
 /**
- * The failure that matters. `params.set('access', '')` yields `?access=&invite=…`,
+ * The failure that mattered. `params.set('access', '')` yields `?access=&invite=…`,
  * which reads as a gated link and opens nothing.
  */
 test('omits the access param entirely when no secret is configured', () => {
-  const link = buildInviteShareLink(CODE, {});
+  const link = buildInviteShareLink(CODE, { PRIVATE_ALLOW_QUERY_ACCESS: 'true' });
   assert.ok(!link.includes('access='), `an empty access param is worse than none: ${link}`);
   assert.ok(link.includes(`invite=${CODE}`), 'the invite must still be there');
+  assert.match(new URL(link).pathname, /^\/private/, 'must land on the gate, not /');
 
   // Whitespace-only is the same thing arriving from a sloppy .env.
-  const padded = buildInviteShareLink(CODE, { PRIVATE_ACCESS_SECRET: '   ' });
+  const padded = buildInviteShareLink(CODE, {
+    PRIVATE_ACCESS_SECRET: '   ',
+    PRIVATE_ALLOW_QUERY_ACCESS: 'true',
+  });
   assert.ok(!padded.includes('access='), 'a whitespace secret is not a secret');
+});
+
+test('includes access only when PRIVATE_ALLOW_QUERY_ACCESS=true', () => {
+  const prodLike = new URL(
+    buildInviteShareLink(CODE, {
+      PRIVATE_ACCESS_SECRET: 's3cret',
+      PRIVATE_ALLOW_QUERY_ACCESS: 'false',
+    })
+  );
+  assert.equal(prodLike.searchParams.get('access'), null);
+
+  const preview = new URL(
+    buildInviteShareLink(CODE, {
+      PRIVATE_ACCESS_SECRET: 's3cret',
+      PRIVATE_ALLOW_QUERY_ACCESS: 'true',
+    })
+  );
+  assert.equal(preview.searchParams.get('access'), 's3cret');
 });
 
 test('falls back to the first PRIVATE_ACCESS_CODES entry, trimmed', () => {
   const url = new URL(
     buildInviteShareLink(CODE, {
       PRIVATE_ACCESS_CODES: ' first , second ,third',
+      PRIVATE_ALLOW_QUERY_ACCESS: 'true',
     })
   );
   assert.equal(url.searchParams.get('access'), 'first');
@@ -59,6 +86,7 @@ test('PRIVATE_ACCESS_SECRET wins over the codes list', () => {
     buildInviteShareLink(CODE, {
       PRIVATE_ACCESS_SECRET: 'primary',
       PRIVATE_ACCESS_CODES: 'fallback',
+      PRIVATE_ALLOW_QUERY_ACCESS: 'true',
     })
   );
   assert.equal(url.searchParams.get('access'), 'primary');
@@ -66,7 +94,10 @@ test('PRIVATE_ACCESS_SECRET wins over the codes list', () => {
 
 test('a secret with URL-special characters is encoded, not pasted raw', () => {
   const secret = 'a b&c=d?e#f';
-  const link = buildInviteShareLink(CODE, { PRIVATE_ACCESS_SECRET: secret });
+  const link = buildInviteShareLink(CODE, {
+    PRIVATE_ACCESS_SECRET: secret,
+    PRIVATE_ALLOW_QUERY_ACCESS: 'true',
+  });
   assert.ok(!link.includes('a b&c=d'), `raw special characters truncate the query: ${link}`);
   assert.equal(
     new URL(link).searchParams.get('access'),
@@ -79,7 +110,7 @@ test('the host loses a trailing slash so the path is never //', () => {
   const link = buildInviteShareLink(CODE, {
     NEXT_PUBLIC_SITE_URL: 'https://staging.example.com/',
   });
-  assert.ok(link.startsWith('https://staging.example.com/?'), link);
+  assert.ok(link.startsWith('https://staging.example.com/private?'), link);
 });
 
 test('SITE_URL wins over APP_URL, and production is the last resort', () => {
@@ -87,19 +118,29 @@ test('SITE_URL wins over APP_URL, and production is the last resort', () => {
     buildInviteShareLink(CODE, {
       NEXT_PUBLIC_SITE_URL: 'https://site.example.com',
       NEXT_PUBLIC_APP_URL: 'https://app.example.com',
-    }).startsWith('https://site.example.com/')
+    }).startsWith('https://site.example.com/private?')
   );
   assert.ok(
     buildInviteShareLink(CODE, {
       NEXT_PUBLIC_APP_URL: 'https://app.example.com',
-    }).startsWith('https://app.example.com/')
+    }).startsWith('https://app.example.com/private?')
   );
   assert.ok(
     buildInviteShareLink(CODE, {}).startsWith(
-      'https://www.missionwinning.com/'
+      'https://www.missionwinning.com/private?'
     ),
     'never a relative or empty host — this is pasted into a message'
   );
+});
+
+test('never points at / — that path shows marketing after query unlock', () => {
+  const link = buildInviteShareLink(CODE, {
+    PRIVATE_ACCESS_SECRET: 's3cret',
+    PRIVATE_ALLOW_QUERY_ACCESS: 'true',
+  });
+  const url = new URL(link);
+  assert.notEqual(url.pathname, '/', 'root path bypasses invitee chrome after cookie grant');
+  assert.equal(url.pathname, '/private');
 });
 
 /**

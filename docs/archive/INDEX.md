@@ -26,6 +26,7 @@ When adding a doc:
 | File | Absorbed by / note |
 |------|---------------------|
 | [log/LOG-rotate-659-for-685.md](./log/LOG-rotate-659-for-685.md) | rotated 2026-08-12 for `.685` preserve next= through private gate |
+| [log/LOG-rotate-661-for-690.md](./log/LOG-rotate-661-for-690.md) | rotated 2026-08-12 for `.690` admin invite share → /private |
 | [log/LOG-rotate-658-for-684.md](./log/LOG-rotate-658-for-684.md) | rotated 2026-08-12 for `.684` private gate session-unlock fail-open |
 | [log/LOG-rotate-668.md](./log/LOG-rotate-668.md) | rotated oldest for `.668` competitor compare removed |
 | [log/LOG-rotate-667.md](./log/LOG-rotate-667.md) | rotated oldest for `.667` Compare stories free-beta mute |
