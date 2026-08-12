@@ -31,7 +31,14 @@ export function SignInPrompt({
   const [expanded, setExpanded] = useState(false);
 
   useEffect(() => {
-    getUser().then((u) => setSignedIn(!!u?.email));
+    /*
+     * Fail open on auth rejection (expired JWT / offline getUser).
+     * Kaizen Strong acceptance: session expiry must never gate mid-set
+     * Log / rest — treat unknown as signed-out chrome, never throw.
+     */
+    getUser()
+      .then((u) => setSignedIn(!!u?.email))
+      .catch(() => setSignedIn(false));
   }, []);
 
   if (signedIn === null || signedIn) return null;

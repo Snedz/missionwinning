@@ -17,6 +17,7 @@ export function HeaderAuthChip() {
     const boot = () => {
       getUser()
         .then((u) => setEmail(u?.email ?? null))
+        .catch(() => setEmail(null))
         .finally(() => setReady(true));
     };
     if (typeof requestIdleCallback !== 'undefined') {

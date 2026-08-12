@@ -205,9 +205,14 @@ export function HomeTodayDashboard() {
   }, []);
 
   useEffect(() => {
-    getUser().then(u => {
-      if (u?.email) setUserEmail(u.email);
-    });
+    // Fail open on expired/rejected auth — status copy only; never gates Start/log.
+    getUser()
+      .then((u) => {
+        if (u?.email) setUserEmail(u.email);
+      })
+      .catch(() => {
+        setUserEmail(null);
+      });
   }, []);
 
   // Freeletics-inspired free core note (per vision.md): Generous basics for everyone; premium for "awesome" depth + bundle synergy.
@@ -307,9 +312,19 @@ export function HomeTodayDashboard() {
     if (!belowFoldReady) return;
     const load = async () => {
       const { loadFromCloud } = useWorkoutStore.getState();
-      const u = await getUser();
+      // Session expired / offline getUser must not abort local pillar wins.
+      let u: Awaited<ReturnType<typeof getUser>> = null;
+      try {
+        u = await getUser();
+      } catch {
+        u = null;
+      }
       if (u) {
-        await loadFromCloud();
+        try {
+          await loadFromCloud();
+        } catch {
+          /* cloud optional — local history already on device */
+        }
         try {
           const today = localDateKey();
           const cloudWins = await getUserNutritionForDate(today);
