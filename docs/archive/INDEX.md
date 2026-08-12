@@ -27,6 +27,7 @@ When adding a doc:
 |------|---------------------|
 | [log/LOG-rotate-698.md](./log/LOG-rotate-698.md) | rotated oldest for `.698` combined /week landing |
 | [log/LOG-rotate-637.md](./log/LOG-rotate-637.md) | rotated oldest for `.637` www surface scaffold |
+| [log/LOG-rotate-636.md](./log/LOG-rotate-636.md) | rotated oldest for `.636` global legal posture |
 | [log/LOG-rotate-638.md](./log/LOG-rotate-638.md) | rotated oldest for `.638` www homepage |
 | [log/LOG-rotate-639.md](./log/LOG-rotate-639.md) | rotated oldest for `.639` www live islands |
 | [log/LOG-rotate-640.md](./log/LOG-rotate-640.md) | rotated oldest for `.640` www link contract |

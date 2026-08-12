@@ -79,7 +79,9 @@ import { BASE_WEEK, CHAPTERS, PIN } from '../lib/weekContent';
       (entries) => {
         for (const e of entries) {
           if (!e.isIntersecting) continue;
-          const i = Number(e.target.dataset.chapter);
+          const target = e.target;
+          if (!(target instanceof HTMLElement)) continue;
+          const i = Number(target.dataset.chapter);
           ticks.forEach((t, ti) => t.toggleAttribute('data-on', ti <= i));
         }
       },
