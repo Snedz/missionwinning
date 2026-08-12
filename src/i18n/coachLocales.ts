@@ -23,6 +23,47 @@ type CoachStrings = {
   coachAdaptRevisionNote: string;
   /** Why panel: today's prescription rationales (`.287`). */
   coachWhyTodayEyebrow: string;
+  /** `.693` — log-cited why-this-week / adapt rationale (inputs · rule · effect). */
+  coachWhyWeekEyebrow: string;
+  coachRationaleInputLabel: string;
+  coachRationaleRuleLabel: string;
+  coachRationaleEffectLabel: string;
+  coachRationaleMissedInput: string;
+  coachRationaleMissedRule: string;
+  coachRationaleMissedEffect: string;
+  coachRationaleMissedCompact: string;
+  coachRationaleSwapInput: string;
+  coachRationaleSwapRule: string;
+  coachRationaleSwapEffect: string;
+  coachRationaleSwapCompact: string;
+  coachRationaleLoggedInput: string;
+  coachRationaleLoggedRule: string;
+  coachRationaleLoggedEffect: string;
+  coachRationaleLoggedCompact: string;
+  coachRationaleDeloadInput: string;
+  coachRationaleDeloadRule: string;
+  coachRationaleDeloadEffect: string;
+  coachRationaleDeloadCompact: string;
+  coachRationalePlateauInput: string;
+  coachRationalePlateauRule: string;
+  coachRationalePlateauEffect: string;
+  coachRationalePlateauCompact: string;
+  coachRationaleSteadyInput: string;
+  coachRationaleSteadyRule: string;
+  coachRationaleSteadyEffect: string;
+  coachRationaleSteadyCompact: string;
+  coachRationaleLoadUpInput: string;
+  coachRationaleLoadUpRule: string;
+  coachRationaleLoadUpEffect: string;
+  coachRationaleLoadUpCompact: string;
+  coachRationaleHoldInput: string;
+  coachRationaleHoldRule: string;
+  coachRationaleHoldEffect: string;
+  coachRationaleHoldCompact: string;
+  coachRationaleGenerateInput: string;
+  coachRationaleGenerateRule: string;
+  coachRationaleGenerateEffect: string;
+  coachRationaleGenerateCompact: string;
   coachAdaptKeepVersion: string;
   coachWeekDose: string;
   coachWeekDoseStrength: string;
@@ -193,6 +234,66 @@ const en: CoachStrings = {
   coachAdaptRevisionNote:
     'Plan revision {{rev}} — week reshaped from workout history alone.',
   coachWhyTodayEyebrow: "Why today's plan",
+  coachWhyWeekEyebrow: 'Why this week — from your logs',
+  coachRationaleInputLabel: 'From your logs',
+  coachRationaleRuleLabel: 'Rule applied',
+  coachRationaleEffectLabel: 'Expected effect',
+  coachRationaleMissedInput:
+    'Missed {{days}} ({{count}} session(s)) in your plan log — past days with no finish.',
+  coachRationaleMissedRule: 'Missed-day re-spread — remaining days still fit the week.',
+  coachRationaleMissedEffect:
+    'Later sessions keep their focus; the calendar shifts forward. No shame; just continue.',
+  coachRationaleMissedCompact:
+    'Missed {{days}} in your logs → re-spread remaining days → week still fits.',
+  coachRationaleSwapInput:
+    'Readiness / strain from your logs flagged {{days}} for a lighter day.',
+  coachRationaleSwapRule:
+    'Readiness recovery swap — strength day becomes recovery when readiness is low.',
+  coachRationaleSwapEffect: 'That day is recovery / mobility — keep quality high, strain low.',
+  coachRationaleSwapCompact:
+    '{{days}}: readiness from logs → recovery swap → lighter day, same week.',
+  coachRationaleLoggedInput:
+    '{{count}} session(s) already finished in your workout log this week.',
+  coachRationaleLoggedRule: 'Log match — finished workouts mark plan days done (no wearable).',
+  coachRationaleLoggedEffect:
+    'Week revision updated from what you logged; remaining days stay on mission.',
+  coachRationaleLoggedCompact:
+    '{{count}} logged → plan marked done → week updated from history alone.',
+  coachRationaleDeloadInput:
+    'Recent sets in your logs called for recovery (hard RPE / stall signals).',
+  coachRationaleDeloadRule: 'Deload progression — lighter load, same movement patterns.',
+  coachRationaleDeloadEffect:
+    'Working sets stay patterned but lighter so you rebuild from a solid base.',
+  coachRationaleDeloadCompact:
+    'Logs showed recovery need → deload rule → lighter load, same patterns.',
+  coachRationalePlateauInput: 'No new best in roughly a month across your logged sets.',
+  coachRationalePlateauRule: 'Plateau deload — step back to rebuild.',
+  coachRationalePlateauEffect: 'Lighter week so progress can restart from quality reps.',
+  coachRationalePlateauCompact:
+    'No recent best in logs → plateau deload → lighter rebuild week.',
+  coachRationaleSteadyInput: 'Your last week of logs is heavier than your month (load band).',
+  coachRationaleSteadyRule: 'Load guard — hold the rise; never auto-deload from the band alone.',
+  coachRationaleSteadyEffect: 'Intensity held steady — clean reps over chasing fatigue.',
+  coachRationaleSteadyCompact: 'Heavy recent week in logs → hold rise → intensity stays put.',
+  coachRationaleLoadUpInput:
+    'Last logged session felt manageable — room for a small load bump.',
+  coachRationaleLoadUpRule: 'Load progression — small bump from easy recent sets.',
+  coachRationaleLoadUpEffect: 'Working weight steps up slightly on the main lifts.',
+  coachRationaleLoadUpCompact:
+    'Easy recent sets in logs → load-up → small weight bump.',
+  coachRationaleHoldInput: 'Recent logged sets are still settling at this load.',
+  coachRationaleHoldRule: 'Hold load — quality over ego until reps feel solid.',
+  coachRationaleHoldEffect: 'Same working weight; focus on crisp reps and full sets.',
+  coachRationaleHoldCompact:
+    'Logs say consolidate → hold load → same weight, better quality.',
+  coachRationaleGenerateInput:
+    '{{count}} workout(s) in your log · {{days}} training days · {{gear}}.',
+  coachRationaleGenerateRule:
+    'Weekly generate — split and sessions from logs and gear, not a wearable.',
+  coachRationaleGenerateEffect:
+    'Sessions on the calendar — miss or crush a day and the plan flexes.',
+  coachRationaleGenerateCompact:
+    '{{count}} logged workouts → weekly generate → {{sessions}} sessions this week.',
   coachAdaptKeepVersion: 'Adjust or keep my version of today',
   coachWeekDose:
     'This week’s dose: {{count}} sessions · {{intent}} · ~{{minutes}} min',

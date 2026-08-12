@@ -10,6 +10,10 @@ import {
 } from '@/lib/coach/adaptSummary';
 import { coachAdaptReentrySession } from '@/lib/coach/coachAdaptReentry';
 import { coachWhyLine } from '@/lib/coach/coachWhyDefaults';
+import {
+  buildWeekRationale,
+  type WeekRationaleHints,
+} from '@/lib/coach/weekRationale';
 import { useStartCoachSession } from '@/hooks/useStartCoachSession';
 
 type Props = {
@@ -23,6 +27,16 @@ type Props = {
   todayOffset?: number;
   /** Open adjust-today sheet (keep / lighten my version) — full Coach only. */
   onAdjustToday?: () => void;
+  /**
+   * Optional log-derived hints already computed upstream (history length, load band).
+   * Never invent metrics here — only pass what CoachContext / loadBands already have.
+   */
+  rationaleHints?: WeekRationaleHints;
+  /**
+   * When true, paint log-cited why-this-week even without an adapt signal
+   * (full Coach week block after generate). Compact Today keeps adapt-only.
+   */
+  showWeekRationale?: boolean;
 };
 
 /**
@@ -30,8 +44,16 @@ type Props = {
  * Surfaces existing adaptPlan outcomes — not a new engine.
  * D2: glanceable — headline + one beat by default; full list only when not compact.
  * `.287`: day-named adapt beats + today's prescription why keys (why panel).
+ * `.693`: log-cited why-this-week / adapt rationale (inputs · rule · effect).
  */
-export function CoachAdaptBanner({ plan, compact, todayOffset, onAdjustToday }: Props) {
+export function CoachAdaptBanner({
+  plan,
+  compact,
+  todayOffset,
+  onAdjustToday,
+  rationaleHints,
+  showWeekRationale,
+}: Props) {
   const { t } = useTranslation();
   // Above the early returns below — this component bails in two places before
   // the re-entry block renders, and a hook after a conditional return is a
@@ -42,17 +64,28 @@ export function CoachAdaptBanner({ plan, compact, todayOffset, onAdjustToday }: 
     !compact && typeof todayOffset === 'number'
       ? todaySessionWhyKeys(plan, todayOffset)
       : [];
-  if (!hasCoachAdaptationSignal(plan) && beats.length === 0 && whyKeys.length === 0) {
+  const rationale =
+    showWeekRationale || hasCoachAdaptationSignal(plan)
+      ? buildWeekRationale(plan, rationaleHints)
+      : null;
+  if (
+    !hasCoachAdaptationSignal(plan) &&
+    beats.length === 0 &&
+    whyKeys.length === 0 &&
+    !rationale
+  ) {
     return null;
   }
 
-  const showHeadline = beats.length > 0 || plan.revision > 1 || whyKeys.length > 0;
+  const showHeadline =
+    beats.length > 0 || plan.revision > 1 || whyKeys.length > 0 || !!rationale;
   if (!showHeadline) return null;
 
   const visibleBeats = compact ? beats.slice(0, 1) : beats.slice(0, 3);
   const missedCount = plan.sessions.filter((s) => s.status === 'missed').length;
   const showReentry = !compact && missedCount > 0;
   const reentrySession = coachAdaptReentrySession(plan, todayOffset);
+  const adaptSignal = hasCoachAdaptationSignal(plan);
 
   return (
     <div
@@ -74,11 +107,58 @@ export function CoachAdaptBanner({ plan, compact, todayOffset, onAdjustToday }: 
             : 'eyebrow text-accent-900'
         }
       >
-        {t('coachAdaptHeadline', {
-          defaultValue: 'Adapted from your logs — no wearable needed',
-        })}
+        {adaptSignal
+          ? t('coachAdaptHeadline', {
+              defaultValue: 'Adapted from your logs — no wearable needed',
+            })
+          : t('coachWhyWeekEyebrow', {
+              defaultValue: 'Why this week — from your logs',
+            })}
       </p>
-      {visibleBeats.length > 0 ? (
+
+      {/* Log-cited inspectability: inputs → rule → effect (Alpha Progression beat). */}
+      {rationale && compact ? (
+        <p
+          className="text-xs text-muted-foreground leading-relaxed"
+          data-testid="coach-week-rationale"
+        >
+          {t(rationale.compactKey, {
+            ...rationale.compactParams,
+            defaultValue: rationale.compactDefault,
+          })}
+        </p>
+      ) : null}
+      {rationale && !compact ? (
+        <div className="space-y-1.5" data-testid="coach-week-rationale">
+          <p className="text-sm text-muted-foreground leading-relaxed">
+            <span className="font-medium text-foreground">
+              {t('coachRationaleInputLabel', { defaultValue: 'From your logs' })}
+              {': '}
+            </span>
+            {t(rationale.inputKey, {
+              ...rationale.inputParams,
+              defaultValue: rationale.inputDefault,
+            })}
+          </p>
+          <p className="text-sm text-muted-foreground leading-relaxed">
+            <span className="font-medium text-foreground">
+              {t('coachRationaleRuleLabel', { defaultValue: 'Rule applied' })}
+              {': '}
+            </span>
+            {t(rationale.ruleKey, { defaultValue: rationale.ruleDefault })}
+          </p>
+          <p className="text-sm text-muted-foreground leading-relaxed">
+            <span className="font-medium text-foreground">
+              {t('coachRationaleEffectLabel', { defaultValue: 'Expected effect' })}
+              {': '}
+            </span>
+            {t(rationale.effectKey, { defaultValue: rationale.effectDefault })}
+          </p>
+        </div>
+      ) : null}
+
+      {/* Legacy adapt beats — only when structured rationale is absent (should be rare). */}
+      {!rationale && visibleBeats.length > 0 ? (
         <ul className={compact ? 'space-y-1' : 'space-y-1.5 text-[15px] leading-snug'}>
           {visibleBeats.map((beat) => (
             <li
@@ -97,7 +177,7 @@ export function CoachAdaptBanner({ plan, compact, todayOffset, onAdjustToday }: 
             </li>
           ))}
         </ul>
-      ) : beats.length === 0 && whyKeys.length === 0 ? (
+      ) : !rationale && beats.length === 0 && whyKeys.length === 0 ? (
         <p
           className={
             compact

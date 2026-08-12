@@ -106,7 +106,16 @@ export function CoachTodayCard() {
         </p>
       </CardHeader>
       <CardContent className="space-y-3">
-        {plan && !locked && <CoachAdaptBanner plan={plan} compact />}
+        {plan && !locked && (
+          <CoachAdaptBanner
+            plan={plan}
+            compact
+            rationaleHints={{
+              loggedWorkoutCount: workoutHistory.length,
+              loadZone: bands.ratio === null ? null : bands.zone,
+            }}
+          />
+        )}
         {plan && !locked && weekDose && weekDose.sessionCount > 0 && (
           <p className="text-xs text-muted-foreground text-center leading-relaxed" data-testid="coach-today-dose">
             {t('coachWeekDose', {
