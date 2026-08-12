@@ -317,26 +317,26 @@ Program templates in the Builder encode these ideas. Pro templates (premium) add
     id: 'getting-started-mw',
     number: 4,
     title: 'Getting Started with Mission Winning',
-    subtitle: 'I-Day, six pillars, and your Win Score',
+    subtitle: 'I-Day, logging, and Mission Coach from your logs',
     icon: '🎯',
     quickPathId: 'mindset-habits',
     heroImage: {
       src: '/learn/getting-started-mw-hero.webp',
       alt: 'Abstract dawn path into training — I-Day and the mission ahead',
-      caption: 'Start the path — then show up daily',
+      caption: 'Log the work — Coach plans from your history',
     },
     sections: [
       {
         id: 'ch4-s1',
         title: 'I-Day & Your Mission',
         summary:
-          'Onboarding sets experience level, equipment, and goals so Today can recommend sensible next steps.',
+          'Onboarding sets level, equipment, and goals so Today can point at a sensible next session — then you log it.',
         body: `I-Day takes about three minutes: accept the mission, set your profile (level, equipment, goals), and optionally sign in for cloud sync.
 
 You are not locked into one program forever. Open Welcome with ?edit=1 anytime equipment or goals change.
 
-Journey phases — Basic Training, Readiness, Commissioned — exist to build habits across all six pillars, not just the barbell. Finish I-Day, then log one real session this week.`,
-        practiceCTA: { label: 'Review Welcome / I-Day', href: '/welcome' },
+The wedge is simple: finish I-Day, log one real Train session this week, and let Today show what comes next. Mission Coach builds weekly plans from those logs alone — no wearable required. Other pillars are there when you want them; they are not homework before your first set.`,
+        practiceCTA: { label: 'Open Today', href: '/log' },
         relatedLearnPathId: 'mindset-habits',
         sourceRef: 'foundations — onboarding & purpose',
         checklist: {
@@ -344,7 +344,7 @@ Journey phases — Basic Training, Readiness, Commissioned — exist to build ha
           items: [
             'Finish I-Day profile (level, equipment, goals)',
             'Log one Train session — even a short one',
-            'Hit one Fuel or Move win on Today',
+            'Open Today after you log — see the next session cue',
             'Revisit Welcome with ?edit=1 if equipment or goals change',
           ],
         },
@@ -358,28 +358,28 @@ Journey phases — Basic Training, Readiness, Commissioned — exist to build ha
         id: 'ch4-s2',
         title: 'The Six Pillars',
         summary:
-          'Train, Fuel, Move, Mind, Track, and Learn work together. Siloed apps miss the synergy.',
-        body: `**Train** — log sets and follow programs.
+          'Train logging plus Mission Coach is the wedge. The other pillars support when you are ready — not a week-one chore list.',
+        body: `**Train** — log sets offline; follow a plan you can finish.
+
+**Mission Coach** — weekly plans from your logs and fatigue signals — no wearable required.
+
+The rest of the product supports that loop when you want depth:
 
 **Fuel** — macros, water, recipes.
-
 **Move** — timed mobility flows.
-
 **Mind** — breathing and short guided sessions.
-
 **Track** — activities beyond the gym.
-
 **Learn** — this guidebook and quick education paths.
 
-Each pillar can log a win on Today. Basic Training asks for one win in each — a low bar meant to show the whole app, not exhaust you in week one.`,
-        practiceCTA: { label: 'Open Today', href: '/log' },
+Each pillar can still log a win on Today. That is optional breadth — not a requirement before you earn a Coach week. Start with one honest Train session.`,
+        practiceCTA: { label: 'Start a workout', href: '/active' },
         relatedLearnPathId: 'mindset-habits',
         sourceRef: 'MW product design',
         table: {
           caption: 'Six pillars — quick reference',
           headers: ['Pillar', 'What you do', 'Route'],
           rows: [
-            ['Train', 'Log sets and programs', '/active'],
+            ['Train', 'Log sets; open Mission Coach from logs', '/active'],
             ['Fuel', 'Macros, water, recipes', '/nutrition'],
             ['Move', 'Timed mobility flows', '/move'],
             ['Mind', 'Breathing and short sessions', '/mind'],
@@ -390,25 +390,25 @@ Each pillar can log a win on Today. Basic Training asks for one win in each — 
         figure: {
           src: '/learn/six-pillars.webp',
           alt: 'Six pillar cards: Train, Fuel, Move, Mind, Track, Learn',
-          caption: 'One win per pillar beats a siloed grind',
+          caption: 'Log Train first — breadth when you are ready',
         },
       },
       {
         id: 'ch4-s3',
         title: 'Win Score & Offline Use',
         summary:
-          'Mission Score weights pillar consistency. The app works offline as a PWA once installed.',
-        body: `Win Score (Mission Score) is a holistic consistency metric — not a medical readiness grade. It rewards showing up across pillars over time more than one hero session.
+          'Mission Score rewards showing up. Offline logging feeds Mission Coach — install the PWA when you can.',
+        body: `Win Score (Mission Score) is a holistic consistency metric — not a medical readiness grade. It rewards showing up over time more than one hero session.
 
-Install from your browser (Add to Home Screen) for offline logging at the park or garage gym. Sync when you sign in on Profile.
+Install from your browser (Add to Home Screen) for offline logging at the park or garage gym. Sync when you sign in on Profile. Those logs are what Mission Coach reads when it builds your next week.
 
 Beta testers: see /beta for the start guide and feedback channels.`,
-        practiceCTA: { label: 'Beta start guide', href: '/beta' },
+        practiceCTA: { label: 'Open Today', href: '/log' },
         relatedLearnPathId: 'home-gym-budget',
         sourceRef: 'MW product design',
         callout: {
           title: 'Score is feedback',
-          body: 'Win Score rewards consistency across pillars — not a single hero workout. Use it to notice gaps, not to punish a quiet week.',
+          body: 'Win Score is feedback on consistency — not a grade. Use it to notice gaps, not to punish a quiet week. Keep logging; Coach plans from what you actually did.',
         },
         figure: {
           src: '/learn/win-score-offline.webp',

@@ -8,6 +8,14 @@ const pwaDisabled =
   process.env.PRIVATE_MODE === 'true' ||
   (process.env.NODE_ENV === 'production' && process.env.PRIVATE_MODE !== 'false');
 
+/** Mirror of `isPrivateModeEnabled()` — client cannot read the httpOnly gate cookie. */
+const privateGateActive =
+  process.env.PRIVATE_MODE === 'true' ||
+  process.env.PRIVATE_MODE === '1' ||
+  (process.env.PRIVATE_MODE !== 'false' &&
+    process.env.PRIVATE_MODE !== '0' &&
+    process.env.NODE_ENV === 'production');
+
 const withSerwist = withSerwistInit({
   swSrc: 'app/sw.ts',
   swDest: 'public/sw.js',
@@ -52,6 +60,7 @@ const nextConfig = {
   // Client needs to know whether to register SW (private gate must not keep a stale worker).
   env: {
     NEXT_PUBLIC_PWA_ENABLED: pwaDisabled ? 'false' : 'true',
+    NEXT_PUBLIC_PRIVATE_GATE: privateGateActive ? 'true' : 'false',
   },
   /**
    * Competitor comparison hub removed (.668) — permanent redirect to Start free.

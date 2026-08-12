@@ -65,6 +65,7 @@ npm run export-locales     # TS + packs → public/locales/
 | `firstStepsLocales.ts` | First Steps checklist |
 | `whatsNewLocales.ts` | What’s New sheet + First Steps restore |
 | `infoLocales.ts` | About, vision, coaching info |
+| `infoEnFloor.ts` | English floor for legal/info keys (Privacy/Terms first paint — `.653`; ratchet `.682`) |
 | `growthLocales.ts` | Referral / invite / share recognition |
 | `leaderboardLocales.ts` | Leaderboard |
 | `landingLocales.ts` | Marketing landing |
