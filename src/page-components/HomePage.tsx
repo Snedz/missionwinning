@@ -14,10 +14,11 @@ import { SkeletonCard } from '@/components/ui/Skeleton';
 import { STORAGE_KEYS } from '@/lib/storage/keys';
 import { readJson } from '@/lib/storage/safeStorage';
 
+/** Phone cap at default; md+ defers to AppLayout — same as HomeTodayLean / HomeTodayDashboard today-shell. */
 function TodayDashboardLoading() {
   return (
     <div
-      className="space-y-4 p-4 max-w-lg mx-auto"
+      className="today-shell space-y-4 p-4 max-w-lg md:max-w-none mx-auto"
       role="status"
       aria-busy="true"
       aria-label="Loading Today"
