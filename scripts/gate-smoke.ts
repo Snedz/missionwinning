@@ -92,6 +92,66 @@ async function main() {
     checks.push({ name: 'GET /welcome', ok: false, detail: String(e) });
   }
 
+  // Production smoke ratchet (.682): retired compare hub + legal English floors.
+  // Live `.618` returned 200 with Hevy/Strong; tip redirects permanently to /welcome.
+  for (const path of ['/compare', '/compare/forge']) {
+    try {
+      const res = await headOrGet(path, { redirect: 'manual' });
+      const loc = res.headers.get('location') || '';
+      const redirected =
+        res.status >= 300 &&
+        res.status < 400 &&
+        (loc.includes('/welcome') || loc.endsWith('/welcome'));
+      let ok = redirected;
+      let detail = redirected
+        ? `${res.status} → ${loc}`
+        : `status ${res.status}${loc ? ` → ${loc}` : ''} (expected permanent redirect to /welcome)`;
+      if (res.status === 200) {
+        const html = await res.text();
+        const competitorHub = /\bHevy\b/.test(html) && /\bStrong\b/.test(html);
+        ok = false;
+        detail = competitorHub
+          ? '200 with Hevy/Strong compare hub — deploy tip (.668+) or restore next.config redirects'
+          : '200 without redirect to /welcome';
+      }
+      checks.push({ name: `GET ${path} → /welcome`, ok, detail });
+    } catch (e) {
+      checks.push({ name: `GET ${path}`, ok: false, detail: String(e) });
+    }
+  }
+
+  // Raw i18n keys as HTML text nodes (`>infoPrivacyOverview<`) — the .618 paint bug.
+  // Script/RSC key strings alone are not this pattern; text-node paint is.
+  for (const path of ['/privacy', '/terms']) {
+    try {
+      const res = await headOrGet(path, { redirect: 'manual' });
+      const loc = res.headers.get('location') || '';
+      if (res.status !== 200) {
+        checks.push({
+          name: `GET ${path} no raw info keys`,
+          ok: false,
+          detail: `status ${res.status}${loc ? ` → ${loc}` : ''} (expected 200 public legal page)`,
+        });
+        continue;
+      }
+      const html = await res.text();
+      const painted = [
+        ...html.matchAll(/>(info(?:Privacy|Terms)[A-Za-z0-9]+)</g),
+      ].map((m) => m[1]!);
+      const unique = [...new Set(painted)].slice(0, 8);
+      const ok = unique.length === 0;
+      checks.push({
+        name: `GET ${path} no raw info keys`,
+        ok,
+        detail: ok
+          ? '200 — no raw infoPrivacy*/infoTerms* text nodes'
+          : `raw keys painted: ${unique.join(', ')} — need infoEnFloor (.653+)`,
+      });
+    } catch (e) {
+      checks.push({ name: `GET ${path} no raw info keys`, ok: false, detail: String(e) });
+    }
+  }
+
   try {
     // /beta is intentionally public while gated (PRIVATE_GATE_PUBLIC_PATHS)
     const beta = await headOrGet('/beta', { redirect: 'manual' });
