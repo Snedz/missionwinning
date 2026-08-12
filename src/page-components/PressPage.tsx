@@ -276,9 +276,7 @@ export function PressPage() {
               </a>
             </p>
             <p className="mt-4 text-sm text-muted-foreground">
-              Full written guidelines live in the repo at{' '}
-              <code className="text-xs text-primary">docs/brand-guidelines.md</code>
-              .{' '}
+              Brand usage guidelines are summarized on this page.{' '}
               <Link href="/about" className="text-primary hover:underline">
                 About Mission Winning
               </Link>
