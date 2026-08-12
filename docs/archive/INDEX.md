@@ -442,3 +442,4 @@ Canonical live launch path: root **[LAUNCH_RUNBOOK.md](../LAUNCH_RUNBOOK.md)** +
 | [log/LOG-rotate-625.md](./log/LOG-rotate-625.md) | rotated 2026-08-09 for `.625` Account Field manual |
 | [log/LOG-rotate-626.md](./log/LOG-rotate-626.md) | rotated 2026-08-09 for `.626` Feel Wave 2 |
 - [log/LOG-rotate-639-migration.md](./log/LOG-rotate-639-migration.md) — migration founder pack + Move free-beta (recovered from misnamed LOG-rotate-654 during .669)
+| [log/LOG-rotate-655-for-670.md](./log/LOG-rotate-655-for-670.md) | rotated 2026-08-11 for `.670` hero design Coach dock + Victory share |
