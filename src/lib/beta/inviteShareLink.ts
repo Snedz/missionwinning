@@ -15,32 +15,44 @@
 /**
  * Build the share link for one invite code.
  *
- * Precedence matches the rest of the app: `PRIVATE_ACCESS_SECRET` first, then the
- * first entry of `PRIVATE_ACCESS_CODES`. `NEXT_PUBLIC_SITE_URL` wins over
- * `NEXT_PUBLIC_APP_URL` here — note that is the **opposite** order to
- * `stripeServer.appOrigin()`, which prefers APP_URL. Left as-is rather than
- * quietly unified: these two answer different questions (where a human is sent vs
- * where Stripe returns to), and changing which host an invite points at is a
- * founder decision, not a tidy-up.
+ * Lands on `/private?invite=…` — the same shape as the shipped beta-invite email
+ * and `print-beta-invite.ts`. The old `/?access=…&invite=…` shape dead-ended:
+ * when query access worked, the gate set a cookie and redirected back to `/` with
+ * the invite still in the query, so the athlete saw marketing instead of the
+ * invitee screen (`PrivateTeaserClient` only renders on `/private`).
+ *
+ * `?access=` is appended only when `PRIVATE_ALLOW_QUERY_ACCESS=true` (preview /
+ * local one-click unlock). Production rejects query bypass unless that flag is
+ * set, so the access code stays out-of-band — same as the email body.
+ *
+ * Precedence for the optional access value matches the rest of the app:
+ * `PRIVATE_ACCESS_SECRET` first, then the first entry of `PRIVATE_ACCESS_CODES`.
+ * `NEXT_PUBLIC_SITE_URL` wins over `NEXT_PUBLIC_APP_URL` here — note that is the
+ * **opposite** order to `stripeServer.appOrigin()`, which prefers APP_URL.
  */
 export function buildInviteShareLink(
   inviteCode: string,
   /** Injected so the link can be built without mutating the real environment. */
   env: Partial<Record<string, string | undefined>> = process.env
 ): string {
-  const access =
-    env.PRIVATE_ACCESS_SECRET?.trim() || env.PRIVATE_ACCESS_CODES?.split(',')[0]?.trim() || '';
   const raw =
     env.NEXT_PUBLIC_SITE_URL?.trim() ||
     env.NEXT_PUBLIC_APP_URL?.trim() ||
     'https://www.missionwinning.com';
   const base = raw.replace(/\/$/, '');
   const params = new URLSearchParams();
-  // Omitted entirely when unset — `access=` with an empty value reads as a gated
-  // link and opens nothing.
-  if (access) params.set('access', access);
   params.set('invite', inviteCode);
-  return `${base}/?${params.toString()}`;
+  const allowQuery = env.PRIVATE_ALLOW_QUERY_ACCESS === 'true';
+  if (allowQuery) {
+    const access =
+      env.PRIVATE_ACCESS_SECRET?.trim() ||
+      env.PRIVATE_ACCESS_CODES?.split(',')[0]?.trim() ||
+      '';
+    // Omitted entirely when unset — `access=` with an empty value reads as a gated
+    // link and opens nothing.
+    if (access) params.set('access', access);
+  }
+  return `${base}/private?${params.toString()}`;
 }
 
 export type InviteJourney = { iDayDone: boolean; btSessions: number; firstWorkout: boolean };

@@ -107,4 +107,9 @@ describe('the private gate redirect (PRIVATE_MODE=true)', () => {
     assert.equal(await redirectFor('/private'), null);
     assert.equal(await redirectFor('/privacy'), null);
   });
+
+  /** Admin share links and the beta email both land here — no redirect, invite intact. */
+  it('serves /private?invite= directly without stripping the code', async () => {
+    assert.equal(await redirectFor('/private?invite=MW-B-ABC12'), null);
+  });
 });

@@ -101,3 +101,19 @@ test('the beta invite email links straight at the gate', () => {
     );
   }
 });
+
+test('the admin share link matches the email — /private, not /', async () => {
+  const { buildInviteShareLink } = await import('./beta/inviteShareLink.ts');
+  const link = buildInviteShareLink('MW-B-ABC12', {
+    PRIVATE_ACCESS_SECRET: 's3cret',
+    NEXT_PUBLIC_SITE_URL: 'https://www.missionwinning.com',
+  });
+  const url = new URL(link);
+  assert.equal(url.pathname, '/private', 'share links must land on the gate page');
+  assert.equal(url.searchParams.get('invite'), 'MW-B-ABC12');
+  assert.equal(
+    url.searchParams.get('access'),
+    null,
+    'production share links must not embed ?access= — it dead-ends on / after unlock'
+  );
+});
