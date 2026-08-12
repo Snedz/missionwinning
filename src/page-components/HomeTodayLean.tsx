@@ -203,15 +203,16 @@ export function HomeTodayLean() {
     const run = () => {
       void (async () => {
         const history = readWorkoutHistoryFromStorage();
-        const [{ computeReadinessFromHistory }, { getRecommendedFocus }, { muscleGroupLabel }] =
+        const [{ computeReadinessFromHistory }, { resolveTodayRecommendedFocus }, { muscleGroupLabel }] =
           await Promise.all([
             import('@/lib/readinessIndex'),
-            import('@/lib/score'),
+            import('@/lib/today/resolveTodayFocus'),
             import('@/lib/readinessDisplay'),
           ]);
+        const { peekCoachToday } = await import('@/lib/coach/peekCoachToday');
         if (cancelled) return;
         const readiness = computeReadinessFromHistory(history);
-        const focus = getRecommendedFocus(readiness);
+        const focus = resolveTodayRecommendedFocus(readiness, peekCoachToday());
         setFocusLabel(muscleGroupLabel(focus.group, t));
       })();
     };
@@ -232,12 +233,13 @@ export function HomeTodayLean() {
   const handleJourneyPrimary = () => {
     void (async () => {
       const history = readWorkoutHistoryFromStorage();
-      const [{ computeReadinessFromHistory }, { getRecommendedFocus }] = await Promise.all([
+      const [{ computeReadinessFromHistory }, { resolveTodayRecommendedFocus }] = await Promise.all([
         import('@/lib/readinessIndex'),
-        import('@/lib/score'),
+        import('@/lib/today/resolveTodayFocus'),
       ]);
+      const { peekCoachToday } = await import('@/lib/coach/peekCoachToday');
       const readiness = computeReadinessFromHistory(history);
-      const recommendedFocus = getRecommendedFocus(readiness);
+      const recommendedFocus = resolveTodayRecommendedFocus(readiness, peekCoachToday());
       const units = readRaw(STORAGE_KEYS.units) === 'imperial' ? 'imperial' : 'metric';
       const userEquip = readRaw(STORAGE_KEYS.equipment) || 'full-gym';
       await runTodayPrimaryAction({

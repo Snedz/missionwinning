@@ -113,6 +113,15 @@ export function coachInsightMessageDefaults(focusLine: string): Record<string, s
  * `defaultValue: messageKey` painted the raw key during bootstrap. Build the
  * focus sentence here and always supply English floors.
  */
+function interpolateInsightFloor(
+  template: string,
+  params: Record<string, unknown>
+): string {
+  return template.replace(/\{\{(\w+)\}\}/g, (_, name: string) =>
+    params[name] != null ? String(params[name]) : ''
+  );
+}
+
 export function translateCoachInsightLine(
   insight: CoachInsight,
   focus: RecommendedFocus,
@@ -121,11 +130,19 @@ export function translateCoachInsightLine(
   const focusLine = formatRecommendedFocusLine(focus, t);
   const defaults = coachInsightMessageDefaults(focusLine);
   const floor = defaults[insight.messageKey] ?? insight.messageKey;
-  return t(insight.messageKey, {
+  const params = {
     ...(insight.messageParams ?? {}),
     focusLine,
+  };
+  const out = t(insight.messageKey, {
+    ...params,
     defaultValue: floor,
   });
+  // react-i18next may echo the key or leave {{focusLine}} unreplaced pre-hydrate.
+  if (!out || out === insight.messageKey || out.includes('{{')) {
+    return interpolateInsightFloor(floor, params);
+  }
+  return out;
 }
 
 /**

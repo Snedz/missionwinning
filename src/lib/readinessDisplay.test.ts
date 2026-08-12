@@ -133,6 +133,20 @@ describe('translateCoachInsightLine', () => {
     assert.ok(/Steady progress/i.test(line), `missing steady copy in "${line}"`);
   });
 
+  it('falls back when t leaves unreplaced {{focusLine}} mustache', () => {
+    const insight = {
+      messageKey: 'coachInsightSteady',
+      messageParams: { focusGroup: 'Chest', focusStatusKey: 'todayReadinessPrime' },
+      actionLabelKey: 'coachActionViewToday',
+      actionPath: '/log',
+    };
+    const echoMustache = (key: string) =>
+      key === 'coachInsightSteady' ? 'Steady progress. {{focusLine}} when ready.' : key;
+    const line = translateCoachInsightLine(insight, focusFor(GROUPS[0]), echoMustache);
+    assert.ok(!line.includes('{{'), `leftover mustache in "${line}"`);
+    assert.ok(/Steady progress/i.test(line), `missing steady floor in "${line}"`);
+  });
+
   it('covers cross-pillar insight keys with English floors', () => {
     for (const key of [
       'coachInsightNeedMove',

@@ -10,7 +10,8 @@ import { useEffect, useMemo, useState, type ReactNode } from "react";
 import dynamic from "next/dynamic";
 import { useTranslation } from "react-i18next";
 import { useWorkoutStore } from "@/store/workoutStore";
-import { getRecommendedFocus, computeWinScore, computeBodyScores, getCoachInsight } from "@/lib/score";
+import { computeWinScore, computeBodyScores, getCoachInsight } from "@/lib/score";
+import { resolveTodayRecommendedFocus } from '@/lib/today/resolveTodayFocus';
 import { getTodayCheckIn } from "@/lib/mindCheckIns";
 import type { CoachInsight } from "@/lib/score";
 import { computeReadinessFromHistory } from "@/lib/readinessIndex";
@@ -341,7 +342,11 @@ export function HomeTodayDashboard() {
   // === Today computations (memoized — avoid recompute on every render) ===
   // Slim path: stored muscleGroups only — no sync EXERCISES import on first paint.
   const [readiness, setReadiness] = useState(() => computeReadinessFromHistory(workoutHistory));
-  const recommendedFocus = useMemo(() => getRecommendedFocus(readiness), [readiness]);
+  const coachTodaySession = useMemo(() => peekCoachToday(), [workoutHistory.length]);
+  const recommendedFocus = useMemo(
+    () => resolveTodayRecommendedFocus(readiness, coachTodaySession),
+    [readiness, coachTodaySession]
+  );
   const [freshnessRows, setFreshnessRows] = useState<
     { group: import('@/lib/muscleGroups').MuscleGroup; days: number; recommended: boolean }[]
   >([]);
@@ -556,7 +561,7 @@ export function HomeTodayDashboard() {
       hasActiveWorkout: !!activeWorkout,
       trainReady,
       focusLabel: muscleGroupLabel(recommendedFocus.group, t),
-      coach: peekCoachToday(),
+      coach: coachTodaySession,
     });
     // workoutHistory.length: re-peek when sessions change (plan may mark done)
     // eslint-disable-next-line react-hooks/exhaustive-deps -- t() stable enough; plan lives in storage
