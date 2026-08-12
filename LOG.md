@@ -18,13 +18,15 @@ metric-first rows, premium ink Field manual console, one-thumb Log set. Not a
 timing claim vs Strong.
 
 **Ship:**
-- `SetLogRow` — metric line for planned/next (no “In the console” prose); denser
-  44px rows; no filled red on the list.
-- `SetLogTable` — tighter cells; sole poster-red inline Log set at md+.
+- `SetLogRow` — **PREVIOUS as set-row anchor** (`prevLabel` / `set-row-prev`) +
+  this-session metric (no “In the console” prose); denser 44px rows; no filled red.
+- `SetLogTable` — Prev column strengthened (`data-prev-anchor`); sole poster-red
+  inline Log set at md+.
 - `LogConsole` — denser ink dock; kind + Use next stay ink/outline (no
   `bg-accent-400`); sole `primary-action` Log set (52px) in the thumb zone.
-- `RestTimerBar` — denser padding; Skip accent fill only in final ≤10s when rest
-  owns the dock. Empty Active already mirrors #450 poster dock — untouched.
+- `RestTimerBar` — **ambient running rest** (`data-rest-running`, ticking clock,
+  depleting ambient fill + meters); Skip accent only in final ≤10s. Empty Active
+  already mirrors #450 poster dock — untouched.
 
 Guards: `setTableDensity694.test.ts` + existing loggerSpeed / loop kaizen.
 Label `.694`.

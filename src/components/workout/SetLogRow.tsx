@@ -3,8 +3,9 @@
  * One set in the active workout list — a read-only record, not a control band.
  *
  * Strong/Hevy density: metric-first (`8 × 60 kg`), not prose ("In the console").
- * Entry stays in `LogConsole`; this is what happened / what is planned. Rows stay
- * ≥44px; RPE taps stay ≥44px. No filled red here — Log set owns poster-red.
+ * **PREVIOUS is the row anchor** (Hevy web withholds this; we show it) — prior
+ * performance sits beside the set number before this session's metric.
+ * Entry stays in `LogConsole`. Rows + RPE ≥44px. No filled red — Log set owns red.
  *
  * See: src/components/workout/INDEX.md
  */
@@ -43,10 +44,22 @@ type Props = {
   /** The set the console is currently holding. */
   isNext: boolean;
   weightLabel: string;
+  /**
+   * Prior-session performance for this set index (`8 × 60`), or null.
+   * Hevy Experience: PREVIOUS is the visible row anchor — never omit the slot.
+   */
+  prevLabel?: string | null;
   onRate: (rpe: 'easy' | 'med' | 'hard') => void;
 };
 
-export function SetLogRow({ setNumber, set, isNext, weightLabel, onRate }: Props) {
+export function SetLogRow({
+  setNumber,
+  set,
+  isNext,
+  weightLabel,
+  prevLabel = null,
+  onRate,
+}: Props) {
   const { t } = useTranslation();
   const kind = set.kind ?? 'normal';
   const line = formatLoggedSetLine(
@@ -55,6 +68,8 @@ export function SetLogRow({ setNumber, set, isNext, weightLabel, onRate }: Props
     weightLabel,
     t('activeSetBodyweight', { defaultValue: 'BW' })
   );
+  const prevShown = prevLabel?.trim() || '—';
+  const prevWord = t('activeColPrev', { defaultValue: 'Prev' });
   const rowLabel = set.completed
     ? t('activeSetRowCompleteAria', {
         n: setNumber,
@@ -75,10 +90,10 @@ export function SetLogRow({ setNumber, set, isNext, weightLabel, onRate }: Props
   return (
     <div
       role="listitem"
-      aria-label={rowLabel}
+      aria-label={`${rowLabel}. ${prevWord} ${prevShown}`}
       aria-current={isNext ? 'true' : undefined}
       className={cn(
-        'flex min-h-[44px] flex-nowrap items-center gap-x-2.5 border-b border-border px-0.5 py-1.5 transition-colors',
+        'flex min-h-[44px] flex-nowrap items-center gap-x-2 border-b border-border px-0.5 py-1.5 transition-colors',
         isNext && 'is-active-row',
         set.completed && 'border-s-[3px] border-s-primary bg-muted/40 ps-2'
       )}
@@ -93,7 +108,26 @@ export function SetLogRow({ setNumber, set, isNext, weightLabel, onRate }: Props
         {setNumber}
       </span>
 
-      {/* Metric-first — Strong/Hevy set table feel; no "In the console" chrome. */}
+      {/* PREVIOUS — set-row metric anchor (Hevy web withholds; we show). */}
+      <span
+        className="flex w-[5.5rem] shrink-0 flex-col justify-center leading-none"
+        data-testid="set-row-prev"
+        data-prev-anchor={prevLabel ? 'true' : 'empty'}
+      >
+        <span className="text-[9px] font-semibold uppercase tracking-[0.1em] text-muted-foreground">
+          {prevWord}
+        </span>
+        <span
+          className={cn(
+            'mt-0.5 truncate text-[13px] tabular-nums',
+            prevLabel ? 'font-semibold text-foreground' : 'text-muted-foreground'
+          )}
+        >
+          {prevShown}
+        </span>
+      </span>
+
+      {/* This session's metric — Strong/Hevy density; no "In the console" chrome. */}
       <span
         className={cn(
           'min-w-0 flex-1 truncate text-[15px] tabular-nums',

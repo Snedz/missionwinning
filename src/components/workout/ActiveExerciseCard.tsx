@@ -136,6 +136,13 @@ export function ActiveExerciseCard({
     goalRange,
   });
 
+  /** PREVIOUS column / row anchor — same labels for compact rows and desktop table. */
+  const prevLabels = formatPrevSetLabels(
+    workoutHistory,
+    exLog.exerciseId,
+    exLog.sets.length
+  );
+
   return (
     <Card
       className={cn(
@@ -179,6 +186,7 @@ export function ActiveExerciseCard({
                   set={set}
                   isNext={isNext}
                   weightLabel={unitLabel}
+                  prevLabel={prevLabels[setIdx]}
                   onRate={(rpe) => onRate(setIdx, rpe)}
                 />
               </div>
@@ -190,11 +198,7 @@ export function ActiveExerciseCard({
               sets={exLog.sets}
               activeSetIdx={activeSetIdxForExercise(nextSet, exIdx)}
               weightLabel={unitLabel}
-              prevLabels={formatPrevSetLabels(
-                workoutHistory,
-                exLog.exerciseId,
-                exLog.sets.length
-              )}
+              prevLabels={prevLabels}
               input={setInput}
               onInputChange={onSetInputChange}
               onLog={() => nextSet && onLogSet(nextSet.setIdx)}

@@ -57,7 +57,7 @@ export function SetLogTable({
           <th scope="col" className={cn(cell, 'w-10 text-start')}>
             {t('activeColSet', { defaultValue: 'Set' })}
           </th>
-          <th scope="col" className={cn(cell, 'text-start')}>
+          <th scope="col" className={cn(cell, 'min-w-[4.5rem] text-start')}>
             {t('activeColPrev', { defaultValue: 'Prev' })}
           </th>
           <th scope="col" className={cn(cell, 'w-[88px] text-start')}>
@@ -100,7 +100,18 @@ export function SetLogTable({
                 {setIdx + 1}
               </th>
 
-              <td className={cn(cell, 'text-muted-foreground')}>{prevLabels[setIdx] ?? '—'}</td>
+              <td
+                className={cn(
+                  cell,
+                  prevLabels[setIdx]
+                    ? 'font-semibold text-foreground'
+                    : 'text-muted-foreground'
+                )}
+                data-testid="set-table-prev"
+                data-prev-anchor={prevLabels[setIdx] ? 'true' : 'empty'}
+              >
+                {prevLabels[setIdx] ?? '—'}
+              </td>
 
               {isActive ? (
                 <>
