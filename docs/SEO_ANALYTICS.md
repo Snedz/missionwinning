@@ -2,6 +2,8 @@
 
 Companion to [ROADMAP_V4_EXPERIENCE.md](archive/ROADMAP_V4_EXPERIENCE.md) Phase 3–4. Code ships the routes and events; this doc is the founder setup checklist.
 
+**Growth honesty (MatrAIx):** F-005 no Feed merchandising · F-016 no Bundle-as-hero · F-008 no open-beta claims while `PRIVATE_MODE` on. GSC prep checklist: [seo/gsc/PREP_CHECKLIST.md](../seo/gsc/PREP_CHECKLIST.md).
+
 ---
 
 ## PostHog public funnel
@@ -20,7 +22,7 @@ Companion to [ROADMAP_V4_EXPERIENCE.md](archive/ROADMAP_V4_EXPERIENCE.md) Phase 
 | `waitlist_joined` | Landing capture / waitlist (`product: landing`) |
 | `iday_started` / `iday_mission_accepted` / `iday_profile_completed` / `iday_completed` | I-Day funnel (per-step drop-off) |
 | `first_workout_completed` / `workout_completed` | Train retention |
-| `coach_session_adjusted` | Free “adjust today” coach action |
+| `coach_session_adjusted` | Free "adjust today" coach action |
 | `coach_chat_opened` / `coach_chat_message_sent` | Premium coach chat (never content) |
 | `push_subscribed` | Web push device opt-in |
 | `referral_landed` | `?ref=` stored in first-party attribution |
@@ -39,14 +41,14 @@ Companion to [ROADMAP_V4_EXPERIENCE.md](archive/ROADMAP_V4_EXPERIENCE.md) Phase 
 
 **Server retention smoke (agent):** `npm run week4-smoke` (digest dryRun + optional `mw_week4_retention`) — see [POST_LAUNCH_CADENCE.md](POST_LAUNCH_CADENCE.md).
 
-**Setup checklist (&lt;15 min):**
+**Setup checklist (<15 min):**
 
 1. Confirm `NEXT_PUBLIC_POSTHOG_KEY` on Production + users can **Allow analytics** (privacy default is off until allow).
 2. Insights → New funnel → ordered steps:
 
 | Step | Event / filter |
 |------|----------------|
-| 1 | `$pageview` (optional: path = `/` or starts with `/guide`) |
+| 1 | `$pageview` (optional: path starts with `/guide` or `/exercises` or `/calculators`) |
 | 2 | `waitlist_joined` **or** `iday_started` (two funnels if you want split: list vs product) |
 | 3 | `iday_mission_accepted` |
 | 4 | `iday_profile_completed` |
@@ -57,7 +59,7 @@ Companion to [ROADMAP_V4_EXPERIENCE.md](archive/ROADMAP_V4_EXPERIENCE.md) Phase 
 **I-Day diagnosis funnel (public-flip gate ≥80% complete):**  
 `iday_started` → `iday_mission_accepted` → `iday_profile_completed` → `iday_completed` → `first_workout_completed`.
 
-**Money funnel (separate):**
+**Money funnel (separate; post-EIN / when Bundle UI returns — never the SEO hero):**
 
 1. `bundle_viewed`  
 2. `checkout_clicked`  
@@ -71,7 +73,7 @@ Companion to [ROADMAP_V4_EXPERIENCE.md](archive/ROADMAP_V4_EXPERIENCE.md) Phase 
 
 **SEO organic funnel (optional):**
 
-1. `$pageview` where path starts with `/guide` or `/exercises`  
+1. `$pageview` where path starts with `/guide` or `/exercises` or `/calculators`  
 2. `public_cta_clicked`  
 3. `iday_started`
 
@@ -79,15 +81,23 @@ Companion to [ROADMAP_V4_EXPERIENCE.md](archive/ROADMAP_V4_EXPERIENCE.md) Phase 
 
 ## Google Search Console
 
+**Prep checklist (Growth-owned):** [seo/gsc/PREP_CHECKLIST.md](../seo/gsc/PREP_CHECKLIST.md).
+
 1. Add property: `https://www.missionwinning.com`
 2. Verify via DNS TXT or HTML tag (Vercel domain settings)
 3. Submit sitemap: `https://www.missionwinning.com/sitemap.xml`
-   - Includes `/guide/*`, `/exercises/*` (~217 exercise URLs), muscle/equipment hubs, `/paths/*` (10 Learn teasers), `/compare` + Forge/Freeletics/spreadsheet stories ([`app/sitemap.ts`](../app/sitemap.ts))
-4. Monitor weekly: indexed pages, impressions, top queries ("how to squat", etc.)
+   - Includes `/guide/*`, `/exercises/*` (~217 exercise URLs), muscle/equipment hubs, `/paths/*` (Learn teasers), live `/calculators/*` ([`app/sitemap.ts`](../app/sitemap.ts))
+4. Monitor weekly **after** public flip: indexed pages, impressions, top queries. While `PRIVATE_MODE=true`, expect **0 organic baseline** — do not invent traction.
 
-**Approx public SEO surface (Wave 4):** ~217 exercises + ~6 guide chapters + ~12–20 hubs + 10 path teasers + compare index/stories + marketing (`/`, `/welcome`, `/bundle`, `/compare`).
+**Honest public SEO surface (Aug 2026):**
 
-**Note:** While `PRIVATE_MODE=true`, `/` redirects to `/private` — public SEO pages `/guide`, `/exercises`, `/paths`, and `/compare` remain indexable.
+| Live / indexable while gated | Not a public SEO surface |
+|------------------------------|---------------------------|
+| `/guide/*`, `/exercises/*`, `/calculators/1rm|tdee|strength-standards`, `/paths`, `/press`, `/welcome` | `/` → `/private` (teaser) |
+| | `/compare` removed (redirect/smoke only until Craft re-ships) |
+| | `/bundle` absent during free beta |
+
+**Note:** While `PRIVATE_MODE=true`, `/` redirects to `/private`. Public SEO work compounds on guide / exercises / calculators — not on inventing `/` or `/bundle` traffic.
 
 ---
 
@@ -110,11 +120,11 @@ CI runs the same script as a **soft warning** (`.github/workflows/ci-extended.ym
 
 ## Internal link mesh (ongoing)
 
-- Landing → `/about`, `/vision`, `/compare/*` (the `GuideTeaser` band was cut in `.104` and the component removed in `.126`; `/guide/*` is reached from `/learn` and the footer)
+- Landing → `/about`, `/vision` (and `/compare/*` **only after** Craft re-ships). The `GuideTeaser` band was cut in `.104` and the component removed in `.126`; `/guide/*` is reached from `/learn` and the footer
 - Exercise pages → "Track this exercise free" → `/welcome` or `/log`
-- Guide chapters → inline CTAs to app onboarding
-- `/compare` cross-links from marketing pages when expanded
-
+- Guide chapters → inline CTAs to app onboarding (Train logger + Mission Coach)
+- Calculators → soft CTA to `/welcome`
+- Do **not** merchandise in-app Feed or Bundle as SEO CTA targets (F-005 / F-016)
 
 ---
 
@@ -122,7 +132,6 @@ CI runs the same script as a **soft warning** (`.github/workflows/ci-extended.ym
 
 - **Helper:** [`src/lib/seoMetadata.ts`](../src/lib/seoMetadata.ts) — `publicPageMetadata` sets title, description, relative canonical, and openGraph/twitter overrides (root layout OG is not enough alone).
 - **Host:** `NEXT_PUBLIC_SITE_URL=https://www.missionwinning.com` (www). Non-www defaults break sitewide canonicals.
-- **JSON-LD:** Organization + WebSite (no SearchAction) + SoftwareApplication ($0) + FAQ on `/`; Product offers on `/bundle`; Article/HowTo + Breadcrumb on guide/exercise pages. See `src/lib/publicSeo.ts`.
+- **JSON-LD:** Organization + WebSite (no SearchAction) + SoftwareApplication ($0) + FAQ on `/`; Product offers on `/bundle` when that route exists; Article/HowTo + Breadcrumb on guide/exercise pages. See `src/lib/publicSeo.ts`.
 - **hreflang:** not emitted — language is client-side on one URL. Add only if locale-prefixed routes ship later.
 - **Attribution:** first-touch UTMs in `localStorage` (`mw_attribution`) attach to leads and, when analytics allowed, PostHog super-properties. Funnel: visit (+utm) → `waitlist_joined` / `iday_*` → `checkout_clicked` → `checkout_completed`. `class_joined` for school join.
-
