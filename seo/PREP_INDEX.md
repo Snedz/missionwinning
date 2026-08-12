@@ -43,3 +43,5 @@ Do **not** lead with everything-app, six pillars as hero, superapp, WeChat, AR, 
 ## Success definition (all briefs)
 
 Funnel to I-Day (logger → Coach), not vanity traffic or invented traction. Organic baseline remains **zero** until public flip. No fake metrics, testimonials, or beta counts in any copy derived from these drafts.
+
+<!-- vercel-retrigger: 2026-08-12T17:26Z -->
