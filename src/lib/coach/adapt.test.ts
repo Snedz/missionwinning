@@ -1,8 +1,9 @@
 import { describe, it } from 'node:test';
 import assert from 'node:assert/strict';
+import type { CompletedWorkoutLog } from '@/types';
 import { buildCoachContextFromInputs } from '@/lib/coach/contextBuilder';
 import { generateWeek } from '@/lib/coach/planEngine';
-import { adaptPlan, adaptForEquipmentChange } from '@/lib/coach/adapt';
+import { adaptPlan, adaptForEquipmentChange, regenerateFutureSessions } from '@/lib/coach/adapt';
 
 describe('adaptPlan', () => {
   /*
@@ -254,5 +255,45 @@ describe('adaptPlan', () => {
     const adapted = adaptForEquipmentChange(plan, newCtx, 1);
     const done = adapted.sessions.find((s) => s.id === doneId);
     assert.equal(done?.status, 'done');
+  });
+
+  it('regenerateFutureSessions is idempotent when the week is unchanged', () => {
+    const history: CompletedWorkoutLog[] = Array.from({ length: 20 }, (_, i) => ({
+      id: `w-${i}`,
+      clientId: `w-${i}`,
+      workoutName: 'Session',
+      startedAt: new Date(Date.now() - i * 86400000 - 3600000).toISOString(),
+      completedAt: new Date(Date.now() - i * 86400000).toISOString(),
+      durationSeconds: 3600,
+      exercises: [
+        {
+          exerciseId: 'squat',
+          muscleGroups: ['Legs'],
+          sets: [{ reps: 10, weight: 100, kind: 'normal' as const }],
+        },
+      ],
+      totalVolume: 50_000,
+      revision: 1,
+      updatedAt: new Date().toISOString(),
+    }));
+    const ctx = buildCoachContextFromInputs({
+      history,
+      experience: 'intermediate',
+      equipment: 'full-gym',
+      goal: 'goal:strength',
+      daysPerWeek: 4,
+      seedId: 'regen-idempotent',
+    });
+    assert.ok(ctx.bodyScores.strain >= 70, 'fixture must exercise fatigue regen path');
+    const plan = generateWeek(ctx, '2026-07-06');
+    const todayOffset = 2;
+    const once = regenerateFutureSessions(plan, ctx, todayOffset);
+    const twice = regenerateFutureSessions(once, ctx, todayOffset);
+    assert.equal(
+      twice.revision,
+      once.revision,
+      'fatigue regen must not bump revision when sessions are already regen-shaped'
+    );
+    assert.deepEqual(twice.sessions, once.sessions);
   });
 });
