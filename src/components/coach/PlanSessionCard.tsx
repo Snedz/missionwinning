@@ -11,6 +11,10 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import type { PlanSession } from '@/lib/coach/types';
+import {
+  buildSessionRationale,
+  type SessionRationaleHints,
+} from '@/lib/coach/sessionRationale';
 import { useUnits, weightUnitLabel } from '@/hooks/useUnits';
 import { cn } from '@/lib/utils';
 
@@ -26,6 +30,12 @@ type Props = {
   isPrimaryStart?: boolean;
   /** Today’s not-done session only — opens adjust flow. */
   onAdjust?: () => void;
+  /**
+   * Optional log-derived hints already computed upstream (history length, load band).
+   * Never invent metrics here — only pass what CoachContext / loadBands already have.
+   * Session rationale paints only on the boss Start card (`.699` / F-012).
+   */
+  rationaleHints?: SessionRationaleHints;
 };
 
 export function PlanSessionCard({
@@ -34,12 +44,18 @@ export function PlanSessionCard({
   isToday,
   isPrimaryStart,
   onAdjust,
+  rationaleHints,
 }: Props) {
   const { t } = useTranslation();
   const startCoachSession = useStartCoachSession();
   const units = useUnits();
   const unit = weightUnitLabel(units);
   const primary = isPrimaryStart ?? isToday;
+  // Boss session only — keep other cards quiet; never force onto Train/Today.
+  const sessionRationale =
+    primary && session.status !== 'done' && session.status !== 'missed'
+      ? buildSessionRationale(session, rationaleHints)
+      : null;
 
   const start = () => {
     startCoachSession(session, { from: 'coach' });
@@ -118,6 +134,47 @@ export function PlanSessionCard({
         </div>
       </CardHeader>
       <CardContent className="space-y-3">
+        {sessionRationale ? (
+          <div
+            className="space-y-1.5 border-s-[3px] border-s-[hsl(var(--accent-poster))] bg-muted px-3 py-2"
+            data-testid="coach-session-rationale"
+          >
+            <p className="eyebrow text-[10px] text-accent-900">
+              {t('coachWhySessionEyebrow', {
+                defaultValue: 'Why this session — from your logs',
+              })}
+            </p>
+            <p className="text-xs text-muted-foreground leading-relaxed">
+              <span className="font-medium text-foreground">
+                {t('coachRationaleInputLabel', { defaultValue: 'From your logs' })}
+                {': '}
+              </span>
+              {t(sessionRationale.inputKey, {
+                ...sessionRationale.inputParams,
+                defaultValue: sessionRationale.inputDefault,
+              })}
+            </p>
+            <p className="text-xs text-muted-foreground leading-relaxed">
+              <span className="font-medium text-foreground">
+                {t('coachRationaleRuleLabel', { defaultValue: 'Rule applied' })}
+                {': '}
+              </span>
+              {t(sessionRationale.ruleKey, {
+                defaultValue: sessionRationale.ruleDefault,
+              })}
+            </p>
+            <p className="text-xs text-muted-foreground leading-relaxed">
+              <span className="font-medium text-foreground">
+                {t('coachRationaleEffectLabel', { defaultValue: 'Expected effect' })}
+                {': '}
+              </span>
+              {t(sessionRationale.effectKey, {
+                ...sessionRationale.effectParams,
+                defaultValue: sessionRationale.effectDefault,
+              })}
+            </p>
+          </div>
+        ) : null}
         <ul className="space-y-2 text-sm">
           {session.exercises.map((ex) => (
             <PlanExerciseLine key={ex.exerciseId} ex={ex} unit={unit} />

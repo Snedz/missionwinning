@@ -27,3 +27,13 @@ test('CoachAdaptBanner surfaces log-cited week rationale', () => {
   assert.match(src, /coachRationaleRuleLabel|Rule applied/);
   assert.match(src, /coachRationaleEffectLabel|Expected effect/);
 });
+
+test('PlanSessionCard surfaces log-cited session rationale on boss card', () => {
+  const src = readFileSync(join(root, 'components/coach/PlanSessionCard.tsx'), 'utf8');
+  assert.match(src, /buildSessionRationale/);
+  assert.match(src, /Why this session — from your logs/i);
+  assert.match(src, /coachRationaleInputLabel|From your logs/);
+  assert.match(src, /coachRationaleRuleLabel|Rule applied/);
+  assert.match(src, /coachRationaleEffectLabel|Expected effect/);
+  assert.doesNotMatch(src, /TrainerRail|forceCoach|PRIVATE_MODE/);
+});

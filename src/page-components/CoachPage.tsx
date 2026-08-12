@@ -312,6 +312,10 @@ export function CoachPage({ askExerciseId }: CoachPageProps = {}) {
             sessions={plan.sessions}
             todayOffset={todayOffset}
             onAdjustToday={() => setAdjustOpen(true)}
+            rationaleHints={{
+              loggedWorkoutCount: ctx.history.length,
+              loadZone: ctx.loadZone ?? null,
+            }}
           />
 
           <details className="group border-2 border-border bg-card">
