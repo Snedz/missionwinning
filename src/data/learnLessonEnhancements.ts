@@ -1,5 +1,6 @@
 /** Extra key points (incl. common mistakes) merged onto learn lessons at display time. */
 export const LEARN_LESSON_ENHANCEMENTS: Record<string, string[]> = {
+  'sb-0': ['Common mistake: waiting for perfect Wi‑Fi or a wearable before logging the first set.'],
   'sb-1': ['Common mistake: adding weight every session regardless of form breakdown.'],
   'sb-2': ['Common mistake: isolating arms/chest before you can control bodyweight patterns.'],
   'sb-3': ['Common mistake: ignoring readiness and grinding through every workout at RPE 10.'],

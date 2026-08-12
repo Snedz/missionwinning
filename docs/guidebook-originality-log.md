@@ -96,6 +96,12 @@ Original AI-generated chapter heroes (brand prompt pack) and instructional SVG c
 | mag-preface | MW product — magazine practice → log/Today/Coach | Mission Winning | 2026-08-12 |
 | mag-how-to | MW product — magazine practice → log/Today/Coach | Mission Winning | 2026-08-12 |
 
+## Learn free intro — wedge (2026-08-12)
+
+| Lesson ID | Source ref (topic only) | Writer | Date |
+|-----------|-------------------------|--------|------|
+| sb-0 | MW product — offline Train + Coach from logs (F-001 / F-018) | Mission Winning | 2026-08-12 |
+
 ## Localized editions
 
 Translations in `src/i18n/packs/{lang}.json` and guidebook locale overlays are **translations of Mission Winning original English**, not ISSA text. Regenerated via `npm run i18n:fill`.
