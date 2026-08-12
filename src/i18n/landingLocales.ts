@@ -1,6 +1,10 @@
 /** Landing / marketing page copy — merged into i18n `common` namespace. */
 
 import { isFreeBeta } from '@/lib/freeBeta';
+import { CONTENT_FLOORS } from '@/lib/contentFloors';
+
+/** Under-promises; never hand-type in landing blurbs — see landingExerciseCount.test.ts */
+const EP = CONTENT_FLOORS.exercisePages;
 
 const LANDING_EN: Record<string, string> = {
   compareEyebrow: 'Honest comparison',
@@ -39,7 +43,7 @@ const LANDING_EN: Record<string, string> = {
   landingFreeTitleLoop: 'Free is the mission, not the trial',
   landingFreeTermLogger: 'The logger',
   landingFreeTermCoach: 'Mission Coach',
-  landingFreeTermLibrary: '217 exercises',
+  landingFreeTermLibrary: `${EP} exercises`,
   landingFreeTermAccount: 'No account',
   landingFreeCoachLine: 'A week built from your logs, regenerated every week.',
 
@@ -68,11 +72,11 @@ const LANDING_EN: Record<string, string> = {
   landingHeroTitle2: 'Win daily.',
   landingHeroSubtitle:
     'Free offline logging (no account) and weekly plans that adapt from your logs alone — no wearable required.',
-  landingHeroLibrary: 'Library of 217 free exercise pages — form cues, hubs, and a full foundations guide.',
+  landingHeroLibrary: `Library of ${EP} free exercise pages — form cues, hubs, and a full foundations guide.`,
   landingHeroLibraryCta: 'Browse exercises',
   landingHeroProof: 'Log a set → Coach shapes the week → Win Score ticks.',
   landingSeeHow: 'See how it works',
-  landingProofChip: '217 exercises · offline · no account',
+  landingProofChip: `${EP} exercises · offline · no account`,
   landingProofNoAiKey:
     'Free core needs no AI key. Optional AI coach when enabled.',
   landingTrustInstall: 'Installs like an app',
@@ -80,7 +84,7 @@ const LANDING_EN: Record<string, string> = {
   landingTrustLang: '14 languages',
   landingCtaStart: 'Start your path',
   landingCtaBundle: 'Super Bundle',
-  landingStatExercises: '217 exercises',
+  landingStatExercises: `${EP} exercises`,
   landingStatOffline: 'Offline PWA',
   landingStatLangs: '14 languages',
   landingStatCore: '$0 core',
@@ -112,12 +116,12 @@ const LANDING_EN: Record<string, string> = {
     'The fundamentals that make people healthier should have no price of admission — anywhere in the world. That is the founding promise, written into our vision, and it does not expire.',
   landingFreeVisionLink: 'our vision',
   landingFreeLogger: 'Full workout logger — sets, reps, RPE, rest timers',
-  landingFreeLibrary: '217-exercise library — bodyweight and minimal gear first',
+  landingFreeLibrary: `${EP}-exercise library — bodyweight and minimal gear first`,
   landingFreeOffline: 'Offline PWA — no store, no fees, no account required',
   landingFreeWinScore: 'Win Score from your logs — readiness, strain, recovery',
   landingFreeStatWorkouts: 'Unlimited logs',
   landingFreeStatWorkoutsHint: 'Forever free',
-  landingFreeStatLibrary: '217 exercises',
+  landingFreeStatLibrary: `${EP} exercises`,
   landingFreeStatLibraryHint: 'Form cues included',
   landingFreeStatOffline: 'Works offline',
   landingFreeStatOfflineHint: 'Install as PWA',
@@ -215,17 +219,17 @@ const LANDING_ES: Record<string, string> = {
   landingHeroTitle2: 'Gana a diario.',
   landingHeroSubtitle:
     'El rastreador de entrenamientos gratis que funciona offline — sin cuenta, sin tienda, sin muro de pago en lo básico. Nutrición, movilidad, mente y aprendizaje suman al mismo Win Score.',
-  landingHeroLibrary: 'Biblioteca de 217 ejercicios gratis — cues, hubs y guía completa.',
+  landingHeroLibrary: `Biblioteca de ${EP} ejercicios gratis — cues, hubs y guía completa.`,
   landingHeroLibraryCta: 'Ver ejercicios',
   landingHeroProof: 'Registra una serie en el demo → el Win Score se mueve. Ese es el bucle.',
   landingSeeHow: 'Cómo funciona',
-  landingProofChip: '217 ejercicios · offline · sin cuenta',
+  landingProofChip: `${EP} ejercicios · offline · sin cuenta`,
   landingProofNoAiKey: 'El core gratis no necesita clave de IA. Coach IA opcional si está activo.',
   landingTrustInstall: 'Se instala como app',
   landingTrustOffline: 'Entrena offline',
   landingTrustLang: '14 idiomas',
   landingCtaStart: 'Comienza tu camino',
-  landingStatExercises: '217 ejercicios',
+  landingStatExercises: `${EP} ejercicios`,
   landingStatOffline: 'PWA offline',
   landingStatLangs: '14 idiomas',
   landingStatCore: 'Núcleo $0',
@@ -450,7 +454,7 @@ const LANDING_IT: Record<string, string> = {
     'Registro offline gratuito (senza account) e piani settimanali che si adattano solo dai tuoi log — nessun wearable richiesto.',
   landingHeroProof: 'Registra una serie → Coach modella la settimana → Win Score avanza.',
   landingSeeHow: 'Come funziona',
-  landingProofChip: '217 esercizi · offline · senza account',
+  landingProofChip: `${EP} esercizi · offline · senza account`,
   landingProofNoAiKey:
     'Il core gratis non richiede chiave IA. Coach IA opzionale se attivo.',
   landingTrustInstall: 'Si installa come app',
@@ -458,7 +462,7 @@ const LANDING_IT: Record<string, string> = {
   landingTrustLang: '14 lingue',
   landingCtaStart: 'Inizia il percorso',
   landingCtaBundle: 'Super Bundle',
-  landingStatExercises: '217 esercizi',
+  landingStatExercises: `${EP} esercizi`,
   landingStatOffline: 'PWA offline',
   landingStatLangs: '14 lingue',
   landingStatCore: 'Core $0',
@@ -546,7 +550,7 @@ const LANDING_RU: Record<string, string> = {
     'Бесплатное офлайн-логирование (без аккаунта) и недельные планы, которые адаптируются только из твоих логов — носимый гаджет не нужен.',
   landingHeroProof: 'Запиши подход → Coach формирует неделю → Win Score растёт.',
   landingSeeHow: 'Как это работает',
-  landingProofChip: '217 упражнений · офлайн · без аккаунта',
+  landingProofChip: `${EP} упражнений · офлайн · без аккаунта`,
   landingProofNoAiKey:
     'Бесплатному ядру не нужен AI-ключ. AI Coach опционален, если включён.',
   landingTrustInstall: 'Устанавливается как приложение',
@@ -554,7 +558,7 @@ const LANDING_RU: Record<string, string> = {
   landingTrustLang: '14 языков',
   landingCtaStart: 'Начать путь',
   landingCtaBundle: 'Super Bundle',
-  landingStatExercises: '217 упражнений',
+  landingStatExercises: `${EP} упражнений`,
   landingStatOffline: 'Офлайн PWA',
   landingStatLangs: '14 языков',
   landingStatCore: 'Ядро $0',
@@ -642,7 +646,7 @@ const LANDING_KO: Record<string, string> = {
     '무료 오프라인 기록(계정 불필요)과 로그만으로 적응하는 주간 플랜 — 웨어러블 필요 없음.',
   landingHeroProof: '세트 기록 → 코치가 주간 조정 → Win Score 상승.',
   landingSeeHow: '작동 방식',
-  landingProofChip: '217개 운동 · 오프라인 · 계정 없음',
+  landingProofChip: `${EP}개 운동 · 오프라인 · 계정 없음`,
   landingProofNoAiKey:
     '무료 코어는 AI 키가 필요 없습니다. AI 코치는 활성화 시 선택 사항.',
   landingTrustInstall: '앱처럼 설치',
@@ -650,7 +654,7 @@ const LANDING_KO: Record<string, string> = {
   landingTrustLang: '14개 언어',
   landingCtaStart: '경로 시작',
   landingCtaBundle: 'Super Bundle',
-  landingStatExercises: '217개 운동',
+  landingStatExercises: `${EP}개 운동`,
   landingStatOffline: '오프라인 PWA',
   landingStatLangs: '14개 언어',
   landingStatCore: '코어 $0',
@@ -738,7 +742,7 @@ const LANDING_JA: Record<string, string> = {
     '無料のオフライン記録（アカウント不要）とログだけから適応する週間プラン — ウェアラブル不要。',
   landingHeroProof: 'セットを記録 → コーチが週を調整 → Win Scoreが動く。',
   landingSeeHow: '仕組みを見る',
-  landingProofChip: '217種のエクササイズ · オフライン · アカウント不要',
+  landingProofChip: `${EP}種のエクササイズ · オフライン · アカウント不要`,
   landingProofNoAiKey:
     '無料コアにAIキーは不要。AIコーチは有効時のみオプション。',
   landingTrustInstall: 'アプリのようにインストール',
@@ -746,7 +750,7 @@ const LANDING_JA: Record<string, string> = {
   landingTrustLang: '14言語',
   landingCtaStart: 'パスを始める',
   landingCtaBundle: 'Super Bundle',
-  landingStatExercises: '217種のエクササイズ',
+  landingStatExercises: `${EP}種のエクササイズ`,
   landingStatOffline: 'オフラインPWA',
   landingStatLangs: '14言語',
   landingStatCore: 'コア $0',

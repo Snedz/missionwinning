@@ -36,6 +36,7 @@ import { GrayscalePhoto } from '@/components/marketing/GrayscalePhoto';
 import { ArrowRight } from 'lucide-react';
 import { isFreeBeta } from '@/lib/freeBeta';
 import { landingFaqKeysForSurface } from '@/i18n/landingLocales';
+import { CONTENT_FLOORS } from '@/lib/contentFloors';
 
 const LogToPlanHero = dynamic(
   () => import('@/components/landing/LogToPlanHero').then((m) => m.LogToPlanHero),
@@ -49,6 +50,8 @@ const CoachAdaptDemo = dynamic(
 
 /** Same free-beta filter as FAQ JSON-LD — one list, two surfaces. */
 const FAQ = landingFaqKeysForSurface();
+
+const EXERCISE_PAGE_FLOOR = CONTENT_FLOORS.exercisePages;
 
 /**
  * What the free core actually is. Each line is checkable — no aspirations, no
@@ -69,7 +72,7 @@ const FREE_CORE = [
   },
   {
     termKey: 'landingFreeTermLibrary',
-    term: '217 exercises',
+    term: `${EXERCISE_PAGE_FLOOR} exercises`,
     key: 'landingFreeLibrary',
     defaultValue: 'Bodyweight and minimal gear first, with form cues.',
   },
@@ -201,7 +204,7 @@ export function LandingPage() {
           {[
             {
               k: 'landingStatExercisesV',
-              v: '217',
+              v: String(EXERCISE_PAGE_FLOOR),
               lk: 'landingStatExercisesL',
               l: 'Exercises, bodyweight and minimal gear first',
             },

@@ -58,3 +58,12 @@ export const CONTENT_FLOORS = {
   /** Eyes-on form pack side stills (FORM_PACK_SIDE_IDS). */
   formPackSide: 18,
 } as const;
+
+/**
+ * Marketing / SEO exercise-page count — deliberately under-promises.
+ * Public `/exercises` UI may show the awaited unique catalog size when it exceeds
+ * this floor; see `contentInventory.test.ts`.
+ */
+export function exercisePageFloorCount(): number {
+  return CONTENT_FLOORS.exercisePages;
+}

@@ -24,7 +24,12 @@ import { useLocaleFormat } from '@/hooks/useLocaleFormat';
 const EQUIP_CHIPS = ['', 'bodyweight', 'dumbbell', 'barbell', 'cable', 'band', 'kettlebell'] as const;
 const TAG_CHIPS: (ProgramTag | '')[] = ['', 'strength', 'hypertrophy', 'conditioning', 'corrective'];
 
-export function ExercisesPublicFilter() {
+type Props = {
+  /** Awaited server-side catalog size — avoids flashing the base ~126 count before lazy splice. */
+  catalogTotal: number;
+};
+
+export function ExercisesPublicFilter({ catalogTotal }: Props) {
   const fmt = useLocaleFormat();
   const [filters, setFilters] = useState<LibraryFilterState>({ ...DEFAULT_LIBRARY_FILTERS });
   const [catalogRevision, setCatalogRevision] = useState(0);
@@ -43,6 +48,8 @@ export function ExercisesPublicFilter() {
     // eslint-disable-next-line react-hooks/exhaustive-deps -- in-place catalog extension
     [filters, catalogRevision]
   );
+
+  const totalCount = catalogRevision > 0 ? EXERCISES.length : catalogTotal;
 
   const setFilter = <K extends keyof LibraryFilterState>(key: K, value: LibraryFilterState[K]) => {
     setFilters((prev) => ({ ...prev, [key]: value }));
@@ -97,7 +104,7 @@ export function ExercisesPublicFilter() {
           ))}
         </div>
         <p className="text-xs text-muted-foreground">
-          Showing {filtered.length} of {EXERCISES.length}
+          Showing {filtered.length} of {totalCount}
         </p>
       </div>
       <ul className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
