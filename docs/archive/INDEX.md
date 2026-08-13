@@ -25,7 +25,7 @@ When adding a doc:
 
 | File | Absorbed by / note |
 |------|---------------------|
-| [log/LOG-rotate-669-for-712.md](./log/LOG-rotate-669-for-712.md) | rotated 2026-08-13 for `.712` Victory vs-last receipt |
+| [log/LOG-rotate-669-for-713.md](./log/LOG-rotate-669-for-713.md) | rotated 2026-08-13 for `.713` Victory vs-last receipt |
 | [log/LOG-rotate-659-for-685.md](./log/LOG-rotate-659-for-685.md) | rotated 2026-08-12 for `.685` preserve next= through private gate |
 | [log/LOG-rotate-661-for-690.md](./log/LOG-rotate-661-for-690.md) | rotated 2026-08-12 for `.690` admin invite share → /private |
 | [log/LOG-rotate-662-for-691.md](./log/LOG-rotate-662-for-691.md) | rotated 2026-08-12 for `.691` Welcome Skip hard-nav private gate |
