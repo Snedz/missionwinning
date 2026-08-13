@@ -15,7 +15,7 @@ Do **not** lead with everything-app, six pillars as hero, superapp, WeChat, AR, 
 
 ### AEO (answer engines)
 
-Prep citation-shaped owned pages now; **publish after public flip**. Reddit = ChatGPT citation channel (founder-honest posts only; no astroturf). See [aeo/AEO_PREP.md](./aeo/AEO_PREP.md). Canonical FAQ copy: [aeo/FAQ-wedge-answers.md](./aeo/FAQ-wedge-answers.md) (Content Learn).
+Prep now; **publish after public flip**. Comparisons not praise. Reddit = ChatGPT only. Skip X/LinkedIn citations. See [aeo/AEO_PREP.md](./aeo/AEO_PREP.md).
 
 ---
 
@@ -23,19 +23,21 @@ Prep citation-shaped owned pages now; **publish after public flip**. Reddit = Ch
 
 | Path | Purpose | Status |
 |------|---------|--------|
-| [aeo/AEO_PREP.md](./aeo/AEO_PREP.md) | AEO strategy: citation pages, gate, Reddit rules | draft 2026-08-13 — not live marketing |
-| [aeo/FAQ-wedge-answers.md](./aeo/FAQ-wedge-answers.md) | Canonical 40–60w FAQ answers (Content Learn) | draft 2026-08-13 — not live marketing |
-| [aeo/BRIEF-citation-pages.md](./aeo/BRIEF-citation-pages.md) | Four wedge pages: slugs/prompts; leads = FAQ file | draft 2026-08-13 — not live marketing |
-| [gsc/PREP_CHECKLIST.md](./gsc/PREP_CHECKLIST.md) | Search Console prep under PRIVATE_MODE (0 organic claims) | draft 2026-08-12 — not live marketing |
-| [content/BRIEF-guide-calisthenics-beginners.md](./content/BRIEF-guide-calisthenics-beginners.md) | Pillar brief: calisthenics workout plan for beginners + PDF angle → `/guide/*` | draft 2026-08-12 — not live marketing |
-| [content/BRIEF-exercises-bodyweight-beginners.md](./content/BRIEF-exercises-bodyweight-beginners.md) | Hub + spoke brief for bodyweight beginners → `/exercises/*` | draft 2026-08-12 — not live marketing |
-| [content/BRIEF-compare-cluster.md](./content/BRIEF-compare-cluster.md) | Compare specs: Hevy/Strong/Fitbod — **craft must re-ship `/compare` first** | draft 2026-08-12 — not live marketing |
-| [keywords/refresh-2026-08-12.md](./keywords/refresh-2026-08-12.md) | Keyword priority refresh vs July OpenSEO brief; OpenSEO tagging plan | draft 2026-08-12 — not live marketing |
-| [competitors/notes-2026-08-12.md](./competitors/notes-2026-08-12.md) | Competitor SEO / positioning notes; name-collision watch | draft 2026-08-12 — not live marketing |
-| [launch/PHASE_B_DRAFT_KIT.md](./launch/PHASE_B_DRAFT_KIT.md) | Phase B paste kits — **DO NOT PUBLISH** until flip + PWA smoke | draft 2026-08-12 — not live marketing |
-| [FOUNDER_SIGNOFF.md](./FOUNDER_SIGNOFF.md) | Founder sign-off checklist (THESIS §8, legal, medical captions, F-005/F-016) | draft 2026-08-12 — not live marketing |
+| [aeo/AEO_PREP.md](./aeo/AEO_PREP.md) | AEO 23-point rules, gate, phrase spreadsheet | draft 2026-08-13 |
+| [aeo/FAQ-wedge-answers.md](./aeo/FAQ-wedge-answers.md) | Canonical 40–60w FAQ answers (Content Learn) | draft 2026-08-13 |
+| [aeo/BRIEF-citation-pages.md](./aeo/BRIEF-citation-pages.md) | FAQ slugs/prompts; leads = FAQ file | draft 2026-08-13 |
+| [aeo/BRIEF-vs-pages.md](./aeo/BRIEF-vs-pages.md) | Mission Winning vs Strong/Hevy/Fitbod/Boostcamp | draft 2026-08-13 |
+| [aeo/LLMS_TXT_SPEC.md](./aeo/LLMS_TXT_SPEC.md) | Honest agent file; refuse dark coupons | draft 2026-08-13 |
+| [gsc/PREP_CHECKLIST.md](./gsc/PREP_CHECKLIST.md) | Search Console prep under PRIVATE_MODE | draft 2026-08-12 |
+| [content/BRIEF-guide-calisthenics-beginners.md](./content/BRIEF-guide-calisthenics-beginners.md) | Calisthenics beginners pillar | draft 2026-08-12 |
+| [content/BRIEF-exercises-bodyweight-beginners.md](./content/BRIEF-exercises-bodyweight-beginners.md) | Bodyweight beginners hub+spoke | draft 2026-08-12 |
+| [content/BRIEF-compare-cluster.md](./content/BRIEF-compare-cluster.md) | Older compare hub spec — vs-pages brief is AEO source of truth | draft 2026-08-12 |
+| [keywords/refresh-2026-08-12.md](./keywords/refresh-2026-08-12.md) | Keyword priority refresh | draft 2026-08-12 |
+| [competitors/notes-2026-08-12.md](./competitors/notes-2026-08-12.md) | Competitor notes + intel errata | draft 2026-08-13 |
+| [launch/PHASE_B_DRAFT_KIT.md](./launch/PHASE_B_DRAFT_KIT.md) | Phase B kits — DO NOT PUBLISH | draft 2026-08-12 |
+| [FOUNDER_SIGNOFF.md](./FOUNDER_SIGNOFF.md) | Founder sign-off checklist | draft 2026-08-12 |
 
-Also aligned: [docs/SOCIAL_LAUNCH.md](../docs/SOCIAL_LAUNCH.md) · [docs/SEO_ANALYTICS.md](../docs/SEO_ANALYTICS.md) (GSC section).
+Also aligned: [docs/SOCIAL_LAUNCH.md](../docs/SOCIAL_LAUNCH.md) (Reddit, YouTube prompt-titles, Where did you find us?).
 
 ---
 
@@ -48,14 +50,11 @@ Also aligned: [docs/SOCIAL_LAUNCH.md](../docs/SOCIAL_LAUNCH.md) · [docs/SEO_ANA
 - `/paths`
 - `/press`
 - `/welcome`
-- `/calculators/*` — **live:** `1rm`, `tdee`, `strength-standards` (Wedge Craft already shipped public calculator pages)
+- `/calculators/*` — **live:** `1rm`, `tdee`, `strength-standards`
 
-**Not live:**
+**Not live:** `/compare` (removed) · `/bundle` (absent during free beta).
 
-- `/compare` — **removed in a recent ship.** Compare briefs below are ready-to-implement specs only. Craft dependency: re-ship `/compare` (and story pages) before any compare SEO go-live.
-- `/bundle` — absent during free beta; not a public SEO surface.
-
-**AEO note:** `/guide` can carry citation blocks while gated (already indexable) **if** copy stays free-beta honest (no "we're live"). New Reddit posts wait for flip. Ch4 FAQ slot after ch4-s3 when Learn unparks; do not duplicate Q1+Q4 onto sb-0.
+**AEO:** vs-pages + FAQs on **open** `/guide` after flip (own domain). No Learn/Substack gate. No AEO while gated.
 
 ---
 
