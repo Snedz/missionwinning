@@ -90,6 +90,10 @@ test.describe('Desktop surface @gate', () => {
     await expect(table.locator('tbody input')).toHaveCount(2);
     await expect(page.getByRole('button', { name: /^log set$/i })).toHaveCount(1);
 
+    // E-Adjacency: honest empty on the live table row; other planned rows stay PREVIOUS-only.
+    await expect(page.getByTestId('set-table-target-empty')).toHaveCount(1);
+    await expect(page.getByTestId('set-table-target')).toHaveCount(0);
+
     // And the dock is empty: a docked console here would be a second place to
     // type the same number.
     const dockChildren = await page.evaluate(
