@@ -108,6 +108,7 @@
 | [DESIGN_SYSTEM.md](DESIGN_SYSTEM.md) | Runtime tokens, shells, ProgressRing, motion |
 | [DESIGN_REVIEW.md](DESIGN_REVIEW.md) | Hero-flow UI/UX audit checklist (quarterly + pre-flip) |
 | [DESTRUCTIVE_UX.md](DESTRUCTIVE_UX.md) | Hold-to-confirm delete language |
+| [overnight/PLAN.md](overnight/PLAN.md) | Frozen implement-only overnight plan (current: garage swap `.721`) |
 
 ---
 
