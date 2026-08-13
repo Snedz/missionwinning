@@ -16,7 +16,7 @@ One screen of truth for any AI tool or human joining cold. Read this, then [AGEN
 
 ---
 
-## Now (2026-08-13 · web `2026.07-unified.764` · Android `1.24.1`)
+## Now (2026-08-13 · web `2026.07-unified.765` · Android `1.24.1`)
 
 > The ONLY "where we are" block in the repo — [ORCHESTRATION.md](ORCHESTRATION.md) points here.
 >
@@ -308,6 +308,7 @@ One screen of truth for any AI tool or human joining cold. Read this, then [AGEN
 > and `.762` dropped `.747` detail (full text remains in LOG.md / archive)
 > and `.763` dropped `.748` detail (full text remains in LOG.md / archive)
 > and `.764` dropped `.749` detail (full text remains in LOG.md / archive)
+> and `.765` dropped `.750` detail (full text remains in LOG.md / archive)
 > to [CONTEXT-now-2026-07-30.md](docs/archive/CONTEXT-now-2026-07-30.md) after this
 > block reached **79 bullets / 103KB**. A status doc that only grows stops being read.
 
@@ -329,6 +330,7 @@ One screen of truth for any AI tool or human joining cold. Read this, then [AGEN
 > | gitleaks | **green — and scanning for the first time.** It had never scanned anything: on a `pull_request` event the action lists the PR's commits, the job declared no `permissions:` block, and it 403'd (`pull_requests=read`) before opening a file. Fixed by a `permissions:` block (`.224` carrying `.255`). It scans **only the PR's own commits**, so commit `8ea3527a`'s real Solana treasury address — scrubbed from the working file, still in history — is out of its scope. That finding stands, deliberately not allowlisted; it was never what made this check red. |
 
 - **Excellence:** unscored · — · [docs/EXCELLENCE_RESULT.md](docs/EXCELLENCE_RESULT.md) — Horizon W phone sign-off home; surface PRs need `status: pass` or `Excellence-Override` (`.669`).
+- **`.765`:** (`2026.07-unified.765`) **Preview walk P0s** — consent banner docks above the tab bar so Today Start stays tappable; landing Get-notified form (no Stripe). Brief reserved `.750`; first land was `.755` (occupied).
 - **`.764`:** (`2026.07-unified.764`) **Free plate math + warmup on the Train set row** — Live barbell plates-per-side + Add warmups 40/60/80. Free. Originally #503 / `.708`.
 - **`.763`:** (`2026.07-unified.763`) **Home gym kit on the free logger** — Account Home gym kit (barbell/rack/plates/dumbbells/pull-up/floor). Just Go + Coach filter, never rank. Train empty Start stays repeat-last. Originally #525 / `.733`.
 - **`.762`:** (`2026.07-unified.762`) **F-017 first-set verify iterate** — Nullish/hash-safe Sign-in chip; Welcome Begin fallback; extended first-set source-scan. Originally #538 / `.750`.
@@ -343,7 +345,6 @@ One screen of truth for any AI tool or human joining cold. Read this, then [AGEN
 - **`.753`:** (`2026.07-unified.753`) **Habit week count + HABIT contract** — Today header always shows this week: N days logged (0 is fine). HABIT contract: daily Train is the loop. Originally #511 / `.722`.
 - **`.752`:** (`2026.07-unified.752`) **Garage swap on the exercise row** — Swap on the Train row / Coach line offers 1–2 garage stand-ins; equipment change clears last load; hide when already garage. Originally #514 / `.721`.
 - **`.751`:** (`2026.07-unified.751`) **Learn vs Strong / Hevy / Fitbod citation pages** — Free /guide/mission-winning-vs-* explanation pages for AEO. CSV import live; Strong/Hevy export dialects planned. Originally #513 / `.716`.
-- **`.750`:** (`2026.07-unified.750`) **Session history list** — Deepen /history Sessions: date · title/muscles · set count from device logs; empty waits on hydrate; tap opens the completed log read-only. Originally #512 / `.720`.
 - **`.669`:** (`2026.07-unified.669`) **Excellence RESULT + agent stop-rule** — `excellenceGate` path policy + `check-excellence-gate` on gate/PR CI; wedge still ships while unscored.
 - **Horizon W + full-launch override (2026-08-05).** Wedge excellence still required; agents may ship rewards + full surface honesty. Fuel estimate accuracy remains.
 - **Free-first beta (~4 weeks):** LLC + EIN pending — **no Bundle UI** + **full depth unlocked**; More/rail **Pillars demoted until first workout** (F-004 / `.695`) — still no Bundle ([docs/FREE_BETA.md](docs/FREE_BETA.md)).

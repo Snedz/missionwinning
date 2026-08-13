@@ -6,12 +6,13 @@ Living roadmap for the **everything app** (Freeletics Super Bundle → one PWA).
 
 ---
 
-## Frozen plan — `.755` Preview walk P0s (consent dock + landing notify) (2026-08-13)
+## Frozen plan — `.765` Preview walk P0s (consent dock + landing notify) (2026-08-13)
 
 > **Frozen.** Implement only this section. Plan commit is `[skip vercel]`.
-> Brief reserved `2026.07-unified.750` — **occupied** on master (session history).
-> This ship lands as `2026.07-unified.755` past master `.754`.
-> Do not steal `.697`–`.730` or `.750`–`.754`.
+> Brief reserved `2026.07-unified.750` — **occupied** (session history).
+> First land was `.755` — **occupied** on master (unilateral L/R).
+> This ship lands as `2026.07-unified.765` past master `.764`.
+> Do not steal `.697`–`.730` or `.750`–`.764`.
 > Draft PR. **Preview will not deploy** (`[skip vercel]` on every commit).
 > Excellence-Override: preview walk P0s (consent dock + landing notify).
 > No `PRIVATE_MODE` flip. No promote. No Stripe. No invented traction.
@@ -71,13 +72,13 @@ Do **not** flip `PRIVATE_MODE`. Do **not** charge. Do **not** invent waitlist tr
 - **Notify form (unit / source):** `LandingPage` mounts `LaunchNotifyForm`; email + submit; `submitLead`; no checkout URL / no `/bundle` href on the form. `first-90` still counts 2 `.primary-action` on `/`. `PrivateTeaserClient` still uses the shared form. Mutant deleting the landing mount dies.
 - **Notify form (Playwright or unit):** fill email, submit path does not navigate to Stripe / checkout. No traction numerals in copy.
 - Geo-block / JourneyGuard / F-017 / `TAP_BUDGET` 5 — no edits that weaken them.
-- `check-build-label` `.755`. LOG + CONTEXT in the same implement commit.
+- `check-build-label` `.765`. LOG + CONTEXT in the same implement commit.
 
 ### Docs / ship protocol
 
-- `APP_BUILD_LABEL` → `2026.07-unified.755`
-- LOG heading `## 2026-08-13 — Preview walk P0s: consent dock + landing notify (\`.755\`)` + rotate oldest live entry
-- CONTEXT `## Now` one `.755` bullet; rotate oldest shipped version bullet (`.696`); keep Status table; ≤25 bullets
+- `APP_BUILD_LABEL` → `2026.07-unified.765`
+- LOG heading `## 2026-08-13 — Preview walk P0s: consent dock + landing notify (\`.765\`)` + rotate oldest live entry
+- CONTEXT `## Now` one `.765` bullet; rotate oldest shipped version bullet (`.750`); keep Status table; ≤25 bullets
 - Help: one line — Super Bundle checkout is not live; get notified on the landing page (no charge)
 - INDEX: `src/components/layout/INDEX.md` (host); `src/components/` if the public form is listed; `src/lib/INDEX.md` only if a new helper lands there
 - i18n: reuse `gateWaitlist*` for form chrome; add landing-specific title/body keys; `npm run i18n:fill` + parity

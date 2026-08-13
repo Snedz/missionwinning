@@ -75,7 +75,7 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
               of something fixed covering the content it belongs to. */}
           <div id={SCREEN_DOCK_HOST_ID} className="shrink-0 empty:hidden" />
           {/* Consent docks here — a flex sibling above the tab bar, never a
-              fixed overlay on Today's Start (Preview walk P0-1 / `.755`). */}
+              fixed overlay on Today's Start (Preview walk P0-1 / `.765`). */}
           <div id={CONSENT_BANNER_HOST_ID} className="shrink-0 empty:hidden" />
           <MobileNav onOpenMore={openMore} moreOpen={moreOpen} />
           <MoreSheet open={moreOpen} onClose={closeMore} />
