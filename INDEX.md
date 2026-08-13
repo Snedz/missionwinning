@@ -23,6 +23,7 @@
 |-------------|------------|-------------------------------|
 | **Deciding what to build next** | [ORCHESTRATION.md](ORCHESTRATION.md) | Old chat plans; infinite feature lists |
 | Implementing a feature | [ORCHESTRATION.md](ORCHESTRATION.md) horizon gate + [docs/PLAN.md](docs/PLAN.md) + `src/*/INDEX.md` | Old chat plans in `~/.cursor/plans/` |
+| **Super Bundle content depth** | [docs/SUPER_BUNDLE_CONTENT_PLAN.md](docs/SUPER_BUNDLE_CONTENT_PLAN.md) — frozen `.700`; honest counts; vs MFP/Pliability/Calm/Fitbod-Coach | Adding catalog volume; food database as the SKU; new tabs; trial |
 | Launch / deploy | **[docs/LAUNCH_RUNBOOK.md](docs/LAUNCH_RUNBOOK.md) — the single source**, then [docs/ENV.md](docs/ENV.md) for what each var means | Everything in `docs/archive/` (`SOFT_LAUNCH_DAY`, `BETA_LAUNCH_OPS`, `PRE_LAUNCH_PLAN`, `LAUNCH_READY`, `TRACK_D_GO_LIVE`, `SETUP`) — all **superseded 2026-07-19** and all still contradicting the runbook |
 | **Supabase migrations (one sitting)** | [docs/MIGRATION_FOUNDER_PACK.md](docs/MIGRATION_FOUNDER_PACK.md) — ordered P1–P10 + week-4 proof | Guessing from `ls migrations/`; claiming week-4 without tombstone fix |
 | Phone dogfood notes (founder) | **[docs/LAUNCH_RUNBOOK.md](docs/LAUNCH_RUNBOOK.md) §3a** — template + poke list; paste friction to agents before inventing ships | Chat-only “test it” without written notes |
