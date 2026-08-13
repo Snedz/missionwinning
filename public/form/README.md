@@ -4,7 +4,8 @@ Clinical movement demos for Train / library / public exercises.
 
 | Path | Role |
 |------|------|
-| `{exerciseId}/side.webp` | Primary poster (library card + LCP) |
+| `{exerciseId}/cast-{letter}.webp` | Cast-set still (`.736` — `squats` / `push-ups` / `pull-ups`). Product picks one via `formCast.ts`. Representation ≠ service territory. |
+| `{exerciseId}/side.webp` | Primary poster (library card + LCP) when no cast set |
 | `{exerciseId}/side.mp4` | Silent ~6s loop (480p); poster used as `poster` |
 | `{exerciseId}/front.webp` | Optional second angle |
 | `pattern-{squat|hinge|push|pull|core|loco|isolation}/side.webp` | Long-tail shared pattern still |

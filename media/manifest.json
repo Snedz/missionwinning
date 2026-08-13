@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated": "2026-08-04",
+  "updated": "2026-08-13",
   "assets": [
     {
       "id": "push-ups",
@@ -8,7 +8,7 @@
       "path": "/form/push-ups/side.webp",
       "status": "shipped",
       "promptId": "grok-form-index-side",
-      "notes": "Form Index clinical side still + loop (.465)"
+      "notes": ".736 recast still set (cast a–d); still-only until loop recast. Legacy side.mp4 not wired."
     },
     {
       "id": "air-squat",
@@ -21,9 +21,10 @@
     {
       "id": "squats",
       "kind": "form",
-      "path": "/form-guides/squats.svg",
+      "path": "/form/squats/cast-a.webp",
       "status": "shipped",
-      "promptId": "form-instructional-v1"
+      "promptId": "form-cast-v1",
+      "notes": ".736 multicultural still set (catalog 006). Cast a–d; picker formCast.ts. Looks include East Asian, modest hijab (served-country athlete), Jewish/Israeli kippah+tzitzit. Representation ≠ service territory. SVG fallback remains /form-guides/squats.svg."
     },
     {
       "id": "deadlift",
@@ -38,8 +39,8 @@
       "kind": "form",
       "path": "/form/pull-ups/side.webp",
       "status": "shipped",
-      "promptId": "grok-form-index-side",
-      "notes": "Form Index clinical side still + loop (.465)"
+      "promptId": "form-cast-v1",
+      "notes": ".736 recast still set (cast a–d); still-only until loop recast."
     },
     {
       "id": "plank",

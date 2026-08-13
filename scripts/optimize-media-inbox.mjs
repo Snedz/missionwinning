@@ -92,8 +92,22 @@ function resolveTarget(fileName) {
   }
   // form-push-ups-side-frame → public/form/push-ups/side.webp
   // form-pattern-squat-side-frame → public/form/pattern-squat/side.webp
+  // form-squats-cast-a-frame → public/form/squats/cast-a.webp
   if (base.startsWith('form-')) {
     let rest = base.slice('form-'.length).replace(/-frame$/, '').replace(/-raw$/, '');
+    const castMatch = rest.match(/^(.*)-cast-([a-z0-9]+)$/);
+    if (castMatch) {
+      const id = castMatch[1];
+      const letter = castMatch[2];
+      if (!id || !letter) return null;
+      return {
+        kind: 'form',
+        out: path.join(root, 'public', 'form', id, `cast-${letter}.webp`),
+        width: 1080,
+        maxBytes: 120_000,
+        publicPath: `/form/${id}/cast-${letter}.webp`,
+      };
+    }
     const angleMatch = rest.match(/^(.*)-(side|front|top)$/);
     if (!angleMatch) return null;
     const id = angleMatch[1];

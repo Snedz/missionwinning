@@ -2,10 +2,17 @@
  * Form Index media — clinical poster/loop packs under /public/form/.
  * Prefer raster form packs over legacy SVG sticks for Train / library.
  * See media/form-kit/FORM_DIRECTOR.md (Seedance-class director prompts + QA).
+ * Cast sets (who appears): src/lib/formCast.ts · docs/MEDIA.md.
  *
  * Quality reset (.467): demote glitchy loops and cropped/wrong stills until
  * Form Director regen passes eyes-on QA. Prefer still-only over broken video.
  */
+
+import {
+  FORM_PACK_CAPTION,
+  formPackCastPosterPath,
+  pickFormCastStill,
+} from '@/lib/formCast';
 
 /**
  * Exercise ids with shipped public/form/{id}/side.webp that pass framing QA.
@@ -41,6 +48,8 @@ export const FORM_PACK_SIDE_IDS = new Set([
   'landmine-press',
   // 'landmine-row',
   'landmine-squat',
+  // Catalog 006 — barbell squat cast set (.736); still-only, no loop
+  'squats',
 ]);
 
 /**
@@ -98,18 +107,28 @@ export type FormPackMedia = {
 export function resolveFormPackMedia(exerciseId: string): FormPackMedia | null {
   if (!FORM_PACK_SIDE_IDS.has(exerciseId)) return null;
 
+  const cast = pickFormCastStill(exerciseId);
+  if (cast) {
+    // Cast packs are still-only until the loop is recast (MEDIA.md · video follow-up).
+    return {
+      mediaUrl: formPackCastPosterPath(exerciseId, cast.id),
+      mediaType: 'image',
+      mediaCaption: FORM_PACK_CAPTION,
+    };
+  }
+
   if (FORM_PACK_VIDEO_IDS.has(exerciseId)) {
     return {
       mediaUrl: formPackSideVideoPath(exerciseId),
       mediaType: 'video',
       mediaPosterUrl: formPackSidePosterPath(exerciseId),
-      mediaCaption: 'Side view · full range of motion',
+      mediaCaption: FORM_PACK_CAPTION,
     };
   }
 
   return {
     mediaUrl: formPackSidePosterPath(exerciseId),
     mediaType: 'image',
-    mediaCaption: 'Side view · full range of motion',
+    mediaCaption: FORM_PACK_CAPTION,
   };
 }

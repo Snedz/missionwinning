@@ -12,7 +12,7 @@
 
 | Domain | Key files | Notes |
 |--------|-----------|-------|
-| **Scoring / Today** | `score.ts`, `crossPillarCoach.ts`, `pillarScoreInputs.ts`, `readinessIndex.ts`, `exerciseMuscleMap.ts` | Readiness, Win Score, coach insight |
+| **Form Index media** | `formMedia.ts`, `formCast.ts`, `formGuides.ts`, `formGuideMedia.ts` | Clinical packs + `.736` cast picker (`docs/MEDIA.md`) |
 | **Mission Rewards** | [`rewards/`](rewards/INDEX.md) | XP, ranks, badges from real logs — never gates logger |
 | **Mission Identity** | [`identity/`](identity/INDEX.md) | Call sign, Athlete Card — social projection; Log↔Social via `domainBoundary.ts` |
 | **Classification guard** | `classificationGuard.test.ts` | `.hermes/` + `ops/` never tracked |

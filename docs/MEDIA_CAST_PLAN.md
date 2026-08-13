@@ -2,9 +2,35 @@
 
 **Status: FROZEN** · 2026-08-13 · build `.736` · start with catalog **006 `squats`**
 
-This file is the implementation plan. Do not reopen scope after freeze. Representation
-rules live in [MEDIA.md](MEDIA.md) after this ship; pipeline facts stay in
-[MEDIA_SYSTEM.md](MEDIA_SYSTEM.md).
+This file is the implementation plan. Do not reopen scope after freeze except a
+**founder addendum**. Representation rules live in [MEDIA.md](MEDIA.md); pipeline
+facts stay in [MEDIA_SYSTEM.md](MEDIA_SYSTEM.md).
+
+### Founder addendum (2026-08-13) — first-wave regions
+
+Cast must include **East Asian** (Korean / Japanese / Chinese — one look;
+Cantonese/HK is not a separate slot), **Arab** (modest dress / hijab where the
+squat still reads), and **Jewish/Israeli** (kippah and/or tzitzit as natural
+training wear, not a costume). Named in MEDIA.md as first-wave **cast**, not a
+campaign and not a market list. `cast-d` is the Jewish/Israeli still (replaces
+the generic older athlete in the freeze roster). Alt still describes the
+movement only.
+
+**Addendum 2 (library-wide, not a sample):** Generate remaining exercise-library
+stills, not a 5-exercise sample. Rotate looks **across** the library so one card
+is not a UN collage. Token max. The first ship may land a subset if generation
+is truncated; the roster then lists only ids that have files on disk, and the
+rest stay athlete-a until recast. Do not regenerate `side.mp4` in this wave.
+
+**Addendum 3 (geo-block, 2026-08-13):** Representation ≠ service territory.
+Keep generating diverse athletes (race, religion, body, modest dress, kippah,
+hijab as a person in a **served** country — e.g. an Arab or Muslim athlete in
+the US or Israel — not an OIC-market campaign). Do **not** add copy, alt,
+filenames, or www heroes that imply we operate in blocked countries.
+First-wave **library targeting** follows `src/lib/legal/supportedRegions.ts`:
+Israel is served; Indonesia / Malaysia / Türkiye / Gulf / Europe / Canada /
+Ukraine are **not** markets. Casting an East Asian, Arab, or Jewish look is not
+a claim that CN, SA, or EU are launch territories. See [MEDIA.md](MEDIA.md).
 
 ---
 
@@ -75,7 +101,7 @@ Related squat ids (not 006; out of this ship except as follow-up):
    - `cast-b` — man, East Asian, compact build, long-sleeve + shorts
    - `cast-c` — woman, hijab + long sleeves + loose training pants (modest; bar on
      back still reads)
-   - `cast-d` — man, older, medium-brown skin, long sleeves + loose pants
+   - `cast-d` — Jewish/Israeli man, kippah + tzitzit as natural training wear (founder addendum)
    Files: `public/form/squats/cast-{a,b,c,d}.webp` + `side.webp` (canonical path =
    the deterministically picked still, or a copy of `cast-a` for the stable URL).
    Target ≤120 KB WebP each.
@@ -101,8 +127,9 @@ Related squat ids (not 006; out of this ship except as follow-up):
 
 ## Follow-up (named, not this PR)
 
-- Recast remaining Form Index packs (`air-squat`, `front-squat`, `push-ups`, …) to
-  the same cast-set contract. Today they are one `athlete-a` body.
+- Recast remaining Form Index packs (`air-squat`, `front-squat`, `bench-press`, …)
+  to the same cast-set contract. `.736` shipped `squats` / `push-ups` / `pull-ups`.
+  Other raster packs remain one `athlete-a` body.
 - Video recast of existing `side.mp4` loops (do not I2V in this PR).
 - Documentary landing photos in `public/photo/` when real photography exists —
   not generated faces in `GrayscalePhoto`.
@@ -126,7 +153,8 @@ Related squat ids (not 006; out of this ship except as follow-up):
 
 - This plan frozen, then code.
 - Draft PR titled **Multicultural exercise + www media (start with 006 squats)**.
-- `squats` has a multicultural still set wired.
+- `squats` has a multicultural still set wired. `push-ups` and `pull-ups` recast
+  still-only (legacy loops not paired). Remaining raster packs listed as follow-up.
 - `docs/MEDIA.md` exists.
 - www / Learn single-default heroes recast **or** listed as follow-up with a reason.
 - No production flip. No secrets.

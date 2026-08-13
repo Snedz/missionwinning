@@ -52,6 +52,7 @@
 | [SOFT_LAUNCH_DAY.md](archive/SOFT_LAUNCH_DAY.md) | Flip-day checklist (after gates) |
 | [PUBLIC_FLIP_CHECKLIST.md](archive/PUBLIC_FLIP_CHECKLIST.md) | Offline, SW, Search Console smoke after public mode |
 | [SOCIAL_LAUNCH.md](SOCIAL_LAUNCH.md) | Beta + public social copy kit |
+| [MEDIA.md](MEDIA.md) | Representation contract — who appears; multicultural cast ≠ service territory (`supportedRegions.ts`) (`.736`) |
 | [MEDIA_CAST_PLAN.md](MEDIA_CAST_PLAN.md) | Frozen `.736` plan — multicultural exercise + www media, start with 006 `squats` |
 | [MEDIA_SYSTEM.md](MEDIA_SYSTEM.md) | Form / Learn / art / social asset pipeline · Google Flow daily credits · [`media/manifest.json`](../media/manifest.json) · [FLOW_PROMPTS.md](../media/FLOW_PROMPTS.md) |
 | [MASCOT.md](MASCOT.md) | Kalligator — brand mascot (placement, voice, anti-guilt) |
