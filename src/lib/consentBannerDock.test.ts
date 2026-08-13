@@ -34,15 +34,14 @@ test('consent banner is never position:fixed at the bottom', () => {
 
 test('AppLayout reserves a flex host between ScreenDock and MobileNav', () => {
   const src = read('src/components/layout/AppLayout.tsx');
-  const dock = src.indexOf('SCREEN_DOCK_HOST_ID');
-  const consent = src.indexOf('CONSENT_BANNER_HOST_ID');
+  const dock = src.indexOf('id={SCREEN_DOCK_HOST_ID}');
+  const consent = src.indexOf('id={CONSENT_BANNER_HOST_ID}');
   const nav = src.indexOf('<MobileNav');
   assert.ok(dock >= 0 && consent >= 0 && nav >= 0, 'dock, consent host, and MobileNav must exist');
   assert.ok(
     dock < consent && consent < nav,
     'consent host must sit between #screen-dock and MobileNav so Start stays above the banner'
   );
-  assert.match(src, /id=\{CONSENT_BANNER_HOST_ID\}/, 'host is a real element, not a comment');
 });
 
 test('I18nPwaProvider still mounts the consent banner', () => {
