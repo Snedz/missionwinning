@@ -124,7 +124,7 @@ export function pickExercises(
 
   let candidates = EXERCISES.filter(
     (ex) =>
-      equipmentMatches(ex, ctx.equipment) &&
+      equipmentMatches(ex, ctx.equipment, ctx.homeGymKit) &&
       levelAllows(ex, ctx.experience) &&
       intersectsGroups(ex, day.focusGroups)
   );
@@ -132,7 +132,7 @@ export function pickExercises(
   if (day.kind === 'conditioning') {
     candidates = EXERCISES.filter(
       (ex) =>
-        equipmentMatches(ex, ctx.equipment) &&
+        equipmentMatches(ex, ctx.equipment, ctx.homeGymKit) &&
         levelAllows(ex, ctx.experience) &&
         (ex.tags?.includes('conditioning') ||
           ex.muscleGroups.includes('Cardio' as never) ||

@@ -8,6 +8,7 @@ import { getTrainingStreak } from '@/lib/streaks';
 import { previewJustGoForEquipment } from '@/lib/justGoSession';
 import { readRaw, writeRaw } from '@/lib/storage/safeStorage';
 import { STORAGE_KEYS, WORKOUT_STORE_KEY } from '@/lib/storage/keys';
+import { seedHomeGymKitIfUnset } from '@/lib/workout/homeGymKit';
 /* `.223` — the one definition, shared with `betaMetricsServer`. See that module. */
 import { allBasicDone } from '@/lib/journey/basicComplete';
 import { week1SecondSessionCue } from '@/lib/activation/week1SecondSession';
@@ -163,6 +164,7 @@ export function completeIDay(profile: {
   writeRaw(STORAGE_KEYS.equipment, profile.equipment);
   writeRaw(STORAGE_KEYS.primaryGoal, profile.primaryGoal);
   writeRaw(STORAGE_KEYS.goals, profile.primaryGoal);
+  seedHomeGymKitIfUnset(profile.equipment);
 
   const s = loadJourneyState();
   s.iDay.completedAt = new Date().toISOString();

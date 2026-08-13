@@ -21,6 +21,8 @@ If you see a **password screen** (`/private`), your cohort uses a pre-launch gat
 2. Complete **I-Day** — a short onboarding that sets your goals and equipment. No account is required.
 3. Land on **Today** (`/log`) — tap **Start**, then log a set. Today also shows an honest **this week: N days logged** count (zero is fine).
 
+On **Account**, list your **Home gym kit** (barbell, rack, plates, dumbbells, pull-up bar, floor) so Train picks what you actually have. Free, on this device — no account.
+
 ## Your first workout
 
 1. Tap **Train** in the bottom nav (or start from Today).

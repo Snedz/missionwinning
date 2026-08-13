@@ -36,6 +36,7 @@ Root-level `@/lib/{name}` paths re-export from here for compatibility — prefer
 24. `lastSetGhost.ts` — last **working** set ghost (not warmup W); one-tap accept (`.759`)
 25. `vsLastSet.ts` — after-save vs-last delta on the set row (`.760`); working-set index; not ghost prefill
 26. `sessionE1rm.ts` — educational Epley e1RM from this session's working sets (`.761`); hide pref `mw_show_session_e1rm`
+27. `homeGymKit.ts` — local Home gym kit (barbell/rack/plates/dumbbells/pull-up-bar/floor). Logger + Just Go + Coach filter; never rank; Train empty Start stays repeat-last (`.763`)
 
 ## Tests (colocated)
 
@@ -66,6 +67,7 @@ Root-level `@/lib/{name}` paths re-export from here for compatibility — prefer
 | `lastSetGhost.test.ts` | First-ever no ghost; returning last working set not warmup (`.759`) |
 | `sessionE1rm.test.ts` | Epley formula + warmup / load-0 exclusion (`.761`) |
 | `sessionE1rmCopy.test.ts` | Copy names Epley; does not say "your max" |
+| `homeGymKit.test.ts` | Parse, $0 floor, matching, I-Day seed, free-path (`.763`) |
 
 ## UI & integration (not in this folder)
 

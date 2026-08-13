@@ -6,7 +6,7 @@
 
 1. `types.ts` — `CoachPlan`, `CoachContext`, `PlanSession`, `PlanExercise`
 2. `schedulePrefs.ts` — days per week, preferred days (`mw_days_per_week`)
-3. `equipment.ts` — `equipmentMatches`, `mapStorageEquipment`
+3. `equipment.ts` — `equipmentMatches` (optional Home gym kit overlay — filter only, never rank), `mapStorageEquipment`
 4. `progression.ts` — `nextTargets` (RPE, stall, deload, % of e1RM `loadPct`, optional `loadZone` cap)
 4b. `loadGuard.ts` — `capProgressionForZone`: a **high** ACWR band holds a rise. Cap-only — never deloads, never touches session shape; `light`/`unknown` are identity
 5. `splitPlanner.ts` — `chooseSplit`, `mapToCalendar`, week start helpers
@@ -51,7 +51,7 @@ Shared client: `src/lib/coachLlmClient.ts` (also used by `coachDailyServer.ts` +
 
 | File | Covers |
 |------|--------|
-| `equipment.test.ts` | Equipment profile filtering |
+| `equipment.test.ts` | Equipment profile filtering + kit overlay (filter-only) |
 | `progression.test.ts` | RPE, deload, stall, units |
 | `splitPlanner.test.ts` | Splits 2–6 days, calendar |
 | `selector.test.ts` | Familiarity, recovery ids, determinism |

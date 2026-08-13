@@ -81,6 +81,12 @@ export const STORAGE_KEYS = {
   daysPerWeek: 'mw_days_per_week',
   preferredDays: 'mw_preferred_days',
   equipment: 'mw_equipment',
+  /**
+   * `.763` — local Home gym kit (barbell, rack, plates, dumbbells, pull-up-bar,
+   * floor). Device-only; the logger and Coach read it as equipment. Unset means
+   * keep the coarse `mw_equipment` 3-profile.
+   */
+  homeGymKit: 'mw_home_gym_kit',
   experience: 'mw_experience',
   primaryGoal: 'mw_primary_goal',
   goals: 'mw_goals',

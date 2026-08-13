@@ -1,7 +1,7 @@
 # Frozen plan — Home gym kit on the free logger
 
 **Status:** FROZEN. Implement only this file.
-**Ship:** `2026.07-unified.733`
+**Ship:** `2026.07-unified.763`
 **Excellence-Override:** free home-gym kit
 **Lane:** Engineering-Web · Horizon W · Train logger equipment (`/account` + `/active` read)
 **Free forever.** Not Super Bundle bait. No trial. No account. No `PRIVATE_MODE` flip.
@@ -27,7 +27,7 @@ Identity’s Athlete Table `homeGym` row is **cosmetic projection** (picks-from-
 | Identity table `homeGym` | Cosmetic pick on `/profile` | **Do not** change picks. Kit may **emit** a mapped pick (Log → Social). Coach never reads identity. |
 | I-Day 3 radios | Welcome ≤90s (C5) | **Do not** expand I-Day to six checkboxes. Seed kit from the radio; Account is the editor. |
 
-Occupied labels `.698`–`.732`. This ship is **`.733`**. Do not steal `.698`.
+Occupied labels through `.762`. This ship is **`.763`**. Originally reserved `.733`.
 
 ---
 
@@ -128,8 +128,8 @@ Do **not** restyle Train chrome. No new nav item. No Android this ship.
 
 - This file (already frozen)
 - `LOG.md` + rotate oldest live entry so the file stays at 15
-- `CONTEXT.md` `## Now` one bullet for `.733`
-- `APP_BUILD_LABEL` → `2026.07-unified.733`
+- `CONTEXT.md` `## Now` one bullet for `.763`
+- `APP_BUILD_LABEL` → `2026.07-unified.763`
 - `src/lib/workout/INDEX.md` · `src/lib/coach/INDEX.md` · `src/lib/storage/keys.ts` · help getting-started one line
 - i18n keys in `athleteLocales.ts` (EN + beachhead; coverage 0 uncovered)
 
