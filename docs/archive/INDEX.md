@@ -25,6 +25,8 @@ When adding a doc:
 
 | File | Absorbed by / note |
 |------|---------------------|
+| [log/LOG-rotate-679-for-744.md](./log/LOG-rotate-679-for-744.md) | rotated 2026-08-13 for `.744` Dependabot security batch (`.679`) |
+| [log/LOG-rotate-669-for-744.md](./log/LOG-rotate-669-for-744.md) | rotated 2026-08-13 for `.744` Dependabot security batch |
 | [log/LOG-rotate-670-for-743.md](./log/LOG-rotate-670-for-743.md) | rotated 2026-08-13 for `.743` Cursor-local CI unblock (`.670`) |
 | [log/LOG-rotate-669-for-743.md](./log/LOG-rotate-669-for-743.md) | rotated 2026-08-13 for `.743` Cursor-local CI unblock |
 | [log/LOG-rotate-669-for-714.md](./log/LOG-rotate-669-for-714.md) | rotated 2026-08-13 for `.714` public GitHub Beta 0.1 + mission |
