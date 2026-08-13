@@ -4,7 +4,7 @@ Plain-language guides for athletes, parents, and teachers. English only for now;
 
 | Guide | Who it's for |
 |-------|----------------|
-| [getting-started.md](getting-started.md) | Everyone — first visit through first workout |
+| [getting-started.md](getting-started.md) | Everyone — first visit through first workout (no account) |
 | [pillars.md](pillars.md) | How Train, Fuel, Move, Mind, Track, and Learn fit together |
 | [mission-coach.md](mission-coach.md) | Premium weekly AI training plan |
 | [fuel-and-nutrition.md](fuel-and-nutrition.md) | Logging food, barcode scan, photo estimate |

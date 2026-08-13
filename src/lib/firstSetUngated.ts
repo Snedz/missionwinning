@@ -1,0 +1,32 @@
+/**
+ * F-017 — first set without an account.
+ *
+ * Header Sign-in chrome is wayfinding, never a logger gate. Cold / first
+ * session and mid-set `/active` must not paint it (and must not call getUser
+ * to decide). One predicate — do not invent a second flag.
+ */
+
+export function normalizeAppPath(pathname: string): string {
+  const raw = (pathname.split('?')[0] ?? pathname).trim();
+  if (!raw) return '/';
+  if (raw.length > 1 && raw.endsWith('/')) return raw.slice(0, -1);
+  return raw;
+}
+
+export function isActiveLoggerPath(pathname: string): boolean {
+  const path = normalizeAppPath(pathname);
+  return path === '/active' || path.startsWith('/active/');
+}
+
+/**
+ * Whether the app-header Sign in chip may mount.
+ * False until the first logged workout; false on Train even after.
+ */
+export function showHeaderSignInChip(params: {
+  hasFirstWorkout: boolean;
+  pathname: string;
+}): boolean {
+  if (!params.hasFirstWorkout) return false;
+  if (isActiveLoggerPath(params.pathname)) return false;
+  return true;
+}

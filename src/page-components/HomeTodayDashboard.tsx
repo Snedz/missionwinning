@@ -633,6 +633,7 @@ export function HomeTodayDashboard() {
         })}
         streak={streak}
         userEmail={userEmail}
+        hasFirstWorkout={workoutHistory.length > 0}
         action={action}
         showEditToday={layout.showDetailsAccordion}
         onEditToday={() => setEditTodayOpen(true)}

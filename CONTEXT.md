@@ -16,7 +16,7 @@ One screen of truth for any AI tool or human joining cold. Read this, then [AGEN
 
 ---
 
-## Now (2026-08-13 · web `2026.07-unified.745` · Android `1.24.1`)
+## Now (2026-08-13 · web `2026.07-unified.746` · Android `1.24.1`)
 
 > The ONLY "where we are" block in the repo — [ORCHESTRATION.md](ORCHESTRATION.md) points here.
 >
@@ -289,6 +289,7 @@ One screen of truth for any AI tool or human joining cold. Read this, then [AGEN
 > and `.743` dropped `.669` detail (full text remains in LOG.md / archive)
 > and `.744` dropped `.679` detail (full text remains in LOG.md / archive)
 > and `.745` dropped `.680` detail (full text remains in LOG.md / archive)
+> and `.746` dropped `.684` detail (full text remains in LOG.md / archive)
 > to [CONTEXT-now-2026-07-30.md](docs/archive/CONTEXT-now-2026-07-30.md) after this
 > block reached **79 bullets / 103KB**. A status doc that only grows stops being read.
 
@@ -310,6 +311,7 @@ One screen of truth for any AI tool or human joining cold. Read this, then [AGEN
 > | gitleaks | **green — and scanning for the first time.** It had never scanned anything: on a `pull_request` event the action lists the PR's commits, the job declared no `permissions:` block, and it 403'd (`pull_requests=read`) before opening a file. Fixed by a `permissions:` block (`.224` carrying `.255`). It scans **only the PR's own commits**, so commit `8ea3527a`'s real Solana treasury address — scrubbed from the working file, still in history — is out of its scope. That finding stands, deliberately not allowlisted; it was never what made this check red. |
 
 - **Excellence:** unscored · — · [docs/EXCELLENCE_RESULT.md](docs/EXCELLENCE_RESULT.md) — Horizon W phone sign-off home; surface PRs need `status: pass` or `Excellence-Override` (`.669`).
+- **`.746`:** (`2026.07-unified.746`) **F-017 first set without an account** — I-Day Continue lands Today (no sign-in step); Train never mounts SignInPrompt; header Sign in hidden until first workout and never on `/active`; `getUser` skipped when hidden. Originally #523 / `.730`.
 - **`.745`:** (`2026.07-unified.745`) **Rest timer last-rest** — same dock/footer timer; next rest for that exercise offers last chosen duration; skip never writes leftover (no shame). Originally #508 / `.715`.
 - **`.744`:** (`2026.07-unified.744`) **Dependabot security batch (Cursor-local)** — js-yaml 4.3.1 (mobile), setup-java v5, playwright 1.62.1, radix toast/label patches, react-i18next 17.0.11. Skipped Tailwind 4 (`#445`). Does not merge Dependabot PRs.
 - **`.743`:** (`2026.07-unified.743`) **Cursor-local CI** — shared `require()` lint + i18n coverage/parity reds on master unblocked; merge bar while Actions minutes are red is local green + craft LGTM ([docs/CI_LOCAL.md](docs/CI_LOCAL.md)).
@@ -324,7 +326,6 @@ One screen of truth for any AI tool or human joining cold. Read this, then [AGEN
 - **`.690`:** (`2026.07-unified.690`) **Admin invite share → `/private`** — `buildInviteShareLink` matches email `/private?invite=` path so invitee chrome paints (W1).
 - **`.689`:** (`2026.07-unified.689`) **Today loading skeleton md width parity** — `TodayDashboardLoading` adds `md:max-w-none` to match Lean/Dashboard; no AppLayout shell redesign. Wedge reserved `.686`–`.688` (#453/#462/#470); master tip `.685` landed (#455).
 - **`.685`:** (`2026.07-unified.685`) **Preserve next= through private gate** — `/private` unlock redirect reads `?next=` via `privateGateReturnPath` (layout no longer hardcodes `/`) (W1).
-- **`.684`:** (`2026.07-unified.684`) **Private gate session-unlock fail-open** — bounded `/private` session recovery; probe-confirmed cookie + hard nav; code-only invitees reach access-code form (W1).
 - **`.669`:** (`2026.07-unified.669`) **Excellence RESULT + agent stop-rule** — `excellenceGate` path policy + `check-excellence-gate` on gate/PR CI; wedge still ships while unscored.
 - **Horizon W + full-launch override (2026-08-05).** Wedge excellence still required; agents may ship rewards + full surface honesty. Fuel estimate accuracy remains.
 - **Free-first beta (~4 weeks):** LLC + EIN pending — **no Bundle UI** + **full depth unlocked**; More/rail **Pillars demoted until first workout** (F-004 / `.695`) — still no Bundle ([docs/FREE_BETA.md](docs/FREE_BETA.md)).

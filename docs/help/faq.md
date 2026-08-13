@@ -6,7 +6,7 @@
 Yes — core workout tracking, library, history, and basic nutrition are free worldwide. Premium is optional.
 
 **Do I need an account?**  
-No for basic logging. Sign in to sync across devices, use Coach premium, and join school classes.
+No. Log your first set with no account. Sign in later from Profile to sync across devices.
 
 **Does it work offline?**  
 Yes as a PWA — log workouts offline; sync when back online if signed in.

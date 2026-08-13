@@ -13,13 +13,13 @@ No app store required.
 
 ## Private beta gate
 
-If you see a **password screen** (`/private`), your cohort uses a pre-launch gate. Enter the password your invite email provides. After unlocking, sign in so your progress can sync.
+If you see a **password screen** (`/private`), your cohort uses a pre-launch gate. Enter the password your invite email provides. Then log your first set — no account required.
 
 ## I-Day (your first mission)
 
-1. Go to **Welcome** or follow prompts after sign-up.
-2. Complete **I-Day** — a short onboarding that sets your goals and equipment.
-3. Land on **Today** (`/log`) — your daily command center.
+1. Go to **Welcome** or follow prompts after unlock.
+2. Complete **I-Day** — a short onboarding that sets your goals and equipment. No account is required.
+3. Land on **Today** (`/log`) — tap **Start**, then log a set.
 
 ## Your first workout
 
@@ -28,9 +28,11 @@ If you see a **password screen** (`/private`), your cohort uses a pre-launch gat
 3. Log sets (reps, weight, RPE). Rest timer runs automatically and remembers the last rest for that exercise. Skip is fine — no penalty.
 4. Finish — your session saves to **History**.
 
-## Sign in (optional but recommended)
+## Sign in (optional — after your first set)
 
-Sign in with **Google, Apple, Microsoft, Facebook, or email** from Profile or Welcome (available options depend on your cohort):
+You can log sets with **no account**. Sign in later from Profile if you want the same diary on another device.
+
+Sign in with **Google, Apple, Microsoft, Facebook, or email** from Profile (available options depend on your cohort):
 
 - Sync workouts across devices
 - Cloud backup for coach plan and journey progress

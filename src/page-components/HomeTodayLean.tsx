@@ -294,6 +294,7 @@ export function HomeTodayLean() {
           today={todayLabel}
           streak={streak}
           userEmail={null}
+          hasFirstWorkout={workoutHistory.length > 0}
           action={action}
           showEditToday={false}
         />
