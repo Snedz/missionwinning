@@ -38,6 +38,17 @@ test('Victory collapses long details; Active gates empty finish', () => {
   );
   assert.match(stats, /grid-cols-3/, 'Hevy receipt header is Duration · Volume · Sets');
   assert.match(stats, /text-muted-foreground/, 'vs-last deltas stay muted in both directions');
+  const receipt = readFileSync(
+    join(root, 'src/components/workout/VictoryReceiptStrip.tsx'),
+    'utf8'
+  );
+  assert.match(receipt, /activeColPrev/, 'receipt shows last-time load, not only a delta');
+  assert.match(receipt, /data-testid="victory-prev"/);
+  assert.doesNotMatch(
+    receipt,
+    /<thead className="sr-only">/,
+    'Set · Prev · Load headers stay visible — a receipt you can read'
+  );
   const receiptAt = sheet.indexOf('VictoryReceiptStrip');
   const detailsAt = sheet.indexOf('<details');
   assert.ok(receiptAt >= 0, 'Victory mounts the vs-last receipt');

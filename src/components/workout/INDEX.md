@@ -21,7 +21,7 @@
 | `VictoryFeelStrip.tsx` | Post-session feel 1–5 energy (free ritual) (`.429`) |
 | `VictoryBodyDeltaStrip.tsx` | Readiness · strain · recovery signed deltas (`.444`) |
 | `VictoryStatsStrip.tsx` | Duration · volume · sets grid with optional vs-last (`.447` / `.700`) |
-| `VictoryReceiptStrip.tsx` | Per-lift vs-last sets + PR badges (`.700`) |
+| `VictoryReceiptStrip.tsx` | Per-lift Set · Prev · Load · vs last + PR badges (`.700`) |
 | `VictoryNextActionStrip.tsx` | Primary Next CTA block (`.447`) |
 | `PlateCalculatorSheet.tsx` | Plate math sheet |
 | `LiveHeartRate.tsx` | Optional Web Bluetooth BPM strip (wearables flag) |

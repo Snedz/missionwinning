@@ -2,7 +2,8 @@
 
 /**
  * Per-lift vs-last receipt on Victory — Hevy logged-out workout body:
- * each set, last-time delta, PR. Presentation only; numbers from buildVictoryReceipt.
+ * Set · Prev · Load · vs last, PR. Presentation only; numbers from
+ * buildVictoryReceipt. Prev is the actual last-time load, not only a delta.
  */
 
 import { useTranslation } from 'react-i18next';
@@ -18,6 +19,9 @@ type Props = {
   receipt: VictoryReceipt;
   unitLabel: string;
 };
+
+const headCell =
+  'py-1.5 pe-2 text-start text-[11px] font-semibold uppercase tracking-[0.1em] text-muted-foreground';
 
 function SetDeltaCell({
   set,
@@ -81,61 +85,84 @@ export function VictoryReceiptStrip({ receipt, unitLabel }: Props) {
       {receipt.exercises.map((ex, exIdx) => {
         const showVs = ex.sets.some((s) => s.priorReps !== null);
         return (
-        <div key={`${ex.exerciseId}-${exIdx}`} className="space-y-1.5">
-          <div className="flex items-baseline justify-between gap-2 px-1">
-            <h3 className="text-sm font-semibold text-foreground">{ex.exerciseName}</h3>
-            {ex.prs.length > 0 ? (
-              <span className="text-xs font-semibold uppercase tracking-[0.08em] text-poster">
-                {t('victoryPrBadge', { defaultValue: 'PR' })}
-              </span>
+          <div key={`${ex.exerciseId}-${exIdx}`} className="space-y-1.5">
+            <div className="flex items-baseline justify-between gap-2 px-1">
+              <h3 className="text-sm font-semibold text-foreground">{ex.exerciseName}</h3>
+              {ex.prs.length > 0 ? (
+                <span className="text-xs font-semibold uppercase tracking-[0.08em] text-poster">
+                  {t('victoryPrBadge', { defaultValue: 'PR' })}
+                </span>
+              ) : null}
+            </div>
+            {ex.note ? (
+              <p className="px-1 text-xs italic text-muted-foreground">{ex.note}</p>
             ) : null}
-          </div>
-          {ex.note ? (
-            <p className="px-1 text-xs italic text-muted-foreground">{ex.note}</p>
-          ) : null}
-          <table className="w-full text-sm">
-            <caption className="sr-only">
-              {t('victoryReceiptSetsCaption', {
-                name: ex.exerciseName,
-                defaultValue: `${ex.exerciseName} sets`,
-              })}
-            </caption>
-            <thead className="sr-only">
-              <tr>
-                <th>{t('historyTableSet', { defaultValue: 'Set' })}</th>
-                <th>{t('victoryReceiptLoad', { defaultValue: 'Load' })}</th>
-                {showVs ? <th>{t('victoryVsLast', { defaultValue: 'vs last' })}</th> : null}
-              </tr>
-            </thead>
-            <tbody>
-              {ex.sets.map((set) => (
-                <tr key={set.setIndex} className="tabular-nums">
-                  <td className="w-8 py-1 pe-2 align-top text-muted-foreground">
-                    {set.setIndex + 1}
-                    {set.kind && set.kind !== 'normal' ? (
-                      <span className="ms-1 text-[10px] uppercase">
-                        {setKindDefaultLabel(set.kind)}
-                      </span>
-                    ) : null}
-                  </td>
-                  <td className="py-1 pe-2 align-top font-semibold text-foreground">
-                    {formatReceiptSetLoad(set.reps, set.weight)}
-                    {set.isPr ? (
-                      <span className="ms-2 text-[10px] font-semibold uppercase tracking-[0.08em] text-poster">
-                        {t('victoryPrBadge', { defaultValue: 'PR' })}
-                      </span>
-                    ) : null}
-                  </td>
+            <table className="w-full border-collapse text-sm">
+              <caption className="sr-only">
+                {t('victoryReceiptSetsCaption', {
+                  name: ex.exerciseName,
+                  defaultValue: `${ex.exerciseName} sets`,
+                })}
+              </caption>
+              <thead>
+                <tr className="border-b-2 border-border">
+                  <th scope="col" className={`${headCell} w-8`}>
+                    {t('activeColSet', { defaultValue: 'Set' })}
+                  </th>
                   {showVs ? (
-                    <td className="py-1 align-top text-end text-xs">
-                      <SetDeltaCell set={set} unitLabel={unitLabel} />
-                    </td>
+                    <th scope="col" className={headCell}>
+                      {t('activeColPrev', { defaultValue: 'Prev' })}
+                    </th>
+                  ) : null}
+                  <th scope="col" className={headCell}>
+                    {t('victoryReceiptLoad', { defaultValue: 'Load' })}
+                  </th>
+                  {showVs ? (
+                    <th scope="col" className={`${headCell} pe-0 text-end`}>
+                      {t('victoryVsLast', { defaultValue: 'vs last' })}
+                    </th>
                   ) : null}
                 </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+              </thead>
+              <tbody>
+                {ex.sets.map((set) => (
+                  <tr key={set.setIndex} className="tabular-nums">
+                    <td className="w-8 py-1.5 pe-2 align-top text-muted-foreground">
+                      {set.setIndex + 1}
+                      {set.kind && set.kind !== 'normal' ? (
+                        <span className="ms-1 text-[10px] uppercase">
+                          {setKindDefaultLabel(set.kind)}
+                        </span>
+                      ) : null}
+                    </td>
+                    {showVs ? (
+                      <td
+                        className="py-1.5 pe-2 align-top text-muted-foreground"
+                        data-testid="victory-prev"
+                      >
+                        {set.priorReps !== null && set.priorWeight !== null
+                          ? formatReceiptSetLoad(set.priorReps, set.priorWeight)
+                          : '—'}
+                      </td>
+                    ) : null}
+                    <td className="py-1.5 pe-2 align-top font-semibold text-foreground">
+                      {formatReceiptSetLoad(set.reps, set.weight)}
+                      {set.isPr ? (
+                        <span className="ms-2 text-[10px] font-semibold uppercase tracking-[0.08em] text-poster">
+                          {t('victoryPrBadge', { defaultValue: 'PR' })}
+                        </span>
+                      ) : null}
+                    </td>
+                    {showVs ? (
+                      <td className="py-1.5 align-top text-end text-xs">
+                        <SetDeltaCell set={set} unitLabel={unitLabel} />
+                      </td>
+                    ) : null}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         );
       })}
     </section>

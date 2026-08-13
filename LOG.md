@@ -15,18 +15,20 @@ Archive: [2026-06 → 2026-07-20](docs/archive/log/LOG-2026-06_to_2026-07-20.md)
 
 After Finish, Victory was a lock screen with volume/sets and a collapsed debrief —
 not a receipt of the work against last time. Hevy's logged-out workout page is the
-bar: duration, volume, sets, each lift, vs-last deltas, PRs. Instant, from local
-logs, offline, free. No account, no Feed, no share-to-unlock.
+bar: duration, volume, sets, each lift with Prev (last-time load) and vs-last
+deltas, PRs. Instant, from local logs, offline, free. No account, no Feed, no
+share-to-unlock.
 
 **Ship:** `buildVictoryReceipt` compares session totals to the last same-named log
 and each lift to the last time that exercise appeared, keyed on `completedAt`
 (timestamp, so two sessions the same afternoon compare — `personalRecordsFor`'s
 UTC-day clock is left on debrief). First-ever is not a PR. Warmups cannot be PRs.
-Victory stats are a 3-cell Duration · Volume · Sets strip with muted vs-last
-deltas (`font-semibold`, Archivo 600 — ratchet 138→136); `VictoryReceiptStrip`
-lists sets above Session details. Share stays optional. Today/Train not
-restyled. Catalogued three pre-existing uncovered i18n keys so coverage stays
-at 0. Label `.700` (does not steal #477 `.698` or #478 `.699`).
+Extra sets reuse last-time's last set as Prev (same as the logger). Victory stats
+are a 3-cell Duration · Volume · Sets strip with muted vs-last deltas
+(`font-semibold`, Archivo 600 — ratchet 138→136); `VictoryReceiptStrip` is
+Set · Prev · Load · vs last above Session details. Share stays optional.
+Today/Train not restyled. Catalogued three pre-existing uncovered i18n keys so
+coverage stays at 0. Label `.700` (does not steal #477 `.698` or #478 `.699`).
 
 Excellence-Override: Victory vs-last receipt (free, offline)
 

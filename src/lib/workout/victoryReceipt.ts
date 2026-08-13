@@ -276,7 +276,13 @@ export function buildVictoryReceipt(
     const prs = beatenRecords(currentBests, prior);
 
     const sets: VictoryReceiptSet[] = ex.sets.map((set, setIndex) => {
-      const priorSet = priorSets[setIndex];
+      // Extra sets this time reuse last-time's last set — same as the logger's
+      // Prev column (`getLastPerformanceForSet`). A blank Prev on set 3 when
+      // last time was 2 is an unfinished receipt, not honesty.
+      const priorSet =
+        priorSets.length === 0
+          ? undefined
+          : (priorSets[setIndex] ?? priorSets[priorSets.length - 1]);
       return {
         setIndex,
         reps: set.reps,

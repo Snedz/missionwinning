@@ -151,7 +151,12 @@ describe('buildVictoryReceipt', () => {
     assert.equal(r.vsLast!.durationDelta, 300);
     assert.equal(r.exercises[0].sets[0].priorWeight, 100);
     assert.equal(r.exercises[0].sets[0].priorReps, 5);
-    assert.equal(r.exercises[0].sets[2].priorReps, null);
+    assert.equal(
+      r.exercises[0].sets[2].priorReps,
+      5,
+      'extra set reuses last-time last set (logger Prev fallback)'
+    );
+    assert.equal(r.exercises[0].sets[2].priorWeight, 100);
     assert.ok(r.prCount > 0);
     assert.equal(r.exercises[0].sets.some((s) => s.isPr), true);
   });
@@ -194,6 +199,39 @@ describe('buildVictoryReceipt', () => {
     const r = buildVictoryReceipt(second, [dead], { resolveName: (id) => id });
     assert.equal(r.vsLast, null);
     assert.equal(r.exercises[0].sets[0].priorReps, null);
+  });
+
+  it('extra set this time reuses last-time last set as Prev (logger fallback)', () => {
+    const first = log({
+      id: '1',
+      completedAt: T0,
+      exercises: [
+        {
+          exerciseId: 'bench-press',
+          sets: [
+            { reps: 5, weight: 100 },
+            { reps: 5, weight: 100 },
+          ],
+        },
+      ],
+    });
+    const second = log({
+      id: '2',
+      completedAt: T1,
+      exercises: [
+        {
+          exerciseId: 'bench-press',
+          sets: [
+            { reps: 5, weight: 100 },
+            { reps: 5, weight: 100 },
+            { reps: 5, weight: 100 },
+          ],
+        },
+      ],
+    });
+    const r = buildVictoryReceipt(second, [first], { resolveName: (id) => id });
+    assert.equal(r.exercises[0].sets[2].priorWeight, 100);
+    assert.equal(r.exercises[0].sets[2].priorReps, 5);
   });
 
   it('does not mark a first-ever lift as a PR', () => {

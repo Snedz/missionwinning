@@ -73,8 +73,8 @@ export function VictoryStatsStrip({
         </p>
         <p className="text-xl font-semibold tabular-nums text-foreground">
           {formatVolume(totalVolume)}
+          <span className="ms-1 text-xs font-semibold text-muted-foreground">{unitLabel}</span>
         </p>
-        <p className="text-xs text-muted-foreground">{unitLabel}</p>
         <VsLastLine>{volumeDelta}</VsLastLine>
       </div>
       <div className="border-2 border-border bg-background p-3 text-center">
