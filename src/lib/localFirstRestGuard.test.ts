@@ -127,7 +127,7 @@ describe('localFirstRestGuard', () => {
     assert.match(rest![0], /resolveStartRestSeconds/);
   });
 
-  it('Active SignInPrompt fails open when getUser rejects (session expired)', () => {
+  it('SignInPrompt fails open when getUser rejects (session expired)', () => {
     const prompt = read('src/components/auth/SignInPrompt.tsx');
     assert.match(
       prompt,
@@ -136,6 +136,12 @@ describe('localFirstRestGuard', () => {
     );
     // Prompt chrome must not disable Log / rest — it is informational only.
     assert.doesNotMatch(prompt, /\bdisabled\b/);
+  });
+
+  it('Train does not mount SignInPrompt (F-017 first set ungated)', () => {
+    const page = read('src/page-components/ActiveWorkoutPage.tsx');
+    assert.doesNotMatch(page, /<SignInPrompt/);
+    assert.doesNotMatch(page, /from '@\/components\/auth\/SignInPrompt'/);
   });
 
   it('Today dashboard auth lookup fails open (status only; never gates Start)', () => {

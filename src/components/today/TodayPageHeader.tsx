@@ -13,6 +13,8 @@ interface Props {
   focusLine?: string | null;
   streak: number;
   userEmail: string | null;
+  /** F-017 — hide the Sign-in link until the first logged workout. */
+  hasFirstWorkout?: boolean;
   action: JourneyAction;
   showEditToday?: boolean;
   onEditToday?: () => void;
@@ -27,6 +29,7 @@ export function TodayPageHeader({
   focusLine,
   streak,
   userEmail,
+  hasFirstWorkout = false,
   action,
   showEditToday,
   onEditToday,
@@ -72,19 +75,21 @@ export function TodayPageHeader({
             </a>
           </>
         )}
-        <span>
-          {!userEmail ? (
+        {userEmail ? (
+          <span>
+            {t('cloudSyncOn', {
+              defaultValue: LOCAL_FIRST_COPY.todayBackupWhenOnline,
+            })}
+          </span>
+        ) : hasFirstWorkout && !userEmail ? (
+          <span>
             <a href="/profile" className="underline underline-offset-2 hover:text-foreground">
               {t('signInOptional', {
                 defaultValue: LOCAL_FIRST_COPY.todaySignInOptional,
               })}
             </a>
-          ) : (
-            t('cloudSyncOn', {
-              defaultValue: LOCAL_FIRST_COPY.todayBackupWhenOnline,
-            })
-          )}
-        </span>
+          </span>
+        ) : null}
       </div>
       <JourneyStrip action={action} />
     </header>
