@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { UI_LANGS } from '@/i18n/appLangs';
 
 /**
  * Public marketing SEO helpers.
@@ -10,9 +11,8 @@ import type { Metadata } from 'next';
  * Canonical host: set NEXT_PUBLIC_SITE_URL=https://www.missionwinning.com in prod.
  * Paths are relative (no trailing slash, no query).
  *
- * hreflang: NOT emitted. Language is client-side on a single URL, so
- * alternates.languages would mislead crawlers. Revisit only if we ship
- * distinct locale paths (e.g. /es/...) with server-rendered copy.
+ * hreflang: emitted as `?hl=` on the same path. Copy is still client-side;
+ * the query is the confirmable language hint, not a distinct locale URL.
  */
 
 export function siteBaseUrl(): string {
@@ -54,6 +54,10 @@ export function publicPageMetadata(input: PublicPageMetaInput): Metadata {
     description: input.description,
     alternates: {
       canonical: path,
+      languages: {
+        'x-default': path,
+        ...Object.fromEntries(UI_LANGS.map((lang) => [lang, `${path}?hl=${lang}`])),
+      },
     },
     openGraph: {
       title: input.title,

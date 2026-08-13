@@ -11,6 +11,7 @@ import { captureAttribution } from '@/lib/attribution';
 import { markInviteLanded } from '@/lib/invite';
 import { STORAGE_KEYS, STORAGE_KEY_PREFIXES } from '@/lib/storage/keys';
 import { readRaw, remove, writeRaw } from '@/lib/storage/safeStorage';
+import { hasConfirmedLocaleChoice } from '@/lib/i18n/localePreference';
 
 // Bootstrap i18next (minimal EN). Full locale catalogs hydrate after idle.
 // supabase-js is NOT imported here — auth listener loads it after idle.
@@ -29,6 +30,14 @@ const AnalyticsConsentBanner = dynamic(
   () =>
     import('@/components/layout/AnalyticsConsentBanner').then((m) => ({
       default: m.AnalyticsConsentBanner,
+    })),
+  { ssr: false }
+);
+
+const LocaleCountryChooser = dynamic(
+  () =>
+    import('@/components/i18n/LocaleCountryChooser').then((m) => ({
+      default: m.LocaleCountryChooser,
     })),
   { ssr: false }
 );
@@ -87,6 +96,14 @@ if (typeof window !== 'undefined') {
 
 export function I18nPwaProvider({ children }: { children: React.ReactNode }) {
   const [showOfflineBanner, setShowOfflineBanner] = useState(false);
+  const [localeResolved, setLocaleResolved] = useState(false);
+
+  useEffect(() => {
+    const sync = () => setLocaleResolved(hasConfirmedLocaleChoice());
+    sync();
+    window.addEventListener('mw-locale-pref', sync);
+    return () => window.removeEventListener('mw-locale-pref', sync);
+  }, []);
 
   // First-touch attribution. Ref/invite persist (honoring the clicked link is
   // strictly necessary); utm/referrer/landing reach storage only with analytics
@@ -204,7 +221,8 @@ export function I18nPwaProvider({ children }: { children: React.ReactNode }) {
       <RegionDefaultsBoot />
       {showOfflineBanner ? <OnlineStatusBanner /> : null}
       {children}
-      <AnalyticsConsentBanner />
+      <LocaleCountryChooser />
+      {localeResolved ? <AnalyticsConsentBanner /> : null}
     </>
   );
 }

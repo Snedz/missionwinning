@@ -6,6 +6,7 @@ import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
 import LanguageDetector from 'i18next-browser-languagedetector';
 import { BOOTSTRAP_EN } from './i18n/bootstrapResources';
+import { UI_LANGS, normalizeUiLang } from './i18n/appLangs';
 
 void i18n
   .use(LanguageDetector)
@@ -19,9 +20,15 @@ void i18n
     interpolation: {
       escapeValue: false,
     },
+    supportedLngs: [...UI_LANGS],
+    nonExplicitSupportedLngs: false,
+    load: 'currentOnly',
     detection: {
-      order: ['localStorage', 'navigator'],
+      order: ['querystring', 'cookie', 'localStorage', 'navigator'],
+      lookupQuerystring: 'hl',
+      lookupCookie: 'mw_locale',
       caches: ['localStorage'],
+      convertDetectedLanguage: (lng: string) => normalizeUiLang(lng),
     },
     ns: ['common'],
     defaultNS: 'common',

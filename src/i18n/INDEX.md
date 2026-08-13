@@ -4,10 +4,12 @@
 
 ## Canonical languages
 
-[`appLangs.ts`](appLangs.ts) exports **`APP_LANGS`** (15):  
+[`appLangs.ts`](appLangs.ts) exports **`APP_LANGS`** (15 pack / parity / guidebook):  
 `en es fr pt ru de it ko ja th vi hi zh id ar`
 
-Use this list everywhere (Profile, `/guide` locale select, export, CI). Do not invent parallel lang arrays.
+and **`UI_LANGS`** (40 first-visit picker + html lang). Country policy is not here — [`supportedRegions.ts`](../lib/legal/supportedRegions.ts). Inventory: [docs/LOCALES.md](../../docs/LOCALES.md).
+
+Guide locale select stays `APP_LANGS`. Profile / footer / first-visit picker use `UI_LANGS`.
 
 ## Standard (required)
 
@@ -15,8 +17,9 @@ Use this list everywhere (Profile, `/guide` locale select, export, CI). Do not i
 2. No raw English in JSX except via `t('key', { defaultValue })` where `defaultValue` is EN and matches the `en` pack.
 3. Guidebook long-form uses `guideSection_*` / editorial / `magazine*` keys (built from chapter data in `buildGuidebookLocaleKeys.ts`).
 4. After adding keys: fill packs → `npm run export-locales` → `npm run i18n:parity` must pass.
-5. Brand / proper nouns may stay identical across langs — list them in [`scripts/i18n-allowlist.json`](../scripts/i18n-allowlist.json).
-6. Pack overlays live in [`packs/{lang}.json`](packs/) and merge via [`localePacks.ts`](localePacks.ts) (hydrate + export).
+5. First-class wedge overlays: [`firstClassLocales.ts`](firstClassLocales.ts) (hydrate only — keep off the root-layout static path).
+6. Brand / proper nouns may stay identical across langs — list them in [`scripts/i18n-allowlist.json`](../scripts/i18n-allowlist.json).
+7. Pack overlays live in [`packs/{lang}.json`](packs/) and merge via [`localePacks.ts`](localePacks.ts) (hydrate + export).
 
 ## Commands
 

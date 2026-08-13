@@ -110,6 +110,10 @@ export const STORAGE_KEYS = {
   units: 'mw_units',
   unitsExplicit: 'mw_units_explicit',
   langExplicit: 'mw_lang_explicit',
+  /** First-visit language + country chooser has been confirmed. */
+  localeChoice: 'mw_locale_choice_v1',
+  /** ISO 3166-1 alpha-2 country preference (independent of language). */
+  countryPref: 'mw_country_pref',
   regionDefaults: 'mw_region_defaults_v1',
   remindersPref: 'mw_reminders_pref',
   sessionCheckinSkipped: 'mw_session_checkin_skipped',

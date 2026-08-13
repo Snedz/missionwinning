@@ -52,6 +52,10 @@ describe('cookiePolicy', () => {
       STORAGE_KEYS.deviceId,
       `${MW_PREFIX}*`,
       GATE_COOKIE_NAME,
+      'mw_locale',
+      'mw_country',
+      STORAGE_KEYS.localeChoice,
+      STORAGE_KEYS.countryPref,
     ]) {
       assert.ok(names.has(required), `inventory must disclose '${required}'`);
     }
