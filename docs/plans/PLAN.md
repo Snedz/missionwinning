@@ -2,7 +2,7 @@
 
 **Status:** FROZEN 2026-08-13. Implement only this document.  
 **Lane:** Content / Super Bundle depth (not wedge chrome).  
-**Ship label:** `2026.07-unified.699` (S6 Victory seam #491 already claims `.698`).  
+**Ship label:** `2026.07-unified.709` (retagged 2026-08-13 — `.699` is #478; `.698` is #477 / #491).  
 **Excellence-Override:** Super Bundle Move premium flows (content)
 
 This is the overnight session plan. It is **not** the living roadmap at [docs/PLAN.md](../PLAN.md).
@@ -112,7 +112,7 @@ After the eight rows exist:
 | `src/lib/contentFloors.ts` | `movePremium: 56` |
 | `src/data/premiumInventory.ts` | `PREMIUM_MOVE_FLOW_COUNT = 56` |
 | `src/lib/move/movePremD2_587.test.ts` | Stop asserting floor **equals** 48. Keep D2 id presence. Floor equality moves to the new test. |
-| New `src/lib/move/movePremD3_699.test.ts` | Floor 56; eight new ids; unique ids vs free; clock honesty; tags; collision gone; S6 target ids still present on free catalog. |
+| New `src/lib/move/movePremD3_709.test.ts` | Floor 56; eight new ids; unique ids vs free; clock honesty; tags; collision gone; S6 target ids still present on free catalog. |
 | `moveLockedHint` + `MoveLockedPreview` | Interpolate `CONTENT_FLOORS.moveFree` / `movePremium`. No hand-typed counts. EN drops “Pliability” product voice (timed original flows, not a video library). |
 | [docs/PLAN.md](../PLAN.md) I3b | Honest current floors (Mind premium 60, Move premium 56) — one line, not a second inventory. |
 
@@ -122,9 +122,9 @@ After the eight rows exist:
 
 Hard rule 5:
 
-- `APP_BUILD_LABEL` → `2026.07-unified.699`
-- `LOG.md` new heading `## 2026-08-13 — … (.699)`; rotate oldest live entry (`.669`) to `docs/archive/log/LOG-rotate-669-for-699.md` + archive INDEX row. (If #491 merges first and already rotated `.669`, rotate whatever is then oldest — do not invent a second archive of the same heading.)
-- `CONTEXT.md` `## Now`: date + label `.699` bullet; drop one oldest ship bullet to stay ≤25. Do not steal S6’s `.698` bullet if it lands.
+- `APP_BUILD_LABEL` → `2026.07-unified.709`
+- `LOG.md` new heading `## 2026-08-13 — … (.709)`; rotate oldest live entry (`.669`) to `docs/archive/log/LOG-rotate-669-for-709.md` + archive INDEX row. (If #491 merges first and already rotated `.669`, rotate whatever is then oldest — do not invent a second archive of the same heading.)
+- `CONTEXT.md` `## Now`: date + label `.709` bullet; drop one oldest ship bullet to stay ≤25. Do not steal `.698` / `.699`.
 - Excellence-Override trailer on the commit **and** the PR body.
 
 Docs indexes: `src/data/INDEX.md` one line if the premium file’s concern changed; `docs/INDEX.md` row pointing at this frozen plan. No new tab, no help-page redesign beyond a factual Move sentence if counts are named.
