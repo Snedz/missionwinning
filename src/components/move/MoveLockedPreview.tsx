@@ -8,6 +8,7 @@ import { Button } from '@/components/ui/button';
 import { MeterBar } from '@/components/ui/MeterBar';
 import { UnlockButton } from '@/components/UnlockButton';
 import { isFreeBeta } from '@/lib/freeBeta';
+import { CONTENT_FLOORS } from '@/lib/contentFloors';
 
 const DEMO_FLOW = [
   { label: 'Cat-Camel', cue: 'Slow spine waves' },
@@ -27,13 +28,13 @@ export function MoveLockedPreview() {
       <CardHeader className="pb-2">
         <CardTitle className="text-base flex items-center gap-2">
           <Wind className="h-4 w-4 text-primary" />
-          {t('movePremiumTitle', { defaultValue: 'Premium — Pliability / Skill Yoga depth' })}
+          {t('movePremiumTitle', { defaultValue: 'Premium — longer timed recovery flows' })}
         </CardTitle>
       </CardHeader>
       <CardContent className="space-y-4">
         <p className="text-sm text-muted-foreground">
           {t('movePremiumDesc', {
-            defaultValue: 'Sports-specific mobility, recovery protocols, and advanced flows.',
+            defaultValue: 'Sports-specific mobility and recovery — timers and bodyweight, not a video library.',
           })}
         </p>
         <div className="relative border-2 border-border bg-card p-4">
@@ -49,13 +50,15 @@ export function MoveLockedPreview() {
             ))}
           </div>
           <p className="mt-3 text-center text-xs text-muted-foreground">
-            {t('movePreviewPlayer', { defaultValue: 'Timed cues — Pliability-style recovery flows' })}
+            {t('movePreviewPlayer', { defaultValue: 'Timed cues — original recovery flows, no video' })}
           </p>
         </div>
         <p className="text-xs text-muted-foreground">
           {t('moveLockedHint', {
+            free: CONTENT_FLOORS.moveFree,
+            premium: CONTENT_FLOORS.movePremium,
             defaultValue:
-              'Free tier includes 10 flows. Premium adds 11 longer protocols — post-lift, morning open, low-back friendly, and athlete recovery.',
+              'Free tier includes {{free}} flows. Super Bundle adds {{premium}} longer timed protocols — post-lift, hotel floor, and athlete recovery. No video library.',
           })}
         </p>
         <div className="flex flex-wrap gap-2">

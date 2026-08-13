@@ -26,7 +26,7 @@
 /** Depth plan D1 floors (see .hermes/plans/*super-bundle-depth*). Current = shipped floor. */
 export const CONTENT_FLOORS = {
   moveFree: 32,
-  movePremium: 48,
+  movePremium: 56,
   mindFree: 32,
   mindPremium: 60,
   recipesFree: 48,
