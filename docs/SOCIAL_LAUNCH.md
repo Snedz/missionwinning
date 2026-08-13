@@ -7,7 +7,8 @@
 **Rule:** External channels get people into I-Day → first workout. No paid ads until week-4 retention holds.  
 **Capital:** [PRELAUNCH_CAPITAL.md](PRELAUNCH_CAPITAL.md) · outreach help: [OUTREACH_VA_BRIEF.md](OUTREACH_VA_BRIEF.md)  
 **Companion:** [STRATEGY.md](STRATEGY.md) · [BETA_INVITE.md](BETA_INVITE.md) · [LAUNCH_RUNBOOK.md](LAUNCH_RUNBOOK.md) · [YC_THESIS.md](YC_THESIS.md) · beta copy: mission-ops `memory/BETA_LANGUAGE.md`  
-**Phase B paste kits (preferred):** [seo/launch/PHASE_B_DRAFT_KIT.md](../seo/launch/PHASE_B_DRAFT_KIT.md) — DO NOT PUBLISH until flip.
+**Phase B paste kits (preferred):** [seo/launch/PHASE_B_DRAFT_KIT.md](../seo/launch/PHASE_B_DRAFT_KIT.md) — DO NOT PUBLISH until flip.  
+**AEO (prep only):** [seo/aeo/AEO_PREP.md](../seo/aeo/AEO_PREP.md) — citation pages + Reddit rules. Publish after flip.
 
 **Wedge line (use everywhere):** Free forever offline logger + adaptive Mission Coach from logs (no wearable). Six pillars stay below the fold / second sentence — not the hook.
 
@@ -50,7 +51,7 @@ Set locked. Win logged.
 | Warm DMs | Highest ROI — point to Enter with code / Get notified (ops: [BETA_INVITE.md](BETA_INVITE.md)) |
 | 2 communities you already use | Value first, then builder-story **free beta** ask (product pitch stays Train+Coach — not Feed/community features) |
 | **One** vertical account | TikTok **or** Instagram Reels (same clips) — you the builder |
-| Skip | LinkedIn company page, daily Twitter, YouTube long-form, Discord server, paid boosts |
+| Skip | LinkedIn company page, daily Twitter, YouTube long-form, Discord server, paid boosts, **Reddit promo** (AEO Reddit is post-flip, founder-honest only) |
 
 Cadence: **≤1 public post/week** while recruiting. Prefer DMs. Framing: **free beta** (enter with code; waitlist = Get notified). Not open/public launch.
 
@@ -110,6 +111,35 @@ missionwinning.com/guide
 
 ---
 
+## AEO + Reddit (prep now, post after flip)
+
+Answer engines (ChatGPT / Perplexity / Gemini) cite **owned FAQ-shaped pages** and **Reddit threads** more than generic blogs. Gated www cannot earn those citations — **PRIVATE_MODE stays until EIN**. Prep the pages ([seo/aeo/](../seo/aeo/AEO_PREP.md)); publish + Reddit after public flip.
+
+**Channel rank for MW (post-flip, not a promise of traffic):** Reddit (ChatGPT citation) → owned `/guide` citation pages → YouTube (logger demos already in the shot list) → LinkedIn / X last. Do not stand up a LinkedIn company page or daily X cadence to chase this.
+
+### Reddit rules (hard)
+
+- **Founder account only.** Real name, real product, real limits.
+- **After `PRIVATE_MODE=false` + PWA smoke.** No "we're live" while gated.
+- **No astroturf:** no fake accounts, no hired comments, no vote rings, no "as a user" alts.
+- **Value first:** answer the thread (offline logging, no-watch coach, previous-set). Link once if rules allow.
+- **No traction theater:** no user counts, no competitor ARR, no "ChatGPT recommended us."
+- Follow each sub's self-promo rules (`r/bodyweightfitness`, `r/homegym`, etc.).
+
+### Founder Reddit skeleton (post-flip only)
+
+```
+I built a free forever workout logger that works offline with no account, plus a coach that writes the week from your logs (no watch).
+
+Not posting user counts. If you train at home/park and hate subscription walls, I'd like the 3-minute critique: where did you get stuck?
+
+[link to /welcome — only when public]
+```
+
+Citation pages to keep fresh after flip (AI citations decay): offline logger, Coach-from-logs, vs-last / previous set, no wearable. See [BRIEF-citation-pages.md](../seo/aeo/BRIEF-citation-pages.md).
+
+---
+
 ## Phase B — Day of public flip
 
 Post **after** `PRIVATE_MODE=false` (EIN) and PWA smoke pass. Prefer kits in [seo/launch/PHASE_B_DRAFT_KIT.md](../seo/launch/PHASE_B_DRAFT_KIT.md). Order:
@@ -117,9 +147,10 @@ Post **after** `PRIVATE_MODE=false` (EIN) and PWA smoke pass. Prefer kits in [se
 1. Beta testers (DM/email)
 2. Product Hunt
 3. Show HN
-4. The 2–3 communities from beta
+4. The 2–3 communities from beta + **one honest Reddit post** (rules above)
 5. TikTok / Reels / Shorts (same clip)
 6. Waitlist email
+7. Index / refresh citation pages on `/guide`
 
 ### 1. Beta testers
 
@@ -165,6 +196,8 @@ Looking for feedback from people who actually log workouts.
 ```
 
 ### 4. Community post (Reddit / Discord — check rules)
+
+Use the AEO Reddit skeleton above. Generic fallback:
 
 ```
 I got tired of subscription trackers and wearable-only AI coaches — so I built a free forever offline logger + coach that adapts from your logs (PWA, no account to start).
@@ -231,7 +264,8 @@ limit 50;
 | One filming batch → 4–8 Shorts (logger demos + Learn tips) | Hire a social agency pre-retention |
 | Reply to every comment month 1 | Fake testimonials |
 | Bio → `/welcome` (Train+Coach wedge) | Meta/TikTok ads until week-4 holds |
-| SEO (`/guide`, `/exercises`, `/calculators`) as compounding channel | Five platforms, ghost four |
+| SEO + AEO (`/guide` citation pages, `/exercises`, `/calculators`); refresh quarterly | Five platforms, ghost four |
+| Honest founder Reddit when it answers a real thread | Astroturf / fake accounts / "ChatGPT says" theater |
 | Pitch free forever logger + Coach from logs | Merchandise in-app Feed / community / everything-app / Bundle-as-hero |
 
 **Owned list > algorithm:** keep capturing waitlist/leads (Get notified); external social is top-of-funnel only — not a product Feed pitch.
