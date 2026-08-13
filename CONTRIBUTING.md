@@ -47,7 +47,7 @@ Open http://localhost:3000 — unlock `/private` if `PRIVATE_MODE=true`.
 
 1. Branch from `master` with a descriptive name (`feat/coach-deload`, `fix/school-pin`).
 2. Keep diffs focused — one concern per PR when possible.
-3. Run `npm test` and `npm run build` before push.
+3. Run `npm test`, `npm run lint`, and `npm run typecheck` before push. While Actions minutes are red, that **Cursor-local green** is the merge bar — [docs/CI_LOCAL.md](docs/CI_LOCAL.md). Put `[skip vercel]` on every commit unless the founder asked for a Preview.
 4. **Never** force-push `master`.
 5. **Never** commit secrets (`.env.local`, keys, tokens).
 6. Update relevant `INDEX.md` and [docs/API.md](docs/API.md) when adding routes or domains.

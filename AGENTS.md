@@ -153,4 +153,5 @@ Durable, non-obvious notes for agents on a VM where the update script (`npm inst
 - **Hello-world flow:** `/active` is the free Train logger. From a fresh state it routes through a short onboarding (Begin → Continue → "Skip — start training"), lands on a seeded workout, and you log a set by entering weight/reps and clicking **Log set**.
 - **`npm install` prints a harmless `EBADENGINE` warning** for `lighthouse` (wants Node ≥22.19; only used by the optional `npm run lighthouse-budget`). It does not affect install, dev, test, or build.
 - **E2E/gate need Chromium.** `npm run gate`, `npm run e2e:*`, and `npm run a11y` run Playwright, whose browsers are not installed by the update script (`npx playwright install chromium` first). Plain `npm run dev`/`test`/`build`/`lint`/`typecheck` need no browser.
+- **Actions minutes red:** merge bar is Cursor-local green — [docs/CI_LOCAL.md](docs/CI_LOCAL.md). `[skip vercel]` on every commit unless the founder asked for a Preview. Do not treat `build-and-test` red as a product fail.
 

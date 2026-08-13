@@ -37,6 +37,18 @@ name: Ratchets
 on:
   push:
     branches: [master]
+    # Same docs-only skip as ci.yml. A CONTEXT/LOG-only push still runs this
+    # job (those files are tests' input) unless the commit is [skip ci].
+    paths-ignore:
+      - 'docs/**'
+      - 'seo/**'
+      - 'media/**'
+      - '.claude/**'
+      - 'public/brand/**'
+      - 'public/learn/**'
+      - 'public/form-guides/**'
+      - 'public/social/**'
+      - 'public/magazine/**'
   workflow_dispatch:
 
 concurrency:

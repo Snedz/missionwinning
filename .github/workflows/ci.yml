@@ -6,6 +6,20 @@ name: CI
 on:
   pull_request:
     branches: [master]
+    # Docs-only PRs still run gitleaks / aikido. This job is the minutes hog
+    # (npm ci + production build + Playwright). Skip it when the diff cannot
+    # change lint/typecheck/tests/build. GitHub also skips the whole workflow
+    # when the HEAD commit message contains [skip ci] / [ci skip].
+    paths-ignore:
+      - 'docs/**'
+      - 'seo/**'
+      - 'media/**'
+      - '.claude/**'
+      - 'public/brand/**'
+      - 'public/learn/**'
+      - 'public/form-guides/**'
+      - 'public/social/**'
+      - 'public/magazine/**'
   workflow_dispatch:
 
 concurrency:
