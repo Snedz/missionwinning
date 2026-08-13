@@ -69,6 +69,7 @@ type Props = {
   onSwapTo: (id: string) => void;
   onNoteChange: (note: string) => void;
   onRate: (setIdx: number, rpe: NonNullable<LoggedSet['rpe']>) => void;
+  onRateRir: (setIdx: number, rir: number | undefined) => void;
   onApplyAllTargets: () => void;
   onAddSet: () => void;
   onStartDrop: () => void;
@@ -113,6 +114,7 @@ export function ActiveExerciseCard({
   onSwapTo,
   onNoteChange,
   onRate,
+  onRateRir,
   onApplyAllTargets,
   onAddSet,
   onStartDrop,
@@ -207,6 +209,7 @@ export function ActiveExerciseCard({
                   prevLabel={prevLabels[setIdx]}
                   pairMark={ssLabel}
                   onRate={(rpe) => onRate(setIdx, rpe)}
+                  onRateRir={(rir) => onRateRir(setIdx, rir)}
                 />
               </div>
             );
@@ -223,6 +226,7 @@ export function ActiveExerciseCard({
               onInputChange={onSetInputChange}
               onLog={() => nextSet && onLogSet(nextSet.setIdx)}
               onRate={onRate}
+              onRateRir={onRateRir}
             />
           </div>
         )}

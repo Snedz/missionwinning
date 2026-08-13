@@ -30,6 +30,7 @@ Root-level `@/lib/{name}` paths re-export from here for compatibility — prefer
 19. `activeWorkoutHelpers.ts` — also `resolveExerciseNextTarget` + loadPct/menu gates (`.418`); `formatPrevSetLabels` + footer peel (`.425`)
 20. `exerciseNote.ts` — per-exercise diary seed (unset vs clear) + history wrap (`.748`)
 21. `garageSwap.ts` — 1–2 bodyweight/garage stand-ins on a logger or Coach plan line (`.752`); not a generate rewrite
+22. `rir.ts` — optional integer 0–5 reps in reserve; empty valid; never replaces RPE (`.756`)
 
 ## Tests (colocated)
 
@@ -52,6 +53,7 @@ Root-level `@/lib/{name}` paths re-export from here for compatibility — prefer
 | `loggerSpeed.test.ts` | Use-next offer rules (`.288`) |
 | `exerciseNote.test.ts` | Prefill / clear / persist seed + first-paint guards (`.748`) |
 | `garageSwap.test.ts` | Garage list ≤2, load clear, plan-line swap, wiring (`.752`) |
+| `rir.test.ts` | Optional 0–5 parse; empty OK; Log set ungated (`.756`) |
 
 ## UI & integration (not in this folder)
 

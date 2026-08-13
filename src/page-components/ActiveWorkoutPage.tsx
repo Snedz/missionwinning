@@ -112,6 +112,7 @@ export function ActiveWorkoutPage() {
   const addExerciseToActive = useWorkoutStore((s) => s.addExerciseToActive);
   const logSetAndAdvance = useWorkoutStore((s) => s.logSetAndAdvance);
   const rateSet = useWorkoutStore((s) => s.rateSet);
+  const rateSetRir = useWorkoutStore((s) => s.rateSetRir);
   const setSetKind = useWorkoutStore((s) => s.setSetKind);
   const setSetSide = useWorkoutStore((s) => s.setSetSide);
   const toggleSupersetWithNext = useWorkoutStore((s) => s.toggleSupersetWithNext);
@@ -644,6 +645,7 @@ export function ActiveWorkoutPage() {
           }}
           onNoteChange={(exIdx, note) => setExerciseNote(exIdx, note)}
           onRate={(exIdx, setIdx, rpe) => rateSet(exIdx, setIdx, rpe)}
+          onRateRir={(exIdx, setIdx, rir) => rateSetRir(exIdx, setIdx, rir)}
           onApplyAllTargets={(exIdx) => applyTargetsForExercise(exIdx)}
           onAddSet={(exIdx) => addSetToExercise(exIdx)}
           onStartDrop={handleStartDrop}

@@ -24,6 +24,7 @@ import {
 import { parseSetSide, setSideDefaultLabel, setSideLabelKey } from '@/lib/workout/unilateral';
 import { rpeDefaultLabel, rpeLabelKey } from '@/lib/workout/rpeLabel';
 import { formatLoggedSetLine } from '@/lib/workout/activeWorkoutHelpers';
+import { SetRirSelect } from '@/components/workout/SetRirSelect';
 import { cn } from '@/lib/utils';
 
 const SET_KIND_TIPS: Record<SetKind, { key: string; defaultValue: string }> = {
@@ -53,6 +54,8 @@ type Props = {
   /** A1/A2 pair mark — prefix on the Set cell so the row stays identifiable. */
   pairMark?: string | null;
   onRate: (rpe: 'easy' | 'med' | 'hard') => void;
+  /** Optional 0–5 RIR — independent of RPE; never required (`.725`). */
+  onRateRir: (rir: number | undefined) => void;
 };
 
 export function SetLogRow({
@@ -63,6 +66,7 @@ export function SetLogRow({
   prevLabel = null,
   pairMark = null,
   onRate,
+  onRateRir,
 }: Props) {
   const { t } = useTranslation();
   const kind = set.kind ?? 'normal';
@@ -181,7 +185,7 @@ export function SetLogRow({
       )}
 
       {set.completed && (
-        <div className="ms-auto flex shrink-0 items-center gap-0.5">
+        <div className="ms-auto flex shrink-0 flex-wrap items-center justify-end gap-0.5">
           {!set.rpe ? (
             (['easy', 'med', 'hard'] as const).map((r) => (
               <Tooltip key={r}>
@@ -205,6 +209,7 @@ export function SetLogRow({
               {t(rpeLabelKey(set.rpe), { defaultValue: rpeDefaultLabel(set.rpe) })}
             </Badge>
           )}
+          <SetRirSelect rir={set.rir} onRateRir={onRateRir} />
           <Check
             className="h-4 w-4 shrink-0 text-primary"
             aria-hidden

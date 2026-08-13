@@ -17,6 +17,7 @@ import type { LoggedSet, SetKind } from '@/types';
 import { setKindBadgeClass, setKindDefaultLabel, setKindLabelKey } from '@/lib/workout/setKind';
 import { parseSetSide, setSideDefaultLabel, setSideLabelKey } from '@/lib/workout/unilateral';
 import { rpeDefaultLabel, rpeLabelKey } from '@/lib/workout/rpeLabel';
+import { SetRirSelect } from '@/components/workout/SetRirSelect';
 import { cn } from '@/lib/utils';
 
 type Props = {
@@ -32,6 +33,8 @@ type Props = {
   onInputChange: (field: 'reps' | 'weight', value: number) => void;
   onLog: () => void;
   onRate: (setIdx: number, rpe: 'easy' | 'med' | 'hard') => void;
+  /** Optional 0–5 RIR — independent of RPE; never required (`.725`). */
+  onRateRir: (setIdx: number, rir: number | undefined) => void;
 };
 
 const cell = 'px-2 py-1.5 align-middle';
@@ -51,6 +54,7 @@ export function SetLogTable({
   onInputChange,
   onLog,
   onRate,
+  onRateRir,
 }: Props) {
   const { t } = useTranslation();
 
@@ -220,6 +224,13 @@ export function SetLogTable({
                             defaultValue: rpeDefaultLabel(set.rpe),
                           })}
                         </span>
+                      )}
+                      {completed && (
+                        <SetRirSelect
+                          rir={set.rir}
+                          onRateRir={(rir) => onRateRir(setIdx, rir)}
+                          testId="set-table-rir"
+                        />
                       )}
                       {completed && (
                         <>

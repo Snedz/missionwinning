@@ -74,6 +74,11 @@ export interface LoggedSet {
   completed: boolean;
   kind?: SetKind;
   rpe?: Rpe;
+  /**
+   * Optional reps in reserve, integer 0–5 (`.725`). Never required; never
+   * replaces `rpe`. Empty / omitted is valid.
+   */
+  rir?: number;
   /** Set at log time when this beat prior e1RM — brass chip on row. */
   isPr?: boolean;
   /** L / R / Alt — only meaningful on a unilateral exercise; omit on bilateral. */
@@ -128,7 +133,15 @@ export interface CompletedWorkoutLog {
   durationSeconds: number;
   exercises: {
     exerciseId: string;
-    sets: { reps: number; weight: number; kind?: SetKind; rpe?: 'easy' | 'med' | 'hard'; side?: SetSide }[];
+    sets: {
+      reps: number;
+      weight: number;
+      kind?: SetKind;
+      rpe?: 'easy' | 'med' | 'hard';
+      side?: SetSide;
+      /** Optional 0–5; omitted when the athlete did not rate RIR (`.756`). */
+      rir?: number;
+    }[];
     note?: string;
     /** Snapshot from catalog at complete time — readiness can skip EXERCISES lookup. */
     muscleGroups?: MuscleGroup[];

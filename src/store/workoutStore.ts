@@ -15,6 +15,7 @@ import type {
   WorkoutExerciseTemplate,
 } from "@/types";
 import { countsTowardVolume } from "@/lib/workout/setKind";
+import { parseOptionalRir } from "@/lib/workout/rir";
 import { advanceAfterLog, pairWithNext, unpair } from "@/lib/workout/superset";
 import {
   completedLoggedSet,
@@ -91,6 +92,8 @@ interface WorkoutState {
     isPr?: boolean
   ) => { exerciseIndex: number; setIndex: number } | null;
   rateSet: (exerciseIndex: number, setIndex: number, rpe: 'easy' | 'med' | 'hard') => void;
+  /** Optional 0–5 RIR after log — never stamped by `logSet` (`.725`). */
+  rateSetRir: (exerciseIndex: number, setIndex: number, rir: number | undefined) => void;
   setSetKind: (exerciseIndex: number, setIndex: number, kind: SetKind) => void;
   setSetSide: (exerciseIndex: number, setIndex: number, side: SetSide | undefined) => void;
   toggleSupersetWithNext: (exerciseIndex: number) => void;
@@ -235,7 +238,11 @@ export const useWorkoutStore = create<WorkoutState>()(
               exerciseId: ex.exerciseId,
               sets: ex.sets
                 .filter((s) => s.completed)
-                .map((s) => completedLoggedSet(s, ex.exerciseId)),
+                .map((s) => {
+                  const rec = completedLoggedSet(s, ex.exerciseId);
+                  const rir = parseOptionalRir(s.rir);
+                  return rir !== undefined ? { ...rec, rir } : rec;
+                }),
               ...(ex.note?.trim() ? { note: ex.note.trim() } : {}),
               ...(ex.muscleGroups?.length ? { muscleGroups: [...ex.muscleGroups] } : {}),
               // Victory + history must know this was a Coach load, not freestyle (`.410`).
@@ -410,6 +417,27 @@ export const useWorkoutStore = create<WorkoutState>()(
           const sets = [...ex.sets];
           if (sets[setIndex]) {
             sets[setIndex] = { ...sets[setIndex], rpe };
+          }
+          ex.sets = sets;
+          exercises[exerciseIndex] = ex;
+          return {
+            activeWorkout: { ...s.activeWorkout, exercises },
+          };
+        });
+      },
+
+      rateSetRir: (exerciseIndex, setIndex, rir) => {
+        set((s) => {
+          if (!s.activeWorkout) return s;
+          const parsed = parseOptionalRir(rir);
+          const exercises = [...s.activeWorkout.exercises];
+          const ex = { ...exercises[exerciseIndex] };
+          const sets = [...ex.sets];
+          if (sets[setIndex]) {
+            const next = { ...sets[setIndex] };
+            if (parsed === undefined) delete next.rir;
+            else next.rir = parsed;
+            sets[setIndex] = next;
           }
           ex.sets = sets;
           exercises[exerciseIndex] = ex;
