@@ -252,3 +252,39 @@ test('notes survive both directions across the Android boundary (.184)', () => {
   const clean = groupFlatSets([{ exerciseId: 'squats', setIndex: 0, reps: 5, weight: 140 }]);
   assert.equal(clean[0].note, undefined);
 });
+
+test('tempo survives nested and flat round-trips; invalid is dropped (.734)', () => {
+  const nested = [
+    {
+      exerciseId: 'bench-press',
+      sets: [
+        { reps: 5, weight: 100, tempo: { ecc: 3, pause: 1, con: 1 } },
+        { reps: 5, weight: 100 },
+      ],
+    },
+  ];
+  const round = groupFlatSets(flattenExercises('w', '2026-08-13T11:00:00Z', nested));
+  assert.deepEqual(round[0].sets[0].tempo, { ecc: 3, pause: 1, con: 1 });
+  assert.equal(round[0].sets[1].tempo, undefined);
+
+  const fromFlat = groupFlatSets([
+    flat({ exerciseId: 'squats', setIndex: 0, tempo: '4-2-1' }),
+    flat({ exerciseId: 'squats', setIndex: 1, tempo: '311' }),
+    flat({ exerciseId: 'squats', setIndex: 2, tempo: '10-1-1' }),
+  ]);
+  assert.deepEqual(fromFlat[0].sets[0].tempo, { ecc: 4, pause: 2, con: 1 });
+  assert.equal(fromFlat[0].sets[1].tempo, undefined, 'bare 311 is dropped');
+  assert.equal(fromFlat[0].sets[2].tempo, undefined, 'out of range is dropped');
+
+  const fromNested = normalizeCloudExercises([
+    {
+      exerciseId: 'row',
+      sets: [
+        { reps: 8, weight: 40, tempo: '3-1-1' },
+        { reps: 8, weight: 40, tempo: { ecc: 99, pause: 1, con: 1 } },
+      ],
+    },
+  ]);
+  assert.deepEqual(fromNested[0].sets[0].tempo, { ecc: 3, pause: 1, con: 1 });
+  assert.equal(fromNested[0].sets[1].tempo, undefined);
+});
