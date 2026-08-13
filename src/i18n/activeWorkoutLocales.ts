@@ -164,6 +164,11 @@ type ActiveWorkoutStrings = {
   activeReentryStart: string;
   activeReentryStartDesc: string;
   activeNextTargetLine: string;
+  /** Educational Epley e1RM on the exercise row after a saved working set (`.761`). */
+  activeE1rmLine: string;
+  activeE1rmHide: string;
+  activeE1rmShow: string;
+  activeE1rmAria: string;
   activeNote: string;
   activeNotePlaceholder: string;
   activeRemoveExercise: string;
@@ -396,6 +401,10 @@ const en: ActiveWorkoutStrings = {
   activeReentryStartDesc:
     'Smaller first session back — finishable, then the week rebuilds.',
   activeNextTargetLine: 'Next: {{reps}} × {{weight}} {{unit}}',
+  activeE1rmLine: 'est. 1RM ~{{e1rm}} {{unit}} (Epley) — formula estimate, not a tested max',
+  activeE1rmHide: 'Hide estimate',
+  activeE1rmShow: 'Show e1RM estimate',
+  activeE1rmAria: 'Estimated one-rep max from the Epley formula, not a tested max',
   activeNote: 'Note',
   activeNotePlaceholder: 'Note — "machine 3, seat 4", "left knee tight"…',
   activeRemoveExercise: 'Remove exercise',

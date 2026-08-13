@@ -138,6 +138,7 @@ Root keeps only the spine: README · CONTEXT · AGENTS · INDEX · vision · ORC
 | [docs/STRATEGY.md](docs/STRATEGY.md) | **Stub** — full business plan in private mission-ops |
 | [docs/REDTEAM.md](docs/REDTEAM.md) | **Stub** — full assumptions audit in private mission-ops |
 | [docs/PLAN.md](docs/PLAN.md) | Build roadmap |
+| [docs/E1RM_PLAN.md](docs/E1RM_PLAN.md) | Frozen `.739` — educational Epley e1RM on logged sets |
 | [LOG.md](LOG.md) | Dev log |
 | [docs/JOURNEY.md](docs/JOURNEY.md) | Mission journey UX |
 | [UX_UNIFIED_PLAN.md](docs/archive/UX_UNIFIED_PLAN.md) | UI unification |

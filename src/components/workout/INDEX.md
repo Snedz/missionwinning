@@ -12,6 +12,7 @@
 | `ActiveWorkoutSheets.tsx` | Check-in · form · add · plates · victory overlay cluster (`.450`) |
 | `ActiveExerciseList.tsx` | Maps session exercises → `ActiveExerciseCard` (swap candidates, table controls, open-idx). Page mounts this instead of inlining the map (`.439`) |
 | `ActiveExerciseCard.tsx` | Dense exercise block — Info → form guide; overflow for Note/Swap/SS/Ask/Remove. **Swap** is `AdaptiveOverlay` + `GarageSwapList` (1–2 garage stand-ins). Footer Rest offers last rest (`.745`). Note field sits **after** the set rows (`.748`) |
+| `ActiveExerciseHeader.tsx` | Title + next line + educational Epley e1RM after a saved working set (`.761`; hideable) |
 | `ExerciseNoteField.tsx` | Always-visible one-line diary on the exercise — last cue prefills at start/add/swap; no autofocus (`.748`) |
 | `ActiveExerciseFooter.tsx` | Add Set · **Drop** after a working set (`.754`, outline, not red) · Rest · desktop kind chips · optional L/R/Alt · set options |
 | `SetLogTable.tsx` | **Desktop** set list — Strong/Hevy density (`Set · Prev · kg · Reps`); **Prev is the row anchor** (`data-prev-anchor`); pair mark `A1·n` when paired (`.749`); optional L/R/Alt; BW+ load on plus-load moves (`.758`); completed rows optional RIR + tempo + vs-last (`.756`/`.757`/`.760`); last-working-set ghost under the table (`.759`); ≥44px inputs; one poster-red inline `Log set`. Compact uses `SetLogRow` + `LogConsole` |

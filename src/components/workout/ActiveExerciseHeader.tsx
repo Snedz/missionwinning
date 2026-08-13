@@ -1,10 +1,11 @@
 'use client';
 
 /**
- * Header chrome for ActiveExerciseCard — title, menus, next line, swap (.431).
+ * Header chrome for ActiveExerciseCard — title, menus, next line, e1RM estimate, swap (.431 / .761).
  * Exercise note lives after the set rows (`.718`) so load/reps keep first paint.
  */
 
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Info } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
@@ -18,6 +19,12 @@ import {
   firstWeightedLoad,
   shouldShowLoadPctChip,
 } from '@/lib/workout/activeWorkoutHelpers';
+import {
+  SESSION_E1RM_COPY,
+  loadSessionE1rmVisible,
+  saveSessionE1rmVisible,
+  sessionE1rmFromSets,
+} from '@/lib/workout/sessionE1rm';
 import type { ActiveExerciseLog, Exercise } from '@/types';
 
 type Props = {
@@ -69,6 +76,14 @@ export function ActiveExerciseHeader({
   onRepeatLast,
 }: Props) {
   const { t } = useTranslation();
+  const [showE1rm, setShowE1rm] = useState(loadSessionE1rmVisible);
+  const sessionE1rm = sessionE1rmFromSets(exLog.sets);
+
+  const onToggleE1rm = () => {
+    const next = !showE1rm;
+    saveSessionE1rmVisible(next);
+    setShowE1rm(next);
+  };
 
   return (
     <CardHeader className="p-3 pb-2 space-y-2">
@@ -130,6 +145,8 @@ export function ActiveExerciseHeader({
             onUnlinkSuperset={onUnlinkSuperset}
             onToggleNote={onToggleNote}
             onToggleSwap={onToggleSwap}
+            onToggleE1rm={onToggleE1rm}
+            e1rmVisible={showE1rm}
             onRemove={onRemove}
           />
         </div>
@@ -142,6 +159,20 @@ export function ActiveExerciseHeader({
             weight: nextTarget.weight,
             unit: unitLabel,
             defaultValue: 'Next: {{reps}} × {{weight}} {{unit}}',
+          })}
+        </p>
+      )}
+
+      {showE1rm && sessionE1rm && (
+        <p
+          data-testid="session-e1rm"
+          className="text-[11px] tabular-nums text-muted-foreground"
+          aria-label={t('activeE1rmAria', { defaultValue: SESSION_E1RM_COPY.aria })}
+        >
+          {t('activeE1rmLine', {
+            e1rm: sessionE1rm.e1rm,
+            unit: unitLabel,
+            defaultValue: SESSION_E1RM_COPY.line,
           })}
         </p>
       )}
