@@ -1,7 +1,8 @@
 'use client';
 
 /**
- * Four-scene cinematic www. Marketing / gated door only.
+ * Four-scene cinematic www plus a quiet later line (not a fifth scene).
+ * Marketing / gated door only. Nested L1 Train+Coach on fold 1.
  * docs/design/WWW_NIGHT.md
  */
 
@@ -58,8 +59,7 @@ export function CinematicWww({ mode, door }: Props) {
       </a>
       <header className="www-cine-nav">
         <Link className="www-cine-brand" href={mode === 'gate' ? '/private' : '/'}>
-          <Mark />
-          <span className="www-cine-word">Mission Winning</span>
+          <Mark size={28} />
         </Link>
         <a className="www-cine-ghost" href={doorHref}>
           {navLabel}
@@ -68,24 +68,43 @@ export function CinematicWww({ mode, door }: Props) {
 
       <main>
         <section className="www-cine-scene www-cine-set" id="set">
-          <div className="www-cine-split">
-            <div>
+          <div className="www-cine-set-inner">
+            <div className="www-cine-cover">
               <div className="www-cine-mark">
                 <Mark size={96} />
               </div>
               <p className="eyebrow-live www-cine-kicker www-cine-mark-follow">
-                {t('landingHeroEyebrowLoop', { defaultValue: 'Free · offline · no account' })}
+                {t('cinePublicLine', { defaultValue: 'Train Anywhere. Win Daily.' })}
               </p>
-              <h1 className="display-hero">{t('landingHeroLine1', { defaultValue: 'Log a set.' })}</h1>
-              <p className="www-cine-lede">
-                {t('landingHeroLine2', { defaultValue: 'Your week rewrites itself.' })}{' '}
-                {t('landingHeroSubtitleLoop', {
-                  defaultValue:
-                    'A workout logger that turns what you actually did into next week’s plan. No wearable, no gym, no account — and the logger is free forever.',
-                })}
-              </p>
+              <h1 className="display-hero">
+                {t('cineHeroHeadline', { defaultValue: 'Log a set. Offline.' })}
+              </h1>
             </div>
             <CinematicLogger doneHref={doorHref} doneLabel={navLabel} />
+          </div>
+        </section>
+
+        <section className="www-cine-scene www-cine-anywhere" id="anywhere">
+          <div className="www-cine-slab">
+            <p className="eyebrow www-cine-kicker">
+              {t('cineAnywhereKicker', { defaultValue: 'Anywhere' })}
+            </p>
+            <h2 className="display-section">
+              {t('cineAnywhereTitle', {
+                defaultValue: 'Garage. Hotel carpet. A park at dusk.',
+              })}
+            </h2>
+            <p className="www-cine-lede">
+              {t('cineAnywhereLead', {
+                defaultValue:
+                  'Sets save on the device. Signal is optional. The plan comes from what you logged, so nothing needs charging for it to work.',
+              })}
+            </p>
+            <p className="www-cine-mark-follow">
+              <a className="www-cine-ghost" href={doorHref}>
+                {navLabel}
+              </a>
+            </p>
           </div>
         </section>
 
@@ -93,7 +112,7 @@ export function CinematicWww({ mode, door }: Props) {
           <div className="www-cine-split">
             <div>
               <p className="eyebrow www-cine-kicker">
-                {t('cineWeekKicker', { defaultValue: 'The week' })}
+                {t('cineWeekKicker', { defaultValue: 'Mission Coach' })}
               </p>
               <h2 className="display-section">
                 {t('cineWeekTitle', { defaultValue: 'A logged set is a new plan.' })}
@@ -133,34 +152,16 @@ export function CinematicWww({ mode, door }: Props) {
           </div>
         </section>
 
-        <section className="www-cine-scene www-cine-anywhere" id="anywhere">
-          <div className="www-cine-slab">
-            <p className="eyebrow www-cine-kicker">
-              {t('cineAnywhereKicker', { defaultValue: 'Anywhere' })}
-            </p>
-            <h2 className="display-section">
-              {t('cineAnywhereTitle', {
-                defaultValue: 'Garage. Hotel carpet. A park at dusk.',
-              })}
-            </h2>
-            <p className="www-cine-lede">
-              {t('cineAnywhereLead', {
-                defaultValue:
-                  'Sets save on the device. Signal is optional. The plan comes from what you logged, so nothing needs charging for it to work.',
-              })}
-            </p>
-            <p className="www-cine-mark-follow">
-              <a className="www-cine-ghost" href={doorHref}>
-                {navLabel}
-              </a>
-            </p>
-          </div>
-        </section>
-
         <section className="www-cine-scene www-cine-door" id="door">
           <div className="www-cine-door-inner">{door}</div>
         </section>
       </main>
+      <p className="www-cine-later">
+        {t('cineLater', {
+          defaultValue:
+            'Mission Winning Health. Later: an athlete page you author. Not a feed.',
+        })}
+      </p>
     </div>
   );
 }

@@ -13,7 +13,7 @@ const html = readFileSync(path.join(root, 'docs/design/concepts/05-exquisite.htm
 
 test('05-exquisite is a self-contained HTML document', () => {
   assert.match(html, /<!DOCTYPE html>/i);
-  assert.match(html, /<h1[^>]*>Log a set\./);
+  assert.match(html, /<h1[^>]*>Log a set\. Offline\./);
   assert.doesNotMatch(html, /href="#"/);
   assert.match(html, /href="\/private"/);
   assert.match(html, /href="\/"/);
@@ -26,6 +26,42 @@ test('05-exquisite carries the gated CTA pack and refuses invite-only', () => {
   assert.doesNotMatch(html, /invite-only/i);
   assert.doesNotMatch(html, /Get an invite/i);
   assert.doesNotMatch(html, /we're live/i);
+});
+
+test('05-exquisite nested mission: public line on fold 1, Coach beat, quiet later', () => {
+  assert.match(html, /Train Anywhere\. Win Daily\./);
+  assert.match(html, /<h1[^>]*>Log a set\. Offline\./);
+  assert.match(html, /Mission Coach/);
+  assert.match(html, /class="later">Mission Winning Health\. Later: an athlete page you author\. Not a feed\./);
+  assert.doesNotMatch(html, /WeChat/i);
+  assert.doesNotMatch(html, /mini-program/i);
+  assert.doesNotMatch(html, /Fuel · Move · Mind/);
+  assert.doesNotMatch(html, /class="scene[^"]*scene-later/);
+});
+
+test('05-exquisite SET is a full-viewport field, not a split widget', () => {
+  const setStart = html.indexOf('id="set"');
+  const anywhereStart = html.indexOf('id="anywhere"');
+  const setBlock = html.slice(setStart, anywhereStart);
+  assert.match(setBlock, /class="set-field"/);
+  assert.doesNotMatch(setBlock, /class="inner"/);
+  assert.doesNotMatch(setBlock, /class="lede"/);
+});
+
+test('05-exquisite scene order is SET → ANYWHERE → WEEK → DOOR', () => {
+  const set = html.indexOf('id="set"');
+  const anywhere = html.indexOf('id="anywhere"');
+  const week = html.indexOf('id="week"');
+  const door = html.indexOf('id="door"');
+  assert.ok(set < anywhere && anywhere < week && week < door, 'expected SET, Anywhere, Week, Door');
+});
+
+test('05-exquisite nav is a HUD, not a paper bar', () => {
+  assert.match(html, /\.nav \{[^}]*position:\s*fixed/);
+  assert.match(html, /\.nav \{[^}]*mix-blend-mode:\s*difference/);
+  assert.doesNotMatch(html, /\.nav \{[^}]*border-bottom/);
+  assert.doesNotMatch(html, /\.nav \{[^}]*position:\s*sticky/);
+  assert.doesNotMatch(html, /nav-word/);
 });
 
 test('05-exquisite inlines the real MW mark and spends one poster red on Log set', () => {

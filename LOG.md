@@ -19,12 +19,24 @@ at SpaceX *structure* (viewport scenes, one type, one CTA shape) on MW paper/ink
 — not a SpaceX skin.
 
 **Ship:** `/private` (what visitors see) + post-unlock `LandingPage` share
-`CinematicWww`: SET (cinematic logger, one poster-red Log set) → WEEK (instrument,
-3×12@80 → 8×82.5) → ANYWHERE (one inverted field) → DOOR (Get notified + Enter
-with code as ghosts). Stacked real `/brand/logo-icon.svg`. CTA pack **Free beta /
-Enter with code / Get notified**. Comp: `docs/design/concepts/05-exquisite.html`.
+`CinematicWww`: SET (full-viewport logger field, one poster-red Log set) →
+ANYWHERE (one inverted field) → WEEK (instrument, 3×12@80 → 8×82.5) → DOOR
+(Get notified + Enter with code as ghosts). Stacked real `/brand/logo-icon.svg`.
+CTA pack **Free beta / Enter with code / Get notified**. Cover: kicker
+**Train Anywhere. Win Daily.** / headline **Log a set. Offline.** HUD nav
+(no paper bar). Comp: `docs/design/concepts/05-exquisite.html`.
 Thesis: `docs/design/WWW_NIGHT.md`. Signed-in Today/Train/Coach untouched.
-`PRIVATE_MODE` untouched. Draft — do not burn Hobby Preview.
+`PRIVATE_MODE` untouched. Draft — do not burn Hobby Preview until ~Thu 14:30 ET.
+
+**Nested iterate:** Mission is nested, not everything-app on fold 1. L1 launch is
+Mission Winning Health — free offline logger + Mission Coach from logs. Public
+line **Train Anywhere. Win Daily.** is the hero kicker; h1 is **Log a set. Offline.**
+WEEK kicker is **Mission Coach**. L2 (athlete page you author; not a feed) is one
+quiet line after `</main>`, never a fifth scene, never a six-pillar dump.
+
+**Visual skim (not LGTM → four fixes):** SET is logger-as-field, not a split
+widget on paper. Cover copy locked as above. Anywhere is scene 2, Week is
+scene 3. Nav has zero mass (HUD).
 
 Label `.701` (onto master `.697`). Excellence-Override below.
 
