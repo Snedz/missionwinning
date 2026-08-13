@@ -78,6 +78,11 @@ import { SegmentedControl } from '@/components/ui/SegmentedControl';
 import { localDateKey, localDateKeyFromIso, formatLocalDateKey } from '@/lib/time/localDate';
 import { templateFromCompletedLog } from '@/lib/workout/historyRetrain';
 import { track } from '@/lib/analytics';
+import { MUSCLE_GROUP_I18N } from '@/lib/muscleGroups';
+import {
+  liveSessionLogs,
+  toSessionHistoryRow,
+} from '@/lib/history/sessionHistoryList';
 
 const HEATMAP_WINDOW_DAYS = 14;
 
@@ -91,9 +96,11 @@ export function HistoryPage() {
   const units = useUnits();
   const unitLabel = weightUnitLabel(units);
   const workoutHistory = useWorkoutStore((s) => s.workoutHistory);
+  const hasHydrated = useWorkoutStore((s) => s.hasHydrated);
   const loadFromCloud = useWorkoutStore((s) => s.loadFromCloud);
   const startWorkout = useWorkoutStore((s) => s.startWorkout);
   const activeWorkout = useWorkoutStore((s) => s.activeWorkout);
+  const liveHistory = useMemo(() => liveSessionLogs(workoutHistory), [workoutHistory]);
   const [selected, setSelected] = useState<CompletedWorkoutLog | null>(null);
 
   /** K7/K11 — start freestyle from a finished log; never wipe a logged session. */
@@ -141,12 +148,12 @@ export function HistoryPage() {
       range === 'all'
         ? 0
         : Date.now() - Number(range) * 24 * 60 * 60 * 1000;
-    return workoutHistory.filter((log) => {
+    return liveHistory.filter((log) => {
       if (cutoff && new Date(log.completedAt).getTime() < cutoff) return false;
       if (q && !log.workoutName.toLowerCase().includes(q)) return false;
       return true;
     });
-  }, [workoutHistory, nameQuery, range]);
+  }, [liveHistory, nameQuery, range]);
 
   const visibleHistory = useMemo(
     () => filteredHistory.slice(0, visibleCount),
@@ -189,7 +196,7 @@ export function HistoryPage() {
   }, [workoutHistory]);
 
   const briefingLine = useMemo(() => {
-    if (workoutHistory.length === 0) {
+    if (liveHistory.length === 0) {
       return t('historyBriefingEmpty', {
         defaultValue: 'Your mission story starts with the first logged set.',
       });
@@ -201,7 +208,7 @@ export function HistoryPage() {
       volume: fmt.num(vol),
       defaultValue: `${sessions} sessions · ${fmt.num(vol)} total volume — consistency compounds.`,
     });
-  }, [workoutHistory.length, summary, t, fmt]);
+  }, [liveHistory.length, summary, t, fmt]);
 
   useEffect(() => {
     const sync = async () => {
@@ -227,11 +234,11 @@ export function HistoryPage() {
   }, [loadFromCloud]);
 
   const sessionLabel =
-    workoutHistory.length === 1
+    liveHistory.length === 1
       ? t('historySessionCount', { count: 1, defaultValue: '1 completed session' })
       : t('historySessionCount', {
-          count: workoutHistory.length,
-          defaultValue: `${workoutHistory.length} completed sessions`,
+          count: liveHistory.length,
+          defaultValue: `${liveHistory.length} completed sessions`,
         });
 
   return (
@@ -310,18 +317,22 @@ export function HistoryPage() {
         </p>
       </div>
 
-      {workoutHistory.length === 0 ? (
-        <EmptyState
-          icon={Dumbbell}
-          illustrationSrc="/brand/mascot/kalligator-invite.webp"
-          illustrationAlt=""
-          title={t('historyEmptyTitle', { defaultValue: 'No sessions yet' })}
-          description={t('historyEmptyDesc', {
-            defaultValue: 'Log one set from Today — finished sessions land here.',
-          })}
-          actionLabel={t('historyStartWorkout', { defaultValue: 'Open Today' })}
-          href="/log"
-        />
+      {!hasHydrated ? (
+        <SkeletonBlock className="h-32" label="Loading sessions" />
+      ) : liveHistory.length === 0 ? (
+        <div data-testid="session-history-empty">
+          <EmptyState
+            icon={Dumbbell}
+            illustrationSrc="/brand/mascot/kalligator-invite.webp"
+            illustrationAlt=""
+            title={t('historyEmptyTitle', { defaultValue: 'No sessions yet' })}
+            description={t('historyEmptyDesc', {
+              defaultValue: 'Log one set from Today — finished sessions land here.',
+            })}
+            actionLabel={t('historyStartWorkout', { defaultValue: 'Open Today' })}
+            href="/log"
+          />
+        </div>
       ) : (
         <div className="space-y-3">
           {/* D11 — Exercises is Trends promoted: volume / 1RM / heat as a first-class tab
@@ -443,30 +454,55 @@ export function HistoryPage() {
               }}
             />
           ) : (
-            <>
-            {visibleHistory.map((log) => (
+            <div className="space-y-3" data-testid="session-history-list">
+            {visibleHistory.map((log) => {
+              const row = toSessionHistoryRow(log);
+              if (!row) return null;
+              const muscleLine = row.muscles
+                .map((g) => t(MUSCLE_GROUP_I18N[g], { defaultValue: g }))
+                .join(' · ');
+              const setLabel =
+                row.setCount === 1
+                  ? t('historySetCountOne', { defaultValue: '1 set' })
+                  : t('historySetCount', {
+                      count: row.setCount,
+                      defaultValue: `${row.setCount} sets`,
+                    });
+              return (
               <Card
                 key={log.id}
-                className="content-card hover:border-foreground transition-colors cursor-pointer"
-                onClick={() => setSelected(log)}
+                className="content-card hover:border-foreground transition-colors"
               >
                 <CardContent className="flex items-center justify-between gap-3 py-3 px-4">
-                  <div className="min-w-0">
-                    <p className="font-semibold truncate">{log.workoutName}</p>
+                  <button
+                    type="button"
+                    data-testid="session-history-row"
+                    className="min-h-[44px] min-w-0 flex-1 text-left"
+                    onClick={() => setSelected(log)}
+                    aria-label={t('historyOpenLog', {
+                      name: row.title,
+                      defaultValue: `Open log: ${row.title}`,
+                    })}
+                  >
+                    <p className="font-semibold truncate">{row.title}</p>
+                    {muscleLine ? (
+                      <p className="text-xs text-muted-foreground mt-0.5 truncate">{muscleLine}</p>
+                    ) : null}
                     <p className="text-xs text-muted-foreground mt-0.5 flex flex-wrap gap-x-3 gap-y-0.5">
                       <span className="inline-flex items-center gap-1">
                         <Calendar className="h-3 w-3" />
-                        {fmt.longDate(log.completedAt)}
+                        {fmt.longDate(row.completedAt)}
                       </span>
+                      <span>{setLabel}</span>
                       <span className="inline-flex items-center gap-1">
                         <Timer className="h-3 w-3" />
                         {formatDuration(log.durationSeconds)}
                       </span>
                       <span>
-                        {log.exercises.length} · {fmt.num(log.totalVolume)} {unitLabel}
+                        {fmt.num(log.totalVolume)} {unitLabel}
                       </span>
                     </p>
-                  </div>
+                  </button>
                   <div className="flex shrink-0 items-center gap-0.5">
                     {templateFromCompletedLog(log) ? (
                       <Button
@@ -495,7 +531,8 @@ export function HistoryPage() {
                   </div>
                 </CardContent>
               </Card>
-            ))}
+              );
+            })}
             {filteredHistory.length > visibleCount ? (
               <Button
                 type="button"
@@ -509,6 +546,7 @@ export function HistoryPage() {
                 })}
               </Button>
             ) : null}
+            </div>
             </>
           )}
           </>
@@ -560,7 +598,10 @@ export function HistoryPage() {
       </div>
 
       <Dialog open={!!selected} onOpenChange={(open) => !open && setSelected(null)}>
-        <DialogContent className="max-w-lg max-h-[85vh] overflow-y-auto">
+        <DialogContent
+          className="max-w-lg max-h-[85vh] overflow-y-auto"
+          data-testid="session-history-log"
+        >
           {selected && (
             <>
               <DialogHeader>
