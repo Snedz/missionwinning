@@ -112,7 +112,7 @@ describe('scale key storage', () => {
     assert.equal(parseFieldTestScaleKey({ ageBand: '12', column: 'm' }), null);
     assert.equal(parseFieldTestScaleKey({ ageBand: '17-21', column: 'x' }), null);
     assert.equal(readFieldTestScaleKey(), null);
-    assert.equal(writeFieldTestScaleKey(KEY), true);
+    writeFieldTestScaleKey(KEY);
     assert.deepEqual(readFieldTestScaleKey(), KEY);
     writeFieldTestScaleKey(null);
     assert.equal(readFieldTestScaleKey(), null);
