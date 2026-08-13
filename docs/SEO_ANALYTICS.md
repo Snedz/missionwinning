@@ -2,7 +2,7 @@
 
 Companion to [ROADMAP_V4_EXPERIENCE.md](archive/ROADMAP_V4_EXPERIENCE.md) Phase 3–4. Code ships the routes and events; this doc is the founder setup checklist.
 
-**Growth honesty (MatrAIx):** F-005 no Feed merchandising · F-016 no Bundle-as-hero · F-008 no open-beta claims while `PRIVATE_MODE` on. GSC prep checklist: [seo/gsc/PREP_CHECKLIST.md](../seo/gsc/PREP_CHECKLIST.md).
+**Growth honesty (MatrAIx + BETA_LANGUAGE):** F-005 no Feed merchandising · F-016 no Bundle-as-hero · F-008 **free beta** while `PRIVATE_MODE` on (Enter with code / Get notified — not invite-only, not open-beta, not “we’re live”). GSC prep checklist: [seo/gsc/PREP_CHECKLIST.md](../seo/gsc/PREP_CHECKLIST.md).
 
 ---
 
@@ -93,7 +93,7 @@ Companion to [ROADMAP_V4_EXPERIENCE.md](archive/ROADMAP_V4_EXPERIENCE.md) Phase 
 
 | Live / indexable while gated | Not a public SEO surface |
 |------------------------------|---------------------------|
-| `/guide/*`, `/exercises/*`, `/calculators/1rm|tdee|strength-standards`, `/paths`, `/press`, `/welcome` | `/` → `/private` (teaser) |
+| `/guide/*`, `/exercises/*`, `/calculators/1rm|tdee|strength-standards`, `/paths`, `/press`, `/welcome` | `/` → `/private` (teaser — Enter with code) |
 | | `/compare` removed (redirect/smoke only until Craft re-ships) |
 | | `/bundle` absent during free beta |
 

@@ -1,9 +1,9 @@
 # Search Console prep checklist — PRIVATE_MODE
 
 **Status:** draft 2026-08-12 — prep only. Not a live SEO report.
-**PRIVATE_MODE:** ON. Do **not** claim organic traction, impressions growth, or rankings.
+**PRIVATE_MODE:** ON until EIN. Do **not** claim organic traction, impressions growth, or rankings.
 
-Companion: [docs/SEO_ANALYTICS.md](../../docs/SEO_ANALYTICS.md) · index: [../PREP_INDEX.md](../PREP_INDEX.md)
+Companion: [docs/SEO_ANALYTICS.md](../../docs/SEO_ANALYTICS.md) · index: [../PREP_INDEX.md](../PREP_INDEX.md) · copy: mission-ops `memory/BETA_LANGUAGE.md`
 
 ---
 
@@ -13,7 +13,7 @@ Companion: [docs/SEO_ANALYTICS.md](../../docs/SEO_ANALYTICS.md) · index: [../PR
 |------|----------------------|
 | **F-005** | Pitch Train+Coach / free forever offline logger only. No in-app social Feed / community / everything-app merchandising on SEO pages or launch kits. |
 | **F-016** | Do not lead with Super Bundle / checkout. Free forever offline logger is the wedge; Bundle never gates the logger. |
-| **F-008** | While gated: invite-only / private beta framing only. No open-beta or "we're live/public" status claims. |
+| **F-008** | While gated: **free beta**. Allowed: Enter with code / Get notified. Banned: invite-only, get an invite, private beta, open-beta, "we're live/public". |
 
 ---
 
@@ -30,7 +30,7 @@ Companion: [docs/SEO_ANALYTICS.md](../../docs/SEO_ANALYTICS.md) · index: [../PR
 
 ## What is indexable while PRIVATE_MODE is ON
 
-`/` serves the private teaser (`/private`). Treat **marketing `/` as gated**, not a public SEO landing.
+`/` serves the private teaser (`/private`). Treat **marketing `/` as gated**, not a public SEO landing. Teaser CTA: **Enter with code** (not Get an invite).
 
 **Expect / treat as public SEO surfaces (when in sitemap + noindex-free):**
 
@@ -84,4 +84,4 @@ Start **after** `PRIVATE_MODE=false`. Until then, record "N/A — gated" rather 
 - No fake traction screenshots or "we're ranking for X" claims pre-flip
 - No Feed / community / everything-app merchandising on SEO CTAs (F-005)
 - No Bundle-as-hero on SEO pages (F-016)
-- No open-beta status language while PRIVATE_MODE on (F-008)
+- No invite-only / open-beta / "we're live" status language while PRIVATE_MODE on (F-008 + BETA_LANGUAGE)

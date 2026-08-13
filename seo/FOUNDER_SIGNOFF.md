@@ -1,7 +1,9 @@
 # Founder sign-off checklist — SEO / launch prep
 
 **Status:** draft 2026-08-12 — not live marketing.  
-**PRIVATE_MODE:** ON. Nothing below is approved for merge into public landing or launch posts until checked.
+**PRIVATE_MODE:** ON until EIN. Nothing below is approved for merge into public landing or launch posts until checked.
+
+Beta copy policy: mission-ops `memory/BETA_LANGUAGE.md`.
 
 ---
 
@@ -9,7 +11,7 @@
 
 - [ ] **F-005 — no social Feed merchandising** — Train+Coach / free forever offline logger only on SEO + SOCIAL_LAUNCH paths. No in-app Feed / community / everything-app as hero.
 - [ ] **F-016 — no Bundle-as-hero** — free forever offline logger leads; Super Bundle never gates the logger; checkout is deep secondary only (post-flip).
-- [ ] **F-008 — gated honesty** — while `PRIVATE_MODE=true`, invite-only / private beta framing only. No open-beta or "we're live/public" status claims.
+- [ ] **F-008 — gated honesty** — while `PRIVATE_MODE=true`, **free beta** framing. Allowed: Enter with code / Get notified. Banned: invite-only, get an invite, private beta, open-beta, "we're live/public".
 
 ---
 
@@ -24,9 +26,9 @@
 
 ## Before Phase B publish (see `launch/PHASE_B_DRAFT_KIT.md`)
 
-- [ ] `PRIVATE_MODE=false`
+- [ ] `PRIVATE_MODE=false` (EIN)
 - [ ] Founder PWA smoke pass (install, offline logger, Coach path)
-- [ ] Soft language audited: no "we're live" / traction while gated; F-005/F-016 re-read
+- [ ] Soft language audited: no "we're live" / traction while gated; F-005/F-016 / BETA_LANGUAGE re-read
 - [ ] Waitlist broadcast: dry-run only until founder sends
 - [ ] Product Hunt / Show HN / community kits re-read for invented metrics (none allowed)
 
@@ -55,6 +57,6 @@
 | THESIS §8 second-beat | Founder | pending | — |
 | America/MAHA | Founder / legal | pending | — |
 | Medical/evidence captions | Founder | pending | — |
-| F-005 / F-016 / F-008 Growth copy | Founder / Growth | pending | — |
+| F-005 / F-016 / F-008 / BETA_LANGUAGE Growth copy | Founder / Growth | pending | — |
 | Phase B kits publish | Founder | blocked on PRIVATE_MODE + PWA | — |
 | `/compare` re-ship | Wedge Craft | pending | — |
