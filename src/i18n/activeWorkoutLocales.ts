@@ -214,6 +214,11 @@ type ActiveWorkoutStrings = {
    * the label is silent, so nothing looks wrong while the announcement is English.
    */
   activeSetLoggedSr: string;
+  /** Unilateral L/R/Alt on the set being entered (.724). */
+  activeSetSideL: string;
+  activeSetSideR: string;
+  activeSetSideAlt: string;
+  activeSetSideAria: string;
   activeSetRowCompleteAria: string;
   activeSetRowNextAria: string;
   activeSetRowPlannedAria: string;
@@ -421,6 +426,10 @@ const en: ActiveWorkoutStrings = {
   liveHrDisconnect: 'Disconnect',
   liveHrConnect: 'Connect HR',
   activeSetLoggedSr: 'Logged',
+  activeSetSideL: 'L',
+  activeSetSideR: 'R',
+  activeSetSideAlt: 'Alt',
+  activeSetSideAria: 'Set side',
   activeSetRowCompleteAria: 'Set {{n}} logged: {{line}}',
   activeSetRowNextAria: 'Set {{n}} — in the console',
   activeSetRowPlannedAria: 'Set {{n}} planned — {{reps}} reps',

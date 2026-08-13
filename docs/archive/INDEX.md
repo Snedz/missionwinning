@@ -26,6 +26,7 @@ When adding a doc:
 
 | File | Absorbed by / note |
 |------|---------------------|
+| [log/LOG-rotate-696-for-755.md](./log/LOG-rotate-696-for-755.md) | rotated 2026-08-13 for `.755` Unilateral L/R on the set log (`.696`) |
 | [log/LOG-rotate-695-for-754.md](./log/LOG-rotate-695-for-754.md) | rotated 2026-08-13 for `.754` Drop sets on the set log (`.695`) |
 | [log/LOG-rotate-694-for-753.md](./log/LOG-rotate-694-for-753.md) | rotated 2026-08-13 for `.753` Habit week count + HABIT contract (`.694`) |
 | [log/LOG-rotate-693-for-752.md](./log/LOG-rotate-693-for-752.md) | rotated 2026-08-13 for `.752` Garage swap on the exercise row (`.693`) |

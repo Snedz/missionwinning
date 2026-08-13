@@ -15,8 +15,13 @@ import { useState } from 'react';
 import { Check, Minus, Plus } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { cn } from '@/lib/utils';
-import type { SetKind } from '@/types';
+import type { SetKind, SetSide } from '@/types';
 import { setKindDefaultLabel, setKindLabelKey } from '@/lib/workout/setKind';
+import {
+  SET_SIDES,
+  setSideDefaultLabel,
+  setSideLabelKey,
+} from '@/lib/workout/unilateral';
 import {
   activeSetOfParams,
   shouldOfferUseNext,
@@ -49,6 +54,10 @@ type Props = {
   weightLabel: string;
   weightStep: number;
   kind: SetKind;
+  /** True when this exercise is unilateral — L/R/Alt chips. */
+  unilateral?: boolean;
+  side?: SetSide;
+  onSideChange?: (side: SetSide | undefined) => void;
   onRepsChange: (reps: number) => void;
   onWeightChange: (weight: number) => void;
   onKindChange: (kind: SetKind) => void;
@@ -133,6 +142,9 @@ export function LogConsole({
   weightLabel,
   weightStep,
   kind,
+  unilateral = false,
+  side,
+  onSideChange,
   onRepsChange,
   onWeightChange,
   onKindChange,
@@ -250,6 +262,32 @@ export function LogConsole({
           </button>
         ) : null}
       </div>
+
+      {unilateral && onSideChange ? (
+        <div
+          className="mt-1 flex flex-wrap gap-1"
+          data-testid="log-console-set-side"
+          role="group"
+          aria-label={t('activeSetSideAria', { defaultValue: 'Set side' })}
+        >
+          {SET_SIDES.map((s) => (
+            <button
+              key={s}
+              type="button"
+              aria-pressed={side === s}
+              onClick={() => onSideChange(side === s ? undefined : s)}
+              className={cn(
+                inkChip,
+                side === s
+                  ? 'border-neutral-100 bg-neutral-100 text-neutral-900'
+                  : 'border-neutral-700 text-neutral-300 hover:bg-neutral-800'
+              )}
+            >
+              {t(setSideLabelKey(s), { defaultValue: setSideDefaultLabel(s) })}
+            </button>
+          ))}
+        </div>
+      ) : null}
 
       <div className="mt-2 flex items-end gap-2.5">
         <Field

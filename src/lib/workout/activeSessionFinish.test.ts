@@ -73,6 +73,15 @@ describe('resolveLogSetPayload', () => {
     });
   });
 
+  it('preserves optional side on a unilateral set', () => {
+    const payload = resolveLogSetPayload({
+      exerciseId: 'lunges',
+      set: { reps: 8, weight: 20, side: 'L' },
+      dial: { reps: 8, weight: 20 },
+    });
+    assert.equal(payload?.side, 'L');
+  });
+
   it('uses dial when no override and preserves kind', () => {
     const payload = resolveLogSetPayload({
       exerciseId: 'squat',

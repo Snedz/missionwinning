@@ -14,12 +14,14 @@ import {
 } from '@/lib/workout/activeWorkoutHelpers';
 import { garageSwapsWhenOpen, listGarageSwaps } from '@/lib/workout/garageSwap';
 import { resolveActiveTableSetControls } from '@/lib/workout/activeTableSetControls';
+import { parseSetSide, shouldOfferSetSide } from '@/lib/workout/unilateral';
 import type { UnitsPref } from '@/lib/units';
 import type {
   ActiveExerciseLog,
   CompletedWorkoutLog,
   LoggedSet,
   SetKind,
+  SetSide,
 } from '@/types';
 
 type Props = {
@@ -56,6 +58,7 @@ type Props = {
   onSetInputChange: (exIdx: number, setIdx: number, field: 'reps' | 'weight', value: number) => void;
   onLogSet: (exIdx: number, setIdx: number) => void;
   onSetKindChange: (exIdx: number, setIdx: number, kind: SetKind) => void;
+  onSetSideChange: (exIdx: number, setIdx: number, side: SetSide | undefined) => void;
 };
 
 export function ActiveExerciseList({
@@ -87,6 +90,7 @@ export function ActiveExerciseList({
   onSetInputChange,
   onLogSet,
   onSetKindChange,
+  onSetSideChange,
 }: Props) {
   return (
     <div className="space-y-3">
@@ -149,6 +153,16 @@ export function ActiveExerciseList({
             onSetKindChange={(kind) => {
               if (!tableControls.canEdit || !nextSet) return;
               onSetKindChange(exIdx, nextSet.setIdx, kind);
+            }}
+            offerSetSide={shouldOfferSetSide(exercise)}
+            activeSetSide={
+              tableControls.canEdit && nextSet
+                ? parseSetSide(exLog.sets[nextSet.setIdx]?.side)
+                : undefined
+            }
+            onSetSideChange={(side) => {
+              if (!tableControls.canEdit || !nextSet) return;
+              onSetSideChange(exIdx, nextSet.setIdx, side);
             }}
           />
         );

@@ -2,7 +2,7 @@
  * Pure helpers for the active workout logger (no React / store).
  * Consumers: ActiveWorkoutPage, unit tests.
  */
-import type { CompletedWorkoutLog } from '@/types';
+import type { CompletedWorkoutLog, SetSide } from '@/types';
 import { repRangeForGoal } from '@/lib/coach/progression';
 import { suggestNextSetTarget } from '@/lib/workout/nextSetTargets';
 import {
@@ -11,6 +11,7 @@ import {
   overloadReasonDefault,
   overloadReasonKey,
 } from '@/lib/workout/progressiveOverloadCue';
+import { isUnilateralExercise, parseSetSide } from '@/lib/workout/unilateral';
 
 /** First incomplete set across the active session, or null when all done. */
 export function findNextSet(exercises: { sets: { completed: boolean }[] }[]): {
@@ -243,6 +244,8 @@ export type ConsoleSetView = {
   exerciseName: string;
   totalSets: number;
   kind: ConsoleSetKind;
+  side?: SetSide;
+  unilateral: boolean;
   input: { reps: number; weight: number };
   overloadCue: {
     lastLine: string | null;
@@ -266,6 +269,7 @@ export function buildConsoleSet(params: {
       weight: number;
       completed: boolean;
       kind?: ConsoleSetKind;
+      side?: SetSide;
     }[];
   }[];
   nextSet: { exIdx: number; setIdx: number } | null;
@@ -326,6 +330,11 @@ export function buildConsoleSet(params: {
     exerciseName: params.resolveExerciseName(exLog.exerciseId),
     totalSets: exLog.sets.length,
     kind: set.kind ?? 'normal',
+    side: parseSetSide(set.side),
+    unilateral: isUnilateralExercise({
+      id: exLog.exerciseId,
+      name: params.resolveExerciseName(exLog.exerciseId),
+    }),
     input: params.resolveInput(nextSet.exIdx, nextSet.setIdx, set.reps, set.weight),
     overloadCue: {
       lastLine: cue.last

@@ -78,6 +78,22 @@ test('normalize is the identity on rows web already wrote', () => {
   assert.deepEqual(normalizeCloudExercises(nested), nested);
 });
 
+test('unilateral side round-trips nested and flat (.724)', () => {
+  const nested = [
+    {
+      exerciseId: 'lunges',
+      sets: [{ reps: 8, weight: 20, side: 'L' as const }, { reps: 8, weight: 20, side: 'R' as const }],
+    },
+  ];
+  assert.deepEqual(normalizeCloudExercises(nested), nested);
+  const round = groupFlatSets(flattenExercises('w', '2026-08-13T11:00:00Z', nested));
+  assert.deepEqual(round[0].sets.map((s) => s.side), ['L', 'R']);
+  const unknown = normalizeCloudExercises([
+    { exerciseId: 'lunges', sets: [{ reps: 8, weight: 20, side: 'left' }] },
+  ]);
+  assert.equal(unknown[0]?.sets[0]?.side, undefined);
+});
+
 test('normalize keeps Mission Coach prescribed stamp on nested web rows (.410)', () => {
   const nested = [
     {
