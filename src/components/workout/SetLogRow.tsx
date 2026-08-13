@@ -58,6 +58,12 @@ type Props = {
   pairMark?: string | null;
   /** After-save vs-last token (`+2.5 kg` / `+1 rep` / `same`). Null = first-ever / warmup. */
   vsLastLabel?: string | null;
+  /** Strong set column: `W` or working-set `1..n`. Defaults to `setNumber`. */
+  ordinalLabel?: string;
+  /** Compact per-side plate hint on the live barbell row only. */
+  plateLine?: string | null;
+  /** Live row: toggle Work ↔ Warmup without expanding Kind. */
+  onToggleWarmup?: () => void;
   onRate: (rpe: 'easy' | 'med' | 'hard') => void;
   /** Optional 0–5 RIR — independent of RPE; never required (`.725`). */
   onRateRir: (rir: number | undefined) => void;
@@ -75,6 +81,9 @@ export function SetLogRow({
   prevLabel = null,
   pairMark = null,
   vsLastLabel = null,
+  ordinalLabel,
+  plateLine = null,
+  onToggleWarmup,
   onRate,
   onRateRir,
   onRateTempo,
@@ -83,6 +92,7 @@ export function SetLogRow({
   const { t } = useTranslation();
   const kind = set.kind ?? 'normal';
   const side = parseSetSide(set.side);
+  const displayN = ordinalLabel ?? (pairMark ? `${pairMark}·${setNumber}` : String(setNumber));
   const line = formatLoggedSetLine(
     set.reps,
     set.weight,
@@ -128,16 +138,34 @@ export function SetLogRow({
       )}
       data-set-complete={set.completed ? 'true' : 'false'}
     >
-      <span
-        className={cn(
-          'shrink-0 text-[13px] font-semibold tabular-nums',
-          pairMark ? 'min-w-[2.75rem]' : 'w-[1.25rem]',
-          set.completed || isNext ? 'text-foreground' : 'text-muted-foreground'
-        )}
-        data-pair-mark={pairMark ?? undefined}
-      >
-        {pairMark ? `${pairMark}·${setNumber}` : setNumber}
-      </span>
+      {isNext && onToggleWarmup ? (
+        <button
+          type="button"
+          onClick={onToggleWarmup}
+          aria-pressed={kind === 'warmup'}
+          data-testid="set-row-warmup-toggle"
+          aria-label={
+            kind === 'warmup'
+              ? t('activeToggleWorkAria', { defaultValue: 'Mark as work set' })
+              : t('activeToggleWarmupAria', { defaultValue: 'Mark as warmup' })
+          }
+          className="flex h-11 min-h-[44px] min-w-[44px] shrink-0 items-center justify-center text-[13px] font-semibold tabular-nums tap-target hover:bg-muted"
+          data-pair-mark={pairMark ?? undefined}
+        >
+          {displayN}
+        </button>
+      ) : (
+        <span
+          className={cn(
+            'shrink-0 text-[13px] font-semibold tabular-nums',
+            pairMark ? 'min-w-[2.75rem]' : 'w-[1.25rem]',
+            set.completed || isNext ? 'text-foreground' : 'text-muted-foreground'
+          )}
+          data-pair-mark={pairMark ?? undefined}
+        >
+          {displayN}
+        </span>
+      )}
       {side ? (
         <span
           className="w-[1.75rem] shrink-0 text-[11px] font-semibold uppercase tracking-[0.06em] text-muted-foreground"
@@ -176,6 +204,17 @@ export function SetLogRow({
         )}
       >
         {line}
+        {plateLine ? (
+          <span
+            className="mt-0.5 block truncate text-[11px] font-normal text-muted-foreground"
+            data-testid="set-row-plates"
+          >
+            {t('activePlatePerSideLine', {
+              plates: plateLine,
+              defaultValue: `${plateLine} / side`,
+            })}
+          </span>
+        ) : null}
       </span>
 
       {set.completed && vsLastLabel ? (

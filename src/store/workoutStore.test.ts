@@ -316,6 +316,26 @@ test('workoutStore', async (t) => {
     assert.equal(sets[2].completed, false);
   });
 
+  await t.test('inserting a warmup ramp prepends warmup sets before work', () => {
+    const store = useWorkoutStore.getState();
+    store.startWorkout('Push', template('bench-press', 2));
+    useWorkoutStore.getState().insertWarmupRampOnExercise(0, [
+      { reps: 8, weight: 40 },
+      { reps: 5, weight: 60 },
+    ]);
+    const sets = useWorkoutStore.getState().activeWorkout?.exercises[0].sets ?? [];
+    assert.equal(sets.length, 4);
+    assert.equal(sets[0].kind, 'warmup');
+    assert.equal(sets[0].weight, 40);
+    assert.equal(sets[1].kind, 'warmup');
+    assert.equal(sets[2].kind, 'normal');
+    useWorkoutStore.getState().insertWarmupRampOnExercise(0, [
+      { reps: 8, weight: 40 },
+      { reps: 5, weight: 60 },
+    ]);
+    assert.equal(useWorkoutStore.getState().activeWorkout?.exercises[0].sets.length, 4);
+  });
+
   await t.test('removing a planned set never removes completed work', () => {
     const store = useWorkoutStore.getState();
     store.startWorkout('Push', template('push-ups', 2));

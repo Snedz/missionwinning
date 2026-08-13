@@ -106,6 +106,11 @@ interface WorkoutState {
   toggleSupersetWithNext: (exerciseIndex: number) => void;
   unlinkSuperset: (exerciseIndex: number) => void;
   addSetToExercise: (exerciseIndex: number) => void;
+  /** Insert planned warmup sets before the first incomplete set (garage ramp). */
+  insertWarmupRampOnExercise: (
+    exerciseIndex: number,
+    ramp: { reps: number; weight: number }[]
+  ) => void;
   /** Removes the last not-yet-completed set (planned-too-many case). */
   removeLastPlannedSet: (exerciseIndex: number) => void;
   removeExerciseFromActive: (exerciseIndex: number) => void;
@@ -131,6 +136,7 @@ interface WorkoutState {
 import { templateSetsToLogged } from '@/lib/workout/workoutTemplate';
 import { materializeTemplates } from '@/lib/workout/materializeProgram';
 import { applyHistoryNote } from '@/lib/workout/exerciseNote';
+import { insertWarmupSets, warmupRampAlreadyPresent } from '@/lib/workout/warmupRamp';
 
 function createLoggedSets(count: number, reps = 10, weight = 0): LoggedSet[] {
   const now = Date.now();
@@ -572,6 +578,29 @@ export const useWorkoutStore = create<WorkoutState>()(
                 ...(lastSet?.side ? { side: lastSet.side } : {}),
               },
             ],
+          };
+          return { activeWorkout: { ...s.activeWorkout, exercises } };
+        });
+      },
+
+      insertWarmupRampOnExercise: (exerciseIndex, ramp) => {
+        set((s) => {
+          if (!s.activeWorkout || ramp.length === 0) return s;
+          const exercises = [...s.activeWorkout.exercises];
+          const ex = exercises[exerciseIndex];
+          if (!ex) return s;
+          if (warmupRampAlreadyPresent(ex.sets, ramp)) return s;
+          const now = Date.now();
+          const rampSets: LoggedSet[] = ramp.map((step, i) => ({
+            id: `warmup-${now}-${i}`,
+            reps: step.reps,
+            weight: step.weight,
+            completed: false,
+            kind: 'warmup' as SetKind,
+          }));
+          exercises[exerciseIndex] = {
+            ...ex,
+            sets: insertWarmupSets(ex.sets, rampSets),
           };
           return { activeWorkout: { ...s.activeWorkout, exercises } };
         });

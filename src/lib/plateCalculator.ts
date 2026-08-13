@@ -65,3 +65,29 @@ export function formatPlateList(plates: number[], unit: string): string {
   if (plates.length === 0) return '—';
   return plates.map((p) => `${p}${unit}`).join(' + ');
 }
+
+/** Catalog `equipment` values that load plates on a bar. Closed list — do not guess from names. */
+const BAR_LOADED_EQUIPMENT = new Set(['barbell', 'trap bar']);
+
+export function isBarLoadedEquipment(equipment?: string): boolean {
+  if (!equipment) return false;
+  return BAR_LOADED_EQUIPMENT.has(equipment.trim().toLowerCase());
+}
+
+/**
+ * Compact per-side stack for the live set row (`25 + 10 + 5`), or null when
+ * plates do not apply (BW / DB / cable / machine / empty bar).
+ */
+export function setRowPlateLine(params: {
+  equipment?: string;
+  weight: number;
+  units: UnitsPref;
+}): string | null {
+  if (!isBarLoadedEquipment(params.equipment)) return null;
+  if (!Number.isFinite(params.weight) || params.weight <= 0) return null;
+  const bar = defaultBarWeight(params.units);
+  if (params.weight <= bar) return null;
+  const result = calculatePlatesPerSide(params.weight, bar, availablePlates(params.units));
+  if (result.perSide.length === 0) return null;
+  return formatPlateList(result.perSide, '');
+}

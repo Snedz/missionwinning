@@ -1,142 +1,163 @@
-# Frozen plan — Home gym kit on the free logger
+# Frozen plan — Free plate math + warmup (logger)
 
-**Status:** FROZEN. Implement only this file.
-**Ship:** `2026.07-unified.763`
-**Excellence-Override:** free home-gym kit
-**Lane:** Engineering-Web · Horizon W · Train logger equipment (`/account` + `/active` read)
-**Free forever.** Not Super Bundle bait. No trial. No account. No `PRIVATE_MODE` flip.
+**Status:** FROZEN. Implement only this file.  
+**Ship:** `2026.07-unified.764`  
+**Excellence-Override:** free plate math + warmup (logger)  
+**Lane:** Engineering-Web · Horizon W · Train logger (`/active`)  
+**Free forever.** Not Super Bundle bait. No trial. No `PRIVATE_MODE` flip.
 
-Young people start with $0: kit is free, logger is free, no paywall.
+Overnight brief: Strong-class garage utility **on the set row**. Do not invent a new tab. Do not collide with F-013 smart defaults (#489) or E-Adjacency (#487) — those PRs exist on the same master tip; **extend or skip**, do not rewrite their cells or dial order.
 
 ---
 
 ## Problem
 
-I-Day stores one coarse radio (`bodyweight` / `dumbbells` / `full-gym`) in `mw_equipment`. A garage athlete with a barbell, rack, plates, and a pull-up bar is forced into **full gym** (machines, cables, sleds they do not have) or **dumbbells** (`home-gym` already maps there and **drops barbell work**). The logger cannot read what they actually own.
+A train-anywhere athlete loading a bar needs two answers without leaving the live set:
 
-Identity’s Athlete Table `homeGym` row is **cosmetic projection** (picks-from-sets). It must not become planner input.
+1. **Which plates per side?**
+2. **What warmup loads before the work?**
+
+What master already has (do not rebuild):
+
+| Already shipped | Where | Gap |
+|-----------------|-------|-----|
+| Greedy plate math | `src/lib/plateCalculator.ts` | Used by header **Plates** sheet + `/calculators` tab, **not the set row** |
+| Warmup as a set kind | `setKind.ts` · LogConsole Kind expand · desktop footer chips | Buried behind Kind (F-003 collapsed it). No Strong-style ramp. Set column always shows 1, 2, 3 |
+| Session header Plates | `ActiveSessionChrome` | Keep. Not a substitute for seeing plates on the load |
+
+`/calculators` already has a Plates tab — **do not add another**.
 
 ---
 
-## Discover, do not rewrite
+## Set-row grammar (what ships)
+
+Live barbell row (compact `SetLogRow` + desktop `SetLogTable` + compact `LogConsole`):
+
+```
+W     PREVIOUS          40 kg
+      8 × 40            10 + 5 / side
+
+1     PREVIOUS          100 kg
+      8 × 100           25 + 10 + 5 / side     [Log set]
+```
+
+- **W** in the set column for warmup; working sets numbered **1..n skipping warmups** (Strong).
+- **Plate line** under the load when the exercise is bar-loaded and weight > bar: compact `25 + 10 + 5 / side` from existing `calculatePlatesPerSide` + `formatPlateList`. Honest empty (no line) for BW / dumbbell / cable / machine / weight ≤ bar.
+- **Prev cell is untouchable** — E-Adjacency (#487) stacks Target above PREVIOUS there. Plates never go in Prev.
+- **Log set stays the sole poster-red primary** (F-003 / `.694`). Plate line is muted ink, not a second primary.
+
+---
+
+## A. Plate math on the live set
+
+**Pure** (extend `plateCalculator.ts`, do not fork):
+
+- `isBarLoadedEquipment(equipment?: string)` — true for `Barbell` and `Trap Bar` only (catalog `equipment` field, case-insensitive). Do not guess from the exercise name.
+- `setRowPlateLine({ equipment, weight, units })` → `string | null`  
+  null when not bar-loaded, weight ≤ `defaultBarWeight`, or no plates.  
+  Otherwise `formatPlateList(perSide, '')` so the row can append `/ side`.
+
+**UI (live set only — same “only the live row” rule as E-Adjacency):**
+
+| Surface | What |
+|---------|------|
+| Compact `SetLogRow` (`isNext`) | Muted plate hint under the metric (`data-testid="set-row-plates"`). **Not** a 44px competing CTA — header Plates stays the 44px sheet opener. |
+| Compact `LogConsole` | Same line under the weight stepper (`data-testid="log-console-plates"`). Tappable ≥44px ink control → existing `PlateCalculatorSheet` (bar / remainder / Apply). |
+| Desktop `SetLogTable` active weight cell | Same line under the input (`data-testid="set-table-plates"`). Tappable → same sheet. |
+| Completed / idle rows | No plate line (F-003 density). |
+
+Keep `ActiveSessionChrome` Plates + `PlateCalculatorSheet` + `/calculators` as they are.
+
+Live compact row uses **dial weight** (parent passes it) so the hint tracks the console, not the stale template.
+
+**Free:** these modules must not import premium / Bundle / trial. Guard discovers the new files rather than enumerating a closed list.
+
+---
+
+## B. Warmup on the set row
+
+**Pure** `src/lib/workout/warmupRamp.ts` (new, colocated test):
+
+Ramp of **three** steps off the **working** load, garage olympic defaults:
+
+| % of work | Reps |
+|-----------|------|
+| 40% | 8 |
+| 60% | 5 |
+| 80% | 3 |
+
+Each step: `roundToStep` with `weightStep(units)`, then skip if `≤ bar` or `≥ work` or duplicate of another step. Empty result → do not insert.
+
+Working load (first hit wins):
+
+1. Live dial when the live set is a **working** set and weight > 0
+2. First incomplete working set’s planned weight > 0
+3. Last completed **working** set
+4. Else null → hide **Add warmups**
+
+`insertWarmupSets(sets, ramp)` inserts the ramp immediately before the first incomplete set. **Idempotent:** if incomplete warmup weights already match the ramp in order, return sets unchanged.
+
+`setRowOrdinal(sets, idx)` → `{ warmup: true, label: 'W' }` or `{ warmup: false, label: '1'.. }` counting only non-warmup sets up to idx.
+
+**UI:**
+
+- Set column shows `setRowOrdinal` label on every row (`SetLogRow` + `SetLogTable`).
+- Live set number is a ≥44px **Work ↔ Warmup** toggle (`data-testid="set-row-warmup-toggle"` / `set-table-warmup-toggle`). Does **not** reopen the four-kind strip (F-003). Failure / drop stay behind Kind.
+- Exercise footer, next to **Add Set**: outline **Add warmups** (`data-testid="active-add-warmups"`) when bar-loaded **and** a working load exists **and** the ramp is not already present. One tap inserts. Hidden when already present (idempotent).
+
+**Carry (compose with F-013, do not rewrite dial order):**
+
+`priorCompletedInExercise` must skip `kind === 'warmup'` so logging a warmup cannot prefill the next **work** set with 40/60/80%. Do **not** change `resolveSetInput`’s prescribed-vs-carry-vs-suggestion order — that is F-013’s (#489) cell. Skipping warmup in the existing helper is the extend; F-013 rebase keeps the skip if it still calls this function.
+
+---
+
+## C. Collisions — skip / extend
 
 | PR | Owns | This ship |
 |----|------|-----------|
-| #503 `.708` plate math + warmup | `plateCalculator.ts` `setRowPlateLine` · `warmupRamp.ts` · set-row W / plates | **Do not** touch those files. Kit may *store* `plates`; plate math inventory stays #503. |
-| #514 `.721` garage swap | `src/lib/workout/garageSwap.ts` · Swap sheet on the row | **Do not** touch. Kit does not invent a second Swap. |
-| Identity table `homeGym` | Cosmetic pick on `/profile` | **Do not** change picks. Kit may **emit** a mapped pick (Log → Social). Coach never reads identity. |
-| I-Day 3 radios | Welcome ≤90s (C5) | **Do not** expand I-Day to six checkboxes. Seed kit from the radio; Account is the editor. |
+| #487 E-Adjacency | Target stacked **above PREVIOUS** in the Prev cell | **Do not** rewrite `SetLogTable` Prev `<td>` / `SetLogRow` prev span. No Target/cite work. |
+| #489 F-013 | `resolveSetInput` / `resolveActiveSetDial` session carry beats prescription on the **next** set; `log-console-reps` / `log-console-weight` | **Do not** reorder `resolveSetInput`. **Do not** add those testids (theirs). Skip warmup inside `priorCompletedInExercise` only. |
+| #477 `.698` · #478 `.699` · #494/492 `.704` | Build labels | Label **`.705`**. Do not steal `.698`–`.704`. |
 
-Occupied labels through `.762`. This ship is **`.763`**. Originally reserved `.733`.
-
----
-
-## What ships
-
-A **local Home gym kit**: the athlete lists what they have.
-
-Closed items (discover this list in code; do not grow it here):
-
-`barbell` · `rack` · `plates` · `dumbbells` · `pull-up-bar` · `floor`
-
-- Device-local JSON. No account. Backup via existing `mw_*` prefix scan.
-- Empty / unset kit → current 3-profile behavior (do not silently strip full-gym machines from athletes who never opened the kit).
-- Saving the kit writes the kit **and** a derived `mw_equipment` so Welcome / journey sync stay consistent.
-- $0 default when they *do* save a first kit with nothing checked: **floor only**.
-
----
-
-## A. Pure kit (logger equipment)
-
-**New** `src/lib/workout/homeGymKit.ts` + colocated test. Not under `identity/` (Coach may read kit storage; Coach must not read identity).
-
-| Export | Contract |
-|--------|----------|
-| `HOME_GYM_ITEMS` | Closed tuple of the six ids |
-| `parseHomeGymKit(raw)` | Clamp unknown keys; empty → floor-only when *explicit save*; missing storage → `null` (unset) |
-| `kitToEquipmentProfile(kit)` | `floor`-only → `bodyweight`; dumbbells without barbell/rack/plates → `dumbbells`; barbell or rack or plates → **not** `full-gym` (derived `home-gym` string is ok for storage; profile stays the three enums via matching overlay) |
-| `kitMatchesExercise(ex, kit)` | Catalog `equipment` → required item(s). Commercial (machine/cable/sled/tire/bike/rower/rings) never match a garage kit. Pull-up family (pull-up / chin-up / hanging / inverted-row) needs `pull-up-bar` even when catalog says Bodyweight. Rack-required lifts (squat / front-squat / bench / incline-bench) need `barbell` **and** `rack`. Deadlift / row / OHP need `barbell` only. Floor work needs `floor`. |
-| `seedKitFromEquipmentProfile(profile)` | I-Day seed: bodyweight → `[floor]`; dumbbells → `[floor, dumbbells]`; full-gym → **unset kit** (commercial gym stays full-gym until they list items) |
-| `kitToAthleteHomeGymPick(kit)` | Emit-only map to existing table picks (`bodyweight-only` / `dumbbells` / `rack-bars`). Never the reverse. |
-
-Storage: `STORAGE_KEYS.homeGymKit` = `mw_home_gym_kit`. Load/save through `safeStorage` (`readJson` / `writeJson`). Saving also writes derived `mw_equipment` + `scheduleJourneyPush()`.
-
-**Logger read:** Just Go / Active empty start / Coach context use `kitMatchesExercise` when a kit is stored; otherwise existing `equipmentMatches(profile)`.
-
-**Coach substitutions, not rank:** thread kit into `equipmentMatches` / selector **filter only**. Do not pass kit into `rankExercises`. Do not add a fourth `EquipmentProfile` enum (Zod + seedPlan stay three-way). Overlay: `equipmentMatches(ex, profile, kit?: HomeGymKit \| null)` — when `kit` is non-null, kit wins the filter; when null, today’s profile rules.
-
-`contextBuilder.readLocalCoachContext` loads kit from storage and passes it. `CoachContext` may carry optional `homeGymKit` for the filter; generate/adapt still store `equipmentProfile` as the three-way derived value.
-
----
-
-## B. Account UI (the editor)
-
-**New** `src/components/profile/HomeGymKitCard.tsx` on `/account` **day-one stack** (after units — Train settings, anonymous). Not under More settings. Not on `/profile` identity table.
-
-- Title: **Home gym kit**
-- Body: list what you have. Free. Stays on this device.
-- Six ≥44px toggles (`variant="selected" | "outline"`, same as units). `data-testid="home-gym-kit"` + `home-gym-kit-{id}`.
-- Auto-save on toggle (like preferred days). No poster-red primary. No Bundle / trial copy.
-- `id="home-gym-kit"` for `/account#home-gym-kit`.
-- On first paint with unset kit: show seeded checkboxes from `mw_equipment` **without writing** until they toggle (full-gym → all six visually, still unset until save).
-
-Emit (optional, same save): if identity table `homeGym` is unset, write `kitToAthleteHomeGymPick`. Never read identity to decide kit. Coach never imports `@/lib/identity`.
-
----
-
-## C. Logger + Coach wiring (read path)
-
-| Caller | Change |
-|--------|--------|
-| `ActiveWorkoutPage` Just Go | Pass stored kit into `buildJustGoSession` |
-| `justGoSession.pickExercisesForFocus` | When kit set, filter pool with `kitMatchesExercise` (not only the bodyweight string check) |
-| `coach/equipment.ts` | Optional kit overlay on `equipmentMatches` |
-| `coach/selector.ts` | Filter via `equipmentMatches(ex, ctx.equipment, ctx.homeGymKit)` — **not** rank |
-| `coach/contextBuilder.ts` | Load kit; do not import identity |
-| Welcome I-Day save | `seedKitFromEquipmentProfile` only when kit still unset |
-
-Do **not** restyle Train chrome. No new nav item. No Android this ship.
+No restyle of Today/Train chrome. No N1 www. No `#485`. No new nav item. No Android this ship.
 
 ---
 
 ## Out of scope (hard)
 
-- Rewrite plate math / warmup / garage Swap
-- Custom plate inventory (bumper vs iron) — #503 refused it
-- Fourth EquipmentProfile enum / API Zod change beyond optional ignore
-- I-Day checkbox wall
-- Super Bundle / trial / account gate
-- America / MAGA / “heartland” copy
-- Identity table pick-set expansion
-- Ranking, leaderboard, Club from kit
-- `PRIVATE_MODE` prod flip · EIN
+- Custom plate inventory / bumper vs iron / collar / ez-bar picker (sheet bar field already exists)
+- Auto-insert warmups without a tap
+- Numbering W1/W2 (all warmups are **W**)
+- Gating behind account, trial, or Super Bundle
+- `/calculators` tab changes
+- Freshness selection, account-lite F-017, Victory, Coach plan engine
 
 ---
 
 ## Tests (falsify, then keep)
 
-- `homeGymKit.test.ts` — parse clamp; $0 empty → floor; barbell+rack matches squat; barbell without rack rejects squat, allows deadlift; floor-only rejects barbell/DB/machine; pull-ups need pull-up-bar; commercial never matches kit; seed full-gym → unset; identity map is one-way.
-- `equipment.test.ts` — kit overlay does not change null-kit 3-profile cases; kit does not affect `rankExercises` (selector still ranks by familiarity).
-- `justGoSession` — kit barbell+floor does not pick leg-press.
-- Domain: `src/lib/coach/` still has no import of `src/lib/identity` (existing C1).
-- Free guard discovers `homeGymKit` + `HomeGymKitCard` — no premium/Bundle/trial.
-- Mutants: kit-null still full-gym machines; ranking by kit item count must fail.
+- `plateCalculator.test.ts` — `isBarLoadedEquipment` closed list; `setRowPlateLine` null vs `25 + 20` (100 kg / 20 kg bar); 225 lb exact.
+- `warmupRamp.test.ts` — 100 kg → 40/60/80 rounded; skip ≤ bar; idempotent insert; ordinal W then 1,2; mutants: empty ramp when work ≤ bar.
+- `priorCompletedInExercise` skips warmup (so F-013 cannot carry 40 kg onto work).
+- Source guard: new plate/warmup UI + lib files do not import premium/Bundle/trial; `SetLogTable` Prev cell still has no plate helper.
+- Density: LogConsole / SetLogTable still exactly one `primary-action` (existing `.694` guards).
+- i18n keys in `activeWorkoutLocales.ts` (`...en` fills other packs). Coverage stays 0 uncovered.
 
 ---
 
 ## Docs / ship protocol (same commit as the code)
 
 - This file (already frozen)
-- `LOG.md` + rotate oldest live entry so the file stays at 15
-- `CONTEXT.md` `## Now` one bullet for `.763`
-- `APP_BUILD_LABEL` → `2026.07-unified.763`
-- `src/lib/workout/INDEX.md` · `src/lib/coach/INDEX.md` · `src/lib/storage/keys.ts` · help getting-started one line
-- i18n keys in `athleteLocales.ts` (EN + beachhead; coverage 0 uncovered)
+- `LOG.md` + rotate oldest live entry (`.669`) so the file stays at 15
+- `CONTEXT.md` `## Now` one bullet for `.705`
+- `APP_BUILD_LABEL` → `2026.07-unified.705`
+- `src/lib/workout/INDEX.md` + `src/components/workout/INDEX.md`
+- Help: one line on getting-started — plates + warmup on the Train set row, free
 
 Commit trailer:
 
 ```
-Excellence-Override: free home-gym kit
+Excellence-Override: free plate math + warmup (logger)
 ```
 
-Draft PR. Preview at most one (plan commit uses `[skip vercel]`). Never flip `PRIVATE_MODE`.
+Draft PR. Preview at most one. Never flip `PRIVATE_MODE`.

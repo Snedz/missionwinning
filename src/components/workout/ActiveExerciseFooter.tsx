@@ -40,6 +40,8 @@ type Props = {
   plannedSetCount: number;
   onApplyAllTargets: () => void;
   onRemoveSet: () => void;
+  showAddWarmups?: boolean;
+  onAddWarmups?: () => void;
 };
 
 export function ActiveExerciseFooter({
@@ -62,6 +64,8 @@ export function ActiveExerciseFooter({
   plannedSetCount,
   onApplyAllTargets,
   onRemoveSet,
+  showAddWarmups = false,
+  onAddWarmups,
 }: Props) {
   const { t } = useTranslation();
 
@@ -83,6 +87,18 @@ export function ActiveExerciseFooter({
           })}
         >
           {t('activeSetDrop', { defaultValue: 'Drop' })}
+        </Button>
+      ) : null}
+      {showAddWarmups && onAddWarmups ? (
+        <Button
+          type="button"
+          variant="outline"
+          size="sm"
+          className="min-h-[44px] tap-target"
+          data-testid="active-add-warmups"
+          onClick={onAddWarmups}
+        >
+          {t('activeAddWarmups', { defaultValue: 'Add warmups' })}
         </Button>
       ) : null}
       <Button

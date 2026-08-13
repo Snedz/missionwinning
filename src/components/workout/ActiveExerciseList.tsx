@@ -62,6 +62,8 @@ type Props = {
   onLogSet: (exIdx: number, setIdx: number) => void;
   onSetKindChange: (exIdx: number, setIdx: number, kind: SetKind) => void;
   onSetSideChange: (exIdx: number, setIdx: number, side: SetSide | undefined) => void;
+  onOpenPlates?: () => void;
+  onAddWarmups?: (exIdx: number) => void;
 };
 
 export function ActiveExerciseList({
@@ -96,6 +98,8 @@ export function ActiveExerciseList({
   onLogSet,
   onSetKindChange,
   onSetSideChange,
+  onOpenPlates,
+  onAddWarmups,
 }: Props) {
   return (
     <div className="space-y-3">
@@ -171,6 +175,8 @@ export function ActiveExerciseList({
               if (!tableControls.canEdit || !nextSet) return;
               onSetSideChange(exIdx, nextSet.setIdx, side);
             }}
+            onOpenPlates={onOpenPlates}
+            onAddWarmups={onAddWarmups ? () => onAddWarmups(exIdx) : undefined}
           />
         );
       })}

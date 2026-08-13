@@ -35,6 +35,12 @@ type Props = {
   pairMark?: string | null;
   /** After-save vs-last tokens; null slots stay unpainted. */
   vsLastLabels?: (string | null)[];
+  /** Strong set column: `W` or working-set `1..n`. */
+  ordinalLabels?: string[];
+  /** Live barbell row only — compact per-side stack. */
+  plateLine?: string | null;
+  onToggleWarmup?: () => void;
+  onOpenPlates?: () => void;
   input: { reps: number; weight: number };
   onInputChange: (field: 'reps' | 'weight', value: number) => void;
   onLog: () => void;
@@ -63,6 +69,10 @@ export function SetLogTable({
   prevLabels,
   pairMark = null,
   vsLastLabels = [],
+  ordinalLabels,
+  plateLine = null,
+  onToggleWarmup,
+  onOpenPlates,
   input,
   onInputChange,
   onLog,
@@ -129,7 +139,24 @@ export function SetLogTable({
                   completed && !isActive && 'border-s-[3px] border-s-primary'
                 )}
               >
-                {pairMark ? `${pairMark}·${setIdx + 1}` : setIdx + 1}
+                {isActive && onToggleWarmup ? (
+                  <button
+                    type="button"
+                    onClick={onToggleWarmup}
+                    aria-pressed={kind === 'warmup'}
+                    data-testid="set-table-warmup-toggle"
+                    aria-label={
+                      kind === 'warmup'
+                        ? t('activeToggleWorkAria', { defaultValue: 'Mark as work set' })
+                        : t('activeToggleWarmupAria', { defaultValue: 'Mark as warmup' })
+                    }
+                    className="flex h-11 min-h-[44px] min-w-[44px] items-center justify-start font-extrabold tabular-nums tap-target hover:bg-muted"
+                  >
+                    {ordinalLabels?.[setIdx] ?? (pairMark ? `${pairMark}·${setIdx + 1}` : setIdx + 1)}
+                  </button>
+                ) : (
+                  (ordinalLabels?.[setIdx] ?? (pairMark ? `${pairMark}·${setIdx + 1}` : setIdx + 1))
+                )}
                 {side ? (
                   <span
                     className="ms-1 text-[11px] font-semibold uppercase tracking-[0.06em] text-muted-foreground"
@@ -183,6 +210,31 @@ export function SetLogTable({
                         }}
                       />
                     </div>
+                    {plateLine ? (
+                      onOpenPlates ? (
+                        <button
+                          type="button"
+                          onClick={onOpenPlates}
+                          data-testid="set-table-plates"
+                          className="mt-1 flex min-h-[44px] w-full items-center text-start text-[11px] tabular-nums text-muted-foreground tap-target hover:bg-muted"
+                        >
+                          {t('activePlatePerSideLine', {
+                            plates: plateLine,
+                            defaultValue: `${plateLine} / side`,
+                          })}
+                        </button>
+                      ) : (
+                        <span
+                          className="mt-1 block text-[11px] tabular-nums text-muted-foreground"
+                          data-testid="set-table-plates"
+                        >
+                          {t('activePlatePerSideLine', {
+                            plates: plateLine,
+                            defaultValue: `${plateLine} / side`,
+                          })}
+                        </span>
+                      )
+                    ) : null}
                   </td>
                   <td className={cell}>
                     <input

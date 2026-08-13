@@ -25,6 +25,7 @@
 |--------|--------|
 | `startWorkout` / `startEmptyWorkout` | Begin active session; `startWorkout` seeds per-exercise notes from history (`.748`) |
 | `setExerciseNote` | Write / clear the one-line diary on an active exercise |
+| `addSetToExercise` / `insertWarmupRampOnExercise` | Add a planned work set / insert free warmup ramp (`.764`) |
 | `logSet` / `logSetAndAdvance` | Record set; pair advance (A then B); last tempo prefills when present |
 | `toggleSupersetWithNext` / `unlinkSuperset` | Pair exactly two consecutive; unlink clears both peers (`.749`) |
 | `rateSet` / `rateSetRir` / `rateSetTempo` | After-log optional RPE / RIR (0–5) / ecc-pause-con tempo; RIR/tempo never stamped on log |

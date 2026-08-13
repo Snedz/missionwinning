@@ -60,6 +60,8 @@ import {
 import { patchesForApplyTargets,
   patchesForPlateWeight,
 } from '@/lib/workout/activeSetInputPatches';
+import { isBarLoadedEquipment } from '@/lib/plateCalculator';
+import { planWarmupRamp, resolveWorkingLoad } from '@/lib/workout/warmupRamp';
 import {
   buildConsoleSet,
   findNextSet,
@@ -120,6 +122,7 @@ export function ActiveWorkoutPage() {
   const toggleSupersetWithNext = useWorkoutStore((s) => s.toggleSupersetWithNext);
   const unlinkSuperset = useWorkoutStore((s) => s.unlinkSuperset);
   const addSetToExercise = useWorkoutStore((s) => s.addSetToExercise);
+  const insertWarmupRampOnExercise = useWorkoutStore((s) => s.insertWarmupRampOnExercise);
   const removeLastPlannedSet = useWorkoutStore((s) => s.removeLastPlannedSet);
   const removeExerciseFromActive = useWorkoutStore((s) => s.removeExerciseFromActive);
   const replaceExerciseInActive = useWorkoutStore((s) => s.replaceExerciseInActive);
@@ -345,6 +348,7 @@ export function ActiveWorkoutPage() {
     bodyweightLabel: t('activeSetBodyweight', { defaultValue: 'BW' }),
     resolveExerciseName: (id) => getExerciseById(id)?.name ?? id,
     resolvePlusLoad: (id) => isPlusLoadExercise(getExerciseById(id) ?? { id }),
+    resolveBarLoaded: (id) => isBarLoadedEquipment(getExerciseById(id)?.equipment),
     resolveInput: getSetInput,
     translateReason: (key, defaultValue) => t(key, { defaultValue }),
   });
@@ -664,6 +668,28 @@ export function ActiveWorkoutPage() {
           onLogSet={(exIdx, setIdx) => handleLogSet(exIdx, setIdx)}
           onSetKindChange={handleSetKindChange}
           onSetSideChange={(exIdx, setIdx, side) => setSetSide(exIdx, setIdx, side)}
+          onOpenPlates={() => setPlateCalcOpen(true)}
+          onAddWarmups={(exIdx) => {
+            const ex = activeWorkout.exercises[exIdx];
+            if (!ex) return;
+            const live = nextSet?.exIdx === exIdx ? nextSet.setIdx : null;
+            const liveSet = live != null ? ex.sets[live] : undefined;
+            const dial =
+              live != null && liveSet
+                ? getSetInput(exIdx, live, liveSet.reps, liveSet.weight)
+                : null;
+            const load = resolveWorkingLoad({
+              sets: ex.sets,
+              liveSetIdx: live,
+              liveDial: dial,
+            });
+            if (!load) return;
+            insertWarmupRampOnExercise(
+              exIdx,
+              planWarmupRamp({ workWeight: load.weight, units })
+            );
+            setSetInputs({});
+          }}
         />
       )}
 
@@ -705,6 +731,7 @@ export function ActiveWorkoutPage() {
         restTimerInitialSeconds={restTimerInitialSeconds}
         unitLabel={unitLabel}
         weightStep={step}
+        units={units}
         onSkipRest={stopRestTimer}
         onAdjustRest={adjustRestTimer}
         onPresetRest={startRestTimer}
@@ -718,6 +745,7 @@ export function ActiveWorkoutPage() {
             updateSetInput(exIdx, setIdx, p.field, p.value);
           }
         }}
+        onOpenPlates={() => setPlateCalcOpen(true)}
       />
 
       <ActiveWorkoutSheets

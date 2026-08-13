@@ -9,8 +9,10 @@ import { ScreenDock } from '@/components/layout/ScreenDock';
 import { RestTimerBar } from '@/components/workout/RestTimerBar';
 import { LogConsole } from '@/components/workout/LogConsole';
 import { patchesForUseNext } from '@/lib/workout/activeSetInputPatches';
+import { setRowPlateLine } from '@/lib/plateCalculator';
 import type { ActiveDockMode, ConsoleSetView } from '@/lib/workout/activeWorkoutHelpers';
 import type { SetKind, SetSide } from '@/types';
+import type { UnitsPref } from '@/lib/units';
 
 type Props = {
   dockMode: ActiveDockMode;
@@ -19,6 +21,7 @@ type Props = {
   restTimerInitialSeconds: number;
   unitLabel: string;
   weightStep: number;
+  units: UnitsPref;
   onSkipRest: () => void;
   onAdjustRest: (delta: number) => void;
   onPresetRest: (seconds: number) => void;
@@ -32,6 +35,7 @@ type Props = {
     setIdx: number,
     patches: { field: 'reps' | 'weight'; value: number }[]
   ) => void;
+  onOpenPlates?: () => void;
 };
 
 export function ActiveSessionDock({
@@ -41,6 +45,7 @@ export function ActiveSessionDock({
   restTimerInitialSeconds,
   unitLabel,
   weightStep,
+  units,
   onSkipRest,
   onAdjustRest,
   onPresetRest,
@@ -50,6 +55,7 @@ export function ActiveSessionDock({
   onSideChange,
   onLog,
   onApplyFieldPatches,
+  onOpenPlates,
 }: Props) {
   /*
     One dock, two states, never both. Rest takes the console over rather
@@ -99,6 +105,12 @@ export function ActiveSessionDock({
               patchesForUseNext(target)
             );
           }}
+          plateLine={setRowPlateLine({
+            equipment: consoleSet.barLoaded ? 'Barbell' : undefined,
+            weight: consoleSet.input.weight,
+            units,
+          })}
+          onOpenPlates={onOpenPlates}
           onUseNext={(target) => {
             onApplyFieldPatches(
               consoleSet.exIdx,
