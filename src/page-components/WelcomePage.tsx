@@ -35,6 +35,7 @@ import { useWorkoutStore, hasLoggedWork } from '@/store/workoutStore';
 import { BrandMonogram } from '@/components/brand/BrandMonogram';
 import { readRaw, writeRaw } from '@/lib/storage/safeStorage';
 import { STORAGE_KEYS } from '@/lib/storage/keys';
+import { seedHomeGymKitIfUnset } from '@/lib/workout/homeGymKit';
 import { navigateAfterPrivateGateUnlock } from '@/lib/privateGateNavigate';
 
 const EXPERIENCE_VALUES = ['beginner', 'intermediate', 'advanced'] as const;
@@ -83,6 +84,7 @@ export function WelcomePage() {
     writeRaw(STORAGE_KEYS.equipment, equipment);
     writeRaw(STORAGE_KEYS.primaryGoal, primaryGoal);
     writeRaw(STORAGE_KEYS.goals, primaryGoal);
+    seedHomeGymKitIfUnset(equipment);
     saveDaysPerWeek(defaultDaysPerWeek(experience));
     scheduleJourneyPush();
   };

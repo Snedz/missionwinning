@@ -47,6 +47,7 @@ import { countHighProteinDaysFromNutritionLog } from "@/lib/nutritionHighProtein
 import { Skeleton, SkeletonBlock, SkeletonCard } from "@/components/ui/Skeleton";
 import { readJson, readRaw } from "@/lib/storage/safeStorage";
 import { STORAGE_KEYS } from "@/lib/storage/keys";
+import { loadHomeGymKit } from "@/lib/workout/homeGymKit";
 import { computeReentry, type Reentry } from "@/lib/reentry";
 import { TodayReentryCard } from "@/components/today/TodayReentryCard";
 import { FIRST_STEPS_DISMISS_KEY } from "@/lib/today/firstStepsDismissed";
@@ -552,6 +553,7 @@ export function HomeTodayDashboard() {
       history: workoutHistory,
       units,
       equipment: userEquip,
+      homeGymKit: loadHomeGymKit(),
       doseScale: reentry?.show ? reentry.doseScale : 1,
       startWorkout,
       navigate: (href) => router.push(href),

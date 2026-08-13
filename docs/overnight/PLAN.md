@@ -1,142 +1,142 @@
-# Frozen: F-017 verify + iterate first set without an account (`.762`)
+# Frozen plan — Home gym kit on the free logger
 
-**Status:** FROZEN. Verify and fix only this plan. Do not expand scope.
+**Status:** FROZEN. Implement only this file.
+**Ship:** `2026.07-unified.763`
+**Excellence-Override:** free home-gym kit
+**Lane:** Engineering-Web · Horizon W · Train logger equipment (`/account` + `/active` read)
+**Free forever.** Not Super Bundle bait. No trial. No account. No `PRIVATE_MODE` flip.
 
-**Label:** `2026.07-unified.762` — F-017 verify/iterate.
-
-Master already minted `.746` (the #523 / reserved-`.730` ship) through `.761` (e1RM). The original brief asked for `.747` / then `.750`; both are taken. `check-build-label` requires a label strictly past `origin/master`. Do not reuse `.730` or `.750`.
-
-**Excellence-Override:** F-017 first-set verify iterate
-
-**Lane:** Engineering-Web + Design craft on the first-set path only.
+Young people start with $0: kit is free, logger is free, no paywall.
 
 ---
 
-## Discovery (why verify, not a new feature)
+## Problem
 
-| Existing | State | This PR |
-|----------|--------|---------|
-| [#523](https://github.com/Snedz/missionwinning/pull/523) / `.746` (reserved `.730`) | Merged to master (`cdf19fa`). Contract: I-Day welcome → profile → `/log`; Train never mounts `SignInPrompt`; header chip off until first workout and never on `/active`; Today Sign-in only after `workoutHistory.length > 0`; `TAP_BUDGET` 5 | **Verify the function and the craft.** Fix gaps in this same PR. |
-| `src/lib/firstSetUngated.test.ts` | Predicate table + source-scan wiring. Does **not** discover child mounts, TAP_BUDGET, speech, or pathname edges beyond a few literals | Extend until a mutant that remounts account chrome on the cold path goes red |
-| Hypothesis (non-binding) | Merge landed the contract, but first-paint chrome or a missed `SignInPrompt` mount / header-chip edge may still fail a cold phone | Investigate. Reach an independent conclusion. Discard the hypothesis if wrong. |
+I-Day stores one coarse radio (`bodyweight` / `dumbbells` / `full-gym`) in `mw_equipment`. A garage athlete with a barbell, rack, plates, and a pull-up bar is forced into **full gym** (machines, cables, sleds they do not have) or **dumbbells** (`home-gym` already maps there and **drops barbell work**). The logger cannot read what they actually own.
 
-This is a **VERIFY + FIX loop**. If the code already matches the contract, still add the missing tests and a short [VERIFY.md](VERIFY.md) ledger.
+Identity’s Athlete Table `homeGym` row is **cosmetic projection** (picks-from-sets). It must not become planner input.
 
 ---
 
-## Goal
+## Discover, do not rewrite
 
-A cold phone (fresh storage) logs the first set with **no account** and **no signup chrome**. The path looks like a field instrument, not a funnel.
+| PR | Owns | This ship |
+|----|------|-----------|
+| #503 `.708` plate math + warmup | `plateCalculator.ts` `setRowPlateLine` · `warmupRamp.ts` · set-row W / plates | **Do not** touch those files. Kit may *store* `plates`; plate math inventory stays #503. |
+| #514 `.721` garage swap | `src/lib/workout/garageSwap.ts` · Swap sheet on the row | **Do not** touch. Kit does not invent a second Swap. |
+| Identity table `homeGym` | Cosmetic pick on `/profile` | **Do not** change picks. Kit may **emit** a mapped pick (Log → Social). Coach never reads identity. |
+| I-Day 3 radios | Welcome ≤90s (C5) | **Do not** expand I-Day to six checkboxes. Seed kit from the radio; Account is the editor. |
 
-`PRIVATE_MODE` / `FREE_BETA` / Stripe / EIN unchanged. Free logger never gated. No production promote. No Vercel Preview.
-
----
-
-## What “prod-ready” means (this PR)
-
-All of the following, or the PR **must not claim** production-ready:
-
-1. **Function tests green locally** for the cold path (unit + source-scan / discover guards listed below). `npm test` on the F-017 files, plus the colocated guards they extend.
-2. **Design of Welcome → `/log` → `/active` first-set is craft-LGTM:** quiet header, metric-first logger, set-log table is first paint on `/active`, no account chrome / banners / “Keep this diary” strip. Fix craft by **removing chrome**, not by adding copy.
-3. **`TAP_BUDGET` stays 5.** Never raised. Speech never owns first paint. Speech never replaces the set-log table.
-4. **No new i18n keys** unless a real string is missing for this path.
-5. **No `PRIVATE_MODE` change, no spine-label steal, no Preview deploy.** `[skip vercel]` on every commit.
-6. **Honesty:** if the cold path could not be run in a real browser (dev server + fresh storage), the PR says so. Tests + source review are not a phone.
-
-Cursor-local green (`npm test` on the touched guards, lint/typecheck if src changes) is the merge bar while Actions minutes are red. Do not burn GitHub Actions. Do not open a Vercel Preview (Hobby `api-deployments-free-per-day` is already burned).
+Occupied labels through `.762`. This ship is **`.763`**. Originally reserved `.733`.
 
 ---
 
-## What I will check (function)
+## What ships
 
-Cold phone / fresh storage contract:
+A **local Home gym kit**: the athlete lists what they have.
 
-| # | Check | Pass |
-|---|--------|------|
-| 1 | I-Day `STEP_ORDER` is `welcome` → `profile` only. Continue calls `finish()` and lands `/log` (F-004). No signup wall. Sign-in stays on `/profile`. | Source + unit. `/welcome` is outside `app/(app)/` (own header, no `AppHeader` chip). |
-| 2 | App-header Sign in chip hidden until first workout. Hidden on `/active` even after. `getUser` is not called when the chip is hidden. | `showHeaderSignInChip` table + `HeaderAuthChip` wiring. Pathname edges: trailing slash, query, `/active/*`. |
-| 3 | Today header: Sign-in link only after `workoutHistory.length > 0`. No “Keep this diary” strip. Lean + Dashboard both pass the same signal. | Header + both Today shells. |
-| 4 | One Start → `/active` → weight/reps → Log set. No account chrome under the logger. `handleLogSet` must not await auth (already asserted in `localFirstRestGuard`; keep + extend). | Page + **discovered children** of Active (not only the page file). |
-| 5 | After the first workout, Sign in may appear as quiet wayfinding on Today / Profile — **never** on `/active`. | Predicate + header. |
-| 6 | `TAP_BUDGET` is 5 in `tests/e2e/first-90.spec.ts`. Skip-sign-in tap is gone. | Unit reads the spec (e2e itself is not run in this PR — Playwright/Chromium + Actions). |
-| 7 | Speech never owns first paint on `/active`. Speech never replaces the set-log table. Debrief speech after Victory is out of the first-set path. | Discover imports on Active first-paint modules. |
-| 8 | Free logger stays ungated. No `PRIVATE_MODE` flip. No production promote. | Diff review. |
+Closed items (discover this list in code; do not grow it here):
+
+`barbell` · `rack` · `plates` · `dumbbells` · `pull-up-bar` · `floor`
+
+- Device-local JSON. No account. Backup via existing `mw_*` prefix scan.
+- Empty / unset kit → current 3-profile behavior (do not silently strip full-gym machines from athletes who never opened the kit).
+- Saving the kit writes the kit **and** a derived `mw_equipment` so Welcome / journey sync stay consistent.
+- $0 default when they *do* save a first kit with nothing checked: **floor only**.
 
 ---
 
-## What I will check (design)
+## A. Pure kit (logger equipment)
 
-Visual north star: Bevel-inspired premium dark UI, metric-first layout.
+**New** `src/lib/workout/homeGymKit.ts` + colocated test. Not under `identity/` (Coach may read kit storage; Coach must not read identity).
 
-| Surface | Pass |
-|---------|------|
-| Welcome | Two steps. Begin → Continue. No Sign-in step, no Skip-sign-in, no account banner. Quiet brand header (own chrome, not the app chip). |
-| Today (`/log`) Lean, first session | One Start. No Sign-in link. No “Keep this diary”. Lean stays lean. |
-| Train (`/active`) first set | Set-log table is first paint once a session exists. No `SignInPrompt`, no account strip, no speech chrome on the table. Header chip off. |
+| Export | Contract |
+|--------|----------|
+| `HOME_GYM_ITEMS` | Closed tuple of the six ids |
+| `parseHomeGymKit(raw)` | Clamp unknown keys; empty → floor-only when *explicit save*; missing storage → `null` (unset) |
+| `kitToEquipmentProfile(kit)` | `floor`-only → `bodyweight`; dumbbells without barbell/rack/plates → `dumbbells`; barbell or rack or plates → **not** `full-gym` (derived `home-gym` string is ok for storage; profile stays the three enums via matching overlay) |
+| `kitMatchesExercise(ex, kit)` | Catalog `equipment` → required item(s). Commercial (machine/cable/sled/tire/bike/rower/rings) never match a garage kit. Pull-up family (pull-up / chin-up / hanging / inverted-row) needs `pull-up-bar` even when catalog says Bodyweight. Rack-required lifts (squat / front-squat / bench / incline-bench) need `barbell` **and** `rack`. Deadlift / row / OHP need `barbell` only. Floor work needs `floor`. |
+| `seedKitFromEquipmentProfile(profile)` | I-Day seed: bodyweight → `[floor]`; dumbbells → `[floor, dumbbells]`; full-gym → **unset kit** (commercial gym stays full-gym until they list items) |
+| `kitToAthleteHomeGymPick(kit)` | Emit-only map to existing table picks (`bodyweight-only` / `dumbbells` / `rack-bars`). Never the reverse. |
 
-If the first-set path looks cheap, sparse, or like a signup funnel: **remove chrome**. Do not add copy. Do not restyle N1 / www. Do not restyle logger density (F-003 stays).
+Storage: `STORAGE_KEYS.homeGymKit` = `mw_home_gym_kit`. Load/save through `safeStorage` (`readJson` / `writeJson`). Saving also writes derived `mw_equipment` + `scheduleJourneyPush()`.
 
----
+**Logger read:** Just Go / Active empty start / Coach context use `kitMatchesExercise` when a kit is stored; otherwise existing `equipmentMatches(profile)`.
 
-## What I will refuse (hard bans)
+**Coach substitutions, not rank:** thread kit into `equipmentMatches` / selector **filter only**. Do not pass kit into `rankExercises`. Do not add a fourth `EquipmentProfile` enum (Zod + seedPlan stay three-way). Overlay: `equipmentMatches(ex, profile, kit?: HomeGymKit \| null)` — when `kit` is non-null, kit wins the filter; when null, today’s profile rules.
 
-- Do not flip `PRIVATE_MODE`. Do not promote production. Do not open a Vercel Preview.
-- Do not burn GitHub Actions. Do not treat Actions red as a product fail.
-- Do not copy #493 extras (Keep this diary, 15-lang gate copy, OS-permission deferral).
-- Do not touch #505 field test, #519 PT warning, #728 Preview gate, #729 transparency.
-- Do not add a guest-mode stack, identity merge, or Coach force.
-- Do not restyle N1 / landing / www.
-- Do not change empty-bar / rest-skip copy.
-- Do not invent traction. Do not gate the free logger.
-- Do not change geo-blocks in `src/lib/legal/supportedRegions.ts`.
-- Do not touch PT / pregnancy / field-test copy (counsel-hold).
-- Do not raise `TAP_BUDGET`. Do not add i18n keys unless a real string is missing.
-- Do not mint `.697`–`.729` or reuse `.730` / `.746`–`.749`.
+`contextBuilder.readLocalCoachContext` loads kit from storage and passes it. `CoachContext` may carry optional `homeGymKit` for the filter; generate/adapt still store `equipmentProfile` as the three-way derived value.
 
 ---
 
-## Tests to write / extend
+## B. Account UI (the editor)
 
-Extend `src/lib/firstSetUngated.test.ts` (and only add a sibling if a second concern appears). Prefer **discover** over enumerate.
+**New** `src/components/profile/HomeGymKitCard.tsx` on `/account` **day-one stack** (after units — Train settings, anonymous). Not under More settings. Not on `/profile` identity table.
 
-| Guard | Asserts | Mutant that must die |
-|-------|---------|----------------------|
-| Predicate edges | `normalizeAppPath` / `isActiveLoggerPath` / `showHeaderSignInChip` for `''`, `/`, query, trailing slash, `/active/foo`, `/log/` | Chip true on `/active?x=1` after first workout |
-| I-Day | `STEP_ORDER` welcome+profile; no `signin` step type; `handleProfileNext` → `finish()`; no `<SignInPanel` | Restoring `setStep('signin')` |
-| Train page | Active does not import or mount `SignInPrompt` | Remounting `<SignInPrompt` on the page |
-| Train children | Discover modules imported by `ActiveWorkoutPage` (one hop). None mount `SignInPrompt` | Prompt moved into `ActiveSessionChrome` / dock / empty state |
-| Header | `getUser` only after `showChip`; `workoutHistory.length`; early return | Calling `getUser` when `showChip` is false |
-| Today | Lean + Dashboard pass `workoutHistory.length > 0`; header `hasFirstWorkout && !userEmail`; no “Keep this diary” | Always-on Sign-in `<a>` |
-| TAP_BUDGET | `tests/e2e/first-90.spec.ts` still `const TAP_BUDGET = 5`; no Skip-sign-in tap | Raising to 6 or restoring Skip |
-| handleLogSet | No `async` / `await` / `getUser` / `getSession` (keep `localFirstRestGuard`; add a first-set pointer so F-017 has one home) | `await getUser()` before `logSetAndAdvance` |
-| Speech | Active first-paint modules (`ActiveWorkoutPage`, `ActiveExerciseList`, `LogConsole`, `ActiveSessionChrome`, `ActiveEmptyState`) do not import `@/lib/speech` | Speech owning the set table |
+- Title: **Home gym kit**
+- Body: list what you have. Free. Stays on this device.
+- Six ≥44px toggles (`variant="selected" | "outline"`, same as units). `data-testid="home-gym-kit"` + `home-gym-kit-{id}`.
+- Auto-save on toggle (like preferred days). No poster-red primary. No Bundle / trial copy.
+- `id="home-gym-kit"` for `/account#home-gym-kit`.
+- On first paint with unset kit: show seeded checkboxes from `mw_equipment` **without writing** until they toggle (full-gym → all six visually, still unset until save).
 
-Do not run `npm run e2e` / `npm run gate` / GitHub Actions. Do not start a production build unless a typecheck failure requires it.
+Emit (optional, same save): if identity table `homeGym` is unset, write `kitToAthleteHomeGymPick`. Never read identity to decide kit. Coach never imports `@/lib/identity`.
 
 ---
 
-## Files (expected)
+## C. Logger + Coach wiring (read path)
 
-| Path | Role |
-|------|------|
-| `docs/overnight/PLAN.md` | This frozen plan |
-| `docs/overnight/VERIFY.md` | Ledger: what was verified, what was fixed, what is still blocked |
-| `docs/overnight/INDEX.md` | Point at verify plan + ledger |
-| `src/lib/firstSetUngated.test.ts` | Extended guards |
-| `src/lib/firstSetUngated.ts` | Only if a real predicate gap |
-| First-set path components | Only if verify finds a function or craft defect |
-| `src/lib/buildInfo.ts` · `LOG.md` · `CONTEXT.md` `## Now` | Ship protocol `.762` |
+| Caller | Change |
+|--------|--------|
+| `ActiveWorkoutPage` Just Go | Pass stored kit into `buildJustGoSession` |
+| `justGoSession.pickExercisesForFocus` | When kit set, filter pool with `kitMatchesExercise` (not only the bodyweight string check) |
+| `coach/equipment.ts` | Optional kit overlay on `equipmentMatches` |
+| `coach/selector.ts` | Filter via `equipmentMatches(ex, ctx.equipment, ctx.homeGymKit)` — **not** rank |
+| `coach/contextBuilder.ts` | Load kit; do not import identity |
+| Welcome I-Day save | `seedKitFromEquipmentProfile` only when kit still unset |
 
-No new i18n keys (hide chrome; existing local-first strings stay).
+Do **not** restyle Train chrome. No new nav item. No Android this ship.
 
 ---
 
-## Ship
+## Out of scope (hard)
 
-- Bump `APP_BUILD_LABEL` to `2026.07-unified.762`.
-- LOG heading `## YYYY-MM-DD — F-017 first-set verify (\`.762\`)`. Rotate oldest to stay ≤15.
-- `## Now`: add `.762` bullet; rotate oldest shipped version bullet to stay ≤25. Keep Status table / Excellence / Horizon W / `PRIVATE_MODE`.
-- Commit trailer: `Excellence-Override: F-017 first-set verify iterate`
-- Every commit: `[skip vercel]`
-- Draft PR title: `F-017 first-set verify iterate (.762)`
-- PR body lists what was verified, what was fixed, and what is still blocked (Preview SSO F-035 / Hobby). Do not claim production-ready if the cold path was not actually run in a browser.
+- Rewrite plate math / warmup / garage Swap
+- Custom plate inventory (bumper vs iron) — #503 refused it
+- Fourth EquipmentProfile enum / API Zod change beyond optional ignore
+- I-Day checkbox wall
+- Super Bundle / trial / account gate
+- America / MAGA / “heartland” copy
+- Identity table pick-set expansion
+- Ranking, leaderboard, Club from kit
+- `PRIVATE_MODE` prod flip · EIN
+
+---
+
+## Tests (falsify, then keep)
+
+- `homeGymKit.test.ts` — parse clamp; $0 empty → floor; barbell+rack matches squat; barbell without rack rejects squat, allows deadlift; floor-only rejects barbell/DB/machine; pull-ups need pull-up-bar; commercial never matches kit; seed full-gym → unset; identity map is one-way.
+- `equipment.test.ts` — kit overlay does not change null-kit 3-profile cases; kit does not affect `rankExercises` (selector still ranks by familiarity).
+- `justGoSession` — kit barbell+floor does not pick leg-press.
+- Domain: `src/lib/coach/` still has no import of `src/lib/identity` (existing C1).
+- Free guard discovers `homeGymKit` + `HomeGymKitCard` — no premium/Bundle/trial.
+- Mutants: kit-null still full-gym machines; ranking by kit item count must fail.
+
+---
+
+## Docs / ship protocol (same commit as the code)
+
+- This file (already frozen)
+- `LOG.md` + rotate oldest live entry so the file stays at 15
+- `CONTEXT.md` `## Now` one bullet for `.763`
+- `APP_BUILD_LABEL` → `2026.07-unified.763`
+- `src/lib/workout/INDEX.md` · `src/lib/coach/INDEX.md` · `src/lib/storage/keys.ts` · help getting-started one line
+- i18n keys in `athleteLocales.ts` (EN + beachhead; coverage 0 uncovered)
+
+Commit trailer:
+
+```
+Excellence-Override: free home-gym kit
+```
+
+Draft PR. Preview at most one (plan commit uses `[skip vercel]`). Never flip `PRIVATE_MODE`.

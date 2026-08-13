@@ -127,6 +127,16 @@ const ATHLETE_EN: Record<string, string> = {
   navAccount: 'Account',
   moreAccountDesc: 'Settings, notifications, backup',
 
+  homeGymKitTitle: 'Home gym kit',
+  homeGymKitBody:
+    'List what you actually have. Free, stays on this device. Leave this unset if you train at a full gym.',
+  homeGymKitItem_barbell: 'Barbell',
+  homeGymKitItem_rack: 'Rack',
+  homeGymKitItem_plates: 'Plates',
+  homeGymKitItem_dumbbells: 'Dumbbells',
+  homeGymKitItem_pull_up_bar: 'Pull-up bar',
+  homeGymKitItem_floor: 'Floor',
+
   // --- Founder status (owner tools) ---
   founderStatusTitle: 'Mission status',
   founderStatusBuild: 'Build',
@@ -182,6 +192,15 @@ const BY_LANG: Record<string, Record<string, string>> = {
       'Inicio de sesión, unidades, notificaciones y copia de seguridad. Tu progreso permanece en este dispositivo salvo que inicies sesión.',
     navAccount: 'Cuenta',
     moreAccountDesc: 'Ajustes, notificaciones, copia de seguridad',
+    homeGymKitTitle: 'Kit de gimnasio en casa',
+    homeGymKitBody:
+      'Lista lo que tienes de verdad. Gratis, se queda en este dispositivo. Déjalo sin tocar si entrenas en un gimnasio completo.',
+    homeGymKitItem_barbell: 'Barra',
+    homeGymKitItem_rack: 'Rack',
+    homeGymKitItem_plates: 'Discos',
+    homeGymKitItem_dumbbells: 'Mancuernas',
+    homeGymKitItem_pull_up_bar: 'Barra de dominadas',
+    homeGymKitItem_floor: 'Suelo',
   }),
   fr: al({
     athletePageTitle: 'Ton relevé',
@@ -219,6 +238,15 @@ const BY_LANG: Record<string, Record<string, string>> = {
       'Connexion, unités, notifications et sauvegarde. Ta progression reste sur cet appareil sauf si tu te connectes.',
     navAccount: 'Compte',
     moreAccountDesc: 'Réglages, notifications, sauvegarde',
+    homeGymKitTitle: 'Kit de salle à la maison',
+    homeGymKitBody:
+      'Indique ce que tu as vraiment. Gratuit, reste sur cet appareil. Laisse tel quel si tu t’entraînes en salle complète.',
+    homeGymKitItem_barbell: 'Barre',
+    homeGymKitItem_rack: 'Rack',
+    homeGymKitItem_plates: 'Disques',
+    homeGymKitItem_dumbbells: 'Haltères',
+    homeGymKitItem_pull_up_bar: 'Barre de traction',
+    homeGymKitItem_floor: 'Sol',
   }),
   pt: al({
     athletePageTitle: 'O teu registo',
@@ -256,6 +284,15 @@ const BY_LANG: Record<string, Record<string, string>> = {
       'Início de sessão, unidades, notificações e cópia de segurança. O teu progresso fica neste dispositivo a não ser que inicies sessão.',
     navAccount: 'Conta',
     moreAccountDesc: 'Definições, notificações, cópia de segurança',
+    homeGymKitTitle: 'Kit de ginásio em casa',
+    homeGymKitBody:
+      'Lista o que tens de verdade. Grátis, fica neste dispositivo. Deixa por definir se treinas num ginásio completo.',
+    homeGymKitItem_barbell: 'Barra',
+    homeGymKitItem_rack: 'Rack',
+    homeGymKitItem_plates: 'Discos',
+    homeGymKitItem_dumbbells: 'Halteres',
+    homeGymKitItem_pull_up_bar: 'Barra de pull-up',
+    homeGymKitItem_floor: 'Chão',
   }),
 };
 

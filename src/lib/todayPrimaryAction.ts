@@ -12,6 +12,7 @@ import { loadCoachTodayOptional } from '@/lib/coach/loadCoachTodayOptional';
 import { track } from '@/lib/analytics';
 import { scaleExercisesByDose } from '@/lib/reentry';
 import { shouldRepeatLastOnToday } from '@/lib/workout/repeatLastSession';
+import type { HomeGymKit } from '@/lib/workout/homeGymKit';
 
 type StartWorkoutFn = (
   name: string,
@@ -46,6 +47,7 @@ export type TodayPrimaryActionOpts = {
   history: CompletedWorkoutLog[];
   units: UnitsPref;
   equipment: string;
+  homeGymKit?: HomeGymKit | null;
   /** When true, treat basic phase train-ready like lean (href /active or startWorkout or basic). */
   includeBasicJustGo?: boolean;
   /**
@@ -66,6 +68,7 @@ export async function runTodayPrimaryAction(opts: TodayPrimaryActionOpts): Promi
     history,
     units,
     equipment,
+    homeGymKit = null,
     includeBasicJustGo = false,
     doseScale = 1,
     startWorkout,
@@ -110,6 +113,7 @@ export async function runTodayPrimaryAction(opts: TodayPrimaryActionOpts): Promi
       history,
       units,
       equipment,
+      homeGymKit,
       coachToday,
     });
     if (session.exercises.length > 0) {

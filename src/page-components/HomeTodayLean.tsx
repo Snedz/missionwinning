@@ -37,6 +37,7 @@ import type { CompletedWorkoutLog } from '@/types';
 import { runTodayPrimaryAction, isTodayTrainReady } from '@/lib/todayPrimaryAction';
 import { STORAGE_KEYS } from '@/lib/storage/keys';
 import { readRaw } from '@/lib/storage/safeStorage';
+import { loadHomeGymKit } from '@/lib/workout/homeGymKit';
 import { peekCoachToday } from '@/lib/coach/peekCoachToday';
 import { buildJustGoHeroMeta, type JustGoHeroMeta } from '@/lib/justGoHeroMeta';
 import { shouldRepeatLastOnToday } from '@/lib/workout/repeatLastSession';
@@ -250,6 +251,7 @@ export function HomeTodayLean() {
         history,
         units,
         equipment: userEquip,
+        homeGymKit: loadHomeGymKit(),
         includeBasicJustGo: false,
         doseScale: reentry?.show ? reentry.doseScale : 1,
         startWorkout: (name, exercises) => startWorkoutFromStore(name, exercises),

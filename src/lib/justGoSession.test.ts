@@ -8,6 +8,7 @@ import {
 import type { MuscleGroup } from '@/lib/muscleGroups';
 import { MAJOR_GROUPS } from '@/lib/muscleGroups';
 import type { ReadinessInfo } from '@/lib/score';
+import { parseHomeGymKit } from '@/lib/workout/homeGymKit';
 
 function readinessAll(days: number): Record<MuscleGroup, ReadinessInfo> {
   const out = {} as Record<MuscleGroup, ReadinessInfo>;
@@ -138,5 +139,21 @@ describe('justGoSession', () => {
     const rows = muscleFreshnessRows(readinessAll(5));
     assert.equal(rows.length, MAJOR_GROUPS.length);
     assert.ok(rows.every((r) => r.recommended));
+  });
+
+  it('garage kit barbell+floor does not pick leg-press', () => {
+    const session = buildJustGoSession({
+      focus: { group: 'Legs', statusKey: 'todayReadinessPrime' },
+      readiness: readinessAll(5),
+      history: [],
+      units: 'metric',
+      equipment: 'full-gym',
+      homeGymKit: parseHomeGymKit(['barbell', 'floor']),
+    });
+    assert.ok(session.exercises.length >= 1);
+    assert.ok(
+      session.exercises.every((ex) => ex.exerciseId !== 'leg-press'),
+      session.exercises.map((e) => e.exerciseId).join(','),
+    );
   });
 });

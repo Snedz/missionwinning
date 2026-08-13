@@ -4,5 +4,5 @@
 
 | File | Purpose |
 |------|---------|
-| [PLAN.md](PLAN.md) | Frozen verify+fix plan (F-017 first-set iterate, `.762`) |
-| [VERIFY.md](VERIFY.md) | Ledger of findings after the verify loop |
+| [PLAN.md](PLAN.md) | Frozen one-concern ship plan (this wave: Home gym kit `.763`) |
+| [VERIFY.md](VERIFY.md) | Prior-wave F-017 verify ledger (`.762`) |

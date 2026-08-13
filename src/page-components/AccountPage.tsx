@@ -35,6 +35,7 @@ import { openBillingPortal } from '@/lib/payments';
 import { ProfileAccountCard } from '@/components/profile/ProfileAccountCard';
 import { ProfileRemindersCard } from '@/components/profile/ProfileRemindersCard';
 import { ProfilePreferencesCard } from '@/components/profile/ProfilePreferencesCard';
+import { HomeGymKitCard } from '@/components/profile/HomeGymKitCard';
 import { ProfileAssessmentCard } from '@/components/profile/ProfileAssessmentCard';
 import { ProfileBetaJourneyCard } from '@/components/profile/ProfileBetaJourneyCard';
 import { ProfileJourneyCard } from '@/components/profile/ProfileJourneyCard';
@@ -364,6 +365,8 @@ export function AccountPage() {
         onGoalsChange={setGoals}
         onSaveGoals={saveGoals}
       />
+
+      <HomeGymKitCard />
 
       {/* Reachable without expanding: referral invite, feedback, privacy, backup
           (e2e + product promise). Everything else folds under More settings. */}

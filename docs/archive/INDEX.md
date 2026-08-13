@@ -26,6 +26,7 @@ When adding a doc:
 
 | File | Absorbed by / note |
 |------|---------------------|
+| [log/LOG-rotate-748-for-763.md](./log/LOG-rotate-748-for-763.md) | rotated 2026-08-13 for `.763` Home gym kit on the free logger (`.748`) |
 | [log/LOG-rotate-747-for-762.md](./log/LOG-rotate-747-for-762.md) | rotated 2026-08-13 for `.762` F-017 first-set verify iterate (`.747`) |
 | [log/LOG-rotate-746-for-761.md](./log/LOG-rotate-746-for-761.md) | rotated 2026-08-13 for `.761` e1RM from logged sets (educational) (`.746`) |
 | [log/LOG-rotate-745-for-760.md](./log/LOG-rotate-745-for-760.md) | rotated 2026-08-13 for `.760` Vs last session on the set row (`.745`) |
