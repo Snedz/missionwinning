@@ -86,7 +86,7 @@ export function BundleShopStack(props: {
               'Logger and free floors. No account. No card. Super Bundle is optional depth — never required to log a set.',
           })}
         </p>
-        <Button asChild className="min-h-[52px] w-full tap-target sm:w-auto">
+        <Button asChild variant="outline" className="min-h-[52px] w-full tap-target sm:w-auto">
           <Link href="/active">{t('bundleShopFreeCta', { defaultValue: 'Start training' })}</Link>
         </Button>
       </article>

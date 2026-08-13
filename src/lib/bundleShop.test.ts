@@ -74,6 +74,17 @@ describe('shop source guards', () => {
     assert.match(stack, /bundle-card-paid/);
   });
 
+  it('free Start training is outline so Get notified is the one poster red', () => {
+    const stack = read('src/components/bundle/BundleShopStack.tsx');
+    const freeCard = stack.slice(
+      stack.indexOf('bundle-card-free'),
+      stack.indexOf('bundle-card-paid')
+    );
+    assert.match(freeCard, /variant=["']outline["']/);
+    assert.doesNotMatch(freeCard, /primary-action|bg-primary-fill|bg-accent-poster/);
+    assert.match(stack, /bundleShopGetNotified/);
+  });
+
   it('paid card interpolates floors — no hardcoded catalog digits', () => {
     const stack = read('src/components/bundle/BundleShopStack.tsx');
     // Strip interpolations / imports; leftover 110/48/60/16 would be the .606 defect.

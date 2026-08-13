@@ -17,7 +17,7 @@ Merchandising the one paid SKU (Super Bundle) against a four-app stack, with che
 
 Two cards only, stacked (Grok Bot hierarchy, MW paper/ink):
 
-1. **Free** — logger + free floors forever. No account. No card. CTA: Start training → `/active`.
+1. **Free** — logger + free floors forever. No account. No card. CTA: **Start training** (outline) → `/active`. **Get notified** / Subscribe is the one poster red.
 2. **Super Bundle** — `$59`/year primary (founders), `$11.99`/mo secondary, `$149` lifetime. One SKU.
 
 Paid card sells **content quality**, not empty SKUs. Counts come from `CONTENT_FLOORS` / `catalogMeta` / `premiumInventory` (floors that `contentInventory.test.ts` already pins `actual >= floor`):
@@ -36,6 +36,7 @@ Optional third state: paid card reads **Already included** only on real enrollme
 
 Buttons:
 
+- Free card **Start training** is outline (not poster fill) so the paid card holds the one red.
 - `FREE_BETA` or checkout unconfigured → **Get notified** (waitlist). Honest line: “Checkout opens when payments go live.”
 - Checkout actually runnable and not free-beta → **Subscribe Now**.
 - Never take a card while `isFreeBeta()`.
