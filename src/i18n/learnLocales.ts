@@ -120,6 +120,11 @@ const es: LearnStrings = {
   learnTitle: 'Aprender y dominar',
   learnSubtitle:
     '{{count}} rutas educativas gratis — fundamentos basados en evidencia e intros especialistas. Premium desbloquea programas completos.',
+  learnSubtitleOpenBeta:
+    '{{count}} rutas educativas — fundamentos primero. Guía y cursos especialistas abiertos en beta abierta.',
+  learnSubtitleBrief: 'Rutas gratis primero. Profundidad de Guía y Bundle cuando las quieras.',
+  learnSubtitleBriefOpenBeta:
+    'Rutas gratis primero. Profundidad de guía y especialistas cuando las quieras.',
   learnMarkComplete: 'Marcar completado',
   learnSampleTitle: 'Pruébalo — entrenamiento muestra gratis',
   learnSampleBtn: 'Iniciar muestra bodyweight →',
@@ -150,7 +155,31 @@ const ar: LearnStrings = {
   learnMarkComplete: 'تحديد كمكتمل',
 };
 
-const LOCALES: Partial<Record<string, LearnStrings>> = { en, es, zh, id, th, ar };
+const LOCALES: Partial<Record<string, LearnStrings>> = {
+  en,
+  es,
+  zh,
+  id,
+  th,
+  ar,
+  fr: {
+    ...en,
+    learnSubtitleOpenBeta:
+      "{{count}} parcours éducatifs — fondations d'abord. Guide et cours spécialistes ouverts en bêta ouverte.",
+    learnSubtitleBrief:
+      "Parcours gratuits d'abord. Profondeur Guide et Bundle quand vous voulez.",
+    learnSubtitleBriefOpenBeta:
+      "Parcours gratuits d'abord. Profondeur du guide et des spécialistes quand vous voulez.",
+  },
+  pt: {
+    ...en,
+    learnSubtitleOpenBeta:
+      '{{count}} percursos educativos — fundamentos primeiro. Guia e cursos especialistas abertos no beta aberto.',
+    learnSubtitleBrief: 'Percursos grátis primeiro. Profundidade de Guia e Bundle quando quiser.',
+    learnSubtitleBriefOpenBeta:
+      'Percursos grátis primeiro. Profundidade do guia e especialistas quando quiser.',
+  },
+};
 
 export function learnStringsFor(lang: string): LearnStrings & Record<string, string> {
   const ui = LOCALES[lang.split('-')[0]] ?? en;
