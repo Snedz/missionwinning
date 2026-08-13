@@ -8,11 +8,13 @@ import { useEffect } from 'react';
 import { supabase } from '@/lib/supabase';
 import { pullJourneyFromCloud, scheduleJourneyPush, syncJourneyOnSignIn } from '@/lib/journeySync';
 import { restorePremiumCourseProgressForUser } from '@/lib/learnCourseProgress';
+import { setLoggerAuthPresence } from '@/lib/authPresence';
 
 /** Keeps journey state in sync with Supabase profiles when signed in. */
 export function useJourneySync() {
   useEffect(() => {
     const { data: sub } = supabase.auth.onAuthStateChange((event, session) => {
+      setLoggerAuthPresence(!!session?.user);
       if (event === 'SIGNED_IN' && session?.user) {
         void syncJourneyOnSignIn();
         /*
@@ -34,6 +36,7 @@ export function useJourneySync() {
 
     void (async () => {
       const { data } = await supabase.auth.getSession();
+      setLoggerAuthPresence(!!data.session?.user);
       if (data.session?.user) {
         await pullJourneyFromCloud();
       }

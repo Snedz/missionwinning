@@ -13,7 +13,8 @@
  * The funnel these events exist to answer (docs/STRATEGY.md #1 metric):
  *   visit → iday_started → iday_mission_accepted → iday_profile_completed →
  *   iday_completed → first_set_logged (with secondsFromStart — the first-90-seconds
- *   budget) → first_workout_completed → workout_completed (repeat) →
+ *   budget) → set_logged / week_logged (working sets; see docs/METRICS.md) →
+ *   first_workout_completed → workout_completed (repeat) →
  *   reentry_shown after a gap → week-4 retention cohort.
  */
 
@@ -26,6 +27,10 @@ export type AnalyticsEvent =
   | 'iday_profile_completed'
   | 'iday_completed'
   | 'first_set_logged'
+  /** Working set saved (kind ≠ warmup). Properties: source, exercise_id, has_load. */
+  | 'set_logged'
+  /** First working set saved in this local ISO week. Properties: source, iso_week. */
+  | 'week_logged'
   | 'first_workout_completed'
   | 'reentry_shown'
   | 'workout_completed'

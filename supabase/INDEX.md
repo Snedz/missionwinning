@@ -26,6 +26,7 @@
 | `20260719_wearable_connections.sql` | Wearable OAuth connections + samples |
 | `20260720_referrals.sql` | Referrals |
 | `20260720_perf_indexes.sql` | `workout_logs(user_id, completed_at)` + leaderboard board indexes + leads filters |
+| `20260813_week_logged.sql` | Signed-in ISO-week logger rollup (CoS applies; guests local-only) |
 
 ## Key tables
 
@@ -38,6 +39,7 @@
 | `wearable_samples` | Normalized wearable samples |
 | School/PFT tables | See fitness_test migration |
 | `youth_consent_records` | COPPA |
+| `week_logged` | Signed-in weekly logger rollup (ISO week). No PII beyond `user_id`. |
 
 ## Related (not here)
 

@@ -24,7 +24,7 @@
 | Action | Effect |
 |--------|--------|
 | `startWorkout` / `startEmptyWorkout` | Begin active session |
-| `logSet` / `logSetAndAdvance` | Record set; superset advance |
+| `logSet` / `logSetAndAdvance` | Record set; superset advance; working-set week-4 events (`week4Logger`) |
 | `completeActiveWorkout` | Mint `clientId`, push to history, enqueue the cloud write on the outbox, analytics, leaderboard push |
 | `loadFromCloud` | Merge Supabase history with local |
 | `cancelActiveWorkout` | Discard in-progress |

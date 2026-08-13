@@ -373,6 +373,11 @@ export const pushUnsubscribeBodySchema = z.object({
 });
 
 /** Account deletion (GDPR Art. 17) — the literal is the second confirmation. */
+/** Signed-in ISO-week logger rollup — no PII. Guests never POST this. */
+export const weekLoggedBodySchema = z.object({
+  isoWeek: z.string().regex(/^\d{4}-W\d{2}$/).max(12),
+});
+
 export const accountDeleteBodySchema = z.object({
   confirm: z.literal('DELETE'),
   /** mw_device_id, so anonymous push/AI-metering rows for this device go too. */

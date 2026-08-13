@@ -22,6 +22,7 @@ import { applyWorkoutRewards } from "@/lib/rewards/apply";
 import { scheduleLeaderboardPush } from "@/lib/leaderboardSync";
 import { mapCloudToLocal, mergeWorkoutHistoriesDetailed } from "@/lib/workout/workoutMerge";
 import { track } from "@/lib/analytics";
+import { recordWorkingSetLogged } from "@/lib/week4Logger";
 import { setActiveWorkoutFlag } from "@/lib/workout/activeWorkoutPulse";
 import { enqueueWorkoutUpsert } from "@/lib/sync/workoutSync";
 import { flush as flushOutbox } from "@/lib/sync/outbox";
@@ -336,6 +337,16 @@ export const useWorkoutStore = create<WorkoutState>()(
               ? { secondsFromStart: Math.max(0, Math.round((Date.now() - started) / 1000)) }
               : undefined
           );
+        }
+
+        const logged = get().activeWorkout?.exercises[exerciseIndex];
+        const saved = logged?.sets[setIndex];
+        if (logged && saved) {
+          recordWorkingSetLogged({
+            kind: saved.kind,
+            exerciseId: logged.exerciseId,
+            weight,
+          });
         }
       },
 

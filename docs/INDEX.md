@@ -77,6 +77,8 @@
 | [WEARABLES.md](WEARABLES.md) | Apple / Google / Whoop / Strava wearables strategy + unlock |
 | [TRACK_D_GO_LIVE.md](archive/TRACK_D_GO_LIVE.md) | Go-live verify commands (`launch-verify`, Stripe, Supabase) |
 | [POST_LAUNCH_CADENCE.md](POST_LAUNCH_CADENCE.md) | Week-4 retention wall + weekly ops |
+| [METRICS.md](METRICS.md) | Boss metric definition — working-set events, what is not counted, no invented traction |
+| [WEEK4_LOGGER_EVENTS_PLAN.md](WEEK4_LOGGER_EVENTS_PLAN.md) | Frozen `.740` plan for those events |
 | **[THESIS.md](THESIS.md)** | **Start here for the idea.** What the product is on one page: three layers, the two-beat wedge, ICP, what is actually shipped vs thin, the honest moat, the open questions |
 | [CREATIVE_MONOPOLY.md](CREATIVE_MONOPOLY.md) | Zero to One filter: trait scores, contrarian secret, beachhead of 10, founder checklist (not a second roadmap) |
 | [MIGRATION_FOUNDER_PACK.md](MIGRATION_FOUNDER_PACK.md) | One-sitting Supabase apply order (pending free-beta set) + week-4 proof |

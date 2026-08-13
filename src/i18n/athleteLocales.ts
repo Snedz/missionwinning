@@ -124,6 +124,17 @@ const ATHLETE_EN: Record<string, string> = {
   accountPrimaryHint: 'What you need day to day',
   accountMoreSettings: 'More settings',
   accountOwnerSection: 'Owner tools',
+  accountUnderTheHood: 'Under the Hood',
+  accountUnderTheHoodHint:
+    'This install only — not a live user count. We do not invent traction.',
+  accountUnderTheHoodFirstWeek: 'First logged week',
+  accountUnderTheHoodThisWeek: 'This week',
+  accountUnderTheHoodLoggedThisWeek: 'Working set this week',
+  accountUnderTheHoodRetained: 'retained_week_4',
+  accountUnderTheHoodNone: 'No working set logged yet',
+  accountUnderTheHoodYes: 'yes',
+  accountUnderTheHoodNo: 'no',
+  offlineQueueWeekLogged: 'Weekly log mark',
   navAccount: 'Account',
   moreAccountDesc: 'Settings, notifications, backup',
 
