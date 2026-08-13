@@ -3,7 +3,6 @@ import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { MOBILITY_FLOWS } from '@/data/mobilityFlows';
-import { PREMIUM_MOBILITY_FLOWS } from '@/data/premiumMobilityFlows';
 import {
   POST_SESSION_FLOW_BY_MUSCLE,
   dominantTrainedMuscle,
@@ -59,14 +58,15 @@ describe('pickPostSessionMoveFlow', () => {
 });
 
 describe('POST_SESSION_FLOW_BY_MUSCLE catalog contract', () => {
-  it('every mapped id is a free MOBILITY_FLOWS row — not premium, not invented', () => {
-    const freeIds = new Set(MOBILITY_FLOWS.map((f) => f.id));
-    const premiumOnly = new Set(
-      PREMIUM_MOBILITY_FLOWS.map((f) => f.id).filter((id) => !freeIds.has(id))
-    );
+  it('every mapped id is a free MOBILITY_FLOWS row — not invented', () => {
+    const freeById = new Map(MOBILITY_FLOWS.map((f) => [f.id, f]));
     for (const [muscle, flow] of Object.entries(POST_SESSION_FLOW_BY_MUSCLE)) {
-      assert.ok(freeIds.has(flow.id), `${muscle} maps to missing free flow ${flow.id}`);
-      assert.ok(!premiumOnly.has(flow.id), `${muscle} must not deep-link a premium-only flow`);
+      const free = freeById.get(flow.id);
+      assert.ok(free, `${muscle} maps to missing free flow ${flow.id}`);
+      assert.ok(
+        free.name === flow.name || free.name.startsWith(`${flow.name} (`),
+        `${muscle} display name ${flow.name} must match catalog ${free.name}`
+      );
     }
   });
 
