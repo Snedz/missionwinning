@@ -71,7 +71,7 @@ export function VictoryReceiptStrip({ receipt, unitLabel }: Props) {
           {t('victoryReceiptLabel', { defaultValue: 'This session' })}
         </p>
         {receipt.prCount > 0 ? (
-          <p className="text-xs font-semibold tabular-nums text-poster" data-testid="victory-pr-count">
+          <p className="text-xs font-semibold tabular-nums text-primary" data-testid="victory-pr-count">
             {receipt.prCount === 1
               ? t('victoryPrsOne', { defaultValue: '1 PR' })
               : t('victoryPrsMany', {
@@ -89,7 +89,7 @@ export function VictoryReceiptStrip({ receipt, unitLabel }: Props) {
             <div className="flex items-baseline justify-between gap-2 px-1">
               <h3 className="text-sm font-semibold text-foreground">{ex.exerciseName}</h3>
               {ex.prs.length > 0 ? (
-                <span className="text-xs font-semibold uppercase tracking-[0.08em] text-poster">
+                <span className="text-xs font-semibold uppercase tracking-[0.08em] text-primary">
                   {t('victoryPrBadge', { defaultValue: 'PR' })}
                 </span>
               ) : null}
@@ -148,7 +148,7 @@ export function VictoryReceiptStrip({ receipt, unitLabel }: Props) {
                     <td className="py-1.5 pe-2 align-top font-semibold text-foreground">
                       {formatReceiptSetLoad(set.reps, set.weight)}
                       {set.isPr ? (
-                        <span className="ms-2 text-[10px] font-semibold uppercase tracking-[0.08em] text-poster">
+                        <span className="ms-2 text-[10px] font-semibold uppercase tracking-[0.08em] text-primary">
                           {t('victoryPrBadge', { defaultValue: 'PR' })}
                         </span>
                       ) : null}

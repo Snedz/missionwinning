@@ -51,7 +51,7 @@ export interface WorkoutVictorySummary {
   progressionInsight?: ProgressionInsight;
   /** Single post-workout ritual CTA (S-Tier: one next action). */
   nextAction?: VictoryNextAction;
-  /** Vs-last receipt from local logs — instant, offline, free (.700). */
+  /** Vs-last receipt from local logs — instant, offline, free (.712). */
   receipt?: VictoryReceipt;
 }
 

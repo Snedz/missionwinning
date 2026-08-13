@@ -15,7 +15,7 @@ Root-level `@/lib/{name}` paths re-export from here for compatibility — prefer
 7. `workoutPr.ts` — personal record detection  
 8. `workoutMerge.ts` — local/cloud history fingerprint merge  
 9. `workoutVictory.ts` — post-workout summary; early/no-plan → Mission Coach; freestyle progression skipped when prescribed (`.410`); one-exit secondary Today helper (`.422`)  
-9b. `victoryReceipt.ts` — vs-last session + per-lift Prev/deltas + beaten PRs from local logs (`.700`); prior is `completedAt` timestamp so two sessions the same day compare; extra sets reuse last-time last set as Prev  
+9b. `victoryReceipt.ts` — vs-last session + per-lift Prev/deltas + beaten PRs from local logs (`.712`); prior is `completedAt` timestamp so two sessions the same day compare; extra sets reuse last-time last set as Prev  
 10. `activeWorkoutHelpers.ts` — next incomplete set, last session, set stats, `buildConsoleSet` / `planApplyTargets` / `resolveActiveSetDial` (`.297`/`.303`)  
 11. `activeWorkoutPulse.ts` — nav pulse flag without store  
 12. `workoutPersistLite.ts` — history/streak from localStorage (cold path)

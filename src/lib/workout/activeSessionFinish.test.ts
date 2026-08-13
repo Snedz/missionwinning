@@ -198,7 +198,7 @@ describe('assembleActiveVictory', () => {
     assert.equal(out.victorySummary.receipt!.prCount, 0);
   });
 
-  it('same-day second session attaches vs-last volume from historyBefore (.700)', () => {
+  it('same-day second session attaches vs-last volume from historyBefore (.712)', () => {
     const first = log({
       id: 'w0',
       completedAt: '2026-08-13T16:00:00.000Z',

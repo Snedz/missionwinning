@@ -1,7 +1,7 @@
 'use client';
 
 /**
- * Duration · volume · sets grid on Victory (.447 / vs-last .700).
+ * Duration · volume · sets grid on Victory (.447 / vs-last .712).
  * Deltas are muted ink in both directions — colouring them would spend the
  * one red on scolding (ScoreNumeral).
  */
