@@ -31,7 +31,7 @@ export const CONTENT_FLOORS = {
   mindPremium: 60,
   recipesFree: 48,
   recipesPremium: 110,
-  learnPremiumSections: 16,
+  learnPremiumSections: 24,
   /**
    * Free guidebook chapters (`BEYOND_THE_BASICS_CHAPTERS`), which is also exactly
    * how many `/guide/*` URLs the sitemap emits — `app/sitemap.ts:86` maps the array.

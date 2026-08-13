@@ -17,7 +17,7 @@ Typical Super Bundle access:
 - **Mission Coach** — full weekly AI plan + adaptation (`/coach`)
 - **Fuel** — premium recipes and meal depth
 - **Move / Mind** — advanced guided sessions
-- **Learn** — full guidebook and programs
+- **Learn** — free intro guidebook + paths stay free; Super Bundle adds the Train→Coach→Fuel/Move/Mind sequence course plus specialist depth
 - **Track** — advanced features where gated
 
 Exact entitlements may evolve — Profile shows your status.
