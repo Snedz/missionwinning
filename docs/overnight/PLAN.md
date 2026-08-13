@@ -120,7 +120,7 @@ Copy-guard bans: `safe for pregnancy` · `safe pregnancy PT` · `prevents miscar
 | `src/i18n/notificationLocales.ts` + `activeWorkoutLocales.ts` + `infoLocales.ts` | EN keys; other langs `...en` |
 | `src/lib/storage/keys.ts` | `pregnancyFlag` |
 | INDEX rows | lib, components, help, docs |
-| `src/lib/buildInfo.ts` · `LOG.md` · `CONTEXT.md` `## Now` | Ship protocol `.746` — v1 wording |
+| `src/lib/buildInfo.ts` · `LOG.md` · `CONTEXT.md` `## Now` | Ship protocol `.761` — v1 wording + unsigned label |
 
 **Must not remain:** `src/lib/coach/pregnancyHold.ts`, `PregnancyHoldNote.tsx`, pregnancy args on `nextTargets` / `CoachContext`.
 

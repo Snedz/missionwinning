@@ -2,7 +2,7 @@
 
 Mission Winning is **educational fitness software**. It is not prenatal care, not medical care, not a clinician, and not emergency services.
 
-You can optionally set a training status under **Account → More settings**: none, pregnant, postpartum, or miscarriage recovery. It is **never required** to log a set. We do not guess this from your workouts. Clearing it is silent — we do not ask what happened.
+You can optionally set a training status under **Account → More settings**: none, pregnant, or postpartum. It is **never required** to log a set. We do not guess this from your workouts. Clearing it is silent — we do not ask what happened.
 
 ## Stopping is allowed
 

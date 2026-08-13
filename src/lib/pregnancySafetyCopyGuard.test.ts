@@ -34,7 +34,6 @@ const PREGNANCY_KEYS = [
   'pregnancyFlagNone',
   'pregnancyFlagPregnant',
   'pregnancyFlagPostpartum',
-  'pregnancyFlagMiscarriage',
   'pregnancyFlagStop',
   'pregnancyFlagNotCare',
 ] as const;
@@ -57,6 +56,13 @@ test('Account EN strings stay inside the copy bans and name stop + clinician', (
   assert.match(en.pregnancyFlagNotCare, /not prenatal care/i);
   assert.match(en.pregnancyFlagNotCare, /not medical advice/i);
   assert.match(en.pregnancyFlagNotCare, /clinician/i);
+  assert.equal(en.pregnancyFlagNone, 'None');
+  assert.equal(en.pregnancyFlagPregnant, 'Pregnant');
+  assert.equal(en.pregnancyFlagPostpartum, 'Postpartum');
+  assert.equal(en.pregnancyFlagMiscarriage, undefined);
+  for (const key of PREGNANCY_KEYS) {
+    assert.doesNotMatch(en[key]!, /miscarriage recovery/i, key);
+  }
 });
 
 test('hard-session stop keys match the frozen counsel strings', () => {
@@ -91,6 +97,7 @@ test('pregnancy help, contract, Account card, and draft refusal stay inside the 
   assert.match(help, /does not change/i);
   assert.doesNotMatch(help, /will not prescribe a max-effort/i);
   assert.doesNotMatch(help, /start buttons stay hidden/i);
+  assert.doesNotMatch(help, /miscarriage recovery/i);
   assertClean('pregnancy-safety.md', help);
 
   const contract = readFileSync(join(root, 'docs/PREGNANCY_SAFETY.md'), 'utf8');
@@ -114,6 +121,7 @@ test('pregnancy help, contract, Account card, and draft refusal stay inside the 
   const all = [...new Set([...cardDefaults, ...cardDefaults2])];
   assert.ok(all.length >= 4, 'expected Account card default copy');
   for (const d of all) assertClean(`card:${d}`, d);
+  assert.doesNotMatch(card, /Miscarriage recovery/);
 
   assert.match(CAUSE_TALK_REFUSAL_DRAFT, /clinician/i);
   assert.match(CAUSE_TALK_REFUSAL_DRAFT, /cannot say|can't say|do not answer/i);

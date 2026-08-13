@@ -10,7 +10,7 @@ The warning tells you:
 
 - Strenuous or max-effort work can be dangerous.
 - **Stop** if you have chest pain, feel faint, have severe shortness of breath, or cannot talk.
-- If you have set a pregnancy / postpartum / miscarriage-recovery status under Account → More settings, that stop line also names bleeding, cramping, and dizziness. The status does not hide this session. See [pregnancy-safety.md](pregnancy-safety.md).
+- If you have set a pregnancy or postpartum status under Account → More settings, that stop line also names bleeding, cramping, and dizziness. The status does not hide this session. See [pregnancy-safety.md](pregnancy-safety.md).
 - This app is **not medical care** and cannot prevent a medical emergency.
 - If this is an emergency, call **local emergency services** — not the app.
 - Talk with a clinician before max-effort tests if you have a heart, breathing, or other health condition, or if you are unsure.

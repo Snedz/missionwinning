@@ -134,8 +134,9 @@ export const STORAGE_KEYS = {
   mindCheckIns: 'mw_mind_checkins',
   lastAssessment: 'mw_last_assessment',
   /**
-   * Optional athlete-owned pregnancy / postpartum / miscarriage-recovery flag.
-   * Never inferred. Device-local. See docs/PREGNANCY_SAFETY.md.
+   * Optional athlete-owned pregnancy / postpartum flag (`none` | `pregnant` |
+   * `postpartum` | stored `miscarriage_recovery`). The fourth value is UNSIGNED
+   * as athlete copy. Never inferred. Device-local. See docs/PREGNANCY_SAFETY.md.
    */
   pregnancyFlag: 'mw_pregnancy_flag',
   wearablesHubSamples: 'mw_wearables_hub_samples',

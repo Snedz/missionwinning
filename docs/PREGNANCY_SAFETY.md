@@ -2,7 +2,7 @@
 
 **Status:** counsel-hold (same posture as PT safety). Educational tools, not a clinician, not 911, not a medical device. Copy in this file and the linked help/Terms paragraph must be reviewed by counsel before production. **Not legal advice.**
 
-**Do not promote this surface until counsel signs the copy.** Draft PRs may land on `master` only after that review — agents do not merge.
+**Do not promote this surface until counsel signs the copy.** Draft PRs may land on `master` only after that review — agents do not merge. Existing Preview is **not** a review or E-Day surface.
 
 **v1 (decision 011):** the optional flag changes **exactly one** product behavior — which stop-symptoms line appears on the hard-session warning sheet. Coach prescriptions and start CTAs are unchanged.
 
@@ -14,10 +14,10 @@ Optional, athlete-owned, stored on this device (`mw_pregnancy_flag`):
 
 | Value | Meaning |
 |-------|---------|
-| `none` | Default. Unset and invalid values parse as `none`. Clearing to `none` deletes the key. |
-| `pregnant` | Athlete set this. |
-| `postpartum` | Athlete set this. |
-| `miscarriage_recovery` | Athlete set this. |
+| `none` | Default. Unset and invalid values parse as `none`. Clearing to `none` deletes the key. Athlete label: **None**. |
+| `pregnant` | Athlete set this. Athlete label: **Pregnant**. |
+| `postpartum` | Athlete set this. Athlete label: **Postpartum**. |
+| `miscarriage_recovery` | Stored value only. **UNSIGNED** as athlete copy — not an Account option. Grief-adjacent labels need counsel + founder before any review surface. Do not invent a synonym for loss. If already stored, the hold stop line still applies. |
 
 **Never inferred** from logs, sex, age, cycle, or photos. **Never required to log.** The free logger stays free. Silent flag-off — no “what happened?” prompt.
 

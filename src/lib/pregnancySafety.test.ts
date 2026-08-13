@@ -3,10 +3,12 @@ import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import path from 'node:path';
 import {
+  ATHLETE_VISIBLE_FLAGS,
   HARD_SESSION_STOP_DEFAULT,
   HARD_SESSION_STOP_PREGNANCY,
   hardSessionStopKey,
   hardSessionStopLine,
+  isAthleteVisibleFlag,
   isPregnancySafetyHold,
   loadPregnancyFlag,
   parsePregnancyFlag,
@@ -54,6 +56,18 @@ describe('parsePregnancyFlag', () => {
     assert.equal(parsePregnancyFlag('Pregnant'), 'pregnant');
     assert.equal(parsePregnancyFlag('postpartum'), 'postpartum');
     assert.equal(parsePregnancyFlag('miscarriage_recovery'), 'miscarriage_recovery');
+  });
+});
+
+describe('athlete-visible labels stay unsigned for grief-adjacent copy', () => {
+  it('Account options are None / Pregnant / Postpartum only', () => {
+    assert.deepEqual([...ATHLETE_VISIBLE_FLAGS], ['none', 'pregnant', 'postpartum']);
+    assert.equal(isAthleteVisibleFlag('none'), true);
+    assert.equal(isAthleteVisibleFlag('pregnant'), true);
+    assert.equal(isAthleteVisibleFlag('postpartum'), true);
+    assert.equal(isAthleteVisibleFlag('miscarriage_recovery'), false);
+    assert.equal(isPregnancySafetyHold('miscarriage_recovery'), true);
+    assert.equal(hardSessionStopLine('miscarriage_recovery'), HARD_SESSION_STOP_PREGNANCY);
   });
 });
 
@@ -160,6 +174,14 @@ describe('pregnancy safety wiring v1', () => {
     const moreIdx = account.indexOf('accountMoreSettings');
     const cardIdx = account.indexOf('<ProfilePregnancyCard');
     assert.ok(cardIdx > moreIdx, 'pregnancy card must sit under More settings');
+
+    const card = readFileSync(
+      path.join(root, 'src/components/profile/ProfilePregnancyCard.tsx'),
+      'utf8'
+    );
+    assert.match(card, /ATHLETE_VISIBLE_FLAGS/);
+    assert.doesNotMatch(card, /Miscarriage recovery/);
+    assert.doesNotMatch(card, /pregnancyFlagMiscarriage/);
 
     const home = readFileSync(path.join(root, 'src/page-components/HomePage.tsx'), 'utf8');
     assert.doesNotMatch(home, /pregnancy/i);

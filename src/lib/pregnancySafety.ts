@@ -26,6 +26,22 @@ export const HOLD_FLAGS: readonly Exclude<PregnancyFlag, 'none'>[] = [
   'miscarriage_recovery',
 ];
 
+/**
+ * Athlete-facing Account options until counsel + founder sign grief-adjacent copy.
+ * `miscarriage_recovery` stays parseable / a hold flag; it is UNSIGNED as a label.
+ */
+export const ATHLETE_VISIBLE_FLAGS = ['none', 'pregnant', 'postpartum'] as const;
+
+export type AthleteVisibleFlag = (typeof ATHLETE_VISIBLE_FLAGS)[number];
+
+export function isAthleteVisibleFlag(
+  flag: PregnancyFlag | string | null | undefined
+): flag is AthleteVisibleFlag {
+  return (ATHLETE_VISIBLE_FLAGS as readonly string[]).includes(
+    parsePregnancyFlag(flag ?? undefined)
+  );
+}
+
 /** #519 hard-session stop line when the flag is off. */
 export const HARD_SESSION_STOP_DEFAULT =
   'Stop if you have chest pain, feel faint, have severe shortness of breath, or cannot talk.';
