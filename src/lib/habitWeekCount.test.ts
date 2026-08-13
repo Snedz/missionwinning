@@ -74,7 +74,7 @@ describe('HABIT contract', () => {
     const body = read(rel);
     assert.match(body, /daily \*\*Train\*\* is the habit loop/i);
     assert.match(body, /Habit → Identity → Money → Platform/);
-    assert.match(body, /0 is a valid/);
+    assert.match(body, /[Zz]ero is a valid/);
   });
 
   it('week-count copy is shame-free (no missed / streak / you-haven’t)', () => {
