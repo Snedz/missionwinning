@@ -6,6 +6,15 @@ Living roadmap for the **everything app** (Freeletics Super Bundle → one PWA).
 
 ---
 
+## Frozen plan — Mission Server messenger (`.752`) — 2026-08-13
+
+> **Frozen.** Implement only [MISSION_SERVER_MESSENGER_PLAN.md](MISSION_SERVER_MESSENGER_PLAN.md).
+> Label `2026.07-unified.752` (master `.751`; do not steal `.697`–`.730`; `.748` already shipped).
+> Continue #518 rooms — deepen presence + MSN window chrome. Not Discord.com.
+> `[skip vercel]` every commit. Excellence-Override: Mission Server messenger (MSN rooms).
+
+---
+
 ## Frozen plan — `.719` logger supersets (2026-08-13)
 
 > **Frozen.** Implement only this section. Plan commit is `[skip vercel]`.
