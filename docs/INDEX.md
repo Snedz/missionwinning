@@ -140,6 +140,7 @@ Root keeps only the spine (README · CONTEXT · AGENTS · INDEX · vision · ORC
 | [LAUNCH_RUNBOOK.md](LAUNCH_RUNBOOK.md) | Founder critical path |
 | [ENV.md](ENV.md) | Environment variables |
 | [PROTECTION.md](PROTECTION.md) | Security checklist |
+| [security/INDEX.md](security/INDEX.md) | Dated red-team hunts (findings only, no PoCs) |
 | [BETA_INVITE.md](BETA_INVITE.md) | Beta kit |
 | [VISION_STATUS.md](VISION_STATUS.md) | Vision scorecard |
 | [VERCEL_DEPLOY_CHECKLIST.md](VERCEL_DEPLOY_CHECKLIST.md) | Deploy steps |

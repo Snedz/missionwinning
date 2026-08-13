@@ -68,7 +68,7 @@
 | Crypto rails (strategy) | [docs/CRYPTO_RAILS_THESIS.md](docs/CRYPTO_RAILS_THESIS.md) | — |
 | Where we are (status) | [CONTEXT.md](CONTEXT.md) `## Now` | Reading the retired vision scorecard as current — it is archived, 495 ships stale |
 | Beta testers | [docs/BETA_INVITE.md](docs/BETA_INVITE.md) | — |
-| Security | [docs/PROTECTION.md](docs/PROTECTION.md), [docs/OWASP_AUDIT.md](docs/OWASP_AUDIT.md), [docs/COMPLIANCE.md](docs/COMPLIANCE.md), [docs/AIKIDO.md](docs/AIKIDO.md) | Certification claims / Vanta substitutes as “done” |
+| Security | [docs/PROTECTION.md](docs/PROTECTION.md), [docs/OWASP_AUDIT.md](docs/OWASP_AUDIT.md), [docs/COMPLIANCE.md](docs/COMPLIANCE.md), [docs/AIKIDO.md](docs/AIKIDO.md), dated hunts in [docs/security/INDEX.md](docs/security/INDEX.md) | Certification claims / Vanta substitutes as “done” |
 | Vercel deploy | [docs/VERCEL_DEPLOY_CHECKLIST.md](docs/VERCEL_DEPLOY_CHECKLIST.md) | — |
 | **CI / Actions minutes** | [docs/CI_LOCAL.md](docs/CI_LOCAL.md) | Treating Actions red as a product fail while minutes are exhausted; burning Hobby Previews |
 | **Open source** | [docs/OPEN_SOURCE.md](docs/OPEN_SOURCE.md), [docs/PUBLIC_GITHUB.md](docs/PUBLIC_GITHUB.md), [docs/CLASSIFICATION.md](docs/CLASSIFICATION.md), [docs/DUAL_REPO.md](docs/DUAL_REPO.md), [docs/SECURITY_PUBLIC_OSS_AUDIT_2026-08-08.md](docs/SECURITY_PUBLIC_OSS_AUDIT_2026-08-08.md), [LICENSE](LICENSE), [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md), [CONTRIBUTING.md](CONTRIBUTING.md) | Flipping `PRIVATE_MODE`; inventing a new license; public monorepo with war-room docs |
