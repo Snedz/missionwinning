@@ -48,6 +48,7 @@
 | `GuidebookChapterPage.tsx` | `/learn/guide/[chapterId]` |
 | `GuidePublicIndexPage.tsx` | `/guide` — Apex shell + Contents |
 | `GuidePublicChapterPage.tsx` | `/guide/[chapter]` — Apex shell |
+| `LearnVsPublicPage.tsx` | `/guide/mission-winning-vs-*` — AEO vs-pages |
 | `GuideMagazinePrintPage.tsx` | `/guide/print` (PDF source) |
 
 ### Premium & marketing
