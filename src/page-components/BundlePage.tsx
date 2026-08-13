@@ -29,6 +29,7 @@ import { isSurfaceEnabled } from "@/lib/surface";
 import { MarketingNav } from "@/components/marketing/MarketingNav";
 import { MarketingFooter } from "@/components/marketing/MarketingFooter";
 import { BUNDLE_PILLARS } from "@/lib/payments";
+import { CONTENT_FLOORS } from "@/lib/contentFloors";
 import {
   BUNDLE_PLANS,
   DEFAULT_BUNDLE_PLAN,
@@ -412,16 +413,24 @@ export function BundlePage() {
               <tbody>
                 {BUNDLE_PILLARS.map((pillar) => {
                   const keys = BUNDLE_PILLAR_I18N[pillar.id];
+                  const premiumCopy = keys
+                    ? t(keys.premiumKey, {
+                        ...(pillar.id === "mind"
+                          ? { count: CONTENT_FLOORS.mindPremium }
+                          : {}),
+                        defaultValue: pillar.premium,
+                      })
+                    : pillar.premium;
                   return (
                     <tr key={pillar.id} className="border-b border-border last:border-0">
                       <td className="p-3">
                         <p className="font-semibold">{keys ? t(keys.nameKey) : pillar.name}</p>
                         <p className="text-xs text-muted-foreground sm:hidden">
-                          {keys ? t(keys.premiumKey) : pillar.premium}
+                          {premiumCopy}
                         </p>
                       </td>
                       <td className="hidden p-3 text-muted-foreground sm:table-cell">
-                        {keys ? t(keys.premiumKey) : pillar.premium}
+                        {premiumCopy}
                       </td>
                       <td className="p-3 text-end tabular-nums">
                         ${PILLAR_STANDALONE_PRICES[pillar.id] ?? "—"}

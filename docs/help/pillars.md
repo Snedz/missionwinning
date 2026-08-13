@@ -34,7 +34,7 @@ Mobility and recovery flows — timed sequences, breathing, and light movement o
 
 **Route:** `/mind`
 
-Recovery and focus — breathing timers and guided sessions. Some sessions require premium enrollment.
+Recovery and focus — daily check-in, breathing timer, and skippable guided sessions. Super Bundle adds journal-style training questions (not a meditation library). Some extra sessions require premium enrollment when pay is on.
 
 ## Track
 

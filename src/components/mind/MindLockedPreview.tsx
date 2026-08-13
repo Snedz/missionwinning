@@ -8,12 +8,18 @@ import { Button } from '@/components/ui/button';
 import { MeterBar } from '@/components/ui/MeterBar';
 import { UnlockButton } from '@/components/UnlockButton';
 import { isFreeBeta } from '@/lib/freeBeta';
+import { getContentInventory } from '@/lib/contentInventory';
 
-const DEMO_STEPS = ['Set one intention for this session', 'Box breathing 4-4-4-4', 'Visualize smooth reps'];
+const DEMO_STEPS = [
+  'What is the smallest session you will actually finish today?',
+  'What got in the way — sleep, schedule, or a plan that was too big?',
+  'What is the next physical action that still counts?',
+];
 
 /** Premium mind upsell — blurred player teaser (TrackGpsLockedPreview pattern). */
 export function MindLockedPreview() {
   const { t } = useTranslation();
+  const inv = getContentInventory();
 
   // Free-first beta: hide paid upsells.
   if (isFreeBeta()) return null;
@@ -23,14 +29,14 @@ export function MindLockedPreview() {
       <CardHeader className="pb-2">
         <CardTitle className="text-base flex items-center gap-2">
           <Brain className="h-4 w-4 text-primary" />
-          {t('mindPremiumTitle', { defaultValue: 'Premium — Calm / Waking Up depth' })}
+          {t('mindPremiumTitle', { defaultValue: 'Premium — training questions, not a spa library' })}
         </CardTitle>
       </CardHeader>
       <CardContent className="space-y-4">
         <p className="text-sm text-muted-foreground">
           {t('mindPremiumDesc', {
             defaultValue:
-              'Guided sessions, sleep stories, expert lessons on building resilience.',
+              'Short journal-style sessions for before a lift, after a miss, sleep, and travel. Pause or skip any step. No streak. Not therapy.',
           })}
         </p>
         <div className="relative border-2 border-border bg-card p-4">
@@ -50,8 +56,10 @@ export function MindLockedPreview() {
         </div>
         <p className="text-xs text-muted-foreground">
           {t('mindLockedHint', {
+            free: inv.mind.free,
+            premium: inv.mind.premium,
             defaultValue:
-              'Free tier includes 10 guided sessions. Premium adds 17 deeper timed sessions — focus, recovery, race calm, and travel resets.',
+              'Free: {{free}} guided sessions. Super Bundle adds {{premium}} timed sessions you can skip — training questions, not a meditation library.',
           })}
         </p>
         <div className="flex flex-wrap gap-2">
