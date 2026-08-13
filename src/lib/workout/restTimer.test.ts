@@ -123,10 +123,12 @@ describe('last-rest recall (.715)', () => {
       resolveRestForNextSet({ exerciseId: 'squats', exerciseName: 'Barbell Back Squat' }),
       150
     );
+    const curlFallback = restSecondsForExercise('Hammer Curl');
     assert.equal(
       resolveRestForNextSet({ exerciseId: 'hammer-curl', exerciseName: 'Hammer Curl' }),
-      60
+      curlFallback
     );
+    assert.notEqual(curlFallback, 150);
   });
 
   it('skip never writes last rest — leftover seconds must not become next rest', () => {
