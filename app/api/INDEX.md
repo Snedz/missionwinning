@@ -43,9 +43,9 @@ Legend:
 | Route | Methods | Auth | Rate | Body |
 |-------|---------|------|------|------|
 | `private-access` | POST | public password | 8/min/IP (Upstash) | password |
-| `private-access/session` | POST | Bearer access_token (getUser) | 20/min/IP | mints gate cookie after OAuth |
-| `geo` | GET | public (CDN country headers) | 60/min/IP | first-visit lang/units defaults |
-| `leads` | POST | public (gate path) | 5/min/IP | Zod `leadsBodySchema`; fire-and-forget confirm email |
+| `private-access/session` | POST | Bearer access_token (getUser) + territory | 20/min/IP | mints gate cookie after OAuth; 401 no bearer; 403 blocked ISO |
+| `geo` | GET | public (CDN country headers) | 60/min/IP | first-visit lang/units; `blocked` from `hostedServiceAccessFromHeaders` |
+| `leads` | POST | public (gate path) + territory on waitlist | 5/min/IP | Zod `leadsBodySchema`; waitlist 403 blocked ISO; feedback still open |
 | `leads/unsubscribe` | GET | public token | 20/min/IP | HMAC `NUDGE_SECRET` |
 | `journey/welcome` | POST | session | 5/min/IP | one-time welcome email |
 
@@ -53,8 +53,8 @@ Legend:
 
 | Route | Methods | Auth | Rate | Body |
 |-------|---------|------|------|------|
-| `account/export` | GET | session | 3/5min/user | Art. 20 — every owned table as JSON attachment; wearable tokens redacted (`src/lib/accountDataServer.ts`) |
-| `account/delete` | POST | session | 2/5min/user | Art. 17 — Zod `accountDeleteBodySchema` (`confirm: 'DELETE'`); email-keyed cleanups then `auth.admin.deleteUser` cascade; no migration needed |
+| `account/export` | GET | session (id from getUser only) | 3/5min/user | Art. 20 — every owned table as JSON attachment; wearable tokens redacted (`src/lib/accountDataServer.ts`) |
+| `account/delete` | POST | session (id from getUser only) | 2/5min/user | Art. 17 — Zod `accountDeleteBodySchema` (`confirm: 'DELETE'`); client `userId` rejected; email-keyed cleanups then `auth.admin.deleteUser` cascade |
 
 ### Coach
 

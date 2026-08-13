@@ -1,5 +1,5 @@
-/** Shown on Profile so testers can confirm the deployed build. Bump when shipping UI to master. `.746` F-017 first set without an account. */
-export const APP_BUILD_LABEL = "2026.07-unified.746";
+/** Shown on Profile so testers can confirm the deployed build. Bump when shipping UI to master. `.747` blue-team P0 harden. */
+export const APP_BUILD_LABEL = "2026.07-unified.747";
 
 /**
  * Athlete-facing marketing version. Distinct from `APP_BUILD_LABEL`, which

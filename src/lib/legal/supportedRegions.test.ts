@@ -4,6 +4,7 @@ import {
   EUROPE_UNSUPPORTED_ISO2,
   OIC_MEMBER_COUNT,
   OIC_UNSUPPORTED_ISO2,
+  countriesFromRequestHeaders,
   countryFromRequestHeaders,
   getTerritoryBlockReason,
   hostedServiceAccessFromHeaders,
@@ -100,13 +101,31 @@ describe('supportedRegions hard block', () => {
     }
   });
 
-  it('countryFromRequestHeaders prefers cf-ipcountry', () => {
+  it('countryFromRequestHeaders lists cf-ipcountry first for display', () => {
     assert.equal(
       countryFromRequestHeaders({
-        get: (n) => (n === 'cf-ipcountry' ? 'us' : n === 'x-vercel-ip-country' ? 'DE' : null),
+        get: (n) => (n === 'cf-ipcountry' ? 'us' : n === 'x-vercel-ip-country' ? 'AU' : null),
       }),
       'US'
     );
+    assert.deepEqual(
+      countriesFromRequestHeaders({
+        get: (n) => (n === 'cf-ipcountry' ? 'us' : n === 'x-vercel-ip-country' ? 'AU' : null),
+      }),
+      ['US', 'AU']
+    );
+  });
+
+  it('blocked ISO on any CDN header is denied', () => {
+    const deny = hostedServiceAccessFromHeaders({
+      get: (n) => (n === 'cf-ipcountry' ? 'US' : n === 'x-vercel-ip-country' ? 'DE' : null),
+    });
+    assert.equal(deny.allowed, false);
+    if (!deny.allowed) {
+      assert.equal(deny.code, 'territory_blocked');
+      assert.equal(deny.reason, 'europe');
+      assert.equal(deny.country, 'DE');
+    }
   });
 
   it('normalizes UK → GB', () => {

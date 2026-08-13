@@ -86,6 +86,14 @@ const NEVER_SHIPPED: { from: number; to: number; why: string }[] = [
       'heading on master ever ended in (`.260`), so the live window can sit on `.261` without ' +
       'a prior rotate of a missing section.',
   },
+  {
+    from: 686,
+    to: 688,
+    why:
+      'Wedge reserved `.686`–`.688` for concurrent PRs (#453 / #462 / #470); master jumped ' +
+      '`.685` → `.689`. No LOG heading on master ever ended in those labels, so rotating ' +
+      '`.685` leaves `.689` as the live floor without a missing section.',
+  },
 ];
 const neverShipped = (x: number) => NEVER_SHIPPED.some((g) => x >= g.from && x <= g.to);
 

@@ -6,7 +6,7 @@
 
 - **Purpose:** Athlete Page identity (You), card cosmetics, display-name validation — social **projection**, not log authority.
 - **Non-goals:** Feeds, DMs, Top-8, planner reads of rank, free-text on public cards.
-- **Entry files:** `displayName.ts`, `athleteCard.ts` · core: `packages/mw-core/src/identity/athleteCard.ts`
+- **Entry files:** `displayName.ts`, `athleteCard.ts`, `accountUserId.ts` · core: `packages/mw-core/src/identity/athleteCard.ts`
 - **Tests to run:** `src/lib/identity/*.test.ts`, `src/lib/careerLine.test.ts`, `src/lib/domainBoundary.test.ts`
 - **Forbidden:** Importing this module from `src/lib/coach/` for planning decisions; gating the free logger on identity.
 - **Horizon gate:** S2–S4a shipped (table, kits, page share-out, private note). Public URL = S4b + Club C2.
@@ -16,6 +16,7 @@
 ## Read order
 
 1. `displayName.ts` — call sign rules  
+1b. `accountUserId.ts` — server-minted account id (session only)  
 2. `packages/mw-core/src/identity/athleteCard.ts` — tier → cosmetics · 00–99 number clamp  
 3. `athleteCard.ts` — localStorage + `ShareCardData` builder · `ATHLETE_CARD_CHANGED`  
 4. `packages/mw-core/src/identity/athleteTable.ts` · `pageKits.ts` · `athleteProfile.ts`  

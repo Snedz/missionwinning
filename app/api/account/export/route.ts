@@ -10,6 +10,7 @@ import { extractSupabaseAccessToken } from '@/lib/supabaseAuthCookies';
 import { rateLimitAsync } from '@/lib/rateLimit';
 import { getSupabaseAdmin } from '@/lib/supabaseAdmin';
 import { exportAccountData } from '@/lib/accountDataServer';
+import { accountUserIdFromSession } from '@/lib/identity/accountUserId';
 
 export const GET = withApiLogging('account/export', async (request: NextRequest) => {
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
@@ -28,12 +29,13 @@ export const GET = withApiLogging('account/export', async (request: NextRequest)
     data: { user },
     error: authError,
   } = await supabase.auth.getUser(accessToken);
-  if (authError || !user?.id) {
+  const userId = accountUserIdFromSession(user);
+  if (authError || !userId) {
     return NextResponse.json({ ok: false, error: 'Invalid session' }, { status: 401 });
   }
 
   // Per-user, not per-IP: an export is heavy and personal.
-  const limited = await rateLimitAsync(`account-export:${user.id}`, 3, 5 * 60_000);
+  const limited = await rateLimitAsync(`account-export:${userId}`, 3, 5 * 60_000);
   if (!limited.ok) {
     return NextResponse.json(
       { ok: false, error: 'Too many requests' },
@@ -47,7 +49,7 @@ export const GET = withApiLogging('account/export', async (request: NextRequest)
   }
 
   try {
-    const data = await exportAccountData(admin, user.id, user.email ?? null);
+    const data = await exportAccountData(admin, userId, user.email ?? null);
     // No date in the server filename: the client names its download with the
     // athlete's local date; a UTC date here would disagree east of UTC (.212).
     return new NextResponse(JSON.stringify(data, null, 2), {

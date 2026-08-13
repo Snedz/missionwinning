@@ -226,48 +226,65 @@ export const TERRITORY_BLOCK_MESSAGES: Record<TerritoryBlockReason, string> = {
     'We could not confirm a supported region for this connection. Hosted signup and checkout are unavailable.',
 };
 
-/** Read CDN country from request headers (Cloudflare / Vercel). */
+const CDN_COUNTRY_HEADER_NAMES = [
+  'cf-ipcountry',
+  'x-vercel-ip-country',
+  'x-country-code',
+] as const;
+
+/** Every CDN country header that is present (deduped, normalized). */
+export function countriesFromRequestHeaders(headers: {
+  get(name: string): string | null;
+}): string[] {
+  const out: string[] = [];
+  const seen = new Set<string>();
+  for (const name of CDN_COUNTRY_HEADER_NAMES) {
+    const iso = normalizeCountryIso2(headers.get(name));
+    if (iso && !seen.has(iso)) {
+      seen.add(iso);
+      out.push(iso);
+    }
+  }
+  return out;
+}
+
+/** Read CDN country from request headers (Cloudflare / Vercel). Display hint only. */
 export function countryFromRequestHeaders(headers: {
   get(name: string): string | null;
 }): string | null {
-  return normalizeCountryIso2(
-    headers.get('cf-ipcountry') ||
-      headers.get('x-vercel-ip-country') ||
-      headers.get('x-country-code')
-  );
+  return countriesFromRequestHeaders(headers)[0] ?? null;
 }
 
 /**
  * Hard block for signup + checkout APIs.
- * - Known blocked country → deny
+ * - Known blocked country on **any** CDN header → deny (a supported ISO on
+ *   another header does not override)
  * - XX / T1 (CF unknown / Tor) → deny
  * - Missing header (local dev, no CDN) → allow (Cloudflare already edges prod)
  */
 export function hostedServiceAccessFromHeaders(headers: {
   get(name: string): string | null;
 }): HostedServiceAccess {
-  const raw =
-    headers.get('cf-ipcountry') ||
-    headers.get('x-vercel-ip-country') ||
-    headers.get('x-country-code');
-  const country = normalizeCountryIso2(raw);
+  const countries = countriesFromRequestHeaders(headers);
 
-  if (!country) {
+  if (countries.length === 0) {
     return { allowed: true, country: null };
   }
 
-  const reason = getTerritoryBlockReason(country);
-  if (reason) {
-    return {
-      allowed: false,
-      country,
-      reason,
-      code: 'territory_blocked',
-      message: TERRITORY_BLOCK_MESSAGES[reason],
-    };
+  for (const country of countries) {
+    const reason = getTerritoryBlockReason(country);
+    if (reason) {
+      return {
+        allowed: false,
+        country,
+        reason,
+        code: 'territory_blocked',
+        message: TERRITORY_BLOCK_MESSAGES[reason],
+      };
+    }
   }
 
-  return { allowed: true, country };
+  return { allowed: true, country: countries[0] };
 }
 
 export const REGION_POLICY = {

@@ -59,7 +59,7 @@ Public while private gate is on. See [OPS_MONITORING.md](OPS_MONITORING.md).
 |--|--|
 | Auth | session (cookie) |
 | Rate | 2 / 5 min / user |
-| Body | Zod `accountDeleteBodySchema` — `{ confirm: 'DELETE', deviceId? }` |
+| Body | Zod `accountDeleteBodySchema` — `{ confirm: 'DELETE', deviceId? }`. Extra `userId` is rejected; the account id is the session user only. |
 | Behavior | Email-keyed cleanups first (`leads`, `checkout_recovery` deleted; `beta_invites` anonymized; orphan `enrollments` by email), anonymous device rows (`push_subscriptions`, `llm_usage` where `user_id is null`), then `auth.admin.deleteUser` — which cascades all 16 user-keyed tables. **No migration required**: every user-keyed table already declares `on delete cascade` from `auth.users`. Any failed step aborts **before** the cascade and returns **502** — success is never reported on a partial deletion. Completeness is enforced by `src/lib/accountDataCompleteness.test.ts`, which discovers tables from `supabase/migrations/` and fails on any table with no export/deletion story. |
 
 ---
@@ -115,6 +115,7 @@ curl -X POST "$BASE/api/private-access" \
 |--|--|
 | Auth | Bearer Supabase `access_token` (`getUser`) |
 | Rate | 20/min/IP |
+| Territory | Same `hostedServiceAccessFromHeaders` list as checkout — **403** `territory_blocked` for a blocked ISO; **401** without a Bearer token |
 | Response | Sets httpOnly gate cookie after OAuth — needed because browser sessions live in localStorage and the proxy cannot see them |
 
 ```bash
@@ -133,6 +134,7 @@ curl -X POST "$BASE/api/private-access/session" \
 | Auth | `gate` |
 | Rate | 5/min/IP |
 | Schema | `leadsBodySchema` |
+| Territory | Waitlist (non-feedback) uses `hostedServiceAccessFromHeaders` — **403** `territory_blocked` for a blocked ISO. Feedback notes still accept. |
 | Insert | Service role only (anon INSERT revoked) |
 
 ---

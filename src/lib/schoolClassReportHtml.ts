@@ -1,6 +1,7 @@
 import { awardLabel, type FitnessAwardTier } from '@/lib/presidentialFitnessTest';
 import type { ClassStandingsRow } from '@/lib/schoolClassExport';
 import { EN_ONLY_SURFACE, formatLocalDateTime } from '@/lib/i18n/formatLocale';
+import { escapeHtml } from '@/lib/escapeHtml';
 
 export type ClassReportStats = {
   uniqueAthletes: number;
@@ -68,12 +69,4 @@ export function formatClassReportHtml(
   <p class="footer">Educational fitness tool by Mission Winning LLC — not an official U.S. government report.</p>
 </body>
 </html>`;
-}
-
-function escapeHtml(raw: string): string {
-  return raw
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;');
 }

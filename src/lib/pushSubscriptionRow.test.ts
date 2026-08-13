@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { buildSubscriptionRow } from '@/lib/pushSubscriptionRow';
+import { buildSubscriptionRow, canWritePushSubscription } from '@/lib/pushSubscriptionRow';
 
 const identity = {
   userId: null,
@@ -114,4 +114,12 @@ test('no behavior-shaped field can be serialized onto the row', () => {
   for (const leak of ['caffeine', 'bedTime', 'alcohol', 'sleepDebt', 'strain floor', '127']) {
     assert.ok(!serialized.includes(leak), `behavior data leaked to the server: ${leak}`);
   }
+});
+
+test('guest data never writes to another account\'s push row', () => {
+  assert.equal(canWritePushSubscription(null, null), true);
+  assert.equal(canWritePushSubscription(null, 'user-a'), true);
+  assert.equal(canWritePushSubscription('user-a', 'user-a'), true);
+  assert.equal(canWritePushSubscription('user-a', null), false);
+  assert.equal(canWritePushSubscription('user-a', 'user-b'), false);
 });

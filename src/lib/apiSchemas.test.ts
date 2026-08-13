@@ -63,6 +63,10 @@ const CASES: Record<string, Case> = {
         input: { confirm: 'DELETE', deviceId: 'x'.repeat(65) },
         because: 'device ids are client UUIDs; 64 bounds junk',
       },
+      {
+        input: { confirm: 'DELETE', userId: 'other-account' },
+        because: 'account id is server-minted from the session — a client-chosen id must not parse',
+      },
     ],
   },
 

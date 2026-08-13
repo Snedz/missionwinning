@@ -8,6 +8,7 @@ import { type NextRequest, NextResponse } from 'next/server';
 import { createServerClient } from '@supabase/ssr';
 import { shouldBounceAuthCallbackToCanonical, configuredSiteOrigin } from '@/lib/authRedirect';
 import { sanitizeNextPath } from '@/lib/safeRedirect';
+import { hostedServiceAccessFromHeaders } from '@/lib/legal/supportedRegions';
 import {
   createPrivateAccessToken,
   PRIVATE_ACCESS_COOKIE,
@@ -24,10 +25,16 @@ export async function GET(request: NextRequest) {
     return NextResponse.redirect(dest);
   }
 
+  const siteOrigin = configuredSiteOrigin() || url.origin;
+  const territory = hostedServiceAccessFromHeaders(request.headers);
+  if (!territory.allowed) {
+    // Do not exchange the code — hosted signup is unavailable in this region.
+    return NextResponse.redirect(new URL('/regions', siteOrigin));
+  }
+
   const code = url.searchParams.get('code');
   const errorDesc = url.searchParams.get('error_description');
   const nextPath = sanitizeNextPath(url.searchParams.get('next'));
-  const siteOrigin = configuredSiteOrigin() || url.origin;
 
   const errorRedirect = (message: string) => {
     const dest = new URL('/profile', siteOrigin);

@@ -13,14 +13,18 @@ import {
   createPrivateAccessToken,
   PRIVATE_ACCESS_COOKIE,
 } from '@/lib/privateSession';
+import { bearerFromAuthorization, sessionMintGate } from '@/lib/privateAccessSessionGate';
 
 export const POST = withApiLogging('private-access/session', async (request: NextRequest) => {
   const secret = process.env.PRIVATE_ACCESS_SECRET;
+  const bearer = bearerFromAuthorization(request.headers.get('authorization'));
+  const gated = sessionMintGate({ secret, bearer, headers: request.headers });
+  if (!gated.ok) {
+    return NextResponse.json(gated.body, { status: gated.status });
+  }
+  // sessionMintGate already refused a missing secret; narrow for the cookie mint.
   if (!secret) {
-    return NextResponse.json(
-      { error: 'Private access not configured' },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: 'Private access not configured' }, { status: 500 });
   }
 
   const ip = clientIp(request);
@@ -30,13 +34,6 @@ export const POST = withApiLogging('private-access/session', async (request: Nex
       { error: 'Too many attempts. Try again shortly.' },
       { status: 429, headers: { 'Retry-After': String(limited.retryAfterSec ?? 60) } }
     );
-  }
-
-  const auth = request.headers.get('authorization');
-  const bearer =
-    auth?.toLowerCase().startsWith('bearer ') ? auth.slice(7).trim() : '';
-  if (!bearer) {
-    return NextResponse.json({ error: 'Missing session' }, { status: 401 });
   }
 
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
