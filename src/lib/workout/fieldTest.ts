@@ -5,7 +5,7 @@
  * Field test / Five-event field test. Scoring lives in fieldTestScore.ts.
  */
 
-import type { WorkoutExerciseTemplate } from '@/types';
+import type { SetKind, WorkoutExerciseTemplate } from '@/types';
 import { countsTowardVolume } from '@/lib/workout/setKind';
 import type { FieldTestScaleEventId } from '@/data/fieldTestAcftScales';
 
@@ -56,7 +56,7 @@ type FieldTestNamed = {
 
 function setIsWorking(set: FieldTestExercise['sets'][number]): boolean {
   if (set.completed === false) return false;
-  return countsTowardVolume(set.kind);
+  return countsTowardVolume(set.kind as SetKind | undefined);
 }
 
 function workingSets(ex: FieldTestExercise | undefined): FieldTestExercise['sets'] {
