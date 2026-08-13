@@ -521,7 +521,7 @@
   "infoFeedbackSubtitle": "告诉我们您看到了什么结果、什么有效以及下一步要构建什么。 Beta 创始人制定了路线图。",
   "infoFeedbackThankSubtitle": "您的反馈有助于让免费核心和超级捆绑包更好地完成全球使命。",
   "infoFeedbackThankTitle": "谢谢",
-  "infoLastUpdated": "最后更新时间：2026 年 7 月",
+  "infoLastUpdated": "最后更新时间：2026 年 8 月 13 日",
   "infoPrivacyAiCoach": "可选AI教练",
   "infoPrivacyAiCoachBody": "免费的核心教练是基于规则的，不需要 AI API 密钥或将数据发送到模型。 当操作员启用可选的 LLM 教练语音或每日洞察时，我们会向配置的提供商发送最小的上下文摘要（推荐：SpaceXAI/xAI）。 Mission Winning 不会出售该内容或将其用于广告。 当提供商是 xAI 并且运营商启用了团队零数据保留 (ZDR) 时，xAI 不会保留静态 API 提示或输出（请参阅有关零数据保留的 xAI 安全常见问题解答）。 云同步、支付、电子邮件和产品分析仍然是独立的第三方，拥有自己的保留政策——ZDR 不会取代这些。",
   "infoPrivacyChoices": "您的选择",

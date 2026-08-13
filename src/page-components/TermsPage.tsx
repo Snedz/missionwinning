@@ -51,7 +51,7 @@ export function TermsPage() {
       icon={Scale}
       eyebrow={t('infoLegalEyebrow', { defaultValue: 'Legal' })}
       title={t('infoTermsTitle', { defaultValue: 'Terms of Service' })}
-      lastUpdated={t('infoLastUpdated', { defaultValue: 'Last updated: August 2026' })}
+      lastUpdated={t('infoLastUpdated', { defaultValue: 'Last updated: 13 August 2026' })}
       showLegalFooter
       jumpLinks={jumpLinks}
     >

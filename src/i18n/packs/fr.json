@@ -731,7 +731,7 @@
   "infoFeedbackThankSubtitle": "Vos commentaires contribuent à améliorer le noyau gratuit et le Super Bundle pour la mission mondiale.",
   "infoFeedbackThankTitle": "Merci",
   "infoFeedbackTitle": "Partagez vos gains",
-  "infoLastUpdated": "Dernière mise à jour : juillet 2026",
+  "infoLastUpdated": "Dernière mise à jour : 13 août 2026",
   "infoPrivacyAiCoach": "Coach IA en option",
   "infoPrivacyAiCoachBody": "Le coach principal gratuit est basé sur des règles et ne nécessite pas de clé API IA ni n'envoie vos données à un modèle. Lorsque les opérateurs activent la voix du coach LLM en option ou les informations quotidiennes, nous envoyons un résumé contextuel minimal au fournisseur configuré (recommandé : SpaceXAI/xAI). Mission Winning ne vend pas ce contenu et ne l'utilise pas pour des publicités. Lorsque le fournisseur est xAI et que l'opérateur a activé l'équipe Zero Data Retention (ZDR), xAI ne conserve pas les invites ou les sorties de l'API au repos (voir la FAQ sur la sécurité xAI sur Zero Data Retention). La synchronisation dans le cloud, les paiements, les e-mails et les analyses de produits restent des tiers distincts avec leurs propres politiques de rétention — ZDR ne les remplace pas.",
   "infoPrivacyChoices": "Vos choix",

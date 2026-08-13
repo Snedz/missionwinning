@@ -33,7 +33,7 @@ export function DmcaPage() {
       icon={Copyright}
       eyebrow={t('infoLegalEyebrow', { defaultValue: 'Legal' })}
       title={t('infoDmcaTitle', { defaultValue: 'DMCA / Copyright' })}
-      lastUpdated={t('infoLastUpdated', { defaultValue: 'Last updated: July 2026' })}
+      lastUpdated={t('infoLastUpdated', { defaultValue: 'Last updated: 13 August 2026' })}
       showLegalFooter
       jumpLinks={jumpLinks}
     >
