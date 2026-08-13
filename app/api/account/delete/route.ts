@@ -36,7 +36,7 @@ export const POST = withApiLogging('account/delete', async (request: NextRequest
     error: authError,
   } = await supabase.auth.getUser(accessToken);
   const userId = accountUserIdFromSession(user);
-  if (authError || !userId) {
+  if (authError || !user || !userId) {
     return NextResponse.json({ ok: false, error: 'Invalid session' }, { status: 401 });
   }
 

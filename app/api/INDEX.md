@@ -26,7 +26,7 @@ Legend:
 
 | Route | Methods | Auth | Rate | Body |
 |-------|---------|------|------|------|
-| `mobile/coach/plan` | GET, POST | public if not PRIVATE_MODE; else Bearer/cookie/gate | 30/min | Zod `mobileCoachPlanBodySchema` · OpenAPI [openapi-mobile.yaml](../../docs/openapi-mobile.yaml) |
+| `mobile/coach/plan` | GET, POST | public if web gate off (`isPrivateModeEnabled`); else Bearer/cookie/gate | 30/min | Zod `mobileCoachPlanBodySchema` · OpenAPI [openapi-mobile.yaml](../../docs/openapi-mobile.yaml) |
 | `mobile/coach/adapt` | POST | same bootstrap rules | 30/min | Zod `mobileCoachAdaptBodySchema` |
 | `mobile/workouts` | POST | optional Bearer (sync when present) | 40/min | Zod `mobileWorkoutLogBodySchema` (legacy summary; prefer sync v2) |
 | `mobile/sync/workouts` | POST | Bearer | 30/min | Batch ≤50 full-fidelity upserts (client_id + revision) |

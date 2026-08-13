@@ -19,9 +19,13 @@ and patched the P0s that were provable without writing exploit paths.
 **Ship:**
 - Hosted signup mint (`/api/private-access/session`, `/auth/callback`) and
   waitlist `/api/leads` use `supportedRegions` — blocked ISO denied; a blocked
-  ISO on any CDN header wins (another header’s supported ISO does not override);
-  missing CDN country still allowed locally. Checkout block unchanged. `/api/geo`
-  uses the same access helper for `blocked`.
+  ISO on any platform CDN header wins (another header’s supported ISO does not
+  override); `x-country-code` is display-only. Missing country still allowed
+  locally / on `next start`; Vercel production (`VERCEL_ENV=production`) denies
+  a missing platform country. Checkout block unchanged. `/api/geo` uses the same
+  access helper for `blocked`. Maps to red-team #540 **P1-2** / **P1-3**.
+- Mobile Coach bootstrap uses `isPrivateModeEnabled()` (same as web) — unset
+  `PRIVATE_MODE` in production is gated. Maps to #540 **P1-4**.
 - Production / Vercel production cannot grant the gate from a query string
   unless `PRIVATE_ALLOW_QUERY_ACCESS=true`. Expired and raw-secret cookies fail
   verify. Invite/next are not access keys.
@@ -38,6 +42,8 @@ No PoCs. `PRIVATE_MODE` unchanged. Excellence-Override: blue-team P0 harden.
 Label `.747` (onto master `.746`).
 
 Rotated LOG oldest → [docs/archive/log/LOG-rotate-685-for-747.md](docs/archive/log/LOG-rotate-685-for-747.md).
+Duplicate `.669` archive headings (four concurrent rotates) collapsed to
+pointers at [LOG-rotate-669-for-744.md](docs/archive/log/LOG-rotate-669-for-744.md).
 
 ## 2026-08-13 — F-017 first set without an account (`.746`)
 

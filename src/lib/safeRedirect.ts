@@ -30,6 +30,13 @@ function decodePath(raw: string): string {
   }
 }
 
+function hasAsciiControl(value: string): boolean {
+  for (let i = 0; i < value.length; i++) {
+    if (value.charCodeAt(i) < 32) return true;
+  }
+  return false;
+}
+
 export function sanitizeNextPath(next: string | null | undefined, fallback = '/log'): string {
   if (!next || typeof next !== 'string') return fallback;
   const trimmed = next.trim();
@@ -43,7 +50,7 @@ export function sanitizeNextPath(next: string | null | undefined, fallback = '/l
     decoded.startsWith('//') ||
     decoded.includes('\\') ||
     decoded.includes('@') ||
-    /[\u0000-\u001f]/.test(decoded)
+    hasAsciiControl(decoded)
   ) {
     return fallback;
   }

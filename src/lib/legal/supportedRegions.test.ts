@@ -1,5 +1,6 @@
 import { describe, it } from 'node:test';
 import assert from 'node:assert/strict';
+import { restoreEnv, setTestEnv, snapshotEnv } from '@/lib/testEnv';
 import {
   EUROPE_UNSUPPORTED_ISO2,
   OIC_MEMBER_COUNT,
@@ -125,6 +126,25 @@ describe('supportedRegions hard block', () => {
       assert.equal(deny.code, 'territory_blocked');
       assert.equal(deny.reason, 'europe');
       assert.equal(deny.country, 'DE');
+    }
+  });
+
+  it('Vercel production denies a missing platform country', () => {
+    const envSnapshot = snapshotEnv();
+    setTestEnv('VERCEL_ENV', 'production');
+    try {
+      const deny = hostedServiceAccessFromHeaders({ get: () => null });
+      assert.equal(deny.allowed, false);
+      if (!deny.allowed) {
+        assert.equal(deny.reason, 'unknown_edge');
+        assert.equal(deny.code, 'territory_blocked');
+      }
+      const hintOnly = hostedServiceAccessFromHeaders({
+        get: (n) => (n === 'x-country-code' ? 'US' : null),
+      });
+      assert.equal(hintOnly.allowed, false);
+    } finally {
+      restoreEnv(envSnapshot);
     }
   });
 
