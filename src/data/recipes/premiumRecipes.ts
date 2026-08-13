@@ -1110,5 +1110,305 @@ export const PREMIUM_RECIPES: Recipe[] = [
     "ingredients": "150g turkey meatballs or mince, zucchini, tomato, garlic, oil, parmesan optional",
     "instructions": "Cook turkey, add zucchini and tomato, simmer until soft.",
     "tip": "Lower-carb dinner option after high-carb lunch."
+  },
+  {
+    "name": "Garage Whey Oat Mug",
+    "protein": 32,
+    "cals": 380,
+    "carbs": 42,
+    "fat": 8,
+    "ingredients": "40g oats, 1 scoop whey, 200ml milk or water, pinch salt, cinnamon",
+    "instructions": "Microwave oats 90s. Stir whey off the heat so it stays smooth. Eat standing if the session starts in ten.",
+    "tip": "Protein first at breakfast — oats wait. Garage staple: one mug, one scoop, done."
+  },
+  {
+    "name": "Cooler Cottage Apple Crunch",
+    "protein": 36,
+    "cals": 340,
+    "carbs": 28,
+    "fat": 10,
+    "ingredients": "300g cottage cheese, 1 apple, 15g walnuts or almonds, cinnamon",
+    "instructions": "Pack cottage cold. Slice apple. Crunch nuts on top. No stove.",
+    "tip": "Cooler meal after a park session. Protein sits in the tub; fruit is the add-on."
+  },
+  {
+    "name": "Skillet Turkey Egg Whites",
+    "protein": 42,
+    "cals": 320,
+    "carbs": 8,
+    "fat": 12,
+    "ingredients": "150g lean turkey mince, 4 egg whites (or 2 eggs + 2 whites), spinach, salt, pepper, 1 tsp oil",
+    "instructions": "Brown turkey in a skillet. Add whites and spinach. Fold until just set.",
+    "tip": "High protein, low mess. One pan on a hot plate — then train."
+  },
+  {
+    "name": "Rice Cooker Chicken Congee Bowl",
+    "protein": 38,
+    "cals": 440,
+    "carbs": 48,
+    "fat": 8,
+    "ingredients": "150g chicken thigh or breast, 80g rice, ginger or garlic if you have it, salt, green onion, water",
+    "instructions": "Rice cooker: rice + extra water + chicken. Cook until porridge-soft. Shred chicken into the bowl.",
+    "tip": "Set it before you lift. Protein in the pot, carbs when you get back."
+  },
+  {
+    "name": "Tuna Pouch Rice Cooler",
+    "protein": 34,
+    "cals": 420,
+    "carbs": 45,
+    "fat": 8,
+    "ingredients": "1 tuna pouch (or can, drained), 200g leftover rice, lemon, salt, handful greens or cucumber",
+    "instructions": "Open pouch over cold rice. Lemon + salt. Eat from the box.",
+    "tip": "Travel plate. Protein is the pouch; rice is yesterday's leftover."
+  },
+  {
+    "name": "Jerky Cheese Apple Plate",
+    "protein": 36,
+    "cals": 380,
+    "carbs": 22,
+    "fat": 16,
+    "ingredients": "80g beef or turkey jerky, 40g cheese, 1 apple",
+    "instructions": "No cook. Plate jerky first, then cheese, then apple. Count the jerky — that is the protein.",
+    "tip": "Road or garage desk. Protein first, fruit last. Not a snack pile."
+  },
+  {
+    "name": "Greek Yogurt Whey Travel Cup",
+    "protein": 40,
+    "cals": 320,
+    "carbs": 24,
+    "fat": 6,
+    "ingredients": "200g plain Greek yogurt, 1 scoop whey, 80g berries or banana slices",
+    "instructions": "Stir whey into yogurt in a lidded cup. Fruit on top. Shake if you are already walking.",
+    "tip": "Two proteins in one cup. Hits the day when the kitchen is a bag."
+  },
+  {
+    "name": "Rotisserie Packet Street Plate",
+    "protein": 40,
+    "cals": 480,
+    "carbs": 42,
+    "fat": 14,
+    "ingredients": "180g store rotisserie chicken, 1 microwave rice packet, bagged slaw or cucumber, hot sauce",
+    "instructions": "Heat rice packet. Pull chicken. Slaw on the side. Plate in five minutes.",
+    "tip": "Bought protein still counts. Garage rule: pull the meat, skip the pastry."
+  },
+  {
+    "name": "Canned Chicken Corn Salad",
+    "protein": 32,
+    "cals": 360,
+    "carbs": 28,
+    "fat": 10,
+    "ingredients": "1 can chicken (drained), 80g corn, 2 tbsp yogurt or oil, salt, pepper, lime if you have it",
+    "instructions": "Drain, mix, eat. No stove. Works from a hotel sink.",
+    "tip": "Can + corn is a plate, not a side. Protein is the can."
+  },
+  {
+    "name": "Cast Iron Turkey Hash",
+    "protein": 40,
+    "cals": 520,
+    "carbs": 38,
+    "fat": 20,
+    "ingredients": "180g turkey mince, 200g potato cubes, 1 egg, peppers or onion, 1 tsp oil, salt",
+    "instructions": "Crisp potato first. Add turkey. Top with a fried egg. One skillet.",
+    "tip": "Garage breakfast or dinner. Egg on top is extra protein, not decoration."
+  },
+  {
+    "name": "One-Pan Chicken Thigh Rice",
+    "protein": 38,
+    "cals": 540,
+    "carbs": 48,
+    "fat": 18,
+    "ingredients": "2 chicken thighs (skin off if you want leaner), 80g dry rice, 200ml broth or water, frozen veg, spices",
+    "instructions": "Sear thighs. Add rice, liquid, veg. Cover 18 min until rice is done.",
+    "tip": "One pan, whole plate. Protein sears first so it does not get lost in the rice."
+  },
+  {
+    "name": "Garage Chili Mac Lean",
+    "protein": 36,
+    "cals": 500,
+    "carbs": 52,
+    "fat": 14,
+    "ingredients": "150g lean beef or turkey, 60g dry pasta, 100g beans, tomato, chili spices, onion if you have it",
+    "instructions": "Brown meat. Add tomato, beans, pasta, water. Simmer until pasta is soft.",
+    "tip": "Comfort food that still leads with meat and beans. Not a cheese dump."
+  },
+  {
+    "name": "Sheet Pan Cod Broccoli",
+    "protein": 36,
+    "cals": 400,
+    "carbs": 32,
+    "fat": 10,
+    "ingredients": "180g cod or other white fish, 200g broccoli, 150g potato wedges, lemon, oil, salt",
+    "instructions": "Sheet pan 200°C, 18 min. Lemon at the end.",
+    "tip": "Oven does the work while you rack plates. Fish is the protein; potato is the session carb."
+  },
+  {
+    "name": "Skillet Steak Bites Peppers",
+    "protein": 42,
+    "cals": 480,
+    "carbs": 16,
+    "fat": 22,
+    "ingredients": "180g sirloin or similar, 2 peppers, garlic, 1 tsp oil, salt, pepper",
+    "instructions": "Hot skillet. Sear steak bites 2 min. Peppers in the same pan. Do not stew the meat.",
+    "tip": "Hard-day plate when you want protein without a rice mountain. Add leftover rice if the session was long."
+  },
+  {
+    "name": "Post-Session Chocolate Milk Rice",
+    "protein": 30,
+    "cals": 520,
+    "carbs": 70,
+    "fat": 8,
+    "ingredients": "400ml chocolate milk (or milk + cocoa + honey), 200g leftover rice, pinch salt",
+    "instructions": "Warm rice. Drink the milk with it, or pour a little over. Eat within an hour of the last set.",
+    "tip": "Protein in the milk, carbs in the rice. Garage recovery — not a dessert bowl."
+  },
+  {
+    "name": "Warm Whey Banana Mash",
+    "protein": 32,
+    "cals": 400,
+    "carbs": 48,
+    "fat": 6,
+    "ingredients": "1 scoop whey, 1 banana, 30g oats, hot water, pinch salt",
+    "instructions": "Mash banana with oats and hot water. Stir whey off heat.",
+    "tip": "When you cannot face a skillet. Protein is the scoop; banana is the glycogen."
+  },
+  {
+    "name": "Garage Recovery Burrito Bowl",
+    "protein": 40,
+    "cals": 560,
+    "carbs": 58,
+    "fat": 12,
+    "ingredients": "180g chicken, 200g rice, 80g black beans, salsa or tomato, yogurt dollop",
+    "instructions": "Reheat chicken and rice. Beans on top. Yogurt instead of sour cream.",
+    "tip": "After a long session: protein, then rice, then beans. Skip the bag of chips."
+  },
+  {
+    "name": "After-Lift Cottage Potato",
+    "protein": 34,
+    "cals": 420,
+    "carbs": 45,
+    "fat": 8,
+    "ingredients": "1 baked or microwave potato, 250g cottage cheese, salt, chives or pepper",
+    "instructions": "Microwave potato 6–8 min. Split. Load cottage. Eat hot.",
+    "tip": "Potato is the carb. Cottage is the protein. Do not flip that."
+  },
+  {
+    "name": "Cold Chicken Pasta Tub",
+    "protein": 38,
+    "cals": 520,
+    "carbs": 55,
+    "fat": 12,
+    "ingredients": "180g leftover chicken, 150g cooked pasta, olive oil or yogurt, frozen peas thawed, salt",
+    "instructions": "Mix cold in a tub. Pack for the next session day.",
+    "tip": "Yesterday's chicken still wins. Protein first in the tub, pasta fills the rest."
+  },
+  {
+    "name": "Tempeh Peanut Garage Bowl",
+    "protein": 30,
+    "cals": 500,
+    "carbs": 48,
+    "fat": 18,
+    "ingredients": "150g tempeh, 200g rice, 1 tbsp peanut butter, soy or salt, cucumber or greens, splash hot water",
+    "instructions": "Sear tempeh. Thin peanut butter with hot water. Plate over rice.",
+    "tip": "Plant plate that still hits protein. Rice completes it — do not skip the tempeh."
+  },
+  {
+    "name": "Lentil Turkey Tomato Pot",
+    "protein": 38,
+    "cals": 460,
+    "carbs": 42,
+    "fat": 12,
+    "ingredients": "120g turkey mince, 80g dry lentils, tomato, onion or garlic, cumin, water or broth",
+    "instructions": "Brown turkey. Add lentils, tomato, liquid. Simmer 25 min until lentils are soft.",
+    "tip": "One pot for two bowls. Turkey leads; lentils stretch the protein without watering it down."
+  },
+  {
+    "name": "Edamame Egg Fried Rice",
+    "protein": 32,
+    "cals": 480,
+    "carbs": 50,
+    "fat": 14,
+    "ingredients": "2 eggs, 150g shelled edamame, 200g leftover rice, soy or salt, 1 tsp oil, green onion",
+    "instructions": "Scramble eggs. Add rice and edamame. Stir fry 4 min.",
+    "tip": "Eggs plus edamame carry the protein. Leftover rice is the point of fried rice."
+  },
+  {
+    "name": "Black Bean Cottage Skillet",
+    "protein": 32,
+    "cals": 400,
+    "carbs": 38,
+    "fat": 10,
+    "ingredients": "200g cottage cheese, 150g black beans, cumin, salsa or tomato, handful greens, 1 tsp oil",
+    "instructions": "Warm beans and salsa in a skillet. Fold in cottage off heat so it stays creamy.",
+    "tip": "Beans plus dairy. Protein first, then the skillet heat. Works when meat is gone."
+  },
+  {
+    "name": "Sunday Chicken Batch Plate",
+    "protein": 42,
+    "cals": 500,
+    "carbs": 48,
+    "fat": 12,
+    "ingredients": "200g batch-cooked chicken, 200g rice, steamed veg, salt, lemon or hot sauce",
+    "instructions": "Pull one container from the Sunday cook. Reheat. Sauce last.",
+    "tip": "One cook, five plates. Weigh the chicken so the week does not drift to rice-only."
+  },
+  {
+    "name": "Leftover Steak Egg Fried",
+    "protein": 40,
+    "cals": 540,
+    "carbs": 42,
+    "fat": 20,
+    "ingredients": "120g leftover steak, 2 eggs, 200g leftover rice, frozen veg, 1 tsp oil, salt",
+    "instructions": "Hot pan. Eggs, rice, chopped steak, veg. Two minutes. Do not recook the steak to leather.",
+    "tip": "Last night's steak is today's protein. Eggs make the leftover a full plate."
+  },
+  {
+    "name": "Fridge Rice Protein Remix",
+    "protein": 34,
+    "cals": 460,
+    "carbs": 48,
+    "fat": 10,
+    "ingredients": "200g leftover rice, 150g any leftover meat, tofu, or canned fish, frozen veg, soy or salsa",
+    "instructions": "Reheat rice with veg. Add the protein last so it only warms. Season hard.",
+    "tip": "Open the fridge, pick the protein first, then the rice. That order is the whole method."
+  },
+  {
+    "name": "Two-Day Turkey Soup Pot",
+    "protein": 36,
+    "cals": 420,
+    "carbs": 38,
+    "fat": 10,
+    "ingredients": "300g turkey pieces, 80g rice or small pasta, carrot or frozen veg, broth, salt, bay if you have it",
+    "instructions": "Simmer turkey 30 min. Add rice last 15 min. Split into two containers.",
+    "tip": "Cook once, eat twice. Skim if you want leaner — keep the meat in the bowl."
+  },
+  {
+    "name": "Slow Casein Cocoa Cup",
+    "protein": 36,
+    "cals": 300,
+    "carbs": 22,
+    "fat": 6,
+    "ingredients": "300g cottage cheese or casein powder + milk, 1 tsp cocoa, pinch salt, optional few berries",
+    "instructions": "Stir cocoa into cottage or mixed casein. Cold. Eat an hour before lights-out.",
+    "tip": "Slow protein for the night. Not a dessert — cocoa is the flavor, cottage is the point."
+  },
+  {
+    "name": "Light Fish Microwave Rice",
+    "protein": 34,
+    "cals": 400,
+    "carbs": 40,
+    "fat": 8,
+    "ingredients": "180g frozen white fish fillet, 1 microwave rice pouch, frozen veg, lemon, salt",
+    "instructions": "Microwave fish and veg per pack. Heat rice. Lemon. Hotel or garage, same plate.",
+    "tip": "When the kitchen is a microwave. Protein is the fillet — do not make this rice-only."
+  },
+  {
+    "name": "Garage Night Yogurt Crunch",
+    "protein": 34,
+    "cals": 360,
+    "carbs": 32,
+    "fat": 8,
+    "ingredients": "250g Greek yogurt, 1/2 scoop whey optional, 20g high-protein cereal or crushed rice cakes, cinnamon",
+    "instructions": "Yogurt in a bowl. Whey stirred in. Crunch on top last so it stays crisp.",
+    "tip": "Evening plate when cooking is done. Protein in the yogurt; crunch is texture, not the meal."
   }
 ];

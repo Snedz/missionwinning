@@ -216,7 +216,7 @@ type FuelStrings = {
 
 const en: FuelStrings = {
   fuelPremiumActive: ' Premium: full recipe library + deep plans (Super Bundle).',
-  fuelBundleUpsell: ' Super Bundle unlocks the full recipe library and advanced meal plans.',
+  fuelBundleUpsell: ' Super Bundle adds protein-first recipes and the Fuel Coach week — logger stays free.',
   fuelWinScore: 'Win Score',
   fuelTargetsTitle: "Today's Targets",
   fuelCalories: 'Calories',
@@ -248,7 +248,7 @@ const en: FuelStrings = {
   fuelPremiumRecipesTitle: 'Premium Recipes & Meal Ideas',
   fuelPremiumLockedTitle: '+{{count}} Premium Recipes',
   fuelPremiumLockedBody:
-    'Unlock the full Fuel pillar recipe library, meal timing strategies, and advanced macro coaching via the Super Bundle.',
+    'Super Bundle adds the protein-first recipe library — garage and travel plates, not a food database. Logger stays free.',
   fuelExploreBundle: 'Explore Super Bundle',
   fuelLogFab: 'Log food',
   fuelLogSheetTitle: 'Log food',
@@ -285,15 +285,15 @@ const en: FuelStrings = {
   fuelSubtitle: 'Log meals, hit protein, keep it simple — works offline on this device.',
   fuelCoachTitle: 'Fuel Coach — adaptive meal plan',
   fuelCoachGenerateDesc:
-    'Generate a 7-day plan from your macro targets and this week’s training load.',
+    'Protein first from your logs — a 7-day plate plan from garage staples, then carbs around hard sessions. Not a food database.',
   fuelCoachGenerate: 'Generate meal plan',
   fuelCoachWeekTitle: 'Your adaptive meal plan',
   fuelCoachRegenerate: 'Regenerate',
   fuelCoachDayTotals: 'Day totals',
   fuelCoachLockedDesc:
-    'Macro-synced 7-day plan from your targets and training load — not a static sample.',
+    'Protein-first week from your targets and training load — garage meals you can cook, not a barcode catalog.',
   fuelCoachTargets: 'Your targets',
-  fuelCoachPreviewNote: 'Recipes from your library, adapted to heavy vs rest days',
+  fuelCoachPreviewNote: 'Protein first, then carbs on heavy days. Recipes from the Fuel library.',
   photoLogAnalyze: 'Analyze',
   photoLogCamera: 'Use camera',
   photoLogDone: 'Done',
@@ -442,7 +442,7 @@ const en: FuelStrings = {
 const es: FuelStrings = {
   ...en,
   fuelPremiumActive: ' Premium: biblioteca completa + planes profundos (Super Bundle).',
-  fuelBundleUpsell: ' Super Bundle desbloquea recetas completas y planes avanzados.',
+  fuelBundleUpsell: ' Super Bundle añade recetas protein-first y la semana Fuel Coach — el logger sigue gratis.',
   fuelWinScore: 'Puntuación de Misión',
   fuelTargetsTitle: 'Objetivos de hoy',
   fuelCalories: 'Calorías',
@@ -469,7 +469,7 @@ const es: FuelStrings = {
   fuelFreeRecipesTitle: 'Recetas gratis ({{count}} — misión core)',
   fuelPremiumRecipesTitle: 'Recetas premium (Super Bundle)',
   fuelPremiumLockedTitle: '+{{count}} recetas premium',
-  fuelPremiumLockedBody: 'Desbloquea la biblioteca Fuel completa y coaching avanzado con Super Bundle.',
+  fuelPremiumLockedBody: 'Super Bundle añade la biblioteca protein-first — platos de garage y viaje, no una base de alimentos. El logger sigue gratis.',
   fuelExploreBundle: 'Explorar Super Bundle',
   fuelMealPlanTitle: 'Plan de comidas alto en proteína (7 días)',
   fuelMealPlanLocked:
@@ -489,7 +489,7 @@ const es: FuelStrings = {
 const fr: FuelStrings = {
   ...en,
   fuelPremiumActive: ' Premium : bibliothèque complète + plans approfondis (Super Bundle).',
-  fuelBundleUpsell: ' Super Bundle débloque les recettes complètes et les plans avancés.',
+  fuelBundleUpsell: ' Super Bundle ajoute des recettes protein-first et la semaine Fuel Coach — le journal reste gratuit.',
   fuelWinScore: 'Score de mission',
   fuelTargetsTitle: 'Objectifs du jour',
   fuelCalories: 'Calories',
@@ -521,7 +521,7 @@ const fr: FuelStrings = {
   fuelPremiumRecipesTitle: 'Recettes premium (Super Bundle)',
   fuelPremiumLockedTitle: '+{{count}} recettes premium',
   fuelPremiumLockedBody:
-    'Débloquez la bibliothèque Fuel complète, le timing des repas et le coaching macro via Super Bundle.',
+    'Super Bundle ajoute la bibliothèque protein-first — assiettes garage et voyage, pas une base alimentaire. Le journal reste gratuit.',
   fuelExploreBundle: 'Explorer Super Bundle',
   fuelLogFab: 'Enregistrer un repas',
   fuelLogSheetTitle: 'Ajouter à Fuel',
@@ -550,21 +550,21 @@ const fr: FuelStrings = {
     'Noyau gratuit : journal quotidien, eau, objectifs et recettes accessibles partout.',
   fuelCoachTitle: 'Fuel Coach — plan repas adaptatif',
   fuelCoachGenerateDesc:
-    'Générez un plan de 7 jours à partir de vos macros et de la charge d’entraînement de la semaine.',
+    'Protéines d’abord depuis vos logs — un plan d’assiettes 7 jours avec des staples garage, puis des glucides autour des séances dures. Pas une base alimentaire.',
   fuelCoachGenerate: 'Générer le plan repas',
   fuelCoachWeekTitle: 'Votre plan repas adaptatif',
   fuelCoachRegenerate: 'Régénérer',
   fuelCoachDayTotals: 'Totaux du jour',
   fuelCoachLockedDesc:
-    'Plan de 7 jours synchronisé aux macros et à la charge — pas un échantillon statique.',
+    'Semaine protein-first depuis vos cibles et votre charge — des repas garage à cuisiner, pas un catalogue code-barres.',
   fuelCoachTargets: 'Vos objectifs',
-  fuelCoachPreviewNote: 'Recettes de votre bibliothèque, adaptées aux jours lourds vs repos',
+  fuelCoachPreviewNote: 'Protéines d’abord, puis glucides les jours lourds. Recettes de la bibliothèque Fuel.',
 };
 
 const zh: FuelStrings = {
   ...en,
   fuelPremiumActive: ' 高级版：完整食谱库与深度计划（Super Bundle）。',
-  fuelBundleUpsell: ' Super Bundle 解锁完整食谱库与高级餐计划。',
+  fuelBundleUpsell: ' Super Bundle 增加 protein-first 食谱和 Fuel Coach 周计划 — 记录器永远免费。',
   fuelWinScore: '任务分数',
   fuelTargetsTitle: '今日目标',
   fuelCalories: '热量',
@@ -593,14 +593,14 @@ const zh: FuelStrings = {
   fuelFreeRecipesTitle: '免费食谱 ({{count}} — 核心任务)',
   fuelPremiumRecipesTitle: '高级食谱与餐点 (Super Bundle)',
   fuelPremiumLockedTitle: '+{{count}} 高级食谱',
-  fuelPremiumLockedBody: '通过 Super Bundle 解锁完整 Fuel 食谱库、用餐时机与高级宏量指导。',
+  fuelPremiumLockedBody: 'Super Bundle 增加 protein-first 食谱库 — 车库和旅行餐盘，不是食物数据库。记录器保持免费。',
   fuelExploreBundle: '了解 Super Bundle',
 };
 
 const id: FuelStrings = {
   ...en,
   fuelPremiumActive: ' Premium: perpustakaan resep lengkap + rencana mendalam (Super Bundle).',
-  fuelBundleUpsell: ' Super Bundle membuka perpustakaan resep lengkap dan rencana makan lanjutan.',
+  fuelBundleUpsell: ' Super Bundle menambah resep protein-first dan minggu Fuel Coach — logger tetap gratis.',
   fuelWinScore: 'Skor Misi',
   fuelTargetsTitle: 'Target hari ini',
   fuelCalories: 'Kalori',
@@ -629,14 +629,14 @@ const id: FuelStrings = {
   fuelFreeRecipesTitle: 'Resep gratis ({{count}} — misi inti)',
   fuelPremiumRecipesTitle: 'Resep premium (Super Bundle)',
   fuelPremiumLockedTitle: '+{{count}} resep premium',
-  fuelPremiumLockedBody: 'Buka perpustakaan Fuel lengkap dan coaching makro lanjutan via Super Bundle.',
+  fuelPremiumLockedBody: 'Super Bundle menambah perpustakaan protein-first — piring garasi dan perjalanan, bukan basis data makanan. Logger tetap gratis.',
   fuelExploreBundle: 'Jelajahi Super Bundle',
 };
 
 const th: FuelStrings = {
   ...en,
   fuelPremiumActive: ' พรีเมียม: สูตรครบ + แผนลึก (Super Bundle)',
-  fuelBundleUpsell: ' Super Bundle ปลดล็อกสูตรครบและแผนมื้อขั้นสูง',
+  fuelBundleUpsell: ' Super Bundle เพิ่มสูตร protein-first และสัปดาห์ Fuel Coach — ตัวบันทึกยังฟรี',
   fuelWinScore: 'คะแนนภารกิจ',
   fuelTargetsTitle: 'เป้าหมายวันนี้',
   fuelCalories: 'แคลอรี่',
@@ -665,14 +665,14 @@ const th: FuelStrings = {
   fuelFreeRecipesTitle: 'สูตรฟรี ({{count}} — ภารกิจหลัก)',
   fuelPremiumRecipesTitle: 'สูตรพรีเมียม (Super Bundle)',
   fuelPremiumLockedTitle: '+{{count}} สูตรพรีเมียม',
-  fuelPremiumLockedBody: 'ปลดล็อกไลบรารี Fuel เต็มและโค้ชมาโครขั้นสูงผ่าน Super Bundle',
+  fuelPremiumLockedBody: 'Super Bundle เพิ่มไลบรารี protein-first — จานโรงรถและเดินทาง ไม่ใช่ฐานข้อมูลอาหาร ตัวบันทึกยังฟรี',
   fuelExploreBundle: 'ดู Super Bundle',
 };
 
 const ar: FuelStrings = {
   ...en,
   fuelPremiumActive: ' Premium: مكتبة وصفات كاملة + خطط (Super Bundle).',
-  fuelBundleUpsell: ' Super Bundle يفتح الوصفات الكاملة وخطط الوجبات المتقدمة.',
+  fuelBundleUpsell: ' Super Bundle يضيف وصفات protein-first وأسبوع Fuel Coach — المسجّل يبقى مجاناً.',
   fuelWinScore: 'نقاط المهمة',
   fuelTargetsTitle: 'أهداف اليوم',
   fuelCalories: 'السعرات',
@@ -701,14 +701,14 @@ const ar: FuelStrings = {
   fuelFreeRecipesTitle: 'وصفات مجانية ({{count}} — المهمة الأساسية)',
   fuelPremiumRecipesTitle: 'وصفات Premium (Super Bundle)',
   fuelPremiumLockedTitle: '+{{count}} وصفات Premium',
-  fuelPremiumLockedBody: 'افتح مكتبة Fuel الكاملة وتدريب الماكرو عبر Super Bundle.',
+  fuelPremiumLockedBody: 'Super Bundle يضيف مكتبة protein-first — أطباق المرآب والسفر، ليست قاعدة أغذية. المسجّل يبقى مجاناً.',
   fuelExploreBundle: 'استكشف Super Bundle',
 };
 
 const de: FuelStrings = {
   ...en,
   fuelPremiumActive: ' Premium: vollständige Bibliothek + vertiefte Pläne (Super Bundle).',
-  fuelBundleUpsell: ' Super Bundle schaltet vollständige Rezepte und erweiterte Pläne frei.',
+  fuelBundleUpsell: ' Super Bundle ergänzt protein-first Rezepte und die Fuel-Coach-Woche — der Logger bleibt frei.',
   fuelWinScore: 'Mission Score',
   fuelTargetsTitle: 'Heutige Ziele',
   fuelCalories: 'Kalorien',
@@ -740,7 +740,7 @@ const de: FuelStrings = {
   fuelPremiumRecipesTitle: 'Premium-Rezepte (Super Bundle)',
   fuelPremiumLockedTitle: '+{{count}} Premium-Rezepte',
   fuelPremiumLockedBody:
-    'Schalte die vollständige Fuel-Bibliothek, Mahlzeiten-Timing und Makro-Coaching über Super Bundle frei.',
+    'Super Bundle ergänzt die protein-first Bibliothek — Garage- und Reiseplatten, keine Lebensmitteldatenbank. Der Logger bleibt frei.',
   fuelExploreBundle: 'Super Bundle entdecken',
   fuelLogFab: 'Mahlzeit protokollieren',
   fuelLogSheetTitle: 'Zu Fuel hinzufügen',
@@ -769,15 +769,15 @@ const de: FuelStrings = {
     'Kostenloser Kern: Tagesprotokoll, Wasser, Ziele und Rezepte überall zugänglich.',
   fuelCoachTitle: 'Fuel Coach — adaptiver Essensplan',
   fuelCoachGenerateDesc:
-    'Erzeuge einen 7-Tage-Plan aus deinen Makros und der Trainingsbelastung der Woche.',
+    'Protein zuerst aus deinen Logs — ein 7-Tage-Tellerplan aus Garage-Staples, dann Kohlenhydrate um harte Einheiten. Keine Lebensmitteldatenbank.',
   fuelCoachGenerate: 'Essensplan generieren',
   fuelCoachWeekTitle: 'Dein adaptiver Essensplan',
   fuelCoachRegenerate: 'Neu generieren',
   fuelCoachDayTotals: 'Tagessummen',
   fuelCoachLockedDesc:
-    '7-Tage-Plan synchron zu Makros und Belastung — kein statisches Sample.',
+    'Protein-first Woche aus Zielen und Belastung — Garage-Mahlzeiten zum Kochen, kein Barcode-Katalog.',
   fuelCoachTargets: 'Deine Ziele',
-  fuelCoachPreviewNote: 'Rezepte aus deiner Bibliothek, angepasst an schwere vs. Ruhetage',
+  fuelCoachPreviewNote: 'Protein zuerst, dann Kohlenhydrate an schweren Tagen. Rezepte aus der Fuel-Bibliothek.',
 };
 
 const LOCALES: Partial<Record<string, FuelStrings>> = {

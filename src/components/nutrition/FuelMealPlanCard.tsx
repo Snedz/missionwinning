@@ -35,7 +35,7 @@ export function FuelMealPlanCard() {
           <p className="text-sm text-muted-foreground">
             {t('fuelCoachGenerateDesc', {
               defaultValue:
-                'Generate a 7-day plan from your macro targets and this week’s training load.',
+                'Protein first from your logs — a 7-day plate plan from garage staples, then carbs around hard sessions. Not a food database.',
             })}
           </p>
           <p className="text-xs text-muted-foreground tabular-nums">
