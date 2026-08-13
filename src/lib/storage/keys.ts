@@ -134,6 +134,8 @@ export const STORAGE_KEYS = {
   mindCheckIns: 'mw_mind_checkins',
   lastAssessment: 'mw_last_assessment',
   wearablesHubSamples: 'mw_wearables_hub_samples',
+  /** `.742` — personal place-dex. Device-local; tagging a session never gates a set. */
+  placeDex: 'mw_place_dex',
 
   // ── Beta / growth ──
   /** Retired `.240` with `BetaWelcomeBanner`; left registered so the name is not reused. */

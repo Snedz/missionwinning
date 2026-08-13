@@ -64,6 +64,7 @@ export const MORE_SHEET_TIER_HREFS: {
 
 /** Foot links: tools first, then company/legal. Leaderboard is a full row when enabled. */
 export const MORE_SHEET_QUIET: readonly MoreQuietLink[] = [
+  { href: '/explore', labelKey: 'navExplore', label: 'Explore' },
   { href: '/calculators', labelKey: 'navCalculators', label: 'Calculators' },
   { href: '/learn/guide', labelKey: 'navGuidebook', label: 'Guidebook' },
   { href: '/beta', labelKey: 'navBetaGuide', label: 'Beta guide' },

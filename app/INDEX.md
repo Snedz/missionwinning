@@ -20,7 +20,8 @@
 | `/nutrition` | Fuel | `NutritionPage.tsx` |
 | `/track` | Track | `TrackPage.tsx` |
 | `/profile` | You | `ProfilePage.tsx` — the Athlete Page (identity · career line · badge shelf) |
-| `/account` | Account | `AccountPage.tsx` — settings, notifications, billing, backup |
+| `/account` | Account | `AccountPage.tsx` — settings |
+| `/explore` | `ExplorePlacesPage.tsx` | Quiet places pin-board — not Today, not a tab |
 
 ### Train deeper
 
@@ -49,6 +50,7 @@
 | `/dmca` | `DmcaPage.tsx` | DMCA / copyright notices |
 | `/refunds` | `RefundsPage.tsx` | Refunds & cancellation |
 | `/welcome` | `WelcomePage.tsx` | I-Day onboarding (also `app/welcome/`) |
+| `/explore` | `ExplorePlacesPage.tsx` | Quiet places pin-board — not Today, not a tab |
 
 ### Outside `(app)` group
 

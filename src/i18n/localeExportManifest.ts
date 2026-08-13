@@ -69,6 +69,7 @@ export const LOCALE_FILES = [
   { namespace: 'beta', filename: 'beta.json' },
   { namespace: 'gate', filename: 'gate.json' },
   { namespace: 'rewards', filename: 'rewards.json' },
+  { namespace: 'places', filename: 'places.json' },
   { namespace: 'learnContent', filename: 'learn-content.json' },
 ] as const;
 
