@@ -634,6 +634,7 @@ export function HomeTodayDashboard() {
         streak={streak}
         userEmail={userEmail}
         action={action}
+        completedSessions={totalSessions}
         showEditToday={layout.showDetailsAccordion}
         onEditToday={() => setEditTodayOpen(true)}
       />

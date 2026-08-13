@@ -2,7 +2,7 @@
  * Welcome Skip must not soft-bypass the private gate (W1 activation).
  *
  * Beta Field repro (live www `.618`, pre-fix):
- *   1. `/welcome` → Begin → Continue through questions → “Skip — start training”
+ *   1. `/welcome` → Begin → Continue through questions (no sign-in wall)
  *   2. Lands `/active` live session; then `/log` and `/coach` render full app
  *      client-side (tab nav never re-runs proxy.ts)
  *   3. Meanwhile `curl -I https://www.missionwinning.com/active` still 307→`/private`

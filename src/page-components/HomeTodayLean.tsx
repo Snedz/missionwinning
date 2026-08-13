@@ -295,6 +295,7 @@ export function HomeTodayLean() {
           streak={streak}
           userEmail={null}
           action={action}
+          completedSessions={workoutHistory.length}
           showEditToday={false}
         />
       ),

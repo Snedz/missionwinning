@@ -35,10 +35,7 @@ test.describe('Phase H hero flows @gate', () => {
     const cont = page.getByRole('button', { name: /continue|continuar/i }).first();
     await expect(cont).toBeVisible({ timeout: 10_000 });
     await cont.click();
-    // Sign-in skip → Today with one primary Start (not Active dump / not pillar wall)
-    const skip = page.getByRole('button', { name: /skip|omitir|first session/i }).first();
-    await expect(skip).toBeVisible({ timeout: 10_000 });
-    await skip.click();
+    // F-017: no sign-in step — profile Continue lands on Today with one Start
     await expect(page).toHaveURL(/\/log/, { timeout: 15_000 });
     await expect(page.locator('.primary-action')).toHaveCount(1);
     await page.locator('.primary-action').first().click();

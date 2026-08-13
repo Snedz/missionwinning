@@ -5,7 +5,11 @@ import { useTranslation } from 'react-i18next';
 import type { JourneyAction } from '@/lib/missionJourney';
 import { JourneyStrip } from '@/components/journey/JourneyHero';
 import { StreakChip } from '@/components/today/StreakChip';
+import { AccountLiteStrip } from '@/components/auth/AccountLiteStrip';
+import { useDismissed } from '@/hooks/useDismissed';
+import { STORAGE_KEYS } from '@/lib/storage/keys';
 import { LOCAL_FIRST_COPY } from '@/lib/localFirstCopy';
+import { ACCOUNT_LITE_COPY, accountLiteHeroChrome } from '@/lib/today/accountLite';
 
 interface Props {
   today: string;
@@ -14,6 +18,8 @@ interface Props {
   streak: number;
   userEmail: string | null;
   action: JourneyAction;
+  /** `workoutHistory.length` — F-017 defers account CTA until first workout. */
+  completedSessions?: number;
   showEditToday?: boolean;
   onEditToday?: () => void;
 }
@@ -28,10 +34,17 @@ export function TodayPageHeader({
   streak,
   userEmail,
   action,
+  completedSessions = 0,
   showEditToday,
   onEditToday,
 }: Props) {
   const { t } = useTranslation();
+  const { dismissed } = useDismissed(STORAGE_KEYS.accountLiteDismissed);
+  const accountChrome = accountLiteHeroChrome({
+    signedIn: !!userEmail,
+    completedWorkouts: completedSessions,
+    dismissed,
+  });
 
   return (
     /*
@@ -72,21 +85,24 @@ export function TodayPageHeader({
             </a>
           </>
         )}
-        <span>
-          {!userEmail ? (
-            <a href="/profile" className="underline underline-offset-2 hover:text-foreground">
-              {t('signInOptional', {
-                defaultValue: LOCAL_FIRST_COPY.todaySignInOptional,
-              })}
-            </a>
-          ) : (
-            t('cloudSyncOn', {
+        {userEmail ? (
+          <span>
+            {t('cloudSyncOn', {
               defaultValue: LOCAL_FIRST_COPY.todayBackupWhenOnline,
-            })
-          )}
-        </span>
+            })}
+          </span>
+        ) : accountChrome === 'local-badge' ? (
+          <span>
+            {t('f017LocalBadge', {
+              defaultValue: ACCOUNT_LITE_COPY.localBadge,
+            })}
+          </span>
+        ) : null}
       </div>
       <JourneyStrip action={action} />
+      {!userEmail && completedSessions > 0 ? (
+        <AccountLiteStrip completedWorkouts={completedSessions} />
+      ) : null}
     </header>
   );
 }

@@ -49,6 +49,11 @@ type CoreStrings = {
   signInOptional: string;
   signInLink: string;
   cloudSyncOn: string;
+  f017LocalBadge: string;
+  f017DeferAccountTitle: string;
+  f017DeferAccountBody: string;
+  f017CreateAccount: string;
+  f017NotNow: string;
   welcomeSignInTitle: string;
   welcomeSignInSubtitle: string;
   commandersIntent: string;
@@ -130,6 +135,12 @@ const en: CoreStrings = {
   signInOptional: 'Sign in optional — progress stays on this device.',
   signInLink: 'Sign in',
   cloudSyncOn: 'Sets save on this device — backup when online.',
+  f017LocalBadge: 'Offline · on this device',
+  f017DeferAccountTitle: 'Keep this diary?',
+  f017DeferAccountBody:
+    'Create an account to sync. You can keep logging offline either way.',
+  f017CreateAccount: 'Create account',
+  f017NotNow: 'Not now',
   welcomeSignInTitle: 'Save progress — your choice',
   welcomeSignInSubtitle:
     'Logging works on this device with no account. Sign in only if you want the same log on another device — Skip anytime.',

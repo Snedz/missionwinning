@@ -25,6 +25,10 @@ import {
 import { getFormGuideOrCues } from '@/lib/formGuides';
 import { SignInPrompt } from '@/components/auth/SignInPrompt';
 import { LOCAL_FIRST_COPY } from '@/lib/localFirstCopy';
+import {
+  mayOfferDeviceLink,
+  mayShowActiveSignInPrompt,
+} from '@/lib/today/accountLite';
 import { useIsCompact } from '@/hooks/useIsCompact';
 import { ActiveEmptyState } from '@/components/workout/ActiveEmptyState';
 import { ActiveSessionChrome } from '@/components/workout/ActiveSessionChrome';
@@ -588,7 +592,7 @@ export function ActiveWorkoutPage() {
         onFinish={handleComplete}
       />
 
-      <LiveHeartRate />
+      {mayOfferDeviceLink(workoutHistory.length) ? <LiveHeartRate /> : null}
 
       <SessionJotField value={activeWorkout.sessionNote ?? ''} onChange={setSessionNote} />
 
@@ -680,16 +684,23 @@ export function ActiveWorkoutPage() {
         toast={toast}
       />
 
-      <SignInPrompt
-        className="mt-6"
-        nextPath="/active"
-        title={t('activeSignInTitle', {
-          defaultValue: LOCAL_FIRST_COPY.activeSignInTitle,
-        })}
-        description={t('activeSignInDesc', {
-          defaultValue: LOCAL_FIRST_COPY.activeSignInDesc,
-        })}
-      />
+      {mayShowActiveSignInPrompt({
+        signedIn: false,
+        completedWorkouts: workoutHistory.length,
+        dismissed: false,
+        hasActiveWorkout: !!activeWorkout,
+      }) ? (
+        <SignInPrompt
+          className="mt-6"
+          nextPath="/active"
+          title={t('activeSignInTitle', {
+            defaultValue: LOCAL_FIRST_COPY.activeSignInTitle,
+          })}
+          description={t('activeSignInDesc', {
+            defaultValue: LOCAL_FIRST_COPY.activeSignInDesc,
+          })}
+        />
+      ) : null}
 
       <ActiveSessionDock
         dockMode={dockMode}

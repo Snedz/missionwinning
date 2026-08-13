@@ -16,7 +16,7 @@ import { fixedTimeAt } from './helpers/fixedClock';
  */
 
 /** Taps from a cold /welcome to a set on the board. Lower is better; never raise this. */
-const TAP_BUDGET = 6;
+const TAP_BUDGET = 5;
 
 /* The pinned clock and why it is derived, not literal: `helpers/fixedClock`. */
 
@@ -44,12 +44,8 @@ test.describe('First 90 seconds @gate', () => {
 
     await tap(page.getByRole('button', { name: /^begin$/i }).first(), 'Begin');
     await tap(page.getByRole('button', { name: /continue|continuar/i }).first(), 'Continue');
-    await tap(
-      page.getByRole('button', { name: /skip|omitir|first session/i }).first(),
-      'Skip sign-in'
-    );
 
-    // F-004 / Hevy: I-Day lands on Today with one Start — not empty feed, not Active dump.
+    // F-017 / F-004: I-Day has no sign-in wall — profile Continue lands on Today.
     await expect(page).toHaveURL(/\/log/, { timeout: 15_000 });
     await expect(page.locator('.primary-action')).toHaveCount(1);
     await tap(

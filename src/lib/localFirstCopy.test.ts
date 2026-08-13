@@ -40,15 +40,21 @@ describe('localFirstCopy', () => {
     const activePage = read('src/page-components/ActiveWorkoutPage.tsx');
     assert.match(activePage, /LOCAL_FIRST_COPY\.activeSignInTitle/);
     assert.match(activePage, /LOCAL_FIRST_COPY\.activeSignInDesc/);
+    assert.match(activePage, /mayShowActiveSignInPrompt/);
     assert.doesNotMatch(activePage, /auto-save to the cloud/i);
 
     const signIn = read('src/components/auth/SignInPrompt.tsx');
     assert.match(signIn, /title\?:/);
 
     const header = read('src/components/today/TodayPageHeader.tsx');
-    assert.match(header, /LOCAL_FIRST_COPY\.todaySignInOptional/);
     assert.match(header, /LOCAL_FIRST_COPY\.todayBackupWhenOnline/);
+    assert.match(header, /ACCOUNT_LITE_COPY\.localBadge/);
     assert.doesNotMatch(header, /Cloud sync on/);
+    assert.doesNotMatch(
+      header,
+      /signInOptional/,
+      'F-017: first-session Today is a local badge, not a Sign in optional wall'
+    );
 
     const pillar = read('src/components/today/TodayProgressSection.tsx');
     assert.match(pillar, /LOCAL_FIRST_COPY\.todayPillarWinEmpty/);

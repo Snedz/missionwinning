@@ -13,7 +13,7 @@
 | Folder | Purpose |
 |--------|---------|
 | `crypto/` | Phantom lifetime USDC checkout |
-| `auth/` | Sign-in panel |
+| `auth/` | Sign-in panel + F-017 `AccountLiteStrip` (post-workout offer) |
 | `benchmarks/` | Benchmark charts |
 | `beta/` | Beta admin, welcome banner |
 | `builder/` | Workout builder panels |

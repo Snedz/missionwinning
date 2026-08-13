@@ -17,7 +17,6 @@ import {
 } from '@/lib/missionJourney';
 import { track } from '@/lib/analytics';
 import { scheduleJourneyPush } from '@/lib/journeySync';
-import { SignInPanel } from '@/components/auth/SignInPanel';
 import { AppLegalFooter } from '@/components/layout/AppLegalFooter';
 import {
   visibleGoalPresetIds,
@@ -34,16 +33,16 @@ import { previewJustGoForEquipment } from '@/lib/justGoSession';
 import { getExerciseById } from '@/data/exercises';
 import { useWorkoutStore, hasLoggedWork } from '@/store/workoutStore';
 import { BrandMonogram } from '@/components/brand/BrandMonogram';
-import { readRaw, writeRaw, remove as removeKey } from '@/lib/storage/safeStorage';
+import { readRaw, writeRaw } from '@/lib/storage/safeStorage';
 import { STORAGE_KEYS } from '@/lib/storage/keys';
 import { navigateAfterPrivateGateUnlock } from '@/lib/privateGateNavigate';
 
 const EXPERIENCE_VALUES = ['beginner', 'intermediate', 'advanced'] as const;
 const EQUIPMENT_VALUES = ['bodyweight', 'dumbbells', 'full-gym'] as const;
 
-type Step = 'welcome' | 'profile' | 'signin';
+type Step = 'welcome' | 'profile';
 
-const STEP_ORDER: Step[] = ['welcome', 'profile', 'signin'];
+const STEP_ORDER: Step[] = ['welcome', 'profile'];
 
 export function WelcomePage() {
   const router = useRouter();
@@ -134,7 +133,7 @@ export function WelcomePage() {
       equipment,
       daysPerWeek: defaultDaysPerWeek(experience),
     });
-    setStep('signin');
+    finish();
   };
 
   const stepIndex = STEP_ORDER.indexOf(step);
@@ -335,85 +334,6 @@ export function WelcomePage() {
                   className="w-full min-h-[44px] tap-target"
                   onClick={() => (isEdit ? router.push('/profile') : setStep('welcome'))}
                 >
-                  <ChevronLeft className="h-4 w-4 mr-1" />{' '}
-                  {t('welcomeBack', { defaultValue: 'Back' })}
-                </Button>
-              </>
-            )}
-
-            {step === 'signin' && (
-              <>
-                <div className="space-y-2">
-                  <p className="eyebrow text-muted-foreground">
-                    {t('welcomeSignInEyebrow', { defaultValue: 'Optional' })}
-                  </p>
-                  <h2 className="display-section max-w-[18ch] text-balance text-foreground">
-                    {t('welcomeSignInTitle', { defaultValue: 'Save progress — your choice' })}
-                  </h2>
-                  <p className="text-sm leading-relaxed text-muted-foreground">
-                    {t('welcomeSignInSubtitle', {
-                      defaultValue:
-                        'Sign in with Google or email to sync across devices. Skip anytime — local progress still works.',
-                    })}
-                  </p>
-                </div>
-                {/* Elevated, not boss — Skip owns the only red on this step. */}
-                <div className="card-elevated space-y-1.5 px-4 py-3.5">
-                  <p className="eyebrow text-muted-foreground">
-                    {t('welcomeSessionReadyEyebrow', { defaultValue: 'Up next' })}
-                  </p>
-                  <p className="text-sm font-semibold">
-                    {t('welcomeSessionReadyTitle', {
-                      defaultValue: 'Your first session is ready',
-                    })}
-                  </p>
-                  <p className="text-sm leading-relaxed text-muted-foreground">
-                    {t('welcomeSessionReadyBody', {
-                      defaultValue: `${firstSession.name} · ${firstSessionNames.length} exercises for your gear. Skip sign-in to start logging right away.`,
-                      name: firstSession.name,
-                      count: firstSessionNames.length,
-                    })}
-                  </p>
-                </div>
-                <label className="flex cursor-pointer items-start gap-2.5 border-2 border-border bg-card p-3 text-sm">
-                  <input
-                    type="checkbox"
-                    className="mt-0.5 h-4 w-4 accent-primary"
-                    defaultChecked={false}
-                    onChange={(e) => {
-                      try {
-                        if (e.target.checked) writeRaw(STORAGE_KEYS.remindersPref, '1');
-                        else removeKey(STORAGE_KEYS.remindersPref);
-                      } catch { /* noop */ }
-                    }}
-                  />
-                  <span className="text-muted-foreground">
-                    {t('welcomeRemindersOptIn', {
-                      defaultValue:
-                        'Email me if I go quiet, and a recap after my first week. Never more than one every two days — unsubscribe anytime.',
-                    })}
-                  </span>
-                </label>
-                {/*
-                  Sign-in is subordinate here, and structurally so: it sits
-                  inside a ruled panel, and the step's one primary action is
-                  Skip. It used to be the other way round — a filled primary on
-                  "Send magic link" with the skip a ghost button in muted text,
-                  which is the weakest thing on the screen. "No account required
-                  to start" is the product's headline promise; the last
-                  onboarding screen must not spend its emphasis arguing with it.
-                */}
-                <div className="border-2 border-border bg-card p-4">
-                  <SignInPanel nextPath="/active" onComplete={finish} />
-                </div>
-                <button
-                  type="button"
-                  className="primary-action min-h-[52px] w-full tap-target text-[19px]"
-                  onClick={finish}
-                >
-                  {t('welcomeSkipSignIn', { defaultValue: 'Skip — start training' })}
-                </button>
-                <Button variant="ghost" size="sm" className="w-full min-h-[44px] tap-target" onClick={() => setStep('profile')}>
                   <ChevronLeft className="h-4 w-4 mr-1" />{' '}
                   {t('welcomeBack', { defaultValue: 'Back' })}
                 </Button>

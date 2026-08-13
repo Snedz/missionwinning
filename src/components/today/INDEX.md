@@ -6,7 +6,7 @@
 
 | File | Purpose |
 |------|---------|
-| `TodayPageHeader.tsx` | Greeting, date, journey phase |
+| `TodayPageHeader.tsx` | Greeting, date, F-017 local-badge / post-workout account strip |
 | `TodayDashboardAccordion.tsx` | Health/journal/week/progress accordion (readiness+) |
 | `TodayDashboardHeader.tsx` | Mission Score ScoreNumeral + MetricsRow; trends collapsed |
 | `TodayHealthSection.tsx` | Readiness, strain, recovery metrics |

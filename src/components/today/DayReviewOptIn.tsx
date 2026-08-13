@@ -33,6 +33,8 @@ import { track } from '@/lib/analytics';
 import { STORAGE_KEYS } from '@/lib/storage/keys';
 import { readRaw, writeRaw } from '@/lib/storage/safeStorage';
 import { mayOfferDayReview } from '@/lib/dayReviewNudge';
+import { mayRequestOsPermission } from '@/lib/today/accountLite';
+import { readWorkoutHistoryFromStorage } from '@/lib/workout/workoutPersistLite';
 import {
   DAY_REVIEW_DEFAULT_HOUR,
   DAY_REVIEW_HOURS,
@@ -50,6 +52,11 @@ export function DayReviewOptIn() {
   useEffect(() => {
     let cancelled = false;
     void (async () => {
+      const history = readWorkoutHistoryFromStorage();
+      if (!mayRequestOsPermission(history.length)) {
+        if (!cancelled) setMode('hidden');
+        return;
+      }
       const m = await import('@/lib/pushClient');
       const hasPush = await m.hasLocalPushSubscription();
       if (cancelled) return;

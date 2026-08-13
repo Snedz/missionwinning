@@ -39,6 +39,12 @@ export const BOOTSTRAP_EN: Record<string, string> = {
   navBasicFocusHint: 'Basic Training focus — train tools first. More pillars unlock as you go.',
   welcomeBegin: 'Begin',
   welcomeSkipSignIn: 'Skip — start training',
+  f017LocalBadge: 'Offline · on this device',
+  f017DeferAccountTitle: 'Keep this diary?',
+  f017DeferAccountBody:
+    'Create an account to sync. You can keep logging offline either way.',
+  f017CreateAccount: 'Create account',
+  f017NotNow: 'Not now',
   todayBasicEncouragement:
     'One step at a time. Log a set — Mission Coach shapes the week from your history.',
   todayCoachInviteEyebrow: 'AI weekly plan',
