@@ -2,7 +2,9 @@
 
 **Status:** draft 2026-08-13 — not live marketing. Do not publish until public flip / CoS unparks Learn content.  
 **Copy owner:** Content Learn (original MW wording). **Host:** Growth `seo/aeo/`.  
+**Rule:** niche FAQs beat broad topics — **one specific question per page/block**.  
 **Ch4 slot (when unparked):** Getting Started after ch4-s3 — not new chapters. Magazine: at most Q1. Learn `sb-0` (#479) already covers Q1+Q4 — do not duplicate.  
+**Open content only:** these answers ship on public `/guide` HTML (no Learn/Substack login wall).  
 **Originality log:** append on ship (`docs/guidebook-originality-log.md`).
 
 Each answer is 40–60 words under a question H2 so crawlers can quote it.
@@ -41,5 +43,7 @@ No wearable is required. Train logging and Mission Coach both run from the sets 
 | Q2 Coach from logs | §2 | Ch4 after ch4-s3 |
 | Q3 vs-last | §3 | Ch4 after ch4-s3 |
 | Q4 no wearable | §4 | sb-0 already covers — don't duplicate |
+
+Vs-pages (comparisons not praise): [BRIEF-vs-pages.md](./BRIEF-vs-pages.md) — separate URLs, not mixed into these FAQs.
 
 Reddit / SOCIAL_LAUNCH stays Growth-owned. No traction, no invite-only, no Feed, no Bundle-as-hero.
