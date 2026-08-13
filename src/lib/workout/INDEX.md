@@ -25,6 +25,7 @@ Root-level `@/lib/{name}` paths re-export from here for compatibility — prefer
 17. `activeSetInputPatches.ts` — Use next / plate / apply-targets field patches (`.407`)
 18. `activeTableSetControls.ts` — desktop table set dial + kind projection (`.408`)
 19. `activeWorkoutHelpers.ts` — also `resolveExerciseNextTarget` + loadPct/menu gates (`.418`); `formatPrevSetLabels` + footer peel (`.425`)
+20. `importCsv.ts` — Strong / Hevy / Boostcamp import + MW CSV round-trip export (free; fixtures in `fixtures/`)
 
 ## Tests (colocated)
 
@@ -39,6 +40,8 @@ Root-level `@/lib/{name}` paths re-export from here for compatibility — prefer
 | `workoutPr.test.ts` | PR detection |
 | `workoutMerge.test.ts` | Conflict / cap / fingerprint |
 | `workoutVictory.test.ts` | Victory next action |
+| `importCsv.test.ts` | Strong / Hevy / Boostcamp / MW CSV parse + round-trip |
+| `csvHistoryFree.test.ts` | Import/export never paywalled; fixtures present |
 | `activeWorkoutHelpers.test.ts` | Next set, last session stats |
 | `sessionCheckInOffer.test.ts` | First-mission never offers check-in (`.293`) |
 | `loggerSpeed.test.ts` | Use-next offer rules (`.288`) |
