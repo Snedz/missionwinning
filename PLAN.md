@@ -3,7 +3,7 @@
 **Freeze.** Implement only this file. Do not reopen refused items mid-build.
 **Not** [docs/PLAN.md](docs/PLAN.md) (build phases A–I). Product law: [docs/IDENTITY_SOCIAL_PLAN.md](docs/IDENTITY_SOCIAL_PLAN.md).
 **Lane:** Engineering-Web · **Horizon:** W craft window · **Override:** `Excellence-Override: Athlete Page authored identity (no Top 8)`
-**Label:** `2026.07-unified.698` after code ships (this freeze commit is docs-only).
+**Label:** `2026.07-unified.706` (retagged off `.698` — that number is reserved for #477 gated www honesty).
 
 ---
 
@@ -79,7 +79,7 @@ Expand `athleteLocales.test.ts` SOURCES to the Athlete Page components this cata
 - Keys in `src/i18n/athleteLocales.ts` (+ card/shelf strings already in `rewardsLocales.ts`). `defaultValue` matches EN. Beachhead es/fr/pt for new lines; others inherit EN.
 - Help: getting-started sign-in points at Account, not Profile.
 - `src/lib/identity/INDEX.md` + `src/i18n/INDEX.md` (athleteLocales row).
-- Hard rule 5 on the **implementation** commit: `APP_BUILD_LABEL` `.698`, `LOG.md` (rotate oldest `.669` — live log is already 15), `CONTEXT.md` `## Now` (rotate oldest ship bullet to stay ≤25).
+- Hard rule 5 on the **implementation** commit: `APP_BUILD_LABEL` `.706`, `LOG.md` (rotate oldest `.669` — live log is already 15), `CONTEXT.md` `## Now` (rotate oldest ship bullet to stay ≤25).
 - Commit trailer: `Excellence-Override: Athlete Page authored identity (no Top 8)`.
 - Draft PR. At most one preview.
 

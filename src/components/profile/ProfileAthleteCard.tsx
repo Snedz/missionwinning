@@ -2,7 +2,7 @@
 /**
  * The Athlete Card — the identity surface `/profile` never had (`.610`).
  *
- * `.698` makes the preview the artifact: token frame/backdrop classes, career
+ * `.706` makes the preview the artifact: token frame/backdrop classes, career
  * signature (never rank/XP), cosmetics and card-share PNG behind a disclosure
  * so the page reads as authored, not as a settings form.
  *

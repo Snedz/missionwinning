@@ -1,6 +1,6 @@
-# LOG rotate — `.669` for `.698`
+# LOG rotate — `.669` for `.706`
 
-Moved out of live `LOG.md` when Athlete Page authored identity (`.698`) shipped.
+Moved out of live `LOG.md` when Athlete Page authored identity (`.706`) shipped.
 Live log keeps ≤15 entries.
 
 ## 2026-08-10 — Horizon W excellence RESULT + agent stop-rule (`.669`)

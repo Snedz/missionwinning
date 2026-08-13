@@ -6,7 +6,7 @@
  * "You". The settings moved to `/account`; what stayed is the part that is
  * actually yours — docs/IDENTITY_SOCIAL_PLAN.md §3.
  *
- * `.698` composition: authored first viewport (identity · card · table · line ·
+ * `.706` composition: authored first viewport (identity · card · table · line ·
  * shelf), editors collapsed, no XP/rank scoreboard. Kits are C6 compositions.
  * Page share is share-OUT PNG (S4a); public URL is S4b (Club C2). Private note
  * is local free text only (C5).
