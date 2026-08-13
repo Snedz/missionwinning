@@ -33,6 +33,8 @@ type Props = {
   prevLabels: (string | null)[];
   /** A1/A2 pair mark — prefix on the Set cell so the row stays identifiable. */
   pairMark?: string | null;
+  /** After-save vs-last tokens; null slots stay unpainted. */
+  vsLastLabels?: (string | null)[];
   input: { reps: number; weight: number };
   onInputChange: (field: 'reps' | 'weight', value: number) => void;
   onLog: () => void;
@@ -60,6 +62,7 @@ export function SetLogTable({
   weightLabel,
   prevLabels,
   pairMark = null,
+  vsLastLabels = [],
   input,
   onInputChange,
   onLog,
@@ -104,6 +107,7 @@ export function SetLogTable({
           const kind = set.kind ?? ('normal' as SetKind);
           const completed = Boolean(set.completed);
           const side = parseSetSide(set.side);
+          const vsLast = vsLastLabels[setIdx] ?? null;
 
           return (
             <tr
@@ -226,6 +230,18 @@ export function SetLogTable({
                   </td>
                   <td className={cn(cell, 'text-end')}>
                     <div className="flex flex-wrap items-center justify-end gap-1">
+                      {completed && vsLast ? (
+                        <span
+                          className="text-[11px] tabular-nums text-muted-foreground"
+                          data-testid="set-table-vs-last"
+                          aria-label={t('activeVsLastAria', {
+                            delta: vsLast,
+                            defaultValue: 'versus last {{delta}}',
+                          })}
+                        >
+                          {vsLast}
+                        </span>
+                      ) : null}
                       {kind !== 'normal' && (
                         <Badge
                           variant="outline"

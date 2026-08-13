@@ -24,6 +24,7 @@ import {
   formatPrevSetLabels,
 } from '@/lib/workout/activeWorkoutHelpers';
 import { resolveLastSetGhost } from '@/lib/workout/lastSetGhost';
+import { formatVsLastSetDeltas } from '@/lib/workout/vsLastSet';
 import { getFormGuideOrCues } from '@/lib/formGuides';
 import { canStartDrop } from '@/lib/workout/dropSet';
 import { resolveRestForNextSet } from '@/lib/workout/restTimer';
@@ -175,6 +176,18 @@ export function ActiveExerciseCard({
       : undefined
   );
   const lastSetGhost = resolveLastSetGhost(workoutHistory, exLog.exerciseId);
+  /** After-save vs-last — working-set index, independent of Prev/ghost prefill. */
+  const vsLastLabels = formatVsLastSetDeltas(
+    workoutHistory,
+    exLog.exerciseId,
+    exLog.sets,
+    unitLabel,
+    {
+      same: t('activeVsLastSame', { defaultValue: 'same' }),
+      rep: t('activeVsLastRep', { defaultValue: 'rep' }),
+      reps: t('activeVsLastReps', { defaultValue: 'reps' }),
+    }
+  );
 
   return (
     <Card
@@ -221,6 +234,7 @@ export function ActiveExerciseCard({
                   prevLabel={prevLabels[setIdx]}
                   pairMark={ssLabel}
                   plusLoad={plusLoad}
+                  vsLastLabel={vsLastLabels[setIdx]}
                   onRate={(rpe) => onRate(setIdx, rpe)}
                   onRateRir={(rir) => onRateRir(setIdx, rir)}
                   onRateTempo={(tempo) => onRateTempo(setIdx, tempo)}
@@ -236,6 +250,7 @@ export function ActiveExerciseCard({
               weightLabel={unitLabel}
               prevLabels={prevLabels}
               pairMark={ssLabel}
+              vsLastLabels={vsLastLabels}
               input={setInput}
               plusLoad={plusLoad}
               onInputChange={onSetInputChange}

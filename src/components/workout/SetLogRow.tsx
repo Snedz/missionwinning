@@ -5,6 +5,8 @@
  * Strong/Hevy density: metric-first (`8 × 60 kg`), not prose ("In the console").
  * **PREVIOUS is the row anchor** (Hevy web withholds this; we show it) — prior
  * performance sits beside the set number before this session's metric.
+ * After a working set saves, a tiny vs-last token (`+2.5 kg` / `+1 rep` / `same`)
+ * sits next to this session's metric (.741). First-ever is silence.
  * Entry stays in `LogConsole`. Rows + RPE ≥44px. No filled red — Log set owns red.
  *
  * See: src/components/workout/INDEX.md
@@ -54,6 +56,8 @@ type Props = {
   prevLabel?: string | null;
   /** A1/A2 pair mark — prefix on the Set cell so the row stays identifiable. */
   pairMark?: string | null;
+  /** After-save vs-last token (`+2.5 kg` / `+1 rep` / `same`). Null = first-ever / warmup. */
+  vsLastLabel?: string | null;
   onRate: (rpe: 'easy' | 'med' | 'hard') => void;
   /** Optional 0–5 RIR — independent of RPE; never required (`.725`). */
   onRateRir: (rir: number | undefined) => void;
@@ -70,6 +74,7 @@ export function SetLogRow({
   weightLabel,
   prevLabel = null,
   pairMark = null,
+  vsLastLabel = null,
   onRate,
   onRateRir,
   onRateTempo,
@@ -87,12 +92,19 @@ export function SetLogRow({
   );
   const prevShown = prevLabel?.trim() || '—';
   const prevWord = t('activeColPrev', { defaultValue: 'Prev' });
+  const vsLastAria =
+    set.completed && vsLastLabel
+      ? t('activeVsLastAria', {
+          delta: vsLastLabel,
+          defaultValue: 'versus last {{delta}}',
+        })
+      : '';
   const rowLabel = set.completed
     ? t('activeSetRowCompleteAria', {
         n: setNumber,
         line,
         defaultValue: `Set ${setNumber} logged: ${line}`,
-      })
+      }) + (vsLastAria ? `. ${vsLastAria}` : '')
     : isNext
       ? t('activeSetRowNextAria', {
           n: setNumber,
@@ -165,6 +177,15 @@ export function SetLogRow({
       >
         {line}
       </span>
+
+      {set.completed && vsLastLabel ? (
+        <span
+          className="shrink-0 text-[11px] tabular-nums text-muted-foreground"
+          data-testid="set-row-vs-last"
+        >
+          {vsLastLabel}
+        </span>
+      ) : null}
 
       {kind !== 'normal' && (
         <Tooltip>
