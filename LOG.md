@@ -19,38 +19,31 @@ at SpaceX *structure* (viewport scenes, one type, one CTA shape) on MW paper/ink
 — not a SpaceX skin.
 
 **Ship:** `/private` (what visitors see) + post-unlock `LandingPage` share
-`CinematicWww`: SET (full-viewport logger field, one poster-red Log set) →
-ANYWHERE (one inverted field) → WEEK (instrument, 3×12@80 → 8×82.5) → DOOR
-(Get notified + Enter with code as ghosts). Stacked real `/brand/logo-icon.svg`.
-CTA pack **Free beta / Enter with code / Get notified**. Cover: kicker
-**Train Anywhere. Win Daily.** / headline **Log a set. Offline.** / one quiet
-Coach line (**Mission Coach plans the week from the log. No wearable.**) so L1
-Train+Coach is on fold 1. HUD nav (no paper bar). Door stays paper — design
-system one-red-field beats a poster-red door. Comp: `docs/design/concepts/05-exquisite.html`.
-Thesis: `docs/design/WWW_NIGHT.md` (constitution-first §0, then the HTML).
-Signed-in Today/Train/Coach untouched. `PRIVATE_MODE` untouched. Draft — do not
-burn Hobby Preview. Do not merge.
+`CinematicWww`. Comp: `docs/design/concepts/05-exquisite.html`. Thesis:
+`docs/design/WWW_NIGHT.md`. Signed-in Today/Train/Coach untouched.
+`PRIVATE_MODE` untouched. Draft — do not burn Hobby Preview. Do not merge.
+
+**N1 recut (locked direction):** Scene 1 stays logger-as-field (stacked MW,
+TARGET / set table, **Log a set. Offline.**, quiet Coach line). Scene 2: type
+**on** the B&W still (no ink slab); HUD unchanged. Scene 3: authored miss /
+travel / band — not a 7-day fake engine, not a Swiss split. Scene 4: **poster
+red door**; copy pack only (Free beta · Enter with code · Get notified); form
+on a paper strip so small type meets contrast. LOG SET remains the one
+`poster` control. Photo-first cover is N3 / fallback-only — not this page.
 
 **Constitution pass:** founder ordered the corpus read before pixels. Product
 `vision.md` + design system + Wave 9 + IDENTITY_SOCIAL_PLAN, then ops
 VISION_LONG_EVERYTHING / STRATEGY / YC_THESIS / FOUNDER_CRITICAL_PATH /
-memory/WWW_NIGHT. Comp recut only where it disagreed: restore the quiet Coach
-line the visual skim had dropped. Athlete Page stays the later line, not a
-scene. Games / feed / Top 8 / everything-app stay off fold 1.
+memory/WWW_NIGHT. N1 wins on the poster-red door (design-system “one red field”
+names the door, it does not keep the door paper).
 
-**Nested iterate:** Mission is nested, not everything-app on fold 1. L1 launch is
-Mission Winning Health — free offline logger + Mission Coach from logs. Public
-line **Train Anywhere. Win Daily.** is the hero kicker; h1 is **Log a set. Offline.**
-WEEK kicker is **Mission Coach**. L2 (athlete page you author; not a feed) is one
-quiet line after `</main>`, never a fifth scene, never a six-pillar dump.
-
-**Visual skim (not LGTM → four fixes):** SET is logger-as-field, not a split
-widget on paper. Cover copy locked as above. Anywhere is scene 2, Week is
-scene 3. Nav has zero mass (HUD).
+**Nested iterate:** L1 on fold 1 is Train + one quiet Coach line. Public line
+**Train Anywhere. Win Daily.** L2 (athlete page you author; not a feed) is one
+quiet line after `</main>`, never a fifth scene.
 
 Label `.701` (onto master `.697`). Excellence-Override below.
 
-Excellence-Override: gated www constitution-first — quiet Coach line on SET fold 1 (surface; RESULT unscored)
+Excellence-Override: gated www N1 recut — logger cover, type on still, authored week breaks, poster-red door (surface; RESULT unscored)
 
 Rotated LOG oldest → [docs/archive/log/LOG-rotate-669-for-701.md](docs/archive/log/LOG-rotate-669-for-701.md).
 

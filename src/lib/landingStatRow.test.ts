@@ -62,3 +62,15 @@ test('cinematic www SET is a field, Anywhere before Week, HUD nav', () => {
   assert.doesNotMatch(css, /\.www-cine-nav \{[^}]*border-bottom/);
   assert.doesNotMatch(css, /\.www-cine-nav \{[^}]*position:\s*sticky/);
 });
+
+test('cinematic www N1: type on still, authored week, poster door', () => {
+  assert.match(cine, /www-cine-on-photo/);
+  assert.doesNotMatch(cine, /www-cine-slab/);
+  assert.doesNotMatch(cine, /www-cine-week-grid/);
+  assert.doesNotMatch(cine, /www-cine-split/);
+  assert.match(cine, /Miss\./);
+  assert.match(cine, /Travel\./);
+  assert.match(cine, /Band\./);
+  assert.match(css, /\.www-cine-door \{[^}]*--accent-poster/);
+  assert.match(cine, /www-cine-breaks/);
+});

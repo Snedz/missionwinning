@@ -71,9 +71,23 @@ test('05-exquisite inlines the real MW mark and spends one poster red on Log set
   assert.equal(posterCount, 1, `expected one poster control in source, found ${posterCount}`);
 });
 
-test('05-exquisite JS-off still has the week instrument and the door forms', () => {
-  assert.match(html, /is-rewritten/);
-  assert.match(html, /Hotel/);
+test('05-exquisite JS-off still has the authored week and the door forms', () => {
+  assert.match(html, /<strong>Miss\.<\/strong>/);
+  assert.match(html, /<strong>Travel\.<\/strong>/);
+  assert.match(html, /<strong>Band\.<\/strong>/);
   assert.match(html, /action="\/private"/);
   assert.match(html, /<noscript>|<button type="button" class="poster"/);
+});
+
+test('05-exquisite N1: type on the still, no fake week engine, poster door', () => {
+  assert.match(html, /class="on-photo"/);
+  assert.doesNotMatch(html, /class="slab"/);
+  assert.doesNotMatch(html, /class="week"/);
+  assert.doesNotMatch(html, /is-rewritten/);
+  assert.match(html, /\.scene-door \{[^}]*var\(--poster\)/);
+  assert.match(html, /class="strip"/);
+  const setStart = html.indexOf('id="set"');
+  const anywhereStart = html.indexOf('id="anywhere"');
+  const setBlock = html.slice(setStart, anywhereStart);
+  assert.match(setBlock, /TARGET/);
 });

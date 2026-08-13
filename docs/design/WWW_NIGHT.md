@@ -49,12 +49,12 @@ Read in the mandatory order. Locked lines, quoted — not paraphrased into a new
 
 | Locked line | What the page does | Who wins |
 |---|---|---|
-| L1 on fold 1: Train + Coach. Coach = one quiet line, not a second shot. | SET kicker + h1 are Train. **One quiet Coach line under the h1.** WEEK is still the instrument (scene 3), not a second cover. | Constitution. The skim that dropped the SET lede is reversed. |
-| One red field per page. | LOG SET is the poster red. Door stays **paper**; Get notified / Enter with code are ghosts. | Design system beats ops N1 “poster-red door.” Two reds would be a costume. |
-| Copy pack on the gated door. | Free beta (HUD, repeats) · Get notified · Enter with code. Form is scene 4, never fold 1. | Copy pack. “No form-as-hero” means the waitlist is not the first scene. |
+| L1 on fold 1: Train + Coach. Coach = one quiet line, not a second shot. | SET kicker + h1 are Train. **One quiet Coach line under the h1.** WEEK is authored breaks (scene 3), not a second cover. | Constitution. |
+| N1: Scene 4 is poster red. Copy pack only. Form is not the hero. | Door is a full-viewport **poster close** `#ec3013`. LOG SET stays the one `poster` **control** on paper. Form sits on a **paper strip**. | **N1 wins.** Design-system “one red field” named the door, not a reason to keep it paper. |
+| Copy pack on the gated door. | Free beta (HUD + door kicker) · Get notified · Enter with code. Form is scene 4, never fold 1. | Copy pack. “No form-as-hero” = red field + display first; waitlist secondary. |
 | Athlete Page = MySpace soul, no feed. S4b next, not Top 8. | One quiet line after `</main>`. Never a fifth 100vh scene. | Constitution. |
-| 3–5 scenes. | Four. | In band. |
-| Lead with what is true now. | Cover: Train Anywhere. Win Daily. / Log a set. Offline. | Constitution. |
+| 3–5 scenes. | Four. Not 9 bands. Not Field Manual. Not a Swiss split-column clone of Comp B. | In band. |
+| Lead with what is true now. | Cover: Train Anywhere. Win Daily. / Log a set. Offline. Logger-as-field. Photo-first cover is N3 / fallback-only. | Constitution. |
 
 ---
 
@@ -68,7 +68,7 @@ Read in the mandatory order. Locked lines, quoted — not paraphrased into a new
 - CoD: type on full-bleed; the fold is an image.
 - La Huella: statement gap. Delivery refused.
 - Comp B: the product performing is our rocket footage. Stacked real MW mark.
-- Wave 11 ground budget: paper dominant, **one** inverted field, red spent once.
+- Wave 11 ground budget: paper dominant, **one** inverted field (Anywhere). N1 spends the **red field** on the door close; LOG SET is the red **button** on paper.
 
 **Refuse**
 
@@ -89,14 +89,14 @@ Cold visitors never see `LandingPage` today. Replacing `/private` is the only wa
 
 | Scene | Ground | What it is | CTA |
 |---|---|---|---|
-| **1 · SET** | Paper. The logger *is* the photography — full-viewport field. | Stacked real MW. Public line **Train Anywhere. Win Daily.** Headline **Log a set. Offline.** Quiet Coach line under the h1. Set table at cinematic scale. **LOG SET** is the page’s one red. | Ghost **Free beta** in the HUD, repeats, always → `/private#door` |
-| **2 · ANYWHERE** | **The one inverted field** — documentary photograph, grayscale, type in an ink slab on the image (no gradient overlay). | One sentence. Not a 3-up card row. | Ghost Free beta |
-| **3 · WEEK** | Paper returns (ground change 2 of 2). | **Mission Coach** kicker. The week instrument answers the log. Same engine numbers: 3×12 @ 80 kg → 8 × 82.5 kg. | Ghost Free beta |
-| **4 · DOOR** | Paper. Not a second red field. | Stacked mark. Free beta. Get notified + Enter with code as ghosts. | Real `action="/private"` |
+| **1 · SET** | Paper. The logger *is* the photography — full-viewport field. | Stacked real MW. Public line **Train Anywhere. Win Daily.** Headline **Log a set. Offline.** Quiet Coach line under the h1. **TARGET / set table** at cinematic scale. **LOG SET** is the page’s one `poster` control. | Ghost **Free beta** in the HUD, repeats, always → `/private#door` |
+| **2 · ANYWHERE** | **The one inverted field** — one B&W documentary still (garage/hotel/anywhere). **Type on the picture**, lower-left, max ~520px. No slab, no frost. HUD unchanged (week is not here). | One sentence. Not a 3-up card row. HTML inlines a comp still; live Next keeps an honest ink slot until a real HP5 frame lands. | Ghost Free beta |
+| **3 · WEEK** | Paper returns. | **Mission Coach** kicker. **Authored** miss / travel / band — not a 7-day fake engine, not a Swiss split. | Ghost Free beta |
+| **4 · DOOR** | **Poster red** `#ec3013`. | Stacked mark. Copy pack only: Free beta · Get notified · Enter with code. Red field + display is the hero; form on a paper strip. | Real `action="/private"` |
 
-Ground changes: **2** (paper → photograph → paper). In the 0–6 band. Red: one control, scene 1.
+Ground changes: **3** (paper → photograph → paper → poster). In the 0–6 band. Red field: door. Red control: LOG SET.
 
-JS-off: every scene is HTML. The logger shows set 1 active and the reason line. The week shows the rewritten Wednesday. Forms post to `/private`. Fonts are progressive (Archivo from Google with grotesque fallback); the page does not wait on them.
+JS-off: every scene is HTML. The logger shows set 1 active, TARGET, and the reason line. The week shows three authored beats. Forms post to `/private`. Fonts are progressive (Archivo from Google with grotesque fallback); the page does not wait on them.
 
 **Not in the page:** stats row, FAQ, compare rail, testimonials, six-pillar pitch, evidence thesis, traction, WeChat / mini-programs / money, a fifth 100vh scene, Top 8, a feed.
 
@@ -131,8 +131,8 @@ Door always `/private`. Homepage `/`. No `href="#"`.
 
 - Nav is a HUD: `position: fixed`, transparent, no background, no border. Mix-blend difference. Small mark left, ghost Free beta right. No wordmark mass.
 - SET is a single field filling `100svh`. Cover chrome (stacked mark + kicker + h1 + quiet Coach line) on the field; the logger occupies the rest.
-- Week becomes a list, not seven columns.
-- Door form is full width. Enter with code is a `<details>`, never a second red.
+- Week is three authored beats, never seven columns.
+- Door is a red close. Form lives on a paper strip (small type fails 4.5:1 on `#ec3013`). Enter with code is a `<details>`, never a second `poster` control.
 
 ---
 
@@ -141,6 +141,6 @@ Door always `/private`. Homepage `/`. No `href="#"`.
 1. **Draft PR.** Comp + thesis + gated `/private` port + post-unlock `LandingPage` port. PR stays **draft**. Do not burn Hobby Preview. Do not merge. Do not flip `PRIVATE_MODE`.
 2. **Founder eyes.** 1440×900 and 390×844, JS on and off. Does scene 1 feel like SpaceX-scale product with Train + Coach on the fold?
 3. **Photography.** Scene 2 in the HTML uses a generated grayscale still as a *comp frame*. The live Next port uses an honest slot until a real HP5 frame lands. Generated art must not ship as the live photograph.
-4. **Post-flip.** Same four scenes. Ghost **Free beta** becomes **Start free** → `/welcome`. Door scene drops waitlist. One red remains LOG SET, or moves to Start free — founder call. Do not invent a fifth band.
+4. **Post-flip.** Same four scenes. Ghost **Free beta** becomes **Start free** → `/welcome`. Door scene drops waitlist; the poster field stays. Do not invent a fifth band.
 5. **A1 `sites/www`.** Do not recover as the product.
 6. **Signed-in app** is out of this PR.

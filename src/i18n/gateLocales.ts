@@ -33,9 +33,9 @@ const GATE_EN: Record<string, string> = {
   cineHeroLead:
     'Mission Coach plans the week from the log. No wearable.',
   cineWeekKicker: 'Mission Coach',
-  cineWeekTitle: 'A logged set is a new plan.',
+  cineWeekTitle: 'The week does not fail.',
   cineWeekLead:
-    'Miss a day, travel, only a band — the week reshapes from the log. Not from a wearable, not from a schedule you already broke.',
+    'Authored from the log. Not a calendar you already broke. Not a wearable.',
   cineWeekWhy:
     'Wednesday was a gym squat. You logged travel. The session became a hotel-room push-up. The week did not fail.',
   cineAnywhereKicker: 'Anywhere',

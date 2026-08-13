@@ -3,6 +3,7 @@
 /**
  * Four-scene cinematic www plus a quiet later line (not a fifth scene).
  * Marketing / gated door only. L1 Train+Coach on fold 1 (quiet Coach line under the h1).
+ * Design N1: SET logger field → type-on-still → authored week breaks → poster-red door.
  * docs/design/WWW_NIGHT.md
  */
 
@@ -18,14 +19,10 @@ const CinematicLogger = dynamic(
   { ssr: false, loading: () => <CinematicLoggerFallback /> }
 );
 
-const WEEK = [
-  { d: 'Mon', w: 'Squat', n: '8 × 82.5' },
-  { d: 'Tue', w: 'Push', n: 'floor' },
-  { d: 'Wed', w: 'Hotel', n: 'push-up', rewrite: true },
-  { d: 'Thu', w: 'Hinge', n: '8 × 100' },
-  { d: 'Fri', w: 'Pull', n: 'bar' },
-  { d: 'Sat', w: 'Walk', n: '—' },
-  { d: 'Sun', w: 'Rest', n: '—' },
+const BREAKS = [
+  { k: 'Miss.', b: 'Wednesday went. The week did not fail.' },
+  { k: 'Travel.', b: 'Hotel room. Push-ups from the log.' },
+  { k: 'Band.', b: 'Only a band. The session still counts.' },
 ] as const;
 
 type Props = {
@@ -91,7 +88,7 @@ export function CinematicWww({ mode, door }: Props) {
         </section>
 
         <section className="www-cine-scene www-cine-anywhere" id="anywhere">
-          <div className="www-cine-slab">
+          <div className="www-cine-on-photo">
             <p className="eyebrow www-cine-kicker">
               {t('cineAnywhereKicker', { defaultValue: 'Anywhere' })}
             </p>
@@ -115,47 +112,31 @@ export function CinematicWww({ mode, door }: Props) {
         </section>
 
         <section className="www-cine-scene www-cine-week" id="week">
-          <div className="www-cine-split">
-            <div>
-              <p className="eyebrow www-cine-kicker">
-                {t('cineWeekKicker', { defaultValue: 'Mission Coach' })}
-              </p>
-              <h2 className="display-section">
-                {t('cineWeekTitle', { defaultValue: 'A logged set is a new plan.' })}
-              </h2>
-              <p className="www-cine-lede">
-                {t('cineWeekLead', {
-                  defaultValue:
-                    'Miss a day, travel, only a band — the week reshapes from the log. Not from a wearable, not from a schedule you already broke.',
-                })}
-              </p>
-              <p className="www-cine-mark-follow">
-                <a className="www-cine-ghost" href={doorHref}>
-                  {navLabel}
-                </a>
-              </p>
-            </div>
-            <div>
-              <div className="www-cine-week-grid" aria-label="This week">
-                {WEEK.map((day) => (
-                  <div
-                    key={day.d}
-                    className={'rewrite' in day && day.rewrite ? 'www-cine-day is-rewritten' : 'www-cine-day'}
-                  >
-                    <strong>{day.d}</strong>
-                    <b>{day.w}</b>
-                    <span>{day.n}</span>
-                  </div>
-                ))}
-              </div>
-              <p className="www-cine-why">
-                {t('cineWeekWhy', {
-                  defaultValue:
-                    'Wednesday was a gym squat. You logged travel. The session became a hotel-room push-up. The week did not fail.',
-                })}
-              </p>
-            </div>
-          </div>
+          <p className="eyebrow www-cine-kicker">
+            {t('cineWeekKicker', { defaultValue: 'Mission Coach' })}
+          </p>
+          <h2 className="display-section">
+            {t('cineWeekTitle', { defaultValue: 'The week does not fail.' })}
+          </h2>
+          <p className="www-cine-lede">
+            {t('cineWeekLead', {
+              defaultValue:
+                'Authored from the log. Not a calendar you already broke. Not a wearable.',
+            })}
+          </p>
+          <ol className="www-cine-breaks">
+            {BREAKS.map((beat) => (
+              <li key={beat.k}>
+                <strong>{beat.k}</strong>
+                <span>{beat.b}</span>
+              </li>
+            ))}
+          </ol>
+          <p className="www-cine-mark-follow">
+            <a className="www-cine-ghost" href={doorHref}>
+              {navLabel}
+            </a>
+          </p>
         </section>
 
         <section className="www-cine-scene www-cine-door" id="door">

@@ -91,8 +91,7 @@
 }
 
 .www-cine-set,
-.www-cine-week,
-.www-cine-door {
+.www-cine-week {
   background: hsl(var(--background));
 }
 
@@ -194,7 +193,20 @@
   align-items: baseline;
   justify-content: space-between;
   gap: 16px;
-  margin-bottom: 18px;
+  margin-bottom: 10px;
+}
+
+.www-cine-legend {
+  display: grid;
+  grid-template-columns: 2.2rem 1fr auto;
+  gap: 16px;
+  margin-bottom: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: hsl(var(--muted-foreground));
+  font-feature-settings: 'tnum' 1;
 }
 
 .www-cine-count {
@@ -268,89 +280,39 @@
 }
 
 @media (min-width: 1100px) {
-  .www-cine-split {
-    display: grid;
-    grid-template-columns: minmax(280px, 0.9fr) minmax(420px, 1.1fr);
-    gap: 64px;
-    align-items: end;
-    width: 100%;
-  }
-
   .www-cine-setrow {
     min-height: 96px;
   }
 }
 
-.www-cine-week-grid {
-  display: grid;
-  grid-template-columns: repeat(7, 1fr);
-  gap: 2px;
-  background: hsl(var(--border));
-  border: 2px solid hsl(var(--foreground));
-  margin-top: 36px;
+.www-cine-breaks {
+  list-style: none;
+  margin: 36px 0 0;
+  padding: 0;
+  max-width: 42rem;
+  border-top: 2px solid hsl(var(--foreground));
 }
 
-.www-cine-day {
-  background: hsl(var(--background));
-  padding: 16px 10px 20px;
-  min-height: 140px;
-  font-feature-settings: 'tnum' 1;
+.www-cine-breaks li {
+  padding: 22px 0 24px;
+  border-bottom: 2px solid hsl(var(--border));
 }
 
-.www-cine-day strong {
+.www-cine-breaks strong {
   display: block;
-  font-size: 12px;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  font-weight: 600;
-}
-
-.www-cine-day b {
-  display: block;
-  margin-top: 18px;
-  font-size: clamp(1.1rem, 2vw, 1.65rem);
-  letter-spacing: -0.03em;
+  font-size: clamp(1.75rem, 4.5vw, 2.75rem);
   font-weight: 800;
+  letter-spacing: -0.03em;
   line-height: 1.05;
+  margin: 0 0 8px;
 }
 
-.www-cine-day span {
+.www-cine-breaks span {
   display: block;
-  margin-top: 8px;
-  font-size: 13px;
+  max-width: 36ch;
   color: hsl(var(--muted-foreground));
-}
-
-.www-cine-day.is-rewritten {
-  background: hsl(var(--accent-tint));
-}
-
-.www-cine-day.is-rewritten b {
-  color: hsl(var(--primary));
-}
-
-@media (max-width: 760px) {
-  .www-cine-week-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .www-cine-day {
-    min-height: 0;
-    display: grid;
-    grid-template-columns: 4rem 1fr auto;
-    gap: 12px;
-    align-items: baseline;
-    padding: 14px 12px;
-  }
-
-  .www-cine-day b {
-    margin-top: 0;
-    font-size: 1.25rem;
-  }
-
-  .www-cine-day span {
-    margin-top: 0;
-  }
+  font-size: 17px;
+  line-height: 1.5;
 }
 
 .www-cine-anywhere {
@@ -361,10 +323,10 @@
   color: hsl(var(--background));
 }
 
-.www-cine-slab {
-  background: hsl(var(--foreground));
+.www-cine-on-photo {
   padding: 36px clamp(16px, 4vw, 48px) 48px;
-  max-width: 36rem;
+  max-width: 520px;
+  background: transparent;
 }
 
 .www-cine-anywhere .www-cine-kicker,
@@ -392,13 +354,98 @@
 }
 
 .www-cine-door {
-  justify-content: center;
+  justify-content: flex-end;
   padding-top: 72px;
-  padding-bottom: 72px;
+  padding-bottom: 48px;
+  background: hsl(var(--accent-poster));
+  color: hsl(var(--background));
+}
+
+.www-cine-door :focus-visible {
+  outline-color: hsl(var(--background));
 }
 
 .www-cine-door-inner {
   max-width: 36rem;
+}
+
+.www-cine-door .www-cine-lede {
+  color: hsl(var(--background));
+  font-size: 19px;
+  font-weight: 600;
+}
+
+.www-cine-door .www-cine-kicker,
+.www-cine-door .eyebrow-live,
+.www-cine-door .display-section {
+  color: hsl(var(--background));
+}
+
+.www-cine-door .www-cine-kicker,
+.www-cine-door .eyebrow-live {
+  font-size: 19px;
+  font-weight: 800;
+}
+
+.www-cine-door .www-cine-ghost {
+  border-color: hsl(var(--background));
+  color: hsl(var(--background));
+}
+
+.www-cine-door .www-cine-ghost:hover {
+  background: hsl(var(--background));
+  color: hsl(var(--accent-poster));
+}
+
+.www-cine-door .www-cine-ghost:focus-visible {
+  outline-color: hsl(var(--background));
+}
+
+.mw-gate .www-cine-door .www-cine-ghost:hover {
+  color: hsl(var(--accent-poster));
+}
+
+.www-cine-strip {
+  background: hsl(var(--background));
+  color: hsl(var(--foreground));
+  padding: 24px 20px 28px;
+  margin-top: 32px;
+  max-width: 36rem;
+}
+
+.www-cine-strip :focus-visible {
+  outline-color: hsl(var(--foreground));
+}
+
+.www-cine-strip .www-cine-lede {
+  margin-top: 0;
+  color: hsl(var(--muted-foreground));
+}
+
+.www-cine-strip .www-cine-ghost {
+  border-color: hsl(var(--foreground));
+  color: hsl(var(--foreground));
+}
+
+.www-cine-strip .www-cine-ghost:hover {
+  background: hsl(var(--foreground));
+  color: hsl(var(--background));
+}
+
+.mw-gate .www-cine-strip .www-cine-ghost:hover {
+  color: hsl(var(--background));
+}
+
+.www-cine-strip .www-cine-foot {
+  color: hsl(var(--muted-foreground));
+}
+
+.www-cine-strip .www-cine-details {
+  border-top-color: hsl(var(--border));
+}
+
+.www-cine-strip .www-cine-details summary {
+  color: hsl(var(--muted-foreground));
 }
 
 .www-cine-field {

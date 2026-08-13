@@ -171,101 +171,13 @@ export function PrivateTeaserClient({ initialInvite = '' }: Props) {
       <h2 className="display-section">
         {t('gateAccessSummary', { defaultValue: 'Enter with code' })}
       </h2>
-      <p className="www-cine-lede">
-        {t('gateInviteSubtitle', {
-          defaultValue:
-            'Enter the access code from your email, then complete I-Day and log your first workout.',
-        })}
-      </p>
-      <form onSubmit={handleSubmit}>
-        {codeField}
-        <div className="www-cine-row">
-          <button
-            type="submit"
-            disabled={loading || !password}
-            className="www-cine-ghost"
-          >
-            {submitLabel}
-          </button>
-        </div>
-        {errorNode}
-        <p className="www-cine-foot">
-          {t('gateBetaGuideFoot', { defaultValue: 'Have a code? See the' })}{' '}
-          <Link href="/beta">{t('gateBetaGuide', { defaultValue: 'beta start guide' })}</Link>.
+      <div className="www-cine-strip">
+        <p className="www-cine-lede">
+          {t('gateInviteSubtitle', {
+            defaultValue:
+              'Enter the access code from your email, then complete I-Day and log your first workout.',
+          })}
         </p>
-      </form>
-    </>
-  ) : (
-    <>
-      <div className="www-cine-mark">
-        <img src="/brand/logo-icon.svg" alt="" width={96} height={96} />
-      </div>
-      <p className="eyebrow-live www-cine-kicker www-cine-mark-follow">
-        {t('gateEyebrow', { defaultValue: 'Free beta' })}
-      </p>
-      <h2 className="display-section">
-        {t('gateWaitlistTitle', { defaultValue: 'Get notified' })}
-      </h2>
-      <p className="www-cine-lede">
-        {t('gateSubtitle', {
-          defaultValue:
-            'Free offline workout logging plus Mission Coach — weekly plans from your logs alone, no wearable. The logger stays free forever.',
-        })}
-      </p>
-      {waitDone ? (
-        <>
-          <p className="gate-done www-cine-mark-follow">
-            <Check className="h-4 w-4" strokeWidth={2} aria-hidden />
-            {t('gateWaitlistDone', { defaultValue: "You're on the list." })}
-          </p>
-          <p className="www-cine-foot">
-            {t('gateWaitlistDoneFoot', {
-              defaultValue: "We'll email you when the beta opens.",
-            })}{' '}
-            {waitEmail}
-          </p>
-        </>
-      ) : (
-        <form onSubmit={handleWaitlist}>
-          <label className="www-cine-field">
-            <span>{t('gateWaitlistEmailLabel', { defaultValue: 'Email' })}</span>
-            <input
-              type="email"
-              required
-              value={waitEmail}
-              onChange={(e) => setWaitEmail(e.target.value)}
-              placeholder={t('gateWaitlistPlaceholder', {
-                defaultValue: 'you@example.com',
-              })}
-              aria-label="Email for the launch waitlist"
-              disabled={waitBusy}
-            />
-          </label>
-          <div className="www-cine-row">
-            <button
-              type="submit"
-              disabled={waitBusy || !waitEmail}
-              className="www-cine-ghost"
-            >
-              {waitBusy
-                ? t('gateWaitlistSubmitting', { defaultValue: 'Joining…' })
-                : t('gateWaitlistSubmit', { defaultValue: 'Get notified' })}
-            </button>
-          </div>
-          {waitError && (
-            <p className="www-cine-foot" role="alert">
-              {waitError}
-            </p>
-          )}
-          <p className="www-cine-foot">
-            {t('gateWaitlistFoot', {
-              defaultValue: 'No spam — one email when the beta opens.',
-            })}
-          </p>
-        </form>
-      )}
-      <details className="www-cine-details">
-        <summary>{t('gateAccessSummary', { defaultValue: 'Enter with code' })}</summary>
         <form onSubmit={handleSubmit}>
           {codeField}
           <div className="www-cine-row">
@@ -278,8 +190,100 @@ export function PrivateTeaserClient({ initialInvite = '' }: Props) {
             </button>
           </div>
           {errorNode}
+          <p className="www-cine-foot">
+            {t('gateBetaGuideFoot', { defaultValue: 'Have a code? See the' })}{' '}
+            <Link href="/beta">{t('gateBetaGuide', { defaultValue: 'beta start guide' })}</Link>.
+          </p>
         </form>
-      </details>
+      </div>
+    </>
+  ) : (
+    <>
+      <div className="www-cine-mark">
+        <img src="/brand/logo-icon.svg" alt="" width={96} height={96} />
+      </div>
+      <p className="eyebrow-live www-cine-kicker www-cine-mark-follow">
+        {t('gateEyebrow', { defaultValue: 'Free beta' })}
+      </p>
+      <h2 className="display-section">
+        {t('gateWaitlistTitle', { defaultValue: 'Get notified' })}
+      </h2>
+      <div className="www-cine-strip">
+        <p className="www-cine-lede">
+          {t('gateSubtitle', {
+            defaultValue:
+              'Free offline workout logging plus Mission Coach — weekly plans from your logs alone, no wearable. The logger stays free forever.',
+          })}
+        </p>
+        {waitDone ? (
+          <>
+            <p className="gate-done www-cine-mark-follow">
+              <Check className="h-4 w-4" strokeWidth={2} aria-hidden />
+              {t('gateWaitlistDone', { defaultValue: "You're on the list." })}
+            </p>
+            <p className="www-cine-foot">
+              {t('gateWaitlistDoneFoot', {
+                defaultValue: "We'll email you when the beta opens.",
+              })}{' '}
+              {waitEmail}
+            </p>
+          </>
+        ) : (
+          <form onSubmit={handleWaitlist}>
+            <label className="www-cine-field">
+              <span>{t('gateWaitlistEmailLabel', { defaultValue: 'Email' })}</span>
+              <input
+                type="email"
+                required
+                value={waitEmail}
+                onChange={(e) => setWaitEmail(e.target.value)}
+                placeholder={t('gateWaitlistPlaceholder', {
+                  defaultValue: 'you@example.com',
+                })}
+                aria-label="Email for the launch waitlist"
+                disabled={waitBusy}
+              />
+            </label>
+            <div className="www-cine-row">
+              <button
+                type="submit"
+                disabled={waitBusy || !waitEmail}
+                className="www-cine-ghost"
+              >
+                {waitBusy
+                  ? t('gateWaitlistSubmitting', { defaultValue: 'Joining…' })
+                  : t('gateWaitlistSubmit', { defaultValue: 'Get notified' })}
+              </button>
+            </div>
+            {waitError && (
+              <p className="www-cine-foot" role="alert">
+                {waitError}
+              </p>
+            )}
+            <p className="www-cine-foot">
+              {t('gateWaitlistFoot', {
+                defaultValue: 'No spam — one email when the beta opens.',
+              })}
+            </p>
+          </form>
+        )}
+        <details className="www-cine-details">
+          <summary>{t('gateAccessSummary', { defaultValue: 'Enter with code' })}</summary>
+          <form onSubmit={handleSubmit}>
+            {codeField}
+            <div className="www-cine-row">
+              <button
+                type="submit"
+                disabled={loading || !password}
+                className="www-cine-ghost"
+              >
+                {submitLabel}
+              </button>
+            </div>
+            {errorNode}
+          </form>
+        </details>
+      </div>
     </>
   );
 

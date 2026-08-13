@@ -58,10 +58,15 @@ export function CinematicLogger({ doneHref = '/private', doneLabel }: Props) {
   return (
     <div className="www-cine-logger">
       <div className="www-cine-logger-head">
-        <p className="eyebrow">{t('heroDemoExercise', { defaultValue: 'Squat · today' })}</p>
+        <p className="eyebrow">TARGET · Squat</p>
         <p className="www-cine-count">
           {logged.length}/{PLANNED_SETS}
         </p>
+      </div>
+      <div className="www-cine-legend" aria-hidden>
+        <span>Set</span>
+        <span>Target</span>
+        <span />
       </div>
       {Array.from({ length: PLANNED_SETS }, (_, i) => {
         const set = logged[i];
@@ -112,8 +117,13 @@ export function CinematicLoggerFallback() {
   return (
     <div className="www-cine-logger" aria-hidden>
       <div className="www-cine-logger-head">
-        <p className="eyebrow">Squat · today</p>
+        <p className="eyebrow">TARGET · Squat</p>
         <p className="www-cine-count">0/3</p>
+      </div>
+      <div className="www-cine-legend" aria-hidden>
+        <span>Set</span>
+        <span>Target</span>
+        <span />
       </div>
       {[0, 1, 2].map((i) => (
         <div key={i} className={`www-cine-setrow ${i === 0 ? 'is-next' : 'is-wait'}`}>
