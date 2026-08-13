@@ -147,11 +147,11 @@ export function PrivateTeaserClient({ initialInvite = '' }: Props) {
         value={password}
         onChange={(e) => setPassword(e.target.value)}
         placeholder={t('gateAccessPlaceholder', {
-          defaultValue: 'Enter code from your invite',
+          defaultValue: 'Enter your access code',
         })}
         autoComplete="off"
-        // Invitees land with the access form expanded — focus the code field.
-        // eslint-disable-next-line jsx-a11y/no-autofocus -- invite conversion
+        // Code-link landers get the access form expanded — focus the code field.
+        // eslint-disable-next-line jsx-a11y/no-autofocus -- access-code conversion
         autoFocus={isInvitee}
         className="gate-input"
         disabled={loading}
@@ -189,7 +189,7 @@ export function PrivateTeaserClient({ initialInvite = '' }: Props) {
       </header>
       <hr className="gate-rule" />
 
-      {/* Field manual: eyebrow → display → one red (invite = enter beta; cold = notify). */}
+      {/* Field manual: eyebrow → display → one red (code = enter beta; cold = notify). */}
       <main className="gate-main">
         <div className="gate-col">
           <h1 className="gate-h1">
@@ -210,12 +210,12 @@ export function PrivateTeaserClient({ initialInvite = '' }: Props) {
           {isInvitee ? (
             <section className="gate-section">
               <p className="gate-kicker">
-                {t('gateInviteEyebrow', { defaultValue: 'Beta invite' })}
+                {t('gateInviteEyebrow', { defaultValue: 'Access code' })}
               </p>
               <p className="gate-invite-copy">
                 {t('gateInviteSubtitle', {
                   defaultValue:
-                    "You're invited — enter the access code from your invite email, then complete I-Day and log your first workout.",
+                    'Enter the access code from your email, then complete I-Day and log your first workout.',
                 })}
               </p>
               <form onSubmit={handleSubmit}>
@@ -231,7 +231,7 @@ export function PrivateTeaserClient({ initialInvite = '' }: Props) {
                 </div>
                 {errorNode}
                 <p className="gate-foot">
-                  {t('gateBetaGuideFoot', { defaultValue: 'Invited testers: see the' })}{' '}
+                  {t('gateBetaGuideFoot', { defaultValue: 'Beta testers: see the' })}{' '}
                   <Link href="/beta">
                     {t('gateBetaGuide', { defaultValue: 'beta start guide' })}
                   </Link>

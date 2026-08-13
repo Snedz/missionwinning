@@ -1,7 +1,7 @@
 /**
  * Honest loading chrome for `/private` while Suspense / session unlock runs.
- * Same brand + invite-only kicker as the ready gate — not a bare "Loading…"
- * or "Checking sign-in…" dead-end (F-008).
+ * Same brand + Free beta kicker as the ready gate — not a bare "Loading…"
+ * or "Checking sign-in…" dead-end (F-008 / BETA_LANGUAGE).
  */
 
 import { GATED_WWW_HONESTY } from '@/lib/gatedWwwHonesty';

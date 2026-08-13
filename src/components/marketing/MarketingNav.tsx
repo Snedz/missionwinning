@@ -41,7 +41,7 @@ export function MarketingNav({ variant = 'full', className }: MarketingNavProps)
       <PublicStatusBar
         label={t('publicStatusOpenBeta', {
           defaultValue:
-            'Invite-only beta — full platform free for testers while we grow with you',
+            'Free beta — full platform free for testers while we grow with you',
         })}
       />
       <div className="relative z-[1] mx-auto flex h-14 max-w-6xl items-center justify-between px-5 sm:h-16">

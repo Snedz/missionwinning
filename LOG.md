@@ -14,19 +14,18 @@ Archive: [2026-06 → 2026-07-20](docs/archive/log/LOG-2026-06_to_2026-07-20.md)
 ## 2026-08-12 — Gated www honesty under PRIVATE_MODE (`.698`)
 
 CoS/Kaizen F-008: while `PRIVATE_MODE` is on, cold visitors hitting `/`, `/log`,
-`/private`, or `/welcome` must see invite / private-beta framing — not a 404,
-not opaque “Checking sign-in…”, and not “open beta” / “Start free” that implies
-the product is publicly open. Gate strength unchanged (no unlocks, no cookie
-mint, no PRIVATE_MODE flip).
+`/private`, or `/welcome` must see Free beta / access-code framing — not a 404,
+not opaque “Checking sign-in…”, not “open beta” / “Start free”, and not
+invite-only / private-beta product-status language (founder BETA_LANGUAGE: gate
+stays until EIN; wording does not say invite-only). Gate strength unchanged.
 
 **Ship:**
-- `gatedWwwHonesty.ts` EN constants + honesty guard (no open-beta / sign-in
-  spinner / Start free on gated copy).
-- `/private` — invite-only private beta eyebrow; Train→Coach teaser; Suspense +
-  session-unlock use `GatePendingChrome` (brand + invite kicker + “Confirming
-  invite access…”).
-- `/welcome` — when client gate on: invite kicker + Train→Coach teaser.
-- Marketing CTA while gated: “Enter with invite” → `/private` (not Start free).
+- `gatedWwwHonesty.ts` EN constants + honesty guard (no open-beta, sign-in
+  spinner, Start free, invite-only, Enter with invite, private beta).
+- `/private` — Free beta eyebrow; Train→Coach teaser; Suspense + session-unlock
+  use `GatePendingChrome` (brand + Free beta kicker + “Confirming access…”).
+- `/welcome` — when client gate on: Free beta kicker + Train→Coach teaser.
+- Marketing CTA while gated: “Enter with code” → `/private` (not Start free).
 - Bootstrap carries gate honesty keys for first paint. `/` + `/log` stay
   redirect-to-gate (proxy), not not-found rewrite.
 

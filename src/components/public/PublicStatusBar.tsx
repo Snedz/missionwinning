@@ -9,7 +9,7 @@
  * urgency, and this product does not have a sale.
  *
  * What Mission Winning has to say there is true and currently buried: the whole
- * platform is free during the open beta. That sentence lives in the landing
+ * platform is free during the free beta. That sentence lives in the landing
  * page's fifth section and on no other public URL, while the free core is the
  * single strongest thing about the product.
  *
@@ -40,7 +40,7 @@ export function PublicStatusBar({ label }: Props) {
     <div className="bg-neutral-900 text-neutral-100">
       <p className="mx-auto max-w-6xl px-5 py-2 text-[11px] font-semibold uppercase tracking-[0.1em]">
         {label ??
-          'Invite-only beta — full platform free for testers while we grow with you'}
+          'Free beta — full platform free for testers while we grow with you'}
       </p>
     </div>
   );
