@@ -285,6 +285,57 @@
   }
 }
 
+/* 1440×900: keep cover-then-table, fit set 03 + LOG SET in the viewport. Phone unchanged. */
+@media (min-width: 1100px) and (max-height: 960px) {
+  .www-cine-set {
+    padding-top: 52px;
+    padding-bottom: 20px;
+  }
+
+  .www-cine-set .www-cine-mark img {
+    width: 64px;
+    height: 64px;
+  }
+
+  .www-cine-set .display-hero {
+    font-size: clamp(2.5rem, 4vw, 3.25rem);
+  }
+
+  .www-cine-set .www-cine-lede {
+    margin-top: 10px;
+  }
+
+  .www-cine-set .www-cine-kicker {
+    margin-bottom: 10px;
+  }
+
+  .www-cine-set .www-cine-mark-follow {
+    margin-top: 12px;
+  }
+
+  .www-cine-logger {
+    margin-top: 12px;
+  }
+
+  .www-cine-setrow {
+    min-height: 64px;
+    padding-top: 8px;
+    padding-bottom: 8px;
+  }
+
+  .www-cine-load {
+    font-size: clamp(2.25rem, 3.8vw, 3.35rem);
+  }
+
+  .www-cine-why {
+    margin: 8px 0 10px;
+  }
+
+  .www-cine-demo {
+    margin-top: 8px;
+  }
+}
+
 .www-cine-breaks {
   list-style: none;
   margin: 36px 0 0;
@@ -327,6 +378,25 @@
   padding: 36px clamp(16px, 4vw, 48px) 48px;
   max-width: 520px;
   background: transparent;
+}
+
+/* 390×844: type stays on the still; compact the block so Garage sits on the dark carpet, not the lamp. Desktop unchanged. */
+@media (max-width: 760px) {
+  .www-cine-on-photo {
+    padding: 12px 16px 24px;
+  }
+
+  .www-cine-anywhere .www-cine-kicker {
+    margin-bottom: 10px;
+  }
+
+  .www-cine-anywhere .www-cine-lede {
+    margin-top: 10px;
+  }
+
+  .www-cine-anywhere .display-section {
+    font-size: 2rem;
+  }
 }
 
 .www-cine-anywhere .www-cine-kicker,
