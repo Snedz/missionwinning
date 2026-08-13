@@ -25,6 +25,7 @@ When adding a doc:
 
 | File | Absorbed by / note |
 |------|---------------------|
+| [log/LOG-rotate-700.md](./log/LOG-rotate-700.md) | rotated oldest for `.700` local design studio |
 | [log/LOG-rotate-699.md](./log/LOG-rotate-699.md) | rotated oldest for `.699` combined landing concept |
 | [log/LOG-rotate-636.md](./log/LOG-rotate-636.md) | rotated oldest for `.636` global legal posture |
 | [log/LOG-rotate-637.md](./log/LOG-rotate-637.md) | rotated oldest for `.637` www surface scaffold |

@@ -43,6 +43,8 @@
 | `form-kit/stickFigure.mjs` | (import) | Stick-figure primitives for form-guide SVGs |
 | `sync-vercel-env.mjs` | `npm run sync-vercel-env` | Sync env to Vercel |
 | `design-concepts/build.mts` | `npx tsx scripts/design-concepts/build.mts` | Render the concept HTML board (01–03 architectures + 04 combined landing) into `docs/design/concepts/`. Asserts self-contained assets, claim bans, structural distinctness. |
+| `design-concepts/serve.mjs` | `npm run design:concepts` | Local design studio on **127.0.0.1:4177**. Serves `docs/design/` (board, 04, studio sheet, stills). Does not replace live `/` or `/start`. |
+| `design-concepts/stills.mjs` | `npm run design:stills` | Fold PNGs of 04 at 390×844 and 1440×900 into `docs/design/`. Optional `/start` stills if www is already up. |
 | `sync-ops-pack.mjs` | `npm run ops:sync` | Stage INTERNAL + founder critical path into gitignored `ops/` for private mission-ops ([DUAL_REPO.md](../docs/DUAL_REPO.md)) |
 
 ## Related (not here)

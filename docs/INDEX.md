@@ -102,7 +102,7 @@
 | [DESIGN_RESEARCH.md](DESIGN_RESEARCH.md) | Competitive UI research + steal/avoid · Wave 9 = identity/social + **source verification** · Wave 10 = the www quality bar, **measured** from 1440pt captures |
 | [DESIGN_PROPOSAL_3.md](DESIGN_PROPOSAL_3.md) | Brief for the final design proposal — what is wireframe vs settled; the design flow as a chip flow. **App surfaces** |
 | [DESIGN_PROPOSAL_WWW.md](DESIGN_PROPOSAL_WWW.md) | Proposal for the **www surface** on Astro — type scale, rhythm, motion, page map, guards. **Commissioned 2026-08-09** |
-| [design/INDEX.md](design/INDEX.md) | Rendered design artifacts — the www spec sheet (self-contained HTML), wireframes and rhythm ruler as PNG |
+| [design/INDEX.md](design/INDEX.md) | Rendered design artifacts — www spec sheet, wireframes, rhythm ruler, concept board, **local studio** (`concepts/studio.html`) and 04 fold stills |
 | [DESIGN_SYSTEM.md](DESIGN_SYSTEM.md) | Runtime tokens, shells, ProgressRing, motion |
 | [DESIGN_REVIEW.md](DESIGN_REVIEW.md) | Hero-flow UI/UX audit checklist (quarterly + pre-flip) |
 | [DESTRUCTIVE_UX.md](DESTRUCTIVE_UX.md) | Hold-to-confirm delete language |
