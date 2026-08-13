@@ -76,10 +76,8 @@ test('journal premium pack is eight original question sessions', () => {
 
 test('no new Mind tab or journal collection', () => {
   assert.equal(MIND_COLLECTIONS.length, 8);
-  assert.equal(
-    MIND_COLLECTIONS.some((c) => c.id === 'journal'),
-    false
-  );
+  const collectionIds: string[] = MIND_COLLECTIONS.map((c) => c.id);
+  assert.equal(collectionIds.includes('journal'), false);
   const page = readFileSync(join(root, 'src/page-components/MindPage.tsx'), 'utf8');
   assert.doesNotMatch(page, /app\/\(app\)\/mind\//);
 });
