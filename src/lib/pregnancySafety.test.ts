@@ -3,16 +3,18 @@ import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import path from 'node:path';
 import {
-  CLINICIAN_HOLD_WHY_KEY,
-  capProgressionForPregnancyHold,
-  isMaxEffortSessionName,
+  HARD_SESSION_STOP_DEFAULT,
+  HARD_SESSION_STOP_PREGNANCY,
+  hardSessionStopKey,
+  hardSessionStopLine,
   isPregnancySafetyHold,
+  loadPregnancyFlag,
   parsePregnancyFlag,
-  shouldHideMaxEffortCtas,
+  savePregnancyFlag,
 } from './pregnancySafety.ts';
 import { nextTargets } from '@/lib/coach/progression';
-import { computeContextHash } from '@/lib/coach/planEngine';
-import { buildCoachContextFromInputs } from '@/lib/coach/contextBuilder';
+import { readRaw, remove, writeRaw } from '@/lib/storage/safeStorage';
+import { STORAGE_KEYS } from '@/lib/storage/keys';
 import type { CompletedWorkoutLog } from '@/types';
 
 const root = path.join(import.meta.dirname, '..', '..');
@@ -43,6 +45,8 @@ describe('parsePregnancyFlag', () => {
     assert.equal(parsePregnancyFlag('  '), 'none');
     assert.equal(parsePregnancyFlag('female'), 'none');
     assert.equal(parsePregnancyFlag('yes'), 'none');
+    assert.equal(parsePregnancyFlag('cycle'), 'none');
+    assert.equal(parsePregnancyFlag('age:32'), 'none');
   });
 
   it('accepts the closed athlete-owned values', () => {
@@ -63,134 +67,89 @@ describe('isPregnancySafetyHold', () => {
   });
 });
 
-describe('shouldHideMaxEffortCtas / isMaxEffortSessionName', () => {
-  it('hides CTAs only when a hold flag is on', () => {
-    assert.equal(shouldHideMaxEffortCtas('none'), false);
-    assert.equal(shouldHideMaxEffortCtas('pregnant'), true);
+describe('hardSessionStopLine', () => {
+  it('keeps the #519 line when the flag is off', () => {
+    assert.equal(hardSessionStopLine('none'), HARD_SESSION_STOP_DEFAULT);
+    assert.equal(hardSessionStopLine(undefined), HARD_SESSION_STOP_DEFAULT);
+    assert.equal(hardSessionStopLine('garbage'), HARD_SESSION_STOP_DEFAULT);
+    assert.equal(hardSessionStopKey('none'), 'hardSessionStop');
   });
 
-  it('marks closed max-effort session titles and ignores Push / Tester', () => {
-    assert.equal(isMaxEffortSessionName('Peaking — 1RM Test'), true);
-    assert.equal(isMaxEffortSessionName('Week 3 — Session 4 (Test)'), true);
-    assert.equal(isMaxEffortSessionName('Field test'), true);
-    assert.equal(isMaxEffortSessionName('Max-effort day'), true);
-    assert.equal(isMaxEffortSessionName('Push'), false);
-    assert.equal(isMaxEffortSessionName('Tester'), false);
-    assert.equal(isMaxEffortSessionName("World's Greatest Stretch"), false);
-  });
-});
-
-describe('capProgressionForPregnancyHold', () => {
-  it('is identity when hold is off or the proposal is not a load jump', () => {
-    const hold = { sets: 3, reps: 8, weight: 60, whyKey: 'coachWhyHold', loadPct: 70 };
-    const same = { ...hold, whyKey: 'coachWhyRepProgress', reps: 9 };
-    assert.deepEqual(capProgressionForPregnancyHold(false, same, hold), same);
-    assert.deepEqual(capProgressionForPregnancyHold(true, same, hold), same);
-  });
-
-  it('caps a weight rise and uses the clinician why-line', () => {
-    const hold = { sets: 3, reps: 8, weight: 60, whyKey: 'coachWhyHold', loadPct: 70 };
-    const jump = { sets: 3, reps: 8, weight: 62.5, whyKey: 'coachWhyLoadUp', loadPct: 72.5 };
-    const capped = capProgressionForPregnancyHold(true, jump, hold);
-    assert.equal(capped.weight, 60);
-    assert.equal(capped.loadPct, 70);
-    assert.equal(capped.whyKey, CLINICIAN_HOLD_WHY_KEY);
-    assert.equal(capped.reps, 8);
+  it('uses the pregnancy stop line when any hold flag is on', () => {
+    for (const flag of ['pregnant', 'postpartum', 'miscarriage_recovery'] as const) {
+      assert.equal(hardSessionStopLine(flag), HARD_SESSION_STOP_PREGNANCY);
+      assert.equal(hardSessionStopKey(flag), 'hardSessionStopPregnancy');
+    }
+    assert.match(HARD_SESSION_STOP_PREGNANCY, /bleeding/);
+    assert.match(HARD_SESSION_STOP_PREGNANCY, /cramping/);
+    assert.match(HARD_SESSION_STOP_PREGNANCY, /dizzy/);
+    assert.doesNotMatch(HARD_SESSION_STOP_DEFAULT, /bleeding/);
   });
 });
 
-describe('nextTargets pregnancy hold', () => {
-  const easyHistory = [
-    logWithExercise('bench-press', [
-      { reps: 8, weight: 60, rpe: 'easy' },
-      { reps: 8, weight: 60, rpe: 'easy' },
-    ]),
-  ];
+describe('savePregnancyFlag flag-off deletes derived state', () => {
+  it('removes the storage key when cleared to none — does not leave none stored', () => {
+    writeRaw(STORAGE_KEYS.pregnancyFlag, 'pregnant');
+    assert.equal(loadPregnancyFlag(), 'pregnant');
+    savePregnancyFlag('none');
+    assert.equal(readRaw(STORAGE_KEYS.pregnancyFlag), null);
+    assert.equal(loadPregnancyFlag(), 'none');
+    savePregnancyFlag('postpartum');
+    assert.equal(readRaw(STORAGE_KEYS.pregnancyFlag), 'postpartum');
+    remove(STORAGE_KEYS.pregnancyFlag);
+  });
+});
 
-  it('still load-ups when the flag is off (logging independence)', () => {
+describe('Coach prescriptions are unchanged in v1', () => {
+  it('nextTargets still load-ups on all-easy — no pregnancy arg on the planner', () => {
+    const easyHistory = [
+      logWithExercise('bench-press', [
+        { reps: 8, weight: 60, rpe: 'easy' },
+        { reps: 8, weight: 60, rpe: 'easy' },
+      ]),
+    ];
     const t = nextTargets('bench-press', easyHistory, 'metric', 'strength', 'intermediate');
     assert.equal(t.whyKey, 'coachWhyLoadUp');
     assert.ok(t.weight > 60);
-  });
 
-  it('does not emit a load jump when pregnant / postpartum / miscarriage_recovery', () => {
-    const plain = nextTargets(
-      'bench-press',
-      easyHistory,
-      'metric',
-      'strength',
-      'intermediate',
-      undefined,
-      false
+    const progression = readFileSync(
+      path.join(root, 'src/lib/coach/progression.ts'),
+      'utf8'
     );
-    for (const _hold of [true]) {
-      const t = nextTargets(
-        'bench-press',
-        easyHistory,
-        'metric',
-        'strength',
-        'intermediate',
-        undefined,
-        true
-      );
-      assert.notEqual(t.whyKey, 'coachWhyLoadUp');
-      assert.equal(t.whyKey, CLINICIAN_HOLD_WHY_KEY);
-      assert.ok(t.weight < plain.weight || t.weight === 60);
-      assert.ok(t.weight <= 60 + 1e-6 || t.loadPct == null || (plain.loadPct != null && t.loadPct < plain.loadPct));
-    }
-  });
-
-  it('still allows rep progress (not a load jump) under the hold', () => {
-    const history = [
-      logWithExercise('push-ups', [
-        { reps: 8, weight: 0, rpe: 'med' },
-        { reps: 8, weight: 0, rpe: 'easy' },
-      ]),
-    ];
-    const t = nextTargets(
-      'push-ups',
-      history,
-      'metric',
-      'general',
-      'intermediate',
-      undefined,
-      true
-    );
-    assert.equal(t.reps, 9);
-    assert.equal(t.weight, 0);
-    assert.equal(t.whyKey, 'coachWhyRepProgress');
-  });
-});
-
-describe('generateWeek pregnancy hold', () => {
-  it('context hash includes the flag so a hold is a different week', () => {
-    const base = {
-      history: [] as CompletedWorkoutLog[],
-      experience: 'intermediate' as const,
-      equipment: 'full-gym',
-      goal: 'goal:strength',
-      daysPerWeek: 4,
-      seedId: 'preg-hash',
-      includeCheckIn: false as const,
-    };
-    const open = buildCoachContextFromInputs({ ...base, pregnancyFlag: 'none' });
-    const held = buildCoachContextFromInputs({ ...base, pregnancyFlag: 'pregnant' });
-    const week = 'hash-week';
-    assert.notEqual(computeContextHash(open, week), computeContextHash(held, week));
+    assert.doesNotMatch(progression, /pregnancySafety|pregnancyHold|capProgressionForPregnancyHold/);
+    const selector = readFileSync(path.join(root, 'src/lib/coach/selector.ts'), 'utf8');
+    assert.doesNotMatch(selector, /pregnancySafety|pregnancyFlag/);
   });
 });
 
 describe('pregnancySafety module stays a closed door', () => {
-  it('does not import score, chat, or rewards', () => {
+  it('does not import score, chat, rewards, outbox, or coach plan engine', () => {
     const src = readFileSync(path.join(import.meta.dirname, 'pregnancySafety.ts'), 'utf8');
     assert.doesNotMatch(src, /from ['"]@\/lib\/score/);
     assert.doesNotMatch(src, /coach\/chat/);
     assert.doesNotMatch(src, /from ['"]@\/lib\/rewards/);
     assert.doesNotMatch(src, /from ['"]@\/lib\/sync\/outbox/);
+    assert.doesNotMatch(src, /from ['"]@\/lib\/coach/);
+    assert.doesNotMatch(src, /shouldHideMaxEffortCtas|capProgressionForPregnancyHold/);
+  });
+
+  it('does not emit an analytics property', () => {
+    const src = readFileSync(path.join(import.meta.dirname, 'pregnancySafety.ts'), 'utf8');
+    const card = readFileSync(
+      path.join(root, 'src/components/profile/ProfilePregnancyCard.tsx'),
+      'utf8'
+    );
+    for (const [label, text] of [
+      ['pregnancySafety.ts', src],
+      ['ProfilePregnancyCard.tsx', card],
+    ] as const) {
+      assert.doesNotMatch(text, /from ['"]@\/lib\/analytics/, label);
+      assert.doesNotMatch(text, /\btrack\s*\(/, label);
+    }
   });
 });
 
-describe('pregnancy safety wiring (.746)', () => {
+describe('pregnancy safety wiring v1', () => {
   it('Account mounts the flag under More settings; Today does not import it', () => {
     const account = readFileSync(
       path.join(root, 'src/page-components/AccountPage.tsx'),
@@ -207,52 +166,44 @@ describe('pregnancy safety wiring (.746)', () => {
     assert.doesNotMatch(home, /ProfilePregnancyCard/);
   });
 
-  it('Coach mounts the hold note; Log set does not read the flag', () => {
-    const coach = readFileSync(path.join(root, 'src/page-components/CoachPage.tsx'), 'utf8');
-    assert.match(coach, /PregnancyHoldNote/);
-    assert.match(coach, /isPregnancySafetyHold/);
-
+  it('Log set does not read the flag; Coach does not mount a hold note or hide CTAs', () => {
     const active = readFileSync(
       path.join(root, 'src/page-components/ActiveWorkoutPage.tsx'),
       'utf8'
     );
-    assert.doesNotMatch(active, /pregnancySafety/);
     assert.doesNotMatch(
       active.slice(active.indexOf('const handleLogSet')),
-      /loadPregnancyFlag|isPregnancySafetyHold/
+      /loadPregnancyFlag|isPregnancySafetyHold|pregnancySafety/
     );
 
     const store = readFileSync(path.join(root, 'src/store/workoutStore.ts'), 'utf8');
     assert.doesNotMatch(store, /pregnancySafety/);
-  });
 
-  it('PFT Continue and program Load hide max-effort starts when hold helpers are wired', () => {
+    const coach = readFileSync(path.join(root, 'src/page-components/CoachPage.tsx'), 'utf8');
+    assert.doesNotMatch(coach, /PregnancyHoldNote|pregnancySafety/);
+
     const pft = readFileSync(
       path.join(root, 'src/components/fitness-test/FitnessTestRunner.tsx'),
       'utf8'
     );
-    assert.match(pft, /isPregnancySafetyHold/);
-    assert.match(pft, /PregnancyHoldNote/);
+    assert.doesNotMatch(pft, /isPregnancySafetyHold|PregnancyHoldNote|shouldHideMaxEffortCtas/);
+    assert.match(pft, /HardSessionWarningSheet/);
 
     const programs = readFileSync(
       path.join(root, 'src/components/builder/ProgramTemplatesPanel.tsx'),
       'utf8'
     );
-    assert.match(programs, /isMaxEffortSessionName/);
-    assert.match(programs, /hideMaxEffort/);
-
-    const pftSection = readFileSync(
-      path.join(root, 'src/components/fitness-test/PresidentialFitnessSection.tsx'),
-      'utf8'
-    );
-    assert.match(pftSection, /isPregnancySafetyHold/);
-    assert.match(pftSection, /PregnancyHoldNote/);
-    assert.match(pftSection, /pftTakeFull/);
+    assert.doesNotMatch(programs, /pregnancySafety|hideMaxEffort|isMaxEffortSessionName/);
   });
 
-  it('selector passes the pregnancy hold into nextTargets', () => {
-    const selector = readFileSync(path.join(root, 'src/lib/coach/selector.ts'), 'utf8');
-    assert.match(selector, /ctx\.pregnancyFlag/);
-    assert.match(selector, /nextTargets\(/);
+  it('hard-session sheet uses the stop-line selector — the one v1 behavior', () => {
+    const sheet = readFileSync(
+      path.join(root, 'src/components/workout/HardSessionWarningSheet.tsx'),
+      'utf8'
+    );
+    assert.match(sheet, /hardSessionStopLine/);
+    assert.match(sheet, /hardSessionStopPregnancy/);
+    assert.match(sheet, /loadPregnancyFlag/);
+    assert.doesNotMatch(sheet, /shouldHideMaxEffortCtas/);
   });
 });

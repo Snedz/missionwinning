@@ -11,6 +11,8 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { YouthParentGate } from '@/components/fitness-test/YouthParentGate';
 import { ShareFitnessButton } from '@/components/fitness-test/ShareFitnessButton';
+import { HardSessionWarningSheet } from '@/components/workout/HardSessionWarningSheet';
+import { needsHardSessionWarning } from '@/lib/workout/hardSession';
 import {
   awardLabel,
   formatMileTime,
@@ -29,8 +31,6 @@ import { pushLeaderboardSnapshot } from '@/lib/leaderboardSync';
 import { computeLocalLeaderboardSnapshot } from '@/lib/leaderboard/computeLocalStats';
 import { useWorkoutStore } from '@/store/workoutStore';
 import { americaHomeOrFallback, isAmericaTrackEnabled } from '@/lib/americaConfig';
-import { PregnancyHoldNote } from '@/components/coach/PregnancyHoldNote';
-import { isPregnancySafetyHold, loadPregnancyFlag } from '@/lib/pregnancySafety';
 
 type Step = 'profile' | 'youth' | 'events' | 'results';
 
@@ -46,6 +46,8 @@ export function FitnessTestRunner() {
   );
 
   const [step, setStep] = useState<Step>('profile');
+  const [hardWarningOpen, setHardWarningOpen] = useState(false);
+  const [hardWarningAck, setHardWarningAck] = useState(false);
   const [age, setAge] = useState('14');
   const [sex, setSex] = useState<FitnessSex>('male');
   const [values, setValues] = useState<Record<string, string>>({});
@@ -68,7 +70,6 @@ export function FitnessTestRunner() {
   const ageNum = parseInt(age, 10);
 
   const proceedFromProfile = () => {
-    if (isPregnancySafetyHold(loadPregnancyFlag())) return;
     if (!Number.isFinite(ageNum) || ageNum < 6) return;
     if (requiresYouthConsent(ageNum) && !youthConsented) {
       setStep('youth');
@@ -264,21 +265,21 @@ export function FitnessTestRunner() {
                 </option>
               </select>
             </label>
-            {isPregnancySafetyHold(loadPregnancyFlag()) ? (
-              <>
-                <PregnancyHoldNote />
-                <p className="text-sm text-muted-foreground leading-relaxed">
-                  {t('pftPregnancyHold', {
-                    defaultValue:
-                      'Max-effort and timed fitness tests stay hidden while this status is set. You can still log a normal set on Train.',
-                  })}
-                </p>
-              </>
-            ) : (
-              <Button className="w-full min-h-[44px] tap-target" onClick={proceedFromProfile}>
-                {t('pftContinue', { defaultValue: 'Continue to events' })}
-              </Button>
-            )}
+            <Button
+              className="w-full min-h-[44px] tap-target"
+              onClick={() => {
+                if (
+                  !hardWarningAck &&
+                  needsHardSessionWarning({ kind: isMini ? 'pft-mini' : 'pft' })
+                ) {
+                  setHardWarningOpen(true);
+                  return;
+                }
+                proceedFromProfile();
+              }}
+            >
+              {t('pftContinue', { defaultValue: 'Continue to events' })}
+            </Button>
           </>
         )}
 
@@ -311,6 +312,15 @@ export function FitnessTestRunner() {
               'Educational fitness tool by Mission Winning LLC — not an official U.S. government test or endorsement.',
           })}
         </p>
+        <HardSessionWarningSheet
+          open={hardWarningOpen}
+          onContinue={() => {
+            setHardWarningAck(true);
+            setHardWarningOpen(false);
+            proceedFromProfile();
+          }}
+          onBack={() => setHardWarningOpen(false)}
+        />
       </CardContent>
     </Card>
   );

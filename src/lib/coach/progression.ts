@@ -7,7 +7,6 @@ import type { Rpe } from '@/lib/coach/types';
 import type { LoadZone } from '@/lib/coach/load';
 import { capProgressionForZone } from '@/lib/coach/loadGuard';
 import { stallSignal, type StallKind } from '@/lib/coach/progress';
-import { capProgressionForPregnancyHold } from '@/lib/pregnancySafety';
 import {
   resolveStartingLoadPct,
   weightFromLoadPct,
@@ -141,24 +140,13 @@ function withLoadPct(
  * can only ever *hold* a rise; see `loadGuard.ts` for why that asymmetry is the whole
  * design.
  */
-function applyHolds(
-  proposed: ProgressionTargets,
-  hold: ProgressionTargets,
-  loadZone: LoadZone | undefined,
-  pregnancyHold: boolean | undefined
-): ProgressionTargets {
-  const afterZone = capProgressionForZone(loadZone, proposed, hold);
-  return capProgressionForPregnancyHold(!!pregnancyHold, afterZone, hold);
-}
-
 export function nextTargets(
   exerciseId: string,
   history: CompletedWorkoutLog[],
   units: UnitsPref,
   goalId: string,
   experience: string,
-  loadZone?: LoadZone,
-  pregnancyHold?: boolean
+  loadZone?: LoadZone
 ): ProgressionTargets {
   const sessions = findRecentSessions(exerciseId, history);
   const step = weightStep(units);
@@ -238,11 +226,10 @@ export function nextTargets(
     if (allEasy(latestSets)) {
       loadPct = Math.min(95, loadPct + 2.5);
       weight = weightFromLoadPct(workingMax, loadPct, units);
-      return applyHolds(
-        withLoadPct({ sets: setCount, reps, weight, whyKey: 'coachWhyLoadUp' }, loadPct),
-        hold,
+      return capProgressionForZone(
         loadZone,
-        pregnancyHold
+        withLoadPct({ sets: setCount, reps, weight, whyKey: 'coachWhyLoadUp' }, loadPct),
+        hold
       );
     }
 
@@ -252,11 +239,10 @@ export function nextTargets(
         whyKey = 'coachWhyRepProgress';
       }
       weight = weightFromLoadPct(workingMax, loadPct, units);
-      return applyHolds(
-        withLoadPct({ sets: setCount, reps, weight, whyKey }, loadPct),
-        hold,
+      return capProgressionForZone(
         loadZone,
-        pregnancyHold
+        withLoadPct({ sets: setCount, reps, weight, whyKey }, loadPct),
+        hold
       );
     }
 
@@ -267,11 +253,10 @@ export function nextTargets(
       whyKey = 'coachWhyLoadUp';
     }
     weight = weightFromLoadPct(workingMax, loadPct, units);
-    return applyHolds(
-      withLoadPct({ sets: setCount, reps, weight, whyKey }, loadPct),
-      hold,
+    return capProgressionForZone(
       loadZone,
-      pregnancyHold
+      withLoadPct({ sets: setCount, reps, weight, whyKey }, loadPct),
+      hold
     );
   }
 
@@ -315,12 +300,7 @@ export function nextTargets(
       weight = roundToStep(weight + step, step);
       whyKey = 'coachWhyLoadUp';
     }
-    return applyHolds(
-      { sets: setCount, reps, weight, whyKey },
-      hold,
-      loadZone,
-      pregnancyHold
-    );
+    return capProgressionForZone(loadZone, { sets: setCount, reps, weight, whyKey }, hold);
   }
 
   if (hasMixedOrMed(latestSets)) {
@@ -328,12 +308,7 @@ export function nextTargets(
       reps += 1;
       whyKey = 'coachWhyRepProgress';
     }
-    return applyHolds(
-      { sets: setCount, reps, weight, whyKey },
-      hold,
-      loadZone,
-      pregnancyHold
-    );
+    return capProgressionForZone(loadZone, { sets: setCount, reps, weight, whyKey }, hold);
   }
 
   // No RPE rated — rep-completion heuristic
@@ -348,10 +323,5 @@ export function nextTargets(
     }
   }
 
-  return applyHolds(
-    { sets: setCount, reps, weight, whyKey },
-    hold,
-    loadZone,
-    pregnancyHold
-  );
+  return capProgressionForZone(loadZone, { sets: setCount, reps, weight, whyKey }, hold);
 }

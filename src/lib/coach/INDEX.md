@@ -9,7 +9,6 @@
 3. `equipment.ts` — `equipmentMatches`, `mapStorageEquipment`
 4. `progression.ts` — `nextTargets` (RPE, stall, deload, % of e1RM `loadPct`, optional `loadZone` cap)
 4b. `loadGuard.ts` — `capProgressionForZone`: a **high** ACWR band holds a rise. Cap-only — never deloads, never touches session shape; `light`/`unknown` are identity
-4c. `pregnancyHold.ts` — rematerialize planned sessions when the athlete-owned pregnancy safety flag is on (`.746`); cap lives in `src/lib/pregnancySafety.ts`
 5. `splitPlanner.ts` — `chooseSplit`, `mapToCalendar`, week start helpers
 6. `selector.ts` — `pickExercises`, `buildSession` (passes `loadPct`, `ctx.loadZone`)
 7. `planEngine.ts` — `generateWeek`, `computeContextHash`
@@ -47,7 +46,6 @@ Shared client: `src/lib/coachLlmClient.ts` (also used by `coachDailyServer.ts` +
 | `coachChatClient.test.ts` | Status copy · stream tags · request context + panel wiring |
 | `weekDose.test.ts` | Session counts + strength/mixed intent labels |
 | `weekRationale.test.ts` | Log-cited adapt / why-this-week (inputs · rule · effect) + banner/page wiring |
-| `pregnancyHold.test.ts` | Planned sessions lose load jumps when the pregnancy hold is on (`.746`) |
 
 ## Tests (colocated)
 

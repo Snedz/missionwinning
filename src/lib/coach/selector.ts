@@ -5,7 +5,6 @@ import { equipmentMatches } from '@/lib/coach/equipment';
 import { nextTargets } from '@/lib/coach/progression';
 import type { CoachContext, PlanExercise, SplitDay } from '@/lib/coach/types';
 import { sessionNameFromKey } from '@/lib/coach/splitPlanner';
-import { isPregnancySafetyHold } from '@/lib/pregnancySafety';
 
 const RECOVERY_IDS = [
   'cat-camel',
@@ -169,8 +168,7 @@ export function pickExercises(
       ctx.units,
       ctx.goalId,
       ctx.experience,
-      ctx.loadZone,
-      isPregnancySafetyHold(ctx.pregnancyFlag)
+      ctx.loadZone
     );
     return {
       exerciseId: ex.id,

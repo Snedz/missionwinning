@@ -18,6 +18,7 @@
 | [help/mission-coach.md](help/mission-coach.md) | AI weekly coach |
 | [help/fuel-and-nutrition.md](help/fuel-and-nutrition.md) | Nutrition logging |
 | [help/fitness-test-and-school.md](help/fitness-test-and-school.md) | PFT + PE classes |
+| [help/pt-safety.md](help/pt-safety.md) | Hard sessions — stop is allowed |
 | [help/pregnancy-safety.md](help/pregnancy-safety.md) | Pregnancy / miscarriage / postpartum — educational, not care |
 | [help/premium-and-billing.md](help/premium-and-billing.md) | Super Bundle |
 | [help/privacy-and-data.md](help/privacy-and-data.md) | Data & consent |

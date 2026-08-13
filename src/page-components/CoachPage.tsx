@@ -25,8 +25,6 @@ import { CoachPlanSkeleton, SkeletonCard } from '@/components/ui/Skeleton';
 import { useCoachPlan } from '@/hooks/useCoachPlan';
 import { summarizeWeekDose } from '@/lib/coach/weekDose';
 import { isFreeBeta } from '@/lib/freeBeta';
-import { PregnancyHoldNote } from '@/components/coach/PregnancyHoldNote';
-import { isPregnancySafetyHold } from '@/lib/pregnancySafety';
 
 const CoachVoiceCard = dynamic(
   () => import('@/components/coach/CoachVoiceCard').then((m) => m.CoachVoiceCard),
@@ -91,8 +89,6 @@ export function CoachPage({ askExerciseId }: CoachPageProps = {}) {
           'A week of training built from your logs — no wearable. Miss a day or crush a PR, and the plan flexes.',
       })}
     >
-      {isPregnancySafetyHold(ctx.pregnancyFlag) ? <PregnancyHoldNote /> : null}
-
       {loading && <CoachPlanSkeleton className="py-2" />}
 
       {!loading && locked && plan && (

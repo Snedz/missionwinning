@@ -109,9 +109,6 @@ type CoachStrings = {
   coachWhyRepProgress: string;
   coachWhyHold: string;
   coachWhyHoldHard: string;
-  /** Pregnancy safety hold (.746) — not medical advice. */
-  coachWhyClinicianHold: string;
-  coachPregnancyHoldNote: string;
   /**
    * `.252` — restored. Both are emitted by the engine (`loadGuard.ts:42`,
    * `progression.ts:173`) and had **no entry here at all**, so
@@ -340,8 +337,6 @@ const en: CoachStrings = {
   coachWhyRepProgress: 'Building reps before adding weight.',
   coachWhyHold: 'Hold this load until reps feel solid.',
   coachWhyHoldHard: 'Hard sets — hold load and consolidate.',
-  coachWhyClinicianHold: 'This is not medical advice; ask your clinician.',
-  coachPregnancyHoldNote: 'This is not medical advice; ask your clinician.',
   coachWhySteadyWeek: 'Big week against your own recent average — holding here.',
   coachWhyPlateauDeload: 'No new best in a month — lighter week to rebuild from.',
   coachWhyDeload: 'Recovery week — lighter load, same patterns.',

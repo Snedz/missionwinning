@@ -30,11 +30,6 @@ import type { ProgramTag } from "@/types";
 import { usePremium } from "@/hooks/usePremium";
 import Link from "next/link";
 import { isFreeBeta } from "@/lib/freeBeta";
-import {
-  isMaxEffortSessionName,
-  isPregnancySafetyHold,
-  loadPregnancyFlag,
-} from "@/lib/pregnancySafety";
 
 export const TEMPLATE_PROGRAM_COUNT = PROGRAM_TEMPLATES.length;
 /** Pro templates are server-only — fetched via /api/premium/programs when premium. */
@@ -59,7 +54,6 @@ function ProgramList({
   onViewDetails?: (program: ProgramTemplate) => void;
 }) {
   const { t } = useTranslation();
-  const hideMaxEffort = isPregnancySafetyHold(loadPregnancyFlag());
 
   if (programs.length === 0) {
     return (
@@ -129,11 +123,9 @@ function ProgramList({
                       })}
                     </p>
                   </div>
-                  {hideMaxEffort && isMaxEffortSessionName(session.name) ? null : (
-                    <Button size="sm" variant="default" onClick={() => onLoadSession(program, session)}>
-                      {t('builderLoad', { defaultValue: 'Load' })}
-                    </Button>
-                  )}
+                  <Button size="sm" variant="default" onClick={() => onLoadSession(program, session)}>
+                    {t('builderLoad', { defaultValue: 'Load' })}
+                  </Button>
                 </div>
               ))}
             </div>

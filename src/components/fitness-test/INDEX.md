@@ -6,7 +6,7 @@
 
 | File | Purpose |
 |------|---------|
-| `FitnessTestRunner.tsx` | Main PFT flow (max-effort start hidden under pregnancy safety hold, `.746`) |
+| `FitnessTestRunner.tsx` | Main PFT flow (hard-session warning before events) |
 | `PresidentialFitnessSection.tsx` | PFT entry on fitness test page |
 | `SchoolClassPanel.tsx` | Join/create PE class |
 | `YouthParentGate.tsx` | Under-age consent gate (uses `ui/OtpInput` for 6-digit verify) |

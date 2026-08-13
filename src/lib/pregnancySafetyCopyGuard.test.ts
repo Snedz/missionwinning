@@ -7,9 +7,13 @@ import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { infoStringsFor } from '@/i18n/infoLocales';
-import { coachStringsFor } from '@/i18n/coachLocales';
 import { notificationStringsFor } from '@/i18n/notificationLocales';
-import { CLINICIAN_HOLD_LINE } from '@/lib/pregnancySafety';
+import { activeWorkoutStringsFor } from '@/i18n/activeWorkoutLocales';
+import {
+  CAUSE_TALK_REFUSAL_DRAFT,
+  HARD_SESSION_STOP_DEFAULT,
+  HARD_SESSION_STOP_PREGNANCY,
+} from '@/lib/pregnancySafety';
 
 const root = join(import.meta.dirname, '..', '..');
 
@@ -50,26 +54,28 @@ test('Account EN strings stay inside the copy bans and name stop + clinician', (
   assert.match(en.pregnancyFlagHint, /optional/i);
   assert.match(en.pregnancyFlagStop, /bleeding/i);
   assert.match(en.pregnancyFlagStop, /cramping/i);
-  assert.match(en.pregnancyFlagStop, /faint/i);
-  assert.match(en.pregnancyFlagStop, /chest pain/i);
-  assert.match(en.pregnancyFlagStop, /cannot talk|can't talk/i);
-  assert.match(en.pregnancyFlagStop, /emergency/i);
   assert.match(en.pregnancyFlagNotCare, /not prenatal care/i);
   assert.match(en.pregnancyFlagNotCare, /not medical advice/i);
   assert.match(en.pregnancyFlagNotCare, /clinician/i);
-  assert.match(en.pregnancyFlagNotCare, /does not prevent miscarriage/i);
 });
 
-test('Coach hold line is only the clinician sentence', () => {
-  const en = coachStringsFor('en');
-  assert.equal(en.coachWhyClinicianHold, CLINICIAN_HOLD_LINE);
-  assert.equal(en.coachPregnancyHoldNote, CLINICIAN_HOLD_LINE);
-  assertClean('coachWhyClinicianHold', en.coachWhyClinicianHold);
-  assertClean('coachPregnancyHoldNote', en.coachPregnancyHoldNote);
+test('hard-session stop keys match the frozen counsel strings', () => {
+  const en = activeWorkoutStringsFor('en');
+  assert.equal(en.hardSessionStop, HARD_SESSION_STOP_DEFAULT);
+  assert.equal(en.hardSessionStopPregnancy, HARD_SESSION_STOP_PREGNANCY);
+  assertClean('hardSessionStop', en.hardSessionStop);
+  assertClean('hardSessionStopPregnancy', en.hardSessionStopPregnancy);
 });
 
-test('Terms educational EN adds a clinician-owned pregnancy sentence without banned claims', () => {
+test('Terms educational EN is the combined counsel paragraph without banned claims', () => {
   const body = infoStringsFor('en').infoTermsEducationalBody;
+  assert.match(body, /educational fitness software/i);
+  assert.match(body, /not medical care/i);
+  assert.match(body, /not emergency services/i);
+  assert.match(body, /strenuous or max-effort/i);
+  assert.match(body, /stopping is always allowed/i);
+  assert.match(body, /cannot prevent a medical emergency/i);
+  assert.match(body, /local emergency services/i);
   assert.match(body, /not provide medical advice/i);
   assert.match(body, /pregnancy/i);
   assert.match(body, /miscarriage/i);
@@ -78,30 +84,24 @@ test('Terms educational EN adds a clinician-owned pregnancy sentence without ban
   assertClean('infoTermsEducationalBody', body);
 });
 
-test('pregnancy help, contract, note, and Account card stay inside the copy bans', () => {
+test('pregnancy help, contract, Account card, and draft refusal stay inside the copy bans', () => {
   const help = readFileSync(join(root, 'docs/help/pregnancy-safety.md'), 'utf8');
   assert.match(help, /stop/i);
   assert.match(help, /not medical/i);
-  assert.match(help, /does not prevent miscarriage/i);
+  assert.match(help, /does not change/i);
+  assert.doesNotMatch(help, /will not prescribe a max-effort/i);
+  assert.doesNotMatch(help, /start buttons stay hidden/i);
   assertClean('pregnancy-safety.md', help);
 
   const contract = readFileSync(join(root, 'docs/PREGNANCY_SAFETY.md'), 'utf8');
   assert.match(contract, /Never inferred/);
   assert.match(contract, /counsel/i);
-  // Contract may name the ban in the "what this is not" list — strip that section's
-  // quoted prohibitions by checking only the positive product sentences around Coach.
+  assert.match(contract, /does not change Coach prescriptions/i);
+  assert.match(contract, /does not hide/i);
   assertClean(
-    'PREGNANCY_SAFETY.md coach section',
-    contract.slice(contract.indexOf('## Coach'))
+    'PREGNANCY_SAFETY.md v1 section',
+    contract.slice(contract.indexOf('## What the flag changes'))
   );
-
-  const note = readFileSync(
-    join(root, 'src/components/coach/PregnancyHoldNote.tsx'),
-    'utf8'
-  );
-  assert.match(note, /CLINICIAN_HOLD_LINE/);
-  assert.match(note, /coachPregnancyHoldNote/);
-  assertClean('CLINICIAN_HOLD_LINE', CLINICIAN_HOLD_LINE);
 
   const card = readFileSync(
     join(root, 'src/components/profile/ProfilePregnancyCard.tsx'),
@@ -110,9 +110,12 @@ test('pregnancy help, contract, note, and Account card stay inside the copy bans
   const cardDefaults = [...card.matchAll(/defaultValue:\s*\n?\s*['`]([^'`]+)['`]/g)].map(
     (m) => m[1]
   );
-  // Also capture single-line defaultValue: '...'
   const cardDefaults2 = [...card.matchAll(/defaultValue:\s*'([^']+)'/g)].map((m) => m[1]);
   const all = [...new Set([...cardDefaults, ...cardDefaults2])];
   assert.ok(all.length >= 4, 'expected Account card default copy');
   for (const d of all) assertClean(`card:${d}`, d);
+
+  assert.match(CAUSE_TALK_REFUSAL_DRAFT, /clinician/i);
+  assert.match(CAUSE_TALK_REFUSAL_DRAFT, /cannot say|can't say|do not answer/i);
+  assertClean('CAUSE_TALK_REFUSAL_DRAFT', CAUSE_TALK_REFUSAL_DRAFT);
 });

@@ -16,6 +16,7 @@ User guides in plain language (no code paths):
 | [help/mission-coach.md](help/mission-coach.md) | Weekly AI coach plan |
 | [help/fuel-and-nutrition.md](help/fuel-and-nutrition.md) | Logging, barcode, photo estimate |
 | [help/fitness-test-and-school.md](help/fitness-test-and-school.md) | PFT, class codes, teacher PIN |
+| [help/pt-safety.md](help/pt-safety.md) | Hard sessions — stop is allowed; not medical care |
 | [help/pregnancy-safety.md](help/pregnancy-safety.md) | Pregnancy / miscarriage / postpartum — not medical care |
 | [help/premium-and-billing.md](help/premium-and-billing.md) | Super Bundle, free vs paid |
 | [help/privacy-and-data.md](help/privacy-and-data.md) | Your data, backup, youth consent |

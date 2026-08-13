@@ -323,8 +323,8 @@ const en: InfoStrings = {
   infoTermsServiceBody:
     'Mission Winning provides a free offline workout logger, Mission Coach planning tools, nutrition and other pillar features, education content, optional Super Bundle premium depth, and related websites and apps. The free core logger is offered so you can track training without paywall; premium features may require purchase. We may modify, suspend, or discontinue features with reasonable notice where practicable. Service-Specific Terms apply to Super Bundle, optional AI Coach features, Android distribution, and human coaching interest lists.',
   infoTermsEducationalBody:
-    // Counsel still reviews this educational sentence (pregnancy/miscarriage/postpartum). Not a legal-pack rewrite.
-    'Content is for general educational purposes. We are not a medical provider or accredited certifying agency. Certificates indicate educational achievement only, not professional licensure. You assume risk for physical activity; consult a physician before starting new programs. We do not provide medical advice; pregnancy, miscarriage, and postpartum decisions are clinician-owned.',
+    // Counsel still reviews this educational paragraph (PT safety + pregnancy). Combined #519/#536 rewrite. Not a legal-pack rewrite.
+    'Mission Winning is educational fitness software, not medical care and not emergency services. Strenuous or max-effort sessions carry extra risk; stopping is always allowed. This app cannot prevent a medical emergency — call local emergency services, not the app. We do not provide medical advice. Pregnancy, miscarriage, and postpartum decisions are clinician-owned.',
   infoTermsAccountsLi1: 'Provide accurate information; keep your email access secure.',
   infoTermsAccountsLi2: 'Do not abuse the service, attempt unauthorized access, or scrape premium content.',
   infoTermsAccountsLi3: 'Do not use the app for unlawful purposes.',

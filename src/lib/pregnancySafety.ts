@@ -1,13 +1,14 @@
 /**
- * Pregnancy / miscarriage / postpartum safety hold.
+ * Pregnancy / miscarriage / postpartum safety — v1.
  *
- * Athlete-owned, never inferred, never a logger gate. Coach prescriptions and
- * max-effort CTAs read this; Log set must not. See docs/PREGNANCY_SAFETY.md.
+ * Athlete-owned flag, never inferred, never a logger gate. The flag changes
+ * exactly one product behavior: which stop-symptoms line appears on the
+ * hard-session warning sheet. See docs/PREGNANCY_SAFETY.md.
  *
  * Counsel reviews copy before production (same hold as PT safety).
  */
 
-import { readRaw, writeRaw } from '@/lib/storage/safeStorage';
+import { readRaw, writeRaw, remove } from '@/lib/storage/safeStorage';
 import { STORAGE_KEYS } from '@/lib/storage/keys';
 
 export const PREGNANCY_FLAGS = [
@@ -25,40 +26,20 @@ export const HOLD_FLAGS: readonly Exclude<PregnancyFlag, 'none'>[] = [
   'miscarriage_recovery',
 ];
 
-/** Athlete-facing why-line when a load jump was available and the hold capped it. */
-export const CLINICIAN_HOLD_WHY_KEY = 'coachWhyClinicianHold';
+/** #519 hard-session stop line when the flag is off. */
+export const HARD_SESSION_STOP_DEFAULT =
+  'Stop if you have chest pain, feel faint, have severe shortness of breath, or cannot talk.';
 
-export const CLINICIAN_HOLD_LINE =
-  'This is not medical advice; ask your clinician.';
-
-export type LoadPrescription = {
-  sets: number;
-  reps: number;
-  weight: number;
-  whyKey: string;
-  loadPct?: number;
-};
-
-const EPSILON = 1e-6;
-
-/** Folded exact titles that exist on master (and field-test names for #505). */
-export const EXACT_MAX_EFFORT_SESSION_NAMES: readonly string[] = [
-  'peaking - 1rm test',
-  'week 3 - session 4 (test)',
-  'field test',
-  'five-event field test',
-];
+/** Hard-session stop line when a hold flag is on. */
+export const HARD_SESSION_STOP_PREGNANCY =
+  'Stop if you have bleeding, cramping, chest pain, feel faint or dizzy, have severe shortness of breath, or cannot talk.';
 
 /**
- * Closed name patterns — session titles only. Not a generic "test" substring
- * (`Tester`, World's Greatest Stretch).
+ * DRAFT / NOT FOR PROD. If asked whether training caused a loss, do not answer;
+ * point to a clinician. Not wired into Coach, chat, or any athlete UI in v1.
  */
-export const MAX_EFFORT_SESSION_NAME_RES: readonly RegExp[] = [
-  /\b2[\s-]?miles?\b/i,
-  /\b1\s*rm\s*test\b/i,
-  /\bmax[\s-]?test\b/i,
-  /\bmax[\s-]?effort\b/i,
-];
+export const CAUSE_TALK_REFUSAL_DRAFT =
+  'I cannot say whether training caused a pregnancy loss. That is a question for a clinician, not this app.';
 
 export function parsePregnancyFlag(raw: string | null | undefined): PregnancyFlag {
   if (raw == null || raw === '') return 'none';
@@ -76,68 +57,27 @@ export function isPregnancySafetyHold(
   return parsed !== 'none';
 }
 
-export function shouldHideMaxEffortCtas(
+export function hardSessionStopLine(
   flag: PregnancyFlag | string | null | undefined
-): boolean {
-  return isPregnancySafetyHold(flag);
+): string {
+  return isPregnancySafetyHold(flag) ? HARD_SESSION_STOP_PREGNANCY : HARD_SESSION_STOP_DEFAULT;
 }
 
-export function foldMaxEffortSessionName(name: string): string {
-  return name
-    .trim()
-    .toLowerCase()
-    .replace(/[—–]/g, '-')
-    .replace(/\s+/g, ' ');
-}
-
-export function isMaxEffortSessionName(name: string | null | undefined): boolean {
-  if (!name || !name.trim()) return false;
-  const folded = foldMaxEffortSessionName(name);
-  if ((EXACT_MAX_EFFORT_SESSION_NAMES as readonly string[]).includes(folded)) return true;
-  return MAX_EFFORT_SESSION_NAME_RES.some((re) => re.test(name) || re.test(folded));
+export function hardSessionStopKey(
+  flag: PregnancyFlag | string | null | undefined
+): 'hardSessionStopPregnancy' | 'hardSessionStop' {
+  return isPregnancySafetyHold(flag) ? 'hardSessionStopPregnancy' : 'hardSessionStop';
 }
 
 export function loadPregnancyFlag(): PregnancyFlag {
   return parsePregnancyFlag(readRaw(STORAGE_KEYS.pregnancyFlag));
 }
 
+/** Clearing to `none` deletes the key — silent flag-off, no derived hold left behind. */
 export function savePregnancyFlag(flag: PregnancyFlag): void {
+  if (flag === 'none') {
+    remove(STORAGE_KEYS.pregnancyFlag);
+    return;
+  }
   writeRaw(STORAGE_KEYS.pregnancyFlag, flag);
-  if (typeof window !== 'undefined') {
-    window.dispatchEvent(new Event('mw-coach-plan-changed'));
-  }
-}
-
-function isLoadJump(proposed: LoadPrescription, hold: LoadPrescription): boolean {
-  if (proposed.weight > hold.weight + EPSILON) return true;
-  if (
-    proposed.loadPct != null &&
-    hold.loadPct != null &&
-    proposed.loadPct > hold.loadPct + EPSILON
-  ) {
-    return true;
-  }
-  return false;
-}
-
-/**
- * Hold a proposed weight / loadPct rise when a pregnancy safety flag is on.
- * Rep progress is not a load jump and passes through. Identity when hold is off
- * or the proposal is not an increase.
- */
-export function capProgressionForPregnancyHold(
-  holdOn: boolean,
-  proposed: LoadPrescription,
-  hold: LoadPrescription
-): LoadPrescription {
-  if (!holdOn) return proposed;
-  if (!isLoadJump(proposed, hold)) return proposed;
-  const capped: LoadPrescription = {
-    sets: proposed.sets,
-    reps: proposed.reps,
-    weight: hold.weight,
-    whyKey: CLINICIAN_HOLD_WHY_KEY,
-  };
-  if (hold.loadPct != null) capped.loadPct = hold.loadPct;
-  return capped;
 }

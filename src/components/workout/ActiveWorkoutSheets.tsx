@@ -9,6 +9,7 @@ import { AddExerciseSheet } from '@/components/workout/AddExerciseSheet';
 import { PlateCalculatorSheet } from '@/components/workout/PlateCalculatorSheet';
 import { WorkoutVictorySheet } from '@/components/workout/WorkoutVictorySheet';
 import { SessionCheckInSheet } from '@/components/workout/SessionCheckInSheet';
+import { HardSessionWarningSheet } from '@/components/workout/HardSessionWarningSheet';
 import { getExerciseById } from '@/data/exercises';
 import type { Debrief } from '@/lib/coach/debrief';
 import type { FormGuide } from '@/types/formGuide';
@@ -34,6 +35,9 @@ type CheckInDismiss = {
 type Props = {
   checkInOpen: boolean;
   onCheckInDismiss: (result: CheckInDismiss) => void;
+  hardWarningOpen?: boolean;
+  onHardWarningContinue?: () => void;
+  onHardWarningBack?: () => void;
   formGuideSheet: FormGuideView | null;
   onCloseFormGuide: () => void;
   addExerciseOpen: boolean;
@@ -65,6 +69,9 @@ type Props = {
 export function ActiveWorkoutSheets({
   checkInOpen,
   onCheckInDismiss,
+  hardWarningOpen = false,
+  onHardWarningContinue,
+  onHardWarningBack,
   formGuideSheet,
   onCloseFormGuide,
   addExerciseOpen,
@@ -89,6 +96,11 @@ export function ActiveWorkoutSheets({
 }: Props) {
   return (
     <>
+      <HardSessionWarningSheet
+        open={hardWarningOpen}
+        onContinue={() => onHardWarningContinue?.()}
+        onBack={() => onHardWarningBack?.()}
+      />
       <SessionCheckInSheet open={checkInOpen} onDismiss={onCheckInDismiss} />
 
       {formGuideSheet ? (
