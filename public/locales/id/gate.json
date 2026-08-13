@@ -24,5 +24,7 @@
   "offlineEyebrow": "No connection",
   "offlineTitle": "Offline — misi tetap jalan.",
   "offlineBody": "This page isn't cached yet, but everything you've already used keeps working — your workouts live on this device and sync when you're back online.",
-  "offlineCta": "Buka Hari Ini"
+  "offlineCta": "Buka Hari Ini",
+  "gateCheckingSession": "Memeriksa masuk…",
+  "gateWaitlistFailed": "Belum tersimpan. Periksa koneksi lalu coba lagi."
 }

@@ -186,5 +186,7 @@
   "victoryMascotCue": "Session saved.",
   "victorySessionDetails": "Session details",
   "activeRestSkipAriaFinal": "Skip rest — go",
-  "activeRestSkipAriaPlain": "Skip rest"
+  "activeRestSkipAriaPlain": "Skip rest",
+  "activeReentryStart": "Start easier session",
+  "activeReentryStartDesc": "Smaller first session back — finishable, then the week rebuilds."
 }

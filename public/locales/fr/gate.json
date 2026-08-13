@@ -24,5 +24,7 @@
   "offlineEyebrow": "Aucune connexion",
   "offlineTitle": "Hors ligne, mais pas hors mission.",
   "offlineBody": "Cette page n'est pas encore mise en cache, mais tout ce que vous avez déjà utilisé continue de fonctionner : vos entraînements sont en direct sur cet appareil et synchronisés lorsque vous êtes de nouveau en ligne.",
-  "offlineCta": "Ouvert aujourd'hui"
+  "offlineCta": "Ouvert aujourd'hui",
+  "gateCheckingSession": "Vérification de la connexion…",
+  "gateWaitlistFailed": "Enregistrement échoué. Vérifiez votre connexion et réessayez."
 }

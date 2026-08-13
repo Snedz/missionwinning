@@ -4,6 +4,9 @@ type ActiveWorkoutStrings = {
   activeNoWorkout: string;
   activeNoWorkoutDesc: string;
   activeStartWorkout: string;
+  /** Re-entry after a lay-off (`reentry.ts`) — a smaller session that finishes. */
+  activeReentryStart: string;
+  activeReentryStartDesc: string;
   activeSetsCompleted: string;
   activeCancel: string;
   activeLiveSession: string;
@@ -226,6 +229,9 @@ const en: ActiveWorkoutStrings = {
   activeNoWorkoutDesc:
     'Start here, or open Today for the session already planned for you. Sets and rest save on this device.',
   activeStartWorkout: 'Start Workout',
+  activeReentryStart: 'Start easier session',
+  activeReentryStartDesc:
+    'Smaller first session back — finishable, then the week rebuilds.',
   activeSetsCompleted: '{{done}}/{{total}} sets completed',
   activeCancel: 'Cancel',
   activeFinish: 'Finish',

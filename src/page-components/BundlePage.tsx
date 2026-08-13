@@ -42,11 +42,11 @@ import { cn } from "@/lib/utils";
 
 function planBadgeLabel(
   badge: "popular" | "bestValue" | "limited" | undefined,
-  t: (key: string) => string
+  t: (key: string, opts?: { defaultValue: string }) => string
 ): string | null {
-  if (badge === "popular") return t("bundleBadgePopular");
-  if (badge === "bestValue") return t("bundleBadgeBestValue");
-  if (badge === "limited") return t("bundleBadgeLimited");
+  if (badge === "popular") return t('bundleBadgePopular', { defaultValue: 'Founders' });
+  if (badge === "bestValue") return t('bundleBadgeBestValue', { defaultValue: 'Best value' });
+  if (badge === "limited") return t('bundleBadgeLimited', { defaultValue: 'Limited offer' });
   return null;
 }
 
@@ -119,15 +119,15 @@ export function BundlePage() {
     planId === "monthly"
       ? t("bundleTabMonthly", { defaultValue: t("bundleTab3mo", { defaultValue: "Monthly" }) })
       : planId === "12mo"
-        ? t("bundleTab12mo")
-        : t("bundleTabLifetime");
+        ? t('bundleTab12mo', { defaultValue: '12 months' })
+        : t('bundleTabLifetime', { defaultValue: 'Lifetime' });
 
   const billingLineFor = (id: BundlePlanId, price: string) =>
     id === "lifetime"
-      ? t("bundleBilledOnce", { price })
+      ? t('bundleBilledOnce', { price, defaultValue: '${{price}} one-time' })
       : id === "monthly"
         ? t("bundleBilledMonthly", { price, defaultValue: `$${price} billed monthly` })
-        : t("bundleBilledTotal", { price });
+        : t('bundleBilledTotal', { price, defaultValue: '${{price}} billed once' });
 
   return (
     <div className="min-h-screen bg-background text-foreground">
@@ -137,13 +137,13 @@ export function BundlePage() {
       <div className="hero-field section-seam relative">
         <div className="relative z-[1] mx-auto max-w-4xl space-y-3 px-5 pb-10 pt-10">
           <Badge className="w-fit border-border bg-muted text-accent-900 hover:bg-muted">
-            {t("bundleUrgencyBadge")}
+            {t('bundleUrgencyBadge', { defaultValue: 'Founders pricing — locked in at launch' })}
           </Badge>
           <PillarPageHeader
             icon={Sparkles}
             eyebrow={t('bundleEyebrow', { defaultValue: 'Super Bundle' })}
-            title={t("bundleHeadline")}
-            subtitle={t("bundleSubhead")}
+            title={t('bundleHeadline', { defaultValue: 'Mission Coach + depth. One honest price.' })}
+            subtitle={t('bundleSubhead', { defaultValue: 'Adaptive weekly plans from your workout logs — then Fuel, Move, Mind, Track, and Learn depth when you want it. Free logger stays free forever.' })}
           />
           <p className="max-w-xl text-sm text-muted-foreground">
             {t('bundleHonestNote', {
@@ -236,8 +236,8 @@ export function BundlePage() {
                       defaultValue: t("bundleTab3mo", { defaultValue: "Monthly" }),
                     })
                   : id === "12mo"
-                    ? t("bundleTab12mo")
-                    : t("bundleTabLifetime");
+                    ? t('bundleTab12mo', { defaultValue: '12 months' })
+                    : t('bundleTabLifetime', { defaultValue: 'Lifetime' });
               const badgeText = planBadgeLabel(p.badge, t);
               return (
                 <TabsTrigger
@@ -279,9 +279,9 @@ export function BundlePage() {
                       <div className="space-y-1">
                         <CardTitle className="flex items-center gap-2 text-xl sm:text-2xl">
                           <Sparkles className="h-5 w-5 shrink-0 text-primary" />
-                          {t("bundleHeroTitle")}
+                          {t('bundleHeroTitle', { defaultValue: 'Super Bundle' })}
                         </CardTitle>
-                        <p className="text-sm text-muted-foreground">{t("bundleHeroSubtitle")}</p>
+                        <p className="text-sm text-muted-foreground">{t('bundleHeroSubtitle', { defaultValue: 'Coach + pillar depth in one install — vs juggling partner apps' })}</p>
                       </div>
                       <div className="flex flex-wrap gap-2">
                         {badgeText && (
@@ -289,7 +289,7 @@ export function BundlePage() {
                         )}
                         {p.savingsPercent > 0 && (
                           <Badge variant="outline" className="border-primary/50 text-primary">
-                            {t("bundleSavePercent", { percent: p.savingsPercent })}
+                            {t('bundleSavePercent', { percent: p.savingsPercent, defaultValue: 'Save {{percent}}%' })}
                           </Badge>
                         )}
                       </div>
@@ -303,7 +303,7 @@ export function BundlePage() {
                       <span className="display-mega text-primary">${p.price}</span>
                       {p.perMonth && (
                         <span className="pb-1 text-sm text-muted-foreground">
-                          {t("bundlePerMonth", { price: p.perMonth })}
+                          {t('bundlePerMonth', { price: p.perMonth, defaultValue: '${{price}}/mo' })}
                         </span>
                       )}
                     </div>
@@ -311,13 +311,13 @@ export function BundlePage() {
 
                     {vsSeparateSavings > 0 && (
                       <p className="text-sm font-semibold text-primary">
-                        {t("bundleVsSeparate", { percent: vsSeparateSavings })}
+                        {t('bundleVsSeparate', { percent: vsSeparateSavings, defaultValue: 'Save {{percent}}% vs buying pillars separately' })}
                       </p>
                     )}
 
                     <p className="flex items-center gap-1.5 text-xs text-muted-foreground">
                       <Trophy className="h-3.5 w-3.5 shrink-0 text-accent-900" />
-                      {t("bundleWinScoreNote")}
+                      {t('bundleWinScoreNote', { defaultValue: 'Today Win Score ties every pillar together.' })}
                     </p>
 
                     <ul className="space-y-2">
@@ -366,7 +366,7 @@ export function BundlePage() {
                           ? t('bundleUnlockLifetimeCta', {
                               defaultValue: 'Unlock lifetime — card or USDC',
                             })
-                          : t('bundleUnlockCta')
+                          : t('bundleUnlockCta', { defaultValue: 'Unlock Super Bundle' })
                       }
                       className="w-full"
                     />
@@ -393,7 +393,7 @@ export function BundlePage() {
         <details className="group">
           <summary className="cursor-pointer list-none text-sm font-semibold text-muted-foreground marker:content-none hover:text-foreground">
             <span className="flex items-center justify-between gap-4">
-              {t("bundleCompareTitle")}
+              {t('bundleCompareTitle', { defaultValue: 'Compare standalone vs bundle' })}
               <span className="transition-transform group-open:rotate-45">+</span>
             </span>
           </summary>
@@ -401,12 +401,12 @@ export function BundlePage() {
             <table className="w-full text-sm">
               <thead>
                 <tr className="border-b-2 border-border bg-card">
-                  <th className="p-3 text-start font-semibold">{t("bundleColPillar")}</th>
+                  <th className="p-3 text-start font-semibold">{t('bundleColPillar', { defaultValue: 'Pillar' })}</th>
                   <th className="hidden p-3 text-start font-semibold sm:table-cell">
-                    {t("bundleColPremium")}
+                    {t('bundleColPremium', { defaultValue: 'Premium tier' })}
                   </th>
-                  <th className="p-3 text-end font-semibold">{t("bundleColMonthly")}</th>
-                  <th className="p-3 text-center font-semibold">{t("bundleColIncluded")}</th>
+                  <th className="p-3 text-end font-semibold">{t('bundleColMonthly', { defaultValue: 'Monthly' })}</th>
+                  <th className="p-3 text-center font-semibold">{t('bundleColIncluded', { defaultValue: 'In bundle' })}</th>
                 </tr>
               </thead>
               <tbody>
@@ -434,7 +434,7 @@ export function BundlePage() {
                 })}
                 <tr className="border-t-2 border-border bg-tint font-semibold">
                   <td className="p-3" colSpan={2}>
-                    {t("bundleRowTotal")}
+                    {t('bundleRowTotal', { defaultValue: 'Super Bundle (all pillars)' })}
                   </td>
                   <td className="p-3 text-end tabular-nums">
                     {plan.perMonth ? (
@@ -455,13 +455,13 @@ export function BundlePage() {
               </tbody>
             </table>
           </div>
-          <p className="mt-3 text-xs text-muted-foreground">{t("bundleCompareFoot")}</p>
+          <p className="mt-3 text-xs text-muted-foreground">{t('bundleCompareFoot', { defaultValue: 'Standalone prices are illustrative — the bundle costs less than subscribing to equivalent apps separately.' })}</p>
         </details>
 
         <p className="text-sm text-muted-foreground">
-          <strong className="text-foreground">{t("bundleFreeForeverTitle")}</strong>
+          <strong className="text-foreground">{t('bundleFreeForeverTitle', { defaultValue: 'Free forever' })}</strong>
           {' — '}
-          {t("bundleFreeForeverBody")}
+          {t('bundleFreeForeverBody', { defaultValue: 'Every pillar includes a free tier: workouts, recipes, mobility flows, breathing, activity logging, and learn paths. Premium unlocks advanced programs, full recipe library, and cloud sync priority.' })}
         </p>
       </div>
       <MarketingFooter />

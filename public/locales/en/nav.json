@@ -33,5 +33,6 @@
   "feedback": "Feedback",
   "resumeWorkout": "Resume workout",
   "offlineBannerShort": "Offline — logging still works",
-  "offlineWaitingCount": "{{count}} waiting"
+  "offlineWaitingCount": "{{count}} waiting",
+  "navInviteOnlyBeta": "Invite-only beta"
 }

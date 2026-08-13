@@ -37,5 +37,8 @@
   "learnCourseEmptyTitle": "No specialist courses yet",
   "learnCourseEmptyBeta": "The specialist catalogue is still being written. The free learning paths and the guidebook are complete and open to everyone.",
   "learnCourseBrowseFree": "Browse free paths",
-  "learnOpenMagazine": "Revista (web)"
+  "learnOpenMagazine": "Revista (web)",
+  "learnSubtitleOpenBeta": "{{count}} rutas de formación — primero los fundamentos. La guía y los cursos especializados están abiertos en la beta.",
+  "learnSubtitleBrief": "Primero las rutas gratis. La guía y la profundidad del Bundle cuando las quieras.",
+  "learnSubtitleBriefOpenBeta": "Primero las rutas gratis. El manual y la profundidad especializada cuando las quieras."
 }

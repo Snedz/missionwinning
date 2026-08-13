@@ -24,5 +24,7 @@
   "offlineEyebrow": "No connection",
   "offlineTitle": "بدون اتصال — المهمة مستمرة.",
   "offlineBody": "This page isn't cached yet, but everything you've already used keeps working — your workouts live on this device and sync when you're back online.",
-  "offlineCta": "افتح اليوم"
+  "offlineCta": "افتح اليوم",
+  "gateCheckingSession": "جارٍ التحقق من تسجيل الدخول…",
+  "gateWaitlistFailed": "لم يتم الحفظ. تحقق من اتصالك وحاول مرة أخرى."
 }

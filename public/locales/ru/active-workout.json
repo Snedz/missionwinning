@@ -186,5 +186,7 @@
   "victoryMascotCue": "Session saved.",
   "victorySessionDetails": "Session details",
   "activeRestSkipAriaFinal": "Skip rest — go",
-  "activeRestSkipAriaPlain": "Skip rest"
+  "activeRestSkipAriaPlain": "Skip rest",
+  "activeReentryStart": "Начать более легкую сессию",
+  "activeReentryStartDesc": "Первая сессия после паузы короче — её можно закончить, затем неделя перестроится."
 }

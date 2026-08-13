@@ -186,5 +186,7 @@
   "victoryMascotCue": "Session saved.",
   "victorySessionDetails": "Session details",
   "activeRestSkipAriaFinal": "Skip rest — go",
-  "activeRestSkipAriaPlain": "Skip rest"
+  "activeRestSkipAriaPlain": "Skip rest",
+  "activeReentryStart": "开始较轻的训练",
+  "activeReentryStartDesc": "回归后的第一次训练更短——能完成，然后本周计划会重建。"
 }

@@ -1,4 +1,8 @@
 {
+  "activeReentryStart": "Inizia sessione più leggera",
+  "activeReentryStartDesc": "Prima sessione di rientro più breve — finibile, poi la settimana si ricostruisce.",
+  "gateCheckingSession": "Verifica accesso…",
+  "gateWaitlistFailed": "Non è stato salvato. Controlla la connessione e riprova.",
   "guideChapter_assessments-progress_subtitle": "Valuta in sicurezza, confrontati con onestà, regola con intenzionalità",
   "guideChapter_assessments-progress_title": "Valutazioni e progressi",
   "guideChapter_getting-started-mw_subtitle": "I-Day, sei pilastri e il tuo Win Score",
@@ -239,6 +243,7 @@
   "guidebookQuickVersion": "Percorso rapido di 5 minuti →",
   "guidebookSubtitle": "Ora con ancora più contenuti! La guida Mission Winning — comprendere la formazione da zero.",
   "guidebookTitle": "Andare oltre le cose base",
+  "languageNotAvailability": "Scegliere una lingua non cambia dove viene offerto il servizio hosted.",
   "learnExpandedBanner": "Ora con ancora più contenuti!",
   "learnExpandedDesc": "Guida Beyond the Basics — 6 capitoli su scienza delle prestazioni, movimento, programmazione e altro ancora. Nucleo libero basato sull'evidenza.",
   "learnOpenGuidebook": "Apri la guida →",
@@ -276,5 +281,6 @@
   "magazineSubtitle": "Mission Winning da leggere",
   "magazineTitle": "Oltre le basi",
   "moreGuidebookDesc": "Beyond the Basics — riferimento profondo",
-  "navGuidebook": "Guida"
+  "navGuidebook": "Guida",
+  "todayCoachChipAction": "Apri"
 }

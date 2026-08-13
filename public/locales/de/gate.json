@@ -24,5 +24,7 @@
   "offlineEyebrow": "Offline",
   "offlineTitle": "Offline — Mission läuft weiter.",
   "offlineBody": "This page isn't cached yet, but everything you've already used keeps working — your workouts live on this device and sync when you're back online.",
-  "offlineCta": "Heute öffnen"
+  "offlineCta": "Heute öffnen",
+  "gateCheckingSession": "Anmeldung wird geprüft…",
+  "gateWaitlistFailed": "Nicht gespeichert. Prüfe deine Verbindung und versuche es erneut."
 }

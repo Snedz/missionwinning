@@ -5,7 +5,7 @@
  */
 
 import { useState, useEffect, useMemo } from 'react';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import { useTranslation } from 'react-i18next';
 import { ChevronLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -45,10 +45,18 @@ type Step = 'welcome' | 'profile' | 'signin';
 
 const STEP_ORDER: Step[] = ['welcome', 'profile', 'signin'];
 
-export function WelcomePage() {
+type WelcomePageProps = {
+  /**
+   * `?edit=1`, resolved by the route. Read as a prop rather than through
+   * `useSearchParams()` so I-Day step one is server-rendered — see
+   * `app/welcome/page.tsx`.
+   */
+  initialEdit?: boolean;
+};
+
+export function WelcomePage({ initialEdit = false }: WelcomePageProps) {
   const router = useRouter();
-  const searchParams = useSearchParams();
-  const isEdit = searchParams.get('edit') === '1';
+  const isEdit = initialEdit;
   const { t } = useTranslation();
   const [step, setStep] = useState<Step>('welcome');
   const [experience, setExperience] = useState('beginner');
@@ -156,8 +164,8 @@ export function WelcomePage() {
         </span>
         <span className="ms-auto text-xs font-semibold text-muted-foreground">
           {isEdit
-            ? t('editJourneyProfile', { defaultValue: 'Edit profile' })
-            : t('welcomeIDay', { defaultValue: 'Get started' })}
+            ? t('editJourneyProfile', { defaultValue: 'Edit profile'})
+            : t('welcomeIDay', { defaultValue: 'Get started'})}
         </span>
       </header>
 
@@ -199,10 +207,10 @@ export function WelcomePage() {
                 {/* Field manual: briefing type — eyebrow → display → one red. */}
                 <div className="space-y-4">
                   <p className="eyebrow text-primary">
-                    {t('welcomeKicker', { defaultValue: 'About two minutes' })}
+                    {t('welcomeKicker', { defaultValue: 'About two minutes'})}
                   </p>
                   <h1 className="display-section max-w-[16ch] text-balance text-foreground">
-                    {t('welcomeTitle', { defaultValue: 'Welcome' })}
+                    {t('welcomeTitle', { defaultValue: 'Welcome'})}
                   </h1>
                   <p className="max-w-md text-base leading-relaxed text-muted-foreground">
                     {t('welcomeSubtitleBrief', {
@@ -232,7 +240,7 @@ export function WelcomePage() {
                   className="primary-action min-h-[52px] w-full tap-target"
                   onClick={handleBegin}
                 >
-                  {t('welcomeBegin', { defaultValue: 'Continue' })}
+                  {t('welcomeBegin', { defaultValue: 'Begin'})}
                 </button>
               </>
             )}
@@ -242,12 +250,12 @@ export function WelcomePage() {
                 <div className="space-y-2">
                   <p className="eyebrow text-muted-foreground">
                     {isEdit
-                      ? t('editJourneyProfile', { defaultValue: 'Edit profile' })
-                      : t('welcomeProfileEyebrow', { defaultValue: 'About you' })}
+                      ? t('editJourneyProfile', { defaultValue: 'Edit profile'})
+                      : t('welcomeProfileEyebrow', { defaultValue: 'About you'})}
                   </p>
                   <h2 className="display-section max-w-[18ch] text-balance text-foreground">
                     {isEdit
-                      ? t('editJourneyProfile', { defaultValue: 'Edit profile' })
+                      ? t('editJourneyProfile', { defaultValue: 'Edit profile'})
                       : t('welcomeProfileTitle', { defaultValue: 'Three quick questions' })}
                   </h2>
                   <p className="text-sm leading-relaxed text-muted-foreground">
@@ -256,8 +264,7 @@ export function WelcomePage() {
                           defaultValue:
                             'Update experience, equipment, and goal. Changes sync when signed in.',
                         })
-                      : t('welcomeProfileHint', {
-                          defaultValue: 'So we can suggest a session that matches your gear.',
+                      : t('welcomeProfileHint', { defaultValue: 'So we can suggest a session that matches your gear.',
                         })}
                   </p>
                 </div>
@@ -351,9 +358,7 @@ export function WelcomePage() {
                     {t('welcomeSignInTitle', { defaultValue: 'Save progress — your choice' })}
                   </h2>
                   <p className="text-sm leading-relaxed text-muted-foreground">
-                    {t('welcomeSignInSubtitle', {
-                      defaultValue:
-                        'Sign in with Google or email to sync across devices. Skip anytime — local progress still works.',
+                    {t('welcomeSignInSubtitle', { defaultValue: 'Logging works on this device with no account. Sign in only if you want the same log on another device — Skip anytime.',
                     })}
                   </p>
                 </div>

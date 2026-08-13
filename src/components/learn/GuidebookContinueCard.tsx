@@ -43,7 +43,8 @@ export function GuidebookContinueCard() {
           {t('guidebookContinue', { defaultValue: 'Continue guidebook' })}
         </CardTitle>
         <CardDescription>
-          {stats.done}/{stats.totalSections} sections · {label || t('guidebookTitle')}
+          {stats.done}/{stats.totalSections} sections ·{' '}
+          {label || t('guidebookTitle', { defaultValue: 'Beyond the Basics' })}
         </CardDescription>
       </CardHeader>
       <CardContent>

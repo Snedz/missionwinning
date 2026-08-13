@@ -92,6 +92,60 @@ async function main() {
     checks.push({ name: 'GET /welcome', ok: false, detail: String(e) });
   }
 
+  /*
+   * `.745` — what the first byte says, measured off the wire.
+   *
+   * On 2026-08-13 the whole visible body of `/private` — which is www itself
+   * while the gate is up — was the words "Checking sign-in…", and `/welcome`
+   * server-rendered no text at all. Both were invisible to every existing
+   * check, because a browser test reads the hydrated DOM and a source guard
+   * cannot see what streamed. This reads the bytes.
+   */
+  for (const { path, needle, why } of [
+    {
+      path: '/private',
+      needle: 'Train anywhere',
+      why: 'gate poster must not wait on the session probe (PrivateTeaserClient)',
+    },
+    {
+      /* Not the word "Welcome": that is in `<title>`, so it passes on a blank
+         page. The first draft of this check did exactly that and went green
+         against the very deploy whose `/welcome` body was one grey box. */
+      path: '/welcome',
+      needle: 'first session',
+      why: 'I-Day step one must be server-rendered (app/welcome/page.tsx resolves ?edit=)',
+    },
+  ]) {
+    try {
+      const res = await headOrGet(path, { redirect: 'manual' });
+      if (res.status !== 200) {
+        checks.push({
+          name: `GET ${path} first paint carries copy`,
+          ok: false,
+          detail: `status ${res.status} (expected 200 — public while gated)`,
+        });
+        continue;
+      }
+      const html = await res.text();
+      /* Body text nodes only. The copy also lives in the RSC payload and the
+         `<title>`, neither of which a reader sees as page content, so matching
+         raw HTML would pass on a blank page. */
+      const text = html
+        .replace(/<head[\s\S]*?<\/head>/i, ' ')
+        .replace(/<script[\s\S]*?<\/script>/g, ' ')
+        .replace(/<style[\s\S]*?<\/style>/g, ' ')
+        .replace(/<[^>]+>/g, '\n');
+      const ok = text.includes(needle);
+      checks.push({
+        name: `GET ${path} first paint carries copy`,
+        ok,
+        detail: ok ? `200 — "${needle}" in the served HTML` : `no "${needle}" text node — ${why}`,
+      });
+    } catch (e) {
+      checks.push({ name: `GET ${path} first paint`, ok: false, detail: String(e) });
+    }
+  }
+
   // Production smoke ratchet (.682): retired compare hub + legal English floors.
   // Live `.618` returned 200 with Hevy/Strong; tip redirects permanently to /welcome.
   for (const path of ['/compare', '/compare/forge']) {

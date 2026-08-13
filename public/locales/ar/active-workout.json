@@ -186,5 +186,7 @@
   "victoryMascotCue": "Session saved.",
   "victorySessionDetails": "Session details",
   "activeRestSkipAriaFinal": "Skip rest — go",
-  "activeRestSkipAriaPlain": "Skip rest"
+  "activeRestSkipAriaPlain": "Skip rest",
+  "activeReentryStart": "ابدأ جلسة أخف",
+  "activeReentryStartDesc": "أول جلسة بعد العودة أقصر — يمكن إكمالها، ثم يُعاد بناء الأسبوع."
 }

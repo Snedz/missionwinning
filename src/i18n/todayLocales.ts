@@ -2,6 +2,8 @@
 
 type TodayStrings = {
   todayBasicEncouragement: string;
+  /** Fallback verb on a cross-pillar coach chip when the rule names no action. */
+  todayCoachChipAction: string;
   todaySectionHealth: string;
   todaySectionHealthDesc: string;
   todaySectionWeek: string;
@@ -280,6 +282,7 @@ type TodayStrings = {
 const en: TodayStrings = {
   todayBasicEncouragement:
     'One step at a time. Log a set — Mission Coach shapes the week from your history.',
+  todayCoachChipAction: 'Open',
   todaySectionHealth: 'Health scores',
   todaySectionHealthDesc: 'Coach insight and pillar breakdown',
   todaySectionWeek: 'This week',
@@ -749,6 +752,7 @@ const es: TodayStrings = {
 };
 
 const zh: TodayStrings = {
+  todayCoachChipAction: '打开',
   todayWeekFailedTitle: en.todayWeekFailedTitle,
   todayWeekFailedDesc: en.todayWeekFailedDesc,
   todayWeekFailedRetry: en.todayWeekFailedRetry,
@@ -1015,6 +1019,7 @@ const zh: TodayStrings = {
 };
 
 const id: TodayStrings = {
+  todayCoachChipAction: 'Buka',
   todayWeekFailedTitle: en.todayWeekFailedTitle,
   todayWeekFailedDesc: en.todayWeekFailedDesc,
   todayWeekFailedRetry: en.todayWeekFailedRetry,
@@ -1296,6 +1301,7 @@ const id: TodayStrings = {
 };
 
 const th: TodayStrings = {
+  todayCoachChipAction: 'เปิด',
   todayWeekFailedTitle: en.todayWeekFailedTitle,
   todayWeekFailedDesc: en.todayWeekFailedDesc,
   todayWeekFailedRetry: en.todayWeekFailedRetry,
@@ -1567,6 +1573,7 @@ const th: TodayStrings = {
 };
 
 const ar: TodayStrings = {
+  todayCoachChipAction: 'افتح',
   todayWeekFailedTitle: en.todayWeekFailedTitle,
   todayWeekFailedDesc: en.todayWeekFailedDesc,
   todayWeekFailedRetry: en.todayWeekFailedRetry,

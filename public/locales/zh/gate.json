@@ -24,5 +24,7 @@
   "offlineEyebrow": "No connection",
   "offlineTitle": "离线 — 任务仍在继续。",
   "offlineBody": "This page isn't cached yet, but everything you've already used keeps working — your workouts live on this device and sync when you're back online.",
-  "offlineCta": "打开今日"
+  "offlineCta": "打开今日",
+  "gateCheckingSession": "正在检查登录…",
+  "gateWaitlistFailed": "未能保存。请检查网络后重试。"
 }

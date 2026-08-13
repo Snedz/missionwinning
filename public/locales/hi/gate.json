@@ -24,5 +24,7 @@
   "offlineEyebrow": "No connection",
   "offlineTitle": "ऑफ़लाइन — मिशन जारी।",
   "offlineBody": "This page isn't cached yet, but everything you've already used keeps working — your workouts live on this device and sync when you're back online.",
-  "offlineCta": "आज खोलें"
+  "offlineCta": "आज खोलें",
+  "gateCheckingSession": "साइन-इन जांच रहे हैं…",
+  "gateWaitlistFailed": "सेव नहीं हुआ। कनेक्शन जांचें और दोबारा कोशिश करें।"
 }

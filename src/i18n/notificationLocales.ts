@@ -84,6 +84,14 @@ const NOTIFICATION_EN: Record<string, string> = {
   takeAssessment: 'Take the free Readiness Assessment',
   profileSetupHint: 'Answer a few questions so sessions match your gear (~2 minutes).',
   changeLanguage: 'Change language',
+  /**
+   * `.745` — the picker lists Français, Deutsch, Italiano, العربية and Bahasa
+   * Indonesia, whose largest markets are all on the hosted block list. Offering
+   * a language is not a claim to serve a country, and the picker was the one
+   * place that read as though it were.
+   */
+  languageNotAvailability:
+    'Choosing a language does not change where the hosted service is offered.',
   units: 'Units',
   metric: 'Metric (kg, cm)',
   imperial: 'Imperial (lbs, in)',

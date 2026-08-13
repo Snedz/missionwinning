@@ -186,5 +186,7 @@
   "victoryMascotCue": "Session saved.",
   "victorySessionDetails": "Session details",
   "activeRestSkipAriaFinal": "Skip rest — go",
-  "activeRestSkipAriaPlain": "Skip rest"
+  "activeRestSkipAriaPlain": "Skip rest",
+  "activeReentryStart": "가벼운 세션 시작",
+  "activeReentryStartDesc": "복귀 첫 세션은 가볍게 — 끝낼 수 있고, 그다음 주간 계획이 다시 세워집니다."
 }

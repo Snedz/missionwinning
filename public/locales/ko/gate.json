@@ -24,5 +24,7 @@
   "offlineEyebrow": "No connection",
   "offlineTitle": "오프라인이지만 임무 외는 아닙니다.",
   "offlineBody": "이 페이지는 아직 캐시되지 않았지만 이미 사용한 모든 기능은 계속 작동합니다. 운동은 이 기기에 실시간으로 표시되며 다시 온라인에 접속하면 동기화됩니다.",
-  "offlineCta": "오늘 열기"
+  "offlineCta": "오늘 열기",
+  "gateCheckingSession": "로그인 확인 중…",
+  "gateWaitlistFailed": "저장되지 않았습니다. 연결을 확인한 뒤 다시 시도하세요."
 }

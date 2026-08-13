@@ -1,4 +1,8 @@
 {
+  "activeReentryStart": "Начать более легкую сессию",
+  "activeReentryStartDesc": "Первая сессия после паузы короче — её можно закончить, затем неделя перестроится.",
+  "gateCheckingSession": "Проверяем вход…",
+  "gateWaitlistFailed": "Не сохранилось. Проверьте соединение и попробуйте снова.",
   "guideChapter_assessments-progress_subtitle": "Проверяйте безопасно, измеряйте честно, корректируйте осознанно",
   "guideChapter_assessments-progress_title": "Оценки и прогресс",
   "guideChapter_getting-started-mw_subtitle": "I-Day, шесть столпов и ваш Win Score",
@@ -239,6 +243,7 @@
   "guidebookQuickVersion": "5-минутный быстрый путь →",
   "guidebookSubtitle": "Теперь с еще большим количеством контента! Путеводитель «Выигрыш миссии» — понимание обучения с нуля.",
   "guidebookTitle": "Больше, чем просто основы",
+  "languageNotAvailability": "Выбор языка не меняет то, где доступен хостируемый сервис.",
   "learnExpandedBanner": "Теперь с еще большим количеством контента!",
   "learnExpandedDesc": "Путеводитель Beyond the Basics — 6 глав о науке о производительности, движении, программировании и многом другом. Свободное ядро, основанное на фактических данных.",
   "learnOpenGuidebook": "Открыть Путеводитель →",
@@ -276,5 +281,6 @@
   "magazineSubtitle": "Mission Winning — читать",
   "magazineTitle": "За пределами основ",
   "moreGuidebookDesc": "Beyond the Basics — глубокая справка",
-  "navGuidebook": "Путеводитель"
+  "navGuidebook": "Путеводитель",
+  "todayCoachChipAction": "Открыть"
 }
