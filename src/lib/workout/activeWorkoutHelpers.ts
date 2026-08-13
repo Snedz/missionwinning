@@ -125,8 +125,12 @@ export function priorCompletedInExercise(
  *
  * Order:
  *  1. What the athlete typed. Always wins.
- *  2. The coach's prescription, when this exercise came from a plan.
- *  3. Same-session carry — prior completed set of this exercise (gym speed, `.289`).
+ *  2. Same-session carry — prior completed set of this exercise (F-013 gym
+ *     speed, `.289` + `.703`). Last load/reps on the *next* set, prescribed or
+ *     not — a plan of 3×5 @ 100 still starts set 1 at 5×100; after you log
+ *     6×102.5, set 2 starts there, not snapped back to the template.
+ *  3. The coach's prescription, when this exercise came from a plan (set 1,
+ *     or no prior completed set). Suggestion must not overrule this (`.175`).
  *  4. The suggestion engine, for freestyle work, inside the athlete's goal range.
  *  5. The same set last time, then the template default.
  */
@@ -135,7 +139,7 @@ export function resolveSetInput(params: {
   prescribed?: boolean;
   defaultReps: number;
   defaultWeight: number;
-  /** Same-session prior completed set of this exercise (freestyle only). */
+  /** Same-session prior completed set of this exercise (prescribed or freestyle). */
   sessionCarry?: { reps: number; weight: number } | null;
   suggestion?: { reps: number; weight: number } | null;
   lastPerformance?: { reps: number; weight: number } | null;
@@ -150,8 +154,8 @@ export function resolveSetInput(params: {
     lastPerformance,
   } = params;
   if (manual) return manual;
-  if (prescribed) return { reps: defaultReps, weight: defaultWeight };
   if (sessionCarry) return { reps: sessionCarry.reps, weight: sessionCarry.weight };
+  if (prescribed) return { reps: defaultReps, weight: defaultWeight };
   if (suggestion) return { reps: suggestion.reps, weight: suggestion.weight };
   if (lastPerformance) return { reps: lastPerformance.reps, weight: lastPerformance.weight };
   return { reps: defaultReps, weight: defaultWeight };
@@ -386,9 +390,10 @@ export function planApplyTargets(params: {
 }
 
 /**
- * What the Active dial shows for one set — prescribed vs freestyle carry vs
+ * What the Active dial shows for one set — session carry vs prescribed vs
  * suggestion. Extracted so the page cannot silently reorder resolveSetInput
- * inputs (Kaizen Loop 3 M3 / `.303`).
+ * inputs (Kaizen Loop 3 M3 / `.303`). F-013: carry last load/reps onto the
+ * next set even when the exercise is prescribed.
  */
 export function resolveActiveSetDial(params: {
   manual?: { reps: number; weight: number };
@@ -403,9 +408,7 @@ export function resolveActiveSetDial(params: {
   repMax: number;
   lastPerformance: { reps: number; weight: number } | null;
 }): { reps: number; weight: number } {
-  const sessionCarry = params.prescribed
-    ? null
-    : priorCompletedInExercise(params.sets, params.setIdx);
+  const sessionCarry = priorCompletedInExercise(params.sets, params.setIdx);
   const suggestion =
     !params.prescribed && params.lastSets
       ? suggestNextSetTarget(params.lastSets, params.setIdx, params.units, {
