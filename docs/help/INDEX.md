@@ -10,7 +10,7 @@ Plain-language guides for athletes, parents, and teachers. English only for now;
 | [fuel-and-nutrition.md](fuel-and-nutrition.md) | Logging food, barcode scan, photo estimate |
 | [fitness-test-and-school.md](fitness-test-and-school.md) | Presidential Fitness Test + PE class codes |
 | [premium-and-billing.md](premium-and-billing.md) | Super Bundle, what's free, restoring access |
-| [privacy-and-data.md](privacy-and-data.md) | Where your data lives, backup, youth consent, optional wearables |
+| [privacy-and-data.md](privacy-and-data.md) | Where your data lives, Why this report, backup, youth consent, optional wearables |
 | [../WEARABLES.md](../WEARABLES.md) | Developer wearables strategy (Apple, Google, Whoop, …) |
 | [faq.md](faq.md) | Quick answers |
 | [troubleshooting.md](troubleshooting.md) | Offline, sync, password gate |

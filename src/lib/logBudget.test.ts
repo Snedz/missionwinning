@@ -86,6 +86,13 @@ const NEVER_SHIPPED: { from: number; to: number; why: string }[] = [
       'heading on master ever ended in (`.260`), so the live window can sit on `.261` without ' +
       'a prior rotate of a missing section.',
   },
+  {
+    from: 698,
+    to: 728,
+    why:
+      'Reserved by concurrent cloud branches while master tip was `.697`. `.729` jumped the ' +
+      'occupied range; no LOG heading on master ever ended in these labels.',
+  },
 ];
 const neverShipped = (x: number) => NEVER_SHIPPED.some((g) => x >= g.from && x <= g.to);
 

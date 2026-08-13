@@ -45,6 +45,7 @@ import { ProfileImportCard } from '@/components/profile/ProfileImportCard';
 import { SyncStatusRow } from '@/components/profile/SyncStatusRow';
 import { ProfilePrivacyCard } from '@/components/profile/ProfilePrivacyCard';
 import { ProfileFeedbackCard } from '@/components/profile/ProfileFeedbackCard';
+import { ProfileTransparencyCard } from '@/components/profile/ProfileTransparencyCard';
 import { ProfileWhatsNewCard } from '@/components/profile/ProfileWhatsNewCard';
 import { ProfileReferralCard } from '@/components/profile/ProfileReferralCard';
 import { ProfileWearablesCard } from '@/components/profile/ProfileWearablesCard';
@@ -370,6 +371,8 @@ export function AccountPage() {
       <ProfileReferralCard signedIn={Boolean(email)} />
 
       <ProfileFeedbackCard />
+
+      <ProfileTransparencyCard />
 
       <ProfilePremiumCard
         premium={premium}

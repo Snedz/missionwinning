@@ -26,9 +26,13 @@ Connecting Apple Health, Google Health Connect, Whoop, Strava, or similar is **o
 
 Manual JSON/CSV imports on Track stay on-device (same as other Track logs) until you sign in and sync.
 
+## Why this (transparency)
+
+Account → **Why this** lists plain reasons for gates and hidden numbers: the logger stays free and offline, whether this deploy is invite-gated, region policy if hosted signup is blocked, why this week's Coach sessions exist (from your logs), the live points table, and Super Bundle "get notified until Stripe." Download the same report as JSON or text. Numbers that stay on your device are private-to-you, not suppressed.
+
 ## Backup and restore
 
-Profile → **Export backup** downloads a JSON file. Restore on a new device by importing that file. Backups are yours — store them securely.
+Account → **Export backup** downloads a JSON file. Restore on a new device by importing that file. Backups are yours — store them securely.
 
 ## Sign-in providers
 

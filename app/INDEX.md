@@ -21,6 +21,7 @@
 | `/track` | Track | `TrackPage.tsx` |
 | `/profile` | You | `ProfilePage.tsx` — the Athlete Page (identity · career line · badge shelf) |
 | `/account` | Account | `AccountPage.tsx` — settings, notifications, billing, backup |
+| `/account/transparency` | Why this | `TransparencyPage.tsx` — gated/hidden reasons + downloadable report |
 
 ### Train deeper
 

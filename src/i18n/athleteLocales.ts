@@ -126,6 +126,26 @@ const ATHLETE_EN: Record<string, string> = {
   accountOwnerSection: 'Owner tools',
   navAccount: 'Account',
   moreAccountDesc: 'Settings, notifications, backup',
+  transparencyEyebrow: 'Account',
+  transparencyTitle: 'Why this',
+  transparencySubtitle:
+    'Plain reasons for gates and hidden numbers. Download the same report as JSON or text.',
+  transparencyDownloadJson: 'Download JSON',
+  transparencyDownloadText: 'Download text',
+  transparencyCardTitle: 'Why this',
+  transparencyCardLead:
+    "See why the logger stays free, whether this deploy is gated, region policy, this week's Coach sessions, the earn table, and Super Bundle notify-until-Stripe. Download the full report.",
+  transparencyCardOpen: 'Open Why this',
+  transparencyEarnTitle: 'Earn table (live local XP)',
+  transparencyEarnEvent: 'Event',
+  transparencyEarnPoints: 'Points',
+  transparencyEarnCap: 'Cap',
+  transparencyStatusOpen: 'Open',
+  transparencyStatusGated: 'Gated',
+  transparencyStatusHidden: 'Hidden',
+  transparencyStatusLimited: 'Limited',
+  transparencyStatusInfo: 'Explained',
+  transparencyBackAccount: 'Back to Account',
 
   // --- Founder status (owner tools) ---
   founderStatusTitle: 'Mission status',

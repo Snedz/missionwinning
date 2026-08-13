@@ -133,6 +133,7 @@ export const KNOWN_TOP_LEVELS: Readonly<Record<string, 'wedge' | 'surface'>> = {
   'src/lib/storage': 'wedge',
   'src/lib/sync': 'wedge',
   'src/lib/time': 'surface',
+  'src/lib/transparency': 'surface',
   'src/lib/today': 'wedge',
   'src/lib/track': 'surface',
   'src/lib/trends': 'surface',
