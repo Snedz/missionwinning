@@ -155,6 +155,7 @@ test('premium cues do not carry stripped-second leftovers', () => {
       assert.doesNotMatch(step.cue, /^[.\s]/, `${flow.id} ${step.title}: cue starts empty`);
       assert.doesNotMatch(step.cue, / \. /, `${flow.id} ${step.title}: leftover " . "`);
       assert.doesNotMatch(step.cue, /– if /, `${flow.id} ${step.title}: truncated range`);
+      assert.doesNotMatch(step.cue, /\d+–(?!\d)/, `${flow.id} ${step.title}: truncated en-dash`);
     }
   }
 });
@@ -178,11 +179,11 @@ test('premium equipment cues carry a floor fallback', () => {
           `${flow.id} ${step.title} names a band without a floor fallback`
         );
       }
-      if (/\bwall\b/i.test(blob) && !/no wall/i.test(blob)) {
+      if (/\b(dead hang|bar hang|\bbar\b)/i.test(blob) && !/broom/i.test(blob)) {
         assert.match(
           blob,
-          /doorframe|floor variation|or floor|tree/i,
-          `${flow.id} ${step.title} names a wall without a floor fallback`
+          /no bar|else /i,
+          `${flow.id} ${step.title} names a bar without a floor fallback`
         );
       }
     }
