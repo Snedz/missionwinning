@@ -26,7 +26,7 @@ export default async function PrivatePage({ searchParams }: { searchParams: Sear
             className="gate-shell gate-center"
             data-mw-invitee={initialInvite ? '1' : '0'}
           >
-            Loading…
+            Confirming access…
           </div>
         }
       >

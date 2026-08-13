@@ -15,7 +15,7 @@
 |------|-------|
 | `HomePage.tsx` | `/log` (Today) |
 | `WelcomePage.tsx` | `/welcome` |
-| `LandingPage.tsx` | `/` |
+| `LandingPage.tsx` | `/` (post-unlock). Four cinematic scenes. Cold `/` redirects to `/private`. |
 
 ### Train
 

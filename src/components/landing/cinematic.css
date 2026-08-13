@@ -1,0 +1,466 @@
+/**
+ * Gated www / post-unlock landing — four 100svh scenes.
+ * Tokens only. Radius 0. No gradient, no second face, no glow.
+ * See docs/design/WWW_NIGHT.md.
+ */
+
+.www-cine {
+  min-height: 100svh;
+  background: hsl(var(--background));
+  color: hsl(var(--foreground));
+}
+
+.www-cine-nav {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  min-height: 56px;
+  padding: 10px clamp(16px, 4vw, 48px);
+  background: hsl(var(--background));
+  border-bottom: 2px solid hsl(var(--foreground));
+}
+
+.www-cine-brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+  color: inherit;
+}
+
+.www-cine-brand img {
+  width: 36px;
+  height: 36px;
+  display: block;
+}
+
+.www-cine-word {
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  font-size: 15px;
+  line-height: 1;
+}
+
+.www-cine-ghost {
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-start;
+  min-height: 44px;
+  padding: 8px 18px;
+  border: 2px solid hsl(var(--foreground));
+  background: transparent;
+  color: hsl(var(--foreground));
+  font-weight: 800;
+  font-size: 15px;
+  letter-spacing: -0.01em;
+  text-decoration: none;
+  text-align: left;
+}
+
+.www-cine-ghost:hover {
+  background: hsl(var(--foreground));
+  color: hsl(var(--background));
+}
+
+.www-cine-ghost:focus-visible {
+  outline: 3px solid hsl(var(--foreground));
+  outline-offset: 3px;
+}
+
+.www-cine-scene {
+  min-height: 100svh;
+  padding: 28px clamp(16px, 4vw, 48px) 48px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+
+.www-cine-set,
+.www-cine-week,
+.www-cine-door {
+  background: hsl(var(--background));
+}
+
+.www-cine-kicker {
+  margin: 0 0 18px;
+}
+
+.www-cine-lede {
+  margin: 22px 0 0;
+  max-width: 36ch;
+  color: hsl(var(--muted-foreground));
+  font-size: 17px;
+  line-height: 1.55;
+}
+
+.www-cine-mark {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 14px;
+}
+
+.www-cine-mark img {
+  width: 72px;
+  height: 72px;
+  display: block;
+}
+
+.www-cine-mark-follow {
+  margin-top: 28px;
+}
+
+@media (min-width: 900px) {
+  .www-cine-mark img {
+    width: 96px;
+    height: 96px;
+  }
+}
+
+.www-cine a {
+  text-decoration: none;
+}
+
+.mw-gate .www-cine a {
+  text-decoration: none;
+}
+
+.mw-gate .www-cine a:hover {
+  color: inherit;
+}
+
+/* Beat .mw-gate a:hover (accent text) so ghost invert stays paper-on-ink. */
+.mw-gate .www-cine-ghost:hover {
+  color: hsl(var(--background));
+}
+
+.mw-gate .www-cine-anywhere .www-cine-ghost:hover {
+  color: hsl(var(--foreground));
+}
+
+.www-cine-logger {
+  max-width: 640px;
+  margin-top: 36px;
+}
+
+.www-cine-logger .primary-action,
+.www-cine-logger > .www-cine-ghost {
+  max-width: 420px;
+}
+
+.www-cine-logger-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 18px;
+}
+
+.www-cine-count {
+  font-weight: 600;
+  font-size: 13px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-feature-settings: 'tnum' 1;
+  color: hsl(var(--muted-foreground));
+}
+
+.www-cine-setrow {
+  display: grid;
+  grid-template-columns: 2.2rem 1fr auto;
+  align-items: baseline;
+  gap: 16px;
+  min-height: 72px;
+  padding: 12px 0;
+  border-top: 2px solid hsl(var(--border));
+  font-feature-settings: 'tnum' 1;
+}
+
+.www-cine-setrow:last-of-type {
+  border-bottom: 2px solid hsl(var(--border));
+}
+
+.www-cine-n {
+  font-size: 13px;
+  letter-spacing: 0.08em;
+  color: hsl(var(--muted-foreground));
+  font-weight: 600;
+}
+
+.www-cine-load {
+  font-family: var(--font-archivo);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 1;
+  font-size: clamp(1.85rem, 4.2vw, 3.25rem);
+  font-variant-numeric: tabular-nums;
+}
+
+.www-cine-setrow.is-next {
+  border-top-color: hsl(var(--primary));
+  background: hsl(var(--accent-tint));
+  margin: 0 -12px;
+  padding-left: 12px;
+  padding-right: 12px;
+}
+
+.www-cine-setrow.is-wait .www-cine-load {
+  color: hsl(var(--muted-foreground));
+}
+
+.www-cine-why {
+  margin: 18px 0 22px;
+  max-width: 46ch;
+  font-size: 15px;
+  line-height: 1.5;
+  color: hsl(var(--muted-foreground));
+}
+
+.www-cine-demo {
+  margin: 14px 0 0;
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: hsl(var(--muted-foreground));
+  font-weight: 600;
+  font-feature-settings: 'tnum' 1;
+}
+
+@media (min-width: 1100px) {
+  .www-cine-split {
+    display: grid;
+    grid-template-columns: minmax(280px, 0.9fr) minmax(420px, 1.1fr);
+    gap: 64px;
+    align-items: end;
+    width: 100%;
+  }
+
+  .www-cine-set {
+    justify-content: stretch;
+    padding-top: 88px;
+  }
+
+  .www-cine-logger {
+    max-width: none;
+    margin-top: 0;
+    width: 100%;
+  }
+}
+
+.www-cine-week-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 2px;
+  background: hsl(var(--border));
+  border: 2px solid hsl(var(--foreground));
+  margin-top: 36px;
+}
+
+.www-cine-day {
+  background: hsl(var(--background));
+  padding: 16px 10px 20px;
+  min-height: 140px;
+  font-feature-settings: 'tnum' 1;
+}
+
+.www-cine-day strong {
+  display: block;
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-weight: 600;
+}
+
+.www-cine-day b {
+  display: block;
+  margin-top: 18px;
+  font-size: clamp(1.1rem, 2vw, 1.65rem);
+  letter-spacing: -0.03em;
+  font-weight: 800;
+  line-height: 1.05;
+}
+
+.www-cine-day span {
+  display: block;
+  margin-top: 8px;
+  font-size: 13px;
+  color: hsl(var(--muted-foreground));
+}
+
+.www-cine-day.is-rewritten {
+  background: hsl(var(--accent-tint));
+}
+
+.www-cine-day.is-rewritten b {
+  color: hsl(var(--primary));
+}
+
+@media (max-width: 760px) {
+  .www-cine-week-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .www-cine-day {
+    min-height: 0;
+    display: grid;
+    grid-template-columns: 4rem 1fr auto;
+    gap: 12px;
+    align-items: baseline;
+    padding: 14px 12px;
+  }
+
+  .www-cine-day b {
+    margin-top: 0;
+    font-size: 1.25rem;
+  }
+
+  .www-cine-day span {
+    margin-top: 0;
+  }
+}
+
+.www-cine-anywhere {
+  min-height: 100svh;
+  padding: 0;
+  justify-content: flex-end;
+  background: hsl(var(--foreground));
+  color: hsl(var(--background));
+}
+
+.www-cine-slab {
+  background: hsl(var(--foreground));
+  padding: 36px clamp(16px, 4vw, 48px) 48px;
+  max-width: 36rem;
+}
+
+.www-cine-anywhere .www-cine-kicker,
+.www-cine-anywhere .display-section,
+.www-cine-anywhere .www-cine-lede {
+  color: hsl(var(--background));
+}
+
+.www-cine-anywhere .www-cine-lede {
+  opacity: 0.82;
+}
+
+.www-cine-anywhere .www-cine-ghost {
+  border-color: hsl(var(--background));
+  color: hsl(var(--background));
+}
+
+.www-cine-anywhere .www-cine-ghost:hover {
+  background: hsl(var(--background));
+  color: hsl(var(--foreground));
+}
+
+.www-cine-anywhere .www-cine-ghost:focus-visible {
+  outline-color: hsl(var(--background));
+}
+
+.www-cine-door {
+  justify-content: center;
+  padding-top: 72px;
+  padding-bottom: 72px;
+}
+
+.www-cine-door-inner {
+  max-width: 36rem;
+}
+
+.www-cine-field {
+  display: block;
+  margin-top: 28px;
+}
+
+.www-cine-field > span {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-weight: 600;
+  color: hsl(var(--muted-foreground));
+}
+
+.www-cine-field input {
+  width: 100%;
+  min-height: 52px;
+  padding: 10px 14px;
+  border: 2px solid hsl(var(--border));
+  background: hsl(var(--card));
+  color: hsl(var(--foreground));
+  border-radius: 0;
+}
+
+.www-cine-field input:focus-visible {
+  border-color: hsl(var(--foreground));
+  outline-offset: 0;
+}
+
+.www-cine-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 14px;
+  align-items: stretch;
+}
+
+.www-cine-foot {
+  margin: 18px 0 0;
+  font-size: 13px;
+  line-height: 1.5;
+  color: hsl(var(--muted-foreground));
+  max-width: 46ch;
+}
+
+.www-cine-details {
+  margin-top: 42px;
+  border-top: 2px solid hsl(var(--border));
+  padding-top: 18px;
+}
+
+.www-cine-details summary {
+  cursor: pointer;
+  list-style: none;
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  font-size: 13px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-weight: 600;
+  color: hsl(var(--muted-foreground));
+}
+
+.www-cine-details summary::-webkit-details-marker {
+  display: none;
+}
+
+.www-cine-unlock {
+  min-height: 100svh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: hsl(var(--muted-foreground));
+  font-size: 15px;
+}
+
+.www-cine-colophon {
+  border-top: 2px solid hsl(var(--foreground));
+  padding: 28px clamp(16px, 4vw, 48px) 40px;
+  font-size: 13px;
+  line-height: 1.55;
+  color: hsl(var(--muted-foreground));
+}
+
+.www-cine-colophon-inner {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px 28px;
+  justify-content: space-between;
+  align-items: baseline;
+}
