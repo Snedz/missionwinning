@@ -91,6 +91,14 @@ export function ActiveSessionDock({
           onWeightChange={(v) => onWeightChange(consoleSet.exIdx, consoleSet.setIdx, v)}
           onKindChange={(kind) => onKindChange(consoleSet.exIdx, consoleSet.setIdx, kind)}
           onLog={() => onLog(consoleSet.exIdx, consoleSet.setIdx)}
+          lastSetGhost={consoleSet.lastSetGhost}
+          onAcceptGhost={(target) => {
+            onApplyFieldPatches(
+              consoleSet.exIdx,
+              consoleSet.setIdx,
+              patchesForUseNext(target)
+            );
+          }}
           onUseNext={(target) => {
             onApplyFieldPatches(
               consoleSet.exIdx,

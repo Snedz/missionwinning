@@ -78,9 +78,17 @@ test('RestTimerBar: ambient running rest + Skip 44px; no poster-red', () => {
   assert.doesNotMatch(src, /accent-poster/);
 });
 
-test('ActiveExerciseCard wires prevLabels into compact SetLogRow', () => {
-  const src = workout('ActiveExerciseCard.tsx');
-  assert.match(src, /formatPrevSetLabels/);
-  assert.match(src, /prevLabel=\{prevLabels\[setIdx\]\}/);
-  assert.match(src, /prevLabels=\{prevLabels\}/);
+test('LastSetGhostButton: outline one-tap; never poster-red', () => {
+  const src = workout('LastSetGhostButton.tsx');
+  assert.match(src, /data-testid="last-set-ghost"/);
+  assert.match(src, /min-h-\[44px\]/);
+  assert.match(src, /tap-target/);
+  assert.doesNotMatch(src, /primary-action/);
+  assert.doesNotMatch(src, /accent-poster/);
+});
+
+test('LogConsole and SetLogTable mount the last-set ghost', () => {
+  assert.match(workout('LogConsole.tsx'), /LastSetGhostButton/);
+  assert.match(workout('SetLogTable.tsx'), /LastSetGhostButton/);
+  assert.match(workout('ActiveExerciseCard.tsx'), /resolveLastSetGhost/);
 });

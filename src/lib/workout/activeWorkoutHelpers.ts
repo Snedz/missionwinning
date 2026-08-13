@@ -5,6 +5,7 @@
 import type { CompletedWorkoutLog, SetSide } from '@/types';
 import { repRangeForGoal } from '@/lib/coach/progression';
 import { suggestNextSetTarget } from '@/lib/workout/nextSetTargets';
+import { resolveLastSetGhost, type LastSetGhost } from '@/lib/workout/lastSetGhost';
 import {
   buildOverloadCue,
   formatOverloadSetLine,
@@ -258,6 +259,8 @@ export type ConsoleSetView = {
   unilateral: boolean;
   plusLoad: boolean;
   input: { reps: number; weight: number };
+  /** Last working set (not warmup). Null on first-ever. */
+  lastSetGhost: LastSetGhost | null;
   overloadCue: {
     lastLine: string | null;
     nextLine: string | null;
@@ -350,6 +353,7 @@ export function buildConsoleSet(params: {
     }),
     plusLoad,
     input: params.resolveInput(nextSet.exIdx, nextSet.setIdx, set.reps, set.weight),
+    lastSetGhost: resolveLastSetGhost(params.workoutHistory, exLog.exerciseId),
     overloadCue: {
       lastLine: cue.last
         ? formatOverloadSetLine(

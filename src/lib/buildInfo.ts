@@ -1,5 +1,5 @@
-/** Shown on Profile so testers can confirm the deployed build. Bump when shipping UI to master. `.758` BW+ belt/vest on plus-load moves; 0 is skip; no new set field. */
-export const APP_BUILD_LABEL = "2026.07-unified.758";
+/** Shown on Profile so testers can confirm the deployed build. Bump when shipping UI to master. `.759` last working-set ghost; one tap into the dial; not warmup. */
+export const APP_BUILD_LABEL = "2026.07-unified.759";
 
 /**
  * Athlete-facing marketing version. Distinct from `APP_BUILD_LABEL`, which
