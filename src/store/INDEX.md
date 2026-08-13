@@ -27,6 +27,7 @@
 | `setExerciseNote` | Write / clear the one-line diary on an active exercise |
 | `logSet` / `logSetAndAdvance` | Record set; pair advance (A then B) |
 | `toggleSupersetWithNext` / `unlinkSuperset` | Pair exactly two consecutive; unlink clears both peers (`.749`) |
+| `rateSet` / `rateSetRir` | After-log optional RPE / RIR (0–5); never stamped on log |
 | `completeActiveWorkout` | Mint `clientId`, push to history, enqueue the cloud write on the outbox, analytics, leaderboard push |
 | `loadFromCloud` | Merge Supabase history with local |
 | `cancelActiveWorkout` | Discard in-progress |

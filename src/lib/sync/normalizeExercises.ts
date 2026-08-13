@@ -19,11 +19,12 @@
  * them tolerate two shapes would hide the defect in six places instead of fixing it
  * in one.
  *
- * Pure, no imports beyond types.
+ * Pure. Optional RIR parse lives in `workout/rir` (one definition).
  */
 
 import type { CompletedWorkoutLog, Rpe, SetKind } from '@/types';
 import { parseSetSide } from '@/lib/workout/unilateral';
+import { parseOptionalRir } from '@/lib/workout/rir';
 
 type NestedExercises = CompletedWorkoutLog['exercises'];
 type NestedSet = NestedExercises[number]['sets'][number];
@@ -40,6 +41,8 @@ export interface FlatSetRow {
   sessionId?: string | null;
   weightUnit?: string;
   rpe?: number | null;
+  /** Optional integer 0–5. Independent of RPE; omitted when unset (`.725`). */
+  rir?: number | null;
   setKind?: string;
   /** Web unilateral L/R/Alt. Optional; Android may omit. */
   side?: string;
@@ -132,6 +135,8 @@ export function groupFlatSets(rows: readonly unknown[]): NestedExercises {
       if (rpe) set.rpe = rpe;
       const side = parseSetSide(row.side);
       if (side) set.side = side;
+      const rir = parseOptionalRir(row.rir);
+      if (rir !== undefined) set.rir = rir;
       return set;
     });
     // Android's per-set notes fold into web's per-exercise note: distinct non-empty
@@ -181,6 +186,8 @@ export function normalizeCloudExercises(value: unknown): NestedExercises {
       }
       const side = parseSetSide(s.side);
       if (side) set.side = side;
+      const rir = parseOptionalRir(s.rir);
+      if (rir !== undefined) set.rir = rir;
       sets.push(set);
     }
     const ex: NestedExercises[number] = { exerciseId: e.exerciseId, sets };
@@ -217,6 +224,8 @@ export function flattenExercises(
       };
       const side = parseSetSide(set.side);
       if (side) row.side = side;
+      const rir = parseOptionalRir(set.rir);
+      if (rir !== undefined) row.rir = rir;
       // Web's exercise-level note travels on the first set — the slot Android's
       // per-set schema has for it. Before `.184` it was omitted here entirely.
       if (setIndex === 0 && ex.note?.trim()) row.note = ex.note.trim();

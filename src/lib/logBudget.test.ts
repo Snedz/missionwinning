@@ -94,6 +94,13 @@ const NEVER_SHIPPED: { from: number; to: number; why: string }[] = [
       'No `##` heading on master ever ended in (`.686`)–(`.688`), so the live window can sit on ' +
       '`.689` without a prior rotate of missing sections.',
   },
+  {
+    from: 698,
+    to: 713,
+    why:
+      'Reserved by concurrent overnight PRs while master jumped `.697` → `.714` (public GitHub). ' +
+      'No `##` heading on master ever ended in (`.698`)–(`.713`).',
+  },
 ];
 const neverShipped = (x: number) => NEVER_SHIPPED.some((g) => x >= g.from && x <= g.to);
 

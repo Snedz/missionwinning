@@ -46,6 +46,10 @@ type ActiveWorkoutStrings = {
   activeRpeEasy: string;
   activeRpeMed: string;
   activeRpeHard: string;
+  /** Optional reps in reserve on a completed set (`.725`). */
+  activeRir: string;
+  activeRirTip: string;
+  activeRirValue: string;
   activePrTitle: string;
   activePrDesc: string;
   activeCopyLast: string;
@@ -274,6 +278,9 @@ const en: ActiveWorkoutStrings = {
   activeRpeEasy: 'Easy',
   activeRpeMed: 'Med',
   activeRpeHard: 'Hard',
+  activeRir: 'RIR',
+  activeRirTip: 'Reps in reserve — how many more you could have done. Optional.',
+  activeRirValue: 'RIR {{n}}',
   activePrTitle: 'New PR!',
   activePrDesc: '{{reps}} × {{weight}} — personal best for this exercise',
   activeCopyLast: 'Copy last',

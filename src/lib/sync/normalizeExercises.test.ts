@@ -177,6 +177,37 @@ test('flatten gives Android back the shape its installed builds expect', () => {
   assert.notEqual(rows[0].id, rows[1].id, 'ids must be unique');
 });
 
+test('optional RIR 0–5 survives nested and flat round-trips; missing stays missing (.725)', () => {
+  const nested = [
+    {
+      exerciseId: 'bench-press',
+      sets: [
+        { reps: 5, weight: 100, rpe: 'hard' as const, rir: 2 },
+        { reps: 5, weight: 100 },
+      ],
+    },
+  ];
+  assert.deepEqual(normalizeCloudExercises(nested), nested, 'nested identity keeps rir');
+  assert.equal(normalizeCloudExercises(nested)[0].sets[1].rir, undefined);
+
+  const dropped = normalizeCloudExercises([
+    { exerciseId: 'bench-press', sets: [{ reps: 5, weight: 100, rir: 6 }] },
+  ]);
+  assert.equal(dropped[0].sets[0].rir, undefined, 'out-of-range must not pass through');
+
+  const flatIn = [
+    flat({ exerciseId: 'bench-press', setIndex: 0, rir: 1 }),
+    flat({ exerciseId: 'bench-press', setIndex: 1 }),
+  ];
+  const grouped = groupFlatSets(flatIn);
+  assert.equal(grouped[0].sets[0].rir, 1);
+  assert.equal(grouped[0].sets[1].rir, undefined);
+
+  const rows = flattenExercises('w1', '2026-08-13T11:00:00Z', nested);
+  assert.equal(rows[0].rir, 2);
+  assert.equal(rows[1].rir, undefined, 'missing RIR stays omitted');
+});
+
 test('flatten and group are inverses over the fields Android carries', () => {
   const original = [
     {

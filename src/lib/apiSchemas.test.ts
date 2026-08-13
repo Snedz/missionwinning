@@ -355,6 +355,7 @@ const CASES: Record<string, Case> = {
         sessionId: 'sess-1',
         weightUnit: 'kg',
         rpe: 8,
+        rir: 2,
         setKind: 'normal',
         // `.184` — this field is the reason rule 2 exists.
         note: 'felt heavy off the chest',
@@ -362,6 +363,7 @@ const CASES: Record<string, Case> = {
     ],
     invalid: [
       { input: { id: 's', exerciseId: 'e', setIndex: 0, reps: 5, weight: 10, completedAt: 'x', rpe: 5 }, because: 'RPE is a 6–10 scale; 5 means the client is sending a different scale' },
+      { input: { id: 's', exerciseId: 'e', setIndex: 0, reps: 5, weight: 10, completedAt: 'x', rir: 6 }, because: 'RIR is 0–5; 6 is a different scale' },
       { input: { id: 's', exerciseId: 'e', setIndex: 0, reps: -1, weight: 10, completedAt: 'x' }, because: 'negative reps' },
     ],
   },
