@@ -27,6 +27,13 @@ a Preview. Security jobs (gitleaks / CodeQL / aikido) stay on.
 docs-only paths; `aikido.yml` gained concurrency cancel-in-progress. gitleaks
 does not inherit the docs skip.
 
+**i18n (same ship, still `.743`):** after lint cleared, `i18n:parity` /
+`i18n:coverage` were the next shared reds on master — Learn beachhead over the
+40% placeholder cap, and three UI keys (`todayCoachChipAction`,
+`activeReentryStart`, `activeReentryStartDesc`) used with `defaultValue` but
+missing from every EN pack. Caps stayed 40% / 0. Keys filled; es/fr/pt
+translated. Did not raise the ratchets.
+
 Label `.743` (onto master `.714`). Excellence-Override below.
 
 Excellence-Override: local CI unblock

@@ -147,6 +147,9 @@ type ActiveWorkoutStrings = {
   activeLastNoteLine: string;
   activeLoadingSession: string;
   activeLoadingSessionDesc: string;
+  /** Empty-state dock when re-entry dose is < 1 (.743 coverage). */
+  activeReentryStart: string;
+  activeReentryStartDesc: string;
   activeNextTargetLine: string;
   activeNote: string;
   activeNotePlaceholder: string;
@@ -356,6 +359,9 @@ const en: ActiveWorkoutStrings = {
   activeLastNoteLine: 'Last note ({{date}}):',
   activeLoadingSession: 'Restoring session…',
   activeLoadingSessionDesc: 'Reading the last workout saved on this device.',
+  activeReentryStart: 'Start easier session',
+  activeReentryStartDesc:
+    'Smaller first session back — finishable, then the week rebuilds.',
   activeNextTargetLine: 'Next: {{reps}} × {{weight}} {{unit}}',
   activeNote: 'Note',
   activeNotePlaceholder: 'Note — "machine 3, seat 4", "left knee tight"…',
@@ -440,6 +446,9 @@ const es: ActiveWorkoutStrings = {
   activeNoWorkout: 'Sin entrenamiento activo',
   activeNoWorkoutDesc:
     'Inicia un entrenamiento rápido desde Hoy o lanza una rutina guardada desde el Builder.',
+  activeReentryStart: 'Empezar sesión más fácil',
+  activeReentryStartDesc:
+    'Primera sesión más corta al volver — terminable, luego la semana se reconstruye.',
   activeStartWorkout: 'Iniciar entrenamiento',
   activeSetsCompleted: '{{done}}/{{total}} series completadas',
   activeCancel: 'Cancelar',
@@ -475,6 +484,9 @@ const es: ActiveWorkoutStrings = {
 const fr: ActiveWorkoutStrings = {
   ...en,
   activeLiveSession: 'Séance en direct',
+  activeReentryStart: 'Commencer une séance plus légère',
+  activeReentryStartDesc:
+    'Première séance plus courte au retour — finissable, puis la semaine se reconstruit.',
   activeCoachSessionEyebrow: 'Séance Mission Coach',
   activeOverloadLastLabel: 'Dernière',
   activeOverloadNextLabel: 'Prochaine',
@@ -686,6 +698,9 @@ const LOCALES: Partial<Record<string, ActiveWorkoutStrings>> = {
   pt: {
     ...en,
     activeNoWorkout: 'Nenhum treino ativo',
+    activeReentryStart: 'Começar sessão mais fácil',
+    activeReentryStartDesc:
+      'Primeira sessão menor na volta — terminável, depois a semana se reconstrói.',
     activeFinish: 'Concluir',
     activeLiveSession: 'Sessão ao vivo',
     activeCoachSessionEyebrow: 'Sessão Mission Coach',

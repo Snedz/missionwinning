@@ -60,6 +60,7 @@ Do not put `[skip ci]` on a first push that needs gitleaks. Do put `[skip vercel
 ## What `.743` changed
 
 - Shared `master` lint: `src/lib/readinessDisplay.test.ts` used `require()`, which `@typescript-eslint/no-require-imports` fails. Every PR died at Lint before typecheck/tests. Replaced with ESM imports. Test kept.
+- Shared `master` i18n: Learn beachhead (es/fr/pt) over the 40% placeholder cap; three UI keys missing from EN packs (`todayCoachChipAction`, `activeReentryStart`, `activeReentryStartDesc`). Caps stayed 40% / 0 — keys filled, beachhead translated.
 - `ci.yml` + `ratchets.yml`: `paths-ignore` for docs-only (they already had concurrency).
 - `aikido.yml`: concurrency `cancel-in-progress` (was missing). gitleaks / CodeQL / aikido still enabled.
 
