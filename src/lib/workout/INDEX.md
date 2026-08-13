@@ -26,6 +26,7 @@ Root-level `@/lib/{name}` paths re-export from here for compatibility — prefer
 17. `activeSetInputPatches.ts` — Use next / plate / apply-targets field patches (`.407`)
 18. `activeTableSetControls.ts` — desktop table set dial + kind projection (`.408`)
 19. `activeWorkoutHelpers.ts` — also `resolveExerciseNextTarget` + loadPct/menu gates (`.418`); `formatPrevSetLabels` + footer peel (`.425`)
+20. `exerciseNote.ts` — per-exercise diary seed (unset vs clear) + history wrap (`.718`)
 
 ## Tests (colocated)
 
@@ -44,6 +45,7 @@ Root-level `@/lib/{name}` paths re-export from here for compatibility — prefer
 | `repeatLastSession.test.ts` | Last-session copy + empty-history path (`.717`) |
 | `sessionCheckInOffer.test.ts` | First-mission never offers check-in (`.293`) |
 | `loggerSpeed.test.ts` | Use-next offer rules (`.288`) |
+| `exerciseNote.test.ts` | Prefill / clear / persist seed + first-paint guards (`.718`) |
 
 ## UI & integration (not in this folder)
 

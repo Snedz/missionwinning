@@ -1,7 +1,8 @@
 'use client';
 
 /**
- * Header chrome for ActiveExerciseCard — title, menus, next line, swap, notes (.431).
+ * Header chrome for ActiveExerciseCard — title, menus, next line, swap (.431).
+ * Exercise note lives after the set rows (`.718`) so load/reps keep first paint.
  */
 
 import { useTranslation } from 'react-i18next';
@@ -16,7 +17,6 @@ import {
   firstWeightedLoad,
   shouldShowLoadPctChip,
 } from '@/lib/workout/activeWorkoutHelpers';
-import { useLocaleFormat } from '@/hooks/useLocaleFormat';
 import type { ActiveExerciseLog, Exercise } from '@/types';
 
 type Props = {
@@ -30,9 +30,7 @@ type Props = {
   menuOpen: boolean;
   onMenuOpenChange: (open: boolean) => void;
   swapOpen: boolean;
-  noteOpen: boolean;
   swapCandidates: Exercise[];
-  lastNote: { date: string; text: string } | null;
   nextTarget: { reps: number; weight: number } | null;
   onFormGuide: () => void;
   onToggleSuperset: () => void;
@@ -41,7 +39,6 @@ type Props = {
   onToggleSwap: () => void;
   onRemove: () => void;
   onSwapTo: (id: string) => void;
-  onNoteChange: (note: string) => void;
   onRepeatLast: () => void;
 };
 
@@ -56,9 +53,7 @@ export function ActiveExerciseHeader({
   menuOpen,
   onMenuOpenChange,
   swapOpen,
-  noteOpen,
   swapCandidates,
-  lastNote,
   nextTarget,
   onFormGuide,
   onToggleSuperset,
@@ -67,11 +62,9 @@ export function ActiveExerciseHeader({
   onToggleSwap,
   onRemove,
   onSwapTo,
-  onNoteChange,
   onRepeatLast,
 }: Props) {
   const { t } = useTranslation();
-  const fmt = useLocaleFormat();
 
   return (
     <CardHeader className="p-3 pb-2 space-y-2">
@@ -167,27 +160,6 @@ export function ActiveExerciseHeader({
             onChange={onSwapTo}
           />
         </AdaptiveOverlay>
-      )}
-      {lastNote && (
-        <p className="text-[11px] text-muted-foreground">
-          {t('activeLastNoteLine', {
-            date: fmt.longDate(lastNote.date),
-            defaultValue: `Last note (${fmt.longDate(lastNote.date)}):`,
-          })}{' '}
-          <span className="italic text-foreground">&ldquo;{lastNote.text}&rdquo;</span>
-        </p>
-      )}
-      {(noteOpen || exLog.note) && (
-        <input
-          type="text"
-          value={exLog.note ?? ''}
-          maxLength={200}
-          placeholder={t('activeNotePlaceholder', {
-            defaultValue: 'Note — "machine 3, seat 4", "left knee tight"…',
-          })}
-          onChange={(e) => onNoteChange(e.target.value)}
-          className="w-full border-2 border-border bg-background px-3 py-2.5 min-h-[44px] text-sm placeholder:text-muted-foreground focus:outline-none focus:border-foreground"
-        />
       )}
     </CardHeader>
   );
