@@ -10,7 +10,7 @@
 | `CoachTodayCard.tsx` | Today commissioned card → links `/coach` |
 | `WeekStrip.tsx` | Week navigation on Coach page |
 | `TodayCoachWeekStrip.tsx` | Compact week strip on Today |
-| `PlanSessionCard.tsx` | Single session card (exercises, start train, optional adjust) |
+| `PlanSessionCard.tsx` | Single session card (exercises, start train, optional adjust, garage Swap on a line) |
 | `CoachPlanSessionGrid.tsx` | Sorted week grid + boss Start via `resolveCoachBossSessionId` (`.442`) |
 | `CoachScheduleEditor.tsx` | Days/week + preferred weekdays (Profile + Coach manage) |
 | `CoachManageSheet.tsx` | D12 manage week: adjust · schedule · regenerate · ask |

@@ -721,9 +721,12 @@ export function shouldShowSupersetLinkMenuitem(
   return hasNextExercise && !alreadySupersetted;
 }
 
-/** Swap is for unstarted exercises only — logged work is not rewritten mid-session. */
-export function shouldShowExerciseSwapMenuitem(hasCompletedSet: boolean): boolean {
-  return !hasCompletedSet;
+/** Swap is for unstarted exercises that have a garage stand-in. */
+export function shouldShowExerciseSwapMenuitem(
+  hasCompletedSet: boolean,
+  optionCount = 0
+): boolean {
+  return !hasCompletedSet && optionCount > 0;
 }
 
 export type ExerciseNextTarget = { reps: number; weight: number };

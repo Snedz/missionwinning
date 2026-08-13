@@ -29,8 +29,9 @@ Both respect your pillar balance; daily insight does not replace the weekly sche
 
 1. Open **Coach** → review the week strip.
 2. Tap today's session → start exercises in **Train**.
-3. Log sets as usual — history feeds next week's plan.
-4. Change preferences in Profile (days per week, equipment, goals).
+3. On a session line, **Swap** offers one or two floor or garage stand-ins when the machine is not there. It changes that line only — it does not rebuild the week.
+4. Log sets as usual — history feeds next week's plan.
+5. Change preferences in Profile (days per week, equipment, goals).
 
 ## Privacy
 

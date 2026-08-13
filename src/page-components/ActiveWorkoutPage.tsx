@@ -82,7 +82,6 @@ import {
 } from '@/lib/workout/activeWorkoutHelpers';
 import { prefersReducedMotion } from '@/lib/motion';
 import { shouldScrollAfterRestEnds } from '@/lib/workout/restTimer';
-import { useLocaleFormat } from '@/hooks/useLocaleFormat';
 import { resolveActiveEmptyStart } from '@/lib/workout/resolveActiveEmptyStart';
 import { track } from '@/lib/analytics';
 
@@ -90,7 +89,6 @@ export function ActiveWorkoutPage() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const { t } = useTranslation();
-  const fmt = useLocaleFormat();
   const isCompact = useIsCompact();
   const units = useUnits();
   const unitLabel = weightUnitLabel(units);
@@ -590,7 +588,6 @@ export function ActiveWorkoutPage() {
           nextSetRef={nextSetRef}
           swapOpenIdx={swapOpenIdx}
           noteOpenIdx={noteOpenIdx}
-          lang={fmt.lang}
           getSetInput={getSetInput}
           onRepeatLast={handleRepeatLast}
           onFormGuide={(id) => setFormGuideId(id)}

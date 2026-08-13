@@ -44,6 +44,7 @@ export type AnalyticsEvent =
   | 'coach_taster_locked'
   | 'coach_premium_active'
   | 'coach_session_adjusted'
+  | 'coach_exercise_swapped'
   | 'readiness_checkin_completed'
   /**
    * `.245` — a trend was asked for. The property is the **outcome**

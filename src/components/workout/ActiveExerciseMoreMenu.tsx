@@ -22,6 +22,7 @@ type Props = {
   hasNextExercise: boolean;
   supersetted: boolean;
   hasCompletedSet: boolean;
+  swapOptionCount: number;
   onToggleSuperset: () => void;
   onUnlinkSuperset: () => void;
   onToggleNote: () => void;
@@ -36,6 +37,7 @@ export function ActiveExerciseMoreMenu({
   hasNextExercise,
   supersetted,
   hasCompletedSet,
+  swapOptionCount,
   onToggleSuperset,
   onUnlinkSuperset,
   onToggleNote,
@@ -112,7 +114,7 @@ export function ActiveExerciseMoreMenu({
               >
                 {t('activeNote', { defaultValue: 'Note' })}
               </button>
-              {shouldShowExerciseSwapMenuitem(hasCompletedSet) && (
+              {shouldShowExerciseSwapMenuitem(hasCompletedSet, swapOptionCount) && (
                 <button
                   type="button"
                   role="menuitem"

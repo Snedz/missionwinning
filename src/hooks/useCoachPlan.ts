@@ -23,6 +23,7 @@ import {
 } from '@/lib/coach/storage';
 import type { CoachPlan } from '@/lib/coach/types';
 import { adjustTodaySession, type SessionConstraint } from '@/lib/coach/adjust';
+import { swapExerciseInPlan } from '@/lib/workout/garageSwap';
 import { scheduleCoachPush } from '@/lib/coachSync';
 
 export function useCoachPlan() {
@@ -167,6 +168,21 @@ export function useCoachPlan() {
     [plan, weekStart, ctx, todayOffset]
   );
 
+  /** Free offline garage swap on one plan line — does not regenerate the week. */
+  const swapSessionExercise = useCallback(
+    (sessionId: string, fromExerciseId: string, toExerciseId: string): CoachPlan | null => {
+      if (!plan || plan.weekStart !== weekStart) return null;
+      const next = swapExerciseInPlan(plan, sessionId, fromExerciseId, toExerciseId);
+      if (!next) return null;
+      savePlan(next);
+      scheduleCoachPush();
+      setPlan(next);
+      track('coach_exercise_swapped', { sessionId, from: fromExerciseId, to: toExerciseId });
+      return next;
+    },
+    [plan, weekStart]
+  );
+
   return {
     plan: plan?.weekStart === weekStart ? plan : locked ? plan : null,
     loading: plan ? false : loading || premiumLoading,
@@ -180,5 +196,6 @@ export function useCoachPlan() {
     generate,
     refresh,
     adjustToday,
+    swapSessionExercise,
   };
 }

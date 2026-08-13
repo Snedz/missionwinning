@@ -6,14 +6,13 @@
 
 import type { RefObject } from 'react';
 import { ActiveExerciseCard } from '@/components/workout/ActiveExerciseCard';
-import { getExerciseById, EXERCISES } from '@/data/exercises';
+import { getExerciseById } from '@/data/exercises';
 import { repRangeForGoal } from '@/lib/coach/progression';
-import { compareText } from '@/lib/i18n/formatLocale';
 import {
   getLastSessionSets,
   isOpenIdx,
-  resolveSwapCandidatesWhenOpen,
 } from '@/lib/workout/activeWorkoutHelpers';
+import { garageSwapsWhenOpen, listGarageSwaps } from '@/lib/workout/garageSwap';
 import { resolveActiveTableSetControls } from '@/lib/workout/activeTableSetControls';
 import type { UnitsPref } from '@/lib/units';
 import type {
@@ -33,7 +32,6 @@ type Props = {
   nextSetRef: RefObject<HTMLDivElement | null>;
   swapOpenIdx: number | null;
   noteOpenIdx: number | null;
-  lang: string;
   getSetInput: (
     exIdx: number,
     setIdx: number,
@@ -69,7 +67,6 @@ export function ActiveExerciseList({
   nextSetRef,
   swapOpenIdx,
   noteOpenIdx,
-  lang,
   getSetInput,
   onRepeatLast,
   onFormGuide,
@@ -94,12 +91,11 @@ export function ActiveExerciseList({
       {exercises.map((exLog, exIdx) => {
         const exercise = getExerciseById(exLog.exerciseId);
         if (!exercise) return null;
-        const swapCandidates = resolveSwapCandidatesWhenOpen({
+        const swapOptions = listGarageSwaps(exercise.id);
+        const swapCandidates = garageSwapsWhenOpen({
           swapOpenIdx,
           exIdx,
-          catalog: EXERCISES,
-          current: exercise,
-          compareNames: (a, b) => compareText(a, b, lang),
+          currentId: exercise.id,
         });
         const tableControls = resolveActiveTableSetControls({
           nextSet,
@@ -124,6 +120,7 @@ export function ActiveExerciseList({
             swapOpen={isOpenIdx(swapOpenIdx, exIdx)}
             noteOpen={isOpenIdx(noteOpenIdx, exIdx)}
             swapCandidates={swapCandidates}
+            swapOptionCount={swapOptions.length}
             lastSessionSets={getLastSessionSets}
             onRepeatLast={() => onRepeatLast(exIdx)}
             onFormGuide={() => onFormGuide(exercise.id)}

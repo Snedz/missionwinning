@@ -20,10 +20,11 @@ type ActiveWorkoutStrings = {
   activeRestAdd15: string;
   activeRestSub15: string;
   activeAddExercise: string;
-  /** Mid-session swap sheet (AdaptiveOverlay) — `.269` */
+  /** Mid-session swap sheet (AdaptiveOverlay) — `.269` / garage list `.721` */
   activeSwapEyebrow: string;
   activeSwapTitle: string;
   activeSwapPlaceholder: string;
+  activeSwapGarageLead: string;
   activeChooseExercise: string;
   activeEmptyExercises: string;
   activeFormGuide: string;
@@ -243,9 +244,10 @@ const en: ActiveWorkoutStrings = {
   activeRestAdd15: '+15s',
   activeRestSub15: '−15s',
   activeAddExercise: 'Add Exercise',
-  activeSwapEyebrow: 'This exercise',
-  activeSwapTitle: 'Swap exercise',
+  activeSwapEyebrow: 'No machine',
+  activeSwapTitle: 'Swap',
   activeSwapPlaceholder: 'Swap to… (same muscles first)',
+  activeSwapGarageLead: 'Same pattern. Floor, chair, or a bar you already have.',
   activeChooseExercise: 'Choose exercise...',
   activeEmptyExercises: 'Add exercises above to begin logging sets.',
   activeFormGuide: 'Form guide',
@@ -464,9 +466,10 @@ const es: ActiveWorkoutStrings = {
   activeRestSubtitle: 'Recupera — siguiente serie cuando estés listo',
   activeRestSkip: 'Saltar',
   activeAddExercise: 'Añadir ejercicio',
-  activeSwapEyebrow: 'Este ejercicio',
-  activeSwapTitle: 'Cambiar ejercicio',
+  activeSwapEyebrow: 'Sin máquina',
+  activeSwapTitle: 'Cambiar',
   activeSwapPlaceholder: 'Cambiar a… (mismos músculos primero)',
+  activeSwapGarageLead: 'Mismo patrón. Suelo, silla o una barra que ya tengas.',
   activeChooseExercise: 'Elegir ejercicio…',
   activeEmptyExercises: 'Añade ejercicios arriba para registrar series.',
   activeFormGuide: 'Guía de forma',
@@ -524,8 +527,9 @@ const fr: ActiveWorkoutStrings = {
   activeRestAdd15: '+15 s',
   activeRestSub15: '−15 s',
   activeAddExercise: 'Ajouter un exercice',
-  activeSwapEyebrow: 'Cet exercice',
-  activeSwapTitle: 'Remplacer l’exercice',
+  activeSwapEyebrow: 'Pas de machine',
+  activeSwapTitle: 'Remplacer',
+  activeSwapGarageLead: 'Même schéma. Sol, chaise, ou une barre que tu as déjà.',
   activeSwapPlaceholder: 'Remplacer par… (mêmes muscles d’abord)',
   activeChooseExercise: 'Choisir un exercice…',
   activeEmptyExercises: 'Ajoutez des exercices ci-dessus pour enregistrer des séries.',
@@ -713,9 +717,10 @@ const LOCALES: Partial<Record<string, ActiveWorkoutStrings>> = {
     activeSetsLabel: 'Séries',
     activeRestAdd15: '+15 s',
     activeRestSub15: '−15 s',
-    activeSwapEyebrow: 'Este exercício',
-    activeSwapTitle: 'Trocar exercício',
+    activeSwapEyebrow: 'Sem máquina',
+    activeSwapTitle: 'Trocar',
     activeSwapPlaceholder: 'Trocar por… (mesmos músculos primeiro)',
+    activeSwapGarageLead: 'O mesmo padrão. Chão, cadeira ou uma barra que já tenhas.',
     activeOverloadLastLabel: 'Última',
     activeOverloadNextLabel: 'Próxima',
     activeOverloadAddReps: 'Mais uma rep',

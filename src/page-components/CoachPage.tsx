@@ -54,6 +54,7 @@ export function CoachPage({ askExerciseId }: CoachPageProps = {}) {
     generate,
     todaySession,
     adjustToday,
+    swapSessionExercise,
   } = useCoachPlan();
   const [adjustOpen, setAdjustOpen] = useState(false);
   const [manageOpen, setManageOpen] = useState(false);
@@ -312,6 +313,7 @@ export function CoachPage({ askExerciseId }: CoachPageProps = {}) {
             sessions={plan.sessions}
             todayOffset={todayOffset}
             onAdjustToday={() => setAdjustOpen(true)}
+            onSwapExercise={swapSessionExercise}
           />
 
           <details className="group border-2 border-border bg-card">

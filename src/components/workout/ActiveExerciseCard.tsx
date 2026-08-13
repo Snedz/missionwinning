@@ -52,6 +52,7 @@ type Props = {
   swapOpen: boolean;
   noteOpen: boolean;
   swapCandidates: Exercise[];
+  swapOptionCount: number;
   lastSessionSets: (
     history: CompletedWorkoutLog[],
     exerciseId: string
@@ -94,6 +95,7 @@ export function ActiveExerciseCard({
   swapOpen,
   noteOpen,
   swapCandidates,
+  swapOptionCount,
   lastSessionSets,
   onRepeatLast,
   onFormGuide,
@@ -170,6 +172,7 @@ export function ActiveExerciseCard({
         onMenuOpenChange={setMenuOpen}
         swapOpen={swapOpen}
         swapCandidates={swapCandidates}
+        swapOptionCount={swapOptionCount}
         nextTarget={nextTarget}
         onFormGuide={onFormGuide}
         onToggleSuperset={onToggleSuperset}
