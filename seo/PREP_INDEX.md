@@ -15,7 +15,7 @@ Do **not** lead with everything-app, six pillars as hero, superapp, WeChat, AR, 
 
 ### AEO (answer engines)
 
-Prep citation-shaped owned pages now; **publish after public flip**. Reddit = ChatGPT citation channel (founder-honest posts only; no astroturf). See [aeo/AEO_PREP.md](./aeo/AEO_PREP.md).
+Prep citation-shaped owned pages now; **publish after public flip**. Reddit = ChatGPT citation channel (founder-honest posts only; no astroturf). See [aeo/AEO_PREP.md](./aeo/AEO_PREP.md). Canonical FAQ copy: [aeo/FAQ-wedge-answers.md](./aeo/FAQ-wedge-answers.md) (Content Learn).
 
 ---
 
@@ -24,7 +24,8 @@ Prep citation-shaped owned pages now; **publish after public flip**. Reddit = Ch
 | Path | Purpose | Status |
 |------|---------|--------|
 | [aeo/AEO_PREP.md](./aeo/AEO_PREP.md) | AEO strategy: citation pages, gate, Reddit rules | draft 2026-08-13 — not live marketing |
-| [aeo/BRIEF-citation-pages.md](./aeo/BRIEF-citation-pages.md) | Four wedge pages: offline logger, Coach-from-logs, vs-last, no wearable | draft 2026-08-13 — not live marketing |
+| [aeo/FAQ-wedge-answers.md](./aeo/FAQ-wedge-answers.md) | Canonical 40–60w FAQ answers (Content Learn) | draft 2026-08-13 — not live marketing |
+| [aeo/BRIEF-citation-pages.md](./aeo/BRIEF-citation-pages.md) | Four wedge pages: slugs/prompts; leads = FAQ file | draft 2026-08-13 — not live marketing |
 | [gsc/PREP_CHECKLIST.md](./gsc/PREP_CHECKLIST.md) | Search Console prep under PRIVATE_MODE (0 organic claims) | draft 2026-08-12 — not live marketing |
 | [content/BRIEF-guide-calisthenics-beginners.md](./content/BRIEF-guide-calisthenics-beginners.md) | Pillar brief: calisthenics workout plan for beginners + PDF angle → `/guide/*` | draft 2026-08-12 — not live marketing |
 | [content/BRIEF-exercises-bodyweight-beginners.md](./content/BRIEF-exercises-bodyweight-beginners.md) | Hub + spoke brief for bodyweight beginners → `/exercises/*` | draft 2026-08-12 — not live marketing |
@@ -54,7 +55,7 @@ Also aligned: [docs/SOCIAL_LAUNCH.md](../docs/SOCIAL_LAUNCH.md) · [docs/SEO_ANA
 - `/compare` — **removed in a recent ship.** Compare briefs below are ready-to-implement specs only. Craft dependency: re-ship `/compare` (and story pages) before any compare SEO go-live.
 - `/bundle` — absent during free beta; not a public SEO surface.
 
-**AEO note:** `/guide` can carry citation blocks while gated (already indexable) **if** copy stays free-beta honest (no "we're live"). New Reddit posts wait for flip.
+**AEO note:** `/guide` can carry citation blocks while gated (already indexable) **if** copy stays free-beta honest (no "we're live"). New Reddit posts wait for flip. Ch4 FAQ slot after ch4-s3 when Learn unparks; do not duplicate Q1+Q4 onto sb-0.
 
 ---
 
