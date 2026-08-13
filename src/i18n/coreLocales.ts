@@ -220,6 +220,12 @@ const de: CoreStrings = {
   betaJourneyProgress: 'Beta-Fortschritt',
   emailNextStep: 'Nächsten Schritt per E-Mail',
   emailNextStepSent: 'Posteingang prüfen — dein nächster Schritt ist unterwegs.',
+  f017LocalBadge: 'Offline · auf diesem Gerät',
+  f017DeferAccountTitle: 'Tagebuch behalten?',
+  f017DeferAccountBody:
+    'Konto anlegen zum Synchronisieren. Du kannst weiter offline loggen.',
+  f017CreateAccount: 'Konto erstellen',
+  f017NotNow: 'Nicht jetzt',
 };
 
 const it: CoreStrings = {
@@ -267,6 +273,12 @@ const it: CoreStrings = {
   betaJourneyProgress: 'Progresso beta',
   emailNextStep: 'Invia il prossimo passo via email',
   emailNextStepSent: 'Controlla la posta per il prossimo passo.',
+  f017LocalBadge: 'Offline · su questo dispositivo',
+  f017DeferAccountTitle: 'Tenere questo diario?',
+  f017DeferAccountBody:
+    'Crea un account per sincronizzare. Puoi continuare a registrare offline.',
+  f017CreateAccount: 'Crea account',
+  f017NotNow: 'Non ora',
 };
 
 const ko: CoreStrings = {
@@ -313,6 +325,12 @@ const ko: CoreStrings = {
   betaJourneyProgress: '베타 진행 상황',
   emailNextStep: '다음 단계 이메일 받기',
   emailNextStepSent: '받은편지함에서 다음 단계를 확인하세요.',
+  f017LocalBadge: '오프라인 · 이 기기에서',
+  f017DeferAccountTitle: '이 일지를 보관할까요?',
+  f017DeferAccountBody:
+    '동기화하려면 계정을 만드세요. 오프라인 기록은 그대로 됩니다.',
+  f017CreateAccount: '계정 만들기',
+  f017NotNow: '나중에',
 };
 
 const es: CoreStrings = {
@@ -348,6 +366,12 @@ const es: CoreStrings = {
   cloudSyncActive: 'Recorrido sincronizado en la nube',
   cloudSyncPending: 'Inicia sesión para sincronizar entre dispositivos',
   saveProfile: 'Guardar perfil',
+  f017LocalBadge: 'Sin conexión · en este dispositivo',
+  f017DeferAccountTitle: '¿Guardar este diario?',
+  f017DeferAccountBody:
+    'Crea una cuenta para sincronizar. Puedes seguir registrando sin conexión.',
+  f017CreateAccount: 'Crear cuenta',
+  f017NotNow: 'Ahora no',
 };
 
 const fr: CoreStrings = {
@@ -383,6 +407,12 @@ const fr: CoreStrings = {
   cloudSyncActive: 'Parcours synchronisé dans le cloud',
   cloudSyncPending: 'Connectez-vous pour synchroniser entre appareils',
   saveProfile: 'Enregistrer le profil',
+  f017LocalBadge: 'Hors ligne · sur cet appareil',
+  f017DeferAccountTitle: 'Garder ce journal ?',
+  f017DeferAccountBody:
+    'Créez un compte pour synchroniser. Vous pouvez continuer hors ligne.',
+  f017CreateAccount: 'Créer un compte',
+  f017NotNow: 'Pas maintenant',
 };
 
 const pt: CoreStrings = {
@@ -418,6 +448,12 @@ const pt: CoreStrings = {
   cloudSyncActive: 'Jornada sincronizada na nuvem',
   cloudSyncPending: 'Entre para sincronizar entre dispositivos',
   saveProfile: 'Salvar perfil',
+  f017LocalBadge: 'Offline · neste dispositivo',
+  f017DeferAccountTitle: 'Manter este diário?',
+  f017DeferAccountBody:
+    'Crie uma conta para sincronizar. Você pode continuar registrando offline.',
+  f017CreateAccount: 'Criar conta',
+  f017NotNow: 'Agora não',
 };
 
 const ru: CoreStrings = {
@@ -453,6 +489,12 @@ const ru: CoreStrings = {
   cloudSyncActive: 'Путь синхронизирован в облаке',
   cloudSyncPending: 'Войдите для синхронизации между устройствами',
   saveProfile: 'Сохранить профиль',
+  f017LocalBadge: 'Офлайн · на этом устройстве',
+  f017DeferAccountTitle: 'Сохранить дневник?',
+  f017DeferAccountBody:
+    'Создайте аккаунт для синхронизации. Можно продолжать офлайн.',
+  f017CreateAccount: 'Создать аккаунт',
+  f017NotNow: 'Не сейчас',
 };
 
 const ja: CoreStrings = {
@@ -499,6 +541,12 @@ const ja: CoreStrings = {
   betaJourneyProgress: 'ベータ進捗',
   emailNextStep: '次のステップをメールで受け取る',
   emailNextStepSent: '受信トレイで次のステップを確認してください。',
+  f017LocalBadge: 'オフライン · この端末',
+  f017DeferAccountTitle: 'この記録を残しますか？',
+  f017DeferAccountBody:
+    '同期するならアカウントを。オフライン記録はそのまま続けられます。',
+  f017CreateAccount: 'アカウント作成',
+  f017NotNow: '後で',
 };
 
 export const CORE_LOCALES: Record<Tier1Lang, CoreStrings> = {

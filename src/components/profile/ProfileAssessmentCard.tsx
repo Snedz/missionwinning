@@ -143,7 +143,7 @@ export function ProfileAssessmentCard() {
           {freeBeta
             ? t('profileAssessmentFootOpenBeta', {
                 defaultValue:
-                  'Core free forever. Open beta unlocks history depth and deeper coaching tools.',
+                  'Core free forever. Free beta unlocks history depth and deeper coaching tools.',
               })
             : t('profileAssessmentFoot', {
                 defaultValue: 'Core free forever. Premium adds history and deeper coaching.',

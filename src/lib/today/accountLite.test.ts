@@ -54,7 +54,7 @@ describe('accountLiteHeroChrome', () => {
 });
 
 describe('mayShowActiveSignInPrompt', () => {
-  it('never mounts during a live session (persistence bar)', () => {
+  it('never mounts on Train — live session or empty Start shell', () => {
     assert.equal(
       mayShowActiveSignInPrompt({
         signedIn: false,
@@ -73,9 +73,6 @@ describe('mayShowActiveSignInPrompt', () => {
       }),
       false
     );
-  });
-
-  it('may offer on an empty Active shell only after the first workout', () => {
     assert.equal(
       mayShowActiveSignInPrompt({
         signedIn: false,
@@ -85,6 +82,8 @@ describe('mayShowActiveSignInPrompt', () => {
       }),
       false
     );
+    // Empty Active after first workout: Start is still the only boss.
+    // Keep this diary? lives on Today, not next to Start.
     assert.equal(
       mayShowActiveSignInPrompt({
         signedIn: false,
@@ -92,7 +91,7 @@ describe('mayShowActiveSignInPrompt', () => {
         dismissed: false,
         hasActiveWorkout: false,
       }),
-      true
+      false
     );
   });
 
@@ -185,13 +184,17 @@ describe('wiring (discover, do not skip)', () => {
     );
   });
 
-  it('Active never mounts SignInPrompt during a live session', () => {
+  it('Active never mounts SignInPrompt (Start / Log set stay the boss)', () => {
     const src = read('src/page-components/ActiveWorkoutPage.tsx');
-    assert.match(src, /mayShowActiveSignInPrompt/);
-    assert.match(src, /hasActiveWorkout:\s*!!activeWorkout/);
-    assert.match(src, /dismissed:\s*accountLiteDismissed/);
-    assert.match(src, /useDismissed\(\s*STORAGE_KEYS\.accountLiteDismissed/);
+    assert.doesNotMatch(
+      src,
+      /SignInPrompt/,
+      'F-017: Train must not park account chrome next to Start or Log set'
+    );
+    assert.doesNotMatch(src, /mayShowActiveSignInPrompt/);
     assert.match(src, /mayOfferDeviceLink/);
+    const empty = read('src/components/workout/ActiveEmptyState.tsx');
+    assert.doesNotMatch(empty, /SignInPrompt|AccountLiteStrip|Keep this diary/);
   });
 
   it('F-030 reuses localFirstRestGuard — no guest-mode fork of logSet/rest', () => {
@@ -218,6 +221,16 @@ describe('wiring (discover, do not skip)', () => {
     assert.match(header, /ACCOUNT_LITE_COPY\.localBadge/);
     assert.match(header, /AccountLiteStrip/);
     assert.match(header, /useDismissed\(STORAGE_KEYS\.accountLiteDismissed\)/);
+    assert.match(
+      header,
+      /completedSessions < 1/,
+      'first session must not call getUser'
+    );
+    assert.match(
+      header,
+      /getUser\(\)[\s\S]*?\.catch\(/,
+      'post-workout session lookup must fail open'
+    );
     assert.doesNotMatch(
       header,
       /href="\/profile"[\s\S]*signInOptional/,
@@ -225,14 +238,77 @@ describe('wiring (discover, do not skip)', () => {
     );
   });
 
-  it('DayReviewOptIn defers OS permission until after first log', () => {
-    const src = read('src/components/today/DayReviewOptIn.tsx');
-    assert.match(src, /mayRequestOsPermission/);
-    assert.match(src, /readWorkoutHistoryFromStorage/);
+  it('DayReviewOptIn and WindDownOptIn defer OS permission until after first log', () => {
+    const day = read('src/components/today/DayReviewOptIn.tsx');
+    assert.match(day, /mayRequestOsPermission/);
+    assert.match(day, /readWorkoutHistoryFromStorage/);
+    const wind = read('src/components/workout/WindDownOptIn.tsx');
+    assert.match(wind, /mayRequestOsPermission/);
+    assert.match(wind, /readWorkoutHistoryFromStorage/);
+  });
+
+  it('header Sign in chip waits for first workout and Not now', () => {
+    const chip = read('src/components/layout/HeaderAuthChip.tsx');
+    assert.match(chip, /accountLiteHeroChrome/);
+    assert.match(chip, /completedWorkouts < 1/);
+    assert.match(chip, /readWorkoutHistoryFromStorage/);
+    assert.doesNotMatch(
+      chip,
+      /if \(!ready \|\| email\) return null;\n\n  return \(/,
+      'unsigned first session must not paint Sign in in the app header'
+    );
   });
 
   it('dismiss key is registered once', () => {
     assert.equal(STORAGE_KEYS.accountLiteDismissed, ACCOUNT_LITE_DISMISS_KEY);
+  });
+
+  it('gate + public status use Free beta / Enter with code / Get notified', () => {
+    const gateEn = read('src/i18n/gateLocales.ts');
+    const enBlock = gateEn.slice(
+      gateEn.indexOf('const GATE_EN'),
+      gateEn.indexOf('const GATE_ES')
+    );
+    assert.match(enBlock, /gateEyebrow:\s*'Free beta'/);
+    assert.match(enBlock, /gateAccessSubmit:\s*'Enter with code'/);
+    assert.match(enBlock, /gateWaitlistSubmit:\s*'Get notified'/);
+    assert.match(enBlock, /gateWaitlistTitle:\s*'Get notified'/);
+    assert.doesNotMatch(enBlock, /invite-?only/i);
+    assert.doesNotMatch(enBlock, /get an invite/i);
+    assert.doesNotMatch(enBlock, /private beta/i);
+    assert.doesNotMatch(enBlock, /open beta/i);
+
+    const teaser = read('app/private/PrivateTeaserClient.tsx');
+    assert.match(teaser, /defaultValue:\s*'Free beta'/);
+    assert.match(teaser, /defaultValue:\s*'Enter with code'/);
+    assert.match(teaser, /defaultValue:\s*'Get notified'/);
+    assert.doesNotMatch(teaser, /Private beta in progress/);
+    assert.doesNotMatch(teaser, /Enter the beta/);
+
+    const status = read('src/i18n/firstStepsLocales.ts');
+    const statusEn = status.slice(
+      status.indexOf('publicStatusOpenBeta'),
+      status.indexOf('};', status.indexOf('publicStatusOpenBeta'))
+    );
+    assert.match(statusEn, /Free beta/);
+    assert.doesNotMatch(statusEn, /invite-?only/i);
+
+    const bar = read('src/components/public/PublicStatusBar.tsx');
+    assert.match(bar, /Free beta/);
+    assert.doesNotMatch(bar, /Invite-only/);
+    const nav = read('src/components/marketing/MarketingNav.tsx');
+    assert.match(nav, /Free beta/);
+    assert.doesNotMatch(nav, /Invite-only/);
+    const appHeader = read('src/components/layout/AppHeader.tsx');
+    assert.match(appHeader, /defaultValue: 'Free beta'/);
+    assert.doesNotMatch(appHeader, /Open beta/);
+    const navPack = read('src/i18n/navLocales.ts');
+    const navEn = navPack.slice(
+      navPack.indexOf('const en: NavStrings'),
+      navPack.indexOf('const', navPack.indexOf('const en: NavStrings') + 1)
+    );
+    assert.match(navEn, /navOpenBeta: 'Free beta'/);
+    assert.doesNotMatch(navEn, /Open beta/);
   });
 
   it('keeps EN core aligned with ACCOUNT_LITE_COPY', () => {

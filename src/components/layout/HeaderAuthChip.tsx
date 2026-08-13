@@ -5,15 +5,28 @@ import Link from 'next/link';
 import { useTranslation } from 'react-i18next';
 import { User } from 'lucide-react';
 import { getUser } from '@/lib/supabase';
+import { useDismissed } from '@/hooks/useDismissed';
+import { STORAGE_KEYS } from '@/lib/storage/keys';
+import { accountLiteHeroChrome } from '@/lib/today/accountLite';
+import { readWorkoutHistoryFromStorage } from '@/lib/workout/workoutPersistLite';
 
-/** Compact sign-in chip for the app header when logged out. */
+/**
+ * Compact sign-in chip — F-017: never on the first session (Start is the boss),
+ * never while Keep this diary? owns the offer. After Not now, this is quiet
+ * wayfinding to Profile. getUser stays off the cold path.
+ */
 export function HeaderAuthChip() {
   const { t } = useTranslation();
   const [email, setEmail] = useState<string | null>(null);
   const [ready, setReady] = useState(false);
+  const { dismissed } = useDismissed(STORAGE_KEYS.accountLiteDismissed);
+  const completedWorkouts = readWorkoutHistoryFromStorage().length;
 
   useEffect(() => {
-    // Defer auth lookup so Supabase is not on first paint for cold /log.
+    if (completedWorkouts < 1) {
+      setReady(true);
+      return;
+    }
     const boot = () => {
       getUser()
         .then((u) => setEmail(u?.email ?? null))
@@ -24,11 +37,18 @@ export function HeaderAuthChip() {
       const id = requestIdleCallback(boot, { timeout: 2500 });
       return () => cancelIdleCallback(id);
     }
-    const t = setTimeout(boot, 400);
-    return () => clearTimeout(t);
-  }, []);
+    const timer = setTimeout(boot, 400);
+    return () => clearTimeout(timer);
+  }, [completedWorkouts]);
 
   if (!ready || email) return null;
+
+  const chrome = accountLiteHeroChrome({
+    signedIn: false,
+    completedWorkouts,
+    dismissed,
+  });
+  if (chrome !== 'local-badge' || completedWorkouts < 1) return null;
 
   return (
     <Link

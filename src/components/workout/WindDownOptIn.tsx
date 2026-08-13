@@ -30,6 +30,8 @@ import { track } from '@/lib/analytics';
 import { STORAGE_KEYS } from '@/lib/storage/keys';
 import { readRaw, writeRaw } from '@/lib/storage/safeStorage';
 import { mayOfferWindDown } from '@/lib/windDown';
+import { mayRequestOsPermission } from '@/lib/today/accountLite';
+import { readWorkoutHistoryFromStorage } from '@/lib/workout/workoutPersistLite';
 
 type Mode = 'hidden' | 'offer' | 'install' | 'done';
 
@@ -47,6 +49,8 @@ export function WindDownOptIn() {
     let cancelled = false;
     void (async () => {
       if (!mayOfferWindDown(readRaw(STORAGE_KEYS.windDownAskedAt), Date.now())) return;
+      const history = readWorkoutHistoryFromStorage();
+      if (!mayRequestOsPermission(history.length)) return;
       const m = await import('@/lib/pushClient');
 
       // Already subscribed — nothing to offer.

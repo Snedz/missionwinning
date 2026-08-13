@@ -1,5 +1,6 @@
 'use client';
 
+import { useEffect, useState } from 'react';
 import { LayoutGrid } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import type { JourneyAction } from '@/lib/missionJourney';
@@ -10,6 +11,7 @@ import { useDismissed } from '@/hooks/useDismissed';
 import { STORAGE_KEYS } from '@/lib/storage/keys';
 import { LOCAL_FIRST_COPY } from '@/lib/localFirstCopy';
 import { ACCOUNT_LITE_COPY, accountLiteHeroChrome } from '@/lib/today/accountLite';
+import { getUser } from '@/lib/supabase';
 
 interface Props {
   today: string;
@@ -40,8 +42,45 @@ export function TodayPageHeader({
 }: Props) {
   const { t } = useTranslation();
   const { dismissed } = useDismissed(STORAGE_KEYS.accountLiteDismissed);
+  const [sessionEmail, setSessionEmail] = useState<string | null>(userEmail);
+  const [sessionReady, setSessionReady] = useState(
+    () => !!userEmail || completedSessions < 1
+  );
+
+  useEffect(() => {
+    if (userEmail) {
+      setSessionEmail(userEmail);
+      setSessionReady(true);
+      return;
+    }
+    // Cold first session: never touch supabase (Lean reachability).
+    if (completedSessions < 1) {
+      setSessionEmail(null);
+      setSessionReady(true);
+      return;
+    }
+    let cancelled = false;
+    setSessionReady(false);
+    getUser()
+      .then((u) => {
+        if (!cancelled) {
+          setSessionEmail(u?.email ?? null);
+          setSessionReady(true);
+        }
+      })
+      .catch(() => {
+        if (!cancelled) {
+          setSessionEmail(null);
+          setSessionReady(true);
+        }
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [userEmail, completedSessions]);
+
   const accountChrome = accountLiteHeroChrome({
-    signedIn: !!userEmail,
+    signedIn: !!sessionEmail,
     completedWorkouts: completedSessions,
     dismissed,
   });
@@ -85,7 +124,7 @@ export function TodayPageHeader({
             </a>
           </>
         )}
-        {userEmail ? (
+        {sessionEmail ? (
           <span>
             {t('cloudSyncOn', {
               defaultValue: LOCAL_FIRST_COPY.todayBackupWhenOnline,
@@ -100,7 +139,7 @@ export function TodayPageHeader({
         ) : null}
       </div>
       <JourneyStrip action={action} />
-      {!userEmail && completedSessions > 0 ? (
+      {sessionReady && accountChrome === 'offer' ? (
         <AccountLiteStrip completedWorkouts={completedSessions} />
       ) : null}
     </header>

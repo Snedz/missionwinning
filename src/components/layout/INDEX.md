@@ -18,7 +18,7 @@
 | `InfoPageFooter.tsx` | Info footer links |
 | `AppLegalFooter.tsx` | In-app legal links |
 | `LegalNav.tsx` | Privacy / terms / DMCA nav |
-| `HeaderAuthChip.tsx` | Sign-in avatar chip |
+| `HeaderAuthChip.tsx` | Sign-in chip after first workout + Not now (F-017: hidden on cold path) |
 | `PageTransition.tsx` | Route transition animation |
 | `../ui/AdaptiveOverlay.tsx` | Compact bottom sheet / md+ centered dialog |
 | `StaggerReveal.tsx` | Staggered entrance motion |

@@ -73,7 +73,7 @@ export function AppHeader({
             the wordmark, chevron and auth chip already fill the row. */}
         {isFreeBeta() && (
           <Badge variant="outline" className="hidden shrink-0 sm:inline-flex">
-            {t('navOpenBeta', { defaultValue: 'Open beta' })}
+            {t('navOpenBeta', { defaultValue: 'Free beta' })}
           </Badge>
         )}
         {isCompact && (

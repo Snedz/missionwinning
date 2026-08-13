@@ -151,6 +151,12 @@ describe('localFirstRestGuard', () => {
       /try\s*\{\s*u\s*=\s*await getUser\(\);\s*\}\s*catch/,
       'below-fold getUser must be try/catch so local wins still load'
     );
+    const header = read('src/components/today/TodayPageHeader.tsx');
+    assert.match(
+      header,
+      /getUser\(\)[\s\S]*?\.catch\(\s*\(\)\s*=>\s*\{/,
+      'Lean post-workout session lookup must fail open'
+    );
   });
 
   it('LogConsole Log set has no disabled / online gate', () => {

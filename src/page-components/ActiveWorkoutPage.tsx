@@ -23,13 +23,7 @@ import {
   stripSeoExerciseFromSearch,
 } from '@/lib/seoExerciseBridge';
 import { getFormGuideOrCues } from '@/lib/formGuides';
-import { SignInPrompt } from '@/components/auth/SignInPrompt';
-import { LOCAL_FIRST_COPY } from '@/lib/localFirstCopy';
-import {
-  mayOfferDeviceLink,
-  mayShowActiveSignInPrompt,
-} from '@/lib/today/accountLite';
-import { useDismissed } from '@/hooks/useDismissed';
+import { mayOfferDeviceLink } from '@/lib/today/accountLite';
 import { useIsCompact } from '@/hooks/useIsCompact';
 import { ActiveEmptyState } from '@/components/workout/ActiveEmptyState';
 import { ActiveSessionChrome } from '@/components/workout/ActiveSessionChrome';
@@ -134,9 +128,6 @@ export function ActiveWorkoutPage() {
   const startRestTimer = useWorkoutStore((s) => s.startRestTimer);
   const workoutHistory = useWorkoutStore((s) => s.workoutHistory);
   const hasHydrated = useWorkoutStore((s) => s.hasHydrated);
-  const { dismissed: accountLiteDismissed } = useDismissed(
-    STORAGE_KEYS.accountLiteDismissed
-  );
 
   useEffect(() => {
     void ensureFullExerciseCatalog();
@@ -687,24 +678,6 @@ export function ActiveWorkoutPage() {
         onDismissOffer={() => setOfferVolumeTrim(false)}
         toast={toast}
       />
-
-      {mayShowActiveSignInPrompt({
-        signedIn: false,
-        completedWorkouts: workoutHistory.length,
-        dismissed: accountLiteDismissed,
-        hasActiveWorkout: !!activeWorkout,
-      }) ? (
-        <SignInPrompt
-          className="mt-6"
-          nextPath="/active"
-          title={t('activeSignInTitle', {
-            defaultValue: LOCAL_FIRST_COPY.activeSignInTitle,
-          })}
-          description={t('activeSignInDesc', {
-            defaultValue: LOCAL_FIRST_COPY.activeSignInDesc,
-          })}
-        />
-      ) : null}
 
       <ActiveSessionDock
         dockMode={dockMode}

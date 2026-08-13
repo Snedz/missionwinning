@@ -159,7 +159,7 @@ export function PrivateTeaserClient({ initialInvite = '' }: Props) {
 
   const submitLabel = loading
     ? t('gateAccessChecking', { defaultValue: 'Checking…' })
-    : t('gateAccessSubmit', { defaultValue: 'Enter the beta' });
+    : t('gateAccessSubmit', { defaultValue: 'Enter with code' });
 
   if (sessionUnlocking) {
     return (
@@ -182,7 +182,7 @@ export function PrivateTeaserClient({ initialInvite = '' }: Props) {
           <span className="gate-brandname">Mission Winning</span>
         </span>
         <p className="gate-kicker">
-          {t('gateEyebrow', { defaultValue: 'Private beta in progress' })}
+          {t('gateEyebrow', { defaultValue: 'Free beta' })}
         </p>
       </header>
       <hr className="gate-rule" />
@@ -251,7 +251,7 @@ export function PrivateTeaserClient({ initialInvite = '' }: Props) {
               ) : (
                 <form onSubmit={handleWaitlist}>
                   <p className="gate-kicker">
-                    {t('gateWaitlistTitle', { defaultValue: 'Get notified at launch' })}
+                    {t('gateWaitlistTitle', { defaultValue: 'Get notified' })}
                   </p>
                   <div className="gate-row">
                     <input
@@ -273,7 +273,7 @@ export function PrivateTeaserClient({ initialInvite = '' }: Props) {
                     >
                       {waitBusy
                         ? t('gateWaitlistSubmitting', { defaultValue: 'Joining…' })
-                        : t('gateWaitlistSubmit', { defaultValue: 'Notify me' })}
+                        : t('gateWaitlistSubmit', { defaultValue: 'Get notified' })}
                     </button>
                   </div>
                   {waitError && (

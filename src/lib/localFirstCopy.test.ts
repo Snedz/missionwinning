@@ -36,11 +36,9 @@ describe('localFirstCopy', () => {
     }
   });
 
-  it('wires Active SignInPrompt + Today header/empty to the constants', () => {
+  it('wires Today header/empty + Active empty to the constants (Train has no SignInPrompt)', () => {
     const activePage = read('src/page-components/ActiveWorkoutPage.tsx');
-    assert.match(activePage, /LOCAL_FIRST_COPY\.activeSignInTitle/);
-    assert.match(activePage, /LOCAL_FIRST_COPY\.activeSignInDesc/);
-    assert.match(activePage, /mayShowActiveSignInPrompt/);
+    assert.doesNotMatch(activePage, /SignInPrompt/);
     assert.doesNotMatch(activePage, /auto-save to the cloud/i);
 
     const signIn = read('src/components/auth/SignInPrompt.tsx');

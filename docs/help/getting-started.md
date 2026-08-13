@@ -13,7 +13,7 @@ No app store required.
 
 ## Private beta gate
 
-If you see a **password screen** (`/private`), your cohort uses a pre-launch gate. Enter the password your invite email provides. You can log your first set with no account — sign in later if you want the same diary on another device.
+If you see a **password screen** (`/private`), your cohort uses a pre-launch gate. The screen says **Free beta** — **Enter with code**, or **Get notified**. Then log your first set with no account — sign in later if you want the same diary on another device.
 
 ## I-Day (your first mission)
 

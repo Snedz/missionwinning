@@ -50,14 +50,14 @@ export function accountLiteHeroChrome(input: AccountLiteInput): AccountLiteHeroC
 }
 
 /**
- * Mid-session SignInPrompt would sit above Log set. Persistence bar: the first
- * set is never lost because signup chrome appeared. Live sessions stay clean.
+ * Train never shows account chrome. Empty `/active` has one boss action
+ * (Start); a live session has Log set. The Keep this diary? offer lives on
+ * Today after the first workout — not next to Start, not above Log set.
  */
 export function mayShowActiveSignInPrompt(
-  input: AccountLiteInput & { hasActiveWorkout: boolean }
+  _input: AccountLiteInput & { hasActiveWorkout: boolean }
 ): boolean {
-  if (input.hasActiveWorkout) return false;
-  return accountLiteHeroChrome(input) === 'offer';
+  return false;
 }
 
 /** F-020 — no BLE / third-party connect before the first log. */

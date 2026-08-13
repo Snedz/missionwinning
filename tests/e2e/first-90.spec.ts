@@ -48,6 +48,10 @@ test.describe('First 90 seconds @gate', () => {
     // F-017 / F-004: I-Day has no sign-in wall — profile Continue lands on Today.
     await expect(page).toHaveURL(/\/log/, { timeout: 15_000 });
     await expect(page.locator('.primary-action')).toHaveCount(1);
+    await expect(page.getByText(/offline · on this device/i)).toBeVisible();
+    await expect(page.getByTestId('account-lite-strip')).toHaveCount(0);
+    await expect(page.getByText(/keep this diary/i)).toHaveCount(0);
+    await expect(page.getByRole('link', { name: /^sign in$/i })).toHaveCount(0);
     await tap(
       page.locator('.primary-action').first(),
       'Start first workout'
@@ -62,6 +66,8 @@ test.describe('First 90 seconds @gate', () => {
       page.getByRole('button', { name: /not now/i }),
       'no modal may intercept the first session'
     ).toHaveCount(0);
+    await expect(page.getByText(/keep this diary/i)).toHaveCount(0);
+    await expect(page.getByTestId('account-lite-strip')).toHaveCount(0);
 
     // `/^log( set)?$/i`, widened deliberately in `.153`: the logger's per-set
     // control bands collapsed into one docked console whose button reads "Log

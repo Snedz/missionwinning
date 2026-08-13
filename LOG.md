@@ -21,10 +21,12 @@ untouched. Absorbs Day-1 F-020 (no device-link), F-028 (no plan wall), F-030
 
 **Ship:** I-Day drops the sign-in step (profile Continue → Today). Today first
 session shows `Offline · on this device`, not a Sign-in link. After first
-workout: quiet `Keep this diary?` strip (Create account / Not now). Active
-SignInPrompt never mounts during a live session. Live HR and day-review push
-wait for the first log. first-90 tap budget 6→5. One concern (no N1 restyle,
-no paywall).
+workout: quiet `Keep this diary?` strip (Create account / Not now). Train never
+mounts SignInPrompt (Start / Log set stay the boss). Live HR, day-review push,
+and victory wind-down wait for the first log. Gate + public status: **Free beta**
+· **Enter with code** · **Get notified** (15 langs; not invite-only). first-90
+tap budget 6→5 plus cold-phone local-badge asserts. One concern (no N1 restyle,
+no paywall, PRIVATE_MODE unchanged).
 
 Label `.700` (draft after reserved `.698`/`.699`). Excellence-Override below.
 
