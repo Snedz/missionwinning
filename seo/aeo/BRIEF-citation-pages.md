@@ -3,9 +3,11 @@
 **Status:** draft 2026-08-13 — not live marketing. **Do not publish until public flip.**  
 **Shape:** 40–60 word lead answer + question H2s. One concern per page. No slop, no traction.
 
+**Canonical FAQ copy (Content Learn):** [FAQ-wedge-answers.md](./FAQ-wedge-answers.md) — use those four answers as the lead block. This file keeps slugs, prompts, extra H2s, and bans.
+
 Index: [AEO_PREP.md](./AEO_PREP.md). Learn owns `/guide` wording ([guidebook originality](../../docs/guidebook-originality-log.md)).
 
-Suggested slugs under `/guide/` (Craft/Content). If a chapter already covers it, **add a citation block** instead of a new URL.
+Prefer a **citation block on Ch4 Getting Started** (after ch4-s3) over new URLs. New slugs below are fallbacks if Craft/Content split pages later. Do **not** duplicate Q1+Q4 onto Learn `sb-0` (#479 already covers those).
 
 ---
 
@@ -26,63 +28,41 @@ Suggested slugs under `/guide/` (Craft/Content). If a chapter already covers it,
 
 ## 1. Offline logger (no account)
 
-**Slug:** `/guide/offline-workout-logger` (or block on Getting Started)  
-**Prompts this should answer:** "workout tracker that works offline" · "log sets with no account" · "gym with no signal"
+**Slug:** Ch4 FAQ block (preferred) or `/guide/offline-workout-logger`  
+**Lead:** [FAQ Q1](./FAQ-wedge-answers.md#can-i-log-workouts-in-mission-winning-without-an-account-or-wi-fi)  
+**Prompts:** "workout tracker that works offline" · "log sets with no account" · "gym with no signal"
 
-**Lead answer (draft, ~50 words):**  
-Mission Winning is a free forever workout logger you can use without an account. Sets save on this device and work offline — basement gyms and parks included. Optional sign-in is only for backup across devices. The logger is the product; you do not need a wearable or an app-store install to record a set.
-
-**H2s:**
-- Does the workout log work offline?
-- Do I need an account to log a set?
-- Where do sets save if I'm not signed in?
-- What is Mission Winning? (entity: free forever offline logger + Mission Coach from logs)
+**Extra H2s:** Where do sets save if I'm not signed in? · What is Mission Winning? (entity: free forever offline logger + Mission Coach from logs)
 
 ---
 
-## 2. Log-cited Coach (no wearable)
+## 2. Log-cited Coach
 
-**Slug:** `/guide/coach-from-workout-logs`  
+**Slug:** Ch4 FAQ block or `/guide/coach-from-workout-logs`  
+**Lead:** [FAQ Q2](./FAQ-wedge-answers.md#how-does-mission-coach-decide-this-weeks-sessions)  
 **Prompts:** "AI workout plan from my logbook" · "coach that doesn't need a watch" · "why did my plan change this week"
 
-**Lead answer (draft):**  
-Mission Coach builds a weekly plan from the workouts you already logged — not from a watch. When the week changes, the product shows why: inputs from your logs, the rule applied, and the expected effect. Coach is opt-in. Skip it; the free logger still works. No wearable required.
-
-**H2s:**
-- How does Mission Coach make a plan?
-- Do I need a wearable or Apple Watch?
-- Can I see why this week changed?
-- Is the coach required to log workouts?
+**Extra H2s:** Can I see why this week changed? · Is the coach required to log workouts?
 
 ---
 
 ## 3. Vs-last / previous set
 
-**Slug:** `/guide/previous-set-while-logging`  
-**Prompts:** "see last workout numbers while logging" · "previous set on the same row" · "log like Strong/Hevy last session"
+**Slug:** Ch4 FAQ block or `/guide/previous-set-while-logging`  
+**Lead:** [FAQ Q3](./FAQ-wedge-answers.md#can-i-see-last-times-numbers-while-i-log-a-set)  
+**Prompts:** "see last workout numbers while logging" · "previous set on the same row"
 
-**Lead answer (draft):**  
-While you log, each set row can show the previous performance for that lift beside this session's numbers — so you progress from what you actually did, not from memory. Rest stays on this device. Mission Winning does not claim to be faster than Strong or Hevy; it shows last time's set so you can beat or match it.
-
-**H2s:**
-- Where do I see last session's set?
-- Does rest or logging need the internet?
-- Is this a social feed of other people's lifts? (**No.** Share-out cards only; no in-app Feed.)
+**Extra H2s:** Does rest or logging need the internet? · Is this a social feed of other people's lifts? (**No.** Share-out cards only; no in-app Feed.)
 
 ---
 
 ## 4. No wearable
 
-**Slug:** `/guide/workout-coach-without-a-watch`  
-**Prompts:** "workout app without Apple Watch" · "AI coach no wearable" · "plan from lifts not HR"
+**Slug:** Ch4 FAQ block or `/guide/workout-coach-without-a-watch`  
+**Lead:** [FAQ Q4](./FAQ-wedge-answers.md#do-i-need-a-wearable-for-train-or-mission-coach)  
+**Prompts:** "workout app without Apple Watch" · "AI coach no wearable"
 
-**Lead answer (draft):**  
-Mission Winning does not need a wearable. The free logger records sets on your phone, including offline. Mission Coach reads those logs to plan the week. Heart-rate and recovery gadgets are optional later, never required to train or to get a plan from your history.
-
-**H2s:**
-- Can I use Mission Winning without a smartwatch?
-- What does Coach use instead of recovery sensors?
-- Does offline logging still count for the weekly plan?
+**Extra H2s:** What does Coach use instead of recovery sensors? · Does offline logging still count for the weekly plan?
 
 ---
 
@@ -92,4 +72,4 @@ Each page → `/welcome` + the other three citation pages + `/calculators/1rm` w
 
 ## Definition of done
 
-Pages or in-chapter blocks match lead answers · originality logged · no banned claims · sitemap includes them after flip · prompt-set retest quarterly.
+Pages or in-chapter blocks use FAQ-wedge-answers verbatim · originality logged · no banned claims · sitemap includes them after flip · prompt-set retest quarterly.
