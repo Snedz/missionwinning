@@ -42,6 +42,10 @@ test('nested mission: public line + Coach beat + quiet later, never a feed', () 
   const en = gateStringsFor('en');
   assert.equal(en.cinePublicLine, 'Train Anywhere. Win Daily.');
   assert.equal(en.cineHeroHeadline, 'Log a set. Offline.');
+  assert.equal(
+    en.cineHeroLead,
+    'Mission Coach plans the week from the log. No wearable.'
+  );
   assert.equal(en.cineWeekKicker, 'Mission Coach');
   assert.match(en.cineLater, /Mission Winning Health/);
   assert.match(en.cineLater, /Not a feed/);

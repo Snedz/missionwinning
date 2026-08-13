@@ -31,7 +31,7 @@ const GATE_EN: Record<string, string> = {
   cinePublicLine: 'Train Anywhere. Win Daily.',
   cineHeroHeadline: 'Log a set. Offline.',
   cineHeroLead:
-    'Your week rewrites itself. Mission Coach plans from the log — free, offline, no account. The logger is free forever.',
+    'Mission Coach plans the week from the log. No wearable.',
   cineWeekKicker: 'Mission Coach',
   cineWeekTitle: 'A logged set is a new plan.',
   cineWeekLead:

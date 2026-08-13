@@ -23,10 +23,20 @@ at SpaceX *structure* (viewport scenes, one type, one CTA shape) on MW paper/ink
 ANYWHERE (one inverted field) → WEEK (instrument, 3×12@80 → 8×82.5) → DOOR
 (Get notified + Enter with code as ghosts). Stacked real `/brand/logo-icon.svg`.
 CTA pack **Free beta / Enter with code / Get notified**. Cover: kicker
-**Train Anywhere. Win Daily.** / headline **Log a set. Offline.** HUD nav
-(no paper bar). Comp: `docs/design/concepts/05-exquisite.html`.
-Thesis: `docs/design/WWW_NIGHT.md`. Signed-in Today/Train/Coach untouched.
-`PRIVATE_MODE` untouched. Draft — do not burn Hobby Preview until ~Thu 14:30 ET.
+**Train Anywhere. Win Daily.** / headline **Log a set. Offline.** / one quiet
+Coach line (**Mission Coach plans the week from the log. No wearable.**) so L1
+Train+Coach is on fold 1. HUD nav (no paper bar). Door stays paper — design
+system one-red-field beats a poster-red door. Comp: `docs/design/concepts/05-exquisite.html`.
+Thesis: `docs/design/WWW_NIGHT.md` (constitution-first §0, then the HTML).
+Signed-in Today/Train/Coach untouched. `PRIVATE_MODE` untouched. Draft — do not
+burn Hobby Preview. Do not merge.
+
+**Constitution pass:** founder ordered the corpus read before pixels. Product
+`vision.md` + design system + Wave 9 + IDENTITY_SOCIAL_PLAN, then ops
+VISION_LONG_EVERYTHING / STRATEGY / YC_THESIS / FOUNDER_CRITICAL_PATH /
+memory/WWW_NIGHT. Comp recut only where it disagreed: restore the quiet Coach
+line the visual skim had dropped. Athlete Page stays the later line, not a
+scene. Games / feed / Top 8 / everything-app stay off fold 1.
 
 **Nested iterate:** Mission is nested, not everything-app on fold 1. L1 launch is
 Mission Winning Health — free offline logger + Mission Coach from logs. Public
@@ -40,7 +50,7 @@ scene 3. Nav has zero mass (HUD).
 
 Label `.701` (onto master `.697`). Excellence-Override below.
 
-Excellence-Override: gated www four-scene cinematic replace (surface; RESULT unscored)
+Excellence-Override: gated www constitution-first — quiet Coach line on SET fold 1 (surface; RESULT unscored)
 
 Rotated LOG oldest → [docs/archive/log/LOG-rotate-669-for-701.md](docs/archive/log/LOG-rotate-669-for-701.md).
 

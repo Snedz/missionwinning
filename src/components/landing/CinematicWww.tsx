@@ -2,7 +2,7 @@
 
 /**
  * Four-scene cinematic www plus a quiet later line (not a fifth scene).
- * Marketing / gated door only. Nested L1 Train+Coach on fold 1.
+ * Marketing / gated door only. L1 Train+Coach on fold 1 (quiet Coach line under the h1).
  * docs/design/WWW_NIGHT.md
  */
 
@@ -79,6 +79,12 @@ export function CinematicWww({ mode, door }: Props) {
               <h1 className="display-hero">
                 {t('cineHeroHeadline', { defaultValue: 'Log a set. Offline.' })}
               </h1>
+              <p className="www-cine-lede">
+                {t('cineHeroLead', {
+                  defaultValue:
+                    'Mission Coach plans the week from the log. No wearable.',
+                })}
+              </p>
             </div>
             <CinematicLogger doneHref={doorHref} doneLabel={navLabel} />
           </div>

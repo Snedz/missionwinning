@@ -45,7 +45,7 @@ test('05-exquisite SET is a full-viewport field, not a split widget', () => {
   const setBlock = html.slice(setStart, anywhereStart);
   assert.match(setBlock, /class="set-field"/);
   assert.doesNotMatch(setBlock, /class="inner"/);
-  assert.doesNotMatch(setBlock, /class="lede"/);
+  assert.match(setBlock, /Mission Coach plans the week from the log\. No wearable\./);
 });
 
 test('05-exquisite scene order is SET → ANYWHERE → WEEK → DOOR', () => {
