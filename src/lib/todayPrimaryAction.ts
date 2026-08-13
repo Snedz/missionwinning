@@ -1,5 +1,5 @@
 /**
- * Shared Today primary CTA: resume active, Just Go, or journey startWorkout / href.
+ * Shared Today primary CTA: resume, live Coach, Repeat last session, Just Go, or journey.
  * Used by lean + full dashboard shells.
  */
 import type { JourneyAction } from '@/lib/missionJourney';
@@ -11,6 +11,7 @@ import type { UnitsPref } from '@/lib/units';
 import { loadCoachTodayOptional } from '@/lib/coach/loadCoachTodayOptional';
 import { track } from '@/lib/analytics';
 import { scaleExercisesByDose } from '@/lib/reentry';
+import { shouldRepeatLastOnToday } from '@/lib/workout/repeatLastSession';
 
 type StartWorkoutFn = (
   name: string,
@@ -88,10 +89,21 @@ export async function runTodayPrimaryAction(opts: TodayPrimaryActionOpts): Promi
   });
 
   if (trainReady) {
-    const [{ buildJustGoSession }, coachToday] = await Promise.all([
-      import('@/lib/justGoSession'),
-      loadCoachTodayOptional(),
-    ]);
+    const coachToday = await loadCoachTodayOptional();
+    const last = shouldRepeatLastOnToday({
+      hasLiveCoach: !!(coachToday && coachToday.exercises.length > 0),
+      history,
+    });
+    if (last) {
+      startWorkout(last.name, last.exercises);
+      track('history_train_again', {
+        exerciseCount: last.exercises.length,
+        from: 'today',
+      });
+      navigate('/active');
+      return;
+    }
+    const { buildJustGoSession } = await import('@/lib/justGoSession');
     const session = buildJustGoSession({
       focus: recommendedFocus,
       readiness,
