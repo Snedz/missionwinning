@@ -4,4 +4,5 @@
 
 | File | Purpose |
 |------|---------|
-| [PLAN.md](PLAN.md) | Frozen implement-only plan (F-017 first set, `.730`) |
+| [PLAN.md](PLAN.md) | Frozen verify+fix plan (F-017 first-set iterate, `.750`) |
+| VERIFY.md | Ledger of findings — written after the verify loop, not before |
