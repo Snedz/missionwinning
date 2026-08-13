@@ -1,7 +1,7 @@
 # PLAN — Five-event field test (frozen)
 
 **Status:** frozen 2026-08-13. Implement only this document.  
-**Ship label:** `2026.07-unified.708` (past master `.697`; do not steal `.698` `.699` `.700` `.705` `.706` `.707`).  
+**Ship label:** `2026.07-unified.711` (past master `.697`; do not steal `.698` `.699` `.700` `.705` `.706` `.707` `.708` `.709` `.710`).  
 **Excellence-Override:** free five-event field test (logger)  
 **Lane:** Engineering-Web. One concern: the field test.
 
@@ -170,7 +170,7 @@ Do not touch: `FREE_STARTER_PROGRAMS`, nav, America/PFT pages, `#495` Victory re
 - New first-paint tab; Today Quick-options chip; Bundle SKU; trial
 - `PRIVATE_MODE` flip; N1 www restyle
 - General Victory vs-last (#495)
-- Labels `.698` `.699` `.700` `.705` `.706` `.707`
+- Labels `.698` `.699` `.700` `.705` `.706` `.707` `.708` `.709` `.710`
 - Android / Expo this ship
 
 ---

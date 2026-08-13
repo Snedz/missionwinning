@@ -25,7 +25,7 @@ Root-level `@/lib/{name}` paths re-export from here for compatibility — prefer
 17. `activeSetInputPatches.ts` — Use next / plate / apply-targets field patches (`.407`)
 18. `activeTableSetControls.ts` — desktop table set dial + kind projection (`.408`)
 19. `activeWorkoutHelpers.ts` — also `resolveExerciseNextTarget` + loadPct/menu gates (`.418`); `formatPrevSetLabels` + footer peel (`.425`)
-20. `fieldTest.ts` — five-event field test template, garage/skip, `isFieldTestLog` (`.708`)
+20. `fieldTest.ts` — five-event field test template, garage/skip, `isFieldTestLog` (`.711`)
 21. `fieldTestScore.ts` — published-table lookup, bands, 0–500 gate
 22. `fieldTestReceipt.ts` — Victory receipt + vs-last (field test only)
 

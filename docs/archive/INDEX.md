@@ -28,7 +28,7 @@ When adding a doc:
 | [log/LOG-rotate-659-for-685.md](./log/LOG-rotate-659-for-685.md) | rotated 2026-08-12 for `.685` preserve next= through private gate |
 | [log/LOG-rotate-661-for-690.md](./log/LOG-rotate-661-for-690.md) | rotated 2026-08-12 for `.690` admin invite share → /private |
 | [log/LOG-rotate-662-for-691.md](./log/LOG-rotate-662-for-691.md) | rotated 2026-08-12 for `.691` Welcome Skip hard-nav private gate |
-| [log/LOG-rotate-669-for-708.md](./log/LOG-rotate-669-for-708.md) | rotated 2026-08-13 for `.708` five-event field test |
+| [log/LOG-rotate-669-for-711.md](./log/LOG-rotate-669-for-711.md) | rotated 2026-08-13 for `.711` five-event field test |
 | [log/LOG-rotate-668-for-697.md](./log/LOG-rotate-668-for-697.md) | rotated 2026-08-12 for `.697` session-expired fail-open mid-set Log/rest |
 | [log/LOG-rotate-667-for-696.md](./log/LOG-rotate-667-for-696.md) | rotated 2026-08-12 for `.696` local-first set-log + rest |
 | [log/LOG-rotate-666-for-695.md](./log/LOG-rotate-666-for-695.md) | rotated 2026-08-12 for `.695` demote six-pillar until first workout |
