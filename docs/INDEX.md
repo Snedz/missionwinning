@@ -130,6 +130,8 @@ Root keeps only the spine (README · CONTEXT · AGENTS · INDEX · vision · ORC
 | [PRICING_REVIEW_2026-08.md](PRICING_REVIEW_2026-08.md) | Super Bundle pricing review — hold Option A (2026-08-05) |
 | [STRATEGY.md](STRATEGY.md) | Business plan · pricing · book plan |
 | [PLAN.md](PLAN.md) | Build phases A–I |
+| [SUPER_BUNDLE_CONTENT_PLAN.md](SUPER_BUNDLE_CONTENT_PLAN.md) | Super Bundle catalog depth (parent, frozen `.700`) |
+| [SUPER_BUNDLE_SHOP_HONESTY_PLAN.md](SUPER_BUNDLE_SHOP_HONESTY_PLAN.md) | **Frozen** 2026-08-13 leftover: shop counts + Coach why-line + FAQ (`.705`; Move catalog is #497) |
 | [REDTEAM.md](REDTEAM.md) | Assumptions audit |
 | [JOURNEY.md](JOURNEY.md) | Mission journey UX (I-Day → Commissioned) |
 | [CLUB_PLAN.md](CLUB_PLAN.md) | Club: points · tiers · collectibles · boards · arcade (phased plan, no code) |

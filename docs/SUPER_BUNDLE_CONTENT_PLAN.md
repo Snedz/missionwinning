@@ -1,6 +1,10 @@
 # Super Bundle content depth — frozen plan (`.700`)
 
-**Status:** frozen 2026-08-13. Implement this file only. Do not add catalog volume, new tabs, a trial, à la carte pillars, or a food database.
+**Status:** frozen 2026-08-13. Catalog volume in this file is for specialists.
+
+**Overnight leftover (2026-08-13):** Move catalog is **#497**; Victory Move seam is **#491**. Do not collide. Implement [SUPER_BUNDLE_SHOP_HONESTY_PLAN.md](SUPER_BUNDLE_SHOP_HONESTY_PLAN.md) only (shop counts, Coach why-line merch, FAQ — label `.705`).
+
+**Status (parent):** frozen 2026-08-13. Do not add catalog volume, new tabs, a trial, à la carte pillars, or a food database.
 
 This is **not** [docs/PLAN.md](PLAN.md) (build phases A–I). One concern: paid depth that is credibly better than buying MFP + Pliability + Calm + Fitbod-Coach, while Strong-class logging stays free.
 
