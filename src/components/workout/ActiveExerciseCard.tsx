@@ -21,6 +21,7 @@ import {
   resolveExerciseNextTarget,
   formatPrevSetLabels,
 } from '@/lib/workout/activeWorkoutHelpers';
+import { formatSetRowAdjacency } from '@/lib/workout/setRowAdjacency';
 import { getFormGuideOrCues } from '@/lib/formGuides';
 import { lastNotesFor } from '@/lib/journal/cueMemory';
 import { resolveRestSeconds } from '@/lib/workout/restTimer';
@@ -142,6 +143,14 @@ export function ActiveExerciseCard({
     exLog.exerciseId,
     exLog.sets.length
   );
+  const adjacency = formatSetRowAdjacency({
+    workoutHistory,
+    exerciseId: exLog.exerciseId,
+    sets: exLog.sets,
+    prescribed: exLog.prescribed,
+    units,
+    goalRange,
+  });
 
   return (
     <Card
@@ -187,6 +196,8 @@ export function ActiveExerciseCard({
                   isNext={isNext}
                   weightLabel={unitLabel}
                   prevLabel={prevLabels[setIdx]}
+                  targetLabel={adjacency[setIdx]?.targetLabel}
+                  cite={adjacency[setIdx]?.cite}
                   onRate={(rpe) => onRate(setIdx, rpe)}
                 />
               </div>
@@ -199,6 +210,7 @@ export function ActiveExerciseCard({
               activeSetIdx={activeSetIdxForExercise(nextSet, exIdx)}
               weightLabel={unitLabel}
               prevLabels={prevLabels}
+              adjacency={adjacency}
               input={setInput}
               onInputChange={onSetInputChange}
               onLog={() => nextSet && onLogSet(nextSet.setIdx)}

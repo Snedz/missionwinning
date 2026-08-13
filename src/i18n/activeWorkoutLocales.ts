@@ -172,6 +172,18 @@ type ActiveWorkoutStrings = {
   activeAddExerciseEyebrow: string;
   activeColSet: string;
   activeColPrev: string;
+  activeColTarget: string;
+  activeTargetCiteFromLast: string;
+  activeTargetCiteSet: string;
+  activeTargetCiteSets: string;
+  activeTargetCiteCoach: string;
+  activeWeekdayMon: string;
+  activeWeekdayTue: string;
+  activeWeekdayWed: string;
+  activeWeekdayThu: string;
+  activeWeekdayFri: string;
+  activeWeekdaySat: string;
+  activeWeekdaySun: string;
   activeColReps: string;
   activeColAction: string;
   activePrBadge: string;
@@ -380,6 +392,18 @@ const en: ActiveWorkoutStrings = {
   activeAddExerciseEyebrow: 'This session',
   activeColSet: 'Set',
   activeColPrev: 'Prev',
+  activeColTarget: 'Target',
+  activeTargetCiteFromLast: 'from last {{day}} · {{sets}}',
+  activeTargetCiteSet: 'set {{n}}',
+  activeTargetCiteSets: 'sets {{from}}–{{to}}',
+  activeTargetCiteCoach: 'Coach plan',
+  activeWeekdayMon: 'Mon',
+  activeWeekdayTue: 'Tue',
+  activeWeekdayWed: 'Wed',
+  activeWeekdayThu: 'Thu',
+  activeWeekdayFri: 'Fri',
+  activeWeekdaySat: 'Sat',
+  activeWeekdaySun: 'Sun',
   activeColReps: 'Reps',
   activeColAction: 'Action',
   activePrBadge: 'PR',
@@ -428,6 +452,18 @@ const es: ActiveWorkoutStrings = {
   activeOverloadHold: 'Mantén',
   activeOverloadFromLast: 'De la última vez',
   activeOverloadPrescribed: 'Plan del coach',
+  activeColTarget: 'Objetivo',
+  activeTargetCiteFromLast: 'del último {{day}} · {{sets}}',
+  activeTargetCiteSet: 'serie {{n}}',
+  activeTargetCiteSets: 'series {{from}}–{{to}}',
+  activeTargetCiteCoach: 'Plan del coach',
+  activeWeekdayMon: 'lun',
+  activeWeekdayTue: 'mar',
+  activeWeekdayWed: 'mié',
+  activeWeekdayThu: 'jue',
+  activeWeekdayFri: 'vie',
+  activeWeekdaySat: 'sáb',
+  activeWeekdaySun: 'dom',
   activeUseNextTarget: 'Usar el siguiente objetivo',
   activeSetKindMore: 'Tipo',
   victoryProgressAddWeight: 'Siguiente: +{{step}} {{unit}} en {{name}} (tope del rango)',
@@ -483,6 +519,18 @@ const fr: ActiveWorkoutStrings = {
   activeOverloadHold: 'Maintiens',
   activeOverloadFromLast: 'De la dernière fois',
   activeOverloadPrescribed: 'Plan coach',
+  activeColTarget: 'Cible',
+  activeTargetCiteFromLast: 'de {{day}} dernier · {{sets}}',
+  activeTargetCiteSet: 'série {{n}}',
+  activeTargetCiteSets: 'séries {{from}}–{{to}}',
+  activeTargetCiteCoach: 'Plan coach',
+  activeWeekdayMon: 'lun',
+  activeWeekdayTue: 'mar',
+  activeWeekdayWed: 'mer',
+  activeWeekdayThu: 'jeu',
+  activeWeekdayFri: 'ven',
+  activeWeekdaySat: 'sam',
+  activeWeekdaySun: 'dim',
   activeUseNextTarget: 'Utiliser la cible suivante',
   activeSetKindMore: 'Type',
   victoryProgressAddWeight: 'Suite : +{{step}} {{unit}} sur {{name}} (haut de fourchette)',
@@ -614,6 +662,18 @@ const de: ActiveWorkoutStrings = {
   activeOverloadHold: 'Halten',
   activeOverloadFromLast: 'Vom letzten Mal',
   activeOverloadPrescribed: 'Coach-Plan',
+  activeColTarget: 'Ziel',
+  activeTargetCiteFromLast: 'von letztem {{day}} · {{sets}}',
+  activeTargetCiteSet: 'Satz {{n}}',
+  activeTargetCiteSets: 'Sätze {{from}}–{{to}}',
+  activeTargetCiteCoach: 'Coach-Plan',
+  activeWeekdayMon: 'Mo',
+  activeWeekdayTue: 'Di',
+  activeWeekdayWed: 'Mi',
+  activeWeekdayThu: 'Do',
+  activeWeekdayFri: 'Fr',
+  activeWeekdaySat: 'Sa',
+  activeWeekdaySun: 'So',
   activeSetKindMore: 'Art',
   activeElapsed: 'Verstrichen',
   activeSetsLabel: 'Sätze',
@@ -703,6 +763,18 @@ const LOCALES: Partial<Record<string, ActiveWorkoutStrings>> = {
     activeOverloadHold: 'Manter',
     activeOverloadFromLast: 'Da última vez',
     activeOverloadPrescribed: 'Plano do coach',
+    activeColTarget: 'Alvo',
+    activeTargetCiteFromLast: 'da última {{day}} · {{sets}}',
+    activeTargetCiteSet: 'série {{n}}',
+    activeTargetCiteSets: 'séries {{from}}–{{to}}',
+    activeTargetCiteCoach: 'Plano do coach',
+    activeWeekdayMon: 'seg',
+    activeWeekdayTue: 'ter',
+    activeWeekdayWed: 'qua',
+    activeWeekdayThu: 'qui',
+    activeWeekdayFri: 'sex',
+    activeWeekdaySat: 'sáb',
+    activeWeekdaySun: 'dom',
     activeUseNextTarget: 'Usar próximo alvo',
     victoryProgressAddWeight: 'Próximo: +{{step}} {{unit}} em {{name}} (topo da faixa)',
     victoryProgressAddReps: 'Próximo: {{reps}} × {{weight}} {{unit}} em {{name}}',

@@ -40,11 +40,27 @@ test('SetLogRow: PREVIOUS row anchor + metric-first density; 44px taps', () => {
   assert.match(code, /set-logged-check/);
   // Hevy Experience: PREVIOUS is a clear set-row metric anchor.
   assert.match(code, /prevLabel/);
-  assert.match(code, /set-row-prev/);
-  assert.match(code, /data-prev-anchor/);
+  assert.match(code, /SetLogAdjacencyStack/);
+  assert.match(code, /set-row/);
   assert.match(code, /activeColPrev/);
   assert.doesNotMatch(code, /activeSetInConsole/);
   assert.doesNotMatch(code, /In the console/);
+  assert.doesNotMatch(code, /primary-action|accent-poster|bg-primary-fill/);
+});
+
+test('SetLogAdjacencyStack: Target stacked above PREVIOUS; not a HUD or Recovery %', () => {
+  const src = workout('SetLogAdjacencyStack.tsx');
+  const code = src.replace(/\/\*[\s\S]*?\*\//g, '').replace(/\/\/.*$/gm, '');
+  assert.match(
+    code,
+    /\$\{testIdPrefix\}-target[\s\S]*\$\{testIdPrefix\}-prev/,
+    'PREVIOUS must follow TARGET in source order'
+  );
+  assert.match(code, /target-cite/);
+  assert.match(code, /data-target-anchor/);
+  assert.match(code, /data-prev-anchor/);
+  assert.doesNotMatch(code, /Recovery\s*%/);
+  assert.doesNotMatch(code, /fixed inset|pointer-events-none.*overlay/i);
   assert.doesNotMatch(code, /primary-action|accent-poster|bg-primary-fill/);
 });
 
@@ -57,8 +73,9 @@ test('SetLogTable: Prev column anchored; one poster-red Log set; 44px inputs', (
   assert.match(src, /min-h-\[44px\]/);
   assert.match(src, /set-table-logged-check/);
   assert.match(src, /border-s-primary|border-s-\[3px\]/);
-  assert.match(src, /set-table-prev/);
+  assert.match(src, /SetLogAdjacencyStack/);
   assert.match(src, /data-prev-anchor/);
+  assert.match(src, /testIdPrefix="set-table"/);
   assert.doesNotMatch(src, /hover:bg-accent-100/);
 });
 
@@ -78,9 +95,12 @@ test('RestTimerBar: ambient running rest + Skip 44px; no poster-red', () => {
   assert.doesNotMatch(src, /accent-poster/);
 });
 
-test('ActiveExerciseCard wires prevLabels into compact SetLogRow', () => {
+test('ActiveExerciseCard wires prevLabels and adjacency into compact SetLogRow', () => {
   const src = workout('ActiveExerciseCard.tsx');
   assert.match(src, /formatPrevSetLabels/);
+  assert.match(src, /formatSetRowAdjacency/);
   assert.match(src, /prevLabel=\{prevLabels\[setIdx\]\}/);
+  assert.match(src, /targetLabel=\{adjacency\[setIdx\]\?\.targetLabel\}/);
   assert.match(src, /prevLabels=\{prevLabels\}/);
+  assert.match(src, /adjacency=\{adjacency\}/);
 });

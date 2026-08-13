@@ -5,6 +5,7 @@
  * Strong/Hevy density: metric-first (`8 × 60 kg`), not prose ("In the console").
  * **PREVIOUS is the row anchor** (Hevy web withholds this; we show it) — prior
  * performance sits beside the set number before this session's metric.
+ * E-Adjacency stacks TARGET + log cite above PREVIOUS on incomplete rows.
  * Entry stays in `LogConsole`. Rows + RPE ≥44px. No filled red — Log set owns red.
  *
  * See: src/components/workout/INDEX.md
@@ -15,7 +16,9 @@ import { useTranslation } from 'react-i18next';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
+import { formatAdjacencyCiteLine, SetLogAdjacencyStack } from '@/components/workout/SetLogAdjacencyStack';
 import type { LoggedSet, SetKind } from '@/types';
+import type { SetRowCite } from '@/lib/workout/setRowAdjacency';
 import {
   setKindBadgeClass,
   setKindDefaultLabel,
@@ -49,6 +52,9 @@ type Props = {
    * Hevy Experience: PREVIOUS is the visible row anchor — never omit the slot.
    */
   prevLabel?: string | null;
+  /** E-Adjacency: next target stacked above PREVIOUS. */
+  targetLabel?: string | null;
+  cite?: SetRowCite | null;
   onRate: (rpe: 'easy' | 'med' | 'hard') => void;
 };
 
@@ -58,6 +64,8 @@ export function SetLogRow({
   isNext,
   weightLabel,
   prevLabel = null,
+  targetLabel = null,
+  cite = null,
   onRate,
 }: Props) {
   const { t } = useTranslation();
@@ -70,6 +78,9 @@ export function SetLogRow({
   );
   const prevShown = prevLabel?.trim() || '—';
   const prevWord = t('activeColPrev', { defaultValue: 'Prev' });
+  const targetWord = t('activeColTarget', { defaultValue: 'Target' });
+  const citeLine = formatAdjacencyCiteLine(cite, t);
+  const showTarget = !set.completed && Boolean(targetLabel);
   const rowLabel = set.completed
     ? t('activeSetRowCompleteAria', {
         n: setNumber,
@@ -90,7 +101,7 @@ export function SetLogRow({
   return (
     <div
       role="listitem"
-      aria-label={`${rowLabel}. ${prevWord} ${prevShown}`}
+      aria-label={`${rowLabel}. ${showTarget && targetLabel ? `${targetWord} ${targetLabel}${citeLine ? ` ${citeLine}` : ''}. ` : ''}${prevWord} ${prevShown}`}
       aria-current={isNext ? 'true' : undefined}
       className={cn(
         'flex min-h-[44px] flex-nowrap items-center gap-x-2 border-b border-border px-0.5 py-1.5 transition-colors',
@@ -108,24 +119,15 @@ export function SetLogRow({
         {setNumber}
       </span>
 
-      {/* PREVIOUS — set-row metric anchor (Hevy web withholds; we show). */}
-      <span
-        className="flex w-[5.5rem] shrink-0 flex-col justify-center leading-none"
-        data-testid="set-row-prev"
-        data-prev-anchor={prevLabel ? 'true' : 'empty'}
-      >
-        <span className="text-[9px] font-semibold uppercase tracking-[0.1em] text-muted-foreground">
-          {prevWord}
-        </span>
-        <span
-          className={cn(
-            'mt-0.5 truncate text-[13px] tabular-nums',
-            prevLabel ? 'font-semibold text-foreground' : 'text-muted-foreground'
-          )}
-        >
-          {prevShown}
-        </span>
-      </span>
+      <SetLogAdjacencyStack
+        targetWord={targetWord}
+        targetLabel={targetLabel}
+        citeLine={citeLine}
+        prevWord={prevWord}
+        prevLabel={prevLabel}
+        showTarget={showTarget}
+        testIdPrefix="set-row"
+      />
 
       {/* This session's metric — Strong/Hevy density; no "In the console" chrome. */}
       <span

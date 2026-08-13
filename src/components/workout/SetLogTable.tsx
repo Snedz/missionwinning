@@ -17,6 +17,11 @@ import type { LoggedSet, SetKind } from '@/types';
 import { setKindBadgeClass, setKindDefaultLabel, setKindLabelKey } from '@/lib/workout/setKind';
 import { rpeDefaultLabel, rpeLabelKey } from '@/lib/workout/rpeLabel';
 import { cn } from '@/lib/utils';
+import {
+  formatAdjacencyCiteLine,
+  SetLogAdjacencyStack,
+} from '@/components/workout/SetLogAdjacencyStack';
+import type { SetRowAdjacency } from '@/lib/workout/setRowAdjacency';
 
 type Props = {
   sets: LoggedSet[];
@@ -25,6 +30,8 @@ type Props = {
   weightLabel: string;
   /** "8 × 60" for each set index, when a previous performance exists. */
   prevLabels: (string | null)[];
+  /** E-Adjacency: target + cite stacked above Prev in this cell. */
+  adjacency?: SetRowAdjacency[];
   input: { reps: number; weight: number };
   onInputChange: (field: 'reps' | 'weight', value: number) => void;
   onLog: () => void;
@@ -43,6 +50,7 @@ export function SetLogTable({
   activeSetIdx,
   weightLabel,
   prevLabels,
+  adjacency = [],
   input,
   onInputChange,
   onLog,
@@ -57,7 +65,7 @@ export function SetLogTable({
           <th scope="col" className={cn(cell, 'w-10 text-start')}>
             {t('activeColSet', { defaultValue: 'Set' })}
           </th>
-          <th scope="col" className={cn(cell, 'min-w-[4.5rem] text-start')}>
+          <th scope="col" className={cn(cell, 'min-w-[7.5rem] text-start')}>
             {t('activeColPrev', { defaultValue: 'Prev' })}
           </th>
           <th scope="col" className={cn(cell, 'w-[88px] text-start')}>
@@ -100,17 +108,16 @@ export function SetLogTable({
                 {setIdx + 1}
               </th>
 
-              <td
-                className={cn(
-                  cell,
-                  prevLabels[setIdx]
-                    ? 'font-semibold text-foreground'
-                    : 'text-muted-foreground'
-                )}
-                data-testid="set-table-prev"
-                data-prev-anchor={prevLabels[setIdx] ? 'true' : 'empty'}
-              >
-                {prevLabels[setIdx] ?? '—'}
+              <td className={cn(cell, 'align-top')} data-prev-anchor={prevLabels[setIdx] ? 'true' : 'empty'}>
+                <SetLogAdjacencyStack
+                  targetWord={t('activeColTarget', { defaultValue: 'Target' })}
+                  targetLabel={adjacency[setIdx]?.targetLabel ?? null}
+                  citeLine={formatAdjacencyCiteLine(adjacency[setIdx]?.cite ?? null, t)}
+                  prevWord={t('activeColPrev', { defaultValue: 'Prev' })}
+                  prevLabel={prevLabels[setIdx]}
+                  showTarget={!completed}
+                  testIdPrefix="set-table"
+                />
               </td>
 
               {isActive ? (

@@ -1397,7 +1397,7 @@ describe('resolveExerciseNextTarget / menu visibility', () => {
       units: 'metric',
       suggest: () => {
         suggestCalls += 1;
-        return { reps: 99, weight: 99, reason: 'from_last' };
+        return { reps: 99, weight: 99, reason: 'from_last', evidenceWorkingIdx: [0] };
       },
     });
     assert.deepEqual(out, { reps: 5, weight: 100 });
@@ -1410,9 +1410,9 @@ describe('resolveExerciseNextTarget / menu visibility', () => {
       prescribed: false,
       lastSets: [{ reps: 8, weight: 90 }],
       units: 'metric',
-      suggest: () => ({ reps: 8, weight: 92.5, reason: 'add_weight' }),
+      suggest: () => ({ reps: 8, weight: 92.5, reason: 'add_weight', evidenceWorkingIdx: [0] }),
     });
-    assert.deepEqual(out, { reps: 8, weight: 92.5, reason: 'add_weight' });
+    assert.deepEqual(out, { reps: 8, weight: 92.5, reason: 'add_weight', evidenceWorkingIdx: [0] });
   });
 
   it('returns null when every set is done or there is no last session', () => {
