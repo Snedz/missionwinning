@@ -62,6 +62,7 @@ describe('formatOverloadSetLine', () => {
   it('formats weighted and bodyweight', () => {
     assert.equal(formatOverloadSetLine(8, 60, 'kg'), '8 × 60 kg');
     assert.equal(formatOverloadSetLine(10, 0, 'kg', 'BW'), '10 × BW');
+    assert.equal(formatOverloadSetLine(8, 20, 'kg', 'BW', true), '8 × BW + 20 kg');
   });
 });
 

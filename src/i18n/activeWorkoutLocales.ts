@@ -76,6 +76,7 @@ type ActiveWorkoutStrings = {
   /** Bodyweight load token when stored weight is 0 (not "0 kg"). */
   activeSetBodyweight: string;
   activeSetBodyweightAddLoad: string;
+  activeSetAddedLoad: string;
   /** Console progressive-overload strip (last · next · why). */
   activeOverloadLastLabel: string;
   activeOverloadNextLabel: string;
@@ -309,6 +310,7 @@ const en: ActiveWorkoutStrings = {
   activeSetLoggedSuperset: '{{reps}} × {{weight}} — next exercise in superset',
   activeSetBodyweight: 'BW',
   activeSetBodyweightAddLoad: 'Bodyweight — tap to add load',
+  activeSetAddedLoad: 'Load',
   activeOverloadLastLabel: 'Last',
   activeOverloadNextLabel: 'Next',
   activeOverloadAddReps: 'Add a rep',
@@ -455,6 +457,7 @@ const en: ActiveWorkoutStrings = {
 
 const es: ActiveWorkoutStrings = {
   ...en,
+  activeSetAddedLoad: 'Carga',
   activeLiveSession: 'Sesión en vivo',
   activeCoachSessionEyebrow: 'Sesión Mission Coach',
   activeOverloadLastLabel: 'Última',
@@ -514,6 +517,7 @@ const es: ActiveWorkoutStrings = {
 
 const fr: ActiveWorkoutStrings = {
   ...en,
+  activeSetAddedLoad: 'Charge',
   activeLiveSession: 'Séance en direct',
   activeReentryStart: 'Commencer une séance plus légère',
   activeReentryStartDesc:
@@ -729,6 +733,7 @@ const LOCALES: Partial<Record<string, ActiveWorkoutStrings>> = {
   de,
   pt: {
     ...en,
+    activeSetAddedLoad: 'Carga',
     activeNoWorkout: 'Nenhum treino ativo',
     activeReentryStart: 'Começar sessão mais fácil',
     activeReentryStartDesc:

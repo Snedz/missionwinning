@@ -64,6 +64,8 @@ type Props = {
   onLog: () => void;
   /** Fill console from progressive-overload / coach next target. */
   onUseNext?: (target: { reps: number; weight: number }) => void;
+  /** Bodyweight move — weight is added load (belt/vest); 0 is skip. */
+  plusLoad?: boolean;
 };
 
 /** 48 × 52px, 2px light rule — the ink ground needs a lighter border than paper. */
@@ -150,6 +152,7 @@ export function LogConsole({
   onKindChange,
   onLog,
   onUseNext,
+  plusLoad = false,
 }: Props) {
   const { t } = useTranslation();
   /** Outdoor default: Work only. Expand once to pick warmup/fail/drop. */
@@ -305,7 +308,63 @@ export function LogConsole({
             onRepsChange(Number.isFinite(parsed) ? Math.min(999, Math.max(1, parsed)) : 1);
           }}
         />
-        {weight <= 0 ? (
+        {plusLoad ? (
+          <div className="min-w-0 flex-1" data-testid="log-console-plus-load">
+            <span className="mb-0.5 block text-[11px] font-semibold uppercase tracking-[0.1em] text-neutral-400">
+              {t('activeSetAddedLoad', { defaultValue: 'Load' })}
+            </span>
+            <div className="flex items-stretch border-2 border-neutral-700">
+              <span
+                className="flex h-[52px] shrink-0 items-center px-2 text-[15px] font-extrabold text-neutral-100"
+                data-testid="log-console-bw-chip"
+              >
+                {t('activeSetBodyweight', { defaultValue: 'BW' })}+
+              </span>
+              <button
+                type="button"
+                className={stepper}
+                aria-label={t('activeDecreaseWeight', {
+                  unit: weightLabel,
+                  defaultValue: `Decrease ${weightLabel}`,
+                })}
+                onClick={() => onWeightChange(Math.max(0, weight - weightStep))}
+              >
+                <Minus className="h-4 w-4" aria-hidden />
+              </button>
+              <input
+                type="text"
+                inputMode="decimal"
+                enterKeyHint="done"
+                value={weight}
+                aria-label={t('activeSetAddedLoad', { defaultValue: 'Load' })}
+                onFocus={(e) => e.target.select()}
+                onChange={(e) => {
+                  const cleaned = e.target.value.replace(',', '.').replace(/[^0-9.]/g, '');
+                  const parsed = parseFloat(cleaned);
+                  onWeightChange(Number.isFinite(parsed) ? Math.min(9999, Math.max(0, parsed)) : 0);
+                }}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter') {
+                    e.preventDefault();
+                    onLog();
+                  }
+                }}
+                className="h-[52px] min-w-0 flex-1 bg-foreground text-center text-[26px] font-extrabold tabular-nums text-neutral-100"
+              />
+              <button
+                type="button"
+                className={stepper}
+                aria-label={t('activeIncreaseWeight', {
+                  unit: weightLabel,
+                  defaultValue: `Increase ${weightLabel}`,
+                })}
+                onClick={() => onWeightChange(weight + weightStep)}
+              >
+                <Plus className="h-4 w-4" aria-hidden />
+              </button>
+            </div>
+          </div>
+        ) : weight <= 0 ? (
           <div className="min-w-0 flex-1">
             <span className="mb-0.5 block text-[11px] font-semibold uppercase tracking-[0.1em] text-neutral-400">
               {weightLabel}

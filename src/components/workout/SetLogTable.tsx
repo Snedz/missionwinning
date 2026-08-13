@@ -19,6 +19,7 @@ import { parseSetSide, setSideDefaultLabel, setSideLabelKey } from '@/lib/workou
 import { rpeDefaultLabel, rpeLabelKey } from '@/lib/workout/rpeLabel';
 import { SetRirSelect } from '@/components/workout/SetRirSelect';
 import { SetTempoField } from '@/components/workout/SetTempoField';
+import { formatPlusLoadWeightCell } from '@/lib/workout/bodyweightLoad';
 import { cn } from '@/lib/utils';
 
 type Props = {
@@ -38,6 +39,7 @@ type Props = {
   onRateRir: (setIdx: number, rir: number | undefined) => void;
   /** Optional ecc/pause/con — never required (`.734`). */
   onRateTempo: (setIdx: number, tempo: SetTempo | undefined) => void;
+  plusLoad?: boolean;
 };
 
 const cell = 'px-2 py-1.5 align-middle';
@@ -59,6 +61,7 @@ export function SetLogTable({
   onRate,
   onRateRir,
   onRateTempo,
+  plusLoad = false,
 }: Props) {
   const { t } = useTranslation();
 
@@ -141,22 +144,33 @@ export function SetLogTable({
               {isActive ? (
                 <>
                   <td className={cell}>
-                    <input
-                      type="text"
-                      inputMode="decimal"
-                      className={cn(numberInput, 'w-[72px]')}
-                      value={input.weight}
-                      aria-label={weightLabel}
-                      onFocus={(e) => e.target.select()}
-                      onChange={(e) => {
-                        const cleaned = e.target.value.replace(',', '.').replace(/[^0-9.]/g, '');
-                        const parsed = parseFloat(cleaned);
-                        onInputChange(
-                          'weight',
-                          Number.isFinite(parsed) ? Math.min(9999, Math.max(0, parsed)) : 0
-                        );
-                      }}
-                    />
+                    <div className="flex items-center gap-1">
+                      {plusLoad ? (
+                        <span className="shrink-0 text-[11px] font-semibold uppercase text-muted-foreground">
+                          {t('activeSetBodyweight', { defaultValue: 'BW' })}+
+                        </span>
+                      ) : null}
+                      <input
+                        type="text"
+                        inputMode="decimal"
+                        className={cn(numberInput, plusLoad ? 'w-[56px]' : 'w-[72px]')}
+                        value={input.weight}
+                        aria-label={
+                          plusLoad
+                            ? t('activeSetAddedLoad', { defaultValue: 'Load' })
+                            : weightLabel
+                        }
+                        onFocus={(e) => e.target.select()}
+                        onChange={(e) => {
+                          const cleaned = e.target.value.replace(',', '.').replace(/[^0-9.]/g, '');
+                          const parsed = parseFloat(cleaned);
+                          onInputChange(
+                            'weight',
+                            Number.isFinite(parsed) ? Math.min(9999, Math.max(0, parsed)) : 0
+                          );
+                        }}
+                      />
+                    </div>
                   </td>
                   <td className={cell}>
                     <input
@@ -190,7 +204,14 @@ export function SetLogTable({
               ) : (
                 <>
                   <td className={cn(cell, completed && 'font-semibold')}>
-                    {completed ? set.weight : '—'}
+                    {completed
+                      ? plusLoad
+                        ? formatPlusLoadWeightCell(
+                            set.weight,
+                            t('activeSetBodyweight', { defaultValue: 'BW' })
+                          )
+                        : set.weight
+                      : '—'}
                   </td>
                   <td className={cn(cell, completed && 'font-semibold')}>
                     {completed ? set.reps : set.reps}

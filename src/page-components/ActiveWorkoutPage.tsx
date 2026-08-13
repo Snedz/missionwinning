@@ -80,6 +80,7 @@ import {
   setInputKey,
   toggleOpenIdx,
 } from '@/lib/workout/activeWorkoutHelpers';
+import { isPlusLoadExercise } from '@/lib/workout/bodyweightLoad';
 import { prefersReducedMotion } from '@/lib/motion';
 import {
   composeDropRest,
@@ -343,6 +344,7 @@ export function ActiveWorkoutPage() {
     unitLabel,
     bodyweightLabel: t('activeSetBodyweight', { defaultValue: 'BW' }),
     resolveExerciseName: (id) => getExerciseById(id)?.name ?? id,
+    resolvePlusLoad: (id) => isPlusLoadExercise(getExerciseById(id) ?? { id }),
     resolveInput: getSetInput,
     translateReason: (key, defaultValue) => t(key, { defaultValue }),
   });

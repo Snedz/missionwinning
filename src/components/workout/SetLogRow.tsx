@@ -59,6 +59,8 @@ type Props = {
   onRateRir: (rir: number | undefined) => void;
   /** Optional ecc/pause/con — never required (`.734`). */
   onRateTempo: (tempo: SetTempo | undefined) => void;
+  /** Bodyweight move — `weight` is added load. */
+  plusLoad?: boolean;
 };
 
 export function SetLogRow({
@@ -71,6 +73,7 @@ export function SetLogRow({
   onRate,
   onRateRir,
   onRateTempo,
+  plusLoad = false,
 }: Props) {
   const { t } = useTranslation();
   const kind = set.kind ?? 'normal';
@@ -79,7 +82,8 @@ export function SetLogRow({
     set.reps,
     set.weight,
     weightLabel,
-    t('activeSetBodyweight', { defaultValue: 'BW' })
+    t('activeSetBodyweight', { defaultValue: 'BW' }),
+    plusLoad
   );
   const prevShown = prevLabel?.trim() || '—';
   const prevWord = t('activeColPrev', { defaultValue: 'Prev' });

@@ -26,6 +26,7 @@ When adding a doc:
 
 | File | Absorbed by / note |
 |------|---------------------|
+| [log/LOG-rotate-743-for-758.md](./log/LOG-rotate-743-for-758.md) | rotated 2026-08-13 for `.758` Bodyweight + load on the Train set row (`.743`) |
 | [log/LOG-rotate-714-for-757.md](./log/LOG-rotate-714-for-757.md) | rotated 2026-08-13 for `.757` Optional tempo on the set row (`.714`) |
 | [log/LOG-rotate-697-for-756.md](./log/LOG-rotate-697-for-756.md) | rotated 2026-08-13 for `.756` Optional RIR on the set row (`.697`) |
 | [log/LOG-rotate-696-for-755.md](./log/LOG-rotate-696-for-755.md) | rotated 2026-08-13 for `.755` Unilateral L/R on the set log (`.696`) |

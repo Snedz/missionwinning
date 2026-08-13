@@ -12,6 +12,7 @@ import {
   overloadReasonKey,
 } from '@/lib/workout/progressiveOverloadCue';
 import { isUnilateralExercise, parseSetSide } from '@/lib/workout/unilateral';
+import { formatPrevPlusLoadLabel, formatSetLoadLine } from '@/lib/workout/bodyweightLoad';
 
 /** First incomplete set across the active session, or null when all done. */
 export function findNextSet(exercises: { sets: { completed: boolean }[] }[]): {
@@ -56,11 +57,16 @@ export function getLastPerformanceForSet(
 export function formatPrevSetLabels(
   workoutHistory: CompletedWorkoutLog[],
   exerciseId: string,
-  setCount: number
+  setCount: number,
+  opts?: { plusLoad?: boolean; bodyweightLabel?: string }
 ): (string | null)[] {
   return Array.from({ length: setCount }, (_, setIdx) => {
     const last = getLastPerformanceForSet(workoutHistory, exerciseId, setIdx);
-    return last ? `${last.reps} × ${last.weight}` : null;
+    if (!last) return null;
+    if (opts?.plusLoad) {
+      return formatPrevPlusLoadLabel(last.reps, last.weight, opts.bodyweightLabel ?? 'BW');
+    }
+    return `${last.reps} × ${last.weight}`;
   });
 }
 
@@ -168,12 +174,16 @@ export function formatLoggedSetLine(
   reps: number,
   weight: number,
   weightLabel: string,
-  bodyweightLabel = 'BW'
+  bodyweightLabel = 'BW',
+  plusLoad = false
 ): string {
-  if (!Number.isFinite(weight) || weight <= 0) {
-    return `${reps} × ${bodyweightLabel}`;
-  }
-  return `${reps} × ${weight} ${weightLabel}`;
+  return formatSetLoadLine({
+    reps,
+    weight,
+    unitLabel: weightLabel,
+    bodyweightLabel,
+    plusLoad,
+  });
 }
 
 /**
@@ -246,6 +256,7 @@ export type ConsoleSetView = {
   kind: ConsoleSetKind;
   side?: SetSide;
   unilateral: boolean;
+  plusLoad: boolean;
   input: { reps: number; weight: number };
   overloadCue: {
     lastLine: string | null;
@@ -279,6 +290,7 @@ export function buildConsoleSet(params: {
   unitLabel: string;
   bodyweightLabel: string;
   resolveExerciseName: (exerciseId: string) => string;
+  resolvePlusLoad?: (exerciseId: string) => boolean;
   resolveInput: (
     exIdx: number,
     setIdx: number,
@@ -323,6 +335,7 @@ export function buildConsoleSet(params: {
     reasonKey && cue.reason
       ? params.translateReason(reasonKey, overloadReasonDefault(cue.reason) ?? '')
       : null;
+  const plusLoad = params.resolvePlusLoad?.(exLog.exerciseId) === true;
 
   return {
     exIdx: nextSet.exIdx,
@@ -335,6 +348,7 @@ export function buildConsoleSet(params: {
       id: exLog.exerciseId,
       name: params.resolveExerciseName(exLog.exerciseId),
     }),
+    plusLoad,
     input: params.resolveInput(nextSet.exIdx, nextSet.setIdx, set.reps, set.weight),
     overloadCue: {
       lastLine: cue.last
@@ -342,7 +356,8 @@ export function buildConsoleSet(params: {
             cue.last.reps,
             cue.last.weight,
             params.unitLabel,
-            params.bodyweightLabel
+            params.bodyweightLabel,
+            plusLoad
           )
         : null,
       nextLine: cue.next
@@ -350,7 +365,8 @@ export function buildConsoleSet(params: {
             cue.next.reps,
             cue.next.weight,
             params.unitLabel,
-            params.bodyweightLabel
+            params.bodyweightLabel,
+            plusLoad
           )
         : null,
       reasonLine: reasonLine || null,

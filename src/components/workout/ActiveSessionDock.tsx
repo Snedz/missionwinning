@@ -86,6 +86,7 @@ export function ActiveSessionDock({
           unilateral={consoleSet.unilateral}
           side={consoleSet.side}
           onSideChange={(side) => onSideChange(consoleSet.exIdx, consoleSet.setIdx, side)}
+          plusLoad={consoleSet.plusLoad}
           onRepsChange={(v) => onRepsChange(consoleSet.exIdx, consoleSet.setIdx, v)}
           onWeightChange={(v) => onWeightChange(consoleSet.exIdx, consoleSet.setIdx, v)}
           onKindChange={(kind) => onKindChange(consoleSet.exIdx, consoleSet.setIdx, kind)}
