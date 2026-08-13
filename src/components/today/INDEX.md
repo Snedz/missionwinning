@@ -6,7 +6,7 @@
 
 | File | Purpose |
 |------|---------|
-| `TodayPageHeader.tsx` | Greeting, date, journey phase. F-017 (`.730`): Sign-in link only after the first workout. |
+| `TodayPageHeader.tsx` | Greeting, date, habit week-count, journey phase. F-017 (`.746`): Sign-in link only after the first workout. |
 | `TodayDashboardAccordion.tsx` | Health/journal/week/progress accordion (readiness+) |
 | `TodayDashboardHeader.tsx` | Mission Score ScoreNumeral + MetricsRow; trends collapsed |
 | `TodayHealthSection.tsx` | Readiness, strain, recovery metrics |

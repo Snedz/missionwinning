@@ -176,6 +176,8 @@ type TodayStrings = {
   /** Kaizen Loop 2 L4 — week recap + debrief (.299) */
   todayWeekRecapTitle: string;
   todayWeekRecapBody: string;
+  /** Habit week-count on Today header — 0 is fine (.722). */
+  todayHabitWeekCount: string;
   todayWeekRecapShareCard: string;
   todayWeekRecapCoach: string;
   todayWeekRecapHistory: string;
@@ -477,6 +479,7 @@ const en: TodayStrings = {
   coachPlanRegenerate: 'Regenerate',
   todayWeekRecapTitle: 'This week',
   todayWeekRecapBody: '{{sessions}} sessions · {{sets}} sets · {{streak}}-day streak',
+  todayHabitWeekCount: 'This week: {{count}} days logged',
   todayWeekRecapShareCard: 'Share card',
   todayWeekRecapCoach: 'Open AI weekly plan',
   todayWeekRecapHistory: 'History',
@@ -766,6 +769,7 @@ const es: TodayStrings = {
 };
 
 const zh: TodayStrings = {
+  todayHabitWeekCount: en.todayHabitWeekCount,
   todayWeekFailedTitle: en.todayWeekFailedTitle,
   todayWeekFailedDesc: en.todayWeekFailedDesc,
   todayWeekFailedRetry: en.todayWeekFailedRetry,
@@ -1033,6 +1037,7 @@ const zh: TodayStrings = {
 };
 
 const id: TodayStrings = {
+  todayHabitWeekCount: en.todayHabitWeekCount,
   todayWeekFailedTitle: en.todayWeekFailedTitle,
   todayWeekFailedDesc: en.todayWeekFailedDesc,
   todayWeekFailedRetry: en.todayWeekFailedRetry,
@@ -1315,6 +1320,7 @@ const id: TodayStrings = {
 };
 
 const th: TodayStrings = {
+  todayHabitWeekCount: en.todayHabitWeekCount,
   todayWeekFailedTitle: en.todayWeekFailedTitle,
   todayWeekFailedDesc: en.todayWeekFailedDesc,
   todayWeekFailedRetry: en.todayWeekFailedRetry,
@@ -1587,6 +1593,7 @@ const th: TodayStrings = {
 };
 
 const ar: TodayStrings = {
+  todayHabitWeekCount: en.todayHabitWeekCount,
   todayWeekFailedTitle: en.todayWeekFailedTitle,
   todayWeekFailedDesc: en.todayWeekFailedDesc,
   todayWeekFailedRetry: en.todayWeekFailedRetry,

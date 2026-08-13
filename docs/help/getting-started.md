@@ -19,7 +19,7 @@ If you see a **password screen** (`/private`), your cohort uses a pre-launch gat
 
 1. Go to **Welcome** or follow prompts after unlock.
 2. Complete **I-Day** — a short onboarding that sets your goals and equipment. No account is required.
-3. Land on **Today** (`/log`) — tap **Start**, then log a set.
+3. Land on **Today** (`/log`) — tap **Start**, then log a set. Today also shows an honest **this week: N days logged** count (zero is fine).
 
 ## Your first workout
 

@@ -26,6 +26,7 @@ When adding a doc:
 
 | File | Absorbed by / note |
 |------|---------------------|
+| [log/LOG-rotate-694-for-753.md](./log/LOG-rotate-694-for-753.md) | rotated 2026-08-13 for `.753` Habit week count + HABIT contract (`.694`) |
 | [log/LOG-rotate-693-for-752.md](./log/LOG-rotate-693-for-752.md) | rotated 2026-08-13 for `.752` Garage swap on the exercise row (`.693`) |
 | [log/LOG-rotate-692-for-751.md](./log/LOG-rotate-692-for-751.md) | rotated 2026-08-13 for `.751` Learn vs Strong / Hevy / Fitbod citation pages (`.692`) |
 | [log/LOG-rotate-691-for-750.md](./log/LOG-rotate-691-for-750.md) | rotated 2026-08-13 for `.750` Session history list (`.691`) |

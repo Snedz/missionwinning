@@ -57,6 +57,7 @@ import { buildTodayHeaderFocusLine } from "@/lib/today/buildTodayHeaderFocusLine
 import type { TodayBlockKey } from "@/lib/today/todayBlockPriority";
 import { useDismissed } from "@/hooks/useDismissed";
 import { formatLocalDateKey, localDateKey, localDateKeyFromIso } from '@/lib/time/localDate';
+import { countTrainDaysThisWeek } from '@/lib/habitWeekCount';
 import { buildContinuitySuggestions } from '@/lib/today/continuityStrip';
 import { ContinuityStrip } from '@/components/today/ContinuityStrip';
 import { peekCoachToday } from '@/lib/coach/peekCoachToday';
@@ -637,6 +638,7 @@ export function HomeTodayDashboard() {
           bodyweightTag: t('todayBodyweightTag', { defaultValue: 'bodyweight' }),
         })}
         streak={streak}
+        daysLoggedThisWeek={countTrainDaysThisWeek(workoutHistory)}
         userEmail={userEmail}
         hasFirstWorkout={workoutHistory.length > 0}
         action={action}

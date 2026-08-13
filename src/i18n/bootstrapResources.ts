@@ -41,6 +41,7 @@ export const BOOTSTRAP_EN: Record<string, string> = {
   welcomeSkipSignIn: 'Skip — start training',
   todayBasicEncouragement:
     'One step at a time. Log a set — Mission Coach shapes the week from your history.',
+  todayHabitWeekCount: 'This week: {{count}} days logged',
   todayCoachInviteEyebrow: 'AI weekly plan',
   todayCoachInviteTitle: 'Generate a free week of Mission Coach',
   todayCoachInviteBody:
