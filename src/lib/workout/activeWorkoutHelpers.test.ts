@@ -147,6 +147,10 @@ describe('activeWorkoutHelpers', () => {
       '6 × 65',
     ]);
     assert.deepEqual(formatPrevSetLabels(hist, 'none', 2), [null, null]);
+    const dipHist = historyWith('pull-ups', [{ reps: 8, weight: 20 }]);
+    assert.deepEqual(formatPrevSetLabels(dipHist, 'pull-ups', 1, { plusLoad: true }), [
+      '8 × BW+20',
+    ]);
     const card = readFileSync(
       path.join(import.meta.dirname, '..', '..', 'components', 'workout', 'ActiveExerciseCard.tsx'),
       'utf8'
@@ -287,6 +291,11 @@ describe('formatLoggedSetLine', () => {
 
   it('keeps weighted sets with the unit label', () => {
     assert.equal(formatLoggedSetLine(5, 100, 'kg'), '5 × 100 kg');
+  });
+
+  it('prints BW + added load when plusLoad', () => {
+    assert.equal(formatLoggedSetLine(8, 20, 'kg', 'BW', true), '8 × BW + 20 kg');
+    assert.equal(formatLoggedSetLine(8, 0, 'kg', 'BW', true), '8 × BW');
   });
 });
 
@@ -501,6 +510,31 @@ describe('buildConsoleSet', () => {
     assert.equal(view!.overloadCue.nextTarget?.weight, 100);
     assert.equal(view!.overloadCue.reasonLine, 'activeOverloadPrescribed');
     assert.equal(view!.overloadCue.nextLine, '5 × 100 kg');
+    assert.equal(view!.plusLoad, false);
+  });
+
+  it('plus-load last line is BW + belt, not a 20 kg bar', () => {
+    const view = buildConsoleSet({
+      exercises: [
+        {
+          exerciseId: 'pull-ups',
+          sets: [{ reps: 8, weight: 0, completed: false, kind: 'normal' }],
+        },
+      ],
+      nextSet: { exIdx: 0, setIdx: 0 },
+      workoutHistory: historyWith('pull-ups', [{ reps: 8, weight: 20 }]),
+      units: 'metric',
+      goalId: 'hypertrophy',
+      unitLabel: 'kg',
+      bodyweightLabel: 'BW',
+      resolveExerciseName: () => 'Pull-ups',
+      resolvePlusLoad: () => true,
+      resolveInput: (_e, _s, r, w) => ({ reps: r, weight: w }),
+      translateReason: (key) => key,
+    });
+    assert.ok(view);
+    assert.equal(view!.plusLoad, true);
+    assert.equal(view!.overloadCue.lastLine, '8 × BW + 20 kg');
   });
 
   it('ActiveWorkoutPage uses buildConsoleSet rather than an inline IIFE', () => {

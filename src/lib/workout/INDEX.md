@@ -9,6 +9,7 @@ Root-level `@/lib/{name}` paths re-export from here for compatibility — prefer
 1. `setKind.ts` — normal/warmup/drop; volume + PR eligibility  
 1b. `dropSet.ts` — start a drop of the last working set (−20% load, skip rest) (`.754`)  
 1c. `unilateral.ts` — optional L/R/Alt on a unilateral set (not a SetKind, not a pair) (`.755`)  
+1d. `bodyweightLoad.ts` — BW + added load on one row (`.758`); `weight` is belt/vest  
 2. `restTimer.ts` — rest seconds, clock format, defaults, last-rest per exercise (`.745`)  
 3. `superset.ts` — pair-of-two (`pairWithNext` / `unpair` / `pairMark` A1/A2), advance after log, rest gate (`.749`)  
 4. `nextSetTargets.ts` — Strong/Hevy-style next set suggestions  
@@ -40,6 +41,8 @@ Root-level `@/lib/{name}` paths re-export from here for compatibility — prefer
 | `setKind.test.ts` | Volume / PR eligibility |
 | `dropSet.test.ts` | Load rule / start plan / rest compose (`.754`) |
 | `unilateral.test.ts` | L/R/Alt persist, skip bilateral, suggest next side (`.755`) |
+| `bodyweightLoad.test.ts` | BW + belt format + plus-load detect (`.758`) |
+| `bodyweightLoadGuard.test.ts` | Free logger; skip-at-0; one formatter (`.758`) |
 | `restTimer.test.ts` | Clock + defaults + start seconds (`.292`) + last-rest recall / skip (`.745`) |
 | `superset.test.ts` | Pair persist, pair-of-two, A1/A2 marks, advance, rest gate (`.749`) |
 | `nextSetTargets.test.ts` | Progression targets |

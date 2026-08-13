@@ -64,6 +64,38 @@ test('an unrated set is assumed moderate, never the flattering end', () => {
   assert.equal(s.sessionRpe, 7);
 });
 
+test('bodyweight plus belt load counts added load as working volume', () => {
+  const belt = sessionLoad(
+    log({
+      daysAgo: 0,
+      sets: [{ reps: 8, weight: 20, rpe: 'hard' }],
+    })
+  );
+  assert.equal(belt.workingSets, 1);
+  assert.equal(belt.tonnage, 160, '8 × 20 kg belt is working volume');
+
+  const bwOnly = sessionLoad(
+    log({
+      daysAgo: 0,
+      sets: [{ reps: 8, weight: 0, rpe: 'hard' }],
+    })
+  );
+  assert.equal(bwOnly.workingSets, 1, 'skip load still logs a working set');
+  assert.equal(bwOnly.tonnage, 0);
+
+  const warmupBelt = sessionLoad(
+    log({
+      daysAgo: 0,
+      sets: [
+        { reps: 8, weight: 10, kind: 'warmup', rpe: 'easy' },
+        { reps: 8, weight: 20, rpe: 'hard' },
+      ],
+    })
+  );
+  assert.equal(warmupBelt.workingSets, 1);
+  assert.equal(warmupBelt.tonnage, 160, 'warmup belt must not inflate Coach volume');
+});
+
 test('bodyweight-only sessions do not divide by zero', () => {
   // Every set has weight 0, so tonnage weighting has nothing to weight by.
   const s = sessionLoad(

@@ -6,6 +6,7 @@
  */
 
 import { useEffect, useRef, useState, type RefObject } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Card, CardContent } from '@/components/ui/card';
 import { SetLogRow } from '@/components/workout/SetLogRow';
 import { SetLogTable } from '@/components/workout/SetLogTable';
@@ -26,6 +27,7 @@ import { getFormGuideOrCues } from '@/lib/formGuides';
 import { canStartDrop } from '@/lib/workout/dropSet';
 import { resolveRestForNextSet } from '@/lib/workout/restTimer';
 import { supersetLabel } from '@/lib/workout/superset';
+import { isPlusLoadExercise } from '@/lib/workout/bodyweightLoad';
 import { cn } from '@/lib/utils';
 import type { UnitsPref } from '@/lib/units';
 import type {
@@ -132,6 +134,7 @@ export function ActiveExerciseCard({
   activeSetSide,
   onSetSideChange,
 }: Props) {
+  const { t } = useTranslation();
   const isCompact = useIsCompact();
   const [menuOpen, setMenuOpen] = useState(false);
   const [footerOpen, setFooterOpen] = useState(false);
@@ -161,10 +164,14 @@ export function ActiveExerciseCard({
   });
 
   /** PREVIOUS column / row anchor — same labels for compact rows and desktop table. */
+  const plusLoad = isPlusLoadExercise(exercise);
   const prevLabels = formatPrevSetLabels(
     workoutHistory,
     exLog.exerciseId,
-    exLog.sets.length
+    exLog.sets.length,
+    plusLoad
+      ? { plusLoad: true, bodyweightLabel: t('activeSetBodyweight', { defaultValue: 'BW' }) }
+      : undefined
   );
 
   return (
@@ -211,6 +218,7 @@ export function ActiveExerciseCard({
                   weightLabel={unitLabel}
                   prevLabel={prevLabels[setIdx]}
                   pairMark={ssLabel}
+                  plusLoad={plusLoad}
                   onRate={(rpe) => onRate(setIdx, rpe)}
                   onRateRir={(rir) => onRateRir(setIdx, rir)}
                   onRateTempo={(tempo) => onRateTempo(setIdx, tempo)}
@@ -227,6 +235,7 @@ export function ActiveExerciseCard({
               prevLabels={prevLabels}
               pairMark={ssLabel}
               input={setInput}
+              plusLoad={plusLoad}
               onInputChange={onSetInputChange}
               onLog={() => nextSet && onLogSet(nextSet.setIdx)}
               onRate={onRate}
