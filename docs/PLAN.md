@@ -4,6 +4,86 @@ Living roadmap for the **everything app** (Freeletics Super Bundle → one PWA).
 
 **Vision comparison:** [VISION_STATUS.md](VISION_STATUS.md) — pillar scorecard, gaps, priorities.
 
+---
+
+## Frozen ship — Mission ID (`.732`) — 2026-08-13
+
+**Status: FROZEN.** Implement only this section. Do not expand. Label `2026.07-unified.732` (occupied `.698`–`.731` — do not steal). Draft PR. One Preview max (`[skip vercel]` on plan-only and fix-up commits). Excellence-Override: Mission ID, founder is 1.
+
+Founder 2026-08-13: give signed-in accounts a monotonic integer **Mission ID**. Prestige of *early*, not a leaderboard. **ID 1 is reserved for founder Snowden Zeng** (GitHub `Snedz`).
+
+### What it is
+
+| | |
+|--|--|
+| Name | **Mission ID** — display `#N` |
+| Kind | Server-issued monotonic integer, unique per signed-in account |
+| ID 1 | Founder only (GitHub login `Snedz`, already public in this repo; plus existing `BETA_ADMIN_EMAILS` / `isBetaAdminEmail` — do **not** invent a new public email, do **not** put EIN or passwords in git) |
+| Next | 2, 3, … via a Postgres sequence starting at 2 |
+| Guest / offline logger | **No Mission ID.** Show nothing. Free logger stays ungated |
+| Call-sign 00–99 | Unchanged cosmetic. Mission ID is a different number |
+| Not | Rank, XP, a board, a GitHub id, “low id flex”, anything on Train/Today/log path. Coach never reads it |
+
+### Hard bans (this ship)
+
+No `PRIVATE_MODE` production flip. No feed / Top 8. No standing on Train/Today. No EIN. Do not steal `.698`. Do not rewrite #728 Preview gate (`proxy.ts` / private-gate session unlock).
+
+### Data (server owns the mint — ECONOMY / IDENTITY: no client grant)
+
+New table `public.mission_ids`:
+
+- `user_id uuid PRIMARY KEY REFERENCES auth.users(id) ON DELETE CASCADE`
+- `mission_id integer NOT NULL UNIQUE CHECK (mission_id >= 1)`
+- `claimed_at timestamptz NOT NULL DEFAULT now()`
+- Sequence `mission_id_seq` **START 2** (so sequential never issues 1)
+- RLS: authenticated **SELECT own row only**. No INSERT/UPDATE/DELETE policies for `anon`/`authenticated`. Writes are service-role only
+- Protect like referrals: a client that can insert its own row can forge an early id
+
+Claim algorithm (pure, then executed with service role):
+
+1. No session → no id (do not mint)
+2. Row exists for `user_id` → return it (idempotent)
+3. Else if founder identity (GitHub login `Snedz` case-insensitive from `user.identities` / `user_metadata`, **or** `isBetaAdminEmail`) **and** mission_id `1` is free → insert `(user_id, 1)`
+4. Else insert `nextval('mission_id_seq')` (≥ 2)
+5. Unique races: `user_id` conflict → re-select; `mission_id = 1` conflict → fall through to sequential (ID 1 cannot be issued twice)
+
+No client POST of an id. No localStorage mint. No demo-mode fallback that invents an id.
+
+### API
+
+`GET /api/account/mission-id` — session cookie, rate-limit per user, service-role claim, JSON `{ ok: true, missionId: number }`. **401** unsigned · **503** admin/DB unconfigured · **502** opaque on write failure. GET only — no body schema that accepts an id.
+
+### UI
+
+- Athlete Page (`/profile`) and Account (`/account`): when signed in and an id exists, show label **Mission ID** and `#N` (`data-testid="mission-id"`). 0 red actions
+- Guest / 401 / 503: render **nothing** (not a dash, not “sign in for an id” on Train/Today)
+- Train (`/active`) and Today (`/log`): no Mission ID copy, no fetch, no import
+- Call-sign editor stays 00–99. Do not merge the two numbers
+- Copy: “Mission ID” / `#1`. No “GitHub id”, no Tobi/Elon names, no “low id flex”
+- Not on share card, boards, nudges, I-Day, or Coach
+
+### Coach / log boundary
+
+Mission ID lives in identity (social projection), not the planner. Add `src/lib/identity/missionId.ts` and `src/lib/missionIdServer.ts` to `SOCIAL_ROOTS`. Source-scan Train/Today/Coach/`src/lib/coach/` for `missionId` / `Mission ID`. Do not put Mission ID in `packages/mw-core` (planner walk starts there).
+
+### Tests (must fail if the rule is deleted)
+
+1. ID 1 cannot be issued twice (second founder claim while 1 is taken → sequential, never another 1). Unique constraint in the migration
+2. Client cannot mint (GET-only route; no client insert/write of `mission_id`; no localStorage key)
+3. Guest has no id (`decide` with no user → null; unsigned UI helper → null)
+4. Athlete Page shows `#1` when the founder profile (`Snedz`) is the current user in tests (`formatMissionId(1) === '#1'` + Profile mounts the line)
+5. `check-build-label` `.732`
+
+### Files (this list is the scope)
+
+`src/lib/identity/missionId.ts` (+ test) · `src/lib/missionIdServer.ts` (+ routetest) · `app/api/account/mission-id/route.ts` · `src/hooks/useMissionId.ts` · `src/components/profile/MissionIdView.tsx` · Athlete Page + Account + `ProfileAccountCard` · migration `supabase/migrations/20260813_mission_ids.sql` · runbook + `accountDataRegistry` · i18n `athleteLocales` · IDENTITY contract + identity INDEX + help FAQ · `domainBoundary` SOCIAL_ROOTS · docs/API + app/api INDEX · build label `.732` · LOG + CONTEXT `## Now` (rotate to stay in budget)
+
+### Out of scope
+
+Android, public URL / S4b, boards, feed, calling it a rank, seeding a UUID (founder’s `auth.users` id is not in git — claim-on-first-GET is the seed).
+
+---
+
 ## Design north stars (UI + product)
 
 | Source | What we borrow |
