@@ -144,27 +144,27 @@ Keep fresh (~3 month citation half-life): FAQ answers + vs-pages on our domain. 
 
 ---
 
-## "Where did you find us?" (Get notified / signup)
+## "Where did you find us?" (Get notified)
 
-**Spec only.** Growth owns the question copy. **Beta Pilot** owns putting it on the Get notified form (and later signup). Do not invent analytics from last-click — **ChatGPT is undercounted ~8x.**
+**Copy SoT:** this section. **Form owner:** Beta Pilot (spec rev 2: mission-ops `memory/beta-ops/AEO_FOUND_US_SPEC.md`). Growth reviews only if this option list drifts. Do not invent analytics from last-click — **ChatGPT is undercounted ~8x.**
 
-**Question:** `Where did you find us?` (optional, one pick)
+**Question:** `Where did you find us?` (optional). Cold Get notified waitlist only — not the invitee access-code path.
 
-**Options (exact labels):**
+**Options (id → label). Do not list X or LinkedIn.**
 
-- ChatGPT / other AI chat
-- Reddit
-- YouTube
-- Google / search
-- A friend
-- Product Hunt / Hacker News
-- Other
+| id | Label |
+|----|-------|
+| `chatgpt` | ChatGPT / other AI chat |
+| `reddit` | Reddit |
+| `youtube` | YouTube |
+| `search` | Google / search |
+| `friend` | A friend |
+| `ph_hn` | Product Hunt / Hacker News |
+| `other` | Other (then one-line text, max 120) |
 
-Do **not** list X or LinkedIn as citation sources (noise / never cited). "Other" catches them.
+**Store:** `found_us:<id>` on existing `leads.referrer` (no new column). `found_us:other:<trimmed text>` when Other. Skip the field → omit (keep first-touch UTM). Post-flip: compare this to PostHog `utm_source`.
 
-Store on the lead row (e.g. `leads.found_us` or equivalent). Post-flip: compare this field to PostHog `utm_source` — expect ChatGPT to show here far more than in UTMs.
-
-While gated: ask on Get notified only. No "we're live."
+While gated: Get notified only. No "we're live." No form PR on this Growth PR.
 
 ---
 
