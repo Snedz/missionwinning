@@ -49,6 +49,8 @@ type Props = {
    * Hevy Experience: PREVIOUS is the visible row anchor — never omit the slot.
    */
   prevLabel?: string | null;
+  /** A1/A2 pair mark — prefix on the Set cell so the row stays identifiable. */
+  pairMark?: string | null;
   onRate: (rpe: 'easy' | 'med' | 'hard') => void;
 };
 
@@ -58,6 +60,7 @@ export function SetLogRow({
   isNext,
   weightLabel,
   prevLabel = null,
+  pairMark = null,
   onRate,
 }: Props) {
   const { t } = useTranslation();
@@ -101,11 +104,13 @@ export function SetLogRow({
     >
       <span
         className={cn(
-          'w-[1.25rem] shrink-0 text-[13px] font-semibold tabular-nums',
+          'shrink-0 text-[13px] font-semibold tabular-nums',
+          pairMark ? 'min-w-[2.75rem]' : 'w-[1.25rem]',
           set.completed || isNext ? 'text-foreground' : 'text-muted-foreground'
         )}
+        data-pair-mark={pairMark ?? undefined}
       >
-        {setNumber}
+        {pairMark ? `${pairMark}·${setNumber}` : setNumber}
       </span>
 
       {/* PREVIOUS — set-row metric anchor (Hevy web withholds; we show). */}

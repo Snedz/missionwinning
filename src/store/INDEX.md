@@ -23,9 +23,10 @@
 
 | Action | Effect |
 |--------|--------|
-| `startWorkout` / `startEmptyWorkout` | Begin active session; `startWorkout` seeds per-exercise notes from history (`.718`) |
+| `startWorkout` / `startEmptyWorkout` | Begin active session; `startWorkout` seeds per-exercise notes from history (`.748`) |
 | `setExerciseNote` | Write / clear the one-line diary on an active exercise |
-| `logSet` / `logSetAndAdvance` | Record set; superset advance |
+| `logSet` / `logSetAndAdvance` | Record set; pair advance (A then B) |
+| `toggleSupersetWithNext` / `unlinkSuperset` | Pair exactly two consecutive; unlink clears both peers (`.749`) |
 | `completeActiveWorkout` | Mint `clientId`, push to history, enqueue the cloud write on the outbox, analytics, leaderboard push |
 | `loadFromCloud` | Merge Supabase history with local |
 | `cancelActiveWorkout` | Discard in-progress |

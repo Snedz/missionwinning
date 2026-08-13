@@ -4,6 +4,65 @@ Living roadmap for the **everything app** (Freeletics Super Bundle → one PWA).
 
 **Vision comparison:** [VISION_STATUS.md](VISION_STATUS.md) — pillar scorecard, gaps, priorities.
 
+---
+
+## Frozen plan — `.719` logger supersets (2026-08-13)
+
+> **Frozen.** Implement only this section. Plan commit is `[skip vercel]`.
+> Label: `2026.07-unified.719` (occupied `.698`–`.718` — do not steal).
+> Draft PR, one Preview max. Excellence-Override: logger supersets.
+> Offline, no account. Set-log table stays first paint. No social. No XP.
+> Speech never owns this.
+
+### Investigate (done — do not invent a second group id)
+
+Existing grouping already lives on the free logger:
+
+| Layer | What exists |
+|-------|-------------|
+| Type | `ActiveExerciseLog.supersetGroup?: string` |
+| Lib | `src/lib/workout/superset.ts` — `getSupersetPeers`, `supersetLabel` (`SS A`/`SS B`), `advanceAfterLog` (peer at same set index), `shouldRestAfterLog` (skip rest mid-round) |
+| Store | `toggleSupersetWithNext` / `unlinkSuperset`; `logSetAndAdvance` already calls `advanceAfterLog`; `partialize` already persists `activeWorkout` |
+| Rest | `planLogSetRest` in `activeSessionFinish.ts` already gates on `shouldRestAfterLog` — **do not edit** `restTimer.ts` or that finish helper |
+| UI | Overflow “Superset w/ next” / “Unlink”; card badge `SS A`; poster-red left edge on the card |
+
+Hevy/Strong gap: athletes expect **A1/A2 pair marks**, **exactly two consecutive** exercises, **A then B then rest**, and **the set row stays** (one table — not a second Hevy-style card stack). Current `SS A` is the wrong mark; `toggle` can merge into 3+ giant sets; `unlink` clears only one exercise (orphan peer); no persist / log-order store tests; the set table itself does not show the pair.
+
+### Ship (only this)
+
+1. **Reuse `supersetGroup`.** Add pure helpers in `superset.ts` (no second id):
+   - `pairMark(exercises, exIdx)` → `A1`/`A2`/`B1`… — groups ordered by first index; slot 1 = earlier exercise, slot 2 = later. Replace `supersetLabel` output (keep the export as an alias of `pairMark` so existing callers stay).
+   - `pairWithNext(exercises, exIdx)` — pair **exactly two consecutive**. New shared id on those two only; any prior partner of either is cleared (no giant sets).
+   - `unpair(exercises, exIdx)` — clear `supersetGroup` on **all peers** of that group.
+2. **Store wiring only** (`workoutStore.ts`): `toggleSupersetWithNext` / `unlinkSuperset` call the pure helpers. `removeExerciseFromActive` unpairs the remaining peer so a delete cannot leave an orphan. Do not change `logSet` / `logSetAndAdvance` / rest timer / repeat-last / notes.
+3. **Table first paint.** Keep `SetLogTable` / `SetLogRow` as the set list. Surface the pair mark on the existing Set cell (`A1`/`A2` prefix + set number) and the existing header badge. `data-pair-mark` on the card/table for tests. Paper, ink, one red, Archivo, radius 0 — no new card chrome, no Hevy card clone, no second table.
+4. **Log order** stays A → B → rest via existing `advanceAfterLog` + `shouldRestAfterLog`. Lock it with tests; do not re-implement rest.
+5. **Persist** is the active session on device (`partialize.activeWorkout`). Pair survives JSON round-trip / store write. Do not add template/builder pairing, completed-log pairing, cloud schema, or account gates.
+6. **Speech never owns this.** Keep the overflow menuitem. Do not add voice / Ask / coach-chat ownership of pair/unpair.
+
+### Tests
+
+- `superset.test.ts`: pair persist (JSON round-trip keeps `supersetGroup`); `pairWithNext` is exactly two and does not merge giant sets; `unpair` clears both peers; `pairMark` is `A1`/`A2`; log order A then B; rest after B only.
+- `workoutStore.test.ts`: toggle writes a shared group; unlink clears both; `logSetAndAdvance` after pairing returns the peer at the same set index.
+- `check-build-label` `.719`. LOG + CONTEXT in the same implement commit.
+
+### Docs / ship protocol
+
+- `APP_BUILD_LABEL` → `2026.07-unified.719`
+- LOG heading `## 2026-08-13 — Supersets on the set log (\`.719\`)` + rotate oldest live entry
+- CONTEXT `## Now` one `.719` bullet; keep Status table; ≤25 bullets
+- Help: one line on first-workout set log (pair two consecutive, A then B then rest)
+- `src/lib/workout/INDEX.md` if the helper list changes
+
+### Hard bans
+
+- No `PRIVATE_MODE` / `FREE_BETA` / EIN / secrets
+- Do not steal `.698` #477 or `.699` #478
+- Do not edit rest timer, repeat-last, notes, vs-pages, field test, plate math, #506
+- No social. No XP. No speech ownership.
+
+---
+
 ## Design north stars (UI + product)
 
 | Source | What we borrow |

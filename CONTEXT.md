@@ -16,7 +16,7 @@ One screen of truth for any AI tool or human joining cold. Read this, then [AGEN
 
 ---
 
-## Now (2026-08-13 · web `2026.07-unified.748` · Android `1.24.1`)
+## Now (2026-08-13 · web `2026.07-unified.749` · Android `1.24.1`)
 
 > The ONLY "where we are" block in the repo — [ORCHESTRATION.md](ORCHESTRATION.md) points here.
 >
@@ -292,6 +292,7 @@ One screen of truth for any AI tool or human joining cold. Read this, then [AGEN
 > and `.746` dropped `.684` detail (full text remains in LOG.md / archive)
 > and `.747` dropped `.685` detail (full text remains in LOG.md / archive)
 > and `.748` dropped `.689` detail (full text remains in LOG.md / archive)
+> and `.749` dropped `.690` detail (full text remains in LOG.md / archive)
 > to [CONTEXT-now-2026-07-30.md](docs/archive/CONTEXT-now-2026-07-30.md) after this
 > block reached **79 bullets / 103KB**. A status doc that only grows stops being read.
 
@@ -313,6 +314,7 @@ One screen of truth for any AI tool or human joining cold. Read this, then [AGEN
 > | gitleaks | **green — and scanning for the first time.** It had never scanned anything: on a `pull_request` event the action lists the PR's commits, the job declared no `permissions:` block, and it 403'd (`pull_requests=read`) before opening a file. Fixed by a `permissions:` block (`.224` carrying `.255`). It scans **only the PR's own commits**, so commit `8ea3527a`'s real Solana treasury address — scrubbed from the working file, still in history — is out of its scope. That finding stands, deliberately not allowlisted; it was never what made this check red. |
 
 - **Excellence:** unscored · — · [docs/EXCELLENCE_RESULT.md](docs/EXCELLENCE_RESULT.md) — Horizon W phone sign-off home; surface PRs need `status: pass` or `Excellence-Override` (`.669`).
+- **`.749`:** (`2026.07-unified.749`) **Supersets on the set log** — Pair exactly two consecutive exercises (A1/A2) on the existing set table; shared rest after B; unlink clears both peers. Originally #509 / `.719`.
 - **`.748`:** (`2026.07-unified.748`) **Exercise notes on the set log** — Always-visible one-line diary after the set rows; last cue prefills at start/add/swap; empty is sticky this session. Originally #507 / `.718`.
 - **`.747`:** (`2026.07-unified.747`) **Repeat last session from the log** — Today/Train empty Start copies the last completed log (same exercises + last loads) or opens a blank logger; resume and live Coach stay ahead. Originally #510 / `.717`.
 - **`.746`:** (`2026.07-unified.746`) **F-017 first set without an account** — I-Day Continue lands Today (no sign-in step); Train never mounts SignInPrompt; header Sign in hidden until first workout and never on `/active`; `getUser` skipped when hidden. Originally #523 / `.730`.
@@ -327,7 +329,6 @@ One screen of truth for any AI tool or human joining cold. Read this, then [AGEN
 - **`.693`:** (`2026.07-unified.693`) **Coach log-cited why-this-week** — adapt/generate rationale cites log inputs · rule · effect on `CoachAdaptBanner` / Coach week (W1 inspectability; no chat chrome).
 - **`.692`:** (`2026.07-unified.692`) **Production smoke ratchet** — CI + gate-smoke lock privacy/terms English floors + `/compare` → `/welcome` (no product redo of `.653`/`.668`).
 - **`.691`:** (`2026.07-unified.691`) **Welcome Skip hard-nav** — I-Day finish uses `window.location.assign` when gate on so proxy demands cookie (no soft bypass) (W1).
-- **`.690`:** (`2026.07-unified.690`) **Admin invite share → `/private`** — `buildInviteShareLink` matches email `/private?invite=` path so invitee chrome paints (W1).
 - **`.669`:** (`2026.07-unified.669`) **Excellence RESULT + agent stop-rule** — `excellenceGate` path policy + `check-excellence-gate` on gate/PR CI; wedge still ships while unscored.
 - **Horizon W + full-launch override (2026-08-05).** Wedge excellence still required; agents may ship rewards + full surface honesty. Fuel estimate accuracy remains.
 - **Free-first beta (~4 weeks):** LLC + EIN pending — **no Bundle UI** + **full depth unlocked**; More/rail **Pillars demoted until first workout** (F-004 / `.695`) — still no Bundle ([docs/FREE_BETA.md](docs/FREE_BETA.md)).

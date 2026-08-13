@@ -15,7 +15,7 @@ import type {
   WorkoutExerciseTemplate,
 } from "@/types";
 import { countsTowardVolume } from "@/lib/workout/setKind";
-import { advanceAfterLog } from "@/lib/workout/superset";
+import { advanceAfterLog, pairWithNext, unpair } from "@/lib/workout/superset";
 import { getUserWorkoutHistory, getUserWorkoutsUpdatedSince, getUser } from "@/lib/supabase";
 import { recordWorkoutCompleted } from "@/lib/challenges";
 import { applyWorkoutRewards } from "@/lib/rewards/apply";
@@ -422,12 +422,12 @@ export const useWorkoutStore = create<WorkoutState>()(
       unlinkSuperset: (exerciseIndex) => {
         set((s) => {
           if (!s.activeWorkout) return s;
-          const exercises = s.activeWorkout.exercises.map((ex, i) => {
-            if (i !== exerciseIndex) return ex;
-            const { supersetGroup: _, ...rest } = ex;
-            return rest;
-          });
-          return { activeWorkout: { ...s.activeWorkout, exercises } };
+          return {
+            activeWorkout: {
+              ...s.activeWorkout,
+              exercises: unpair(s.activeWorkout.exercises, exerciseIndex),
+            },
+          };
         });
       },
 
@@ -436,13 +436,12 @@ export const useWorkoutStore = create<WorkoutState>()(
           if (!s.activeWorkout) return s;
           const nextIdx = exerciseIndex + 1;
           if (nextIdx >= s.activeWorkout.exercises.length) return s;
-          const exercises = [...s.activeWorkout.exercises];
-          const current = exercises[exerciseIndex];
-          const next = exercises[nextIdx];
-          const shared = current.supersetGroup ?? next.supersetGroup ?? `ss-${Date.now()}`;
-          exercises[exerciseIndex] = { ...current, supersetGroup: shared };
-          exercises[nextIdx] = { ...next, supersetGroup: shared };
-          return { activeWorkout: { ...s.activeWorkout, exercises } };
+          return {
+            activeWorkout: {
+              ...s.activeWorkout,
+              exercises: pairWithNext(s.activeWorkout.exercises, exerciseIndex),
+            },
+          };
         });
       },
 
@@ -491,7 +490,9 @@ export const useWorkoutStore = create<WorkoutState>()(
           return {
             activeWorkout: {
               ...s.activeWorkout,
-              exercises: s.activeWorkout.exercises.filter((_, i) => i !== exerciseIndex),
+              exercises: unpair(s.activeWorkout.exercises, exerciseIndex).filter(
+                (_, i) => i !== exerciseIndex
+              ),
             },
           };
         });
