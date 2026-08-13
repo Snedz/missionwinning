@@ -31,6 +31,8 @@ import { STORAGE_KEYS } from "@/lib/storage/keys";
 import { browserStorage, dedupeWrites, elapsedSecondsFrom } from "@/store/persistDedupe";
 import {
   FALLBACK_REST_SECONDS,
+  rememberLastRest,
+  rememberedRestAfterAdjust,
   resolveStartRestSeconds,
 } from "@/lib/workout/restTimer";
 
@@ -52,6 +54,8 @@ interface WorkoutState {
   restSecondsRemaining: number;
   restTimerActive: boolean;
   restTimerInitialSeconds: number;
+  /** Exercise the running rest belongs to — memory only, like other restTimer*. */
+  restExerciseId: string | null;
   elapsedSeconds: number;
   /** False until persist finishes merging localStorage (avoids Start wipe race). */
   hasHydrated: boolean;
@@ -95,7 +99,7 @@ interface WorkoutState {
   setExerciseNote: (exerciseIndex: number, note: string) => void;
   /** Session-level jot — becomes journal fragments at finish, never syncs. */
   setSessionNote: (note: string) => void;
-  startRestTimer: (seconds?: number) => void;
+  startRestTimer: (seconds?: number, exerciseId?: string) => void;
   adjustRestTimer: (delta: number) => void;
   tickRestTimer: () => void;
   stopRestTimer: () => void;
@@ -128,6 +132,7 @@ export const useWorkoutStore = create<WorkoutState>()(
       restSecondsRemaining: 0,
       restTimerActive: false,
       restTimerInitialSeconds: FALLBACK_REST_SECONDS,
+      restExerciseId: null,
       elapsedSeconds: 0,
       hasHydrated: false,
 
@@ -169,6 +174,7 @@ export const useWorkoutStore = create<WorkoutState>()(
           restSecondsRemaining: 0,
           restTimerActive: false,
           restTimerInitialSeconds: FALLBACK_REST_SECONDS,
+          restExerciseId: null,
         });
       },
 
@@ -185,6 +191,7 @@ export const useWorkoutStore = create<WorkoutState>()(
           restSecondsRemaining: 0,
           restTimerActive: false,
           restTimerInitialSeconds: FALLBACK_REST_SECONDS,
+          restExerciseId: null,
         });
       },
 
@@ -196,6 +203,7 @@ export const useWorkoutStore = create<WorkoutState>()(
           restSecondsRemaining: 0,
           restTimerActive: false,
           restTimerInitialSeconds: FALLBACK_REST_SECONDS,
+          restExerciseId: null,
         });
       },
 
@@ -255,6 +263,7 @@ export const useWorkoutStore = create<WorkoutState>()(
           restSecondsRemaining: 0,
           restTimerActive: false,
           restTimerInitialSeconds: FALLBACK_REST_SECONDS,
+          restExerciseId: null,
         }));
 
         recordWorkoutCompleted(log);
@@ -513,24 +522,35 @@ export const useWorkoutStore = create<WorkoutState>()(
         });
       },
 
-      startRestTimer: (seconds?: number) => {
+      startRestTimer: (seconds?: number, exerciseId?: string) => {
         // `.292` — never invent 30s. One fallback lives in restTimer.ts.
         const sec = resolveStartRestSeconds(seconds);
+        const id = (exerciseId?.trim() || get().restExerciseId || '').trim() || null;
+        if (id) rememberLastRest(id, sec);
         set({
           restSecondsRemaining: sec,
           restTimerInitialSeconds: sec,
           restTimerActive: true,
+          restExerciseId: id,
         });
       },
 
       adjustRestTimer: (delta) => {
         set((s) => {
           const next = Math.max(0, s.restSecondsRemaining + delta);
+          const remembered = rememberedRestAfterAdjust({
+            previousInitial: s.restTimerInitialSeconds,
+            nextRemaining: next,
+          });
+          if (remembered != null && s.restExerciseId) {
+            rememberLastRest(s.restExerciseId, remembered);
+          }
           return {
             restSecondsRemaining: next,
             restTimerActive: next > 0,
             restTimerInitialSeconds:
               next > s.restTimerInitialSeconds ? next : s.restTimerInitialSeconds,
+            restExerciseId: next > 0 ? s.restExerciseId : null,
           };
         });
       },
@@ -543,14 +563,15 @@ export const useWorkoutStore = create<WorkoutState>()(
             if (typeof navigator !== 'undefined' && navigator.vibrate) {
               navigator.vibrate([120, 60, 120]);
             }
-            return { restSecondsRemaining: 0, restTimerActive: false };
+            return { restSecondsRemaining: 0, restTimerActive: false, restExerciseId: null };
           }
           return { restSecondsRemaining: next };
         });
       },
 
       stopRestTimer: () => {
-        set({ restSecondsRemaining: 0, restTimerActive: false });
+        // Skip — leftover seconds must not become next rest.
+        set({ restSecondsRemaining: 0, restTimerActive: false, restExerciseId: null });
       },
 
       tickElapsed: () => {

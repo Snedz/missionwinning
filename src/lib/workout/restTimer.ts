@@ -8,7 +8,7 @@
  */
 
 import { STORAGE_KEYS } from '@/lib/storage/keys';
-import { readRaw, writeRaw } from '@/lib/storage/safeStorage';
+import { readJson, readRaw, writeJson, writeRaw } from '@/lib/storage/safeStorage';
 
 export const REST_PRESETS = [60, 90, 120, 180] as const;
 export type RestPreset = (typeof REST_PRESETS)[number];
@@ -17,6 +17,13 @@ export type RestPreset = (typeof REST_PRESETS)[number];
 export const FALLBACK_REST_SECONDS = 90;
 
 const DEFAULT_REST_KEY = STORAGE_KEYS.defaultRestSec;
+const LAST_REST_KEY = STORAGE_KEYS.lastRestByExercise;
+
+/** Drop oldest ids when the per-exercise map would grow without bound. */
+export const LAST_REST_MAX_EXERCISES = 80;
+
+const LAST_REST_MIN_SECONDS = 15;
+const LAST_REST_MAX_SECONDS = 600;
 
 const COMPOUND_KEYWORDS = ['squat', 'deadlift', 'bench', 'press', 'row', 'pullup', 'pull-up', 'clean', 'snatch'];
 
@@ -99,4 +106,80 @@ export function shouldScrollAfterRestEnds(wasActive: boolean, isActive: boolean)
 /** Active log rest: named exercise uses shared resolver, else the 90s fallback. */
 export function restSecondsForExercise(exerciseName: string | undefined, fallback = 90): number {
   return exerciseName ? resolveRestSeconds(exerciseName) : fallback;
+}
+
+function clampLastRestSeconds(seconds: number): number | null {
+  if (!Number.isFinite(seconds)) return null;
+  return Math.max(LAST_REST_MIN_SECONDS, Math.min(LAST_REST_MAX_SECONDS, Math.round(seconds)));
+}
+
+function readLastRestMap(): Record<string, number> {
+  const raw = readJson<unknown>(LAST_REST_KEY, {});
+  if (!raw || typeof raw !== 'object' || Array.isArray(raw)) return {};
+  const out: Record<string, number> = {};
+  for (const [id, value] of Object.entries(raw as Record<string, unknown>)) {
+    if (typeof value === 'number') out[id] = value;
+  }
+  return out;
+}
+
+/** Persist last chosen rest for an exercise. No-op on empty id or non-finite seconds. */
+export function rememberLastRest(exerciseId: string, seconds: number): void {
+  const id = exerciseId.trim();
+  if (!id) return;
+  const sec = clampLastRestSeconds(seconds);
+  if (sec == null) return;
+  const map = readLastRestMap();
+  delete map[id];
+  map[id] = sec;
+  const keys = Object.keys(map);
+  if (keys.length > LAST_REST_MAX_EXERCISES) {
+    for (const stale of keys.slice(0, keys.length - LAST_REST_MAX_EXERCISES)) {
+      delete map[stale];
+    }
+  }
+  writeJson(LAST_REST_KEY, map);
+}
+
+/** Stored last rest for this exercise, or null when none / corrupt. */
+export function recallLastRest(exerciseId: string): number | null {
+  const id = exerciseId.trim();
+  if (!id) return null;
+  return clampLastRestSeconds(readLastRestMap()[id] ?? NaN);
+}
+
+/**
+ * Next rest: last rest for this exercise wins; else name heuristic ∪ session default.
+ */
+export function resolveRestForNextSet(params: {
+  exerciseId?: string;
+  exerciseName?: string;
+}): number {
+  if (params.exerciseId) {
+    const last = recallLastRest(params.exerciseId);
+    if (last != null) return last;
+  }
+  return restSecondsForExercise(params.exerciseName);
+}
+
+/** Skip / stop never persist leftover seconds. Named so the skip test cannot be vacuous. */
+export function shouldRememberRestOnSkip(): boolean {
+  return false;
+}
+
+/**
+ * +15s that grows the started duration → remember the new remaining.
+ * Mid-countdown +15s below the initial does not rewrite last rest.
+ */
+export function rememberedRestAfterAdjust(params: {
+  previousInitial: number;
+  nextRemaining: number;
+}): number | null {
+  if (!Number.isFinite(params.nextRemaining) || !Number.isFinite(params.previousInitial)) {
+    return null;
+  }
+  if (params.nextRemaining > params.previousInitial) {
+    return clampLastRestSeconds(params.nextRemaining);
+  }
+  return null;
 }

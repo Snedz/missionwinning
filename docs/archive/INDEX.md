@@ -12,6 +12,7 @@ When adding a doc:
 
 | File | Absorbed by / note |
 |------|---------------------|
+| [log/LOG-rotate-680-for-745.md](./log/LOG-rotate-680-for-745.md) | rotated 2026-08-13 for `.745` rest timer last-rest (`.680`) |
 | [PRE_LAUNCH_PLAN.md](./PRE_LAUNCH_PLAN.md) | [LAUNCH_RUNBOOK.md](../LAUNCH_RUNBOOK.md) |
 | [UX_UNIFIED_PLAN.md](./UX_UNIFIED_PLAN.md) | Historical UX plan |
 | [LAUNCH_READY.md](./LAUNCH_READY.md) | Greened items → runbook § prep |
@@ -25,6 +26,7 @@ When adding a doc:
 
 | File | Absorbed by / note |
 |------|---------------------|
+| [log/LOG-rotate-680-for-745.md](./log/LOG-rotate-680-for-745.md) | rotated 2026-08-13 for `.745` rest timer last-rest (`.680`) |
 | [log/LOG-rotate-679-for-744.md](./log/LOG-rotate-679-for-744.md) | rotated 2026-08-13 for `.744` Dependabot security batch (`.679`) |
 | [log/LOG-rotate-669-for-744.md](./log/LOG-rotate-669-for-744.md) | rotated 2026-08-13 for `.744` Dependabot security batch |
 | [log/LOG-rotate-670-for-743.md](./log/LOG-rotate-670-for-743.md) | rotated 2026-08-13 for `.743` Cursor-local CI unblock (`.670`) |
@@ -33,6 +35,7 @@ When adding a doc:
 | [log/LOG-rotate-659-for-685.md](./log/LOG-rotate-659-for-685.md) | rotated 2026-08-12 for `.685` preserve next= through private gate |
 | [log/LOG-rotate-661-for-690.md](./log/LOG-rotate-661-for-690.md) | rotated 2026-08-12 for `.690` admin invite share → /private |
 | [log/LOG-rotate-662-for-691.md](./log/LOG-rotate-662-for-691.md) | rotated 2026-08-12 for `.691` Welcome Skip hard-nav private gate |
+| [log/LOG-rotate-669-for-715.md](./log/LOG-rotate-669-for-715.md) | rotated 2026-08-13 for `.715` rest timer last-rest |
 | [log/LOG-rotate-668-for-697.md](./log/LOG-rotate-668-for-697.md) | rotated 2026-08-12 for `.697` session-expired fail-open mid-set Log/rest |
 | [log/LOG-rotate-667-for-696.md](./log/LOG-rotate-667-for-696.md) | rotated 2026-08-12 for `.696` local-first set-log + rest |
 | [log/LOG-rotate-666-for-695.md](./log/LOG-rotate-666-for-695.md) | rotated 2026-08-12 for `.695` demote six-pillar until first workout |

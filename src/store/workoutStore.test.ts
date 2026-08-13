@@ -35,6 +35,7 @@ test('workoutStore', async (t) => {
       restSecondsRemaining: 0,
       restTimerActive: false,
       restTimerInitialSeconds: 90,
+      restExerciseId: null,
       elapsedSeconds: 0,
       // hasHydrated is deliberately not reset — faking it here would mask the
       // hydration regression the first assertion below guards.
@@ -253,6 +254,44 @@ test('workoutStore', async (t) => {
     useWorkoutStore.getState().adjustRestTimer(-100);
     assert.equal(useWorkoutStore.getState().restSecondsRemaining, 0);
     assert.equal(useWorkoutStore.getState().restTimerActive, false);
+  });
+
+  await t.test('startRestTimer with exerciseId remembers last rest; skip does not overwrite', async () => {
+    reset();
+    const { recallLastRest } = await import('@/lib/workout/restTimer');
+    useWorkoutStore.getState().startRestTimer(120, 'squats');
+    assert.equal(useWorkoutStore.getState().restExerciseId, 'squats');
+    assert.equal(recallLastRest('squats'), 120);
+
+    useWorkoutStore.getState().tickRestTimer();
+    useWorkoutStore.getState().tickRestTimer();
+    useWorkoutStore.getState().stopRestTimer();
+    assert.equal(useWorkoutStore.getState().restTimerActive, false);
+    assert.equal(useWorkoutStore.getState().restExerciseId, null);
+    // Skip leftover (118s) must not replace the chosen 120.
+    assert.equal(recallLastRest('squats'), 120);
+  });
+
+  await t.test('+15s that grows the initial remembers the new duration', async () => {
+    reset();
+    const { recallLastRest } = await import('@/lib/workout/restTimer');
+    useWorkoutStore.getState().startRestTimer(90, 'curl');
+    useWorkoutStore.getState().adjustRestTimer(15);
+    assert.equal(useWorkoutStore.getState().restTimerInitialSeconds, 105);
+    assert.equal(recallLastRest('curl'), 105);
+  });
+
+  await t.test('stopRestTimer source never writes last rest', async () => {
+    const { readFileSync } = await import('node:fs');
+    const { join } = await import('node:path');
+    const src = readFileSync(join(import.meta.dirname, 'workoutStore.ts'), 'utf8');
+    const stop = src.match(/stopRestTimer:\s*\(\)\s*=>\s*\{[\s\S]*?\n\s*\},/);
+    assert.ok(stop, 'stopRestTimer missing');
+    assert.doesNotMatch(
+      stop![0],
+      /rememberLastRest/,
+      'skip/stop must not persist leftover rest — mutant that writes here must fail'
+    );
   });
 
   await t.test('startRestTimer without seconds uses the shared fallback (≥60s), not 30', () => {
