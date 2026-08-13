@@ -21,6 +21,7 @@
 | [help/premium-and-billing.md](help/premium-and-billing.md) | Super Bundle |
 | [help/privacy-and-data.md](help/privacy-and-data.md) | Data & consent |
 | [help/faq.md](help/faq.md) | FAQ |
+| [help/mission-server.md](help/mission-server.md) | Garage text rooms |
 | [help/troubleshooting.md](help/troubleshooting.md) | Common fixes |
 
 ---

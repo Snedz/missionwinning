@@ -1,0 +1,18 @@
+{
+  "navServer": "Garaje",
+  "moreServerDesc": "Text rooms on this device",
+  "serverEyebrow": "Garage",
+  "serverTitle": "Garage",
+  "serverSubtitle": "Text rooms on this device. Not a feed.",
+  "serverChannelTrain": "train",
+  "serverChannelGarage": "garage",
+  "serverChannelOffTopic": "off-topic",
+  "serverEmpty": "Aún no hay mensajes. Quedan en este dispositivo.",
+  "serverComposerPlaceholder": "Message #{{channel}}",
+  "serverSend": "Enviar",
+  "serverMemberSelf": "Tú",
+  "serverMemberCount": "1 member",
+  "serverChannelsLabel": "Channels",
+  "serverMembersLabel": "Members",
+  "serverLocalNote": "Saved on this device. Cloud fan-out only if you are signed in."
+}

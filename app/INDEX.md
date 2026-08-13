@@ -31,6 +31,7 @@
 | `/library` | `LibraryPage.tsx` |
 | `/history` | `HistoryPage.tsx` |
 | `/leaderboard` | `LeaderboardPage.tsx` |
+| `/server` | `ServerPage.tsx` — Mission Server garage text rooms (parkable; not a tab) |
 | `/benchmarks` | `BenchmarksPage.tsx` |
 
 ### Other pillars & info

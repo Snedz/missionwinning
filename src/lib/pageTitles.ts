@@ -38,6 +38,7 @@ export const ROUTE_LABELS: { href: string; label: string; labelKey: string }[] =
   { href: '/library', labelKey: 'navLibrary', label: 'Library' },
   { href: '/history', labelKey: 'navHistory', label: 'History' },
   { href: '/leaderboard', labelKey: 'navLeaderboard', label: 'Leaderboard' },
+  { href: '/server', labelKey: 'navServer', label: 'Garage' },
   { href: '/benchmarks', labelKey: 'navReadiness', label: 'Readiness tests' },
   { href: '/assessments', labelKey: 'navHealth', label: 'Health screen' },
   { href: '/calculators', labelKey: 'navCalculators', label: 'Calculators' },

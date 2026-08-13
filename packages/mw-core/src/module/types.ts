@@ -11,7 +11,8 @@ export type ModuleScope =
   | 'health.write'
   | 'economy.earn'
   | 'economy.read'
-  | 'social.project';
+  | 'social.project'
+  | 'social.channel.write';
 
 export type ModuleSurface = 'web' | 'android' | 'ios' | 'game';
 
@@ -36,6 +37,7 @@ const SCOPE_SET = new Set<string>([
   'economy.earn',
   'economy.read',
   'social.project',
+  'social.channel.write',
 ]);
 
 /** Module ids: lowercase segments joined by dots, at least two segments. */
@@ -73,4 +75,14 @@ export const HEALTH_TRAIN_MANIFEST: ModuleManifest = {
   surfaces: ['web', 'android'],
   freeCore: true,
   entry: '/active',
+};
+
+/** Garage text rooms — free_core; not a paywall. Web PWA only in v1. */
+export const SOCIAL_SERVER_MANIFEST: ModuleManifest = {
+  id: 'social.server',
+  version: '1.0.0',
+  scopes: ['identity.read', 'social.channel.write'],
+  surfaces: ['web'],
+  freeCore: true,
+  entry: '/server',
 };

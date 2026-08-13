@@ -27,6 +27,7 @@
 | `LibraryPage.tsx` | `/library` |
 | `BenchmarksPage.tsx` | `/benchmarks` |
 | `LeaderboardPage.tsx` | `/leaderboard` |
+| `ServerPage.tsx` | `/server` — Garage text rooms (parkable; More → You) |
 
 ### Mission Coach (AI)
 

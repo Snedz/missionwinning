@@ -16,6 +16,7 @@ export const ROUTE_TITLES = {
   benchmarks: 'Benchmarks',
   history: 'Workout History',
   leaderboard: 'Leaderboard',
+  server: 'Garage',
   profile: 'Your Record',
   account: 'Account & Settings',
   bundle: 'Super Bundle',

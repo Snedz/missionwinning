@@ -41,6 +41,7 @@
 | **Compliance** | `compliance/` | Vanta-lite control catalog probes — [docs/COMPLIANCE.md](../../docs/COMPLIANCE.md) |
 | **Destructive UX** | `holdToConfirm.ts` | Hold-to-confirm helpers — [docs/DESTRUCTIVE_UX.md](../../docs/DESTRUCTIVE_UX.md) |
 | **Leaderboard** | `leaderboard/` subfolder | Local + cloud leaderboard |
+| **Mission Server** | [`social/`](social/INDEX.md) | Garage text rooms — local-first; coach/logger must not import |
 
 ## Subfolders (one concern each)
 
@@ -52,6 +53,7 @@
 | `workout/` | Logger, merge, rest, PR, victory — [workout/INDEX.md](workout/INDEX.md) |
 | `wearables/` | OAuth + hubs + BLE HR — [wearables/INDEX.md](wearables/INDEX.md) |
 | `leaderboard/` | Leaderboard compute/sync helpers — [leaderboard/INDEX.md](leaderboard/INDEX.md) |
+| `social/` | Mission Server garage text rooms — [social/INDEX.md](social/INDEX.md) |
 | `storage/` | **The only** direct localStorage access — [storage/INDEX.md](storage/INDEX.md) |
 | `sync/` | Durable outbox for cloud writes — [sync/INDEX.md](sync/INDEX.md) |
 

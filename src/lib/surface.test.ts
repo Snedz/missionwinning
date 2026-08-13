@@ -40,6 +40,7 @@ test('surface', async (t) => {
       for (const s of ['move', 'mind', 'track', 'learn', 'guidebook'] as Surface[]) {
         assert.equal(isSurfaceEnabled(s), true, `${s} should be reachable by default`);
       }
+      assert.equal(isSurfaceEnabled('server'), true, 'Mission Server is on by default and parkable');
     });
   });
 
@@ -53,7 +54,7 @@ test('surface', async (t) => {
 
   await t.test('wedge parks every optional surface', () => {
     withSurfaces('wedge', () => {
-      for (const s of ['move', 'mind', 'track', 'learn', 'guidebook', 'benchmarks', 'calculators', 'programs'] as Surface[]) {
+      for (const s of ['move', 'mind', 'track', 'learn', 'guidebook', 'benchmarks', 'calculators', 'programs', 'server'] as Surface[]) {
         assert.equal(isSurfaceEnabled(s), false, `${s} should be parked in wedge mode`);
       }
       assert.equal(isSurfaceEnabled('america'), false);
@@ -108,6 +109,7 @@ test('surface', async (t) => {
   });
 
   await t.test('paths resolve to their surface, longest match first', () => {
+    assert.equal(surfaceForPath('/server'), 'server');
     assert.equal(surfaceForPath('/learn'), 'learn');
     assert.equal(surfaceForPath('/learn/course'), 'learn');
     assert.equal(surfaceForPath('/learn/guide'), 'guidebook');
@@ -128,7 +130,11 @@ test('surface', async (t) => {
       assert.equal(isPathEnabled('/api/wearables/status'), false);
       assert.equal(isPathEnabled('/leaderboard'), true);
       assert.equal(isPathEnabled('/move'), true);
+      assert.equal(isPathEnabled('/server'), true, 'Mission Server on by default');
       assert.equal(isPathEnabled('/active'), true);
+    });
+    withSurfaces('wedge', () => {
+      assert.equal(isPathEnabled('/server'), false, '/server parks with wedge');
     });
   });
 

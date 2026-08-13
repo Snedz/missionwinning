@@ -49,6 +49,8 @@ npm run export-locales     # TS + packs → public/locales/
 | `moveLocales.ts` | Move pillar |
 | `mindLocales.ts` | Mind pillar |
 | `learnLocales.ts` | Learn pillar |
+| `rewardsLocales.ts` | Rewards / XP copy |
+| `serverLocales.ts` | Mission Server / Garage |
 | `learnContentLocales.ts` | Learn path lesson overrides |
 | `guidebookLocales.ts` | Guidebook chrome + content keys |
 | `builderLocales.ts` | Workout builder |

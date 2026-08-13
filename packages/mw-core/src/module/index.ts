@@ -4,4 +4,5 @@ export {
   parseModuleId,
   assertModuleManifest,
   HEALTH_TRAIN_MANIFEST,
+  SOCIAL_SERVER_MANIFEST,
 } from './types';
