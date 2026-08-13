@@ -1,17 +1,17 @@
 # SEO Prep Index — Mission Winning
 
 **Status:** draft 2026-08-12 — not live marketing.  
-**PRIVATE_MODE:** ON. These files are prep only. Do not treat as published campaigns, traction claims, or organic results.
+**PRIVATE_MODE:** ON until EIN. These files are prep only. Do not treat as published campaigns, traction claims, or organic results.
 
 Pitch wedge only: free forever offline workout logger (no account) + Mission Coach / plans from logs (no wearable). ICP: train-anywhere lifter (home / park / garage, bodyweight or minimal kit, subscription-fatigued).
 
 Do **not** lead with everything-app, six pillars as hero, superapp, WeChat, AR, wallet, America/MAHA, or medical claims as hero.
 
-### MatrAIx gates
+### MatrAIx + BETA_LANGUAGE gates
 
 - **F-005:** No in-app social Feed / community merchandising in beta or SEO CTAs — Train+Coach only.
 - **F-016:** No Bundle / checkout as hero; free forever offline logger is the wedge.
-- **F-008:** Invite-only / private beta framing while gated — no open-beta or "we're live/public" claims.
+- **F-008:** **Free beta** framing while gated (Enter with code / Get notified). No invite-only, no open-beta, no "we're live/public" claims.
 
 ---
 

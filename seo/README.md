@@ -1,6 +1,6 @@
 # SEO Workspace — missionwinning.com
 
-Working folder for SEO notes, exports, briefs, and reports. Agents: read this first, then [STRATEGY.md](../STRATEGY.md) (positioning, wedge customer, SEO KPIs) and [docs/SEO_ANALYTICS.md](../docs/SEO_ANALYTICS.md) (events + funnel setup). Prep index: [PREP_INDEX.md](./PREP_INDEX.md). GSC checklist: [gsc/PREP_CHECKLIST.md](./gsc/PREP_CHECKLIST.md).
+Working folder for SEO notes, exports, briefs, and reports. Agents: read this first, then [STRATEGY.md](../STRATEGY.md) (positioning, wedge customer, SEO KPIs) and [docs/SEO_ANALYTICS.md](../docs/SEO_ANALYTICS.md) (events + funnel setup). Prep index: [PREP_INDEX.md](./PREP_INDEX.md). GSC checklist: [gsc/PREP_CHECKLIST.md](./gsc/PREP_CHECKLIST.md). Beta copy: mission-ops `memory/BETA_LANGUAGE.md`.
 
 ## Project context
 
@@ -10,20 +10,20 @@ Working folder for SEO notes, exports, briefs, and reports. Agents: read this fi
 | **OpenSEO project** | `Default` — id `abdf037a-2175-421d-8781-dcc56a0393d0` (US / en) |
 | **Search Console** | Connected natively in OpenSEO (`sc-domain:missionwinning.com`) — use `get_search_console_performance`, no CSV exports needed |
 | **Market** | Global English first (wherever Reddit/PH/IndieHackers outreach lands); product built for low-resource markets (BR, IN, NG, ID, EE, RU) — multi-language SEO later |
-| **Site stage** | Pre-public-launch (Aug 2026). `PRIVATE_MODE` gate still on → GSC shows 0 impressions. Organic baseline starts when the gate flips. Invite-only / private beta — not open beta. |
+| **Site stage** | Pre-public-launch (Aug 2026). `PRIVATE_MODE` gate still on until EIN → GSC shows 0 impressions. Organic baseline starts when the gate flips. **Free beta** (enter with code / Get notified) — not invite-only, not open beta. |
 | **Stack** | Next.js PWA on Vercel. `app/sitemap.ts` + `app/robots.ts` exist. |
 
 ## MatrAIx gates (Growth copy)
 
 - **F-005:** Train+Coach / free forever offline logger only — no in-app social Feed / community / everything-app merchandising.
 - **F-016:** Do not lead with Super Bundle / checkout; free forever offline logger is the wedge.
-- **F-008:** While `PRIVATE_MODE=true`, no open-beta / "we're live/public" status claims.
+- **F-008:** While `PRIVATE_MODE=true`, **free beta** framing. No invite-only, no open-beta / "we're live/public" status claims. CTAs: Enter with code · Get notified.
 
 ## SEO-relevant public routes (honest)
 
 **Indexable while gated (typical):** `/guide/*` · `/exercises/*` · `/calculators/1rm` · `/calculators/tdee` · `/calculators/strength-standards` · `/paths` · `/press` · `/welcome`
 
-**Gated / not a public SEO landing:** `/` → `/private` while `PRIVATE_MODE` on.
+**Gated / not a public SEO landing:** `/` → `/private` while `PRIVATE_MODE` on (Enter with code).
 
 **Not live — do not pitch:** `/compare` (removed; craft re-ship gate) · `/bundle` (absent during free beta).
 
