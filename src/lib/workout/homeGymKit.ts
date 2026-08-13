@@ -101,7 +101,7 @@ export function loadHomeGymKit(): HomeGymKit | null {
   }
 }
 
-export function kitToStorageEquipment(kit: HomeGymKit): string {
+export function kitToStorageEquipment(kit: HomeGymKit): 'bodyweight' | 'dumbbells' | 'full-gym' {
   if (kitHas(kit, 'barbell') || kitHas(kit, 'rack') || kitHas(kit, 'plates')) {
     return 'full-gym';
   }
@@ -148,7 +148,8 @@ function needsRack(ex: Exercise): boolean {
   if (normalizeEq(ex.equipment) !== 'barbell') return false;
   const s = `${ex.id} ${ex.name}`.toLowerCase();
   if (/split[\s-]?squat|hack[\s-]?squat/.test(s)) return false;
-  return /\b(squat|bench)\b/.test(s);
+  // Catalog id is `squats` (plural) — `\bsquat\b` misses it.
+  return /squat|bench/.test(s);
 }
 
 /**
