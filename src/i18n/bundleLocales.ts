@@ -1,5 +1,7 @@
 /** Super Bundle merchandising copy — merged into i18n `common` namespace. */
 
+import { CONTENT_FLOORS } from '@/lib/contentFloors';
+
 type BundleStrings = {
   bundleBadge: string;
   bundleHeadline: string;
@@ -123,11 +125,11 @@ const en: BundleStrings = {
   bundlePillarTrack: 'Track',
   bundlePillarLearn: 'Learn',
   bundlePillarTrainFree: 'Full logger, builder, library, benchmarks',
-  bundlePillarTrainPremium: 'AI Coach, unlimited plans, hybrid programming',
+  bundlePillarTrainPremium: 'Log-cited why-this-week + adapt — not a chatbot',
   bundlePillarFuelFree: 'Macro log, water, 20 recipes',
   bundlePillarFuelPremium: 'Fuel Coach — macro-synced 7-day plan + training-load adaptation',
-  bundlePillarMoveFree: '10 guided mobility flows + timer',
-  bundlePillarMovePremium: '18 timed recovery flows — press play, follow cues',
+  bundlePillarMoveFree: `${CONTENT_FLOORS.moveFree} guided mobility flows + timer`,
+  bundlePillarMovePremium: `${CONTENT_FLOORS.movePremium} timed recovery flows — press play, follow cues`,
   bundlePillarMindFree: 'Breathing timer + 10 guided sessions',
   bundlePillarMindPremium: '22 guided sessions — timed player with pause/skip',
   bundlePillarTrackFree: 'Manual activity log + weekly stats',
@@ -380,11 +382,11 @@ const it: BundleStrings = {
   bundleFreeForeverBody:
     'Ogni pilastro include un livello gratuito: allenamenti, ricette, mobilità, respirazione, log attività e percorsi di apprendimento. Premium sblocca programmi avanzati, biblioteca completa e priorità sync.',
   bundlePillarTrainFree: 'Logger completo, builder, biblioteca, benchmark',
-  bundlePillarTrainPremium: 'AI Coach, piani illimitati, programmazione ibrida',
+  bundlePillarTrainPremium: 'Why di questa settimana dai log + adapt — non una chatbot',
   bundlePillarFuelFree: 'Log macro, acqua, 20 ricette',
   bundlePillarFuelPremium: 'Fuel Coach — piano 7 giorni sincronizzato ai macro + adattamento al carico',
-  bundlePillarMoveFree: '10 flow di mobilità guidati + timer',
-  bundlePillarMovePremium: '18 flow di recupero a tempo — premi play, segui i cue',
+  bundlePillarMoveFree: `${CONTENT_FLOORS.moveFree} flow di mobilità guidati + timer`,
+  bundlePillarMovePremium: `${CONTENT_FLOORS.movePremium} flow di recupero a tempo — premi play, segui i cue`,
   bundlePillarMindFree: 'Timer respirazione + 10 sessioni guidate',
   bundlePillarMindPremium: '22 sessioni guidate — player a tempo con pausa/salto',
   bundlePillarTrackFree: 'Log attività manuale + statistiche settimanali',
@@ -429,11 +431,11 @@ const ru: BundleStrings = {
   bundleFreeForeverBody:
     'Каждый столп включает бесплатный уровень: тренировки, рецепты, мобильность, дыхание, лог активности и учебные пути. Premium открывает продвинутые программы, полную библиотеку и приоритет синхронизации.',
   bundlePillarTrainFree: 'Полный логгер, конструктор, библиотека, бенчмарки',
-  bundlePillarTrainPremium: 'AI Coach, безлимитные планы, гибридное программирование',
+  bundlePillarTrainPremium: 'Why этой недели из логов + adapt — не чатбот',
   bundlePillarFuelFree: 'Лог макросов, вода, 20 рецептов',
   bundlePillarFuelPremium: 'Fuel Coach — 7-дневный план по макросам + адаптация к нагрузке',
-  bundlePillarMoveFree: '10 guided mobility flows + таймер',
-  bundlePillarMovePremium: '18 timed recovery flows — play, следуй подсказкам',
+  bundlePillarMoveFree: `${CONTENT_FLOORS.moveFree} guided mobility flows + таймер`,
+  bundlePillarMovePremium: `${CONTENT_FLOORS.movePremium} timed recovery flows — play, следуй подсказкам`,
   bundlePillarMindFree: 'Таймер дыхания + 10 guided sessions',
   bundlePillarMindPremium: '22 guided sessions — таймер с паузой/пропуском',
   bundlePillarTrackFree: 'Ручной лог активности + недельная статистика',
@@ -478,11 +480,11 @@ const ko: BundleStrings = {
   bundleFreeForeverBody:
     '모든 기둥에 무료 등급 포함: 운동, 레시피, 모빌리티, 호흡, 활동 로그, 학습 경로. 프리미엄은 고급 프로그램, 전체 라이브러리, 동기화 우선권을 엽니다.',
   bundlePillarTrainFree: '전체 로거, 빌더, 라이브러리, 벤치마크',
-  bundlePillarTrainPremium: 'AI 코치, 무제한 플랜, 하이브리드 프로그래밍',
+  bundlePillarTrainPremium: '로그가 인용한 이번 주 why + adapt — 챗봇 아님',
   bundlePillarFuelFree: '매크로 로그, 수분, 레시피 20개',
   bundlePillarFuelPremium: 'Fuel Coach — 매크로 동기화 7일 플랜 + 훈련 부하 적응',
-  bundlePillarMoveFree: '가이드 모빌리티 플로우 10개 + 타이머',
-  bundlePillarMovePremium: '타이머 회복 플로우 18개 — 재생하고 큐를 따르세요',
+  bundlePillarMoveFree: `가이드 모빌리티 플로우 ${CONTENT_FLOORS.moveFree}개 + 타이머`,
+  bundlePillarMovePremium: `타이머 회복 플로우 ${CONTENT_FLOORS.movePremium}개 — 재생하고 큐를 따르세요`,
   bundlePillarMindFree: '호흡 타이머 + 가이드 세션 10개',
   bundlePillarMindPremium: '가이드 세션 22개 — 일시정지/건너뛰기 타이머 플레이어',
   bundlePillarTrackFree: '수동 활동 로그 + 주간 통계',
@@ -527,11 +529,11 @@ const ja: BundleStrings = {
   bundleFreeForeverBody:
     '各柱に無料層あり：ワークアウト、レシピ、モビリティ、呼吸、活動ログ、学習パス。プレミアムで上級プログラム、全ライブラリ、同期優先を解放。',
   bundlePillarTrainFree: 'フルロガー、ビルダー、ライブラリ、ベンチマーク',
-  bundlePillarTrainPremium: 'AIコーチ、無制限プラン、ハイブリッドプログラミング',
+  bundlePillarTrainPremium: 'ログに基づく今週のwhy + adapt — チャットボットではない',
   bundlePillarFuelFree: 'マクロログ、水分、レシピ20件',
   bundlePillarFuelPremium: 'Fuel Coach — マクロ同期7日プラン + トレーニング負荷適応',
-  bundlePillarMoveFree: 'ガイド付きモビリティフロー10本 + タイマー',
-  bundlePillarMovePremium: 'タイムド回復フロー18本 — 再生してキューに従う',
+  bundlePillarMoveFree: `ガイド付きモビリティフロー${CONTENT_FLOORS.moveFree}本 + タイマー`,
+  bundlePillarMovePremium: `タイムド回復フロー${CONTENT_FLOORS.movePremium}本 — 再生してキューに従う`,
   bundlePillarMindFree: '呼吸タイマー + ガイドセッション10本',
   bundlePillarMindPremium: 'ガイドセッション22本 — 一時停止/スキップ付きプレイヤー',
   bundlePillarTrackFree: '手動活動ログ + 週間統計',

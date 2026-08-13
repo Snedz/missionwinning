@@ -2,7 +2,7 @@
 
 **Status:** frozen 2026-08-13. Catalog volume in this file is for specialists.
 
-**Overnight leftover (2026-08-13):** Move catalog is **#497**; Victory Move seam is **#491**. Do not collide. Implement [SUPER_BUNDLE_SHOP_HONESTY_PLAN.md](SUPER_BUNDLE_SHOP_HONESTY_PLAN.md) only (shop counts, Coach why-line merch, FAQ — label `.705`).
+**Overnight leftover (2026-08-13):** Specialists landed (#497 Move, #499 Fuel, #501 Mind, #502 Learn, #498 shop). Do not collide. Implement [SUPER_BUNDLE_SHOP_HONESTY_PLAN.md](SUPER_BUNDLE_SHOP_HONESTY_PLAN.md) only (Move table counts + Train why + vs-stack help — label `.707`).
 
 **Status (parent):** frozen 2026-08-13. Do not add catalog volume, new tabs, a trial, à la carte pillars, or a food database.
 
