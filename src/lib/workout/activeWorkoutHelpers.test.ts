@@ -511,6 +511,7 @@ describe('buildConsoleSet', () => {
     assert.equal(view!.overloadCue.reasonLine, 'activeOverloadPrescribed');
     assert.equal(view!.overloadCue.nextLine, '5 × 100 kg');
     assert.equal(view!.plusLoad, false);
+    assert.deepEqual(view!.lastSetGhost, { reps: 8, weight: 80 });
   });
 
   it('plus-load last line is BW + belt, not a 20 kg bar', () => {
@@ -535,6 +536,68 @@ describe('buildConsoleSet', () => {
     assert.ok(view);
     assert.equal(view!.plusLoad, true);
     assert.equal(view!.overloadCue.lastLine, '8 × BW + 20 kg');
+  });
+
+  it('first-ever exercise has no last-set ghost', () => {
+    const view = buildConsoleSet({
+      exercises: [
+        {
+          exerciseId: 'bench-press',
+          sets: [{ reps: 10, weight: 0, completed: false, kind: 'normal' }],
+        },
+      ],
+      nextSet: { exIdx: 0, setIdx: 0 },
+      workoutHistory: [],
+      units: 'metric',
+      goalId: 'general',
+      unitLabel: 'kg',
+      bodyweightLabel: 'BW',
+      resolveExerciseName: () => 'Bench Press',
+      resolveInput: (_e, _s, r, w) => ({ reps: r, weight: w }),
+      translateReason: (_k, d) => d,
+    });
+    assert.ok(view);
+    assert.equal(view!.lastSetGhost, null);
+  });
+
+  it('ghost is last working set, not warmup W', () => {
+    const view = buildConsoleSet({
+      exercises: [
+        {
+          exerciseId: 'bench-press',
+          sets: [{ reps: 10, weight: 0, completed: false, kind: 'normal' }],
+        },
+      ],
+      nextSet: { exIdx: 0, setIdx: 0 },
+      workoutHistory: [
+        {
+          id: 'h1',
+          workoutName: 'Past',
+          startedAt: new Date(Date.now() - 86_400_000).toISOString(),
+          completedAt: new Date(Date.now() - 86_400_000).toISOString(),
+          durationSeconds: 3600,
+          totalVolume: 400,
+          exercises: [
+            {
+              exerciseId: 'bench-press',
+              sets: [
+                { reps: 10, weight: 40, kind: 'warmup' },
+                { reps: 5, weight: 80, kind: 'normal' },
+              ],
+            },
+          ],
+        },
+      ],
+      units: 'metric',
+      goalId: 'general',
+      unitLabel: 'kg',
+      bodyweightLabel: 'BW',
+      resolveExerciseName: () => 'Bench Press',
+      resolveInput: (_e, _s, r, w) => ({ reps: r, weight: w }),
+      translateReason: (_k, d) => d,
+    });
+    assert.ok(view);
+    assert.deepEqual(view!.lastSetGhost, { reps: 5, weight: 80 });
   });
 
   it('ActiveWorkoutPage uses buildConsoleSet rather than an inline IIFE', () => {

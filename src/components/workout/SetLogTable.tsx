@@ -21,6 +21,8 @@ import { SetRirSelect } from '@/components/workout/SetRirSelect';
 import { SetTempoField } from '@/components/workout/SetTempoField';
 import { formatPlusLoadWeightCell } from '@/lib/workout/bodyweightLoad';
 import { cn } from '@/lib/utils';
+import type { LastSetGhost } from '@/lib/workout/lastSetGhost';
+import { LastSetGhostButton } from '@/components/workout/LastSetGhostButton';
 
 type Props = {
   sets: LoggedSet[];
@@ -40,6 +42,9 @@ type Props = {
   /** Optional ecc/pause/con — never required (`.734`). */
   onRateTempo: (setIdx: number, tempo: SetTempo | undefined) => void;
   plusLoad?: boolean;
+  /** Last working set (not warmup). One tap accepts into the active dial. */
+  lastSetGhost?: LastSetGhost | null;
+  onAcceptGhost?: (target: { reps: number; weight: number }) => void;
 };
 
 const cell = 'px-2 py-1.5 align-middle';
@@ -62,12 +67,15 @@ export function SetLogTable({
   onRateRir,
   onRateTempo,
   plusLoad = false,
+  lastSetGhost,
+  onAcceptGhost,
 }: Props) {
   const { t } = useTranslation();
 
   return (
+    <div className="w-full max-w-[640px]">
     <table
-      className="w-full max-w-[640px] border-collapse text-sm"
+      className="w-full border-collapse text-sm"
       data-testid="set-log-table"
       data-pair-mark={pairMark ?? undefined}
     >
@@ -285,5 +293,14 @@ export function SetLogTable({
         })}
       </tbody>
     </table>
+    {onAcceptGhost && activeSetIdx >= 0 ? (
+      <LastSetGhostButton
+        ghost={lastSetGhost}
+        dial={input}
+        onAccept={onAcceptGhost}
+        tone="paper"
+      />
+    ) : null}
+    </div>
   );
 }

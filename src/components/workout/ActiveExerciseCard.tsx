@@ -23,6 +23,7 @@ import {
   resolveExerciseNextTarget,
   formatPrevSetLabels,
 } from '@/lib/workout/activeWorkoutHelpers';
+import { resolveLastSetGhost } from '@/lib/workout/lastSetGhost';
 import { getFormGuideOrCues } from '@/lib/formGuides';
 import { canStartDrop } from '@/lib/workout/dropSet';
 import { resolveRestForNextSet } from '@/lib/workout/restTimer';
@@ -173,6 +174,7 @@ export function ActiveExerciseCard({
       ? { plusLoad: true, bodyweightLabel: t('activeSetBodyweight', { defaultValue: 'BW' }) }
       : undefined
   );
+  const lastSetGhost = resolveLastSetGhost(workoutHistory, exLog.exerciseId);
 
   return (
     <Card
@@ -241,6 +243,11 @@ export function ActiveExerciseCard({
               onRate={onRate}
               onRateRir={onRateRir}
               onRateTempo={onRateTempo}
+              lastSetGhost={lastSetGhost}
+              onAcceptGhost={(target) => {
+                onSetInputChange('reps', target.reps);
+                onSetInputChange('weight', target.weight);
+              }}
             />
           </div>
         )}

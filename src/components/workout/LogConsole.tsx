@@ -28,6 +28,8 @@ import {
   shouldShowSetKindExpand,
   visibleSetKinds,
 } from '@/lib/workout/loggerSpeed';
+import type { LastSetGhost } from '@/lib/workout/lastSetGhost';
+import { LastSetGhostButton } from '@/components/workout/LastSetGhostButton';
 
 /** Progressive-overload strip under the exercise name (last · next · why). */
 export type LogConsoleOverloadCue = {
@@ -66,6 +68,9 @@ type Props = {
   onUseNext?: (target: { reps: number; weight: number }) => void;
   /** Bodyweight move — weight is added load (belt/vest); 0 is skip. */
   plusLoad?: boolean;
+  /** Last working set (not warmup). One tap accepts into the dial. */
+  lastSetGhost?: LastSetGhost | null;
+  onAcceptGhost?: (target: { reps: number; weight: number }) => void;
 };
 
 /** 48 × 52px, 2px light rule — the ink ground needs a lighter border than paper. */
@@ -153,6 +158,8 @@ export function LogConsole({
   onLog,
   onUseNext,
   plusLoad = false,
+  lastSetGhost,
+  onAcceptGhost,
 }: Props) {
   const { t } = useTranslation();
   /** Outdoor default: Work only. Expand once to pick warmup/fail/drop. */
@@ -209,6 +216,15 @@ export function LogConsole({
         </div>
       ) : legacyLine ? (
         <p className="mt-1 truncate text-xs tabular-nums text-neutral-400">{legacyLine}</p>
+      ) : null}
+
+      {onAcceptGhost ? (
+        <LastSetGhostButton
+          ghost={lastSetGhost}
+          dial={{ reps, weight }}
+          onAccept={onAcceptGhost}
+          tone="ink"
+        />
       ) : null}
 
       {offerUseNext && nextTarget ? (
