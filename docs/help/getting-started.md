@@ -30,7 +30,7 @@ If you see a **password screen** (`/private`), your cohort uses a pre-launch gat
 
 ## Sign in (optional but recommended)
 
-Sign in with **Google, Apple, Microsoft, Facebook, or email** from Profile or Welcome (available options depend on your cohort):
+Sign in with **Google, Apple, Microsoft, Facebook, or email** from **Account** (More → Account) or Welcome (available options depend on your cohort):
 
 - Sync workouts across devices
 - Cloud backup for coach plan and journey progress

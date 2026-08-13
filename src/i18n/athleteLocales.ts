@@ -23,9 +23,8 @@
 
 const ATHLETE_EN: Record<string, string> = {
   // --- /profile — the Athlete Page ---
-  athletePageTitle: 'Your record',
+  athletePageTitle: 'You',
   athletePageSubtitle: 'Authored here. Counted honestly. Yours on this device.',
-  athletePageSettingsTitle: 'Settings',
   athletePageSettingsLink: 'Account & settings',
 
   // --- Identity ---
@@ -61,6 +60,7 @@ const ATHLETE_EN: Record<string, string> = {
   // --- The table (S3 MySpace interests) ---
   athleteTableTitle: 'About training',
   athleteTableBody: 'Who you are as an athlete — picks only, stays on this device.',
+  athleteTableEdit: 'Edit table',
   athleteTableUnset: '—',
   athleteTableSave: 'Save',
   athleteTableSaved: 'Saved on this device.',
@@ -147,9 +147,8 @@ const al = (over: Record<string, string>): Record<string, string> => ({
 const BY_LANG: Record<string, Record<string, string>> = {
   en: ATHLETE_EN,
   es: al({
-    athletePageTitle: 'Tu registro',
+    athletePageTitle: 'Tú',
     athletePageSubtitle: 'Escrito aquí. Contado con honestidad. Tuyo en este dispositivo.',
-    athletePageSettingsTitle: 'Ajustes',
     athletePageSettingsLink: 'Cuenta y ajustes',
     athleteIdentityTitle: 'Indicativo',
     athleteIdentityNameLabel: 'Nombre',
@@ -176,6 +175,7 @@ const BY_LANG: Record<string, Record<string, string>> = {
     careerLineExercises: 'Ejercicios',
     careerLineBestWeek: 'Mejor semana',
     careerLineDays: 'Días entrenados',
+    athleteTableEdit: 'Editar tabla',
     accountEyebrow: 'Cuenta',
     accountTitle: 'Ajustes',
     accountSubtitle:
@@ -184,9 +184,8 @@ const BY_LANG: Record<string, Record<string, string>> = {
     moreAccountDesc: 'Ajustes, notificaciones, copia de seguridad',
   }),
   fr: al({
-    athletePageTitle: 'Ton relevé',
+    athletePageTitle: 'Toi',
     athletePageSubtitle: 'Écrit ici. Compté honnêtement. À toi, sur cet appareil.',
-    athletePageSettingsTitle: 'Réglages',
     athletePageSettingsLink: 'Compte et réglages',
     athleteIdentityTitle: 'Indicatif',
     athleteIdentityNameLabel: 'Nom',
@@ -213,6 +212,7 @@ const BY_LANG: Record<string, Record<string, string>> = {
     careerLineExercises: 'Exercices',
     careerLineBestWeek: 'Meilleure semaine',
     careerLineDays: 'Jours d’entraînement',
+    athleteTableEdit: 'Modifier le tableau',
     accountEyebrow: 'Compte',
     accountTitle: 'Réglages',
     accountSubtitle:
@@ -221,9 +221,8 @@ const BY_LANG: Record<string, Record<string, string>> = {
     moreAccountDesc: 'Réglages, notifications, sauvegarde',
   }),
   pt: al({
-    athletePageTitle: 'O teu registo',
+    athletePageTitle: 'Tu',
     athletePageSubtitle: 'Escrito aqui. Contado com honestidade. Teu neste dispositivo.',
-    athletePageSettingsTitle: 'Definições',
     athletePageSettingsLink: 'Conta e definições',
     athleteIdentityTitle: 'Indicativo',
     athleteIdentityNameLabel: 'Nome',
@@ -250,6 +249,7 @@ const BY_LANG: Record<string, Record<string, string>> = {
     careerLineExercises: 'Exercícios',
     careerLineBestWeek: 'Melhor semana',
     careerLineDays: 'Dias treinados',
+    athleteTableEdit: 'Editar tabela',
     accountEyebrow: 'Conta',
     accountTitle: 'Definições',
     accountSubtitle:
