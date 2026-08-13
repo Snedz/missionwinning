@@ -16,6 +16,8 @@
 
 import { describe, it } from 'node:test';
 import assert from 'node:assert/strict';
+import { readFileSync } from 'node:fs';
+import { join } from 'node:path';
 import {
   formatRecommendedFocusLine,
   muscleGroupLabel,
@@ -168,8 +170,6 @@ describe('translateCoachActionLabel', () => {
 
 describe('useDailyCoachInsight wiring', () => {
   it('uses English floors not defaultValue: messageKey', () => {
-    const { readFileSync } = require('node:fs') as typeof import('node:fs');
-    const { join } = require('node:path') as typeof import('node:path');
     const src = readFileSync(
       join(import.meta.dirname, '..', 'hooks', 'useDailyCoachInsight.ts'),
       'utf8'

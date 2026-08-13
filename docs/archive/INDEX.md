@@ -25,6 +25,8 @@ When adding a doc:
 
 | File | Absorbed by / note |
 |------|---------------------|
+| [log/LOG-rotate-670-for-743.md](./log/LOG-rotate-670-for-743.md) | rotated 2026-08-13 for `.743` Cursor-local CI unblock (`.670`) |
+| [log/LOG-rotate-669-for-743.md](./log/LOG-rotate-669-for-743.md) | rotated 2026-08-13 for `.743` Cursor-local CI unblock |
 | [log/LOG-rotate-669-for-714.md](./log/LOG-rotate-669-for-714.md) | rotated 2026-08-13 for `.714` public GitHub Beta 0.1 + mission |
 | [log/LOG-rotate-659-for-685.md](./log/LOG-rotate-659-for-685.md) | rotated 2026-08-12 for `.685` preserve next= through private gate |
 | [log/LOG-rotate-661-for-690.md](./log/LOG-rotate-661-for-690.md) | rotated 2026-08-12 for `.690` admin invite share → /private |

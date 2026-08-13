@@ -11,6 +11,10 @@ on:
     branches: [master]
   workflow_dispatch:
 
+concurrency:
+  group: aikido-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   aikido-security:
     runs-on: ubuntu-latest

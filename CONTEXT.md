@@ -16,7 +16,7 @@ One screen of truth for any AI tool or human joining cold. Read this, then [AGEN
 
 ---
 
-## Now (2026-08-13 · web `2026.07-unified.714` · Android `1.24.1`)
+## Now (2026-08-13 · web `2026.07-unified.743` · Android `1.24.1`)
 
 > The ONLY "where we are" block in the repo — [ORCHESTRATION.md](ORCHESTRATION.md) points here.
 >
@@ -286,6 +286,7 @@ One screen of truth for any AI tool or human joining cold. Read this, then [AGEN
 > and `.696` dropped `.635` detail (full text remains in LOG.md / archive)
 > and `.697` dropped `.618` detail (full text remains in LOG.md / archive)
 > and `.714` dropped `.636` detail (full text remains in LOG.md / archive)
+> and `.743` dropped `.669` detail (full text remains in LOG.md / archive)
 > to [CONTEXT-now-2026-07-30.md](docs/archive/CONTEXT-now-2026-07-30.md) after this
 > block reached **79 bullets / 103KB**. A status doc that only grows stops being read.
 
@@ -301,12 +302,13 @@ One screen of truth for any AI tool or human joining cold. Read this, then [AGEN
 > | `PRIVATE_MODE` | **on** in production. The gate is up; `/` serves the `/private` teaser. Also disables the service worker, so **no beta tester can install the PWA or log offline** — deliberate (do not offline-cache a private app), and the offline promise gets zero beta validation until the flip. Post-flip check is in [LAUNCH_RUNBOOK](docs/LAUNCH_RUNBOOK.md) §5. |
 > | `MAIL_POSTAL_ADDRESS` | **unset** — `send-beta-invite.ts` hard-exits and `renderEmail.ts` refuses to render, so **no invite email can be sent**. `.204` fixed the link; this is the remaining blocker to the first 10 users. |
 > | Repo visibility | **private since 2026-08-02 00:49Z** — it was public until then, and four GitHub security features went with it, all needing Advanced Security on a private repo: **secret scanning + push protection** (had been on), **code scanning** (`/code-scanning/default-setup` → 403), **private vulnerability reporting** (→ 404), and the **Dependency Review API** (→ 403, so `dependency-review-action` cannot run here at all). **Dependabot alerts and security updates are unaffected** and still on — 3 open advisories, all high. That leaves `gitleaks` as the only secret gate. Flipping back to public restores all four at no cost; until then, do not propose them. |
-> | GitHub Actions | **running, and metered again.** Measured 2026-08-02 on PR #186: `build-and-test` ran to completion in 7m22s (53 `@gate` e2e), `gitleaks` and `aikido-security` likewise. The `runner_id: 0` billing block is cleared. But that run finished at **00:41, eight minutes before the repo went private** — standard runners are free only on public repos, so every minute since draws on the account quota. The lean-CI split (PR-only, heavy jobs in `ci-extended`) is load-bearing again, not just tidy. `npm run gate` is no longer the only thing guarding `master` — it stays the faster pre-push check, and now the cheaper one. |
+> | GitHub Actions | **minutes exhausted / billing-blocked for paid jobs.** ~50 draft PRs show `build-and-test` red. Merge bar while red: **Cursor-local green** (`npm test`, lint, typecheck, excellence) + craft LGTM — [docs/CI_LOCAL.md](docs/CI_LOCAL.md). Actions red is not a product fail. Security jobs (gitleaks / CodeQL / aikido) stay on. `[skip vercel]` on commits unless the founder asked for a Preview. |
 > | VAPID keys · `CRON_SECRET` · `SMOKE_BASE_URL` · Sentry DSN · Upstash | **unset.** Push ships dark, the hourly sweeps `exit 0`, there is no server request logging, and rate limiting is per-instance in memory. |
 > | Migrations | **9 recorded pending** — [LAUNCH_RUNBOOK](docs/LAUNCH_RUNBOOK.md) §3, enforced by `src/lib/migrationLedger.test.ts`. |
 > | gitleaks | **green — and scanning for the first time.** It had never scanned anything: on a `pull_request` event the action lists the PR's commits, the job declared no `permissions:` block, and it 403'd (`pull_requests=read`) before opening a file. Fixed by a `permissions:` block (`.224` carrying `.255`). It scans **only the PR's own commits**, so commit `8ea3527a`'s real Solana treasury address — scrubbed from the working file, still in history — is out of its scope. That finding stands, deliberately not allowlisted; it was never what made this check red. |
 
 - **Excellence:** unscored · — · [docs/EXCELLENCE_RESULT.md](docs/EXCELLENCE_RESULT.md) — Horizon W phone sign-off home; surface PRs need `status: pass` or `Excellence-Override` (`.669`).
+- **`.743`:** (`2026.07-unified.743`) **Cursor-local CI** — shared `require()` lint on master unblocked every PR; merge bar while Actions minutes are red is local green + craft LGTM ([docs/CI_LOCAL.md](docs/CI_LOCAL.md)).
 - **`.714`:** (`2026.07-unified.714`) **Public GitHub pass / Beta 0.1** — mission sentence on README + About 01 + vision north star; public stamp `0.1 (beta)`; dual-repo honesty. Founder still owns visibility; `PRIVATE_MODE` unchanged.
 - **`.697`:** (`2026.07-unified.697`) **Session-expired fail-open mid-set Log/rest** — SignInPrompt catch → signed-out; log/rest path never awaits auth/sync (Kaizen Strong / F-001).
 - **`.696`:** (`2026.07-unified.696`) **Local-first set-log + rest** — Today/Active empty + SignIn/status copy device-first; rest path ungated by sync (F-001).

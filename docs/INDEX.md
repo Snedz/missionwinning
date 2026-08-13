@@ -88,6 +88,7 @@
 | [applications/README.md](applications/README.md) | Paste answers are **gitignored** (founder-only); public stub only |
 | [PRODUCTION_STACK.md](PRODUCTION_STACK.md) | 13-layer production scorecard (ops maturity) |
 | [CACHE_LADDER.md](CACHE_LADDER.md) | Browser / CDN / Redis / Postgres — ideal vs MW v1 |
+| [CI_LOCAL.md](CI_LOCAL.md) | Merge bar while Actions minutes are red — Cursor-local green + craft LGTM |
 | [BACKUP_RESTORE.md](BACKUP_RESTORE.md) | User export + Supabase operator recovery (L13) |
 | [STRIPE_PREMIUM_SETUP.md](STRIPE_PREMIUM_SETUP.md) | Live Stripe + premium gate |
 | [PHANTOM_USDC_CHECKOUT.md](PHANTOM_USDC_CHECKOUT.md) | Lifetime Phantom Solana USDC |
