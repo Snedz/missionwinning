@@ -37,9 +37,15 @@ describe('planWarmupRamp', () => {
 });
 
 describe('insertWarmupSets / idempotent present', () => {
-  const work = [
-    { id: 'w1', completed: false, kind: 'normal' as const, reps: 5, weight: 100 },
-    { id: 'w2', completed: false, kind: 'normal' as const, reps: 5, weight: 100 },
+  const work: {
+    id: string;
+    completed: boolean;
+    kind: string;
+    reps: number;
+    weight: number;
+  }[] = [
+    { id: 'w1', completed: false, kind: 'normal', reps: 5, weight: 100 },
+    { id: 'w2', completed: false, kind: 'normal', reps: 5, weight: 100 },
   ];
   const ramp = planWarmupRamp({ workWeight: 100, units: 'metric' });
   const rampRows = ramp.map((s, i) => ({
