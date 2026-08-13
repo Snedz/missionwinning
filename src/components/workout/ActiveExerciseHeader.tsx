@@ -10,9 +10,10 @@ import { Info } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { CardHeader, CardTitle } from '@/components/ui/card';
-import { ExercisePicker } from '@/components/library/ExercisePicker';
 import { AdaptiveOverlay } from '@/components/ui/AdaptiveOverlay';
 import { ActiveExerciseMoreMenu } from '@/components/workout/ActiveExerciseMoreMenu';
+import { GarageSwapList } from '@/components/workout/GarageSwapList';
+import { shouldShowGarageSwap } from '@/lib/workout/garageSwap';
 import {
   firstWeightedLoad,
   shouldShowLoadPctChip,
@@ -31,6 +32,8 @@ type Props = {
   onMenuOpenChange: (open: boolean) => void;
   swapOpen: boolean;
   swapCandidates: Exercise[];
+  /** Always-on garage list length — sheet candidates are empty when closed. */
+  swapOptionCount: number;
   nextTarget: { reps: number; weight: number } | null;
   onFormGuide: () => void;
   onToggleSuperset: () => void;
@@ -54,6 +57,7 @@ export function ActiveExerciseHeader({
   onMenuOpenChange,
   swapOpen,
   swapCandidates,
+  swapOptionCount,
   nextTarget,
   onFormGuide,
   onToggleSuperset,
@@ -100,6 +104,20 @@ export function ActiveExerciseHeader({
               <Info className="h-5 w-5" />
             </Button>
           )}
+          {shouldShowGarageSwap({
+            hasCompletedSet: hasCompleted,
+            optionCount: swapOptionCount,
+          }) && (
+            <Button
+              type="button"
+              variant="ghost"
+              size="sm"
+              className="min-h-[44px] px-2 text-sm text-primary"
+              onClick={onToggleSwap}
+            >
+              {t('activeSwap', { defaultValue: 'Swap' })}
+            </Button>
+          )}
           <ActiveExerciseMoreMenu
             open={menuOpen}
             onOpenChange={onMenuOpenChange}
@@ -107,6 +125,7 @@ export function ActiveExerciseHeader({
             hasNextExercise={hasNext}
             supersetted={!!exLog.supersetGroup}
             hasCompletedSet={hasCompleted}
+            swapOptionCount={swapOptionCount}
             onToggleSuperset={onToggleSuperset}
             onUnlinkSuperset={onUnlinkSuperset}
             onToggleNote={onToggleNote}
@@ -144,21 +163,13 @@ export function ActiveExerciseHeader({
           open={swapOpen}
           onClose={onToggleSwap}
           size="sm"
-          eyebrow={t('activeSwapEyebrow', { defaultValue: 'This exercise' })}
+          eyebrow={t('activeSwapEyebrow', { defaultValue: 'No machine' })}
           title={t('activeSwapTitle', {
-            defaultValue: 'Swap exercise',
+            defaultValue: 'Swap',
           })}
           bodyClassName="p-4"
         >
-          <ExercisePicker
-            value=""
-            exercises={swapCandidates}
-            listClassName="max-h-[52vh]"
-            placeholder={t('activeSwapPlaceholder', {
-              defaultValue: 'Swap to… (same muscles first)',
-            })}
-            onChange={onSwapTo}
-          />
+          <GarageSwapList options={swapCandidates} onChoose={onSwapTo} />
         </AdaptiveOverlay>
       )}
     </CardHeader>

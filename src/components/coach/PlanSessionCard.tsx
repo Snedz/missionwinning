@@ -26,6 +26,8 @@ type Props = {
   isPrimaryStart?: boolean;
   /** Today’s not-done session only — opens adjust flow. */
   onAdjust?: () => void;
+  /** Garage swap on one exercise line — not a week regenerate. */
+  onSwapExercise?: (fromExerciseId: string, toExerciseId: string) => void;
 };
 
 export function PlanSessionCard({
@@ -34,6 +36,7 @@ export function PlanSessionCard({
   isToday,
   isPrimaryStart,
   onAdjust,
+  onSwapExercise,
 }: Props) {
   const { t } = useTranslation();
   const startCoachSession = useStartCoachSession();
@@ -120,7 +123,16 @@ export function PlanSessionCard({
       <CardContent className="space-y-3">
         <ul className="space-y-2 text-sm">
           {session.exercises.map((ex) => (
-            <PlanExerciseLine key={ex.exerciseId} ex={ex} unit={unit} />
+            <PlanExerciseLine
+              key={ex.exerciseId}
+              ex={ex}
+              unit={unit}
+              onSwap={
+                onSwapExercise
+                  ? (toId) => onSwapExercise(ex.exerciseId, toId)
+                  : undefined
+              }
+            />
           ))}
         </ul>
         {session.status !== 'done' && (

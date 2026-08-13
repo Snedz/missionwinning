@@ -590,7 +590,6 @@ export function ActiveWorkoutPage() {
           nextSetRef={nextSetRef}
           swapOpenIdx={swapOpenIdx}
           noteOpenIdx={noteOpenIdx}
-          lang={fmt.lang}
           getSetInput={getSetInput}
           onRepeatLast={handleRepeatLast}
           onFormGuide={(id) => setFormGuideId(id)}

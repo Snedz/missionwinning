@@ -458,4 +458,16 @@ test('workoutStore', async (t) => {
     assert.equal(a?.reps, 8);
     assert.equal(a?.weight, 40);
   });
+
+  await t.test('garage swap clears planned weight when equipment changes', () => {
+    const store = useWorkoutStore.getState();
+    store.startWorkout('Push', template('bench-press', 2));
+    const before = useWorkoutStore.getState().activeWorkout?.exercises[0];
+    assert.equal(before?.sets[0]?.weight, 50);
+    useWorkoutStore.getState().replaceExerciseInActive(0, 'push-ups');
+    const after = useWorkoutStore.getState().activeWorkout?.exercises[0];
+    assert.equal(after?.exerciseId, 'push-ups');
+    assert.equal(after?.sets[0]?.weight, 0);
+    assert.equal(after?.sets[0]?.reps, 10);
+  });
 });

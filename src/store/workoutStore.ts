@@ -26,6 +26,8 @@ import { setActiveWorkoutFlag } from "@/lib/workout/activeWorkoutPulse";
 import { enqueueWorkoutUpsert } from "@/lib/sync/workoutSync";
 import { flush as flushOutbox } from "@/lib/sync/outbox";
 import { newClientId } from "@/lib/workout/clientId";
+import { applyGarageSwapToActive, garageEquipmentChanged } from "@/lib/workout/garageSwap";
+import { getExerciseById } from "@/data/exercises";
 import { readRaw, writeRaw } from "@/lib/storage/safeStorage";
 import { STORAGE_KEYS } from "@/lib/storage/keys";
 import { browserStorage, dedupeWrites, elapsedSecondsFrom } from "@/store/persistDedupe";
@@ -504,14 +506,15 @@ export const useWorkoutStore = create<WorkoutState>()(
           const exercises = [...s.activeWorkout.exercises];
           const ex = exercises[exerciseIndex];
           if (!ex || ex.sets.some((x) => x.completed)) return s;
+          const from = getExerciseById(ex.exerciseId);
+          const to = getExerciseById(newExerciseId);
           exercises[exerciseIndex] = applyHistoryNote(
-            {
-              ...ex,
-              exerciseId: newExerciseId,
-              // Keep the planned set count; reset target loads — different lift, different weights.
-              sets: createLoggedSets(ex.sets.length),
-              muscleGroups: muscleGroups?.length ? [...muscleGroups] : undefined,
-            },
+            applyGarageSwapToActive({
+              current: ex,
+              nextId: newExerciseId,
+              nextMuscleGroups: muscleGroups,
+              equipmentChanged: garageEquipmentChanged(from?.equipment, to?.equipment),
+            }),
             s.workoutHistory
           );
           return { activeWorkout: { ...s.activeWorkout, exercises } };

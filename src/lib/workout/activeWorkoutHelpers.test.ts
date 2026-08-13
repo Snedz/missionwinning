@@ -395,7 +395,7 @@ describe('rankSwapCandidates', () => {
     );
   });
 
-  it('ActiveExerciseList uses resolveSwapCandidatesWhenOpen rather than an open-idx ternary', () => {
+  it('ActiveExerciseList uses garageSwapsWhenOpen rather than an open-idx ternary', () => {
     const list = readFileSync(
       path.join(import.meta.dirname, '..', '..', 'components', 'workout', 'ActiveExerciseList.tsx'),
       'utf8'
@@ -404,17 +404,17 @@ describe('rankSwapCandidates', () => {
       path.join(import.meta.dirname, '..', '..', 'page-components', 'ActiveWorkoutPage.tsx'),
       'utf8'
     );
-    assert.match(list, /resolveSwapCandidatesWhenOpen\(/);
+    assert.match(list, /garageSwapsWhenOpen\(/);
     assert.match(page, /ActiveExerciseList/);
     assert.doesNotMatch(
       list,
       /rankSwapCandidates\(/,
-      'list must call resolveSwapCandidatesWhenOpen, not rankSwapCandidates directly'
+      'list must call garageSwapsWhenOpen, not rankSwapCandidates directly'
     );
     assert.doesNotMatch(
       page,
-      /resolveSwapCandidatesWhenOpen\(/,
-      'swap ranking lives in ActiveExerciseList'
+      /garageSwapsWhenOpen\(/,
+      'garage swap listing lives in ActiveExerciseList'
     );
   });
 });
@@ -1442,8 +1442,9 @@ describe('resolveExerciseNextTarget / menu visibility', () => {
     assert.equal(shouldShowLoadPctChip(null, [{ weight: 60 }]), false);
     assert.equal(shouldShowSupersetLinkMenuitem(true, false), true);
     assert.equal(shouldShowSupersetLinkMenuitem(true, true), false);
-    assert.equal(shouldShowExerciseSwapMenuitem(false), true);
-    assert.equal(shouldShowExerciseSwapMenuitem(true), false);
+    assert.equal(shouldShowExerciseSwapMenuitem(false, 2), true);
+    assert.equal(shouldShowExerciseSwapMenuitem(false, 0), false);
+    assert.equal(shouldShowExerciseSwapMenuitem(true, 2), false);
   });
 
   it('ActiveExerciseCard wires the next-target and header/footer', () => {

@@ -12,9 +12,15 @@ type Props = {
   sessions: PlanSession[];
   todayOffset: number;
   onAdjustToday: () => void;
+  onSwapExercise?: (sessionId: string, fromExerciseId: string, toExerciseId: string) => void;
 };
 
-export function CoachPlanSessionGrid({ sessions, todayOffset, onAdjustToday }: Props) {
+export function CoachPlanSessionGrid({
+  sessions,
+  todayOffset,
+  onAdjustToday,
+  onSwapExercise,
+}: Props) {
   const bossId = resolveCoachBossSessionId(sessions, todayOffset);
 
   return (
@@ -32,6 +38,11 @@ export function CoachPlanSessionGrid({ sessions, todayOffset, onAdjustToday }: P
               isPrimaryStart={session.id === bossId}
               onAdjust={
                 isToday && session.status !== 'done' ? onAdjustToday : undefined
+              }
+              onSwapExercise={
+                session.status !== 'done' && onSwapExercise
+                  ? (fromId, toId) => onSwapExercise(session.id, fromId, toId)
+                  : undefined
               }
             />
           );
