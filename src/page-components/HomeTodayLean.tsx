@@ -42,6 +42,7 @@ import { buildJustGoHeroMeta, type JustGoHeroMeta } from '@/lib/justGoHeroMeta';
 import { shouldRepeatLastOnToday } from '@/lib/workout/repeatLastSession';
 import type { RewardsSummary } from '@/lib/rewards/summary';
 import { formatLocalDateKey, localDateKey, localDateKeyFromIso } from '@/lib/time/localDate';
+import { countTrainDaysThisWeek } from '@/lib/habitWeekCount';
 import { buildContinuitySuggestions } from '@/lib/today/continuityStrip';
 
 /**
@@ -300,6 +301,7 @@ export function HomeTodayLean() {
         <TodayPageHeader
           today={todayLabel}
           streak={streak}
+          daysLoggedThisWeek={countTrainDaysThisWeek(workoutHistory)}
           userEmail={null}
           hasFirstWorkout={workoutHistory.length > 0}
           action={action}
