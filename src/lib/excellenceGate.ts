@@ -172,6 +172,7 @@ export const KNOWN_TOP_LEVELS: Readonly<Record<string, 'wedge' | 'surface'>> = {
   'src/components/session': 'surface',
   'src/components/today': 'wedge',
   'src/components/track': 'surface',
+  'src/components/transparency': 'surface',
   'src/components/ui': 'surface',
   'src/components/workout': 'wedge',
   // apps/android (native product — surface until web excellence pass; Accept B separate)
