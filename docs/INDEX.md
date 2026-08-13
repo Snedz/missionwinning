@@ -135,7 +135,7 @@ Root keeps only the spine (README · CONTEXT · AGENTS · INDEX · vision · ORC
 | [STRATEGY.md](STRATEGY.md) | Business plan · pricing · book plan |
 | [PLAN.md](PLAN.md) | Build phases A–I |
 | [DEPENDABOT_BATCH_744.md](DEPENDABOT_BATCH_744.md) | Frozen `.744` Dependabot batch plan (take vs skip; do not merge Dependabot PRs) |
-| [overnight/PLAN.md](overnight/PLAN.md) | Frozen one-concern ship plan (this wave: F-017 first set) |
+| [overnight/PLAN.md](overnight/PLAN.md) | Frozen verify+fix plan (this wave: F-017 first-set iterate `.762`) |
 | [plans/INDEX.md](plans/INDEX.md) | Frozen plan-then-build ship plans (not the roadmap) |
 | [REDTEAM.md](REDTEAM.md) | Assumptions audit |
 | [JOURNEY.md](JOURNEY.md) | Mission journey UX (I-Day → Commissioned) |

@@ -1,10 +1,10 @@
-# Frozen: F-017 verify + iterate first set without an account (`.750`)
+# Frozen: F-017 verify + iterate first set without an account (`.762`)
 
 **Status:** FROZEN. Verify and fix only this plan. Do not expand scope.
 
-**Label:** `2026.07-unified.750` — F-017 verify/iterate.
+**Label:** `2026.07-unified.762` — F-017 verify/iterate.
 
-Master already minted `.746` (the #523 / reserved-`.730` ship), then `.747` Repeat last, `.748` exercise notes, `.749` supersets. The task brief asked for `.747`; that number is taken. `check-build-label` requires a label strictly past `origin/master`. Do not reuse `.730`. Do not steal `.697`–`.729` or `.746`–`.749`.
+Master already minted `.746` (the #523 / reserved-`.730` ship) through `.761` (e1RM). The original brief asked for `.747` / then `.750`; both are taken. `check-build-label` requires a label strictly past `origin/master`. Do not reuse `.730` or `.750`.
 
 **Excellence-Override:** F-017 first-set verify iterate
 
@@ -125,7 +125,7 @@ Do not run `npm run e2e` / `npm run gate` / GitHub Actions. Do not start a produ
 | `src/lib/firstSetUngated.test.ts` | Extended guards |
 | `src/lib/firstSetUngated.ts` | Only if a real predicate gap |
 | First-set path components | Only if verify finds a function or craft defect |
-| `src/lib/buildInfo.ts` · `LOG.md` · `CONTEXT.md` `## Now` | Ship protocol `.750` |
+| `src/lib/buildInfo.ts` · `LOG.md` · `CONTEXT.md` `## Now` | Ship protocol `.762` |
 
 No new i18n keys (hide chrome; existing local-first strings stay).
 
@@ -133,10 +133,10 @@ No new i18n keys (hide chrome; existing local-first strings stay).
 
 ## Ship
 
-- Bump `APP_BUILD_LABEL` to `2026.07-unified.750`.
-- LOG heading `## YYYY-MM-DD — F-017 first-set verify (\`.750\`)`. Rotate oldest to stay ≤15.
-- `## Now`: add `.750` bullet; rotate oldest shipped version bullet to stay ≤25. Keep Status table / Excellence / Horizon W / `PRIVATE_MODE`.
+- Bump `APP_BUILD_LABEL` to `2026.07-unified.762`.
+- LOG heading `## YYYY-MM-DD — F-017 first-set verify (\`.762\`)`. Rotate oldest to stay ≤15.
+- `## Now`: add `.762` bullet; rotate oldest shipped version bullet to stay ≤25. Keep Status table / Excellence / Horizon W / `PRIVATE_MODE`.
 - Commit trailer: `Excellence-Override: F-017 first-set verify iterate`
 - Every commit: `[skip vercel]`
-- Draft PR title: `F-017 first-set verify iterate (.750)`
+- Draft PR title: `F-017 first-set verify iterate (.762)`
 - PR body lists what was verified, what was fixed, and what is still blocked (Preview SSO F-035 / Hobby). Do not claim production-ready if the cold path was not actually run in a browser.

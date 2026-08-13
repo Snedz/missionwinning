@@ -18,7 +18,7 @@
 | `InfoPageFooter.tsx` | Info footer links |
 | `AppLegalFooter.tsx` | In-app legal links + public version stamp (`0.1 (beta)`) |
 | `LegalNav.tsx` | Privacy / terms / DMCA nav |
-| `HeaderAuthChip.tsx` | Sign-in avatar chip. F-017 (`.730`): hidden until the first workout; never on `/active`. `getUser` only when the chip may show. |
+| `HeaderAuthChip.tsx` | Sign-in avatar chip. F-017 (`.746` / `.762`): hidden until the first workout; never on `/active`. `getUser` only when the chip may show. |
 | `PageTransition.tsx` | Route transition animation |
 | `../ui/AdaptiveOverlay.tsx` | Compact bottom sheet / md+ centered dialog |
 | `StaggerReveal.tsx` | Staggered entrance motion |

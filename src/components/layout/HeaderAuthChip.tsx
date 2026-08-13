@@ -12,7 +12,7 @@ import { useWorkoutStore } from '@/store/workoutStore';
 /** Compact sign-in chip for the app header when logged out. */
 export function HeaderAuthChip() {
   const { t } = useTranslation();
-  const pathname = usePathname();
+  const pathname = usePathname() ?? '';
   const hasFirstWorkout = useWorkoutStore((s) => s.workoutHistory.length > 0);
   const showChip = showHeaderSignInChip({ hasFirstWorkout, pathname });
   const [email, setEmail] = useState<string | null>(null);
