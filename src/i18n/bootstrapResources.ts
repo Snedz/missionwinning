@@ -23,6 +23,7 @@ export const BOOTSTRAP_EN: Record<string, string> = {
   navBuilder: 'Builder',
   navLibrary: 'Library',
   navHistory: 'History',
+  navServer: 'Messenger',
   navMove: 'Move',
   navMind: 'Mind',
   navLearn: 'Learn',

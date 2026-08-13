@@ -44,6 +44,7 @@ npm run export-locales     # TS + packs → public/locales/
 | `todayLocales.ts` | Today dashboard |
 | `coachLocales.ts` | Mission Coach |
 | `navLocales.ts` | Navigation labels |
+| `serverLocales.ts` | Mission Server messenger (`/server`) |
 | `bundleLocales.ts` | Super Bundle |
 | `fuelLocales.ts` | Nutrition |
 | `moveLocales.ts` | Move pillar |

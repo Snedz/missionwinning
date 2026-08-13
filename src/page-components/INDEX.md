@@ -79,6 +79,7 @@
 | File | Route |
 |------|-------|
 | `ProfilePage.tsx` | `/profile` — the Athlete Page: identity, career line, badge shelf |
+| `ServerPage.tsx` | `/server` — Mission Server messenger (rooms + presence). Not a Today tab |
 | `AccountPage.tsx` | `/account` — settings; cards in `src/components/profile/` |
 | `PrivacyPage.tsx` | `/privacy` |
 | `CookiesPage.tsx` | `/cookies` |

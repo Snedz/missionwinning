@@ -26,6 +26,7 @@ When adding a doc:
 
 | File | Absorbed by / note |
 |------|---------------------|
+| [log/LOG-rotate-693-for-752.md](./log/LOG-rotate-693-for-752.md) | rotated 2026-08-13 for `.752` Mission Server messenger (`.693`) |
 | [log/LOG-rotate-692-for-751.md](./log/LOG-rotate-692-for-751.md) | rotated 2026-08-13 for `.751` Learn vs Strong / Hevy / Fitbod citation pages (`.692`) |
 | [log/LOG-rotate-691-for-750.md](./log/LOG-rotate-691-for-750.md) | rotated 2026-08-13 for `.750` Session history list (`.691`) |
 | [log/LOG-rotate-690-for-749.md](./log/LOG-rotate-690-for-749.md) | rotated 2026-08-13 for `.749` Supersets on the set log (`.690`) |

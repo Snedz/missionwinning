@@ -2,6 +2,7 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import {
   HEALTH_TRAIN_MANIFEST,
+  SOCIAL_SERVER_MANIFEST,
   assertModuleManifest,
   isModuleScope,
   parseModuleId,
@@ -31,4 +32,12 @@ test('assertModuleManifest rejects bad entry', () => {
       entry: 'active',
     })
   );
+});
+
+test('SOCIAL_SERVER_MANIFEST is free-core messenger with channel write', () => {
+  assert.equal(SOCIAL_SERVER_MANIFEST.freeCore, true);
+  assert.equal(SOCIAL_SERVER_MANIFEST.entry, '/server');
+  assert.ok(SOCIAL_SERVER_MANIFEST.scopes.includes('social.channel.write'));
+  assert.equal(isModuleScope('social.channel.write'), true);
+  assert.doesNotThrow(() => assertModuleManifest(SOCIAL_SERVER_MANIFEST));
 });

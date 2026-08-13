@@ -39,7 +39,8 @@ module:
 | `id.profile` | Athlete Page | yes |
 | `id.account` | Settings | yes |
 | `economy.rewards` | Local XP / badges | yes |
-| `game.*` | Future | reserved |
+| `social.server` | Garage messenger (rooms + local presence) | **yes** (`free_core: true` — garage itself is not a paywall) |
+| `game.*` | Future in-ecosystem games (Age of Empires 2 / Pokémon GO / Clash of Clans analogues) bind the same Mission ID — host runtime is post-PMF; **no UI in this horizon** | reserved |
 | `host.shell` | Future mini-host | n/a |
 
 ## Scopes
@@ -53,6 +54,7 @@ module:
 | `economy.earn` | Emit earn events from allowed sources |
 | `economy.read` | Read own points/inventory |
 | `social.project` | Publish allowed projection fields only |
+| `social.channel.write` | Append a local text message in a room the athlete already belongs to (local-only in v1) |
 
 Host (future) **denies** undeclared scopes. Today the web monolith is implicit full access inside first-party code; the manifest is the long-term contract.
 

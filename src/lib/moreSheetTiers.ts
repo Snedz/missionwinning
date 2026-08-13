@@ -8,7 +8,7 @@
  *
  *   Wedge   — History · Library · Builder · Assess (train-adjacent)
  *   Pillars — Move · Mind · Track · Learn
- *   You     — Profile
+ *   You     — Profile · Messenger · Account
  *
  * Quiet foot links stay for legal/meta (not full rows). Bundle remains a
  * separate premium panel when free-beta is off.
@@ -58,7 +58,7 @@ export const MORE_SHEET_TIER_HREFS: {
     id: 'you',
     title: 'You',
     titleKey: 'moreTierYou',
-    hrefs: ['/profile', '/account'],
+    hrefs: ['/profile', '/server', '/account'],
   },
 ];
 

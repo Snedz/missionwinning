@@ -227,7 +227,9 @@ test('C3: no social route is a primary tab', () => {
   const hrefs = [...block[1].matchAll(/'([^']+)'/g)].map((m) => m[1]);
 
   assert.ok(hrefs.length >= 3, `only ${hrefs.length} tab hrefs parsed — the extraction has drifted`);
-  const social = hrefs.filter((h) => ['/leaderboard', '/club', '/squad', '/profile'].includes(h));
+  const social = hrefs.filter((h) =>
+    ['/leaderboard', '/club', '/squad', '/profile', '/server'].includes(h)
+  );
   assert.deepEqual(
     social,
     [],
@@ -286,7 +288,6 @@ test('the scan actually reaches the product', () => {
   ] as const) {
     assert.ok(filesUnder(roots).length > 0, `${label} matches no files at all`);
     for (const r of roots) {
-      if (r === 'src/lib/social/') continue; // declared ahead of the phase that creates it
       assert.ok(
         filesUnder([r]).length > 0,
         `${label} entry '${r}' matches nothing — a rename dropped it out of scope silently`

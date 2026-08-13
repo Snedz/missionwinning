@@ -60,6 +60,7 @@ const GATED_ROUTES = [
   '/calculators',
   '/programs',
   '/guide',
+  '/server',
 ] as const;
 
 /**

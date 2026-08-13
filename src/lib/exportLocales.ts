@@ -36,6 +36,7 @@ import { betaStringsFor } from '@/i18n/betaLocales';
 import { gateStringsFor } from '@/i18n/gateLocales';
 import { rewardsStringsFor } from '@/i18n/rewardsLocales';
 import { learnContentStringsFor } from '@/i18n/learnContentLocales';
+import { serverStringsFor } from '@/i18n/serverLocales';
 import { APP_LANGS, type AppLang } from '@/i18n/appLangs';
 import { withLocalePack } from '@/i18n/localePacks';
 import type { LocaleNamespace } from '@/i18n/localeExportManifest';
@@ -278,6 +279,12 @@ export const LOCALE_EXPORTS: LocaleExportEntry[] = [
     namespace: 'learnContent',
     filename: 'learn-content.json',
     stringsFor: packWrapIntersect(learnContentStringsFor),
+    langs: EXPORT_LANGS,
+  },
+  {
+    namespace: 'server',
+    filename: 'server.json',
+    stringsFor: packWrap(serverStringsFor),
     langs: EXPORT_LANGS,
   },
 ];

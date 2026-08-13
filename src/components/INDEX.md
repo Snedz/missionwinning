@@ -32,6 +32,7 @@
 | `today/` | Today dashboard — [today/INDEX.md](today/INDEX.md) |
 | `track/` | GPS / activity panels |
 | `profile/` | Profile settings cards (privacy, backup, referral, wearables, What’s New) |
+| `social/` | Mission Server messenger chrome — [social/INDEX.md](social/INDEX.md) |
 | `ui/` | Design system primitives (`AdaptiveOverlay` — the one sheet shell, with a pinned `footer` slot; `EmptyState`, `ErrorState`, `Skeleton`, `MeterBar`, `ScoreNumeral`, `RuledRadioGroup`, `OtpInput`, `FileDropZone`, `FileUploadRow`, `HoldToConfirmButton`, `DangerZone`, shadcn) |
 | `workout/` | Active workout — [workout/INDEX.md](workout/INDEX.md) |
 
