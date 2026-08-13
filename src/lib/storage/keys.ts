@@ -57,6 +57,8 @@ export const STORAGE_KEYS = {
   lastRestByExercise: 'mw_last_rest_by_exercise',
   /** Last ecc/pause/con tempo per exercise id — prefill on the next set (`.734`). */
   lastTempoByExercise: 'mw_last_tempo_by_exercise',
+  /** `.761` — hide educational session e1RM on the Active exercise row. Default shown. */
+  showSessionE1rm: 'mw_show_session_e1rm',
   activityLog: 'mw_activity_log',
   todaySectionsV1: 'mw_today_sections_v1',
   todaySectionsV2: 'mw_today_sections_v2',

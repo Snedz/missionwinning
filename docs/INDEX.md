@@ -14,6 +14,7 @@
 |------|---------|
 | [help/INDEX.md](help/INDEX.md) | Help library index |
 | [help/getting-started.md](help/getting-started.md) | New user onboarding |
+| [help/e1rm.md](help/e1rm.md) | Educational Epley e1RM on Train — not a tested max |
 | [help/pillars.md](help/pillars.md) | Six pillars explained |
 | [help/mission-coach.md](help/mission-coach.md) | AI weekly coach |
 | [help/fuel-and-nutrition.md](help/fuel-and-nutrition.md) | Nutrition logging |

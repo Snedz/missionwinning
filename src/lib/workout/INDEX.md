@@ -35,6 +35,7 @@ Root-level `@/lib/{name}` paths re-export from here for compatibility — prefer
 23. `tempo.ts` — optional ecc/pause/con parse + last-tempo recall (`.757`)
 24. `lastSetGhost.ts` — last **working** set ghost (not warmup W); one-tap accept (`.759`)
 25. `vsLastSet.ts` — after-save vs-last delta on the set row (`.760`); working-set index; not ghost prefill
+26. `sessionE1rm.ts` — educational Epley e1RM from this session's working sets (`.761`); hide pref `mw_show_session_e1rm`
 
 ## Tests (colocated)
 
@@ -63,6 +64,8 @@ Root-level `@/lib/{name}` paths re-export from here for compatibility — prefer
 | `rir.test.ts` | Optional 0–5 parse; empty OK; Log set ungated (`.756`) |
 | `tempo.test.ts` | Optional tempo parse / last-tempo / not a Log set gate (`.757`) |
 | `lastSetGhost.test.ts` | First-ever no ghost; returning last working set not warmup (`.759`) |
+| `sessionE1rm.test.ts` | Epley formula + warmup / load-0 exclusion (`.761`) |
+| `sessionE1rmCopy.test.ts` | Copy names Epley; does not say "your max" |
 
 ## UI & integration (not in this folder)
 

@@ -1,7 +1,7 @@
 'use client';
 
 /**
- * Overflow menu for one ActiveExerciseCard (Ask / Superset / Note / Swap / Remove).
+ * Overflow menu for one ActiveExerciseCard (Ask / Superset / Note / Swap / e1RM hide / Remove).
  * HoldToConfirm stays outside `role=menu` (aria-busy is not a menuitem).
  */
 
@@ -14,6 +14,7 @@ import {
   shouldShowSupersetLinkMenuitem,
   shouldShowExerciseSwapMenuitem,
 } from '@/lib/workout/activeWorkoutHelpers';
+import { SESSION_E1RM_COPY } from '@/lib/workout/sessionE1rm';
 
 type Props = {
   open: boolean;
@@ -27,6 +28,8 @@ type Props = {
   onUnlinkSuperset: () => void;
   onToggleNote: () => void;
   onToggleSwap: () => void;
+  onToggleE1rm: () => void;
+  e1rmVisible: boolean;
   onRemove: () => void;
 };
 
@@ -42,6 +45,8 @@ export function ActiveExerciseMoreMenu({
   onUnlinkSuperset,
   onToggleNote,
   onToggleSwap,
+  onToggleE1rm,
+  e1rmVisible,
   onRemove,
 }: Props) {
   const { t } = useTranslation();
@@ -127,6 +132,19 @@ export function ActiveExerciseMoreMenu({
                   {t('activeSwap', { defaultValue: 'Swap' })}
                 </button>
               )}
+              <button
+                type="button"
+                role="menuitem"
+                className="flex w-full min-h-[44px] items-center px-3 text-sm hover:bg-muted text-start"
+                onClick={() => {
+                  onToggleE1rm();
+                  onOpenChange(false);
+                }}
+              >
+                {e1rmVisible
+                  ? t('activeE1rmHide', { defaultValue: SESSION_E1RM_COPY.hide })
+                  : t('activeE1rmShow', { defaultValue: SESSION_E1RM_COPY.show })}
+              </button>
             </div>
             <div className="border-t-2 border-border px-1 pt-1">
               <HoldToConfirmButton
