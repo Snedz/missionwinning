@@ -12,7 +12,7 @@ import { readFileSync, readdirSync } from 'node:fs';
 import path from 'node:path';
 import { MOBILE_TAB_HREFS } from '@/lib/primaryNav';
 
-const root = path.join(import.meta.dirname, '..', '..');
+const root = path.join(import.meta.dirname, '..', '..', '..');
 const read = (p: string) => readFileSync(path.join(root, p), 'utf8');
 
 function stripComments(src: string): string {
