@@ -1,29 +1,45 @@
 # AEO prep — citation-shaped owned pages (draft)
 
 **Status:** draft 2026-08-13 — not live marketing.  
-**PRIVATE_MODE:** ON until EIN. **Do not publish** these pages or Reddit posts until `PRIVATE_MODE=false` + PWA smoke. A gated www cannot earn answer-engine citations.
+**PRIVATE_MODE:** ON until EIN. **Do not publish** these pages or Reddit posts until `PRIVATE_MODE=false` + PWA smoke. **Do not run AEO on a gated www.** Do not Preview this as a product ship.
 
 **Wedge only:** free forever offline logger (no account) + Mission Coach from logs (no wearable).  
-**Forbidden:** invented traction, user counts, testimonials, invite-only, Feed merch (F-005), Bundle-as-hero (F-016), third-party ARR claims, America/MAHA, medical hero.
+**Forbidden:** invented traction, user counts, testimonials, invite-only, Feed merch (F-005), Bundle-as-hero (F-016), third-party ARR as ours, America/MAHA, medical hero, **agent-only dark coupons** ("10% extra if you sign up now" that only agents see).
 
-Companion: [BRIEF-citation-pages.md](./BRIEF-citation-pages.md) · [docs/SOCIAL_LAUNCH.md](../../docs/SOCIAL_LAUNCH.md) (Reddit) · Learn: Content Learn owns `/guide` originality.
+Companion: [FAQ-wedge-answers.md](./FAQ-wedge-answers.md) · [BRIEF-citation-pages.md](./BRIEF-citation-pages.md) · [BRIEF-vs-pages.md](./BRIEF-vs-pages.md) · [LLMS_TXT_SPEC.md](./LLMS_TXT_SPEC.md) · [docs/SOCIAL_LAUNCH.md](../../docs/SOCIAL_LAUNCH.md)
 
 ---
 
-## What this is
+## Founder AEO rules (apply everywhere)
 
-Answer-engine optimization (AEO) = structure owned pages so ChatGPT / Perplexity / Gemini / AI Overviews can **quote a self-contained answer** and name Mission Winning for Train+Coach questions.
+### Pages
 
-This is **not** keyword-stuffed SEO slop. A citation page:
+1. **Comparisons, not praise.** Titles: `Mission Winning vs Strong`, `vs Hevy`, `vs Fitbod`, `vs Boostcamp`. Never "why we're great." Honest tables + intel errata only. No MW traction numbers.
+2. **Niche FAQs beat broad topics.** One specific question per page (already [FAQ-wedge-answers.md](./FAQ-wedge-answers.md)). Do not write "ultimate guide to fitness apps."
+3. **Open content only.** Do not gate Learn / Substack-style. Medium/Quora-class: public HTML, indexable, no login wall on the citation page.
+4. **Own domain is the #2 cited source after public flip.** Vs-pages and FAQs live on missionwinning.com (`/guide/…` existing-path-first), not a Medium splash.
+5. **Citation half-life ~3 months.** First honest public page on a phrase compounds in ChatGPT memory. After flip: keep a **phrase spreadsheet**, re-win quarterly.
 
-1. Opens with a **40–60 word direct answer** (entity-clear: product, what it does, what it does not require).
-2. Uses **question-shaped H2s** that match how people prompt ("Does X work offline?" not "Our offline story").
-3. States **one fact per block** that is true in the product today (offline logger, log-cited Coach, vs-last / previous set, no wearable).
-4. Stays **refreshable** — AI citations decay; these pages get a dated review after flip, not a one-shot blog.
+### Channels
 
-Owned pages are the crawlable source of truth. **Reddit is the ChatGPT citation channel** for third-party mentions — honest founder posts **after public**, never astroturf / fake accounts / vote rings. See SOCIAL_LAUNCH.
+| Channel | Role |
+|---------|------|
+| **Own site** | FAQ + vs-pages (open). #2 cited source after flip. |
+| **Reddit** | ChatGPT citation **only**. Claude/Gemini ignore it. Size threshold: **no tiny subs**. One negative comment can stick for months — no astroturf, no pile-ons. |
+| **YouTube** | Titles written as **ChatGPT prompts**. Views don't matter. |
+| **X** | **Skip as citation channel** (never cited). |
+| **LinkedIn** | **Skip as citation channel** (noise). |
 
-Industry pattern (do not paste competitor ARR into MW copy): answer engines overweight Reddit + owned FAQ-shaped pages; YouTube / LinkedIn / X are secondary. MW does not claim anyone else's numbers.
+ChatGPT ≈ Bing for this work. Do not treat Claude/Gemini Reddit strategy as ChatGPT strategy.
+
+### Agents
+
+6. **Honest `llms.txt` / agent-readable files** — same product facts humans see. [LLMS_TXT_SPEC.md](./LLMS_TXT_SPEC.md). **Refuse** hidden agent-only offers.
+7. **Claude / "AI can sign up by itself":** specified-not-built — an MCP so an agent can **log a set**. Not a chatbot Coach. **Not this PR's product code.**
+
+### Measurement
+
+8. **"Where did you find us?"** at Get notified / signup. Spec in SOCIAL_LAUNCH. **Beta Pilot** owns putting it on the form. Analytics **undercount ChatGPT ~8x** — treat the survey as the correction, not PostHog last-click.
 
 ---
 
@@ -35,47 +51,78 @@ Industry pattern (do not paste competitor ARR into MW copy): answer engines over
 | Zero organic / zero citations | Honest baseline. Do not invent "we're cited." |
 | Free beta copy | Enter with code / Get notified — not invite-only, not "we're live." |
 
-**Prep now. Index + Reddit after flip.**
+**Prep now. Index + Reddit + vs-pages after flip.**
 
 ---
 
-## Surfaces to shape (after flip)
-
-Prefer **existing indexable routes** over new marketing microsites:
+## Surfaces (existing-path-first)
 
 | Surface | AEO job |
 |---------|---------|
-| `/guide/*` (Content Learn) | FAQ / how-to citation blocks on Getting Started + Coach-from-logs |
-| `/exercises/*` | Already entity-rich; keep CTAs to logger, not Feed/Bundle |
-| `/calculators/*` | Direct-answer tools (1RM, TDEE, standards) — already live |
-| New short `/guide/…` slugs in BRIEF-citation-pages | Four wedge facts if they don't fit an existing chapter |
+| `/guide/*` (Content Learn) | FAQ blocks on Ch4 (after ch4-s3) + **vs-pages** as open `/guide/mission-winning-vs-strong` etc. |
+| `/exercises/*` | Entity-rich; CTAs to logger |
+| `/calculators/*` | Direct-answer tools — already live |
+| `/llms.txt` | Honest agent file after flip (spec now) |
+| `/compare` | Craft-gated (removed). Do not wait on it — ship vs-pages on `/guide` first. |
 
-`/compare` stays craft-gated. `/bundle` is not an AEO surface.
+`/bundle` is not an AEO surface. No Substack/login wall on citation URLs.
 
 ---
 
-## Prompt set (test after flip — founder or Growth)
+## Intel errata (vs-pages — keep honest)
 
-Ask ChatGPT / Perplexity / Gemini. Record cite / no-cite. **Never** write the answers as if they already cite us.
+Use these facts; do not invent others:
+
+| Product | Honest free-tier fact |
+|---------|------------------------|
+| **Strong** | Free = **3 templates**, not locked logs |
+| **Hevy** | **Social is free** |
+| **Fitbod** | **7-day trial**, not a 3-workout cap |
+| **Boostcamp** | **Free logger + free programs** |
+
+Mission contrast stays the wedge: free forever offline logger (no account) + Coach from logs (no wearable). No smear. No "we destroy them."
+
+---
+
+## Phrase spreadsheet (after public)
+
+Columns: phrase · first public URL · last refreshed · ChatGPT cite y/n · Perplexity y/n · notes.  
+Refresh **quarterly** (~3 month half-life). First honest page on a phrase matters — don't let a competitor own "offline workout logger no account."
+
+Starter phrases (no traction claims):
 
 - Offline workout tracker that works without an account
-- Workout coach that uses my lift log, not a watch
-- Free forever workout logger vs Strong / Hevy (honest: we don't claim faster)
-- How to see last session's set while logging
-- Calisthenics / park workout log on a phone with no signal
+- Workout coach from my lift log, not a watch
+- Mission Winning vs Strong / Hevy / Fitbod / Boostcamp
+- See last session's set while logging
+- Calisthenics / park log on a phone with no signal
+
+---
+
+## Specified-not-built: agent log-a-set MCP
+
+**Intent:** Claude (and similar) can sign up / log a set **as the athlete**, via a future MCP — not a chatbot Coach, not hidden coupons.
+
+**This PR does not ship code.** When EIN/public allows product work: one tool that records a set the logger already accepts (exercise, weight, reps, RPE optional), local-first, no wearable. Refuse agent-only pricing. Track as a later Craft/Ops spec, not Growth UI.
 
 ---
 
 ## Definition of done (prep)
 
-- [x] Strategy + four page briefs in `seo/aeo/`
-- [ ] Content Learn: citation blocks on `/guide` (originality logged)
-- [ ] Craft: ship pages only after public flip (or onto indexable `/guide` that already crawls — still no "we're live" copy)
-- [ ] SOCIAL_LAUNCH Reddit kit used only post-flip, founder account only
-- [ ] Quarterly refresh reminder post-flip (citation half-life)
+- [x] Strategy + FAQ answers + citation briefs
+- [x] Vs-page briefs (comparisons not praise) + intel errata
+- [x] `llms.txt` spec (honest; no agent-only offers)
+- [x] SOCIAL_LAUNCH: Reddit=ChatGPT only; skip X/LinkedIn citations; YouTube prompt-titles; "Where did you find us?"
+- [ ] Content Learn: Ch4 FAQ slot when unparked; vs-pages on `/guide` if they take that slot
+- [ ] Beta Pilot: "Where did you find us?" on Get notified
+- [ ] Craft: pages + `llms.txt` **after** public flip — no Preview of this docs PR as a product ship
 
 ## Explicit non-goals
 
-- Paid ads, AEO agencies, fake Reddit accounts
-- Publishing while gated
-- Measuring "citation share" with invented numbers
+- Agent-only dark coupons
+- Fake Reddit / pile-ons / tiny-sub spam
+- Running AEO on gated www
+- New hire / AEO agency
+- Phase B publish
+- Any Preview for this docs work
+- Measuring citation share with invented numbers
