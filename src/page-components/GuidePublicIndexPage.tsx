@@ -8,6 +8,7 @@ import { useEffect, useMemo } from 'react';
 import Link from 'next/link';
 import { useTranslation } from 'react-i18next';
 import { BEYOND_THE_BASICS_CHAPTERS } from '@/data/guidebook/chapters';
+import { LEARN_VS_PAGES, learnVsPublicHref } from '@/data/learnVsPages';
 import { localizeGuidebookChapters, localizeMagazineMeta } from '@/lib/localizeGuidebook';
 import { track } from '@/lib/analytics';
 import { GuideApexShell } from '@/components/learn/GuideApexShell';
@@ -69,6 +70,29 @@ export function GuidePublicIndexPage() {
                 {ch.title}
               </h2>
               <p className="mt-1 text-sm text-muted-foreground">{ch.subtitle}</p>
+            </Link>
+          ))}
+        </section>
+
+        <section className="space-y-3">
+          <div className="briefing-rule">
+            <span className="eyebrow">Compare</span>
+          </div>
+          <p className="text-sm leading-relaxed text-muted-foreground">
+            Honest comparisons — not rankings. Free to read.
+          </p>
+          {LEARN_VS_PAGES.map((page) => (
+            <Link
+              key={page.id}
+              href={learnVsPublicHref(page.id)}
+              className="content-card pressable-card block p-5"
+              onClick={() => track('guide_read', { chapter: page.id })}
+            >
+              <p className="section-index mb-2">VS</p>
+              <h2 className="font-display text-xl font-semibold tracking-[-0.01em]">
+                {page.title}
+              </h2>
+              <p className="mt-1 text-sm text-muted-foreground">{page.subtitle}</p>
             </Link>
           ))}
         </section>
