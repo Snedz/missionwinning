@@ -1,6 +1,6 @@
 # SEO Workspace — missionwinning.com
 
-Working folder for SEO notes, exports, briefs, and reports. Agents: read this first, then [STRATEGY.md](../STRATEGY.md) (positioning, wedge customer, SEO KPIs) and [docs/SEO_ANALYTICS.md](../docs/SEO_ANALYTICS.md) (events + funnel setup). Prep index: [PREP_INDEX.md](./PREP_INDEX.md). GSC checklist: [gsc/PREP_CHECKLIST.md](./gsc/PREP_CHECKLIST.md). Beta copy: mission-ops `memory/BETA_LANGUAGE.md`.
+Working folder for SEO notes, exports, briefs, and reports. Agents: read this first, then [STRATEGY.md](../STRATEGY.md) (positioning, wedge customer, SEO KPIs) and [docs/SEO_ANALYTICS.md](../docs/SEO_ANALYTICS.md) (events + funnel setup). Prep index: [PREP_INDEX.md](./PREP_INDEX.md). GSC checklist: [gsc/PREP_CHECKLIST.md](./gsc/PREP_CHECKLIST.md). AEO: [aeo/AEO_PREP.md](./aeo/AEO_PREP.md). Beta copy: mission-ops `memory/BETA_LANGUAGE.md`.
 
 ## Project context
 
@@ -10,7 +10,7 @@ Working folder for SEO notes, exports, briefs, and reports. Agents: read this fi
 | **OpenSEO project** | `Default` — id `abdf037a-2175-421d-8781-dcc56a0393d0` (US / en) |
 | **Search Console** | Connected natively in OpenSEO (`sc-domain:missionwinning.com`) — use `get_search_console_performance`, no CSV exports needed |
 | **Market** | Global English first (wherever Reddit/PH/IndieHackers outreach lands); product built for low-resource markets (BR, IN, NG, ID, EE, RU) — multi-language SEO later |
-| **Site stage** | Pre-public-launch (Aug 2026). `PRIVATE_MODE` gate still on until EIN → GSC shows 0 impressions. Organic baseline starts when the gate flips. **Free beta** (enter with code / Get notified) — not invite-only, not open beta. |
+| **Site stage** | Pre-public-launch (Aug 2026). `PRIVATE_MODE` gate still on until EIN → GSC shows 0 impressions. Organic baseline starts when the gate flips. **Free beta** (enter with code / Get notified) — not invite-only, not open beta. AEO citations cannot run on a gated www; prep pages now, publish after flip. |
 | **Stack** | Next.js PWA on Vercel. `app/sitemap.ts` + `app/robots.ts` exist. |
 
 ## MatrAIx gates (Growth copy)
@@ -32,6 +32,7 @@ Working folder for SEO notes, exports, briefs, and reports. Agents: read this fi
 1. **Indexed public URLs** — growth on `/guide/*`, `/exercises/*`, `/calculators/*` (Search Console). `/compare` only after Craft re-ships.
 2. **Weekly organic sessions** — baseline after `PRIVATE_MODE=false`; tracked in PostHog + GSC. Pre-flip baseline = **zero** (do not invent).
 3. SEO serves the #1 business metric: week-4 retained weekly loggers. Organic content should funnel visitors into the no-account tracker (try in 30 seconds), not just collect traffic.
+4. **AEO (post-flip):** citation-shaped `/guide` pages + honest founder Reddit. Not a parallel "everything content" program.
 
 ## Positioning (write in these terms)
 
@@ -47,6 +48,7 @@ Working folder for SEO notes, exports, briefs, and reports. Agents: read this fi
 | Folder | Contents |
 |---|---|
 | `gsc/` | Search Console prep checklist + manual exports if ever needed (native connection preferred) |
+| `aeo/` | Answer-engine prep: citation-page briefs (publish after flip) |
 | `keywords/` | Keyword research outputs, saved/tagged term lists |
 | `competitors/` | Competitor and landscape analyses |
 | `content/` | Content briefs for /guide, /exercises, /compare pages |
@@ -58,4 +60,4 @@ Working folder for SEO notes, exports, briefs, and reports. Agents: read this fi
 
 - Keep research scoped to the wedge (train-anywhere lifter) until activation holds — six pillars serve everyone, but marketing to everyone acquires no one.
 - OpenSEO credits are limited (~469 as of 2026-07-19); confirm before batches over 2,000 credits.
-- Next planned workflow: **keyword-research** seeded from wedge terms ("free workout tracker", "bodyweight workout log", "workout tracker no account", "offline workout app").
+- Next planned workflow: **keyword-research** seeded from wedge terms ("free workout tracker", "bodyweight workout log", "workout tracker no account", "offline workout app") + AEO citation pages after flip.
