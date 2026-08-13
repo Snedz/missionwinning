@@ -50,6 +50,7 @@ type Props = {
   onRate: (exIdx: number, setIdx: number, rpe: NonNullable<LoggedSet['rpe']>) => void;
   onApplyAllTargets: (exIdx: number) => void;
   onAddSet: (exIdx: number) => void;
+  onStartDrop: (exIdx: number) => void;
   onRemoveSet: (exIdx: number) => void;
   onStartRest: (seconds: number, exerciseId: string) => void;
   onSetInputChange: (exIdx: number, setIdx: number, field: 'reps' | 'weight', value: number) => void;
@@ -80,6 +81,7 @@ export function ActiveExerciseList({
   onRate,
   onApplyAllTargets,
   onAddSet,
+  onStartDrop,
   onRemoveSet,
   onStartRest,
   onSetInputChange,
@@ -134,6 +136,7 @@ export function ActiveExerciseList({
             onRate={(setIdx, rpe) => onRate(exIdx, setIdx, rpe)}
             onApplyAllTargets={() => onApplyAllTargets(exIdx)}
             onAddSet={() => onAddSet(exIdx)}
+            onStartDrop={() => onStartDrop(exIdx)}
             onRemoveSet={() => onRemoveSet(exIdx)}
             onStartRest={(seconds) => onStartRest(seconds, exLog.exerciseId)}
             setInput={tableControls.setInput}

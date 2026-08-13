@@ -7,6 +7,7 @@ Root-level `@/lib/{name}` paths re-export from here for compatibility — prefer
 ## Read order
 
 1. `setKind.ts` — normal/warmup/drop; volume + PR eligibility  
+1b. `dropSet.ts` — start a drop of the last working set (−20% load, skip rest) (`.754`)  
 2. `restTimer.ts` — rest seconds, clock format, defaults, last-rest per exercise (`.745`)  
 3. `superset.ts` — pair-of-two (`pairWithNext` / `unpair` / `pairMark` A1/A2), advance after log, rest gate (`.749`)  
 4. `nextSetTargets.ts` — Strong/Hevy-style next set suggestions  
@@ -34,6 +35,7 @@ Root-level `@/lib/{name}` paths re-export from here for compatibility — prefer
 | File | Covers |
 |------|--------|
 | `setKind.test.ts` | Volume / PR eligibility |
+| `dropSet.test.ts` | Load rule / start plan / rest compose (`.754`) |
 | `restTimer.test.ts` | Clock + defaults + start seconds (`.292`) + last-rest recall / skip (`.745`) |
 | `superset.test.ts` | Pair persist, pair-of-two, A1/A2 marks, advance, rest gate (`.749`) |
 | `nextSetTargets.test.ts` | Progression targets |

@@ -81,9 +81,15 @@ import {
   toggleOpenIdx,
 } from '@/lib/workout/activeWorkoutHelpers';
 import { prefersReducedMotion } from '@/lib/motion';
+import {
+  composeDropRest,
+  planStartDrop,
+  suggestDropFromPrior,
+} from '@/lib/workout/dropSet';
 import { shouldScrollAfterRestEnds } from '@/lib/workout/restTimer';
 import { resolveActiveEmptyStart } from '@/lib/workout/resolveActiveEmptyStart';
 import { track } from '@/lib/analytics';
+import type { SetKind } from '@/types';
 
 export function ActiveWorkoutPage() {
   const router = useRouter();
@@ -368,14 +374,17 @@ export function ActiveWorkoutPage() {
       useWorkoutStore.getState().activeWorkout?.exercises ??
       activeWorkout?.exercises ??
       [];
-    const rest = planLogSetRest({
-      exercisesAfterLog: updatedExercises,
-      exIdx,
-      setIdx,
-      advanceNext: next,
-      exerciseName: exercise?.name,
-      exerciseId,
-    });
+    const rest = composeDropRest(
+      planLogSetRest({
+        exercisesAfterLog: updatedExercises,
+        exIdx,
+        setIdx,
+        advanceNext: next,
+        exerciseName: exercise?.name,
+        exerciseId,
+      }),
+      setKind
+    );
     if (rest.takeRest) {
       startRestTimer(rest.restSeconds, exerciseId);
     }
@@ -386,6 +395,31 @@ export function ActiveWorkoutPage() {
       navigator.vibrate([...haptic]);
     }
     // Routine set feedback = row completion + rest timer (no toast spam).
+  };
+
+  const applyDropDial = (exIdx: number, setIdx: number, reps: number, weight: number) => {
+    const key = setInputKey(exIdx, setIdx);
+    setSetInputs((prev) => ({ ...prev, [key]: { reps, weight } }));
+  };
+
+  const handleStartDrop = (exIdx: number) => {
+    const ex = activeWorkout?.exercises[exIdx];
+    if (!ex) return;
+    const plan = planStartDrop(ex.sets, units);
+    if (!plan) return;
+    if (plan.addSet) addSetToExercise(exIdx);
+    setSetKind(exIdx, plan.targetSetIdx, 'drop');
+    applyDropDial(exIdx, plan.targetSetIdx, plan.reps, plan.weight);
+    stopRestTimer();
+  };
+
+  const handleSetKindChange = (exIdx: number, setIdx: number, kind: SetKind) => {
+    setSetKind(exIdx, setIdx, kind);
+    if (kind !== 'drop') return;
+    const ex = activeWorkout?.exercises[exIdx];
+    if (!ex) return;
+    const prefill = suggestDropFromPrior(ex.sets, setIdx, units);
+    if (prefill) applyDropDial(exIdx, setIdx, prefill.reps, prefill.weight);
   };
 
   const handleRepeatLast = (exIdx: number) => {
@@ -611,6 +645,7 @@ export function ActiveWorkoutPage() {
           onRate={(exIdx, setIdx, rpe) => rateSet(exIdx, setIdx, rpe)}
           onApplyAllTargets={(exIdx) => applyTargetsForExercise(exIdx)}
           onAddSet={(exIdx) => addSetToExercise(exIdx)}
+          onStartDrop={handleStartDrop}
           onRemoveSet={(exIdx) => {
             removeLastPlannedSet(exIdx);
             setSetInputs({});
@@ -620,7 +655,7 @@ export function ActiveWorkoutPage() {
             updateSetInput(exIdx, setIdx, field, value)
           }
           onLogSet={(exIdx, setIdx) => handleLogSet(exIdx, setIdx)}
-          onSetKindChange={(exIdx, setIdx, kind) => setSetKind(exIdx, setIdx, kind)}
+          onSetKindChange={handleSetKindChange}
         />
       )}
 
@@ -667,7 +702,7 @@ export function ActiveWorkoutPage() {
         onPresetRest={startRestTimer}
         onRepsChange={(exIdx, setIdx, reps) => updateSetInput(exIdx, setIdx, 'reps', reps)}
         onWeightChange={(exIdx, setIdx, weight) => updateSetInput(exIdx, setIdx, 'weight', weight)}
-        onKindChange={(exIdx, setIdx, kind) => setSetKind(exIdx, setIdx, kind)}
+        onKindChange={handleSetKindChange}
         onLog={(exIdx, setIdx) => handleLogSet(exIdx, setIdx)}
         onApplyFieldPatches={(exIdx, setIdx, patches) => {
           for (const p of patches) {

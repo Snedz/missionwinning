@@ -13,6 +13,7 @@
 | `ActiveExerciseList.tsx` | Maps session exercises → `ActiveExerciseCard` (swap candidates, table controls, open-idx). Page mounts this instead of inlining the map (`.439`) |
 | `ActiveExerciseCard.tsx` | Dense exercise block — Info → form guide; overflow for Note/Swap/SS/Ask/Remove. **Swap** is `AdaptiveOverlay` + `GarageSwapList` (1–2 garage stand-ins). Footer Rest offers last rest (`.745`). Note field sits **after** the set rows (`.748`) |
 | `ExerciseNoteField.tsx` | Always-visible one-line diary on the exercise — last cue prefills at start/add/swap; no autofocus (`.748`) |
+| `ActiveExerciseFooter.tsx` | Add Set · **Drop** after a working set (`.754`, outline, not red) · Rest · desktop kind chips · set options |
 | `SetLogTable.tsx` | **Desktop** set list — Strong/Hevy density (`Set · Prev · kg · Reps`); **Prev is the row anchor** (`data-prev-anchor`); pair mark `A1·n` on the Set cell when paired (`.749`); ≥44px inputs; one poster-red inline `Log set` (sole red at md+). Compact uses `SetLogRow` + `LogConsole` |
 | `SetLogRow.tsx` | **Read-only set record** — **Prev metric anchor** + this-session line (no "In the console" prose), pair mark `A1·n` when paired (`.749`), kind/PR/RPE, `Check`. ≥44px row + RPE. No filled red — entry is `LogConsole` |
 | `LogConsole.tsx` | **Compact only** — **the only place a set is entered.** Dense ink `ScreenDock`: name + `Set n of m`, overload cue, collapsed Work/Kind chips (ink selected, never accent fill), 52px steppers, one poster-red `Log set` in the thumb zone (F-003) |
@@ -33,4 +34,4 @@
 |-------|------|
 | Page | `ActiveWorkoutPage.tsx` |
 | Store | `workoutStore.ts` |
-| Lib | `activeWorkoutHelpers.ts`, `restTimer.ts`, `plateCalculator.ts`, `workoutPr.ts`, `setKind.ts` |
+| Lib | `activeWorkoutHelpers.ts`, `restTimer.ts`, `plateCalculator.ts`, `workoutPr.ts`, `setKind.ts`, `dropSet.ts` |

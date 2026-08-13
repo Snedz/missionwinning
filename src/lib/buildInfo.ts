@@ -1,5 +1,5 @@
-/** Shown on Profile so testers can confirm the deployed build. Bump when shipping UI to master. `.753` habit week count. */
-export const APP_BUILD_LABEL = "2026.07-unified.753";
+/** Shown on Profile so testers can confirm the deployed build. Bump when shipping UI to master. `.754` drop sets. */
+export const APP_BUILD_LABEL = "2026.07-unified.754";
 
 /**
  * Athlete-facing marketing version. Distinct from `APP_BUILD_LABEL`, which
