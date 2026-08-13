@@ -78,6 +78,10 @@ type HistoryStrings = {
   journalCancel: string;
   /** Kaizen History empty honesty — cross-link to Fuel (`.561`). */
   historyViewFuel: string;
+  /** `.720` — session list scan. */
+  historySetCount: string;
+  historySetCountOne: string;
+  historyOpenLog: string;
 };
 
 const en: HistoryStrings = {
@@ -154,6 +158,9 @@ const en: HistoryStrings = {
   journalSave: 'Save',
   journalCancel: 'Cancel',
   historyViewFuel: 'View in Fuel',
+  historySetCount: '{{count}} sets',
+  historySetCountOne: '1 set',
+  historyOpenLog: 'Open log: {{name}}',
 };
 
 const es: HistoryStrings = {
