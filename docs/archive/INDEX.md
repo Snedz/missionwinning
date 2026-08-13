@@ -26,6 +26,7 @@ When adding a doc:
 
 | File | Absorbed by / note |
 |------|---------------------|
+| [log/LOG-rotate-690-for-749.md](./log/LOG-rotate-690-for-749.md) | rotated 2026-08-13 for `.749` Supersets on the set log (`.690`) |
 | [log/LOG-rotate-689-for-748.md](./log/LOG-rotate-689-for-748.md) | rotated 2026-08-13 for `.748` Exercise notes on the set log (`.689`) |
 | [log/LOG-rotate-685-for-747.md](./log/LOG-rotate-685-for-747.md) | rotated 2026-08-13 for `.747` Repeat last session from the log (`.685`) |
 | [log/LOG-rotate-684-for-746.md](./log/LOG-rotate-684-for-746.md) | rotated 2026-08-13 for `.746` F-017 first set without an account (`.684`) |

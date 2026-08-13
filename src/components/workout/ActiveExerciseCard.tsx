@@ -156,6 +156,7 @@ export function ActiveExerciseCard({
         'content-card',
         ssLabel && 'border-s-[3px] border-s-[hsl(var(--accent-poster))]'
       )}
+      data-pair-mark={ssLabel ?? undefined}
     >
       <ActiveExerciseHeader
         exercise={exercise}
@@ -191,6 +192,7 @@ export function ActiveExerciseCard({
                   isNext={isNext}
                   weightLabel={unitLabel}
                   prevLabel={prevLabels[setIdx]}
+                  pairMark={ssLabel}
                   onRate={(rpe) => onRate(setIdx, rpe)}
                 />
               </div>
@@ -203,6 +205,7 @@ export function ActiveExerciseCard({
               activeSetIdx={activeSetIdxForExercise(nextSet, exIdx)}
               weightLabel={unitLabel}
               prevLabels={prevLabels}
+              pairMark={ssLabel}
               input={setInput}
               onInputChange={onSetInputChange}
               onLog={() => nextSet && onLogSet(nextSet.setIdx)}

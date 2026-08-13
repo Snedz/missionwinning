@@ -415,4 +415,45 @@ test('workoutStore', async (t) => {
     assert.equal(swapped?.exerciseId, 'squat');
     assert.equal(swapped?.note, 'belt on 3');
   });
+
+  await t.test('pairing two consecutive exercises persists a shared group (.719)', () => {
+    useWorkoutStore.getState().startWorkout('Push', [
+      ...template('bench-press', 2),
+      ...template('bent-over-row', 2),
+    ]);
+    useWorkoutStore.getState().toggleSupersetWithNext(0);
+    const exercises = useWorkoutStore.getState().activeWorkout?.exercises ?? [];
+    assert.ok(exercises[0].supersetGroup);
+    assert.equal(exercises[0].supersetGroup, exercises[1].supersetGroup);
+
+    const round = JSON.parse(JSON.stringify(exercises)) as typeof exercises;
+    assert.equal(round[0].supersetGroup, exercises[0].supersetGroup);
+    assert.equal(round[1].supersetGroup, exercises[1].supersetGroup);
+  });
+
+  await t.test('unlink clears both peers of a pair (.719)', () => {
+    useWorkoutStore.getState().startWorkout('Push', [
+      ...template('bench-press', 2),
+      ...template('bent-over-row', 2),
+    ]);
+    useWorkoutStore.getState().toggleSupersetWithNext(0);
+    useWorkoutStore.getState().unlinkSuperset(1);
+    const exercises = useWorkoutStore.getState().activeWorkout?.exercises ?? [];
+    assert.equal(exercises[0].supersetGroup, undefined);
+    assert.equal(exercises[1].supersetGroup, undefined);
+  });
+
+  await t.test('logSetAndAdvance after a pair goes A then B (.719)', () => {
+    useWorkoutStore.getState().startWorkout('Push', [
+      ...template('bench-press', 2),
+      ...template('bent-over-row', 2),
+    ]);
+    useWorkoutStore.getState().toggleSupersetWithNext(0);
+    const next = useWorkoutStore.getState().logSetAndAdvance(0, 0, 8, 40);
+    assert.deepEqual(next, { exerciseIndex: 1, setIndex: 0 });
+    const a = useWorkoutStore.getState().activeWorkout?.exercises[0].sets[0];
+    assert.equal(a?.completed, true);
+    assert.equal(a?.reps, 8);
+    assert.equal(a?.weight, 40);
+  });
 });

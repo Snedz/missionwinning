@@ -25,7 +25,7 @@ If you see a **password screen** (`/private`), your cohort uses a pre-launch gat
 
 1. Tap **Train** in the bottom nav (or start from Today).
 2. Pick a template from **Builder**, start a blank workout, or tap **Repeat last session** when you already have a completed log (same exercises and last loads). No account required — it works offline.
-3. Log sets (reps, weight, RPE). Optional one-line note per exercise (for example “belt on 3”) sits under the sets — last time’s cue prefills, stays on this device’s log, and is not a feed. Rest timer runs automatically and remembers the last rest for that exercise. Skip is fine — no penalty.
+3. Log sets (reps, weight, RPE). Optional one-line note per exercise (for example “belt on 3”) sits under the sets — last time’s cue prefills, stays on this device’s log, and is not a feed. Rest timer runs automatically and remembers the last rest for that exercise. Skip is fine — no penalty. Pair two consecutive exercises (More → Superset w/ next) to alternate A then B, then rest — the set table stays; pairing saves on this device.
 4. Finish — your session saves to **History**.
 
 ## Sign in (optional — after your first set)

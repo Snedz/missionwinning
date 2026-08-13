@@ -25,6 +25,8 @@ type Props = {
   weightLabel: string;
   /** "8 × 60" for each set index, when a previous performance exists. */
   prevLabels: (string | null)[];
+  /** A1/A2 pair mark — prefix on the Set cell so the row stays identifiable. */
+  pairMark?: string | null;
   input: { reps: number; weight: number };
   onInputChange: (field: 'reps' | 'weight', value: number) => void;
   onLog: () => void;
@@ -43,6 +45,7 @@ export function SetLogTable({
   activeSetIdx,
   weightLabel,
   prevLabels,
+  pairMark = null,
   input,
   onInputChange,
   onLog,
@@ -51,10 +54,14 @@ export function SetLogTable({
   const { t } = useTranslation();
 
   return (
-    <table className="w-full max-w-[640px] border-collapse text-sm" data-testid="set-log-table">
+    <table
+      className="w-full max-w-[640px] border-collapse text-sm"
+      data-testid="set-log-table"
+      data-pair-mark={pairMark ?? undefined}
+    >
       <thead>
         <tr className="border-b-2 border-border text-[11px] font-semibold uppercase tracking-[0.1em] text-muted-foreground">
-          <th scope="col" className={cn(cell, 'w-10 text-start')}>
+          <th scope="col" className={cn(cell, pairMark ? 'w-14' : 'w-10', 'text-start')}>
             {t('activeColSet', { defaultValue: 'Set' })}
           </th>
           <th scope="col" className={cn(cell, 'min-w-[4.5rem] text-start')}>
@@ -97,7 +104,7 @@ export function SetLogTable({
                   completed && !isActive && 'border-s-[3px] border-s-primary'
                 )}
               >
-                {setIdx + 1}
+                {pairMark ? `${pairMark}·${setIdx + 1}` : setIdx + 1}
               </th>
 
               <td
