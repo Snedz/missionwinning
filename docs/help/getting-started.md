@@ -24,7 +24,7 @@ If you see a **password screen** (`/private`), your cohort uses a pre-launch gat
 ## Your first workout
 
 1. Tap **Train** in the bottom nav (or start from Today).
-2. Pick a template from **Builder** or start a blank workout.
+2. Pick a template from **Builder**, start a blank workout, or tap **Repeat last session** when you already have a completed log (same exercises and last loads). No account required — it works offline.
 3. Log sets (reps, weight, RPE). Rest timer runs automatically and remembers the last rest for that exercise. Skip is fine — no penalty.
 4. Finish — your session saves to **History**.
 

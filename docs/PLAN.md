@@ -17,6 +17,68 @@ Mission Winning is **none of these** — one unified super app, free core foreve
 
 ---
 
+## Freeze — Repeat last session from the log (`.717`) — 2026-08-13
+
+> **Frozen.** Implement only this block. Do not expand. Label `2026.07-unified.717`
+> (occupied `.698`–`.716`). Draft PR. One Preview max. `[skip vercel]` on the
+> plan commit only.
+
+Strong/Hevy migrants live on **repeat last session**. History already has
+“Train this again” (`templateFromCompletedLog`). Today and Train empty Start
+do not: Active empty seeds Just Go; Today primary builds Just Go / Coach.
+This ship is **one control** that copies the last completed session into the
+free logger — not a template marketplace.
+
+### Already in the tree (deepen; do not fork)
+
+| Primitive | Role | Do not |
+|-----------|------|--------|
+| `src/lib/workout/historyRetrain.ts` `templateFromCompletedLog` | Maps a finished log → startWorkout template (names, set counts, last loads/reps as **uncompleted** targets) | Rewrite the mapper |
+| History `retrainFromLog` / `historyTrainAgain` | Same primitive for a *picked* log | Add a session picker on Today/Train |
+| `getLastPerformanceForSet` / `resolveSetInput` lastPerformance + session carry | F-013 / #489 dial prefills (Prev column + next-set carry) | Rewrite `resolveSetInput` or #489 |
+| `resolveRepeatLastTarget` / `activeRepeatLast` | Mid-session **repeat last set** | Reuse that key or label for this session control |
+| `startWorkout` | Builds uncompleted sets from the template; rest stays off | Call `startRestTimer` on start |
+
+### Behavior (one primary)
+
+**Last repeatable session** = newest `workoutHistory` entry (array is newest-first) where `templateFromCompletedLog` returns non-null (skips `deletedAt`, empty exercises, no `exerciseId`). Pure helper `repeatLastSessionTemplate(history)` in `src/lib/workout/repeatLastSession.ts` — wraps the existing mapper, does not copy its loop.
+
+1. **Resume** an in-progress session still wins (unchanged).
+2. **Train empty (`/active`):** if a last session exists → `startWorkout(template)` (not `prescribed`). Else → `startEmptyWorkout()` (existing empty logger). **Stop seeding Just Go / Coach from Active empty.** Train is the logger; Coach stays on `/coach` and on Today when a live plan exists.
+3. **Today (`/log`) one primary, in order:** resume → **live Coach session** (existing honesty: Start names the plan; do not steal this) → **repeat last session** → existing Just Go / journey seed / href. Repeat-last does **not** apply re-entry `doseScale` (copy last as-is). Do not auto-start Coach on the repeat-last branch.
+4. **Prefills:** template targets are last loads/reps. Compose with existing `getLastPerformanceForSet` / `resolveSetInput` (manual > session carry > last performance > template default). Do not auto-progress via `suggestNextSetTarget` at start.
+5. **Empty history:** existing empty logger. Shame-free — no missed / skipped / streak-loss / “get back” copy. Button stays **Start workout**.
+6. **Copy when last exists:** **Repeat last session** (new keys). Description: same exercises and last loads, log when ready. Do not reuse `activeRepeatLast` (“Repeat last set”).
+7. **Hard no:** auto-start rest; auto-start Coach on this control; social share; speech/voice owning the flow; second button / template list; gating the free logger; account/network required (local `workoutHistory` only). Set-log table remains first paint when exercises are copied.
+
+### Files (expected)
+
+- `src/lib/workout/repeatLastSession.ts` + colocated test
+- Slim `resolveActiveEmptyStart` to last-session or empty (drop Just Go/coach/dose from this path)
+- `ActiveWorkoutPage` empty start + `ActiveEmptyState` label
+- `runTodayPrimaryAction` + `justGoHeroMeta` source `repeat_last` (hero and tap must agree)
+- i18n: `activeRepeatLastSession` / `todayRepeatLastCta` (+ title/desc/kicker) in `activeWorkoutLocales` + `todayLocales`; `npm run i18n:fill` if packs require
+- Help: one sentence in `docs/help/getting-started.md`
+- INDEX: `src/lib/workout/INDEX.md` (+ Active empty row if props change)
+- Analytics: reuse `history_train_again` with `from: 'today' | 'active_empty'`
+- Ship protocol: `APP_BUILD_LABEL` `.717`, LOG (rotate oldest to stay ≤15), CONTEXT `## Now`, trailer `Excellence-Override: repeat last session`
+
+### Tests
+
+- Last-session copy: exercises, name, last loads/reps as uncompleted targets; newest-first; skip tombstone/empty
+- Empty-history path: helper null; Active empty still `startEmptyWorkout`; no guilt phrases in empty copy
+- Wiring: Active empty + Today primary call the helper; Active empty no longer `buildJustGoSession`
+- No rest on start (source scan: empty-start path does not call `startRestTimer`)
+- Copied session is not `prescribed`
+- `resolveSetInput` order untouched (do not edit that function)
+- `node scripts/check-build-label.mjs` for `.717`
+
+### Out of scope (hard bans)
+
+`PRIVATE_MODE` / `FREE_BETA` / Top 8 / EIN / field test / plate math / Super Bundle shop / public GitHub #506 / Learn vs-pages / stealing `.698`–`.716` / rewriting #489 / Builder marketplace / speech.
+
+---
+
 ## Phase status
 
 | Phase | Focus | Status |

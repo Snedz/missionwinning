@@ -62,6 +62,7 @@ import { ContinuityStrip } from '@/components/today/ContinuityStrip';
 import { peekCoachToday } from '@/lib/coach/peekCoachToday';
 import { loadPlan } from '@/lib/coach/storage';
 import { buildJustGoHeroMeta, type JustGoHeroMeta } from '@/lib/justGoHeroMeta';
+import { shouldRepeatLastOnToday } from '@/lib/workout/repeatLastSession';
 
 const FirstStepsCard = dynamic(
   () => import('@/components/journey/FirstStepsCard').then((m) => m.FirstStepsCard),
@@ -567,15 +568,19 @@ export function HomeTodayDashboard() {
       hasStartWorkout: !!action.startWorkout,
       phase: action.phase,
     });
+    const coach = peekCoachToday();
+    const lastSession = shouldRepeatLastOnToday({
+      hasLiveCoach: !!(coach && coach.exercises.length > 0),
+      history: workoutHistory,
+    });
     return buildJustGoHeroMeta({
       hasActiveWorkout: !!activeWorkout,
       trainReady,
       focusLabel: muscleGroupLabel(recommendedFocus.group, t),
-      coach: peekCoachToday(),
+      coach,
+      repeatLastName: lastSession?.name ?? null,
     });
-    // workoutHistory.length: re-peek when sessions change (plan may mark done)
-    // eslint-disable-next-line react-hooks/exhaustive-deps -- t() stable enough; plan lives in storage
-  }, [activeWorkout, action.href, action.startWorkout, action.phase, recommendedFocus.group, t, workoutHistory.length]);
+  }, [activeWorkout, action.href, action.startWorkout, action.phase, recommendedFocus.group, t, workoutHistory]);
 
   /*
    * Every block declares what it costs the screen.

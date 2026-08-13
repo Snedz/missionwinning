@@ -26,6 +26,7 @@ When adding a doc:
 
 | File | Absorbed by / note |
 |------|---------------------|
+| [log/LOG-rotate-685-for-747.md](./log/LOG-rotate-685-for-747.md) | rotated 2026-08-13 for `.747` Repeat last session from the log (`.685`) |
 | [log/LOG-rotate-684-for-746.md](./log/LOG-rotate-684-for-746.md) | rotated 2026-08-13 for `.746` F-017 first set without an account (`.684`) |
 | [log/LOG-rotate-680-for-745.md](./log/LOG-rotate-680-for-745.md) | rotated 2026-08-13 for `.745` rest timer last-rest (`.680`) |
 | [log/LOG-rotate-679-for-744.md](./log/LOG-rotate-679-for-744.md) | rotated 2026-08-13 for `.744` Dependabot security batch (`.679`) |

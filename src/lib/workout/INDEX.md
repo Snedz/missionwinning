@@ -16,7 +16,8 @@ Root-level `@/lib/{name}` paths re-export from here for compatibility — prefer
 8. `workoutMerge.ts` — local/cloud history fingerprint merge  
 9. `workoutVictory.ts` — post-workout summary; early/no-plan → Mission Coach; freestyle progression skipped when prescribed (`.410`); one-exit secondary Today helper (`.422`)  
 10. `activeWorkoutHelpers.ts` — next incomplete set, last session, set stats, `buildConsoleSet` / `planApplyTargets` / `resolveActiveSetDial` (`.297`/`.303`)  
-11. `activeWorkoutPulse.ts` — nav pulse flag without store  
+10a. `repeatLastSession.ts` — last completed log → startWorkout template (`.717`); wraps `historyRetrain.templateFromCompletedLog`  
+11. `activeWorkoutPulse.ts` — nav pulse flag without store
 12. `workoutPersistLite.ts` — history/streak from localStorage (cold path)
 13. `sessionCheckInOffer.ts` — pure W1 gate: never Mind-sheet the first mission (`.293`)
 14. `loggerSpeed.ts` — Enter/Use-next helpers (`.288`)
@@ -40,6 +41,7 @@ Root-level `@/lib/{name}` paths re-export from here for compatibility — prefer
 | `workoutMerge.test.ts` | Conflict / cap / fingerprint |
 | `workoutVictory.test.ts` | Victory next action |
 | `activeWorkoutHelpers.test.ts` | Next set, last session stats |
+| `repeatLastSession.test.ts` | Last-session copy + empty-history path (`.717`) |
 | `sessionCheckInOffer.test.ts` | First-mission never offers check-in (`.293`) |
 | `loggerSpeed.test.ts` | Use-next offer rules (`.288`) |
 

@@ -12,6 +12,11 @@ type TodayStrings = {
   todayWeeklyChallengesDescOpenBeta: string;
   todayDayStreak: string;
   todayStartWorkout: string;
+  /** Today hero when the primary tap copies the last completed session (.717). */
+  todayRepeatLastCta: string;
+  todayRepeatLastKicker: string;
+  todayRepeatLastTitle: string;
+  todayRepeatLastDesc: string;
   todaySectionProgress: string;
   todaySectionProgressDesc: string;
   todayQuickOptions: string;
@@ -292,6 +297,10 @@ const en: TodayStrings = {
     'Train + Fuel + volume goals this week. Free core — open beta unlocks depth across the app.',
   todayDayStreak: '{{count}}-day streak',
   todayStartWorkout: "Start Today's Workout",
+  todayRepeatLastCta: 'Repeat last session',
+  todayRepeatLastKicker: 'Train',
+  todayRepeatLastTitle: '{{name}}',
+  todayRepeatLastDesc: 'Same as last time — last loads are ready in the set log.',
   todaySectionProgress: 'Progress & tools',
   todaySectionProgressDesc: 'Readiness, stats, and history',
   todayQuickOptions: 'Quick options',
@@ -585,6 +594,10 @@ const coachPlanDefaults = {
   coachPlanGenerating: en.coachPlanGenerating,
   coachPlanLoad: en.coachPlanLoad,
   coachPlanRegenerate: en.coachPlanRegenerate,
+  todayRepeatLastCta: en.todayRepeatLastCta,
+  todayRepeatLastKicker: en.todayRepeatLastKicker,
+  todayRepeatLastTitle: en.todayRepeatLastTitle,
+  todayRepeatLastDesc: en.todayRepeatLastDesc,
 };
 
 const es: TodayStrings = {

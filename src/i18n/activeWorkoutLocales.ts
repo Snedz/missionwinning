@@ -32,6 +32,9 @@ type ActiveWorkoutStrings = {
   activeStartRest: string;
   activeLogSet: string;
   activeRepeatLast: string;
+  /** Empty-state Start when a last completed session exists (.717). Not last set. */
+  activeRepeatLastSession: string;
+  activeRepeatLastSessionDesc: string;
   activeLastPerformance: string;
   activeSetLogged: string;
   activeSetLoggedDesc: string;
@@ -251,6 +254,8 @@ const en: ActiveWorkoutStrings = {
   activeStartRest: '{{seconds}}s Rest',
   activeLogSet: 'Log set',
   activeRepeatLast: 'Repeat last set',
+  activeRepeatLastSession: 'Repeat last session',
+  activeRepeatLastSessionDesc: 'Same exercises and last loads. Log when ready.',
   activeLastPerformance: 'Last: {{reps}} × {{weight}}',
   activeSetLogged: 'Set logged',
   activeSetLoggedDesc: '{{reps}} × {{weight}} — {{rest}}s rest',

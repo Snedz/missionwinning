@@ -39,6 +39,7 @@ import { STORAGE_KEYS } from '@/lib/storage/keys';
 import { readRaw } from '@/lib/storage/safeStorage';
 import { peekCoachToday } from '@/lib/coach/peekCoachToday';
 import { buildJustGoHeroMeta, type JustGoHeroMeta } from '@/lib/justGoHeroMeta';
+import { shouldRepeatLastOnToday } from '@/lib/workout/repeatLastSession';
 import type { RewardsSummary } from '@/lib/rewards/summary';
 import { formatLocalDateKey, localDateKey, localDateKeyFromIso } from '@/lib/time/localDate';
 import { buildContinuitySuggestions } from '@/lib/today/continuityStrip';
@@ -256,6 +257,11 @@ export function HomeTodayLean() {
     })();
   };
 
+  const coachPeek = peekCoachToday();
+  const lastSession = shouldRepeatLastOnToday({
+    hasLiveCoach: !!(coachPeek && coachPeek.exercises.length > 0),
+    history: workoutHistory,
+  });
   const justGoMeta: JustGoHeroMeta | null = buildJustGoHeroMeta({
     hasActiveWorkout,
     trainReady: isTodayTrainReady({
@@ -265,7 +271,8 @@ export function HomeTodayLean() {
     }),
     focusLabel:
       focusLabel || t('todaySessionFocus', { defaultValue: 'Training' }),
-    coach: peekCoachToday(),
+    coach: coachPeek,
+    repeatLastName: lastSession?.name ?? null,
   });
 
   /*

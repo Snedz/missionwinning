@@ -83,10 +83,7 @@ import {
 import { prefersReducedMotion } from '@/lib/motion';
 import { shouldScrollAfterRestEnds } from '@/lib/workout/restTimer';
 import { useLocaleFormat } from '@/hooks/useLocaleFormat';
-import { computeReentry } from '@/lib/reentry';
 import { resolveActiveEmptyStart } from '@/lib/workout/resolveActiveEmptyStart';
-import { getRecommendedFocus, computeReadiness } from '@/lib/score';
-import { loadCoachTodayOptional } from '@/lib/coach/loadCoachTodayOptional';
 import { track } from '@/lib/analytics';
 
 export function ActiveWorkoutPage() {
@@ -509,31 +506,17 @@ export function ActiveWorkoutPage() {
     router.push(activePostSessionPath('history'));
   };
 
-  const handleEmptyStart = async () => {
+  const handleEmptyStart = () => {
     /*
-     * Free-beta excellence: Train tab Start should not dump a returning athlete
-     * into a blank board after a gap. Seed Just Go (coach day when present) and
-     * apply re-entry dose — same rules as Today's primary CTA. Cold devices still
-     * get freestyle empty.
+     * Strong/Hevy empty start: copy the last completed session when one exists.
+     * Cold devices stay freestyle empty. Do not seed Just Go or Coach here —
+     * Train is the logger; rest stays off until a set is logged.
      */
-    const equipment = readRaw(STORAGE_KEYS.equipment) || 'bodyweight';
-    const readiness = computeReadiness(workoutHistory);
-    const focus = getRecommendedFocus(readiness);
-    const coachToday = await loadCoachTodayOptional();
-    const start = resolveActiveEmptyStart({
-      history: workoutHistory,
-      units,
-      equipment,
-      focus,
-      readiness,
-      coachToday,
-    });
-    if (start.kind === 'just_go') {
+    const start = resolveActiveEmptyStart(workoutHistory);
+    if (start.kind === 'repeat_last') {
       startWorkout(start.name, start.exercises);
-      track('just_go_started', {
-        source: start.source,
-        focus: focus.group,
-        doseScale: start.doseScale,
+      track('history_train_again', {
+        exerciseCount: start.exercises.length,
         from: 'active_empty',
       });
       return;
@@ -541,16 +524,12 @@ export function ActiveWorkoutPage() {
     startEmptyWorkout();
   };
 
-  const reentryHint = computeReentry(workoutHistory, Date.now());
-
   if (!activeWorkout) {
     return (
       <ActiveEmptyState
-        onStart={() => {
-          void handleEmptyStart();
-        }}
+        onStart={handleEmptyStart}
         hydrated={hasHydrated}
-        reentryDoseScale={reentryHint.show ? reentryHint.doseScale : undefined}
+        hasLastSession={resolveActiveEmptyStart(workoutHistory).kind === 'repeat_last'}
         victoryOpen={victoryOpen}
         victorySummary={victorySummary}
         onVictoryOpenChange={setVictoryOpen}
