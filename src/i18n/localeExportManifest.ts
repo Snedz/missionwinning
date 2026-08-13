@@ -70,6 +70,7 @@ export const LOCALE_FILES = [
   { namespace: 'gate', filename: 'gate.json' },
   { namespace: 'rewards', filename: 'rewards.json' },
   { namespace: 'learnContent', filename: 'learn-content.json' },
+  { namespace: 'fieldTest', filename: 'field-test.json' },
 ] as const;
 
 export type LocaleNamespace = (typeof LOCALE_FILES)[number]['namespace'];

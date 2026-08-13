@@ -22,6 +22,19 @@ import {
   shouldStartSeoExerciseSession,
   stripSeoExerciseFromSearch,
 } from '@/lib/seoExerciseBridge';
+import {
+  FIELD_TEST_GARAGE_ID,
+  fieldTestSessionTemplate,
+  fieldTestSkipNote,
+  isFieldTestLog,
+  isFieldTestSdcSlot,
+  isFieldTestSkipNote,
+  parseFieldTestParam,
+  shouldStartFieldTestSession,
+  stripFieldTestFromSearch,
+} from '@/lib/workout/fieldTest';
+import { readFieldTestScaleKey } from '@/lib/workout/fieldTestScore';
+import { FieldTestEventActions } from '@/components/workout/FieldTestEventActions';
 import { getFormGuideOrCues } from '@/lib/formGuides';
 import { SignInPrompt } from '@/components/auth/SignInPrompt';
 import { LOCAL_FIRST_COPY } from '@/lib/localFirstCopy';
@@ -178,6 +191,23 @@ export function ActiveWorkoutPage() {
     addExerciseToActive,
     router,
   ]);
+
+  const fieldTestConsumed = useRef(false);
+  useEffect(() => {
+    if (!hasHydrated) return;
+    if (!parseFieldTestParam(searchParams)) {
+      fieldTestConsumed.current = false;
+      return;
+    }
+    if (fieldTestConsumed.current) return;
+    fieldTestConsumed.current = true;
+    const logged = hasLoggedWork(activeWorkout);
+    if (shouldStartFieldTestSession(logged)) {
+      const session = fieldTestSessionTemplate();
+      startWorkout(session.name, session.exercises);
+    }
+    router.replace(`/active${stripFieldTestFromSearch(window.location.search)}`);
+  }, [hasHydrated, searchParams, activeWorkout, startWorkout, router]);
 
   const [addExerciseId, setAddExerciseId] = useState('');
   const [setInputs, setSetInputs] = useState<Record<string, { reps: number; weight: number }>>({});
@@ -438,6 +468,7 @@ export function ActiveWorkoutPage() {
       goalId,
       hasCoachPlan: !!plan,
       resolveExerciseName: (id) => getExerciseById(id)?.name ?? id.replace(/-/g, ' '),
+      fieldTestScaleKey: readFieldTestScaleKey(),
     });
     setDebrief(assembled.debrief);
     setEntryFragments(assembled.entry.fragments);
@@ -560,6 +591,10 @@ export function ActiveWorkoutPage() {
         debrief={debrief}
         fragments={entryFragments}
         workoutId={victoryWorkoutId ?? undefined}
+        onRunFieldTestAgain={() => {
+          const session = fieldTestSessionTemplate();
+          startWorkout(session.name, session.exercises);
+        }}
       />
     );
   }
@@ -591,6 +626,15 @@ export function ActiveWorkoutPage() {
       <LiveHeartRate />
 
       <SessionJotField value={activeWorkout.sessionNote ?? ''} onChange={setSessionNote} />
+
+      {isFieldTestLog(activeWorkout) ? (
+        <p className="text-[11px] leading-relaxed text-muted-foreground">
+          {t('fieldTestStartHint', {
+            defaultValue:
+              'Optional: pick a published scale column on the receipt to see points.',
+          })}
+        </p>
+      ) : null}
 
       {!activeSessionHasExercises(activeWorkout.exercises) ? (
         /* Was the logger's own dashed box — the system has no dashed borders
@@ -646,6 +690,31 @@ export function ActiveWorkoutPage() {
           }
           onLogSet={(exIdx, setIdx) => handleLogSet(exIdx, setIdx)}
           onSetKindChange={(exIdx, setIdx, kind) => setSetKind(exIdx, setIdx, kind)}
+          afterHeaderFor={(exIdx, exerciseId) => {
+            if (!isFieldTestLog(activeWorkout) || !isFieldTestSdcSlot(exerciseId)) {
+              return null;
+            }
+            const exLog = activeWorkout.exercises[exIdx];
+            if (!exLog) return null;
+            const hasCompleted = exLog.sets.some((s) => s.completed);
+            return (
+              <div className="px-3">
+                <FieldTestEventActions
+                  isGarage={exerciseId === FIELD_TEST_GARAGE_ID}
+                  skipped={isFieldTestSkipNote(exLog.note)}
+                  canSwap={!hasCompleted}
+                  onGarage={() => {
+                    const garage = getExerciseById(FIELD_TEST_GARAGE_ID);
+                    replaceExerciseInActive(exIdx, FIELD_TEST_GARAGE_ID, garage?.muscleGroups);
+                    setSetInputs({});
+                  }}
+                  onSkip={() => {
+                    setExerciseNote(exIdx, fieldTestSkipNote(exLog.note));
+                  }}
+                />
+              </div>
+            );
+          }}
         />
       )}
 

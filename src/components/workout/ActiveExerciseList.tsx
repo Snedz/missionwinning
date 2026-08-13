@@ -4,7 +4,7 @@
  * Exercise cards list for ActiveWorkoutPage — map stays out of the page shell (.439).
  */
 
-import type { RefObject } from 'react';
+import type { ReactNode, RefObject } from 'react';
 import { ActiveExerciseCard } from '@/components/workout/ActiveExerciseCard';
 import { getExerciseById, EXERCISES } from '@/data/exercises';
 import { repRangeForGoal } from '@/lib/coach/progression';
@@ -57,6 +57,7 @@ type Props = {
   onSetInputChange: (exIdx: number, setIdx: number, field: 'reps' | 'weight', value: number) => void;
   onLogSet: (exIdx: number, setIdx: number) => void;
   onSetKindChange: (exIdx: number, setIdx: number, kind: SetKind) => void;
+  afterHeaderFor?: (exIdx: number, exerciseId: string) => ReactNode;
 };
 
 export function ActiveExerciseList({
@@ -88,6 +89,7 @@ export function ActiveExerciseList({
   onSetInputChange,
   onLogSet,
   onSetKindChange,
+  afterHeaderFor,
 }: Props) {
   return (
     <div className="space-y-3">
@@ -150,6 +152,7 @@ export function ActiveExerciseList({
               if (!tableControls.canEdit || !nextSet) return;
               onSetKindChange(exIdx, nextSet.setIdx, kind);
             }}
+            afterHeader={afterHeaderFor?.(exIdx, exLog.exerciseId)}
           />
         );
       })}

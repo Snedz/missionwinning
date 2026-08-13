@@ -31,6 +31,8 @@ import {
   summarizeWorkoutVictory,
   type WorkoutVictorySummary,
 } from '@/lib/workout/workoutVictory';
+import { buildFieldTestReceipt } from '@/lib/workout/fieldTestReceipt';
+import type { FieldTestScaleKey } from '@/lib/workout/fieldTestScore';
 
 /**
  * Resolve what to log for one set (override wins; else dial).
@@ -180,6 +182,7 @@ export function assembleActiveVictory(params: {
   goalId: string;
   hasCoachPlan: boolean;
   resolveExerciseName: (exerciseId: string) => string;
+  fieldTestScaleKey?: FieldTestScaleKey | null;
 }): ActiveVictoryAssembly {
   const historyAfter = [params.log, ...params.historyBefore];
   const streak = getTrainingStreak(historyAfter);
@@ -210,7 +213,13 @@ export function assembleActiveVictory(params: {
       completedWorkouts: historyAfter.length,
       hasCoachPlan: params.hasCoachPlan,
       strainDelta: scoreDeltas.strain,
-    }
+    },
+    buildFieldTestReceipt(
+      params.log,
+      params.historyBefore,
+      params.fieldTestScaleKey ?? null,
+      params.units
+    )
   );
 
   return {

@@ -18,6 +18,8 @@
 | [help/mission-coach.md](help/mission-coach.md) | AI weekly coach |
 | [help/fuel-and-nutrition.md](help/fuel-and-nutrition.md) | Nutrition logging |
 | [help/fitness-test-and-school.md](help/fitness-test-and-school.md) | PFT + PE classes |
+| [help/field-test.md](help/field-test.md) | Free five-event field test (logger) |
+| [FIELD_TEST_PLAN.md](FIELD_TEST_PLAN.md) | Frozen plan — five-event field test |
 | [help/premium-and-billing.md](help/premium-and-billing.md) | Super Bundle |
 | [help/privacy-and-data.md](help/privacy-and-data.md) | Data & consent |
 | [help/faq.md](help/faq.md) | FAQ |

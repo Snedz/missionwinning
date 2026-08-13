@@ -59,6 +59,7 @@ npm run export-locales     # TS + packs → public/locales/
 | `assessmentsLocales.ts` | PAR-Q |
 | `calculatorsLocales.ts` | Calculators |
 | `fitnessTestLocales.ts` | PFT |
+| `fieldTestLocales.ts` | Five-event field test (not CORE) |
 | `programsLocales.ts` | Programs |
 | `libraryLocales.ts` | Exercise library |
 | `feedbackLocales.ts` | Feedback |

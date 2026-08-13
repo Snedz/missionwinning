@@ -27,6 +27,7 @@
 | `guidebook/magazineMeta.ts` | Beyond the Basics magazine front matter + PDF path |
 | `learnPaths.ts`, `learnLessonEnhancements.ts` | Learn pillar paths |
 | `presidentialFitnessStandards.json` | PFT scoring standards |
+| `fieldTestAcftScales.ts` | Published five-event scoring tables (23 March 2022) — field test only |
 | `pftWeekOneChallenge.ts` | PFT challenge data |
 
 ## Coach note

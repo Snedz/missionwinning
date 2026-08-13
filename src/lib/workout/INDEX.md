@@ -25,6 +25,9 @@ Root-level `@/lib/{name}` paths re-export from here for compatibility — prefer
 17. `activeSetInputPatches.ts` — Use next / plate / apply-targets field patches (`.407`)
 18. `activeTableSetControls.ts` — desktop table set dial + kind projection (`.408`)
 19. `activeWorkoutHelpers.ts` — also `resolveExerciseNextTarget` + loadPct/menu gates (`.418`); `formatPrevSetLabels` + footer peel (`.425`)
+20. `fieldTest.ts` — five-event field test template, garage/skip, `isFieldTestLog` (`.708`)
+21. `fieldTestScore.ts` — published-table lookup, bands, 0–500 gate
+22. `fieldTestReceipt.ts` — Victory receipt + vs-last (field test only)
 
 ## Tests (colocated)
 
@@ -42,6 +45,10 @@ Root-level `@/lib/{name}` paths re-export from here for compatibility — prefer
 | `activeWorkoutHelpers.test.ts` | Next set, last session stats |
 | `sessionCheckInOffer.test.ts` | First-mission never offers check-in (`.293`) |
 | `loggerSpeed.test.ts` | Use-next offer rules (`.288`) |
+| `fieldTest.test.ts` | Template, garage/skip, name-or-signature |
+| `fieldTestScore.test.ts` | Cited lookup, garage drops 500, no key → raw |
+| `fieldTestReceipt.test.ts` | vs-last + rescore |
+| `fieldTestCopy.test.ts` | Public copy has no Army marks except the cite |
 
 ## UI & integration (not in this folder)
 

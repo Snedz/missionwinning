@@ -5,7 +5,7 @@
  * Dense mobile: cues live in Form guide; actions in overflow.
  */
 
-import { useState, type RefObject } from 'react';
+import { useState, type ReactNode, type RefObject } from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { SetLogRow } from '@/components/workout/SetLogRow';
 import { SetLogTable } from '@/components/workout/SetLogTable';
@@ -78,6 +78,8 @@ type Props = {
   /** Kind of the set currently being entered, and how to change it. */
   activeSetKind: SetKind;
   onSetKindChange: (kind: SetKind) => void;
+  /** Field-test SDC garage/skip — optional slot after the header. */
+  afterHeader?: ReactNode;
 };
 
 export function ActiveExerciseCard({
@@ -114,6 +116,7 @@ export function ActiveExerciseCard({
   onLogSet,
   activeSetKind,
   onSetKindChange,
+  afterHeader,
 }: Props) {
   const isCompact = useIsCompact();
   const [menuOpen, setMenuOpen] = useState(false);
@@ -175,6 +178,7 @@ export function ActiveExerciseCard({
         onNoteChange={onNoteChange}
         onRepeatLast={onRepeatLast}
       />
+      {afterHeader}
       <CardContent className="space-y-2 p-3 pt-0">
         {isCompact ? (
           exLog.sets.map((set, setIdx) => {

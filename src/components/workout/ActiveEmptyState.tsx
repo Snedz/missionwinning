@@ -31,6 +31,8 @@ type Props = {
   fragments?: string[];
   /** Finished session id — lets a feel tap annotate that session's journal entry. */
   workoutId?: string;
+  /** Start the same five-event field test after Victory. */
+  onRunFieldTestAgain?: () => void;
 };
 
 /** Empty /active shell — start quick session or jump to Today / Builder. */
@@ -46,6 +48,7 @@ export function ActiveEmptyState({
   workoutId,
   onViewToday,
   onViewHistory,
+  onRunFieldTestAgain,
 }: Props) {
   const { t } = useTranslation();
   const easedBack =
@@ -126,7 +129,18 @@ export function ActiveEmptyState({
         >
           {t('activeGoBuilder', { defaultValue: 'Builder' })}
         </a>
+        <a
+          href="/active?fieldTest=1"
+          className="min-h-[44px] inline-flex items-center text-muted-foreground underline-offset-2 hover:text-foreground hover:underline"
+        >
+          {t('fieldTestStartLink', { defaultValue: 'Five-event field test' })}
+        </a>
       </div>
+      <p className="text-[11px] leading-relaxed text-muted-foreground">
+        {t('fieldTestStartHint', {
+          defaultValue: 'Optional: pick a published scale column on the receipt to see points.',
+        })}
+      </p>
       {/*
         Compact dock owns the one red Start. Desktop `ScreenDock` renders in
         place (same as Today), so the poster field still leads under the invite.
@@ -177,6 +191,7 @@ export function ActiveEmptyState({
         onOpenChange={onVictoryOpenChange}
         onViewToday={onViewToday}
         onViewHistory={onViewHistory}
+        onRunFieldTestAgain={onRunFieldTestAgain}
       />
     </div>
   );

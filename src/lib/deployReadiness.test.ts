@@ -32,8 +32,9 @@ describe('deployReadiness', () => {
     // `catalog.ts` were defined in no catalogue at all and survived only in a
     // stale committed export. Counting namespaces proves a pack ships; only
     // `rewardsKeyParity.test.ts` proves the pack is complete.
-    assert.equal(r.localeFiles, 510);
-    assert.equal(r.localeNamespaces, 34);
+    // `.708` 34→35 with `fieldTest` (510→525).
+    assert.equal(r.localeFiles, 525);
+    assert.equal(r.localeNamespaces, 35);
     assert.ok(r.minTodayKeys >= 100);
     assert.equal(r.target, 'ci');
   });

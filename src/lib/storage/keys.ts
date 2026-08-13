@@ -109,6 +109,11 @@ export const STORAGE_KEYS = {
   operatorName: 'mw_operator_name',
   units: 'mw_units',
   unitsExplicit: 'mw_units_explicit',
+  /**
+   * Optional published scale column for the five-event field test.
+   * `{ ageBand, column: 'm' | 'f' }`. Unset → raw performances only.
+   */
+  fieldTestScaleKey: 'mw_field_test_scale_key',
   langExplicit: 'mw_lang_explicit',
   regionDefaults: 'mw_region_defaults_v1',
   remindersPref: 'mw_reminders_pref',

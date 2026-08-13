@@ -29,6 +29,7 @@ import { VictoryFeelStrip } from '@/components/workout/VictoryFeelStrip';
 import { VictoryBodyDeltaStrip } from '@/components/workout/VictoryBodyDeltaStrip';
 import { VictoryStatsStrip } from '@/components/workout/VictoryStatsStrip';
 import { VictoryNextActionStrip } from '@/components/workout/VictoryNextActionStrip';
+import { FieldTestReceiptStrip } from '@/components/workout/FieldTestReceiptStrip';
 import { VictorySecondaryLinks } from '@/components/workout/VictorySecondaryLinks';
 import { VictoryRewardsLine } from '@/components/rewards/VictoryRewardsLine';
 import { buildVictorySecondaryLinks } from '@/lib/workout/victorySecondaryLinks';
@@ -65,6 +66,8 @@ type Props = {
    * `.184` write-only defect, live again.
    */
   workoutId?: string;
+  /** Field test only — starts the same five-event template. */
+  onRunFieldTestAgain?: () => void;
 };
 
 /** D2 Victory ritual — lock scale + volume + one next action (paper/ink). */
@@ -77,6 +80,7 @@ export function WorkoutVictorySheet({
   debrief,
   fragments,
   workoutId,
+  onRunFieldTestAgain,
 }: Props) {
   const { t } = useTranslation();
   const fmt = useLocaleFormat();
@@ -275,6 +279,21 @@ export function WorkoutVictorySheet({
           unitLabel={unitLabel}
           formatVolume={(n) => fmt.num(n)}
         />
+
+        {summary.fieldTest ? (
+          <FieldTestReceiptStrip
+            receipt={summary.fieldTest}
+            units={units}
+            onRunAgain={
+              onRunFieldTestAgain
+                ? () => {
+                    onOpenChange(false);
+                    onRunFieldTestAgain();
+                  }
+                : undefined
+            }
+          />
+        ) : null}
 
         <VictoryRewardsLine active={open} />
 
