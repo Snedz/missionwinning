@@ -71,6 +71,9 @@ type Props = {
   /** Last working set (not warmup). One tap accepts into the dial. */
   lastSetGhost?: LastSetGhost | null;
   onAcceptGhost?: (target: { reps: number; weight: number }) => void;
+  /** Live barbell plate hint (`25 + 15`). */
+  plateLine?: string | null;
+  onOpenPlates?: () => void;
 };
 
 /** 48 × 52px, 2px light rule — the ink ground needs a lighter border than paper. */
@@ -160,6 +163,8 @@ export function LogConsole({
   plusLoad = false,
   lastSetGhost,
   onAcceptGhost,
+  plateLine = null,
+  onOpenPlates,
 }: Props) {
   const { t } = useTranslation();
   /** Outdoor default: Work only. Expand once to pick warmup/fail/drop. */
@@ -421,6 +426,30 @@ export function LogConsole({
           />
         )}
       </div>
+
+      {plateLine && onOpenPlates ? (
+        <button
+          type="button"
+          onClick={onOpenPlates}
+          data-testid="log-console-plates"
+          className="mt-1.5 flex min-h-[44px] w-full items-center border-2 border-neutral-700 px-3 text-start text-xs tabular-nums text-neutral-300 tap-target hover:bg-neutral-800"
+        >
+          {t('activePlatePerSideLine', {
+            plates: plateLine,
+            defaultValue: `${plateLine} / side`,
+          })}
+        </button>
+      ) : plateLine ? (
+        <p
+          className="mt-1.5 text-xs tabular-nums text-neutral-400"
+          data-testid="log-console-plates"
+        >
+          {t('activePlatePerSideLine', {
+            plates: plateLine,
+            defaultValue: `${plateLine} / side`,
+          })}
+        </p>
+      ) : null}
 
       {/* Sole poster-red primary on the hero Active log path (compact dock). */}
       <button

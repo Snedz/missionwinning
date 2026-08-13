@@ -1,7 +1,7 @@
 # Frozen plan — Free plate math + warmup (logger)
 
 **Status:** FROZEN. Implement only this file.  
-**Ship:** `2026.07-unified.705`  
+**Ship:** `2026.07-unified.764`  
 **Excellence-Override:** free plate math + warmup (logger)  
 **Lane:** Engineering-Web · Horizon W · Train logger (`/active`)  
 **Free forever.** Not Super Bundle bait. No trial. No `PRIVATE_MODE` flip.

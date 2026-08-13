@@ -66,6 +66,11 @@ type ActiveWorkoutStrings = {
   activePlateRemainder: string;
   activePlateApply: string;
   activeOpenPlateCalc: string;
+  /** Live set-row per-side stack (`25 + 15 / side`). */
+  activePlatePerSideLine: string;
+  activeAddWarmups: string;
+  activeToggleWarmupAria: string;
+  activeToggleWorkAria: string;
   activeSetNormal: string;
   activeSetWarmup: string;
   activeSetFailure: string;
@@ -311,6 +316,10 @@ const en: ActiveWorkoutStrings = {
   activePlateRemainder: 'Cannot load exactly — {{remainder}}{{unit}} short',
   activePlateApply: 'Use {{weight}} {{unit}}',
   activeOpenPlateCalc: 'Plates',
+  activePlatePerSideLine: '{{plates}} / side',
+  activeAddWarmups: 'Add warmups',
+  activeToggleWarmupAria: 'Mark as warmup',
+  activeToggleWorkAria: 'Mark as work set',
   activeSetNormal: 'Work',
   activeSetWarmup: 'Warmup',
   activeSetFailure: 'Failure',
@@ -487,6 +496,10 @@ const es: ActiveWorkoutStrings = {
   activeOverloadPrescribed: 'Plan del coach',
   activeUseNextTarget: 'Usar el siguiente objetivo',
   activeSetKindMore: 'Tipo',
+  activePlatePerSideLine: '{{plates}} / lado',
+  activeAddWarmups: 'Añadir calentamientos',
+  activeToggleWarmupAria: 'Marcar como calentamiento',
+  activeToggleWorkAria: 'Marcar como serie de trabajo',
   victoryProgressAddWeight: 'Siguiente: +{{step}} {{unit}} en {{name}} (tope del rango)',
   victoryProgressAddReps: 'Siguiente: {{reps}} × {{weight}} {{unit}} en {{name}}',
   victoryProgressHold: 'Siguiente: mantén {{reps}} × {{weight}} {{unit}} en {{name}}',
@@ -552,6 +565,10 @@ const fr: ActiveWorkoutStrings = {
   activeOverloadPrescribed: 'Plan coach',
   activeUseNextTarget: 'Utiliser la cible suivante',
   activeSetKindMore: 'Type',
+  activePlatePerSideLine: '{{plates}} / côté',
+  activeAddWarmups: 'Ajouter les échauffements',
+  activeToggleWarmupAria: 'Marquer comme échauffement',
+  activeToggleWorkAria: 'Marquer comme série de travail',
   victoryProgressAddWeight: 'Suite : +{{step}} {{unit}} sur {{name}} (haut de fourchette)',
   victoryProgressAddReps: 'Suite : {{reps}} × {{weight}} {{unit}} sur {{name}}',
   victoryProgressHold: 'Suite : maintiens {{reps}} × {{weight}} {{unit}} sur {{name}}',
@@ -735,6 +752,10 @@ const de: ActiveWorkoutStrings = {
   activePlateRemainder: 'Exakte Last nicht möglich — {{remainder}}{{unit}} fehlen',
   activePlateApply: '{{weight}} {{unit}} verwenden',
   activeOpenPlateCalc: 'Scheiben',
+  activePlatePerSideLine: '{{plates}} / Seite',
+  activeAddWarmups: 'Aufwärmsätze hinzufügen',
+  activeToggleWarmupAria: 'Als Aufwärmsatz markieren',
+  activeToggleWorkAria: 'Als Arbeitssatz markieren',
   activeSetNormal: 'Arbeit',
   activeSetWarmup: 'Aufwärmen',
   activeSetFailure: 'Versagen',

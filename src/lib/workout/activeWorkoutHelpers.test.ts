@@ -281,6 +281,24 @@ describe('priorCompletedInExercise', () => {
     ];
     assert.deepEqual(priorCompletedInExercise(sets, 2), { reps: 8, weight: 55 });
   });
+
+  it('skips warmup so the next work set does not inherit 40%', () => {
+    const sets = [
+      { completed: true, reps: 8, weight: 40, kind: 'warmup' },
+      { completed: true, reps: 5, weight: 60, kind: 'warmup' },
+      { completed: false, reps: 5, weight: 100, kind: 'normal' },
+    ];
+    assert.equal(priorCompletedInExercise(sets, 2), null);
+  });
+
+  it('carries the last working set across a warmup', () => {
+    const sets = [
+      { completed: true, reps: 5, weight: 100, kind: 'normal' },
+      { completed: true, reps: 8, weight: 40, kind: 'warmup' },
+      { completed: false, reps: 5, weight: 100, kind: 'normal' },
+    ];
+    assert.deepEqual(priorCompletedInExercise(sets, 2), { reps: 5, weight: 100 });
+  });
 });
 
 describe('formatLoggedSetLine', () => {
@@ -690,6 +708,25 @@ describe('resolveActiveSetDial', () => {
       lastPerformance: { reps: 6, weight: 65 },
     });
     assert.deepEqual(out, { reps: 8, weight: 70 });
+  });
+
+  it('a warmup set keeps the ramp weight, not last-session suggestion', () => {
+    const out = resolveActiveSetDial({
+      prescribed: false,
+      defaultReps: 8,
+      defaultWeight: 40,
+      sets: [
+        { completed: false, reps: 8, weight: 40, kind: 'warmup' },
+        { completed: false, reps: 5, weight: 100, kind: 'normal' },
+      ],
+      setIdx: 0,
+      lastSets: [{ reps: 5, weight: 100 }],
+      units: 'metric',
+      repMin: 8,
+      repMax: 12,
+      lastPerformance: { reps: 5, weight: 100 },
+    });
+    assert.deepEqual(out, { reps: 8, weight: 40 });
   });
 
   it('ActiveWorkoutPage uses resolveActiveSetDial rather than inlining carry', () => {

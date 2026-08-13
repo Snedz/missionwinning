@@ -25,6 +25,13 @@ import {
 } from '@/lib/workout/activeWorkoutHelpers';
 import { resolveLastSetGhost } from '@/lib/workout/lastSetGhost';
 import { formatVsLastSetDeltas } from '@/lib/workout/vsLastSet';
+import { isBarLoadedEquipment, setRowPlateLine } from '@/lib/plateCalculator';
+import {
+  nextWarmupKind,
+  resolveWorkingLoad,
+  setRowOrdinal,
+  shouldShowAddWarmups,
+} from '@/lib/workout/warmupRamp';
 import { getFormGuideOrCues } from '@/lib/formGuides';
 import { canStartDrop } from '@/lib/workout/dropSet';
 import { resolveRestForNextSet } from '@/lib/workout/restTimer';
@@ -92,6 +99,8 @@ type Props = {
   offerSetSide?: boolean;
   activeSetSide?: SetSide;
   onSetSideChange?: (side: SetSide | undefined) => void;
+  onOpenPlates?: () => void;
+  onAddWarmups?: () => void;
 };
 
 export function ActiveExerciseCard({
@@ -135,6 +144,8 @@ export function ActiveExerciseCard({
   offerSetSide = false,
   activeSetSide,
   onSetSideChange,
+  onOpenPlates,
+  onAddWarmups,
 }: Props) {
   const { t } = useTranslation();
   const isCompact = useIsCompact();
@@ -188,6 +199,28 @@ export function ActiveExerciseCard({
       reps: t('activeVsLastReps', { defaultValue: 'reps' }),
     }
   );
+  const ordinalLabels = exLog.sets.map((_, i) => setRowOrdinal(exLog.sets, i).label);
+  const barLoaded = isBarLoadedEquipment(exercise.equipment);
+  const liveSetIdx = activeSetIdxForExercise(nextSet, exIdx);
+  const livePlateLine =
+    holdsActiveSet && liveSetIdx >= 0
+      ? setRowPlateLine({
+          equipment: exercise.equipment,
+          weight: setInput.weight,
+          units,
+        })
+      : null;
+  const workingLoad = resolveWorkingLoad({
+    sets: exLog.sets,
+    liveSetIdx: holdsActiveSet && liveSetIdx >= 0 ? liveSetIdx : null,
+    liveDial: holdsActiveSet ? setInput : null,
+  });
+  const showAddWarmups = shouldShowAddWarmups({
+    barLoaded,
+    workingWeight: workingLoad?.weight ?? null,
+    units,
+    sets: exLog.sets,
+  });
 
   return (
     <Card
@@ -235,6 +268,11 @@ export function ActiveExerciseCard({
                   pairMark={ssLabel}
                   plusLoad={plusLoad}
                   vsLastLabel={vsLastLabels[setIdx]}
+                  ordinalLabel={ordinalLabels[setIdx]}
+                  plateLine={isNext ? livePlateLine : null}
+                  onToggleWarmup={
+                    isNext ? () => onSetKindChange(nextWarmupKind(set.kind)) : undefined
+                  }
                   onRate={(rpe) => onRate(setIdx, rpe)}
                   onRateRir={(rir) => onRateRir(setIdx, rir)}
                   onRateTempo={(tempo) => onRateTempo(setIdx, tempo)}
@@ -251,6 +289,10 @@ export function ActiveExerciseCard({
               prevLabels={prevLabels}
               pairMark={ssLabel}
               vsLastLabels={vsLastLabels}
+              ordinalLabels={ordinalLabels}
+              plateLine={livePlateLine}
+              onToggleWarmup={() => onSetKindChange(nextWarmupKind(activeSetKind))}
+              onOpenPlates={onOpenPlates}
               input={setInput}
               plusLoad={plusLoad}
               onInputChange={onSetInputChange}
@@ -291,6 +333,8 @@ export function ActiveExerciseCard({
           plannedSetCount={exLog.sets.length}
           onApplyAllTargets={onApplyAllTargets}
           onRemoveSet={onRemoveSet}
+          showAddWarmups={showAddWarmups}
+          onAddWarmups={onAddWarmups}
         />
       </CardContent>
     </Card>

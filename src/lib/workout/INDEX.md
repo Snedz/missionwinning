@@ -37,6 +37,7 @@ Root-level `@/lib/{name}` paths re-export from here for compatibility — prefer
 25. `vsLastSet.ts` — after-save vs-last delta on the set row (`.760`); working-set index; not ghost prefill
 26. `sessionE1rm.ts` — educational Epley e1RM from this session's working sets (`.761`); hide pref `mw_show_session_e1rm`
 27. `homeGymKit.ts` — local Home gym kit (barbell/rack/plates/dumbbells/pull-up-bar/floor). Logger + Just Go + Coach filter; never rank; Train empty Start stays repeat-last (`.763`)
+28. `warmupRamp.ts` — free Strong-class 40/60/80 warmup insert + set-column `W` ordinals (`.764`); plate line is `src/lib/plateCalculator.ts` `setRowPlateLine`
 
 ## Tests (colocated)
 
@@ -68,6 +69,8 @@ Root-level `@/lib/{name}` paths re-export from here for compatibility — prefer
 | `sessionE1rm.test.ts` | Epley formula + warmup / load-0 exclusion (`.761`) |
 | `sessionE1rmCopy.test.ts` | Copy names Epley; does not say "your max" |
 | `homeGymKit.test.ts` | Parse, $0 floor, matching, I-Day seed, free-path (`.763`) |
+| `warmupRamp.test.ts` | 40/60/80 ramp, ordinals, idempotent insert (`.764`) |
+| `plateWarmupFree.test.ts` | Plate/warmup path never imports premium (`.764`) |
 
 ## UI & integration (not in this folder)
 

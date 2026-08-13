@@ -14,13 +14,13 @@
 | `ActiveExerciseCard.tsx` | Dense exercise block — Info → form guide; overflow for Note/Swap/SS/Ask/Remove. **Swap** is `AdaptiveOverlay` + `GarageSwapList` (1–2 garage stand-ins). Footer Rest offers last rest (`.745`). Note field sits **after** the set rows (`.748`) |
 | `ActiveExerciseHeader.tsx` | Title + next line + educational Epley e1RM after a saved working set (`.761`; hideable) |
 | `ExerciseNoteField.tsx` | Always-visible one-line diary on the exercise — last cue prefills at start/add/swap; no autofocus (`.748`) |
-| `ActiveExerciseFooter.tsx` | Add Set · **Drop** after a working set (`.754`, outline, not red) · Rest · desktop kind chips · optional L/R/Alt · set options |
-| `SetLogTable.tsx` | **Desktop** set list — Strong/Hevy density (`Set · Prev · kg · Reps`); **Prev is the row anchor** (`data-prev-anchor`); pair mark `A1·n` when paired (`.749`); optional L/R/Alt; BW+ load on plus-load moves (`.758`); completed rows optional RIR + tempo + vs-last (`.756`/`.757`/`.760`); last-working-set ghost under the table (`.759`); ≥44px inputs; one poster-red inline `Log set`. Compact uses `SetLogRow` + `LogConsole` |
-| `SetLogRow.tsx` | **Read-only set record** — **Prev metric anchor** + this-session line (BW + load when plus-load) + tiny vs-last after save (`.760`), pair mark `A1·n` when paired (`.749`), kind/PR/RPE, optional L/R/Alt + RIR + tempo, `Check`. ≥44px row. No filled red — entry is `LogConsole` |
+| `ActiveExerciseFooter.tsx` | Add Set · **Drop** after a working set (`.754`, outline, not red) · **Add warmups** 40/60/80 (`.764`) · Rest · desktop kind chips · optional L/R/Alt · set options |
+| `SetLogTable.tsx` | **Desktop** set list — Strong/Hevy density (`Set · Prev · kg · Reps`); **Prev is the row anchor** (`data-prev-anchor`); pair mark `A1·n` when paired (`.749`); optional L/R/Alt; BW+ load on plus-load moves (`.758`); live barbell plates + `W`/1..n warmup toggle (`.764`); completed rows optional RIR + tempo + vs-last (`.756`/`.757`/`.760`); last-working-set ghost under the table (`.759`); ≥44px inputs; one poster-red inline `Log set`. Compact uses `SetLogRow` + `LogConsole` |
+| `SetLogRow.tsx` | **Read-only set record** — **Prev metric anchor** + this-session line (BW + load when plus-load) + tiny vs-last after save (`.760`), pair mark `A1·n` when paired (`.749`), live plate hint + warmup toggle (`.764`), kind/PR/RPE, optional L/R/Alt + RIR + tempo, `Check`. ≥44px row. No filled red — entry is `LogConsole` |
 | `SetRirSelect.tsx` | Compact native 0–5 RIR select for completed rows (`.756`). Empty default. |
 | `SetTempoField.tsx` | Compact optional `e-p-c` tempo on a **completed** set row (`.757`). Never required to log |
 | `LastSetGhostButton.tsx` | One-tap last **working** set (not warmup) into the dial — outline, never poster red (`.759`) |
-| `LogConsole.tsx` | **Compact only** — **the only place a set is entered.** Dense ink `ScreenDock`: name + `Set n of m`, overload cue, last-set ghost (`.759`), collapsed Work/Kind chips, optional L/R/Alt on unilateral, **BW+ load stepper** on plus-load moves (0 = skip), 52px steppers, one poster-red `Log set` in the thumb zone (F-003) |
+| `LogConsole.tsx` | **Compact only** — **the only place a set is entered.** Dense ink `ScreenDock`: name + `Set n of m`, overload cue, last-set ghost (`.759`), collapsed Work/Kind chips, optional L/R/Alt on unilateral, **BW+ load stepper** on plus-load moves (0 = skip), tappable plate line (`.764`), 52px steppers, one poster-red `Log set` in the thumb zone (F-003) |
 | `GarageSwapList.tsx` | Short 1–2 garage stand-ins for logger + Coach session Swap (`.752`). Not the catalog picker |
 | `AddExerciseSheet.tsx` | `ExercisePicker` in a sheet with the confirm in the footer. **Test contract:** keeps the `search exercises` placeholder, `option` rows and `add selected exercise` name — `logger-depth`, `first-90` and `hero-flows` all drive them |
 | `RestTimerBar.tsx` | Rest countdown — **takes the `ScreenDock` over from `LogConsole`, never both**. **Ambient running** while `remaining > 0` (`data-rest-running`, ticking `rest-clock`, depleting ambient fill + meters). Skip via `data-testid="rest-skip"`; accent fill only in final ≤10s |
@@ -38,4 +38,4 @@
 |-------|------|
 | Page | `ActiveWorkoutPage.tsx` |
 | Store | `workoutStore.ts` |
-| Lib | `activeWorkoutHelpers.ts`, `lastSetGhost.ts`, `vsLastSet.ts`, `restTimer.ts`, `plateCalculator.ts`, `workoutPr.ts`, `setKind.ts`, `dropSet.ts` |
+| Lib | `activeWorkoutHelpers.ts`, `lastSetGhost.ts`, `vsLastSet.ts`, `restTimer.ts`, `plateCalculator.ts`, `warmupRamp.ts`, `workoutPr.ts`, `setKind.ts`, `dropSet.ts` |

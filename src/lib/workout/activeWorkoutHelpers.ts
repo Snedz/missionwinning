@@ -111,12 +111,13 @@ export function sessionSetStats(
  * Null when nothing earlier in this exercise is completed.
  */
 export function priorCompletedInExercise(
-  sets: { completed: boolean; reps: number; weight: number }[],
+  sets: { completed: boolean; reps: number; weight: number; kind?: string }[],
   setIdx: number
 ): { reps: number; weight: number } | null {
   for (let i = setIdx - 1; i >= 0; i--) {
     const s = sets[i];
-    if (s?.completed) return { reps: s.reps, weight: s.weight };
+    // Warmups are not the load to carry onto the next work set (compose with F-013).
+    if (s?.completed && s.kind !== 'warmup') return { reps: s.reps, weight: s.weight };
   }
   return null;
 }
@@ -258,6 +259,8 @@ export type ConsoleSetView = {
   side?: SetSide;
   unilateral: boolean;
   plusLoad: boolean;
+  /** True when the catalog equipment loads plates on a bar. */
+  barLoaded: boolean;
   input: { reps: number; weight: number };
   /** Last working set (not warmup). Null on first-ever. */
   lastSetGhost: LastSetGhost | null;
@@ -294,6 +297,7 @@ export function buildConsoleSet(params: {
   bodyweightLabel: string;
   resolveExerciseName: (exerciseId: string) => string;
   resolvePlusLoad?: (exerciseId: string) => boolean;
+  resolveBarLoaded?: (exerciseId: string) => boolean;
   resolveInput: (
     exIdx: number,
     setIdx: number,
@@ -352,6 +356,7 @@ export function buildConsoleSet(params: {
       name: params.resolveExerciseName(exLog.exerciseId),
     }),
     plusLoad,
+    barLoaded: params.resolveBarLoaded?.(exLog.exerciseId) ?? false,
     input: params.resolveInput(nextSet.exIdx, nextSet.setIdx, set.reps, set.weight),
     lastSetGhost: resolveLastSetGhost(params.workoutHistory, exLog.exerciseId),
     overloadCue: {
@@ -424,7 +429,7 @@ export function resolveActiveSetDial(params: {
   prescribed?: boolean;
   defaultReps: number;
   defaultWeight: number;
-  sets: { completed: boolean; reps: number; weight: number }[];
+  sets: { completed: boolean; reps: number; weight: number; kind?: string }[];
   setIdx: number;
   lastSets: { reps: number; weight: number }[] | null;
   units: 'metric' | 'imperial';
@@ -432,6 +437,20 @@ export function resolveActiveSetDial(params: {
   repMax: number;
   lastPerformance: { reps: number; weight: number } | null;
 }): { reps: number; weight: number } {
+  const currentKind = params.sets[params.setIdx]?.kind;
+  if (currentKind === 'warmup') {
+    // Ramp weights are on the set itself — last-session suggestion must not
+    // replace a 40 kg warmup with last week's work set (freestyle).
+    return resolveSetInput({
+      manual: params.manual,
+      prescribed: false,
+      defaultReps: params.defaultReps,
+      defaultWeight: params.defaultWeight,
+      sessionCarry: null,
+      suggestion: null,
+      lastPerformance: null,
+    });
+  }
   const sessionCarry = params.prescribed
     ? null
     : priorCompletedInExercise(params.sets, params.setIdx);
