@@ -8,7 +8,7 @@ import { cn } from '@/lib/utils';
 import { BrandMonogram } from '@/components/brand/BrandMonogram';
 import { Badge } from '@/components/ui/badge';
 import { isFreeBeta } from '@/lib/freeBeta';
-import { isClientPrivateGateEnabled } from '@/lib/privateGateNavigate';
+import { isClientPrivateGateEnabled } from '@/lib/privateGateClientFlag';
 import { useIsCompact } from '@/hooks/useIsCompact';
 import { ROUTE_LABELS, STATIC_PAGE_TITLES } from '@/lib/pageTitles';
 
