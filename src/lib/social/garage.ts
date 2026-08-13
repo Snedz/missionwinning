@@ -62,7 +62,8 @@ export function clampMissionServerState(raw: unknown): MissionServerState {
       : {};
   const messages: GarageServer['messages'] = {};
   for (const ch of channels) {
-    const list = Array.isArray(messagesIn[ch.id]) ? messagesIn[ch.id] : [];
+    const rawList = messagesIn[ch.id];
+    const list: unknown[] = Array.isArray(rawList) ? rawList : [];
     const kept = list.filter(isGarageMessage).filter((m) => m.channelId === ch.id);
     messages[ch.id] =
       kept.length > MAX_MESSAGES_PER_CHANNEL
