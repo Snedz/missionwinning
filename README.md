@@ -3,23 +3,27 @@
 [![License: AGPL v3](https://img.shields.io/badge/License-AGPL_v3-blue.svg)](LICENSE)
 [![Source](https://img.shields.io/badge/source-GitHub-181717?logo=github)](https://github.com/Snedz/missionwinning)
 
+**The mission is advancement of civilization and propagation of consciousness to the stars.**
+
+**Beta 0.1** · Mission Winning 0.1 (beta)
+
 **Train Anywhere. Win Daily.**
 
-Adaptive AI coaching for train-anywhere athletes — free offline workout logging (no account required), and weekly plans that adapt from your logs alone (no wearable required).
-
-The free logger is never gated. Premium deepens the path; it does not close the door.
+Adaptive AI coaching for train-anywhere athletes — free offline workout logging (no account required), and weekly plans that adapt from your logs alone (no wearable required). The free logger is never gated.
 
 ---
 
-## Why this exists
+## Latest
 
-The best training outcomes have always come from a coach who knows you. That privilege should not require a gym membership, a wearable, or another stacked subscription. Mission Winning is the free core of that coach — on any phone, offline first, bodyweight-friendly.
+**Mission Winning 0.1 (beta)** — inspectable free core. Site gate (`PRIVATE_MODE`) is separate from GitHub visibility and is founder-owned.
 
-**Constitution:** [vision.md](vision.md) · **One-page product truth:** [docs/THESIS.md](docs/THESIS.md)
+Constitution: [vision.md](vision.md) · One-page product truth: [docs/THESIS.md](docs/THESIS.md)
 
 ---
 
-## What you get
+## What's in this repo
+
+The product: Next.js 16 PWA, Mission Coach engine, Android Compose under `apps/android`, shared `packages/mw-core`, tests, and product docs. AGPL-3.0. Fork it, read the coach, run it locally, tell us where it is wrong.
 
 | Surface | What it does |
 |---------|----------------|
@@ -30,7 +34,17 @@ The best training outcomes have always come from a coach who knows you. That pri
 | **You** | Athlete identity & earned record (`/profile`) — settings on `/account` |
 | **PWA + Android** | Web installable worldwide; native Compose under `apps/android` |
 
-Built with Next.js, TypeScript, Tailwind, Zustand, Supabase.
+## What's not in this repo
+
+We ship the inspectable product. We do not ship operator secrets or the war room.
+
+| Kept private | Where |
+|--------------|--------|
+| Founder war room (strategy, red-team full text, YC/capital/outreach) | Private [`mission-ops`](https://github.com/Snedz/mission-ops) — this tree keeps **stubs** only |
+| Vercel / GitHub secrets, Stripe keys, production DB | Operator vaults — [docs/SECRETS.md](docs/SECRETS.md) |
+| EIN, personal email, postal, phone | Never in git |
+
+Invite inspection and criticism of the **free core**. Dual-repo: [docs/DUAL_REPO.md](docs/DUAL_REPO.md) · [docs/CLASSIFICATION.md](docs/CLASSIFICATION.md).
 
 ---
 
@@ -46,7 +60,7 @@ npm install
 npm run dev
 ```
 
-Open http://localhost:3000. Unlock `/private` if `PRIVATE_MODE` is on.
+Open http://localhost:3000. No env vars are required for local demo: the private gate is off in development, premium depth is unlocked, and cloud services degrade to on-device storage. Unlock `/private` only if you set `PRIVATE_MODE` on.
 
 | Command | Purpose |
 |---------|---------|
@@ -60,52 +74,19 @@ Open http://localhost:3000. Unlock `/private` if `PRIVATE_MODE` is on.
 
 ---
 
-## Documentation
+## Architecture
 
-**[docs/README.md](docs/README.md)** — hub for all audiences.
+Short map: [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md).
 
-| Audience | Start |
-|----------|--------|
-| Athletes | [docs/help/](docs/help/INDEX.md) |
-| Developers | [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) · [docs/API.md](docs/API.md) · [CONTRIBUTING.md](CONTRIBUTING.md) |
-| **AI agents** | **[CONTEXT.md](CONTEXT.md)** first → [AGENTS.md](AGENTS.md) → [INDEX.md](INDEX.md) → [ORCHESTRATION.md](ORCHESTRATION.md) |
-| Platform contracts | [docs/contracts/](docs/contracts/INDEX.md) |
-| Security / OSS | [docs/OPEN_SOURCE.md](docs/OPEN_SOURCE.md) · [docs/SECRETS.md](docs/SECRETS.md) · [docs/CLASSIFICATION.md](docs/CLASSIFICATION.md) |
+`app/` is thin Next.js route shells. UI lives in `src/page-components/` and `src/components/`. Domain logic is `src/lib/` (Mission Coach: `src/lib/coach/`). Shared pure TS: `packages/mw-core`.
 
-Ship history: [LOG.md](LOG.md). Status lives only in `CONTEXT.md` `## Now`.
-
----
-
-## For AI agents
-
-1. Read **CONTEXT.md** (status + hard rules).  
-2. **AGENTS.md** (conventions) then **INDEX.md** (routing).  
-3. **ORCHESTRATION.md** (what is allowed *now*).  
-4. Folder `INDEX.md` for the area you edit.  
-5. Prefer [docs/contracts/](docs/contracts/INDEX.md) for identity / economy / modules.  
-
-Do not use chat session plans as product truth. Do not invent traction. Do not flip `PRIVATE_MODE`. War-room strategy full text is **not** in this tree (stubs only) — private ops when mounted.
-
----
-
-## Open source & privacy
-
-| Commitment | Detail |
-|------------|--------|
-| **License** | [AGPL-3.0](LICENSE) |
-| **Secrets** | Never in git — [docs/SECRETS.md](docs/SECRETS.md) · `npm run secrets:scan` |
-| **Local-first** | Workouts stay on-device until sign-in sync |
-| **Analytics** | Off until the user allows; no session replay; DNT respected |
-| **AI coach** | Rules by default; optional LLM with Zero Data Retention when configured |
-| **Classification** | [docs/CLASSIFICATION.md](docs/CLASSIFICATION.md) — public product vs private ops |
-
-Private founder continuity (diary, strategy memos, local Mission Control dashboard) lives outside this public tree — see [docs/DUAL_REPO.md](docs/DUAL_REPO.md) and [docs/OPS_LOCAL.md](docs/OPS_LOCAL.md).
+**[docs/README.md](docs/README.md)** — hub for all audiences (athletes, developers, agents).
 
 ---
 
 ## Contributing
 
-See [CONTRIBUTING.md](CONTRIBUTING.md) and [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md).
+See [CONTRIBUTING.md](CONTRIBUTING.md) and [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md). Security reports: [SECURITY.md](SECURITY.md).
 
 ## License
 

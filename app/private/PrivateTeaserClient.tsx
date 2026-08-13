@@ -7,6 +7,10 @@ import { useTranslation } from 'react-i18next';
 import { Check } from 'lucide-react';
 import { AppLegalFooter } from '@/components/layout/AppLegalFooter';
 import {
+  APP_PUBLIC_PRODUCT_VERSION,
+  APP_PUBLIC_VERSION,
+} from '@/lib/buildInfo';
+import {
   grantPrivateAccessFromSession,
   navigateAfterPrivateGateUnlock,
 } from '@/lib/grantPrivateAccessFromSession';
@@ -181,8 +185,8 @@ export function PrivateTeaserClient({ initialInvite = '' }: Props) {
           </span>
           <span className="gate-brandname">Mission Winning</span>
         </span>
-        <p className="gate-kicker">
-          {t('gateEyebrow', { defaultValue: 'Private beta in progress' })}
+        <p className="gate-kicker" data-mw-public-version={APP_PUBLIC_VERSION}>
+          {APP_PUBLIC_VERSION}
         </p>
       </header>
       <hr className="gate-rule" />
@@ -316,7 +320,7 @@ export function PrivateTeaserClient({ initialInvite = '' }: Props) {
       <div className="gate-footer">
         <div className="gate-footer-inner">
           <span>
-            Mission Winning —{' '}
+            {APP_PUBLIC_PRODUCT_VERSION} —{' '}
             {t('gateFooterTagline', { defaultValue: 'free core forever' })}
           </span>
           <AppLegalFooter className="gate-footer-links" />

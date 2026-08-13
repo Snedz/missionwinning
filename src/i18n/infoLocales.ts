@@ -121,6 +121,8 @@ type InfoStrings = {
   infoTermsAcceptableUseBody: string;
   infoPrivacySubprocessors: string;
   infoPrivacySubprocessorsBody: string;
+  infoAboutMissionNorthStar: string;
+  infoAboutMissionNested: string;
   infoAboutMissionP1: string;
   infoAboutMissionP1OpenBeta: string;
   infoAboutMissionP2: string;
@@ -429,6 +431,10 @@ const en: InfoStrings = {
   infoRefundsAbuseBody:
     'We may refuse repeat refund requests that appear abusive. Opening a chargeback without contacting support first may delay resolution. Fraudulent payments may result in account termination. Purchases made while you are in an unsupported region (or while circumventing Supported Regions) may be cancelled and refunded as a policy or compliance correction; we are not required to provide ongoing premium access in unsupported regions.',
   infoRefundsFoot: 'See also',
+  infoAboutMissionNorthStar:
+    'The mission is advancement of civilization and propagation of consciousness to the stars.',
+  infoAboutMissionNested:
+    'That is the north star. Today we serve it through L1 Health: Train plus Mission Coach.',
   infoAboutMissionP1:
     'Mission Winning is a free offline workout logger with adaptive Mission Coach plans from your logs — no wearable required. Super Bundle unlocks Coach depth and specialist education; logging stays free forever.',
   infoAboutMissionP1OpenBeta:
@@ -439,9 +445,9 @@ const en: InfoStrings = {
     'Evidence supports structured exercise for mood and energy in research settings — but most advice stays “just go work out.” We turn that into a weekly plan you can follow on any phone. We do not diagnose or treat depression; this is educational fitness, not clinical care.',
   infoAboutAmericaLink: 'Presidential Fitness Test & youth movement →',
   infoAboutBusinessBody:
-    'Operated by Mission Winning LLC for the app, programs, and coaching. Free core stays free; paid Super Bundle funds deeper Coach and pillar tools when you want them.',
+    'Operated by Mission Winning LLC (Texas) for the app, programs, and coaching. Free core stays free; paid Super Bundle funds deeper Coach and pillar tools when you want them.',
   infoAboutBusinessBodyOpenBeta:
-    'Operated by Mission Winning LLC. Open beta — full tools free while we grow with you. The logger stays free forever.',
+    'Operated by Mission Winning LLC (Texas). Beta 0.1 — full tools free while we grow with you. The logger stays free forever.',
   infoAboutDisclaimerEducational:
     'Educational only. Mission Winning provides practical training education and tools. We are not a federally recognized or accredited certifying agency. Completion grants a Mission Winning Certificate of Educational Achievement only.',
   infoAboutDisclaimerGov:
