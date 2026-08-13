@@ -28,7 +28,7 @@ export function sortByNearby(places: readonly PlacePin[], origin: GeoOrigin | nu
   }));
   if (!origin) return withDistance;
   return withDistance.sort((a, b) => {
-    if (a.distanceKm == null && b.distanceKm == null) return a.name.localeCompare(b.name);
+    if (a.distanceKm == null && b.distanceKm == null) return 0;
     if (a.distanceKm == null) return 1;
     if (b.distanceKm == null) return -1;
     return a.distanceKm - b.distanceKm;

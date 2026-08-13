@@ -211,7 +211,9 @@ function PinBoard({
   onSelect: (id: string) => void;
 }) {
   const { t } = useTranslation();
-  const plotted = pins.filter(hasCoords);
+  const plotted = pins.filter(
+    (p): p is NearbyPlace & { lat: number; lng: number } => hasCoords(p)
+  );
 
   return (
     <div

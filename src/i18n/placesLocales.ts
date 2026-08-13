@@ -40,7 +40,7 @@ const ES: Record<string, string> = {
   accountExploreCta: 'Abrir Explorar',
 };
 
-function pack(partial: Partial<Record<string, string>>): Record<string, string> {
+function pack(partial: Record<string, string>): Record<string, string> {
   return { ...EN, ...partial };
 }
 

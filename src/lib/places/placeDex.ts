@@ -23,7 +23,7 @@ function isPersonalPlace(value: unknown): value is PlacePin {
 }
 
 export function loadPlaceDex(): PlacePin[] {
-  const raw = readJson<unknown>(STORAGE_KEYS.placeDex);
+  const raw = readJson<unknown>(STORAGE_KEYS.placeDex, null);
   if (!Array.isArray(raw)) return [];
   return raw.filter(isPersonalPlace).map((p) => ({
     ...p,
