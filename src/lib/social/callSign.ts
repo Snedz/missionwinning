@@ -19,7 +19,7 @@ export function readChatCallSign(): string {
 
 /** Zero-padded `00`–`99` when the Athlete Card number is set; otherwise null. */
 export function readChatMissionId(): string | null {
-  const card = readJson<{ callSignNumber?: unknown }>(STORAGE_KEYS.athleteCard, null);
+  const card = readJson<{ callSignNumber?: unknown } | null>(STORAGE_KEYS.athleteCard, null);
   const n = clampCallSignNumber(card?.callSignNumber);
   return n == null ? null : formatCallSignNumber(n);
 }
