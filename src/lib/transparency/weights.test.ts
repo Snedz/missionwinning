@@ -78,7 +78,10 @@ test('no ROOM SCORE table exists to invent penalty magnitudes from', () => {
   const hits: string[] = [];
   for (const rel of ['docs/CLUB_PLAN.md', 'docs/contracts/ECONOMY.md', 'docs/TRANSPARENCY_PLAN.md']) {
     const src = readFileSync(path.join(root, rel), 'utf8');
-    if (/ROOM SCORE/i.test(src)) hits.push(rel);
+    // A heading or markdown table named ROOM SCORE — not a sentence that says it is absent.
+    if (/^#{1,6}\s+ROOM SCORE\b/im.test(src) || /^\|[^|\n]*ROOM SCORE/im.test(src)) {
+      hits.push(rel);
+    }
   }
   assert.deepEqual(hits, [], 'ROOM SCORE table appeared — wire it, do not keep filter labels');
 });
