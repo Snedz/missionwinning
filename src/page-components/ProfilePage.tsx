@@ -140,11 +140,11 @@ export function ProfilePage() {
         </div>
 
         <div data-athlete-block>
-          <AthletePageShareCard />
+          <AthletePrivateNoteCard />
         </div>
 
         <div data-athlete-block>
-          <AthletePrivateNoteCard />
+          <AthletePageShareCard />
         </div>
 
         <p className="pt-2" data-athlete-block>
