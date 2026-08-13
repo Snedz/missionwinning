@@ -21,6 +21,9 @@ type Props = {
   activeSetKind: SetKind;
   onSetKindChange: (kind: SetKind) => void;
   onAddSet: () => void;
+  /** After a working set — start a drop of that set (existing `kind: 'drop'`). */
+  canStartDrop: boolean;
+  onStartDrop: () => void;
   onStartRest: (seconds: number) => void;
   footerOpen: boolean;
   onFooterOpenChange: (open: boolean) => void;
@@ -38,6 +41,8 @@ export function ActiveExerciseFooter({
   activeSetKind,
   onSetKindChange,
   onAddSet,
+  canStartDrop,
+  onStartDrop,
   onStartRest,
   footerOpen,
   onFooterOpenChange,
@@ -54,6 +59,21 @@ export function ActiveExerciseFooter({
       <Button variant="outline" size="sm" className="min-h-[44px] tap-target" onClick={onAddSet}>
         <Plus className="h-3 w-3 me-1" /> {t('activeAddSet', { defaultValue: 'Add Set' })}
       </Button>
+      {canStartDrop ? (
+        <Button
+          type="button"
+          variant="outline"
+          size="sm"
+          className="min-h-[44px] tap-target"
+          onClick={onStartDrop}
+          data-testid="start-drop-set"
+          aria-label={t('activeSetDropTip', {
+            defaultValue: 'Drop set — lighter follow-up; not a PR attempt',
+          })}
+        >
+          {t('activeSetDrop', { defaultValue: 'Drop' })}
+        </Button>
+      ) : null}
       <Button
         type="button"
         variant="ghost"

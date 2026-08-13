@@ -23,6 +23,7 @@ import {
   formatPrevSetLabels,
 } from '@/lib/workout/activeWorkoutHelpers';
 import { getFormGuideOrCues } from '@/lib/formGuides';
+import { canStartDrop } from '@/lib/workout/dropSet';
 import { resolveRestForNextSet } from '@/lib/workout/restTimer';
 import { supersetLabel } from '@/lib/workout/superset';
 import { cn } from '@/lib/utils';
@@ -69,6 +70,7 @@ type Props = {
   onRate: (setIdx: number, rpe: NonNullable<LoggedSet['rpe']>) => void;
   onApplyAllTargets: () => void;
   onAddSet: () => void;
+  onStartDrop: () => void;
   onRemoveSet: () => void;
   onStartRest: (seconds: number) => void;
   /* Desktop only — the table logs in place, so it needs the same input state
@@ -109,6 +111,7 @@ export function ActiveExerciseCard({
   onRate,
   onApplyAllTargets,
   onAddSet,
+  onStartDrop,
   onRemoveSet,
   onStartRest,
   setInput,
@@ -228,6 +231,8 @@ export function ActiveExerciseCard({
           activeSetKind={activeSetKind}
           onSetKindChange={onSetKindChange}
           onAddSet={onAddSet}
+          canStartDrop={canStartDrop(exLog.sets)}
+          onStartDrop={onStartDrop}
           onStartRest={onStartRest}
           footerOpen={footerOpen}
           onFooterOpenChange={setFooterOpen}

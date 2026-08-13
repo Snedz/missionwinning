@@ -333,6 +333,18 @@ test('workoutStore', async (t) => {
     assert.equal(sets[0].completed, true);
   });
 
+  await t.test('drop kind survives logSet (existing SetKind — no second persist)', () => {
+    const store = useWorkoutStore.getState();
+    store.startWorkout('Push', template('bench-press', 2));
+    store.logSet(0, 0, 8, 100);
+    store.setSetKind(0, 1, 'drop');
+    store.logSet(0, 1, 8, 80);
+    const sets = useWorkoutStore.getState().activeWorkout?.exercises[0].sets ?? [];
+    assert.equal(sets[1].kind, 'drop');
+    assert.equal(sets[1].completed, true);
+    assert.equal(sets[1].weight, 80);
+  });
+
   await t.test('swapping an exercise is refused once a set is logged', () => {
     const store = useWorkoutStore.getState();
     store.startWorkout('Push', template());

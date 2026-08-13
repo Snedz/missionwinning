@@ -16,7 +16,7 @@ One screen of truth for any AI tool or human joining cold. Read this, then [AGEN
 
 ---
 
-## Now (2026-08-13 · web `2026.07-unified.753` · Android `1.24.1`)
+## Now (2026-08-13 · web `2026.07-unified.754` · Android `1.24.1`)
 
 > The ONLY "where we are" block in the repo — [ORCHESTRATION.md](ORCHESTRATION.md) points here.
 >
@@ -297,6 +297,7 @@ One screen of truth for any AI tool or human joining cold. Read this, then [AGEN
 > and `.751` dropped `.692` detail (full text remains in LOG.md / archive)
 > and `.752` dropped `.693` detail (full text remains in LOG.md / archive)
 > and `.753` dropped `.694` detail (full text remains in LOG.md / archive)
+> and `.754` dropped `.695` detail (full text remains in LOG.md / archive)
 > to [CONTEXT-now-2026-07-30.md](docs/archive/CONTEXT-now-2026-07-30.md) after this
 > block reached **79 bullets / 103KB**. A status doc that only grows stops being read.
 
@@ -318,6 +319,7 @@ One screen of truth for any AI tool or human joining cold. Read this, then [AGEN
 > | gitleaks | **green — and scanning for the first time.** It had never scanned anything: on a `pull_request` event the action lists the PR's commits, the job declared no `permissions:` block, and it 403'd (`pull_requests=read`) before opening a file. Fixed by a `permissions:` block (`.224` carrying `.255`). It scans **only the PR's own commits**, so commit `8ea3527a`'s real Solana treasury address — scrubbed from the working file, still in history — is out of its scope. That finding stands, deliberately not allowlisted; it was never what made this check red. |
 
 - **Excellence:** unscored · — · [docs/EXCELLENCE_RESULT.md](docs/EXCELLENCE_RESULT.md) — Horizon W phone sign-off home; surface PRs need `status: pass` or `Excellence-Override` (`.669`).
+- **`.754`:** (`2026.07-unified.754`) **Drop sets on the set log** — Footer Drop after a working set starts a −20% follow-up and skips rest. Originally #515 / `.723`.
 - **`.753`:** (`2026.07-unified.753`) **Habit week count + HABIT contract** — Today header always shows this week: N days logged (0 is fine). HABIT contract: daily Train is the loop. Originally #511 / `.722`.
 - **`.752`:** (`2026.07-unified.752`) **Garage swap on the exercise row** — Swap on the Train row / Coach line offers 1–2 garage stand-ins; equipment change clears last load; hide when already garage. Originally #514 / `.721`.
 - **`.751`:** (`2026.07-unified.751`) **Learn vs Strong / Hevy / Fitbod citation pages** — Free /guide/mission-winning-vs-* explanation pages for AEO. CSV import live; Strong/Hevy export dialects planned. Originally #513 / `.716`.
@@ -332,7 +334,6 @@ One screen of truth for any AI tool or human joining cold. Read this, then [AGEN
 - **`.714`:** (`2026.07-unified.714`) **Public GitHub pass / Beta 0.1** — mission sentence on README + About 01 + vision north star; public stamp `0.1 (beta)`; dual-repo honesty. Founder still owns visibility; `PRIVATE_MODE` unchanged.
 - **`.697`:** (`2026.07-unified.697`) **Session-expired fail-open mid-set Log/rest** — SignInPrompt catch → signed-out; log/rest path never awaits auth/sync (Kaizen Strong / F-001).
 - **`.696`:** (`2026.07-unified.696`) **Local-first set-log + rest** — Today/Active empty + SignIn/status copy device-first; rest path ungated by sync (F-001).
-- **`.695`:** (`2026.07-unified.695`) **Demote six-pillar chrome until first workout** — First Steps workout-only + More/rail Pillars hidden pre-`basic.workout` / `workoutHistory.length`; I-Day → Today one Start (F-004 C5≤90s; no shell redesign).
 - **`.669`:** (`2026.07-unified.669`) **Excellence RESULT + agent stop-rule** — `excellenceGate` path policy + `check-excellence-gate` on gate/PR CI; wedge still ships while unscored.
 - **Horizon W + full-launch override (2026-08-05).** Wedge excellence still required; agents may ship rewards + full surface honesty. Fuel estimate accuracy remains.
 - **Free-first beta (~4 weeks):** LLC + EIN pending — **no Bundle UI** + **full depth unlocked**; More/rail **Pillars demoted until first workout** (F-004 / `.695`) — still no Bundle ([docs/FREE_BETA.md](docs/FREE_BETA.md)).
