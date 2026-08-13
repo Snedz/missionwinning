@@ -26,6 +26,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { useCoachPlan } from '@/hooks/useCoachPlan';
 import { useWorkoutStore } from '@/store/workoutStore';
 import { CoachAdaptBanner } from '@/components/coach/CoachAdaptBanner';
+import { CoachLogCite } from '@/components/coach/CoachLogCite';
 import { summarizeWeekDose } from '@/lib/coach/weekDose';
 import { sessionContinuity } from '@/lib/coach/programContinuity';
 import { buildSessionWhyLine } from '@/lib/coach/sessionWhyLine';
@@ -104,6 +105,9 @@ export function CoachTodayCard() {
         <p className="text-xs text-muted-foreground font-normal leading-relaxed">
           {t('coachTodayMission', { defaultValue: 'Built from your logs — no wearable required.' })}
         </p>
+        {/* The line above is the claim `earnedFromLogsCopy.test.ts` pins; this is
+            the evidence for it, or the admission that there is none yet. */}
+        <CoachLogCite className="mt-1" />
       </CardHeader>
       <CardContent className="space-y-3">
         {plan && !locked && (

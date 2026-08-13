@@ -5,6 +5,7 @@ import { useTranslation } from 'react-i18next';
 import { Sparkles } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { WeekStrip } from '@/components/coach/WeekStrip';
+import { CoachLogCite } from '@/components/coach/CoachLogCite';
 import { useCoachPlan } from '@/hooks/useCoachPlan';
 
 /** Compact coach week overview for the Today hub. */
@@ -29,7 +30,7 @@ export function TodayCoachWeekStrip() {
           </Link>
         </CardTitle>
       </CardHeader>
-      <CardContent>
+      <CardContent className="space-y-2">
         {plan ? (
           <WeekStrip weekStart={weekStart} sessions={plan.sessions} todayOffset={todayOffset} />
         ) : (
@@ -39,6 +40,8 @@ export function TodayCoachWeekStrip() {
             })}
           </p>
         )}
+        {/* Which week this is a plan *from* — or that there is nothing yet. */}
+        <CoachLogCite className="text-center" />
       </CardContent>
     </Card>
   );

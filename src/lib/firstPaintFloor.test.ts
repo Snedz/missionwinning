@@ -207,9 +207,21 @@ test('computed-key t() calls without a defaultValue only ever decrease', () => {
   );
 });
 
+/**
+ * What the reader actually gets, in resolution order.
+ *
+ * `BOOTSTRAP_EN` is layered **on top of** the packs because it is the only
+ * catalogue in the first-paint bundle and i18next resolves it first. `.746`
+ * found what that blindness costs: `todayCoachInviteEyebrow` exists *only* in
+ * bootstrap, so its mount sites' `defaultValue` had never rendered even once,
+ * and the eyebrow above Today's Coach invite read "AI weekly plan" permanently
+ * while the source said "Mission Coach". Comparing defaults against the packs
+ * alone could not see it — the key is in no pack, so it was skipped as unknown.
+ */
 const EN_STRINGS: Record<string, string> = (() => {
   const en: Record<string, string> = {};
   for (const entry of LOCALE_EXPORTS) Object.assign(en, entry.stringsFor('en'));
+  Object.assign(en, BOOTSTRAP_EN);
   return en;
 })();
 
@@ -237,12 +249,20 @@ function driftingCalls(): string[] {
 }
 
 /**
- * Measured at `.745`: 193 sites, most of them a straight apostrophe where the
- * pack has a curly one, or a missing trailing arrow. The gate, the header, the
- * welcome flow and the language switcher are held at zero separately below; the
- * rest is a backlog with a number on it. Down only.
+ * Measured at `.745`: 193 sites against the packs alone. `.746` layered
+ * `BOOTSTRAP_EN` in — the catalogue that actually resolves first — and the true
+ * number is **209**. The 16 it had been blind to are the worse half: for a
+ * bootstrap-only key the `defaultValue` never renders at all, so the source and
+ * the screen can disagree forever (that is how "AI weekly plan" survived above
+ * a call site reading "Mission Coach").
+ *
+ * The cap went **up** because the measurement got honest, not because the app
+ * got worse. Fourteen of the 209 are one shortening — footer labels reading
+ * "Terms"/"Privacy" against defaults of "Terms of Service"/"Privacy Policy" —
+ * and are a separate sweep. The gate, the header, the welcome flow and the
+ * language switcher are held at zero below. Down only from here.
  */
-const MAX_FIRST_PAINT_COPY_DRIFT = 193;
+const MAX_FIRST_PAINT_COPY_DRIFT = 209;
 
 test('first-paint copy drift only ever decreases', () => {
   const drifting = driftingCalls();
