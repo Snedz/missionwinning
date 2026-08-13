@@ -3,7 +3,7 @@
 ```
 ████████████████████████████████████████████████████████████████
 █  DRAFT ONLY — DO NOT PUBLISH                                 █
-█  Blocked until: PRIVATE_MODE=false                           █
+█  Blocked until: PRIVATE_MODE=false (EIN)                     █
 █             AND founder PWA smoke pass                       █
 █  Soft language must NOT say “live” / “public” while gated.   █
 █  Waitlist broadcast: DRY-RUN ONLY until founder sends.       █
@@ -12,9 +12,10 @@
 
 **Status:** draft 2026-08-12 — not live marketing.  
 **Adapted from:** SOCIAL_LAUNCH (Train+Coach wedge).  
-**Never invent:** metrics, testimonials, beta counts, organic traction.
+**Never invent:** metrics, testimonials, beta counts, organic traction.  
+**Gated copy (until EIN):** **free beta** · Enter with code · Get notified. Not invite-only. See mission-ops `memory/BETA_LANGUAGE.md`.
 
-When PRIVATE_MODE is still ON, prefer “private beta / waitlist / opening soon” framing in any accidental leak — these kits are for the **post-flip** moment and must be re-checked the day of.
+When PRIVATE_MODE is still ON, any accidental leak uses **free beta / Get notified / Enter with code** — never invite-only, never “we’re live.” These kits are for the **post-flip** moment and must be re-checked the day of.
 
 ---
 
@@ -149,7 +150,7 @@ If something breaks on install or offline, reply to this email — I read them.
 
 — {{founder_name}}
 
-P.S. If you were on the waitlist during private mode: thank you for waiting. No fake “thousands joined today” lines.
+P.S. If you were on the waitlist during gated beta: thank you for waiting. No fake “thousands joined today” lines.
 
 ### Waitlist broadcast reminder
 
@@ -166,6 +167,7 @@ Re-read body the morning of flip for accuracy.
 | Forbidden while gated / always | Preferred |
 |-------------------------------|-----------|
 | “We’re live” (while PRIVATE_MODE) | omit kit entirely until flip |
+| Invite-only / get an invite / private beta | **Free beta** · Enter with code · Get notified |
 | “X users,” “trending,” “viral” | say nothing |
 | Superapp / six pillars hero | Train + Coach wedge |
 | Wearable required | No wearable for Coach |
