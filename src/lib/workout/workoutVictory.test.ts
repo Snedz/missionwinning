@@ -110,6 +110,7 @@ describe('shouldShowVictoryBackTodaySecondary', () => {
     assert.match(src, /VictoryFeelStrip/);
     assert.match(src, /VictoryBodyDeltaStrip/);
     assert.match(src, /VictoryStatsStrip/);
+    assert.match(src, /VictoryReceiptStrip/);
     assert.match(src, /VictoryNextActionStrip/);
     assert.doesNotMatch(
       src,

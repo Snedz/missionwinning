@@ -11,6 +11,9 @@ No for basic logging. Sign in to sync across devices, use Coach premium, and joi
 **Does it work offline?**  
 Yes as a PWA — log workouts offline; sync when back online if signed in.
 
+**What does Victory show after I finish?**  
+A receipt of the session you just logged — duration, volume, sets, each lift, vs last time, and PRs — from logs on this device. Instant, offline, and free. Share is optional; nothing is unlocked by posting.
+
 **Which phones are supported?**  
 Any modern browser — iPhone Safari, Android Chrome, desktop. Install to home screen for best experience.
 
