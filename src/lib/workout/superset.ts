@@ -93,6 +93,14 @@ export function advanceAfterLog(
         return { exerciseIndex: pi, setIndex: setIdx };
       }
     }
+    // Pair round done — next incomplete set on the first peer (A then B then rest).
+    for (const pi of peers) {
+      for (let si = setIdx + 1; si < (exercises[pi]?.sets.length ?? 0); si++) {
+        if (!exercises[pi].sets[si].completed) {
+          return { exerciseIndex: pi, setIndex: si };
+        }
+      }
+    }
   }
 
   for (let ei = exIdx; ei < exercises.length; ei++) {

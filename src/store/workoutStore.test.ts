@@ -449,8 +449,10 @@ test('workoutStore', async (t) => {
       ...template('bent-over-row', 2),
     ]);
     useWorkoutStore.getState().toggleSupersetWithNext(0);
-    const next = useWorkoutStore.getState().logSetAndAdvance(0, 0, 8, 40);
-    assert.deepEqual(next, { exerciseIndex: 1, setIndex: 0 });
+    const afterA = useWorkoutStore.getState().logSetAndAdvance(0, 0, 8, 40);
+    assert.deepEqual(afterA, { exerciseIndex: 1, setIndex: 0 });
+    const afterB = useWorkoutStore.getState().logSetAndAdvance(1, 0, 8, 50);
+    assert.deepEqual(afterB, { exerciseIndex: 0, setIndex: 1 });
     const a = useWorkoutStore.getState().activeWorkout?.exercises[0].sets[0];
     assert.equal(a?.completed, true);
     assert.equal(a?.reps, 8);
