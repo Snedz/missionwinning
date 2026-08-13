@@ -125,9 +125,10 @@ describe('firstSetUngated wiring', () => {
     assert.match(src, /usePathname\(\) \?\? ''/);
     assert.match(src, /if \(!showChip\) return;/);
     const boot = src.slice(src.indexOf('const boot'), src.indexOf('if (typeof requestIdleCallback'));
-    assert.match(boot, /if \(!showChip\) return;/);
-    assert.doesNotMatch(boot, /getUser\(/);
-    assert.match(src, /getUser\(/);
+    const guardAt = boot.indexOf('if (!showChip) return;');
+    const getUserAt = boot.indexOf('getUser(');
+    assert.ok(guardAt !== -1, 'boot must bail when the chip is hidden');
+    assert.ok(getUserAt > guardAt, 'getUser must sit after the hidden-chip return');
     const afterReturn = src.slice(src.indexOf('if (!showChip) return null;'));
     assert.match(afterReturn, /<Link/);
   });
