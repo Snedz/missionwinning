@@ -48,4 +48,7 @@ Source + layout review of Welcome → Today Lean → `/active` first-set. **Not 
 
 ## Prod-ready?
 
-**Not claimed.** Tests for the cold-path *contract* are local-green after this ship; the actual cold phone path was not executed here.
+**Not claimed.** Local unit guards for the cold-path *contract* are green
+(`firstSetUngated`, `localFirstRestGuard`, `localFirstCopy`, `contextBudget`,
+`buildInfo`, `check-build-label`). The actual cold phone path was not executed
+here.
