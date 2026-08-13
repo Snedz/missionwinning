@@ -229,7 +229,7 @@ export function WelcomePage() {
                   className="primary-action min-h-[52px] w-full tap-target"
                   onClick={handleBegin}
                 >
-                  {t('welcomeBegin', { defaultValue: 'Continue' })}
+                  {t('welcomeBegin', { defaultValue: 'Begin' })}
                 </button>
               </>
             )}

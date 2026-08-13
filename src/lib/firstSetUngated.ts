@@ -6,14 +6,16 @@
  * to decide). One predicate — do not invent a second flag.
  */
 
-export function normalizeAppPath(pathname: string): string {
-  const raw = (pathname.split('?')[0] ?? pathname).trim();
+export function normalizeAppPath(pathname: string | null | undefined): string {
+  const raw = String(pathname ?? '')
+    .split(/[?#]/)[0]
+    ?.trim() ?? '';
   if (!raw) return '/';
   if (raw.length > 1 && raw.endsWith('/')) return raw.slice(0, -1);
   return raw;
 }
 
-export function isActiveLoggerPath(pathname: string): boolean {
+export function isActiveLoggerPath(pathname: string | null | undefined): boolean {
   const path = normalizeAppPath(pathname);
   return path === '/active' || path.startsWith('/active/');
 }
@@ -24,7 +26,7 @@ export function isActiveLoggerPath(pathname: string): boolean {
  */
 export function showHeaderSignInChip(params: {
   hasFirstWorkout: boolean;
-  pathname: string;
+  pathname: string | null | undefined;
 }): boolean {
   if (!params.hasFirstWorkout) return false;
   if (isActiveLoggerPath(params.pathname)) return false;

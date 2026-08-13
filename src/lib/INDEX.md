@@ -26,7 +26,7 @@
 | **Journey** | `missionJourney.ts`, `journeySync.ts`, `journeyGoals.ts`, `journeyAnalytics.ts` | I-Day → Commissioned |
 | **Workouts** | [`workout/`](workout/INDEX.md) subfolder (+ root re-exports); `justGoSession.ts`, `historyAnalytics.ts`, [`history/`](history/INDEX.md), `benchmarks.ts` | Logger helpers; Just Go; session list rows; rest/PR/superset/tempo; vs-last; Repeat last session (`.747`) |
 | **Local-first copy** | `localFirstCopy.ts` | Today/Active F-001 EN constants — set-log + rest never framed as cloud-required |
-| **First-set ungated** | `firstSetUngated.ts` | `.730` F-017 — `showHeaderSignInChip`. Hide Sign in until the first workout; never on `/active`. |
+| **First-set ungated** | `firstSetUngated.ts` | F-017 / `.746` + `.762` verify — `showHeaderSignInChip`. Hide Sign in until the first workout; never on `/active`. Nullish/hash-safe path. |
 | **Nutrition / Fuel** | `macroTargets.ts`, `fuelGoalWizard.ts`, `fuelDayAdapt.ts`, `openFoodFacts.ts`, `nutritionLog.ts`, `nlMealLog.ts`, `mealDraft.ts`, `savedMeals.ts`, `nutritionHighProteinDays.ts` | Fuel pillar; goal→macros; train-day targets; NL + presets; photo draft |
 | **Habit week count** | `habitWeekCount.ts` | Unique local Train days this week — [HABIT.md](../../docs/contracts/HABIT.md) |
 | **Today primary CTA** | `todayPrimaryAction.ts`, `coach/loadCoachTodayOptional.ts` | Shared Just Go / journey primary for lean + dashboard |
