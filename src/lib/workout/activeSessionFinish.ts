@@ -20,7 +20,7 @@ import {
 import { computeBodyScores } from '@/lib/score';
 import type { MindCheckIn } from '@/lib/mindCheckIns';
 import { shouldRestAfterLog } from '@/lib/workout/superset';
-import { restSecondsForExercise } from '@/lib/workout/restTimer';
+import { resolveRestForNextSet } from '@/lib/workout/restTimer';
 import { isPersonalRecord } from '@/lib/workout/workoutPr';
 import {
   bodyScoreDeltas,
@@ -135,6 +135,8 @@ export function planLogSetRest(params: {
   /** Result of logSetAndAdvance — next open set or null. */
   advanceNext: { exerciseIndex: number; setIndex: number } | null;
   exerciseName: string | undefined;
+  /** Catalog id — last-rest recall keys on this, not the localized name. */
+  exerciseId?: string;
 }): LogSetRestPlan {
   return {
     takeRest: shouldRestAfterLog(
@@ -143,7 +145,10 @@ export function planLogSetRest(params: {
       params.setIdx,
       params.advanceNext
     ),
-    restSeconds: restSecondsForExercise(params.exerciseName),
+    restSeconds: resolveRestForNextSet({
+      exerciseId: params.exerciseId,
+      exerciseName: params.exerciseName,
+    }),
   };
 }
 

@@ -53,7 +53,7 @@ type Props = {
   onApplyAllTargets: (exIdx: number) => void;
   onAddSet: (exIdx: number) => void;
   onRemoveSet: (exIdx: number) => void;
-  onStartRest: (seconds: number) => void;
+  onStartRest: (seconds: number, exerciseId: string) => void;
   onSetInputChange: (exIdx: number, setIdx: number, field: 'reps' | 'weight', value: number) => void;
   onLogSet: (exIdx: number, setIdx: number) => void;
   onSetKindChange: (exIdx: number, setIdx: number, kind: SetKind) => void;
@@ -138,7 +138,7 @@ export function ActiveExerciseList({
             onApplyAllTargets={() => onApplyAllTargets(exIdx)}
             onAddSet={() => onAddSet(exIdx)}
             onRemoveSet={() => onRemoveSet(exIdx)}
-            onStartRest={onStartRest}
+            onStartRest={(seconds) => onStartRest(seconds, exLog.exerciseId)}
             setInput={tableControls.setInput}
             onSetInputChange={(field, value) => {
               if (!tableControls.canEdit || !nextSet) return;

@@ -23,7 +23,7 @@ import {
 } from '@/lib/workout/activeWorkoutHelpers';
 import { getFormGuideOrCues } from '@/lib/formGuides';
 import { lastNotesFor } from '@/lib/journal/cueMemory';
-import { resolveRestSeconds } from '@/lib/workout/restTimer';
+import { resolveRestForNextSet } from '@/lib/workout/restTimer';
 import { supersetLabel } from '@/lib/workout/superset';
 import { cn } from '@/lib/utils';
 import type { UnitsPref } from '@/lib/units';
@@ -120,7 +120,10 @@ export function ActiveExerciseCard({
   const [footerOpen, setFooterOpen] = useState(false);
   const hasCompleted = exerciseHasCompletedSet(exLog.sets);
   const hasPlanned = exerciseHasPlannedSet(exLog.sets);
-  const restSec = resolveRestSeconds(exercise.name);
+  const restSec = resolveRestForNextSet({
+    exerciseId: exLog.exerciseId,
+    exerciseName: exercise.name,
+  });
   const ssLabel = supersetLabel(exercises, exIdx);
   const hasNext = exIdx < exercises.length - 1;
   const holdsActiveSet = holdsActiveExercise(nextSet, exIdx);

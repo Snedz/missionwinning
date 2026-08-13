@@ -381,9 +381,10 @@ export function ActiveWorkoutPage() {
       setIdx,
       advanceNext: next,
       exerciseName: exercise?.name,
+      exerciseId,
     });
     if (rest.takeRest) {
-      startRestTimer(rest.restSeconds);
+      startRestTimer(rest.restSeconds, exerciseId);
     }
 
     // Honor = inline brass PR chip on the set row (Design Orchestration D0).
@@ -640,7 +641,7 @@ export function ActiveWorkoutPage() {
             removeLastPlannedSet(exIdx);
             setSetInputs({});
           }}
-          onStartRest={(seconds) => startRestTimer(seconds)}
+          onStartRest={(seconds, exerciseId) => startRestTimer(seconds, exerciseId)}
           onSetInputChange={(exIdx, setIdx, field, value) =>
             updateSetInput(exIdx, setIdx, field, value)
           }

@@ -7,7 +7,7 @@ Root-level `@/lib/{name}` paths re-export from here for compatibility — prefer
 ## Read order
 
 1. `setKind.ts` — normal/warmup/drop; volume + PR eligibility  
-2. `restTimer.ts` — rest seconds, clock format, defaults  
+2. `restTimer.ts` — rest seconds, clock format, defaults, last-rest per exercise (`.715`)  
 3. `superset.ts` — peer links, advance after log, rest gate  
 4. `nextSetTargets.ts` — Strong/Hevy-style next set suggestions  
 5. `percentLoad.ts` — TrainHeroic-style % of e1RM → absolute weight (`loadPct`)  
@@ -31,7 +31,7 @@ Root-level `@/lib/{name}` paths re-export from here for compatibility — prefer
 | File | Covers |
 |------|--------|
 | `setKind.test.ts` | Volume / PR eligibility |
-| `restTimer.test.ts` | Clock + defaults + start seconds (`.292`) |
+| `restTimer.test.ts` | Clock + defaults + start seconds (`.292`) + last-rest recall / skip (`.715`) |
 | `superset.test.ts` | Advance, rest gate |
 | `nextSetTargets.test.ts` | Progression targets |
 | `percentLoad.test.ts` | e1RM max, % → weight, scale |

@@ -50,6 +50,11 @@ export const STORAGE_KEYS = {
    */
   athletePrivateNote: 'mw_athlete_private_note',
   defaultRestSec: 'mw_default_rest_sec',
+  /**
+   * `.715` — last chosen rest seconds per exercise id. Device-local; skip
+   * never writes. Cap lives in restTimer.ts, not here.
+   */
+  lastRestByExercise: 'mw_last_rest_by_exercise',
   activityLog: 'mw_activity_log',
   todaySectionsV1: 'mw_today_sections_v1',
   todaySectionsV2: 'mw_today_sections_v2',
