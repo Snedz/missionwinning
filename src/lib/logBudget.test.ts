@@ -86,6 +86,15 @@ const NEVER_SHIPPED: { from: number; to: number; why: string }[] = [
       'heading on master ever ended in (`.260`), so the live window can sit on `.261` without ' +
       'a prior rotate of a missing section.',
   },
+  {
+    from: 671,
+    to: 678,
+    why:
+      'Minted by concurrent branches that were relabeled before landing — `.671`–`.677` ' +
+      'relabel (Craft #452 owned `.671`); guidebook CTAs shipped as `.680`. No `##` heading ' +
+      'on master ever ended in these labels, so rotating `.670` walks this hole to the ' +
+      'archived `.670` once `.679` is the live bottom.',
+  },
 ];
 const neverShipped = (x: number) => NEVER_SHIPPED.some((g) => x >= g.from && x <= g.to);
 

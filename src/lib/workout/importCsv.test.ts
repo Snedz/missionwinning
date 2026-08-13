@@ -6,12 +6,16 @@ import {
   csvEscape,
   detectCsvFormat,
   exerciseIdForName,
+  formatDurationSeconds,
+  formatHevyLocal,
   mergeImportedLogs,
   parseBoostcampDate,
   parseDurationSeconds,
   parseWorkoutCsv,
   splitCsvRecords,
+  workoutsToHevyCsv,
   workoutsToMwCsv,
+  workoutsToStrongCsv,
 } from '@/lib/workout/importCsv';
 import { sessionLoad } from '@/lib/coach/load';
 import { localDateKeyFromIso } from '@/lib/time/localDate';
@@ -215,6 +219,10 @@ describe('importCsv', () => {
     assert.equal(parseDurationSeconds('1h 5m'), 3900);
     assert.equal(parseDurationSeconds('45m'), 2700);
     assert.equal(parseDurationSeconds('32s'), 32);
+    assert.equal(formatDurationSeconds(3900), '1h 5m');
+    assert.equal(formatDurationSeconds(2700), '45m');
+    assert.equal(formatDurationSeconds(32), '32s');
+    assert.equal(parseDurationSeconds(formatDurationSeconds(3661)), 3661);
   });
 
   it('Boostcamp slash dates follow the unit column (kg = EU, lb = US)', () => {
@@ -248,12 +256,95 @@ describe('importCsv', () => {
     assert.equal(duplicates, 2);
   });
 
+  it('round-trip: Strong fixture → Strong CSV → parse → merge is a no-op', () => {
+    const imported = parseWorkoutCsv(STRONG, 'metric', testId);
+    const csv = workoutsToStrongCsv(imported.workouts, 'metric');
+    assert.match(csv, /^Date,Workout Name,Duration,Exercise Name,Set Order/);
+    assert.match(csv, /1h 5m/);
+    assert.match(csv, /55m/);
+    const back = parseWorkoutCsv(csv, 'metric', testId);
+    assert.equal(back.format, 'strong');
+    assert.equal(back.workouts.length, 2);
+    for (const w of imported.workouts) {
+      const twin = back.workouts.find((b) => b.workoutName === w.workoutName);
+      assert.ok(twin);
+      assert.deepEqual(sessionLoad(twin), sessionLoad(w));
+    }
+    const { added, duplicates } = mergeImportedLogs(imported.workouts, back.workouts);
+    assert.equal(added, 0, 'Strong in+out must not duplicate');
+    assert.equal(duplicates, 2);
+  });
+
+  it('round-trip: Hevy fixture → Hevy CSV → parse → merge is a no-op', () => {
+    const imported = parseWorkoutCsv(HEVY, 'metric', testId);
+    const csv = workoutsToHevyCsv(imported.workouts, 'metric');
+    assert.match(csv, /^title,start_time,end_time,description,exercise_title/);
+    assert.match(csv, /set_type,weight_kg/);
+    assert.match(csv, /,failure,/);
+    assert.match(csv, /,warmup,/);
+    const back = parseWorkoutCsv(csv, 'metric', testId);
+    assert.equal(back.format, 'hevy');
+    assert.equal(back.workouts.length, 2);
+    const push = back.workouts.find((w) => w.workoutName === 'Push Day');
+    assert.ok(push);
+    const bench = push.exercises.find((e) => e.exerciseId === 'bench-press');
+    assert.ok(bench);
+    assert.equal(bench.sets[2].kind, 'failure');
+    assert.equal(push.durationSeconds, 65 * 60);
+    for (const w of imported.workouts) {
+      const twin = back.workouts.find((b) => b.workoutName === w.workoutName);
+      assert.ok(twin);
+      assert.deepEqual(sessionLoad(twin), sessionLoad(w));
+    }
+    const { added, duplicates } = mergeImportedLogs(imported.workouts, back.workouts);
+    assert.equal(added, 0, 'Hevy in+out must not duplicate');
+    assert.equal(duplicates, 2);
+  });
+
   it('export skips tombstoned logs', () => {
     const live = parseWorkoutCsv(MW, 'metric', testId).workouts[0];
     const dead: CompletedWorkoutLog = { ...live, id: 'dead', deletedAt: '2026-07-20T00:00:00.000Z' };
-    const csv = workoutsToMwCsv([live, dead], 'metric');
-    assert.equal(csv.split('\n').filter((l) => l.startsWith('dead,')).length, 0);
-    assert.match(csv, new RegExp(`^${live.id},`, 'm'));
+    const mw = workoutsToMwCsv([live, dead], 'metric');
+    assert.equal(mw.split('\n').filter((l) => l.startsWith('dead,')).length, 0);
+    assert.match(mw, new RegExp(`^${live.id},`, 'm'));
+    const hevyLive = workoutsToHevyCsv([live], 'metric');
+    const hevyMixed = workoutsToHevyCsv([live, dead], 'metric');
+    assert.equal(hevyMixed, hevyLive, 'Hevy export must drop tombstones');
+    const strongLive = workoutsToStrongCsv([live], 'metric');
+    const strongMixed = workoutsToStrongCsv([live, dead], 'metric');
+    assert.equal(strongMixed, strongLive, 'Strong export must drop tombstones');
+  });
+
+  it('Hevy and Strong export dates use local fields, not UTC ISO slices', () => {
+    // Pacific/Kiritimati is UTC+14: 10:05 local on the 14th is still the 13th in UTC.
+    // Slicing toISOString() would write 13 Jul / 2026-07-13 — the defect that shipped
+    // a wrong shared week east of UTC everywhere else in this repo.
+    const previous = process.env.TZ;
+    process.env.TZ = 'Pacific/Kiritimati';
+    try {
+      const started = new Date(2026, 6, 14, 10, 5, 0);
+      const completed = new Date(2026, 6, 14, 11, 10, 0);
+      const log: CompletedWorkoutLog = {
+        id: 'local-1',
+        workoutName: 'Push Day',
+        startedAt: started.toISOString(),
+        completedAt: completed.toISOString(),
+        durationSeconds: 65 * 60,
+        exercises: [{ exerciseId: 'bench-press', sets: [{ reps: 5, weight: 100 }] }],
+        totalVolume: 500,
+      };
+      assert.equal(formatHevyLocal(log.startedAt), '14 Jul 2026, 10:05');
+      const hevy = workoutsToHevyCsv([log], 'metric');
+      assert.match(hevy, /14 Jul 2026, 10:05/);
+      assert.match(hevy, /14 Jul 2026, 11:10/);
+      assert.doesNotMatch(hevy, /13 Jul 2026/);
+      const strong = workoutsToStrongCsv([log], 'metric');
+      assert.match(strong, /2026-07-14 10:05:00/);
+      assert.doesNotMatch(strong, /2026-07-13/);
+    } finally {
+      if (previous === undefined) delete process.env.TZ;
+      else process.env.TZ = previous;
+    }
   });
 
   it('csvEscape quotes commas, quotes, and newlines', () => {

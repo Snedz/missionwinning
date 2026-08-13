@@ -1,6 +1,6 @@
 /**
  * The DOM half of CSV history transfer: parse → merge into the persisted store,
- * and export the current log as MW CSV.
+ * and export the current log as Strong or Hevy CSV (0.1 beta).
  *
  * Mirrors `backup.ts`'s restore path deliberately — write the zustand persist
  * payload under `WORKOUT_STORE_KEY` and let the caller refresh, rather than mutating
@@ -10,7 +10,8 @@
  * `backup.ts` already drew it.
  *
  * Export reads the same persist payload import writes. Free forever — this
- * module must never consult premium.
+ * module must never consult premium. No extra surfaces: download stays on the
+ * existing Profile card.
  */
 
 import { WORKOUT_STORE_KEY } from '@/lib/backup';
@@ -22,8 +23,10 @@ import type { CompletedWorkoutLog } from '@/types';
 import {
   mergeImportedLogs,
   parseWorkoutCsv,
-  workoutsToMwCsv,
+  workoutsToHevyCsv,
+  workoutsToStrongCsv,
   type CsvFormat,
+  type WorkoutCsvDialect,
 } from '@/lib/workout/importCsv';
 
 interface PersistedWorkoutState {
@@ -45,7 +48,7 @@ export interface CsvRestoreResult {
 }
 
 export type CsvExportResult =
-  | { ok: true; csv: string; count: number }
+  | { ok: true; csv: string; count: number; dialect: WorkoutCsvDialect }
   | { ok: false; error: 'empty' | 'storage' };
 
 function displayUnits(): UnitsPref {
@@ -89,31 +92,31 @@ export function importWorkoutCsvText(text: string): CsvRestoreResult {
 }
 
 /** Pure-enough: read persist, shape CSV. No download — tests can call this. */
-export function buildWorkoutCsvDownload(): CsvExportResult {
+export function buildWorkoutCsvDownload(dialect: WorkoutCsvDialect): CsvExportResult {
   try {
     const raw = readRaw(WORKOUT_STORE_KEY);
     const current: PersistedWorkoutState = raw ? (JSON.parse(raw) as PersistedWorkoutState) : {};
     const existing = (current.state?.workoutHistory ?? []).filter((l) => !l.deletedAt);
     if (existing.length === 0) return { ok: false, error: 'empty' };
-    return {
-      ok: true,
-      csv: workoutsToMwCsv(existing, displayUnits()),
-      count: existing.length,
-    };
+    const csv =
+      dialect === 'hevy'
+        ? workoutsToHevyCsv(existing, displayUnits())
+        : workoutsToStrongCsv(existing, displayUnits());
+    return { ok: true, csv, count: existing.length, dialect };
   } catch {
     return { ok: false, error: 'storage' };
   }
 }
 
-export function downloadWorkoutCsv(): CsvExportResult {
-  const built = buildWorkoutCsvDownload();
+export function downloadWorkoutCsv(dialect: WorkoutCsvDialect): CsvExportResult {
+  const built = buildWorkoutCsvDownload(dialect);
   if (!built.ok) return built;
   if (typeof document === 'undefined') return built;
   const blob = new Blob([built.csv], { type: 'text/csv;charset=utf-8' });
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
   a.href = url;
-  a.download = `mission-winning-history-${localDateKey()}.csv`;
+  a.download = `${dialect}-history-${localDateKey()}.csv`;
   a.click();
   URL.revokeObjectURL(url);
   return built;

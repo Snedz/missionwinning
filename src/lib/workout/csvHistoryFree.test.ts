@@ -67,22 +67,34 @@ describe('csvHistoryFree', () => {
     }
   });
 
-  it('the parser still names Strong, Hevy, Boostcamp, and MW round-trip', () => {
+  it('the parser still names Strong, Hevy, Boostcamp, and MW; 0.1 export is Strong/Hevy', () => {
     const src = read('src/lib/workout/importCsv.ts');
     assert.match(src, /CsvFormat = 'hevy' \| 'strong' \| 'boostcamp' \| 'mw'/);
     assert.match(src, /export function workoutsToMwCsv/);
+    assert.match(src, /export function workoutsToStrongCsv/);
+    assert.match(src, /export function workoutsToHevyCsv/);
     assert.match(src, /export function parseWorkoutCsv/);
+    assert.doesNotMatch(src, /workoutsToBoostcampCsv/);
   });
 
-  it('the Profile card wires both import and export with no disabled gate', () => {
+  it('the Profile card wires Strong/Hevy import and export with no disabled gate', () => {
     const src = stripComments(read('src/components/profile/ProfileImportCard.tsx'));
     assert.match(src, /importWorkoutCsvText/);
-    assert.match(src, /downloadWorkoutCsv/);
+    assert.match(src, /downloadWorkoutCsv\(/);
+    assert.match(src, /handleExport\('strong'\)/);
+    assert.match(src, /handleExport\('hevy'\)/);
+    assert.doesNotMatch(src, /downloadWorkoutCsv\(\)/);
     assert.doesNotMatch(
       src,
       /disabled=\{[^}]*premium/i,
       'export/import must not disable on premium'
     );
+  });
+
+  it('CSV download filenames use localDateKey, never toISOString', () => {
+    const src = read('src/lib/workout/importCsvRestore.ts');
+    assert.match(src, /localDateKey\(\)/);
+    assert.doesNotMatch(src, /toISOString/);
   });
 
   it('sample fixtures used by the parser tests still exist', () => {

@@ -68,7 +68,7 @@ Private beta gate — use the password from your invite.
 **How do I delete my data?**  
 Export backup first if needed, then contact support or clear site data locally.
 
-**Can I bring Strong / Hevy / Boostcamp history?**  
-Yes. Profile → Your training history → Import CSV. Drop the CSV those apps (or a Boostcamp history dump) give you. You can export your Mission Winning log the same way, free, anytime.
+**Can I bring Strong / Hevy history?**  
+Yes. Profile → Your training history → Import CSV (0.1 beta). Drop a Strong or Hevy CSV, then export the same dialects, free, anytime. History is never paywalled.
 
 More: [troubleshooting.md](troubleshooting.md), [privacy-and-data.md](privacy-and-data.md).

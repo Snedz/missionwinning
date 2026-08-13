@@ -1,17 +1,16 @@
 /**
- * CSV history transfer: Strong / Hevy / Boostcamp import + Mission Winning
- * round-trip export → `CompletedWorkoutLog[]`.
+ * CSV history transfer — 0.1 (beta), then freeze.
+ *
+ * Product in+out is **Strong and Hevy**, free forever, never gated. Boostcamp
+ * dumps and Mission Winning native CSV still *import* (a file in the hand must
+ * not bounce); they are not 0.1 export dialects. JSON device backup stays on
+ * Profile for full-app restore; this is the log.
  *
  * Switchers are the early market for a new logger, and every one of them is
  * holding a CSV: Hevy caps free history at three months, Strong paywalls export
- * of your own logs, Boostcamp has no native CSV (athletes use a per-set dump).
- * This module turns those files into the web's native shape so `personalRecordsFor`,
- * `e1rmSeries`, `loadBands` light up against years of the athlete's own history.
- *
- * Export is the other half of the same contract: a portable MW CSV that this
- * parser re-imports as a no-op (and that Android `WorkoutTransfer.toMwCsv`
- * already speaks). History in and out is free forever, never gated — JSON
- * device backup stays on Profile for full-app restore; this is the log.
+ * of your own logs. This module turns those files into the web's native shape
+ * so `personalRecordsFor`, `e1rmSeries`, `loadBands` light up against years of
+ * the athlete's own history — and writes the same dialects back out.
  *
  * Pure and DOM-free: parsing someone's training history must be provable in a
  * unit test rather than discovered by an athlete whose 400-session export
@@ -22,6 +21,8 @@
  *   records are split by a real CSV scanner, never `text.split('\n')`.
  * - **Unknown set types stay 'normal', unknown RPE stays absent.** Dropping a set
  *   because its label is unrecognised would silently shrink someone's history.
+ * - **Export dates use local Date fields**, never `toISOString()` calendar slices
+ *   — east of UTC an ISO date is yesterday's evening.
  */
 
 import type { CompletedWorkoutLog, SetKind, Rpe } from '@/types';
@@ -32,10 +33,22 @@ import { compareKeys } from '@/lib/i18n/formatLocale';
 
 export type CsvFormat = 'hevy' | 'strong' | 'boostcamp' | 'mw';
 
-/** Android `WorkoutTransfer.toMwCsv` header — web export must match byte-for-byte on names. */
+/** Official Hevy workout-export header (kg). Parser also accepts Android's `weight_lbs` column. */
+export const HEVY_CSV_HEADER =
+  'title,start_time,end_time,description,exercise_title,superset_id,exercise_notes,' +
+  'set_index,set_type,weight_kg,reps,distance_km,duration_seconds,rpe';
+
+/** Strong workout-export header. Set Order is 1-based; Weight Unit is `kg` or `lbs`. */
+export const STRONG_CSV_HEADER =
+  'Date,Workout Name,Duration,Exercise Name,Set Order,Weight,Weight Unit,Reps,RPE,Notes';
+
+/** Android `WorkoutTransfer.toMwCsv` header — kept for import + tests, not the 0.1 Profile download. */
 export const MW_CSV_HEADER =
   'workout_id,workout_name,completed_at,duration_seconds,weight_unit,' +
   'exercise_id,exercise_name,set_index,reps,weight,rpe,set_kind,note,superset_group';
+
+/** 0.1 Profile download dialects. Boostcamp/MW stay import-only. */
+export type WorkoutCsvDialect = 'strong' | 'hevy';
 
 export interface CsvImportResult {
   workouts: CompletedWorkoutLog[];
@@ -213,6 +226,19 @@ export function parseDurationSeconds(raw: string): number {
   if (m) seconds += Number(m[1]) * 60;
   if (s) seconds += Number(s[1]);
   return seconds;
+}
+
+/** Inverse of `parseDurationSeconds` — Strong's duration column. */
+export function formatDurationSeconds(total: number): string {
+  const s = Math.max(0, Math.round(total));
+  const h = Math.floor(s / 3600);
+  const m = Math.floor((s % 3600) / 60);
+  const sec = s % 60;
+  const parts: string[] = [];
+  if (h) parts.push(`${h}h`);
+  if (m) parts.push(`${m}m`);
+  if (sec || parts.length === 0) parts.push(`${sec}s`);
+  return parts.join(' ');
 }
 
 interface RawSet {
@@ -612,6 +638,152 @@ export function workoutsToMwCsv(workouts: CompletedWorkoutLog[], units: UnitsPre
           ]
             .map((cell) => csvEscape(String(cell)))
             .join(',')
+        );
+      });
+    }
+  }
+  return `${lines.join('\n')}\n`;
+}
+
+const HEVY_MONTHS = [
+  'Jan',
+  'Feb',
+  'Mar',
+  'Apr',
+  'May',
+  'Jun',
+  'Jul',
+  'Aug',
+  'Sep',
+  'Oct',
+  'Nov',
+  'Dec',
+] as const;
+
+function pad2(n: number): string {
+  return String(n).padStart(2, '0');
+}
+
+/**
+ * Hevy `"d MMM yyyy, HH:mm"` from local fields. English month names are the
+ * dialect, not the athlete's UI language.
+ */
+export function formatHevyLocal(iso: string): string {
+  const d = new Date(iso);
+  if (Number.isNaN(d.getTime())) return '';
+  return `${d.getDate()} ${HEVY_MONTHS[d.getMonth()]} ${d.getFullYear()}, ${pad2(d.getHours())}:${pad2(d.getMinutes())}`;
+}
+
+/** Strong `"YYYY-MM-DD HH:mm:ss"` from local fields. */
+export function formatStrongLocal(iso: string): string {
+  const d = new Date(iso);
+  if (Number.isNaN(d.getTime())) return '';
+  return `${d.getFullYear()}-${pad2(d.getMonth() + 1)}-${pad2(d.getDate())} ${pad2(d.getHours())}:${pad2(d.getMinutes())}:${pad2(d.getSeconds())}`;
+}
+
+function hevySetType(kind?: SetKind): string {
+  if (kind === 'warmup') return 'warmup';
+  if (kind === 'drop') return 'dropset';
+  if (kind === 'failure') return 'failure';
+  return 'normal';
+}
+
+function storedToKg(weight: number, units: UnitsPref): number {
+  return units === 'metric' ? weight : round1(weight / LB_PER_KG);
+}
+
+/**
+ * Hevy infers session length from start/end. Strong imports store duration
+ * separately with identical timestamps — offset the end so a Hevy round-trip
+ * keeps the minutes.
+ */
+function hevyEndIso(w: CompletedWorkoutLog): string {
+  const start = w.startedAt || w.completedAt;
+  const end = w.completedAt || w.startedAt;
+  if (!end) return '';
+  if (w.durationSeconds > 0 && start) {
+    const startMs = Date.parse(start);
+    const endMs = Date.parse(end);
+    if (Number.isFinite(startMs) && Number.isFinite(endMs) && endMs <= startMs) {
+      return new Date(startMs + w.durationSeconds * 1000).toISOString();
+    }
+  }
+  return end;
+}
+
+function csvRow(cells: Array<string | number>): string {
+  return cells.map((cell) => csvEscape(String(cell))).join(',');
+}
+
+/**
+ * Official Hevy workout CSV (kg column). Re-import is a no-op against the
+ * history it came from (merge identity is minute + name + set count).
+ */
+export function workoutsToHevyCsv(workouts: CompletedWorkoutLog[], units: UnitsPref): string {
+  const lines = [HEVY_CSV_HEADER];
+  for (const w of workouts) {
+    if (w.deletedAt) continue;
+    const start = formatHevyLocal(w.startedAt || w.completedAt);
+    const end = formatHevyLocal(hevyEndIso(w));
+    for (const ex of w.exercises) {
+      const name = exerciseNameForId(ex.exerciseId);
+      const note = ex.note ?? '';
+      ex.sets.forEach((s, i) => {
+        const rpe = rpeCategoryToNumber(s.rpe);
+        lines.push(
+          csvRow([
+            w.workoutName,
+            start,
+            end,
+            '',
+            name,
+            '',
+            note,
+            String(i),
+            hevySetType(s.kind),
+            String(storedToKg(s.weight, units)),
+            String(s.reps),
+            '',
+            '',
+            rpe != null ? String(rpe) : '',
+          ])
+        );
+      });
+    }
+  }
+  return `${lines.join('\n')}\n`;
+}
+
+/**
+ * Strong workout CSV. Set Order is 1-based per exercise. Re-import is a no-op.
+ * Strong has no set-kind column — warmup/drop/failure flatten to normal on the
+ * way out (Hevy is the dialect that keeps kinds).
+ */
+export function workoutsToStrongCsv(workouts: CompletedWorkoutLog[], units: UnitsPref): string {
+  const unit = units === 'imperial' ? 'lbs' : 'kg';
+  const lines = [STRONG_CSV_HEADER];
+  for (const w of workouts) {
+    if (w.deletedAt) continue;
+    const date = formatStrongLocal(w.startedAt || w.completedAt);
+    const duration = formatDurationSeconds(w.durationSeconds);
+    for (const ex of w.exercises) {
+      const name = exerciseNameForId(ex.exerciseId);
+      const note = ex.note ?? '';
+      ex.sets.forEach((s, i) => {
+        const rpe = rpeCategoryToNumber(s.rpe);
+        lines.push(
+          csvRow([
+            date,
+            w.workoutName,
+            duration,
+            name,
+            String(i + 1),
+            String(s.weight),
+            unit,
+            String(s.reps),
+            rpe != null ? String(rpe) : '',
+            note,
+          ])
         );
       });
     }

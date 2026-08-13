@@ -25,6 +25,7 @@ When adding a doc:
 
 | File | Absorbed by / note |
 |------|---------------------|
+| [log/LOG-rotate-670-for-701.md](./log/LOG-rotate-670-for-701.md) | rotated 2026-08-13 for `.701` Strong/Hevy CSV in+out freeze 0.1 |
 | [log/LOG-rotate-669-for-700.md](./log/LOG-rotate-669-for-700.md) | rotated 2026-08-13 for `.700` free Strong/Hevy/Boostcamp CSV + round-trip export |
 | [log/LOG-rotate-659-for-685.md](./log/LOG-rotate-659-for-685.md) | rotated 2026-08-12 for `.685` preserve next= through private gate |
 | [log/LOG-rotate-661-for-690.md](./log/LOG-rotate-661-for-690.md) | rotated 2026-08-12 for `.690` admin invite share → /private |
