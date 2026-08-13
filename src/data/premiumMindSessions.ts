@@ -865,7 +865,7 @@ export const PREMIUM_MIND_SESSIONS: GuidedMindSession[] = [
       { text: 'What is just tired — the kind that usually fades with food and sleep?', durationSec: 55 },
       { text: 'What is the next recovery action you can start in the next hour — protein, walk, or lights down?', durationSec: 70 },
       { text: 'One technical note for next time, then stop analyzing. Hydrate.', durationSec: 55 },
-      { text: 'Leave the room calmer than you entered.', durationSec: 60 },
+      { text: 'Leave the room quieter than you entered.', durationSec: 60 },
     ],
   },
   {

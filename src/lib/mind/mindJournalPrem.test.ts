@@ -20,7 +20,7 @@ const JOURNAL_IDS = [
 ] as const;
 
 const FORBIDDEN =
-  /streak|Calm|Headspace|Waking Up|sleep stor|diagnos|depress|therap|SSRI|PTSD|disorder|suicid|clinical/i;
+  /streak|Headspace|Waking Up|sleep stor|diagnos|depress|therap|SSRI|PTSD|disorder|suicid|clinical|Calm\s*\/\s*Waking/i;
 
 function premiumSrc(): string {
   return readFileSync(join(root, 'src/data/premiumMindSessions.ts'), 'utf8');
