@@ -60,7 +60,7 @@ const GUIDEBOOK_ES: Record<string, string> = {
   'guideChapter_movement-mechanics_title': 'Mecánica del movimiento',
   'guideChapter_movement-mechanics_subtitle': 'Cómo funcionan los patrones — palancas, no mitos',
   'guideChapter_programming-tuning_title': 'Programación y ajuste',
-  'guideChapter_programming-tuning_subtitle': 'Volumen, intensidad y cuándo descargar',
+  'guideChapter_programming-tuning_subtitle': 'Volumen, intensidad y descargas — planes desde tus registros',
   'guideChapter_getting-started-mw_title': 'Empezar con Mission Winning',
   'guideChapter_getting-started-mw_subtitle': 'I-Day, seis pilares y tu Win Score',
   'guideChapter_nutrition-recovery_title': 'Nutrición y recuperación',
