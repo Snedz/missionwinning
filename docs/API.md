@@ -45,6 +45,14 @@ Public while private gate is on. See [OPS_MONITORING.md](OPS_MONITORING.md).
 
 ## Account (GDPR)
 
+### `GET /api/account/mission-id`
+
+| | |
+|--|--|
+| Auth | session (cookie) |
+| Rate | 30 / min / user |
+| Response | `{ ok: true, missionId: number }`. Idempotent server claim: founder GitHub `Snedz` (or `BETA_ADMIN_EMAILS`) gets **1**; everyone else gets 2, 3, … **401** unsigned · **503** admin not configured · **502** opaque on write failure. GET only — the client never chooses an integer |
+
 ### `GET /api/account/export`
 
 | | |
@@ -60,7 +68,7 @@ Public while private gate is on. See [OPS_MONITORING.md](OPS_MONITORING.md).
 | Auth | session (cookie) |
 | Rate | 2 / 5 min / user |
 | Body | Zod `accountDeleteBodySchema` — `{ confirm: 'DELETE', deviceId? }` |
-| Behavior | Email-keyed cleanups first (`leads`, `checkout_recovery` deleted; `beta_invites` anonymized; orphan `enrollments` by email), anonymous device rows (`push_subscriptions`, `llm_usage` where `user_id is null`), then `auth.admin.deleteUser` — which cascades all 16 user-keyed tables. **No migration required**: every user-keyed table already declares `on delete cascade` from `auth.users`. Any failed step aborts **before** the cascade and returns **502** — success is never reported on a partial deletion. Completeness is enforced by `src/lib/accountDataCompleteness.test.ts`, which discovers tables from `supabase/migrations/` and fails on any table with no export/deletion story. |
+| Behavior | Email-keyed cleanups first (`leads`, `checkout_recovery` deleted; `beta_invites` anonymized; orphan `enrollments` by email), anonymous device rows (`push_subscriptions`, `llm_usage` where `user_id is null`), then `auth.admin.deleteUser` — which cascades all user-keyed tables. **No migration required**: every user-keyed table already declares `on delete cascade` from `auth.users`. Any failed step aborts **before** the cascade and returns **502** — success is never reported on a partial deletion. Completeness is enforced by `src/lib/accountDataCompleteness.test.ts`, which discovers tables from `supabase/migrations/` and fails on any table with no export/deletion story. |
 
 ---
 

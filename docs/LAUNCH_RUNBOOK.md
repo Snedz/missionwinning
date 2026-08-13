@@ -79,6 +79,7 @@
    15. **`20260730_wind_down_nudge.sql`** — `last_session_high` + `last_wind_down_at` on `push_subscriptions`; **the evening wind-down push (`.176`) is inert without it.** Apply after #13 — it extends the table #13 creates.
    16. **`20260731_llm_usage.sql`** — the `llm_usage` ledger; **per-user LLM spend metering (`.188`) records nothing without it**, so the quota gates cannot bind and the cost ceiling is unenforced.
    17. **`20260801_day_review_push.sql`** — `day_review_hour` + `last_day_review_at` on `push_subscriptions`; **the evening day-review push (`.194`/`.196`) is inert without it.** Apply after #13, and after #15 for ordering clarity — all three extend the same table.  
+   18. **`20260813_mission_ids.sql`** — `mission_ids` table + sequence starting at 2; **signed-in Mission ID (`.732`) cannot be issued at all without it**, so Athlete Page / Account show nothing and ID 1 cannot be reserved for the founder.  
 4. Redeploy, then verify on the Profile page in-app: build label matches the latest commit (`src/lib/buildInfo.ts`).
 5. **Smoke after env** (from a machine with secrets):
    ```bash
@@ -92,7 +93,7 @@
 
 - [x] Env vars set (incl. service role, DEMO_PREMIUM=false, Resend, Stripe webhook secret, Payment Links)
 - [x] All migrations run through **20260720_referrals** (push + week-4 RPC)
-- [ ] **Migrations from §2 item 9 onward are NOT applied** (beta invites → day-review push). **One-sitting pack:** [MIGRATION_FOUNDER_PACK.md](MIGRATION_FOUNDER_PACK.md) (P1–P10 = files `20260721_*` … `20260801_day_review_push.sql`). The two `20260728_*` gate the anonymous return loop and the correctness of the boss metric (tombstones); the `20260721_*` set gates invite ledger + Android sync; `20260730_wind_down_nudge` / `20260801_day_review_push` gate evening pushes; `20260731_llm_usage` gates LLM spend metering. **After tombstone migration:** run `supabase/checks/week4_retention_proof.sql`. CI path: `apply-migration.yml` when `SUPABASE_DB_URL` is set.
+- [ ] **Migrations from §2 item 9 onward are NOT applied** (beta invites → Mission ID). **One-sitting pack:** [MIGRATION_FOUNDER_PACK.md](MIGRATION_FOUNDER_PACK.md) (P1–P11 = files `20260721_*` … `20260813_mission_ids.sql`). The two `20260728_*` gate the anonymous return loop and the correctness of the boss metric (tombstones); the `20260721_*` set gates invite ledger + Android sync; `20260730_wind_down_nudge` / `20260801_day_review_push` gate evening pushes; `20260731_llm_usage` gates LLM spend metering; `20260813_mission_ids` gates signed-in Mission ID (founder is 1). **After tombstone migration:** run `supabase/checks/week4_retention_proof.sql`. CI path: `apply-migration.yml` when `SUPABASE_DB_URL` is set.
 - [x] Deployed URL loads and shows the new private teaser page
 - [x] Digest dry-run + live send OK (`sent:true` with Resend)
 

@@ -12,6 +12,7 @@
 | `useMissionJourney.ts` | Journey components, guards | `missionJourney.ts` |
 | `useJourneySync.ts` | `AppLayout`, Profile | `journeySync.ts`, Supabase |
 | `useOutboxDrain.ts` | `JourneySyncInner` (idle) | `lib/sync/outbox.ts` — drains on mount / online / visible |
+| `useMissionId.ts` | Athlete Page, Account | `GET /api/account/mission-id` — display only; guests stay null |
 | `usePremium.ts` | Gated UI, Bundle | `/api/premium/status` |
 | `useUnits.ts` | Workout, calculators | `units.ts`, localStorage |
 | `useUiMode.ts` | Layout, simplified UI | `uiMode.ts` |

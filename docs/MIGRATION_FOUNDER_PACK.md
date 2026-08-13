@@ -4,7 +4,7 @@
 **When:** Before or while recruiting the first 10 free-logger testers.  
 **Companion:** [LAUNCH_RUNBOOK.md](LAUNCH_RUNBOOK.md) §2 · ledger guard `src/lib/migrationLedger.test.ts`
 
-> **Why this exists.** CONTEXT says ~9 migrations pending. The runbook lists them, but the order, verify commands, and “what breaks” live in one dense list. This pack is the **single paste path** for the free-beta window (no charge, no `PRIVATE_MODE` flip required for local SQL apply).
+> **Why this exists.** CONTEXT records pending migrations. The runbook lists them, but the order, verify commands, and “what breaks” live in one dense list. This pack is the **single paste path** for the free-beta window (no charge, no `PRIVATE_MODE` flip required for local SQL apply).
 
 ---
 
@@ -34,9 +34,10 @@ Files under `supabase/migrations/`. All are written to be **idempotent** (`if no
 | **P8** | `20260730_wind_down_nudge.sql` | Evening wind-down push columns missing (after P6) |
 | **P9** | `20260731_llm_usage.sql` | LLM spend ledger missing — quotas cannot bind if LLM is ever enabled |
 | **P10** | `20260801_day_review_push.sql` | Day-review push columns missing (after P6) |
+| **P11** | `20260813_mission_ids.sql` | **Mission ID cannot be issued** — Athlete Page / Account stay blank; founder cannot be `#1` |
 
 **Free-beta minimum for honest ops:** **P1 + P2 + P6 + P7**.  
-**Full pack (recommended same sitting):** P1–P10.
+**Full pack (recommended same sitting):** P1–P11.
 
 **Not in this pack (already assumed applied):** base `20250629_*` through `20260720_referrals.sql` (includes initial `mw_week4_retention()`). P7 **corrects** that function for tombstones.
 
@@ -44,7 +45,7 @@ Files under `supabase/migrations/`. All are written to be **idempotent** (`if no
 
 ## 2. How to apply (SQL Editor)
 
-For each file in order P1 → P10:
+For each file in order P1 → P11:
 
 1. Open `supabase/migrations/<file>` in the repo.
 2. Paste entire contents into SQL Editor → **Run**.
@@ -61,6 +62,7 @@ Run in SQL Editor (safe read):
 -- Tables / columns this pack expects
 select to_regclass('public.beta_invites') as beta_invites;
 select to_regclass('public.llm_usage') as llm_usage;
+select to_regclass('public.mission_ids') as mission_ids;
 
 select column_name
 from information_schema.columns
@@ -82,6 +84,7 @@ Interpretation:
 | Result | Meaning |
 |--------|---------|
 | `beta_invites` null | Apply P1 |
+| `mission_ids` null | Apply P11 |
 | `workout_logs.deleted_at` missing | Apply P2 (and then P7) |
 | `device_id` missing on push_subscriptions | Apply P6 (then P8/P10) |
 | `mw_week4_retention` missing | Apply `20260720_referrals.sql` first (outside this pack) |
@@ -101,6 +104,7 @@ Interpretation:
 - [ ] P8 `20260730_wind_down_nudge.sql`
 - [ ] P9 `20260731_llm_usage.sql`
 - [ ] P10 `20260801_day_review_push.sql`
+- [ ] P11 `20260813_mission_ids.sql`
 - [ ] **Proof (required after P7):**
 
 ```bash
@@ -109,7 +113,7 @@ psql "$DATABASE_URL" -v ON_ERROR_STOP=1 -f supabase/checks/week4_retention_proof
 # Expect: week4 proof OK
 ```
 
-- [ ] Update [CONTEXT.md](../CONTEXT.md) Status migrations line if agents cannot (founder note to agent: “pack applied”) so “9 pending” stops lying
+- [ ] Update [CONTEXT.md](../CONTEXT.md) Status migrations line if agents cannot (founder note to agent: “pack applied”) so the pending count stops lying
 
 ---
 
