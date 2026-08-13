@@ -1,4 +1,4 @@
-# Super Bundle shop leftover — Move table + Train why + vs-stack help (`.707`)
+# Super Bundle shop leftover — Move table + Train why + vs-stack help (`.710`)
 
 **Status:** frozen 2026-08-13 overnight (amended). Implement **this file only**.
 
@@ -9,7 +9,7 @@ Specialists landed first. Do not collide:
 | **#498** | `/bundle` shop restore, `BundlePage` layout, `BundleShopStack`, checkout mute, `faq.md`, `premium-and-billing.md`, today/activeWorkout catalog keys |
 | **#497** | Move catalog + `MoveLockedPreview` / `moveLocales` Pliability copy |
 | **#499** | Fuel recipes + Fuel shop `{{count}}` strings + `FuelLockedPreview` |
-| **#501** | Mind sessions + Mind shop strings + `MindLockedPreview` |
+| **#501** | Mind sessions (label **`.707`**) + Mind shop strings + `MindLockedPreview` |
 | **#502** | Learn chapters + Learn shop string + `LearnLockedPreview` |
 | **#478** | Coach `sessionRationale` / why-this-session |
 
@@ -17,7 +17,7 @@ This is **not** [docs/PLAN.md](PLAN.md). Parent catalog plan: [SUPER_BUNDLE_CONT
 
 Excellence-Override: Super Bundle content depth vs competitor stack.
 
-Ship label: **`2026.07-unified.707`** (`.705` is #498 and #502; `.706` is #500).
+Ship label: **`2026.07-unified.710`**. Do not steal `.707` (Mind #501). Also taken: `.698`–`.700`, `.705`–`.709` (#503 plate math, #497 Move).
 
 ---
 
@@ -85,6 +85,6 @@ No trial. No à la carte. No new tabs. No `PRIVATE_MODE`. No Stripe unmute. No `
 
 ## Docs / ship
 
-Same commit: LOG (rotate `.669` → `LOG-rotate-669-for-707.md`), `CONTEXT.md` `## Now`, `APP_BUILD_LABEL` `2026.07-unified.707`. Trailer: `Excellence-Override: Super Bundle content depth vs competitor stack`.
+Same commit: LOG (rotate `.669` → `LOG-rotate-669-for-710.md`), `CONTEXT.md` `## Now`, `APP_BUILD_LABEL` `2026.07-unified.710`. Trailer: `Excellence-Override: Super Bundle content depth vs competitor stack`.
 
 Draft PR. Preview at most one. Do not merge.

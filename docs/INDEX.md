@@ -131,7 +131,7 @@ Root keeps only the spine (README · CONTEXT · AGENTS · INDEX · vision · ORC
 | [STRATEGY.md](STRATEGY.md) | Business plan · pricing · book plan |
 | [PLAN.md](PLAN.md) | Build phases A–I |
 | [SUPER_BUNDLE_CONTENT_PLAN.md](SUPER_BUNDLE_CONTENT_PLAN.md) | Super Bundle catalog depth (parent, frozen `.700`) |
-| [SUPER_BUNDLE_SHOP_HONESTY_PLAN.md](SUPER_BUNDLE_SHOP_HONESTY_PLAN.md) | **Frozen** leftover: Move table 32/48 + Train why + vs-stack help (`.707`; do not collide with #498/#497/#499/#501/#502) |
+| [SUPER_BUNDLE_SHOP_HONESTY_PLAN.md](SUPER_BUNDLE_SHOP_HONESTY_PLAN.md) | **Frozen** leftover: Move table 32/48 + Train why + vs-stack help (`.710`; `.707` is Mind #501) |
 | [REDTEAM.md](REDTEAM.md) | Assumptions audit |
 | [JOURNEY.md](JOURNEY.md) | Mission journey UX (I-Day → Commissioned) |
 | [CLUB_PLAN.md](CLUB_PLAN.md) | Club: points · tiers · collectibles · boards · arcade (phased plan, no code) |

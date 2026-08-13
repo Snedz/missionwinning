@@ -1,5 +1,5 @@
 /**
- * `.707` — leftover after specialists: Fuel/Mind/Learn shop strings and
+ * `.710` — leftover after specialists: Fuel/Mind/Learn shop strings and
  * BundlePage layout are other PRs. The compare table still advertised 10/18
  * Move flows (floors 32/48) and Train as unlimited plans.
  *
