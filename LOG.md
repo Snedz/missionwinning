@@ -92,13 +92,50 @@ blank body. Also repaired two gate steps that were **already red on master**:
 i18n parity (3 `learn` keys over the beachhead cap for es/fr/pt) and i18n
 coverage (3 keys used in the UI with no EN pack).
 
+**The gate was red on `master` before this branch existed, in five places, and
+nobody knew which.** Measured by building `master` in a second worktree and
+running the same steps against both. Repaired here because four of them are
+cheap and a permanently-red step teaches people to stop reading the output:
+`lint` (a `require()` in `readinessDisplay.test.ts` since `.643`), `i18n:parity`
+(3 `learn` keys over the beachhead cap for es/fr/pt), `i18n:coverage` (3 keys
+used in the UI with no EN pack), and hero e2e — `mobile-nav.spec.ts`'s reach
+case has asserted the *opposite* of `.695`'s pillar demotion since `.695`
+shipped, on a fresh device where the demotion is in force. It now tests both
+halves: pillars **absent** before the first workout, everything inside the
+budget once `workout-tracker-storage` holds a session; `/nutrition` moved to the
+always-reachable list because Fuel is the fourth tab and survives a demotion
+that only drops the rail group.
+
+Two remain, both stated rather than papered over. **Bundle budget** was already
+breached on `master` — `/log` +7.3 KB, `/active` +13.6 KB against caps that may
+only ratchet down. This branch is +0.0 on `/log` (after splitting
+`isClientPrivateGateEnabled` into its own module so `AppHeader`, which sits in
+every route's shared chunk, stopped dragging `publicRoutes.ts` along) and
+**+0.3 KB on `/active`**, which is the two logger i18n keys that fix the
+coverage hole in fourteen languages. The cap is not raised: correct copy for
+`activeReentryStart`/`Desc` is worth 0.3 KB on a route already 13.6 over, and if
+the founder disagrees the keys are one revert. **`/leaderboard` fails axe
+serious/critical** on `master` too — untouched here, since that is a design call
+on a surface this PR has no business in.
+
 **Not done, deliberately:** no `PRIVATE_MODE` flip, no locale added or removed
 (a language is not a territory), no landing redesign, no traction claims. Left
 for the founder: `welcomeBegin` still says *"Begin"* because
 `first-90.spec.ts` taps that exact label while the newer component copy says
 *"Continue"* — a copy call with a test coupling, not an agent's. `public/locales`
 is ~3,100 lines stale against `src/i18n`; only this PR's keys were patched, and
-that overlay has been opt-in since `.222`.
+that overlay has been opt-in since `.222`. Three production smoke checks
+unrelated to this ship are red on the live deploy: `/locales` JSON while gated,
+two `/api/school/class/[code]/*` handlers, and the unsigned-PayPal-webhook
+rejection.
+
+**Verified:** gate steps 1–16 green (including excellence-gate override,
+coverage floors, design system, token sync, production build), hero e2e **71
+passed**, a11y **58 passed** with the one pre-existing `/leaderboard` failure,
+unit **2473**, route contract **47**. The ungated Preview named in the brief is
+behind Vercel deployment protection (302 → `sso-api`) with no credentials on
+this VM, so the artifacts were production HTML over the wire plus a local
+`PRIVATE_MODE=true` build walked in headless Chromium at 390×844.
 
 Label `.745` (onto master `.697`). Excellence-Override below.
 
