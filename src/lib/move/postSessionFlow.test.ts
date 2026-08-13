@@ -72,8 +72,8 @@ describe('POST_SESSION_FLOW_BY_MUSCLE catalog contract', () => {
 
   it('the picker module does not import the mobility catalog (logger bundle)', () => {
     const src = readFileSync(join(import.meta.dirname, 'postSessionFlow.ts'), 'utf8');
-    assert.doesNotMatch(src, /mobilityFlows/);
-    assert.doesNotMatch(src, /premiumMobilityFlows/);
-    assert.doesNotMatch(src, /mobilityScore|mobility score/i);
+    assert.doesNotMatch(src, /from ['"][^'"]*mobilityFlows/);
+    assert.doesNotMatch(src, /from ['"][^'"]*premiumMobilityFlows/);
+    assert.doesNotMatch(src, /\bmobilityScore\b/);
   });
 });

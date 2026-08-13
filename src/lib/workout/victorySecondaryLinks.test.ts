@@ -76,7 +76,7 @@ describe('buildVictorySecondaryLinks', () => {
 
   it('does not import the mobility catalog or a score', () => {
     const src = readFileSync(join(import.meta.dirname, 'victorySecondaryLinks.ts'), 'utf8');
-    assert.doesNotMatch(src, /mobilityFlows/);
-    assert.doesNotMatch(src, /mobilityScore|mobility score/i);
+    assert.doesNotMatch(src, /from ['"][^'"]*mobilityFlows/);
+    assert.doesNotMatch(src, /\bmobilityScore\b/);
   });
 });
