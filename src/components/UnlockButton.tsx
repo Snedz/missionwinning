@@ -10,11 +10,11 @@ import {
   getStripeCheckoutUrl,
   grantPremiumDemo,
   isCheckoutSessionsEnabled,
+  isPaidCheckoutAllowed,
   type CheckoutPlanId,
 } from '@/lib/payments';
 import { submitLead } from '@/lib/supabase';
 import { track } from '@/lib/analytics';
-import { isFreeBeta } from '@/lib/freeBeta';
 import { fetchTerritoryAccess } from '@/lib/legal/territoryAccessClient';
 
 interface Props {
@@ -79,9 +79,9 @@ export function UnlockButton({
     };
   }, []);
 
-  // Free-first beta: no checkout / waitlist / Bundle CTAs.
-  if (isFreeBeta()) return null;
-
+  // Free-first beta: mute live checkout. Shop waitlist still renders (Get notified).
+  // Do not return null — /bundle merchandises Super Bundle while charges stay dark.
+  const checkoutMuted = !isPaidCheckoutAllowed();
   const program = productId ? PROGRAM_PRICES[productId] : null;
   const amount = price || program?.price;
   const itemTitle =
@@ -93,7 +93,7 @@ export function UnlockButton({
     getStripeCheckoutUrl(productId || (isSubscription ? 'super-bundle' : undefined));
 
   const useSessions = Boolean(planId) && isCheckoutSessionsEnabled();
-  const hasLiveCheckout = useSessions || Boolean(checkoutUrl);
+  const hasLiveCheckout = !checkoutMuted && (useSessions || Boolean(checkoutUrl));
 
   const checkoutLabel =
     label ||
@@ -149,6 +149,7 @@ export function UnlockButton({
   };
 
   const startCheckout = async () => {
+    if (checkoutMuted) return;
     setCheckoutError(null);
     track('checkout_clicked', {
       product: productId || (isSubscription ? 'super-bundle' : 'premium'),
@@ -270,7 +271,9 @@ export function UnlockButton({
         className="w-full border-2 border-border bg-background px-3 py-3 text-sm min-h-[44px]"
       />
       <button type="submit" className="primary-action w-full min-h-[52px] tap-target" disabled={submitting || !email.trim()}>
-        {submitting ? t('unlockJoining', { defaultValue: 'Joining…' }) : t('unlockJoinFounders', { defaultValue: 'Join founders list' })}
+        {submitting
+          ? t('unlockJoining', { defaultValue: 'Joining…' })
+          : label || t('unlockGetNotified', { defaultValue: t('unlockJoinFounders', { defaultValue: 'Get notified' }) })}
       </button>
       {waitlistError && (
         <p className="text-center text-xs text-destructive" role="alert">

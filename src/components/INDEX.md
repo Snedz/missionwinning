@@ -17,6 +17,7 @@
 | `benchmarks/` | Benchmark charts |
 | `beta/` | Beta admin, welcome banner |
 | `builder/` | Workout builder panels |
+| `bundle/` | Super Bundle shop cards — [bundle/INDEX.md](bundle/INDEX.md) |
 | `coach/` | Mission Coach UI — [coach/INDEX.md](coach/INDEX.md) |
 | `fitness-test/` | PFT test runner — [fitness-test/INDEX.md](fitness-test/INDEX.md) |
 | `form/` | Form guides |

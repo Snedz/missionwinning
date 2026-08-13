@@ -54,7 +54,7 @@
 
 | File | Route |
 |------|-------|
-| `BundlePage.tsx` | `/bundle` |
+| `BundlePage.tsx` | `/bundle` Super Bundle shop (Free vs one SKU) |
 | `LearnPathsPublicIndexPage.tsx` | `/paths` |
 | `LearnPathPublicPage.tsx` | `/paths/[id]` |
 | `ExerciseMuscleHubPage.tsx` | `/exercises/muscle/[group]` |

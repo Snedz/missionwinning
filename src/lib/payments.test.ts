@@ -19,6 +19,7 @@ import {
   createCheckoutForPlan,
   openBillingPortal,
   isCheckoutSessionsEnabled,
+  isPaidCheckoutAllowed,
   getStripeCheckoutUrl,
   PROGRAM_PRICES,
   SUPER_BUNDLE_PRICE,
@@ -143,6 +144,23 @@ test('isCheckoutSessionsEnabled is true only for the exact string', () => {
   for (const [value, want] of [['true', true], ['false', false], ['TRUE', false], ['1', false], [undefined, false]] as const) {
     setTestEnv('NEXT_PUBLIC_STRIPE_CHECKOUT', value);
     assert.equal(isCheckoutSessionsEnabled(), want, `NEXT_PUBLIC_STRIPE_CHECKOUT=${String(value)}`);
+  }
+});
+
+test('isPaidCheckoutAllowed is false while free-beta is on, even if Stripe checkout flag is set', () => {
+  const prevBeta = process.env.NEXT_PUBLIC_FREE_BETA;
+  const prevCheckout = process.env.NEXT_PUBLIC_STRIPE_CHECKOUT;
+  try {
+    setTestEnv('NEXT_PUBLIC_STRIPE_CHECKOUT', 'true');
+    setTestEnv('NEXT_PUBLIC_FREE_BETA', undefined);
+    assert.equal(isPaidCheckoutAllowed(), false, 'unset FREE_BETA defaults on — no charge');
+    setTestEnv('NEXT_PUBLIC_FREE_BETA', 'true');
+    assert.equal(isPaidCheckoutAllowed(), false);
+    setTestEnv('NEXT_PUBLIC_FREE_BETA', 'false');
+    assert.equal(isPaidCheckoutAllowed(), true);
+  } finally {
+    setTestEnv('NEXT_PUBLIC_FREE_BETA', prevBeta);
+    setTestEnv('NEXT_PUBLIC_STRIPE_CHECKOUT', prevCheckout);
   }
 });
 

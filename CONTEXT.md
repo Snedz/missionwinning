@@ -16,7 +16,7 @@ One screen of truth for any AI tool or human joining cold. Read this, then [AGEN
 
 ---
 
-## Now (2026-08-12 · web `2026.07-unified.697` · Android `1.24.1`)
+## Now (2026-08-13 · web `2026.07-unified.705` · Android `1.24.1`)
 
 > The ONLY "where we are" block in the repo — [ORCHESTRATION.md](ORCHESTRATION.md) points here.
 >
@@ -285,6 +285,7 @@ One screen of truth for any AI tool or human joining cold. Read this, then [AGEN
 > and `.695` dropped `.606` detail (full text remains in LOG.md / archive)
 > and `.696` dropped `.635` detail (full text remains in LOG.md / archive)
 > and `.697` dropped `.618` detail (full text remains in LOG.md / archive)
+> and `.705` dropped `.669` detail (full text remains in LOG.md / archive)
 > to [CONTEXT-now-2026-07-30.md](docs/archive/CONTEXT-now-2026-07-30.md) after this
 > block reached **79 bullets / 103KB**. A status doc that only grows stops being read.
 
@@ -306,6 +307,7 @@ One screen of truth for any AI tool or human joining cold. Read this, then [AGEN
 > | gitleaks | **green — and scanning for the first time.** It had never scanned anything: on a `pull_request` event the action lists the PR's commits, the job declared no `permissions:` block, and it 403'd (`pull_requests=read`) before opening a file. Fixed by a `permissions:` block (`.224` carrying `.255`). It scans **only the PR's own commits**, so commit `8ea3527a`'s real Solana treasury address — scrubbed from the working file, still in history — is out of its scope. That finding stands, deliberately not allowlisted; it was never what made this check red. |
 
 - **Excellence:** unscored · — · [docs/EXCELLENCE_RESULT.md](docs/EXCELLENCE_RESULT.md) — Horizon W phone sign-off home; surface PRs need `status: pass` or `Excellence-Override` (`.669`).
+- **`.705`:** (`2026.07-unified.705`) **Super Bundle shop restore** — `/bundle` merchandises Free logger vs one paid SKU ($59/yr founders); checkout muted (Get notified) while FREE_BETA; depth still unlocked; no trial, no à la carte, no live Stripe.
 - **`.697`:** (`2026.07-unified.697`) **Session-expired fail-open mid-set Log/rest** — SignInPrompt catch → signed-out; log/rest path never awaits auth/sync (Kaizen Strong / F-001).
 - **`.696`:** (`2026.07-unified.696`) **Local-first set-log + rest** — Today/Active empty + SignIn/status copy device-first; rest path ungated by sync (F-001).
 - **`.695`:** (`2026.07-unified.695`) **Demote six-pillar chrome until first workout** — First Steps workout-only + More/rail Pillars hidden pre-`basic.workout` / `workoutHistory.length`; I-Day → Today one Start (F-004 C5≤90s; no shell redesign).
@@ -320,10 +322,9 @@ One screen of truth for any AI tool or human joining cold. Read this, then [AGEN
 - **`.680`:** (`2026.07-unified.680`) **Guidebook wedge CTAs** — Ch4 Getting Started + magazine `1.4.3` practice lines pitch Train log + Mission Coach from logs; originality logged; Learn heroes still parked.
 - **`.679`:** (`2026.07-unified.679`) **Today /log renderer crash** — `regenerateFutureSessions` idempotent like `.207` `adaptPlan`; stopped synchronous `useCoachPlan` ↔ `mw-coach-plan-changed` stack overflow on high-strain Today (Scout Aw Snap `.618`).
 - **`.670`:** (`2026.07-unified.670`) **Hero design** — Coach empty docks poster-field Generate (mirror Active); Victory share fail-only recovery line (not cancel).
-- **`.669`:** (`2026.07-unified.669`) **Excellence RESULT + agent stop-rule** — `excellenceGate` path policy + `check-excellence-gate` on gate/PR CI; wedge still ships while unscored.
 - **`.636`:** (`2026.07-unified.636`) **Global legal posture** — multi-jurisdiction sanctions/trade controls; no US-primary / OFAC-only consumer voice; commercial exclusions unchanged. Counsel export global freeze. **Not legal advice.**
 - **Horizon W + full-launch override (2026-08-05).** Wedge excellence still required; agents may ship rewards + full surface honesty. Fuel estimate accuracy remains.
-- **Free-first beta (~4 weeks):** LLC + EIN pending — **no Bundle UI** + **full depth unlocked**; More/rail **Pillars demoted until first workout** (F-004 / `.695`) — still no Bundle ([docs/FREE_BETA.md](docs/FREE_BETA.md)).
+- **Free-first beta (~4 weeks):** LLC + EIN pending — **shop merchandises Super Bundle** (Free vs one SKU); **checkout muted**; **depth still unlocked**; More/rail **Pillars demoted until first workout** (F-004 / `.695`) ([docs/FREE_BETA.md](docs/FREE_BETA.md)).
 - **`e2e:visual` is the one dark gate.** Its three baselines were generated **2026-07-22, before the rebrand**, and depicted the old navy/emerald dark design — black grounds, emerald CTAs, rounded corners. Verified by opening one, not inferred from dates. **Deleted**, because a known-wrong baseline is worse than none: the first Linux run would have shown four huge diffs, and the reflex there is `--update-snapshots` without looking, which launders whatever renders that day into truth. `home-reduced.png` **never had a baseline at all**, so the homepage has been silently self-approving since the case was written. **First Linux CI run after billing clears must bootstrap all four** (`npx playwright test --grep @visual --update-snapshots`, then commit the artifact) — it cannot be done on macOS, the pixels will not match.
 
 

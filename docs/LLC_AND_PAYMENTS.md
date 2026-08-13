@@ -60,7 +60,7 @@ Cheap insurance vs later rebrand. Use a trademark attorney or reputable filing f
 
 ## §1d — Pre-EIN interim payments (Texas LLC pending)
 
-**Founder override (2026-07-23):** Free-first beta for ~4 weeks while LLC + EIN clear. **Do not** take individual Stripe / PayPal / crypto checkout until business accounts exist. All Bundle UI is muted — [FREE_BETA.md](FREE_BETA.md). Escape-hatch Venmo only if founder manually grants enrollments offline (rare).
+**Founder override (2026-07-23):** Free-first beta for ~4 weeks while LLC + EIN clear. **Do not** take individual Stripe / PayPal / crypto checkout until business accounts exist. `/bundle` merchandises Super Bundle; **live checkout stays muted** — [FREE_BETA.md](FREE_BETA.md). Escape-hatch Venmo only if founder manually grants enrollments offline (rare).
 
 **Situation:** LLC filed (e.g. Bizee → state, ~4 weeks) + EIN service pending. **Business** Stripe/PayPal will not open without EIN.
 

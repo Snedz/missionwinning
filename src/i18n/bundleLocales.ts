@@ -69,6 +69,29 @@ type BundleStrings = {
   bundleUsdcNote: string;
   bundleUnlockLifetimeCta: string;
   bundleRefundNote: string;
+  bundleShopFreeEyebrow: string;
+  bundleShopFreeTitle: string;
+  bundleShopFreeBody: string;
+  bundleShopFreeCta: string;
+  bundleShopPaidEyebrow: string;
+  bundleShopPaidLead: string;
+  bundleShopVsStack: string;
+  bundleShopPerYear: string;
+  bundleShopSecondaryPrices: string;
+  bundleShopPlanChooser: string;
+  bundleShopPaidCoach: string;
+  bundleShopPaidRecipes: string;
+  bundleShopPaidMove: string;
+  bundleShopPaidMind: string;
+  bundleShopPaidLearn: string;
+  bundleShopPaidLogger: string;
+  bundleShopSubscribe: string;
+  bundleShopGetNotified: string;
+  bundleShopCheckoutSoon: string;
+  bundleShopAlreadyIncluded: string;
+  bundleShopAlreadyIncludedBody: string;
+  bundleShopOpenCoach: string;
+  bundleShopIllustrative: string;
   unlockStartingCheckout: string;
   unlockSecureCheckout: string;
   unlockMoneyBack: string;
@@ -77,6 +100,7 @@ type BundleStrings = {
   unlockFoundersEmail: string;
   unlockJoining: string;
   unlockJoinFounders: string;
+  unlockGetNotified: string;
 };
 
 const en: BundleStrings = {
@@ -154,6 +178,31 @@ const en: BundleStrings = {
   bundleUsdcNote: 'Base USDC is a payment rail — not the product.',
   bundleUnlockLifetimeCta: 'Unlock lifetime Super Bundle',
   bundleRefundNote: 'Questions on access? Contact support from Profile.',
+  bundleShopFreeEyebrow: 'Always yours',
+  bundleShopFreeTitle: 'Free forever',
+  bundleShopFreeBody:
+    'Logger and free floors. No account. No card. Super Bundle is optional depth — never required to log a set.',
+  bundleShopFreeCta: 'Start training',
+  bundleShopPaidEyebrow: 'One Super Bundle',
+  bundleShopPaidLead: 'Coach depth plus pillar catalogs in one install — not four apps.',
+  bundleShopVsStack: 'One Super Bundle vs {{stack}}.',
+  bundleShopPerYear: '/year founders',
+  bundleShopSecondaryPrices: '${{monthly}}/mo · ${{lifetime}} lifetime',
+  bundleShopPlanChooser: 'Super Bundle plan',
+  bundleShopPaidCoach: 'Mission Coach weekly plans from your logs',
+  bundleShopPaidRecipes: '{{count}} premium recipes',
+  bundleShopPaidMove: '{{count}} premium Move flows',
+  bundleShopPaidMind: '{{count}} premium Mind sessions',
+  bundleShopPaidLearn: '{{count}} premium Learn sections',
+  bundleShopPaidLogger: 'Logger stays free. Never gated.',
+  bundleShopSubscribe: 'Subscribe Now',
+  bundleShopGetNotified: 'Get notified',
+  bundleShopCheckoutSoon: 'Checkout opens when payments go live.',
+  bundleShopAlreadyIncluded: 'Already included',
+  bundleShopAlreadyIncludedBody: 'Super Bundle depth is on this account.',
+  bundleShopOpenCoach: 'Open Coach',
+  bundleShopIllustrative:
+    'Standalone $ figures are an illustrative vs-stack — not for sale separately. Super Bundle is the only paid SKU.',
   unlockStartingCheckout: 'Starting checkout…',
   unlockSecureCheckout: 'Secure checkout by Stripe · Card · Apple Pay · Google Pay · PayPal · USDC',
   unlockMoneyBack: '14-day money-back on first paid charge',
@@ -162,6 +211,7 @@ const en: BundleStrings = {
   unlockFoundersEmail: "We'll email {{email}} when checkout opens.",
   unlockJoining: 'Joining…',
   unlockJoinFounders: 'Join founders list',
+  unlockGetNotified: 'Get notified',
 };
 
 const es: BundleStrings = {

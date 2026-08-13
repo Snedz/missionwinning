@@ -43,21 +43,21 @@ test('free-beta depth unlock call sites still exist', () => {
 
 test('paid mute surfaces and depth unlock are both documented in FREE_BETA.md', () => {
   const doc = readFileSync(path.join(root, 'docs/FREE_BETA.md'), 'utf8');
-  assert.match(doc, /Mute pay|no Super Bundle/i);
+  assert.match(doc, /Mute pay|checkout muted|no live checkout/i);
   assert.match(doc, /Unlock depth|premium-entitled|isFreeBetaPremiumUnlocked/i);
   assert.match(doc, /NEXT_PUBLIC_FREE_BETA=false/);
 });
 
-test('UnlockButton mutes under free-beta and still has a paid checkout body', () => {
+test('UnlockButton mutes live checkout under free-beta and still has waitlist + paid body', () => {
   const src = readFileSync(path.join(root, 'src/components/UnlockButton.tsx'), 'utf8');
-  assert.match(src, /if\s*\(\s*isFreeBeta\s*\(\s*\)\s*\)\s*return\s*null/);
-  // When free-beta is off, checkout / waitlist path remains load-bearing.
+  assert.match(src, /isPaidCheckoutAllowed|checkoutMuted/);
+  assert.doesNotMatch(src, /if\s*\(\s*isFreeBeta\s*\(\s*\)\s*\)\s*return\s*null/);
   assert.match(src, /createCheckoutForPlan|getStripeCheckoutUrl/);
   assert.match(src, /grantPremiumDemo|submitLead/);
 });
 
-test('Bundle route redirects when free-beta is on', () => {
+test('Bundle route serves the shop (no /log redirect)', () => {
   const src = readFileSync(path.join(root, 'app/bundle/page.tsx'), 'utf8');
-  assert.match(src, /isFreeBeta/);
-  assert.match(src, /redirect\s*\(\s*['"]\/log['"]\s*\)/);
+  assert.doesNotMatch(src, /redirect\s*\(\s*['"]\/log['"]\s*\)/);
+  assert.match(src, /BundlePage/);
 });

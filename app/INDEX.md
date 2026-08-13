@@ -55,7 +55,7 @@
 | URL | File |
 |-----|------|
 | `/` | `app/page.tsx` → `LandingPage` |
-| `/bundle` | `app/bundle/page.tsx` → `BundlePage` (marketing chrome) |
+| `/bundle` | `app/bundle/page.tsx` → `BundlePage` — Super Bundle shop (Free vs one paid SKU; checkout muted in free-beta) |
 | `/compare` · `/compare/*` | **Removed (.668)** — permanent redirect to `/welcome` (no competitor comparison hub) |
 | `/guide`, `/exercises` | Public SEO pages |
 | `/press` | `app/press/page.tsx` → `PressPage` (brand & media kit) |
