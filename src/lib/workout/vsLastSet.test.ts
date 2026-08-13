@@ -224,7 +224,8 @@ describe('vs-last stays off the ghost / social lanes', () => {
   const read = (...parts: string[]) => readFileSync(path.join(root, ...parts), 'utf8');
 
   it('does not import ghost prefill helpers or social rank', () => {
-    const src = read('src', 'lib', 'workout', 'vsLastSet.ts');
+    const raw = read('src', 'lib', 'workout', 'vsLastSet.ts');
+    const src = raw.replace(/\/\*[\s\S]*?\*\//g, '').replace(/\/\/.*$/gm, '');
     assert.doesNotMatch(src, /getLastPerformanceForSet|formatPrevSetLabels|resolveSetInput/);
     assert.doesNotMatch(src, /leaderboard|elite|rankAgainst|other users/i);
     assert.match(src, /getLastSessionSets/);
