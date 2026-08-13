@@ -95,6 +95,27 @@ describe('mayShowActiveSignInPrompt', () => {
       true
     );
   });
+
+  it('Not now does not re-prompt on Active (mid-session or empty shell)', () => {
+    assert.equal(
+      mayShowActiveSignInPrompt({
+        signedIn: false,
+        completedWorkouts: 3,
+        dismissed: true,
+        hasActiveWorkout: false,
+      }),
+      false
+    );
+    assert.equal(
+      mayShowActiveSignInPrompt({
+        signedIn: false,
+        completedWorkouts: 3,
+        dismissed: true,
+        hasActiveWorkout: true,
+      }),
+      false
+    );
+  });
 });
 
 describe('Day-1 absorbed gates', () => {
@@ -168,7 +189,27 @@ describe('wiring (discover, do not skip)', () => {
     const src = read('src/page-components/ActiveWorkoutPage.tsx');
     assert.match(src, /mayShowActiveSignInPrompt/);
     assert.match(src, /hasActiveWorkout:\s*!!activeWorkout/);
+    assert.match(src, /dismissed:\s*accountLiteDismissed/);
+    assert.match(src, /useDismissed\(\s*STORAGE_KEYS\.accountLiteDismissed/);
     assert.match(src, /mayOfferDeviceLink/);
+  });
+
+  it('F-030 reuses localFirstRestGuard — no guest-mode fork of logSet/rest', () => {
+    const rest = read('src/lib/localFirstRestGuard.test.ts');
+    assert.match(rest, /handleLogSet/);
+    assert.match(rest, /startRestTimer/);
+    assert.match(rest, /getUser/);
+    assert.doesNotMatch(
+      read('src/lib/today/accountLite.ts'),
+      /getUser|flushOutbox|guestMode/,
+      'account-lite is chrome policy, not a second persistence stack'
+    );
+    const logSet = read('src/page-components/ActiveWorkoutPage.tsx').match(
+      /const handleLogSet[\s\S]*?startRestTimer\(rest\.restSeconds\);[\s\S]*?\n {2}\};/
+    );
+    assert.ok(logSet, 'handleLogSet rest block missing');
+    assert.doesNotMatch(logSet[0], /\bawait\b/);
+    assert.doesNotMatch(logSet[0], /getUser|flushOutbox/);
   });
 
   it('Today header uses account-lite chrome, not a first-session sign-in link', () => {

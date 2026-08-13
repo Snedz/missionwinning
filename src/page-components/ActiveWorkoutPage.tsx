@@ -29,6 +29,7 @@ import {
   mayOfferDeviceLink,
   mayShowActiveSignInPrompt,
 } from '@/lib/today/accountLite';
+import { useDismissed } from '@/hooks/useDismissed';
 import { useIsCompact } from '@/hooks/useIsCompact';
 import { ActiveEmptyState } from '@/components/workout/ActiveEmptyState';
 import { ActiveSessionChrome } from '@/components/workout/ActiveSessionChrome';
@@ -133,6 +134,9 @@ export function ActiveWorkoutPage() {
   const startRestTimer = useWorkoutStore((s) => s.startRestTimer);
   const workoutHistory = useWorkoutStore((s) => s.workoutHistory);
   const hasHydrated = useWorkoutStore((s) => s.hasHydrated);
+  const { dismissed: accountLiteDismissed } = useDismissed(
+    STORAGE_KEYS.accountLiteDismissed
+  );
 
   useEffect(() => {
     void ensureFullExerciseCatalog();
@@ -687,7 +691,7 @@ export function ActiveWorkoutPage() {
       {mayShowActiveSignInPrompt({
         signedIn: false,
         completedWorkouts: workoutHistory.length,
-        dismissed: false,
+        dismissed: accountLiteDismissed,
         hasActiveWorkout: !!activeWorkout,
       }) ? (
         <SignInPrompt
