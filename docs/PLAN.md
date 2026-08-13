@@ -6,6 +6,100 @@ Living roadmap for the **everything app** (Freeletics Super Bundle → one PWA).
 
 ---
 
+## Frozen plan — `.755` Preview walk P0s (consent dock + landing notify) (2026-08-13)
+
+> **Frozen.** Implement only this section. Plan commit is `[skip vercel]`.
+> Brief reserved `2026.07-unified.750` — **occupied** on master (session history).
+> This ship lands as `2026.07-unified.755` past master `.754`.
+> Do not steal `.697`–`.730` or `.750`–`.754`.
+> Draft PR. **Preview will not deploy** (`[skip vercel]` on every commit).
+> Excellence-Override: preview walk P0s (consent dock + landing notify).
+> No `PRIVATE_MODE` flip. No promote. No Stripe. No invented traction.
+> Do not touch #505 #519 #536. Do not redo F-039 `/train` `/today` aliases.
+
+Walk: mission-ops #19 — local `VERCEL_ENV=preview` of `.728` / `cursor/eday-ungated-preview-8e4f` (live Preview is Vercel SSO). Two P0s on the ungated code path.
+
+### Investigate (done — hypothesis holds)
+
+| P0 | Walk claim | Verified on master `.754` |
+|----|------------|---------------------------|
+| **1** | Consent banner `fixed bottom-0 z-[60]` covers Today's first-set CTA on phones | **Yes.** `AnalyticsConsentBanner` is `fixed bottom-0 inset-x-0 z-[60]` in `I18nPwaProvider` (outside the AppLayout flex column). `ScreenDock` + `MobileNav` are flex siblings that reserve height; a fixed overlay sits on top of both. Playwright: `role="dialog"` intercepts pointer events. Latent unless `NEXT_PUBLIC_POSTHOG_KEY` is set (assume preview/prod). Tablet/desktop escape: `ScreenDock` renders in-flow at `md+`, so Start is in the scroll, not under the bar. |
+| **2** | “SUPER BUNDLE: GET NOTIFIED UNTIL STRIPE” has no form | **Yes.** The only notify form is `PrivateTeaserClient.handleWaitlist` → `submitLead` (`source: 'launch-waitlist'`). Ungating makes `hasServerPrivateAccess()` true, so `/private` **always redirects**. `UnlockButton` returns `null` while `isFreeBeta()` (default ON). Landing has **zero** email/notify controls. `/bundle` 307s to `/log` during free-beta. Zero fake checkout — keep that. |
+
+Not these (do not “fix”):
+
+- Cold `/active` → `/welcome` is **JourneyGuard**, not `PRIVATE_MODE`. First-set path stays I-Day → `/log` → Start → Log set.
+- F-017: no `SignInPrompt` under the logger; `TAP_BUDGET` stays **5**.
+- Geo-block law holds. No country picker that lets blocked ISOs through.
+- Logger stays reachable in blocked territories (offline logger ≠ hosted service).
+
+### Ship (only this)
+
+#### P0-1 — Today Start stays tappable under the consent banner
+
+Do **not** remove consent. Do **not** raise `TAP_BUDGET`. Do **not** put chat on Today.
+
+1. Add a reserved flex host in `AppLayout` **between** `#screen-dock` and `MobileNav` (`CONSENT_BANNER_HOST_ID`, `shrink-0 empty:hidden`). Same contract as `ScreenDock`: a flex sibling reserves height; `main` shrinks.
+2. `AnalyticsConsentBanner` **portals into that host** when it exists. The docked banner is **in-flow, not `fixed`**. Keep `role="dialog"`, both choices, `shouldShowAnalyticsBanner` (key + undecided + no DNT).
+3. Fallback (no host — landing / marketing, no AppLayout): render **in document flow after children**, never `fixed bottom-0`. Marketing has no docked Start.
+4. Order on a phone:
+
+```
+[main]
+[ScreenDock — Today's Start / rest dock]
+[consent banner — reserved]
+[MobileNav]
+```
+
+Start stays above the banner. Tab bar stays below it. Rest-timer dock stays clear.
+
+5. Test hook: `?mw_force_consent=1` shows the real banner when preference is unset (e2e / QA without a PostHog key). Do not persist a fake choice. Do not init PostHog from the hook alone.
+
+#### P0-2 — Real Get-notified on the public landing
+
+Do **not** flip `PRIVATE_MODE`. Do **not** charge. Do **not** invent waitlist traction numbers. Do **not** open checkout. Do **not** claim Stripe is live. Do **not** change `/bundle`'s free-beta 307 (mute stays). Do **not** un-null `UnlockButton` during free-beta (that is checkout).
+
+1. Extract the existing `/private` waitlist (`submitLead` + `{ ok }` handling — never a dead try/catch) into `src/components/public/LaunchNotifyForm.tsx`. Same `/api/leads` path. Source `landing-super-bundle-notify` on landing; keep `launch-waitlist` on `/private`.
+2. Mount the form on `LandingPage` as a **quiet band** (after free core / before FAQ, or after FAQ before the poster close). Honest copy: Super Bundle checkout is **not** open; leave an email; we will not charge. **Not** `.primary-action` — `first-90` keeps **exactly two** red actions on `/` (hero + poster close).
+3. `PrivateTeaserClient` uses the shared form so gated prod still captures leads.
+4. No Stripe, no Payment Link, no `grantPremiumDemo` on this control, no “X people waiting”.
+
+### Tests
+
+- **Consent layout (unit / source):** banner never uses `fixed bottom-0` (docked or fallback). `AppLayout` has the consent host between `#screen-dock` and `MobileNav`. `I18nPwaProvider` still mounts the banner. Mutant restoring `fixed bottom-0 z-[60]` dies.
+- **Consent click (Playwright, phone 390×844):** `?mw_force_consent=1`, banner `role="dialog"` visible, Today's `.primary-action` / Start is the `elementFromPoint` at its center and **clicks** (not intercepted). Do not add a tap to `first-90`. Do not raise `TAP_BUDGET`.
+- **Notify form (unit / source):** `LandingPage` mounts `LaunchNotifyForm`; email + submit; `submitLead`; no checkout URL / no `/bundle` href on the form. `first-90` still counts 2 `.primary-action` on `/`. `PrivateTeaserClient` still uses the shared form. Mutant deleting the landing mount dies.
+- **Notify form (Playwright or unit):** fill email, submit path does not navigate to Stripe / checkout. No traction numerals in copy.
+- Geo-block / JourneyGuard / F-017 / `TAP_BUDGET` 5 — no edits that weaken them.
+- `check-build-label` `.755`. LOG + CONTEXT in the same implement commit.
+
+### Docs / ship protocol
+
+- `APP_BUILD_LABEL` → `2026.07-unified.755`
+- LOG heading `## 2026-08-13 — Preview walk P0s: consent dock + landing notify (\`.755\`)` + rotate oldest live entry
+- CONTEXT `## Now` one `.755` bullet; rotate oldest shipped version bullet (`.696`); keep Status table; ≤25 bullets
+- Help: one line — Super Bundle checkout is not live; get notified on the landing page (no charge)
+- INDEX: `src/components/layout/INDEX.md` (host); `src/components/` if the public form is listed; `src/lib/INDEX.md` only if a new helper lands there
+- i18n: reuse `gateWaitlist*` for form chrome; add landing-specific title/body keys; `npm run i18n:fill` + parity
+- Commit trailer: `Excellence-Override: preview walk P0s (consent dock + landing notify)`
+- Every commit: `[skip vercel]`. PR body cites mission-ops #19 and says Preview will not deploy.
+
+### Hard bans
+
+- No `PRIVATE_MODE` / promote / EIN / secrets
+- No Stripe / fake checkout / invented traction
+- Do not steal `.697`–`.730` or `.750`–`.754`
+- Do not touch #505 #519 #536
+- Do not redo F-039 `/train` `/today` aliases
+- Do not raise `TAP_BUDGET`
+- Do not put chat on Today
+- Do not remove consent
+- Do not weaken geo-block or add a country picker that lets blocked ISOs through
+- Do not gate the free logger
+- Do not change `/bundle` free-beta redirect or un-null `UnlockButton` in free-beta
+
+---
+
 ## Frozen plan — `.719` logger supersets (2026-08-13)
 
 > **Frozen.** Implement only this section. Plan commit is `[skip vercel]`.
