@@ -17,6 +17,7 @@ type FitnessTestStrings = {
   pftSexMale: string;
   pftSexFemale: string;
   pftContinue: string;
+  pftPregnancyHold: string;
   pftScore: string;
   pftBack: string;
   pftResultsTitle: string;
@@ -158,6 +159,8 @@ const en: FitnessTestStrings = {
   pftSexMale: 'Male standards',
   pftSexFemale: 'Female standards',
   pftContinue: 'Continue to events',
+  pftPregnancyHold:
+    'Max-effort and timed fitness tests stay hidden while this status is set. You can still log a normal set on Train.',
   pftScore: 'Score my test',
   pftBack: 'Back',
   pftResultsTitle: 'Your fitness test results',

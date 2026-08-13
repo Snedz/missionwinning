@@ -23,6 +23,7 @@ export function computeContextHash(ctx: CoachContext, weekStart: string): string
     recovery: ctx.bodyScores.recovery,
     units: ctx.units,
     assessmentRisk: ctx.assessmentRisk ?? '',
+    pregnancyFlag: ctx.pregnancyFlag ?? 'none',
   };
   return String(hashString(stableStringify(slice)));
 }

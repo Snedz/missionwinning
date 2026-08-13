@@ -42,6 +42,7 @@ import { ProfilePremiumCard } from '@/components/profile/ProfilePremiumCard';
 import { ProfileOwnerTools } from '@/components/profile/ProfileOwnerTools';
 import { ProfileBackupCard } from '@/components/profile/ProfileBackupCard';
 import { ProfileImportCard } from '@/components/profile/ProfileImportCard';
+import { ProfilePregnancyCard } from '@/components/profile/ProfilePregnancyCard';
 import { SyncStatusRow } from '@/components/profile/SyncStatusRow';
 import { ProfilePrivacyCard } from '@/components/profile/ProfilePrivacyCard';
 import { ProfileFeedbackCard } from '@/components/profile/ProfileFeedbackCard';
@@ -383,6 +384,8 @@ export function AccountPage() {
         </summary>
         <div className="space-y-6 border-t-2 border-border px-4 py-4">
           <ProfileAssessmentCard />
+
+          <ProfilePregnancyCard />
 
           <ProfileBetaJourneyCard
             funnel={funnel}

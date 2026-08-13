@@ -29,6 +29,8 @@ import { pushLeaderboardSnapshot } from '@/lib/leaderboardSync';
 import { computeLocalLeaderboardSnapshot } from '@/lib/leaderboard/computeLocalStats';
 import { useWorkoutStore } from '@/store/workoutStore';
 import { americaHomeOrFallback, isAmericaTrackEnabled } from '@/lib/americaConfig';
+import { PregnancyHoldNote } from '@/components/coach/PregnancyHoldNote';
+import { isPregnancySafetyHold, loadPregnancyFlag } from '@/lib/pregnancySafety';
 
 type Step = 'profile' | 'youth' | 'events' | 'results';
 
@@ -66,6 +68,7 @@ export function FitnessTestRunner() {
   const ageNum = parseInt(age, 10);
 
   const proceedFromProfile = () => {
+    if (isPregnancySafetyHold(loadPregnancyFlag())) return;
     if (!Number.isFinite(ageNum) || ageNum < 6) return;
     if (requiresYouthConsent(ageNum) && !youthConsented) {
       setStep('youth');
@@ -261,9 +264,21 @@ export function FitnessTestRunner() {
                 </option>
               </select>
             </label>
-            <Button className="w-full min-h-[44px] tap-target" onClick={proceedFromProfile}>
-              {t('pftContinue', { defaultValue: 'Continue to events' })}
-            </Button>
+            {isPregnancySafetyHold(loadPregnancyFlag()) ? (
+              <>
+                <PregnancyHoldNote />
+                <p className="text-sm text-muted-foreground leading-relaxed">
+                  {t('pftPregnancyHold', {
+                    defaultValue:
+                      'Max-effort and timed fitness tests stay hidden while this status is set. You can still log a normal set on Train.',
+                  })}
+                </p>
+              </>
+            ) : (
+              <Button className="w-full min-h-[44px] tap-target" onClick={proceedFromProfile}>
+                {t('pftContinue', { defaultValue: 'Continue to events' })}
+              </Button>
+            )}
           </>
         )}
 

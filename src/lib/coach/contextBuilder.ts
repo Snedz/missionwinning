@@ -10,6 +10,7 @@ import { loadPreferredDays, loadDaysPerWeek } from '@/lib/coach/schedulePrefs';
 import { getTodayCheckIn } from '@/lib/mindCheckIns';
 import { readRaw } from '@/lib/storage/safeStorage';
 import { STORAGE_KEYS } from '@/lib/storage/keys';
+import { loadPregnancyFlag, parsePregnancyFlag, type PregnancyFlag } from '@/lib/pregnancySafety';
 
 export function buildCoachContextFromInputs(params: {
   history: CompletedWorkoutLog[];
@@ -23,6 +24,7 @@ export function buildCoachContextFromInputs(params: {
   preferredDays?: number[];
   /** Pass false to skip reading today's check-in (tests / SSR). Default true on client. */
   includeCheckIn?: boolean;
+  pregnancyFlag?: PregnancyFlag;
 }): CoachContext {
   const experience = (params.experience ?? 'beginner') as CoachContext['experience'];
   const equipment = mapStorageEquipment(params.equipment ?? 'bodyweight');
@@ -59,6 +61,7 @@ export function buildCoachContextFromInputs(params: {
     // generated rather than re-read mid-week: load shapes the *next* session, it does
     // not pull the rug on a plan the athlete is already working through.
     loadZone: loadBands(params.history).zone,
+    pregnancyFlag: parsePregnancyFlag(params.pregnancyFlag),
   };
 }
 
@@ -86,5 +89,6 @@ export function readLocalCoachContext(history: CompletedWorkoutLog[]): CoachCont
     units,
     assessmentRisk,
     includeCheckIn: true,
+    pregnancyFlag: loadPregnancyFlag(),
   });
 }

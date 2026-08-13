@@ -7,6 +7,8 @@ import { useLocaleFormat } from '@/hooks/useLocaleFormat';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { isAmericaTrackEnabled } from '@/lib/americaConfig';
+import { PregnancyHoldNote } from '@/components/coach/PregnancyHoldNote';
+import { isPregnancySafetyHold, loadPregnancyFlag } from '@/lib/pregnancySafety';
 import { PFT_EVENTS, PFT_MINI_EVENT_IDS } from '@/lib/presidentialFitnessTest';
 import { getLatestFitnessTestSession } from '@/lib/presidentialFitnessStorage';
 import { useEffect, useState } from 'react';
@@ -23,6 +25,8 @@ export function PresidentialFitnessSection() {
  }, []);
 
  if (!isAmericaTrackEnabled()) return null;
+
+ const hold = isPregnancySafetyHold(loadPregnancyFlag());
 
  return (
  <Card className="border-border bg-card">
@@ -60,6 +64,9 @@ export function PresidentialFitnessSection() {
  })}
  </div>
  )}
+ {hold ? (
+ <PregnancyHoldNote />
+ ) : (
  <div className="flex flex-col sm:flex-row gap-2">
  <Button asChild className="min-h-[44px] bg-[hsl(var(--status-info))] hover:bg-card">
  <Link href="/fitness-test">{t('pftTakeFull', { defaultValue: 'Take the full test' })}</Link>
@@ -78,6 +85,7 @@ export function PresidentialFitnessSection() {
  </Link>
  </Button>
  </div>
+ )}
  <p className="text-[10px] text-muted-foreground text-center pt-1">
  {t('pftDisclaimer', {
  defaultValue:

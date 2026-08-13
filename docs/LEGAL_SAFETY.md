@@ -31,6 +31,7 @@ Live policy: [`/regions`](https://missionwinning.com/regions). Product logic: `s
 | Store privacy labels | Data inventory below (fill Play/App Console when TWA opens — do not invent early) |
 | UGC / DMCA | Terms → User content + Copyright; public `/dmca` notice channel |
 | Medical / mental-health marketing | Educational fitness only; see §3a + [EXERCISE_AS_MEDICINE.md](EXERCISE_AS_MEDICINE.md) |
+| Pregnancy / miscarriage / postpartum | Optional athlete-owned flag; not prenatal care; counsel-hold — [PREGNANCY_SAFETY.md](PREGNANCY_SAFETY.md) |
 
 ---
 
@@ -90,6 +91,7 @@ Source of truth: [EXERCISE_AS_MEDICINE.md](EXERCISE_AS_MEDICINE.md). Aligns with
 | Surface | Path |
 |---------|------|
 | Privacy / Terms / Usage / Regions / Service terms / DMCA UI | `PrivacyPage`, `TermsPage`, `UsagePolicyPage`, `SupportedRegionsPage`, `ServiceTermsPage`, `DmcaPage`, `RefundsPage` |
+| Pregnancy / miscarriage / postpartum | `pregnancySafety.ts`, Account More settings, Coach note — [PREGNANCY_SAFETY.md](PREGNANCY_SAFETY.md) |
 | Copy | `src/i18n/infoLocales.ts` |
 | Landing AI line | `src/i18n/landingLocales.ts` (`landingProofNoAiKey`) |
 | Public routes | `src/lib/publicRoutes.ts`, `app/sitemap.ts` |

@@ -3,6 +3,7 @@ import type { BodyScores, ReadinessInfo } from '@/lib/score';
 import type { CompletedWorkoutLog } from '@/types';
 import type { UnitsPref } from '@/lib/units';
 import type { LoadZone } from '@/lib/coach/load';
+import type { PregnancyFlag } from '@/lib/pregnancySafety';
 
 export type { Rpe } from '@/types';
 
@@ -62,6 +63,12 @@ export interface CoachContext {
    * there and the zone is `unknown`. Only ever holds a rise; see `loadGuard.ts`.
    */
   loadZone?: LoadZone;
+  /**
+   * Optional athlete-owned pregnancy / postpartum / miscarriage-recovery flag.
+   * Never inferred. When a hold value is set, progression must not emit a load jump.
+   * See docs/PREGNANCY_SAFETY.md.
+   */
+  pregnancyFlag?: PregnancyFlag;
 }
 
 export interface SplitDay {

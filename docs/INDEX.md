@@ -18,6 +18,7 @@
 | [help/mission-coach.md](help/mission-coach.md) | AI weekly coach |
 | [help/fuel-and-nutrition.md](help/fuel-and-nutrition.md) | Nutrition logging |
 | [help/fitness-test-and-school.md](help/fitness-test-and-school.md) | PFT + PE classes |
+| [help/pregnancy-safety.md](help/pregnancy-safety.md) | Pregnancy / miscarriage / postpartum — educational, not care |
 | [help/premium-and-billing.md](help/premium-and-billing.md) | Super Bundle |
 | [help/privacy-and-data.md](help/privacy-and-data.md) | Data & consent |
 | [help/faq.md](help/faq.md) | FAQ |
@@ -64,6 +65,7 @@
 | [PRELAUNCH_CAPITAL.md](PRELAUNCH_CAPITAL.md) | Unlimited-funds tiers: legal/ops/VA yes; paid ads no until week-4 |
 | [OUTREACH_VA_BRIEF.md](OUTREACH_VA_BRIEF.md) | Hire script for beta DM help (no ads) |
 | [LEGAL_SAFETY.md](LEGAL_SAFETY.md) | AI disclosure, arbitration, DMCA, store data inventory |
+| [PREGNANCY_SAFETY.md](PREGNANCY_SAFETY.md) | Pregnancy / miscarriage / postpartum — educational, counsel-hold |
 | [PAY_READY_LEGAL.md](PAY_READY_LEGAL.md) | Six docs before payments · refunds · DPA/MSA templates |
 | [legal/DPA.md](legal/DPA.md) | B2B/school DPA draft (docs-only) |
 | [legal/MSA_TEMPLATE.md](legal/MSA_TEMPLATE.md) | B2B MSA draft (no consumer SLA promises) |

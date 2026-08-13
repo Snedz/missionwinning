@@ -19,6 +19,7 @@
 | `CoachChatPanel.tsx` | Premium chat; free = soft tip or form cues for `?ask=` (not brass paywall) |
 | `CoachChatTranscript.tsx` | Premium turn log (`role="log"`) (`.448`) |
 | `CoachChatComposer.tsx` | Premium input + send/stop (`.448`) |
+| `PregnancyHoldNote.tsx` | One-line clinician disclaimer when pregnancy safety hold is on (`.746`) |
 
 ## Related
 

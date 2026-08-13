@@ -133,6 +133,11 @@ export const STORAGE_KEYS = {
   // ── Move / Mind / Track ──
   mindCheckIns: 'mw_mind_checkins',
   lastAssessment: 'mw_last_assessment',
+  /**
+   * Optional athlete-owned pregnancy / postpartum / miscarriage-recovery flag.
+   * Never inferred. Device-local. See docs/PREGNANCY_SAFETY.md.
+   */
+  pregnancyFlag: 'mw_pregnancy_flag',
   wearablesHubSamples: 'mw_wearables_hub_samples',
 
   // ── Beta / growth ──

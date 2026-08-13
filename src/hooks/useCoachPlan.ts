@@ -23,6 +23,7 @@ import {
 } from '@/lib/coach/storage';
 import type { CoachPlan } from '@/lib/coach/types';
 import { adjustTodaySession, type SessionConstraint } from '@/lib/coach/adjust';
+import { holdPrescriptionsInPlan } from '@/lib/coach/pregnancyHold';
 import { scheduleCoachPush } from '@/lib/coachSync';
 
 export function useCoachPlan() {
@@ -90,6 +91,7 @@ export function useCoachPlan() {
      */
     let next = adaptPlan(existing, ctx, localDateKey());
     next = adaptForEquipmentChange(next, ctx, todayOffset);
+    next = holdPrescriptionsInPlan(next, ctx);
 
     if (premium && ctx.bodyScores.strain >= 70 && todayOffset < 6) {
       const regen = regenerateFutureSessions(next, ctx, todayOffset);

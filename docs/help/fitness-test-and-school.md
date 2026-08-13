@@ -12,6 +12,8 @@ Students complete curl-ups, push-ups, sit-and-reach, and mile run (or alternativ
 
 Use the share button to copy text for parents or coaches — no account required to take the test; sign-in enables cloud sync and class leaderboards.
 
+If you have set a pregnancy / postpartum / miscarriage-recovery status under Account, fitness-test start buttons stay hidden. See [pregnancy-safety.md](pregnancy-safety.md). The app is not prenatal care.
+
 ## Joining a class (students)
 
 1. Your teacher gives you a **class code** (format like `MWA3K9`).
