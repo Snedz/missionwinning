@@ -21,6 +21,8 @@ Use the share button to copy text for parents or coaches — no account required
 
 You only see **aggregate standings** — not other students' private workout data.
 
+Hard sessions (including the mile run) show a **stop-is-allowed** warning first. See [pt-safety.md](pt-safety.md). The app is not medical care.
+
 ## Creating a class (teachers)
 
 1. Open **Fitness Test** → **School & PE class** panel.

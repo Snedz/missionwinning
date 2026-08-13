@@ -19,12 +19,13 @@ Root-level `@/lib/{name}` paths re-export from here for compatibility — prefer
 11. `activeWorkoutPulse.ts` — nav pulse flag without store  
 12. `workoutPersistLite.ts` — history/streak from localStorage (cold path)
 13. `sessionCheckInOffer.ts` — pure W1 gate: never Mind-sheet the first mission (`.293`)
-14. `loggerSpeed.ts` — Enter/Use-next helpers (`.288`)
-15. `activeSessionFinish.ts` — log-set payload/PR/rest/haptic + Victory + empty-finish toast (`.405`/`.409`)
-16. `activeSessionCheckIn.ts` — check-in dismiss + volume-trim toast kind (`.406`)
-17. `activeSetInputPatches.ts` — Use next / plate / apply-targets field patches (`.407`)
-18. `activeTableSetControls.ts` — desktop table set dial + kind projection (`.408`)
-19. `activeWorkoutHelpers.ts` — also `resolveExerciseNextTarget` + loadPct/menu gates (`.418`); `formatPrevSetLabels` + footer peel (`.425`)
+14. `hardSession.ts` — closed marks for the pre-start hard-session warning (`.727`); not a logger gate
+15. `loggerSpeed.ts` — Enter/Use-next helpers (`.288`)
+16. `activeSessionFinish.ts` — log-set payload/PR/rest/haptic + Victory + empty-finish toast (`.405`/`.409`)
+17. `activeSessionCheckIn.ts` — check-in dismiss + volume-trim toast kind (`.406`)
+18. `activeSetInputPatches.ts` — Use next / plate / apply-targets field patches (`.407`)
+19. `activeTableSetControls.ts` — desktop table set dial + kind projection (`.408`)
+20. `activeWorkoutHelpers.ts` — also `resolveExerciseNextTarget` + loadPct/menu gates (`.418`); `formatPrevSetLabels` + footer peel (`.425`)
 
 ## Tests (colocated)
 
@@ -41,6 +42,8 @@ Root-level `@/lib/{name}` paths re-export from here for compatibility — prefer
 | `workoutVictory.test.ts` | Victory next action |
 | `activeWorkoutHelpers.test.ts` | Next set, last session stats |
 | `sessionCheckInOffer.test.ts` | First-mission never offers check-in (`.293`) |
+| `hardSession.test.ts` | Hard-session marks; normal set / Push / AMRAP stay quiet (`.727`) |
+| `hardSessionCopyGuard.test.ts` | Forbidden safety/identity phrases cannot ship (`.727`) |
 | `loggerSpeed.test.ts` | Use-next offer rules (`.288`) |
 
 ## UI & integration (not in this folder)
