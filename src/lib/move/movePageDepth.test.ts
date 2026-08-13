@@ -14,4 +14,5 @@ test('MovePage wires collections + content inventory', () => {
   // Free-beta Field manual: brief free-first subtitle (not depth/count cosplay).
   assert.match(src, /moveSubtitleBrief/);
   assert.doesNotMatch(src, /moveSubtitleDepth/);
+  assert.match(src, /parseMoveFlowParam/);
 });

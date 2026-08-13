@@ -37,7 +37,7 @@
 
 | URL | Page component | Notes |
 |-----|----------------|-------|
-| `/move` | `MovePage.tsx` | Mobility |
+| `/move` | `MovePage.tsx` | Mobility — `?flow=` starts a free flow (Victory S6) |
 | `/mind` | `MindPage.tsx` | Mind & recovery |
 | `/learn` | `LearnPage.tsx` | Education |
 | `/learn/guide` | `GuidebookIndexPage.tsx` | Guidebook |

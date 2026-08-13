@@ -212,6 +212,8 @@ type ActiveWorkoutStrings = {
   activeSetRowPlannedAria: string;
   victoryMascotCue: string;
   victorySessionDetails: string;
+  /** S6 — Victory Move seam after a logged session. */
+  victorySecondaryMoveBecause: string;
   /** Split from a `finalSeconds` ternary default — see moveLocales. */
   activeRestSkipAriaFinal: string;
   activeRestSkipAriaPlain: string;
@@ -413,6 +415,7 @@ const en: ActiveWorkoutStrings = {
   activeSetRowPlannedAria: 'Set {{n}} planned — {{reps}} reps',
   victoryMascotCue: 'Session saved.',
   victorySessionDetails: 'Session details',
+  victorySecondaryMoveBecause: '{{flow}} — because you trained {{muscle}}',
   activeRestSkipAriaFinal: 'Skip rest — go',
   activeRestSkipAriaPlain: 'Skip rest',
 };
@@ -435,6 +438,7 @@ const es: ActiveWorkoutStrings = {
   victoryProgressHold: 'Siguiente: mantén {{reps}} × {{weight}} {{unit}} en {{name}}',
   victoryProgressAddRepsBw: 'Siguiente: {{reps}} reps en {{name}}',
   victoryProgressHoldBw: 'Siguiente: mantén {{reps}} en {{name}}',
+  victorySecondaryMoveBecause: '{{flow}} — porque entrenaste {{muscle}}',
   activeElapsed: 'Transcurrido',
   activeSetsLabel: 'Series',
   activeNoWorkout: 'Sin entrenamiento activo',
@@ -490,6 +494,7 @@ const fr: ActiveWorkoutStrings = {
   victoryProgressHold: 'Suite : maintiens {{reps}} × {{weight}} {{unit}} sur {{name}}',
   victoryProgressAddRepsBw: 'Suite : {{reps}} reps sur {{name}}',
   victoryProgressHoldBw: 'Suite : maintiens {{reps}} sur {{name}}',
+  victorySecondaryMoveBecause: '{{flow}} — parce que tu as entraîné {{muscle}}',
   activeElapsed: 'Écoulé',
   activeSetsLabel: 'Séries',
   activeNoWorkout: 'Aucun entraînement actif',
@@ -672,6 +677,7 @@ const de: ActiveWorkoutStrings = {
   activeSupersetLink: 'Supersatz mit nächster',
   activeSupersetUnlink: 'Supersatz trennen',
   activeSetLoggedSuperset: '{{reps}} × {{weight}} — nächste Übung im Supersatz',
+  victorySecondaryMoveBecause: '{{flow}} — weil du {{muscle}} trainiert hast',
 };
 
 const LOCALES: Partial<Record<string, ActiveWorkoutStrings>> = {
@@ -709,6 +715,7 @@ const LOCALES: Partial<Record<string, ActiveWorkoutStrings>> = {
     victoryProgressHold: 'Próximo: mantenha {{reps}} × {{weight}} {{unit}} em {{name}}',
     victoryProgressAddRepsBw: 'Próximo: {{reps}} reps em {{name}}',
     victoryProgressHoldBw: 'Próximo: mantenha {{reps}} em {{name}}',
+    victorySecondaryMoveBecause: '{{flow}} — porque treinaste {{muscle}}',
   },
   it: {
     ...en,

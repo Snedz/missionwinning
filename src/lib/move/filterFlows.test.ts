@@ -6,6 +6,7 @@ import {
   flowMatchesCollection,
   MOVE_COLLECTIONS,
   parseMoveCollectionParam,
+  parseMoveFlowParam,
 } from '@/lib/move/filterFlows';
 
 const sample: MobilityFlow[] = [
@@ -78,5 +79,14 @@ describe('filterFlows', () => {
   it('parseMoveCollectionParam hydrates deep links', () => {
     assert.equal(parseMoveCollectionParam('recover-after-lower'), 'recover-after-lower');
     assert.equal(parseMoveCollectionParam('nope'), 'all');
+  });
+
+  it('parseMoveFlowParam accepts only catalog ids', () => {
+    assert.equal(parseMoveFlowParam('tspine-opener', sample), null);
+    assert.equal(parseMoveFlowParam('a', sample), 'a');
+    assert.equal(parseMoveFlowParam('nope', sample), null);
+    assert.equal(parseMoveFlowParam('  a  ', sample), 'a');
+    assert.equal(parseMoveFlowParam('', sample), null);
+    assert.equal(parseMoveFlowParam(null, sample), null);
   });
 });

@@ -4,6 +4,7 @@ import { weightStep, weightUnitLabel } from '@/lib/units';
 import { suggestNextSetTarget } from '@/lib/workout/nextSetTargets';
 import { sessionIsCoachPrescribed } from '@/lib/workout/activeWorkoutHelpers';
 import { getExerciseById } from '@/data/exercises';
+import { workingMuscleGroupsFromLog } from '@/lib/move/postSessionFlow';
 import {
   pickVictoryNextAction as pickVictoryNextActionCore,
   COACH_VICTORY_EARLY_WORKOUTS as COACH_VICTORY_EARLY_WORKOUTS_CORE,
@@ -50,6 +51,11 @@ export interface WorkoutVictorySummary {
   progressionInsight?: ProgressionInsight;
   /** Single post-workout ritual CTA (S-Tier: one next action). */
   nextAction?: VictoryNextAction;
+  /**
+   * Working-set muscle snapshots for the Victory Move seam (S6).
+   * Empty when nothing logged; share cards ignore this.
+   */
+  workingMuscleGroups?: string[][];
 }
 
 /** Rank working sets: load×reps when loaded; reps alone when bodyweight. */
@@ -201,6 +207,7 @@ export function summarizeWorkoutVictory(
     streak,
     bodyDelta,
     progressionInsight,
+    workingMuscleGroups: workingMuscleGroupsFromLog(log.exercises),
     nextAction:
       nextAction ??
       pickVictoryNextAction({

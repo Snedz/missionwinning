@@ -22,6 +22,7 @@
 | `VictoryBodyDeltaStrip.tsx` | Readiness · strain · recovery signed deltas (`.444`) |
 | `VictoryStatsStrip.tsx` | Volume · sets · duration grid (`.447`) |
 | `VictoryNextActionStrip.tsx` | Primary Next CTA block (`.447`) |
+| `VictorySecondaryLinks.tsx` | One quiet seam under the primary — Move from the log (`.698`) |
 | `PlateCalculatorSheet.tsx` | Plate math sheet |
 | `LiveHeartRate.tsx` | Optional Web Bluetooth BPM strip (wearables flag) |
 
