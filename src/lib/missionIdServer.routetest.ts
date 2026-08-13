@@ -20,7 +20,7 @@ function founderUser(id = 'founder-uuid'): User {
     identities: [
       { provider: 'github', identity_data: { user_name: 'Snedz' } },
     ],
-  } as User;
+  } as unknown as User;
 }
 
 function otherUser(id = 'other-uuid'): User {
@@ -28,7 +28,7 @@ function otherUser(id = 'other-uuid'): User {
     id,
     email: 'athlete@example.com',
     identities: [],
-  } as User;
+  } as unknown as User;
 }
 
 function makeAdmin(opts: { rows?: Row[]; failInsert?: boolean } = {}) {
