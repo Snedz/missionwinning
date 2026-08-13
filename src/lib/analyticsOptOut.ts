@@ -46,16 +46,30 @@ export function isAnalyticsAllowed(): boolean {
   return loadAnalyticsPreference() === 'allowed';
 }
 
-/** Whether to show the first-visit privacy banner (key present, no choice yet, no DNT). */
+/** QA / e2e hook — shows the real banner without a PostHog key. Does not persist a choice. */
+export const FORCE_CONSENT_QUERY = 'mw_force_consent';
+
+function forceConsentFromQuery(): boolean {
+  if (typeof window === 'undefined') return false;
+  try {
+    return new URLSearchParams(window.location.search).get(FORCE_CONSENT_QUERY) === '1';
+  } catch {
+    return false;
+  }
+}
+
+/** Whether to show the first-visit privacy banner (key or force hook, no choice yet, no DNT). */
 export function shouldShowAnalyticsBanner(): boolean {
   if (typeof window === 'undefined') return false;
-  if (!process.env.NEXT_PUBLIC_POSTHOG_KEY) return false;
   try {
     if (navigator.doNotTrack === '1') return false;
   } catch {
     /* ignore */
   }
-  return loadAnalyticsPreference() === null;
+  if (loadAnalyticsPreference() !== null) return false;
+  if (forceConsentFromQuery()) return true;
+  if (!process.env.NEXT_PUBLIC_POSTHOG_KEY) return false;
+  return true;
 }
 
 export { PREF_KEY as ANALYTICS_PREF_KEY };

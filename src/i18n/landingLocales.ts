@@ -161,6 +161,12 @@ const LANDING_EN: Record<string, string> = {
   landingFinalCtaTitle: 'The path starts with one workout.',
   landingFinalCtaButton: 'Start free — no account',
   landingFinalCtaFoot: 'Under three minutes to your first session. Nothing to install, nothing to pay.',
+  landingNotifyEyebrow: 'Super Bundle',
+  landingNotifyTitle: 'Get notified when checkout opens',
+  landingNotifyBody:
+    'Stripe is not live yet. Leave an email — we will not charge you. The logger stays free.',
+  landingNotifyFoot: 'No spam. One email when Super Bundle checkout opens.',
+  landingNotifyEmailAria: 'Email to get notified when Super Bundle checkout opens',
   landingCaptureEyebrow: 'Launch list',
   landingCaptureTitle: 'Get launch notes. Stay free forever.',
   landingCaptureBody:
@@ -274,6 +280,12 @@ const LANDING_ES: Record<string, string> = {
   landingFinalCtaTitle: 'El camino empieza con un entrenamiento.',
   landingFinalCtaButton: 'Empieza gratis — sin cuenta',
   landingFinalCtaFoot: 'Menos de tres minutos a tu primera sesión. Nada que instalar ni pagar.',
+  landingNotifyEyebrow: 'Super Bundle',
+  landingNotifyTitle: 'Te avisamos cuando abra el checkout',
+  landingNotifyBody:
+    'Stripe aún no está en vivo. Deja un email — no te cobramos. El logger sigue gratis.',
+  landingNotifyFoot: 'Sin spam. Un email cuando abra el checkout del Super Bundle.',
+  landingNotifyEmailAria: 'Email para avisarte cuando abra el checkout del Super Bundle',
   landingCaptureEyebrow: 'Lista de lanzamiento',
   landingCaptureTitle: 'Notas de lanzamiento. Núcleo gratis para siempre.',
   landingCaptureBody:
@@ -334,6 +346,12 @@ const LANDING_PT: Record<string, string> = {
   landingBundleCta: 'Ver o bundle',
   landingFinalCtaTitle: 'O caminho começa com um treino.',
   landingFinalCtaButton: 'Comece grátis — sem conta',
+  landingNotifyEyebrow: 'Super Bundle',
+  landingNotifyTitle: 'Avisamos quando o checkout abrir',
+  landingNotifyBody:
+    'O Stripe ainda não está no ar. Deixe um e-mail — não cobramos. O logger continua grátis.',
+  landingNotifyFoot: 'Sem spam. Um e-mail quando o checkout do Super Bundle abrir.',
+  landingNotifyEmailAria: 'E-mail para avisar quando o checkout do Super Bundle abrir',
   landingCaptureEyebrow: 'Lista de lançamento',
   landingCaptureTitle: 'Receba o lançamento. Núcleo grátis para sempre.',
   landingCaptureBody:
@@ -420,6 +438,12 @@ const LANDING_FR: Record<string, string> = {
   landingBundleCta: 'Voir le bundle',
   landingFinalCtaTitle: 'Le parcours commence par un entraînement.',
   landingFinalCtaButton: 'Commencer gratuit — sans compte',
+  landingNotifyEyebrow: 'Super Bundle',
+  landingNotifyTitle: 'On vous prévient quand le paiement ouvre',
+  landingNotifyBody:
+    'Stripe n’est pas encore en ligne. Laissez un e-mail — on ne vous facture pas. Le logger reste gratuit.',
+  landingNotifyFoot: 'Pas de spam. Un e-mail quand le checkout Super Bundle ouvre.',
+  landingNotifyEmailAria: 'E-mail pour être prévenu quand le checkout Super Bundle ouvre',
   landingCaptureEyebrow: 'Liste de lancement',
   landingCaptureTitle: 'Notes de lancement. Cœur gratuit pour toujours.',
   landingCaptureButton: 'Me prévenir',

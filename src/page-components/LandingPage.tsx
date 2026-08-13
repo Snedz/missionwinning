@@ -36,6 +36,7 @@ import { GrayscalePhoto } from '@/components/marketing/GrayscalePhoto';
 import { ArrowRight } from 'lucide-react';
 import { isFreeBeta } from '@/lib/freeBeta';
 import { landingFaqKeysForSurface } from '@/i18n/landingLocales';
+import { LaunchNotifyForm } from '@/components/public/LaunchNotifyForm';
 
 const LogToPlanHero = dynamic(
   () => import('@/components/landing/LogToPlanHero').then((m) => m.LogToPlanHero),
@@ -365,6 +366,39 @@ export function LandingPage() {
               <Link href="/about" className="underline underline-offset-4 hover:text-foreground">
                 {t('landingAboutLink', { defaultValue: 'About Mission Winning' })}
               </Link>
+            </p>
+          </Reveal>
+        </div>
+      </section>
+
+      {/* ── SUPER BUNDLE NOTIFY — honest, no checkout ──────────────── */}
+      <section className="section-seam" data-mw-landing-notify>
+        <div className="mx-auto max-w-3xl px-5 py-16 lg:py-20">
+          <Reveal>
+            <p className="section-index mb-2">05</p>
+            <p className="eyebrow mb-4">
+              {t('landingNotifyEyebrow', { defaultValue: 'Super Bundle' })}
+            </p>
+            <h2 className="display-section mb-6 max-w-[24ch] text-balance text-foreground">
+              {t('landingNotifyTitle', { defaultValue: 'Get notified when checkout opens' })}
+            </h2>
+            <p className="mb-8 max-w-md text-base leading-relaxed text-muted-foreground">
+              {t('landingNotifyBody', {
+                defaultValue:
+                  'Stripe is not live yet. Leave an email — we will not charge you. The logger stays free.',
+              })}
+            </p>
+            <div className="max-w-md">
+              <LaunchNotifyForm
+                source="landing-super-bundle-notify"
+                message="Super Bundle checkout notify"
+                variant="landing"
+              />
+            </div>
+            <p className="mt-4 max-w-md text-sm leading-relaxed text-muted-foreground">
+              {t('landingNotifyFoot', {
+                defaultValue: 'No spam. One email when Super Bundle checkout opens.',
+              })}
             </p>
           </Reveal>
         </div>

@@ -24,6 +24,8 @@ Exact entitlements may evolve — Profile shows your status.
 
 ## Buying the Super Bundle
 
+Checkout is **not live yet**. On the public landing page, use **Notify me** to leave an email — we will not charge you. The logger stays free.
+
 1. Sign in (Profile) with the email you will pay with.
 2. Go to **Bundle** (`/bundle`) or upgrade prompts in Coach.
 3. Choose monthly, founders annual, or lifetime.
