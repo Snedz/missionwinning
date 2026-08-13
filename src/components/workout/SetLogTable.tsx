@@ -17,11 +17,8 @@ import type { LoggedSet, SetKind } from '@/types';
 import { setKindBadgeClass, setKindDefaultLabel, setKindLabelKey } from '@/lib/workout/setKind';
 import { rpeDefaultLabel, rpeLabelKey } from '@/lib/workout/rpeLabel';
 import { cn } from '@/lib/utils';
-import {
-  formatAdjacencyCiteLine,
-  SetLogAdjacencyStack,
-} from '@/components/workout/SetLogAdjacencyStack';
-import type { SetRowAdjacency } from '@/lib/workout/setRowAdjacency';
+import { SetLogAdjacencyStack } from '@/components/workout/SetLogAdjacencyStack';
+import { formatAdjacencyCiteLine, type SetRowAdjacency } from '@/lib/workout/setRowAdjacency';
 
 type Props = {
   sets: LoggedSet[];
@@ -113,9 +110,16 @@ export function SetLogTable({
                   targetWord={t('activeColTarget', { defaultValue: 'Target' })}
                   targetLabel={adjacency[setIdx]?.targetLabel ?? null}
                   citeLine={formatAdjacencyCiteLine(adjacency[setIdx]?.cite ?? null, t)}
+                  emptyLine={
+                    adjacency[setIdx]?.empty
+                      ? t('activeTargetEmpty', {
+                          defaultValue: 'No prior sets yet — log this one',
+                        })
+                      : null
+                  }
                   prevWord={t('activeColPrev', { defaultValue: 'Prev' })}
                   prevLabel={prevLabels[setIdx]}
-                  showTarget={!completed}
+                  showTarget={isActive && !completed}
                   testIdPrefix="set-table"
                 />
               </td>

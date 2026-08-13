@@ -4,7 +4,9 @@ import { readFileSync } from 'node:fs';
 import path from 'node:path';
 import type { CompletedWorkoutLog } from '@/types';
 import {
+  formatAdjacencyCiteLine,
   formatSetRowAdjacency,
+  lastLiveSessionForExercise,
   resolveSetRowAdjacency,
 } from '@/lib/workout/setRowAdjacency';
 
@@ -23,7 +25,8 @@ function isoOnPreviousJsWeekday(jsDay: number): string {
 function historyWith(
   exerciseId: string,
   sets: { reps: number; weight: number; kind?: 'normal' | 'warmup' }[],
-  completedAt: string
+  completedAt: string,
+  over: Partial<CompletedWorkoutLog> = {}
 ): CompletedWorkoutLog[] {
   return [
     {
@@ -39,9 +42,12 @@ function historyWith(
           sets: sets.map((s) => ({ reps: s.reps, weight: s.weight, kind: s.kind ?? 'normal' })),
         },
       ],
+      ...over,
     },
   ];
 }
+
+const planned = { reps: 8, weight: 60 };
 
 describe('resolveSetRowAdjacency', () => {
   it('cites last Tuesday working sets 2–4 when all hit the top of range', () => {
@@ -60,10 +66,11 @@ describe('resolveSetRowAdjacency', () => {
       workoutHistory: hist,
       exerciseId: 'bench-press',
       setIdx: 0,
-      planned: { reps: 8, weight: 60 },
+      planned,
       units: 'metric',
     });
     assert.equal(out.targetLabel, '8 × 62.5');
+    assert.equal(out.empty, false);
     assert.ok(out.cite && out.cite.kind === 'logs');
     if (out.cite.kind !== 'logs') return;
     assert.equal(out.cite.weekdayMondayOffset, 1);
@@ -97,15 +104,39 @@ describe('resolveSetRowAdjacency', () => {
     assert.equal(out.cite.setTo, 2);
   });
 
-  it('returns no target when there is no last session', () => {
+  it('returns honest empty when there is no last session — never invents a number', () => {
     const out = resolveSetRowAdjacency({
       workoutHistory: [],
       exerciseId: 'bench-press',
       setIdx: 0,
-      planned: { reps: 8, weight: 60 },
+      planned,
       units: 'metric',
     });
-    assert.deepEqual(out, { targetLabel: null, cite: null });
+    assert.deepEqual(out, { targetLabel: null, cite: null, empty: true });
+  });
+
+  it('skips a deleted session and cites the live one behind it', () => {
+    const liveAt = isoOnPreviousJsWeekday(1);
+    const deadAt = isoOnPreviousJsWeekday(2);
+    const dead = historyWith(
+      'bench-press',
+      [{ reps: 12, weight: 100 }],
+      deadAt,
+      { id: 'dead', deletedAt: new Date().toISOString() }
+    );
+    const live = historyWith('bench-press', [{ reps: 8, weight: 60 }], liveAt, { id: 'live' });
+    const out = resolveSetRowAdjacency({
+      workoutHistory: [...dead, ...live],
+      exerciseId: 'bench-press',
+      setIdx: 0,
+      planned,
+      units: 'metric',
+    });
+    assert.equal(out.targetLabel, '9 × 60');
+    assert.ok(out.cite && out.cite.kind === 'logs');
+    if (out.cite.kind !== 'logs') return;
+    assert.equal(out.cite.weekdayShort, 'Mon');
+    assert.equal(out.empty, false);
   });
 
   it('does not invent a log cite for a prescribed set', () => {
@@ -124,6 +155,7 @@ describe('resolveSetRowAdjacency', () => {
     });
     assert.equal(out.targetLabel, '5 × 100');
     assert.deepEqual(out.cite, { kind: 'coach' });
+    assert.equal(out.empty, false);
   });
 
   it('stays quiet on warmup rows', () => {
@@ -139,7 +171,26 @@ describe('resolveSetRowAdjacency', () => {
       planned: { reps: 8, weight: 40, kind: 'warmup' },
       units: 'metric',
     });
-    assert.deepEqual(out, { targetLabel: null, cite: null });
+    assert.deepEqual(out, { targetLabel: null, cite: null, empty: false });
+  });
+
+  it('stays quiet (not honest-empty) when the matched working set has 0 reps', () => {
+    const hist = historyWith(
+      'bench-press',
+      [
+        { reps: 8, weight: 60 },
+        { reps: 0, weight: 60 },
+      ],
+      isoOnPreviousJsWeekday(4)
+    );
+    const out = resolveSetRowAdjacency({
+      workoutHistory: hist,
+      exerciseId: 'bench-press',
+      setIdx: 1,
+      planned,
+      units: 'metric',
+    });
+    assert.deepEqual(out, { targetLabel: null, cite: null, empty: false });
   });
 
   it('formatSetRowAdjacency returns one row per planned set', () => {
@@ -163,7 +214,68 @@ describe('resolveSetRowAdjacency', () => {
     });
     assert.equal(rows.length, 3);
     assert.ok(rows[0]?.targetLabel);
+    assert.equal(rows[0]?.empty, false);
     assert.ok(rows[2]?.cite && rows[2].cite.kind === 'logs');
+  });
+});
+
+describe('lastLiveSessionForExercise', () => {
+  it('skips warmup-only and 0-rep sessions as non-evidence', () => {
+    const junkAt = isoOnPreviousJsWeekday(3);
+    const liveAt = isoOnPreviousJsWeekday(1);
+    const warmupOnly = historyWith(
+      'bench-press',
+      [{ reps: 8, weight: 40, kind: 'warmup' }],
+      junkAt,
+      { id: 'wu' }
+    );
+    const zeroRep = historyWith(
+      'bench-press',
+      [{ reps: 0, weight: 80 }],
+      junkAt,
+      { id: 'zero' }
+    );
+    const live = historyWith('bench-press', [{ reps: 8, weight: 60 }], liveAt, { id: 'live' });
+    const found = lastLiveSessionForExercise([...warmupOnly, ...zeroRep, ...live], 'bench-press');
+    assert.equal(found?.id, 'live');
+  });
+});
+
+describe('formatAdjacencyCiteLine', () => {
+  function t(key: string, opts?: Record<string, unknown>): string {
+    return String(opts?.defaultValue ?? key);
+  }
+
+  it('formats a log cite as From last {day} · sets {range}', () => {
+    const line = formatAdjacencyCiteLine(
+      {
+        kind: 'logs',
+        weekdayMondayOffset: 1,
+        weekdayShort: 'Tue',
+        setFrom: 2,
+        setTo: 4,
+      },
+      t
+    );
+    assert.equal(line, 'From last Tue · sets 2–4');
+  });
+
+  it('formats a single-set cite', () => {
+    const line = formatAdjacencyCiteLine(
+      {
+        kind: 'logs',
+        weekdayMondayOffset: 0,
+        weekdayShort: 'Mon',
+        setFrom: 2,
+        setTo: 2,
+      },
+      t
+    );
+    assert.equal(line, 'From last Mon · set 2');
+  });
+
+  it('does not invent a Tuesday for a coach cite', () => {
+    assert.equal(formatAdjacencyCiteLine({ kind: 'coach' }, t), 'Coach plan');
   });
 });
 
@@ -175,10 +287,19 @@ describe('setRowAdjacency honesty', () => {
     assert.doesNotMatch(code, /toISOString\(/);
   });
 
+  it('drops tombstones — deletedAt is not a last session', () => {
+    assert.match(code, /deletedAt/);
+    assert.match(code, /lastLiveSessionForExercise/);
+  });
+
   it('does not import freshness, readiness, or Recovery % — freshness never picks the lift', () => {
     assert.doesNotMatch(code, /from ['"]@\/lib\/readiness/);
     assert.doesNotMatch(code, /from ['"]@\/lib\/coach\/load/);
     assert.doesNotMatch(code, /readinessIndex/);
     assert.doesNotMatch(code, /Recovery %/);
+  });
+
+  it('never claims AI-suggested or optimized-for-you', () => {
+    assert.doesNotMatch(code, /AI suggested|optimized for you/i);
   });
 });

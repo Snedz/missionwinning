@@ -14,16 +14,20 @@ Archive: [2026-06 → 2026-07-20](docs/archive/log/LOG-2026-06_to_2026-07-20.md)
 ## 2026-08-13 — E-Adjacency set-row target + cite (`.703`)
 
 When logging a set, the athlete sees the next target stacked above PREVIOUS,
-cited from the last session that produced it (e.g. *from last Tue · sets 2–4*).
+cited from the last live session that produced it (e.g. *From last Tue · sets 2–4*).
 Free. Not a HUD overlay. Not a fake Recovery %. Freshness may later veto dose —
 it never picks the main lift (this ship does not build freshness selection).
 
 **Ship:** `setRowAdjacency.ts` derives the double-progression (or coach) target
-and a log cite (local weekday + working-set numbers; warmup excluded). Compact
-`SetLogRow` and desktop Prev cell share `SetLogAdjacencyStack`. Table chrome
-unchanged aside from stacking in the Prev cell. DESIGN_NEXT / experience-ledger
-were not in-repo; grammar follows the brief. Label `.703` so it does not steal
-`#477` `.698` or `#478` `.699`.
+and a log cite (local weekday + working-set numbers; warmup excluded).
+`lastLiveSessionForExercise` is the one last-session home — tombstones and 0-rep
+junk are not evidence (PREVIOUS via `getLastSessionSets` uses the same reader).
+Compact `SetLogRow` and desktop Prev cell share `SetLogAdjacencyStack`. Target
+paints **only on the live row** (F-003 density); no prior logs → TARGET eyebrow +
+*No prior sets yet — log this one*, never an invented number. Table chrome
+unchanged aside from stacking in the Prev cell. Grammar matches mission-ops
+`DESIGN_NEXT.md` §A without rewriting the set table. Label `.703` so it does not
+steal `#477` `.698` or `#478` `.699`.
 
 Excellence-Override: E-Adjacency set-row target + cite
 

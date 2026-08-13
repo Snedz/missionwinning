@@ -1,63 +1,21 @@
 'use client';
 /**
- * E-Adjacency stack: TARGET (+ log cite) above PREVIOUS.
+ * E-Adjacency stack: TARGET (+ log cite or honest empty) above PREVIOUS.
  * Compact row and desktop Prev cell share this grammar — not a HUD overlay.
+ * Target paints only when the parent says this is the live row (`showTarget`).
  */
 
-import type { TFunction } from 'i18next';
 import { cn } from '@/lib/utils';
-import type { SetRowCite } from '@/lib/workout/setRowAdjacency';
-
-export function formatAdjacencyCiteLine(
-  cite: SetRowCite | null,
-  t: TFunction
-): string | null {
-  if (!cite) return null;
-  if (cite.kind === 'coach') {
-    return t('activeTargetCiteCoach', { defaultValue: 'Coach plan' });
-  }
-  const day = weekdayWord(cite.weekdayMondayOffset, t);
-  const sets =
-    cite.setFrom === cite.setTo
-      ? t('activeTargetCiteSet', { n: cite.setFrom, defaultValue: `set ${cite.setFrom}` })
-      : t('activeTargetCiteSets', {
-          from: cite.setFrom,
-          to: cite.setTo,
-          defaultValue: `sets ${cite.setFrom}–${cite.setTo}`,
-        });
-  return t('activeTargetCiteFromLast', {
-    day,
-    sets,
-    defaultValue: `from last ${day} · ${sets}`,
-  });
-}
-
-function weekdayWord(offset: number, t: TFunction): string {
-  switch (offset) {
-    case 0:
-      return t('activeWeekdayMon', { defaultValue: 'Mon' });
-    case 1:
-      return t('activeWeekdayTue', { defaultValue: 'Tue' });
-    case 2:
-      return t('activeWeekdayWed', { defaultValue: 'Wed' });
-    case 3:
-      return t('activeWeekdayThu', { defaultValue: 'Thu' });
-    case 4:
-      return t('activeWeekdayFri', { defaultValue: 'Fri' });
-    case 5:
-      return t('activeWeekdaySat', { defaultValue: 'Sat' });
-    default:
-      return t('activeWeekdaySun', { defaultValue: 'Sun' });
-  }
-}
 
 type Props = {
   targetWord: string;
   targetLabel: string | null;
   citeLine: string | null;
+  /** DESIGN_NEXT §A: no invented number — TARGET eyebrow + this copy. */
+  emptyLine: string | null;
   prevWord: string;
   prevLabel: string | null;
-  /** Hide target on completed rows — the logged line is the truth. */
+  /** Live incomplete row only — planned rows keep PREVIOUS, not a tripled stack. */
   showTarget: boolean;
   testIdPrefix: 'set-row' | 'set-table';
 };
@@ -66,20 +24,23 @@ export function SetLogAdjacencyStack({
   targetWord,
   targetLabel,
   citeLine,
+  emptyLine,
   prevWord,
   prevLabel,
   showTarget,
   testIdPrefix,
 }: Props) {
   const prevShown = prevLabel?.trim() || '—';
-  const show = Boolean(showTarget && targetLabel);
+  const showNumber = Boolean(showTarget && targetLabel);
+  const showEmpty = Boolean(showTarget && !targetLabel && emptyLine);
+  const show = showNumber || showEmpty;
 
   return (
     <span
       className="flex min-w-[7.25rem] shrink-0 flex-col justify-center leading-none"
       data-testid={`${testIdPrefix}-adjacency`}
     >
-      {show ? (
+      {showNumber ? (
         <span data-testid={`${testIdPrefix}-target`} data-target-anchor="true">
           <span className="text-[9px] font-semibold uppercase tracking-[0.1em] text-muted-foreground">
             {targetWord}
@@ -90,11 +51,21 @@ export function SetLogAdjacencyStack({
           {citeLine ? (
             <span
               data-testid={`${testIdPrefix}-target-cite`}
-              className="mt-0.5 block truncate text-[9px] text-muted-foreground"
+              className="mt-0.5 block truncate text-[13px] text-muted-foreground"
             >
               {citeLine}
             </span>
           ) : null}
+        </span>
+      ) : null}
+      {showEmpty ? (
+        <span data-testid={`${testIdPrefix}-target-empty`} data-target-anchor="empty">
+          <span className="text-[9px] font-semibold uppercase tracking-[0.1em] text-muted-foreground">
+            {targetWord}
+          </span>
+          <span className="mt-0.5 block text-[13px] leading-snug text-muted-foreground">
+            {emptyLine}
+          </span>
         </span>
       ) : null}
       <span

@@ -198,6 +198,7 @@ export function ActiveExerciseCard({
                   prevLabel={prevLabels[setIdx]}
                   targetLabel={adjacency[setIdx]?.targetLabel}
                   cite={adjacency[setIdx]?.cite}
+                  empty={adjacency[setIdx]?.empty}
                   onRate={(rpe) => onRate(setIdx, rpe)}
                 />
               </div>

@@ -47,7 +47,8 @@ export function suggestNextSetTarget(
 
   const matchIdx = setIdx < ws.length ? setIdx : ws.length - 1;
   const match = ws[matchIdx]!;
-  const lastReps = Math.max(1, Math.round(match.reps));
+  const lastReps = Math.round(match.reps);
+  if (lastReps < 1) return null;
   const lastWeight = Math.max(0, match.weight);
 
   // All working sets hit top of range at same weight → load up

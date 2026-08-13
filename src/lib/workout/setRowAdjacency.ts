@@ -2,9 +2,10 @@
  * E-Adjacency — next-set target + log cite for the set row (above PREVIOUS).
  *
  * Free forever. The number is double-progression (or the coach prescription).
- * The cite is the last session that produced it (weekday + working set numbers).
- * Freshness may later veto dose — it never picks the lift, so this module must
- * not import readiness / freshness / Recovery %.
+ * The cite is the last *live* session that produced it (weekday + working set
+ * numbers). Tombstones (`deletedAt`) are not history. Freshness may later veto
+ * dose — it never picks the lift, so this module must not import readiness /
+ * freshness / Recovery %.
  */
 
 import type { CompletedWorkoutLog } from '@/types';
@@ -31,21 +32,35 @@ export type SetRowCite = SetRowLogCite | SetRowCoachCite;
 export type SetRowAdjacency = {
   targetLabel: string | null;
   cite: SetRowCite | null;
+  /**
+   * Honest empty: no live prior logs. Show TARGET eyebrow + empty copy.
+   * Never an invented number. Warmup / unusable match stay quiet (`false`).
+   */
+  empty: boolean;
 };
 
-function lastSessionForExercise(
+const QUIET: SetRowAdjacency = { targetLabel: null, cite: null, empty: false };
+const HONEST_EMPTY: SetRowAdjacency = { targetLabel: null, cite: null, empty: true };
+
+function hasUsableWorkingSet(
+  sets: CompletedWorkoutLog['exercises'][number]['sets']
+): boolean {
+  return sets.some((s) => s.kind !== 'warmup' && s.reps > 0);
+}
+
+/**
+ * Newest live session that actually logged this lift.
+ * One home for Train last-session lookup — tombstones and 0-rep junk are not evidence.
+ */
+export function lastLiveSessionForExercise(
   history: CompletedWorkoutLog[],
   exerciseId: string
-): {
-  completedAt: string;
-  startedAt: string;
-  sets: CompletedWorkoutLog['exercises'][number]['sets'];
-} | null {
+): CompletedWorkoutLog | null {
   for (const log of history) {
+    if (log.deletedAt) continue;
     const ex = log.exercises.find((e) => e.exerciseId === exerciseId);
-    if (ex && ex.sets.length > 0) {
-      return { completedAt: log.completedAt, startedAt: log.startedAt, sets: ex.sets };
-    }
+    if (!ex || !hasUsableWorkingSet(ex.sets)) continue;
+    return log;
   }
   return null;
 }
@@ -75,6 +90,52 @@ function formatTargetLabel(reps: number, weight: number): string {
   return `${reps} × ${weight}`;
 }
 
+/** i18n `t` — weekday keys stay literal (coverage forbids computed keys). */
+export type AdjacencyCiteT = (key: string, opts?: Record<string, unknown>) => string;
+
+export function formatAdjacencyCiteLine(
+  cite: SetRowCite | null,
+  t: AdjacencyCiteT
+): string | null {
+  if (!cite) return null;
+  if (cite.kind === 'coach') {
+    return t('activeTargetCiteCoach', { defaultValue: 'Coach plan' });
+  }
+  const day = weekdayWord(cite.weekdayMondayOffset, t);
+  const sets =
+    cite.setFrom === cite.setTo
+      ? t('activeTargetCiteSet', { n: cite.setFrom, defaultValue: `set ${cite.setFrom}` })
+      : t('activeTargetCiteSets', {
+          from: cite.setFrom,
+          to: cite.setTo,
+          defaultValue: `sets ${cite.setFrom}–${cite.setTo}`,
+        });
+  return t('activeTargetCiteFromLast', {
+    day,
+    sets,
+    defaultValue: `From last ${day} · ${sets}`,
+  });
+}
+
+function weekdayWord(offset: number, t: AdjacencyCiteT): string {
+  switch (offset) {
+    case 0:
+      return t('activeWeekdayMon', { defaultValue: 'Mon' });
+    case 1:
+      return t('activeWeekdayTue', { defaultValue: 'Tue' });
+    case 2:
+      return t('activeWeekdayWed', { defaultValue: 'Wed' });
+    case 3:
+      return t('activeWeekdayThu', { defaultValue: 'Thu' });
+    case 4:
+      return t('activeWeekdayFri', { defaultValue: 'Fri' });
+    case 5:
+      return t('activeWeekdaySat', { defaultValue: 'Sat' });
+    default:
+      return t('activeWeekdaySun', { defaultValue: 'Sun' });
+  }
+}
+
 export function resolveSetRowAdjacency(params: {
   workoutHistory: CompletedWorkoutLog[];
   exerciseId: string;
@@ -84,34 +145,36 @@ export function resolveSetRowAdjacency(params: {
   units: UnitsPref;
   goalRange?: { min: number; max: number };
 }): SetRowAdjacency {
-  if (params.planned.kind === 'warmup') {
-    return { targetLabel: null, cite: null };
-  }
+  if (params.planned.kind === 'warmup') return QUIET;
 
   if (params.prescribed) {
     return {
       targetLabel: formatTargetLabel(params.planned.reps, params.planned.weight),
       cite: { kind: 'coach' },
+      empty: false,
     };
   }
 
-  const last = lastSessionForExercise(params.workoutHistory, params.exerciseId);
-  if (!last) return { targetLabel: null, cite: null };
+  const lastLog = lastLiveSessionForExercise(params.workoutHistory, params.exerciseId);
+  if (!lastLog) return HONEST_EMPTY;
 
-  const suggestion = suggestNextSetTarget(last.sets, params.setIdx, params.units, {
+  const lastEx = lastLog.exercises.find((e) => e.exerciseId === params.exerciseId);
+  if (!lastEx) return HONEST_EMPTY;
+
+  const suggestion = suggestNextSetTarget(lastEx.sets, params.setIdx, params.units, {
     repMin: params.goalRange?.min,
     repMax: params.goalRange?.max,
   });
-  if (!suggestion) return { targetLabel: null, cite: null };
+  if (!suggestion) return QUIET;
 
-  const workingNums = originalWorkingNumbers(last.sets);
+  const workingNums = originalWorkingNumbers(lastEx.sets);
   const citedNums = suggestion.evidenceWorkingIdx
     .map((i) => workingNums[i])
     .filter((n): n is number => typeof n === 'number');
   const setFrom = citedNums.length ? Math.min(...citedNums) : (workingNums[0] ?? 1);
   const setTo = citedNums.length ? Math.max(...citedNums) : setFrom;
 
-  const day = weekdayFromIso(last.completedAt) ?? weekdayFromIso(last.startedAt);
+  const day = weekdayFromIso(lastLog.completedAt) ?? weekdayFromIso(lastLog.startedAt);
 
   return {
     targetLabel: formatTargetLabel(suggestion.reps, suggestion.weight),
@@ -124,6 +187,7 @@ export function resolveSetRowAdjacency(params: {
           setTo,
         }
       : null,
+    empty: false,
   };
 }
 

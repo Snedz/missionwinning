@@ -177,6 +177,8 @@ type ActiveWorkoutStrings = {
   activeTargetCiteSet: string;
   activeTargetCiteSets: string;
   activeTargetCiteCoach: string;
+  /** DESIGN_NEXT §A — honest empty, no invented target. */
+  activeTargetEmpty: string;
   activeWeekdayMon: string;
   activeWeekdayTue: string;
   activeWeekdayWed: string;
@@ -393,10 +395,11 @@ const en: ActiveWorkoutStrings = {
   activeColSet: 'Set',
   activeColPrev: 'Prev',
   activeColTarget: 'Target',
-  activeTargetCiteFromLast: 'from last {{day}} · {{sets}}',
+  activeTargetCiteFromLast: 'From last {{day}} · {{sets}}',
   activeTargetCiteSet: 'set {{n}}',
   activeTargetCiteSets: 'sets {{from}}–{{to}}',
   activeTargetCiteCoach: 'Coach plan',
+  activeTargetEmpty: 'No prior sets yet — log this one',
   activeWeekdayMon: 'Mon',
   activeWeekdayTue: 'Tue',
   activeWeekdayWed: 'Wed',
@@ -453,10 +456,11 @@ const es: ActiveWorkoutStrings = {
   activeOverloadFromLast: 'De la última vez',
   activeOverloadPrescribed: 'Plan del coach',
   activeColTarget: 'Objetivo',
-  activeTargetCiteFromLast: 'del último {{day}} · {{sets}}',
+  activeTargetCiteFromLast: 'Del último {{day}} · {{sets}}',
   activeTargetCiteSet: 'serie {{n}}',
   activeTargetCiteSets: 'series {{from}}–{{to}}',
   activeTargetCiteCoach: 'Plan del coach',
+  activeTargetEmpty: 'Aún no hay series — registra esta',
   activeWeekdayMon: 'lun',
   activeWeekdayTue: 'mar',
   activeWeekdayWed: 'mié',
@@ -520,10 +524,11 @@ const fr: ActiveWorkoutStrings = {
   activeOverloadFromLast: 'De la dernière fois',
   activeOverloadPrescribed: 'Plan coach',
   activeColTarget: 'Cible',
-  activeTargetCiteFromLast: 'de {{day}} dernier · {{sets}}',
+  activeTargetCiteFromLast: 'De {{day}} dernier · {{sets}}',
   activeTargetCiteSet: 'série {{n}}',
   activeTargetCiteSets: 'séries {{from}}–{{to}}',
   activeTargetCiteCoach: 'Plan coach',
+  activeTargetEmpty: 'Pas encore de séries — enregistre celle-ci',
   activeWeekdayMon: 'lun',
   activeWeekdayTue: 'mar',
   activeWeekdayWed: 'mer',
@@ -663,10 +668,11 @@ const de: ActiveWorkoutStrings = {
   activeOverloadFromLast: 'Vom letzten Mal',
   activeOverloadPrescribed: 'Coach-Plan',
   activeColTarget: 'Ziel',
-  activeTargetCiteFromLast: 'von letztem {{day}} · {{sets}}',
+  activeTargetCiteFromLast: 'Von letztem {{day}} · {{sets}}',
   activeTargetCiteSet: 'Satz {{n}}',
   activeTargetCiteSets: 'Sätze {{from}}–{{to}}',
   activeTargetCiteCoach: 'Coach-Plan',
+  activeTargetEmpty: 'Noch keine Sätze — logge diesen',
   activeWeekdayMon: 'Mo',
   activeWeekdayTue: 'Di',
   activeWeekdayWed: 'Mi',
@@ -764,10 +770,11 @@ const LOCALES: Partial<Record<string, ActiveWorkoutStrings>> = {
     activeOverloadFromLast: 'Da última vez',
     activeOverloadPrescribed: 'Plano do coach',
     activeColTarget: 'Alvo',
-    activeTargetCiteFromLast: 'da última {{day}} · {{sets}}',
+    activeTargetCiteFromLast: 'Da última {{day}} · {{sets}}',
     activeTargetCiteSet: 'série {{n}}',
     activeTargetCiteSets: 'séries {{from}}–{{to}}',
     activeTargetCiteCoach: 'Plano do coach',
+    activeTargetEmpty: 'Ainda sem séries — registra esta',
     activeWeekdayMon: 'seg',
     activeWeekdayTue: 'ter',
     activeWeekdayWed: 'qua',

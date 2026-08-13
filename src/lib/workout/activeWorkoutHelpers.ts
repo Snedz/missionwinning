@@ -4,6 +4,7 @@
  */
 import type { CompletedWorkoutLog } from '@/types';
 import { repRangeForGoal } from '@/lib/coach/progression';
+import { lastLiveSessionForExercise } from '@/lib/workout/setRowAdjacency';
 import { suggestNextSetTarget } from '@/lib/workout/nextSetTargets';
 import {
   buildOverloadCue,
@@ -24,16 +25,15 @@ export function findNextSet(exercises: { sets: { completed: boolean }[] }[]): {
   return null;
 }
 
-/** All sets from the most recent session containing this exercise. */
+/** All sets from the most recent *live* session containing this exercise. */
 export function getLastSessionSets(
   workoutHistory: CompletedWorkoutLog[],
   exerciseId: string
 ): CompletedWorkoutLog['exercises'][number]['sets'] | null {
-  for (const log of workoutHistory) {
-    const ex = log.exercises.find((e) => e.exerciseId === exerciseId);
-    if (ex && ex.sets.length > 0) return ex.sets;
-  }
-  return null;
+  const log = lastLiveSessionForExercise(workoutHistory, exerciseId);
+  if (!log) return null;
+  const ex = log.exercises.find((e) => e.exerciseId === exerciseId);
+  return ex && ex.sets.length > 0 ? ex.sets : null;
 }
 
 /**

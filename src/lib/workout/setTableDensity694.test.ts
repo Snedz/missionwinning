@@ -41,6 +41,8 @@ test('SetLogRow: PREVIOUS row anchor + metric-first density; 44px taps', () => {
   // Hevy Experience: PREVIOUS is a clear set-row metric anchor.
   assert.match(code, /prevLabel/);
   assert.match(code, /SetLogAdjacencyStack/);
+  assert.match(code, /showTarget = isNext && !set.completed/);
+  assert.match(code, /activeTargetEmpty/);
   assert.match(code, /set-row/);
   assert.match(code, /activeColPrev/);
   assert.doesNotMatch(code, /activeSetInConsole/);
@@ -57,9 +59,12 @@ test('SetLogAdjacencyStack: Target stacked above PREVIOUS; not a HUD or Recovery
     'PREVIOUS must follow TARGET in source order'
   );
   assert.match(code, /target-cite/);
+  assert.match(code, /target-empty/);
   assert.match(code, /data-target-anchor/);
   assert.match(code, /data-prev-anchor/);
+  assert.match(code, /text-\[13px\] text-muted-foreground/);
   assert.doesNotMatch(code, /Recovery\s*%/);
+  assert.doesNotMatch(code, /AI suggested|optimized for you/i);
   assert.doesNotMatch(code, /fixed inset|pointer-events-none.*overlay/i);
   assert.doesNotMatch(code, /primary-action|accent-poster|bg-primary-fill/);
 });
@@ -74,6 +79,8 @@ test('SetLogTable: Prev column anchored; one poster-red Log set; 44px inputs', (
   assert.match(src, /set-table-logged-check/);
   assert.match(src, /border-s-primary|border-s-\[3px\]/);
   assert.match(src, /SetLogAdjacencyStack/);
+  assert.match(src, /showTarget=\{isActive && !completed\}/);
+  assert.match(src, /activeTargetEmpty/);
   assert.match(src, /data-prev-anchor/);
   assert.match(src, /testIdPrefix="set-table"/);
   assert.doesNotMatch(src, /hover:bg-accent-100/);
@@ -101,6 +108,7 @@ test('ActiveExerciseCard wires prevLabels and adjacency into compact SetLogRow',
   assert.match(src, /formatSetRowAdjacency/);
   assert.match(src, /prevLabel=\{prevLabels\[setIdx\]\}/);
   assert.match(src, /targetLabel=\{adjacency\[setIdx\]\?\.targetLabel\}/);
+  assert.match(src, /empty=\{adjacency\[setIdx\]\?\.empty\}/);
   assert.match(src, /prevLabels=\{prevLabels\}/);
   assert.match(src, /adjacency=\{adjacency\}/);
 });

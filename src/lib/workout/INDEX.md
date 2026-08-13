@@ -10,7 +10,7 @@ Root-level `@/lib/{name}` paths re-export from here for compatibility — prefer
 2. `restTimer.ts` — rest seconds, clock format, defaults  
 3. `superset.ts` — peer links, advance after log, rest gate  
 4. `nextSetTargets.ts` — Strong/Hevy-style next set suggestions  
-4a. `setRowAdjacency.ts` — E-Adjacency: set-row target + log cite (above PREVIOUS)  
+4a. `setRowAdjacency.ts` — E-Adjacency: set-row target + log cite (above PREVIOUS); `lastLiveSessionForExercise` is the Train last-session home (skips `deletedAt` / 0-rep junk)  
 5. `percentLoad.ts` — TrainHeroic-style % of e1RM → absolute weight (`loadPct`)  
 6. `workoutTemplate.ts` — template → logged sets  
 7. `workoutPr.ts` — personal record detection  
@@ -35,7 +35,7 @@ Root-level `@/lib/{name}` paths re-export from here for compatibility — prefer
 | `restTimer.test.ts` | Clock + defaults + start seconds (`.292`) |
 | `superset.test.ts` | Advance, rest gate |
 | `nextSetTargets.test.ts` | Progression targets |
-| `setRowAdjacency.test.ts` | Target + weekday/set-number cite; no freshness picker |
+| `setRowAdjacency.test.ts` | Target + weekday/set-number cite; honest empty; tombstones; no freshness picker |
 | `percentLoad.test.ts` | e1RM max, % → weight, scale |
 | `workoutTemplate.test.ts` | Template logging |
 | `workoutPr.test.ts` | PR detection |

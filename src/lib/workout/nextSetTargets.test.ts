@@ -53,8 +53,18 @@ describe('nextSetTargets', () => {
     assert.deepEqual(t.evidenceWorkingIdx, [0]);
   });
 
-  it('returns null when no working sets', () => {
-    assert.equal(suggestNextSetTarget([{ reps: 5, weight: 20, kind: 'warmup' }], 0, 'metric'), null);
+  it('returns null when the matched working set has 0 reps — no invented 1-rep', () => {
+    assert.equal(
+      suggestNextSetTarget(
+        [
+          { reps: 8, weight: 60 },
+          { reps: 0, weight: 60 },
+        ],
+        1,
+        'metric'
+      ),
+      null
+    );
   });
 
   it('builds per-set targets for planned count', () => {

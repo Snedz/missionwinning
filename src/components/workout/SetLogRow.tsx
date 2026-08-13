@@ -5,7 +5,7 @@
  * Strong/Hevy density: metric-first (`8 × 60 kg`), not prose ("In the console").
  * **PREVIOUS is the row anchor** (Hevy web withholds this; we show it) — prior
  * performance sits beside the set number before this session's metric.
- * E-Adjacency stacks TARGET + log cite above PREVIOUS on incomplete rows.
+ * E-Adjacency stacks TARGET + log cite above PREVIOUS on the live row only.
  * Entry stays in `LogConsole`. Rows + RPE ≥44px. No filled red — Log set owns red.
  *
  * See: src/components/workout/INDEX.md
@@ -16,9 +16,9 @@ import { useTranslation } from 'react-i18next';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
-import { formatAdjacencyCiteLine, SetLogAdjacencyStack } from '@/components/workout/SetLogAdjacencyStack';
+import { SetLogAdjacencyStack } from '@/components/workout/SetLogAdjacencyStack';
 import type { LoggedSet, SetKind } from '@/types';
-import type { SetRowCite } from '@/lib/workout/setRowAdjacency';
+import { formatAdjacencyCiteLine, type SetRowCite } from '@/lib/workout/setRowAdjacency';
 import {
   setKindBadgeClass,
   setKindDefaultLabel,
@@ -52,9 +52,11 @@ type Props = {
    * Hevy Experience: PREVIOUS is the visible row anchor — never omit the slot.
    */
   prevLabel?: string | null;
-  /** E-Adjacency: next target stacked above PREVIOUS. */
+  /** E-Adjacency: next target stacked above PREVIOUS (live row). */
   targetLabel?: string | null;
   cite?: SetRowCite | null;
+  /** Honest empty — no live prior logs to cite. */
+  empty?: boolean;
   onRate: (rpe: 'easy' | 'med' | 'hard') => void;
 };
 
@@ -66,6 +68,7 @@ export function SetLogRow({
   prevLabel = null,
   targetLabel = null,
   cite = null,
+  empty = false,
   onRate,
 }: Props) {
   const { t } = useTranslation();
@@ -80,7 +83,10 @@ export function SetLogRow({
   const prevWord = t('activeColPrev', { defaultValue: 'Prev' });
   const targetWord = t('activeColTarget', { defaultValue: 'Target' });
   const citeLine = formatAdjacencyCiteLine(cite, t);
-  const showTarget = !set.completed && Boolean(targetLabel);
+  const emptyLine = empty
+    ? t('activeTargetEmpty', { defaultValue: 'No prior sets yet — log this one' })
+    : null;
+  const showTarget = isNext && !set.completed;
   const rowLabel = set.completed
     ? t('activeSetRowCompleteAria', {
         n: setNumber,
@@ -101,7 +107,7 @@ export function SetLogRow({
   return (
     <div
       role="listitem"
-      aria-label={`${rowLabel}. ${showTarget && targetLabel ? `${targetWord} ${targetLabel}${citeLine ? ` ${citeLine}` : ''}. ` : ''}${prevWord} ${prevShown}`}
+      aria-label={`${rowLabel}. ${showTarget && targetLabel ? `${targetWord} ${targetLabel}${citeLine ? ` ${citeLine}` : ''}. ` : showTarget && emptyLine ? `${targetWord} ${emptyLine}. ` : ''}${prevWord} ${prevShown}`}
       aria-current={isNext ? 'true' : undefined}
       className={cn(
         'flex min-h-[44px] flex-nowrap items-center gap-x-2 border-b border-border px-0.5 py-1.5 transition-colors',
@@ -123,6 +129,7 @@ export function SetLogRow({
         targetWord={targetWord}
         targetLabel={targetLabel}
         citeLine={citeLine}
+        emptyLine={emptyLine}
         prevWord={prevWord}
         prevLabel={prevLabel}
         showTarget={showTarget}
