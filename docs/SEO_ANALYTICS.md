@@ -23,6 +23,7 @@ Companion to [ROADMAP_V4_EXPERIENCE.md](archive/ROADMAP_V4_EXPERIENCE.md) Phase 
 | `iday_started` / `iday_mission_accepted` / `iday_profile_completed` / `iday_completed` | I-Day funnel (per-step drop-off) |
 | `first_workout_completed` / `workout_completed` | Train retention |
 | `coach_session_adjusted` | Free "adjust today" coach action |
+| `coach_exercise_swapped` | Free garage swap on one Coach plan line |
 | `coach_chat_opened` / `coach_chat_message_sent` | Premium coach chat (never content) |
 | `push_subscribed` | Web push device opt-in |
 | `referral_landed` | `?ref=` stored in first-party attribution |
