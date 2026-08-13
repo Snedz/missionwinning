@@ -18,9 +18,16 @@ export type Rir = (typeof RIR_VALUES)[number];
  * and NaN are dropped — never clamped into a number the athlete did not give.
  */
 export function parseOptionalRir(value: unknown): number | undefined {
-  if (value === '' || value == null) return undefined;
+  if (value == null) return undefined;
   if (typeof value === 'boolean') return undefined;
-  const n = typeof value === 'number' ? value : Number(String(value).trim());
-  if (!Number.isInteger(n) || n < RIR_MIN || n > RIR_MAX) return undefined;
-  return n;
+  if (typeof value === 'string') {
+    const trimmed = value.trim();
+    if (trimmed === '') return undefined;
+    const n = Number(trimmed);
+    if (!Number.isInteger(n) || n < RIR_MIN || n > RIR_MAX) return undefined;
+    return n;
+  }
+  if (typeof value !== 'number') return undefined;
+  if (!Number.isInteger(value) || value < RIR_MIN || value > RIR_MAX) return undefined;
+  return value;
 }

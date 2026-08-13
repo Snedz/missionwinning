@@ -75,10 +75,13 @@ test('completed set rows expose optional RIR; Log set does not require it', () =
   );
   assert.match(
     store,
-    /logSet\(exerciseIndex, setIndex, reps, weight, undefined, isPr\)/,
+    /get\(\)\.logSet\(exerciseIndex, setIndex, reps, weight, undefined, isPr\)/,
     'log path must still leave ratings unstamped'
   );
-  const advance = /logSetAndAdvance:\s*\([^)]*\)\s*=>\s*\{[\s\S]*?\n      \},/.exec(store);
-  assert.ok(advance, 'could not isolate logSetAndAdvance — re-read the store');
-  assert.doesNotMatch(advance[0], /rateSetRir|\brir\b/, 'RIR must not be auto-stamped on log');
+  const implStart = store.indexOf(
+    'logSetAndAdvance: (exerciseIndex, setIndex, reps, weight, isPr) =>'
+  );
+  assert.ok(implStart > 0, 'could not find logSetAndAdvance implementation');
+  const impl = store.slice(implStart, implStart + 280);
+  assert.doesNotMatch(impl, /rateSetRir|\brir\b/, 'RIR must not be auto-stamped on log');
 });
