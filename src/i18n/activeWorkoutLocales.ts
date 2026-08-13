@@ -231,6 +231,11 @@ type ActiveWorkoutStrings = {
   activeSetRowCompleteAria: string;
   activeSetRowNextAria: string;
   activeSetRowPlannedAria: string;
+  /** After-save vs-last on the set row (.741). */
+  activeVsLastSame: string;
+  activeVsLastRep: string;
+  activeVsLastReps: string;
+  activeVsLastAria: string;
   victoryMascotCue: string;
   victorySessionDetails: string;
   /** Split from a `finalSeconds` ternary default — see moveLocales. */
@@ -449,6 +454,10 @@ const en: ActiveWorkoutStrings = {
   activeSetRowCompleteAria: 'Set {{n}} logged: {{line}}',
   activeSetRowNextAria: 'Set {{n}} — in the console',
   activeSetRowPlannedAria: 'Set {{n}} planned — {{reps}} reps',
+  activeVsLastSame: 'same',
+  activeVsLastRep: 'rep',
+  activeVsLastReps: 'reps',
+  activeVsLastAria: 'versus last {{delta}}',
   victoryMascotCue: 'Session saved.',
   victorySessionDetails: 'Session details',
   activeRestSkipAriaFinal: 'Skip rest — go',
@@ -513,6 +522,8 @@ const es: ActiveWorkoutStrings = {
   activeWeight: 'kg',
   activePrTitle: '¡Nuevo PR!',
   activePrDesc: '{{reps}} × {{weight}} — récord personal en este ejercicio',
+  activeVsLastSame: 'igual',
+  activeVsLastAria: 'frente a la última {{delta}}',
 };
 
 const fr: ActiveWorkoutStrings = {
@@ -595,6 +606,8 @@ const fr: ActiveWorkoutStrings = {
   activeSupersetLink: 'Superset avec le suivant',
   activeSupersetUnlink: 'Dissocier le superset',
   activeSetLoggedSuperset: '{{reps}} × {{weight}} — exercice suivant du superset',
+  activeVsLastSame: 'pareil',
+  activeVsLastAria: 'versus la dernière {{delta}}',
 };
 
 const zh: ActiveWorkoutStrings = {
@@ -762,6 +775,8 @@ const LOCALES: Partial<Record<string, ActiveWorkoutStrings>> = {
     victoryProgressHold: 'Próximo: mantenha {{reps}} × {{weight}} {{unit}} em {{name}}',
     victoryProgressAddRepsBw: 'Próximo: {{reps}} reps em {{name}}',
     victoryProgressHoldBw: 'Próximo: mantenha {{reps}} em {{name}}',
+    activeVsLastSame: 'igual',
+    activeVsLastAria: 'versus a última {{delta}}',
   },
   it: {
     ...en,

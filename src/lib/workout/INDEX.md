@@ -34,6 +34,7 @@ Root-level `@/lib/{name}` paths re-export from here for compatibility — prefer
 22. `rir.ts` — optional integer 0–5 reps in reserve; empty valid; never replaces RPE (`.756`)
 23. `tempo.ts` — optional ecc/pause/con parse + last-tempo recall (`.757`)
 24. `lastSetGhost.ts` — last **working** set ghost (not warmup W); one-tap accept (`.759`)
+25. `vsLastSet.ts` — after-save vs-last delta on the set row (`.760`); working-set index; not ghost prefill
 
 ## Tests (colocated)
 
@@ -54,6 +55,7 @@ Root-level `@/lib/{name}` paths re-export from here for compatibility — prefer
 | `workoutVictory.test.ts` | Victory next action |
 | `activeWorkoutHelpers.test.ts` | Next set, last session stats |
 | `repeatLastSession.test.ts` | Last-session copy + empty-history path (`.717`) |
+| `vsLastSet.test.ts` | After-save vs-last: +weight / +reps / first-ever (`.760`) |
 | `sessionCheckInOffer.test.ts` | First-mission never offers check-in (`.293`) |
 | `loggerSpeed.test.ts` | Use-next offer rules (`.288`) |
 | `exerciseNote.test.ts` | Prefill / clear / persist seed + first-paint guards (`.748`) |
