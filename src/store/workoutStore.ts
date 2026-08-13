@@ -111,6 +111,7 @@ interface WorkoutState {
 
 import { templateSetsToLogged } from '@/lib/workout/workoutTemplate';
 import { materializeTemplates } from '@/lib/workout/materializeProgram';
+import { applyHistoryNote } from '@/lib/workout/exerciseNote';
 
 function createLoggedSets(count: number, reps = 10, weight = 0): LoggedSet[] {
   const now = Date.now();
@@ -155,17 +156,23 @@ export const useWorkoutStore = create<WorkoutState>()(
         // %-authored program sets resolve against the athlete's history at start
         // time, so a saved cycle keeps its percentages and re-anchors each run.
         const units = readRaw(STORAGE_KEYS.units) === 'imperial' ? 'imperial' : 'metric';
-        const resolved = materializeTemplates(exercises, get().workoutHistory, units);
+        const history = get().workoutHistory;
+        const resolved = materializeTemplates(exercises, history, units);
         const active: ActiveWorkout = {
           workoutId,
           workoutName: name,
           startedAt: new Date().toISOString(),
-          exercises: resolved.map((ex) => ({
-            exerciseId: ex.exerciseId,
-            sets: templateSetsToLogged(ex),
-            ...(ex.loadPct != null && ex.loadPct > 0 ? { loadPct: ex.loadPct } : {}),
-            ...(ex.prescribed ? { prescribed: true } : {}),
-          })),
+          exercises: resolved.map((ex) =>
+            applyHistoryNote(
+              {
+                exerciseId: ex.exerciseId,
+                sets: templateSetsToLogged(ex),
+                ...(ex.loadPct != null && ex.loadPct > 0 ? { loadPct: ex.loadPct } : {}),
+                ...(ex.prescribed ? { prescribed: true } : {}),
+              },
+              history
+            )
+          ),
         };
         syncActiveFlag(active);
         set({
@@ -296,11 +303,14 @@ export const useWorkoutStore = create<WorkoutState>()(
               ...s.activeWorkout,
               exercises: [
                 ...s.activeWorkout.exercises,
-                {
-                  exerciseId,
-                  sets: createLoggedSets(3),
-                  ...(muscleGroups?.length ? { muscleGroups: [...muscleGroups] } : {}),
-                },
+                applyHistoryNote(
+                  {
+                    exerciseId,
+                    sets: createLoggedSets(3),
+                    ...(muscleGroups?.length ? { muscleGroups: [...muscleGroups] } : {}),
+                  },
+                  s.workoutHistory
+                ),
               ],
             },
           };
@@ -493,13 +503,16 @@ export const useWorkoutStore = create<WorkoutState>()(
           const exercises = [...s.activeWorkout.exercises];
           const ex = exercises[exerciseIndex];
           if (!ex || ex.sets.some((x) => x.completed)) return s;
-          exercises[exerciseIndex] = {
-            ...ex,
-            exerciseId: newExerciseId,
-            // Keep the planned set count; reset target loads — different lift, different weights.
-            sets: createLoggedSets(ex.sets.length),
-            muscleGroups: muscleGroups?.length ? [...muscleGroups] : undefined,
-          };
+          exercises[exerciseIndex] = applyHistoryNote(
+            {
+              ...ex,
+              exerciseId: newExerciseId,
+              // Keep the planned set count; reset target loads — different lift, different weights.
+              sets: createLoggedSets(ex.sets.length),
+              muscleGroups: muscleGroups?.length ? [...muscleGroups] : undefined,
+            },
+            s.workoutHistory
+          );
           return { activeWorkout: { ...s.activeWorkout, exercises } };
         });
       },

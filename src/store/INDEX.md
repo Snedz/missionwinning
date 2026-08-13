@@ -23,7 +23,8 @@
 
 | Action | Effect |
 |--------|--------|
-| `startWorkout` / `startEmptyWorkout` | Begin active session |
+| `startWorkout` / `startEmptyWorkout` | Begin active session; `startWorkout` seeds per-exercise notes from history (`.718`) |
+| `setExerciseNote` | Write / clear the one-line diary on an active exercise |
 | `logSet` / `logSetAndAdvance` | Record set; superset advance |
 | `completeActiveWorkout` | Mint `clientId`, push to history, enqueue the cloud write on the outbox, analytics, leaderboard push |
 | `loadFromCloud` | Merge Supabase history with local |

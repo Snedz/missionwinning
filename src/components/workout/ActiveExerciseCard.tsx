@@ -5,12 +5,13 @@
  * Dense mobile: cues live in Form guide; actions in overflow.
  */
 
-import { useState, type RefObject } from 'react';
+import { useEffect, useRef, useState, type RefObject } from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { SetLogRow } from '@/components/workout/SetLogRow';
 import { SetLogTable } from '@/components/workout/SetLogTable';
 import { ActiveExerciseHeader } from '@/components/workout/ActiveExerciseHeader';
 import { ActiveExerciseFooter } from '@/components/workout/ActiveExerciseFooter';
+import { ExerciseNoteField } from '@/components/workout/ExerciseNoteField';
 import { useIsCompact } from '@/hooks/useIsCompact';
 import {
   exerciseHasCompletedSet,
@@ -22,7 +23,6 @@ import {
   formatPrevSetLabels,
 } from '@/lib/workout/activeWorkoutHelpers';
 import { getFormGuideOrCues } from '@/lib/formGuides';
-import { lastNotesFor } from '@/lib/journal/cueMemory';
 import { resolveRestForNextSet } from '@/lib/workout/restTimer';
 import { supersetLabel } from '@/lib/workout/superset';
 import { cn } from '@/lib/utils';
@@ -118,6 +118,7 @@ export function ActiveExerciseCard({
   const isCompact = useIsCompact();
   const [menuOpen, setMenuOpen] = useState(false);
   const [footerOpen, setFooterOpen] = useState(false);
+  const noteRef = useRef<HTMLInputElement>(null);
   const hasCompleted = exerciseHasCompletedSet(exLog.sets);
   const hasPlanned = exerciseHasPlannedSet(exLog.sets);
   const restSec = resolveRestForNextSet({
@@ -129,7 +130,10 @@ export function ActiveExerciseCard({
   const holdsActiveSet = holdsActiveExercise(nextSet, exIdx);
   const lastSets = lastSessionSets(workoutHistory, exLog.exerciseId);
   const hasFormGuide = !!getFormGuideOrCues(exercise.id, { exercise });
-  const lastNote = lastNotesFor(exLog.exerciseId, workoutHistory)[0] ?? null;
+
+  useEffect(() => {
+    if (noteOpen) noteRef.current?.focus();
+  }, [noteOpen]);
 
   const nextTarget = resolveExerciseNextTarget({
     sets: exLog.sets,
@@ -164,9 +168,7 @@ export function ActiveExerciseCard({
         menuOpen={menuOpen}
         onMenuOpenChange={setMenuOpen}
         swapOpen={swapOpen}
-        noteOpen={noteOpen}
         swapCandidates={swapCandidates}
-        lastNote={lastNote}
         nextTarget={nextTarget}
         onFormGuide={onFormGuide}
         onToggleSuperset={onToggleSuperset}
@@ -175,7 +177,6 @@ export function ActiveExerciseCard({
         onToggleSwap={onToggleSwap}
         onRemove={onRemove}
         onSwapTo={onSwapTo}
-        onNoteChange={onNoteChange}
         onRepeatLast={onRepeatLast}
       />
       <CardContent className="space-y-2 p-3 pt-0">
@@ -209,6 +210,11 @@ export function ActiveExerciseCard({
             />
           </div>
         )}
+        <ExerciseNoteField
+          value={exLog.note ?? ''}
+          onChange={onNoteChange}
+          inputRef={noteRef}
+        />
         <ActiveExerciseFooter
           isCompact={isCompact}
           holdsActiveSet={holdsActiveSet}

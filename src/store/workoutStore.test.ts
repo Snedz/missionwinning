@@ -347,4 +347,72 @@ test('workoutStore', async (t) => {
       'a swap after logging would silently reassign real work'
     );
   });
+
+  await t.test('exercise note persists on the completed log (.718)', () => {
+    const store = useWorkoutStore.getState();
+    store.startWorkout('Push', template());
+    store.setExerciseNote(0, 'belt on 3');
+    store.logSet(0, 0, 10, 50);
+    const saved = useWorkoutStore.getState().completeActiveWorkout();
+    assert.equal(saved?.exercises[0].note, 'belt on 3');
+    assert.equal(useWorkoutStore.getState().workoutHistory[0].exercises[0].note, 'belt on 3');
+  });
+
+  await t.test('a blank exercise note is omitted from history (.718)', () => {
+    const store = useWorkoutStore.getState();
+    store.startWorkout('Push', template());
+    store.setExerciseNote(0, '   ');
+    store.logSet(0, 0, 10, 50);
+    const saved = useWorkoutStore.getState().completeActiveWorkout();
+    assert.equal('note' in (saved?.exercises[0] ?? {}), false);
+  });
+
+  await t.test('start prefills the last note for that exercise (.718)', () => {
+    const store = useWorkoutStore.getState();
+    store.startWorkout('Push', template());
+    store.setExerciseNote(0, 'belt on 3');
+    store.logSet(0, 0, 10, 50);
+    useWorkoutStore.getState().completeActiveWorkout();
+
+    useWorkoutStore.getState().startWorkout('Push', template());
+    assert.equal(useWorkoutStore.getState().activeWorkout?.exercises[0].note, 'belt on 3');
+  });
+
+  await t.test('clearing a prefilled note is sticky this session (.718)', () => {
+    const store = useWorkoutStore.getState();
+    store.startWorkout('Push', template());
+    store.setExerciseNote(0, 'belt on 3');
+    store.logSet(0, 0, 10, 50);
+    useWorkoutStore.getState().completeActiveWorkout();
+
+    useWorkoutStore.getState().startWorkout('Push', template());
+    useWorkoutStore.getState().setExerciseNote(0, '');
+    assert.equal(useWorkoutStore.getState().activeWorkout?.exercises[0].note, '');
+
+    useWorkoutStore.getState().logSet(0, 0, 10, 50);
+    const saved = useWorkoutStore.getState().completeActiveWorkout();
+    assert.equal('note' in (saved?.exercises[0] ?? {}), false);
+  });
+
+  await t.test('add and swap seed the new exercise, not the old cue (.718)', () => {
+    const store = useWorkoutStore.getState();
+    store.startWorkout('Push', template('bench-press'));
+    store.setExerciseNote(0, 'tuck elbows');
+    store.logSet(0, 0, 8, 60);
+    useWorkoutStore.getState().completeActiveWorkout();
+
+    useWorkoutStore.getState().startWorkout('Legs', template('squat'));
+    useWorkoutStore.getState().setExerciseNote(0, 'belt on 3');
+    useWorkoutStore.getState().logSet(0, 0, 5, 100);
+    useWorkoutStore.getState().completeActiveWorkout();
+
+    useWorkoutStore.getState().startEmptyWorkout();
+    useWorkoutStore.getState().addExerciseToActive('bench-press');
+    assert.equal(useWorkoutStore.getState().activeWorkout?.exercises[0].note, 'tuck elbows');
+
+    useWorkoutStore.getState().replaceExerciseInActive(0, 'squat');
+    const swapped = useWorkoutStore.getState().activeWorkout?.exercises[0];
+    assert.equal(swapped?.exerciseId, 'squat');
+    assert.equal(swapped?.note, 'belt on 3');
+  });
 });
