@@ -1,6 +1,6 @@
 /**
  * Uncontested example public parks — catalog, not territory.
- * No owner, no rank, no likes. See docs/places/PLAN.md §5.
+ * See docs/places/PLAN.md §5.
  */
 
 import type { PlacePin } from './types';

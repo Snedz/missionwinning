@@ -129,7 +129,7 @@ export function ExplorePlacesPage() {
                   ? t('explorePersonal', { defaultValue: 'Yours' })
                   : t('exploreExamplePublic', { defaultValue: 'Example public' })}
                 {pin.distanceKm != null
-                  ? ` · ${t('exploreDistanceKm', { km: pin.distanceKm.toFixed(0), defaultValue: `${pin.distanceKm.toFixed(0)} km` })}`
+                  ? ` · ${t('exploreDistanceKm', { km: pin.distanceKm.toFixed(0), defaultValue: '{{km}} km' })}`
                   : ''}
               </span>
             </button>

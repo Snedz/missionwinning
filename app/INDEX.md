@@ -21,7 +21,6 @@
 | `/track` | Track | `TrackPage.tsx` |
 | `/profile` | You | `ProfilePage.tsx` — the Athlete Page (identity · career line · badge shelf) |
 | `/account` | Account | `AccountPage.tsx` — settings |
-| `/explore` | `ExplorePlacesPage.tsx` | Quiet places pin-board — not Today, not a tab |
 
 ### Train deeper
 
