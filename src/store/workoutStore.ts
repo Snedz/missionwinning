@@ -16,6 +16,12 @@ import type {
 } from "@/types";
 import { countsTowardVolume } from "@/lib/workout/setKind";
 import { advanceAfterLog, pairWithNext, unpair } from "@/lib/workout/superset";
+import {
+  completedLoggedSet,
+  parseSetSide,
+  suggestNextSide,
+  type SetSide,
+} from "@/lib/workout/unilateral";
 import { getUserWorkoutHistory, getUserWorkoutsUpdatedSince, getUser } from "@/lib/supabase";
 import { recordWorkoutCompleted } from "@/lib/challenges";
 import { applyWorkoutRewards } from "@/lib/rewards/apply";
@@ -86,6 +92,7 @@ interface WorkoutState {
   ) => { exerciseIndex: number; setIndex: number } | null;
   rateSet: (exerciseIndex: number, setIndex: number, rpe: 'easy' | 'med' | 'hard') => void;
   setSetKind: (exerciseIndex: number, setIndex: number, kind: SetKind) => void;
+  setSetSide: (exerciseIndex: number, setIndex: number, side: SetSide | undefined) => void;
   toggleSupersetWithNext: (exerciseIndex: number) => void;
   unlinkSuperset: (exerciseIndex: number) => void;
   addSetToExercise: (exerciseIndex: number) => void;
@@ -228,12 +235,7 @@ export const useWorkoutStore = create<WorkoutState>()(
               exerciseId: ex.exerciseId,
               sets: ex.sets
                 .filter((s) => s.completed)
-                .map((s) => ({
-                  reps: s.reps,
-                  weight: s.weight,
-                  kind: s.kind ?? 'normal',
-                  rpe: s.rpe,
-                })),
+                .map((s) => completedLoggedSet(s, ex.exerciseId)),
               ...(ex.note?.trim() ? { note: ex.note.trim() } : {}),
               ...(ex.muscleGroups?.length ? { muscleGroups: [...ex.muscleGroups] } : {}),
               // Victory + history must know this was a Coach load, not freestyle (`.410`).
@@ -384,7 +386,20 @@ export const useWorkoutStore = create<WorkoutState>()(
         get().logSet(exerciseIndex, setIndex, reps, weight, undefined, isPr);
         const aw = get().activeWorkout;
         if (!aw) return null;
-        return advanceAfterLog(aw.exercises, exerciseIndex, setIndex);
+        const loggedSide = parseSetSide(aw.exercises[exerciseIndex]?.sets[setIndex]?.side);
+        const next = advanceAfterLog(aw.exercises, exerciseIndex, setIndex);
+        if (
+          next &&
+          next.exerciseIndex === exerciseIndex &&
+          loggedSide
+        ) {
+          const nxt = aw.exercises[next.exerciseIndex]?.sets[next.setIndex];
+          if (nxt && !nxt.completed && !nxt.side) {
+            const suggested = suggestNextSide(loggedSide);
+            if (suggested) get().setSetSide(next.exerciseIndex, next.setIndex, suggested);
+          }
+        }
+        return next;
       },
 
       rateSet: (exerciseIndex, setIndex, rpe) => {
@@ -412,6 +427,26 @@ export const useWorkoutStore = create<WorkoutState>()(
           const sets = [...ex.sets];
           if (sets[setIndex] && !sets[setIndex].completed) {
             sets[setIndex] = { ...sets[setIndex], kind };
+          }
+          ex.sets = sets;
+          exercises[exerciseIndex] = ex;
+          return {
+            activeWorkout: { ...s.activeWorkout, exercises },
+          };
+        });
+      },
+
+      setSetSide: (exerciseIndex, setIndex, side) => {
+        set((s) => {
+          if (!s.activeWorkout) return s;
+          const exercises = [...s.activeWorkout.exercises];
+          const ex = { ...exercises[exerciseIndex] };
+          const sets = [...ex.sets];
+          if (sets[setIndex] && !sets[setIndex].completed) {
+            const next = { ...sets[setIndex] };
+            if (side) next.side = side;
+            else delete next.side;
+            sets[setIndex] = next;
           }
           ex.sets = sets;
           exercises[exerciseIndex] = ex;
@@ -463,6 +498,7 @@ export const useWorkoutStore = create<WorkoutState>()(
                 weight: lastSet?.weight ?? 0,
                 completed: false,
                 kind: lastSet?.kind ?? 'normal',
+                ...(lastSet?.side ? { side: lastSet.side } : {}),
               },
             ],
           };

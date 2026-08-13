@@ -12,6 +12,9 @@ export type ProgramTag = "strength" | "hypertrophy" | "conditioning" | "correcti
 
 export type SetKind = 'normal' | 'warmup' | 'failure' | 'drop';
 
+/** Optional laterality on a unilateral set — not a SetKind, not a superset pair. */
+export type SetSide = 'L' | 'R' | 'alt';
+
 export type Rpe = 'easy' | 'med' | 'hard';
 
 export type ExerciseLevel = "beginner" | "intermediate" | "advanced";
@@ -73,6 +76,8 @@ export interface LoggedSet {
   rpe?: Rpe;
   /** Set at log time when this beat prior e1RM — brass chip on row. */
   isPr?: boolean;
+  /** L / R / Alt — only meaningful on a unilateral exercise; omit on bilateral. */
+  side?: SetSide;
 }
 
 export interface ActiveExerciseLog {
@@ -123,7 +128,7 @@ export interface CompletedWorkoutLog {
   durationSeconds: number;
   exercises: {
     exerciseId: string;
-    sets: { reps: number; weight: number; kind?: SetKind; rpe?: 'easy' | 'med' | 'hard' }[];
+    sets: { reps: number; weight: number; kind?: SetKind; rpe?: 'easy' | 'med' | 'hard'; side?: SetSide }[];
     note?: string;
     /** Snapshot from catalog at complete time — readiness can skip EXERCISES lookup. */
     muscleGroups?: MuscleGroup[];

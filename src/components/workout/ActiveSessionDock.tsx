@@ -10,7 +10,7 @@ import { RestTimerBar } from '@/components/workout/RestTimerBar';
 import { LogConsole } from '@/components/workout/LogConsole';
 import { patchesForUseNext } from '@/lib/workout/activeSetInputPatches';
 import type { ActiveDockMode, ConsoleSetView } from '@/lib/workout/activeWorkoutHelpers';
-import type { SetKind } from '@/types';
+import type { SetKind, SetSide } from '@/types';
 
 type Props = {
   dockMode: ActiveDockMode;
@@ -25,6 +25,7 @@ type Props = {
   onRepsChange: (exIdx: number, setIdx: number, reps: number) => void;
   onWeightChange: (exIdx: number, setIdx: number, weight: number) => void;
   onKindChange: (exIdx: number, setIdx: number, kind: SetKind) => void;
+  onSideChange: (exIdx: number, setIdx: number, side: SetSide | undefined) => void;
   onLog: (exIdx: number, setIdx: number) => void;
   onApplyFieldPatches: (
     exIdx: number,
@@ -46,6 +47,7 @@ export function ActiveSessionDock({
   onRepsChange,
   onWeightChange,
   onKindChange,
+  onSideChange,
   onLog,
   onApplyFieldPatches,
 }: Props) {
@@ -81,6 +83,9 @@ export function ActiveSessionDock({
           weightLabel={unitLabel}
           weightStep={weightStep}
           kind={consoleSet.kind}
+          unilateral={consoleSet.unilateral}
+          side={consoleSet.side}
+          onSideChange={(side) => onSideChange(consoleSet.exIdx, consoleSet.setIdx, side)}
           onRepsChange={(v) => onRepsChange(consoleSet.exIdx, consoleSet.setIdx, v)}
           onWeightChange={(v) => onWeightChange(consoleSet.exIdx, consoleSet.setIdx, v)}
           onKindChange={(kind) => onKindChange(consoleSet.exIdx, consoleSet.setIdx, kind)}

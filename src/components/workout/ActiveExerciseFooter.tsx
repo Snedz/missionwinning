@@ -11,8 +11,13 @@ import { Button } from '@/components/ui/button';
 import { ActiveSetOptionsMenu } from '@/components/workout/ActiveSetOptionsMenu';
 import { shouldShowSetOptionsFooter } from '@/lib/workout/activeWorkoutHelpers';
 import { SET_KINDS, setKindDefaultLabel, setKindLabelKey } from '@/lib/workout/setKind';
+import {
+  SET_SIDES,
+  setSideDefaultLabel,
+  setSideLabelKey,
+} from '@/lib/workout/unilateral';
 import { cn } from '@/lib/utils';
-import type { SetKind } from '@/types';
+import type { SetKind, SetSide } from '@/types';
 
 type Props = {
   isCompact: boolean;
@@ -20,6 +25,9 @@ type Props = {
   restSec: number;
   activeSetKind: SetKind;
   onSetKindChange: (kind: SetKind) => void;
+  offerSetSide?: boolean;
+  activeSetSide?: SetSide;
+  onSetSideChange?: (side: SetSide | undefined) => void;
   onAddSet: () => void;
   /** After a working set — start a drop of that set (existing `kind: 'drop'`). */
   canStartDrop: boolean;
@@ -40,6 +48,9 @@ export function ActiveExerciseFooter({
   restSec,
   activeSetKind,
   onSetKindChange,
+  offerSetSide = false,
+  activeSetSide,
+  onSetSideChange,
   onAddSet,
   canStartDrop,
   onStartDrop,
@@ -107,6 +118,31 @@ export function ActiveExerciseFooter({
               {t(setKindLabelKey(k), {
                 defaultValue: k === 'normal' ? 'Work' : setKindDefaultLabel(k),
               })}
+            </button>
+          ))}
+        </div>
+      )}
+      {!isCompact && holdsActiveSet && offerSetSide && onSetSideChange && (
+        <div
+          className="flex flex-wrap items-center gap-1"
+          data-testid="desktop-set-side"
+          role="group"
+          aria-label={t('activeSetSideAria', { defaultValue: 'Set side' })}
+        >
+          {SET_SIDES.map((s) => (
+            <button
+              key={s}
+              type="button"
+              aria-pressed={activeSetSide === s}
+              onClick={() => onSetSideChange(activeSetSide === s ? undefined : s)}
+              className={cn(
+                'min-h-[44px] border-2 px-2 text-[11px] font-semibold uppercase tracking-[0.06em] transition-colors tap-target',
+                activeSetSide === s
+                  ? 'border-border bg-muted text-foreground'
+                  : 'border-border text-muted-foreground hover:bg-muted'
+              )}
+            >
+              {t(setSideLabelKey(s), { defaultValue: setSideDefaultLabel(s) })}
             </button>
           ))}
         </div>

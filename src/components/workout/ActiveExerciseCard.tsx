@@ -34,6 +34,7 @@ import type {
   Exercise,
   LoggedSet,
   SetKind,
+  SetSide,
 } from '@/types';
 
 type TemplateSet = { reps: number; weight: number; kind?: SetKind; rpe?: LoggedSet['rpe'] };
@@ -81,6 +82,9 @@ type Props = {
   /** Kind of the set currently being entered, and how to change it. */
   activeSetKind: SetKind;
   onSetKindChange: (kind: SetKind) => void;
+  offerSetSide?: boolean;
+  activeSetSide?: SetSide;
+  onSetSideChange?: (side: SetSide | undefined) => void;
 };
 
 export function ActiveExerciseCard({
@@ -119,6 +123,9 @@ export function ActiveExerciseCard({
   onLogSet,
   activeSetKind,
   onSetKindChange,
+  offerSetSide = false,
+  activeSetSide,
+  onSetSideChange,
 }: Props) {
   const isCompact = useIsCompact();
   const [menuOpen, setMenuOpen] = useState(false);
@@ -230,6 +237,9 @@ export function ActiveExerciseCard({
           restSec={restSec}
           activeSetKind={activeSetKind}
           onSetKindChange={onSetKindChange}
+          offerSetSide={offerSetSide}
+          activeSetSide={activeSetSide}
+          onSetSideChange={onSetSideChange}
           onAddSet={onAddSet}
           canStartDrop={canStartDrop(exLog.sets)}
           onStartDrop={onStartDrop}

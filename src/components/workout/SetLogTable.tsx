@@ -15,6 +15,7 @@ import { useTranslation } from 'react-i18next';
 import { Badge } from '@/components/ui/badge';
 import type { LoggedSet, SetKind } from '@/types';
 import { setKindBadgeClass, setKindDefaultLabel, setKindLabelKey } from '@/lib/workout/setKind';
+import { parseSetSide, setSideDefaultLabel, setSideLabelKey } from '@/lib/workout/unilateral';
 import { rpeDefaultLabel, rpeLabelKey } from '@/lib/workout/rpeLabel';
 import { cn } from '@/lib/utils';
 
@@ -83,6 +84,7 @@ export function SetLogTable({
           const isActive = setIdx === activeSetIdx;
           const kind = set.kind ?? ('normal' as SetKind);
           const completed = Boolean(set.completed);
+          const side = parseSetSide(set.side);
 
           return (
             <tr
@@ -105,6 +107,14 @@ export function SetLogTable({
                 )}
               >
                 {pairMark ? `${pairMark}·${setIdx + 1}` : setIdx + 1}
+                {side ? (
+                  <span
+                    className="ms-1 text-[11px] font-semibold uppercase tracking-[0.06em] text-muted-foreground"
+                    data-testid="set-table-side"
+                  >
+                    {t(setSideLabelKey(side), { defaultValue: setSideDefaultLabel(side) })}
+                  </span>
+                ) : null}
               </th>
 
               <td

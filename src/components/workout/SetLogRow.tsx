@@ -21,6 +21,7 @@ import {
   setKindDefaultLabel,
   setKindLabelKey,
 } from '@/lib/workout/setKind';
+import { parseSetSide, setSideDefaultLabel, setSideLabelKey } from '@/lib/workout/unilateral';
 import { rpeDefaultLabel, rpeLabelKey } from '@/lib/workout/rpeLabel';
 import { formatLoggedSetLine } from '@/lib/workout/activeWorkoutHelpers';
 import { cn } from '@/lib/utils';
@@ -65,6 +66,7 @@ export function SetLogRow({
 }: Props) {
   const { t } = useTranslation();
   const kind = set.kind ?? 'normal';
+  const side = parseSetSide(set.side);
   const line = formatLoggedSetLine(
     set.reps,
     set.weight,
@@ -112,6 +114,14 @@ export function SetLogRow({
       >
         {pairMark ? `${pairMark}·${setNumber}` : setNumber}
       </span>
+      {side ? (
+        <span
+          className="w-[1.75rem] shrink-0 text-[11px] font-semibold uppercase tracking-[0.06em] text-muted-foreground"
+          data-testid="set-row-side"
+        >
+          {t(setSideLabelKey(side), { defaultValue: setSideDefaultLabel(side) })}
+        </span>
+      ) : null}
 
       {/* PREVIOUS — set-row metric anchor (Hevy web withholds; we show). */}
       <span

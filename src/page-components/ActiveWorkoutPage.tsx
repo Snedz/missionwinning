@@ -113,6 +113,7 @@ export function ActiveWorkoutPage() {
   const logSetAndAdvance = useWorkoutStore((s) => s.logSetAndAdvance);
   const rateSet = useWorkoutStore((s) => s.rateSet);
   const setSetKind = useWorkoutStore((s) => s.setSetKind);
+  const setSetSide = useWorkoutStore((s) => s.setSetSide);
   const toggleSupersetWithNext = useWorkoutStore((s) => s.toggleSupersetWithNext);
   const unlinkSuperset = useWorkoutStore((s) => s.unlinkSuperset);
   const addSetToExercise = useWorkoutStore((s) => s.addSetToExercise);
@@ -656,6 +657,7 @@ export function ActiveWorkoutPage() {
           }
           onLogSet={(exIdx, setIdx) => handleLogSet(exIdx, setIdx)}
           onSetKindChange={handleSetKindChange}
+          onSetSideChange={(exIdx, setIdx, side) => setSetSide(exIdx, setIdx, side)}
         />
       )}
 
@@ -703,6 +705,7 @@ export function ActiveWorkoutPage() {
         onRepsChange={(exIdx, setIdx, reps) => updateSetInput(exIdx, setIdx, 'reps', reps)}
         onWeightChange={(exIdx, setIdx, weight) => updateSetInput(exIdx, setIdx, 'weight', weight)}
         onKindChange={handleSetKindChange}
+        onSideChange={(exIdx, setIdx, side) => setSetSide(exIdx, setIdx, side)}
         onLog={(exIdx, setIdx) => handleLogSet(exIdx, setIdx)}
         onApplyFieldPatches={(exIdx, setIdx, patches) => {
           for (const p of patches) {
