@@ -71,7 +71,7 @@ test('header and menu defaultValues stay honest and wired', () => {
   assert.match(header, /sessionE1rmFromSets/);
   assert.match(header, /data-testid="session-e1rm"/);
   assert.match(header, /SESSION_E1RM_COPY\.line/);
-  assert.match(header, /not a tested max/);
+  assert.match(header, /SESSION_E1RM_COPY\.aria/);
   assert.doesNotMatch(header, /test your 1RM/i);
   assert.doesNotMatch(header, /your max/i);
   assert.match(menu, /SESSION_E1RM_COPY\.(hide|show)/);
