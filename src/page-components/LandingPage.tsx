@@ -18,7 +18,6 @@ export function LandingPage() {
   const door = (
     <>
       <div className="www-cine-mark">
-        {/* eslint-disable-next-line @next/next/no-img-element -- real brand SVG */}
         <img src="/brand/logo-icon.svg" alt="" width={96} height={96} />
       </div>
       <p className="eyebrow-live www-cine-kicker www-cine-mark-follow">

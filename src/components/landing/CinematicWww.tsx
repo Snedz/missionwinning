@@ -35,7 +35,6 @@ type Props = {
 
 function Mark({ size = 36 }: { size?: number }) {
   return (
-    // eslint-disable-next-line @next/next/no-img-element -- real brand SVG, not a raster
     <img
       src="/brand/logo-icon.svg"
       alt=""
@@ -116,7 +115,7 @@ export function CinematicWww({ mode, door }: Props) {
                 {WEEK.map((day) => (
                   <div
                     key={day.d}
-                    className={day.rewrite ? 'www-cine-day is-rewritten' : 'www-cine-day'}
+                    className={'rewrite' in day && day.rewrite ? 'www-cine-day is-rewritten' : 'www-cine-day'}
                   >
                     <strong>{day.d}</strong>
                     <b>{day.w}</b>
