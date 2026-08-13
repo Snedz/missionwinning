@@ -23,7 +23,7 @@
 | `../ui/AdaptiveOverlay.tsx` | Compact bottom sheet / md+ centered dialog |
 | `StaggerReveal.tsx` | Staggered entrance motion |
 | `OnlineStatusBanner.tsx` | Offline/sync banner |
-| `AnalyticsConsentBanner.tsx` | First-visit product analytics choice (private by default) |
+| `AnalyticsConsentBanner.tsx` | First-visit product analytics choice (private by default); docks into the `ScreenDock` host so it never covers the logger (`.745`) |
 
 ## Two surfaces — read this before changing structure
 

@@ -11,6 +11,101 @@ Archive: [2026-06 → 2026-07-20](docs/archive/log/LOG-2026-06_to_2026-07-20.md)
 
 --- · [`.492` for `.507`](docs/archive/log/LOG-rotate-507.md). · [`.493` for `.508`](docs/archive/log/LOG-rotate-508.md). · [`.494` for `.509`](docs/archive/log/LOG-rotate-509.md). · [`.495` for `.510`](docs/archive/log/LOG-rotate-510.md). · [`.496` for `.511`](docs/archive/log/LOG-rotate-511.md). · [`.497` for `.512`](docs/archive/log/LOG-rotate-512.md). · [`.498` for `.513`](docs/archive/log/LOG-rotate-513.md). · [`.499` for `.514`](docs/archive/log/LOG-rotate-514.md). · [`.500` for `.515`](docs/archive/log/LOG-rotate-515.md). · [`.501` for `.516`](docs/archive/log/LOG-rotate-516.md). · [`.502` for `.517`](docs/archive/log/LOG-rotate-517.md). · [`.503` for `.518`](docs/archive/log/LOG-rotate-518.md). · [`.504` for `.519`](docs/archive/log/LOG-rotate-519.md). · [`.505` for `.520`](docs/archive/log/LOG-rotate-520.md). · [`.506` for `.521`](docs/archive/log/LOG-rotate-521.md). · [`.507` for `.522`](docs/archive/log/LOG-rotate-522.md). · [`.508` for `.523`](docs/archive/log/LOG-rotate-523.md). · [`.509` for `.524`](docs/archive/log/LOG-rotate-524.md). · [`.510` for `.525`](docs/archive/log/LOG-rotate-525.md). · [`.511` for `.526`](docs/archive/log/LOG-rotate-526.md). · [`.512` for `.527`](docs/archive/log/LOG-rotate-527.md). · [`.513` for `.528`](docs/archive/log/LOG-rotate-528.md). · [`.514` for `.529`](docs/archive/log/LOG-rotate-529.md). · [`.515` for `.530`](docs/archive/log/LOG-rotate-530.md). · [`.516` for `.531`](docs/archive/log/LOG-rotate-531.md). · [`.517` for `.532`](docs/archive/log/LOG-rotate-532.md). · [`.518` for `.533`](docs/archive/log/LOG-rotate-533.md). · [`.519` for `.534`](docs/archive/log/LOG-rotate-534.md). · [`.520` for `.535`](docs/archive/log/LOG-rotate-535.md). · [`.521` for `.536`](docs/archive/log/LOG-rotate-536.md). · [`.522` for `.537`](docs/archive/log/LOG-rotate-537.md). · [`.523` for `.538`](docs/archive/log/LOG-rotate-538.md). · [`.524` for `.539`](docs/archive/log/LOG-rotate-539.md). · [`.525` for `.540`](docs/archive/log/LOG-rotate-540.md). · [`.526` for `.541`](docs/archive/log/LOG-rotate-541.md). · [`.527` for `.542`](docs/archive/log/LOG-rotate-542.md). · [`.528` for `.543`](docs/archive/log/LOG-rotate-543.md). · [`.529` for `.544`](docs/archive/log/LOG-rotate-544.md). · [`.530` for `.545`](docs/archive/log/LOG-rotate-545.md). · [`.531` for `.546`](docs/archive/log/LOG-rotate-546.md). · [`.532` for `.547`](docs/archive/log/LOG-rotate-547.md). · [`.533` for `.548`](docs/archive/log/LOG-rotate-548.md). · [`.534` for `.549`](docs/archive/log/LOG-rotate-549.md). · [`.535` for `.550`](docs/archive/log/LOG-rotate-550.md). · [`.536` for `.551`](docs/archive/log/LOG-rotate-551.md). · [`.537` for `.552`](docs/archive/log/LOG-rotate-552.md). · [`.538` for `.553`](docs/archive/log/LOG-rotate-553.md). · [`.539` for `.554`](docs/archive/log/LOG-rotate-554.md). · [`.540` for `.555`](docs/archive/log/LOG-rotate-555.md). · [`.541` for `.556`](docs/archive/log/LOG-rotate-556.md). · [`.542` for `.557`](docs/archive/log/LOG-rotate-557.md). · [`.543` for `.558`](docs/archive/log/LOG-rotate-558.md). · [`.544` for `.559`](docs/archive/log/LOG-rotate-559.md). · [`.545` for `.560`](docs/archive/log/LOG-rotate-560.md). · [`.546` for `.561`](docs/archive/log/LOG-rotate-561.md). · [`.547` for `.562`](docs/archive/log/LOG-rotate-562.md). · [`.548` for `.563`](docs/archive/log/LOG-rotate-563.md). · [`.549` for `.564`](docs/archive/log/LOG-rotate-564.md). · [`.550` for `.565`](docs/archive/log/LOG-rotate-565.md). · [`.551` for `.566`](docs/archive/log/LOG-rotate-566.md). · [`.552` for `.567`](docs/archive/log/LOG-rotate-567.md). · [`.553` for `.568`](docs/archive/log/LOG-rotate-568.md). · [`.554` for `.569`](docs/archive/log/LOG-rotate-569.md). · [`.555` for `.570`](docs/archive/log/LOG-rotate-570.md). · [`.556` for `.571`](docs/archive/log/LOG-rotate-571.md). · [`.557` for `.572`](docs/archive/log/LOG-rotate-572.md). · [`.558` for `.573`](docs/archive/log/LOG-rotate-573.md). · [`.559` for `.574`](docs/archive/log/LOG-rotate-574.md). · [`.560` for `.575`](docs/archive/log/LOG-rotate-575.md). · [`.561` for `.576`](docs/archive/log/LOG-rotate-576.md). · [`.562` for `.577`](docs/archive/log/LOG-rotate-577.md). · [`.563` for `.578`](docs/archive/log/LOG-rotate-578.md). · [`.564` for `.579`](docs/archive/log/LOG-rotate-579.md). · [`.565` for `.580`](docs/archive/log/LOG-rotate-580.md). · [`.566` for `.581`](docs/archive/log/LOG-rotate-581.md). · [`.567` for `.582`](docs/archive/log/LOG-rotate-582.md). · [`.568` for `.583`](docs/archive/log/LOG-rotate-583.md). · [`.569` for `.584`](docs/archive/log/LOG-rotate-584.md). · [`.570` for `.585`](docs/archive/log/LOG-rotate-585.md). · [`.571` for `.586`](docs/archive/log/LOG-rotate-586.md). · [`.572` for `.587`](docs/archive/log/LOG-rotate-587.md). · [`.573` for `.588`](docs/archive/log/LOG-rotate-588.md). · [`.574` for `.589`](docs/archive/log/LOG-rotate-589.md). · [`.575` for `.590`](docs/archive/log/LOG-rotate-590.md). · [`.576` for `.591`](docs/archive/log/LOG-rotate-591.md). · [`.577` for `.592`](docs/archive/log/LOG-rotate-592.md). · [`.578` for `.593`](docs/archive/log/LOG-rotate-593.md). · [`.581` for `.596`](docs/archive/log/LOG-rotate-596.md). · [`.582` for `.597`](docs/archive/log/LOG-rotate-597.md). · [`.583` for `.598`](docs/archive/log/LOG-rotate-598.md). · [`.584` for `.599`](docs/archive/log/LOG-rotate-599.md). · [`.585` for `.600`](docs/archive/log/LOG-rotate-600.md). · [`.586` for `.601`](docs/archive/log/LOG-rotate-601.md). · [`.587` for `.602`](docs/archive/log/LOG-rotate-602.md). · [`.588` for `.603`](docs/archive/log/LOG-rotate-603.md). · [`.590` for `.606`](docs/archive/log/LOG-rotate-606.md). · [`.596` for `.612`](docs/archive/log/LOG-rotate-612.md). · [`.597` for `.613`](docs/archive/log/LOG-rotate-613.md). · [`.599` for `.614`](docs/archive/log/LOG-rotate-614.md). · [`.600` for `.615`](docs/archive/log/LOG-rotate-615.md). · [`.601` for `.616`](docs/archive/log/LOG-rotate-616.md). · [`.602` for `.617`](docs/archive/log/LOG-rotate-617.md). · [`.603` for `.618`](docs/archive/log/LOG-rotate-618.md). · [`.604` for `.619`](docs/archive/log/LOG-rotate-619.md). · [`.655` for `.670`](docs/archive/log/LOG-rotate-655-for-670.md). · [`.656` for `.679`](docs/archive/log/LOG-rotate-656-for-679.md). · [`.657` for `.680`](docs/archive/log/LOG-rotate-657-for-680.md). · [`.658` for `.684`](docs/archive/log/LOG-rotate-658-for-684.md). · [`.659` for `.685`](docs/archive/log/LOG-rotate-659-for-685.md). · [`.660` for `.689`](docs/archive/log/LOG-rotate-660-for-689.md). · [`.661` for `.690`](docs/archive/log/LOG-rotate-661-for-690.md). · [`.662` for `.691`](docs/archive/log/LOG-rotate-662-for-691.md). · [`.663` for `.692`](docs/archive/log/LOG-rotate-663-for-692.md). · [`.664` for `.693`](docs/archive/log/LOG-rotate-664-for-693.md). · [`.665` for `.694`](docs/archive/log/LOG-rotate-665-for-694.md). · [`.666` for `.695`](docs/archive/log/LOG-rotate-666-for-695.md). · [`.667` for `.696`](docs/archive/log/LOG-rotate-667-for-696.md). · [`.668` for `.697`](docs/archive/log/LOG-rotate-668-for-697.md).
 
+## 2026-08-13 — www Kaizen: first paint, and only true claims (`.745`)
+
+Read the live site rather than the repo. `PRIVATE_MODE` is on, so `/` 307s to
+`/private` — **that page is www** — and the entire visible text of its
+server-rendered body was three words:
+
+    Checking sign-in…
+
+`PrivateTeaserClient` opened with `sessionUnlocking = true` and returned a
+centred one-liner until a **6-second** bounded session probe (`.684`) resolved.
+Correct fail-open logic, wired as a page-level early return, so the poster, the
+promise and the only public capture point in the product were all withheld from
+every cold visitor, every crawler, and anyone whose JS was slow or dead. The
+other public entry, `/welcome`, served **no visible text at all**: it is
+prerendered, `WelcomePage` called `useSearchParams()`, so the whole page became
+a Suspense child and the HTML Vercel served was the fallback — one
+`aria-hidden` `SkeletonCard`. The `/compare` redirect (`.668`), the guidebook
+CTAs (`.680`) and the gate's own links all point there.
+
+**Nothing in the suite could see either one.** e2e reads the hydrated DOM; the
+source guards read source. Hydration is exactly the step neither defect
+survived to. The Preview link in the brief is behind Vercel SSO (302 →
+`sso-api`), so production HTML and a local gated build were the artifacts.
+
+**Ship.** `/private` and `/welcome` resolve their query on the server
+(`initialInvite`/`initialNext`, `initialEdit`) so neither needs a boundary; the
+gate probe now runs *under* the poster and says so in one `aria-live` line.
+Gate copy floors from a new EN-only `src/i18n/gateEn.ts` — the `.653` fix for
+legal pages, applied to the front door — because the hand-typed `defaultValue`s
+and the pack had drifted into **two different claims**: first paint said
+*"Private beta in progress"* and *"Get notified at launch"*, hydration replaced
+them with *"Invite-only open beta"* and *"Get an invite"*. Raw keys:
+`guidebookTitle` and **27** `BundlePage` keys had no `defaultValue` and are
+absent from `BOOTSTRAP_EN`, so they printed themselves for ~2.8s; `/bundle`'s
+textless fallback became `RouteLoading`. On `/welcome`, six keys were reverted
+to the 2026-07-23 "Humanize Welcome" wording and the **pack** updated to match,
+because a three-week-older pack value had been silently overwriting that copy on
+every hydration — a craft ship that only ever displayed for two seconds.
+
+**Honesty, obeying `supportedRegions.ts`.** The chrome badge read *"Open beta"*
+on `/regions`, `/terms` and every page that stays public while the gate is up,
+to visitors who cannot get in without a code — the landing already says
+*invite-only*. It now reads **Invite-only beta** whenever the gate is on. And
+the gate waitlist was asking **every** territory for an email under the promise
+*"We'll email you when a seat opens"*, including Europe, Canada, Ukraine and the
+57 OIC states, where signup and checkout are hard-blocked and no seat ever
+opens. `waitlistTerritory.ts` reads the `blocked` flag `/api/geo` had already
+been computing and nothing had ever read: a named exclusion gets the policy
+sentence and `/regions` instead of the ask, an *unconfirmed* country (XX / Tor)
+keeps the form and gets the notice, and anything unreadable **fails open** — a
+supported athlete must never be told they are excluded because a fetch changed
+shape. The language picker (fr/de/it/ar/id, every one of those markets blocked)
+now says in one line that a language is not a territory.
+
+**Logger chrome.** Measured at 390×844 with `NEXT_PUBLIC_POSTHOG_KEY` set: the
+consent banner is `fixed bottom-0 z-[60]` over a `z-50` tab bar, y=702–844,
+covering **Start Workout**, the Just Go card, and all five tabs. Hard rule 2
+says the free logger is never gated; chrome parked on its button is a gate with
+manners. `ScreenDock` already documents this exact shape as `RestTimerBar`
+"floating over the very set row it describes", so the banner portals into the
+same host and reserves its height. Re-measured: nothing covered. The key is
+unset in production, so this was a defect waiting for the day analytics is
+switched on.
+
+**Guards.** `firstPaintFloor.test.ts` **discovers** rather than enumerates —
+both defects were ordinary-looking files no allowlist would have named. Every
+`t()` call site must pass `defaultValue` or hold a `BOOTSTRAP_EN` key; public
+routes may not first-paint a textless placeholder (resolving one level into the
+fallback component, `.253`'s rule, so `<RouteLoading label="Account"/>` is
+judged on what it renders); copy drift is a ratchet at **193** with the four
+front-door files pinned at zero; computed-key calls are a ratchet at 9. A floor
+on the scan itself (≥2000 call sites) because both defects were things a check
+looked at and did not see. `gate-smoke` now reads the served **bytes** of
+`/private` and `/welcome` — red against production today, green against a local
+gated build. **13 mutants killed**, two of which were defects in the guard
+found by mutating it: a single-quote-only key regex that classified 25 raw keys
+as unknowable, and a `/welcome` needle that matched `<title>` and so passed on a
+blank body. Also repaired two gate steps that were **already red on master**:
+i18n parity (3 `learn` keys over the beachhead cap for es/fr/pt) and i18n
+coverage (3 keys used in the UI with no EN pack).
+
+**Not done, deliberately:** no `PRIVATE_MODE` flip, no locale added or removed
+(a language is not a territory), no landing redesign, no traction claims. Left
+for the founder: `welcomeBegin` still says *"Begin"* because
+`first-90.spec.ts` taps that exact label while the newer component copy says
+*"Continue"* — a copy call with a test coupling, not an agent's. `public/locales`
+is ~3,100 lines stale against `src/i18n`; only this PR's keys were patched, and
+that overlay has been opt-in since `.222`.
+
+Label `.745` (onto master `.697`). Excellence-Override below.
+
+Excellence-Override: www kaizen first-paint (RESULT unscored)
+
+Rotated LOG oldest → [docs/archive/log/LOG-rotate-669-for-745.md](docs/archive/log/LOG-rotate-669-for-745.md).
+
 ## 2026-08-12 — Session-expired fail-open for mid-set Log/rest (`.697`)
 
 Kaizen Strong acceptance on F-001: auth session expiry / sync must not block
@@ -228,14 +323,3 @@ quiet recovery line only when the share ladder fully fails (not on user cancel).
 manual A hierarchy for the free Coach primary; Peak-End trust on silent fail.
 
 Rotated LOG oldest → [docs/archive/log/LOG-rotate-655-for-670.md](docs/archive/log/LOG-rotate-655-for-670.md).
-
-## 2026-08-10 — Horizon W excellence RESULT + agent stop-rule (`.669`)
-
-Process ratchet for the open excellence loop: one home at `docs/EXCELLENCE_RESULT.md`
-(`status: unscored|pass|fail`), pure `src/lib/excellenceGate.ts` path policy, and
-`npm run check-excellence-gate` on local gate + PR CI. Surface paths fail while status
-is not `pass` unless `Excellence-Override: <reason>` (env override local-only). Wedge
-Train/Today/Coach still ships. ORCHESTRATION names the sign-off file; Android Accept B
-stays separate.
-
-Rotated LOG oldest → [docs/archive/log/LOG-rotate-654.md](docs/archive/log/LOG-rotate-654.md).

@@ -456,3 +456,4 @@ Canonical live launch path: root **[LAUNCH_RUNBOOK.md](../LAUNCH_RUNBOOK.md)** +
 | [log/LOG-rotate-660-for-689.md](./log/LOG-rotate-660-for-689.md) | rotated 2026-08-12 for `.689` Today loading skeleton md width parity (`.660` Fuel free-beta recipe empty mute) |
 | [log/LOG-rotate-656-for-679.md](./log/LOG-rotate-656-for-679.md) | rotated 2026-08-12 for `.679` Today /log coach refresh loop (`.656` Move free-beta mute) |
 | [log/LOG-rotate-657-for-680.md](./log/LOG-rotate-657-for-680.md) | rotated 2026-08-12 for `.680` guidebook Ch4 + magazine wedge CTAs |
+| [log/LOG-rotate-669-for-745.md](./log/LOG-rotate-669-for-745.md) | rotated 2026-08-13 for `.745` www Kaizen first paint (`.669` excellence RESULT + agent stop-rule) |
