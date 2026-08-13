@@ -1,50 +1,59 @@
-# Transparency report — Why this (`.729`)
-
-Frozen implementation plan. Build only this. **Not** an X Settings clone and **not** a For You ranker — we do not have one.
+# Transparency — Visibility + Under the Hood (`.729`)
 
 Excellence-Override: X-style why-this transparency report.
 
-## Steal
+Account ships two surfaces. **Visibility** lists whether anything is limited and the exact reason. **Under the Hood** publishes BOOSTS / PENALTIES as a dark tabular card. Download (JSON + text) is the same report object: reasons, weights, and labels on this athlete.
 
-On Account, a **Why this** report the athlete can open and **download** (JSON + plain text). Each row has a **plain reason** (no mystery sauce).
+## Routes
 
-Route: `/account/transparency`. Entry: Account card (day-one stack, not only More settings).
-
-## Rows (exactly these)
-
-| id | What it states |
+| URL | Page |
 |---|---|
-| `logger` | Offline, no account required, never gated by paywall. Always `open`. |
-| `access` | `PRIVATE_MODE` / open-beta: whether this deploy is gated and why (invite/access-code launch gate, or open). Free-beta depth unlock is named here, not as suppression. |
-| `region` | If hosted signup/checkout is blocked, name the existing policy (`canada` / `europe` / `oic` / `ukraine` / `unknown_edge`) via `supportedRegions.ts`. Logger is not region-gated. |
-| `coach` | Skippable. Why this week’s sessions exist — reuse `buildWeekRationale` (log-cited). Planner blindness: Coach never reads rank / points / boards. |
-| `score` | Publish the **live** earn table from `rewards/catalog.ts` (`XP_BY_ACTION` + `DAILY_ACTION_CAPS` + `DAILY_XP_SOFT_CAP`) as rows: event, points, cap. Club v1 table in `CLUB_PLAN.md` is planned, not live — say so. If a number is not public, say **private-to-self, not suppressed**. |
-| `bundle` | Super Bundle: Get notified until Stripe (FREE_BETA mute and/or no live checkout). Not a shadowban. |
+| `/account/transparency` | Visibility — N limits apply / each check + reason |
+| `/account/under-the-hood` | Scoring weights — BOOSTS / PENALTIES |
+
+Entry: Account card (after sign-in), with downloads on the card.
+
+## Visibility rows (exactly these)
+
+| id | Status when it applies | What it states |
+|---|---|---|
+| `logger` | always `open` | Offline, no account, never paywalled. |
+| `access` | `gated` if PRIVATE_MODE | Invite/access-code launch gate, or open. |
+| `region` | `limited` if hosted signup blocked | Named policy via `supportedRegions.ts`. Logger is not region-gated. |
+| `coach` | `skipped` if no week | Skippable. Why-line from `buildWeekRationale`. Planner reads logs only. |
+| `score` | always `hidden` | Mission Score / XP stay on this device. |
+| `bundle` | `limited` if checkout muted | Notify only until Stripe. |
+
+## Under the Hood
+
+**BOOSTS (live)** = `src/lib/rewards/catalog.ts` (`XP_BY_ACTION` + caps). Source line: `src/lib/rewards/catalog.ts • defaults`.
+
+**BOOSTS (Club planned)** = `docs/CLUB_PLAN.md` v1 (session +10, coach-plan +5, …). Labeled planned. Not awarding today.
+
+**PENALTIES** = report / mute / block / hide. Visibility filters. Display: `does not debit points`. No ROOM SCORE table exists — do not invent magnitudes. Never “you lost N pts”.
+
+Do not clone another product’s chrome or mascot. Do not treat another product’s ranking scores as XP.
+
+## Download
+
+JSON + text from the same report: rows, earn table, `boosts`, `clubPlannedBoosts`, `penalties`, `athleteLabels`, `sources`.
 
 ## Refuse
 
-- X Settings UI, impressions, For You, shadowban of other users
-- Paying people to talk / X-weights-as-XP
+- Impressions, feed ranking, hiding other users
+- Paying people to talk / treating foreign ranking scores as XP
 - Standing on the log path
-- Claiming we suppress posts
+- Claiming we hide posts
 - EIN work, `PRIVATE_MODE` production flip, invite-only product change
-
-## Shape
-
-Pure builder `src/lib/transparency/` (surface). Input is injectable (gate, free-beta, stripe, territory, coach rationale). Output is one report object. Download formatters read **that same object** — JSON and plain text must carry the same `reason` strings.
-
-Statuses: `open` | `gated` | `hidden` | `limited` | `info`. Every row has a non-empty `reason`. Every `gated` / `hidden` / `limited` row has a reason (tested).
-
-Reason copy lives in the builder (English, cookie-policy inventory posture) so the download is stable. Page chrome goes through `athleteLocales`.
 
 ## Tests
 
-- Copy-guard: transparency lib + page + card must not contain forbidden phrases (`shadowban`, `impressions`, `For You`, `suppress posts`, `paying people`, `x-weight`).
-- Unit: every gated/hidden/limited fixture has a reason; logger never gated; coach cites rationale or “no week yet / skippable” + blindness; earn table matches catalog; download JSON/text reasons === report reasons.
-- `check-build-label` `.729`.
+- Copy-guard on lib + pages + panel
+- Every gated/hidden/limited/skipped fixture has a reason
+- Download includes weights + athlete labels
+- Live boosts match catalog; Club session/coach-plan match CLUB_PLAN; penalties never debit
+- `check-build-label` `.729`
 
-## Docs / ship
+## Help
 
-Label `2026.07-unified.729`. Occupied `.698`–`.728`. Draft PR. One Preview max. `[skip vercel]` on the plan-only commit.
-
-Help: one short paragraph on `docs/help/privacy-and-data.md`. Indexes: `app/`, `page-components/`, `src/lib/`, `docs/help/`, root `INDEX.md`. Excellence gate: register `src/lib/transparency` as surface.
+`docs/help/privacy-and-data.md` — Visibility + Under the Hood. Mission Server: replies from people you trained with beat likes; likes are weak.

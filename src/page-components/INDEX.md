@@ -79,7 +79,8 @@
 |------|-------|
 | `ProfilePage.tsx` | `/profile` — the Athlete Page: identity, career line, badge shelf |
 | `AccountPage.tsx` | `/account` — settings; cards in `src/components/profile/` |
-| `TransparencyPage.tsx` | `/account/transparency` — Why this report (download JSON + text) |
+| `TransparencyPage.tsx` | `/account/transparency` — Visibility report (download JSON + text) |
+| `UnderTheHoodPage.tsx` | `/account/under-the-hood` — BOOSTS / PENALTIES weights |
 | `PrivacyPage.tsx` | `/privacy` |
 | `CookiesPage.tsx` | `/cookies` |
 | `AccessibilityPage.tsx` | `/accessibility` |

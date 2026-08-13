@@ -26,9 +26,13 @@ Connecting Apple Health, Google Health Connect, Whoop, Strava, or similar is **o
 
 Manual JSON/CSV imports on Track stay on-device (same as other Track logs) until you sign in and sync.
 
-## Why this (transparency)
+## Visibility and Under the Hood
 
-Account → **Why this** lists plain reasons for gates and hidden numbers: the logger stays free and offline, whether this deploy is invite-gated, region policy if hosted signup is blocked, why this week's Coach sessions exist (from your logs), the live points table, and Super Bundle "get notified until Stripe." Download the same report as JSON or text. Numbers that stay on your device are private-to-you, not suppressed.
+Account → **Visibility** lists whether anything is limited and the exact reason: the logger stays free and offline, whether this deploy is invite-gated, region policy if hosted signup is blocked, whether Coach was skipped, that Mission Score stays on your device, and Super Bundle notify-only until Stripe. Download the same report as JSON or text.
+
+Account → **Under the Hood** publishes scoring weights. **Boosts** are Mission Points this device awards (session finish, coach-adjacent live events, and the planned Club ledger: session, coach-plan, and the rest). **Penalties** (report, mute, block, hide) are visibility filters — they do not debit points.
+
+How to post well in Mission Server: replies from people you trained with beat likes. Likes are weak.
 
 ## Backup and restore
 

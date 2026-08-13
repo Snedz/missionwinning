@@ -1,18 +1,38 @@
 /**
- * Build the Why-this report. Pure: every gate/limit takes an injected fact
- * and returns a named reason. Download formatters consume this object only.
+ * Build the visibility + Under the Hood report. Pure: every gate/limit
+ * takes an injected fact and returns a named reason. Download formatters
+ * consume this object only.
  */
 
 import { TERRITORY_BLOCK_MESSAGES, type TerritoryBlockReason } from '@/lib/legal/supportedRegions';
 import { assertNoForbiddenPhrases } from '@/lib/transparency/copyGuard';
 import { DAILY_XP_SOFT_CAP, publishEarnTable } from '@/lib/transparency/earnTable';
+import {
+  publishClubPlannedBoosts,
+  publishLiveBoosts,
+  publishPenalties,
+  publishWeightsSources,
+} from '@/lib/transparency/weights';
 import type {
+  AthleteLabel,
   TransparencyInput,
   TransparencyReport,
   TransparencyRow,
+  TransparencyStatus,
 } from '@/lib/transparency/types';
 
 const REQUIRED_IDS = ['logger', 'access', 'region', 'coach', 'score', 'bundle'] as const;
+
+const LIMIT_STATUSES: TransparencyStatus[] = ['gated', 'limited'];
+const LABEL_STATUSES: TransparencyStatus[] = ['gated', 'hidden', 'limited', 'skipped'];
+
+export function isLimitStatus(status: TransparencyStatus): boolean {
+  return LIMIT_STATUSES.includes(status);
+}
+
+export function isAthleteLabelStatus(status: TransparencyStatus): boolean {
+  return LABEL_STATUSES.includes(status);
+}
 
 function loggerRow(): TransparencyRow {
   return {
@@ -28,12 +48,10 @@ function accessRow(input: TransparencyInput): TransparencyRow {
   const details: string[] = [];
   if (input.freeBeta) {
     details.push(
-      'Open-beta (FREE_BETA) unlocks Coach depth on this deploy and mutes Super Bundle checkout until payments are live. That is a launch mute, not a visibility limit on your training.'
+      'Open-beta (FREE_BETA) unlocks Coach depth on this deploy and mutes Super Bundle checkout until payments are live.'
     );
   } else {
-    details.push(
-      'Open-beta mute is off. Premium depth follows enrollment; the logger stays free.'
-    );
+    details.push('Open-beta mute is off. Premium depth follows enrollment; the logger stays free.');
   }
 
   if (input.privateGateEnabled) {
@@ -42,7 +60,7 @@ function accessRow(input: TransparencyInput): TransparencyRow {
       title: 'Site access (PRIVATE_MODE)',
       status: 'gated',
       reason:
-        'This deploy is behind PRIVATE_MODE. The public site serves the /private teaser until you unlock with an invite or access code. That is a launch gate so testers can dogfood before a public flip — not a visibility limit on your logs.',
+        'Limited. This deploy is behind PRIVATE_MODE. The public site serves the /private teaser until you unlock with an invite or access code.',
       details,
     };
   }
@@ -51,8 +69,7 @@ function accessRow(input: TransparencyInput): TransparencyRow {
     id: 'access',
     title: 'Site access (PRIVATE_MODE)',
     status: 'open',
-    reason:
-      'This deploy is open (PRIVATE_MODE off). Anyone can reach the app without an invite gate.',
+    reason: 'Not limited. PRIVATE_MODE is off. Anyone can reach the app without an invite gate.',
     details,
   };
 }
@@ -69,7 +86,7 @@ function regionRow(input: TransparencyInput): TransparencyRow {
       id: 'region',
       title: 'Region (hosted service)',
       status: 'limited',
-      reason: `${named} Policy: ${territory.reason ?? 'unknown_edge'}. The Train logger is not region-gated and still works on this device without an account.`,
+      reason: `Limited. ${named} Policy: ${territory.reason ?? 'unknown_edge'}. The Train logger is not region-gated and still works on this device without an account.`,
     };
   }
 
@@ -79,7 +96,7 @@ function regionRow(input: TransparencyInput): TransparencyRow {
       title: 'Region (hosted service)',
       status: 'open',
       reason:
-        'No CDN country on this connection, so hosted signup/checkout are not blocked here. When a country is known, Supported Regions (Europe/EEA, Canada, Ukraine, OIC) apply. The logger is not region-gated.',
+        'Not limited. No CDN country on this connection, so hosted signup/checkout are not blocked here. When a country is known, Supported Regions (Europe/EEA, Canada, Ukraine, OIC) apply. The logger is not region-gated.',
     };
   }
 
@@ -87,21 +104,20 @@ function regionRow(input: TransparencyInput): TransparencyRow {
     id: 'region',
     title: 'Region (hosted service)',
     status: 'open',
-    reason: `Hosted signup and checkout are available for this region (${territory.country}). The logger works everywhere, including offline.`,
+    reason: `Not limited. Hosted signup and checkout are available for this region (${territory.country}). The logger works everywhere, including offline.`,
   };
 }
 
 function coachRow(input: TransparencyInput): TransparencyRow {
-  const blindness =
-    'The planner is blind to standing. Coach never reads rank, points, or leaderboards — only your logs.';
+  const blindness = 'The planner reads logs only — never rank, points, or leaderboards.';
   const skippable = 'Coach is skippable: you can log freely without generating a week.';
 
   if (!input.coach.hasPlan) {
     return {
       id: 'coach',
       title: 'Mission Coach',
-      status: 'info',
-      reason: `No week generated yet. ${skippable} ${blindness}`,
+      status: 'skipped',
+      reason: `Skipped. No week generated yet. ${skippable} ${blindness}`,
     };
   }
 
@@ -126,13 +142,13 @@ function scoreRow(): TransparencyRow {
   return {
     id: 'score',
     title: 'Mission Score and points',
-    status: 'info',
+    status: 'hidden',
     reason:
-      'The live earn table below is what this device awards (event, points, cap). Your XP total and Mission Score stay on this device — private-to-self, not suppressed. Standing never sits on the log path or in Coach.',
+      'Hidden. Mission Score and XP stay on this device — private to you. Standing never sits on the log path or in Coach.',
     details: [
-      `Soft daily XP cap: ${DAILY_XP_SOFT_CAP}. Per-action caps are in the table.`,
-      'Club server ledger (CLUB_PLAN v1) is planned and not live — those numbers are not hidden; they are not shipping yet.',
-      "Mission Score is a weekly grade from this week's logs on this device, not a public rank.",
+      `Soft daily XP cap: ${DAILY_XP_SOFT_CAP}. Per-action caps are in Under the Hood.`,
+      'Club server ledger (CLUB_PLAN v1) is planned and not live.',
+      "Mission Score is a weekly grade from this week's logs on this device.",
     ],
   };
 }
@@ -142,9 +158,9 @@ function bundleRow(input: TransparencyInput): TransparencyRow {
     return {
       id: 'bundle',
       title: 'Super Bundle',
-      status: 'gated',
+      status: 'limited',
       reason:
-        'Get notified until Stripe. Checkout is muted because payments are not live on this deploy (free-first beta and/or Stripe unset) — not a visibility limit, and not a ban on your account.',
+        'Notify only. Checkout is off until Stripe is live on this deploy (free-first beta and/or Stripe unset).',
       details: [
         'The logger stays free. Coach depth stays unlocked while FREE_BETA is on.',
         'When Stripe is live and free-beta is off, Super Bundle checkout appears. Until then: join the notify list.',
@@ -157,8 +173,22 @@ function bundleRow(input: TransparencyInput): TransparencyRow {
     title: 'Super Bundle',
     status: 'open',
     reason:
-      'Stripe checkout is live on this deploy. Super Bundle is a paid add-on for Coach depth — it never gates the logger.',
+      'Not limited. Stripe checkout is live on this deploy. Super Bundle is a paid add-on for Coach depth — it never gates the logger.',
   };
+}
+
+export function athleteLabelsFromRows(rows: TransparencyRow[]): AthleteLabel[] {
+  return rows.map((row) => ({
+    id: row.id,
+    title: row.title,
+    status: row.status,
+    applies: isAthleteLabelStatus(row.status),
+    reason: row.reason,
+  }));
+}
+
+export function countLimitsApply(rows: TransparencyRow[]): number {
+  return rows.filter((r) => isLimitStatus(r.status)).length;
 }
 
 export function buildTransparencyReport(input: TransparencyInput): TransparencyReport {
@@ -180,7 +210,10 @@ export function buildTransparencyReport(input: TransparencyInput): TransparencyR
       throw new Error(`transparency row ${row.id} is missing a reason`);
     }
     if (
-      (row.status === 'gated' || row.status === 'hidden' || row.status === 'limited') &&
+      (row.status === 'gated' ||
+        row.status === 'hidden' ||
+        row.status === 'limited' ||
+        row.status === 'skipped') &&
       !row.reason.trim()
     ) {
       throw new Error(`transparency row ${row.id} is ${row.status} without a reason`);
@@ -191,6 +224,15 @@ export function buildTransparencyReport(input: TransparencyInput): TransparencyR
     }
   }
 
+  const boosts = publishLiveBoosts();
+  const clubPlannedBoosts = publishClubPlannedBoosts();
+  const penalties = publishPenalties();
+
+  for (const w of [...boosts, ...clubPlannedBoosts, ...penalties]) {
+    assertNoForbiddenPhrases(w.label, `weight ${w.id} label`);
+    assertNoForbiddenPhrases(w.display, `weight ${w.id} display`);
+  }
+
   const report: TransparencyReport = {
     app: 'mission-winning',
     kind: 'transparency-report',
@@ -198,6 +240,12 @@ export function buildTransparencyReport(input: TransparencyInput): TransparencyR
     buildLabel: input.buildLabel,
     rows,
     earnTable: publishEarnTable(),
+    boosts,
+    clubPlannedBoosts,
+    penalties,
+    athleteLabels: athleteLabelsFromRows(rows),
+    sources: publishWeightsSources(),
+    limitsApply: countLimitsApply(rows),
   };
 
   return report;

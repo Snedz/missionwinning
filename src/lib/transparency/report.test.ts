@@ -129,8 +129,9 @@ test('PRIVATE_MODE gated names the launch gate', () => {
   const access = report.rows.find((r) => r.id === 'access');
   assert.ok(access);
   assert.equal(access.status, 'gated');
+  assert.match(access.reason, /Limited/);
   assert.match(access.reason, /PRIVATE_MODE/);
-  assert.match(access.reason, /launch gate/i);
+  assert.match(access.reason, /invite or access code/);
 });
 
 test('region blocked names the coded policy', () => {
@@ -152,12 +153,14 @@ test('region blocked names the coded policy', () => {
   assert.match(region.reason, /not region-gated/i);
 });
 
-test('coach without a plan is skippable and planner-blind', () => {
+test('coach without a plan is skipped and planner-blind', () => {
   const report = buildTransparencyReport(baseInput());
   const coach = report.rows.find((r) => r.id === 'coach');
   assert.ok(coach);
+  assert.equal(coach.status, 'skipped');
+  assert.match(coach.reason, /Skipped/);
   assert.match(coach.reason, /skippable/i);
-  assert.match(coach.reason, /never reads rank/i);
+  assert.match(coach.reason, /never rank/i);
 });
 
 test('coach with a why-line cites the log-derived compact reason', () => {
@@ -175,15 +178,17 @@ test('coach with a why-line cites the log-derived compact reason', () => {
   const coach = report.rows.find((r) => r.id === 'coach');
   assert.ok(coach);
   assert.equal(coach.reason, '3 logged workouts → weekly generate → 4 sessions this week.');
-  assert.ok(coach.details?.some((d) => /never reads rank/i.test(d)));
+  assert.ok(coach.details?.some((d) => /never rank/i.test(d)));
   assert.ok(coach.details?.some((d) => /Logs:/.test(d)));
 });
 
-test('score row publishes the live catalog and private-to-self', () => {
+test('score row is hidden and private to this athlete', () => {
   const report = buildTransparencyReport(baseInput());
   const score = report.rows.find((r) => r.id === 'score');
   assert.ok(score);
-  assert.match(score.reason, /private-to-self, not suppressed/);
+  assert.equal(score.status, 'hidden');
+  assert.match(score.reason, /Hidden/);
+  assert.match(score.reason, /private to you/);
   assert.equal(report.earnTable.length, Object.keys(XP_BY_ACTION).length);
   assert.deepEqual(
     report.earnTable.map((e) => e.actionId).sort(),
@@ -193,13 +198,13 @@ test('score row publishes the live catalog and private-to-self', () => {
   assert.deepEqual(report.earnTable, live);
 });
 
-test('bundle is Get notified until Stripe while checkout is muted', () => {
+test('bundle is notify-only while checkout is muted', () => {
   const muted = buildTransparencyReport(baseInput({ freeBeta: true, stripeCheckoutEnabled: false }));
   const bundle = muted.rows.find((r) => r.id === 'bundle');
   assert.ok(bundle);
-  assert.equal(bundle.status, 'gated');
-  assert.match(bundle.reason, /Get notified until Stripe/);
-  assert.doesNotMatch(bundle.reason, /shadowban/i);
+  assert.equal(bundle.status, 'limited');
+  assert.match(bundle.reason, /Notify only/);
+  assert.match(bundle.reason, /Stripe/);
 });
 
 test('bundle opens when Stripe is live and free-beta is off', () => {
@@ -210,6 +215,7 @@ test('bundle opens when Stripe is live and free-beta is off', () => {
   assert.ok(bundle);
   assert.equal(bundle.status, 'open');
   assert.match(bundle.reason, /Stripe checkout is live/);
+  assert.match(bundle.reason, /Not limited/);
 });
 
 test('download JSON and text return the same reasons as the report', () => {
@@ -239,13 +245,41 @@ test('download JSON and text return the same reasons as the report', () => {
     assert.ok(text.includes(String(earn.points)));
     assert.ok(text.includes(earn.cap));
   }
+  assert.match(text, /BOOSTS \(live local XP\)/);
+  assert.match(text, /PENALTIES \(visibility only\)/);
+  assert.match(text, /Labels on this athlete/);
+  for (const boost of report.boosts) {
+    assert.ok(text.includes(boost.label), `text dropped boost ${boost.id}`);
+    assert.ok(text.includes(boost.display));
+  }
+  for (const penalty of report.penalties) {
+    assert.ok(text.includes(penalty.label));
+    assert.ok(text.includes(penalty.display));
+  }
+  assert.equal(json.boosts.length, report.boosts.length);
+  assert.equal(json.penalties.length, report.penalties.length);
+  assert.ok(json.athleteLabels.some((l) => l.id === 'score' && l.applies));
+  assert.ok(json.athleteLabels.some((l) => l.id === 'access' && l.applies));
 });
 
-test('page reuses buildWeekRationale and Account links to the report', () => {
+test('page reuses buildWeekRationale and Account links to both reports', () => {
+  const hook = readFileSync(path.join(root, 'src/hooks/useTransparencyReport.ts'), 'utf8');
+  assert.match(hook, /buildWeekRationale/);
+  const downloads = readFileSync(
+    path.join(root, 'src/components/transparency/TransparencyDownloads.tsx'),
+    'utf8'
+  );
+  assert.match(downloads, /formatTransparencyJson/);
+  assert.match(downloads, /formatTransparencyText/);
   const page = readFileSync(path.join(root, 'src/page-components/TransparencyPage.tsx'), 'utf8');
-  assert.match(page, /buildWeekRationale/);
-  assert.match(page, /formatTransparencyJson/);
-  assert.match(page, /formatTransparencyText/);
+  assert.match(page, /useTransparencyReport/);
+  const hood = readFileSync(path.join(root, 'src/page-components/UnderTheHoodPage.tsx'), 'utf8');
+  assert.match(hood, /WeightsPanel/);
+  assert.doesNotMatch(hood, /xai-org|Copy link/);
+  const panel = readFileSync(path.join(root, 'src/components/transparency/WeightsPanel.tsx'), 'utf8');
+  assert.match(panel, /hoodBoosts/);
+  assert.match(panel, /hoodPenalties/);
+  assert.doesNotMatch(panel, /xai-org|Copy link/);
   const account = readFileSync(path.join(root, 'src/page-components/AccountPage.tsx'), 'utf8');
   assert.match(account, /ProfileTransparencyCard/);
   const card = readFileSync(
@@ -253,4 +287,16 @@ test('page reuses buildWeekRationale and Account links to the report', () => {
     'utf8'
   );
   assert.match(card, /\/account\/transparency/);
+  assert.match(card, /\/account\/under-the-hood/);
+  assert.match(card, /TransparencyDownloads/);
+});
+
+test('open-beta + notify-only counts as a limit; score hidden is a label not a limit', () => {
+  const report = buildTransparencyReport(baseInput());
+  assert.ok(report.limitsApply >= 1);
+  const bundle = report.rows.find((r) => r.id === 'bundle');
+  assert.equal(bundle?.status, 'limited');
+  const score = report.athleteLabels.find((l) => l.id === 'score');
+  assert.ok(score?.applies);
+  assert.equal(score?.status, 'hidden');
 });

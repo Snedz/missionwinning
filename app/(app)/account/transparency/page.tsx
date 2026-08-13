@@ -4,12 +4,12 @@ import { RouteLoading } from '@/components/layout/RouteLoading';
 
 const TransparencyPage = dynamic(
   () => import('@/page-components/TransparencyPage').then((m) => m.TransparencyPage),
-  { loading: () => <RouteLoading label="Why this" /> }
+  { loading: () => <RouteLoading label="Visibility" /> }
 );
 
 export const metadata: Metadata = {
-  title: 'Why this',
-  description: 'Plain reasons for gates and hidden numbers. Download the report.',
+  title: 'Visibility',
+  description: 'See if anything is limited, the exact reason, and download the report.',
 };
 
 export default function TransparencyRoute() {

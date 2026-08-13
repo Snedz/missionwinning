@@ -32,8 +32,11 @@ test('forbidden list is closed and each entry has a reason', () => {
 test('transparency sources do not use refused visibility language', () => {
   const files = [
     ...walk(path.join(root, 'src/lib/transparency')),
+    ...walk(path.join(root, 'src/components/transparency')),
     path.join(root, 'src/page-components/TransparencyPage.tsx'),
+    path.join(root, 'src/page-components/UnderTheHoodPage.tsx'),
     path.join(root, 'src/components/profile/ProfileTransparencyCard.tsx'),
+    path.join(root, 'src/hooks/useTransparencyReport.ts'),
   ];
   const hits: string[] = [];
   for (const file of files) {

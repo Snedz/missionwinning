@@ -19,6 +19,7 @@
 | `use-toast.ts` | shadcn toast primitive | UI only |
 | `useScrollReveal.ts` | marketing `Reveal` | IntersectionObserver |
 | `useFileUploadQueue.ts` | Track import, Profile backup | per-file progress/retry queue |
+| `useTransparencyReport.ts` | Visibility + Under the Hood + Account card | `src/lib/transparency/`, territory, Coach rationale |
 | `useIsCompact.ts` | `ScreenDock`, `JourneyHero` | `matchMedia('(max-width: 767px)')` — **the line between the two designs**, see below |
 
 ## Conventions

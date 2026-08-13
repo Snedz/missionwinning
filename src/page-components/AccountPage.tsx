@@ -342,6 +342,8 @@ export function AccountPage() {
         authError={authError}
       />
 
+      <ProfileTransparencyCard />
+
       {/* Not behind `email &&` — device notifications are the only return channel an
           anonymous athlete has, and they are the athlete this product is built for.
           The card renders nothing when it has neither row to offer. */}
@@ -371,8 +373,6 @@ export function AccountPage() {
       <ProfileReferralCard signedIn={Boolean(email)} />
 
       <ProfileFeedbackCard />
-
-      <ProfileTransparencyCard />
 
       <ProfilePremiumCard
         premium={premium}
