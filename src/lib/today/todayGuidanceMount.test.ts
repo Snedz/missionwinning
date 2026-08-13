@@ -87,14 +87,19 @@ const SHELLS = ['src/page-components/HomeTodayLean.tsx', 'src/page-components/Ho
 test('both Today shells render the guidance cards', () => {
   for (const shell of SHELLS) {
     const src = read(shell);
-    for (const card of ['FirstStepsCard', 'TodayReentryCard']) {
-      assert.match(
-        src,
-        new RegExp(`<${card}\\b`),
-        `${shell} never renders <${card}> — a card in one shell is a card half the athletes cannot see`
-      );
-    }
+    assert.match(
+      src,
+      /<FirstStepsCard\b/,
+      `${shell} never renders <FirstStepsCard> — a card in one shell is a card half the athletes cannot see`
+    );
+    assert.match(
+      src,
+      /reentry=\{/,
+      `${shell} must pass reentry into JourneyHero so the 0.1 quiet line reaches both shells`
+    );
   }
+  const hero = read('src/components/journey/JourneyHero.tsx');
+  assert.match(hero, /<TodayReentryCard\b/, 'the Start field renders the one missed-day line');
 });
 
 /**
@@ -127,4 +132,6 @@ test('both shells hide the quiet line while a workout is open', () => {
   const dash = read('src/page-components/HomeTodayDashboard.tsx');
   assert.match(lean, /sessionOpen:\s*hasActiveWorkout/);
   assert.match(dash, /sessionOpen:\s*!!activeWorkout/);
+  const hero = read('src/components/journey/JourneyHero.tsx');
+  assert.match(hero, /reentry\?\.show && !activeWorkout/);
 });

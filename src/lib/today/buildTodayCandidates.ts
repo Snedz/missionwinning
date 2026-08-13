@@ -15,7 +15,6 @@ import {
 } from '@/lib/today/dayReviewMount';
 import {
   firstStepsMayMount,
-  reentryCardMayMount,
 } from '@/lib/today/todayGuidanceMount';
 import {
   todayCoachInviteMayMount,
@@ -36,9 +35,9 @@ export type BuildTodayCandidatesInput = {
   phase: JourneyPhase;
   /** First Steps dismissed (or never offered). */
   firstStepsDismissed: boolean;
-  /** Soft re-entry card wants to show. */
+  /** Gap flag — quiet line is on JourneyHero now; kept so call sites stay one shape. */
   reentryShow: boolean;
-  /** Live workout — hide the missed-day line. */
+  /** Live workout — quiet line hide is on JourneyHero; kept so call sites stay one shape. */
   sessionOpen?: boolean;
   /** From `getTodayLayout(phase).showDashboard`. */
   showDashboard: boolean;
@@ -73,16 +72,6 @@ export function buildTodayCandidates(input: BuildTodayCandidatesInput): TodayCan
 
   if (input.phase === 'commissioned') {
     out.push({ key: 'intent', priority: P.intent });
-  }
-
-  if (
-    reentryCardMayMount({
-      phase: input.phase,
-      show: input.reentryShow,
-      sessionOpen: input.sessionOpen,
-    })
-  ) {
-    out.push({ key: 'reentry', priority: P.reentry, pinned: true });
   }
 
   /** Cross-pillar next steps after first train (Super Bundle depth / UX_PLAYBOOK web-now). */

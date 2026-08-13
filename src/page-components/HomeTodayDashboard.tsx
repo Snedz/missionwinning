@@ -48,9 +48,9 @@ import { Skeleton, SkeletonBlock, SkeletonCard } from "@/components/ui/Skeleton"
 import { readJson, readRaw } from "@/lib/storage/safeStorage";
 import { STORAGE_KEYS } from "@/lib/storage/keys";
 import { computeReentry, type Reentry } from "@/lib/reentry";
-import { TodayReentryCard } from "@/components/today/TodayReentryCard";
 import { FIRST_STEPS_DISMISS_KEY } from "@/lib/today/firstStepsDismissed";
 import { buildTodayCandidates } from "@/lib/today/buildTodayCandidates";
+import { reentryCardMayMount } from "@/lib/today/todayGuidanceMount";
 import { planTodayBlocks, type TodayBlockCandidate } from "@/lib/today/todayBlockBudget";
 import { shouldAppendTodayMoreDetails } from "@/lib/today/shouldAppendTodayMore";
 import { buildTodayHeaderFocusLine } from "@/lib/today/buildTodayHeaderFocusLine";
@@ -640,7 +640,6 @@ export function HomeTodayDashboard() {
       />
     ),
     intent: <CommandersIntent />,
-    reentry: reentry ? <TodayReentryCard reentry={reentry} /> : null,
     continuity:
       continuitySuggestions.length > 0 ? (
         <ContinuityStrip suggestions={continuitySuggestions} />
@@ -810,6 +809,16 @@ export function HomeTodayDashboard() {
           activeWorkout={!!activeWorkout}
           justGoMeta={justGoMeta}
           completedSessions={workoutHistory.length}
+          reentry={
+            reentry &&
+            reentryCardMayMount({
+              phase: state.phase,
+              show: reentry.show,
+              sessionOpen: !!activeWorkout,
+            })
+              ? reentry
+              : null
+          }
         />
       </ScreenDock>
     </>

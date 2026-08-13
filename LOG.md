@@ -14,16 +14,16 @@ Archive: [2026-06 → 2026-07-20](docs/archive/log/LOG-2026-06_to_2026-07-20.md)
 ## 2026-08-13 — Missed-day shame-free re-entry (`.704`)
 
 Horizon W criterion 4 / S7: if two or more local calendar days have passed
-since the last logged session, Today (`/log`) shows one quiet line —
+since the last logged session, Today's Start field shows one quiet line —
 “Two days off. Here’s the 20-minute version.” — and the primary Start applies
-the short dose. No streak, no “you missed”, no new reminders (habit
-automaticity). One rest day stays silent. 90+ days names “A while off” rather
+the short dose. Frozen as 0.1 (beta). No streak, no “you missed”, no new
+reminders. One rest day stays silent. 90+ days names “A while off” rather
 than a large count. Outbound nudges still must not name the absence.
 
 **Ship:** `REENTRY_MIN_DAYS` 4→2 (calendar days via `localDateKey`); quiet line
-in `TodayReentryCard` (status text, not a bordered card); dose targets 20
-minutes from last session duration. Lean + dashboard hide the line while a
-workout is already open. Design may own wording later.
+on the Start field (`JourneyHero` / `TodayReentryCard`); dose targets 20
+minutes from last session duration. Hidden while a workout is already open.
+0.1 (beta) freeze — Design may own wording later.
 
 Label `.704` (`.698`–`.703` reserved on other PRs). Excellence-Override below.
 

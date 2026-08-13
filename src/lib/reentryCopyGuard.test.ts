@@ -47,6 +47,8 @@ test('TodayReentryCard is a quiet line, not a streak card', () => {
   assert.match(src, /role="status"/);
   assert.doesNotMatch(src, /border-2/);
   assert.doesNotMatch(src, /todayReentryEyebrow/);
+  assert.doesNotMatch(src, /line-clamp/);
+  assert.doesNotMatch(src, /streak/i);
 });
 
 test('the quiet line is not an outbound nudge', () => {

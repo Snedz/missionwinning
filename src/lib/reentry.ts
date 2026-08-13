@@ -7,9 +7,10 @@
  * closes the app. So the rules here do two things — say something true and kind, and
  * make the next session visibly smaller than the one they missed.
  *
- * S7 (Horizon W): two or more local calendar days since the last session, Today
- * shows one quiet line and starts the 20-minute version. No streak guilt. Outbound
- * nudges still must not name the absence — that contract lives in `reentryTone.ts`.
+ * S7 (Horizon W): two or more local calendar days since the last session, Today's
+ * Start field shows one quiet line (0.1 beta freeze) and starts the 20-minute
+ * version. No streak guilt. Outbound nudges still must not name the absence —
+ * that contract lives in `reentryTone.ts`.
  *
  * Pure and dateless by parameter so it is testable.
  */
