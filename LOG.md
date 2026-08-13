@@ -34,6 +34,10 @@ does not inherit the docs skip.
 missing from every EN pack. Caps stayed 40% / 0. Keys filled; es/fr/pt
 translated. Did not raise the ratchets.
 
+**Bundle budget** (`/log` 286.5 vs 280, `/active` 448.7 vs 435) is already red
+on `master` at the same numbers — a CI-matching `PRIVATE_MODE=false` build.
+Did not raise the caps. Separate size pass; not this merge bar.
+
 Label `.743` (onto master `.714`). Excellence-Override below.
 
 Excellence-Override: local CI unblock
