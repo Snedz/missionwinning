@@ -1,8 +1,8 @@
-# Frozen: Pregnancy + miscarriage safety v1 — counsel-hold, symptom line only (`.746`)
+# Frozen: Pregnancy + miscarriage safety v1 — counsel-hold, symptom line only (`.752`)
 
 **Status:** FROZEN. Implement only this plan. Decision 011 v1 (ops #18). Same legal posture as PT safety ([PR #519](https://github.com/Snedz/missionwinning/pull/519)): educational tools, not a clinician, not 911, not a medical device. Draft PR. Counsel reviews copy before production. Do not merge. Do not promote.
 
-**Label:** `2026.07-unified.746` (occupied `.698`–`.745`). One Preview max. Follow-ups `[skip vercel]`.
+**Label:** `2026.07-unified.752` (past origin/master `.751`; this branch first minted `.746` while master was `.697`). One Preview max. Follow-ups `[skip vercel]`.
 
 **Excellence-Override:** pregnancy/miscarriage safety
 
@@ -134,16 +134,16 @@ Copy-guard bans: `safe for pregnancy` · `safe pregnancy PT` · `prevents miscar
 - Copy-guard: banned phrases absent from pregnancy module, Account card, EN strings, help, contract, Terms paragraph.
 - Wiring: Account card is under More settings; HomePage / Today do not import it.
 - `pregnancySafety.ts` does not import score, chat, rewards, outbox, or coach plan engine.
-- `check-build-label` → `.746` past master `.697`.
+- `check-build-label` → `.752` past origin/master `.751`.
 - Falsify: a mutant adding “safe for pregnancy” or making the flag change Coach load must fail.
 
 ---
 
 ## Ship
 
-- Keep `APP_BUILD_LABEL` at `2026.07-unified.746`.
-- LOG heading stays `.746`; rewrite the entry to v1 (symptom line only).
-- `## Now` `.746` bullet: counsel-hold, flag, symptom line only — not Coach caps / CTA hide.
+- Bump `APP_BUILD_LABEL` to `2026.07-unified.752` (past origin/master `.751`).
+- LOG heading `## YYYY-MM-DD — … (\`.752\`)`. Rewrite the entry to v1 (symptom line only).
+- `## Now` `.752` bullet: counsel-hold, flag, symptom line only — not Coach caps / CTA hide.
 - Commit trailer: `Excellence-Override: pregnancy/miscarriage safety`
 - Draft PR title may stay. PR body: **counsel-hold, draft, do not merge, do not promote, v1 = symptom line only**.
 - This plan commit: `[skip vercel]`. Implement commit may touch Preview. Follow-ups `[skip vercel]`.
