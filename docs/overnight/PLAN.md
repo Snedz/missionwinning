@@ -1,12 +1,14 @@
-# Frozen: Pregnancy + miscarriage safety v1 — counsel-hold, symptom line only (`.752`)
+# Frozen: Pregnancy + miscarriage safety v1 — counsel-hold, symptom line only (`.761`)
 
 **Status:** FROZEN. Implement only this plan. Decision 011 v1 (ops #18). Same legal posture as PT safety ([PR #519](https://github.com/Snedz/missionwinning/pull/519)): educational tools, not a clinician, not 911, not a medical device. Draft PR. Counsel reviews copy before production. Do not merge. Do not promote.
 
-**Label:** `2026.07-unified.752` (past origin/master `.751`; this branch first minted `.746` while master was `.697`). One Preview max. Follow-ups `[skip vercel]`.
+**Label:** `2026.07-unified.761` (past origin/master `.760`; this branch first minted `.746` while master was `.697`, then `.752` while master was `.751`). One Preview max. Follow-ups `[skip vercel]`. Existing Vercel Preview is **not** a review or E-Day surface.
 
 **Excellence-Override:** pregnancy/miscarriage safety
 
 **Supersedes** the earlier `.746` freeze in this file (Coach load-jump caps + CTA hide). Those behaviors are a **follow-on decision**, not v1.
+
+**Addendum (Counsel + CoS, unsigned label):** athlete-facing “Miscarriage recovery” / presenting `miscarriage_recovery` as finished copy stays **UNSIGNED**. Grief-adjacent option labels need counsel + founder before any review surface. Keep the stored enum value in code. Do not invent a cute synonym for loss. Athlete labels until founder reads: **None / Pregnant / Postpartum** only.
 
 ---
 
@@ -22,7 +24,9 @@ We do **not** claim we prevent loss or complications. We do **not** sell “safe
 
 ### Flag (device-local)
 
-- Optional, athlete-owned: `none` | `pregnant` | `postpartum` | `miscarriage_recovery`.
+- Optional, athlete-owned stored values: `none` | `pregnant` | `postpartum` | `miscarriage_recovery`.
+- **Athlete-visible labels (signed for this draft):** None / Pregnant / Postpartum only. Do not show “Miscarriage recovery”. Do not invent a synonym for loss.
+- `miscarriage_recovery` may stay in the parser / hold set (if already stored, the stop line still uses the hold string). It is **UNSIGNED** as athlete copy — not an option in the Account control.
 - Never inferred from logs, sex, age, cycle, or photos. Never required to log. Unset / invalid → `none`.
 - Silent flag-off: clearing to `none` **deletes** the storage key (no “what happened?” UI, no derived hold state left behind).
 - Settings control under **Account → More settings** only. Not Today. Not first paint.
@@ -81,6 +85,7 @@ Coach prescriptions stay as they are on `master`. The flag does not change them.
 - Do not put the control on Today or first paint.
 - Do not sync the flag to cloud/outbox.
 - Do not open a second PR. Stay draft. Do not merge.
+- Do not present “Miscarriage recovery” as finished athlete copy. Do not treat Preview as a review or E-Day surface.
 
 ---
 
@@ -134,16 +139,18 @@ Copy-guard bans: `safe for pregnancy` · `safe pregnancy PT` · `prevents miscar
 - Copy-guard: banned phrases absent from pregnancy module, Account card, EN strings, help, contract, Terms paragraph.
 - Wiring: Account card is under More settings; HomePage / Today do not import it.
 - `pregnancySafety.ts` does not import score, chat, rewards, outbox, or coach plan engine.
-- `check-build-label` → `.752` past origin/master `.751`.
+- Athlete Account options are only none / pregnant / postpartum. Card + EN option keys do not contain “Miscarriage recovery”.
+- Stored `miscarriage_recovery` still parses and still selects the hold stop line.
+- `check-build-label` → `.761` past origin/master `.760`.
 - Falsify: a mutant adding “safe for pregnancy” or making the flag change Coach load must fail.
 
 ---
 
 ## Ship
 
-- Bump `APP_BUILD_LABEL` to `2026.07-unified.752` (past origin/master `.751`).
-- LOG heading `## YYYY-MM-DD — … (\`.752\`)`. Rewrite the entry to v1 (symptom line only).
-- `## Now` `.752` bullet: counsel-hold, flag, symptom line only — not Coach caps / CTA hide.
+- Bump `APP_BUILD_LABEL` to `2026.07-unified.761` (past origin/master `.760`).
+- LOG heading `## YYYY-MM-DD — … (\`.761\`)`. Rewrite the entry to v1 (symptom line only) + unsigned label addendum.
+- `## Now` `.761` bullet: counsel-hold, flag, symptom line only, unsigned fourth label — not Coach caps / CTA hide. Preview is not a review surface.
 - Commit trailer: `Excellence-Override: pregnancy/miscarriage safety`
 - Draft PR title may stay. PR body: **counsel-hold, draft, do not merge, do not promote, v1 = symptom line only**.
 - This plan commit: `[skip vercel]`. Implement commit may touch Preview. Follow-ups `[skip vercel]`.
