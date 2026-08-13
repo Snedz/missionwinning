@@ -1,20 +1,23 @@
 const { withSentryConfig } = require('@sentry/nextjs');
 const withSerwistInit = require('@serwist/next').default;
 
+/**
+ * Mirror of `isPrivateModeEnabledFromEnv()` in src/lib/privateModeFlag.ts.
+ * CJS cannot import that TS module. Preview is ungated first: Vercel Preview
+ * inherits Production PRIVATE_MODE=true and builds with NODE_ENV=production.
+ */
+const privateGateActive =
+  process.env.VERCEL_ENV === 'preview'
+    ? false
+    : process.env.PRIVATE_MODE === 'true' ||
+      process.env.PRIVATE_MODE === '1' ||
+      (process.env.PRIVATE_MODE !== 'false' &&
+        process.env.PRIVATE_MODE !== '0' &&
+        process.env.NODE_ENV === 'production');
+
 /** Disable SW while private gate is on (prevents offline leak of full app).
  *  Wave B / public flip: set PRIVATE_MODE=false so Serwist builds (docs/PRODUCTION_STACK.md L10). */
-const pwaDisabled =
-  process.env.NODE_ENV === 'development' ||
-  process.env.PRIVATE_MODE === 'true' ||
-  (process.env.NODE_ENV === 'production' && process.env.PRIVATE_MODE !== 'false');
-
-/** Mirror of `isPrivateModeEnabled()` — client cannot read the httpOnly gate cookie. */
-const privateGateActive =
-  process.env.PRIVATE_MODE === 'true' ||
-  process.env.PRIVATE_MODE === '1' ||
-  (process.env.PRIVATE_MODE !== 'false' &&
-    process.env.PRIVATE_MODE !== '0' &&
-    process.env.NODE_ENV === 'production');
+const pwaDisabled = process.env.NODE_ENV === 'development' || privateGateActive;
 
 const withSerwist = withSerwistInit({
   swSrc: 'app/sw.ts',

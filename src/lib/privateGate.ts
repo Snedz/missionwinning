@@ -19,13 +19,7 @@ import {
   PRIVATE_GATE_PUBLIC_PATHS,
 } from '@/lib/publicRoutes';
 
-/** True when private development gate should be active (default: on in production). */
-export function isPrivateModeEnabled(): boolean {
-  const flag = process.env.PRIVATE_MODE;
-  if (flag === 'false' || flag === '0') return false;
-  if (flag === 'true' || flag === '1') return true;
-  return process.env.NODE_ENV === 'production';
-}
+export { isPrivateModeEnabled, isPrivateModeEnabledFromEnv } from '@/lib/privateModeFlag';
 
 export const PUBLIC_PATHS_WHILE_GATED = PRIVATE_GATE_PUBLIC_PATHS;
 

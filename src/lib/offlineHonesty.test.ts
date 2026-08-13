@@ -110,8 +110,13 @@ describe('the offline capability flag', () => {
     );
     assert.match(
       cfg,
-      /const pwaDisabled =[\s\S]{0,240}PRIVATE_MODE/,
-      '`pwaDisabled` must still key on PRIVATE_MODE — the whole coupling rests on it'
+      /const pwaDisabled =[\s\S]{0,160}privateGateActive/,
+      '`pwaDisabled` must follow `privateGateActive` so Preview ungating also enables Serwist'
+    );
+    assert.match(
+      cfg,
+      /const privateGateActive =[\s\S]{0,400}PRIVATE_MODE/,
+      '`privateGateActive` must still key on PRIVATE_MODE — the whole coupling rests on it'
     );
   });
 

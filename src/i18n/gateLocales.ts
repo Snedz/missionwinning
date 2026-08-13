@@ -1,13 +1,13 @@
 /** Private gate + offline fallback copy — full APP_LANGS records. */
 
 const GATE_EN: Record<string, string> = {
-  gateEyebrow: 'Invite-only open beta',
+  gateEyebrow: 'Open beta',
   gateTitle1: 'Train anywhere.',
   gateTitle2: 'Win daily.',
   gateSubtitle:
-    'Free offline workout logging plus Mission Coach — weekly plans from your logs alone, no wearable. Full tools free for invited testers; the logger stays free forever.',
+    'Free offline workout logging plus Mission Coach — weekly plans from your logs alone, no wearable. The logger stays free forever. Super Bundle: get notified until checkout is live. No free trial.',
   gateFooterTagline: 'free core forever',
-  gateWaitlistTitle: 'Get an invite',
+  gateWaitlistTitle: 'Get notified',
   gateWaitlistPlaceholder: 'you@example.com',
   gateWaitlistSubmit: 'Notify me',
   gateWaitlistSubmitting: 'Joining…',
