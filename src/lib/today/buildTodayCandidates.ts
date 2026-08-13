@@ -38,6 +38,8 @@ export type BuildTodayCandidatesInput = {
   firstStepsDismissed: boolean;
   /** Soft re-entry card wants to show. */
   reentryShow: boolean;
+  /** Live workout — hide the missed-day line. */
+  sessionOpen?: boolean;
   /** From `getTodayLayout(phase).showDashboard`. */
   showDashboard: boolean;
   /** Idle / below-fold gate — secondary surfaces wait for this. */
@@ -73,7 +75,13 @@ export function buildTodayCandidates(input: BuildTodayCandidatesInput): TodayCan
     out.push({ key: 'intent', priority: P.intent });
   }
 
-  if (reentryCardMayMount({ phase: input.phase, show: input.reentryShow })) {
+  if (
+    reentryCardMayMount({
+      phase: input.phase,
+      show: input.reentryShow,
+      sessionOpen: input.sessionOpen,
+    })
+  ) {
     out.push({ key: 'reentry', priority: P.reentry, pinned: true });
   }
 

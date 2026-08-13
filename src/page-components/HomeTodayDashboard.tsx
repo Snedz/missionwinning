@@ -609,6 +609,7 @@ export function HomeTodayDashboard() {
     phase: state.phase,
     firstStepsDismissed: betaDismissed,
     reentryShow: !!reentry?.show,
+    sessionOpen: !!activeWorkout,
     showDashboard: layout.showDashboard,
     belowFoldReady,
     totalSessions,

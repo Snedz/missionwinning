@@ -5,9 +5,8 @@
  * coach session can be started. `todayPrimaryAction` scaled it;
  * `CoachTodayCard`, `PlanSessionCard` and `CoachAdaptBanner` each called
  * `planSessionToTemplates` raw. So an athlete back after ten days read
- * "Today's session is about 50% of usual sets" on `TodayReentryCard` — whose
- * own header comment says "the card must not promise lighter without applying
- * it" — and then got the full session from the Coach card directly beneath it.
+ * "Two days off. Here's the 20-minute version." on `TodayReentryCard` — whose
+ * own header says the line must not promise lighter without applying it — and then got the full session from the Coach card directly beneath it.
  *
  * Four call sites and one rule is `.178`: the rule lives here now, and the
  * callers cannot disagree about it because they no longer each own a copy.

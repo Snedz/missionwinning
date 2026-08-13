@@ -69,6 +69,14 @@ test('re-entry is answered over both inputs, not just the phase', () => {
   }
 });
 
+test('an open session is not a return', () => {
+  assert.equal(
+    reentryCardMayMount({ phase: 'basic', show: true, sessionOpen: true }),
+    false,
+    'the quiet line must not claim days off while a workout is already running'
+  );
+});
+
 /**
  * The bug was a mount site, so the guard has to read mount sites. A rule that
  * only tested the predicate would have passed on the broken build — the
@@ -112,4 +120,11 @@ test('both shells ask the shared mount rule rather than re-deriving it', () => {
       `${shell} must gate re-entry on the shared rule (reentryCardMayMount or buildTodayCandidates)`
     );
   }
+});
+
+test('both shells hide the quiet line while a workout is open', () => {
+  const lean = read('src/page-components/HomeTodayLean.tsx');
+  const dash = read('src/page-components/HomeTodayDashboard.tsx');
+  assert.match(lean, /sessionOpen:\s*hasActiveWorkout/);
+  assert.match(dash, /sessionOpen:\s*!!activeWorkout/);
 });

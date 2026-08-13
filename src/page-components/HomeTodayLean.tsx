@@ -303,7 +303,14 @@ export function HomeTodayLean() {
 
   // Directly under the boss CTA, as in the dashboard shell: a returning athlete
   // sees the smaller ask before anything that reads as a scoreboard of the gap.
-  if (reentry && reentryCardMayMount({ phase: journeyState.phase, show: reentry.show })) {
+  if (
+    reentry &&
+    reentryCardMayMount({
+      phase: journeyState.phase,
+      show: reentry.show,
+      sessionOpen: hasActiveWorkout,
+    })
+  ) {
     blocks.push({
       key: 'reentry',
       priority: P.reentry,

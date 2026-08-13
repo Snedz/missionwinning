@@ -53,9 +53,19 @@ export interface ReentryMountInput {
   phase: JourneyPhase;
   /** `computeReentry(...).show` — whether there is a gap worth naming. */
   show: boolean;
+  /**
+   * Mid-set: they are not returning, they are already in. Hide the quiet line
+   * so "N days off" cannot sit above a live logger.
+   */
+  sessionOpen?: boolean;
 }
 
-export function reentryCardMayMount({ phase, show }: ReentryMountInput): boolean {
+export function reentryCardMayMount({
+  phase,
+  show,
+  sessionOpen = false,
+}: ReentryMountInput): boolean {
+  if (sessionOpen) return false;
   if (!show) return false;
   return phase !== 'i-day';
 }

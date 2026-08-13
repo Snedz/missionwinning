@@ -31,7 +31,7 @@ function logDaysAgo(days: number): CompletedWorkoutLog {
         ],
       },
     ],
-    durationSeconds: 1200,
+    durationSeconds: 2400,
     totalVolume: 0,
   };
 }

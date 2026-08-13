@@ -13,6 +13,7 @@
 | Domain | Key files | Notes |
 |--------|-----------|-------|
 | **Scoring / Today** | `score.ts`, `crossPillarCoach.ts`, `pillarScoreInputs.ts`, `readinessIndex.ts`, `exerciseMuscleMap.ts` | Readiness, Win Score, coach insight |
+| **Re-entry** | `reentry.ts`, `reentryTone.ts` | Missed-day quiet line + short dose (S7); outbound tone contract |
 | **Mission Rewards** | [`rewards/`](rewards/INDEX.md) | XP, ranks, badges from real logs — never gates logger |
 | **Mission Identity** | [`identity/`](identity/INDEX.md) | Call sign, Athlete Card — social projection; Log↔Social via `domainBoundary.ts` |
 | **Classification guard** | `classificationGuard.test.ts` | `.hermes/` + `ops/` never tracked |

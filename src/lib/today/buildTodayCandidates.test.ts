@@ -121,6 +121,14 @@ describe('buildTodayCandidates', () => {
     assert.ok(more.includes('dashboard'), 'Mission Score spills on densest evening');
   });
 
+  it('hides re-entry while a session is already open', () => {
+    const specs = buildTodayCandidates(densestEvening({ sessionOpen: true }));
+    assert.ok(
+      !specs.some((s) => s.key === 'reentry'),
+      'a live session is not a return — the missed-day line must not mount'
+    );
+  });
+
   it('HomeTodayDashboard builds from buildTodayCandidates rather than a second ladder', () => {
     const src = readFileSync(
       path.join(import.meta.dirname, '..', '..', 'page-components', 'HomeTodayDashboard.tsx'),
