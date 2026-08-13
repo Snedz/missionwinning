@@ -1,6 +1,8 @@
 # Overnight freeze — Super Bundle Mind premium (journal sessions)
 
-**Status:** FROZEN. Implement only this document. Do not add tabs, audio, trials, locale farms, Android, or a meditation-library expansion.
+**Status:** FROZEN (product scope). **Retag:** `.698` vacated — reserved for #477 gated www honesty; #500 Athlete Page took `.706`. This ship is `2026.07-unified.707`. Avoid `.698` `.699` `.700` `.705`. Sessions + floors unchanged.
+
+Implement only this document. Do not add tabs, audio, trials, locale farms, Android, or a meditation-library expansion.
 
 **Override:** `Excellence-Override: Super Bundle Mind premium (content)`  
 Horizon W RESULT is unscored; `/mind` and `src/lib/mind` are surface. Trailer required on the ship commit and draft PR body.
@@ -124,9 +126,9 @@ Reuse `GuidedMindSession` shape. **No schema change.** Server-only file stays `i
 
 ## Ship protocol (same commit as the code)
 
-- Label `2026.07-unified.698` (past master `.697`).
-- `LOG.md` new heading `## 2026-08-13 — Super Bundle Mind journal sessions (`.698`)`. Rotate oldest live entry (`.669`) → `docs/archive/log/` + `docs/archive/INDEX.md` (live LOG is already 15/15).
-- `CONTEXT.md` `## Now`: add `.698` bullet; drop oldest numbered ship bullet (`.636`) so the `- **` count stays ≤25. Standing Status table untouched. Never flip `PRIVATE_MODE`.
+- Label `2026.07-unified.707` (past master `.697`; not `.698` `.699` `.700` `.705`).
+- `LOG.md` new heading `## 2026-08-13 — Super Bundle Mind journal sessions (`.707`)`. Rotate oldest live entry (`.669`) → `docs/archive/log/` + `docs/archive/INDEX.md` (live LOG is already 15/15).
+- `CONTEXT.md` `## Now`: add `.707` bullet; drop oldest numbered ship bullet (`.636`) so the `- **` count stays ≤25. Standing Status table untouched. Never flip `PRIVATE_MODE`.
 - Commit trailer + PR body: `Excellence-Override: Super Bundle Mind premium (content)`.
 - Draft PR. Do not merge. Do not request extra previews.
 

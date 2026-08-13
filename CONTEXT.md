@@ -16,7 +16,7 @@ One screen of truth for any AI tool or human joining cold. Read this, then [AGEN
 
 ---
 
-## Now (2026-08-13 · web `2026.07-unified.698` · Android `1.24.1`)
+## Now (2026-08-13 · web `2026.07-unified.707` · Android `1.24.1`)
 
 > The ONLY "where we are" block in the repo — [ORCHESTRATION.md](ORCHESTRATION.md) points here.
 >
@@ -285,7 +285,7 @@ One screen of truth for any AI tool or human joining cold. Read this, then [AGEN
 > and `.695` dropped `.606` detail (full text remains in LOG.md / archive)
 > and `.696` dropped `.635` detail (full text remains in LOG.md / archive)
 > and `.697` dropped `.618` detail (full text remains in LOG.md / archive)
-> and `.698` dropped `.636` detail (full text remains in LOG.md / archive)
+> and `.707` dropped `.636` detail (full text remains in LOG.md / archive)
 > to [CONTEXT-now-2026-07-30.md](docs/archive/CONTEXT-now-2026-07-30.md) after this
 > block reached **79 bullets / 103KB**. A status doc that only grows stops being read.
 
@@ -307,7 +307,7 @@ One screen of truth for any AI tool or human joining cold. Read this, then [AGEN
 > | gitleaks | **green — and scanning for the first time.** It had never scanned anything: on a `pull_request` event the action lists the PR's commits, the job declared no `permissions:` block, and it 403'd (`pull_requests=read`) before opening a file. Fixed by a `permissions:` block (`.224` carrying `.255`). It scans **only the PR's own commits**, so commit `8ea3527a`'s real Solana treasury address — scrubbed from the working file, still in history — is out of its scope. That finding stands, deliberately not allowlisted; it was never what made this check red. |
 
 - **Excellence:** unscored · — · [docs/EXCELLENCE_RESULT.md](docs/EXCELLENCE_RESULT.md) — Horizon W phone sign-off home; surface PRs need `status: pass` or `Excellence-Override` (`.669`).
-- **`.698`:** (`2026.07-unified.698`) **Super Bundle Mind journal sessions** — +8 skippable question sessions; premium floor 60→68; Calm-clone + stale 10/17/22 copy replaced with interpolated counts (no new tab).
+- **`.707`:** (`2026.07-unified.707`) **Super Bundle Mind journal sessions** — +8 skippable question sessions; premium floor 60→68; Calm-clone + stale 10/17/22 copy replaced with interpolated counts (no new tab). `.698` reserved for #477.
 - **`.697`:** (`2026.07-unified.697`) **Session-expired fail-open mid-set Log/rest** — SignInPrompt catch → signed-out; log/rest path never awaits auth/sync (Kaizen Strong / F-001).
 - **`.696`:** (`2026.07-unified.696`) **Local-first set-log + rest** — Today/Active empty + SignIn/status copy device-first; rest path ungated by sync (F-001).
 - **`.695`:** (`2026.07-unified.695`) **Demote six-pillar chrome until first workout** — First Steps workout-only + More/rail Pillars hidden pre-`basic.workout` / `workoutHistory.length`; I-Day → Today one Start (F-004 C5≤90s; no shell redesign).

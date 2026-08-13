@@ -1,4 +1,4 @@
-# Rotated from LOG.md for `.698`
+# Rotated from LOG.md for `.707`
 
 ## 2026-08-10 — Horizon W excellence RESULT + agent stop-rule (`.669`)
 
