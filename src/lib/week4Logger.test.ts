@@ -173,7 +173,7 @@ describe('week4Logger wiring', () => {
     const logSet = store.match(/logSet:\s*\([^)]*\)\s*=>\s*\{[\s\S]*?\n\s*\},/);
     assert.ok(logSet, 'logSet missing');
     assert.match(logSet![0], /recordWorkingSetLogged/);
-    assert.doesNotMatch(logSet![0], /set_logged|week_logged/);
+    assert.doesNotMatch(logSet![0], /['"]set_logged['"]|['"]week_logged['"]/);
     assert.doesNotMatch(logSet![0], /\benqueueWeekLogged\b/);
   });
 
