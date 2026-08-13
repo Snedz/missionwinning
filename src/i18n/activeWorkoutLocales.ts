@@ -50,6 +50,10 @@ type ActiveWorkoutStrings = {
   activeRir: string;
   activeRirTip: string;
   activeRirValue: string;
+  /** Optional ecc/pause/con on a completed set (`.734`). */
+  activeTempo: string;
+  activeTempoTip: string;
+  activeTempoPlaceholder: string;
   activePrTitle: string;
   activePrDesc: string;
   activeCopyLast: string;
@@ -281,6 +285,9 @@ const en: ActiveWorkoutStrings = {
   activeRir: 'RIR',
   activeRirTip: 'Reps in reserve — how many more you could have done. Optional.',
   activeRirValue: 'RIR {{n}}',
+  activeTempo: 'Tempo',
+  activeTempoTip: 'Eccentric-pause-concentric seconds, e.g. 3-1-1. Optional.',
+  activeTempoPlaceholder: '3-1-1',
   activePrTitle: 'New PR!',
   activePrDesc: '{{reps}} × {{weight}} — personal best for this exercise',
   activeCopyLast: 'Copy last',

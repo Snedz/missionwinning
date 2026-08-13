@@ -13,11 +13,12 @@
 import { Check } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { Badge } from '@/components/ui/badge';
-import type { LoggedSet, SetKind } from '@/types';
+import type { LoggedSet, SetKind, SetTempo } from '@/types';
 import { setKindBadgeClass, setKindDefaultLabel, setKindLabelKey } from '@/lib/workout/setKind';
 import { parseSetSide, setSideDefaultLabel, setSideLabelKey } from '@/lib/workout/unilateral';
 import { rpeDefaultLabel, rpeLabelKey } from '@/lib/workout/rpeLabel';
 import { SetRirSelect } from '@/components/workout/SetRirSelect';
+import { SetTempoField } from '@/components/workout/SetTempoField';
 import { cn } from '@/lib/utils';
 
 type Props = {
@@ -35,6 +36,8 @@ type Props = {
   onRate: (setIdx: number, rpe: 'easy' | 'med' | 'hard') => void;
   /** Optional 0–5 RIR — independent of RPE; never required (`.725`). */
   onRateRir: (setIdx: number, rir: number | undefined) => void;
+  /** Optional ecc/pause/con — never required (`.734`). */
+  onRateTempo: (setIdx: number, tempo: SetTempo | undefined) => void;
 };
 
 const cell = 'px-2 py-1.5 align-middle';
@@ -55,6 +58,7 @@ export function SetLogTable({
   onLog,
   onRate,
   onRateRir,
+  onRateTempo,
 }: Props) {
   const { t } = useTranslation();
 
@@ -192,7 +196,7 @@ export function SetLogTable({
                     {completed ? set.reps : set.reps}
                   </td>
                   <td className={cn(cell, 'text-end')}>
-                    <div className="flex items-center justify-end gap-1">
+                    <div className="flex flex-wrap items-center justify-end gap-1">
                       {kind !== 'normal' && (
                         <Badge
                           variant="outline"
@@ -230,6 +234,13 @@ export function SetLogTable({
                           rir={set.rir}
                           onRateRir={(rir) => onRateRir(setIdx, rir)}
                           testId="set-table-rir"
+                        />
+                      )}
+                      {completed && (
+                        <SetTempoField
+                          tempo={set.tempo}
+                          onRateTempo={(tempo) => onRateTempo(setIdx, tempo)}
+                          testId="set-table-tempo"
                         />
                       )}
                       {completed && (

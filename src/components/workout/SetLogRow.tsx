@@ -15,7 +15,7 @@ import { useTranslation } from 'react-i18next';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
-import type { LoggedSet, SetKind } from '@/types';
+import type { LoggedSet, SetKind, SetTempo } from '@/types';
 import {
   setKindBadgeClass,
   setKindDefaultLabel,
@@ -25,6 +25,7 @@ import { parseSetSide, setSideDefaultLabel, setSideLabelKey } from '@/lib/workou
 import { rpeDefaultLabel, rpeLabelKey } from '@/lib/workout/rpeLabel';
 import { formatLoggedSetLine } from '@/lib/workout/activeWorkoutHelpers';
 import { SetRirSelect } from '@/components/workout/SetRirSelect';
+import { SetTempoField } from '@/components/workout/SetTempoField';
 import { cn } from '@/lib/utils';
 
 const SET_KIND_TIPS: Record<SetKind, { key: string; defaultValue: string }> = {
@@ -56,6 +57,8 @@ type Props = {
   onRate: (rpe: 'easy' | 'med' | 'hard') => void;
   /** Optional 0–5 RIR — independent of RPE; never required (`.725`). */
   onRateRir: (rir: number | undefined) => void;
+  /** Optional ecc/pause/con — never required (`.734`). */
+  onRateTempo: (tempo: SetTempo | undefined) => void;
 };
 
 export function SetLogRow({
@@ -67,6 +70,7 @@ export function SetLogRow({
   pairMark = null,
   onRate,
   onRateRir,
+  onRateTempo,
 }: Props) {
   const { t } = useTranslation();
   const kind = set.kind ?? 'normal';
@@ -210,6 +214,7 @@ export function SetLogRow({
             </Badge>
           )}
           <SetRirSelect rir={set.rir} onRateRir={onRateRir} />
+          <SetTempoField tempo={set.tempo} onRateTempo={onRateTempo} />
           <Check
             className="h-4 w-4 shrink-0 text-primary"
             aria-hidden

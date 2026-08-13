@@ -35,6 +35,7 @@ import type {
   LoggedSet,
   SetKind,
   SetSide,
+  SetTempo,
 } from '@/types';
 
 type TemplateSet = { reps: number; weight: number; kind?: SetKind; rpe?: LoggedSet['rpe'] };
@@ -70,6 +71,7 @@ type Props = {
   onNoteChange: (note: string) => void;
   onRate: (setIdx: number, rpe: NonNullable<LoggedSet['rpe']>) => void;
   onRateRir: (setIdx: number, rir: number | undefined) => void;
+  onRateTempo: (setIdx: number, tempo: SetTempo | undefined) => void;
   onApplyAllTargets: () => void;
   onAddSet: () => void;
   onStartDrop: () => void;
@@ -115,6 +117,7 @@ export function ActiveExerciseCard({
   onNoteChange,
   onRate,
   onRateRir,
+  onRateTempo,
   onApplyAllTargets,
   onAddSet,
   onStartDrop,
@@ -210,6 +213,7 @@ export function ActiveExerciseCard({
                   pairMark={ssLabel}
                   onRate={(rpe) => onRate(setIdx, rpe)}
                   onRateRir={(rir) => onRateRir(setIdx, rir)}
+                  onRateTempo={(tempo) => onRateTempo(setIdx, tempo)}
                 />
               </div>
             );
@@ -227,6 +231,7 @@ export function ActiveExerciseCard({
               onLog={() => nextSet && onLogSet(nextSet.setIdx)}
               onRate={onRate}
               onRateRir={onRateRir}
+              onRateTempo={onRateTempo}
             />
           </div>
         )}

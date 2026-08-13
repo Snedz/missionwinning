@@ -17,6 +17,13 @@ export type SetSide = 'L' | 'R' | 'alt';
 
 export type Rpe = 'easy' | 'med' | 'hard';
 
+/** Eccentric / pause / concentric seconds (e.g. 3-1-1). Optional on a logged set. */
+export interface SetTempo {
+  ecc: number;
+  pause: number;
+  con: number;
+}
+
 export type ExerciseLevel = "beginner" | "intermediate" | "advanced";
 
 export interface Exercise {
@@ -79,6 +86,8 @@ export interface LoggedSet {
    * replaces `rpe`. Empty / omitted is valid.
    */
   rir?: number;
+  /** Optional ecc/pause/con seconds (`.734`). Never required to log. */
+  tempo?: SetTempo;
   /** Set at log time when this beat prior e1RM — brass chip on row. */
   isPr?: boolean;
   /** L / R / Alt — only meaningful on a unilateral exercise; omit on bilateral. */
@@ -141,6 +150,7 @@ export interface CompletedWorkoutLog {
       side?: SetSide;
       /** Optional 0–5; omitted when the athlete did not rate RIR (`.756`). */
       rir?: number;
+      tempo?: SetTempo;
     }[];
     note?: string;
     /** Snapshot from catalog at complete time — readiness can skip EXERCISES lookup. */

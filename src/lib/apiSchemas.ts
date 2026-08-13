@@ -266,6 +266,9 @@ export const mobileSyncSetSchema = z.object({
   /** Optional 0–5 RIR — independent of RPE 6–10; never required (`.725`). */
   rir: z.number().int().min(0).max(5).nullable().optional(),
   setKind: z.string().max(20).default('normal'),
+  // Optional ecc-pause-con (`3-1-1`). Invalid values are dropped at normalize,
+  // not here — a bad tempo must not fail the whole set sync (`.734`).
+  tempo: z.string().max(11).optional(),
   // Dropped by omission before `.184` — Android sent it, zod stripped it, and every
   // set note died here. 500 chars bounds the jsonb, not the athlete's thought.
   note: z.string().max(500).optional(),

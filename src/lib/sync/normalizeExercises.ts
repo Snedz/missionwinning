@@ -19,12 +19,13 @@
  * them tolerate two shapes would hide the defect in six places instead of fixing it
  * in one.
  *
- * Pure. Optional RIR parse lives in `workout/rir` (one definition).
+ * Pure. Optional RIR parse lives in `workout/rir`; tempo parse in `tempo.ts`.
  */
 
 import type { CompletedWorkoutLog, Rpe, SetKind } from '@/types';
 import { parseSetSide } from '@/lib/workout/unilateral';
 import { parseOptionalRir } from '@/lib/workout/rir';
+import { formatTempo, parseOptionalTempo } from '@/lib/workout/tempo';
 
 type NestedExercises = CompletedWorkoutLog['exercises'];
 type NestedSet = NestedExercises[number]['sets'][number];
@@ -46,6 +47,8 @@ export interface FlatSetRow {
   setKind?: string;
   /** Web unilateral L/R/Alt. Optional; Android may omit. */
   side?: string;
+  /** Optional ecc-pause-con (`3-1-1`) — dropped when invalid (`.734`). */
+  tempo?: string | null;
   /** Android stores a note per set; web stores one per exercise. See the mapping notes
    *  on `groupFlatSets` / `flattenExercises` — before `.184` this field was dropped in
    *  BOTH directions, so every note silently died at this boundary. */
@@ -137,6 +140,8 @@ export function groupFlatSets(rows: readonly unknown[]): NestedExercises {
       if (side) set.side = side;
       const rir = parseOptionalRir(row.rir);
       if (rir !== undefined) set.rir = rir;
+      const tempo = parseOptionalTempo(row.tempo);
+      if (tempo) set.tempo = tempo;
       return set;
     });
     // Android's per-set notes fold into web's per-exercise note: distinct non-empty
@@ -188,6 +193,8 @@ export function normalizeCloudExercises(value: unknown): NestedExercises {
       if (side) set.side = side;
       const rir = parseOptionalRir(s.rir);
       if (rir !== undefined) set.rir = rir;
+      const tempo = parseOptionalTempo(s.tempo);
+      if (tempo) set.tempo = tempo;
       sets.push(set);
     }
     const ex: NestedExercises[number] = { exerciseId: e.exerciseId, sets };
@@ -226,6 +233,8 @@ export function flattenExercises(
       if (side) row.side = side;
       const rir = parseOptionalRir(set.rir);
       if (rir !== undefined) row.rir = rir;
+      const tempo = parseOptionalTempo(set.tempo);
+      if (tempo) row.tempo = formatTempo(tempo);
       // Web's exercise-level note travels on the first set — the slot Android's
       // per-set schema has for it. Before `.184` it was omitted here entirely.
       if (setIndex === 0 && ex.note?.trim()) row.note = ex.note.trim();

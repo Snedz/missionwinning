@@ -101,6 +101,13 @@ const NEVER_SHIPPED: { from: number; to: number; why: string }[] = [
       'Reserved by concurrent overnight PRs while master jumped `.697` → `.714` (public GitHub). ' +
       'No `##` heading on master ever ended in (`.698`)–(`.713`).',
   },
+  {
+    from: 715,
+    to: 742,
+    why:
+      'Reserved by concurrent logger-spine PRs while master jumped `.714` → `.743` (Cursor-local CI). ' +
+      'Those reservations landed as `.745`–`.757`. No `##` heading on master ever ended in (`.715`)–(`.742`).',
+  },
 ];
 const neverShipped = (x: number) => NEVER_SHIPPED.some((g) => x >= g.from && x <= g.to);
 

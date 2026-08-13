@@ -16,6 +16,7 @@ import type {
 } from "@/types";
 import { countsTowardVolume } from "@/lib/workout/setKind";
 import { parseOptionalRir } from "@/lib/workout/rir";
+import { lastTempoForExercise, parseOptionalTempo, rememberLastTempo } from "@/lib/workout/tempo";
 import { advanceAfterLog, pairWithNext, unpair } from "@/lib/workout/superset";
 import {
   completedLoggedSet,
@@ -94,6 +95,12 @@ interface WorkoutState {
   rateSet: (exerciseIndex: number, setIndex: number, rpe: 'easy' | 'med' | 'hard') => void;
   /** Optional 0–5 RIR after log — never stamped by `logSet` (`.725`). */
   rateSetRir: (exerciseIndex: number, setIndex: number, rir: number | undefined) => void;
+  /** Optional ecc/pause/con after log — last tempo prefills on `logSet` (`.734`). */
+  rateSetTempo: (
+    exerciseIndex: number,
+    setIndex: number,
+    tempo: import('@/types').SetTempo | undefined
+  ) => void;
   setSetKind: (exerciseIndex: number, setIndex: number, kind: SetKind) => void;
   setSetSide: (exerciseIndex: number, setIndex: number, side: SetSide | undefined) => void;
   toggleSupersetWithNext: (exerciseIndex: number) => void;
@@ -241,7 +248,12 @@ export const useWorkoutStore = create<WorkoutState>()(
                 .map((s) => {
                   const rec = completedLoggedSet(s, ex.exerciseId);
                   const rir = parseOptionalRir(s.rir);
-                  return rir !== undefined ? { ...rec, rir } : rec;
+                  const tempo = parseOptionalTempo(s.tempo);
+                  return {
+                    ...rec,
+                    ...(rir !== undefined ? { rir } : {}),
+                    ...(tempo ? { tempo } : {}),
+                  };
                 }),
               ...(ex.note?.trim() ? { note: ex.note.trim() } : {}),
               ...(ex.muscleGroups?.length ? { muscleGroups: [...ex.muscleGroups] } : {}),
@@ -341,6 +353,11 @@ export const useWorkoutStore = create<WorkoutState>()(
           const exercises = [...s.activeWorkout.exercises];
           const ex = { ...exercises[exerciseIndex] };
           const sets = [...ex.sets];
+          const lastTempo = lastTempoForExercise(
+            ex.exerciseId,
+            sets.filter((x) => x.completed),
+            s.workoutHistory
+          );
           sets[setIndex] = {
             ...sets[setIndex],
             reps,
@@ -349,9 +366,11 @@ export const useWorkoutStore = create<WorkoutState>()(
             rpe,
             kind: sets[setIndex].kind ?? 'normal',
             isPr: isPr || undefined,
+            ...(lastTempo ? { tempo: lastTempo } : {}),
           };
           ex.sets = sets;
           exercises[exerciseIndex] = ex;
+          if (lastTempo) rememberLastTempo(ex.exerciseId, lastTempo);
           return {
             activeWorkout: { ...s.activeWorkout, exercises },
           };
@@ -437,6 +456,30 @@ export const useWorkoutStore = create<WorkoutState>()(
             const next = { ...sets[setIndex] };
             if (parsed === undefined) delete next.rir;
             else next.rir = parsed;
+            sets[setIndex] = next;
+          }
+          ex.sets = sets;
+          exercises[exerciseIndex] = ex;
+          return {
+            activeWorkout: { ...s.activeWorkout, exercises },
+          };
+        });
+      },
+
+      rateSetTempo: (exerciseIndex, setIndex, tempo) => {
+        set((s) => {
+          if (!s.activeWorkout) return s;
+          const parsed = parseOptionalTempo(tempo);
+          const exercises = [...s.activeWorkout.exercises];
+          const ex = { ...exercises[exerciseIndex] };
+          const sets = [...ex.sets];
+          if (sets[setIndex]) {
+            const next = { ...sets[setIndex] };
+            if (parsed === undefined) delete next.tempo;
+            else {
+              next.tempo = parsed;
+              rememberLastTempo(ex.exerciseId, parsed);
+            }
             sets[setIndex] = next;
           }
           ex.sets = sets;
