@@ -547,7 +547,6 @@ export function HistoryPage() {
               </Button>
             ) : null}
             </div>
-            </>
           )}
           </>
           )}
