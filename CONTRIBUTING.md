@@ -1,6 +1,6 @@
 # Contributing to Mission Winning
 
-Thank you for helping build a healthier world. This guide is for developers and agents working in the repo.
+Thank you for helping build the free core. This guide is for **outside contributors** and for agents working in the repo.
 
 **License:** contributions are accepted under the [GNU Affero General Public License v3.0](LICENSE). By opening a PR you agree your contribution is licensed under AGPL-3.0.
 
@@ -17,7 +17,7 @@ Thank you for helping build a healthier world. This guide is for developers and 
 - Optional: Supabase project, Stripe test keys (see [docs/ENV.md](docs/ENV.md))
 
 ```bash
-git clone <repo>
+git clone https://github.com/Snedz/missionwinning.git
 cd missionwinning
 cp .env.example .env.local   # if present; else see docs/ENV.md
 npm install

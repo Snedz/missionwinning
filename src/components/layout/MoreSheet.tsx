@@ -39,7 +39,7 @@ import { FirstStepsSheet } from '@/components/journey/FirstStepsSheet';
 import { WhatsNewSheet } from '@/components/profile/WhatsNewSheet';
 import { getFirstSteps, summarizeFirstSteps } from '@/lib/journey/firstSteps';
 import { syncJourneyPhase } from '@/lib/missionJourney';
-import { APP_BUILD_LABEL } from '@/lib/buildInfo';
+import { APP_BUILD_LABEL, APP_PUBLIC_PRODUCT_VERSION } from '@/lib/buildInfo';
 import { isWhatsNewUnseen } from '@/lib/whatsNew';
 import { useWorkoutStore } from '@/store/workoutStore';
 
@@ -292,6 +292,12 @@ export function MoreSheet({ open, onClose }: { open: boolean; onClose: () => voi
           </Link>
         ))}
       </div>
+      <p
+        className="px-4 pb-4 text-[10px] font-semibold uppercase tracking-[0.1em] text-muted-foreground"
+        data-mw-public-version
+      >
+        {APP_PUBLIC_PRODUCT_VERSION}
+      </p>
     </AdaptiveOverlay>
   );
 }

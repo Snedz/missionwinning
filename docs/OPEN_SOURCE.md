@@ -48,7 +48,7 @@ Agents never change repository visibility. Full checklist: [SECRETS.md § Pre-pu
 6. Accelerator **paste packs** stay local (`docs/applications/*` gitignored — see [applications/README.md](applications/README.md)).
 7. Enable GitHub **Secret scanning** + **Push protection** (free once Public).
 8. Prefer GitHub **Environments** with required reviewers for `deploy-production` / `sync-vercel-env` / `apply-migration` ([VERCEL_DEPLOY_CHECKLIST.md](VERCEL_DEPLOY_CHECKLIST.md)).
-9. GitHub → Settings → **Change repository visibility → Public** (founder only).
+9. GitHub → Settings → **Change repository visibility → Public** (founder only). One-pager: [PUBLIC_GITHUB.md](PUBLIC_GITHUB.md).
 10. Optional: topics (`agpl-3.0`, `pwa`, `fitness`, `nextjs`) and LICENSE badge.
 
 **Cleanup shipped 2026-08-08** — scrub + dual-repo structure. **Visibility flip remains founder-owned.**

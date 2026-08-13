@@ -31,6 +31,7 @@
 |------|---------|
 | [ARCHITECTURE.md](ARCHITECTURE.md) | System design, layers, state |
 | [OPEN_SOURCE.md](OPEN_SOURCE.md) | AGPL posture · public flip · what stays secret |
+| [PUBLIC_GITHUB.md](PUBLIC_GITHUB.md) | Founder-only GitHub Settings clicks (visibility, secret scanning, topics) — agents never flip |
 | [CLASSIFICATION.md](CLASSIFICATION.md) | PUBLIC / INTERNAL / SECRET / LOCAL path classes |
 | [DUAL_REPO.md](DUAL_REPO.md) | Product repo vs private mission-ops · `npm run ops:sync` |
 | [SECURITY_PUBLIC_OSS_AUDIT_2026-08-08.md](SECURITY_PUBLIC_OSS_AUDIT_2026-08-08.md) | Public OSS prep audit (2026-08-08) |
