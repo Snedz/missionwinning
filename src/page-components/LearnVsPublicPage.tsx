@@ -58,30 +58,14 @@ export function LearnVsPublicPage({ page }: Props) {
               paragraphClassName: 'text-sm leading-relaxed text-foreground',
             })}
           </div>
-          {section.table ? (
-            <div
-              tabIndex={0}
-              role="region"
-              aria-label={section.table.caption ?? 'Comparison table'}
-            >
-              <GuideSectionExtras
-                section={{
-                  callout: section.callout,
-                  table: section.table,
-                  checklist: section.checklist,
-                }}
-                variant="app"
-              />
-            </div>
-          ) : (
-            <GuideSectionExtras
-              section={{
-                callout: section.callout,
-                checklist: section.checklist,
-              }}
-              variant="app"
-            />
-          )}
+          <GuideSectionExtras
+            section={{
+              callout: section.callout,
+              table: section.table,
+              checklist: section.checklist,
+            }}
+            variant="app"
+          />
         </article>
       ))}
 
