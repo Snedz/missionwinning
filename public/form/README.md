@@ -16,6 +16,6 @@ Clinical movement demos for Train / library / public exercises.
 
 **Landmine (`.473` / `.772`):** still-only packs for `landmine-press`, `landmine-row` (floor pivot), `landmine-squat`. Other landmines use pattern media + structured guides.
 
-**Library cards (`.772`):** unique Form Index stills only (38 wired). Shared `pattern-*` rasters stay in the form sheet with an honest caption — they are not card posters. Wave B: `dead-bug`, `side-plank`, `mountain-climbers`, `hollow-hold`, `cable-row`, `lateral-raise`, `dumbbell-press`, `dumbbell-row`.
+**Library cards (`.774`):** unique Form Index stills only (43 wired). Shared `pattern-*` rasters stay in the form sheet with an honest caption — they are not card posters. Wave C: `step-ups`, `jump-squats`, `wall-ball`, `dips-chair`, `incline-bench`.
 
 Do not embed third-party CrossFit or YouTube demos. MW-owned assets only.

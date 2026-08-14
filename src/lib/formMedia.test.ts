@@ -109,9 +109,12 @@ test('alias keys exist in the full catalog', async () => {
 });
 
 test('library poster is never a shared pattern raster', () => {
-  assert.equal(formPackLibraryPosterUrl('incline-bench'), null);
   assert.equal(formPackLibraryPosterUrl('farmers-walk-dbs'), null);
-  assert.equal(formPackLibraryPosterUrl('wall-ball'), null);
+  assert.equal(formPackLibraryPosterUrl('suitcase-carry'), null);
+  const incline = formPackLibraryPosterUrl('incline-bench');
+  assert.equal(incline, '/form/incline-bench/side.webp');
+  const wall = formPackLibraryPosterUrl('wall-ball');
+  assert.equal(wall, '/form/wall-ball/side.webp');
   const hip = formPackLibraryPosterUrl('hip-thrust');
   assert.ok(hip);
   assert.equal(hip.includes('/form/pattern-'), false);
