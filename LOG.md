@@ -76,6 +76,18 @@ above. It needs a profile-less journey variant or a founder call on I-Day's shap
 which master deliberately cut to two steps in `.759`–`.764`. Named rather than
 guessed at.
 
+**Verified on the production build, not the dev server.** Returning athlete at
+390×844: **0** blocking sheets between Start and Log set, **2** interactions,
+`SETS 1/1`, the sheet offered *after* the set, and an untouched Save wrote
+`(nothing)` where it used to write 3/3/3. `/coach` and Today both read *"From
+your log: Bench Press 60kg × 5 · Aug 13"* (the Today insight card's copy sits in
+the collapsed health section and carries the same line). `/` and `/welcome`
+state the mechanism in server-rendered HTML. Hero e2e **71 passed**; unit
+**2767**; route contract **47**; lint, typecheck, i18n parity + coverage, locale
+split, design system, display type, token sync, excellence gate all green.
+`bundle-budget` stays red exactly as master left it — `/` 257.1 KB (master
+257.5), `/log` 287.3 (287.8), `/active` 453.6 (453.1).
+
 Label `.767` (onto `.766`, same PR). Excellence-Override below.
 
 Excellence-Override: www kaizen first-paint (RESULT unscored)
