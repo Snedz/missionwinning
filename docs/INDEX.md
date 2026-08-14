@@ -18,12 +18,10 @@
 | [help/mission-coach.md](help/mission-coach.md) | AI weekly coach |
 | [help/fuel-and-nutrition.md](help/fuel-and-nutrition.md) | Nutrition logging |
 | [help/fitness-test-and-school.md](help/fitness-test-and-school.md) | PFT + PE classes |
-| [help/field-test.md](help/field-test.md) | Free five-event field test (logger) |
-| [FIELD_TEST_PLAN.md](FIELD_TEST_PLAN.md) | Frozen plan — five-event field test |
+| [help/pt-safety.md](help/pt-safety.md) | Hard sessions — stop is allowed |
 | [help/premium-and-billing.md](help/premium-and-billing.md) | Super Bundle |
 | [help/privacy-and-data.md](help/privacy-and-data.md) | Data & consent |
 | [help/faq.md](help/faq.md) | FAQ |
-| [help/mission-server.md](help/mission-server.md) | Garage text rooms |
 | [help/troubleshooting.md](help/troubleshooting.md) | Common fixes |
 
 ---
@@ -38,10 +36,8 @@
 | [DUAL_REPO.md](DUAL_REPO.md) | Product repo vs private mission-ops · `npm run ops:sync` |
 | [SECURITY_PUBLIC_OSS_AUDIT_2026-08-08.md](SECURITY_PUBLIC_OSS_AUDIT_2026-08-08.md) | Public OSS prep audit (2026-08-08) |
 | [contracts/INDEX.md](contracts/INDEX.md) | Identity · economy · module · AI interop contracts |
-| [MISSION_SERVER_V1_PLAN.md](MISSION_SERVER_V1_PLAN.md) | Garage text rooms freeze (`.726`) — Discord-shaped, parkable, not a tab |
 | [SECRETS.md](SECRETS.md) | Secrets program · vaults · gitleaks · rotate-on-leak |
 | [FREE_BETA.md](FREE_BETA.md) | Free-first beta mute (LLC/EIN window) — hide all paid UI |
-| [SUPER_BUNDLE_CONTENT_PLAN.md](SUPER_BUNDLE_CONTENT_PLAN.md) | Frozen `.700` Super Bundle content depth (quality, honest counts) |
 | [ADAPTIVE_LAYOUT.md](ADAPTIVE_LAYOUT.md) | Window size classes · adaptive overlays (web + Android) |
 | [API.md](API.md) | HTTP API reference |
 | [AGENT_RECIPES.md](AGENT_RECIPES.md) | Agent task playbooks |
@@ -134,8 +130,6 @@ Root keeps only the spine (README · CONTEXT · AGENTS · INDEX · vision · ORC
 | [PRICING_REVIEW_2026-08.md](PRICING_REVIEW_2026-08.md) | Super Bundle pricing review — hold Option A (2026-08-05) |
 | [STRATEGY.md](STRATEGY.md) | Business plan · pricing · book plan |
 | [PLAN.md](PLAN.md) | Build phases A–I |
-| [SUPER_BUNDLE_CONTENT_PLAN.md](SUPER_BUNDLE_CONTENT_PLAN.md) | Super Bundle catalog depth (parent, frozen `.700`) |
-| [SUPER_BUNDLE_SHOP_HONESTY_PLAN.md](SUPER_BUNDLE_SHOP_HONESTY_PLAN.md) | **Frozen** leftover: Move table 32/48 + Train why + vs-stack help (`.710`; `.707` is Mind #501) |
 | [REDTEAM.md](REDTEAM.md) | Assumptions audit |
 | [JOURNEY.md](JOURNEY.md) | Mission journey UX (I-Day → Commissioned) |
 | [CLUB_PLAN.md](CLUB_PLAN.md) | Club: points · tiers · collectibles · boards · arcade (phased plan, no code) |

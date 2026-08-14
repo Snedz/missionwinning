@@ -9,13 +9,11 @@ Plain-language guides for athletes, parents, and teachers. English only for now;
 | [mission-coach.md](mission-coach.md) | Premium weekly AI training plan |
 | [fuel-and-nutrition.md](fuel-and-nutrition.md) | Logging food, barcode scan, photo estimate |
 | [fitness-test-and-school.md](fitness-test-and-school.md) | Presidential Fitness Test + PE class codes |
-| [field-test.md](field-test.md) | Free five-event field test (logger) |
+| [pt-safety.md](pt-safety.md) | Hard sessions — stop is allowed; not medical care |
 | [premium-and-billing.md](premium-and-billing.md) | Super Bundle, what's free, restoring access |
-| [super-bundle-vs-stack.md](super-bundle-vs-stack.md) | One $59 SKU vs MFP + Pliability + Calm + a coach app |
 | [privacy-and-data.md](privacy-and-data.md) | Where your data lives, backup, youth consent, optional wearables |
 | [../WEARABLES.md](../WEARABLES.md) | Developer wearables strategy (Apple, Google, Whoop, …) |
 | [faq.md](faq.md) | Quick answers |
-| [mission-server.md](mission-server.md) | Garage text rooms (device-local; not a feed) |
 | [troubleshooting.md](troubleshooting.md) | Offline, sync, password gate |
 
 **In the app:** Profile → legal links; Today tab = `/log`; Coach = `/coach`.

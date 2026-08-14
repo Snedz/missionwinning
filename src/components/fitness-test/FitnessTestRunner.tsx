@@ -11,6 +11,8 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { YouthParentGate } from '@/components/fitness-test/YouthParentGate';
 import { ShareFitnessButton } from '@/components/fitness-test/ShareFitnessButton';
+import { HardSessionWarningSheet } from '@/components/workout/HardSessionWarningSheet';
+import { needsHardSessionWarning } from '@/lib/workout/hardSession';
 import {
   awardLabel,
   formatMileTime,
@@ -44,6 +46,8 @@ export function FitnessTestRunner() {
   );
 
   const [step, setStep] = useState<Step>('profile');
+  const [hardWarningOpen, setHardWarningOpen] = useState(false);
+  const [hardWarningAck, setHardWarningAck] = useState(false);
   const [age, setAge] = useState('14');
   const [sex, setSex] = useState<FitnessSex>('male');
   const [values, setValues] = useState<Record<string, string>>({});
@@ -261,7 +265,19 @@ export function FitnessTestRunner() {
                 </option>
               </select>
             </label>
-            <Button className="w-full min-h-[44px] tap-target" onClick={proceedFromProfile}>
+            <Button
+              className="w-full min-h-[44px] tap-target"
+              onClick={() => {
+                if (
+                  !hardWarningAck &&
+                  needsHardSessionWarning({ kind: isMini ? 'pft-mini' : 'pft' })
+                ) {
+                  setHardWarningOpen(true);
+                  return;
+                }
+                proceedFromProfile();
+              }}
+            >
               {t('pftContinue', { defaultValue: 'Continue to events' })}
             </Button>
           </>
@@ -296,6 +312,15 @@ export function FitnessTestRunner() {
               'Educational fitness tool by Mission Winning LLC — not an official U.S. government test or endorsement.',
           })}
         </p>
+        <HardSessionWarningSheet
+          open={hardWarningOpen}
+          onContinue={() => {
+            setHardWarningAck(true);
+            setHardWarningOpen(false);
+            proceedFromProfile();
+          }}
+          onBack={() => setHardWarningOpen(false)}
+        />
       </CardContent>
     </Card>
   );

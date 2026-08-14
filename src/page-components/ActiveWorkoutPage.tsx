@@ -59,6 +59,7 @@ import {
   shouldOfferSessionCheckIn,
   markSessionCheckInSkipped,
 } from '@/components/workout/SessionCheckInSheet';
+import { needsHardSessionWarning } from '@/lib/workout/hardSession';
 import { useCoachPlan } from '@/hooks/useCoachPlan';
 import {
   assembleActiveVictory,
@@ -223,6 +224,8 @@ export function ActiveWorkoutPage() {
   /** Id of the session the victory sheet is showing — the journal entry's key. */
   const [victoryWorkoutId, setVictoryWorkoutId] = useState<string | null>(null);
   const [checkInOpen, setCheckInOpen] = useState(false);
+  const [hardWarningOpen, setHardWarningOpen] = useState(false);
+  const hardWarningAckKey = useRef<string | null>(null);
   const [readinessBefore, setReadinessBefore] = useState<number | null>(null);
   const [readinessAfter, setReadinessAfter] = useState<number | null>(null);
   const [offerVolumeTrim, setOfferVolumeTrim] = useState(false);
@@ -231,13 +234,27 @@ export function ActiveWorkoutPage() {
   const sessionKey = activeWorkout
     ? `${activeWorkout.startedAt}:${activeWorkout.workoutName}`
     : null;
+  const fieldTestParam = searchParams.get('fieldTest');
 
   useEffect(() => {
     if (!sessionKey) return;
+    const workout = useWorkoutStore.getState().activeWorkout;
+    if (!workout) return;
+    const logged = hasLoggedWork(workout);
+    const hard = needsHardSessionWarning({
+      name: workout.workoutName,
+      fieldTestParam,
+      hasLoggedWork: logged,
+    });
+    if (hard && hardWarningAckKey.current !== sessionKey) {
+      setHardWarningOpen(true);
+      setCheckInOpen(false);
+      return;
+    }
     if (shouldOfferSessionCheckIn()) {
       setCheckInOpen(true);
     }
-  }, [sessionKey]);
+  }, [sessionKey, fieldTestParam]);
 
   const nextSet = useMemo(
     () => (activeWorkout ? findNextSet(activeWorkout.exercises) : null),
@@ -796,6 +813,17 @@ export function ActiveWorkoutPage() {
           setReadinessBefore(planDismiss.readinessBefore);
           setReadinessAfter(planDismiss.readinessAfter);
           if (planDismiss.offerVolumeTrim) setOfferVolumeTrim(true);
+        }}
+        hardWarningOpen={hardWarningOpen}
+        onHardWarningContinue={() => {
+          if (sessionKey) hardWarningAckKey.current = sessionKey;
+          setHardWarningOpen(false);
+          if (shouldOfferSessionCheckIn()) setCheckInOpen(true);
+        }}
+        onHardWarningBack={() => {
+          setHardWarningOpen(false);
+          const workout = useWorkoutStore.getState().activeWorkout;
+          if (workout && !hasLoggedWork(workout)) cancelActiveWorkout();
         }}
         formGuideSheet={formGuideSheet}
         onCloseFormGuide={() => setFormGuideId(null)}

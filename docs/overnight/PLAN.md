@@ -1,145 +1,126 @@
-# Overnight freeze — Super Bundle Mind premium (journal sessions)
+# Frozen: PT safety — stop-is-legal before hard sessions (`.727`)
 
-**Status:** FROZEN (product scope). **Retag:** `.698` vacated — reserved for #477 gated www honesty; #500 Athlete Page took `.706`. This ship is `2026.07-unified.707`. Avoid `.698` `.699` `.700` `.705`. Sessions + floors unchanged.
+**Status:** FROZEN. Implement only this plan. Do not rewrite [PR #505](https://github.com/Snedz/missionwinning/pull/505) (field test). This PR must work on `master` even if #505 never merges.
 
-Implement only this document. Do not add tabs, audio, trials, locale farms, Android, or a meditation-library expansion.
+**Label:** `2026.07-unified.727` (occupied `.698`–`.726`). Draft PR. One Preview max.
 
-**Override:** `Excellence-Override: Super Bundle Mind premium (content)`  
-Horizon W RESULT is unscored; `/mind` and `src/lib/mind` are surface. Trailer required on the ship commit and draft PR body.
-
-**INTEL_HEALTH_SEQUENCE:** not in this product git (ops / `.hermes` are LOCAL). Locked reading: **journal/question steps beat a Calm-style meditation library.** Do not invent a clinical protocol or a new series tab.
-
----
-
-## Honest inventory (measured 2026-08-13 on `master` @ `.697`)
-
-| Catalog | Count | Floor (`CONTENT_FLOORS`) | What athletes can still be told |
-|---------|------:|-------------------------:|----------------------------------|
-| Free guided (`GUIDED_MIND_SESSIONS`) | **32** | `mindFree: 32` | Honest on `/mind` counted headings |
-| Premium guided (`PREMIUM_MIND_SESSIONS`) | **60** unique ids | `mindPremium: 60` | **Lies:** locked preview `10` + `17`; bundle i18n `10` + `22`; `docs/PLAN.md` I3b `17` Mind |
-| Move premium | 48 | 48 | Out of scope (do not “fix” Move this ship) |
-
-`payments.ts` `BUNDLE_PILLARS` already interpolates `CONTENT_FLOORS`. **`BundlePage` ignores those strings** and renders `t('bundlePillarMindPremium')` → **"22 guided sessions"**. Same class of defect `.606` fixed in `payments.ts`.
-
-`MindLockedPreview` (hidden while `FREE_BETA`) still merchandises **Calm / Waking Up** and **sleep stories**, with **10 / 17**.
+**Excellence-Override:** PT safety warning
 
 ---
 
 ## Goal
 
-Ship **original MW** Super Bundle Mind depth that is:
+A max-effort session is never the silent default. Stopping is allowed. We do **not** claim we can prevent sudden collapse or medical emergencies.
 
-1. **Journal/question style** — timed steps the athlete *answers*, not a body-scan / box-breath library clone.
-2. **Skippable** — reuse `GuidedStepPlayer` Skip (already wired). No “don’t skip” copy.
-3. **No streak guilt** — missed days are data; no streak, freeze, or “don’t break the chain.”
-4. **No Calm clone** — no competitor names, no sleep stories, no spa library pitch.
-5. **Not clinical** — no diagnosis, therapy, SSRI, disorder, crisis care. Training questions only. [docs/EXERCISE_AS_MEDICINE.md](../EXERCISE_AS_MEDICINE.md) boundary.
-6. **Not a new tab** — stay on `/mind`. Do **not** add a collection chip, series rail, route, or nav item. Existing `MIND_COLLECTIONS` length stays **8**.
-7. **Honest counts** — floors, constants, preview, bundle Mind row, and `docs/PLAN.md` I3b all state the **new** premium count.
-
-No trial. No `PRIVATE_MODE` flip. Draft PR. At most one preview (the PR’s).
+Context that must **not** appear in product copy, comments shipped to users, help, or tests' asserted strings: a named casualty, unit, “sudden cardiac arrest” as a product claim. Do not clone USMC/ACFT branding.
 
 ---
 
-## What we will add
+## Non-goals (hard bans)
 
-**+8 premium sessions** in `src/data/premiumMindSessions.ts`.
-
-| After this ship | Value |
-|-----------------|------:|
-| Premium ids / `PREMIUM_MIND_SESSION_COUNT` / `CONTENT_FLOORS.mindPremium` | **68** |
-| Free (unchanged) | **32** |
-| Unlocked total under free-beta | **100** |
-
-### Session ids (frozen)
-
-All ids unique vs the existing 60. Tag with **existing** collection tags only (plus `journal` for tests — `journal` is **not** a collection id).
-
-| id | Collection tags | Minutes | Job |
-|----|-----------------|--------:|-----|
-| `journal-session-size` | `pre-lift`, `focus` | 5 | Smallest session you will actually finish today |
-| `journal-missed-day` | `stress`, `recovery` | 5 | What got in the way; next physical action — no shame |
-| `journal-sleep-data` | `sleep` | 5 | Last night as data, not a morality score |
-| `journal-after-heavy` | `post-train`, `recovery` | 6 | Where the work sits; sharp vs tired |
-| `journal-travel-plan-b` | `travel`, `focus` | 4 | Hotel gym, floor, or walk — start in 10 minutes |
-| `journal-feed-vs-program` | `focus`, `anxiety` | 5 | Their highlight vs your next set |
-| `journal-one-cue` | `pre-lift`, `focus` | 4 | Keep one cue; drop one |
-| `journal-week-close` | `recovery`, `focus` | 6 | Sessions completed; one adjustment; no streak trophy |
-
-### Step rules (every new session)
-
-- ≥4 steps; `minutes` 4–6; step durations sum within ~±30s of `minutes * 60`.
-- **≥2 steps contain `?`** (the journal test).
-- At most one settle-breath step; the rest are questions or a single commit line.
-- Original MW athlete voice (train-anywhere, logs, Coach week). No spa, no “inner peace,” no namaste, no chakras.
-- Forbidden substrings in new bodies: `streak`, `Calm`, `Headspace`, `Waking Up`, `sleep stor`, `diagnos`, `depress`, `therap`, `SSRI`, `PTSD`, `disorder`, `suicid`, `clinical`.
-- No “do not skip” / “must finish.” Skip is allowed.
-- Unique `id`; unique `title` (existing catalog already duplicates “After a bad session” — do not add a third).
-
-Reuse `GuidedMindSession` shape. **No schema change.** Server-only file stays `import 'server-only'`.
+- Do not flip `PRIVATE_MODE`.
+- Do not mint `.698` or `.699`.
+- Do not implement ECG, wearable HR as a gate, or PAR-Q as a gate of the logger. `/assessments` stays optional and unconnected to Log set.
+- Do not import chat or score into the new module.
+- Do not rewrite PR #505 / field-test session templates / ACFT tables.
+- Do not rewrite the legal pack. No EIN. Texas LLC already present.
+- Do not block free logging of a **normal** set. The sheet is pre-start only.
+- Do not add a new tab, pillar, locale, or America/PFT clone.
 
 ---
 
-## Copy + count honesty (same ship)
+## Product
 
-### Must change
+One reusable **hard-session warning** sheet (`AdaptiveOverlay`), shown **before** a marked hard session starts — never before a normal Just Go / seeded / prescribed training set.
 
-| File | Change |
-|------|--------|
-| `src/data/premiumMindSessions.ts` | Append the 8 sessions |
-| `src/data/premiumInventory.ts` | `PREMIUM_MIND_SESSION_COUNT = 68` |
-| `src/lib/contentFloors.ts` | `mindPremium: 68` |
-| `src/i18n/mindLocales.ts` | Drop Calm / Waking Up / sleep stories / guided-meditation pitch. `mindLockedHint` interpolates `{{free}}` + `{{premium}}` (no literal 10/17). |
-| `src/components/mind/MindLockedPreview.tsx` | Pass `getContentInventory()` into `mindLockedHint`; defaultValues match EN pack. Demo steps become question-shaped, not box-breath. |
-| `src/i18n/bundleLocales.ts` | `bundlePillarMindFree` / `bundlePillarMindPremium` use `{{count}}` (no literal 10/22). |
-| `src/page-components/BundlePage.tsx` | Mind row: `t(freeKey/premiumKey, { count: CONTENT_FLOORS.mindFree\|mindPremium, defaultValue: pillar.free\|premium })`. Other pillars unchanged. |
-| `src/lib/payments.ts` | Mind premium blurb may mention skip + journal prompts; **still interpolate** `CONTENT_FLOORS` (no new hand-typed digits). |
-| Pack overlays that still say Calm / sleep stories / `10`+`22` for those Mind keys | Replace with the new EN (mind is not a beachhead CORE_NS). |
-| `public/locales/**/mind.json` | `npm run export-locales` so HTTP overlays are not a second Calm clone. |
-| `docs/PLAN.md` I3b | `17 Mind + 11 Move` → **68 Mind + 48 Move** (honest floors). |
-| `docs/help/pillars.md` Mind | One sentence: skippable journal-style sessions, not a meditation app. |
-| `vision.md` Mind pillar bullet | Surgical: premium is skippable training questions / recovery prompts — **not** “Full Calm/Waking Up-style.” Do not rewrite the Super Bundle section. |
+### Copy the sheet must say (EN)
 
-### Must not change
+1. Strenuous / max-effort work can be dangerous.
+2. Stop if chest pain, faint, severe shortness of breath, or you cannot talk.
+3. This is not medical care. The app cannot prevent a medical emergency.
+4. Call **local emergency services**, not the app.
+5. Consult a clinician before max tests if you have a relevant condition or are unsure.
+6. Stopping is allowed. Primary: continue. Secondary: Back (always works).
 
-- `MIND_COLLECTIONS` / `MIND_SERIES` / sleep-week rail.
-- Free catalog (`guidedMindSessions.ts`).
-- `GuidedStepPlayer` (skip already exists).
-- `PRIVATE_MODE`, Stripe, trials, free-logger gates, Android, new API routes, new i18n keys unless a defaultValue has no key (prefer editing existing keys).
-- Rewriting the existing 60 premium sessions (meditation-heavy debt stays; this ship *adds* the journal pack and stops *selling* Calm).
+### Copy bans (must fail CI if they ship in this feature’s files)
+
+pass/fail-as-identity · recruiter · MEPS · “we keep you safe” · “prevents cardiac events” · government test · elite ranking vs other users · shame for stopping (quit/lazy/failed as identity) · USMC / ACFT as product name · “sudden cardiac arrest” as a claim we prevent.
+
+### Skip / Back
+
+Back closes the sheet and **does not start** the hard session. It never disables Log set on a session that already has completed work. First-mission `/active` Start (normal seed) must not open this sheet — e2e first-90 forbids extra “Not now” chrome; this sheet’s dismiss label is **Back**, not “Not now”.
 
 ---
 
-## Tests (falsifiable)
+## What is a “hard session” (closed list)
 
-1. Update `mindPremD2_588.test.ts`: floor **68**; id-count **68**; constants match file.
-2. New `src/lib/mind/mindJournalPrem.test.ts`:
-   - The 8 ids exist, unique vs whole catalog, tags, ≥2 `?` steps, duration mix.
-   - `MIND_COLLECTIONS.length === 8` and no `journal` collection id.
-   - Source scan of **new ids’ bodies** for forbidden streak/clinical/Calm tokens.
-   - `mindLocales.ts` + `MindLockedPreview.tsx` EN/defaultValues: no `Calm`, `Waking Up`, `Headspace`, `sleep stor`; `mindLockedHint` contains `{{free}}` and `{{premium}}`.
-   - Mutant: deleting one journal id or putting `Calm` back in the title must fail (run the test against a deliberate break once, then restore).
-3. Existing `contentInventory.test.ts` / `payments.test.ts` stay green via floor bump only.
-4. No new e2e. No visual baselines.
+Pure module `src/lib/workout/hardSession.ts`. One definition. Discoverable kinds, not a fuzzy “test” substring on every name (`Tester`, `latest`).
 
----
+`needsHardSessionWarning(input)` is true when any of:
 
-## Ship protocol (same commit as the code)
+| Mark | On master today | When #505 merges |
+|------|-----------------|------------------|
+| `kind: 'pft'` or `'pft-mini'` | `/fitness-test` Continue → events | unchanged |
+| `kind: 'field-test'` | unused | #505 passes this or starts a named field test |
+| `fieldTest=1` search param | unused (we do **not** start a field test) | warning if a session is also starting |
+| Closed **exact** names (case-insensitive): `Peaking — 1RM Test`, `Week 3 — Session 4 (Test)`, `Field test`, `Five-event field test` | 1RM / program test starts | field-test name without rewriting #505 |
+| Session **name** matches closed regexes: `\b2[\s-]?miles?\b`, `\b1\s*rm\s*test\b`, `\bmax[\s-]?test\b`, `\bmax[\s-]?effort\b` | any existing 2-mile / max / test **session title** | same |
 
-- Label `2026.07-unified.707` (past master `.697`; not `.698` `.699` `.700` `.705`).
-- `LOG.md` new heading `## 2026-08-13 — Super Bundle Mind journal sessions (`.707`)`. Rotate oldest live entry (`.669`) → `docs/archive/log/` + `docs/archive/INDEX.md` (live LOG is already 15/15).
-- `CONTEXT.md` `## Now`: add `.707` bullet; drop oldest numbered ship bullet (`.636`) so the `- **` count stays ≤25. Standing Status table untouched. Never flip `PRIVATE_MODE`.
-- Commit trailer + PR body: `Excellence-Override: Super Bundle Mind premium (content)`.
-- Draft PR. Do not merge. Do not request extra previews.
+False for: empty/Just Go/Coach day names, “Push”, AMRAP WODs, exercise names like World's Greatest Stretch, any session with `hasLoggedWork` (never a logger gate).
 
 ---
 
-## Out of scope (refuse if tempted)
+## UX wiring (master)
 
-- New `/mind/*` route or collection tab.
-- Audio CDN / sleep stories / expert lesson library.
-- Wiring Mind sessions into `src/lib/journal/` (that domain is **training notes**, not this pack).
-- Clinical screening, crisis flows, streak freeze, Duo guilt.
-- Move / Fuel / Learn content.
-- Locale body farms beyond replacing Calm/stale-count overlays for the keys this ship edits.
-- Founder tasks, traction numbers, `PRIVATE_MODE`.
+1. **PFT** (`FitnessTestRunner`): tapping Continue to events opens the sheet first. Continue → existing `proceedFromProfile`. Back → stay on profile. Acknowledge once per page visit.
+2. **Train** (`ActiveWorkoutPage`): when `activeWorkout` exists, name/kind/param is hard, and **no completed set yet**, open the sheet **instead of** (not under) the Mind check-in. Continue → dismiss, then check-in may offer as today. Back → `cancelActiveWorkout()` only if `!hasLoggedWork`. Log set / rest paths never call this.
+3. **Export** `HardSessionWarningSheet` + `needsHardSessionWarning` so #505 can wrap its start later. Do not add field-test templates here.
+
+---
+
+## Help + legal (minimal)
+
+- New `docs/help/pt-safety.md` — plain language: hard sessions, stop rules, not medical care, call local emergency services, Back always works, logger of a normal set is never blocked. No casualty names. No “we keep you safe.”
+- `docs/help/INDEX.md` + `docs/INDEX.md` help table: add the row.
+- `docs/help/fitness-test-and-school.md`: one pointer to PT safety (PFT mile run is strenuous). `docs/help/field-test.md` **does not exist on master** — do not invent that file; write pt-safety so #505 can link later.
+- **Terms EN only:** append one tight sentence to `infoTermsEducationalBody` in `src/i18n/infoLocales.ts` (educational disclaimer). Do not rewrite About, Privacy, counsel exports, or non-EN overrides. No EIN.
+
+---
+
+## Files (expected)
+
+| Path | Role |
+|------|------|
+| `src/lib/workout/hardSession.ts` | Pure predicate + closed marks |
+| `src/lib/workout/hardSession.test.ts` | True for marks; false for normal set / Push / AMRAP / logged work |
+| `src/lib/workout/hardSessionCopyGuard.test.ts` | Forbidden phrases cannot ship in this feature’s sources + EN strings + help |
+| `src/components/workout/HardSessionWarningSheet.tsx` | AdaptiveOverlay sheet |
+| `src/page-components/ActiveWorkoutPage.tsx` + `ActiveWorkoutSheets.tsx` | Train wiring |
+| `src/components/fitness-test/FitnessTestRunner.tsx` | PFT wiring |
+| `src/i18n/activeWorkoutLocales.ts` | EN keys (other langs `...en`) |
+| `src/i18n/infoLocales.ts` | One EN educational sentence |
+| `docs/help/pt-safety.md` | Help |
+| INDEX rows in `src/lib/workout/`, `src/components/workout/`, help |
+| `src/lib/buildInfo.ts` · `LOG.md` · `CONTEXT.md` `## Now` | Ship protocol `.727` |
+
+---
+
+## Tests
+
+- Predicate: PFT / field-test kind / `fieldTest=1` / closed names / 2-mile name → true. `Push`, Just Go, AMRAP WOD, empty name → false.
+- Copy-guard: banned phrases absent from hardSession module, sheet, EN hardSession* strings, `pt-safety.md`, and the new Terms sentence. Extract user-facing strings; comments may name the ban.
+- Wiring: Active source includes the sheet and `hasLoggedWork` short-circuit; `handleLogSet` / log-set path does not import/call the warning. FitnessTestRunner opens it before events.
+- `hardSession.ts` does not import `score`, coach chat, or rewards (source scan).
+- `check-build-label` → `.727` past master `.697`.
+- Falsify: a mutant adding “we keep you safe” or skipping the `hasLoggedWork` gate must fail.
+
+---
+
+## Ship
+
+- Bump `APP_BUILD_LABEL` to `2026.07-unified.727`.
+- LOG heading `## YYYY-MM-DD — PT safety: stop-is-legal before hard sessions (\`.727\`)`. Rotate oldest LOG section (`.669`) to stay ≤15.
+- `## Now`: add `.727` bullet; rotate oldest shipped version bullet (`.636`) to stay ≤25. Do not drop Status table / Excellence / Horizon W / PRIVATE_MODE facts.
+- Commit trailer: `Excellence-Override: PT safety warning`
+- Draft PR title: `PT safety: stop-is-legal before hard sessions (.727)`
+- Plan commit: `[skip vercel]`. Implement commit may create the one Preview. Follow-ups `[skip vercel]`.

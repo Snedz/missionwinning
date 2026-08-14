@@ -127,6 +127,16 @@ type ActiveWorkoutStrings = {
   sessionCheckInMotivation: string;
   sessionCheckInLow: string;
   sessionCheckInFired: string;
+  /** Pre-start hard-session warning (.727) — not a logger gate. */
+  hardSessionEyebrow: string;
+  hardSessionTitle: string;
+  hardSessionLead: string;
+  hardSessionStop: string;
+  hardSessionNotCare: string;
+  hardSessionEmergency: string;
+  hardSessionClinician: string;
+  hardSessionContinue: string;
+  hardSessionBack: string;
   /** Kaizen Loop 2 L4 — Active chrome + session volume (.299) */
   activeAddExerciseTitle: string;
   activeApplyAllTargets: string;
@@ -338,6 +348,18 @@ const en: ActiveWorkoutStrings = {
   sessionCheckInMotivation: 'Motivation',
   sessionCheckInLow: 'Low',
   sessionCheckInFired: 'Fired up',
+  hardSessionEyebrow: 'Before a hard session',
+  hardSessionTitle: 'Stopping is allowed',
+  hardSessionLead:
+    'A max-effort or timed test can be dangerous. This is not the default way to train.',
+  hardSessionStop:
+    'Stop if you have chest pain, feel faint, have severe shortness of breath, or cannot talk.',
+  hardSessionNotCare: 'This app is not medical care and cannot prevent a medical emergency.',
+  hardSessionEmergency: 'If this is an emergency, call local emergency services — not this app.',
+  hardSessionClinician:
+    'Talk with a clinician before max-effort tests if you have a heart, breathing, or other health condition, or if you are unsure.',
+  hardSessionContinue: 'I understand — start',
+  hardSessionBack: 'Back',
   activeAddExerciseTitle: 'Add exercise',
   activeApplyAllTargets: 'Apply targets',
   activeAskAboutForm: 'Ask about form',
