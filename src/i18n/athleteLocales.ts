@@ -46,6 +46,9 @@ const ATHLETE_EN: Record<string, string> = {
   athleteIdentityRejectUnsafe:
     'That contains characters that break a shared list. Try letters and numbers.',
 
+  // --- Mission ID (signed-in only; not the 00–99 call-sign) ---
+  missionIdLabel: 'Mission ID',
+
   // --- The line ---
   careerLineTitle: 'Your record',
   careerLineEmpty:
@@ -213,6 +216,7 @@ const BY_LANG: Record<string, Record<string, string>> = {
     athleteIdentityRejectLink: 'Sin enlaces ni direcciones en un indicativo.',
     athleteIdentityRejectUnsafe:
       'Contiene caracteres que rompen una lista compartida. Usa letras y números.',
+    missionIdLabel: 'ID de misión',
     careerLineTitle: 'Tu registro',
     careerSignature: '{{sessions}} sesiones · mejor semana {{bestWeek}} · {{days}} días',
     careerLineEmpty:
@@ -259,6 +263,7 @@ const BY_LANG: Record<string, Record<string, string>> = {
     athleteIdentityRejectLink: 'Pas de liens ni d’adresses dans un indicatif.',
     athleteIdentityRejectUnsafe:
       'Il contient des caractères qui cassent une liste partagée. Utilise lettres et chiffres.',
+    missionIdLabel: 'ID de mission',
     careerLineTitle: 'Ton relevé',
     careerSignature: '{{sessions}} séances · meilleure semaine {{bestWeek}} · {{days}} jours',
     careerLineEmpty:
@@ -305,6 +310,7 @@ const BY_LANG: Record<string, Record<string, string>> = {
     athleteIdentityRejectLink: 'Sem links nem endereços num indicativo.',
     athleteIdentityRejectUnsafe:
       'Contém caracteres que quebram uma lista partilhada. Usa letras e números.',
+    missionIdLabel: 'ID de missão',
     careerLineTitle: 'O teu registo',
     careerSignature: '{{sessions}} sessões · melhor semana {{bestWeek}} · {{days}} dias',
     careerLineEmpty:

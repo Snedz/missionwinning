@@ -13,7 +13,7 @@ A single **odometer of logged work** and an **inventory of earned cosmetics** sh
 ## Invariants (load-bearing)
 
 1. Points/XP reward **logged work**, never attention (opens, views, notification taps).  
-2. **No client grant API** — server (when public) re-derives from source tables; local engine is exact for you only.  
+2. **No client grant API** — server (when public) re-derives from source tables; local engine is exact for you only. Sequential **Mission ID** follows the same rule: GET-only claim, never a client-chosen integer ([IDENTITY.md](IDENTITY.md)).  
 3. **Monotonic** — no decay, no relegation, no revoked tier.  
 4. **Virtual-only, earned-only** — nothing purchasable for rank.  
 5. Free logger is never gated by rank.  

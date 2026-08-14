@@ -11,6 +11,7 @@ Mission Winning stores most workout and preference data **on your device** first
 | Journey / I-Day | Yes | When signed in |
 | Nutrition log | Yes | Primarily local |
 | Account email | — | Yes (auth) |
+| Mission ID | — | Yes when signed in (sequential `#N`) |
 | Premium enrollment | — | Yes (server) |
 | School class metadata | Partial | Yes (teacher-created classes) |
 | PFT scores (class) | — | Yes when synced |

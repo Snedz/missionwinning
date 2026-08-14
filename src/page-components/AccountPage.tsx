@@ -33,6 +33,7 @@ import { useToast } from '@/hooks/use-toast';
 import { loadDaysPerWeek } from '@/lib/coach/schedulePrefs';
 import { openBillingPortal } from '@/lib/payments';
 import { ProfileAccountCard } from '@/components/profile/ProfileAccountCard';
+import { useMissionId } from '@/hooks/useMissionId';
 import { ProfileRemindersCard } from '@/components/profile/ProfileRemindersCard';
 import { ProfilePreferencesCard } from '@/components/profile/ProfilePreferencesCard';
 import { HomeGymKitCard } from '@/components/profile/HomeGymKitCard';
@@ -98,6 +99,7 @@ export function AccountPage() {
   const [pushBusy, setPushBusy] = useState(false);
   const [dayReviewHour, setDayReviewHour] = useState<number | null>(null);
   const [billingBusy, setBillingBusy] = useState(false);
+  const missionId = useMissionId();
 
   useEffect(() => {
     supabase.auth.getUser().then(({ data }) => {
@@ -341,6 +343,7 @@ export function AccountPage() {
         ownerTools={ownerTools}
         onSignOut={handleSignOut}
         authError={authError}
+        missionId={missionId}
       />
 
       <ProfileTransparencyCard />

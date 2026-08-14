@@ -25,6 +25,7 @@ One portable athlete identity across health, club standing, share-out cards, and
 | `userId` | Cloud (Supabase auth) | Optional until sign-in |
 | Call sign / `operatorName` | Local (+ board when projected) | 24 chars; validated — see `src/lib/identity/displayName.ts` |
 | Call-sign number | Local (+ share title when set) | 00–99; always available; `clampCallSignNumber` — not tier-gated |
+| **Mission ID** | Cloud (signed-in only) | Monotonic integer `#N`. ID **1** is the founder (GitHub `Snedz` / `BETA_ADMIN_EMAILS`). Server mint — no client grant. Not the call-sign. Guests have none |
 | Athlete Card config | Local picks | Frames/backdrops/badges clamped by tier · number optional — `mw-core` `resolveCardCosmetics` |
 
 ## Surfaces
@@ -41,6 +42,7 @@ One portable athlete identity across health, club standing, share-out cards, and
 | Field | Public projection | Share card | Local only |
 |-------|-------------------|------------|------------|
 | Call sign | When boards/S4 | Yes | Yes |
+| Mission ID (`#N`) | Athlete Page / Account when signed in | No (this ship) | No — server only |
 | Career line (derived) | Optional later | Optional | Yes |
 | Interests table picks | Picks only (S4) | Optional later | Yes (S3a) |
 | Page kit id | Picks only (S4) | Optional later | Yes (`default` until S3b) |

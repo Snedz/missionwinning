@@ -28,6 +28,8 @@ import { APP_BUILD_LABEL } from '@/lib/buildInfo';
 import { ProfileRewardsCard } from '@/components/rewards/ProfileRewardsCard';
 import { ProfileAthleteCard } from '@/components/profile/ProfileAthleteCard';
 import { AthleteIdentityCard } from '@/components/profile/AthleteIdentityCard';
+import { MissionIdView } from '@/components/profile/MissionIdView';
+import { useMissionId } from '@/hooks/useMissionId';
 import { CareerLineCard } from '@/components/profile/CareerLineCard';
 import { AthleteTableCard } from '@/components/profile/AthleteTableCard';
 import { AthletePageKitCard } from '@/components/profile/AthletePageKitCard';
@@ -52,6 +54,7 @@ export function ProfilePage() {
   const { t } = useTranslation();
   const { isCommissioned, state } = useMissionJourney();
   const workoutHistory = useWorkoutStore((s) => s.workoutHistory);
+  const missionId = useMissionId();
 
   /**
    * Zustand rehydrates after mount, so reading history during the first render
@@ -117,6 +120,7 @@ export function ProfilePage() {
       <div className={cn(kitClass)} data-testid="athlete-page-kit-root" data-page-kit={kitId}>
         <div className="athlete-page-kit__band" data-athlete-block>
           <AthleteIdentityCard career={career} />
+          <MissionIdView missionId={missionId} />
         </div>
 
         <div data-athlete-block>
