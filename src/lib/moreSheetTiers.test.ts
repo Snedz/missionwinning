@@ -20,6 +20,7 @@ test('More tiers are Wedge · Pillars · You with declared hrefs', () => {
   assert.ok(wedge.hrefs.includes('/leaderboard'), 'leaderboard is a Wedge row when surface on');
   assert.ok(wedge.hrefs.includes('/library'));
   assert.ok(wedge.hrefs.includes('/builder'));
+  assert.ok(!wedge.hrefs.includes('/assessments'), 'PAR-Q is intake at /coach, not a More row');
   const pillars = MORE_SHEET_TIER_HREFS.find((t) => t.id === 'pillars')!;
   assert.ok(pillars.hrefs.includes('/move'));
   assert.ok(pillars.hrefs.includes('/learn'));

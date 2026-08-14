@@ -38,6 +38,11 @@ function moreNavHrefs(): string[] {
  */
 const NAV_EXEMPT: { path: string; reason: string }[] = [
   {
+    path: '/assessments',
+    reason:
+      'ISSA-style intake at Mission Coach generate — not a More/rail feature you go do. Route stays for the sheet and deep links. Logger never waits on it.',
+  },
+  {
     path: '/benchmarks',
     reason:
       'Founder decision pending: promote to RAIL_GROUPS.toolkit, or keep as a destination the Learn path links into. Recorded here so it is a choice, not the drift it was.',

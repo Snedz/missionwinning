@@ -25,6 +25,7 @@ import type { CoachPlan } from '@/lib/coach/types';
 import { adjustTodaySession, type SessionConstraint } from '@/lib/coach/adjust';
 import { swapExerciseInPlan } from '@/lib/workout/garageSwap';
 import { scheduleCoachPush } from '@/lib/coachSync';
+import { hasParqScreen } from '@/lib/journey/parqIntake';
 
 export function useCoachPlan() {
   const history = useWorkoutStore((s) => s.workoutHistory);
@@ -36,6 +37,9 @@ export function useCoachPlan() {
     typeof window !== 'undefined' ? !loadPlan() : true
   );
   const [userId, setUserId] = useState<string | null>(null);
+  const [needsParq, setNeedsParq] = useState(
+    () => typeof window !== 'undefined' && !hasParqScreen()
+  );
 
   const weekStart = currentWeekStart();
   const todayOffset = todayDayOffset(weekStart);
@@ -129,6 +133,11 @@ export function useCoachPlan() {
   }, [refresh]);
 
   const generate = useCallback(() => {
+    if (!hasParqScreen()) {
+      setNeedsParq(true);
+      return null;
+    }
+    setNeedsParq(false);
     // Free: first plan for this week anytime. Same-week regen = Bundle.
     if (!premium && plan?.weekStart === weekStart) {
       track('coach_taster_locked');
@@ -194,6 +203,8 @@ export function useCoachPlan() {
     weekStart,
     ctx,
     generate,
+    needsParq,
+    refreshParq: () => setNeedsParq(!hasParqScreen()),
     refresh,
     adjustToday,
     swapSessionExercise,

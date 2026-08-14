@@ -24,6 +24,7 @@ import { UnlockButton } from '@/components/UnlockButton';
 import { EmptyState } from '@/components/ui/EmptyState';
 import { CoachPlanSkeleton, SkeletonCard } from '@/components/ui/Skeleton';
 import { useCoachPlan } from '@/hooks/useCoachPlan';
+import { ParqIntakeCard } from '@/components/coach/ParqIntakeCard';
 import { summarizeWeekDose } from '@/lib/coach/weekDose';
 import { isFreeBeta } from '@/lib/freeBeta';
 
@@ -53,6 +54,8 @@ export function CoachPage({ askExerciseId }: CoachPageProps = {}) {
     weekStart,
     ctx,
     generate,
+    needsParq,
+    refreshParq,
     todaySession,
     adjustToday,
     swapSessionExercise,
@@ -117,7 +120,15 @@ export function CoachPage({ askExerciseId }: CoachPageProps = {}) {
 
       {/* Free beta: never hard-lock Coach — offer a fresh week.
           Invite only in EmptyState; one red Generate lives in ScreenDock (1A). */}
-      {!loading && locked && freeBeta && (
+      {!loading && locked && freeBeta && needsParq && (
+        <ParqIntakeCard
+          onDone={() => {
+            refreshParq();
+            generate();
+          }}
+        />
+      )}
+      {!loading && locked && freeBeta && !needsParq && (
         <>
           <EmptyState
             icon={Sparkles}
@@ -196,7 +207,15 @@ export function CoachPage({ askExerciseId }: CoachPageProps = {}) {
 
       {/* Field manual 1A: EmptyState is invite only (outline CTAs demoted by design).
           Boss Generate docks in poster-field — same chrome as Active empty Start. */}
-      {!loading && !plan && !locked && (
+      {!loading && !plan && !locked && needsParq && (
+        <ParqIntakeCard
+          onDone={() => {
+            refreshParq();
+            generate();
+          }}
+        />
+      )}
+      {!loading && !plan && !locked && !needsParq && (
         <>
           <EmptyState
             icon={Sparkles}

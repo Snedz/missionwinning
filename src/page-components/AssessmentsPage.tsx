@@ -15,11 +15,8 @@ import { useTranslation } from 'react-i18next';
 import { PillarPageShell } from '@/components/layout/PillarPageShell';
 import { useWorkoutStore } from '@/store/workoutStore';
 import { SignInPrompt } from '@/components/auth/SignInPrompt';
-import { saveNutritionEntry } from '@/lib/supabase';
 import type { WorkoutExerciseTemplate } from '@/types';
-import { writeJson } from '@/lib/storage/safeStorage';
-import { STORAGE_KEYS } from '@/lib/storage/keys';
-import { localDateKey } from '@/lib/time/localDate';
+import { persistParqScreen, scoreParqAnswers } from '@/lib/journey/parqIntake';
 
 interface AssessmentResult {
   riskLevel: 'low' | 'moderate' | 'high';
@@ -130,16 +127,14 @@ export function AssessmentsPage() {
   const startWorkout = useWorkoutStore((s) => s.startWorkout);
 
   const submitAssessment = () => {
-    const yesFlags = Object.values(answers).filter(v => v.toLowerCase().includes('yes') || v.toLowerCase().includes('low')).length;
-    let risk: 'low' | 'moderate' | 'high' = 'low';
+    const { risk } = scoreParqAnswers(answers);
     let notes = t('assessRiskLowNotes', { defaultValue: 'Great baseline. Proceed with standard programs.' });
     let recs = [
       t('assessRecLow1', { defaultValue: 'Start with Beginner Full Body or Bodyweight program.' }),
       t('assessRecLow2', { defaultValue: 'Focus on consistent form.' }),
     ];
 
-    if (yesFlags >= 3) {
-      risk = 'high';
+    if (risk === 'high') {
       notes = t('assessRiskHighNotes', {
         defaultValue:
           'Multiple flags detected. Strongly recommend medical clearance before intense training.',
@@ -149,8 +144,7 @@ export function AssessmentsPage() {
         t('assessRecHigh2', { defaultValue: 'Consult physician.' }),
         t('assessRecHigh3', { defaultValue: 'Use low-impact options and monitor symptoms.' }),
       ];
-    } else if (yesFlags >= 1) {
-      risk = 'moderate';
+    } else if (risk === 'moderate') {
       notes = t('assessRiskModerateNotes', {
         defaultValue: 'Some caution advised. Consider starting with corrective work.',
       });
@@ -162,15 +156,8 @@ export function AssessmentsPage() {
       ];
     }
 
-    const res: AssessmentResult = { riskLevel: risk, notes, recommendations: recs };
-    setResult(res);
-
-    // Save a note to nutrition logs as demo assessment record (or extend table later)
-    const today = localDateKey();
-    saveNutritionEntry({ date: today, name: `Assessment: ${risk} risk`, protein: 0, cals: 0 }).catch(() => {});
-
-    // Persist last result for profile / history
-    writeJson(STORAGE_KEYS.lastAssessment, { risk, notes, date: today });
+    setResult({ riskLevel: risk, notes, recommendations: recs });
+    persistParqScreen({ risk, notes });
   };
 
   /*

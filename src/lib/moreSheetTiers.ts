@@ -6,7 +6,7 @@
  * into Toolkit. Athletes open More for *everything that is not a tab* — three
  * scannable tiers beat a rail copy:
  *
- *   Wedge   — History · Library · Builder · Assess (train-adjacent)
+ *   Wedge   — History · Library · Builder (PAR-Q is coach-generate intake)
  *   Pillars — Move · Mind · Track · Learn
  *   You     — Profile · Messenger · Account
  *
@@ -46,7 +46,7 @@ export const MORE_SHEET_TIER_HREFS: {
     id: 'wedge',
     title: 'Wedge',
     titleKey: 'moreTierWedge',
-    hrefs: ['/history', '/leaderboard', '/library', '/builder', '/assessments'],
+    hrefs: ['/history', '/leaderboard', '/library', '/builder'],
   },
   {
     id: 'pillars',

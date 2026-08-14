@@ -34,7 +34,7 @@ import { isFreeBeta } from '@/lib/freeBeta';
 
 export function CoachTodayCard() {
   const { t } = useTranslation();
-  const { plan, todaySession, loading, locked, generate } = useCoachPlan();
+  const { plan, todaySession, loading, locked, generate, needsParq } = useCoachPlan();
   const startCoachSession = useStartCoachSession();
   const workoutHistory = useWorkoutStore((s) => s.workoutHistory);
   const units = useUnits();
@@ -137,14 +137,22 @@ export function CoachTodayCard() {
                 defaultValue: 'Generate a weekly plan from your logs — no wearable required.',
               })}
             </p>
-            <Button
-              variant="outline"
-              size="sm"
-              className="min-h-[44px] tap-target"
-              onClick={() => generate()}
-            >
-              {t('coachGenerateWeek', { defaultValue: 'Generate this week' })}
-            </Button>
+            {needsParq ? (
+              <Button variant="outline" size="sm" className="min-h-[44px] tap-target" asChild>
+                <Link href="/coach">
+                  {t('firstStepParqTitle', { defaultValue: 'Screen before a coach plan' })}
+                </Link>
+              </Button>
+            ) : (
+              <Button
+                variant="outline"
+                size="sm"
+                className="min-h-[44px] tap-target"
+                onClick={() => generate()}
+              >
+                {t('coachGenerateWeek', { defaultValue: 'Generate this week' })}
+              </Button>
+            )}
           </>
         )}
         {locked && !freeBeta && (

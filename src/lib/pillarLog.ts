@@ -28,8 +28,8 @@ export function pillarWinEntryName(pillar: PillarType, title: string): string {
 
 /**
  * `nutrition_entries` is doing double duty as a generic "win" table — pillar wins are
- * written here, and `AssessmentsPage` records assessments the same way with a comment
- * admitting it is a stopgap ("or extend table later").
+ * written here. PAR-Q used to write `Assessment: {risk} risk` the same way;
+ * `.777` stopped that. The reader still matches leftover rows.
  *
  * They all arrive with `protein: 0, cals: 0`, and the Fuel diary used to render every
  * cloud row, so a signed-in athlete who logged a GPS run saw
