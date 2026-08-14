@@ -58,7 +58,7 @@ export const BUNDLE_PILLARS = [
     id: 'fuel',
     name: 'Fuel',
     free: `Macro log, water, ${CONTENT_FLOORS.recipesFree} free recipes`,
-    premium: `${CONTENT_FLOORS.recipesPremium} premium recipes, meal plans, coaching sync`,
+    premium: `${CONTENT_FLOORS.recipesPremium} protein-first recipes, meal plans, coaching sync`,
     standalone: '$10/mo',
     route: '/nutrition',
   },

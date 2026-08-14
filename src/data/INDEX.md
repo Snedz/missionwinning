@@ -22,6 +22,7 @@
 | `guidedMindSessions.ts` | Free mind sessions |
 | `premiumMindSessions.ts` | Premium mind |
 | `recipes/freeRecipes.ts`, `recipes/premiumRecipes.ts` | Nutrition recipes (`premiumRecipes` dynamic import on API route) |
+| `recipes/PLAN.md` | **Frozen** Super Bundle Fuel recipe + protein-first copy plan (`.700`) |
 | `guidebook/chapters.ts`, `guidebook/premiumChapters.ts` | Guidebook content (+ optional `heroImage` / `figure`) |
 | `guidebook/types.ts` | Guide chapter/section types incl. `GuideFigure` |
 | `guidebook/magazineMeta.ts` | Beyond the Basics magazine front matter + PDF path |

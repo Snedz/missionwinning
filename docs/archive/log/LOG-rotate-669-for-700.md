@@ -7,4 +7,4 @@ is not `pass` unless `Excellence-Override: <reason>` (env override local-only). 
 Train/Today/Coach still ships. ORCHESTRATION names the sign-off file; Android Accept B
 stays separate.
 
-Rotated LOG oldest → [docs/archive/log/LOG-rotate-654.md](./LOG-rotate-654.md).
+Rotated LOG oldest → [docs/archive/log/LOG-rotate-654.md](LOG-rotate-654.md).

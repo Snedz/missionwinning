@@ -89,7 +89,7 @@ export function coachInsightMessageDefaults(focusLine: string): Record<string, s
     coachInsightNeedMove:
       'Training load is building — add mobility today to protect joints and stay on the path.',
     coachInsightNeedFuel:
-      "You're training hard but protein is lagging. Log Fuel today to recover and grow.",
+      "You're training hard but protein is lagging. Hit protein first in Fuel — log a plate, not a barcode.",
     coachInsightNeedMind:
       'Recovery is under stress. A short Mind session can help sleep, focus, and sticking with training — educational habit tools, not clinical care.',
     coachInsightSynergyMove:

@@ -7,13 +7,13 @@ import { PREMIUM_RECIPE_COUNT } from '@/data/recipes/catalogMeta';
 
 const root = join(import.meta.dirname, '..', '..', '..');
 
-test('D2 fuel premium floor is 110 and catalogMeta matches', () => {
-  assert.equal(CONTENT_FLOORS.recipesPremium, 110);
-  assert.equal(PREMIUM_RECIPE_COUNT, 110);
-  assert.equal(getContentInventory().recipes.premium, 110);
+test('D2 fuel premium floor tracks catalogMeta (110 floor raised by Super Bundle wave)', () => {
+  assert.equal(CONTENT_FLOORS.recipesPremium, PREMIUM_RECIPE_COUNT);
+  assert.equal(getContentInventory().recipes.premium, PREMIUM_RECIPE_COUNT);
   const src = readFileSync(join(root, 'src/data/recipes/premiumRecipes.ts'), 'utf8');
   const names = [...src.matchAll(/"name":\s*"([^"]+)"/g)].map((m) => m[1]);
-  assert.equal(names.length, 110);
+  assert.equal(names.length, PREMIUM_RECIPE_COUNT);
+  assert.ok(PREMIUM_RECIPE_COUNT >= 140);
   assert.ok(names.includes('Casein Berry Night Bowl'));
   assert.ok(names.includes('Post-Sleep-Week Protein Bowl'));
 });

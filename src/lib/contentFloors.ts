@@ -30,7 +30,7 @@ export const CONTENT_FLOORS = {
   mindFree: 32,
   mindPremium: 60,
   recipesFree: 48,
-  recipesPremium: 110,
+  recipesPremium: 140,
   learnPremiumSections: 16,
   /**
    * Free guidebook chapters (`BEYOND_THE_BASICS_CHAPTERS`), which is also exactly
