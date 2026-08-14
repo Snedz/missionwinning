@@ -37,5 +37,8 @@
   "learnCourseEmptyTitle": "No specialist courses yet",
   "learnCourseEmptyBeta": "The specialist catalogue is still being written. The free learning paths and the guidebook are complete and open to everyone.",
   "learnCourseBrowseFree": "Browse free paths",
-  "learnOpenMagazine": "Magazine (web)"
+  "learnOpenMagazine": "Magazine (web)",
+  "learnSubtitleOpenBeta": "{{count}} parcours éducatifs — les bases d’abord. Guide et cours spécialisés ouverts en bêta ouverte.",
+  "learnSubtitleBrief": "Parcours gratuits d’abord. Profondeur Guide et Bundle quand vous voulez.",
+  "learnSubtitleBriefOpenBeta": "Parcours gratuits d’abord. Profondeur du guide et des spécialistes quand vous voulez."
 }

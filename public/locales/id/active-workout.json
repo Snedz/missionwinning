@@ -186,5 +186,7 @@
   "victoryMascotCue": "Session saved.",
   "victorySessionDetails": "Session details",
   "activeRestSkipAriaFinal": "Skip rest — go",
-  "activeRestSkipAriaPlain": "Skip rest"
+  "activeRestSkipAriaPlain": "Skip rest",
+  "activeReentryStart": "Mulai sesi lebih ringan",
+  "activeReentryStartDesc": "Sesi pertama setelah kembali lebih ringan — bisa diselesaikan, lalu minggu disusun ulang."
 }

@@ -186,5 +186,7 @@
   "victoryMascotCue": "Séance enregistrée.",
   "victorySessionDetails": "Détails de la séance",
   "activeRestSkipAriaFinal": "Passer le repos — on y va",
-  "activeRestSkipAriaPlain": "Passer le repos"
+  "activeRestSkipAriaPlain": "Passer le repos",
+  "activeReentryStart": "Commencer une séance plus légère",
+  "activeReentryStartDesc": "Première séance plus courte au retour — finissable, puis la semaine se reconstruit."
 }

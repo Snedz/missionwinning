@@ -13,7 +13,6 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
-import Link from 'next/link';
 import { useTranslation } from 'react-i18next';
 import { Settings } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
@@ -34,7 +33,6 @@ import { useToast } from '@/hooks/use-toast';
 import { loadDaysPerWeek } from '@/lib/coach/schedulePrefs';
 import { openBillingPortal } from '@/lib/payments';
 import { ProfileAccountCard } from '@/components/profile/ProfileAccountCard';
-import { useMissionId } from '@/hooks/useMissionId';
 import { ProfileRemindersCard } from '@/components/profile/ProfileRemindersCard';
 import { ProfilePreferencesCard } from '@/components/profile/ProfilePreferencesCard';
 import { HomeGymKitCard } from '@/components/profile/HomeGymKitCard';
@@ -45,13 +43,10 @@ import { ProfilePremiumCard } from '@/components/profile/ProfilePremiumCard';
 import { ProfileOwnerTools } from '@/components/profile/ProfileOwnerTools';
 import { ProfileBackupCard } from '@/components/profile/ProfileBackupCard';
 import { ProfileImportCard } from '@/components/profile/ProfileImportCard';
-import { ProfilePregnancyCard } from '@/components/profile/ProfilePregnancyCard';
 import { SyncStatusRow } from '@/components/profile/SyncStatusRow';
 import { ProfilePrivacyCard } from '@/components/profile/ProfilePrivacyCard';
 import { ProfileFeedbackCard } from '@/components/profile/ProfileFeedbackCard';
-import { ProfileTransparencyCard } from '@/components/profile/ProfileTransparencyCard';
 import { ProfileWhatsNewCard } from '@/components/profile/ProfileWhatsNewCard';
-import { UnderTheHoodCard } from '@/components/profile/UnderTheHoodCard';
 import { ProfileReferralCard } from '@/components/profile/ProfileReferralCard';
 import { ProfileWearablesCard } from '@/components/profile/ProfileWearablesCard';
 import { readRaw, writeRaw, remove as removeRaw } from '@/lib/storage/safeStorage';
@@ -102,7 +97,22 @@ export function AccountPage() {
   const [pushBusy, setPushBusy] = useState(false);
   const [dayReviewHour, setDayReviewHour] = useState<number | null>(null);
   const [billingBusy, setBillingBusy] = useState(false);
-  const missionId = useMissionId();
+  /**
+   * `#import` deep link. Read in an effect, not during render: the fragment is
+   * not sent to the server, so deciding `open` from it while hydrating would be a
+   * mismatch. One frame closed, then open and scrolled, beats a hydration error.
+   */
+  const [importDeepLink, setImportDeepLink] = useState(false);
+
+  useEffect(() => {
+    if (typeof window === 'undefined' || window.location.hash !== '#import') return;
+    setImportDeepLink(true);
+    // After the details paints open, put the card on screen.
+    const id = requestAnimationFrame(() => {
+      document.getElementById('import')?.scrollIntoView({ block: 'start' });
+    });
+    return () => cancelAnimationFrame(id);
+  }, []);
 
   useEffect(() => {
     supabase.auth.getUser().then(({ data }) => {
@@ -346,10 +356,7 @@ export function AccountPage() {
         ownerTools={ownerTools}
         onSignOut={handleSignOut}
         authError={authError}
-        missionId={missionId}
       />
-
-      <ProfileTransparencyCard />
 
       {/* Not behind `email &&` — device notifications are the only return channel an
           anonymous athlete has, and they are the athlete this product is built for.
@@ -383,39 +390,27 @@ export function AccountPage() {
 
       <ProfileFeedbackCard />
 
-      <Card className="border-2 border-border bg-card">
-        <CardContent className="space-y-2 pt-6">
-          <p className="font-semibold">
-            {t('accountExploreTitle', { defaultValue: 'Explore places' })}
-          </p>
-          <p className="text-sm text-muted-foreground">
-            {t('accountExploreLead', {
-              defaultValue: 'A quiet map of pins you have tagged. GPS is optional.',
-            })}
-          </p>
-          <Link
-            href="/explore"
-            className="inline-flex min-h-[44px] items-center text-sm font-semibold text-primary underline-offset-4 hover:underline"
-          >
-            {t('accountExploreCta', { defaultValue: 'Open Explore' })}
-          </Link>
-        </CardContent>
-      </Card>
-
       <ProfilePremiumCard
         premium={premium}
         billingBusy={billingBusy}
         onManageBilling={handleManageBilling}
       />
 
-      <details className="group border-2 border-border bg-card">
+      {/*
+       * `.766` — `#import` opens this and scrolls to the CSV card.
+       *
+       * Strong/Hevy import has existed and shipped for a while, and it was
+       * unreachable in practice: `/account` → expand "More settings" → scroll
+       * past six cards. The East Asia shard lists data-in as its own P1 next to
+       * logging speed, and a migrant arriving with a CSV in hand had no path.
+       * I-Day and the Active empty state now link straight here.
+       */}
+      <details className="group border-2 border-border bg-card" open={importDeepLink}>
         <summary className="flex min-h-[44px] cursor-pointer list-none items-center px-4 py-3 text-sm font-semibold text-foreground [&::-webkit-details-marker]:hidden">
           {t('accountMoreSettings', { defaultValue: 'More settings' })}
         </summary>
         <div className="space-y-6 border-t-2 border-border px-4 py-4">
           <ProfileAssessmentCard />
-
-          <ProfilePregnancyCard />
 
           <ProfileBetaJourneyCard
             funnel={funnel}
@@ -440,15 +435,15 @@ export function AccountPage() {
 
           <ProfileWhatsNewCard />
 
-          <UnderTheHoodCard />
-
           <ProfilePrivacyCard />
 
           <SyncStatusRow />
 
           <ProfileBackupCard />
 
-          <ProfileImportCard />
+          <div id="import" className="scroll-mt-4">
+            <ProfileImportCard />
+          </div>
         </div>
       </details>
 

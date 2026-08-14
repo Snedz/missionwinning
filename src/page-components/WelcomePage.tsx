@@ -5,7 +5,7 @@
  */
 
 import { useState, useEffect, useMemo } from 'react';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import { useTranslation } from 'react-i18next';
 import { ChevronLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -17,7 +17,6 @@ import {
 } from '@/lib/missionJourney';
 import { track } from '@/lib/analytics';
 import { scheduleJourneyPush } from '@/lib/journeySync';
-import { SignInPanel } from '@/components/auth/SignInPanel';
 import { AppLegalFooter } from '@/components/layout/AppLegalFooter';
 import {
   visibleGoalPresetIds,
@@ -34,25 +33,32 @@ import { previewJustGoForEquipment } from '@/lib/justGoSession';
 import { getExerciseById } from '@/data/exercises';
 import { useWorkoutStore, hasLoggedWork } from '@/store/workoutStore';
 import { BrandMonogram } from '@/components/brand/BrandMonogram';
-import { readRaw, writeRaw, remove as removeKey } from '@/lib/storage/safeStorage';
+import { readRaw, writeRaw } from '@/lib/storage/safeStorage';
 import { STORAGE_KEYS } from '@/lib/storage/keys';
-import {
-  isClientPrivateGateEnabled,
-  navigateAfterPrivateGateUnlock,
-} from '@/lib/privateGateNavigate';
-import { GATED_WWW_HONESTY } from '@/lib/gatedWwwHonesty';
+import { seedHomeGymKitIfUnset } from '@/lib/workout/homeGymKit';
+import { navigateAfterPrivateGateUnlock } from '@/lib/privateGateNavigate';
+import { LOCAL_FIRST_COPY } from '@/lib/localFirstCopy';
 
 const EXPERIENCE_VALUES = ['beginner', 'intermediate', 'advanced'] as const;
 const EQUIPMENT_VALUES = ['bodyweight', 'dumbbells', 'full-gym'] as const;
 
-type Step = 'welcome' | 'profile' | 'signin';
+type Step = 'welcome' | 'profile';
 
-const STEP_ORDER: Step[] = ['welcome', 'profile', 'signin'];
+const STEP_ORDER: Step[] = ['welcome', 'profile'];
 
-export function WelcomePage() {
+type WelcomePageProps = {
+  /**
+   * `?edit=1`, resolved by the route. Read as a prop rather than through
+   * `useSearchParams()` so I-Day step one is server-rendered — that hook made
+   * the whole page a Suspense child at prerender and the served HTML became the
+   * fallback, one `aria-hidden` skeleton (`.765`). See `app/welcome/page.tsx`.
+   */
+  initialEdit?: boolean;
+};
+
+export function WelcomePage({ initialEdit = false }: WelcomePageProps) {
   const router = useRouter();
-  const searchParams = useSearchParams();
-  const isEdit = searchParams.get('edit') === '1';
+  const isEdit = initialEdit;
   const { t } = useTranslation();
   const [step, setStep] = useState<Step>('welcome');
   const [experience, setExperience] = useState('beginner');
@@ -88,6 +94,7 @@ export function WelcomePage() {
     writeRaw(STORAGE_KEYS.equipment, equipment);
     writeRaw(STORAGE_KEYS.primaryGoal, primaryGoal);
     writeRaw(STORAGE_KEYS.goals, primaryGoal);
+    seedHomeGymKitIfUnset(equipment);
     saveDaysPerWeek(defaultDaysPerWeek(experience));
     scheduleJourneyPush();
   };
@@ -127,18 +134,16 @@ export function WelcomePage() {
   };
 
   const handleProfileNext = () => {
-    if (isEdit) {
-      finish();
-      return;
+    // F-017 — no I-Day sign-in wall. Account stays on Profile.
+    if (!isEdit) {
+      saveDaysPerWeek(defaultDaysPerWeek(experience));
+      track('iday_profile_completed', {
+        experience,
+        equipment,
+        daysPerWeek: defaultDaysPerWeek(experience),
+      });
     }
-    // Days/week defaults from experience — Coach can refine later (D1: 3 questions max).
-    saveDaysPerWeek(defaultDaysPerWeek(experience));
-    track('iday_profile_completed', {
-      experience,
-      equipment,
-      daysPerWeek: defaultDaysPerWeek(experience),
-    });
-    setStep('signin');
+    finish();
   };
 
   const stepIndex = STEP_ORDER.indexOf(step);
@@ -150,7 +155,6 @@ export function WelcomePage() {
         .map((ex) => getExerciseById(ex.exerciseId)?.name ?? ex.exerciseId),
     [firstSession]
   );
-  const gateOn = isClientPrivateGateEnabled();
 
   return (
     <div className="relative min-h-screen text-foreground flex flex-col bg-background">
@@ -162,9 +166,7 @@ export function WelcomePage() {
         <span className="ms-auto text-xs font-semibold text-muted-foreground">
           {isEdit
             ? t('editJourneyProfile', { defaultValue: 'Edit profile' })
-            : gateOn
-              ? t('gateEyebrow', { defaultValue: GATED_WWW_HONESTY.gateEyebrow })
-              : t('welcomeIDay', { defaultValue: 'Get started' })}
+            : t('welcomeIDay', { defaultValue: 'Get started' })}
         </span>
       </header>
 
@@ -206,32 +208,16 @@ export function WelcomePage() {
                 {/* Field manual: briefing type — eyebrow → display → one red. */}
                 <div className="space-y-4">
                   <p className="eyebrow text-primary">
-                    {gateOn
-                      ? t('welcomeGateKicker', {
-                          defaultValue: GATED_WWW_HONESTY.welcomeKicker,
-                        })
-                      : t('welcomeKicker', { defaultValue: 'About two minutes' })}
+                    {t('welcomeKicker', { defaultValue: 'About two minutes' })}
                   </p>
                   <h1 className="display-section max-w-[16ch] text-balance text-foreground">
                     {t('welcomeTitle', { defaultValue: 'Welcome' })}
                   </h1>
                   <p className="max-w-md text-base leading-relaxed text-muted-foreground">
-                    {gateOn
-                      ? t('welcomeGateSubtitleBrief', {
-                          defaultValue: GATED_WWW_HONESTY.welcomeSubtitleBrief,
-                        })
-                      : t('welcomeSubtitleBrief', {
-                          defaultValue:
-                            'A few questions, then log your first session. Free offline logging — forever.',
-                        })}
-                  </p>
-                  {gateOn && (
-                    <p className="max-w-md text-sm leading-relaxed text-muted-foreground">
-                      {t('gateWedgeTeaser', {
-                        defaultValue: GATED_WWW_HONESTY.gateWedgeTeaser,
+                    {t('welcomeSubtitleBrief', {
+                        defaultValue: LOCAL_FIRST_COPY.welcomeLocalFirst,
                       })}
-                    </p>
-                  )}
+                  </p>
                 </div>
 
                 <div className="card-elevated space-y-1.5 px-4 py-3.5">
@@ -254,7 +240,7 @@ export function WelcomePage() {
                   className="primary-action min-h-[52px] w-full tap-target"
                   onClick={handleBegin}
                 >
-                  {t('welcomeBegin', { defaultValue: 'Continue' })}
+                  {t('welcomeBegin', { defaultValue: 'Begin' })}
                 </button>
               </>
             )}
@@ -351,6 +337,21 @@ export function WelcomePage() {
                     ? t('saveProfile', { defaultValue: 'Save profile' })
                     : t('welcomeContinue', { defaultValue: 'Continue' })}
                 </button>
+                {/*
+                  Data-in, on the last screen before the first log. Strong/Hevy
+                  import has shipped for a while and lived three taps deep inside
+                  a collapsed section on /account, so a switcher holding a CSV —
+                  the export is how you leave Hevy once it caps free history —
+                  had no path to it. `.766` moved this off the sign-in step that
+                  `.759`–`.764` removed. Reuses the import card's own translated strings;
+                  a link, not a red action, because the free logger comes first.
+                */}
+                <p className="text-center text-xs leading-relaxed text-muted-foreground">
+                  {t('csvImportTitle', { defaultValue: 'Switching from another app?' })}{' '}
+                  <a href="/account#import" className="underline underline-offset-2">
+                    {t('csvImportCta', { defaultValue: 'Import CSV (Strong / Hevy)' })}
+                  </a>
+                </p>
                 <Button
                   variant="ghost"
                   size="sm"
@@ -363,84 +364,6 @@ export function WelcomePage() {
               </>
             )}
 
-            {step === 'signin' && (
-              <>
-                <div className="space-y-2">
-                  <p className="eyebrow text-muted-foreground">
-                    {t('welcomeSignInEyebrow', { defaultValue: 'Optional' })}
-                  </p>
-                  <h2 className="display-section max-w-[18ch] text-balance text-foreground">
-                    {t('welcomeSignInTitle', { defaultValue: 'Save progress — your choice' })}
-                  </h2>
-                  <p className="text-sm leading-relaxed text-muted-foreground">
-                    {t('welcomeSignInSubtitle', {
-                      defaultValue:
-                        'Sign in with Google or email to sync across devices. Skip anytime — local progress still works.',
-                    })}
-                  </p>
-                </div>
-                {/* Elevated, not boss — Skip owns the only red on this step. */}
-                <div className="card-elevated space-y-1.5 px-4 py-3.5">
-                  <p className="eyebrow text-muted-foreground">
-                    {t('welcomeSessionReadyEyebrow', { defaultValue: 'Up next' })}
-                  </p>
-                  <p className="text-sm font-semibold">
-                    {t('welcomeSessionReadyTitle', {
-                      defaultValue: 'Your first session is ready',
-                    })}
-                  </p>
-                  <p className="text-sm leading-relaxed text-muted-foreground">
-                    {t('welcomeSessionReadyBody', {
-                      defaultValue: `${firstSession.name} · ${firstSessionNames.length} exercises for your gear. Skip sign-in to start logging right away.`,
-                      name: firstSession.name,
-                      count: firstSessionNames.length,
-                    })}
-                  </p>
-                </div>
-                <label className="flex cursor-pointer items-start gap-2.5 border-2 border-border bg-card p-3 text-sm">
-                  <input
-                    type="checkbox"
-                    className="mt-0.5 h-4 w-4 accent-primary"
-                    defaultChecked={false}
-                    onChange={(e) => {
-                      try {
-                        if (e.target.checked) writeRaw(STORAGE_KEYS.remindersPref, '1');
-                        else removeKey(STORAGE_KEYS.remindersPref);
-                      } catch { /* noop */ }
-                    }}
-                  />
-                  <span className="text-muted-foreground">
-                    {t('welcomeRemindersOptIn', {
-                      defaultValue:
-                        'Email me if I go quiet, and a recap after my first week. Never more than one every two days — unsubscribe anytime.',
-                    })}
-                  </span>
-                </label>
-                {/*
-                  Sign-in is subordinate here, and structurally so: it sits
-                  inside a ruled panel, and the step's one primary action is
-                  Skip. It used to be the other way round — a filled primary on
-                  "Send magic link" with the skip a ghost button in muted text,
-                  which is the weakest thing on the screen. "No account required
-                  to start" is the product's headline promise; the last
-                  onboarding screen must not spend its emphasis arguing with it.
-                */}
-                <div className="border-2 border-border bg-card p-4">
-                  <SignInPanel nextPath="/active" onComplete={finish} />
-                </div>
-                <button
-                  type="button"
-                  className="primary-action min-h-[52px] w-full tap-target text-[19px]"
-                  onClick={finish}
-                >
-                  {t('welcomeSkipSignIn', { defaultValue: 'Skip — start training' })}
-                </button>
-                <Button variant="ghost" size="sm" className="w-full min-h-[44px] tap-target" onClick={() => setStep('profile')}>
-                  <ChevronLeft className="h-4 w-4 mr-1" />{' '}
-                  {t('welcomeBack', { defaultValue: 'Back' })}
-                </Button>
-              </>
-            )}
         </div>
       </main>
 

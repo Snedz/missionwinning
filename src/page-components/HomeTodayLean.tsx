@@ -10,6 +10,11 @@ import dynamic from 'next/dynamic';
 import { useRouter } from 'next/navigation';
 import { useTranslation } from 'react-i18next';
 import { JourneyHero } from '@/components/journey/JourneyHero';
+
+const CoachLogCite = dynamic(
+  () => import('@/components/coach/CoachLogCite').then((m) => m.CoachLogCite),
+  { ssr: false }
+);
 import { dayReviewMayMount } from '@/lib/today/dayReviewMount';
 import { firstStepsMayMount, reentryCardMayMount } from '@/lib/today/todayGuidanceMount';
 import { todayCoachInviteMayMount } from '@/lib/today/todayCoachInviteMount';
@@ -371,6 +376,8 @@ export function HomeTodayLean() {
               defaultValue: 'Turn your logs into this week’s plan',
             })}
           </p>
+          {/* "Turn your logs into…" is a claim; this is the log it means. */}
+          <CoachLogCite className="mt-1" />
         </a>
       ),
     });

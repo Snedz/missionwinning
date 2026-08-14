@@ -65,8 +65,8 @@ type WelcomeStrings = {
 };
 
 const en: WelcomeStrings = {
-  welcomeKicker: 'I-Day · About two minutes',
-  welcomeIDay: 'I-Day',
+  welcomeKicker: 'About two minutes',
+  welcomeIDay: 'Get started',
   welcomeMissionLead: 'The mission',
   welcomeMissionTitle: 'One path. Free fundamentals.',
   welcomeMissionBody1:
@@ -75,11 +75,11 @@ const en: WelcomeStrings = {
     'The fundamentals are free forever. Premium deepens each pillar for those who want more — never required to start.',
   welcomeMissionP3:
     'Your job today: complete one step at a time. Today always shows your next single action.',
-  welcomeProfileEyebrow: 'Briefing',
+  welcomeProfileEyebrow: 'About you',
   welcomeSignInEyebrow: 'Optional',
   welcomeProfileTitle: 'Three quick questions',
   welcomeProfileEditHint: 'Update experience, equipment, and goal. Changes sync when signed in.',
-  welcomeProfileHint: 'So Today can recommend the right starting point.',
+  welcomeProfileHint: 'So we can suggest a session that matches your gear.',
   welcomeExperience: 'Experience',
   welcomeExpBeginner: 'New to training',
   welcomeExpIntermediate: 'Some experience',
@@ -108,11 +108,11 @@ const en: WelcomeStrings = {
   photoLogBetaNote: 'Bevel-style meal capture — privacy-first, on-device when possible.',
   navOurMission: 'Our mission',
   navBetaGuide: 'Beta guide',
-  welcomeTitle: 'Welcome, Mission Member',
+  welcomeTitle: 'Welcome',
   welcomeSubtitle:
     'Set your path, then log your first session. One step at a time — Today always shows the next action.',
   welcomeSubtitleBrief:
-    'A few questions, then log your first session. Free offline logging — forever.',
+    'A few questions, then log your first session. No account — sets are written to this device, and nothing is uploaded unless you sign in.',
   welcomeBegin: 'Begin',
   welcomeAccept: 'I accept the path',
   welcomeContinue: 'Continue',
@@ -122,7 +122,7 @@ const en: WelcomeStrings = {
   welcomeSkipSignIn: 'Skip — start training',
   welcomeRemindersOptIn:
     'Email me if I go quiet, and a recap after my first week. Never more than one every two days — unsubscribe anytime.',
-  editJourneyProfile: 'Edit journey profile',
+  editJourneyProfile: 'Edit profile',
   saveProfile: 'Save profile',
   welcomeProgressLabel: 'Progress, step {{step}} of {{total}}',
   welcomeProgressMono: '{{step}} / {{total}}',

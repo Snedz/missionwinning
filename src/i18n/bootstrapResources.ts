@@ -23,7 +23,6 @@ export const BOOTSTRAP_EN: Record<string, string> = {
   navBuilder: 'Builder',
   navLibrary: 'Library',
   navHistory: 'History',
-  navServer: 'Messenger',
   navMove: 'Move',
   navMind: 'Mind',
   navLearn: 'Learn',
@@ -42,10 +41,23 @@ export const BOOTSTRAP_EN: Record<string, string> = {
   welcomeSkipSignIn: 'Skip — start training',
   todayBasicEncouragement:
     'One step at a time. Log a set — Mission Coach shapes the week from your history.',
-  todayCoachInviteEyebrow: 'AI weekly plan',
-  todayCoachInviteTitle: 'Generate a free week of Mission Coach',
-  todayCoachInviteBody:
-    'Adaptive plan from your gear and days/week — free every week, no API key required.',
+  todayHabitWeekCount: 'This week: {{count}} days logged',
+  /*
+   * `.766` — these three keys live **only** here, so `BOOTSTRAP_EN` is not the
+   * first-paint value, it is the only value: the mount sites' `defaultValue`s
+   * ("Mission Coach", "Turn your logs into this week's plan") have never once
+   * rendered. The eyebrow above Today's Coach invite therefore read "AI weekly
+   * plan" permanently, and the body advertised the absence of an API key.
+   *
+   * East Asia shard (mission-ops #13) scored coach-from-logs clarity 2.56/5 —
+   * the lowest item — from an AI-skeptical cohort, diagnosed as "coach output
+   * has no log-derived labels". Naming the technology instead of the evidence is
+   * the copy equivalent of that defect, so these now match their call sites and
+   * a `CoachLogCite` line underneath names the actual log.
+   */
+  todayCoachInviteEyebrow: 'Mission Coach',
+  todayCoachInviteTitle: 'Turn your logs into this week’s plan',
+  todayCoachInviteBody: 'Built from your gear and days per week — free every week.',
   landingNavStart: 'Start free',
   landingFaqEyebrow: 'Straight answers',
   landingFaqFreeQ: 'Is the free version actually complete?',

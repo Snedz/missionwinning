@@ -24,21 +24,24 @@
 | **Device storage** | `storage/safeStorage.ts` | Guarded localStorage — never throws |
 | **Surface parking** | `surface.ts` | Which non-wedge surfaces are reachable (`NEXT_PUBLIC_SURFACES`) |
 | **Journey** | `missionJourney.ts`, `journeySync.ts`, `journeyGoals.ts`, `journeyAnalytics.ts` | I-Day → Commissioned |
-| **Workouts** | [`workout/`](workout/INDEX.md) subfolder (+ root re-exports); `justGoSession.ts`, `historyAnalytics.ts`, `benchmarks.ts` | Logger helpers; Just Go; next-set targets; rest/PR/superset |
+| **Workouts** | [`workout/`](workout/INDEX.md) subfolder (+ root re-exports); `justGoSession.ts`, `historyAnalytics.ts`, [`history/`](history/INDEX.md), `benchmarks.ts` | Logger helpers; Just Go; session list rows; rest/PR/superset/tempo; vs-last; Repeat last session (`.747`) |
 | **Local-first copy** | `localFirstCopy.ts` | Today/Active F-001 EN constants — set-log + rest never framed as cloud-required |
-| **First-set ungated** | `firstSetUngated.ts` | `.730` F-017 — `showHeaderSignInChip`. Hide Sign in until the first workout; never on `/active`. |
+| **First-set ungated** | `firstSetUngated.ts` | F-017 / `.766` + `.762` verify — `showHeaderSignInChip`. Hide Sign in until the first workout; never on `/active`. Nullish/hash-safe path. |
 | **Nutrition / Fuel** | `macroTargets.ts`, `fuelGoalWizard.ts`, `fuelDayAdapt.ts`, `openFoodFacts.ts`, `nutritionLog.ts`, `nlMealLog.ts`, `mealDraft.ts`, `savedMeals.ts`, `nutritionHighProteinDays.ts` | Fuel pillar; goal→macros; train-day targets; NL + presets; photo draft |
+| **Habit week count** | `habitWeekCount.ts` | Unique local Train days this week — [HABIT.md](../../docs/contracts/HABIT.md) |
 | **Today primary CTA** | `todayPrimaryAction.ts`, `coach/loadCoachTodayOptional.ts` | Shared Just Go / journey primary for lean + dashboard |
 | **Fuel Coach** | `fuelCoach/` subfolder | Adaptive meal plan — see [fuelCoach/INDEX.md](fuelCoach/INDEX.md) |
 | **Payments** | `premiumServer.ts`, `premiumEnrollmentCache.ts`, `payments.ts`, `checkoutServer.ts`, `stripeServer.ts`, `stripeWebhook.ts`, `paypalWebhook.ts`, [`cryptoCheckout/`](cryptoCheckout/INDEX.md) | Stripe + Phantom USDC lifetime; enrollment Redis memo |
 | **Payments — the pure decisions** | `checkout/checkoutParams.ts` (what Stripe is asked to charge), `premium/enrollmentRow.ts` (what a paid webhook writes), `authUserId.ts` (what may go in an `auth.users` FK) | `.262` — lifted out of the `server-only` modules above, which reach Stripe/Supabase on their first line and so could not be tested at all. Dependency-free on purpose; `money.routetest.ts` covers the server halves |
 | **School / PFT** | `schoolClassServer.ts`, `presidentialFitness*.ts`, `fitnessTest*.ts` | America track |
-| **Gating / auth** | `privateGate.ts`, `privateAccessSessionGate.ts`, `supabaseAuthCookies.ts`, `supabaseRequestAuth.ts` | Private beta, JWT cookies; session mint geo-block |
+| **Gating / auth** | `privateGate.ts`, `supabaseAuthCookies.ts`, `supabaseRequestAuth.ts` | Private beta, JWT cookies |
+| **Service territory** | `legal/supportedRegions.ts`, `legal/territoryAccessClient.ts`, `legal/waitlistTerritory.ts` | The block list is the contract: signup, checkout, and (`.765`) the gate waitlist |
+| **First paint** | `firstPaintFloor.test.ts` | No raw keys, no textless public fallback, no copy that changes after hydration |
 | **i18n loaders** | `routeMetadata.ts`, `navConfig.ts` | Not strings — see `src/i18n/` |
 | **Units** | `units.ts` | `weightStep`, metric/imperial |
 | **Backup** | `backup.ts` | Device backup export/restore |
 | **What’s New** | `whatsNew.ts` | Build-label last-seen + curated athlete bullets (D13) |
-| **Analytics** | `analytics.ts`, `analyticsOptOut.ts`, `analyticsSanitize.ts` | PostHog events; pregnancy/PT keys stripped |
+| **Analytics** | `analytics.ts`, `analyticsOptOut.ts` | PostHog events; preference off until user allows |
 | **Observability** | `sentryCommon.ts`, `api/withApiLogging.ts` | Sentry (env-gated) + API request logs |
 | **Compliance** | `compliance/` | Vanta-lite control catalog probes — [docs/COMPLIANCE.md](../../docs/COMPLIANCE.md) |
 | **Destructive UX** | `holdToConfirm.ts` | Hold-to-confirm helpers — [docs/DESTRUCTIVE_UX.md](../../docs/DESTRUCTIVE_UX.md) |
@@ -49,6 +52,7 @@
 | Folder | INDEX |
 |--------|-------|
 | `coach/` | [coach/INDEX.md](coach/INDEX.md) |
+| `history/` | Session list + month grid — [history/INDEX.md](history/INDEX.md) |
 | `identity/` | Athlete identity — [identity/INDEX.md](identity/INDEX.md) |
 | `fuelCoach/` | [fuelCoach/INDEX.md](fuelCoach/INDEX.md) |
 | `workout/` | Logger, merge, rest, PR, victory — [workout/INDEX.md](workout/INDEX.md) |

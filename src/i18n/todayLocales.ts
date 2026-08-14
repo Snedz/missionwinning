@@ -12,6 +12,11 @@ type TodayStrings = {
   todayWeeklyChallengesDescOpenBeta: string;
   todayDayStreak: string;
   todayStartWorkout: string;
+  /** Today hero when the primary tap copies the last completed session (.717). */
+  todayRepeatLastCta: string;
+  todayRepeatLastKicker: string;
+  todayRepeatLastTitle: string;
+  todayRepeatLastDesc: string;
   todaySectionProgress: string;
   todaySectionProgressDesc: string;
   todayQuickOptions: string;
@@ -171,6 +176,8 @@ type TodayStrings = {
   /** Kaizen Loop 2 L4 — week recap + debrief (.299) */
   todayWeekRecapTitle: string;
   todayWeekRecapBody: string;
+  /** Habit week-count on Today header — 0 is fine (.722). */
+  todayHabitWeekCount: string;
   todayWeekRecapShareCard: string;
   todayWeekRecapCoach: string;
   todayWeekRecapHistory: string;
@@ -292,6 +299,10 @@ const en: TodayStrings = {
     'Train + Fuel + volume goals this week. Free core — open beta unlocks depth across the app.',
   todayDayStreak: '{{count}}-day streak',
   todayStartWorkout: "Start Today's Workout",
+  todayRepeatLastCta: 'Repeat last session',
+  todayRepeatLastKicker: 'Train',
+  todayRepeatLastTitle: '{{name}}',
+  todayRepeatLastDesc: 'Same as last time — last loads are ready in the set log.',
   todaySectionProgress: 'Progress & tools',
   todaySectionProgressDesc: 'Readiness, stats, and history',
   todayQuickOptions: 'Quick options',
@@ -468,6 +479,7 @@ const en: TodayStrings = {
   coachPlanRegenerate: 'Regenerate',
   todayWeekRecapTitle: 'This week',
   todayWeekRecapBody: '{{sessions}} sessions · {{sets}} sets · {{streak}}-day streak',
+  todayHabitWeekCount: 'This week: {{count}} days logged',
   todayWeekRecapShareCard: 'Share card',
   todayWeekRecapCoach: 'Open AI weekly plan',
   todayWeekRecapHistory: 'History',
@@ -585,6 +597,10 @@ const coachPlanDefaults = {
   coachPlanGenerating: en.coachPlanGenerating,
   coachPlanLoad: en.coachPlanLoad,
   coachPlanRegenerate: en.coachPlanRegenerate,
+  todayRepeatLastCta: en.todayRepeatLastCta,
+  todayRepeatLastKicker: en.todayRepeatLastKicker,
+  todayRepeatLastTitle: en.todayRepeatLastTitle,
+  todayRepeatLastDesc: en.todayRepeatLastDesc,
 };
 
 const es: TodayStrings = {
@@ -753,6 +769,8 @@ const es: TodayStrings = {
 };
 
 const zh: TodayStrings = {
+  todayCoachChipAction: '打开',
+  todayHabitWeekCount: en.todayHabitWeekCount,
   todayWeekFailedTitle: en.todayWeekFailedTitle,
   todayWeekFailedDesc: en.todayWeekFailedDesc,
   todayWeekFailedRetry: en.todayWeekFailedRetry,
@@ -964,7 +982,6 @@ const zh: TodayStrings = {
   todayMissionScoreDesc: '六大支柱共同贡献 — 训练、营养、活动、心理、追踪、学习。',
   todayCoachInsightTitle: '教练建议',
   todayCoachInsightDesc: '基于就绪度、负荷与恢复',
-  todayCoachChipAction: '打开',
   coachInsightHighRisk: '评估显示风险较高。今天优先恢复、灵活性和轻度活动。',
   coachInsightHighStrain: '训练负荷高、恢复不足。灵活或休息日会让你更强归来。',
   coachInsightPrimed: '你已准备好训练。{{focusLine}}。',
@@ -1020,6 +1037,8 @@ const zh: TodayStrings = {
 };
 
 const id: TodayStrings = {
+  todayCoachChipAction: 'Buka',
+  todayHabitWeekCount: en.todayHabitWeekCount,
   todayWeekFailedTitle: en.todayWeekFailedTitle,
   todayWeekFailedDesc: en.todayWeekFailedDesc,
   todayWeekFailedRetry: en.todayWeekFailedRetry,
@@ -1233,7 +1252,6 @@ const id: TodayStrings = {
   todayMissionScoreDesc: 'Enam pilar berkontribusi — Train, Fuel, Move, Mind, Track, Learn.',
   todayCoachInsightTitle: 'Wawasan coach',
   todayCoachInsightDesc: 'Berdasarkan kesiapan, beban, dan pemulihan',
-  todayCoachChipAction: 'Buka',
   coachInsightHighRisk:
     'Asesmen menandai risiko tinggi. Prioritaskan pemulihan, mobilitas, dan gerakan ringan hari ini.',
   coachInsightHighStrain:
@@ -1302,6 +1320,8 @@ const id: TodayStrings = {
 };
 
 const th: TodayStrings = {
+  todayCoachChipAction: 'เปิด',
+  todayHabitWeekCount: en.todayHabitWeekCount,
   todayWeekFailedTitle: en.todayWeekFailedTitle,
   todayWeekFailedDesc: en.todayWeekFailedDesc,
   todayWeekFailedRetry: en.todayWeekFailedRetry,
@@ -1514,7 +1534,6 @@ const th: TodayStrings = {
   todayMissionScoreDesc: 'หกเสาหลักมีส่วน — Train, Fuel, Move, Mind, Track, Learn',
   todayCoachInsightTitle: 'คำแนะนำโค้ช',
   todayCoachInsightDesc: 'จากความพร้อม โหลด และการฟื้นตัว',
-  todayCoachChipAction: 'เปิด',
   coachInsightHighRisk: 'การประเมินบ่งชี้ความเสี่ยงสูง วันนี้เน้นฟื้นตัว ความคล่องตัว และการเคลื่อนไหวเบา',
   coachInsightHighStrain: 'โหลดสูงแต่ฟื้นตัวต่ำ วันพักหรือ mobility จะช่วยกลับมาแข็งแกร่ง',
   coachInsightPrimed: 'คุณพร้อมฝึก {{focusLine}}',
@@ -1574,6 +1593,8 @@ const th: TodayStrings = {
 };
 
 const ar: TodayStrings = {
+  todayCoachChipAction: 'افتح',
+  todayHabitWeekCount: en.todayHabitWeekCount,
   todayWeekFailedTitle: en.todayWeekFailedTitle,
   todayWeekFailedDesc: en.todayWeekFailedDesc,
   todayWeekFailedRetry: en.todayWeekFailedRetry,
@@ -1785,7 +1806,6 @@ const ar: TodayStrings = {
   todayMissionScoreDesc: 'الركائز الست تساهم — Train وFuel وMove وMind وTrack وLearn.',
   todayCoachInsightTitle: 'نصيحة المدرب',
   todayCoachInsightDesc: 'بناءً على الجاهزية والحمولة والاستشفاء',
-  todayCoachChipAction: 'افتح',
   coachInsightHighRisk: 'تقييمك أشار لخطر مرتفع. أولِّ استشفاءً وحركة خفيفة اليوم.',
   coachInsightHighStrain: 'حمولة عالية واستشفاء منخفض. يوم راحة أو movilidad يعيدك أقوى.',
   coachInsightPrimed: 'أنت جاهز للتمرين. {{focusLine}}.',

@@ -38,5 +38,7 @@
   "offlineEyebrow": "No connection",
   "offlineTitle": "Офлайн — миссия продолжается.",
   "offlineBody": "This page isn't cached yet, but everything you've already used keeps working — your workouts live on this device and sync when you're back online.",
-  "offlineCta": "Открыть Сегодня"
+  "offlineCta": "Открыть Сегодня",
+  "gateCheckingSession": "Проверяем вход…",
+  "gateWaitlistFailed": "Не сохранилось. Проверьте соединение и попробуйте снова."
 }

@@ -26,19 +26,22 @@ test.describe('Phase H hero flows @gate', () => {
     }
   });
 
-  test('I-Day skip lands on Today with one Start (F-004 / Hevy)', async ({ page }) => {
+  test('I-Day finish lands on Today with one Start (F-004 / Hevy)', async ({ page }) => {
     await page.goto('/welcome', { waitUntil: 'domcontentloaded' });
     const begin = page.getByRole('button', { name: /^begin$/i }).first();
     await expect(begin).toBeVisible({ timeout: 10_000 });
     await begin.click();
-    // Profile → Continue
+    /*
+     * Profile → Continue **is** the end of I-Day now. The sign-in step this case
+     * used to walk through was removed when I-Day went to two steps, and the
+     * spec kept clicking for a "Skip" that no longer exists — red on master
+     * every run. Renamed with the flow rather than patched around it: what the
+     * case is actually for is the landing (`/log`, one primary action, then
+     * `/active` with a Log button), and all of that still holds.
+     */
     const cont = page.getByRole('button', { name: /continue|continuar/i }).first();
     await expect(cont).toBeVisible({ timeout: 10_000 });
     await cont.click();
-    // Sign-in skip → Today with one primary Start (not Active dump / not pillar wall)
-    const skip = page.getByRole('button', { name: /skip|omitir|first session/i }).first();
-    await expect(skip).toBeVisible({ timeout: 10_000 });
-    await skip.click();
     await expect(page).toHaveURL(/\/log/, { timeout: 15_000 });
     await expect(page.locator('.primary-action')).toHaveCount(1);
     await page.locator('.primary-action').first().click();

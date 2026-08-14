@@ -7,11 +7,10 @@
  * Soft nav from gate-public `/welcome` never re-ran proxy.ts.
  */
 import { isPrivateGatePublicPath } from '@/lib/publicRoutes';
+import { isClientPrivateGateEnabled } from '@/lib/privateGateClientFlag';
 
-/** Build-time mirror of `isPrivateModeEnabled()` — see next.config.js `env`. */
-export function isClientPrivateGateEnabled(): boolean {
-  return process.env.NEXT_PUBLIC_PRIVATE_GATE === 'true';
-}
+/** Re-exported so existing call sites and the source guards keep one import. */
+export { isClientPrivateGateEnabled };
 
 /** Pure decision — testable without a browser `window`. */
 export function privateGateRequiresHardNavigation(destination: string): boolean {

@@ -86,6 +86,11 @@ const CoachTodayCard = dynamic(
   { ssr: false, loading: () => <SkeletonCard className="min-h-[7rem]" /> }
 );
 
+const CoachLogCite = dynamic(
+  () => import('@/components/coach/CoachLogCite').then((m) => m.CoachLogCite),
+  { ssr: false }
+);
+
 const TodayCoachWeekStrip = dynamic(
   () => import('@/components/coach/TodayCoachWeekStrip').then((m) => m.TodayCoachWeekStrip),
   { ssr: false, loading: () => <SkeletonBlock className="h-14 w-full" /> }
@@ -692,6 +697,8 @@ export function HomeTodayDashboard() {
             defaultValue: 'Built from your gear and days per week — free every week.',
           })}
         </p>
+        {/* The claim above, with the log it is made from. */}
+        <CoachLogCite className="mt-1" />
       </a>
     ),
     'day-review': <TodayDayReviewCard />,

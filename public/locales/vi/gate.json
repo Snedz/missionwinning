@@ -38,5 +38,7 @@
   "offlineEyebrow": "Không có kết nối",
   "offlineTitle": "Ngoại tuyến - nhưng không tắt nhiệm vụ.",
   "offlineBody": "Trang này chưa được lưu vào bộ nhớ đệm nhưng mọi thứ bạn đã sử dụng vẫn tiếp tục hoạt động — các bài tập của bạn trực tiếp trên thiết bị này và đồng bộ hóa khi bạn trực tuyến trở lại.",
-  "offlineCta": "Mở cửa hôm nay"
+  "offlineCta": "Mở cửa hôm nay",
+  "gateCheckingSession": "Đang kiểm tra đăng nhập…",
+  "gateWaitlistFailed": "Chưa lưu được. Kiểm tra kết nối và thử lại."
 }

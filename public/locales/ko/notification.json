@@ -147,5 +147,6 @@
   "demoAnalyticsToastDesc": "{{count}} journey events ({{phases}} phase completes).",
   "unitsAffectsHint": "Affects calculators and new logs. Default is metric.",
   "languageHint": "Switch the app language. Names stay in native form.",
-  "trainingGoalsHint": "Used for program recommendations."
+  "trainingGoalsHint": "Used for program recommendations.",
+  "languageNotAvailability": "언어를 선택해도 호스팅 서비스 제공 지역은 바뀌지 않습니다."
 }

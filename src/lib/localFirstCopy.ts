@@ -12,6 +12,23 @@
  */
 
 export const LOCAL_FIRST_COPY = {
+  /**
+   * First paint of the two public entries (`/private`, `/welcome`).
+   *
+   * East Asia shard (mission-ops #13): CN/HK respondents rated the offline
+   * *claim* 3.97 and disbelieved the *implementation* — "forced cloud sync /
+   * data opacity". `.696` fixed the framing inside the app; the two screens a
+   * sceptic actually sees first still said only the adjective, "offline", which
+   * is exactly the word an app with forced sync would also use.
+   *
+   * So these name the **mechanism** instead: no account, written to this device,
+   * nothing uploaded unless you sign in. A mechanism is checkable — turn off the
+   * radio and log a set — and an adjective is not.
+   */
+  gateLocalFirst:
+    'No account needed: the logger writes sets to your device, and nothing is uploaded unless you sign in.',
+  welcomeLocalFirst:
+    'A few questions, then log your first session. No account — sets are written to this device, and nothing is uploaded unless you sign in.',
   /** Active mid-session SignInPrompt title — device owns the log. */
   activeSignInTitle: 'Sets save on this device',
   /**

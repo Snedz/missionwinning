@@ -38,5 +38,7 @@
   "offlineEyebrow": "Sin conexión",
   "offlineTitle": "Sin conexión — pero en misión.",
   "offlineBody": "Esta página aún no está almacenada en caché, pero todo lo que ya has usado sigue funcionando: tus entrenamientos se guardan en este dispositivo y se sincronizan cuando vuelves a estar en línea.",
-  "offlineCta": "Abrir Hoy"
+  "offlineCta": "Abrir Hoy",
+  "gateCheckingSession": "Comprobando sesión…",
+  "gateWaitlistFailed": "No se guardó. Revisa tu conexión e inténtalo de nuevo."
 }

@@ -1,36 +1,6 @@
-/** Private gate + offline fallback copy — full APP_LANGS records. */
+/** Private gate + offline fallback copy — full APP_LANGS records. EN lives in gateEn.ts. */
 
-const GATE_EN: Record<string, string> = {
-  gateEyebrow: 'Open beta',
-  gateTitle1: 'Train anywhere.',
-  gateTitle2: 'Win daily.',
-  gateSubtitle:
-    'Free offline workout logging plus Mission Coach — weekly plans from your logs alone, no wearable. The logger stays free forever. Super Bundle: get notified until checkout is live. No free trial.',
-  gateFooterTagline: 'free core forever',
-  gateWaitlistTitle: 'Get notified',
-  gateWaitlistPlaceholder: 'you@example.com',
-  gateWaitlistSubmit: 'Notify me',
-  gateWaitlistSubmitting: 'Joining…',
-  gateWaitlistDone: "You're on the list.",
-  gateWaitlistDoneFoot: "We'll email you when a seat opens.",
-  gateWaitlistFoot: 'No spam — one email when your invite is ready, one if the waitlist moves.',
-  gateAccessSummary: 'Have a beta access code?',
-  gateAccessLabel: 'Access code',
-  gateAccessPlaceholder: 'Enter code from your invite',
-  gateAccessSubmit: 'Enter the beta',
-  gateAccessChecking: 'Checking…',
-  gateInviteEyebrow: 'Beta invite',
-  gateInviteHeadline: "You're invited — enter your access code to join the beta.",
-  gateInviteSubtitle:
-    "You're invited — enter the access code from your invite email, then complete I-Day and log your first workout.",
-  gateBetaGuide: 'beta start guide',
-  gateBetaGuideFoot: 'Invited testers: see the',
-  offlineEyebrow: 'No connection',
-  offlineTitle: "You're offline. The log isn't.",
-  offlineBody:
-    "This page isn't cached yet, but everything you've already used keeps working — your workouts live on this device and sync when you're back online.",
-  offlineCta: 'Open Today',
-};
+import { GATE_EN } from '@/i18n/gateEn';
 
 const GATE_ES: Record<string, string> = {
   ...GATE_EN,

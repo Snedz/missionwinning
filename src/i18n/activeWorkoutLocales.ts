@@ -58,6 +58,7 @@ type ActiveWorkoutStrings = {
   activeSetWarmup: string;
   activeSetFailure: string;
   activeSetDrop: string;
+  activeSetDropTip: string;
   activeSupersetLink: string;
   activeSupersetUnlink: string;
   activeSetLoggedSuperset: string;
@@ -290,6 +291,7 @@ const en: ActiveWorkoutStrings = {
   activeSetWarmup: 'Warmup',
   activeSetFailure: 'Failure',
   activeSetDrop: 'Drop',
+  activeSetDropTip: 'Drop set — lighter follow-up; not a PR attempt',
   activeSupersetLink: 'Superset w/ next',
   activeSupersetUnlink: 'Unlink superset',
   activeSetLoggedSuperset: '{{reps}} × {{weight}} — next exercise in superset',

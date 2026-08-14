@@ -3,6 +3,9 @@
 type CoachStrings = {
   coachPageTitle: string;
   coachPageSubtitle: string;
+  /** `.766` — the log fact a Coach line stands on, and the no-logs admission. */
+  coachCiteFromLog: string;
+  coachCiteNoLogs: string;
   coachWeekEyebrow: string;
   coachGenerateWeek: string;
   coachGenerateWeekHint: string;
@@ -250,6 +253,9 @@ const en: CoachStrings = {
   coachPageTitle: 'Mission Coach',
   coachPageSubtitle:
     'Weekly plans from your workout logs alone — no wearable. Adapts when you miss or crush a session.',
+  coachCiteFromLog: 'From your log: {{fact}}',
+  coachCiteNoLogs:
+    'No sets logged yet — log one and Coach builds the week from it.',
   coachLoadTitle: 'Training load',
   coachLoadUnmeasured: 'Not enough history yet',
   coachLoadUnmeasuredBody:

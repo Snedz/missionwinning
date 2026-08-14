@@ -186,5 +186,7 @@
   "victoryMascotCue": "Session saved.",
   "victorySessionDetails": "Session details",
   "activeRestSkipAriaFinal": "Skip rest — go",
-  "activeRestSkipAriaPlain": "Skip rest"
+  "activeRestSkipAriaPlain": "Skip rest",
+  "activeReentryStart": "軽めのセッションを開始",
+  "activeReentryStartDesc": "復帰後の最初のセッションは軽め。やり切れば、週の計画が組み直されます。"
 }

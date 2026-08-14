@@ -4,12 +4,10 @@
 
 ## Canonical languages
 
-[`appLangs.ts`](appLangs.ts) exports **`APP_LANGS`** (15 pack / parity / guidebook):  
+[`appLangs.ts`](appLangs.ts) exports **`APP_LANGS`** (15):  
 `en es fr pt ru de it ko ja th vi hi zh id ar`
 
-and **`UI_LANGS`** (40 first-visit picker + html lang). Country policy is not here — [`supportedRegions.ts`](../lib/legal/supportedRegions.ts). Inventory: [docs/LOCALES.md](../../docs/LOCALES.md).
-
-Guide locale select stays `APP_LANGS`. Profile / footer / first-visit picker use `UI_LANGS`.
+Use this list everywhere (Profile, `/guide` locale select, export, CI). Do not invent parallel lang arrays.
 
 ## Standard (required)
 
@@ -17,9 +15,8 @@ Guide locale select stays `APP_LANGS`. Profile / footer / first-visit picker use
 2. No raw English in JSX except via `t('key', { defaultValue })` where `defaultValue` is EN and matches the `en` pack.
 3. Guidebook long-form uses `guideSection_*` / editorial / `magazine*` keys (built from chapter data in `buildGuidebookLocaleKeys.ts`).
 4. After adding keys: fill packs → `npm run export-locales` → `npm run i18n:parity` must pass.
-5. First-class wedge overlays: [`firstClassLocales.ts`](firstClassLocales.ts) (hydrate only — keep off the root-layout static path).
-6. Brand / proper nouns may stay identical across langs — list them in [`scripts/i18n-allowlist.json`](../scripts/i18n-allowlist.json).
-7. Pack overlays live in [`packs/{lang}.json`](packs/) and merge via [`localePacks.ts`](localePacks.ts) (hydrate + export).
+5. Brand / proper nouns may stay identical across langs — list them in [`scripts/i18n-allowlist.json`](../scripts/i18n-allowlist.json).
+6. Pack overlays live in [`packs/{lang}.json`](packs/) and merge via [`localePacks.ts`](localePacks.ts) (hydrate + export).
 
 ## Commands
 
@@ -43,19 +40,15 @@ npm run export-locales     # TS + packs → public/locales/
 
 | File | Namespace content |
 |------|-------------------|
-| `athleteLocales.ts` | Athlete Page (You) + Account split |
 | `welcomeLocales.ts` | I-Day / welcome flow |
 | `todayLocales.ts` | Today dashboard |
 | `coachLocales.ts` | Mission Coach |
 | `navLocales.ts` | Navigation labels |
-| `serverLocales.ts` | Mission Server messenger (`/server`) |
 | `bundleLocales.ts` | Super Bundle |
 | `fuelLocales.ts` | Nutrition |
 | `moveLocales.ts` | Move pillar |
 | `mindLocales.ts` | Mind pillar |
 | `learnLocales.ts` | Learn pillar |
-| `rewardsLocales.ts` | Rewards / XP copy |
-| `serverLocales.ts` | Mission Server / Garage |
 | `learnContentLocales.ts` | Learn path lesson overrides |
 | `guidebookLocales.ts` | Guidebook chrome + content keys |
 | `builderLocales.ts` | Workout builder |
@@ -66,21 +59,19 @@ npm run export-locales     # TS + packs → public/locales/
 | `assessmentsLocales.ts` | PAR-Q |
 | `calculatorsLocales.ts` | Calculators |
 | `fitnessTestLocales.ts` | PFT |
-| `fieldTestLocales.ts` | Five-event field test (not CORE) |
 | `programsLocales.ts` | Programs |
 | `libraryLocales.ts` | Exercise library |
 | `feedbackLocales.ts` | Feedback |
 | `firstStepsLocales.ts` | First Steps checklist |
 | `whatsNewLocales.ts` | What’s New sheet + First Steps restore |
-| `placesLocales.ts` | Explore places pin-board |
 | `infoLocales.ts` | About, vision, coaching info |
 | `infoEnFloor.ts` | English floor for legal/info keys (Privacy/Terms first paint — `.653`; ratchet `.682`) |
 | `growthLocales.ts` | Referral / invite / share recognition |
 | `leaderboardLocales.ts` | Leaderboard |
 | `landingLocales.ts` | Marketing landing |
 | `betaLocales.ts` | Beta gates |
-| `gateLocales.ts` | Private gate |
-| `athleteLocales.ts` | Athlete Page + Account + Visibility / Under the Hood chrome |
+| `gateLocales.ts` | Private gate (EN lives in `gateEn.ts`) |
+| `gateEn.ts` | English gate copy + `gateEnFloor()` — first paint on `/private` cannot disagree with the pack (`.765`) |
 
 ## Pattern
 

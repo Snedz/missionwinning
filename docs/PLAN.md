@@ -318,6 +318,43 @@ Optional US national-fitness side track (`NEXT_PUBLIC_AMERICA_TRACK_ENABLED`). D
 | Privacy + Terms | ✅ |
 | Enable PWA (`PRIVATE_MODE=false`) | ⬜ |
 
+### www first paint floor (frozen scope, `.765`)
+
+Measured on live `www.missionwinning.com` 2026-08-13 (the Preview link is behind
+Vercel SSO, so the gated production HTML was the artifact read). `PRIVATE_MODE`
+is on, so `/` → `/private` for every visitor: **the gate *is* the website.** Its
+whole server-rendered body was the three words `Checking sign-in…`, and
+`/welcome` — the other public entry — server-rendered no visible text at all.
+Frozen scope, seven items, no route or IA changes:
+
+| # | Defect on the gated path | Floor this establishes |
+|---|--------------------------|------------------------|
+| 1 | `/private` HTML = `Checking sign-in…` — the poster waited on a 6 s session probe | The gate poster is in the first byte; the probe never replaces it |
+| 2 | `/welcome` HTML = an `aria-hidden` skeleton (`useSearchParams` bailed the page to its Suspense fallback at prerender) | I-Day step 1 is server-rendered text |
+| 3 | Chrome badge read `Open beta` while the doors need an access code (the landing already says *invite-only*) | Chrome states the gate it is actually behind |
+| 4 | The gate waitlist took an email from every territory, including the hard-blocked ones | No capture we cannot serve — [supportedRegions.ts](../src/lib/legal/supportedRegions.ts) decides |
+| 5 | The language picker listed fr/de/it/ar/id with no word on service territory | Language is not availability; `/regions` is one tap away |
+| 6 | The consent banner is `fixed bottom-0 z-[60]` over a `z-50` nav — it lands on the logger's own controls the day `NEXT_PUBLIC_POSTHOG_KEY` is set | Hard rule 2: nothing chrome-level covers the free logger |
+| 7 | `t('guidebookTitle')` / `t('bundleUnlockCta')` carry no `defaultValue` and are absent from `BOOTSTRAP_EN`, so first paint printed the key | No camelCase key can reach a screen |
+
+Out of scope, deliberately: no `PRIVATE_MODE` flip, no locale added or removed
+(a language is not a territory), no landing redesign, no traction claims.
+
+### East Asia shard P0s (frozen scope, `.766`)
+
+Second frozen scope, from the East Asia survey shard (mission-ops #13). Taken
+without waiting for the other shards, as instructed.
+
+| # | Finding | Fix, and its floor |
+|---|---------|--------------------|
+| 1 | **Coach-from-logs clarity 2.56/5 — the lowest item**, from an AI-skeptical / Alpha-curious cohort: *"coach output has no log-derived labels"*. Every Coach surface made a *provenance claim* ("built from your logs", "AI weekly plan") and none showed evidence | [logCitation.ts](../src/lib/coach/logCitation.ts) quotes the device's own last loaded set, or says `no-logs`. Any `t('coach…')` claim matching *from your logs* must sit beside a rendered `<CoachLogCite />` |
+| 2 | **CN/HK believe the offline claim (3.97) and not the implementation** — "forced cloud sync / data opacity" | Both public entries name the mechanism from one source (`LOCAL_FIRST_COPY.gateLocalFirst` / `.welcomeLocalFirst`): no account, written to this device, nothing uploaded unless you sign in |
+| 3 | **Strong/Hevy migrants: logging speed *and* CSV data-in are separate P1s** | The importer existed and was unreachable. I-Day and the empty logger link `/account#import`; the fragment opens the `<details>` it targets. Speed is not touched here — `.694` owns it |
+
+Out of scope for this shard: `navCoach` stays "AI weekly plan" — `primaryNav.ts`
+records that screen name as a kept decision, and overturning it on one shard is
+a founder call. It is the last generic-AI string on first paint.
+
 ### Hero flow QA (mobile)
 
 1. `/welcome` I-Day (≤3 min)

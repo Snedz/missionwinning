@@ -1,5 +1,6 @@
 'use client';
 
+import Link from 'next/link';
 import { useTranslation } from 'react-i18next';
 import i18n from '@/i18n';
 import { scheduleJourneyPush } from '@/lib/journeySync';
@@ -36,6 +37,15 @@ export function ProfileLanguageSwitcher() {
           </option>
         ))}
       </select>
+      <p className="text-xs text-muted-foreground">
+        {t('languageNotAvailability', {
+          defaultValue:
+            'Choosing a language does not change where the hosted service is offered.',
+        })}{' '}
+        <Link href="/regions" className="underline underline-offset-2">
+          {t('infoRegionsTitle', { defaultValue: 'Supported Regions' })}
+        </Link>
+      </p>
     </div>
   );
 }

@@ -186,5 +186,7 @@
   "victoryMascotCue": "Session saved.",
   "victorySessionDetails": "Session details",
   "activeRestSkipAriaFinal": "Skip rest — go",
-  "activeRestSkipAriaPlain": "Skip rest"
+  "activeRestSkipAriaPlain": "Skip rest",
+  "activeReentryStart": "आसान सत्र शुरू करें",
+  "activeReentryStartDesc": "वापसी का पहला सत्र छोटा — पूरा हो सकेगा, फिर सप्ताह फिर से बनेगा।"
 }

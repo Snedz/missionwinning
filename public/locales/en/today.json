@@ -265,5 +265,6 @@
   "todayFounderLogMobility": "Log mobility habit",
   "todayFounderSnackHint": "Open Fuel",
   "todayFounderSnackHintDesc": "Log a recovery snack when you are ready.",
-  "todayFounderLogSnack": "Log recovery snack"
+  "todayFounderLogSnack": "Log recovery snack",
+  "todayCoachChipAction": "Open"
 }

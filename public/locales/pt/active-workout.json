@@ -186,5 +186,7 @@
   "victoryMascotCue": "Sessão guardada.",
   "victorySessionDetails": "Detalhes da sessão",
   "activeRestSkipAriaFinal": "Saltar descanso — vamos",
-  "activeRestSkipAriaPlain": "Saltar descanso"
+  "activeRestSkipAriaPlain": "Saltar descanso",
+  "activeReentryStart": "Começar sessão mais fácil",
+  "activeReentryStartDesc": "Primeira sessão menor na volta — terminável, depois a semana se reconstrói."
 }
