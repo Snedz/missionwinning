@@ -18,6 +18,11 @@ export type NextSetTarget = {
   weight: number;
   /** Why this suggestion — for UI chip / a11y. */
   reason: 'hold' | 'add_reps' | 'add_weight' | 'from_last';
+  /**
+   * 0-based indices into `workingSets(lastSets)` that produced this number.
+   * E-Adjacency cites these as 1-based original set numbers (warmup skipped).
+   */
+  evidenceWorkingIdx: number[];
 };
 
 const DEFAULT_REP_MIN = 8;
@@ -40,20 +45,26 @@ export function suggestNextSetTarget(
   const repMax = opts?.repMax ?? DEFAULT_REP_MAX;
   const step = weightStep(units);
 
-  const match = ws[setIdx] ?? ws[ws.length - 1];
-  const lastReps = Math.max(1, Math.round(match.reps));
+  const matchIdx = setIdx < ws.length ? setIdx : ws.length - 1;
+  const match = ws[matchIdx]!;
+  const lastReps = Math.round(match.reps);
+  if (lastReps < 1) return null;
   const lastWeight = Math.max(0, match.weight);
 
   // All working sets hit top of range at same weight → load up
   const allHitTop =
     ws.length > 0 &&
     ws.every((s) => s.reps >= repMax && Math.abs(s.weight - lastWeight) < step / 2);
+  const evidenceWorkingIdx = allHitTop
+    ? ws.map((_, i) => i)
+    : [matchIdx];
 
   if (allHitTop && lastWeight > 0) {
     return {
       reps: repMin,
       weight: roundToStep(lastWeight + step, step),
       reason: 'add_weight',
+      evidenceWorkingIdx,
     };
   }
 
@@ -62,6 +73,7 @@ export function suggestNextSetTarget(
       reps: repMin,
       weight: roundToStep(lastWeight + step, step),
       reason: 'add_weight',
+      evidenceWorkingIdx,
     };
   }
 
@@ -70,10 +82,11 @@ export function suggestNextSetTarget(
       reps: Math.min(repMax, lastReps + 1),
       weight: lastWeight,
       reason: 'add_reps',
+      evidenceWorkingIdx,
     };
   }
 
-  return { reps: lastReps, weight: lastWeight, reason: 'from_last' };
+  return { reps: lastReps, weight: lastWeight, reason: 'from_last', evidenceWorkingIdx };
 }
 
 /** Per-set targets for an exercise's planned set count. */

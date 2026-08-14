@@ -120,6 +120,16 @@ describe('activeWorkoutHelpers', () => {
     assert.equal(getLastSessionSets(hist, 'missing'), null);
   });
 
+  it('getLastSessionSets skips tombstones and 0-rep junk', () => {
+    const live = historyWith('squats', [{ reps: 5, weight: 80 }]);
+    const dead = historyWith('squats', [{ reps: 5, weight: 999 }]);
+    dead[0] = { ...dead[0]!, id: 'dead', deletedAt: new Date().toISOString() };
+    const zero = historyWith('squats', [{ reps: 0, weight: 200 }]);
+    zero[0] = { ...zero[0]!, id: 'zero' };
+    const sets = getLastSessionSets([dead[0]!, zero[0]!, live[0]!], 'squats');
+    assert.equal(sets?.[0]?.weight, 80);
+  });
+
   it('getLastPerformanceForSet matches set index then falls back', () => {
     const hist = historyWith('bench-press', [
       { reps: 8, weight: 60 },
@@ -1531,7 +1541,7 @@ describe('resolveExerciseNextTarget / menu visibility', () => {
       units: 'metric',
       suggest: () => {
         suggestCalls += 1;
-        return { reps: 99, weight: 99, reason: 'from_last' };
+        return { reps: 99, weight: 99, reason: 'from_last', evidenceWorkingIdx: [0] };
       },
     });
     assert.deepEqual(out, { reps: 5, weight: 100 });
@@ -1544,9 +1554,9 @@ describe('resolveExerciseNextTarget / menu visibility', () => {
       prescribed: false,
       lastSets: [{ reps: 8, weight: 90 }],
       units: 'metric',
-      suggest: () => ({ reps: 8, weight: 92.5, reason: 'add_weight' }),
+      suggest: () => ({ reps: 8, weight: 92.5, reason: 'add_weight', evidenceWorkingIdx: [0] }),
     });
-    assert.deepEqual(out, { reps: 8, weight: 92.5, reason: 'add_weight' });
+    assert.deepEqual(out, { reps: 8, weight: 92.5, reason: 'add_weight', evidenceWorkingIdx: [0] });
   });
 
   it('returns null when every set is done or there is no last session', () => {
