@@ -25,7 +25,6 @@ When adding a doc:
 
 | File | Absorbed by / note |
 |------|---------------------|
-| [log/LOG-rotate-674.md](./log/LOG-rotate-674.md) | rotated oldest for `.674` press kit internal path leak |
 | [log/LOG-rotate-668.md](./log/LOG-rotate-668.md) | rotated oldest for `.668` competitor compare removed |
 | [log/LOG-rotate-667.md](./log/LOG-rotate-667.md) | rotated oldest for `.667` Compare stories free-beta mute |
 | [log/LOG-rotate-666.md](./log/LOG-rotate-666.md) | rotated oldest for `.666` Calculators macro foot free-beta mute |
@@ -39,7 +38,6 @@ When adding a doc:
 | [log/LOG-rotate-658.md](./log/LOG-rotate-658.md) | rotated oldest for `.658` landing FAQ JSON-LD free-beta mute |
 | [log/LOG-rotate-657.md](./log/LOG-rotate-657.md) | rotated oldest for `.657` Programs free-beta mute |
 | [log/LOG-rotate-656.md](./log/LOG-rotate-656.md) | rotated oldest for `.656` Move free-beta mute |
-| [log/LOG-rotate-677.md](./log/LOG-rotate-677.md) | rotated oldest for `.677` PWA start_url private gate |
 | [log/LOG-rotate-655.md](./log/LOG-rotate-655.md) | rotated oldest for `.655` Learn free-beta mute |
 | [log/LOG-rotate-654.md](./log/LOG-rotate-654.md) | rotated oldest for `.654` press+vision free-beta mute |
 | [log/LOG-rotate-653.md](./log/LOG-rotate-653.md) | rotated oldest for `.653` legal English floors |
@@ -444,3 +442,5 @@ Canonical live launch path: root **[LAUNCH_RUNBOOK.md](../LAUNCH_RUNBOOK.md)** +
 | [log/LOG-rotate-625.md](./log/LOG-rotate-625.md) | rotated 2026-08-09 for `.625` Account Field manual |
 | [log/LOG-rotate-626.md](./log/LOG-rotate-626.md) | rotated 2026-08-09 for `.626` Feel Wave 2 |
 - [log/LOG-rotate-639-migration.md](./log/LOG-rotate-639-migration.md) — migration founder pack + Move free-beta (recovered from misnamed LOG-rotate-654 during .669)
+| [log/LOG-rotate-655-for-670.md](./log/LOG-rotate-655-for-670.md) | rotated 2026-08-11 for `.670` hero design Coach dock + Victory share |
+| [log/LOG-rotate-680.md](./log/LOG-rotate-680.md) | rotated 2026-08-12 for `.680` units + BW Victory volume |

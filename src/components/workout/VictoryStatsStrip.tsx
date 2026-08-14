@@ -6,9 +6,11 @@
 
 import { useTranslation } from 'react-i18next';
 import { formatDuration } from '@/lib/utils';
+import { formatWorkoutVolumeDisplay } from '@/lib/workout/volumeDisplay';
 
 type Props = {
   totalVolume: number;
+  totalReps?: number;
   setCount: number;
   durationSeconds: number;
   unitLabel: string;
@@ -17,12 +19,14 @@ type Props = {
 
 export function VictoryStatsStrip({
   totalVolume,
+  totalReps = 0,
   setCount,
   durationSeconds,
   unitLabel,
   formatVolume,
 }: Props) {
   const { t } = useTranslation();
+  const vol = formatWorkoutVolumeDisplay(totalVolume, totalReps, unitLabel, formatVolume);
 
   return (
     <div className="grid grid-cols-2 gap-3 py-2">
@@ -31,9 +35,13 @@ export function VictoryStatsStrip({
           {t('victoryVolume', { defaultValue: 'Volume' })}
         </p>
         <p className="text-xl font-semibold tabular-nums text-foreground">
-          {formatVolume(totalVolume)}
+          {vol.value}
         </p>
-        <p className="text-xs text-muted-foreground">{unitLabel}</p>
+        <p className="text-xs text-muted-foreground">
+          {vol.unit === 'reps'
+            ? t('victoryVolumeRepsUnit', { defaultValue: 'reps' })
+            : vol.unit}
+        </p>
       </div>
       <div className="border-2 border-border bg-background p-3 text-center">
         <p className="text-xs font-medium text-muted-foreground">

@@ -17,13 +17,16 @@ import { STORAGE_KEYS } from '@/lib/storage/keys';
 
 export type { UnitsPref };
 
+function readUnitsPref(): UnitsPref {
+  if (typeof window === 'undefined') return 'metric';
+  const saved = readRaw(STORAGE_KEYS.units) as UnitsPref | null;
+  return saved === 'imperial' ? 'imperial' : 'metric';
+}
+
 export function useUnits(): UnitsPref {
-  const [units, setUnits] = useState<UnitsPref>('metric');
+  const [units, setUnits] = useState<UnitsPref>(readUnitsPref);
 
   useEffect(() => {
-    const saved = readRaw(STORAGE_KEYS.units) as UnitsPref | null;
-    if (saved === 'metric' || saved === 'imperial') setUnits(saved);
-
     const onStorage = (e: StorageEvent) => {
       if (e.key === 'mw_units' && (e.newValue === 'metric' || e.newValue === 'imperial')) {
         setUnits(e.newValue);

@@ -14,6 +14,7 @@ import type { WeeklyDebrief } from '@/lib/weeklyDebrief';
 const SUMMARY: WorkoutVictorySummary = {
   workoutName: 'Push Day',
   totalVolume: 5200,
+  totalReps: 0,
   durationSeconds: 3900,
   setCount: 18,
   exerciseCount: 5,
