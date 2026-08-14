@@ -98,7 +98,21 @@ than skipping there (`.213`: a skipped check is not a passed check) turned up:
   listed `'/server'` twice — a duplicate the mass merge produced — and Playwright
   refuses to *load* a file with a duplicate test title, so step 19 could not
   collect a single test. Nobody saw it because the gate halts at step 8 on the
-  coverage floor `master` also breaches.
+  coverage floor `master` also breaches. Step 19 was **already red** on `master`,
+  for a reason that measured nothing; it is red now for reasons that do.
+
+With the file loadable, axe ran for the first time since `.766`: **58 passed, 13
+failed**, and **none of the 13 involve anything this branch added** — the new
+control appears in zero violation nodes. Eleven are logger/coach sheet states
+whose locators have drifted, the same drift `logger-depth` shows. The other two
+are a finding worth the founder's attention rather than an agent's:
+
+> **`/private` and `/` fail WCAG AA on the poster red.** `#f3f2f2` on `#ec3013`
+> measures **3.75:1** where 4.5:1 is required for normal-size text — 210 nodes on
+> the gate alone. Large display type only needs 3:1 and is fine; this is the small
+> text and chrome sitting on `--accent-poster`. Fixing it means moving a brand
+> token or restricting white-on-red to large text, which is a design decision
+> under `docs/DESIGN_SYSTEM.md`, not a silent retune by me.
 
 **`master`'s own gate is red at four steps** and was before this branch: coverage
 floors (432 untested vs floor 395 — this branch is 432, contributing none), i18n
