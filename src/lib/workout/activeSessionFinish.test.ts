@@ -227,6 +227,33 @@ describe('assembleActiveVictory', () => {
     assert.equal(out.pushPatch.lastSessionAt, finished.completedAt);
     assert.equal(out.journal.workoutId, finished.id);
     assert.ok(out.entry.fragments.some((f) => f.includes('Felt strong')));
+    assert.ok(out.victorySummary.receipt);
+    assert.equal(out.victorySummary.receipt.exercises.length, 1);
+    assert.equal(out.victorySummary.receipt.vsLast, null);
+  });
+
+  it('attaches vs-last on the receipt when a prior same-named log exists', () => {
+    const prior = log({
+      id: 'w0',
+      startedAt: '2026-08-03T10:00:00Z',
+      completedAt: '2026-08-03T10:25:00Z',
+      durationSeconds: 1500,
+      totalVolume: 1800,
+    });
+    const finished = log({ totalVolume: 2200, durationSeconds: 1900 });
+    const out = assembleActiveVictory({
+      log: finished,
+      historyBefore: [prior],
+      checkIn: null,
+      sessionNote: '',
+      units: 'metric',
+      goalId: 'general',
+      hasCoachPlan: true,
+      resolveExerciseName: (id) => id,
+    });
+    const vsLast = out.victorySummary.receipt?.vsLast;
+    assert.ok(vsLast);
+    assert.equal(vsLast.volumeDelta, 400);
   });
 });
 

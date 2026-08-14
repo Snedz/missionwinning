@@ -29,7 +29,7 @@ export function TransparencyDownloads({ report, className }: Props) {
           )
         }
       >
-        {t('transparencyDownloadJson')}
+        {t('transparencyDownloadJson', { defaultValue: 'Download JSON' })}
       </Button>
       <Button
         type="button"
@@ -43,7 +43,7 @@ export function TransparencyDownloads({ report, className }: Props) {
           )
         }
       >
-        {t('transparencyDownloadText')}
+        {t('transparencyDownloadText', { defaultValue: 'Download text' })}
       </Button>
     </div>
   );

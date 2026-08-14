@@ -413,13 +413,16 @@ export function BundlePage() {
               <tbody>
                 {BUNDLE_PILLARS.map((pillar) => {
                   const keys = BUNDLE_PILLAR_I18N[pillar.id];
+                  const fuelCount = { count: CONTENT_FLOORS.recipesPremium };
                   const premiumCopy = keys
-                    ? t(keys.premiumKey, {
-                        ...(pillar.id === "mind"
-                          ? { count: CONTENT_FLOORS.mindPremium }
-                          : {}),
-                        defaultValue: pillar.premium,
-                      })
+                    ? pillar.id === "fuel"
+                      ? t(keys.premiumKey, fuelCount)
+                      : t(keys.premiumKey, {
+                          ...(pillar.id === "mind"
+                            ? { count: CONTENT_FLOORS.mindPremium }
+                            : {}),
+                          defaultValue: pillar.premium,
+                        })
                     : pillar.premium;
                   return (
                     <tr key={pillar.id} className="border-b border-border last:border-0">

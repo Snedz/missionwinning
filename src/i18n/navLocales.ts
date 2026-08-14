@@ -41,8 +41,8 @@ type NavStrings = {
 };
 
 const en: NavStrings = {
-  navOpenBeta: 'Open beta',
-  navInviteOnlyBeta: 'Invite-only beta',
+  navOpenBeta: 'Free beta',
+  navInviteOnlyBeta: 'Free beta',
   navAssess: 'Assess',
   navMore: 'More',
   navCoachTab: 'Coach',
@@ -62,7 +62,7 @@ const en: NavStrings = {
   navLibrary: 'Library',
   navHistory: 'History',
   navLeaderboard: 'Leaderboard',
-  navServer: 'Garage',
+  navServer: 'Messenger',
   navReadiness: 'Readiness tests',
   navHealth: 'Health screen',
   navCalculators: 'Calculators',

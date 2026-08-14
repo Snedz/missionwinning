@@ -12,6 +12,7 @@ Plain-language guides for athletes, parents, and teachers. English only for now;
 | [pt-safety.md](pt-safety.md) | Hard sessions — stop is allowed; not medical care |
 | [pregnancy-safety.md](pregnancy-safety.md) | Pregnancy / miscarriage / postpartum — stop is allowed; not medical care |
 | [premium-and-billing.md](premium-and-billing.md) | Super Bundle, what's free, restoring access |
+| [super-bundle-vs-stack.md](super-bundle-vs-stack.md) | One $59 SKU vs MFP + Pliability + Calm + a coach app |
 | [privacy-and-data.md](privacy-and-data.md) | Where your data lives, backup, youth consent, optional wearables |
 | [../WEARABLES.md](../WEARABLES.md) | Developer wearables strategy (Apple, Google, Whoop, …) |
 | [mission-server.md](mission-server.md) | Messenger (`/server`) — rooms on this device, not Discord.com |

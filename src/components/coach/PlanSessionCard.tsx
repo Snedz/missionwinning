@@ -30,6 +30,8 @@ type Props = {
   isPrimaryStart?: boolean;
   /** Today’s not-done session only — opens adjust flow. */
   onAdjust?: () => void;
+  /** Garage swap on a planned line — does not regenerate the week. */
+  onSwapExercise?: (fromExerciseId: string, toExerciseId: string) => void;
   /**
    * Optional log-derived hints already computed upstream (history length, load band).
    * Never invent metrics here — only pass what CoachContext / loadBands already have.
@@ -44,6 +46,7 @@ export function PlanSessionCard({
   isToday,
   isPrimaryStart,
   onAdjust,
+  onSwapExercise,
   rationaleHints,
 }: Props) {
   const { t } = useTranslation();
@@ -177,7 +180,16 @@ export function PlanSessionCard({
         ) : null}
         <ul className="space-y-2 text-sm">
           {session.exercises.map((ex) => (
-            <PlanExerciseLine key={ex.exerciseId} ex={ex} unit={unit} />
+            <PlanExerciseLine
+              key={ex.exerciseId}
+              ex={ex}
+              unit={unit}
+              onSwap={
+                onSwapExercise
+                  ? (toId) => onSwapExercise(ex.exerciseId, toId)
+                  : undefined
+              }
+            />
           ))}
         </ul>
         {session.status !== 'done' && (

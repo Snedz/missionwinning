@@ -4,6 +4,7 @@
   "leaderboardRankings": "Peringkat",
   "leaderboardTitle": "Papan peringkat",
   "leaderboardSubtitle": "Bandingkan operator global, regional, negara, locale, atau squad.",
+  "leaderboardSubtitleBrief": "Optional ranks. Training first — never required.",
   "leaderboardSync": "Sinkron",
   "leaderboardOperators": "operators",
   "leaderboardYourRank": "Your rank",

@@ -1,6 +1,8 @@
 {
   "assessTitle": "準備状況の評価",
   "assessSubtitle": "無料のコアツール。 標準的な病歴と ParQ スタイルの質問に基づいています。 正直に答えて、個別の指導を受けてください。",
+  "assessSubtitleBrief": "Answer the screen. Stage prompts when you want them.",
+  "assessMoreStage": "Stage of change & prompts",
   "assessFormTitle": "クイックヘルス＆ライフスタイル画面",
   "assessStageTitle": "変化の段階 + コーチングのプロンプト",
   "assessDisclaimer": "これは教育上のスクリーニングのみであり、医学的なアドバイスではありません。 必ず医師に相談してください。",

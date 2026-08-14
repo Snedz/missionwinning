@@ -4,6 +4,7 @@
   "leaderboardRankings": "排名",
   "leaderboardTitle": "排行榜",
   "leaderboardSubtitle": "全球、区域、国家、语言或小队排名对比。",
+  "leaderboardSubtitleBrief": "Optional ranks. Training first — never required.",
   "leaderboardSync": "同步",
   "leaderboardOperators": "operators",
   "leaderboardYourRank": "你的排名",

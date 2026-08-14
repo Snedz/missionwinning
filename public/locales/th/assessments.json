@@ -1,6 +1,8 @@
 {
   "assessTitle": "การประเมินความพร้อม",
   "assessSubtitle": "เครื่องมือหลักฟรี อิงตามประวัติสุขภาพมาตรฐานและคำถามสไตล์ ParQ ตอบอย่างตรงไปตรงมาเพื่อขอคำแนะนำส่วนบุคคล",
+  "assessSubtitleBrief": "Answer the screen. Stage prompts when you want them.",
+  "assessMoreStage": "Stage of change & prompts",
   "assessFormTitle": "หน้าจอสุขภาพและไลฟ์สไตล์ด่วน",
   "assessStageTitle": "ขั้นตอนของการเปลี่ยนแปลง + พร้อมท์การฝึกสอน",
   "assessDisclaimer": "นี่เป็นการคัดกรองเพื่อการศึกษาเท่านั้น ไม่ใช่คำแนะนำทางการแพทย์ ปรึกษาแพทย์เสมอ",

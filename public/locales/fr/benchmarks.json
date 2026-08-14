@@ -1,6 +1,8 @@
 {
   "benchmarksTitle": "Repères",
   "benchmarksSubtitle": "Statistiques, répétitions maximales, estimations par rapport aux résultats réels et progression au fil du temps.",
+  "benchmarksSubtitleBrief": "Rep maxes from your logs. Other tests when you want them.",
+  "benchmarksMoreTests": "Military & youth tests",
   "benchmarksEmptyTitle": "Pas encore de données de référence",
   "benchmarksEmptyDesc": "Effectuez des entraînements avec des séries enregistrées pour créer des 1RM estimés. Enregistrez une série à 1 répétition pour enregistrer un 1RM réel à des fins de comparaison.",
   "benchmarksExercisesTracked": "Exercices suivis",

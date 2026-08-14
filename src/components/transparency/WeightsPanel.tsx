@@ -52,29 +52,29 @@ export function WeightsPanel({
   return (
     <div className="border-2 border-neutral-900 bg-neutral-900 px-4 py-5 text-neutral-100">
       <p className="text-xs uppercase tracking-wide text-neutral-400">
-        {t('hoodKicker')}
+        {t('hoodKicker', { defaultValue: 'Mission Winning' })}
       </p>
       <h2 className="mt-1 text-2xl font-bold tracking-tight text-neutral-100">
-        {t('hoodTitle')}
+        {t('hoodTitle', { defaultValue: 'Scoring weights' })}
       </h2>
 
       <div className="mt-6 grid gap-8 md:grid-cols-2">
         <div className="space-y-6">
           <WeightList
-            heading={t('hoodBoosts')}
+            heading={t('hoodBoosts', { defaultValue: 'Boosts' })}
             headingClass="mb-2 text-xs font-semibold uppercase tracking-wide text-neutral-100"
             rows={boosts}
             valueClass="text-neutral-100"
           />
           <WeightList
-            heading={t('hoodBoostsPlanned')}
+            heading={t('hoodBoostsPlanned', { defaultValue: 'Boosts (Club ledger — planned)' })}
             headingClass="mb-2 text-xs font-semibold uppercase tracking-wide text-neutral-400"
             rows={clubPlannedBoosts}
             valueClass="text-neutral-400"
           />
         </div>
         <WeightList
-          heading={t('hoodPenalties')}
+          heading={t('hoodPenalties', { defaultValue: 'Penalties' })}
           headingClass="mb-2 text-xs font-semibold uppercase tracking-wide text-accent-400"
           rows={penalties}
           valueClass="text-accent-400"

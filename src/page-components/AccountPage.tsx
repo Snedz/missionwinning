@@ -12,6 +12,7 @@
  */
 
 import { useState, useEffect } from 'react';
+import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useTranslation } from 'react-i18next';
 import { Settings } from 'lucide-react';
@@ -33,7 +34,10 @@ import { useToast } from '@/hooks/use-toast';
 import { loadDaysPerWeek } from '@/lib/coach/schedulePrefs';
 import { openBillingPortal } from '@/lib/payments';
 import { ProfileAccountCard } from '@/components/profile/ProfileAccountCard';
+import { ProfileTransparencyCard } from '@/components/profile/ProfileTransparencyCard';
+import { ProfilePregnancyCard } from '@/components/profile/ProfilePregnancyCard';
 import { ProfileRemindersCard } from '@/components/profile/ProfileRemindersCard';
+import { useMissionId } from '@/hooks/useMissionId';
 import { ProfilePreferencesCard } from '@/components/profile/ProfilePreferencesCard';
 import { HomeGymKitCard } from '@/components/profile/HomeGymKitCard';
 import { ProfileAssessmentCard } from '@/components/profile/ProfileAssessmentCard';
@@ -103,6 +107,7 @@ export function AccountPage() {
    * mismatch. One frame closed, then open and scrolled, beats a hydration error.
    */
   const [importDeepLink, setImportDeepLink] = useState(false);
+  const missionId = useMissionId();
 
   useEffect(() => {
     if (typeof window === 'undefined' || window.location.hash !== '#import') return;
@@ -356,7 +361,10 @@ export function AccountPage() {
         ownerTools={ownerTools}
         onSignOut={handleSignOut}
         authError={authError}
+        missionId={missionId}
       />
+
+      <ProfileTransparencyCard />
 
       {/* Not behind `email &&` — device notifications are the only return channel an
           anonymous athlete has, and they are the athlete this product is built for.
@@ -390,6 +398,25 @@ export function AccountPage() {
 
       <ProfileFeedbackCard />
 
+      <Card className="border-2 border-border bg-card">
+        <CardContent className="space-y-2 pt-6">
+          <p className="font-semibold">
+            {t('accountExploreTitle', { defaultValue: 'Explore places' })}
+          </p>
+          <p className="text-sm text-muted-foreground">
+            {t('accountExploreLead', {
+              defaultValue: 'A quiet map of pins you have tagged. GPS is optional.',
+            })}
+          </p>
+          <Link
+            href="/explore"
+            className="inline-flex min-h-[44px] items-center text-sm font-semibold text-primary underline-offset-4 hover:underline"
+          >
+            {t('accountExploreCta', { defaultValue: 'Open Explore' })}
+          </Link>
+        </CardContent>
+      </Card>
+
       <ProfilePremiumCard
         premium={premium}
         billingBusy={billingBusy}
@@ -410,6 +437,8 @@ export function AccountPage() {
           {t('accountMoreSettings', { defaultValue: 'More settings' })}
         </summary>
         <div className="space-y-6 border-t-2 border-border px-4 py-4">
+          <ProfilePregnancyCard />
+
           <ProfileAssessmentCard />
 
           <ProfileBetaJourneyCard

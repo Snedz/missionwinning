@@ -1,6 +1,8 @@
 {
   "assessTitle": "준비 상태 평가",
   "assessSubtitle": "무료 핵심 도구. 표준 건강 기록 및 ParQ 스타일 질문을 기반으로 합니다. Answer honestly for personalized guidance.",
+  "assessSubtitleBrief": "Answer the screen. Stage prompts when you want them.",
+  "assessMoreStage": "Stage of change & prompts",
   "assessFormTitle": "Quick Health & Lifestyle Screen",
   "assessStageTitle": "Stage of Change + Coaching Prompts",
   "assessDisclaimer": "이는 교육적 검사일 뿐이며 의학적 조언은 아닙니다. 항상 의사와 상담하십시오.",

@@ -138,7 +138,7 @@ describe('learn vs-pages honesty', () => {
     assert.equal(LEARN_VS_PAGES.length, 3);
     assert.equal(BEYOND_THE_BASICS_CHAPTERS.length, CONTENT_FLOORS.guidebookFreeChapters);
     assert.equal(CONTENT_FLOORS.guidebookFreeChapters, 6);
-    assert.equal(CONTENT_FLOORS.learnPremiumSections, 16);
+    assert.equal(CONTENT_FLOORS.learnPremiumSections, 24);
     assert.ok(
       !BEYOND_THE_BASICS_CHAPTERS.some((c) =>
         (LEARN_VS_PAGE_IDS as readonly string[]).includes(c.id)

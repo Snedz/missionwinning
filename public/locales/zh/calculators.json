@@ -1,6 +1,8 @@
 {
   "calcTitle": "计算器",
   "calcSubtitle": "免费 1RM、宏和制版工具。 Super Bundle 解锁高级周期和客户端同步。",
+  "calcSubtitleBrief": "1RM, macros, plates — free tools, no account required.",
+  "calcMorePremium": "Premium calculator depth",
   "calcTab1rm": "1RM",
   "calcTabMacros": "宏",
   "calcTabPlates": "盘子",
@@ -32,6 +34,7 @@
   "calcFat": "胖的",
   "calcCarbs": "碳水化合物",
   "calcMacroFoot": "粗米夫林-圣杰尔 + 活动。 高级计划增加了阶段和身体成分调整。",
+  "calcMacroFootOpenBeta": "Rough Mifflin-St Jeor + activity. Starting estimates — refine with Fuel logs over time.",
   "calcApplyTargets": "将目标应用于 Fuel",
   "calcViewFuel": "开放燃料",
   "calcToastApplied": "应用的目标",

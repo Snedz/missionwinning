@@ -347,7 +347,7 @@ export function WelcomePage({ initialEdit = false }: WelcomePageProps) {
                   a link, not a red action, because the free logger comes first.
                 */}
                 <p className="text-center text-xs leading-relaxed text-muted-foreground">
-                  {t('csvImportTitle', { defaultValue: 'Switching from another app?' })}{' '}
+                  {t('csvImportTitle', { defaultValue: 'Your training history' })}{' '}
                   <a href="/account#import" className="underline underline-offset-2">
                     {t('csvImportCta', { defaultValue: 'Import CSV (Strong / Hevy)' })}
                   </a>

@@ -3,8 +3,8 @@
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useTranslation } from 'react-i18next';
-import { Check } from 'lucide-react';
 import { AppLegalFooter } from '@/components/layout/AppLegalFooter';
+import { LaunchNotifyForm } from '@/components/public/LaunchNotifyForm';
 import { gateEnFloor } from '@/i18n/gateEn';
 import {
   APP_PUBLIC_PRODUCT_VERSION,
@@ -19,8 +19,6 @@ import {
   waitlistTerritoryFromGeo,
   type WaitlistTerritory,
 } from '@/lib/legal/waitlistTerritory';
-import { submitLead } from '@/lib/supabase';
-import { track } from '@/lib/analytics';
 
 type Props = {
   /** Server-resolved invite so SSR HTML exposes data-mw-invitee for gate-smoke. */
@@ -43,18 +41,14 @@ export function PrivateTeaserClient({ initialInvite = '', initialNext = '' }: Pr
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
-  const [waitEmail, setWaitEmail] = useState('');
-  const [waitDone, setWaitDone] = useState(false);
-  const [waitBusy, setWaitBusy] = useState(false);
-  const [waitError, setWaitError] = useState<string | null>(null);
   const [sessionUnlocking, setSessionUnlocking] = useState(true);
   const [territory, setTerritory] = useState<WaitlistTerritory>({ stance: 'capture' });
 
   // Signed-in (localStorage) but missing gate cookie — typical after Google OAuth.
   // Bounded + fail-open: code-only invitees must reach the access-code form.
   //
-  // `.765` — this probe used to replace the whole page with "Checking sign-in…"
-  // for up to 6s. With PRIVATE_MODE on, `/` redirects here, so those three words
+  // `.765` — this probe used to replace the whole page with a session spinner
+  // for up to 6s. With PRIVATE_MODE on, `/` redirects here, so those words
   // were the entire server-rendered website. The probe now runs underneath the
   // poster and only announces itself in one line; on success it still hard-navs.
   useEffect(() => {
@@ -129,38 +123,6 @@ export function PrivateTeaserClient({ initialInvite = '', initialNext = '' }: Pr
     } finally {
       setLoading(false);
     }
-  };
-
-  const handleWaitlist = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!waitEmail || waitBusy) return;
-    setWaitBusy(true);
-    setWaitError(null);
-
-    // Same defect as UnlockButton had: `submitLead` never throws — it reports
-    // failure through `{ ok }` — so the old try/catch was dead and the result was
-    // discarded. This is the private gate, the only public capture point while
-    // PRIVATE_MODE is on, so a silently dropped address here is a launch-day lead
-    // that never existed. `ok` is still true for the local-only fallback, which is
-    // recoverable; only a hard failure shows the error.
-    const result = await submitLead({
-      name: '',
-      email: waitEmail,
-      source: 'launch-waitlist',
-      message: 'Private gate waitlist',
-    });
-
-    if (!result?.ok) {
-      setWaitError(
-        g('gateWaitlistFailed')
-      );
-      setWaitBusy(false);
-      return;
-    }
-
-    track('waitlist_joined', { product: 'launch' });
-    setWaitDone(true);
-    setWaitBusy(false);
   };
 
   const errorNode = error ? (
@@ -296,53 +258,17 @@ export function PrivateTeaserClient({ initialInvite = '', initialNext = '' }: Pr
                     </Link>
                   </p>
                 </div>
-              ) : waitDone ? (
-                <>
-                  <p className="gate-done">
-                    <Check className="h-4 w-4" strokeWidth={2} aria-hidden />
-                    {g('gateWaitlistDone')}
-                  </p>
-                  <p className="gate-foot">
-                    {g('gateWaitlistDoneFoot')}{' '}
-                    {waitEmail}
-                  </p>
-                </>
               ) : (
-                <form onSubmit={handleWaitlist}>
-                  <p className="gate-kicker">
-                    {g('gateWaitlistTitle')}
-                  </p>
-                  <div className="gate-row">
-                    <input
-                      type="email"
-                      required
-                      value={waitEmail}
-                      onChange={(e) => setWaitEmail(e.target.value)}
-                      placeholder={g('gateWaitlistPlaceholder')}
-                      aria-label="Email for the launch waitlist"
-                      className="gate-input"
-                      disabled={waitBusy}
-                    />
-                    <button
-                      type="submit"
-                      disabled={waitBusy || !waitEmail}
-                      className="gate-btn gate-btn-primary"
-                    >
-                      {waitBusy
-                        ? g('gateWaitlistSubmitting')
-                        : g('gateWaitlistSubmit')}
-                    </button>
-                  </div>
-                  {waitError && (
-                    <p className="gate-foot" role="alert" style={{ color: 'var(--destructive)' }}>
-                      {waitError}
-                    </p>
-                  )}
-                  <p className="gate-foot">
-                    {g('gateWaitlistFoot')}
-                  </p>
+                <>
+                  <p className="gate-kicker">{g('gateWaitlistTitle')}</p>
+                  <LaunchNotifyForm
+                    source="launch-waitlist"
+                    message="Private gate waitlist"
+                    variant="gate"
+                  />
+                  <p className="gate-foot">{g('gateWaitlistFoot')}</p>
                   {territoryNote}
-                </form>
+                </>
               )}
 
               {/* Access code secondary — never competes with Notify me red. */}

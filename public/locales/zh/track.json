@@ -1,6 +1,9 @@
 {
   "trackTitle": "活动追踪",
   "trackSubtitle": "免费手动记录步行、跑步、骑行、徒步。高级版增加 GPS 与进阶统计。",
+  "trackSubtitleBrief": "Log a walk or run. GPS and extras when you want them.",
+  "trackMoreGpsImport": "GPS, insights & import",
+  "trackMoreBodyWearables": "Body, wearables & trends",
   "trackWeekSessions": "本周",
   "trackTotalTime": "总时长",
   "trackDistance": "距离",

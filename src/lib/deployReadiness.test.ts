@@ -33,8 +33,9 @@ describe('deployReadiness', () => {
     // stale committed export. Counting namespaces proves a pack ships; only
     // `rewardsKeyParity.test.ts` proves the pack is complete.
     // `.742` 34→35 with `places` (510→525): Explore pin-board + place-dex.
-    assert.equal(r.localeFiles, 525);
-    assert.equal(r.localeNamespaces, 35);
+    // `.766` 35→36 with `server` messenger (525→540).
+    assert.equal(r.localeFiles, 540);
+    assert.equal(r.localeNamespaces, 36);
     assert.ok(r.minTodayKeys >= 100);
     assert.equal(r.target, 'ci');
   });

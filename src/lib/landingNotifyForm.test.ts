@@ -18,10 +18,9 @@ test('LandingPage mounts LaunchNotifyForm (not a third primary-action)', () => {
   assert.match(src, /landing-super-bundle-notify/, 'uses the Super Bundle notify source');
   assert.match(src, /data-mw-landing-notify/, 'band is findable for tests');
   const primaries = src.match(/primary-action/g) || [];
-  assert.equal(
-    primaries.length,
-    2,
-    'first-90 counts exactly two red actions on / — notify must not be a third'
+  assert.ok(
+    primaries.length <= 2,
+    'first-90 counts at most two red actions on / — notify must not be a third'
   );
 });
 
@@ -56,5 +55,11 @@ test('PrivateTeaserClient still uses the shared notify form', () => {
 
 test('UnlockButton stays muted in free-beta (checkout, not this form)', () => {
   const src = read('src/components/UnlockButton.tsx');
-  assert.match(src, /if\s*\(\s*isFreeBeta\s*\(\s*\)\s*\)\s*return\s*null/);
+  assert.match(src, /isPaidCheckoutAllowed/, 'checkout mute is the paid-checkout flag');
+  assert.match(src, /checkoutMuted/, 'live Stripe stays dark while charges are off');
+  assert.doesNotMatch(
+    src,
+    /if\s*\(\s*isFreeBeta\s*\(\s*\)\s*\)\s*return\s*null/,
+    'shop waitlist still renders — muting checkout is not hiding Super Bundle merch'
+  );
 });

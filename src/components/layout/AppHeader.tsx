@@ -8,7 +8,6 @@ import { cn } from '@/lib/utils';
 import { BrandMonogram } from '@/components/brand/BrandMonogram';
 import { Badge } from '@/components/ui/badge';
 import { isFreeBeta } from '@/lib/freeBeta';
-import { isClientPrivateGateEnabled } from '@/lib/privateGateClientFlag';
 import { useIsCompact } from '@/hooks/useIsCompact';
 import { ROUTE_LABELS, STATIC_PAGE_TITLES } from '@/lib/pageTitles';
 
@@ -76,14 +75,11 @@ export function AppHeader({
             `.765` — and bound to the *gate* as well as the flag. This said
             "Open beta" on `/regions`, `/terms` and every other page that stays
             public while `PRIVATE_MODE` is on, to visitors who cannot get in
-            without an access code. The landing already says "invite-only";
             chrome that contradicts the page it frames is the cheapest kind of
             dishonesty and the easiest to fix. */}
         {isFreeBeta() && (
           <Badge variant="outline" className="hidden shrink-0 sm:inline-flex">
-            {isClientPrivateGateEnabled()
-              ? t('navInviteOnlyBeta', { defaultValue: 'Invite-only beta' })
-              : t('navOpenBeta', { defaultValue: 'Open beta' })}
+            {t('navOpenBeta', { defaultValue: 'Free beta' })}
           </Badge>
         )}
         {isCompact && (

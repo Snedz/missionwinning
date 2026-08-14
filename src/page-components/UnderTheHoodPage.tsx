@@ -21,21 +21,24 @@ export function UnderTheHoodPage() {
   return (
     <PillarPageShell
       icon={SlidersHorizontal}
-      eyebrow={t('hoodEyebrow')}
-      title={t('hoodPageTitle')}
-      subtitle={t('hoodSubtitle')}
+      eyebrow={t('hoodEyebrow', { defaultValue: 'Account' })}
+      title={t('hoodPageTitle', { defaultValue: 'Under the Hood' })}
+      subtitle={t('hoodSubtitle', {
+        defaultValue:
+          'Published Mission Points (what this device awards) and visibility filters. Filters never debit points.',
+      })}
       footer={<AppLegalFooter showBuild buildLabel={APP_BUILD_LABEL} />}
     >
       <p>
         <Link href="/account" className="text-sm text-primary underline underline-offset-2">
-          {t('transparencyBackAccount')}
+          {t('transparencyBackAccount', { defaultValue: 'Back to Account' })}
         </Link>
         {' · '}
         <Link
           href="/account/transparency"
           className="text-sm text-primary underline underline-offset-2"
         >
-          {t('transparencyTitle')}
+          {t('transparencyTitle', { defaultValue: 'Visibility' })}
         </Link>
       </p>
 
@@ -49,8 +52,18 @@ export function UnderTheHoodPage() {
         clubSource={report.sources.club}
       />
 
-      <p className="text-sm text-muted-foreground">{t('hoodPenaltyNote')}</p>
-      <p className="text-sm text-muted-foreground">{t('hoodServerHelp')}</p>
+      <p className="text-sm text-muted-foreground">
+        {t('hoodPenaltyNote', {
+          defaultValue:
+            'Report, mute, block, and hide are visibility filters. They do not debit Mission Points.',
+        })}
+      </p>
+      <p className="text-sm text-muted-foreground">
+        {t('hoodServerHelp', {
+          defaultValue:
+            'How to post well in Mission Server: replies from people you trained with beat likes. Likes are weak.',
+        })}
+      </p>
     </PillarPageShell>
   );
 }

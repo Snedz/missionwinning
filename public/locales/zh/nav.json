@@ -1,5 +1,6 @@
 {
   "navOpenBeta": "公开测试",
+  "navInviteOnlyBeta": "仅限邀请测试",
   "navAssess": "评估",
   "navMore": "更多",
   "navCoachTab": "教练",
@@ -19,6 +20,7 @@
   "navLibrary": "动作库",
   "navHistory": "历史",
   "navLeaderboard": "排行榜",
+  "navServer": "Messenger",
   "navReadiness": "就绪度测试",
   "navHealth": "健康筛查",
   "navCalculators": "计算器",
@@ -33,6 +35,5 @@
   "feedback": "Feedback",
   "resumeWorkout": "Resume workout",
   "offlineBannerShort": "Offline — logging still works",
-  "offlineWaitingCount": "{{count}} waiting",
-  "navInviteOnlyBeta": "仅限邀请测试"
+  "offlineWaitingCount": "{{count}} waiting"
 }

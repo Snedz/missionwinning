@@ -1,6 +1,8 @@
 {
   "benchmarksTitle": "Điểm chuẩn",
   "benchmarksSubtitle": "Thống kê, số lần tối đa, ước tính so với thực tế và tiến bộ theo thời gian.",
+  "benchmarksSubtitleBrief": "Rep maxes from your logs. Other tests when you want them.",
+  "benchmarksMoreTests": "Military & youth tests",
   "benchmarksEmptyTitle": "Chưa có dữ liệu điểm chuẩn",
   "benchmarksEmptyDesc": "Hoàn thành các bài tập với các hiệp đã ghi để xây dựng 1RM ước tính. Ghi lại một hiệp ở 1 lần lặp lại để ghi lại 1RM thực tế để so sánh.",
   "benchmarksExercisesTracked": "Bài tập được theo dõi",

@@ -1,5 +1,6 @@
 {
   "navOpenBeta": "เบต้าเปิด",
+  "navInviteOnlyBeta": "เบต้าเฉพาะผู้ได้รับเชิญ",
   "navAssess": "ประเมิน",
   "navMore": "เพิ่มเติม",
   "navCoachTab": "โค้ช",
@@ -19,6 +20,7 @@
   "navLibrary": "ไลบรารี",
   "navHistory": "ประวัติ",
   "navLeaderboard": "อันดับ",
+  "navServer": "Messenger",
   "navReadiness": "ทดสอบความพร้อม",
   "navHealth": "คัดกรองสุขภาพ",
   "navCalculators": "เครื่องคิดเลข",
@@ -33,6 +35,5 @@
   "feedback": "Feedback",
   "resumeWorkout": "Resume workout",
   "offlineBannerShort": "Offline — logging still works",
-  "offlineWaitingCount": "{{count}} waiting",
-  "navInviteOnlyBeta": "เบต้าเฉพาะผู้ได้รับเชิญ"
+  "offlineWaitingCount": "{{count}} waiting"
 }

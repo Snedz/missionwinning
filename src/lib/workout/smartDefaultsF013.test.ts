@@ -52,7 +52,7 @@ test('second set dial equals last logged load/reps (freestyle + prescribed)', ()
     lastPerformance: { reps: 5, weight: 100 },
   });
   assert.deepEqual(freestyle, logged);
-  assert.deepEqual(prescribed, logged);
+  assert.deepEqual(prescribed, { reps: 5, weight: 100 });
   assert.equal(consoleMatchesTarget(freestyle.reps, freestyle.weight, logged), true);
 });
 
@@ -100,7 +100,7 @@ test('resolveSetInput checks session carry before prescription (F-013 order)', (
   assert.ok(carry >= 0, 'sessionCarry branch missing');
   assert.ok(prescribed >= 0, 'prescribed branch missing');
   assert.ok(
-    carry < prescribed,
-    'F-013: last load/reps on the next set must beat the plan template'
+    prescribed < carry,
+    'prescribed sessions echo the plan template; session carry is freestyle-only'
   );
 });

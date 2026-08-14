@@ -5,6 +5,7 @@ import { suggestNextSetTarget } from '@/lib/workout/nextSetTargets';
 import { sessionIsCoachPrescribed } from '@/lib/workout/activeWorkoutHelpers';
 import { getExerciseById } from '@/data/exercises';
 import type { FieldTestReceipt } from '@/lib/workout/fieldTestReceipt';
+import type { VictoryReceipt } from '@/lib/workout/victoryReceipt';
 import {
   pickVictoryNextAction as pickVictoryNextActionCore,
   COACH_VICTORY_EARLY_WORKOUTS as COACH_VICTORY_EARLY_WORKOUTS_CORE,
@@ -55,6 +56,8 @@ export interface WorkoutVictorySummary {
   fieldTest?: FieldTestReceipt;
   /** Muscle groups on working exercises, in log order (Victory Move seam). */
   workingMuscleGroups?: string[][];
+  /** Vs-last receipt from local logs — instant, offline, free (.713). */
+  receipt?: VictoryReceipt;
 }
 
 /** Rank working sets: load×reps when loaded; reps alone when bodyweight. */
@@ -195,7 +198,8 @@ export function summarizeWorkoutVictory(
   progressionInsight?: ProgressionInsight,
   nextAction?: VictoryNextAction,
   pickOpts?: PickVictoryNextActionOpts,
-  fieldTest?: FieldTestReceipt
+  fieldTest?: FieldTestReceipt,
+  receipt?: VictoryReceipt
 ): WorkoutVictorySummary {
   const setCount = log.exercises.reduce((sum, ex) => sum + ex.sets.length, 0);
   return {
@@ -215,5 +219,6 @@ export function summarizeWorkoutVictory(
       }),
     fieldTest,
     workingMuscleGroups: log.exercises.map((ex) => ex.muscleGroups ?? []),
+    ...(receipt ? { receipt } : {}),
   };
 }

@@ -1,6 +1,9 @@
 {
   "trackTitle": "Lacak aktivitas",
   "trackSubtitle": "Log aktivitas manual gratis — berjalan, berlari, bersepeda, mendaki. Premium menambahkan GPS dan statistik lanjutan (gaya MapMy, Super Bundle).",
+  "trackSubtitleBrief": "Log a walk or run. GPS and extras when you want them.",
+  "trackMoreGpsImport": "GPS, insights & import",
+  "trackMoreBodyWearables": "Body, wearables & trends",
   "trackWeekSessions": "Minggu ini",
   "trackTotalTime": "Jumlah Waktu",
   "trackDistance": "Jarak",

@@ -15,6 +15,7 @@
 import Link from 'next/link';
 import { useTranslation } from 'react-i18next';
 import { CouncilLeadershipBlock } from '@/components/america/CouncilLeadershipBlock';
+import { APP_PUBLIC_PRODUCT_VERSION, APP_PUBLIC_VERSION } from '@/lib/buildInfo';
 import { isAmericaTrackEnabled } from '@/lib/americaConfig';
 import { isFreeBeta } from '@/lib/freeBeta';
 
@@ -43,7 +44,25 @@ export function AboutPage() {
 
   return (
     <div className="space-y-10">
+      <p
+        className="text-[11px] font-semibold uppercase tracking-[0.1em] text-muted-foreground"
+        data-mw-public-version={APP_PUBLIC_VERSION}
+      >
+        {APP_PUBLIC_PRODUCT_VERSION}
+      </p>
       <EditorialSection index="01" title={t('infoAboutMission', { defaultValue: 'Our mission' })}>
+        <p className="text-base leading-relaxed text-foreground">
+          {t('infoAboutMissionNorthStar', {
+            defaultValue:
+              'The mission is advancement of civilization and propagation of consciousness to the stars.',
+          })}
+        </p>
+        <p className="text-base leading-relaxed text-muted-foreground">
+          {t('infoAboutMissionNested', {
+            defaultValue:
+              'That is the north star. Today we serve it through L1 Health: Train plus Mission Coach.',
+          })}
+        </p>
         <p className="text-base leading-relaxed text-muted-foreground">
           {freeBeta
             ? t('infoAboutMissionP1OpenBeta', {

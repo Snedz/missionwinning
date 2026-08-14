@@ -135,8 +135,9 @@ test('MUST_MUTE files still exist (no silent delete of the mute layer)', () => {
   }
 });
 
-test('bundle route no longer 307s to /log', () => {
+test('bundle route 307s to /log while free-beta mutes the shop', () => {
   const src = readFileSync(path.join(root, 'app/bundle/page.tsx'), 'utf8');
-  assert.doesNotMatch(src, /redirect\s*\(/);
+  assert.match(src, /isFreeBeta/);
+  assert.match(src, /redirect\s*\(/);
   assert.match(src, /BundlePage/);
 });

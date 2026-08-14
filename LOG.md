@@ -32,6 +32,11 @@ repeat-last / empty (no Just Go). Free logger ungated.
 Landed: #428 #452 #456–459 #466–467 #477–479 #485 #487–492 #494–502 #504–505
 #518–519 #521–522 #524 #531–532 #534 #536–537 #539–543, plus stacked #481–483.
 
+**Compose:** after the oldest-first merge, re-wired PR surfaces onto master's
+Train logger — Victory vs-last receipt, Coach garage swap, hard-session warning,
+About/Account cards, cinematic landing + notify, consent banner, shop copy.
+CONTEXT still mutes `/bundle` → `/log`. Empty Start stays repeat-last.
+
 Label `.766` (onto master `.764`; `.765` Preview walk is already in this tree
 from #542). Excellence-Override below.
 

@@ -6,7 +6,7 @@
 import { PREMIUM_RECIPE_COUNT } from '@/data/recipes/catalogMeta';
 
 export const PREMIUM_MIND_SESSION_COUNT = 68;
-export const PREMIUM_MOVE_FLOW_COUNT = 48;
+export const PREMIUM_MOVE_FLOW_COUNT = 56;
 export const PREMIUM_LEARN_SECTION_COUNT = 24;
 
 export { PREMIUM_RECIPE_COUNT };

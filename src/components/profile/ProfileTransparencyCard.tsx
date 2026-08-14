@@ -14,26 +14,38 @@ export function ProfileTransparencyCard() {
   const report = useTransparencyReport();
   const summary =
     report.limitsApply === 0
-      ? t('transparencyNoLimits')
-      : t('transparencyLimitsApply', { count: report.limitsApply });
+      ? t('transparencyNoLimits', { defaultValue: 'No limits apply' })
+      : t('transparencyLimitsApply', {
+          count: report.limitsApply,
+          defaultValue: '{{count}} limits apply',
+        });
 
   return (
     <Card className="border-2 border-border bg-card">
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
           <FileText className="h-4 w-4" aria-hidden="true" />
-          {t('transparencyCardTitle')}
+          {t('transparencyCardTitle', { defaultValue: 'Visibility' })}
         </CardTitle>
       </CardHeader>
       <CardContent className="space-y-3 text-sm">
         <p className="font-semibold text-foreground">{summary}</p>
-        <p className="text-muted-foreground leading-relaxed">{t('transparencyCardLead')}</p>
+        <p className="text-muted-foreground leading-relaxed">
+          {t('transparencyCardLead', {
+            defaultValue:
+              'See if anything is limited and why. Under the Hood publishes Mission Points boosts and visibility filters. Download includes both, plus labels on this athlete.',
+          })}
+        </p>
         <div className="flex flex-col gap-2 sm:flex-row">
           <Button asChild variant="outline" className="min-h-[44px] w-full tap-target">
-            <Link href="/account/transparency">{t('transparencyCardOpen')}</Link>
+            <Link href="/account/transparency">
+              {t('transparencyCardOpen', { defaultValue: 'Open Visibility' })}
+            </Link>
           </Button>
           <Button asChild variant="outline" className="min-h-[44px] w-full tap-target">
-            <Link href="/account/under-the-hood">{t('hoodCardOpen')}</Link>
+            <Link href="/account/under-the-hood">
+              {t('hoodCardOpen', { defaultValue: 'Under the Hood' })}
+            </Link>
           </Button>
         </div>
         <TransparencyDownloads report={report} />

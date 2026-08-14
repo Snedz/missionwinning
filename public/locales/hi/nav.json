@@ -1,5 +1,6 @@
 {
-  "navOpenBeta": "Open beta",
+  "navOpenBeta": "Free beta",
+  "navInviteOnlyBeta": "केवल आमंत्रण बीटा",
   "navAssess": "Assess",
   "navMore": "More",
   "navCoachTab": "Coach",
@@ -19,6 +20,7 @@
   "navLibrary": "पुस्तकालय",
   "navHistory": "इतिहास",
   "navLeaderboard": "लीडरबोर्ड",
+  "navServer": "Messenger",
   "navReadiness": "तत्परता परीक्षण",
   "navHealth": "स्वास्थ्य स्क्रीन",
   "navCalculators": "कैलकुलेटर",
@@ -33,6 +35,5 @@
   "feedback": "Feedback",
   "resumeWorkout": "Resume workout",
   "offlineBannerShort": "Offline — logging still works",
-  "offlineWaitingCount": "{{count}} waiting",
-  "navInviteOnlyBeta": "केवल आमंत्रण बीटा"
+  "offlineWaitingCount": "{{count}} waiting"
 }

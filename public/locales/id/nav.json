@@ -1,5 +1,6 @@
 {
   "navOpenBeta": "Beta terbuka",
+  "navInviteOnlyBeta": "Beta khusus undangan",
   "navAssess": "Nilai",
   "navMore": "Lainnya",
   "navCoachTab": "Pelatih",
@@ -19,6 +20,7 @@
   "navLibrary": "Perpustakaan",
   "navHistory": "Riwayat",
   "navLeaderboard": "Papan peringkat",
+  "navServer": "Messenger",
   "navReadiness": "Tes kesiapan",
   "navHealth": "Skrining kesehatan",
   "navCalculators": "Kalkulator",
@@ -33,6 +35,5 @@
   "feedback": "Feedback",
   "resumeWorkout": "Resume workout",
   "offlineBannerShort": "Offline — logging still works",
-  "offlineWaitingCount": "{{count}} waiting",
-  "navInviteOnlyBeta": "Beta khusus undangan"
+  "offlineWaitingCount": "{{count}} waiting"
 }

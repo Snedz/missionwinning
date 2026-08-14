@@ -1,6 +1,6 @@
 {
   "welcomeKicker": "Dia I · Cerca de dois minutos",
-  "welcomeIDay": "I-Day",
+  "welcomeIDay": "Get started",
   "welcomeMissionLead": "A missão",
   "welcomeMissionTitle": "Um caminho. Fundamentos gratuitos.",
   "welcomeMissionBody1": "Mission Winning é primeiro um rastreador de treino gratuito - depois abasteça, mova, mentalize, monitore e aprenda em um só lugar.",
@@ -41,6 +41,7 @@
   "navBetaGuide": "Guia beta",
   "welcomeTitle": "Bem-vindo, membro da missão",
   "welcomeSubtitle": "Defina seu caminho e registre sua primeira sessão. Um passo de cada vez — Hoje sempre mostra a próxima ação.",
+  "welcomeSubtitleBrief": "A few questions, then log your first session. No account — sets are written to this device, and nothing is uploaded unless you sign in.",
   "welcomeBegin": "Começar",
   "welcomeAccept": "Eu aceito o caminho",
   "welcomeContinue": "Continuar",

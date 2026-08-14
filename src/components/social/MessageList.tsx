@@ -1,16 +1,12 @@
 'use client';
 
 import { useTranslation } from 'react-i18next';
+import { useLocaleFormat } from '@/hooks/useLocaleFormat';
 import type { GarageMessage } from '@/lib/social/types';
-
-function formatClock(iso: string): string {
-  const d = new Date(iso);
-  if (Number.isNaN(d.getTime())) return '';
-  return d.toLocaleTimeString(undefined, { hour: 'numeric', minute: '2-digit' });
-}
 
 export function MessageList({ messages }: { messages: readonly GarageMessage[] }) {
   const { t } = useTranslation();
+  const fmt = useLocaleFormat();
   if (messages.length === 0) {
     return (
       <p className="px-4 py-8 text-sm text-muted-foreground">
@@ -34,7 +30,7 @@ export function MessageList({ messages }: { messages: readonly GarageMessage[] }
                 ) : null}
               </span>
               <time className="text-xs tabular-nums text-muted-foreground" dateTime={m.createdAt}>
-                {formatClock(m.createdAt)}
+                {fmt.time(m.createdAt, { hour: 'numeric', minute: '2-digit' })}
               </time>
             </div>
             <p className="mt-1 whitespace-pre-wrap break-words text-sm">{body}</p>

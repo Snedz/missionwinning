@@ -1,6 +1,8 @@
 {
   "calcTitle": "Máy tính",
   "calcSubtitle": "Các công cụ 1RM, macro và tấm miễn phí. Super Bundle mở khóa định kỳ nâng cao và đồng bộ hóa ứng dụng khách.",
+  "calcSubtitleBrief": "1RM, macros, plates — free tools, no account required.",
+  "calcMorePremium": "Premium calculator depth",
   "calcTab1rm": "1RM",
   "calcTabMacros": "Macro",
   "calcTabPlates": "Tấm",
@@ -32,6 +34,7 @@
   "calcFat": "Mập",
   "calcCarbs": "Carb",
   "calcMacroFoot": "Hoạt động thô Mifflin-St Jeor +. Các chương trình cao cấp bổ sung thêm các điều chỉnh về pha và cơ thể.",
+  "calcMacroFootOpenBeta": "Rough Mifflin-St Jeor + activity. Starting estimates — refine with Fuel logs over time.",
   "calcApplyTargets": "Áp dụng mục tiêu cho nhiên liệu",
   "calcViewFuel": "Nhiên liệu mở",
   "calcToastApplied": "Mục tiêu được áp dụng",

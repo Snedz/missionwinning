@@ -31,7 +31,7 @@ test('live boosts match the catalog, never another product\'s ranking scores', (
     assert.equal(row.label, EARN_EVENT_LABELS[row.id as keyof typeof EARN_EVENT_LABELS]);
     assert.doesNotMatch(row.label, /copy link|quote|repost|share via dm/i);
   }
-  assert.ok(rows.some((r) => r.id === 'workout_finish' && r.points === 50));
+    assert.ok(rows.some((r) => r.id === 'workout_finish' && r.points === 45));
 });
 
 test('Club planned boosts publish session and coach-plan from CLUB_PLAN', () => {

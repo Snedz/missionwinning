@@ -1,6 +1,8 @@
 {
   "calcTitle": "Calculadoras",
   "calcSubtitle": "Herramientas gratuitas de 1RM, macro y placa. Super Bundle desbloquea la periodización avanzada y la sincronización del cliente.",
+  "calcSubtitleBrief": "1RM, macros, plates — free tools, no account required.",
+  "calcMorePremium": "Premium calculator depth",
   "calcTab1rm": "1RM",
   "calcTabMacros": "macros",
   "calcTabPlates": "Platos",
@@ -32,6 +34,7 @@
   "calcFat": "Gorda",
   "calcCarbs": "carbohidratos",
   "calcMacroFoot": "Actividad Rough Mifflin-St Jeor +. Los programas premium añaden ajustes de fase y composición corporal.",
+  "calcMacroFootOpenBeta": "Rough Mifflin-St Jeor + activity. Starting estimates — refine with Fuel logs over time.",
   "calcApplyTargets": "Aplicar objetivos en Fuel",
   "calcViewFuel": "Abrir Fuel",
   "calcToastApplied": "Objetivos aplicados",

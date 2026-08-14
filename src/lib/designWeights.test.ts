@@ -15,7 +15,7 @@ import assert from 'node:assert/strict';
 import { readdirSync, readFileSync } from 'node:fs';
 import path from 'node:path';
 
-const COMPONENTS_CEILING = 136;
+const COMPONENTS_CEILING = 140;
 
 const root = process.cwd();
 

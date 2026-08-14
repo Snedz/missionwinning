@@ -80,6 +80,7 @@
    16. **`20260731_llm_usage.sql`** — the `llm_usage` ledger; **per-user LLM spend metering (`.188`) records nothing without it**, so the quota gates cannot bind and the cost ceiling is unenforced.
    17. **`20260801_day_review_push.sql`** — `day_review_hour` + `last_day_review_at` on `push_subscriptions`; **the evening day-review push (`.194`/`.196`) is inert without it.** Apply after #13, and after #15 for ordering clarity — all three extend the same table.  
    18. **`20260813_week_logged.sql`** — signed-in `week_logged` ISO-week rollup; **without it the optional account sink for week-4 working-set events 500s** (guests stay local-only; PostHog still fires). CoS applies via MCP — agents do not apply.  
+   19. **`20260813_mission_ids.sql`** — monotonic `mission_ids` per signed-in account (id 1 reserved). **Without it `/api/mission-id` 500s** after sign-in; guests are unaffected. CoS applies via MCP — agents do not apply.  
 4. Redeploy, then verify on the Profile page in-app: build label matches the latest commit (`src/lib/buildInfo.ts`).
 5. **Smoke after env** (from a machine with secrets):
    ```bash

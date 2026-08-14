@@ -19,11 +19,11 @@
 import { LOCAL_FIRST_COPY } from '@/lib/localFirstCopy';
 
 export const GATE_EN: Record<string, string> = {
-  gateEyebrow: 'Invite-only open beta',
+  gateEyebrow: 'Free beta',
   gateTitle1: 'Train anywhere.',
   gateTitle2: 'Win daily.',
   gateSubtitle:
-    'Free offline workout logging plus Mission Coach — weekly plans from your logs alone, no wearable. Full tools free for invited testers; the logger stays free forever.',
+    'Free offline workout logging plus Mission Coach — weekly plans from your logs alone, no wearable. The logger stays free forever.',
   /**
    * `.766` — the mechanism, not the adjective. CN/HK respondents believed the
    * offline claim (3.97) and not the implementation; "offline" is the word an app
@@ -32,26 +32,41 @@ export const GATE_EN: Record<string, string> = {
    */
   gateLocalFirst: LOCAL_FIRST_COPY.gateLocalFirst,
   gateFooterTagline: 'free core forever',
-  gateWaitlistTitle: 'Get an invite',
+  gateWaitlistTitle: 'Get notified',
   gateWaitlistPlaceholder: 'you@example.com',
-  gateWaitlistSubmit: 'Notify me',
+  gateWaitlistEmailLabel: 'Email',
+  gateWaitlistSubmit: 'Get notified',
   gateWaitlistSubmitting: 'Joining…',
   gateWaitlistDone: "You're on the list.",
-  gateWaitlistDoneFoot: "We'll email you when a seat opens.",
-  gateWaitlistFoot: 'No spam — one email when your invite is ready, one if the waitlist moves.',
+  gateWaitlistDoneFoot: "We'll email you when the beta opens.",
+  gateWaitlistFoot: 'No spam — one email when the beta opens.',
   gateWaitlistFailed: 'That did not save. Check your connection and try again.',
-  gateAccessSummary: 'Have a beta access code?',
+  gateAccessSummary: 'Enter with code',
   gateAccessLabel: 'Access code',
-  gateAccessPlaceholder: 'Enter code from your invite',
-  gateAccessSubmit: 'Enter the beta',
+  gateAccessPlaceholder: 'Enter your access code',
+  gateAccessSubmit: 'Enter with code',
   gateAccessChecking: 'Checking…',
-  gateCheckingSession: 'Checking sign-in…',
-  gateInviteEyebrow: 'Beta invite',
-  gateInviteHeadline: "You're invited — enter your access code to join the beta.",
+  gateCheckingSession: 'Confirming access…',
+  gateInviteEyebrow: 'Access code',
+  gateInviteHeadline: 'Enter your access code to join the beta.',
   gateInviteSubtitle:
-    "You're invited — enter the access code from your invite email, then complete I-Day and log your first workout.",
+    'Enter the access code from your email, then complete I-Day and log your first workout.',
   gateBetaGuide: 'beta start guide',
-  gateBetaGuideFoot: 'Invited testers: see the',
+  gateBetaGuideFoot: 'Have a code? See the',
+  cinePublicLine: 'Train Anywhere. Win Daily.',
+  cineHeroHeadline: 'Log a set. Offline.',
+  cineHeroLead: 'Mission Coach plans the week from the log. No wearable.',
+  cineWeekKicker: 'Mission Coach',
+  cineWeekTitle: 'A logged set is a new plan.',
+  cineWeekLead:
+    'Miss a day, travel, only a band — the week reshapes from the log. Not from a wearable, not from a schedule you already broke.',
+  cineWeekWhy:
+    'Wednesday was a gym squat. You logged travel. The session became a hotel-room push-up. The week did not fail.',
+  cineAnywhereKicker: 'Anywhere',
+  cineAnywhereTitle: 'Garage. Hotel carpet. A park at dusk.',
+  cineAnywhereLead:
+    'Sets save on the device. Signal is optional. The plan comes from what you logged, so nothing needs charging for it to work.',
+  cineLater: 'Mission Winning Health. Later: an athlete page you author. Not a feed.',
   offlineEyebrow: 'No connection',
   offlineTitle: "You're offline. The log isn't.",
   offlineBody:

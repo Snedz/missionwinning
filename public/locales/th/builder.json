@@ -1,6 +1,7 @@
 {
   "builderTitle": "สร้างการฝึก",
   "builderSubtitle": "Use the Beginner, Advanced, or Pro tabs below, then click Load on a session. Premium unlocks bodybuilding, corrective & conditioning specialist programs.",
+  "builderSubtitleBrief": "Three steps: start, arrange, train.",
   "builderTemplatesTitle": "Program Templates",
   "builderTemplatesFoot": "Includes new free bodyweight + mobility circuits (vision core)",
   "builderProgramCount": "{{count}} programs",
@@ -79,6 +80,8 @@
   "builderSessionCount": "{{count}} sessions",
   "builderProOffline": "Offline — premium program list will load when you reconnect.",
   "builderProLoadFail": "Could not load premium programs. Try again.",
+  "builderProOfflineOpenBeta": "Offline — pro program list will load when you reconnect. Free templates still work.",
+  "builderProLoadFailOpenBeta": "Could not load pro programs. Try again — free templates still work.",
   "builderTemplateSearch": "Search programs or sessions…",
   "builderTemplateSearchCount": "{{count}} matching",
   "builderProFreeBeta": "Pro cycles are paused during open beta — free templates stay available.",

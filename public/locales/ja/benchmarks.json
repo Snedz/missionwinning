@@ -1,6 +1,8 @@
 {
   "benchmarksTitle": "ベンチマーク",
   "benchmarksSubtitle": "統計、繰り返しの最大値、推定値と実際の値、および時間の経過に伴う進行状況。",
+  "benchmarksSubtitleBrief": "Rep maxes from your logs. Other tests when you want them.",
+  "benchmarksMoreTests": "Military & youth tests",
   "benchmarksEmptyTitle": "ベンチマークデータはまだありません",
   "benchmarksEmptyDesc": "記録されたセットでワークアウトを完了して、推定 1RM を構築します。 比較のために実際の 1RM を記録するために、1 回のセットを記録します。",
   "benchmarksExercisesTracked": "追跡された演習",

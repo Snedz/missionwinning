@@ -1,5 +1,5 @@
 {
-  "navServer": "Messenger",
+  "navServer": "信使",
   "moreServerDesc": "Rooms on this device",
   "serverEyebrow": "Mission Server",
   "serverTitle": "Garage",
@@ -9,15 +9,15 @@
   "serverChannelOffTopic": "off-topic",
   "serverEmpty": "No messages yet. They stay on this device.",
   "serverComposerPlaceholder": "Message {{channel}}",
-  "serverSend": "Send",
+  "serverSend": "发送",
   "serverMemberSelf": "You",
   "serverRoomsLabel": "Rooms",
   "serverWindowLabel": "Chat",
   "serverLocalNote": "Saved on this device. Cloud fan-out only if Realtime is on and you are signed in.",
   "serverPresenceLabel": "Presence",
-  "serverPresenceAvailable": "Available",
-  "serverPresenceAway": "Away",
-  "serverPresenceOffline": "Offline",
+  "serverPresenceAvailable": "在线",
+  "serverPresenceAway": "离开",
+  "serverPresenceOffline": "离线",
   "serverNudge": "Nudge",
   "serverNudgeLine": "Nudge"
 }

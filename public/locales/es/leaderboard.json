@@ -4,6 +4,7 @@
   "leaderboardRankings": "Clasificaciones",
   "leaderboardTitle": "Clasificación",
   "leaderboardSubtitle": "Compara operadores globalmente, por región, país, idioma o escuadra.",
+  "leaderboardSubtitleBrief": "Optional ranks. Training first — never required.",
   "leaderboardSync": "Sincronizar",
   "leaderboardOperators": "operadores",
   "leaderboardYourRank": "Tu puesto",

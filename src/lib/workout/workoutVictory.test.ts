@@ -322,4 +322,32 @@ describe('summarizeWorkoutVictory', () => {
     });
     assert.equal(second.nextAction?.href, '/coach');
   });
+
+  it('attaches a vs-last receipt when one is passed', () => {
+    const log: CompletedWorkoutLog = {
+      id: '1',
+      workoutName: 'Push',
+      startedAt: '2026-07-01T10:00:00Z',
+      completedAt: '2026-07-01T10:30:00Z',
+      durationSeconds: 1800,
+      totalVolume: 5000,
+      exercises: [{ exerciseId: 'bench', sets: [{ reps: 5, weight: 100 }] }],
+    };
+    const receipt = {
+      vsLast: { volumeDelta: 200, setCountDelta: 0, durationDelta: 60 },
+      exercises: [],
+      prCount: 0,
+    };
+    const s = summarizeWorkoutVictory(
+      log,
+      1,
+      undefined,
+      undefined,
+      undefined,
+      undefined,
+      undefined,
+      receipt
+    );
+    assert.equal(s.receipt?.vsLast?.volumeDelta, 200);
+  });
 });

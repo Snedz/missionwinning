@@ -1,6 +1,8 @@
 {
   "benchmarksTitle": "Referencias",
   "benchmarksSubtitle": "Estadísticas, rep max, estimado vs real y progreso.",
+  "benchmarksSubtitleBrief": "Rep maxes from your logs. Other tests when you want them.",
+  "benchmarksMoreTests": "Military & youth tests",
   "benchmarksEmptyTitle": "Sin datos de benchmarks",
   "benchmarksEmptyDesc": "Complete los entrenamientos con series registradas para desarrollar 1RM estimados. Registre una serie de 1 repetición para registrar un 1RM real para comparar.",
   "benchmarksExercisesTracked": "Ejercicios registrados",

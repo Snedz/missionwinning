@@ -1,5 +1,6 @@
 {
   "navOpenBeta": "Beta aperta",
+  "navInviteOnlyBeta": "Beta su invito",
   "navAssess": "Valuta",
   "navMore": "Altro",
   "navCoachTab": "Coach",
@@ -19,6 +20,7 @@
   "navLibrary": "Biblioteca",
   "navHistory": "Cronologia",
   "navLeaderboard": "Classifica",
+  "navServer": "Messenger",
   "navReadiness": "Test di prontezza",
   "navHealth": "Screening salute",
   "navCalculators": "Calcolatori",
@@ -33,6 +35,5 @@
   "feedback": "Feedback",
   "resumeWorkout": "Resume workout",
   "offlineBannerShort": "Offline — logging still works",
-  "offlineWaitingCount": "{{count}} waiting",
-  "navInviteOnlyBeta": "Beta su invito"
+  "offlineWaitingCount": "{{count}} waiting"
 }

@@ -4,6 +4,7 @@
   "leaderboardRankings": "Rangliste",
   "leaderboardTitle": "Leaderboard",
   "leaderboardSubtitle": "Compare Mission Operators globally, by region, country, locale, or squad.",
+  "leaderboardSubtitleBrief": "Optional ranks. Training first — never required.",
   "leaderboardSync": "Sync",
   "leaderboardOperators": "operators",
   "leaderboardYourRank": "Your rank",

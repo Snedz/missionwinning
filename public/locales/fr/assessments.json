@@ -1,6 +1,8 @@
 {
   "assessTitle": "Évaluation de l'état de préparation",
   "assessSubtitle": "Outil de base gratuit. Basé sur les antécédents médicaux standard et des questions de style ParQ. Répondez honnêtement pour obtenir des conseils personnalisés.",
+  "assessSubtitleBrief": "Answer the screen. Stage prompts when you want them.",
+  "assessMoreStage": "Stage of change & prompts",
   "assessFormTitle": "Écran rapide sur la santé et le mode de vie",
   "assessStageTitle": "Étape du changement + invites de coaching",
   "assessDisclaimer": "Il s’agit uniquement d’un dépistage éducatif et non d’un avis médical. Consultez toujours un médecin.",

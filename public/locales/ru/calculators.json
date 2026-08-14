@@ -1,6 +1,8 @@
 {
   "calcTitle": "Calculators",
   "calcSubtitle": "Free 1RM, macro, and plate tools. Super Bundle unlocks advanced periodization and client sync.",
+  "calcSubtitleBrief": "1RM, macros, plates — free tools, no account required.",
+  "calcMorePremium": "Premium calculator depth",
   "calcTab1rm": "1RM",
   "calcTabMacros": "Macros",
   "calcTabPlates": "Plates",
@@ -32,6 +34,7 @@
   "calcFat": "Fat",
   "calcCarbs": "Carbs",
   "calcMacroFoot": "Rough Mifflin-St Jeor + activity. Premium programs add phase and body-comp adjustments.",
+  "calcMacroFootOpenBeta": "Rough Mifflin-St Jeor + activity. Starting estimates — refine with Fuel logs over time.",
   "calcApplyTargets": "Apply targets to Fuel",
   "calcViewFuel": "Open Fuel",
   "calcToastApplied": "Targets applied",

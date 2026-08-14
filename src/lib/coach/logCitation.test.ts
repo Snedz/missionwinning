@@ -244,6 +244,12 @@ function coachClaimKeys(src: string): string[] {
 const CLAIM_WITHOUT_CITE_EXEMPT: Record<string, string> = {
   'src/components/coach/CoachAdaptBanner.tsx':
     '`.693` — this component *is* the citation (input · rule · effect from weekRationale); a second one under it would repeat itself.',
+  'src/components/coach/PlanSessionCard.tsx':
+    '`.699` — session rationale *is* the citation (input · rule · effect from the log); a second one under it would repeat itself.',
+  'src/components/bundle/BundleShopStack.tsx':
+    'Shop merch names the Coach-from-logs mechanism; `/bundle` has no athlete log to quote.',
+  'src/components/nutrition/FuelMealPlanCard.tsx':
+    'Fuel Coach generate copy names the mechanism before a plan exists; there is no set to quote until meals are logged.',
 };
 
 test('a Coach provenance claim never ships without a citation beside it', () => {

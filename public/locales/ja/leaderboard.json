@@ -4,6 +4,7 @@
   "leaderboardRankings": "ランキング",
   "leaderboardTitle": "リーダーボード",
   "leaderboardSubtitle": "世界・地域・国・ロケール・スクワッドで比較。",
+  "leaderboardSubtitleBrief": "Optional ranks. Training first — never required.",
   "leaderboardSync": "同期",
   "leaderboardOperators": "演算子",
   "leaderboardYourRank": "あなたの順位",

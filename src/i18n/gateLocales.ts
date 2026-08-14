@@ -4,7 +4,7 @@ import { GATE_EN } from '@/i18n/gateEn';
 
 const GATE_ES: Record<string, string> = {
   ...GATE_EN,
-  gateEyebrow: 'Beta abierta solo por invitación',
+  gateEyebrow: 'Beta gratis',
   gateTitle1: 'Entrena en cualquier lugar.',
   gateTitle2: 'Gana a diario.',
   gateSubtitle:
@@ -33,7 +33,7 @@ const GATE_ES: Record<string, string> = {
 
 const GATE_FR: Record<string, string> = {
   ...GATE_EN,
-  gateEyebrow: 'Bêta ouverte sur invitation',
+  gateEyebrow: 'Bêta gratuite',
   gateTitle1: 'Entraînez-vous partout.',
   gateTitle2: 'Gagnez chaque jour.',
   gateSubtitle:
@@ -55,7 +55,7 @@ const GATE_FR: Record<string, string> = {
 
 const GATE_PT: Record<string, string> = {
   ...GATE_EN,
-  gateEyebrow: 'Beta aberta só por convite',
+  gateEyebrow: 'Beta grátis',
   gateTitle1: 'Treine em qualquer lugar.',
   gateTitle2: 'Vença todo dia.',
   gateSubtitle:
@@ -77,7 +77,7 @@ const GATE_PT: Record<string, string> = {
 
 const GATE_DE: Record<string, string> = {
   ...GATE_EN,
-  gateEyebrow: 'Offene Beta nur auf Einladung',
+  gateEyebrow: 'Kostenlose Beta',
   gateTitle1: 'Überall trainieren.',
   gateTitle2: 'Täglich gewinnen.',
   gateSubtitle:

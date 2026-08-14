@@ -1,6 +1,9 @@
 {
   "trackTitle": "Suivre l'activité",
   "trackSubtitle": "Journal d'activité manuel gratuit : marche, course, vélo, randonnée. Premium ajoute le GPS et les statistiques avancées (style MapMy, Super Bundle).",
+  "trackSubtitleBrief": "Log a walk or run. GPS and extras when you want them.",
+  "trackMoreGpsImport": "GPS, insights & import",
+  "trackMoreBodyWearables": "Body, wearables & trends",
   "trackWeekSessions": "Cette semaine",
   "trackTotalTime": "Durée totale",
   "trackDistance": "Distance",
