@@ -2,7 +2,7 @@
 
 **Audience:** Founder + the next Hermes / Grok Build / graph agent  
 **Lane:** Engineering-Web (unless a loop says Android)  
-**Status:** ACTIVE 2026-08-14 · web `2026.07-unified.798` · Alpha 0.1.0 · **C2 open**  
+**Status:** ACTIVE 2026-08-14 · web `2026.07-unified.799` · Alpha 0.1.0 · **C3 open**  
 **Does not replace:** [ORCHESTRATION.md](../ORCHESTRATION.md) (what may be built) · [CONTEXT.md](../CONTEXT.md) `## Now` (where we are) · [vision.md](../vision.md) (constitution) · [docs/THESIS.md](THESIS.md) (wedge) · [docs/PLAN.md](PLAN.md) (phases A–I)
 
 This file is the **execution queue** for the agent graph: one concern per loop, spawn, ship, mark done, spawn the next. It is not a second status block and not a license to skip standing hard bans.
@@ -132,8 +132,8 @@ G is empty. Horizon W pass is founder-later. These rows are agent-allowed honest
 | # | Loop | Moves | Status |
 |---|------|-------|--------|
 | **C1** | `sites/www` **vision** page only | Additive Astro. Do **not** steal host or Next `/vision` | `done` — `.798` this PR |
-| **C2** | `sites/www` **compare** index only | Links Next `/guide/mission-winning-vs-*`. Do not move SEO URLs | `open` |
-| **C3** | Track strap honesty | Wearable card must not imply a live sync | queued |
+| **C2** | `sites/www` **compare** index only | Links Next `/guide/mission-winning-vs-*`. Do not move SEO URLs | `done` — `.799` this PR |
+| **C3** | Track strap honesty | Wearable card must not imply a live sync | `open` |
 | **C4** | In-app Help / FAQ | `docs/help` into the app. Not a Today tab | queued |
 | **C5** | Programs merch honesty | No second-store / coming-soon paid coach | queued |
 | **C6** | Rewards planned rest | R4b. Weekly goal stays boss | queued |

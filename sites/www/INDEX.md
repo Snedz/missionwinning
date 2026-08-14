@@ -9,7 +9,7 @@ Astro 7 + Tailwind 4, **static output**, deployed to Cloudflare Pages. No adapte
 
 | Path | Role |
 |------|------|
-| `src/pages/` | Routes. One `.astro` file per URL — `index.astro` (homepage), `start.astro` (conversion), `week.astro` (dedicated landing), `about.astro` (commissioned about; Next keeps the host and Next `/about`), `vision.astro` (commissioned vision; Next keeps Next `/vision`) |
+| `src/pages/` | Routes. One `.astro` file per URL — `index.astro` (homepage), `start.astro` (conversion), `week.astro` (dedicated landing), `about.astro` (commissioned about; Next keeps the host and Next `/about`), `vision.astro` (commissioned vision; Next keeps Next `/vision`), `compare.astro` (index only; Next keeps `/guide/mission-winning-vs-*`) |
 | `src/layouts/Base.astro` | `<head>`, font preload, canonical, OG |
 | `src/components/` | Page pieces. `CtaSlot.astro` is the one action; `StagePhoto.astro` makes a photograph a ground; `LogToPlanDemo` and `CoachAdaptDemo` are the two live islands |
 | `src/lib/appLinks.ts` | Every link that leaves this build (`INVITE_URL`, `HOME_URL`, `START_URL`). One home, because the host split is undecided |
