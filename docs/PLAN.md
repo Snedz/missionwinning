@@ -124,6 +124,21 @@ Frozen scope, seven items, no route or IA changes:
 Out of scope, deliberately: no `PRIVATE_MODE` flip, no locale added or removed
 (a language is not a territory), no landing redesign, no traction claims.
 
+### East Asia shard P0s (frozen scope, `.746`)
+
+Second frozen scope, from the East Asia survey shard (mission-ops #13). Taken
+without waiting for the other shards, as instructed.
+
+| # | Finding | Fix, and its floor |
+|---|---------|--------------------|
+| 1 | **Coach-from-logs clarity 2.56/5 — the lowest item**, from an AI-skeptical / Alpha-curious cohort: *"coach output has no log-derived labels"*. Every Coach surface made a *provenance claim* ("built from your logs", "AI weekly plan") and none showed evidence | [logCitation.ts](../src/lib/coach/logCitation.ts) quotes the device's own last loaded set, or says `no-logs`. Any `t('coach…')` claim matching *from your logs* must sit beside a rendered `<CoachLogCite />` |
+| 2 | **CN/HK believe the offline claim (3.97) and not the implementation** — "forced cloud sync / data opacity" | Both public entries name the mechanism from one source (`LOCAL_FIRST_COPY.gateLocalFirst` / `.welcomeLocalFirst`): no account, written to this device, nothing uploaded unless you sign in |
+| 3 | **Strong/Hevy migrants: logging speed *and* CSV data-in are separate P1s** | The importer existed and was unreachable. I-Day and the empty logger link `/account#import`; the fragment opens the `<details>` it targets. Speed is not touched here — `.694` owns it |
+
+Out of scope for this shard: `navCoach` stays "AI weekly plan" — `primaryNav.ts`
+records that screen name as a kept decision, and overturning it on one shard is
+a founder call. It is the last generic-AI string on first paint.
+
 ### Hero flow QA (mobile)
 
 1. `/welcome` I-Day (≤3 min)

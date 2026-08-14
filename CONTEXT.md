@@ -16,7 +16,7 @@ One screen of truth for any AI tool or human joining cold. Read this, then [AGEN
 
 ---
 
-## Now (2026-08-13 · web `2026.07-unified.745` · Android `1.24.1`)
+## Now (2026-08-13 · web `2026.07-unified.746` · Android `1.24.1`)
 
 > The ONLY "where we are" block in the repo — [ORCHESTRATION.md](ORCHESTRATION.md) points here.
 >
@@ -309,7 +309,7 @@ One screen of truth for any AI tool or human joining cold. Read this, then [AGEN
 > | gitleaks | **green — and scanning for the first time.** It had never scanned anything: on a `pull_request` event the action lists the PR's commits, the job declared no `permissions:` block, and it 403'd (`pull_requests=read`) before opening a file. Fixed by a `permissions:` block (`.224` carrying `.255`). It scans **only the PR's own commits**, so commit `8ea3527a`'s real Solana treasury address — scrubbed from the working file, still in history — is out of its scope. That finding stands, deliberately not allowlisted; it was never what made this check red. |
 
 - **Excellence:** unscored · — · [docs/EXCELLENCE_RESULT.md](docs/EXCELLENCE_RESULT.md) — Horizon W phone sign-off home; surface PRs need `status: pass` or `Excellence-Override` (`.669`).
-- **`.745`:** (`2026.07-unified.745`) **www first paint + gated honesty** — gate/`/welcome` resolve their query server-side (poster and I-Day step one are in the first byte, not `Checking sign-in…` and a skeleton); gate copy floors from `gateEn.ts`; chrome says **Invite-only beta** while gated; gate waitlist refuses hard-blocked territories via `/api/geo` (`supportedRegions.ts`); consent banner docks instead of covering **Start Workout**. `firstPaintFloor.test.ts` + `gate-smoke` byte checks; i18n parity/coverage green again.
+- **`.745`–`.746`:** (`2026.07-unified.746`) **www first paint + gated honesty + Coach citation.** `.745`: gate/`/welcome` resolve their query server-side (poster and I-Day step one are in the first byte, not `Checking sign-in…` and a skeleton); gate copy floors from `gateEn.ts`; chrome says **Invite-only beta** while gated; gate waitlist refuses hard-blocked territories via `/api/geo` (`supportedRegions.ts`); consent banner docks instead of covering **Start Workout**. `.746` (East Asia shard, clarity 2.56/5): every Coach claim now cites a stored set or says `no-logs` (`coach/logCitation.ts` + `CoachLogCite`) and "AI weekly plan" is gone from above the Coach invite; both public entries name the local-first **mechanism** (no account · this device · nothing uploaded unless you sign in); Strong/Hevy CSV import reachable from I-Day + empty logger via `/account#import`. Guards: `firstPaintFloor` (drift ratchet 209, bootstrap layered), `logCitation`, `importReach`, `gate-smoke` byte checks; lint + i18n parity/coverage green again (all three were red on master).
 - **`.697`:** (`2026.07-unified.697`) **Session-expired fail-open mid-set Log/rest** — SignInPrompt catch → signed-out; log/rest path never awaits auth/sync (Kaizen Strong / F-001).
 - **`.696`:** (`2026.07-unified.696`) **Local-first set-log + rest** — Today/Active empty + SignIn/status copy device-first; rest path ungated by sync (F-001).
 - **`.695`:** (`2026.07-unified.695`) **Demote six-pillar chrome until first workout** — First Steps workout-only + More/rail Pillars hidden pre-`basic.workout` / `workoutHistory.length`; I-Day → Today one Start (F-004 C5≤90s; no shell redesign).

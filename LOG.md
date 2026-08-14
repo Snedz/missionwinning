@@ -11,6 +11,91 @@ Archive: [2026-06 → 2026-07-20](docs/archive/log/LOG-2026-06_to_2026-07-20.md)
 
 --- · [`.492` for `.507`](docs/archive/log/LOG-rotate-507.md). · [`.493` for `.508`](docs/archive/log/LOG-rotate-508.md). · [`.494` for `.509`](docs/archive/log/LOG-rotate-509.md). · [`.495` for `.510`](docs/archive/log/LOG-rotate-510.md). · [`.496` for `.511`](docs/archive/log/LOG-rotate-511.md). · [`.497` for `.512`](docs/archive/log/LOG-rotate-512.md). · [`.498` for `.513`](docs/archive/log/LOG-rotate-513.md). · [`.499` for `.514`](docs/archive/log/LOG-rotate-514.md). · [`.500` for `.515`](docs/archive/log/LOG-rotate-515.md). · [`.501` for `.516`](docs/archive/log/LOG-rotate-516.md). · [`.502` for `.517`](docs/archive/log/LOG-rotate-517.md). · [`.503` for `.518`](docs/archive/log/LOG-rotate-518.md). · [`.504` for `.519`](docs/archive/log/LOG-rotate-519.md). · [`.505` for `.520`](docs/archive/log/LOG-rotate-520.md). · [`.506` for `.521`](docs/archive/log/LOG-rotate-521.md). · [`.507` for `.522`](docs/archive/log/LOG-rotate-522.md). · [`.508` for `.523`](docs/archive/log/LOG-rotate-523.md). · [`.509` for `.524`](docs/archive/log/LOG-rotate-524.md). · [`.510` for `.525`](docs/archive/log/LOG-rotate-525.md). · [`.511` for `.526`](docs/archive/log/LOG-rotate-526.md). · [`.512` for `.527`](docs/archive/log/LOG-rotate-527.md). · [`.513` for `.528`](docs/archive/log/LOG-rotate-528.md). · [`.514` for `.529`](docs/archive/log/LOG-rotate-529.md). · [`.515` for `.530`](docs/archive/log/LOG-rotate-530.md). · [`.516` for `.531`](docs/archive/log/LOG-rotate-531.md). · [`.517` for `.532`](docs/archive/log/LOG-rotate-532.md). · [`.518` for `.533`](docs/archive/log/LOG-rotate-533.md). · [`.519` for `.534`](docs/archive/log/LOG-rotate-534.md). · [`.520` for `.535`](docs/archive/log/LOG-rotate-535.md). · [`.521` for `.536`](docs/archive/log/LOG-rotate-536.md). · [`.522` for `.537`](docs/archive/log/LOG-rotate-537.md). · [`.523` for `.538`](docs/archive/log/LOG-rotate-538.md). · [`.524` for `.539`](docs/archive/log/LOG-rotate-539.md). · [`.525` for `.540`](docs/archive/log/LOG-rotate-540.md). · [`.526` for `.541`](docs/archive/log/LOG-rotate-541.md). · [`.527` for `.542`](docs/archive/log/LOG-rotate-542.md). · [`.528` for `.543`](docs/archive/log/LOG-rotate-543.md). · [`.529` for `.544`](docs/archive/log/LOG-rotate-544.md). · [`.530` for `.545`](docs/archive/log/LOG-rotate-545.md). · [`.531` for `.546`](docs/archive/log/LOG-rotate-546.md). · [`.532` for `.547`](docs/archive/log/LOG-rotate-547.md). · [`.533` for `.548`](docs/archive/log/LOG-rotate-548.md). · [`.534` for `.549`](docs/archive/log/LOG-rotate-549.md). · [`.535` for `.550`](docs/archive/log/LOG-rotate-550.md). · [`.536` for `.551`](docs/archive/log/LOG-rotate-551.md). · [`.537` for `.552`](docs/archive/log/LOG-rotate-552.md). · [`.538` for `.553`](docs/archive/log/LOG-rotate-553.md). · [`.539` for `.554`](docs/archive/log/LOG-rotate-554.md). · [`.540` for `.555`](docs/archive/log/LOG-rotate-555.md). · [`.541` for `.556`](docs/archive/log/LOG-rotate-556.md). · [`.542` for `.557`](docs/archive/log/LOG-rotate-557.md). · [`.543` for `.558`](docs/archive/log/LOG-rotate-558.md). · [`.544` for `.559`](docs/archive/log/LOG-rotate-559.md). · [`.545` for `.560`](docs/archive/log/LOG-rotate-560.md). · [`.546` for `.561`](docs/archive/log/LOG-rotate-561.md). · [`.547` for `.562`](docs/archive/log/LOG-rotate-562.md). · [`.548` for `.563`](docs/archive/log/LOG-rotate-563.md). · [`.549` for `.564`](docs/archive/log/LOG-rotate-564.md). · [`.550` for `.565`](docs/archive/log/LOG-rotate-565.md). · [`.551` for `.566`](docs/archive/log/LOG-rotate-566.md). · [`.552` for `.567`](docs/archive/log/LOG-rotate-567.md). · [`.553` for `.568`](docs/archive/log/LOG-rotate-568.md). · [`.554` for `.569`](docs/archive/log/LOG-rotate-569.md). · [`.555` for `.570`](docs/archive/log/LOG-rotate-570.md). · [`.556` for `.571`](docs/archive/log/LOG-rotate-571.md). · [`.557` for `.572`](docs/archive/log/LOG-rotate-572.md). · [`.558` for `.573`](docs/archive/log/LOG-rotate-573.md). · [`.559` for `.574`](docs/archive/log/LOG-rotate-574.md). · [`.560` for `.575`](docs/archive/log/LOG-rotate-575.md). · [`.561` for `.576`](docs/archive/log/LOG-rotate-576.md). · [`.562` for `.577`](docs/archive/log/LOG-rotate-577.md). · [`.563` for `.578`](docs/archive/log/LOG-rotate-578.md). · [`.564` for `.579`](docs/archive/log/LOG-rotate-579.md). · [`.565` for `.580`](docs/archive/log/LOG-rotate-580.md). · [`.566` for `.581`](docs/archive/log/LOG-rotate-581.md). · [`.567` for `.582`](docs/archive/log/LOG-rotate-582.md). · [`.568` for `.583`](docs/archive/log/LOG-rotate-583.md). · [`.569` for `.584`](docs/archive/log/LOG-rotate-584.md). · [`.570` for `.585`](docs/archive/log/LOG-rotate-585.md). · [`.571` for `.586`](docs/archive/log/LOG-rotate-586.md). · [`.572` for `.587`](docs/archive/log/LOG-rotate-587.md). · [`.573` for `.588`](docs/archive/log/LOG-rotate-588.md). · [`.574` for `.589`](docs/archive/log/LOG-rotate-589.md). · [`.575` for `.590`](docs/archive/log/LOG-rotate-590.md). · [`.576` for `.591`](docs/archive/log/LOG-rotate-591.md). · [`.577` for `.592`](docs/archive/log/LOG-rotate-592.md). · [`.578` for `.593`](docs/archive/log/LOG-rotate-593.md). · [`.581` for `.596`](docs/archive/log/LOG-rotate-596.md). · [`.582` for `.597`](docs/archive/log/LOG-rotate-597.md). · [`.583` for `.598`](docs/archive/log/LOG-rotate-598.md). · [`.584` for `.599`](docs/archive/log/LOG-rotate-599.md). · [`.585` for `.600`](docs/archive/log/LOG-rotate-600.md). · [`.586` for `.601`](docs/archive/log/LOG-rotate-601.md). · [`.587` for `.602`](docs/archive/log/LOG-rotate-602.md). · [`.588` for `.603`](docs/archive/log/LOG-rotate-603.md). · [`.590` for `.606`](docs/archive/log/LOG-rotate-606.md). · [`.596` for `.612`](docs/archive/log/LOG-rotate-612.md). · [`.597` for `.613`](docs/archive/log/LOG-rotate-613.md). · [`.599` for `.614`](docs/archive/log/LOG-rotate-614.md). · [`.600` for `.615`](docs/archive/log/LOG-rotate-615.md). · [`.601` for `.616`](docs/archive/log/LOG-rotate-616.md). · [`.602` for `.617`](docs/archive/log/LOG-rotate-617.md). · [`.603` for `.618`](docs/archive/log/LOG-rotate-618.md). · [`.604` for `.619`](docs/archive/log/LOG-rotate-619.md). · [`.655` for `.670`](docs/archive/log/LOG-rotate-655-for-670.md). · [`.656` for `.679`](docs/archive/log/LOG-rotate-656-for-679.md). · [`.657` for `.680`](docs/archive/log/LOG-rotate-657-for-680.md). · [`.658` for `.684`](docs/archive/log/LOG-rotate-658-for-684.md). · [`.659` for `.685`](docs/archive/log/LOG-rotate-659-for-685.md). · [`.660` for `.689`](docs/archive/log/LOG-rotate-660-for-689.md). · [`.661` for `.690`](docs/archive/log/LOG-rotate-661-for-690.md). · [`.662` for `.691`](docs/archive/log/LOG-rotate-662-for-691.md). · [`.663` for `.692`](docs/archive/log/LOG-rotate-663-for-692.md). · [`.664` for `.693`](docs/archive/log/LOG-rotate-664-for-693.md). · [`.665` for `.694`](docs/archive/log/LOG-rotate-665-for-694.md). · [`.666` for `.695`](docs/archive/log/LOG-rotate-666-for-695.md). · [`.667` for `.696`](docs/archive/log/LOG-rotate-667-for-696.md). · [`.668` for `.697`](docs/archive/log/LOG-rotate-668-for-697.md).
 
+## 2026-08-13 — Coach cites the log; first paint names the mechanism (`.746`)
+
+East Asia survey shard (mission-ops #13), taken without waiting for the other
+shards. Three P0s, all of them about **being believed** rather than being right.
+
+**1. Coach-from-logs clarity 2.56/5 — the lowest item on the sheet**, from a
+cohort described as AI-skeptical and Alpha-curious, diagnosed as *"coach output
+has no log-derived labels"*. Read the surfaces and the diagnosis is exact:
+`/coach` says *"built from your logs"*, `CoachTodayCard` says *"Built from your
+logs — no wearable required"*, and Today's Coach invite eyebrow said **"AI weekly
+plan"**. Three claims about provenance, no evidence of it. To a reader who
+suspects a language model produced the number, a provenance claim is the weakest
+available move: it is exactly what a fabricated plan would also say. `.693`
+shipped the honest version for *adaptation* — `weekRationale`'s input · rule ·
+effect — but it only renders when there is an adaptation to explain, so the
+fresh-week and no-plan paths, which is the whole first run the survey measured,
+had nothing at all.
+
+New `src/lib/coach/logCitation.ts` **quotes** the device's own log: the last
+performed loaded set as exercise + load + reps + date, a bodyweight session by
+name, and `no-logs` as a first-class answer rather than a claim with nothing
+behind it. It quotes and never infers — no averages, no estimated 1RM — because
+a number the athlete cannot check against their own memory is the defect being
+reported, not the fix. Deleted (tombstoned) rows and 0-rep legacy rows are never
+quoted back. `CoachLogCite` renders it under every Coach claim (Today's invite
+in both shells, `CoachTodayCard`, `TodayCoachWeekStrip`) and emphasised at the
+top of `/coach`, where the citation *is* the argument. It reads the persist blob
+rather than the store, because two mount sites are on the deliberately store-free
+Today cold path — and never the plan, because quoting the output as its own
+evidence is the thing being complained about.
+
+**"AI weekly plan" was not a first-paint value that hydration corrected.** All
+three Coach-invite keys live **only** in `BOOTSTRAP_EN`, so the mount sites'
+own defaults — "Mission Coach", "Turn your logs into this week's plan" — had
+never rendered once, in any language. `.745`'s drift guard could not see it
+either: it compared defaults against the *packs*, and a bootstrap-only key is in
+no pack, so it was skipped as unknown. `firstPaintFloor` now layers
+`BOOTSTRAP_EN` over the packs, which is the resolution order i18next actually
+uses, and the drift cap rises **193 → 209**: the measurement got honest, the app
+did not get worse. 16 of those sites were invisible before; 14 are one footer
+shortening ("Terms" vs "Terms of Service") and are a separate sweep.
+
+**2. CN/HK believe the offline claim and not the implementation.** Offline scored
+3.97 while the free text said *"forced cloud sync / data opacity"*. `.696` fixed
+the framing inside the app, but the two screens a sceptic sees first — the gate
+poster and I-Day step one — still offered only the adjective, and *"offline"* is
+a word an app with forced sync would also print. `LOCAL_FIRST_COPY` gains the
+**mechanism** for both entries, from one source: no account, sets written to this
+device, nothing uploaded unless you sign in. A mechanism is checkable — turn off
+the radio and log a set — and an adjective is not. Both now carry it in
+server-rendered HTML.
+
+**3. Data-in is its own P1, and the instruction was not to fix only speed.**
+Strong/Hevy CSV import already existed, tested and free, and was unreachable in
+practice: `/account` → expand a collapsed "More settings" → scroll past six
+cards. A switcher arrives holding a CSV — the export is how you leave Hevy once
+it caps free history at three months — and nothing in the product mentioned it at
+that moment. I-Day's sign-in step and the empty logger now link
+`/account#import`; the fragment **opens the `<details>` it points into** and
+scrolls, because a link into a closed `<details>` lands nowhere. Both reuse the
+importer's own labels so the offer cannot drift from the feature. Logging speed
+is untouched — `.694` owns it, and conflating the two was the thing the shard
+explicitly warned against.
+
+**Guards: 20 mutants killed, two of them defects in my own guard.** Deleting
+`<CoachLogCite />` from `CoachTodayCard` and from `/coach` left the citation
+check **green**, because `/CoachLogCite/` is satisfied by the leftover `import`
+line — a guard a stale import can satisfy is checking spelling, not behaviour.
+It now requires the rendered element. The discovery rule also caught me twice
+while being written: it first flagged `TodayProgressSection`, whose *"from your
+logs"* line is about **rewards** and must stay away from the planner
+(`domainBoundary` C1–C3), so the rule became key-scoped; and its staleness
+assertion rejected a `CoachVoiceCard` exemption I had written from memory for a
+claim that file never makes.
+
+**Not done:** `navCoach` stays *"AI weekly plan"*. [`primaryNav.ts`](src/lib/primaryNav.ts)
+records that screen name as a decision kept on purpose, and overturning a
+documented product call on one survey shard is founder work, not an agent's — so
+it is named here instead: it is the last generic-AI string on first paint, and
+it is the label of the screen the 2.56/5 was measured about.
+
+Label `.746` (onto `.745`, same PR). Excellence-Override below.
+
+Excellence-Override: www kaizen first-paint (RESULT unscored)
+
 ## 2026-08-13 — www Kaizen: first paint, and only true claims (`.745`)
 
 Read the live site rather than the repo. `PRIVATE_MODE` is on, so `/` 307s to
