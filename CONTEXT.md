@@ -16,7 +16,7 @@ One screen of truth for any AI tool or human joining cold. Read this, then [AGEN
 
 ---
 
-## Now (2026-08-14 · web `2026.07-unified.766` · Android `1.24.1`)
+## Now (2026-08-14 · web `2026.07-unified.767` · Android `1.24.1`)
 
 > The ONLY "where we are" block in the repo — [ORCHESTRATION.md](ORCHESTRATION.md) points here.
 >
@@ -331,6 +331,7 @@ One screen of truth for any AI tool or human joining cold. Read this, then [AGEN
 > | gitleaks | **green — and scanning for the first time.** It had never scanned anything: on a `pull_request` event the action lists the PR's commits, the job declared no `permissions:` block, and it 403'd (`pull_requests=read`) before opening a file. Fixed by a `permissions:` block (`.224` carrying `.255`). It scans **only the PR's own commits**, so commit `8ea3527a`'s real Solana treasury address — scrubbed from the working file, still in history — is out of its scope. That finding stands, deliberately not allowlisted; it was never what made this check red. |
 
 - **Excellence:** unscored · — · [docs/EXCELLENCE_RESULT.md](docs/EXCELLENCE_RESULT.md) — Horizon W phone sign-off home; surface PRs need `status: pass` or `Excellence-Override` (`.669`).
+- **`.767`:** (`2026.07-unified.767`) **Dependabot security/quality batch** — one Cursor PR, not 46 bot PRs. `overrides` pin `axios@1.19.0` (8 high GHSAs gone) + `nanoid@3.3.18`. Ratchet 9 → 1 (`bigint-buffer` remains). No `PRIVATE_MODE` flip.
 - **`.766`:** (`2026.07-unified.766`) **Merge all open PRs on a Cursor landing branch** — 47 PR heads oldest-first; 0 Dependabot PRs (alerts ≠ PRs). Train logger restored from master; PR wiring composed onto it (Victory receipt, garage swap, hard-session, About/Account). No `PRIVATE_MODE` flip. No Vercel preview. Cursor-local merge bar ([docs/CI_LOCAL.md](docs/CI_LOCAL.md)).
 - **`.765`:** (`2026.07-unified.765`) **Preview walk P0s** — consent banner docks above the tab bar so Today Start stays tappable; landing Get-notified form (no Stripe). Brief reserved `.750`; first land was `.755` (occupied).
 - **`.764`:** (`2026.07-unified.764`) **Free plate math + warmup on the Train set row** — Live barbell plates-per-side + Add warmups 40/60/80. Free. Originally #503 / `.708`.
@@ -345,7 +346,6 @@ One screen of truth for any AI tool or human joining cold. Read this, then [AGEN
 - **`.755`:** (`2026.07-unified.755`) **Unilateral L/R on the set log** — Optional L/R/Alt on unilateral lifts; after L suggest R; bilateral strips stray side. Originally #516 / `.724`.
 - **`.754`:** (`2026.07-unified.754`) **Drop sets on the set log** — Footer Drop after a working set starts a −20% follow-up and skips rest. Originally #515 / `.723`.
 - **`.753`:** (`2026.07-unified.753`) **Habit week count + HABIT contract** — Today header always shows this week: N days logged (0 is fine). HABIT contract: daily Train is the loop. Originally #511 / `.722`.
-- **`.752`:** (`2026.07-unified.752`) **Garage swap on the exercise row** — Swap on the Train row / Coach line offers 1–2 garage stand-ins; equipment change clears last load; hide when already garage. Originally #514 / `.721`.
 - **`.669`:** (`2026.07-unified.669`) **Excellence RESULT + agent stop-rule** — `excellenceGate` path policy + `check-excellence-gate` on gate/PR CI; wedge still ships while unscored.
 - **Horizon W + full-launch override (2026-08-05).** Wedge excellence still required; agents may ship rewards + full surface honesty. Fuel estimate accuracy remains.
 - **Free-first beta (~4 weeks):** LLC + EIN pending — **no Bundle UI** + **full depth unlocked**; More/rail **Pillars demoted until first workout** (F-004 / `.695`) — still no Bundle ([docs/FREE_BETA.md](docs/FREE_BETA.md)).
