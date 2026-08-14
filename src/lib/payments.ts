@@ -50,7 +50,7 @@ export const BUNDLE_PILLARS = [
     id: 'train',
     name: 'Train',
     free: 'Full logger, builder, library, benchmarks',
-    premium: 'AI Coach depth, unlimited plans, hybrid programming',
+    premium: 'Log-cited why-this-week + adapt — not a chatbot',
     standalone: '$15/mo',
     route: '/log',
   },

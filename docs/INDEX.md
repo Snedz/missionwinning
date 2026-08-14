@@ -37,6 +37,7 @@
 | [contracts/INDEX.md](contracts/INDEX.md) | Identity · economy · module · AI interop contracts |
 | [SECRETS.md](SECRETS.md) | Secrets program · vaults · gitleaks · rotate-on-leak |
 | [FREE_BETA.md](FREE_BETA.md) | Free-first beta mute (LLC/EIN window) — hide all paid UI |
+| [SUPER_BUNDLE_CONTENT_PLAN.md](SUPER_BUNDLE_CONTENT_PLAN.md) | Frozen `.700` Super Bundle content depth (quality, honest counts) |
 | [ADAPTIVE_LAYOUT.md](ADAPTIVE_LAYOUT.md) | Window size classes · adaptive overlays (web + Android) |
 | [API.md](API.md) | HTTP API reference |
 | [AGENT_RECIPES.md](AGENT_RECIPES.md) | Agent task playbooks |
@@ -128,7 +129,9 @@ Root keeps only the spine (README · CONTEXT · AGENTS · INDEX · vision · ORC
 |------|---------|
 | [PRICING_REVIEW_2026-08.md](PRICING_REVIEW_2026-08.md) | Super Bundle pricing review — hold Option A (2026-08-05) |
 | [STRATEGY.md](STRATEGY.md) | Business plan · pricing · book plan |
-| [LEARN_SUPER_BUNDLE_PLAN.md](LEARN_SUPER_BUNDLE_PLAN.md) | Frozen overnight plan: original premium Learn sequence (Train→Coach→Fuel/Move/Mind) |
+| [PLAN.md](PLAN.md) | Build phases A–I |
+| [SUPER_BUNDLE_CONTENT_PLAN.md](SUPER_BUNDLE_CONTENT_PLAN.md) | Super Bundle catalog depth (parent, frozen `.700`) |
+| [SUPER_BUNDLE_SHOP_HONESTY_PLAN.md](SUPER_BUNDLE_SHOP_HONESTY_PLAN.md) | **Frozen** leftover: Move table 32/48 + Train why + vs-stack help (`.710`; `.707` is Mind #501) |
 | [REDTEAM.md](REDTEAM.md) | Assumptions audit |
 | [JOURNEY.md](JOURNEY.md) | Mission journey UX (I-Day → Commissioned) |
 | [CLUB_PLAN.md](CLUB_PLAN.md) | Club: points · tiers · collectibles · boards · arcade (phased plan, no code) |

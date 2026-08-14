@@ -690,6 +690,7 @@ const es: TodayStrings = {
   todayMissionScoreDesc: 'Los seis pilares contribuyen — Train, Fuel, Move, Mind, Track y Learn.',
   todayCoachInsightTitle: 'Consejo del coach',
   todayCoachInsightDesc: 'Según tu preparación, carga y recuperación',
+  todayCoachChipAction: 'Abrir',
   coachInsightHighRisk:
     'Tu evaluación indicó riesgo elevado. Prioriza recuperación, movilidad y movimiento ligero hoy.',
   coachInsightHighStrain:
