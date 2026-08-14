@@ -77,9 +77,6 @@ export function LaunchNotifyForm({ source, message, variant = 'landing' }: Props
 
     return (
       <form onSubmit={handleSubmit} data-mw-launch-notify="gate">
-        <p className="gate-kicker">
-          {t('gateWaitlistTitle', { defaultValue: 'Get notified at launch' })}
-        </p>
         <div className="gate-row">
           <input
             type="email"
@@ -100,7 +97,7 @@ export function LaunchNotifyForm({ source, message, variant = 'landing' }: Props
           >
             {busy
               ? t('gateWaitlistSubmitting', { defaultValue: 'Joining…' })
-              : t('gateWaitlistSubmit', { defaultValue: 'Notify me' })}
+              : t('gateWaitlistSubmit', { defaultValue: 'Get notified' })}
           </button>
         </div>
         {error && (
@@ -108,11 +105,6 @@ export function LaunchNotifyForm({ source, message, variant = 'landing' }: Props
             {error}
           </p>
         )}
-        <p className="gate-foot">
-          {t('gateWaitlistFoot', {
-            defaultValue: 'No spam — one email when the beta opens, one at launch.',
-          })}
-        </p>
       </form>
     );
   }
