@@ -1,0 +1,352 @@
+import { describe, it } from 'node:test';
+import assert from 'node:assert/strict';
+import type { CompletedWorkoutLog, SetKind } from '@/types';
+import { PR_EPSILON } from '@/lib/coach/progress';
+import {
+  buildVictoryReceipt,
+  formatReceiptDurationDelta,
+  formatReceiptNumber,
+  formatReceiptSetLoad,
+  formatReceiptSigned,
+  isPriorLog,
+  pickPriorExerciseLog,
+  pickPriorSameNamedSession,
+  receiptSetDeltas,
+} from './victoryReceipt.ts';
+
+const T0 = '2026-08-13T16:00:00.000Z';
+const T1 = '2026-08-13T18:00:00.000Z';
+const T2 = '2026-08-12T18:00:00.000Z';
+
+function log(partial: Partial<CompletedWorkoutLog> & Pick<CompletedWorkoutLog, 'id' | 'completedAt'>): CompletedWorkoutLog {
+  return {
+    workoutName: 'Push',
+    startedAt: partial.startedAt ?? partial.completedAt,
+    durationSeconds: 1800,
+    totalVolume: 1000,
+    exercises: [
+      {
+        exerciseId: 'bench-press',
+        sets: [{ reps: 5, weight: 100 }],
+      },
+    ],
+    ...partial,
+  };
+}
+
+describe('isPriorLog', () => {
+  it('uses completedAt timestamp, not UTC day — same-afternoon second session counts', () => {
+    const morning = log({ id: 'a', completedAt: T0 });
+    const evening = log({ id: 'b', completedAt: T1 });
+    assert.equal(isPriorLog(morning, evening), true);
+    assert.equal(isPriorLog(evening, morning), false);
+  });
+
+  it('skips self, tombstones, and unparseable dates', () => {
+    const current = log({ id: 'a', completedAt: T1 });
+    assert.equal(isPriorLog(current, current), false);
+    assert.equal(isPriorLog(log({ id: 'x', completedAt: T0, deletedAt: '2026-08-13T16:01:00.000Z' }), current), false);
+    assert.equal(isPriorLog(log({ id: 'y', completedAt: 'not-a-date' }), current), false);
+  });
+});
+
+describe('pickPriorSameNamedSession', () => {
+  it('picks the latest earlier same name, ignoring a newer id in the array', () => {
+    const current = log({ id: 'now', completedAt: T1, workoutName: 'Push' });
+    const older = log({ id: 'old', completedAt: T2, workoutName: 'Push', totalVolume: 800 });
+    const last = log({ id: 'last', completedAt: T0, workoutName: 'Push', totalVolume: 900 });
+    const pull = log({ id: 'pull', completedAt: T0, workoutName: 'Pull', totalVolume: 2000 });
+    const picked = pickPriorSameNamedSession(current, [pull, last, older, current]);
+    assert.equal(picked?.id, 'last');
+  });
+
+  it('matches workout name case-insensitively and skips empty names', () => {
+    const current = log({ id: 'now', completedAt: T1, workoutName: 'push' });
+    const prior = log({ id: 'p', completedAt: T0, workoutName: 'Push' });
+    assert.equal(pickPriorSameNamedSession(current, [prior])?.id, 'p');
+    assert.equal(
+      pickPriorSameNamedSession(log({ id: 'n', completedAt: T1, workoutName: '   ' }), [prior]),
+      null
+    );
+  });
+});
+
+describe('pickPriorExerciseLog', () => {
+  it('finds last time the lift appeared even when the session name differs', () => {
+    const current = log({
+      id: 'now',
+      completedAt: T1,
+      workoutName: 'Upper',
+      exercises: [{ exerciseId: 'bench-press', sets: [{ reps: 5, weight: 102.5 }] }],
+    });
+    const prior = log({
+      id: 'p',
+      completedAt: T0,
+      workoutName: 'Push',
+      exercises: [{ exerciseId: 'bench-press', sets: [{ reps: 5, weight: 100 }] }],
+    });
+    const other = log({
+      id: 'o',
+      completedAt: T0,
+      workoutName: 'Legs',
+      exercises: [{ exerciseId: 'squat', sets: [{ reps: 5, weight: 140 }] }],
+    });
+    assert.equal(pickPriorExerciseLog(current, [other, prior], 'bench-press')?.id, 'p');
+    assert.equal(
+      pickPriorExerciseLog(current, [other], 'bench-press'),
+      null,
+      'a legs-only prior is not last-time bench'
+    );
+  });
+});
+
+describe('buildVictoryReceipt', () => {
+  it('first session is a receipt without vs-last or PRs', () => {
+    const first = log({ id: '1', completedAt: T1, totalVolume: 1000 });
+    const r = buildVictoryReceipt(first, [], { resolveName: (id) => id });
+    assert.equal(r.vsLast, null);
+    assert.equal(r.prCount, 0);
+    assert.equal(r.exercises.length, 1);
+    assert.equal(r.exercises[0].sets[0].priorReps, null);
+    assert.equal(r.exercises[0].sets[0].isPr, false);
+    assert.deepEqual(r.exercises[0].prs, []);
+  });
+
+  it('same-day second session shows volume/sets/duration vs last + lift deltas', () => {
+    const first = log({
+      id: '1',
+      completedAt: T0,
+      durationSeconds: 1500,
+      totalVolume: 1000,
+      exercises: [
+        {
+          exerciseId: 'bench-press',
+          sets: [
+            { reps: 5, weight: 100 },
+            { reps: 5, weight: 100 },
+          ],
+        },
+      ],
+    });
+    const second = log({
+      id: '2',
+      completedAt: T1,
+      durationSeconds: 1800,
+      totalVolume: 1230,
+      exercises: [
+        {
+          exerciseId: 'bench-press',
+          sets: [
+            { reps: 5, weight: 102.5 },
+            { reps: 6, weight: 102.5 },
+            { reps: 5, weight: 102.5 },
+          ],
+        },
+      ],
+    });
+    const r = buildVictoryReceipt(second, [first], { resolveName: (id) => id });
+    assert.ok(r.vsLast);
+    assert.equal(r.vsLast!.volumeDelta, 230);
+    assert.equal(r.vsLast!.setCountDelta, 1);
+    assert.equal(r.vsLast!.durationDelta, 300);
+    assert.equal(r.exercises[0].sets[0].priorWeight, 100);
+    assert.equal(r.exercises[0].sets[0].priorReps, 5);
+    assert.equal(
+      r.exercises[0].sets[2].priorReps,
+      5,
+      'extra set reuses last-time last set (logger Prev fallback)'
+    );
+    assert.equal(r.exercises[0].sets[2].priorWeight, 100);
+    assert.ok(r.prCount > 0);
+    assert.equal(r.exercises[0].sets.some((s) => s.isPr), true);
+  });
+
+  it('does not treat the current log as last time when it is also in history', () => {
+    const first = log({ id: '1', completedAt: T0, totalVolume: 800 });
+    const second = log({ id: '2', completedAt: T1, totalVolume: 1100 });
+    const r = buildVictoryReceipt(second, [second, first], { resolveName: (id) => id });
+    assert.equal(r.vsLast?.volumeDelta, 300);
+  });
+
+  it('session vs-last stays quiet when the name differs; lift vs-last still fills', () => {
+    const push = log({
+      id: '1',
+      completedAt: T0,
+      workoutName: 'Push',
+      totalVolume: 800,
+      exercises: [{ exerciseId: 'bench-press', sets: [{ reps: 5, weight: 100 }] }],
+    });
+    const upper = log({
+      id: '2',
+      completedAt: T1,
+      workoutName: 'Upper',
+      totalVolume: 900,
+      exercises: [{ exerciseId: 'bench-press', sets: [{ reps: 5, weight: 100 }] }],
+    });
+    const r = buildVictoryReceipt(upper, [push], { resolveName: (id) => id });
+    assert.equal(r.vsLast, null);
+    assert.equal(r.exercises[0].sets[0].priorWeight, 100);
+  });
+
+  it('ignores tombstoned priors', () => {
+    const dead = log({
+      id: '1',
+      completedAt: T0,
+      totalVolume: 500,
+      deletedAt: T0,
+    });
+    const second = log({ id: '2', completedAt: T1, totalVolume: 900 });
+    const r = buildVictoryReceipt(second, [dead], { resolveName: (id) => id });
+    assert.equal(r.vsLast, null);
+    assert.equal(r.exercises[0].sets[0].priorReps, null);
+  });
+
+  it('extra set this time reuses last-time last set as Prev (logger fallback)', () => {
+    const first = log({
+      id: '1',
+      completedAt: T0,
+      exercises: [
+        {
+          exerciseId: 'bench-press',
+          sets: [
+            { reps: 5, weight: 100 },
+            { reps: 5, weight: 100 },
+          ],
+        },
+      ],
+    });
+    const second = log({
+      id: '2',
+      completedAt: T1,
+      exercises: [
+        {
+          exerciseId: 'bench-press',
+          sets: [
+            { reps: 5, weight: 100 },
+            { reps: 5, weight: 100 },
+            { reps: 5, weight: 100 },
+          ],
+        },
+      ],
+    });
+    const r = buildVictoryReceipt(second, [first], { resolveName: (id) => id });
+    assert.equal(r.exercises[0].sets[2].priorWeight, 100);
+    assert.equal(r.exercises[0].sets[2].priorReps, 5);
+  });
+
+  it('does not mark a first-ever lift as a PR', () => {
+    const first = log({
+      id: '1',
+      completedAt: T1,
+      exercises: [{ exerciseId: 'ohp', sets: [{ reps: 5, weight: 60 }] }],
+    });
+    const r = buildVictoryReceipt(first, [], { resolveName: (id) => id });
+    assert.equal(r.prCount, 0);
+    assert.equal(r.exercises[0].sets[0].isPr, false);
+  });
+
+  it('refuses a warmup as a PR even when the numbers are new', () => {
+    const prior = log({
+      id: '1',
+      completedAt: T0,
+      exercises: [{ exerciseId: 'bench-press', sets: [{ reps: 5, weight: 100, kind: 'normal' }] }],
+    });
+    const current = log({
+      id: '2',
+      completedAt: T1,
+      exercises: [
+        {
+          exerciseId: 'bench-press',
+          sets: [
+            { reps: 5, weight: 120, kind: 'warmup' as SetKind },
+            { reps: 5, weight: 100, kind: 'normal' },
+          ],
+        },
+      ],
+    });
+    const r = buildVictoryReceipt(current, [prior], { resolveName: (id) => id });
+    const warmup = r.exercises[0].sets[0];
+    assert.equal(warmup.kind, 'warmup');
+    assert.equal(warmup.isPr, false);
+  });
+
+  it(`needs more than PR_EPSILON (${PR_EPSILON}) to count a weight record`, () => {
+    const prior = log({
+      id: '1',
+      completedAt: T0,
+      exercises: [{ exerciseId: 'bench-press', sets: [{ reps: 5, weight: 100 }] }],
+    });
+    const noise = log({
+      id: '2',
+      completedAt: T1,
+      exercises: [{ exerciseId: 'bench-press', sets: [{ reps: 5, weight: 100.3 }] }],
+    });
+    const r = buildVictoryReceipt(noise, [prior], { resolveName: (id) => id });
+    assert.equal(
+      r.exercises[0].prs.some((p) => p.kind === 'weight'),
+      false
+    );
+  });
+
+  it('carries a trimmed exercise note onto the receipt', () => {
+    const first = log({
+      id: '1',
+      completedAt: T1,
+      exercises: [
+        {
+          exerciseId: 'bench-press',
+          note: '  seat 4  ',
+          sets: [{ reps: 5, weight: 100 }],
+        },
+      ],
+    });
+    const r = buildVictoryReceipt(first, [], { resolveName: (id) => id });
+    assert.equal(r.exercises[0].note, 'seat 4');
+  });
+
+  it('resolves catalog names when no override is passed', () => {
+    const first = log({ id: '1', completedAt: T1 });
+    const r = buildVictoryReceipt(first, []);
+    assert.equal(r.exercises[0].exerciseName, 'Bench Press');
+  });
+});
+
+describe('receipt display helpers', () => {
+  it('formats load, signed deltas, and duration without trailing .0', () => {
+    assert.equal(formatReceiptNumber(100), '100');
+    assert.equal(formatReceiptNumber(102.5), '102.5');
+    assert.equal(formatReceiptSetLoad(5, 100), '100 × 5');
+    assert.equal(formatReceiptSetLoad(8, 0), '8 reps');
+    assert.equal(formatReceiptSigned(2.5), '+2.5');
+    assert.equal(formatReceiptSigned(-2), '-2');
+    assert.equal(formatReceiptSigned(0), '0');
+    assert.equal(formatReceiptDurationDelta(300), '+5:00');
+    assert.equal(formatReceiptDurationDelta(-90), '-1:30');
+    assert.equal(formatReceiptDurationDelta(0), '0:00');
+  });
+
+  it('omits zero deltas and stays quiet without a prior set', () => {
+    assert.deepEqual(
+      receiptSetDeltas({
+        setIndex: 0,
+        reps: 5,
+        weight: 102.5,
+        priorReps: 5,
+        priorWeight: 100,
+        isPr: false,
+      }),
+      { weight: 2.5, reps: null }
+    );
+    assert.deepEqual(
+      receiptSetDeltas({
+        setIndex: 0,
+        reps: 5,
+        weight: 100,
+        priorReps: null,
+        priorWeight: null,
+        isPr: false,
+      }),
+      { weight: null, reps: null }
+    );
+  });
+});

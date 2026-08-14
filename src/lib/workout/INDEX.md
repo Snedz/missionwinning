@@ -14,7 +14,8 @@ Root-level `@/lib/{name}` paths re-export from here for compatibility — prefer
 6. `workoutTemplate.ts` — template → logged sets  
 7. `workoutPr.ts` — personal record detection  
 8. `workoutMerge.ts` — local/cloud history fingerprint merge  
-9. `workoutVictory.ts` — post-workout summary; early/no-plan → Mission Coach; freestyle progression skipped when prescribed (`.410`); one-exit secondary Today helper (`.422`); working-set muscles for the Move seam (`.698`)  
+9. `workoutVictory.ts` — post-workout summary; early/no-plan → Mission Coach; freestyle progression skipped when prescribed (`.410`); one-exit secondary Today helper (`.422`)  
+9b. `victoryReceipt.ts` — vs-last session + per-lift Prev/deltas + beaten PRs from local logs (`.713`); prior is `completedAt` timestamp so two sessions the same day compare; extra sets reuse last-time last set as Prev  
 10. `activeWorkoutHelpers.ts` — next incomplete set, last session, set stats, `buildConsoleSet` / `planApplyTargets` / `resolveActiveSetDial` (`.297`/`.303`)  
 11. `activeWorkoutPulse.ts` — nav pulse flag without store  
 12. `workoutPersistLite.ts` — history/streak from localStorage (cold path)
@@ -39,7 +40,7 @@ Root-level `@/lib/{name}` paths re-export from here for compatibility — prefer
 | `workoutPr.test.ts` | PR detection |
 | `workoutMerge.test.ts` | Conflict / cap / fingerprint |
 | `workoutVictory.test.ts` | Victory next action |
-| `victorySecondaryLinks.test.ts` | One Victory seam line; Move skips fuel (`.698`) |
+| `victoryReceipt.test.ts` | Vs-last receipt, same-day prior, first-ever not a PR |
 | `activeWorkoutHelpers.test.ts` | Next set, last session stats |
 | `sessionCheckInOffer.test.ts` | First-mission never offers check-in (`.293`) |
 | `loggerSpeed.test.ts` | Use-next offer rules (`.288`) |

@@ -25,8 +25,8 @@ If you see a **password screen** (`/private`), your cohort uses a pre-launch gat
 
 1. Tap **Train** in the bottom nav (or start from Today).
 2. Pick a template from **Builder** or start a blank workout.
-3. Log sets (reps, weight, RPE). After you log a set, the next one starts with the same load and reps — tap **Log set** once to confirm. Rest timer runs automatically.
-4. Finish — your session saves to **History**.
+3. Log sets (reps, weight, RPE). Rest timer runs automatically.
+4. Finish — **Victory** shows a receipt of the session (volume, sets, duration, each lift) and, from the second time on, **Prev** (last-time load), **vs last** deltas, and PRs from logs on this device. No account needed. Your session also saves to **History**.
 
 ## Sign in (optional but recommended)
 

@@ -1,4 +1,5 @@
 {
+  "ignoreCommand": "echo \"$VERCEL_GIT_COMMIT_MESSAGE\" | grep -Fq '[skip vercel]'",
   "headers": [
     {
       "source": "/(.*)",

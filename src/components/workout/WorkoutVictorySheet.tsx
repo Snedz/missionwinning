@@ -28,6 +28,7 @@ import { SessionDebriefCard } from '@/components/workout/SessionDebriefCard';
 import { VictoryFeelStrip } from '@/components/workout/VictoryFeelStrip';
 import { VictoryBodyDeltaStrip } from '@/components/workout/VictoryBodyDeltaStrip';
 import { VictoryStatsStrip } from '@/components/workout/VictoryStatsStrip';
+import { VictoryReceiptStrip } from '@/components/workout/VictoryReceiptStrip';
 import { VictoryNextActionStrip } from '@/components/workout/VictoryNextActionStrip';
 import { VictorySecondaryLinks } from '@/components/workout/VictorySecondaryLinks';
 import { VictoryRewardsLine } from '@/components/rewards/VictoryRewardsLine';
@@ -267,7 +268,12 @@ export function WorkoutVictorySheet({
           durationSeconds={summary.durationSeconds}
           unitLabel={unitLabel}
           formatVolume={(n) => fmt.num(n)}
+          vsLast={summary.receipt?.vsLast ?? null}
         />
+
+        {summary.receipt ? (
+          <VictoryReceiptStrip receipt={summary.receipt} unitLabel={unitLabel} />
+        ) : null}
 
         <VictoryRewardsLine active={open} />
 

@@ -4,14 +4,13 @@ import { weightStep, weightUnitLabel } from '@/lib/units';
 import { suggestNextSetTarget } from '@/lib/workout/nextSetTargets';
 import { sessionIsCoachPrescribed } from '@/lib/workout/activeWorkoutHelpers';
 import { getExerciseById } from '@/data/exercises';
-import { workingMuscleGroupsFromLog } from '@/lib/move/postSessionFlow';
+import type { VictoryReceipt } from '@/lib/workout/victoryReceipt';
 import {
   pickVictoryNextAction as pickVictoryNextActionCore,
   COACH_VICTORY_EARLY_WORKOUTS as COACH_VICTORY_EARLY_WORKOUTS_CORE,
   type VictoryNextAction as VictoryNextActionCore,
   type PickVictoryNextActionOpts as PickVictoryNextActionOptsCore,
 } from '../../../packages/mw-core/src/workout/victory';
-import { sumWorkingReps } from '@/lib/workout/volumeDisplay';
 
 export type VictoryBodyDelta = {
   readiness: number;
@@ -42,8 +41,6 @@ export type ProgressionInsight = {
 export interface WorkoutVictorySummary {
   workoutName: string;
   totalVolume: number;
-  /** Working-set reps — used when tonnage is 0 (bodyweight). */
-  totalReps: number;
   durationSeconds: number;
   setCount: number;
   exerciseCount: number;
@@ -54,11 +51,8 @@ export interface WorkoutVictorySummary {
   progressionInsight?: ProgressionInsight;
   /** Single post-workout ritual CTA (S-Tier: one next action). */
   nextAction?: VictoryNextAction;
-  /**
-   * Working-set muscle snapshots for the Victory Move seam (S6).
-   * Empty when nothing logged; share cards ignore this.
-   */
-  workingMuscleGroups?: string[][];
+  /** Vs-last receipt from local logs — instant, offline, free (.713). */
+  receipt?: VictoryReceipt;
 }
 
 /** Rank working sets: load×reps when loaded; reps alone when bodyweight. */
@@ -198,25 +192,25 @@ export function summarizeWorkoutVictory(
   bodyDelta?: VictoryBodyDelta,
   progressionInsight?: ProgressionInsight,
   nextAction?: VictoryNextAction,
-  pickOpts?: PickVictoryNextActionOpts
+  pickOpts?: PickVictoryNextActionOpts,
+  receipt?: VictoryReceipt
 ): WorkoutVictorySummary {
   const setCount = log.exercises.reduce((sum, ex) => sum + ex.sets.length, 0);
   return {
     workoutName: log.workoutName,
     totalVolume: log.totalVolume,
-    totalReps: sumWorkingReps(log.exercises),
     durationSeconds: log.durationSeconds,
     setCount,
     exerciseCount: log.exercises.length,
     streak,
     bodyDelta,
     progressionInsight,
-    workingMuscleGroups: workingMuscleGroupsFromLog(log.exercises),
     nextAction:
       nextAction ??
       pickVictoryNextAction({
         strainDelta: bodyDelta?.strain,
         ...pickOpts,
       }),
+    ...(receipt ? { receipt } : {}),
   };
 }

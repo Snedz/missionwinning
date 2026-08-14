@@ -4,6 +4,9 @@ type ActiveWorkoutStrings = {
   activeNoWorkout: string;
   activeNoWorkoutDesc: string;
   activeStartWorkout: string;
+  /** Empty-state Start when re-entry dose is below 1. */
+  activeReentryStart: string;
+  activeReentryStartDesc: string;
   activeSetsCompleted: string;
   activeCancel: string;
   activeLiveSession: string;
@@ -212,8 +215,16 @@ type ActiveWorkoutStrings = {
   activeSetRowPlannedAria: string;
   victoryMascotCue: string;
   victorySessionDetails: string;
-  /** S6 — Victory Move seam after a logged session. */
-  victorySecondaryMoveBecause: string;
+  victoryDuration: string;
+  victoryVsLast: string;
+  victoryReceiptLabel: string;
+  victoryPrBadge: string;
+  victoryPrsOne: string;
+  victoryPrsMany: string;
+  victoryDeltaWeight: string;
+  victoryDeltaReps: string;
+  victoryReceiptSetsCaption: string;
+  victoryReceiptLoad: string;
   /** Split from a `finalSeconds` ternary default — see moveLocales. */
   activeRestSkipAriaFinal: string;
   activeRestSkipAriaPlain: string;
@@ -228,6 +239,9 @@ const en: ActiveWorkoutStrings = {
   activeNoWorkoutDesc:
     'Start here, or open Today for the session already planned for you. Sets and rest save on this device.',
   activeStartWorkout: 'Start Workout',
+  activeReentryStart: 'Start easier session',
+  activeReentryStartDesc:
+    'Smaller first session back — finishable, then the week rebuilds.',
   activeSetsCompleted: '{{done}}/{{total}} sets completed',
   activeCancel: 'Cancel',
   activeFinish: 'Finish',
@@ -415,7 +429,16 @@ const en: ActiveWorkoutStrings = {
   activeSetRowPlannedAria: 'Set {{n}} planned — {{reps}} reps',
   victoryMascotCue: 'Session saved.',
   victorySessionDetails: 'Session details',
-  victorySecondaryMoveBecause: '{{flow}} — because you trained {{muscle}}',
+  victoryDuration: 'Duration',
+  victoryVsLast: 'vs last',
+  victoryReceiptLabel: 'This session',
+  victoryPrBadge: 'PR',
+  victoryPrsOne: '1 PR',
+  victoryPrsMany: '{{count}} PRs',
+  victoryDeltaWeight: '{{signed}} {{unit}}',
+  victoryDeltaReps: '{{signed}} reps',
+  victoryReceiptSetsCaption: '{{name}} sets',
+  victoryReceiptLoad: 'Load',
   activeRestSkipAriaFinal: 'Skip rest — go',
   activeRestSkipAriaPlain: 'Skip rest',
 };
@@ -438,13 +461,20 @@ const es: ActiveWorkoutStrings = {
   victoryProgressHold: 'Siguiente: mantén {{reps}} × {{weight}} {{unit}} en {{name}}',
   victoryProgressAddRepsBw: 'Siguiente: {{reps}} reps en {{name}}',
   victoryProgressHoldBw: 'Siguiente: mantén {{reps}} en {{name}}',
-  victorySecondaryMoveBecause: '{{flow}} — porque entrenaste {{muscle}}',
+  victoryDuration: 'Duración',
+  victoryVsLast: 'vs anterior',
+  victoryReceiptLabel: 'Esta sesión',
+  victoryReceiptSetsCaption: 'Series de {{name}}',
+  victoryReceiptLoad: 'Carga',
   activeElapsed: 'Transcurrido',
   activeSetsLabel: 'Series',
   activeNoWorkout: 'Sin entrenamiento activo',
   activeNoWorkoutDesc:
     'Inicia un entrenamiento rápido desde Hoy o lanza una rutina guardada desde el Builder.',
   activeStartWorkout: 'Iniciar entrenamiento',
+  activeReentryStart: 'Empieza una sesión más fácil',
+  activeReentryStartDesc:
+    'Primera sesión de vuelta más corta — terminable, y la semana se reconstruye.',
   activeSetsCompleted: '{{done}}/{{total}} series completadas',
   activeCancel: 'Cancelar',
   activeFinish: 'Terminar',
@@ -494,13 +524,20 @@ const fr: ActiveWorkoutStrings = {
   victoryProgressHold: 'Suite : maintiens {{reps}} × {{weight}} {{unit}} sur {{name}}',
   victoryProgressAddRepsBw: 'Suite : {{reps}} reps sur {{name}}',
   victoryProgressHoldBw: 'Suite : maintiens {{reps}} sur {{name}}',
-  victorySecondaryMoveBecause: '{{flow}} — parce que tu as entraîné {{muscle}}',
+  victoryDuration: 'Durée',
+  victoryVsLast: 'vs la dernière',
+  victoryReceiptLabel: 'Cette séance',
+  victoryReceiptSetsCaption: 'Séries de {{name}}',
+  victoryReceiptLoad: 'Charge',
   activeElapsed: 'Écoulé',
   activeSetsLabel: 'Séries',
   activeNoWorkout: 'Aucun entraînement actif',
   activeNoWorkoutDesc:
     'Démarrez un entraînement rapide depuis Aujourd’hui ou lancez une routine depuis le Builder.',
   activeStartWorkout: "Commencer l'entraînement",
+  activeReentryStart: 'Commencer une séance plus facile',
+  activeReentryStartDesc:
+    'Première séance de retour plus courte — finissable, puis la semaine se reconstruit.',
   activeSetsCompleted: '{{done}}/{{total}} séries terminées',
   activeCancel: 'Annuler',
   activeFinish: 'Terminer',
@@ -619,6 +656,11 @@ const de: ActiveWorkoutStrings = {
   activeOverloadHold: 'Halten',
   activeOverloadFromLast: 'Vom letzten Mal',
   activeOverloadPrescribed: 'Coach-Plan',
+  victoryDuration: 'Dauer',
+  victoryVsLast: 'vs. zuletzt',
+  victoryReceiptLabel: 'Diese Einheit',
+  victoryReceiptSetsCaption: '{{name}} Sätze',
+  victoryReceiptLoad: 'Last',
   activeSetKindMore: 'Art',
   activeElapsed: 'Verstrichen',
   activeSetsLabel: 'Sätze',
@@ -626,6 +668,9 @@ const de: ActiveWorkoutStrings = {
   activeNoWorkoutDesc:
     'Starte ein Schnelltraining von Heute oder starte eine Routine aus dem Builder.',
   activeStartWorkout: 'Training starten',
+  activeReentryStart: 'Leichtere Einheit starten',
+  activeReentryStartDesc:
+    'Kleinere erste Einheit zurück — schaffbar, dann baut sich die Woche neu.',
   activeSetsCompleted: '{{done}}/{{total}} Sätze abgeschlossen',
   activeCancel: 'Abbrechen',
   activeFinish: 'Beenden',
@@ -677,7 +722,6 @@ const de: ActiveWorkoutStrings = {
   activeSupersetLink: 'Supersatz mit nächster',
   activeSupersetUnlink: 'Supersatz trennen',
   activeSetLoggedSuperset: '{{reps}} × {{weight}} — nächste Übung im Supersatz',
-  victorySecondaryMoveBecause: '{{flow}} — weil du {{muscle}} trainiert hast',
 };
 
 const LOCALES: Partial<Record<string, ActiveWorkoutStrings>> = {
@@ -709,13 +753,20 @@ const LOCALES: Partial<Record<string, ActiveWorkoutStrings>> = {
     activeOverloadHold: 'Manter',
     activeOverloadFromLast: 'Da última vez',
     activeOverloadPrescribed: 'Plano do coach',
+    victoryDuration: 'Duração',
+    victoryVsLast: 'vs a última',
+    victoryReceiptLabel: 'Esta sessão',
+    victoryReceiptSetsCaption: 'Séries de {{name}}',
+    victoryReceiptLoad: 'Carga',
+    activeReentryStart: 'Começar sessão mais fácil',
+    activeReentryStartDesc:
+      'Primeira sessão de volta menor — dá para terminar, depois a semana se reconstrói.',
     activeUseNextTarget: 'Usar próximo alvo',
     victoryProgressAddWeight: 'Próximo: +{{step}} {{unit}} em {{name}} (topo da faixa)',
     victoryProgressAddReps: 'Próximo: {{reps}} × {{weight}} {{unit}} em {{name}}',
     victoryProgressHold: 'Próximo: mantenha {{reps}} × {{weight}} {{unit}} em {{name}}',
     victoryProgressAddRepsBw: 'Próximo: {{reps}} reps em {{name}}',
     victoryProgressHoldBw: 'Próximo: mantenha {{reps}} em {{name}}',
-    victorySecondaryMoveBecause: '{{flow}} — porque treinaste {{muscle}}',
   },
   it: {
     ...en,

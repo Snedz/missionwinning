@@ -6,13 +6,13 @@
 Yes — core workout tracking, library, history, and basic nutrition are free worldwide. Premium is optional.
 
 **Do I need an account?**  
-No. Log your first set with no account. Sign in later from Profile to sync across devices.
+No for basic logging. Sign in to sync across devices, use Coach premium, and join school classes.
 
 **Does it work offline?**  
 Yes as a PWA — log workouts offline; sync when back online if signed in.
 
-**What is the estimated 1RM on the exercise row?**  
-An **Epley formula estimate** from the working set you just logged — not a tested max, not a prescription. Warm-ups and zero-load sets are ignored. Hide it from the exercise menu. See [e1rm.md](e1rm.md).
+**What does Victory show after I finish?**  
+A receipt of the session you just logged — duration, volume, sets, each lift with last-time **Prev**, vs last deltas, and PRs — from logs on this device. Instant, offline, and free. Share is optional; nothing is unlocked by posting.
 
 **Which phones are supported?**  
 Any modern browser — iPhone Safari, Android Chrome, desktop. Install to home screen for best experience.
@@ -24,9 +24,6 @@ A 0–100 grade for **this week**, built from all six pillars — train, fuel, m
 
 **What is readiness?**  
 An estimate of how recovered your muscles are based on recent training — shown on Today.
-
-**I missed a couple of days — did I blow a streak?**  
-No. Today shows a quiet line such as “Two days off. Here’s the 20-minute version.” and starts a shorter session. Nothing to catch up on, and no streak guilt.
 
 ## Mission Coach
 
@@ -73,8 +70,5 @@ Private beta gate — use the password from your invite.
 
 **How do I delete my data?**  
 Export backup first if needed, then contact support or clear site data locally.
-
-**Can I bring Strong / Hevy history?**  
-Yes. Profile → Your training history → Import CSV (0.1 beta). Drop a Strong or Hevy CSV, then export the same dialects, free, anytime. History is never paywalled.
 
 More: [troubleshooting.md](troubleshooting.md), [privacy-and-data.md](privacy-and-data.md).

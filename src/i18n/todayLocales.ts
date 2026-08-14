@@ -287,6 +287,8 @@ type TodayStrings = {
   todayFounderSnackHint: string;
   todayFounderSnackHintDesc: string;
   todayFounderLogSnack: string;
+  /** Fallback chip action when the insight has no actionLabelKey. */
+  todayCoachChipAction: string;
 };
 
 const en: TodayStrings = {
@@ -592,6 +594,7 @@ const en: TodayStrings = {
   todayFounderSnackHint: 'Open Fuel',
   todayFounderSnackHintDesc: 'Log a recovery snack when you are ready.',
   todayFounderLogSnack: 'Log recovery snack',
+  todayCoachChipAction: 'Open',
 };
 
 const coachPlanDefaults = {
@@ -610,6 +613,7 @@ const coachPlanDefaults = {
 
 const es: TodayStrings = {
   ...en,
+  todayCoachChipAction: 'Abrir',
   todayBasicEncouragement:
     'Un paso a la vez. Salud para todos — entrena, alimenta, muévete y aprende en tu camino.',
   todaySectionHealth: 'Puntuaciones de salud',
@@ -800,6 +804,7 @@ const zh: TodayStrings = {
   todayFounderSnackHint: en.todayFounderSnackHint,
   todayFounderSnackHintDesc: en.todayFounderSnackHintDesc,
   todayFounderLogSnack: en.todayFounderLogSnack,
+  todayCoachChipAction: en.todayCoachChipAction,
   continuityTitle: en.continuityTitle,
   continuitySubtitle: en.continuitySubtitle,
   todayWeekRecapTitle: en.todayWeekRecapTitle,
@@ -1070,6 +1075,7 @@ const id: TodayStrings = {
   todayFounderSnackHint: en.todayFounderSnackHint,
   todayFounderSnackHintDesc: en.todayFounderSnackHintDesc,
   todayFounderLogSnack: en.todayFounderLogSnack,
+  todayCoachChipAction: en.todayCoachChipAction,
   continuityTitle: en.continuityTitle,
   continuitySubtitle: en.continuitySubtitle,
   todayWeekRecapTitle: en.todayWeekRecapTitle,
@@ -1355,6 +1361,7 @@ const th: TodayStrings = {
   todayFounderSnackHint: en.todayFounderSnackHint,
   todayFounderSnackHintDesc: en.todayFounderSnackHintDesc,
   todayFounderLogSnack: en.todayFounderLogSnack,
+  todayCoachChipAction: en.todayCoachChipAction,
   continuityTitle: en.continuityTitle,
   continuitySubtitle: en.continuitySubtitle,
   todayWeekRecapTitle: en.todayWeekRecapTitle,
@@ -1630,6 +1637,7 @@ const ar: TodayStrings = {
   todayFounderSnackHint: en.todayFounderSnackHint,
   todayFounderSnackHintDesc: en.todayFounderSnackHintDesc,
   todayFounderLogSnack: en.todayFounderLogSnack,
+  todayCoachChipAction: en.todayCoachChipAction,
   continuityTitle: en.continuityTitle,
   continuitySubtitle: en.continuitySubtitle,
   todayWeekRecapTitle: en.todayWeekRecapTitle,
@@ -1886,6 +1894,7 @@ const LOCALES: Partial<Record<string, TodayStrings>> = {
   ar,
   fr: {
     ...en,
+    todayCoachChipAction: 'Ouvrir',
     todayBasicEncouragement:
       'Un pas à la fois. La santé pour tous — entraînez-vous, alimentez-vous, bougez et apprenez sur votre chemin.',
     todaySectionHealth: 'Scores de santé',
@@ -2047,6 +2056,7 @@ const LOCALES: Partial<Record<string, TodayStrings>> = {
   },
   pt: {
     ...en,
+    todayCoachChipAction: 'Abrir',
     todayBasicEncouragement:
       'Um passo de cada vez. Saúde para todos — treine, alimente-se, mova-se e aprenda.',
     todayStartWorkout: 'Começar treino de hoje',
@@ -2056,6 +2066,7 @@ const LOCALES: Partial<Record<string, TodayStrings>> = {
   },
   de: {
     ...en,
+    todayCoachChipAction: 'Öffnen',
     todayBasicEncouragement:
       'Schritt für Schritt. Gesundheit für alle — trainiere, ernähre dich, bewege dich und lerne auf deinem Weg.',
     todaySectionHealth: 'Gesundheits-Scores',
