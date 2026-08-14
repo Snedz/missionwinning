@@ -22,7 +22,7 @@
 | `form/` | Form guides |
 | `history/` | History charts, muscle heatmap |
 | `journey/` | Journey UX — [journey/INDEX.md](journey/INDEX.md) |
-| `landing/` | Gated www / post-unlock landing — `CinematicWww` (four scenes), `CinematicLogger` (product-as-hero). `LogToPlanHero` kept as the boxed specimen. [landing/INDEX.md](landing/INDEX.md) |
+| `landing/` | Homepage demos — `LogToPlanHero` (the signature: real progression engine), `CoachAdaptDemo` |
 | `layout/` | App shell — [layout/INDEX.md](layout/INDEX.md) |
 | `leaderboard/` | Leaderboard UI |
 | `learn/` | Learn path UI + `GuideSectionExtras`, `GuideApexShell`, `GuideContentsRail`, `GuideLocaleSelect` (public magazine reader) |
@@ -31,7 +31,7 @@
 | `pillars/` | Shared pillar panels, timed flows |
 | `today/` | Today dashboard — [today/INDEX.md](today/INDEX.md) |
 | `track/` | GPS / activity panels |
-| `profile/` | Profile settings cards (privacy, backup, referral, wearables, What’s New). `HomeGymKitCard` — Account day-one Home gym kit (`.763`) |
+| `profile/` | Profile settings cards (privacy, backup, CSV history import/export, referral, wearables, What’s New) |
 | `ui/` | Design system primitives (`AdaptiveOverlay` — the one sheet shell, with a pinned `footer` slot; `EmptyState`, `ErrorState`, `Skeleton`, `MeterBar`, `ScoreNumeral`, `RuledRadioGroup`, `OtpInput`, `FileDropZone`, `FileUploadRow`, `HoldToConfirmButton`, `DangerZone`, shadcn) |
 | `workout/` | Active workout — [workout/INDEX.md](workout/INDEX.md) |
 

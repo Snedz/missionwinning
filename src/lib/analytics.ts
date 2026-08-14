@@ -79,6 +79,7 @@ export type AnalyticsEvent =
   | 'backup_exported'
   | 'backup_restored'
   | 'csv_imported'
+  | 'csv_exported'
   | 'share_card_generated'
   | 'debrief_spoken'
   | 'day_review_quick_log'

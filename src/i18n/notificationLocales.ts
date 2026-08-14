@@ -93,18 +93,25 @@ const NOTIFICATION_EN: Record<string, string> = {
   /** Kaizen Loop 6 P1 — Profile privacy / premium / CSV / sync (.313) */
   csvImportFailed: 'Could not read that file',
   csvImportUnrecognized:
-    'Expected a Strong or Hevy CSV export. Export from the other app, then drop the file here.',
+    'Expected a Strong or Hevy CSV. Export from the other app, then drop the file here.',
   csvImportEmpty: 'No workout rows found in the file.',
   csvImportDone: 'History imported',
   csvImportDoneDesc:
     '{{added}} workouts imported ({{duplicates}} already here). Your PRs, 1RM trends and load band now use them. Reloading…',
-  csvImportTitle: 'Switching from another app?',
+  csvImportTitle: 'Your training history',
   csvImportSubtitle:
-    'Import your Strong or Hevy history from a CSV export. Your records rebuild here in seconds — free, no account needed.',
+    '0.1 beta — import or export Strong and Hevy CSV. Free forever, no account. History is never paywalled.',
   csvImportCta: 'Import CSV (Strong / Hevy)',
   csvImportDropIdle: 'Drop a Strong or Hevy CSV or click to browse',
   csvImportDropActive: 'Drop to import',
   csvImportNeedCsv: 'Use the CSV export from Strong or Hevy.',
+  csvExportCta: 'Export CSV',
+  csvExportStrongCta: 'Export Strong CSV',
+  csvExportHevyCta: 'Export Hevy CSV',
+  csvExportDone: 'History exported',
+  csvExportDoneDesc: '{{count}} workouts saved as {{format}} CSV. Free — your log is yours.',
+  csvExportEmpty: 'Nothing to export yet',
+  csvExportEmptyDesc: 'Log a workout, or import a CSV first. Export is free.',
   premiumStatus: 'Premium Status',
   premiumUnlocked: '✓ Premium unlocked (via Super Bundle or demo request)',
   billingPortalOpening: 'Opening…',

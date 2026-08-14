@@ -1,0 +1,4 @@
+session_date,session_title,exercise_name,set_index,set_value_weight,set_amount_reps,set_weight_unit,archived_weight,archived_reps,set_skipped
+2026-07-14,Push Day,Bench Press (Barbell),1,100,5,kg,100,5,false
+2026-07-14,Push Day,Bench Press (Barbell),2,100,5,kg,100,5,false
+2026-07-16,Leg Day,Squat (Barbell),1,140,5,kg,140,5,false

@@ -28,7 +28,9 @@ Manual JSON/CSV imports on Track stay on-device (same as other Track logs) until
 
 ## Backup and restore
 
-Profile → **Export backup** downloads a JSON file. Restore on a new device by importing that file. Backups are yours — store them securely.
+Profile → **Export backup** downloads a JSON file of this device (workouts, routines, nutrition, journey). Restore on a new device by importing that file. Backups are yours — store them securely.
+
+Separately, Profile → **Your training history** imports and exports Strong and Hevy CSV (0.1 beta). Import and export are **free forever** — no account, never paywalled. Files stay on this device until you sign in and sync.
 
 ## Sign-in providers
 
@@ -54,7 +56,7 @@ Anonymous usage analytics (e.g. PostHog) may run to improve the product — see 
 
 ## Your rights
 
-- Export your backup anytime.
+- Export your backup or workout CSV anytime (both free).
 - Delete local data by clearing site data in browser settings.
 - Request account deletion via support (cloud rows removed per policy).
 

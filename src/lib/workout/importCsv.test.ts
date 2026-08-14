@@ -1,41 +1,53 @@
 import { describe, it } from 'node:test';
 import assert from 'node:assert/strict';
+import { readFileSync } from 'node:fs';
+import path from 'node:path';
 import {
+  csvEscape,
   detectCsvFormat,
   exerciseIdForName,
+  formatDurationSeconds,
+  formatHevyLocal,
   mergeImportedLogs,
+  parseBoostcampDate,
   parseDurationSeconds,
   parseWorkoutCsv,
   splitCsvRecords,
+  workoutsToHevyCsv,
+  workoutsToMwCsv,
+  workoutsToStrongCsv,
 } from '@/lib/workout/importCsv';
 import { sessionLoad } from '@/lib/coach/load';
+import { localDateKeyFromIso } from '@/lib/time/localDate';
 import type { CompletedWorkoutLog } from '@/types';
 
 let n = 0;
 const testId = () => `t-${++n}`;
 
-const HEVY = [
-  'title,start_time,end_time,description,exercise_title,superset_id,exercise_notes,set_index,set_type,weight_kg,reps,distance_km,duration_seconds,rpe',
-  '"Push Day","14 Jul 2026, 18:05","14 Jul 2026, 19:10",,"Bench Press (Barbell)",,,0,normal,100,5,,,8',
-  '"Push Day","14 Jul 2026, 18:05","14 Jul 2026, 19:10",,"Bench Press (Barbell)",,,1,normal,100,5,,,9',
-  '"Push Day","14 Jul 2026, 18:05","14 Jul 2026, 19:10",,"Bench Press (Barbell)",,"note with, comma',
-  'and a newline",2,failure,100,3,,,10',
-  '"Push Day","14 Jul 2026, 18:05","14 Jul 2026, 19:10",,"Lateral Raise (Dumbbell)",,,0,warmup,8,15,,,',
-  '"Leg Day","16 Jul 2026, 18:00","16 Jul 2026, 19:00",,"Squat (Barbell)",,,0,normal,140,5,,,8',
-].join('\n');
+const fixture = (name: string) =>
+  readFileSync(path.join(import.meta.dirname, 'fixtures', name), 'utf8');
 
-const STRONG = [
-  'Date,Workout Name,Duration,Exercise Name,Set Order,Weight,Weight Unit,Reps,RPE,Notes',
-  '2026-07-14 18:05:00,"Push Day","1h 5m","Bench Press (Barbell)",1,100,kg,5,8,',
-  '2026-07-14 18:05:00,"Push Day","1h 5m","Bench Press (Barbell)",2,100,kg,5,9,',
-  '2026-07-16 18:00:00,"Leg Day","55m","Squat (Barbell)",1,140,kg,5,8,',
-].join('\n');
+const HEVY = fixture('hevy-sample.csv');
+const STRONG = fixture('strong-sample.csv');
+const BOOSTCAMP = fixture('boostcamp-sample.csv');
+const BOOSTCAMP_FLAT = fixture('boostcamp-flatten-sample.csv');
+const MW = fixture('mw-native-sample.csv');
 
 describe('importCsv', () => {
   it('detects format from the header, not the filename', () => {
     assert.equal(detectCsvFormat(HEVY), 'hevy');
     assert.equal(detectCsvFormat(STRONG), 'strong');
+    assert.equal(detectCsvFormat(BOOSTCAMP), 'boostcamp');
+    assert.equal(detectCsvFormat(BOOSTCAMP_FLAT), 'boostcamp');
+    assert.equal(detectCsvFormat(MW), 'mw');
     assert.equal(detectCsvFormat('a,b,c\n1,2,3'), null);
+  });
+
+  it('a UTF-8 BOM does not hide a Strong header', () => {
+    assert.equal(detectCsvFormat(`\uFEFF${STRONG}`), 'strong');
+    const r = parseWorkoutCsv(`\uFEFF${STRONG}`, 'metric', testId);
+    assert.equal(r.format, 'strong');
+    assert.equal(r.workouts.length, 2);
   });
 
   it('a quoted field with a newline stays one record', () => {
@@ -75,6 +87,44 @@ describe('importCsv', () => {
     assert.equal(leg.exercises[0].sets[0].weight, 140);
   });
 
+  it('rebuilds a Boostcamp History→CSV dump (per-set, slash dates)', () => {
+    const r = parseWorkoutCsv(BOOSTCAMP, 'metric', testId);
+    assert.equal(r.format, 'boostcamp');
+    assert.equal(r.error, undefined);
+    assert.equal(r.workouts.length, 2);
+    const first = r.workouts.find((w) => w.workoutName === 'Bullmastiff');
+    assert.ok(first);
+    assert.equal(localDateKeyFromIso(first.completedAt), '2026-07-14');
+    const bench = first.exercises.find((e) => e.exerciseId === 'bench-press');
+    assert.ok(bench);
+    assert.equal(bench.sets.length, 2);
+    assert.equal(bench.sets[0].weight, 100);
+  });
+
+  it('rebuilds a Boostcamp flatten CSV (session_date + archived weight)', () => {
+    const r = parseWorkoutCsv(BOOSTCAMP_FLAT, 'metric', testId);
+    assert.equal(r.format, 'boostcamp');
+    assert.equal(r.workouts.length, 2);
+    const push = r.workouts.find((w) => w.workoutName === 'Push Day');
+    assert.ok(push);
+    assert.equal(localDateKeyFromIso(push.completedAt), '2026-07-14');
+    assert.equal(push.exercises[0].sets.length, 2);
+  });
+
+  it('rebuilds Mission Winning native CSV, keeping workout ids', () => {
+    const r = parseWorkoutCsv(MW, 'metric', testId);
+    assert.equal(r.format, 'mw');
+    assert.equal(r.workouts.length, 2);
+    const push = r.workouts.find((w) => w.workoutName === 'Push Day');
+    assert.ok(push);
+    assert.equal(push.id, 'w1');
+    assert.equal(push.durationSeconds, 3900);
+    const bench = push.exercises.find((e) => e.exerciseId === 'bench-press');
+    assert.ok(bench);
+    assert.equal(bench.sets[0].rpe, 'med');
+    assert.equal(bench.sets[1].rpe, 'hard');
+  });
+
   it('converts units to the athlete display preference', () => {
     const imperial = parseWorkoutCsv(HEVY, 'imperial', testId);
     const bench = imperial.workouts
@@ -96,6 +146,23 @@ describe('importCsv', () => {
       exercises: [
         { exerciseId: 'squats', sets: [{ reps: 5, weight: 140, rpe: 'med' }] },
       ],
+      totalVolume: 700,
+    };
+    assert.deepEqual(sessionLoad(imported), sessionLoad(native));
+  });
+
+  it('Boostcamp import matches a native twin in sessionLoad', () => {
+    const r = parseWorkoutCsv(BOOSTCAMP, 'metric', testId);
+    const imported = r.workouts.find(
+      (w) => w.workoutName === 'Bullmastiff' && localDateKeyFromIso(w.completedAt) === '2026-07-16'
+    )!;
+    const native: CompletedWorkoutLog = {
+      id: 'n-bc',
+      workoutName: 'Bullmastiff',
+      startedAt: imported.startedAt,
+      completedAt: imported.completedAt,
+      durationSeconds: imported.durationSeconds,
+      exercises: [{ exerciseId: 'squats', sets: [{ reps: 5, weight: 140 }] }],
       totalVolume: 700,
     };
     assert.deepEqual(sessionLoad(imported), sessionLoad(native));
@@ -134,9 +201,156 @@ describe('importCsv', () => {
     assert.equal(r.skippedRows, 1, 'blank exercise name is skipped and counted');
   });
 
+  it('skips Boostcamp flatten rows marked skipped', () => {
+    const csv =
+      BOOSTCAMP_FLAT.trimEnd() +
+      '\n2026-07-14,Push Day,Ghost Press,3,100,5,kg,100,5,true\n';
+    const r = parseWorkoutCsv(csv, 'metric', testId);
+    assert.equal(r.skippedRows, 1);
+    const push = r.workouts.find((w) => w.workoutName === 'Push Day')!;
+    assert.equal(
+      push.exercises.reduce((n, e) => n + e.sets.length, 0),
+      2,
+      'the skipped ghost set must not land in history'
+    );
+  });
+
   it('Strong duration strings parse in all three shapes', () => {
     assert.equal(parseDurationSeconds('1h 5m'), 3900);
     assert.equal(parseDurationSeconds('45m'), 2700);
     assert.equal(parseDurationSeconds('32s'), 32);
+    assert.equal(formatDurationSeconds(3900), '1h 5m');
+    assert.equal(formatDurationSeconds(2700), '45m');
+    assert.equal(formatDurationSeconds(32), '32s');
+    assert.equal(parseDurationSeconds(formatDurationSeconds(3661)), 3661);
+  });
+
+  it('Boostcamp slash dates follow the unit column (kg = EU, lb = US)', () => {
+    assert.equal(localDateKeyFromIso(parseBoostcampDate('03/04/26', 'kg')!), '2026-04-03');
+    assert.equal(localDateKeyFromIso(parseBoostcampDate('03/04/26', 'lb')!), '2026-03-04');
+  });
+
+  it('a date-only ISO is the local calendar day, not UTC midnight', () => {
+    const csv =
+      'session_date,session_title,exercise_name,set_index,set_value_weight,set_amount_reps,set_weight_unit\n' +
+      '2026-07-14,Noon,Squat (Barbell),1,140,5,kg\n';
+    const r = parseWorkoutCsv(csv, 'metric', testId);
+    assert.equal(localDateKeyFromIso(r.workouts[0].completedAt), '2026-07-14');
+  });
+
+  it('round-trip: native logs → MW CSV → parse → merge is a no-op', () => {
+    const imported = parseWorkoutCsv(STRONG, 'metric', testId);
+    assert.equal(imported.workouts.length, 2);
+    const csv = workoutsToMwCsv(imported.workouts, 'metric');
+    assert.match(csv, /^workout_id,workout_name,completed_at/);
+    const back = parseWorkoutCsv(csv, 'metric', testId);
+    assert.equal(back.format, 'mw');
+    assert.equal(back.workouts.length, 2);
+    for (const w of imported.workouts) {
+      const twin = back.workouts.find((b) => b.workoutName === w.workoutName);
+      assert.ok(twin);
+      assert.deepEqual(sessionLoad(twin), sessionLoad(w));
+    }
+    const { added, duplicates } = mergeImportedLogs(imported.workouts, back.workouts);
+    assert.equal(added, 0, 'exporting then importing the same log must not duplicate');
+    assert.equal(duplicates, 2);
+  });
+
+  it('round-trip: Strong fixture → Strong CSV → parse → merge is a no-op', () => {
+    const imported = parseWorkoutCsv(STRONG, 'metric', testId);
+    const csv = workoutsToStrongCsv(imported.workouts, 'metric');
+    assert.match(csv, /^Date,Workout Name,Duration,Exercise Name,Set Order/);
+    assert.match(csv, /1h 5m/);
+    assert.match(csv, /55m/);
+    const back = parseWorkoutCsv(csv, 'metric', testId);
+    assert.equal(back.format, 'strong');
+    assert.equal(back.workouts.length, 2);
+    for (const w of imported.workouts) {
+      const twin = back.workouts.find((b) => b.workoutName === w.workoutName);
+      assert.ok(twin);
+      assert.deepEqual(sessionLoad(twin), sessionLoad(w));
+    }
+    const { added, duplicates } = mergeImportedLogs(imported.workouts, back.workouts);
+    assert.equal(added, 0, 'Strong in+out must not duplicate');
+    assert.equal(duplicates, 2);
+  });
+
+  it('round-trip: Hevy fixture → Hevy CSV → parse → merge is a no-op', () => {
+    const imported = parseWorkoutCsv(HEVY, 'metric', testId);
+    const csv = workoutsToHevyCsv(imported.workouts, 'metric');
+    assert.match(csv, /^title,start_time,end_time,description,exercise_title/);
+    assert.match(csv, /set_type,weight_kg/);
+    assert.match(csv, /,failure,/);
+    assert.match(csv, /,warmup,/);
+    const back = parseWorkoutCsv(csv, 'metric', testId);
+    assert.equal(back.format, 'hevy');
+    assert.equal(back.workouts.length, 2);
+    const push = back.workouts.find((w) => w.workoutName === 'Push Day');
+    assert.ok(push);
+    const bench = push.exercises.find((e) => e.exerciseId === 'bench-press');
+    assert.ok(bench);
+    assert.equal(bench.sets[2].kind, 'failure');
+    assert.equal(push.durationSeconds, 65 * 60);
+    for (const w of imported.workouts) {
+      const twin = back.workouts.find((b) => b.workoutName === w.workoutName);
+      assert.ok(twin);
+      assert.deepEqual(sessionLoad(twin), sessionLoad(w));
+    }
+    const { added, duplicates } = mergeImportedLogs(imported.workouts, back.workouts);
+    assert.equal(added, 0, 'Hevy in+out must not duplicate');
+    assert.equal(duplicates, 2);
+  });
+
+  it('export skips tombstoned logs', () => {
+    const live = parseWorkoutCsv(MW, 'metric', testId).workouts[0];
+    const dead: CompletedWorkoutLog = { ...live, id: 'dead', deletedAt: '2026-07-20T00:00:00.000Z' };
+    const mw = workoutsToMwCsv([live, dead], 'metric');
+    assert.equal(mw.split('\n').filter((l) => l.startsWith('dead,')).length, 0);
+    assert.match(mw, new RegExp(`^${live.id},`, 'm'));
+    const hevyLive = workoutsToHevyCsv([live], 'metric');
+    const hevyMixed = workoutsToHevyCsv([live, dead], 'metric');
+    assert.equal(hevyMixed, hevyLive, 'Hevy export must drop tombstones');
+    const strongLive = workoutsToStrongCsv([live], 'metric');
+    const strongMixed = workoutsToStrongCsv([live, dead], 'metric');
+    assert.equal(strongMixed, strongLive, 'Strong export must drop tombstones');
+  });
+
+  it('Hevy and Strong export dates use local fields, not UTC ISO slices', () => {
+    // Pacific/Kiritimati is UTC+14: 10:05 local on the 14th is still the 13th in UTC.
+    // Slicing toISOString() would write 13 Jul / 2026-07-13 — the defect that shipped
+    // a wrong shared week east of UTC everywhere else in this repo.
+    const previous = process.env.TZ;
+    process.env.TZ = 'Pacific/Kiritimati';
+    try {
+      const started = new Date(2026, 6, 14, 10, 5, 0);
+      const completed = new Date(2026, 6, 14, 11, 10, 0);
+      const log: CompletedWorkoutLog = {
+        id: 'local-1',
+        workoutName: 'Push Day',
+        startedAt: started.toISOString(),
+        completedAt: completed.toISOString(),
+        durationSeconds: 65 * 60,
+        exercises: [{ exerciseId: 'bench-press', sets: [{ reps: 5, weight: 100 }] }],
+        totalVolume: 500,
+      };
+      assert.equal(formatHevyLocal(log.startedAt), '14 Jul 2026, 10:05');
+      const hevy = workoutsToHevyCsv([log], 'metric');
+      assert.match(hevy, /14 Jul 2026, 10:05/);
+      assert.match(hevy, /14 Jul 2026, 11:10/);
+      assert.doesNotMatch(hevy, /13 Jul 2026/);
+      const strong = workoutsToStrongCsv([log], 'metric');
+      assert.match(strong, /2026-07-14 10:05:00/);
+      assert.doesNotMatch(strong, /2026-07-13/);
+    } finally {
+      if (previous === undefined) delete process.env.TZ;
+      else process.env.TZ = previous;
+    }
+  });
+
+  it('csvEscape quotes commas, quotes, and newlines', () => {
+    assert.equal(csvEscape('plain'), 'plain');
+    assert.equal(csvEscape('a,b'), '"a,b"');
+    assert.equal(csvEscape('say "hi"'), '"say ""hi"""');
+    assert.equal(csvEscape('line\nbreak'), '"line\nbreak"');
   });
 });
