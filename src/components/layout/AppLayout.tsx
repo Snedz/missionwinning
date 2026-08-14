@@ -15,6 +15,7 @@ import { PageTransition } from '@/components/layout/PageTransition';
 import { JourneySyncBoot } from '@/components/layout/JourneySyncBoot';
 import { TooltipProvider } from '@/components/ui/tooltip';
 import { recordScreen } from '@/lib/screenTrail';
+import { useVisualViewportKeyboardOverlap } from '@/hooks/useVisualViewportKeyboardOverlap';
 
 const Sidebar = dynamic(() => import('./Sidebar').then((m) => ({ default: m.Sidebar })), {
   ssr: false,
@@ -43,6 +44,7 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
   const [moreOpen, setMoreOpen] = useState(false);
   const openMore = useCallback(() => setMoreOpen(true), []);
   const closeMore = useCallback(() => setMoreOpen(false), []);
+  const keyboardOverlap = useVisualViewportKeyboardOverlap();
 
   useEffect(() => {
     setMoreOpen(false);
@@ -56,7 +58,10 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
       <TooltipProvider delayDuration={300}>
         <CommissioningCeremony />
         <JourneySyncBoot />
-        <div className="flex flex-col h-screen overflow-hidden bg-background">
+        <div
+          className="flex flex-col h-screen overflow-hidden bg-background"
+          style={keyboardOverlap > 0 ? { paddingBottom: keyboardOverlap } : undefined}
+        >
           <AppHeader onOpenMore={openMore} moreOpen={moreOpen} />
           <div className="flex flex-1 min-h-0">
             <div className="hidden md:block">
