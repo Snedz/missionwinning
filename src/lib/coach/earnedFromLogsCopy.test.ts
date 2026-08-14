@@ -27,3 +27,18 @@ test('CoachAdaptBanner surfaces log-cited week rationale', () => {
   assert.match(src, /coachRationaleRuleLabel|Rule applied/);
   assert.match(src, /coachRationaleEffectLabel|Expected effect/);
 });
+
+test('PlanSessionCard surfaces log-cited session rationale on boss card', () => {
+  const src = readFileSync(join(root, 'components/coach/PlanSessionCard.tsx'), 'utf8');
+  assert.match(src, /buildSessionRationale/);
+  assert.match(src, /coachRationaleInputLabel|From your logs/);
+  assert.match(src, /coachRationaleRuleLabel|Rule applied/);
+  assert.match(src, /coachRationaleEffectLabel|Expected effect/);
+  // Craft: single "From your logs" via input label — no redundant eyebrow key.
+  assert.doesNotMatch(src, /coachWhySessionEyebrow/);
+  assert.doesNotMatch(src, /className=\{?["']eyebrow/);
+  // Quiet inset next to Start — primary edge, not poster compete.
+  assert.match(src, /border-s-primary/);
+  assert.doesNotMatch(src, /border-s-\[hsl\(var\(--accent-poster\)\)\]/);
+  assert.doesNotMatch(src, /TrainerRail|forceCoach|PRIVATE_MODE/);
+});

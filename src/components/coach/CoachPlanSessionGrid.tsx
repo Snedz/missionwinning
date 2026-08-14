@@ -6,20 +6,25 @@
 
 import { PlanSessionCard } from '@/components/coach/PlanSessionCard';
 import { resolveCoachBossSessionId } from '@/lib/coach/resolveCoachBossSessionId';
+import type { SessionRationaleHints } from '@/lib/coach/sessionRationale';
 import type { PlanSession } from '@/lib/coach/types';
 
 type Props = {
   sessions: PlanSession[];
   todayOffset: number;
   onAdjustToday: () => void;
-  onSwapExercise?: (sessionId: string, fromExerciseId: string, toExerciseId: string) => void;
+  /**
+   * Log-derived hints for boss-session “why this session” (`.699`).
+   * Only the primary Start card paints; other days stay quiet.
+   */
+  rationaleHints?: SessionRationaleHints;
 };
 
 export function CoachPlanSessionGrid({
   sessions,
   todayOffset,
   onAdjustToday,
-  onSwapExercise,
+  rationaleHints,
 }: Props) {
   const bossId = resolveCoachBossSessionId(sessions, todayOffset);
 
@@ -36,13 +41,9 @@ export function CoachPlanSessionGrid({
               session={session}
               isToday={isToday}
               isPrimaryStart={session.id === bossId}
+              rationaleHints={rationaleHints}
               onAdjust={
                 isToday && session.status !== 'done' ? onAdjustToday : undefined
-              }
-              onSwapExercise={
-                session.status !== 'done' && onSwapExercise
-                  ? (fromId, toId) => onSwapExercise(session.id, fromId, toId)
-                  : undefined
               }
             />
           );

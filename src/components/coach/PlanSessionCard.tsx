@@ -11,6 +11,10 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import type { PlanSession } from '@/lib/coach/types';
+import {
+  buildSessionRationale,
+  type SessionRationaleHints,
+} from '@/lib/coach/sessionRationale';
 import { useUnits, weightUnitLabel } from '@/hooks/useUnits';
 import { cn } from '@/lib/utils';
 
@@ -26,8 +30,12 @@ type Props = {
   isPrimaryStart?: boolean;
   /** Today’s not-done session only — opens adjust flow. */
   onAdjust?: () => void;
-  /** Garage swap on one exercise line — not a week regenerate. */
-  onSwapExercise?: (fromExerciseId: string, toExerciseId: string) => void;
+  /**
+   * Optional log-derived hints already computed upstream (history length, load band).
+   * Never invent metrics here — only pass what CoachContext / loadBands already have.
+   * Session rationale paints only on the boss Start card (`.699` / F-012).
+   */
+  rationaleHints?: SessionRationaleHints;
 };
 
 export function PlanSessionCard({
@@ -36,13 +44,18 @@ export function PlanSessionCard({
   isToday,
   isPrimaryStart,
   onAdjust,
-  onSwapExercise,
+  rationaleHints,
 }: Props) {
   const { t } = useTranslation();
   const startCoachSession = useStartCoachSession();
   const units = useUnits();
   const unit = weightUnitLabel(units);
   const primary = isPrimaryStart ?? isToday;
+  // Boss session only — keep other cards quiet; never force onto Train/Today.
+  const sessionRationale =
+    primary && session.status !== 'done' && session.status !== 'missed'
+      ? buildSessionRationale(session, rationaleHints)
+      : null;
 
   const start = () => {
     startCoachSession(session, { from: 'coach' });
@@ -121,18 +134,50 @@ export function PlanSessionCard({
         </div>
       </CardHeader>
       <CardContent className="space-y-3">
+        {sessionRationale ? (
+          /*
+           * Quiet inset on the boss card — ink primary edge (not poster) so it
+           * does not compete with Start. No eyebrow: the input label alone
+           * carries the log cite (Design polish on `.699`).
+           */
+          <div
+            className="space-y-1.5 border-s-[3px] border-s-primary bg-muted px-3 py-2"
+            data-testid="coach-session-rationale"
+          >
+            <p className="text-xs text-muted-foreground leading-relaxed">
+              <span className="font-medium text-foreground">
+                {t('coachRationaleInputLabel', { defaultValue: 'From your logs' })}
+                {': '}
+              </span>
+              {t(sessionRationale.inputKey, {
+                ...sessionRationale.inputParams,
+                defaultValue: sessionRationale.inputDefault,
+              })}
+            </p>
+            <p className="text-xs text-muted-foreground leading-relaxed">
+              <span className="font-medium text-foreground">
+                {t('coachRationaleRuleLabel', { defaultValue: 'Rule applied' })}
+                {': '}
+              </span>
+              {t(sessionRationale.ruleKey, {
+                defaultValue: sessionRationale.ruleDefault,
+              })}
+            </p>
+            <p className="text-xs text-muted-foreground leading-relaxed">
+              <span className="font-medium text-foreground">
+                {t('coachRationaleEffectLabel', { defaultValue: 'Expected effect' })}
+                {': '}
+              </span>
+              {t(sessionRationale.effectKey, {
+                ...sessionRationale.effectParams,
+                defaultValue: sessionRationale.effectDefault,
+              })}
+            </p>
+          </div>
+        ) : null}
         <ul className="space-y-2 text-sm">
           {session.exercises.map((ex) => (
-            <PlanExerciseLine
-              key={ex.exerciseId}
-              ex={ex}
-              unit={unit}
-              onSwap={
-                onSwapExercise
-                  ? (toId) => onSwapExercise(ex.exerciseId, toId)
-                  : undefined
-              }
-            />
+            <PlanExerciseLine key={ex.exerciseId} ex={ex} unit={unit} />
           ))}
         </ul>
         {session.status !== 'done' && (
