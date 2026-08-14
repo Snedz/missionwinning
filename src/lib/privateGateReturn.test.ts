@@ -33,6 +33,11 @@ test('the unlocked /private page redirect reads next instead of hardcoding /', (
   const page = read('app/private/page.tsx');
   assert.match(page, /privateGateReturnPath|sanitizeNextPath/);
   assert.match(page, /searchParams[\s\S]*next/);
+  assert.match(
+    page,
+    /isPrivateModeEnabled\(\)\s*&&/,
+    'ungated Preview must keep `/private` as the teaser, not bounce to Today'
+  );
 });
 
 test('PrivateTeaserClient uses the shared return-path helper', () => {
