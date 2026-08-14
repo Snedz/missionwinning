@@ -16,6 +16,7 @@ Studio: [grok.com/imagine](https://grok.com/imagine).
 | Social video | `social-invite-raw.mp4` (optional; keep local — do not commit multi-MB) |
 | Mascot (Kalligator) | `mascot-kalligator-idle-frame.png` · `mascot-kalligator-invite-frame.png` · `mascot-kalligator-celebrate-frame.png` |
 | Form Index poster | `form-{exerciseId}-side-frame.png` → `public/form/{id}/side.webp` |
+| Form Index cast still | `form-{exerciseId}-cast-{letter}-frame.png` → `public/form/{id}/cast-{letter}.webp` |
 | Form Index front | `form-{exerciseId}-front-frame.png` → `public/form/{id}/front.webp` |
 
 ## Optimize

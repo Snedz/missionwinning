@@ -38,6 +38,7 @@ const read = (p: string) => readFileSync(path.join(root, p), 'utf8');
 /** Files that tell a person or an agent what colour to make something. */
 const SPEC_FILES = [
   'docs/MEDIA_SYSTEM.md',
+  'docs/MEDIA.md',
   'docs/MASCOT.md',
   'media/FLOW_PROMPTS.md',
   'media/manifest.json',
