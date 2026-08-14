@@ -36,6 +36,7 @@ Legend:
 | `mobile/sync/customs` | POST, GET | Bearer | 30–60/min | Custom exercises sync |
 | `mobile/sync/prefs` | POST, GET | Bearer | 30–60/min | Units/rest/equipment/bar prefs |
 | `mobile/premium/status` | GET | Bearer (or cookie fallback) | 60/min | Super Bundle flag for native Account |
+| `mobile/premium/play-purchase` | POST | Bearer | 20/min/IP | Zod Play token → enrollment. Logger never depends on this |
 | `mobile/telemetry` | POST | public (opaque install id only) | 20/min | Privacy-first weekly Android heartbeat |
 
 ### Gate & leads
@@ -63,6 +64,7 @@ Legend:
 |-------|---------|------|------|------|
 | `account/export` | GET | session (id from getUser only) | 3/5min/user | Art. 20 — every owned table as JSON attachment; wearable tokens redacted (`src/lib/accountDataServer.ts`) |
 | `account/delete` | POST | session (id from getUser only) | 2/5min/user | Art. 17 — Zod `accountDeleteBodySchema` (`confirm: 'DELETE'`); client `userId` rejected; client `deviceId` ignored (P2-1); email-keyed cleanups then linked-device anonymous wipe then `auth.admin.deleteUser` cascade |
+| `account/mission-id` | GET | session | 30/min/user | Sequential integer claim. No client mint. **503** unconfigured · **502** opaque |
 
 ### Coach
 
@@ -125,6 +127,9 @@ Legend:
 | `nudges/unsubscribe` | GET | signed token | 20/min/IP | query `u`+`t` |
 | `cron/nudges` | GET | `Authorization: Bearer CRON_SECRET` | — | Daily 17:00 UTC |
 | `cron/wind-down` | GET | `Authorization: Bearer CRON_SECRET` | — | **Hourly, from `.github/workflows/cron-wind-down.yml`** (Vercel Hobby caps crons at daily). Evening (19–22 local) note after a session that ran hot. Push only; own `last_wind_down_at` marker so it never suppresses a comeback. `?dryRun=1` reports `localHour` per candidate |
+| `cron/day-review` | GET | `Authorization: Bearer CRON_SECRET` | — | Hourly evening doorbell. No numbers on the push. Own `last_day_review_at` |
+| `health` | GET | none (shallow) · `Bearer CRON_SECRET` when `?deep=1` | — | `{ ok, build, time }`. Deep adds checks |
+| `metrics/week-logged` | POST | session | 20/min/IP | Zod `weekLoggedBodySchema`. Guests 401. No PII beyond uid |
 
 ### Checkout & webhooks
 
@@ -138,6 +143,9 @@ Legend:
 | `paypal-webhook` | POST | PayPal REST verify | — | service role enroll |
 | `beta/metrics` | GET | beta admin email **or** `x-beta-admin-secret` | — | service role aggregate |
 | `beta/feedback` | GET, POST | beta admin email **or** `x-beta-admin-secret` | POST 30/min/IP + 8 KiB | GET inbox + optional review join. POST Zod `feedbackReviewBodySchema` — founder dest. Missing table 503 `reviews_unavailable`. Never returns a Postgres `error.message` |
+| `beta/invites` | GET, POST | beta admin email **or** `x-beta-admin-secret` | POST rate-limited | GET funnel rows. POST issue code + `/private?invite=` link |
+| `beta/invites/landed` | POST | public (opaque) | 30/min/IP | Sets `first_landed_at` once; always 200 |
+| `beta/invites/redeem` | POST | session | 5/min/IP | Bind invite to user; ≤7-day account |
 
 ### Wearables (flag: `NEXT_PUBLIC_WEARABLES`)
 
