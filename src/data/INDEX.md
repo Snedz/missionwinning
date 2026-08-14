@@ -18,7 +18,7 @@
 | `starterPrograms.ts` | Free starter programs |
 | `premiumProgramTemplates.ts` | Premium programs (server-gated) |
 | `mobilityFlows.ts` | Free mobility flows (UI runner — not loggable sets) |
-| `premiumMobilityFlows.ts` | Premium mobility |
+| `premiumMobilityFlows.ts` | Premium mobility (server-only, clock-honest; 56 floor) |
 | `guidedMindSessions.ts` | Free mind sessions |
 | `premiumMindSessions.ts` | Premium mind |
 | `recipes/freeRecipes.ts`, `recipes/premiumRecipes.ts` | Nutrition recipes (`premiumRecipes` dynamic import on API route) |

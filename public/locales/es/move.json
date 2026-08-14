@@ -17,9 +17,11 @@
   "moveEmptyCta": "Browse free flows",
   "movePremiumFetchFailed": "Could not load premium flows",
   "movePremiumFetchFailedDesc": "Free flows still work. Check your connection and try again.",
+  "movePremiumFetchFailedOpenBeta": "Could not load extra recovery flows",
+  "movePremiumOfflineOpenBeta": "Extra recovery flows unavailable offline — free flows above still work.",
   "movePremiumRetry": "Try again",
-  "movePreviewPlayer": "Timed cues — Pliability-style recovery flows",
-  "moveLockedHint": "Free tier includes 10 flows. Premium adds 11 longer protocols — post-lift, morning open, low-back friendly, and athlete recovery.",
+  "movePreviewPlayer": "Timed cues — original recovery flows, no video",
+  "moveLockedHint": "Free tier includes {{free}} flows. Super Bundle adds {{premium}} longer timed protocols — post-lift, hotel floor, and athlete recovery. No video library.",
   "moveCollections": "Colecciones",
   "moveCollectionShowAll": "Ver todos los flujos",
   "moveCollectionEmpty": "No hay flujos en esta colección.",
@@ -27,5 +29,7 @@
   "movePremiumFlowsCount": "Más flujos de recuperación ({{count}})",
   "movePremiumPreviewCount": "Flujos de recuperación premium ({{count}})",
   "moveSubtitleDepthBeta": "{{free}} flujos gratuitos · {{unlocked}} desbloqueados en la beta abierta (temporizadores, sobre todo peso corporal).",
-  "moveSubtitleDepthPaid": "{{free}} flujos gratuitos · Super Bundle añade {{premium}} flujos de recuperación más largos."
+  "moveSubtitleDepthPaid": "{{free}} flujos gratuitos · Super Bundle añade {{premium}} flujos de recuperación más largos.",
+  "moveSubtitleBrief": "Pick a free flow. Timers and bodyweight — premium later if you want.",
+  "moveSubtitleBriefOpenBeta": "Pick a free flow. Timers and bodyweight — recovery depth open in open beta."
 }
