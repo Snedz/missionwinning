@@ -201,6 +201,9 @@ type InfoStrings = {
   infoUsageReportBody: string;
   infoUsageFoot: string;
   infoRegionsTitle: string;
+  /** `.769` — the sentence every blocked state renders. */
+  infoRegionsStillWorks: string;
+  infoRegionsUnknownEdge: string;
   infoRegionsSummary: string;
   infoRegionsSummaryBody: string;
   infoRegionsSupported: string;
@@ -547,6 +550,10 @@ const en: InfoStrings = {
     'Security/vulnerabilities: see SECURITY.md in the repository. AUP abuse: support@missionwinning.com (subject: AUP abuse). Legal: support@missionwinning.com (subject: Legal).',
   infoUsageFoot: 'Report abuse: support@missionwinning.com (subject: AUP abuse) · See also',
   infoRegionsTitle: 'Supported Regions',
+  infoRegionsStillWorks:
+    'The free workout logger still works here: it runs on this device, needs no account, and your data stays yours to export.',
+  infoRegionsUnknownEdge:
+    'We could not tell which country this connection is coming from — a VPN, a privacy browser or a carrier proxy will do that. Hosted signup and checkout stay unavailable until we can, and turning a VPN off usually resolves it.',
   infoRegionsSummary: 'Summary',
   infoRegionsSummaryBody:
     'Mission Winning’s hosted consumer service (website, PWA accounts, cloud sync, Super Bundle checkout, and our distributed Android product) is a global product with listed commercial exclusions: Europe (including France), Canada, Ukraine, and Organisation of Islamic Cooperation (OIC) member states. Cloudflare edge rules plus in-app signup/checkout hard blocks enforce these exclusions. Ukraine is a commercial product exclusion, separate from sanctions and trade-control compliance.',

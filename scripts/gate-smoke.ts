@@ -147,6 +147,64 @@ async function main() {
   }
 
   /*
+   * `.769` — the gate offers the product, and the logger is actually reachable.
+   *
+   * Shard 1 (US/LatAm, ops #16): the invite/account gate before any value is one
+   * of two themes covering ~27% of rows. Two facts have to be true together, so
+   * both are checked over the wire: the gate paints a "Log a set" action, and
+   * `/active` answers 200 **without** the access cookie. Either one alone is a
+   * dead end — a CTA into a 307, or a reachable logger nobody is told about.
+   */
+  try {
+    const res = await headOrGet('/private', { redirect: 'manual' });
+    const html = res.status === 200 ? await res.text() : '';
+    const offersLogger = /data-mw-free-logger/.test(html);
+    checks.push({
+      name: 'GET /private offers the free logger',
+      ok: offersLogger,
+      detail: offersLogger
+        ? '200 — gate paints a Log a set action'
+        : `no data-mw-free-logger in the gate HTML (status ${res.status}) — first paint is asking, not offering`,
+    });
+  } catch (e) {
+    checks.push({ name: 'GET /private offers the free logger', ok: false, detail: String(e) });
+  }
+
+  try {
+    const res = await headOrGet('/active', { redirect: 'manual' });
+    const ok = res.status === 200;
+    checks.push({
+      name: 'GET /active is public while gated (hard rule 2)',
+      ok,
+      detail: ok
+        ? '200 without the access cookie'
+        : `status ${res.status} → ${res.headers.get('location') || 'none'} — the free logger is gated`,
+    });
+  } catch (e) {
+    checks.push({ name: 'GET /active public while gated', ok: false, detail: String(e) });
+  }
+
+  /*
+   * And the blocked state is a limit, not a broken page: `/regions` must lead
+   * with what still works (`territoryHonesty.test.ts` owns the ordering rule;
+   * this one only asks whether the sentence reached the served page).
+   */
+  try {
+    const res = await headOrGet('/regions', { redirect: 'manual' });
+    const html = res.status === 200 ? await res.text() : '';
+    const explained = /data-mw-still-works/.test(html);
+    checks.push({
+      name: 'GET /regions explains the limit',
+      ok: explained,
+      detail: explained
+        ? '200 — "what still works" is on the page'
+        : `no data-mw-still-works (status ${res.status}) — the block reads as a dead end`,
+    });
+  } catch (e) {
+    checks.push({ name: 'GET /regions explains the limit', ok: false, detail: String(e) });
+  }
+
+  /*
    * `.768` — what the first paint weighs, over the wire.
    *
    * Shard 4 (diaspora + RU, ops #15) reports a heavy, slow www first paint, and

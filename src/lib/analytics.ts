@@ -38,6 +38,8 @@ export type AnalyticsEvent =
   | 'pillar_win'
   | 'bundle_viewed'
   | 'waitlist_joined'
+  /** `.769` — gate → free logger, the first non-asking action the gate offers. */
+  | 'gate_log_a_set_clicked'
   | 'checkout_clicked'
   | 'checkout_completed'
   | 'pwa_installed'

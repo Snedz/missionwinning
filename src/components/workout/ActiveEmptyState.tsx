@@ -14,6 +14,19 @@ import { LOCAL_FIRST_COPY } from '@/lib/localFirstCopy';
 
 type Props = {
   onStart: () => void;
+  /**
+   * `.769` — the first session, for a device with no history.
+   *
+   * `handleEmptyStart` deliberately stays freestyle ("Cold devices stay freestyle
+   * empty. Do not seed Just Go or Coach here"), and that rule is kept: this is a
+   * **separate, labelled** action, not a change to what Start does. It exists
+   * because the gate now lets a stranger reach the logger (`publicRoutes.ts`),
+   * and Today — where F-004 puts the seeded Start — is still cookie-gated. Shard
+   * 1 asked for value before the account; shard 4 asked for smart defaults.
+   * Landing someone on "Add exercises above to begin logging sets" is neither.
+   */
+  firstSession?: { name: string; exerciseCount: number } | null;
+  onStartFirstSession?: () => void;
   /** When false, Start is disabled until Zustand persist rehydrates. */
   hydrated?: boolean;
   /** Last completed session exists — Start copies it (`.717`). */
@@ -33,6 +46,8 @@ type Props = {
 /** Empty /active shell — start quick session or jump to Today / Builder. */
 export function ActiveEmptyState({
   onStart,
+  firstSession = null,
+  onStartFirstSession,
   hydrated = true,
   hasLastSession = false,
   victoryOpen,
@@ -155,22 +170,50 @@ export function ActiveEmptyState({
                     defaultValue: LOCAL_FIRST_COPY.activeNoWorkoutDesc,
                   })}
           </p>
-          <button
-            type="button"
-            onClick={onStart}
-            disabled={!hydrated}
-            className="primary-action min-h-[52px] w-full text-[19px] disabled:opacity-60"
-            aria-busy={hydrated ? undefined : true}
-          >
-            <span className="flex-1 text-start">
-              {!hydrated
-                ? t('activeLoadingSession', { defaultValue: 'Restoring session…' })
-                : hasLastSession
-                  ? t('activeRepeatLastSession', { defaultValue: 'Repeat last session' })
-                  : t('activeStartWorkout', { defaultValue: 'Start workout' })}
-            </span>
-            <ChevronRight className="ms-auto h-5 w-5 shrink-0" aria-hidden />
-          </button>
+          {/* Exactly one red action, whichever it is. */}
+          {hydrated && firstSession && onStartFirstSession ? (
+            <>
+              <button
+                type="button"
+                onClick={onStartFirstSession}
+                className="primary-action min-h-[52px] w-full text-[19px]"
+                data-mw-first-session
+              >
+                <span className="flex-1 text-start">
+                  {t('activeStartFirstSession', {
+                    name: firstSession.name,
+                    count: firstSession.exerciseCount,
+                    defaultValue: `Start ${firstSession.name} — ${firstSession.exerciseCount} exercises`,
+                  })}
+                </span>
+                <ChevronRight className="ms-auto h-5 w-5 shrink-0" aria-hidden />
+              </button>
+              <button
+                type="button"
+                onClick={onStart}
+                className="mt-2 min-h-[44px] w-full border-2 border-border bg-background text-sm font-semibold tap-target"
+              >
+                {t('activeStartWorkout', { defaultValue: 'Start Workout' })}
+              </button>
+            </>
+          ) : (
+            <button
+              type="button"
+              onClick={onStart}
+              disabled={!hydrated}
+              className="primary-action min-h-[52px] w-full text-[19px] disabled:opacity-60"
+              aria-busy={hydrated ? undefined : true}
+            >
+              <span className="flex-1 text-start">
+                {!hydrated
+                  ? t('activeLoadingSession', { defaultValue: 'Restoring session…' })
+                  : hasLastSession
+                    ? t('activeRepeatLastSession', { defaultValue: 'Repeat last session' })
+                    : t('activeStartWorkout', { defaultValue: 'Start Workout' })}
+              </span>
+              <ChevronRight className="ms-auto h-5 w-5 shrink-0" aria-hidden />
+            </button>
+          )}
         </div>
       </ScreenDock>
       <WorkoutVictorySheet

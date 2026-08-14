@@ -1,6 +1,7 @@
 {
   "activeReentryStart": "軽めのセッションを開始",
   "activeReentryStartDesc": "復帰後の最初のセッションは軽め。やり切れば、週の計画が組み直されます。",
+  "activeStartFirstSession": "{{name}} を開始 — {{count}} 種目",
   "americaCtaTest": "体力テストを受けてください",
   "americaCtaToday": "今日に行く",
   "americaCtaWelcome": "I デイの旅を始めましょう",

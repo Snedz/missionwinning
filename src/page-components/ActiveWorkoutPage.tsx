@@ -8,6 +8,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { repRangeForGoal } from '@/lib/coach/progression';
 import { parseGoalPresetId } from '@/lib/journeyGoals';
+import { previewJustGoForEquipment } from '@/lib/justGoSession';
 import { readRaw } from '@/lib/storage/safeStorage';
 import { STORAGE_KEYS } from '@/lib/storage/keys';
 import { useRouter, useSearchParams } from 'next/navigation';
@@ -581,6 +582,28 @@ export function ActiveWorkoutPage() {
     router.push(activePostSessionPath('history'));
   };
 
+  /**
+   * `.769` — the first session, for a device that has none.
+   *
+   * The gate now lets a stranger reach `/active` (`publicRoutes.ts`) while Today
+   * — where F-004 docks the seeded Start — still needs the access cookie. So the
+   * template Today would have offered is offered here instead, as its own action:
+   * `handleEmptyStart` stays freestyle, exactly as its comment requires.
+   */
+  const firstSessionOffer = useMemo(() => {
+    if (workoutHistory.length > 0) return null;
+    const equipment = readRaw(STORAGE_KEYS.equipment) || 'bodyweight';
+    const preview = previewJustGoForEquipment(equipment);
+    if (!preview?.exercises?.length) return null;
+    return { name: preview.name, exercises: preview.exercises };
+  }, [workoutHistory.length]);
+
+  const handleStartFirstSession = () => {
+    if (!firstSessionOffer) return;
+    startWorkout(firstSessionOffer.name, firstSessionOffer.exercises);
+    track('just_go_started', { from: 'active_empty_first' });
+  };
+
   const handleEmptyStart = () => {
     /*
      * Strong/Hevy empty start: copy the last completed session when one exists.
@@ -603,6 +626,15 @@ export function ActiveWorkoutPage() {
     return (
       <ActiveEmptyState
         onStart={handleEmptyStart}
+        firstSession={
+          firstSessionOffer
+            ? {
+                name: firstSessionOffer.name,
+                exerciseCount: firstSessionOffer.exercises.length,
+              }
+            : null
+        }
+        onStartFirstSession={handleStartFirstSession}
         hydrated={hasHydrated}
         hasLastSession={resolveActiveEmptyStart(workoutHistory).kind === 'repeat_last'}
         victoryOpen={victoryOpen}

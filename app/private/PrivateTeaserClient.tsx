@@ -6,6 +6,8 @@ import { useTranslation } from 'react-i18next';
 import { AppLegalFooter } from '@/components/layout/AppLegalFooter';
 import { LaunchNotifyForm } from '@/components/public/LaunchNotifyForm';
 import { gateEnFloor } from '@/i18n/gateEn';
+import { track } from '@/lib/analytics';
+import { TERRITORY_STILL_WORKS } from '@/lib/legal/supportedRegions';
 import {
   APP_PUBLIC_PRODUCT_VERSION,
   APP_PUBLIC_VERSION,
@@ -237,6 +239,29 @@ export function PrivateTeaserClient({ initialInvite = '', initialNext = '' }: Pr
             </section>
           ) : (
             <section className="gate-section">
+              {/*
+                `.769` — the first thing on offer is the product, not a form.
+                Shard 1 (US/LatAm, ops #16): the invite/account gate before any
+                value is one of two themes covering ~27% of rows. Every action on
+                this page used to be a way of *asking* — an email, or a code — and
+                the free logger sat behind the gate where nobody could reach it.
+                `/active` is public while gated now (`publicRoutes.ts`), so this
+                CTA is a real door: I-Day is two steps and ends at the logger.
+              */}
+              <p className="gate-kicker">{g('gateFreeLoggerEyebrow')}</p>
+              <div className="gate-actions">
+                <a
+                  href="/welcome"
+                  className="gate-btn gate-btn-primary"
+                  data-mw-free-logger
+                  onClick={() => track('gate_log_a_set_clicked')}
+                >
+                  {g('gateFreeLoggerCta')}
+                </a>
+              </div>
+              <p className="gate-foot">{g('gateFreeLoggerFoot')}</p>
+              <hr className="gate-rule" />
+
               {territory.stance === 'refuse' ? (
                 /*
                  * A named excluded territory. The poster still stands — the
@@ -250,6 +275,10 @@ export function PrivateTeaserClient({ initialInvite = '', initialNext = '' }: Pr
                     {t('infoRegionsTitle', { defaultValue: 'Supported Regions' })}
                   </p>
                   <p className="gate-invite-copy">{territory.message}</p>
+                  {/* Not a dead end: the logger above still works here (`.769`). */}
+                  <p className="gate-foot" data-mw-still-works>
+                    {t('infoRegionsStillWorks', { defaultValue: TERRITORY_STILL_WORKS })}
+                  </p>
                   <p className="gate-foot">
                     <Link href="/regions">
                       {t('infoRegionsNotSupported', {

@@ -49,10 +49,17 @@ test('MoreSheet gate signal is workout history length (same as basic.workout)', 
 test('I-Day finish lands on Today (/log), not an auto-started Active session', () => {
   const src = read('src/page-components/WelcomePage.tsx');
   const finish = src.slice(src.indexOf('const finish ='), src.indexOf('const handleBegin'));
+  /*
+   * `.769` — F-004 still lands on Today, and now says *when*: `/log` the moment
+   * the gate is off, `/active` while it is on, because Today demands the access
+   * cookie and finishing I-Day used to end on `/private`. Shard 1 (US/LatAm)
+   * measured that wall as one of its two biggest themes. Both destinations are
+   * pinned so neither can quietly become the only one.
+   */
   assert.match(
     finish,
-    /go\(\s*['"`]\/log['"`]\s*\)/,
-    'Hevy / F-004: post-signup must open Today with one Start'
+    /go\(\s*isClientPrivateGateEnabled\(\)\s*\?\s*['"`]\/active['"`]\s*:\s*['"`]\/log['"`]\s*\)/,
+    'F-004: post-I-Day must open Today when ungated, and the logger while gated'
   );
   assert.doesNotMatch(
     finish,

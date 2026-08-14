@@ -1,6 +1,7 @@
 {
   "activeReentryStart": "가벼운 세션 시작",
   "activeReentryStartDesc": "복귀 첫 세션은 가볍게 — 끝낼 수 있고, 그다음 주간 계획이 다시 세워집니다.",
+  "activeStartFirstSession": "{{name}} 시작 — {{count}}개 운동",
   "americaCtaTest": "체력 테스트를 받아보세요",
   "americaCtaToday": "오늘로 이동",
   "americaCtaWelcome": "I-Day 여행을 시작하세요",

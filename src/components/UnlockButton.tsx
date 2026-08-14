@@ -16,6 +16,7 @@ import {
 import { submitLead } from '@/lib/supabase';
 import { track } from '@/lib/analytics';
 import { fetchTerritoryAccess } from '@/lib/legal/territoryAccessClient';
+import { TERRITORY_STILL_WORKS } from '@/lib/legal/supportedRegions';
 
 interface Props {
   productId?: string;
@@ -107,9 +108,9 @@ export function UnlockButton({
         <p className="text-sm text-foreground font-medium" role="alert">
           {territoryMessage}
         </p>
-        <p className="text-xs text-muted-foreground">
-          The free offline logger still works on your device without an account.{' '}
-          <Link href="/regions" className="text-primary hover:underline">
+        <p className="text-xs text-muted-foreground" data-mw-still-works>
+          {TERRITORY_STILL_WORKS}{' '}
+          <Link prefetch={false} href="/regions" className="text-primary hover:underline">
             Supported Regions
           </Link>
         </p>

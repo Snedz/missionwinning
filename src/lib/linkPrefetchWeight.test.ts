@@ -67,6 +67,8 @@ function componentFiles(): string[] {
 const PRODUCT_PATHS = new Set([
   '/private',
   '/welcome',
+  /** `.769` — the free logger is public while gated; it is the product, not legal. */
+  '/active',
   '/beta',
   '/guide',
   '/exercises',

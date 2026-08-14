@@ -26,6 +26,7 @@ import {
   type OAuthProvider,
 } from '@/lib/supabase';
 import { fetchTerritoryAccess } from '@/lib/legal/territoryAccessClient';
+import { TERRITORY_STILL_WORKS } from '@/lib/legal/supportedRegions';
 
 type SignInPanelProps = {
   /** Called after magic link is sent or user skips (Welcome flow). */
@@ -223,8 +224,8 @@ export function SignInPanel({
         >
           {territoryMessage}
         </p>
-        <p className="text-xs text-muted-foreground">
-          You can still use the free offline logger without an account.{' '}
+        <p className="text-xs text-muted-foreground" data-mw-still-works>
+          {t('infoRegionsStillWorks', { defaultValue: TERRITORY_STILL_WORKS })}{' '}
           <Link prefetch={false} href="/regions" className="text-primary underline underline-offset-2">
             Supported Regions
           </Link>

@@ -38,6 +38,7 @@
   "activeSetLoggedSuperset": "{{reps}} × {{weight}} — 超级组中的下一个练习",
   "activeSetNormal": "工作",
   "activeSetWarmup": "热身",
+  "activeStartFirstSession": "开始 {{name}} — {{count}} 个动作",
   "activeStartRest": "{{seconds}}秒 休息",
   "activeSupersetLink": "超级组与下一个",
   "activeSupersetUnlink": "取消链接超集",

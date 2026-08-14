@@ -43,6 +43,7 @@
   "activeSetNormal": "Bekerja",
   "activeSetWarmup": "Pemanasan",
   "activeSetsCompleted": "{{done}}/{{total}} set selesai",
+  "activeStartFirstSession": "Mulai {{name}} — {{count}} latihan",
   "activeStartRest": "{{seconds}} Istirahat",
   "activeSupersetLink": "Superset dengan berikutnya",
   "activeSupersetUnlink": "Putuskan tautan superset",

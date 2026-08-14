@@ -11,6 +11,8 @@ import { InfoPageShell, InfoSection } from '@/components/layout/InfoPageShell';
 import { infoEnFloor } from '@/i18n/infoEnFloor';
 import {
   EUROPE_UNSUPPORTED_ISO2,
+  TERRITORY_BLOCK_MESSAGES,
+  TERRITORY_STILL_WORKS,
   EXTRA_UNSUPPORTED_ISO2,
   OIC_UNSUPPORTED_ISO2,
   REGION_POLICY,
@@ -52,9 +54,27 @@ export function SupportedRegionsPage() {
       showLegalFooter
       jumpLinks={jumpLinks}
     >
-      <p className="text-sm text-muted-foreground -mt-2 mb-4 border-2 border-border bg-muted/40 p-3">
+      {/*
+        `.769` — the answer first, the policy second.
+        Shard 1 (US/LatAm, ops #16): the geo-block "reads as a broken page, not an
+        explained limit". This page opened with a market-posture sentence and four
+        ISO lists — accurate, and no use to someone who just wants to know whether
+        they can use the app. What still works has always been on this page, in the
+        fifth section. It is now the first thing on it, from the same constant every
+        blocked state renders.
+      */}
+      <p
+        className="text-sm text-foreground -mt-2 mb-3 border-2 border-border p-3"
+        data-mw-still-works
+      >
+        {t('infoRegionsStillWorks', { defaultValue: TERRITORY_STILL_WORKS })}
+      </p>
+      <p className="text-sm text-muted-foreground mb-4 border-2 border-border bg-muted/40 p-3">
         <strong className="text-foreground">{REGION_POLICY.marketPosture} platform.</strong>{' '}
-        {REGION_POLICY.summary}
+        {REGION_POLICY.summary}{' '}
+        {t('infoRegionsUnknownEdge', {
+          defaultValue: TERRITORY_BLOCK_MESSAGES.unknown_edge,
+        })}
       </p>
 
       {SECTIONS.map((section) => (

@@ -222,8 +222,19 @@ export const TERRITORY_BLOCK_MESSAGES: Record<TerritoryBlockReason, string> = {
   oic: 'Mission Winning’s hosted service is not available in Organisation of Islamic Cooperation member states.',
   canada: 'Mission Winning’s hosted service is not available in Canada.',
   ukraine: 'Mission Winning’s hosted service is not available in Ukraine.',
+  /**
+   * `.769` — the cause, not just the verdict.
+   *
+   * Shard 1 (US/LatAm, ops #16) reports the geo-block reading as a broken page,
+   * and US/LatAm are **supported** territories — so the state these respondents
+   * hit is almost certainly this one: Cloudflare could not place the connection
+   * (`XX`/`T1`), which a VPN, a privacy browser or a carrier proxy will do
+   * routinely on mobile networks in the region. "We could not confirm a supported
+   * region" told them nothing they could act on, and the old sentence read like a
+   * rejection of *them* rather than a limit of *us*.
+   */
   unknown_edge:
-    'We could not confirm a supported region for this connection. Hosted signup and checkout are unavailable.',
+    'We could not tell which country this connection is coming from — a VPN, a privacy browser or a carrier proxy will do that. Hosted signup and checkout stay unavailable until we can, and turning a VPN off usually resolves it.',
 };
 
 /** Platform-set country headers. `x-country-code` is not trusted for access. */
@@ -253,6 +264,23 @@ export function countriesFromRequestHeaders(headers: {
 }
 
 /** Read CDN country from request headers. Display hint — may include `x-country-code`. */
+/**
+ * What is still true for a visitor we cannot serve — the sentence that turns a
+ * dead end into a limit.
+ *
+ * Shard 1's second theme: the block "reads as a broken page, not an explained
+ * limit". The block itself is founder policy and stays exactly as it is; what was
+ * missing is that **the thing most people came for still works**. The free logger
+ * is device-local, needs no account, and `/regions` has always said so — in the
+ * fifth paragraph, in "What 'hosted service' means".
+ *
+ * One home, rendered by every blocked state: the gate, sign-in, checkout, and the
+ * top of `/regions`.
+ */
+export const TERRITORY_STILL_WORKS =
+  'The free workout logger still works here: it runs on this device, needs no account, and your data stays yours to export.';
+
+/** Read CDN country from request headers (Cloudflare / Vercel). */
 export function countryFromRequestHeaders(headers: {
   get(name: string): string | null;
 }): string | null {

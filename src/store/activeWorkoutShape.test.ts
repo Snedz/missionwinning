@@ -129,9 +129,12 @@ describe('the onboarding call site', () => {
       finish.includes('hasLoggedWork'),
       'WelcomePage.finish() must ask whether there is work to resume on /active'
     );
+    // `.769` — Today when ungated; the free logger while the gate would bounce it.
     assert.ok(
-      /go\(\s*['"`]\/log['"`]\s*\)/.test(finish),
-      'default I-Day finish must land on Today (/log) with one Start — Hevy rage / C5'
+      /go\(\s*isClientPrivateGateEnabled\(\)\s*\?\s*['"`]\/active['"`]\s*:\s*['"`]\/log['"`]\s*\)/.test(
+        finish
+      ),
+      'default I-Day finish must land on Today (/log) with one Start, or the logger while gated'
     );
     assert.ok(
       !finish.includes('startWorkout('),

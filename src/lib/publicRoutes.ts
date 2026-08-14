@@ -33,6 +33,26 @@ export const JOURNEY_BYPASS_PATHS = [
 export const PRIVATE_GATE_PUBLIC_PATHS = [
   '/private',
   '/welcome',
+  /**
+   * The free logger — hard rule 2, executable.
+   *
+   * `.769` — shard 1 (US/LatAm, ops #16) found that its **two biggest themes,
+   * ~27% of rows, are the invite/account gate before any value** and a geo-block
+   * that reads as a broken page. The first one was literally true: with the gate
+   * up, `/welcome` was public and `/active` was not, so a visitor could complete
+   * I-Day and land on `/private`. Every road led back to an email form.
+   *
+   * "The free logger is never gated. Ever." is hard rule 2, and `#523` shipped
+   * the first set without an account. Adding `/active` here is what makes those
+   * two facts reachable by a stranger; it is not a `PRIVATE_MODE` flip and it
+   * does not open Today, Coach, Fuel, history or any account surface — those
+   * still demand the cookie, and the nav to them still explains itself at the
+   * gate. Precedent: `/welcome` was added the same way, so SEO could reach I-Day.
+   *
+   * The logger needs no API: sets are written to this device
+   * (`localFirstCopy.ts`), and sync is what an account buys.
+   */
+  '/active',
   '/privacy',
   '/terms',
   /** A cookie policy unreachable pre-consent / pre-gate is a defect. */

@@ -1,6 +1,7 @@
 {
   "activeReentryStart": "Inizia sessione più leggera",
   "activeReentryStartDesc": "Prima sessione di rientro più breve — finibile, poi la settimana si ricostruisce.",
+  "activeStartFirstSession": "Inizia {{name}} — {{count}} esercizi",
   "gateCheckingSession": "Verifica accesso…",
   "gateWaitlistFailed": "Non è stato salvato. Controlla la connessione e riprova.",
   "guideChapter_assessments-progress_subtitle": "Valuta in sicurezza, confrontati con onestà, regola con intenzionalità",

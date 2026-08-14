@@ -32,6 +32,18 @@ export const GATE_EN: Record<string, string> = {
    */
   gateLocalFirst: LOCAL_FIRST_COPY.gateLocalFirst,
   gateFooterTagline: 'free core forever',
+  /**
+   * `.769` — the gate's one red action, and the only honest one it has ever had.
+   *
+   * The logger is free, needs no account, and `/active` is reachable while the
+   * gate is up, so this is a door rather than a pitch. Shard 1 (US/LatAm) put the
+   * invite wall in ~27% of rows; an email form as the only thing on offer is what
+   * that wall looked like.
+   */
+  gateFreeLoggerEyebrow: 'Free, right now — no invite needed',
+  gateFreeLoggerCta: 'Log a set',
+  gateFreeLoggerFoot:
+    'The workout logger is open to everyone: no account, no invite, sets written to this device. An invite adds Today, Mission Coach and sync.',
   gateWaitlistTitle: 'Get notified',
   gateWaitlistPlaceholder: 'you@example.com',
   gateWaitlistEmailLabel: 'Email',

@@ -42,6 +42,7 @@
   "activeSetNormal": "عمل",
   "activeSetWarmup": "تسخين",
   "activeSetsCompleted": "{{done}}/{{total}} اكتملت المجموعات",
+  "activeStartFirstSession": "ابدأ {{name}} — {{count}} تمارين",
   "activeStartRest": "راحة لمدة {{seconds}}",
   "activeSupersetLink": "مجموعة شاملة مع التالي",
   "activeSupersetUnlink": "إلغاء ربط المجموعة الشاملة",

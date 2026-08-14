@@ -4,6 +4,8 @@ type ActiveWorkoutStrings = {
   activeNoWorkout: string;
   activeNoWorkoutDesc: string;
   activeStartWorkout: string;
+  /** `.769` — the seeded first session on a device with no history. */
+  activeStartFirstSession: string;
   activeSetsCompleted: string;
   activeCancel: string;
   activeLiveSession: string;
@@ -274,6 +276,7 @@ const en: ActiveWorkoutStrings = {
   activeNoWorkoutDesc:
     'Start here, or open Today for the session already planned for you. Sets and rest save on this device.',
   activeStartWorkout: 'Start Workout',
+  activeStartFirstSession: 'Start {{name}} — {{count}} exercises',
   activeSetsCompleted: '{{done}}/{{total}} sets completed',
   activeCancel: 'Cancel',
   activeFinish: 'Finish',

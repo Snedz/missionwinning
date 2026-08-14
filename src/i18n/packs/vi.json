@@ -1,6 +1,7 @@
 {
   "activeReentryStart": "Bắt đầu buổi nhẹ hơn",
   "activeReentryStartDesc": "Buổi đầu trở lại nhẹ hơn — có thể hoàn thành, rồi tuần sẽ được xây lại.",
+  "activeStartFirstSession": "Bắt đầu {{name}} — {{count}} bài",
   "americaCtaTest": "Làm bài kiểm tra thể lực",
   "americaCtaToday": "Đi tới hôm nay",
   "americaCtaWelcome": "Bắt đầu hành trình trong ngày",

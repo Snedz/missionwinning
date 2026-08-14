@@ -36,7 +36,10 @@ import { BrandMonogram } from '@/components/brand/BrandMonogram';
 import { readRaw, writeRaw } from '@/lib/storage/safeStorage';
 import { STORAGE_KEYS } from '@/lib/storage/keys';
 import { seedHomeGymKitIfUnset } from '@/lib/workout/homeGymKit';
-import { navigateAfterPrivateGateUnlock } from '@/lib/privateGateNavigate';
+import {
+  isClientPrivateGateEnabled,
+  navigateAfterPrivateGateUnlock,
+} from '@/lib/privateGateNavigate';
 import { LOCAL_FIRST_COPY } from '@/lib/localFirstCopy';
 
 const EXPERIENCE_VALUES = ['beginner', 'intermediate', 'advanced'] as const;
@@ -122,7 +125,17 @@ export function WelcomePage({ initialEdit = false }: WelcomePageProps) {
       go('/active');
       return;
     }
-    go('/log');
+    /*
+     * `.769` — while the gate is up, Today is not reachable.
+     *
+     * F-004's landing is Today with one Start, and that is still the destination
+     * the moment `PRIVATE_MODE` is off. But with the gate on, `/log` demands the
+     * access cookie, so finishing I-Day sent a stranger to `/private` — the
+     * invite wall shard 1 (US/LatAm) measured as one of its two biggest themes.
+     * The logger is the one app surface a stranger may use (hard rule 2), so
+     * while gated, I-Day ends where the value is instead of at an email form.
+     */
+    go(isClientPrivateGateEnabled() ? '/active' : '/log');
   };
 
   const handleBegin = () => {

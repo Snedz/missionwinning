@@ -32,7 +32,43 @@ describe('isPublicPathWhileGated', () => {
     assert.equal(isPublicPathWhileGated('/feedback'), true);
     assert.equal(isPublicPathWhileGated('/today'), false);
     assert.equal(isPublicPathWhileGated('/log'), false);
-    assert.equal(isPublicPathWhileGated('/active'), false);
+  });
+
+  /**
+   * `.769` — hard rule 2, as a test: "the free logger is never gated. Ever."
+   *
+   * `/active` is public while the gate is up. Shard 1 (US/LatAm, ops #16) found
+   * the invite wall in ~27% of rows, and it was literally true — `/welcome` was
+   * public, the logger was not, so finishing I-Day landed on `/private`.
+   *
+   * The blast radius is asserted here rather than described: **only** the logger
+   * opens. Today, Coach, Fuel, history, profile and account still demand the
+   * cookie, so this cannot drift into "the app is public" one route at a time.
+   */
+  it('opens the free logger while gated, and nothing else in the app', () => {
+    assert.equal(isPublicPathWhileGated('/active'), true);
+    for (const gated of [
+      '/log',
+      '/coach',
+      '/nutrition',
+      '/history',
+      '/profile',
+      '/account',
+      '/move',
+      '/mind',
+      '/track',
+      '/builder',
+      '/library',
+      '/leaderboard',
+      '/assessments',
+      '/benchmarks',
+    ]) {
+      assert.equal(
+        isPublicPathWhileGated(gated),
+        false,
+        `${gated} must still require the access cookie — only the logger is open`
+      );
+    }
   });
 });
 

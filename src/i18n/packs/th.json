@@ -1,6 +1,7 @@
 {
   "activeReentryStart": "เริ่มเซสชันที่เบากว่า",
   "activeReentryStartDesc": "เซสชันแรกหลังกลับมาสั้นลง — ทำจบได้ แล้วแผนสัปดาห์จะปรับใหม่",
+  "activeStartFirstSession": "เริ่ม {{name}} — {{count}} ท่า",
   "americaCtaTest": "ทำแบบทดสอบสมรรถภาพร่างกาย",
   "americaCtaToday": "ไปที่วันนี้",
   "americaCtaWelcome": "เริ่มต้นการเดินทาง I-Day",

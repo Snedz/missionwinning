@@ -2,6 +2,7 @@
   "activeReentryStart": "आसान सत्र शुरू करें",
   "activeReentryStartDesc": "वापसी का पहला सत्र छोटा — पूरा हो सकेगा, फिर सप्ताह फिर से बनेगा।",
   "activeSetsCompleted": "{{done}}/{{total}} सेट पूरा हो गया",
+  "activeStartFirstSession": "{{name}} शुरू करें — {{count}} व्यायाम",
   "bundleBadgeBestValue": "सबसे अच्छा मूल्य",
   "bundleBilledMonthly": "${{price}} मासिक बिल भेजा जाता है",
   "bundleBilledTotal": "${{price}} एक बार बिल किया गया",

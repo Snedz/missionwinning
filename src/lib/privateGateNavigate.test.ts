@@ -29,7 +29,17 @@ function stripComments(src: string): string {
 }
 
 /** Wedge routes that must not render via soft nav while PRIVATE_MODE is on without a cookie. */
-const BETA_FIELD_GATED_WEDGE = ['/active', '/log', '/coach', '/profile'] as const;
+/**
+ * `.769` — `/active` left this list because it is no longer gated.
+ *
+ * The defect this guards (`.618`) was a **soft** nav from a gate-public page into
+ * a **gated** route: `curl` 307s to `/private` while `router.push` rendered the
+ * app client-side. That mismatch is what needs the hard nav. `/active` is now
+ * public while gated (hard rule 2, `publicRoutes.ts`), so proxy and router agree
+ * about it and a soft nav tells no lie. `/log`, `/coach` and `/profile` are still
+ * cookie-gated, so they are still pinned here.
+ */
+const BETA_FIELD_GATED_WEDGE = ['/log', '/coach', '/profile'] as const;
 
 test('beta field: gated wedge routes require hard nav when gate is on (no cookie)', () => {
   const prev = process.env.NEXT_PUBLIC_PRIVATE_GATE;
@@ -45,6 +55,8 @@ test('beta field: gated wedge routes require hard nav when gate is on (no cookie
     }
     assert.equal(privateGateRequiresHardNavigation('/welcome'), false);
     assert.equal(privateGateRequiresHardNavigation('/private'), false);
+    // The free logger is public while gated, so it needs no hard nav either.
+    assert.equal(privateGateRequiresHardNavigation('/active'), false);
   } finally {
     process.env.NEXT_PUBLIC_PRIVATE_GATE = prev;
   }
