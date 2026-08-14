@@ -13,8 +13,13 @@
 
 import { describe, it } from 'node:test';
 import assert from 'node:assert/strict';
+import { readFileSync } from 'node:fs';
+import path from 'node:path';
 import { INVITE_CODE_RE, generateInviteCode, isValidInviteCode } from '@/lib/inviteCode';
 import { REFERRAL_ALPHABET, generateReferralCode } from '@/lib/referralCode';
+
+const root = path.join(import.meta.dirname, '..', '..');
+const read = (p: string) => readFileSync(path.join(root, p), 'utf8');
 
 describe('generateInviteCode', () => {
   it('emits the documented shape for every position in the alphabet', () => {
@@ -73,5 +78,15 @@ describe('isValidInviteCode', () => {
     assert.ok(!isValidInviteCode('MW-B-IOOO1'), 'ambiguous characters must not pass');
     // An inner space survives `.trim()` and must still be rejected.
     assert.ok(!isValidInviteCode('MW-B- ABCD'), 'an inner space must not pass');
+  });
+});
+
+describe('default RNG is CSPRNG', () => {
+  it('invite, referral, and class codes do not call Math.random', () => {
+    for (const file of ['src/lib/inviteCode.ts', 'src/lib/referralCode.ts', 'src/lib/schoolClass.ts']) {
+      const src = read(file);
+      assert.doesNotMatch(src, /Math\.random/, `${file} still draws from Math.random`);
+      assert.match(src, /getRandomValues/, `${file} must use crypto.getRandomValues`);
+    }
   });
 });

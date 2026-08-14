@@ -58,6 +58,27 @@ describe('deployReadiness', () => {
     }
   });
 
+  it('SITE_URL host check uses the hostname, not a substring', () => {
+    const snap = snapshotEnv();
+    try {
+      setTestEnv('NODE_ENV', 'production');
+      setTestEnv('RESEND_FROM', 'Mission Winning <hello@missionwinning.com>');
+      setTestEnv('NEXT_PUBLIC_SITE_URL', 'https://evilmissionwinning.com');
+      const spoof = warnLaunchEmailAndSiteUrl();
+      assert.equal(
+        spoof.some((m) => m.includes('non-www')),
+        false,
+        'a lookalike host is not our apex'
+      );
+
+      setTestEnv('NEXT_PUBLIC_SITE_URL', 'https://missionwinning.com');
+      const apex = warnLaunchEmailAndSiteUrl();
+      assert.ok(apex.some((m) => m.includes('non-www')), 'apex without www still warns');
+    } finally {
+      restoreEnv(snap);
+    }
+  });
+
   describe('production target', () => {
     let envSnapshot: NodeJS.ProcessEnv;
 

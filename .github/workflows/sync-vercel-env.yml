@@ -22,6 +22,8 @@ on:
 jobs:
   sync:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     # Founder: create GH Environment "production" with required reviewers when repo is Public.
     environment: production
     steps:

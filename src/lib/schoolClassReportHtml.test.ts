@@ -21,6 +21,6 @@ describe('schoolClassReportHtml', () => {
       { rank: 1, athleteLabel: '<script>', bestTier: 'below', score: 0 },
     ]);
     assert.match(html, /&lt;script&gt;/);
-    assert.doesNotMatch(html, /<script>/);
+    assert.doesNotMatch(html, /<script>/i);
   });
 });
