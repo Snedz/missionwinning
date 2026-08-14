@@ -17,14 +17,14 @@
 | `check-build-label.mjs` | `npm run check-build-label` | **Hard rule 5, executable.** Label must exceed `origin/master`'s and be cited in LOG.md + CONTEXT.md. Gate step 2 — before the build, so an unbumped label doesn't cost 3 min |
 | `week4-smoke.mjs` | `npm run week4-smoke` | Weekly-digest dryRun + optional `mw_week4_retention` RPC |
 | `../supabase/checks/week4_retention_proof.sql` | `psql "$DATABASE_URL" -v ON_ERROR_STOP=1 -f supabase/checks/week4_retention_proof.sql` | Seeds every boundary case for the boss metric, asserts 5 eligible / 2 retained, then **rolls back**. `week4-smoke` proves the RPC *answers*; this proves it answers *correctly* |
-| `launch-verify.mjs` | `npm run launch-verify` | Track D chain: env + Supabase + Stripe gates + gate-smoke + growth-smoke + rate-limit-smoke + e2e:critical |
+| `launch-verify.mjs` | `npm run launch-verify` | Track D chain: env + Supabase + Stripe gates + gate-smoke + growth-smoke + rate-limit-smoke + e2e:critical. Default env profile is Horizon 0 (`--launch`). `LAUNCH_PAID=true` or `--paid` selects Horizon 1 (Stripe webhook + Checkout). |
 | `lighthouse-budget.mjs` | `LIGHTHOUSE_SNAPSHOT=1 node scripts/lighthouse-budget.mjs` | Mobile Lighthouse budgets (see [docs/LIGHTHOUSE_BASELINE.md](../docs/LIGHTHOUSE_BASELINE.md)) |
 | `verify-stripe-enrollment.mjs` | `node scripts/verify-stripe-enrollment.mjs` | Row shape; `--check-gates`; `--check-checkout`; `--check-crypto-checkout`; `--ping-webhook`; `--verify-enrollment <email>` |
 | `setup-stripe-webhook.mjs` | `STRIPE_SECRET_KEY=sk_… node scripts/setup-stripe-webhook.mjs` | Create Stripe `checkout.session.completed` webhook; print `whsec` for Vercel |
 | `verify-premium` (npm) | `npm run verify-premium` | Alias for `--check-gates` against `SMOKE_BASE_URL` |
 | `verify-supabase-security.mjs` | `node scripts/verify-supabase-security.mjs` | Security migration checklist |
 | `pre-deploy-smoke.ts` | `npm run predeploy` | Before deploy |
-| `check-env.mjs` | `npm run check-env` | Verify `.env.local`; add `--launch` for go-live env |
+| `check-env.mjs` | `npm run check-env` | Verify `.env.local`. `--launch` = Horizon 0 while FREE_BETA is on (`MAIL_POSTAL_ADDRESS` required; Stripe not). `--launch --paid` or `LAUNCH_PAID=true` = Horizon 1 (Stripe webhook + Checkout). `NEXT_PUBLIC_FREE_BETA=false/0/off` makes `--launch` Horizon 1. Implementation: `evaluateCheckEnv`. |
 | `oauth-provider-checklist.mjs` | `node scripts/oauth-provider-checklist.mjs` | Print Google/Apple/Azure/Facebook enable order (see ENV.md) |
 | `export-locale-json.ts` | `npm run export-locales` | Export i18n TS + packs → `public/locales/` |
 | `i18n-parity.ts` | `npm run i18n:parity` | APP_LANGS key-set + non-EN placeholder gate (CI) |

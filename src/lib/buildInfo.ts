@@ -1,5 +1,5 @@
-/** Shown on Profile so testers can confirm the deployed build. Bump when shipping UI to master. `.780` PWA start_url flag-switch. */
-export const APP_BUILD_LABEL = "2026.07-unified.780";
+/** Shown on Profile so testers can confirm the deployed build. Bump when shipping UI to master. `.781` H0 vs H1 launch env. */
+export const APP_BUILD_LABEL = "2026.07-unified.781";
 
 /**
  * Semver for athletes. Distinct from `APP_BUILD_LABEL`, which `/api/health`

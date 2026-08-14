@@ -1,10 +1,35 @@
 #!/usr/bin/env node
 /**
  * Quick env sanity check — run: npm run check-env
- * Production launch: npm run check-env -- --launch
- * Does not print secret values.
+ *
+ * Horizon 0 (free-first public flip, FREE_BETA on):
+ *   npm run check-env -- --launch
+ *   Stripe webhook + Checkout are not required. MAIL_POSTAL_ADDRESS is.
+ *
+ * Horizon 1 (pay unmuted / EIN):
+ *   npm run check-env -- --launch --paid
+ *   LAUNCH_PAID=true npm run check-env -- --launch
+ *   Keeps today’s Stripe webhook + Checkout hard-fails.
+ *
+ * If NEXT_PUBLIC_FREE_BETA is false/0/off, --launch is Horizon 1 even without
+ * --paid (pay is unmuted). Does not print secret values.
+ *
+ * evaluateCheckEnv is the one implementation; the CLI prints and exits.
+ * Tests import this module — a top-level process.exit would kill npm test.
  */
-const launch = process.argv.includes('--launch');
+import { pathToFileURL } from 'node:url';
+import { resolve } from 'node:path';
+
+/** Same off-tokens as `isFreeBeta` in src/lib/freeBeta.ts — do not drift. */
+export const FREE_BETA_OFF = new Set(['0', 'false', 'off']);
+export const FREE_BETA_ON = new Set(['1', 'true', 'on']);
+
+const PLACEHOLDER_SECRETS = new Set([
+  'done',
+  'change-me',
+  'your-secret',
+  'test-gate-secret-32chars-min!!',
+]);
 
 const required = [
   ['PRIVATE_ACCESS_SECRET', 'Private gate password (Vercel + .env.local)'],
@@ -12,11 +37,15 @@ const required = [
   ['NEXT_PUBLIC_SUPABASE_ANON_KEY', 'Supabase anon key'],
 ];
 
-const launchRequired = [
+const launchAlways = [
   ['SUPABASE_SERVICE_ROLE_KEY', 'Webhooks, enrollments, admin APIs'],
-  ['STRIPE_WEBHOOK_SECRET', 'Stripe checkout.session.completed'],
   ['YOUTH_CONSENT_SECRET', 'Dedicated — never reuse PRIVATE_ACCESS_SECRET'],
   ['NUDGE_SECRET', 'Journey email unsubscribe HMAC'],
+  ['MAIL_POSTAL_ADDRESS', 'CAN-SPAM postal — invite + list mail hard-refuse without it'],
+];
+
+const launchPaidKeys = [
+  ['STRIPE_WEBHOOK_SECRET', 'Stripe checkout.session.completed'],
 ];
 
 const launchRecommended = [
@@ -65,153 +94,240 @@ const optional = [
   ['MEAL_VISION_MODEL', 'Meal vision model id (optional)'],
 ];
 
-const PLACEHOLDER_SECRETS = new Set(['done', 'change-me', 'your-secret', 'test-gate-secret-32chars-min!!']);
-
-function isWeakSecret(val) {
+export function isWeakSecret(val) {
   if (!val || val.length < 16) return true;
   return PLACEHOLDER_SECRETS.has(val.trim().toLowerCase());
 }
 
-let ok = true;
-let warn = 0;
-
-console.log(`\nMission Winning — environment check${launch ? ' (launch)' : ''}\n`);
-
-for (const [key, hint] of required) {
-  const val = process.env[key];
-  if (!val || val.includes('YOUR-PROJECT') || val.includes('your-anon-key')) {
-    console.log(`  ✗ ${key} — missing or placeholder (${hint})`);
-    ok = false;
-  } else if (key === 'PRIVATE_ACCESS_SECRET' && isWeakSecret(val)) {
-    console.log(`  ✗ ${key} — rotate before production (weak or dev placeholder)`);
-    ok = false;
-  } else {
-    console.log(`  ✓ ${key}`);
-  }
+/** Mirror of `isFreeBeta` — .mjs cannot import the TS module. */
+export function isFreeBetaFromEnv(env) {
+  const raw = String(env.NEXT_PUBLIC_FREE_BETA ?? '')
+    .trim()
+    .toLowerCase();
+  if (FREE_BETA_OFF.has(raw)) return false;
+  if (FREE_BETA_ON.has(raw)) return true;
+  return true;
 }
 
-if (launch) {
-  const prodVerified = process.env.LAUNCH_PROD_VERIFIED === '1';
-  for (const [key, hint] of launchRequired) {
-    const val =
-      key === 'NEXT_PUBLIC_STRIPE_LINK_BUNDLE'
-        ? process.env.NEXT_PUBLIC_STRIPE_LINK_BUNDLE || process.env.NEXT_PUBLIC_STRIPE_LINK_PREMIUM
-        : process.env[key];
-    if (
-      !val &&
-      prodVerified &&
-      (key === 'SUPABASE_SERVICE_ROLE_KEY' || key === 'STRIPE_WEBHOOK_SECRET')
-    ) {
-      console.log(`  ✓ ${key} (Production-verified — local Sensitive pull redacted)`);
+export function launchPaidRequested(argv, env = {}) {
+  return argv.includes('--paid') || env.LAUNCH_PAID === 'true';
+}
+
+export function parseCheckEnvArgs(argv, env = {}) {
+  const paid = launchPaidRequested(argv, env);
+  const launch = argv.includes('--launch') || paid;
+  return { launch, paid };
+}
+
+/** Args `node` receives to run this script from launch-verify. */
+export function checkEnvNodeArgs({ envFile, paid }) {
+  const args = envFile
+    ? ['--env-file', envFile, 'scripts/check-env.mjs', '--launch']
+    : ['scripts/check-env.mjs', '--launch'];
+  if (paid) args.push('--paid');
+  return args;
+}
+
+function raw(env, key) {
+  const v = env[key];
+  return v == null ? '' : String(v);
+}
+
+function missingOrPlaceholder(key, val) {
+  if (!val) return true;
+  if (key === 'NEXT_PUBLIC_SUPABASE_URL' && val.includes('YOUR-PROJECT')) return true;
+  if (key === 'NEXT_PUBLIC_SUPABASE_ANON_KEY' && val.includes('your-anon-key')) return true;
+  if (val.includes('YOUR-') || val === 'whsec_...' || val.includes('pk_live_...')) return true;
+  return false;
+}
+
+function launchBanner(profile) {
+  if (profile === 'h1') return ' (launch · Horizon 1 paid)';
+  if (profile === 'h0') return ' (launch · Horizon 0)';
+  return '';
+}
+
+function successCopy(profile, warn) {
+  const warnBit = warn ? ` (${warn} warning(s))` : '';
+  if (profile === 'h0') {
+    return `\nHorizon 0 launch env looks ready (FREE_BETA — Stripe not required).${warnBit}\n`;
+  }
+  if (profile === 'h1') {
+    return `\nHorizon 1 paid launch env looks ready.${warnBit}\n`;
+  }
+  return `\nReady for private gated deploy.${warnBit}\n`;
+}
+
+/**
+ * Pure check. Does not print or exit.
+ *
+ * @param {NodeJS.Dict<string | undefined>} env
+ * @param {{ launch?: boolean, paid?: boolean }} [opts]
+ */
+export function evaluateCheckEnv(env, opts = {}) {
+  const paidRequested = opts.paid === true;
+  const launch = opts.launch === true || paidRequested;
+  const freeBeta = isFreeBetaFromEnv(env);
+  const requirePaid = launch && (paidRequested || !freeBeta);
+  const profile = !launch ? 'dev' : requirePaid ? 'h1' : 'h0';
+
+  const lines = [];
+  const failures = [];
+  let ok = true;
+  let warn = 0;
+  const log = (s) => {
+    lines.push(s);
+  };
+  const fail = (key, msg) => {
+    ok = false;
+    failures.push(key);
+    log(msg);
+  };
+
+  log(`\nMission Winning — environment check${launchBanner(profile)}\n`);
+
+  for (const [key, hint] of required) {
+    const val = raw(env, key);
+    if (missingOrPlaceholder(key, val)) {
+      fail(key, `  ✗ ${key} — missing or placeholder (${hint})`);
+    } else if (key === 'PRIVATE_ACCESS_SECRET' && isWeakSecret(val)) {
+      fail(key, `  ✗ ${key} — rotate before production (weak or dev placeholder)`);
+    } else {
+      log(`  ✓ ${key}`);
+    }
+  }
+
+  if (launch) {
+    const prodVerified = env.LAUNCH_PROD_VERIFIED === '1';
+    const launchRequired = requirePaid ? [...launchAlways, ...launchPaidKeys] : launchAlways;
+
+    for (const [key, hint] of launchRequired) {
+      const val = raw(env, key).trim();
+      if (
+        !val &&
+        prodVerified &&
+        (key === 'SUPABASE_SERVICE_ROLE_KEY' || key === 'STRIPE_WEBHOOK_SECRET')
+      ) {
+        log(`  ✓ ${key} (Production-verified — local Sensitive pull redacted)`);
+        continue;
+      }
+      if (missingOrPlaceholder(key, val)) {
+        fail(key, `  ✗ ${key} — required for go-live (${hint})`);
+      } else if ((key === 'YOUTH_CONSENT_SECRET' || key === 'NUDGE_SECRET') && isWeakSecret(val)) {
+        fail(key, `  ✗ ${key} — use openssl rand -base64 32 (dedicated secret)`);
+      } else {
+        log(`  ✓ ${key}`);
+      }
+    }
+
+    for (const [key, hint] of launchRecommended) {
+      const val = raw(env, key);
+      if (!val) {
+        log(`  ⚠ ${key} — recommended for go-live (${hint})`);
+        warn++;
+      } else {
+        log(`  ✓ ${key}`);
+      }
+    }
+
+    if (requirePaid) {
+      const hasSessions =
+        raw(env, 'STRIPE_SECRET_KEY') &&
+        raw(env, 'STRIPE_PRICE_BUNDLE_12MO') &&
+        env.NEXT_PUBLIC_STRIPE_CHECKOUT === 'true';
+      const hasPaymentLink =
+        raw(env, 'NEXT_PUBLIC_STRIPE_LINK_BUNDLE') || raw(env, 'NEXT_PUBLIC_STRIPE_LINK_PREMIUM');
+      if (!hasSessions && !hasPaymentLink) {
+        fail(
+          'Checkout',
+          '  ✗ Checkout — set Checkout Sessions (STRIPE_SECRET_KEY + prices + NEXT_PUBLIC_STRIPE_CHECKOUT=true) or NEXT_PUBLIC_STRIPE_LINK_BUNDLE'
+        );
+      } else if (hasSessions) {
+        log('  ✓ Checkout Sessions path configured');
+      } else {
+        log('  ✓ Payment Link fallback configured');
+      }
+    }
+  }
+
+  for (const [key, hint] of optional) {
+    const val = raw(env, key);
+    if (!val) {
+      log(`  · ${key} (optional) — ${hint}`);
       continue;
     }
-    if (!val || val.includes('YOUR-') || val === 'whsec_...' || val.includes('pk_live_...')) {
-      console.log(`  ✗ ${key} — required for go-live (${hint})`);
-      ok = false;
-    } else if ((key === 'YOUTH_CONSENT_SECRET' || key === 'NUDGE_SECRET') && isWeakSecret(val)) {
-      console.log(`  ✗ ${key} — use openssl rand -base64 32 (dedicated secret)`);
-      ok = false;
-    } else {
-      console.log(`  ✓ ${key}`);
-    }
+    const redact = /SECRET|KEY|TOKEN|PASSWORD|PRIVATE/i.test(key) && !key.startsWith('NEXT_PUBLIC_');
+    log(redact ? `  ✓ ${key}=<set>` : `  ✓ ${key}=${val}`);
   }
 
-  for (const [key, hint] of launchRecommended) {
-    const val = process.env[key];
-    if (!val) {
-      console.log(`  ⚠ ${key} — recommended for go-live (${hint})`);
-      warn++;
-    } else {
-      console.log(`  ✓ ${key}`);
-    }
+  if (env.DEMO_PREMIUM === 'true') {
+    fail('DEMO_PREMIUM', '  ✗ DEMO_PREMIUM=true — must be false before public production deploy');
   }
 
-  const hasSessions =
-    process.env.STRIPE_SECRET_KEY &&
-    process.env.STRIPE_PRICE_BUNDLE_12MO &&
-    process.env.NEXT_PUBLIC_STRIPE_CHECKOUT === 'true';
-  const hasPaymentLink =
-    process.env.NEXT_PUBLIC_STRIPE_LINK_BUNDLE || process.env.NEXT_PUBLIC_STRIPE_LINK_PREMIUM;
-  if (!hasSessions && !hasPaymentLink) {
-    console.log(
-      '  ✗ Checkout — set Checkout Sessions (STRIPE_SECRET_KEY + prices + NEXT_PUBLIC_STRIPE_CHECKOUT=true) or NEXT_PUBLIC_STRIPE_LINK_BUNDLE'
+  if (launch && env.PRIVATE_MODE !== 'false') {
+    log('  ⚠ PRIVATE_MODE is not false — OK for pre-launch gate verify; set false for §5 go-public');
+    warn++;
+  }
+
+  if (launch && freeBeta && !paidRequested) {
+    log(
+      '  · FREE_BETA is on (default) — Bundle/checkout muted, premium depth unlocked; Stripe not required for Horizon 0. Use --paid or LAUNCH_PAID=true for Horizon 1.'
     );
-    ok = false;
-  } else if (hasSessions) {
-    console.log('  ✓ Checkout Sessions path configured');
-  } else {
-    console.log('  ✓ Payment Link fallback configured');
+  } else if (launch && freeBeta && paidRequested) {
+    log(
+      '  · FREE_BETA is on, but --paid requested — Horizon 1 Stripe webhook + Checkout are required.'
+    );
+  } else if (launch && !freeBeta) {
+    log('  · FREE_BETA is off — pay unmuted; Horizon 1 Stripe webhook + Checkout are required.');
   }
-}
 
-for (const [key, hint] of optional) {
-  const val = process.env[key];
-  if (!val) {
-    console.log(`  · ${key} (optional) — ${hint}`);
-    continue;
+  const resendFrom = raw(env, 'RESEND_FROM');
+  if (launch && (!resendFrom || /@resend\.dev\b/i.test(resendFrom))) {
+    log('  ⚠ RESEND_FROM — set a verified domain From (not onboarding@resend.dev) for launch mail');
+    warn++;
   }
-  // Never print secret material in optional rows
-  const redact =
-    /SECRET|KEY|TOKEN|PASSWORD|PRIVATE/i.test(key) && !key.startsWith('NEXT_PUBLIC_');
-  console.log(redact ? `  ✓ ${key}=<set>` : `  ✓ ${key}=${val}`);
+
+  const siteUrl = raw(env, 'NEXT_PUBLIC_SITE_URL');
+  if (launch && !siteUrl) {
+    log('  ⚠ NEXT_PUBLIC_SITE_URL unset — set https://www.missionwinning.com for canonicals/OG');
+    warn++;
+  } else if (siteUrl && siteUrl.includes('missionwinning.com') && !siteUrl.includes('www.')) {
+    log('  ⚠ NEXT_PUBLIC_SITE_URL is non-www — prefer https://www.missionwinning.com');
+    warn++;
+  }
+
+  if (launch && !raw(env, 'UPSTASH_REDIS_REST_URL')) {
+    log('  ⚠ UPSTASH_REDIS_REST_URL unset — required before public (PRODUCTION_STACK L9)');
+    warn++;
+  }
+  if (launch && !raw(env, 'NEXT_PUBLIC_SENTRY_DSN')) {
+    log('  ⚠ NEXT_PUBLIC_SENTRY_DSN unset — required before public (PRODUCTION_STACK L12)');
+    warn++;
+  }
+
+  if (env.NEXT_PUBLIC_SHOW_MAHA_COPY === 'true') {
+    log('  ⚠ NEXT_PUBLIC_SHOW_MAHA_COPY=true — confirm legal review for MAHA copy');
+    warn++;
+  }
+
+  log(ok ? successCopy(profile, warn) : '\nFix the items above, then redeploy Vercel.\n');
+
+  return { ok, warn, lines, profile, requirePaid, freeBeta, launch, failures };
 }
 
-if (process.env.DEMO_PREMIUM === 'true') {
-  console.log('  ✗ DEMO_PREMIUM=true — must be false before public production deploy');
-  ok = false;
+function isDirectCli() {
+  const entry = process.argv[1];
+  if (!entry) return false;
+  return import.meta.url === pathToFileURL(resolve(entry)).href;
 }
 
-if (launch && process.env.PRIVATE_MODE !== 'false') {
-  console.log('  ⚠ PRIVATE_MODE is not false — OK for pre-launch gate verify; set false for §5 go-public');
-  warn++;
+function main() {
+  const { launch, paid } = parseCheckEnvArgs(process.argv, process.env);
+  const result = evaluateCheckEnv(process.env, { launch, paid });
+  for (const line of result.lines) console.log(line);
+  process.exit(result.ok ? 0 : 1);
 }
 
-// CAN-SPAM: invite + list mail hard-refuse without a public postal address (CONTEXT ## Now).
-if (launch && !process.env.MAIL_POSTAL_ADDRESS?.trim()) {
-  console.log(
-    '  ⚠ MAIL_POSTAL_ADDRESS unset — beta invites and list mail cannot send (LAUNCH_RUNBOOK §2; send-beta-invite hard-exits)'
-  );
-  warn++;
+if (isDirectCli()) {
+  main();
 }
-
-if (launch && process.env.NEXT_PUBLIC_FREE_BETA !== 'false' && process.env.NEXT_PUBLIC_FREE_BETA !== '0') {
-  console.log(
-    '  · FREE_BETA is on (default) — Bundle/checkout muted, premium depth unlocked; set NEXT_PUBLIC_FREE_BETA=false after EIN/Stripe'
-  );
-}
-
-const resendFrom = process.env.RESEND_FROM || '';
-if (launch && (!resendFrom || /@resend\.dev\b/i.test(resendFrom))) {
-  console.log('  ⚠ RESEND_FROM — set a verified domain From (not onboarding@resend.dev) for launch mail');
-  warn++;
-}
-
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || '';
-if (launch && !siteUrl) {
-  console.log('  ⚠ NEXT_PUBLIC_SITE_URL unset — set https://www.missionwinning.com for canonicals/OG');
-  warn++;
-} else if (siteUrl && siteUrl.includes('missionwinning.com') && !siteUrl.includes('www.')) {
-  console.log('  ⚠ NEXT_PUBLIC_SITE_URL is non-www — prefer https://www.missionwinning.com');
-  warn++;
-}
-
-if (launch && !process.env.UPSTASH_REDIS_REST_URL) {
-  console.log('  ⚠ UPSTASH_REDIS_REST_URL unset — required before public (PRODUCTION_STACK L9)');
-  warn++;
-}
-if (launch && !process.env.NEXT_PUBLIC_SENTRY_DSN) {
-  console.log('  ⚠ NEXT_PUBLIC_SENTRY_DSN unset — required before public (PRODUCTION_STACK L12)');
-  warn++;
-}
-
-if (process.env.NEXT_PUBLIC_SHOW_MAHA_COPY === 'true') {
-  console.log('  ⚠ NEXT_PUBLIC_SHOW_MAHA_COPY=true — confirm legal review for MAHA copy');
-  warn++;
-}
-
-console.log(
-  ok
-    ? `\n${launch ? 'Launch env looks ready.' : 'Ready for private gated deploy.'}${warn ? ` (${warn} warning(s))` : ''}\n`
-    : '\nFix the items above, then redeploy Vercel.\n'
-);
-process.exit(ok ? 0 : 1);
