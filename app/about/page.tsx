@@ -8,7 +8,7 @@ import { APP_PUBLIC_PRODUCT_VERSION } from '@/lib/buildInfo';
 export const metadata: Metadata = publicPageMetadata({
   title: `About ${APP_PUBLIC_PRODUCT_VERSION}`,
   description:
-    `${APP_PUBLIC_PRODUCT_VERSION} — open beta. Free offline logger + Mission Coach from your logs. Operated by Mission Winning LLC, a Texas limited liability company. Educational tools only, not medical care.`,
+    `${APP_PUBLIC_PRODUCT_VERSION} — open alpha. Free offline logger + Mission Coach from your logs. Operated by Mission Winning LLC, a Texas limited liability company. Educational tools only, not medical care.`,
   path: '/about',
 });
 
@@ -26,7 +26,7 @@ export default function About() {
       title={APP_PUBLIC_PRODUCT_VERSION}
       subtitle={
         isFreeBeta()
-          ? 'Open beta. Free offline logger + Mission Coach from your logs — the logger stays free forever. No account required. Educational tools only, not medical care.'
+          ? 'Open alpha. Free offline logger + Mission Coach from your logs — the logger stays free forever. No account required. Educational tools only, not medical care.'
           : 'Free offline logger + Mission Coach from your logs — the logger stays free forever; Super Bundle adds depth when you are ready. Educational tools only, not medical care.'
       }
     >

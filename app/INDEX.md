@@ -60,6 +60,7 @@
 | `/compare` · `/compare/*` | **Removed (.668)** — permanent redirect to `/welcome` (no competitor comparison hub) |
 | `/guide`, `/exercises` | Public SEO pages |
 | `/press` | `app/press/page.tsx` → `PressPage` (brand & media kit) |
+| `/changelog` | `app/changelog/page.tsx` → `ChangelogPage` (athlete release notes; marketing chrome) |
 | `/guide` (Apex reader) | `GuidePublicIndexPage` — Contents sidebar + language switcher |
 | `/guide/[chapter]` | `GuidePublicChapterPage` — same shell |
 | `/guide/mission-winning-vs-strong` · `vs-hevy` · `vs-fitbod` | `LearnVsPublicPage` — AEO comparison (not magazine chapters) |
@@ -95,8 +96,8 @@
 
 - Deleted: `app/api/coach/plan/route.ts` — use `plan-voice` + client `src/lib/coach/`
 - Empty ghost dirs were **removed** — signed-in page routes live under `app/(app)/`.
-  **Exception (`.595`):** `app/about/` and `app/vision/` are real, deliberate top-level
-  routes. They render marketing chrome (`PublicPageShell`), not the app shell, because
-  the landing footer links to them from every public page — a visitor clicking "About"
-  must not land inside a signed-in nav rail. URLs are unchanged; route groups do not
-  affect paths.
+  **Exception (`.595`):** `app/about/`, `app/vision/`, and `app/changelog/` are real,
+  deliberate top-level routes. They render marketing chrome (`PublicPageShell`), not
+  the app shell, because the landing footer links to them from every public page — a
+  visitor clicking "About" or "Changelog" must not land inside a signed-in nav rail.
+  URLs are unchanged; route groups do not affect paths.

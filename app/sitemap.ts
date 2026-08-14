@@ -25,6 +25,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const routes = [
     '',
     '/about',
+    '/changelog',
     '/vision',
     // `/bundle` is the Super Bundle shop (merchandising). Checkout stays muted
     // while FREE_BETA is on — the page itself answers 200.

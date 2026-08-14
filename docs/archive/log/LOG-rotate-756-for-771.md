@@ -1,5 +1,3 @@
-# Rotated from LOG.md for `.773`
-
 ## 2026-08-13 — Optional RIR on the set row (`.756`)
 
 Optional integer **0–5 reps in reserve** on a completed set. Empty is valid.
@@ -13,4 +11,4 @@ Excellence-Override below.
 
 Excellence-Override: optional RIR
 
-Rotated LOG oldest → [LOG-rotate-697-for-756.md](./LOG-rotate-697-for-756.md).
+Rotated LOG oldest → [docs/archive/log/LOG-rotate-697-for-756.md](docs/archive/log/LOG-rotate-697-for-756.md).

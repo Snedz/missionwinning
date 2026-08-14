@@ -13,6 +13,7 @@ import { validateBuildLabel } from '@/lib/deployReadiness';
 import {
   APP_BUILD_LABEL,
   APP_PUBLIC_PRODUCT_VERSION,
+  APP_PUBLIC_STAGE,
   APP_PUBLIC_STATUS_LINE_EN,
   APP_PUBLIC_VERSION,
 } from '@/lib/buildInfo';
@@ -25,9 +26,10 @@ test('internal build label stays the unified ship id', () => {
   assert.match(APP_BUILD_LABEL, /^\d{4}\.\d{2}-unified\.\d+$/);
 });
 
-test('athlete-facing version is Mission Winning 0.0.1 (beta)', () => {
-  assert.equal(APP_PUBLIC_VERSION, '0.0.1 (beta)');
-  assert.equal(APP_PUBLIC_PRODUCT_VERSION, 'Mission Winning 0.0.1 (beta)');
+test('athlete-facing version is Mission Winning Alpha 0.1.0', () => {
+  assert.equal(APP_PUBLIC_VERSION, '0.1.0');
+  assert.equal(APP_PUBLIC_STAGE, 'Alpha');
+  assert.equal(APP_PUBLIC_PRODUCT_VERSION, 'Mission Winning Alpha 0.1.0');
   assert.equal(validateBuildLabel(APP_PUBLIC_VERSION), false);
   assert.doesNotMatch(APP_PUBLIC_VERSION, /v1\.0/i);
   assert.doesNotMatch(APP_PUBLIC_PRODUCT_VERSION, /v1\.0|invite-only|everything.?app/i);
@@ -36,10 +38,10 @@ test('athlete-facing version is Mission Winning 0.0.1 (beta)', () => {
 test('English status line is free beta, not invite-only or everything-app', () => {
   assert.equal(
     APP_PUBLIC_STATUS_LINE_EN,
-    `${APP_PUBLIC_PRODUCT_VERSION} — free beta. Offline logging plus Mission Coach from your logs.`
+    `${APP_PUBLIC_PRODUCT_VERSION} — open alpha. Offline logging plus Mission Coach from your logs.`
   );
   assert.doesNotMatch(APP_PUBLIC_STATUS_LINE_EN, /invite-only|private beta|v1\.0|full platform|everything/i);
-  assert.match(APP_PUBLIC_STATUS_LINE_EN, /free beta/i);
+  assert.match(APP_PUBLIC_STATUS_LINE_EN, /open alpha/i);
 });
 
 test('health liveness reports APP_BUILD_LABEL, not the public stamp', () => {
@@ -93,7 +95,7 @@ test('firstSteps status key interpolates to the same English stamp', () => {
   const template = m[1];
   assert.equal(
     template,
-    '{{productVersion}} — free beta. Offline logging plus Mission Coach from your logs.'
+    '{{productVersion}} — open alpha. Offline logging plus Mission Coach from your logs.'
   );
   assert.doesNotMatch(template, /invite-only|full platform|v1\.0|everything/i);
   assert.equal(

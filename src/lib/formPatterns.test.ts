@@ -28,9 +28,8 @@ test('every pattern has legacy SVG; wired rasters resolve to form still', () => 
       `missing form/pattern-${id}/side.webp`
     );
   }
-  // Demoted hinge falls back to SVG
-  assert.equal(formPatternPath('hinge'), '/form-guides/pattern-hinge.svg');
-  assert.ok(!FORM_PATTERN_RASTER_IDS.has('hinge'));
+  assert.equal(formPatternPath('hinge'), '/form/pattern-hinge/side.webp');
+  assert.ok(FORM_PATTERN_RASTER_IDS.has('hinge'));
 });
 
 test('inferFormPattern maps common families', () => {

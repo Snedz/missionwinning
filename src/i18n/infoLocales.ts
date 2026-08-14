@@ -448,7 +448,7 @@ const en: InfoStrings = {
   infoAboutBusinessBody:
     'Operated by Mission Winning LLC, a Texas limited liability company, for the app, programs, and coaching. Free core stays free; paid Super Bundle funds deeper Coach and pillar tools when you want them.',
   infoAboutBusinessBodyOpenBeta:
-    'Operated by Mission Winning LLC, a Texas limited liability company. {{productVersion}} is an open beta — full tools free while we grow with you. The logger stays free forever.',
+    'Operated by Mission Winning LLC, a Texas limited liability company. {{productVersion}} is an open alpha — full tools free while we grow with you. The logger stays free forever.',
   infoAboutDisclaimerEducational:
     'Educational only. Mission Winning provides practical training education and tools. We are not a federally recognized or accredited certifying agency. Completion grants a Mission Winning Certificate of Educational Achievement only.',
   infoAboutDisclaimerGov:

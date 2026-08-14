@@ -24,14 +24,55 @@ untouched.
 corpus). `fetchCoachChat` / `streamCoachChat` run the loop. Client sends
 `slimCoachLogFacts`. grok-4.6 reasoning pinned `low`.
 
-Label `.773` (onto master `.770`). `.771` reserved by #550. `.772` reserved
-by #551.
+Label `.773` (onto master `.772`).
 
 Excellence-Override: coach local RAG
 
-Rotated LOG oldest → [docs/archive/log/LOG-rotate-756-for-773.md](docs/archive/log/LOG-rotate-756-for-773.md).
+Rotated LOG oldest → [docs/archive/log/LOG-rotate-758-for-773.md](docs/archive/log/LOG-rotate-758-for-773.md).
+
+## 2026-08-14 — Library form media honesty + Wave A stills (`.772`)
+
+Library cards were showing shared pattern rasters (a runner on Farmer’s Walk,
+a push-up on Burpees) as if they were the named lift. Front squat was a
+high-bar back squat. Landmine row floated. Pattern-hinge cropped the head.
+
+**Ship:** `formPackLibraryPosterUrl` — cards only show a unique Form Index
+still. Method aliases (`20-rep-squat` → `squats`, …). Regen PASS stills:
+front-squat, landmine-row, pattern-hinge, burpees (jump), thruster (lockout),
+lunges (dumbbells). Wave A unique stills: inverted-row, hip-thrust, face-pull,
+bicep-curl, tricep-pushdown, wall-sit, bird-dog, lat-pulldown, goblet-squat,
+pike-pushup. Wave B: dead-bug, side-plank, mountain-climbers, hollow-hold,
+cable-row, lateral-raise, dumbbell-press, dumbbell-row. Floor 19 → 38.
+Loops demoted on replaced stills. No bulk I2V.
+
+Mutants: SIDE_IDS without a disk still → red; alias to an unwired target → red;
+library poster for `incline-bench` is null (not `pattern-push`).
+
+Label `.772` (onto master `.771`).
+
+Excellence-Override: form Index media + `formMedia.ts` classified surface
+
+Rotated LOG oldest → [docs/archive/log/LOG-rotate-757-for-772.md](docs/archive/log/LOG-rotate-757-for-772.md).
+
+## 2026-08-14 — Alpha 0.1.0 changelog (`.771`)
+
+Athlete-facing name is **Alpha 0.1.0** (semver). The ship id stays the unified
+label. Public `/changelog` follows the xAI shape: date, `vX.Y.Z` chip, product
+heading, athlete bullets. Engineering stays in this file. Open alpha. Invite
+gate. Not a public flip. Not a `PRIVATE_MODE` flip.
+
+**Ship:** `APP_PUBLIC_VERSION = "0.1.0"` · `APP_PUBLIC_STAGE = "Alpha"`.
+`CHANGELOG.md` + `src/data/changelog.ts` lockstep. `/changelog` is public
+while gated, like `/about`. Footer, legal footer, About, sitemap.
+
+Label `.771` (onto master `.770`).
+
+Excellence-Override: alpha 0.1.0 changelog
+
+Rotated LOG oldest → [docs/archive/log/LOG-rotate-756-for-771.md](docs/archive/log/LOG-rotate-756-for-771.md).
 
 ## 2026-08-14 — Done beta code works on Vercel Preview (`.770`)
+
 
 Vercel env is per-environment. `PRIVATE_ACCESS_CODES` (the Done alias) lived
 on Production; `scripts/sync-vercel-env.mjs` copied `PRIVATE_ACCESS_SECRET` to
@@ -266,35 +307,3 @@ Excellence-Override below.
 Excellence-Override: last-set ghost
 
 Rotated LOG oldest → [docs/archive/log/LOG-rotate-744-for-759.md](docs/archive/log/LOG-rotate-744-for-759.md).
-## 2026-08-13 — Bodyweight + load on the Train set row (`.758`)
-
-On pull-ups, push-ups, and dips the load field is **extra weight** (belt/vest),
-not a bar. The row reads `8 × BW` or `8 × BW + 20 kg`. Leave load at **0** to
-log bodyweight only. Coach volume counts `reps × added load` on working sets;
-a warmup belt still does not count.
-
-**Ship:** `bodyweightLoad.ts` detect + format; compact `BW+` stepper; desktop
-table prefix. No new set field. Free logger. Offline, no account.
-
-Label `.758` (onto master `.757`). Originally reserved `.735`; landed as `.758` past master `.757`.
-Excellence-Override below.
-
-Excellence-Override: bodyweight+load on the set row
-
-Rotated LOG oldest → [docs/archive/log/LOG-rotate-743-for-758.md](docs/archive/log/LOG-rotate-743-for-758.md).
-## 2026-08-13 — Optional tempo on the set row (`.757`)
-
-Optional **ecc/pause/con** (`3-1-1`) on a completed set. Empty is valid.
-Never required. Never blocks Log set. Last tempo for that exercise prefills
-the next logged set. Does not feed coach load or rewards.
-
-**Ship:** `tempo.ts` parse + last-tempo recall; `rateSetTempo` after log;
-compact `SetTempoField` on completed rows beside RPE/RIR. Sync keeps `side`,
-`rir`, and `tempo`. Offline, no account.
-
-Label `.757` (onto master `.756`). Originally reserved `.734`; landed as `.757` past master `.756`.
-Excellence-Override below.
-
-Excellence-Override: optional set-row tempo
-
-Rotated LOG oldest → [docs/archive/log/LOG-rotate-714-for-757.md](docs/archive/log/LOG-rotate-714-for-757.md).
