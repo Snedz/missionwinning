@@ -22,7 +22,7 @@ Root-level `@/lib/{name}` paths re-export from here for compatibility — prefer
 10a. `repeatLastSession.ts` — last completed log → startWorkout template (`.717`); wraps `historyRetrain.templateFromCompletedLog`  
 11. `activeWorkoutPulse.ts` — nav pulse flag without store
 12. `workoutPersistLite.ts` — history/streak from localStorage (cold path)
-13. `sessionCheckInOffer.ts` — pure W1 gate: never Mind-sheet the first mission (`.293`)
+13. `sessionCheckInOffer.ts` — pure gate: never Mind-sheet before the first set of **any** session (`.293` first mission, `.767` all sessions)
 14. `loggerSpeed.ts` — Enter/Use-next helpers (`.288`)
 15. `activeSessionFinish.ts` — log-set payload/PR/rest/haptic + Victory + empty-finish toast (`.405`/`.409`)
 16. `activeSessionCheckIn.ts` — check-in dismiss + volume-trim toast kind (`.406`)
@@ -48,6 +48,7 @@ Root-level `@/lib/{name}` paths re-export from here for compatibility — prefer
 | `unilateral.test.ts` | L/R/Alt persist, skip bilateral, suggest next side (`.755`) |
 | `bodyweightLoad.test.ts` | BW + belt format + plus-load detect (`.758`) |
 | `bodyweightLoadGuard.test.ts` | Free logger; skip-at-0; one formatter (`.758`) |
+| `sessionCheckInOffer.test.ts` | The readiness sheet never precedes the first set of any session (`.767`) |
 | `importReach.test.ts` | Strong/Hevy CSV import stays reachable from I-Day + empty logger (`.766`) |
 | `restTimer.test.ts` | Clock + defaults + start seconds (`.292`) + last-rest recall / skip (`.745`) |
 | `superset.test.ts` | Pair persist, pair-of-two, A1/A2 marks, advance, rest gate (`.749`) |

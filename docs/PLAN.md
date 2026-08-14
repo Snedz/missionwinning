@@ -256,6 +256,22 @@ without waiting for the other shards, as instructed.
 | 2 | **CN/HK believe the offline claim (3.97) and not the implementation** — "forced cloud sync / data opacity" | Both public entries name the mechanism from one source (`LOCAL_FIRST_COPY.gateLocalFirst` / `.welcomeLocalFirst`): no account, written to this device, nothing uploaded unless you sign in |
 | 3 | **Strong/Hevy migrants: logging speed *and* CSV data-in are separate P1s** | The importer existed and was unreachable. I-Day and the empty logger link `/account#import`; the fragment opens the `<details>` it targets. Speed is not touched here — `.694` owns it |
 
+### Shard 3 P0s (frozen scope, `.767`)
+
+IL/IN/SEA (ops #14) confirms the same three findings across two more regions, so
+the scope is *depth on the same three*, not a fourth theme.
+
+| # | Finding | Fix, and its floor |
+|---|---------|--------------------|
+| 1 | Too many taps to log a set — **new to scope**; `.766` deliberately left speed to master | Measured at 390×844: the returning path ran Start → full-viewport check-in sheet → Log set, now **2 interactions**. `sessionCheckInOffer.ts` extends its own first-mission rule to every session; the sheet records only rows the athlete moved |
+| 2 | Coach not visibly grounded in logs (repeat) | `CoachInsightCard` carries the `.766` citation; the guard's claim pattern widened to the derived phrasing ("from your recent training load") it could not see |
+| 3 | Offline-logging disbelief (repeat) | The **landing hero** — where these regions arrive by SEO — states the mechanism from the same constant as the gate and I-Day |
+
+Deferred with a reason, not dropped: the cold path's 2 I-Day taps. Halving it
+needs a profile-less `completeIDay()`, because the current one writes
+experience/equipment/goal — recording answers nobody gave is what `.767` just
+removed from the check-in sheet.
+
 Out of scope for this shard: `navCoach` stays "AI weekly plan" — `primaryNav.ts`
 records that screen name as a kept decision, and overturning it on one shard is
 a founder call. It is the last generic-AI string on first paint.

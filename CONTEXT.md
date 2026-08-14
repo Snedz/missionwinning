@@ -16,7 +16,7 @@ One screen of truth for any AI tool or human joining cold. Read this, then [AGEN
 
 ---
 
-## Now (2026-08-13 · web `2026.07-unified.766` · Android `1.24.1`)
+## Now (2026-08-14 · web `2026.07-unified.767` · Android `1.24.1`)
 
 > The ONLY "where we are" block in the repo — [ORCHESTRATION.md](ORCHESTRATION.md) points here.
 >
@@ -308,6 +308,7 @@ One screen of truth for any AI tool or human joining cold. Read this, then [AGEN
 > and `.762` dropped `.747` detail (full text remains in LOG.md / archive)
 > and `.763` dropped `.748` detail (full text remains in LOG.md / archive)
 > and `.764` dropped `.749` detail (full text remains in LOG.md / archive)
+> and `.767` dropped `.752`–`.753` detail (rotated to docs/archive/log/LOG-rotate-752-for-767.md)
 > and `.766` dropped `.750`–`.751` detail (rotated to docs/archive/log/LOG-rotate-750-for-766.md
 > and LOG-rotate-751-for-766.md; `.765`/`.766` share one bullet — one ship series, one PR)
 > to [CONTEXT-now-2026-07-30.md](docs/archive/CONTEXT-now-2026-07-30.md) after this
@@ -331,6 +332,7 @@ One screen of truth for any AI tool or human joining cold. Read this, then [AGEN
 > | gitleaks | **green — and scanning for the first time.** It had never scanned anything: on a `pull_request` event the action lists the PR's commits, the job declared no `permissions:` block, and it 403'd (`pull_requests=read`) before opening a file. Fixed by a `permissions:` block (`.224` carrying `.255`). It scans **only the PR's own commits**, so commit `8ea3527a`'s real Solana treasury address — scrubbed from the working file, still in history — is out of its scope. That finding stands, deliberately not allowlisted; it was never what made this check red. |
 
 - **Excellence:** unscored · — · [docs/EXCELLENCE_RESULT.md](docs/EXCELLENCE_RESULT.md) — Horizon W phone sign-off home; surface PRs need `status: pass` or `Excellence-Override` (`.669`).
+- **`.767`:** (`2026.07-unified.767`) **No questionnaire before the first set** — shard 3 (IL/IN/SEA) confirms all three P0s across two more regions and adds taps-to-log. Measured at 390×844: the returning path ran Start → **full-viewport `SessionCheckInSheet`** (logger underneath, unclickable) → Log set; now **2 interactions**. `sessionCheckInOffer` extends its own first-mission rule to every session. The same sheet was writing an unanswered **3/3/3 readiness row** whenever an athlete tapped its primary to get past it — straight into `computeBodyScores` and the plan; only moved rows are written now. `CoachInsightCard` carries the `.766` log citation; the **landing hero** states the local-first mechanism from the same constant as the gate and I-Day. 8/8 mutants (two fixed the guard). Cold path stays 4 — the 2 I-Day taps need a profile-less `completeIDay` or a founder call, named not guessed.
 - **`.765`–`.766`:** (`2026.07-unified.766`) **www first paint · gated honesty · Coach cites the log.** `.765`: gate + `/welcome` resolve their query server-side, so the poster and I-Day step one are in the first byte (they were `Checking sign-in…` and an `aria-hidden` skeleton); gate copy floors from `gateEn.ts`; chrome reads **Invite-only beta** while the gate is up; the gate waitlist refuses hard-blocked territories via `/api/geo` (`legal/supportedRegions.ts`); the consent banner docks instead of covering **Start Workout**. `.766` (East Asia shard, coach-from-logs clarity 2.56/5): every Coach claim now cites a stored set or says `no-logs` (`coach/logCitation.ts` + `CoachLogCite`), "AI weekly plan" is gone from above the Coach invite, both public entries name the local-first **mechanism** (no account · this device · nothing uploaded unless you sign in), and Strong/Hevy CSV import is reachable from I-Day + the empty logger via `/account#import`. Guards: `firstPaintFloor` (drift ratchet 209, `BOOTSTRAP_EN` layered), `logCitation`, `importReach`, `gate-smoke` byte checks. **`lint`, `i18n:parity` and `i18n:coverage` were red on master and are green again; `bundle-budget` was already breached (`/log` +7.3KB, `/active` +13.6KB) and this branch does not raise the cap.**
 - **`.764`:** (`2026.07-unified.764`) **Free plate math + warmup on the Train set row** — Live barbell plates-per-side + Add warmups 40/60/80. Free. Originally #503 / `.708`.
 - **`.763`:** (`2026.07-unified.763`) **Home gym kit on the free logger** — Account Home gym kit (barbell/rack/plates/dumbbells/pull-up/floor). Just Go + Coach filter, never rank. Train empty Start stays repeat-last. Originally #525 / `.733`.
@@ -343,7 +345,6 @@ One screen of truth for any AI tool or human joining cold. Read this, then [AGEN
 - **`.756`:** (`2026.07-unified.756`) **Optional RIR on the set row** — Optional 0–5 RIR on completed rows beside RPE; empty valid; Log set ungated. Originally #517 / `.725`.
 - **`.755`:** (`2026.07-unified.755`) **Unilateral L/R on the set log** — Optional L/R/Alt on unilateral lifts; after L suggest R; bilateral strips stray side. Originally #516 / `.724`.
 - **`.754`:** (`2026.07-unified.754`) **Drop sets on the set log** — Footer Drop after a working set starts a −20% follow-up and skips rest. Originally #515 / `.723`.
-- **`.753`:** (`2026.07-unified.753`) **Habit week count + HABIT contract** — Today header always shows this week: N days logged (0 is fine). HABIT contract: daily Train is the loop. Originally #511 / `.722`.
 - **`.752`:** (`2026.07-unified.752`) **Garage swap on the exercise row** — Swap on the Train row / Coach line offers 1–2 garage stand-ins; equipment change clears last load; hide when already garage. Originally #514 / `.721`.
 - **`.751`:** (`2026.07-unified.751`) **Learn vs Strong / Hevy / Fitbod citation pages** — Free /guide/mission-winning-vs-* explanation pages for AEO. CSV import live; Strong/Hevy export dialects planned. Originally #513 / `.716`.
 - **`.669`:** (`2026.07-unified.669`) **Excellence RESULT + agent stop-rule** — `excellenceGate` path policy + `check-excellence-gate` on gate/PR CI; wedge still ships while unscored.

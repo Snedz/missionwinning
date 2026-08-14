@@ -11,6 +11,75 @@ Archive: [2026-06 → 2026-07-20](docs/archive/log/LOG-2026-06_to_2026-07-20.md)
 
 --- · [`.492` for `.507`](docs/archive/log/LOG-rotate-507.md). · [`.493` for `.508`](docs/archive/log/LOG-rotate-508.md). · [`.494` for `.509`](docs/archive/log/LOG-rotate-509.md). · [`.495` for `.510`](docs/archive/log/LOG-rotate-510.md). · [`.496` for `.511`](docs/archive/log/LOG-rotate-511.md). · [`.497` for `.512`](docs/archive/log/LOG-rotate-512.md). · [`.498` for `.513`](docs/archive/log/LOG-rotate-513.md). · [`.499` for `.514`](docs/archive/log/LOG-rotate-514.md). · [`.500` for `.515`](docs/archive/log/LOG-rotate-515.md). · [`.501` for `.516`](docs/archive/log/LOG-rotate-516.md). · [`.502` for `.517`](docs/archive/log/LOG-rotate-517.md). · [`.503` for `.518`](docs/archive/log/LOG-rotate-518.md). · [`.504` for `.519`](docs/archive/log/LOG-rotate-519.md). · [`.505` for `.520`](docs/archive/log/LOG-rotate-520.md). · [`.506` for `.521`](docs/archive/log/LOG-rotate-521.md). · [`.507` for `.522`](docs/archive/log/LOG-rotate-522.md). · [`.508` for `.523`](docs/archive/log/LOG-rotate-523.md). · [`.509` for `.524`](docs/archive/log/LOG-rotate-524.md). · [`.510` for `.525`](docs/archive/log/LOG-rotate-525.md). · [`.511` for `.526`](docs/archive/log/LOG-rotate-526.md). · [`.512` for `.527`](docs/archive/log/LOG-rotate-527.md). · [`.513` for `.528`](docs/archive/log/LOG-rotate-528.md). · [`.514` for `.529`](docs/archive/log/LOG-rotate-529.md). · [`.515` for `.530`](docs/archive/log/LOG-rotate-530.md). · [`.516` for `.531`](docs/archive/log/LOG-rotate-531.md). · [`.517` for `.532`](docs/archive/log/LOG-rotate-532.md). · [`.518` for `.533`](docs/archive/log/LOG-rotate-533.md). · [`.519` for `.534`](docs/archive/log/LOG-rotate-534.md). · [`.520` for `.535`](docs/archive/log/LOG-rotate-535.md). · [`.521` for `.536`](docs/archive/log/LOG-rotate-536.md). · [`.522` for `.537`](docs/archive/log/LOG-rotate-537.md). · [`.523` for `.538`](docs/archive/log/LOG-rotate-538.md). · [`.524` for `.539`](docs/archive/log/LOG-rotate-539.md). · [`.525` for `.540`](docs/archive/log/LOG-rotate-540.md). · [`.526` for `.541`](docs/archive/log/LOG-rotate-541.md). · [`.527` for `.542`](docs/archive/log/LOG-rotate-542.md). · [`.528` for `.543`](docs/archive/log/LOG-rotate-543.md). · [`.529` for `.544`](docs/archive/log/LOG-rotate-544.md). · [`.530` for `.545`](docs/archive/log/LOG-rotate-545.md). · [`.531` for `.546`](docs/archive/log/LOG-rotate-546.md). · [`.532` for `.547`](docs/archive/log/LOG-rotate-547.md). · [`.533` for `.548`](docs/archive/log/LOG-rotate-548.md). · [`.534` for `.549`](docs/archive/log/LOG-rotate-549.md). · [`.535` for `.550`](docs/archive/log/LOG-rotate-550.md). · [`.536` for `.551`](docs/archive/log/LOG-rotate-551.md). · [`.537` for `.552`](docs/archive/log/LOG-rotate-552.md). · [`.538` for `.553`](docs/archive/log/LOG-rotate-553.md). · [`.539` for `.554`](docs/archive/log/LOG-rotate-554.md). · [`.540` for `.555`](docs/archive/log/LOG-rotate-555.md). · [`.541` for `.556`](docs/archive/log/LOG-rotate-556.md). · [`.542` for `.557`](docs/archive/log/LOG-rotate-557.md). · [`.543` for `.558`](docs/archive/log/LOG-rotate-558.md). · [`.544` for `.559`](docs/archive/log/LOG-rotate-559.md). · [`.545` for `.560`](docs/archive/log/LOG-rotate-560.md). · [`.546` for `.561`](docs/archive/log/LOG-rotate-561.md). · [`.547` for `.562`](docs/archive/log/LOG-rotate-562.md). · [`.548` for `.563`](docs/archive/log/LOG-rotate-563.md). · [`.549` for `.564`](docs/archive/log/LOG-rotate-564.md). · [`.550` for `.565`](docs/archive/log/LOG-rotate-565.md). · [`.551` for `.566`](docs/archive/log/LOG-rotate-566.md). · [`.552` for `.567`](docs/archive/log/LOG-rotate-567.md). · [`.553` for `.568`](docs/archive/log/LOG-rotate-568.md). · [`.554` for `.569`](docs/archive/log/LOG-rotate-569.md). · [`.555` for `.570`](docs/archive/log/LOG-rotate-570.md). · [`.556` for `.571`](docs/archive/log/LOG-rotate-571.md). · [`.557` for `.572`](docs/archive/log/LOG-rotate-572.md). · [`.558` for `.573`](docs/archive/log/LOG-rotate-573.md). · [`.559` for `.574`](docs/archive/log/LOG-rotate-574.md). · [`.560` for `.575`](docs/archive/log/LOG-rotate-575.md). · [`.561` for `.576`](docs/archive/log/LOG-rotate-576.md). · [`.562` for `.577`](docs/archive/log/LOG-rotate-577.md). · [`.563` for `.578`](docs/archive/log/LOG-rotate-578.md). · [`.564` for `.579`](docs/archive/log/LOG-rotate-579.md). · [`.565` for `.580`](docs/archive/log/LOG-rotate-580.md). · [`.566` for `.581`](docs/archive/log/LOG-rotate-581.md). · [`.567` for `.582`](docs/archive/log/LOG-rotate-582.md). · [`.568` for `.583`](docs/archive/log/LOG-rotate-583.md). · [`.569` for `.584`](docs/archive/log/LOG-rotate-584.md). · [`.570` for `.585`](docs/archive/log/LOG-rotate-585.md). · [`.571` for `.586`](docs/archive/log/LOG-rotate-586.md). · [`.572` for `.587`](docs/archive/log/LOG-rotate-587.md). · [`.573` for `.588`](docs/archive/log/LOG-rotate-588.md). · [`.574` for `.589`](docs/archive/log/LOG-rotate-589.md). · [`.575` for `.590`](docs/archive/log/LOG-rotate-590.md). · [`.576` for `.591`](docs/archive/log/LOG-rotate-591.md). · [`.577` for `.592`](docs/archive/log/LOG-rotate-592.md). · [`.578` for `.593`](docs/archive/log/LOG-rotate-593.md). · [`.581` for `.596`](docs/archive/log/LOG-rotate-596.md). · [`.582` for `.597`](docs/archive/log/LOG-rotate-597.md). · [`.583` for `.598`](docs/archive/log/LOG-rotate-598.md). · [`.584` for `.599`](docs/archive/log/LOG-rotate-599.md). · [`.585` for `.600`](docs/archive/log/LOG-rotate-600.md). · [`.586` for `.601`](docs/archive/log/LOG-rotate-601.md). · [`.587` for `.602`](docs/archive/log/LOG-rotate-602.md). · [`.588` for `.603`](docs/archive/log/LOG-rotate-603.md). · [`.590` for `.606`](docs/archive/log/LOG-rotate-606.md). · [`.596` for `.612`](docs/archive/log/LOG-rotate-612.md). · [`.597` for `.613`](docs/archive/log/LOG-rotate-613.md). · [`.599` for `.614`](docs/archive/log/LOG-rotate-614.md). · [`.600` for `.615`](docs/archive/log/LOG-rotate-615.md). · [`.601` for `.616`](docs/archive/log/LOG-rotate-616.md). · [`.602` for `.617`](docs/archive/log/LOG-rotate-617.md). · [`.603` for `.618`](docs/archive/log/LOG-rotate-618.md). · [`.604` for `.619`](docs/archive/log/LOG-rotate-619.md). · [`.655` for `.670`](docs/archive/log/LOG-rotate-655-for-670.md). · [`.656` for `.679`](docs/archive/log/LOG-rotate-656-for-679.md). · [`.657` for `.680`](docs/archive/log/LOG-rotate-657-for-680.md). · [`.658` for `.684`](docs/archive/log/LOG-rotate-658-for-684.md). · [`.659` for `.685`](docs/archive/log/LOG-rotate-659-for-685.md). · [`.660` for `.689`](docs/archive/log/LOG-rotate-660-for-689.md). · [`.661` for `.690`](docs/archive/log/LOG-rotate-661-for-690.md). · [`.662` for `.691`](docs/archive/log/LOG-rotate-662-for-691.md). · [`.663` for `.692`](docs/archive/log/LOG-rotate-663-for-692.md). · [`.664` for `.693`](docs/archive/log/LOG-rotate-664-for-693.md). · [`.665` for `.694`](docs/archive/log/LOG-rotate-665-for-694.md). · [`.666` for `.695`](docs/archive/log/LOG-rotate-666-for-695.md). · [`.667` for `.696`](docs/archive/log/LOG-rotate-667-for-696.md). · [`.668` for `.697`](docs/archive/log/LOG-rotate-668-for-697.md). · [`.669` for `.714`](docs/archive/log/LOG-rotate-669-for-714.md). · [`.669` for `.743`](docs/archive/log/LOG-rotate-669-for-743.md). · [`.670` for `.743`](docs/archive/log/LOG-rotate-670-for-743.md). · [`.669` for `.744`](docs/archive/log/LOG-rotate-669-for-744.md). · [`.679` for `.744`](docs/archive/log/LOG-rotate-679-for-744.md). · [`.680` for `.745`](docs/archive/log/LOG-rotate-680-for-745.md). · [`.684` for `.746`](docs/archive/log/LOG-rotate-684-for-746.md).
 
+## 2026-08-14 — No questionnaire before the first set (`.767`)
+
+Shard 3 (IL/IN/SEA, ops #14) confirms all three P0s across two more regions, and
+adds the one I deliberately left alone in `.766`: **too many taps to log a set**.
+
+**Measured, and the first measurement was wrong in the product's favour.** My
+harness typed weight and reps into the set row and reported 8 interactions from a
+cold device. The row was already prefilled; the typing was mine, not the
+athlete's. Corrected, headless at 390×844, counting every interaction:
+
+| path | before | after |
+|---|---|---|
+| cold device (no I-Day) | 4 | 4 |
+| I-Day done, no sessions | 2 | 2 |
+| **returning, has history** | **3, one of them a full-screen questionnaire** | **2** |
+
+The habit path — the one a survey respondent actually rates — ran Start →
+`SessionCheckInSheet` → Log set. That sheet is an `AdaptiveOverlay` at
+`z-[70]`, so the logger was rendered underneath and **unclickable** until the
+athlete dealt with three rating rows. `tests/e2e/helpers/journey.ts` already
+seeds a completed check-in to get past it and states why in its own header
+("full-viewport overlay that intercepts Finish / picker clicks") — the suite
+agreeing in writing while measuring nothing.
+
+The principle was already written in [`sessionCheckInOffer.ts`](src/lib/workout/sessionCheckInOffer.ts):
+*a Mind questionnaire must not stand between arriving on Active and logging a
+set.* It said **first** mission, and shard 3 is about returning athletes, which
+is exactly the case it excluded. It now says every session: ask after the first
+set, when the athlete is warm and nothing is in the way.
+
+**The same defect was manufacturing the input Mission Coach reasons from.** Every
+row starts at 3 and `save()` wrote all three unconditionally, so the fastest way
+past a sheet standing between you and your set was to tap its primary — which
+recorded a 3/3/3 readiness check-in **nobody answered**, into `computeBodyScores`,
+into readiness, into the plan. Only rows the athlete moved are written now, and an
+untouched Save writes nothing at all. Shard 3 lists "Coach not visibly grounded in
+logs" and "too many taps" as separate P0s; here they were one bug.
+
+**The two repeat findings, extended to where these regions land.** `CoachInsightCard`
+— "Coach note", *"From your recent training load and recovery"* — now carries the
+`.766` citation: load and recovery are computed from sessions, so the session is
+the thing to show. The claim pattern in the guard widened to catch that derived
+phrasing, which it could not see. And the **landing hero** now states the
+local-first mechanism from the same constant as the gate and I-Day: IL/IN/SEA
+arrive on `/` by SEO rather than on the gate, and the hero said "offline" and "no
+account" without ever saying where the sets go.
+
+**Guards: 8 mutants, 8 killed — two of them only after the mutants fixed the
+guard.** Dropping `touch()` from one `QuickRow` left a row that could be moved and
+still not saved, and my landing assertion was satisfied by the **comment** naming
+the constant two lines above the render — `.766`'s leftover-import defect wearing
+prose. Source assertions strip comments now. `localFirstCopy` also grew an "every
+constant is actually on a screen" check, which immediately found two orphans:
+`.696`'s Active sign-in strings, unmounted since master's `.746` removed that
+prompt. Retired with the reason; the strings stay in the pack so fifteen
+translations are not thrown away.
+
+**Not shipped, and why.** The cold path's remaining 4 taps include the 2 I-Day
+steps. A "log a set now, set up later" door would halve it, but `completeIDay()`
+requires experience/equipment/goal **and writes them**, so that door would record
+answers the athlete never gave — the exact thing removed from the check-in sheet
+above. It needs a profile-less journey variant or a founder call on I-Day's shape,
+which master deliberately cut to two steps in `.759`–`.764`. Named rather than
+guessed at.
+
+Label `.767` (onto `.766`, same PR). Excellence-Override below.
+
+Excellence-Override: www kaizen first-paint (RESULT unscored)
+
 ## 2026-08-13 — Coach cites the log; first paint names the mechanism (`.766`)
 
 East Asia survey shard (mission-ops #13), taken without waiting for the other
@@ -459,22 +528,3 @@ Excellence-Override below.
 Excellence-Override: habit week count + HABIT contract
 
 Rotated LOG oldest → [docs/archive/log/LOG-rotate-694-for-753.md](docs/archive/log/LOG-rotate-694-for-753.md).
-## 2026-08-13 — Garage swap on the exercise row (`.752`)
-
-When the machine is not there, one **Swap** on the Train logger row and on a
-Coach session line offers **1–2 original** bodyweight / garage stand-ins (same
-pattern, no gym). Short list. Offline. Free. No account.
-
-**Ship:** `garageSwap.ts` closed map + apply helpers. Logger Swap sheet is
-`GarageSwapList` (not the catalog picker). Coach line swap mutates one
-`PlanExercise` via `swapExerciseInPlan` — does not call `generateWeek` / adapt.
-Equipment change clears last load; same equipment keeps planned weight. Hide
-Swap when already garage or no honest pair. Today compact stays swap-free.
-Swap still seeds the new exercise’s last note (`.748`).
-
-Label `.752` (onto master `.751`). Originally reserved `.721`; landed as `.752` past master `.751`.
-Excellence-Override below.
-
-Excellence-Override: garage exercise swap
-
-Rotated LOG oldest → [docs/archive/log/LOG-rotate-693-for-752.md](docs/archive/log/LOG-rotate-693-for-752.md).

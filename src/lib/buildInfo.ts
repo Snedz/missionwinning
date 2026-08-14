@@ -1,5 +1,5 @@
-/** Shown on Profile so testers can confirm the deployed build. Bump when shipping UI to master. `.766` Coach cites the log it planned from; first paint names the local-first mechanism. */
-export const APP_BUILD_LABEL = "2026.07-unified.766";
+/** Shown on Profile so testers can confirm the deployed build. Bump when shipping UI to master. `.767` No questionnaire before the first set; Coach cites the log; first paint names the mechanism. */
+export const APP_BUILD_LABEL = "2026.07-unified.767";
 
 /**
  * Athlete-facing marketing version. Distinct from `APP_BUILD_LABEL`, which
