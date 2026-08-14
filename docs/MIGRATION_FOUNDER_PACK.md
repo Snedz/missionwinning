@@ -93,20 +93,20 @@ Interpretation:
 
 ## 4. Founder checklist
 
-- [ ] P1 `20260721_beta_invites.sql`
-- [ ] P2 `20260721_workout_sync_v2.sql`
-- [ ] P3 `20260721_routines_sync.sql`
-- [ ] P4 `20260721_custom_exercises_prefs_sync.sql`
-- [ ] P5 `20260721_android_telemetry.sql`
-- [ ] P6 `20260728_anonymous_push.sql`
-- [ ] P7 `20260728_week4_exclude_tombstones.sql`
-- [ ] P8 `20260730_wind_down_nudge.sql`
-- [ ] P9 `20260731_llm_usage.sql`
-- [ ] P10 `20260801_day_review_push.sql`
-- [ ] P11 `20260813_week_logged.sql`
-- [ ] `20260813_mission_ids.sql` (runbook item 19)
-- [ ] P12 `20260814_social_messages.sql`
-- [ ] **Proof (required after P7):**
+- [x] P1 `20260721_beta_invites.sql`
+- [x] P2 `20260721_workout_sync_v2.sql`
+- [x] P3 `20260721_routines_sync.sql`
+- [x] P4 `20260721_custom_exercises_prefs_sync.sql`
+- [x] P5 `20260721_android_telemetry.sql`
+- [x] P6 `20260728_anonymous_push.sql`
+- [x] P7 `20260728_week4_exclude_tombstones.sql`
+- [x] P8 `20260730_wind_down_nudge.sql`
+- [x] P9 `20260731_llm_usage.sql`
+- [x] P10 `20260801_day_review_push.sql`
+- [x] P11 `20260813_week_logged.sql`
+- [x] `20260813_mission_ids.sql` (runbook item 19)
+- [x] P12 `20260814_social_messages.sql`
+- [ ] **Proof (required after P7):** — not run; Management API rejected the transactional `auth.users` fixture (`supabase/checks/week4_retention_proof.sql`). Run locally with `psql` when you have the URI.
 
 ```bash
 # From a machine with DATABASE_URL (Supabase → Database → URI)
@@ -114,7 +114,7 @@ psql "$DATABASE_URL" -v ON_ERROR_STOP=1 -f supabase/checks/week4_retention_proof
 # Expect: week4 proof OK
 ```
 
-- [ ] Update [CONTEXT.md](../CONTEXT.md) Status migrations line if agents cannot (founder note to agent: “pack applied”) so the pending count stops lying
+- [x] Update [CONTEXT.md](../CONTEXT.md) Status migrations line — applied 2026-08-14
 
 ---
 
