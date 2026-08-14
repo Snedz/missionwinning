@@ -303,23 +303,20 @@ Excellence-Override: merge-all Cursor landing (Actions minutes / no Vercel previ
 
 Rotated LOG oldest → [docs/archive/log/LOG-rotate-751-for-766.md](docs/archive/log/LOG-rotate-751-for-766.md).
 
-## 2026-08-13 — Preview walk P0s: consent dock + landing notify (`.765`)
+## 2026-08-14 — Form object kit + implement stills
 
-Chrome walk of the ungated Preview path (mission-ops #19): the analytics
-consent banner covered Today's only first-set CTA on phones, and Super Bundle
-“get notified until Stripe” had no form once `/private` always redirected.
+Pose-first Form Index prompts invented toy DBs, missing pairs, and
+machines that cannot exist (sealed box, slack cable, high pulley as a
+seated row). Form Director is now object-first.
 
-**Ship:** consent banner docks as a reserved flex sibling above the tab bar
-(never `fixed bottom-0`). Landing mounts `LaunchNotifyForm` (existing
-`/api/leads` path). No checkout. No Stripe-is-live claim. No invented traction.
-`TAP_BUDGET` stays 5. Consent stays. `PRIVATE_MODE` unchanged. Preview will
-not deploy.
+**Ship:** `IMPLEMENT` block + implement catalog; QA ticks 8–12; prop
+sheets (DB pair/single, cable-row station, medball, landmine); still
+sheets for implement-using wired ids. Regenerated `cable-row` (visible
+pin-stack, horizontal line of pull), `lateral-raise`, `dumbbell-press`,
+`lunges`, `dumbbell-row`. Floor stays 43. Still-only. No I2V. No
+`PRIVATE_MODE` flip. Media-only — label stays `.779`.
 
-Label `.765` (onto master `.764`). Brief reserved `.750` (occupied). First
-land `.755` was occupied by unilateral L/R. Excellence-Override below.
+Excellence-Override: form stills replace existing Form Index posters (object QA)
 
-Excellence-Override: preview walk P0s (consent dock + landing notify)
-
-Rotated LOG oldest → [docs/archive/log/LOG-rotate-750-for-765.md](docs/archive/log/LOG-rotate-750-for-765.md).
-
+Rotated LOG oldest → [docs/archive/log/LOG-rotate-765-for-form-object-kit.md](docs/archive/log/LOG-rotate-765-for-form-object-kit.md).
 

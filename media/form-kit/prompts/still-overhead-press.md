@@ -21,6 +21,14 @@ POSE / EXERCISE LOCK (hard)
 - Feet under hips, knees soft but standing tall, ribs stacked, no excessive lean back
 - Full body in frame: head with ≥8% headroom, feet with ≥5% sole/floor room
 
+IMPLEMENT
+class: barbell-empty
+count: 1
+scale: full-length Olympic bar, sleeves past both hands
+origin / path: in front of the face on the way up; lockout above the crown
+machine: none
+attach: @prop-barbell-sheet
+
 EQUIPMENT (hard)
 ONE empty silver Olympic barbell only — left–right axis.
 NO plates · NO spring collars · NO clips · NO prongs · NO star locks · NO multi-prong hubs.

@@ -18,4 +18,6 @@ Clinical movement demos for Train / library / public exercises.
 
 **Library cards (`.774`):** unique Form Index stills only (43 wired). Shared `pattern-*` rasters stay in the form sheet with an honest caption — they are not card posters. Wave C: `step-ups`, `jump-squats`, `wall-ball`, `dips-chair`, `incline-bench`.
 
+**Object kit:** implement-using still prompts fill the `IMPLEMENT` block in [FORM_DIRECTOR.md](../../media/form-kit/FORM_DIRECTOR.md) and attach the matching `@prop-*` sheet.
+
 Do not embed third-party CrossFit or YouTube demos. MW-owned assets only.

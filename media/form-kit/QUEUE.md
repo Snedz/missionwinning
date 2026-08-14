@@ -1,6 +1,6 @@
 # Form Index — generation queue (resume)
 
-**Status:** `.774` Wave C unique stills (5).  
+**Status:** object-kit + IMPLEMENT block. Five weak stills regenerated. Targeted sharp only.  
 **Do not** run `npm run media:optimize-inbox` on the whole inbox (it rewrites unrelated packs). Targeted sharp only.
 
 ## Shipped pack (after .774)
@@ -20,8 +20,8 @@ Library cards must stay unique-pack only (`formPackLibraryPosterUrl`).
 ## Pipeline
 
 ```
-1. Grok Imagine + refs (athlete-a-side, prop-barbell as needed)
-2. Paste director block from prompts/
+1. Grok Imagine + refs (athlete-a-side **and** the IMPLEMENT `@prop-*` sheet)
+2. Paste the full director block from `prompts/still-{id}.md` — a prompt without `IMPLEMENT` is incomplete
 3. Save PNG as media/inbox/form-{id}-side-frame.png
 4. npm run media:optimize-inbox
 5. Vision QA vs FORM_DIRECTOR hard rejects

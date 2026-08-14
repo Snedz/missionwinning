@@ -39,8 +39,13 @@ Open the still next to a reference demo. Tick all:
 5. **Phase** — setup, mid, or lockout is intentional and labeled in the director sheet  
 6. **Physics** — implement outside body; no bar-through-torso; no extra limbs  
 7. **Brand field** — paper-neutral ground; no text/logos  
+8. **Count** — right number of implements; both visible if the lift is bilateral  
+9. **Scale** — not a toy, not a cartoon hex; handle matches a closed adult hand  
+10. **Origin / path** — cable, machine, or bar direction matches the lift (seated row = shin-height exit; lateral = frontal plane, not a front raise)  
+11. **Machine can exist** — no straps-on-row, no pulley-on-plates, no unused high boom on a horizontal pull  
+12. **Form-check phase** — the named cue is readable (a coach would pass it)  
 
-Any NO → log in [FAIL.md](FAIL.md), **remove id from `FORM_PACK_SIDE_IDS`**, keep file only as regen reference.
+Any NO → log in [FAIL.md](FAIL.md). For a **wired** regen, leave `FORM_PACK_SIDE_IDS` and replace the file only after the new still PASSes. Demote (remove the id) only when the live file itself fails and there is no replacement yet.
 
 ---
 

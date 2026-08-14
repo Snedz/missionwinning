@@ -16,6 +16,14 @@ POSE / EXERCISE LOCK (hard)
 - Bar path OUTSIDE the body — never on the back (not a good-morning)
 - Full head + both feet in frame with margins
 
+IMPLEMENT
+class: landmine
+count: 1
+scale: empty Olympic bar; far sleeve planted on the floor
+origin / path: free end rows to the hip; far end stays on the floor
+machine: none
+attach: @prop-landmine-pivot
+
 EQUIPMENT (hard)
 ONE landmine barbell: FAR END (sleeve) planted on the FLOOR as a clear pivot — sleeve tip or plates touching floor.
 Working end (collar/sleeve without huge plate stack preferred) is the free end athlete rows.

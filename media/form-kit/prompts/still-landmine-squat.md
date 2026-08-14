@@ -21,6 +21,14 @@ POSE / EXERCISE LOCK
 - Elbows under load, knees track over midfoot, heels down
 - Full headroom and feet visible
 
+IMPLEMENT
+class: landmine
+count: 1
+scale: empty Olympic bar; far sleeve on the floor
+origin / path: free end at the sternum; far end stays planted
+machine: none
+attach: @prop-landmine-pivot
+
 EQUIPMENT PHYSICS
 ONE barbell only. Far end on floor as pivot. Free end at chest — not overhead, not on back.
 No bar through body. Contact shadows.
