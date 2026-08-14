@@ -61,5 +61,7 @@ describe('first-set locale chooser (F-017)', () => {
     const guardAt = src.lastIndexOf('shouldAutoOpenLocaleChooser', openAt);
     assert.ok(openAt > 0, 'setOpen(true) must still exist');
     assert.ok(guardAt > 0 && guardAt < openAt, 'guard must precede setOpen(true)');
+    assert.match(src, /window\.location\.pathname/);
+    assert.match(src, /isFirstSetLocaleChooserPath\(pathname\)\) setOpen\(false\)/);
   });
 });
