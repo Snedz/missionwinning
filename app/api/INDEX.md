@@ -62,7 +62,7 @@ Legend:
 | Route | Methods | Auth | Rate | Body |
 |-------|---------|------|------|------|
 | `account/export` | GET | session (id from getUser only) | 3/5min/user | Art. 20 — every owned table as JSON attachment; wearable tokens redacted (`src/lib/accountDataServer.ts`) |
-| `account/delete` | POST | session (id from getUser only) | 2/5min/user | Art. 17 — Zod `accountDeleteBodySchema` (`confirm: 'DELETE'`); client `userId` rejected; email-keyed cleanups then `auth.admin.deleteUser` cascade |
+| `account/delete` | POST | session (id from getUser only) | 2/5min/user | Art. 17 — Zod `accountDeleteBodySchema` (`confirm: 'DELETE'`); client `userId` rejected; client `deviceId` ignored (P2-1); email-keyed cleanups then linked-device anonymous wipe then `auth.admin.deleteUser` cascade |
 
 ### Coach
 
@@ -112,10 +112,10 @@ Legend:
 
 | Route | Methods | Auth | Rate | Notes |
 |-------|---------|------|------|-------|
-| `youth/consent-verify` | POST | token HMAC | limited | fail-closed secret |
-| `youth/consent-notify` | POST | optional session | 3/min/IP | Zod `youthConsentNotifySchema` |
-| `youth/consent-status` | GET | token/session | — | |
-| `youth/consent-confirm` | GET | token | — | |
+| `youth/consent-verify` | POST | token HMAC | limited | 404 when youth parked; fail-closed secret |
+| `youth/consent-notify` | POST | session | 3/min/IP + 3/hour/recipient | 404 when youth parked (P2-3); Zod `youthConsentNotifySchema` |
+| `youth/consent-status` | GET | session | — | 404 when youth parked |
+| `youth/consent-confirm` | GET | token | — | 404 when youth parked |
 
 ### Journey, nudges, cron
 

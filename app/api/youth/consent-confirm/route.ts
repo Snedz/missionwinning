@@ -6,9 +6,13 @@ import { NextRequest, NextResponse } from 'next/server';
 import { withApiLogging } from '@/lib/api/withApiLogging';
 import { persistYouthConsent } from '@/lib/youthConsentServer';
 import { verifyConsentToken } from '@/lib/youthConsentToken';
+import { youthApiNotFound } from '@/lib/youthSurfaceGuard';
 
 /** Verify parent email link token. Persists to athlete account when token includes uid. */
 export const GET = withApiLogging('youth/consent-confirm', async(request: NextRequest) => {
+  const parked = youthApiNotFound();
+  if (parked) return parked;
+
   const token = request.nextUrl.searchParams.get('token');
   if (!token) {
     return NextResponse.json({ ok: false, error: 'Missing token' }, { status: 400 });

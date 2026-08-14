@@ -75,4 +75,20 @@ describe('accountDataCompleteness', () => {
     assert.ok(spec?.redact?.includes('access_token'));
     assert.ok(spec?.redact?.includes('refresh_token'));
   });
+
+  it('legal-hold is Privacy policy, not a delete flag', () => {
+    const executor = readFileSync(path.join(process.cwd(), 'src/lib/accountDataServer.ts'), 'utf8');
+    assert.doesNotMatch(executor, /legal[_-]?hold/i);
+    assert.match(executor, /EMAIL_ONLY_TABLES/);
+    const locales = readFileSync(path.join(process.cwd(), 'src/i18n/infoLocales.ts'), 'utf8');
+    assert.match(locales, /thirty \(30\) days/);
+    assert.match(locales, /legal holds/);
+  });
+
+  it('the executor exports email-keyed tables — access matches delete', () => {
+    const executor = readFileSync(path.join(process.cwd(), 'src/lib/accountDataServer.ts'), 'utf8');
+    assert.match(executor, /for \(const table of EMAIL_ONLY_TABLES\)/);
+    assert.match(executor, /\.eq\('email', email\)/);
+    assert.match(executor, /eq\('user_email', email\)/);
+  });
 });

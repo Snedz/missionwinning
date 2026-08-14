@@ -85,3 +85,5 @@ Ship order when unlocked: Whoop → Strava → Oura → Garmin → Fitbit → Po
 ## Env
 
 See [ENV.md](ENV.md) § Wearables. Master client flag: `NEXT_PUBLIC_WEARABLES=true`.
+OAuth `state` requires `WEARABLES_OAUTH_STATE_SECRET` in production (no source fallback).
+Callback origin is `WEARABLES_OAUTH_REDIRECT_BASE` or `NEXT_PUBLIC_APP_URL`, never the request Host.

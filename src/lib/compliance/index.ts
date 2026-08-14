@@ -3,8 +3,8 @@
  * Not a certification. See docs/COMPLIANCE.md.
  */
 
-import { readFileSync, existsSync } from 'node:fs';
-import { join } from 'node:path';
+import { readFileSync, existsSync, readdirSync, statSync } from 'node:fs';
+import { extname, join } from 'node:path';
 import { createRequire } from 'node:module';
 import { getDeployReadinessReport } from '@/lib/deployReadiness';
 
@@ -14,7 +14,14 @@ const yaml = require('js-yaml') as {
   load: (input: string) => unknown;
 };
 
-export type ComplianceFramework = 'soc2' | 'iso27001' | 'hipaa';
+export type ComplianceFramework =
+  | 'soc2'
+  | 'iso27001'
+  | 'hipaa'
+  | 'ccpa'
+  | 'coppa'
+  | 'play_data'
+  | 'ftc_ai';
 export type ComplianceOwner = 'agent' | 'founder';
 export type ComplianceProbe =
   | 'doc_exists'
@@ -22,6 +29,7 @@ export type ComplianceProbe =
   | 'deploy_readiness'
   | 'dependabot'
   | 'ci_audit'
+  | 'source_scan'
   | 'manual'
   | 'partial'
   | 'n_a';
@@ -38,6 +46,15 @@ export type ComplianceControl = {
   probe: ComplianceProbe;
   status: ComplianceSeedStatus;
   notes?: string;
+  /** All of these strings must appear in the evidence scan. */
+  require?: string[];
+  /** None of these strings may appear in the evidence scan. */
+  forbid?: string[];
+  /**
+   * Hunt id (e.g. P2-2). A failing source_scan becomes `partial`.
+   * If the scan later *passes*, the result is `fail` (stale allowlist).
+   */
+  known_open?: string;
 };
 
 export type ComplianceCatalog = {
@@ -71,8 +88,37 @@ export type ComplianceReport = {
   controls: ControlEvaluation[];
 };
 
-const FRAMEWORKS: ComplianceFramework[] = ['soc2', 'iso27001', 'hipaa'];
+const FRAMEWORKS: ComplianceFramework[] = [
+  'soc2',
+  'iso27001',
+  'hipaa',
+  'ccpa',
+  'coppa',
+  'play_data',
+  'ftc_ai',
+];
+const FRAMEWORK_SET = new Set<string>(FRAMEWORKS);
 const RESULTS: ComplianceResultStatus[] = ['pass', 'fail', 'partial', 'manual', 'n_a'];
+
+export function assertCatalogControls(controls: ComplianceControl[]): void {
+  for (const c of controls) {
+    if (!c?.id || !c.probe) {
+      throw new Error(`Invalid control: missing id or probe`);
+    }
+    for (const fw of c.frameworks ?? []) {
+      if (!FRAMEWORK_SET.has(fw)) {
+        throw new Error(`Unknown framework '${fw}' on ${c.id}`);
+      }
+    }
+    if (c.probe === 'source_scan') {
+      const req = c.require?.length ?? 0;
+      const forb = c.forbid?.length ?? 0;
+      if (req + forb === 0) {
+        throw new Error(`${c.id}: source_scan needs require or forbid`);
+      }
+    }
+  }
+}
 
 export function defaultCatalogPath(repoRoot = process.cwd()): string {
   return join(repoRoot, 'docs/compliance/controls.yaml');
@@ -89,6 +135,7 @@ export function loadComplianceCatalog(repoRoot = process.cwd()): ComplianceCatal
   if (!doc?.controls || !Array.isArray(doc.controls)) {
     throw new Error(`Invalid compliance catalog at ${path}`);
   }
+  assertCatalogControls(doc.controls);
   return {
     version: doc.version ?? 1,
     disclaimer: (doc.disclaimer ?? '').trim(),
@@ -147,6 +194,89 @@ export function probeCiAudit(repoRoot: string): { ok: boolean; detail: string } 
     ok: true,
     detail: soft ? 'npm audit present (soft / continue-on-error)' : 'npm audit present',
   };
+}
+
+const SCAN_EXT = new Set(['.ts', '.tsx', '.js', '.jsx', '.mjs', '.cjs', '.yml', '.yaml']);
+const SKIP_DIRS = new Set([
+  'node_modules',
+  '.git',
+  '.next',
+  'dist',
+  'coverage',
+  'build',
+  '.turbo',
+]);
+const SCAN_FILE_BUDGET = 400;
+
+function collectScanFiles(repoRoot: string, rel: string, out: string[], budget: { n: number }) {
+  if (budget.n <= 0) return;
+  const abs = join(repoRoot, rel);
+  if (!existsSync(abs)) return;
+  const st = statSync(abs);
+  if (st.isFile()) {
+    out.push(rel);
+    budget.n -= 1;
+    return;
+  }
+  if (!st.isDirectory()) return;
+  for (const name of readdirSync(abs)) {
+    if (SKIP_DIRS.has(name)) continue;
+    const childRel = rel ? join(rel, name) : name;
+    const childAbs = join(repoRoot, childRel);
+    let childSt;
+    try {
+      childSt = statSync(childAbs);
+    } catch {
+      continue;
+    }
+    if (childSt.isDirectory()) {
+      collectScanFiles(repoRoot, childRel, out, budget);
+    } else if (SCAN_EXT.has(extname(name))) {
+      out.push(childRel);
+      budget.n -= 1;
+    }
+    if (budget.n <= 0) return;
+  }
+}
+
+/** Read evidence as one blob: a file as-is, or a directory of source/yaml files. */
+export function readEvidenceBlob(repoRoot: string, evidence: string): { ok: boolean; text: string; detail: string } {
+  const abs = join(repoRoot, evidence);
+  if (!existsSync(abs)) {
+    return { ok: false, text: '', detail: `Missing ${evidence}` };
+  }
+  const st = statSync(abs);
+  if (st.isFile()) {
+    return { ok: true, text: readFileSync(abs, 'utf8'), detail: evidence };
+  }
+  const files: string[] = [];
+  collectScanFiles(repoRoot, evidence, files, { n: SCAN_FILE_BUDGET });
+  if (!files.length) {
+    return { ok: false, text: '', detail: `No scannable files under ${evidence}` };
+  }
+  const parts = files.map((f) => readFileSync(join(repoRoot, f), 'utf8'));
+  return {
+    ok: true,
+    text: parts.join('\n'),
+    detail: `${files.length} files under ${evidence}`,
+  };
+}
+
+export function probeSourceScan(
+  control: Pick<ComplianceControl, 'evidence' | 'require' | 'forbid'>,
+  repoRoot: string
+): { ok: boolean; detail: string } {
+  const blob = readEvidenceBlob(repoRoot, control.evidence);
+  if (!blob.ok) return { ok: false, detail: blob.detail };
+  const missing = (control.require ?? []).filter((s) => !blob.text.includes(s));
+  const hits = (control.forbid ?? []).filter((s) => blob.text.includes(s));
+  if (missing.length) {
+    return { ok: false, detail: `Missing required: ${missing.join(', ')}` };
+  }
+  if (hits.length) {
+    return { ok: false, detail: `Forbidden present: ${hits.join(', ')}` };
+  }
+  return { ok: true, detail: `source_scan ok (${blob.detail})` };
 }
 
 export function evaluateControl(
@@ -215,6 +345,24 @@ export function evaluateControl(
           detail: e instanceof Error ? e.message : String(e),
         };
       }
+    }
+    case 'source_scan': {
+      const { ok, detail } = probeSourceScan(control, repoRoot);
+      if (control.known_open) {
+        if (ok) {
+          return {
+            ...base,
+            result: 'fail',
+            detail: `stale known_open ${control.known_open}: probe now passes — remove known_open from the catalog`,
+          };
+        }
+        return {
+          ...base,
+          result: 'partial',
+          detail: `known open (${control.known_open}): ${detail}`,
+        };
+      }
+      return { ...base, result: ok ? 'pass' : 'fail', detail };
     }
     default:
       return { ...base, result: 'fail', detail: `Unknown probe: ${control.probe}` };

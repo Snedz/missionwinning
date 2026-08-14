@@ -13,9 +13,13 @@ import { rateLimitAsync } from '@/lib/rateLimit';
 import { clientIp } from '@/lib/clientIp';
 import { createHash } from 'node:crypto';
 import { parseJsonBody, youthConsentVerifySchema } from '@/lib/apiSchemas';
+import { youthApiNotFound } from '@/lib/youthSurfaceGuard';
 
 /** Verify 6-digit parent consent code (cross-device). Persists when athlete is signed in. */
 export const POST = withApiLogging('youth/consent-verify', async(request: NextRequest) => {
+  const parked = youthApiNotFound();
+  if (parked) return parked;
+
   const ip = clientIp(request);
   let body: unknown;
   try {

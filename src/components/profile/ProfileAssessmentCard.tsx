@@ -4,12 +4,10 @@ import { useRouter } from 'next/navigation';
 import { useTranslation } from 'react-i18next';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { getUser } from '@/lib/supabase';
 import { useWorkoutStore } from '@/store/workoutStore';
 import { STORAGE_KEYS } from '@/lib/storage/keys';
 import { readJson } from '@/lib/storage/safeStorage';
 import { toast } from '@/hooks/use-toast';
-import { localDateKey } from '@/lib/time/localDate';
 import { bumpTrainingStreak } from '@/lib/streaks';
 import { isFreeBeta } from '@/lib/freeBeta';
 
@@ -95,18 +93,7 @@ export function ProfileAssessmentCard() {
                 size="sm"
                 className="min-h-[44px] tap-target"
                 variant="ghost"
-                onClick={async () => {
-                  const u = await getUser();
-                  const today = localDateKey();
-                  if (u)
-                    await (
-                      await import('@/lib/supabase')
-                    ).saveNutritionEntry({
-                      date: today,
-                      name: 'Assessment Win from Profile',
-                      protein: 0,
-                      cals: 0,
-                    });
+                onClick={() => {
                   const streak = bumpTrainingStreak();
                   toast({
                     title: t('todayFounderWinLogged', { defaultValue: 'Win logged' }),

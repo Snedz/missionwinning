@@ -4,7 +4,7 @@
 
 **HIPAA:** Framework **mapping only** for technical safeguards that resemble our stack. We are **not** a covered entity and **do not** claim to process PHI under HIPAA. See [LEGAL_SAFETY.md](LEGAL_SAFETY.md).
 
-**Related:** [PROTECTION.md](PROTECTION.md) · [OWASP_AUDIT.md](OWASP_AUDIT.md) · [SECURITY_AUDIT_TRIAGE.md](SECURITY_AUDIT_TRIAGE.md) · [SECURITY.md](../SECURITY.md) · [PAY_READY_LEGAL.md](PAY_READY_LEGAL.md)
+**Related:** [PROTECTION.md](PROTECTION.md) · [OWASP_AUDIT.md](OWASP_AUDIT.md) · [SECURITY_AUDIT_TRIAGE.md](SECURITY_AUDIT_TRIAGE.md) · [SECURITY.md](../SECURITY.md) · [PAY_READY_LEGAL.md](PAY_READY_LEGAL.md) · current census [security/PROGRAM_STATUS.md](security/PROGRAM_STATUS.md)
 
 ---
 
@@ -16,7 +16,7 @@ npm run compliance:status -- --write-md   # refresh snapshot below
 npm run compliance:status -- --ci         # write compliance-status.json (CI artifact)
 ```
 
-Catalog source of truth: [`compliance/controls.yaml`](compliance/controls.yaml).
+Catalog source of truth: [`docs/compliance/controls.yaml`](compliance/controls.yaml).
 
 Logic: [`src/lib/compliance/`](../src/lib/compliance/).
 
@@ -26,15 +26,19 @@ Logic: [`src/lib/compliance/`](../src/lib/compliance/).
 
 <!-- compliance-snapshot:start -->
 
-_Generated 2026-07-22T01:21:56.769Z (catalog v1). Re-run `npm run compliance:status -- --write-md`._
+_Generated 2026-08-14T07:09:24.188Z (catalog v2). Re-run `npm run compliance:status -- --write-md`._
 
 | Framework | Pass | Partial | Manual | N/A | Fail |
 |-----------|------|---------|--------|-----|------|
-| soc2 | 30 | 7 | 2 | 1 | 0 |
-| iso27001 | 29 | 6 | 1 | 1 | 0 |
-| hipaa | 6 | 4 | 0 | 4 | 0 |
+| soc2 | 44 | 7 | 5 | 1 | 0 |
+| iso27001 | 27 | 6 | 4 | 1 | 0 |
+| hipaa | 6 | 4 | 1 | 4 | 0 |
+| ccpa | 11 | 0 | 0 | 0 | 0 |
+| coppa | 4 | 0 | 0 | 0 | 0 |
+| play_data | 1 | 1 | 0 | 0 | 0 |
+| ftc_ai | 2 | 0 | 0 | 0 | 0 |
 
-**Overall:** pass=32 · partial=7 · manual=2 · n_a=4 · fail=0
+**Overall:** pass=48 · partial=8 · manual=5 · n_a=4 · fail=0
 
 <!-- compliance-snapshot:end -->
 
@@ -47,22 +51,28 @@ _Generated 2026-07-22T01:21:56.769Z (catalog v1). Re-run `npm run compliance:sta
 | **SOC 2** | Trust Services Criteria *subset* mapped to gate, CI, webhooks, headers, privacy docs |
 | **ISO 27001** | Annex A *subset* aligned to the same evidence (not a full ISMS) |
 | **HIPAA** | Security Rule technical-safeguard *map only* — BAA / covered-entity rows are `n_a` |
+| **CCPA / CPRA** | Access, delete, no sale/share — `source_scan` against the executor, not the Privacy page alone |
+| **COPPA** | Youth surface parked + consent secret fail-closed |
+| **Play Data safety** | LEGAL_SAFETY §2 inventory; Console form is founder/partial until Internal |
+| **FTC AI** | Live Privacy AI disclosure + LLM ZDR fail-closed |
 
-One control can list multiple frameworks (crosswalk).
+One control can list multiple frameworks (crosswalk). `source_scan` is the default for code-backed rows. `doc_exists` remains only when the document *is* the control (Privacy page, Terms, SECURITY.md, AUP). Known-open hunt items evaluate as `partial` until the scan passes, then the catalog `known_open` flag must be removed or CI goes red.
 
 ---
 
-## Founder cadence (weekly)
+## Founder cadence
 
-1. Open latest CI artifact `compliance-status.json` (or run locally).
-2. Clear or schedule **manual** / **partial** controls (Supabase probe, Sentry DSN, DMCA agent, audit triage).
-3. Do **not** market pass counts as certification.
+**Weekly (10 min):** open `compliance-status.json` (or `npm run compliance:status`). Clear or schedule **manual** / **partial** controls (Supabase probe, Sentry DSN, DMCA agent, audit triage). Do **not** market pass counts as certification.
+
+**Monthly (agent, when asked):** scoped hunt or `/cso` daily mode. Update the REDTEAM date only if a verdict *changed*. Refresh [OWASP_AUDIT.md](OWASP_AUDIT.md) the same way. Living census stays [security/PROGRAM_STATUS.md](security/PROGRAM_STATUS.md).
+
+**Quarterly (founder):** advisory accept review (Solana `bigint-buffer`), secret rotation, cyber-insurance quote, Play Data safety form if Internal is open. Agents list these; they never tick them.
 
 ---
 
 ## CI evidence
 
-- Workflow: `.github/workflows/ci.yml` → `compliance:status --ci` (soft) + artifact upload
+- Workflow: `.github/workflows/ci.yml` → `compliance:status --ci` (fails the step on any `fail`; known-open hunts are `partial`) + artifact upload
 - Dependabot: `.github/dependabot.yml` (npm + GitHub Actions, weekly)
 - Optional CodeQL: `.github/workflows/codeql.yml` — enable GitHub Advanced Security on the repo if the job no-ops
 

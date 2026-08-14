@@ -14,9 +14,20 @@ test('privateGate verifies cookie or Bearer via shared authAccessToken (F1)', ()
   assert.ok(!/PRIVATE_ALLOW_AUTH_BYPASS !== 'true'/.test(gate));
 });
 
-test('proxy uses hasValidSupabaseSession / verified user path', () => {
+test('proxy does not treat a verified JWT as a gate pass', () => {
   const proxy = readFileSync(join(root, 'proxy.ts'), 'utf8');
-  assert.match(proxy, /hasValidSupabaseSession/);
+  assert.doesNotMatch(proxy, /hasValidSupabaseSession/);
+  assert.doesNotMatch(proxy, /hasVerifiedSupabaseUser/);
+  assert.match(proxy, /hasPrivateAccessCookie/);
+});
+
+test('session mint and OAuth callback require inviteRedeemed while gated', () => {
+  const session = readFileSync(join(root, 'app/api/private-access/session/route.ts'), 'utf8');
+  const callback = readFileSync(join(root, 'app/auth/callback/route.ts'), 'utf8');
+  assert.match(session, /sessionMintEligible/);
+  assert.match(session, /invite_required/);
+  assert.match(callback, /sessionMintEligible/);
+  assert.match(callback, /bindInviteToUser/);
 });
 
 test('mobileAccess reuses authAccessToken (no duplicate Bearer parse)', () => {

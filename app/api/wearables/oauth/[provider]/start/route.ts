@@ -9,7 +9,11 @@ import { rateLimitAsync } from '@/lib/rateLimit';
 import { getUserFromRequest } from '@/lib/supabaseRequestAuth';
 import { getOAuthCredentials, isWearablesEnabled } from '@/lib/wearables/flags';
 import { getOAuthAdapter, isOAuthProviderId } from '@/lib/wearables/oauthProviders';
-import { getOAuthRedirectUri, signOAuthState } from '@/lib/wearables/oauthState';
+import {
+  getOAuthRedirectUri,
+  signOAuthState,
+  WearablesOAuthMisconfiguredError,
+} from '@/lib/wearables/oauthState';
 
 type Ctx = { params: Promise<{ provider: string }> };
 
@@ -41,19 +45,24 @@ export const GET = withApiLogging('wearables/oauth/start', async (req: NextReque
     return NextResponse.json({ error: 'Provider not configured', code: 'not_configured' }, { status: 503 });
   }
 
-  const origin = req.nextUrl.origin;
-  const redirectUri = getOAuthRedirectUri(origin, raw);
-  const state = signOAuthState({
-    userId: user.id,
-    provider: raw,
-    exp: Date.now() + 15 * 60 * 1000,
-  });
-  const adapter = getOAuthAdapter(raw);
-  const url = adapter.buildAuthorizeUrl({
-    clientId: creds.clientId,
-    redirectUri,
-    state,
-  });
-
-  return NextResponse.redirect(url);
+  try {
+    const redirectUri = getOAuthRedirectUri(raw);
+    const state = signOAuthState({
+      userId: user.id,
+      provider: raw,
+      exp: Date.now() + 15 * 60 * 1000,
+    });
+    const adapter = getOAuthAdapter(raw);
+    const url = adapter.buildAuthorizeUrl({
+      clientId: creds.clientId,
+      redirectUri,
+      state,
+    });
+    return NextResponse.redirect(url);
+  } catch (e) {
+    if (e instanceof WearablesOAuthMisconfiguredError) {
+      return NextResponse.json({ error: 'Provider not configured', code: 'not_configured' }, { status: 503 });
+    }
+    throw e;
+  }
 });

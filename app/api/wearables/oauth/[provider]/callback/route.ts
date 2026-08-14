@@ -9,7 +9,11 @@ import { rateLimitAsync } from '@/lib/rateLimit';
 import { upsertOAuthConnection } from '@/lib/wearables/connections';
 import { getOAuthCredentials, isWearablesEnabled } from '@/lib/wearables/flags';
 import { getOAuthAdapter, isOAuthProviderId } from '@/lib/wearables/oauthProviders';
-import { getOAuthRedirectUri, verifyOAuthState } from '@/lib/wearables/oauthState';
+import {
+  getOAuthRedirectUri,
+  verifyOAuthState,
+  WearablesOAuthMisconfiguredError,
+} from '@/lib/wearables/oauthState';
 
 type Ctx = { params: Promise<{ provider: string }> };
 
@@ -35,7 +39,15 @@ export const GET = withApiLogging('wearables/oauth/callback', async (req: NextRe
     return NextResponse.redirect(new URL('/profile?wearables=denied', req.url));
   }
 
-  const verified = verifyOAuthState(state);
+  let verified: ReturnType<typeof verifyOAuthState>;
+  try {
+    verified = verifyOAuthState(state);
+  } catch (e) {
+    if (e instanceof WearablesOAuthMisconfiguredError) {
+      return NextResponse.redirect(new URL('/profile?wearables=not_configured', req.url));
+    }
+    throw e;
+  }
   if (!verified.ok || verified.provider !== raw) {
     return NextResponse.redirect(new URL('/profile?wearables=bad_state', req.url));
   }
@@ -45,7 +57,15 @@ export const GET = withApiLogging('wearables/oauth/callback', async (req: NextRe
     return NextResponse.redirect(new URL('/profile?wearables=not_configured', req.url));
   }
 
-  const redirectUri = getOAuthRedirectUri(req.nextUrl.origin, raw);
+  let redirectUri: string;
+  try {
+    redirectUri = getOAuthRedirectUri(raw);
+  } catch (e) {
+    if (e instanceof WearablesOAuthMisconfiguredError) {
+      return NextResponse.redirect(new URL('/profile?wearables=not_configured', req.url));
+    }
+    throw e;
+  }
   const adapter = getOAuthAdapter(raw);
 
   try {

@@ -51,7 +51,7 @@ Public while private gate is on. See [OPS_MONITORING.md](OPS_MONITORING.md).
 |--|--|
 | Auth | session (cookie) |
 | Rate | 3 / 5 min / user |
-| Response | JSON attachment: every table the account owns (`EXPORT_TABLES` in [src/lib/accountDataRegistry.ts](../src/lib/accountDataRegistry.ts)), rows capped at 5000/table with a `truncated` marker. `wearable_connections.access_token`/`refresh_token` are redacted — secrets ride in no export. **401** no session · **503** admin not configured · **502** opaque on read failure |
+| Response | JSON attachment: every table the account owns (`EXPORT_TABLES`) plus, when the session has an email, email-keyed PI (`leads`, `checkout_recovery`, `beta_invites`) and orphan `enrollments` by `user_email`. Rows capped at 5000/table with a `truncated` marker. `wearable_connections.access_token`/`refresh_token` are redacted — secrets ride in no export. **401** no session · **503** admin not configured · **502** opaque on read failure |
 
 ### `POST /api/account/delete`
 
@@ -59,8 +59,8 @@ Public while private gate is on. See [OPS_MONITORING.md](OPS_MONITORING.md).
 |--|--|
 | Auth | session (cookie) |
 | Rate | 2 / 5 min / user |
-| Body | Zod `accountDeleteBodySchema` — `{ confirm: 'DELETE', deviceId? }`. Extra `userId` is rejected; the account id is the session user only. |
-| Behavior | Email-keyed cleanups first (`leads`, `checkout_recovery` deleted; `beta_invites` anonymized; orphan `enrollments` by email), anonymous device rows (`push_subscriptions`, `llm_usage` where `user_id is null`), then `auth.admin.deleteUser` — which cascades all 16 user-keyed tables. **No migration required**: every user-keyed table already declares `on delete cascade` from `auth.users`. Any failed step aborts **before** the cascade and returns **502** — success is never reported on a partial deletion. Completeness is enforced by `src/lib/accountDataCompleteness.test.ts`, which discovers tables from `supabase/migrations/` and fails on any table with no export/deletion story. |
+| Body | Zod `accountDeleteBodySchema` — `{ confirm: 'DELETE', deviceId? }`. Extra `userId` is rejected; the account id is the session user only. `deviceId` is accepted so old clients do not 400 and is **ignored**; anonymous device rows are cleaned only for ids already stored on this user. |
+| Behavior | Email-keyed cleanups first (`leads`, `checkout_recovery` deleted; `beta_invites` anonymized; orphan `enrollments` by email), anonymous device rows (`push_subscriptions`, `llm_usage` where `user_id is null`) only for server-linked device ids, then `auth.admin.deleteUser` — which cascades user-keyed tables. **No migration required**: every user-keyed table already declares `on delete cascade` from `auth.users`. Any failed step aborts **before** the cascade and returns **502** — success is never reported on a partial deletion. Completeness is enforced by `src/lib/accountDataCompleteness.test.ts`, which discovers tables from `supabase/migrations/` and fails on any table with no export/deletion story. |
 
 ---
 
@@ -344,7 +344,7 @@ Gated by `NEXT_PUBLIC_WEARABLES=true`. See [WEARABLES.md](WEARABLES.md).
 |--|--|
 | Auth | start: `session` · callback: signed `state` |
 | Providers | `whoop`, `strava`, `oura`, `garmin`, `fitbit`, `polar` |
-| Notes | Requires provider `*_CLIENT_ID` / `*_CLIENT_SECRET` |
+| Notes | Requires provider `*_CLIENT_ID` / `*_CLIENT_SECRET`. `state` HMAC needs `WEARABLES_OAUTH_STATE_SECRET` (no source fallback). `redirect_uri` is the configured origin, never the request Host. Start returns 503 `not_configured` when the secret/origin is missing. |
 
 ---
 

@@ -229,6 +229,31 @@ export const TERRITORY_BLOCK_MESSAGES: Record<TerritoryBlockReason, string> = {
 /** Platform-set country headers. `x-country-code` is not trusted for access. */
 const PLATFORM_COUNTRY_HEADER_NAMES = ['cf-ipcountry', 'x-vercel-ip-country'] as const;
 
+/**
+ * Headers that may *allow* hosted access on a Vercel runtime.
+ * `cf-ipcountry` is client-spoofable when Cloudflare is not stripping it —
+ * it may only tighten a block, never create an allow (P1-2).
+ */
+export const ACCESS_ALLOW_ON_VERCEL = ['x-vercel-ip-country'] as const;
+
+function isVercelHostedRuntime(): boolean {
+  const env = process.env.VERCEL_ENV;
+  return env === 'production' || env === 'preview';
+}
+
+function deniedTerritory(
+  country: string | null,
+  reason: TerritoryBlockReason
+): HostedServiceAccess {
+  return {
+    allowed: false,
+    country,
+    reason,
+    code: 'territory_blocked',
+    message: TERRITORY_BLOCK_MESSAGES[reason],
+  };
+}
+
 function countriesFromNamedHeaders(
   headers: { get(name: string): string | null },
   names: readonly string[]
@@ -267,43 +292,31 @@ export function countryFromRequestHeaders(headers: {
 /**
  * Hard block for signup + checkout APIs.
  * - Known blocked country on **any** platform CDN header → deny (a supported
- *   ISO on another header does not override)
+ *   ISO on another header does not override). CF may only tighten.
  * - XX / T1 (CF unknown / Tor) → deny
  * - Missing header locally / on `next start` → allow
- * - Missing header on Vercel production (`VERCEL_ENV=production`) → deny
+ * - On Vercel production or preview, only `x-vercel-ip-country` may allow.
+ *   A spoofed `cf-ipcountry` is not an allow. Missing Vercel header → deny.
  */
 export function hostedServiceAccessFromHeaders(headers: {
   get(name: string): string | null;
 }): HostedServiceAccess {
-  const countries = countriesFromRequestHeaders(headers);
+  const blockCountries = countriesFromRequestHeaders(headers);
+  for (const country of blockCountries) {
+    const reason = getTerritoryBlockReason(country);
+    if (reason) return deniedTerritory(country, reason);
+  }
 
-  if (countries.length === 0) {
-    if (process.env.VERCEL_ENV === 'production') {
-      return {
-        allowed: false,
-        country: null,
-        reason: 'unknown_edge',
-        code: 'territory_blocked',
-        message: TERRITORY_BLOCK_MESSAGES.unknown_edge,
-      };
-    }
+  const allowCountries = isVercelHostedRuntime()
+    ? countriesFromNamedHeaders(headers, ACCESS_ALLOW_ON_VERCEL)
+    : blockCountries;
+
+  if (allowCountries.length === 0) {
+    if (isVercelHostedRuntime()) return deniedTerritory(null, 'unknown_edge');
     return { allowed: true, country: null };
   }
 
-  for (const country of countries) {
-    const reason = getTerritoryBlockReason(country);
-    if (reason) {
-      return {
-        allowed: false,
-        country,
-        reason,
-        code: 'territory_blocked',
-        message: TERRITORY_BLOCK_MESSAGES[reason],
-      };
-    }
-  }
-
-  return { allowed: true, country: countries[0] };
+  return { allowed: true, country: allowCountries[0] };
 }
 
 export const REGION_POLICY = {

@@ -3,7 +3,6 @@ import type { NextRequest } from 'next/server';
 import {
   applyPrivateGateHeaders,
   hasPrivateAccessCookie,
-  hasValidSupabaseSession,
   isPrivateModeEnabled,
   isPublicApiPathWhileGated,
   isPublicPathWhileGated,
@@ -12,7 +11,7 @@ import {
 import { attachPrivateAccessCookie } from '@/lib/privateSession';
 import { isPathEnabled } from '@/lib/surface';
 
-export async function proxy(request: NextRequest) {
+export function proxy(request: NextRequest) {
   // Parked surfaces are unreachable before anything else runs, so a parked API is
   // not an attack surface and parking does not depend on the private gate.
   //
@@ -46,9 +45,6 @@ export async function proxy(request: NextRequest) {
     if (hasPrivateAccessCookie(request, secret)) {
       return applyPrivateGateHeaders(NextResponse.next());
     }
-    if (await hasValidSupabaseSession(request)) {
-      return applyPrivateGateHeaders(NextResponse.next());
-    }
     return applyPrivateGateHeaders(
       NextResponse.json({ error: 'Private development gate' }, { status: 403 })
     );
@@ -63,10 +59,6 @@ export async function proxy(request: NextRequest) {
   }
 
   if (hasPrivateAccessCookie(request, secret)) {
-    return applyPrivateGateHeaders(NextResponse.next());
-  }
-
-  if (await hasValidSupabaseSession(request)) {
     return applyPrivateGateHeaders(NextResponse.next());
   }
 

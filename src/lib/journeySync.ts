@@ -16,10 +16,17 @@ const PHASE_RANK: Record<JourneyPhase, number> = {
 
 import { loadPlan, isTasterUsed, markTasterUsed, savePlan } from '@/lib/coach/storage';
 import { I18N_LANG_KEY, STORAGE_KEYS } from '@/lib/storage/keys';
-import { readRaw, writeRaw } from '@/lib/storage/safeStorage';
+import { readRaw, remove, writeRaw } from '@/lib/storage/safeStorage';
 import { mergeCoachPlans } from '@/lib/coachSync';
 import type { CoachPlan } from '@/lib/coach/types';
 import { enqueue, registerHandler } from '@/lib/sync/outbox';
+import {
+  bindStorageOwner,
+  clearAthleteLocalState,
+  planSignInStorage,
+  readStorageOwner,
+  stripRestrictedHealthLocal,
+} from '@/lib/storage/athleteLocalState';
 
 export interface CloudProfileSlice {
   locale?: string | null;
@@ -86,10 +93,9 @@ function applyProfileFieldsToLocal(profile: CloudProfileSlice): void {
   }
 }
 
-/** Pull cloud profile journey + preferences; merge with local (farthest progress wins). */
-export async function pullJourneyFromCloud(): Promise<boolean> {
+async function fetchCloudProfile(): Promise<CloudProfileSlice | null> {
   const user = await getUser();
-  if (!user || !process.env.NEXT_PUBLIC_SUPABASE_URL) return false;
+  if (!user || !process.env.NEXT_PUBLIC_SUPABASE_URL) return null;
 
   const { data, error } = await supabase
     .from('profiles')
@@ -97,20 +103,34 @@ export async function pullJourneyFromCloud(): Promise<boolean> {
     .eq('id', user.id)
     .maybeSingle();
 
-  if (error || !data) return false;
+  if (error || !data) return null;
+  return data as CloudProfileSlice;
+}
 
-  applyProfileFieldsToLocal(data as CloudProfileSlice);
-
-  const local = loadJourneyState();
-  if (data.journey_state && typeof data.journey_state === 'object') {
-    const merged = mergeJourneyStates(local, data.journey_state as JourneyState);
-    saveJourneyState(merged);
-    if (merged.commissionedAt) {
-      writeRaw(STORAGE_KEYS.commissionedAt, merged.commissionedAt);
+function applyCloudJourney(profile: CloudProfileSlice, mode: 'merge' | 'replace'): void {
+  applyProfileFieldsToLocal(profile);
+  if (profile.journey_state && typeof profile.journey_state === 'object') {
+    const next =
+      mode === 'merge'
+        ? mergeJourneyStates(loadJourneyState(), profile.journey_state as JourneyState)
+        : (profile.journey_state as JourneyState);
+    saveJourneyState(next);
+    if (next.commissionedAt) {
+      writeRaw(STORAGE_KEYS.commissionedAt, next.commissionedAt);
     }
+  } else if (mode === 'replace') {
+    remove(STORAGE_KEYS.journeyState);
   }
+  if (typeof window !== 'undefined') {
+    window.dispatchEvent(new CustomEvent('mw-journey-synced'));
+  }
+}
 
-  window.dispatchEvent(new CustomEvent('mw-journey-synced'));
+/** Pull cloud profile journey + preferences; merge with local (farthest progress wins). */
+export async function pullJourneyFromCloud(): Promise<boolean> {
+  const profile = await fetchCloudProfile();
+  if (!profile) return false;
+  applyCloudJourney(profile, 'merge');
   return true;
 }
 
@@ -190,15 +210,47 @@ function requestWelcomeEmail(): void {
   }
 }
 
-/** On sign-in: merge cloud → local, then push merged state back. */
+function afterSignInSideEffects(pushed: boolean): void {
+  if (!pushed) return;
+  requestWelcomeEmail();
+  void import('@/lib/referral').then((m) => m.redeemReferralFromAttribution());
+  void import('@/lib/invite').then((m) => m.redeemInviteFromAttribution());
+}
+
+/**
+ * On sign-in: merge only when this device already belongs to the same user.
+ * Foreign leftover or a guest sitting on an existing account is replaced from
+ * cloud (no OR-merge of PAR-Q). A first-time account on a guest device may
+ * keep I-Day, but restricted health is stripped before the push.
+ */
 export async function syncJourneyOnSignIn(): Promise<void> {
-  await pullJourneyFromCloud();
-  const pushed = await pushJourneyToCloud();
-  if (pushed) {
-    requestWelcomeEmail();
-    // Referral redeem (Wave 8) — fire-and-forget; service-role write via API
-    void import('@/lib/referral').then((m) => m.redeemReferralFromAttribution());
-    // Beta invite redeem (Wave 10) — same pattern
-    void import('@/lib/invite').then((m) => m.redeemInviteFromAttribution());
+  const user = await getUser();
+  if (!user) return;
+
+  const profile = await fetchCloudProfile();
+  const cloudHasJourney = !!(
+    profile?.journey_state && typeof profile.journey_state === 'object'
+  );
+  const plan = planSignInStorage(readStorageOwner(), user.id, cloudHasJourney);
+
+  if (plan === 'replace-from-cloud') {
+    clearAthleteLocalState();
+    if (profile) applyCloudJourney(profile, 'replace');
+    bindStorageOwner(user.id);
+    afterSignInSideEffects(true);
+    return;
   }
+
+  if (plan === 'adopt-guest-sans-health') {
+    stripRestrictedHealthLocal();
+    bindStorageOwner(user.id);
+    const pushed = await pushJourneyToCloud();
+    afterSignInSideEffects(pushed);
+    return;
+  }
+
+  if (profile) applyCloudJourney(profile, 'merge');
+  bindStorageOwner(user.id);
+  const pushed = await pushJourneyToCloud();
+  afterSignInSideEffects(pushed);
 }

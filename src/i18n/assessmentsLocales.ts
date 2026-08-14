@@ -13,10 +13,10 @@ const ASSESS_EN: Record<string, string> = {
   assessOarsNote:
     'OARS in practice: Open questions, Affirm strengths, Reflect back, Summarize. Match approach to readiness.',
   assessResultTitle: 'Assessment Result',
-  assessRecommendations: 'Recommendations (click to start a matching free starter + log win):',
+  assessRecommendations: 'Recommendations — tap to start a free starter:',
   assessResultFoot:
-    'Results saved locally + to logs. Use to guide program choice in the Builder / Today. Streak +1 on start.',
-  assessSignInFoot: 'Keep assessment history synced when you sign in.',
+    'Results stay on this device. Use them to pick a starter on Today. Completing a workout is what earns a streak.',
+  assessSignInFoot: 'Sign in to sync workouts. Assessment results stay on this device.',
   assessYes: 'Yes',
   assessNo: 'No',
   assessUnsure: 'Unsure',
@@ -85,6 +85,11 @@ const ASSESS_EN: Record<string, string> = {
 
 const ASSESS_ES: Record<string, string> = {
   ...ASSESS_EN,
+  assessResultFoot:
+    'Los resultados quedan en este dispositivo. Úsalos para elegir un inicio en Hoy. Completar un entrenamiento es lo que suma racha.',
+  assessSignInFoot:
+    'Inicia sesión para sincronizar entrenamientos. Los resultados de la evaluación se quedan en este dispositivo.',
+  assessRecommendations: 'Recomendaciones — toca para iniciar un starter gratis:',
   assessTitle: 'Evaluación de preparación',
   assessSubtitle:
     'Herramienta gratuita. Basada en historial de salud y preguntas estilo ParQ. Responde con honestidad.',

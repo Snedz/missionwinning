@@ -10,6 +10,7 @@ import { rateLimitAsync } from '@/lib/rateLimit';
 import { clientIp } from '@/lib/clientIp';
 import { parseJsonBody, inviteCodeBodySchema } from '@/lib/apiSchemas';
 import { rejectOversizedBody } from '@/lib/requestBodyLimit';
+import { bindInviteToUser } from '@/lib/inviteBoundServer';
 
 export const POST = withApiLogging('beta/invites/redeem', async (request: NextRequest) => {
   const oversized = rejectOversizedBody(request, 4 * 1024);
@@ -54,49 +55,9 @@ export const POST = withApiLogging('beta/invites/redeem', async (request: NextRe
     return NextResponse.json({ ok: true, status: 'already' });
   }
 
-  const { data: invite } = await admin
-    .from('beta_invites')
-    .select('id, code, signed_up_user_id')
-    .eq('code', code)
-    .maybeSingle();
-
-  if (!invite) {
+  const bound = await bindInviteToUser(admin, user, code);
+  if (!bound.ok) {
     return NextResponse.json({ ok: true, status: 'ignored' });
-  }
-
-  // Already claimed by someone else — still attribute this user if not double-claimed
-  if (invite.signed_up_user_id && invite.signed_up_user_id !== user.id) {
-    // Allow multiple signups per invite code (founder may reuse link); mark first only
-  }
-
-  const { error } = await admin
-    .from('profiles')
-    .update({ invited_via: code })
-    .eq('id', user.id);
-
-  if (error) {
-    const { error: upErr } = await admin.from('profiles').upsert(
-      {
-        id: user.id,
-        email: user.email,
-        invited_via: code,
-        updated_at: new Date().toISOString(),
-      },
-      { onConflict: 'id' }
-    );
-    if (upErr) {
-      console.error('invite redeem profile', upErr);
-      return NextResponse.json({ ok: true, status: 'ignored' });
-    }
-  }
-
-  // First signup wins signed_up_user_id
-  if (!invite.signed_up_user_id) {
-    await admin
-      .from('beta_invites')
-      .update({ signed_up_user_id: user.id })
-      .eq('id', invite.id)
-      .is('signed_up_user_id', null);
   }
 
   return NextResponse.json({ ok: true, status: 'attributed' });

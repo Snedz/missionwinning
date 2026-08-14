@@ -1,6 +1,6 @@
 /**
  * Geo hint for first-visit language/units defaults + territory hard-block flag.
- * Auth: public | Rate: 60/min/IP | Headers: cf-ipcountry / x-vercel-ip-country
+ * Auth: public | Rate: 60/min/IP | Headers: x-vercel-ip-country allows on Vercel; cf-ipcountry may only block
  */
 import { NextRequest, NextResponse } from 'next/server';
 import { withApiLogging } from '@/lib/api/withApiLogging';

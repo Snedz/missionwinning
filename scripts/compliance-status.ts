@@ -39,7 +39,7 @@ if (writeMd) {
   console.log('Updated docs/COMPLIANCE.md snapshot');
 }
 
-// Soft gate: many fails usually mean a broken catalog path.
-if (report.totals.fail > 2) {
+// known_open defects evaluate as `partial`. Any real fail is a regression.
+if (report.totals.fail > 0) {
   process.exitCode = 1;
 }

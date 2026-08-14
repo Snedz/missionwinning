@@ -5,15 +5,17 @@
 # HIPAA rows are technical-safeguard mapping only — we are not a covered entity
 # and do not claim to process PHI under HIPAA.
 #
-# Frameworks: soc2 | iso27001 | hipaa
+# Frameworks: soc2 | iso27001 | hipaa | ccpa | coppa | play_data | ftc_ai
 # owner: agent (CI/repo) | founder (manual ops)
-# probe: doc_exists | headers | deploy_readiness | dependabot | ci_audit | manual | partial | n_a
+# probe: doc_exists | headers | deploy_readiness | dependabot | ci_audit | source_scan | manual | partial | n_a
+# source_scan: require[] must all appear; forbid[] must not. known_open: fail→partial; pass→stale fail.
 # status seed: automated | manual | partial | n_a
 
-version: 1
+version: 2
 disclaimer: >
-  Control monitoring and evidence pointers only — not a SOC 2, ISO 27001, or HIPAA
-  attestation. Educational fitness product; HIPAA mapped technically only.
+  Control monitoring and evidence pointers only — not a SOC 2, ISO 27001, HIPAA,
+  CCPA, COPPA, or Play certification. Educational fitness product; HIPAA mapped
+  technically only. Privacy tags (ccpa/coppa/play_data/ftc_ai) are maps, not attestations.
 
 controls:
   # --- Access & authentication ---
@@ -22,20 +24,22 @@ controls:
     frameworks: [soc2, iso27001, hipaa]
     category: access
     owner: agent
-    evidence: docs/PROTECTION.md
-    probe: doc_exists
+    evidence: src/lib/privateSession.ts
+    probe: source_scan
+    require: [createHmac, timingSafeEqual, mw_private_access]
     status: automated
-    notes: "proxy.ts + privateSession HMAC; SOC2 CC6 / ISO A.8 / HIPAA 164.312(a)"
+    notes: "HMAC cookie — not a markdown file; SOC2 CC6 / ISO A.8 / HIPAA 164.312(a)"
 
   - id: MW-ACCESS-002
     title: Premium content server-gated (no client-only unlock)
     frameworks: [soc2, iso27001]
     category: access
     owner: agent
-    evidence: scripts/gate-smoke.ts
-    probe: doc_exists
+    evidence: src/lib/premiumServer.ts
+    probe: source_scan
+    require: [isDemoPremiumEnabled, forbidden in production]
     status: automated
-    notes: "/api/premium/* 403 when unenrolled; CI gate-smoke when SMOKE_BASE_URL set"
+    notes: "DEMO_PREMIUM refused in production builds"
 
   - id: MW-ACCESS-003
     title: DEMO_PREMIUM refused in production deploy readiness
@@ -53,19 +57,30 @@ controls:
     category: access
     owner: founder
     evidence: scripts/verify-supabase-security.mjs
-    probe: doc_exists
+    probe: manual
     status: manual
-    notes: "Founder runs probe against prod; HIPAA map-only access control"
+    notes: "Founder runs probe against prod; file existence is not the control"
 
   - id: MW-ACCESS-005
     title: Youth consent / COPPA path secrets required for launch
-    frameworks: [soc2, iso27001]
+    frameworks: [soc2, iso27001, coppa]
     category: access
     owner: agent
     evidence: src/lib/deployReadiness.ts
     probe: deploy_readiness
     status: automated
     notes: "YOUTH_CONSENT_SECRET in production env gate"
+
+  - id: MW-ACCESS-006
+    title: Closed-beta gate cookie is invite-bound
+    frameworks: [soc2, iso27001]
+    category: access
+    owner: agent
+    evidence: src/lib/privateAccessSessionGate.ts
+    probe: source_scan
+    require: [inviteRedeemed, sessionMintEligible]
+    status: automated
+    notes: "JWT is not an invite; password mint and ?access= stay separate doors"
 
   # --- Change management ---
   - id: MW-CHG-001
@@ -74,9 +89,10 @@ controls:
     category: change
     owner: agent
     evidence: .github/workflows/ci.yml
-    probe: doc_exists
+    probe: source_scan
+    require: ["npm run lint", "npm run typecheck", "npm test"]
     status: automated
-    notes: "SOC2 CC8 change management"
+    notes: "SOC2 CC8 — the steps, not the file"
 
   - id: MW-CHG-002
     title: Blocking critical-path E2E in CI
@@ -84,9 +100,10 @@ controls:
     category: change
     owner: agent
     evidence: .github/workflows/ci.yml
-    probe: doc_exists
+    probe: source_scan
+    require: ["npm run e2e:gate"]
     status: automated
-    notes: "e2e-critical job"
+    notes: "Hero @gate e2e on the PR job (e2e:critical lives in ci-extended)"
 
   - id: MW-CHG-003
     title: Deploy readiness asserts build label + locale export
@@ -135,7 +152,8 @@ controls:
     category: encryption
     owner: agent
     evidence: .gitignore
-    probe: doc_exists
+    probe: source_scan
+    require: [".env*.local"]
     status: automated
     notes: ""
 
@@ -151,12 +169,13 @@ controls:
     notes: "Enable NEXT_PUBLIC_SENTRY_DSN; HIPAA audit controls map-only / partial — no SIEM"
 
   - id: MW-MON-002
-    title: Perimeter security-smoke in CI (soft)
+    title: Perimeter security-smoke script exists and is wired
     frameworks: [soc2, iso27001]
     category: monitoring
     owner: agent
     evidence: scripts/gate-smoke.ts
-    probe: doc_exists
+    probe: source_scan
+    require: [SMOKE_BASE_URL, stripe-webhook]
     status: automated
     notes: "Runs when SMOKE_BASE_URL secret set"
 
@@ -196,18 +215,20 @@ controls:
     frameworks: [soc2, iso27001]
     category: integrity
     owner: agent
-    evidence: docs/PROTECTION.md
-    probe: doc_exists
+    evidence: src/lib/stripeWebhook.ts
+    probe: source_scan
+    require: [verifyStripeSignature, createHmac, timingSafeEqual]
     status: automated
-    notes: "STRIPE_WEBHOOK_SECRET; gate-smoke 401 without sig"
+    notes: "HMAC, not a Protection.md mention"
 
   - id: MW-PAY-002
     title: PayPal webhook verification path
     frameworks: [soc2, iso27001]
     category: integrity
     owner: agent
-    evidence: docs/PROTECTION.md
-    probe: doc_exists
+    evidence: src/lib/paypalWebhook.ts
+    probe: source_scan
+    require: [verifyPayPalWebhookSignature, verify-webhook-signature]
     status: automated
     notes: ""
 
@@ -217,7 +238,8 @@ controls:
     category: integrity
     owner: agent
     evidence: src/lib/cryptoCheckout/confirm.security.test.ts
-    probe: doc_exists
+    probe: source_scan
+    require: [getIntentForUser]
     status: automated
     notes: ""
 
@@ -228,29 +250,32 @@ controls:
     category: vendor
     owner: agent
     evidence: docs/LEGAL_SAFETY.md
-    probe: doc_exists
+    probe: source_scan
+    require: ["Data inventory", "We do not use Meta Pixel"]
     status: automated
     notes: "HIPAA BAA/org rows are N/A — not a covered entity"
 
   - id: MW-VEN-002
-    title: No Meta Pixel / GA advertising tags
-    frameworks: [soc2, iso27001]
+    title: No Meta Pixel / GA advertising tags in app code
+    frameworks: [soc2, iso27001, ccpa]
     category: vendor
     owner: agent
-    evidence: docs/LEGAL_SAFETY.md
-    probe: doc_exists
+    evidence: src
+    probe: source_scan
+    forbid: [fbevents.js, "fbq(", googletagmanager.com/gtag]
     status: automated
-    notes: "Stated in LEGAL_SAFETY + Privacy third parties"
+    notes: "Scan src — docs that say we do not use pixels are not evidence"
 
   - id: MW-VEN-003
     title: PostHog opt-in / DNT / no session recording
-    frameworks: [soc2, iso27001]
+    frameworks: [soc2, iso27001, ccpa]
     category: vendor
     owner: agent
-    evidence: docs/help/privacy-and-data.md
-    probe: doc_exists
+    evidence: src/lib/analyticsOptOut.ts
+    probe: source_scan
+    require: [doNotTrack, isAnalyticsAllowed]
     status: automated
-    notes: ""
+    notes: "Undecided = off; DNT hard off"
 
   - id: MW-VEN-004
     title: Optional LLM ZDR preference documented
@@ -258,9 +283,9 @@ controls:
     category: vendor
     owner: founder
     evidence: SECURITY.md
-    probe: doc_exists
+    probe: manual
     status: manual
-    notes: "Founder enables provider ZDR in console"
+    notes: "Founder enables provider ZDR in console — SECURITY.md is not the enablement"
 
   - id: MW-VEN-005
     title: HIPAA Business Associate Agreements with vendors
@@ -315,13 +340,14 @@ controls:
 
   - id: MW-POL-005
     title: AI feature disclosure (FTC-facing)
-    frameworks: [soc2]
+    frameworks: [soc2, ftc_ai]
     category: policy
     owner: agent
-    evidence: docs/LEGAL_SAFETY.md
-    probe: doc_exists
+    evidence: src/i18n/infoLocales.ts
+    probe: source_scan
+    require: [artificial intelligence, Zero Data Retention]
     status: automated
-    notes: ""
+    notes: "Live Privacy copy, not the LEGAL_SAFETY memo"
 
   - id: MW-POL-006
     title: Information security policy pack (HR, access reviews)
@@ -336,13 +362,14 @@ controls:
   # --- Backup & availability ---
   - id: MW-AVL-001
     title: Client export / restore for local-first data
-    frameworks: [soc2, iso27001]
+    frameworks: [soc2, iso27001, ccpa]
     category: availability
     owner: agent
-    evidence: docs/help/privacy-and-data.md
-    probe: doc_exists
+    evidence: src/lib/accountDataServer.ts
+    probe: source_scan
+    require: [exportAccountData, deleteAccount]
     status: automated
-    notes: ""
+    notes: "Executor, not the help page"
 
   - id: MW-AVL-002
     title: Supabase + Vercel managed backups / HA
@@ -422,9 +449,9 @@ controls:
     category: risk
     owner: founder
     evidence: docs/SECURITY_AUDIT_TRIAGE.md
-    probe: doc_exists
+    probe: manual
     status: manual
-    notes: "Quarterly review"
+    notes: "Quarterly review — a file on disk is not the review"
 
   - id: MW-INC-003
     title: Compliance status reporter in CI artifact
@@ -432,7 +459,8 @@ controls:
     category: risk
     owner: agent
     evidence: scripts/compliance-status.ts
-    probe: doc_exists
+    probe: source_scan
+    require: [buildComplianceReport, "--ci"]
     status: automated
     notes: "This monitor"
 
@@ -449,13 +477,14 @@ controls:
   # --- ISO-oriented leftovers ---
   - id: MW-ISO-001
     title: Asset / data inventory for store labels
-    frameworks: [iso27001]
+    frameworks: [iso27001, play_data]
     category: inventory
     owner: agent
     evidence: docs/LEGAL_SAFETY.md
-    probe: doc_exists
+    probe: source_scan
+    require: ["Data inventory", "Advertising ID"]
     status: automated
-    notes: "A.5-ish information inventory lite"
+    notes: "A.5-ish information inventory lite — headings must still exist"
 
   - id: MW-ISO-002
     title: Acceptable use policy for software
@@ -465,7 +494,7 @@ controls:
     evidence: docs/legal/ACCEPTABLE_USE.md
     probe: doc_exists
     status: automated
-    notes: ""
+    notes: "The document is the control"
 
   - id: MW-ISO-003
     title: Env checklist for production secrets
@@ -473,6 +502,219 @@ controls:
     category: access
     owner: agent
     evidence: scripts/check-env.mjs
-    probe: doc_exists
+    probe: source_scan
+    require: ["--launch", "PRIVATE_ACCESS_SECRET"]
     status: automated
     notes: "Founder runs --launch before flip"
+
+  # --- Privacy rights & health buckets (Phase 1) ---
+  - id: MW-CCPA-001
+    title: Account export is scoped to the verified user
+    frameworks: [ccpa, soc2]
+    category: privacy
+    owner: agent
+    evidence: src/lib/accountDataServer.ts
+    probe: source_scan
+    require: [client-supplied device id, EXPORT_TABLES]
+    status: automated
+    notes: "Access — Art. 20 / CCPA right to know"
+
+  - id: MW-CCPA-002
+    title: Account delete executor exists
+    frameworks: [ccpa, soc2]
+    category: privacy
+    owner: agent
+    evidence: src/lib/accountDataServer.ts
+    probe: source_scan
+    require: [deleteAccount, deleteUser]
+    status: automated
+    notes: "Deletion path. Unproven device ids are ignored (MW-CCPA-005)"
+
+  - id: MW-CCPA-005
+    title: Account delete ignores unproven client device ids
+    frameworks: [ccpa, soc2]
+    category: privacy
+    owner: agent
+    evidence: src/lib/accountDataServer.ts
+    probe: source_scan
+    require: [linkedDeviceIdsForUser]
+    status: automated
+    notes: "P2-1. Anonymous push/llm rows wiped only for device ids already on this user"
+
+  - id: MW-CCPA-003
+    title: No sale or share for cross-context ads
+    frameworks: [ccpa]
+    category: privacy
+    owner: agent
+    evidence: src/i18n/infoLocales.ts
+    probe: source_scan
+    require: [do not sell or share personal information for cross-context]
+    status: automated
+    notes: "Live Privacy California section"
+
+  - id: MW-CCPA-004
+    title: DSAR table registry is complete against migrations
+    frameworks: [ccpa, soc2]
+    category: privacy
+    owner: agent
+    evidence: src/lib/accountDataCompleteness.test.ts
+    probe: source_scan
+    require: [every migration table appears in exactly one registry]
+    status: automated
+    notes: "A new create table without a fate turns the unit lane red"
+
+  - id: MW-CCPA-006
+    title: Account export includes email-keyed personal information
+    frameworks: [ccpa, soc2]
+    category: privacy
+    owner: agent
+    evidence: src/lib/accountDataServer.ts
+    probe: source_scan
+    require: [EMAIL_ONLY_TABLES, "eq('email', email)", "eq('user_email', email)"]
+    status: automated
+    notes: "P2-8. Leads, checkout recovery, invites, and orphan enrollments ride access"
+
+  - id: MW-COPPA-001
+    title: Youth APIs parked with the school surface
+    frameworks: [coppa, soc2]
+    category: privacy
+    owner: agent
+    evidence: src/lib/surface.ts
+    probe: source_scan
+    require: ["/api/youth"]
+    status: automated
+    notes: "Default-off; proxy 404s until school is enabled"
+
+  - id: MW-COPPA-002
+    title: Youth consent secret fail-closed in production
+    frameworks: [coppa, soc2]
+    category: privacy
+    owner: agent
+    evidence: src/lib/youthConsentToken.ts
+    probe: source_scan
+    require: [YouthConsentMisconfiguredError]
+    status: automated
+    notes: "No hardcoded HMAC fallback (contrast P2-4 wearables)"
+
+  - id: MW-COPPA-003
+    title: Youth consent-notify is not an open mail relay
+    frameworks: [coppa, soc2]
+    category: privacy
+    owner: agent
+    evidence: app/api/youth/consent-notify/route.ts
+    probe: source_scan
+    require: [youthApiNotFound, getUserFromRequest, "youth-consent-notify:to:"]
+    status: automated
+    notes: "P2-3. 404 when parked; session required; per-recipient cap"
+
+  - id: MW-WEAR-001
+    title: Wearables OAuth state has no source HMAC fallback
+    frameworks: [soc2]
+    category: privacy
+    owner: agent
+    evidence: src/lib/wearables/oauthState.ts
+    probe: source_scan
+    require: [WearablesOAuthMisconfiguredError, WEARABLES_OAUTH_STATE_SECRET]
+    forbid: [mw-wearables-dev-state]
+    status: automated
+    notes: "P2-4. Dedicated secret in production; redirect_uri from configured origin"
+
+  - id: MW-TERR-001
+    title: Territory client fails closed on geo error
+    frameworks: [soc2]
+    category: privacy
+    owner: agent
+    evidence: src/lib/legal/territoryAccessClient.ts
+    probe: source_scan
+    require: [unavailableTerritoryAccess, canCacheTerritoryAccess]
+    forbid: ["blocked: false"]
+    status: automated
+    notes: "P2-5. Non-OK /api/geo is blocked; missing-country allow is not session-cached"
+
+  - id: MW-TERR-002
+    title: Vercel access allow is x-vercel-ip-country only
+    frameworks: [soc2]
+    category: privacy
+    owner: agent
+    evidence: src/lib/legal/supportedRegions.ts
+    probe: source_scan
+    require: ["ACCESS_ALLOW_ON_VERCEL = ['x-vercel-ip-country']"]
+    status: automated
+    notes: "P1-2. cf-ipcountry may tighten a block, never create an allow on Vercel"
+
+  - id: MW-TERR-003
+    title: Blocked-region callback identifies then refuses the session
+    frameworks: [soc2]
+    category: privacy
+    owner: agent
+    evidence: app/auth/callback/route.ts
+    probe: source_scan
+    require: [disposeBlockedTerritorySignup, exchangeCodeForSession]
+    status: automated
+    notes: "P1-3. New empty accounts may be reaped; existing athletes are kept"
+
+  - id: MW-PLAY-001
+    title: Play Data safety form filled from LEGAL_SAFETY §2
+    frameworks: [play_data]
+    category: privacy
+    owner: founder
+    evidence: apps/android/PLAY_LISTING.md
+    probe: partial
+    status: partial
+    notes: "Inventory exists; Play Console form is founder-owned at Internal"
+
+  - id: MW-HEALTH-001
+    title: Assessment / PAR-Q risk is not a nutrition row
+    frameworks: [ccpa, hipaa]
+    category: privacy
+    owner: agent
+    evidence: src/page-components/AssessmentsPage.tsx
+    probe: source_scan
+    require: [STORAGE_KEYS.lastAssessment]
+    forbid: [saveNutritionEntry]
+    status: automated
+    notes: "Device-only mw_last_assessment. Historical Assessment: rows still filter in Fuel."
+
+  - id: MW-HEALTH-002
+    title: Sign-out clears or namespaces athlete-local storage
+    frameworks: [ccpa, soc2]
+    category: privacy
+    owner: agent
+    evidence: src/page-components/AccountPage.tsx
+    probe: source_scan
+    require: [clearAthleteLocalState]
+    status: automated
+    notes: "Sign-out wipes athlete-local keys. Foreign/guest storage does not OR-merge PAR-Q."
+
+  - id: MW-LLM-001
+    title: Coach LLM fails closed without ZDR when required
+    frameworks: [soc2, ftc_ai]
+    category: privacy
+    owner: agent
+    evidence: src/lib/coachLlmClient.ts
+    probe: source_scan
+    require: [requireZdr, x-zero-data-retention, Never logs prompt]
+    status: automated
+    notes: "COACH_LLM_REQUIRE_ZDR"
+
+  - id: MW-PLAN-001
+    title: Planner is blind to standing / social identity
+    frameworks: [soc2]
+    category: privacy
+    owner: agent
+    evidence: src/lib/domainBoundary.test.ts
+    probe: source_scan
+    require: [PLANNER_ROOTS, SOCIAL_ROOTS]
+    status: automated
+    notes: "C1–C3 domain boundary"
+
+  - id: MW-MOBILE-001
+    title: Mobile Coach bootstrap uses the web private-mode helper
+    frameworks: [soc2]
+    category: access
+    owner: agent
+    evidence: src/lib/mobileAccess.ts
+    probe: source_scan
+    require: [isPrivateModeEnabled]
+    status: automated
+    notes: "P1-4 closed — no second PRIVATE_MODE === true compare"

@@ -193,7 +193,7 @@ Mission Winning’s **positioning** (free global PWA, six pillars, Super Bundle)
 - [x] PayPal webhook signature verification (`src/lib/paypalWebhook.ts`)
 - [x] CSP header enforced in production (`next.config.js`; `CSP_ENFORCE=false` for report-only)
 - [x] Leads table: rate limit on `/api/leads` (5/min/IP; server insert via service role); anon INSERT revoked (`20260705_leads_api_only.sql`)
-- [x] JWT gate bypass: `hasValidSupabaseSession()` uses `supabase.auth.getUser()` (no unsigned payload parse)
+- [x] JWT gate bypass: `getUser()` verifies tokens (F1). A verified session is **not** a gate pass — cookie (invite- or password-minted) or `?access=` only (P1-1 / `.772`).
 
 ### P2 — Competitive parity
 

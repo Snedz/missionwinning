@@ -12,7 +12,7 @@
 | `types.ts` | Sample kinds, provider ids, labels |
 | `adapter.ts` | OAuth adapter + hub ingest contracts |
 | `oauthProviders.ts` | Whoop, Strava, Oura, Garmin, Fitbit, Polar |
-| `oauthState.ts` | Signed OAuth `state` + redirect URI |
+| `oauthState.ts` | Signed OAuth `state` (dedicated secret, no source fallback) + origin-bound redirect URI |
 | `hubs.ts` | HealthKit / Health Connect / Fit native bridge normalize |
 | `mapSamples.ts` | Samples → Track activity hints |
 | `connections.ts` | Supabase upsert/disconnect/samples (service-role) |

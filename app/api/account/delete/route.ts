@@ -1,6 +1,7 @@
 /**
  * Account deletion (GDPR Art. 17): email-keyed cleanups, anonymous device
- * rows, then auth.users cascade. Never reports success on a partial delete.
+ * rows for *server-linked* device ids only (P2-1), then auth.users cascade.
+ * Never reports success on a partial delete.
  * Auth: session | Rate: 2/5min/user | Zod: accountDeleteBodySchema
  * See: app/api/INDEX.md, docs/API.md
  */
@@ -64,7 +65,9 @@ export const POST = withApiLogging('account/delete', async (request: NextRequest
     return NextResponse.json({ ok: false, error: 'Not configured' }, { status: 503 });
   }
 
-  const result = await deleteAccount(admin, userId, user.email ?? null, parsed.data.deviceId);
+  // parsed.data.deviceId is accepted so old clients do not 400. Delete
+  // ignores it — only server-linked device ids are cleaned (P2-1).
+  const result = await deleteAccount(admin, userId, user.email ?? null);
   if (!result.ok) {
     // Opaque out; the step name goes to the server log only.
     console.error('account delete failed at step:', result.step);

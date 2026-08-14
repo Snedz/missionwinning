@@ -2,6 +2,7 @@ import { describe, it } from 'node:test';
 import assert from 'node:assert/strict';
 import { restoreEnv, setTestEnv, snapshotEnv } from '@/lib/testEnv';
 import {
+  ACCESS_ALLOW_ON_VERCEL,
   EUROPE_UNSUPPORTED_ISO2,
   OIC_MEMBER_COUNT,
   OIC_UNSUPPORTED_ISO2,
@@ -146,6 +147,49 @@ describe('supportedRegions hard block', () => {
     } finally {
       restoreEnv(envSnapshot);
     }
+  });
+
+  it('Vercel production/preview do not treat a spoofed cf-ipcountry as allow', () => {
+    assert.deepEqual(ACCESS_ALLOW_ON_VERCEL, ['x-vercel-ip-country']);
+    const envSnapshot = snapshotEnv();
+    try {
+      for (const env of ['production', 'preview'] as const) {
+        setTestEnv('VERCEL_ENV', env);
+        const cfOnly = hostedServiceAccessFromHeaders({
+          get: (n) => (n === 'cf-ipcountry' ? 'US' : null),
+        });
+        assert.equal(cfOnly.allowed, false, env);
+        if (!cfOnly.allowed) {
+          assert.equal(cfOnly.reason, 'unknown_edge');
+        }
+
+        const vercelAllow = hostedServiceAccessFromHeaders({
+          get: (n) => (n === 'x-vercel-ip-country' ? 'US' : null),
+        });
+        assert.equal(vercelAllow.allowed, true, env);
+        if (vercelAllow.allowed) assert.equal(vercelAllow.country, 'US');
+
+        const vercelBlockCfAllow = hostedServiceAccessFromHeaders({
+          get: (n) =>
+            n === 'x-vercel-ip-country' ? 'DE' : n === 'cf-ipcountry' ? 'US' : null,
+        });
+        assert.equal(vercelBlockCfAllow.allowed, false, env);
+        if (!vercelBlockCfAllow.allowed) {
+          assert.equal(vercelBlockCfAllow.reason, 'europe');
+          assert.equal(vercelBlockCfAllow.country, 'DE');
+        }
+      }
+    } finally {
+      restoreEnv(envSnapshot);
+    }
+  });
+
+  it('local still allows a CF country when Vercel is not the runtime', () => {
+    const allow = hostedServiceAccessFromHeaders({
+      get: (n) => (n === 'cf-ipcountry' ? 'US' : null),
+    });
+    assert.equal(allow.allowed, true);
+    if (allow.allowed) assert.equal(allow.country, 'US');
   });
 
   it('normalizes UK → GB', () => {

@@ -4,8 +4,13 @@
  * Unauthenticated mint and blocked-territory mint must fail here — not after a
  * cookie is written. Checkout already uses {@link hostedServiceAccessFromHeaders};
  * hosted signup mint must use the same list.
+ *
+ * After getUser(), {@link inviteRedeemed} / {@link sessionMintEligible} decide
+ * whether a JWT may mint the gate cookie. A session is not an invite.
  */
 import { hostedServiceAccessFromHeaders } from '@/lib/legal/supportedRegions';
+
+export { inviteRedeemed, sessionMintEligible } from '@/lib/inviteBound';
 
 export type SessionMintGateResult =
   | { ok: true }
