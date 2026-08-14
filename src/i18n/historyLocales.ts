@@ -86,7 +86,7 @@ type HistoryStrings = {
 
 const en: HistoryStrings = {
   historyTitle: 'Workout History',
-  historySubtitle: 'Your history powers Today readiness and Win Score.',
+  historySubtitle: 'Your history powers Today readiness and Mission Score.',
   historySessionCount: '{{count}} completed session',
   historySyncing: ' — syncing cloud…',
   historyCloudMerged: ' — cloud merged',

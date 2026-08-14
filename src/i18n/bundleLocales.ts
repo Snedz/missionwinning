@@ -104,8 +104,8 @@ const en: BundleStrings = {
   bundleUnlockCta: 'Unlock Super Bundle',
   bundleOneAppTitle: 'One app — not seven',
   bundleOneAppDesc:
-    'Freeletics Super Bundle spans multiple apps. Mission Winning keeps Train, Fuel, Move, Mind, Track, and Learn in one PWA with one Win Score.',
-  bundleWinScoreNote: 'Today Win Score ties every pillar together.',
+    'Freeletics Super Bundle spans multiple apps. Mission Winning keeps Train, Fuel, Move, Mind, Track, and Learn in one PWA with one Mission Score.',
+  bundleWinScoreNote: 'Today Mission Score ties every pillar together.',
   bundleCompareTitle: 'Compare standalone vs bundle',
   bundleColPillar: 'Pillar',
   bundleColPremium: 'Premium tier',
@@ -170,7 +170,7 @@ const es: BundleStrings = {
   ...en,
   bundleHeadline: 'Seis pilares. Una app. Un precio.',
   bundleSubhead:
-    'Mission Winning reemplaza un montón de apps de fitness con una PWA — Entrenar, Nutrición, Movimiento, Mente, Seguimiento, Aprender y tu Win Score unificado en Hoy.',
+    'Mission Winning reemplaza un montón de apps de fitness con una PWA — Entrenar, Nutrición, Movimiento, Mente, Seguimiento, Aprender y tu Mission Score unificado en Hoy.',
   bundleUrgencyBadge: 'Precio introductorio — tiempo limitado',
   bundleTab3mo: '3 meses',
   bundleTab12mo: '12 meses',
@@ -186,8 +186,8 @@ const es: BundleStrings = {
   bundleUnlockCta: 'Desbloquear Super Bundle',
   bundleOneAppTitle: 'Una app — no siete',
   bundleOneAppDesc:
-    'Freeletics vende apps separadas. Mission Winning mantiene Entrenar, Nutrición, Movimiento, Mente, Seguimiento y Aprender en una sola instalación con un Win Score.',
-  bundleWinScoreNote: 'El Win Score en Hoy une todos los pilares.',
+    'Freeletics vende apps separadas. Mission Winning mantiene Entrenar, Nutrición, Movimiento, Mente, Seguimiento y Aprender en una sola instalación con un Mission Score.',
+  bundleWinScoreNote: 'El Mission Score en Hoy une todos los pilares.',
   bundleCompareTitle: 'Comparar individual vs bundle',
   bundleColPillar: 'Pilar',
   bundleColPremium: 'Nivel premium',
@@ -206,7 +206,7 @@ const zh: BundleStrings = {
   ...en,
   bundleHeadline: '六大支柱。一个应用。一个价格。',
   bundleSubhead:
-    'Mission Winning 用一个 PWA 取代一堆健身应用 — 训练、营养、活动、心理、追踪、学习，以及 Today 统一的 Win Score。',
+    'Mission Winning 用一个 PWA 取代一堆健身应用 — 训练、营养、活动、心理、追踪、学习，以及 Today 统一的 Mission Score。',
   bundleUrgencyBadge: '入门价 — 限时',
   bundleTab3mo: '3 个月',
   bundleTab12mo: '12 个月',
@@ -222,8 +222,8 @@ const zh: BundleStrings = {
   bundleUnlockCta: '解锁 Super Bundle',
   bundleOneAppTitle: '一个应用 — 不是七个',
   bundleOneAppDesc:
-    'Freeletics 卖多个独立应用。Mission Winning 把训练、营养、活动、心理、追踪、学习放在一个安装里，共用一个 Win Score。',
-  bundleWinScoreNote: 'Today 的 Win Score 串联所有支柱。',
+    'Freeletics 卖多个独立应用。Mission Winning 把训练、营养、活动、心理、追踪、学习放在一个安装里，共用一个 Mission Score。',
+  bundleWinScoreNote: 'Today 的 Mission Score 串联所有支柱。',
   bundleCompareTitle: '单独购买 vs 捆绑',
   bundleColPillar: '支柱',
   bundleColPremium: '高级版',
@@ -238,7 +238,7 @@ const id: BundleStrings = {
   ...en,
   bundleHeadline: 'Enam pilar. Satu app. Satu harga.',
   bundleSubhead:
-    'Mission Winning menggantikan banyak app fitness dengan satu PWA — Train, Fuel, Move, Mind, Track, Learn, plus Win Score terpadu di Today.',
+    'Mission Winning menggantikan banyak app fitness dengan satu PWA — Train, Fuel, Move, Mind, Track, Learn, plus Mission Score terpadu di Today.',
   bundleUrgencyBadge: 'Harga intro — waktu terbatas',
   bundleTab3mo: '3 bulan',
   bundleTab12mo: '12 bulan',
@@ -259,7 +259,7 @@ const th: BundleStrings = {
   ...en,
   bundleHeadline: 'หกเสาหลัก แอปเดียว ราคาเดียว',
   bundleSubhead:
-    'Mission Winning แทนที่แอปฟิตเนสหลายตัวด้วย PWA เดียว — Train, Fuel, Move, Mind, Track, Learn และ Win Score รวมบน Today',
+    'Mission Winning แทนที่แอปฟิตเนสหลายตัวด้วย PWA เดียว — Train, Fuel, Move, Mind, Track, Learn และ Mission Score รวมบน Today',
   bundleUrgencyBadge: 'ราคาเปิดตัว — จำกัดเวลา',
   bundleTab3mo: '3 เดือน',
   bundleTab12mo: '12 เดือน',
@@ -280,7 +280,7 @@ const ar: BundleStrings = {
   ...en,
   bundleHeadline: 'ستة أركان. تطبيق واحد. سعر واحد.',
   bundleSubhead:
-    'Mission Winning يستبدل مجموعة تطبيقات اللياقة بتطبيق PWA واحد — Train وFuel وMove وMind وTrack وLearn مع Win Score موحد في Today.',
+    'Mission Winning يستبدل مجموعة تطبيقات اللياقة بتطبيق PWA واحد — Train وFuel وMove وMind وTrack وLearn مع Mission Score موحد في Today.',
   bundleUrgencyBadge: 'سعر تمهيدي — لفترة محدودة',
   bundleTab3mo: '3 أشهر',
   bundleTab12mo: '12 شهرًا',
@@ -296,8 +296,8 @@ const ar: BundleStrings = {
   bundleUnlockCta: 'افتح Super Bundle',
   bundleOneAppTitle: 'تطبيق واحد — لا سبعة',
   bundleOneAppDesc:
-    'Freeletics تبيع تطبيقات منفصلة. Mission Winning يجمع Train وFuel وMove وMind وTrack وLearn في تثبيت واحد مع Win Score واحد.',
-  bundleWinScoreNote: 'Win Score في Today يربط كل الأركان.',
+    'Freeletics تبيع تطبيقات منفصلة. Mission Winning يجمع Train وFuel وMove وMind وTrack وLearn في تثبيت واحد مع Mission Score واحد.',
+  bundleWinScoreNote: 'Mission Score في Today يربط كل الأركان.',
   bundleCompareTitle: 'مقارنة منفرد vs الحزمة',
   bundleColPillar: 'الركن',
   bundleColPremium: 'المستوى المميز',
@@ -369,8 +369,8 @@ const it: BundleStrings = {
   bundleUnlockCta: 'Sblocca Super Bundle',
   bundleOneAppTitle: 'Una app — non sette',
   bundleOneAppDesc:
-    'Altri vendono app separate. Mission Winning tiene Train, Fuel, Move, Mind, Track e Learn in una PWA con un Win Score.',
-  bundleWinScoreNote: 'Il Win Score in Today unisce tutti i pilastri.',
+    'Altri vendono app separate. Mission Winning tiene Train, Fuel, Move, Mind, Track e Learn in una PWA con un Mission Score.',
+  bundleWinScoreNote: 'Il Mission Score in Today unisce tutti i pilastri.',
   bundleCompareTitle: 'Confronta singolo vs bundle',
   bundleColPillar: 'Pilastro',
   bundleColPremium: 'Livello premium',
@@ -418,8 +418,8 @@ const ru: BundleStrings = {
   bundleUnlockCta: 'Открыть Super Bundle',
   bundleOneAppTitle: 'Одно приложение — не семь',
   bundleOneAppDesc:
-    'Другие продают отдельные приложения. Mission Winning держит Train, Fuel, Move, Mind, Track и Learn в одной PWA с одним Win Score.',
-  bundleWinScoreNote: 'Win Score в Today связывает все столпы.',
+    'Другие продают отдельные приложения. Mission Winning держит Train, Fuel, Move, Mind, Track и Learn в одной PWA с одним Mission Score.',
+  bundleWinScoreNote: 'Mission Score в Today связывает все столпы.',
   bundleCompareTitle: 'Сравнить отдельно vs bundle',
   bundleColPillar: 'Столп',
   bundleColPremium: 'Премиум-уровень',
@@ -467,8 +467,8 @@ const ko: BundleStrings = {
   bundleUnlockCta: 'Super Bundle 잠금 해제',
   bundleOneAppTitle: '하나의 앱 — 일곱 개가 아님',
   bundleOneAppDesc:
-    '다른 서비스는 앱을 나눕니다. Mission Winning은 Train, Fuel, Move, Mind, Track, Learn을 하나의 PWA와 Win Score로 유지합니다.',
-  bundleWinScoreNote: 'Today의 Win Score가 모든 기둥을 연결합니다.',
+    '다른 서비스는 앱을 나눕니다. Mission Winning은 Train, Fuel, Move, Mind, Track, Learn을 하나의 PWA와 Mission Score로 유지합니다.',
+  bundleWinScoreNote: 'Today의 Mission Score가 모든 기둥을 연결합니다.',
   bundleCompareTitle: '개별 vs 번들 비교',
   bundleColPillar: '기둥',
   bundleColPremium: '프리미엄 등급',
@@ -516,8 +516,8 @@ const ja: BundleStrings = {
   bundleUnlockCta: 'Super Bundle を解除',
   bundleOneAppTitle: 'ひとつのアプリ — 7つではない',
   bundleOneAppDesc:
-    '他社はアプリを分けて売ります。Mission WinningはTrain、Fuel、Move、Mind、Track、LearnをひとつのPWAとWin Scoreにまとめます。',
-  bundleWinScoreNote: 'TodayのWin Scoreがすべての柱をつなぎます。',
+    '他社はアプリを分けて売ります。Mission WinningはTrain、Fuel、Move、Mind、Track、LearnをひとつのPWAとMission Scoreにまとめます。',
+  bundleWinScoreNote: 'TodayのMission Scoreがすべての柱をつなぎます。',
   bundleCompareTitle: '単体 vs バンドル比較',
   bundleColPillar: '柱',
   bundleColPremium: 'プレミアム層',

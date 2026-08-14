@@ -81,7 +81,7 @@ export const POST = withApiLogging('journey/welcome', async (request: NextReques
       `Start I-Day (about two minutes): ${app}/welcome`,
       `Open Today: ${app}/log`,
       '',
-      'Log one set. Watch Win Score tick. That’s the loop.',
+      'Log one set. Watch Mission Score tick. That’s the loop.',
       '',
       '— Mission Winning',
     ].join('\n'),

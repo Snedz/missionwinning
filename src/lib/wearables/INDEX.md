@@ -2,7 +2,7 @@
 
 > One concern: Multi-vendor wearable ingest (OAuth brands + platform hubs + BLE HR).
 
-**Horizon:** Live OAuth/hubs gated by `NEXT_PUBLIC_WEARABLES` and [docs/WEARABLES.md](../../../docs/WEARABLES.md). Win Score stays log-derived.
+**Horizon:** Live OAuth/hubs gated by `NEXT_PUBLIC_WEARABLES` and [docs/WEARABLES.md](../../../docs/WEARABLES.md). Mission Score stays log-derived.
 
 ## Files
 

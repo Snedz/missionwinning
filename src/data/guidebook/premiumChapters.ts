@@ -181,7 +181,7 @@ Fuel Coach adapts meal plans to training load when you are on Super Bundle.`,
         id: 'pch10-s3',
         title: 'Hydration and Electrolytes',
         summary: 'Thirst lags; urine color and body weight still help.',
-        body: `Aim for pale-yellow urine on training days. In heat or long sessions, add sodium via food or an electrolyte mix — not only plain water. Track glasses on Fuel so Win Score hydration stays honest.
+        body: `Aim for pale-yellow urine on training days. In heat or long sessions, add sodium via food or an electrolyte mix — not only plain water. Track glasses on Fuel so Mission Score hydration stays honest.
 
 Travel and altitude increase fluid needs — plan before the session, not mid-cramp.`,
         practiceCTA: { label: 'Log water on Fuel', href: '/nutrition' },

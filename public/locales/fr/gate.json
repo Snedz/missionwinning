@@ -5,6 +5,7 @@
   "gateSubtitle": "L'application gratuite pour tout ce qui concerne la santé : entraînement, nutrition, mobilité, esprit, activité et apprentissage. Lancement bientôt, noyau gratuit pour toujours.",
   "gateLocalFirst": "No account needed: the logger writes sets to your device, and nothing is uploaded unless you sign in.",
   "gateFooterTagline": "cœur gratuit pour toujours",
+  "gateLogASet": "Enregistrer une série",
   "gateWaitlistTitle": "Soyez averti au lancement",
   "gateWaitlistPlaceholder": "vous@exemple.com",
   "gateWaitlistEmailLabel": "Email",

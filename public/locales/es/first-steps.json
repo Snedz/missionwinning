@@ -21,7 +21,7 @@
   "firstStepLearnTitle": "Lee una guía",
   "firstStepLearnWhy": "Knowing why a session is built the way it is makes it easier to keep going.",
   "firstStepParqTitle": "Completa el cuestionario de salud",
-  "firstStepParqWhy": "A short safety questionnaire. It is the one step the app does ask for before pushing harder.",
+  "firstStepParqWhy": "A short safety questionnaire before Mission Coach generates a week. Log set never waits on it.",
   "fuelMealStripLabel": "Comida",
   "fuelModeStripLabel": "Método de registro",
   "publicStatusOpenBeta": "{{productVersion}} — open alpha. Offline logging plus Mission Coach from your logs."

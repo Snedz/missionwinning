@@ -88,7 +88,7 @@ export const FREE_LEARN_PATHS: LearnPath[] = [
         summary: 'Adequate protein supports muscle repair, satiety, and recovery.',
         keyPoints: [
           'Aim for a daily target — adjust in Calculators',
-          'High-protein days boost your Win Score',
+          'High-protein days boost your Mission Score',
           'Combine plant sources for complete amino profiles',
         ],
         actionHref: '/nutrition',

@@ -6,7 +6,7 @@ export const LEADERBOARD_BOARDS: LeaderboardBoard[] = [
   {
     id: 'mission-score',
     title: 'Mission Score',
-    subtitle: 'Cross-pillar Win Score — Train, Fuel, Move, Mind, Track, Learn.',
+    subtitle: 'Cross-pillar Mission Score — Train, Fuel, Move, Mind, Track, Learn.',
     unit: 'pts',
   },
   {

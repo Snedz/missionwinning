@@ -182,7 +182,7 @@ export function TodayProgressSection({
               ? t('todayWithBodyweight', { defaultValue: 'with bodyweight/minimal' })
               : t('todayWithEquipment', { defaultValue: 'with available equipment' })}
           </div>
-          <div className="text-muted-foreground">{t('todayRecommendedBody', { defaultValue: 'Start with a simple full-body or split from Builder, or launch a program template. Complete sessions to level up your Win Score.' })}</div>
+          <div className="text-muted-foreground">{t('todayRecommendedBody', { defaultValue: 'Start with a simple full-body or split from Builder, or launch a program template. Complete sessions to level up your Mission Score.' })}</div>
           <Button variant="outline" size="sm" className="min-h-[44px] tap-target" onClick={() => router.push('/builder')}>
             {t('todayGoBuilder', { defaultValue: 'Open builder' })}
           </Button>
