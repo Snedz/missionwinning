@@ -19,6 +19,7 @@
  */
 
 import { isAnalyticsAllowed } from '@/lib/analyticsOptOut';
+import { sanitizeAnalyticsProperties } from '@/lib/analyticsSanitize';
 import { attributionAsProps, loadAttribution } from '@/lib/attribution';
 
 export type AnalyticsEvent =
@@ -126,9 +127,13 @@ function flushPending() {
   if (!ph || !initialized) return;
   for (const item of pending) {
     try {
-      if (item.type === 'track' && item.event) ph.capture(item.event, item.properties);
-      else if (item.type === 'identify' && item.userId) ph.identify(item.userId);
-      else if (item.type === 'reset') ph.reset();
+      if (item.type === 'track' && item.event) {
+        ph.capture(item.event, sanitizeAnalyticsProperties(item.properties));
+      } else if (item.type === 'identify' && item.userId) {
+        ph.identify(item.userId);
+      } else if (item.type === 'reset') {
+        ph.reset();
+      }
     } catch {
       /* Analytics must never break the app. */
     }
@@ -206,11 +211,11 @@ export function track(
   if (!process.env.NEXT_PUBLIC_POSTHOG_KEY) return;
   if (!isAnalyticsAllowed()) return;
   if (!initialized || !ph) {
-    pending.push({ type: 'track', event, properties });
+    pending.push({ type: 'track', event, properties: sanitizeAnalyticsProperties(properties) });
     return;
   }
   try {
-    ph.capture(event, properties);
+    ph.capture(event, sanitizeAnalyticsProperties(properties));
   } catch {
     // Analytics must never break the app.
   }

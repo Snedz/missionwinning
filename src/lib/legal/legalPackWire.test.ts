@@ -52,8 +52,18 @@ test('signup and checkout hard-block territory', () => {
   assert.match(unlock, /territory_blocked|territoryBlocked/);
 
   const geo = readFileSync(join(root, 'app/api/geo/route.ts'), 'utf8');
+  assert.match(geo, /hostedServiceAccessFromHeaders/);
   assert.match(geo, /blocked/);
   assert.match(geo, /blockReason/);
+
+  const session = readFileSync(join(root, 'app/api/private-access/session/route.ts'), 'utf8');
+  assert.match(session, /sessionMintGate/);
+
+  const callback = readFileSync(join(root, 'app/auth/callback/route.ts'), 'utf8');
+  assert.match(callback, /hostedServiceAccessFromHeaders/);
+
+  const leads = readFileSync(join(root, 'app/api/leads/route.ts'), 'utf8');
+  assert.match(leads, /hostedServiceAccessFromHeaders/);
 });
 
 test('Terms liability cap, Texas law, indemnify; Privacy 30-day deletion', () => {

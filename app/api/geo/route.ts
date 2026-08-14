@@ -9,7 +9,7 @@ import { rateLimitAsync } from '@/lib/rateLimit';
 import { resolveRegionDefaults } from '@/lib/regionDefaults';
 import {
   countryFromRequestHeaders,
-  getTerritoryBlockReason,
+  hostedServiceAccessFromHeaders,
   TERRITORY_BLOCK_MESSAGES,
 } from '@/lib/legal/supportedRegions';
 
@@ -33,9 +33,10 @@ export const GET = withApiLogging('geo', async (request: NextRequest) => {
     acceptLanguage: request.headers.get('accept-language'),
   });
 
-  const cdnCountry = countryFromRequestHeaders(request.headers);
-  const blockReason = cdnCountry ? getTerritoryBlockReason(cdnCountry) : null;
-  const blocked = blockReason != null;
+  const territory = hostedServiceAccessFromHeaders(request.headers);
+  const cdnCountry = territory.country ?? countryFromRequestHeaders(request.headers);
+  const blockReason = territory.allowed ? null : territory.reason;
+  const blocked = !territory.allowed;
 
   return NextResponse.json(
     {

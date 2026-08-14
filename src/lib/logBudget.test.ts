@@ -87,11 +87,12 @@ const NEVER_SHIPPED: { from: number; to: number; why: string }[] = [
       'a prior rotate of a missing section.',
   },
   {
-    from: 698,
-    to: 728,
+    from: 686,
+    to: 688,
     why:
-      'Reserved by concurrent cloud branches while master tip was `.697`. `.729` jumped the ' +
-      'occupied range; no LOG heading on master ever ended in these labels.',
+      'Wedge reserved `.686`–`.688` for concurrent PRs (#453 / #462 / #470); master jumped ' +
+      '`.685` → `.689`. No LOG heading on master ever ended in those labels, so rotating ' +
+      '`.685` leaves `.689` as the live floor without a missing section.',
   },
 ];
 const neverShipped = (x: number) => NEVER_SHIPPED.some((g) => x >= g.from && x <= g.to);

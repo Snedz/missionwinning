@@ -10,6 +10,7 @@ import { rateLimitAsync } from '@/lib/rateLimit';
 import { clientIp } from '@/lib/clientIp';
 import { getSupabaseAdmin } from '@/lib/supabaseAdmin';
 import { leadsBodySchema, parseJsonBody } from '@/lib/apiSchemas';
+import { hostedServiceAccessFromHeaders } from '@/lib/legal/supportedRegions';
 import { renderEmail } from '@/emails/renderEmail';
 import {
   leadUnsubscribeUrl,
@@ -124,6 +125,23 @@ export const POST = withApiLogging('leads', async (req: NextRequest) => {
    */
   if (!email && !isFeedbackSource(source)) {
     return NextResponse.json({ error: 'email is required' }, { status: 400 });
+  }
+
+  // Waitlist signup is hosted-account adjacent — same territory list as checkout.
+  // Feedback from a blocked region still lands (free logger is never gated).
+  if (!isFeedbackSource(source)) {
+    const territory = hostedServiceAccessFromHeaders(req.headers);
+    if (!territory.allowed) {
+      return NextResponse.json(
+        {
+          error: territory.message,
+          code: territory.code,
+          reason: territory.reason,
+          country: territory.country,
+        },
+        { status: 403 }
+      );
+    }
   }
 
   const payload: Record<string, unknown> = {

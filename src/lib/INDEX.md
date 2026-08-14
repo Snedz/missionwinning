@@ -12,10 +12,11 @@
 
 | Domain | Key files | Notes |
 |--------|-----------|-------|
-| **Form Index media** | `formMedia.ts`, `formCast.ts`, `formGuides.ts`, `formGuideMedia.ts` | Clinical packs + `.736` cast picker (`docs/MEDIA.md`) |
+| **Scoring / Today** | `score.ts`, `crossPillarCoach.ts`, `pillarScoreInputs.ts`, `readinessIndex.ts`, `exerciseMuscleMap.ts` | Readiness, Win Score, coach insight |
 | **Mission Rewards** | [`rewards/`](rewards/INDEX.md) | XP, ranks, badges from real logs — never gates logger |
-| **Mission Identity** | [`identity/`](identity/INDEX.md) | Call sign, Athlete Card, Mission ID display — social projection; mint is `missionIdServer.ts`; Log↔Social via `domainBoundary.ts` |
+| **Mission Identity** | [`identity/`](identity/INDEX.md) | Call sign, Athlete Card — social projection; Log↔Social via `domainBoundary.ts` |
 | **Classification guard** | `classificationGuard.test.ts` | `.hermes/` + `ops/` never tracked |
+| **Build / public stamp** | `buildInfo.ts`, `buildInfo.test.ts` | Internal `APP_BUILD_LABEL` vs athlete `0.1 (beta)` |
 | **Mission Coach (daily)** | `coachDailyServer.ts` | LLM daily insight API — not weekly plan |
 | **Mission Coach (weekly)** | `coach/` subfolder | Plan engine — see [coach/INDEX.md](coach/INDEX.md) |
 | **Coach sync** | `coachSync.ts` | Cloud push for coach plan |
@@ -24,43 +25,37 @@
 | **Surface parking** | `surface.ts` | Which non-wedge surfaces are reachable (`NEXT_PUBLIC_SURFACES`) |
 | **Journey** | `missionJourney.ts`, `journeySync.ts`, `journeyGoals.ts`, `journeyAnalytics.ts` | I-Day → Commissioned |
 | **Workouts** | [`workout/`](workout/INDEX.md) subfolder (+ root re-exports); `justGoSession.ts`, `historyAnalytics.ts`, `benchmarks.ts` | Logger helpers; Just Go; next-set targets; rest/PR/superset |
-| **Places** | [`places/`](places/INDEX.md) | Explore pins, optional nearby, personal place-dex — never gates a set |
 | **Local-first copy** | `localFirstCopy.ts` | Today/Active F-001 EN constants — set-log + rest never framed as cloud-required |
-| **Pregnancy safety** | `pregnancySafety.ts` | Optional athlete-owned flag; v1 changes only the hard-session stop-symptoms line; grief-adjacent option label unsigned (`.761`) |
+| **First-set ungated** | `firstSetUngated.ts` | `.730` F-017 — `showHeaderSignInChip`. Hide Sign in until the first workout; never on `/active`. |
 | **Nutrition / Fuel** | `macroTargets.ts`, `fuelGoalWizard.ts`, `fuelDayAdapt.ts`, `openFoodFacts.ts`, `nutritionLog.ts`, `nlMealLog.ts`, `mealDraft.ts`, `savedMeals.ts`, `nutritionHighProteinDays.ts` | Fuel pillar; goal→macros; train-day targets; NL + presets; photo draft |
 | **Today primary CTA** | `todayPrimaryAction.ts`, `coach/loadCoachTodayOptional.ts` | Shared Just Go / journey primary for lean + dashboard |
 | **Fuel Coach** | `fuelCoach/` subfolder | Adaptive meal plan — see [fuelCoach/INDEX.md](fuelCoach/INDEX.md) |
 | **Payments** | `premiumServer.ts`, `premiumEnrollmentCache.ts`, `payments.ts`, `checkoutServer.ts`, `stripeServer.ts`, `stripeWebhook.ts`, `paypalWebhook.ts`, [`cryptoCheckout/`](cryptoCheckout/INDEX.md) | Stripe + Phantom USDC lifetime; enrollment Redis memo |
 | **Payments — the pure decisions** | `checkout/checkoutParams.ts` (what Stripe is asked to charge), `premium/enrollmentRow.ts` (what a paid webhook writes), `authUserId.ts` (what may go in an `auth.users` FK) | `.262` — lifted out of the `server-only` modules above, which reach Stripe/Supabase on their first line and so could not be tested at all. Dependency-free on purpose; `money.routetest.ts` covers the server halves |
 | **School / PFT** | `schoolClassServer.ts`, `presidentialFitness*.ts`, `fitnessTest*.ts` | America track |
-| **Gating / auth** | `privateModeFlag.ts`, `privateGate.ts`, `supabaseAuthCookies.ts`, `supabaseRequestAuth.ts` | Private beta; Preview ungated via `VERCEL_ENV` |
+| **Gating / auth** | `privateGate.ts`, `privateAccessSessionGate.ts`, `supabaseAuthCookies.ts`, `supabaseRequestAuth.ts` | Private beta, JWT cookies; session mint geo-block |
 | **i18n loaders** | `routeMetadata.ts`, `navConfig.ts` | Not strings — see `src/i18n/` |
-| **i18n prefs** | `i18n/` | Country picker + locale persist — country list from `legal/supportedRegions.ts` |
 | **Units** | `units.ts` | `weightStep`, metric/imperial |
 | **Backup** | `backup.ts` | Device backup export/restore |
 | **What’s New** | `whatsNew.ts` | Build-label last-seen + curated athlete bullets (D13) |
-| **Analytics** | `analytics.ts`, `analyticsOptOut.ts`, `week4Logger.ts`, `week4LoggerSync.ts`, `authPresence.ts` | PostHog events; week-4 working-set instrument; preference off until user allows |
+| **Analytics** | `analytics.ts`, `analyticsOptOut.ts`, `analyticsSanitize.ts` | PostHog events; pregnancy/PT keys stripped |
 | **Observability** | `sentryCommon.ts`, `api/withApiLogging.ts` | Sentry (env-gated) + API request logs |
 | **Compliance** | `compliance/` | Vanta-lite control catalog probes — [docs/COMPLIANCE.md](../../docs/COMPLIANCE.md) |
 | **Destructive UX** | `holdToConfirm.ts` | Hold-to-confirm helpers — [docs/DESTRUCTIVE_UX.md](../../docs/DESTRUCTIVE_UX.md) |
 | **Leaderboard** | `leaderboard/` subfolder | Local + cloud leaderboard |
-| **Visibility / Under the Hood** | [`transparency/`](transparency/INDEX.md) | Account report: limits + reasons; BOOSTS/PENALTIES; download JSON + text |
 
 ## Subfolders (one concern each)
 
 | Folder | INDEX |
 |--------|-------|
 | `coach/` | [coach/INDEX.md](coach/INDEX.md) |
-| `places/` | Explore pins / place-dex — [places/INDEX.md](places/INDEX.md) |
 | `identity/` | Athlete identity — [identity/INDEX.md](identity/INDEX.md) |
 | `fuelCoach/` | [fuelCoach/INDEX.md](fuelCoach/INDEX.md) |
 | `workout/` | Logger, merge, rest, PR, victory — [workout/INDEX.md](workout/INDEX.md) |
-| `transparency/` | Visibility + Under the Hood — [transparency/INDEX.md](transparency/INDEX.md) |
 | `wearables/` | OAuth + hubs + BLE HR — [wearables/INDEX.md](wearables/INDEX.md) |
 | `leaderboard/` | Leaderboard compute/sync helpers — [leaderboard/INDEX.md](leaderboard/INDEX.md) |
 | `storage/` | **The only** direct localStorage access — [storage/INDEX.md](storage/INDEX.md) |
 | `sync/` | Durable outbox for cloud writes — [sync/INDEX.md](sync/INDEX.md) |
-| `social/` | Mission Server messenger — [social/INDEX.md](social/INDEX.md) |
 
 ## Convention: adding new domains
 

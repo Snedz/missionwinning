@@ -7,7 +7,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { withApiLogging } from '@/lib/api/withApiLogging';
 import { rateLimitAsync } from '@/lib/rateLimit';
 import { clientIp } from '@/lib/clientIp';
-import { hasMobileAppAccess, allowMobileCoachBootstrap } from '@/lib/mobileAccess';
+import { allowMobileCoachBootstrap } from '@/lib/mobileAccess';
 import { applySessionDone, type CoachPlan } from '@/lib/mobileCoachApi';
 import { mobileCoachAdaptBodySchema, parseJsonBody } from '@/lib/apiSchemas';
 import { rejectOversizedBody } from '@/lib/requestBodyLimit';
@@ -25,12 +25,7 @@ export const POST = withApiLogging('mobile/coach/adapt', async (request: NextReq
     );
   }
 
-  // Allow bootstrap in public mode so offline clients can adapt without sign-in
-  if (process.env.PRIVATE_MODE === 'true') {
-    if (!(await hasMobileAppAccess(request))) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-    }
-  } else if (!(await allowMobileCoachBootstrap(request))) {
+  if (!(await allowMobileCoachBootstrap(request))) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 

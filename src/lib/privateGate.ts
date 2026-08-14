@@ -113,9 +113,12 @@ export function hasPrivateAccessCookie(request: NextRequest, secret: string | un
 /** Query-string gate bypass — disabled in production unless PRIVATE_ALLOW_QUERY_ACCESS=true. */
 export function queryGrantsAccess(searchParams: URLSearchParams, secret: string | undefined): boolean {
   if (!secret) return false;
-  if (process.env.NODE_ENV === 'production' && process.env.PRIVATE_ALLOW_QUERY_ACCESS !== 'true') {
+  const prodLike =
+    process.env.NODE_ENV === 'production' || process.env.VERCEL_ENV === 'production';
+  if (prodLike && process.env.PRIVATE_ALLOW_QUERY_ACCESS !== 'true') {
     return false;
   }
+  // Only `access` may grant — invite/next/code are display or return paths, not keys.
   const access = searchParams.get('access');
   if (!access) return false;
   return matchesPrivateAccessPassword(access, secret, process.env.PRIVATE_ACCESS_CODES);

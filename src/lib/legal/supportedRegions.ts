@@ -226,48 +226,84 @@ export const TERRITORY_BLOCK_MESSAGES: Record<TerritoryBlockReason, string> = {
     'We could not confirm a supported region for this connection. Hosted signup and checkout are unavailable.',
 };
 
-/** Read CDN country from request headers (Cloudflare / Vercel). */
+/** Platform-set country headers. `x-country-code` is not trusted for access. */
+const PLATFORM_COUNTRY_HEADER_NAMES = ['cf-ipcountry', 'x-vercel-ip-country'] as const;
+
+function countriesFromNamedHeaders(
+  headers: { get(name: string): string | null },
+  names: readonly string[]
+): string[] {
+  const out: string[] = [];
+  const seen = new Set<string>();
+  for (const name of names) {
+    const iso = normalizeCountryIso2(headers.get(name));
+    if (iso && !seen.has(iso)) {
+      seen.add(iso);
+      out.push(iso);
+    }
+  }
+  return out;
+}
+
+/** Platform CDN countries only (Cloudflare / Vercel). Used for the hard block. */
+export function countriesFromRequestHeaders(headers: {
+  get(name: string): string | null;
+}): string[] {
+  return countriesFromNamedHeaders(headers, PLATFORM_COUNTRY_HEADER_NAMES);
+}
+
+/** Read CDN country from request headers. Display hint — may include `x-country-code`. */
 export function countryFromRequestHeaders(headers: {
   get(name: string): string | null;
 }): string | null {
-  return normalizeCountryIso2(
-    headers.get('cf-ipcountry') ||
-      headers.get('x-vercel-ip-country') ||
-      headers.get('x-country-code')
+  return (
+    countriesFromNamedHeaders(headers, [
+      ...PLATFORM_COUNTRY_HEADER_NAMES,
+      'x-country-code',
+    ])[0] ?? null
   );
 }
 
 /**
  * Hard block for signup + checkout APIs.
- * - Known blocked country → deny
+ * - Known blocked country on **any** platform CDN header → deny (a supported
+ *   ISO on another header does not override)
  * - XX / T1 (CF unknown / Tor) → deny
- * - Missing header (local dev, no CDN) → allow (Cloudflare already edges prod)
+ * - Missing header locally / on `next start` → allow
+ * - Missing header on Vercel production (`VERCEL_ENV=production`) → deny
  */
 export function hostedServiceAccessFromHeaders(headers: {
   get(name: string): string | null;
 }): HostedServiceAccess {
-  const raw =
-    headers.get('cf-ipcountry') ||
-    headers.get('x-vercel-ip-country') ||
-    headers.get('x-country-code');
-  const country = normalizeCountryIso2(raw);
+  const countries = countriesFromRequestHeaders(headers);
 
-  if (!country) {
+  if (countries.length === 0) {
+    if (process.env.VERCEL_ENV === 'production') {
+      return {
+        allowed: false,
+        country: null,
+        reason: 'unknown_edge',
+        code: 'territory_blocked',
+        message: TERRITORY_BLOCK_MESSAGES.unknown_edge,
+      };
+    }
     return { allowed: true, country: null };
   }
 
-  const reason = getTerritoryBlockReason(country);
-  if (reason) {
-    return {
-      allowed: false,
-      country,
-      reason,
-      code: 'territory_blocked',
-      message: TERRITORY_BLOCK_MESSAGES[reason],
-    };
+  for (const country of countries) {
+    const reason = getTerritoryBlockReason(country);
+    if (reason) {
+      return {
+        allowed: false,
+        country,
+        reason,
+        code: 'territory_blocked',
+        message: TERRITORY_BLOCK_MESSAGES[reason],
+      };
+    }
   }
 
-  return { allowed: true, country };
+  return { allowed: true, country: countries[0] };
 }
 
 export const REGION_POLICY = {

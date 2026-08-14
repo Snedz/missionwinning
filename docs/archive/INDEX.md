@@ -26,12 +26,7 @@ When adding a doc:
 
 | File | Absorbed by / note |
 |------|---------------------|
-| [log/LOG-rotate-693-for-752.md](./log/LOG-rotate-693-for-752.md) | rotated 2026-08-13 for `.752` Mission Server messenger (`.693`) |
-| [log/LOG-rotate-692-for-751.md](./log/LOG-rotate-692-for-751.md) | rotated 2026-08-13 for `.751` Learn vs Strong / Hevy / Fitbod citation pages (`.692`) |
-| [log/LOG-rotate-691-for-750.md](./log/LOG-rotate-691-for-750.md) | rotated 2026-08-13 for `.750` Session history list (`.691`) |
-| [log/LOG-rotate-690-for-749.md](./log/LOG-rotate-690-for-749.md) | rotated 2026-08-13 for `.749` Supersets on the set log (`.690`) |
-| [log/LOG-rotate-689-for-748.md](./log/LOG-rotate-689-for-748.md) | rotated 2026-08-13 for `.748` Exercise notes on the set log (`.689`) |
-| [log/LOG-rotate-685-for-747.md](./log/LOG-rotate-685-for-747.md) | rotated 2026-08-13 for `.747` Repeat last session from the log (`.685`) |
+| [log/LOG-rotate-685-for-747.md](./log/LOG-rotate-685-for-747.md) | rotated 2026-08-13 for `.747` blue-team P0 harden (`.685`) |
 | [log/LOG-rotate-684-for-746.md](./log/LOG-rotate-684-for-746.md) | rotated 2026-08-13 for `.746` F-017 first set without an account (`.684`) |
 | [log/LOG-rotate-680-for-745.md](./log/LOG-rotate-680-for-745.md) | rotated 2026-08-13 for `.745` rest timer last-rest (`.680`) |
 | [log/LOG-rotate-679-for-744.md](./log/LOG-rotate-679-for-744.md) | rotated 2026-08-13 for `.744` Dependabot security batch (`.679`) |

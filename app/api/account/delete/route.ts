@@ -13,6 +13,7 @@ import { rejectOversizedBody } from '@/lib/requestBodyLimit';
 import { accountDeleteBodySchema, parseJsonBody } from '@/lib/apiSchemas';
 import { getSupabaseAdmin } from '@/lib/supabaseAdmin';
 import { deleteAccount } from '@/lib/accountDataServer';
+import { accountUserIdFromSession } from '@/lib/identity/accountUserId';
 
 export const POST = withApiLogging('account/delete', async (request: NextRequest) => {
   const oversized = rejectOversizedBody(request, 4 * 1024);
@@ -34,11 +35,12 @@ export const POST = withApiLogging('account/delete', async (request: NextRequest
     data: { user },
     error: authError,
   } = await supabase.auth.getUser(accessToken);
-  if (authError || !user?.id) {
+  const userId = accountUserIdFromSession(user);
+  if (authError || !user || !userId) {
     return NextResponse.json({ ok: false, error: 'Invalid session' }, { status: 401 });
   }
 
-  const limited = await rateLimitAsync(`account-delete:${user.id}`, 2, 5 * 60_000);
+  const limited = await rateLimitAsync(`account-delete:${userId}`, 2, 5 * 60_000);
   if (!limited.ok) {
     return NextResponse.json(
       { ok: false, error: 'Too many requests' },
@@ -62,7 +64,7 @@ export const POST = withApiLogging('account/delete', async (request: NextRequest
     return NextResponse.json({ ok: false, error: 'Not configured' }, { status: 503 });
   }
 
-  const result = await deleteAccount(admin, user.id, user.email ?? null, parsed.data.deviceId);
+  const result = await deleteAccount(admin, userId, user.email ?? null, parsed.data.deviceId);
   if (!result.ok) {
     // Opaque out; the step name goes to the server log only.
     console.error('account delete failed at step:', result.step);
