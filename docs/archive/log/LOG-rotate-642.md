@@ -11,3 +11,6 @@ Tokens/IA locked. Completes Field manual A pass from `.619`–`.626` across the 
 
 Rotated LOG oldest → [docs/archive/log/LOG-rotate-627.md](docs/archive/log/LOG-rotate-627.md). · [rotated for `.628`](docs/archive/log/LOG-rotate-628.md).
 
+### Rotated from CONTEXT.md `## Now` for `.642` (budget is ≤25 bullets)
+
+- **`.619`:** (`2026.07-unified.619`) **Hero feel Field manual** — Today briefing hierarchy; Active Finish demoted (Log set owns red); Victory/Coach composition; B/C presets catalogued for later Personal AI density choice.

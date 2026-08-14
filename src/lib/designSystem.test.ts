@@ -83,19 +83,50 @@ test('font-family: inherit is a reset, not a second typeface', () => {
   assert.equal(scanText('src/x.css', 'font-family: var(--font-archivo);').length, 0);
 });
 
-test('the walk opens .css files — the blind spot that hid a whole off-system page', () => {
+test('the walk opens every language the design system is written in', () => {
   /*
    * Source assertion, because the walk is not exported. Without it the two
    * fixture tests above would pass forever against files the real run never
    * opens — a guard proving itself on inputs it cannot reach is `.220`'s
    * defect, and it is exactly how experience.css survived a rebrand.
+   *
+   * This parses the alternation rather than matching its literal bytes. The
+   * literal form (`/\\\.\(tsx\?\|css\)\$/`) had to be edited by hand every time
+   * a language was added, and the edit that adds one is exactly the edit that
+   * could drop another — `.astro` joined in the www handoff and the old
+   * assertion would have gone red for the right reason and been "fixed" by
+   * pasting a new literal, which tests nothing about `.css` surviving.
    */
   const scriptSource = read('scripts/check-design-system.mjs');
-  assert.match(
-    scriptSource,
-    /\\\.\(tsx\?\|css\)\$/,
-    'check-design-system must walk .css — experience.css hid emerald/oklch/12 radii in exactly this gap'
-  );
+  const filter = scriptSource.match(/\/\\\.\(([^)]+)\)\$\/\.test\(entry\.name\)/);
+  assert.ok(filter, 'could not find the walk extension filter in check-design-system.mjs');
+
+  const extensions = filter[1].split('|');
+  for (const required of ['tsx?', 'css', 'astro']) {
+    assert.ok(
+      extensions.includes(required),
+      `check-design-system must walk ${required} — experience.css hid emerald/oklch/12 radii in exactly this gap`
+    );
+  }
+});
+
+test('the walk covers every surface that carries design tokens', () => {
+  /*
+   * `sites/www` is the fourth surface (handoff design_handoff_www_static). It is
+   * guarded by extending this walk rather than by a new gate step, so the step
+   * that already runs this script covers it — which also means the coverage is
+   * one array literal away from vanishing with nothing to notice.
+   */
+  const scriptSource = read('scripts/check-design-system.mjs');
+  const roots = scriptSource.match(/const roots = \[([^\]]+)\]/);
+  assert.ok(roots, 'could not find the walk root list in check-design-system.mjs');
+
+  for (const required of ['src', 'app', 'sites/www']) {
+    assert.ok(
+      roots[1].includes(`'${required}'`),
+      `check-design-system must walk ${required} — a surface outside the walk is unguarded`
+    );
+  }
 });
 
 test('a chart tooltip with no styling at all is caught', () => {

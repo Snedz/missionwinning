@@ -102,13 +102,15 @@ Node 22 (CI). PR CI is [.github/workflows/ci.yml](.github/workflows/ci.yml); min
 
 `scripts/gate.mjs` runs everything CI would, on your machine, and builds with `PRIVATE_MODE=false` so the service worker compiles (the offline spec needs one). It starts and stops its own production server.
 
-1. Port unoccupied · 2. Build label + hard rule 5 · 3. **Excellence gate** · 4. Lint · 5. Typecheck
-6. Unit tests · 7. Route contract tests · 8. **Coverage floors** · 9. i18n parity · 10. i18n coverage
-11. Dependency advisories · 12. Design system · 13. Locale split · 14. Display type
-15. Token sync (web ↔ Android) · 16. Production build · 17. Bundle budget
-18. Hero e2e (`@gate`) · 19. Accessibility (`@a11y`)
+1. Port unoccupied · 2. Build label + hard rule 5 · 3. Lint · 4. Typecheck · 5. Unit tests
+6. Route contract tests · 7. **Coverage floors** · 8. i18n parity · 9. i18n coverage
+10. Dependency advisories · 11. Design system · 12. Locale split · 13. Display type
+14. Token sync (web ↔ www ↔ Android) · 15. **WWW build + checks** · 16. Production build
+17. Bundle budget · 18. Hero e2e (`@gate`) · 19. Accessibility (`@a11y`)
 
-> This list said **16 steps** until `.562`, and omitted **Coverage floors** entirely — the one ratchet that had been silently breached on `master` since `.544`. The port guard was missing too. **`.669` added Excellence gate** (Horizon W RESULT + surface stop-rule). A map of the gate that cannot see a step is how the step stops being run; `scripts/gate.mjs` numbers every step it executes, so the count is checkable against a single `npm run gate` run.
+> Step 15 covers `sites/www` (the marketing surface). Steps 11 and 14 cover it too — those two scripts were widened to walk the directory rather than gaining steps of their own, so only the checks that need build output are a separate step.
+>
+> This list said **16 steps** until `.562`, and omitted **Coverage floors** entirely — the one ratchet that had been silently breached on `master` since `.544`. The port guard was missing too. A map of the gate that cannot see a step is how the step stops being run; `scripts/gate.mjs` numbers every step it executes, so the count is checkable against a single `npm run gate` run.
 
 Not covered: `npm run e2e:visual` (needs deliberate Linux baselines) and Lighthouse (needs Chrome).
 
@@ -228,22 +230,3 @@ Requires `bun` (`brew install bun`). Run `/gstack-upgrade` to update.
 **Edit boundaries** — `/freeze` (restrict edits to one directory) · `/guard` (freeze + destructive-command warnings) · `/unfreeze`
 
 **Other** — `/codex` (OpenAI Codex CLI wrapper) · `/cso` (Chief Security Officer mode) · `/setup-gbrain` · `/gstack-upgrade`
-
-## Skill routing
-
-When the user's request matches an available skill, invoke it via the Skill tool. When in doubt, invoke the skill.
-
-Key routing rules:
-- Product ideas/brainstorming → invoke /office-hours
-- Strategy/scope → invoke /plan-ceo-review
-- Architecture → invoke /plan-eng-review
-- Design system/plan review → invoke /design-consultation or /plan-design-review
-- Full review pipeline → invoke /autoplan
-- Bugs/errors → invoke /investigate
-- QA/testing site behavior → invoke /qa or /qa-only
-- Code review/diff check → invoke /review
-- Visual polish → invoke /design-review
-- Ship/deploy/PR → invoke /ship or /land-and-deploy
-- Save progress → invoke /context-save
-- Resume context → invoke /context-restore
-- Author a backlog-ready spec/issue → invoke /spec

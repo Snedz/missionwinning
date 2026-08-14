@@ -1,0 +1,120 @@
+---
+/*
+ * /start — the conversion page.
+ *
+ * Wave 11 §11.4 is the whole argument for this file existing, and it overturned
+ * what I expected. The difference between a homepage and a dedicated page is
+ * NOT length and NOT stripping: Freeletics' Nutrition landing page keeps the
+ * full site nav, runs 4578pt — as long as their homepage — and has the same
+ * eight section boundaries. What marks it is **CTA discipline**: two distinct
+ * actions against the homepage's five, with one string repeated four times at a
+ * 740–1000pt cadence.
+ *
+ * Stripping navigation is what AUTH AND CHECKOUT surfaces do. All three
+ * nav-less captures in the set are that kind of page — CoD's MW4 pre-order
+ * (site nav replaced by a bare wordmark), Freeletics Log-in (0 links in the top
+ * 120pt, 3 total against the homepage's 42) and Activision Sign-in (0 nav, one
+ * full-page image ground, primary action at y=472 of an 1118pt page).
+ *
+ * An invite capture belongs in that group, so this page is nav-less and single
+ * fold: wordmark, headline, one action above the fold, three checkable proofs,
+ * and the demo that makes the claim performable. No outbound links except the
+ * legal pair, which is not optional.
+ *
+ * It is ADDITIVE. `/start` is a new path — it moves no SEO URL and renames no
+ * route, which is what ORCHESTRATION's founder override requires.
+ *
+ * The action goes to the private gate, which is the honest target: while
+ * PRIVATE_MODE is on, the app's `/` redirects there and it is the only working
+ * capture in the product. A static Cloudflare page cannot POST to /api/leads
+ * itself — next.config.js sets `form-action 'self'` and `connect-src 'self'` —
+ * so linking to the page that owns the form is the version that is true. See
+ * ../lib/appLinks.
+ */
+import Base from '../layouts/Base.astro';
+import CtaSlot from '../components/CtaSlot.astro';
+import StagePhoto from '../components/StagePhoto.astro';
+import LogToPlanDemo from '../components/LogToPlanDemo.astro';
+import { appUrl } from '../lib/appLinks';
+import { CONTENT_FLOORS } from '@/lib/contentFloors';
+
+// Checkable facts only, from the floors module — hard rule 3. Three, not four:
+// this page has one job, and a fourth number is a fourth thing to read.
+const proofs = [
+  { figure: String(CONTENT_FLOORS.exercisePages), label: 'Exercises, bodyweight and minimal gear first' },
+  { figure: '0', label: 'Wearables, accounts or app stores required' },
+  { figure: '$0', label: 'The logger, forever — not a trial' },
+];
+---
+
+<Base
+  title="Get an invite — Mission Winning"
+  description="A free offline workout logger that turns what you actually did into next week's plan. No wearable, no gym, no account."
+>
+  <main>
+    <section class="stage on-dark flex min-h-[100svh] flex-col px-5 py-10 sm:px-8 lg:py-14">
+      <StagePhoto
+        base="/photo/phone-bench"
+        alt="A phone resting on a gym bench between sets"
+        position="50% 42%"
+      />
+
+      <div class="stage-body mx-auto flex w-full max-w-6xl flex-1 flex-col">
+        <!-- Wordmark only. Not a nav — there is nowhere else to go from here,
+             and that is the point of the page. -->
+        <a href="/" class="flex shrink-0 items-center gap-3 self-start">
+          <span
+            class="flex h-8 w-8 items-center justify-center bg-paper text-[13px] font-extrabold tracking-[-0.04em] text-ink"
+            >MW</span
+          >
+          <span class="text-[15px] font-extrabold tracking-[-0.01em]">Mission Winning</span>
+        </a>
+
+        <div class="mt-auto grid gap-10 pt-16 lg:grid-cols-[1.05fr_0.95fr] lg:items-end lg:gap-14">
+          <div>
+            <p class="eyebrow eyebrow-live">Free · offline · no account</p>
+            <h1 class="display-hero-www rise mt-5 max-w-[14ch]">
+              <span>Log a set.</span>
+              <span>Get the next one.</span>
+            </h1>
+            <p class="mt-6 max-w-[52ch] text-[19px] leading-[1.5] text-quiet">
+              The logger is free forever and works offline. Mission Coach builds next week from
+              what you actually did &mdash; no wearable, no gym, nothing to install.
+            </p>
+
+            <!-- The one action, above the fold. Activision's sign-in puts its
+                 primary at y=472 of 1118pt; MW4's at y=407. -->
+            <CtaSlot terminal class="mt-9 max-w-[420px]" />
+
+            <dl class="mt-10 grid grid-cols-3 gap-0.5 border-2 border-rule bg-rule">
+              {proofs.map((p) => (
+                <div class="flex flex-col gap-2 bg-paper p-4">
+                  <dt class="text-[28px] font-extrabold leading-none tracking-[-0.02em] text-poster">
+                    {p.figure}
+                  </dt>
+                  <dd class="eyebrow">{p.label}</dd>
+                </div>
+              ))}
+            </dl>
+          </div>
+
+          <!-- The demo runs the real engine, so the claim above it is
+               performable rather than merely asserted. `ground-paper` opts this
+               card's subtree out of the dark-ground inversion. -->
+          <div class="ground-paper">
+            <LogToPlanDemo terminal />
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- The only outbound links on the page, and not optional. -->
+  <footer class="ground-ink px-5 py-6 sm:px-8">
+    <div class="mx-auto flex max-w-6xl flex-wrap items-center gap-x-6 gap-y-2">
+      <p class="eyebrow">&copy; Mission Winning</p>
+      <a href={appUrl('/privacy')} class="eyebrow underline">Privacy</a>
+      <a href={appUrl('/terms')} class="eyebrow underline">Terms</a>
+    </div>
+  </footer>
+</Base>

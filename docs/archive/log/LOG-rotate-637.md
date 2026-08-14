@@ -7,4 +7,3 @@
 Layout: identity band wears poster-field under Poster kit; Field is a left rule in accent tokens; Ledger tightens block rules. `/profile` still **0 red actions**.
 
 Rotated LOG oldest → [docs/archive/log/LOG-rotate-622.md](docs/archive/log/LOG-rotate-622.md).
-
