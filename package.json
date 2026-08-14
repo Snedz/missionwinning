@@ -62,6 +62,8 @@
     "www:check": "npm --prefix sites/www run check",
     "www:gate": "npm run www:build && npm run www:check",
     "www:tokens": "node scripts/build-marketing-tokens.mjs",
+    "design:concepts": "node scripts/design-concepts/serve.mjs",
+    "design:stills": "node scripts/design-concepts/stills.mjs",
     "mobile": "npm --prefix apps/mobile start",
     "mobile:typecheck": "npm --prefix apps/mobile run typecheck",
     "android:assemble": "cd apps/android && ./gradlew :app:assembleDebug",

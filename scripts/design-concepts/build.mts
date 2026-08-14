@@ -301,6 +301,8 @@ any two rows of the table match.</p>
     <p>A document, not a scroll. Opens on a contents page. You look things up, and you may never reach the bottom.</p></a>
   <a class="card" href="04-combined.html"><span class="n">04</span><h2>Combined landing</h2>
     <p>The fusion, in this order: pinned arrival, then the live week, then the manual, then the invite. One type system. Real links.</p></a>
+  <a class="card" href="studio.html"><span class="n">Studio</span><h2>Local design review</h2>
+    <p>Not live. 04 next to current /start, at 390 and 1440. Does not replace the shipped pages.</p></a>
 </div>
 
 <table>
