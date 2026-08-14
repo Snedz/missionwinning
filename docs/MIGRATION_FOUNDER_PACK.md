@@ -35,9 +35,10 @@ Files under `supabase/migrations/`. All are written to be **idempotent** (`if no
 | **P9** | `20260731_llm_usage.sql` | LLM spend ledger missing — quotas cannot bind if LLM is ever enabled |
 | **P10** | `20260801_day_review_push.sql` | Day-review push columns missing (after P6) |
 | **P11** | `20260813_week_logged.sql` | Signed-in week-4 working-set rollup has nowhere to land (guests stay local; PostHog still fires) |
+| **P12** | `20260814_social_messages.sql` | Signed-in Mission Server stays local-only — shared rooms / presence / reports have nowhere to land |
 
 **Free-beta minimum for honest ops:** **P1 + P2 + P6 + P7**.  
-**Full pack (recommended same sitting):** P1–P11.
+**Full pack (recommended same sitting):** P1–P12 + `20260813_mission_ids.sql` (runbook §2 item 19).
 
 **Not in this pack (already assumed applied):** base `20250629_*` through `20260720_referrals.sql` (includes initial `mw_week4_retention()`). P7 **corrects** that function for tombstones.
 
@@ -103,6 +104,8 @@ Interpretation:
 - [ ] P9 `20260731_llm_usage.sql`
 - [ ] P10 `20260801_day_review_push.sql`
 - [ ] P11 `20260813_week_logged.sql`
+- [ ] `20260813_mission_ids.sql` (runbook item 19)
+- [ ] P12 `20260814_social_messages.sql`
 - [ ] **Proof (required after P7):**
 
 ```bash

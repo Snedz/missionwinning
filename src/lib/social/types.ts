@@ -31,6 +31,9 @@ export type ServerMember = {
 
 export type MessageKind = 'text' | 'nudge';
 
+/** local = this device posted it. remote = pulled or realtime from another athlete. */
+export type MessageOrigin = 'local' | 'remote';
+
 export type GarageMessage = {
   id: string;
   channelId: string;
@@ -40,6 +43,13 @@ export type GarageMessage = {
   body: string;
   createdAt: string;
   kind?: MessageKind;
+  origin?: MessageOrigin;
+};
+
+export type RemotePresence = {
+  callSign: string;
+  status: PresenceStatus;
+  lastSeen: string;
 };
 
 export type GarageServer = {

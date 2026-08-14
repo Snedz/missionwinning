@@ -81,6 +81,7 @@
    17. **`20260801_day_review_push.sql`** — `day_review_hour` + `last_day_review_at` on `push_subscriptions`; **the evening day-review push (`.194`/`.196`) is inert without it.** Apply after #13, and after #15 for ordering clarity — all three extend the same table.  
    18. **`20260813_week_logged.sql`** — signed-in `week_logged` ISO-week rollup; **without it the optional account sink for week-4 working-set events 500s** (guests stay local-only; PostHog still fires). CoS applies via MCP — agents do not apply.  
    19. **`20260813_mission_ids.sql`** — monotonic `mission_ids` per signed-in account (id 1 reserved). **Without it `/api/mission-id` 500s** after sign-in; guests are unaffected. CoS applies via MCP — agents do not apply.  
+   20. **`20260814_social_messages.sql`** — shared Garage rooms (`social_messages` + presence + reports). **Without it signed-in Mission Server stays local-only** (runtime fail-opens; outbox 401/missing-table finishes). Guests unaffected. CoS applies via MCP — agents do not apply.  
 4. Redeploy, then verify on the Profile page in-app: build label matches the latest commit (`src/lib/buildInfo.ts`).
 5. **Smoke after env** (from a machine with secrets):
    ```bash
@@ -94,7 +95,7 @@
 
 - [x] Env vars set (incl. service role, DEMO_PREMIUM=false, Resend, Stripe webhook secret, Payment Links)
 - [x] All migrations run through **20260720_referrals** (push + week-4 RPC)
-- [ ] **Migrations from §2 item 9 onward are NOT applied** (beta invites → week_logged). **One-sitting pack:** [MIGRATION_FOUNDER_PACK.md](MIGRATION_FOUNDER_PACK.md) (P1–P11 = files `20260721_*` … `20260813_week_logged.sql`). The two `20260728_*` gate the anonymous return loop and the correctness of the boss metric (tombstones); the `20260721_*` set gates invite ledger + Android sync; `20260730_wind_down_nudge` / `20260801_day_review_push` gate evening pushes; `20260731_llm_usage` gates LLM spend metering; `20260813_week_logged` gates the signed-in week-4 working-set sink. **After tombstone migration:** run `supabase/checks/week4_retention_proof.sql`. CI path: `apply-migration.yml` when `SUPABASE_DB_URL` is set.
+- [ ] **Migrations from §2 item 9 onward are NOT applied** (beta invites → social_messages). **One-sitting pack:** [MIGRATION_FOUNDER_PACK.md](MIGRATION_FOUNDER_PACK.md) (P1–P12 = files `20260721_*` … `20260814_social_messages.sql`, plus `20260813_mission_ids.sql`). The two `20260728_*` gate the anonymous return loop and the correctness of the boss metric (tombstones); the `20260721_*` set gates invite ledger + Android sync; `20260730_wind_down_nudge` / `20260801_day_review_push` gate evening pushes; `20260731_llm_usage` gates LLM spend metering; `20260813_week_logged` gates the signed-in week-4 working-set sink; `20260814_social_messages` gates shared Garage rooms (signed-in only). **After tombstone migration:** run `supabase/checks/week4_retention_proof.sql`. CI path: `apply-migration.yml` when `SUPABASE_DB_URL` is set.
 - [x] Deployed URL loads and shows the new private teaser page
 - [x] Digest dry-run + live send OK (`sent:true` with Resend)
 

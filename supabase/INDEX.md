@@ -27,6 +27,7 @@
 | `20260720_referrals.sql` | Referrals |
 | `20260720_perf_indexes.sql` | `workout_logs(user_id, completed_at)` + leaderboard board indexes + leads filters |
 | `20260813_week_logged.sql` | Signed-in ISO-week logger rollup (CoS applies; guests local-only) |
+| `20260814_social_messages.sql` | Shared Garage rooms + presence + reports (signed-in; guests local) |
 
 ## Key tables
 
@@ -40,6 +41,9 @@
 | School/PFT tables | See fitness_test migration |
 | `youth_consent_records` | COPPA |
 | `week_logged` | Signed-in weekly logger rollup (ISO week). No PII beyond `user_id`. |
+| `social_messages` | Signed-in Garage room posts |
+| `social_presence` | Signed-in self presence |
+| `social_message_reports` | Reports on another athlete's Garage message |
 
 ## Related (not here)
 

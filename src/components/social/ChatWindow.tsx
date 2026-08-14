@@ -10,11 +10,13 @@ export function ChatWindow({
   messages,
   onSend,
   onNudge,
+  onReport,
 }: {
   roomName: string;
   messages: readonly GarageMessage[];
   onSend: (body: string) => void;
   onNudge: () => void;
+  onReport?: (messageId: string) => void;
 }) {
   const { t } = useTranslation();
   return (
@@ -30,7 +32,7 @@ export function ChatWindow({
         </button>
       </header>
       <div className="flex-1 overflow-y-auto bg-background">
-        <MessageList messages={messages} />
+        <MessageList messages={messages} onReport={onReport} />
       </div>
       <MessageComposer channelName={roomName} onSend={onSend} />
     </section>

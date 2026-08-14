@@ -113,6 +113,7 @@ test('surface', async (t) => {
     assert.equal(surfaceForPath('/learn/guide'), 'guidebook');
     assert.equal(surfaceForPath('/learn/guide/chapter-1'), 'guidebook');
     assert.equal(surfaceForPath('/server'), 'server');
+    assert.equal(surfaceForPath('/api/social/messages'), 'server');
     assert.equal(surfaceForPath('/api/school/class/mine'), 'school');
     assert.equal(surfaceForPath('/api/coach/chat'), null);
   });
@@ -134,6 +135,7 @@ test('surface', async (t) => {
     });
     withSurfaces('wedge', () => {
       assert.equal(isPathEnabled('/server'), false, '/server parks with wedge');
+      assert.equal(isPathEnabled('/api/social/messages'), false, 'social API parks with wedge');
       assert.equal(isPathEnabled('/move'), false);
       assert.equal(isPathEnabled('/active'), true);
     });

@@ -49,7 +49,7 @@
 | `/dmca` | `DmcaPage.tsx` | DMCA / copyright notices |
 | `/refunds` | `RefundsPage.tsx` | Refunds & cancellation |
 | `/welcome` | `WelcomePage.tsx` | I-Day onboarding (also `app/welcome/`) |
-| `/server` | `ServerPage.tsx` | Mission Server messenger (MSN rooms + presence). More → You. Not a tab. `robots: noindex` |
+| `/server` | `ServerPage.tsx` | Mission Server messenger (MSN rooms + presence). Signed-in rooms persist. More → You. Not a tab. `robots: noindex` |
 
 ### Outside `(app)` group
 

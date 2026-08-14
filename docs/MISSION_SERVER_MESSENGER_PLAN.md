@@ -95,10 +95,11 @@ Ops #8 already locked native-not-discord.com. Honour it: no Discord OAuth, widge
 
 ### 4.4 Sync (fail open to local)
 
-- Local store is always the source of truth.
-- Realtime is **off unless** all of: `isSupabaseConfigured()`, a session exists, and subscribe does not throw.
+- Local store is always the source of truth on the device.
+- Signed-in persist (`.775`): outbox → `POST /api/social/messages` → `social_messages`. Guests never enqueue. Missing table fail-opens to local.
+- Realtime is **off unless** all of: `isSupabaseConfigured()`, a session exists, and subscribe does not throw. Prefer `postgres_changes` on `social_messages`; broadcast on shared topic `mw-garage` is extra fan-out.
 - Feature flag: treat missing/unconfigured Realtime as local-only. Never crash. Never toast “cloud chat is on”.
-- No Vercel sockets. No postgres migration (9 already pending). Broadcast is ephemeral same-online fan-out; persist is what survives reload.
+- No Vercel sockets. The pending founder pack does **not** block writing the next migration.
 
 ### 4.5 Entry and parking
 

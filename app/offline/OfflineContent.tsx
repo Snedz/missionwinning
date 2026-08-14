@@ -31,6 +31,9 @@ const KIND_LABEL: Record<OutboxKind, { key: string; defaultValue: string }> = {
   'invite.redeem': { key: 'offlineQueueInviteRedeem', defaultValue: 'Invite code' },
   'referral.redeem': { key: 'offlineQueueReferral', defaultValue: 'Referral code' },
   'week.logged': { key: 'offlineQueueWeekLogged', defaultValue: 'Weekly log mark' },
+  'social.message': { key: 'offlineQueueSocialMessage', defaultValue: 'Messenger note' },
+  'social.presence': { key: 'offlineQueueSocialPresence', defaultValue: 'Messenger status' },
+  'social.report': { key: 'offlineQueueSocialReport', defaultValue: 'Messenger report' },
 };
 
 /** Coarse on purpose — a queued write does not need a to-the-minute timestamp. */

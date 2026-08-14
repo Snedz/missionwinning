@@ -20,8 +20,15 @@ import {
   setLocalPresence,
 } from '@/lib/social/store';
 import { connectGarageRealtime, type GarageRealtimeHandle } from '@/lib/social/realtime';
+import { pullChannelMessages, pullRemotePresence } from '@/lib/social/pull';
+import { messageToPayload } from '@/lib/social/cloud';
+import {
+  enqueueSocialMessageIfSignedIn,
+  enqueueSocialPresenceIfSignedIn,
+  enqueueSocialReport,
+} from '@/lib/socialSync';
 import { readChatCallSign, readChatMissionId } from '@/lib/social/callSign';
-import type { MissionServerState, PresenceStatus } from '@/lib/social/types';
+import type { MissionServerState, PresenceStatus, RemotePresence } from '@/lib/social/types';
 
 const CHANNEL_KEYS: Record<string, string> = {
   train: 'serverChannelTrain',
@@ -34,10 +41,30 @@ export function ServerPage() {
   const [state, setState] = useState<MissionServerState | null>(null);
   const [channelId, setChannelId] = useState('train');
   const [realtime, setRealtime] = useState<GarageRealtimeHandle | null>(null);
+  const [others, setOthers] = useState<RemotePresence[]>([]);
 
   useEffect(() => {
     setState(loadMissionServer());
   }, []);
+
+  useEffect(() => {
+    let active = true;
+    void pullChannelMessages(channelId).then((remote) => {
+      if (!active) return;
+      let next = loadMissionServer();
+      for (const message of remote) {
+        const ingested = ingestRemoteMessage(message);
+        if (ingested) next = ingested;
+      }
+      setState(next);
+    });
+    void pullRemotePresence().then((people) => {
+      if (active) setOthers(people);
+    });
+    return () => {
+      active = false;
+    };
+  }, [channelId]);
 
   useEffect(() => {
     let active = true;
@@ -77,6 +104,8 @@ export function ServerPage() {
       const result = postLocalMessage(channel.id, body);
       if (!result.ok) return;
       setState(result.state);
+      const payload = messageToPayload(result.message);
+      if (payload) void enqueueSocialMessageIfSignedIn(payload);
       if (realtime?.ok) void realtime.send(result.message);
     },
     [channel, realtime]
@@ -87,11 +116,22 @@ export function ServerPage() {
     const result = postLocalNudge(channel.id);
     if (!result.ok) return;
     setState(result.state);
+    const payload = messageToPayload(result.message);
+    if (payload) void enqueueSocialMessageIfSignedIn(payload);
     if (realtime?.ok) void realtime.send(result.message);
   }, [channel, realtime]);
 
   const onPresence = useCallback((next: PresenceStatus) => {
-    setState(setLocalPresence(next));
+    const updated = setLocalPresence(next);
+    setState(updated);
+    void enqueueSocialPresenceIfSignedIn({
+      status: next,
+      callSign: readChatCallSign(),
+    });
+  }, []);
+
+  const onReport = useCallback((messageId: string) => {
+    enqueueSocialReport({ messageId, reason: 'other' });
   }, []);
 
   if (!state || !channel) {
@@ -115,7 +155,7 @@ export function ServerPage() {
           eyebrow={t('serverEyebrow', { defaultValue: 'Mission Server' })}
           title={t('serverTitle', { defaultValue: 'Garage' })}
           subtitle={t('serverSubtitle', {
-            defaultValue: 'Rooms on this device. Not a feed.',
+            defaultValue: 'Shared rooms when signed in. Guests stay on this device. Not a feed.',
           })}
         />
         <div className="shrink-0 md:pt-2">
@@ -126,6 +166,15 @@ export function ServerPage() {
             ) : null}
           </p>
           <PresenceControl value={state.presence} onChange={onPresence} />
+          {others.length > 0 ? (
+            <ul className="mt-3 space-y-1 text-xs text-muted-foreground">
+              {others.map((person) => (
+                <li key={`${person.callSign}-${person.lastSeen}`}>
+                  {person.callSign} · {person.status}
+                </li>
+              ))}
+            </ul>
+          ) : null}
         </div>
       </div>
 
@@ -138,12 +187,14 @@ export function ServerPage() {
           messages={messages}
           onSend={onSend}
           onNudge={onNudge}
+          onReport={onReport}
         />
       </div>
 
       <p className="text-xs text-muted-foreground">
         {t('serverLocalNote', {
-          defaultValue: 'Saved on this device. Cloud fan-out only if Realtime is on and you are signed in.',
+          defaultValue:
+            'Guests: this device only. Signed in: shared Garage rooms. Coach never reads the chat.',
         })}
       </p>
     </div>
