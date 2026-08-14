@@ -10,6 +10,8 @@ Most vibe-coded apps ship **two** layers (UI + database). A real product needs *
 
 ## Scorecard (2026-07-20)
 
+Live ops facts live in [CONTEXT.md](../CONTEXT.md) `## Now`. If a checkbox or cell here is older, CONTEXT wins.
+
 | # | Layer | Status | Owner | Evidence | Gap / next |
 |---|-------|--------|-------|----------|------------|
 | 1 | Frontend foundations | **Strong** | Agent | Next/React/Zustand, design system, e2e | PWA offline gated until `PRIVATE_MODE=false` |
