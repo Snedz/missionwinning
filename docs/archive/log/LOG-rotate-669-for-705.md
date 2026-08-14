@@ -1,3 +1,5 @@
+# Rotated from LOG.md for `.705`
+
 ## 2026-08-10 — Horizon W excellence RESULT + agent stop-rule (`.669`)
 
 Process ratchet for the open excellence loop: one home at `docs/EXCELLENCE_RESULT.md`
@@ -7,4 +9,4 @@ is not `pass` unless `Excellence-Override: <reason>` (env override local-only). 
 Train/Today/Coach still ships. ORCHESTRATION names the sign-off file; Android Accept B
 stays separate.
 
-Rotated LOG oldest → [docs/archive/log/LOG-rotate-654.md](docs/archive/log/LOG-rotate-654.md).
+Rotated LOG oldest → [docs/archive/log/LOG-rotate-654.md](LOG-rotate-654.md).

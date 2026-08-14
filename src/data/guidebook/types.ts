@@ -30,6 +30,9 @@ export interface GuideFigure {
   caption?: string;
 }
 
+/** Diataxis role — optional; used by Super Bundle sequence chapters. */
+export type GuideDiataxis = 'tutorial' | 'how-to' | 'explanation' | 'reference';
+
 export interface GuideSection {
   id: string;
   title: string;
@@ -37,6 +40,8 @@ export interface GuideSection {
   /** Paragraphs separated by blank lines in the reader. */
   body: string;
   practiceCTA: GuidePracticeCTA;
+  /** Documentation type (Diataxis). Omitted on older specialist sections. */
+  diataxis?: GuideDiataxis;
   relatedExerciseIds?: string[];
   relatedLearnPathId?: string;
   /** Internal source-topic reference for the originality log — not shown to users. */

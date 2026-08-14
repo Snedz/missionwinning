@@ -83,6 +83,10 @@ describe('contentInventory', () => {
     const inv = getContentInventory();
     assert.equal(inv.move.premium, countIdsInFile('src/data/premiumMobilityFlows.ts'));
     assert.equal(inv.mind.premium, countIdsInFile('src/data/premiumMindSessions.ts'));
+    const guideSrc = readFileSync(join(root, 'src/data/guidebook/premiumChapters.ts'), 'utf8');
+    const learnSections = [...guideSrc.matchAll(/\bid:\s*'pch\d+-s\d+'/g)].length;
+    assert.equal(inv.learn.premiumSections, learnSections);
+    assert.equal(CONTENT_FLOORS.learnPremiumSections, learnSections);
   });
 
   it('PREMIUM_INVENTORY object is internally consistent', () => {

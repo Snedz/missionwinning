@@ -29,3 +29,6 @@
 | 4 | Getting Started with MW | Client onboarding parallels → I-Day, pillars, Win Score |
 | 5 | Nutrition & Recovery | Macros, hydration, sleep, meal timing |
 | 6 | Assessments & Progress | PAR-Q, benchmarks, when to adjust load |
+| 7–10 | Premium specialist (corrective, coaching business, hypertrophy, sports nutrition) | ISSA-aligned topics, original MW wording — see `premiumChapters.ts` `sourceRef` |
+| 11 | One Week, One Sequence | **MW product** — Train → Coach → Fuel/Move/Mind as one week (Diataxis tutorial + how-to). No ISSA PDF. |
+| 12 | One Stack | **MW product** — why Super Bundle beats a guidebook + logger + coach app (Diataxis explanation + reference). No ISSA PDF. |

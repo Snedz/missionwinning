@@ -10,9 +10,9 @@ import { isFreeBeta } from '@/lib/freeBeta';
 import { BEYOND_THE_BASICS_CHAPTERS } from '@/data/guidebook/chapters';
 
 const PREMIUM_PREVIEW = [
+  { title: 'One Week, One Sequence', icon: '📅' },
+  { title: 'One Stack', icon: '📖' },
   { title: 'Corrective Exercise Depth', icon: '🩹' },
-  { title: 'Coaching Business Essentials', icon: '💼' },
-  { title: 'Bodybuilding Periodization', icon: '💪' },
 ];
 
 /** Learn premium upsell — free intro chapter + gated specialist courses teaser. */
@@ -68,7 +68,7 @@ export function LearnLockedPreview() {
         <p className="text-xs text-muted-foreground">
           {t('learnLockedHint', {
             defaultValue:
-              'Free: 6 guidebook chapters + 10 paths. Premium: 4 specialist courses, 16 sections — corrective, coaching, periodization, sports nutrition.',
+              'Free: 6 guidebook chapters + 10 paths. Premium: one Train→Coach→Fuel/Move/Mind sequence course plus specialist depth — 24 sections.',
           })}
         </p>
         <div className="flex flex-wrap gap-2">

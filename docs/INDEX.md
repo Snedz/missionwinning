@@ -36,8 +36,7 @@
 | [SECURITY_PUBLIC_OSS_AUDIT_2026-08-08.md](SECURITY_PUBLIC_OSS_AUDIT_2026-08-08.md) | Public OSS prep audit (2026-08-08) |
 | [contracts/INDEX.md](contracts/INDEX.md) | Identity · economy · module · AI interop contracts |
 | [SECRETS.md](SECRETS.md) | Secrets program · vaults · gitleaks · rotate-on-leak |
-| [FREE_BETA.md](FREE_BETA.md) | Free-first beta: shop merchandises Super Bundle; live checkout muted |
-| [SUPER_BUNDLE_SHOP_PLAN.md](SUPER_BUNDLE_SHOP_PLAN.md) | Frozen 0.1 shop restore (Free vs Super Bundle; no trial) |
+| [FREE_BETA.md](FREE_BETA.md) | Free-first beta mute (LLC/EIN window) — hide all paid UI |
 | [ADAPTIVE_LAYOUT.md](ADAPTIVE_LAYOUT.md) | Window size classes · adaptive overlays (web + Android) |
 | [API.md](API.md) | HTTP API reference |
 | [AGENT_RECIPES.md](AGENT_RECIPES.md) | Agent task playbooks |
@@ -129,8 +128,7 @@ Root keeps only the spine (README · CONTEXT · AGENTS · INDEX · vision · ORC
 |------|---------|
 | [PRICING_REVIEW_2026-08.md](PRICING_REVIEW_2026-08.md) | Super Bundle pricing review — hold Option A (2026-08-05) |
 | [STRATEGY.md](STRATEGY.md) | Business plan · pricing · book plan |
-| [PLAN.md](PLAN.md) | Build phases A–I |
-| [plans/PLAN.md](plans/PLAN.md) | **Frozen** 2026-08-13 overnight: Super Bundle Move premium flows (not the living roadmap) |
+| [LEARN_SUPER_BUNDLE_PLAN.md](LEARN_SUPER_BUNDLE_PLAN.md) | Frozen overnight plan: original premium Learn sequence (Train→Coach→Fuel/Move/Mind) |
 | [REDTEAM.md](REDTEAM.md) | Assumptions audit |
 | [JOURNEY.md](JOURNEY.md) | Mission journey UX (I-Day → Commissioned) |
 | [CLUB_PLAN.md](CLUB_PLAN.md) | Club: points · tiers · collectibles · boards · arcade (phased plan, no code) |

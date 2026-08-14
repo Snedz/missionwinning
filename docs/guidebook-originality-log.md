@@ -110,3 +110,26 @@ Diataxis tutorial on the existing free chapter (not Strength Basics `sb-0` / #47
 ## Localized editions
 
 Translations in `src/i18n/packs/{lang}.json` and guidebook locale overlays are **translations of Mission Winning original English**, not ISSA text. Regenerated via `npm run i18n:fill`.
+
+## Super Bundle sequence (premium Ch11–12)
+
+Original MW product chapters — not ISSA. Diataxis tutorial / how-to / explanation / reference. Free intro chapters were not edited.
+
+| Section ID | Source ref (topic only) | Writer | Date |
+|------------|-------------------------|--------|------|
+| pch11-s1 | MW product — Super Bundle sequence (log the session) | Mission Winning | 2026-08-13 |
+| pch11-s2 | MW product — Super Bundle sequence (week from logs) | Mission Winning | 2026-08-13 |
+| pch11-s3 | MW product — Super Bundle sequence (Fuel/Move/Mind on this week) | Mission Winning | 2026-08-13 |
+| pch11-s4 | MW product — Super Bundle sequence (adapt here) | Mission Winning | 2026-08-13 |
+| pch12-s1 | MW product — Super Bundle sequence (three products, three diaries) | Mission Winning | 2026-08-13 |
+| pch12-s2 | MW product — Super Bundle sequence (one sequence, not six apps) | Mission Winning | 2026-08-13 |
+| pch12-s3 | MW product — Super Bundle sequence (what stays free) | Mission Winning | 2026-08-13 |
+| pch12-s4 | MW product — Super Bundle sequence (what Bundle adds) | Mission Winning | 2026-08-13 |
+
+| Section ID | Block | Source ref (topic only) | Writer | Date |
+|------------|-------|-------------------------|--------|------|
+| pch11-s1 | checklist — first logged session | MW product — Super Bundle sequence | Mission Winning | 2026-08-13 |
+| pch11-s3 | table — same-week support | MW product — Super Bundle sequence | Mission Winning | 2026-08-13 |
+| pch12-s1 | callout — shared diary is the product | MW product — Super Bundle sequence | Mission Winning | 2026-08-13 |
+| pch12-s3 | table — free vs Super Bundle on this sequence | MW product — Super Bundle sequence | Mission Winning | 2026-08-13 |
+| pch12-s4 | checklist — Bundle depth on the same week | MW product — Super Bundle sequence | Mission Winning | 2026-08-13 |

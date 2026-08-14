@@ -26,12 +26,12 @@
 /** Depth plan D1 floors (see .hermes/plans/*super-bundle-depth*). Current = shipped floor. */
 export const CONTENT_FLOORS = {
   moveFree: 32,
-  movePremium: 56,
+  movePremium: 48,
   mindFree: 32,
-  mindPremium: 68,
+  mindPremium: 60,
   recipesFree: 48,
-  recipesPremium: 140,
-  learnPremiumSections: 16,
+  recipesPremium: 110,
+  learnPremiumSections: 24,
   /**
    * Free guidebook chapters (`BEYOND_THE_BASICS_CHAPTERS`), which is also exactly
    * how many `/guide/*` URLs the sitemap emits — `app/sitemap.ts:86` maps the array.
@@ -58,12 +58,3 @@ export const CONTENT_FLOORS = {
   /** Eyes-on form pack side stills (FORM_PACK_SIDE_IDS). */
   formPackSide: 18,
 } as const;
-
-/**
- * Marketing / SEO exercise-page count — deliberately under-promises.
- * Public `/exercises` UI may show the awaited unique catalog size when it exceeds
- * this floor; see `contentInventory.test.ts`.
- */
-export function exercisePageFloorCount(): number {
-  return CONTENT_FLOORS.exercisePages;
-}
