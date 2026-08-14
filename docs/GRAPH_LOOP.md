@@ -2,7 +2,7 @@
 
 **Audience:** Founder + the next Hermes / Grok Build / graph agent  
 **Lane:** Engineering-Web (unless a loop says Android)  
-**Status:** ACTIVE 2026-08-14 · web `2026.07-unified.797` · Alpha 0.1.0 · **G7 open**  
+**Status:** ACTIVE 2026-08-14 · web `2026.07-unified.797` · Alpha 0.1.0 · **G queue empty**  
 **Does not replace:** [ORCHESTRATION.md](../ORCHESTRATION.md) (what may be built) · [CONTEXT.md](../CONTEXT.md) `## Now` (where we are) · [vision.md](../vision.md) (constitution) · [docs/THESIS.md](THESIS.md) (wedge) · [docs/PLAN.md](PLAN.md) (phases A–I)
 
 This file is the **execution queue** for the agent graph: one concern per loop, spawn, ship, mark done, spawn the next. It is not a second status block and not a license to skip standing hard bans.
@@ -121,7 +121,7 @@ H0 is empty. Top `open` row is the only live ticket.
 | **G4** | Today: one next session | Old W1. Phone shows train / resume | `done (already true)` — JourneyHero Resume / one train CTA; `justGoHeroMeta.ts`; `todayPrimaryAction.ts`; Lean + Dashboard `ScreenDock` |
 | **G5** | Logger one-thumb | Old W2. Outdoor set log | `done` — `.796` this PR |
 | **G6** | Coach week on Coach **and** Today | Old W3. Dose + adapt visible | `done` — `.797` this PR |
-| **G7** | Missed-day re-entry, in-app | Old W4. No shame copy | `open` |
+| **G7** | Missed-day re-entry, in-app | Old W4. No shame copy | `done (already true)` — JourneyHero `TodayReentryCard` quiet line; `doseScale` on Start; `reentryCopyGuard.test.ts`; Lean + Dashboard `reentryCardMayMount` |
 
 Do not reopen cinematic. Do not add Compare. Club / Server / Athlete public URL stay off this table.
 
