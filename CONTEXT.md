@@ -16,7 +16,7 @@ One screen of truth for any AI tool or human joining cold. Read this, then [AGEN
 
 ---
 
-## Now (2026-08-14 · web `2026.07-unified.779` · Android `1.24.1`)
+## Now (2026-08-14 · web `2026.07-unified.780` · Android `1.24.1`)
 
 > The ONLY "where we are" block in the repo — [ORCHESTRATION.md](ORCHESTRATION.md) points here.
 >
@@ -308,6 +308,7 @@ One screen of truth for any AI tool or human joining cold. Read this, then [AGEN
 > and `.762` dropped `.747` detail (full text remains in LOG.md / archive)
 > and `.777` dropped `.762` detail (full text remains in LOG.md / archive)
 > and `.779` dropped `.764` detail (full text remains in LOG.md / archive)
+> and `.780` dropped `.765` detail (full text remains in LOG.md / archive)
 > and `.778` dropped `.763` detail (full text remains in LOG.md / archive)
 > and `.763` dropped `.748` detail (full text remains in LOG.md / archive)
 > and `.764` dropped `.749` detail (full text remains in LOG.md / archive)
@@ -337,6 +338,7 @@ One screen of truth for any AI tool or human joining cold. Read this, then [AGEN
 > | Privacy / security program | **Landed `.778`** — [docs/security/PROGRAM_STATUS.md](docs/security/PROGRAM_STATUS.md). Invite-bound gate, health-bucket, DSAR, territory fail-closed. OTP-without-click can leave a ghost user. Not a cert. |
 
 - **Excellence:** unscored · — · [docs/EXCELLENCE_RESULT.md](docs/EXCELLENCE_RESULT.md) — Horizon W phone sign-off home; surface PRs need `status: pass` or `Excellence-Override` (`.669`).
+- **`.780`:** (`2026.07-unified.780`) **PWA start_url flag-switch** — gated cold-start stays `/private`; ungated / Preview / gate-build opens Today (`/log`). Same predicate as Serwist. `id` unchanged. Not a `PRIVATE_MODE` flip.
 - **`.779`:** (`2026.07-unified.779`) **Privacy land typecheck** — `walkTs` Dirent vs string. P2-2 discover covers `persistParqScreen` / ParqIntakeCard. No `PRIVATE_MODE` flip.
 - **`.778`:** (`2026.07-unified.778`) **Privacy/security program** — invite-bound gate, sign-out wipe, DSAR email-keyed export, territory fail-closed, blocked-signup reap. PAR-Q food-row already closed by `.777`. Not a cert. No `PRIVATE_MODE` flip.
 - **`.777`:** (`2026.07-unified.777`) **PAR-Q is coach intake** — Seven flags before first Mission Coach generate. Not a More/rail feature. Not a Fuel row. Today stays train. Logger ungated. No `PRIVATE_MODE` flip.
@@ -351,7 +353,6 @@ One screen of truth for any AI tool or human joining cold. Read this, then [AGEN
 - **`.768`:** (`2026.07-unified.768`) **First set while gated** — `/active` public while the gate is up; `/private` primary is Log a set; I-Day lands Train when gated. Today / Coach stay cookie-gated. Not a `PRIVATE_MODE` flip.
 - **`.767`:** (`2026.07-unified.767`) **Dependabot security/quality batch** — one Cursor PR, not 46 bot PRs. `overrides` pin `axios@1.19.0` (8 high GHSAs gone) + `nanoid@3.3.18`. Ratchet 9 → 1 (`bigint-buffer` remains). No `PRIVATE_MODE` flip.
 - **`.766`:** (`2026.07-unified.766`) **Merge all open PRs on a Cursor landing branch** — 47 PR heads oldest-first; 0 Dependabot PRs (alerts ≠ PRs). Train logger restored from master; PR wiring composed onto it (Victory receipt, garage swap, hard-session, About/Account). No `PRIVATE_MODE` flip. No Vercel preview. Cursor-local merge bar ([docs/CI_LOCAL.md](docs/CI_LOCAL.md)).
-- **`.765`:** (`2026.07-unified.765`) **Preview walk P0s** — consent banner docks above the tab bar so Today Start stays tappable; landing Get-notified form (no Stripe). Brief reserved `.750`; first land was `.755` (occupied).
 - **`.669`:** (`2026.07-unified.669`) **Excellence RESULT + agent stop-rule** — `excellenceGate` path policy + `check-excellence-gate` on gate/PR CI; wedge still ships while unscored.
 - **Horizon W + full-launch override (2026-08-05).** Wedge excellence still required; agents may ship rewards + full surface honesty. Fuel estimate accuracy remains.
 - **Free-first beta (~4 weeks):** LLC + EIN pending — **no Bundle UI** + **full depth unlocked**; More/rail **Pillars demoted until first workout** (F-004 / `.695`) — still no Bundle ([docs/FREE_BETA.md](docs/FREE_BETA.md)).

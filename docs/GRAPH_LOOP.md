@@ -2,7 +2,7 @@
 
 **Audience:** Founder + the next Cursor Cloud / graph agent  
 **Lane:** Engineering-Web (unless a loop says Android)  
-**Status:** ACTIVE 2026-08-14 · web `2026.07-unified.779` · Alpha 0.1.0  
+**Status:** ACTIVE 2026-08-14 · web `2026.07-unified.780` · Alpha 0.1.0  
 **Does not replace:** [ORCHESTRATION.md](../ORCHESTRATION.md) (what may be built) · [CONTEXT.md](../CONTEXT.md) `## Now` (where we are) · [vision.md](../vision.md) (constitution) · [docs/THESIS.md](THESIS.md) (wedge) · [docs/PLAN.md](PLAN.md) (phases A–I)
 
 This file is the **execution queue** for the agent graph: one concern per loop, spawn, ship, mark done, spawn the next. It is not a second status block and not a license to skip standing hard bans.
@@ -40,7 +40,8 @@ Recent turns:
 | Live-walk graph (sand, 2026-08-12) | Beta honesty | **Partial.** Merged #453 #454 #455 #462 #463 #464. Closed unmerged #451–#461 — harvest is parked with W |
 | `.772`–`.779` | Form stills, coach RAG, LLM $ cap, Mission Server, PAR-Q, privacy program | On master. Craft window, not phone excellence sign-off |
 | This file v1 | Horizon W queue 0–8 | Docs-only. **Parked** this session |
-| This file v2 | Horizon 0+ queue (research 2026-08-14) | **You are here.** Top open = **H0-1** |
+| This file v2 | Horizon 0+ queue (research 2026-08-14) | Docs |
+| **H0-1** | PWA `start_url` flag-switch | `.780` this PR — **done** |
 
 ---
 
@@ -83,8 +84,8 @@ Verified in source 2026-08-14 (master `.779`). Findings with proof paths: [§ Re
 
 | # | Loop | Moves | Status |
 |---|------|-------|--------|
-| **H0-1** | PWA `start_url` flag-switch (same predicate as SW) | Public-flip landmine | `open` — **next** |
-| **H0-2** | `check-env --launch` vs FREE_BETA (H0 vs H1 profiles) | Launch-verify can succeed | `open` |
+| **H0-1** | PWA `start_url` flag-switch (same predicate as SW) | Public-flip landmine | `done` — `.780` this PR |
+| **H0-2** | `check-env --launch` vs FREE_BETA (H0 vs H1 profiles) | Launch-verify can succeed | `open` — **next** |
 | **H0-3** | API INDEX + `docs/API.md` + PROGRAM_STATUS census | Docs match reality | `open` |
 | **H0-4** | Public-flip checklist: `start_url` curl + SW; runbook pointers | Flip-day smoke | `open` |
 | **H0-5** | “Win Score” → Mission Score leftover strings | Public copy honesty | `open` |
@@ -206,7 +207,7 @@ CONTEXT `.254`: `public/learn/*.webp` 89–99% dark with teal. `check-design-sys
 
 ---
 
-## H0-1 — PWA `start_url` flag-switch (next)
+## H0-1 — PWA `start_url` flag-switch (`done` · `.780`)
 
 **Concern:** After the founder sets `PRIVATE_MODE=false` and rebuilds, installed PWAs must open Today (`/log`), not the teaser. Today they would still open `/private` because the manifest is hardcoded and the test forbids any other value.
 
@@ -276,7 +277,7 @@ CONTEXT `.254`: `public/learn/*.webp` 89–99% dark with teal. `check-design-sys
 You are the next Mission Winning graph-loop agent.
 
 1. Read CONTEXT.md, AGENTS.md, INDEX.md, ORCHESTRATION.md, then docs/GRAPH_LOOP.md.
-2. Implement ONLY the top loop whose Status is `open` (today: H0-1 PWA start_url).
+2. Implement ONLY the top loop whose Status is `open` (today: H0-2 launch env profiles).
 3. This session skipped Horizon W (2026-08-14). Do not unpark W0–W8. Do not write excellence status: pass.
 4. Investigate on current master before coding. If the claim is already false, mark the loop done in GRAPH_LOOP.md with proof paths and stop.
 5. One concern. One PR. [skip vercel] unless I asked for Preview.
@@ -285,7 +286,7 @@ You are the next Mission Winning graph-loop agent.
 8. When done: set this loop to `done` in docs/GRAPH_LOOP.md (Outcome = PR + label) and leave the following loop `open`. If you shipped H0-3 / H0-5 / H0-6, also mark the parked W twin done.
 ```
 
-To run H0-2 instead (after H0-1 is done), replace step 2 with “Implement H0-2 only.”
+To run H0-3 instead (after H0-2 is done), replace step 2 with “Implement H0-3 only.”
 
 ---
 

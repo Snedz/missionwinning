@@ -1,58 +1,58 @@
 /**
- * PWA cold-start under PRIVATE_MODE must not open on a gated route.
+ * PWA cold-start must switch with the private gate — same predicate as SW.
  *
- * `app/manifest.ts` `start_url` is what the OS loads on icon tap. While the
- * private gate is up, `/log` and `/active` redirect to `/private` — a bounce
- * that previously dropped `next=` and invite context on cold install.
+ * `app/manifest.ts` `start_url` is what the OS loads on icon tap. A literal
+ * `/private` here survives `PRIVATE_MODE=false` rebuilds; the SW already
+ * flag-switches in `next.config.js`. This file guards the wiring, not a
+ * second copy of the gate.
  *
- * To point start_url back at a gated route intentionally, update the allowlist
- * below with rationale — do not silently revert manifest.ts alone.
+ * Behaviour matrix lives in `pwaStartUrl.test.ts`.
  */
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
-import { isPrivateGatePublicPath } from '@/lib/publicRoutes';
 
 const root = join(import.meta.dirname, '..', '..');
 const manifestSrc = readFileSync(join(root, 'app/manifest.ts'), 'utf8');
+const helperSrc = readFileSync(join(root, 'src/lib/pwaStartUrl.ts'), 'utf8');
 
-/** Routes that redirect to /private when PRIVATE_MODE is on — never start_url. */
-const GATED_START_PATHS = ['/', '/log', '/active'] as const;
-
-/**
- * Explicit product choice for private-beta cold install. Change only with
- * founder sign-off and an update to this constant + test rationale.
- */
-const EXPECTED_START_URL = '/private';
-
-function parseManifestField(field: 'start_url' | 'id'): string {
-  const re = new RegExp(`${field}:\\s*['"]([^'"]+)['"]`);
-  const m = manifestSrc.match(re);
-  assert.ok(m, `app/manifest.ts must declare ${field}`);
-  return m[1]!;
-}
-
-test('PWA start_url is gate-public (private-beta cold install)', () => {
-  const startUrl = parseManifestField('start_url');
-  assert.equal(
-    startUrl,
-    EXPECTED_START_URL,
-    'start_url must stay /private for private-beta cold install unless this test is updated with rationale'
+test('manifest start_url is pwaStartUrl() — not a gated literal', () => {
+  assert.match(
+    manifestSrc,
+    /from ['"]@\/lib\/pwaStartUrl['"]/,
+    'app/manifest.ts must import pwaStartUrl'
   );
-  for (const gated of GATED_START_PATHS) {
-    assert.notEqual(
-      startUrl,
-      gated,
-      `start_url must not be ${gated} while the private gate is up`
-    );
-  }
-  assert.ok(
-    isPrivateGatePublicPath(startUrl),
-    `start_url ${startUrl} must be in PRIVATE_GATE_PUBLIC_PATHS`
+  assert.match(
+    manifestSrc,
+    /start_url:\s*pwaStartUrl\s*\(/,
+    'start_url must call pwaStartUrl so the flip-day rebuild is not a silent teaser'
+  );
+  assert.doesNotMatch(
+    manifestSrc,
+    /start_url:\s*['"]\/private['"]/,
+    'a hardcoded /private start_url is the landmine this loop exists to close'
+  );
+  assert.doesNotMatch(
+    manifestSrc,
+    /start_url:\s*['"]\/(log|active|)['"]/,
+    'do not hardcode a gated or logger path; the helper owns the branch'
+  );
+});
+
+test('pwaStartUrl uses the shared gate predicate (no third private copy)', () => {
+  assert.match(
+    helperSrc,
+    /isPrivateModeEnabledFromEnv/,
+    'pwaStartUrl must call isPrivateModeEnabledFromEnv — Preview short-circuit lives there'
+  );
+  assert.doesNotMatch(
+    helperSrc,
+    /function isPrivateModeEnabled/,
+    'do not copy privateModeFlag into pwaStartUrl (.178)'
   );
 });
 
 test('PWA id stays stable (changing it resets install identity)', () => {
-  assert.equal(parseManifestField('id'), '/log');
+  assert.match(manifestSrc, /id:\s*['"]\/log['"]/);
 });
