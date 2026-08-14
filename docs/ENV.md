@@ -27,7 +27,7 @@ Add these for **Production** and **Preview**:
 | Variable | Required | Example / notes |
 |----------|----------|-----------------|
 | `PRIVATE_ACCESS_SECRET` | **Yes** | Run `openssl rand -base64 32` — pick one strong secret and save it somewhere safe |
-| `PRIVATE_ACCESS_CODES` | Optional | Comma-separated aliases accepted at `/private` (e.g. `Done`). Cookies still signed with `PRIVATE_ACCESS_SECRET` |
+| `PRIVATE_ACCESS_CODES` | Optional | Comma-separated aliases accepted at `/private` (e.g. `Done`). **Must be set for Production AND Preview** — a Production-only alias is why the code works on www and 401s on `*.vercel.app`. Cookies still signed with `PRIVATE_ACCESS_SECRET`. `scripts/sync-vercel-env.mjs` copies this key when the GitHub secret is set. |
 | `PRIVATE_MODE` | Yes (Production) | `true` on production until the public flip. **Agents never set Production to `false`.** Vercel Preview is ungated in code when `VERCEL_ENV=preview` (`.728`), even if this var is inherited as `true`. |
 | `NEXT_PUBLIC_SUPABASE_URL` | Recommended | `https://YOUR-PROJECT.supabase.co` |
 | `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Recommended | From Supabase → Project Settings → API |
@@ -69,6 +69,10 @@ Canonical docs: [What is Zero Data Retention (ZDR)?](https://docs.x.ai/developer
 **Stay ZDR-compatible:** use only one-shot **chat completions**. Do not add Files, Collections, Batch, deferred completions, or stateful Responses (`store_messages` / `previous_response_id`) on this team.
 
 After adding or changing env vars: **Deployments → Redeploy** (env changes do not apply until redeploy).
+
+**Preview vs Production (the Done code):** Vercel env vars are per-environment. If `PRIVATE_ACCESS_CODES=Done` is checked only for Production, www accepts it and every Preview 401s. Set the same value on Preview (and Development if you use `vercel dev`). If Preview shows a **Vercel login** instead of `/private`, that is Deployment Protection in the Vercel dashboard — the Done code cannot unlock that page.
+
+If the GitHub *Sync Vercel env* workflow is how you push secrets, add repository secret `PRIVATE_ACCESS_CODES` (same aliases) so Preview is not left behind.
 
 ### Sync via GitHub (when Vercel dashboard is locked)
 
@@ -451,6 +455,7 @@ Run through `supabase/migrations/20260703_reminders_optin.sql` (or latest in `su
 > know *what* each variable is for; use the runbook to know what is *done*.
 
 - [ ] `PRIVATE_ACCESS_SECRET` set in Vercel Production + Preview
+- [ ] `PRIVATE_ACCESS_CODES` set in Vercel Production + Preview if you use aliases (e.g. `Done`)
 - [ ] `PRIVATE_MODE=true` in Vercel
 - [ ] Redeployed after env changes
 - [ ] Verified in incognito → `/private` only

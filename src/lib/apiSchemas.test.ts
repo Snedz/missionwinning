@@ -422,7 +422,13 @@ const CASES: Record<string, Case> = {
 
   privateAccessBodySchema: {
     valid: [{ password: 'let-me-in' }],
-    invalid: [{ input: { password: '' }, because: 'an empty password must never reach the comparison' }],
+    invalid: [
+      { input: { password: '' }, because: 'an empty password must never reach the comparison' },
+      {
+        input: { password: '   ' },
+        because: 'whitespace-only must trim to empty and fail — a space is not a code',
+      },
+    ],
   },
 
   pushSubscribeBodySchema: {

@@ -10,6 +10,7 @@ import {
   APP_PUBLIC_PRODUCT_VERSION,
   APP_PUBLIC_VERSION,
 } from '@/lib/buildInfo';
+import { confirmPrivateGateCookie } from '@/lib/confirmPrivateGateCookie';
 import {
   grantPrivateAccessFromSession,
   navigateAfterPrivateGateUnlock,
@@ -91,7 +92,8 @@ export function PrivateTeaserClient({ initialInvite = '', initialNext = '' }: Pr
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!password) return;
+    const code = password.trim();
+    if (!code) return;
 
     setLoading(true);
     setError('');
@@ -101,10 +103,17 @@ export function PrivateTeaserClient({ initialInvite = '', initialNext = '' }: Pr
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         credentials: 'same-origin',
-        body: JSON.stringify({ password }),
+        body: JSON.stringify({ password: code }),
       });
 
       if (res.ok) {
+        const kept = await confirmPrivateGateCookie();
+        if (!kept) {
+          setError(
+            'The code was accepted but this host did not keep the gate cookie. On a Vercel Preview, set PRIVATE_ACCESS_SECRET and PRIVATE_ACCESS_CODES for Preview (same values as Production) and redeploy. If you see a Vercel login instead of this page, that is Deployment Protection — not the Done code.'
+          );
+          return;
+        }
         navigateAfterPrivateGateUnlock(privateGateReturnPath(initialNext));
         return;
       } else {

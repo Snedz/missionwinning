@@ -5,6 +5,7 @@
 #   VERCEL_PROJECT_ID     — Vercel project → Settings → General → Project ID
 #   VERCEL_ORG_ID         — optional team id (Settings → General → Team ID)
 #   PRIVATE_ACCESS_SECRET — openssl rand -base64 32
+#   PRIVATE_ACCESS_CODES  — optional aliases (e.g. Done); must include Preview
 #   … plus any vars from .env.example you want on Production/Preview
 #
 # Optional: VERCEL_DEPLOY_HOOK_URL — Deploy Hooks → create Production hook
@@ -37,6 +38,7 @@ jobs:
           VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
           VERCEL_DEPLOY_HOOK_URL: ${{ inputs.trigger_deploy && secrets.VERCEL_DEPLOY_HOOK_URL || '' }}
           PRIVATE_ACCESS_SECRET: ${{ secrets.PRIVATE_ACCESS_SECRET }}
+          PRIVATE_ACCESS_CODES: ${{ secrets.PRIVATE_ACCESS_CODES }}
           PRIVATE_MODE: ${{ secrets.PRIVATE_MODE }}
           PRIVATE_ALLOW_AUTH_BYPASS: ${{ secrets.PRIVATE_ALLOW_AUTH_BYPASS }}
           NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}

@@ -50,6 +50,24 @@ export function timingSafeSecretMatch(provided: string, secret: string): boolean
 }
 
 /**
+ * Strip BOM / wrapping quotes that the Vercel env UI and `.env` paste often add.
+ * Preview-only copies of `PRIVATE_ACCESS_CODES` are the usual casualty — Production
+ * was typed in the dashboard (`Done`), Preview was pasted as `"Done"` and 401'd.
+ */
+export function normalizePrivateAccessCode(raw: string | undefined | null): string {
+  if (!raw) return '';
+  let s = raw.replace(/^\uFEFF/, '').trim();
+  if (s.length >= 2) {
+    const first = s[0];
+    const last = s[s.length - 1];
+    if ((first === '"' && last === '"') || (first === "'" && last === "'")) {
+      s = s.slice(1, -1).trim();
+    }
+  }
+  return s;
+}
+
+/**
  * Primary HMAC secret + optional comma-separated codes from PRIVATE_ACCESS_CODES.
  * Cookies are always signed with PRIVATE_ACCESS_SECRET; extras are password-only.
  */
@@ -58,7 +76,7 @@ export function getPrivateAccessPasswords(
   extras = process.env.PRIVATE_ACCESS_CODES
 ): string[] {
   const codes = [primary, ...(extras ?? '').split(',')]
-    .map((s) => s?.trim() ?? '')
+    .map((s) => normalizePrivateAccessCode(s))
     .filter(Boolean);
   return [...new Set(codes)];
 }
@@ -69,11 +87,45 @@ export function matchesPrivateAccessPassword(
   primary = process.env.PRIVATE_ACCESS_SECRET,
   extras = process.env.PRIVATE_ACCESS_CODES
 ): boolean {
+  const needle = normalizePrivateAccessCode(provided);
+  if (!needle) return false;
   let matched = false;
   for (const secret of getPrivateAccessPasswords(primary, extras)) {
-    if (timingSafeSecretMatch(provided, secret)) matched = true;
+    if (timingSafeSecretMatch(needle, secret)) matched = true;
   }
   return matched;
+}
+
+export type PrivateAccessCookieOptions = {
+  httpOnly: true;
+  secure: boolean;
+  sameSite: 'lax';
+  maxAge: number;
+  path: '/';
+};
+
+/**
+ * Host-only gate cookie. Never set `domain` — `vercel.app` is on the public
+ * suffix list, so a Domain attribute would be rejected on Preview and the
+ * Done code would 200 then bounce straight back to `/private`.
+ */
+export function privateAccessCookieOptions(): PrivateAccessCookieOptions {
+  return {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === 'production' || process.env.VERCEL === '1',
+    sameSite: 'lax',
+    maxAge: TOKEN_TTL_SEC,
+    path: '/',
+  };
+}
+
+export function attachPrivateAccessCookie(
+  cookies: {
+    set: (name: string, value: string, options: PrivateAccessCookieOptions) => unknown;
+  },
+  secret: string
+): void {
+  cookies.set(COOKIE_NAME, createPrivateAccessToken(secret), privateAccessCookieOptions());
 }
 
 export { COOKIE_NAME as PRIVATE_ACCESS_COOKIE };

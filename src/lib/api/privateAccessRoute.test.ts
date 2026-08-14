@@ -67,6 +67,21 @@ describe('private-access API route', () => {
     assert.ok(setCookie.includes(PRIVATE_ACCESS_COOKIE));
   });
 
+  it('returns 200 for quoted Preview env alias and trimmed password', async () => {
+    setTestEnv('PRIVATE_ACCESS_CODES', '"Done"');
+    const res = await POST(
+      makeNextRequest('http://localhost/api/private-access', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'x-forwarded-for': '10.0.0.103' },
+        body: JSON.stringify({ password: '  Done  ' }),
+      })
+    );
+    assert.equal(res.status, 200, 'quoted PRIVATE_ACCESS_CODES on Preview must accept Done');
+    const setCookie = res.headers.get('set-cookie') ?? '';
+    assert.ok(setCookie.includes(PRIVATE_ACCESS_COOKIE));
+    assert.doesNotMatch(setCookie, /domain=/i, 'host-only — Domain would fail on *.vercel.app');
+  });
+
   it('returns 400 for invalid body', async () => {
     const res = await POST(
       makeNextRequest('http://localhost/api/private-access', {

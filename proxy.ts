@@ -9,7 +9,7 @@ import {
   isPublicPathWhileGated,
   queryGrantsAccess,
 } from '@/lib/privateGate';
-import { createPrivateAccessToken, PRIVATE_ACCESS_COOKIE } from '@/lib/privateSession';
+import { attachPrivateAccessCookie } from '@/lib/privateSession';
 import { isPathEnabled } from '@/lib/surface';
 
 export async function proxy(request: NextRequest) {
@@ -58,13 +58,7 @@ export async function proxy(request: NextRequest) {
     const url = request.nextUrl.clone();
     url.searchParams.delete('access');
     const response = NextResponse.redirect(url);
-    response.cookies.set(PRIVATE_ACCESS_COOKIE, createPrivateAccessToken(secret!), {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: 'lax',
-      maxAge: 60 * 60 * 24 * 30,
-      path: '/',
-    });
+    attachPrivateAccessCookie(response.cookies, secret!);
     return applyPrivateGateHeaders(response);
   }
 

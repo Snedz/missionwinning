@@ -9,10 +9,7 @@ import { createServerClient } from '@supabase/ssr';
 import { shouldBounceAuthCallbackToCanonical, configuredSiteOrigin } from '@/lib/authRedirect';
 import { sanitizeNextPath } from '@/lib/safeRedirect';
 import { hostedServiceAccessFromHeaders } from '@/lib/legal/supportedRegions';
-import {
-  createPrivateAccessToken,
-  PRIVATE_ACCESS_COOKIE,
-} from '@/lib/privateSession';
+import { attachPrivateAccessCookie } from '@/lib/privateSession';
 import { formatOAuthError } from '@/lib/oauthConfig';
 
 export async function GET(request: NextRequest) {
@@ -84,13 +81,7 @@ export async function GET(request: NextRequest) {
 
   const secret = process.env.PRIVATE_ACCESS_SECRET;
   if (secret) {
-    response.cookies.set(PRIVATE_ACCESS_COOKIE, createPrivateAccessToken(secret), {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: 'lax',
-      maxAge: 60 * 60 * 24 * 30,
-      path: '/',
-    });
+    attachPrivateAccessCookie(response.cookies, secret);
   }
 
   return response;
