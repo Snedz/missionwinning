@@ -24,5 +24,5 @@
   "firstStepParqWhy": "A short safety questionnaire. It is the one step the app does ask for before pushing harder.",
   "fuelMealStripLabel": "Mahlzeit",
   "fuelModeStripLabel": "Erfassungsart",
-  "publicStatusOpenBeta": "Free beta — full platform free for testers while we grow with you"
+  "publicStatusOpenBeta": "{{productVersion}} — free beta. Offline logging plus Mission Coach from your logs."
 }

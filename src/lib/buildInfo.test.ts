@@ -76,7 +76,9 @@ test('gated www, about, and version chips import the public stamp', () => {
 
 test('firstSteps status key interpolates to the same English stamp', () => {
   const src = read('src/i18n/firstStepsLocales.ts');
-  const m = src.match(/publicStatusOpenBeta:\s*\n?\s*'([^']*)'/);
+  const m = src.match(
+    /publicStatusOpenBeta:\s*\n?\s*'([^']*)'/
+  );
   assert.ok(m?.[1], 'firstStepsLocales is missing publicStatusOpenBeta');
   const template = m[1];
   assert.equal(
