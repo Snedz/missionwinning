@@ -355,6 +355,22 @@ Out of scope for this shard: `navCoach` stays "AI weekly plan" — `primaryNav.t
 records that screen name as a kept decision, and overturning it on one shard is
 a founder call. It is the last generic-AI string on first paint.
 
+### Shard P0s re-landed after `#543` (frozen scope, `.767`–`.769`)
+
+`#544` carried `.765`/`.766`; this is what came after. Geo-block **not** removed.
+
+| Shard | Finding | Fix, and its floor |
+|-------|---------|--------------------|
+| 1 · US/LatAm (#16) | Invite/account gate before any value (~27% of rows with theme 2) | `/active` public while gated (hard rule 2); gate's one red action is **Log a set**; I-Day finishes at the logger while gated; empty logger offers the seeded first session. `privateGate.test.ts` + `privateGateRedirect.routetest.ts` enumerate what stays shut. Stranger → logged set in **5 taps** |
+| 1 · US/LatAm (#16) | Geo-block reads as a broken page | `unknown_edge` names cause (VPN / carrier proxy) and exit; no message may read as a failure; `TERRITORY_STILL_WORKS` leads `/regions` and every blocked state from one home |
+| 3 · IL/IN/SEA (#14) | Too many taps to log a set | Returning path 3 → **2**; `sessionCheckInOffer` extends its own first-mission rule to every session; the sheet records only rows the athlete moved |
+| 4 · diaspora+RU (#15) | Heavy/slow www first paint | Legal footers stop prefetching: `/welcome` 416 → **334 KB gz**, 53 → 37 requests. `linkPrefetchWeight.test.ts` + `gate-smoke` script counts for the two www entries, which had no budget at all |
+
+Deferred with reasons, not dropped: the cold path's 2 I-Day taps (`completeIDay()`
+writes answers nobody gave), `navCoach` = "AI weekly plan" (`primaryNav.ts` records
+it as kept), `/terms` at 404 KB (its own content), and the 360×640 console covering
+the sets it logs (the set-row owner's call).
+
 ### Hero flow QA (mobile)
 
 1. `/welcome` I-Day (≤3 min)

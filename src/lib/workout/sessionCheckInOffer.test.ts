@@ -113,9 +113,15 @@ describe('session check-in offer wiring (.293)', () => {
       /shouldOfferSessionCheckIn\(loggedSetsThisSession\)/,
       'the count must reach the decision, or the sheet opens before the first set again'
     );
-    assert.match(
-      active,
-      /\[sessionKey, loggedSetsThisSession\]/,
+    /*
+     * The count must be *in* the dependency array, not the whole array. Master's
+     * `.76x` added `fieldTestParam` to the same effect, and pinning the exact
+     * array made this guard fail on a change that kept the rule perfectly.
+     */
+    const deps = /\}, \[([^\]]*)\]\);/g;
+    const arrays = [...active.matchAll(deps)].map((m) => m[1]);
+    assert.ok(
+      arrays.some((a) => /sessionKey/.test(a) && /loggedSetsThisSession/.test(a)),
       'the effect must depend on the count — otherwise it only ever runs at set 0'
     );
   });

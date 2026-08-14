@@ -11,6 +11,132 @@ Archive: [2026-06 → 2026-07-20](docs/archive/log/LOG-2026-06_to_2026-07-20.md)
 
 --- · [`.492` for `.507`](docs/archive/log/LOG-rotate-507.md). · [`.493` for `.508`](docs/archive/log/LOG-rotate-508.md). · [`.494` for `.509`](docs/archive/log/LOG-rotate-509.md). · [`.495` for `.510`](docs/archive/log/LOG-rotate-510.md). · [`.496` for `.511`](docs/archive/log/LOG-rotate-511.md). · [`.497` for `.512`](docs/archive/log/LOG-rotate-512.md). · [`.498` for `.513`](docs/archive/log/LOG-rotate-513.md). · [`.499` for `.514`](docs/archive/log/LOG-rotate-514.md). · [`.500` for `.515`](docs/archive/log/LOG-rotate-515.md). · [`.501` for `.516`](docs/archive/log/LOG-rotate-516.md). · [`.502` for `.517`](docs/archive/log/LOG-rotate-517.md). · [`.503` for `.518`](docs/archive/log/LOG-rotate-518.md). · [`.504` for `.519`](docs/archive/log/LOG-rotate-519.md). · [`.505` for `.520`](docs/archive/log/LOG-rotate-520.md). · [`.506` for `.521`](docs/archive/log/LOG-rotate-521.md). · [`.507` for `.522`](docs/archive/log/LOG-rotate-522.md). · [`.508` for `.523`](docs/archive/log/LOG-rotate-523.md). · [`.509` for `.524`](docs/archive/log/LOG-rotate-524.md). · [`.510` for `.525`](docs/archive/log/LOG-rotate-525.md). · [`.511` for `.526`](docs/archive/log/LOG-rotate-526.md). · [`.512` for `.527`](docs/archive/log/LOG-rotate-527.md). · [`.513` for `.528`](docs/archive/log/LOG-rotate-528.md). · [`.514` for `.529`](docs/archive/log/LOG-rotate-529.md). · [`.515` for `.530`](docs/archive/log/LOG-rotate-530.md). · [`.516` for `.531`](docs/archive/log/LOG-rotate-531.md). · [`.517` for `.532`](docs/archive/log/LOG-rotate-532.md). · [`.518` for `.533`](docs/archive/log/LOG-rotate-533.md). · [`.519` for `.534`](docs/archive/log/LOG-rotate-534.md). · [`.520` for `.535`](docs/archive/log/LOG-rotate-535.md). · [`.521` for `.536`](docs/archive/log/LOG-rotate-536.md). · [`.522` for `.537`](docs/archive/log/LOG-rotate-537.md). · [`.523` for `.538`](docs/archive/log/LOG-rotate-538.md). · [`.524` for `.539`](docs/archive/log/LOG-rotate-539.md). · [`.525` for `.540`](docs/archive/log/LOG-rotate-540.md). · [`.526` for `.541`](docs/archive/log/LOG-rotate-541.md). · [`.527` for `.542`](docs/archive/log/LOG-rotate-542.md). · [`.528` for `.543`](docs/archive/log/LOG-rotate-543.md). · [`.529` for `.544`](docs/archive/log/LOG-rotate-544.md). · [`.530` for `.545`](docs/archive/log/LOG-rotate-545.md). · [`.531` for `.546`](docs/archive/log/LOG-rotate-546.md). · [`.532` for `.547`](docs/archive/log/LOG-rotate-547.md). · [`.533` for `.548`](docs/archive/log/LOG-rotate-548.md). · [`.534` for `.549`](docs/archive/log/LOG-rotate-549.md). · [`.535` for `.550`](docs/archive/log/LOG-rotate-550.md). · [`.536` for `.551`](docs/archive/log/LOG-rotate-551.md). · [`.537` for `.552`](docs/archive/log/LOG-rotate-552.md). · [`.538` for `.553`](docs/archive/log/LOG-rotate-553.md). · [`.539` for `.554`](docs/archive/log/LOG-rotate-554.md). · [`.540` for `.555`](docs/archive/log/LOG-rotate-555.md). · [`.541` for `.556`](docs/archive/log/LOG-rotate-556.md). · [`.542` for `.557`](docs/archive/log/LOG-rotate-557.md). · [`.543` for `.558`](docs/archive/log/LOG-rotate-558.md). · [`.544` for `.559`](docs/archive/log/LOG-rotate-559.md). · [`.545` for `.560`](docs/archive/log/LOG-rotate-560.md). · [`.546` for `.561`](docs/archive/log/LOG-rotate-561.md). · [`.547` for `.562`](docs/archive/log/LOG-rotate-562.md). · [`.548` for `.563`](docs/archive/log/LOG-rotate-563.md). · [`.549` for `.564`](docs/archive/log/LOG-rotate-564.md). · [`.550` for `.565`](docs/archive/log/LOG-rotate-565.md). · [`.551` for `.566`](docs/archive/log/LOG-rotate-566.md). · [`.552` for `.567`](docs/archive/log/LOG-rotate-567.md). · [`.553` for `.568`](docs/archive/log/LOG-rotate-568.md). · [`.554` for `.569`](docs/archive/log/LOG-rotate-569.md). · [`.555` for `.570`](docs/archive/log/LOG-rotate-570.md). · [`.556` for `.571`](docs/archive/log/LOG-rotate-571.md). · [`.557` for `.572`](docs/archive/log/LOG-rotate-572.md). · [`.558` for `.573`](docs/archive/log/LOG-rotate-573.md). · [`.559` for `.574`](docs/archive/log/LOG-rotate-574.md). · [`.560` for `.575`](docs/archive/log/LOG-rotate-575.md). · [`.561` for `.576`](docs/archive/log/LOG-rotate-576.md). · [`.562` for `.577`](docs/archive/log/LOG-rotate-577.md). · [`.563` for `.578`](docs/archive/log/LOG-rotate-578.md). · [`.564` for `.579`](docs/archive/log/LOG-rotate-579.md). · [`.565` for `.580`](docs/archive/log/LOG-rotate-580.md). · [`.566` for `.581`](docs/archive/log/LOG-rotate-581.md). · [`.567` for `.582`](docs/archive/log/LOG-rotate-582.md). · [`.568` for `.583`](docs/archive/log/LOG-rotate-583.md). · [`.569` for `.584`](docs/archive/log/LOG-rotate-584.md). · [`.570` for `.585`](docs/archive/log/LOG-rotate-585.md). · [`.571` for `.586`](docs/archive/log/LOG-rotate-586.md). · [`.572` for `.587`](docs/archive/log/LOG-rotate-587.md). · [`.573` for `.588`](docs/archive/log/LOG-rotate-588.md). · [`.574` for `.589`](docs/archive/log/LOG-rotate-589.md). · [`.575` for `.590`](docs/archive/log/LOG-rotate-590.md). · [`.576` for `.591`](docs/archive/log/LOG-rotate-591.md). · [`.577` for `.592`](docs/archive/log/LOG-rotate-592.md). · [`.578` for `.593`](docs/archive/log/LOG-rotate-593.md). · [`.581` for `.596`](docs/archive/log/LOG-rotate-596.md). · [`.582` for `.597`](docs/archive/log/LOG-rotate-597.md). · [`.583` for `.598`](docs/archive/log/LOG-rotate-598.md). · [`.584` for `.599`](docs/archive/log/LOG-rotate-599.md). · [`.585` for `.600`](docs/archive/log/LOG-rotate-600.md). · [`.586` for `.601`](docs/archive/log/LOG-rotate-601.md). · [`.587` for `.602`](docs/archive/log/LOG-rotate-602.md). · [`.588` for `.603`](docs/archive/log/LOG-rotate-603.md). · [`.590` for `.606`](docs/archive/log/LOG-rotate-606.md). · [`.596` for `.612`](docs/archive/log/LOG-rotate-612.md). · [`.597` for `.613`](docs/archive/log/LOG-rotate-613.md). · [`.599` for `.614`](docs/archive/log/LOG-rotate-614.md). · [`.600` for `.615`](docs/archive/log/LOG-rotate-615.md). · [`.601` for `.616`](docs/archive/log/LOG-rotate-616.md). · [`.602` for `.617`](docs/archive/log/LOG-rotate-617.md). · [`.603` for `.618`](docs/archive/log/LOG-rotate-618.md). · [`.604` for `.619`](docs/archive/log/LOG-rotate-619.md). · [`.655` for `.670`](docs/archive/log/LOG-rotate-655-for-670.md). · [`.656` for `.679`](docs/archive/log/LOG-rotate-656-for-679.md). · [`.657` for `.680`](docs/archive/log/LOG-rotate-657-for-680.md). · [`.658` for `.684`](docs/archive/log/LOG-rotate-658-for-684.md). · [`.659` for `.685`](docs/archive/log/LOG-rotate-659-for-685.md). · [`.660` for `.689`](docs/archive/log/LOG-rotate-660-for-689.md). · [`.661` for `.690`](docs/archive/log/LOG-rotate-661-for-690.md). · [`.662` for `.691`](docs/archive/log/LOG-rotate-662-for-691.md). · [`.663` for `.692`](docs/archive/log/LOG-rotate-663-for-692.md). · [`.664` for `.693`](docs/archive/log/LOG-rotate-664-for-693.md). · [`.665` for `.694`](docs/archive/log/LOG-rotate-665-for-694.md). · [`.666` for `.695`](docs/archive/log/LOG-rotate-666-for-695.md). · [`.667` for `.696`](docs/archive/log/LOG-rotate-667-for-696.md). · [`.668` for `.697`](docs/archive/log/LOG-rotate-668-for-697.md). · [`.669` for `.714`](docs/archive/log/LOG-rotate-669-for-714.md). · [`.669` for `.743`](docs/archive/log/LOG-rotate-669-for-743.md). · [`.670` for `.743`](docs/archive/log/LOG-rotate-670-for-743.md). · [`.669` for `.744`](docs/archive/log/LOG-rotate-669-for-744.md). · [`.679` for `.744`](docs/archive/log/LOG-rotate-679-for-744.md). · [`.680` for `.745`](docs/archive/log/LOG-rotate-680-for-745.md). · [`.684` for `.746`](docs/archive/log/LOG-rotate-684-for-746.md). · [`.750` for `.765`](docs/archive/log/LOG-rotate-750-for-765.md).
 
+## 2026-08-14 — Value before the account; the geo-block explains itself (`.769`)
+
+Three shards' outstanding P0s, re-landed on `master` after `#543` was closed
+("superseded by #544"). `#544` carried `.765`/`.766`; this carries what came
+after: shard 3's taps-to-log, shard 4's first-paint weight, and shard 1's two
+big themes. Geo-block **unchanged** — the first assertion in the new guard is
+that every blocked country is still blocked and US/LatAm are still supported.
+
+### The invite wall was literally true (shard 1, US/LatAm ops #16, ~27% of rows)
+
+With the gate up, `/welcome` was public and `/active` was not, so a stranger
+could finish I-Day and land on `/private`. The gate's only two actions were both
+ways of asking: a waitlist address, or an access code. Hard rule 2 — *"the free
+logger is never gated. Ever."* — and `#523`'s first-set-without-an-account were
+both unreachable by anyone without an invite.
+
+- **`/active` is public while gated.** Not a `PRIVATE_MODE` flip; the mechanism
+  that made `/welcome` public for SEO. The blast radius is *asserted*, not
+  described: `privateGate.test.ts` enumerates the fourteen app routes that still
+  demand the cookie, and `privateGateRedirect.routetest.ts` pins the same fact at
+  the middleware, because a list and a proxy are two different things (`.204`).
+  Verified on a gated production build: `/active` 200; `/log`, `/coach`,
+  `/nutrition`, `/history`, `/profile`, `/account` all 307 → `/private`.
+- The gate's **one red action is "Log a set"**; the notify form stays secondary.
+- I-Day finishes at the logger while gated, at Today the moment the gate is off.
+  F-004 intact; both destinations pinned in the two guards that own that rule.
+- The empty logger offers the **seeded first session** as its own labelled
+  action. `handleEmptyStart` stays freestyle exactly as its comment demands
+  ("Cold devices stay freestyle empty. Do not seed Just Go or Coach here"),
+  nothing auto-starts, still one red action. Without it the road I had just
+  opened ended on *"Add exercises above to begin logging sets"* — shard 4's
+  missing-defaults complaint, freshly manufactured by my own fix, and found by
+  walking the path rather than reasoning about it.
+
+Measured, gated production build, a stranger with no cookie, account or invite:
+
+```
+0. landed /private
+1. tap "Log a set"                           (the gate)
+2. tap "Begin"                               (I-Day 1/2)
+3. tap "Continue"                            (I-Day 2/2)
+4. tap "Start Just Go — Legs — 4 exercises"  (the logger)
+5. tap "Log set"                             → SETS 1/12
+```
+
+**Five interactions to a logged set, from a state where it was impossible.**
+
+### The geo-block was a verdict with no cause, no exit, no alternative
+
+US and LatAm are *supported*, so the state those respondents hit is almost
+certainly `unknown_edge`: Cloudflare could not place the connection, which a VPN,
+a privacy browser or a carrier proxy does routinely on mobile networks there. The
+old sentence — *"We could not confirm a supported region for this connection"* —
+named no cause, offered no way forward, and read as a rejection of the reader
+rather than a limit of ours. It now names the usual cause and says turning a VPN
+off generally resolves it, and no block message may read like a failure
+(`error`/`denied`/`forbidden` asserted absent from all five).
+
+`TERRITORY_STILL_WORKS` is one sentence with one home — the free logger runs on
+this device, needs no account, data stays exportable — rendered by the gate,
+sign-in, checkout and `/regions`. Always true, always buried: `/regions` said it
+in its fifth section, after four lists of ISO codes. It now **leads** the page,
+asserted to come before both the market-posture paragraph and the lists, because
+a page that opens with a hundred country codes is what "broken" feels like. It
+lives in its own module: imported from `supportedRegions.ts` it would have
+dragged ~100 ISO codes onto the Today path (the `.766` split, again).
+
+### No questionnaire between arriving on Active and the first set (shard 3)
+
+The returning path ran Start → full-viewport `SessionCheckInSheet` (logger
+underneath, unclickable) → Log set; now **2 interactions**. The rule already
+existed in `sessionCheckInOffer.ts` and said *first* mission, which is exactly
+the case shard 3 is not about. **The same sheet was manufacturing the input
+Coach reasons from:** every row starts at 3 and `save()` wrote all three
+unconditionally, so tapping its primary to get past it recorded a 3/3/3
+readiness row nobody answered, into `computeBodyScores` and the plan. Only moved
+rows are written now. My first tap harness was wrong in the product's favour —
+it typed into a row that was already prefilled.
+
+### The www first paint was downloading the legal library (shard 4)
+
+`AppLegalFooter` renders eight legal links and sits on the gate, on I-Day and
+under every info page; App Router prefetches links in the viewport, and on a
+short screen that footer is. `/welcome` **416 → 334 KB gz, 53 → 37 requests**;
+`/log` 594 → 545. The guard then found four more clusters (`SignInPanel`,
+`LegalNav`, `ServiceTermsPage`, `TermsPage`). Two ratchets, because
+`bundle-budget` is blind twice over: prefetch is a runtime fetch of *other*
+routes' chunks, and the two pages that *are* www while gated had no budget at all
+(both dynamic). Shard 4's four other findings were already fixed and undeployed;
+the **buried Log button does not reproduce** — docked and in viewport at 360×640,
+390×844 and 412×732.
+
+### Guards
+
+**26 mutants killed across these three ships, four of them defects in my own
+guards.** One list verified itself, so **deleting** `'CA'` passed (the loop
+stopped visiting it) — it now pins named members and sizes. One was satisfied by
+a leftover `import` after the render was replaced with prose: the **third** time
+that class has bitten (`.766` an import, `.768` a comment), so `readCode` strips
+imports too. One asked `/regions` to link to itself. One compared a variable
+declaration where it meant rendered order.
+
+**Seven existing guards failed on this work and every one was right** — the gate
+perimeter, the I-Day landing (×2), the hard-nav rule, the route contract, my own
+prefetch route list, and the check-in dep array. Each re-pointed with its
+reasoning; none weakened. Two are now stricter: the perimeter one enumerates what
+stays shut, and the dep-array one checks membership instead of an exact array (it
+had failed on master's `fieldTestParam` while the rule held perfectly).
+
+### State
+
+Unit **3199** · route contract · lint · typecheck · i18n parity · locale split ·
+design system · display type · excellence gate. **Red on `master` and not from
+this work:** `i18n:coverage` (70 keys with no EN pack, from `#544`'s merge —
+identical count on `master` and here), `bundle-budget`, seven `/active`/`/track`
+a11y sheet cases and `/leaderboard` axe, and two stale `gate-smoke` checks
+asserting paths this product deliberately removed (`/america` is surface-parked;
+`/locales/en/common.json` went in `.222`).
+
+**Production is still `.697`** — its `/private` serves `Checking sign-in…`.
+Everything in shards 1–4 that is fixed is fixed in git and invisible to users.
+
+Label `.769` (onto `master` `.766`). Excellence-Override below.
+
+Excellence-Override: www kaizen first-paint (RESULT unscored)
+
 ## 2026-08-14 — Merge all open PRs on a Cursor landing branch (`.766`)
 
 GitHub showed 47 open PRs and ~45 Security/quality/Dependabot items “not ready”.
@@ -261,22 +387,3 @@ Excellence-Override below.
 Excellence-Override: habit week count + HABIT contract
 
 Rotated LOG oldest → [docs/archive/log/LOG-rotate-694-for-753.md](docs/archive/log/LOG-rotate-694-for-753.md).
-## 2026-08-13 — Garage swap on the exercise row (`.752`)
-
-When the machine is not there, one **Swap** on the Train logger row and on a
-Coach session line offers **1–2 original** bodyweight / garage stand-ins (same
-pattern, no gym). Short list. Offline. Free. No account.
-
-**Ship:** `garageSwap.ts` closed map + apply helpers. Logger Swap sheet is
-`GarageSwapList` (not the catalog picker). Coach line swap mutates one
-`PlanExercise` via `swapExerciseInPlan` — does not call `generateWeek` / adapt.
-Equipment change clears last load; same equipment keeps planned weight. Hide
-Swap when already garage or no honest pair. Today compact stays swap-free.
-Swap still seeds the new exercise’s last note (`.748`).
-
-Label `.752` (onto master `.751`). Originally reserved `.721`; landed as `.752` past master `.751`.
-Excellence-Override below.
-
-Excellence-Override: garage exercise swap
-
-Rotated LOG oldest → [docs/archive/log/LOG-rotate-693-for-752.md](docs/archive/log/LOG-rotate-693-for-752.md).

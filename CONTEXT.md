@@ -16,7 +16,7 @@ One screen of truth for any AI tool or human joining cold. Read this, then [AGEN
 
 ---
 
-## Now (2026-08-14 · web `2026.07-unified.766` · Android `1.24.1`)
+## Now (2026-08-14 · web `2026.07-unified.769` · Android `1.24.1`)
 
 > The ONLY "where we are" block in the repo — [ORCHESTRATION.md](ORCHESTRATION.md) points here.
 >
@@ -331,6 +331,7 @@ One screen of truth for any AI tool or human joining cold. Read this, then [AGEN
 > | gitleaks | **green — and scanning for the first time.** It had never scanned anything: on a `pull_request` event the action lists the PR's commits, the job declared no `permissions:` block, and it 403'd (`pull_requests=read`) before opening a file. Fixed by a `permissions:` block (`.224` carrying `.255`). It scans **only the PR's own commits**, so commit `8ea3527a`'s real Solana treasury address — scrubbed from the working file, still in history — is out of its scope. That finding stands, deliberately not allowlisted; it was never what made this check red. |
 
 - **Excellence:** unscored · — · [docs/EXCELLENCE_RESULT.md](docs/EXCELLENCE_RESULT.md) — Horizon W phone sign-off home; surface PRs need `status: pass` or `Excellence-Override` (`.669`).
+- **`.767`–`.769`:** (`2026.07-unified.769`) **Value before the account · lighter www · no questionnaire before the first set.** Shard 1 (US/LatAm, ~27% of rows): **`/active` is public while gated** (hard rule 2; not a `PRIVATE_MODE` flip — the mechanism that made `/welcome` public), blast radius asserted (fourteen app routes still demand the cookie, pinned in both the list and the proxy); the gate's one red action is **Log a set**; I-Day finishes at the logger while gated; the empty logger offers the seeded first session. Measured: **a stranger with no cookie, account or invite logs a set in 5 taps**, from impossible. Geo-block **unchanged**, but `unknown_edge` (VPN/carrier proxy — what US/LatAm actually hit) names its cause and exit, no block message may read as a failure, and `TERRITORY_STILL_WORKS` leads `/regions` and every blocked state from one home. Shard 3: the returning path no longer meets a full-viewport check-in sheet (3→2 taps) and that sheet stopped writing an unanswered 3/3/3 readiness row into the plan. Shard 4: legal footers stopped prefetching the legal library (`/welcome` 416→334 KB gz, 53→37 requests) with two ratchets, since `bundle-budget` sees neither prefetch nor the two dynamic www entries. 26 mutants; seven existing guards caught this work and were re-pointed, none weakened.
 - **`.766`:** (`2026.07-unified.766`) **Merge all open PRs on a Cursor landing branch** — 47 PR heads oldest-first; 0 Dependabot PRs (alerts ≠ PRs). Train logger restored from master; PR wiring composed onto it (Victory receipt, garage swap, hard-session, About/Account). No `PRIVATE_MODE` flip. No Vercel preview. Cursor-local merge bar ([docs/CI_LOCAL.md](docs/CI_LOCAL.md)).
 - **`.765`:** (`2026.07-unified.765`) **Preview walk P0s** — consent banner docks above the tab bar so Today Start stays tappable; landing Get-notified form (no Stripe). Brief reserved `.750`; first land was `.755` (occupied).
 - **`.764`:** (`2026.07-unified.764`) **Free plate math + warmup on the Train set row** — Live barbell plates-per-side + Add warmups 40/60/80. Free. Originally #503 / `.708`.
@@ -338,7 +339,6 @@ One screen of truth for any AI tool or human joining cold. Read this, then [AGEN
 - **`.762`:** (`2026.07-unified.762`) **F-017 first-set verify iterate** — Nullish/hash-safe Sign-in chip; Welcome Begin fallback; extended first-set source-scan. Originally #538 / `.750`.
 - **`.761`:** (`2026.07-unified.761`) **e1RM from logged sets (educational)** — Epley est. 1RM on the exercise row after a working set; hideable; not a tested max. Originally #528 / `.739`.
 - **`.760`:** (`2026.07-unified.760`) **Vs last session on the set row** — After a working set saves, a tiny +kg / +rep / same vs last session. First-ever and warmups blank. Originally #530 / `.741`.
-- **`.759`:** (`2026.07-unified.759`) **Last-set ghost on the Train set row** — One-tap last working set (not warmup) into the dial; first-ever stays empty. Originally #529 / `.738`.
 - **`.758`:** (`2026.07-unified.758`) **Bodyweight + load on the Train set row** — On pull-ups/push-ups/dips the load field is extra weight (belt/vest); 0 logs BW only. Originally #527 / `.735`.
 - **`.757`:** (`2026.07-unified.757`) **Optional tempo on the set row** — Optional ecc/pause/con (`3-1-1`) on completed rows beside RPE/RIR; last tempo prefills; never blocks Log set. Originally #526 / `.734`.
 - **`.756`:** (`2026.07-unified.756`) **Optional RIR on the set row** — Optional 0–5 RIR on completed rows beside RPE; empty valid; Log set ungated. Originally #517 / `.725`.

@@ -483,3 +483,4 @@ Canonical live launch path: root **[LAUNCH_RUNBOOK.md](../LAUNCH_RUNBOOK.md)** +
 | [log/LOG-rotate-656-for-679.md](./log/LOG-rotate-656-for-679.md) | rotated 2026-08-12 for `.679` Today /log coach refresh loop (`.656` Move free-beta mute) |
 | [log/LOG-rotate-657-for-680.md](./log/LOG-rotate-657-for-680.md) | rotated 2026-08-12 for `.680` guidebook Ch4 + magazine wedge CTAs |
 | — | `.766` merge-all: overlapping PRs each archived `.669` / `.655` / `.656` / `.630` / `.750`. One `##` heading per label. Survivor for `.669` is [log/LOG-rotate-669-for-743.md](./log/LOG-rotate-669-for-743.md). |
+| [log/LOG-rotate-752-for-769.md](./log/LOG-rotate-752-for-769.md) | rotated 2026-08-14 for `.769` value before the account + geo-block honesty (`.752`) |
