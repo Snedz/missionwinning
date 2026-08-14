@@ -110,6 +110,7 @@
 | [DESIGN_PROPOSAL_WWW.md](DESIGN_PROPOSAL_WWW.md) | Proposal for the **www surface** on Astro — type scale, rhythm, motion, page map, guards. **Commissioned 2026-08-09** |
 | [design/INDEX.md](design/INDEX.md) | Rendered design artifacts — www spec sheet, wireframes, rhythm ruler, concept board, **local studio** (`concepts/studio.html`) and 04 fold stills |
 | [DESIGN_SYSTEM.md](DESIGN_SYSTEM.md) | Runtime tokens, shells, ProgressRing, motion |
+| [design/WWW_NIGHT.md](design/WWW_NIGHT.md) | Overnight cinematic www — four scenes, steal/refuse, ship path |
 | [DESIGN_REVIEW.md](DESIGN_REVIEW.md) | Hero-flow UI/UX audit checklist (quarterly + pre-flip) |
 | [DESTRUCTIVE_UX.md](DESTRUCTIVE_UX.md) | Hold-to-confirm delete language |
 | [overnight/PLAN.md](overnight/PLAN.md) | Frozen implement-only overnight plan (current: garage swap `.721`) |

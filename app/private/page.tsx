@@ -1,10 +1,8 @@
 import { Suspense } from 'react';
 import { redirect } from 'next/navigation';
 import { PrivateTeaserClient } from './PrivateTeaserClient';
-import { GatePendingChrome } from './GatePendingChrome';
 import { hasServerPrivateAccess } from '@/lib/privateGateServer';
 import { privateGateReturnPath } from '@/lib/privateGateReturn';
-import { GATED_WWW_HONESTY } from '@/lib/gatedWwwHonesty';
 import './gate.css';
 
 type SearchParams = Promise<{ invite?: string | string[]; next?: string | string[] }>;
@@ -24,10 +22,12 @@ export default async function PrivatePage({ searchParams }: { searchParams: Sear
     <div className="mw-gate">
       <Suspense
         fallback={
-          <GatePendingChrome
-            isInvitee={Boolean(initialInvite)}
-            status={GATED_WWW_HONESTY.gateLoading}
-          />
+          <div
+            className="gate-shell gate-center"
+            data-mw-invitee={initialInvite ? '1' : '0'}
+          >
+            Confirming access…
+          </div>
         }
       >
         <PrivateTeaserClient initialInvite={initialInvite} />

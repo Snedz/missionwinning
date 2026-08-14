@@ -75,16 +75,10 @@ const SOURCES = new Map(SOURCE_FILES.map((f) => [f, stripComments(read(f))]));
  */
 const NOT_A_PLACEHOLDER: { file: string; fallback: string; why: string; fixWhen: string }[] = [
   {
-    file: 'src/page-components/LandingPage.tsx',
-    fallback: 'LogToPlanHeroFallback',
-    why: 'Renders the hero for real rather than standing in for it — same component serves as the permanent no-JS shell at LandingPage:134, so from the reader\'s point of view nothing is loading and there is no busy state to announce.',
+    file: 'src/components/landing/CinematicWww.tsx',
+    fallback: 'CinematicLoggerFallback',
+    why: 'Renders the hero logger for real rather than standing in for it — same component serves as the permanent no-JS shell, so from the reader\'s point of view nothing is loading and there is no busy state to announce.',
     fixWhen: 'It stops being the no-JS shell and becomes a placeholder shape.',
-  },
-  {
-    file: 'src/page-components/LandingPage.tsx',
-    fallback: 'div',
-    why: 'CoachAdaptDemo reserves 8rem of height and draws nothing at all — an empty aria-hidden box. There is no placeholder content to describe, and announcing "loading" for blank space is noise in a screen reader.',
-    fixWhen: 'It grows visible placeholder content.',
   },
 ];
 

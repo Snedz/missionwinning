@@ -1,17 +1,20 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { useTranslation } from 'react-i18next';
 import { Check } from 'lucide-react';
 import { AppLegalFooter } from '@/components/layout/AppLegalFooter';
-import { grantPrivateAccessFromSession } from '@/lib/grantPrivateAccessFromSession';
-import { sanitizeNextPath } from '@/lib/safeRedirect';
+import { CinematicWww } from '@/components/landing/CinematicWww';
+import '@/components/landing/cinematic.css';
+import {
+  grantPrivateAccessFromSession,
+  navigateAfterPrivateGateUnlock,
+} from '@/lib/grantPrivateAccessFromSession';
+import { privateGateReturnPath } from '@/lib/privateGateReturn';
 import { submitLead } from '@/lib/supabase';
 import { track } from '@/lib/analytics';
-import { GATED_WWW_HONESTY } from '@/lib/gatedWwwHonesty';
-import { GatePendingChrome } from './GatePendingChrome';
 
 type Props = {
   /** Server-resolved invite so SSR HTML exposes data-mw-invitee for gate-smoke. */
@@ -20,7 +23,6 @@ type Props = {
 
 export function PrivateTeaserClient({ initialInvite = '' }: Props) {
   const { t } = useTranslation();
-  const router = useRouter();
   const searchParams = useSearchParams();
   const inviteCode = (searchParams.get('invite')?.trim() || initialInvite).trim();
   const isInvitee = Boolean(inviteCode);
@@ -35,22 +37,27 @@ export function PrivateTeaserClient({ initialInvite = '' }: Props) {
   const [sessionUnlocking, setSessionUnlocking] = useState(true);
 
   // Signed-in (localStorage) but missing gate cookie — typical after Google OAuth.
+  // Bounded + fail-open: code-only invitees must reach the access-code form.
   useEffect(() => {
     let cancelled = false;
     void (async () => {
-      const ok = await grantPrivateAccessFromSession();
-      if (cancelled) return;
-      if (ok) {
-        router.replace(sanitizeNextPath(searchParams.get('next'), '/'));
-        router.refresh();
-        return;
+      try {
+        const ok = await grantPrivateAccessFromSession();
+        if (cancelled) return;
+        if (ok) {
+          navigateAfterPrivateGateUnlock(
+            privateGateReturnPath(searchParams.get('next'))
+          );
+          return;
+        }
+      } finally {
+        if (!cancelled) setSessionUnlocking(false);
       }
-      setSessionUnlocking(false);
     })();
     return () => {
       cancelled = true;
     };
-  }, [router, searchParams]);
+  }, [searchParams]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -68,8 +75,10 @@ export function PrivateTeaserClient({ initialInvite = '' }: Props) {
       });
 
       if (res.ok) {
-        router.push(sanitizeNextPath(searchParams.get('next'), '/'));
-        router.refresh();
+        navigateAfterPrivateGateUnlock(
+          privateGateReturnPath(searchParams.get('next'))
+        );
+        return;
       } else {
         const data = await res.json().catch(() => ({}));
         const msg = data.error || 'Incorrect access code';
@@ -129,10 +138,8 @@ export function PrivateTeaserClient({ initialInvite = '' }: Props) {
   ) : null;
 
   const codeField = (
-    <label className="gate-field">
-      <span className="gate-label">
-        {t('gateAccessLabel', { defaultValue: 'Access code' })}
-      </span>
+    <label className="www-cine-field">
+      <span>{t('gateAccessLabel', { defaultValue: 'Access code' })}</span>
       <input
         type="password"
         value={password}
@@ -141,10 +148,9 @@ export function PrivateTeaserClient({ initialInvite = '' }: Props) {
           defaultValue: 'Enter your access code',
         })}
         autoComplete="off"
-        // Code-link landers get the access form expanded — focus the code field.
-        // eslint-disable-next-line jsx-a11y/no-autofocus -- access-code conversion
+        // Invitees land with the access form expanded — focus the code field.
+        // eslint-disable-next-line jsx-a11y/no-autofocus -- invite conversion
         autoFocus={isInvitee}
-        className="gate-input"
         disabled={loading}
       />
     </label>
@@ -152,171 +158,150 @@ export function PrivateTeaserClient({ initialInvite = '' }: Props) {
 
   const submitLabel = loading
     ? t('gateAccessChecking', { defaultValue: 'Checking…' })
-    : t('gateAccessSubmit', { defaultValue: 'Enter the beta' });
+    : t('gateAccessSubmit', { defaultValue: 'Enter with code' });
+
+  const door = isInvitee ? (
+    <>
+      <div className="www-cine-mark">
+        <img src="/brand/logo-icon.svg" alt="" width={96} height={96} />
+      </div>
+      <p className="eyebrow-live www-cine-kicker www-cine-mark-follow">
+        {t('gateEyebrow', { defaultValue: 'Free beta' })}
+      </p>
+      <h2 className="display-section">
+        {t('gateAccessSummary', { defaultValue: 'Enter with code' })}
+      </h2>
+      <div className="www-cine-strip">
+        <p className="www-cine-lede">
+          {t('gateInviteSubtitle', {
+            defaultValue:
+              'Enter the access code from your email, then complete I-Day and log your first workout.',
+          })}
+        </p>
+        <form onSubmit={handleSubmit}>
+          {codeField}
+          <div className="www-cine-row">
+            <button
+              type="submit"
+              disabled={loading || !password}
+              className="www-cine-ghost"
+            >
+              {submitLabel}
+            </button>
+          </div>
+          {errorNode}
+          <p className="www-cine-foot">
+            {t('gateBetaGuideFoot', { defaultValue: 'Have a code? See the' })}{' '}
+            <Link href="/beta">{t('gateBetaGuide', { defaultValue: 'beta start guide' })}</Link>.
+          </p>
+        </form>
+      </div>
+    </>
+  ) : (
+    <>
+      <div className="www-cine-mark">
+        <img src="/brand/logo-icon.svg" alt="" width={96} height={96} />
+      </div>
+      <p className="eyebrow-live www-cine-kicker www-cine-mark-follow">
+        {t('gateEyebrow', { defaultValue: 'Free beta' })}
+      </p>
+      <h2 className="display-section">
+        {t('gateWaitlistTitle', { defaultValue: 'Get notified' })}
+      </h2>
+      <div className="www-cine-strip">
+        <p className="www-cine-lede">
+          {t('gateSubtitle', {
+            defaultValue:
+              'Free offline workout logging plus Mission Coach — weekly plans from your logs alone, no wearable. The logger stays free forever.',
+          })}
+        </p>
+        {waitDone ? (
+          <>
+            <p className="gate-done www-cine-mark-follow">
+              <Check className="h-4 w-4" strokeWidth={2} aria-hidden />
+              {t('gateWaitlistDone', { defaultValue: "You're on the list." })}
+            </p>
+            <p className="www-cine-foot">
+              {t('gateWaitlistDoneFoot', {
+                defaultValue: "We'll email you when the beta opens.",
+              })}{' '}
+              {waitEmail}
+            </p>
+          </>
+        ) : (
+          <form onSubmit={handleWaitlist}>
+            <label className="www-cine-field">
+              <span>{t('gateWaitlistEmailLabel', { defaultValue: 'Email' })}</span>
+              <input
+                type="email"
+                required
+                value={waitEmail}
+                onChange={(e) => setWaitEmail(e.target.value)}
+                placeholder={t('gateWaitlistPlaceholder', {
+                  defaultValue: 'you@example.com',
+                })}
+                aria-label="Email for the launch waitlist"
+                disabled={waitBusy}
+              />
+            </label>
+            <div className="www-cine-row">
+              <button
+                type="submit"
+                disabled={waitBusy || !waitEmail}
+                className="www-cine-ghost"
+              >
+                {waitBusy
+                  ? t('gateWaitlistSubmitting', { defaultValue: 'Joining…' })
+                  : t('gateWaitlistSubmit', { defaultValue: 'Get notified' })}
+              </button>
+            </div>
+            {waitError && (
+              <p className="www-cine-foot" role="alert">
+                {waitError}
+              </p>
+            )}
+            <p className="www-cine-foot">
+              {t('gateWaitlistFoot', {
+                defaultValue: 'No spam — one email when the beta opens.',
+              })}
+            </p>
+          </form>
+        )}
+        <details className="www-cine-details">
+          <summary>{t('gateAccessSummary', { defaultValue: 'Enter with code' })}</summary>
+          <form onSubmit={handleSubmit}>
+            {codeField}
+            <div className="www-cine-row">
+              <button
+                type="submit"
+                disabled={loading || !password}
+                className="www-cine-ghost"
+              >
+                {submitLabel}
+              </button>
+            </div>
+            {errorNode}
+          </form>
+        </details>
+      </div>
+    </>
+  );
 
   if (sessionUnlocking) {
     return (
-      <GatePendingChrome
-        isInvitee={isInvitee}
-        status={t('gateCheckingSession', {
-          defaultValue: GATED_WWW_HONESTY.gateCheckingSession,
-        })}
-      />
+      <div className="www-cine-unlock" data-mw-invitee={isInvitee ? '1' : '0'}>
+        {t('gateCheckingSession', { defaultValue: 'Confirming access…' })}
+      </div>
     );
   }
 
   return (
-    <div className="gate-shell page-enter" data-mw-invitee={isInvitee ? '1' : '0'}>
-      <header className="gate-header">
-        <span className="gate-brand">
-          <span className="gate-mark" data-brand-monogram aria-hidden>
-            MW
-          </span>
-          <span className="gate-brandname">Mission Winning</span>
-        </span>
-        <p className="gate-kicker">
-          {t('gateEyebrow', { defaultValue: GATED_WWW_HONESTY.gateEyebrow })}
-        </p>
-      </header>
-      <hr className="gate-rule" />
-
-      {/* Field manual: eyebrow → display → one red (code = enter beta; cold = notify). */}
-      <main className="gate-main">
-        <div className="gate-col">
-          <h1 className="gate-h1">
-            <span>{t('gateTitle1', { defaultValue: 'Train anywhere.' })}</span>
-            <span>{t('gateTitle2', { defaultValue: 'Win daily.' })}</span>
-          </h1>
-          <p className="gate-lede">
-            {t('gateSubtitle', {
-              defaultValue: GATED_WWW_HONESTY.gateSubtitle,
-            })}
-          </p>
-          <p className="gate-foot">
-            {t('gateWedgeTeaser', {
-              defaultValue: GATED_WWW_HONESTY.gateWedgeTeaser,
-            })}
-          </p>
-
-          {isInvitee ? (
-            <section className="gate-section">
-              <p className="gate-kicker">
-                {t('gateInviteEyebrow', { defaultValue: 'Access code' })}
-              </p>
-              <p className="gate-invite-copy">
-                {t('gateInviteSubtitle', {
-                  defaultValue:
-                    'Enter the access code from your email, then complete I-Day and log your first workout.',
-                })}
-              </p>
-              <form onSubmit={handleSubmit}>
-                {codeField}
-                <div className="gate-actions">
-                  <button
-                    type="submit"
-                    disabled={loading || !password}
-                    className="gate-btn gate-btn-primary"
-                  >
-                    {submitLabel}
-                  </button>
-                </div>
-                {errorNode}
-                <p className="gate-foot">
-                  {t('gateBetaGuideFoot', { defaultValue: 'Beta testers: see the' })}{' '}
-                  <Link href="/beta">
-                    {t('gateBetaGuide', { defaultValue: 'beta start guide' })}
-                  </Link>
-                  . If you installed the app before the gate, clear site data or reinstall.
-                </p>
-              </form>
-            </section>
-          ) : (
-            <section className="gate-section">
-              {waitDone ? (
-                <>
-                  <p className="gate-done">
-                    <Check className="h-4 w-4" strokeWidth={2} aria-hidden />
-                    {t('gateWaitlistDone', { defaultValue: "You're on the list." })}
-                  </p>
-                  <p className="gate-foot">
-                    {t('gateWaitlistDoneFoot', {
-                      defaultValue: "We'll email you when a seat opens.",
-                    })}{' '}
-                    {waitEmail}
-                  </p>
-                </>
-              ) : (
-                <form onSubmit={handleWaitlist}>
-                  <p className="gate-kicker">
-                    {t('gateWaitlistTitle', {
-                      defaultValue: GATED_WWW_HONESTY.gateWaitlistTitle,
-                    })}
-                  </p>
-                  <div className="gate-row">
-                    <input
-                      type="email"
-                      required
-                      value={waitEmail}
-                      onChange={(e) => setWaitEmail(e.target.value)}
-                      placeholder={t('gateWaitlistPlaceholder', {
-                        defaultValue: 'you@example.com',
-                      })}
-                      aria-label="Email for the launch waitlist"
-                      className="gate-input"
-                      disabled={waitBusy}
-                    />
-                    <button
-                      type="submit"
-                      disabled={waitBusy || !waitEmail}
-                      className="gate-btn gate-btn-primary"
-                    >
-                      {waitBusy
-                        ? t('gateWaitlistSubmitting', { defaultValue: 'Joining…' })
-                        : t('gateWaitlistSubmit', { defaultValue: 'Notify me' })}
-                    </button>
-                  </div>
-                  {waitError && (
-                    <p className="gate-foot" role="alert" style={{ color: 'var(--destructive)' }}>
-                      {waitError}
-                    </p>
-                  )}
-                  <p className="gate-foot">
-                    {t('gateWaitlistFoot', {
-                      defaultValue: 'No spam — one email when the beta opens, one at launch.',
-                    })}
-                  </p>
-                </form>
-              )}
-
-              {/* Access code secondary — never competes with Notify me red. */}
-              <details className="gate-details" open={false}>
-                <summary className="gate-details-summary">
-                  {t('gateAccessSummary', { defaultValue: 'Have a beta access code?' })}
-                </summary>
-                <form onSubmit={handleSubmit}>
-                  {codeField}
-                  <div className="gate-actions">
-                    <button
-                      type="submit"
-                      disabled={loading || !password}
-                      className="gate-btn gate-btn-secondary"
-                    >
-                      {submitLabel}
-                    </button>
-                  </div>
-                  {errorNode}
-                </form>
-              </details>
-            </section>
-          )}
-        </div>
-      </main>
-
+    <div data-mw-invitee={isInvitee ? '1' : '0'}>
+      <CinematicWww mode="gate" door={door} />
       <div className="gate-footer">
         <div className="gate-footer-inner">
           <span>
-            Mission Winning —{' '}
-            {t('gateFooterTagline', { defaultValue: 'free core forever' })}
+            Mission Winning — {t('gateFooterTagline', { defaultValue: 'free core forever' })}
           </span>
           <AppLegalFooter className="gate-footer-links" />
         </div>

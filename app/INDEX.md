@@ -54,7 +54,7 @@
 
 | URL | File |
 |-----|------|
-| `/` | `app/page.tsx` → `LandingPage` |
+| `/` | `app/page.tsx` → `LandingPage` (post-unlock). Cold visitors redirect to `/private`. |
 | `/bundle` | `app/bundle/page.tsx` → `BundlePage` (marketing chrome) |
 | `/compare` · `/compare/*` | **Removed (.668)** — permanent redirect to `/welcome` (no competitor comparison hub) |
 | `/guide`, `/exercises` | Public SEO pages |
@@ -65,7 +65,7 @@
 | `/guide/print` | Magazine print/PDF source (`GuideMagazinePrintPage`) — noindex |
 | `/exercises/muscle/[group]`, `/exercises/equipment/[slug]` | Catalog hub indexes |
 | `/paths`, `/paths/[id]` | Public Learn path teasers (in-app Learn stays `/learn`) |
-| `/private` | `app/private/page.tsx` |
+| `/private` | `app/private/page.tsx` — gated www (four cinematic scenes). The live website while `PRIVATE_MODE` is on. |
 | `/offline` | `app/offline/page.tsx` |
 | `/auth/callback` | `app/auth/callback/route.ts` (PKCE exchange + gate cookie) |
 

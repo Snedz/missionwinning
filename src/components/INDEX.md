@@ -22,7 +22,7 @@
 | `form/` | Form guides |
 | `history/` | History charts, muscle heatmap |
 | `journey/` | Journey UX — [journey/INDEX.md](journey/INDEX.md) |
-| `landing/` | Homepage demos — `LogToPlanHero` (the signature: real progression engine), `CoachAdaptDemo` |
+| `landing/` | Gated www / post-unlock landing — `CinematicWww` (four scenes), `CinematicLogger` (product-as-hero). `LogToPlanHero` kept as the boxed specimen. [landing/INDEX.md](landing/INDEX.md) |
 | `layout/` | App shell — [layout/INDEX.md](layout/INDEX.md) |
 | `leaderboard/` | Leaderboard UI |
 | `learn/` | Learn path UI + `GuideSectionExtras`, `GuideApexShell`, `GuideContentsRail`, `GuideLocaleSelect` (public magazine reader) |

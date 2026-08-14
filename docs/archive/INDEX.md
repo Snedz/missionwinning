@@ -25,17 +25,50 @@ When adding a doc:
 
 | File | Absorbed by / note |
 |------|---------------------|
-| [log/LOG-rotate-700.md](./log/LOG-rotate-700.md) | rotated oldest for `.700` local design studio |
-| [log/LOG-rotate-699.md](./log/LOG-rotate-699.md) | rotated oldest for `.699` combined landing concept |
+| [log/LOG-rotate-669-for-701.md](./log/LOG-rotate-669-for-701.md) | rotated 2026-08-13 for `.701` exquisite gated www |
+| [log/LOG-rotate-659-for-685.md](./log/LOG-rotate-659-for-685.md) | rotated 2026-08-12 for `.685` preserve next= through private gate |
+| [log/LOG-rotate-661-for-690.md](./log/LOG-rotate-661-for-690.md) | rotated 2026-08-12 for `.690` admin invite share → /private |
+| [log/LOG-rotate-662-for-691.md](./log/LOG-rotate-662-for-691.md) | rotated 2026-08-12 for `.691` Welcome Skip hard-nav private gate |
+| [log/LOG-rotate-668-for-697.md](./log/LOG-rotate-668-for-697.md) | rotated 2026-08-12 for `.697` session-expired fail-open mid-set Log/rest |
+| [log/LOG-rotate-667-for-696.md](./log/LOG-rotate-667-for-696.md) | rotated 2026-08-12 for `.696` local-first set-log + rest |
+| [log/LOG-rotate-666-for-695.md](./log/LOG-rotate-666-for-695.md) | rotated 2026-08-12 for `.695` demote six-pillar until first workout |
+| [log/LOG-rotate-665-for-694.md](./log/LOG-rotate-665-for-694.md) | rotated 2026-08-12 for `.694` Active set-table density |
+| [log/LOG-rotate-664-for-693.md](./log/LOG-rotate-664-for-693.md) | rotated 2026-08-12 for `.693` Coach log-cited why-this-week |
+| [log/LOG-rotate-663-for-692.md](./log/LOG-rotate-663-for-692.md) | rotated 2026-08-12 for `.692` production smoke ratchet |
+| [log/LOG-rotate-658-for-684.md](./log/LOG-rotate-658-for-684.md) | rotated 2026-08-12 for `.684` private gate session-unlock fail-open |
+| [log/LOG-rotate-668.md](./log/LOG-rotate-668.md) | rotated oldest for `.668` competitor compare removed |
+| [log/LOG-rotate-667.md](./log/LOG-rotate-667.md) | rotated oldest for `.667` Compare stories free-beta mute |
+| [log/LOG-rotate-666.md](./log/LOG-rotate-666.md) | rotated oldest for `.666` Calculators macro foot free-beta mute |
+| [log/LOG-rotate-665.md](./log/LOG-rotate-665.md) | rotated oldest for `.665` Today challenges free-beta mute |
+| [log/LOG-rotate-664.md](./log/LOG-rotate-664.md) | rotated oldest for `.664` Mind/Guide/Profile free-beta mute |
+| [log/LOG-rotate-663.md](./log/LOG-rotate-663.md) | rotated oldest for `.663` Learn course + Builder pro free-beta mute |
+| [log/LOG-rotate-662.md](./log/LOG-rotate-662.md) | rotated oldest for `.662` Fuel toast free-beta mute |
+| [log/LOG-rotate-661.md](./log/LOG-rotate-661.md) | rotated oldest for `.661` Move+Mind free-beta empty mute |
+| [log/LOG-rotate-660.md](./log/LOG-rotate-660.md) | rotated oldest for `.660` Fuel free-beta recipe empty mute |
+| [log/LOG-rotate-659.md](./log/LOG-rotate-659.md) | rotated oldest for `.659` Programs catalog floors + free-beta bullets |
+| [log/LOG-rotate-658.md](./log/LOG-rotate-658.md) | rotated oldest for `.658` landing FAQ JSON-LD free-beta mute |
+| [log/LOG-rotate-657.md](./log/LOG-rotate-657.md) | rotated oldest for `.657` Programs free-beta mute |
+| [log/LOG-rotate-656.md](./log/LOG-rotate-656.md) | rotated oldest for `.656` Move free-beta mute |
+| [log/LOG-rotate-655.md](./log/LOG-rotate-655.md) | rotated oldest for `.655` Learn free-beta mute |
+| [log/LOG-rotate-654.md](./log/LOG-rotate-654.md) | rotated oldest for `.654` press+vision free-beta mute |
+| [log/LOG-rotate-653.md](./log/LOG-rotate-653.md) | rotated oldest for `.653` legal English floors |
+| [log/LOG-rotate-652.md](./log/LOG-rotate-652.md) | rotated oldest for `.652` About free-beta mute |
+| [log/LOG-rotate-651.md](./log/LOG-rotate-651.md) | rotated oldest for `.651` score foot free-beta mute |
+| [log/LOG-rotate-650.md](./log/LOG-rotate-650.md) | rotated oldest for `.650` badge count i18n |
+| [log/LOG-rotate-649.md](./log/LOG-rotate-649.md) | rotated oldest for `.649` assessments stage honesty |
+| [log/LOG-rotate-648.md](./log/LOG-rotate-648.md) | rotated oldest for `.648` logger RPE floors |
+| [log/LOG-rotate-647.md](./log/LOG-rotate-647.md) | rotated oldest for `.647` coach voice floors |
+| [log/LOG-rotate-646.md](./log/LOG-rotate-646.md) | rotated oldest for `.646` readiness + journal floors |
+| [log/LOG-rotate-645.md](./log/LOG-rotate-645.md) | rotated oldest for `.645` plan exercise why floors |
+| [log/LOG-rotate-644.md](./log/LOG-rotate-644.md) | rotated oldest for `.644` today health honesty |
+| [log/LOG-rotate-643.md](./log/LOG-rotate-643.md) | rotated oldest for `.643` daily coach insight floors |
+| [log/LOG-rotate-642.md](./log/LOG-rotate-642.md) | rotated oldest for `.642` coach why floors |
+| [log/LOG-rotate-641.md](./log/LOG-rotate-641.md) | rotated oldest for `.641` victory single source |
+| [log/LOG-rotate-640.md](./log/LOG-rotate-640.md) | rotated oldest for `.640` active empty Just Go |
+| [log/LOG-rotate-639.md](./log/LOG-rotate-639.md) | rotated oldest for `.639` migration pack |
+| [log/LOG-rotate-638.md](./log/LOG-rotate-638.md) | rotated oldest for `.638` empty Active dock |
+| [log/LOG-rotate-637.md](./log/LOG-rotate-637.md) | rotated oldest for `.637` CX Today i18n |
 | [log/LOG-rotate-636.md](./log/LOG-rotate-636.md) | rotated oldest for `.636` global legal posture |
-| [log/LOG-rotate-637.md](./log/LOG-rotate-637.md) | rotated oldest for `.637` www surface scaffold |
-| [log/LOG-rotate-638.md](./log/LOG-rotate-638.md) | rotated oldest for `.638` www homepage |
-| [log/LOG-rotate-639.md](./log/LOG-rotate-639.md) | rotated oldest for `.639` www live islands |
-| [log/LOG-rotate-640.md](./log/LOG-rotate-640.md) | rotated oldest for `.640` www link contract |
-| [log/LOG-rotate-641.md](./log/LOG-rotate-641.md) | rotated oldest for `.641` www composition |
-| [log/LOG-rotate-642.md](./log/LOG-rotate-642.md) | rotated oldest for `.642` www /start |
-| [log/LOG-rotate-643.md](./log/LOG-rotate-643.md) | rotated oldest for `.643` design variants board |
-| [log/LOG-rotate-644.md](./log/LOG-rotate-644.md) | rotated oldest for `.644` three concepts from zero |
 | [log/LOG-rotate-635.md](./log/LOG-rotate-635.md) | rotated oldest for `.635` sanctions no place names |
 | [log/LOG-rotate-634.md](./log/LOG-rotate-634.md) | rotated oldest for `.634` sanctions occupied regions |
 | [log/LOG-rotate-633.md](./log/LOG-rotate-633.md) | rotated oldest for `.633` Feel Wave 9 |
@@ -419,3 +452,8 @@ Canonical live launch path: root **[LAUNCH_RUNBOOK.md](../LAUNCH_RUNBOOK.md)** +
 | [log/LOG-rotate-624.md](./log/LOG-rotate-624.md) | rotated 2026-08-09 for `.624` You Field manual |
 | [log/LOG-rotate-625.md](./log/LOG-rotate-625.md) | rotated 2026-08-09 for `.625` Account Field manual |
 | [log/LOG-rotate-626.md](./log/LOG-rotate-626.md) | rotated 2026-08-09 for `.626` Feel Wave 2 |
+- [log/LOG-rotate-639-migration.md](./log/LOG-rotate-639-migration.md) — migration founder pack + Move free-beta (recovered from misnamed LOG-rotate-654 during .669)
+| [log/LOG-rotate-655-for-670.md](./log/LOG-rotate-655-for-670.md) | rotated 2026-08-11 for `.670` hero design Coach dock + Victory share |
+| [log/LOG-rotate-660-for-689.md](./log/LOG-rotate-660-for-689.md) | rotated 2026-08-12 for `.689` Today loading skeleton md width parity (`.660` Fuel free-beta recipe empty mute) |
+| [log/LOG-rotate-656-for-679.md](./log/LOG-rotate-656-for-679.md) | rotated 2026-08-12 for `.679` Today /log coach refresh loop (`.656` Move free-beta mute) |
+| [log/LOG-rotate-657-for-680.md](./log/LOG-rotate-657-for-680.md) | rotated 2026-08-12 for `.680` guidebook Ch4 + magazine wedge CTAs |
