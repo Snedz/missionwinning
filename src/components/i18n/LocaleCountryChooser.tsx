@@ -8,6 +8,7 @@
  */
 
 import { useEffect, useMemo, useState } from 'react';
+import { usePathname } from 'next/navigation';
 import { useTranslation } from 'react-i18next';
 import i18n from '@/i18n';
 import { UI_LANGS, UI_LANG_PICKER_LABELS, normalizeUiLang, type UiLang } from '@/i18n/appLangs';
@@ -25,6 +26,7 @@ import {
   hasConfirmedLocaleChoice,
   persistLocaleCountryPref,
   resolvePersistCountry,
+  shouldAutoOpenLocaleChooser,
 } from '@/lib/i18n/localePreference';
 import { isHostedServiceSupportedCountry } from '@/lib/legal/supportedRegions';
 
@@ -36,6 +38,7 @@ type GeoHint = {
 
 export function LocaleCountryChooser() {
   const { t } = useTranslation();
+  const pathname = usePathname() ?? '/';
   const [open, setOpen] = useState(false);
   const [language, setLanguage] = useState<UiLang>('en');
   const [pickedCountry, setPickedCountry] = useState('US');
@@ -77,13 +80,14 @@ export function LocaleCountryChooser() {
       } else {
         setPickedCountry(served[0] ?? 'US');
       }
-      setOpen(true);
+      // F-017 — do not cover I-Day Continue / first-set Start with this sheet.
+      if (shouldAutoOpenLocaleChooser(pathname)) setOpen(true);
     })();
 
     return () => {
       cancelled = true;
     };
-  }, [served]);
+  }, [served, pathname]);
 
   const confirm = (nextLang: UiLang, nextPicked: string) => {
     const country = resolvePersistCountry({

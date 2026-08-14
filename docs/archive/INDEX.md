@@ -12,6 +12,7 @@ When adding a doc:
 
 | File | Absorbed by / note |
 |------|---------------------|
+| [log/LOG-rotate-770-for-784.md](./log/LOG-rotate-770-for-784.md) | rotated 2026-08-14 for `.784` first-set locale sheet (`.770`) |
 | [log/LOG-rotate-769-for-783.md](./log/LOG-rotate-769-for-783.md) | rotated 2026-08-14 for `.783` CodeQL hardening (`.769`) |
 | [log/LOG-rotate-768-for-782.md](./log/LOG-rotate-768-for-782.md) | rotated 2026-08-14 for `.782` feedback triage (`.768`) |
 | [log/LOG-rotate-767-for-form-object-kit.md](./log/LOG-rotate-767-for-form-object-kit.md) | rotated 2026-08-14 for form object kit (`.767`) |
