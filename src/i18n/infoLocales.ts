@@ -5,6 +5,10 @@ type InfoStrings = {
   [key: string]: string;
   infoLastUpdated: string;
   infoAboutTitle: string;
+  infoHelpTitle: string;
+  infoHelpEyebrow: string;
+  infoHelpSubtitle: string;
+  infoHelpFaq: string;
   infoAboutSubtitle: string;
   infoTermsTitle: string;
   infoPrivacyTitle: string;
@@ -260,6 +264,10 @@ type InfoStrings = {
 const en: InfoStrings = {
   infoLastUpdated: 'Last updated: 13 August 2026',
   infoAboutTitle: 'About Mission Winning',
+  infoHelpTitle: 'Help',
+  infoHelpEyebrow: 'Help',
+  infoHelpSubtitle: 'Short answers. The free logger is never gated.',
+  infoHelpFaq: 'FAQ',
   infoAboutSubtitle:
     'Free offline logger + Mission Coach from your logs — free core forever; Super Bundle adds depth when you are ready.',
   infoTermsTitle: 'Terms of Service',

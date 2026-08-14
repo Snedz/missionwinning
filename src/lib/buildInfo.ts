@@ -1,5 +1,5 @@
-/** Shown on Profile so testers can confirm the deployed build. Bump when shipping UI to master. `.800` Track strap honesty. */
-export const APP_BUILD_LABEL = "2026.07-unified.800";
+/** Shown on Profile so testers can confirm the deployed build. Bump when shipping UI to master. `.801` in-app Help. */
+export const APP_BUILD_LABEL = "2026.07-unified.801";
 
 /**
  * Semver for athletes. Distinct from `APP_BUILD_LABEL`, which `/api/health`

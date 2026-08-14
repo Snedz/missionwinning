@@ -63,7 +63,7 @@ export function TodayCoachWeekStrip() {
         ) : (
           <p className="text-sm text-muted-foreground text-center py-2">
             {t('coachGenerateWeekHint', {
-              defaultValue: 'Open Coach to generate your weekly plan.',
+              defaultValue: 'Generate a weekly plan from your logs — no wearable required.',
             })}
           </p>
         )}

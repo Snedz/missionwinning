@@ -60,6 +60,12 @@ export function AppLegalFooter({ className = '', showBuild = false, buildLabel }
         <span aria-hidden className="text-border">
           ·
         </span>
+        <Link href="/help" className="hover:text-primary transition-colors">
+          {t('infoHelpTitle', { defaultValue: 'Help' })}
+        </Link>
+        <span aria-hidden className="text-border">
+          ·
+        </span>
         <Link href="/about" className="hover:text-primary transition-colors">
           {t('about', { defaultValue: 'About' })}
         </Link>
