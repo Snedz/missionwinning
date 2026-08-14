@@ -32,6 +32,9 @@ import { useIsCompact } from '@/hooks/useIsCompact';
 
 export const SCREEN_DOCK_HOST_ID = 'screen-dock';
 
+/** Flex host for the analytics consent banner — between this dock and MobileNav. */
+export const CONSENT_BANNER_HOST_ID = 'consent-banner';
+
 export function ScreenDock({ children }: { children: ReactNode }) {
   const isCompact = useIsCompact();
   const [host, setHost] = useState<HTMLElement | null>(null);

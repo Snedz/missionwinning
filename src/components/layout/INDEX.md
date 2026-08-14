@@ -8,22 +8,22 @@
 |------|---------|
 | `AppLayout.tsx` | Main app chrome + journey sync |
 | `AppHeader.tsx` | Top bar, title from navConfig |
-| `Sidebar.tsx` | Desktop nav — public version chip (`0.1 (beta)`), not the unified build label |
+| `Sidebar.tsx` | Desktop nav; athlete chip is public version |
 | `MobileNav.tsx` | Bottom tab bar — **five slots**, in flow (not fixed) so it reserves its own height |
-| `MoreSheet.tsx` | The fifth tab: signed-in screens with no tab + What’s New row + First Steps + public version stamp |
-| `ScreenDock.tsx` | The field a screen docks above the tab bar. **Compact only** — at `md+` it renders in place (see *Two surfaces* below). On compact it **portals to a flex sibling of `main`**: `position: fixed` does not work inside a screen (`.stagger-enter` leaves a transform, and a transformed ancestor becomes the containing block), and a flex sibling reserves its own height |
+| `MoreSheet.tsx` | The fifth tab: signed-in screens with no tab + What’s New row + First Steps |
+| `ScreenDock.tsx` | The field a screen docks above the tab bar. **Compact only** — at `md+` it renders in place (see *Two surfaces* below). On compact it **portals to a flex sibling of `main`**: `position: fixed` does not work inside a screen (`.stagger-enter` leaves a transform, and a transformed ancestor becomes the containing block), and a flex sibling reserves its own height. Also exports `CONSENT_BANNER_HOST_ID` (flex sibling between the dock and `MobileNav`) |
 | `PillarPageShell.tsx` | Standard pillar page wrapper |
 | `PillarPageHeader.tsx` | Pillar title + actions |
 | `InfoPageShell.tsx` | Legal/marketing pages |
 | `InfoPageFooter.tsx` | Info footer links |
-| `AppLegalFooter.tsx` | In-app legal links + public version chip; `Build {APP_BUILD_LABEL}` remains for deploy smoke |
+| `AppLegalFooter.tsx` | In-app legal links + public version stamp (`0.1 (beta)`) |
 | `LegalNav.tsx` | Privacy / terms / DMCA nav |
-| `HeaderAuthChip.tsx` | Sign-in avatar chip |
+| `HeaderAuthChip.tsx` | Sign-in avatar chip. F-017 (`.746` / `.762`): hidden until the first workout; never on `/active`. `getUser` only when the chip may show. |
 | `PageTransition.tsx` | Route transition animation |
 | `../ui/AdaptiveOverlay.tsx` | Compact bottom sheet / md+ centered dialog |
 | `StaggerReveal.tsx` | Staggered entrance motion |
 | `OnlineStatusBanner.tsx` | Offline/sync banner |
-| `AnalyticsConsentBanner.tsx` | Cookie banner after locale chooser: Accept / Reject non-essential / Manage |
+| `AnalyticsConsentBanner.tsx` | First-visit product analytics choice (private by default). Portals into `CONSENT_BANNER_HOST_ID` — a flex sibling between `ScreenDock` and `MobileNav` — so it never overlays Today's Start. |
 
 ## Two surfaces — read this before changing structure
 

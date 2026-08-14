@@ -1,5 +1,5 @@
-/** Shown on Profile so testers can confirm the deployed build. Bump when shipping UI to master. `.764` plates per side on the live barbell row; Add warmups 40/60/80; W then 1..n. */
-export const APP_BUILD_LABEL = "2026.07-unified.764";
+/** Shown on Profile so testers can confirm the deployed build. Bump when shipping UI to master. `.765` preview walk P0s. */
+export const APP_BUILD_LABEL = "2026.07-unified.765";
 
 /**
  * Athlete-facing marketing version. Distinct from `APP_BUILD_LABEL`, which

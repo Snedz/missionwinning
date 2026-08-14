@@ -26,7 +26,25 @@ When adding a doc:
 
 | File | Absorbed by / note |
 |------|---------------------|
-| [log/LOG-rotate-685-for-747.md](./log/LOG-rotate-685-for-747.md) | rotated 2026-08-13 for `.747` blue-team P0 harden (`.685`) |
+| [log/LOG-rotate-750-for-765.md](./log/LOG-rotate-750-for-765.md) | rotated 2026-08-13 for `.765` Preview walk P0s (`.750`) |
+| [log/LOG-rotate-749-for-764.md](./log/LOG-rotate-749-for-764.md) | rotated 2026-08-13 for `.764` Free plate math + warmup on the Train set row (`.749`) |
+| [log/LOG-rotate-748-for-763.md](./log/LOG-rotate-748-for-763.md) | rotated 2026-08-13 for `.763` Home gym kit on the free logger (`.748`) |
+| [log/LOG-rotate-747-for-762.md](./log/LOG-rotate-747-for-762.md) | rotated 2026-08-13 for `.762` F-017 first-set verify iterate (`.747`) |
+| [log/LOG-rotate-746-for-761.md](./log/LOG-rotate-746-for-761.md) | rotated 2026-08-13 for `.761` e1RM from logged sets (educational) (`.746`) |
+| [log/LOG-rotate-745-for-760.md](./log/LOG-rotate-745-for-760.md) | rotated 2026-08-13 for `.760` Vs last session on the set row (`.745`) |
+| [log/LOG-rotate-744-for-759.md](./log/LOG-rotate-744-for-759.md) | rotated 2026-08-13 for `.759` Last-set ghost on the Train set row (`.744`) |
+| [log/LOG-rotate-743-for-758.md](./log/LOG-rotate-743-for-758.md) | rotated 2026-08-13 for `.758` Bodyweight + load on the Train set row (`.743`) |
+| [log/LOG-rotate-714-for-757.md](./log/LOG-rotate-714-for-757.md) | rotated 2026-08-13 for `.757` Optional tempo on the set row (`.714`) |
+| [log/LOG-rotate-697-for-756.md](./log/LOG-rotate-697-for-756.md) | rotated 2026-08-13 for `.756` Optional RIR on the set row (`.697`) |
+| [log/LOG-rotate-696-for-755.md](./log/LOG-rotate-696-for-755.md) | rotated 2026-08-13 for `.755` Unilateral L/R on the set log (`.696`) |
+| [log/LOG-rotate-695-for-754.md](./log/LOG-rotate-695-for-754.md) | rotated 2026-08-13 for `.754` Drop sets on the set log (`.695`) |
+| [log/LOG-rotate-694-for-753.md](./log/LOG-rotate-694-for-753.md) | rotated 2026-08-13 for `.753` Habit week count + HABIT contract (`.694`) |
+| [log/LOG-rotate-693-for-752.md](./log/LOG-rotate-693-for-752.md) | rotated 2026-08-13 for `.752` Garage swap on the exercise row (`.693`) |
+| [log/LOG-rotate-692-for-751.md](./log/LOG-rotate-692-for-751.md) | rotated 2026-08-13 for `.751` Learn vs Strong / Hevy / Fitbod citation pages (`.692`) |
+| [log/LOG-rotate-691-for-750.md](./log/LOG-rotate-691-for-750.md) | rotated 2026-08-13 for `.750` Session history list (`.691`) |
+| [log/LOG-rotate-690-for-749.md](./log/LOG-rotate-690-for-749.md) | rotated 2026-08-13 for `.749` Supersets on the set log (`.690`) |
+| [log/LOG-rotate-689-for-748.md](./log/LOG-rotate-689-for-748.md) | rotated 2026-08-13 for `.748` Exercise notes on the set log (`.689`) |
+| [log/LOG-rotate-685-for-747.md](./log/LOG-rotate-685-for-747.md) | rotated 2026-08-13 for `.747` Repeat last session from the log (`.685`) |
 | [log/LOG-rotate-684-for-746.md](./log/LOG-rotate-684-for-746.md) | rotated 2026-08-13 for `.746` F-017 first set without an account (`.684`) |
 | [log/LOG-rotate-680-for-745.md](./log/LOG-rotate-680-for-745.md) | rotated 2026-08-13 for `.745` rest timer last-rest (`.680`) |
 | [log/LOG-rotate-679-for-744.md](./log/LOG-rotate-679-for-744.md) | rotated 2026-08-13 for `.744` Dependabot security batch (`.679`) |

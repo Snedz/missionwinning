@@ -31,8 +31,8 @@
 | `pillars/` | Shared pillar panels, timed flows |
 | `today/` | Today dashboard — [today/INDEX.md](today/INDEX.md) |
 | `track/` | GPS / activity panels |
-| `profile/` | Profile settings cards (privacy, backup, referral, wearables, What’s New) |
-| `social/` | Mission Server messenger chrome — [social/INDEX.md](social/INDEX.md) |
+| `profile/` | Profile settings cards (privacy, backup, referral, wearables, What’s New). `HomeGymKitCard` — Account day-one Home gym kit (`.763`) |
+| `public/` | Public SEO chrome + `LaunchNotifyForm` (landing / `/private` email notify — no checkout) |
 | `ui/` | Design system primitives (`AdaptiveOverlay` — the one sheet shell, with a pinned `footer` slot; `EmptyState`, `ErrorState`, `Skeleton`, `MeterBar`, `ScoreNumeral`, `RuledRadioGroup`, `OtpInput`, `FileDropZone`, `FileUploadRow`, `HoldToConfirmButton`, `DangerZone`, shadcn) |
 | `workout/` | Active workout — [workout/INDEX.md](workout/INDEX.md) |
 
