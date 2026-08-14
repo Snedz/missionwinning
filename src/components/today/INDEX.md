@@ -18,6 +18,7 @@
 | `MuscleFreshnessStrip.tsx` | Muscle days/REC glance — chips at `md+`, ruled rows with an 8px meter on compact |
 | `CrossPillarCoachChips.tsx` | Move/Fuel/Mind suggestions |
 | `Sparkline.tsx` | Shared mini chart |
+| `TodayReentryCard.tsx` | S7 0.1 (beta) quiet line on the Start field (`JourneyHero`) |
 
 ## Related
 

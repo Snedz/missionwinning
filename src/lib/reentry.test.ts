@@ -3,9 +3,12 @@ import assert from 'node:assert/strict';
 import {
   computeReentry,
   daysSinceLastSession,
+  doseScaleForShortSession,
   doseScalePercent,
   easedSetCount,
+  formatReentryQuietLine,
   REENTRY_MIN_DAYS,
+  REENTRY_SHORT_MINUTES,
   scaleExercisesByDose,
 } from '@/lib/reentry';
 import type { CompletedWorkoutLog } from '@/types';
@@ -34,7 +37,7 @@ test('reentry', async (t) => {
     assert.equal(r.show, false, 'I-Day owns the never-logged story');
   });
 
-  await t.test('rest days are not a missed day', () => {
+  await t.test('one rest day is not a missed day', () => {
     for (let d = 0; d < REENTRY_MIN_DAYS; d++) {
       const r = computeReentry([log(d)], NOW);
       assert.equal(r.show, false, `${d} days off must not trigger re-entry`);
@@ -42,29 +45,48 @@ test('reentry', async (t) => {
     }
   });
 
-  await t.test('a few days off eases the dose without making a fuss', () => {
+  await t.test('two calendar days off is the quiet short session', () => {
+    const r = computeReentry([log(2)], NOW);
+    assert.equal(r.show, true);
+    assert.equal(r.tone, 'gap');
+    assert.equal(r.daysSince, 2);
+    assert.equal(
+      formatReentryQuietLine(r),
+      "Two days off. Here's the 20-minute version."
+    );
+    assert.equal(r.doseScale, doseScaleForShortSession(30));
+  });
+
+  await t.test('a few days off eases toward twenty minutes without a fuss', () => {
     const r = computeReentry([log(5)], NOW);
     assert.equal(r.show, true);
     assert.equal(r.tone, 'gap');
-    assert.ok(r.doseScale < 1 && r.doseScale > 0.5, 'a small gap should not halve the session');
+    assert.ok(r.doseScale < 1, 'a gap should not start the full session');
+    assert.equal(r.doseScale, doseScaleForShortSession(30));
   });
 
-  await t.test('two weeks off halves the dose', () => {
+  await t.test('two weeks off is long-gap, still the short session', () => {
     const r = computeReentry([log(20)], NOW);
     assert.equal(r.tone, 'long-gap');
-    assert.equal(r.doseScale, 0.5);
+    assert.equal(r.show, true);
+    assert.equal(r.doseScale, doseScaleForShortSession(30));
   });
 
   await t.test('months off is treated as lapsed, not a continuing plan', () => {
     const r = computeReentry([log(200)], NOW);
     assert.equal(r.tone, 'lapsed');
     assert.equal(r.show, true);
-    assert.equal(r.doseScale, 0.5);
+    assert.equal(r.doseScale, doseScaleForShortSession(30));
+    assert.equal(
+      formatReentryQuietLine(r),
+      "A while off. Here's the 20-minute version.",
+      'lapsed copy does not name a large absence'
+    );
   });
 
   await t.test('the most recent session wins regardless of array order', () => {
-    const history = [log(30), log(2), log(90)];
-    assert.equal(daysSinceLastSession(history, NOW), 2);
+    const history = [log(30), log(1), log(90)];
+    assert.equal(daysSinceLastSession(history, NOW), 1);
     assert.equal(computeReentry(history, NOW).show, false);
   });
 
@@ -87,6 +109,48 @@ test('reentry', async (t) => {
 
   await t.test('a future timestamp never produces a negative gap', () => {
     assert.equal(daysSinceLastSession([log(-3)], NOW), 0);
+  });
+
+  await t.test('calendar days, not elapsed 24h blocks', () => {
+    // Monday 22:00 → Wednesday 08:00 is two local calendar days and ~34 hours.
+    const wednesdayMorning = new Date(2026, 6, 22, 8, 0, 0).getTime();
+    const mondayEvening = new Date(2026, 6, 20, 22, 0, 0).toISOString();
+    const history = [{ ...log(0), completedAt: mondayEvening, startedAt: mondayEvening }];
+    assert.equal(daysSinceLastSession(history, wednesdayMorning), 2);
+    assert.equal(computeReentry(history, wednesdayMorning).show, true);
+  });
+
+  await t.test('doseScaleForShortSession never grows the ask', () => {
+    assert.equal(doseScaleForShortSession(15), 1, 'already short stays full');
+    assert.equal(doseScaleForShortSession(40), 0.5);
+    assert.equal(doseScaleForShortSession(100), 0.4, 'floor so the session does not vanish');
+    assert.equal(doseScaleForShortSession(0), 0.5);
+  });
+
+  await t.test('a log with no duration falls back to a typical session', () => {
+    const r = computeReentry(
+      [
+        {
+          ...log(8),
+          durationSeconds: 0,
+          exercises: [],
+        },
+      ],
+      NOW
+    );
+    assert.equal(r.show, true);
+    assert.equal(r.doseScale, 0.5, '40 min assumed → 20/40');
+  });
+
+  await t.test('quiet line never uses streak or missed-you copy', () => {
+    for (const days of [2, 3, 5, 11, 20]) {
+      const line = formatReentryQuietLine({
+        daysSince: days,
+        tone: days >= 14 ? 'long-gap' : 'gap',
+      });
+      assert.doesNotMatch(line, /streak|missed|failed|guilt|quit/i, line);
+      assert.match(line, new RegExp(`${REENTRY_SHORT_MINUTES}-minute version`));
+    }
   });
 
   await t.test('easedSetCount always leaves something to do', () => {

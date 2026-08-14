@@ -252,6 +252,9 @@ type TodayStrings = {
   todayReentryLongBody: string;
   todayReentryBody: string;
   todayReentryEyebrow: string;
+  /** S7 quiet line: "{{off}}. Here's the {{minutes}}-minute version." */
+  todayReentryQuietLine: string;
+  todayReentryOffLapsed: string;
   todayMissionScoreFromLogs: string;
   todayScoreAfterFirstLog: string;
   todayScoreNotMeasured: string;
@@ -553,6 +556,8 @@ const en: TodayStrings = {
   todayReentryLongBody: "Today's session is about {{pct}}% of usual so the first one back is easy to finish. Your history is still here.",
   todayReentryBody: "Today's session is about {{pct}}% of usual sets. Get it done and the week rebuilds itself.",
   todayReentryEyebrow: 'Back in',
+  todayReentryQuietLine: "{{off}}. Here's the {{minutes}}-minute version.",
+  todayReentryOffLapsed: 'A while off',
   todayMissionScoreFromLogs: 'From your logs',
   todayScoreAfterFirstLog: 'After your first log',
   todayScoreNotMeasured: 'Not measured',
@@ -868,6 +873,8 @@ const zh: TodayStrings = {
   todayReentryLongBody: en.todayReentryLongBody,
   todayReentryBody: en.todayReentryBody,
   todayReentryEyebrow: en.todayReentryEyebrow,
+  todayReentryQuietLine: en.todayReentryQuietLine,
+  todayReentryOffLapsed: en.todayReentryOffLapsed,
   todayMissionScoreFromLogs: en.todayMissionScoreFromLogs,
   todayScoreAfterFirstLog: en.todayScoreAfterFirstLog,
   todayScoreNotMeasured: en.todayScoreNotMeasured,
@@ -1136,6 +1143,8 @@ const id: TodayStrings = {
   todayReentryLongBody: en.todayReentryLongBody,
   todayReentryBody: en.todayReentryBody,
   todayReentryEyebrow: en.todayReentryEyebrow,
+  todayReentryQuietLine: en.todayReentryQuietLine,
+  todayReentryOffLapsed: en.todayReentryOffLapsed,
   todayMissionScoreFromLogs: en.todayMissionScoreFromLogs,
   todayScoreAfterFirstLog: en.todayScoreAfterFirstLog,
   todayScoreNotMeasured: en.todayScoreNotMeasured,
@@ -1419,6 +1428,8 @@ const th: TodayStrings = {
   todayReentryLongBody: en.todayReentryLongBody,
   todayReentryBody: en.todayReentryBody,
   todayReentryEyebrow: en.todayReentryEyebrow,
+  todayReentryQuietLine: en.todayReentryQuietLine,
+  todayReentryOffLapsed: en.todayReentryOffLapsed,
   todayMissionScoreFromLogs: en.todayMissionScoreFromLogs,
   todayScoreAfterFirstLog: en.todayScoreAfterFirstLog,
   todayScoreNotMeasured: en.todayScoreNotMeasured,
@@ -1692,6 +1703,8 @@ const ar: TodayStrings = {
   todayReentryLongBody: en.todayReentryLongBody,
   todayReentryBody: en.todayReentryBody,
   todayReentryEyebrow: en.todayReentryEyebrow,
+  todayReentryQuietLine: en.todayReentryQuietLine,
+  todayReentryOffLapsed: en.todayReentryOffLapsed,
   todayMissionScoreFromLogs: en.todayMissionScoreFromLogs,
   todayScoreAfterFirstLog: en.todayScoreAfterFirstLog,
   todayScoreNotMeasured: en.todayScoreNotMeasured,

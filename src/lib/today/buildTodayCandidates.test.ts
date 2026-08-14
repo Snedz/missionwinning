@@ -22,10 +22,10 @@ function densestEvening(overrides: Partial<BuildTodayCandidatesInput> = {}): Bui
 }
 
 describe('buildTodayCandidates', () => {
-  it('pins only beta, header, and reentry when they mount', () => {
+  it('pins only beta and header when they mount', () => {
     const specs = buildTodayCandidates(densestEvening());
     for (const s of specs) {
-      if (s.key === 'beta' || s.key === 'header' || s.key === 'reentry') {
+      if (s.key === 'beta' || s.key === 'header') {
         assert.equal(s.pinned, true, `${s.key} must be pinned`);
       } else {
         assert.equal(s.pinned, undefined, `${s.key} must not be pinned`);
@@ -46,7 +46,6 @@ describe('buildTodayCandidates', () => {
       'beta',
       'header',
       'intent',
-      'reentry',
       'continuity',
       'dashboard',
       'freshness',
@@ -121,12 +120,23 @@ describe('buildTodayCandidates', () => {
     assert.ok(more.includes('dashboard'), 'Mission Score spills on densest evening');
   });
 
+  it('does not spend a Today block on the missed-day line', () => {
+    const specs = buildTodayCandidates(densestEvening());
+    assert.ok(
+      !specs.some((s) => s.key === 'reentry'),
+      '0.1 beta: the quiet line lives on the Start field, not a pinned card'
+    );
+    const open = buildTodayCandidates(densestEvening({ sessionOpen: true }));
+    assert.ok(!open.some((s) => s.key === 'reentry'));
+  });
+
   it('HomeTodayDashboard builds from buildTodayCandidates rather than a second ladder', () => {
     const src = readFileSync(
       path.join(import.meta.dirname, '..', '..', 'page-components', 'HomeTodayDashboard.tsx'),
       'utf8'
     );
     assert.match(src, /buildTodayCandidates\(/);
+    assert.match(src, /reentry=\{/);
     assert.doesNotMatch(
       src,
       /staggerBlocks\.push\(\{\s*key:\s*'coach-today'/,

@@ -25,6 +25,9 @@ A 0–100 grade for **this week**, built from all six pillars — train, fuel, m
 **What is readiness?**  
 An estimate of how recovered your muscles are based on recent training — shown on Today.
 
+**I missed a couple of days — did I blow a streak?**  
+No. Today shows a quiet line such as “Two days off. Here’s the 20-minute version.” and starts a shorter session. Nothing to catch up on, and no streak guilt.
+
 ## Mission Coach
 
 **Why is Coach locked?**  

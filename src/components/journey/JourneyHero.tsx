@@ -14,6 +14,8 @@ import {
   resolveJustGoHeroCopy,
   type JustGoHeroMeta,
 } from '@/lib/justGoHeroMeta';
+import { TodayReentryCard } from '@/components/today/TodayReentryCard';
+import type { Reentry } from '@/lib/reentry';
 
 export function JourneyStrip({ action }: { action: JourneyAction }) {
   const { t } = useTranslation();
@@ -69,6 +71,11 @@ interface JourneyHeroProps {
   justGoMeta?: JustGoHeroMeta | null;
   /** `workoutHistory.length` — week-1 second-session CTA when exactly 1 (`.291`). */
   completedSessions?: number;
+  /**
+   * 0.1 (beta) missed-day line. When set, it *is* the Start field's one line —
+   * unclamped, no streak. Hidden while a workout is already open.
+   */
+  reentry?: Reentry | null;
 }
 
 export function JourneyHero({
@@ -77,6 +84,7 @@ export function JourneyHero({
   activeWorkout,
   justGoMeta,
   completedSessions,
+  reentry,
 }: JourneyHeroProps) {
   const { t } = useTranslation();
   const isCompact = useIsCompact();
@@ -112,6 +120,8 @@ export function JourneyHero({
         })
       : action.description;
 
+  const quietLine = reentry?.show && !activeWorkout ? reentry : null;
+
   /*
    * Desktop keeps the form handoff 2 drew: a full block in the content flow,
    * with the title and the whole description, and an action sized to its own
@@ -129,7 +139,11 @@ export function JourneyHero({
           <h3 className="font-display text-[1.6rem] font-extrabold leading-[1.05] md:text-[1.9rem]">
             {title}
           </h3>
-          <p className="poster-sub mt-1.5 text-sm leading-relaxed tabular-nums">{description}</p>
+          {quietLine ? (
+            <TodayReentryCard reentry={quietLine} />
+          ) : (
+            <p className="poster-sub mt-1.5 text-sm leading-relaxed tabular-nums">{description}</p>
+          )}
         </div>
         {/* `w-auto` beats `.primary-action`'s `w-full` — utilities layer after
             components. The handoff's `.btn` is `inline-flex`, i.e. sized to its
@@ -168,11 +182,14 @@ export function JourneyHero({
       <p className="poster-kicker mb-2 text-[11px] font-semibold uppercase tracking-[0.12em]">
         {kicker}
       </p>
-      {/* One line, clamped. The description is why this action and not another,
-          which is worth keeping; the full paragraph is not worth the fold. */}
-      <p className="poster-sub mb-2.5 line-clamp-1 text-sm leading-relaxed tabular-nums">
-        {description}
-      </p>
+      {/* One line. Missed-day re-entry (0.1 beta) is the full sentence, unclamped. */}
+      {quietLine ? (
+        <TodayReentryCard reentry={quietLine} />
+      ) : (
+        <p className="poster-sub mb-2.5 line-clamp-1 text-sm leading-relaxed tabular-nums">
+          {description}
+        </p>
+      )}
       <button
         type="button"
         onClick={onPrimaryClick}
