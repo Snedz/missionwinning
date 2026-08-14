@@ -223,11 +223,11 @@ const figures = {
 
   'win-score-offline': frame(
     'CH 4 · SCORE',
-    'Win Score rewards consistency — offline first',
+    'Mission Score rewards consistency — offline first',
     `
     <circle cx="280" cy="300" r="100" fill="none" stroke="${INK}" stroke-width="3"/>
     <circle cx="280" cy="300" r="70" fill="none" stroke="${RED}" stroke-width="4"/>
-    <text x="280" y="295" text-anchor="middle" fill="${INK}" font-family="Archivo, system-ui, sans-serif" font-size="22" font-weight="700">Win</text>
+    <text x="280" y="295" text-anchor="middle" fill="${INK}" font-family="Archivo, system-ui, sans-serif" font-size="16" font-weight="700">Mission</text>
     <text x="280" y="325" text-anchor="middle" fill="${MUTED}" font-family="Archivo, system-ui, sans-serif" font-size="14">Score</text>
     <path d="M400 300 L500 300" stroke="${RED}" stroke-width="3"/>
     <polygon points="500,292 512,300 500,308" fill="${RED}"/>

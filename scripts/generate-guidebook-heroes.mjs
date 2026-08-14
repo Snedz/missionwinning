@@ -129,7 +129,7 @@ const heroes = {
 
   'getting-started-mw-hero': frame(
     'Getting Started',
-    'I-Day · six pillars · Win Score',
+    'I-Day · six pillars · Mission Score',
     `
     ${[
       ['01', 'TRAIN', 200, 300],
@@ -148,7 +148,7 @@ const heroes = {
       )
       .join('')}
     <rect x="1040" y="400" width="120" height="120" fill="${INK}"/>
-    <text x="1100" y="470" text-anchor="middle" fill="${PAPER}" font-family="Archivo, system-ui, sans-serif" font-size="36" font-weight="700">W</text>
+    <text x="1100" y="470" text-anchor="middle" fill="${PAPER}" font-family="Archivo, system-ui, sans-serif" font-size="36" font-weight="700">M</text>
     <text x="1100" y="560" text-anchor="middle" fill="${MUTED}" font-family="Archivo, system-ui, sans-serif" font-size="14">SCORE</text>
     `
   ),
