@@ -29,6 +29,7 @@
  * a document that has to carry its own fonts and photographs too.
  */
 import { fontFaces, photo } from './assets.mjs';
+import { INVITE_URL } from '../../sites/www/src/lib/appLinks.ts';
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -238,7 +239,7 @@ ${chapters}
     <h2>Train anywhere.<br>Win daily.</h2>
     <p>A free workout logger, and a coach that writes next week from what you actually did. No
       wearable, no gym, no account. Invite-only while the beta runs.</p>
-    <a class="cta" href="#">Request an invite &rarr;</a>
+    <a class="cta" href="${INVITE_URL}">Request an invite &rarr;</a>
 
     <p class="colophon">
       <b>On the plates.</b> Three of the five grounds are photographs; two are typographic, because

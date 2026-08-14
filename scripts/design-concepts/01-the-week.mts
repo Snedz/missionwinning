@@ -30,6 +30,7 @@ import { suggestNextSetTarget, type SetSnapshot } from '@/lib/workout/nextSetTar
 import { weightUnitLabel, type UnitsPref } from '@/lib/units';
 import { CONTENT_FLOORS } from '@/lib/contentFloors';
 import { fontFaces } from './assets.mjs';
+import { INVITE_URL } from '../../sites/www/src/lib/appLinks.ts';
 
 const UNITS: UnitsPref = 'metric';
 const UNIT = weightUnitLabel(UNITS);
@@ -292,7 +293,7 @@ body{
     <h2>Nothing, for the part you just used.</h2>
     <p>The logger and the weekly plan are free permanently — not a trial. No wearable, no gym, no
       account. Access is invite-only while the beta runs.</p>
-    <a class="cta" href="#">Request an invite &rarr;</a>
+    <a class="cta" href="${INVITE_URL}">Request an invite &rarr;</a>
 
     <p class="foot">
       <b>About these numbers.</b> The opening target is computed at build time by the same function
