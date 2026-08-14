@@ -60,6 +60,7 @@ const MUST_STAMP: { file: string; why: string }[] = [
   { file: 'app/private/PrivateTeaserClient.tsx', why: 'gated www (`/` while PRIVATE_MODE)' },
   { file: 'src/page-components/AboutPage.tsx', why: 'about body' },
   { file: 'src/components/public/PublicStatusBar.tsx', why: 'public chrome status strip' },
+  { file: 'src/components/marketing/MarketingNav.tsx', why: 'landing chrome status bar after Done' },
   { file: 'src/components/layout/Sidebar.tsx', why: 'desktop rail version chip' },
   { file: 'src/components/layout/MoreSheet.tsx', why: 'mobile More version chip' },
   { file: 'src/components/layout/AppLegalFooter.tsx', why: 'Profile/Account version chip' },
