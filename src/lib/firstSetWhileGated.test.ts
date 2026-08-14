@@ -96,18 +96,21 @@ describe('first set while gated (.768)', () => {
     assert.deepEqual(stale, [], `MUST_STAY_GATED stale entries:\n${stale.join('\n')}`);
   });
 
-  it('cold /private primary is Log a set → /welcome; waitlist is not poster-red', () => {
+  it('cold /private primary is Notify me; Log a set does not skip the door', () => {
     const teaser = read('app/private/PrivateTeaserClient.tsx');
     const notify = read('src/components/public/LaunchNotifyForm.tsx');
-    assert.match(teaser, /gateLogASet/);
-    assert.match(teaser, /href=["']\/welcome["']/);
-    assert.match(teaser, /gate-btn-primary/);
+    assert.doesNotMatch(
+      teaser,
+      /href=["']\/welcome["']/,
+      'cold poster must not send /welcome — that bypasses the gate'
+    );
+    assert.doesNotMatch(teaser, /gateLogASet/);
     const gateVariant = notify.slice(notify.indexOf("variant === 'gate'"));
-    assert.match(gateVariant, /gate-btn-secondary/);
+    assert.match(gateVariant, /gate-btn-primary/);
     assert.doesNotMatch(
       gateVariant,
-      /gate-btn-primary/,
-      'waitlist submit must not be the one red on /private'
+      /gate-btn-secondary/,
+      'waitlist Notify me is the one red on /private'
     );
   });
 

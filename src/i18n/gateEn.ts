@@ -19,11 +19,11 @@
 import { LOCAL_FIRST_COPY } from '@/lib/localFirstCopy';
 
 export const GATE_EN: Record<string, string> = {
-  gateEyebrow: 'Free beta',
+  gateEyebrow: 'Alpha',
   gateTitle1: 'Train anywhere.',
   gateTitle2: 'Win daily.',
   gateSubtitle:
-    'Free offline workout logging plus Mission Coach — weekly plans from your logs alone, no wearable. The logger stays free forever.',
+    'Free offline workout logging plus Mission Coach — weekly plans from your logs alone, no wearable. Full tools free in this Alpha; the logger stays free forever.',
   /**
    * `.766` — the mechanism, not the adjective. CN/HK respondents believed the
    * offline claim (3.97) and not the implementation; "offline" is the word an app
@@ -36,23 +36,23 @@ export const GATE_EN: Record<string, string> = {
   gateWaitlistTitle: 'Get notified',
   gateWaitlistPlaceholder: 'you@example.com',
   gateWaitlistEmailLabel: 'Email',
-  gateWaitlistSubmit: 'Get notified',
+  gateWaitlistSubmit: 'Notify me',
   gateWaitlistSubmitting: 'Joining…',
   gateWaitlistDone: "You're on the list.",
-  gateWaitlistDoneFoot: "We'll email you when the beta opens.",
-  gateWaitlistFoot: 'No spam — one email when the beta opens.',
+  gateWaitlistDoneFoot: "We'll email you when Alpha access is ready.",
+  gateWaitlistFoot: 'No spam — one email when Alpha access is ready.',
   gateWaitlistFailed: 'That did not save. Check your connection and try again.',
-  gateAccessSummary: 'Enter with code',
+  gateAccessSummary: 'Have an Alpha access code?',
   gateAccessLabel: 'Access code',
   gateAccessPlaceholder: 'Enter your access code',
   gateAccessSubmit: 'Enter with code',
   gateAccessChecking: 'Checking…',
   gateCheckingSession: 'Confirming access…',
   gateInviteEyebrow: 'Access code',
-  gateInviteHeadline: 'Enter your access code to join the beta.',
+  gateInviteHeadline: 'Enter your access code to join the Alpha.',
   gateInviteSubtitle:
     'Enter the access code from your email, then complete I-Day and log your first workout.',
-  gateBetaGuide: 'beta start guide',
+  gateBetaGuide: 'Alpha start guide',
   gateBetaGuideFoot: 'Have a code? See the',
   cinePublicLine: 'Train Anywhere. Win Daily.',
   cineHeroHeadline: 'Log a set. Offline.',
