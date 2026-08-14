@@ -19,10 +19,10 @@
 | [help/fuel-and-nutrition.md](help/fuel-and-nutrition.md) | Nutrition logging |
 | [help/fitness-test-and-school.md](help/fitness-test-and-school.md) | PFT + PE classes |
 | [help/pt-safety.md](help/pt-safety.md) | Hard sessions — stop is allowed |
+| [help/pregnancy-safety.md](help/pregnancy-safety.md) | Pregnancy / miscarriage / postpartum — educational, not care |
 | [help/premium-and-billing.md](help/premium-and-billing.md) | Super Bundle |
 | [help/privacy-and-data.md](help/privacy-and-data.md) | Data & consent |
 | [help/faq.md](help/faq.md) | FAQ |
-| [help/explore-places.md](help/explore-places.md) | Explore map, optional GPS |
 | [help/troubleshooting.md](help/troubleshooting.md) | Common fixes |
 
 ---
@@ -37,13 +37,11 @@
 | [DUAL_REPO.md](DUAL_REPO.md) | Product repo vs private mission-ops · `npm run ops:sync` |
 | [SECURITY_PUBLIC_OSS_AUDIT_2026-08-08.md](SECURITY_PUBLIC_OSS_AUDIT_2026-08-08.md) | Public OSS prep audit (2026-08-08) |
 | [contracts/INDEX.md](contracts/INDEX.md) | Identity · economy · module · AI interop contracts |
-| [TRANSPARENCY_PLAN.md](TRANSPARENCY_PLAN.md) | Visibility + Under the Hood (Account) — limits, weights, downloadable |
 | [SECRETS.md](SECRETS.md) | Secrets program · vaults · gitleaks · rotate-on-leak |
 | [FREE_BETA.md](FREE_BETA.md) | Free-first beta mute (LLC/EIN window) — hide all paid UI |
 | [ADAPTIVE_LAYOUT.md](ADAPTIVE_LAYOUT.md) | Window size classes · adaptive overlays (web + Android) |
 | [API.md](API.md) | HTTP API reference |
 | [AGENT_RECIPES.md](AGENT_RECIPES.md) | Agent task playbooks |
-| [places/PLAN.md](places/PLAN.md) | Frozen Explore places slice (Decision 009) |
 | [../CONTRIBUTING.md](../CONTRIBUTING.md) | Contributor guide |
 
 ---
@@ -56,8 +54,6 @@
 | [SOFT_LAUNCH_DAY.md](archive/SOFT_LAUNCH_DAY.md) | Flip-day checklist (after gates) |
 | [PUBLIC_FLIP_CHECKLIST.md](archive/PUBLIC_FLIP_CHECKLIST.md) | Offline, SW, Search Console smoke after public mode |
 | [SOCIAL_LAUNCH.md](SOCIAL_LAUNCH.md) | Beta + public social copy kit |
-| [MEDIA.md](MEDIA.md) | Representation contract — who appears; multicultural cast ≠ service territory (`supportedRegions.ts`) (`.736`) |
-| [MEDIA_CAST_PLAN.md](MEDIA_CAST_PLAN.md) | Frozen `.736` plan — multicultural exercise + www media, start with 006 `squats` |
 | [MEDIA_SYSTEM.md](MEDIA_SYSTEM.md) | Form / Learn / art / social asset pipeline · Google Flow daily credits · [`media/manifest.json`](../media/manifest.json) · [FLOW_PROMPTS.md](../media/FLOW_PROMPTS.md) |
 | [MASCOT.md](MASCOT.md) | Kalligator — brand mascot (placement, voice, anti-guilt) |
 | [brand-guidelines.md](brand-guidelines.md) | Brand voice, colors, logo rules · public `/press` · AI prompt block · Kalligator → [MASCOT.md](MASCOT.md) |
@@ -70,6 +66,7 @@
 | [PRELAUNCH_CAPITAL.md](PRELAUNCH_CAPITAL.md) | Unlimited-funds tiers: legal/ops/VA yes; paid ads no until week-4 |
 | [OUTREACH_VA_BRIEF.md](OUTREACH_VA_BRIEF.md) | Hire script for beta DM help (no ads) |
 | [LEGAL_SAFETY.md](LEGAL_SAFETY.md) | AI disclosure, arbitration, DMCA, store data inventory |
+| [PREGNANCY_SAFETY.md](PREGNANCY_SAFETY.md) | Pregnancy / miscarriage / postpartum — educational, counsel-hold |
 | [PAY_READY_LEGAL.md](PAY_READY_LEGAL.md) | Six docs before payments · refunds · DPA/MSA templates |
 | [legal/DPA.md](legal/DPA.md) | B2B/school DPA draft (docs-only) |
 | [legal/MSA_TEMPLATE.md](legal/MSA_TEMPLATE.md) | B2B MSA draft (no consumer SLA promises) |
@@ -83,8 +80,6 @@
 | [WEARABLES.md](WEARABLES.md) | Apple / Google / Whoop / Strava wearables strategy + unlock |
 | [TRACK_D_GO_LIVE.md](archive/TRACK_D_GO_LIVE.md) | Go-live verify commands (`launch-verify`, Stripe, Supabase) |
 | [POST_LAUNCH_CADENCE.md](POST_LAUNCH_CADENCE.md) | Week-4 retention wall + weekly ops |
-| [METRICS.md](METRICS.md) | Boss metric definition — working-set events, what is not counted, no invented traction |
-| [WEEK4_LOGGER_EVENTS_PLAN.md](WEEK4_LOGGER_EVENTS_PLAN.md) | Frozen `.740` plan for those events |
 | **[THESIS.md](THESIS.md)** | **Start here for the idea.** What the product is on one page: three layers, the two-beat wedge, ICP, what is actually shipped vs thin, the honest moat, the open questions |
 | [CREATIVE_MONOPOLY.md](CREATIVE_MONOPOLY.md) | Zero to One filter: trait scores, contrarian secret, beachhead of 10, founder checklist (not a second roadmap) |
 | [MIGRATION_FOUNDER_PACK.md](MIGRATION_FOUNDER_PACK.md) | One-sitting Supabase apply order (pending free-beta set) + week-4 proof |
@@ -142,7 +137,6 @@ Root keeps only the spine (README · CONTEXT · AGENTS · INDEX · vision · ORC
 | [CLUB_PLAN.md](CLUB_PLAN.md) | Club: points · tiers · collectibles · boards · arcade (phased plan, no code) |
 | [IDENTITY_SOCIAL_PLAN.md](IDENTITY_SOCIAL_PLAN.md) | The `You` surface · Athlete Page · the Log↔Social domain boundary and its contracts |
 | [LAUNCH_RUNBOOK.md](LAUNCH_RUNBOOK.md) | Founder critical path |
-| [overnight/INDEX.md](overnight/INDEX.md) | E-Day / overnight sitting plans (`.728` ungated Preview) |
 | [ENV.md](ENV.md) | Environment variables |
 | [PROTECTION.md](PROTECTION.md) | Security checklist |
 | [BETA_INVITE.md](BETA_INVITE.md) | Beta kit |

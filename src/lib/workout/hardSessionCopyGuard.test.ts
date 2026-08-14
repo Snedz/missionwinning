@@ -36,6 +36,7 @@ const HARD_SESSION_KEYS = [
   'hardSessionTitle',
   'hardSessionLead',
   'hardSessionStop',
+  'hardSessionStopPregnancy',
   'hardSessionNotCare',
   'hardSessionEmergency',
   'hardSessionClinician',

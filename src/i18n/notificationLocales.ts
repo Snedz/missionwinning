@@ -211,6 +211,16 @@ const NOTIFICATION_EN: Record<string, string> = {
   unitsAffectsHint: 'Affects calculators and new logs. Default is metric.',
   languageHint: 'Switch the app language. Names stay in native form.',
   trainingGoalsHint: 'Used for program recommendations.',
+  pregnancyFlagTitle: 'Pregnancy & postpartum',
+  pregnancyFlagHint:
+    'Optional. Stored on this device. Never required to log. Stopping is always allowed.',
+  pregnancyFlagNone: 'None',
+  pregnancyFlagPregnant: 'Pregnant',
+  pregnancyFlagPostpartum: 'Postpartum',
+  pregnancyFlagStop:
+    'If you have bleeding, cramping, feel faint, have chest pain, or cannot talk: stop and get help. This app is not emergency services.',
+  pregnancyFlagNotCare:
+    'This is not prenatal care and does not prevent miscarriage or complications. Not medical advice — ask your clinician.',
 };
 
 const nl = (over: Record<string, string>): Record<string, string> => ({

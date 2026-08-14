@@ -108,6 +108,7 @@ type TodayStrings = {
   todayMissionScoreDesc: string;
   todayCoachInsightTitle: string;
   todayCoachInsightDesc: string;
+  /** Chip CTA when the insight has no actionLabelKey (.743 coverage). */
   todayCoachChipAction: string;
   coachInsightHighRisk: string;
   coachInsightHighStrain: string;
@@ -405,7 +406,7 @@ const en: TodayStrings = {
   coachInsightNeedMove:
     'Training load is building — add mobility today to protect joints and stay on the path.',
   coachInsightNeedFuel:
-    'You\'re training hard but protein is lagging. Hit protein first in Fuel — log a plate, not a barcode.',
+    'You\'re training hard but protein is lagging. Log Fuel today to recover and grow.',
   coachInsightNeedMind:
     'Recovery is under stress. A short Mind session can help sleep, focus, and sticking with training — educational habit tools, not clinical care.',
   coachInsightSynergyMove:
@@ -704,7 +705,7 @@ const es: TodayStrings = {
   coachInsightNeedMove:
     'La carga de entrenamiento sube — añade movilidad hoy para proteger articulaciones.',
   coachInsightNeedFuel:
-    'Entrenas fuerte pero la proteína va rezagada. Prioriza proteína en Fuel — registra un plato, no un código de barras.',
+    'Entrenas fuerte pero la proteína va rezagada. Registra Fuel hoy para recuperar.',
   coachInsightNeedMind:
     'La recuperación está bajo estrés. Una sesión Mind breve ayuda al sueño y la constancia.',
   coachInsightSynergyMove:
@@ -963,7 +964,7 @@ const zh: TodayStrings = {
   todayMissionScoreDesc: '六大支柱共同贡献 — 训练、营养、活动、心理、追踪、学习。',
   todayCoachInsightTitle: '教练建议',
   todayCoachInsightDesc: '基于就绪度、负荷与恢复',
-  todayCoachChipAction: en.todayCoachChipAction,
+  todayCoachChipAction: '打开',
   coachInsightHighRisk: '评估显示风险较高。今天优先恢复、灵活性和轻度活动。',
   coachInsightHighStrain: '训练负荷高、恢复不足。灵活或休息日会让你更强归来。',
   coachInsightPrimed: '你已准备好训练。{{focusLine}}。',
@@ -971,7 +972,7 @@ const zh: TodayStrings = {
   coachInsightLowReadiness: '就绪度偏低。在营养记录蛋白质、尝试心理呼吸，或今天轻一点。',
   coachInsightSteady: '稳步前进。准备好时 {{focusLine}}。',
   coachInsightNeedMove: '训练负荷在累积——今天做灵活性训练保护关节。',
-  coachInsightNeedFuel: '训练很猛但蛋白质不足。先补蛋白 — 记一盘菜，不要扫条码。',
+  coachInsightNeedFuel: '训练很猛但蛋白质不足。今天记录饮食以恢复和增长。',
   coachInsightNeedMind: '恢复压力较大。简短的正念练习有助于睡眠和坚持。',
   coachInsightSynergyMove: '训练周表现不错——配合灵活性训练持续进步。',
   coachInsightNeedTrack: '训练很稳定——在 Track 记录一次户外步行或跑步，补全健康图景。',
@@ -1232,7 +1233,7 @@ const id: TodayStrings = {
   todayMissionScoreDesc: 'Enam pilar berkontribusi — Train, Fuel, Move, Mind, Track, Learn.',
   todayCoachInsightTitle: 'Wawasan coach',
   todayCoachInsightDesc: 'Berdasarkan kesiapan, beban, dan pemulihan',
-  todayCoachChipAction: en.todayCoachChipAction,
+  todayCoachChipAction: 'Buka',
   coachInsightHighRisk:
     'Asesmen menandai risiko tinggi. Prioritaskan pemulihan, mobilitas, dan gerakan ringan hari ini.',
   coachInsightHighStrain:
@@ -1246,7 +1247,7 @@ const id: TodayStrings = {
   coachInsightNeedMove:
     'Beban latihan meningkat — tambahkan mobilitas hari ini untuk melindungi sendi.',
   coachInsightNeedFuel:
-    'Latihan keras tapi protein tertinggal. Protein dulu di Fuel — catat sepiring, bukan barcode.',
+    'Latihan keras tapi protein tertinggal. Catat Fuel hari ini untuk pulih.',
   coachInsightNeedMind:
     'Pemulihan under stress. Sesi Mind singkat membantu tidur dan konsistensi.',
   coachInsightSynergyMove:
@@ -1513,7 +1514,7 @@ const th: TodayStrings = {
   todayMissionScoreDesc: 'หกเสาหลักมีส่วน — Train, Fuel, Move, Mind, Track, Learn',
   todayCoachInsightTitle: 'คำแนะนำโค้ช',
   todayCoachInsightDesc: 'จากความพร้อม โหลด และการฟื้นตัว',
-  todayCoachChipAction: en.todayCoachChipAction,
+  todayCoachChipAction: 'เปิด',
   coachInsightHighRisk: 'การประเมินบ่งชี้ความเสี่ยงสูง วันนี้เน้นฟื้นตัว ความคล่องตัว และการเคลื่อนไหวเบา',
   coachInsightHighStrain: 'โหลดสูงแต่ฟื้นตัวต่ำ วันพักหรือ mobility จะช่วยกลับมาแข็งแกร่ง',
   coachInsightPrimed: 'คุณพร้อมฝึก {{focusLine}}',
@@ -1521,7 +1522,7 @@ const th: TodayStrings = {
   coachInsightLowReadiness: 'ความพร้อมต่ำ บันทึกโปรตีนใน Fuel ลอง Mind หรือเบาวันนี้',
   coachInsightSteady: 'ก้าวหน้าสม่ำเสมอ {{focusLine}} เมื่อพร้อม',
   coachInsightNeedMove: 'โหลดเทรนกำลังสะสม — เพิ่ม mobility วันนี้เพื่อปกป้องข้อต่อ',
-  coachInsightNeedFuel: 'เทรนหนักแต่โปรตีนตามไม่ทัน ใส่โปรตีนก่อนใน Fuel — บันทึกจาน ไม่ใช่บาร์โค้ด',
+  coachInsightNeedFuel: 'เทรนหนักแต่โปรตีนตามไม่ทัน บันทึก Fuel วันนี้เพื่อฟื้นตัว',
   coachInsightNeedMind: 'การฟื้นตัวตึงเครียด เซสชัน Mind สั้นๆ ช่วยการนอนและความสม่ำเสมอ',
   coachInsightSynergyMove: 'สัปดาห์เทรนดี — จับคู่ mobility เพื่อก้าวหน้าต่อเนื่อง',
   coachInsightNeedTrack: 'เทรนสม่ำเสมอ — บันทึกเดินหรือวิ่งกลางแจ้งใน Track ให้ครบภาพ',
@@ -1784,7 +1785,7 @@ const ar: TodayStrings = {
   todayMissionScoreDesc: 'الركائز الست تساهم — Train وFuel وMove وMind وTrack وLearn.',
   todayCoachInsightTitle: 'نصيحة المدرب',
   todayCoachInsightDesc: 'بناءً على الجاهزية والحمولة والاستشفاء',
-  todayCoachChipAction: en.todayCoachChipAction,
+  todayCoachChipAction: 'افتح',
   coachInsightHighRisk: 'تقييمك أشار لخطر مرتفع. أولِّ استشفاءً وحركة خفيفة اليوم.',
   coachInsightHighStrain: 'حمولة عالية واستشفاء منخفض. يوم راحة أو movilidad يعيدك أقوى.',
   coachInsightPrimed: 'أنت جاهز للتمرين. {{focusLine}}.',
@@ -1792,7 +1793,7 @@ const ar: TodayStrings = {
   coachInsightLowReadiness: 'جاهزية منخفضة. سجّل بروتين في Fuel أو جرّب Mind أو خفّف اليوم.',
   coachInsightSteady: 'تقدّم ثابت. {{focusLine}} عندما تكون جاهزاً.',
   coachInsightNeedMove: 'حمولة التدريب تتراكم — أضف movilidad اليوم لحماية المفاصل.',
-  coachInsightNeedFuel: 'تدريب قوي لكن البروتين متأخر. ابدأ بالبروتين في Fuel — سجّل طبقاً لا باركود.',
+  coachInsightNeedFuel: 'تدريب قوي لكن البروtein متأخر. سجّل Fuel اليوم للتعافي.',
   coachInsightNeedMind: 'الاستشفاء تحت ضغط. جلسة Mind قصيرة تساعد النوم والاستمرارية.',
   coachInsightSynergyMove: 'أسبوع تدريب قوي — ادمج movilidad للتقدم بأمان.',
   coachInsightNeedTrack: 'تدريب منتظم — سجّل مشياً أو جرياً في Track لإكمال الصورة.',
@@ -1954,6 +1955,7 @@ const LOCALES: Partial<Record<string, TodayStrings>> = {
     todayMissionScoreDesc: 'Les six piliers comptent — Train, Fuel, Move, Mind, Track et Learn.',
     todayCoachInsightTitle: 'Conseil du coach',
     todayCoachInsightDesc: 'Selon votre préparation, charge et récupération',
+    todayCoachChipAction: 'Ouvrir',
     coachInsightHighRisk:
       'Votre évaluation indique un risque élevé. Priorisez récupération, mobilité et mouvement léger aujourd’hui.',
     coachInsightHighStrain:
@@ -1967,7 +1969,7 @@ const LOCALES: Partial<Record<string, TodayStrings>> = {
     coachInsightNeedMove:
       'La charge d’entraînement monte — ajoutez de la mobilité aujourd’hui pour protéger les articulations.',
     coachInsightNeedFuel:
-      'Vous vous entraînez fort mais les protéines traînent. Protéines d’abord dans Fuel — un assiette, pas un code-barres.',
+      'Vous vous entraînez fort mais les protéines traînent. Enregistrez Fuel aujourd’hui pour récupérer.',
     coachInsightNeedMind:
       'La récupération est sous stress. Une courte séance Mind aide le sommeil et la constance.',
     coachInsightSynergyMove:
@@ -2015,6 +2017,7 @@ const LOCALES: Partial<Record<string, TodayStrings>> = {
     todayBasicEncouragement:
       'Um passo de cada vez. Saúde para todos — treine, alimente-se, mova-se e aprenda.',
     todayStartWorkout: 'Começar treino de hoje',
+    todayCoachChipAction: 'Abrir',
     coachPlanTitle: 'Coach IA — plano semanal',
     coachPlanCta: 'Gerar esta semana',
   },
@@ -2122,6 +2125,7 @@ const LOCALES: Partial<Record<string, TodayStrings>> = {
     todayMissionScoreDesc: 'Alle sechs Säulen zählen — Train, Fuel, Move, Mind, Track und Learn.',
     todayCoachInsightTitle: 'Coach-Tipp',
     todayCoachInsightDesc: 'Basierend auf Bereitschaft, Belastung und Erholung',
+    todayCoachChipAction: 'Öffnen',
     coachInsightHighRisk:
       'Deine Bewertung zeigt ein hohes Risiko. Priorisiere heute Erholung, Mobilität und leichte Bewegung.',
     coachInsightHighStrain:
@@ -2135,7 +2139,7 @@ const LOCALES: Partial<Record<string, TodayStrings>> = {
     coachInsightNeedMove:
       'Die Trainingsbelastung steigt — füge heute Mobilität hinzu, um die Gelenke zu schützen.',
     coachInsightNeedFuel:
-      'Du trainierst hart, aber das Protein hinkt hinterher. Protein zuerst in Fuel — ein Teller, kein Barcode.',
+      'Du trainierst hart, aber das Protein hinkt hinterher. Protokolliere heute Fuel zur Erholung.',
     coachInsightNeedMind:
       'Die Erholung steht unter Stress. Eine kurze Mind-Einheit hilft Schlaf und Konstanz.',
     coachInsightSynergyMove:

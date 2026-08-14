@@ -9,6 +9,11 @@ import { useId, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Button } from '@/components/ui/button';
 import { AdaptiveOverlay } from '@/components/ui/AdaptiveOverlay';
+import {
+  hardSessionStopLine,
+  isPregnancySafetyHold,
+  loadPregnancyFlag,
+} from '@/lib/pregnancySafety';
 
 type Props = {
   open: boolean;
@@ -20,6 +25,9 @@ export function HardSessionWarningSheet({ open, onContinue, onBack }: Props) {
   const { t } = useTranslation();
   const titleId = useId();
   const continueRef = useRef<HTMLButtonElement | null>(null);
+  const flag = loadPregnancyFlag();
+  const stopLine = hardSessionStopLine(flag);
+  const holdOn = isPregnancySafetyHold(flag);
 
   return (
     <AdaptiveOverlay
@@ -59,11 +67,10 @@ export function HardSessionWarningSheet({ open, onContinue, onBack }: Props) {
             'A max-effort or timed test can be dangerous. This is not the default way to train.',
         })}
       </p>
-      <p className="text-sm leading-relaxed">
-        {t('hardSessionStop', {
-          defaultValue:
-            'Stop if you have chest pain, feel faint, have severe shortness of breath, or cannot talk.',
-        })}
+      <p className="text-sm leading-relaxed" data-testid="hard-session-stop">
+        {holdOn
+          ? t('hardSessionStopPregnancy', { defaultValue: stopLine })
+          : t('hardSessionStop', { defaultValue: stopLine })}
       </p>
       <p className="text-sm text-muted-foreground leading-relaxed">
         {t('hardSessionNotCare', {

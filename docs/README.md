@@ -17,6 +17,7 @@ User guides in plain language (no code paths):
 | [help/fuel-and-nutrition.md](help/fuel-and-nutrition.md) | Logging, barcode, photo estimate |
 | [help/fitness-test-and-school.md](help/fitness-test-and-school.md) | PFT, class codes, teacher PIN |
 | [help/pt-safety.md](help/pt-safety.md) | Hard sessions — stop is allowed; not medical care |
+| [help/pregnancy-safety.md](help/pregnancy-safety.md) | Pregnancy / miscarriage / postpartum — not medical care |
 | [help/premium-and-billing.md](help/premium-and-billing.md) | Super Bundle, free vs paid |
 | [help/privacy-and-data.md](help/privacy-and-data.md) | Your data, backup, youth consent |
 | [help/faq.md](help/faq.md) | Common questions |
@@ -46,7 +47,7 @@ User guides in plain language (no code paths):
 | [../CONTRIBUTING.md](../CONTRIBUTING.md) | Setup, PR workflow, where to put code |
 | [OPEN_SOURCE.md](OPEN_SOURCE.md) | AGPL · public flip · operator secrets |
 | [CLASSIFICATION.md](CLASSIFICATION.md) · [DUAL_REPO.md](DUAL_REPO.md) · [OPS_LOCAL.md](OPS_LOCAL.md) | Public product vs private mission-ops · local Continuity dashboard |
-| [contracts/INDEX.md](contracts/INDEX.md) | Habit · identity · economy · module · AI interop |
+| [contracts/INDEX.md](contracts/INDEX.md) | Identity · economy · module · AI interop |
 | [SECRETS.md](SECRETS.md) | Secrets program · vaults · gitleaks · rotate-on-leak |
 | [ENV.md](ENV.md) | Environment variables |
 | [../app/INDEX.md](../app/INDEX.md) | Routes and API inventory |
@@ -64,7 +65,6 @@ User guides in plain language (no code paths):
 | [AIKIDO.md](AIKIDO.md) | Aikido Cursor MCP + CRITICAL-deps CI gate |
 | [COMPLIANCE.md](COMPLIANCE.md) | Control monitor (SOC2/ISO/HIPAA map-only) |
 | [SEO_ANALYTICS.md](SEO_ANALYTICS.md) | PostHog + Search Console |
-| [METRICS.md](METRICS.md) | Week-4 boss metric — definition, exclusions, no invented traction |
 | [LIGHTHOUSE_BASELINE.md](LIGHTHOUSE_BASELINE.md) | Performance baselines |
 
 ### Legal & sourcing

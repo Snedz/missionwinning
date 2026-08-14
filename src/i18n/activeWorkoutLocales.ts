@@ -132,6 +132,8 @@ type ActiveWorkoutStrings = {
   hardSessionTitle: string;
   hardSessionLead: string;
   hardSessionStop: string;
+  /** Pregnancy-flag variant of the stop line (.746 v1). */
+  hardSessionStopPregnancy: string;
   hardSessionNotCare: string;
   hardSessionEmergency: string;
   hardSessionClinician: string;
@@ -157,6 +159,7 @@ type ActiveWorkoutStrings = {
   activeLastNoteLine: string;
   activeLoadingSession: string;
   activeLoadingSessionDesc: string;
+  /** Empty-state dock when re-entry dose is < 1 (.743 coverage). */
   activeReentryStart: string;
   activeReentryStartDesc: string;
   activeNextTargetLine: string;
@@ -354,6 +357,8 @@ const en: ActiveWorkoutStrings = {
     'A max-effort or timed test can be dangerous. This is not the default way to train.',
   hardSessionStop:
     'Stop if you have chest pain, feel faint, have severe shortness of breath, or cannot talk.',
+  hardSessionStopPregnancy:
+    'Stop if you have bleeding, cramping, chest pain, feel faint or dizzy, have severe shortness of breath, or cannot talk.',
   hardSessionNotCare: 'This app is not medical care and cannot prevent a medical emergency.',
   hardSessionEmergency: 'If this is an emergency, call local emergency services — not this app.',
   hardSessionClinician:
@@ -381,7 +386,8 @@ const en: ActiveWorkoutStrings = {
   activeLoadingSession: 'Restoring session…',
   activeLoadingSessionDesc: 'Reading the last workout saved on this device.',
   activeReentryStart: 'Start easier session',
-  activeReentryStartDesc: 'Smaller first session back — finishable, then the week rebuilds.',
+  activeReentryStartDesc:
+    'Smaller first session back — finishable, then the week rebuilds.',
   activeNextTargetLine: 'Next: {{reps}} × {{weight}} {{unit}}',
   activeNote: 'Note',
   activeNotePlaceholder: 'Note — "machine 3, seat 4", "left knee tight"…',
@@ -466,6 +472,25 @@ const es: ActiveWorkoutStrings = {
   activeNoWorkout: 'Sin entrenamiento activo',
   activeNoWorkoutDesc:
     'Inicia un entrenamiento rápido desde Hoy o lanza una rutina guardada desde el Builder.',
+  activeReentryStart: 'Empezar sesión más fácil',
+  activeReentryStartDesc:
+    'Primera sesión más corta al volver — terminable, luego la semana se reconstruye.',
+  hardSessionEyebrow: 'Antes de una sesión dura',
+  hardSessionTitle: 'Parar está permitido',
+  hardSessionLead:
+    'Un esfuerzo máximo o un test cronometrado puede ser peligroso. Esta no es la forma habitual de entrenar.',
+  hardSessionStop:
+    'Para si tienes dolor en el pecho, te sientes desfallecido, tienes falta de aire grave, o no puedes hablar.',
+  hardSessionStopPregnancy:
+    'Para si tienes sangrado, calambres, dolor en el pecho, te sientes desfallecida o mareada, tienes falta de aire grave, o no puedes hablar.',
+  hardSessionNotCare:
+    'Esta app no es atención médica y no puede prevenir una emergencia médica.',
+  hardSessionEmergency:
+    'Si esto es una emergencia, llama a los servicios de emergencia locales — no a esta app.',
+  hardSessionClinician:
+    'Habla con un clínico antes de tests de esfuerzo máximo si tienes una condición del corazón, respiratoria u otra de salud, o si no estás seguro.',
+  hardSessionContinue: 'Entiendo — empezar',
+  hardSessionBack: 'Atrás',
   activeStartWorkout: 'Iniciar entrenamiento',
   activeSetsCompleted: '{{done}}/{{total}} series completadas',
   activeCancel: 'Cancelar',
@@ -501,6 +526,25 @@ const es: ActiveWorkoutStrings = {
 const fr: ActiveWorkoutStrings = {
   ...en,
   activeLiveSession: 'Séance en direct',
+  activeReentryStart: 'Commencer une séance plus légère',
+  activeReentryStartDesc:
+    'Première séance plus courte au retour — finissable, puis la semaine se reconstruit.',
+  hardSessionEyebrow: 'Avant une séance intense',
+  hardSessionTitle: "S'arrêter est permis",
+  hardSessionLead:
+    "Un effort maximal ou un test chronométré peut être dangereux. Ce n'est pas la façon habituelle de s'entraîner.",
+  hardSessionStop:
+    'Arrêtez si vous avez une douleur thoracique, vous sentez défaillir, avez un essoufflement grave, ou ne pouvez pas parler.',
+  hardSessionStopPregnancy:
+    'Arrêtez si vous avez des saignements, des crampes, une douleur thoracique, vous sentez défaillir ou étourdie, avez un essoufflement grave, ou ne pouvez pas parler.',
+  hardSessionNotCare:
+    "Cette app n'est pas un soin médical et ne peut pas prévenir une urgence médicale.",
+  hardSessionEmergency:
+    "En cas d'urgence, appelez les services d'urgence locaux — pas cette app.",
+  hardSessionClinician:
+    "Parlez à un clinicien avant les tests d'effort maximal si vous avez une condition cardiaque, respiratoire ou autre, ou en cas de doute.",
+  hardSessionContinue: 'Je comprends — commencer',
+  hardSessionBack: 'Retour',
   activeCoachSessionEyebrow: 'Séance Mission Coach',
   activeOverloadLastLabel: 'Dernière',
   activeOverloadNextLabel: 'Prochaine',
@@ -712,6 +756,25 @@ const LOCALES: Partial<Record<string, ActiveWorkoutStrings>> = {
   pt: {
     ...en,
     activeNoWorkout: 'Nenhum treino ativo',
+    activeReentryStart: 'Começar sessão mais fácil',
+    activeReentryStartDesc:
+      'Primeira sessão menor na volta — terminável, depois a semana se reconstrói.',
+    hardSessionEyebrow: 'Antes de uma sessão dura',
+    hardSessionTitle: 'Parar é permitido',
+    hardSessionLead:
+      'Um esforço máximo ou um teste cronometrado pode ser perigoso. Esta não é a forma habitual de treinar.',
+    hardSessionStop:
+      'Pare se tiver dor no peito, se sentir desmaio, falta de ar grave, ou não conseguir falar.',
+    hardSessionStopPregnancy:
+      'Pare se tiver sangramento, cãibras, dor no peito, se sentir desmaio ou tontura, falta de ar grave, ou não conseguir falar.',
+    hardSessionNotCare:
+      'Este app não é atendimento médico e não pode prevenir uma emergência médica.',
+    hardSessionEmergency:
+      'Se isto for uma emergência, ligue para os serviços de emergência locais — não para este app.',
+    hardSessionClinician:
+      'Fale com um clínico antes de testes de esforço máximo se tiver uma condição cardíaca, respiratória ou outra de saúde, ou se não tiver certeza.',
+    hardSessionContinue: 'Entendi — começar',
+    hardSessionBack: 'Voltar',
     activeFinish: 'Concluir',
     activeLiveSession: 'Sessão ao vivo',
     activeCoachSessionEyebrow: 'Sessão Mission Coach',

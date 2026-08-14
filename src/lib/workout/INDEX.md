@@ -19,7 +19,7 @@ Root-level `@/lib/{name}` paths re-export from here for compatibility — prefer
 11. `activeWorkoutPulse.ts` — nav pulse flag without store  
 12. `workoutPersistLite.ts` — history/streak from localStorage (cold path)
 13. `sessionCheckInOffer.ts` — pure W1 gate: never Mind-sheet the first mission (`.293`)
-14. `hardSession.ts` — closed marks for the pre-start hard-session warning (`.727`); not a logger gate
+14. `hardSession.ts` — closed marks for the pre-start hard-session warning (`.727`); not a logger gate. Stop line selected by `pregnancySafety.ts` (`.746` v1)
 15. `loggerSpeed.ts` — Enter/Use-next helpers (`.288`)
 16. `activeSessionFinish.ts` — log-set payload/PR/rest/haptic + Victory + empty-finish toast (`.405`/`.409`)
 17. `activeSessionCheckIn.ts` — check-in dismiss + volume-trim toast kind (`.406`)
