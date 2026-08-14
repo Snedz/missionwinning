@@ -29,12 +29,28 @@ Loops demoted on replaced stills. No bulk I2V.
 Mutants: SIDE_IDS without a disk still → red; alias to an unwired target → red;
 library poster for `incline-bench` is null (not `pattern-push`).
 
-Label `.772` (onto master `.770`). `.771` reserved by the Alpha changelog
-branch. Excellence-Override below.
+Label `.772` (onto master `.771`).
 
 Excellence-Override: form Index media + `formMedia.ts` classified surface
 
-Rotated LOG oldest → [docs/archive/log/LOG-rotate-756-for-772.md](docs/archive/log/LOG-rotate-756-for-772.md).
+Rotated LOG oldest → [docs/archive/log/LOG-rotate-757-for-772.md](docs/archive/log/LOG-rotate-757-for-772.md).
+
+## 2026-08-14 — Alpha 0.1.0 changelog (`.771`)
+
+Athlete-facing name is **Alpha 0.1.0** (semver). The ship id stays the unified
+label. Public `/changelog` follows the xAI shape: date, `vX.Y.Z` chip, product
+heading, athlete bullets. Engineering stays in this file. Open alpha. Invite
+gate. Not a public flip. Not a `PRIVATE_MODE` flip.
+
+**Ship:** `APP_PUBLIC_VERSION = "0.1.0"` · `APP_PUBLIC_STAGE = "Alpha"`.
+`CHANGELOG.md` + `src/data/changelog.ts` lockstep. `/changelog` is public
+while gated, like `/about`. Footer, legal footer, About, sitemap.
+
+Label `.771` (onto master `.770`).
+
+Excellence-Override: alpha 0.1.0 changelog
+
+Rotated LOG oldest → [docs/archive/log/LOG-rotate-756-for-771.md](docs/archive/log/LOG-rotate-756-for-771.md).
 
 ## 2026-08-14 — Done beta code works on Vercel Preview (`.770`)
 
@@ -287,19 +303,3 @@ Excellence-Override below.
 Excellence-Override: bodyweight+load on the set row
 
 Rotated LOG oldest → [docs/archive/log/LOG-rotate-743-for-758.md](docs/archive/log/LOG-rotate-743-for-758.md).
-## 2026-08-13 — Optional tempo on the set row (`.757`)
-
-Optional **ecc/pause/con** (`3-1-1`) on a completed set. Empty is valid.
-Never required. Never blocks Log set. Last tempo for that exercise prefills
-the next logged set. Does not feed coach load or rewards.
-
-**Ship:** `tempo.ts` parse + last-tempo recall; `rateSetTempo` after log;
-compact `SetTempoField` on completed rows beside RPE/RIR. Sync keeps `side`,
-`rir`, and `tempo`. Offline, no account.
-
-Label `.757` (onto master `.756`). Originally reserved `.734`; landed as `.757` past master `.756`.
-Excellence-Override below.
-
-Excellence-Override: optional set-row tempo
-
-Rotated LOG oldest → [docs/archive/log/LOG-rotate-714-for-757.md](docs/archive/log/LOG-rotate-714-for-757.md).

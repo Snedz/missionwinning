@@ -6,13 +6,14 @@
  * CTA, the nav CTA and the red poster close all scrolled nowhere — on a page
  * whose whole brief was "one action, repeated". Adding
  * scripts/www-link-contract.mjs then found ten more the same day: the compare
- * rail's ten `/compare/{slug}` links, and the hero demo's `/welcome`.
+ * rail's ten `/compare/{slug}` links (hub deleted in `.668`; rail removed with
+ * it), and the hero demo's `/welcome`.
  *
  * The pattern behind all twelve is one mistake, made once and repeated: this
  * surface was written as if it were the Next app. It is not. `astro build`
- * emits exactly one HTML file. `/welcome`, `/compare/*`, `/private` and
- * `/api/leads` are Next routes on the Vercel origin, and a relative path to any
- * of them 404s on Cloudflare Pages.
+ * emits exactly one HTML file. `/welcome`, `/private` and `/api/leads` are Next
+ * routes on the Vercel origin, and a relative path to any of them 404s on
+ * Cloudflare Pages.
  *
  * So they are absolute, and they are all here rather than typed at each call
  * site — which is what makes the eventual move cheap. Which origin serves

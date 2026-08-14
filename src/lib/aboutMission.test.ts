@@ -42,6 +42,6 @@ test('README and vision.md first-paint the exact founder sentence', () => {
     readmeBeforeProduct.includes(FOUNDING_MISSION),
     'README must lead with the mission sentence before the surfaces table'
   );
-  assert.match(readmeBeforeProduct, /Beta 0\.1|0\.1 \(beta\)/);
+  assert.match(readmeBeforeProduct, /Alpha 0\.1\.0/);
   assert.doesNotMatch(readmeBeforeProduct, /everything app|WeChat|MySpace/i);
 });

@@ -5,7 +5,7 @@
 
 **The mission is advancement of civilization and propagation of consciousness to the stars.**
 
-**Beta 0.0.1** · Mission Winning 0.0.1 (beta)
+**Alpha 0.1.0** · Mission Winning Alpha 0.1.0
 
 **Train Anywhere. Win Daily.**
 
@@ -15,9 +15,9 @@ Adaptive AI coaching for train-anywhere athletes — free offline workout loggin
 
 ## Latest
 
-**Mission Winning 0.0.1 (beta)** — inspectable free core. Site gate (`PRIVATE_MODE`) is separate from GitHub visibility and is founder-owned.
+**Mission Winning Alpha 0.1.0** — inspectable free core. Site gate (`PRIVATE_MODE`) is separate from GitHub visibility and is founder-owned.
 
-Constitution: [vision.md](vision.md) · One-page product truth: [docs/THESIS.md](docs/THESIS.md)
+Constitution: [vision.md](vision.md) · One-page product truth: [docs/THESIS.md](docs/THESIS.md) · What shipped: [CHANGELOG.md](CHANGELOG.md) · [/changelog](/changelog)
 
 ---
 

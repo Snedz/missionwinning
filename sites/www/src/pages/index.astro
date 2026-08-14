@@ -22,9 +22,11 @@
  *   04 adapt       paper
  *   05 anywhere    photographic band
  *   06 free core   INK — the one contrasting field, about two-thirds down
- *   07 compare     paper
- *   08 questions   paper
- *   09 close       red
+ *   07 questions   paper
+ *   08 close       red
+ *
+ * Compare rail removed after `.668` deleted the Next `/compare` hub. Linking
+ * ten stories that 404 is worse than no rail.
  *
  * The action repeats on the cadence §11.4 measured (Freeletics Nutrition runs
  * one string every 740–1000pt) but only ONE instance is red. The others invert
@@ -42,7 +44,7 @@ import LogToPlanDemo from '../components/LogToPlanDemo.astro';
 import CoachAdaptDemo from '../components/CoachAdaptDemo.astro';
 import { appUrl } from '../lib/appLinks';
 import {
-  META, HERO, STATS, STATEMENTS, ADAPT, ANYWHERE, FREE_CORE, COMPARE, QUESTIONS, NAV_LINKS,
+  META, HERO, STATS, STATEMENTS, ADAPT, ANYWHERE, FREE_CORE, QUESTIONS, NAV_LINKS,
 } from '../lib/homeContent';
 
 /*
@@ -228,30 +230,7 @@ import {
       </div>
     </section>
 
-    <!-- 07 COMPARE RAIL. The crop is the affordance: the next card is cut by the
-         viewport edge rather than announced by an arrow. Ten real stories, so
-         the rail has something to be a rail about. The ten pages themselves stay
-         on the Next app — see ../lib/appLinks. -->
-    <Section id="compare">
-      <p class="eyebrow">{COMPARE.eyebrow}</p>
-      <h2 class="display-section mt-4 max-w-[24ch]">{COMPARE.heading}</h2>
-      <div class="mt-10 rail">
-        {COMPARE.stories.map((story) => (
-          <a
-            href={appUrl(`/compare/${story.slug}`)}
-            class="flex flex-col gap-3 border-2 border-rule bg-card p-5 hover:bg-tint"
-          >
-            <span class="eyebrow">{story.eyebrow}</span>
-            <span class="text-[17px] font-extrabold leading-[1.2] tracking-[-0.01em]">
-              {story.title}
-            </span>
-          </a>
-        ))}
-      </div>
-      <p class="eyebrow mt-4">{COMPARE.stories.length} stories · scroll</p>
-    </Section>
-
-    <!-- 08 QUESTIONS. `<details>`, so it opens with JavaScript disabled. -->
+    <!-- 07 QUESTIONS. `<details>`, so it opens with JavaScript disabled. -->
     <Section id="questions">
       <p class="eyebrow">{QUESTIONS.eyebrow}</p>
       <h2 class="display-section mt-4 max-w-[24ch]">{QUESTIONS.heading}</h2>

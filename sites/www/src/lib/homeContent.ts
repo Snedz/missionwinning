@@ -19,7 +19,6 @@
  */
 import { CONTENT_FLOORS } from '@/lib/contentFloors';
 import { landingStringsFor, LANDING_FAQ_KEYS } from '@/i18n/landingLocales';
-import { COMPARE_STORIES } from '@/data/compareStories';
 
 const t = landingStringsFor('en');
 
@@ -104,12 +103,6 @@ export const FREE_CORE = {
     'Fuel, Move, Mind, Track and Learn deepen the path after Train + Coach — never the pitch.',
 };
 
-export const COMPARE = {
-  eyebrow: 'Honest comparison',
-  heading: 'Read the one that sounds like you',
-  stories: COMPARE_STORIES.map((s) => ({ slug: s.slug, eyebrow: s.eyebrow, title: s.title })),
-};
-
 export const QUESTIONS = {
   eyebrow: 'Straight answers',
   heading: 'Questions worth asking first',
@@ -123,7 +116,6 @@ export const NAV_LINKS = [
   { href: '/#adapt', label: 'Coach' },
   { href: '/#anywhere', label: 'Anywhere' },
   { href: '/#free', label: 'Free core' },
-  { href: '/#compare', label: 'Compare' },
   { href: '/#questions', label: 'Questions' },
 ] as const;
 
@@ -161,3 +153,4 @@ export const ADAPT_WEEK = {
   note: 'A planned week. Miss a day and the rest of it moves — the door is kept, not dropped.',
   action: 'Miss Wednesday',
 } as const;
+

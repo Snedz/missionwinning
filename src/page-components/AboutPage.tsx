@@ -44,12 +44,19 @@ export function AboutPage() {
 
   return (
     <div className="space-y-10">
-      <p
-        className="text-[11px] font-semibold uppercase tracking-[0.1em] text-muted-foreground"
-        data-mw-public-version={APP_PUBLIC_VERSION}
-      >
-        {APP_PUBLIC_PRODUCT_VERSION}
-      </p>
+      <div className="space-y-2">
+        <p
+          className="text-[11px] font-semibold uppercase tracking-[0.1em] text-muted-foreground"
+          data-mw-public-version={APP_PUBLIC_VERSION}
+        >
+          {APP_PUBLIC_PRODUCT_VERSION}
+        </p>
+        <p>
+          <Link href="/changelog" className="text-sm text-muted-foreground hover:underline">
+            Changelog
+          </Link>
+        </p>
+      </div>
       <EditorialSection index="01" title={t('infoAboutMission', { defaultValue: 'Our mission' })}>
         <p className="text-base leading-relaxed text-foreground">
           {t('infoAboutMissionNorthStar', {
@@ -119,7 +126,7 @@ export function AboutPage() {
             ? t('infoAboutBusinessBodyOpenBeta', {
                 productVersion: APP_PUBLIC_PRODUCT_VERSION,
                 defaultValue:
-                  'Operated by Mission Winning LLC, a Texas limited liability company. {{productVersion}} is an open beta — full tools free while we grow with you. The logger stays free forever.',
+                  'Operated by Mission Winning LLC, a Texas limited liability company. {{productVersion}} is an open alpha — full tools free while we grow with you. The logger stays free forever.',
               })
             : t('infoAboutBusinessBody', {
                 defaultValue:

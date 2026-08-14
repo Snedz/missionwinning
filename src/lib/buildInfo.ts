@@ -2,19 +2,21 @@
 export const APP_BUILD_LABEL = "2026.07-unified.772";
 
 /**
- * Athlete-facing marketing version. Distinct from `APP_BUILD_LABEL`, which
- * `/api/health` and deploy smoke keep as the honest unified ship id.
+ * Semver for athletes. Distinct from `APP_BUILD_LABEL`, which `/api/health`
+ * and deploy smoke keep as the honest unified ship id.
  *
- * Language is free beta — not invite-only, not v1.0. 0.0.1 is the door
- * stamp for invite beta; it is not a public flip.
+ * 0.1.0 is the first named Alpha. Not v1.0. Not a public flip.
  */
-export const APP_PUBLIC_VERSION = "0.0.1 (beta)";
+export const APP_PUBLIC_VERSION = "0.1.0";
 
-/** Full product stamp: `Mission Winning 0.0.1 (beta)`. */
-export const APP_PUBLIC_PRODUCT_VERSION = `Mission Winning ${APP_PUBLIC_VERSION}`;
+/** Channel word shown with the semver: Alpha 0.1.0. */
+export const APP_PUBLIC_STAGE = "Alpha";
+
+/** Full product stamp: `Mission Winning Alpha 0.1.0`. */
+export const APP_PUBLIC_PRODUCT_VERSION = `Mission Winning ${APP_PUBLIC_STAGE} ${APP_PUBLIC_VERSION}`;
 
 /**
  * English status-bar line for the public SEO shell (EN-only by construction).
  * Translated chrome interpolates `{{productVersion}}` with the same product stamp.
  */
-export const APP_PUBLIC_STATUS_LINE_EN = `${APP_PUBLIC_PRODUCT_VERSION} — free beta. Offline logging plus Mission Coach from your logs.`;
+export const APP_PUBLIC_STATUS_LINE_EN = `${APP_PUBLIC_PRODUCT_VERSION} — open alpha. Offline logging plus Mission Coach from your logs.`;
