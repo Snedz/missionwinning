@@ -14,6 +14,7 @@ Plain-language guides for athletes, parents, and teachers. English only for now;
 | [premium-and-billing.md](premium-and-billing.md) | Super Bundle, what's free, restoring access |
 | [privacy-and-data.md](privacy-and-data.md) | Where your data lives, backup, youth consent, optional wearables |
 | [../WEARABLES.md](../WEARABLES.md) | Developer wearables strategy (Apple, Google, Whoop, …) |
+| [mission-server.md](mission-server.md) | Messenger (`/server`) — rooms on this device, not Discord.com |
 | [faq.md](faq.md) | Quick answers |
 | [troubleshooting.md](troubleshooting.md) | Offline, sync, password gate |
 

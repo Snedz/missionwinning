@@ -20,17 +20,27 @@ export function MessageList({ messages }: { messages: readonly GarageMessage[] }
   }
   return (
     <ul className="space-y-3 px-4 py-4">
-      {messages.map((m) => (
-        <li key={m.id} className="border-t-2 border-border pt-3 first:border-t-0 first:pt-0">
-          <div className="flex items-baseline justify-between gap-3">
-            <span className="text-sm font-extrabold">{m.authorCallSign}</span>
-            <time className="text-xs tabular-nums text-muted-foreground" dateTime={m.createdAt}>
-              {formatClock(m.createdAt)}
-            </time>
-          </div>
-          <p className="mt-1 whitespace-pre-wrap break-words text-sm">{m.body}</p>
-        </li>
-      ))}
+      {messages.map((m) => {
+        const body =
+          m.kind === 'nudge' ? t('serverNudgeLine', { defaultValue: 'Nudge' }) : m.body;
+        const mission = m.authorMissionId?.trim();
+        return (
+          <li key={m.id} className="border-t-2 border-border pt-3 first:border-t-0 first:pt-0">
+            <div className="flex items-baseline justify-between gap-3">
+              <span className="text-sm font-extrabold">
+                {m.authorCallSign}
+                {mission ? (
+                  <span className="ms-2 font-semibold tabular-nums text-muted-foreground">{mission}</span>
+                ) : null}
+              </span>
+              <time className="text-xs tabular-nums text-muted-foreground" dateTime={m.createdAt}>
+                {formatClock(m.createdAt)}
+              </time>
+            </div>
+            <p className="mt-1 whitespace-pre-wrap break-words text-sm">{body}</p>
+          </li>
+        );
+      })}
     </ul>
   );
 }

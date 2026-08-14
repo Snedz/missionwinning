@@ -53,12 +53,9 @@ export const SOCIAL_ROOTS = [
   'src/lib/rewards/',
   'src/lib/leaderboard/',
   'src/lib/social/',
-  'src/lib/identity/missionId.ts',
-  'src/lib/missionIdServer.ts',
-  'src/hooks/useMissionId.ts',
   'src/components/rewards/',
   'src/components/leaderboard/',
-  'src/components/profile/MissionIdView.tsx',
+  'src/components/social/',
 ] as const;
 
 /**

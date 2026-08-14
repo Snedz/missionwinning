@@ -43,3 +43,11 @@ test('assertModuleManifest rejects bad entry', () => {
     })
   );
 });
+
+test('SOCIAL_SERVER_MANIFEST is free-core messenger with channel write', () => {
+  assert.equal(SOCIAL_SERVER_MANIFEST.freeCore, true);
+  assert.equal(SOCIAL_SERVER_MANIFEST.entry, '/server');
+  assert.ok(SOCIAL_SERVER_MANIFEST.scopes.includes('social.channel.write'));
+  assert.equal(isModuleScope('social.channel.write'), true);
+  assert.doesNotThrow(() => assertModuleManifest(SOCIAL_SERVER_MANIFEST));
+});

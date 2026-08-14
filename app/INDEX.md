@@ -20,7 +20,7 @@
 | `/nutrition` | Fuel | `NutritionPage.tsx` |
 | `/track` | Track | `TrackPage.tsx` |
 | `/profile` | You | `ProfilePage.tsx` — the Athlete Page (identity · career line · badge shelf) |
-| `/account` | Account | `AccountPage.tsx` — settings |
+| `/account` | Account | `AccountPage.tsx` — settings, notifications, billing, backup |
 
 ### Train deeper
 
@@ -49,7 +49,7 @@
 | `/dmca` | `DmcaPage.tsx` | DMCA / copyright notices |
 | `/refunds` | `RefundsPage.tsx` | Refunds & cancellation |
 | `/welcome` | `WelcomePage.tsx` | I-Day onboarding (also `app/welcome/`) |
-| `/explore` | `ExplorePlacesPage.tsx` | Quiet places pin-board — not Today, not a tab |
+| `/server` | `ServerPage.tsx` | Mission Server messenger (MSN rooms + presence). More → You. Not a tab. `robots: noindex` |
 
 ### Outside `(app)` group
 
@@ -62,6 +62,7 @@
 | `/press` | `app/press/page.tsx` → `PressPage` (brand & media kit) |
 | `/guide` (Apex reader) | `GuidePublicIndexPage` — Contents sidebar + language switcher |
 | `/guide/[chapter]` | `GuidePublicChapterPage` — same shell |
+| `/guide/mission-winning-vs-strong` · `vs-hevy` · `vs-fitbod` | `LearnVsPublicPage` — AEO comparison (not magazine chapters) |
 | `/guide/print` | Magazine print/PDF source (`GuideMagazinePrintPage`) — noindex |
 | `/exercises/muscle/[group]`, `/exercises/equipment/[slug]` | Catalog hub indexes |
 | `/paths`, `/paths/[id]` | Public Learn path teasers (in-app Learn stays `/learn`) |

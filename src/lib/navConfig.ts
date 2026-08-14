@@ -11,7 +11,7 @@ import {
   Dumbbell,
   History,
   MapPin,
-  Hash,
+  MessageSquare,
   PenTool,
   Settings,
   Shield,
@@ -147,10 +147,10 @@ export const MORE_NAV: NavLinkItem[] = [
   {
     href: '/server',
     labelKey: 'navServer',
-    label: 'Garage',
-    icon: Hash,
+    label: 'Messenger',
+    icon: MessageSquare,
     descriptionKey: 'moreServerDesc',
-    description: 'Text rooms on this device',
+    description: 'Rooms on this device',
   },
   {
     href: '/account',

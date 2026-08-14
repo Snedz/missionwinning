@@ -1,7 +1,8 @@
 /**
  * Optional Supabase Realtime broadcast for Mission Server.
  *
- * Fail-closed: no session, missing config, or subscribe errors → stay local.
+ * Feature-flagged (`NEXT_PUBLIC_MISSION_SERVER_REALTIME=1`) and fail-open to
+ * local: no flag, no session, missing config, or subscribe errors → stay local.
  * Never opens a WebSocket on a Vercel function. Local store remains source of truth.
  */
 
@@ -68,11 +69,18 @@ async function defaultDeps(): Promise<GarageRealtimeDeps> {
   };
 }
 
+export function isMissionServerRealtimeEnabled(): boolean {
+  return process.env.NEXT_PUBLIC_MISSION_SERVER_REALTIME === '1';
+}
+
 export async function connectGarageRealtime(
   onRemote: (payload: unknown) => void,
   deps?: GarageRealtimeDeps
 ): Promise<GarageRealtimeHandle> {
   try {
+    if (!deps && !isMissionServerRealtimeEnabled()) {
+      return { ok: false, reason: 'unconfigured' };
+    }
     const d = deps ?? (await defaultDeps());
     if (!d.isConfigured()) return { ok: false, reason: 'unconfigured' };
     const session = await d.getSession();

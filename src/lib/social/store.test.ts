@@ -7,10 +7,14 @@ import { UNSET_CALL_SIGN, readChatCallSign } from './callSign';
 import { seedGarageServer } from './garage';
 import {
   ingestRemoteMessage,
+  lastMessageForChannel,
   loadMissionServer,
   messagesForChannel,
   postLocalMessage,
+  postLocalNudge,
+  setLocalPresence,
 } from './store';
+import { readChatMissionId } from './callSign';
 import {
   DEFAULT_CHANNEL_SLUGS,
   MAX_CHANNELS,
@@ -157,4 +161,40 @@ test('ingestRemoteMessage ignores junk and accepts a valid payload', () => {
   });
   assert.ok(ingested);
   assert.equal(messagesForChannel(ingested!, 'garage')[0].id, 'remote-1');
+});
+
+test('presence defaults to available and survives reload', () => {
+  const a = loadMissionServer();
+  assert.equal(a.presence, 'available');
+  const away = setLocalPresence('away');
+  assert.equal(away.presence, 'away');
+  const b = loadMissionServer();
+  assert.equal(b.presence, 'away');
+  assert.equal(messagesForChannel(b, 'train').length, 0);
+});
+
+test('nudge is a local system line that persists', () => {
+  const posted = postLocalNudge('train');
+  assert.equal(posted.ok, true);
+  if (!posted.ok) return;
+  assert.equal(posted.message.kind, 'nudge');
+  const again = loadMissionServer();
+  const last = lastMessageForChannel(again, 'train');
+  assert.equal(last?.kind, 'nudge');
+  assert.equal(last?.body, 'Nudge');
+});
+
+test('Mission ID is omitted when the Athlete Card number is unset', () => {
+  assert.equal(readChatMissionId(), null);
+  const posted = postLocalMessage('train', 'hello');
+  assert.equal(posted.ok, true);
+  if (posted.ok) assert.equal(posted.message.authorMissionId, null);
+});
+
+test('Mission ID is the zero-padded card number when set', () => {
+  writeRaw(STORAGE_KEYS.athleteCard, JSON.stringify({ callSignNumber: 7, badges: [] }));
+  assert.equal(readChatMissionId(), '07');
+  const posted = postLocalMessage('train', 'hello');
+  assert.equal(posted.ok, true);
+  if (posted.ok) assert.equal(posted.message.authorMissionId, '07');
 });

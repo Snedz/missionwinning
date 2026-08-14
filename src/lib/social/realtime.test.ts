@@ -34,7 +34,7 @@ test('no session stays local without subscribe', async () => {
   assert.equal(subscribed, 0);
 });
 
-test('subscribe throw is fail-closed', async () => {
+test('subscribe throw stays local without crashing', async () => {
   const deps: GarageRealtimeDeps = {
     isConfigured: () => true,
     getSession: async () => ({ user: { id: 'u1' } }),
@@ -45,6 +45,19 @@ test('subscribe throw is fail-closed', async () => {
   const handle = await connectGarageRealtime(() => {}, deps);
   assert.equal(handle.ok, false);
   if (!handle.ok) assert.equal(handle.reason, 'subscribe-failed');
+});
+
+test('flag off without injected deps stays local', async () => {
+  const prev = process.env.NEXT_PUBLIC_MISSION_SERVER_REALTIME;
+  delete process.env.NEXT_PUBLIC_MISSION_SERVER_REALTIME;
+  try {
+    const handle = await connectGarageRealtime(() => {});
+    assert.equal(handle.ok, false);
+    if (!handle.ok) assert.equal(handle.reason, 'unconfigured');
+  } finally {
+    if (prev === undefined) delete process.env.NEXT_PUBLIC_MISSION_SERVER_REALTIME;
+    else process.env.NEXT_PUBLIC_MISSION_SERVER_REALTIME = prev;
+  }
 });
 
 test('configured session can send after subscribe', async () => {

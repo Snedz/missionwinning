@@ -60,6 +60,7 @@
 | `leaderboard/` | Leaderboard compute/sync helpers — [leaderboard/INDEX.md](leaderboard/INDEX.md) |
 | `storage/` | **The only** direct localStorage access — [storage/INDEX.md](storage/INDEX.md) |
 | `sync/` | Durable outbox for cloud writes — [sync/INDEX.md](sync/INDEX.md) |
+| `social/` | Mission Server messenger — [social/INDEX.md](social/INDEX.md) |
 
 ## Convention: adding new domains
 

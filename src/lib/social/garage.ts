@@ -8,6 +8,8 @@ import {
   GARAGE_SERVER_ID,
   MAX_CHANNELS,
   MAX_MESSAGES_PER_CHANNEL,
+  isPresenceStatus,
+  type GarageMessage,
   type GarageServer,
   type MissionServerState,
   type ServerChannel,
@@ -29,7 +31,7 @@ export function seedGarageServer(): GarageServer {
 }
 
 export function seedMissionServerState(): MissionServerState {
-  return { version: 1, server: seedGarageServer() };
+  return { version: 1, server: seedGarageServer(), presence: 'available' };
 }
 
 /** Clamp a loaded blob to v1 free limits. Never throws. */
@@ -73,6 +75,7 @@ export function clampMissionServerState(raw: unknown): MissionServerState {
 
   return {
     version: 1,
+    presence: isPresenceStatus(rec.presence) ? rec.presence : 'available',
     server: {
       id: GARAGE_SERVER_ID,
       name: typeof server.name === 'string' && server.name.trim() ? server.name.trim() : 'Garage',
@@ -83,14 +86,25 @@ export function clampMissionServerState(raw: unknown): MissionServerState {
   };
 }
 
-function isGarageMessage(value: unknown): value is GarageServer['messages'][string][number] {
+function isGarageMessage(value: unknown): value is GarageMessage {
   if (!value || typeof value !== 'object') return false;
   const m = value as Record<string, unknown>;
-  return (
-    typeof m.id === 'string' &&
-    typeof m.channelId === 'string' &&
-    typeof m.authorCallSign === 'string' &&
-    typeof m.body === 'string' &&
-    typeof m.createdAt === 'string'
-  );
+  if (
+    typeof m.id !== 'string' ||
+    typeof m.channelId !== 'string' ||
+    typeof m.authorCallSign !== 'string' ||
+    typeof m.body !== 'string' ||
+    typeof m.createdAt !== 'string'
+  ) {
+    return false;
+  }
+  if (m.kind !== undefined && m.kind !== 'text' && m.kind !== 'nudge') return false;
+  if (
+    m.authorMissionId !== undefined &&
+    m.authorMissionId !== null &&
+    typeof m.authorMissionId !== 'string'
+  ) {
+    return false;
+  }
+  return true;
 }

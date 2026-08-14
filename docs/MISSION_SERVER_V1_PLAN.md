@@ -1,6 +1,6 @@
 # Mission Server v1 — freeze (`.726`)
 
-**Status:** FROZEN 2026-08-13. Implement this file only. Do not add voice, DMs, feed, Top 8, WeChat order, Android Compose, or www copy.
+**Status:** CONTINUED by [MISSION_SERVER_MESSENGER_PLAN.md](MISSION_SERVER_MESSENGER_PLAN.md) (`.752`). Keep the store/route; do not implement Discord-shaped chrome from this file.
 **Label:** `2026.07-unified.726` (do not steal `.698`–`.725`)
 **Horizon:** Founder override 2026-08-13 — L2-shaped capability now, **parkable**, not Friday’s open-beta pitch, not a primary tab.
 **Excellence-Override:** Mission Server v1 text rooms

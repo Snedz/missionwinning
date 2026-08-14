@@ -37,10 +37,9 @@ test('surface', async (t) => {
 
   await t.test('secondary pillars stay usable by default (vision keeps six pillars)', () => {
     withSurfaces(undefined, () => {
-      for (const s of ['move', 'mind', 'track', 'learn', 'guidebook'] as Surface[]) {
+      for (const s of ['move', 'mind', 'track', 'learn', 'guidebook', 'server'] as Surface[]) {
         assert.equal(isSurfaceEnabled(s), true, `${s} should be reachable by default`);
       }
-      assert.equal(isSurfaceEnabled('server'), true, 'Mission Server is on by default and parkable');
     });
   });
 
@@ -109,11 +108,11 @@ test('surface', async (t) => {
   });
 
   await t.test('paths resolve to their surface, longest match first', () => {
-    assert.equal(surfaceForPath('/server'), 'server');
     assert.equal(surfaceForPath('/learn'), 'learn');
     assert.equal(surfaceForPath('/learn/course'), 'learn');
     assert.equal(surfaceForPath('/learn/guide'), 'guidebook');
     assert.equal(surfaceForPath('/learn/guide/chapter-1'), 'guidebook');
+    assert.equal(surfaceForPath('/server'), 'server');
     assert.equal(surfaceForPath('/api/school/class/mine'), 'school');
     assert.equal(surfaceForPath('/api/coach/chat'), null);
   });
@@ -130,11 +129,13 @@ test('surface', async (t) => {
       assert.equal(isPathEnabled('/api/wearables/status'), false);
       assert.equal(isPathEnabled('/leaderboard'), true);
       assert.equal(isPathEnabled('/move'), true);
-      assert.equal(isPathEnabled('/server'), true, 'Mission Server on by default');
+      assert.equal(isPathEnabled('/server'), true);
       assert.equal(isPathEnabled('/active'), true);
     });
     withSurfaces('wedge', () => {
       assert.equal(isPathEnabled('/server'), false, '/server parks with wedge');
+      assert.equal(isPathEnabled('/move'), false);
+      assert.equal(isPathEnabled('/active'), true);
     });
   });
 

@@ -8,7 +8,7 @@
  *
  *   Wedge   — History · Library · Builder · Assess (train-adjacent)
  *   Pillars — Move · Mind · Track · Learn
- *   You     — Profile
+ *   You     — Profile · Messenger · Account
  *
  * Quiet foot links stay for legal/meta (not full rows). Bundle is a shop
  * panel in MoreSheet; live checkout stays muted while free-beta is on.

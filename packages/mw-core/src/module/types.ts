@@ -77,10 +77,10 @@ export const HEALTH_TRAIN_MANIFEST: ModuleManifest = {
   entry: '/active',
 };
 
-/** Garage text rooms — free_core; not a paywall. Web PWA only in v1. */
+/** Garage messenger — rooms + local presence. Free core; never gates the logger. */
 export const SOCIAL_SERVER_MANIFEST: ModuleManifest = {
   id: 'social.server',
-  version: '1.0.0',
+  version: '1.1.0',
   scopes: ['identity.read', 'social.channel.write'],
   surfaces: ['web'],
   freeCore: true,

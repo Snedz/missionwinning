@@ -46,7 +46,7 @@ export function hydrateI18nResources(instance: typeof i18n): Promise<void> {
       { mergeBetaStrings },
       { mergeGrowthStrings },
       { mergeRewardsStrings },
-      { mergePlacesStrings },
+      { mergeServerStrings },
     ] = await Promise.all([
       import('@/i18n/coreLocales'),
       import('@/i18n/tier2Locales'),
@@ -84,7 +84,7 @@ export function hydrateI18nResources(instance: typeof i18n): Promise<void> {
       import('@/i18n/betaLocales'),
       import('@/i18n/growthLocales'),
       import('@/i18n/rewardsLocales'),
-      import('@/i18n/placesLocales'),
+      import('@/i18n/serverLocales'),
     ]);
 
     // Seed EN base from existing bundle so we don't wipe bootstrap keys
@@ -143,23 +143,13 @@ export function hydrateI18nResources(instance: typeof i18n): Promise<void> {
       mergeBetaStrings(resources[lang], lang);
       mergeGrowthStrings(resources[lang], lang);
       mergeRewardsStrings(resources[lang], lang);
-      mergePlacesStrings(resources[lang], lang);
+      mergeServerStrings(resources[lang], lang);
     }
 
     const { applyLocalePack } = await import('@/i18n/localePacks');
     for (const [lang, common] of Object.entries(resources)) {
       applyLocalePack(common, lang);
-    }
-
-    const { applyFirstClassOverlay } = await import('@/i18n/firstClassLocales');
-    const { UI_LANGS, packLangForUi } = await import('@/i18n/appLangs');
-    for (const ui of UI_LANGS) {
-      const pack = packLangForUi(ui);
-      const base = { ...(resources[pack] ?? resources.en) };
-      applyFirstClassOverlay(base, ui);
-      instance.addResourceBundle(ui, 'common', base, true, true);
-      if (ui === 'zh-Hans') instance.addResourceBundle('zh', 'common', base, true, true);
-      if (ui === 'pt-BR') instance.addResourceBundle('pt', 'common', base, true, true);
+      instance.addResourceBundle(lang, 'common', common, true, true);
     }
 
     // addResourceBundle emits `added`, not `loaded` — force a refresh so

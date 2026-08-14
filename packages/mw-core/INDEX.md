@@ -11,7 +11,7 @@
 | `@missionwinning/mw-core/workout` | Victory next-action (Coach wedge) |
 | `@missionwinning/mw-core/identity` | Athlete Card cosmetics / tier pure rules |
 | `@missionwinning/mw-core/economy` | Points/inventory interop types (contracts) |
-| `@missionwinning/mw-core/module` | Mini-app manifest types + `health.train` + `social.server` seeds |
+| `@missionwinning/mw-core/module` | Mini-app manifest types + `health.train` seed + `social.server` messenger |
 
 ## Rule
 

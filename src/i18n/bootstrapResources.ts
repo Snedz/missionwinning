@@ -4,20 +4,9 @@
  */
 
 import { BETA_EN } from '@/i18n/betaLocales';
-import { GATED_WWW_HONESTY } from '@/lib/gatedWwwHonesty';
 
 export const BOOTSTRAP_EN: Record<string, string> = {
   ...BETA_EN,
-  // F-008 — first paint on /private + gated marketing CTA before hydrate.
-  gateEyebrow: GATED_WWW_HONESTY.gateEyebrow,
-  gateSubtitle: GATED_WWW_HONESTY.gateSubtitle,
-  gateWedgeTeaser: GATED_WWW_HONESTY.gateWedgeTeaser,
-  gateCheckingSession: GATED_WWW_HONESTY.gateCheckingSession,
-  gateLoading: GATED_WWW_HONESTY.gateLoading,
-  gateWaitlistTitle: GATED_WWW_HONESTY.gateWaitlistTitle,
-  landingNavStartGated: GATED_WWW_HONESTY.landingNavStartGated,
-  welcomeGateKicker: GATED_WWW_HONESTY.welcomeKicker,
-  welcomeGateSubtitleBrief: GATED_WWW_HONESTY.welcomeSubtitleBrief,
   appName: 'Mission Winning',
   tagline: 'Train anywhere. Win daily.',
   infoBetaTitle: 'Start here',
@@ -34,7 +23,7 @@ export const BOOTSTRAP_EN: Record<string, string> = {
   navBuilder: 'Builder',
   navLibrary: 'Library',
   navHistory: 'History',
-  navServer: 'Garage',
+  navServer: 'Messenger',
   navMove: 'Move',
   navMind: 'Mind',
   navLearn: 'Learn',
@@ -53,7 +42,6 @@ export const BOOTSTRAP_EN: Record<string, string> = {
   welcomeSkipSignIn: 'Skip — start training',
   todayBasicEncouragement:
     'One step at a time. Log a set — Mission Coach shapes the week from your history.',
-  todayHabitWeekCount: 'This week: {{count}} days logged',
   todayCoachInviteEyebrow: 'AI weekly plan',
   todayCoachInviteTitle: 'Generate a free week of Mission Coach',
   todayCoachInviteBody:

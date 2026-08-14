@@ -49,7 +49,7 @@ export const STORAGE_KEYS = {
    * (C5). Key name is grepped by privateNoteBoundary.test.ts.
    */
   athletePrivateNote: 'mw_athlete_private_note',
-  /** `.726` — Mission Server garage (local-first text rooms). */
+  /** Mission Server messenger — rooms, messages, local presence. */
   missionServer: 'mw_mission_server',
   defaultRestSec: 'mw_default_rest_sec',
   /**
@@ -57,10 +57,6 @@ export const STORAGE_KEYS = {
    * never writes. Cap lives in restTimer.ts, not here.
    */
   lastRestByExercise: 'mw_last_rest_by_exercise',
-  /** Last ecc/pause/con tempo per exercise id — prefill on the next set (`.734`). */
-  lastTempoByExercise: 'mw_last_tempo_by_exercise',
-  /** `.761` — hide educational session e1RM on the Active exercise row. Default shown. */
-  showSessionE1rm: 'mw_show_session_e1rm',
   activityLog: 'mw_activity_log',
   todaySectionsV1: 'mw_today_sections_v1',
   todaySectionsV2: 'mw_today_sections_v2',
@@ -83,12 +79,6 @@ export const STORAGE_KEYS = {
   daysPerWeek: 'mw_days_per_week',
   preferredDays: 'mw_preferred_days',
   equipment: 'mw_equipment',
-  /**
-   * `.763` — local Home gym kit (barbell, rack, plates, dumbbells, pull-up-bar,
-   * floor). Device-only; the logger and Coach read it as equipment. Unset means
-   * keep the coarse `mw_equipment` 3-profile.
-   */
-  homeGymKit: 'mw_home_gym_kit',
   experience: 'mw_experience',
   primaryGoal: 'mw_primary_goal',
   goals: 'mw_goals',
@@ -126,16 +116,7 @@ export const STORAGE_KEYS = {
   operatorName: 'mw_operator_name',
   units: 'mw_units',
   unitsExplicit: 'mw_units_explicit',
-  /**
-   * Optional published scale column for the five-event field test.
-   * `{ ageBand, column: 'm' | 'f' }`. Unset → raw performances only.
-   */
-  fieldTestScaleKey: 'mw_field_test_scale_key',
   langExplicit: 'mw_lang_explicit',
-  /** First-visit language + country chooser has been confirmed. */
-  localeChoice: 'mw_locale_choice_v1',
-  /** ISO 3166-1 alpha-2 country preference (independent of language). */
-  countryPref: 'mw_country_pref',
   regionDefaults: 'mw_region_defaults_v1',
   remindersPref: 'mw_reminders_pref',
   sessionCheckinSkipped: 'mw_session_checkin_skipped',
@@ -159,15 +140,7 @@ export const STORAGE_KEYS = {
   // ── Move / Mind / Track ──
   mindCheckIns: 'mw_mind_checkins',
   lastAssessment: 'mw_last_assessment',
-  /**
-   * Optional athlete-owned pregnancy / postpartum flag (`none` | `pregnant` |
-   * `postpartum` | stored `miscarriage_recovery`). The fourth value is UNSIGNED
-   * as athlete copy. Never inferred. Device-local. See docs/PREGNANCY_SAFETY.md.
-   */
-  pregnancyFlag: 'mw_pregnancy_flag',
   wearablesHubSamples: 'mw_wearables_hub_samples',
-  /** `.742` — personal place-dex. Device-local; tagging a session never gates a set. */
-  placeDex: 'mw_place_dex',
 
   // ── Beta / growth ──
   /** Retired `.240` with `BetaWelcomeBanner`; left registered so the name is not reused. */
@@ -186,7 +159,6 @@ export const STORAGE_KEYS = {
   leads: 'mw_leads',
   referralCode: 'mw_referral_code',
   squadCode: 'mw_squad_code',
-  /** Local ISO-week rollup for this install (`firstIsoWeek` + `weeks`). Not a user count. */
   week4Retention: 'mw_week4_retention',
 
   // ── America / PFT / school (parkable) ──

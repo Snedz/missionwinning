@@ -6,81 +6,69 @@ Living roadmap for the **everything app** (Freeletics Super Bundle → one PWA).
 
 ---
 
-## Frozen ship — Mission ID (`.732`) — 2026-08-13
+## Frozen plan — Mission Server messenger (`.752`) — 2026-08-13
 
-**Status: FROZEN.** Implement only this section. Do not expand. Label `2026.07-unified.732` (occupied `.698`–`.731` — do not steal). Draft PR. One Preview max (`[skip vercel]` on plan-only and fix-up commits). Excellence-Override: Mission ID, founder is 1.
+> **Frozen.** Implement only [MISSION_SERVER_MESSENGER_PLAN.md](MISSION_SERVER_MESSENGER_PLAN.md).
+> Label `2026.07-unified.752` (master `.751`; do not steal `.697`–`.730`; `.748` already shipped).
+> Continue #518 rooms — deepen presence + MSN window chrome. Not Discord.com.
+> `[skip vercel]` every commit. Excellence-Override: Mission Server messenger (MSN rooms).
 
-Founder 2026-08-13: give signed-in accounts a monotonic integer **Mission ID**. Prestige of *early*, not a leaderboard. **ID 1 is reserved for founder Snowden Zeng** (GitHub `Snedz`).
+---
 
-### What it is
+## Frozen plan — `.719` logger supersets (2026-08-13)
 
-| | |
-|--|--|
-| Name | **Mission ID** — display `#N` |
-| Kind | Server-issued monotonic integer, unique per signed-in account |
-| ID 1 | Founder only (GitHub login `Snedz`, already public in this repo; plus existing `BETA_ADMIN_EMAILS` / `isBetaAdminEmail` — do **not** invent a new public email, do **not** put EIN or passwords in git) |
-| Next | 2, 3, … via a Postgres sequence starting at 2 |
-| Guest / offline logger | **No Mission ID.** Show nothing. Free logger stays ungated |
-| Call-sign 00–99 | Unchanged cosmetic. Mission ID is a different number |
-| Not | Rank, XP, a board, a GitHub id, “low id flex”, anything on Train/Today/log path. Coach never reads it |
+> **Frozen.** Implement only this section. Plan commit is `[skip vercel]`.
+> Label: `2026.07-unified.719` (occupied `.698`–`.718` — do not steal).
+> Draft PR, one Preview max. Excellence-Override: logger supersets.
+> Offline, no account. Set-log table stays first paint. No social. No XP.
+> Speech never owns this.
 
-### Hard bans (this ship)
+### Investigate (done — do not invent a second group id)
 
-No `PRIVATE_MODE` production flip. No feed / Top 8. No standing on Train/Today. No EIN. Do not steal `.698`. Do not rewrite #728 Preview gate (`proxy.ts` / private-gate session unlock).
+Existing grouping already lives on the free logger:
 
-### Data (server owns the mint — ECONOMY / IDENTITY: no client grant)
+| Layer | What exists |
+|-------|-------------|
+| Type | `ActiveExerciseLog.supersetGroup?: string` |
+| Lib | `src/lib/workout/superset.ts` — `getSupersetPeers`, `supersetLabel` (`SS A`/`SS B`), `advanceAfterLog` (peer at same set index), `shouldRestAfterLog` (skip rest mid-round) |
+| Store | `toggleSupersetWithNext` / `unlinkSuperset`; `logSetAndAdvance` already calls `advanceAfterLog`; `partialize` already persists `activeWorkout` |
+| Rest | `planLogSetRest` in `activeSessionFinish.ts` already gates on `shouldRestAfterLog` — **do not edit** `restTimer.ts` or that finish helper |
+| UI | Overflow “Superset w/ next” / “Unlink”; card badge `SS A`; poster-red left edge on the card |
 
-New table `public.mission_ids`:
+Hevy/Strong gap: athletes expect **A1/A2 pair marks**, **exactly two consecutive** exercises, **A then B then rest**, and **the set row stays** (one table — not a second Hevy-style card stack). Current `SS A` is the wrong mark; `toggle` can merge into 3+ giant sets; `unlink` clears only one exercise (orphan peer); no persist / log-order store tests; the set table itself does not show the pair.
 
-- `user_id uuid PRIMARY KEY REFERENCES auth.users(id) ON DELETE CASCADE`
-- `mission_id integer NOT NULL UNIQUE CHECK (mission_id >= 1)`
-- `claimed_at timestamptz NOT NULL DEFAULT now()`
-- Sequence `mission_id_seq` **START 2** (so sequential never issues 1)
-- RLS: authenticated **SELECT own row only**. No INSERT/UPDATE/DELETE policies for `anon`/`authenticated`. Writes are service-role only
-- Protect like referrals: a client that can insert its own row can forge an early id
+### Ship (only this)
 
-Claim algorithm (pure, then executed with service role):
+1. **Reuse `supersetGroup`.** Add pure helpers in `superset.ts` (no second id):
+   - `pairMark(exercises, exIdx)` → `A1`/`A2`/`B1`… — groups ordered by first index; slot 1 = earlier exercise, slot 2 = later. Replace `supersetLabel` output (keep the export as an alias of `pairMark` so existing callers stay).
+   - `pairWithNext(exercises, exIdx)` — pair **exactly two consecutive**. New shared id on those two only; any prior partner of either is cleared (no giant sets).
+   - `unpair(exercises, exIdx)` — clear `supersetGroup` on **all peers** of that group.
+2. **Store wiring only** (`workoutStore.ts`): `toggleSupersetWithNext` / `unlinkSuperset` call the pure helpers. `removeExerciseFromActive` unpairs the remaining peer so a delete cannot leave an orphan. Do not change `logSet` / `logSetAndAdvance` / rest timer / repeat-last / notes.
+3. **Table first paint.** Keep `SetLogTable` / `SetLogRow` as the set list. Surface the pair mark on the existing Set cell (`A1`/`A2` prefix + set number) and the existing header badge. `data-pair-mark` on the card/table for tests. Paper, ink, one red, Archivo, radius 0 — no new card chrome, no Hevy card clone, no second table.
+4. **Log order** stays A → B → rest via existing `advanceAfterLog` + `shouldRestAfterLog`. Lock it with tests; do not re-implement rest.
+5. **Persist** is the active session on device (`partialize.activeWorkout`). Pair survives JSON round-trip / store write. Do not add template/builder pairing, completed-log pairing, cloud schema, or account gates.
+6. **Speech never owns this.** Keep the overflow menuitem. Do not add voice / Ask / coach-chat ownership of pair/unpair.
 
-1. No session → no id (do not mint)
-2. Row exists for `user_id` → return it (idempotent)
-3. Else if founder identity (GitHub login `Snedz` case-insensitive from `user.identities` / `user_metadata`, **or** `isBetaAdminEmail`) **and** mission_id `1` is free → insert `(user_id, 1)`
-4. Else insert `nextval('mission_id_seq')` (≥ 2)
-5. Unique races: `user_id` conflict → re-select; `mission_id = 1` conflict → fall through to sequential (ID 1 cannot be issued twice)
+### Tests
 
-No client POST of an id. No localStorage mint. No demo-mode fallback that invents an id.
+- `superset.test.ts`: pair persist (JSON round-trip keeps `supersetGroup`); `pairWithNext` is exactly two and does not merge giant sets; `unpair` clears both peers; `pairMark` is `A1`/`A2`; log order A then B; rest after B only.
+- `workoutStore.test.ts`: toggle writes a shared group; unlink clears both; `logSetAndAdvance` after pairing returns the peer at the same set index.
+- `check-build-label` `.719`. LOG + CONTEXT in the same implement commit.
 
-### API
+### Docs / ship protocol
 
-`GET /api/account/mission-id` — session cookie, rate-limit per user, service-role claim, JSON `{ ok: true, missionId: number }`. **401** unsigned · **503** admin/DB unconfigured · **502** opaque on write failure. GET only — no body schema that accepts an id.
+- `APP_BUILD_LABEL` → `2026.07-unified.719`
+- LOG heading `## 2026-08-13 — Supersets on the set log (\`.719\`)` + rotate oldest live entry
+- CONTEXT `## Now` one `.719` bullet; keep Status table; ≤25 bullets
+- Help: one line on first-workout set log (pair two consecutive, A then B then rest)
+- `src/lib/workout/INDEX.md` if the helper list changes
 
-### UI
+### Hard bans
 
-- Athlete Page (`/profile`) and Account (`/account`): when signed in and an id exists, show label **Mission ID** and `#N` (`data-testid="mission-id"`). 0 red actions
-- Guest / 401 / 503: render **nothing** (not a dash, not “sign in for an id” on Train/Today)
-- Train (`/active`) and Today (`/log`): no Mission ID copy, no fetch, no import
-- Call-sign editor stays 00–99. Do not merge the two numbers
-- Copy: “Mission ID” / `#1`. No “GitHub id”, no Tobi/Elon names, no “low id flex”
-- Not on share card, boards, nudges, I-Day, or Coach
-
-### Coach / log boundary
-
-Mission ID lives in identity (social projection), not the planner. Add `src/lib/identity/missionId.ts` and `src/lib/missionIdServer.ts` to `SOCIAL_ROOTS`. Source-scan Train/Today/Coach/`src/lib/coach/` for `missionId` / `Mission ID`. Do not put Mission ID in `packages/mw-core` (planner walk starts there).
-
-### Tests (must fail if the rule is deleted)
-
-1. ID 1 cannot be issued twice (second founder claim while 1 is taken → sequential, never another 1). Unique constraint in the migration
-2. Client cannot mint (GET-only route; no client insert/write of `mission_id`; no localStorage key)
-3. Guest has no id (`decide` with no user → null; unsigned UI helper → null)
-4. Athlete Page shows `#1` when the founder profile (`Snedz`) is the current user in tests (`formatMissionId(1) === '#1'` + Profile mounts the line)
-5. `check-build-label` `.732`
-
-### Files (this list is the scope)
-
-`src/lib/identity/missionId.ts` (+ test) · `src/lib/missionIdServer.ts` (+ routetest) · `app/api/account/mission-id/route.ts` · `src/hooks/useMissionId.ts` · `src/components/profile/MissionIdView.tsx` · Athlete Page + Account + `ProfileAccountCard` · migration `supabase/migrations/20260813_mission_ids.sql` · runbook + `accountDataRegistry` · i18n `athleteLocales` · IDENTITY contract + identity INDEX + help FAQ · `domainBoundary` SOCIAL_ROOTS · docs/API + app/api INDEX · build label `.732` · LOG + CONTEXT `## Now` (rotate to stay in budget)
-
-### Out of scope
-
-Android, public URL / S4b, boards, feed, calling it a rank, seeding a UUID (founder’s `auth.users` id is not in git — claim-on-first-GET is the seed).
+- No `PRIVATE_MODE` / `FREE_BETA` / EIN / secrets
+- Do not steal `.698` #477 or `.699` #478
+- Do not edit rest timer, repeat-last, notes, vs-pages, field test, plate math, #506
+- No social. No XP. No speech ownership.
 
 ---
 
@@ -94,6 +82,68 @@ Android, public URL / S4b, boards, feed, calling it a rank, seeding a UUID (foun
 | **Muscle & Fitness / Bodybuilding.com** | Exercise library depth, filters, programs, education tone |
 
 Mission Winning is **none of these** — one unified super app, free core forever, global PWA.
+
+---
+
+## Freeze — Repeat last session from the log (`.717`) — 2026-08-13
+
+> **Frozen.** Implement only this block. Do not expand. Label `2026.07-unified.717`
+> (occupied `.698`–`.716`). Draft PR. One Preview max. `[skip vercel]` on the
+> plan commit only.
+
+Strong/Hevy migrants live on **repeat last session**. History already has
+“Train this again” (`templateFromCompletedLog`). Today and Train empty Start
+do not: Active empty seeds Just Go; Today primary builds Just Go / Coach.
+This ship is **one control** that copies the last completed session into the
+free logger — not a template marketplace.
+
+### Already in the tree (deepen; do not fork)
+
+| Primitive | Role | Do not |
+|-----------|------|--------|
+| `src/lib/workout/historyRetrain.ts` `templateFromCompletedLog` | Maps a finished log → startWorkout template (names, set counts, last loads/reps as **uncompleted** targets) | Rewrite the mapper |
+| History `retrainFromLog` / `historyTrainAgain` | Same primitive for a *picked* log | Add a session picker on Today/Train |
+| `getLastPerformanceForSet` / `resolveSetInput` lastPerformance + session carry | F-013 / #489 dial prefills (Prev column + next-set carry) | Rewrite `resolveSetInput` or #489 |
+| `resolveRepeatLastTarget` / `activeRepeatLast` | Mid-session **repeat last set** | Reuse that key or label for this session control |
+| `startWorkout` | Builds uncompleted sets from the template; rest stays off | Call `startRestTimer` on start |
+
+### Behavior (one primary)
+
+**Last repeatable session** = newest `workoutHistory` entry (array is newest-first) where `templateFromCompletedLog` returns non-null (skips `deletedAt`, empty exercises, no `exerciseId`). Pure helper `repeatLastSessionTemplate(history)` in `src/lib/workout/repeatLastSession.ts` — wraps the existing mapper, does not copy its loop.
+
+1. **Resume** an in-progress session still wins (unchanged).
+2. **Train empty (`/active`):** if a last session exists → `startWorkout(template)` (not `prescribed`). Else → `startEmptyWorkout()` (existing empty logger). **Stop seeding Just Go / Coach from Active empty.** Train is the logger; Coach stays on `/coach` and on Today when a live plan exists.
+3. **Today (`/log`) one primary, in order:** resume → **live Coach session** (existing honesty: Start names the plan; do not steal this) → **repeat last session** → existing Just Go / journey seed / href. Repeat-last does **not** apply re-entry `doseScale` (copy last as-is). Do not auto-start Coach on the repeat-last branch.
+4. **Prefills:** template targets are last loads/reps. Compose with existing `getLastPerformanceForSet` / `resolveSetInput` (manual > session carry > last performance > template default). Do not auto-progress via `suggestNextSetTarget` at start.
+5. **Empty history:** existing empty logger. Shame-free — no missed / skipped / streak-loss / “get back” copy. Button stays **Start workout**.
+6. **Copy when last exists:** **Repeat last session** (new keys). Description: same exercises and last loads, log when ready. Do not reuse `activeRepeatLast` (“Repeat last set”).
+7. **Hard no:** auto-start rest; auto-start Coach on this control; social share; speech/voice owning the flow; second button / template list; gating the free logger; account/network required (local `workoutHistory` only). Set-log table remains first paint when exercises are copied.
+
+### Files (expected)
+
+- `src/lib/workout/repeatLastSession.ts` + colocated test
+- Slim `resolveActiveEmptyStart` to last-session or empty (drop Just Go/coach/dose from this path)
+- `ActiveWorkoutPage` empty start + `ActiveEmptyState` label
+- `runTodayPrimaryAction` + `justGoHeroMeta` source `repeat_last` (hero and tap must agree)
+- i18n: `activeRepeatLastSession` / `todayRepeatLastCta` (+ title/desc/kicker) in `activeWorkoutLocales` + `todayLocales`; `npm run i18n:fill` if packs require
+- Help: one sentence in `docs/help/getting-started.md`
+- INDEX: `src/lib/workout/INDEX.md` (+ Active empty row if props change)
+- Analytics: reuse `history_train_again` with `from: 'today' | 'active_empty'`
+- Ship protocol: `APP_BUILD_LABEL` `.717`, LOG (rotate oldest to stay ≤15), CONTEXT `## Now`, trailer `Excellence-Override: repeat last session`
+
+### Tests
+
+- Last-session copy: exercises, name, last loads/reps as uncompleted targets; newest-first; skip tombstone/empty
+- Empty-history path: helper null; Active empty still `startEmptyWorkout`; no guilt phrases in empty copy
+- Wiring: Active empty + Today primary call the helper; Active empty no longer `buildJustGoSession`
+- No rest on start (source scan: empty-start path does not call `startRestTimer`)
+- Copied session is not `prescribed`
+- `resolveSetInput` order untouched (do not edit that function)
+- `node scripts/check-build-label.mjs` for `.717`
+
+### Out of scope (hard bans)
+
+`PRIVATE_MODE` / `FREE_BETA` / Top 8 / EIN / field test / plate math / Super Bundle shop / public GitHub #506 / Learn vs-pages / stealing `.698`–`.716` / rewriting #489 / Builder marketplace / speech.
 
 ---
 
@@ -204,9 +254,9 @@ Aligns revenue with [vision.md](../vision.md) without gating free core.
 | **I2** | AI Coach v1 — plan generator, premium-gated Train Coach | ✅ Engine + taster + regen; polish remaining | “Personal trainer in pocket” |
 | **I2b** | Fuel Coach — adaptive meal plans synced to macros / training | ✅ Premium-gated (`src/lib/fuelCoach/`) | Fuel depth |
 | **I3** | Track GPS premium MVP — live recording, pace chart, weekly stats | ✅ Shipped | Track |
-| **I3b** | Mind / Move premium depth beyond unlock cards | ✅ 68 Mind + 48 Move premium sessions | Bundle proof |
+| **I3b** | Mind / Move premium depth beyond unlock cards | ✅ 17 Mind + 11 Move premium sessions | Bundle proof |
 | **I3c** | Learn premium specialist chapters | ✅ 4 courses / 16 sections + course fix | Bundle proof |
-| **I4** | i18n G2 — Today/Fuel/Active/Welcome body for Tier 1 + AR RTL | 🟡 es + **fr** shipped; **de** next (one locale at a time). **`.737` founder override:** first-visit language + country picker — [GLOBAL_LOCALE_PLAN.md](GLOBAL_LOCALE_PLAN.md), inventory [LOCALES.md](LOCALES.md). Country list is [`supportedRegions.ts`](../src/lib/legal/supportedRegions.ts), not a new geo list. | Global equity |
+| **I4** | i18n G2 — Today/Fuel/Active/Welcome body for Tier 1 + AR RTL | 🟡 es + **fr** shipped; **de** next (one locale at a time) | Global equity |
 | **I5** | Cross-pillar recommendation depth (coach → multi-pillar CTAs) | ✅ Victory/guided/course CTAs + Learn in single insight | 1+1+1 > sum |
 
 **Done when:** Paying users get differentiated premium; free core unchanged; bundle LTV measurable.

@@ -1,3 +1,5 @@
+Superseded live LOG entry rotated 2026-08-13 for `.752` Mission Server messenger.
+
 ## 2026-08-12 — Coach log-cited why-this-week / adapt rationale (`.693`)
 
 Athletes could see that Coach adapted, but not inspect **why** in a structured way

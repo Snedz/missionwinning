@@ -32,7 +32,7 @@ export function MessageComposer({
       }}
     >
       <label className="sr-only" htmlFor="garage-message">
-        {t('serverComposerPlaceholder', { channel: channelName, defaultValue: `Message #${channelName}` })}
+        {t('serverComposerPlaceholder', { channel: channelName, defaultValue: 'Message {{channel}}' })}
       </label>
       <textarea
         id="garage-message"
@@ -50,7 +50,7 @@ export function MessageComposer({
         }}
         placeholder={t('serverComposerPlaceholder', {
           channel: channelName,
-          defaultValue: `Message #${channelName}`,
+          defaultValue: 'Message {{channel}}',
         })}
         className="min-h-[44px] w-full resize-none rounded-none border-2 border-input bg-card px-3 py-2 text-sm"
       />

@@ -4,13 +4,16 @@
 
 import { readJson, writeJson } from '@/lib/storage/safeStorage';
 import { STORAGE_KEYS } from '@/lib/storage/keys';
-import { readChatCallSign } from './callSign';
+import { readChatCallSign, readChatMissionId } from './callSign';
 import { clampMissionServerState, seedMissionServerState } from './garage';
 import {
   MAX_MESSAGE_BODY,
   MAX_MESSAGES_PER_CHANNEL,
+  isPresenceStatus,
   type GarageMessage,
+  type MessageKind,
   type MissionServerState,
+  type PresenceStatus,
 } from './types';
 
 export type PostMessageResult =
@@ -42,10 +45,33 @@ export function messagesForChannel(state: MissionServerState, channelId: string)
   return state.server.messages[channelId] ?? [];
 }
 
+export function lastMessageForChannel(
+  state: MissionServerState,
+  channelId: string
+): GarageMessage | null {
+  const list = messagesForChannel(state, channelId);
+  return list[list.length - 1] ?? null;
+}
+
+export function setLocalPresence(status: PresenceStatus): MissionServerState {
+  const next: MissionServerState = {
+    ...loadMissionServer(),
+    presence: isPresenceStatus(status) ? status : 'available',
+  };
+  saveMissionServer(next);
+  return next;
+}
+
 export function postLocalMessage(
   channelId: string,
   body: string,
-  opts?: { authorCallSign?: string; createdAt?: string; id?: string }
+  opts?: {
+    authorCallSign?: string;
+    authorMissionId?: string | null;
+    createdAt?: string;
+    id?: string;
+    kind?: MessageKind;
+  }
 ): PostMessageResult {
   const trimmed = body.trim();
   if (!trimmed) return { ok: false, reason: 'empty' };
@@ -55,12 +81,16 @@ export function postLocalMessage(
   const channel = state.server.channels.find((c) => c.id === channelId);
   if (!channel) return { ok: false, reason: 'unknown-channel' };
 
+  const kind: MessageKind = opts?.kind === 'nudge' ? 'nudge' : 'text';
   const message: GarageMessage = {
     id: opts?.id ?? newMessageId(),
     channelId,
     authorCallSign: (opts?.authorCallSign ?? readChatCallSign()).trim() || readChatCallSign(),
+    authorMissionId:
+      opts?.authorMissionId !== undefined ? opts.authorMissionId : readChatMissionId(),
     body: trimmed.slice(0, MAX_MESSAGE_BODY),
     createdAt: opts?.createdAt ?? new Date().toISOString(),
+    kind,
   };
 
   const existing = state.server.messages[channelId] ?? [];
@@ -85,6 +115,11 @@ export function postLocalMessage(
   return { ok: true, message, state: next };
 }
 
+/** Quiet local nudge — no sound. Body is a stable token; UI translates. */
+export function postLocalNudge(channelId: string): PostMessageResult {
+  return postLocalMessage(channelId, 'Nudge', { kind: 'nudge' });
+}
+
 /** Merge a remote broadcast if it looks like a v1 message. Never throws. */
 export function ingestRemoteMessage(raw: unknown): MissionServerState | null {
   if (!raw || typeof raw !== 'object') return null;
@@ -98,10 +133,13 @@ export function ingestRemoteMessage(raw: unknown): MissionServerState | null {
   ) {
     return null;
   }
+  const kind = m.kind === 'nudge' ? 'nudge' : 'text';
   const result = postLocalMessage(m.channelId, m.body, {
     id: m.id,
     authorCallSign: m.authorCallSign,
+    authorMissionId: typeof m.authorMissionId === 'string' ? m.authorMissionId : null,
     createdAt: m.createdAt,
+    kind,
   });
   return result.ok ? result.state : null;
 }

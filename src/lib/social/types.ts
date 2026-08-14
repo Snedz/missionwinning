@@ -1,7 +1,8 @@
 /**
- * Mission Server v1 — garage text rooms.
+ * Mission Server messenger — rooms, messages, local presence.
  *
- * Freeze: docs/MISSION_SERVER_V1_PLAN.md
+ * Freeze: docs/MISSION_SERVER_MESSENGER_PLAN.md (continues #518).
+ * Later horizon (no UI): game.* modules bind the same Mission ID.
  */
 
 export const MAX_SERVERS = 1;
@@ -14,6 +15,9 @@ export type DefaultChannelSlug = (typeof DEFAULT_CHANNEL_SLUGS)[number];
 
 export const GARAGE_SERVER_ID = 'garage-local';
 
+export const PRESENCE_STATUSES = ['available', 'away', 'offline'] as const;
+export type PresenceStatus = (typeof PRESENCE_STATUSES)[number];
+
 export type ServerChannel = {
   id: string;
   slug: string;
@@ -25,12 +29,17 @@ export type ServerMember = {
   kind: 'self';
 };
 
+export type MessageKind = 'text' | 'nudge';
+
 export type GarageMessage = {
   id: string;
   channelId: string;
   authorCallSign: string;
+  /** Athlete Card call-sign `00`–`99` when set. Local only. */
+  authorMissionId?: string | null;
   body: string;
   createdAt: string;
+  kind?: MessageKind;
 };
 
 export type GarageServer = {
@@ -45,8 +54,16 @@ export type GarageServer = {
 export type MissionServerState = {
   version: 1;
   server: GarageServer;
+  /** Self presence on this device. Never invent other athletes. */
+  presence: PresenceStatus;
 };
 
 export function isDefaultChannelSlug(value: string): value is DefaultChannelSlug {
   return (DEFAULT_CHANNEL_SLUGS as readonly string[]).includes(value);
+}
+
+export function isPresenceStatus(value: unknown): value is PresenceStatus {
+  return (
+    typeof value === 'string' && (PRESENCE_STATUSES as readonly string[]).includes(value)
+  );
 }

@@ -15,10 +15,10 @@ export const STATIC_PAGE_TITLES: Record<string, { label: string; labelKey?: stri
   '/coaching': { label: 'Talk to a human coach', labelKey: 'infoCoachingTitle' },
   '/america': { label: 'National fitness', labelKey: 'americaHeroTitle' },
   '/calculators': { label: 'Calculators', labelKey: 'calcTitle' },
-  '/explore': { label: 'Explore', labelKey: 'navExplore' },
   '/welcome': { label: 'Welcome', labelKey: 'welcomeTitle' },
   '/fitness-test': { label: 'Fitness test', labelKey: 'pftPageTitle' },
   '/learn/guide': { label: 'Guidebook', labelKey: 'guidebookTitle' },
+  '/server': { label: 'Messenger', labelKey: 'navServer' },
   '/assessments': { label: 'Health screen', labelKey: 'assessTitle' },
 };
 
@@ -39,11 +39,10 @@ export const ROUTE_LABELS: { href: string; label: string; labelKey: string }[] =
   { href: '/library', labelKey: 'navLibrary', label: 'Library' },
   { href: '/history', labelKey: 'navHistory', label: 'History' },
   { href: '/leaderboard', labelKey: 'navLeaderboard', label: 'Leaderboard' },
-  { href: '/server', labelKey: 'navServer', label: 'Garage' },
+  { href: '/server', labelKey: 'navServer', label: 'Messenger' },
   { href: '/benchmarks', labelKey: 'navReadiness', label: 'Readiness tests' },
   { href: '/assessments', labelKey: 'navHealth', label: 'Health screen' },
   { href: '/calculators', labelKey: 'navCalculators', label: 'Calculators' },
-  { href: '/explore', labelKey: 'navExplore', label: 'Explore' },
   { href: '/bundle', labelKey: 'navBundle', label: 'Super Bundle' },
 ];
 

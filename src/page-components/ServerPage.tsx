@@ -1,20 +1,33 @@
 'use client';
 /**
- * Page: /server — Mission Server v1 garage text rooms.
- * See: docs/MISSION_SERVER_V1_PLAN.md, app/INDEX.md
+ * Page: /server — Mission Server messenger (MSN rooms + presence).
+ * See: docs/MISSION_SERVER_MESSENGER_PLAN.md, app/INDEX.md
  */
 
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import { Hash } from 'lucide-react';
+import { MessageSquare } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
-import { ChannelList } from '@/components/social/ChannelList';
-import { MemberList } from '@/components/social/MemberList';
-import { MessageComposer } from '@/components/social/MessageComposer';
-import { MessageList } from '@/components/social/MessageList';
+import { BuddyList } from '@/components/social/BuddyList';
+import { ChatWindow } from '@/components/social/ChatWindow';
+import { PresenceControl } from '@/components/social/PresenceControl';
 import { PillarPageHeader } from '@/components/layout/PillarPageHeader';
-import { ingestRemoteMessage, loadMissionServer, messagesForChannel, postLocalMessage } from '@/lib/social/store';
+import {
+  ingestRemoteMessage,
+  loadMissionServer,
+  messagesForChannel,
+  postLocalMessage,
+  postLocalNudge,
+  setLocalPresence,
+} from '@/lib/social/store';
 import { connectGarageRealtime, type GarageRealtimeHandle } from '@/lib/social/realtime';
-import type { MissionServerState } from '@/lib/social/types';
+import { readChatCallSign, readChatMissionId } from '@/lib/social/callSign';
+import type { MissionServerState, PresenceStatus } from '@/lib/social/types';
+
+const CHANNEL_KEYS: Record<string, string> = {
+  train: 'serverChannelTrain',
+  garage: 'serverChannelGarage',
+  'off-topic': 'serverChannelOffTopic',
+};
 
 export function ServerPage() {
   const { t } = useTranslation();
@@ -52,6 +65,11 @@ export function ServerPage() {
   );
 
   const messages = state && channel ? messagesForChannel(state, channel.id) : [];
+  const displayName = readChatCallSign();
+  const missionId = readChatMissionId();
+  const roomName = channel
+    ? t(CHANNEL_KEYS[channel.slug] ?? channel.name, { defaultValue: channel.name })
+    : '';
 
   const onSend = useCallback(
     (body: string) => {
@@ -64,12 +82,24 @@ export function ServerPage() {
     [channel, realtime]
   );
 
+  const onNudge = useCallback(() => {
+    if (!channel) return;
+    const result = postLocalNudge(channel.id);
+    if (!result.ok) return;
+    setState(result.state);
+    if (realtime?.ok) void realtime.send(result.message);
+  }, [channel, realtime]);
+
+  const onPresence = useCallback((next: PresenceStatus) => {
+    setState(setLocalPresence(next));
+  }, []);
+
   if (!state || !channel) {
     return (
       <div className="p-6">
         <PillarPageHeader
-          icon={Hash}
-          eyebrow={t('serverEyebrow', { defaultValue: 'Garage' })}
+          icon={MessageSquare}
+          eyebrow={t('serverEyebrow', { defaultValue: 'Mission Server' })}
           title={t('serverTitle', { defaultValue: 'Garage' })}
           subtitle=""
         />
@@ -79,40 +109,41 @@ export function ServerPage() {
 
   return (
     <div className="space-y-4">
-      <div className="flex items-start justify-between gap-4">
+      <div className="flex flex-col gap-3 md:flex-row md:items-start md:justify-between">
         <PillarPageHeader
-          icon={Hash}
-          eyebrow={t('serverEyebrow', { defaultValue: 'Garage' })}
+          icon={MessageSquare}
+          eyebrow={t('serverEyebrow', { defaultValue: 'Mission Server' })}
           title={t('serverTitle', { defaultValue: 'Garage' })}
-          subtitle={t('serverSubtitle', { defaultValue: 'Text rooms on this device. Not a feed.' })}
+          subtitle={t('serverSubtitle', {
+            defaultValue: 'Rooms on this device. Not a feed.',
+          })}
         />
-        <p className="shrink-0 pt-2 text-xs text-muted-foreground md:hidden">
-          {t('serverMemberCount', { defaultValue: '1 member' })}
-        </p>
+        <div className="shrink-0 md:pt-2">
+          <p className="mb-2 text-sm font-semibold">
+            {displayName}
+            {missionId ? (
+              <span className="ms-2 tabular-nums text-muted-foreground">{missionId}</span>
+            ) : null}
+          </p>
+          <PresenceControl value={state.presence} onChange={onPresence} />
+        </div>
       </div>
 
-      <div className="grid min-h-[60vh] border-2 border-border md:grid-cols-[11rem_minmax(0,1fr)_9rem]">
+      <div className="grid min-h-[60vh] border-2 border-border md:grid-cols-[13rem_minmax(0,1fr)]">
         <div className="border-b-2 border-border p-2 md:border-b-0 md:border-r-2">
-          <ChannelList
-            channels={state.server.channels}
-            activeId={channel.id}
-            onSelect={setChannelId}
-          />
+          <BuddyList state={state} activeId={channel.id} onSelect={setChannelId} />
         </div>
-        <div className="flex min-h-[40vh] flex-col">
-          <div className="flex-1 overflow-y-auto">
-            <MessageList messages={messages} />
-          </div>
-          <MessageComposer channelName={channel.name} onSend={onSend} />
-        </div>
-        <div className="hidden border-l-2 border-border p-2 md:block">
-          <MemberList />
-        </div>
+        <ChatWindow
+          roomName={roomName}
+          messages={messages}
+          onSend={onSend}
+          onNudge={onNudge}
+        />
       </div>
 
       <p className="text-xs text-muted-foreground">
         {t('serverLocalNote', {
-          defaultValue: 'Saved on this device. Cloud fan-out only if you are signed in.',
+          defaultValue: 'Saved on this device. Cloud fan-out only if Realtime is on and you are signed in.',
         })}
       </p>
     </div>

@@ -30,6 +30,7 @@ export const ROUTE_TITLES = {
   assessments: 'Assessments',
   fitnessTest: 'Fitness Test',
   welcome: 'Welcome — I-Day',
+  server: 'Messenger',
   offline: 'Offline',
   private: 'Private Beta',
 } as const;
