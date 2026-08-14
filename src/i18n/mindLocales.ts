@@ -104,7 +104,7 @@ const en: MindStrings = {
   mindPremiumSessionsCountOpenBeta: 'More guided sessions ({{count}})',
   mindPremiumPreviewCount: 'Premium guided sessions ({{count}})',
   mindSubtitleDepthBeta:
-    '{{free}} free guided sessions · {{unlocked}} unlocked in open beta — breathing + check-in included.',
+    '{{free}} free guided sessions · {{unlocked}} unlocked in Alpha — breathing + check-in included.',
   mindSubtitleDepthPaid:
     '{{free}} free guided sessions · Super Bundle adds {{premium}} deeper timed sessions.',
   mindSubtitleBrief: 'Check in, then breathe or run a free guided session.',

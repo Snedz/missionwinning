@@ -155,7 +155,7 @@ export function ProfileAccountCard({
         ) : freeBeta ? (
           <p className="text-xs text-muted-foreground leading-relaxed">
             {t('profileFreeBetaFoot', {
-              defaultValue: 'Open beta — full tools free while we grow with you. Logger stays free forever.',
+              defaultValue: 'Alpha — full tools free while we grow with you. Logger stays free forever.',
             })}
           </p>
         ) : (

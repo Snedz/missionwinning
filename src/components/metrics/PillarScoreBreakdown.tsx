@@ -71,7 +71,7 @@ export function PillarScoreBreakdown({ breakdown }: { breakdown: WinScoreBreakdo
         {freeBeta
           ? t('todayPillarScoreFootOpenBeta', {
               defaultValue:
-                'Training carries most of the score. Other tools add a little when you use them — nothing is paywalled in open beta.',
+                'Training carries most of the score. Other tools add a little when you use them — nothing is paywalled in Alpha.',
             })
           : t('todayPillarScoreFoot', {
               defaultValue:

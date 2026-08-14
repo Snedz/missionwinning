@@ -134,7 +134,7 @@ export function CoachPage({ askExerciseId }: CoachPageProps = {}) {
             icon={Sparkles}
             title={t('coachGenerateEmptyTitle', { defaultValue: 'Ready for a new week?' })}
             description={t('coachFreeBetaNextWeek', {
-              defaultValue: 'Generate next week from your latest logs. Free while beta is open.',
+              defaultValue: 'Generate next week from your latest logs. Free during Alpha.',
             })}
           />
           <ScreenDock>
@@ -144,7 +144,7 @@ export function CoachPage({ askExerciseId }: CoachPageProps = {}) {
               </p>
               <p className="poster-sub mb-2.5 line-clamp-2 text-sm leading-relaxed">
                 {t('coachFreeBetaNextWeek', {
-                  defaultValue: 'Generate next week from your latest logs. Free while beta is open.',
+                  defaultValue: 'Generate next week from your latest logs. Free during Alpha.',
                 })}
               </p>
               <button

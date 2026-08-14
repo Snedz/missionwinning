@@ -518,7 +518,7 @@ const en: CoachStrings = {
   coachPreferredDaysSpread:
     'Pick at least {{count}} to choose your own days — otherwise sessions spread evenly.',
   coachGenerateEmptyTitle: 'No plan this week',
-  coachFreeBetaNextWeek: 'Generate next week from your latest logs. Free while beta is open.',
+  coachFreeBetaNextWeek: 'Generate next week from your latest logs. Free during Alpha.',
   coachGenerateEmptyDesc: 'One week from your logs. Free every week — no wearable.',
   coachManageCancel: 'Cancel',
   coachManageBack: 'Back',

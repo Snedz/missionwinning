@@ -181,7 +181,7 @@ const en: BuilderStrings = {
   builderProLoadFailOpenBeta: 'Could not load pro programs. Try again — free templates still work.',
   builderTemplateSearch: 'Search programs or sessions…',
   builderTemplateSearchCount: '{{count}} matching',
-  builderProFreeBeta: 'Pro cycles are paused during open beta — free templates stay available.',
+  builderProFreeBeta: 'Pro cycles are paused during Alpha — free templates stay available.',
   builderRemoveExercise: 'Remove exercise',
   builderRemoveSet: 'Remove set',
   builderContinue: 'Continue',

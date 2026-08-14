@@ -421,7 +421,7 @@ const en: FuelStrings = {
   fuelSubtitleBrief: 'Log meals on this device. Targets and recipes when you need them.',
   fuelMoreTools: 'Targets, week & weight',
   fuelSubtitleDepthBeta:
-    '{{free}} free recipes · {{unlocked}} unlocked in open beta — meals stay on this device.',
+    '{{free}} free recipes · {{unlocked}} unlocked in Alpha — meals stay on this device.',
   fuelSubtitleDepthPaid:
     '{{free}} free recipes · Super Bundle adds {{premium}} more. Meals stay on this device.',
   fuelEmptyCta: 'Log food',

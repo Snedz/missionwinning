@@ -606,7 +606,7 @@ export function NutritionPage() {
               {t('fuelSubtitleDepthBeta', {
                 free: inv.recipes.free,
                 unlocked: inv.unlockedTotal.recipes,
-                defaultValue: `${inv.recipes.free} free recipes · ${inv.unlockedTotal.recipes} unlocked in open beta.`,
+                defaultValue: `${inv.recipes.free} free recipes · ${inv.unlockedTotal.recipes} unlocked in Alpha.`,
               })}
             </p>
           ) : (

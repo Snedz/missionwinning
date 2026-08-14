@@ -202,7 +202,7 @@ export function MovePage() {
         freeBeta
           ? t('moveSubtitleBriefOpenBeta', {
               defaultValue:
-                'Pick a free flow. Timers and bodyweight — recovery depth open in open beta.',
+                'Pick a free flow. Timers and bodyweight — recovery depth open in Alpha.',
             })
           : t('moveSubtitleBrief', {
               defaultValue:
