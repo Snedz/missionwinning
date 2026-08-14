@@ -2,7 +2,8 @@ import type { Metadata } from 'next';
 import { redirect } from 'next/navigation';
 import { LandingPage } from '@/page-components/LandingPage';
 import { GateTeaser } from './private/GateTeaser';
-import { hasServerPrivateAccess } from '@/lib/privateGateServer';
+import { homeSurfaceAfterGate, isUngatedDoor } from '@/lib/homeSurface';
+import { hasPrivateAccessCookieOnServer } from '@/lib/privateGateServer';
 import { isPrivateModeEnabled } from '@/lib/privateModeFlag';
 import { publicPageMetadata } from '@/lib/seoMetadata';
 import {
@@ -20,37 +21,44 @@ export const metadata: Metadata = publicPageMetadata({
 });
 
 /**
- * Door vs post-flip landing.
+ * Door vs homepage.
  *
  * Gate on + no cookie → `/private` (production www).
- * Gate on + cookie → cinematic LandingPage.
- * Gate off (Preview / local dev) → the same teaser as `/private`. Preview
- * inherits Production PRIVATE_MODE but short-circuits the gate so Train is
- * walkable; that used to paint the cinematic open landing on `/`.
+ * Cookie → LandingPage — the .696 marketing homepage (Log a set /
+ * Your week rewrites itself). Not cinematic www.
+ * Preview / local, no cookie → teaser. Done mints the cookie.
+ * Production public flip (gate off) → homepage with no door.
  */
+function Homepage() {
+  const graph = [
+    organizationJsonLd(),
+    webSiteJsonLd(),
+    softwareApplicationJsonLd(),
+    faqPageJsonLd(),
+  ];
+  return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(graph) }}
+      />
+      <LandingPage />
+    </>
+  );
+}
+
 export default async function MissionWinningLanding() {
-  if (isPrivateModeEnabled()) {
-    if (!(await hasServerPrivateAccess())) {
-      redirect('/private');
-    }
-
-    const graph = [
-      organizationJsonLd(),
-      webSiteJsonLd(),
-      softwareApplicationJsonLd(),
-      faqPageJsonLd(),
-    ];
-
-    return (
-      <>
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(graph) }}
-        />
-        <LandingPage />
-      </>
-    );
+  const cookie = await hasPrivateAccessCookieOnServer();
+  const surface = homeSurfaceAfterGate({
+    privateMode: isPrivateModeEnabled(),
+    cookie,
+    ungatedDoor: isUngatedDoor(),
+  });
+  if (surface === 'private') {
+    redirect('/private');
   }
-
+  if (surface === 'homepage') {
+    return <Homepage />;
+  }
   return <GateTeaser walkOpen />;
 }

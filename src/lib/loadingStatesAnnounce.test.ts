@@ -80,6 +80,12 @@ const NOT_A_PLACEHOLDER: { file: string; fallback: string; why: string; fixWhen:
     why: 'Renders the hero logger for real rather than standing in for it — same component serves as the permanent no-JS shell, so from the reader\'s point of view nothing is loading and there is no busy state to announce.',
     fixWhen: 'It stops being the no-JS shell and becomes a placeholder shape.',
   },
+  {
+    file: 'src/page-components/LandingPage.tsx',
+    fallback: 'LogToPlanHeroFallback',
+    why: 'SSR / no-JS shell of the squat demo — same geometry as the live hero, not a loading box. The reader already sees the sets; announcing busy would lie.',
+    fixWhen: 'It stops being the no-JS shell and becomes a placeholder shape.',
+  },
 ];
 
 const exempt = (file: string, fallback: string) =>
