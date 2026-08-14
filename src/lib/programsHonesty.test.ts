@@ -11,7 +11,7 @@ test('free-beta Programs does not paint checkout merch', () => {
   assert.match(page, /!freeBeta && <> • \{catalogLine\(prog\.priceKey\)\}/);
   assert.match(page, /!freeBeta && \(/);
   assert.match(page, /UnlockButton/);
-  assert.match(page, /href=\"\/coach\"/);
+  assert.match(page, /href="\/coach"/);
   assert.match(page, /not a second store/);
 });
 

@@ -48,6 +48,6 @@ test('Today rewards can mark rest without a second red', () => {
     'utf8'
   );
   assert.match(card, /rest-today/);
-  assert.match(card, /variant=\"ghost\"/);
+  assert.match(card, /variant="ghost"/);
   assert.doesNotMatch(card, /primary-action/);
 });
