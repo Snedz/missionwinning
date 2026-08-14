@@ -53,6 +53,8 @@ export interface WorkoutVictorySummary {
   nextAction?: VictoryNextAction;
   /** Five-event field test receipt — only when the finished log is a field test. */
   fieldTest?: FieldTestReceipt;
+  /** Muscle groups on working exercises, in log order (Victory Move seam). */
+  workingMuscleGroups?: string[][];
 }
 
 /** Rank working sets: load×reps when loaded; reps alone when bodyweight. */
@@ -212,5 +214,6 @@ export function summarizeWorkoutVictory(
         ...pickOpts,
       }),
     fieldTest,
+    workingMuscleGroups: log.exercises.map((ex) => ex.muscleGroups ?? []),
   };
 }

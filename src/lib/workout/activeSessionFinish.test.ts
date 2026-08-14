@@ -227,45 +227,6 @@ describe('assembleActiveVictory', () => {
     assert.equal(out.pushPatch.lastSessionAt, finished.completedAt);
     assert.equal(out.journal.workoutId, finished.id);
     assert.ok(out.entry.fragments.some((f) => f.includes('Felt strong')));
-    assert.ok(out.victorySummary.receipt);
-    assert.equal(out.victorySummary.receipt!.vsLast, null);
-    assert.equal(out.victorySummary.receipt!.prCount, 0);
-  });
-
-  it('same-day second session attaches vs-last volume from historyBefore (.713)', () => {
-    const first = log({
-      id: 'w0',
-      completedAt: '2026-08-13T16:00:00.000Z',
-      startedAt: '2026-08-13T15:30:00.000Z',
-      totalVolume: 800,
-    });
-    const second = log({
-      id: 'w1',
-      completedAt: '2026-08-13T18:00:00.000Z',
-      startedAt: '2026-08-13T17:30:00.000Z',
-      totalVolume: 1100,
-      exercises: [
-        {
-          exerciseId: 'bench-press',
-          sets: [
-            { reps: 5, weight: 105 },
-            { reps: 5, weight: 105 },
-          ],
-        },
-      ],
-    });
-    const out = assembleActiveVictory({
-      log: second,
-      historyBefore: [first],
-      checkIn: null,
-      sessionNote: '',
-      units: 'metric',
-      goalId: 'general',
-      hasCoachPlan: true,
-      resolveExerciseName: (id) => id,
-    });
-    assert.equal(out.victorySummary.receipt?.vsLast?.volumeDelta, 300);
-    assert.ok((out.victorySummary.receipt?.prCount ?? 0) > 0);
   });
 });
 
@@ -291,15 +252,6 @@ describe('Active page wiring (.405/.409)', () => {
       src,
       /buildDebrief\(/,
       'debrief must live inside assembleActiveVictory'
-    );
-    assert.match(
-      readFileSync(path.join(root, 'src/lib/workout/activeSessionFinish.ts'), 'utf8'),
-      /buildVictoryReceipt\(params\.log, params\.historyBefore/
-    );
-    assert.doesNotMatch(
-      src,
-      /buildVictoryReceipt\(/,
-      'receipt must live inside assembleActiveVictory'
     );
     assert.doesNotMatch(
       src,

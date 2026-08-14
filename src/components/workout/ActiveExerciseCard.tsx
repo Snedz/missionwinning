@@ -5,12 +5,14 @@
  * Dense mobile: cues live in Form guide; actions in overflow.
  */
 
-import { useState, type ReactNode, type RefObject } from 'react';
+import { useEffect, useRef, useState, type RefObject } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Card, CardContent } from '@/components/ui/card';
 import { SetLogRow } from '@/components/workout/SetLogRow';
 import { SetLogTable } from '@/components/workout/SetLogTable';
 import { ActiveExerciseHeader } from '@/components/workout/ActiveExerciseHeader';
 import { ActiveExerciseFooter } from '@/components/workout/ActiveExerciseFooter';
+import { ExerciseNoteField } from '@/components/workout/ExerciseNoteField';
 import { useIsCompact } from '@/hooks/useIsCompact';
 import {
   exerciseHasCompletedSet,
@@ -21,11 +23,20 @@ import {
   resolveExerciseNextTarget,
   formatPrevSetLabels,
 } from '@/lib/workout/activeWorkoutHelpers';
-import { formatSetRowAdjacency } from '@/lib/workout/setRowAdjacency';
+import { resolveLastSetGhost } from '@/lib/workout/lastSetGhost';
+import { formatVsLastSetDeltas } from '@/lib/workout/vsLastSet';
+import { isBarLoadedEquipment, setRowPlateLine } from '@/lib/plateCalculator';
+import {
+  nextWarmupKind,
+  resolveWorkingLoad,
+  setRowOrdinal,
+  shouldShowAddWarmups,
+} from '@/lib/workout/warmupRamp';
 import { getFormGuideOrCues } from '@/lib/formGuides';
-import { lastNotesFor } from '@/lib/journal/cueMemory';
-import { resolveRestSeconds } from '@/lib/workout/restTimer';
+import { canStartDrop } from '@/lib/workout/dropSet';
+import { resolveRestForNextSet } from '@/lib/workout/restTimer';
 import { supersetLabel } from '@/lib/workout/superset';
+import { isPlusLoadExercise } from '@/lib/workout/bodyweightLoad';
 import { cn } from '@/lib/utils';
 import type { UnitsPref } from '@/lib/units';
 import type {
@@ -34,6 +45,8 @@ import type {
   Exercise,
   LoggedSet,
   SetKind,
+  SetSide,
+  SetTempo,
 } from '@/types';
 
 type TemplateSet = { reps: number; weight: number; kind?: SetKind; rpe?: LoggedSet['rpe'] };
@@ -53,6 +66,7 @@ type Props = {
   swapOpen: boolean;
   noteOpen: boolean;
   swapCandidates: Exercise[];
+  swapOptionCount: number;
   lastSessionSets: (
     history: CompletedWorkoutLog[],
     exerciseId: string
@@ -67,8 +81,11 @@ type Props = {
   onSwapTo: (id: string) => void;
   onNoteChange: (note: string) => void;
   onRate: (setIdx: number, rpe: NonNullable<LoggedSet['rpe']>) => void;
+  onRateRir: (setIdx: number, rir: number | undefined) => void;
+  onRateTempo: (setIdx: number, tempo: SetTempo | undefined) => void;
   onApplyAllTargets: () => void;
   onAddSet: () => void;
+  onStartDrop: () => void;
   onRemoveSet: () => void;
   onStartRest: (seconds: number) => void;
   /* Desktop only — the table logs in place, so it needs the same input state
@@ -79,8 +96,11 @@ type Props = {
   /** Kind of the set currently being entered, and how to change it. */
   activeSetKind: SetKind;
   onSetKindChange: (kind: SetKind) => void;
-  /** Field-test SDC garage/skip — optional slot after the header. */
-  afterHeader?: ReactNode;
+  offerSetSide?: boolean;
+  activeSetSide?: SetSide;
+  onSetSideChange?: (side: SetSide | undefined) => void;
+  onOpenPlates?: () => void;
+  onAddWarmups?: () => void;
 };
 
 export function ActiveExerciseCard({
@@ -97,6 +117,7 @@ export function ActiveExerciseCard({
   swapOpen,
   noteOpen,
   swapCandidates,
+  swapOptionCount,
   lastSessionSets,
   onRepeatLast,
   onFormGuide,
@@ -108,8 +129,11 @@ export function ActiveExerciseCard({
   onSwapTo,
   onNoteChange,
   onRate,
+  onRateRir,
+  onRateTempo,
   onApplyAllTargets,
   onAddSet,
+  onStartDrop,
   onRemoveSet,
   onStartRest,
   setInput,
@@ -117,20 +141,32 @@ export function ActiveExerciseCard({
   onLogSet,
   activeSetKind,
   onSetKindChange,
-  afterHeader,
+  offerSetSide = false,
+  activeSetSide,
+  onSetSideChange,
+  onOpenPlates,
+  onAddWarmups,
 }: Props) {
+  const { t } = useTranslation();
   const isCompact = useIsCompact();
   const [menuOpen, setMenuOpen] = useState(false);
   const [footerOpen, setFooterOpen] = useState(false);
+  const noteRef = useRef<HTMLInputElement>(null);
   const hasCompleted = exerciseHasCompletedSet(exLog.sets);
   const hasPlanned = exerciseHasPlannedSet(exLog.sets);
-  const restSec = resolveRestSeconds(exercise.name);
+  const restSec = resolveRestForNextSet({
+    exerciseId: exLog.exerciseId,
+    exerciseName: exercise.name,
+  });
   const ssLabel = supersetLabel(exercises, exIdx);
   const hasNext = exIdx < exercises.length - 1;
   const holdsActiveSet = holdsActiveExercise(nextSet, exIdx);
   const lastSets = lastSessionSets(workoutHistory, exLog.exerciseId);
   const hasFormGuide = !!getFormGuideOrCues(exercise.id, { exercise });
-  const lastNote = lastNotesFor(exLog.exerciseId, workoutHistory)[0] ?? null;
+
+  useEffect(() => {
+    if (noteOpen) noteRef.current?.focus();
+  }, [noteOpen]);
 
   const nextTarget = resolveExerciseNextTarget({
     sets: exLog.sets,
@@ -141,18 +177,49 @@ export function ActiveExerciseCard({
   });
 
   /** PREVIOUS column / row anchor — same labels for compact rows and desktop table. */
+  const plusLoad = isPlusLoadExercise(exercise);
   const prevLabels = formatPrevSetLabels(
     workoutHistory,
     exLog.exerciseId,
-    exLog.sets.length
+    exLog.sets.length,
+    plusLoad
+      ? { plusLoad: true, bodyweightLabel: t('activeSetBodyweight', { defaultValue: 'BW' }) }
+      : undefined
   );
-  const adjacency = formatSetRowAdjacency({
+  const lastSetGhost = resolveLastSetGhost(workoutHistory, exLog.exerciseId);
+  /** After-save vs-last — working-set index, independent of Prev/ghost prefill. */
+  const vsLastLabels = formatVsLastSetDeltas(
     workoutHistory,
-    exerciseId: exLog.exerciseId,
+    exLog.exerciseId,
+    exLog.sets,
+    unitLabel,
+    {
+      same: t('activeVsLastSame', { defaultValue: 'same' }),
+      rep: t('activeVsLastRep', { defaultValue: 'rep' }),
+      reps: t('activeVsLastReps', { defaultValue: 'reps' }),
+    }
+  );
+  const ordinalLabels = exLog.sets.map((_, i) => setRowOrdinal(exLog.sets, i).label);
+  const barLoaded = isBarLoadedEquipment(exercise.equipment);
+  const liveSetIdx = activeSetIdxForExercise(nextSet, exIdx);
+  const livePlateLine =
+    holdsActiveSet && liveSetIdx >= 0
+      ? setRowPlateLine({
+          equipment: exercise.equipment,
+          weight: setInput.weight,
+          units,
+        })
+      : null;
+  const workingLoad = resolveWorkingLoad({
     sets: exLog.sets,
-    prescribed: exLog.prescribed,
+    liveSetIdx: holdsActiveSet && liveSetIdx >= 0 ? liveSetIdx : null,
+    liveDial: holdsActiveSet ? setInput : null,
+  });
+  const showAddWarmups = shouldShowAddWarmups({
+    barLoaded,
+    workingWeight: workingLoad?.weight ?? null,
     units,
-    goalRange,
+    sets: exLog.sets,
   });
 
   return (
@@ -161,6 +228,7 @@ export function ActiveExerciseCard({
         'content-card',
         ssLabel && 'border-s-[3px] border-s-[hsl(var(--accent-poster))]'
       )}
+      data-pair-mark={ssLabel ?? undefined}
     >
       <ActiveExerciseHeader
         exercise={exercise}
@@ -173,9 +241,8 @@ export function ActiveExerciseCard({
         menuOpen={menuOpen}
         onMenuOpenChange={setMenuOpen}
         swapOpen={swapOpen}
-        noteOpen={noteOpen}
         swapCandidates={swapCandidates}
-        lastNote={lastNote}
+        swapOptionCount={swapOptionCount}
         nextTarget={nextTarget}
         onFormGuide={onFormGuide}
         onToggleSuperset={onToggleSuperset}
@@ -184,10 +251,8 @@ export function ActiveExerciseCard({
         onToggleSwap={onToggleSwap}
         onRemove={onRemove}
         onSwapTo={onSwapTo}
-        onNoteChange={onNoteChange}
         onRepeatLast={onRepeatLast}
       />
-      {afterHeader}
       <CardContent className="space-y-2 p-3 pt-0">
         {isCompact ? (
           exLog.sets.map((set, setIdx) => {
@@ -200,10 +265,17 @@ export function ActiveExerciseCard({
                   isNext={isNext}
                   weightLabel={unitLabel}
                   prevLabel={prevLabels[setIdx]}
-                  targetLabel={adjacency[setIdx]?.targetLabel}
-                  cite={adjacency[setIdx]?.cite}
-                  empty={adjacency[setIdx]?.empty}
+                  pairMark={ssLabel}
+                  plusLoad={plusLoad}
+                  vsLastLabel={vsLastLabels[setIdx]}
+                  ordinalLabel={ordinalLabels[setIdx]}
+                  plateLine={isNext ? livePlateLine : null}
+                  onToggleWarmup={
+                    isNext ? () => onSetKindChange(nextWarmupKind(set.kind)) : undefined
+                  }
                   onRate={(rpe) => onRate(setIdx, rpe)}
+                  onRateRir={(rir) => onRateRir(setIdx, rir)}
+                  onRateTempo={(tempo) => onRateTempo(setIdx, tempo)}
                 />
               </div>
             );
@@ -215,21 +287,44 @@ export function ActiveExerciseCard({
               activeSetIdx={activeSetIdxForExercise(nextSet, exIdx)}
               weightLabel={unitLabel}
               prevLabels={prevLabels}
-              adjacency={adjacency}
+              pairMark={ssLabel}
+              vsLastLabels={vsLastLabels}
+              ordinalLabels={ordinalLabels}
+              plateLine={livePlateLine}
+              onToggleWarmup={() => onSetKindChange(nextWarmupKind(activeSetKind))}
+              onOpenPlates={onOpenPlates}
               input={setInput}
+              plusLoad={plusLoad}
               onInputChange={onSetInputChange}
               onLog={() => nextSet && onLogSet(nextSet.setIdx)}
               onRate={onRate}
+              onRateRir={onRateRir}
+              onRateTempo={onRateTempo}
+              lastSetGhost={lastSetGhost}
+              onAcceptGhost={(target) => {
+                onSetInputChange('reps', target.reps);
+                onSetInputChange('weight', target.weight);
+              }}
             />
           </div>
         )}
+        <ExerciseNoteField
+          value={exLog.note ?? ''}
+          onChange={onNoteChange}
+          inputRef={noteRef}
+        />
         <ActiveExerciseFooter
           isCompact={isCompact}
           holdsActiveSet={holdsActiveSet}
           restSec={restSec}
           activeSetKind={activeSetKind}
           onSetKindChange={onSetKindChange}
+          offerSetSide={offerSetSide}
+          activeSetSide={activeSetSide}
+          onSetSideChange={onSetSideChange}
           onAddSet={onAddSet}
+          canStartDrop={canStartDrop(exLog.sets)}
+          onStartDrop={onStartDrop}
           onStartRest={onStartRest}
           footerOpen={footerOpen}
           onFooterOpenChange={setFooterOpen}
@@ -238,6 +333,8 @@ export function ActiveExerciseCard({
           plannedSetCount={exLog.sets.length}
           onApplyAllTargets={onApplyAllTargets}
           onRemoveSet={onRemoveSet}
+          showAddWarmups={showAddWarmups}
+          onAddWarmups={onAddWarmups}
         />
       </CardContent>
     </Card>

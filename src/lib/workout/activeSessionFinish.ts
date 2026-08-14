@@ -6,7 +6,7 @@
  * stay on the page.
  */
 
-import type { ActiveExerciseLog, CompletedWorkoutLog, SetKind } from '@/types';
+import type { ActiveExerciseLog, CompletedWorkoutLog, SetKind, SetSide } from '@/types';
 import type { UnitsPref } from '@/lib/units';
 import { weightUnitLabel } from '@/lib/units';
 import { repRangeForGoal } from '@/lib/coach/progression';
@@ -20,7 +20,7 @@ import {
 import { computeBodyScores } from '@/lib/score';
 import type { MindCheckIn } from '@/lib/mindCheckIns';
 import { shouldRestAfterLog } from '@/lib/workout/superset';
-import { restSecondsForExercise } from '@/lib/workout/restTimer';
+import { resolveRestForNextSet } from '@/lib/workout/restTimer';
 import { isPersonalRecord } from '@/lib/workout/workoutPr';
 import {
   bodyScoreDeltas,
@@ -31,8 +31,6 @@ import {
   summarizeWorkoutVictory,
   type WorkoutVictorySummary,
 } from '@/lib/workout/workoutVictory';
-import { buildFieldTestReceipt } from '@/lib/workout/fieldTestReceipt';
-import type { FieldTestScaleKey } from '@/lib/workout/fieldTestScore';
 
 /**
  * Resolve what to log for one set (override wins; else dial).
@@ -42,20 +40,23 @@ export type LogSetPayload = {
   exerciseId: string;
   setKind: SetKind;
   input: { reps: number; weight: number };
+  side?: SetSide;
 };
 
 export function resolveLogSetPayload(params: {
   exerciseId: string | undefined;
-  set: { reps: number; weight: number; kind?: SetKind } | undefined;
+  set: { reps: number; weight: number; kind?: SetKind; side?: SetSide } | undefined;
   override?: { reps: number; weight: number };
   dial: { reps: number; weight: number };
 }): LogSetPayload | null {
   if (!params.exerciseId || !params.set) return null;
-  return {
+  const payload: LogSetPayload = {
     exerciseId: params.exerciseId,
     setKind: params.set.kind ?? 'normal',
     input: params.override ?? params.dial,
   };
+  if (params.set.side) payload.side = params.set.side;
+  return payload;
 }
 
 /** PR check against completed history (active set is not history yet). */
@@ -137,6 +138,8 @@ export function planLogSetRest(params: {
   /** Result of logSetAndAdvance — next open set or null. */
   advanceNext: { exerciseIndex: number; setIndex: number } | null;
   exerciseName: string | undefined;
+  /** Catalog id — last-rest recall keys on this, not the localized name. */
+  exerciseId?: string;
 }): LogSetRestPlan {
   return {
     takeRest: shouldRestAfterLog(
@@ -145,7 +148,10 @@ export function planLogSetRest(params: {
       params.setIdx,
       params.advanceNext
     ),
-    restSeconds: restSecondsForExercise(params.exerciseName),
+    restSeconds: resolveRestForNextSet({
+      exerciseId: params.exerciseId,
+      exerciseName: params.exerciseName,
+    }),
   };
 }
 
@@ -182,7 +188,6 @@ export function assembleActiveVictory(params: {
   goalId: string;
   hasCoachPlan: boolean;
   resolveExerciseName: (exerciseId: string) => string;
-  fieldTestScaleKey?: FieldTestScaleKey | null;
 }): ActiveVictoryAssembly {
   const historyAfter = [params.log, ...params.historyBefore];
   const streak = getTrainingStreak(historyAfter);
@@ -213,13 +218,7 @@ export function assembleActiveVictory(params: {
       completedWorkouts: historyAfter.length,
       hasCoachPlan: params.hasCoachPlan,
       strainDelta: scoreDeltas.strain,
-    },
-    buildFieldTestReceipt(
-      params.log,
-      params.historyBefore,
-      params.fieldTestScaleKey ?? null,
-      params.units
-    )
+    }
   );
 
   return {

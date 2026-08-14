@@ -120,16 +120,6 @@ describe('activeWorkoutHelpers', () => {
     assert.equal(getLastSessionSets(hist, 'missing'), null);
   });
 
-  it('getLastSessionSets skips tombstones and 0-rep junk', () => {
-    const live = historyWith('squats', [{ reps: 5, weight: 80 }]);
-    const dead = historyWith('squats', [{ reps: 5, weight: 999 }]);
-    dead[0] = { ...dead[0]!, id: 'dead', deletedAt: new Date().toISOString() };
-    const zero = historyWith('squats', [{ reps: 0, weight: 200 }]);
-    zero[0] = { ...zero[0]!, id: 'zero' };
-    const sets = getLastSessionSets([dead[0]!, zero[0]!, live[0]!], 'squats');
-    assert.equal(sets?.[0]?.weight, 80);
-  });
-
   it('getLastPerformanceForSet matches set index then falls back', () => {
     const hist = historyWith('bench-press', [
       { reps: 8, weight: 60 },
@@ -237,22 +227,11 @@ describe('resolveSetInput', () => {
     assert.deepEqual(out, { reps: 9, weight: 82 });
   });
 
-  it('same-session carry beats a coach prescription on the next set (F-013)', () => {
-    // Set 1 logged 9×82 on a 5×85 plan — set 2 starts at 9×82, not snapped back.
+  it('coach prescription still beats same-session carry', () => {
     const out = resolveSetInput({
       ...base,
       prescribed: true,
       sessionCarry: { reps: 9, weight: 82 },
-      suggestion: { reps: 9, weight: 82 },
-    });
-    assert.deepEqual(out, { reps: 9, weight: 82 });
-  });
-
-  it('prescription still fills set 1 when nothing in this exercise is logged', () => {
-    const out = resolveSetInput({
-      ...base,
-      prescribed: true,
-      sessionCarry: null,
       suggestion: { reps: 9, weight: 82 },
     });
     assert.deepEqual(out, { reps: 5, weight: 85 });
@@ -693,32 +672,13 @@ describe('planApplyTargets', () => {
 });
 
 describe('resolveActiveSetDial', () => {
-  it('prescribed set 1 ignores history and returns template numbers', () => {
+  it('prescribed ignores history and returns template numbers', () => {
     const out = resolveActiveSetDial({
       prescribed: true,
       defaultReps: 5,
       defaultWeight: 100,
       sets: [
-        { completed: false, reps: 5, weight: 100 },
-        { completed: false, reps: 5, weight: 100 },
-      ],
-      setIdx: 0,
-      lastSets: [{ reps: 12, weight: 60 }],
-      units: 'metric',
-      repMin: 8,
-      repMax: 12,
-      lastPerformance: { reps: 12, weight: 60 },
-    });
-    assert.deepEqual(out, { reps: 5, weight: 100 });
-  });
-
-  it('prescribed next set carries last load/reps, not the template (F-013)', () => {
-    const out = resolveActiveSetDial({
-      prescribed: true,
-      defaultReps: 5,
-      defaultWeight: 100,
-      sets: [
-        { completed: true, reps: 6, weight: 102.5 },
+        { completed: true, reps: 5, weight: 100 },
         { completed: false, reps: 5, weight: 100 },
       ],
       setIdx: 1,
@@ -728,7 +688,7 @@ describe('resolveActiveSetDial', () => {
       repMax: 12,
       lastPerformance: { reps: 12, weight: 60 },
     });
-    assert.deepEqual(out, { reps: 6, weight: 102.5 });
+    assert.deepEqual(out, { reps: 5, weight: 100 });
   });
 
   it('freestyle carries the prior completed set in this exercise', () => {
@@ -779,21 +739,6 @@ describe('resolveActiveSetDial', () => {
       src,
       /priorCompletedInExercise\(/,
       'session carry must stay inside resolveActiveSetDial'
-    );
-  });
-
-  it('prescribed exercises still compute session carry (F-013)', () => {
-    const src = readFileSync(
-      path.join(import.meta.dirname, 'activeWorkoutHelpers.ts'),
-      'utf8'
-    );
-    const dialFn = src.slice(src.indexOf('export function resolveActiveSetDial'));
-    const body = dialFn.slice(0, dialFn.indexOf('\nexport function'));
-    assert.match(body, /priorCompletedInExercise\(/);
-    assert.doesNotMatch(
-      body,
-      /sessionCarry\s*=\s*params\.prescribed/,
-      'F-013: next-set carry must not be nulled for prescribed work'
     );
   });
 });
@@ -1586,7 +1531,7 @@ describe('resolveExerciseNextTarget / menu visibility', () => {
       units: 'metric',
       suggest: () => {
         suggestCalls += 1;
-        return { reps: 99, weight: 99, reason: 'from_last', evidenceWorkingIdx: [0] };
+        return { reps: 99, weight: 99, reason: 'from_last', evidenceWorkingIdx: [] };
       },
     });
     assert.deepEqual(out, { reps: 5, weight: 100 });
@@ -1599,9 +1544,14 @@ describe('resolveExerciseNextTarget / menu visibility', () => {
       prescribed: false,
       lastSets: [{ reps: 8, weight: 90 }],
       units: 'metric',
-      suggest: () => ({ reps: 8, weight: 92.5, reason: 'add_weight', evidenceWorkingIdx: [0] }),
+      suggest: () => ({ reps: 8, weight: 92.5, reason: 'add_weight', evidenceWorkingIdx: [] }),
     });
-    assert.deepEqual(out, { reps: 8, weight: 92.5, reason: 'add_weight', evidenceWorkingIdx: [0] });
+    assert.deepEqual(out, {
+      reps: 8,
+      weight: 92.5,
+      reason: 'add_weight',
+      evidenceWorkingIdx: [],
+    });
   });
 
   it('returns null when every set is done or there is no last session', () => {

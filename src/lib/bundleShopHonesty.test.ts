@@ -33,7 +33,10 @@ function leftoverDigits(value: string, ...keep: number[]): string {
 test('Move table merch uses floors, not the stale 10/18 trailer', () => {
   const freeN = CONTENT_FLOORS.moveFree;
   const premN = CONTENT_FLOORS.movePremium;
-  assert.ok(freeN !== 10 && premN !== 18, 'floors collapsed onto the stale trailer — this test would go green on the lie');
+  assert.ok(
+    Number(freeN) !== 10 && Number(premN) !== 18,
+    'floors collapsed onto the stale trailer — this test would go green on the lie',
+  );
   for (const lang of APP_LANGS) {
     const strings = withLocalePack(
       bundleStringsFor(lang) as unknown as Record<string, string>,

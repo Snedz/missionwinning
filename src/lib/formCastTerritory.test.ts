@@ -71,7 +71,7 @@ function sloganHits(haystack: string, file: string): string[] {
 
 function walkFiles(dir: string, acc: string[] = []): string[] {
   const abs = path.join(root, dir);
-  let entries: ReturnType<typeof readdirSync>;
+  let entries: string[];
   try {
     entries = readdirSync(abs);
   } catch {

@@ -1,5 +1,15 @@
 /** Safe post-auth redirect paths (open redirect prevention). */
 
+/** Retired route spellings → canonical app paths (`.673`). */
+export const DEAD_ALIAS_PATHS: Readonly<Record<string, string>> = {
+  '/today': '/log',
+  '/train': '/active',
+  '/dashboard': '/log',
+  '/app': '/log',
+  '/login': '/welcome',
+  '/pricing': '/welcome',
+};
+
 const ALLOWED_NEXT_PATHS = new Set([
   '/log',
   '/profile',
@@ -55,7 +65,8 @@ export function sanitizeNextPath(next: string | null | undefined, fallback = '/l
     return fallback;
   }
   const pathOnly = decoded.split('?')[0].split('#')[0];
-  if (ALLOWED_NEXT_PATHS.has(pathOnly)) return pathOnly;
+  const canonical = DEAD_ALIAS_PATHS[pathOnly] ?? pathOnly;
+  if (ALLOWED_NEXT_PATHS.has(canonical)) return canonical;
   if (CLASS_PATH.test(pathOnly)) return pathOnly;
   return fallback;
 }
