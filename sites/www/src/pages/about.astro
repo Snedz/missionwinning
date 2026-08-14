@@ -1,0 +1,104 @@
+---
+/*
+ * /about — commissioned Astro about page.
+ *
+ * Additive. Next keeps www.missionwinning.com and the ~250 SEO URLs,
+ * including Next /about. This file is the fourth-surface about page only.
+ * No national-fitness track. No host flip. No _redirects.
+ */
+import Base from '../layouts/Base.astro';
+import CtaSlot from '../components/CtaSlot.astro';
+import StagePhoto from '../components/StagePhoto.astro';
+import { appUrl } from '../lib/appLinks';
+import { META, HERO, SECTIONS } from '../lib/aboutContent';
+---
+
+<Base title={META.title} description={META.description}>
+  <header
+    class="on-dark fixed inset-x-0 top-0 z-50 border-b-2 border-transparent transition-colors duration-200"
+    data-nav
+  >
+    <div class="mx-auto flex max-w-6xl items-center gap-4 px-5 py-4 sm:px-8">
+      <a href="/" class="flex shrink-0 items-center gap-3">
+        <span
+          class="flex h-8 w-8 items-center justify-center bg-paper text-[13px] font-extrabold tracking-[-0.04em] text-ink"
+          data-nav-mark>MW</span
+        >
+        <span class="text-[15px] font-extrabold tracking-[-0.01em]">Mission Winning</span>
+      </a>
+      <a href="/" class="hidden text-[15px] font-semibold hover:underline md:inline">Homepage</a>
+      <CtaSlot variant="quiet" terminal class="ml-auto shrink-0" />
+    </div>
+  </header>
+
+  <main>
+    <section
+      class="stage on-dark flex min-h-[72svh] flex-col justify-end px-5 pb-14 pt-32 sm:px-8 lg:pb-20 lg:pt-40"
+    >
+      <StagePhoto
+        base="/photo/bare-wrist"
+        alt="A bare wrist on a barbell — no wearable required"
+        position="50% 45%"
+      />
+      <div class="stage-body mx-auto w-full max-w-6xl">
+        <p class="eyebrow eyebrow-live">{HERO.eyebrow}</p>
+        <h1 class="display-hero-www rise mt-5 max-w-[14ch]">
+          {HERO.lines.map((line) => <span>{line}</span>)}
+        </h1>
+        <p class="mt-6 max-w-[52ch] text-[19px] leading-[1.5] text-quiet">
+          {HERO.body}
+        </p>
+      </div>
+    </section>
+
+    {
+      SECTIONS.map((section) => (
+        <section class="px-5 py-section sm:px-8 lg:py-section-lg">
+          <div class="mx-auto max-w-3xl">
+            <p class="eyebrow">{section.index}</p>
+            <h2 class="display-section mt-4 max-w-[24ch]">{section.title}</h2>
+            {section.body.map((p) => (
+              <p class="mt-4 max-w-[62ch] text-[17px] leading-[1.55] text-quiet">{p}</p>
+            ))}
+          </div>
+        </section>
+      ))
+    }
+  </main>
+
+  <footer class="poster-field px-5 py-statement sm:px-8 lg:py-statement-lg">
+    <div class="mx-auto max-w-6xl">
+      <p class="display-statement wipe"><span>One set is the whole beginning.</span></p>
+      <CtaSlot terminal class="mt-10 max-w-[420px]" />
+    </div>
+  </footer>
+
+  <div class="ground-ink px-5 py-6 sm:px-8">
+    <div class="mx-auto flex max-w-6xl flex-wrap items-center gap-x-6 gap-y-2">
+      <p class="eyebrow">&copy; Mission Winning</p>
+      <a href="/" class="eyebrow underline">Homepage</a>
+      <a href={appUrl('/privacy')} class="eyebrow underline">Privacy</a>
+      <a href={appUrl('/terms')} class="eyebrow underline">Terms</a>
+    </div>
+  </div>
+</Base>
+
+<script>
+  const nav = document.querySelector<HTMLElement>('[data-nav]');
+  const hero = document.querySelector<HTMLElement>('main > section');
+  if (nav && hero) {
+    const onDark = () => {
+      nav.classList.add('on-dark');
+      nav.classList.remove('bg-paper', 'border-rule');
+      nav.classList.add('border-transparent');
+    };
+    const onPaper = () => {
+      nav.classList.remove('on-dark', 'border-transparent');
+      nav.classList.add('bg-paper', 'border-rule');
+    };
+    new IntersectionObserver(([entry]) => (entry.isIntersecting ? onDark() : onPaper()), {
+      rootMargin: '-72px 0px 0px 0px',
+      threshold: 0,
+    }).observe(hero);
+  }
+</script>

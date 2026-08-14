@@ -1,5 +1,5 @@
-/** Shown on Profile so testers can confirm the deployed build. Bump when shipping UI to master. `.794` landing chrome Alpha. */
-export const APP_BUILD_LABEL = "2026.07-unified.794";
+/** Shown on Profile so testers can confirm the deployed build. Bump when shipping UI to master. `.795` www about. */
+export const APP_BUILD_LABEL = "2026.07-unified.795";
 
 /**
  * Semver for athletes. Distinct from `APP_BUILD_LABEL`, which `/api/health`

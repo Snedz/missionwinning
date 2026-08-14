@@ -2,7 +2,7 @@
 
 **Audience:** Founder + the next Hermes / Grok Build / graph agent  
 **Lane:** Engineering-Web (unless a loop says Android)  
-**Status:** ACTIVE 2026-08-14 · web `2026.07-unified.794` · Alpha 0.1.0 · **G3 open**  
+**Status:** ACTIVE 2026-08-14 · web `2026.07-unified.795` · Alpha 0.1.0 · **G4 open**  
 **Does not replace:** [ORCHESTRATION.md](../ORCHESTRATION.md) (what may be built) · [CONTEXT.md](../CONTEXT.md) `## Now` (where we are) · [vision.md](../vision.md) (constitution) · [docs/THESIS.md](THESIS.md) (wedge) · [docs/PLAN.md](PLAN.md) (phases A–I)
 
 This file is the **execution queue** for the agent graph: one concern per loop, spawn, ship, mark done, spawn the next. It is not a second status block and not a license to skip standing hard bans.
@@ -117,8 +117,8 @@ H0 is empty. Top `open` row is the only live ticket.
 |---|------|-------|--------|
 | **G1** | Next landing: empty Reveal bands + photo slots | After Done, `/` is `.696`. Reveal leaves blank paper; three photo slots empty | `done` — `.793` this PR |
 | **G2** | Landing chrome honesty | Status bar leftover / Alpha vs Free-beta | `done` — `.794` this PR |
-| **G3** | `sites/www` **about** page only | Commissioned Astro. Do **not** steal `www.missionwinning.com` from Next | `open` |
-| **G4** | Today: one next session | Old W1. Phone shows train / resume | queued |
+| **G3** | `sites/www` **about** page only | Commissioned Astro. Do **not** steal `www.missionwinning.com` from Next | `done` — `.795` this PR |
+| **G4** | Today: one next session | Old W1. Phone shows train / resume | `open` |
 | **G5** | Logger one-thumb | Old W2. Outdoor set log | queued |
 | **G6** | Coach week on Coach **and** Today | Old W3. Dose + adapt visible | queued |
 | **G7** | Missed-day re-entry, in-app | Old W4. No shame copy | queued |

@@ -213,6 +213,36 @@ test('/week copy does not invent traction or a before-after', () => {
   assert.doesNotMatch(copy, /gym-bro/i);
 });
 
+test('/about is additive Astro and does not steal the Next host', () => {
+  /*
+   * G3. Commissioned fourth-surface about page. Next keeps
+   * www.missionwinning.com, the ~250 SEO URLs, and Next /about.
+   */
+  const page = read('sites/www/src/pages/about.astro');
+  const copy = [page, read('sites/www/src/lib/aboutContent.ts')].join('\n');
+  assert.match(page, /\bterminal\b/, '/about must terminate at the private gate');
+  assert.match(page, /href="\/"/, '/about must link to the homepage');
+  assert.ok(
+    existsSync(path.join(root, 'src/page-components/AboutPage.tsx')),
+    'Next /about stays — this loop does not move the SEO URL'
+  );
+  assert.equal(
+    existsSync(path.join(root, 'sites/www/public/_redirects')),
+    false,
+    'no _redirects — do not steal www.missionwinning.com'
+  );
+  assert.equal(
+    existsSync(path.join(root, 'sites/www/wrangler.toml')),
+    false,
+    'no wrangler.toml — host split stays undecided'
+  );
+  assert.doesNotMatch(copy, /america|Presidential Fitness/i);
+  assert.doesNotMatch(copy, /\b\d[\d,.]*\s*(athletes|users|sign-?ups)\b/i);
+  assert.doesNotMatch(copy, /we're live/i);
+  assert.match(copy, /Mission Winning LLC/);
+  assert.match(copy, /Texas/);
+});
+
 test('/week anywhere movement keeps three photographs and two plates', () => {
   /*
    * Concept 02's honest greybox: five places, three frames in the repo.
