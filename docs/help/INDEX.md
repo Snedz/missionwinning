@@ -15,6 +15,7 @@ Plain-language guides for athletes, parents, and teachers. English only for now;
 | [privacy-and-data.md](privacy-and-data.md) | Where your data lives, backup, youth consent, optional wearables |
 | [../WEARABLES.md](../WEARABLES.md) | Developer wearables strategy (Apple, Google, Whoop, …) |
 | [faq.md](faq.md) | Quick answers |
+| [mission-server.md](mission-server.md) | Garage text rooms (device-local; not a feed) |
 | [troubleshooting.md](troubleshooting.md) | Offline, sync, password gate |
 
 **In the app:** Profile → legal links; Today tab = `/log`; Coach = `/coach`.

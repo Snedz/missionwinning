@@ -11,6 +11,7 @@ import {
   Dumbbell,
   History,
   MapPin,
+  Hash,
   PenTool,
   Settings,
   Shield,
@@ -142,6 +143,14 @@ export const MORE_NAV: NavLinkItem[] = [
     icon: Sparkles,
     descriptionKey: 'moreBundleDesc',
     description: 'Premium pillars',
+  },
+  {
+    href: '/server',
+    labelKey: 'navServer',
+    label: 'Garage',
+    icon: Hash,
+    descriptionKey: 'moreServerDesc',
+    description: 'Text rooms on this device',
   },
   {
     href: '/account',

@@ -29,6 +29,8 @@
 | `metrics/` | CoachInsightCard, pillar scores (not weekly plan) |
 | `nutrition/` | Fuel UI — `FuelMacroOverview`, `FuelQuickLogPanel`, `FuelMoreTools`, `FuelTodayLogCard`, `FuelLogSheet`, `FuelRecipesPanel` |
 | `pillars/` | Shared pillar panels, timed flows |
+| `session/` | Guided session runner |
+| `social/` | Mission Server garage UI — channel list, messages, composer |
 | `today/` | Today dashboard — [today/INDEX.md](today/INDEX.md) |
 | `track/` | GPS / activity panels |
 | `profile/` | Athlete Page (You) + Account settings cards |

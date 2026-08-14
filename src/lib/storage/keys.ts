@@ -49,6 +49,8 @@ export const STORAGE_KEYS = {
    * (C5). Key name is grepped by privateNoteBoundary.test.ts.
    */
   athletePrivateNote: 'mw_athlete_private_note',
+  /** `.726` — Mission Server garage (local-first text rooms). */
+  missionServer: 'mw_mission_server',
   defaultRestSec: 'mw_default_rest_sec',
   /**
    * `.715` — last chosen rest seconds per exercise id. Device-local; skip

@@ -23,6 +23,7 @@
 | [help/premium-and-billing.md](help/premium-and-billing.md) | Super Bundle |
 | [help/privacy-and-data.md](help/privacy-and-data.md) | Data & consent |
 | [help/faq.md](help/faq.md) | FAQ |
+| [help/mission-server.md](help/mission-server.md) | Garage text rooms |
 | [help/troubleshooting.md](help/troubleshooting.md) | Common fixes |
 
 ---
@@ -37,6 +38,7 @@
 | [DUAL_REPO.md](DUAL_REPO.md) | Product repo vs private mission-ops · `npm run ops:sync` |
 | [SECURITY_PUBLIC_OSS_AUDIT_2026-08-08.md](SECURITY_PUBLIC_OSS_AUDIT_2026-08-08.md) | Public OSS prep audit (2026-08-08) |
 | [contracts/INDEX.md](contracts/INDEX.md) | Identity · economy · module · AI interop contracts |
+| [MISSION_SERVER_V1_PLAN.md](MISSION_SERVER_V1_PLAN.md) | Garage text rooms freeze (`.726`) — Discord-shaped, parkable, not a tab |
 | [SECRETS.md](SECRETS.md) | Secrets program · vaults · gitleaks · rotate-on-leak |
 | [FREE_BETA.md](FREE_BETA.md) | Free-first beta mute (LLC/EIN window) — hide all paid UI |
 | [SUPER_BUNDLE_CONTENT_PLAN.md](SUPER_BUNDLE_CONTENT_PLAN.md) | Frozen `.700` Super Bundle content depth (quality, honest counts) |

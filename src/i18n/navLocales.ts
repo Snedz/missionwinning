@@ -21,6 +21,7 @@ type NavStrings = {
   navLibrary: string;
   navHistory: string;
   navLeaderboard: string;
+  navServer: string;
   navReadiness: string;
   navHealth: string;
   navCalculators: string;
@@ -59,6 +60,7 @@ const en: NavStrings = {
   navLibrary: 'Library',
   navHistory: 'History',
   navLeaderboard: 'Leaderboard',
+  navServer: 'Garage',
   navReadiness: 'Readiness tests',
   navHealth: 'Health screen',
   navCalculators: 'Calculators',
