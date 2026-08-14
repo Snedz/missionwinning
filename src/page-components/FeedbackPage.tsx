@@ -4,7 +4,6 @@
  * See: app/INDEX.md, src/page-components/INDEX.md
  */
 
-import { FEEDBACK_SOURCE_TAG } from '@/lib/feedbackSource';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useTranslation } from 'react-i18next';
@@ -13,6 +12,8 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { InfoPageShell } from '@/components/layout/InfoPageShell';
+import { composeFeedbackNote } from '@/lib/feedbackNote';
+import { APP_BUILD_LABEL } from '@/lib/buildInfo';
 import { enqueueFeedback } from '@/lib/sync/feedbackSync';
 import { SignInPrompt } from '@/components/auth/SignInPrompt';
 import { readJson, writeJson, writeRaw } from '@/lib/storage/safeStorage';
@@ -41,20 +42,20 @@ export function FeedbackPage() {
     // Through the outbox, not a direct call whose result gets discarded: these notes
     // are the beta's interview record, and a phone with no signal is the normal case.
     enqueueFeedback(
-      {
-        name: form.name || 'Tester',
-        email: form.email,
-        goals: [
+      composeFeedbackNote({
+        text: [
           `Friction: ${form.friction}`,
           form.expected ? `Expected: ${form.expected}` : null,
           form.nextWant ? `Want next: ${form.nextWant}` : null,
         ]
           .filter(Boolean)
           .join('\n'),
-        package_interest: FEEDBACK_SOURCE_TAG,
-        source: FEEDBACK_SOURCE_TAG,
-        message: form.friction,
-      },
+        email: form.email,
+        name: form.name,
+        screen: '/feedback',
+        buildLabel: APP_BUILD_LABEL,
+        online: typeof navigator === 'undefined' ? true : navigator.onLine,
+      }),
       at
     );
     writeRaw(STORAGE_KEYS.betaContributor, 'true');

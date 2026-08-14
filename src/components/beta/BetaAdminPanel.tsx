@@ -1,8 +1,10 @@
 'use client';
 
 import type { FeedbackNote } from '@/lib/feedbackSource';
+import { FeedbackNoteRow } from '@/components/beta/FeedbackNoteRow';
+import { countFeedbackDests, formatDestCounts } from '@/lib/feedbackTriage';
 import { loadReviewedAt, markReviewed, unreadCount } from '@/lib/feedbackUnread';
-import { localDateKey, localDateKeyFromIso } from '@/lib/time/localDate';
+import { localDateKey } from '@/lib/time/localDate';
 import { useCallback, useEffect, useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import type { BetaFunnelAggregate } from '@/types/betaMetrics';
@@ -58,6 +60,7 @@ export function BetaAdminPanel({ enabled }: Props) {
    */
   const [feedback, setFeedback] = useState<FeedbackNote[] | null>(null);
   const [feedbackError, setFeedbackError] = useState<string | null>(null);
+  const [persistAvailable, setPersistAvailable] = useState(false);
 
   /*
    * `.216` — where the founder stopped reading. Read in an effect rather than a
@@ -99,8 +102,12 @@ export function BetaAdminPanel({ enabled }: Props) {
       // Reported separately: feedback failing must not blank the funnel above
       // it, and a funnel failure must not be mistaken for "no one wrote in".
       if (feedbackRes.ok) {
-        const body = (await feedbackRes.json()) as { notes?: FeedbackNote[] };
+        const body = (await feedbackRes.json()) as {
+          notes?: FeedbackNote[];
+          persistAvailable?: boolean;
+        };
         setFeedback(body.notes ?? []);
+        setPersistAvailable(body.persistAvailable === true);
         setFeedbackError(null);
       } else {
         setFeedback(null);
@@ -365,6 +372,11 @@ export function BetaAdminPanel({ enabled }: Props) {
                     {unread > 0 ? (
                       <span className="ms-2 text-[color:var(--accent-poster)]">{unread} new</span>
                     ) : null}
+                    {feedback && feedback.length > 0 ? (
+                      <div className="mt-1 text-[11px] font-normal text-muted-foreground">
+                        {formatDestCounts(countFeedbackDests(feedback))}
+                      </div>
+                    ) : null}
                   </div>
                   {unread > 0 && feedback ? (
                     <button
@@ -388,21 +400,18 @@ export function BetaAdminPanel({ enabled }: Props) {
                 ) : (
                   <ul className="space-y-3">
                     {feedback.map((note) => (
-                      <li key={`${note.at}-${note.email}`} className="border-t border-border pt-2 first:border-0 first:pt-0">
-                        <div className="flex justify-between gap-2 text-[11px] text-muted-foreground">
-                          <span className="truncate">{note.name || 'Anonymous'}</span>
-                          <span className="tabular-nums shrink-0">{localDateKeyFromIso(note.at)}</span>
-                        </div>
-                        {note.email ? (
-                          <div className="text-[11px] text-muted-foreground truncate">{note.email}</div>
-                        ) : null}
-                        {/* `whitespace-pre-wrap`: the form packs four answers into
-                            one field separated by newlines, so collapsing them
-                            would run the whole note into a single paragraph. */}
-                        <p className="mt-1 whitespace-pre-wrap leading-relaxed text-foreground">
-                          {note.text}
-                        </p>
-                      </li>
+                      <FeedbackNoteRow
+                        key={note.id ?? `${note.at}-${note.email}`}
+                        note={note}
+                        persistAvailable={persistAvailable}
+                        onRated={(leadId, review) =>
+                          setFeedback((prev) =>
+                            prev
+                              ? prev.map((n) => (n.id === leadId ? { ...n, review } : n))
+                              : prev
+                          )
+                        }
+                      />
                     ))}
                   </ul>
                 )}

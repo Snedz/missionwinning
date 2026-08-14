@@ -28,6 +28,12 @@ import {
 } from '@/lib/founderDigestCompose';
 import { unreadCount } from '@/lib/feedbackUnread';
 import type { FeedbackNote } from '@/lib/feedbackSource';
+import {
+  canAssignDest,
+  classifyFeedbackNote,
+  formatFeedbackTicket,
+  ticketContainsEmail,
+} from '@/lib/feedbackTriage';
 
 const root = path.join(import.meta.dirname, '..', '..');
 const read = (p: string) => readFileSync(path.join(root, p), 'utf8');
@@ -221,5 +227,55 @@ test('marking read uses the newest note, not the wall clock', () => {
     src,
     /function markReviewed[\s\S]{0,400}?Date\.now\(\)/,
     'stamping "now" hides notes that landed between the fetch and the click'
+  );
+});
+
+test('a timer jump on Train is a wedge bug eligible for craft, not voice', () => {
+  const t = classifyFeedbackNote({
+    text: 'Timer jumped mid-set outdoors.',
+    screen: '/active',
+  });
+  assert.equal(t.class, 'wedge-bug');
+  assert.deepEqual(t.destEligible, ['craft']);
+  assert.equal(canAssignDest(t, 'voice'), false);
+});
+
+test('an iOS ask is off-horizon and cannot go to Grok', () => {
+  const t = classifyFeedbackNote({ text: 'Please add an iOS app' });
+  assert.equal(t.class, 'off-horizon');
+  assert.equal(canAssignDest(t, 'voice'), false);
+  assert.equal(canAssignDest(t, 'craft', { founderOverride: true }), false);
+});
+
+test('medical content cannot be sent to voice', () => {
+  const t = classifyFeedbackNote({
+    text: 'Coach told me to train through chest pain',
+    screen: '/coach',
+  });
+  assert.equal(t.class, 'medical-legal');
+  assert.equal(canAssignDest(t, 'voice', { founderOverride: true }), false);
+});
+
+test('a craft ticket never carries a raw email', () => {
+  const ticket = formatFeedbackTicket({
+    class: 'wedge-bug',
+    dest: 'craft',
+    text: 'Timer jumped. Reply you@example.com\n---\nScreen: /active\nBuild: x',
+    screen: '/active',
+    buildLabel: 'x',
+    aligned: true,
+  });
+  assert.equal(ticketContainsEmail(ticket), false);
+});
+
+test('the rate path is the one writer', () => {
+  const route = stripComments(read('app/api/beta/feedback/route.ts'));
+  assert.match(route, /export const POST/, 'inbox without a rate path cannot close the loop');
+  assert.match(route, /writeFeedbackReview/, 'POST must delegate, not insert');
+  assert.match(route, /canAssignDest/, 'dest is a classified decision, not a free enum');
+  assert.doesNotMatch(
+    route,
+    /\.from\(['"]feedback_reviews['"]\)/,
+    'the route must not query reviews itself — that is a second writer'
   );
 });

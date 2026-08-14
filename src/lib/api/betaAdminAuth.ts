@@ -29,17 +29,23 @@ import { isBetaAdminEmail } from '@/lib/betaMetricsServer';
 import { extractSupabaseAccessToken } from '@/lib/supabaseAuthCookies';
 
 export async function authorizeBetaAdmin(request: NextRequest): Promise<boolean> {
+  return (await resolveBetaAdminActor(request)) !== null;
+}
+
+export async function resolveBetaAdminActor(request: NextRequest): Promise<string | null> {
   const secret = request.headers.get('x-beta-admin-secret');
-  if (secret && secret === process.env.BETA_ADMIN_SECRET) return true;
+  if (secret && secret === process.env.BETA_ADMIN_SECRET) return 'secret';
 
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
   const anon = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
   const token = extractSupabaseAccessToken(request.cookies);
-  if (!url || !anon || !token) return false;
+  if (!url || !anon || !token) return null;
 
   const supabase = createClient(url, anon);
   const {
     data: { user },
   } = await supabase.auth.getUser(token);
-  return isBetaAdminEmail(user?.email);
+  const email = user?.email?.trim().toLowerCase() ?? '';
+  if (!email || !isBetaAdminEmail(email)) return null;
+  return email;
 }

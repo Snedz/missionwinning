@@ -53,12 +53,14 @@ test('the source tag has one definition, and writer and reader share it', () => 
    * indistinguishable from "nobody has written in".
    */
   const form = stripComments(read(FORM));
-  assert.match(form, /FEEDBACK_SOURCE_TAG/, 'the form must write the shared constant');
+  assert.match(form, /composeFeedbackNote\(/, 'the form must use the one composer (tag + screen + build)');
   assert.doesNotMatch(
     form,
     /source:\s*'feedback-page'/,
     'the tag is a literal here and a constant in the reader — that is two definitions'
   );
+  assert.match(form, /APP_BUILD_LABEL/);
+  assert.match(form, /screen:\s*'\/feedback'/);
 });
 
 test('the prose column is actually selected somewhere', () => {
@@ -97,7 +99,7 @@ test('the read path is founder-only and fails closed', () => {
   const route = stripComments(read(READ_ROUTE));
   assert.match(
     route,
-    /authorizeBetaAdmin\(request\)/,
+    /resolveBetaAdminActor\(request\)/,
     'feedback contains user email addresses and free text — it cannot be world-readable'
   );
   assert.match(route, /status:\s*403/, 'an unauthorised read must be refused, not empty');
@@ -124,17 +126,10 @@ test('a broken read is distinguishable from an empty inbox', () => {
 test('the panel reaches the endpoint and renders the text', () => {
   const panel = stripComments(read(PANEL));
   assert.match(panel, /fetch\('\/api\/beta\/feedback'/, 'the panel must actually call the read route');
-  assert.match(
-    panel,
-    /note\.text/,
-    'the panel must render the prose — showing only a count is the defect this fixes'
-  );
-  assert.match(
-    panel,
-    /whitespace-pre-wrap/,
-    'the form packs four answers into one newline-separated field; collapsing them runs the ' +
-      'whole note into one paragraph'
-  );
+  assert.match(panel, /FeedbackNoteRow/, 'the row is the named reader of the prose');
+  const row = stripComments(read('src/components/beta/FeedbackNoteRow.tsx'));
+  assert.match(row, /note\.text/);
+  assert.match(row, /whitespace-pre-wrap/);
 });
 
 /**

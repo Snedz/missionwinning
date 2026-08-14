@@ -15,7 +15,7 @@
 | `crypto/` | Phantom lifetime USDC checkout |
 | `auth/` | Sign-in panel |
 | `benchmarks/` | Benchmark charts |
-| `beta/` | Beta admin, welcome banner |
+| `beta/` | Beta admin, welcome banner, `FeedbackNoteRow` (rate dest) |
 | `builder/` | Workout builder panels |
 | `coach/` | Mission Coach UI — [coach/INDEX.md](coach/INDEX.md) |
 | `fitness-test/` | PFT test runner — [fitness-test/INDEX.md](fitness-test/INDEX.md) |

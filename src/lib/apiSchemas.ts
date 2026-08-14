@@ -440,6 +440,23 @@ export const socialReportBodySchema = z.object({
   reason: z.enum(['spam', 'abuse', 'other']).optional(),
 });
 
+export const feedbackReviewBodySchema = z.object({
+  leadId: z.number().int().positive(),
+  dest: z.enum(['craft', 'voice', 'park', 'done']),
+  class: z
+    .enum([
+      'wedge-bug',
+      'wedge-confusion',
+      'voice',
+      'planner',
+      'feature-ask',
+      'off-horizon',
+      'medical-legal',
+      'abuse-spam',
+    ])
+    .optional(),
+});
+
 export const accountDeleteBodySchema = z
   .object({
     confirm: z.literal('DELETE'),

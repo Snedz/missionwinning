@@ -137,6 +137,7 @@ Legend:
 | `stripe-webhook` | POST | Stripe HMAC sig | — | enroll + checkout recovery + dispute founder notify |
 | `paypal-webhook` | POST | PayPal REST verify | — | service role enroll |
 | `beta/metrics` | GET | beta admin email **or** `x-beta-admin-secret` | — | service role aggregate |
+| `beta/feedback` | GET, POST | beta admin email **or** `x-beta-admin-secret` | POST 30/min/IP + 8 KiB | GET inbox + optional review join. POST Zod `feedbackReviewBodySchema` — founder dest. Missing table 503 `reviews_unavailable`. Never returns a Postgres `error.message` |
 
 ### Wearables (flag: `NEXT_PUBLIC_WEARABLES`)
 

@@ -38,11 +38,17 @@ export function isFeedbackSource(source: string | null | undefined): boolean {
  * habit is worth keeping even where it happens to be free.
  */
 export interface FeedbackNote {
-  /** ISO timestamp from `leads.created_at`. */
+  id?: number | null;
   at: string;
-  /** Whatever the sender typed, or the form's default. May be empty. */
   name: string;
   email: string;
-  /** The prose. This is the field nothing read for the whole life of the form. */
   text: string;
+  screen?: string | null;
+  previousScreen?: string | null;
+  buildLabel?: string | null;
+  review?: {
+    class: string;
+    dest: string;
+    decidedAt: string;
+  } | null;
 }
