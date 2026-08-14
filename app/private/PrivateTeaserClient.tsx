@@ -1,20 +1,13 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { useSearchParams } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { useTranslation } from 'react-i18next';
 import { Check } from 'lucide-react';
 import { AppLegalFooter } from '@/components/layout/AppLegalFooter';
-import {
-  APP_PUBLIC_PRODUCT_VERSION,
-  APP_PUBLIC_VERSION,
-} from '@/lib/buildInfo';
-import {
-  grantPrivateAccessFromSession,
-  navigateAfterPrivateGateUnlock,
-} from '@/lib/grantPrivateAccessFromSession';
-import { privateGateReturnPath } from '@/lib/privateGateReturn';
+import { grantPrivateAccessFromSession } from '@/lib/grantPrivateAccessFromSession';
+import { sanitizeNextPath } from '@/lib/safeRedirect';
 import { submitLead } from '@/lib/supabase';
 import { track } from '@/lib/analytics';
 
@@ -25,6 +18,7 @@ type Props = {
 
 export function PrivateTeaserClient({ initialInvite = '' }: Props) {
   const { t } = useTranslation();
+  const router = useRouter();
   const searchParams = useSearchParams();
   const inviteCode = (searchParams.get('invite')?.trim() || initialInvite).trim();
   const isInvitee = Boolean(inviteCode);
@@ -39,27 +33,22 @@ export function PrivateTeaserClient({ initialInvite = '' }: Props) {
   const [sessionUnlocking, setSessionUnlocking] = useState(true);
 
   // Signed-in (localStorage) but missing gate cookie — typical after Google OAuth.
-  // Bounded + fail-open: code-only invitees must reach the access-code form.
   useEffect(() => {
     let cancelled = false;
     void (async () => {
-      try {
-        const ok = await grantPrivateAccessFromSession();
-        if (cancelled) return;
-        if (ok) {
-          navigateAfterPrivateGateUnlock(
-            privateGateReturnPath(searchParams.get('next'))
-          );
-          return;
-        }
-      } finally {
-        if (!cancelled) setSessionUnlocking(false);
+      const ok = await grantPrivateAccessFromSession();
+      if (cancelled) return;
+      if (ok) {
+        router.replace(sanitizeNextPath(searchParams.get('next'), '/'));
+        router.refresh();
+        return;
       }
+      setSessionUnlocking(false);
     })();
     return () => {
       cancelled = true;
     };
-  }, [searchParams]);
+  }, [router, searchParams]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -77,10 +66,8 @@ export function PrivateTeaserClient({ initialInvite = '' }: Props) {
       });
 
       if (res.ok) {
-        navigateAfterPrivateGateUnlock(
-          privateGateReturnPath(searchParams.get('next'))
-        );
-        return;
+        router.push(sanitizeNextPath(searchParams.get('next'), '/'));
+        router.refresh();
       } else {
         const data = await res.json().catch(() => ({}));
         const msg = data.error || 'Incorrect access code';
@@ -185,8 +172,8 @@ export function PrivateTeaserClient({ initialInvite = '' }: Props) {
           </span>
           <span className="gate-brandname">Mission Winning</span>
         </span>
-        <p className="gate-kicker" data-mw-public-version={APP_PUBLIC_VERSION}>
-          {APP_PUBLIC_VERSION}
+        <p className="gate-kicker">
+          {t('gateEyebrow', { defaultValue: 'Private beta in progress' })}
         </p>
       </header>
       <hr className="gate-rule" />
@@ -320,7 +307,7 @@ export function PrivateTeaserClient({ initialInvite = '' }: Props) {
       <div className="gate-footer">
         <div className="gate-footer-inner">
           <span>
-            {APP_PUBLIC_PRODUCT_VERSION} —{' '}
+            Mission Winning —{' '}
             {t('gateFooterTagline', { defaultValue: 'free core forever' })}
           </span>
           <AppLegalFooter className="gate-footer-links" />

@@ -1,5 +1,15 @@
 /** Safe post-auth redirect paths (open redirect prevention). */
 
+/** Dead route aliases → canonical paths (keep in sync with next.config.js redirects). */
+export const DEAD_ALIAS_PATHS: Readonly<Record<string, string>> = {
+  '/today': '/log',
+  '/train': '/active',
+  '/dashboard': '/log',
+  '/app': '/log',
+  '/login': '/welcome',
+  '/pricing': '/welcome',
+};
+
 const ALLOWED_NEXT_PATHS = new Set([
   '/log',
   '/profile',
@@ -27,7 +37,8 @@ export function sanitizeNextPath(next: string | null | undefined, fallback = '/l
     return fallback;
   }
   const pathOnly = trimmed.split('?')[0].split('#')[0];
-  if (ALLOWED_NEXT_PATHS.has(pathOnly)) return pathOnly;
+  const canonical = DEAD_ALIAS_PATHS[pathOnly] ?? pathOnly;
+  if (ALLOWED_NEXT_PATHS.has(canonical)) return canonical;
   if (pathOnly.startsWith('/school/class/')) return pathOnly;
   if (pathOnly.startsWith('/join/class/')) return pathOnly;
   return fallback;

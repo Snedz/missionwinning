@@ -25,7 +25,7 @@ When adding a doc:
 
 | File | Absorbed by / note |
 |------|---------------------|
-| [log/LOG-rotate-672.md](./log/LOG-rotate-672.md) | rotated oldest for `.672` exercise count single source |
+| [log/LOG-rotate-673.md](./log/LOG-rotate-673.md) | rotated oldest for `.673` dead alias redirects |
 | [log/LOG-rotate-668.md](./log/LOG-rotate-668.md) | rotated oldest for `.668` competitor compare removed |
 | [log/LOG-rotate-667.md](./log/LOG-rotate-667.md) | rotated oldest for `.667` Compare stories free-beta mute |
 | [log/LOG-rotate-666.md](./log/LOG-rotate-666.md) | rotated oldest for `.666` Calculators macro foot free-beta mute |
@@ -443,5 +443,3 @@ Canonical live launch path: root **[LAUNCH_RUNBOOK.md](../LAUNCH_RUNBOOK.md)** +
 | [log/LOG-rotate-625.md](./log/LOG-rotate-625.md) | rotated 2026-08-09 for `.625` Account Field manual |
 | [log/LOG-rotate-626.md](./log/LOG-rotate-626.md) | rotated 2026-08-09 for `.626` Feel Wave 2 |
 - [log/LOG-rotate-639-migration.md](./log/LOG-rotate-639-migration.md) — migration founder pack + Move free-beta (recovered from misnamed LOG-rotate-654 during .669)
-| [log/LOG-rotate-655-for-670.md](./log/LOG-rotate-655-for-670.md) | rotated 2026-08-11 for `.670` hero design Coach dock + Victory share |
-| [log/LOG-rotate-671.md](./log/LOG-rotate-671.md) | rotated 2026-08-12 for `.671` /beta first-paint i18n |
