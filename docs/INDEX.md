@@ -22,6 +22,7 @@
 | [help/premium-and-billing.md](help/premium-and-billing.md) | Super Bundle |
 | [help/privacy-and-data.md](help/privacy-and-data.md) | Data & consent |
 | [help/faq.md](help/faq.md) | FAQ |
+| [help/explore-places.md](help/explore-places.md) | Explore map, optional GPS |
 | [help/troubleshooting.md](help/troubleshooting.md) | Common fixes |
 
 ---
@@ -42,6 +43,7 @@
 | [ADAPTIVE_LAYOUT.md](ADAPTIVE_LAYOUT.md) | Window size classes · adaptive overlays (web + Android) |
 | [API.md](API.md) | HTTP API reference |
 | [AGENT_RECIPES.md](AGENT_RECIPES.md) | Agent task playbooks |
+| [places/PLAN.md](places/PLAN.md) | Frozen Explore places slice (Decision 009) |
 | [../CONTRIBUTING.md](../CONTRIBUTING.md) | Contributor guide |
 
 ---

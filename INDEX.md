@@ -24,7 +24,7 @@
 | **Deciding what to build next** | [ORCHESTRATION.md](ORCHESTRATION.md) | Old chat plans; infinite feature lists |
 | Implementing a feature | [ORCHESTRATION.md](ORCHESTRATION.md) horizon gate + [docs/PLAN.md](docs/PLAN.md) + `src/*/INDEX.md` | Old chat plans in `~/.cursor/plans/` |
 | Launch / deploy | **[docs/LAUNCH_RUNBOOK.md](docs/LAUNCH_RUNBOOK.md) — the single source**, then [docs/ENV.md](docs/ENV.md) for what each var means | Everything in `docs/archive/` (`SOFT_LAUNCH_DAY`, `BETA_LAUNCH_OPS`, `PRE_LAUNCH_PLAN`, `LAUNCH_READY`, `TRACK_D_GO_LIVE`, `SETUP`) — all **superseded 2026-07-19** and all still contradicting the runbook |
-| **Supabase migrations (one sitting)** | [docs/MIGRATION_FOUNDER_PACK.md](docs/MIGRATION_FOUNDER_PACK.md) — ordered P1–P11 + week-4 proof | Guessing from `ls migrations/`; claiming week-4 without tombstone fix |
+| **Supabase migrations (one sitting)** | [docs/MIGRATION_FOUNDER_PACK.md](docs/MIGRATION_FOUNDER_PACK.md) — ordered P1–P10 + week-4 proof | Guessing from `ls migrations/`; claiming week-4 without tombstone fix |
 | Phone dogfood notes (founder) | **[docs/LAUNCH_RUNBOOK.md](docs/LAUNCH_RUNBOOK.md) §3a** — template + poke list; paste friction to agents before inventing ships | Chat-only “test it” without written notes |
 | Social / launch posts | [docs/SOCIAL_LAUNCH.md](docs/SOCIAL_LAUNCH.md), [docs/BETA_INVITE.md](docs/BETA_INVITE.md) | — |
 | Brand / press / media kit | [docs/brand-guidelines.md](docs/brand-guidelines.md), `/press`, `public/brand/` | — |
@@ -58,12 +58,12 @@
 | **Return loop for anonymous athletes** | [docs/RETURN_LOOP_PLAN.md](docs/RETURN_LOOP_PLAN.md) + [src/lib/reentry.ts](src/lib/reentry.ts) | Account-gated push/nudges as the retention answer; streak-loss copy |
 | **Club / points / tiers / boards / arcade (plan)** | [docs/CLUB_PLAN.md](docs/CLUB_PLAN.md) | Building any phase without its entry gate + founder line; loss/relegation mechanics; purchasable points; gamified theater |
 | **You surface / profile / social boundary (plan)** | [docs/IDENTITY_SOCIAL_PLAN.md](docs/IDENTITY_SOCIAL_PLAN.md) · identity code [src/lib/identity/INDEX.md](src/lib/identity/INDEX.md) | A feed; Top 8 / friend ranking; user CSS; free text on public surfaces; any Social→Log import (contract C1) |
-| **Visibility / Under the Hood** | [docs/TRANSPARENCY_PLAN.md](docs/TRANSPARENCY_PLAN.md) · code `src/lib/transparency/` · `/account/transparency` · `/account/under-the-hood` | Treating foreign ranking scores as XP; claiming we hide posts; standing on the log path |
+| **Explore places (pins / place-dex)** | Frozen slice [docs/places/PLAN.md](docs/places/PLAN.md) · code `src/lib/places/` · route `/explore` | Gym wars; pin takeover; raid FOMO; GPS-gated logging; likes; public ranks; Discord.com; Explore on Today |
 | **Platform contracts (identity / economy / modules / AI)** | [docs/contracts/INDEX.md](docs/contracts/INDEX.md) | Building games/metaverse product surfaces before week-4; second user systems per module |
 | **Classification / dual-repo / open safely** | [docs/CLASSIFICATION.md](docs/CLASSIFICATION.md), [docs/DUAL_REPO.md](docs/DUAL_REPO.md), `npm run ops:sync` | Committing `ops/` or `.hermes/`; putting STRATEGY war-room detail in public product git long-term |
 | **Design proposal brief (third)** | [docs/DESIGN_PROPOSAL_3.md](docs/DESIGN_PROPOSAL_3.md) | Re-opening IA, routes or tokens — those are settled, not wireframe |
 | UI/UX audit (hero flows) | [docs/DESIGN_REVIEW.md](docs/DESIGN_REVIEW.md) | Landing redesigns while beta gates red |
-| SEO / growth analytics | [docs/SEO_ANALYTICS.md](docs/SEO_ANALYTICS.md), [docs/LIGHTHOUSE_BASELINE.md](docs/LIGHTHOUSE_BASELINE.md), **boss metric:** [docs/METRICS.md](docs/METRICS.md) | Invented traction numbers |
+| SEO / growth analytics | [docs/SEO_ANALYTICS.md](docs/SEO_ANALYTICS.md), [docs/LIGHTHOUSE_BASELINE.md](docs/LIGHTHOUSE_BASELINE.md) | — |
 | Stripe + premium | [docs/STRIPE_PREMIUM_SETUP.md](docs/STRIPE_PREMIUM_SETUP.md) | — |
 | Phantom USDC lifetime | [docs/PHANTOM_USDC_CHECKOUT.md](docs/PHANTOM_USDC_CHECKOUT.md) | — |
 | Crypto rails (strategy) | [docs/CRYPTO_RAILS_THESIS.md](docs/CRYPTO_RAILS_THESIS.md) | — |

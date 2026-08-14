@@ -35,9 +35,8 @@ import { coachStringsFor } from '@/i18n/coachLocales';
 import { betaStringsFor } from '@/i18n/betaLocales';
 import { gateStringsFor } from '@/i18n/gateLocales';
 import { rewardsStringsFor } from '@/i18n/rewardsLocales';
-import { serverStringsFor } from '@/i18n/serverLocales';
+import { placesStringsFor } from '@/i18n/placesLocales';
 import { learnContentStringsFor } from '@/i18n/learnContentLocales';
-import { fieldTestStringsFor } from '@/i18n/fieldTestLocales';
 import { APP_LANGS, type AppLang } from '@/i18n/appLangs';
 import { withLocalePack } from '@/i18n/localePacks';
 import type { LocaleNamespace } from '@/i18n/localeExportManifest';
@@ -277,21 +276,15 @@ export const LOCALE_EXPORTS: LocaleExportEntry[] = [
     langs: EXPORT_LANGS,
   },
   {
-    namespace: 'server',
-    filename: 'server.json',
-    stringsFor: packWrap(serverStringsFor),
+    namespace: 'places',
+    filename: 'places.json',
+    stringsFor: packWrap(placesStringsFor),
     langs: EXPORT_LANGS,
   },
   {
     namespace: 'learnContent',
     filename: 'learn-content.json',
     stringsFor: packWrapIntersect(learnContentStringsFor),
-    langs: EXPORT_LANGS,
-  },
-  {
-    namespace: 'fieldTest',
-    filename: 'field-test.json',
-    stringsFor: packWrap(fieldTestStringsFor),
     langs: EXPORT_LANGS,
   },
 ];

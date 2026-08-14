@@ -39,6 +39,9 @@ Coach adapts when you miss sessions, change equipment, or report low readiness.
 **Is Coach medical advice?**  
 No — general fitness guidance only. Consult a professional for injuries or conditions.
 
+**Does logging need GPS?**  
+No. Sets save without a place. Explore is optional and lives under Account, not on Today.
+
 ## Fuel
 
 **Why didn't barcode scan find my food?**  

@@ -13,6 +13,7 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
+import Link from 'next/link';
 import { useTranslation } from 'react-i18next';
 import { Settings } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
@@ -380,6 +381,25 @@ export function AccountPage() {
       <ProfileReferralCard signedIn={Boolean(email)} />
 
       <ProfileFeedbackCard />
+
+      <Card className="border-2 border-border bg-card">
+        <CardContent className="space-y-2 pt-6">
+          <p className="font-semibold">
+            {t('accountExploreTitle', { defaultValue: 'Explore places' })}
+          </p>
+          <p className="text-sm text-muted-foreground">
+            {t('accountExploreLead', {
+              defaultValue: 'A quiet map of pins you have tagged. GPS is optional.',
+            })}
+          </p>
+          <Link
+            href="/explore"
+            className="inline-flex min-h-[44px] items-center text-sm font-semibold text-primary underline-offset-4 hover:underline"
+          >
+            {t('accountExploreCta', { defaultValue: 'Open Explore' })}
+          </Link>
+        </CardContent>
+      </Card>
 
       <ProfilePremiumCard
         premium={premium}

@@ -15,7 +15,7 @@
 |------|-------|
 | `HomePage.tsx` | `/log` (Today) |
 | `WelcomePage.tsx` | `/welcome` |
-| `LandingPage.tsx` | `/` (post-unlock). Four cinematic scenes. Cold `/` redirects to `/private`. |
+| `LandingPage.tsx` | `/` |
 
 ### Train
 
@@ -27,7 +27,6 @@
 | `LibraryPage.tsx` | `/library` |
 | `BenchmarksPage.tsx` | `/benchmarks` |
 | `LeaderboardPage.tsx` | `/leaderboard` |
-| `ServerPage.tsx` | `/server` — Garage text rooms (parkable; More → You) |
 
 ### Mission Coach (AI)
 
@@ -49,14 +48,13 @@
 | `GuidebookChapterPage.tsx` | `/learn/guide/[chapterId]` |
 | `GuidePublicIndexPage.tsx` | `/guide` — Apex shell + Contents |
 | `GuidePublicChapterPage.tsx` | `/guide/[chapter]` — Apex shell |
-| `LearnVsPublicPage.tsx` | `/guide/mission-winning-vs-*` — AEO vs-pages |
 | `GuideMagazinePrintPage.tsx` | `/guide/print` (PDF source) |
 
 ### Premium & marketing
 
 | File | Route |
 |------|-------|
-| `BundlePage.tsx` | `/bundle` Super Bundle shop (Free vs one SKU) |
+| `BundlePage.tsx` | `/bundle` |
 | `LearnPathsPublicIndexPage.tsx` | `/paths` |
 | `LearnPathPublicPage.tsx` | `/paths/[id]` |
 | `ExerciseMuscleHubPage.tsx` | `/exercises/muscle/[group]` |
@@ -81,8 +79,7 @@
 |------|-------|
 | `ProfilePage.tsx` | `/profile` — the Athlete Page: identity, career line, badge shelf |
 | `AccountPage.tsx` | `/account` — settings; cards in `src/components/profile/` |
-| `TransparencyPage.tsx` | `/account/transparency` — Visibility report (download JSON + text) |
-| `UnderTheHoodPage.tsx` | `/account/under-the-hood` — BOOSTS / PENALTIES weights |
+| `ExplorePlacesPage.tsx` | `/explore` — places pin-board (quiet; not Today) |
 | `PrivacyPage.tsx` | `/privacy` |
 | `CookiesPage.tsx` | `/cookies` |
 | `AccessibilityPage.tsx` | `/accessibility` |

@@ -32,7 +32,7 @@ describe('deployReadiness', () => {
     // `catalog.ts` were defined in no catalogue at all and survived only in a
     // stale committed export. Counting namespaces proves a pack ships; only
     // `rewardsKeyParity.test.ts` proves the pack is complete.
-    // `.711` 34→35 with `fieldTest` (510→525).
+    // `.742` 34→35 with `places` (510→525): Explore pin-board + place-dex.
     assert.equal(r.localeFiles, 525);
     assert.equal(r.localeNamespaces, 35);
     assert.ok(r.minTodayKeys >= 100);

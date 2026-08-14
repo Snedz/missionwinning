@@ -20,9 +20,7 @@
 | `/nutrition` | Fuel | `NutritionPage.tsx` |
 | `/track` | Track | `TrackPage.tsx` |
 | `/profile` | You | `ProfilePage.tsx` — the Athlete Page (identity · career line · badge shelf) |
-| `/account` | Account | `AccountPage.tsx` — settings, notifications, billing, backup |
-| `/account/transparency` | Visibility | `TransparencyPage.tsx` — limits + reasons + downloadable report |
-| `/account/under-the-hood` | Under the Hood | `UnderTheHoodPage.tsx` — BOOSTS / PENALTIES weights |
+| `/account` | Account | `AccountPage.tsx` — settings |
 
 ### Train deeper
 
@@ -33,7 +31,6 @@
 | `/library` | `LibraryPage.tsx` |
 | `/history` | `HistoryPage.tsx` |
 | `/leaderboard` | `LeaderboardPage.tsx` |
-| `/server` | `ServerPage.tsx` — Mission Server garage text rooms (parkable; not a tab) |
 | `/benchmarks` | `BenchmarksPage.tsx` |
 
 ### Other pillars & info
@@ -52,13 +49,14 @@
 | `/dmca` | `DmcaPage.tsx` | DMCA / copyright notices |
 | `/refunds` | `RefundsPage.tsx` | Refunds & cancellation |
 | `/welcome` | `WelcomePage.tsx` | I-Day onboarding (also `app/welcome/`) |
+| `/explore` | `ExplorePlacesPage.tsx` | Quiet places pin-board — not Today, not a tab |
 
 ### Outside `(app)` group
 
 | URL | File |
 |-----|------|
 | `/` | `app/page.tsx` → `LandingPage` |
-| `/bundle` | `app/bundle/page.tsx` → `BundlePage` — Super Bundle shop (Free vs one paid SKU; checkout muted in free-beta) |
+| `/bundle` | `app/bundle/page.tsx` → `BundlePage` (marketing chrome) |
 | `/compare` · `/compare/*` | **Removed (.668)** — permanent redirect to `/welcome` (no competitor comparison hub) |
 | `/guide`, `/exercises` | Public SEO pages |
 | `/press` | `app/press/page.tsx` → `PressPage` (brand & media kit) |
