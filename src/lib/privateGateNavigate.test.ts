@@ -5,7 +5,8 @@
  *   1. `/welcome` → Begin → Continue through questions → “Skip — start training”
  *   2. Lands `/active` live session; then `/log` and `/coach` render full app
  *      client-side (tab nav never re-runs proxy.ts)
- *   3. Meanwhile `curl -I https://www.missionwinning.com/active` still 307→`/private`
+ *   3. Meanwhile `curl` of `/log` and `/coach` still 307→`/private`
+ *      (`.768`: `/active` is public while gated — hard-nav no longer applies)
  *   4. State in localStorage (`mw_journey_state`, etc.), **no Set-Cookie**
  *
  * Root pattern: soft `router.push` after `completeIDay` bypasses proxy. Fix:
@@ -29,7 +30,7 @@ function stripComments(src: string): string {
 }
 
 /** Wedge routes that must not render via soft nav while PRIVATE_MODE is on without a cookie. */
-const BETA_FIELD_GATED_WEDGE = ['/active', '/log', '/coach', '/profile'] as const;
+const BETA_FIELD_GATED_WEDGE = ['/log', '/coach', '/profile'] as const;
 
 test('beta field: gated wedge routes require hard nav when gate is on (no cookie)', () => {
   const prev = process.env.NEXT_PUBLIC_PRIVATE_GATE;
@@ -45,6 +46,11 @@ test('beta field: gated wedge routes require hard nav when gate is on (no cookie
     }
     assert.equal(privateGateRequiresHardNavigation('/welcome'), false);
     assert.equal(privateGateRequiresHardNavigation('/private'), false);
+    assert.equal(
+      privateGateRequiresHardNavigation('/active'),
+      false,
+      '.768 /active is gate-public — I-Day may soft-nav the logger'
+    );
   } finally {
     process.env.NEXT_PUBLIC_PRIVATE_GATE = prev;
   }

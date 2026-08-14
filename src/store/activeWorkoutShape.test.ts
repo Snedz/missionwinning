@@ -130,8 +130,8 @@ describe('the onboarding call site', () => {
       'WelcomePage.finish() must ask whether there is work to resume on /active'
     );
     assert.ok(
-      /go\(\s*['"`]\/log['"`]\s*\)/.test(finish),
-      'default I-Day finish must land on Today (/log) with one Start — Hevy rage / C5'
+      finish.includes('idayFinishPath'),
+      'default I-Day finish delegates to idayFinishPath — Today after flip, Train while gated'
     );
     assert.ok(
       !finish.includes('startWorkout('),

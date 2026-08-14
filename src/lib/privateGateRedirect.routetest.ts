@@ -97,7 +97,7 @@ describe('the private gate redirect (PRIVATE_MODE=true)', () => {
    * fire, which is the same class of silent overwrite as the original bug.
    */
   it('leaves an explicit next alone', async () => {
-    const to = await redirectFor('/active?next=/coach');
+    const to = await redirectFor('/log?next=/coach');
     assert.ok(to);
     assert.equal(to.searchParams.get('next'), '/coach');
   });
@@ -106,6 +106,15 @@ describe('the private gate redirect (PRIVATE_MODE=true)', () => {
     assert.equal(await redirectFor('/welcome'), null);
     assert.equal(await redirectFor('/private'), null);
     assert.equal(await redirectFor('/privacy'), null);
+    assert.equal(await redirectFor('/active'), null, '.768 logger is public while gated');
+    assert.equal(await redirectFor('/active?exercise=squats'), null, 'query stays on the logger');
+  });
+
+  it('Today still 307s to the gate (blast radius — not a PRIVATE_MODE flip)', async () => {
+    const to = await redirectFor('/log');
+    assert.ok(to);
+    assert.equal(to.pathname, '/private');
+    assert.equal(to.searchParams.get('next'), '/log');
   });
 
   /** Admin share links and the beta email both land here — no redirect, invite intact. */

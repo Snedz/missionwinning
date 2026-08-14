@@ -336,6 +336,8 @@ export function discoverTopLevelKeys(repoRoot: string = process.cwd()): string[]
       if (!statSync(full).isDirectory()) continue;
       // Skip Next.js special files if any appear as dirs
       if (name === 'layout.tsx' || name === 'loading.tsx') continue;
+      // Gradle / npm output — gitignored, not a product surface.
+      if (name === 'build' || name === 'node_modules') continue;
       out.push(`${keyPrefix}${name}`);
     }
   }

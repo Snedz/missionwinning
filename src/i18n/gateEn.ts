@@ -32,6 +32,7 @@ export const GATE_EN: Record<string, string> = {
    */
   gateLocalFirst: LOCAL_FIRST_COPY.gateLocalFirst,
   gateFooterTagline: 'free core forever',
+  gateLogASet: 'Log a set',
   gateWaitlistTitle: 'Get notified',
   gateWaitlistPlaceholder: 'you@example.com',
   gateWaitlistEmailLabel: 'Email',

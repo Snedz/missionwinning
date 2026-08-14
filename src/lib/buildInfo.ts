@@ -1,5 +1,5 @@
-/** Shown on Profile so testers can confirm the deployed build. Bump when shipping UI to master. `.767` Dependabot security/quality batch. */
-export const APP_BUILD_LABEL = "2026.07-unified.767";
+/** Shown on Profile so testers can confirm the deployed build. Bump when shipping UI to master. `.768` first set while gated. */
+export const APP_BUILD_LABEL = "2026.07-unified.768";
 
 /**
  * Athlete-facing marketing version. Distinct from `APP_BUILD_LABEL`, which

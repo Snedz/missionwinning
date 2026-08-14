@@ -36,7 +36,11 @@ import { BrandMonogram } from '@/components/brand/BrandMonogram';
 import { readRaw, writeRaw } from '@/lib/storage/safeStorage';
 import { STORAGE_KEYS } from '@/lib/storage/keys';
 import { seedHomeGymKitIfUnset } from '@/lib/workout/homeGymKit';
-import { navigateAfterPrivateGateUnlock } from '@/lib/privateGateNavigate';
+import {
+  isClientPrivateGateEnabled,
+  navigateAfterPrivateGateUnlock,
+} from '@/lib/privateGateNavigate';
+import { idayFinishPath } from '@/lib/idayFinishPath';
 import { LOCAL_FIRST_COPY } from '@/lib/localFirstCopy';
 
 const EXPERIENCE_VALUES = ['beginner', 'intermediate', 'advanced'] as const;
@@ -112,17 +116,16 @@ export function WelcomePage({ initialEdit = false }: WelcomePageProps) {
     track('iday_completed', { experience, equipment });
     /*
      * `.204` — never let onboarding take a session away.
-     *
-     * If there is real logged work on the device, resume it. Otherwise F-004 /
-     * Hevy rage: land on **Today** with one Start (JourneyHero + first-workout
-     * template) — not an auto-started Active session, not an empty feed, not a
-     * six-pillar wall. Start stays one tap; the free logger is never gated.
+     * `.768` — while the gate build is on, Today 307s without a cookie, so
+     * cold Continue lands the public logger. After the flip, Today again.
      */
-    if (hasLoggedWork(useWorkoutStore.getState().activeWorkout)) {
-      go('/active');
-      return;
-    }
-    go('/log');
+    go(
+      idayFinishPath({
+        isEdit: false,
+        hasLoggedWork: hasLoggedWork(useWorkoutStore.getState().activeWorkout),
+        gateOn: isClientPrivateGateEnabled(),
+      })
+    );
   };
 
   const handleBegin = () => {

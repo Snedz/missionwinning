@@ -46,13 +46,13 @@ test('MoreSheet gate signal is workout history length (same as basic.workout)', 
   assert.match(src, /workoutHistory\.length/);
 });
 
-test('I-Day finish lands on Today (/log), not an auto-started Active session', () => {
+test('I-Day finish uses idayFinishPath and never auto-starts a session', () => {
   const src = read('src/page-components/WelcomePage.tsx');
   const finish = src.slice(src.indexOf('const finish ='), src.indexOf('const handleBegin'));
   assert.match(
     finish,
-    /go\(\s*['"`]\/log['"`]\s*\)/,
-    'Hevy / F-004: post-signup must open Today with one Start'
+    /idayFinishPath\(/,
+    'Hevy / F-004: destination is one function — Today after flip, Train while gated'
   );
   assert.doesNotMatch(
     finish,

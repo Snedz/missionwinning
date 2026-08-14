@@ -9,6 +9,7 @@ const GATE_ES: Record<string, string> = {
   gateTitle2: 'Gana a diario.',
   gateSubtitle:
     'Registro offline gratis + Mission Coach desde tus logs (sin wearable). Herramientas completas gratis para invitados; el logger es gratis para siempre.',
+  gateLogASet: 'Registrar una serie',
   gateWaitlistTitle: 'Pide una invitación',
   gateWaitlistPlaceholder: 'tu@correo.com',
   gateWaitlistSubmit: 'Avísame',
@@ -38,6 +39,7 @@ const GATE_FR: Record<string, string> = {
   gateTitle2: 'Gagnez chaque jour.',
   gateSubtitle:
     'Journal offline gratuit + Mission Coach depuis vos logs (sans wearable). Outils complets gratuits pour les invités ; le logger reste gratuit pour toujours.',
+  gateLogASet: 'Enregistrer une série',
   gateWaitlistTitle: 'Demander une invitation',
   gateWaitlistSubmit: 'Me prévenir',
   gateWaitlistSubmitting: 'Inscription…',
@@ -60,6 +62,7 @@ const GATE_PT: Record<string, string> = {
   gateTitle2: 'Vença todo dia.',
   gateSubtitle:
     'Registro offline grátis + Mission Coach a partir dos seus logs (sem wearable). Ferramentas completas grátis para convidados; o logger fica grátis para sempre.',
+  gateLogASet: 'Registrar uma série',
   gateWaitlistTitle: 'Peça um convite',
   gateWaitlistSubmit: 'Avise-me',
   gateWaitlistSubmitting: 'Entrando…',

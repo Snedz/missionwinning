@@ -188,7 +188,7 @@ export function PrivateTeaserClient({ initialInvite = '', initialNext = '' }: Pr
       </header>
       <hr className="gate-rule" />
 
-      {/* Field manual: eyebrow → display → one red (invite = enter beta; cold = notify). */}
+      {/* Field manual: eyebrow → display → one red (invite = enter beta; cold = log a set). */}
       <main className="gate-main">
         <div className="gate-col">
           <h1 className="gate-h1">
@@ -237,6 +237,11 @@ export function PrivateTeaserClient({ initialInvite = '', initialNext = '' }: Pr
             </section>
           ) : (
             <section className="gate-section">
+              <div className="gate-actions">
+                <Link href="/welcome" className="gate-btn gate-btn-primary">
+                  {g('gateLogASet')}
+                </Link>
+              </div>
               {territory.stance === 'refuse' ? (
                 /*
                  * A named excluded territory. The poster still stands — the

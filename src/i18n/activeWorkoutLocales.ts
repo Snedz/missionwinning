@@ -36,6 +36,8 @@ type ActiveWorkoutStrings = {
   /** Empty-state Start when a last completed session exists (.717). Not last set. */
   activeRepeatLastSession: string;
   activeRepeatLastSessionDesc: string;
+  /** Empty-state Start for the I-Day equipment preview (`.768`). Not Just Go inside resolveActiveEmptyStart. */
+  activeStartPreviewSession: string;
   activeLastPerformance: string;
   activeSetLogged: string;
   activeSetLoggedDesc: string;
@@ -299,6 +301,7 @@ const en: ActiveWorkoutStrings = {
   activeRepeatLast: 'Repeat last set',
   activeRepeatLastSession: 'Repeat last session',
   activeRepeatLastSessionDesc: 'Same exercises and last loads. Log when ready.',
+  activeStartPreviewSession: 'Start {{name}} — {{count}} exercises',
   activeLastPerformance: 'Last: {{reps}} × {{weight}}',
   activeSetLogged: 'Set logged',
   activeSetLoggedDesc: '{{reps}} × {{weight}} — {{rest}}s rest',
@@ -556,6 +559,7 @@ const es: ActiveWorkoutStrings = {
   hardSessionContinue: 'Entiendo — empezar',
   hardSessionBack: 'Atrás',
   activeStartWorkout: 'Iniciar entrenamiento',
+  activeStartPreviewSession: 'Empezar {{name}} — {{count}} ejercicios',
   activeSetsCompleted: '{{done}}/{{total}} series completadas',
   activeCancel: 'Cancelar',
   activeFinish: 'Terminar',
@@ -638,6 +642,7 @@ const fr: ActiveWorkoutStrings = {
   activeNoWorkoutDesc:
     'Démarrez un entraînement rapide depuis Aujourd’hui ou lancez une routine depuis le Builder.',
   activeStartWorkout: "Commencer l'entraînement",
+  activeStartPreviewSession: 'Commencer {{name}} — {{count}} exercices',
   activeSetsCompleted: '{{done}}/{{total}} séries terminées',
   activeCancel: 'Annuler',
   activeFinish: 'Terminer',
@@ -836,6 +841,7 @@ const LOCALES: Partial<Record<string, ActiveWorkoutStrings>> = {
     ...en,
     activeSetAddedLoad: 'Carga',
     activeNoWorkout: 'Nenhum treino ativo',
+    activeStartPreviewSession: 'Começar {{name}} — {{count}} exercícios',
     activeReentryStart: 'Começar sessão mais fácil',
     activeReentryStartDesc:
       'Primeira sessão menor na volta — terminável, depois a semana se reconstrói.',
