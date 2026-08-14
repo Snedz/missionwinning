@@ -26,9 +26,18 @@ type Props = {
   initialInvite?: string;
   /** Server-resolved `?next=` — read here so the gate needs no Suspense boundary. */
   initialNext?: string;
+  /**
+   * Preview / local: PRIVATE_MODE is off. Unlock must not assign `/` — that
+   * remounts this teaser. I-Day is the same door as Log a set.
+   */
+  walkOpen?: boolean;
 };
 
-export function PrivateTeaserClient({ initialInvite = '', initialNext = '' }: Props) {
+export function PrivateTeaserClient({
+  initialInvite = '',
+  initialNext = '',
+  walkOpen = false,
+}: Props) {
   const { t } = useTranslation();
   /**
    * Every string on this page is floored from the English gate pack, so the
@@ -42,7 +51,7 @@ export function PrivateTeaserClient({ initialInvite = '', initialNext = '' }: Pr
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
-  const [sessionUnlocking, setSessionUnlocking] = useState(true);
+  const [sessionUnlocking, setSessionUnlocking] = useState(!walkOpen);
   const [territory, setTerritory] = useState<WaitlistTerritory>({ stance: 'capture' });
 
   // Signed-in (localStorage) but missing gate cookie — typical after Google OAuth.
@@ -52,14 +61,22 @@ export function PrivateTeaserClient({ initialInvite = '', initialNext = '' }: Pr
   // for up to 6s. With PRIVATE_MODE on, `/` redirects here, so those words
   // were the entire server-rendered website. The probe now runs underneath the
   // poster and only announces itself in one line; on success it still hard-navs.
+  const unlockHref = walkOpen
+    ? privateGateReturnPath(initialNext, '/welcome')
+    : privateGateReturnPath(initialNext);
+
   useEffect(() => {
+    if (walkOpen) {
+      setSessionUnlocking(false);
+      return;
+    }
     let cancelled = false;
     void (async () => {
       try {
         const ok = await grantPrivateAccessFromSession(initialInvite);
         if (cancelled) return;
         if (ok) {
-          navigateAfterPrivateGateUnlock(privateGateReturnPath(initialNext));
+          navigateAfterPrivateGateUnlock(unlockHref);
           return;
         }
       } finally {
@@ -69,7 +86,7 @@ export function PrivateTeaserClient({ initialInvite = '', initialNext = '' }: Pr
     return () => {
       cancelled = true;
     };
-  }, [initialInvite, initialNext]);
+  }, [initialInvite, unlockHref, walkOpen]);
 
   // Territory truth before the ask: /api/geo is public while gated (privateGate.ts).
   useEffect(() => {
@@ -95,6 +112,11 @@ export function PrivateTeaserClient({ initialInvite = '', initialNext = '' }: Pr
     const code = password.trim();
     if (!code) return;
 
+    if (walkOpen) {
+      navigateAfterPrivateGateUnlock(unlockHref);
+      return;
+    }
+
     setLoading(true);
     setError('');
 
@@ -114,7 +136,7 @@ export function PrivateTeaserClient({ initialInvite = '', initialNext = '' }: Pr
           );
           return;
         }
-        navigateAfterPrivateGateUnlock(privateGateReturnPath(initialNext));
+        navigateAfterPrivateGateUnlock(unlockHref);
         return;
       } else {
         const data = await res.json().catch(() => ({}));

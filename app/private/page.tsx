@@ -30,5 +30,11 @@ export default async function PrivatePage({ searchParams }: { searchParams: Sear
    * the fallback was the word "Loading…". With PRIVATE_MODE on, `/` redirects
    * here, so that fallback was the whole of www for anyone whose JS had not run.
    */
-  return <GateTeaser initialInvite={initialInvite} initialNext={initialNext} />;
+  return (
+    <GateTeaser
+      initialInvite={initialInvite}
+      initialNext={initialNext}
+      walkOpen={!isPrivateModeEnabled()}
+    />
+  );
 }

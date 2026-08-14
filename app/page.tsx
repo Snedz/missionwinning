@@ -52,5 +52,5 @@ export default async function MissionWinningLanding() {
     );
   }
 
-  return <GateTeaser />;
+  return <GateTeaser walkOpen />;
 }

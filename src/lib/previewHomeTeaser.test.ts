@@ -21,6 +21,7 @@ test('ungated `/` mounts the gate teaser, not CinematicWww', () => {
   const landingReturn = page.lastIndexOf('<LandingPage');
   assert.ok(ungatedReturn > 0, 'ungated branch must return GateTeaser');
   assert.ok(landingReturn > 0 && landingReturn < ungatedReturn, 'LandingPage stays on the gated+cookie branch only');
+  assert.match(page, /<GateTeaser walkOpen/, 'Preview must not bounce unlock back onto `/`');
 });
 
 test('GateTeaser is the mw-gate door, not the cinematic www', () => {
