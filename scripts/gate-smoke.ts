@@ -146,6 +146,54 @@ async function main() {
     }
   }
 
+  /*
+   * `.768` — what the first paint weighs, over the wire.
+   *
+   * Shard 4 (diaspora + RU, ops #15) reports a heavy, slow www first paint, and
+   * the two pages that *are* www while the gate is up had no budget at all:
+   * `bundle-budget.mjs` reads prerendered HTML, and `/private` and `/welcome`
+   * are both dynamic (a cookie check and a query), so no file exists for it to
+   * read. This counts the scripts the served HTML asks for — the same question,
+   * asked where the answer exists.
+   *
+   * Script **count**, not bytes: a smoke should not download a megabyte to make
+   * a point, and the regression this catches — `next/link` prefetching a pile of
+   * routes nobody asked for — shows up as requests first. Measured on a gated
+   * production build at `.768`: `/private` 20, `/welcome` 32. Caps are set with
+   * a little headroom and **only ever come down**.
+   */
+  for (const { path, cap } of [
+    { path: '/private', cap: 26 },
+    { path: '/welcome', cap: 38 },
+  ]) {
+    try {
+      const res = await headOrGet(path, { redirect: 'manual' });
+      if (res.status !== 200) {
+        checks.push({
+          name: `GET ${path} first-paint script count`,
+          ok: false,
+          detail: `status ${res.status} (expected 200 — public while gated)`,
+        });
+        continue;
+      }
+      const html = await res.text();
+      const scripts = new Set(
+        [...html.matchAll(/<script[^>]+src="([^"]+)"/g)].map((m) => m[1])
+      );
+      const ok = scripts.size <= cap;
+      checks.push({
+        name: `GET ${path} first-paint script count`,
+        ok,
+        detail: ok
+          ? `${scripts.size} scripts (cap ${cap})`
+          : `${scripts.size} scripts > cap ${cap} — check for a new prefetching <Link> ` +
+            `(see linkPrefetchWeight.test.ts) or a static import that should be dynamic()`,
+      });
+    } catch (e) {
+      checks.push({ name: `GET ${path} first-paint weight`, ok: false, detail: String(e) });
+    }
+  }
+
   // Production smoke ratchet (.682): retired compare hub + legal English floors.
   // Live `.618` returned 200 with Hevy/Strong; tip redirects permanently to /welcome.
   for (const path of ['/compare', '/compare/forge']) {

@@ -484,3 +484,4 @@ Canonical live launch path: root **[LAUNCH_RUNBOOK.md](../LAUNCH_RUNBOOK.md)** +
 | [log/LOG-rotate-751-for-766.md](./log/LOG-rotate-751-for-766.md) | rotated 2026-08-13 for `.766` Coach log citation (`.751` Learn vs Strong/Hevy/Fitbod) |
 | — | `.766` removed `LOG-rotate-669-for-715/743/744.md`: the `.669` entry had been archived four times over, so `logBudget`'s "no build label has two entries" was red on master. [log/LOG-rotate-669-for-714.md](./log/LOG-rotate-669-for-714.md) is the surviving copy. |
 | [log/LOG-rotate-752-for-767.md](./log/LOG-rotate-752-for-767.md) | rotated 2026-08-14 for `.767` no questionnaire before the first set (`.752`) |
+| [log/LOG-rotate-753-for-768.md](./log/LOG-rotate-753-for-768.md) | rotated 2026-08-14 for `.768` legal-footer prefetch weight (`.753`) |

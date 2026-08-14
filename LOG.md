@@ -11,6 +11,89 @@ Archive: [2026-06 → 2026-07-20](docs/archive/log/LOG-2026-06_to_2026-07-20.md)
 
 --- · [`.492` for `.507`](docs/archive/log/LOG-rotate-507.md). · [`.493` for `.508`](docs/archive/log/LOG-rotate-508.md). · [`.494` for `.509`](docs/archive/log/LOG-rotate-509.md). · [`.495` for `.510`](docs/archive/log/LOG-rotate-510.md). · [`.496` for `.511`](docs/archive/log/LOG-rotate-511.md). · [`.497` for `.512`](docs/archive/log/LOG-rotate-512.md). · [`.498` for `.513`](docs/archive/log/LOG-rotate-513.md). · [`.499` for `.514`](docs/archive/log/LOG-rotate-514.md). · [`.500` for `.515`](docs/archive/log/LOG-rotate-515.md). · [`.501` for `.516`](docs/archive/log/LOG-rotate-516.md). · [`.502` for `.517`](docs/archive/log/LOG-rotate-517.md). · [`.503` for `.518`](docs/archive/log/LOG-rotate-518.md). · [`.504` for `.519`](docs/archive/log/LOG-rotate-519.md). · [`.505` for `.520`](docs/archive/log/LOG-rotate-520.md). · [`.506` for `.521`](docs/archive/log/LOG-rotate-521.md). · [`.507` for `.522`](docs/archive/log/LOG-rotate-522.md). · [`.508` for `.523`](docs/archive/log/LOG-rotate-523.md). · [`.509` for `.524`](docs/archive/log/LOG-rotate-524.md). · [`.510` for `.525`](docs/archive/log/LOG-rotate-525.md). · [`.511` for `.526`](docs/archive/log/LOG-rotate-526.md). · [`.512` for `.527`](docs/archive/log/LOG-rotate-527.md). · [`.513` for `.528`](docs/archive/log/LOG-rotate-528.md). · [`.514` for `.529`](docs/archive/log/LOG-rotate-529.md). · [`.515` for `.530`](docs/archive/log/LOG-rotate-530.md). · [`.516` for `.531`](docs/archive/log/LOG-rotate-531.md). · [`.517` for `.532`](docs/archive/log/LOG-rotate-532.md). · [`.518` for `.533`](docs/archive/log/LOG-rotate-533.md). · [`.519` for `.534`](docs/archive/log/LOG-rotate-534.md). · [`.520` for `.535`](docs/archive/log/LOG-rotate-535.md). · [`.521` for `.536`](docs/archive/log/LOG-rotate-536.md). · [`.522` for `.537`](docs/archive/log/LOG-rotate-537.md). · [`.523` for `.538`](docs/archive/log/LOG-rotate-538.md). · [`.524` for `.539`](docs/archive/log/LOG-rotate-539.md). · [`.525` for `.540`](docs/archive/log/LOG-rotate-540.md). · [`.526` for `.541`](docs/archive/log/LOG-rotate-541.md). · [`.527` for `.542`](docs/archive/log/LOG-rotate-542.md). · [`.528` for `.543`](docs/archive/log/LOG-rotate-543.md). · [`.529` for `.544`](docs/archive/log/LOG-rotate-544.md). · [`.530` for `.545`](docs/archive/log/LOG-rotate-545.md). · [`.531` for `.546`](docs/archive/log/LOG-rotate-546.md). · [`.532` for `.547`](docs/archive/log/LOG-rotate-547.md). · [`.533` for `.548`](docs/archive/log/LOG-rotate-548.md). · [`.534` for `.549`](docs/archive/log/LOG-rotate-549.md). · [`.535` for `.550`](docs/archive/log/LOG-rotate-550.md). · [`.536` for `.551`](docs/archive/log/LOG-rotate-551.md). · [`.537` for `.552`](docs/archive/log/LOG-rotate-552.md). · [`.538` for `.553`](docs/archive/log/LOG-rotate-553.md). · [`.539` for `.554`](docs/archive/log/LOG-rotate-554.md). · [`.540` for `.555`](docs/archive/log/LOG-rotate-555.md). · [`.541` for `.556`](docs/archive/log/LOG-rotate-556.md). · [`.542` for `.557`](docs/archive/log/LOG-rotate-557.md). · [`.543` for `.558`](docs/archive/log/LOG-rotate-558.md). · [`.544` for `.559`](docs/archive/log/LOG-rotate-559.md). · [`.545` for `.560`](docs/archive/log/LOG-rotate-560.md). · [`.546` for `.561`](docs/archive/log/LOG-rotate-561.md). · [`.547` for `.562`](docs/archive/log/LOG-rotate-562.md). · [`.548` for `.563`](docs/archive/log/LOG-rotate-563.md). · [`.549` for `.564`](docs/archive/log/LOG-rotate-564.md). · [`.550` for `.565`](docs/archive/log/LOG-rotate-565.md). · [`.551` for `.566`](docs/archive/log/LOG-rotate-566.md). · [`.552` for `.567`](docs/archive/log/LOG-rotate-567.md). · [`.553` for `.568`](docs/archive/log/LOG-rotate-568.md). · [`.554` for `.569`](docs/archive/log/LOG-rotate-569.md). · [`.555` for `.570`](docs/archive/log/LOG-rotate-570.md). · [`.556` for `.571`](docs/archive/log/LOG-rotate-571.md). · [`.557` for `.572`](docs/archive/log/LOG-rotate-572.md). · [`.558` for `.573`](docs/archive/log/LOG-rotate-573.md). · [`.559` for `.574`](docs/archive/log/LOG-rotate-574.md). · [`.560` for `.575`](docs/archive/log/LOG-rotate-575.md). · [`.561` for `.576`](docs/archive/log/LOG-rotate-576.md). · [`.562` for `.577`](docs/archive/log/LOG-rotate-577.md). · [`.563` for `.578`](docs/archive/log/LOG-rotate-578.md). · [`.564` for `.579`](docs/archive/log/LOG-rotate-579.md). · [`.565` for `.580`](docs/archive/log/LOG-rotate-580.md). · [`.566` for `.581`](docs/archive/log/LOG-rotate-581.md). · [`.567` for `.582`](docs/archive/log/LOG-rotate-582.md). · [`.568` for `.583`](docs/archive/log/LOG-rotate-583.md). · [`.569` for `.584`](docs/archive/log/LOG-rotate-584.md). · [`.570` for `.585`](docs/archive/log/LOG-rotate-585.md). · [`.571` for `.586`](docs/archive/log/LOG-rotate-586.md). · [`.572` for `.587`](docs/archive/log/LOG-rotate-587.md). · [`.573` for `.588`](docs/archive/log/LOG-rotate-588.md). · [`.574` for `.589`](docs/archive/log/LOG-rotate-589.md). · [`.575` for `.590`](docs/archive/log/LOG-rotate-590.md). · [`.576` for `.591`](docs/archive/log/LOG-rotate-591.md). · [`.577` for `.592`](docs/archive/log/LOG-rotate-592.md). · [`.578` for `.593`](docs/archive/log/LOG-rotate-593.md). · [`.581` for `.596`](docs/archive/log/LOG-rotate-596.md). · [`.582` for `.597`](docs/archive/log/LOG-rotate-597.md). · [`.583` for `.598`](docs/archive/log/LOG-rotate-598.md). · [`.584` for `.599`](docs/archive/log/LOG-rotate-599.md). · [`.585` for `.600`](docs/archive/log/LOG-rotate-600.md). · [`.586` for `.601`](docs/archive/log/LOG-rotate-601.md). · [`.587` for `.602`](docs/archive/log/LOG-rotate-602.md). · [`.588` for `.603`](docs/archive/log/LOG-rotate-603.md). · [`.590` for `.606`](docs/archive/log/LOG-rotate-606.md). · [`.596` for `.612`](docs/archive/log/LOG-rotate-612.md). · [`.597` for `.613`](docs/archive/log/LOG-rotate-613.md). · [`.599` for `.614`](docs/archive/log/LOG-rotate-614.md). · [`.600` for `.615`](docs/archive/log/LOG-rotate-615.md). · [`.601` for `.616`](docs/archive/log/LOG-rotate-616.md). · [`.602` for `.617`](docs/archive/log/LOG-rotate-617.md). · [`.603` for `.618`](docs/archive/log/LOG-rotate-618.md). · [`.604` for `.619`](docs/archive/log/LOG-rotate-619.md). · [`.655` for `.670`](docs/archive/log/LOG-rotate-655-for-670.md). · [`.656` for `.679`](docs/archive/log/LOG-rotate-656-for-679.md). · [`.657` for `.680`](docs/archive/log/LOG-rotate-657-for-680.md). · [`.658` for `.684`](docs/archive/log/LOG-rotate-658-for-684.md). · [`.659` for `.685`](docs/archive/log/LOG-rotate-659-for-685.md). · [`.660` for `.689`](docs/archive/log/LOG-rotate-660-for-689.md). · [`.661` for `.690`](docs/archive/log/LOG-rotate-661-for-690.md). · [`.662` for `.691`](docs/archive/log/LOG-rotate-662-for-691.md). · [`.663` for `.692`](docs/archive/log/LOG-rotate-663-for-692.md). · [`.664` for `.693`](docs/archive/log/LOG-rotate-664-for-693.md). · [`.665` for `.694`](docs/archive/log/LOG-rotate-665-for-694.md). · [`.666` for `.695`](docs/archive/log/LOG-rotate-666-for-695.md). · [`.667` for `.696`](docs/archive/log/LOG-rotate-667-for-696.md). · [`.668` for `.697`](docs/archive/log/LOG-rotate-668-for-697.md). · [`.669` for `.714`](docs/archive/log/LOG-rotate-669-for-714.md). · [`.669` for `.743`](docs/archive/log/LOG-rotate-669-for-743.md). · [`.670` for `.743`](docs/archive/log/LOG-rotate-670-for-743.md). · [`.669` for `.744`](docs/archive/log/LOG-rotate-669-for-744.md). · [`.679` for `.744`](docs/archive/log/LOG-rotate-679-for-744.md). · [`.680` for `.745`](docs/archive/log/LOG-rotate-680-for-745.md). · [`.684` for `.746`](docs/archive/log/LOG-rotate-684-for-746.md).
 
+## 2026-08-14 — Legal footers stop prefetching the legal library (`.768`)
+
+Shard 4 (diaspora + RU, ops #15) adds five findings: onboarding wall, missing
+smart defaults, buried Log button, heavy/slow www first paint, canned Coach. The
+instruction was the last-but-one and the first: **buried Log button and
+first-paint weight**. One of those turned out to be a deploy problem and the
+other a real one, so this entry is mostly about telling them apart.
+
+**Production is `.697`. Shard 4 is a survey of a build from ~70 ships ago.**
+Checked, not assumed: `www.missionwinning.com/private` still serves
+`Checking sign-in…` as its whole body — `.765`'s fix — carries neither the
+version stamp master added in `.759`–`.764` nor `.766`'s local-first line. So
+four of shard 4's five findings describe software that is already fixed on
+`master` and **not deployed**: the onboarding wall (I-Day cut to two steps),
+missing smart defaults (`.754`–`.764` set-row: prefill, prev/next targets,
+steppers, Repeat last set, plate math), canned Coach (`.766`/`.767` log
+citations), and the buried Log button.
+
+**The buried Log button does not reproduce on `master`.** Measured on a
+production build at three phone sizes, landing on Active and looking for the log
+control without scrolling:
+
+| viewport | Log control | in viewport |
+|---|---|---|
+| 360×640 (small Android) | y=518, h=52 | yes |
+| 390×844 (design frame) | y=722, h=52 | yes |
+| 412×732 (common Android) | y=610, h=52 | yes |
+
+It is docked — a `ScreenDock` flex sibling, so it cannot scroll away — and a
+returning athlete logs a set in **2 interactions** (`.767`). One residual worth
+naming for whoever owns the set row: at 360×640 the open console occupies
+~370px of a 640px screen, so the sets you have already logged are off-screen
+while you log the next one. That is a judgement about `.75x`'s own new console,
+not a defect I should re-cut from a survey line.
+
+**The weight is real, and it was nobody's prefetch.** Measured at 390×844 on a
+production build, counting every script the browser fetched with no interaction:
+`/welcome` pulled **416 KB gzipped across 53 requests** — 26 chunks and 146.6 KB
+*more than the landing page*, to ask three questions. The extra was `next/link`
+**prefetch**. [`AppLegalFooter`](src/components/layout/AppLegalFooter.tsx) renders
+eight links — Terms, Privacy, Usage, Regions, Service terms, DMCA, Refunds,
+About — and sits on the private gate, on I-Day, and under every info and pillar
+page. App Router prefetches links as they enter the viewport, and on a short
+screen that footer *is* in the viewport, so arriving at I-Day downloaded the
+legal library. Nobody opens I-Day to read the DMCA policy.
+
+| route | before | after |
+|---|---|---|
+| `/welcome` | 416.1 KB / 53 requests | **334.2 KB / 37** |
+| `/log` | 593.5 KB / 73 | **544.7 KB / 63** |
+| `/private` (gated build) | — | 267.7 KB / 20 |
+
+The guard found four more clusters I had not looked at: `SignInPanel` (4 legal
+links), `LegalNav` (8), `ServiceTermsPage` (5) and `TermsPage` (15 in-body
+cross-references). All opted out. Those did **not** move `/terms` (404 KB / 47
+scripts, unchanged), and the reason is worth writing down rather than claiming a
+win: on a long legal page those links are below the fold, so they were never
+prefetched inside the measurement window. `/terms` is heavy on its own content —
+a separate finding, named not guessed.
+
+**Two ratchets, because this regresses by omission.** `prefetch` defaults to on,
+so the next `<Link>` added to a footer is heavy unless its author knows. And
+`bundle-budget.mjs` is blind to it twice over: it measures initial JS off
+prerendered HTML, prefetch is a runtime fetch of *other* routes' chunks (the
+`.222` blind spot, in a new place), and **the two pages that are www while the
+gate is up have never had a budget at all** — both are dynamic, so there is no
+prerendered file for it to read. So: `linkPrefetchWeight.test.ts` requires any
+component linking four or more info/legal routes to opt out, with the info-route
+list derived from `publicRoutes.ts` rather than typed again, and an explicit test
+that product links (the logger, Coach, JourneyHero) are left alone — prefetching
+the screen an athlete is about to open is the feature working. And `gate-smoke`
+now counts the scripts the served HTML asks for on `/private` (cap 26, measured
+20) and `/welcome` (cap 38, measured 32) — script count rather than bytes,
+because a smoke should not download a megabyte to make a point and the
+regression shows up as requests first.
+
+**Founder, one line:** everything in shards 1–4 that is fixed is fixed on
+`master` and invisible to users. Production has not moved since `.697`.
+
+Label `.768` (onto `.767`, same PR). Excellence-Override below.
+
+Excellence-Override: www kaizen first-paint (RESULT unscored)
+
 ## 2026-08-14 — No questionnaire before the first set (`.767`)
 
 Shard 3 (IL/IN/SEA, ops #14) confirms all three P0s across two more regions, and
@@ -523,20 +606,3 @@ Excellence-Override below.
 Excellence-Override: drop sets
 
 Rotated LOG oldest → [docs/archive/log/LOG-rotate-695-for-754.md](docs/archive/log/LOG-rotate-695-for-754.md).
-## 2026-08-13 — Habit week count + HABIT contract (`.753`)
-
-Quiet public-safe OS node: **Habit → Identity → Money → Platform**. Identity is
-#500; money is #498; the missing habit hook is an honest Today week-count — not
-a Mission ID line, not #492’s two-day-off Start copy.
-
-**Ship:** `docs/contracts/HABIT.md` — daily Train is the loop later modules hang
-off. Today header (Lean + Dashboard) always shows `This week: N days logged`
-(0 is fine; unique local days; tombstones out). Next action unchanged. No
-WeChat / MySpace / Top 8. Frozen plan: [docs/HABIT_WEEK_PLAN.md](docs/HABIT_WEEK_PLAN.md).
-
-Label `.753` (onto master `.752`). Originally reserved `.722`; landed as `.753` past master `.752`.
-Excellence-Override below.
-
-Excellence-Override: habit week count + HABIT contract
-
-Rotated LOG oldest → [docs/archive/log/LOG-rotate-694-for-753.md](docs/archive/log/LOG-rotate-694-for-753.md).

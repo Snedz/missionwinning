@@ -48,14 +48,14 @@ export function ServiceTermsPage() {
           <p className="text-muted-foreground">{t(section.bodyKey, { defaultValue: infoEnFloor(section.bodyKey) })}</p>
           {section.id === 'super-bundle' && (
             <p className="mt-2">
-              <Link href="/refunds" className="text-primary hover:underline text-sm">
+              <Link prefetch={false} href="/refunds" className="text-primary hover:underline text-sm">
                 {t('infoRefundsTitle', { defaultValue: 'Refunds & cancellation' })}
               </Link>
             </p>
           )}
           {section.id === 'regions' && (
             <p className="mt-2">
-              <Link href="/regions" className="text-primary hover:underline text-sm">
+              <Link prefetch={false} href="/regions" className="text-primary hover:underline text-sm">
                 {t('infoRegionsTitle', { defaultValue: 'Supported Regions' })}
               </Link>
             </p>
@@ -65,15 +65,15 @@ export function ServiceTermsPage() {
 
       <p className="text-xs text-muted-foreground pt-2">
         {t('infoServiceFoot', { defaultValue: 'Mission Winning LLC · support@missionwinning.com · See also' })}{' '}
-        <Link href="/terms" className="text-primary hover:underline">
+        <Link prefetch={false} href="/terms" className="text-primary hover:underline">
           {t('termsOfService', { defaultValue: 'Terms of Service' })}
         </Link>
         {' · '}
-        <Link href="/usage" className="text-primary hover:underline">
+        <Link prefetch={false} href="/usage" className="text-primary hover:underline">
           {t('infoUsageTitle', { defaultValue: 'Usage Policy' })}
         </Link>
         {' · '}
-        <Link href="/privacy" className="text-primary hover:underline">
+        <Link prefetch={false} href="/privacy" className="text-primary hover:underline">
           {t('privacyPolicy', { defaultValue: 'Privacy Policy' })}
         </Link>
       </p>

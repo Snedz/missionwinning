@@ -21,7 +21,7 @@ export function LegalNav({
 
   return (
     <nav className={cn('flex flex-wrap gap-x-3 gap-y-2 text-sm text-muted-foreground', className)}>
-      <Link href="/about" className={linkClassName}>
+      <Link prefetch={false} href="/about" className={linkClassName}>
         {t('about', { defaultValue: 'About' })}
       </Link>
       {includeBeta && (
@@ -30,26 +30,26 @@ export function LegalNav({
         </Link>
       )}
       {includeFeedback && (
-        <Link href="/feedback" className={linkClassName}>
+        <Link prefetch={false} href="/feedback" className={linkClassName}>
           {t('feedback', { defaultValue: 'Feedback' })}
         </Link>
       )}
-      <Link href="/terms" className={linkClassName}>
+      <Link prefetch={false} href="/terms" className={linkClassName}>
         {t('termsOfService', { defaultValue: 'Terms of Service' })}
       </Link>
-      <Link href="/privacy" className={linkClassName}>
+      <Link prefetch={false} href="/privacy" className={linkClassName}>
         {t('privacyPolicy', { defaultValue: 'Privacy Policy' })}
       </Link>
-      <Link href="/cookies" className={linkClassName}>
+      <Link prefetch={false} href="/cookies" className={linkClassName}>
         {t('infoCookiesTitle', { defaultValue: 'Cookies & device storage' })}
       </Link>
-      <Link href="/accessibility" className={linkClassName}>
+      <Link prefetch={false} href="/accessibility" className={linkClassName}>
         {t('infoA11yTitle', { defaultValue: 'Accessibility statement' })}
       </Link>
-      <Link href="/dmca" className={linkClassName}>
+      <Link prefetch={false} href="/dmca" className={linkClassName}>
         {t('infoDmcaTitle', { defaultValue: 'DMCA / Copyright' })}
       </Link>
-      <Link href="/refunds" className={linkClassName}>
+      <Link prefetch={false} href="/refunds" className={linkClassName}>
         {t('infoRefundsTitle', { defaultValue: 'Refunds & cancellation' })}
       </Link>
     </nav>

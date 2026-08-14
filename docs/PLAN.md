@@ -267,6 +267,21 @@ the scope is *depth on the same three*, not a fourth theme.
 | 2 | Coach not visibly grounded in logs (repeat) | `CoachInsightCard` carries the `.766` citation; the guard's claim pattern widened to the derived phrasing ("from your recent training load") it could not see |
 | 3 | Offline-logging disbelief (repeat) | The **landing hero** — where these regions arrive by SEO — states the mechanism from the same constant as the gate and I-Day |
 
+### Shard 4 P0s (frozen scope, `.768`)
+
+Diaspora + RU (ops #15): onboarding wall, missing smart defaults, buried Log
+button, heavy/slow www first paint, canned Coach. Instruction: buried Log button
+and first-paint weight next.
+
+| Finding | Disposition |
+|---------|-------------|
+| Heavy/slow www first paint | **Shipped.** `AppLegalFooter`'s eight links were prefetched from the viewport on I-Day and the gate: `/welcome` 416→334 KB gz, 53→37 requests. Ratchets: `linkPrefetchWeight.test.ts` + `gate-smoke` script counts for the two www entries, which had no budget at all |
+| Buried Log button | **Does not reproduce on `master`** — docked and in viewport at 360×640, 390×844, 412×732; 2 interactions to a logged set (`.767`). Named for the set-row owner: at 360×640 the open console takes ~370px of 640, so logged sets sit off-screen |
+| Onboarding wall · missing smart defaults · canned Coach | **Already fixed on `master`, not deployed.** Production still serves `.697` — its `/private` is still "Checking sign-in…". I-Day is two steps, the set row prefills, Coach cites the log |
+
+`/terms` is 404 KB / 47 scripts on its own content — a separate finding, not
+prefetch (its in-body links are below the fold and were never prefetched).
+
 Deferred with a reason, not dropped: the cold path's 2 I-Day taps. Halving it
 needs a profile-less `completeIDay()`, because the current one writes
 experience/equipment/goal — recording answers nobody gave is what `.767` just
