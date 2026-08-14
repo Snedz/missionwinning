@@ -16,7 +16,7 @@ One screen of truth for any AI tool or human joining cold. Read this, then [AGEN
 
 ---
 
-## Now (2026-08-14 · web `2026.07-unified.782` · Android `1.24.1`)
+## Now (2026-08-14 · web `2026.07-unified.783` · Android `1.24.1`)
 
 > The ONLY "where we are" block in the repo — [ORCHESTRATION.md](ORCHESTRATION.md) points here.
 >
@@ -319,6 +319,7 @@ One screen of truth for any AI tool or human joining cold. Read this, then [AGEN
 > and `.768` dropped `.753` detail (full text remains in LOG.md / archive)
 > and form-object-kit dropped `.767` detail (full text remains in LOG.md / archive)
 > and `.782` dropped `.768` detail (full text remains in LOG.md / archive)
+> and `.783` dropped `.769` detail (full text remains in LOG.md / archive)
 > to [CONTEXT-now-2026-07-30.md](docs/archive/CONTEXT-now-2026-07-30.md) after this
 > block reached **79 bullets / 103KB**. A status doc that only grows stops being read.
 
@@ -340,6 +341,7 @@ One screen of truth for any AI tool or human joining cold. Read this, then [AGEN
 > | gitleaks | **green — and scanning for the first time.** It had never scanned anything: on a `pull_request` event the action lists the PR's commits, the job declared no `permissions:` block, and it 403'd (`pull_requests=read`) before opening a file. Fixed by a `permissions:` block (`.224` carrying `.255`). It scans **only the PR's own commits**, so commit `8ea3527a`'s real Solana treasury address — scrubbed from the working file, still in history — is out of its scope. That finding stands, deliberately not allowlisted; it was never what made this check red. |
 > | Privacy / security program | **Landed `.778`** — [docs/security/PROGRAM_STATUS.md](docs/security/PROGRAM_STATUS.md). Invite-bound gate, health-bucket, DSAR, territory fail-closed. OTP-without-click can leave a ghost user. Not a cert. |
 
+- **`.783`:** (`2026.07-unified.783`) **CodeQL hardening** — invite/referral/class codes use `crypto.getRandomValues`; SITE_URL host parse (not substring); workflow `contents: read`. Replay of #559 onto `.782`. No `PRIVATE_MODE` flip.
 - **`.782`:** (`2026.07-unified.782`) **Feedback triage** — founder rates tester notes craft / voice / park / done. Rules only. Missing `feedback_reviews` fail-opens. No Grok. No `PRIVATE_MODE` flip.
 - **Form object kit (on `.781`):** IMPLEMENT block + prop sheets. Regen cable-row (visible stack), lateral-raise, DB press, lunges, DB row. Floor 43. Still-only. No `PRIVATE_MODE` flip.
 - **Excellence:** unscored · — · [docs/EXCELLENCE_RESULT.md](docs/EXCELLENCE_RESULT.md) — Horizon W phone sign-off home; surface PRs need `status: pass` or `Excellence-Override` (`.669`).
@@ -355,7 +357,6 @@ One screen of truth for any AI tool or human joining cold. Read this, then [AGEN
 - **`.772`:** (`2026.07-unified.772`) **Library form media honesty + Wave A/B stills** — Cards show unique Form Index posters only (no shared runner/push-up). Regen front-squat / landmine-row / hinge / burpees / thruster / lunges. Eighteen new teaching stills. Floor 38. No `PRIVATE_MODE` flip.
 - **`.771`:** (`2026.07-unified.771`) **Alpha 0.1.0 changelog** — athlete stamp `Mission Winning Alpha 0.1.0`. Public `/changelog` (date, v-chip, heading, athlete bullets). Open alpha. Invite gate. Not a public flip. Not a `PRIVATE_MODE` flip.
 - **`.770`:** (`2026.07-unified.770`) **Done beta code on Vercel Preview** — `PRIVATE_ACCESS_CODES` syncs with the HMAC secret (Production + Preview). Quote-strip matching, host-only gate cookie, cookie probe after unlock. A Vercel login is Deployment Protection, not the Done form. No `PRIVATE_MODE` flip.
-- **`.769`:** (`2026.07-unified.769`) **Beta 0.0.1 door stamp** — athlete name is `0.0.1 (beta)`, not `0.1`. Invite beta, not a public flip. Not a `PRIVATE_MODE` flip.
 - **`.669`:** (`2026.07-unified.669`) **Excellence RESULT + agent stop-rule** — `excellenceGate` path policy + `check-excellence-gate` on gate/PR CI; wedge still ships while unscored.
 - **Horizon W + full-launch override (2026-08-05).** Wedge excellence still required; agents may ship rewards + full surface honesty. Fuel estimate accuracy remains.
 - **Free-first beta (~4 weeks):** LLC + EIN pending — **no Bundle UI** + **full depth unlocked**; More/rail **Pillars demoted until first workout** (F-004 / `.695`) — still no Bundle ([docs/FREE_BETA.md](docs/FREE_BETA.md)).

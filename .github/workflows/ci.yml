@@ -29,6 +29,8 @@ concurrency:
 jobs:
   build-and-test:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     # Hero e2e runs in this job so the production build happens exactly once.
     # PRIVATE_MODE=false compiles the service worker, which the offline spec needs.
     # Must stay in step with `BUILD_ENV` in scripts/gate.mjs — enforced by
@@ -197,6 +199,8 @@ jobs:
   # workflowBuildEnv.test.ts exempts this job by id for that reason.
   www:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     steps:
       - uses: actions/checkout@v5
 

@@ -105,7 +105,9 @@ const plan = {
 };
 
 const json = JSON.stringify(plan);
-const snippet = `(function(){localStorage.setItem('mw_coach_plan',${JSON.stringify(json)});localStorage.setItem('mw_coach_taster_used','1');window.dispatchEvent(new CustomEvent('mw-coach-plan-changed'));console.log('Mission Winning: coach adapt demo seeded. Open /coach');location.href='/coach';})();`;
+// Escape </script> so this snippet is safe if ever embedded in a <script> tag.
+const safeJson = JSON.stringify(json).replace(/<\//g, '<\\/');
+const snippet = `(function(){localStorage.setItem('mw_coach_plan',${safeJson});localStorage.setItem('mw_coach_taster_used','1');window.dispatchEvent(new CustomEvent('mw-coach-plan-changed'));console.log('Mission Winning: coach adapt demo seeded. Open /coach');location.href='/coach';})();`;
 
 console.log(`
 seed-coach-adapt-demo

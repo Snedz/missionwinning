@@ -291,9 +291,19 @@ export function evaluateCheckEnv(env, opts = {}) {
   if (launch && !siteUrl) {
     log('  ⚠ NEXT_PUBLIC_SITE_URL unset — set https://www.missionwinning.com for canonicals/OG');
     warn++;
-  } else if (siteUrl && siteUrl.includes('missionwinning.com') && !siteUrl.includes('www.')) {
-    log('  ⚠ NEXT_PUBLIC_SITE_URL is non-www — prefer https://www.missionwinning.com');
-    warn++;
+  } else if (siteUrl) {
+    try {
+      const { hostname } = new URL(siteUrl);
+      if (
+        (hostname === 'missionwinning.com' || hostname.endsWith('.missionwinning.com')) &&
+        hostname !== 'www.missionwinning.com'
+      ) {
+        log('  ⚠ NEXT_PUBLIC_SITE_URL is non-www — prefer https://www.missionwinning.com');
+        warn++;
+      }
+    } catch {
+      // invalid URL — ignore
+    }
   }
 
   if (launch && !raw(env, 'UPSTASH_REDIS_REST_URL')) {

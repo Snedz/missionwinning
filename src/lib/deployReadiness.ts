@@ -132,12 +132,20 @@ export function warnLaunchEmailAndSiteUrl(): string[] {
       '[seo] NEXT_PUBLIC_SITE_URL unset — defaulting canonicals to https://www.missionwinning.com';
     console.warn(msg);
     warnings.push(msg);
-  } else if (!/^https:\/\/www\.missionwinning\.com\/?$/i.test(site) && site.includes('missionwinning.com')) {
-    if (!site.includes('www.')) {
-      const msg =
-        '[seo] NEXT_PUBLIC_SITE_URL is non-www — prefer https://www.missionwinning.com for canonicals';
-      console.warn(msg);
-      warnings.push(msg);
+  } else if (!/^https:\/\/www\.missionwinning\.com\/?$/i.test(site)) {
+    try {
+      const { hostname } = new URL(site);
+      if (
+        (hostname === 'missionwinning.com' || hostname.endsWith('.missionwinning.com')) &&
+        hostname !== 'www.missionwinning.com'
+      ) {
+        const msg =
+          '[seo] NEXT_PUBLIC_SITE_URL is non-www — prefer https://www.missionwinning.com for canonicals';
+        console.warn(msg);
+        warnings.push(msg);
+      }
+    } catch {
+      // invalid URL — ignore
     }
   }
   return warnings;

@@ -22,6 +22,8 @@ concurrency:
 jobs:
   e2e-critical:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     # `.255` — this block must match `scripts/gate.mjs`'s `BUILD_ENV` and
     # `ci.yml`'s. Asserted in `src/lib/workflowBuildEnv.test.ts`; the VAPID
     # placeholder's reasoning is in `ci.yml`, which is where it was proved.
@@ -65,6 +67,8 @@ jobs:
 
   lighthouse-budget:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     continue-on-error: true
     # `.255` — this job had **no env at all**, and that is not cosmetic.
     #
@@ -116,6 +120,8 @@ jobs:
 
   visual-regression:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     continue-on-error: true
     # `.255` — `PRIVATE_MODE: 'false'` was set on the **assertion** step, which
     # runs after the build and after the server started. Step env does not
@@ -245,6 +251,8 @@ jobs:
 
   gate-smoke:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     steps:
       - uses: actions/checkout@v5
 
@@ -269,6 +277,8 @@ jobs:
 
   growth-smoke:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     steps:
       - uses: actions/checkout@v5
 
@@ -293,6 +303,8 @@ jobs:
 
   rate-limit-smoke:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     continue-on-error: true
     steps:
       - uses: actions/checkout@v5
@@ -330,6 +342,8 @@ jobs:
 
   android:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     defaults:
       run:
         working-directory: apps/android

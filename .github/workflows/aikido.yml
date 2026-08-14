@@ -18,6 +18,8 @@ concurrency:
 jobs:
   aikido-security:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     steps:
       - name: Check AIKIDO_SECRET_KEY
         id: gate
