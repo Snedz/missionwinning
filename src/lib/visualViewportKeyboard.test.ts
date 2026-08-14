@@ -81,6 +81,6 @@ test('AppLayout lifts the logger dock by that overlap', () => {
 test('LogConsole still logs from the keyboard Go/Done key', () => {
   const src = read('src/components/workout/LogConsole.tsx');
   assert.match(src, /onSubmit=\{onLog\}/);
-  assert.match(src, /enterKeyHint=\"done\"/);
+  assert.match(src, /enterKeyHint="done"/);
   assert.match(src, /log-console-log-set/);
 });

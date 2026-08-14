@@ -16,6 +16,6 @@ test('in-app FAQ says the logger is free and no wearable is required', () => {
 
 test('Help is a real route and is linked from the legal footer', () => {
   assert.match(read('app/(app)/help/page.tsx'), /HelpPage/);
-  assert.match(read('src/components/layout/AppLegalFooter.tsx'), /href=\"\/help\"/);
+  assert.match(read('src/components/layout/AppLegalFooter.tsx'), /href="\/help"/);
   assert.match(read('src/page-components/HelpPage.tsx'), /HELP_FAQ/);
 });
