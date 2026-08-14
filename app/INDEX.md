@@ -55,7 +55,7 @@
 
 | URL | File |
 |-----|------|
-| `/` | `app/page.tsx` → `LandingPage` |
+| `/` | `app/page.tsx` → gate teaser when ungated (Preview/dev); `LandingPage` only when gated + cookie |
 | `/bundle` | `app/bundle/page.tsx` → `BundlePage` (marketing chrome) |
 | `/compare` · `/compare/*` | **Removed (.668)** — permanent redirect to `/welcome` (no competitor comparison hub) |
 | `/guide`, `/exercises` | Public SEO pages |

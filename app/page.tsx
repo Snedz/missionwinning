@@ -1,7 +1,9 @@
 import type { Metadata } from 'next';
 import { redirect } from 'next/navigation';
 import { LandingPage } from '@/page-components/LandingPage';
+import { GateTeaser } from './private/GateTeaser';
 import { hasServerPrivateAccess } from '@/lib/privateGateServer';
+import { isPrivateModeEnabled } from '@/lib/privateModeFlag';
 import { publicPageMetadata } from '@/lib/seoMetadata';
 import {
   faqPageJsonLd,
@@ -18,28 +20,37 @@ export const metadata: Metadata = publicPageMetadata({
 });
 
 /**
- * Landing stays request-aware for the private gate cookie.
- * (App) routes no longer force-dynamic — see app/(app)/layout.tsx.
+ * Door vs post-flip landing.
+ *
+ * Gate on + no cookie → `/private` (production www).
+ * Gate on + cookie → cinematic LandingPage.
+ * Gate off (Preview / local dev) → the same teaser as `/private`. Preview
+ * inherits Production PRIVATE_MODE but short-circuits the gate so Train is
+ * walkable; that used to paint the cinematic open landing on `/`.
  */
 export default async function MissionWinningLanding() {
-  if (!(await hasServerPrivateAccess())) {
-    redirect('/private');
+  if (isPrivateModeEnabled()) {
+    if (!(await hasServerPrivateAccess())) {
+      redirect('/private');
+    }
+
+    const graph = [
+      organizationJsonLd(),
+      webSiteJsonLd(),
+      softwareApplicationJsonLd(),
+      faqPageJsonLd(),
+    ];
+
+    return (
+      <>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(graph) }}
+        />
+        <LandingPage />
+      </>
+    );
   }
 
-  const graph = [
-    organizationJsonLd(),
-    webSiteJsonLd(),
-    softwareApplicationJsonLd(),
-    faqPageJsonLd(),
-  ];
-
-  return (
-    <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(graph) }}
-      />
-      <LandingPage />
-    </>
-  );
+  return <GateTeaser />;
 }

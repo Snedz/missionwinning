@@ -1,14 +1,16 @@
 import { redirect } from 'next/navigation';
-import { PrivateTeaserClient } from './PrivateTeaserClient';
+import { GateTeaser } from './GateTeaser';
 import { hasServerPrivateAccess } from '@/lib/privateGateServer';
+import { isPrivateModeEnabled } from '@/lib/privateModeFlag';
 import { privateGateReturnPath } from '@/lib/privateGateReturn';
-import './gate.css';
 
 type SearchParams = Promise<{ invite?: string | string[]; next?: string | string[] }>;
 
 export default async function PrivatePage({ searchParams }: { searchParams: SearchParams }) {
   const sp = await searchParams;
-  if (await hasServerPrivateAccess()) {
+  // Preview/local are ungated so Train is walkable. Do not bounce `/private`
+  // to Today there — that made the old door unreachable on Preview.
+  if (isPrivateModeEnabled() && (await hasServerPrivateAccess())) {
     const rawNext = sp.next;
     const next = (Array.isArray(rawNext) ? rawNext[0] : rawNext)?.trim();
     redirect(privateGateReturnPath(next));
@@ -28,9 +30,5 @@ export default async function PrivatePage({ searchParams }: { searchParams: Sear
    * the fallback was the word "Loading…". With PRIVATE_MODE on, `/` redirects
    * here, so that fallback was the whole of www for anyone whose JS had not run.
    */
-  return (
-    <div className="mw-gate">
-      <PrivateTeaserClient initialInvite={initialInvite} initialNext={initialNext} />
-    </div>
-  );
+  return <GateTeaser initialInvite={initialInvite} initialNext={initialNext} />;
 }
