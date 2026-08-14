@@ -4,7 +4,7 @@ import { weightStep, weightUnitLabel } from '@/lib/units';
 import { suggestNextSetTarget } from '@/lib/workout/nextSetTargets';
 import { sessionIsCoachPrescribed } from '@/lib/workout/activeWorkoutHelpers';
 import { getExerciseById } from '@/data/exercises';
-import type { VictoryReceipt } from '@/lib/workout/victoryReceipt';
+import type { FieldTestReceipt } from '@/lib/workout/fieldTestReceipt';
 import {
   pickVictoryNextAction as pickVictoryNextActionCore,
   COACH_VICTORY_EARLY_WORKOUTS as COACH_VICTORY_EARLY_WORKOUTS_CORE,
@@ -51,8 +51,8 @@ export interface WorkoutVictorySummary {
   progressionInsight?: ProgressionInsight;
   /** Single post-workout ritual CTA (S-Tier: one next action). */
   nextAction?: VictoryNextAction;
-  /** Vs-last receipt from local logs — instant, offline, free (.713). */
-  receipt?: VictoryReceipt;
+  /** Five-event field test receipt — only when the finished log is a field test. */
+  fieldTest?: FieldTestReceipt;
 }
 
 /** Rank working sets: load×reps when loaded; reps alone when bodyweight. */
@@ -193,7 +193,7 @@ export function summarizeWorkoutVictory(
   progressionInsight?: ProgressionInsight,
   nextAction?: VictoryNextAction,
   pickOpts?: PickVictoryNextActionOpts,
-  receipt?: VictoryReceipt
+  fieldTest?: FieldTestReceipt
 ): WorkoutVictorySummary {
   const setCount = log.exercises.reduce((sum, ex) => sum + ex.sets.length, 0);
   return {
@@ -211,6 +211,6 @@ export function summarizeWorkoutVictory(
         strainDelta: bodyDelta?.strain,
         ...pickOpts,
       }),
-    ...(receipt ? { receipt } : {}),
+    fieldTest,
   };
 }

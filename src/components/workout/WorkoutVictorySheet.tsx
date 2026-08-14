@@ -28,13 +28,12 @@ import { SessionDebriefCard } from '@/components/workout/SessionDebriefCard';
 import { VictoryFeelStrip } from '@/components/workout/VictoryFeelStrip';
 import { VictoryBodyDeltaStrip } from '@/components/workout/VictoryBodyDeltaStrip';
 import { VictoryStatsStrip } from '@/components/workout/VictoryStatsStrip';
-import { VictoryReceiptStrip } from '@/components/workout/VictoryReceiptStrip';
 import { VictoryNextActionStrip } from '@/components/workout/VictoryNextActionStrip';
+import { FieldTestReceiptStrip } from '@/components/workout/FieldTestReceiptStrip';
 import { VictorySecondaryLinks } from '@/components/workout/VictorySecondaryLinks';
 import { VictoryRewardsLine } from '@/components/rewards/VictoryRewardsLine';
 import { buildVictorySecondaryLinks } from '@/lib/workout/victorySecondaryLinks';
 import { shouldCollapseVictoryDetails } from '@/lib/workout/victoryLayout';
-import { isSurfaceEnabled } from '@/lib/surface';
 import { parseNutritionLog } from '@/lib/nutritionQuickLog';
 import { readRaw } from '@/lib/storage/safeStorage';
 import { STORAGE_KEYS } from '@/lib/storage/keys';
@@ -67,6 +66,8 @@ type Props = {
    * `.184` write-only defect, live again.
    */
   workoutId?: string;
+  /** Field test only — starts the same five-event template. */
+  onRunFieldTestAgain?: () => void;
 };
 
 /** D2 Victory ritual — lock scale + volume + one next action (paper/ink). */
@@ -79,12 +80,15 @@ export function WorkoutVictorySheet({
   debrief,
   fragments,
   workoutId,
+  onRunFieldTestAgain,
 }: Props) {
   const { t } = useTranslation();
   const fmt = useLocaleFormat();
   const units = useUnits();
   const unitLabel = weightUnitLabel(units);
   const [feelSaved, setFeelSaved] = useState(false);
+  /** Share ladder full fail only — never cancel. Design review 2A. */
+  const [shareFailHint, setShareFailHint] = useState(false);
 
   const secondaryLinks = useMemo(() => {
     if (!summary?.nextAction) return [];
@@ -102,8 +106,6 @@ export function WorkoutVictorySheet({
       primaryHref: summary.nextAction.href,
       proteinLoggedToday,
       strainDelta: summary.bodyDelta?.strain,
-      workingMuscleGroups: summary.workingMuscleGroups,
-      moveSurfaceEnabled: isSurfaceEnabled('move'),
     });
   }, [summary]);
 
@@ -125,6 +127,7 @@ export function WorkoutVictorySheet({
    * Fallthrough ladder: `victoryShare` helpers (.452).
    */
   const handleShare = async () => {
+    setShareFailHint(false);
     const refCode = getCachedReferralCode();
     const origin =
       typeof window !== 'undefined' ? window.location.origin : 'https://www.missionwinning.com';
@@ -171,11 +174,16 @@ export function WorkoutVictorySheet({
     const next = nextVictoryShareAfterText(textResult, canClipboard);
     if (next === 'shared') return;
     if (next === 'clipboard') {
-      await navigator.clipboard.writeText(fullText);
-      track('workout_shared', { method: 'copied' });
-      return;
+      try {
+        await navigator.clipboard.writeText(fullText);
+        track('workout_shared', { method: 'copied' });
+        return;
+      } catch {
+        // Clipboard denied — fall through to fail recovery.
+      }
     }
     track('workout_shared', { method: 'failed' });
+    setShareFailHint(true);
   };
 
   const showBackTodaySecondary = shouldShowVictoryBackTodaySecondary(
@@ -231,7 +239,10 @@ export function WorkoutVictorySheet({
     <Dialog
       open={open}
       onOpenChange={(next) => {
-        if (!next) setFeelSaved(false);
+        if (!next) {
+          setFeelSaved(false);
+          setShareFailHint(false);
+        }
         onOpenChange(next);
       }}
     >
@@ -263,16 +274,25 @@ export function WorkoutVictorySheet({
 
         <VictoryStatsStrip
           totalVolume={summary.totalVolume}
-          totalReps={summary.totalReps}
           setCount={summary.setCount}
           durationSeconds={summary.durationSeconds}
           unitLabel={unitLabel}
           formatVolume={(n) => fmt.num(n)}
-          vsLast={summary.receipt?.vsLast ?? null}
         />
 
-        {summary.receipt ? (
-          <VictoryReceiptStrip receipt={summary.receipt} unitLabel={unitLabel} />
+        {summary.fieldTest ? (
+          <FieldTestReceiptStrip
+            receipt={summary.fieldTest}
+            units={units}
+            onRunAgain={
+              onRunFieldTestAgain
+                ? () => {
+                    onOpenChange(false);
+                    onRunFieldTestAgain();
+                  }
+                : undefined
+            }
+          />
         ) : null}
 
         <VictoryRewardsLine active={open} />
@@ -317,23 +337,36 @@ export function WorkoutVictorySheet({
               {t('victoryBackToday', { defaultValue: 'Back to Today' })}
             </button>
           )}
-          <div className="flex flex-wrap items-center justify-center gap-x-3 gap-y-1 text-[11px] text-muted-foreground">
-            <button
-              type="button"
-              className="hover:text-foreground underline-offset-2 hover:underline min-h-[44px] inline-flex items-center tap-target"
-              onClick={onViewHistory}
-            >
-              {t('victoryViewHistory', { defaultValue: 'History' })}
-            </button>
-            <span aria-hidden>·</span>
-            <button
-              type="button"
-              className="inline-flex items-center gap-1 hover:text-foreground underline-offset-2 hover:underline min-h-[44px] tap-target"
-              onClick={handleShare}
-            >
-              <Share2 className="h-3 w-3" />
-              {t('victoryShare', { defaultValue: 'Share' })}
-            </button>
+          <div className="flex flex-col items-center gap-1">
+            <div className="flex flex-wrap items-center justify-center gap-x-3 gap-y-1 text-[11px] text-muted-foreground">
+              <button
+                type="button"
+                className="hover:text-foreground underline-offset-2 hover:underline min-h-[44px] inline-flex items-center tap-target"
+                onClick={onViewHistory}
+              >
+                {t('victoryViewHistory', { defaultValue: 'History' })}
+              </button>
+              <span aria-hidden>·</span>
+              <button
+                type="button"
+                className="inline-flex items-center gap-1 hover:text-foreground underline-offset-2 hover:underline min-h-[44px] tap-target"
+                onClick={handleShare}
+              >
+                <Share2 className="h-3 w-3" />
+                {t('victoryShare', { defaultValue: 'Share' })}
+              </button>
+            </div>
+            {shareFailHint ? (
+              <p
+                role="status"
+                className="max-w-xs text-center text-[11px] leading-relaxed text-muted-foreground"
+                data-testid="victory-share-fail"
+              >
+                {t('victoryShareFailed', {
+                  defaultValue: 'Couldn’t share from this browser. Tap Share again, or copy from History later.',
+                })}
+              </p>
+            ) : null}
           </div>
         </DialogFooter>
       </DialogContent>
