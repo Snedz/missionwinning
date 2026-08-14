@@ -2,7 +2,7 @@
 
 **Audience:** Founder + the next Hermes / Grok Build / graph agent  
 **Lane:** Engineering-Web (unless a loop says Android)  
-**Status:** ACTIVE 2026-08-14 · web `2026.07-unified.803` · Alpha 0.1.0 · **C7 open**  
+**Status:** ACTIVE 2026-08-14 · web `2026.07-unified.803` · Alpha 0.1.0 · **C8 open**  
 **Does not replace:** [ORCHESTRATION.md](../ORCHESTRATION.md) (what may be built) · [CONTEXT.md](../CONTEXT.md) `## Now` (where we are) · [vision.md](../vision.md) (constitution) · [docs/THESIS.md](THESIS.md) (wedge) · [docs/PLAN.md](PLAN.md) (phases A–I)
 
 This file is the **execution queue** for the agent graph: one concern per loop, spawn, ship, mark done, spawn the next. It is not a second status block and not a license to skip standing hard bans.
@@ -137,8 +137,8 @@ G is empty. Horizon W pass is founder-later. These rows are agent-allowed honest
 | **C4** | In-app Help / FAQ | `docs/help` into the app. Not a Today tab | `done` — `.801` this PR |
 | **C5** | Programs merch honesty | No second-store / coming-soon paid coach | `done` — `.802` this PR |
 | **C6** | Rewards planned rest | R4b. Weekly goal stays boss | `done` — `.803` this PR |
-| **C7** | Victory Fuel/Mind ritual | Residual. Mark already-true if wired | `open` |
-| **C8** | Fuel estimate residual | Investigate. Do not invent NL tokens | queued |
+| **C7** | Victory Fuel/Mind ritual | Residual. Mark already-true if wired | `done (already true)` — `pickVictoryNextAction` high strain → `/mind?collection=post-train` (`src/lib/workout/workoutVictory.ts` + `.test.ts`). Wedge next stays Coach when a plan exists. No restyle. |
+| **C8** | Fuel estimate residual | Investigate. Do not invent NL tokens | `open` |
 
 ### After H0 (orientation — not open until H0-1…H0-7 are done or `founder`)
 
