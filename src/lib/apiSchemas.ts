@@ -37,7 +37,7 @@ export const leadsBodySchema = z.object({
 });
 
 export const privateAccessBodySchema = z.object({
-  password: z.string().min(1).max(256),
+  password: z.string().trim().min(1).max(256),
 });
 
 export const schoolPinBodySchema = z.object({

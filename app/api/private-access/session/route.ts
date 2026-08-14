@@ -9,10 +9,7 @@ import { createClient } from '@supabase/supabase-js';
 import { withApiLogging } from '@/lib/api/withApiLogging';
 import { clientIp } from '@/lib/clientIp';
 import { rateLimitAsync } from '@/lib/rateLimit';
-import {
-  createPrivateAccessToken,
-  PRIVATE_ACCESS_COOKIE,
-} from '@/lib/privateSession';
+import { attachPrivateAccessCookie } from '@/lib/privateSession';
 import { bearerFromAuthorization, sessionMintGate } from '@/lib/privateAccessSessionGate';
 
 export const POST = withApiLogging('private-access/session', async (request: NextRequest) => {
@@ -53,12 +50,6 @@ export const POST = withApiLogging('private-access/session', async (request: Nex
   }
 
   const response = NextResponse.json({ success: true, userId: user.id });
-  response.cookies.set(PRIVATE_ACCESS_COOKIE, createPrivateAccessToken(secret), {
-    httpOnly: true,
-    secure: process.env.NODE_ENV === 'production',
-    sameSite: 'lax',
-    maxAge: 60 * 60 * 24 * 30,
-    path: '/',
-  });
+  attachPrivateAccessCookie(response.cookies, secret);
   return response;
 });

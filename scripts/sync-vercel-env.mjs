@@ -22,6 +22,9 @@ const TARGETS = ['production', 'preview', 'development'];
 /** Keys synced when present in process.env. PRIVATE_ACCESS_SECRET must be set. */
 const SYNC_KEYS = [
   'PRIVATE_ACCESS_SECRET',
+  // Aliases (e.g. Done) must ship to Preview too — Production-only CODES is
+  // why the beta code works on www and 401s on every *.vercel.app.
+  'PRIVATE_ACCESS_CODES',
   'PRIVATE_MODE',
   'PRIVATE_ALLOW_AUTH_BYPASS',
   'NEXT_PUBLIC_SUPABASE_URL',

@@ -33,6 +33,7 @@ const launchRecommended = [
 
 const optional = [
   ['PRIVATE_MODE', 'true/false — gate on in production by default'],
+  ['PRIVATE_ACCESS_CODES', 'Comma-separated /private aliases (e.g. Done) — set for Production AND Preview'],
   ['PRIVATE_ALLOW_AUTH_BYPASS', 'Leave unset/false — magic link should not bypass gate'],
   ['DEMO_PREMIUM', 'Must be false (or unset) in production'],
   ['BETA_ADMIN_EMAILS', 'Comma-separated founder emails for beta panel'],

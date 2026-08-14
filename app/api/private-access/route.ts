@@ -6,9 +6,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { withApiLogging } from '@/lib/api/withApiLogging';
 import {
-  createPrivateAccessToken,
+  attachPrivateAccessCookie,
   matchesPrivateAccessPassword,
-  PRIVATE_ACCESS_COOKIE,
 } from '@/lib/privateSession';
 import { rateLimitAsync } from '@/lib/rateLimit';
 import { clientIp } from '@/lib/clientIp';
@@ -47,13 +46,6 @@ export const POST = withApiLogging('private-access', async(request: NextRequest)
   }
 
   const response = NextResponse.json({ success: true });
-  response.cookies.set(PRIVATE_ACCESS_COOKIE, createPrivateAccessToken(secret), {
-    httpOnly: true,
-    secure: process.env.NODE_ENV === 'production',
-    sameSite: 'lax',
-    maxAge: 60 * 60 * 24 * 30,
-    path: '/',
-  });
-
+  attachPrivateAccessCookie(response.cookies, secret);
   return response;
 });

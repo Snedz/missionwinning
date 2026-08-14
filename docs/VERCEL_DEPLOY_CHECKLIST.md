@@ -146,7 +146,8 @@ See [ENV.md](ENV.md) and [PROTECTION.md](PROTECTION.md).
 
 | Variable | Required for gate |
 |----------|-------------------|
-| `PRIVATE_ACCESS_SECRET` | Rotate with `openssl rand -base64 32` — **never** ship the dev placeholder `Done` to Production |
+| `PRIVATE_ACCESS_SECRET` | Rotate with `openssl rand -base64 32` — **never** ship the dev placeholder `Done` to Production as the HMAC secret |
+| `PRIVATE_ACCESS_CODES` | Optional aliases for `/private` (e.g. `Done`) — **Production + Preview**, same value |
 | `PRIVATE_MODE` | `true` during private beta |
 | `NEXT_PUBLIC_SUPABASE_URL` | Yes |
 | `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Yes |

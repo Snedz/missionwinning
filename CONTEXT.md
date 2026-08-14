@@ -16,7 +16,7 @@ One screen of truth for any AI tool or human joining cold. Read this, then [AGEN
 
 ---
 
-## Now (2026-08-14 · web `2026.07-unified.769` · Android `1.24.1`)
+## Now (2026-08-14 · web `2026.07-unified.770` · Android `1.24.1`)
 
 > The ONLY "where we are" block in the repo — [ORCHESTRATION.md](ORCHESTRATION.md) points here.
 >
@@ -310,6 +310,8 @@ One screen of truth for any AI tool or human joining cold. Read this, then [AGEN
 > and `.764` dropped `.749` detail (full text remains in LOG.md / archive)
 > and `.765` dropped `.750` detail (full text remains in LOG.md / archive)
 > and `.766` dropped `.751` detail (full text remains in LOG.md / archive)
+> and `.767` dropped `.752` detail (full text remains in LOG.md / archive)
+> and `.768` dropped `.753` detail (full text remains in LOG.md / archive)
 > to [CONTEXT-now-2026-07-30.md](docs/archive/CONTEXT-now-2026-07-30.md) after this
 > block reached **79 bullets / 103KB**. A status doc that only grows stops being read.
 
@@ -331,6 +333,7 @@ One screen of truth for any AI tool or human joining cold. Read this, then [AGEN
 > | gitleaks | **green — and scanning for the first time.** It had never scanned anything: on a `pull_request` event the action lists the PR's commits, the job declared no `permissions:` block, and it 403'd (`pull_requests=read`) before opening a file. Fixed by a `permissions:` block (`.224` carrying `.255`). It scans **only the PR's own commits**, so commit `8ea3527a`'s real Solana treasury address — scrubbed from the working file, still in history — is out of its scope. That finding stands, deliberately not allowlisted; it was never what made this check red. |
 
 - **Excellence:** unscored · — · [docs/EXCELLENCE_RESULT.md](docs/EXCELLENCE_RESULT.md) — Horizon W phone sign-off home; surface PRs need `status: pass` or `Excellence-Override` (`.669`).
+- **`.770`:** (`2026.07-unified.770`) **Done beta code on Vercel Preview** — `PRIVATE_ACCESS_CODES` syncs with the HMAC secret (Production + Preview). Quote-strip matching, host-only gate cookie, cookie probe after unlock. A Vercel login is Deployment Protection, not the Done form. No `PRIVATE_MODE` flip.
 - **`.769`:** (`2026.07-unified.769`) **Beta 0.0.1 door stamp** — athlete name is `0.0.1 (beta)`, not `0.1`. Invite beta, not a public flip. Not a `PRIVATE_MODE` flip.
 - **`.768`:** (`2026.07-unified.768`) **First set while gated** — `/active` public while the gate is up; `/private` primary is Log a set; I-Day lands Train when gated. Today / Coach stay cookie-gated. Not a `PRIVATE_MODE` flip.
 - **`.767`:** (`2026.07-unified.767`) **Dependabot security/quality batch** — one Cursor PR, not 46 bot PRs. `overrides` pin `axios@1.19.0` (8 high GHSAs gone) + `nanoid@3.3.18`. Ratchet 9 → 1 (`bigint-buffer` remains). No `PRIVATE_MODE` flip.
@@ -345,7 +348,6 @@ One screen of truth for any AI tool or human joining cold. Read this, then [AGEN
 - **`.758`:** (`2026.07-unified.758`) **Bodyweight + load on the Train set row** — On pull-ups/push-ups/dips the load field is extra weight (belt/vest); 0 logs BW only. Originally #527 / `.735`.
 - **`.757`:** (`2026.07-unified.757`) **Optional tempo on the set row** — Optional ecc/pause/con (`3-1-1`) on completed rows beside RPE/RIR; last tempo prefills; never blocks Log set. Originally #526 / `.734`.
 - **`.756`:** (`2026.07-unified.756`) **Optional RIR on the set row** — Optional 0–5 RIR on completed rows beside RPE; empty valid; Log set ungated. Originally #517 / `.725`.
-- **`.755`:** (`2026.07-unified.755`) **Unilateral L/R on the set log** — Optional L/R/Alt on unilateral lifts; after L suggest R; bilateral strips stray side. Originally #516 / `.724`.
 - **`.669`:** (`2026.07-unified.669`) **Excellence RESULT + agent stop-rule** — `excellenceGate` path policy + `check-excellence-gate` on gate/PR CI; wedge still ships while unscored.
 - **Horizon W + full-launch override (2026-08-05).** Wedge excellence still required; agents may ship rewards + full surface honesty. Fuel estimate accuracy remains.
 - **Free-first beta (~4 weeks):** LLC + EIN pending — **no Bundle UI** + **full depth unlocked**; More/rail **Pillars demoted until first workout** (F-004 / `.695`) — still no Bundle ([docs/FREE_BETA.md](docs/FREE_BETA.md)).

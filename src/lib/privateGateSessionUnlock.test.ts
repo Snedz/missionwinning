@@ -63,6 +63,11 @@ test('session unlock does not soft-navigate before the gate cookie is confirmed'
     /navigateAfterPrivateGateUnlock\(\s*privateGateReturnPath\(/,
     'post-unlock must hard-navigate via navigateAfterPrivateGateUnlock(privateGateReturnPath(...))'
   );
+  assert.match(
+    client,
+    /confirmPrivateGateCookie\(\)/,
+    'password unlock must probe the cookie before leaving /private — a 200 that Preview cannot store would otherwise bounce silently'
+  );
   assert.doesNotMatch(
     client,
     /navigateAfterPrivateGateUnlock\(\s*['"`/]/,
