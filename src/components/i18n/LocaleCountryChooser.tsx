@@ -24,6 +24,7 @@ import {
   detectCountryHint,
   detectLanguageHint,
   hasConfirmedLocaleChoice,
+  isFirstSetLocaleChooserPath,
   persistLocaleCountryPref,
   resolvePersistCountry,
   shouldAutoOpenLocaleChooser,
@@ -46,6 +47,10 @@ export function LocaleCountryChooser() {
   const [blockMessage, setBlockMessage] = useState<string | null>(null);
 
   const served = useMemo(() => servedCountryCodes(), []);
+
+  useEffect(() => {
+    if (isFirstSetLocaleChooserPath(pathname)) setOpen(false);
+  }, [pathname]);
 
   useEffect(() => {
     if (hasConfirmedLocaleChoice()) return;
@@ -81,7 +86,10 @@ export function LocaleCountryChooser() {
         setPickedCountry(served[0] ?? 'US');
       }
       // F-017 — do not cover I-Day Continue / first-set Start with this sheet.
-      if (shouldAutoOpenLocaleChooser(pathname)) setOpen(true);
+      // Live path: the geo fetch can resolve after I-Day navigates to /active.
+      const here =
+        typeof window !== 'undefined' ? window.location.pathname : pathname;
+      if (shouldAutoOpenLocaleChooser(here)) setOpen(true);
     })();
 
     return () => {
