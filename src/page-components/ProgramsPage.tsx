@@ -265,6 +265,16 @@ export function ProgramsPage() {
       </div>
 
       <p className="text-center text-xs text-muted-foreground max-w-md mx-auto">
+        <Link href="/coach" className="text-primary hover:underline">
+          {t('programsCoachPointer', {
+            defaultValue: 'Mission Coach writes the week from your logs.',
+          })}
+        </Link>{' '}
+        {t('programsNotAStore', {
+          defaultValue: 'These cards are education outlines, not a second store.',
+        })}
+      </p>
+      <p className="text-center text-xs text-muted-foreground max-w-md mx-auto">
         {freeBeta
           ? t('programsFootOpenBeta', {
               defaultValue:
