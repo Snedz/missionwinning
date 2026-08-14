@@ -228,7 +228,7 @@ export function UnlockButton({
         <p className="mt-1 text-center text-[11px] text-muted-foreground">
           {t('unlockMoneyBack', { defaultValue: '14-day money-back on first paid charge' })} —{' '}
           <Link href="/refunds" className="text-primary hover:underline">
-            {t('infoRefundsTitle', { defaultValue: 'Refunds' })}
+            {t('infoRefundsTitle', { defaultValue: 'Refunds & cancellation' })}
           </Link>
         </p>
         {checkoutError && (

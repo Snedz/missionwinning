@@ -12,6 +12,7 @@ When adding a doc:
 
 | File | Absorbed by / note |
 |------|---------------------|
+| [log/LOG-rotate-786-for-801.md](./log/LOG-rotate-786-for-801.md) | rotated 2026-08-14 for `.801` in-app Help (`.786`) |
 | [log/LOG-rotate-785-for-800.md](./log/LOG-rotate-785-for-800.md) | rotated 2026-08-14 for `.800` Track strap (`.785`) |
 | [log/LOG-rotate-784-for-799.md](./log/LOG-rotate-784-for-799.md) | rotated 2026-08-14 for `.799` www compare (`.784`) |
 | [log/LOG-rotate-783-for-798.md](./log/LOG-rotate-783-for-798.md) | rotated 2026-08-14 for `.798` www vision (`.783`) |
