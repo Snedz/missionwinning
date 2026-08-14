@@ -32,6 +32,9 @@ AND Preview. No hardcoded alias. `PRIVATE_MODE` unchanged. Preview stays
 ungated at the proxy when `VERCEL_ENV=preview` (`.728`) — `/private` still
 needs the same codes if you test the form there.
 
+Mutants killed: quoted `"Done"` without quote-strip; `SYNC_KEYS` without
+`PRIVATE_ACCESS_CODES`; workflow without the GitHub secret mapping.
+
 Label `.770` (onto master `.769`).
 
 Excellence-Override: preview Done beta code
