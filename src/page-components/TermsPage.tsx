@@ -74,48 +74,48 @@ export function TermsPage() {
               </p>
               {section.id === 'dmca' && (
                 <p className="mt-2">
-                  <Link href="/dmca" className="text-primary hover:underline text-sm">
+                  <Link prefetch={false} href="/dmca" className="text-primary hover:underline text-sm">
                     {t('infoDmcaTitle', { defaultValue: 'DMCA / Copyright' })}
                   </Link>
                 </p>
               )}
               {section.id === 'premium' && (
                 <p className="mt-2">
-                  <Link href="/refunds" className="text-primary hover:underline text-sm">
+                  <Link prefetch={false} href="/refunds" className="text-primary hover:underline text-sm">
                     {t('infoRefundsTitle', { defaultValue: 'Refunds & cancellation' })}
                   </Link>
                   {' · '}
-                  <Link href="/service-terms" className="text-primary hover:underline text-sm">
+                  <Link prefetch={false} href="/service-terms" className="text-primary hover:underline text-sm">
                     {t('infoServiceTermsTitle', { defaultValue: 'Service-Specific Terms' })}
                   </Link>
                 </p>
               )}
               {section.id === 'acceptable-use' && (
                 <p className="mt-2">
-                  <Link href="/usage" className="text-primary hover:underline text-sm">
+                  <Link prefetch={false} href="/usage" className="text-primary hover:underline text-sm">
                     {t('infoUsageTitle', { defaultValue: 'Usage Policy' })}
                   </Link>
                 </p>
               )}
               {section.id === 'eligibility' && (
                 <p className="mt-2">
-                  <Link href="/regions" className="text-primary hover:underline text-sm">
+                  <Link prefetch={false} href="/regions" className="text-primary hover:underline text-sm">
                     {t('infoRegionsTitle', { defaultValue: 'Supported Regions' })}
                   </Link>
                 </p>
               )}
               {section.id === 'related' && (
                 <p className="mt-2 flex flex-wrap gap-x-3 gap-y-1 text-sm">
-                  <Link href="/usage" className="text-primary hover:underline">
+                  <Link prefetch={false} href="/usage" className="text-primary hover:underline">
                     {t('infoUsageTitle', { defaultValue: 'Usage Policy' })}
                   </Link>
-                  <Link href="/regions" className="text-primary hover:underline">
+                  <Link prefetch={false} href="/regions" className="text-primary hover:underline">
                     {t('infoRegionsTitle', { defaultValue: 'Supported Regions' })}
                   </Link>
-                  <Link href="/service-terms" className="text-primary hover:underline">
+                  <Link prefetch={false} href="/service-terms" className="text-primary hover:underline">
                     {t('infoServiceTermsTitle', { defaultValue: 'Service-Specific Terms' })}
                   </Link>
-                  <Link href="/privacy" className="text-primary hover:underline">
+                  <Link prefetch={false} href="/privacy" className="text-primary hover:underline">
                     {t('privacyPolicy', { defaultValue: 'Privacy Policy' })}
                   </Link>
                 </p>
@@ -129,27 +129,27 @@ export function TermsPage() {
         {t('infoTermsFoot', {
           defaultValue: 'Mission Winning LLC · support@missionwinning.com · See also',
         })}{' '}
-        <Link href="/privacy" className="text-primary hover:underline">
+        <Link prefetch={false} href="/privacy" className="text-primary hover:underline">
           {t('privacyPolicy', { defaultValue: 'Privacy Policy' })}
         </Link>
         {' · '}
-        <Link href="/usage" className="text-primary hover:underline">
+        <Link prefetch={false} href="/usage" className="text-primary hover:underline">
           {t('infoUsageTitle', { defaultValue: 'Usage Policy' })}
         </Link>
         {' · '}
-        <Link href="/regions" className="text-primary hover:underline">
+        <Link prefetch={false} href="/regions" className="text-primary hover:underline">
           {t('infoRegionsTitle', { defaultValue: 'Supported Regions' })}
         </Link>
         {' · '}
-        <Link href="/service-terms" className="text-primary hover:underline">
+        <Link prefetch={false} href="/service-terms" className="text-primary hover:underline">
           {t('infoServiceTermsTitle', { defaultValue: 'Service-Specific Terms' })}
         </Link>
         {' · '}
-        <Link href="/refunds" className="text-primary hover:underline">
+        <Link prefetch={false} href="/refunds" className="text-primary hover:underline">
           {t('infoRefundsTitle', { defaultValue: 'Refunds & cancellation' })}
         </Link>
         {' · '}
-        <Link href="/dmca" className="text-primary hover:underline">
+        <Link prefetch={false} href="/dmca" className="text-primary hover:underline">
           {t('infoDmcaTitle', { defaultValue: 'DMCA / Copyright' })}
         </Link>
       </p>

@@ -225,11 +225,11 @@ export function SignInPanel({
         </p>
         <p className="text-xs text-muted-foreground">
           You can still use the free offline logger without an account.{' '}
-          <Link href="/regions" className="text-primary underline underline-offset-2">
+          <Link prefetch={false} href="/regions" className="text-primary underline underline-offset-2">
             Supported Regions
           </Link>
           {' · '}
-          <Link href="/terms" className="text-primary underline underline-offset-2">
+          <Link prefetch={false} href="/terms" className="text-primary underline underline-offset-2">
             Terms
           </Link>
         </p>
@@ -406,11 +406,11 @@ export function SignInPanel({
         />
         <span>
           I agree to the{' '}
-          <Link href="/terms" target="_blank" className="text-primary underline">
+          <Link prefetch={false} href="/terms" target="_blank" className="text-primary underline">
             Terms of Service
           </Link>{' '}
           and{' '}
-          <Link href="/privacy" target="_blank" className="text-primary underline">
+          <Link prefetch={false} href="/privacy" target="_blank" className="text-primary underline">
             Privacy Policy
           </Link>
           . We only sync data you choose to save when signed in.
