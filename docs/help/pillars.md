@@ -28,13 +28,13 @@ See [fuel-and-nutrition.md](fuel-and-nutrition.md).
 
 **Route:** `/move`
 
-Mobility and recovery flows — timed sequences, breathing, and light movement on rest days. Cross-pillar coach may suggest Move when strain is high.
+Mobility and recovery flows — timed sequences, breathing, and light movement on rest days. After you log a session, Victory may offer **one** matching free flow for the muscles you just trained. Cross-pillar coach may also suggest Move when strain is high.
 
 ## Mind
 
 **Route:** `/mind`
 
-Recovery and focus — breathing timers and guided sessions. Some sessions require premium enrollment.
+Recovery and focus — daily check-in, breathing timer, and skippable guided sessions. Super Bundle adds journal-style training questions (not a meditation library). Some extra sessions require premium enrollment when pay is on.
 
 ## Track
 
@@ -48,7 +48,7 @@ You can import activity files without linking a watch: Apple Health Shortcuts JS
 
 **Route:** `/learn`, `/learn/guide`
 
-Education — structured paths and the Mission Winning guidebook (**Beyond the Basics**). Free chapters are public at `/guide` without an account: expandable **Contents** sidebar (desktop) or Contents panel (mobile), plus a language switcher. You can also download the magazine PDF from `/guide` or `/learn/guide` (English compilation). Full specialist depth may be premium.
+Education — structured paths and the Mission Winning guidebook (**Beyond the Basics**). Free chapters are public at `/guide` without an account: expandable **Contents** sidebar (desktop) or Contents panel (mobile), plus a language switcher. You can also download the magazine PDF from `/guide` or `/learn/guide` (English compilation). The free intro stays free. Super Bundle adds a sequence course (Train, then Coach, then Fuel / Move / Mind on the same week) plus specialist depth — not a second set of apps.
 
 ## Today — your hub
 

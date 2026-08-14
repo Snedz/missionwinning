@@ -6,28 +6,23 @@
 
 | File | Purpose |
 |------|---------|
-    | `ActiveEmptyState.tsx` | No-session shell — Start workout, or Repeat last session when history exists |
+| `ActiveEmptyState.tsx` | No-session shell — start quick workout |
 | `ActiveSessionChrome.tsx` | Session bar — Elapsed/Sets pair, progress, Plates + Finish; **Add exercise is a trigger** for `AddExerciseSheet`, not an inline picker |
 | `ActiveSessionDock.tsx` | One `ScreenDock` for rest **or** compact `LogConsole` — never both (`.440`). Mode from `resolveActiveDockMode` |
-| `ActiveWorkoutSheets.tsx` | Check-in · form · add · plates · victory overlay cluster (`.450`) |
+| `ActiveWorkoutSheets.tsx` | Check-in · hard-session warning · form · add · plates · victory overlay cluster (`.450`) |
 | `ActiveExerciseList.tsx` | Maps session exercises → `ActiveExerciseCard` (swap candidates, table controls, open-idx). Page mounts this instead of inlining the map (`.439`) |
-| `ActiveExerciseCard.tsx` | Dense exercise block — Info → form guide; overflow for Note/Swap/SS/Ask/Remove. **Swap** is `AdaptiveOverlay` + `GarageSwapList` (1–2 garage stand-ins). Footer Rest offers last rest (`.745`). Note field sits **after** the set rows (`.748`) |
-| `ActiveExerciseHeader.tsx` | Title + next line + educational Epley e1RM after a saved working set (`.761`; hideable) |
-| `ExerciseNoteField.tsx` | Always-visible one-line diary on the exercise — last cue prefills at start/add/swap; no autofocus (`.748`) |
-| `ActiveExerciseFooter.tsx` | Add Set · **Drop** after a working set (`.754`, outline, not red) · **Add warmups** 40/60/80 (`.764`) · Rest · desktop kind chips · optional L/R/Alt · set options |
-| `SetLogTable.tsx` | **Desktop** set list — Strong/Hevy density (`Set · Prev · kg · Reps`); **Prev is the row anchor** (`data-prev-anchor`); pair mark `A1·n` when paired (`.749`); optional L/R/Alt; BW+ load on plus-load moves (`.758`); live barbell plates + `W`/1..n warmup toggle (`.764`); completed rows optional RIR + tempo + vs-last (`.756`/`.757`/`.760`); last-working-set ghost under the table (`.759`); ≥44px inputs; one poster-red inline `Log set`. Compact uses `SetLogRow` + `LogConsole` |
-| `SetLogRow.tsx` | **Read-only set record** — **Prev metric anchor** + this-session line (BW + load when plus-load) + tiny vs-last after save (`.760`), pair mark `A1·n` when paired (`.749`), live plate hint + warmup toggle (`.764`), kind/PR/RPE, optional L/R/Alt + RIR + tempo, `Check`. ≥44px row. No filled red — entry is `LogConsole` |
-| `SetRirSelect.tsx` | Compact native 0–5 RIR select for completed rows (`.756`). Empty default. |
-| `SetTempoField.tsx` | Compact optional `e-p-c` tempo on a **completed** set row (`.757`). Never required to log |
-| `LastSetGhostButton.tsx` | One-tap last **working** set (not warmup) into the dial — outline, never poster red (`.759`) |
-| `LogConsole.tsx` | **Compact only** — **the only place a set is entered.** Dense ink `ScreenDock`: name + `Set n of m`, overload cue, last-set ghost (`.759`), collapsed Work/Kind chips, optional L/R/Alt on unilateral, **BW+ load stepper** on plus-load moves (0 = skip), tappable plate line (`.764`), 52px steppers, one poster-red `Log set` in the thumb zone (F-003) |
-| `GarageSwapList.tsx` | Short 1–2 garage stand-ins for logger + Coach session Swap (`.752`). Not the catalog picker |
+| `ActiveExerciseCard.tsx` | Dense exercise block — Info → form guide; overflow for Note/Swap/SS/Ask/Remove. **Swap** is `AdaptiveOverlay` + `ExercisePicker` (not an inline max-h-48 list) |
+| `SetLogTable.tsx` | **Desktop** set list — Strong/Hevy density (`Set · Prev · kg · Reps`); **Prev is the row anchor** (`data-prev-anchor`); ≥44px inputs; one poster-red inline `Log set` (sole red at md+). Compact uses `SetLogRow` + `LogConsole` |
+| `SetLogRow.tsx` | **Read-only set record** — **Prev metric anchor** + this-session line (no "In the console" prose), kind/PR/RPE, `Check`. ≥44px row + RPE. No filled red — entry is `LogConsole` |
+| `LogConsole.tsx` | **Compact only** — **the only place a set is entered.** Dense ink `ScreenDock`: name + `Set n of m`, overload cue, collapsed Work/Kind chips (ink selected, never accent fill), 52px steppers, one poster-red `Log set` in the thumb zone (F-003) |
 | `AddExerciseSheet.tsx` | `ExercisePicker` in a sheet with the confirm in the footer. **Test contract:** keeps the `search exercises` placeholder, `option` rows and `add selected exercise` name — `logger-depth`, `first-90` and `hero-flows` all drive them |
+| `HardSessionWarningSheet.tsx` | Pre-start hard-session warning — Back does not start; never gates Log set. Stop line follows pregnancy flag (`.746` v1) |
 | `RestTimerBar.tsx` | Rest countdown — **takes the `ScreenDock` over from `LogConsole`, never both**. **Ambient running** while `remaining > 0` (`data-rest-running`, ticking `rest-clock`, depleting ambient fill + meters). Skip via `data-testid="rest-skip"`; accent fill only in final ≤10s |
 | `WorkoutVictorySheet.tsx` | Post-workout summary sheet |
 | `VictoryFeelStrip.tsx` | Post-session feel 1–5 energy (free ritual) (`.429`) |
 | `VictoryBodyDeltaStrip.tsx` | Readiness · strain · recovery signed deltas (`.444`) |
-| `VictoryStatsStrip.tsx` | Volume · sets · duration grid (`.447`) |
+| `VictoryStatsStrip.tsx` | Volume · sets · duration grid (`.447`); optional vs-last deltas from the receipt |
+| `VictoryReceiptStrip.tsx` | Per-lift vs-last receipt on Victory (`.713`) |
 | `VictoryNextActionStrip.tsx` | Primary Next CTA block (`.447`) |
 | `PlateCalculatorSheet.tsx` | Plate math sheet |
 | `LiveHeartRate.tsx` | Optional Web Bluetooth BPM strip (wearables flag) |
@@ -38,4 +33,4 @@
 |-------|------|
 | Page | `ActiveWorkoutPage.tsx` |
 | Store | `workoutStore.ts` |
-| Lib | `activeWorkoutHelpers.ts`, `lastSetGhost.ts`, `vsLastSet.ts`, `restTimer.ts`, `plateCalculator.ts`, `warmupRamp.ts`, `workoutPr.ts`, `setKind.ts`, `dropSet.ts` |
+| Lib | `activeWorkoutHelpers.ts`, `restTimer.ts`, `plateCalculator.ts`, `workoutPr.ts`, `setKind.ts` |

@@ -5,4 +5,3 @@
 **Private note** is local free text (280 chars) that may never reach share or projection. Boundary test greps publicProjection / athletePageShare / athleteCard for the storage key and forbids importing `privateNote`. Outline buttons only — `/profile` stays at **0 red actions**.
 
 Rotated LOG oldest → [docs/archive/log/LOG-rotate-623.md](docs/archive/log/LOG-rotate-623.md). · [rotated for `.624`](docs/archive/log/LOG-rotate-624.md).
-

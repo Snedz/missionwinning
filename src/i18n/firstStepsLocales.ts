@@ -59,7 +59,7 @@ const FIRST_STEPS_EN: Record<string, string> = {
   fuelModeStripLabel: 'Log method',
 
   // The public status bar — true only while `isFreeBeta()`.
-  // Stamp interpolates APP_PUBLIC_PRODUCT_VERSION (free beta, not invite-only).
+  // Open beta while Preview is ungated; same free-first promise on production after the flip.
   publicStatusOpenBeta:
     '{{productVersion}} — free beta. Offline logging plus Mission Coach from your logs.',
 };

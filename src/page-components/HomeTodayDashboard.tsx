@@ -49,9 +49,9 @@ import { readJson, readRaw } from "@/lib/storage/safeStorage";
 import { STORAGE_KEYS } from "@/lib/storage/keys";
 import { loadHomeGymKit } from "@/lib/workout/homeGymKit";
 import { computeReentry, type Reentry } from "@/lib/reentry";
-import { TodayReentryCard } from "@/components/today/TodayReentryCard";
 import { FIRST_STEPS_DISMISS_KEY } from "@/lib/today/firstStepsDismissed";
 import { buildTodayCandidates } from "@/lib/today/buildTodayCandidates";
+import { reentryCardMayMount } from "@/lib/today/todayGuidanceMount";
 import { planTodayBlocks, type TodayBlockCandidate } from "@/lib/today/todayBlockBudget";
 import { shouldAppendTodayMoreDetails } from "@/lib/today/shouldAppendTodayMore";
 import { buildTodayHeaderFocusLine } from "@/lib/today/buildTodayHeaderFocusLine";
@@ -84,6 +84,11 @@ const MuscleFreshnessStrip = dynamic(
 const CoachTodayCard = dynamic(
   () => import('@/components/coach/CoachTodayCard').then((m) => m.CoachTodayCard),
   { ssr: false, loading: () => <SkeletonCard className="min-h-[7rem]" /> }
+);
+
+const CoachLogCite = dynamic(
+  () => import('@/components/coach/CoachLogCite').then((m) => m.CoachLogCite),
+  { ssr: false }
 );
 
 const TodayCoachWeekStrip = dynamic(
@@ -617,6 +622,7 @@ export function HomeTodayDashboard() {
     phase: state.phase,
     firstStepsDismissed: betaDismissed,
     reentryShow: !!reentry?.show,
+    sessionOpen: !!activeWorkout,
     showDashboard: layout.showDashboard,
     belowFoldReady,
     totalSessions,
@@ -649,7 +655,6 @@ export function HomeTodayDashboard() {
       />
     ),
     intent: <CommandersIntent />,
-    reentry: reentry ? <TodayReentryCard reentry={reentry} /> : null,
     continuity:
       continuitySuggestions.length > 0 ? (
         <ContinuityStrip suggestions={continuitySuggestions} />
@@ -692,6 +697,8 @@ export function HomeTodayDashboard() {
             defaultValue: 'Built from your gear and days per week — free every week.',
           })}
         </p>
+        {/* The claim above, with the log it is made from. */}
+        <CoachLogCite className="mt-1" />
       </a>
     ),
     'day-review': <TodayDayReviewCard />,
@@ -819,6 +826,16 @@ export function HomeTodayDashboard() {
           activeWorkout={!!activeWorkout}
           justGoMeta={justGoMeta}
           completedSessions={workoutHistory.length}
+          reentry={
+            reentry &&
+            reentryCardMayMount({
+              phase: state.phase,
+              show: reentry.show,
+              sessionOpen: !!activeWorkout,
+            })
+              ? reentry
+              : null
+          }
         />
       </ScreenDock>
     </>

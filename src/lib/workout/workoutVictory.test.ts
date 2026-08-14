@@ -110,6 +110,7 @@ describe('shouldShowVictoryBackTodaySecondary', () => {
     assert.match(src, /VictoryFeelStrip/);
     assert.match(src, /VictoryBodyDeltaStrip/);
     assert.match(src, /VictoryStatsStrip/);
+    assert.match(src, /VictoryReceiptStrip/);
     assert.match(src, /VictoryNextActionStrip/);
     assert.doesNotMatch(
       src,
@@ -271,6 +272,34 @@ describe('summarizeWorkoutVictory', () => {
     assert.equal(s.workoutName, 'Push');
   });
 
+  it('attaches working-set muscles for the Move seam', () => {
+    const log: CompletedWorkoutLog = {
+      id: '1',
+      workoutName: 'Pull',
+      startedAt: '2026-07-01T10:00:00Z',
+      completedAt: '2026-07-01T10:30:00Z',
+      durationSeconds: 1800,
+      totalVolume: 5000,
+      exercises: [
+        {
+          exerciseId: 'lat-pulldown',
+          muscleGroups: ['Back', 'Arms'],
+          sets: [{ reps: 8, weight: 50 }],
+        },
+        {
+          exerciseId: 'barbell-row',
+          muscleGroups: ['Back', 'Arms'],
+          sets: [{ reps: 8, weight: 60 }],
+        },
+      ],
+    };
+    const s = summarizeWorkoutVictory(log, 1);
+    assert.deepEqual(s.workingMuscleGroups, [
+      ['Back', 'Arms'],
+      ['Back', 'Arms'],
+    ]);
+  });
+
   it('passes pickOpts through to next action', () => {
     const log: CompletedWorkoutLog = {
       id: '1',
@@ -292,5 +321,33 @@ describe('summarizeWorkoutVictory', () => {
       hasCoachPlan: true,
     });
     assert.equal(second.nextAction?.href, '/coach');
+  });
+
+  it('attaches a vs-last receipt when one is passed', () => {
+    const log: CompletedWorkoutLog = {
+      id: '1',
+      workoutName: 'Push',
+      startedAt: '2026-07-01T10:00:00Z',
+      completedAt: '2026-07-01T10:30:00Z',
+      durationSeconds: 1800,
+      totalVolume: 5000,
+      exercises: [{ exerciseId: 'bench', sets: [{ reps: 5, weight: 100 }] }],
+    };
+    const receipt = {
+      vsLast: { volumeDelta: 200, setCountDelta: 0, durationDelta: 60 },
+      exercises: [],
+      prCount: 0,
+    };
+    const s = summarizeWorkoutVictory(
+      log,
+      1,
+      undefined,
+      undefined,
+      undefined,
+      undefined,
+      undefined,
+      receipt
+    );
+    assert.equal(s.receipt?.vsLast?.volumeDelta, 200);
   });
 });

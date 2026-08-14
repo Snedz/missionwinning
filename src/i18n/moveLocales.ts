@@ -58,8 +58,8 @@ const en: MoveStrings = {
     'Free guided flows with timers — bodyweight, global-friendly. Premium adds sports-specific depth (Super Bundle).',
   moveStartFlow: 'Start Flow',
   moveRecentWins: 'Recent Move Wins',
-  movePremiumTitle: 'Premium — Pliability / Skill Yoga depth',
-  movePremiumDesc: 'Sports-specific mobility, recovery protocols, and advanced flows.',
+  movePremiumTitle: 'Premium — longer timed recovery flows',
+  movePremiumDesc: 'Sports-specific mobility and recovery — timers and bodyweight, not a video library.',
   movePremiumBtn: 'Move Premium',
   movePremiumLoading: 'Loading recovery flows…',
   moveEyebrow: 'Move',
@@ -76,9 +76,9 @@ const en: MoveStrings = {
   movePremiumOfflineOpenBeta:
     'Extra recovery flows unavailable offline — free flows above still work.',
   movePremiumRetry: 'Try again',
-  movePreviewPlayer: 'Timed cues — Pliability-style recovery flows',
+  movePreviewPlayer: 'Timed cues — original recovery flows, no video',
   moveLockedHint:
-    'Free tier includes 10 flows. Premium adds 11 longer protocols — post-lift, morning open, low-back friendly, and athlete recovery.',
+    'Free tier includes {{free}} flows. Super Bundle adds {{premium}} longer timed protocols — post-lift, hotel floor, and athlete recovery. No video library.',
   moveCollections: 'Collections',
   moveCollectionShowAll: 'Show all flows',
   moveCollectionEmpty: 'No flows in this collection.',

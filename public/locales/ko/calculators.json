@@ -1,6 +1,8 @@
 {
   "calcTitle": "계산기",
   "calcSubtitle": "무료 1RM, 매크로 및 플레이트 도구. Super Bundle은 고급 주기화 및 클라이언트 동기화를 잠금 해제합니다.",
+  "calcSubtitleBrief": "1RM, macros, plates — free tools, no account required.",
+  "calcMorePremium": "Premium calculator depth",
   "calcTab1rm": "1RM",
   "calcTabMacros": "매크로",
   "calcTabPlates": "접시",
@@ -32,6 +34,7 @@
   "calcFat": "지방",
   "calcCarbs": "탄수화물",
   "calcMacroFoot": "거친 Mifflin-St Jeor + 활동. 프리미엄 프로그램에는 위상 및 신체 구성 요소 조정이 추가됩니다.",
+  "calcMacroFootOpenBeta": "Rough Mifflin-St Jeor + activity. Starting estimates — refine with Fuel logs over time.",
   "calcApplyTargets": "연료에 목표 적용",
   "calcViewFuel": "개방형 연료",
   "calcToastApplied": "적용 대상",

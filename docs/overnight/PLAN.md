@@ -1,163 +1,156 @@
-# Frozen plan — Free plate math + warmup (logger)
+# Frozen: Pregnancy + miscarriage safety v1 — counsel-hold, symptom line only (`.761`)
 
-**Status:** FROZEN. Implement only this file.  
-**Ship:** `2026.07-unified.764`  
-**Excellence-Override:** free plate math + warmup (logger)  
-**Lane:** Engineering-Web · Horizon W · Train logger (`/active`)  
-**Free forever.** Not Super Bundle bait. No trial. No `PRIVATE_MODE` flip.
+**Status:** FROZEN. Implement only this plan. Decision 011 v1 (ops #18). Same legal posture as PT safety ([PR #519](https://github.com/Snedz/missionwinning/pull/519)): educational tools, not a clinician, not 911, not a medical device. Draft PR. Counsel reviews copy before production. Do not merge. Do not promote.
 
-Overnight brief: Strong-class garage utility **on the set row**. Do not invent a new tab. Do not collide with F-013 smart defaults (#489) or E-Adjacency (#487) — those PRs exist on the same master tip; **extend or skip**, do not rewrite their cells or dial order.
+**Label:** `2026.07-unified.761` (past origin/master `.760`; this branch first minted `.746` while master was `.697`, then `.752` while master was `.751`). One Preview max. Follow-ups `[skip vercel]`. Existing Vercel Preview is **not** a review or E-Day surface.
 
----
+**Excellence-Override:** pregnancy/miscarriage safety
 
-## Problem
+**Supersedes** the earlier `.746` freeze in this file (Coach load-jump caps + CTA hide). Those behaviors are a **follow-on decision**, not v1.
 
-A train-anywhere athlete loading a bar needs two answers without leaving the live set:
-
-1. **Which plates per side?**
-2. **What warmup loads before the work?**
-
-What master already has (do not rebuild):
-
-| Already shipped | Where | Gap |
-|-----------------|-------|-----|
-| Greedy plate math | `src/lib/plateCalculator.ts` | Used by header **Plates** sheet + `/calculators` tab, **not the set row** |
-| Warmup as a set kind | `setKind.ts` · LogConsole Kind expand · desktop footer chips | Buried behind Kind (F-003 collapsed it). No Strong-style ramp. Set column always shows 1, 2, 3 |
-| Session header Plates | `ActiveSessionChrome` | Keep. Not a substitute for seeing plates on the load |
-
-`/calculators` already has a Plates tab — **do not add another**.
+**Addendum (Counsel + CoS, unsigned label):** athlete-facing “Miscarriage recovery” / presenting `miscarriage_recovery` as finished copy stays **UNSIGNED**. Grief-adjacent option labels need counsel + founder before any review surface. Keep the stored enum value in code. Do not invent a cute synonym for loss. Athlete labels until founder reads: **None / Pregnant / Postpartum** only.
 
 ---
 
-## Set-row grammar (what ships)
+## Goal
 
-Live barbell row (compact `SetLogRow` + desktop `SetLogTable` + compact `LogConsole`):
+The optional pregnancy flag changes **exactly one** product behavior: which stop-symptoms line appears on the existing #519 hard-session warning sheet.
 
-```
-W     PREVIOUS          40 kg
-      8 × 40            10 + 5 / side
-
-1     PREVIOUS          100 kg
-      8 × 100           25 + 10 + 5 / side     [Log set]
-```
-
-- **W** in the set column for warmup; working sets numbered **1..n skipping warmups** (Strong).
-- **Plate line** under the load when the exercise is bar-loaded and weight > bar: compact `25 + 10 + 5 / side` from existing `calculatePlatesPerSide` + `formatPlateList`. Honest empty (no line) for BW / dumbbell / cable / machine / weight ≤ bar.
-- **Prev cell is untouchable** — E-Adjacency (#487) stacks Target above PREVIOUS there. Plates never go in Prev.
-- **Log set stays the sole poster-red primary** (F-003 / `.694`). Plate line is muted ink, not a second primary.
+We do **not** claim we prevent loss or complications. We do **not** sell “safe pregnancy PT.” Do not invent law or medical claims.
 
 ---
 
-## A. Plate math on the live set
+## v1 product (keep)
 
-**Pure** (extend `plateCalculator.ts`, do not fork):
+### Flag (device-local)
 
-- `isBarLoadedEquipment(equipment?: string)` — true for `Barbell` and `Trap Bar` only (catalog `equipment` field, case-insensitive). Do not guess from the exercise name.
-- `setRowPlateLine({ equipment, weight, units })` → `string | null`  
-  null when not bar-loaded, weight ≤ `defaultBarWeight`, or no plates.  
-  Otherwise `formatPlateList(perSide, '')` so the row can append `/ side`.
+- Optional, athlete-owned stored values: `none` | `pregnant` | `postpartum` | `miscarriage_recovery`.
+- **Athlete-visible labels (signed for this draft):** None / Pregnant / Postpartum only. Do not show “Miscarriage recovery”. Do not invent a synonym for loss.
+- `miscarriage_recovery` may stay in the parser / hold set (if already stored, the stop line still uses the hold string). It is **UNSIGNED** as athlete copy — not an option in the Account control.
+- Never inferred from logs, sex, age, cycle, or photos. Never required to log. Unset / invalid → `none`.
+- Silent flag-off: clearing to `none` **deletes** the storage key (no “what happened?” UI, no derived hold state left behind).
+- Settings control under **Account → More settings** only. Not Today. Not first paint.
+- Storage key `mw_pregnancy_flag` via `STORAGE_KEYS` + `safeStorage`. No analytics property. No cloud/outbox sync.
+- Logger ungated. `handleLogSet` / `logSet` must not import or call pregnancy helpers.
 
-**UI (live set only — same “only the live row” rule as E-Adjacency):**
+### Hard-session stop line (the one behavior)
 
-| Surface | What |
-|---------|------|
-| Compact `SetLogRow` (`isNext`) | Muted plate hint under the metric (`data-testid="set-row-plates"`). **Not** a 44px competing CTA — header Plates stays the 44px sheet opener. |
-| Compact `LogConsole` | Same line under the weight stepper (`data-testid="log-console-plates"`). Tappable ≥44px ink control → existing `PlateCalculatorSheet` (bar / remainder / Apply). |
-| Desktop `SetLogTable` active weight cell | Same line under the input (`data-testid="set-table-plates"`). Tappable → same sheet. |
-| Completed / idle rows | No plate line (F-003 density). |
+Bring the #519 hard-session warning sheet onto this branch (it is not on `master`) so the flag has a home. Do not hide the sheet or the start CTAs.
 
-Keep `ActiveSessionChrome` Plates + `PlateCalculatorSheet` + `/calculators` as they are.
+When the flag is **on** (`pregnant` | `postpartum` | `miscarriage_recovery`):
 
-Live compact row uses **dial weight** (parent passes it) so the hint tracks the console, not the stale template.
+> Stop if you have bleeding, cramping, chest pain, feel faint or dizzy, have severe shortness of breath, or cannot talk.
 
-**Free:** these modules must not import premium / Bundle / trial. Guard discovers the new files rather than enumerating a closed list.
+When the flag is **off** (`none` / unset / invalid), keep the #519 line:
 
----
+> Stop if you have chest pain, feel faint, have severe shortness of breath, or cannot talk.
 
-## B. Warmup on the set row
+One pure selector owns those two strings. The sheet renders that selector. Back still works. Logging a normal set is never blocked.
 
-**Pure** `src/lib/workout/warmupRamp.ts` (new, colocated test):
+### Combined Terms educational paragraph
 
-Ramp of **three** steps off the **working** load, garage olympic defaults:
+Replace **both** #519 and #536 rewrites of `infoTermsEducationalBody` with this **one** English paragraph (counsel still reviews; comment in source). Do not rewrite About, Privacy, counsel exports, or non-EN overlays. No EIN.
 
-| % of work | Reps |
-|-----------|------|
-| 40% | 8 |
-| 60% | 5 |
-| 80% | 3 |
+> Mission Winning is educational fitness software, not medical care and not emergency services. Strenuous or max-effort sessions carry extra risk; stopping is always allowed. This app cannot prevent a medical emergency — call local emergency services, not the app. We do not provide medical advice. Pregnancy, miscarriage, and postpartum decisions are clinician-owned.
 
-Each step: `roundToStep` with `weightStep(units)`, then skip if `≤ bar` or `≥ work` or duplicate of another step. Empty result → do not insert.
+### Cause-talk refusal (copy only)
 
-Working load (first hit wins):
-
-1. Live dial when the live set is a **working** set and weight > 0
-2. First incomplete working set’s planned weight > 0
-3. Last completed **working** set
-4. Else null → hide **Add warmups**
-
-`insertWarmupSets(sets, ramp)` inserts the ramp immediately before the first incomplete set. **Idempotent:** if incomplete warmup weights already match the ramp in order, return sets unchanged.
-
-`setRowOrdinal(sets, idx)` → `{ warmup: true, label: 'W' }` or `{ warmup: false, label: '1'.. }` counting only non-warmup sets up to idx.
-
-**UI:**
-
-- Set column shows `setRowOrdinal` label on every row (`SetLogRow` + `SetLogTable`).
-- Live set number is a ≥44px **Work ↔ Warmup** toggle (`data-testid="set-row-warmup-toggle"` / `set-table-warmup-toggle`). Does **not** reopen the four-kind strip (F-003). Failure / drop stay behind Kind.
-- Exercise footer, next to **Add Set**: outline **Add warmups** (`data-testid="active-add-warmups"`) when bar-loaded **and** a working load exists **and** the ramp is not already present. One tap inserts. Hidden when already present (idempotent).
-
-**Carry (compose with F-013, do not rewrite dial order):**
-
-`priorCompletedInExercise` must skip `kind === 'warmup'` so logging a warmup cannot prefill the next **work** set with 40/60/80%. Do **not** change `resolveSetInput`’s prescribed-vs-carry-vs-suggestion order — that is F-013’s (#489) cell. Skipping warmup in the existing helper is the extend; F-013 rebase keeps the skip if it still calls this function.
+Scripted refusal **COPY** may stay as draft / not-for-prod text: if asked whether training caused a loss, do not answer; point to a clinician. Do **not** implement Coach programming, chat, or voice changes.
 
 ---
 
-## C. Collisions — skip / extend
+## Remove from this PR (follow-on, not v1)
 
-| PR | Owns | This ship |
-|----|------|-----------|
-| #487 E-Adjacency | Target stacked **above PREVIOUS** in the Prev cell | **Do not** rewrite `SetLogTable` Prev `<td>` / `SetLogRow` prev span. No Target/cite work. |
-| #489 F-013 | `resolveSetInput` / `resolveActiveSetDial` session carry beats prescription on the **next** set; `log-console-reps` / `log-console-weight` | **Do not** reorder `resolveSetInput`. **Do not** add those testids (theirs). Skip warmup inside `priorCompletedInExercise` only. |
-| #477 `.698` · #478 `.699` · #494/492 `.704` | Build labels | Label **`.705`**. Do not steal `.698`–`.704`. |
+- Hiding max-effort / field-test / PFT start CTAs
+- Coach load-jump caps
+- `capProgressionForPregnancyHold` / `nextTargets` pregnancy arg / `holdPrescriptionsInPlan` / `pregnancyHold.ts`
+- Coach `pregnancyFlag` on `CoachContext` / context hash / selector
+- `PregnancyHoldNote` on Coach, fitness-test, or PFT
+- Any intensity cap, exercise substitution, or prenatal programming
 
-No restyle of Today/Train chrome. No N1 www. No `#485`. No new nav item. No Android this ship.
-
----
-
-## Out of scope (hard)
-
-- Custom plate inventory / bumper vs iron / collar / ez-bar picker (sheet bar field already exists)
-- Auto-insert warmups without a tap
-- Numbering W1/W2 (all warmups are **W**)
-- Gating behind account, trial, or Super Bundle
-- `/calculators` tab changes
-- Freshness selection, account-lite F-017, Victory, Coach plan engine
+Coach prescriptions stay as they are on `master`. The flag does not change them.
 
 ---
 
-## Tests (falsify, then keep)
+## Non-goals (hard bans)
 
-- `plateCalculator.test.ts` — `isBarLoadedEquipment` closed list; `setRowPlateLine` null vs `25 + 20` (100 kg / 20 kg bar); 225 lb exact.
-- `warmupRamp.test.ts` — 100 kg → 40/60/80 rounded; skip ≤ bar; idempotent insert; ordinal W then 1,2; mutants: empty ramp when work ≤ bar.
-- `priorCompletedInExercise` skips warmup (so F-013 cannot carry 40 kg onto work).
-- Source guard: new plate/warmup UI + lib files do not import premium/Bundle/trial; `SetLogTable` Prev cell still has no plate helper.
-- Density: LogConsole / SetLogTable still exactly one `primary-action` (existing `.694` guards).
-- i18n keys in `activeWorkoutLocales.ts` (`...en` fills other packs). Coverage stays 0 uncovered.
+- Do not flip `PRIVATE_MODE`.
+- Do not mint `.698`–`.745`.
+- Do not infer the flag. Do not gate the free logger.
+- Do not implement prenatal programming, miscarriage-prevention protocols, ECG, or PAR-Q as a logger gate.
+- Do not rewrite the legal pack. No EIN. Texas LLC already present.
+- Do not change `supportedRegions.ts` / geo-block.
+- Do not add a new tab, pillar, locale, or America/PFT clone.
+- Do not name victims. No USMC/ACFT branding. No “safe PT” sell.
+- Do not put the control on Today or first paint.
+- Do not sync the flag to cloud/outbox.
+- Do not open a second PR. Stay draft. Do not merge.
+- Do not present “Miscarriage recovery” as finished athlete copy. Do not treat Preview as a review or E-Day surface.
 
 ---
 
-## Docs / ship protocol (same commit as the code)
+## Contract + help
 
-- This file (already frozen)
-- `LOG.md` + rotate oldest live entry (`.669`) so the file stays at 15
-- `CONTEXT.md` `## Now` one bullet for `.705`
-- `APP_BUILD_LABEL` → `2026.07-unified.705`
-- `src/lib/workout/INDEX.md` + `src/components/workout/INDEX.md`
-- Help: one line on getting-started — plates + warmup on the Train set row, free
+`docs/PREGNANCY_SAFETY.md` and `docs/help/pregnancy-safety.md` must match v1:
 
-Commit trailer:
+- Flag optional, never inferred, never required to log.
+- Stop is always legal.
+- App is not prenatal care, not miscarriage prevention, not “safe pregnancy PT.”
+- The flag **does not** change Coach prescriptions or hide CTAs.
+- The flag **does** change the hard-session stop-symptoms line (and only that).
+- Counsel reviews copy before production.
 
-```
-Excellence-Override: free plate math + warmup (logger)
-```
+Copy-guard bans: `safe for pregnancy` · `safe pregnancy PT` · `prevents miscarriage` · `prevent miscarriage` · `prevents loss` · `prenatal care` as a product claim · `we keep you safe` · victim names · `USMC` · `ACFT` as product name.
 
-Draft PR. Preview at most one. Never flip `PRIVATE_MODE`.
+---
+
+## Files (expected)
+
+| Path | Role |
+|------|------|
+| `docs/PREGNANCY_SAFETY.md` | Contract — v1 symptom line only |
+| `docs/help/pregnancy-safety.md` | Help — v1 |
+| `src/lib/pregnancySafety.ts` | Pure flag + stop-line selector. No load cap. No CTA hide. |
+| `src/lib/pregnancySafety.test.ts` | Optional flag; logging; no inference; no analytics; flag-off deletes; logger never blocked; stop-line switch |
+| `src/lib/pregnancySafetyCopyGuard.test.ts` | Banned phrases cannot ship |
+| `src/lib/workout/hardSession.ts` | #519 when-to-warn (unchanged marks) |
+| `src/components/workout/HardSessionWarningSheet.tsx` | Sheet uses stop-line selector |
+| `src/components/profile/ProfilePregnancyCard.tsx` | Quiet Account control |
+| `src/page-components/AccountPage.tsx` | Card under More settings |
+| `src/i18n/notificationLocales.ts` + `activeWorkoutLocales.ts` + `infoLocales.ts` | EN keys; other langs `...en` |
+| `src/lib/storage/keys.ts` | `pregnancyFlag` |
+| INDEX rows | lib, components, help, docs |
+| `src/lib/buildInfo.ts` · `LOG.md` · `CONTEXT.md` `## Now` | Ship protocol `.761` — v1 wording + unsigned label |
+
+**Must not remain:** `src/lib/coach/pregnancyHold.ts`, `PregnancyHoldNote.tsx`, pregnancy args on `nextTargets` / `CoachContext`.
+
+---
+
+## Tests
+
+- Flag optional: unset / `none` / garbage → `none`; hold true only for the three named values.
+- Logging works with no flag: Active `handleLogSet` / workout `logSet` do not import pregnancy helpers.
+- No inference path: parse never maps sex/age/cycle/yes/female to a hold.
+- No analytics property: pregnancy module + Account card do not call `track` / analytics.
+- Flag-off deletes derived state: `savePregnancyFlag('none')` removes the key (does not leave `'none'` stored).
+- Logger never blocked: Log set path does not read the flag.
+- Stop line: hold on → pregnancy string; hold off → #519 string. Sheet wiring uses the selector.
+- Tests **do not** require Coach load-cap or CTA-hide as this PR’s behavior. `nextTargets` without a pregnancy arg still load-ups on all-easy (master behaviour).
+- Copy-guard: banned phrases absent from pregnancy module, Account card, EN strings, help, contract, Terms paragraph.
+- Wiring: Account card is under More settings; HomePage / Today do not import it.
+- `pregnancySafety.ts` does not import score, chat, rewards, outbox, or coach plan engine.
+- Athlete Account options are only none / pregnant / postpartum. Card + EN option keys do not contain “Miscarriage recovery”.
+- Stored `miscarriage_recovery` still parses and still selects the hold stop line.
+- `check-build-label` → `.761` past origin/master `.760`.
+- Falsify: a mutant adding “safe for pregnancy” or making the flag change Coach load must fail.
+
+---
+
+## Ship
+
+- Bump `APP_BUILD_LABEL` to `2026.07-unified.761` (past origin/master `.760`).
+- LOG heading `## YYYY-MM-DD — … (\`.761\`)`. Rewrite the entry to v1 (symptom line only) + unsigned label addendum.
+- `## Now` `.761` bullet: counsel-hold, flag, symptom line only, unsigned fourth label — not Coach caps / CTA hide. Preview is not a review surface.
+- Commit trailer: `Excellence-Override: pregnancy/miscarriage safety`
+- Draft PR title may stay. PR body: **counsel-hold, draft, do not merge, do not promote, v1 = symptom line only**.
+- This plan commit: `[skip vercel]`. Implement commit may touch Preview. Follow-ups `[skip vercel]`.

@@ -70,10 +70,16 @@ export function AppHeader({
         </span>
         {/* Bound to the flag, not hardcoded — the tag has to disappear on
             its own when the beta window closes. Hidden under sm: at 375px
-            the wordmark, chevron and auth chip already fill the row. */}
+            the wordmark, chevron and auth chip already fill the row.
+
+            `.765` — and bound to the *gate* as well as the flag. This said
+            "Open beta" on `/regions`, `/terms` and every other page that stays
+            public while `PRIVATE_MODE` is on, to visitors who cannot get in
+            chrome that contradicts the page it frames is the cheapest kind of
+            dishonesty and the easiest to fix. */}
         {isFreeBeta() && (
           <Badge variant="outline" className="hidden shrink-0 sm:inline-flex">
-            {t('navOpenBeta', { defaultValue: 'Open beta' })}
+            {t('navOpenBeta', { defaultValue: 'Free beta' })}
           </Badge>
         )}
         {isCompact && (

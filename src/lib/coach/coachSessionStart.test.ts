@@ -15,7 +15,7 @@ import type { PlanSession } from '@/lib/coach/types';
  *     `/active` with no active workout renders `ActiveEmptyState` ("No session
  *     running"), so the one red control on the re-entry banner was a dead end.
  *   - The re-entry dose was applied in exactly **one** of the four places a coach
- *     session can start. `TodayReentryCard` promises "about 50% of usual sets" —
+ *     session can start. `TodayReentryCard` promises the 20-minute version —
  *     its own header says the card "must not promise lighter without applying
  *     it" — and the Coach card directly beneath it started the full session.
  *
@@ -55,8 +55,7 @@ describe('coachSessionTemplates', () => {
   });
 
   it('applies the dose the re-entry card promised', () => {
-    // 0.5 is the `lapsed` / `long-gap` scale in reentry.ts — the one the card
-    // renders as "about 50% of usual sets".
+    // 0.5 is the unknown-duration fallback in reentry.ts (40 min usual → 20/40).
     const eased = coachSessionTemplates(session(4), 0.5);
     assert.deepEqual(
       eased.map((e) => e.sets.length),
@@ -225,7 +224,7 @@ describe('resolveCoachSessionStart', () => {
   });
 
   it('eases the session for an athlete coming back from a gap', () => {
-    // 20 days out is `long-gap` in reentry.ts — doseScale 0.5.
+    // 20 days out is `long-gap` in reentry.ts; no duration on the fixture → dose 0.5.
     const start = resolveCoachSessionStart(session(4), daysAgo(20), now);
     assert.ok(start);
     assert.equal(start.doseScale, 0.5);

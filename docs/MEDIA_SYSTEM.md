@@ -7,6 +7,8 @@
 
 Generation is **offline batch** → founder approve → commit static files. There is **no** runtime image-gen API in the product.
 
+**Who appears in the frame:** [MEDIA.md](MEDIA.md) — representation is default, not a campaign. **Representation ≠ service territory** (country availability is [`supportedRegions.ts`](../src/lib/legal/supportedRegions.ts)). Cast includes East Asian (one look; Cantonese/HK is not a separate slot), Arab / modest dress (hijab where the movement reads — athlete in a served country), Jewish/Israeli (kippah/tzitzit as natural training wear). Alt describes the movement, never a city-launch.
+
 **Exercise Form Index (Train + library + public `/exercises`):** GrokFilm-style browse (pattern / equipment / muscle) → **clinical side poster or short loop** → **Train this free**. Pedagogy borrows CrossFit *movement-standards craft* (full body, full ROM, side camera, short silent loop) — **not** CrossFit IP, embeds, or brand. Host on Vercel static free tier (`public/form/`); **not** Supabase Storage (egress) and **not** YouTube as mid-set primary.
 
 **Default form media:** `/form/{id}/side.webp` (+ optional `side.mp4` only after QA). Legacy stick SVGs under `/form-guides/` remain as fallback. Resolve: form pack → pattern raster (when wired) → pattern SVG → text. Structured guide floor ≥80 — `src/lib/formGuideCoverage.test.ts`.
@@ -159,7 +161,7 @@ npm run media:optimize-inbox
 
 | Surface | How media attaches |
 |---------|-------------------|
-| Form Index | `FORM_PACK_SIDE_IDS` + `/form/{id}/side.webp` via `src/lib/formMedia.ts` → `formGuides.ts`; fallback SVG + pattern packs |
+| Form Index | `FORM_PACK_SIDE_IDS` + `/form/{id}/side.webp` (or `cast-*.webp` via `formCast.ts`) → `formGuides.ts`; fallback SVG + pattern packs. Who appears: [MEDIA.md](MEDIA.md) |
 | Guidebook | Optional `figure` / `heroImage` on guidebook types → reader + PDF |
 | Marketing | `ArtPicture` + `public/art/` |
 | Social | Files under `public/social/`; paths listed in [SOCIAL_LAUNCH.md](SOCIAL_LAUNCH.md) |
@@ -180,5 +182,6 @@ npm run media:optimize-inbox
 | **6b** | Learn section densify — paper/ink teaching figures (18/18 free sections) | Shipped (`.414`–`.415`) |
 | **7** | Pattern packs (7) for long-tail + honest caption · social WebP | Shipped (`.415`) |
 | **8** | Kalligator modernist re-ink · magazine PDF densify · PDF builder `load` settle | Shipped (`.416`) |
+| **9** | Representation contract + `squats` (006) multicultural still set | Shipped (`.736`) |
 
 **Form Index craft loop:** inventory → Imagine clinical side still (`form-{id}-side-frame`) → `npm run media:optimize-inbox` → wire `FORM_PACK_SIDE_IDS` → library card poster + sheet. Optional later: image→video loop → WebM. Coverage: [`media/COVERAGE.md`](../media/COVERAGE.md).

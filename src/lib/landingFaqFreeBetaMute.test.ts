@@ -8,9 +8,10 @@ import { join } from 'node:path';
 
 const root = join(import.meta.dirname, '..', '..');
 
-test('LandingPage uses shared free-beta FAQ key list', () => {
+test('LandingPage no longer paints a FAQ band — JSON-LD still uses the shared list', () => {
   const src = readFileSync(join(root, 'src/page-components/LandingPage.tsx'), 'utf8');
-  assert.match(src, /landingFaqKeysForSurface/);
+  assert.doesNotMatch(src, /landingFaqKeysForSurface/);
+  assert.doesNotMatch(src, /landingFaqEyebrow/);
 });
 
 test('faqPageJsonLd + landing locales filter Super Bundle FAQ under free beta', () => {

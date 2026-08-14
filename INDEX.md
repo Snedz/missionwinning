@@ -58,7 +58,8 @@
 | **Return loop for anonymous athletes** | [docs/RETURN_LOOP_PLAN.md](docs/RETURN_LOOP_PLAN.md) + [src/lib/reentry.ts](src/lib/reentry.ts) | Account-gated push/nudges as the retention answer; streak-loss copy |
 | **Club / points / tiers / boards / arcade (plan)** | [docs/CLUB_PLAN.md](docs/CLUB_PLAN.md) | Building any phase without its entry gate + founder line; loss/relegation mechanics; purchasable points; gamified theater |
 | **You surface / profile / social boundary (plan)** | [docs/IDENTITY_SOCIAL_PLAN.md](docs/IDENTITY_SOCIAL_PLAN.md) · identity code [src/lib/identity/INDEX.md](src/lib/identity/INDEX.md) | A feed; Top 8 / friend ranking; user CSS; free text on public surfaces; any Social→Log import (contract C1) |
-| **Platform contracts (habit / identity / economy / modules / AI)** | [docs/contracts/INDEX.md](docs/contracts/INDEX.md) | Building games/metaverse product surfaces before week-4; second user systems per module |
+| **Mission Server messenger** | [docs/MISSION_SERVER_MESSENGER_PLAN.md](docs/MISSION_SERVER_MESSENGER_PLAN.md) (freeze `.752`; continues #518) | Discord.com; DMs; workout feed; chat on Today/Train; Vercel sockets |
+| **Platform contracts (identity / economy / modules / AI)** | [docs/contracts/INDEX.md](docs/contracts/INDEX.md) | Building games/metaverse product surfaces before week-4; second user systems per module |
 | **Classification / dual-repo / open safely** | [docs/CLASSIFICATION.md](docs/CLASSIFICATION.md), [docs/DUAL_REPO.md](docs/DUAL_REPO.md), `npm run ops:sync` | Committing `ops/` or `.hermes/`; putting STRATEGY war-room detail in public product git long-term |
 | **Design proposal brief (third)** | [docs/DESIGN_PROPOSAL_3.md](docs/DESIGN_PROPOSAL_3.md) | Re-opening IA, routes or tokens — those are settled, not wireframe |
 | UI/UX audit (hero flows) | [docs/DESIGN_REVIEW.md](docs/DESIGN_REVIEW.md) | Landing redesigns while beta gates red |
@@ -68,7 +69,7 @@
 | Crypto rails (strategy) | [docs/CRYPTO_RAILS_THESIS.md](docs/CRYPTO_RAILS_THESIS.md) | — |
 | Where we are (status) | [CONTEXT.md](CONTEXT.md) `## Now` | Reading the retired vision scorecard as current — it is archived, 495 ships stale |
 | Beta testers | [docs/BETA_INVITE.md](docs/BETA_INVITE.md) | — |
-| Security | [docs/PROTECTION.md](docs/PROTECTION.md), [docs/OWASP_AUDIT.md](docs/OWASP_AUDIT.md), [docs/COMPLIANCE.md](docs/COMPLIANCE.md), [docs/AIKIDO.md](docs/AIKIDO.md) | Certification claims / Vanta substitutes as “done” |
+| Security | [docs/PROTECTION.md](docs/PROTECTION.md), [docs/OWASP_AUDIT.md](docs/OWASP_AUDIT.md), [docs/COMPLIANCE.md](docs/COMPLIANCE.md), [docs/AIKIDO.md](docs/AIKIDO.md), dated hunts in [docs/security/INDEX.md](docs/security/INDEX.md) | Certification claims / Vanta substitutes as “done” |
 | Vercel deploy | [docs/VERCEL_DEPLOY_CHECKLIST.md](docs/VERCEL_DEPLOY_CHECKLIST.md) | — |
 | **CI / Actions minutes** | [docs/CI_LOCAL.md](docs/CI_LOCAL.md) | Treating Actions red as a product fail while minutes are exhausted; burning Hobby Previews |
 | **Open source** | [docs/OPEN_SOURCE.md](docs/OPEN_SOURCE.md), [docs/PUBLIC_GITHUB.md](docs/PUBLIC_GITHUB.md), [docs/CLASSIFICATION.md](docs/CLASSIFICATION.md), [docs/DUAL_REPO.md](docs/DUAL_REPO.md), [docs/SECURITY_PUBLIC_OSS_AUDIT_2026-08-08.md](docs/SECURITY_PUBLIC_OSS_AUDIT_2026-08-08.md), [LICENSE](LICENSE), [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md), [CONTRIBUTING.md](CONTRIBUTING.md) | Flipping `PRIVATE_MODE`; inventing a new license; public monorepo with war-room docs |

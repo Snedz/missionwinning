@@ -11,6 +11,7 @@ import {
   Dumbbell,
   History,
   MapPin,
+  MessageSquare,
   PenTool,
   Settings,
   Shield,
@@ -142,6 +143,14 @@ export const MORE_NAV: NavLinkItem[] = [
     icon: Sparkles,
     descriptionKey: 'moreBundleDesc',
     description: 'Premium pillars',
+  },
+  {
+    href: '/server',
+    labelKey: 'navServer',
+    label: 'Messenger',
+    icon: MessageSquare,
+    descriptionKey: 'moreServerDesc',
+    description: 'Rooms on this device',
   },
   {
     href: '/account',

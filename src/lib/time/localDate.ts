@@ -183,6 +183,62 @@ export function formatLocalClockTime(
  * Journal strip "when" — time-only if same local day as `now`, else short date+time.
  * Unparseable ISO returns the raw string (do not fake a date).
  */
+const ISO_WEEK_RE = /^(\d{4})-W(\d{2})$/;
+
+/**
+ * Local ISO week as `YYYY-Www`.
+ *
+ * Thursday of the week owns the ISO week-year (ISO 8601). Built from local
+ * calendar fields — never `toISOString()` — so a late evening east of UTC
+ * stays in the week the athlete is actually in.
+ */
+export function localIsoWeekKey(d: Date = new Date()): string {
+  const local = new Date(d.getFullYear(), d.getMonth(), d.getDate());
+  const dow = local.getDay() || 7; // Mon=1 … Sun=7
+  const monday = new Date(local.getFullYear(), local.getMonth(), local.getDate() - dow + 1);
+  const thursday = new Date(monday.getFullYear(), monday.getMonth(), monday.getDate() + 3);
+  const year = thursday.getFullYear();
+  const jan4 = new Date(year, 0, 4);
+  const jan4Dow = jan4.getDay() || 7;
+  const week1Monday = new Date(year, 0, 4 - jan4Dow + 1);
+  const week = 1 + Math.round((monday.getTime() - week1Monday.getTime()) / 604_800_000);
+  return `${year}-W${String(week).padStart(2, '0')}`;
+}
+
+export function parseIsoWeekKey(key: string): { year: number; week: number } | null {
+  const m = ISO_WEEK_RE.exec(key);
+  if (!m) return null;
+  const year = Number(m[1]);
+  const week = Number(m[2]);
+  if (week < 1 || week > 53) return null;
+  return { year, week };
+}
+
+/** Local Monday of an ISO week key, or null when the key is unparseable. */
+export function mondayOfIsoWeek(key: string): Date | null {
+  const parsed = parseIsoWeekKey(key);
+  if (!parsed) return null;
+  const jan4 = new Date(parsed.year, 0, 4);
+  const jan4Dow = jan4.getDay() || 7;
+  const week1Monday = new Date(parsed.year, 0, 4 - jan4Dow + 1);
+  return new Date(
+    week1Monday.getFullYear(),
+    week1Monday.getMonth(),
+    week1Monday.getDate() + (parsed.week - 1) * 7
+  );
+}
+
+/**
+ * Whole ISO weeks from `fromKey` to `toKey` (0 = same week).
+ * Null when either key is unparseable.
+ */
+export function isoWeekOffset(fromKey: string, toKey: string): number | null {
+  const a = mondayOfIsoWeek(fromKey);
+  const b = mondayOfIsoWeek(toKey);
+  if (!a || !b) return null;
+  return Math.round((b.getTime() - a.getTime()) / 604_800_000);
+}
+
 export function formatJournalWhen(at: string, locale: string, now: Date = new Date()): string {
   const d = new Date(at);
   if (Number.isNaN(d.getTime())) return at;

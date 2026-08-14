@@ -1,5 +1,6 @@
 {
   "navOpenBeta": "オープンベータ",
+  "navInviteOnlyBeta": "招待制ベータ",
   "navAssess": "評価",
   "navMore": "その他",
   "navCoachTab": "コーチ",
@@ -19,6 +20,7 @@
   "navLibrary": "ライブラリ",
   "navHistory": "履歴",
   "navLeaderboard": "ランキング",
+  "navServer": "Messenger",
   "navReadiness": "準備度テスト",
   "navHealth": "健康スクリーニング",
   "navCalculators": "計算機",

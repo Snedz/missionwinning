@@ -4,6 +4,7 @@
   "leaderboardRankings": "Xếp hạng",
   "leaderboardTitle": "Bảng xếp hạng",
   "leaderboardSubtitle": "So sánh Người điều hành nhiệm vụ trên toàn cầu, theo khu vực, quốc gia, địa phương hoặc đội.",
+  "leaderboardSubtitleBrief": "Optional ranks. Training first — never required.",
   "leaderboardSync": "Đồng bộ hóa",
   "leaderboardOperators": "toán tử",
   "leaderboardYourRank": "Thứ hạng của bạn",

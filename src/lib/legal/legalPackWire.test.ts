@@ -52,8 +52,18 @@ test('signup and checkout hard-block territory', () => {
   assert.match(unlock, /territory_blocked|territoryBlocked/);
 
   const geo = readFileSync(join(root, 'app/api/geo/route.ts'), 'utf8');
+  assert.match(geo, /hostedServiceAccessFromHeaders/);
   assert.match(geo, /blocked/);
   assert.match(geo, /blockReason/);
+
+  const session = readFileSync(join(root, 'app/api/private-access/session/route.ts'), 'utf8');
+  assert.match(session, /sessionMintGate/);
+
+  const callback = readFileSync(join(root, 'app/auth/callback/route.ts'), 'utf8');
+  assert.match(callback, /hostedServiceAccessFromHeaders/);
+
+  const leads = readFileSync(join(root, 'app/api/leads/route.ts'), 'utf8');
+  assert.match(leads, /hostedServiceAccessFromHeaders/);
 });
 
 test('Terms liability cap, Texas law, indemnify; Privacy 30-day deletion', () => {
@@ -73,4 +83,22 @@ test('Terms liability cap, Texas law, indemnify; Privacy 30-day deletion', () =>
   assert.match(locales, /indemnify/);
   assert.match(locales, /thirty \(30\) days/);
   assert.match(locales, /required or permitted by law/);
+});
+
+test('legal + About stamp: 0.1 beta, Texas LLC, dated 13 Aug 2026, no live-Stripe claim', () => {
+  const locales = readFileSync(join(root, 'src/i18n/infoLocales.ts'), 'utf8');
+  const about = readFileSync(join(root, 'app/about/page.tsx'), 'utf8');
+  const refunds = readFileSync(join(root, 'src/page-components/RefundsPage.tsx'), 'utf8');
+  const dmca = readFileSync(join(root, 'src/i18n/infoLocales.ts'), 'utf8');
+
+  assert.match(about, /Mission Winning 0\.1 \(beta\)/);
+  assert.doesNotMatch(about, /invite-only|Private beta|private beta/i);
+  assert.match(locales, /Texas limited liability company/);
+  assert.match(locales, /Last updated: 13 August 2026/);
+  assert.match(locales, /The free logger never needs a refund/);
+  assert.match(locales, /when paid checkout is live/);
+  assert.doesNotMatch(locales, /Stripe Customer Portal/);
+  assert.doesNotMatch(refunds, /Stripe Customer Portal/);
+  assert.match(dmca, /to be published on this page after the Copyright Office designation is filed/);
+  assert.doesNotMatch(locales, /\bEIN\b.{0,40}\d{2}-\d{7}/);
 });

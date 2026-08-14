@@ -3,16 +3,19 @@
 ## General
 
 **Is Mission Winning really free?**  
-Yes — core workout tracking, library, history, and basic nutrition are free worldwide. Premium is optional.
+Yes — the logger, library, history, and basic nutrition are free worldwide, forever, with no account and no card. Super Bundle is optional depth (one SKU). There is no 7-day trial and no à la carte pillar prices.
 
 **Do I need an account?**  
-No. Log your first set with no account. Sign in later from Profile to sync across devices.
+No for basic logging. Sign in to sync across devices, use Coach premium, and join school classes. A **Mission ID** (`#N`) is issued when you sign in — an early number, not a rank. Offline logging never requires one.
+
+**What is a Mission ID?**  
+A sequential number for signed-in accounts, shown on You (Athlete Page) and Account as `#N`. It is not a leaderboard place, not XP, and not the 00–99 call-sign. Guests do not have one.
 
 **Does it work offline?**  
 Yes as a PWA — log workouts offline; sync when back online if signed in.
 
-**What is the estimated 1RM on the exercise row?**  
-An **Epley formula estimate** from the working set you just logged — not a tested max, not a prescription. Warm-ups and zero-load sets are ignored. Hide it from the exercise menu. See [e1rm.md](e1rm.md).
+**What does Victory show after I finish?**  
+A receipt of the session you just logged — duration, volume, sets, each lift with last-time **Prev**, vs last deltas, and PRs — from logs on this device. Instant, offline, and free. Share is optional; nothing is unlocked by posting.
 
 **Which phones are supported?**  
 Any modern browser — iPhone Safari, Android Chrome, desktop. Install to home screen for best experience.
@@ -28,13 +31,16 @@ An estimate of how recovered your muscles are based on recent training — shown
 ## Mission Coach
 
 **Why is Coach locked?**  
-Mission Coach is premium. Try the taster or upgrade via `/bundle`.
+Mission Coach weekly depth is Super Bundle (optional). During free-first beta it is unlocked for everyone and `/bundle` is waitlist-only (Get notified — checkout is not live). After payments go live, upgrade via `/bundle`. The logger is never gated.
 
 **Why did my plan change?**  
 Coach adapts when you miss sessions, change equipment, or report low readiness.
 
 **Is Coach medical advice?**  
 No — general fitness guidance only. Consult a professional for injuries or conditions.
+
+**Does logging need GPS?**  
+No. Sets save without a place. Explore is optional and lives under Account, not on Today.
 
 ## Fuel
 

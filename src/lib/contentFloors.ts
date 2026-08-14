@@ -26,12 +26,12 @@
 /** Depth plan D1 floors (see .hermes/plans/*super-bundle-depth*). Current = shipped floor. */
 export const CONTENT_FLOORS = {
   moveFree: 32,
-  movePremium: 48,
+  movePremium: 56,
   mindFree: 32,
-  mindPremium: 60,
+  mindPremium: 68,
   recipesFree: 48,
-  recipesPremium: 110,
-  learnPremiumSections: 16,
+  recipesPremium: 140,
+  learnPremiumSections: 24,
   /**
    * Free guidebook chapters (`BEYOND_THE_BASICS_CHAPTERS`), which is also exactly
    * how many `/guide/*` URLs the sitemap emits — `app/sitemap.ts:86` maps the array.
@@ -56,5 +56,5 @@ export const CONTENT_FLOORS = {
    */
   exercisePages: 228,
   /** Eyes-on form pack side stills (FORM_PACK_SIDE_IDS). */
-  formPackSide: 18,
+  formPackSide: 19,
 } as const;

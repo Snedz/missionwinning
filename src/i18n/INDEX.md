@@ -70,7 +70,8 @@ npm run export-locales     # TS + packs → public/locales/
 | `leaderboardLocales.ts` | Leaderboard |
 | `landingLocales.ts` | Marketing landing |
 | `betaLocales.ts` | Beta gates |
-| `gateLocales.ts` | Private gate |
+| `gateLocales.ts` | Private gate (EN lives in `gateEn.ts`) |
+| `gateEn.ts` | English gate copy + `gateEnFloor()` — first paint on `/private` cannot disagree with the pack (`.765`) |
 
 ## Pattern
 

@@ -41,6 +41,7 @@
   "navBetaGuide": "测试指南",
   "welcomeTitle": "欢迎，使命成员",
   "welcomeSubtitle": "设置您的路径，然后记录您的第一个会话。 一次一步——今天总是显示下一步行动。",
+  "welcomeSubtitleBrief": "A few questions, then log your first session. No account — sets are written to this device, and nothing is uploaded unless you sign in.",
   "welcomeBegin": "开始",
   "welcomeAccept": "我接受这条路",
   "welcomeContinue": "继续",

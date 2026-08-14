@@ -25,9 +25,11 @@ export const ROUTE_TITLES = {
   coaching: 'Coaching',
   coach: 'Mission Coach',
   calculators: 'Calculators',
+  explore: 'Explore',
   assessments: 'Assessments',
   fitnessTest: 'Fitness Test',
   welcome: 'Welcome — I-Day',
+  server: 'Messenger',
   offline: 'Offline',
   private: 'Private Beta',
 } as const;

@@ -81,7 +81,7 @@ export function FuelLockedPreview({ baseTargets }: Props) {
         <p className="text-sm text-muted-foreground">
           {t('fuelCoachLockedDesc', {
             defaultValue:
-              'Macro-synced 7-day plan from your targets and training load — not a static sample.',
+              'Protein-first week from your targets and training load — garage meals you can cook, not a barcode catalog.',
           })}
         </p>
         <p className="text-xs text-muted-foreground">
@@ -110,7 +110,7 @@ export function FuelLockedPreview({ baseTargets }: Props) {
           </div>
           <p className="mt-2 text-center text-xs text-muted-foreground">
             {t('fuelCoachPreviewNote', {
-              defaultValue: 'Recipes from your library, adapted to heavy vs rest days',
+              defaultValue: 'Protein first, then carbs on heavy days. Recipes from the Fuel library.',
             })}
           </p>
         </div>

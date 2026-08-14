@@ -7,20 +7,8 @@ import { FREE_LEARN_PATHS } from '@/data/learnPaths';
 import { MAJOR_GROUPS } from '@/lib/muscleGroups';
 import { EQUIPMENT_HUBS, muscleHubSlug } from '@/lib/exerciseSeo';
 import { isPathEnabled } from '@/lib/surface';
-import { isFreeBeta } from '@/lib/freeBeta';
 import { isPrivateGatePublicPath } from '@/lib/publicRoutes';
-
-/**
- * Whether the private beta gate is active for this build. Mirrors
- * `isPrivateModeEnabled()` in `src/lib/privateGate.ts`, which is not imported here
- * because it pulls in `@supabase/supabase-js`.
- */
-function privateGateOn(): boolean {
-  const flag = process.env.PRIVATE_MODE;
-  if (flag === 'false' || flag === '0') return false;
-  if (flag === 'true' || flag === '1') return true;
-  return process.env.NODE_ENV === 'production';
-}
+import { isPrivateModeEnabled } from '@/lib/privateModeFlag';
 
 /**
  * Awaited on purpose: `EXERCISES` is the base catalog until
@@ -31,16 +19,16 @@ function privateGateOn(): boolean {
  */
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   await ensureFullExerciseCatalog();
-  const gateOn = privateGateOn();
+  const gateOn = isPrivateModeEnabled();
   // One definition of the canonical host — see app/robots.ts for what a second one cost.
   const base = siteBaseUrl();
   const routes = [
     '',
     '/about',
     '/vision',
-    // `/bundle` is deliberately absent during the free beta: it 307s to `/`, and a
-    // sitemap should only carry URLs that answer 200. Re-add it with the paid surfaces.
-    ...(isFreeBeta() ? [] : ['/bundle']),
+    // `/bundle` is the Super Bundle shop (merchandising). Checkout stays muted
+    // while FREE_BETA is on — the page itself answers 200.
+    '/bundle',
     '/press',
     '/terms',
     '/privacy',

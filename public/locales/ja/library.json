@@ -10,6 +10,7 @@
   "libraryEyebrow": "Library",
   "library": "Exercise Library",
   "librarySubtitle": "合図と代替手段を使用した {{count}} 以上の動き。 体重と最小限の装備が優先されます。",
+  "librarySubtitleBrief": "Search movements. Filters when you need them.",
   "libraryTodayHub": "今日のハブ",
   "libraryProgramTemplates": "プログラムテンプレート",
   "libraryPremiumUnlocked": "— 完全なライブラリのロックが解除されました。",

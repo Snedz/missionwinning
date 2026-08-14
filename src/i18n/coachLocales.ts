@@ -3,6 +3,9 @@
 type CoachStrings = {
   coachPageTitle: string;
   coachPageSubtitle: string;
+  /** `.766` — the log fact a Coach line stands on, and the no-logs admission. */
+  coachCiteFromLog: string;
+  coachCiteNoLogs: string;
   coachWeekEyebrow: string;
   coachGenerateWeek: string;
   coachGenerateWeekHint: string;
@@ -25,6 +28,8 @@ type CoachStrings = {
   coachWhyTodayEyebrow: string;
   /** `.693` — log-cited why-this-week / adapt rationale (inputs · rule · effect). */
   coachWhyWeekEyebrow: string;
+  /** `.699` — log-cited why-this-session (boss card; inputs · rule · effect). */
+  coachWhySessionEyebrow: string;
   coachRationaleInputLabel: string;
   coachRationaleRuleLabel: string;
   coachRationaleEffectLabel: string;
@@ -66,6 +71,51 @@ type CoachStrings = {
   coachRationaleGenerateEffect: string;
   coachRationaleGenerateCompact: string;
   coachRationaleGenerateCompactFresh: string;
+  /** `.699` — session-scoped rationale stories (F-012 / F-002-session). */
+  coachSessionRationaleSwapInput: string;
+  coachSessionRationaleSwapRule: string;
+  coachSessionRationaleSwapEffect: string;
+  coachSessionRationaleSwapCompact: string;
+  coachSessionRationaleDeloadInput: string;
+  coachSessionRationaleDeloadRule: string;
+  coachSessionRationaleDeloadEffect: string;
+  coachSessionRationaleDeloadCompact: string;
+  coachSessionRationalePlateauInput: string;
+  coachSessionRationalePlateauRule: string;
+  coachSessionRationalePlateauEffect: string;
+  coachSessionRationalePlateauCompact: string;
+  coachSessionRationaleSteadyInput: string;
+  coachSessionRationaleSteadyRule: string;
+  coachSessionRationaleSteadyEffect: string;
+  coachSessionRationaleSteadyCompact: string;
+  coachSessionRationaleLoadUpInput: string;
+  coachSessionRationaleLoadUpRule: string;
+  coachSessionRationaleLoadUpEffect: string;
+  coachSessionRationaleLoadUpCompact: string;
+  coachSessionRationaleRepInput: string;
+  coachSessionRationaleRepRule: string;
+  coachSessionRationaleRepEffect: string;
+  coachSessionRationaleRepCompact: string;
+  coachSessionRationaleBwInput: string;
+  coachSessionRationaleBwRule: string;
+  coachSessionRationaleBwEffect: string;
+  coachSessionRationaleBwCompact: string;
+  coachSessionRationaleConservativeInput: string;
+  coachSessionRationaleConservativeRule: string;
+  coachSessionRationaleConservativeEffect: string;
+  coachSessionRationaleConservativeCompact: string;
+  coachSessionRationaleHoldInput: string;
+  coachSessionRationaleHoldRule: string;
+  coachSessionRationaleHoldEffect: string;
+  coachSessionRationaleHoldCompact: string;
+  coachSessionRationaleRecoveryInput: string;
+  coachSessionRationaleRecoveryRule: string;
+  coachSessionRationaleRecoveryEffect: string;
+  coachSessionRationaleRecoveryCompact: string;
+  coachSessionRationaleFocusInput: string;
+  coachSessionRationaleFocusRule: string;
+  coachSessionRationaleFocusEffect: string;
+  coachSessionRationaleFocusCompact: string;
   coachAdaptKeepVersion: string;
   coachWeekDose: string;
   coachWeekDoseStrength: string;
@@ -203,6 +253,9 @@ const en: CoachStrings = {
   coachPageTitle: 'Mission Coach',
   coachPageSubtitle:
     'Weekly plans from your workout logs alone — no wearable. Adapts when you miss or crush a session.',
+  coachCiteFromLog: 'From your log: {{fact}}',
+  coachCiteNoLogs:
+    'No sets logged yet — log one and Coach builds the week from it.',
   coachLoadTitle: 'Training load',
   coachLoadUnmeasured: 'Not enough history yet',
   coachLoadUnmeasuredBody:
@@ -237,6 +290,7 @@ const en: CoachStrings = {
     'Plan revision {{rev}} — week reshaped from workout history alone.',
   coachWhyTodayEyebrow: "Why today's plan",
   coachWhyWeekEyebrow: 'Why this week — from your logs',
+  coachWhySessionEyebrow: 'Why this session — from your logs',
   coachRationaleInputLabel: 'From your logs',
   coachRationaleRuleLabel: 'Rule applied',
   coachRationaleEffectLabel: 'Expected effect',
@@ -300,6 +354,83 @@ const en: CoachStrings = {
     '{{count}} logged workouts → weekly generate → {{sessions}} sessions this week.',
   coachRationaleGenerateCompactFresh:
     '{{days}} days · {{gear}} → weekly generate → {{sessions}} sessions this week.',
+  coachSessionRationaleSwapInput:
+    'Readiness / strain from your recent logs flagged today for a lighter day.',
+  coachSessionRationaleSwapRule:
+    'Recovery session — mobility and activation instead of a heavy strength day.',
+  coachSessionRationaleSwapEffect:
+    'Keep quality high and strain low — earn tomorrow’s strength work.',
+  coachSessionRationaleSwapCompact:
+    'Readiness from logs → recovery session → lighter day, same mission.',
+  coachSessionRationaleDeloadInput:
+    'Recent sets in your logs called for recovery (hard RPE / stall).',
+  coachSessionRationaleDeloadRule: 'Deload session — lighter load, same movement patterns.',
+  coachSessionRationaleDeloadEffect:
+    'Working sets stay patterned but lighter so you rebuild cleanly.',
+  coachSessionRationaleDeloadCompact:
+    'Logs showed recovery need → deload session → lighter load, same patterns.',
+  coachSessionRationalePlateauInput: 'No new best in roughly a month across your logged sets.',
+  coachSessionRationalePlateauRule: 'Plateau deload session — step back to rebuild.',
+  coachSessionRationalePlateauEffect:
+    'Lighter work today so progress can restart from quality reps.',
+  coachSessionRationalePlateauCompact:
+    'No recent best in logs → plateau deload → lighter rebuild session.',
+  coachSessionRationaleSteadyInput:
+    'Your last week of logs is heavier than your month (load band).',
+  coachSessionRationaleSteadyRule:
+    'Load guard — hold the rise this session; never auto-deload from the band alone.',
+  coachSessionRationaleSteadyEffect: 'Intensity held steady — clean reps over chasing fatigue.',
+  coachSessionRationaleSteadyCompact:
+    'Heavy recent week in logs → hold rise → intensity stays put today.',
+  coachSessionRationaleLoadUpInput:
+    'Last logged session felt manageable — room for a small load bump.',
+  coachSessionRationaleLoadUpRule: 'Load progression — small bump from easy recent sets.',
+  coachSessionRationaleLoadUpEffect:
+    'Working weight steps up slightly on the main lifts this session.',
+  coachSessionRationaleLoadUpCompact:
+    'Easy recent sets in logs → load-up → small weight bump today.',
+  coachSessionRationaleRepInput:
+    'Recent logged sets left room to build reps before adding weight.',
+  coachSessionRationaleRepRule: 'Rep progression — earn the next weight with solid reps.',
+  coachSessionRationaleRepEffect: 'More reps at the same load until the set challenges you.',
+  coachSessionRationaleRepCompact:
+    'Easy recent sets in logs → rep progress → build reps before load.',
+  coachSessionRationaleBwInput:
+    'Bodyweight work in your logs still has room to grow via reps.',
+  coachSessionRationaleBwRule: 'Rep progression — add reps until the set feels challenging.',
+  coachSessionRationaleBwEffect:
+    'More quality reps today; load stays bodyweight until reps earn it.',
+  coachSessionRationaleBwCompact:
+    'Bodyweight logs → rep progress → more reps, same pattern.',
+  coachSessionRationaleConservativeInput:
+    'You asked to avoid a movement — this session stays conservative.',
+  coachSessionRationaleConservativeRule: 'Adjust-today conservative load — quality over ego.',
+  coachSessionRationaleConservativeEffect:
+    'Safer loads and patterns so you can still train without the avoided work.',
+  coachSessionRationaleConservativeCompact:
+    'Avoid adjustment → conservative session → quality over ego.',
+  coachSessionRationaleHoldInput: 'Recent logged sets are still settling at this load.',
+  coachSessionRationaleHoldRule: 'Hold load — quality over ego until reps feel solid.',
+  coachSessionRationaleHoldEffect:
+    'Same working weight this session; focus on crisp reps and full sets.',
+  coachSessionRationaleHoldCompact:
+    'Logs say consolidate → hold load → same weight, better quality.',
+  coachSessionRationaleRecoveryInput:
+    'Your plan put recovery / mobility here from schedule and logs.',
+  coachSessionRationaleRecoveryRule:
+    'Recovery session — mobility and activation for better training.',
+  coachSessionRationaleRecoveryEffect:
+    'Move well today; keep strain low so strength days stay productive.',
+  coachSessionRationaleRecoveryCompact:
+    'Schedule + logs → recovery session → mobility, low strain.',
+  coachSessionRationaleFocusInput:
+    '{{count}} workout(s) in your log · next up: {{focus}} ({{kind}}).',
+  coachSessionRationaleFocusRule:
+    'Session pick — focus and kind from your week split and logged history.',
+  coachSessionRationaleFocusEffect:
+    'Train {{focus}} as planned — miss or crush it and the week flexes.',
+  coachSessionRationaleFocusCompact:
+    '{{count}} logged → {{kind}} session ({{focus}}) → next work from your plan.',
   coachAdaptKeepVersion: 'Adjust or keep my version of today',
   coachWeekDose:
     'This week’s dose: {{count}} sessions · {{intent}} · ~{{minutes}} min',

@@ -1,6 +1,8 @@
 {
   "benchmarksTitle": "Benchmark",
   "benchmarksSubtitle": "Statistics, rep maxes, estimated vs actual, and progress over time.",
+  "benchmarksSubtitleBrief": "Rep maxes from your logs. Other tests when you want them.",
+  "benchmarksMoreTests": "Military & youth tests",
   "benchmarksEmptyTitle": "Belum ada data patokan",
   "benchmarksEmptyDesc": "Selesaikan latihan dengan set yang dicatat untuk membangun perkiraan 1RM. Catat satu set dengan 1 repetisi untuk mencatat 1RM aktual sebagai perbandingan.",
   "benchmarksExercisesTracked": "Latihan dilacak",

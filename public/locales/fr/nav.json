@@ -1,5 +1,6 @@
 {
   "navOpenBeta": "Bêta ouverte",
+  "navInviteOnlyBeta": "Bêta sur invitation",
   "navAssess": "Évaluer",
   "navMore": "Plus",
   "navCoachTab": "Coach",
@@ -19,6 +20,7 @@
   "navLibrary": "Bibliothèque",
   "navHistory": "Historique",
   "navLeaderboard": "Classement",
+  "navServer": "Messenger",
   "navReadiness": "Tests de préparation",
   "navHealth": "Bilan santé",
   "navCalculators": "Calculateurs",

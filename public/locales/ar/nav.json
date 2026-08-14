@@ -1,5 +1,6 @@
 {
   "navOpenBeta": "نسخة تجريبية مفتوحة",
+  "navInviteOnlyBeta": "نسخة تجريبية بالدعوة",
   "navAssess": "تقييم",
   "navMore": "المزيد",
   "navCoachTab": "المدرب",
@@ -19,6 +20,7 @@
   "navLibrary": "المكتبة",
   "navHistory": "السجل",
   "navLeaderboard": "المتصدرين",
+  "navServer": "Messenger",
   "navReadiness": "اختبارات الجاهزية",
   "navHealth": "فحص الصحة",
   "navCalculators": "الحاسبات",

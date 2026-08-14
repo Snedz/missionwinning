@@ -4,6 +4,7 @@
   "leaderboardRankings": "อันดับ",
   "leaderboardTitle": "กระดานอันดับ",
   "leaderboardSubtitle": "เปรียบเทียบผู้ปฏิบัติภารกิจทั่วโลก ตามภูมิภาค ประเทศ สถานที่ หรือทีม",
+  "leaderboardSubtitleBrief": "Optional ranks. Training first — never required.",
   "leaderboardSync": "ซิงค์",
   "leaderboardOperators": "ตัวดำเนินการ",
   "leaderboardYourRank": "อันดับของคุณ",

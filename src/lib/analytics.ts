@@ -13,11 +13,13 @@
  * The funnel these events exist to answer (docs/STRATEGY.md #1 metric):
  *   visit → iday_started → iday_mission_accepted → iday_profile_completed →
  *   iday_completed → first_set_logged (with secondsFromStart — the first-90-seconds
- *   budget) → first_workout_completed → workout_completed (repeat) →
+ *   budget) → set_logged / week_logged (working sets; see docs/METRICS.md) →
+ *   first_workout_completed → workout_completed (repeat) →
  *   reentry_shown after a gap → week-4 retention cohort.
  */
 
 import { isAnalyticsAllowed } from '@/lib/analyticsOptOut';
+import { sanitizeAnalyticsProperties } from '@/lib/analyticsSanitize';
 import { attributionAsProps, loadAttribution } from '@/lib/attribution';
 
 export type AnalyticsEvent =
@@ -26,6 +28,10 @@ export type AnalyticsEvent =
   | 'iday_profile_completed'
   | 'iday_completed'
   | 'first_set_logged'
+  /** Working set saved (kind ≠ warmup). Properties: source, exercise_id, has_load. */
+  | 'set_logged'
+  /** First working set saved in this local ISO week. Properties: source, iso_week. */
+  | 'week_logged'
   | 'first_workout_completed'
   | 'reentry_shown'
   | 'workout_completed'
@@ -79,6 +85,7 @@ export type AnalyticsEvent =
   | 'backup_exported'
   | 'backup_restored'
   | 'csv_imported'
+  | 'csv_exported'
   | 'share_card_generated'
   | 'debrief_spoken'
   | 'day_review_quick_log'
@@ -120,9 +127,13 @@ function flushPending() {
   if (!ph || !initialized) return;
   for (const item of pending) {
     try {
-      if (item.type === 'track' && item.event) ph.capture(item.event, item.properties);
-      else if (item.type === 'identify' && item.userId) ph.identify(item.userId);
-      else if (item.type === 'reset') ph.reset();
+      if (item.type === 'track' && item.event) {
+        ph.capture(item.event, sanitizeAnalyticsProperties(item.properties));
+      } else if (item.type === 'identify' && item.userId) {
+        ph.identify(item.userId);
+      } else if (item.type === 'reset') {
+        ph.reset();
+      }
     } catch {
       /* Analytics must never break the app. */
     }
@@ -200,11 +211,11 @@ export function track(
   if (!process.env.NEXT_PUBLIC_POSTHOG_KEY) return;
   if (!isAnalyticsAllowed()) return;
   if (!initialized || !ph) {
-    pending.push({ type: 'track', event, properties });
+    pending.push({ type: 'track', event, properties: sanitizeAnalyticsProperties(properties) });
     return;
   }
   try {
-    ph.capture(event, properties);
+    ph.capture(event, sanitizeAnalyticsProperties(properties));
   } catch {
     // Analytics must never break the app.
   }

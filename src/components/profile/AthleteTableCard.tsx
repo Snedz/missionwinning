@@ -3,7 +3,9 @@
  * The table — MySpace interests, retrained for training (IDENTITY_SOCIAL_PLAN §3).
  *
  * Picks-from-sets only. No free text, no anthem URL (C5 / rights). Local only
- * until S4. Save is outline so `/profile` stays at 0 red actions.
+ * until S4. Display is the authored answers; the editor lives in a disclosure
+ * so the page reads as a record, not a form. Save is outline so `/profile`
+ * stays at 0 red actions.
  */
 
 import { useEffect, useState } from 'react';
@@ -91,6 +93,14 @@ export function AthleteTableCard() {
     setSaved(true);
   };
 
+  const pickText = (rowId: AthleteTableRowId): string => {
+    const value = table[rowId];
+    if (typeof value !== 'string' || !value) {
+      return t('athleteTableUnset', { defaultValue: '—' });
+    }
+    return t(pickLabelKey(rowId, value), { defaultValue: PICK_DEFAULTS[value] ?? value });
+  };
+
   return (
     <Card className="bg-card" data-testid="athlete-table-card">
       <CardContent className="pt-6">
@@ -101,50 +111,74 @@ export function AthleteTableCard() {
           })}
         </p>
 
-        <dl className="space-y-4">
+        <dl className="space-y-3" data-testid="athlete-table-display">
           {ATHLETE_TABLE_ROWS.map((row) => {
             const rowId = row.id as AthleteTableRowId;
-            const value = table[rowId] ?? '';
             return (
-              <div key={rowId} className="grid gap-1 sm:grid-cols-[10rem_1fr] sm:items-center sm:gap-3">
-                <dt className="text-xs font-semibold text-muted-foreground">
+              <div
+                key={rowId}
+                className="grid gap-1 border-t-2 border-border pt-3 first:border-t-0 first:pt-0 sm:grid-cols-[10rem_1fr] sm:items-baseline sm:gap-3"
+              >
+                <dt className="text-xs font-semibold uppercase tracking-[0.08em] text-muted-foreground">
                   {t(rowLabelKey(rowId), { defaultValue: ROW_DEFAULTS[rowId] })}
                 </dt>
-                <dd>
-                  <select
-                    id={`athlete-table-${rowId}`}
-                    value={typeof value === 'string' ? value : ''}
-                    onChange={(e) => setPick(rowId, e.target.value)}
-                    className="min-h-[44px] w-full max-w-md rounded-none border border-border bg-background px-3 text-sm tap-target"
-                    aria-label={t(rowLabelKey(rowId), { defaultValue: ROW_DEFAULTS[rowId] })}
-                  >
-                    <option value="">
-                      {t('athleteTableUnset', { defaultValue: '—' })}
-                    </option>
-                    {picksForRow(rowId).map((pick) => (
-                      <option key={pick} value={pick}>
-                        {t(pickLabelKey(rowId, pick), {
-                          defaultValue: PICK_DEFAULTS[pick] ?? pick,
-                        })}
-                      </option>
-                    ))}
-                  </select>
-                </dd>
+                <dd className="text-sm font-semibold text-foreground">{pickText(rowId)}</dd>
               </div>
             );
           })}
         </dl>
 
-        <div className="mt-5">
-          <Button type="button" variant="outline" onClick={commit} className="tap-target min-h-[44px]">
-            {t('athleteTableSave', { defaultValue: 'Save' })}
-          </Button>
-          {saved && (
-            <p className="mt-2 text-sm text-muted-foreground" role="status">
-              {t('athleteTableSaved', { defaultValue: 'Saved on this device.' })}
-            </p>
-          )}
-        </div>
+        <details className="group mt-5 border-t-2 border-border pt-4">
+          <summary className="flex min-h-[44px] cursor-pointer list-none items-center text-sm font-semibold text-muted-foreground hover:text-foreground [&::-webkit-details-marker]:hidden">
+            {t('athleteTableEdit', { defaultValue: 'Edit table' })}
+          </summary>
+          <div className="mt-3">
+            <dl className="space-y-4">
+              {ATHLETE_TABLE_ROWS.map((row) => {
+                const rowId = row.id as AthleteTableRowId;
+                const value = table[rowId] ?? '';
+                return (
+                  <div key={rowId} className="grid gap-1 sm:grid-cols-[10rem_1fr] sm:items-center sm:gap-3">
+                    <dt className="text-xs font-semibold text-muted-foreground">
+                      {t(rowLabelKey(rowId), { defaultValue: ROW_DEFAULTS[rowId] })}
+                    </dt>
+                    <dd>
+                      <select
+                        id={`athlete-table-${rowId}`}
+                        value={typeof value === 'string' ? value : ''}
+                        onChange={(e) => setPick(rowId, e.target.value)}
+                        className="min-h-[44px] w-full max-w-md rounded-none border border-border bg-background px-3 text-sm tap-target"
+                        aria-label={t(rowLabelKey(rowId), { defaultValue: ROW_DEFAULTS[rowId] })}
+                      >
+                        <option value="">
+                          {t('athleteTableUnset', { defaultValue: '—' })}
+                        </option>
+                        {picksForRow(rowId).map((pick) => (
+                          <option key={pick} value={pick}>
+                            {t(pickLabelKey(rowId, pick), {
+                              defaultValue: PICK_DEFAULTS[pick] ?? pick,
+                            })}
+                          </option>
+                        ))}
+                      </select>
+                    </dd>
+                  </div>
+                );
+              })}
+            </dl>
+
+            <div className="mt-5">
+              <Button type="button" variant="outline" onClick={commit} className="tap-target min-h-[44px]">
+                {t('athleteTableSave', { defaultValue: 'Save' })}
+              </Button>
+              {saved && (
+                <p className="mt-2 text-sm text-muted-foreground" role="status">
+                  {t('athleteTableSaved', { defaultValue: 'Saved on this device.' })}
+                </p>
+              )}
+            </div>
+          </div>
+        </details>
       </CardContent>
     </Card>
   );

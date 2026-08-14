@@ -25,6 +25,20 @@ export const FREE_LEARN_PATHS: LearnPath[] = [
     icon: '🏋️',
     lessons: [
       {
+        id: 'sb-0',
+        title: 'Offline Log, Then Coach',
+        summary:
+          'Start on your phone with no wearable and no feed. Log sets offline; Mission Coach builds the next week from those logs alone.',
+        keyPoints: [
+          'Free offline logging works without Wi‑Fi — sync later if you sign in',
+          'No wearable required for Train or for Mission Coach plans',
+          'Coach weeks come from your logged sets and fatigue signals — not a social feed',
+          'After you log, open Today for the next session cue',
+        ],
+        actionLabel: 'Start a workout',
+        actionHref: '/active',
+      },
+      {
         id: 'sb-1',
         title: 'Progressive Overload',
         summary: 'Muscles adapt when you gradually increase stress — weight, reps, or quality.',
@@ -240,6 +254,20 @@ export const FREE_LEARN_PATHS: LearnPath[] = [
     subtitle: 'Plan training in blocks — linear, undulating, and deload weeks',
     icon: '📈',
     lessons: [
+      {
+        id: 'pd-0',
+        title: 'Weeks From Your Logs',
+        summary:
+          'Mission Coach builds the next week from what you logged — volume, RPE, missed days. No wearable. No spreadsheet first.',
+        keyPoints: [
+          'Log sets on this phone even offline — Coach reads the diary, not a strap',
+          'A week of honest logs beats a perfect template you never followed',
+          'Missed sessions get re-spread; you do not start over from shame',
+          'Open Coach after you have logged — the plan is earned from history',
+        ],
+        actionLabel: 'Open Mission Coach',
+        actionHref: '/coach',
+      },
       {
         id: 'pd-1',
         title: 'Linear vs Undulating Progression',

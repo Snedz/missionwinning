@@ -2,11 +2,13 @@
 
 /**
  * Quiet Super Bundle continuity under Victory primary (one boss CTA stays above).
+ * S6: at most one seam line — a muscle-matched free Move flow when the log has one.
  */
 
 import Link from 'next/link';
 import { useTranslation } from 'react-i18next';
 import type { VictorySecondaryLink } from '@/lib/workout/victorySecondaryLinks';
+import { MUSCLE_GROUP_I18N, type MuscleGroup } from '@/lib/muscleGroups';
 
 type Props = {
   links: VictorySecondaryLink[];
@@ -29,8 +31,19 @@ export function VictorySecondaryLinks({ links, onNavigate }: Props) {
             href={link.href}
             className="hover:text-foreground underline-offset-2 hover:underline"
             onClick={onNavigate}
+            data-testid={link.kind === 'move' ? 'victory-move-seam' : undefined}
           >
-            {t(link.labelKey, { defaultValue: link.defaultLabel })}
+            {link.kind === 'move' && link.flowName && link.muscle
+              ? t('victorySecondaryMoveBecause', {
+                  defaultValue: '{{flow}} — because you trained {{muscle}}',
+                  flow: link.flowName,
+                  muscle: MUSCLE_GROUP_I18N[link.muscle as MuscleGroup]
+                    ? t(MUSCLE_GROUP_I18N[link.muscle as MuscleGroup], {
+                        defaultValue: link.muscle,
+                      })
+                    : link.muscle,
+                })
+              : t(link.labelKey, { defaultValue: link.defaultLabel })}
           </Link>
         </span>
       ))}

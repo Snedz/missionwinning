@@ -121,6 +121,17 @@ export function ActiveEmptyState({
         >
           {t('activeGoBuilder', { defaultValue: 'Builder' })}
         </a>
+        {/*
+          An empty logger is where a switcher notices their history is missing —
+          so the CSV path is offered here rather than only three taps deep on
+          /account. Quiet by design: the one red action stays Start.
+        */}
+        <a
+          href="/account#import"
+          className="min-h-[44px] inline-flex items-center text-muted-foreground underline-offset-2 hover:text-foreground hover:underline"
+        >
+          {t('csvImportCta', { defaultValue: 'Import CSV (Strong / Hevy)' })}
+        </a>
       </div>
       {/*
         Compact dock owns the one red Start. Desktop `ScreenDock` renders in

@@ -1,6 +1,8 @@
 {
   "benchmarksTitle": "基准测试",
   "benchmarksSubtitle": "统计、极限次数、估算与实际对比及进展。",
+  "benchmarksSubtitleBrief": "Rep maxes from your logs. Other tests when you want them.",
+  "benchmarksMoreTests": "Military & youth tests",
   "benchmarksEmptyTitle": "暂无基准数据",
   "benchmarksEmptyDesc": "使用记录的组数完成训练，以建立估计的 1RM。 以 1 次重复记录一组，记录实际 1RM 以进行比较。",
   "benchmarksExercisesTracked": "跟踪动作",

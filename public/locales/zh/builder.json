@@ -1,6 +1,7 @@
 {
   "builderTitle": "训练构建器",
   "builderSubtitle": "使用下面的“初学者”、“高级”或“专业”选项卡，然后单击“加载会话”。 高级版可解锁健美、矫正和体能专家计划。",
+  "builderSubtitleBrief": "Three steps: start, arrange, train.",
   "builderTemplatesTitle": "程序模板",
   "builderTemplatesFoot": "包括新的自由体重+移动回路（视觉核心）",
   "builderProgramCount": "{{count}} 个程序",
@@ -79,6 +80,8 @@
   "builderSessionCount": "{{count}} sessions",
   "builderProOffline": "Offline — premium program list will load when you reconnect.",
   "builderProLoadFail": "Could not load premium programs. Try again.",
+  "builderProOfflineOpenBeta": "Offline — pro program list will load when you reconnect. Free templates still work.",
+  "builderProLoadFailOpenBeta": "Could not load pro programs. Try again — free templates still work.",
   "builderTemplateSearch": "Search programs or sessions…",
   "builderTemplateSearchCount": "{{count}} matching",
   "builderProFreeBeta": "Pro cycles are paused during open beta — free templates stay available.",

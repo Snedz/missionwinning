@@ -25,7 +25,7 @@ import {
   pushUnsubscribeBodySchema,
 } from '@/lib/apiSchemas';
 import { rejectOversizedBody } from '@/lib/requestBodyLimit';
-import { buildSubscriptionRow } from '@/lib/pushSubscriptionRow';
+import { buildSubscriptionRow, canWritePushSubscription } from '@/lib/pushSubscriptionRow';
 
 /** Resolve the signed-in user, if there is one. Absence is normal, not an error. */
 async function optionalUserId(request: NextRequest): Promise<string | null> {
@@ -77,6 +77,16 @@ export const POST = withApiLogging('push/subscribe', async (request: NextRequest
   const body = parsed.data;
 
   const userId = await optionalUserId(request);
+
+  const { data: existing } = await admin
+    .from('push_subscriptions')
+    .select('user_id')
+    .eq('endpoint', body.endpoint)
+    .maybeSingle();
+
+  if (!canWritePushSubscription((existing?.user_id as string | null) ?? null, userId)) {
+    return NextResponse.json({ ok: false, error: 'Not allowed' }, { status: 403 });
+  }
 
   // onConflict endpoint, not (user_id, device_id): the browser owns the endpoint and
   // re-subscribing the same browser must update in place. Signing in later re-posts

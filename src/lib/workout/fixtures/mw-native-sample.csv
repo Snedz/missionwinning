@@ -1,0 +1,4 @@
+workout_id,workout_name,completed_at,duration_seconds,weight_unit,exercise_id,exercise_name,set_index,reps,weight,rpe,set_kind,note,superset_group
+w1,Push Day,2026-07-14T18:05:00.000Z,3900,kg,bench-press,Bench Press,0,5,100,8,normal,,
+w1,Push Day,2026-07-14T18:05:00.000Z,3900,kg,bench-press,Bench Press,1,5,100,9,normal,,
+w2,Leg Day,2026-07-16T18:00:00.000Z,3300,kg,squats,Squats,0,5,140,8,normal,,

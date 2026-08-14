@@ -12,3 +12,6 @@ Completes Field manual A across signed-in More toolkit surfaces (Waves 1–4).
 
 Rotated LOG oldest → [docs/archive/log/LOG-rotate-628.md](docs/archive/log/LOG-rotate-628.md). · [rotated for `.629`](docs/archive/log/LOG-rotate-629.md).
 
+### Rotated from CONTEXT.md `## Now` for `.643` (budget is ≤25 bullets)
+
+- **`.622`:** (`2026.07-unified.622`) **You S3b — kits + C5 DTO.** Stack/Field/Ledger/Poster page kits (token composition, tier-gated); C5 public projection pure shape.

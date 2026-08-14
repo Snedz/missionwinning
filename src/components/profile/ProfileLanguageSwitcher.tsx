@@ -1,19 +1,26 @@
 'use client';
 
+import Link from 'next/link';
 import { useTranslation } from 'react-i18next';
 import i18n from '@/i18n';
 import { scheduleJourneyPush } from '@/lib/journeySync';
-import { APP_LANGS, APP_LANG_NATIVE_NAMES, normalizeAppLang } from '@/i18n/appLangs';
-import { STORAGE_KEYS } from '@/lib/storage/keys';
-import { writeRaw } from '@/lib/storage/safeStorage';
+import { UI_LANGS, UI_LANG_PICKER_LABELS, normalizeUiLang } from '@/i18n/appLangs';
+import {
+  applyDocumentLang,
+  detectCountryHint,
+  loadLocaleCountryPref,
+  persistLocaleCountryPref,
+} from '@/lib/i18n/localePreference';
 
 export function ProfileLanguageSwitcher() {
   const { t } = useTranslation();
-  const currentLang = normalizeAppLang(i18n.language);
+  const currentLang = normalizeUiLang(i18n.language);
   const changeLanguage = (lng: string) => {
-    // Explicit choice blocks RegionDefaultsBoot from overriding it on the next visit.
-    writeRaw(STORAGE_KEYS.langExplicit, '1');
-    i18n.changeLanguage(lng);
+    const language = normalizeUiLang(lng);
+    const country = loadLocaleCountryPref()?.country ?? detectCountryHint();
+    persistLocaleCountryPref({ language, country });
+    void i18n.changeLanguage(language);
+    applyDocumentLang(language);
     scheduleJourneyPush();
   };
   return (
@@ -21,15 +28,24 @@ export function ProfileLanguageSwitcher() {
       <select
         value={currentLang}
         onChange={(e) => changeLanguage(e.target.value)}
-        className="w-full min-h-[44px] text-sm bg-background border-2 border-border rounded px-3 py-2"
+        className="w-full min-h-[44px] text-sm bg-background border-2 border-border px-3 py-2"
         aria-label={t('changeLanguage', { defaultValue: 'Change language' })}
       >
-        {APP_LANGS.map((l) => (
+        {UI_LANGS.map((l) => (
           <option key={l} value={l}>
-            {APP_LANG_NATIVE_NAMES[l]}
+            {UI_LANG_PICKER_LABELS[l]}
           </option>
         ))}
       </select>
+      <p className="text-xs text-muted-foreground">
+        {t('languageNotAvailability', {
+          defaultValue:
+            'Choosing a language does not change where the hosted service is offered.',
+        })}{' '}
+        <Link href="/regions" className="underline underline-offset-2">
+          {t('infoRegionsTitle', { defaultValue: 'Supported Regions' })}
+        </Link>
+      </p>
     </div>
   );
 }

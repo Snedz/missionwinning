@@ -8,11 +8,10 @@
  * is not — a countdown to a sale that is always running is manufactured
  * urgency, and this product does not have a sale.
  *
- * What Mission Winning has to say there is true and currently buried: the
- * athlete-facing version is **0.1 (beta)** — free beta, Train logger + Mission
- * Coach from logs. That sentence used to live only on the landing's fifth
- * section, and it said invite-only / full platform, which is the wrong
- * language for a free-beta stamp.
+ * What Mission Winning has to say there is true and currently buried: the whole
+ * platform is free during the open beta. That sentence lives in the landing
+ * page's fifth section and on no other public URL, while the free core is the
+ * single strongest thing about the product.
  *
  * **Ink, not red.** Red is the one do-this-now action, and the landing already
  * spends its one poster field on the closing CTA. An ink field says "status"
@@ -25,7 +24,7 @@
  * has to hydrate anything for this bar.
  */
 
-import { APP_PUBLIC_STATUS_LINE_EN, APP_PUBLIC_VERSION } from '@/lib/buildInfo';
+import { APP_PUBLIC_STATUS_LINE_EN } from '@/lib/buildInfo';
 import { isFreeBeta } from '@/lib/freeBeta';
 
 type Props = {
@@ -40,10 +39,7 @@ export function PublicStatusBar({ label }: Props) {
 
   return (
     <div className="bg-neutral-900 text-neutral-100">
-      <p
-        className="mx-auto max-w-6xl px-5 py-2 text-[11px] font-semibold uppercase tracking-[0.1em]"
-        data-mw-public-version={APP_PUBLIC_VERSION}
-      >
+      <p className="mx-auto max-w-6xl px-5 py-2 text-[11px] font-semibold uppercase tracking-[0.1em]">
         {label ?? APP_PUBLIC_STATUS_LINE_EN}
       </p>
     </div>

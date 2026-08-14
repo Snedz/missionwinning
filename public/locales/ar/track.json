@@ -1,6 +1,9 @@
 {
   "trackTitle": "تتبع النشاط",
   "trackSubtitle": "سجل الأنشطة اليدوية المجاني - المشي، والجري، وركوب الدراجة، والمشي لمسافات طويلة. يضيف Premium نظام تحديد المواقع العالمي (GPS) والإحصائيات المتقدمة (MapMy-style وSuper Bundle).",
+  "trackSubtitleBrief": "Log a walk or run. GPS and extras when you want them.",
+  "trackMoreGpsImport": "GPS, insights & import",
+  "trackMoreBodyWearables": "Body, wearables & trends",
   "trackWeekSessions": "هذا الأسبوع",
   "trackTotalTime": "الوقت الإجمالي",
   "trackDistance": "مسافة",

@@ -1,5 +1,6 @@
 {
   "navOpenBeta": "오픈 베타",
+  "navInviteOnlyBeta": "초대 전용 베타",
   "navAssess": "평가",
   "navMore": "더보기",
   "navCoachTab": "코치",
@@ -19,6 +20,7 @@
   "navLibrary": "라이브러리",
   "navHistory": "기록",
   "navLeaderboard": "리더보드",
+  "navServer": "Messenger",
   "navReadiness": "준비도 테스트",
   "navHealth": "건강 검진",
   "navCalculators": "계산기",

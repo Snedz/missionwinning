@@ -113,6 +113,10 @@ const NOT_THIS_APP: { id: string; why: string }[] = [
     why: 'The no-build half of the gate, on a push to master — lint, typecheck, unit, route contract, coverage, i18n, design system, locale split, display type, token sync. It never runs `next build` and never serves a page; the placeholders exist to make a *served* app behave, so here they would be credential-shaped values in a job with no runtime.',
   },
   {
+    id: 'ci.yml:www',
+    why: 'A different application: sites/www is Astro static output for Cloudflare Pages, with its own node_modules and its own Tailwind major. It runs `astro build`, never `next build`, and serves nothing that reads NEXT_PUBLIC_* — the Supabase and VAPID placeholders exist to make the *Next app* behave when served, so here they would be credential-shaped values in a job that cannot use them. Same reasoning as the Android entry below: one repo, two applications.',
+  },
+  {
     id: 'aikido.yml:*',
     why: 'Third-party security scanner. It reads the repository and never builds or serves the app, so app env would only be a credential-shaped thing sitting in a scanner job.',
   },

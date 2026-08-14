@@ -118,11 +118,11 @@ export function AboutPage() {
           {freeBeta
             ? t('infoAboutBusinessBodyOpenBeta', {
                 defaultValue:
-                  'Operated by Mission Winning LLC (Texas). Beta 0.1 — full tools free while we grow with you. The logger stays free forever.',
+                  'Operated by Mission Winning LLC, a Texas limited liability company. Mission Winning 0.1 (beta) is an open beta — full tools free while we grow with you. The logger stays free forever.',
               })
             : t('infoAboutBusinessBody', {
                 defaultValue:
-                  'Operated by Mission Winning LLC (Texas) for the app, programs, and coaching. Free core stays free; paid Super Bundle funds deeper Coach and pillar tools when you want them.',
+                  'Operated by Mission Winning LLC, a Texas limited liability company, for the app, programs, and coaching. Free core stays free; paid Super Bundle funds deeper Coach and pillar tools when you want them.',
               })}
         </p>
       </EditorialSection>

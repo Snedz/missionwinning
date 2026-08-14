@@ -17,22 +17,59 @@ import { seedLegacyOnboarding } from './helpers/journey';
 /** Taps from any app screen to any other. One for a tab, two via More. */
 const REACH_BUDGET = 2;
 
-/** The thirteen signed-in screens `railGroupsForNav()` declares. */
-const RAIL_SCREENS = [
+/**
+ * `.765` — the reachability claim is now *conditional*, and it has been failing
+ * on `master` since `.695` because it was not.
+ *
+ * `.695` demoted the six-pillar chrome until the first logged workout:
+ * `railGroupsForNav({ hasFirstWorkout: false })` drops the whole Pillars group,
+ * which is exactly what `pillarChromeGate.test.ts` requires. This case seeded a
+ * fresh device and then asserted all thirteen screens were two taps away, so it
+ * asserted the opposite of a shipped decision and went red every run — a check
+ * saturated at red measures as little as one saturated at green.
+ *
+ * So it now tests both halves of the decision: the pillars are *absent* before
+ * the first workout, and every screen is inside the budget once one exists. The
+ * fresh-device half is the stronger assertion, because it is the one that would
+ * catch the options wall coming back to I-Day.
+ */
+const ALWAYS_REACHABLE = [
   '/log',
   '/active',
   '/coach',
-  '/history',
+  /* Fuel is the fourth tab, so it survives the demotion the rail group does not. */
   '/nutrition',
-  '/move',
-  '/mind',
-  '/track',
-  '/learn',
+  '/history',
   '/assessments',
   '/library',
   '/builder',
   '/profile',
 ] as const;
+
+/** Dropped from the rail until `basic.workout` — see `.695`. */
+const PILLAR_SCREENS = ['/move', '/mind', '/track', '/learn'] as const;
+
+const RAIL_SCREENS = [...ALWAYS_REACHABLE, ...PILLAR_SCREENS] as const;
+
+/** One completed session, in the shape `workoutStore`'s persist layer writes. */
+const SEEDED_HISTORY = {
+  state: {
+    workoutHistory: [
+      {
+        id: 'nav-reach-1',
+        workoutName: 'Seeded session',
+        completedAt: new Date().toISOString(),
+        durationSeconds: 600,
+        totalVolume: 1000,
+        totalSets: 4,
+        exercises: [],
+      },
+    ],
+    savedWorkouts: [],
+    activeWorkout: null,
+  },
+  version: 0,
+};
 
 test.describe('Mobile navigation @gate', () => {
   test.beforeEach(async ({ page, context, baseURL }) => {
@@ -73,7 +110,12 @@ test.describe('Mobile navigation @gate', () => {
     }
   });
 
-  test('every rail screen is reachable within the tap budget', async ({ page }) => {
+  /**
+   * Open the fifth tab once and read what it offers, rather than clicking
+   * through thirteen navigations — the claim is about reachability, and a link
+   * in an open sheet is one tap.
+   */
+  async function readReach(page: import('@playwright/test').Page) {
     // networkidle — this case opens the sheet, and More only works once
     // hydrated. See the Escape case below.
     await page.goto('/log', { waitUntil: 'networkidle' });
@@ -83,9 +125,6 @@ test.describe('Mobile navigation @gate', () => {
       els.map((el) => el.getAttribute('href') ?? '')
     );
 
-    // Open the fifth tab once and read what it offers, rather than clicking
-    // through thirteen navigations — the claim is about reachability, and a
-    // link in an open sheet is one tap.
     await bar.getByRole('button', { name: /more/i }).click();
     const sheet = page.getByRole('dialog');
     await expect(sheet).toBeVisible();
@@ -93,11 +132,38 @@ test.describe('Mobile navigation @gate', () => {
       els.map((el) => el.getAttribute('href') ?? '')
     );
 
-    const unreachable: string[] = [];
-    for (const screen of RAIL_SCREENS) {
-      const taps = tabHrefs.includes(screen) ? 1 : sheetHrefs.includes(screen) ? 2 : Infinity;
-      if (taps > REACH_BUDGET) unreachable.push(screen);
-    }
+    const taps = (screen: string) =>
+      tabHrefs.includes(screen) ? 1 : sheetHrefs.includes(screen) ? 2 : Infinity;
+
+    return { tabHrefs, sheetHrefs, taps };
+  }
+
+  test('before the first workout the pillars are not on the rail at all', async ({ page }) => {
+    const { tabHrefs, sheetHrefs, taps } = await readReach(page);
+
+    const present = PILLAR_SCREENS.filter((s) => taps(s) <= REACH_BUDGET);
+    expect(
+      present,
+      'F-004 / `.695`: the six-pillar chrome stays demoted until a workout exists'
+    ).toEqual([]);
+
+    // …and demotion may not cost anything else its route.
+    const unreachable = ALWAYS_REACHABLE.filter((s) => taps(s) > REACH_BUDGET);
+    expect(unreachable, `screens with no route inside ${REACH_BUDGET} taps`).toEqual([]);
+
+    const repeated = sheetHrefs.filter((h) => tabHrefs.includes(h));
+    expect(repeated, 'More repeats a tab').toEqual([]);
+  });
+
+  test('every rail screen is reachable within the tap budget', async ({ page }) => {
+    // The gate signal is workout history length, the same fact as `basic.workout`.
+    await page.addInitScript((seed) => {
+      localStorage.setItem('workout-tracker-storage', JSON.stringify(seed));
+    }, SEEDED_HISTORY);
+
+    const { tabHrefs, sheetHrefs, taps } = await readReach(page);
+
+    const unreachable = RAIL_SCREENS.filter((s) => taps(s) > REACH_BUDGET);
     expect(unreachable, `screens with no route inside ${REACH_BUDGET} taps`).toEqual([]);
 
     // The sheet must not repeat what the bar already shows two inches below.

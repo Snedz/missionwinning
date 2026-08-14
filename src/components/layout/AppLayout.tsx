@@ -9,7 +9,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { usePathname } from 'next/navigation';
 import { MobileNav } from './MobileNav';
 import { AppHeader } from './AppHeader';
-import { SCREEN_DOCK_HOST_ID } from './ScreenDock';
+import { CONSENT_BANNER_HOST_ID, SCREEN_DOCK_HOST_ID } from './ScreenDock';
 import { JourneyGuard } from '@/components/journey/JourneyGuard';
 import { PageTransition } from '@/components/layout/PageTransition';
 import { JourneySyncBoot } from '@/components/layout/JourneySyncBoot';
@@ -74,6 +74,9 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
               sibling of `main`, so `main` shrinks by the dock's height instead
               of something fixed covering the content it belongs to. */}
           <div id={SCREEN_DOCK_HOST_ID} className="shrink-0 empty:hidden" />
+          {/* Consent docks here — a flex sibling above the tab bar, never a
+              fixed overlay on Today's Start (Preview walk P0-1 / `.765`). */}
+          <div id={CONSENT_BANNER_HOST_ID} className="shrink-0 empty:hidden" />
           <MobileNav onOpenMore={openMore} moreOpen={moreOpen} />
           <MoreSheet open={moreOpen} onClose={closeMore} />
         </div>

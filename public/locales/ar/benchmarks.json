@@ -1,6 +1,8 @@
 {
   "benchmarksTitle": "معايير الأداء",
   "benchmarksSubtitle": "الإحصائيات، والحدود القصوى للممثلين، والمقدرة مقابل الفعلية، والتقدم مع مرور الوقت.",
+  "benchmarksSubtitleBrief": "Rep maxes from your logs. Other tests when you want them.",
+  "benchmarksMoreTests": "Military & youth tests",
   "benchmarksEmptyTitle": "No benchmark data yet",
   "benchmarksEmptyDesc": "أكمل التدريبات بمجموعات مسجلة لبناء 1RMs المقدرة. قم بتسجيل مجموعة بمعدل 1 مندوب لتسجيل 1RM فعلي للمقارنة.",
   "benchmarksExercisesTracked": "تمارين متتبعة",

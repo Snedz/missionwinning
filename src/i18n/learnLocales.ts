@@ -98,10 +98,10 @@ const en: LearnStrings = {
   learnReadIntro: 'Read intro chapter →',
   learnPreviewCourse: 'Multi-chapter courses with progress tracking',
   learnLockedHint:
-    'Free: 6 guidebook chapters + 10 paths. Premium: 4 specialist courses, 16 sections — corrective, coaching, periodization, sports nutrition.',
+    'Free: 6 guidebook chapters + 10 paths. Premium: one Train→Coach→Fuel/Move/Mind sequence course plus specialist depth — 24 sections.',
   learnCourseTitle: 'Specialist courses',
   learnCourseSubtitle:
-    'Premium guidebook chapters — corrective, coaching business, periodization, and more.',
+    'Train → Coach → Fuel/Move/Mind as one sequence, plus specialist depth.',
   learnCourseSubtitleBrief: 'Specialist courses when unlocked. Free paths live on Learn.',
   learnCourseSignIn: 'Sign in with your bundle email to load specialist courses.',
   learnCourseFetchFailed: 'Courses could not load',
@@ -155,7 +155,31 @@ const ar: LearnStrings = {
   learnMarkComplete: 'تحديد كمكتمل',
 };
 
-const LOCALES: Partial<Record<string, LearnStrings>> = { en, es, zh, id, th, ar };
+const LOCALES: Partial<Record<string, LearnStrings>> = {
+  en,
+  es,
+  zh,
+  id,
+  th,
+  ar,
+  fr: {
+    ...en,
+    learnSubtitleOpenBeta:
+      "{{count}} parcours éducatifs — fondations d'abord. Guide et cours spécialistes ouverts en bêta ouverte.",
+    learnSubtitleBrief:
+      "Parcours gratuits d'abord. Profondeur Guide et Bundle quand vous voulez.",
+    learnSubtitleBriefOpenBeta:
+      "Parcours gratuits d'abord. Profondeur du guide et des spécialistes quand vous voulez.",
+  },
+  pt: {
+    ...en,
+    learnSubtitleOpenBeta:
+      '{{count}} percursos educativos — fundamentos primeiro. Guia e cursos especialistas abertos no beta aberto.',
+    learnSubtitleBrief: 'Percursos grátis primeiro. Profundidade de Guia e Bundle quando quiser.',
+    learnSubtitleBriefOpenBeta:
+      'Percursos grátis primeiro. Profundidade do guia e especialistas quando quiser.',
+  },
+};
 
 export function learnStringsFor(lang: string): LearnStrings & Record<string, string> {
   const ui = LOCALES[lang.split('-')[0]] ?? en;

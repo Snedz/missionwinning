@@ -13,7 +13,7 @@ No app store required.
 
 ## Private beta gate
 
-If you see a **password screen** (`/private`), your cohort uses a pre-launch gate. Enter the password your invite email provides. Then log your first set — no account required.
+If you see a **password screen** (`/private`), your cohort uses a pre-launch gate. Enter the password your invite email provides. Then log your first set — no account required. Super Bundle checkout is not open — leave an email on the landing page to get notified (no charge).
 
 ## I-Day (your first mission)
 

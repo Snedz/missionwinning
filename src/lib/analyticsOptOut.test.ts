@@ -114,4 +114,24 @@ describe('analyticsOptOut', () => {
     dnt = '1';
     assert.equal(shouldShowAnalyticsBanner(), false);
   });
+
+  it('force query shows the banner without a PostHog key when undecided', () => {
+    const prev = globalThis.window?.location;
+    Object.defineProperty(globalThis.window, 'location', {
+      configurable: true,
+      value: { search: '?mw_force_consent=1' },
+    });
+    try {
+      assert.equal(shouldShowAnalyticsBanner(), true);
+      saveAnalyticsPreference('opted_out');
+      assert.equal(shouldShowAnalyticsBanner(), false);
+    } finally {
+      if (prev !== undefined) {
+        Object.defineProperty(globalThis.window, 'location', {
+          configurable: true,
+          value: prev,
+        });
+      }
+    }
+  });
 });

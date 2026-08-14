@@ -79,16 +79,51 @@ export async function expectOneRedAction(page: Page, where: string): Promise<voi
  * shared component could put a second red fill on any of the other fifteen
  * routes and nothing would say so. `EmptyState` was doing exactly that on nine.
  */
-export async function expectAtMostOneRedAction(page: Page, where: string): Promise<void> {
-  const red = await redControls(
-    page,
-    'main button, main a[role="button"], main select, #screen-dock button'
-  );
+export async function expectAtMostOneRedAction(
+  page: Page,
+  where: string,
+  selector: string = APP_CONTROLS
+): Promise<void> {
+  // A count taken over a selector that matches nothing is zero, and zero passes
+  // — so assert the container exists before believing the measurement. On the
+  // marketing site this is the difference between "one red action" and "this
+  // helper silently measured an empty page".
+  await expect(
+    page.locator('main'),
+    `${where}: no <main> — the red-action count would be taken over nothing`
+  ).toHaveCount(1);
+
+  const red = await redControls(page, selector);
   expect(
     red.length,
     `${where}: at most one red action per screen, found ${red.length}: ${red.join(' · ')}`
   ).toBeLessThanOrEqual(1);
 }
+
+/**
+ * The app's controls: real buttons, ARIA buttons and selects, plus the dock.
+ *
+ * A plain `<a href>` is deliberately NOT in this list — in the app a link is
+ * navigation and is never the red action, so counting links here would flag
+ * every inline `text-primary` link as a second one.
+ */
+export const APP_CONTROLS =
+  'main button, main a[role="button"], main select, #screen-dock button';
+
+/**
+ * The www surface's controls.
+ *
+ * Marketing CTAs are plain `<a href>` — there is nothing to submit, so a button
+ * would be wrong markup. Running APP_CONTROLS against sites/www would match the
+ * empty set and pass on every page forever: the vacuous-guard shape `.220`
+ * names, arriving through a helper written to prevent it.
+ *
+ * `footer` is included because the poster close lives there and is the one red
+ * FIELD on the page; its nested action inverts to paper, and a regression that
+ * un-inverts it is exactly what this must catch.
+ */
+export const WWW_CONTROLS =
+  'header a, header button, main a, main button, footer a, footer button';
 
 /** The same measurement, as a number, for the `.241` per-route ratchet. */
 export async function redActionCount(page: Page): Promise<number> {

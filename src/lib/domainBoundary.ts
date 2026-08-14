@@ -55,6 +55,7 @@ export const SOCIAL_ROOTS = [
   'src/lib/social/',
   'src/components/rewards/',
   'src/components/leaderboard/',
+  'src/components/social/',
 ] as const;
 
 /**

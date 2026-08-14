@@ -9,6 +9,9 @@ import {
   formatLocalMonthKey,
   formatJournalWhen,
   formatLocalClockTime,
+  localIsoWeekKey,
+  isoWeekOffset,
+  mondayOfIsoWeek,
 } from '@/lib/time/localDate';
 
 /**
@@ -199,5 +202,44 @@ describe("formatLocalClockTime", () => {
   it("returns a non-empty clock string", () => {
     const s = formatLocalClockTime(new Date(2026, 7, 5, 14, 5, 0), "en-US");
     assert.ok(s.length > 0);
+  });
+});
+
+describe('localIsoWeekKey', () => {
+  it('uses local Thursday for the ISO week-year', () => {
+    for (const tz of ZONES) {
+      inZone(tz, () => {
+        // Thu 2026-01-01 is ISO 2026-W01.
+        assert.equal(localIsoWeekKey(localAt(2026, 1, 1, 12)), '2026-W01', tz);
+        // Mon 2025-12-29 belongs to 2026-W01 (Thursday is 2026-01-01).
+        assert.equal(localIsoWeekKey(localAt(2025, 12, 29, 23, 30)), '2026-W01', tz);
+        // Thu 2026-08-13 is 2026-W33.
+        assert.equal(localIsoWeekKey(localAt(2026, 8, 13, 12)), '2026-W33', tz);
+      });
+    }
+  });
+
+  it('does not use toISOString for the week key', () => {
+    inZone('Asia/Tokyo', () => {
+      const late = localAt(2026, 8, 13, 23, 30);
+      assert.equal(localIsoWeekKey(late), '2026-W33');
+    });
+  });
+});
+
+describe('isoWeekOffset', () => {
+  it('is zero in the same week and three from W01 to W04', () => {
+    assert.equal(isoWeekOffset('2026-W01', '2026-W01'), 0);
+    assert.equal(isoWeekOffset('2026-W01', '2026-W04'), 3);
+    assert.equal(isoWeekOffset('not-a-week', '2026-W04'), null);
+  });
+
+  it('crosses a 53-week year without inventing a week', () => {
+    // 2026-12-31 is Thursday → 2026-W53. Next Monday is 2027-W01.
+    assert.equal(localIsoWeekKey(localAt(2026, 12, 31, 12)), '2026-W53');
+    assert.equal(isoWeekOffset('2026-W53', '2027-W01'), 1);
+    const monday = mondayOfIsoWeek('2026-W33');
+    assert.ok(monday);
+    assert.equal(monday.getDay(), 1);
   });
 });

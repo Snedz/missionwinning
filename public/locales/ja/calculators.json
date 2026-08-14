@@ -1,6 +1,8 @@
 {
   "calcTitle": "電卓",
   "calcSubtitle": "無料の 1RM、マクロ、プレート ツール。 スーパー バンドルにより、高度な期間化とクライアント同期が可能になります。",
+  "calcSubtitleBrief": "1RM, macros, plates — free tools, no account required.",
+  "calcMorePremium": "Premium calculator depth",
   "calcTab1rm": "1RM",
   "calcTabMacros": "マクロ",
   "calcTabPlates": "プレート",
@@ -32,6 +34,7 @@
   "calcFat": "脂肪",
   "calcCarbs": "炭水化物",
   "calcMacroFoot": "ラフ・ミフリン-サン・ジョル+アクティビティ。 プレミアム プログラムでは、フェーズとボディコンプの調整が追加されます。",
+  "calcMacroFootOpenBeta": "Rough Mifflin-St Jeor + activity. Starting estimates — refine with Fuel logs over time.",
   "calcApplyTargets": "ターゲットを燃料に適用する",
   "calcViewFuel": "オープンフューエル",
   "calcToastApplied": "適用されたターゲット",

@@ -33,7 +33,8 @@ export type Surface =
   | 'guidebook'
   | 'benchmarks'
   | 'calculators'
-  | 'programs';
+  | 'programs'
+  | 'server';
 
 /**
  * Parked unless explicitly enabled. These add compliance, hardware or
@@ -59,6 +60,7 @@ const SECONDARY_PILLARS: readonly Surface[] = [
   'calculators',
   'programs',
   'leaderboard',
+  'server',
 ];
 
 function rawList(): string[] {
@@ -107,6 +109,7 @@ export const SURFACE_PATHS: Record<Surface, readonly string[]> = {
   benchmarks: ['/benchmarks'],
   calculators: ['/calculators'],
   programs: ['/programs'],
+  server: ['/server'],
 };
 
 /**

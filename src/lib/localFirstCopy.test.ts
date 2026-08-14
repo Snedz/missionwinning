@@ -57,6 +57,41 @@ describe('localFirstCopy', () => {
     assert.match(empty, /LOCAL_FIRST_COPY\.activeNoWorkoutDesc/);
   });
 
+  /**
+   * `.766` — CN/HK rated the offline *claim* 3.97 and disbelieved the
+   * *implementation* ("forced cloud sync / data opacity"). The fix is not a
+   * louder adjective: it is naming the mechanism on the two screens a sceptic
+   * sees first, because "offline" is a word an app with forced sync also prints.
+   */
+  it('states the mechanism, not the adjective, on both public entries', () => {
+    for (const key of ['gateLocalFirst', 'welcomeLocalFirst'] as const) {
+      const copy = LOCAL_FIRST_COPY[key];
+      assert.match(copy, /no account/i, `${key} must say an account is not needed`);
+      assert.match(copy, /this device|your device/i, `${key} must say where sets go`);
+      assert.match(copy, /uploaded/i, `${key} must speak to upload, the actual suspicion`);
+      assert.match(copy, /unless you sign in/i, `${key} must name the one condition`);
+      // A mechanism sentence that hedges into "may" or "should" is an adjective again.
+      assert.doesNotMatch(copy, /\b(?:may|should|generally|typically)\b/i, key);
+    }
+  });
+
+  it('wires both public entries to the constants', () => {
+    // The gate floors every string from GATE_EN, so the constant lands there.
+    const gate = read('src/i18n/gateEn.ts');
+    assert.match(gate, /gateLocalFirst: LOCAL_FIRST_COPY\.gateLocalFirst/);
+    const teaser = read('app/private/PrivateTeaserClient.tsx');
+    assert.match(teaser, /g\('gateLocalFirst'\)/, 'the gate poster must render it');
+
+    const welcome = read('src/page-components/WelcomePage.tsx');
+    assert.match(welcome, /LOCAL_FIRST_COPY\.welcomeLocalFirst/);
+    const welcomePack = read('src/i18n/welcomeLocales.ts');
+    assert.match(
+      welcomePack,
+      quoteAssign('welcomeSubtitleBrief', LOCAL_FIRST_COPY.welcomeLocalFirst),
+      'I-Day step one paints the pack value — it must be the same sentence'
+    );
+  });
+
   it('keeps EN packs aligned with LOCAL_FIRST_COPY for hydrated keys', () => {
     const core = read('src/i18n/coreLocales.ts');
     assert.match(core, quoteAssign('cloudSyncOn', LOCAL_FIRST_COPY.todayBackupWhenOnline));

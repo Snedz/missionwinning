@@ -21,4 +21,10 @@ describe('publicGuidePracticeCta', () => {
     assert.match(fuel.label, /Fuel|Start free/i);
     assert.notEqual(fuel.label, 'Open Fuel log');
   });
+
+  it('maps Coach to welcome with a Coach label', () => {
+    const coach = publicGuidePracticeCta('/coach', 'Open Mission Coach');
+    assert.equal(coach.href, '/welcome');
+    assert.match(coach.label, /Mission Coach/i);
+  });
 });

@@ -1,6 +1,6 @@
 {
   "welcomeKicker": "स्वतंत्रता दिवस · लगभग दो मिनट",
-  "welcomeIDay": "I-Day",
+  "welcomeIDay": "Get started",
   "welcomeMissionLead": "लक्ष्य",
   "welcomeMissionTitle": "एक रास्ता. मुफ़्त बुनियादी बातें.",
   "welcomeMissionBody1": "मिशन विनिंग पहले एक निःशुल्क वर्कआउट ट्रैकर है - फिर एक ही स्थान पर ईंधन, चाल, दिमाग, ट्रैक और सीखें।",
@@ -41,6 +41,7 @@
   "navBetaGuide": "बीटा गाइड",
   "welcomeTitle": "आपका स्वागत है, मिशन सदस्य",
   "welcomeSubtitle": "अपना पथ निर्धारित करें, फिर अपना पहला सत्र लॉग करें। एक समय में एक कदम - आज हमेशा अगली कार्रवाई दिखाता है।",
+  "welcomeSubtitleBrief": "A few questions, then log your first session. No account — sets are written to this device, and nothing is uploaded unless you sign in.",
   "welcomeBegin": "शुरू",
   "welcomeAccept": "मैं रास्ता स्वीकार करता हूँ",
   "welcomeContinue": "जारी रखना",

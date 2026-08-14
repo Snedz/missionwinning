@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useTranslation } from 'react-i18next';
 import type { GuideChapter } from '@/data/guidebook/types';
+import { GuideSectionExtras } from '@/components/learn/GuideSectionExtras';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import {
@@ -131,6 +132,7 @@ export function CourseReader({ chapters, initialChapterId }: Props) {
                       )}
                     </p>
                   ))}
+                  <GuideSectionExtras section={section} variant="app" />
                   <div className="flex flex-wrap gap-2 pt-2">
                     <Button size="sm" variant="default" className="min-h-[44px] tap-target" asChild>
                       <Link href={section.practiceCTA.href}>{section.practiceCTA.label}</Link>

@@ -188,7 +188,24 @@ run('Design system', 'npm', ['run', 'check-design-system']);
 run('Locale split', 'npm', ['run', 'check-locale-split']);
 // Both of these existed as npm scripts and neither was in the gate, so nothing ran them.
 run('Display type', 'npm', ['run', 'check-display-type']);
-run('Token sync (web ↔ Android)', 'npm', ['run', 'check-token-sync']);
+run('Token sync (web ↔ www ↔ Android)', 'npm', ['run', 'check-token-sync']);
+
+/*
+ * The www surface (sites/www), built and checked here rather than only on CI.
+ *
+ * It could have been a CI-only job — it is a different application and it does
+ * lengthen this gate. `ciTruth.test.ts` refuses that: while Actions is
+ * billing-blocked a workflow-only check is not being checked at all, and its
+ * failure message says to move it into `npm run gate`, "which is the only thing
+ * that actually runs". So it runs here.
+ *
+ * The token and design-system guards deliberately do NOT appear as new steps —
+ * those two scripts were widened to walk sites/www, so the steps above already
+ * cover it. This one needs its own because the class contract and the JS budget
+ * read build output, and the rhythm check needs a rendered page.
+ */
+run('WWW build + checks (sites/www)', 'npm', ['run', 'www:gate']);
+
 run('Production build (PRIVATE_MODE=false)', 'npm', ['run', 'build'], BUILD_ENV);
 
 /*

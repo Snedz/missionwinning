@@ -34,9 +34,10 @@ Files under `supabase/migrations/`. All are written to be **idempotent** (`if no
 | **P8** | `20260730_wind_down_nudge.sql` | Evening wind-down push columns missing (after P6) |
 | **P9** | `20260731_llm_usage.sql` | LLM spend ledger missing — quotas cannot bind if LLM is ever enabled |
 | **P10** | `20260801_day_review_push.sql` | Day-review push columns missing (after P6) |
+| **P11** | `20260813_week_logged.sql` | Signed-in week-4 working-set rollup has nowhere to land (guests stay local; PostHog still fires) |
 
 **Free-beta minimum for honest ops:** **P1 + P2 + P6 + P7**.  
-**Full pack (recommended same sitting):** P1–P10.
+**Full pack (recommended same sitting):** P1–P11.
 
 **Not in this pack (already assumed applied):** base `20250629_*` through `20260720_referrals.sql` (includes initial `mw_week4_retention()`). P7 **corrects** that function for tombstones.
 
@@ -101,6 +102,7 @@ Interpretation:
 - [ ] P8 `20260730_wind_down_nudge.sql`
 - [ ] P9 `20260731_llm_usage.sql`
 - [ ] P10 `20260801_day_review_push.sql`
+- [ ] P11 `20260813_week_logged.sql`
 - [ ] **Proof (required after P7):**
 
 ```bash
@@ -109,7 +111,7 @@ psql "$DATABASE_URL" -v ON_ERROR_STOP=1 -f supabase/checks/week4_retention_proof
 # Expect: week4 proof OK
 ```
 
-- [ ] Update [CONTEXT.md](../CONTEXT.md) Status migrations line if agents cannot (founder note to agent: “pack applied”) so “9 pending” stops lying
+- [ ] Update [CONTEXT.md](../CONTEXT.md) Status migrations line if agents cannot (founder note to agent: “pack applied”) so the pending count stops lying
 
 ---
 

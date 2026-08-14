@@ -10,3 +10,6 @@ Tokens/IA locked. Continues A (Field manual) from `.619`–`.625`.
 
 Rotated LOG oldest → [docs/archive/log/LOG-rotate-626.md](docs/archive/log/LOG-rotate-626.md). · [rotated for `.627`](docs/archive/log/LOG-rotate-627.md).
 
+### Rotated from CONTEXT.md `## Now` for `.641` (budget is ≤25 bullets)
+
+- **`.618`:** (`2026.07-unified.618`) **Ukraine commercial exclusion** + consumer legal refresh — Terms sanctions clause; Regions/Privacy/AUP/Service-Terms/Refunds; `UA` hard-block. Not OFAC country embargo; RU/BY still open (founder). Counsel export 2026-08-09. **Not legal advice.**

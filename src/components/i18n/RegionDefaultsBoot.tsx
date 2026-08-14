@@ -1,15 +1,12 @@
 'use client';
 
 /**
- * First-visit language + units from CDN country (/api/geo).
- * Skips when the user already chose prefs in Profile (explicit flags).
+ * First-visit units from CDN country (/api/geo).
+ * Does not change language — LocaleCountryChooser is the confirm step.
  */
 
 import { useEffect } from 'react';
-import i18n from '@/i18n';
-import { normalizeAppLang } from '@/i18n/appLangs';
 import {
-  LANG_EXPLICIT_KEY,
   REGION_DEFAULTS_APPLIED_KEY,
   UNITS_EXPLICIT_KEY,
   UNITS_STORAGE_KEY,
@@ -34,7 +31,6 @@ export function RegionDefaultsBoot() {
         if (cancelled) return;
 
         const unitsExplicit = readRaw(UNITS_EXPLICIT_KEY) === '1';
-        const langExplicit = readRaw(LANG_EXPLICIT_KEY) === '1';
         const hasUnits = readRaw(UNITS_STORAGE_KEY);
 
         if (!unitsExplicit && !hasUnits && (data.units === 'metric' || data.units === 'imperial')) {
@@ -44,11 +40,9 @@ export function RegionDefaultsBoot() {
           );
         }
 
-        if (!langExplicit && data.language) {
-          const lng = normalizeAppLang(data.language);
-          // Override navigator-only first paint with region default.
-          await i18n.changeLanguage(lng);
-        }
+        // Language is confirmed in LocaleCountryChooser — never silently
+        // change it from /api/geo. Geo country is a hint; hosted service
+        // still follows supportedRegions.ts.
       } catch {
         /* offline or geo unavailable — defaults stay as they are */
       } finally {

@@ -1,40 +1,10 @@
-/** Private gate + offline fallback copy — full APP_LANGS records. */
+/** Private gate + offline fallback copy — full APP_LANGS records. EN lives in gateEn.ts. */
 
-const GATE_EN: Record<string, string> = {
-  gateEyebrow: 'Invite-only open beta',
-  gateTitle1: 'Train anywhere.',
-  gateTitle2: 'Win daily.',
-  gateSubtitle:
-    'Free offline workout logging plus Mission Coach — weekly plans from your logs alone, no wearable. Full tools free for invited testers; the logger stays free forever.',
-  gateFooterTagline: 'free core forever',
-  gateWaitlistTitle: 'Get an invite',
-  gateWaitlistPlaceholder: 'you@example.com',
-  gateWaitlistSubmit: 'Notify me',
-  gateWaitlistSubmitting: 'Joining…',
-  gateWaitlistDone: "You're on the list.",
-  gateWaitlistDoneFoot: "We'll email you when a seat opens.",
-  gateWaitlistFoot: 'No spam — one email when your invite is ready, one if the waitlist moves.',
-  gateAccessSummary: 'Have a beta access code?',
-  gateAccessLabel: 'Access code',
-  gateAccessPlaceholder: 'Enter code from your invite',
-  gateAccessSubmit: 'Enter the beta',
-  gateAccessChecking: 'Checking…',
-  gateInviteEyebrow: 'Beta invite',
-  gateInviteHeadline: "You're invited — enter your access code to join the beta.",
-  gateInviteSubtitle:
-    "You're invited — enter the access code from your invite email, then complete I-Day and log your first workout.",
-  gateBetaGuide: 'beta start guide',
-  gateBetaGuideFoot: 'Invited testers: see the',
-  offlineEyebrow: 'No connection',
-  offlineTitle: "You're offline. The log isn't.",
-  offlineBody:
-    "This page isn't cached yet, but everything you've already used keeps working — your workouts live on this device and sync when you're back online.",
-  offlineCta: 'Open Today',
-};
+import { GATE_EN } from '@/i18n/gateEn';
 
 const GATE_ES: Record<string, string> = {
   ...GATE_EN,
-  gateEyebrow: 'Beta abierta solo por invitación',
+  gateEyebrow: 'Beta gratis',
   gateTitle1: 'Entrena en cualquier lugar.',
   gateTitle2: 'Gana a diario.',
   gateSubtitle:
@@ -63,7 +33,7 @@ const GATE_ES: Record<string, string> = {
 
 const GATE_FR: Record<string, string> = {
   ...GATE_EN,
-  gateEyebrow: 'Bêta ouverte sur invitation',
+  gateEyebrow: 'Bêta gratuite',
   gateTitle1: 'Entraînez-vous partout.',
   gateTitle2: 'Gagnez chaque jour.',
   gateSubtitle:
@@ -85,7 +55,7 @@ const GATE_FR: Record<string, string> = {
 
 const GATE_PT: Record<string, string> = {
   ...GATE_EN,
-  gateEyebrow: 'Beta aberta só por convite',
+  gateEyebrow: 'Beta grátis',
   gateTitle1: 'Treine em qualquer lugar.',
   gateTitle2: 'Vença todo dia.',
   gateSubtitle:
@@ -107,7 +77,7 @@ const GATE_PT: Record<string, string> = {
 
 const GATE_DE: Record<string, string> = {
   ...GATE_EN,
-  gateEyebrow: 'Offene Beta nur auf Einladung',
+  gateEyebrow: 'Kostenlose Beta',
   gateTitle1: 'Überall trainieren.',
   gateTitle2: 'Täglich gewinnen.',
   gateSubtitle:

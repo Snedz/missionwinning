@@ -109,25 +109,15 @@ test.describe('visual regression @visual', () => {
   });
 
   /**
-   * `/bundle` is only reachable when FREE_BETA is off, and `isFreeBeta()` defaults
-   * **true** — the CI job sets `PRIVATE_MODE=false` but nothing sets
-   * `NEXT_PUBLIC_FREE_BETA`, so today the route 307s to `/log`.
-   *
-   * Bootstrapping baselines in that state would have written `bundle-reduced.png`
-   * containing the **Today page**, then compared every future run against it and
-   * passed. A baseline whose name and contents disagree is worse than no baseline —
-   * it is the laundering this file's own header warns about, arriving through the
-   * front door.
-   *
-   * So: skip while the redirect is live, and resume automatically the day Bundle
-   * ships. Verified, not assumed — the check is the landing URL, not the flag.
+   * `/bundle` is the Super Bundle shop. Checkout stays muted while FREE_BETA
+   * is on (`isPaidCheckoutAllowed`). Snapshot the merchandising page.
    */
   test('bundle reduced-motion @visual', async ({ page }) => {
     await shoot(page, {
       path: '/bundle',
       name: 'bundle-reduced.png',
       skipWhenRedirected:
-        'FREE_BETA is on, so Bundle is not a page yet. Refusing to snapshot it under the wrong name; this resumes by itself when Bundle ships.',
+        'Bundle redirected (private gate or surface park). Refusing to snapshot it under the wrong name.',
     });
   });
 });

@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button';
 import { DangerZone } from '@/components/ui/DangerZone';
 import { HoldToConfirmButton } from '@/components/ui/HoldToConfirmButton';
 import { SignInPanel } from '@/components/auth/SignInPanel';
+import { MissionIdView } from '@/components/profile/MissionIdView';
 import { isFreeBeta } from '@/lib/freeBeta';
 import { STORAGE_KEYS } from '@/lib/storage/keys';
 import { readRaw } from '@/lib/storage/safeStorage';
@@ -17,6 +18,7 @@ type ProfileAccountCardProps = {
   ownerTools: boolean;
   onSignOut: () => void;
   authError?: string | null;
+  missionId?: number | null;
 };
 
 export function ProfileAccountCard({
@@ -24,6 +26,7 @@ export function ProfileAccountCard({
   ownerTools,
   onSignOut,
   authError,
+  missionId = null,
 }: ProfileAccountCardProps) {
   const { t } = useTranslation();
   const freeBeta = isFreeBeta();
@@ -112,6 +115,7 @@ export function ProfileAccountCard({
               {t('signedInAs', { defaultValue: 'Signed in as' })}{' '}
               <span className="font-semibold text-foreground">{email}</span>
             </div>
+            <MissionIdView missionId={missionId} />
             <div className="flex flex-wrap gap-2">
               <Button variant="outline" onClick={onSignOut}>
                 {t('signOut', { defaultValue: 'Sign out' })}

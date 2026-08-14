@@ -1,6 +1,9 @@
 {
   "trackTitle": "Track Activity",
   "trackSubtitle": "Registro de atividades manuais gratuito – caminhar, correr, andar de bicicleta, caminhar. Premium adiciona GPS e estatísticas avançadas (estilo MapMy, Super Bundle).",
+  "trackSubtitleBrief": "Log a walk or run. GPS and extras when you want them.",
+  "trackMoreGpsImport": "GPS, insights & import",
+  "trackMoreBodyWearables": "Body, wearables & trends",
   "trackWeekSessions": "This Week",
   "trackTotalTime": "Total Time",
   "trackDistance": "Distance",

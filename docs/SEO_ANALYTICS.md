@@ -22,6 +22,8 @@ Companion to [ROADMAP_V4_EXPERIENCE.md](archive/ROADMAP_V4_EXPERIENCE.md) Phase 
 | `waitlist_joined` | Landing capture / waitlist (`product: landing`) |
 | `iday_started` / `iday_mission_accepted` / `iday_profile_completed` / `iday_completed` | I-Day funnel (per-step drop-off) |
 | `first_workout_completed` / `workout_completed` | Train retention |
+| `set_logged` | Working set saved (`source`, `exercise_id`, `has_load`) — warmup excluded |
+| `week_logged` | First working set in the local ISO week (`source`, `iso_week`) |
 | `coach_session_adjusted` | Free "adjust today" coach action |
 | `coach_exercise_swapped` | Free garage swap on one Coach plan line |
 | `coach_chat_opened` / `coach_chat_message_sent` | Premium coach chat (never content) |
@@ -68,7 +70,7 @@ Companion to [ROADMAP_V4_EXPERIENCE.md](archive/ROADMAP_V4_EXPERIENCE.md) Phase 
 
 **Attribution:** first-touch `utm_source` / `utm_medium` / `utm_campaign` / `landing_path` are PostHog super-properties after consent (`attribution.ts`). Breakdown funnels by `utm_source`.
 
-**Retention:** weekly cohort on `workout_completed` (repeat training) — year-one #1 metric.
+**Retention:** weekly cohort on `week_logged` (working set in the ISO week) is the honest year-one #1 metric — [METRICS.md](METRICS.md). `workout_completed` remains the session-level funnel step. Do not invent traction numbers.
 
 **Push attribution:** notification open URLs use `?src=push` (e.g. `/log?src=push`). There is no SW-side analytics; PostHog pageviews pick up the query when the user lands after `notificationclick`.
 

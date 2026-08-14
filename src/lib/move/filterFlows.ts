@@ -111,3 +111,17 @@ export function parseMoveCollectionParam(
   const id = raw.trim() as MoveCollectionId;
   return MOVE_COLLECTIONS.some((c) => c.id === id) ? id : 'all';
 }
+
+/**
+ * Hydrate `/move?flow=` — only ids present in the caller-supplied catalog.
+ * Victory passes free flows; unknown / premium-only ids are ignored.
+ */
+export function parseMoveFlowParam(
+  raw: string | null | undefined,
+  flows: readonly { id: string }[]
+): string | null {
+  if (!raw) return null;
+  const id = raw.trim();
+  if (!id) return null;
+  return flows.some((f) => f.id === id) ? id : null;
+}

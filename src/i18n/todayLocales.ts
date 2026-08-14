@@ -417,7 +417,7 @@ const en: TodayStrings = {
   coachInsightNeedMove:
     'Training load is building — add mobility today to protect joints and stay on the path.',
   coachInsightNeedFuel:
-    'You\'re training hard but protein is lagging. Log Fuel today to recover and grow.',
+    'You\'re training hard but protein is lagging. Hit protein first in Fuel — log a plate, not a barcode.',
   coachInsightNeedMind:
     'Recovery is under stress. A short Mind session can help sleep, focus, and sticking with training — educational habit tools, not clinical care.',
   coachInsightSynergyMove:
@@ -769,6 +769,7 @@ const es: TodayStrings = {
 };
 
 const zh: TodayStrings = {
+  todayCoachChipAction: '打开',
   todayHabitWeekCount: en.todayHabitWeekCount,
   todayWeekFailedTitle: en.todayWeekFailedTitle,
   todayWeekFailedDesc: en.todayWeekFailedDesc,
@@ -981,7 +982,6 @@ const zh: TodayStrings = {
   todayMissionScoreDesc: '六大支柱共同贡献 — 训练、营养、活动、心理、追踪、学习。',
   todayCoachInsightTitle: '教练建议',
   todayCoachInsightDesc: '基于就绪度、负荷与恢复',
-  todayCoachChipAction: '打开',
   coachInsightHighRisk: '评估显示风险较高。今天优先恢复、灵活性和轻度活动。',
   coachInsightHighStrain: '训练负荷高、恢复不足。灵活或休息日会让你更强归来。',
   coachInsightPrimed: '你已准备好训练。{{focusLine}}。',
@@ -1037,6 +1037,7 @@ const zh: TodayStrings = {
 };
 
 const id: TodayStrings = {
+  todayCoachChipAction: 'Buka',
   todayHabitWeekCount: en.todayHabitWeekCount,
   todayWeekFailedTitle: en.todayWeekFailedTitle,
   todayWeekFailedDesc: en.todayWeekFailedDesc,
@@ -1251,7 +1252,6 @@ const id: TodayStrings = {
   todayMissionScoreDesc: 'Enam pilar berkontribusi — Train, Fuel, Move, Mind, Track, Learn.',
   todayCoachInsightTitle: 'Wawasan coach',
   todayCoachInsightDesc: 'Berdasarkan kesiapan, beban, dan pemulihan',
-  todayCoachChipAction: 'Buka',
   coachInsightHighRisk:
     'Asesmen menandai risiko tinggi. Prioritaskan pemulihan, mobilitas, dan gerakan ringan hari ini.',
   coachInsightHighStrain:
@@ -1320,6 +1320,7 @@ const id: TodayStrings = {
 };
 
 const th: TodayStrings = {
+  todayCoachChipAction: 'เปิด',
   todayHabitWeekCount: en.todayHabitWeekCount,
   todayWeekFailedTitle: en.todayWeekFailedTitle,
   todayWeekFailedDesc: en.todayWeekFailedDesc,
@@ -1533,7 +1534,6 @@ const th: TodayStrings = {
   todayMissionScoreDesc: 'หกเสาหลักมีส่วน — Train, Fuel, Move, Mind, Track, Learn',
   todayCoachInsightTitle: 'คำแนะนำโค้ช',
   todayCoachInsightDesc: 'จากความพร้อม โหลด และการฟื้นตัว',
-  todayCoachChipAction: 'เปิด',
   coachInsightHighRisk: 'การประเมินบ่งชี้ความเสี่ยงสูง วันนี้เน้นฟื้นตัว ความคล่องตัว และการเคลื่อนไหวเบา',
   coachInsightHighStrain: 'โหลดสูงแต่ฟื้นตัวต่ำ วันพักหรือ mobility จะช่วยกลับมาแข็งแกร่ง',
   coachInsightPrimed: 'คุณพร้อมฝึก {{focusLine}}',
@@ -1593,6 +1593,7 @@ const th: TodayStrings = {
 };
 
 const ar: TodayStrings = {
+  todayCoachChipAction: 'افتح',
   todayHabitWeekCount: en.todayHabitWeekCount,
   todayWeekFailedTitle: en.todayWeekFailedTitle,
   todayWeekFailedDesc: en.todayWeekFailedDesc,
@@ -1805,7 +1806,6 @@ const ar: TodayStrings = {
   todayMissionScoreDesc: 'الركائز الست تساهم — Train وFuel وMove وMind وTrack وLearn.',
   todayCoachInsightTitle: 'نصيحة المدرب',
   todayCoachInsightDesc: 'بناءً على الجاهزية والحمولة والاستشفاء',
-  todayCoachChipAction: 'افتح',
   coachInsightHighRisk: 'تقييمك أشار لخطر مرتفع. أولِّ استشفاءً وحركة خفيفة اليوم.',
   coachInsightHighStrain: 'حمولة عالية واستشفاء منخفض. يوم راحة أو movilidad يعيدك أقوى.',
   coachInsightPrimed: 'أنت جاهز للتمرين. {{focusLine}}.',

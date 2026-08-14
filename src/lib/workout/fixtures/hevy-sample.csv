@@ -1,0 +1,7 @@
+title,start_time,end_time,description,exercise_title,superset_id,exercise_notes,set_index,set_type,weight_kg,reps,distance_km,duration_seconds,rpe
+"Push Day","14 Jul 2026, 18:05","14 Jul 2026, 19:10",,"Bench Press (Barbell)",,,0,normal,100,5,,,8
+"Push Day","14 Jul 2026, 18:05","14 Jul 2026, 19:10",,"Bench Press (Barbell)",,,1,normal,100,5,,,9
+"Push Day","14 Jul 2026, 18:05","14 Jul 2026, 19:10",,"Bench Press (Barbell)",,"note with, comma
+and a newline",2,failure,100,3,,,10
+"Push Day","14 Jul 2026, 18:05","14 Jul 2026, 19:10",,"Lateral Raise (Dumbbell)",,,0,warmup,8,15,,,
+"Leg Day","16 Jul 2026, 18:00","16 Jul 2026, 19:00",,"Squat (Barbell)",,,0,normal,140,5,,,8

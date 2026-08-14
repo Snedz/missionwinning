@@ -26,7 +26,21 @@ describe('nextSetTargets', () => {
     assert.equal(t.reps, 8);
   });
 
-  it('ignores warmup sets when matching index', () => {
+  it('cites all working-set indices when every set hit the top of range', () => {
+    const t = suggestNextSetTarget(
+      [
+        { reps: 12, weight: 60 },
+        { reps: 12, weight: 60 },
+        { reps: 12, weight: 60 },
+      ],
+      0,
+      'metric'
+    );
+    assert.ok(t);
+    assert.deepEqual(t.evidenceWorkingIdx, [0, 1, 2]);
+  });
+
+  it('cites the matched working index, skipping warmup', () => {
     const last = [
       { reps: 10, weight: 40, kind: 'warmup' },
       { reps: 8, weight: 80, kind: 'normal' },
@@ -36,10 +50,21 @@ describe('nextSetTargets', () => {
     assert.ok(t);
     assert.equal(t.weight, 80);
     assert.equal(t.reps, 9);
+    assert.deepEqual(t.evidenceWorkingIdx, [0]);
   });
 
-  it('returns null when no working sets', () => {
-    assert.equal(suggestNextSetTarget([{ reps: 5, weight: 20, kind: 'warmup' }], 0, 'metric'), null);
+  it('returns null when the matched working set has 0 reps — no invented 1-rep', () => {
+    assert.equal(
+      suggestNextSetTarget(
+        [
+          { reps: 8, weight: 60 },
+          { reps: 0, weight: 60 },
+        ],
+        1,
+        'metric'
+      ),
+      null
+    );
   });
 
   it('builds per-set targets for planned count', () => {

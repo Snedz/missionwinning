@@ -8,7 +8,6 @@ import { BrandMonogram } from '@/components/brand/BrandMonogram';
 import { PublicNavMenu } from '@/components/public/PublicNavMenu';
 import { footerGroups, primaryNavLinks } from '@/components/marketing/footerLinks';
 import { PublicStatusBar } from '@/components/public/PublicStatusBar';
-import { APP_PUBLIC_PRODUCT_VERSION } from '@/lib/buildInfo';
 
 type MarketingNavProps = {
   /** full = site links + primary CTA; compact = logo + primary CTA only */
@@ -32,9 +31,8 @@ export function MarketingNav({ variant = 'full', className }: MarketingNavProps)
     >
       <PublicStatusBar
         label={t('publicStatusOpenBeta', {
-          productVersion: APP_PUBLIC_PRODUCT_VERSION,
           defaultValue:
-            '{{productVersion}} — free beta. Offline logging plus Mission Coach from your logs.',
+            'Open beta — logger free forever. Super Bundle: get notified until Stripe.',
         })}
       />
       <div className="relative z-[1] mx-auto flex h-14 max-w-6xl items-center justify-between px-5 sm:h-16">

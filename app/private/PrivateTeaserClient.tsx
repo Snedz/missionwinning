@@ -1,11 +1,11 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { useTranslation } from 'react-i18next';
-import { Check } from 'lucide-react';
 import { AppLegalFooter } from '@/components/layout/AppLegalFooter';
+import { LaunchNotifyForm } from '@/components/public/LaunchNotifyForm';
+import { gateEnFloor } from '@/i18n/gateEn';
 import {
   APP_PUBLIC_PRODUCT_VERSION,
   APP_PUBLIC_VERSION,
@@ -15,31 +15,42 @@ import {
   navigateAfterPrivateGateUnlock,
 } from '@/lib/grantPrivateAccessFromSession';
 import { privateGateReturnPath } from '@/lib/privateGateReturn';
-import { submitLead } from '@/lib/supabase';
-import { track } from '@/lib/analytics';
+import {
+  waitlistTerritoryFromGeo,
+  type WaitlistTerritory,
+} from '@/lib/legal/waitlistTerritory';
 
 type Props = {
   /** Server-resolved invite so SSR HTML exposes data-mw-invitee for gate-smoke. */
   initialInvite?: string;
+  /** Server-resolved `?next=` — read here so the gate needs no Suspense boundary. */
+  initialNext?: string;
 };
 
-export function PrivateTeaserClient({ initialInvite = '' }: Props) {
+export function PrivateTeaserClient({ initialInvite = '', initialNext = '' }: Props) {
   const { t } = useTranslation();
-  const searchParams = useSearchParams();
-  const inviteCode = (searchParams.get('invite')?.trim() || initialInvite).trim();
-  const isInvitee = Boolean(inviteCode);
+  /**
+   * Every string on this page is floored from the English gate pack, so the
+   * server paint and the post-hydration paint are the same sentence. Typing the
+   * fallback by hand is how the gate came to promise two different things a
+   * couple of seconds apart — see `gateEn.ts`.
+   */
+  const g = (key: string) => t(key, { defaultValue: gateEnFloor(key) });
+  const isInvitee = Boolean(initialInvite.trim());
 
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
-  const [waitEmail, setWaitEmail] = useState('');
-  const [waitDone, setWaitDone] = useState(false);
-  const [waitBusy, setWaitBusy] = useState(false);
-  const [waitError, setWaitError] = useState<string | null>(null);
   const [sessionUnlocking, setSessionUnlocking] = useState(true);
+  const [territory, setTerritory] = useState<WaitlistTerritory>({ stance: 'capture' });
 
   // Signed-in (localStorage) but missing gate cookie — typical after Google OAuth.
   // Bounded + fail-open: code-only invitees must reach the access-code form.
+  //
+  // `.765` — this probe used to replace the whole page with a session spinner
+  // for up to 6s. With PRIVATE_MODE on, `/` redirects here, so those words
+  // were the entire server-rendered website. The probe now runs underneath the
+  // poster and only announces itself in one line; on success it still hard-navs.
   useEffect(() => {
     let cancelled = false;
     void (async () => {
@@ -47,9 +58,7 @@ export function PrivateTeaserClient({ initialInvite = '' }: Props) {
         const ok = await grantPrivateAccessFromSession();
         if (cancelled) return;
         if (ok) {
-          navigateAfterPrivateGateUnlock(
-            privateGateReturnPath(searchParams.get('next'))
-          );
+          navigateAfterPrivateGateUnlock(privateGateReturnPath(initialNext));
           return;
         }
       } finally {
@@ -59,7 +68,26 @@ export function PrivateTeaserClient({ initialInvite = '' }: Props) {
     return () => {
       cancelled = true;
     };
-  }, [searchParams]);
+  }, [initialNext]);
+
+  // Territory truth before the ask: /api/geo is public while gated (privateGate.ts).
+  useEffect(() => {
+    if (isInvitee) return; // Invitees were chosen by hand — no capture to police.
+    let cancelled = false;
+    void (async () => {
+      try {
+        const res = await fetch('/api/geo', { credentials: 'same-origin' });
+        if (!res.ok || cancelled) return;
+        const stance = waitlistTerritoryFromGeo(await res.json());
+        if (!cancelled) setTerritory(stance);
+      } catch {
+        /* Fail-open: never tell a supported athlete they are excluded. */
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, [isInvitee]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -77,9 +105,7 @@ export function PrivateTeaserClient({ initialInvite = '' }: Props) {
       });
 
       if (res.ok) {
-        navigateAfterPrivateGateUnlock(
-          privateGateReturnPath(searchParams.get('next'))
-        );
+        navigateAfterPrivateGateUnlock(privateGateReturnPath(initialNext));
         return;
       } else {
         const data = await res.json().catch(() => ({}));
@@ -99,40 +125,6 @@ export function PrivateTeaserClient({ initialInvite = '' }: Props) {
     }
   };
 
-  const handleWaitlist = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!waitEmail || waitBusy) return;
-    setWaitBusy(true);
-    setWaitError(null);
-
-    // Same defect as UnlockButton had: `submitLead` never throws — it reports
-    // failure through `{ ok }` — so the old try/catch was dead and the result was
-    // discarded. This is the private gate, the only public capture point while
-    // PRIVATE_MODE is on, so a silently dropped address here is a launch-day lead
-    // that never existed. `ok` is still true for the local-only fallback, which is
-    // recoverable; only a hard failure shows the error.
-    const result = await submitLead({
-      name: '',
-      email: waitEmail,
-      source: 'launch-waitlist',
-      message: 'Private gate waitlist',
-    });
-
-    if (!result?.ok) {
-      setWaitError(
-        t('gateWaitlistFailed', {
-          defaultValue: 'That did not save. Check your connection and try again.',
-        })
-      );
-      setWaitBusy(false);
-      return;
-    }
-
-    track('waitlist_joined', { product: 'launch' });
-    setWaitDone(true);
-    setWaitBusy(false);
-  };
-
   const errorNode = error ? (
     <p role="alert" aria-live="assertive" className="gate-error">
       {error}
@@ -142,15 +134,13 @@ export function PrivateTeaserClient({ initialInvite = '' }: Props) {
   const codeField = (
     <label className="gate-field">
       <span className="gate-label">
-        {t('gateAccessLabel', { defaultValue: 'Access code' })}
+        {g('gateAccessLabel')}
       </span>
       <input
         type="password"
         value={password}
         onChange={(e) => setPassword(e.target.value)}
-        placeholder={t('gateAccessPlaceholder', {
-          defaultValue: 'Enter code from your invite',
-        })}
+        placeholder={g('gateAccessPlaceholder')}
         autoComplete="off"
         // Invitees land with the access form expanded — focus the code field.
         // eslint-disable-next-line jsx-a11y/no-autofocus -- invite conversion
@@ -162,19 +152,26 @@ export function PrivateTeaserClient({ initialInvite = '' }: Props) {
   );
 
   const submitLabel = loading
-    ? t('gateAccessChecking', { defaultValue: 'Checking…' })
-    : t('gateAccessSubmit', { defaultValue: 'Enter the beta' });
+    ? g('gateAccessChecking')
+    : g('gateAccessSubmit');
 
-  if (sessionUnlocking) {
-    return (
-      <div
-        className="gate-shell gate-center"
-        data-mw-invitee={isInvitee ? '1' : '0'}
-      >
-        {t('gateCheckingSession', { defaultValue: 'Checking sign-in…' })}
-      </div>
-    );
-  }
+  /** Announced, never blocking — the poster is already on screen behind it. */
+  const probeNote = sessionUnlocking ? (
+    <p className="gate-foot" aria-live="polite">
+      {g('gateCheckingSession')}
+    </p>
+  ) : null;
+
+  /** `notice` = country unconfirmed (Tor / some VPNs). Say so; keep the form. */
+  const territoryNote =
+    territory.stance === 'notice' && territory.message ? (
+      <p className="gate-foot" data-mw-territory={territory.reason}>
+        {territory.message}{' '}
+        <Link href="/regions">
+          {t('infoRegionsTitle', { defaultValue: 'Supported Regions' })}
+        </Link>
+      </p>
+    ) : null;
 
   return (
     <div className="gate-shell page-enter" data-mw-invitee={isInvitee ? '1' : '0'}>
@@ -186,7 +183,7 @@ export function PrivateTeaserClient({ initialInvite = '' }: Props) {
           <span className="gate-brandname">Mission Winning</span>
         </span>
         <p className="gate-kicker" data-mw-public-version={APP_PUBLIC_VERSION}>
-          {APP_PUBLIC_VERSION}
+          {APP_PUBLIC_VERSION} · {g('gateEyebrow')}
         </p>
       </header>
       <hr className="gate-rule" />
@@ -195,26 +192,27 @@ export function PrivateTeaserClient({ initialInvite = '' }: Props) {
       <main className="gate-main">
         <div className="gate-col">
           <h1 className="gate-h1">
-            <span>{t('gateTitle1', { defaultValue: 'Train anywhere.' })}</span>
-            <span>{t('gateTitle2', { defaultValue: 'Win daily.' })}</span>
+            <span>{g('gateTitle1')}</span>
+            <span>{g('gateTitle2')}</span>
           </h1>
           <p className="gate-lede">
-            {t('gateSubtitle', {
-              defaultValue:
-                'Free offline workout logging plus Mission Coach — weekly plans from your logs alone, no wearable. Launching soon; the core is free forever.',
-            })}
+            {g('gateSubtitle')}
+          </p>
+          {/*
+            The mechanism, on the first screen anyone sees. "Offline" is a word
+            an app with forced sync would also print; this says where the sets go.
+          */}
+          <p className="gate-foot" data-mw-local-first>
+            {g('gateLocalFirst')}
           </p>
 
           {isInvitee ? (
             <section className="gate-section">
               <p className="gate-kicker">
-                {t('gateInviteEyebrow', { defaultValue: 'Beta invite' })}
+                {g('gateInviteEyebrow')}
               </p>
               <p className="gate-invite-copy">
-                {t('gateInviteSubtitle', {
-                  defaultValue:
-                    "You're invited — enter the access code from your invite email, then complete I-Day and log your first workout.",
-                })}
+                {g('gateInviteSubtitle')}
               </p>
               <form onSubmit={handleSubmit}>
                 {codeField}
@@ -229,9 +227,9 @@ export function PrivateTeaserClient({ initialInvite = '' }: Props) {
                 </div>
                 {errorNode}
                 <p className="gate-foot">
-                  {t('gateBetaGuideFoot', { defaultValue: 'Invited testers: see the' })}{' '}
+                  {g('gateBetaGuideFoot')}{' '}
                   <Link href="/beta">
-                    {t('gateBetaGuide', { defaultValue: 'beta start guide' })}
+                    {g('gateBetaGuide')}
                   </Link>
                   . If you installed the app before the gate, clear site data or reinstall.
                 </p>
@@ -239,64 +237,44 @@ export function PrivateTeaserClient({ initialInvite = '' }: Props) {
             </section>
           ) : (
             <section className="gate-section">
-              {waitDone ? (
-                <>
-                  <p className="gate-done">
-                    <Check className="h-4 w-4" strokeWidth={2} aria-hidden />
-                    {t('gateWaitlistDone', { defaultValue: "You're on the list." })}
-                  </p>
-                  <p className="gate-foot">
-                    {t('gateWaitlistDoneFoot', {
-                      defaultValue: "We'll email you the moment doors open.",
-                    })}{' '}
-                    {waitEmail}
-                  </p>
-                </>
-              ) : (
-                <form onSubmit={handleWaitlist}>
+              {territory.stance === 'refuse' ? (
+                /*
+                 * A named excluded territory. The poster still stands — the
+                 * product exists and the source is public — but we do not ask
+                 * for an address we could only ever ignore. The access-code
+                 * details below stay open, so a hand-picked tester passing
+                 * through is not locked out of their own invite.
+                 */
+                <div data-mw-territory={territory.reason}>
                   <p className="gate-kicker">
-                    {t('gateWaitlistTitle', { defaultValue: 'Get notified at launch' })}
+                    {t('infoRegionsTitle', { defaultValue: 'Supported Regions' })}
                   </p>
-                  <div className="gate-row">
-                    <input
-                      type="email"
-                      required
-                      value={waitEmail}
-                      onChange={(e) => setWaitEmail(e.target.value)}
-                      placeholder={t('gateWaitlistPlaceholder', {
-                        defaultValue: 'you@example.com',
-                      })}
-                      aria-label="Email for the launch waitlist"
-                      className="gate-input"
-                      disabled={waitBusy}
-                    />
-                    <button
-                      type="submit"
-                      disabled={waitBusy || !waitEmail}
-                      className="gate-btn gate-btn-primary"
-                    >
-                      {waitBusy
-                        ? t('gateWaitlistSubmitting', { defaultValue: 'Joining…' })
-                        : t('gateWaitlistSubmit', { defaultValue: 'Notify me' })}
-                    </button>
-                  </div>
-                  {waitError && (
-                    <p className="gate-foot" role="alert" style={{ color: 'var(--destructive)' }}>
-                      {waitError}
-                    </p>
-                  )}
+                  <p className="gate-invite-copy">{territory.message}</p>
                   <p className="gate-foot">
-                    {t('gateWaitlistFoot', {
-                      defaultValue: 'No spam — one email when the beta opens, one at launch.',
-                    })}
+                    <Link href="/regions">
+                      {t('infoRegionsNotSupported', {
+                        defaultValue: 'Where we do not support the hosted service',
+                      })}
+                    </Link>
                   </p>
-                </form>
+                </div>
+              ) : (
+                <>
+                  <p className="gate-kicker">{g('gateWaitlistTitle')}</p>
+                  <LaunchNotifyForm
+                    source="launch-waitlist"
+                    message="Private gate waitlist"
+                    variant="gate"
+                  />
+                  <p className="gate-foot">{g('gateWaitlistFoot')}</p>
+                  {territoryNote}
+                </>
               )}
 
               {/* Access code secondary — never competes with Notify me red. */}
               <details className="gate-details" open={false}>
                 <summary className="gate-details-summary">
-                  {t('gateAccessSummary', { defaultValue: 'Have a beta access code?' })}
+                  {g('gateAccessSummary')}
                 </summary>
                 <form onSubmit={handleSubmit}>
                   {codeField}
@@ -314,6 +292,8 @@ export function PrivateTeaserClient({ initialInvite = '' }: Props) {
               </details>
             </section>
           )}
+
+          {probeNote}
         </div>
       </main>
 
@@ -321,7 +301,7 @@ export function PrivateTeaserClient({ initialInvite = '' }: Props) {
         <div className="gate-footer-inner">
           <span>
             {APP_PUBLIC_PRODUCT_VERSION} —{' '}
-            {t('gateFooterTagline', { defaultValue: 'free core forever' })}
+            {g('gateFooterTagline')}
           </span>
           <AppLegalFooter className="gate-footer-links" />
         </div>

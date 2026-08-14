@@ -20,7 +20,10 @@ export interface ToneViolation {
 
 /**
  * Naming how long someone has been gone turns a gap into a verdict. "It's been 11
- * days" is information the athlete already has and cannot act on.
+ * days" is information the athlete already has and cannot act on — **on an outbound
+ * channel**. The in-app Today quiet line (S7) may name calendar days off because
+ * the next sentence is the 20-minute session they can start. Do not reuse that
+ * line in email or push.
  *
  * Counts of things they *did* ("Sessions: 3") are fine — this only matches a number
  * bound to a unit of elapsed time.

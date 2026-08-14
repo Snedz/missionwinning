@@ -11,3 +11,6 @@ Continues Field manual A after Waves 1–4.
 
 Rotated LOG oldest → [docs/archive/log/LOG-rotate-629.md](docs/archive/log/LOG-rotate-629.md). · [rotated for `.630`](docs/archive/log/LOG-rotate-630.md).
 
+### Rotated from CONTEXT.md `## Now` for `.644`
+
+- **`.635`:** (`2026.07-unified.635`) **Sanctions/export** — generic only (no sub-national place names). `.634` naming reverted. **Not legal advice.**

@@ -118,7 +118,7 @@ const en: CoreStrings = {
   lang_it: 'Italiano',
   lang_ko: '한국어',
   lang_ja: '日本語',
-  editJourneyProfile: 'Edit journey profile',
+  editJourneyProfile: 'Edit profile',
   cloudSyncActive: 'Journey synced to cloud',
   cloudSyncPending: 'Sign in to sync journey across devices',
   saveProfile: 'Save profile',

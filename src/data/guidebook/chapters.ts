@@ -214,27 +214,29 @@ Pair patterns across the week rather than cramming everything into one marathon 
     id: 'programming-tuning',
     number: 3,
     title: 'Programming & Tuning',
-    subtitle: 'Volume, intensity, and when to deload — tune your plan',
+    subtitle: 'Volume, intensity, and deloads — plans from your logs',
     icon: '⚙️',
     quickPathId: 'periodization-design',
     heroImage: {
       src: '/learn/programming-tuning-hero.webp',
       alt: 'Abstract progressive overload waveform on a dark mission canvas',
-      caption: 'Progress the plan, then deload',
+      caption: 'Progress the plan from what you logged',
     },
     sections: [
       {
         id: 'ch3-s1',
-        title: 'Volume & Intensity',
+        title: 'Log First, Then Tune',
         summary:
-          'Volume is how much work you do; intensity is how hard each set is. Both must progress over months, not every session.',
-        body: `**Volume** is often counted as hard sets per muscle group per week. Beginners grow on modest volume; advanced lifters need more careful periodization.
+          'Log sets on this phone — even offline, with no wearable. Mission Coach reads that diary and builds the next week. Volume and intensity are what it is reading.',
+        body: `This section is a practice intro: do the work, then let the week come from the diary.
 
-**Intensity** can mean % of max or proximity to failure (RPE). Heavy triples and moderate rep work serve different goals.
+**Do this first.** Open Train and log the sets you actually did — park, garage, hotel gym, or living-room floor. The logger works on this phone without Wi-Fi. You do not need a wearable, and you do not need an account to start. Rate how hard the set felt when you have a sense for it.
 
-A common beginner mistake is maxing out every week. A common intermediate mistake is adding exercises instead of progressing the ones that matter.
+**Then open Mission Coach.** Weekly plans come from those logs: how much you did, how hard it felt, and what you missed. Coach re-spreads a skipped day instead of shaming you into a restart. A week of honest logs beats a perfect template you never followed.
 
-Log sets and reps in Active Workout. Mission Winning history is your programming notebook.`,
+**What Coach is reading.** Volume is how much work you did (often hard sets per muscle group per week). Intensity is how hard each set was — percent of max or proximity to failure (RPE). Beginners grow on modest volume; advanced lifters need more careful waves. A common beginner mistake is maxing out every week. A common intermediate mistake is adding exercises instead of progressing the ones that matter.
+
+Log sets and reps in Train. That history is the programming notebook Mission Coach uses — not a strap, not a social feed.`,
         practiceCTA: { label: 'Start a workout', href: '/active' },
         relatedLearnPathId: 'periodization-design',
         relatedExerciseIds: ['squats', 'deadlift', 'bench-press'],
@@ -263,8 +265,8 @@ Log sets and reps in Active Workout. Mission Winning history is your programming
 
 Use RPE when sleep was poor, stress is high, or readiness trends down. Keep the movement pattern; drop load or reps instead of forcing yesterday's numbers.
 
-In the logger, note how sets felt. Over weeks you will see when to add weight versus when to repeat the same top set.`,
-        practiceCTA: { label: 'Use program templates', href: '/builder' },
+In the logger, note how sets felt. Mission Coach uses those RPE notes when it shapes the next week. You do not need a wearable for that signal. Over weeks you will see when to add weight versus when to repeat the same top set.`,
+        practiceCTA: { label: 'Open Mission Coach', href: '/coach' },
         relatedExerciseIds: ['squats', 'bench-press', 'deadlift'],
         relatedLearnPathId: 'periodization-design',
         sourceRef: 'foundations — RPE',
@@ -296,8 +298,8 @@ In the logger, note how sets felt. Over weeks you will see when to add weight ve
 
 **Deload:** Cut volume or intensity 40–60% for a week when performance stalls or readiness drops for 5+ days.
 
-Program templates in the Builder encode these ideas. Pro templates (premium) add classic strength blocks — Texas Method, 5/3/1 variants, and more — when you are ready for structure beyond starters.`,
-        practiceCTA: { label: 'Browse templates', href: '/builder' },
+Mission Coach already waves stress from your logs — including missed sessions. You do not need a wearable or a template pack to get a week that matches what you actually did. Deload is a plan, not a failure.`,
+        practiceCTA: { label: 'Open Mission Coach', href: '/coach' },
         relatedExerciseIds: ['squats', 'deadlift', 'overhead-press'],
         relatedLearnPathId: 'periodization-design',
         sourceRef: 'foundations — periodization',

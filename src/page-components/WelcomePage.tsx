@@ -5,7 +5,7 @@
  */
 
 import { useState, useEffect, useMemo } from 'react';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import { useTranslation } from 'react-i18next';
 import { ChevronLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -37,6 +37,7 @@ import { readRaw, writeRaw } from '@/lib/storage/safeStorage';
 import { STORAGE_KEYS } from '@/lib/storage/keys';
 import { seedHomeGymKitIfUnset } from '@/lib/workout/homeGymKit';
 import { navigateAfterPrivateGateUnlock } from '@/lib/privateGateNavigate';
+import { LOCAL_FIRST_COPY } from '@/lib/localFirstCopy';
 
 const EXPERIENCE_VALUES = ['beginner', 'intermediate', 'advanced'] as const;
 const EQUIPMENT_VALUES = ['bodyweight', 'dumbbells', 'full-gym'] as const;
@@ -45,10 +46,19 @@ type Step = 'welcome' | 'profile';
 
 const STEP_ORDER: Step[] = ['welcome', 'profile'];
 
-export function WelcomePage() {
+type WelcomePageProps = {
+  /**
+   * `?edit=1`, resolved by the route. Read as a prop rather than through
+   * `useSearchParams()` so I-Day step one is server-rendered — that hook made
+   * the whole page a Suspense child at prerender and the served HTML became the
+   * fallback, one `aria-hidden` skeleton (`.765`). See `app/welcome/page.tsx`.
+   */
+  initialEdit?: boolean;
+};
+
+export function WelcomePage({ initialEdit = false }: WelcomePageProps) {
   const router = useRouter();
-  const searchParams = useSearchParams();
-  const isEdit = searchParams.get('edit') === '1';
+  const isEdit = initialEdit;
   const { t } = useTranslation();
   const [step, setStep] = useState<Step>('welcome');
   const [experience, setExperience] = useState('beginner');
@@ -205,9 +215,8 @@ export function WelcomePage() {
                   </h1>
                   <p className="max-w-md text-base leading-relaxed text-muted-foreground">
                     {t('welcomeSubtitleBrief', {
-                      defaultValue:
-                        'A few questions, then log your first session. Free offline logging — forever.',
-                    })}
+                        defaultValue: LOCAL_FIRST_COPY.welcomeLocalFirst,
+                      })}
                   </p>
                 </div>
 
@@ -328,6 +337,21 @@ export function WelcomePage() {
                     ? t('saveProfile', { defaultValue: 'Save profile' })
                     : t('welcomeContinue', { defaultValue: 'Continue' })}
                 </button>
+                {/*
+                  Data-in, on the last screen before the first log. Strong/Hevy
+                  import has shipped for a while and lived three taps deep inside
+                  a collapsed section on /account, so a switcher holding a CSV —
+                  the export is how you leave Hevy once it caps free history —
+                  had no path to it. `.766` moved this off the sign-in step that
+                  `.759`–`.764` removed. Reuses the import card's own translated strings;
+                  a link, not a red action, because the free logger comes first.
+                */}
+                <p className="text-center text-xs leading-relaxed text-muted-foreground">
+                  {t('csvImportTitle', { defaultValue: 'Your training history' })}{' '}
+                  <a href="/account#import" className="underline underline-offset-2">
+                    {t('csvImportCta', { defaultValue: 'Import CSV (Strong / Hevy)' })}
+                  </a>
+                </p>
                 <Button
                   variant="ghost"
                   size="sm"

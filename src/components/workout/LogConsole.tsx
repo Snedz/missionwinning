@@ -95,6 +95,7 @@ function Field({
   onInput,
   onSubmit,
   inputMode,
+  testId,
 }: {
   label: string;
   value: number;
@@ -107,6 +108,7 @@ function Field({
   /** Enter / Go on the soft keyboard logs the set (gym speed). */
   onSubmit?: () => void;
   inputMode: 'numeric' | 'decimal';
+  testId?: string;
 }) {
   return (
     <div className="min-w-0 flex-1">
@@ -122,6 +124,7 @@ function Field({
           inputMode={inputMode}
           enterKeyHint="done"
           value={value}
+          data-testid={testId}
           aria-label={inputLabel}
           onFocus={(e) => e.target.select()}
           onChange={(e) => onInput(e.target.value)}
@@ -318,6 +321,7 @@ export function LogConsole({
           label={t('activeReps', { defaultValue: 'Reps' })}
           value={reps}
           inputMode="numeric"
+          testId="log-console-reps"
           inputLabel={t('activeReps', { defaultValue: 'Reps' })}
           decreaseLabel={t('activeDecreaseReps', { defaultValue: 'Decrease reps' })}
           increaseLabel={t('activeIncreaseReps', { defaultValue: 'Increase reps' })}
@@ -394,6 +398,7 @@ export function LogConsole({
               type="button"
               onClick={() => onWeightChange(weightStep > 0 ? weightStep : 5)}
               className="flex h-[52px] w-full items-center justify-center border-2 border-neutral-700 bg-foreground text-[22px] font-extrabold text-neutral-100 tap-target"
+              data-testid="log-console-weight"
               aria-label={t('activeSetBodyweightAddLoad', {
                 defaultValue: 'Bodyweight — tap to add load',
               })}
@@ -406,6 +411,7 @@ export function LogConsole({
             label={weightLabel}
             value={weight}
             inputMode="decimal"
+            testId="log-console-weight"
             inputLabel={weightLabel}
             decreaseLabel={t('activeDecreaseWeight', {
               unit: weightLabel,

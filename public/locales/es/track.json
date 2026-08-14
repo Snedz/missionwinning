@@ -1,6 +1,9 @@
 {
   "trackTitle": "Registrar actividad",
   "trackSubtitle": "Registro manual gratuito — caminar, correr, bici, senderismo. Premium añade GPS y estadísticas avanzadas.",
+  "trackSubtitleBrief": "Log a walk or run. GPS and extras when you want them.",
+  "trackMoreGpsImport": "GPS, insights & import",
+  "trackMoreBodyWearables": "Body, wearables & trends",
   "trackWeekSessions": "Esta semana",
   "trackTotalTime": "Tiempo total",
   "trackDistance": "Distancia",

@@ -50,6 +50,14 @@ const UUID_2 = '7c1e4b90-2a3d-4f56-8b9c-0d1e2f3a4b5c';
 const SIG = 'z'.repeat(88);
 
 const CASES: Record<string, Case> = {
+  weekLoggedBodySchema: {
+    valid: [{ isoWeek: '2026-W33' }],
+    invalid: [
+      { input: { isoWeek: '2026-08-13' }, because: 'ISO week is YYYY-Www, not a calendar date' },
+      { input: {}, because: 'isoWeek is required' },
+    ],
+  },
+
   accountDeleteBodySchema: {
     valid: [{ confirm: 'DELETE', deviceId: 'device-1' }],
     invalid: [
@@ -62,6 +70,10 @@ const CASES: Record<string, Case> = {
       {
         input: { confirm: 'DELETE', deviceId: 'x'.repeat(65) },
         because: 'device ids are client UUIDs; 64 bounds junk',
+      },
+      {
+        input: { confirm: 'DELETE', userId: 'other-account' },
+        because: 'account id is server-minted from the session — a client-chosen id must not parse',
       },
     ],
   },

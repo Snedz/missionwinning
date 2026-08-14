@@ -48,7 +48,7 @@ export function SupportedRegionsPage() {
       icon={Globe2}
       eyebrow={t('infoLegalEyebrow', { defaultValue: 'Legal' })}
       title={t('infoRegionsTitle', { defaultValue: 'Supported Regions' })}
-      lastUpdated={t('infoLastUpdated', { defaultValue: 'Last updated: August 2026' })}
+      lastUpdated={t('infoLastUpdated', { defaultValue: 'Last updated: 13 August 2026' })}
       showLegalFooter
       jumpLinks={jumpLinks}
     >

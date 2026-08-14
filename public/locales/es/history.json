@@ -20,6 +20,8 @@
   "historyDayEyebrow": "On this day",
   "historyDayPosition": "Day {{index}} of {{total}} logged",
   "historyDayEmpty": "Nothing was recorded on this day.",
+  "historyDayEmptyTitle": "Nothing logged this day",
+  "historyDayEmptyCta": "Open Today",
   "historyDayBadDate": "That is not a date. Pick a day from your history.",
   "historyDayBack": "Back to history",
   "historyDayToday": "replay today",
@@ -66,5 +68,8 @@
   "journalEditPlaceholder": "One note per line — your words, kept verbatim.",
   "journalSave": "Save",
   "journalCancel": "Cancel",
-  "historyViewFuel": "Ver en Fuel"
+  "historyViewFuel": "Ver en Fuel",
+  "historySetCount": "{{count}} sets",
+  "historySetCountOne": "1 set",
+  "historyOpenLog": "Open log: {{name}}"
 }

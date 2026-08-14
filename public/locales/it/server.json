@@ -1,0 +1,23 @@
+{
+  "navServer": "Messenger",
+  "moreServerDesc": "Rooms on this device",
+  "serverEyebrow": "Mission Server",
+  "serverTitle": "Garage",
+  "serverSubtitle": "Rooms on this device. Not a feed.",
+  "serverChannelTrain": "train",
+  "serverChannelGarage": "garage",
+  "serverChannelOffTopic": "off-topic",
+  "serverEmpty": "No messages yet. They stay on this device.",
+  "serverComposerPlaceholder": "Message {{channel}}",
+  "serverSend": "Invia",
+  "serverMemberSelf": "You",
+  "serverRoomsLabel": "Rooms",
+  "serverWindowLabel": "Chat",
+  "serverLocalNote": "Saved on this device. Cloud fan-out only if Realtime is on and you are signed in.",
+  "serverPresenceLabel": "Presence",
+  "serverPresenceAvailable": "Available",
+  "serverPresenceAway": "Away",
+  "serverPresenceOffline": "Offline",
+  "serverNudge": "Nudge",
+  "serverNudgeLine": "Nudge"
+}

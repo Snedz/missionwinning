@@ -10,6 +10,11 @@ import dynamic from 'next/dynamic';
 import { useRouter } from 'next/navigation';
 import { useTranslation } from 'react-i18next';
 import { JourneyHero } from '@/components/journey/JourneyHero';
+
+const CoachLogCite = dynamic(
+  () => import('@/components/coach/CoachLogCite').then((m) => m.CoachLogCite),
+  { ssr: false }
+);
 import { dayReviewMayMount } from '@/lib/today/dayReviewMount';
 import { firstStepsMayMount, reentryCardMayMount } from '@/lib/today/todayGuidanceMount';
 import { todayCoachInviteMayMount } from '@/lib/today/todayCoachInviteMount';
@@ -60,19 +65,14 @@ const TodayDayReviewCard = dynamic(
 /**
  * `.204` — both were mounted in the dashboard shell only, and `HomePage` sends
  * `i-day` and `basic` here. The beta path card therefore appeared only after the
- * athlete had already done what it instructs, and a `basic` athlete who lapsed
- * got no re-entry card — `basic` requires all five pillars, so history can be
- * long before the phase advances. Same `dynamic()` + mount-gate shape as the
- * evening card above, so neither chunk is fetched when it cannot render.
+ * athlete had already done what it instructs. Same `dynamic()` + mount-gate
+ * shape as the evening card above, so the chunk is not fetched when it cannot
+ * render. Missed-day re-entry (0.1 beta) is the Start field's one line, not a
+ * second card.
  */
 const FirstStepsCard = dynamic(
   () => import('@/components/journey/FirstStepsCard').then((m) => m.FirstStepsCard),
   { ssr: false, loading: () => null }
-);
-
-const TodayReentryCard = dynamic(
-  () => import('@/components/today/TodayReentryCard').then((m) => m.TodayReentryCard),
-  { ssr: false }
 );
 
 /** After first session — rank + weekly goal; cold path stays free of rewards chunk. */
@@ -313,17 +313,6 @@ export function HomeTodayLean() {
     },
   ];
 
-  // Directly under the boss CTA, as in the dashboard shell: a returning athlete
-  // sees the smaller ask before anything that reads as a scoreboard of the gap.
-  if (reentry && reentryCardMayMount({ phase: journeyState.phase, show: reentry.show })) {
-    blocks.push({
-      key: 'reentry',
-      priority: P.reentry,
-      pinned: true,
-      node: <TodayReentryCard reentry={reentry} />,
-    });
-  }
-
   if (rewardsSummary && workoutHistory.length > 0) {
     blocks.push({
       key: 'rewards',
@@ -387,6 +376,8 @@ export function HomeTodayLean() {
               defaultValue: 'Turn your logs into this week’s plan',
             })}
           </p>
+          {/* "Turn your logs into…" is a claim; this is the log it means. */}
+          <CoachLogCite className="mt-1" />
         </a>
       ),
     });
@@ -451,6 +442,16 @@ export function HomeTodayLean() {
           activeWorkout={hasActiveWorkout}
           justGoMeta={justGoMeta}
           completedSessions={workoutHistory.length}
+          reentry={
+            reentry &&
+            reentryCardMayMount({
+              phase: journeyState.phase,
+              show: reentry.show,
+              sessionOpen: hasActiveWorkout,
+            })
+              ? reentry
+              : null
+          }
         />
       </ScreenDock>
     </>

@@ -1,9 +1,11 @@
-import { describe, it } from 'node:test';
+import { afterEach, beforeEach, describe, it } from 'node:test';
 import assert from 'node:assert/strict';
 import {
   isPublicApiPathWhileGated,
   isPublicPathWhileGated,
+  queryGrantsAccess,
 } from './privateGate.ts';
+import { restoreEnv, setTestEnv, snapshotEnv } from './testEnv.ts';
 
 describe('isPublicPathWhileGated', () => {
   it('allows the gate page and legal footer routes', () => {
@@ -93,5 +95,45 @@ describe('isPublicApiPathWhileGated', () => {
         '/api/stripe-webhook',
       ].sort()
     );
+  });
+});
+
+describe('queryGrantsAccess', () => {
+  let envSnapshot: NodeJS.ProcessEnv;
+
+  beforeEach(() => {
+    envSnapshot = snapshotEnv();
+  });
+
+  afterEach(() => {
+    restoreEnv(envSnapshot);
+  });
+
+  it('does not grant from a query string in production', () => {
+    setTestEnv('NODE_ENV', 'production');
+    setTestEnv('PRIVATE_ALLOW_QUERY_ACCESS', undefined);
+    const params = new URLSearchParams({ access: 'test-gate-secret-32chars-min!!' });
+    assert.equal(queryGrantsAccess(params, 'test-gate-secret-32chars-min!!'), false);
+  });
+
+  it('does not grant from invite or next params', () => {
+    setTestEnv('NODE_ENV', 'test');
+    setTestEnv('PRIVATE_ALLOW_QUERY_ACCESS', 'true');
+    assert.equal(
+      queryGrantsAccess(new URLSearchParams({ invite: 'MW-B-ABC12' }), 'test-gate-secret-32chars-min!!'),
+      false
+    );
+    assert.equal(
+      queryGrantsAccess(new URLSearchParams({ next: '/log' }), 'test-gate-secret-32chars-min!!'),
+      false
+    );
+  });
+
+  it('still requires the flag on Vercel production even if NODE_ENV is unset-like', () => {
+    setTestEnv('NODE_ENV', 'test');
+    setTestEnv('VERCEL_ENV', 'production');
+    setTestEnv('PRIVATE_ALLOW_QUERY_ACCESS', undefined);
+    const params = new URLSearchParams({ access: 'test-gate-secret-32chars-min!!' });
+    assert.equal(queryGrantsAccess(params, 'test-gate-secret-32chars-min!!'), false);
   });
 });

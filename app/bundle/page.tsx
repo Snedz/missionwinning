@@ -4,7 +4,7 @@ import { redirect } from 'next/navigation';
 import { BundlePage } from '@/page-components/BundlePage';
 import { publicPageMetadata } from '@/lib/seoMetadata';
 import { productJsonLd } from '@/lib/publicSeo';
-import { SkeletonCard } from '@/components/ui/Skeleton';
+import { RouteLoading } from '@/components/layout/RouteLoading';
 import { isFreeBeta } from '@/lib/freeBeta';
 
 export const metadata: Metadata = publicPageMetadata({
@@ -25,13 +25,7 @@ export default function SuperBundleRoute() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      <Suspense
-        fallback={
-          <div className="flex min-h-screen items-center justify-center bg-background px-5">
-            <SkeletonCard className="w-full max-w-lg" />
-          </div>
-        }
-      >
+      <Suspense fallback={<RouteLoading label="Super Bundle" />}>
         <BundlePage />
       </Suspense>
     </>

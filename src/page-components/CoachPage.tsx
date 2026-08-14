@@ -14,6 +14,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { PillarPageShell } from '@/components/layout/PillarPageShell';
 import { ScreenDock } from '@/components/layout/ScreenDock';
 import { WeekStrip } from '@/components/coach/WeekStrip';
+import { CoachLogCite } from '@/components/coach/CoachLogCite';
 import { CoachPlanSessionGrid } from '@/components/coach/CoachPlanSessionGrid';
 import { AdjustSessionSheet } from '@/components/coach/AdjustSessionSheet';
 import { CoachAdaptBanner } from '@/components/coach/CoachAdaptBanner';
@@ -90,6 +91,14 @@ export function CoachPage({ askExerciseId }: CoachPageProps = {}) {
           'A week of training built from your logs — no wearable. Miss a day or crush a PR, and the plan flexes.',
       })}
     >
+      {/*
+       * Directly under the subtitle's "built from your logs" claim, before any
+       * plan renders: the log it is built from, or the fact that there is none.
+       * `emphasis` because on this screen the citation *is* the argument — the
+       * survey's lowest-scoring item was clarity about exactly this.
+       */}
+      <CoachLogCite emphasis className="mb-3" />
+
       {loading && <CoachPlanSkeleton className="py-2" />}
 
       {!loading && locked && plan && (
@@ -314,6 +323,10 @@ export function CoachPage({ askExerciseId }: CoachPageProps = {}) {
             todayOffset={todayOffset}
             onAdjustToday={() => setAdjustOpen(true)}
             onSwapExercise={swapSessionExercise}
+            rationaleHints={{
+              loggedWorkoutCount: ctx.history.length,
+              loadZone: ctx.loadZone ?? null,
+            }}
           />
 
           <details className="group border-2 border-border bg-card">

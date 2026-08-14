@@ -1,5 +1,6 @@
 {
   "navOpenBeta": "Открытая бета",
+  "navInviteOnlyBeta": "Бета по приглашению",
   "navAssess": "Оценка",
   "navMore": "Ещё",
   "navCoachTab": "Тренер",
@@ -19,6 +20,7 @@
   "navLibrary": "Библиотека",
   "navHistory": "История",
   "navLeaderboard": "Рейтинг",
+  "navServer": "Messenger",
   "navReadiness": "Тесты готовности",
   "navHealth": "Скрининг здоровья",
   "navCalculators": "Калькуляторы",

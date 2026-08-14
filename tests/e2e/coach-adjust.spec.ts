@@ -43,9 +43,9 @@ test.describe('Coach adjust + chat lock', () => {
     await page.goto('/coach', { waitUntil: 'domcontentloaded' });
     // Was asserting the Super Bundle teaser unconditionally, and has been red
     // since free beta went on: `CoachPage` hides that block behind
-    // `!freeBeta` on purpose (docs/FREE_BETA.md — no Bundle UI while the
-    // window is open). The product is right and the assertion was stale. This
-    // is not in the gate, which is why nobody saw it.
+    // `!freeBeta` on purpose (docs/FREE_BETA.md — Coach chat tip stays muted;
+    // the shop lives at `/bundle`, not on Coach). The product is right and the
+    // assertion was stale. This is not in the gate, which is why nobody saw it.
     //
     // What the case is actually for: Coach states its offer, whichever offer
     // currently applies.

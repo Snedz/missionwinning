@@ -378,11 +378,18 @@ export const pushUnsubscribeBodySchema = z.object({
 });
 
 /** Account deletion (GDPR Art. 17) — the literal is the second confirmation. */
-export const accountDeleteBodySchema = z.object({
-  confirm: z.literal('DELETE'),
-  /** mw_device_id, so anonymous push/AI-metering rows for this device go too. */
-  deviceId: z.string().max(64).optional(),
+/** Signed-in ISO-week logger rollup — no PII. Guests never POST this. */
+export const weekLoggedBodySchema = z.object({
+  isoWeek: z.string().regex(/^\d{4}-W\d{2}$/).max(12),
 });
+
+export const accountDeleteBodySchema = z
+  .object({
+    confirm: z.literal('DELETE'),
+    /** mw_device_id, so anonymous push/AI-metering rows for this device go too. */
+    deviceId: z.string().max(64).optional(),
+  })
+  .strict();
 
 export function parseJsonBody<T>(schema: z.ZodType<T>, body: unknown):
   | { ok: true; data: T }

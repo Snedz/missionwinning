@@ -9,14 +9,14 @@ const root = join(import.meta.dirname, '..', '..', '..');
 
 function countPremiumMoveIds(): number {
   const src = readFileSync(join(root, 'src/data/premiumMobilityFlows.ts'), 'utf8');
-  return (src.match(/^\s*id:\s*'/gm) ?? []).length;
+  return (src.match(/^\s*id:\s*['"]/gm) ?? []).length;
 }
 
-test('D2 move premium floor is 48 and constants match file', () => {
-  assert.equal(CONTENT_FLOORS.movePremium, 48);
-  assert.equal(PREMIUM_MOVE_FLOW_COUNT, 48);
-  assert.equal(countPremiumMoveIds(), 48);
-  assert.equal(getContentInventory().move.premium, 48);
+test('D2 move premium ids remain after later depth ships', () => {
+  assert.ok(CONTENT_FLOORS.movePremium >= 48);
+  assert.ok(PREMIUM_MOVE_FLOW_COUNT >= 48);
+  assert.ok(countPremiumMoveIds() >= 48);
+  assert.ok(getContentInventory().move.premium >= 48);
 });
 
 test('new premium move flows are present with long-form tags', () => {
@@ -31,8 +31,8 @@ test('new premium move flows are present with long-form tags', () => {
     'neck-tspine-desk-long-16',
     'hyrox-engine-opener-14',
   ]) {
-    assert.match(src, new RegExp(`id: '${id}'`), id);
+    assert.match(src, new RegExp(`id: ['"]${id}['"]`), id);
   }
   assert.match(src, /durationMin: 20/);
-  assert.match(src, /'long'/);
+  assert.match(src, /['"]long['"]/);
 });

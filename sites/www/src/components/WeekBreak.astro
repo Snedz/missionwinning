@@ -1,0 +1,67 @@
+---
+/*
+ * The week, after it breaks. Concept 01's second movement, in A1.
+ *
+ * CSS `:has()` drives which week is shown — zero JavaScript. Without `:has()`
+ * every week is visible, which is the honest no-JS state (you read all three
+ * illustrations instead of picking one). The picker is not the argument; the
+ * three authored weeks are. The page says they are authored.
+ *
+ * Not `.primary-action`: the closing field owns this page's one red control.
+ * A selected pick is tint + ink rule, the same register as LogToPlanDemo's
+ * "Log set" at rest.
+ */
+import { CONSEQUENCES } from '../lib/weekContent';
+import type { Day } from '../lib/weekContent';
+
+function kindClass(kind: Day['kind']): string {
+  if (kind === 'rest') return 'text-quiet';
+  if (kind === 'strength') return 'border-l-2 border-red pl-2';
+  return 'border-l-2 border-ink pl-2';
+}
+---
+
+<div class="break">
+  <p class="eyebrow">Then the week breaks</p>
+  <h2 class="display-section mt-4 max-w-[24ch]">Every plan survives a good week. Show it a bad one.</h2>
+  <p class="mt-4 max-w-[56ch] text-[17px] leading-[1.6] text-quiet">
+    Pick what went wrong. This is the part a written programme cannot do — it was
+    finished before your Wednesday happened.
+  </p>
+
+  <div class="mt-8 flex flex-wrap gap-0.5" role="radiogroup" aria-label="What went wrong">
+    {CONSEQUENCES.map((c, i) => (
+      <label class="break-pick flex min-h-[44px] cursor-pointer items-center border-2 border-rule bg-paper px-4 py-3 text-[15px] font-semibold">
+        <input
+          class="sr-only"
+          type="radio"
+          name="week-break"
+          value={c.id}
+          checked={i === 0}
+        />
+        {c.button}
+      </label>
+    ))}
+  </div>
+
+  <div class="mt-6">
+    {CONSEQUENCES.map((c) => (
+      <div class="break-week" data-for={c.id}>
+        <ol class="grid grid-cols-2 gap-0.5 border-2 border-rule bg-rule sm:grid-cols-7">
+          {c.week.map((d) => (
+            <li class="flex flex-col gap-1 bg-paper px-2 py-3">
+              <span class="eyebrow">{d.d}</span>
+              <span class={`text-[13px] font-semibold leading-tight ${kindClass(d.kind)}`}>
+                {d.label}
+              </span>
+            </li>
+          ))}
+        </ol>
+        <div class="mt-6 max-w-[60ch] border-l-2 border-red pl-4">
+          <p class="text-[18px] font-extrabold tracking-[-0.01em]">{c.verdict}</p>
+          <p class="mt-2 text-[15px] leading-[1.55] text-quiet">{c.detail}</p>
+        </div>
+      </div>
+    ))}
+  </div>
+</div>

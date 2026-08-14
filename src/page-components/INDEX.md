@@ -48,7 +48,6 @@
 | `GuidebookChapterPage.tsx` | `/learn/guide/[chapterId]` |
 | `GuidePublicIndexPage.tsx` | `/guide` — Apex shell + Contents |
 | `GuidePublicChapterPage.tsx` | `/guide/[chapter]` — Apex shell |
-| `LearnVsPublicPage.tsx` | `/guide/mission-winning-vs-*` — AEO vs-pages |
 | `GuideMagazinePrintPage.tsx` | `/guide/print` (PDF source) |
 
 ### Premium & marketing
@@ -79,7 +78,9 @@
 | File | Route |
 |------|-------|
 | `ProfilePage.tsx` | `/profile` — the Athlete Page: identity, career line, badge shelf |
+| `ServerPage.tsx` | `/server` — Mission Server messenger (rooms + presence). Not a Today tab |
 | `AccountPage.tsx` | `/account` — settings; cards in `src/components/profile/` |
+| `ExplorePlacesPage.tsx` | `/explore` — places pin-board (quiet; not Today) |
 | `PrivacyPage.tsx` | `/privacy` |
 | `CookiesPage.tsx` | `/cookies` |
 | `AccessibilityPage.tsx` | `/accessibility` |

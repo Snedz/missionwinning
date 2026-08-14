@@ -9,7 +9,12 @@ import type { BadgeId } from '@/lib/rewards/types';
 import { summarizeRewards } from '@/lib/rewards/summary';
 import { useWorkoutStore } from '@/store/workoutStore';
 
-/** Profile collection — earned badges + empty honest state. */
+/**
+ * Athlete Page shelf — earned badge medallions only.
+ *
+ * IDENTITY_SOCIAL_PLAN §3: the shelf is provenance, not a scoreboard.
+ * Level / rank / XP / weekly challenges stay on Today (`TodayRewardsCard`).
+ */
 export function ProfileRewardsCard() {
   const { t } = useTranslation();
   const history = useWorkoutStore((s) => s.workoutHistory);
@@ -21,27 +26,15 @@ export function ProfileRewardsCard() {
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
           <Medal className="h-5 w-5 text-primary" aria-hidden />
-          {t('rewardProfileTitle', { defaultValue: 'Badges & rank' })}
+          {t('rewardProfileTitle', { defaultValue: 'Badges' })}
         </CardTitle>
         <CardDescription>
-          {t('rewardProfileRank', {
-            level: summary.level,
-            rank: t(summary.rankTitleKey, { defaultValue: summary.rankTitleDefault }),
-            xp: summary.xpTotal,
-            defaultValue: `Level ${summary.level} · ${summary.rankTitleDefault} · ${summary.xpTotal} XP`,
+          {t('rewardProfileShelfHint', {
+            defaultValue: 'Earned from logs on this device. Not a ranking.',
           })}
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-3">
-        {summary.challengesTotal > 0 ? (
-          <p className="text-xs text-muted-foreground" data-testid="profile-rewards-challenges">
-            {t('rewardProfileChallenges', {
-              done: summary.challengesComplete,
-              total: summary.challengesTotal,
-              defaultValue: `${summary.challengesComplete}/${summary.challengesTotal} weekly challenges met`,
-            })}
-          </p>
-        ) : null}
         {summary.badges.length === 0 ? (
           <p className="text-sm text-muted-foreground">
             {t('rewardProfileEmpty', {

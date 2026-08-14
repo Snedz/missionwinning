@@ -96,19 +96,40 @@ Original AI-generated chapter heroes (brand prompt pack) and instructional SVG c
 | mag-preface | MW product — magazine practice → log/Today/Coach | Mission Winning | 2026-08-12 |
 | mag-how-to | MW product — magazine practice → log/Today/Coach | Mission Winning | 2026-08-12 |
 
-## Learn vs-pages (AEO explanation, 2026-08-13)
+## Ch3 Programming & Tuning — Coach-from-logs intro (2026-08-13)
 
-Original MW comparison copy. Not competitor help text. Not ISSA. Not magazine chapters.
+Diataxis tutorial on the existing free chapter (not Strength Basics `sb-0` / #479, not Ch4 / `.680`). Original MW wording; no ISSA text.
 
-| Page / section ID | Source ref (topic only) | Writer | Date |
-|-------------------|-------------------------|--------|------|
-| `mission-winning-vs-strong` | MW product — vs Strong (AEO) | Mission Winning | 2026-08-13 |
-| `vs-strong-table` · `vs-strong-wins` · `vs-strong-differs` · `vs-strong-pick` | MW product — vs Strong | Mission Winning | 2026-08-13 |
-| `mission-winning-vs-hevy` | MW product — vs Hevy (AEO) | Mission Winning | 2026-08-13 |
-| `vs-hevy-table` · `vs-hevy-wins` · `vs-hevy-differs` · `vs-hevy-pick` | MW product — vs Hevy | Mission Winning | 2026-08-13 |
-| `mission-winning-vs-fitbod` | MW product — vs Fitbod (AEO) | Mission Winning | 2026-08-13 |
-| `vs-fitbod-table` · `vs-fitbod-wins` · `vs-fitbod-differs` · `vs-fitbod-pick` | MW product — vs Fitbod | Mission Winning | 2026-08-13 |
+| Section / lesson ID | Source ref (topic only) | Writer | Date |
+|---------------------|-------------------------|--------|------|
+| ch3-s1 | MW product — log-then-Coach tutorial (volume as what Coach reads) | Mission Winning | 2026-08-13 |
+| ch3-s2 | MW product — RPE notes feed Coach weeks (no wearable) | Mission Winning | 2026-08-13 |
+| ch3-s3 | MW product — deload / missed days from logs, not templates | Mission Winning | 2026-08-13 |
+| pd-0 | MW product — Periodization path intro: weeks from logs | Mission Winning | 2026-08-13 |
 
 ## Localized editions
 
 Translations in `src/i18n/packs/{lang}.json` and guidebook locale overlays are **translations of Mission Winning original English**, not ISSA text. Regenerated via `npm run i18n:fill`.
+
+## Super Bundle sequence (premium Ch11–12)
+
+Original MW product chapters — not ISSA. Diataxis tutorial / how-to / explanation / reference. Free intro chapters were not edited.
+
+| Section ID | Source ref (topic only) | Writer | Date |
+|------------|-------------------------|--------|------|
+| pch11-s1 | MW product — Super Bundle sequence (log the session) | Mission Winning | 2026-08-13 |
+| pch11-s2 | MW product — Super Bundle sequence (week from logs) | Mission Winning | 2026-08-13 |
+| pch11-s3 | MW product — Super Bundle sequence (Fuel/Move/Mind on this week) | Mission Winning | 2026-08-13 |
+| pch11-s4 | MW product — Super Bundle sequence (adapt here) | Mission Winning | 2026-08-13 |
+| pch12-s1 | MW product — Super Bundle sequence (three products, three diaries) | Mission Winning | 2026-08-13 |
+| pch12-s2 | MW product — Super Bundle sequence (one sequence, not six apps) | Mission Winning | 2026-08-13 |
+| pch12-s3 | MW product — Super Bundle sequence (what stays free) | Mission Winning | 2026-08-13 |
+| pch12-s4 | MW product — Super Bundle sequence (what Bundle adds) | Mission Winning | 2026-08-13 |
+
+| Section ID | Block | Source ref (topic only) | Writer | Date |
+|------------|-------|-------------------------|--------|------|
+| pch11-s1 | checklist — first logged session | MW product — Super Bundle sequence | Mission Winning | 2026-08-13 |
+| pch11-s3 | table — same-week support | MW product — Super Bundle sequence | Mission Winning | 2026-08-13 |
+| pch12-s1 | callout — shared diary is the product | MW product — Super Bundle sequence | Mission Winning | 2026-08-13 |
+| pch12-s3 | table — free vs Super Bundle on this sequence | MW product — Super Bundle sequence | Mission Winning | 2026-08-13 |
+| pch12-s4 | checklist — Bundle depth on the same week | MW product — Super Bundle sequence | Mission Winning | 2026-08-13 |

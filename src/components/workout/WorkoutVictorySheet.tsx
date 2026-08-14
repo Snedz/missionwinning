@@ -28,11 +28,14 @@ import { SessionDebriefCard } from '@/components/workout/SessionDebriefCard';
 import { VictoryFeelStrip } from '@/components/workout/VictoryFeelStrip';
 import { VictoryBodyDeltaStrip } from '@/components/workout/VictoryBodyDeltaStrip';
 import { VictoryStatsStrip } from '@/components/workout/VictoryStatsStrip';
+import { VictoryReceiptStrip } from '@/components/workout/VictoryReceiptStrip';
 import { VictoryNextActionStrip } from '@/components/workout/VictoryNextActionStrip';
+import { FieldTestReceiptStrip } from '@/components/workout/FieldTestReceiptStrip';
 import { VictorySecondaryLinks } from '@/components/workout/VictorySecondaryLinks';
 import { VictoryRewardsLine } from '@/components/rewards/VictoryRewardsLine';
 import { buildVictorySecondaryLinks } from '@/lib/workout/victorySecondaryLinks';
 import { shouldCollapseVictoryDetails } from '@/lib/workout/victoryLayout';
+import { isSurfaceEnabled } from '@/lib/surface';
 import { parseNutritionLog } from '@/lib/nutritionQuickLog';
 import { readRaw } from '@/lib/storage/safeStorage';
 import { STORAGE_KEYS } from '@/lib/storage/keys';
@@ -65,6 +68,8 @@ type Props = {
    * `.184` write-only defect, live again.
    */
   workoutId?: string;
+  /** Field test only — starts the same five-event template. */
+  onRunFieldTestAgain?: () => void;
 };
 
 /** D2 Victory ritual — lock scale + volume + one next action (paper/ink). */
@@ -77,6 +82,7 @@ export function WorkoutVictorySheet({
   debrief,
   fragments,
   workoutId,
+  onRunFieldTestAgain,
 }: Props) {
   const { t } = useTranslation();
   const fmt = useLocaleFormat();
@@ -102,6 +108,8 @@ export function WorkoutVictorySheet({
       primaryHref: summary.nextAction.href,
       proteinLoggedToday,
       strainDelta: summary.bodyDelta?.strain,
+      workingMuscleGroups: summary.workingMuscleGroups,
+      moveSurfaceEnabled: isSurfaceEnabled('move'),
     });
   }, [summary]);
 
@@ -274,7 +282,27 @@ export function WorkoutVictorySheet({
           durationSeconds={summary.durationSeconds}
           unitLabel={unitLabel}
           formatVolume={(n) => fmt.num(n)}
+          vsLast={summary.receipt?.vsLast ?? null}
         />
+
+        {summary.receipt ? (
+          <VictoryReceiptStrip receipt={summary.receipt} unitLabel={unitLabel} />
+        ) : null}
+
+        {summary.fieldTest ? (
+          <FieldTestReceiptStrip
+            receipt={summary.fieldTest}
+            units={units}
+            onRunAgain={
+              onRunFieldTestAgain
+                ? () => {
+                    onOpenChange(false);
+                    onRunFieldTestAgain();
+                  }
+                : undefined
+            }
+          />
+        ) : null}
 
         <VictoryRewardsLine active={open} />
 

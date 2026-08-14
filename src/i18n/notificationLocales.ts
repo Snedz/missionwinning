@@ -84,6 +84,14 @@ const NOTIFICATION_EN: Record<string, string> = {
   takeAssessment: 'Take the free Readiness Assessment',
   profileSetupHint: 'Answer a few questions so sessions match your gear (~2 minutes).',
   changeLanguage: 'Change language',
+  /**
+   * `.765` — the picker lists Français, Deutsch, Italiano, العربية and Bahasa
+   * Indonesia, whose largest markets are all on the hosted block list. Offering
+   * a language is not a claim to serve a country, and the picker was the one
+   * place that read as though it were.
+   */
+  languageNotAvailability:
+    'Choosing a language does not change where the hosted service is offered.',
   units: 'Units',
   metric: 'Metric (kg, cm)',
   imperial: 'Imperial (lbs, in)',
@@ -93,18 +101,25 @@ const NOTIFICATION_EN: Record<string, string> = {
   /** Kaizen Loop 6 P1 — Profile privacy / premium / CSV / sync (.313) */
   csvImportFailed: 'Could not read that file',
   csvImportUnrecognized:
-    'Expected a Strong or Hevy CSV export. Export from the other app, then drop the file here.',
+    'Expected a Strong or Hevy CSV. Export from the other app, then drop the file here.',
   csvImportEmpty: 'No workout rows found in the file.',
   csvImportDone: 'History imported',
   csvImportDoneDesc:
     '{{added}} workouts imported ({{duplicates}} already here). Your PRs, 1RM trends and load band now use them. Reloading…',
-  csvImportTitle: 'Switching from another app?',
+  csvImportTitle: 'Your training history',
   csvImportSubtitle:
-    'Import your Strong or Hevy history from a CSV export. Your records rebuild here in seconds — free, no account needed.',
+    '0.1 beta — import or export Strong and Hevy CSV. Free forever, no account. History is never paywalled.',
   csvImportCta: 'Import CSV (Strong / Hevy)',
   csvImportDropIdle: 'Drop a Strong or Hevy CSV or click to browse',
   csvImportDropActive: 'Drop to import',
   csvImportNeedCsv: 'Use the CSV export from Strong or Hevy.',
+  csvExportCta: 'Export CSV',
+  csvExportStrongCta: 'Export Strong CSV',
+  csvExportHevyCta: 'Export Hevy CSV',
+  csvExportDone: 'History exported',
+  csvExportDoneDesc: '{{count}} workouts saved as {{format}} CSV. Free — your log is yours.',
+  csvExportEmpty: 'Nothing to export yet',
+  csvExportEmptyDesc: 'Log a workout, or import a CSV first. Export is free.',
   premiumStatus: 'Premium Status',
   premiumUnlocked: '✓ Premium unlocked (via Super Bundle or demo request)',
   billingPortalOpening: 'Opening…',
@@ -204,6 +219,16 @@ const NOTIFICATION_EN: Record<string, string> = {
   unitsAffectsHint: 'Affects calculators and new logs. Default is metric.',
   languageHint: 'Switch the app language. Names stay in native form.',
   trainingGoalsHint: 'Used for program recommendations.',
+  pregnancyFlagTitle: 'Pregnancy & postpartum',
+  pregnancyFlagHint:
+    'Optional. Stored on this device. Never required to log. Stopping is always allowed.',
+  pregnancyFlagNone: 'None',
+  pregnancyFlagPregnant: 'Pregnant',
+  pregnancyFlagPostpartum: 'Postpartum',
+  pregnancyFlagStop:
+    'If you have bleeding, cramping, feel faint, have chest pain, or cannot talk: stop and get help. This app is not emergency services.',
+  pregnancyFlagNotCare:
+    'This is not prenatal care and does not prevent miscarriage or complications. Not medical advice — ask your clinician.',
 };
 
 const nl = (over: Record<string, string>): Record<string, string> => ({

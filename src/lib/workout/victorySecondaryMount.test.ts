@@ -10,6 +10,7 @@ test('WorkoutVictorySheet mounts quiet secondary Super Bundle links', () => {
   );
   assert.match(src, /VictorySecondaryLinks/);
   assert.match(src, /buildVictorySecondaryLinks/);
+  assert.match(src, /workingMuscleGroups/);
 });
 
 test('mw-core victory never routes fuel to Bundle', () => {

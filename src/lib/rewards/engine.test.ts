@@ -38,8 +38,8 @@ describe('applyRewardEvent — workout', () => {
     const b = applyRewardEvent(state, workout('b', 0, 2));
     state = b.state;
     const c = applyRewardEvent(state, workout('c', 0, 3));
-    assert.equal(a.xpGained, 50);
-    assert.equal(b.xpGained, 50);
+    assert.equal(a.xpGained, 45);
+    assert.equal(b.xpGained, 45);
     assert.equal(c.xpGained, 0);
     assert.ok(c.xpAwards.some((x) => x.capped));
   });
@@ -183,7 +183,8 @@ describe('milestone badges — fuel + pillars', () => {
 describe('level math', () => {
   it('levelForXp thresholds', () => {
     assert.equal(levelForXp(0), 1);
-    assert.equal(levelForXp(100), 2);
+    assert.equal(levelForXp(149), 1);
+    assert.equal(levelForXp(150), 2);
     assert.equal(levelForXp(250), 3);
   });
 

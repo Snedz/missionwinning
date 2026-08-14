@@ -1,6 +1,8 @@
 {
   "assessTitle": "Evaluación de preparación",
   "assessSubtitle": "Herramienta gratuita. Basada en historial de salud y preguntas estilo ParQ. Responde con honestidad.",
+  "assessSubtitleBrief": "Answer the screen. Stage prompts when you want them.",
+  "assessMoreStage": "Stage of change & prompts",
   "assessFormTitle": "Evaluación rápida de salud y estilo de vida",
   "assessStageTitle": "Etapa de cambio + indicaciones de coaching",
   "assessDisclaimer": "Se trata de un examen educativo únicamente, no de un consejo médico. Siempre consulte a un médico.",

@@ -19,13 +19,7 @@ import {
   PRIVATE_GATE_PUBLIC_PATHS,
 } from '@/lib/publicRoutes';
 
-/** True when private development gate should be active (default: on in production). */
-export function isPrivateModeEnabled(): boolean {
-  const flag = process.env.PRIVATE_MODE;
-  if (flag === 'false' || flag === '0') return false;
-  if (flag === 'true' || flag === '1') return true;
-  return process.env.NODE_ENV === 'production';
-}
+export { isPrivateModeEnabled, isPrivateModeEnabledFromEnv } from '@/lib/privateModeFlag';
 
 export const PUBLIC_PATHS_WHILE_GATED = PRIVATE_GATE_PUBLIC_PATHS;
 
@@ -119,9 +113,12 @@ export function hasPrivateAccessCookie(request: NextRequest, secret: string | un
 /** Query-string gate bypass — disabled in production unless PRIVATE_ALLOW_QUERY_ACCESS=true. */
 export function queryGrantsAccess(searchParams: URLSearchParams, secret: string | undefined): boolean {
   if (!secret) return false;
-  if (process.env.NODE_ENV === 'production' && process.env.PRIVATE_ALLOW_QUERY_ACCESS !== 'true') {
+  const prodLike =
+    process.env.NODE_ENV === 'production' || process.env.VERCEL_ENV === 'production';
+  if (prodLike && process.env.PRIVATE_ALLOW_QUERY_ACCESS !== 'true') {
     return false;
   }
+  // Only `access` may grant — invite/next/code are display or return paths, not keys.
   const access = searchParams.get('access');
   if (!access) return false;
   return matchesPrivateAccessPassword(access, secret, process.env.PRIVATE_ACCESS_CODES);

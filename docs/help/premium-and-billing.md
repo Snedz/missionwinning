@@ -15,14 +15,16 @@ Mission Winning is **mostly free**. Premium unlocks depth across pillars through
 Typical Super Bundle access:
 
 - **Mission Coach** — full weekly AI plan + adaptation (`/coach`)
-- **Fuel** — premium recipes and meal depth
+- **Fuel** — protein-first premium recipes (140) plus the free 48; Fuel Coach week from your logs. Not a food database. Logger stays free.
 - **Move / Mind** — advanced guided sessions
-- **Learn** — full guidebook and programs
+- **Learn** — free intro guidebook + paths stay free; Super Bundle adds the Train→Coach→Fuel/Move/Mind sequence course plus specialist depth
 - **Track** — advanced features where gated
 
 Exact entitlements may evolve — Profile shows your status.
 
 ## Buying the Super Bundle
+
+Checkout is **not live yet**. On the public landing page, use **Notify me** to leave an email — we will not charge you. The logger stays free.
 
 1. Sign in (Profile) with the email you will pay with.
 2. Go to **Bundle** (`/bundle`) or upgrade prompts in Coach.

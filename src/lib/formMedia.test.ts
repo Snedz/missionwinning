@@ -15,20 +15,17 @@ test('unknown exercise has no form pack', () => {
   assert.equal(resolveFormPackMedia('not-a-real-lift'), null);
 });
 
-test('OHP and pull-ups form packs are still-only after .540 re-QA', () => {
-  for (const id of ['overhead-press', 'pull-ups'] as const) {
-    const pack = resolveFormPackMedia(id);
-    assert.ok(pack, id);
-    assert.equal(pack?.mediaType, 'image', id);
-    assert.equal(pack?.mediaUrl, `/form/${id}/side.webp`, id);
-  }
+test('OHP form pack is still-only after .540 re-QA', () => {
+  const pack = resolveFormPackMedia('overhead-press');
+  assert.ok(pack);
+  assert.equal(pack?.mediaType, 'image');
+  assert.equal(pack?.mediaUrl, '/form/overhead-press/side.webp');
 });
 
 test('loop pilot packs resolve to video with poster', () => {
   for (const id of [
     'air-squat',
     'glute-bridge',
-    'push-ups',
     'plank',
     'lunges',
     'box-jump',
@@ -46,6 +43,14 @@ test('loop pilot packs resolve to video with poster', () => {
     assert.equal(pack?.mediaType, 'video', id);
     assert.equal(pack?.mediaUrl, `/form/${id}/side.mp4`, id);
     assert.equal(pack?.mediaPosterUrl, `/form/${id}/side.webp`, id);
+  }
+});
+
+test('cast packs are still-only even when a legacy loop file exists', () => {
+  for (const id of ['push-ups', 'pull-ups'] as const) {
+    const pack = resolveFormPackMedia(id);
+    assert.equal(pack?.mediaType, 'image', id);
+    assert.match(pack?.mediaUrl ?? '', new RegExp(`^/form/${id}/cast-[a-d]\\.webp$`), id);
   }
 });
 

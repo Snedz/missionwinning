@@ -8,10 +8,10 @@
  *
  *   Wedge   — History · Library · Builder · Assess (train-adjacent)
  *   Pillars — Move · Mind · Track · Learn
- *   You     — Profile
+ *   You     — Profile · Messenger · Account
  *
- * Quiet foot links stay for legal/meta (not full rows). Bundle remains a
- * separate premium panel when free-beta is off.
+ * Quiet foot links stay for legal/meta (not full rows). Bundle is a shop
+ * panel in MoreSheet; live checkout stays muted while free-beta is on.
  *
  * One declaration: hrefs resolve through the same `NAV_BY_HREF` map as the rail
  * so labels cannot disagree (`.178`).
@@ -58,12 +58,13 @@ export const MORE_SHEET_TIER_HREFS: {
     id: 'you',
     title: 'You',
     titleKey: 'moreTierYou',
-    hrefs: ['/profile', '/account'],
+    hrefs: ['/profile', '/server', '/account'],
   },
 ];
 
 /** Foot links: tools first, then company/legal. Leaderboard is a full row when enabled. */
 export const MORE_SHEET_QUIET: readonly MoreQuietLink[] = [
+  { href: '/explore', labelKey: 'navExplore', label: 'Explore' },
   { href: '/calculators', labelKey: 'navCalculators', label: 'Calculators' },
   { href: '/learn/guide', labelKey: 'navGuidebook', label: 'Guidebook' },
   { href: '/beta', labelKey: 'navBetaGuide', label: 'Beta guide' },
@@ -95,7 +96,7 @@ export type MoreSheetNavOpts = {
 };
 
 /**
- * Resolve More sheet tiers for the current surface parking / free-beta world.
+ * Resolve More sheet tiers for the current surface parking world.
  * Empty tiers are dropped. Tab routes never appear as rows.
  */
 export function moreSheetTiersForNav(opts?: MoreSheetNavOpts): MoreSheetTier[] {

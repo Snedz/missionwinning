@@ -28,7 +28,7 @@
  * has now paid for three times.
  */
 
-import { readFileSync, readdirSync } from 'node:fs';
+import { existsSync, readFileSync, readdirSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import process from 'node:process';
@@ -65,6 +65,18 @@ export const ALLOWLIST = [
     rules: ['off-palette-colour'],
     why: '`themeColor` meta, read by the browser chrome before any stylesheet is parsed.',
     fixWhen: 'Never — it is evaluated outside CSS.',
+  },
+  {
+    file: 'sites/www/src/styles/global.css',
+    rules: ['second-typeface'],
+    why: 'The `@font-face` block that DECLARES the family. The www surface self-hosts Archivo rather than reaching for next/font, so the name has to appear as a literal exactly once — this is the definition the rule elsewhere protects, not a second face slipping in.',
+    fixWhen: 'Never, while the font is self-hosted. The narrower risk (a SECOND @font-face) is covered by src/lib/wwwSurface.test.ts, which asserts this file declares exactly one family and that it is Archivo.',
+  },
+  {
+    file: 'sites/www/src/layouts/Base.astro',
+    rules: ['off-palette-colour'],
+    why: 'The `theme-color` meta tag on the www surface, for the same reason as app/layout.tsx above: the browser paints its chrome from this value before any stylesheet is parsed, so `hsl(var(--background))` resolves to nothing and the address bar flashes white against paper.',
+    fixWhen: 'Never, while the value must be a literal in markup. If Astro ever inlines a token at build time into meta content, take it from tokens.css and delete this row.',
   },
   {
     file: 'app/global-error.tsx',
@@ -125,6 +137,14 @@ function stripComments(src) {
     .replace(/\{\/\*[\s\S]*?\*\/\}/g, blank)
     .replace(/\/\*[\s\S]*?\*\//g, blank)
     /*
+     * HTML comments, for `.astro` templates. Without this the whole point of
+     * blanking comments — that documenting a decision must not be punished —
+     * stops holding the moment the file is an Astro template rather than JSX:
+     * a comment explaining *why* a hex is unavoidable was itself reported as
+     * two hexes. Same rule, one syntax further out.
+     */
+    .replace(/<!--[\s\S]*?-->/g, blank)
+    /*
      * Inline `//` too, not just line-start: the comment explaining MobileNav's
      * 3.84:1 contrast choice sits after a ternary (`: // muted-foreground …`)
      * and was being read as code. The `[^:]` guard keeps `https://` intact —
@@ -137,7 +157,16 @@ function walk(dir, out = []) {
   for (const entry of readdirSync(path.join(root, dir), { withFileTypes: true })) {
     const rel = `${dir}/${entry.name}`;
     if (entry.isDirectory()) {
-      if (entry.name === 'node_modules' || entry.name === '.next') continue;
+      // `dist` and `.astro` are sites/www build output — compiled CSS with the
+      // token values inlined as literals. Scanning generated artifacts reports
+      // the source's own colours back as violations.
+      if (
+        entry.name === 'node_modules' ||
+        entry.name === '.next' ||
+        entry.name === 'dist' ||
+        entry.name === '.astro'
+      )
+        continue;
       walk(rel, out);
     } else if (
       /*
@@ -148,7 +177,7 @@ function walk(dir, out = []) {
        * that skips the language palettes are written in checks spellings, not
        * design. (`.202`/`.221`, one layer out.)
        */
-      /\.(tsx?|css)$/.test(entry.name) &&
+      /\.(tsx?|css|astro)$/.test(entry.name) &&
       !/\.(test|routetest)\.tsx?$/.test(entry.name)
     ) {
       out.push(rel);
@@ -156,6 +185,14 @@ function walk(dir, out = []) {
   }
   return out;
 }
+
+/**
+ * Path predicate for rules that apply to one surface. Absent `scope` means the
+ * rule applies everywhere, which is the default and stays the default — a rule
+ * worth having is usually worth having repo-wide, and narrowing one needs the
+ * kind of reason written above the three that carry this.
+ */
+const WWW_ONLY = (file) => file.startsWith('sites/www/');
 
 /**
  * The rules, as a data table so each one carries its own explanation into the
@@ -270,6 +307,66 @@ const RULES = [
     ok: (v) => v.trim().startsWith('var(--font') || v.trim() === 'inherit',
     why: 'Archivo only — --font-inter/display/mono all alias --font-archivo',
   },
+  /*
+   * The three below are the founder ban list for the www surface
+   * (docs/DESIGN_PROPOSAL_WWW.md §8, override 2026-08-09). Five bans were
+   * given; two were already structural and needed no new rule —
+   * `second-typeface` above already forbids Inter as a display face, and
+   * GrayscalePhoto renders an honest captioned block rather than a stand-in
+   * when it has no image, so "stock-photo placeholder" is unrepresentable.
+   * Writing rules for those two would have been three lines of theatre.
+   *
+   * They carry `scope`, and it is not timidity. Run repo-wide these three
+   * report 312 findings in src/ and app/ — ~250 `text-center` call sites
+   * (empty-state copy, table cells, small captions) and every `→` and `✓`,
+   * which this product uses as typography, not as icons. The ban was given for
+   * a new surface with no legacy; applying it to eleven months of shipped
+   * screens would mean either 312 edits nobody asked for or 312 allowlist
+   * entries, and an allowlist that large is a disabled check with extra steps.
+   *
+   * If the app should adopt them later that is a deliberate pass with its own
+   * PR, not a side effect of commissioning a marketing site.
+   */
+  {
+    id: 'gradient',
+    scope: WWW_ONLY,
+    // off-palette-colour only catches a gradient whose stops are literals;
+    // `linear-gradient(var(--a), var(--b))` passes it cleanly. The ban is on
+    // the gradient itself — flat ink on paper, structure drawn with 2px rules.
+    // section-seam is the one sanctioned use and is allowlisted below: it
+    // paints a 2px rule via background-image, not a shaded field.
+    pattern: /\b(?:linear|radial|conic)-gradient\(|\bbg-gradient-to-[a-z]{1,2}\b/g,
+    why: 'flat surfaces only — gradients were retired in .131 and are on the founder ban list',
+  },
+  {
+    id: 'emoji-as-icon',
+    scope: WWW_ONLY,
+    /*
+     * Pictographic blocks plus the variation selector that forces emoji
+     * presentation — NOT arrows (U+2190–21FF) or dingbats (U+2700–27BF). A
+     * first draft included both and reported 312 findings whose content was
+     * `→` and `✓`: this product sets those as type, in CTAs and check glyphs,
+     * and a rule that calls typography an emoji is a rule that gets turned off.
+     *
+     * `u` flag is required or the astral ranges do not match at all and the
+     * rule scans clean forever. Comments are blanked before matching, so an
+     * emoji discussed in a comment is already exempt.
+     */
+    pattern: /[\u{1F000}-\u{1FAFF}\u{FE0F}]/gu,
+    why: 'clinical metrics, not gamification — lucide over emoji (DESIGN_SYSTEM principle 4)',
+  },
+  {
+    id: 'centred-section-root',
+    scope: WWW_ONLY,
+    // Everything is flush left, button labels included. Centring a heading or
+    // a hero is the single loudest tell that a layout is not on this system.
+    // Scoped to className strings so `text-center` inside a table cell utility
+    // or a chart label is unaffected — those read as `text-center` on a <td>,
+    // which this matches too, hence the allowlist rather than a cleverer regex.
+    pattern: /class(?:Name)?=(?:"|'|\{`)([^"'`]*)/g,
+    ok: (v) => !/\btext-center\b/.test(v),
+    why: 'flush left everywhere — centred-everything is on the founder ban list',
+  },
 ];
 
 export function scan(files, readFile, ignoreExemptions = false) {
@@ -277,6 +374,7 @@ export function scan(files, readFile, ignoreExemptions = false) {
   for (const file of files) {
     const src = stripComments(readFile(file));
     for (const rule of RULES) {
+      if (rule.scope && !rule.scope(file)) continue;
       if (rule.appliesTo && !rule.appliesTo(src)) continue;
       for (const m of src.matchAll(rule.pattern)) {
         if (rule.ok && rule.ok(m[1] ?? m[0])) continue;
@@ -291,7 +389,13 @@ export function scan(files, readFile, ignoreExemptions = false) {
 
 function main() {
   // `src/index.css` no longer needs naming by hand — the walk carries `.css`.
-  const files = [...walk('src'), ...walk('app')];
+  // `sites/www` is the fourth surface (handoff design_handoff_www_static). It is
+  // guarded by extending this walk rather than by a new gate step: the step that
+  // already runs this script then covers the new directory, and the gate stays
+  // at 18 — gateDocParity.test.ts asserts CLAUDE.md's numbered list is exactly
+  // 1..N, so a new step is a doc change in two more files.
+  const roots = ['src', 'app', 'sites/www'].filter((d) => existsSync(path.join(root, d)));
+  const files = roots.flatMap((d) => walk(d));
   const findings = scan(files, (f) => readFileSync(path.join(root, f), 'utf8'));
 
   console.log(

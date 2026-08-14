@@ -57,6 +57,12 @@ export function CookiesPage() {
             })}
           </li>
           <li>
+            {t('infoCookiesLocaleLi', {
+              defaultValue:
+                'mw_locale and mw_country are strictly necessary first-party cookies. Language is a display preference; country follows the hosted-service geo-block in supportedRegions.ts. Counsel should review this inventory before a public flip — this page does not rewrite the Privacy or Terms bodies.',
+            })}
+          </li>
+          <li>
             {t('infoCookiesManageLi', {
               defaultValue:
                 'Change your analytics choice anytime in Profile → Privacy & analytics; clear site data in your browser to remove everything local.',

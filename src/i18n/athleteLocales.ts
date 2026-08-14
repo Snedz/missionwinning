@@ -23,9 +23,8 @@
 
 const ATHLETE_EN: Record<string, string> = {
   // --- /profile — the Athlete Page ---
-  athletePageTitle: 'Your record',
+  athletePageTitle: 'You',
   athletePageSubtitle: 'Authored here. Counted honestly. Yours on this device.',
-  athletePageSettingsTitle: 'Settings',
   athletePageSettingsLink: 'Account & settings',
 
   // --- Identity ---
@@ -47,6 +46,9 @@ const ATHLETE_EN: Record<string, string> = {
   athleteIdentityRejectUnsafe:
     'That contains characters that break a shared list. Try letters and numbers.',
 
+  // --- Mission ID (signed-in only; not the 00–99 call-sign) ---
+  missionIdLabel: 'Mission ID',
+
   // --- The line ---
   careerLineTitle: 'Your record',
   careerLineEmpty:
@@ -61,6 +63,7 @@ const ATHLETE_EN: Record<string, string> = {
   // --- The table (S3 MySpace interests) ---
   athleteTableTitle: 'About training',
   athleteTableBody: 'Who you are as an athlete — picks only, stays on this device.',
+  athleteTableEdit: 'Edit table',
   athleteTableUnset: '—',
   athleteTableSave: 'Save',
   athleteTableSaved: 'Saved on this device.',
@@ -124,8 +127,56 @@ const ATHLETE_EN: Record<string, string> = {
   accountPrimaryHint: 'What you need day to day',
   accountMoreSettings: 'More settings',
   accountOwnerSection: 'Owner tools',
+  accountUnderTheHood: 'Under the Hood',
+  accountUnderTheHoodHint:
+    'This install only — not a live user count. We do not invent traction.',
+  accountUnderTheHoodFirstWeek: 'First logged week',
+  accountUnderTheHoodThisWeek: 'This week',
+  accountUnderTheHoodLoggedThisWeek: 'Working set this week',
+  accountUnderTheHoodRetained: 'retained_week_4',
+  accountUnderTheHoodNone: 'No working set logged yet',
+  accountUnderTheHoodYes: 'yes',
+  accountUnderTheHoodNo: 'no',
+  offlineQueueWeekLogged: 'Weekly log mark',
   navAccount: 'Account',
   moreAccountDesc: 'Settings, notifications, backup',
+  transparencyEyebrow: 'Account',
+  transparencyTitle: 'Visibility',
+  transparencySubtitle:
+    'See if anything is limited, the exact reason, and download the full report (JSON + text).',
+  transparencyDownloadJson: 'Download JSON',
+  transparencyDownloadText: 'Download text',
+  transparencyCardTitle: 'Visibility',
+  transparencyCardLead:
+    'See if anything is limited and why. Under the Hood publishes Mission Points boosts and visibility filters. Download includes both, plus labels on this athlete.',
+  transparencyCardOpen: 'Open Visibility',
+  transparencyEarnTitle: 'Earn table (live local XP)',
+  transparencyEarnEvent: 'Event',
+  transparencyEarnPoints: 'Points',
+  transparencyEarnCap: 'Cap',
+  transparencyStatusOpen: 'Not limited',
+  transparencyStatusGated: 'Limited',
+  transparencyStatusHidden: 'Hidden',
+  transparencyStatusLimited: 'Limited',
+  transparencyStatusSkipped: 'Skipped',
+  transparencyStatusInfo: 'Explained',
+  transparencyBackAccount: 'Back to Account',
+  transparencyNoLimits: 'No limits apply',
+  transparencyLimitsApply: '{{count}} limits apply',
+  hoodEyebrow: 'Account',
+  hoodPageTitle: 'Under the Hood',
+  hoodKicker: 'Mission Winning',
+  hoodTitle: 'Scoring weights',
+  hoodSubtitle:
+    'Published Mission Points (what this device awards) and visibility filters. Filters never debit points.',
+  hoodBoosts: 'Boosts',
+  hoodBoostsPlanned: 'Boosts (Club ledger — planned)',
+  hoodPenalties: 'Penalties',
+  hoodCardOpen: 'Under the Hood',
+  hoodPenaltyNote:
+    'Report, mute, block, and hide are visibility filters. They do not debit Mission Points.',
+  hoodServerHelp:
+    'How to post well in Mission Server: replies from people you trained with beat likes. Likes are weak.',
 
   homeGymKitTitle: 'Home gym kit',
   homeGymKitBody:
@@ -157,9 +208,8 @@ const al = (over: Record<string, string>): Record<string, string> => ({
 const BY_LANG: Record<string, Record<string, string>> = {
   en: ATHLETE_EN,
   es: al({
-    athletePageTitle: 'Tu registro',
+    athletePageTitle: 'Tú',
     athletePageSubtitle: 'Escrito aquí. Contado con honestidad. Tuyo en este dispositivo.',
-    athletePageSettingsTitle: 'Ajustes',
     athletePageSettingsLink: 'Cuenta y ajustes',
     athleteIdentityTitle: 'Indicativo',
     athleteIdentityNameLabel: 'Nombre',
@@ -177,6 +227,7 @@ const BY_LANG: Record<string, Record<string, string>> = {
     athleteIdentityRejectLink: 'Sin enlaces ni direcciones en un indicativo.',
     athleteIdentityRejectUnsafe:
       'Contiene caracteres que rompen una lista compartida. Usa letras y números.',
+    missionIdLabel: 'ID de misión',
     careerLineTitle: 'Tu registro',
     careerSignature: '{{sessions}} sesiones · mejor semana {{bestWeek}} · {{days}} días',
     careerLineEmpty:
@@ -186,6 +237,7 @@ const BY_LANG: Record<string, Record<string, string>> = {
     careerLineExercises: 'Ejercicios',
     careerLineBestWeek: 'Mejor semana',
     careerLineDays: 'Días entrenados',
+    athleteTableEdit: 'Editar tabla',
     accountEyebrow: 'Cuenta',
     accountTitle: 'Ajustes',
     accountSubtitle:
@@ -203,9 +255,8 @@ const BY_LANG: Record<string, Record<string, string>> = {
     homeGymKitItem_floor: 'Suelo',
   }),
   fr: al({
-    athletePageTitle: 'Ton relevé',
+    athletePageTitle: 'Toi',
     athletePageSubtitle: 'Écrit ici. Compté honnêtement. À toi, sur cet appareil.',
-    athletePageSettingsTitle: 'Réglages',
     athletePageSettingsLink: 'Compte et réglages',
     athleteIdentityTitle: 'Indicatif',
     athleteIdentityNameLabel: 'Nom',
@@ -223,6 +274,7 @@ const BY_LANG: Record<string, Record<string, string>> = {
     athleteIdentityRejectLink: 'Pas de liens ni d’adresses dans un indicatif.',
     athleteIdentityRejectUnsafe:
       'Il contient des caractères qui cassent une liste partagée. Utilise lettres et chiffres.',
+    missionIdLabel: 'ID de mission',
     careerLineTitle: 'Ton relevé',
     careerSignature: '{{sessions}} séances · meilleure semaine {{bestWeek}} · {{days}} jours',
     careerLineEmpty:
@@ -232,6 +284,7 @@ const BY_LANG: Record<string, Record<string, string>> = {
     careerLineExercises: 'Exercices',
     careerLineBestWeek: 'Meilleure semaine',
     careerLineDays: 'Jours d’entraînement',
+    athleteTableEdit: 'Modifier le tableau',
     accountEyebrow: 'Compte',
     accountTitle: 'Réglages',
     accountSubtitle:
@@ -249,9 +302,8 @@ const BY_LANG: Record<string, Record<string, string>> = {
     homeGymKitItem_floor: 'Sol',
   }),
   pt: al({
-    athletePageTitle: 'O teu registo',
+    athletePageTitle: 'Tu',
     athletePageSubtitle: 'Escrito aqui. Contado com honestidade. Teu neste dispositivo.',
-    athletePageSettingsTitle: 'Definições',
     athletePageSettingsLink: 'Conta e definições',
     athleteIdentityTitle: 'Indicativo',
     athleteIdentityNameLabel: 'Nome',
@@ -269,6 +321,7 @@ const BY_LANG: Record<string, Record<string, string>> = {
     athleteIdentityRejectLink: 'Sem links nem endereços num indicativo.',
     athleteIdentityRejectUnsafe:
       'Contém caracteres que quebram uma lista partilhada. Usa letras e números.',
+    missionIdLabel: 'ID de missão',
     careerLineTitle: 'O teu registo',
     careerSignature: '{{sessions}} sessões · melhor semana {{bestWeek}} · {{days}} dias',
     careerLineEmpty:
@@ -278,6 +331,7 @@ const BY_LANG: Record<string, Record<string, string>> = {
     careerLineExercises: 'Exercícios',
     careerLineBestWeek: 'Melhor semana',
     careerLineDays: 'Dias treinados',
+    athleteTableEdit: 'Editar tabela',
     accountEyebrow: 'Conta',
     accountTitle: 'Definições',
     accountSubtitle:

@@ -54,6 +54,19 @@ export type SubscriptionRow = {
   day_review_hour: number | null;
 }>;
 
+/**
+ * Guest / other-account writes must not take over a row already linked to a user.
+ * Anonymous create and same-user update (or first link) are allowed.
+ */
+export function canWritePushSubscription(
+  existingUserId: string | null | undefined,
+  callerUserId: string | null | undefined
+): boolean {
+  if (!existingUserId) return true;
+  if (!callerUserId) return false;
+  return existingUserId === callerUserId;
+}
+
 export function buildSubscriptionRow(input: SubscriptionRowInput): SubscriptionRow {
   return {
     user_id: input.userId,

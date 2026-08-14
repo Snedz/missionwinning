@@ -4,7 +4,7 @@
 import type { NextRequest } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
 import { extractSupabaseAccessTokenFromRequest, bearerAccessToken } from '@/lib/authAccessToken';
-import { hasPrivateAccessCookie } from '@/lib/privateGate';
+import { hasPrivateAccessCookie, isPrivateModeEnabled } from '@/lib/privateGate';
 
 export { bearerAccessToken };
 
@@ -26,8 +26,13 @@ export async function hasMobileAppAccess(request: NextRequest): Promise<boolean>
   return Boolean(user);
 }
 
-/** Seed/generate endpoints: allow when not private, or when mobile access passes. */
+/** Same gate as web `proxy.ts` — unset PRIVATE_MODE in production is on. */
+export function mobileCoachBootstrapRequiresAccess(): boolean {
+  return isPrivateModeEnabled();
+}
+
+/** Seed/generate endpoints: allow when the web gate is off, or when mobile access passes. */
 export async function allowMobileCoachBootstrap(request: NextRequest): Promise<boolean> {
-  if (process.env.PRIVATE_MODE !== 'true') return true;
+  if (!mobileCoachBootstrapRequiresAccess()) return true;
   return hasMobileAppAccess(request);
 }

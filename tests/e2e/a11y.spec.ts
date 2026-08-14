@@ -39,6 +39,7 @@ const GATED_ROUTES = [
   '/library',
   '/builder',
   '/profile',
+  '/server',
   '/account',
   '/exercises/push-ups',
   // The SEO tail is most of the site's URLs and one exercise page used to represent all
@@ -60,6 +61,7 @@ const GATED_ROUTES = [
   '/calculators',
   '/programs',
   '/guide',
+  '/server',
 ] as const;
 
 /**

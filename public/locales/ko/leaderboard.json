@@ -4,6 +4,7 @@
   "leaderboardRankings": "순위",
   "leaderboardTitle": "리더보드",
   "leaderboardSubtitle": "지역, 국가, 로케일 또는 분대별로 전 세계적으로 미션 오퍼레이터를 비교하세요.",
+  "leaderboardSubtitleBrief": "Optional ranks. Training first — never required.",
   "leaderboardSync": "동조",
   "leaderboardOperators": "운영자",
   "leaderboardYourRank": "당신의 순위",

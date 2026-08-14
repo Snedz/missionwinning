@@ -513,6 +513,203 @@ Claims were checked at source, not accepted from search snippets. Recorded so th
 
 ---
 
+## Wave 10 — The www quality bar, measured (2026-08-09)
+
+**Method — measured, not eyeballed.** Founder supplied three reference sites (freeletics.com/en · callofduty.com/ca/en · lahuella.club/en) as the quality bar for a static marketing site, plus phone screenshots. Live browsing was **blocked by this session's egress policy** for all three hosts (and for awwwards.com, koto.com, brand.callofduty.com) — so the founder then supplied **ten desktop print-to-PDF captures at 1440pt**, including two TrainHeroic pages and both auth surfaces. Those were parsed with PyMuPDF: every text span's **font, point size and fill colour**, every block's y-extent, and page renders at 0.62×. Type scales, palettes and section gaps below are extracted values, not estimates. Companion proposal: [DESIGN_PROPOSAL_WWW.md](DESIGN_PROPOSAL_WWW.md).
+
+### 10.1 The correction this wave exists to record
+
+Reading the **phone** screenshots alone, the obvious conclusion was *"the references are one tier louder than us — go roughly 2× bigger."* A proposal was drafted on that reading, specifying a 168px poster tier.
+
+**The measurements refute it.** At 1440pt, reference display type tops out at 70–100pt and section headings sit at 30–40pt. [`src/index.css`](../src/index.css) already ships `.display-hero` at 76px and `.display-section` at 48px — **at or above the reference median on both**. A phone capture compresses a 1440pt layout into 390pt and makes everything read as enormous; the ratio survives that transform, the absolute size does not.
+
+The real gap is **not type size**. It is vertical rhythm (§10.4) and motion. Recorded because this is `.220`'s shape in a new place: a conclusion drawn from the artifact that was easiest to look at, rather than from the one that carries the number.
+
+### 10.2 Type scale, extracted (all at 1440pt viewport)
+
+| Site / page | Display max | Section head | Body | Micro | Display faces |
+|---|---|---|---|---|---|
+| Freeletics home | **74pt** (hero 48) | 40pt | 18 / 16 | 12pt **Iosevka-Semibold** caps | subsetted variable + AktivGroteskEx |
+| Freeletics nutrition | 56pt | 40pt | 18 / 16 | 14pt | same |
+| Freeletics log-in | 40pt | — | 16 | 12.8 / 12 | same |
+| CoD home | 36pt | 36pt | 20 / 16 | 11 / 14.1 | **HitmarkerCondensed-Black** + HitmarkerText |
+| CoD MW4 | **69.7pt** | 29.2 / 28.8 | 16 / 12 | 10 | same |
+| CoD sign-in | 24pt | — | 13 / 16 | 12 | **DINNextLTPro** — a different family entirely |
+| La Huella home | **96pt** | 30pt | 18 / 14 | 12 | **CWM-Bold** + **Inter18pt** for body |
+| TrainHeroic | **100pt** (stat) · 70 (hero) | 32 / 23 | 20 / 18 | 13 / 14 | Poppins (Bold Italic caps) + Oswald |
+
+**Median hero display ≈ 70pt · median section head ≈ 36pt · body 16–20pt · micro 10–14pt.** Mission Winning: 76 / 48 / 17 / 13. In band on all four.
+
+Three observations that do transfer:
+
+- **A stat tier above the headline tier.** TrainHeroic sets `500,000+` at **100pt** — larger than its own hero. La Huella's 96pt is likewise a statement, not a headline. MW's `.display-mega` caps at 72px, *below* its own `.display-hero` (76px). That inversion is the one genuine scale gap found.
+- **A dedicated micro-label face.** Freeletics sets `GUNDULA, 37` in **Iosevka mono, caps, wide-tracked** — a monospace reserved for telemetry. MW achieves the same register with Archivo caps + `tnum` at 13px/0.08em, which is the cheaper and more system-consistent answer. No change needed.
+- **Condensed display is 2-of-4, not universal.** CoD (Hitmarker Condensed) and La Huella (CWM) are condensed; Freeletics and TrainHeroic are normal width. Condensed is a legitimate option, not a requirement.
+
+### 10.3 Palettes, extracted
+
+| Site | Ground | Accent | Accent's job |
+|---|---|---|---|
+| Freeletics | `#161e21` | `#fe7413` orange | **Section headings only.** Buttons are white pills — the accent never becomes an action colour |
+| Call of Duty | `#000000` | `#ffd000` yellow | **Actions, tags and carousel progress.** Nothing else is yellow |
+| La Huella | `#0f0f0f` | `#fdca38` yellow | The accent *is* the ground — full-bleed yellow fields carrying black display type |
+| TrainHeroic | `#050310` | `#f1fd53` + `#0a0eff` | Yellow as a **highlight marker behind display words**; blue as the button fill |
+
+All four run **one dominant accent on a near-black ground**. MW inverts the ground (paper `#f3f2f2`) and keeps the one-accent rule — already the law, enforced at runtime by [`redActions.ts`](../tests/e2e/helpers/redActions.ts). La Huella's full-bleed accent field is the same idea as [`.poster-close`](../src/index.css); MW arrived there independently.
+
+### 10.4 Vertical rhythm — the actual finding
+
+Gap between consecutive text blocks, at 1440pt:
+
+| Page | Median | p90 | Max | Gaps ≥60pt |
+|---|---|---|---|---|
+| CoD home | **144pt** | 643 | 832 | 12 |
+| Freeletics home | 31pt | 186 | 540 | 13 |
+| Freeletics nutrition | 41pt | 384 | 608 | 9 |
+| TrainHeroic | 41pt | 411 | 769 | 11 |
+| CoD MW4 (product page) | 27pt | 71 | 301 | 5 |
+
+**The grammar is bimodal: clusters at 27–46pt, section boundaries at 190–450pt, statement boundaries at 540–830pt.** Nothing sits in between.
+
+MW's marketing sections are `py-16 lg:py-20`, so a section boundary is **~160px** — below every reference's p90 and roughly half CoD's median. *This is the delta the phone screenshots were actually showing.* Cluster spacing (`space-y-6` = 24px) is already correct.
+
+### 10.5 Text density — and the finding that decides our stack
+
+Characters of rendered text per 1000pt of scroll:
+
+| Page | Density |
+|---|---|
+| La Huella | **19** |
+| CoD home | 226 |
+| Freeletics nutrition | 306 |
+| TrainHeroic | 371 |
+| Freeletics home | 530 |
+| CoD MW4 | 1172 |
+
+La Huella's capture is **9109pt tall and contains two text blocks**, separated by a single **8365pt gap**. Its page renders essentially nothing without JavaScript — the entire document is GSAP scroll-triggered (Awwwards records the build as WordPress + GSAP + Next.js).
+
+**This is the wave's most actionable result.** It is the visual bar the founder set *and* an architecture MW must not copy: the www surface carries ~250 SEO URLs and the free-calculator growth bet ([`seo/README.md`](../seo/README.md)), and a page whose content exists only after JS runs cannot serve either. **Take La Huella's rhythm; refuse its delivery.**
+
+### 10.6 Steal · avoid · own
+
+**Steal**
+- **One CTA shape, contextual verb.** Freeletics repeats a white pill + `→` and changes only the verb: *Start now · Start your plan now · Got It Now · Start your transformation · Start eating clean now*. CoD repeats *PRE-ORDER* in nav, hero and vault band. MW's [`.primary-action`](../src/index.css) is already that shape.
+- **A reassurance line under the CTA.** TrainHeroic: *"14-Day Free Trial. No Credit Card Required."* MW already writes these (*"Under three minutes to your first logged set"*, *"no account"*) — they belong under the button, not in a paragraph.
+- **The statement gap.** 540–830pt around a single sentence, at the open and the close.
+- **The peeking rail.** Freeletics cuts the 5th card at the viewport edge on desktop *and* mobile — the affordance is the crop, not an arrow.
+- **Alternating one-third hero.** CoD's two stacked heroes put content in the right third, then the left third. Asymmetry without a layout change.
+- **Colour picks one of three.** TrainHeroic's 3-up band makes only the middle cell yellow.
+
+**Avoid**
+- **Freeletics' purple-blue gradient promo band** and its centred hero — both are literally on the founder's ban list for this build.
+- **CoD's auth break.** The sign-in page abandons Hitmarker for DIN Next and drops the yellow. One system to the edge of the funnel, then a different one at the moment of conversion.
+- **La Huella's JS-only body** (§10.5).
+- **Freeletics' before/after transformation grid.** Body-composition proof is a positioning MW has explicitly refused ([brand-guidelines](brand-guidelines.md) § Voice).
+
+**Own**
+- Paper ground. All four references are near-black; ink-on-paper is the differentiated register in this category, and it is already shipped.
+- Sentence-case display. Two of four references are all-caps; `src/index.css:320` retired caps deliberately (*"the caps were Barlow's"*).
+- 2px rules doing the organising, where the references use whitespace or hairlines.
+
+### 10.7 Source verification
+
+| Claim | Source | Verdict |
+|---|---|---|
+| Type scales, palettes, gap distributions, text density | 10 founder-supplied 1440pt PDF captures, parsed with PyMuPDF | **Verified — primary.** Extracted from the documents; reproducible from the same files |
+| Hitmarker is bespoke (NaN × Koto, 2023), 3 widths × 5 weights + Text | Search summaries of nan.xyz, brand.callofduty.com, Design Week | **Weak-verified** — vendor pages were egress-blocked; the PDFs independently confirm the family names `HitmarkerCondensed-Black`, `HitmarkerText-*`, `HitmarkerNormal-Medium` |
+| La Huella built with WordPress + GSAP + Next.js, by mortensen (Barcelona) | Awwwards nominee page via search | **Weak-verified** — aggregator; consistent with §10.5's measured JS dependence |
+| Freeletics "60 million users", "450 million sessions", "700+ exercises" | freeletics.com home capture | **Verified as their claim** — not ours to repeat, and hard rule 3 forbids MW inventing any equivalent |
+| Live rendering, hover/scroll behaviour, motion timings | — | **Unverified.** Print captures are static; every motion claim in the proposal is derived from the shipped MW tokens, not measured from the references |
+
+**Standing rule this wave adds:** a reference screenshot taken at a different viewport than the one being designed is evidence of *proportion*, never of *size*. Measure at the target viewport before writing a number into a spec.
+
+---
+
+## Wave 11 — Composition, measured (2026-08-09)
+
+### 11.1 Why this wave exists
+
+Wave 10 measured type and spacing, `sites/www` was built to those numbers, and every guard on it is green. Rendered, it reads as **a wireframe with real copy in it**. So Wave 10 was not wrong; it was *incomplete*, and the missing axis turned out to be the dominant one.
+
+The same ten captures were re-parsed with PyMuPDF for composition rather than typography: raster image area (union of `get_image_rects` on a 2pt grid, so stacked carousel layers count once), full-bleed counts, background fill sampled down the left margin, and text spans whose box falls inside an image box.
+
+**This is the same failure shape as §10.1, one level up.** There, a number was written into a spec from a screenshot taken at the wrong viewport. Here, an entire axis was left out of the spec — and because nothing measured it, nothing could go red.
+
+### 11.2 The gap
+
+| Capture | Type | Page H (pt) | **Image area** | **Fold image area** (first 900pt) | Full-bleed | Ground changes | Text inside image |
+|---|---|---|---|---|---|---|---|
+| CoD home | home | 4675 | **76.3%** | 100.0% | 7 (677–1135pt) | 1 | 51 / 77 (66%) |
+| TrainHeroic B | home | 6259 | **76.5%** | 90.6% | 7 (88–1122pt) | 6 | 75 / 112 (67%) |
+| TrainHeroic A | home | 810 | **81.0%** | 81.0% | 2 | 3 | 29 / 29 (100%) |
+| Activision Sign-in | landing | 1118 | **100.0%** | 100.0% | 2 | 0 | 27 / 27 (100%) |
+| Freeletics Nutrition | landing | 4578 | **67.2%** | 95.8% | 2 (810pt) | 5 | 18 / 66 (27%) |
+| CoD MW4 pre-order | landing | 2367 | 29.6% | 71.7% | 1 (530pt) | 1 | 4 / 102 (4%) |
+| Freeletics home A | home | 4990 | ≥29.4% † | ≥12.7% † | 0 † | 5 | 16 / 119 (13%) |
+| Freeletics home B | home | 9839 | ≥10.7% † | 93.1% | 1 (1019pt) | 2 | 48 / 119 (40%) |
+| Freeletics Log-in | landing | 831 | 0.44% | 0.4% | 0 | 0 | 0 |
+| La Huella | home | 9109 | 0.02% ‡ | 0.2% ‡ | 0 ‡ | 0 ‡ | 0 ‡ |
+| **`sites/www` `/`** | **home** | **7074px** | **~4%** | **~0%** | **0** | **1** | **0** |
+
+† **Floors, not readings.** Freeletics home A's hero is an unrendered `<video>` (the flat `#909799` band at y=250–950); home B has 8750pt of flat `#253137` below y=1100 where lazy-loaded content never printed.
+‡ **Excluded from every conclusion.** La Huella's capture is near-empty because the page is GSAP-driven and renders nothing without JS — §10.5 already recorded this. Its numbers measure the capture, not the design.
+
+Also excluded from area conclusions: CSS gradients, SVG and vector artwork are drawing operators rather than image XObjects, so **every image percentage here is a lower bound.**
+
+### 11.3 What the numbers say
+
+**The fold is the target, not the page.** Of the captures that rasterised, page-wide coverage is 76.3 / 76.5 / 81.0 / 100%, and above-the-fold coverage is starker still: **six of ten put an image under 80–100% of the first 900pt.** Our homepage is ~20× below the fully-rendered homepage median (52.8%) and effectively zero at the fold.
+
+**Full-bleed is the mechanism.** Every capture that reads as designed carries full-width images **480–1135pt tall** — 0.5 to 1.25 viewport heights each, stacked 1–7 per page. The two captures with zero full-bleed rects are the two that render as flat colour.
+
+**Type sits on the image; it does not sit beside it.** 100 / 100 / 67 / 66 / 40% of text spans fall inside an image box. Matching the area ratio while keeping photographs in cards next to copy would match the number and miss the register.
+
+**Ground changes are deliberate and rare — 0 to 6 per page, never per section.** CoD holds one flat black for 1950pt across eight section boundaries. The two pages that change ground most each do it to introduce **exactly one** inverted field: Freeletics Nutrition a `#f5f8fa` light band at y=2550–3350, TrainHeroic B a `#0a0eff` accent band at y=3150–3500.
+
+> **This extends §10.3's one-accent rule: the accent gets a *ground*, not just a heading colour.** And it kills an idea that looked obviously right — alternating paper / ink / photo / red per section. No reference does that. It would have read as a theme demo rather than a page.
+
+### 11.4 Homepage vs dedicated page — the difference is CTA discipline, not stripping
+
+| | Homepages | Dedicated pages |
+|---|---|---|
+| Distinct CTAs | **4–5, none repeated** | **2** |
+| Most-repeated CTA | none | *"Start eating clean now"* **×4** (y=648 · 2388 · 3136 · 3867) |
+| Total links | 42–45 | 24–38 · auth surfaces **3–15** |
+| Nav items in top 120pt | 5–10 | 6 (Nutrition) · **0** (MW4, both auth pages) |
+| Section boundaries ≥190pt | 6–8 | 8 (Nutrition) · 1 (MW4) · 0 (auth) |
+
+**Freeletics Nutrition is the case that decides it.** It keeps the full site nav, runs 4578pt — as long as the homepage — and has the same eight section boundaries. Nothing structural marks it as a landing page. What marks it is **two distinct CTAs against the homepage's five, and one string repeated four times, once every 740–1000pt.**
+
+So: a dedicated page does not have to be shorter or nav-less. **Stripping navigation is what auth and checkout surfaces do** — all three nav-less captures (MW4 pre-order, Freeletics Log-in, Activision Sign-in) sit in that group, and an invite capture belongs with them.
+
+Worth recording against the brief: *"one CTA, repeated"* on every page is landing-page behaviour applied to a homepage. It is a deliberate founder choice, not what the references do.
+
+### 11.5 The floors this wave commits to
+
+Written here **before** the page that has to meet them, so the numbers are argued from the captures rather than fitted to whatever gets built. `scripts/www-composition.mjs` implements exactly these; each is set below the measured band so it fails on regression rather than dictating art direction — the same reasoning that kept §10.4's cluster band out of the rhythm guard.
+
+| Floor | Value | Reference band |
+|---|---|---|
+| Image coverage, first 900px at 1440 | **≥ 60%** | 81–100% (six captures) |
+| Image coverage, whole page | **≥ 35%** | 52.8% homepage median |
+| Full-bleed images (≥90% viewport width) | **≥ 1** | 1–7 per page |
+| Text blocks set over an image | **≥ 1** | 40–100% of spans |
+
+**What this cannot measure, stated so it is not assumed:** it counts raster boxes at one viewport. It has no opinion on whether a photograph is any good, and a page could satisfy every floor with twelve bad images. It closes the axis that was missing, not the one that matters most.
+
+### 11.6 Source verification
+
+| Claim | Source | Verdict |
+|---|---|---|
+| Image area, full-bleed counts, ground sequences, text-in-image counts | The same 10 founder-supplied 1440pt PDF captures, re-parsed with PyMuPDF | **Verified — primary.** Reproducible from the same files |
+| CTA counts, repeat cadence, nav/link counts | Same captures; CTA identified by span text + fill colour | **Verified with a caveat** — a rasterised button carries no text span, so MW4's nav count (0) was confirmed visually rather than by extraction |
+| Freeletics home A/B image coverage | Same captures | **Floors only** — unrendered `<video>` and lazy-loaded content, §11.2 † |
+| La Huella composition | Same capture | **Rejected** — measures an unrendered document, §11.2 ‡ |
+| Motion, hover, scroll-triggered reveal, parallax | — | **Unverified**, as in §10.7. Print captures are static |
+| Ground sampling | Left margin (x=3–15pt) only | **Partial** — a centred light panel on a dark ground would read as unchanged |
+
+---
+
 ## Sources folded in
 
 - Internal: UX_UNIFIED_PLAN (Bevel/Freeletics), ROADMAP_V4_EXPERIENCE (no teardown)  
@@ -524,4 +721,6 @@ Claims were checked at source, not accepted from search snippets. Recorded so th
 - Wave 6: TrainHeroic athlete gym + % load (not coach SaaS)
 - Wave 7: Design Excellence OS — steal/avoid/own synthesis + craft waves D0–D3
 - Wave 9: Mazeas et al. 2022 *JMIR* 24(1):e26779 · Kolnes et al. 2026 *PMC12938745* · help.bevel.health pricing · williamsf1.com/wclub-education · freeletics.com + forum.freeletics.com · Us Weekly / Metro on MySpace Top 8 · nine founder reference screenshots. **One source rejected** — see §9.6
+- Wave 11: the **same ten captures**, re-parsed for composition rather than typography — image-rect unions, full-bleed counts, left-margin ground sampling, text-span/image-rect intersection. No new sources; the finding is that Wave 10 measured the wrong axis, not that it measured wrongly
+- Wave 10: **ten founder-supplied 1440pt desktop PDF captures** — freeletics.com (home ×2, nutrition, log-in) · callofduty.com (home, MW4 pre-order, Activision sign-in) · lahuella.club · trainheroic.com (×2) — parsed with PyMuPDF for font/size/colour/geometry. Live sites were **egress-blocked**; awwwards.com, koto.com and brand.callofduty.com likewise, so their claims are search-sourced and marked weak-verified in §10.7
 - Wave 8: trainerize.com + help center · truecoach.co + help center · everfit.io + help center · help.fitbod.me + sensai.fit · runna.com/support.runna.com + press.strava.com · joinladder.com + garagegymreviews.com · investor.onepeloton.com · Capterra/G2/GetApp/JustUseApp/Trustpilot review mining · quickcoach.fit pricing 2026 · Sheen et al. 2025 *BJHP* (58,881-post study, via UCL News) · RevenueCat State of Subscription Apps · Sensor Tower US charts

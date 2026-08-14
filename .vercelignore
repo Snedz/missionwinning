@@ -22,6 +22,14 @@
 # nested files, hence invisible to the CLI, hence the overage.
 apps/
 
+# The www surface — a separate Astro site deployed to Cloudflare Pages, not to
+# Vercel. Its node_modules (215 packages) and dist/ are excluded by
+# sites/www/.gitignore, which is nested and therefore invisible to the CLI:
+# exactly the shape that caused the 19,614-file overage above. Nothing in app/
+# or src/ imports from here — the dependency runs the other way, since the site
+# reads src/lib/contentFloors.ts at build time.
+sites/
+
 # Agent tooling, including worktrees (115k+ files). Listed explicitly rather
 # than relying on whatever the CLI excludes by default.
 .claude/

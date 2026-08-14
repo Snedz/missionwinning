@@ -9,6 +9,7 @@ import { registerLeaderboardSyncHandler } from '@/lib/leaderboardSync';
 import { registerPftSyncHandler } from '@/lib/pftSync';
 import { registerFeedbackSyncHandler } from '@/lib/sync/feedbackSync';
 import { registerAttributionSyncHandlers } from '@/lib/sync/attributionSync';
+import { registerWeekLoggedSyncHandler } from '@/lib/week4LoggerSync';
 
 /**
  * Drives the outbox for the lifetime of the tab.
@@ -29,6 +30,7 @@ export function useOutboxDrain(): void {
     registerPftSyncHandler();
     registerFeedbackSyncHandler();
     registerAttributionSyncHandlers();
+    registerWeekLoggedSyncHandler();
 
     let cancelled = false;
     let timer: ReturnType<typeof setTimeout> | null = null;

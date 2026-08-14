@@ -1,6 +1,7 @@
 {
   "builderTitle": "Pembuat latihan",
   "builderSubtitle": "Gunakan tab Pemula, Lanjutan, atau Pro di bawah, lalu klik Muat pada sesi. Premium membuka program spesialis binaraga, korektif & pengkondisian.",
+  "builderSubtitleBrief": "Three steps: start, arrange, train.",
   "builderTemplatesTitle": "Templat Program",
   "builderTemplatesFoot": "Termasuk sirkuit berat badan + mobilitas gratis baru (inti penglihatan)",
   "builderProgramCount": "{{count}} program",
@@ -79,6 +80,8 @@
   "builderSessionCount": "{{count}} sessions",
   "builderProOffline": "Offline — premium program list will load when you reconnect.",
   "builderProLoadFail": "Could not load premium programs. Try again.",
+  "builderProOfflineOpenBeta": "Offline — pro program list will load when you reconnect. Free templates still work.",
+  "builderProLoadFailOpenBeta": "Could not load pro programs. Try again — free templates still work.",
   "builderTemplateSearch": "Search programs or sessions…",
   "builderTemplateSearchCount": "{{count}} matching",
   "builderProFreeBeta": "Pro cycles are paused during open beta — free templates stay available.",

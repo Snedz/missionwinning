@@ -6,6 +6,7 @@ type NavStrings = {
   navCoachTab: string;
   navMoreEyebrow: string;
   navOpenBeta: string;
+  navInviteOnlyBeta: string;
   navGroupMission: string;
   navGroupPillars: string;
   navGroupToolkit: string;
@@ -21,6 +22,7 @@ type NavStrings = {
   navLibrary: string;
   navHistory: string;
   navLeaderboard: string;
+  navServer: string;
   navReadiness: string;
   navHealth: string;
   navCalculators: string;
@@ -39,7 +41,8 @@ type NavStrings = {
 };
 
 const en: NavStrings = {
-  navOpenBeta: 'Open beta',
+  navOpenBeta: 'Free beta',
+  navInviteOnlyBeta: 'Free beta',
   navAssess: 'Assess',
   navMore: 'More',
   navCoachTab: 'Coach',
@@ -59,6 +62,7 @@ const en: NavStrings = {
   navLibrary: 'Library',
   navHistory: 'History',
   navLeaderboard: 'Leaderboard',
+  navServer: 'Messenger',
   navReadiness: 'Readiness tests',
   navHealth: 'Health screen',
   navCalculators: 'Calculators',
@@ -81,6 +85,7 @@ const en: NavStrings = {
 const es: NavStrings = {
   ...en,
   navOpenBeta: 'Beta abierta',
+  navInviteOnlyBeta: 'Beta por invitación',
   navAssess: 'Evaluar',
   navMore: 'Más',
   navCoachTab: 'Coach',
@@ -109,6 +114,7 @@ const es: NavStrings = {
 
 const zh: Partial<NavStrings> = {
   navOpenBeta: '公开测试',
+  navInviteOnlyBeta: '仅限邀请测试',
   navAssess: '评估',
   navMore: '更多',
   navCoachTab: '教练',
@@ -142,6 +148,7 @@ const zh: Partial<NavStrings> = {
 
 const id: Partial<NavStrings> = {
   navOpenBeta: 'Beta terbuka',
+  navInviteOnlyBeta: 'Beta khusus undangan',
   navAssess: 'Nilai',
   navMore: 'Lainnya',
   navCoachTab: 'Pelatih',
@@ -175,6 +182,7 @@ const id: Partial<NavStrings> = {
 
 const th: Partial<NavStrings> = {
   navOpenBeta: 'เบต้าเปิด',
+  navInviteOnlyBeta: 'เบต้าเฉพาะผู้ได้รับเชิญ',
   navAssess: 'ประเมิน',
   navMore: 'เพิ่มเติม',
   navCoachTab: 'โค้ช',
@@ -208,6 +216,7 @@ const th: Partial<NavStrings> = {
 
 const ar: Partial<NavStrings> = {
   navOpenBeta: 'نسخة تجريبية مفتوحة',
+  navInviteOnlyBeta: 'نسخة تجريبية بالدعوة',
   navAssess: 'تقييم',
   navMore: 'المزيد',
   navCoachTab: 'المدرب',
@@ -242,6 +251,7 @@ const ar: Partial<NavStrings> = {
 const fr: Partial<NavStrings> = {
   ...en,
   navOpenBeta: 'Bêta ouverte',
+  navInviteOnlyBeta: 'Bêta sur invitation',
   navAssess: 'Évaluer',
   navMore: 'Plus',
   navCoachTab: 'Coach',
@@ -269,6 +279,7 @@ const fr: Partial<NavStrings> = {
 const de: Partial<NavStrings> = {
   ...en,
   navOpenBeta: 'Offene Beta',
+  navInviteOnlyBeta: 'Beta nur mit Einladung',
   navAssess: 'Bewerten',
   navMore: 'Mehr',
   navCoachTab: 'Coach',
@@ -296,6 +307,7 @@ const de: Partial<NavStrings> = {
 const it: Partial<NavStrings> = {
   ...en,
   navOpenBeta: 'Beta aperta',
+  navInviteOnlyBeta: 'Beta su invito',
   navAssess: 'Valuta',
   navMore: 'Altro',
   navCoachTab: 'Coach',
@@ -323,6 +335,7 @@ const it: Partial<NavStrings> = {
 const ko: Partial<NavStrings> = {
   ...en,
   navOpenBeta: '오픈 베타',
+  navInviteOnlyBeta: '초대 전용 베타',
   navAssess: '평가',
   navMore: '더보기',
   navCoachTab: '코치',
@@ -350,6 +363,7 @@ const ko: Partial<NavStrings> = {
 const ja: Partial<NavStrings> = {
   ...en,
   navOpenBeta: 'オープンベータ',
+  navInviteOnlyBeta: '招待制ベータ',
   navAssess: '評価',
   navMore: 'その他',
   navCoachTab: 'コーチ',
@@ -377,6 +391,7 @@ const ja: Partial<NavStrings> = {
 const pt: Partial<NavStrings> = {
   ...en,
   navOpenBeta: 'Beta aberto',
+  navInviteOnlyBeta: 'Beta por convite',
   navAssess: 'Avaliar',
   navMore: 'Mais',
   navCoachTab: 'Treinador',
@@ -404,6 +419,7 @@ const pt: Partial<NavStrings> = {
 const ru: Partial<NavStrings> = {
   ...en,
   navOpenBeta: 'Открытая бета',
+  navInviteOnlyBeta: 'Бета по приглашению',
   navAssess: 'Оценка',
   navMore: 'Ещё',
   navCoachTab: 'Тренер',

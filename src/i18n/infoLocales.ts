@@ -258,7 +258,7 @@ type InfoStrings = {
 };
 
 const en: InfoStrings = {
-  infoLastUpdated: 'Last updated: August 2026',
+  infoLastUpdated: 'Last updated: 13 August 2026',
   infoAboutTitle: 'About Mission Winning',
   infoAboutSubtitle:
     'Free offline logger + Mission Coach from your logs — free core forever; Super Bundle adds depth when you are ready.',
@@ -325,7 +325,8 @@ const en: InfoStrings = {
   infoTermsServiceBody:
     'Mission Winning provides a free offline workout logger, Mission Coach planning tools, nutrition and other pillar features, education content, optional Super Bundle premium depth, and related websites and apps. The free core logger is offered so you can track training without paywall; premium features may require purchase. We may modify, suspend, or discontinue features with reasonable notice where practicable. Service-Specific Terms apply to Super Bundle, optional AI Coach features, Android distribution, and human coaching interest lists.',
   infoTermsEducationalBody:
-    'Content is for general educational purposes. We are not a medical provider or accredited certifying agency. Certificates indicate educational achievement only, not professional licensure. You assume risk for physical activity; consult a physician before starting new programs.',
+    // Counsel still reviews this educational paragraph (PT safety + pregnancy). Combined #519/#536 rewrite. Not a legal-pack rewrite.
+    'Mission Winning is educational fitness software, not medical care and not emergency services. Strenuous or max-effort sessions carry extra risk; stopping is always allowed. This app cannot prevent a medical emergency — call local emergency services, not the app. We do not provide medical advice. Pregnancy, miscarriage, and postpartum decisions are clinician-owned.',
   infoTermsAccountsLi1: 'Provide accurate information; keep your email access secure.',
   infoTermsAccountsLi2: 'Do not abuse the service, attempt unauthorized access, or scrape premium content.',
   infoTermsAccountsLi3: 'Do not use the app for unlawful purposes.',
@@ -417,10 +418,10 @@ const en: InfoStrings = {
     'This page is an operational notice channel, not legal advice. Registering a designated agent with the U.S. Copyright Office is required for safe-harbor protection.',
   infoRefundsTitle: 'Refunds & cancellation',
   infoRefundsIntro:
-    'This policy applies to paid Mission Winning purchases (Super Bundle and related premium). Free core use needs no refund. Educational fitness software only — not a medical device.',
+    'The free logger never needs a refund. Super Bundle refunds apply when paid checkout is live. Educational fitness software only — not a medical device.',
   infoRefundsSubs: 'Subscriptions',
   infoRefundsSubsBody:
-    'Monthly and 12-month Super Bundle: request a full refund within 14 days of your first paid charge by emailing support@missionwinning.com. After that window, we do not offer mid-cycle prorated refunds. Cancel anytime in Profile → Manage billing (Stripe Customer Portal) to stop future charges; access continues through the paid period already billed.',
+    'Monthly and 12-month Super Bundle: request a full refund within 14 days of your first paid charge by emailing support@missionwinning.com. After that window, we do not offer mid-cycle prorated refunds. Cancel anytime in Profile → Manage billing to stop future charges; access continues through the paid period already billed.',
   infoRefundsLifetime: 'Lifetime / USDC',
   infoRefundsLifetimeBody:
     'Lifetime (card or Phantom USDC): request a refund within 14 days of purchase if you have not meaningfully used premium features, by emailing support@missionwinning.com. After 14 days, lifetime purchases are non-refundable. Phantom/USDC refunds are processed manually by support — there is no automated on-chain reverse transfer yet.',
@@ -445,9 +446,9 @@ const en: InfoStrings = {
     'Evidence supports structured exercise for mood and energy in research settings — but most advice stays “just go work out.” We turn that into a weekly plan you can follow on any phone. We do not diagnose or treat depression; this is educational fitness, not clinical care.',
   infoAboutAmericaLink: 'Presidential Fitness Test & youth movement →',
   infoAboutBusinessBody:
-    'Operated by Mission Winning LLC (Texas) for the app, programs, and coaching. Free core stays free; paid Super Bundle funds deeper Coach and pillar tools when you want them.',
+    'Operated by Mission Winning LLC, a Texas limited liability company, for the app, programs, and coaching. Free core stays free; paid Super Bundle funds deeper Coach and pillar tools when you want them.',
   infoAboutBusinessBodyOpenBeta:
-    'Operated by Mission Winning LLC (Texas). Beta 0.1 — full tools free while we grow with you. The logger stays free forever.',
+    'Operated by Mission Winning LLC, a Texas limited liability company. Mission Winning 0.1 (beta) is an open beta — full tools free while we grow with you. The logger stays free forever.',
   infoAboutDisclaimerEducational:
     'Educational only. Mission Winning provides practical training education and tools. We are not a federally recognized or accredited certifying agency. Completion grants a Mission Winning Certificate of Educational Achievement only.',
   infoAboutDisclaimerGov:

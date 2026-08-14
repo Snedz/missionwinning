@@ -16,10 +16,10 @@
  *  - week-1 recap: joined 6–8 days ago and trained at least once
  *  - week-behind:  short of their own weekly target with the week nearly out
  *
- * The old `streak-at-risk` kind is gone. It fired on a consecutive-day premise that
- * `reentry.ts` explicitly rejects (`REENTRY_MIN_DAYS = 4`, "rest days are part of
- * training"), so a 3x/week lifter was told a scheduled rest day had cost them
- * something.
+ * The old `streak-at-risk` kind is gone. It fired on a consecutive-day premise
+ * that a 3x/week lifter's scheduled rest day had cost them something. Outbound
+ * copy still uses `quietThresholdDays` (floor 4) and must not name the absence.
+ * The in-app Today line may (S7: two local calendar days + the 20-minute session).
  */
 
 import { localDateKeyFromIso } from '@/lib/time/localDate';

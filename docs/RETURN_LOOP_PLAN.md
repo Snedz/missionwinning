@@ -87,7 +87,7 @@ second identity.
 ## Out of scope
 
 - Email for anonymous users — there is no address, and asking for one is the account.
-- Changing what `reentry.ts` shows in-app. That half shipped and is correct.
+- Push/email copy that names how long someone has been gone. In-app Today may show the S7 quiet line (“Two days off. Here’s the 20-minute version.”); outbound channels still must not.
 - Any pillar depth. This is Horizon W.
 
 ## Done when

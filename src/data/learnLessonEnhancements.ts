@@ -1,5 +1,6 @@
 /** Extra key points (incl. common mistakes) merged onto learn lessons at display time. */
 export const LEARN_LESSON_ENHANCEMENTS: Record<string, string[]> = {
+  'sb-0': ['Common mistake: waiting for perfect Wi‑Fi or a wearable before logging the first set.'],
   'sb-1': ['Common mistake: adding weight every session regardless of form breakdown.'],
   'sb-2': ['Common mistake: isolating arms/chest before you can control bodyweight patterns.'],
   'sb-3': ['Common mistake: ignoring readiness and grinding through every workout at RPE 10.'],
@@ -18,6 +19,9 @@ export const LEARN_LESSON_ENHANCEMENTS: Record<string, string[]> = {
   'cf-1': ['Common mistake: loading heavy before you can pass a bodyweight squat screen.'],
   'cf-2': ['Common mistake: endless corrective work with zero progressive overload.'],
   'cf-3': ['Common mistake: treating pain as always muscular — refer when in doubt.'],
+  'pd-0': [
+    'Common mistake: waiting for a wearable or a downloaded spreadsheet before logging the first week.',
+  ],
   'pd-1': ['Common mistake: copying advanced peaking blocks without a volume base.'],
   'pd-2': ['Common mistake: raising volume, intensity, AND frequency simultaneously.'],
   'pd-3': ['Common mistake: running specialization year-round without maintenance work.'],

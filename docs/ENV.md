@@ -28,7 +28,7 @@ Add these for **Production** and **Preview**:
 |----------|----------|-----------------|
 | `PRIVATE_ACCESS_SECRET` | **Yes** | Run `openssl rand -base64 32` — pick one strong secret and save it somewhere safe |
 | `PRIVATE_ACCESS_CODES` | Optional | Comma-separated aliases accepted at `/private` (e.g. `Done`). Cookies still signed with `PRIVATE_ACCESS_SECRET` |
-| `PRIVATE_MODE` | Yes | `true` while in private dev; set `false` when launching publicly |
+| `PRIVATE_MODE` | Yes (Production) | `true` on production until the public flip. **Agents never set Production to `false`.** Vercel Preview is ungated in code when `VERCEL_ENV=preview` (`.728`), even if this var is inherited as `true`. |
 | `NEXT_PUBLIC_SUPABASE_URL` | Recommended | `https://YOUR-PROJECT.supabase.co` |
 | `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Recommended | From Supabase → Project Settings → API |
 | `SUPABASE_SERVICE_ROLE_KEY` | Beta admin + webhooks | Server only — never `NEXT_PUBLIC_` |

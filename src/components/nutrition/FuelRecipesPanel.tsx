@@ -249,7 +249,7 @@ export function FuelRecipesPanel({
             <p>
               {t('fuelPremiumLockedBody', {
                 defaultValue:
-                  'Unlock the full Fuel pillar recipe library, meal timing strategies, and advanced macro coaching via the Super Bundle.',
+                  'Super Bundle adds the protein-first recipe library — garage and travel plates, not a food database. Logger stays free.',
               })}
             </p>
             <ul className="text-xs space-y-1">

@@ -14,11 +14,12 @@
 |------|---------|
 | [help/INDEX.md](help/INDEX.md) | Help library index |
 | [help/getting-started.md](help/getting-started.md) | New user onboarding |
-| [help/e1rm.md](help/e1rm.md) | Educational Epley e1RM on Train — not a tested max |
 | [help/pillars.md](help/pillars.md) | Six pillars explained |
 | [help/mission-coach.md](help/mission-coach.md) | AI weekly coach |
 | [help/fuel-and-nutrition.md](help/fuel-and-nutrition.md) | Nutrition logging |
 | [help/fitness-test-and-school.md](help/fitness-test-and-school.md) | PFT + PE classes |
+| [help/pt-safety.md](help/pt-safety.md) | Hard sessions — stop is allowed |
+| [help/pregnancy-safety.md](help/pregnancy-safety.md) | Pregnancy / miscarriage / postpartum — educational, not care |
 | [help/premium-and-billing.md](help/premium-and-billing.md) | Super Bundle |
 | [help/privacy-and-data.md](help/privacy-and-data.md) | Data & consent |
 | [help/faq.md](help/faq.md) | FAQ |
@@ -32,17 +33,16 @@
 |------|---------|
 | [ARCHITECTURE.md](ARCHITECTURE.md) | System design, layers, state |
 | [OPEN_SOURCE.md](OPEN_SOURCE.md) | AGPL posture · public flip · what stays secret |
-| [PUBLIC_GITHUB.md](PUBLIC_GITHUB.md) | Founder-only GitHub Settings clicks (visibility, secret scanning, topics) — agents never flip |
 | [CLASSIFICATION.md](CLASSIFICATION.md) | PUBLIC / INTERNAL / SECRET / LOCAL path classes |
 | [DUAL_REPO.md](DUAL_REPO.md) | Product repo vs private mission-ops · `npm run ops:sync` |
 | [SECURITY_PUBLIC_OSS_AUDIT_2026-08-08.md](SECURITY_PUBLIC_OSS_AUDIT_2026-08-08.md) | Public OSS prep audit (2026-08-08) |
-| [contracts/INDEX.md](contracts/INDEX.md) | Habit · identity · economy · module · AI interop contracts |
+| [contracts/INDEX.md](contracts/INDEX.md) | Identity · economy · module · AI interop contracts |
+| [MISSION_SERVER_MESSENGER_PLAN.md](MISSION_SERVER_MESSENGER_PLAN.md) | Frozen `.752` messenger (MSN rooms + presence; continues #518) |
 | [SECRETS.md](SECRETS.md) | Secrets program · vaults · gitleaks · rotate-on-leak |
 | [FREE_BETA.md](FREE_BETA.md) | Free-first beta mute (LLC/EIN window) — hide all paid UI |
 | [ADAPTIVE_LAYOUT.md](ADAPTIVE_LAYOUT.md) | Window size classes · adaptive overlays (web + Android) |
 | [API.md](API.md) | HTTP API reference |
 | [AGENT_RECIPES.md](AGENT_RECIPES.md) | Agent task playbooks |
-| [E1RM_PLAN.md](E1RM_PLAN.md) | Frozen `.739` — educational Epley e1RM on the Active exercise row |
 | [../CONTRIBUTING.md](../CONTRIBUTING.md) | Contributor guide |
 
 ---
@@ -67,6 +67,7 @@
 | [PRELAUNCH_CAPITAL.md](PRELAUNCH_CAPITAL.md) | Unlimited-funds tiers: legal/ops/VA yes; paid ads no until week-4 |
 | [OUTREACH_VA_BRIEF.md](OUTREACH_VA_BRIEF.md) | Hire script for beta DM help (no ads) |
 | [LEGAL_SAFETY.md](LEGAL_SAFETY.md) | AI disclosure, arbitration, DMCA, store data inventory |
+| [PREGNANCY_SAFETY.md](PREGNANCY_SAFETY.md) | Pregnancy / miscarriage / postpartum — educational, counsel-hold |
 | [PAY_READY_LEGAL.md](PAY_READY_LEGAL.md) | Six docs before payments · refunds · DPA/MSA templates |
 | [legal/DPA.md](legal/DPA.md) | B2B/school DPA draft (docs-only) |
 | [legal/MSA_TEMPLATE.md](legal/MSA_TEMPLATE.md) | B2B MSA draft (no consumer SLA promises) |
@@ -90,7 +91,6 @@
 | [applications/README.md](applications/README.md) | Paste answers are **gitignored** (founder-only); public stub only |
 | [PRODUCTION_STACK.md](PRODUCTION_STACK.md) | 13-layer production scorecard (ops maturity) |
 | [CACHE_LADDER.md](CACHE_LADDER.md) | Browser / CDN / Redis / Postgres — ideal vs MW v1 |
-| [CI_LOCAL.md](CI_LOCAL.md) | Merge bar while Actions minutes are red — Cursor-local green + craft LGTM |
 | [BACKUP_RESTORE.md](BACKUP_RESTORE.md) | User export + Supabase operator recovery (L13) |
 | [STRIPE_PREMIUM_SETUP.md](STRIPE_PREMIUM_SETUP.md) | Live Stripe + premium gate |
 | [PHANTOM_USDC_CHECKOUT.md](PHANTOM_USDC_CHECKOUT.md) | Lifetime Phantom Solana USDC |
@@ -110,7 +110,6 @@
 | [DESIGN_SYSTEM.md](DESIGN_SYSTEM.md) | Runtime tokens, shells, ProgressRing, motion |
 | [DESIGN_REVIEW.md](DESIGN_REVIEW.md) | Hero-flow UI/UX audit checklist (quarterly + pre-flip) |
 | [DESTRUCTIVE_UX.md](DESTRUCTIVE_UX.md) | Hold-to-confirm delete language |
-| [overnight/PLAN.md](overnight/PLAN.md) | Frozen implement-only overnight plan (current: garage swap `.721`) |
 
 ---
 
@@ -134,9 +133,9 @@ Root keeps only the spine (README · CONTEXT · AGENTS · INDEX · vision · ORC
 | [PRICING_REVIEW_2026-08.md](PRICING_REVIEW_2026-08.md) | Super Bundle pricing review — hold Option A (2026-08-05) |
 | [STRATEGY.md](STRATEGY.md) | Business plan · pricing · book plan |
 | [PLAN.md](PLAN.md) | Build phases A–I |
-| [DEPENDABOT_BATCH_744.md](DEPENDABOT_BATCH_744.md) | Frozen `.744` Dependabot batch plan (take vs skip; do not merge Dependabot PRs) |
-| [overnight/PLAN.md](overnight/PLAN.md) | Frozen verify+fix plan (this wave: F-017 first-set iterate `.762`) |
-| [plans/INDEX.md](plans/INDEX.md) | Frozen plan-then-build ship plans (not the roadmap) |
+| [GLOBAL_LOCALE_PLAN.md](GLOBAL_LOCALE_PLAN.md) | First-visit language + country (`.737`); country list is `supportedRegions.ts` |
+| [LOCALES.md](LOCALES.md) | Language inventory vs served markets |
+| [COOKIES.md](COOKIES.md) | Locale/country cookie note |
 | [REDTEAM.md](REDTEAM.md) | Assumptions audit |
 | [JOURNEY.md](JOURNEY.md) | Mission journey UX (I-Day → Commissioned) |
 | [CLUB_PLAN.md](CLUB_PLAN.md) | Club: points · tiers · collectibles · boards · arcade (phased plan, no code) |
@@ -144,6 +143,7 @@ Root keeps only the spine (README · CONTEXT · AGENTS · INDEX · vision · ORC
 | [LAUNCH_RUNBOOK.md](LAUNCH_RUNBOOK.md) | Founder critical path |
 | [ENV.md](ENV.md) | Environment variables |
 | [PROTECTION.md](PROTECTION.md) | Security checklist |
+| [security/INDEX.md](security/INDEX.md) | Dated red-team hunts (findings only, no PoCs) |
 | [BETA_INVITE.md](BETA_INVITE.md) | Beta kit |
 | [VISION_STATUS.md](VISION_STATUS.md) | Vision scorecard |
 | [VERCEL_DEPLOY_CHECKLIST.md](VERCEL_DEPLOY_CHECKLIST.md) | Deploy steps |

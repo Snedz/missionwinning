@@ -49,6 +49,8 @@ export const STORAGE_KEYS = {
    * (C5). Key name is grepped by privateNoteBoundary.test.ts.
    */
   athletePrivateNote: 'mw_athlete_private_note',
+  /** Mission Server messenger — rooms, messages, local presence. */
+  missionServer: 'mw_mission_server',
   defaultRestSec: 'mw_default_rest_sec',
   /**
    * `.715` — last chosen rest seconds per exercise id. Device-local; skip
@@ -125,9 +127,19 @@ export const STORAGE_KEYS = {
   units: 'mw_units',
   unitsExplicit: 'mw_units_explicit',
   langExplicit: 'mw_lang_explicit',
+  /** Explicit first-visit language choice (not detector drift). */
+  localeChoice: 'mw_locale_choice',
+  /** ISO country from first-visit region picker. */
+  countryPref: 'mw_country_pref',
   regionDefaults: 'mw_region_defaults_v1',
   remindersPref: 'mw_reminders_pref',
   sessionCheckinSkipped: 'mw_session_checkin_skipped',
+  /** Explore places dex — optional GPS pins, local only. */
+  placeDex: 'mw_place_dex',
+  /** Counsel-hold pregnancy / postpartum flag — symptom line only. */
+  pregnancyFlag: 'mw_pregnancy_flag',
+  /** Five-event field test published-table scale key. */
+  fieldTestScaleKey: 'mw_field_test_scale_key',
 
   // ── Consent / privacy ──
   privacyConsent: 'mw_privacy_consent_v1',
