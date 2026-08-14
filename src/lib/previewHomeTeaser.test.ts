@@ -1,6 +1,6 @@
 /**
- * Preview / local `/` must be the old door (gate teaser), not the cinematic
- * post-flip landing. Production with the gate on is unchanged.
+ * Preview / local `/` is the gate teaser until the signed cookie, then the
+ * `.696` homepage. Not cinematic. Production with the gate on is unchanged.
  */
 
 import { test } from 'node:test';
@@ -12,16 +12,19 @@ import { isPublicPathWhileGated } from './privateGate';
 const root = path.join(import.meta.dirname, '..', '..');
 const read = (p: string) => readFileSync(path.join(root, p), 'utf8');
 
-test('ungated `/` mounts the gate teaser, not CinematicWww', () => {
+test('ungated `/` is the teaser until the cookie, then the homepage', () => {
   const page = read('app/page.tsx');
   assert.match(page, /isPrivateModeEnabled/);
+  assert.match(page, /hasPrivateAccessCookieOnServer/);
+  assert.match(page, /homeSurfaceAfterGate/);
   assert.match(page, /GateTeaser/);
   assert.match(page, /LandingPage/);
-  const ungatedReturn = page.lastIndexOf('return <GateTeaser');
-  const landingReturn = page.lastIndexOf('<LandingPage');
-  assert.ok(ungatedReturn > 0, 'ungated branch must return GateTeaser');
-  assert.ok(landingReturn > 0 && landingReturn < ungatedReturn, 'LandingPage stays on the gated+cookie branch only');
-  assert.match(page, /<GateTeaser walkOpen/, 'Preview must not bounce unlock back onto `/`');
+  assert.doesNotMatch(
+    page,
+    /hasServerPrivateAccess/,
+    'gate-off is not unlock — that skipped the teaser on Preview'
+  );
+  assert.match(page, /<GateTeaser walkOpen/, 'cold Preview still shows the door');
 });
 
 test('GateTeaser is the mw-gate door, not the cinematic www', () => {

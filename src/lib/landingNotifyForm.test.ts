@@ -12,16 +12,13 @@ import path from 'node:path';
 const root = path.join(import.meta.dirname, '..', '..');
 const read = (p: string) => readFileSync(path.join(root, p), 'utf8');
 
-test('LandingPage mounts LaunchNotifyForm (not a third primary-action)', () => {
-  const src = read('src/page-components/LandingPage.tsx');
-  assert.match(src, /LaunchNotifyForm/, 'landing must mount the notify form');
-  assert.match(src, /landing-super-bundle-notify/, 'uses the Super Bundle notify source');
-  assert.match(src, /data-mw-landing-notify/, 'band is findable for tests');
-  const primaries = src.match(/primary-action/g) || [];
-  assert.ok(
-    primaries.length <= 2,
-    'first-90 counts at most two red actions on / — notify must not be a third'
-  );
+test('gate teaser owns LaunchNotifyForm; landing is Start free only', () => {
+  const landing = read('src/page-components/LandingPage.tsx');
+  const gate = read('app/private/PrivateTeaserClient.tsx');
+  assert.match(gate, /LaunchNotifyForm/, 'waitlist stays on the door');
+  assert.doesNotMatch(landing, /LaunchNotifyForm/, '.696 homepage has no notify band');
+  const primaries = landing.match(/primary-action/g) || [];
+  assert.ok(primaries.length <= 2, 'landing keeps at most two red Start free actions');
 });
 
 test('LaunchNotifyForm collects email via submitLead and never opens checkout', () => {

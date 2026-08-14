@@ -1,6 +1,6 @@
 /**
- * Cinematic landing has no “At a glance” stat grid — that was the wireframe.
- * docs/design/WWW_NIGHT.md
+ * `/` after Done is the .696 marketing homepage (stat row + LogToPlanHero).
+ * Cinematic www stays a separate component, not this page.
  */
 
 import { test } from 'node:test';
@@ -13,12 +13,11 @@ const landing = readFileSync(path.join(root, 'src/page-components/LandingPage.ts
 const cine = readFileSync(path.join(root, 'src/components/landing/CinematicWww.tsx'), 'utf8');
 const css = readFileSync(path.join(root, 'src/components/landing/cinematic.css'), 'utf8');
 
-test('LandingPage is the four-scene cinematic www, not a template of bands', () => {
-  assert.match(landing, /CinematicWww/);
-  assert.match(landing, /mode="open"/);
-  assert.doesNotMatch(landing, /At a glance/);
-  assert.doesNotMatch(landing, /landingFaqKeysForSurface/);
-  assert.doesNotMatch(landing, /LogToPlanHero/);
+test('LandingPage is the .696 marketing homepage, not cinematic www', () => {
+  assert.match(landing, /LogToPlanHero/);
+  assert.match(landing, /MarketingNav/);
+  assert.match(landing, /At a glance/);
+  assert.doesNotMatch(landing, /CinematicWww/);
 });
 
 test('cinematic www is four scenes, ghost CTA, real mark', () => {

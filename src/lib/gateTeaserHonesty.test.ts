@@ -21,10 +21,12 @@ test('gate notify title and foot live only on the teaser, not inside the form', 
   assert.equal([...teaser.matchAll(/gateWaitlistFoot/g)].length, 1);
 });
 
-test('ungated walk-open unlocks to /welcome, not `/`', () => {
+test('ungated walk-open POSTs the code and returns to `/` (homepage)', () => {
   const teaser = read('app/private/PrivateTeaserClient.tsx');
   assert.match(teaser, /walkOpen/);
-  assert.match(teaser, /privateGateReturnPath\(initialNext, '\/welcome'\)/);
+  assert.match(teaser, /privateGateReturnPath\(initialNext\)/);
+  assert.doesNotMatch(teaser, /privateGateReturnPath\(initialNext, '\/welcome'\)/);
+  assert.match(teaser, /\/api\/private-access/);
   const priv = read('app/private/page.tsx');
   assert.match(priv, /walkOpen=\{!isPrivateModeEnabled\(\)\}/);
 });

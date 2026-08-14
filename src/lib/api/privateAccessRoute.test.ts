@@ -82,6 +82,36 @@ describe('private-access API route', () => {
     assert.doesNotMatch(setCookie, /domain=/i, 'host-only — Domain would fail on *.vercel.app');
   });
 
+  it('accepts Done on ungated Preview even when CODES is unset', async () => {
+    setTestEnv('VERCEL_ENV', 'preview');
+    setTestEnv('PRIVATE_ACCESS_CODES', undefined);
+    const res = await POST(
+      makeNextRequest('http://localhost/api/private-access', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'x-forwarded-for': '10.0.0.104' },
+        body: JSON.stringify({ password: 'Done' }),
+      })
+    );
+    assert.equal(res.status, 200, 'Preview Done must mint the cookie so `/` is the homepage');
+    const setCookie = res.headers.get('set-cookie') ?? '';
+    assert.ok(setCookie.includes(PRIVATE_ACCESS_COOKIE));
+  });
+
+  it('still 401s Done on gated production when CODES is unset', async () => {
+    setTestEnv('VERCEL_ENV', 'production');
+    setTestEnv('NODE_ENV', 'production');
+    setTestEnv('PRIVATE_MODE', 'true');
+    setTestEnv('PRIVATE_ACCESS_CODES', undefined);
+    const res = await POST(
+      makeNextRequest('http://localhost/api/private-access', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'x-forwarded-for': '10.0.0.105' },
+        body: JSON.stringify({ password: 'Done' }),
+      })
+    );
+    assert.equal(res.status, 401);
+  });
+
   it('returns 400 for invalid body', async () => {
     const res = await POST(
       makeNextRequest('http://localhost/api/private-access', {

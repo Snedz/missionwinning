@@ -27,8 +27,8 @@ type Props = {
   /** Server-resolved `?next=` — read here so the gate needs no Suspense boundary. */
   initialNext?: string;
   /**
-   * Preview / local: PRIVATE_MODE is off. Unlock must not assign `/` — that
-   * remounts this teaser. I-Day is the same door as Log a set.
+   * Preview / local: PRIVATE_MODE is off. Unlock still POSTs Done so the
+   * gate cookie is set, then `/` can paint the homepage (not I-Day).
    */
   walkOpen?: boolean;
 };
@@ -61,9 +61,7 @@ export function PrivateTeaserClient({
   // for up to 6s. With PRIVATE_MODE on, `/` redirects here, so those words
   // were the entire server-rendered website. The probe now runs underneath the
   // poster and only announces itself in one line; on success it still hard-navs.
-  const unlockHref = walkOpen
-    ? privateGateReturnPath(initialNext, '/welcome')
-    : privateGateReturnPath(initialNext);
+  const unlockHref = privateGateReturnPath(initialNext);
 
   useEffect(() => {
     if (walkOpen) {
@@ -111,11 +109,6 @@ export function PrivateTeaserClient({
     e.preventDefault();
     const code = password.trim();
     if (!code) return;
-
-    if (walkOpen) {
-      navigateAfterPrivateGateUnlock(unlockHref);
-      return;
-    }
 
     setLoading(true);
     setError('');
