@@ -20,8 +20,8 @@
   "firstStepMoveWhy": "Five minutes on the days you do not train is what keeps the streak reachable.",
   "firstStepLearnTitle": "Read one guide",
   "firstStepLearnWhy": "Knowing why a session is built the way it is makes it easier to keep going.",
-  "firstStepParqTitle": "Complete the health screen",
-  "firstStepParqWhy": "A short safety questionnaire. It is the one step the app does ask for before pushing harder.",
+  "firstStepParqTitle": "Screen before a coach plan",
+  "firstStepParqWhy": "A short safety questionnaire before Mission Coach generates a week. Log set never waits on it.",
   "fuelMealStripLabel": "Meal",
   "fuelModeStripLabel": "Log method",
   "publicStatusOpenBeta": "{{productVersion}} — open alpha. Offline logging plus Mission Coach from your logs."

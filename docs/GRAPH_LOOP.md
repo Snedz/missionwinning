@@ -2,7 +2,7 @@
 
 **Audience:** Founder + the next Cursor Cloud / graph agent  
 **Lane:** Engineering-Web (unless a loop says Android)  
-**Status:** ACTIVE 2026-08-14 · web `2026.07-unified.781` · Alpha 0.1.0  
+**Status:** ACTIVE 2026-08-14 · web `2026.07-unified.788` · Alpha 0.1.0  
 **Does not replace:** [ORCHESTRATION.md](../ORCHESTRATION.md) (what may be built) · [CONTEXT.md](../CONTEXT.md) `## Now` (where we are) · [vision.md](../vision.md) (constitution) · [docs/THESIS.md](THESIS.md) (wedge) · [docs/PLAN.md](PLAN.md) (phases A–I)
 
 This file is the **execution queue** for the agent graph: one concern per loop, spawn, ship, mark done, spawn the next. It is not a second status block and not a license to skip standing hard bans.
@@ -44,6 +44,7 @@ Recent turns:
 | **H0-1** | PWA `start_url` flag-switch | `.780` this PR — **done** |
 | **H0-2** | Launch env H0 vs H1 (FREE_BETA) | `.781` this PR — **done** |
 | **H0-3** | API inventory + glob guard | `.787` — **done** |
+| **H0-5** | Win Score → Mission Score leftover copy | `.788` this PR — **done** |
 
 ---
 
@@ -90,7 +91,7 @@ Verified in source 2026-08-14 (master `.779`). Findings with proof paths: [§ Re
 | **H0-2** | `check-env --launch` vs FREE_BETA (H0 vs H1 profiles) | Launch-verify can succeed | `done` — `.781` this PR |
 | **H0-3** | API INDEX + `docs/API.md` + PROGRAM_STATUS census | Docs match reality | `done` — `.787` |
 | **H0-4** | Public-flip checklist: `start_url` curl + SW; runbook pointers | Flip-day smoke | `done` — docs |
-| **H0-5** | “Win Score” → Mission Score leftover strings | Public copy honesty | `open` |
+| **H0-5** | “Win Score” → Mission Score leftover strings | Public copy honesty | `done` — `.788` |
 | **H0-6** | Guidebook chapter heroes still navy/emerald | Design honesty before baselines | `open` |
 | **H0-7** | Production-stack / runbook vs CONTEXT (Upstash, `.104`) | Docs match reality | `open` |
 
@@ -139,7 +140,7 @@ Do not pull these forward while H0 agent loops remain `open`.
 | W3 | Coach week earned from logs, on Coach **and** Today | `parked` |
 | W4 | Missed-day re-entry, in-app only | `parked` |
 | W5 | Form Index Wave D — next unique stills | `parked` |
-| W6 | “Win Score” leftover strings | `parked` — **same work as H0-5**; if you ship H0-5, mark W6 done too |
+| W6 | “Win Score” leftover strings | `done` — same as H0-5 `.788` |
 | W7 | API INDEX drift | `done` — same as H0-3 `.787` |
 | W8 | Guidebook chapter heroes | `parked` — **same work as H0-6**; if you ship H0-6, mark W8 done too |
 
@@ -186,9 +187,9 @@ Headers on those routes already say “See: app/api/INDEX.md, docs/API.md”. Di
 
 [CONTEXT.md](../CONTEXT.md) `## Now` wins (`.178`). [LAUNCH_RUNBOOK.md](LAUNCH_RUNBOOK.md) §1 still talks `.104` / “CI billing cleared 2026-07-22”; §2b checks Upstash live; CONTEXT Status table: Actions exhausted, Upstash **unset**. Do not “fix” by copying the Status table into the runbook. Add a pointer: if the runbook disagrees, CONTEXT wins. H0-4 adds the missing `start_url` curl to the flip checklist.
 
-### H0-5 — Win Score leftover copy
+### H0-5 — Win Score leftover copy (`done` · `.788`)
 
-Trap term in CONTEXT: do not add new “Win Score” strings. Remaining values (2026-08-14 grep): `landingLocales`, `todayLocales`, `notificationLocales`, `historyLocales`, `guidebookLocales`, plus `src/lib/INDEX.md` notes and `winScoreSeen` **field name** in activation tests (rename the **string**, not the storage key, unless a migration exists).
+Athlete strings say Mission Score. Keys (`landingFreeWinScore`, `winScoreSeen`) unchanged. Guard: [`src/lib/missionScoreCopy.test.ts`](../src/lib/missionScoreCopy.test.ts).
 
 ### H0-6 — chapter heroes
 
@@ -250,9 +251,9 @@ CONTEXT `.254`: `public/learn/*.webp` 89–99% dark with teal. `check-design-sys
 
 ---
 
-## H0-5 — Mission Score leftover copy
+## H0-5 — Mission Score leftover copy (`done` · `.788`)
 
-**Ship:** one i18n pass (`src/i18n/*Locales.ts`). `npm run i18n:parity`. Do not add keys. Do not rename `winScoreSeen` storage without a migration. Mark parked W6 done.
+**Shipped:** i18n values + packs + `export-locales`, guidebook/leaderboard/welcome leftovers, `missionScoreCopy.test.ts`. Keys and `winScoreSeen` unchanged. W6 marked done.
 
 ---
 
@@ -274,7 +275,7 @@ CONTEXT `.254`: `public/learn/*.webp` 89–99% dark with teal. `check-design-sys
 You are the next Mission Winning graph-loop agent.
 
 1. Read CONTEXT.md, AGENTS.md, INDEX.md, ORCHESTRATION.md, then docs/GRAPH_LOOP.md.
-2. Implement ONLY the top loop whose Status is `open` (today: H0-5 Win Score leftover copy).
+2. Implement ONLY the top loop whose Status is `open` (today: H0-6 guidebook chapter heroes).
 3. This session skipped Horizon W (2026-08-14). Do not unpark W0–W8. Do not write excellence status: pass.
 4. Investigate on current master before coding. If the claim is already false, mark the loop done in GRAPH_LOOP.md with proof paths and stop.
 5. One concern. One PR. [skip vercel] unless I asked for Preview.

@@ -52,7 +52,7 @@ Mission Winning tracks what you actually do. That history is the feedback loop: 
 
 **Oxidative (minutes+):** Jogging, long hikes, easy bike. Sustainable pace and breathing.
 
-Most general fitness blends all three across the week. A lifter who never trains oxidative capacity may gas out on conditioning tests; a runner who never lifts may lack strength for posture and injury resilience. The six-pillar Win Score nudges balance — not perfection every day.`,
+Most general fitness blends all three across the week. A lifter who never trains oxidative capacity may gas out on conditioning tests; a runner who never lifts may lack strength for posture and injury resilience. The six-pillar Mission Score nudges balance — not perfection every day.`,
         practiceCTA: { label: 'Log an activity', href: '/track' },
         relatedExerciseIds: ['jump-squats', 'burpees', 'mountain-climbers'],
         relatedLearnPathId: 'strength-basics',
@@ -397,10 +397,10 @@ Each pillar can still log a win on Today. That is optional breadth — not a req
       },
       {
         id: 'ch4-s3',
-        title: 'Win Score & Offline Use',
+        title: 'Mission Score & Offline Use',
         summary:
           'Mission Score rewards showing up. Offline logging feeds Mission Coach — install the PWA when you can.',
-        body: `Win Score (Mission Score) is a holistic consistency metric — not a medical readiness grade. It rewards showing up over time more than one hero session.
+        body: `Mission Score is a holistic consistency metric — not a medical readiness grade. It rewards showing up over time more than one hero session.
 
 Install from your browser (Add to Home Screen) for offline logging at the park or garage gym. Sync when you sign in on Profile. Those logs are what Mission Coach reads when it builds your next week.
 
@@ -410,11 +410,11 @@ Beta testers: see /beta for the start guide and feedback channels.`,
         sourceRef: 'MW product design',
         callout: {
           title: 'Score is feedback',
-          body: 'Win Score is feedback on consistency — not a grade. Use it to notice gaps, not to punish a quiet week. Keep logging; Coach plans from what you actually did.',
+          body: 'Mission Score is feedback on consistency — not a grade. Use it to notice gaps, not to punish a quiet week. Keep logging; Coach plans from what you actually did.',
         },
         figure: {
           src: '/learn/win-score-offline.webp',
-          alt: 'Win Score circle linked to offline install and log',
+          alt: 'Mission Score circle linked to offline install and log',
           caption: 'Install · log offline · sync when signed in',
         },
       },
@@ -596,7 +596,7 @@ Leaderboards add optional social motivation. Squad codes let friends compare wit
 
 **Life stress:** Keep the habit with lower-RPE sessions; consistency beats hero weeks you cannot recover from.
 
-History and Win Score trends on Today help you decide. This guidebook is the reference; your log is the truth.`,
+History and Mission Score trends on Today help you decide. This guidebook is the reference; your log is the truth.`,
         practiceCTA: { label: 'View workout history', href: '/history' },
         relatedExerciseIds: ['squats', 'push-ups', 'deadlift'],
         relatedLearnPathId: 'assessments-path',

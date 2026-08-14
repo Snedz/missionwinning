@@ -5,6 +5,7 @@
   "gateSubtitle": "แอปเพื่อสุขภาพทุกอย่างฟรี ทั้งการฝึกอบรม โภชนาการ การเคลื่อนไหว จิตใจ กิจกรรม และการเรียนรู้ เปิดตัวเร็ว ๆ นี้ แกนฟรีตลอดไป",
   "gateLocalFirst": "No account needed: the logger writes sets to your device, and nothing is uploaded unless you sign in.",
   "gateFooterTagline": "ฟีเจอร์หลักฟรีตลอดไป",
+  "gateLogASet": "Log a set",
   "gateWaitlistTitle": "รับการแจ้งเตือนเมื่อเปิดตัว",
   "gateWaitlistPlaceholder": "you@example.com",
   "gateWaitlistEmailLabel": "Email",

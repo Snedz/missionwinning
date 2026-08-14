@@ -158,7 +158,7 @@ export function ProfileWearablesCard({ signedIn }: Props) {
         <CardDescription>
           {t('wearablesLead', {
             defaultValue:
-              'Optional. Connect Whoop, Strava, and more when configured. Apple Health and Google Health Connect need the app shell later. Win Score still comes from your logs.',
+              'Optional. Connect Whoop, Strava, and more when configured. Apple Health and Google Health Connect need the app shell later. Mission Score still comes from your logs.',
           })}
         </CardDescription>
       </CardHeader>

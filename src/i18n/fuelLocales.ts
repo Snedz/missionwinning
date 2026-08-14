@@ -217,7 +217,7 @@ type FuelStrings = {
 const en: FuelStrings = {
   fuelPremiumActive: ' Premium: full recipe library + deep plans (Super Bundle).',
   fuelBundleUpsell: ' Super Bundle adds protein-first recipes and the Fuel Coach week — logger stays free.',
-  fuelWinScore: 'Win Score',
+  fuelWinScore: 'Mission Score',
   fuelTargetsTitle: "Today's Targets",
   fuelCalories: 'Calories',
   fuelProtein: 'Protein',

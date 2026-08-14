@@ -1,7 +1,7 @@
 import type { GuidedSessionComplete } from '@/lib/guidedSession';
 import { logPillarWin, type PillarType } from '@/lib/pillarLog';
 
-/** Log a guided session completion toward Win Score + pillar wins. */
+/** Log a guided session completion toward Mission Score + pillar wins. */
 export function completeGuidedSession(
   pillar: PillarType,
   result: GuidedSessionComplete,

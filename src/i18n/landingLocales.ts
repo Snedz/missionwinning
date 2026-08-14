@@ -74,7 +74,7 @@ const LANDING_EN: Record<string, string> = {
     'Free offline logging (no account) and weekly plans that adapt from your logs alone — no wearable required.',
   landingHeroLibrary: `Library of ${EP} free exercise pages — form cues, hubs, and a full foundations guide.`,
   landingHeroLibraryCta: 'Browse exercises',
-  landingHeroProof: 'Log a set → Coach shapes the week → Win Score ticks.',
+  landingHeroProof: 'Log a set → Coach shapes the week → Mission Score ticks.',
   landingSeeHow: 'See how it works',
   landingProofChip: `${EP} exercises · offline · no account`,
   landingProofNoAiKey:
@@ -102,7 +102,7 @@ const LANDING_EN: Record<string, string> = {
     'One small win in each pillar: first workout, first meal logged, first flow, first breath, first lesson.',
   landingJourneyPhase2Name: 'Readiness',
   landingJourneyPhase2Desc:
-    'A health screen, your baseline Win Score, and a seven-day streak. Standards before speed.',
+    'A health screen, your baseline Mission Score, and a seven-day streak. Standards before speed.',
   landingJourneyPhase3Name: 'Commissioned',
   landingJourneyPhase3Desc:
     'Today becomes your command center. One clear action every day, scored across all six pillars.',
@@ -118,19 +118,19 @@ const LANDING_EN: Record<string, string> = {
   landingFreeLogger: 'Full workout logger — sets, reps, RPE, rest timers',
   landingFreeLibrary: `${EP}-exercise library — bodyweight and minimal gear first`,
   landingFreeOffline: 'Offline PWA — no store, no fees, no account required',
-  landingFreeWinScore: 'Win Score from your logs — readiness, strain, recovery',
+  landingFreeWinScore: 'Mission Score from your logs — readiness, strain, recovery',
   landingFreeStatWorkouts: 'Unlimited logs',
   landingFreeStatWorkoutsHint: 'Forever free',
   landingFreeStatLibrary: `${EP} exercises`,
   landingFreeStatLibraryHint: 'Form cues included',
   landingFreeStatOffline: 'Works offline',
   landingFreeStatOfflineHint: 'Install as PWA',
-  landingFreeStatScore: 'Win Score',
+  landingFreeStatScore: 'Mission Score',
   landingFreeStatScoreHint: 'Six pillars, one number',
   landingPillarsEyebrow: 'Six pillars',
   landingPillarsTitle: 'Everything reinforces everything.',
   landingPillarsBody:
-    'Mobility improves training. Mind improves consistency. Fuel powers results. The Win Score weighs all six — one number for the whole self, not another silo.',
+    'Mobility improves training. Mind improves consistency. Fuel powers results. The Mission Score weighs all six — one number for the whole self, not another silo.',
   landingPillarsFree: 'Free',
   landingPillarsBundle: 'Bundle',
   landingPillarsOpen: 'Open {{name}}',
@@ -225,10 +225,10 @@ const LANDING_ES: Record<string, string> = {
   landingHeroTitle1: 'Entrena en cualquier lugar.',
   landingHeroTitle2: 'Gana a diario.',
   landingHeroSubtitle:
-    'El rastreador de entrenamientos gratis que funciona offline — sin cuenta, sin tienda, sin muro de pago en lo básico. Nutrición, movilidad, mente y aprendizaje suman al mismo Win Score.',
+    'El rastreador de entrenamientos gratis que funciona offline — sin cuenta, sin tienda, sin muro de pago en lo básico. Nutrición, movilidad, mente y aprendizaje suman al mismo Mission Score.',
   landingHeroLibrary: `Biblioteca de ${EP} ejercicios gratis — cues, hubs y guía completa.`,
   landingHeroLibraryCta: 'Ver ejercicios',
-  landingHeroProof: 'Registra una serie en el demo → el Win Score se mueve. Ese es el bucle.',
+  landingHeroProof: 'Registra una serie en el demo → el Mission Score se mueve. Ese es el bucle.',
   landingSeeHow: 'Cómo funciona',
   landingProofChip: `${EP} ejercicios · offline · sin cuenta`,
   landingProofNoAiKey: 'El core gratis no necesita clave de IA. Coach IA opcional si está activo.',
@@ -258,7 +258,7 @@ const LANDING_ES: Record<string, string> = {
   landingPillarsEyebrow: 'Seis pilares',
   landingPillarsTitle: 'Todo refuerza todo.',
   landingPillarsBody:
-    'La movilidad mejora el entrenamiento. La mente mejora la constancia. El fuel impulsa resultados. El Win Score pesa los seis.',
+    'La movilidad mejora el entrenamiento. La mente mejora la constancia. El fuel impulsa resultados. El Mission Score pesa los seis.',
   landingPillarsFree: 'Gratis',
   landingPillarsBundle: 'Bundle',
   landingBundleEyebrow: 'El Super Bundle',
@@ -335,7 +335,7 @@ const LANDING_PT: Record<string, string> = {
   landingHeroTitle1: 'Treine em qualquer lugar.',
   landingHeroTitle2: 'Vença todo dia.',
   landingHeroSubtitle:
-    'O tracker de treinos grátis que funciona offline — sem conta, sem loja, sem paywall no básico. Nutrição, mobilidade, mente e aprendizado somam no mesmo Win Score.',
+    'O tracker de treinos grátis que funciona offline — sem conta, sem loja, sem paywall no básico. Nutrição, mobilidade, mente e aprendizado somam no mesmo Mission Score.',
   landingSeeHow: 'Como funciona',
   landingCtaStart: 'Comece seu caminho',
   landingJourneyTitle: 'O caminho do membro',
@@ -384,7 +384,7 @@ const LANDING_DE: Record<string, string> = {
   landingHeroTitle1: 'Trainiere überall.',
   landingHeroTitle2: 'Gewinne täglich.',
   landingHeroSubtitle:
-    'Der kostenlose Offline-Workout-Tracker — kein Konto, kein App-Store, keine Paywall bei den Basics. Ernährung, Mobility, Mind und Lernen fließen in denselben Win Score.',
+    'Der kostenlose Offline-Workout-Tracker — kein Konto, kein App-Store, keine Paywall bei den Basics. Ernährung, Mobility, Mind und Lernen fließen in denselben Mission Score.',
   landingSeeHow: 'So funktioniert’s',
   landingCtaStart: 'Starte deinen Weg',
   landingJourneyTitle: 'Der Member-Pfad',
@@ -427,7 +427,7 @@ const LANDING_FR: Record<string, string> = {
   landingHeroTitle1: 'Entraîne-toi partout.',
   landingHeroTitle2: 'Gagne chaque jour.',
   landingHeroSubtitle:
-    'Le tracker d’entraînement gratuit qui marche hors ligne — pas de compte, pas de store, pas de paywall sur l’essentiel. Nutrition, mobilité, mental et apprentissage dans le même Win Score.',
+    'Le tracker d’entraînement gratuit qui marche hors ligne — pas de compte, pas de store, pas de paywall sur l’essentiel. Nutrition, mobilité, mental et apprentissage dans le même Mission Score.',
   landingSeeHow: 'Comment ça marche',
   landingCtaStart: 'Commence ton parcours',
   landingJourneyTitle: 'Le parcours membre',
@@ -478,7 +478,7 @@ const LANDING_IT: Record<string, string> = {
   landingHeroTitle2: 'Vinci ogni giorno.',
   landingHeroSubtitle:
     'Registro offline gratuito (senza account) e piani settimanali che si adattano solo dai tuoi log — nessun wearable richiesto.',
-  landingHeroProof: 'Registra una serie → Coach modella la settimana → Win Score avanza.',
+  landingHeroProof: 'Registra una serie → Coach modella la settimana → Mission Score avanza.',
   landingSeeHow: 'Come funziona',
   landingProofChip: `${EP} esercizi · offline · senza account`,
   landingProofNoAiKey:
@@ -499,7 +499,7 @@ const LANDING_IT: Record<string, string> = {
   landingPillarsEyebrow: 'Sei pilastri',
   landingPillarsTitle: 'Tutto rafforza tutto.',
   landingPillarsBody:
-    'La mobilità migliora l’allenamento. La mente migliora la costanza. Il fuel alimenta i risultati. Il Win Score pesa tutti e sei.',
+    'La mobilità migliora l’allenamento. La mente migliora la costanza. Il fuel alimenta i risultati. Il Mission Score pesa tutti e sei.',
   landingPillarsFree: 'Gratis',
   landingPillarsBundle: 'Bundle',
   landingBundleEyebrow: 'Il Super Bundle',
@@ -575,7 +575,7 @@ const LANDING_RU: Record<string, string> = {
   landingHeroTitle2: 'Побеждай каждый день.',
   landingHeroSubtitle:
     'Бесплатное офлайн-логирование (без аккаунта) и недельные планы, которые адаптируются только из твоих логов — носимый гаджет не нужен.',
-  landingHeroProof: 'Запиши подход → Coach формирует неделю → Win Score растёт.',
+  landingHeroProof: 'Запиши подход → Coach формирует неделю → Mission Score растёт.',
   landingSeeHow: 'Как это работает',
   landingProofChip: `${EP} упражнений · офлайн · без аккаунта`,
   landingProofNoAiKey:
@@ -596,7 +596,7 @@ const LANDING_RU: Record<string, string> = {
   landingPillarsEyebrow: 'Шесть столпов',
   landingPillarsTitle: 'Всё усиливает всё.',
   landingPillarsBody:
-    'Мобильность улучшает тренировки. Разум улучшает постоянство. Fuel питает результат. Win Score взвешивает все шесть.',
+    'Мобильность улучшает тренировки. Разум улучшает постоянство. Fuel питает результат. Mission Score взвешивает все шесть.',
   landingPillarsFree: 'Бесплатно',
   landingPillarsBundle: 'Bundle',
   landingBundleEyebrow: 'Super Bundle',
@@ -672,7 +672,7 @@ const LANDING_KO: Record<string, string> = {
   landingHeroTitle2: '매일 이기세요.',
   landingHeroSubtitle:
     '무료 오프라인 기록(계정 불필요)과 로그만으로 적응하는 주간 플랜 — 웨어러블 필요 없음.',
-  landingHeroProof: '세트 기록 → 코치가 주간 조정 → Win Score 상승.',
+  landingHeroProof: '세트 기록 → 코치가 주간 조정 → Mission Score 상승.',
   landingSeeHow: '작동 방식',
   landingProofChip: `${EP}개 운동 · 오프라인 · 계정 없음`,
   landingProofNoAiKey:
@@ -693,7 +693,7 @@ const LANDING_KO: Record<string, string> = {
   landingPillarsEyebrow: '여섯 기둥',
   landingPillarsTitle: '모든 것이 서로를 강화합니다.',
   landingPillarsBody:
-    '모빌리티는 훈련을, 마인드는 꾸준함을, Fuel은 결과를 이끕니다. Win Score가 여섯 기둥을 모두 반영합니다.',
+    '모빌리티는 훈련을, 마인드는 꾸준함을, Fuel은 결과를 이끕니다. Mission Score가 여섯 기둥을 모두 반영합니다.',
   landingPillarsFree: '무료',
   landingPillarsBundle: 'Bundle',
   landingBundleEyebrow: 'Super Bundle',
@@ -769,7 +769,7 @@ const LANDING_JA: Record<string, string> = {
   landingHeroTitle2: '毎日勝つ。',
   landingHeroSubtitle:
     '無料のオフライン記録（アカウント不要）とログだけから適応する週間プラン — ウェアラブル不要。',
-  landingHeroProof: 'セットを記録 → コーチが週を調整 → Win Scoreが動く。',
+  landingHeroProof: 'セットを記録 → コーチが週を調整 → Mission Scoreが動く。',
   landingSeeHow: '仕組みを見る',
   landingProofChip: `${EP}種のエクササイズ · オフライン · アカウント不要`,
   landingProofNoAiKey:
@@ -790,7 +790,7 @@ const LANDING_JA: Record<string, string> = {
   landingPillarsEyebrow: '6つの柱',
   landingPillarsTitle: 'すべてがすべてを強化する。',
   landingPillarsBody:
-    'モビリティはトレーニングを、マインドは継続を、Fuelは結果を支えます。Win Scoreが6つの柱をひとつに。',
+    'モビリティはトレーニングを、マインドは継続を、Fuelは結果を支えます。Mission Scoreが6つの柱をひとつに。',
   landingPillarsFree: '無料',
   landingPillarsBundle: 'Bundle',
   landingBundleEyebrow: 'Super Bundle',
@@ -864,7 +864,7 @@ const LANDING_HI: Record<string, string> = {
   landingHeroTitle1: 'कहीं भी ट्रेन करें।',
   landingHeroTitle2: 'हर दिन जीतें।',
   landingHeroSubtitle:
-    'मुफ़्त ऑफ़लाइन वर्कआउट ट्रैकर — बिना खाते, बिना स्टोर, कोर पर कोई paywall नहीं। Win Score पोषण, गतिशीलता, मन और सीख को जोड़ता है।',
+    'मुफ़्त ऑफ़लाइन वर्कआउट ट्रैकर — बिना खाते, बिना स्टोर, कोर पर कोई paywall नहीं। Mission Score पोषण, गतिशीलता, मन और सीख को जोड़ता है।',
   landingCtaStart: 'अपना मार्ग शुरू करें',
   landingFinalCtaButton: 'मुफ़्त शुरू — बिना खाते',
   landingCaptureTitle: 'लॉन्च नोट्स। कोर हमेशा मुफ़्त।',
@@ -884,7 +884,7 @@ const LANDING_ID: Record<string, string> = {
   landingHeroTitle1: 'Latihan di mana saja.',
   landingHeroTitle2: 'Menang setiap hari.',
   landingHeroSubtitle:
-    'Pelacak latihan gratis offline — tanpa akun, tanpa toko, tanpa paywall di inti. Win Score menyatukan nutrisi, mobilitas, pikiran, dan belajar.',
+    'Pelacak latihan gratis offline — tanpa akun, tanpa toko, tanpa paywall di inti. Mission Score menyatukan nutrisi, mobilitas, pikiran, dan belajar.',
   landingCtaStart: 'Mulai jalurmu',
   landingFinalCtaButton: 'Mulai gratis — tanpa akun',
   landingCaptureTitle: 'Catatan rilis. Inti gratis selamanya.',
@@ -904,7 +904,7 @@ const LANDING_TH: Record<string, string> = {
   landingHeroTitle1: 'ฝึกได้ทุกที่',
   landingHeroTitle2: 'ชนะทุกวัน',
   landingHeroSubtitle:
-    'ตัวติดตามออกกำลังกายฟรีออฟไลน์ — ไม่ต้องมีบัญชี ไม่ต้องร้านค้า ไม่มี paywall ที่คอร์ Win Score รวมโภชนาการ การเคลื่อนไหว จิตใจ และการเรียนรู้',
+    'ตัวติดตามออกกำลังกายฟรีออฟไลน์ — ไม่ต้องมีบัญชี ไม่ต้องร้านค้า ไม่มี paywall ที่คอร์ Mission Score รวมโภชนาการ การเคลื่อนไหว จิตใจ และการเรียนรู้',
   landingCtaStart: 'เริ่มเส้นทางของคุณ',
   landingFinalCtaButton: 'เริ่มฟรี — ไม่ต้องมีบัญชี',
   landingCaptureTitle: 'ข่าวเปิดตัว คอร์ฟรีตลอดไป',
@@ -924,7 +924,7 @@ const LANDING_ZH: Record<string, string> = {
   landingHeroTitle1: '随处训练。',
   landingHeroTitle2: '每日获胜。',
   landingHeroSubtitle:
-    '免费离线训练记录器——无需账号、无需应用商店、核心功能无付费墙。Win Score 将营养、活动、心态与学习合而为一。',
+    '免费离线训练记录器——无需账号、无需应用商店、核心功能无付费墙。Mission Score 将营养、活动、心态与学习合而为一。',
   landingCtaStart: '开始你的路径',
   landingFinalCtaButton: '免费开始 — 无需账号',
   landingCaptureTitle: '上线通知。核心永久免费。',
@@ -944,7 +944,7 @@ const LANDING_VI: Record<string, string> = {
   landingHeroTitle1: 'Tập mọi nơi.',
   landingHeroTitle2: 'Thắng mỗi ngày.',
   landingHeroSubtitle:
-    'Trình theo dõi tập luyện miễn phí offline — không tài khoản, không cửa hàng, không paywall phần lõi. Win Score gộp dinh dưỡng, vận động, tinh thần và học tập.',
+    'Trình theo dõi tập luyện miễn phí offline — không tài khoản, không cửa hàng, không paywall phần lõi. Mission Score gộp dinh dưỡng, vận động, tinh thần và học tập.',
   landingCtaStart: 'Bắt đầu lộ trình',
   landingFinalCtaButton: 'Bắt đầu miễn phí — không tài khoản',
   landingCaptureTitle: 'Tin ra mắt. Lõi miễn phí mãi mãi.',
@@ -964,7 +964,7 @@ const LANDING_AR: Record<string, string> = {
   landingHeroTitle1: 'تدرّب في أي مكان.',
   landingHeroTitle2: 'انتصِر كل يوم.',
   landingHeroSubtitle:
-    'متتبع تمارين مجاني يعمل دون اتصال — بلا حساب، بلا متجر، بلا جدار دفع على النواة. Win Score يجمع التغذية والحركة والعقل والتعلم.',
+    'متتبع تمارين مجاني يعمل دون اتصال — بلا حساب، بلا متجر، بلا جدار دفع على النواة. Mission Score يجمع التغذية والحركة والعقل والتعلم.',
   landingCtaStart: 'ابدأ مسارك',
   landingFinalCtaButton: 'ابدأ مجانًا — بلا حساب',
   landingCaptureTitle: 'ملاحظات الإطلاق. النواة مجانية إلى الأبد.',

@@ -1,7 +1,7 @@
 /**
  * Growth / referral / share copy — Wave 8.
  * LLM-drafted partial locales — founder review before public flip.
- * Product nouns (Win Score, Super Bundle, I-Day, Mission Winning) stay English.
+ * Product nouns (Mission Score, Super Bundle, I-Day, Mission Winning) stay English.
  */
 
 type GrowthStrings = {

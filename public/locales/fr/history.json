@@ -1,6 +1,6 @@
 {
   "historyTitle": "Historique d'entraînement",
-  "historySubtitle": "Votre historique alimente la préparation du Today Hub et le Win Score.",
+  "historySubtitle": "Votre historique alimente la préparation du Today Hub et le Mission Score.",
   "historySessionCount": "{{count}} session terminée",
   "historySyncing": "- synchronisation du cloud…",
   "historyCloudMerged": "— nuage fusionné",
