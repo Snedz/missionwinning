@@ -24,7 +24,7 @@ Chapter / section imagery for Beyond the Basics. Playbook: [docs/MEDIA_SYSTEM.md
 | `protein-briefing.webp` | Ch5 macros |
 | `retest-cadence.webp` | Ch6 benchmarks |
 | `six-pillars.webp` | Ch4 pillars |
-| `win-score-offline.webp` | Ch4 Win Score |
+| `win-score-offline.webp` | Ch4 Mission Score |
 | `meal-timing.webp` | Ch5 meal timing |
 | `parq-screen.webp` | Ch6 PAR-Q |
 | `adjust-plan.webp` | Ch6 adjust plan |

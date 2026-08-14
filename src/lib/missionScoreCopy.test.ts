@@ -48,6 +48,7 @@ test('athlete copy does not say Win Score', () => {
       if (rel.endsWith('.test.ts') || rel.endsWith('.routetest.ts')) return false;
       return /\.(ts|tsx|js|mjs)$/.test(rel);
     }),
+    ...leftover('scripts', (rel) => /generate-.*\.mjs$/.test(rel)),
     ...leftover('public/locales', (rel) => rel.endsWith('.json')),
   ];
   assert.deepEqual(
