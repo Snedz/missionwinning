@@ -15,7 +15,15 @@ import type {
   WorkoutExerciseTemplate,
 } from "@/types";
 import { countsTowardVolume } from "@/lib/workout/setKind";
-import { advanceAfterLog } from "@/lib/workout/superset";
+import { parseOptionalRir } from "@/lib/workout/rir";
+import { lastTempoForExercise, parseOptionalTempo, rememberLastTempo } from "@/lib/workout/tempo";
+import { advanceAfterLog, pairWithNext, unpair } from "@/lib/workout/superset";
+import {
+  completedLoggedSet,
+  parseSetSide,
+  suggestNextSide,
+  type SetSide,
+} from "@/lib/workout/unilateral";
 import { getUserWorkoutHistory, getUserWorkoutsUpdatedSince, getUser } from "@/lib/supabase";
 import { recordWorkoutCompleted } from "@/lib/challenges";
 import { applyWorkoutRewards } from "@/lib/rewards/apply";
@@ -26,11 +34,15 @@ import { setActiveWorkoutFlag } from "@/lib/workout/activeWorkoutPulse";
 import { enqueueWorkoutUpsert } from "@/lib/sync/workoutSync";
 import { flush as flushOutbox } from "@/lib/sync/outbox";
 import { newClientId } from "@/lib/workout/clientId";
+import { applyGarageSwapToActive, garageEquipmentChanged } from "@/lib/workout/garageSwap";
+import { getExerciseById } from "@/data/exercises";
 import { readRaw, writeRaw } from "@/lib/storage/safeStorage";
 import { STORAGE_KEYS } from "@/lib/storage/keys";
 import { browserStorage, dedupeWrites, elapsedSecondsFrom } from "@/store/persistDedupe";
 import {
   FALLBACK_REST_SECONDS,
+  rememberLastRest,
+  rememberedRestAfterAdjust,
   resolveStartRestSeconds,
 } from "@/lib/workout/restTimer";
 
@@ -52,6 +64,8 @@ interface WorkoutState {
   restSecondsRemaining: number;
   restTimerActive: boolean;
   restTimerInitialSeconds: number;
+  /** Exercise the running rest belongs to — memory only, like other restTimer*. */
+  restExerciseId: string | null;
   elapsedSeconds: number;
   /** False until persist finishes merging localStorage (avoids Start wipe race). */
   hasHydrated: boolean;
@@ -79,10 +93,24 @@ interface WorkoutState {
     isPr?: boolean
   ) => { exerciseIndex: number; setIndex: number } | null;
   rateSet: (exerciseIndex: number, setIndex: number, rpe: 'easy' | 'med' | 'hard') => void;
+  /** Optional 0–5 RIR after log — never stamped by `logSet` (`.725`). */
+  rateSetRir: (exerciseIndex: number, setIndex: number, rir: number | undefined) => void;
+  /** Optional ecc/pause/con after log — last tempo prefills on `logSet` (`.734`). */
+  rateSetTempo: (
+    exerciseIndex: number,
+    setIndex: number,
+    tempo: import('@/types').SetTempo | undefined
+  ) => void;
   setSetKind: (exerciseIndex: number, setIndex: number, kind: SetKind) => void;
+  setSetSide: (exerciseIndex: number, setIndex: number, side: SetSide | undefined) => void;
   toggleSupersetWithNext: (exerciseIndex: number) => void;
   unlinkSuperset: (exerciseIndex: number) => void;
   addSetToExercise: (exerciseIndex: number) => void;
+  /** Insert planned warmup sets before the first incomplete set (garage ramp). */
+  insertWarmupRampOnExercise: (
+    exerciseIndex: number,
+    ramp: { reps: number; weight: number }[]
+  ) => void;
   /** Removes the last not-yet-completed set (planned-too-many case). */
   removeLastPlannedSet: (exerciseIndex: number) => void;
   removeExerciseFromActive: (exerciseIndex: number) => void;
@@ -95,7 +123,7 @@ interface WorkoutState {
   setExerciseNote: (exerciseIndex: number, note: string) => void;
   /** Session-level jot — becomes journal fragments at finish, never syncs. */
   setSessionNote: (note: string) => void;
-  startRestTimer: (seconds?: number) => void;
+  startRestTimer: (seconds?: number, exerciseId?: string) => void;
   adjustRestTimer: (delta: number) => void;
   tickRestTimer: () => void;
   stopRestTimer: () => void;
@@ -107,6 +135,8 @@ interface WorkoutState {
 
 import { templateSetsToLogged } from '@/lib/workout/workoutTemplate';
 import { materializeTemplates } from '@/lib/workout/materializeProgram';
+import { applyHistoryNote } from '@/lib/workout/exerciseNote';
+import { insertWarmupSets, warmupRampAlreadyPresent } from '@/lib/workout/warmupRamp';
 
 function createLoggedSets(count: number, reps = 10, weight = 0): LoggedSet[] {
   const now = Date.now();
@@ -128,6 +158,7 @@ export const useWorkoutStore = create<WorkoutState>()(
       restSecondsRemaining: 0,
       restTimerActive: false,
       restTimerInitialSeconds: FALLBACK_REST_SECONDS,
+      restExerciseId: null,
       elapsedSeconds: 0,
       hasHydrated: false,
 
@@ -150,17 +181,23 @@ export const useWorkoutStore = create<WorkoutState>()(
         // %-authored program sets resolve against the athlete's history at start
         // time, so a saved cycle keeps its percentages and re-anchors each run.
         const units = readRaw(STORAGE_KEYS.units) === 'imperial' ? 'imperial' : 'metric';
-        const resolved = materializeTemplates(exercises, get().workoutHistory, units);
+        const history = get().workoutHistory;
+        const resolved = materializeTemplates(exercises, history, units);
         const active: ActiveWorkout = {
           workoutId,
           workoutName: name,
           startedAt: new Date().toISOString(),
-          exercises: resolved.map((ex) => ({
-            exerciseId: ex.exerciseId,
-            sets: templateSetsToLogged(ex),
-            ...(ex.loadPct != null && ex.loadPct > 0 ? { loadPct: ex.loadPct } : {}),
-            ...(ex.prescribed ? { prescribed: true } : {}),
-          })),
+          exercises: resolved.map((ex) =>
+            applyHistoryNote(
+              {
+                exerciseId: ex.exerciseId,
+                sets: templateSetsToLogged(ex),
+                ...(ex.loadPct != null && ex.loadPct > 0 ? { loadPct: ex.loadPct } : {}),
+                ...(ex.prescribed ? { prescribed: true } : {}),
+              },
+              history
+            )
+          ),
         };
         syncActiveFlag(active);
         set({
@@ -169,6 +206,7 @@ export const useWorkoutStore = create<WorkoutState>()(
           restSecondsRemaining: 0,
           restTimerActive: false,
           restTimerInitialSeconds: FALLBACK_REST_SECONDS,
+          restExerciseId: null,
         });
       },
 
@@ -185,6 +223,7 @@ export const useWorkoutStore = create<WorkoutState>()(
           restSecondsRemaining: 0,
           restTimerActive: false,
           restTimerInitialSeconds: FALLBACK_REST_SECONDS,
+          restExerciseId: null,
         });
       },
 
@@ -196,6 +235,7 @@ export const useWorkoutStore = create<WorkoutState>()(
           restSecondsRemaining: 0,
           restTimerActive: false,
           restTimerInitialSeconds: FALLBACK_REST_SECONDS,
+          restExerciseId: null,
         });
       },
 
@@ -211,12 +251,16 @@ export const useWorkoutStore = create<WorkoutState>()(
               exerciseId: ex.exerciseId,
               sets: ex.sets
                 .filter((s) => s.completed)
-                .map((s) => ({
-                  reps: s.reps,
-                  weight: s.weight,
-                  kind: s.kind ?? 'normal',
-                  rpe: s.rpe,
-                })),
+                .map((s) => {
+                  const rec = completedLoggedSet(s, ex.exerciseId);
+                  const rir = parseOptionalRir(s.rir);
+                  const tempo = parseOptionalTempo(s.tempo);
+                  return {
+                    ...rec,
+                    ...(rir !== undefined ? { rir } : {}),
+                    ...(tempo ? { tempo } : {}),
+                  };
+                }),
               ...(ex.note?.trim() ? { note: ex.note.trim() } : {}),
               ...(ex.muscleGroups?.length ? { muscleGroups: [...ex.muscleGroups] } : {}),
               // Victory + history must know this was a Coach load, not freestyle (`.410`).
@@ -255,6 +299,7 @@ export const useWorkoutStore = create<WorkoutState>()(
           restSecondsRemaining: 0,
           restTimerActive: false,
           restTimerInitialSeconds: FALLBACK_REST_SECONDS,
+          restExerciseId: null,
         }));
 
         recordWorkoutCompleted(log);
@@ -287,11 +332,14 @@ export const useWorkoutStore = create<WorkoutState>()(
               ...s.activeWorkout,
               exercises: [
                 ...s.activeWorkout.exercises,
-                {
-                  exerciseId,
-                  sets: createLoggedSets(3),
-                  ...(muscleGroups?.length ? { muscleGroups: [...muscleGroups] } : {}),
-                },
+                applyHistoryNote(
+                  {
+                    exerciseId,
+                    sets: createLoggedSets(3),
+                    ...(muscleGroups?.length ? { muscleGroups: [...muscleGroups] } : {}),
+                  },
+                  s.workoutHistory
+                ),
               ],
             },
           };
@@ -311,6 +359,11 @@ export const useWorkoutStore = create<WorkoutState>()(
           const exercises = [...s.activeWorkout.exercises];
           const ex = { ...exercises[exerciseIndex] };
           const sets = [...ex.sets];
+          const lastTempo = lastTempoForExercise(
+            ex.exerciseId,
+            sets.filter((x) => x.completed),
+            s.workoutHistory
+          );
           sets[setIndex] = {
             ...sets[setIndex],
             reps,
@@ -319,9 +372,11 @@ export const useWorkoutStore = create<WorkoutState>()(
             rpe,
             kind: sets[setIndex].kind ?? 'normal',
             isPr: isPr || undefined,
+            ...(lastTempo ? { tempo: lastTempo } : {}),
           };
           ex.sets = sets;
           exercises[exerciseIndex] = ex;
+          if (lastTempo) rememberLastTempo(ex.exerciseId, lastTempo);
           return {
             activeWorkout: { ...s.activeWorkout, exercises },
           };
@@ -363,7 +418,20 @@ export const useWorkoutStore = create<WorkoutState>()(
         get().logSet(exerciseIndex, setIndex, reps, weight, undefined, isPr);
         const aw = get().activeWorkout;
         if (!aw) return null;
-        return advanceAfterLog(aw.exercises, exerciseIndex, setIndex);
+        const loggedSide = parseSetSide(aw.exercises[exerciseIndex]?.sets[setIndex]?.side);
+        const next = advanceAfterLog(aw.exercises, exerciseIndex, setIndex);
+        if (
+          next &&
+          next.exerciseIndex === exerciseIndex &&
+          loggedSide
+        ) {
+          const nxt = aw.exercises[next.exerciseIndex]?.sets[next.setIndex];
+          if (nxt && !nxt.completed && !nxt.side) {
+            const suggested = suggestNextSide(loggedSide);
+            if (suggested) get().setSetSide(next.exerciseIndex, next.setIndex, suggested);
+          }
+        }
+        return next;
       },
 
       rateSet: (exerciseIndex, setIndex, rpe) => {
@@ -374,6 +442,51 @@ export const useWorkoutStore = create<WorkoutState>()(
           const sets = [...ex.sets];
           if (sets[setIndex]) {
             sets[setIndex] = { ...sets[setIndex], rpe };
+          }
+          ex.sets = sets;
+          exercises[exerciseIndex] = ex;
+          return {
+            activeWorkout: { ...s.activeWorkout, exercises },
+          };
+        });
+      },
+
+      rateSetRir: (exerciseIndex, setIndex, rir) => {
+        set((s) => {
+          if (!s.activeWorkout) return s;
+          const parsed = parseOptionalRir(rir);
+          const exercises = [...s.activeWorkout.exercises];
+          const ex = { ...exercises[exerciseIndex] };
+          const sets = [...ex.sets];
+          if (sets[setIndex]) {
+            const next = { ...sets[setIndex] };
+            if (parsed === undefined) delete next.rir;
+            else next.rir = parsed;
+            sets[setIndex] = next;
+          }
+          ex.sets = sets;
+          exercises[exerciseIndex] = ex;
+          return {
+            activeWorkout: { ...s.activeWorkout, exercises },
+          };
+        });
+      },
+
+      rateSetTempo: (exerciseIndex, setIndex, tempo) => {
+        set((s) => {
+          if (!s.activeWorkout) return s;
+          const parsed = parseOptionalTempo(tempo);
+          const exercises = [...s.activeWorkout.exercises];
+          const ex = { ...exercises[exerciseIndex] };
+          const sets = [...ex.sets];
+          if (sets[setIndex]) {
+            const next = { ...sets[setIndex] };
+            if (parsed === undefined) delete next.tempo;
+            else {
+              next.tempo = parsed;
+              rememberLastTempo(ex.exerciseId, parsed);
+            }
+            sets[setIndex] = next;
           }
           ex.sets = sets;
           exercises[exerciseIndex] = ex;
@@ -400,15 +513,35 @@ export const useWorkoutStore = create<WorkoutState>()(
         });
       },
 
+      setSetSide: (exerciseIndex, setIndex, side) => {
+        set((s) => {
+          if (!s.activeWorkout) return s;
+          const exercises = [...s.activeWorkout.exercises];
+          const ex = { ...exercises[exerciseIndex] };
+          const sets = [...ex.sets];
+          if (sets[setIndex] && !sets[setIndex].completed) {
+            const next = { ...sets[setIndex] };
+            if (side) next.side = side;
+            else delete next.side;
+            sets[setIndex] = next;
+          }
+          ex.sets = sets;
+          exercises[exerciseIndex] = ex;
+          return {
+            activeWorkout: { ...s.activeWorkout, exercises },
+          };
+        });
+      },
+
       unlinkSuperset: (exerciseIndex) => {
         set((s) => {
           if (!s.activeWorkout) return s;
-          const exercises = s.activeWorkout.exercises.map((ex, i) => {
-            if (i !== exerciseIndex) return ex;
-            const { supersetGroup: _, ...rest } = ex;
-            return rest;
-          });
-          return { activeWorkout: { ...s.activeWorkout, exercises } };
+          return {
+            activeWorkout: {
+              ...s.activeWorkout,
+              exercises: unpair(s.activeWorkout.exercises, exerciseIndex),
+            },
+          };
         });
       },
 
@@ -417,13 +550,12 @@ export const useWorkoutStore = create<WorkoutState>()(
           if (!s.activeWorkout) return s;
           const nextIdx = exerciseIndex + 1;
           if (nextIdx >= s.activeWorkout.exercises.length) return s;
-          const exercises = [...s.activeWorkout.exercises];
-          const current = exercises[exerciseIndex];
-          const next = exercises[nextIdx];
-          const shared = current.supersetGroup ?? next.supersetGroup ?? `ss-${Date.now()}`;
-          exercises[exerciseIndex] = { ...current, supersetGroup: shared };
-          exercises[nextIdx] = { ...next, supersetGroup: shared };
-          return { activeWorkout: { ...s.activeWorkout, exercises } };
+          return {
+            activeWorkout: {
+              ...s.activeWorkout,
+              exercises: pairWithNext(s.activeWorkout.exercises, exerciseIndex),
+            },
+          };
         });
       },
 
@@ -443,8 +575,32 @@ export const useWorkoutStore = create<WorkoutState>()(
                 weight: lastSet?.weight ?? 0,
                 completed: false,
                 kind: lastSet?.kind ?? 'normal',
+                ...(lastSet?.side ? { side: lastSet.side } : {}),
               },
             ],
+          };
+          return { activeWorkout: { ...s.activeWorkout, exercises } };
+        });
+      },
+
+      insertWarmupRampOnExercise: (exerciseIndex, ramp) => {
+        set((s) => {
+          if (!s.activeWorkout || ramp.length === 0) return s;
+          const exercises = [...s.activeWorkout.exercises];
+          const ex = exercises[exerciseIndex];
+          if (!ex) return s;
+          if (warmupRampAlreadyPresent(ex.sets, ramp)) return s;
+          const now = Date.now();
+          const rampSets: LoggedSet[] = ramp.map((step, i) => ({
+            id: `warmup-${now}-${i}`,
+            reps: step.reps,
+            weight: step.weight,
+            completed: false,
+            kind: 'warmup' as SetKind,
+          }));
+          exercises[exerciseIndex] = {
+            ...ex,
+            sets: insertWarmupSets(ex.sets, rampSets),
           };
           return { activeWorkout: { ...s.activeWorkout, exercises } };
         });
@@ -472,7 +628,9 @@ export const useWorkoutStore = create<WorkoutState>()(
           return {
             activeWorkout: {
               ...s.activeWorkout,
-              exercises: s.activeWorkout.exercises.filter((_, i) => i !== exerciseIndex),
+              exercises: unpair(s.activeWorkout.exercises, exerciseIndex).filter(
+                (_, i) => i !== exerciseIndex
+              ),
             },
           };
         });
@@ -484,13 +642,17 @@ export const useWorkoutStore = create<WorkoutState>()(
           const exercises = [...s.activeWorkout.exercises];
           const ex = exercises[exerciseIndex];
           if (!ex || ex.sets.some((x) => x.completed)) return s;
-          exercises[exerciseIndex] = {
-            ...ex,
-            exerciseId: newExerciseId,
-            // Keep the planned set count; reset target loads — different lift, different weights.
-            sets: createLoggedSets(ex.sets.length),
-            muscleGroups: muscleGroups?.length ? [...muscleGroups] : undefined,
-          };
+          const from = getExerciseById(ex.exerciseId);
+          const to = getExerciseById(newExerciseId);
+          exercises[exerciseIndex] = applyHistoryNote(
+            applyGarageSwapToActive({
+              current: ex,
+              nextId: newExerciseId,
+              nextMuscleGroups: muscleGroups,
+              equipmentChanged: garageEquipmentChanged(from?.equipment, to?.equipment),
+            }),
+            s.workoutHistory
+          );
           return { activeWorkout: { ...s.activeWorkout, exercises } };
         });
       },
@@ -513,24 +675,35 @@ export const useWorkoutStore = create<WorkoutState>()(
         });
       },
 
-      startRestTimer: (seconds?: number) => {
+      startRestTimer: (seconds?: number, exerciseId?: string) => {
         // `.292` — never invent 30s. One fallback lives in restTimer.ts.
         const sec = resolveStartRestSeconds(seconds);
+        const id = (exerciseId?.trim() || get().restExerciseId || '').trim() || null;
+        if (id) rememberLastRest(id, sec);
         set({
           restSecondsRemaining: sec,
           restTimerInitialSeconds: sec,
           restTimerActive: true,
+          restExerciseId: id,
         });
       },
 
       adjustRestTimer: (delta) => {
         set((s) => {
           const next = Math.max(0, s.restSecondsRemaining + delta);
+          const remembered = rememberedRestAfterAdjust({
+            previousInitial: s.restTimerInitialSeconds,
+            nextRemaining: next,
+          });
+          if (remembered != null && s.restExerciseId) {
+            rememberLastRest(s.restExerciseId, remembered);
+          }
           return {
             restSecondsRemaining: next,
             restTimerActive: next > 0,
             restTimerInitialSeconds:
               next > s.restTimerInitialSeconds ? next : s.restTimerInitialSeconds,
+            restExerciseId: next > 0 ? s.restExerciseId : null,
           };
         });
       },
@@ -543,14 +716,15 @@ export const useWorkoutStore = create<WorkoutState>()(
             if (typeof navigator !== 'undefined' && navigator.vibrate) {
               navigator.vibrate([120, 60, 120]);
             }
-            return { restSecondsRemaining: 0, restTimerActive: false };
+            return { restSecondsRemaining: 0, restTimerActive: false, restExerciseId: null };
           }
           return { restSecondsRemaining: next };
         });
       },
 
       stopRestTimer: () => {
-        set({ restSecondsRemaining: 0, restTimerActive: false });
+        // Skip — leftover seconds must not become next rest.
+        set({ restSecondsRemaining: 0, restTimerActive: false, restExerciseId: null });
       },
 
       tickElapsed: () => {

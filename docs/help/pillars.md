@@ -11,7 +11,7 @@ Strength and conditioning — log workouts, browse exercises, run programs, and 
 - **Active workout** — live set logging with rest timer and PR detection
 - **Builder** — custom workouts and program templates
 - **Library** — searchable exercises with cues and alternatives
-- **History** — volume trends and session detail
+- **History** — past sessions (date, muscles, set count); tap a row to open that log
 
 ## Fuel
 

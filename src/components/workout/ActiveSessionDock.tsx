@@ -9,8 +9,10 @@ import { ScreenDock } from '@/components/layout/ScreenDock';
 import { RestTimerBar } from '@/components/workout/RestTimerBar';
 import { LogConsole } from '@/components/workout/LogConsole';
 import { patchesForUseNext } from '@/lib/workout/activeSetInputPatches';
+import { setRowPlateLine } from '@/lib/plateCalculator';
 import type { ActiveDockMode, ConsoleSetView } from '@/lib/workout/activeWorkoutHelpers';
-import type { SetKind } from '@/types';
+import type { SetKind, SetSide } from '@/types';
+import type { UnitsPref } from '@/lib/units';
 
 type Props = {
   dockMode: ActiveDockMode;
@@ -19,18 +21,21 @@ type Props = {
   restTimerInitialSeconds: number;
   unitLabel: string;
   weightStep: number;
+  units: UnitsPref;
   onSkipRest: () => void;
   onAdjustRest: (delta: number) => void;
   onPresetRest: (seconds: number) => void;
   onRepsChange: (exIdx: number, setIdx: number, reps: number) => void;
   onWeightChange: (exIdx: number, setIdx: number, weight: number) => void;
   onKindChange: (exIdx: number, setIdx: number, kind: SetKind) => void;
+  onSideChange: (exIdx: number, setIdx: number, side: SetSide | undefined) => void;
   onLog: (exIdx: number, setIdx: number) => void;
   onApplyFieldPatches: (
     exIdx: number,
     setIdx: number,
     patches: { field: 'reps' | 'weight'; value: number }[]
   ) => void;
+  onOpenPlates?: () => void;
 };
 
 export function ActiveSessionDock({
@@ -40,14 +45,17 @@ export function ActiveSessionDock({
   restTimerInitialSeconds,
   unitLabel,
   weightStep,
+  units,
   onSkipRest,
   onAdjustRest,
   onPresetRest,
   onRepsChange,
   onWeightChange,
   onKindChange,
+  onSideChange,
   onLog,
   onApplyFieldPatches,
+  onOpenPlates,
 }: Props) {
   /*
     One dock, two states, never both. Rest takes the console over rather
@@ -81,10 +89,28 @@ export function ActiveSessionDock({
           weightLabel={unitLabel}
           weightStep={weightStep}
           kind={consoleSet.kind}
+          unilateral={consoleSet.unilateral}
+          side={consoleSet.side}
+          onSideChange={(side) => onSideChange(consoleSet.exIdx, consoleSet.setIdx, side)}
+          plusLoad={consoleSet.plusLoad}
           onRepsChange={(v) => onRepsChange(consoleSet.exIdx, consoleSet.setIdx, v)}
           onWeightChange={(v) => onWeightChange(consoleSet.exIdx, consoleSet.setIdx, v)}
           onKindChange={(kind) => onKindChange(consoleSet.exIdx, consoleSet.setIdx, kind)}
           onLog={() => onLog(consoleSet.exIdx, consoleSet.setIdx)}
+          lastSetGhost={consoleSet.lastSetGhost}
+          onAcceptGhost={(target) => {
+            onApplyFieldPatches(
+              consoleSet.exIdx,
+              consoleSet.setIdx,
+              patchesForUseNext(target)
+            );
+          }}
+          plateLine={setRowPlateLine({
+            equipment: consoleSet.barLoaded ? 'Barbell' : undefined,
+            weight: consoleSet.input.weight,
+            units,
+          })}
+          onOpenPlates={onOpenPlates}
           onUseNext={(target) => {
             onApplyFieldPatches(
               consoleSet.exIdx,

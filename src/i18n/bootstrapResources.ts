@@ -41,8 +41,9 @@ export const BOOTSTRAP_EN: Record<string, string> = {
   welcomeSkipSignIn: 'Skip — start training',
   todayBasicEncouragement:
     'One step at a time. Log a set — Mission Coach shapes the week from your history.',
+  todayHabitWeekCount: 'This week: {{count}} days logged',
   /*
-   * `.746` — these three keys live **only** here, so `BOOTSTRAP_EN` is not the
+   * `.766` — these three keys live **only** here, so `BOOTSTRAP_EN` is not the
    * first-paint value, it is the only value: the mount sites' `defaultValue`s
    * ("Mission Coach", "Turn your logs into this week's plan") have never once
    * rendered. The eyebrow above Today's Coach invite therefore read "AI weekly

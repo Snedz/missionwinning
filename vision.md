@@ -4,7 +4,7 @@
 
 | Layer | Statement |
 |-------|-----------|
-| **North star** | Human capability is infrastructure. Mission Winning builds the free, adaptive coaching layer so more of humanity can stay strong, fueled, and on the path — Team Humanity, starting with the body. |
+| **North star** | The mission is advancement of civilization and propagation of consciousness to the stars. |
 | **Mission** | Make adaptive coaching and the free core of training available to every human who has a phone — not only those with gyms, trainers, or wearables. |
 | **Vision** | Be the entrance to the path: a lifelong adaptive coach that grows with the athlete across training, fuel, recovery, and learning — free core forever; Super Bundle deepens, never gates. Different pillars, one goal. |
 | **Entry today** | Free forever workout logging (no account) plus Mission Coach — fatigue-aware weekly plans from workout history alone, no wearable required. Train anywhere. Win daily. |

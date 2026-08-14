@@ -1,22 +1,30 @@
 'use client';
 
 /**
- * Header chrome for ActiveExerciseCard — title, menus, next line, swap, notes (.431).
+ * Header chrome for ActiveExerciseCard — title, menus, next line, e1RM estimate, swap (.431 / .761).
+ * Exercise note lives after the set rows (`.718`) so load/reps keep first paint.
  */
 
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Info } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { CardHeader, CardTitle } from '@/components/ui/card';
-import { ExercisePicker } from '@/components/library/ExercisePicker';
 import { AdaptiveOverlay } from '@/components/ui/AdaptiveOverlay';
 import { ActiveExerciseMoreMenu } from '@/components/workout/ActiveExerciseMoreMenu';
+import { GarageSwapList } from '@/components/workout/GarageSwapList';
+import { shouldShowGarageSwap } from '@/lib/workout/garageSwap';
 import {
   firstWeightedLoad,
   shouldShowLoadPctChip,
 } from '@/lib/workout/activeWorkoutHelpers';
-import { useLocaleFormat } from '@/hooks/useLocaleFormat';
+import {
+  SESSION_E1RM_COPY,
+  loadSessionE1rmVisible,
+  saveSessionE1rmVisible,
+  sessionE1rmFromSets,
+} from '@/lib/workout/sessionE1rm';
 import type { ActiveExerciseLog, Exercise } from '@/types';
 
 type Props = {
@@ -30,9 +38,9 @@ type Props = {
   menuOpen: boolean;
   onMenuOpenChange: (open: boolean) => void;
   swapOpen: boolean;
-  noteOpen: boolean;
   swapCandidates: Exercise[];
-  lastNote: { date: string; text: string } | null;
+  /** Always-on garage list length — sheet candidates are empty when closed. */
+  swapOptionCount: number;
   nextTarget: { reps: number; weight: number } | null;
   onFormGuide: () => void;
   onToggleSuperset: () => void;
@@ -41,7 +49,6 @@ type Props = {
   onToggleSwap: () => void;
   onRemove: () => void;
   onSwapTo: (id: string) => void;
-  onNoteChange: (note: string) => void;
   onRepeatLast: () => void;
 };
 
@@ -56,9 +63,8 @@ export function ActiveExerciseHeader({
   menuOpen,
   onMenuOpenChange,
   swapOpen,
-  noteOpen,
   swapCandidates,
-  lastNote,
+  swapOptionCount,
   nextTarget,
   onFormGuide,
   onToggleSuperset,
@@ -67,11 +73,17 @@ export function ActiveExerciseHeader({
   onToggleSwap,
   onRemove,
   onSwapTo,
-  onNoteChange,
   onRepeatLast,
 }: Props) {
   const { t } = useTranslation();
-  const fmt = useLocaleFormat();
+  const [showE1rm, setShowE1rm] = useState(loadSessionE1rmVisible);
+  const sessionE1rm = sessionE1rmFromSets(exLog.sets);
+
+  const onToggleE1rm = () => {
+    const next = !showE1rm;
+    saveSessionE1rmVisible(next);
+    setShowE1rm(next);
+  };
 
   return (
     <CardHeader className="p-3 pb-2 space-y-2">
@@ -107,6 +119,20 @@ export function ActiveExerciseHeader({
               <Info className="h-5 w-5" />
             </Button>
           )}
+          {shouldShowGarageSwap({
+            hasCompletedSet: hasCompleted,
+            optionCount: swapOptionCount,
+          }) && (
+            <Button
+              type="button"
+              variant="ghost"
+              size="sm"
+              className="min-h-[44px] px-2 text-sm text-primary"
+              onClick={onToggleSwap}
+            >
+              {t('activeSwap', { defaultValue: 'Swap' })}
+            </Button>
+          )}
           <ActiveExerciseMoreMenu
             open={menuOpen}
             onOpenChange={onMenuOpenChange}
@@ -114,10 +140,13 @@ export function ActiveExerciseHeader({
             hasNextExercise={hasNext}
             supersetted={!!exLog.supersetGroup}
             hasCompletedSet={hasCompleted}
+            swapOptionCount={swapOptionCount}
             onToggleSuperset={onToggleSuperset}
             onUnlinkSuperset={onUnlinkSuperset}
             onToggleNote={onToggleNote}
             onToggleSwap={onToggleSwap}
+            onToggleE1rm={onToggleE1rm}
+            e1rmVisible={showE1rm}
             onRemove={onRemove}
           />
         </div>
@@ -130,6 +159,20 @@ export function ActiveExerciseHeader({
             weight: nextTarget.weight,
             unit: unitLabel,
             defaultValue: 'Next: {{reps}} × {{weight}} {{unit}}',
+          })}
+        </p>
+      )}
+
+      {showE1rm && sessionE1rm && (
+        <p
+          data-testid="session-e1rm"
+          className="text-[11px] tabular-nums text-muted-foreground"
+          aria-label={t('activeE1rmAria', { defaultValue: SESSION_E1RM_COPY.aria })}
+        >
+          {t('activeE1rmLine', {
+            e1rm: sessionE1rm.e1rm,
+            unit: unitLabel,
+            defaultValue: SESSION_E1RM_COPY.line,
           })}
         </p>
       )}
@@ -151,43 +194,14 @@ export function ActiveExerciseHeader({
           open={swapOpen}
           onClose={onToggleSwap}
           size="sm"
-          eyebrow={t('activeSwapEyebrow', { defaultValue: 'This exercise' })}
+          eyebrow={t('activeSwapEyebrow', { defaultValue: 'No machine' })}
           title={t('activeSwapTitle', {
-            defaultValue: 'Swap exercise',
+            defaultValue: 'Swap',
           })}
           bodyClassName="p-4"
         >
-          <ExercisePicker
-            value=""
-            exercises={swapCandidates}
-            listClassName="max-h-[52vh]"
-            placeholder={t('activeSwapPlaceholder', {
-              defaultValue: 'Swap to… (same muscles first)',
-            })}
-            onChange={onSwapTo}
-          />
+          <GarageSwapList options={swapCandidates} onChoose={onSwapTo} />
         </AdaptiveOverlay>
-      )}
-      {lastNote && (
-        <p className="text-[11px] text-muted-foreground">
-          {t('activeLastNoteLine', {
-            date: fmt.longDate(lastNote.date),
-            defaultValue: `Last note (${fmt.longDate(lastNote.date)}):`,
-          })}{' '}
-          <span className="italic text-foreground">&ldquo;{lastNote.text}&rdquo;</span>
-        </p>
-      )}
-      {(noteOpen || exLog.note) && (
-        <input
-          type="text"
-          value={exLog.note ?? ''}
-          maxLength={200}
-          placeholder={t('activeNotePlaceholder', {
-            defaultValue: 'Note — "machine 3, seat 4", "left knee tight"…',
-          })}
-          onChange={(e) => onNoteChange(e.target.value)}
-          className="w-full border-2 border-border bg-background px-3 py-2.5 min-h-[44px] text-sm placeholder:text-muted-foreground focus:outline-none focus:border-foreground"
-        />
       )}
     </CardHeader>
   );

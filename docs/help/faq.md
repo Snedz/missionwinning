@@ -6,10 +6,13 @@
 Yes — core workout tracking, library, history, and basic nutrition are free worldwide. Premium is optional.
 
 **Do I need an account?**  
-No for basic logging. Sign in to sync across devices, use Coach premium, and join school classes.
+No. Log your first set with no account. Sign in later from Profile to sync across devices.
 
 **Does it work offline?**  
 Yes as a PWA — log workouts offline; sync when back online if signed in.
+
+**What is the estimated 1RM on the exercise row?**  
+An **Epley formula estimate** from the working set you just logged — not a tested max, not a prescription. Warm-ups and zero-load sets are ignored. Hide it from the exercise menu. See [e1rm.md](e1rm.md).
 
 **Which phones are supported?**  
 Any modern browser — iPhone Safari, Android Chrome, desktop. Install to home screen for best experience.

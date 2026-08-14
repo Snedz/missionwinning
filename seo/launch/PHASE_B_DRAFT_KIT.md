@@ -15,6 +15,8 @@
 **Never invent:** metrics, testimonials, beta counts, organic traction.  
 **Gated copy (until EIN):** **free beta** · Enter with code · Get notified. Not invite-only. See mission-ops `memory/BETA_LANGUAGE.md`.
 
+**E-Day tonight (Thu 13 Aug 2026 ET, not Friday):** founder-review checklist + 3 X / 1 IG drafts — [EDAY_TONIGHT.md](./EDAY_TONIGHT.md) · [SOCIAL_DRAFTS.md](./SOCIAL_DRAFTS.md). Those posts stay unposted until production `PRIVATE_MODE=false` + founder go. This Phase B file is still PH / HN / waitlist — do not publish from the docs PR.
+
 When PRIVATE_MODE is still ON, any accidental leak uses **free beta / Get notified / Enter with code** — never invite-only, never “we’re live.” These kits are for the **post-flip** moment and must be re-checked the day of.
 
 ---

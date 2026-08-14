@@ -20,7 +20,7 @@ import { initAnalytics, stopAnalyticsCapture } from '@/lib/analytics';
  * Primary action keeps data private (opt out of product metrics).
  * Workouts stay local-first either way.
  *
- * ## `.745` — it docks; it does not float
+ * ## `.765` — it docks; it does not float
  *
  * This was `fixed bottom-0 inset-x-0 z-[60]` over a `z-50` tab bar. Measured at
  * 390×844 with `NEXT_PUBLIC_POSTHOG_KEY` set, it occupied y=702–844 and covered

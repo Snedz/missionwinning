@@ -35,6 +35,7 @@ test('workoutStore', async (t) => {
       restSecondsRemaining: 0,
       restTimerActive: false,
       restTimerInitialSeconds: 90,
+      restExerciseId: null,
       elapsedSeconds: 0,
       // hasHydrated is deliberately not reset — faking it here would mask the
       // hydration regression the first assertion below guards.
@@ -255,6 +256,44 @@ test('workoutStore', async (t) => {
     assert.equal(useWorkoutStore.getState().restTimerActive, false);
   });
 
+  await t.test('startRestTimer with exerciseId remembers last rest; skip does not overwrite', async () => {
+    reset();
+    const { recallLastRest } = await import('@/lib/workout/restTimer');
+    useWorkoutStore.getState().startRestTimer(120, 'squats');
+    assert.equal(useWorkoutStore.getState().restExerciseId, 'squats');
+    assert.equal(recallLastRest('squats'), 120);
+
+    useWorkoutStore.getState().tickRestTimer();
+    useWorkoutStore.getState().tickRestTimer();
+    useWorkoutStore.getState().stopRestTimer();
+    assert.equal(useWorkoutStore.getState().restTimerActive, false);
+    assert.equal(useWorkoutStore.getState().restExerciseId, null);
+    // Skip leftover (118s) must not replace the chosen 120.
+    assert.equal(recallLastRest('squats'), 120);
+  });
+
+  await t.test('+15s that grows the initial remembers the new duration', async () => {
+    reset();
+    const { recallLastRest } = await import('@/lib/workout/restTimer');
+    useWorkoutStore.getState().startRestTimer(90, 'curl');
+    useWorkoutStore.getState().adjustRestTimer(15);
+    assert.equal(useWorkoutStore.getState().restTimerInitialSeconds, 105);
+    assert.equal(recallLastRest('curl'), 105);
+  });
+
+  await t.test('stopRestTimer source never writes last rest', async () => {
+    const { readFileSync } = await import('node:fs');
+    const { join } = await import('node:path');
+    const src = readFileSync(join(import.meta.dirname, 'workoutStore.ts'), 'utf8');
+    const stop = src.match(/stopRestTimer:\s*\(\)\s*=>\s*\{[\s\S]*?\n\s*\},/);
+    assert.ok(stop, 'stopRestTimer missing');
+    assert.doesNotMatch(
+      stop![0],
+      /rememberLastRest/,
+      'skip/stop must not persist leftover rest — mutant that writes here must fail'
+    );
+  });
+
   await t.test('startRestTimer without seconds uses the shared fallback (≥60s), not 30', () => {
     useWorkoutStore.getState().startRestTimer();
     const remaining = useWorkoutStore.getState().restSecondsRemaining;
@@ -277,6 +316,26 @@ test('workoutStore', async (t) => {
     assert.equal(sets[2].completed, false);
   });
 
+  await t.test('inserting a warmup ramp prepends warmup sets before work', () => {
+    const store = useWorkoutStore.getState();
+    store.startWorkout('Push', template('bench-press', 2));
+    useWorkoutStore.getState().insertWarmupRampOnExercise(0, [
+      { reps: 8, weight: 40 },
+      { reps: 5, weight: 60 },
+    ]);
+    const sets = useWorkoutStore.getState().activeWorkout?.exercises[0].sets ?? [];
+    assert.equal(sets.length, 4);
+    assert.equal(sets[0].kind, 'warmup');
+    assert.equal(sets[0].weight, 40);
+    assert.equal(sets[1].kind, 'warmup');
+    assert.equal(sets[2].kind, 'normal');
+    useWorkoutStore.getState().insertWarmupRampOnExercise(0, [
+      { reps: 8, weight: 40 },
+      { reps: 5, weight: 60 },
+    ]);
+    assert.equal(useWorkoutStore.getState().activeWorkout?.exercises[0].sets.length, 4);
+  });
+
   await t.test('removing a planned set never removes completed work', () => {
     const store = useWorkoutStore.getState();
     store.startWorkout('Push', template('push-ups', 2));
@@ -294,6 +353,18 @@ test('workoutStore', async (t) => {
     assert.equal(sets[0].completed, true);
   });
 
+  await t.test('drop kind survives logSet (existing SetKind — no second persist)', () => {
+    const store = useWorkoutStore.getState();
+    store.startWorkout('Push', template('bench-press', 2));
+    store.logSet(0, 0, 8, 100);
+    store.setSetKind(0, 1, 'drop');
+    store.logSet(0, 1, 8, 80);
+    const sets = useWorkoutStore.getState().activeWorkout?.exercises[0].sets ?? [];
+    assert.equal(sets[1].kind, 'drop');
+    assert.equal(sets[1].completed, true);
+    assert.equal(sets[1].weight, 80);
+  });
+
   await t.test('swapping an exercise is refused once a set is logged', () => {
     const store = useWorkoutStore.getState();
     store.startWorkout('Push', template());
@@ -307,5 +378,128 @@ test('workoutStore', async (t) => {
       'dips',
       'a swap after logging would silently reassign real work'
     );
+  });
+
+  await t.test('exercise note persists on the completed log (.718)', () => {
+    const store = useWorkoutStore.getState();
+    store.startWorkout('Push', template());
+    store.setExerciseNote(0, 'belt on 3');
+    store.logSet(0, 0, 10, 50);
+    const saved = useWorkoutStore.getState().completeActiveWorkout();
+    assert.equal(saved?.exercises[0].note, 'belt on 3');
+    assert.equal(useWorkoutStore.getState().workoutHistory[0].exercises[0].note, 'belt on 3');
+  });
+
+  await t.test('a blank exercise note is omitted from history (.718)', () => {
+    const store = useWorkoutStore.getState();
+    store.startWorkout('Push', template());
+    store.setExerciseNote(0, '   ');
+    store.logSet(0, 0, 10, 50);
+    const saved = useWorkoutStore.getState().completeActiveWorkout();
+    assert.equal('note' in (saved?.exercises[0] ?? {}), false);
+  });
+
+  await t.test('start prefills the last note for that exercise (.718)', () => {
+    const store = useWorkoutStore.getState();
+    store.startWorkout('Push', template());
+    store.setExerciseNote(0, 'belt on 3');
+    store.logSet(0, 0, 10, 50);
+    useWorkoutStore.getState().completeActiveWorkout();
+
+    useWorkoutStore.getState().startWorkout('Push', template());
+    assert.equal(useWorkoutStore.getState().activeWorkout?.exercises[0].note, 'belt on 3');
+  });
+
+  await t.test('clearing a prefilled note is sticky this session (.718)', () => {
+    const store = useWorkoutStore.getState();
+    store.startWorkout('Push', template());
+    store.setExerciseNote(0, 'belt on 3');
+    store.logSet(0, 0, 10, 50);
+    useWorkoutStore.getState().completeActiveWorkout();
+
+    useWorkoutStore.getState().startWorkout('Push', template());
+    useWorkoutStore.getState().setExerciseNote(0, '');
+    assert.equal(useWorkoutStore.getState().activeWorkout?.exercises[0].note, '');
+
+    useWorkoutStore.getState().logSet(0, 0, 10, 50);
+    const saved = useWorkoutStore.getState().completeActiveWorkout();
+    assert.equal('note' in (saved?.exercises[0] ?? {}), false);
+  });
+
+  await t.test('add and swap seed the new exercise, not the old cue (.718)', () => {
+    const store = useWorkoutStore.getState();
+    store.startWorkout('Push', template('bench-press'));
+    store.setExerciseNote(0, 'tuck elbows');
+    store.logSet(0, 0, 8, 60);
+    useWorkoutStore.getState().completeActiveWorkout();
+
+    useWorkoutStore.getState().startWorkout('Legs', template('squat'));
+    useWorkoutStore.getState().setExerciseNote(0, 'belt on 3');
+    useWorkoutStore.getState().logSet(0, 0, 5, 100);
+    useWorkoutStore.getState().completeActiveWorkout();
+
+    useWorkoutStore.getState().startEmptyWorkout();
+    useWorkoutStore.getState().addExerciseToActive('bench-press');
+    assert.equal(useWorkoutStore.getState().activeWorkout?.exercises[0].note, 'tuck elbows');
+
+    useWorkoutStore.getState().replaceExerciseInActive(0, 'squat');
+    const swapped = useWorkoutStore.getState().activeWorkout?.exercises[0];
+    assert.equal(swapped?.exerciseId, 'squat');
+    assert.equal(swapped?.note, 'belt on 3');
+  });
+
+  await t.test('pairing two consecutive exercises persists a shared group (.719)', () => {
+    useWorkoutStore.getState().startWorkout('Push', [
+      ...template('bench-press', 2),
+      ...template('bent-over-row', 2),
+    ]);
+    useWorkoutStore.getState().toggleSupersetWithNext(0);
+    const exercises = useWorkoutStore.getState().activeWorkout?.exercises ?? [];
+    assert.ok(exercises[0].supersetGroup);
+    assert.equal(exercises[0].supersetGroup, exercises[1].supersetGroup);
+
+    const round = JSON.parse(JSON.stringify(exercises)) as typeof exercises;
+    assert.equal(round[0].supersetGroup, exercises[0].supersetGroup);
+    assert.equal(round[1].supersetGroup, exercises[1].supersetGroup);
+  });
+
+  await t.test('unlink clears both peers of a pair (.719)', () => {
+    useWorkoutStore.getState().startWorkout('Push', [
+      ...template('bench-press', 2),
+      ...template('bent-over-row', 2),
+    ]);
+    useWorkoutStore.getState().toggleSupersetWithNext(0);
+    useWorkoutStore.getState().unlinkSuperset(1);
+    const exercises = useWorkoutStore.getState().activeWorkout?.exercises ?? [];
+    assert.equal(exercises[0].supersetGroup, undefined);
+    assert.equal(exercises[1].supersetGroup, undefined);
+  });
+
+  await t.test('logSetAndAdvance after a pair goes A then B (.719)', () => {
+    useWorkoutStore.getState().startWorkout('Push', [
+      ...template('bench-press', 2),
+      ...template('bent-over-row', 2),
+    ]);
+    useWorkoutStore.getState().toggleSupersetWithNext(0);
+    const afterA = useWorkoutStore.getState().logSetAndAdvance(0, 0, 8, 40);
+    assert.deepEqual(afterA, { exerciseIndex: 1, setIndex: 0 });
+    const afterB = useWorkoutStore.getState().logSetAndAdvance(1, 0, 8, 50);
+    assert.deepEqual(afterB, { exerciseIndex: 0, setIndex: 1 });
+    const a = useWorkoutStore.getState().activeWorkout?.exercises[0].sets[0];
+    assert.equal(a?.completed, true);
+    assert.equal(a?.reps, 8);
+    assert.equal(a?.weight, 40);
+  });
+
+  await t.test('garage swap clears planned weight when equipment changes', () => {
+    const store = useWorkoutStore.getState();
+    store.startWorkout('Push', template('bench-press', 2));
+    const before = useWorkoutStore.getState().activeWorkout?.exercises[0];
+    assert.equal(before?.sets[0]?.weight, 50);
+    useWorkoutStore.getState().replaceExerciseInActive(0, 'push-ups');
+    const after = useWorkoutStore.getState().activeWorkout?.exercises[0];
+    assert.equal(after?.exerciseId, 'push-ups');
+    assert.equal(after?.sets[0]?.weight, 0);
+    assert.equal(after?.sets[0]?.reps, 10);
   });
 });

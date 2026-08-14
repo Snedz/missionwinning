@@ -1,5 +1,5 @@
 /**
- * Shared Today primary CTA: resume active, Just Go, or journey startWorkout / href.
+ * Shared Today primary CTA: resume, live Coach, Repeat last session, Just Go, or journey.
  * Used by lean + full dashboard shells.
  */
 import type { JourneyAction } from '@/lib/missionJourney';
@@ -11,6 +11,8 @@ import type { UnitsPref } from '@/lib/units';
 import { loadCoachTodayOptional } from '@/lib/coach/loadCoachTodayOptional';
 import { track } from '@/lib/analytics';
 import { scaleExercisesByDose } from '@/lib/reentry';
+import { shouldRepeatLastOnToday } from '@/lib/workout/repeatLastSession';
+import type { HomeGymKit } from '@/lib/workout/homeGymKit';
 
 type StartWorkoutFn = (
   name: string,
@@ -45,6 +47,7 @@ export type TodayPrimaryActionOpts = {
   history: CompletedWorkoutLog[];
   units: UnitsPref;
   equipment: string;
+  homeGymKit?: HomeGymKit | null;
   /** When true, treat basic phase train-ready like lean (href /active or startWorkout or basic). */
   includeBasicJustGo?: boolean;
   /**
@@ -65,6 +68,7 @@ export async function runTodayPrimaryAction(opts: TodayPrimaryActionOpts): Promi
     history,
     units,
     equipment,
+    homeGymKit = null,
     includeBasicJustGo = false,
     doseScale = 1,
     startWorkout,
@@ -88,16 +92,28 @@ export async function runTodayPrimaryAction(opts: TodayPrimaryActionOpts): Promi
   });
 
   if (trainReady) {
-    const [{ buildJustGoSession }, coachToday] = await Promise.all([
-      import('@/lib/justGoSession'),
-      loadCoachTodayOptional(),
-    ]);
+    const coachToday = await loadCoachTodayOptional();
+    const last = shouldRepeatLastOnToday({
+      hasLiveCoach: !!(coachToday && coachToday.exercises.length > 0),
+      history,
+    });
+    if (last) {
+      startWorkout(last.name, last.exercises);
+      track('history_train_again', {
+        exerciseCount: last.exercises.length,
+        from: 'today',
+      });
+      navigate('/active');
+      return;
+    }
+    const { buildJustGoSession } = await import('@/lib/justGoSession');
     const session = buildJustGoSession({
       focus: recommendedFocus,
       readiness,
       history,
       units,
       equipment,
+      homeGymKit,
       coachToday,
     });
     if (session.exercises.length > 0) {

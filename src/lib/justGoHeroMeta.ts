@@ -3,10 +3,12 @@
  *
  * Just Go is freestyle (focus/starter). When Mission Coach has a live session
  * for today, the same tap loads that plan — the label must not say "Just Go".
+ * When there is no live Coach day but a last completed session exists, the
+ * tap copies that log (`.717`) — the label must say Repeat last session.
  */
 import type { CoachSessionLike, JustGoSession } from '@/lib/justGoSession';
 
-export type JustGoHeroSource = JustGoSession['source'];
+export type JustGoHeroSource = JustGoSession['source'] | 'repeat_last';
 
 export type JustGoHeroMeta = {
   focusLabel: string;
@@ -22,6 +24,8 @@ export type BuildJustGoHeroMetaOpts = {
   focusLabel: string;
   /** From peekCoachToday / loadCoachTodayOptional — null when no live plan day. */
   coach: CoachSessionLike | null;
+  /** Last completed session name when Repeat Last owns the tap (`.717`). */
+  repeatLastName?: string | null;
 };
 
 /**
@@ -37,6 +41,14 @@ export function buildJustGoHeroMeta(opts: BuildJustGoHeroMetaOpts): JustGoHeroMe
       focusLabel,
       source: 'coach',
       sessionName: coach.name,
+    };
+  }
+  const repeatName = opts.repeatLastName?.trim();
+  if (repeatName) {
+    return {
+      focusLabel,
+      source: 'repeat_last',
+      sessionName: repeatName,
     };
   }
   return { focusLabel, source: 'focus' };
@@ -70,6 +82,22 @@ export function resolveJustGoHeroCopy(
   opts?: ResolveJustGoHeroCopyOpts
 ): JustGoHeroCopy {
   const week1Second = opts?.completedSessions === 1;
+
+  if (meta.source === 'repeat_last') {
+    const name = meta.sessionName?.trim() || meta.focusLabel;
+    return {
+      labelKey: 'todayRepeatLastCta',
+      defaultLabel: 'Repeat last session',
+      kickerKey: 'todayRepeatLastKicker',
+      defaultKicker: 'Train',
+      titleKey: 'todayRepeatLastTitle',
+      defaultTitle: name,
+      titleParams: { name },
+      descKey: 'todayRepeatLastDesc',
+      defaultDesc: 'Same as last time — last loads are ready in the set log.',
+      descParams: { name },
+    };
+  }
 
   if (meta.source === 'coach') {
     const name = meta.sessionName?.trim() || meta.focusLabel;

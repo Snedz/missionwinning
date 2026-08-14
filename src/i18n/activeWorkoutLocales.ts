@@ -4,9 +4,6 @@ type ActiveWorkoutStrings = {
   activeNoWorkout: string;
   activeNoWorkoutDesc: string;
   activeStartWorkout: string;
-  /** Re-entry after a lay-off (`reentry.ts`) — a smaller session that finishes. */
-  activeReentryStart: string;
-  activeReentryStartDesc: string;
   activeSetsCompleted: string;
   activeCancel: string;
   activeLiveSession: string;
@@ -23,10 +20,11 @@ type ActiveWorkoutStrings = {
   activeRestAdd15: string;
   activeRestSub15: string;
   activeAddExercise: string;
-  /** Mid-session swap sheet (AdaptiveOverlay) — `.269` */
+  /** Mid-session swap sheet (AdaptiveOverlay) — `.269` / garage list `.721` */
   activeSwapEyebrow: string;
   activeSwapTitle: string;
   activeSwapPlaceholder: string;
+  activeSwapGarageLead: string;
   activeChooseExercise: string;
   activeEmptyExercises: string;
   activeFormGuide: string;
@@ -35,6 +33,9 @@ type ActiveWorkoutStrings = {
   activeStartRest: string;
   activeLogSet: string;
   activeRepeatLast: string;
+  /** Empty-state Start when a last completed session exists (.717). Not last set. */
+  activeRepeatLastSession: string;
+  activeRepeatLastSessionDesc: string;
   activeLastPerformance: string;
   activeSetLogged: string;
   activeSetLoggedDesc: string;
@@ -45,6 +46,14 @@ type ActiveWorkoutStrings = {
   activeRpeEasy: string;
   activeRpeMed: string;
   activeRpeHard: string;
+  /** Optional reps in reserve on a completed set (`.725`). */
+  activeRir: string;
+  activeRirTip: string;
+  activeRirValue: string;
+  /** Optional ecc/pause/con on a completed set (`.734`). */
+  activeTempo: string;
+  activeTempoTip: string;
+  activeTempoPlaceholder: string;
   activePrTitle: string;
   activePrDesc: string;
   activeCopyLast: string;
@@ -57,16 +66,23 @@ type ActiveWorkoutStrings = {
   activePlateRemainder: string;
   activePlateApply: string;
   activeOpenPlateCalc: string;
+  /** Live set-row per-side stack (`25 + 15 / side`). */
+  activePlatePerSideLine: string;
+  activeAddWarmups: string;
+  activeToggleWarmupAria: string;
+  activeToggleWorkAria: string;
   activeSetNormal: string;
   activeSetWarmup: string;
   activeSetFailure: string;
   activeSetDrop: string;
+  activeSetDropTip: string;
   activeSupersetLink: string;
   activeSupersetUnlink: string;
   activeSetLoggedSuperset: string;
   /** Bodyweight load token when stored weight is 0 (not "0 kg"). */
   activeSetBodyweight: string;
   activeSetBodyweightAddLoad: string;
+  activeSetAddedLoad: string;
   /** Console progressive-overload strip (last · next · why). */
   activeOverloadLastLabel: string;
   activeOverloadNextLabel: string;
@@ -150,7 +166,15 @@ type ActiveWorkoutStrings = {
   activeLastNoteLine: string;
   activeLoadingSession: string;
   activeLoadingSessionDesc: string;
+  /** Empty-state dock when re-entry dose is < 1 (.743 coverage). */
+  activeReentryStart: string;
+  activeReentryStartDesc: string;
   activeNextTargetLine: string;
+  /** Educational Epley e1RM on the exercise row after a saved working set (`.761`). */
+  activeE1rmLine: string;
+  activeE1rmHide: string;
+  activeE1rmShow: string;
+  activeE1rmAria: string;
   activeNote: string;
   activeNotePlaceholder: string;
   activeRemoveExercise: string;
@@ -210,9 +234,19 @@ type ActiveWorkoutStrings = {
    * the label is silent, so nothing looks wrong while the announcement is English.
    */
   activeSetLoggedSr: string;
+  /** Unilateral L/R/Alt on the set being entered (.724). */
+  activeSetSideL: string;
+  activeSetSideR: string;
+  activeSetSideAlt: string;
+  activeSetSideAria: string;
   activeSetRowCompleteAria: string;
   activeSetRowNextAria: string;
   activeSetRowPlannedAria: string;
+  /** After-save vs-last on the set row (.741). */
+  activeVsLastSame: string;
+  activeVsLastRep: string;
+  activeVsLastReps: string;
+  activeVsLastAria: string;
   victoryMascotCue: string;
   victorySessionDetails: string;
   /** Split from a `finalSeconds` ternary default — see moveLocales. */
@@ -229,9 +263,6 @@ const en: ActiveWorkoutStrings = {
   activeNoWorkoutDesc:
     'Start here, or open Today for the session already planned for you. Sets and rest save on this device.',
   activeStartWorkout: 'Start Workout',
-  activeReentryStart: 'Start easier session',
-  activeReentryStartDesc:
-    'Smaller first session back — finishable, then the week rebuilds.',
   activeSetsCompleted: '{{done}}/{{total}} sets completed',
   activeCancel: 'Cancel',
   activeFinish: 'Finish',
@@ -243,9 +274,10 @@ const en: ActiveWorkoutStrings = {
   activeRestAdd15: '+15s',
   activeRestSub15: '−15s',
   activeAddExercise: 'Add Exercise',
-  activeSwapEyebrow: 'This exercise',
-  activeSwapTitle: 'Swap exercise',
+  activeSwapEyebrow: 'No machine',
+  activeSwapTitle: 'Swap',
   activeSwapPlaceholder: 'Swap to… (same muscles first)',
+  activeSwapGarageLead: 'Same pattern. Floor, chair, or a bar you already have.',
   activeChooseExercise: 'Choose exercise...',
   activeEmptyExercises: 'Add exercises above to begin logging sets.',
   activeFormGuide: 'Form guide',
@@ -254,6 +286,8 @@ const en: ActiveWorkoutStrings = {
   activeStartRest: '{{seconds}}s Rest',
   activeLogSet: 'Log set',
   activeRepeatLast: 'Repeat last set',
+  activeRepeatLastSession: 'Repeat last session',
+  activeRepeatLastSessionDesc: 'Same exercises and last loads. Log when ready.',
   activeLastPerformance: 'Last: {{reps}} × {{weight}}',
   activeSetLogged: 'Set logged',
   activeSetLoggedDesc: '{{reps}} × {{weight}} — {{rest}}s rest',
@@ -265,6 +299,12 @@ const en: ActiveWorkoutStrings = {
   activeRpeEasy: 'Easy',
   activeRpeMed: 'Med',
   activeRpeHard: 'Hard',
+  activeRir: 'RIR',
+  activeRirTip: 'Reps in reserve — how many more you could have done. Optional.',
+  activeRirValue: 'RIR {{n}}',
+  activeTempo: 'Tempo',
+  activeTempoTip: 'Eccentric-pause-concentric seconds, e.g. 3-1-1. Optional.',
+  activeTempoPlaceholder: '3-1-1',
   activePrTitle: 'New PR!',
   activePrDesc: '{{reps}} × {{weight}} — personal best for this exercise',
   activeCopyLast: 'Copy last',
@@ -277,15 +317,21 @@ const en: ActiveWorkoutStrings = {
   activePlateRemainder: 'Cannot load exactly — {{remainder}}{{unit}} short',
   activePlateApply: 'Use {{weight}} {{unit}}',
   activeOpenPlateCalc: 'Plates',
+  activePlatePerSideLine: '{{plates}} / side',
+  activeAddWarmups: 'Add warmups',
+  activeToggleWarmupAria: 'Mark as warmup',
+  activeToggleWorkAria: 'Mark as work set',
   activeSetNormal: 'Work',
   activeSetWarmup: 'Warmup',
   activeSetFailure: 'Failure',
   activeSetDrop: 'Drop',
+  activeSetDropTip: 'Drop set — lighter follow-up; not a PR attempt',
   activeSupersetLink: 'Superset w/ next',
   activeSupersetUnlink: 'Unlink superset',
   activeSetLoggedSuperset: '{{reps}} × {{weight}} — next exercise in superset',
   activeSetBodyweight: 'BW',
   activeSetBodyweightAddLoad: 'Bodyweight — tap to add load',
+  activeSetAddedLoad: 'Load',
   activeOverloadLastLabel: 'Last',
   activeOverloadNextLabel: 'Next',
   activeOverloadAddReps: 'Add a rep',
@@ -362,7 +408,14 @@ const en: ActiveWorkoutStrings = {
   activeLastNoteLine: 'Last note ({{date}}):',
   activeLoadingSession: 'Restoring session…',
   activeLoadingSessionDesc: 'Reading the last workout saved on this device.',
+  activeReentryStart: 'Start easier session',
+  activeReentryStartDesc:
+    'Smaller first session back — finishable, then the week rebuilds.',
   activeNextTargetLine: 'Next: {{reps}} × {{weight}} {{unit}}',
+  activeE1rmLine: 'est. 1RM ~{{e1rm}} {{unit}} (Epley) — formula estimate, not a tested max',
+  activeE1rmHide: 'Hide estimate',
+  activeE1rmShow: 'Show e1RM estimate',
+  activeE1rmAria: 'Estimated one-rep max from the Epley formula, not a tested max',
   activeNote: 'Note',
   activeNotePlaceholder: 'Note — "machine 3, seat 4", "left knee tight"…',
   activeRemoveExercise: 'Remove exercise',
@@ -414,9 +467,17 @@ const en: ActiveWorkoutStrings = {
   liveHrDisconnect: 'Disconnect',
   liveHrConnect: 'Connect HR',
   activeSetLoggedSr: 'Logged',
+  activeSetSideL: 'L',
+  activeSetSideR: 'R',
+  activeSetSideAlt: 'Alt',
+  activeSetSideAria: 'Set side',
   activeSetRowCompleteAria: 'Set {{n}} logged: {{line}}',
   activeSetRowNextAria: 'Set {{n}} — in the console',
   activeSetRowPlannedAria: 'Set {{n}} planned — {{reps}} reps',
+  activeVsLastSame: 'same',
+  activeVsLastRep: 'rep',
+  activeVsLastReps: 'reps',
+  activeVsLastAria: 'versus last {{delta}}',
   victoryMascotCue: 'Session saved.',
   victorySessionDetails: 'Session details',
   activeRestSkipAriaFinal: 'Skip rest — go',
@@ -425,6 +486,7 @@ const en: ActiveWorkoutStrings = {
 
 const es: ActiveWorkoutStrings = {
   ...en,
+  activeSetAddedLoad: 'Carga',
   activeLiveSession: 'Sesión en vivo',
   activeCoachSessionEyebrow: 'Sesión Mission Coach',
   activeOverloadLastLabel: 'Última',
@@ -436,6 +498,10 @@ const es: ActiveWorkoutStrings = {
   activeOverloadPrescribed: 'Plan del coach',
   activeUseNextTarget: 'Usar el siguiente objetivo',
   activeSetKindMore: 'Tipo',
+  activePlatePerSideLine: '{{plates}} / lado',
+  activeAddWarmups: 'Añadir calentamientos',
+  activeToggleWarmupAria: 'Marcar como calentamiento',
+  activeToggleWorkAria: 'Marcar como serie de trabajo',
   victoryProgressAddWeight: 'Siguiente: +{{step}} {{unit}} en {{name}} (tope del rango)',
   victoryProgressAddReps: 'Siguiente: {{reps}} × {{weight}} {{unit}} en {{name}}',
   victoryProgressHold: 'Siguiente: mantén {{reps}} × {{weight}} {{unit}} en {{name}}',
@@ -446,6 +512,9 @@ const es: ActiveWorkoutStrings = {
   activeNoWorkout: 'Sin entrenamiento activo',
   activeNoWorkoutDesc:
     'Inicia un entrenamiento rápido desde Hoy o lanza una rutina guardada desde el Builder.',
+  activeReentryStart: 'Empezar sesión más fácil',
+  activeReentryStartDesc:
+    'Primera sesión más corta al volver — terminable, luego la semana se reconstruye.',
   activeStartWorkout: 'Iniciar entrenamiento',
   activeSetsCompleted: '{{done}}/{{total}} series completadas',
   activeCancel: 'Cancelar',
@@ -456,9 +525,10 @@ const es: ActiveWorkoutStrings = {
   activeRestSubtitle: 'Recupera — siguiente serie cuando estés listo',
   activeRestSkip: 'Saltar',
   activeAddExercise: 'Añadir ejercicio',
-  activeSwapEyebrow: 'Este ejercicio',
-  activeSwapTitle: 'Cambiar ejercicio',
+  activeSwapEyebrow: 'Sin máquina',
+  activeSwapTitle: 'Cambiar',
   activeSwapPlaceholder: 'Cambiar a… (mismos músculos primero)',
+  activeSwapGarageLead: 'Mismo patrón. Suelo, silla o una barra que ya tengas.',
   activeChooseExercise: 'Elegir ejercicio…',
   activeEmptyExercises: 'Añade ejercicios arriba para registrar series.',
   activeFormGuide: 'Guía de forma',
@@ -476,11 +546,17 @@ const es: ActiveWorkoutStrings = {
   activeWeight: 'kg',
   activePrTitle: '¡Nuevo PR!',
   activePrDesc: '{{reps}} × {{weight}} — récord personal en este ejercicio',
+  activeVsLastSame: 'igual',
+  activeVsLastAria: 'frente a la última {{delta}}',
 };
 
 const fr: ActiveWorkoutStrings = {
   ...en,
+  activeSetAddedLoad: 'Charge',
   activeLiveSession: 'Séance en direct',
+  activeReentryStart: 'Commencer une séance plus légère',
+  activeReentryStartDesc:
+    'Première séance plus courte au retour — finissable, puis la semaine se reconstruit.',
   activeCoachSessionEyebrow: 'Séance Mission Coach',
   activeOverloadLastLabel: 'Dernière',
   activeOverloadNextLabel: 'Prochaine',
@@ -491,6 +567,10 @@ const fr: ActiveWorkoutStrings = {
   activeOverloadPrescribed: 'Plan coach',
   activeUseNextTarget: 'Utiliser la cible suivante',
   activeSetKindMore: 'Type',
+  activePlatePerSideLine: '{{plates}} / côté',
+  activeAddWarmups: 'Ajouter les échauffements',
+  activeToggleWarmupAria: 'Marquer comme échauffement',
+  activeToggleWorkAria: 'Marquer comme série de travail',
   victoryProgressAddWeight: 'Suite : +{{step}} {{unit}} sur {{name}} (haut de fourchette)',
   victoryProgressAddReps: 'Suite : {{reps}} × {{weight}} {{unit}} sur {{name}}',
   victoryProgressHold: 'Suite : maintiens {{reps}} × {{weight}} {{unit}} sur {{name}}',
@@ -513,8 +593,9 @@ const fr: ActiveWorkoutStrings = {
   activeRestAdd15: '+15 s',
   activeRestSub15: '−15 s',
   activeAddExercise: 'Ajouter un exercice',
-  activeSwapEyebrow: 'Cet exercice',
-  activeSwapTitle: 'Remplacer l’exercice',
+  activeSwapEyebrow: 'Pas de machine',
+  activeSwapTitle: 'Remplacer',
+  activeSwapGarageLead: 'Même schéma. Sol, chaise, ou une barre que tu as déjà.',
   activeSwapPlaceholder: 'Remplacer par… (mêmes muscles d’abord)',
   activeChooseExercise: 'Choisir un exercice…',
   activeEmptyExercises: 'Ajoutez des exercices ci-dessus pour enregistrer des séries.',
@@ -553,6 +634,8 @@ const fr: ActiveWorkoutStrings = {
   activeSupersetLink: 'Superset avec le suivant',
   activeSupersetUnlink: 'Dissocier le superset',
   activeSetLoggedSuperset: '{{reps}} × {{weight}} — exercice suivant du superset',
+  activeVsLastSame: 'pareil',
+  activeVsLastAria: 'versus la dernière {{delta}}',
 };
 
 const zh: ActiveWorkoutStrings = {
@@ -671,6 +754,10 @@ const de: ActiveWorkoutStrings = {
   activePlateRemainder: 'Exakte Last nicht möglich — {{remainder}}{{unit}} fehlen',
   activePlateApply: '{{weight}} {{unit}} verwenden',
   activeOpenPlateCalc: 'Scheiben',
+  activePlatePerSideLine: '{{plates}} / Seite',
+  activeAddWarmups: 'Aufwärmsätze hinzufügen',
+  activeToggleWarmupAria: 'Als Aufwärmsatz markieren',
+  activeToggleWorkAria: 'Als Arbeitssatz markieren',
   activeSetNormal: 'Arbeit',
   activeSetWarmup: 'Aufwärmen',
   activeSetFailure: 'Versagen',
@@ -691,7 +778,11 @@ const LOCALES: Partial<Record<string, ActiveWorkoutStrings>> = {
   de,
   pt: {
     ...en,
+    activeSetAddedLoad: 'Carga',
     activeNoWorkout: 'Nenhum treino ativo',
+    activeReentryStart: 'Começar sessão mais fácil',
+    activeReentryStartDesc:
+      'Primeira sessão menor na volta — terminável, depois a semana se reconstrói.',
     activeFinish: 'Concluir',
     activeLiveSession: 'Sessão ao vivo',
     activeCoachSessionEyebrow: 'Sessão Mission Coach',
@@ -699,9 +790,10 @@ const LOCALES: Partial<Record<string, ActiveWorkoutStrings>> = {
     activeSetsLabel: 'Séries',
     activeRestAdd15: '+15 s',
     activeRestSub15: '−15 s',
-    activeSwapEyebrow: 'Este exercício',
-    activeSwapTitle: 'Trocar exercício',
+    activeSwapEyebrow: 'Sem máquina',
+    activeSwapTitle: 'Trocar',
     activeSwapPlaceholder: 'Trocar por… (mesmos músculos primeiro)',
+    activeSwapGarageLead: 'O mesmo padrão. Chão, cadeira ou uma barra que já tenhas.',
     activeOverloadLastLabel: 'Última',
     activeOverloadNextLabel: 'Próxima',
     activeOverloadAddReps: 'Mais uma rep',
@@ -715,6 +807,8 @@ const LOCALES: Partial<Record<string, ActiveWorkoutStrings>> = {
     victoryProgressHold: 'Próximo: mantenha {{reps}} × {{weight}} {{unit}} em {{name}}',
     victoryProgressAddRepsBw: 'Próximo: {{reps}} reps em {{name}}',
     victoryProgressHoldBw: 'Próximo: mantenha {{reps}} em {{name}}',
+    activeVsLastSame: 'igual',
+    activeVsLastAria: 'versus a última {{delta}}',
   },
   it: {
     ...en,

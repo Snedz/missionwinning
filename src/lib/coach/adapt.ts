@@ -5,6 +5,7 @@ import type { CoachContext, CoachPlan, PlanSession } from '@/lib/coach/types';
 import { chooseSplit, mapToCalendar, todayDayOffset } from '@/lib/coach/splitPlanner';
 import { buildSession } from '@/lib/coach/selector';
 import { hashString, mulberry32 } from '@/lib/coach/rng';
+import { kitMatchesExercise } from '@/lib/workout/homeGymKit';
 
 export function recoverySession(dayOffset: number, weekStart: string): PlanSession {
   const rng = mulberry32(hashString(`${weekStart}-recovery-${dayOffset}`));
@@ -335,6 +336,19 @@ export function adaptForEquipmentChange(
   ctx: CoachContext,
   todayOffset: number
 ): CoachPlan {
-  if (plan.equipmentProfile === ctx.equipment) return plan;
+  const profileChanged = plan.equipmentProfile !== ctx.equipment;
+  const kit = ctx.homeGymKit ?? null;
+  const futureNeedsSwap =
+    !!kit &&
+    plan.sessions.some(
+      (s) =>
+        s.dayOffset >= todayOffset &&
+        s.status !== 'done' &&
+        s.exercises.some((ex) => {
+          const data = EXERCISES.find((e) => e.id === ex.exerciseId);
+          return data ? !kitMatchesExercise(data, kit) : false;
+        })
+    );
+  if (!profileChanged && !futureNeedsSwap) return plan;
   return regenerateFutureSessions(plan, ctx, todayOffset);
 }

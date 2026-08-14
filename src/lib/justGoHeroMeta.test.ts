@@ -49,6 +49,36 @@ describe('buildJustGoHeroMeta', () => {
     });
   });
 
+  it('marks repeat_last when a last session exists and Coach is not live', () => {
+    const meta = buildJustGoHeroMeta({
+      hasActiveWorkout: false,
+      trainReady: true,
+      focusLabel: 'Chest',
+      coach: null,
+      repeatLastName: 'Push',
+    });
+    assert.deepEqual(meta, {
+      focusLabel: 'Chest',
+      source: 'repeat_last',
+      sessionName: 'Push',
+    });
+  });
+
+  it('live Coach still wins over Repeat last', () => {
+    const meta = buildJustGoHeroMeta({
+      hasActiveWorkout: false,
+      trainReady: true,
+      focusLabel: 'Legs',
+      coach: {
+        name: 'Upper A',
+        status: 'planned',
+        exercises: [{ exerciseId: 'bench-press', sets: 3, reps: 8, weight: 60 }],
+      },
+      repeatLastName: 'Push',
+    });
+    assert.equal(meta?.source, 'coach');
+  });
+
   it('falls back to freestyle focus without a coach day', () => {
     const meta = buildJustGoHeroMeta({
       hasActiveWorkout: false,
@@ -131,6 +161,19 @@ describe('resolveJustGoHeroCopy', () => {
     assert.equal(copy.labelKey, 'justGoCta');
     assert.match(copy.defaultLabel, /Just Go/i);
   });
+
+  it('names Repeat last session without Just Go or week-1 overlay', () => {
+    const copy = resolveJustGoHeroCopy(
+      { focusLabel: 'Chest', source: 'repeat_last', sessionName: 'Push' },
+      { completedSessions: 1 }
+    );
+    assert.equal(copy.labelKey, 'todayRepeatLastCta');
+    assert.equal(copy.defaultLabel, 'Repeat last session');
+    assert.equal(copy.defaultTitle, 'Push');
+    assert.doesNotMatch(copy.defaultLabel, /just go/i);
+    assert.doesNotMatch(copy.defaultDesc, /just go/i);
+    assert.doesNotMatch(copy.defaultLabel, /session 2/i);
+  });
 });
 
 describe('isFreestyleJustGo', () => {
@@ -138,5 +181,6 @@ describe('isFreestyleJustGo', () => {
     assert.equal(isFreestyleJustGo('focus'), true);
     assert.equal(isFreestyleJustGo('starter'), true);
     assert.equal(isFreestyleJustGo('coach'), false);
+    assert.equal(isFreestyleJustGo('repeat_last'), false);
   });
 });

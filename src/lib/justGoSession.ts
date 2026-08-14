@@ -12,6 +12,7 @@ import type { ReadinessInfo, RecommendedFocus } from '@/lib/score';
 import { suggestNextSetTarget } from '@/lib/workout/nextSetTargets';
 import type { UnitsPref } from '@/lib/units';
 import type { CompletedWorkoutLog, WorkoutExerciseTemplate } from '@/types';
+import { kitMatchesExercise, type HomeGymKit } from '@/lib/workout/homeGymKit';
 
 export type JustGoSession = {
   name: string;
@@ -79,11 +80,14 @@ function seedExerciseFromHistory(
 function pickExercisesForFocus(
   focus: MuscleGroup,
   equipment: string,
-  count: number
+  count: number,
+  kit?: HomeGymKit | null
 ): { exerciseId: string; reps: number }[] {
   const bodyweight = equipment === 'bodyweight' || equipment === 'minimal';
   let pool = EXERCISES.filter((e) => e.muscleGroups.includes(focus));
-  if (bodyweight) {
+  if (kit) {
+    pool = pool.filter((e) => kitMatchesExercise(e, kit));
+  } else if (bodyweight) {
     const bw = pool.filter(
       (e) =>
         !e.equipment ||
@@ -121,9 +125,10 @@ export function buildJustGoSession(opts: {
   history: CompletedWorkoutLog[];
   units: UnitsPref;
   equipment?: string;
+  homeGymKit?: HomeGymKit | null;
   coachToday?: CoachSessionLike | null;
 }): JustGoSession {
-  const { focus, history, units, equipment = 'full-gym', coachToday } = opts;
+  const { focus, history, units, equipment = 'full-gym', homeGymKit = null, coachToday } = opts;
 
   if (coachToday && coachToday.status !== 'done' && coachToday.exercises.length > 0) {
     const exercises = coachToday.exercises.map((ex) => {
@@ -159,7 +164,7 @@ export function buildJustGoSession(opts: {
     };
   }
 
-  const picked = pickExercisesForFocus(focus.group, equipment, 4);
+  const picked = pickExercisesForFocus(focus.group, equipment, 4, homeGymKit);
   if (picked.length >= 2) {
     const exercises = picked.map((p) =>
       seedExerciseFromHistory(p.exerciseId, 3, p.reps, 0, history, units)
@@ -172,8 +177,14 @@ export function buildJustGoSession(opts: {
     };
   }
 
-  const starter = starterForFocus(focus.group);
-  const exercises = (starter ?? []).map((ex) =>
+  let starter = starterForFocus(focus.group) ?? [];
+  if (homeGymKit) {
+    starter = starter.filter((ex) => {
+      const data = EXERCISES.find((e) => e.id === ex.exerciseId);
+      return data ? kitMatchesExercise(data, homeGymKit) : false;
+    });
+  }
+  const exercises = starter.map((ex) =>
     seedExerciseFromHistory(
       ex.exerciseId,
       ex.sets.length || 3,

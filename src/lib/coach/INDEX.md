@@ -6,7 +6,7 @@
 
 1. `types.ts` — `CoachPlan`, `CoachContext`, `PlanSession`, `PlanExercise`
 2. `schedulePrefs.ts` — days per week, preferred days (`mw_days_per_week`)
-3. `equipment.ts` — `equipmentMatches`, `mapStorageEquipment`
+3. `equipment.ts` — `equipmentMatches` (optional Home gym kit overlay — filter only, never rank), `mapStorageEquipment`
 4. `progression.ts` — `nextTargets` (RPE, stall, deload, % of e1RM `loadPct`, optional `loadZone` cap)
 4b. `loadGuard.ts` — `capProgressionForZone`: a **high** ACWR band holds a rise. Cap-only — never deloads, never touches session shape; `light`/`unknown` are identity
 5. `splitPlanner.ts` — `chooseSplit`, `mapToCalendar`, week start helpers
@@ -16,7 +16,7 @@
 8b. `adaptSummary.ts` — re-exports from `packages/mw-core` (shared with Expo)
 8c. `weekDose.ts` — plain-language weekly “dose” (session count · intent · minutes) for Coach UI
 8c2. `weekRationale.ts` — log-cited why-this-week / adapt rationale (inputs · rule · effect) for Coach inspectability (`.693`)
-8c3. `logCitation.ts` — the log fact under every Coach line, or `no-logs`; quotes a stored set, never infers (`.746`, survey clarity 2.56/5)
+8c3. `logCitation.ts` — the log fact under every Coach line, or `no-logs`; quotes a stored set, never infers (`.766`, survey clarity 2.56/5)
 8d. `coachAdaptReentry.ts` — pure: adapt-banner re-entry is coach day vs freestyle Just Go
 8e. `resolveCoachBossSessionId.ts` — which session gets filled Start on `/coach` (today pending else next)
 8f. `coachChatClient.ts` — HTTP status → copy + stream `[[error:…]]` + request context + `readCoachChatStream` (.445/.453)
@@ -52,7 +52,7 @@ Shared client: `src/lib/coachLlmClient.ts` (also used by `coachDailyServer.ts` +
 
 | File | Covers |
 |------|--------|
-| `equipment.test.ts` | Equipment profile filtering |
+| `equipment.test.ts` | Equipment profile filtering + kit overlay (filter-only) |
 | `progression.test.ts` | RPE, deload, stall, units |
 | `splitPlanner.test.ts` | Splits 2–6 days, calendar |
 | `selector.test.ts` | Familiarity, recovery ids, determinism |

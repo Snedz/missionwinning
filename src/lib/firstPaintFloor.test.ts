@@ -211,7 +211,7 @@ test('computed-key t() calls without a defaultValue only ever decrease', () => {
  * What the reader actually gets, in resolution order.
  *
  * `BOOTSTRAP_EN` is layered **on top of** the packs because it is the only
- * catalogue in the first-paint bundle and i18next resolves it first. `.746`
+ * catalogue in the first-paint bundle and i18next resolves it first. `.766`
  * found what that blindness costs: `todayCoachInviteEyebrow` exists *only* in
  * bootstrap, so its mount sites' `defaultValue` had never rendered even once,
  * and the eyebrow above Today's Coach invite read "AI weekly plan" permanently
@@ -249,7 +249,7 @@ function driftingCalls(): string[] {
 }
 
 /**
- * Measured at `.745`: 193 sites against the packs alone. `.746` layered
+ * Measured at `.765`: 193 sites against the packs alone. `.766` layered
  * `BOOTSTRAP_EN` in — the catalogue that actually resolves first — and the true
  * number is **209**. The 16 it had been blind to are the worse half: for a
  * bootstrap-only key the `defaultValue` never renders at all, so the source and

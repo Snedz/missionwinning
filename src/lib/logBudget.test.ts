@@ -86,6 +86,28 @@ const NEVER_SHIPPED: { from: number; to: number; why: string }[] = [
       'heading on master ever ended in (`.260`), so the live window can sit on `.261` without ' +
       'a prior rotate of a missing section.',
   },
+  {
+    from: 686,
+    to: 688,
+    why:
+      'Reserved by concurrent wedge PRs (#453/#462/#470) while master tip `.685` landed (#455). ' +
+      'No `##` heading on master ever ended in (`.686`)–(`.688`), so the live window can sit on ' +
+      '`.689` without a prior rotate of missing sections.',
+  },
+  {
+    from: 698,
+    to: 713,
+    why:
+      'Reserved by concurrent overnight PRs while master jumped `.697` → `.714` (public GitHub). ' +
+      'No `##` heading on master ever ended in (`.698`)–(`.713`).',
+  },
+  {
+    from: 715,
+    to: 742,
+    why:
+      'Reserved by concurrent logger-spine PRs while master jumped `.714` → `.743` (Cursor-local CI). ' +
+      'Those reservations landed as `.745`–`.757`. No `##` heading on master ever ended in (`.715`)–(`.742`).',
+  },
 ];
 const neverShipped = (x: number) => NEVER_SHIPPED.some((g) => x >= g.from && x <= g.to);
 

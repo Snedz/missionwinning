@@ -43,6 +43,7 @@ test('SetLogRow: PREVIOUS row anchor + metric-first density; 44px taps', () => {
   assert.match(code, /set-row-prev/);
   assert.match(code, /data-prev-anchor/);
   assert.match(code, /activeColPrev/);
+  assert.match(code, /set-row-vs-last/);
   assert.doesNotMatch(code, /activeSetInConsole/);
   assert.doesNotMatch(code, /In the console/);
   assert.doesNotMatch(code, /primary-action|accent-poster|bg-primary-fill/);
@@ -59,6 +60,7 @@ test('SetLogTable: Prev column anchored; one poster-red Log set; 44px inputs', (
   assert.match(src, /border-s-primary|border-s-\[3px\]/);
   assert.match(src, /set-table-prev/);
   assert.match(src, /data-prev-anchor/);
+  assert.match(src, /set-table-vs-last/);
   assert.doesNotMatch(src, /hover:bg-accent-100/);
 });
 
@@ -78,9 +80,27 @@ test('RestTimerBar: ambient running rest + Skip 44px; no poster-red', () => {
   assert.doesNotMatch(src, /accent-poster/);
 });
 
-test('ActiveExerciseCard wires prevLabels into compact SetLogRow', () => {
+test('LastSetGhostButton: outline one-tap; never poster-red', () => {
+  const src = workout('LastSetGhostButton.tsx');
+  assert.match(src, /data-testid="last-set-ghost"/);
+  assert.match(src, /min-h-\[44px\]/);
+  assert.match(src, /tap-target/);
+  assert.doesNotMatch(src, /primary-action/);
+  assert.doesNotMatch(src, /accent-poster/);
+});
+
+test('LogConsole and SetLogTable mount the last-set ghost', () => {
+  assert.match(workout('LogConsole.tsx'), /LastSetGhostButton/);
+  assert.match(workout('SetLogTable.tsx'), /LastSetGhostButton/);
+  assert.match(workout('ActiveExerciseCard.tsx'), /resolveLastSetGhost/);
+});
+
+test('ActiveExerciseCard wires prevLabels and vs-last into compact SetLogRow', () => {
   const src = workout('ActiveExerciseCard.tsx');
   assert.match(src, /formatPrevSetLabels/);
   assert.match(src, /prevLabel=\{prevLabels\[setIdx\]\}/);
   assert.match(src, /prevLabels=\{prevLabels\}/);
+  assert.match(src, /formatVsLastSetDeltas/);
+  assert.match(src, /vsLastLabel=\{vsLastLabels\[setIdx\]\}/);
+  assert.match(src, /vsLastLabels=\{vsLastLabels\}/);
 });

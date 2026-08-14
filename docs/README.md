@@ -45,7 +45,7 @@ User guides in plain language (no code paths):
 | [../CONTRIBUTING.md](../CONTRIBUTING.md) | Setup, PR workflow, where to put code |
 | [OPEN_SOURCE.md](OPEN_SOURCE.md) | AGPL · public flip · operator secrets |
 | [CLASSIFICATION.md](CLASSIFICATION.md) · [DUAL_REPO.md](DUAL_REPO.md) · [OPS_LOCAL.md](OPS_LOCAL.md) | Public product vs private mission-ops · local Continuity dashboard |
-| [contracts/INDEX.md](contracts/INDEX.md) | Identity · economy · module · AI interop |
+| [contracts/INDEX.md](contracts/INDEX.md) | Habit · identity · economy · module · AI interop |
 | [SECRETS.md](SECRETS.md) | Secrets program · vaults · gitleaks · rotate-on-leak |
 | [ENV.md](ENV.md) | Environment variables |
 | [../app/INDEX.md](../app/INDEX.md) | Routes and API inventory |

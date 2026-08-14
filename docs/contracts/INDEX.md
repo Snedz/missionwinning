@@ -5,6 +5,7 @@
 
 | Contract | File | Code anchors |
 |----------|------|----------------|
+| Habit | [HABIT.md](HABIT.md) | `src/lib/habitWeekCount.ts`, Today `/log` header |
 | Identity | [IDENTITY.md](IDENTITY.md) | `packages/mw-core/src/identity/`, `src/lib/identity/`, `/profile` + `/account` |
 | Economy | [ECONOMY.md](ECONOMY.md) | `packages/mw-core/src/economy/`, `src/lib/rewards/`, [CLUB_PLAN.md](../CLUB_PLAN.md) |
 | Module host | [MODULE.md](MODULE.md) | `packages/mw-core/src/module/` |

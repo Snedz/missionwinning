@@ -3,7 +3,7 @@
 type CoachStrings = {
   coachPageTitle: string;
   coachPageSubtitle: string;
-  /** `.746` — the log fact a Coach line stands on, and the no-logs admission. */
+  /** `.766` — the log fact a Coach line stands on, and the no-logs admission. */
   coachCiteFromLog: string;
   coachCiteNoLogs: string;
   coachWeekEyebrow: string;

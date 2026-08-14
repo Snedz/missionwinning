@@ -1,6 +1,7 @@
 import type { MetadataRoute } from 'next';
 import { siteBaseUrl } from '@/lib/seoMetadata';
 import { BEYOND_THE_BASICS_CHAPTERS } from '@/data/guidebook/chapters';
+import { LEARN_VS_PAGES, learnVsPublicHref } from '@/data/learnVsPages';
 import { EXERCISES, ensureFullExerciseCatalog } from '@/data/exercises';
 import { FREE_LEARN_PATHS } from '@/data/learnPaths';
 import { MAJOR_GROUPS } from '@/lib/muscleGroups';
@@ -81,6 +82,14 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.6,
   }));
 
+  /** Learn vs-pages — AEO comparison URLs, not magazine chapters. */
+  const learnVsEntries = LEARN_VS_PAGES.map((page) => ({
+    url: `${base}${learnVsPublicHref(page.id)}`,
+    lastModified: now,
+    changeFrequency: 'monthly' as const,
+    priority: 0.6,
+  }));
+
   const exerciseEntries = EXERCISES.map((ex) => ({
     url: `${base}/exercises/${ex.id}`,
     lastModified: now,
@@ -111,7 +120,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   return [
     ...staticEntries,
-    ...(isPathEnabled('/guide') ? guideEntries : []),
+    ...(isPathEnabled('/guide') ? [...guideEntries, ...learnVsEntries] : []),
     ...exerciseEntries,
     ...muscleHubs,
     ...equipmentHubs,

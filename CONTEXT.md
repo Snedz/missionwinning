@@ -16,7 +16,7 @@ One screen of truth for any AI tool or human joining cold. Read this, then [AGEN
 
 ---
 
-## Now (2026-08-13 · web `2026.07-unified.746` · Android `1.24.1`)
+## Now (2026-08-13 · web `2026.07-unified.766` · Android `1.24.1`)
 
 > The ONLY "where we are" block in the repo — [ORCHESTRATION.md](ORCHESTRATION.md) points here.
 >
@@ -285,9 +285,31 @@ One screen of truth for any AI tool or human joining cold. Read this, then [AGEN
 > and `.695` dropped `.606` detail (full text remains in LOG.md / archive)
 > and `.696` dropped `.635` detail (full text remains in LOG.md / archive)
 > and `.697` dropped `.618` detail (full text remains in LOG.md / archive)
-> and `.745` dropped `.669` detail — the excellence-gate policy it described is
-> stated in the standing **Excellence** bullet below, which is why the bullet
-> was the safe one to rotate (full text: docs/archive/log/LOG-rotate-669-for-745.md)
+> and `.714` dropped `.636` detail (full text remains in LOG.md / archive)
+> and `.743` dropped `.669` detail (full text remains in LOG.md / archive)
+> and `.744` dropped `.679` detail (full text remains in LOG.md / archive)
+> and `.745` dropped `.680` detail (full text remains in LOG.md / archive)
+> and `.746` dropped `.684` detail (full text remains in LOG.md / archive)
+> and `.747` dropped `.685` detail (full text remains in LOG.md / archive)
+> and `.748` dropped `.689` detail (full text remains in LOG.md / archive)
+> and `.749` dropped `.690` detail (full text remains in LOG.md / archive)
+> and `.750` dropped `.691` detail (full text remains in LOG.md / archive)
+> and `.751` dropped `.692` detail (full text remains in LOG.md / archive)
+> and `.752` dropped `.693` detail (full text remains in LOG.md / archive)
+> and `.753` dropped `.694` detail (full text remains in LOG.md / archive)
+> and `.754` dropped `.695` detail (full text remains in LOG.md / archive)
+> and `.755` dropped `.696` detail (full text remains in LOG.md / archive)
+> and `.756` dropped `.697` detail (full text remains in LOG.md / archive)
+> and `.757` dropped `.714` detail (full text remains in LOG.md / archive)
+> and `.758` dropped `.743` detail (full text remains in LOG.md / archive)
+> and `.759` dropped `.744` detail (full text remains in LOG.md / archive)
+> and `.760` dropped `.745` detail (full text remains in LOG.md / archive)
+> and `.761` dropped `.746` detail (full text remains in LOG.md / archive)
+> and `.762` dropped `.747` detail (full text remains in LOG.md / archive)
+> and `.763` dropped `.748` detail (full text remains in LOG.md / archive)
+> and `.764` dropped `.749` detail (full text remains in LOG.md / archive)
+> and `.766` dropped `.750`–`.751` detail (rotated to docs/archive/log/LOG-rotate-750-for-766.md
+> and LOG-rotate-751-for-766.md; `.765`/`.766` share one bullet — one ship series, one PR)
 > to [CONTEXT-now-2026-07-30.md](docs/archive/CONTEXT-now-2026-07-30.md) after this
 > block reached **79 bullets / 103KB**. A status doc that only grows stops being read.
 
@@ -303,28 +325,28 @@ One screen of truth for any AI tool or human joining cold. Read this, then [AGEN
 > | `PRIVATE_MODE` | **on** in production. The gate is up; `/` serves the `/private` teaser. Also disables the service worker, so **no beta tester can install the PWA or log offline** — deliberate (do not offline-cache a private app), and the offline promise gets zero beta validation until the flip. Post-flip check is in [LAUNCH_RUNBOOK](docs/LAUNCH_RUNBOOK.md) §5. |
 > | `MAIL_POSTAL_ADDRESS` | **unset** — `send-beta-invite.ts` hard-exits and `renderEmail.ts` refuses to render, so **no invite email can be sent**. `.204` fixed the link; this is the remaining blocker to the first 10 users. |
 > | Repo visibility | **private since 2026-08-02 00:49Z** — it was public until then, and four GitHub security features went with it, all needing Advanced Security on a private repo: **secret scanning + push protection** (had been on), **code scanning** (`/code-scanning/default-setup` → 403), **private vulnerability reporting** (→ 404), and the **Dependency Review API** (→ 403, so `dependency-review-action` cannot run here at all). **Dependabot alerts and security updates are unaffected** and still on — 3 open advisories, all high. That leaves `gitleaks` as the only secret gate. Flipping back to public restores all four at no cost; until then, do not propose them. |
-> | GitHub Actions | **running, and metered again.** Measured 2026-08-02 on PR #186: `build-and-test` ran to completion in 7m22s (53 `@gate` e2e), `gitleaks` and `aikido-security` likewise. The `runner_id: 0` billing block is cleared. But that run finished at **00:41, eight minutes before the repo went private** — standard runners are free only on public repos, so every minute since draws on the account quota. The lean-CI split (PR-only, heavy jobs in `ci-extended`) is load-bearing again, not just tidy. `npm run gate` is no longer the only thing guarding `master` — it stays the faster pre-push check, and now the cheaper one. |
+> | GitHub Actions | **minutes exhausted / billing-blocked for paid jobs.** ~50 draft PRs show `build-and-test` red. Merge bar while red: **Cursor-local green** (`npm test`, lint, typecheck, excellence) + craft LGTM — [docs/CI_LOCAL.md](docs/CI_LOCAL.md). Actions red is not a product fail. Security jobs (gitleaks / CodeQL / aikido) stay on. `[skip vercel]` on commits unless the founder asked for a Preview. |
 > | VAPID keys · `CRON_SECRET` · `SMOKE_BASE_URL` · Sentry DSN · Upstash | **unset.** Push ships dark, the hourly sweeps `exit 0`, there is no server request logging, and rate limiting is per-instance in memory. |
 > | Migrations | **9 recorded pending** — [LAUNCH_RUNBOOK](docs/LAUNCH_RUNBOOK.md) §3, enforced by `src/lib/migrationLedger.test.ts`. |
 > | gitleaks | **green — and scanning for the first time.** It had never scanned anything: on a `pull_request` event the action lists the PR's commits, the job declared no `permissions:` block, and it 403'd (`pull_requests=read`) before opening a file. Fixed by a `permissions:` block (`.224` carrying `.255`). It scans **only the PR's own commits**, so commit `8ea3527a`'s real Solana treasury address — scrubbed from the working file, still in history — is out of its scope. That finding stands, deliberately not allowlisted; it was never what made this check red. |
 
 - **Excellence:** unscored · — · [docs/EXCELLENCE_RESULT.md](docs/EXCELLENCE_RESULT.md) — Horizon W phone sign-off home; surface PRs need `status: pass` or `Excellence-Override` (`.669`).
-- **`.745`–`.746`:** (`2026.07-unified.746`) **www first paint + gated honesty + Coach citation.** `.745`: gate/`/welcome` resolve their query server-side (poster and I-Day step one are in the first byte, not `Checking sign-in…` and a skeleton); gate copy floors from `gateEn.ts`; chrome says **Invite-only beta** while gated; gate waitlist refuses hard-blocked territories via `/api/geo` (`supportedRegions.ts`); consent banner docks instead of covering **Start Workout**. `.746` (East Asia shard, clarity 2.56/5): every Coach claim now cites a stored set or says `no-logs` (`coach/logCitation.ts` + `CoachLogCite`) and "AI weekly plan" is gone from above the Coach invite; both public entries name the local-first **mechanism** (no account · this device · nothing uploaded unless you sign in); Strong/Hevy CSV import reachable from I-Day + empty logger via `/account#import`. Guards: `firstPaintFloor` (drift ratchet 209, bootstrap layered), `logCitation`, `importReach`, `gate-smoke` byte checks; lint + i18n parity/coverage green again (all three were red on master).
-- **`.697`:** (`2026.07-unified.697`) **Session-expired fail-open mid-set Log/rest** — SignInPrompt catch → signed-out; log/rest path never awaits auth/sync (Kaizen Strong / F-001).
-- **`.696`:** (`2026.07-unified.696`) **Local-first set-log + rest** — Today/Active empty + SignIn/status copy device-first; rest path ungated by sync (F-001).
-- **`.695`:** (`2026.07-unified.695`) **Demote six-pillar chrome until first workout** — First Steps workout-only + More/rail Pillars hidden pre-`basic.workout` / `workoutHistory.length`; I-Day → Today one Start (F-004 C5≤90s; no shell redesign).
-- **`.694`:** (`2026.07-unified.694`) **Active set-table density (F-003)** — Prev row anchor + ambient running rest; dense ink `LogConsole`; sole poster-red Log set; ≥44px taps (one-thumb; not faster-than-Strong/Hevy).
-- **`.693`:** (`2026.07-unified.693`) **Coach log-cited why-this-week** — adapt/generate rationale cites log inputs · rule · effect on `CoachAdaptBanner` / Coach week (W1 inspectability; no chat chrome).
-- **`.692`:** (`2026.07-unified.692`) **Production smoke ratchet** — CI + gate-smoke lock privacy/terms English floors + `/compare` → `/welcome` (no product redo of `.653`/`.668`).
-- **`.691`:** (`2026.07-unified.691`) **Welcome Skip hard-nav** — I-Day finish uses `window.location.assign` when gate on so proxy demands cookie (no soft bypass) (W1).
-- **`.690`:** (`2026.07-unified.690`) **Admin invite share → `/private`** — `buildInviteShareLink` matches email `/private?invite=` path so invitee chrome paints (W1).
-- **`.689`:** (`2026.07-unified.689`) **Today loading skeleton md width parity** — `TodayDashboardLoading` adds `md:max-w-none` to match Lean/Dashboard; no AppLayout shell redesign. Wedge reserved `.686`–`.688` (#453/#462/#470); master tip `.685` landed (#455).
-- **`.685`:** (`2026.07-unified.685`) **Preserve next= through private gate** — `/private` unlock redirect reads `?next=` via `privateGateReturnPath` (layout no longer hardcodes `/`) (W1).
-- **`.684`:** (`2026.07-unified.684`) **Private gate session-unlock fail-open** — bounded `/private` session recovery; probe-confirmed cookie + hard nav; code-only invitees reach access-code form (W1).
-- **`.680`:** (`2026.07-unified.680`) **Guidebook wedge CTAs** — Ch4 Getting Started + magazine `1.4.3` practice lines pitch Train log + Mission Coach from logs; originality logged; Learn heroes still parked.
-- **`.679`:** (`2026.07-unified.679`) **Today /log renderer crash** — `regenerateFutureSessions` idempotent like `.207` `adaptPlan`; stopped synchronous `useCoachPlan` ↔ `mw-coach-plan-changed` stack overflow on high-strain Today (Scout Aw Snap `.618`).
-- **`.670`:** (`2026.07-unified.670`) **Hero design** — Coach empty docks poster-field Generate (mirror Active); Victory share fail-only recovery line (not cancel).
-- **`.636`:** (`2026.07-unified.636`) **Global legal posture** — multi-jurisdiction sanctions/trade controls; no US-primary / OFAC-only consumer voice; commercial exclusions unchanged. Counsel export global freeze. **Not legal advice.**
+- **`.765`–`.766`:** (`2026.07-unified.766`) **www first paint · gated honesty · Coach cites the log.** `.765`: gate + `/welcome` resolve their query server-side, so the poster and I-Day step one are in the first byte (they were `Checking sign-in…` and an `aria-hidden` skeleton); gate copy floors from `gateEn.ts`; chrome reads **Invite-only beta** while the gate is up; the gate waitlist refuses hard-blocked territories via `/api/geo` (`legal/supportedRegions.ts`); the consent banner docks instead of covering **Start Workout**. `.766` (East Asia shard, coach-from-logs clarity 2.56/5): every Coach claim now cites a stored set or says `no-logs` (`coach/logCitation.ts` + `CoachLogCite`), "AI weekly plan" is gone from above the Coach invite, both public entries name the local-first **mechanism** (no account · this device · nothing uploaded unless you sign in), and Strong/Hevy CSV import is reachable from I-Day + the empty logger via `/account#import`. Guards: `firstPaintFloor` (drift ratchet 209, `BOOTSTRAP_EN` layered), `logCitation`, `importReach`, `gate-smoke` byte checks. **`lint`, `i18n:parity` and `i18n:coverage` were red on master and are green again; `bundle-budget` was already breached (`/log` +7.3KB, `/active` +13.6KB) and this branch does not raise the cap.**
+- **`.764`:** (`2026.07-unified.764`) **Free plate math + warmup on the Train set row** — Live barbell plates-per-side + Add warmups 40/60/80. Free. Originally #503 / `.708`.
+- **`.763`:** (`2026.07-unified.763`) **Home gym kit on the free logger** — Account Home gym kit (barbell/rack/plates/dumbbells/pull-up/floor). Just Go + Coach filter, never rank. Train empty Start stays repeat-last. Originally #525 / `.733`.
+- **`.762`:** (`2026.07-unified.762`) **F-017 first-set verify iterate** — Nullish/hash-safe Sign-in chip; Welcome Begin fallback; extended first-set source-scan. Originally #538 / `.750`.
+- **`.761`:** (`2026.07-unified.761`) **e1RM from logged sets (educational)** — Epley est. 1RM on the exercise row after a working set; hideable; not a tested max. Originally #528 / `.739`.
+- **`.760`:** (`2026.07-unified.760`) **Vs last session on the set row** — After a working set saves, a tiny +kg / +rep / same vs last session. First-ever and warmups blank. Originally #530 / `.741`.
+- **`.759`:** (`2026.07-unified.759`) **Last-set ghost on the Train set row** — One-tap last working set (not warmup) into the dial; first-ever stays empty. Originally #529 / `.738`.
+- **`.758`:** (`2026.07-unified.758`) **Bodyweight + load on the Train set row** — On pull-ups/push-ups/dips the load field is extra weight (belt/vest); 0 logs BW only. Originally #527 / `.735`.
+- **`.757`:** (`2026.07-unified.757`) **Optional tempo on the set row** — Optional ecc/pause/con (`3-1-1`) on completed rows beside RPE/RIR; last tempo prefills; never blocks Log set. Originally #526 / `.734`.
+- **`.756`:** (`2026.07-unified.756`) **Optional RIR on the set row** — Optional 0–5 RIR on completed rows beside RPE; empty valid; Log set ungated. Originally #517 / `.725`.
+- **`.755`:** (`2026.07-unified.755`) **Unilateral L/R on the set log** — Optional L/R/Alt on unilateral lifts; after L suggest R; bilateral strips stray side. Originally #516 / `.724`.
+- **`.754`:** (`2026.07-unified.754`) **Drop sets on the set log** — Footer Drop after a working set starts a −20% follow-up and skips rest. Originally #515 / `.723`.
+- **`.753`:** (`2026.07-unified.753`) **Habit week count + HABIT contract** — Today header always shows this week: N days logged (0 is fine). HABIT contract: daily Train is the loop. Originally #511 / `.722`.
+- **`.752`:** (`2026.07-unified.752`) **Garage swap on the exercise row** — Swap on the Train row / Coach line offers 1–2 garage stand-ins; equipment change clears last load; hide when already garage. Originally #514 / `.721`.
+- **`.751`:** (`2026.07-unified.751`) **Learn vs Strong / Hevy / Fitbod citation pages** — Free /guide/mission-winning-vs-* explanation pages for AEO. CSV import live; Strong/Hevy export dialects planned. Originally #513 / `.716`.
+- **`.669`:** (`2026.07-unified.669`) **Excellence RESULT + agent stop-rule** — `excellenceGate` path policy + `check-excellence-gate` on gate/PR CI; wedge still ships while unscored.
 - **Horizon W + full-launch override (2026-08-05).** Wedge excellence still required; agents may ship rewards + full surface honesty. Fuel estimate accuracy remains.
 - **Free-first beta (~4 weeks):** LLC + EIN pending — **no Bundle UI** + **full depth unlocked**; More/rail **Pillars demoted until first workout** (F-004 / `.695`) — still no Bundle ([docs/FREE_BETA.md](docs/FREE_BETA.md)).
 - **`e2e:visual` is the one dark gate.** Its three baselines were generated **2026-07-22, before the rebrand**, and depicted the old navy/emerald dark design — black grounds, emerald CTAs, rounded corners. Verified by opening one, not inferred from dates. **Deleted**, because a known-wrong baseline is worse than none: the first Linux run would have shown four huge diffs, and the reflex there is `--update-snapshots` without looking, which launders whatever renders that day into truth. `home-reduced.png` **never had a baseline at all**, so the homepage has been silently self-approving since the case was written. **First Linux CI run after billing clears must bootstrap all four** (`npx playwright test --grep @visual --update-snapshots`, then commit the artifact) — it cannot be done on macOS, the pixels will not match.

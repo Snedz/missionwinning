@@ -7,7 +7,7 @@ import { cn } from '@/lib/utils';
 import { useActiveWorkoutPulse } from '@/hooks/useActiveWorkoutPulse';
 import { useTranslation } from 'react-i18next';
 import { railGroupsForNav } from '@/lib/navConfig';
-import { APP_BUILD_LABEL } from '@/lib/buildInfo';
+import { APP_PUBLIC_VERSION } from '@/lib/buildInfo';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 import { useWorkoutStore } from '@/store/workoutStore';
 
@@ -100,16 +100,18 @@ export function Sidebar() {
       </nav>
 
       {/*
-        The handoff's rail ends `v2026.07.89 · Guide` under a rule. It is the
-        only build label a signed-in tester can see without opening Profile,
-        which is worth having when every beta report starts "which build?".
+        Athlete-facing stamp is the public marketing version. The unified
+        `APP_BUILD_LABEL` stays on `/api/health` and Profile `Build {label}`
+        so testers can still confirm the deployed ship.
 
         `lg:` only — the rail is 72px icon-only below that, where a version
         string cannot fit and the Guide link is already in the nav.
       */}
       <div className="hidden lg:block border-t-2 border-border px-3 py-3">
         <p className="text-[10px] font-semibold uppercase tracking-[0.1em] text-muted-foreground">
-          <span className="tabular-nums">{APP_BUILD_LABEL}</span>
+          <span className="tabular-nums" data-mw-public-version={APP_PUBLIC_VERSION}>
+            {APP_PUBLIC_VERSION}
+          </span>
           {' · '}
           <Link href="/guide" className="hover:text-foreground hover:underline">
             {t('navGuide', { defaultValue: 'Guide' })}

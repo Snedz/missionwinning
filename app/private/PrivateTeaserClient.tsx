@@ -7,6 +7,10 @@ import { Check } from 'lucide-react';
 import { AppLegalFooter } from '@/components/layout/AppLegalFooter';
 import { gateEnFloor } from '@/i18n/gateEn';
 import {
+  APP_PUBLIC_PRODUCT_VERSION,
+  APP_PUBLIC_VERSION,
+} from '@/lib/buildInfo';
+import {
   grantPrivateAccessFromSession,
   navigateAfterPrivateGateUnlock,
 } from '@/lib/grantPrivateAccessFromSession';
@@ -49,7 +53,7 @@ export function PrivateTeaserClient({ initialInvite = '', initialNext = '' }: Pr
   // Signed-in (localStorage) but missing gate cookie — typical after Google OAuth.
   // Bounded + fail-open: code-only invitees must reach the access-code form.
   //
-  // `.745` — this probe used to replace the whole page with "Checking sign-in…"
+  // `.765` — this probe used to replace the whole page with "Checking sign-in…"
   // for up to 6s. With PRIVATE_MODE on, `/` redirects here, so those three words
   // were the entire server-rendered website. The probe now runs underneath the
   // poster and only announces itself in one line; on success it still hard-navs.
@@ -216,8 +220,8 @@ export function PrivateTeaserClient({ initialInvite = '', initialNext = '' }: Pr
           </span>
           <span className="gate-brandname">Mission Winning</span>
         </span>
-        <p className="gate-kicker">
-          {g('gateEyebrow')}
+        <p className="gate-kicker" data-mw-public-version={APP_PUBLIC_VERSION}>
+          {APP_PUBLIC_VERSION} · {g('gateEyebrow')}
         </p>
       </header>
       <hr className="gate-rule" />
@@ -370,7 +374,7 @@ export function PrivateTeaserClient({ initialInvite = '', initialNext = '' }: Pr
       <div className="gate-footer">
         <div className="gate-footer-inner">
           <span>
-            Mission Winning —{' '}
+            {APP_PUBLIC_PRODUCT_VERSION} —{' '}
             {g('gateFooterTagline')}
           </span>
           <AppLegalFooter className="gate-footer-links" />

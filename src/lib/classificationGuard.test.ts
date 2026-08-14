@@ -69,7 +69,12 @@ test('.gitignore forbids hermes and ops', () => {
 });
 
 test('classification + dual-repo docs exist', () => {
-  for (const p of ['docs/CLASSIFICATION.md', 'docs/DUAL_REPO.md', 'docs/contracts/INDEX.md']) {
+  for (const p of [
+    'docs/CLASSIFICATION.md',
+    'docs/DUAL_REPO.md',
+    'docs/contracts/INDEX.md',
+    'docs/contracts/HABIT.md',
+  ]) {
     assert.ok(existsSync(path.join(root, p)), `missing ${p}`);
   }
 });

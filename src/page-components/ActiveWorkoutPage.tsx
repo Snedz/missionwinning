@@ -23,8 +23,6 @@ import {
   stripSeoExerciseFromSearch,
 } from '@/lib/seoExerciseBridge';
 import { getFormGuideOrCues } from '@/lib/formGuides';
-import { SignInPrompt } from '@/components/auth/SignInPrompt';
-import { LOCAL_FIRST_COPY } from '@/lib/localFirstCopy';
 import { useIsCompact } from '@/hooks/useIsCompact';
 import { ActiveEmptyState } from '@/components/workout/ActiveEmptyState';
 import { ActiveSessionChrome } from '@/components/workout/ActiveSessionChrome';
@@ -62,6 +60,8 @@ import {
 import { patchesForApplyTargets,
   patchesForPlateWeight,
 } from '@/lib/workout/activeSetInputPatches';
+import { isBarLoadedEquipment } from '@/lib/plateCalculator';
+import { planWarmupRamp, resolveWorkingLoad } from '@/lib/workout/warmupRamp';
 import {
   buildConsoleSet,
   findNextSet,
@@ -82,20 +82,22 @@ import {
   setInputKey,
   toggleOpenIdx,
 } from '@/lib/workout/activeWorkoutHelpers';
+import { isPlusLoadExercise } from '@/lib/workout/bodyweightLoad';
 import { prefersReducedMotion } from '@/lib/motion';
+import {
+  composeDropRest,
+  planStartDrop,
+  suggestDropFromPrior,
+} from '@/lib/workout/dropSet';
 import { shouldScrollAfterRestEnds } from '@/lib/workout/restTimer';
-import { useLocaleFormat } from '@/hooks/useLocaleFormat';
-import { computeReentry } from '@/lib/reentry';
 import { resolveActiveEmptyStart } from '@/lib/workout/resolveActiveEmptyStart';
-import { getRecommendedFocus, computeReadiness } from '@/lib/score';
-import { loadCoachTodayOptional } from '@/lib/coach/loadCoachTodayOptional';
 import { track } from '@/lib/analytics';
+import type { SetKind } from '@/types';
 
 export function ActiveWorkoutPage() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const { t } = useTranslation();
-  const fmt = useLocaleFormat();
   const isCompact = useIsCompact();
   const units = useUnits();
   const unitLabel = weightUnitLabel(units);
@@ -113,10 +115,14 @@ export function ActiveWorkoutPage() {
   const addExerciseToActive = useWorkoutStore((s) => s.addExerciseToActive);
   const logSetAndAdvance = useWorkoutStore((s) => s.logSetAndAdvance);
   const rateSet = useWorkoutStore((s) => s.rateSet);
+  const rateSetRir = useWorkoutStore((s) => s.rateSetRir);
+  const rateSetTempo = useWorkoutStore((s) => s.rateSetTempo);
   const setSetKind = useWorkoutStore((s) => s.setSetKind);
+  const setSetSide = useWorkoutStore((s) => s.setSetSide);
   const toggleSupersetWithNext = useWorkoutStore((s) => s.toggleSupersetWithNext);
   const unlinkSuperset = useWorkoutStore((s) => s.unlinkSuperset);
   const addSetToExercise = useWorkoutStore((s) => s.addSetToExercise);
+  const insertWarmupRampOnExercise = useWorkoutStore((s) => s.insertWarmupRampOnExercise);
   const removeLastPlannedSet = useWorkoutStore((s) => s.removeLastPlannedSet);
   const removeExerciseFromActive = useWorkoutStore((s) => s.removeExerciseFromActive);
   const replaceExerciseInActive = useWorkoutStore((s) => s.replaceExerciseInActive);
@@ -341,6 +347,8 @@ export function ActiveWorkoutPage() {
     unitLabel,
     bodyweightLabel: t('activeSetBodyweight', { defaultValue: 'BW' }),
     resolveExerciseName: (id) => getExerciseById(id)?.name ?? id,
+    resolvePlusLoad: (id) => isPlusLoadExercise(getExerciseById(id) ?? { id }),
+    resolveBarLoaded: (id) => isBarLoadedEquipment(getExerciseById(id)?.equipment),
     resolveInput: getSetInput,
     translateReason: (key, defaultValue) => t(key, { defaultValue }),
   });
@@ -375,15 +383,19 @@ export function ActiveWorkoutPage() {
       useWorkoutStore.getState().activeWorkout?.exercises ??
       activeWorkout?.exercises ??
       [];
-    const rest = planLogSetRest({
-      exercisesAfterLog: updatedExercises,
-      exIdx,
-      setIdx,
-      advanceNext: next,
-      exerciseName: exercise?.name,
-    });
+    const rest = composeDropRest(
+      planLogSetRest({
+        exercisesAfterLog: updatedExercises,
+        exIdx,
+        setIdx,
+        advanceNext: next,
+        exerciseName: exercise?.name,
+        exerciseId,
+      }),
+      setKind
+    );
     if (rest.takeRest) {
-      startRestTimer(rest.restSeconds);
+      startRestTimer(rest.restSeconds, exerciseId);
     }
 
     // Honor = inline brass PR chip on the set row (Design Orchestration D0).
@@ -392,6 +404,31 @@ export function ActiveWorkoutPage() {
       navigator.vibrate([...haptic]);
     }
     // Routine set feedback = row completion + rest timer (no toast spam).
+  };
+
+  const applyDropDial = (exIdx: number, setIdx: number, reps: number, weight: number) => {
+    const key = setInputKey(exIdx, setIdx);
+    setSetInputs((prev) => ({ ...prev, [key]: { reps, weight } }));
+  };
+
+  const handleStartDrop = (exIdx: number) => {
+    const ex = activeWorkout?.exercises[exIdx];
+    if (!ex) return;
+    const plan = planStartDrop(ex.sets, units);
+    if (!plan) return;
+    if (plan.addSet) addSetToExercise(exIdx);
+    setSetKind(exIdx, plan.targetSetIdx, 'drop');
+    applyDropDial(exIdx, plan.targetSetIdx, plan.reps, plan.weight);
+    stopRestTimer();
+  };
+
+  const handleSetKindChange = (exIdx: number, setIdx: number, kind: SetKind) => {
+    setSetKind(exIdx, setIdx, kind);
+    if (kind !== 'drop') return;
+    const ex = activeWorkout?.exercises[exIdx];
+    if (!ex) return;
+    const prefill = suggestDropFromPrior(ex.sets, setIdx, units);
+    if (prefill) applyDropDial(exIdx, setIdx, prefill.reps, prefill.weight);
   };
 
   const handleRepeatLast = (exIdx: number) => {
@@ -510,31 +547,17 @@ export function ActiveWorkoutPage() {
     router.push(activePostSessionPath('history'));
   };
 
-  const handleEmptyStart = async () => {
+  const handleEmptyStart = () => {
     /*
-     * Free-beta excellence: Train tab Start should not dump a returning athlete
-     * into a blank board after a gap. Seed Just Go (coach day when present) and
-     * apply re-entry dose — same rules as Today's primary CTA. Cold devices still
-     * get freestyle empty.
+     * Strong/Hevy empty start: copy the last completed session when one exists.
+     * Cold devices stay freestyle empty. Do not seed Just Go or Coach here —
+     * Train is the logger; rest stays off until a set is logged.
      */
-    const equipment = readRaw(STORAGE_KEYS.equipment) || 'bodyweight';
-    const readiness = computeReadiness(workoutHistory);
-    const focus = getRecommendedFocus(readiness);
-    const coachToday = await loadCoachTodayOptional();
-    const start = resolveActiveEmptyStart({
-      history: workoutHistory,
-      units,
-      equipment,
-      focus,
-      readiness,
-      coachToday,
-    });
-    if (start.kind === 'just_go') {
+    const start = resolveActiveEmptyStart(workoutHistory);
+    if (start.kind === 'repeat_last') {
       startWorkout(start.name, start.exercises);
-      track('just_go_started', {
-        source: start.source,
-        focus: focus.group,
-        doseScale: start.doseScale,
+      track('history_train_again', {
+        exerciseCount: start.exercises.length,
         from: 'active_empty',
       });
       return;
@@ -542,16 +565,12 @@ export function ActiveWorkoutPage() {
     startEmptyWorkout();
   };
 
-  const reentryHint = computeReentry(workoutHistory, Date.now());
-
   if (!activeWorkout) {
     return (
       <ActiveEmptyState
-        onStart={() => {
-          void handleEmptyStart();
-        }}
+        onStart={handleEmptyStart}
         hydrated={hasHydrated}
-        reentryDoseScale={reentryHint.show ? reentryHint.doseScale : undefined}
+        hasLastSession={resolveActiveEmptyStart(workoutHistory).kind === 'repeat_last'}
         victoryOpen={victoryOpen}
         victorySummary={victorySummary}
         onVictoryOpenChange={setVictoryOpen}
@@ -612,7 +631,6 @@ export function ActiveWorkoutPage() {
           nextSetRef={nextSetRef}
           swapOpenIdx={swapOpenIdx}
           noteOpenIdx={noteOpenIdx}
-          lang={fmt.lang}
           getSetInput={getSetInput}
           onRepeatLast={handleRepeatLast}
           onFormGuide={(id) => setFormGuideId(id)}
@@ -634,18 +652,44 @@ export function ActiveWorkoutPage() {
           }}
           onNoteChange={(exIdx, note) => setExerciseNote(exIdx, note)}
           onRate={(exIdx, setIdx, rpe) => rateSet(exIdx, setIdx, rpe)}
+          onRateRir={(exIdx, setIdx, rir) => rateSetRir(exIdx, setIdx, rir)}
+          onRateTempo={(exIdx, setIdx, tempo) => rateSetTempo(exIdx, setIdx, tempo)}
           onApplyAllTargets={(exIdx) => applyTargetsForExercise(exIdx)}
           onAddSet={(exIdx) => addSetToExercise(exIdx)}
+          onStartDrop={handleStartDrop}
           onRemoveSet={(exIdx) => {
             removeLastPlannedSet(exIdx);
             setSetInputs({});
           }}
-          onStartRest={(seconds) => startRestTimer(seconds)}
+          onStartRest={(seconds, exerciseId) => startRestTimer(seconds, exerciseId)}
           onSetInputChange={(exIdx, setIdx, field, value) =>
             updateSetInput(exIdx, setIdx, field, value)
           }
           onLogSet={(exIdx, setIdx) => handleLogSet(exIdx, setIdx)}
-          onSetKindChange={(exIdx, setIdx, kind) => setSetKind(exIdx, setIdx, kind)}
+          onSetKindChange={handleSetKindChange}
+          onSetSideChange={(exIdx, setIdx, side) => setSetSide(exIdx, setIdx, side)}
+          onOpenPlates={() => setPlateCalcOpen(true)}
+          onAddWarmups={(exIdx) => {
+            const ex = activeWorkout.exercises[exIdx];
+            if (!ex) return;
+            const live = nextSet?.exIdx === exIdx ? nextSet.setIdx : null;
+            const liveSet = live != null ? ex.sets[live] : undefined;
+            const dial =
+              live != null && liveSet
+                ? getSetInput(exIdx, live, liveSet.reps, liveSet.weight)
+                : null;
+            const load = resolveWorkingLoad({
+              sets: ex.sets,
+              liveSetIdx: live,
+              liveDial: dial,
+            });
+            if (!load) return;
+            insertWarmupRampOnExercise(
+              exIdx,
+              planWarmupRamp({ workWeight: load.weight, units })
+            );
+            setSetInputs({});
+          }}
         />
       )}
 
@@ -680,17 +724,6 @@ export function ActiveWorkoutPage() {
         toast={toast}
       />
 
-      <SignInPrompt
-        className="mt-6"
-        nextPath="/active"
-        title={t('activeSignInTitle', {
-          defaultValue: LOCAL_FIRST_COPY.activeSignInTitle,
-        })}
-        description={t('activeSignInDesc', {
-          defaultValue: LOCAL_FIRST_COPY.activeSignInDesc,
-        })}
-      />
-
       <ActiveSessionDock
         dockMode={dockMode}
         consoleSet={consoleSet}
@@ -698,18 +731,21 @@ export function ActiveWorkoutPage() {
         restTimerInitialSeconds={restTimerInitialSeconds}
         unitLabel={unitLabel}
         weightStep={step}
+        units={units}
         onSkipRest={stopRestTimer}
         onAdjustRest={adjustRestTimer}
         onPresetRest={startRestTimer}
         onRepsChange={(exIdx, setIdx, reps) => updateSetInput(exIdx, setIdx, 'reps', reps)}
         onWeightChange={(exIdx, setIdx, weight) => updateSetInput(exIdx, setIdx, 'weight', weight)}
-        onKindChange={(exIdx, setIdx, kind) => setSetKind(exIdx, setIdx, kind)}
+        onKindChange={handleSetKindChange}
+        onSideChange={(exIdx, setIdx, side) => setSetSide(exIdx, setIdx, side)}
         onLog={(exIdx, setIdx) => handleLogSet(exIdx, setIdx)}
         onApplyFieldPatches={(exIdx, setIdx, patches) => {
           for (const p of patches) {
             updateSetInput(exIdx, setIdx, p.field, p.value);
           }
         }}
+        onOpenPlates={() => setPlateCalcOpen(true)}
       />
 
       <ActiveWorkoutSheets

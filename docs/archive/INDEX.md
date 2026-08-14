@@ -12,6 +12,7 @@ When adding a doc:
 
 | File | Absorbed by / note |
 |------|---------------------|
+| [log/LOG-rotate-680-for-745.md](./log/LOG-rotate-680-for-745.md) | rotated 2026-08-13 for `.765` rest timer last-rest (`.680`) |
 | [PRE_LAUNCH_PLAN.md](./PRE_LAUNCH_PLAN.md) | [LAUNCH_RUNBOOK.md](../LAUNCH_RUNBOOK.md) |
 | [UX_UNIFIED_PLAN.md](./UX_UNIFIED_PLAN.md) | Historical UX plan |
 | [LAUNCH_READY.md](./LAUNCH_READY.md) | Greened items → runbook § prep |
@@ -25,6 +26,29 @@ When adding a doc:
 
 | File | Absorbed by / note |
 |------|---------------------|
+| [log/LOG-rotate-749-for-764.md](./log/LOG-rotate-749-for-764.md) | rotated 2026-08-13 for `.764` Free plate math + warmup on the Train set row (`.749`) |
+| [log/LOG-rotate-748-for-763.md](./log/LOG-rotate-748-for-763.md) | rotated 2026-08-13 for `.763` Home gym kit on the free logger (`.748`) |
+| [log/LOG-rotate-747-for-762.md](./log/LOG-rotate-747-for-762.md) | rotated 2026-08-13 for `.762` F-017 first-set verify iterate (`.747`) |
+| [log/LOG-rotate-746-for-761.md](./log/LOG-rotate-746-for-761.md) | rotated 2026-08-13 for `.761` e1RM from logged sets (educational) (`.766`) |
+| [log/LOG-rotate-745-for-760.md](./log/LOG-rotate-745-for-760.md) | rotated 2026-08-13 for `.760` Vs last session on the set row (`.765`) |
+| [log/LOG-rotate-744-for-759.md](./log/LOG-rotate-744-for-759.md) | rotated 2026-08-13 for `.759` Last-set ghost on the Train set row (`.744`) |
+| [log/LOG-rotate-743-for-758.md](./log/LOG-rotate-743-for-758.md) | rotated 2026-08-13 for `.758` Bodyweight + load on the Train set row (`.743`) |
+| [log/LOG-rotate-714-for-757.md](./log/LOG-rotate-714-for-757.md) | rotated 2026-08-13 for `.757` Optional tempo on the set row (`.714`) |
+| [log/LOG-rotate-697-for-756.md](./log/LOG-rotate-697-for-756.md) | rotated 2026-08-13 for `.756` Optional RIR on the set row (`.697`) |
+| [log/LOG-rotate-696-for-755.md](./log/LOG-rotate-696-for-755.md) | rotated 2026-08-13 for `.755` Unilateral L/R on the set log (`.696`) |
+| [log/LOG-rotate-695-for-754.md](./log/LOG-rotate-695-for-754.md) | rotated 2026-08-13 for `.754` Drop sets on the set log (`.695`) |
+| [log/LOG-rotate-694-for-753.md](./log/LOG-rotate-694-for-753.md) | rotated 2026-08-13 for `.753` Habit week count + HABIT contract (`.694`) |
+| [log/LOG-rotate-693-for-752.md](./log/LOG-rotate-693-for-752.md) | rotated 2026-08-13 for `.752` Garage swap on the exercise row (`.693`) |
+| [log/LOG-rotate-692-for-751.md](./log/LOG-rotate-692-for-751.md) | rotated 2026-08-13 for `.751` Learn vs Strong / Hevy / Fitbod citation pages (`.692`) |
+| [log/LOG-rotate-691-for-750.md](./log/LOG-rotate-691-for-750.md) | rotated 2026-08-13 for `.750` Session history list (`.691`) |
+| [log/LOG-rotate-690-for-749.md](./log/LOG-rotate-690-for-749.md) | rotated 2026-08-13 for `.749` Supersets on the set log (`.690`) |
+| [log/LOG-rotate-689-for-748.md](./log/LOG-rotate-689-for-748.md) | rotated 2026-08-13 for `.748` Exercise notes on the set log (`.689`) |
+| [log/LOG-rotate-685-for-747.md](./log/LOG-rotate-685-for-747.md) | rotated 2026-08-13 for `.747` Repeat last session from the log (`.685`) |
+| [log/LOG-rotate-684-for-746.md](./log/LOG-rotate-684-for-746.md) | rotated 2026-08-13 for `.766` F-017 first set without an account (`.684`) |
+| [log/LOG-rotate-680-for-745.md](./log/LOG-rotate-680-for-745.md) | rotated 2026-08-13 for `.765` rest timer last-rest (`.680`) |
+| [log/LOG-rotate-679-for-744.md](./log/LOG-rotate-679-for-744.md) | rotated 2026-08-13 for `.744` Dependabot security batch (`.679`) |
+| [log/LOG-rotate-670-for-743.md](./log/LOG-rotate-670-for-743.md) | rotated 2026-08-13 for `.743` Cursor-local CI unblock (`.670`) |
+| [log/LOG-rotate-669-for-714.md](./log/LOG-rotate-669-for-714.md) | rotated 2026-08-13 for `.714` public GitHub Beta 0.1 + mission |
 | [log/LOG-rotate-659-for-685.md](./log/LOG-rotate-659-for-685.md) | rotated 2026-08-12 for `.685` preserve next= through private gate |
 | [log/LOG-rotate-661-for-690.md](./log/LOG-rotate-661-for-690.md) | rotated 2026-08-12 for `.690` admin invite share → /private |
 | [log/LOG-rotate-662-for-691.md](./log/LOG-rotate-662-for-691.md) | rotated 2026-08-12 for `.691` Welcome Skip hard-nav private gate |
@@ -456,4 +480,6 @@ Canonical live launch path: root **[LAUNCH_RUNBOOK.md](../LAUNCH_RUNBOOK.md)** +
 | [log/LOG-rotate-660-for-689.md](./log/LOG-rotate-660-for-689.md) | rotated 2026-08-12 for `.689` Today loading skeleton md width parity (`.660` Fuel free-beta recipe empty mute) |
 | [log/LOG-rotate-656-for-679.md](./log/LOG-rotate-656-for-679.md) | rotated 2026-08-12 for `.679` Today /log coach refresh loop (`.656` Move free-beta mute) |
 | [log/LOG-rotate-657-for-680.md](./log/LOG-rotate-657-for-680.md) | rotated 2026-08-12 for `.680` guidebook Ch4 + magazine wedge CTAs |
-| [log/LOG-rotate-669-for-745.md](./log/LOG-rotate-669-for-745.md) | rotated 2026-08-13 for `.745` www Kaizen first paint (`.669` excellence RESULT + agent stop-rule) |
+| [log/LOG-rotate-750-for-766.md](./log/LOG-rotate-750-for-766.md) | rotated 2026-08-13 for `.766` Coach log citation (`.750` session history list) |
+| [log/LOG-rotate-751-for-766.md](./log/LOG-rotate-751-for-766.md) | rotated 2026-08-13 for `.766` Coach log citation (`.751` Learn vs Strong/Hevy/Fitbod) |
+| — | `.766` removed `LOG-rotate-669-for-715/743/744.md`: the `.669` entry had been archived four times over, so `logBudget`'s "no build label has two entries" was red on master. [log/LOG-rotate-669-for-714.md](./log/LOG-rotate-669-for-714.md) is the surviving copy. |

@@ -61,6 +61,7 @@
 | `/press` | `app/press/page.tsx` → `PressPage` (brand & media kit) |
 | `/guide` (Apex reader) | `GuidePublicIndexPage` — Contents sidebar + language switcher |
 | `/guide/[chapter]` | `GuidePublicChapterPage` — same shell |
+| `/guide/mission-winning-vs-strong` · `vs-hevy` · `vs-fitbod` | `LearnVsPublicPage` — AEO comparison (not magazine chapters) |
 | `/guide/print` | Magazine print/PDF source (`GuideMagazinePrintPage`) — noindex |
 | `/exercises/muscle/[group]`, `/exercises/equipment/[slug]` | Catalog hub indexes |
 | `/paths`, `/paths/[id]` | Public Learn path teasers (in-app Learn stays `/learn`) |

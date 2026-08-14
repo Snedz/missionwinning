@@ -3,6 +3,7 @@ import type { BodyScores, ReadinessInfo } from '@/lib/score';
 import type { CompletedWorkoutLog } from '@/types';
 import type { UnitsPref } from '@/lib/units';
 import type { LoadZone } from '@/lib/coach/load';
+import type { HomeGymKit } from '@/lib/workout/homeGymKit';
 
 export type { Rpe } from '@/types';
 
@@ -55,6 +56,11 @@ export interface CoachContext {
   units: UnitsPref;
   assessmentRisk?: string;
   seedId: string;
+  /**
+   * Local Home gym kit (`.733`). Filter-only — never a rank input.
+   * Null/absent keeps the three-way `equipment` profile.
+   */
+  homeGymKit?: HomeGymKit | null;
   /**
    * The athlete's acute:chronic load band (`load.ts`), computed once at context build.
    * Optional so a context without it behaves exactly as it did before `.177` — which

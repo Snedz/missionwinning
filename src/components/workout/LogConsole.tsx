@@ -15,14 +15,21 @@ import { useState } from 'react';
 import { Check, Minus, Plus } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { cn } from '@/lib/utils';
-import type { SetKind } from '@/types';
+import type { SetKind, SetSide } from '@/types';
 import { setKindDefaultLabel, setKindLabelKey } from '@/lib/workout/setKind';
+import {
+  SET_SIDES,
+  setSideDefaultLabel,
+  setSideLabelKey,
+} from '@/lib/workout/unilateral';
 import {
   activeSetOfParams,
   shouldOfferUseNext,
   shouldShowSetKindExpand,
   visibleSetKinds,
 } from '@/lib/workout/loggerSpeed';
+import type { LastSetGhost } from '@/lib/workout/lastSetGhost';
+import { LastSetGhostButton } from '@/components/workout/LastSetGhostButton';
 
 /** Progressive-overload strip under the exercise name (last · next · why). */
 export type LogConsoleOverloadCue = {
@@ -49,12 +56,24 @@ type Props = {
   weightLabel: string;
   weightStep: number;
   kind: SetKind;
+  /** True when this exercise is unilateral — L/R/Alt chips. */
+  unilateral?: boolean;
+  side?: SetSide;
+  onSideChange?: (side: SetSide | undefined) => void;
   onRepsChange: (reps: number) => void;
   onWeightChange: (weight: number) => void;
   onKindChange: (kind: SetKind) => void;
   onLog: () => void;
   /** Fill console from progressive-overload / coach next target. */
   onUseNext?: (target: { reps: number; weight: number }) => void;
+  /** Bodyweight move — weight is added load (belt/vest); 0 is skip. */
+  plusLoad?: boolean;
+  /** Last working set (not warmup). One tap accepts into the dial. */
+  lastSetGhost?: LastSetGhost | null;
+  onAcceptGhost?: (target: { reps: number; weight: number }) => void;
+  /** Live barbell plate hint (`25 + 15`). */
+  plateLine?: string | null;
+  onOpenPlates?: () => void;
 };
 
 /** 48 × 52px, 2px light rule — the ink ground needs a lighter border than paper. */
@@ -133,11 +152,19 @@ export function LogConsole({
   weightLabel,
   weightStep,
   kind,
+  unilateral = false,
+  side,
+  onSideChange,
   onRepsChange,
   onWeightChange,
   onKindChange,
   onLog,
   onUseNext,
+  plusLoad = false,
+  lastSetGhost,
+  onAcceptGhost,
+  plateLine = null,
+  onOpenPlates,
 }: Props) {
   const { t } = useTranslation();
   /** Outdoor default: Work only. Expand once to pick warmup/fail/drop. */
@@ -196,6 +223,15 @@ export function LogConsole({
         <p className="mt-1 truncate text-xs tabular-nums text-neutral-400">{legacyLine}</p>
       ) : null}
 
+      {onAcceptGhost ? (
+        <LastSetGhostButton
+          ghost={lastSetGhost}
+          dial={{ reps, weight }}
+          onAccept={onAcceptGhost}
+          tone="ink"
+        />
+      ) : null}
+
       {offerUseNext && nextTarget ? (
         <button
           type="button"
@@ -251,6 +287,32 @@ export function LogConsole({
         ) : null}
       </div>
 
+      {unilateral && onSideChange ? (
+        <div
+          className="mt-1 flex flex-wrap gap-1"
+          data-testid="log-console-set-side"
+          role="group"
+          aria-label={t('activeSetSideAria', { defaultValue: 'Set side' })}
+        >
+          {SET_SIDES.map((s) => (
+            <button
+              key={s}
+              type="button"
+              aria-pressed={side === s}
+              onClick={() => onSideChange(side === s ? undefined : s)}
+              className={cn(
+                inkChip,
+                side === s
+                  ? 'border-neutral-100 bg-neutral-100 text-neutral-900'
+                  : 'border-neutral-700 text-neutral-300 hover:bg-neutral-800'
+              )}
+            >
+              {t(setSideLabelKey(s), { defaultValue: setSideDefaultLabel(s) })}
+            </button>
+          ))}
+        </div>
+      ) : null}
+
       <div className="mt-2 flex items-end gap-2.5">
         <Field
           label={t('activeReps', { defaultValue: 'Reps' })}
@@ -267,7 +329,63 @@ export function LogConsole({
             onRepsChange(Number.isFinite(parsed) ? Math.min(999, Math.max(1, parsed)) : 1);
           }}
         />
-        {weight <= 0 ? (
+        {plusLoad ? (
+          <div className="min-w-0 flex-1" data-testid="log-console-plus-load">
+            <span className="mb-0.5 block text-[11px] font-semibold uppercase tracking-[0.1em] text-neutral-400">
+              {t('activeSetAddedLoad', { defaultValue: 'Load' })}
+            </span>
+            <div className="flex items-stretch border-2 border-neutral-700">
+              <span
+                className="flex h-[52px] shrink-0 items-center px-2 text-[15px] font-extrabold text-neutral-100"
+                data-testid="log-console-bw-chip"
+              >
+                {t('activeSetBodyweight', { defaultValue: 'BW' })}+
+              </span>
+              <button
+                type="button"
+                className={stepper}
+                aria-label={t('activeDecreaseWeight', {
+                  unit: weightLabel,
+                  defaultValue: `Decrease ${weightLabel}`,
+                })}
+                onClick={() => onWeightChange(Math.max(0, weight - weightStep))}
+              >
+                <Minus className="h-4 w-4" aria-hidden />
+              </button>
+              <input
+                type="text"
+                inputMode="decimal"
+                enterKeyHint="done"
+                value={weight}
+                aria-label={t('activeSetAddedLoad', { defaultValue: 'Load' })}
+                onFocus={(e) => e.target.select()}
+                onChange={(e) => {
+                  const cleaned = e.target.value.replace(',', '.').replace(/[^0-9.]/g, '');
+                  const parsed = parseFloat(cleaned);
+                  onWeightChange(Number.isFinite(parsed) ? Math.min(9999, Math.max(0, parsed)) : 0);
+                }}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter') {
+                    e.preventDefault();
+                    onLog();
+                  }
+                }}
+                className="h-[52px] min-w-0 flex-1 bg-foreground text-center text-[26px] font-extrabold tabular-nums text-neutral-100"
+              />
+              <button
+                type="button"
+                className={stepper}
+                aria-label={t('activeIncreaseWeight', {
+                  unit: weightLabel,
+                  defaultValue: `Increase ${weightLabel}`,
+                })}
+                onClick={() => onWeightChange(weight + weightStep)}
+              >
+                <Plus className="h-4 w-4" aria-hidden />
+              </button>
+            </div>
+          </div>
+        ) : weight <= 0 ? (
           <div className="min-w-0 flex-1">
             <span className="mb-0.5 block text-[11px] font-semibold uppercase tracking-[0.1em] text-neutral-400">
               {weightLabel}
@@ -308,6 +426,30 @@ export function LogConsole({
           />
         )}
       </div>
+
+      {plateLine && onOpenPlates ? (
+        <button
+          type="button"
+          onClick={onOpenPlates}
+          data-testid="log-console-plates"
+          className="mt-1.5 flex min-h-[44px] w-full items-center border-2 border-neutral-700 px-3 text-start text-xs tabular-nums text-neutral-300 tap-target hover:bg-neutral-800"
+        >
+          {t('activePlatePerSideLine', {
+            plates: plateLine,
+            defaultValue: `${plateLine} / side`,
+          })}
+        </button>
+      ) : plateLine ? (
+        <p
+          className="mt-1.5 text-xs tabular-nums text-neutral-400"
+          data-testid="log-console-plates"
+        >
+          {t('activePlatePerSideLine', {
+            plates: plateLine,
+            defaultValue: `${plateLine} / side`,
+          })}
+        </p>
+      ) : null}
 
       {/* Sole poster-red primary on the hero Active log path (compact dock). */}
       <button

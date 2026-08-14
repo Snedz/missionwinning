@@ -6,21 +6,23 @@
 
 import type { RefObject } from 'react';
 import { ActiveExerciseCard } from '@/components/workout/ActiveExerciseCard';
-import { getExerciseById, EXERCISES } from '@/data/exercises';
+import { getExerciseById } from '@/data/exercises';
 import { repRangeForGoal } from '@/lib/coach/progression';
-import { compareText } from '@/lib/i18n/formatLocale';
 import {
   getLastSessionSets,
   isOpenIdx,
-  resolveSwapCandidatesWhenOpen,
 } from '@/lib/workout/activeWorkoutHelpers';
+import { garageSwapsWhenOpen, listGarageSwaps } from '@/lib/workout/garageSwap';
 import { resolveActiveTableSetControls } from '@/lib/workout/activeTableSetControls';
+import { parseSetSide, shouldOfferSetSide } from '@/lib/workout/unilateral';
 import type { UnitsPref } from '@/lib/units';
 import type {
   ActiveExerciseLog,
   CompletedWorkoutLog,
   LoggedSet,
   SetKind,
+  SetSide,
+  SetTempo,
 } from '@/types';
 
 type Props = {
@@ -33,7 +35,6 @@ type Props = {
   nextSetRef: RefObject<HTMLDivElement | null>;
   swapOpenIdx: number | null;
   noteOpenIdx: number | null;
-  lang: string;
   getSetInput: (
     exIdx: number,
     setIdx: number,
@@ -50,13 +51,19 @@ type Props = {
   onSwapTo: (exIdx: number, id: string) => void;
   onNoteChange: (exIdx: number, note: string) => void;
   onRate: (exIdx: number, setIdx: number, rpe: NonNullable<LoggedSet['rpe']>) => void;
+  onRateRir: (exIdx: number, setIdx: number, rir: number | undefined) => void;
+  onRateTempo: (exIdx: number, setIdx: number, tempo: SetTempo | undefined) => void;
   onApplyAllTargets: (exIdx: number) => void;
   onAddSet: (exIdx: number) => void;
+  onStartDrop: (exIdx: number) => void;
   onRemoveSet: (exIdx: number) => void;
-  onStartRest: (seconds: number) => void;
+  onStartRest: (seconds: number, exerciseId: string) => void;
   onSetInputChange: (exIdx: number, setIdx: number, field: 'reps' | 'weight', value: number) => void;
   onLogSet: (exIdx: number, setIdx: number) => void;
   onSetKindChange: (exIdx: number, setIdx: number, kind: SetKind) => void;
+  onSetSideChange: (exIdx: number, setIdx: number, side: SetSide | undefined) => void;
+  onOpenPlates?: () => void;
+  onAddWarmups?: (exIdx: number) => void;
 };
 
 export function ActiveExerciseList({
@@ -69,7 +76,6 @@ export function ActiveExerciseList({
   nextSetRef,
   swapOpenIdx,
   noteOpenIdx,
-  lang,
   getSetInput,
   onRepeatLast,
   onFormGuide,
@@ -81,25 +87,30 @@ export function ActiveExerciseList({
   onSwapTo,
   onNoteChange,
   onRate,
+  onRateRir,
+  onRateTempo,
   onApplyAllTargets,
   onAddSet,
+  onStartDrop,
   onRemoveSet,
   onStartRest,
   onSetInputChange,
   onLogSet,
   onSetKindChange,
+  onSetSideChange,
+  onOpenPlates,
+  onAddWarmups,
 }: Props) {
   return (
     <div className="space-y-3">
       {exercises.map((exLog, exIdx) => {
         const exercise = getExerciseById(exLog.exerciseId);
         if (!exercise) return null;
-        const swapCandidates = resolveSwapCandidatesWhenOpen({
+        const swapOptions = listGarageSwaps(exercise.id);
+        const swapCandidates = garageSwapsWhenOpen({
           swapOpenIdx,
           exIdx,
-          catalog: EXERCISES,
-          current: exercise,
-          compareNames: (a, b) => compareText(a, b, lang),
+          currentId: exercise.id,
         });
         const tableControls = resolveActiveTableSetControls({
           nextSet,
@@ -124,6 +135,7 @@ export function ActiveExerciseList({
             swapOpen={isOpenIdx(swapOpenIdx, exIdx)}
             noteOpen={isOpenIdx(noteOpenIdx, exIdx)}
             swapCandidates={swapCandidates}
+            swapOptionCount={swapOptions.length}
             lastSessionSets={getLastSessionSets}
             onRepeatLast={() => onRepeatLast(exIdx)}
             onFormGuide={() => onFormGuide(exercise.id)}
@@ -135,10 +147,13 @@ export function ActiveExerciseList({
             onSwapTo={(id) => onSwapTo(exIdx, id)}
             onNoteChange={(note) => onNoteChange(exIdx, note)}
             onRate={(setIdx, rpe) => onRate(exIdx, setIdx, rpe)}
+            onRateRir={(setIdx, rir) => onRateRir(exIdx, setIdx, rir)}
+            onRateTempo={(setIdx, tempo) => onRateTempo(exIdx, setIdx, tempo)}
             onApplyAllTargets={() => onApplyAllTargets(exIdx)}
             onAddSet={() => onAddSet(exIdx)}
+            onStartDrop={() => onStartDrop(exIdx)}
             onRemoveSet={() => onRemoveSet(exIdx)}
-            onStartRest={onStartRest}
+            onStartRest={(seconds) => onStartRest(seconds, exLog.exerciseId)}
             setInput={tableControls.setInput}
             onSetInputChange={(field, value) => {
               if (!tableControls.canEdit || !nextSet) return;
@@ -150,6 +165,18 @@ export function ActiveExerciseList({
               if (!tableControls.canEdit || !nextSet) return;
               onSetKindChange(exIdx, nextSet.setIdx, kind);
             }}
+            offerSetSide={shouldOfferSetSide(exercise)}
+            activeSetSide={
+              tableControls.canEdit && nextSet
+                ? parseSetSide(exLog.sets[nextSet.setIdx]?.side)
+                : undefined
+            }
+            onSetSideChange={(side) => {
+              if (!tableControls.canEdit || !nextSet) return;
+              onSetSideChange(exIdx, nextSet.setIdx, side);
+            }}
+            onOpenPlates={onOpenPlates}
+            onAddWarmups={onAddWarmups ? () => onAddWarmups(exIdx) : undefined}
           />
         );
       })}

@@ -12,7 +12,17 @@ export type ProgramTag = "strength" | "hypertrophy" | "conditioning" | "correcti
 
 export type SetKind = 'normal' | 'warmup' | 'failure' | 'drop';
 
+/** Optional laterality on a unilateral set — not a SetKind, not a superset pair. */
+export type SetSide = 'L' | 'R' | 'alt';
+
 export type Rpe = 'easy' | 'med' | 'hard';
+
+/** Eccentric / pause / concentric seconds (e.g. 3-1-1). Optional on a logged set. */
+export interface SetTempo {
+  ecc: number;
+  pause: number;
+  con: number;
+}
 
 export type ExerciseLevel = "beginner" | "intermediate" | "advanced";
 
@@ -71,8 +81,17 @@ export interface LoggedSet {
   completed: boolean;
   kind?: SetKind;
   rpe?: Rpe;
+  /**
+   * Optional reps in reserve, integer 0–5 (`.725`). Never required; never
+   * replaces `rpe`. Empty / omitted is valid.
+   */
+  rir?: number;
+  /** Optional ecc/pause/con seconds (`.734`). Never required to log. */
+  tempo?: SetTempo;
   /** Set at log time when this beat prior e1RM — brass chip on row. */
   isPr?: boolean;
+  /** L / R / Alt — only meaningful on a unilateral exercise; omit on bilateral. */
+  side?: SetSide;
 }
 
 export interface ActiveExerciseLog {
@@ -123,7 +142,16 @@ export interface CompletedWorkoutLog {
   durationSeconds: number;
   exercises: {
     exerciseId: string;
-    sets: { reps: number; weight: number; kind?: SetKind; rpe?: 'easy' | 'med' | 'hard' }[];
+    sets: {
+      reps: number;
+      weight: number;
+      kind?: SetKind;
+      rpe?: 'easy' | 'med' | 'hard';
+      side?: SetSide;
+      /** Optional 0–5; omitted when the athlete did not rate RIR (`.756`). */
+      rir?: number;
+      tempo?: SetTempo;
+    }[];
     note?: string;
     /** Snapshot from catalog at complete time — readiness can skip EXERCISES lookup. */
     muscleGroups?: MuscleGroup[];

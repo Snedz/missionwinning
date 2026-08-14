@@ -304,6 +304,50 @@ test('the failing-and-unrun audit is stated where the next reader will look', ()
 });
 
 /**
+ * Minutes-saving skips must not silently disable the secret / SAST jobs.
+ *
+ * `.743` — while Actions quota is red, `ci.yml` skips docs-only diffs and
+ * GitHub already honors `[skip ci]` on the HEAD commit. Those two are the
+ * whole spend cut. gitleaks / aikido / CodeQL stay triggered; a paths-ignore
+ * or `if: false` on those files would be "saving minutes" by turning off the
+ * only gates that still run for free / cheap.
+ */
+test('security workflows still trigger; only the expensive job skips docs-only', () => {
+  const uncommented = (p: string) =>
+    read(p)
+      .split('\n')
+      .filter((line) => !/^\s*#/.test(line))
+      .join('\n');
+
+  const ci = uncommented('.github/workflows/ci.yml');
+  assert.match(
+    ci,
+    /paths-ignore:/,
+    'ci.yml must skip docs-only PRs — that job is npm ci + production build + Playwright'
+  );
+  assert.match(ci, /docs\/\*\*/, 'ci.yml paths-ignore must include docs/**');
+
+  const gitleaks = uncommented('.github/workflows/gitleaks.yml');
+  assert.match(gitleaks, /pull_request:/, 'gitleaks.yml must still run on pull_request');
+  assert.doesNotMatch(
+    gitleaks,
+    /paths-ignore:/,
+    'gitleaks must not inherit the docs-only skip — secrets in markdown are still secrets'
+  );
+
+  const aikido = uncommented('.github/workflows/aikido.yml');
+  assert.match(aikido, /pull_request:/, 'aikido.yml must still run on pull_request');
+  assert.match(
+    aikido,
+    /cancel-in-progress:\s*true/,
+    'aikido.yml must cancel in-progress runs — it had no concurrency and stacked minutes on every push'
+  );
+
+  const codeql = uncommented('.github/workflows/codeql.yml');
+  assert.match(codeql, /workflow_dispatch:/, 'codeql.yml must remain dispatchable — do not delete the job to save minutes');
+});
+
+/**
  * A skipped check must never be counted as a passed one.
  *
  * `.213` — `gate-smoke.ts` had **two** checks that pushed `ok: true` with a

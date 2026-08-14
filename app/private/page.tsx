@@ -21,7 +21,7 @@ export default async function PrivatePage({ searchParams }: { searchParams: Sear
     (Array.isArray(rawNextParam) ? rawNextParam[0] : rawNextParam)?.trim() || '';
 
   /*
-   * `.745` — the gate reads its query here, not in the client, so this page has
+   * `.765` — the gate reads its query here, not in the client, so this page has
    * no Suspense boundary and the poster is server-rendered.
    *
    * `useSearchParams()` in the teaser put the entire gate behind a fallback, and

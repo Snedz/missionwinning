@@ -120,6 +120,11 @@ const es: LearnStrings = {
   learnTitle: 'Aprender y dominar',
   learnSubtitle:
     '{{count}} rutas educativas gratis — fundamentos basados en evidencia e intros especialistas. Premium desbloquea programas completos.',
+  learnSubtitleOpenBeta:
+    '{{count}} rutas educativas — fundamentos primero. Guía y cursos especialistas abiertos en beta abierta.',
+  learnSubtitleBrief: 'Rutas gratis primero. Profundidad de Guía y Bundle cuando las quieras.',
+  learnSubtitleBriefOpenBeta:
+    'Rutas gratis primero. Profundidad de guía y especialistas cuando las quieras.',
   learnMarkComplete: 'Marcar completado',
   learnSampleTitle: 'Pruébalo — entrenamiento muestra gratis',
   learnSampleBtn: 'Iniciar muestra bodyweight →',

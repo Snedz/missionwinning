@@ -78,6 +78,22 @@ test('normalize is the identity on rows web already wrote', () => {
   assert.deepEqual(normalizeCloudExercises(nested), nested);
 });
 
+test('unilateral side round-trips nested and flat (.724)', () => {
+  const nested = [
+    {
+      exerciseId: 'lunges',
+      sets: [{ reps: 8, weight: 20, side: 'L' as const }, { reps: 8, weight: 20, side: 'R' as const }],
+    },
+  ];
+  assert.deepEqual(normalizeCloudExercises(nested), nested);
+  const round = groupFlatSets(flattenExercises('w', '2026-08-13T11:00:00Z', nested));
+  assert.deepEqual(round[0].sets.map((s) => s.side), ['L', 'R']);
+  const unknown = normalizeCloudExercises([
+    { exerciseId: 'lunges', sets: [{ reps: 8, weight: 20, side: 'left' }] },
+  ]);
+  assert.equal(unknown[0]?.sets[0]?.side, undefined);
+});
+
 test('normalize keeps Mission Coach prescribed stamp on nested web rows (.410)', () => {
   const nested = [
     {
@@ -161,6 +177,37 @@ test('flatten gives Android back the shape its installed builds expect', () => {
   assert.notEqual(rows[0].id, rows[1].id, 'ids must be unique');
 });
 
+test('optional RIR 0–5 survives nested and flat round-trips; missing stays missing (.725)', () => {
+  const nested = [
+    {
+      exerciseId: 'bench-press',
+      sets: [
+        { reps: 5, weight: 100, rpe: 'hard' as const, rir: 2 },
+        { reps: 5, weight: 100 },
+      ],
+    },
+  ];
+  assert.deepEqual(normalizeCloudExercises(nested), nested, 'nested identity keeps rir');
+  assert.equal(normalizeCloudExercises(nested)[0].sets[1].rir, undefined);
+
+  const dropped = normalizeCloudExercises([
+    { exerciseId: 'bench-press', sets: [{ reps: 5, weight: 100, rir: 6 }] },
+  ]);
+  assert.equal(dropped[0].sets[0].rir, undefined, 'out-of-range must not pass through');
+
+  const flatIn = [
+    flat({ exerciseId: 'bench-press', setIndex: 0, rir: 1 }),
+    flat({ exerciseId: 'bench-press', setIndex: 1 }),
+  ];
+  const grouped = groupFlatSets(flatIn);
+  assert.equal(grouped[0].sets[0].rir, 1);
+  assert.equal(grouped[0].sets[1].rir, undefined);
+
+  const rows = flattenExercises('w1', '2026-08-13T11:00:00Z', nested);
+  assert.equal(rows[0].rir, 2);
+  assert.equal(rows[1].rir, undefined, 'missing RIR stays omitted');
+});
+
 test('flatten and group are inverses over the fields Android carries', () => {
   const original = [
     {
@@ -204,4 +251,40 @@ test('notes survive both directions across the Android boundary (.184)', () => {
   // And no note means no field — absent, not empty string.
   const clean = groupFlatSets([{ exerciseId: 'squats', setIndex: 0, reps: 5, weight: 140 }]);
   assert.equal(clean[0].note, undefined);
+});
+
+test('tempo survives nested and flat round-trips; invalid is dropped (.734)', () => {
+  const nested = [
+    {
+      exerciseId: 'bench-press',
+      sets: [
+        { reps: 5, weight: 100, tempo: { ecc: 3, pause: 1, con: 1 } },
+        { reps: 5, weight: 100 },
+      ],
+    },
+  ];
+  const round = groupFlatSets(flattenExercises('w', '2026-08-13T11:00:00Z', nested));
+  assert.deepEqual(round[0].sets[0].tempo, { ecc: 3, pause: 1, con: 1 });
+  assert.equal(round[0].sets[1].tempo, undefined);
+
+  const fromFlat = groupFlatSets([
+    flat({ exerciseId: 'squats', setIndex: 0, tempo: '4-2-1' }),
+    flat({ exerciseId: 'squats', setIndex: 1, tempo: '311' }),
+    flat({ exerciseId: 'squats', setIndex: 2, tempo: '10-1-1' }),
+  ]);
+  assert.deepEqual(fromFlat[0].sets[0].tempo, { ecc: 4, pause: 2, con: 1 });
+  assert.equal(fromFlat[0].sets[1].tempo, undefined, 'bare 311 is dropped');
+  assert.equal(fromFlat[0].sets[2].tempo, undefined, 'out of range is dropped');
+
+  const fromNested = normalizeCloudExercises([
+    {
+      exerciseId: 'row',
+      sets: [
+        { reps: 8, weight: 40, tempo: '3-1-1' },
+        { reps: 8, weight: 40, tempo: { ecc: 99, pause: 1, con: 1 } },
+      ],
+    },
+  ]);
+  assert.deepEqual(fromNested[0].sets[0].tempo, { ecc: 3, pause: 1, con: 1 });
+  assert.equal(fromNested[0].sets[1].tempo, undefined);
 });

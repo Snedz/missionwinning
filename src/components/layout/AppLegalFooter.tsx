@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import { useTranslation } from 'react-i18next';
+import { APP_PUBLIC_PRODUCT_VERSION } from '@/lib/buildInfo';
 
 type AppLegalFooterProps = {
   className?: string;
@@ -74,8 +75,15 @@ export function AppLegalFooter({ className = '', showBuild = false, buildLabel }
           {t('sourceCode', { defaultValue: 'Source' })}
         </a>
       </nav>
-      {showBuild && buildLabel && (
-        <p className="text-[10px] text-muted-foreground">Build {buildLabel}</p>
+      {showBuild && (
+        <>
+          <p className="text-[10px] font-semibold uppercase tracking-[0.1em] text-muted-foreground">
+            {APP_PUBLIC_PRODUCT_VERSION}
+          </p>
+          {buildLabel && (
+            <p className="text-[10px] text-muted-foreground">Build {buildLabel}</p>
+          )}
+        </>
       )}
     </footer>
   );

@@ -1,7 +1,7 @@
 /**
  * English gate + offline copy, and the first-paint floor that reads it.
  *
- * Split out of `gateLocales.ts` (`.745`) for two reasons:
+ * Split out of `gateLocales.ts` (`.765`) for two reasons:
  *
  * 1. **One home for the words.** The gate's components used hand-typed
  *    `defaultValue:` strings, which is what SSR paints, while the pack held
@@ -25,7 +25,7 @@ export const GATE_EN: Record<string, string> = {
   gateSubtitle:
     'Free offline workout logging plus Mission Coach — weekly plans from your logs alone, no wearable. Full tools free for invited testers; the logger stays free forever.',
   /**
-   * `.746` — the mechanism, not the adjective. CN/HK respondents believed the
+   * `.766` — the mechanism, not the adjective. CN/HK respondents believed the
    * offline claim (3.97) and not the implementation; "offline" is the word an app
    * with forced sync would also use, so the poster now says what actually
    * happens. Single source: `LOCAL_FIRST_COPY.gateLocalFirst`.

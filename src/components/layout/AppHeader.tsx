@@ -73,7 +73,7 @@ export function AppHeader({
             its own when the beta window closes. Hidden under sm: at 375px
             the wordmark, chevron and auth chip already fill the row.
 
-            `.745` — and bound to the *gate* as well as the flag. This said
+            `.765` — and bound to the *gate* as well as the flag. This said
             "Open beta" on `/regions`, `/terms` and every other page that stays
             public while `PRIVATE_MODE` is on, to visitors who cannot get in
             without an access code. The landing already says "invite-only";

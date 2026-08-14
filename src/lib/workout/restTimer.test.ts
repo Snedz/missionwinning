@@ -5,14 +5,21 @@ import {
   formatRestClock,
   getSuggestedRestSeconds,
   isRestFinalSeconds,
+  LAST_REST_MAX_EXERCISES,
+  recallLastRest,
+  rememberLastRest,
+  rememberedRestAfterAdjust,
+  resolveRestForNextSet,
   resolveRestSeconds,
   restSecondsForExercise,
   resolveStartRestSeconds,
   restProgress,
   REST_FINAL_SECONDS,
+  shouldRememberRestOnSkip,
   shouldScrollAfterRestEnds,
   shouldShowRestPresets,
 } from '@/lib/workout/restTimer';
+import { __resetForTests as resetStorage } from '@/lib/storage/safeStorage';
 import { readFileSync } from 'node:fs';
 import path from 'node:path';
 
@@ -101,7 +108,73 @@ describe('restSecondsForExercise', () => {
       /restSecondsForExercise\(/,
       'page must not call restSecondsForExercise — planLogSetRest owns rest duration'
     );
-    assert.match(finish, /restSecondsForExercise\(/);
+    assert.match(finish, /resolveRestForNextSet\(/);
     assert.doesNotMatch(finish, /resolveRestSeconds\(exercise\.name\)\s*:\s*90/);
+  });
+});
+
+describe('last-rest recall (.715)', () => {
+  it('remembers last rest per exercise and leaves others on the heuristic', () => {
+    resetStorage();
+    rememberLastRest('squats', 150);
+    assert.equal(recallLastRest('squats'), 150);
+    assert.equal(recallLastRest('hammer-curl'), null);
+    assert.equal(
+      resolveRestForNextSet({ exerciseId: 'squats', exerciseName: 'Barbell Back Squat' }),
+      150
+    );
+    const curlFallback = restSecondsForExercise('Hammer Curl');
+    assert.equal(
+      resolveRestForNextSet({ exerciseId: 'hammer-curl', exerciseName: 'Hammer Curl' }),
+      curlFallback
+    );
+    assert.notEqual(curlFallback, 150);
+  });
+
+  it('skip never writes last rest — leftover seconds must not become next rest', () => {
+    resetStorage();
+    rememberLastRest('bench-press', 180);
+    assert.equal(shouldRememberRestOnSkip(), false);
+    // A skip at 12s remaining must not overwrite 180.
+    if (shouldRememberRestOnSkip()) {
+      rememberLastRest('bench-press', 12);
+    }
+    assert.equal(recallLastRest('bench-press'), 180);
+  });
+
+  it('+15s that grows the initial is remembered; mid-countdown +15s is not', () => {
+    assert.equal(
+      rememberedRestAfterAdjust({ previousInitial: 90, nextRemaining: 105 }),
+      105
+    );
+    assert.equal(
+      rememberedRestAfterAdjust({ previousInitial: 90, nextRemaining: 55 }),
+      null
+    );
+    assert.equal(
+      rememberedRestAfterAdjust({ previousInitial: 90, nextRemaining: 90 }),
+      null
+    );
+  });
+
+  it('empty id and non-finite seconds no-op; out-of-range clamps to 15–600', () => {
+    resetStorage();
+    rememberLastRest('', 90);
+    rememberLastRest('   ', 90);
+    rememberLastRest('squats', Number.NaN);
+    assert.equal(recallLastRest('squats'), null);
+    rememberLastRest('squats', 5);
+    assert.equal(recallLastRest('squats'), 15);
+    rememberLastRest('squats', 900);
+    assert.equal(recallLastRest('squats'), 600);
+  });
+
+  it('caps the last-rest map so it cannot grow without bound', () => {
+    resetStorage();
+    for (let i = 0; i < LAST_REST_MAX_EXERCISES + 5; i += 1) {
+      rememberLastRest(`ex-${i}`, 90);
+    }
+    assert.equal(recallLastRest('ex-0'), null);
+    assert.equal(recallLastRest(`ex-${LAST_REST_MAX_EXERCISES + 4}`), 90);
   });
 });

@@ -161,7 +161,7 @@ test('the citation copy describes the evidence, not the technology', () => {
 });
 
 test('the generic-AI screen fails closed on the phrasing that shipped', () => {
-  // Verbatim the value `BOOTSTRAP_EN.todayCoachInviteEyebrow` carried until `.746`.
+  // Verbatim the value `BOOTSTRAP_EN.todayCoachInviteEyebrow` carried until `.766`.
   const bad = coachCopyAvoidsGenericAi({ eyebrow: 'AI weekly plan' });
   assert.equal(bad.ok, false);
   const alsoBad = coachCopyAvoidsGenericAi({

@@ -2,15 +2,18 @@
  * Pure helpers for the active workout logger (no React / store).
  * Consumers: ActiveWorkoutPage, unit tests.
  */
-import type { CompletedWorkoutLog } from '@/types';
+import type { CompletedWorkoutLog, SetSide } from '@/types';
 import { repRangeForGoal } from '@/lib/coach/progression';
 import { suggestNextSetTarget } from '@/lib/workout/nextSetTargets';
+import { resolveLastSetGhost, type LastSetGhost } from '@/lib/workout/lastSetGhost';
 import {
   buildOverloadCue,
   formatOverloadSetLine,
   overloadReasonDefault,
   overloadReasonKey,
 } from '@/lib/workout/progressiveOverloadCue';
+import { isUnilateralExercise, parseSetSide } from '@/lib/workout/unilateral';
+import { formatPrevPlusLoadLabel, formatSetLoadLine } from '@/lib/workout/bodyweightLoad';
 
 /** First incomplete set across the active session, or null when all done. */
 export function findNextSet(exercises: { sets: { completed: boolean }[] }[]): {
@@ -55,11 +58,16 @@ export function getLastPerformanceForSet(
 export function formatPrevSetLabels(
   workoutHistory: CompletedWorkoutLog[],
   exerciseId: string,
-  setCount: number
+  setCount: number,
+  opts?: { plusLoad?: boolean; bodyweightLabel?: string }
 ): (string | null)[] {
   return Array.from({ length: setCount }, (_, setIdx) => {
     const last = getLastPerformanceForSet(workoutHistory, exerciseId, setIdx);
-    return last ? `${last.reps} × ${last.weight}` : null;
+    if (!last) return null;
+    if (opts?.plusLoad) {
+      return formatPrevPlusLoadLabel(last.reps, last.weight, opts.bodyweightLabel ?? 'BW');
+    }
+    return `${last.reps} × ${last.weight}`;
   });
 }
 
@@ -103,12 +111,13 @@ export function sessionSetStats(
  * Null when nothing earlier in this exercise is completed.
  */
 export function priorCompletedInExercise(
-  sets: { completed: boolean; reps: number; weight: number }[],
+  sets: { completed: boolean; reps: number; weight: number; kind?: string }[],
   setIdx: number
 ): { reps: number; weight: number } | null {
   for (let i = setIdx - 1; i >= 0; i--) {
     const s = sets[i];
-    if (s?.completed) return { reps: s.reps, weight: s.weight };
+    // Warmups are not the load to carry onto the next work set (compose with F-013).
+    if (s?.completed && s.kind !== 'warmup') return { reps: s.reps, weight: s.weight };
   }
   return null;
 }
@@ -167,12 +176,16 @@ export function formatLoggedSetLine(
   reps: number,
   weight: number,
   weightLabel: string,
-  bodyweightLabel = 'BW'
+  bodyweightLabel = 'BW',
+  plusLoad = false
 ): string {
-  if (!Number.isFinite(weight) || weight <= 0) {
-    return `${reps} × ${bodyweightLabel}`;
-  }
-  return `${reps} × ${weight} ${weightLabel}`;
+  return formatSetLoadLine({
+    reps,
+    weight,
+    unitLabel: weightLabel,
+    bodyweightLabel,
+    plusLoad,
+  });
 }
 
 /**
@@ -243,7 +256,14 @@ export type ConsoleSetView = {
   exerciseName: string;
   totalSets: number;
   kind: ConsoleSetKind;
+  side?: SetSide;
+  unilateral: boolean;
+  plusLoad: boolean;
+  /** True when the catalog equipment loads plates on a bar. */
+  barLoaded: boolean;
   input: { reps: number; weight: number };
+  /** Last working set (not warmup). Null on first-ever. */
+  lastSetGhost: LastSetGhost | null;
   overloadCue: {
     lastLine: string | null;
     nextLine: string | null;
@@ -266,6 +286,7 @@ export function buildConsoleSet(params: {
       weight: number;
       completed: boolean;
       kind?: ConsoleSetKind;
+      side?: SetSide;
     }[];
   }[];
   nextSet: { exIdx: number; setIdx: number } | null;
@@ -275,6 +296,8 @@ export function buildConsoleSet(params: {
   unitLabel: string;
   bodyweightLabel: string;
   resolveExerciseName: (exerciseId: string) => string;
+  resolvePlusLoad?: (exerciseId: string) => boolean;
+  resolveBarLoaded?: (exerciseId: string) => boolean;
   resolveInput: (
     exIdx: number,
     setIdx: number,
@@ -319,6 +342,7 @@ export function buildConsoleSet(params: {
     reasonKey && cue.reason
       ? params.translateReason(reasonKey, overloadReasonDefault(cue.reason) ?? '')
       : null;
+  const plusLoad = params.resolvePlusLoad?.(exLog.exerciseId) === true;
 
   return {
     exIdx: nextSet.exIdx,
@@ -326,14 +350,23 @@ export function buildConsoleSet(params: {
     exerciseName: params.resolveExerciseName(exLog.exerciseId),
     totalSets: exLog.sets.length,
     kind: set.kind ?? 'normal',
+    side: parseSetSide(set.side),
+    unilateral: isUnilateralExercise({
+      id: exLog.exerciseId,
+      name: params.resolveExerciseName(exLog.exerciseId),
+    }),
+    plusLoad,
+    barLoaded: params.resolveBarLoaded?.(exLog.exerciseId) ?? false,
     input: params.resolveInput(nextSet.exIdx, nextSet.setIdx, set.reps, set.weight),
+    lastSetGhost: resolveLastSetGhost(params.workoutHistory, exLog.exerciseId),
     overloadCue: {
       lastLine: cue.last
         ? formatOverloadSetLine(
             cue.last.reps,
             cue.last.weight,
             params.unitLabel,
-            params.bodyweightLabel
+            params.bodyweightLabel,
+            plusLoad
           )
         : null,
       nextLine: cue.next
@@ -341,7 +374,8 @@ export function buildConsoleSet(params: {
             cue.next.reps,
             cue.next.weight,
             params.unitLabel,
-            params.bodyweightLabel
+            params.bodyweightLabel,
+            plusLoad
           )
         : null,
       reasonLine: reasonLine || null,
@@ -395,7 +429,7 @@ export function resolveActiveSetDial(params: {
   prescribed?: boolean;
   defaultReps: number;
   defaultWeight: number;
-  sets: { completed: boolean; reps: number; weight: number }[];
+  sets: { completed: boolean; reps: number; weight: number; kind?: string }[];
   setIdx: number;
   lastSets: { reps: number; weight: number }[] | null;
   units: 'metric' | 'imperial';
@@ -403,6 +437,20 @@ export function resolveActiveSetDial(params: {
   repMax: number;
   lastPerformance: { reps: number; weight: number } | null;
 }): { reps: number; weight: number } {
+  const currentKind = params.sets[params.setIdx]?.kind;
+  if (currentKind === 'warmup') {
+    // Ramp weights are on the set itself — last-session suggestion must not
+    // replace a 40 kg warmup with last week's work set (freestyle).
+    return resolveSetInput({
+      manual: params.manual,
+      prescribed: false,
+      defaultReps: params.defaultReps,
+      defaultWeight: params.defaultWeight,
+      sessionCarry: null,
+      suggestion: null,
+      lastPerformance: null,
+    });
+  }
   const sessionCarry = params.prescribed
     ? null
     : priorCompletedInExercise(params.sets, params.setIdx);
@@ -721,9 +769,12 @@ export function shouldShowSupersetLinkMenuitem(
   return hasNextExercise && !alreadySupersetted;
 }
 
-/** Swap is for unstarted exercises only — logged work is not rewritten mid-session. */
-export function shouldShowExerciseSwapMenuitem(hasCompletedSet: boolean): boolean {
-  return !hasCompletedSet;
+/** Swap is for unstarted exercises that have a garage stand-in. */
+export function shouldShowExerciseSwapMenuitem(
+  hasCompletedSet: boolean,
+  optionCount = 0
+): boolean {
+  return !hasCompletedSet && optionCount > 0;
 }
 
 export type ExerciseNextTarget = { reps: number; weight: number };

@@ -18,7 +18,7 @@ import { seedLegacyOnboarding } from './helpers/journey';
 const REACH_BUDGET = 2;
 
 /**
- * `.745` — the reachability claim is now *conditional*, and it has been failing
+ * `.765` — the reachability claim is now *conditional*, and it has been failing
  * on `master` since `.695` because it was not.
  *
  * `.695` demoted the six-pillar chrome until the first logged workout:

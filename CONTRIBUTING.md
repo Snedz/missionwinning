@@ -1,6 +1,6 @@
 # Contributing to Mission Winning
 
-Thank you for helping build a healthier world. This guide is for developers and agents working in the repo.
+Thank you for helping build the free core. This guide is for **outside contributors** and for agents working in the repo.
 
 **License:** contributions are accepted under the [GNU Affero General Public License v3.0](LICENSE). By opening a PR you agree your contribution is licensed under AGPL-3.0.
 
@@ -17,7 +17,7 @@ Thank you for helping build a healthier world. This guide is for developers and 
 - Optional: Supabase project, Stripe test keys (see [docs/ENV.md](docs/ENV.md))
 
 ```bash
-git clone <repo>
+git clone https://github.com/Snedz/missionwinning.git
 cd missionwinning
 cp .env.example .env.local   # if present; else see docs/ENV.md
 npm install
@@ -47,7 +47,7 @@ Open http://localhost:3000 — unlock `/private` if `PRIVATE_MODE=true`.
 
 1. Branch from `master` with a descriptive name (`feat/coach-deload`, `fix/school-pin`).
 2. Keep diffs focused — one concern per PR when possible.
-3. Run `npm test` and `npm run build` before push.
+3. Run `npm test`, `npm run lint`, and `npm run typecheck` before push. While Actions minutes are red, that **Cursor-local green** is the merge bar — [docs/CI_LOCAL.md](docs/CI_LOCAL.md). Put `[skip vercel]` on every commit unless the founder asked for a Preview.
 4. **Never** force-push `master`.
 5. **Never** commit secrets (`.env.local`, keys, tokens).
 6. Update relevant `INDEX.md` and [docs/API.md](docs/API.md) when adding routes or domains.

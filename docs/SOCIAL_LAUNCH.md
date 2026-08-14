@@ -7,7 +7,8 @@
 **Rule:** External channels get people into I-Day → first workout. No paid ads until week-4 retention holds.  
 **Capital:** [PRELAUNCH_CAPITAL.md](PRELAUNCH_CAPITAL.md) · outreach help: [OUTREACH_VA_BRIEF.md](OUTREACH_VA_BRIEF.md)  
 **Companion:** [STRATEGY.md](STRATEGY.md) · [BETA_INVITE.md](BETA_INVITE.md) · [LAUNCH_RUNBOOK.md](LAUNCH_RUNBOOK.md) · [YC_THESIS.md](YC_THESIS.md) · beta copy: mission-ops `memory/BETA_LANGUAGE.md`  
-**Phase B paste kits (preferred):** [seo/launch/PHASE_B_DRAFT_KIT.md](../seo/launch/PHASE_B_DRAFT_KIT.md) — DO NOT PUBLISH until flip.
+**Phase B paste kits (preferred):** [seo/launch/PHASE_B_DRAFT_KIT.md](../seo/launch/PHASE_B_DRAFT_KIT.md) — DO NOT PUBLISH until flip.  
+**AEO (prep only):** [seo/aeo/AEO_PREP.md](../seo/aeo/AEO_PREP.md) — citation pages, vs-pages, Reddit=ChatGPT only. Publish after flip.
 
 **Wedge line (use everywhere):** Free forever offline logger + adaptive Mission Coach from logs (no wearable). Six pillars stay below the fold / second sentence — not the hook.
 
@@ -50,7 +51,8 @@ Set locked. Win logged.
 | Warm DMs | Highest ROI — point to Enter with code / Get notified (ops: [BETA_INVITE.md](BETA_INVITE.md)) |
 | 2 communities you already use | Value first, then builder-story **free beta** ask (product pitch stays Train+Coach — not Feed/community features) |
 | **One** vertical account | TikTok **or** Instagram Reels (same clips) — you the builder |
-| Skip | LinkedIn company page, daily Twitter, YouTube long-form, Discord server, paid boosts |
+| Skip as **citation** channels | **X** (never cited) · **LinkedIn** (noise) · tiny Reddit subs |
+| Skip | LinkedIn company page, daily Twitter/X, Discord server, paid boosts, **Reddit promo while gated** |
 
 Cadence: **≤1 public post/week** while recruiting. Prefer DMs. Framing: **free beta** (enter with code; waitlist = Get notified). Not open/public launch.
 
@@ -64,6 +66,8 @@ Free beta: enter with code at missionwinning.com — or get notified.
 ### Film once (30–60s) — shot list
 
 Record on phone, portrait, silent UI or soft click sounds. **YC demo variant:** same arc ending on Coach adapting the week.
+
+**YouTube / Shorts title = a ChatGPT prompt** (views don't matter). Examples: `Does a workout logger work offline with no account?` · `Workout coach from my logs not a watch` — not "Mission Winning demo v1."
 
 | Seconds | Screen | Say / caption beat |
 |---------|--------|--------------------|
@@ -110,6 +114,60 @@ missionwinning.com/guide
 
 ---
 
+## AEO + Reddit (prep now, post after flip)
+
+Full rules: [seo/aeo/AEO_PREP.md](../seo/aeo/AEO_PREP.md). Gated www **cannot** earn citations — PRIVATE_MODE stays until EIN.
+
+**ChatGPT ≈ Bing.** Reddit is a **ChatGPT-only** citation channel (Claude/Gemini ignore Reddit). Own site is the #2 cited source after flip — that's why vs-pages live on `/guide`, not Medium. Skip **X** and **LinkedIn** as citation channels.
+
+### Reddit rules (hard)
+
+- **Founder account only.** Real name, real product, real limits.
+- **After `PRIVATE_MODE=false` + PWA smoke.** No "we're live" while gated.
+- **Size threshold:** no tiny subs. One negative comment can stick for months.
+- **No astroturf, no pile-ons:** no fake accounts, hired comments, vote rings, "as a user" alts, brigade replies.
+- **Value first:** answer the thread. Link once if rules allow.
+- **No traction theater:** no user counts, no competitor ARR, no "ChatGPT recommended us."
+- Follow each sub's self-promo rules (`r/bodyweightfitness`, `r/homegym`, etc.).
+
+### Founder Reddit skeleton (post-flip only)
+
+```
+I built a free forever workout logger that works offline with no account, plus a coach that writes the week from your logs (no watch).
+
+Not posting user counts. If you train at home/park and hate subscription walls, I'd like the 3-minute critique: where did you get stuck?
+
+[link to /welcome — only when public]
+```
+
+Keep fresh (~3 month citation half-life): FAQ answers + vs-pages on our domain. Phrase spreadsheet after flip — first honest public page on a phrase compounds in ChatGPT memory.
+
+---
+
+## "Where did you find us?" (Get notified)
+
+**Copy SoT:** this section. **Form owner:** Beta Pilot (spec rev 2: mission-ops `memory/beta-ops/AEO_FOUND_US_SPEC.md`). Growth reviews only if this option list drifts. Do not invent analytics from last-click — **ChatGPT is undercounted ~8x.**
+
+**Question:** `Where did you find us?` (optional). Cold Get notified waitlist only — not the invitee access-code path.
+
+**Options (id → label). Do not list X or LinkedIn.**
+
+| id | Label |
+|----|-------|
+| `chatgpt` | ChatGPT / other AI chat |
+| `reddit` | Reddit |
+| `youtube` | YouTube |
+| `search` | Google / search |
+| `friend` | A friend |
+| `ph_hn` | Product Hunt / Hacker News |
+| `other` | Other (then one-line text, max 120) |
+
+**Store:** `found_us:<id>` on existing `leads.referrer` (no new column). `found_us:other:<trimmed text>` when Other. Skip the field → omit (keep first-touch UTM). Post-flip: compare this to PostHog `utm_source`.
+
+While gated: Get notified only. No "we're live." No form PR on this Growth PR.
+
+---
+
 ## Phase B — Day of public flip
 
 Post **after** `PRIVATE_MODE=false` (EIN) and PWA smoke pass. Prefer kits in [seo/launch/PHASE_B_DRAFT_KIT.md](../seo/launch/PHASE_B_DRAFT_KIT.md). Order:
@@ -117,9 +175,12 @@ Post **after** `PRIVATE_MODE=false` (EIN) and PWA smoke pass. Prefer kits in [se
 1. Beta testers (DM/email)
 2. Product Hunt
 3. Show HN
-4. The 2–3 communities from beta
-5. TikTok / Reels / Shorts (same clip)
+4. The 2–3 communities from beta + **one honest Reddit post** (sized sub, rules above)
+5. YouTube/Shorts with **prompt-shaped titles** (same clip)
 6. Waitlist email
+7. Index FAQ + vs-pages on `/guide` + `llms.txt`
+
+Skip X/LinkedIn launch blasts as citation plays.
 
 ### 1. Beta testers
 
@@ -166,6 +227,8 @@ Looking for feedback from people who actually log workouts.
 
 ### 4. Community post (Reddit / Discord — check rules)
 
+Use the AEO Reddit skeleton above. Generic fallback:
+
 ```
 I got tired of subscription trackers and wearable-only AI coaches — so I built a free forever offline logger + coach that adapts from your logs (PWA, no account to start).
 
@@ -174,7 +237,9 @@ https://www.missionwinning.com
 Looking for honest feedback — especially: where did you get confused in the first 3 minutes?
 ```
 
-### 5. Shorts / TikTok / Reels caption (launch)
+### 5. Shorts / TikTok / Reels / YouTube caption (launch)
+
+**Title (prompt-shaped):** `Does a workout logger work offline with no account?`
 
 ```
 Free workout tracker. No account. Works offline.
@@ -182,8 +247,6 @@ Free workout tracker. No account. Works offline.
 I-Day → log a set → Mission Score.
 
 Link in bio → missionwinning.com
-
-#fitness #bodyweight #homegym #pwa
 ```
 
 ### 6. Waitlist email (launch broadcast script)
@@ -228,10 +291,12 @@ limit 50;
 
 | Do | Don't |
 |----|--------|
-| One filming batch → 4–8 Shorts (logger demos + Learn tips) | Hire a social agency pre-retention |
-| Reply to every comment month 1 | Fake testimonials |
+| Prompt-titled YouTube/Shorts (views don't matter) | Chase X/LinkedIn citations |
+| Reply to every comment month 1 | Fake testimonials / Reddit pile-ons |
 | Bio → `/welcome` (Train+Coach wedge) | Meta/TikTok ads until week-4 holds |
-| SEO (`/guide`, `/exercises`, `/calculators`) as compounding channel | Five platforms, ghost four |
-| Pitch free forever logger + Coach from logs | Merchandise in-app Feed / community / everything-app / Bundle-as-hero |
+| Open `/guide` FAQ + vs-pages; refresh quarterly (~3 mo half-life) | Gate Learn; Medium splash instead of our domain |
+| Honest founder Reddit on **sized** subs | Astroturf / tiny subs / "ChatGPT says" theater |
+| "Where did you find us?" on Get notified | Trust last-click (ChatGPT undercounted ~8x) |
+| Pitch free forever logger + Coach from logs | Feed / everything-app / Bundle-as-hero / agent-only coupons |
 
 **Owned list > algorithm:** keep capturing waitlist/leads (Get notified); external social is top-of-funnel only — not a product Feed pitch.

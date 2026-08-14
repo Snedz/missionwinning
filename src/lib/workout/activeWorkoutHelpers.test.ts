@@ -147,6 +147,10 @@ describe('activeWorkoutHelpers', () => {
       '6 × 65',
     ]);
     assert.deepEqual(formatPrevSetLabels(hist, 'none', 2), [null, null]);
+    const dipHist = historyWith('pull-ups', [{ reps: 8, weight: 20 }]);
+    assert.deepEqual(formatPrevSetLabels(dipHist, 'pull-ups', 1, { plusLoad: true }), [
+      '8 × BW+20',
+    ]);
     const card = readFileSync(
       path.join(import.meta.dirname, '..', '..', 'components', 'workout', 'ActiveExerciseCard.tsx'),
       'utf8'
@@ -277,6 +281,24 @@ describe('priorCompletedInExercise', () => {
     ];
     assert.deepEqual(priorCompletedInExercise(sets, 2), { reps: 8, weight: 55 });
   });
+
+  it('skips warmup so the next work set does not inherit 40%', () => {
+    const sets = [
+      { completed: true, reps: 8, weight: 40, kind: 'warmup' },
+      { completed: true, reps: 5, weight: 60, kind: 'warmup' },
+      { completed: false, reps: 5, weight: 100, kind: 'normal' },
+    ];
+    assert.equal(priorCompletedInExercise(sets, 2), null);
+  });
+
+  it('carries the last working set across a warmup', () => {
+    const sets = [
+      { completed: true, reps: 5, weight: 100, kind: 'normal' },
+      { completed: true, reps: 8, weight: 40, kind: 'warmup' },
+      { completed: false, reps: 5, weight: 100, kind: 'normal' },
+    ];
+    assert.deepEqual(priorCompletedInExercise(sets, 2), { reps: 5, weight: 100 });
+  });
 });
 
 describe('formatLoggedSetLine', () => {
@@ -287,6 +309,11 @@ describe('formatLoggedSetLine', () => {
 
   it('keeps weighted sets with the unit label', () => {
     assert.equal(formatLoggedSetLine(5, 100, 'kg'), '5 × 100 kg');
+  });
+
+  it('prints BW + added load when plusLoad', () => {
+    assert.equal(formatLoggedSetLine(8, 20, 'kg', 'BW', true), '8 × BW + 20 kg');
+    assert.equal(formatLoggedSetLine(8, 0, 'kg', 'BW', true), '8 × BW');
   });
 });
 
@@ -395,7 +422,7 @@ describe('rankSwapCandidates', () => {
     );
   });
 
-  it('ActiveExerciseList uses resolveSwapCandidatesWhenOpen rather than an open-idx ternary', () => {
+  it('ActiveExerciseList uses garageSwapsWhenOpen rather than an open-idx ternary', () => {
     const list = readFileSync(
       path.join(import.meta.dirname, '..', '..', 'components', 'workout', 'ActiveExerciseList.tsx'),
       'utf8'
@@ -404,17 +431,17 @@ describe('rankSwapCandidates', () => {
       path.join(import.meta.dirname, '..', '..', 'page-components', 'ActiveWorkoutPage.tsx'),
       'utf8'
     );
-    assert.match(list, /resolveSwapCandidatesWhenOpen\(/);
+    assert.match(list, /garageSwapsWhenOpen\(/);
     assert.match(page, /ActiveExerciseList/);
     assert.doesNotMatch(
       list,
       /rankSwapCandidates\(/,
-      'list must call resolveSwapCandidatesWhenOpen, not rankSwapCandidates directly'
+      'list must call garageSwapsWhenOpen, not rankSwapCandidates directly'
     );
     assert.doesNotMatch(
       page,
-      /resolveSwapCandidatesWhenOpen\(/,
-      'swap ranking lives in ActiveExerciseList'
+      /garageSwapsWhenOpen\(/,
+      'garage swap listing lives in ActiveExerciseList'
     );
   });
 });
@@ -501,6 +528,94 @@ describe('buildConsoleSet', () => {
     assert.equal(view!.overloadCue.nextTarget?.weight, 100);
     assert.equal(view!.overloadCue.reasonLine, 'activeOverloadPrescribed');
     assert.equal(view!.overloadCue.nextLine, '5 × 100 kg');
+    assert.equal(view!.plusLoad, false);
+    assert.deepEqual(view!.lastSetGhost, { reps: 8, weight: 80 });
+  });
+
+  it('plus-load last line is BW + belt, not a 20 kg bar', () => {
+    const view = buildConsoleSet({
+      exercises: [
+        {
+          exerciseId: 'pull-ups',
+          sets: [{ reps: 8, weight: 0, completed: false, kind: 'normal' }],
+        },
+      ],
+      nextSet: { exIdx: 0, setIdx: 0 },
+      workoutHistory: historyWith('pull-ups', [{ reps: 8, weight: 20 }]),
+      units: 'metric',
+      goalId: 'hypertrophy',
+      unitLabel: 'kg',
+      bodyweightLabel: 'BW',
+      resolveExerciseName: () => 'Pull-ups',
+      resolvePlusLoad: () => true,
+      resolveInput: (_e, _s, r, w) => ({ reps: r, weight: w }),
+      translateReason: (key) => key,
+    });
+    assert.ok(view);
+    assert.equal(view!.plusLoad, true);
+    assert.equal(view!.overloadCue.lastLine, '8 × BW + 20 kg');
+  });
+
+  it('first-ever exercise has no last-set ghost', () => {
+    const view = buildConsoleSet({
+      exercises: [
+        {
+          exerciseId: 'bench-press',
+          sets: [{ reps: 10, weight: 0, completed: false, kind: 'normal' }],
+        },
+      ],
+      nextSet: { exIdx: 0, setIdx: 0 },
+      workoutHistory: [],
+      units: 'metric',
+      goalId: 'general',
+      unitLabel: 'kg',
+      bodyweightLabel: 'BW',
+      resolveExerciseName: () => 'Bench Press',
+      resolveInput: (_e, _s, r, w) => ({ reps: r, weight: w }),
+      translateReason: (_k, d) => d,
+    });
+    assert.ok(view);
+    assert.equal(view!.lastSetGhost, null);
+  });
+
+  it('ghost is last working set, not warmup W', () => {
+    const view = buildConsoleSet({
+      exercises: [
+        {
+          exerciseId: 'bench-press',
+          sets: [{ reps: 10, weight: 0, completed: false, kind: 'normal' }],
+        },
+      ],
+      nextSet: { exIdx: 0, setIdx: 0 },
+      workoutHistory: [
+        {
+          id: 'h1',
+          workoutName: 'Past',
+          startedAt: new Date(Date.now() - 86_400_000).toISOString(),
+          completedAt: new Date(Date.now() - 86_400_000).toISOString(),
+          durationSeconds: 3600,
+          totalVolume: 400,
+          exercises: [
+            {
+              exerciseId: 'bench-press',
+              sets: [
+                { reps: 10, weight: 40, kind: 'warmup' },
+                { reps: 5, weight: 80, kind: 'normal' },
+              ],
+            },
+          ],
+        },
+      ],
+      units: 'metric',
+      goalId: 'general',
+      unitLabel: 'kg',
+      bodyweightLabel: 'BW',
+      resolveExerciseName: () => 'Bench Press',
+      resolveInput: (_e, _s, r, w) => ({ reps: r, weight: w }),
+      translateReason: (_k, d) => d,
+    });
+    assert.ok(view);
+    assert.deepEqual(view!.lastSetGhost, { reps: 5, weight: 80 });
   });
 
   it('ActiveWorkoutPage uses buildConsoleSet rather than an inline IIFE', () => {
@@ -593,6 +708,25 @@ describe('resolveActiveSetDial', () => {
       lastPerformance: { reps: 6, weight: 65 },
     });
     assert.deepEqual(out, { reps: 8, weight: 70 });
+  });
+
+  it('a warmup set keeps the ramp weight, not last-session suggestion', () => {
+    const out = resolveActiveSetDial({
+      prescribed: false,
+      defaultReps: 8,
+      defaultWeight: 40,
+      sets: [
+        { completed: false, reps: 8, weight: 40, kind: 'warmup' },
+        { completed: false, reps: 5, weight: 100, kind: 'normal' },
+      ],
+      setIdx: 0,
+      lastSets: [{ reps: 5, weight: 100 }],
+      units: 'metric',
+      repMin: 8,
+      repMax: 12,
+      lastPerformance: { reps: 5, weight: 100 },
+    });
+    assert.deepEqual(out, { reps: 8, weight: 40 });
   });
 
   it('ActiveWorkoutPage uses resolveActiveSetDial rather than inlining carry', () => {
@@ -1442,8 +1576,9 @@ describe('resolveExerciseNextTarget / menu visibility', () => {
     assert.equal(shouldShowLoadPctChip(null, [{ weight: 60 }]), false);
     assert.equal(shouldShowSupersetLinkMenuitem(true, false), true);
     assert.equal(shouldShowSupersetLinkMenuitem(true, true), false);
-    assert.equal(shouldShowExerciseSwapMenuitem(false), true);
-    assert.equal(shouldShowExerciseSwapMenuitem(true), false);
+    assert.equal(shouldShowExerciseSwapMenuitem(false, 2), true);
+    assert.equal(shouldShowExerciseSwapMenuitem(false, 0), false);
+    assert.equal(shouldShowExerciseSwapMenuitem(true, 2), false);
   });
 
   it('ActiveExerciseCard wires the next-target and header/footer', () => {

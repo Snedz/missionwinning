@@ -1,5 +1,6 @@
 import type { Exercise } from '@/types';
 import type { EquipmentProfile } from '@/lib/coach/types';
+import { kitMatchesExercise, type HomeGymKit } from '@/lib/workout/homeGymKit';
 
 const BODYWEIGHT_EQ = new Set([
   'bodyweight',
@@ -38,7 +39,12 @@ export function mapStorageEquipment(value: string): EquipmentProfile {
   return 'full-gym';
 }
 
-export function equipmentMatches(ex: Exercise, profile: EquipmentProfile): boolean {
+export function equipmentMatches(
+  ex: Exercise,
+  profile: EquipmentProfile,
+  kit?: HomeGymKit | null
+): boolean {
+  if (kit) return kitMatchesExercise(ex, kit);
   const eq = normalizeEquipment(ex.equipment);
 
   if (FULL_GYM_ONLY.has(eq) && profile !== 'full-gym') return false;

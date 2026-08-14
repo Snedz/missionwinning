@@ -9,9 +9,9 @@ Chronological record of shipped work. Newest first.
 Archive: [2026-06 → 2026-07-20](docs/archive/log/LOG-2026-06_to_2026-07-20.md) · [2026-07-20 tail](docs/archive/log/LOG-2026-07-20_tail.md) (incl. Accelerator sprint kit rotated 2026-07-22) · [2026-07-20 → 2026-07-29 (`.179` and earlier)](docs/archive/log/LOG-2026-07-20_to_2026-07-29.md) · [2026-07-29 → 2026-07-30 (`.180`–`.199`)](docs/archive/log/LOG-2026-07-29_to_2026-07-30.md) (both rotated 2026-07-30) · [2026-07-30 → 2026-07-31 (`.200`–`.213`)](docs/archive/log/LOG-2026-07-30_to_2026-07-31.md) (rotated 2026-08-02) · [`.247` for `.263`](docs/archive/log/LOG-hero-audit-rotate-2026-08-03.md) · [`.279`](docs/archive/log/LOG-rotate-279.md) · [`.280`](docs/archive/log/LOG-rotate-280.md) · [`.281` for `.296`](docs/archive/log/LOG-rotate-296.md) · [`.282` for `.297`](docs/archive/log/LOG-rotate-297.md) · [`.283` for `.298`](docs/archive/log/LOG-rotate-298.md) · [`.284` for `.299`](docs/archive/log/LOG-rotate-299.md) · [`.285` for `.300`](docs/archive/log/LOG-rotate-300.md) · [`.286` for `.301`](docs/archive/log/LOG-rotate-301.md) · [`.287` for `.302`](docs/archive/log/LOG-rotate-302.md) · [`.288` for `.303`](docs/archive/log/LOG-rotate-303.md) · [`.289` for `.304`](docs/archive/log/LOG-rotate-304.md) · [`.290` for `.305`](docs/archive/log/LOG-rotate-305.md) · [`.291` for `.306`](docs/archive/log/LOG-rotate-306.md) · [`.292` for `.307`](docs/archive/log/LOG-rotate-307.md) · [`.293` for `.308`](docs/archive/log/LOG-rotate-308.md) · [`.294` for `.309`](docs/archive/log/LOG-rotate-309.md) · [`.295` for `.310`](docs/archive/log/LOG-rotate-310.md) · [`.296` for `.311`](docs/archive/log/LOG-rotate-311.md) · [`.297` for `.312`](docs/archive/log/LOG-rotate-312.md) · [`.298` for `.313`](docs/archive/log/LOG-rotate-313.md) · [`.299` for `.314`](docs/archive/log/LOG-rotate-314.md) · [`.300` for `.315`](docs/archive/log/LOG-rotate-315.md). · [`.301` for `.316`](docs/archive/log/LOG-rotate-316.md). · [`.302` for `.317`](docs/archive/log/LOG-rotate-317.md). · [`.303` for `.318`](docs/archive/log/LOG-rotate-318.md). · [`.304` for `.319`](docs/archive/log/LOG-rotate-319.md). · [`.305` for `.320`](docs/archive/log/LOG-rotate-320.md). · [`.306` for `.321`](docs/archive/log/LOG-rotate-321.md). · [`.307` for `.322`](docs/archive/log/LOG-rotate-322.md). · [`.308` for `.323`](docs/archive/log/LOG-rotate-323.md). · [`.309` for `.324`](docs/archive/log/LOG-rotate-324.md). · [`.310` for `.325`](docs/archive/log/LOG-rotate-325.md). · [`.311` for `.326`](docs/archive/log/LOG-rotate-326.md). · [`.312` for `.327`](docs/archive/log/LOG-rotate-327.md). · [`.313` for `.328`](docs/archive/log/LOG-rotate-328.md). · [`.314` for `.329`](docs/archive/log/LOG-rotate-329.md). · [`.315` for `.330`](docs/archive/log/LOG-rotate-330.md). · [`.316` for `.331`](docs/archive/log/LOG-rotate-331.md). · [`.317` for `.332`](docs/archive/log/LOG-rotate-332.md). · [`.318` for `.333`](docs/archive/log/LOG-rotate-333.md). · [`.319` for `.334`](docs/archive/log/LOG-rotate-334.md). · [`.320` for `.335`](docs/archive/log/LOG-rotate-335.md). · [`.321` for `.336`](docs/archive/log/LOG-rotate-336.md). · [`.322` for `.337`](docs/archive/log/LOG-rotate-337.md). · [`.323` for `.338`](docs/archive/log/LOG-rotate-338.md). · [`.324` for `.339`](docs/archive/log/LOG-rotate-339.md). · [`.325` for `.340`](docs/archive/log/LOG-rotate-340.md). · [`.326` for `.341`](docs/archive/log/LOG-rotate-341.md). · [`.327` for `.342`](docs/archive/log/LOG-rotate-342.md). · [`.328` for `.343`](docs/archive/log/LOG-rotate-343.md). · [`.329` for `.344`](docs/archive/log/LOG-rotate-344.md). · [`.330` for `.345`](docs/archive/log/LOG-rotate-345.md). · [`.331` for `.346`](docs/archive/log/LOG-rotate-346.md). · [`.332` for `.347`](docs/archive/log/LOG-rotate-347.md). · [`.333` for `.348`](docs/archive/log/LOG-rotate-348.md). · [`.334` for `.349`](docs/archive/log/LOG-rotate-349.md). · [`.335` for `.350`](docs/archive/log/LOG-rotate-350.md). · [`.336` for `.351`](docs/archive/log/LOG-rotate-351.md). · [`.337` for `.352`](docs/archive/log/LOG-rotate-352.md). · [`.338` for `.353`](docs/archive/log/LOG-rotate-353.md). · [`.339` for `.354`](docs/archive/log/LOG-rotate-354.md). · [`.340` for `.355`](docs/archive/log/LOG-rotate-355.md). · [`.341` for `.356`](docs/archive/log/LOG-rotate-356.md). · [`.342` for `.357`](docs/archive/log/LOG-rotate-357.md). · [`.343` for `.358`](docs/archive/log/LOG-rotate-358.md). · [`.344` for `.359`](docs/archive/log/LOG-rotate-359.md). · [`.345` for `.360`](docs/archive/log/LOG-rotate-360.md). · [`.346` for `.361`](docs/archive/log/LOG-rotate-361.md). · [`.347` for `.362`](docs/archive/log/LOG-rotate-362.md). · [`.348` for `.363`](docs/archive/log/LOG-rotate-363.md). · [`.349` for `.364`](docs/archive/log/LOG-rotate-364.md). · [`.350` for `.365`](docs/archive/log/LOG-rotate-365.md). · [`.351` for `.366`](docs/archive/log/LOG-rotate-366.md). · [`.352` for `.367`](docs/archive/log/LOG-rotate-367.md). · [`.353` for `.368`](docs/archive/log/LOG-rotate-368.md). · [`.354` for `.369`](docs/archive/log/LOG-rotate-369.md). · [`.355` for `.370`](docs/archive/log/LOG-rotate-370.md). · [`.356` for `.371`](docs/archive/log/LOG-rotate-371.md). · [`.357` for `.372`](docs/archive/log/LOG-rotate-372.md). · [`.358` for `.373`](docs/archive/log/LOG-rotate-373.md). · [`.359` for `.374`](docs/archive/log/LOG-rotate-374.md). · [`.360` for `.375`](docs/archive/log/LOG-rotate-375.md). · [`.361` for `.376`](docs/archive/log/LOG-rotate-376.md). · [`.362` for `.377`](docs/archive/log/LOG-rotate-377.md). · [`.363` for `.378`](docs/archive/log/LOG-rotate-378.md). · [`.364` for `.379`](docs/archive/log/LOG-rotate-379.md). · [`.365` for `.380`](docs/archive/log/LOG-rotate-380.md). · [`.366` for `.381`](docs/archive/log/LOG-rotate-381.md). · [`.367` for `.382`](docs/archive/log/LOG-rotate-382.md). · [`.368` for `.383`](docs/archive/log/LOG-rotate-383.md). · [`.369` for `.384`](docs/archive/log/LOG-rotate-384.md). · [`.370` for `.385`](docs/archive/log/LOG-rotate-385.md). · [`.371` for `.386`](docs/archive/log/LOG-rotate-386.md). · [`.372` for `.387`](docs/archive/log/LOG-rotate-387.md). · [`.373` for `.388`](docs/archive/log/LOG-rotate-388.md). · [`.374` for `.389`](docs/archive/log/LOG-rotate-389.md). · [`.375` for `.390`](docs/archive/log/LOG-rotate-390.md). · [`.376` for `.391`](docs/archive/log/LOG-rotate-391.md). · [`.377` for `.392`](docs/archive/log/LOG-rotate-392.md). · [`.378` for `.393`](docs/archive/log/LOG-rotate-393.md). · [`.379` for `.394`](docs/archive/log/LOG-rotate-394.md). · [`.380` for `.395`](docs/archive/log/LOG-rotate-395.md). · [`.381` for `.396`](docs/archive/log/LOG-rotate-396.md). · [`.382` for `.397`](docs/archive/log/LOG-rotate-397.md). · [`.383` for `.398`](docs/archive/log/LOG-rotate-398.md). · [`.384` for `.399`](docs/archive/log/LOG-rotate-399.md). · [`.385` for `.400`](docs/archive/log/LOG-rotate-400.md). · [`.386` for `.401`](docs/archive/log/LOG-rotate-401.md). · [`.387` for `.402`](docs/archive/log/LOG-rotate-402.md). · [`.388` for `.403`](docs/archive/log/LOG-rotate-403.md). · [`.389` for `.404`](docs/archive/log/LOG-rotate-404.md). · [`.390` for `.405`](docs/archive/log/LOG-rotate-405.md). · [`.391` for `.406`](docs/archive/log/LOG-rotate-406.md). · [`.392` for `.407`](docs/archive/log/LOG-rotate-407.md). · [`.393` for `.408`](docs/archive/log/LOG-rotate-408.md). · [`.394` for `.409`](docs/archive/log/LOG-rotate-409.md). · [`.395` for `.410`](docs/archive/log/LOG-rotate-410.md). · [`.396` for `.411`](docs/archive/log/LOG-rotate-411.md). · [`.397` for `.412`](docs/archive/log/LOG-rotate-412.md). · [`.398` for `.413`](docs/archive/log/LOG-rotate-413.md). · [`.399` for `.414`](docs/archive/log/LOG-rotate-414.md). · [`.400` for `.415`](docs/archive/log/LOG-rotate-415.md). · [`.401` for `.416`](docs/archive/log/LOG-rotate-416.md). · [`.402` for `.417`](docs/archive/log/LOG-rotate-417.md). · [`.403` for `.418`](docs/archive/log/LOG-rotate-418.md). · [`.404` for `.419`](docs/archive/log/LOG-rotate-419.md). · [`.405` for `.420`](docs/archive/log/LOG-rotate-420.md). · [`.406` for `.421`](docs/archive/log/LOG-rotate-421.md). · [`.407` for `.422`](docs/archive/log/LOG-rotate-422.md). · [`.408` for `.423`](docs/archive/log/LOG-rotate-423.md). · [`.409` for `.424`](docs/archive/log/LOG-rotate-424.md). · [`.410` for `.425`](docs/archive/log/LOG-rotate-425.md). · [`.411` for `.426`](docs/archive/log/LOG-rotate-426.md). · [`.412` for `.427`](docs/archive/log/LOG-rotate-427.md). · [`.413` for `.428`](docs/archive/log/LOG-rotate-428.md). · [`.414` for `.429`](docs/archive/log/LOG-rotate-429.md). · [`.415` for `.430`](docs/archive/log/LOG-rotate-430.md). · [`.416` for `.431`](docs/archive/log/LOG-rotate-431.md). · [`.417` for `.432`](docs/archive/log/LOG-rotate-432.md). · [`.418` for `.433`](docs/archive/log/LOG-rotate-433.md). · [`.419` for `.434`](docs/archive/log/LOG-rotate-434.md). · [`.420` for `.435`](docs/archive/log/LOG-rotate-435.md). · [`.421` for `.436`](docs/archive/log/LOG-rotate-436.md). · [`.422` for `.437`](docs/archive/log/LOG-rotate-437.md). · [`.423` for `.438`](docs/archive/log/LOG-rotate-438.md). · [`.424` for `.439`](docs/archive/log/LOG-rotate-439.md). · [`.425` for `.440`](docs/archive/log/LOG-rotate-440.md). · [`.426` for `.441`](docs/archive/log/LOG-rotate-441.md). · [`.427` for `.442`](docs/archive/log/LOG-rotate-442.md). · [`.428` for `.443`](docs/archive/log/LOG-rotate-443.md). · [`.429` for `.444`](docs/archive/log/LOG-rotate-444.md). · [`.430` for `.445`](docs/archive/log/LOG-rotate-445.md). · [`.431` for `.446`](docs/archive/log/LOG-rotate-446.md). · [`.432` for `.447`](docs/archive/log/LOG-rotate-447.md). · [`.433` for `.448`](docs/archive/log/LOG-rotate-448.md). · [`.434` for `.449`](docs/archive/log/LOG-rotate-449.md). · [`.435` for `.450`](docs/archive/log/LOG-rotate-450.md). · [`.436` for `.451`](docs/archive/log/LOG-rotate-451.md). · [`.437` for `.452`](docs/archive/log/LOG-rotate-452.md). · [`.438` for `.453`](docs/archive/log/LOG-rotate-453.md). · [`.439` for `.454`](docs/archive/log/LOG-rotate-454.md). · [`.440` for `.455`](docs/archive/log/LOG-rotate-455.md). · [`.441` for `.456`](docs/archive/log/LOG-rotate-456.md). · [`.442` for `.457`](docs/archive/log/LOG-rotate-457.md). · [`.443` for `.458`](docs/archive/log/LOG-rotate-458.md). · [`.444` for `.459`](docs/archive/log/LOG-rotate-459.md). · [`.445` for `.460`](docs/archive/log/LOG-rotate-460.md). · [`.446` for `.461`](docs/archive/log/LOG-rotate-461.md). · [`.447` for `.462`](docs/archive/log/LOG-rotate-462.md). · [`.448` for `.463`](docs/archive/log/LOG-rotate-463.md). · [`.449` for `.464`](docs/archive/log/LOG-rotate-464.md). · [`.450` for `.465`](docs/archive/log/LOG-rotate-465.md). · [`.451` for `.466`](docs/archive/log/LOG-rotate-466.md). · [`.452` for `.467`](docs/archive/log/LOG-rotate-467.md). · [`.453` for `.468`](docs/archive/log/LOG-rotate-468.md). · [`.454` for `.469`](docs/archive/log/LOG-rotate-469.md). · [`.455` for `.470`](docs/archive/log/LOG-rotate-470.md). · [`.456` for `.471`](docs/archive/log/LOG-rotate-471.md). · [`.457` for `.472`](docs/archive/log/LOG-rotate-472.md). · [`.458` for `.473`](docs/archive/log/LOG-rotate-473.md). · [`.459` for `.474`](docs/archive/log/LOG-rotate-474.md). · [`.460` for `.475`](docs/archive/log/LOG-rotate-475.md). · [`.461` for `.476`](docs/archive/log/LOG-rotate-476.md). · [`.462` for `.477`](docs/archive/log/LOG-rotate-477.md). · [`.463` for `.478`](docs/archive/log/LOG-rotate-478.md). · [`.464` for `.479`](docs/archive/log/LOG-rotate-479.md). · [`.465` for `.480`](docs/archive/log/LOG-rotate-480.md). · [`.466` for `.481`](docs/archive/log/LOG-rotate-481.md). · [`.467` for `.482`](docs/archive/log/LOG-rotate-482.md). · [`.468` for `.483`](docs/archive/log/LOG-rotate-483.md). · [`.469` for `.484`](docs/archive/log/LOG-rotate-484.md). · [`.470` for `.485`](docs/archive/log/LOG-rotate-485.md). · [`.471` for `.486`](docs/archive/log/LOG-rotate-486.md). · [`.472` for `.487`](docs/archive/log/LOG-rotate-487.md). · [`.473` for `.488`](docs/archive/log/LOG-rotate-488.md). · [`.474` for `.489`](docs/archive/log/LOG-rotate-489.md). · [`.475` for `.490`](docs/archive/log/LOG-rotate-490.md). · [`.476` for `.491`](docs/archive/log/LOG-rotate-491.md). · [`.477` for `.492`](docs/archive/log/LOG-rotate-492.md). · [`.478` for `.493`](docs/archive/log/LOG-rotate-493.md). · [`.479` for `.494`](docs/archive/log/LOG-rotate-494.md). · [`.480` for `.495`](docs/archive/log/LOG-rotate-495.md). · [`.481` for `.496`](docs/archive/log/LOG-rotate-496.md). · [`.482` for `.497`](docs/archive/log/LOG-rotate-497.md). · [`.483` for `.498`](docs/archive/log/LOG-rotate-498.md). · [`.484` for `.499`](docs/archive/log/LOG-rotate-499.md). · [`.485` for `.500`](docs/archive/log/LOG-rotate-500.md). · [`.486` for `.501`](docs/archive/log/LOG-rotate-501.md). · [`.487` for `.502`](docs/archive/log/LOG-rotate-502.md). · [`.488` for `.503`](docs/archive/log/LOG-rotate-503.md). · [`.490` for `.505`](docs/archive/log/LOG-rotate-505.md). · [`.491` for `.506`](docs/archive/log/LOG-rotate-506.md). · [`.579` for `.594`](docs/archive/log/LOG-rotate-594.md). · [`.580` for `.595`](docs/archive/log/LOG-rotate-595.md).
 
 
---- · [`.492` for `.507`](docs/archive/log/LOG-rotate-507.md). · [`.493` for `.508`](docs/archive/log/LOG-rotate-508.md). · [`.494` for `.509`](docs/archive/log/LOG-rotate-509.md). · [`.495` for `.510`](docs/archive/log/LOG-rotate-510.md). · [`.496` for `.511`](docs/archive/log/LOG-rotate-511.md). · [`.497` for `.512`](docs/archive/log/LOG-rotate-512.md). · [`.498` for `.513`](docs/archive/log/LOG-rotate-513.md). · [`.499` for `.514`](docs/archive/log/LOG-rotate-514.md). · [`.500` for `.515`](docs/archive/log/LOG-rotate-515.md). · [`.501` for `.516`](docs/archive/log/LOG-rotate-516.md). · [`.502` for `.517`](docs/archive/log/LOG-rotate-517.md). · [`.503` for `.518`](docs/archive/log/LOG-rotate-518.md). · [`.504` for `.519`](docs/archive/log/LOG-rotate-519.md). · [`.505` for `.520`](docs/archive/log/LOG-rotate-520.md). · [`.506` for `.521`](docs/archive/log/LOG-rotate-521.md). · [`.507` for `.522`](docs/archive/log/LOG-rotate-522.md). · [`.508` for `.523`](docs/archive/log/LOG-rotate-523.md). · [`.509` for `.524`](docs/archive/log/LOG-rotate-524.md). · [`.510` for `.525`](docs/archive/log/LOG-rotate-525.md). · [`.511` for `.526`](docs/archive/log/LOG-rotate-526.md). · [`.512` for `.527`](docs/archive/log/LOG-rotate-527.md). · [`.513` for `.528`](docs/archive/log/LOG-rotate-528.md). · [`.514` for `.529`](docs/archive/log/LOG-rotate-529.md). · [`.515` for `.530`](docs/archive/log/LOG-rotate-530.md). · [`.516` for `.531`](docs/archive/log/LOG-rotate-531.md). · [`.517` for `.532`](docs/archive/log/LOG-rotate-532.md). · [`.518` for `.533`](docs/archive/log/LOG-rotate-533.md). · [`.519` for `.534`](docs/archive/log/LOG-rotate-534.md). · [`.520` for `.535`](docs/archive/log/LOG-rotate-535.md). · [`.521` for `.536`](docs/archive/log/LOG-rotate-536.md). · [`.522` for `.537`](docs/archive/log/LOG-rotate-537.md). · [`.523` for `.538`](docs/archive/log/LOG-rotate-538.md). · [`.524` for `.539`](docs/archive/log/LOG-rotate-539.md). · [`.525` for `.540`](docs/archive/log/LOG-rotate-540.md). · [`.526` for `.541`](docs/archive/log/LOG-rotate-541.md). · [`.527` for `.542`](docs/archive/log/LOG-rotate-542.md). · [`.528` for `.543`](docs/archive/log/LOG-rotate-543.md). · [`.529` for `.544`](docs/archive/log/LOG-rotate-544.md). · [`.530` for `.545`](docs/archive/log/LOG-rotate-545.md). · [`.531` for `.546`](docs/archive/log/LOG-rotate-546.md). · [`.532` for `.547`](docs/archive/log/LOG-rotate-547.md). · [`.533` for `.548`](docs/archive/log/LOG-rotate-548.md). · [`.534` for `.549`](docs/archive/log/LOG-rotate-549.md). · [`.535` for `.550`](docs/archive/log/LOG-rotate-550.md). · [`.536` for `.551`](docs/archive/log/LOG-rotate-551.md). · [`.537` for `.552`](docs/archive/log/LOG-rotate-552.md). · [`.538` for `.553`](docs/archive/log/LOG-rotate-553.md). · [`.539` for `.554`](docs/archive/log/LOG-rotate-554.md). · [`.540` for `.555`](docs/archive/log/LOG-rotate-555.md). · [`.541` for `.556`](docs/archive/log/LOG-rotate-556.md). · [`.542` for `.557`](docs/archive/log/LOG-rotate-557.md). · [`.543` for `.558`](docs/archive/log/LOG-rotate-558.md). · [`.544` for `.559`](docs/archive/log/LOG-rotate-559.md). · [`.545` for `.560`](docs/archive/log/LOG-rotate-560.md). · [`.546` for `.561`](docs/archive/log/LOG-rotate-561.md). · [`.547` for `.562`](docs/archive/log/LOG-rotate-562.md). · [`.548` for `.563`](docs/archive/log/LOG-rotate-563.md). · [`.549` for `.564`](docs/archive/log/LOG-rotate-564.md). · [`.550` for `.565`](docs/archive/log/LOG-rotate-565.md). · [`.551` for `.566`](docs/archive/log/LOG-rotate-566.md). · [`.552` for `.567`](docs/archive/log/LOG-rotate-567.md). · [`.553` for `.568`](docs/archive/log/LOG-rotate-568.md). · [`.554` for `.569`](docs/archive/log/LOG-rotate-569.md). · [`.555` for `.570`](docs/archive/log/LOG-rotate-570.md). · [`.556` for `.571`](docs/archive/log/LOG-rotate-571.md). · [`.557` for `.572`](docs/archive/log/LOG-rotate-572.md). · [`.558` for `.573`](docs/archive/log/LOG-rotate-573.md). · [`.559` for `.574`](docs/archive/log/LOG-rotate-574.md). · [`.560` for `.575`](docs/archive/log/LOG-rotate-575.md). · [`.561` for `.576`](docs/archive/log/LOG-rotate-576.md). · [`.562` for `.577`](docs/archive/log/LOG-rotate-577.md). · [`.563` for `.578`](docs/archive/log/LOG-rotate-578.md). · [`.564` for `.579`](docs/archive/log/LOG-rotate-579.md). · [`.565` for `.580`](docs/archive/log/LOG-rotate-580.md). · [`.566` for `.581`](docs/archive/log/LOG-rotate-581.md). · [`.567` for `.582`](docs/archive/log/LOG-rotate-582.md). · [`.568` for `.583`](docs/archive/log/LOG-rotate-583.md). · [`.569` for `.584`](docs/archive/log/LOG-rotate-584.md). · [`.570` for `.585`](docs/archive/log/LOG-rotate-585.md). · [`.571` for `.586`](docs/archive/log/LOG-rotate-586.md). · [`.572` for `.587`](docs/archive/log/LOG-rotate-587.md). · [`.573` for `.588`](docs/archive/log/LOG-rotate-588.md). · [`.574` for `.589`](docs/archive/log/LOG-rotate-589.md). · [`.575` for `.590`](docs/archive/log/LOG-rotate-590.md). · [`.576` for `.591`](docs/archive/log/LOG-rotate-591.md). · [`.577` for `.592`](docs/archive/log/LOG-rotate-592.md). · [`.578` for `.593`](docs/archive/log/LOG-rotate-593.md). · [`.581` for `.596`](docs/archive/log/LOG-rotate-596.md). · [`.582` for `.597`](docs/archive/log/LOG-rotate-597.md). · [`.583` for `.598`](docs/archive/log/LOG-rotate-598.md). · [`.584` for `.599`](docs/archive/log/LOG-rotate-599.md). · [`.585` for `.600`](docs/archive/log/LOG-rotate-600.md). · [`.586` for `.601`](docs/archive/log/LOG-rotate-601.md). · [`.587` for `.602`](docs/archive/log/LOG-rotate-602.md). · [`.588` for `.603`](docs/archive/log/LOG-rotate-603.md). · [`.590` for `.606`](docs/archive/log/LOG-rotate-606.md). · [`.596` for `.612`](docs/archive/log/LOG-rotate-612.md). · [`.597` for `.613`](docs/archive/log/LOG-rotate-613.md). · [`.599` for `.614`](docs/archive/log/LOG-rotate-614.md). · [`.600` for `.615`](docs/archive/log/LOG-rotate-615.md). · [`.601` for `.616`](docs/archive/log/LOG-rotate-616.md). · [`.602` for `.617`](docs/archive/log/LOG-rotate-617.md). · [`.603` for `.618`](docs/archive/log/LOG-rotate-618.md). · [`.604` for `.619`](docs/archive/log/LOG-rotate-619.md). · [`.655` for `.670`](docs/archive/log/LOG-rotate-655-for-670.md). · [`.656` for `.679`](docs/archive/log/LOG-rotate-656-for-679.md). · [`.657` for `.680`](docs/archive/log/LOG-rotate-657-for-680.md). · [`.658` for `.684`](docs/archive/log/LOG-rotate-658-for-684.md). · [`.659` for `.685`](docs/archive/log/LOG-rotate-659-for-685.md). · [`.660` for `.689`](docs/archive/log/LOG-rotate-660-for-689.md). · [`.661` for `.690`](docs/archive/log/LOG-rotate-661-for-690.md). · [`.662` for `.691`](docs/archive/log/LOG-rotate-662-for-691.md). · [`.663` for `.692`](docs/archive/log/LOG-rotate-663-for-692.md). · [`.664` for `.693`](docs/archive/log/LOG-rotate-664-for-693.md). · [`.665` for `.694`](docs/archive/log/LOG-rotate-665-for-694.md). · [`.666` for `.695`](docs/archive/log/LOG-rotate-666-for-695.md). · [`.667` for `.696`](docs/archive/log/LOG-rotate-667-for-696.md). · [`.668` for `.697`](docs/archive/log/LOG-rotate-668-for-697.md).
+--- · [`.492` for `.507`](docs/archive/log/LOG-rotate-507.md). · [`.493` for `.508`](docs/archive/log/LOG-rotate-508.md). · [`.494` for `.509`](docs/archive/log/LOG-rotate-509.md). · [`.495` for `.510`](docs/archive/log/LOG-rotate-510.md). · [`.496` for `.511`](docs/archive/log/LOG-rotate-511.md). · [`.497` for `.512`](docs/archive/log/LOG-rotate-512.md). · [`.498` for `.513`](docs/archive/log/LOG-rotate-513.md). · [`.499` for `.514`](docs/archive/log/LOG-rotate-514.md). · [`.500` for `.515`](docs/archive/log/LOG-rotate-515.md). · [`.501` for `.516`](docs/archive/log/LOG-rotate-516.md). · [`.502` for `.517`](docs/archive/log/LOG-rotate-517.md). · [`.503` for `.518`](docs/archive/log/LOG-rotate-518.md). · [`.504` for `.519`](docs/archive/log/LOG-rotate-519.md). · [`.505` for `.520`](docs/archive/log/LOG-rotate-520.md). · [`.506` for `.521`](docs/archive/log/LOG-rotate-521.md). · [`.507` for `.522`](docs/archive/log/LOG-rotate-522.md). · [`.508` for `.523`](docs/archive/log/LOG-rotate-523.md). · [`.509` for `.524`](docs/archive/log/LOG-rotate-524.md). · [`.510` for `.525`](docs/archive/log/LOG-rotate-525.md). · [`.511` for `.526`](docs/archive/log/LOG-rotate-526.md). · [`.512` for `.527`](docs/archive/log/LOG-rotate-527.md). · [`.513` for `.528`](docs/archive/log/LOG-rotate-528.md). · [`.514` for `.529`](docs/archive/log/LOG-rotate-529.md). · [`.515` for `.530`](docs/archive/log/LOG-rotate-530.md). · [`.516` for `.531`](docs/archive/log/LOG-rotate-531.md). · [`.517` for `.532`](docs/archive/log/LOG-rotate-532.md). · [`.518` for `.533`](docs/archive/log/LOG-rotate-533.md). · [`.519` for `.534`](docs/archive/log/LOG-rotate-534.md). · [`.520` for `.535`](docs/archive/log/LOG-rotate-535.md). · [`.521` for `.536`](docs/archive/log/LOG-rotate-536.md). · [`.522` for `.537`](docs/archive/log/LOG-rotate-537.md). · [`.523` for `.538`](docs/archive/log/LOG-rotate-538.md). · [`.524` for `.539`](docs/archive/log/LOG-rotate-539.md). · [`.525` for `.540`](docs/archive/log/LOG-rotate-540.md). · [`.526` for `.541`](docs/archive/log/LOG-rotate-541.md). · [`.527` for `.542`](docs/archive/log/LOG-rotate-542.md). · [`.528` for `.543`](docs/archive/log/LOG-rotate-543.md). · [`.529` for `.544`](docs/archive/log/LOG-rotate-544.md). · [`.530` for `.545`](docs/archive/log/LOG-rotate-545.md). · [`.531` for `.546`](docs/archive/log/LOG-rotate-546.md). · [`.532` for `.547`](docs/archive/log/LOG-rotate-547.md). · [`.533` for `.548`](docs/archive/log/LOG-rotate-548.md). · [`.534` for `.549`](docs/archive/log/LOG-rotate-549.md). · [`.535` for `.550`](docs/archive/log/LOG-rotate-550.md). · [`.536` for `.551`](docs/archive/log/LOG-rotate-551.md). · [`.537` for `.552`](docs/archive/log/LOG-rotate-552.md). · [`.538` for `.553`](docs/archive/log/LOG-rotate-553.md). · [`.539` for `.554`](docs/archive/log/LOG-rotate-554.md). · [`.540` for `.555`](docs/archive/log/LOG-rotate-555.md). · [`.541` for `.556`](docs/archive/log/LOG-rotate-556.md). · [`.542` for `.557`](docs/archive/log/LOG-rotate-557.md). · [`.543` for `.558`](docs/archive/log/LOG-rotate-558.md). · [`.544` for `.559`](docs/archive/log/LOG-rotate-559.md). · [`.545` for `.560`](docs/archive/log/LOG-rotate-560.md). · [`.546` for `.561`](docs/archive/log/LOG-rotate-561.md). · [`.547` for `.562`](docs/archive/log/LOG-rotate-562.md). · [`.548` for `.563`](docs/archive/log/LOG-rotate-563.md). · [`.549` for `.564`](docs/archive/log/LOG-rotate-564.md). · [`.550` for `.565`](docs/archive/log/LOG-rotate-565.md). · [`.551` for `.566`](docs/archive/log/LOG-rotate-566.md). · [`.552` for `.567`](docs/archive/log/LOG-rotate-567.md). · [`.553` for `.568`](docs/archive/log/LOG-rotate-568.md). · [`.554` for `.569`](docs/archive/log/LOG-rotate-569.md). · [`.555` for `.570`](docs/archive/log/LOG-rotate-570.md). · [`.556` for `.571`](docs/archive/log/LOG-rotate-571.md). · [`.557` for `.572`](docs/archive/log/LOG-rotate-572.md). · [`.558` for `.573`](docs/archive/log/LOG-rotate-573.md). · [`.559` for `.574`](docs/archive/log/LOG-rotate-574.md). · [`.560` for `.575`](docs/archive/log/LOG-rotate-575.md). · [`.561` for `.576`](docs/archive/log/LOG-rotate-576.md). · [`.562` for `.577`](docs/archive/log/LOG-rotate-577.md). · [`.563` for `.578`](docs/archive/log/LOG-rotate-578.md). · [`.564` for `.579`](docs/archive/log/LOG-rotate-579.md). · [`.565` for `.580`](docs/archive/log/LOG-rotate-580.md). · [`.566` for `.581`](docs/archive/log/LOG-rotate-581.md). · [`.567` for `.582`](docs/archive/log/LOG-rotate-582.md). · [`.568` for `.583`](docs/archive/log/LOG-rotate-583.md). · [`.569` for `.584`](docs/archive/log/LOG-rotate-584.md). · [`.570` for `.585`](docs/archive/log/LOG-rotate-585.md). · [`.571` for `.586`](docs/archive/log/LOG-rotate-586.md). · [`.572` for `.587`](docs/archive/log/LOG-rotate-587.md). · [`.573` for `.588`](docs/archive/log/LOG-rotate-588.md). · [`.574` for `.589`](docs/archive/log/LOG-rotate-589.md). · [`.575` for `.590`](docs/archive/log/LOG-rotate-590.md). · [`.576` for `.591`](docs/archive/log/LOG-rotate-591.md). · [`.577` for `.592`](docs/archive/log/LOG-rotate-592.md). · [`.578` for `.593`](docs/archive/log/LOG-rotate-593.md). · [`.581` for `.596`](docs/archive/log/LOG-rotate-596.md). · [`.582` for `.597`](docs/archive/log/LOG-rotate-597.md). · [`.583` for `.598`](docs/archive/log/LOG-rotate-598.md). · [`.584` for `.599`](docs/archive/log/LOG-rotate-599.md). · [`.585` for `.600`](docs/archive/log/LOG-rotate-600.md). · [`.586` for `.601`](docs/archive/log/LOG-rotate-601.md). · [`.587` for `.602`](docs/archive/log/LOG-rotate-602.md). · [`.588` for `.603`](docs/archive/log/LOG-rotate-603.md). · [`.590` for `.606`](docs/archive/log/LOG-rotate-606.md). · [`.596` for `.612`](docs/archive/log/LOG-rotate-612.md). · [`.597` for `.613`](docs/archive/log/LOG-rotate-613.md). · [`.599` for `.614`](docs/archive/log/LOG-rotate-614.md). · [`.600` for `.615`](docs/archive/log/LOG-rotate-615.md). · [`.601` for `.616`](docs/archive/log/LOG-rotate-616.md). · [`.602` for `.617`](docs/archive/log/LOG-rotate-617.md). · [`.603` for `.618`](docs/archive/log/LOG-rotate-618.md). · [`.604` for `.619`](docs/archive/log/LOG-rotate-619.md). · [`.655` for `.670`](docs/archive/log/LOG-rotate-655-for-670.md). · [`.656` for `.679`](docs/archive/log/LOG-rotate-656-for-679.md). · [`.657` for `.680`](docs/archive/log/LOG-rotate-657-for-680.md). · [`.658` for `.684`](docs/archive/log/LOG-rotate-658-for-684.md). · [`.659` for `.685`](docs/archive/log/LOG-rotate-659-for-685.md). · [`.660` for `.689`](docs/archive/log/LOG-rotate-660-for-689.md). · [`.661` for `.690`](docs/archive/log/LOG-rotate-661-for-690.md). · [`.662` for `.691`](docs/archive/log/LOG-rotate-662-for-691.md). · [`.663` for `.692`](docs/archive/log/LOG-rotate-663-for-692.md). · [`.664` for `.693`](docs/archive/log/LOG-rotate-664-for-693.md). · [`.665` for `.694`](docs/archive/log/LOG-rotate-665-for-694.md). · [`.666` for `.695`](docs/archive/log/LOG-rotate-666-for-695.md). · [`.667` for `.696`](docs/archive/log/LOG-rotate-667-for-696.md). · [`.668` for `.697`](docs/archive/log/LOG-rotate-668-for-697.md). · [`.669` for `.714`](docs/archive/log/LOG-rotate-669-for-714.md). · [`.669` for `.743`](docs/archive/log/LOG-rotate-669-for-743.md). · [`.670` for `.743`](docs/archive/log/LOG-rotate-670-for-743.md). · [`.669` for `.744`](docs/archive/log/LOG-rotate-669-for-744.md). · [`.679` for `.744`](docs/archive/log/LOG-rotate-679-for-744.md). · [`.680` for `.745`](docs/archive/log/LOG-rotate-680-for-745.md). · [`.684` for `.746`](docs/archive/log/LOG-rotate-684-for-746.md).
 
-## 2026-08-13 — Coach cites the log; first paint names the mechanism (`.746`)
+## 2026-08-13 — Coach cites the log; first paint names the mechanism (`.766`)
 
 East Asia survey shard (mission-ops #13), taken without waiting for the other
 shards. Three P0s, all of them about **being believed** rather than being right.
@@ -45,7 +45,7 @@ evidence is the thing being complained about.
 **"AI weekly plan" was not a first-paint value that hydration corrected.** All
 three Coach-invite keys live **only** in `BOOTSTRAP_EN`, so the mount sites'
 own defaults — "Mission Coach", "Turn your logs into this week's plan" — had
-never rendered once, in any language. `.745`'s drift guard could not see it
+never rendered once, in any language. `.765`'s drift guard could not see it
 either: it compared defaults against the *packs*, and a bootstrap-only key is in
 no pack, so it was skipped as unknown. `firstPaintFloor` now layers
 `BOOTSTRAP_EN` over the packs, which is the resolution order i18next actually
@@ -92,11 +92,11 @@ documented product call on one survey shard is founder work, not an agent's — 
 it is named here instead: it is the last generic-AI string on first paint, and
 it is the label of the screen the 2.56/5 was measured about.
 
-Label `.746` (onto `.745`, same PR). Excellence-Override below.
+Label `.766` (onto `.765`, same PR). Excellence-Override below.
 
 Excellence-Override: www kaizen first-paint (RESULT unscored)
 
-## 2026-08-13 — www Kaizen: first paint, and only true claims (`.745`)
+## 2026-08-13 — www Kaizen: first paint, and only true claims (`.765`)
 
 Read the live site rather than the repo. `PRIVATE_MODE` is on, so `/` 307s to
 `/private` — **that page is www** — and the entire visible text of its
@@ -222,226 +222,226 @@ behind Vercel deployment protection (302 → `sso-api`) with no credentials on
 this VM, so the artifacts were production HTML over the wire plus a local
 `PRIVATE_MODE=true` build walked in headless Chromium at 390×844.
 
-Label `.745` (onto master `.697`). Excellence-Override below.
+Label `.765` (onto master `.697`). Excellence-Override below.
 
 Excellence-Override: www kaizen first-paint (RESULT unscored)
 
-Rotated LOG oldest → [docs/archive/log/LOG-rotate-669-for-745.md](docs/archive/log/LOG-rotate-669-for-745.md).
+Rotated LOG oldest → [docs/archive/log/LOG-rotate-669-for-714.md](docs/archive/log/LOG-rotate-669-for-714.md).
 
-## 2026-08-12 — Session-expired fail-open for mid-set Log/rest (`.697`)
+## 2026-08-13 — Free plate math + warmup on the Train set row (`.764`)
 
-Kaizen Strong acceptance on F-001: auth session expiry / sync must not block
-mid-set Log or rest. `#474` / `.696` shipped local-first copy; this closes the
-fail-open hole on Active SignInPrompt + locks the path in guards.
+Garage utility on the live Train set row. Barbell rows show **plates per
+side** (`25 + 15 / side`) when load is above the bar. **Add warmups** inserts
+a 40/60/80 ramp; set column uses **W** then 1..n. Live set number toggles
+Work ↔ Warmup. Header Plates sheet unchanged. Free forever — not Bundle bait.
 
-**Ship:** `SignInPrompt` `.catch` → `signedIn=false` on rejected `getUser`
-(expired JWT / offline). Today dashboard email + below-fold cloud load fail
-open so local pillar wins still paint. `localFirstRestGuard` asserts
-`handleLogSet` / `logSet` / `logSetAndAdvance` / `startRestTimer` never await
-auth/sync; Log set button has no disabled/online gate. Free logger ungated.
-One concern (no identity merge, no Coach force, no density rewrite).
+**Ship:** `setRowPlateLine` + `warmupRamp.ts`; compact + desktop row. Does not
+rewrite Prev, ghost, vs-last, L/R, RIR, tempo, or BW+.
 
-Label `.697` (onto master `.696` / #474). Excellence-Override below.
+Label `.764` (onto master `.763`). Originally reserved `.708` / `.705`; landed as `.764` past master `.763`.
+Excellence-Override below.
 
-Excellence-Override: MatrAIx F-001 session-expired fail-open mid-set Log/rest (RESULT unscored)
+Excellence-Override: free plate math + warmup (logger)
 
-Rotated LOG oldest → [docs/archive/log/LOG-rotate-668-for-697.md](docs/archive/log/LOG-rotate-668-for-697.md).
+Rotated LOG oldest → [docs/archive/log/LOG-rotate-749-for-764.md](docs/archive/log/LOG-rotate-749-for-764.md).
+## 2026-08-13 — Home gym kit on the free logger (`.763`)
 
-## 2026-08-12 — Local-first set-log + rest (Today / Active) (`.696`)
+Device-local Home gym kit (barbell · rack · plates · dumbbells · pull-up-bar ·
+floor) on Account. Train Just Go and Coach filter substitutions from it —
+never rank. Unset keeps the I-Day 3-profile. Explicit empty save is floor
+only ($0). I-Day seeds bodyweight/dumbbells only. Train empty Start stays
+repeat-last / blank — not Just Go. Free, no account, not Bundle bait.
 
-MatrAIx Survey N=5: 4/5 offline/cloud bounce. First-session chrome implied
-sync/cloud for core logging — Active mid-session SignInPrompt said workouts
-auto-save to the cloud; Today header heroed “Cloud sync on”; pillar-win empty
-and Welcome sign-in led with sync. Rest timer was already local; this ship locks
-that and fixes the copy.
+**Ship:** `homeGymKit.ts` + `HomeGymKitCard`; Just Go / Coach overlay.
+Identity emit only. Free logger ungated.
 
-**Ship:** `localFirstCopy.ts` EN constants + honesty guard; Active SignInPrompt
-title/desc device-first; Active empty pack aligned (“sets and rest save on this
-device”); Today status + pillar empty backup-quiet; Welcome sign-in Skip-primary
-local-first. `localFirstRestGuard` discovers rest helpers/UI and asserts no
-sync import + log-set → rest never awaits fetch/outbox. Free logger ungated.
+Label `.763` (onto master `.762`). Originally reserved `.733`; landed as `.763` past master `.762`.
+Excellence-Override below.
 
-Label `.696` (rebases onto master `.695` / #473). Excellence-Override below.
+Excellence-Override: free home-gym kit
 
-Excellence-Override: MatrAIx F-001 local-first set-log + rest (Today/Active; RESULT unscored)
+Rotated LOG oldest → [docs/archive/log/LOG-rotate-748-for-763.md](docs/archive/log/LOG-rotate-748-for-763.md).
+## 2026-08-13 — F-017 first-set verify iterate (`.762`)
 
-Rotated LOG oldest → [docs/archive/log/LOG-rotate-667-for-696.md](docs/archive/log/LOG-rotate-667-for-696.md).
+Verify + harden the #523 / `.746` first-set contract. `normalizeAppPath`
+treats nullish as `/` and strips hash so `/active#x` cannot show the chip.
+Header chip coerces `usePathname() ?? ''`. Welcome `welcomeBegin` fallback
+is **Begin** (matches EN / first-90). Extended source-scan guards: one-hop
+Train children, TAP_BUDGET 5, speech off first paint, `handleLogSet` has
+no `await` / `getUser`. Cold path was not run in a browser this session.
 
-## 2026-08-12 — Demote six-pillar chrome until first workout (`.695`)
+**Ship:** `firstSetUngated` edges + HeaderAuthChip + Welcome fallback.
+Free logger ungated. `PRIVATE_MODE` unchanged.
 
-MatrAIx N=5 / Kaizen F-004: I-Day and early Basic still painted a six-item First
-Steps wall (Fuel · Mind · Move · Learn · PAR-Q beside the first log) and the More
-sheet / desktop rail always showed the Pillars tier. That is the options-before-start
-wall ORCHESTRATION C5 (≤90s) forbids — not a missing feature.
+Label `.762` (onto master `.761`). Originally reserved `.750`; landed as `.762` past master `.761`.
+Excellence-Override below.
 
-**Ship (progressive disclosure, one concern):**
-- `getFirstSteps` — before `basic.workout`, checklist is **workout only**; session2
-  + optional pillars return after the first log (same gate as Basic Training /
-  `allBasicDone`).
-- `moreSheetTiersForNav` / `railGroupsForNav` — drop `pillars` when
-  `hasFirstWorkout: false`; MoreSheet + Sidebar pass `workoutHistory.length > 0`
-  (the signal `detectBasicMilestones` already uses). No AppLayout/shell redesign,
-  no landing rewrite, no new pillar chrome.
-- **Hevy acceptance:** I-Day finish lands on **Today (`/log`)** with one
-  JourneyHero Start (no auto-started Active dump). Resume `/active` only when
-  `hasLoggedWork`. first-90 / hero-flows updated (Still ≤6 taps).
-- Guards: `firstSteps.test.ts` + `moreSheetTiers.test.ts` + `pillarChromeGate.test.ts`
-  (pure demotion + wiring + Welcome→`/log` source-scan).
+Excellence-Override: F-017 first-set verify iterate
 
-Label `.695` (rebases onto master `.694` / #475 F-003). Excellence-Override below.
+Rotated LOG oldest → [docs/archive/log/LOG-rotate-747-for-762.md](docs/archive/log/LOG-rotate-747-for-762.md).
+## 2026-08-13 — e1RM from logged sets (educational) (`.761`)
 
-Excellence-Override: demote six-pillar until first workout (F-004 C5≤90s)
+After a working set is saved, the Active exercise row shows an **Epley**
+estimated 1RM from that session's countable sets. Guests — local sets, no
+account. Warmup W and load-0 skip do not feed the formula. Hideable on-device.
+Copy names the formula and says it is an estimate, not a tested max. No
+"test your 1RM" CTA. Field test / hard-session stay in #505 / #519.
 
-Rotated LOG oldest → [docs/archive/log/LOG-rotate-666-for-695.md](docs/archive/log/LOG-rotate-666-for-695.md).
+**Ship:** `sessionE1rmFromSets` + `epley1rm`; line on `ActiveExerciseHeader`;
+overflow hide/show (`mw_show_session_e1rm`). Free logger ungated. One concern.
 
-## 2026-08-12 — Active set-table density for one-thumb log (`.694`)
+Label `.761` (onto master `.760`). Originally reserved `.739`; landed as `.761` past master `.760`.
+Excellence-Override below.
 
-Kaizen F-003 (MatrAIx N=5): Strong/Hevy-feel density on Active set logging —
-metric-first rows, premium ink Field manual console, one-thumb Log set. Not a
-timing claim vs Strong.
+Excellence-Override: e1RM estimate
 
-**Ship:**
-- `SetLogRow` — **PREVIOUS as set-row anchor** (`prevLabel` / `set-row-prev`) +
-  this-session metric (no “In the console” prose); denser 44px rows; no filled red.
-- `SetLogTable` — Prev column strengthened (`data-prev-anchor`); sole poster-red
-  inline Log set at md+.
-- `LogConsole` — denser ink dock; kind + Use next stay ink/outline (no
-  `bg-accent-400`); sole `primary-action` Log set (52px) in the thumb zone.
-- `RestTimerBar` — **ambient running rest** (`data-rest-running`, ticking clock,
-  depleting ambient fill + meters); Skip accent only in final ≤10s. Empty Active
-  already mirrors #450 poster dock — untouched.
+Rotated LOG oldest → [docs/archive/log/LOG-rotate-746-for-761.md](docs/archive/log/LOG-rotate-746-for-761.md).
+## 2026-08-13 — Vs last session on the set row (`.760`)
 
-Guards: `setTableDensity694.test.ts` + existing loggerSpeed / loop kaizen.
-Label `.694`.
+After a **working** set saves, a tiny token shows vs last session: `+2.5 kg`,
+`+1 rep`, or **same**. First-ever and warmups stay blank. Independent of Prev
+and last-set ghost prefill. Guests use local history.
 
-Excellence-Override: Active set-table density for Strong-migrant one-thumb log (F-003); unscored Horizon
+**Ship:** `vsLastSet.ts` working-set index + delta; compact + desktop row token.
+Offline, no account.
 
-Rotated LOG oldest → [docs/archive/log/LOG-rotate-665-for-694.md](docs/archive/log/LOG-rotate-665-for-694.md).
+Label `.760` (onto master `.759`). Originally reserved `.741`; landed as `.760` past master `.759`.
+Excellence-Override below.
 
+Excellence-Override: vs-last on the set row
 
-## 2026-08-12 — Coach log-cited why-this-week / adapt rationale (`.693`)
+Rotated LOG oldest → [docs/archive/log/LOG-rotate-745-for-760.md](docs/archive/log/LOG-rotate-745-for-760.md).
+## 2026-08-13 — Last-set ghost on the Train set row (`.759`)
 
-Athletes could see that Coach adapted, but not inspect **why** in a structured way
-grounded in logs — Alpha Progression’s inspectability edge. Existing adapt beats
-were one prose blob; generate weeks had dose but no input → rule → effect story.
+When this exercise has been worked before, the live row can show a **ghost** of
+the last **working** set (not warmup W): weight × reps. One tap accepts it into
+the dial. First-ever stays empty. Does not auto-log or start rest.
 
-**Ship:** pure `weekRationale.ts` builds one shame-free rationale from signals the
-adapt/generate path already computes (missed days, readiness swaps, logged done,
-dominant progression `whyKey`, load-band hold, schedule/gear). Surfaces on
-`CoachAdaptBanner` (full: three lines; compact Today: one line) and always on the
-Coach week after generate via `showWeekRationale` + `ctx.history` / `loadZone`
-hints. No new chat widgets; free logger untouched.
+**Ship:** `lastSetGhost.ts`; compact + desktop `LastSetGhostButton` (outline,
+never poster red). Reuses `patchesForUseNext`. Offline, no account.
 
-Guards: unit coverage for each story kind + wiring on banner/page; copy honesty
-extended. Label `.693`.
+Label `.759` (onto master `.758`). Originally reserved `.738`; landed as `.759` past master `.758`.
+Excellence-Override below.
 
-Excellence-Override: Coach log-cited why-this-week / adapt rationale (W1 inspectability; RESULT unscored)
+Excellence-Override: last-set ghost
 
-Rotated LOG oldest → [docs/archive/log/LOG-rotate-664-for-693.md](docs/archive/log/LOG-rotate-664-for-693.md).
+Rotated LOG oldest → [docs/archive/log/LOG-rotate-744-for-759.md](docs/archive/log/LOG-rotate-744-for-759.md).
+## 2026-08-13 — Bodyweight + load on the Train set row (`.758`)
 
-## 2026-08-12 — Production smoke ratchet: legal floors + /compare redirect (`.692`)
+On pull-ups, push-ups, and dips the load field is **extra weight** (belt/vest),
+not a bar. The row reads `8 × BW` or `8 × BW + 20 kg`. Leave load at **0** to
+log bodyweight only. Coach volume counts `reps × added load` on working sets;
+a warmup belt still does not count.
 
-Tip already had English floors for privacy/terms (`.653`) and permanent
-`/compare` → `/welcome` (`.668`); live Production is still on `.618` and fails
-all three smokes (raw `infoPrivacy*` / `infoTerms*` paint; Hevy/Strong hub at
-200). One-concern optional smoke ratchet so tip cannot regress — does **not**
-redo the product fixes:
+**Ship:** `bodyweightLoad.ts` detect + format; compact `BW+` stepper; desktop
+table prefix. No new set field. Free logger. Offline, no account.
 
-- `productionSmokeRatchet.test.ts` — discover Privacy/Terms keys → `infoEnFloor`
-  ≠ raw key; parse `next.config.js` redirects (`/compare`, `/compare/:path*`,
-  permanent → `/welcome`); pages must wire `infoEnFloor` as `defaultValue`.
-- `gate-smoke` — curl `/compare` + `/compare/forge` redirect; `/privacy` +
-  `/terms` refuse HTML text-node raw keys (`>infoPrivacy…<`).
-- Hero e2e covers hub index + story path.
+Label `.758` (onto master `.757`). Originally reserved `.735`; landed as `.758` past master `.757`.
+Excellence-Override below.
 
-Verified: 2 mutants killed (drop `/compare` rule; floor Overview to its key);
-gate-smoke against www fails the four new checks on `.618` as expected.
-Label `.692` (rebases onto tip `.691` after #453/#462).
+Excellence-Override: bodyweight+load on the set row
 
-Rotated LOG oldest → [docs/archive/log/LOG-rotate-663-for-692.md](docs/archive/log/LOG-rotate-663-for-692.md).
+Rotated LOG oldest → [docs/archive/log/LOG-rotate-743-for-758.md](docs/archive/log/LOG-rotate-743-for-758.md).
+## 2026-08-13 — Optional tempo on the set row (`.757`)
 
-## 2026-08-12 — Welcome Skip must not soft-bypass private gate (`.691`)
+Optional **ecc/pause/con** (`3-1-1`) on a completed set. Empty is valid.
+Never required. Never blocks Log set. Last tempo for that exercise prefills
+the next logged set. Does not feed coach load or rewards.
 
-**Beta Field repro (live www `.618`, pre-fix):** `/welcome` → Begin → Continue → Skip — start training → lands `/active`; `/log` and `/coach` then render client-side; `curl -I /active` still 307→`/private`; localStorage holds `mw_journey_state`, **no Set-Cookie**. Root pattern: soft `router.push` after `completeIDay` bypasses `proxy.ts`.
+**Ship:** `tempo.ts` parse + last-tempo recall; `rateSetTempo` after log;
+compact `SetTempoField` on completed rows beside RPE/RIR. Sync keeps `side`,
+`rir`, and `tempo`. Offline, no account.
 
-**Fix:** `navigateAfterPrivateGateUnlock()` — when `NEXT_PUBLIC_PRIVATE_GATE=true`, gated destinations use `window.location.assign` so `/private?next=…` is required without a cookie; gate off keeps `router.push`. Source guard in `privateGateNavigate.test.ts` (includes `/coach` wedge route).
+Label `.757` (onto master `.756`). Originally reserved `.734`; landed as `.757` past master `.756`.
+Excellence-Override below.
 
-Excellence-Override: Welcome Skip must not soft-bypass private gate (W1 activation)
+Excellence-Override: optional set-row tempo
 
-Rotated LOG oldest → [docs/archive/log/LOG-rotate-662-for-691.md](docs/archive/log/LOG-rotate-662-for-691.md).
+Rotated LOG oldest → [docs/archive/log/LOG-rotate-714-for-757.md](docs/archive/log/LOG-rotate-714-for-757.md).
+## 2026-08-13 — Optional RIR on the set row (`.756`)
 
-## 2026-08-12 — Admin invite share link lands on /private (`.690`)
+Optional integer **0–5 reps in reserve** on a completed set. Empty is valid.
+Never required. Never replaces RPE. Log set stays ungated.
 
-Beta Field P0: founder-copied links from the admin panel pointed at `/?access=…&invite=…`
-while the shipped email used `/private?invite=…`. On preview (or anywhere
-`PRIVATE_ALLOW_QUERY_ACCESS=true`), query unlock set the gate cookie and redirected
-back to `/` — marketing, not `PrivateTeaserClient` — so `data-mw-invitee` stayed 0
-and "You're invited" never rendered. `buildInviteShareLink` now matches the email
-and `print-beta-invite.ts`: `/private?invite=…`, with `?access=` only when query
-unlock is explicitly allowed. Regression guards in `inviteShareLink.test.ts`,
-`privateGateRedirect.test.ts`, and `privateGateRedirect.routetest.ts`.
+**Ship:** `rir.ts` parse; `rateSetRir` after log; compact `SetRirSelect` on
+completed rows beside RPE. Sync keeps `side` and `rir`. Offline, no account.
 
-Excellence-Override: preserve ?invite= through gate for beta activation (W1)
+Label `.756` (onto master `.755`). Originally reserved `.725`; landed as `.756` past master `.755`.
+Excellence-Override below.
 
-Rotated LOG oldest → [docs/archive/log/LOG-rotate-661-for-690.md](docs/archive/log/LOG-rotate-661-for-690.md).
+Excellence-Override: optional RIR
 
-## 2026-08-12 — Today loading skeleton md width parity (`.689`)
+Rotated LOG oldest → [docs/archive/log/LOG-rotate-697-for-756.md](docs/archive/log/LOG-rotate-697-for-756.md).
+## 2026-08-13 — Unilateral L/R on the set log (`.755`)
 
-Desktop `/log` Today path already lifts phone measure at md+ (`HomeTodayLean` /
-`HomeTodayDashboard`: `max-w-lg md:max-w-none`). `TodayDashboardLoading` still used
-`max-w-lg mx-auto` without `md:max-w-none`, so desktop could flash a phone-narrow
-skeleton before hydrate. Skeleton wrapper now matches the today-shell pattern; no
-AppLayout ladder or Today composition change. Label `.689` — Wedge reserved
-`.686`–`.688` for #453 / #462 / #470; master tip `.685` landed (#455).
+Optional **L / R / Alt** on a unilateral exercise (lunge, DB row, split squat)
+without splitting the lift into two movements or two social posts. Investigation
+found no laterality field on `Exercise`, `LoggedSet`, mw-core, or Android —
+`SetKind` stays warmup/failure/drop; a superset pair is not left/right.
 
-Excellence-Override: Today loading skeleton md width parity; no shell redesign
+**Ship:** `side?: SetSide` on the logged set; `isUnilateralExercise` detector;
+chips on compact `LogConsole` + desktop footer; quiet badge on the same table
+row. Default unset. After L, suggest R on the next planned set of the same
+exercise. Bilateral strips stray `side` on complete. Offline, no account.
+Speech never owns this.
 
-Rotated LOG oldest → [docs/archive/log/LOG-rotate-660-for-689.md](docs/archive/log/LOG-rotate-660-for-689.md).
+Label `.755` (onto master `.754`). Originally reserved `.724`; landed as `.755` past master `.754`.
+Excellence-Override below.
 
-## 2026-08-12 — Preserve next= through private gate after I-Day (`.685`)
+Excellence-Override: unilateral L/R
 
-Gated `/log` and `/coach` set `?next=` in `proxy.ts`, but `app/private/layout.tsx`
-redirected unlocked visitors to `/` and dropped it. Unlock redirect moved to
-`app/private/page.tsx` with `privateGateReturnPath`; client unlock uses
-`navigateAfterPrivateGateUnlock(privateGateReturnPath(...))`. Regression:
-`privateGateReturn.test.ts`, `/coach` routetest.
+Rotated LOG oldest → [docs/archive/log/LOG-rotate-696-for-755.md](docs/archive/log/LOG-rotate-696-for-755.md).
+## 2026-08-13 — Drop sets on the set log (`.754`)
 
-Excellence-Override: preserve next= through private gate for post-I-Day wedge (W1)
+The free logger already had `SetKind` `'drop'` — volume, PR skip, sync, CSV,
+and a Kind chip. Tagging Drop did not start a drop. Strong/Hevy users expect
+one control after a working set: same exercise, lower load, no rest.
 
-Rotated LOG oldest → [docs/archive/log/LOG-rotate-659-for-685.md](docs/archive/log/LOG-rotate-659-for-685.md).
+**Ship:** deepen the existing kind. Footer **Drop** (`canStartDrop` after a
+working set) marks the next set `kind: 'drop'`, prefills **−20%** of the parent
+load (unit step, always below when load > 0), and **skips rest**. Compose with
+last-rest via `composeDropRest`. Offline, no account. Set-log table stays first
+paint. No XP, no social, no shame.
 
-## 2026-08-12 — Restore /private access-code form for code-only invitees (`.684`)
+Label `.754` (onto master `.753`). Originally reserved `.723`; landed as `.754` past master `.753`.
+Excellence-Override below.
 
-W1 activation: `/private` session-unlock could hang forever on "Checking sign-in…"
-(unbounded `getSession` / mint fetch) or soft-navigate invitees to marketing home via
-`router.replace` before the httpOnly gate cookie was probe-confirmed. Bounded fail-open
-session recovery, `confirmPrivateGateCookie()` probe, and hard `window.location.assign`
-after unlock. Regression guards in `privateGateSessionUnlock.test.ts`.
+Excellence-Override: drop sets
 
-Excellence-Override: restore /private access-code form for code-only invitees (W1 activation)
+Rotated LOG oldest → [docs/archive/log/LOG-rotate-695-for-754.md](docs/archive/log/LOG-rotate-695-for-754.md).
+## 2026-08-13 — Habit week count + HABIT contract (`.753`)
 
-Rotated LOG oldest → [docs/archive/log/LOG-rotate-658-for-684.md](docs/archive/log/LOG-rotate-658-for-684.md).
+Quiet public-safe OS node: **Habit → Identity → Money → Platform**. Identity is
+#500; money is #498; the missing habit hook is an honest Today week-count — not
+a Mission ID line, not #492’s two-day-off Start copy.
 
-## 2026-08-12 — Guidebook Ch4 + magazine wedge CTAs (`.680`)
+**Ship:** `docs/contracts/HABIT.md` — daily Train is the loop later modules hang
+off. Today header (Lean + Dashboard) always shows `This week: N days logged`
+(0 is fine; unique local days; tombstones out). Next action unchanged. No
+WeChat / MySpace / Top 8. Frozen plan: [docs/HABIT_WEEK_PLAN.md](docs/HABIT_WEEK_PLAN.md).
 
-Refine-only copy: Getting Started (`getting-started-mw`) and magazine front matter
-practice lines now pitch Train logging + Mission Coach from logs (no wearable).
-Magazine `1.4.3`. Originality logged. No new chapters/courses; Learn chapter heroes
-still parked (CONTEXT `.254` teal/navy pending founder Flow credits).
+Label `.753` (onto master `.752`). Originally reserved `.722`; landed as `.753` past master `.752`.
+Excellence-Override below.
 
-Rotated LOG oldest → [docs/archive/log/LOG-rotate-657-for-680.md](docs/archive/log/LOG-rotate-657-for-680.md).
+Excellence-Override: habit week count + HABIT contract
 
-## 2026-08-12 — Today /log coach fatigue-regen refresh loop (`.679`)
+Rotated LOG oldest → [docs/archive/log/LOG-rotate-694-for-753.md](docs/archive/log/LOG-rotate-694-for-753.md).
+## 2026-08-13 — Garage swap on the exercise row (`.752`)
 
-Scout dogfood on live `.618`: Chrome **Aw, Snap!** (renderer code 9) on `/log` with title "Today · Mission Winning". Root cause: `regenerateFutureSessions` always returned `revision + 1` (same class as `.207` on `adaptPlan`). `useCoachPlan.refresh` saves when revision moves, listens synchronously for `mw-coach-plan-changed`; on Today with free beta (= premium) and strain ≥ 70, `TodayCoachWeekStrip` / `CoachTodayCard` mount → infinite synchronous recursion until stack overflow. Fix: `sessionsEqual` gate before bumping revision (equipment profile unchanged). Regression in `adapt.test.ts`. Label `.679` (not `.678`) so it can land after skeleton PR #463 if that keeps `.678`.
+When the machine is not there, one **Swap** on the Train logger row and on a
+Coach session line offers **1–2 original** bodyweight / garage stand-ins (same
+pattern, no gym). Short list. Offline. Free. No account.
 
-Rotated LOG oldest → [docs/archive/log/LOG-rotate-656-for-679.md](docs/archive/log/LOG-rotate-656-for-679.md).
+**Ship:** `garageSwap.ts` closed map + apply helpers. Logger Swap sheet is
+`GarageSwapList` (not the catalog picker). Coach line swap mutates one
+`PlanExercise` via `swapExerciseInPlan` — does not call `generateWeek` / adapt.
+Equipment change clears last load; same equipment keeps planned weight. Hide
+Swap when already garage or no honest pair. Today compact stays swap-free.
+Swap still seeds the new exercise’s last note (`.748`).
 
-## 2026-08-11 — Hero flow design: Coach dock + Victory share fail (`.670`)
+Label `.752` (onto master `.751`). Originally reserved `.721`; landed as `.752` past master `.751`.
+Excellence-Override below.
 
-Design review (website hero flows): Coach empty “Generate this week” now docks in
-`poster-field` (mirror Active Start) — EmptyState is invite-only. Victory share shows a
-quiet recovery line only when the share ladder fully fails (not on user cancel). Field
-manual A hierarchy for the free Coach primary; Peak-End trust on silent fail.
+Excellence-Override: garage exercise swap
 
-Rotated LOG oldest → [docs/archive/log/LOG-rotate-655-for-670.md](docs/archive/log/LOG-rotate-655-for-670.md).
+Rotated LOG oldest → [docs/archive/log/LOG-rotate-693-for-752.md](docs/archive/log/LOG-rotate-693-for-752.md).

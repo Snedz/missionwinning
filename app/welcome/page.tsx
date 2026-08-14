@@ -11,7 +11,7 @@ export const metadata: Metadata = publicPageMetadata({
 type SearchParams = Promise<{ edit?: string | string[] }>;
 
 /**
- * `.745` — `?edit=1` is resolved here, not by `useSearchParams()` inside the page.
+ * `.765` — `?edit=1` is resolved here, not by `useSearchParams()` inside the page.
  *
  * That hook made the whole of I-Day a Suspense child, and since this route
  * prerendered, the HTML Vercel served was the fallback: one `aria-hidden`

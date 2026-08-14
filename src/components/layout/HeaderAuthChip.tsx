@@ -2,19 +2,27 @@
 
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { useTranslation } from 'react-i18next';
 import { User } from 'lucide-react';
 import { getUser } from '@/lib/supabase';
+import { showHeaderSignInChip } from '@/lib/firstSetUngated';
+import { useWorkoutStore } from '@/store/workoutStore';
 
 /** Compact sign-in chip for the app header when logged out. */
 export function HeaderAuthChip() {
   const { t } = useTranslation();
+  const pathname = usePathname() ?? '';
+  const hasFirstWorkout = useWorkoutStore((s) => s.workoutHistory.length > 0);
+  const showChip = showHeaderSignInChip({ hasFirstWorkout, pathname });
   const [email, setEmail] = useState<string | null>(null);
   const [ready, setReady] = useState(false);
 
   useEffect(() => {
     // Defer auth lookup so Supabase is not on first paint for cold /log.
+    // F-017: skip getUser entirely while the chip must stay hidden.
     const boot = () => {
+      if (!showChip) return;
       getUser()
         .then((u) => setEmail(u?.email ?? null))
         .catch(() => setEmail(null))
@@ -26,8 +34,9 @@ export function HeaderAuthChip() {
     }
     const t = setTimeout(boot, 400);
     return () => clearTimeout(t);
-  }, []);
+  }, [showChip]);
 
+  if (!showChip) return null;
   if (!ready || email) return null;
 
   return (

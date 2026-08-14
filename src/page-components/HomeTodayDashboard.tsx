@@ -47,6 +47,7 @@ import { countHighProteinDaysFromNutritionLog } from "@/lib/nutritionHighProtein
 import { Skeleton, SkeletonBlock, SkeletonCard } from "@/components/ui/Skeleton";
 import { readJson, readRaw } from "@/lib/storage/safeStorage";
 import { STORAGE_KEYS } from "@/lib/storage/keys";
+import { loadHomeGymKit } from "@/lib/workout/homeGymKit";
 import { computeReentry, type Reentry } from "@/lib/reentry";
 import { TodayReentryCard } from "@/components/today/TodayReentryCard";
 import { FIRST_STEPS_DISMISS_KEY } from "@/lib/today/firstStepsDismissed";
@@ -57,11 +58,13 @@ import { buildTodayHeaderFocusLine } from "@/lib/today/buildTodayHeaderFocusLine
 import type { TodayBlockKey } from "@/lib/today/todayBlockPriority";
 import { useDismissed } from "@/hooks/useDismissed";
 import { formatLocalDateKey, localDateKey, localDateKeyFromIso } from '@/lib/time/localDate';
+import { countTrainDaysThisWeek } from '@/lib/habitWeekCount';
 import { buildContinuitySuggestions } from '@/lib/today/continuityStrip';
 import { ContinuityStrip } from '@/components/today/ContinuityStrip';
 import { peekCoachToday } from '@/lib/coach/peekCoachToday';
 import { loadPlan } from '@/lib/coach/storage';
 import { buildJustGoHeroMeta, type JustGoHeroMeta } from '@/lib/justGoHeroMeta';
+import { shouldRepeatLastOnToday } from '@/lib/workout/repeatLastSession';
 
 const FirstStepsCard = dynamic(
   () => import('@/components/journey/FirstStepsCard').then((m) => m.FirstStepsCard),
@@ -555,6 +558,7 @@ export function HomeTodayDashboard() {
       history: workoutHistory,
       units,
       equipment: userEquip,
+      homeGymKit: loadHomeGymKit(),
       doseScale: reentry?.show ? reentry.doseScale : 1,
       startWorkout,
       navigate: (href) => router.push(href),
@@ -572,15 +576,19 @@ export function HomeTodayDashboard() {
       hasStartWorkout: !!action.startWorkout,
       phase: action.phase,
     });
+    const coach = peekCoachToday();
+    const lastSession = shouldRepeatLastOnToday({
+      hasLiveCoach: !!(coach && coach.exercises.length > 0),
+      history: workoutHistory,
+    });
     return buildJustGoHeroMeta({
       hasActiveWorkout: !!activeWorkout,
       trainReady,
       focusLabel: muscleGroupLabel(recommendedFocus.group, t),
-      coach: peekCoachToday(),
+      coach,
+      repeatLastName: lastSession?.name ?? null,
     });
-    // workoutHistory.length: re-peek when sessions change (plan may mark done)
-    // eslint-disable-next-line react-hooks/exhaustive-deps -- t() stable enough; plan lives in storage
-  }, [activeWorkout, action.href, action.startWorkout, action.phase, recommendedFocus.group, t, workoutHistory.length]);
+  }, [activeWorkout, action.href, action.startWorkout, action.phase, recommendedFocus.group, t, workoutHistory]);
 
   /*
    * Every block declares what it costs the screen.
@@ -637,7 +645,9 @@ export function HomeTodayDashboard() {
           bodyweightTag: t('todayBodyweightTag', { defaultValue: 'bodyweight' }),
         })}
         streak={streak}
+        daysLoggedThisWeek={countTrainDaysThisWeek(workoutHistory)}
         userEmail={userEmail}
+        hasFirstWorkout={workoutHistory.length > 0}
         action={action}
         showEditToday={layout.showDetailsAccordion}
         onEditToday={() => setEditTodayOpen(true)}

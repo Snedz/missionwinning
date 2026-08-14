@@ -73,6 +73,18 @@ describe('isTodayTrainReady', () => {
 });
 
 describe('Today shells pass re-entry doseScale into primary action', () => {
+  it('lean + dashboard agree with shouldRepeatLastOnToday for the hero', () => {
+    const root = path.join(import.meta.dirname, '..', '..');
+    for (const rel of [
+      'src/page-components/HomeTodayLean.tsx',
+      'src/page-components/HomeTodayDashboard.tsx',
+    ]) {
+      const src = readFileSync(path.join(root, rel), 'utf8');
+      assert.match(src, /shouldRepeatLastOnToday\(/, rel);
+      assert.match(src, /repeatLastName:/, rel);
+    }
+  });
+
   it('lean + dashboard call runTodayPrimaryAction with doseScale from reentry', () => {
     const root = path.join(import.meta.dirname, '..', '..');
     for (const rel of [

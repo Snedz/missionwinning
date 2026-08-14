@@ -85,7 +85,7 @@ const NOTIFICATION_EN: Record<string, string> = {
   profileSetupHint: 'Answer a few questions so sessions match your gear (~2 minutes).',
   changeLanguage: 'Change language',
   /**
-   * `.745` — the picker lists Français, Deutsch, Italiano, العربية and Bahasa
+   * `.765` — the picker lists Français, Deutsch, Italiano, العربية and Bahasa
    * Indonesia, whose largest markets are all on the hosted block list. Offering
    * a language is not a claim to serve a country, and the picker was the one
    * place that read as though it were.

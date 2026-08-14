@@ -16,11 +16,8 @@ type Props = {
   onStart: () => void;
   /** When false, Start is disabled until Zustand persist rehydrates. */
   hydrated?: boolean;
-  /**
-   * Re-entry dose from history gap (&lt; 1 when returning after a lapse).
-   * Dock copy names the easier first session back.
-   */
-  reentryDoseScale?: number;
+  /** Last completed session exists — Start copies it (`.717`). */
+  hasLastSession?: boolean;
   victoryOpen: boolean;
   victorySummary: WorkoutVictorySummary | null;
   onVictoryOpenChange: (open: boolean) => void;
@@ -37,7 +34,7 @@ type Props = {
 export function ActiveEmptyState({
   onStart,
   hydrated = true,
-  reentryDoseScale,
+  hasLastSession = false,
   victoryOpen,
   victorySummary,
   onVictoryOpenChange,
@@ -48,8 +45,6 @@ export function ActiveEmptyState({
   onViewHistory,
 }: Props) {
   const { t } = useTranslation();
-  const easedBack =
-    typeof reentryDoseScale === 'number' && reentryDoseScale > 0 && reentryDoseScale < 1;
 
   return (
     /*
@@ -152,10 +147,9 @@ export function ActiveEmptyState({
               ? t('activeLoadingSessionDesc', {
                   defaultValue: 'Reading the last workout saved on this device.',
                 })
-              : easedBack
-                ? t('activeReentryStartDesc', {
-                    defaultValue:
-                      'Smaller first session back — finishable, then the week rebuilds.',
+              : hasLastSession
+                ? t('activeRepeatLastSessionDesc', {
+                    defaultValue: 'Same exercises and last loads. Log when ready.',
                   })
                 : t('activeNoWorkoutDesc', {
                     defaultValue: LOCAL_FIRST_COPY.activeNoWorkoutDesc,
@@ -171,8 +165,8 @@ export function ActiveEmptyState({
             <span className="flex-1 text-start">
               {!hydrated
                 ? t('activeLoadingSession', { defaultValue: 'Restoring session…' })
-                : easedBack
-                  ? t('activeReentryStart', { defaultValue: 'Start easier session' })
+                : hasLastSession
+                  ? t('activeRepeatLastSession', { defaultValue: 'Repeat last session' })
                   : t('activeStartWorkout', { defaultValue: 'Start workout' })}
             </span>
             <ChevronRight className="ms-auto h-5 w-5 shrink-0" aria-hidden />

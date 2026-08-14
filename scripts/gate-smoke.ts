@@ -93,7 +93,7 @@ async function main() {
   }
 
   /*
-   * `.745` — what the first byte says, measured off the wire.
+   * `.765` — what the first byte says, measured off the wire.
    *
    * On 2026-08-13 the whole visible body of `/private` — which is www itself
    * while the gate is up — was the words "Checking sign-in…", and `/welcome`

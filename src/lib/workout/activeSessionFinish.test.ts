@@ -12,6 +12,8 @@ import {
   PR_HAPTIC_PATTERN,
   resolveLogSetPayload,
 } from './activeSessionFinish.ts';
+import { rememberLastRest } from '@/lib/workout/restTimer';
+import { __resetForTests as resetStorage } from '@/lib/storage/safeStorage';
 import type { CompletedWorkoutLog } from '@/types';
 
 const root = path.join(import.meta.dirname, '..', '..', '..');
@@ -69,6 +71,15 @@ describe('resolveLogSetPayload', () => {
       setKind: 'normal',
       input: { reps: 3, weight: 120 },
     });
+  });
+
+  it('preserves optional side on a unilateral set', () => {
+    const payload = resolveLogSetPayload({
+      exerciseId: 'lunges',
+      set: { reps: 8, weight: 20, side: 'L' },
+      dial: { reps: 8, weight: 20 },
+    });
+    assert.equal(payload?.side, 'L');
   });
 
   it('uses dial when no override and preserves kind', () => {
@@ -153,6 +164,29 @@ describe('logSetIsPr + planLogSetRest', () => {
     });
     assert.equal(rest.takeRest, true);
     assert.ok(rest.restSeconds >= 60);
+  });
+
+  it('uses recalled last rest for that exerciseId', () => {
+    resetStorage();
+    rememberLastRest('bench-press', 150);
+    const rest = planLogSetRest({
+      exercisesAfterLog: [
+        {
+          exerciseId: 'bench-press',
+          sets: [
+            { id: 'a', reps: 5, weight: 100, completed: true },
+            { id: 'b', reps: 5, weight: 100, completed: false },
+          ],
+        },
+      ],
+      exIdx: 0,
+      setIdx: 0,
+      advanceNext: { exerciseIndex: 0, setIndex: 1 },
+      exerciseName: 'Barbell Bench Press',
+      exerciseId: 'bench-press',
+    });
+    assert.equal(rest.takeRest, true);
+    assert.equal(rest.restSeconds, 150);
   });
 
   it('skips rest when advanceNext is null (session complete)', () => {

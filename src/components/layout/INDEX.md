@@ -8,7 +8,7 @@
 |------|---------|
 | `AppLayout.tsx` | Main app chrome + journey sync |
 | `AppHeader.tsx` | Top bar, title from navConfig |
-| `Sidebar.tsx` | Desktop nav |
+| `Sidebar.tsx` | Desktop nav; athlete chip is public version |
 | `MobileNav.tsx` | Bottom tab bar — **five slots**, in flow (not fixed) so it reserves its own height |
 | `MoreSheet.tsx` | The fifth tab: signed-in screens with no tab + What’s New row + First Steps |
 | `ScreenDock.tsx` | The field a screen docks above the tab bar. **Compact only** — at `md+` it renders in place (see *Two surfaces* below). On compact it **portals to a flex sibling of `main`**: `position: fixed` does not work inside a screen (`.stagger-enter` leaves a transform, and a transformed ancestor becomes the containing block), and a flex sibling reserves its own height |
@@ -16,14 +16,14 @@
 | `PillarPageHeader.tsx` | Pillar title + actions |
 | `InfoPageShell.tsx` | Legal/marketing pages |
 | `InfoPageFooter.tsx` | Info footer links |
-| `AppLegalFooter.tsx` | In-app legal links |
+| `AppLegalFooter.tsx` | In-app legal links + public version stamp (`0.1 (beta)`) |
 | `LegalNav.tsx` | Privacy / terms / DMCA nav |
-| `HeaderAuthChip.tsx` | Sign-in avatar chip |
+| `HeaderAuthChip.tsx` | Sign-in avatar chip. F-017 (`.766` / `.762`): hidden until the first workout; never on `/active`. `getUser` only when the chip may show. |
 | `PageTransition.tsx` | Route transition animation |
 | `../ui/AdaptiveOverlay.tsx` | Compact bottom sheet / md+ centered dialog |
 | `StaggerReveal.tsx` | Staggered entrance motion |
 | `OnlineStatusBanner.tsx` | Offline/sync banner |
-| `AnalyticsConsentBanner.tsx` | First-visit product analytics choice (private by default); docks into the `ScreenDock` host so it never covers the logger (`.745`) |
+| `AnalyticsConsentBanner.tsx` | First-visit product analytics choice (private by default); docks into the `ScreenDock` host so it never covers the logger (`.765`) |
 
 ## Two surfaces — read this before changing structure
 

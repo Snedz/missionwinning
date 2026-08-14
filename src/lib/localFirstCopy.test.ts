@@ -36,10 +36,9 @@ describe('localFirstCopy', () => {
     }
   });
 
-  it('wires Active SignInPrompt + Today header/empty to the constants', () => {
+  it('wires Today header/empty to the constants; Train has no SignInPrompt', () => {
     const activePage = read('src/page-components/ActiveWorkoutPage.tsx');
-    assert.match(activePage, /LOCAL_FIRST_COPY\.activeSignInTitle/);
-    assert.match(activePage, /LOCAL_FIRST_COPY\.activeSignInDesc/);
+    assert.doesNotMatch(activePage, /<SignInPrompt/);
     assert.doesNotMatch(activePage, /auto-save to the cloud/i);
 
     const signIn = read('src/components/auth/SignInPrompt.tsx');
@@ -59,7 +58,7 @@ describe('localFirstCopy', () => {
   });
 
   /**
-   * `.746` — CN/HK rated the offline *claim* 3.97 and disbelieved the
+   * `.766` — CN/HK rated the offline *claim* 3.97 and disbelieved the
    * *implementation* ("forced cloud sync / data opacity"). The fix is not a
    * louder adjective: it is naming the mechanism on the two screens a sceptic
    * sees first, because "offline" is a word an app with forced sync also prints.

@@ -8,6 +8,7 @@
  */
 
 import type { NextSetTarget } from '@/lib/workout/nextSetTargets';
+import { formatSetLoadLine } from '@/lib/workout/bodyweightLoad';
 
 export type OverloadReason = NextSetTarget['reason'] | 'prescribed';
 
@@ -113,8 +114,14 @@ export function formatOverloadSetLine(
   reps: number,
   weight: number,
   unitLabel: string,
-  bwLabel = 'BW'
+  bwLabel = 'BW',
+  plusLoad = false
 ): string {
-  if (weight <= 0) return `${reps} × ${bwLabel}`;
-  return `${reps} × ${weight} ${unitLabel}`;
+  return formatSetLoadLine({
+    reps,
+    weight,
+    unitLabel,
+    bodyweightLabel: bwLabel,
+    plusLoad,
+  });
 }

@@ -13,6 +13,7 @@ export function computeContextHash(ctx: CoachContext, weekStart: string): string
     weekStart,
     experience: ctx.experience,
     equipment: ctx.equipment,
+    homeGymKit: (ctx.homeGymKit?.items ?? []).slice().sort().join(','),
     goalId: ctx.goalId,
     daysPerWeek: ctx.daysPerWeek,
     preferredDays: ctx.preferredDays,

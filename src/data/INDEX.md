@@ -25,6 +25,7 @@
 | `guidebook/chapters.ts`, `guidebook/premiumChapters.ts` | Guidebook content (+ optional `heroImage` / `figure`) |
 | `guidebook/types.ts` | Guide chapter/section types incl. `GuideFigure` |
 | `guidebook/magazineMeta.ts` | Beyond the Basics magazine front matter + PDF path |
+| `learnVsPages.ts` | Public Learn vs-pages (Strong / Hevy / Fitbod) — AEO explanation, not magazine chapters |
 | `learnPaths.ts`, `learnLessonEnhancements.ts` | Learn pillar paths |
 | `presidentialFitnessStandards.json` | PFT scoring standards |
 | `pftWeekOneChallenge.ts` | PFT challenge data |

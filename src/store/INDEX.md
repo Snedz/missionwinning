@@ -15,7 +15,7 @@
 | `savedWorkouts` | zustand persist | Builder templates |
 | `workoutHistory` | zustand persist | Completed logs — merges with cloud |
 | `activeWorkout` | memory + persist | In-progress session |
-| `restTimer*` | memory | Rest countdown between sets |
+| `restTimer*` | memory | Rest countdown between sets; `restExerciseId` keys last-rest writes (`.715`) |
 | `elapsedSeconds` | memory | Workout clock |
 | `hasHydrated` | memory | True once rehydration settles — gates Active Start. Owned by the reconciliation block *after* `create()`, never inside `onRehydrateStorage` (zustand runs that synchronously during `create()`, so touching the store there throws a swallowed TDZ error and the logger stays disabled). |
 
@@ -23,8 +23,12 @@
 
 | Action | Effect |
 |--------|--------|
-| `startWorkout` / `startEmptyWorkout` | Begin active session |
-| `logSet` / `logSetAndAdvance` | Record set; superset advance |
+| `startWorkout` / `startEmptyWorkout` | Begin active session; `startWorkout` seeds per-exercise notes from history (`.748`) |
+| `setExerciseNote` | Write / clear the one-line diary on an active exercise |
+| `addSetToExercise` / `insertWarmupRampOnExercise` | Add a planned work set / insert free warmup ramp (`.764`) |
+| `logSet` / `logSetAndAdvance` | Record set; pair advance (A then B); last tempo prefills when present |
+| `toggleSupersetWithNext` / `unlinkSuperset` | Pair exactly two consecutive; unlink clears both peers (`.749`) |
+| `rateSet` / `rateSetRir` / `rateSetTempo` | After-log optional RPE / RIR (0–5) / ecc-pause-con tempo; RIR/tempo never stamped on log |
 | `completeActiveWorkout` | Mint `clientId`, push to history, enqueue the cloud write on the outbox, analytics, leaderboard push |
 | `loadFromCloud` | Merge Supabase history with local |
 | `cancelActiveWorkout` | Discard in-progress |

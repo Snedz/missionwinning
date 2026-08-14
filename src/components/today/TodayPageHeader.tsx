@@ -6,13 +6,18 @@ import type { JourneyAction } from '@/lib/missionJourney';
 import { JourneyStrip } from '@/components/journey/JourneyHero';
 import { StreakChip } from '@/components/today/StreakChip';
 import { LOCAL_FIRST_COPY } from '@/lib/localFirstCopy';
+import { HABIT_WEEK_COUNT_EN } from '@/lib/habitWeekCount';
 
 interface Props {
   today: string;
   /** Optional focus line under the title (full dashboard). */
   focusLine?: string | null;
   streak: number;
+  /** Unique local Train days this week — 0 is shown, shame-free. */
+  daysLoggedThisWeek: number;
   userEmail: string | null;
+  /** F-017 — hide the Sign-in link until the first logged workout. */
+  hasFirstWorkout?: boolean;
   action: JourneyAction;
   showEditToday?: boolean;
   onEditToday?: () => void;
@@ -26,7 +31,9 @@ export function TodayPageHeader({
   today,
   focusLine,
   streak,
+  daysLoggedThisWeek,
   userEmail,
+  hasFirstWorkout = false,
   action,
   showEditToday,
   onEditToday,
@@ -64,6 +71,12 @@ export function TodayPageHeader({
       </div>
       {/* Meta stays one line and small so the docked Start is the job of the fold. */}
       <div className="flex flex-wrap items-center gap-x-2.5 gap-y-1 text-xs text-muted-foreground">
+        <span className="tabular-nums" data-testid="today-habit-week-count">
+          {t('todayHabitWeekCount', {
+            count: daysLoggedThisWeek,
+            defaultValue: HABIT_WEEK_COUNT_EN,
+          })}
+        </span>
         {streak > 0 && (
           <>
             <StreakChip streak={streak} variant="inline" />
@@ -72,19 +85,21 @@ export function TodayPageHeader({
             </a>
           </>
         )}
-        <span>
-          {!userEmail ? (
+        {userEmail ? (
+          <span>
+            {t('cloudSyncOn', {
+              defaultValue: LOCAL_FIRST_COPY.todayBackupWhenOnline,
+            })}
+          </span>
+        ) : hasFirstWorkout && !userEmail ? (
+          <span>
             <a href="/profile" className="underline underline-offset-2 hover:text-foreground">
               {t('signInOptional', {
                 defaultValue: LOCAL_FIRST_COPY.todaySignInOptional,
               })}
             </a>
-          ) : (
-            t('cloudSyncOn', {
-              defaultValue: LOCAL_FIRST_COPY.todayBackupWhenOnline,
-            })
-          )}
-        </span>
+          </span>
+        ) : null}
       </div>
       <JourneyStrip action={action} />
     </header>

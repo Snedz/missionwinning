@@ -58,7 +58,7 @@
 | **Return loop for anonymous athletes** | [docs/RETURN_LOOP_PLAN.md](docs/RETURN_LOOP_PLAN.md) + [src/lib/reentry.ts](src/lib/reentry.ts) | Account-gated push/nudges as the retention answer; streak-loss copy |
 | **Club / points / tiers / boards / arcade (plan)** | [docs/CLUB_PLAN.md](docs/CLUB_PLAN.md) | Building any phase without its entry gate + founder line; loss/relegation mechanics; purchasable points; gamified theater |
 | **You surface / profile / social boundary (plan)** | [docs/IDENTITY_SOCIAL_PLAN.md](docs/IDENTITY_SOCIAL_PLAN.md) · identity code [src/lib/identity/INDEX.md](src/lib/identity/INDEX.md) | A feed; Top 8 / friend ranking; user CSS; free text on public surfaces; any Social→Log import (contract C1) |
-| **Platform contracts (identity / economy / modules / AI)** | [docs/contracts/INDEX.md](docs/contracts/INDEX.md) | Building games/metaverse product surfaces before week-4; second user systems per module |
+| **Platform contracts (habit / identity / economy / modules / AI)** | [docs/contracts/INDEX.md](docs/contracts/INDEX.md) | Building games/metaverse product surfaces before week-4; second user systems per module |
 | **Classification / dual-repo / open safely** | [docs/CLASSIFICATION.md](docs/CLASSIFICATION.md), [docs/DUAL_REPO.md](docs/DUAL_REPO.md), `npm run ops:sync` | Committing `ops/` or `.hermes/`; putting STRATEGY war-room detail in public product git long-term |
 | **Design proposal brief (third)** | [docs/DESIGN_PROPOSAL_3.md](docs/DESIGN_PROPOSAL_3.md) | Re-opening IA, routes or tokens — those are settled, not wireframe |
 | UI/UX audit (hero flows) | [docs/DESIGN_REVIEW.md](docs/DESIGN_REVIEW.md) | Landing redesigns while beta gates red |
@@ -70,7 +70,8 @@
 | Beta testers | [docs/BETA_INVITE.md](docs/BETA_INVITE.md) | — |
 | Security | [docs/PROTECTION.md](docs/PROTECTION.md), [docs/OWASP_AUDIT.md](docs/OWASP_AUDIT.md), [docs/COMPLIANCE.md](docs/COMPLIANCE.md), [docs/AIKIDO.md](docs/AIKIDO.md) | Certification claims / Vanta substitutes as “done” |
 | Vercel deploy | [docs/VERCEL_DEPLOY_CHECKLIST.md](docs/VERCEL_DEPLOY_CHECKLIST.md) | — |
-| **Open source** | [docs/OPEN_SOURCE.md](docs/OPEN_SOURCE.md), [docs/CLASSIFICATION.md](docs/CLASSIFICATION.md), [docs/DUAL_REPO.md](docs/DUAL_REPO.md), [docs/SECURITY_PUBLIC_OSS_AUDIT_2026-08-08.md](docs/SECURITY_PUBLIC_OSS_AUDIT_2026-08-08.md), [LICENSE](LICENSE), [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md), [CONTRIBUTING.md](CONTRIBUTING.md) | Flipping `PRIVATE_MODE`; inventing a new license; public monorepo with war-room docs |
+| **CI / Actions minutes** | [docs/CI_LOCAL.md](docs/CI_LOCAL.md) | Treating Actions red as a product fail while minutes are exhausted; burning Hobby Previews |
+| **Open source** | [docs/OPEN_SOURCE.md](docs/OPEN_SOURCE.md), [docs/PUBLIC_GITHUB.md](docs/PUBLIC_GITHUB.md), [docs/CLASSIFICATION.md](docs/CLASSIFICATION.md), [docs/DUAL_REPO.md](docs/DUAL_REPO.md), [docs/SECURITY_PUBLIC_OSS_AUDIT_2026-08-08.md](docs/SECURITY_PUBLIC_OSS_AUDIT_2026-08-08.md), [LICENSE](LICENSE), [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md), [CONTRIBUTING.md](CONTRIBUTING.md) | Flipping `PRIVATE_MODE`; inventing a new license; public monorepo with war-room docs |
 | **Secrets / keys** | [docs/SECRETS.md](docs/SECRETS.md), [docs/ENV.md](docs/ENV.md), [SECURITY.md](SECURITY.md) | Committing `.env.local`; pasting live keys into docs; tracking `.hermes/` or `ops/` |
 | **Production / ops maturity (13 layers)** | [docs/PRODUCTION_STACK.md](docs/PRODUCTION_STACK.md), [docs/BACKUP_RESTORE.md](docs/BACKUP_RESTORE.md), [docs/CACHE_LADDER.md](docs/CACHE_LADDER.md) | Feature roadmaps; claiming all 13 “done” |
 | Pre-launch checklist | [docs/LAUNCH_RUNBOOK.md](docs/LAUNCH_RUNBOOK.md) | `docs/archive/PRE_LAUNCH_PLAN.md` — **superseded 2026-07-19**, was routed here until `.170` |
@@ -137,6 +138,7 @@ Root keeps only the spine: README · CONTEXT · AGENTS · INDEX · vision · ORC
 | [docs/STRATEGY.md](docs/STRATEGY.md) | **Stub** — full business plan in private mission-ops |
 | [docs/REDTEAM.md](docs/REDTEAM.md) | **Stub** — full assumptions audit in private mission-ops |
 | [docs/PLAN.md](docs/PLAN.md) | Build roadmap |
+| [docs/E1RM_PLAN.md](docs/E1RM_PLAN.md) | Frozen `.739` — educational Epley e1RM on logged sets |
 | [LOG.md](LOG.md) | Dev log |
 | [docs/JOURNEY.md](docs/JOURNEY.md) | Mission journey UX |
 | [UX_UNIFIED_PLAN.md](docs/archive/UX_UNIFIED_PLAN.md) | UI unification |

@@ -2,8 +2,6 @@
 
 type TodayStrings = {
   todayBasicEncouragement: string;
-  /** Fallback verb on a cross-pillar coach chip when the rule names no action. */
-  todayCoachChipAction: string;
   todaySectionHealth: string;
   todaySectionHealthDesc: string;
   todaySectionWeek: string;
@@ -14,6 +12,11 @@ type TodayStrings = {
   todayWeeklyChallengesDescOpenBeta: string;
   todayDayStreak: string;
   todayStartWorkout: string;
+  /** Today hero when the primary tap copies the last completed session (.717). */
+  todayRepeatLastCta: string;
+  todayRepeatLastKicker: string;
+  todayRepeatLastTitle: string;
+  todayRepeatLastDesc: string;
   todaySectionProgress: string;
   todaySectionProgressDesc: string;
   todayQuickOptions: string;
@@ -110,6 +113,8 @@ type TodayStrings = {
   todayMissionScoreDesc: string;
   todayCoachInsightTitle: string;
   todayCoachInsightDesc: string;
+  /** Chip CTA when the insight has no actionLabelKey (.743 coverage). */
+  todayCoachChipAction: string;
   coachInsightHighRisk: string;
   coachInsightHighStrain: string;
   coachInsightPrimed: string;
@@ -171,6 +176,8 @@ type TodayStrings = {
   /** Kaizen Loop 2 L4 — week recap + debrief (.299) */
   todayWeekRecapTitle: string;
   todayWeekRecapBody: string;
+  /** Habit week-count on Today header — 0 is fine (.722). */
+  todayHabitWeekCount: string;
   todayWeekRecapShareCard: string;
   todayWeekRecapCoach: string;
   todayWeekRecapHistory: string;
@@ -282,7 +289,6 @@ type TodayStrings = {
 const en: TodayStrings = {
   todayBasicEncouragement:
     'One step at a time. Log a set — Mission Coach shapes the week from your history.',
-  todayCoachChipAction: 'Open',
   todaySectionHealth: 'Health scores',
   todaySectionHealthDesc: 'Coach insight and pillar breakdown',
   todaySectionWeek: 'This week',
@@ -293,6 +299,10 @@ const en: TodayStrings = {
     'Train + Fuel + volume goals this week. Free core — open beta unlocks depth across the app.',
   todayDayStreak: '{{count}}-day streak',
   todayStartWorkout: "Start Today's Workout",
+  todayRepeatLastCta: 'Repeat last session',
+  todayRepeatLastKicker: 'Train',
+  todayRepeatLastTitle: '{{name}}',
+  todayRepeatLastDesc: 'Same as last time — last loads are ready in the set log.',
   todaySectionProgress: 'Progress & tools',
   todaySectionProgressDesc: 'Readiness, stats, and history',
   todayQuickOptions: 'Quick options',
@@ -393,6 +403,7 @@ const en: TodayStrings = {
   todayMissionScoreDesc: 'All six pillars contribute — Train, Fuel, Move, Mind, Track, and Learn.',
   todayCoachInsightTitle: 'Coach insight',
   todayCoachInsightDesc: 'Based on your readiness, strain, and recovery',
+  todayCoachChipAction: 'Open',
   coachInsightHighRisk:
     'Your assessment flagged elevated risk. Prioritize recovery, mobility, and light movement today.',
   coachInsightHighStrain:
@@ -468,6 +479,7 @@ const en: TodayStrings = {
   coachPlanRegenerate: 'Regenerate',
   todayWeekRecapTitle: 'This week',
   todayWeekRecapBody: '{{sessions}} sessions · {{sets}} sets · {{streak}}-day streak',
+  todayHabitWeekCount: 'This week: {{count}} days logged',
   todayWeekRecapShareCard: 'Share card',
   todayWeekRecapCoach: 'Open AI weekly plan',
   todayWeekRecapHistory: 'History',
@@ -585,6 +597,10 @@ const coachPlanDefaults = {
   coachPlanGenerating: en.coachPlanGenerating,
   coachPlanLoad: en.coachPlanLoad,
   coachPlanRegenerate: en.coachPlanRegenerate,
+  todayRepeatLastCta: en.todayRepeatLastCta,
+  todayRepeatLastKicker: en.todayRepeatLastKicker,
+  todayRepeatLastTitle: en.todayRepeatLastTitle,
+  todayRepeatLastDesc: en.todayRepeatLastDesc,
 };
 
 const es: TodayStrings = {
@@ -691,6 +707,7 @@ const es: TodayStrings = {
   todayMissionScoreDesc: 'Los seis pilares contribuyen — Train, Fuel, Move, Mind, Track y Learn.',
   todayCoachInsightTitle: 'Consejo del coach',
   todayCoachInsightDesc: 'Según tu preparación, carga y recuperación',
+  todayCoachChipAction: 'Abrir',
   coachInsightHighRisk:
     'Tu evaluación indicó riesgo elevado. Prioriza recuperación, movilidad y movimiento ligero hoy.',
   coachInsightHighStrain:
@@ -753,6 +770,7 @@ const es: TodayStrings = {
 
 const zh: TodayStrings = {
   todayCoachChipAction: '打开',
+  todayHabitWeekCount: en.todayHabitWeekCount,
   todayWeekFailedTitle: en.todayWeekFailedTitle,
   todayWeekFailedDesc: en.todayWeekFailedDesc,
   todayWeekFailedRetry: en.todayWeekFailedRetry,
@@ -1020,6 +1038,7 @@ const zh: TodayStrings = {
 
 const id: TodayStrings = {
   todayCoachChipAction: 'Buka',
+  todayHabitWeekCount: en.todayHabitWeekCount,
   todayWeekFailedTitle: en.todayWeekFailedTitle,
   todayWeekFailedDesc: en.todayWeekFailedDesc,
   todayWeekFailedRetry: en.todayWeekFailedRetry,
@@ -1302,6 +1321,7 @@ const id: TodayStrings = {
 
 const th: TodayStrings = {
   todayCoachChipAction: 'เปิด',
+  todayHabitWeekCount: en.todayHabitWeekCount,
   todayWeekFailedTitle: en.todayWeekFailedTitle,
   todayWeekFailedDesc: en.todayWeekFailedDesc,
   todayWeekFailedRetry: en.todayWeekFailedRetry,
@@ -1574,6 +1594,7 @@ const th: TodayStrings = {
 
 const ar: TodayStrings = {
   todayCoachChipAction: 'افتح',
+  todayHabitWeekCount: en.todayHabitWeekCount,
   todayWeekFailedTitle: en.todayWeekFailedTitle,
   todayWeekFailedDesc: en.todayWeekFailedDesc,
   todayWeekFailedRetry: en.todayWeekFailedRetry,
@@ -1954,6 +1975,7 @@ const LOCALES: Partial<Record<string, TodayStrings>> = {
     todayMissionScoreDesc: 'Les six piliers comptent — Train, Fuel, Move, Mind, Track et Learn.',
     todayCoachInsightTitle: 'Conseil du coach',
     todayCoachInsightDesc: 'Selon votre préparation, charge et récupération',
+    todayCoachChipAction: 'Ouvrir',
     coachInsightHighRisk:
       'Votre évaluation indique un risque élevé. Priorisez récupération, mobilité et mouvement léger aujourd’hui.',
     coachInsightHighStrain:
@@ -2015,6 +2037,7 @@ const LOCALES: Partial<Record<string, TodayStrings>> = {
     todayBasicEncouragement:
       'Um passo de cada vez. Saúde para todos — treine, alimente-se, mova-se e aprenda.',
     todayStartWorkout: 'Começar treino de hoje',
+    todayCoachChipAction: 'Abrir',
     coachPlanTitle: 'Coach IA — plano semanal',
     coachPlanCta: 'Gerar esta semana',
   },
@@ -2122,6 +2145,7 @@ const LOCALES: Partial<Record<string, TodayStrings>> = {
     todayMissionScoreDesc: 'Alle sechs Säulen zählen — Train, Fuel, Move, Mind, Track und Learn.',
     todayCoachInsightTitle: 'Coach-Tipp',
     todayCoachInsightDesc: 'Basierend auf Bereitschaft, Belastung und Erholung',
+    todayCoachChipAction: 'Öffnen',
     coachInsightHighRisk:
       'Deine Bewertung zeigt ein hohes Risiko. Priorisiere heute Erholung, Mobilität und leichte Bewegung.',
     coachInsightHighStrain:
