@@ -272,9 +272,14 @@ export function TrackPage() {
 
       <details className="group border-2 border-border bg-card">
         <summary className="flex min-h-[44px] cursor-pointer list-none items-center px-4 py-3 text-sm font-semibold text-muted-foreground [&::-webkit-details-marker]:hidden">
-          {t('trackMoreBodyWearables', { defaultValue: 'Body, wearables & trends' })}
+          {t('trackMoreBodyWearables', { defaultValue: 'Body & trends' })}
         </summary>
         <div className="space-y-4 border-t-2 border-border p-4">
+          <p className="text-xs text-muted-foreground" data-testid="track-no-strap">
+            {t('trackNoStrapRequired', {
+              defaultValue: 'No strap required. GPS and a typed walk are the live Track.',
+            })}
+          </p>
           <ProfileWearablesCard signedIn={signedIn} />
           <TrendAskCard history={workoutHistory} />
           <BodyMetricsCard refreshKey={refresh} onChanged={() => setRefresh((r) => r + 1)} />
