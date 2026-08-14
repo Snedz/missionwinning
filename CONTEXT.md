@@ -16,7 +16,7 @@ One screen of truth for any AI tool or human joining cold. Read this, then [AGEN
 
 ---
 
-## Now (2026-08-14 · web `2026.07-unified.777` · Android `1.24.1`)
+## Now (2026-08-14 · web `2026.07-unified.778` · Android `1.24.1`)
 
 > The ONLY "where we are" block in the repo — [ORCHESTRATION.md](ORCHESTRATION.md) points here.
 >
@@ -306,6 +306,8 @@ One screen of truth for any AI tool or human joining cold. Read this, then [AGEN
 > and `.760` dropped `.745` detail (full text remains in LOG.md / archive)
 > and `.761` dropped `.746` detail (full text remains in LOG.md / archive)
 > and `.762` dropped `.747` detail (full text remains in LOG.md / archive)
+> and `.777` dropped `.762` detail (full text remains in LOG.md / archive)
+> and `.778` dropped `.763` detail (full text remains in LOG.md / archive)
 > and `.763` dropped `.748` detail (full text remains in LOG.md / archive)
 > and `.764` dropped `.749` detail (full text remains in LOG.md / archive)
 > and `.765` dropped `.750` detail (full text remains in LOG.md / archive)
@@ -331,8 +333,10 @@ One screen of truth for any AI tool or human joining cold. Read this, then [AGEN
 > | VAPID keys · `CRON_SECRET` · `SMOKE_BASE_URL` · Sentry DSN · Upstash | **unset.** Push ships dark, the hourly sweeps `exit 0`, there is no server request logging, and rate limiting is per-instance in memory. |
 > | Migrations | **13 recorded pending** (P1–P12 + `mission_ids`) — [LAUNCH_RUNBOOK](docs/LAUNCH_RUNBOOK.md) §3, enforced by `src/lib/migrationLedger.test.ts`. Agents write the next file; founder applies. |
 > | gitleaks | **green — and scanning for the first time.** It had never scanned anything: on a `pull_request` event the action lists the PR's commits, the job declared no `permissions:` block, and it 403'd (`pull_requests=read`) before opening a file. Fixed by a `permissions:` block (`.224` carrying `.255`). It scans **only the PR's own commits**, so commit `8ea3527a`'s real Solana treasury address — scrubbed from the working file, still in history — is out of its scope. That finding stands, deliberately not allowlisted; it was never what made this check red. |
+> | Privacy / security program | **Landed `.778`** — [docs/security/PROGRAM_STATUS.md](docs/security/PROGRAM_STATUS.md). Invite-bound gate, health-bucket, DSAR, territory fail-closed. OTP-without-click can leave a ghost user. Not a cert. |
 
 - **Excellence:** unscored · — · [docs/EXCELLENCE_RESULT.md](docs/EXCELLENCE_RESULT.md) — Horizon W phone sign-off home; surface PRs need `status: pass` or `Excellence-Override` (`.669`).
+- **`.778`:** (`2026.07-unified.778`) **Privacy/security program** — invite-bound gate, sign-out wipe, DSAR email-keyed export, territory fail-closed, blocked-signup reap. PAR-Q food-row already closed by `.777`. Not a cert. No `PRIVATE_MODE` flip.
 - **`.777`:** (`2026.07-unified.777`) **PAR-Q is coach intake** — Seven flags before first Mission Coach generate. Not a More/rail feature. Not a Fuel row. Today stays train. Logger ungated. No `PRIVATE_MODE` flip.
 - **`.776`:** (`2026.07-unified.776`) **Mission Server durable rooms** — Signed-in Garage posts ride the outbox to `social_messages`. Guests stay local. Missing table fail-opens. No Vercel sockets. No `PRIVATE_MODE` flip.
 - **`.775`:** (`2026.07-unified.775`) **LLM daily dollar cap** — 15¢/identity/day + $25 org breaker; fail-closed. Lifetime uses the same cap. LAUNCH_RUNBOOK §5. No `PRIVATE_MODE` flip.
@@ -347,7 +351,6 @@ One screen of truth for any AI tool or human joining cold. Read this, then [AGEN
 - **`.766`:** (`2026.07-unified.766`) **Merge all open PRs on a Cursor landing branch** — 47 PR heads oldest-first; 0 Dependabot PRs (alerts ≠ PRs). Train logger restored from master; PR wiring composed onto it (Victory receipt, garage swap, hard-session, About/Account). No `PRIVATE_MODE` flip. No Vercel preview. Cursor-local merge bar ([docs/CI_LOCAL.md](docs/CI_LOCAL.md)).
 - **`.765`:** (`2026.07-unified.765`) **Preview walk P0s** — consent banner docks above the tab bar so Today Start stays tappable; landing Get-notified form (no Stripe). Brief reserved `.750`; first land was `.755` (occupied).
 - **`.764`:** (`2026.07-unified.764`) **Free plate math + warmup on the Train set row** — Live barbell plates-per-side + Add warmups 40/60/80. Free. Originally #503 / `.708`.
-- **`.763`:** (`2026.07-unified.763`) **Home gym kit on the free logger** — Account Home gym kit (barbell/rack/plates/dumbbells/pull-up/floor). Just Go + Coach filter, never rank. Train empty Start stays repeat-last. Originally #525 / `.733`.
 - **`.669`:** (`2026.07-unified.669`) **Excellence RESULT + agent stop-rule** — `excellenceGate` path policy + `check-excellence-gate` on gate/PR CI; wedge still ships while unscored.
 - **Horizon W + full-launch override (2026-08-05).** Wedge excellence still required; agents may ship rewards + full surface honesty. Fuel estimate accuracy remains.
 - **Free-first beta (~4 weeks):** LLC + EIN pending — **no Bundle UI** + **full depth unlocked**; More/rail **Pillars demoted until first workout** (F-004 / `.695`) — still no Bundle ([docs/FREE_BETA.md](docs/FREE_BETA.md)).

@@ -20,6 +20,7 @@ at every call site.
 |------|---------|
 | `safeStorage.ts` | `readRaw` / `writeRaw` / `readJson` / `writeJson` / `remove` / `keysWithPrefix` — never throw |
 | `keys.ts` | Registry of every app-owned key (typing + discoverability) |
+| `athleteLocalState.ts` | Sign-out wipe + storage-owner bind so PAR-Q cannot follow the next account (P1-5) |
 
 ## Rules
 

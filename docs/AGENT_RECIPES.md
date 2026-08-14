@@ -111,14 +111,49 @@ Canonical langs: [`src/i18n/appLangs.ts`](../src/i18n/appLangs.ts) (`APP_LANGS`,
 
 ---
 
-## 10. Security-sensitive change checklist
+## 10. Touching auth / PII / webhooks / LLM / health flags
+
+Living census: [security/PROGRAM_STATUS.md](security/PROGRAM_STATUS.md). Catalog: [`docs/compliance/controls.yaml`](compliance/controls.yaml). This is **not** a SOC 2 / ISO / HIPAA / GDPR certification.
+
+**Required reads**
+
+1. [CONTEXT.md](../CONTEXT.md) `## Now`
+2. [PROTECTION.md](PROTECTION.md)
+3. [LEGAL_SAFETY.md](LEGAL_SAFETY.md) §2 (store-label inventory)
+4. [security/PROGRAM_STATUS.md](security/PROGRAM_STATUS.md)
+
+**Required tests** (run the ones your change can break)
+
+```bash
+npx tsx --test src/lib/healthDataBucket.test.ts
+npx tsx --test src/lib/legal/supportedRegions.test.ts
+npx tsx --test src/lib/privacyInstill.test.ts
+npx tsx --conditions=react-server --test src/lib/accountDataServer.routetest.ts
+npm run compliance:status   # fail count must stay 0
+```
+
+**Never**
+
+- Claim SOC 2, ISO 27001, HIPAA, or GDPR in product or docs
+- Tick founder-only boxes (`MAIL_POSTAL_ADDRESS`, DMCA agent, Play form, ZDR contract)
+- Flip `PRIVATE_MODE`
+- Treat [REDTEAM_2026-08-13.md](security/REDTEAM_2026-08-13.md) as live — use PROGRAM_STATUS
+
+**Review checklist**
 
 - [ ] No secrets in `NEXT_PUBLIC_*`
-- [ ] Premium check server-side
-- [ ] RLS or service-role pattern documented
-- [ ] Rate limit on brute-force endpoints
-- [ ] Update [PROTECTION.md](PROTECTION.md) or [OWASP_AUDIT.md](OWASP_AUDIT.md)
-- [ ] `npm run security-smoke` if deploy smoke env available
+- [ ] Premium check server-side (`premiumServer.ts`, never localStorage)
+- [ ] Auth is `getUser()` / `hasAppAccess` + Zod — no second copy of a predicate
+- [ ] IDOR: filter by session `user_id`, not a client `userId` / unproven `deviceId`
+- [ ] Account delete/export never forwards `parsed.data.deviceId` into the executor
+- [ ] Access country is not `x-country-code`; Vercel allow is `x-vercel-ip-country` only
+- [ ] Assessment / pregnancy / PAR-Q never call `saveNutritionEntry` or PostHog properties
+- [ ] New `create table` has a fate in `accountDataRegistry.ts`
+- [ ] New third party is a LEGAL_SAFETY §2 row **and** a Privacy sentence
+- [ ] Rate limit on brute-force / mail / webhook endpoints
+- [ ] `npm run security-smoke` if deploy smoke env is available
+
+This repo has no `.greptile/` tree. Instill is this recipe + `privacyInstill.test.ts` + the colocated hunt tests. Do not invent a Greptile config.
 
 ---
 

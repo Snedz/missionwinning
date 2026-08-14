@@ -9,8 +9,13 @@ import { createServerClient } from '@supabase/ssr';
 import { shouldBounceAuthCallbackToCanonical, configuredSiteOrigin } from '@/lib/authRedirect';
 import { sanitizeNextPath } from '@/lib/safeRedirect';
 import { hostedServiceAccessFromHeaders } from '@/lib/legal/supportedRegions';
+import { disposeBlockedTerritorySignup } from '@/lib/legal/blockedSignupServer';
 import { attachPrivateAccessCookie } from '@/lib/privateSession';
 import { formatOAuthError } from '@/lib/oauthConfig';
+import { isPrivateModeEnabled } from '@/lib/privateGate';
+import { inviteRedeemed, sessionMintEligible } from '@/lib/privateAccessSessionGate';
+import { getSupabaseAdmin } from '@/lib/supabaseAdmin';
+import { bindInviteToUser, loadInvitedVia } from '@/lib/inviteBoundServer';
 
 export async function GET(request: NextRequest) {
   const url = new URL(request.url);
@@ -23,12 +28,6 @@ export async function GET(request: NextRequest) {
   }
 
   const siteOrigin = configuredSiteOrigin() || url.origin;
-  const territory = hostedServiceAccessFromHeaders(request.headers);
-  if (!territory.allowed) {
-    // Do not exchange the code — hosted signup is unavailable in this region.
-    return NextResponse.redirect(new URL('/regions', siteOrigin));
-  }
-
   const code = url.searchParams.get('code');
   const errorDesc = url.searchParams.get('error_description');
   const nextPath = sanitizeNextPath(url.searchParams.get('next'));
@@ -74,13 +73,48 @@ export async function GET(request: NextRequest) {
     return errorRedirect(formatOAuthError(error.message));
   }
 
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  const admin = getSupabaseAdmin();
+
+  // Identify first (Supabase already created the user). Do not persist
+  // session or gate cookies when hosted signup is unavailable here.
+  const territory = hostedServiceAccessFromHeaders(request.headers);
+  if (!territory.allowed) {
+    const dest = NextResponse.redirect(new URL('/regions', siteOrigin));
+    for (const { name, options } of pendingCookies) {
+      dest.cookies.set(name, '', { ...options, maxAge: 0 });
+    }
+    if (user && admin) {
+      await disposeBlockedTerritorySignup(admin, user);
+    }
+    return dest;
+  }
+
+  let redeemed = false;
+  if (user && admin) {
+    redeemed = inviteRedeemed(await loadInvitedVia(admin, user.id));
+    const inviteParam = url.searchParams.get('invite');
+    if (!redeemed && inviteParam) {
+      const bound = await bindInviteToUser(admin, user, inviteParam);
+      redeemed = bound.ok;
+    }
+  }
+
   const response = NextResponse.redirect(new URL(nextPath, siteOrigin));
   for (const { name, value, options } of pendingCookies) {
     response.cookies.set(name, value, options);
   }
 
   const secret = process.env.PRIVATE_ACCESS_SECRET;
-  if (secret) {
+  if (
+    secret &&
+    sessionMintEligible({
+      privateModeEnabled: isPrivateModeEnabled(),
+      inviteRedeemed: redeemed,
+    })
+  ) {
     attachPrivateAccessCookie(response.cookies, secret);
   }
 

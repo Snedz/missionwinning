@@ -136,6 +136,12 @@ export const STORAGE_KEYS = {
   sessionCheckinSkipped: 'mw_session_checkin_skipped',
   /** Explore places dex — optional GPS pins, local only. */
   placeDex: 'mw_place_dex',
+  /**
+   * Signed-in user id that currently owns athlete-local `mw_*` on this device.
+   * Empty means guest. Used to refuse OR-merging the previous athlete's PAR-Q
+   * onto the next account (P1-5).
+   */
+  storageOwner: 'mw_storage_owner',
   /** Counsel-hold pregnancy / postpartum flag — symptom line only. */
   pregnancyFlag: 'mw_pregnancy_flag',
   /** Five-event field test published-table scale key. */

@@ -37,7 +37,7 @@
 | **Payments — the pure decisions** | `checkout/checkoutParams.ts` (what Stripe is asked to charge), `premium/enrollmentRow.ts` (what a paid webhook writes), `authUserId.ts` (what may go in an `auth.users` FK) | `.262` — lifted out of the `server-only` modules above, which reach Stripe/Supabase on their first line and so could not be tested at all. Dependency-free on purpose; `money.routetest.ts` covers the server halves |
 | **School / PFT** | `schoolClassServer.ts`, `presidentialFitness*.ts`, `fitnessTest*.ts` | America track |
 | **Gating / auth** | `privateGate.ts`, `privateSession.ts`, `supabaseAuthCookies.ts`, `supabaseRequestAuth.ts` | Private beta, HMAC cookie, JWT cookies |
-| **Service territory** | `legal/supportedRegions.ts`, `legal/territoryAccessClient.ts`, `legal/waitlistTerritory.ts` | The block list is the contract: signup, checkout, and (`.765`) the gate waitlist |
+| **Service territory** | `legal/supportedRegions.ts`, `legal/territoryAccessClient.ts`, `legal/waitlistTerritory.ts`, `legal/blockedSignup.ts` | The block list is the contract. Vercel allow is `x-vercel-ip-country` only. Blocked signup may reap a new empty account |
 | **First paint** | `firstPaintFloor.test.ts` | No raw keys, no textless public fallback, no copy that changes after hydration |
 | **i18n loaders** | `routeMetadata.ts`, `navConfig.ts` | Not strings — see `src/i18n/` |
 | **Units** | `units.ts` | `weightStep`, metric/imperial |
@@ -45,7 +45,7 @@
 | **What’s New** | `whatsNew.ts` | Build-label last-seen + curated athlete bullets (D13) |
 | **Analytics** | `analytics.ts`, `analyticsOptOut.ts` | PostHog events; preference off until user allows |
 | **Observability** | `sentryCommon.ts`, `api/withApiLogging.ts` | Sentry (env-gated) + API request logs |
-| **Compliance** | `compliance/` | Vanta-lite control catalog probes — [docs/COMPLIANCE.md](../../docs/COMPLIANCE.md) |
+| **Compliance** | `compliance/`, `privacyInstill.test.ts` | Vanta-lite catalog probes + Phase 3 instill — [docs/COMPLIANCE.md](../../docs/COMPLIANCE.md) |
 | **Destructive UX** | `holdToConfirm.ts` | Hold-to-confirm helpers — [docs/DESTRUCTIVE_UX.md](../../docs/DESTRUCTIVE_UX.md) |
 | **Leaderboard** | `leaderboard/` subfolder | Local + cloud leaderboard |
 

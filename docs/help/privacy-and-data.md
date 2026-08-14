@@ -59,7 +59,7 @@ Teachers see **class aggregates and standings**, not students' full workout jour
 
 ## Analytics
 
-Anonymous usage analytics (e.g. PostHog) may run to improve the product — see `/privacy` for the full policy.
+Product analytics (PostHog) stay **off** until you allow them in the first-visit banner or Profile → Privacy. Browsers that send Do Not Track never show the banner and never capture. We do not use session recording, Meta Pixel, or Google advertising tags. Full policy: `/privacy`.
 
 ## Your rights
 

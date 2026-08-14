@@ -1,9 +1,11 @@
 /**
  * Send parent consent notification email.
- * Auth: optional session | Rate: 3/min/IP | Schema: youthConsentNotifySchema
+ * Auth: session | Rate: 3/min/IP + 3/hour/recipient | Schema: youthConsentNotifySchema
+ * 404 when the youth/school surface is parked (P2-3).
  * See: app/api/INDEX.md
  */
 import { NextRequest, NextResponse } from 'next/server';
+import { createHash } from 'node:crypto';
 import { withApiLogging } from '@/lib/api/withApiLogging';
 import { Resend } from 'resend';
 import { rateLimitAsync } from '@/lib/rateLimit';
@@ -17,11 +19,20 @@ import { getUserFromRequest } from '@/lib/supabaseRequestAuth';
 import { clientIp } from '@/lib/clientIp';
 import { parseJsonBody, youthConsentNotifySchema } from '@/lib/apiSchemas';
 import { rejectOversizedBody } from '@/lib/requestBodyLimit';
+import { youthApiNotFound } from '@/lib/youthSurfaceGuard';
 
 /** Email parent/guardian a verification code + confirm link. */
 export const POST = withApiLogging('youth/consent-notify', async(request: NextRequest) => {
+  const parked = youthApiNotFound();
+  if (parked) return parked;
+
   const oversized = rejectOversizedBody(request, 4 * 1024);
   if (oversized) return oversized;
+
+  const user = await getUserFromRequest(request);
+  if (!user) {
+    return NextResponse.json({ error: 'Sign in required' }, { status: 401 });
+  }
 
   const ip = clientIp(request);
   const limited = await rateLimitAsync(`youth-consent-notify:${ip}`, 3, 60_000);
@@ -58,10 +69,20 @@ export const POST = withApiLogging('youth/consent-notify', async(request: NextRe
     return NextResponse.json({ error: 'Invalid consent payload' }, { status: 400 });
   }
 
-  const user = await getUserFromRequest(request);
+  const emailKey = createHash('sha256').update(parentEmail.toLowerCase()).digest('hex').slice(0, 16);
+  const recipientLimited = await rateLimitAsync(`youth-consent-notify:to:${emailKey}`, 3, 60 * 60_000);
+  if (!recipientLimited.ok) {
+    return NextResponse.json(
+      { error: 'Too many consent requests. Try again shortly.' },
+      {
+        status: 429,
+        headers: { 'Retry-After': String(recipientLimited.retryAfterSec ?? 3600) },
+      }
+    );
+  }
   const appUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://www.missionwinning.com';
   const code = generateConsentCode(parentEmail, childAge);
-  const token = createConsentVerifyToken(parentEmail, childAge, undefined, user?.id);
+  const token = createConsentVerifyToken(parentEmail, childAge, undefined, user.id);
   const confirmLink = consentConfirmUrl(token, appUrl);
 
   const resend = new Resend(apiKey);
@@ -79,12 +100,6 @@ export const POST = withApiLogging('youth/consent-notify', async(request: NextRe
       `Verification code (tell your athlete): ${code}`,
       '',
       `Or confirm on this device: ${confirmLink}`,
-      user
-        ? ''
-        : [
-            '',
-            'Tip: have your athlete sign in before requesting consent so approval syncs across devices.',
-          ].join('\n'),
       '',
       'Mission Winning provides educational fitness tools only — not medical advice.',
       '',

@@ -15,8 +15,8 @@ test('every pillar win the writer produces is recognised as non-food', () => {
   }
 });
 
-test('the two assessment writers are recognised', () => {
-  // AssessmentsPage.tsx and ProfileAssessmentCard.tsx, verbatim.
+test('legacy assessment food-row names still filter', () => {
+  // Historical P2-2 rows. New writers must not produce these (healthDataBucket.test.ts).
   assert.equal(isNonFoodEntryName('Assessment: moderate risk'), true);
   assert.equal(isNonFoodEntryName('Assessment Win from Profile'), true);
 });

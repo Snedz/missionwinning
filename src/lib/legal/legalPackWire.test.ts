@@ -43,6 +43,13 @@ test('signup and checkout hard-block territory', () => {
   const intent = readFileSync(join(root, 'app/api/crypto-checkout/intent/route.ts'), 'utf8');
   assert.match(intent, /hostedServiceAccessFromHeaders/);
 
+  const territoryClient = readFileSync(
+    join(root, 'src/lib/legal/territoryAccessClient.ts'),
+    'utf8'
+  );
+  assert.match(territoryClient, /unavailableTerritoryAccess/);
+  assert.doesNotMatch(territoryClient, /blocked:\s*false/);
+
   const signIn = readFileSync(join(root, 'src/components/auth/SignInPanel.tsx'), 'utf8');
   assert.match(signIn, /fetchTerritoryAccess/);
   assert.match(signIn, /territoryBlocked/);
@@ -61,6 +68,7 @@ test('signup and checkout hard-block territory', () => {
 
   const callback = readFileSync(join(root, 'app/auth/callback/route.ts'), 'utf8');
   assert.match(callback, /hostedServiceAccessFromHeaders/);
+  assert.match(callback, /disposeBlockedTerritorySignup/);
 
   const leads = readFileSync(join(root, 'app/api/leads/route.ts'), 'utf8');
   assert.match(leads, /hostedServiceAccessFromHeaders/);

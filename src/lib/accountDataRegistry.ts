@@ -51,7 +51,11 @@ export const EXPORT_TABLES: readonly ExportTableSpec[] = [
   { table: 'social_message_reports', match: 'user_id' },
 ] as const;
 
-/** Email-keyed rows with no user_id — cleaned explicitly before the cascade. */
+/**
+ * Email-keyed rows with no user_id. Exported when the session has an email
+ * (CCPA access). Cleaned explicitly before the auth cascade (delete).
+ * `beta_invites` is anonymized, not deleted — the row is funnel history.
+ */
 export const EMAIL_ONLY_TABLES = ['leads', 'checkout_recovery', 'beta_invites'] as const;
 
 /** Tables deliberately outside both lanes — each with the reason on record. */

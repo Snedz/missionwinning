@@ -7,6 +7,8 @@
 
 import { supabase, isSupabaseConfigured } from '@/lib/supabase';
 import { confirmPrivateGateCookie } from '@/lib/confirmPrivateGateCookie';
+import { loadAttribution } from '@/lib/attribution';
+import { isValidInviteCode } from '@/lib/inviteCode';
 
 /** Upper bound for cold / invitee session recovery — then show the access-code form. */
 export const SESSION_UNLOCK_TIMEOUT_MS = 6_000;
@@ -27,7 +29,7 @@ function withTimeout<T>(promise: Promise<T>, ms: number, fallback: T): Promise<T
   });
 }
 
-async function grantPrivateAccessFromSessionInner(): Promise<boolean> {
+async function grantPrivateAccessFromSessionInner(inviteCode?: string): Promise<boolean> {
   if (typeof window === 'undefined') return false;
   if (!isSupabaseConfigured()) return false;
 
@@ -35,12 +37,18 @@ async function grantPrivateAccessFromSessionInner(): Promise<boolean> {
   const token = data.session?.access_token;
   if (!token) return false;
 
+  const fromArg = inviteCode?.trim() ?? '';
+  const fromAttr = loadAttribution()?.invite?.trim() ?? '';
+  const code = [fromArg, fromAttr].find((c) => isValidInviteCode(c)) ?? '';
+
   const res = await fetch('/api/private-access/session', {
     method: 'POST',
     credentials: 'same-origin',
     headers: {
       Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json',
     },
+    body: JSON.stringify(code ? { code } : {}),
     signal: AbortSignal.timeout(SESSION_UNLOCK_TIMEOUT_MS),
   });
   if (!res.ok) return false;
@@ -48,10 +56,10 @@ async function grantPrivateAccessFromSessionInner(): Promise<boolean> {
   return confirmPrivateGateCookie();
 }
 
-export async function grantPrivateAccessFromSession(): Promise<boolean> {
+export async function grantPrivateAccessFromSession(inviteCode?: string): Promise<boolean> {
   try {
     return await withTimeout(
-      grantPrivateAccessFromSessionInner(),
+      grantPrivateAccessFromSessionInner(inviteCode),
       SESSION_UNLOCK_TIMEOUT_MS,
       false
     );

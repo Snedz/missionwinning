@@ -1,5 +1,7 @@
 import { describe, it } from 'node:test';
 import assert from 'node:assert/strict';
+import { readFileSync } from 'node:fs';
+import { join } from 'node:path';
 import { mergeJourneyStates } from './journeySync.ts';
 import type { JourneyState } from '@/lib/missionJourney';
 
@@ -75,4 +77,11 @@ describe('mergeJourneyStates', () => {
     assert.deepEqual(ab.basic, ba.basic);
     assert.deepEqual(ab.readiness, ba.readiness);
   });
+});
+
+it('sign-in path asks the storage planner instead of always merge+push', () => {
+  const src = readFileSync(join(import.meta.dirname, 'journeySync.ts'), 'utf8');
+  assert.match(src, /planSignInStorage/);
+  assert.match(src, /stripRestrictedHealthLocal/);
+  assert.match(src, /replace-from-cloud/);
 });

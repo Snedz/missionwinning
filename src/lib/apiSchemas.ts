@@ -443,7 +443,10 @@ export const socialReportBodySchema = z.object({
 export const accountDeleteBodySchema = z
   .object({
     confirm: z.literal('DELETE'),
-    /** mw_device_id, so anonymous push/AI-metering rows for this device go too. */
+    /**
+     * Accepted for old clients. The executor ignores it and derives device
+     * ids from rows already owned by this user (P2-1).
+     */
     deviceId: z.string().max(64).optional(),
   })
   .strict();

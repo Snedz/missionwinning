@@ -12,6 +12,7 @@ When adding a doc:
 
 | File | Absorbed by / note |
 |------|---------------------|
+| [log/LOG-rotate-763-for-778.md](./log/LOG-rotate-763-for-778.md) | rotated 2026-08-14 for `.778` privacy/security program (`.763`) |
 | [log/LOG-rotate-761-for-776.md](./log/LOG-rotate-761-for-776.md) | rotated 2026-08-14 when `.776` landed (`.761`) |
 | [log/LOG-rotate-760-for-775.md](./log/LOG-rotate-760-for-775.md) | rotated 2026-08-14 for `.775` LLM dollar cap (`.760`) |
 | [log/LOG-rotate-680-for-745.md](./log/LOG-rotate-680-for-745.md) | rotated 2026-08-13 for `.765` rest timer last-rest (`.680`) |

@@ -4,7 +4,9 @@
  *
  * Security F1 (2026-08-05): verified Supabase access token may come from
  * Authorization Bearer **or** sb-* cookies — always supabase.auth.getUser().
- * PRIVATE_ALLOW_AUTH_BYPASS is no longer required for JWT gate access (deprecated).
+ * PRIVATE_ALLOW_AUTH_BYPASS is no longer required for JWT *verification* (deprecated).
+ * P1-1: a verified JWT is not a gate pass — cookie (invite- or password-minted)
+ * or `?access=` only. `hasVerifiedSupabaseUser` stays for mint/recovery callers.
  */
 import { createClient } from '@supabase/supabase-js';
 import type { NextRequest } from 'next/server';

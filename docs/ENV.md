@@ -406,7 +406,8 @@ Multi-vendor sync — see [docs/WEARABLES.md](WEARABLES.md). Opt-in; off unless 
 | Variable | Purpose |
 |----------|---------|
 | `NEXT_PUBLIC_WEARABLES` | `true` to show Profile wearables + Active live HR |
-| `WEARABLES_OAUTH_REDIRECT_BASE` | Optional absolute origin for OAuth callbacks (defaults to request origin) |
+| `WEARABLES_OAUTH_STATE_SECRET` | Dedicated HMAC for OAuth `state`. **Required in production** if wearables are on. No source fallback. |
+| `WEARABLES_OAUTH_REDIRECT_BASE` | Absolute origin for OAuth callbacks. Falls back to `NEXT_PUBLIC_APP_URL`. Never the request Host. |
 | `WHOOP_CLIENT_ID` / `WHOOP_CLIENT_SECRET` | Whoop OAuth |
 | `STRAVA_CLIENT_ID` / `STRAVA_CLIENT_SECRET` | Strava OAuth (`activity:read`) — dark until keys + `NEXT_PUBLIC_WEARABLES=true` |
 | `MEAL_VISION_API_URL` | Optional OpenAI-compatible multimodal chat URL for Fuel **photo** meal estimates (`/api/fuel/estimate-meal`). Prefer same host style as coach (e.g. `https://api.x.ai/v1/chat/completions`) |

@@ -56,7 +56,7 @@ export function PrivateTeaserClient({ initialInvite = '', initialNext = '' }: Pr
     let cancelled = false;
     void (async () => {
       try {
-        const ok = await grantPrivateAccessFromSession();
+        const ok = await grantPrivateAccessFromSession(initialInvite);
         if (cancelled) return;
         if (ok) {
           navigateAfterPrivateGateUnlock(privateGateReturnPath(initialNext));
@@ -69,7 +69,7 @@ export function PrivateTeaserClient({ initialInvite = '', initialNext = '' }: Pr
     return () => {
       cancelled = true;
     };
-  }, [initialNext]);
+  }, [initialInvite, initialNext]);
 
   // Territory truth before the ask: /api/geo is public while gated (privateGate.ts).
   useEffect(() => {

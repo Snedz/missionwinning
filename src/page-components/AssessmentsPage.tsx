@@ -393,7 +393,7 @@ export function AssessmentsPage() {
             <div className="text-xs">
               {t('assessResultFoot', {
                 defaultValue:
-                  'Results saved locally + to logs. Use to guide program choice in the Builder / Today. Streak +1 on start.',
+                  'Results stay on this device. Use them to pick a starter on Today. Completing a workout is what earns a streak.',
               })}
             </div>
             <Button variant="outline" className="mt-2" asChild>
@@ -406,7 +406,7 @@ export function AssessmentsPage() {
       <SignInPrompt
         className="mt-2"
         nextPath="/assessments" description={t('assessSignInFoot', {
-          defaultValue: 'Keep assessment history synced when you sign in.',
+          defaultValue: 'Sign in to sync workouts. Assessment results stay on this device.',
         })}
       />
     </PillarPageShell>

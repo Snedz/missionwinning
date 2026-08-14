@@ -22,6 +22,11 @@ test('session unlock is bounded and fail-open to the access-code form', () => {
   const grant = stripComments(read('src/lib/grantPrivateAccessFromSession.ts'));
   assert.match(
     grant,
+    /isValidInviteCode/,
+    'session recovery must send a valid invite code so mint can bind — a JWT is not an invite'
+  );
+  assert.match(
+    grant,
     /SESSION_UNLOCK_TIMEOUT_MS/,
     'session recovery must declare an upper bound — unbounded getSession/fetch hides the form forever'
   );

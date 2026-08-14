@@ -14,12 +14,13 @@
 import 'server-only';
 import type { SupabaseClient } from '@supabase/supabase-js';
 import {
+  EMAIL_ONLY_TABLES,
   EXPORT_ROW_CAP,
   EXPORT_TABLES,
   type ExportTableSpec,
 } from '@/lib/accountDataRegistry';
 
-export { EXPORT_ROW_CAP, EXPORT_TABLES };
+export { EMAIL_ONLY_TABLES, EXPORT_ROW_CAP, EXPORT_TABLES };
 
 export type AccountExport = {
   app: 'mission-winning';
@@ -32,9 +33,30 @@ export type AccountExport = {
 /**
  * Export always filters by the server-verified user — never by a
  * client-supplied device id, which a session cannot prove ownership of.
- * ('user_id_or_device' describes the DELETE story: anonymous rows for that
- * device are cleaned too, since the cascade cannot reach them.)
+ * Delete matches: anonymous device rows are cleaned only for device ids
+ * already stored on this user (P2-1).
  */
+
+const DEVICE_LINK_TABLES = ['push_subscriptions', 'llm_usage'] as const;
+
+async function linkedDeviceIdsForUser(
+  admin: SupabaseClient,
+  userId: string
+): Promise<{ ok: true; ids: string[] } | { ok: false; step: string }> {
+  const ids = new Set<string>();
+  for (const table of DEVICE_LINK_TABLES) {
+    const { data, error } = await admin.from(table).select('device_id').eq('user_id', userId);
+    if (error) return { ok: false, step: `device_link_${table}` };
+    for (const row of data ?? []) {
+      const id = typeof (row as { device_id?: unknown }).device_id === 'string'
+        ? (row as { device_id: string }).device_id.trim()
+        : '';
+      if (id) ids.add(id);
+    }
+  }
+  return { ok: true, ids: [...ids] };
+}
+
 function ownershipColumn(spec: ExportTableSpec): 'id' | 'user_id' {
   return spec.match === 'id' ? 'id' : 'user_id';
 }
@@ -67,6 +89,46 @@ export async function exportAccountData(
       truncated: rows.length > EXPORT_ROW_CAP,
     };
   }
+
+  // Email-keyed PI is not on auth.users — CCPA access must still include it.
+  if (email) {
+    for (const table of EMAIL_ONLY_TABLES) {
+      const { data, error } = await admin
+        .from(table)
+        .select('*')
+        .eq('email', email)
+        .limit(EXPORT_ROW_CAP + 1);
+      if (error) {
+        throw new Error(`export failed on ${table}`);
+      }
+      const rows = (data ?? []) as Record<string, unknown>[];
+      tables[table] = {
+        rows: rows.slice(0, EXPORT_ROW_CAP),
+        truncated: rows.length > EXPORT_ROW_CAP,
+      };
+    }
+
+    const orphans = await admin
+      .from('enrollments')
+      .select('*')
+      .is('user_id', null)
+      .eq('user_email', email)
+      .limit(EXPORT_ROW_CAP + 1);
+    if (orphans.error) {
+      throw new Error('export failed on enrollments');
+    }
+    const existing = tables.enrollments ?? { rows: [], truncated: false };
+    const seen = new Set(existing.rows.map((r) => String(r.id ?? '')));
+    const extra = ((orphans.data ?? []) as Record<string, unknown>[]).filter(
+      (r) => !seen.has(String(r.id ?? ''))
+    );
+    const merged = [...existing.rows, ...extra];
+    tables.enrollments = {
+      rows: merged.slice(0, EXPORT_ROW_CAP),
+      truncated: existing.truncated || merged.length > EXPORT_ROW_CAP,
+    };
+  }
+
   return {
     app: 'mission-winning',
     exportedAt: new Date().toISOString(),
@@ -86,8 +148,7 @@ export async function exportAccountData(
 export async function deleteAccount(
   admin: SupabaseClient,
   userId: string,
-  email: string | null,
-  deviceId?: string
+  email: string | null
 ): Promise<{ ok: true } | { ok: false; step: string }> {
   if (email) {
     const leads = await admin.from('leads').delete().eq('email', email);
@@ -110,7 +171,10 @@ export async function deleteAccount(
     if (orphanEnrollments.error) return { ok: false, step: 'enrollments' };
   }
 
-  if (deviceId) {
+  const linked = await linkedDeviceIdsForUser(admin, userId);
+  if (!linked.ok) return linked;
+
+  for (const deviceId of linked.ids) {
     // Anonymous device rows carry no user_id, so the cascade cannot reach them.
     const push = await admin
       .from('push_subscriptions')

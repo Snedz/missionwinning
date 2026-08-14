@@ -7,6 +7,7 @@
 import { useEffect } from 'react';
 import { supabase } from '@/lib/supabase';
 import { pullJourneyFromCloud, scheduleJourneyPush, syncJourneyOnSignIn } from '@/lib/journeySync';
+import { clearAthleteLocalState } from '@/lib/storage/athleteLocalState';
 import { restorePremiumCourseProgressForUser } from '@/lib/learnCourseProgress';
 import { setLoggerAuthPresence } from '@/lib/authPresence';
 
@@ -31,6 +32,10 @@ export function useJourneySync() {
       }
       if (event === 'TOKEN_REFRESHED' && session?.user) {
         void pullJourneyFromCloud();
+      }
+      if (event === 'SIGNED_OUT') {
+        setLoggerAuthPresence(false);
+        clearAthleteLocalState();
       }
     });
 
