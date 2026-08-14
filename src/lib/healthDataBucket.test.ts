@@ -30,7 +30,7 @@ function rel(p: string): string {
 }
 
 test('assessment-named sources never call saveNutritionEntry', () => {
-  const assess = srcFiles.filter((p) => /assess/i.test(p));
+  const assess = srcFiles.filter((p) => /assess|parq/i.test(p));
   assert.ok(
     assess.some((p) => p.endsWith('AssessmentsPage.tsx')),
     'AssessmentsPage.tsx disappeared from the walk — the guard is blind'
@@ -38,6 +38,14 @@ test('assessment-named sources never call saveNutritionEntry', () => {
   assert.ok(
     assess.some((p) => p.endsWith('ProfileAssessmentCard.tsx')),
     'ProfileAssessmentCard.tsx disappeared from the walk — the guard is blind'
+  );
+  assert.ok(
+    assess.some((p) => p.endsWith('parqIntake.ts')),
+    'parqIntake.ts disappeared from the walk — the persist home is unguarded'
+  );
+  assert.ok(
+    assess.some((p) => p.endsWith('ParqIntakeCard.tsx')),
+    'ParqIntakeCard.tsx disappeared from the walk — the persist home is unguarded'
   );
   const leaks = assess.filter((p) => readFileSync(p, 'utf8').includes('saveNutritionEntry'));
   assert.deepEqual(
@@ -57,10 +65,16 @@ test('no new Assessment: ${risk} food-row writer', () => {
   );
 });
 
-test('AssessmentsPage still persists mw_last_assessment and nothing in nutrition_logs', () => {
-  const src = readFileSync(join(root, 'src/page-components/AssessmentsPage.tsx'), 'utf8');
-  assert.match(src, /STORAGE_KEYS\.lastAssessment/);
-  assert.match(src, /writeJson\(\s*STORAGE_KEYS\.lastAssessment/);
-  assert.doesNotMatch(src, /saveNutritionEntry/);
-  assert.doesNotMatch(src, /from\('nutrition_logs'\)/);
+test('PAR-Q persist is persistParqScreen — never nutrition_logs', () => {
+  const page = readFileSync(join(root, 'src/page-components/AssessmentsPage.tsx'), 'utf8');
+  const intake = readFileSync(join(root, 'src/lib/journey/parqIntake.ts'), 'utf8');
+  const card = readFileSync(join(root, 'src/components/coach/ParqIntakeCard.tsx'), 'utf8');
+  assert.match(page, /persistParqScreen/);
+  assert.match(card, /persistParqScreen/);
+  assert.match(intake, /STORAGE_KEYS\.lastAssessment/);
+  assert.match(intake, /writeJson\(\s*STORAGE_KEYS\.lastAssessment/);
+  assert.doesNotMatch(page, /saveNutritionEntry/);
+  assert.doesNotMatch(card, /saveNutritionEntry/);
+  assert.doesNotMatch(intake, /saveNutritionEntry/);
+  assert.doesNotMatch(intake, /from\('nutrition_logs'\)/);
 });

@@ -1,6 +1,6 @@
 # Privacy & security program — Phase 0 status
 
-**Tip:** `2026.07-unified.778` (replay onto master `.777`)  
+**Tip:** `2026.07-unified.779` (`.778` land + typecheck / persist-home follow-up)  
 **Date:** 2026-08-14  
 **Not a certification.** Do not claim SOC 2, ISO 27001, HIPAA, or GDPR from this file.
 
