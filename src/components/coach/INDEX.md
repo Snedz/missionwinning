@@ -10,7 +10,7 @@
 | `CoachTodayCard.tsx` | Today commissioned card → links `/coach` |
 | `CoachLogCite.tsx` | The quoted log under a Coach claim, or the no-logs admission (`.766`) |
 | `WeekStrip.tsx` | Week navigation on Coach page |
-| `TodayCoachWeekStrip.tsx` | Compact week strip on Today |
+| `TodayCoachWeekStrip.tsx` | Compact week strip on Today — dose + compact adapt (G6). No second red. |
 | `PlanSessionCard.tsx` | Single session card (exercises, start train, optional adjust); `.699` boss-card why-this-session |
 | `CoachPlanSessionGrid.tsx` | Sorted week grid + boss Start via `resolveCoachBossSessionId` (`.442`); passes session rationale hints and garage `onSwapExercise` |
 | `CoachScheduleEditor.tsx` | Days/week + preferred weekdays (Profile + Coach manage) |
