@@ -2,7 +2,7 @@
 
 **Audience:** Founder + the next Cursor Cloud / graph agent  
 **Lane:** Engineering-Web (unless a loop says Android)  
-**Status:** ACTIVE 2026-08-14 · web `2026.07-unified.789` · Alpha 0.1.0  
+**Status:** ACTIVE 2026-08-14 · web `2026.07-unified.789` · Alpha 0.1.0 · H0 agent queue empty  
 **Does not replace:** [ORCHESTRATION.md](../ORCHESTRATION.md) (what may be built) · [CONTEXT.md](../CONTEXT.md) `## Now` (where we are) · [vision.md](../vision.md) (constitution) · [docs/THESIS.md](THESIS.md) (wedge) · [docs/PLAN.md](PLAN.md) (phases A–I)
 
 This file is the **execution queue** for the agent graph: one concern per loop, spawn, ship, mark done, spawn the next. It is not a second status block and not a license to skip standing hard bans.
@@ -46,6 +46,7 @@ Recent turns:
 | **H0-3** | API inventory + glob guard | `.787` — **done** |
 | **H0-5** | Win Score → Mission Score leftover copy | `.788` this PR — **done** |
 | **H0-6** | Guidebook chapter heroes | `.268` already paper; leftover glyphs `.789` — **done** |
+| **H0-7** | Runbook / scorecard vs CONTEXT | docs — **done** |
 
 ---
 
@@ -94,7 +95,7 @@ Verified in source 2026-08-14 (master `.779`). Findings with proof paths: [§ Re
 | **H0-4** | Public-flip checklist: `start_url` curl + SW; runbook pointers | Flip-day smoke | `done` — docs |
 | **H0-5** | “Win Score” → Mission Score leftover strings | Public copy honesty | `done` — `.788` |
 | **H0-6** | Guidebook chapter heroes still navy/emerald | Design honesty before baselines | `done` — already `.268`; leftover glyphs `.789` |
-| **H0-7** | Production-stack / runbook vs CONTEXT (Upstash, `.104`) | Docs match reality | `open` |
+| **H0-7** | Production-stack / runbook vs CONTEXT (Upstash, `.104`) | Docs match reality | `done` — docs |
 
 ### After H0 (orientation — not open until H0-1…H0-7 are done or `founder`)
 
@@ -264,9 +265,9 @@ Every `public/learn/*.webp` measures 0–1% ink and ≥1% brand red. Guard: [`sr
 
 ---
 
-## H0-7 — Runbook / scorecard vs CONTEXT
+## H0-7 — Runbook / scorecard vs CONTEXT (`done` · docs)
 
-**Ship:** at the top of [LAUNCH_RUNBOOK.md](LAUNCH_RUNBOOK.md) §1 and [PRODUCTION_STACK.md](PRODUCTION_STACK.md) scorecard, one sentence: live ops facts live in CONTEXT `## Now`; if a checkbox here is older, CONTEXT wins. Uncheck Upstash-live if the runbook still claims it. Do not copy the Status table.
+**Shipped:** pointer at LAUNCH_RUNBOOK §1 and PRODUCTION_STACK scorecard. Upstash-live unchecked (CONTEXT: unset). Status table not copied.
 
 ---
 
@@ -276,7 +277,7 @@ Every `public/learn/*.webp` measures 0–1% ink and ≥1% brand red. Guard: [`sr
 You are the next Mission Winning graph-loop agent.
 
 1. Read CONTEXT.md, AGENTS.md, INDEX.md, ORCHESTRATION.md, then docs/GRAPH_LOOP.md.
-2. Implement ONLY the top loop whose Status is `open` (today: H0-7 runbook vs CONTEXT).
+2. Implement ONLY the top loop whose Status is `open`. H0-1…H0-7 are done. Do not invent a new loop. Stop the graph unless the founder names the next concern.
 3. This session skipped Horizon W (2026-08-14). Do not unpark W0–W8. Do not write excellence status: pass.
 4. Investigate on current master before coding. If the claim is already false, mark the loop done in GRAPH_LOOP.md with proof paths and stop.
 5. One concern. One PR. [skip vercel] unless I asked for Preview.
