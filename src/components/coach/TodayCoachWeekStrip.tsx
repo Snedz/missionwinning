@@ -6,12 +6,23 @@ import { Sparkles } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { WeekStrip } from '@/components/coach/WeekStrip';
 import { CoachLogCite } from '@/components/coach/CoachLogCite';
+import { CoachAdaptBanner } from '@/components/coach/CoachAdaptBanner';
 import { useCoachPlan } from '@/hooks/useCoachPlan';
+import { summarizeWeekDose } from '@/lib/coach/weekDose';
 
 /** Compact coach week overview for the Today hub. */
 export function TodayCoachWeekStrip() {
   const { t } = useTranslation();
   const { plan, loading, todayOffset, weekStart } = useCoachPlan();
+  const weekDose = plan ? summarizeWeekDose(plan) : null;
+  const doseIntent =
+    weekDose?.intent === 'strength'
+      ? t('coachWeekDoseStrength', { defaultValue: 'mostly strength' })
+      : weekDose?.intent === 'conditioning'
+        ? t('coachWeekDoseConditioning', { defaultValue: 'conditioning focus' })
+        : weekDose?.intent === 'recovery'
+          ? t('coachWeekDoseRecovery', { defaultValue: 'recovery-heavy' })
+          : t('coachWeekDoseMixed', { defaultValue: 'mixed strength & recovery' });
 
   if (loading) return null;
 
@@ -32,7 +43,23 @@ export function TodayCoachWeekStrip() {
       </CardHeader>
       <CardContent className="space-y-2">
         {plan ? (
-          <WeekStrip weekStart={weekStart} sessions={plan.sessions} todayOffset={todayOffset} />
+          <>
+            <WeekStrip weekStart={weekStart} sessions={plan.sessions} todayOffset={todayOffset} />
+            {weekDose && weekDose.sessionCount > 0 ? (
+              <p
+                className="text-xs text-muted-foreground text-center leading-relaxed"
+                data-testid="today-coach-week-dose"
+              >
+                {t('coachWeekDose', {
+                  count: weekDose.sessionCount,
+                  intent: doseIntent,
+                  minutes: weekDose.estMinutes,
+                  defaultValue: `This week’s dose: ${weekDose.sessionCount} sessions · ${doseIntent} · ~${weekDose.estMinutes} min`,
+                })}
+              </p>
+            ) : null}
+            <CoachAdaptBanner plan={plan} compact todayOffset={todayOffset} />
+          </>
         ) : (
           <p className="text-sm text-muted-foreground text-center py-2">
             {t('coachGenerateWeekHint', {
