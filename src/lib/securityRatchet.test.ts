@@ -92,11 +92,11 @@ test('the ratchet only moves down', () => {
    * silent headroom — the same defect this ship fixed in `i18nCoverage.test.ts`,
    * which sat at 710 against a cap of 16.
    *
-   * `.202` (i18n coverage) and `.209` (bundle budget) are the same shape. The
-   * rule they share: a cap that follows reality is not a cap.
+   * `.767`: 9 → 1. Eight axios GHSAs cleared by `overrides` `axios@1.19.0`.
+   * bigint-buffer remains. Lowered in lockstep with `MAX_ACCEPTED_HIGH`.
    */
   assert.ok(
-    MAX_ACCEPTED_HIGH <= 9,
+    MAX_ACCEPTED_HIGH <= 1,
     `MAX_ACCEPTED_HIGH is ${MAX_ACCEPTED_HIGH}; it may only ever be lowered. Raising it to admit ` +
       'a new advisory is how a gate becomes decoration.'
   );

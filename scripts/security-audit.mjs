@@ -51,22 +51,6 @@ const ACCEPTED = [
     why: 'Buffer overflow in toBigIntLE(). Enters via @solana/spl-token. The only fix npm offers is a breaking downgrade of the payment SDK.',
     fixWhen: 'A non-breaking @solana/spl-token release clears it, or the crypto rail is retired.',
   },
-  // The axios cluster. One package, one entry point, one reason.
-  ...[
-    'GHSA-35jp-ww65-95wh',
-    'GHSA-3g43-6gmg-66jw',
-    'GHSA-777c-7fjr-54vf',
-    'GHSA-hfxv-24rg-xrqf',
-    'GHSA-j5f8-grm9-p9fc',
-    'GHSA-p92q-9vqr-4j8v',
-    'GHSA-pjwm-pj3p-43mv',
-    'GHSA-q8qp-cvcw-x6jj',
-  ].map((id) => ({
-    id,
-    pkg: 'axios',
-    why: 'Enters only through @phantom/react-sdk, which is loaded by a dynamic() import on /bundle and never enters the wedge bundle. npm offers only a breaking SDK downgrade. Downgrading the payment SDK to clear an advisory in a route most users never open is the worse trade.',
-    fixWhen: '@phantom/react-sdk ships a release on a patched axios, or Lifetime USDC is retired.',
-  })),
 ];
 
 /**
@@ -76,8 +60,11 @@ const ACCEPTED = [
  * this only ever moves down and that it equals the allowlist length — an
  * allowlist longer than the cap would let an unreviewed advisory in behind a
  * reviewed one.
+ *
+ * `.767`: 9 → 1. Eight axios GHSAs cleared by an `overrides` pin to
+ * `axios@1.19.0` (Phantom still nested 1.15.1). bigint-buffer remains.
  */
-export const MAX_ACCEPTED_HIGH = 9;
+export const MAX_ACCEPTED_HIGH = 1;
 
 const acceptedIds = new Set(ACCEPTED.map((a) => a.id));
 
