@@ -2,7 +2,11 @@
 export const REFERRAL_ALPHABET = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
 
 export function generateReferralCode(randomBytes?: () => number): string {
-  const rnd = randomBytes ?? (() => Math.floor(Math.random() * REFERRAL_ALPHABET.length));
+  const rnd = randomBytes ?? (() => {
+    const arr = new Uint8Array(1);
+    crypto.getRandomValues(arr);
+    return arr[0];
+  });
   let body = '';
   for (let i = 0; i < 5; i++) {
     body += REFERRAL_ALPHABET[rnd() % REFERRAL_ALPHABET.length];

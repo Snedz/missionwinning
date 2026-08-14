@@ -30,8 +30,10 @@ export function normalizeClassCode(raw: string): string | null {
 
 export function generateClassCode(): string {
   let suffix = '';
+  const arr = new Uint8Array(4);
+  crypto.getRandomValues(arr);
   for (let i = 0; i < 4; i++) {
-    suffix += CODE_CHARS[Math.floor(Math.random() * CODE_CHARS.length)];
+    suffix += CODE_CHARS[arr[i] % CODE_CHARS.length];
   }
   return `MW${suffix}`;
 }
@@ -60,7 +62,9 @@ export function loadTeacherClasses(): TeacherClassRecord[] {
 }
 
 export function generateTeacherPin(): string {
-  return String(100000 + Math.floor(Math.random() * 900000));
+  const arr = new Uint32Array(1);
+  crypto.getRandomValues(arr);
+  return String(100000 + (arr[0] % 900000));
 }
 
 export function saveTeacherPin(code: string, pin: string): void {
