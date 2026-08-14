@@ -44,7 +44,9 @@ Add these for **Production** and **Preview**:
 | `PRIVATE_ALLOW_QUERY_ACCESS` | Optional | Set `true` only to allow `?access=` bypass in production (deprecated; prefer `/private` form + share code out-of-band) |
 | `COACH_LLM_API_URL` | Optional | OpenAI-compatible chat completions URL. Prefer SpaceXAI/xAI: `https://api.x.ai/v1/chat/completions`. Omit for rules-only coach |
 | `COACH_LLM_API_KEY` | Optional | Provider API key (e.g. `xai-…` from [console.x.ai](https://console.x.ai/)). **Never** `NEXT_PUBLIC_` |
-| `COACH_LLM_MODEL` | Optional | Model slug (e.g. `grok-4.5` — confirm on [docs.x.ai/developers/models](https://docs.x.ai/developers/models)) |
+| `COACH_LLM_MODEL` | Optional | Model slug. Default in code is `grok-4.6`. Confirm on [docs.x.ai/developers/models](https://docs.x.ai/developers/models) |
+| `COACH_LLM_REASONING_EFFORT` | Optional | `low` (default) or `medium`. `high` / `xhigh` are ignored unless `COACH_LLM_ALLOW_HIGH_REASONING=true` — 4.6 defaults high and reasoning tokens are not capped by `max_tokens` |
+| `COACH_LLM_ALLOW_HIGH_REASONING` | Optional | Founder override. Leave unset. High reasoning is the silent bill on 4.6 |
 | `COACH_LLM_REQUIRE_ZDR` | Optional | `true` recommended in production when using xAI: fail closed unless response header `x-zero-data-retention: true` |
 | `LLM_DAILY_CAP_COACH_CHAT` | Optional | Per-identity daily LLM request cap (default 60). `0` disables the feature's LLM branch. Same family: `LLM_DAILY_CAP_DAILY_INSIGHT` (30) · `LLM_DAILY_CAP_PLAN_VOICE` (20) · `LLM_DAILY_CAP_DEBRIEF_VOICE` (10) · `LLM_DAILY_CAP_MEAL_VISION` (20). See `src/lib/llm/quota.ts`; spend rows land in `llm_usage` (migration `20260731`). **Daily windows need Upstash env to be real across serverless instances** — without `UPSTASH_REDIS_REST_URL`/`_TOKEN` the counter is per-instance memory (soft) |
 | `NEXT_PUBLIC_VAPID_PUBLIC_KEY` | Optional | Web push public key (`npx web-push generate-vapid-keys`). SW only active when `PRIVATE_MODE=false` prod build |

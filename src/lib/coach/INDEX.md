@@ -19,13 +19,14 @@
 8c3. `logCitation.ts` — the log fact under every Coach line, or `no-logs`; quotes a stored set, never infers (`.766`, survey clarity 2.56/5)
 8d. `coachAdaptReentry.ts` — pure: adapt-banner re-entry is coach day vs freestyle Just Go
 8e. `resolveCoachBossSessionId.ts` — which session gets filled Start on `/coach` (today pending else next)
-8f. `coachChatClient.ts` — HTTP status → copy + stream `[[error:…]]` + request context + `readCoachChatStream` (.445/.453)
+8f. `coachChatClient.ts` — HTTP status → copy + stream `[[error:…]]` + slims log/week citations + `readCoachChatStream` (.445/.453)
+8g. `agent/` — local RAG + MCP-shaped tools + ReAct loop for premium chat (ZDR one-shot only) — [agent/INDEX.md](agent/INDEX.md)
 9. `storage.ts` — `loadPlan`, `savePlan`, taster flags, device id
 10. `contextBuilder.ts` — `readLocalCoachContext`, assembles from localStorage + history
 11. `planVoiceServer.ts` — LLM/rules voice for weekly briefing (used by API route)
 12. `rng.ts` — `mulberry32`, `hashString` (deterministic variety)
 13. `adjust.ts` — free offline “adjust today” (time / bodyweight / avoid group; scales `loadPct`)
-14. Related: `src/lib/coachChatServer.ts` — premium chat prompts + parse (API `/api/coach/chat`)
+14. Related: `src/lib/coachChatServer.ts` — premium chat ReAct + retrieve + parse (API `/api/coach/chat`)
 15. Related load math: `src/lib/workout/percentLoad.ts` — e1RM → weight from `loadPct`
 
 ## Optional LLM + ZDR
@@ -33,8 +34,10 @@
 Shared client: `src/lib/coachLlmClient.ts` (also used by `coachDailyServer.ts` + chat).
 
 - Prefer SpaceXAI/xAI + Console **Zero Data Retention** (team-wide). Header check: `x-zero-data-retention`.
-- **Allowed:** one-shot OpenAI-compatible chat completions.
+- Default model `grok-4.6` with `reasoning_effort=low` and live search off. High reasoning is a founder override.
+- **Allowed:** one-shot OpenAI-compatible chat completions (including a ReAct loop of one-shots).
 - **Forbidden under ZDR ops:** Files, Collections/RAG, Batch, deferred completions, stateful Responses (`store_messages` / `previous_response_id`).
+- **Local RAG:** `src/lib/coach/agent/` retrieves over the catalog + guidebook summaries in-process. That is not vendor Collections.
 - Env: `COACH_LLM_*` — see root `ENV.md`.
 
 ## Tests
@@ -45,6 +48,7 @@ Shared client: `src/lib/coachLlmClient.ts` (also used by `coachDailyServer.ts` +
 | `coachAdaptReentry.test.ts` | Adapt-banner re-entry is coach-prescribed vs Just Go |
 | `resolveCoachBossSessionId.test.ts` | Boss Start pick + grid wiring |
 | `coachChatClient.test.ts` | Status copy · stream tags · request context + panel wiring |
+| `agent/*.test.ts` | Local corpus · BM25 retrieve · log/week slims · tools · MCP · ReAct · no social imports |
 | `weekDose.test.ts` | Session counts + strength/mixed intent labels |
 | `weekRationale.test.ts` | Log-cited adapt / why-this-week (inputs · rule · effect) + banner/page wiring |
 

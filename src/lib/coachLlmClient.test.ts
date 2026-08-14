@@ -1,10 +1,13 @@
 import { describe, it } from 'node:test';
 import assert from 'node:assert/strict';
 import {
+  buildCoachChatCompletionBody,
+  DEFAULT_COACH_LLM_MODEL,
   fetchCoachLlmCompletion,
   isTruthyEnv,
   parseZeroDataRetentionHeader,
   readCoachLlmEnv,
+  resolveCoachReasoningEffort,
   streamCoachLlmCompletion,
 } from '@/lib/coachLlmClient';
 
@@ -25,11 +28,47 @@ describe('isTruthyEnv / readCoachLlmEnv', () => {
     const env = readCoachLlmEnv({
       COACH_LLM_API_URL: ' https://api.x.ai/v1/chat/completions ',
       COACH_LLM_API_KEY: 'xai-test',
-      COACH_LLM_MODEL: 'grok-4.5',
+      COACH_LLM_MODEL: 'grok-4.6',
       COACH_LLM_REQUIRE_ZDR: 'true',
     });
     assert.equal(env.apiUrl, 'https://api.x.ai/v1/chat/completions');
     assert.equal(env.requireZdr, true);
+    assert.equal(env.reasoningEffort, 'low');
+  });
+});
+
+describe('resolveCoachReasoningEffort', () => {
+  it('defaults to low and refuses high unless the founder override is on', () => {
+    assert.equal(resolveCoachReasoningEffort(undefined), 'low');
+    assert.equal(resolveCoachReasoningEffort('HIGH'), 'low');
+    assert.equal(resolveCoachReasoningEffort('xhigh'), 'low');
+    assert.equal(resolveCoachReasoningEffort('medium'), 'medium');
+    assert.equal(resolveCoachReasoningEffort('high', true), 'high');
+    assert.equal(resolveCoachReasoningEffort('xhigh', true), 'xhigh');
+  });
+});
+
+describe('buildCoachChatCompletionBody', () => {
+  it('defaults to grok-4.6, pins reasoning_effort low, and turns search off', () => {
+    const body = buildCoachChatCompletionBody({ system: 's', user: 'u' }, {});
+    assert.equal(DEFAULT_COACH_LLM_MODEL, 'grok-4.6');
+    assert.equal(body.model, 'grok-4.6');
+    assert.equal(body.reasoning_effort, 'low');
+    assert.deepEqual(body.search_parameters, { mode: 'off' });
+    assert.equal(body.max_completion_tokens, 200);
+    assert.equal(body.stream, undefined);
+  });
+
+  it('omitting reasoning_effort or search-off is the 4.6 cost defect', () => {
+    const src = [
+      'reasoning_effort: cfg.reasoningEffort ?? \'low\'',
+      "search_parameters: { mode: 'off' }",
+    ];
+    const body = buildCoachChatCompletionBody({ system: 's', user: 'u' }, {});
+    assert.equal('reasoning_effort' in body, true);
+    assert.notEqual(body.reasoning_effort, undefined);
+    assert.equal((body.search_parameters as { mode: string }).mode, 'off');
+    assert.ok(src.length === 2);
   });
 });
 
@@ -40,6 +79,32 @@ describe('fetchCoachLlmCompletion', () => {
     model: 'grok-4.5',
     requireZdr: false,
   };
+
+  it('posts the 4.6-safe body even when env.model is unset', async () => {
+    let sent = '';
+    const fetchImpl = async (_url: RequestInfo | URL, init?: RequestInit) => {
+      sent = String(init?.body ?? '');
+      return new Response(
+        JSON.stringify({ choices: [{ message: { content: 'ok' } }] }),
+        { status: 200 }
+      );
+    };
+    await fetchCoachLlmCompletion(
+      { system: 's', user: 'u' },
+      {
+        env: { apiUrl: baseEnv.apiUrl, apiKey: baseEnv.apiKey, requireZdr: false },
+        fetchImpl: fetchImpl as typeof fetch,
+      }
+    );
+    const body = JSON.parse(sent) as {
+      model: string;
+      reasoning_effort: string;
+      search_parameters: { mode: string };
+    };
+    assert.equal(body.model, 'grok-4.6');
+    assert.equal(body.reasoning_effort, 'low');
+    assert.equal(body.search_parameters.mode, 'off');
+  });
 
   it('returns unconfigured without url/key', async () => {
     const out = await fetchCoachLlmCompletion(

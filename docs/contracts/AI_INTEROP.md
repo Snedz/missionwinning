@@ -45,6 +45,7 @@ Model: [src/lib/identity/INDEX.md](../../src/lib/identity/INDEX.md), [src/lib/co
 |------|--------|
 | Provider-swappable | `src/lib/coachLlmClient.ts` — prefer ZDR |
 | Fail closed | Rules coach if LLM/ZDR unavailable |
+| Local RAG only | Premium chat retrieves in-process (`src/lib/coach/agent/`). No vendor Collections / Files / stateful Responses |
 | No secret prompts in git | Operator keys in env only |
 | Classification | Never paste INTERNAL strategy into user-visible coach copy |
 | Health claims | [EXERCISE_AS_MEDICINE.md](../EXERCISE_AS_MEDICINE.md) hygiene |

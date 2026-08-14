@@ -16,6 +16,17 @@ export interface LlmUsage {
   totalTokens: number;
   /** True when derived from character counts rather than the provider's meter. */
   estimated: boolean;
+  /**
+   * Hidden thinking tokens (xAI `completion_tokens_details.reasoning_tokens`).
+   * Billed, and *not* capped by `max_tokens` / `max_completion_tokens`.
+   * Omitted when the provider did not report the field.
+   */
+  reasoningTokens?: number;
+  /**
+   * Provider cost ticks when present (`cost_in_usd_ticks`).
+   * 10_000_000_000 ticks = $1. Omitted when unreported.
+   */
+  costUsdTicks?: number;
 }
 
 function toCount(value: unknown): number | null {
@@ -30,17 +41,27 @@ function toCount(value: unknown): number | null {
  */
 export function parseLlmUsage(raw: unknown): LlmUsage | null {
   if (!raw || typeof raw !== 'object') return null;
-  const u = raw as { prompt_tokens?: unknown; completion_tokens?: unknown; total_tokens?: unknown };
+  const u = raw as {
+    prompt_tokens?: unknown;
+    completion_tokens?: unknown;
+    total_tokens?: unknown;
+    cost_in_usd_ticks?: unknown;
+    completion_tokens_details?: { reasoning_tokens?: unknown };
+  };
   const prompt = toCount(u.prompt_tokens);
   const completion = toCount(u.completion_tokens);
   if (prompt === null && completion === null) return null;
   const p = prompt ?? 0;
   const c = completion ?? 0;
+  const reasoning = toCount(u.completion_tokens_details?.reasoning_tokens);
+  const costUsdTicks = toCount(u.cost_in_usd_ticks);
   return {
     promptTokens: p,
     completionTokens: c,
     totalTokens: toCount(u.total_tokens) ?? p + c,
     estimated: false,
+    ...(reasoning !== null ? { reasoningTokens: reasoning } : {}),
+    ...(costUsdTicks !== null ? { costUsdTicks } : {}),
   };
 }
 
@@ -57,5 +78,27 @@ export function estimateLlmUsage(promptChars: number, completionChars: number): 
     completionTokens: completion,
     totalTokens: prompt + completion,
     estimated: true,
+  };
+}
+
+/** Add two meters. A missing side is identity. Estimated if either side was. */
+export function sumLlmUsage(a?: LlmUsage, b?: LlmUsage): LlmUsage | undefined {
+  if (!a) return b;
+  if (!b) return a;
+  const reasoningTokens =
+    a.reasoningTokens !== undefined || b.reasoningTokens !== undefined
+      ? (a.reasoningTokens ?? 0) + (b.reasoningTokens ?? 0)
+      : undefined;
+  const costUsdTicks =
+    a.costUsdTicks !== undefined || b.costUsdTicks !== undefined
+      ? (a.costUsdTicks ?? 0) + (b.costUsdTicks ?? 0)
+      : undefined;
+  return {
+    promptTokens: a.promptTokens + b.promptTokens,
+    completionTokens: a.completionTokens + b.completionTokens,
+    totalTokens: a.totalTokens + b.totalTokens,
+    estimated: a.estimated || b.estimated,
+    ...(reasoningTokens !== undefined ? { reasoningTokens } : {}),
+    ...(costUsdTicks !== undefined ? { costUsdTicks } : {}),
   };
 }

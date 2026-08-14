@@ -176,10 +176,10 @@ All LLM branches are metered per identity since `.188`: token counts (never cont
 | Auth | `gate` + `hasAppAccess` + **premium** (402 `premium_required` if free) |
 | Rate | 10/min/IP + daily per-identity quota |
 | Body cap | 32KB |
-| Schema | `coachChatSchema` — message ≤1000, turns ≤12, compact context (scores + optional today session / exerciseId), optional `deviceId` |
+| Schema | `coachChatSchema` — message ≤1000, turns ≤12, compact citations (scores + optional today session / exerciseId / logFacts ≤12 / weekSessions ≤8 / loadZone), optional `deviceId`. Never raw workout logs. |
 | Success | `{ message, actionLabel?, actionPath?, source: 'llm' }` |
 | Errors | 503 `coach_offline` (LLM unconfigured / ZDR fail-closed), 502 other LLM fail, 429 `coach_quota` + `retryAfterSec` (daily limit; stream emits `[[error:coach_quota]]`) |
-| Notes | No rules fallback. ZDR one-shot via `coachLlmClient`. Transcript not stored server-side. |
+| Notes | No rules fallback. ZDR one-shot via `coachLlmClient` + in-process RAG/ReAct (`src/lib/coach/agent/`). Transcript not stored server-side. |
 
 ---
 

@@ -56,6 +56,9 @@ describe('buildCoachChatRequestContext', () => {
     assert.equal(ctx.exerciseId, 'bench');
     assert.equal(ctx.todaySession?.exercises.length, 12);
     assert.equal(ctx.todaySession?.exercises[0]?.name, 'Name-ex-0');
+    assert.deepEqual(ctx.logFacts, []);
+    assert.deepEqual(ctx.weekSessions, []);
+    assert.equal(ctx.loadZone, 'unknown');
   });
 
   it('omits todaySession when absent', () => {
@@ -66,6 +69,45 @@ describe('buildCoachChatRequestContext', () => {
       resolveExerciseName: (id) => id,
     });
     assert.equal(ctx.todaySession, undefined);
+  });
+
+  it('slims history into citations and counts train days', () => {
+    const now = new Date();
+    const completedAt = new Date(now.getTime() - 2 * 24 * 60 * 60 * 1000).toISOString();
+    const ctx = buildCoachChatRequestContext({
+      readiness: 1,
+      strain: 2,
+      recovery: 3,
+      resolveExerciseName: (id) => id,
+      history: [
+        {
+          id: 'w1',
+          workoutName: 'Lower',
+          startedAt: completedAt,
+          completedAt,
+          durationSeconds: 1800,
+          totalVolume: 400,
+          exercises: [{ exerciseId: 'squats', sets: [{ reps: 5, weight: 80 }] }],
+        },
+      ],
+      loadZone: 'steady',
+      now,
+    });
+    assert.equal(ctx.trainDays14, 1);
+    assert.equal(ctx.logFacts[0]?.exerciseId, 'squats');
+    assert.equal(ctx.logFacts[0]?.weight, 80);
+    assert.equal(ctx.loadZone, 'steady');
+  });
+});
+
+describe('client chat helpers stay corpus-free', () => {
+  it('does not import the guidebook-backed corpus (server-only)', () => {
+    const src = readFileSync(
+      path.join(import.meta.dirname, 'coachChatClient.ts'),
+      'utf8'
+    );
+    assert.doesNotMatch(src, /coach\/agent\/corpus/);
+    assert.doesNotMatch(src, /guidebook\/chapters/);
   });
 });
 

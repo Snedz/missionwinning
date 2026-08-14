@@ -7,6 +7,7 @@
  *
  * ZDR-safe only: one-shot chat completions. Do not use Files, Collections, Batch,
  * deferred completions, or stateful Responses store_messages / previous_response_id.
+ * Default model is grok-4.6 with reasoning_effort=low and live search off.
  */
 
 import { estimateLlmUsage, parseLlmUsage, type LlmUsage } from '@/lib/llm/usage';
@@ -41,11 +42,19 @@ export type CoachLlmFail = {
 
 export type CoachLlmResult = CoachLlmOk | CoachLlmFail;
 
+export const DEFAULT_COACH_LLM_MODEL = 'grok-4.6';
+
+/** Visible-answer cap. Does not cap billed reasoning tokens — `reasoning_effort` does. */
+export const DEFAULT_COACH_MAX_COMPLETION_TOKENS = 200;
+
+export type CoachReasoningEffort = 'low' | 'medium' | 'high' | 'xhigh';
+
 export type CoachLlmEnv = {
   apiUrl?: string;
   apiKey?: string;
   model?: string;
   requireZdr?: boolean;
+  reasoningEffort?: CoachReasoningEffort;
 };
 
 /** Pure parse of the ZDR response header (xAI returns "true" | "false"). */
@@ -65,6 +74,20 @@ export function isTruthyEnv(value: string | undefined): boolean {
   return v === '1' || v === 'true' || v === 'yes' || v === 'on';
 }
 
+/**
+ * 4.6 defaults `reasoning_effort` to high and cannot disable thinking.
+ * High/xhigh stay off unless the founder sets COACH_LLM_ALLOW_HIGH_REASONING.
+ */
+export function resolveCoachReasoningEffort(
+  raw: string | undefined,
+  allowHigh = false
+): CoachReasoningEffort {
+  const v = (raw ?? '').trim().toLowerCase();
+  if (v === 'medium') return 'medium';
+  if ((v === 'high' || v === 'xhigh') && allowHigh) return v;
+  return 'low';
+}
+
 export function readCoachLlmEnv(
   env: Record<string, string | undefined> = process.env
 ): CoachLlmEnv {
@@ -73,7 +96,39 @@ export function readCoachLlmEnv(
     apiKey: env.COACH_LLM_API_KEY?.trim() || undefined,
     model: env.COACH_LLM_MODEL?.trim() || undefined,
     requireZdr: isTruthyEnv(env.COACH_LLM_REQUIRE_ZDR),
+    reasoningEffort: resolveCoachReasoningEffort(
+      env.COACH_LLM_REASONING_EFFORT,
+      isTruthyEnv(env.COACH_LLM_ALLOW_HIGH_REASONING)
+    ),
   };
+}
+
+/**
+ * One request body for both one-shot and stream. Search stays off: the live
+ * web is extra memory and not our catalog. reasoning_effort is always set.
+ */
+export function buildCoachChatCompletionBody(
+  req: CoachLlmRequest,
+  cfg: Pick<CoachLlmEnv, 'model' | 'reasoningEffort'> & { stream?: boolean }
+): Record<string, unknown> {
+  const maxOut = req.maxTokens ?? DEFAULT_COACH_MAX_COMPLETION_TOKENS;
+  const body: Record<string, unknown> = {
+    model: cfg.model?.trim() || DEFAULT_COACH_LLM_MODEL,
+    messages: [
+      { role: 'system', content: req.system },
+      { role: 'user', content: req.user },
+    ],
+    max_completion_tokens: maxOut,
+    max_tokens: maxOut,
+    temperature: req.temperature ?? 0.6,
+    reasoning_effort: cfg.reasoningEffort ?? 'low',
+    search_parameters: { mode: 'off' },
+  };
+  if (cfg.stream) {
+    body.stream = true;
+    body.stream_options = { include_usage: true };
+  }
+  return body;
 }
 
 type FetchLike = typeof fetch;
@@ -95,7 +150,6 @@ export async function fetchCoachLlmCompletion(
     return { ok: false, reason: 'unconfigured' };
   }
 
-  const model = cfg.model || 'grok-4.5';
   const fetchImpl = options?.fetchImpl ?? fetch;
   const timeoutMs = options?.timeoutMs ?? 12_000;
   const t0 = Date.now();
@@ -107,15 +161,12 @@ export async function fetchCoachLlmCompletion(
         'Content-Type': 'application/json',
         Authorization: `Bearer ${cfg.apiKey}`,
       },
-      body: JSON.stringify({
-        model,
-        messages: [
-          { role: 'system', content: req.system },
-          { role: 'user', content: req.user },
-        ],
-        max_tokens: req.maxTokens ?? 200,
-        temperature: req.temperature ?? 0.6,
-      }),
+      body: JSON.stringify(
+        buildCoachChatCompletionBody(req, {
+          model: cfg.model,
+          reasoningEffort: cfg.reasoningEffort,
+        })
+      ),
       signal: AbortSignal.timeout(timeoutMs),
     });
 
@@ -210,6 +261,9 @@ function logCoachLlmMeta(meta: {
             promptTokens: meta.usage.promptTokens,
             completionTokens: meta.usage.completionTokens,
             estimated: meta.usage.estimated,
+            ...(meta.usage.reasoningTokens !== undefined
+              ? { reasoningTokens: meta.usage.reasoningTokens }
+              : {}),
           }
         : {}),
     })
@@ -245,7 +299,6 @@ export async function* streamCoachLlmCompletion(
     return { ok: false, reason: 'unconfigured' };
   }
 
-  const model = cfg.model || 'grok-4.5';
   const fetchImpl = options?.fetchImpl ?? fetch;
   const timeoutMs = options?.timeoutMs ?? 30_000;
   const t0 = Date.now();
@@ -266,20 +319,13 @@ export async function* streamCoachLlmCompletion(
         'Content-Type': 'application/json',
         Authorization: `Bearer ${cfg.apiKey}`,
       },
-      body: JSON.stringify({
-        model,
-        messages: [
-          { role: 'system', content: req.system },
-          { role: 'user', content: req.user },
-        ],
-        max_tokens: req.maxTokens ?? 200,
-        temperature: req.temperature ?? 0.6,
-        stream: true,
-        // OpenAI-compatible: ask for a final usage chunk. xAI honors this; a
-        // provider that 400s on it lands in the existing http_error degrade
-        // path, and one that ignores it falls back to the char estimate below.
-        stream_options: { include_usage: true },
-      }),
+      body: JSON.stringify(
+        buildCoachChatCompletionBody(req, {
+          model: cfg.model,
+          reasoningEffort: cfg.reasoningEffort,
+          stream: true,
+        })
+      ),
       signal,
     });
     clearTimeout(timeoutId);

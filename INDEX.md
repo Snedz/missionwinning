@@ -94,6 +94,7 @@
 | Routes & API | [app/INDEX.md](app/INDEX.md) | Next.js pages and API handlers |
 | Business logic | [src/lib/INDEX.md](src/lib/INDEX.md) | Pure TS domain code |
 | Mission Coach engine | [src/lib/coach/INDEX.md](src/lib/coach/INDEX.md) | Weekly plan prediction |
+| Mission Coach chat | [src/lib/coach/agent/INDEX.md](src/lib/coach/agent/INDEX.md) | Local RAG + tools + ReAct (ZDR one-shot) |
 | Mission Identity (web) | [src/lib/identity/INDEX.md](src/lib/identity/INDEX.md) | Call sign, Athlete Card storage |
 | Shared pure TS (web + native) | [packages/mw-core/INDEX.md](packages/mw-core/INDEX.md) | coach, workout, identity, economy, module contracts |
 | Native Expo app | [apps/mobile/INDEX.md](apps/mobile/INDEX.md) | Flow prototype only (not Play product) |
