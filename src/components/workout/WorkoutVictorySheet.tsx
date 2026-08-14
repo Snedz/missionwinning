@@ -33,6 +33,7 @@ import { VictorySecondaryLinks } from '@/components/workout/VictorySecondaryLink
 import { VictoryRewardsLine } from '@/components/rewards/VictoryRewardsLine';
 import { buildVictorySecondaryLinks } from '@/lib/workout/victorySecondaryLinks';
 import { shouldCollapseVictoryDetails } from '@/lib/workout/victoryLayout';
+import { isSurfaceEnabled } from '@/lib/surface';
 import { parseNutritionLog } from '@/lib/nutritionQuickLog';
 import { readRaw } from '@/lib/storage/safeStorage';
 import { STORAGE_KEYS } from '@/lib/storage/keys';
@@ -100,6 +101,8 @@ export function WorkoutVictorySheet({
       primaryHref: summary.nextAction.href,
       proteinLoggedToday,
       strainDelta: summary.bodyDelta?.strain,
+      workingMuscleGroups: summary.workingMuscleGroups,
+      moveSurfaceEnabled: isSurfaceEnabled('move'),
     });
   }, [summary]);
 

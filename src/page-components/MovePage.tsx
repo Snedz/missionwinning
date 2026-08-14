@@ -4,7 +4,7 @@
  * See: app/INDEX.md, src/page-components/INDEX.md
  */
 
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { useTranslation } from 'react-i18next';
 import { useLocaleFormat } from '@/hooks/useLocaleFormat';
@@ -27,6 +27,7 @@ import {
   filterFlowsByCollection,
   MOVE_COLLECTIONS,
   parseMoveCollectionParam,
+  parseMoveFlowParam,
   type MoveCollectionId,
 } from '@/lib/move/filterFlows';
 import { cn } from '@/lib/utils';
@@ -40,7 +41,15 @@ export function MovePage() {
   const { premium, loading: premiumLoading } = usePremium();
   const freeBeta = isFreeBeta();
   const [premiumFlows, setPremiumFlows] = useState<MobilityFlow[]>([]);
-  const [activeFlowId, setActiveFlowId] = useState<string | null>(null);
+  const [activeFlowId, setActiveFlowId] = useState<string | null>(() =>
+    parseMoveFlowParam(
+      typeof window !== 'undefined'
+        ? new URLSearchParams(window.location.search).get('flow')
+        : null,
+      MOBILITY_FLOWS
+    )
+  );
+  const skipUrlFlow = useRef(false);
   const [refresh, setRefresh] = useState(0);
   const [premiumOpen, setPremiumOpen] = useState(false);
   const [premiumFetchError, setPremiumFetchError] = useState(false);
@@ -56,6 +65,12 @@ export function MovePage() {
 
   useEffect(() => {
     setCollectionId(parseMoveCollectionParam(searchParams.get('collection')));
+  }, [searchParams]);
+
+  useEffect(() => {
+    if (skipUrlFlow.current) return;
+    const id = parseMoveFlowParam(searchParams.get('flow'), MOBILITY_FLOWS);
+    if (id) setActiveFlowId(id);
   }, [searchParams]);
 
   useEffect(() => {
@@ -106,7 +121,10 @@ export function MovePage() {
         <TimedFlowRunner
           flow={activeFlow}
           onComplete={() => setRefresh((r) => r + 1)}
-          onExit={() => setActiveFlowId(null)}
+          onExit={() => {
+            skipUrlFlow.current = true;
+            setActiveFlowId(null);
+          }}
         />
       </div>
     );

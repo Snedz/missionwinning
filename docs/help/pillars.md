@@ -28,7 +28,7 @@ See [fuel-and-nutrition.md](fuel-and-nutrition.md).
 
 **Route:** `/move`
 
-Mobility and recovery flows — timed sequences, breathing, and light movement on rest days. Cross-pillar coach may suggest Move when strain is high.
+Mobility and recovery flows — timed sequences, breathing, and light movement on rest days. After you log a session, Victory may offer **one** matching free flow for the muscles you just trained. Cross-pillar coach may also suggest Move when strain is high.
 
 ## Mind
 

@@ -14,8 +14,8 @@ Root-level `@/lib/{name}` paths re-export from here for compatibility — prefer
 6. `workoutTemplate.ts` — template → logged sets  
 7. `workoutPr.ts` — personal record detection  
 8. `workoutMerge.ts` — local/cloud history fingerprint merge  
-9. `workoutVictory.ts` — post-workout summary; early/no-plan → Mission Coach; freestyle progression skipped when prescribed (`.410`); one-exit secondary Today helper (`.422`)  
-10. `activeWorkoutHelpers.ts` — next incomplete set, last session, set stats, `buildConsoleSet` / `planApplyTargets` / `resolveActiveSetDial` (`.297`/`.303`); F-013 session carry beats prescription on the next set  
+9. `workoutVictory.ts` — post-workout summary; early/no-plan → Mission Coach; freestyle progression skipped when prescribed (`.410`); one-exit secondary Today helper (`.422`); working-set muscles for the Move seam (`.698`)  
+10. `activeWorkoutHelpers.ts` — next incomplete set, last session, set stats, `buildConsoleSet` / `planApplyTargets` / `resolveActiveSetDial` (`.297`/`.303`)  
 11. `activeWorkoutPulse.ts` — nav pulse flag without store  
 12. `workoutPersistLite.ts` — history/streak from localStorage (cold path)
 13. `sessionCheckInOffer.ts` — pure W1 gate: never Mind-sheet the first mission (`.293`)
@@ -25,7 +25,6 @@ Root-level `@/lib/{name}` paths re-export from here for compatibility — prefer
 17. `activeSetInputPatches.ts` — Use next / plate / apply-targets field patches (`.407`)
 18. `activeTableSetControls.ts` — desktop table set dial + kind projection (`.408`)
 19. `activeWorkoutHelpers.ts` — also `resolveExerciseNextTarget` + loadPct/menu gates (`.418`); `formatPrevSetLabels` + footer peel (`.425`)
-20. `importCsv.ts` — Strong / Hevy CSV in+out (0.1 beta, free); Boostcamp + MW still import; fixtures in `fixtures/`
 
 ## Tests (colocated)
 
@@ -40,13 +39,10 @@ Root-level `@/lib/{name}` paths re-export from here for compatibility — prefer
 | `workoutPr.test.ts` | PR detection |
 | `workoutMerge.test.ts` | Conflict / cap / fingerprint |
 | `workoutVictory.test.ts` | Victory next action |
-| `importCsv.test.ts` | Strong / Hevy in+out + Boostcamp / MW import + round-trip |
-| `csvHistoryFree.test.ts` | Import/export never paywalled; fixtures present |
+| `victorySecondaryLinks.test.ts` | One Victory seam line; Move skips fuel (`.698`) |
 | `activeWorkoutHelpers.test.ts` | Next set, last session stats |
 | `sessionCheckInOffer.test.ts` | First-mission never offers check-in (`.293`) |
 | `loggerSpeed.test.ts` | Use-next offer rules (`.288`) |
-| `smartDefaultsF013.test.ts` | Next-set last load/reps prefill (F-013) |
-| `setTableDensity694.test.ts` | F-003 density: sole poster-red Log, ≥44px, Prev anchor |
 
 ## UI & integration (not in this folder)
 

@@ -1,5 +1,3 @@
-# Rotated for .698
-
 ## 2026-08-10 — Horizon W excellence RESULT + agent stop-rule (`.669`)
 
 Process ratchet for the open excellence loop: one home at `docs/EXCELLENCE_RESULT.md`
