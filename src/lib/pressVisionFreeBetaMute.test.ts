@@ -8,6 +8,13 @@ import { join } from 'node:path';
 
 const root = join(import.meta.dirname, '..', '..');
 
+test('PressPage public copy does not leak internal repo paths', () => {
+  const src = readFileSync(join(root, 'src/page-components/PressPage.tsx'), 'utf8');
+  const withoutComments = src.replace(/\/\*[\s\S]*?\*\//g, '').replace(/\/\/.*$/gm, '');
+  assert.doesNotMatch(withoutComments, /docs\/brand-guidelines/);
+  assert.doesNotMatch(withoutComments, /live in the repo at/i);
+});
+
 test('PressPage has open-beta medium boilerplate without Super Bundle', () => {
   const src = readFileSync(join(root, 'src/page-components/PressPage.tsx'), 'utf8');
   assert.match(src, /MEDIUM_BOILERPLATE_OPEN_BETA/);
