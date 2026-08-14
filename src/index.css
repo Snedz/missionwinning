@@ -550,10 +550,13 @@
     animation: page-enter 0.48s ease-out both;
   }
 
-  /* Scroll-reveal — pair with Reveal / useScrollReveal */
+  /* Scroll-reveal — pair with Reveal / useScrollReveal.
+     Paint first. IntersectionObserver never fires for a full-page
+     capture or a crawler, so opacity:0 here left blank paper between
+     "At a glance" and FAQ. Fade is not allowed to hide copy. */
   .reveal {
-    opacity: 0;
-    transform: translateY(14px);
+    opacity: 1;
+    transform: none;
     transition:
       opacity 0.55s cubic-bezier(0.22, 1, 0.36, 1),
       transform 0.55s cubic-bezier(0.22, 1, 0.36, 1);
@@ -561,7 +564,7 @@
 
   .reveal-visible {
     opacity: 1;
-    transform: translateY(0);
+    transform: none;
   }
 
   .ticker-track {

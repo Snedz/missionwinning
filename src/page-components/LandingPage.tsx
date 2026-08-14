@@ -276,13 +276,9 @@ export function LandingPage() {
               })}
             </h2>
             <div className="grid gap-8 sm:grid-cols-3">
-              {/* The handoff's three documentary photos live here — the section
-                  that is literally about where you train. They ship as empty
-                  slots: the rule is real grayscale photography or nothing, so a
-                  neutral block that says what belongs in it beats a stand-in
-                  image that has to be found and removed later. The `shot`
-                  string is the brief; add /public/photo/<name>.{avif,webp} and
-                  pass `base` to fill one. */}
+              {/* Three documentary stills already live in /public/photo/.
+                  GrayscalePhoto gets `base` so the slot is the photograph,
+                  not a caption. Real grayscale or nothing — no stock. */}
               {[
                 {
                   k: 'landingAnywhereOffline',
