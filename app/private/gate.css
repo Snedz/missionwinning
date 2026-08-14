@@ -309,6 +309,27 @@
   color: var(--g-muted);
 }
 
+/*
+ * `.770` — the way to reach the other 39 languages, now that the first-visit
+ * sheet waits to be asked. Footer weight on purpose: it must be findable without
+ * competing with "Log a set".
+ */
+.gate-lang-btn {
+  appearance: none;
+  background: none;
+  border: 0;
+  padding: 0;
+  font: inherit;
+  color: var(--g-muted);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  cursor: pointer;
+  min-height: 44px;
+}
+.gate-lang-btn:hover {
+  color: var(--g-accent-700);
+}
+
 /* AppLegalFooter carries dark-theme utility classes until Phase 1 — re-seat it. */
 .mw-gate .gate-footer-links {
   padding: 0;

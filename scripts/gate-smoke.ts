@@ -2,13 +2,32 @@
 /**
  * Post-deploy gate smoke — curl-style checks against a running deployment.
  * Usage: SMOKE_BASE_URL=https://www.missionwinning.com npm run gate-smoke
+ *
+ * Against a *protected* deployment (any Preview with Deployment Protection on),
+ * pass credentials or the run cannot see the app at all:
+ *   VERCEL_AUTOMATION_BYPASS_SECRET=… SMOKE_BASE_URL=https://…vercel.app npm run gate-smoke
+ * Without them every path answers from Vercel's SSO wall, and this script now
+ * says so once instead of reporting ~26 invented product defects (F-035).
  */
+import {
+  describeProtectionBlock,
+  protectionEnvFrom,
+  protectionHeaders,
+  protectionSummary,
+  type ProtectionBlock,
+} from '../src/lib/deploymentProtection';
+
 const base = (process.env.SMOKE_BASE_URL || process.argv[2] || '').replace(/\/$/, '');
 
 if (!base) {
   console.error('Usage: SMOKE_BASE_URL=https://your-domain npm run gate-smoke');
   process.exit(1);
 }
+
+/** Credentials for a protected deployment, if the caller has any. */
+const authHeaders = protectionHeaders(protectionEnvFrom(process.env));
+/** Every response that Vercel — not the app — refused. */
+const protectionBlocks: ProtectionBlock[] = [];
 
 type Check = { name: string; ok: boolean; detail: string };
 
@@ -32,7 +51,32 @@ async function unlockCookie(baseUrl: string, secret: string): Promise<string> {
 async function headOrGet(path: string, init?: RequestInit): Promise<Response> {
   const url = `${base}${path}`;
   try {
-    return await fetch(url, { ...init, signal: AbortSignal.timeout(15_000) });
+    const res = await fetch(url, {
+      ...init,
+      headers: { ...authHeaders, ...(init?.headers as Record<string, string> | undefined) },
+      signal: AbortSignal.timeout(15_000),
+    });
+    /*
+     * Record the wall without changing what any check sees. A refused request is
+     * still returned to its caller, which will report its own failure — but the
+     * run-level summary can now name the real cause once (F-035), instead of
+     * leaving a reader to conclude the product is broken.
+     */
+    const challengeBody =
+      res.status === 401 || res.status === 403
+        ? await res
+            .clone()
+            .text()
+            .catch(() => '')
+        : '';
+    const block = describeProtectionBlock({
+      path,
+      status: res.status,
+      location: res.headers.get('location'),
+      body: challengeBody,
+    });
+    if (block.protected) protectionBlocks.push(block);
+    return res;
   } catch (e) {
     throw new Error(`${url} — ${e instanceof Error ? e.message : String(e)}`);
   }
@@ -792,6 +836,20 @@ async function main() {
   console.log(
     failed ? `\n${failed} check(s) failed.${tail}\n` : `\nAll gate checks passed.${tail}\n`
   );
+
+  /*
+   * `.770` — say "you were never let in" before anyone reads the failures as
+   * findings. Shard 0 walked a protected Preview, got 302 → vercel.com/sso-api
+   * on all 19 paths, and filed "Train unreachable" against the product; the app
+   * was never reached. A runner that cannot tell a locked door from a broken
+   * room will keep producing that finding, so this one names the door.
+   */
+  const protection = protectionSummary(protectionBlocks);
+  if (protection) {
+    console.log(`  ! ${protection}`);
+    console.log(`    ${protectionBlocks[0].detail}\n`);
+  }
+
   process.exit(failed ? 1 : 0);
 }
 

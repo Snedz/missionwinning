@@ -1,10 +1,32 @@
 'use client';
 
 /**
- * First-visit language + country chooser.
+ * Language + country chooser — **opened on request, never on arrival**.
+ *
  * Language is a preference. Country list is served ISOs only
- * (`isHostedServiceSupportedCountry`). Detected blocked territory shows
+ * (`isHostedServiceSupportedCountry`). A detected blocked territory shows
  * TERRITORY_BLOCK_MESSAGES and cannot continue into hosted signup.
+ *
+ * `.770` — this used to open itself on every first visit, on every route,
+ * mounted from `app/i18n-pwa-provider.tsx`. Measured on a production build with
+ * the gate up: a full-screen overlay at `z-[70]` with a `bg-foreground/50` scrim
+ * owned the first paint of www, and `elementsFromPoint` on the poster's "Log a
+ * set" button returned the sheet — the primary CTA was **not clickable at all**
+ * on a 390×844 phone. Shard 1 (US/LatAm, ops #16) named a gate before any value
+ * as its biggest theme and shard 4 named the onboarding wall; this was both,
+ * ahead of the free logger.
+ *
+ * It was also a confirmation dialog for a decision already made. The effect
+ * below applies the browser's language immediately, so by the time the sheet
+ * appeared the page had already switched; "Continue" only *persisted* the guess,
+ * and dismissing the scrim persisted the same values. There was no branch in
+ * which the visitor's answer changed anything.
+ *
+ * So the guess is now persisted silently and the sheet opens only when someone
+ * asks for it — {@link LOCALE_CHOOSER_OPEN_EVENT}, wired from the gate poster
+ * and available anywhere. Discoverability went up rather than down: the gate had
+ * no language control of its own, so this overlay was the only way to reach 40
+ * languages from www, and dismissing it was the only way to reach the product.
  */
 
 import { useEffect, useMemo, useState } from 'react';
@@ -13,6 +35,7 @@ import i18n from '@/i18n';
 import { UI_LANGS, UI_LANG_PICKER_LABELS, normalizeUiLang, type UiLang } from '@/i18n/appLangs';
 import { AdaptiveOverlay } from '@/components/ui/AdaptiveOverlay';
 import { Button } from '@/components/ui/button';
+import { LOCALE_CHOOSER_OPEN_EVENT } from '@/lib/i18n/localeChooserEvent';
 import {
   countryDisplayName,
   servedCountryCodes,
@@ -23,6 +46,7 @@ import {
   detectCountryHint,
   detectLanguageHint,
   hasConfirmedLocaleChoice,
+  loadLocaleCountryPref,
   persistLocaleCountryPref,
   resolvePersistCountry,
 } from '@/lib/i18n/localePreference';
@@ -44,16 +68,28 @@ export function LocaleCountryChooser() {
 
   const served = useMemo(() => servedCountryCodes(), []);
 
+  /** Someone asked for the sheet — the only way it opens. */
   useEffect(() => {
-    if (hasConfirmedLocaleChoice()) return;
+    const onOpen = () => setOpen(true);
+    window.addEventListener(LOCALE_CHOOSER_OPEN_EVENT, onOpen);
+    return () => window.removeEventListener(LOCALE_CHOOSER_OPEN_EVENT, onOpen);
+  }, []);
+
+  useEffect(() => {
     const hl =
       typeof window !== 'undefined'
         ? new URLSearchParams(window.location.search).get('hl')
         : null;
-    const lang = detectLanguageHint({ queryHl: hl });
+    const confirmed = hasConfirmedLocaleChoice();
+    const saved = loadLocaleCountryPref();
+    const lang = confirmed
+      ? normalizeUiLang(saved?.language ?? i18n.language)
+      : detectLanguageHint({ queryHl: hl });
     setLanguage(lang);
-    void i18n.changeLanguage(lang);
-    applyDocumentLang(lang);
+    if (!confirmed) {
+      void i18n.changeLanguage(lang);
+      applyDocumentLang(lang);
+    }
 
     let cancelled = false;
     void (async () => {
@@ -70,14 +106,26 @@ export function LocaleCountryChooser() {
       const territory = territoryMessageForCountry(detected);
       const message = geo?.blockMessage ?? territory?.message ?? null;
       setBlockMessage(message);
-      if (isHostedServiceSupportedCountry(detected)) {
-        setPickedCountry(detected);
-      } else if (served.includes('US')) {
-        setPickedCountry('US');
-      } else {
-        setPickedCountry(served[0] ?? 'US');
+      const picked = isHostedServiceSupportedCountry(detected)
+        ? detected
+        : served.includes('US')
+          ? 'US'
+          : served[0] ?? 'US';
+      setPickedCountry(picked);
+
+      /*
+       * Write the guess rather than posing it as a question. These are the exact
+       * values the old "Continue" button wrote, so nothing about the resulting
+       * preference changed — only the wall in front of it. Without this the
+       * detected language would re-apply on every load and never be recorded,
+       * and `hasConfirmedLocaleChoice()` would stay false forever.
+       */
+      if (!confirmed) {
+        persistLocaleCountryPref({
+          language: lang,
+          country: resolvePersistCountry({ detected, picked }),
+        });
       }
-      setOpen(true);
     })();
 
     return () => {

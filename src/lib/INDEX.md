@@ -38,6 +38,8 @@
 | **Service territory** | `legal/supportedRegions.ts`, `legal/territoryAccessClient.ts`, `legal/waitlistTerritory.ts` | The block list is the contract: signup, checkout, and (`.765`) the gate waitlist |
 | **First paint** | `firstPaintFloor.test.ts` | No raw keys, no textless public fallback, no copy that changes after hydration |
 | **First-paint weight** | `linkPrefetchWeight.test.ts` | A footer full of legal `<Link>`s must not prefetch the legal library (`.768`) |
+| **First-paint wall** | `i18n/firstPaintWall.test.ts` | No overlay opens itself on arrival — one covered the gate's "Log a set" (`.770`) |
+| **Protected deployments** | `deploymentProtection.ts` + test | Carry bypass / OIDC credentials into a walk, and never report Vercel's wall as a product defect (F-035, `.770`) |
 | **i18n loaders** | `routeMetadata.ts`, `navConfig.ts` | Not strings — see `src/i18n/` |
 | **Units** | `units.ts` | `weightStep`, metric/imperial |
 | **Backup** | `backup.ts` | Device backup export/restore |

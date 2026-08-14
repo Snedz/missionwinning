@@ -1,6 +1,19 @@
 import { defineConfig } from '@playwright/test';
 
+import { protectionEnvFrom, protectionHeaders } from './src/lib/deploymentProtection';
+
 const baseURL = process.env.SMOKE_BASE_URL || 'http://localhost:3000';
+
+/*
+ * Credentials for a Preview behind Deployment Protection (F-035, `.770`).
+ *
+ * Empty for localhost and for any deployment that is already open, so this is
+ * inert in the gate. When VERCEL_AUTOMATION_BYPASS_SECRET (or VERCEL_OIDC_TOKEN)
+ * is present, every navigation carries it and a protected Preview becomes
+ * walkable — the browser form also asks Vercel to set the bypass cookie so the
+ * grant survives the redirects a real walk makes.
+ */
+const protectionAuth = protectionHeaders(protectionEnvFrom(process.env, { browser: true }));
 
 export default defineConfig({
   testDir: 'tests/e2e',
@@ -20,6 +33,7 @@ export default defineConfig({
     baseURL,
     trace: 'on-first-retry',
     screenshot: 'only-on-failure',
+    ...(Object.keys(protectionAuth).length ? { extraHTTPHeaders: protectionAuth } : {}),
   },
   projects: [
     {

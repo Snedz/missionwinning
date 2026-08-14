@@ -5,6 +5,7 @@ import { GATE_EN } from '@/i18n/gateEn';
 const GATE_ES: Record<string, string> = {
   ...GATE_EN,
   gateEyebrow: 'Beta gratis',
+  gateLanguageCta: 'Idioma / Language / 语言',
   gateTitle1: 'Entrena en cualquier lugar.',
   gateTitle2: 'Gana a diario.',
   gateSubtitle:
@@ -34,6 +35,7 @@ const GATE_ES: Record<string, string> = {
 const GATE_FR: Record<string, string> = {
   ...GATE_EN,
   gateEyebrow: 'Bêta gratuite',
+  gateLanguageCta: 'Langue / Language / 语言',
   gateTitle1: 'Entraînez-vous partout.',
   gateTitle2: 'Gagnez chaque jour.',
   gateSubtitle:
@@ -56,6 +58,7 @@ const GATE_FR: Record<string, string> = {
 const GATE_PT: Record<string, string> = {
   ...GATE_EN,
   gateEyebrow: 'Beta grátis',
+  gateLanguageCta: 'Idioma / Language / 语言',
   gateTitle1: 'Treine em qualquer lugar.',
   gateTitle2: 'Vença todo dia.',
   gateSubtitle:
@@ -78,6 +81,7 @@ const GATE_PT: Record<string, string> = {
 const GATE_DE: Record<string, string> = {
   ...GATE_EN,
   gateEyebrow: 'Kostenlose Beta',
+  gateLanguageCta: 'Sprache / Language / 语言',
   gateTitle1: 'Überall trainieren.',
   gateTitle2: 'Täglich gewinnen.',
   gateSubtitle:
@@ -100,6 +104,7 @@ const GATE_DE: Record<string, string> = {
 const GATE_IT: Record<string, string> = {
   ...GATE_EN,
   gateEyebrow: 'Beta aperta solo su invito',
+  gateLanguageCta: 'Lingua / Language / 语言',
   gateTitle1: 'Allena ovunque.',
   gateTitle2: 'Vinci ogni giorno.',
   gateWaitlistTitle: 'Avvisami al lancio',
@@ -115,6 +120,7 @@ const GATE_IT: Record<string, string> = {
 const GATE_RU: Record<string, string> = {
   ...GATE_EN,
   gateEyebrow: 'Открытая бета по приглашению',
+  gateLanguageCta: 'Язык / Language / 语言',
   gateTitle1: 'Тренируйся где угодно.',
   gateTitle2: 'Побеждай каждый день.',
   gateWaitlistTitle: 'Уведомить о запуске',
@@ -130,6 +136,7 @@ const GATE_RU: Record<string, string> = {
 const GATE_JA: Record<string, string> = {
   ...GATE_EN,
   gateEyebrow: '招待制オープンベータ',
+  gateLanguageCta: '言語 / Language / 语言',
   gateTitle1: 'どこでもトレーニング。',
   gateTitle2: '毎日勝つ。',
   gateWaitlistTitle: 'ローンチ時に通知',
@@ -145,6 +152,7 @@ const GATE_JA: Record<string, string> = {
 const GATE_KO: Record<string, string> = {
   ...GATE_EN,
   gateEyebrow: '초대 전용 오픈 베타',
+  gateLanguageCta: '언어 / Language / 语言',
   gateTitle1: '어디서나 훈련하세요.',
   gateTitle2: '매일 승리하세요.',
   gateWaitlistTitle: '출시 알림 받기',
@@ -160,6 +168,7 @@ const GATE_KO: Record<string, string> = {
 const GATE_ZH: Record<string, string> = {
   ...GATE_EN,
   gateEyebrow: '仅邀请开放测试',
+  gateLanguageCta: '语言 / Language / Español',
   gateTitle1: '随处训练。',
   gateTitle2: '每日取胜。',
   gateWaitlistTitle: '上线时通知我',
@@ -175,6 +184,7 @@ const GATE_ZH: Record<string, string> = {
 const GATE_TH: Record<string, string> = {
   ...GATE_EN,
   gateEyebrow: 'โอเพนเบต้าเฉพาะผู้ได้รับเชิญ',
+  gateLanguageCta: 'ภาษา / Language / 语言',
   gateTitle1: 'ฝึกได้ทุกที่',
   gateTitle2: 'ชนะทุกวัน',
   gateWaitlistTitle: 'แจ้งเมื่อเปิดตัว',
@@ -190,6 +200,7 @@ const GATE_TH: Record<string, string> = {
 const GATE_VI: Record<string, string> = {
   ...GATE_EN,
   gateEyebrow: 'Beta mở chỉ theo lời mời',
+  gateLanguageCta: 'Ngôn ngữ / Language / 语言',
   gateTitle1: 'Tập luyện mọi nơi.',
   gateTitle2: 'Chiến thắng mỗi ngày.',
   gateWaitlistTitle: 'Báo khi ra mắt',
@@ -205,6 +216,7 @@ const GATE_VI: Record<string, string> = {
 const GATE_HI: Record<string, string> = {
   ...GATE_EN,
   gateEyebrow: 'केवल आमंत्रण ओपन बीटा',
+  gateLanguageCta: 'भाषा / Language / 语言',
   gateTitle1: 'कहीं भी ट्रेन करें।',
   gateTitle2: 'रोज जीतें।',
   gateWaitlistTitle: 'लॉन्च पर सूचित करें',
@@ -220,6 +232,7 @@ const GATE_HI: Record<string, string> = {
 const GATE_ID: Record<string, string> = {
   ...GATE_EN,
   gateEyebrow: 'Beta terbuka hanya undangan',
+  gateLanguageCta: 'Bahasa / Language / 语言',
   gateTitle1: 'Latihan di mana saja.',
   gateTitle2: 'Menang setiap hari.',
   gateWaitlistTitle: 'Beritahu saat peluncuran',
@@ -235,6 +248,7 @@ const GATE_ID: Record<string, string> = {
 const GATE_AR: Record<string, string> = {
   ...GATE_EN,
   gateEyebrow: 'بيتا مفتوحة بالدعوة فقط',
+  gateLanguageCta: 'اللغة / Language / 语言',
   gateTitle1: 'تدرب في أي مكان.',
   gateTitle2: 'انتصِر يوميًا.',
   gateWaitlistTitle: 'أبلغني عند الإطلاق',

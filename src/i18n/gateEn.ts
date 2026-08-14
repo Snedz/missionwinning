@@ -33,6 +33,14 @@ export const GATE_EN: Record<string, string> = {
   gateLocalFirst: LOCAL_FIRST_COPY.gateLocalFirst,
   gateFooterTagline: 'free core forever',
   /**
+   * `.770` — the gate's own way into the other 39 languages.
+   *
+   * Deliberately names a language rather than saying "Language": the visitor who
+   * needs this one cannot necessarily read the label. Until `.770` the only route
+   * was a sheet that opened itself over the poster and covered "Log a set".
+   */
+  gateLanguageCta: 'Language / 语言 / Español',
+  /**
    * `.769` — the gate's one red action, and the only honest one it has ever had.
    *
    * The logger is free, needs no account, and `/active` is reachable while the

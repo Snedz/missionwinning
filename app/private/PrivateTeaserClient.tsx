@@ -7,6 +7,7 @@ import { AppLegalFooter } from '@/components/layout/AppLegalFooter';
 import { LaunchNotifyForm } from '@/components/public/LaunchNotifyForm';
 import { gateEnFloor } from '@/i18n/gateEn';
 import { track } from '@/lib/analytics';
+import { openLocaleChooser } from '@/lib/i18n/localeChooserEvent';
 import { TERRITORY_STILL_WORKS } from '@/lib/legal/territoryCopy';
 import {
   APP_PUBLIC_PRODUCT_VERSION,
@@ -332,6 +333,19 @@ export function PrivateTeaserClient({ initialInvite = '', initialNext = '' }: Pr
             {APP_PUBLIC_PRODUCT_VERSION} —{' '}
             {g('gateFooterTagline')}
           </span>
+          {/*
+            * `.770` — the gate had no language control of its own, so the
+            * first-visit sheet was the only route to the other 39 languages.
+            * Now the sheet waits to be asked, and this is how you ask.
+            */}
+          <button
+            type="button"
+            className="gate-lang-btn"
+            data-mw-locale-open="true"
+            onClick={openLocaleChooser}
+          >
+            {g('gateLanguageCta')}
+          </button>
           <AppLegalFooter className="gate-footer-links" />
         </div>
       </div>

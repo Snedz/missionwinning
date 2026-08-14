@@ -97,9 +97,30 @@ describe('the private gate redirect (PRIVATE_MODE=true)', () => {
    * fire, which is the same class of silent overwrite as the original bug.
    */
   it('leaves an explicit next alone', async () => {
-    const to = await redirectFor('/active?next=/coach');
+    // `/log`, not `/active`: the free logger stopped redirecting in `.769`, so
+    // asking it about `next` would only ever measure the public-path branch.
+    const to = await redirectFor('/log?next=/coach');
     assert.ok(to);
     assert.equal(to.searchParams.get('next'), '/coach');
+  });
+
+  /**
+   * Hard rule 2 at the proxy, not just in the list.
+   *
+   * `.769` made `/active` public while gated so a stranger can log a set. The
+   * path list (`privateGate.test.ts`) and the middleware are two different
+   * things — `.204` shipped a route the list called public and the proxy still
+   * bounced — so the same fact is pinned in both places.
+   */
+  it('never sends the free logger to the gate, and still sends the rest', async () => {
+    assert.equal(
+      await redirectFor('/active'),
+      null,
+      'the free logger is never gated (hard rule 2)'
+    );
+    for (const gated of ['/log', '/coach', '/nutrition', '/history', '/profile', '/account']) {
+      assert.ok(await redirectFor(gated), `${gated} must still require the cookie`);
+    }
   });
 
   it('still lets the gate-public paths through', async () => {

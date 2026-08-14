@@ -138,6 +138,54 @@ for beta testers (Profile build label ≠ repo).
 **Kaizen note:** success is not “number of `.N` builds per day.” Prefer activation and honest
 product over paint-layer thrash that burns the deploy budget.
 
+### 1.7 Walking a Preview that is behind Deployment Protection — **F-035**
+
+**The finding (shard 0 / ops #17, 2026-08-14).** A Preview URL was handed to the survey
+pipeline as “the ungated build”. Every request answered **302 → `vercel.com/sso-api`**, so the
+shard recorded *“Train unreachable”* and filed nineteen paths as product state. Nothing was
+broken: the walker was never let in. Re-measured here with `npm run gate-smoke` against that
+same URL — **19 of 19 requests refused by Vercel**, none of them by the app.
+
+A protection page misread as a product failure is the most expensive false negative available
+to us, because it costs a survey round *and looks like evidence*.
+
+**A Preview is not ungated.** “Ungated” describes `PRIVATE_MODE` — our gate, in our code. Vercel
+Deployment Protection is a **separate, project-level wall in front of the whole deployment**. A
+Preview can be both: our gate off, Vercel’s wall on. That is the state ops #17 hit.
+
+**This cannot be fixed from the repo.** Deployment Protection lives in **Project → Settings →
+Deployment Protection** (or the REST API). `vercel.json` has no field for it — do not look for
+one, and **do not turn protection off to make a walk pass**. Authenticated access is the fix.
+
+**Founder action — pick one, both are one-time:**
+
+| Option | Steps | Who it unblocks |
+|--------|-------|-----------------|
+| **Bypass secret** (simplest for CI + agents) | Project → Settings → Deployment Protection → **Protection Bypass for Automation** → generate. Vercel then exposes it as `VERCEL_AUTOMATION_BYPASS_SECRET`. Add the same value to Cloud Agent secrets. | `npm run gate-smoke`, Playwright, any agent walk |
+| **Vercel-authenticated agent** | Give the agent VM a Vercel identity (`vercel login`, or a token in Cloud Agent secrets), then `vc curl` and `VERCEL_OIDC_TOKEN` work without any long-lived bypass | agent-driven diagnosis, no shared secret |
+
+With either in the environment, both walkers carry credentials automatically — no flags:
+
+```bash
+VERCEL_AUTOMATION_BYPASS_SECRET=… SMOKE_BASE_URL=https://<preview>.vercel.app npm run gate-smoke
+VERCEL_AUTOMATION_BYPASS_SECRET=… SMOKE_BASE_URL=https://<preview>.vercel.app npm run e2e:critical
+```
+
+`src/lib/deploymentProtection.ts` holds the header rules; the browser form also requests the
+bypass **cookie**, because a walk follows redirects and a header-only grant dies at the first one.
+
+**Until then, `gate-smoke` refuses to pretend.** It recognises the wall and prints one verdict —
+*“N/N paths were refused by Vercel Deployment Protection, not by the app… this run measured
+access, not the product”* — so the next reader cannot mistake 28 red checks for 28 defects. Our
+own `/private` gate redirect is deliberately **not** counted as a wall; that is the product
+working, and a guard asserts the difference (`deploymentProtection.test.ts`).
+
+**Read the Preview that matches the code.** ops #17 also notes F-017 lives on **#523, not the
+#522 Preview** that was walked. A Preview is a snapshot of *one branch*; walking the wrong PR’s
+Preview measures code that never contained the fix. Before a survey round, confirm the PR number
+on the Preview matches the PR whose work is being surveyed, and check the build label on the
+Profile footer against that branch (§1.3).
+
 ---
 
 ## 2. Environment variables
