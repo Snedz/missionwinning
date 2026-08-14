@@ -86,6 +86,39 @@ logs"* line is about **rewards** and must stay away from the planner
 assertion rejected a `CoachVoiceCard` exemption I had written from memory for a
 claim that file never makes.
 
+**Merged master mid-flight, and it cost more than a rebase would look like.** 67
+builds landed while this branch was open (`.698`→`.764`, mostly the Train set
+row), so the labels moved: `.745`/`.746` are shipped entries in master's archive
+now, and `logBudget`'s *"no build label has two entries"* is the guard for
+exactly that collision — `scripts/relabel.mjs` exists because a branch open
+longer than one ship interval is guaranteed to hit it. Three conflicts were real:
+**I-Day lost its sign-in step** on master, so the CSV line moved to the new last
+screen; master's `WelcomePage` also reintroduced `useSearchParams`, which would
+have silently undone `.765`'s first-paint fix and was caught by `firstPaintFloor`
+— the guard earning its place inside one day. The **gate grew version stamps**,
+kept and combined with `g()` flooring. And master had independently translated
+the same three i18n keys, so its wording won everywhere and `public/locales` was
+re-aligned to the packs.
+
+**Measured against master@`.764` in a second worktree rather than argued:** `/`
+256.8 KB vs 257.5, `/log` 287.3 vs 287.8, `/active` 453.5 vs 453.1. `/log`
+started +1.0 KB because `HomeTodayLean` imported the citation statically on the
+cold path; it is `dynamic(ssr:false)` now and two of three routes come in under
+master. The `/active` +0.4 KB is the logger i18n keys that had been rendering
+English in fifteen languages. No cap raised.
+
+**Four more checks were red on master and are green here:** `i18n:coverage`
+(`activeSetDropTip` reached no pack), `i18n:parity` (activeWorkout/pt over the
+beachhead cap), `logBudget` (the `.669` entry had been archived **four times**),
+and `hero-flows`' *"I-Day skip lands on Today"*, which clicked for a Skip button
+on a screen master had deleted — fixed and verified red-then-green against
+**master's own build**, so it is about the shipped flow and not this branch.
+**Still red on master and left alone:** seven `/active` and `/track` a11y sheet
+cases fail `toBeVisible` against the redesigned set row, and `/leaderboard` fails
+axe. Reproduced on master@`.764` to be sure. Those belong to whoever shipped
+`.754`–`.764`; guessing at a redesigned logger's sheet markup from here would be
+worse than naming it.
+
 **Not done:** `navCoach` stays *"AI weekly plan"*. [`primaryNav.ts`](src/lib/primaryNav.ts)
 records that screen name as a decision kept on purpose, and overturning a
 documented product call on one survey shard is founder work, not an agent's — so
