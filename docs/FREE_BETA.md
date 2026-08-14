@@ -1,7 +1,9 @@
-# Free-first beta (LLC / EIN window)
+# Alpha mute-pay (`isFreeBeta` flag)
 
 **Status:** ON by default via `isFreeBeta()` / `MwFreeBeta.ENABLED`  
 **Why:** Texas LLC filed (~4 weeks) + EIN pending — business Stripe/PayPal cannot open yet. Founder chose **hard no** on individual Stripe interim ([LLC_AND_PAYMENTS.md](LLC_AND_PAYMENTS.md) §1d overridden for this window).
+
+**Launch name:** Mission Winning **Alpha 0.1.0**. This file names the mute-pay flag, not the product.
 
 **Shop restore:** `/bundle` merchandises Super Bundle (Free vs one paid SKU). Live checkout stays muted. Frozen plan: [SUPER_BUNDLE_SHOP_PLAN.md](SUPER_BUNDLE_SHOP_PLAN.md).
 
@@ -12,7 +14,7 @@
 - **Unlock depth:** treat everyone as premium-entitled — Coach chat, Fuel Coach, GPS catalogs, Move/Mind/Learn premium sessions, adapt depth. No $ credits wallet. Do not bait-and-switch by gating depth with no buy path.
 - **More nav:** Bundle row restored (shop). F-004 (`.695`) demotes the More/rail **Pillars** tier until the first logged workout (`workoutHistory.length` / `basic.workout`); Wedge + You stay. After first workout, pillars reappear.
 - Show: logger, Today, Victory, Coach week + depth, free + unlocked pillar tools, Guide, Super Bundle shop (honest “checkout opens when payments go live”).
-- Frame: “Open beta — full platform free while we grow with you.” Logger never gated.
+- Frame: “Alpha — full tools free while we grow with you.” Logger never gated. `isFreeBeta()` is mute-pay, not the product name.
 
 ## Flags
 
