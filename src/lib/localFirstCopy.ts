@@ -29,14 +29,19 @@ export const LOCAL_FIRST_COPY = {
     'No account needed: the logger writes sets to your device, and nothing is uploaded unless you sign in.',
   welcomeLocalFirst:
     'A few questions, then log your first session. No account — sets are written to this device, and nothing is uploaded unless you sign in.',
-  /** Active mid-session SignInPrompt title — device owns the log. */
-  activeSignInTitle: 'Sets save on this device',
-  /**
-   * Active mid-session SignInPrompt body — sign-in is optional backup only.
-   * Must not say auto-save / required / cloud-first.
+  /*
+   * `activeSignInTitle` / `activeSignInDesc` retired here at `.767`.
+   *
+   * `.696` wrote them for the Active mid-session sign-in prompt; master's `.746`
+   * ("F-017 first set without an account") removed that prompt outright, which
+   * is the same axis pushed further — no sign-in surface at all during the first
+   * session. The constants were left behind and rendered nowhere, which the
+   * "every local-first constant is actually on a screen" guard found. Their
+   * strings stay in `activeWorkoutLocales` so fifteen translations are not
+   * thrown away, and this note is here so the next author knows they are
+   * unmounted rather than missing. If a sign-in prompt ever returns to Active,
+   * bring them back **into this file** so the honesty screen sees them again.
    */
-  activeSignInDesc:
-    'Logging and rest work offline. Sign in only if you want the same log on another device.',
   /** Today header when unsigned — full line; sign-in is optional, not the save path. */
   todaySignInOptional: 'Sign in optional — progress stays on this device.',
   /**

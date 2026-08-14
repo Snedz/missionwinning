@@ -13,6 +13,9 @@ const LANDING_EN: Record<string, string> = {
   landingAboutLink: 'About Mission Winning',
   // ── Homepage loop rebuild (log → adapt → anywhere → free → start) ──
   landingHeroEyebrowLoop: 'Free · offline · no account',
+  /** `.767` — the local-first mechanism, one source: `LOCAL_FIRST_COPY.gateLocalFirst`. */
+  landingLocalFirst:
+    'No account needed: the logger writes sets to your device, and nothing is uploaded unless you sign in.',
   landingHeroLine1: 'Log a set.',
   landingHeroLine2: 'Your week rewrites itself.',
   landingHeroSubtitleLoop:

@@ -209,8 +209,17 @@ function componentFiles(): string[] {
 const stripComments = (src: string) =>
   src.replace(/\/\*[\s\S]*?\*\//g, ' ').replace(/(^|[^:])\/\/[^\n]*/g, '$1');
 
-/** A provenance claim: "from your logs" / "built from your logs" and kin. */
-const PROVENANCE_CLAIM = /from your (?:logs|history|workout logs)|built from your|logs alone/i;
+/**
+ * A provenance claim: "from your logs" / "built from your logs" and kin.
+ *
+ * `.767` — widened to the *derived* phrasings after shard 3 repeated the
+ * finding. `CoachInsightCard` says *"From your recent training load and
+ * recovery"*: load and recovery are computed from sessions, so that sentence
+ * makes the same promise one step removed, and the original pattern did not see
+ * it. The list is closed and every entry is a spelling this repo ships.
+ */
+const PROVENANCE_CLAIM =
+  /from your (?:logs|history|workout logs|recent training|recent logs)|built from your|logs alone|from your gear and days/i;
 
 /**
  * A *Coach* provenance claim is one made under a Coach key.

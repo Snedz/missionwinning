@@ -35,6 +35,7 @@ import { Reveal } from '@/components/marketing/Reveal';
 import { GrayscalePhoto } from '@/components/marketing/GrayscalePhoto';
 import { ArrowRight } from 'lucide-react';
 import { isFreeBeta } from '@/lib/freeBeta';
+import { LOCAL_FIRST_COPY } from '@/lib/localFirstCopy';
 import { landingFaqKeysForSurface } from '@/i18n/landingLocales';
 
 const LogToPlanHero = dynamic(
@@ -161,11 +162,22 @@ export function LandingPage() {
               <br />
               {t('landingHeroLine2', { defaultValue: 'Your week rewrites itself.' })}
             </h1>
-            <p className="mb-8 max-w-md text-base leading-relaxed text-muted-foreground sm:text-lg">
+            <p className="mb-4 max-w-md text-base leading-relaxed text-muted-foreground sm:text-lg">
               {t('landingHeroSubtitleLoop', {
                 defaultValue:
                   'A workout logger that turns what you actually did into next week’s plan. No wearable, no gym, no account — and the logger is free forever. Works offline, anywhere you train.',
               })}
+            </p>
+            {/*
+              `.767` — the mechanism, on the surface these regions arrive at
+              first. Shard 3 (IL/IN/SEA) repeats CN/HK's finding: the offline
+              *claim* is believed and the *implementation* is not. The hero
+              already said "offline" and "no account"; what it never said is
+              where the sets go. One source with the gate and I-Day —
+              `LOCAL_FIRST_COPY.gateLocalFirst`.
+            */}
+            <p className="mb-8 max-w-md text-sm leading-relaxed text-muted-foreground">
+              {t('landingLocalFirst', { defaultValue: LOCAL_FIRST_COPY.gateLocalFirst })}
             </p>
             <button
               type="button"

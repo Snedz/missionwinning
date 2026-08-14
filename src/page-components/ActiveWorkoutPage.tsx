@@ -208,12 +208,29 @@ export function ActiveWorkoutPage() {
     ? `${activeWorkout.startedAt}:${activeWorkout.workoutName}`
     : null;
 
+  /**
+   * `.767` — offered *after* the first set, not before it.
+   *
+   * Keyed on the set count as well as the session, so the effect re-runs once
+   * work is on the board. Shard 3 (IL/IN/SEA) measured the old order as taps to
+   * log a set: Start → full-viewport sheet → Log set, with the logger rendered
+   * underneath and unclickable. `sessionCheckInOffer.ts` holds the rule.
+   */
+  const loggedSetsThisSession = useMemo(
+    () =>
+      (activeWorkout?.exercises ?? []).reduce(
+        (n, ex) => n + (ex.sets ?? []).filter((s) => s.completed).length,
+        0
+      ),
+    [activeWorkout]
+  );
+
   useEffect(() => {
     if (!sessionKey) return;
-    if (shouldOfferSessionCheckIn()) {
+    if (shouldOfferSessionCheckIn(loggedSetsThisSession)) {
       setCheckInOpen(true);
     }
-  }, [sessionKey]);
+  }, [sessionKey, loggedSetsThisSession]);
 
   const nextSet = useMemo(
     () => (activeWorkout ? findNextSet(activeWorkout.exercises) : null),
