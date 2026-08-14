@@ -12,6 +12,7 @@ When adding a doc:
 
 | File | Absorbed by / note |
 |------|---------------------|
+| [log/LOG-rotate-760-for-775.md](./log/LOG-rotate-760-for-775.md) | rotated 2026-08-14 for `.775` LLM dollar cap (`.760`) |
 | [log/LOG-rotate-680-for-745.md](./log/LOG-rotate-680-for-745.md) | rotated 2026-08-13 for `.765` rest timer last-rest (`.680`) |
 | [PRE_LAUNCH_PLAN.md](./PRE_LAUNCH_PLAN.md) | [LAUNCH_RUNBOOK.md](../LAUNCH_RUNBOOK.md) |
 | [UX_UNIFIED_PLAN.md](./UX_UNIFIED_PLAN.md) | Historical UX plan |

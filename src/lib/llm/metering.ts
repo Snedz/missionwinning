@@ -16,6 +16,7 @@ import 'server-only';
 
 import { getSupabaseAdmin } from '@/lib/supabaseAdmin';
 import { buildLlmUsageRow, type LlmUsageRecordInput } from '@/lib/llm/meteringRow';
+import { addLlmSpend } from '@/lib/llm/spendLimit';
 
 export type {
   LlmCallerIdentity,
@@ -34,5 +35,8 @@ export async function recordLlmUsage(input: LlmUsageRecordInput): Promise<void> 
     await admin.from('llm_usage').insert(row);
   } catch {
     // The ledger must never take the feature down with it.
+  }
+  if (input.ok) {
+    await addLlmSpend(input.identity, input.usage);
   }
 }

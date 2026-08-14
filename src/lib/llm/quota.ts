@@ -18,6 +18,7 @@
 
 import { rateLimitAsync, type RateLimitResult } from '@/lib/rateLimit';
 import type { LlmCallerIdentity, LlmFeature } from '@/lib/llm/meteringRow';
+import { checkLlmDailySpend } from '@/lib/llm/spendLimit';
 
 export const DAY_MS = 86_400_000;
 
@@ -88,4 +89,21 @@ export async function checkLlmDailyQuota(
   } catch {
     return { ok: true };
   }
+}
+
+/**
+ * Request cap (fail-open) then dollar cap (fail-closed).
+ * Dark LLM env still skips this at the route — do not call when unconfigured.
+ */
+export async function allowLlmInference(
+  feature: LlmFeature,
+  identity: LlmCallerIdentity,
+  options?: {
+    env?: Record<string, string | undefined>;
+    limiter?: (key: string, limit: number, windowMs: number) => Promise<RateLimitResult>;
+  }
+): Promise<LlmQuotaDecision> {
+  const requests = await checkLlmDailyQuota(feature, identity, options);
+  if (!requests.ok) return requests;
+  return checkLlmDailySpend(identity, { env: options?.env });
 }

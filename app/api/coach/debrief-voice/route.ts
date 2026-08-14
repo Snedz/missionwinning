@@ -13,7 +13,7 @@ import { rejectOversizedBody } from '@/lib/requestBodyLimit';
 import { z } from 'zod';
 import { parseJsonBody } from '@/lib/apiSchemas';
 import { resolveLlmCaller } from '@/lib/llm/identity';
-import { checkLlmDailyQuota } from '@/lib/llm/quota';
+import { allowLlmInference } from '@/lib/llm/quota';
 import { recordLlmUsage } from '@/lib/llm/metering';
 
 const debriefVoiceSchema = z.object({
@@ -52,7 +52,7 @@ export const POST = withApiLogging('coach/debrief-voice', async (request: NextRe
   const llmConfigured = Boolean(llmEnv.apiUrl && llmEnv.apiKey);
   const caller = await resolveLlmCaller(request, parsed.data.deviceId);
   const useLlm =
-    llmConfigured && caller.premium && (await checkLlmDailyQuota('debrief_voice', caller)).ok;
+    llmConfigured && caller.premium && (await allowLlmInference('debrief_voice', caller)).ok;
 
   const t0 = Date.now();
   const voice = await fetchDebriefVoice(

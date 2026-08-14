@@ -10,7 +10,7 @@ import { rateLimitAsync } from '@/lib/rateLimit';
 import { clientIp } from '@/lib/clientIp';
 import { hasAppAccess } from '@/lib/requestAccess';
 import { resolveLlmCaller } from '@/lib/llm/identity';
-import { checkLlmDailyQuota } from '@/lib/llm/quota';
+import { allowLlmInference } from '@/lib/llm/quota';
 import { recordLlmUsage } from '@/lib/llm/metering';
 
 const MAX_BYTES = 6 * 1024 * 1024;
@@ -70,7 +70,7 @@ export const POST = withApiLogging('fuel/estimate-meal', async(request: NextRequ
       const useVision =
         isMealVisionConfigured() &&
         caller.premium &&
-        (await checkLlmDailyQuota('meal_vision', caller)).ok;
+        (await allowLlmInference('meal_vision', caller)).ok;
       if (useVision) {
         const buf = Buffer.from(await photo.arrayBuffer());
         const b64 = buf.toString('base64');

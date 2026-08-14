@@ -13,7 +13,7 @@ import { readCoachLlmEnv } from '@/lib/coachLlmClient';
 import { coachPlanVoiceSchema, parseJsonBody } from '@/lib/apiSchemas';
 import { rejectOversizedBody } from '@/lib/requestBodyLimit';
 import { resolveLlmCaller } from '@/lib/llm/identity';
-import { checkLlmDailyQuota } from '@/lib/llm/quota';
+import { allowLlmInference } from '@/lib/llm/quota';
 import { recordLlmUsage } from '@/lib/llm/metering';
 
 export const POST = withApiLogging('coach/plan-voice', async (request: NextRequest) => {
@@ -55,7 +55,7 @@ export const POST = withApiLogging('coach/plan-voice', async (request: NextReque
   let caller = null;
   if (appAccess && llmConfigured) {
     caller = await resolveLlmCaller(request, body.deviceId);
-    useLlm = caller.premium && (await checkLlmDailyQuota('plan_voice', caller)).ok;
+    useLlm = caller.premium && (await allowLlmInference('plan_voice', caller)).ok;
   }
 
   const t0 = Date.now();

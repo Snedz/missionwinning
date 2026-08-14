@@ -16,7 +16,7 @@ import { coachDailyContextSchema, parseJsonBody } from '@/lib/apiSchemas';
 import { readCoachLlmEnv } from '@/lib/coachLlmClient';
 import { rejectOversizedBody } from '@/lib/requestBodyLimit';
 import { resolveLlmCaller } from '@/lib/llm/identity';
-import { checkLlmDailyQuota } from '@/lib/llm/quota';
+import { allowLlmInference } from '@/lib/llm/quota';
 import { recordLlmUsage } from '@/lib/llm/metering';
 
 /** Daily AI coach insight — uses LLM when COACH_LLM_* env set; else rule keys from client. */
@@ -58,7 +58,7 @@ export const POST = withApiLogging('coach/daily-insight', async (request: NextRe
   // Dark env → straight to rules without touching the quota (the PR-stays-dark contract).
   let useLlm = caller.premium && Boolean(llmEnv.apiUrl && llmEnv.apiKey);
   if (useLlm) {
-    const quota = await checkLlmDailyQuota('daily_insight', caller);
+    const quota = await allowLlmInference('daily_insight', caller);
     if (!quota.ok) {
       useLlm = false;
       quotaExceeded = true;
