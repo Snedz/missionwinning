@@ -13,7 +13,8 @@ type RevealProps = {
 
 /**
  * Marketing scroll-reveal wrapper — adds `.reveal` / `.reveal-visible`.
- * Reduced-motion users get content immediately via useScrollReveal.
+ * `.reveal` paints immediately (G1). Reduced-motion still short-circuits
+ * the observer via useScrollReveal. Do not hide copy behind IO.
  */
 export function Reveal({
   children,

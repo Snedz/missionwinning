@@ -9,7 +9,7 @@
 | `MarketingNav.tsx` | Sticky nav — `full` (site links) or `compact`. Links move into `PublicNavMenu` below `md` |
 | `MarketingFooter.tsx` | Translated footer columns + disclaimer. Reads `footerLinks.ts` |
 | `footerLinks.ts` | The footer/nav link tables — plain data, no `'use client'`, so Server Components can import them. One list for both footers |
-| `Reveal.tsx` | Scroll-reveal wrapper (`.reveal`) |
+| `Reveal.tsx` | Scroll-reveal wrapper (`.reveal` paints immediately — do not hide copy behind IO) |
 | `ArtPicture.tsx` | AVIF + WebP `<picture>` for marketing art |
 
 `StatBand.tsx`, `BundleTeaserCard.tsx` and `EmailCaptureBand.tsx` were deleted in `.129` —
