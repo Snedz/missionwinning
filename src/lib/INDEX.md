@@ -31,7 +31,7 @@
 | **Payments** | `premiumServer.ts`, `premiumEnrollmentCache.ts`, `payments.ts`, `checkoutServer.ts`, `stripeServer.ts`, `stripeWebhook.ts`, `paypalWebhook.ts`, [`cryptoCheckout/`](cryptoCheckout/INDEX.md) | Stripe + Phantom USDC lifetime; enrollment Redis memo |
 | **Payments — the pure decisions** | `checkout/checkoutParams.ts` (what Stripe is asked to charge), `premium/enrollmentRow.ts` (what a paid webhook writes), `authUserId.ts` (what may go in an `auth.users` FK) | `.262` — lifted out of the `server-only` modules above, which reach Stripe/Supabase on their first line and so could not be tested at all. Dependency-free on purpose; `money.routetest.ts` covers the server halves |
 | **School / PFT** | `schoolClassServer.ts`, `presidentialFitness*.ts`, `fitnessTest*.ts` | America track |
-| **Gating / auth** | `privateGate.ts`, `supabaseAuthCookies.ts`, `supabaseRequestAuth.ts` | Private beta, JWT cookies |
+| **Gating / auth** | `privateModeFlag.ts`, `privateGate.ts`, `supabaseAuthCookies.ts`, `supabaseRequestAuth.ts` | Private beta; Preview ungated via `VERCEL_ENV` |
 | **i18n loaders** | `routeMetadata.ts`, `navConfig.ts` | Not strings — see `src/i18n/` |
 | **Units** | `units.ts` | `weightStep`, metric/imperial |
 | **Backup** | `backup.ts` | Device backup export/restore |

@@ -136,6 +136,7 @@ Root keeps only the spine (README · CONTEXT · AGENTS · INDEX · vision · ORC
 | [CLUB_PLAN.md](CLUB_PLAN.md) | Club: points · tiers · collectibles · boards · arcade (phased plan, no code) |
 | [IDENTITY_SOCIAL_PLAN.md](IDENTITY_SOCIAL_PLAN.md) | The `You` surface · Athlete Page · the Log↔Social domain boundary and its contracts |
 | [LAUNCH_RUNBOOK.md](LAUNCH_RUNBOOK.md) | Founder critical path |
+| [overnight/INDEX.md](overnight/INDEX.md) | E-Day / overnight sitting plans (`.728` ungated Preview) |
 | [ENV.md](ENV.md) | Environment variables |
 | [PROTECTION.md](PROTECTION.md) | Security checklist |
 | [BETA_INVITE.md](BETA_INVITE.md) | Beta kit |
