@@ -23,7 +23,7 @@ const MEDIUM_BOILERPLATE =
 
 /** Free-beta press copy — no Super Bundle pitch while pay is muted (.654). */
 const MEDIUM_BOILERPLATE_OPEN_BETA =
-  'Mission Winning is a free offline workout logger plus adaptive Mission Coach from your logs — no wearable required. Free core forever. Works offline as a PWA. Open beta unlocks the full platform while we grow with testers.';
+  'Mission Winning is a free offline workout logger plus adaptive Mission Coach from your logs — no wearable required. Free core forever. Works offline as a PWA. Alpha unlocks the full platform while we grow with testers.';
 
 const COLORS = [
   { name: 'Paper', role: 'Ground', hex: '#f3f2f2', hsl: '0 4% 95%', swatch: '#f3f2f2', border: true },

@@ -176,7 +176,7 @@ export function CoachTodayCard() {
             <p className="text-sm text-muted-foreground leading-relaxed">
               {t('coachFreeBetaNextWeek', {
                 defaultValue:
-                  'Open beta keeps Coach open. Generate the next week from your latest logs.',
+                  'Generate next week from your latest logs. Free during Alpha.',
               })}
             </p>
             <Button

@@ -86,12 +86,12 @@ const en: MoveStrings = {
   movePremiumFlowsCount: 'More recovery flows ({{count}})',
   movePremiumPreviewCount: 'Premium recovery flows ({{count}})',
   moveSubtitleDepthBeta:
-    '{{free}} free flows · {{unlocked}} unlocked in open beta (timers, mostly bodyweight).',
+    '{{free}} free flows · {{unlocked}} unlocked in Alpha (timers, mostly bodyweight).',
   moveSubtitleDepthPaid:
     '{{free}} free flows · Super Bundle adds {{premium}} longer recovery flows.',
   moveSubtitleBrief: 'Pick a free flow. Timers and bodyweight — premium later if you want.',
   moveSubtitleBriefOpenBeta:
-    'Pick a free flow. Timers and bodyweight — recovery depth open in open beta.',
+    'Pick a free flow. Timers and bodyweight — recovery depth open in Alpha.',
 };
 
 const es: MoveStrings = {

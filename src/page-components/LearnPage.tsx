@@ -312,7 +312,7 @@ export function LearnPage() {
               {freeBeta
                 ? t('learnSubtitleOpenBeta', {
                     count: FREE_LEARN_PATHS.length,
-                    defaultValue: `${FREE_LEARN_PATHS.length} education paths — foundations first. Guidebook and specialist courses open in open beta.`,
+                    defaultValue: `${FREE_LEARN_PATHS.length} education paths — foundations first. Guidebook and specialist courses open in Alpha.`,
                   })
                 : t('learnSubtitle', {
                     count: FREE_LEARN_PATHS.length,

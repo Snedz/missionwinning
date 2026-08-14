@@ -61,7 +61,7 @@ const en: LearnStrings = {
   learnSubtitle:
     '{{count}} free education paths — evidence-based foundations plus specialist intros. Premium unlocks full programs (Super Bundle).',
   learnSubtitleOpenBeta:
-    '{{count}} education paths — foundations first. Guidebook and specialist courses open in open beta.',
+    '{{count}} education paths — foundations first. Guidebook and specialist courses open in Alpha.',
   learnSubtitleBrief: 'Free paths first. Guide and Bundle depth when you want them.',
   learnSubtitleBriefOpenBeta: 'Free paths first. Guidebook and specialist depth when you want them.',
   learnMoreLearn: 'Guide, sample & premium',

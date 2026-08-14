@@ -112,6 +112,7 @@ type InfoStrings = {
   infoDmcaFoot: string;
   infoRefundsTitle: string;
   infoRefundsIntro: string;
+  infoRefundsIntroOpenBeta: string;
   infoRefundsSubs: string;
   infoRefundsSubsBody: string;
   infoRefundsLifetime: string;
@@ -427,6 +428,8 @@ const en: InfoStrings = {
   infoRefundsTitle: 'Refunds & cancellation',
   infoRefundsIntro:
     'The free logger never needs a refund. Super Bundle refunds apply when paid checkout is live. Educational fitness software only — not a medical device.',
+  infoRefundsIntroOpenBeta:
+    'The free logger never needs a refund. Paid Super Bundle checkout is not live during this Alpha, so there is no paid charge to reverse. Super Bundle refund terms below apply when paid checkout is live. Educational fitness software only — not a medical device.',
   infoRefundsSubs: 'Subscriptions',
   infoRefundsSubsBody:
     'Monthly and 12-month Super Bundle: request a full refund within 14 days of your first paid charge by emailing support@missionwinning.com. After that window, we do not offer mid-cycle prorated refunds. Cancel anytime in Profile → Manage billing to stop future charges; access continues through the paid period already billed.',

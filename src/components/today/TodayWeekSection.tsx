@@ -49,7 +49,7 @@ export function TodayWeekSection({
             {freeBeta
               ? t('todayWeeklyChallengesDescOpenBeta', {
                   defaultValue:
-                    'Train + Fuel + volume goals this week. Free core — open beta unlocks depth across the app.',
+                    'Train + Fuel + volume goals this week. Free core — Alpha unlocks depth across the app.',
                 })
               : t('todayWeeklyChallengesDesc', {
                   defaultValue:

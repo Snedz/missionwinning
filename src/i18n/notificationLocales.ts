@@ -78,7 +78,7 @@ const NOTIFICATION_EN: Record<string, string> = {
     'The backup includes workouts, saved routines, nutrition, and journey progress from this device. Restoring merges — nothing on this device is deleted.',
   account: 'Account',
   signedInAs: 'Signed in as',
-  profileFreeBetaFoot: 'Open beta — full tools free while we grow with you. Logger stays free forever.',
+  profileFreeBetaFoot: 'Alpha — full tools free while we grow with you. Logger stays free forever.',
   premiumStatusFoot: 'Super Bundle unlocks Coach depth. The free logger is never gated.',
   retake: 'Retake Assessment',
   takeAssessment: 'Take the free Readiness Assessment',
@@ -210,7 +210,7 @@ const NOTIFICATION_EN: Record<string, string> = {
   profileAssessmentHint: 'Short screen + stage of change. Guides free starters.',
   profileAssessmentFoot: 'Core free forever. Premium adds history and deeper coaching.',
   profileAssessmentFootOpenBeta:
-    'Core free forever. Open beta unlocks history depth and deeper coaching tools.',
+    'Core free forever. Alpha unlocks history depth and deeper coaching tools.',
   ownerToolsBundleFoot: 'Demo figures only. Free core stays free.',
   ownerToolsShareFoot: 'Share wins and feedback when you ship.',
   ownerToolsEventsFoot: 'Journey events, milestones, and installs. Syncs when signed in.',

@@ -34,7 +34,7 @@ export function RefundsPage() {
         {freeBeta
           ? t('infoRefundsIntroOpenBeta', {
               defaultValue:
-                'The free logger never needs a refund. Paid Super Bundle checkout is not live during this open beta, so there is no paid charge to reverse. Super Bundle refund terms below apply when paid checkout is live. Educational fitness software only — not a medical device.',
+                'The free logger never needs a refund. Paid Super Bundle checkout is not live during this Alpha, so there is no paid charge to reverse. Super Bundle refund terms below apply when paid checkout is live. Educational fitness software only — not a medical device.',
             })
           : t('infoRefundsIntro', {
               defaultValue:

@@ -305,7 +305,7 @@ export function ProgramTemplatesPanel({
       {category === "pro" && !premiumLoading && !premium && isFreeBeta() && (
         <div className="border border-border bg-card p-4 text-sm text-muted-foreground">
           {t('builderProFreeBeta', {
-            defaultValue: 'Pro cycles are paused during open beta — free templates stay available.',
+            defaultValue: 'Pro cycles are paused during Alpha — free templates stay available.',
           })}
         </div>
       )}

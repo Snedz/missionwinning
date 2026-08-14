@@ -296,7 +296,7 @@ const en: TodayStrings = {
   todayWeeklyChallenges: 'Weekly Challenges',
   todayWeeklyChallengesDesc: 'Train + Fuel + volume goals this week. Free core — no premium required.',
   todayWeeklyChallengesDescOpenBeta:
-    'Train + Fuel + volume goals this week. Free core — open beta unlocks depth across the app.',
+    'Train + Fuel + volume goals this week. Free core — Alpha unlocks depth across the app.',
   todayDayStreak: '{{count}}-day streak',
   todayStartWorkout: "Start Today's Workout",
   todayRepeatLastCta: 'Repeat last session',
@@ -453,7 +453,7 @@ const en: TodayStrings = {
   todayPillarScoreFoot:
     'Training carries most of the score. Other tools add a little when you use them. Logger stays free forever.',
   todayPillarScoreFootOpenBeta:
-    'Training carries most of the score. Other tools add a little when you use them — nothing is paywalled in open beta.',
+    'Training carries most of the score. Other tools add a little when you use them — nothing is paywalled in Alpha.',
   todayTrendsTitle: '7-day trends',
   todayTrendVolume: 'Volume',
   todayTrendSessions: 'Sessions',
@@ -1300,7 +1300,7 @@ const id: TodayStrings = {
   todayPillarScoreFoot:
     'Latihan membawa skor terbesar. Alat lain menambah sedikit saat dipakai. Logger gratis selamanya.',
   todayPillarScoreFootOpenBeta:
-    'Latihan membawa skor terbesar. Alat lain menambah sedikit — tanpa paywall di open beta.',
+    'Latihan membawa skor terbesar. Alat lain menambah sedikit — tanpa paywall di Alpha.',
   todayTrendsTitle: 'Tren 7 hari',
   todayTrendVolume: 'Volume',
   todayTrendSessions: 'Sesi',
@@ -2023,7 +2023,7 @@ const LOCALES: Partial<Record<string, TodayStrings>> = {
     todayPillarScoreFoot:
       'L’entraînement pèse le plus. Les autres outils ajoutent un peu quand vous les utilisez. Le journal reste gratuit pour toujours.',
     todayPillarScoreFootOpenBeta:
-      'L’entraînement pèse le plus. Les autres outils ajoutent un peu — rien n’est paywallé en open beta.',
+      'L’entraînement pèse le plus. Les autres outils ajoutent un peu — rien n’est paywallé en Alpha.',
     coachPlanTitle: 'Coach IA — plan hebdomadaire',
     coachPlanDesc: 'Trois séances selon préparation, charge et matériel.',
     coachPlanPremiumDesc: 'Premium génère une semaine sensible à la fatigue pour le journal.',
@@ -2193,7 +2193,7 @@ const LOCALES: Partial<Record<string, TodayStrings>> = {
     todayPillarScoreFoot:
       'Training trägt den Score am meisten. Andere Tools geben etwas dazu, wenn du sie nutzt. Der Logger bleibt für immer kostenlos.',
     todayPillarScoreFootOpenBeta:
-      'Training trägt den Score am meisten. Andere Tools geben etwas dazu — in der Open Beta ohne Paywall.',
+      'Training trägt den Score am meisten. Andere Tools geben etwas dazu — in der Alpha ohne Paywall.',
     coachPlanTitle: 'KI-Coach — Wochenplan',
     coachPlanDesc: 'Drei Einheiten nach Bereitschaft, Belastung und Equipment.',
     coachPlanPremiumDesc: 'Premium erzeugt eine ermüdungssensible Woche fürs Journal.',

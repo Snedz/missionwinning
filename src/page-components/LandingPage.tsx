@@ -340,9 +340,8 @@ export function LandingPage() {
             </h2>
             <p className="mb-8 max-w-md text-base leading-relaxed text-muted-foreground">
               {t('landingFreeBody', {
-                defaultValue: isFreeBeta()
-                  ? 'Logging and Mission Coach plans from your logs stay free — no account required. Open beta means full tools while we grow with you.'
-                  : 'Logging stays free forever. Super Bundle adds Coach depth when you want it — it never gates the logger.',
+                defaultValue:
+                  'The fundamentals that make people healthier should have no price of admission — anywhere in the world. That is the founding promise, written into our vision, and it does not expire.',
               })}
             </p>
 
