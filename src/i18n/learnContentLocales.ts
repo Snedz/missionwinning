@@ -60,6 +60,15 @@ const es: ContentOverrides = {
 
   'learnPath_periodization-design_title': 'Periodización y diseño de programas',
   'learnPath_periodization-design_subtitle': 'Planifica en bloques — lineal, ondulante y deload',
+  'learnLesson_pd-0_title': 'Semanas desde tus registros',
+  'learnLesson_pd-0_summary':
+    'Mission Coach arma la próxima semana con lo que registraste — volumen, RPE, días perdidos. Sin wearable. Sin hoja de cálculo primero.',
+  'learnLesson_pd-0_kp_0':
+    'Registra series en este teléfono incluso sin conexión — Coach lee el diario, no una pulsera',
+  'learnLesson_pd-0_kp_1': 'Una semana de registros honestos gana a una plantilla perfecta que nunca seguiste',
+  'learnLesson_pd-0_kp_2': 'Las sesiones perdidas se redistribuyen; no empiezas de cero por vergüenza',
+  'learnLesson_pd-0_kp_3': 'Abre Coach después de registrar — el plan se gana con el historial',
+  'learnLesson_pd-0_action': 'Abrir Mission Coach',
   'learnLesson_pd-1_action': 'Explorar plantillas',
   'learnLesson_pd-2_action': 'Ver puntuación de recuperación',
   'learnLesson_pd-3_action': 'Combustible para la fase',
@@ -96,6 +105,8 @@ const zh: ContentOverrides = {
   'learnPath_assessments-path_title': '评估与调整',
   'learnPath_corrective-foundations_title': '纠正性训练基础',
   'learnPath_periodization-design_title': '周期化与计划设计',
+  'learnLesson_pd-0_title': '从训练记录排出一周',
+  'learnLesson_pd-0_action': '打开 Mission Coach',
   'learnPath_coaching-client-success_title': '教练与客户成功',
 };
 

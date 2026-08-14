@@ -96,11 +96,16 @@ Original AI-generated chapter heroes (brand prompt pack) and instructional SVG c
 | mag-preface | MW product — magazine practice → log/Today/Coach | Mission Winning | 2026-08-12 |
 | mag-how-to | MW product — magazine practice → log/Today/Coach | Mission Winning | 2026-08-12 |
 
-## Learn free intro — wedge (2026-08-12)
+## Ch3 Programming & Tuning — Coach-from-logs intro (2026-08-13)
 
-| Lesson ID | Source ref (topic only) | Writer | Date |
-|-----------|-------------------------|--------|------|
-| sb-0 | MW product — offline Train + Coach from logs (F-001 / F-018) | Mission Winning | 2026-08-12 |
+Diataxis tutorial on the existing free chapter (not Strength Basics `sb-0` / #479, not Ch4 / `.680`). Original MW wording; no ISSA text.
+
+| Section / lesson ID | Source ref (topic only) | Writer | Date |
+|---------------------|-------------------------|--------|------|
+| ch3-s1 | MW product — log-then-Coach tutorial (volume as what Coach reads) | Mission Winning | 2026-08-13 |
+| ch3-s2 | MW product — RPE notes feed Coach weeks (no wearable) | Mission Winning | 2026-08-13 |
+| ch3-s3 | MW product — deload / missed days from logs, not templates | Mission Winning | 2026-08-13 |
+| pd-0 | MW product — Periodization path intro: weeks from logs | Mission Winning | 2026-08-13 |
 
 ## Localized editions
 

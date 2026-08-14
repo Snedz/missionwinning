@@ -258,6 +258,20 @@ export const FREE_LEARN_PATHS: LearnPath[] = [
     icon: '📈',
     lessons: [
       {
+        id: 'pd-0',
+        title: 'Weeks From Your Logs',
+        summary:
+          'Mission Coach builds the next week from what you logged — volume, RPE, missed days. No wearable. No spreadsheet first.',
+        keyPoints: [
+          'Log sets on this phone even offline — Coach reads the diary, not a strap',
+          'A week of honest logs beats a perfect template you never followed',
+          'Missed sessions get re-spread; you do not start over from shame',
+          'Open Coach after you have logged — the plan is earned from history',
+        ],
+        actionLabel: 'Open Mission Coach',
+        actionHref: '/coach',
+      },
+      {
         id: 'pd-1',
         title: 'Linear vs Undulating Progression',
         summary: 'Beginners thrive on simple linear overload; intermediates benefit from varied stress.',

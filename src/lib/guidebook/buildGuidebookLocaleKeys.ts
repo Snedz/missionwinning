@@ -75,6 +75,7 @@ export function buildMagazineMetaLocaleKeys(): Record<string, string> {
     guidePublicBrowseExercises: 'Browse free exercises',
     guidePublicStartFree: 'Start free — Begin I-Day',
     guidePublicStartTraining: 'Start free — train in the app',
+    guidePublicStartCoach: 'Start free — Mission Coach in the app',
     guidePublicStartFuel: 'Start free — open Fuel in the app',
     guidePublicStartMove: 'Start free — Move flows in the app',
     guidePublicStartMind: 'Start free — Mind sessions in the app',
