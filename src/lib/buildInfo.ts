@@ -1,5 +1,5 @@
-/** Shown on Profile so testers can confirm the deployed build. Bump when shipping UI to master. `.771` Alpha 0.1.0 changelog. */
-export const APP_BUILD_LABEL = "2026.07-unified.771";
+/** Shown on Profile so testers can confirm the deployed build. Bump when shipping UI to master. `.772` Library form media honesty. */
+export const APP_BUILD_LABEL = "2026.07-unified.772";
 
 /**
  * Semver for athletes. Distinct from `APP_BUILD_LABEL`, which `/api/health`

@@ -38,7 +38,7 @@ export const PATTERN_MEDIA_CAPTION =
  */
 export const FORM_PATTERN_RASTER_IDS = new Set<FormPatternId>([
   'squat',
-  // 'hinge', // demoted .541 — head cropped / tight crop hard reject
+  'hinge', // .772 regen — full head/feet, empty bar anterior
   'push',
   'pull',
   'loco',

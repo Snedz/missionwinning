@@ -35,6 +35,7 @@ import {
   type LibraryFilterState,
 } from '@/lib/libraryFilters';
 import { inferFormPattern } from '@/lib/formPatterns';
+import { formPackLibraryPosterUrl } from '@/lib/formMedia';
 import { getFormGuideOrCues } from '@/lib/formGuides';
 import { exerciseCraftBlurb } from '@/lib/exerciseCraftBlurb';
 import {
@@ -385,13 +386,7 @@ export function LibraryPage() {
           const pattern = inferFormPattern(ex.id, ex);
           const guideMedia = getFormGuideOrCues(ex.id, { exercise: ex });
           const hasForm = !!guideMedia?.mediaUrl;
-          const posterUrl =
-            guideMedia?.mediaPosterUrl ??
-            (guideMedia?.mediaType === 'image' &&
-            guideMedia.mediaUrl &&
-            !guideMedia.mediaUrl.endsWith('.svg')
-              ? guideMedia.mediaUrl
-              : undefined);
+          const posterUrl = formPackLibraryPosterUrl(ex.id);
           const isPicked = pickedIds.includes(ex.id);
           return (
           <Card
