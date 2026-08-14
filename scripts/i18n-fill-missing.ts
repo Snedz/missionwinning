@@ -89,7 +89,7 @@ async function translateOpenAI(texts: string[], lang: string): Promise<string[]>
       messages: [
         {
           role: 'system',
-          content: `You translate Mission Winning fitness-app UI strings into ${LANG_NAMES[lang] || lang}. Keep brand names (Mission Winning, Win Score, I-Day, Super Bundle), keep markdown **bold**, keep {placeholders}. Return JSON {"t":["..."]} same length/order as input "s".`,
+          content: `You translate Mission Winning fitness-app UI strings into ${LANG_NAMES[lang] || lang}. Keep brand names (Mission Winning, Mission Score, I-Day, Super Bundle), keep markdown **bold**, keep {placeholders}. Return JSON {"t":["..."]} same length/order as input "s".`,
         },
         { role: 'user', content: JSON.stringify({ s: texts }) },
       ],

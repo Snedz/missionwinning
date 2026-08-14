@@ -62,7 +62,7 @@ const GUIDEBOOK_ES: Record<string, string> = {
   'guideChapter_programming-tuning_title': 'Programación y ajuste',
   'guideChapter_programming-tuning_subtitle': 'Volumen, intensidad y descargas — planes desde tus registros',
   'guideChapter_getting-started-mw_title': 'Empezar con Mission Winning',
-  'guideChapter_getting-started-mw_subtitle': 'I-Day, seis pilares y tu Win Score',
+  'guideChapter_getting-started-mw_subtitle': 'I-Day, seis pilares y tu Mission Score',
   'guideChapter_nutrition-recovery_title': 'Nutrición y recuperación',
   'guideChapter_nutrition-recovery_subtitle': 'Combustible y sueño — la otra mitad de la adaptación',
   'guideChapter_assessments-progress_title': 'Evaluaciones y progreso',

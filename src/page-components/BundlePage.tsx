@@ -318,7 +318,7 @@ export function BundlePage() {
 
                     <p className="flex items-center gap-1.5 text-xs text-muted-foreground">
                       <Trophy className="h-3.5 w-3.5 shrink-0 text-accent-900" />
-                      {t('bundleWinScoreNote', { defaultValue: 'Today Win Score ties every pillar together.' })}
+                      {t('bundleWinScoreNote', { defaultValue: 'Today Mission Score ties every pillar together.' })}
                     </p>
 
                     <ul className="space-y-2">

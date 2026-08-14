@@ -11,7 +11,7 @@
 5. `planEngine.ts` — `generateFuelPlan`, `regenerateFuelPlan`
 6. `storage.ts` — `loadFuelPlan`, `saveFuelPlan` (`mw_fuel_plan`)
 7. `fuelSync.ts` — cloud push/pull per user id
-8. `synergy.ts` — `hasFuelPlanThisWeek`, `todayFuelSynergyBump` for Today chips + Win Score
+8. `synergy.ts` — `hasFuelPlanThisWeek`, `todayFuelSynergyBump` for Today chips + Mission Score
 9. `rng.ts` — re-exports `coach/rng.ts` for deterministic variety
 
 ## Tests (colocated)

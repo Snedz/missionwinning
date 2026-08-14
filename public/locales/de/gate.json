@@ -5,6 +5,7 @@
   "gateSubtitle": "Kostenloses Offline-Logging + Mission Coach aus deinen Logs (ohne Wearable). Volle Tools gratis für Eingeladene; der Logger bleibt für immer gratis.",
   "gateLocalFirst": "No account needed: the logger writes sets to your device, and nothing is uploaded unless you sign in.",
   "gateFooterTagline": "Kern für immer gratis",
+  "gateLogASet": "Log a set",
   "gateWaitlistTitle": "Einladung anfragen",
   "gateWaitlistPlaceholder": "you@example.com",
   "gateWaitlistEmailLabel": "Email",

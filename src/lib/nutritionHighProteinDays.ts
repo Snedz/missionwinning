@@ -1,6 +1,6 @@
 /**
  * Count distinct days with ≥150g protein from local nutrition log.
- * Pure helper for Today Win Score (no React).
+ * Pure helper for Today Mission Score (no React).
  */
 
 import { STORAGE_KEYS } from '@/lib/storage/keys';

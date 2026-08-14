@@ -161,7 +161,7 @@ const NOTIFICATION_EN: Record<string, string> = {
   wearablesDisconnected: 'Disconnected.',
   wearablesTitle: 'Wearables',
   wearablesLead:
-    'Optional. Connect Whoop, Strava, and more when configured. Apple Health and Google Health Connect need the app shell later. Win Score still comes from your logs.',
+    'Optional. Connect Whoop, Strava, and more when configured. Apple Health and Google Health Connect need the app shell later. Mission Score still comes from your logs.',
   wearablesSignIn: 'Sign in to connect wearable accounts.',
   wearablesHubPending: 'Needs thin native shell (coming after TWA / iOS).',
   wearablesBleHint: 'Use live heart rate on the Active workout screen.',

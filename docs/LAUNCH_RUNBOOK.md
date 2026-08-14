@@ -11,6 +11,8 @@
 
 ## §1 — Regain deploy access (do today, ~30–60 min)
 
+> Live ops facts live in [CONTEXT.md](../CONTEXT.md) `## Now`. If a checkbox here is older, CONTEXT wins.
+
 > **2026-07-11:** Vercel is connected via GitHub + Cursor. Skip 2FA recovery unless access breaks again. Confirm Production deploys from `master` and Profile shows the latest build label.
 >
 > **2026-07-22 (unblock www):** Production was stuck on a Jul 20 CLI deploy (~69 commits behind master). CI and [deploy-production.yml](../.github/workflows/deploy-production.yml) had been failing in ~2s with **GitHub spending limit / billing** — not a code failure.
@@ -115,7 +117,7 @@ Scorecard: [docs/PRODUCTION_STACK.md](PRODUCTION_STACK.md). Recovery: [docs/BACK
    ```
 5. **Backup drill (L13):** Profile → Export backup once; skim operator restore steps in BACKUP_RESTORE.md.
 
-- [x] Upstash live · [x] rate-limit-smoke sees 429 on www (2026-07-22) · [ ] Sentry DSN live
+- [ ] Upstash live (CONTEXT Status: unset — this box was stale) · [ ] rate-limit-smoke on www · [ ] Sentry DSN live
 - [ ] GitHub `SMOKE_BASE_URL` / `SMOKE_ACCESS_SECRET` for gate-smoke in CI (Deploy secrets present)
 - [ ] Profile export verified once
 - **Also before flip:** Android Accept B Pass — [apps/android/FOUNDER_ACCEPT.md](../apps/android/FOUNDER_ACCEPT.md) 15-min path → [SHIP_INTERNAL.md](../apps/android/SHIP_INTERNAL.md)
@@ -328,7 +330,7 @@ SMOKE_BASE_URL=https://www.missionwinning.com SMOKE_ALLOW_PUBLIC=true SMOKE_EXPE
 ```
 
 See [docs/archive/TRACK_D_GO_LIVE.md](archive/TRACK_D_GO_LIVE.md) for Stripe enrollment + Supabase probe commands.  
-Flip checklist: [docs/archive/PUBLIC_FLIP_CHECKLIST.md](archive/PUBLIC_FLIP_CHECKLIST.md) (offline + SW spot-check Today/Train).
+Flip checklist: [docs/archive/PUBLIC_FLIP_CHECKLIST.md](archive/PUBLIC_FLIP_CHECKLIST.md) (offline + SW + **`start_url` curl**: gated `/private`, post-flip rebuild `/log`). Live ops facts stay in CONTEXT `## Now` — if a checkbox here is older, CONTEXT wins.
 
 1. Final security curls (replace domain if needed):
    ```bash

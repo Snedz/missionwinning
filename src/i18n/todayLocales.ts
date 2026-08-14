@@ -320,7 +320,7 @@ const en: TodayStrings = {
   todayWithBodyweight: 'with bodyweight/minimal',
   todayWithEquipment: 'with available equipment',
   todayRecommendedBody:
-    'Start with a simple full-body or split from Builder, or launch a program template. Complete sessions to level up your Win Score.',
+    'Start with a simple full-body or split from Builder, or launch a program template. Complete sessions to level up your Mission Score.',
   todayGoBuilder: 'Go to Builder / Choose Template →',
   todayStatSessions: 'Sessions',
   todayStatVolume: 'Total Volume',
@@ -427,7 +427,7 @@ const en: TodayStrings = {
   coachInsightNeedLearn:
     'You\'re active across pillars — open a specialist course in Learn to deepen the stack.',
   coachInsightSynergyMultipillar:
-    'Multi-pillar week — your Win Score reflects Train + recovery + learning together.',
+    'Multi-pillar week — your Mission Score reflects Train + recovery + learning together.',
   coachInsightFuelCoachSynergy:
     'Heavy training logged — Fuel Coach added +{{carbs}}g carbs to today\'s plan.',
   coachActionRecoveryFlow: 'Try recovery flow',
@@ -731,7 +731,7 @@ const es: TodayStrings = {
   coachInsightNeedLearn:
     'Estás activo en varios pilares — abre un curso en Learn para profundizar.',
   coachInsightSynergyMultipillar:
-    'Semana multi-pilar — tu Win Score refleja entreno + recuperación + aprendizaje.',
+    'Semana multi-pilar — tu Mission Score refleja entreno + recuperación + aprendizaje.',
   coachInsightFuelCoachSynergy:
     'Entreno intenso registrado — Fuel Coach añadió +{{carbs}}g carbos al plan de hoy.',
   coachActionRecoveryFlow: 'Flujo de recuperación',
@@ -998,7 +998,7 @@ const zh: TodayStrings = {
   coachActionOpenMind: '打开心理支柱',
   coachActionOpenTrack: '打开追踪支柱',
   coachInsightNeedLearn: '你已在多个支柱活跃——打开 Learn 专业课程深化体系。',
-  coachInsightSynergyMultipillar: '多支柱的一周——Win Score 反映训练、恢复与学习合力。',
+  coachInsightSynergyMultipillar: '多支柱的一周——Mission Score 反映训练、恢复与学习合力。',
   coachInsightFuelCoachSynergy: '已记录大重量训练——Fuel Coach 为今日计划增加 +{{carbs}}g 碳水。',
   coachActionOpenLearn: '打开 Learn 课程',
   coachActionOpenFuel: '打开 Fuel Coach',
@@ -1277,7 +1277,7 @@ const id: TodayStrings = {
   coachActionOpenMind: 'Buka pilar Mind',
   coachActionOpenTrack: 'Buka pilar Track',
   coachInsightNeedLearn: 'Kamu aktif di beberapa pilar — buka kursus Learn untuk memperdalam.',
-  coachInsightSynergyMultipillar: 'Minggu multi-pilar — Win Score mencerminkan latihan + pemulihan + belajar.',
+  coachInsightSynergyMultipillar: 'Minggu multi-pilar — Mission Score mencerminkan latihan + pemulihan + belajar.',
   coachInsightFuelCoachSynergy:
     'Latihan berat tercatat — Fuel Coach menambah +{{carbs}}g karbohidrat ke rencana hari ini.',
   coachActionOpenLearn: 'Buka kursus Learn',
@@ -1550,7 +1550,7 @@ const th: TodayStrings = {
   coachActionOpenMind: 'เปิดเสา Mind',
   coachActionOpenTrack: 'เปิดเสา Track',
   coachInsightNeedLearn: 'คุณทำหลายเสาแล้ว — เปิดคอร์ส Learn เพื่อเสริมความลึก',
-  coachInsightSynergyMultipillar: 'สัปดาห์หลายเสา — Win Score สะท้อนการเทรน + ฟื้นตัว + เรียนรู้',
+  coachInsightSynergyMultipillar: 'สัปดาห์หลายเสา — Mission Score สะท้อนการเทรน + ฟื้นตัว + เรียนรู้',
   coachInsightFuelCoachSynergy:
     'บันทึกเทรนหนักแล้ว — Fuel Coach เพิ่มคาร์บ +{{carbs}}g ในแผนวันนี้',
   coachActionOpenLearn: 'เปิดคอร์ส Learn',
@@ -1822,7 +1822,7 @@ const ar: TodayStrings = {
   coachActionOpenMind: 'فتح ركيزة Mind',
   coachActionOpenTrack: 'فتح ركيزة Track',
   coachInsightNeedLearn: 'أنت نشط عبر عدة ركائز — افتح دورة Learn لتعميق المسار.',
-  coachInsightSynergyMultipillar: 'أسبوع متعدد الركائز — Win Score يعكس التدريب والتعافي والتعلم.',
+  coachInsightSynergyMultipillar: 'أسبوع متعدد الركائز — Mission Score يعكس التدريب والتعافي والتعلم.',
   coachInsightFuelCoachSynergy:
     'تم تسجيل تدريب ثقيل — أضاف Fuel Coach +{{carbs}}g كربوهيدرات لخطة اليوم.',
   coachActionOpenLearn: 'فتح دورات Learn',
@@ -1999,7 +1999,7 @@ const LOCALES: Partial<Record<string, TodayStrings>> = {
     coachInsightNeedLearn:
       'Vous êtes actif sur plusieurs piliers — ouvrez un cours Learn pour approfondir.',
     coachInsightSynergyMultipillar:
-      'Semaine multi-piliers — votre Win Score reflète entraînement + récupération + apprentissage.',
+      'Semaine multi-piliers — votre Mission Score reflète entraînement + récupération + apprentissage.',
     coachInsightFuelCoachSynergy:
       'Entraînement intense enregistré — Fuel Coach a ajouté +{{carbs}} g de glucides au plan du jour.',
     coachActionRecoveryFlow: 'Flux de récupération',
@@ -2169,7 +2169,7 @@ const LOCALES: Partial<Record<string, TodayStrings>> = {
     coachInsightNeedLearn:
       'Du bist auf mehreren Säulen aktiv — öffne einen Learn-Kurs zum Vertiefen.',
     coachInsightSynergyMultipillar:
-      'Multi-Säulen-Woche — dein Win Score spiegelt Training + Erholung + Lernen wider.',
+      'Multi-Säulen-Woche — dein Mission Score spiegelt Training + Erholung + Lernen wider.',
     coachInsightFuelCoachSynergy:
       'Intensives Training protokolliert — Fuel Coach hat +{{carbs}} g Kohlenhydrate zum Tagesplan hinzugefügt.',
     coachActionRecoveryFlow: 'Erholungsfluss',

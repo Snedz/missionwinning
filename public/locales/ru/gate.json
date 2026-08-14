@@ -5,6 +5,7 @@
   "gateSubtitle": "Free offline workout logging plus Mission Coach — weekly plans from your logs alone, no wearable. The logger stays free forever.",
   "gateLocalFirst": "No account needed: the logger writes sets to your device, and nothing is uploaded unless you sign in.",
   "gateFooterTagline": "ядро бесплатно навсегда",
+  "gateLogASet": "Log a set",
   "gateWaitlistTitle": "Уведомить о запуске",
   "gateWaitlistPlaceholder": "you@example.com",
   "gateWaitlistEmailLabel": "Email",

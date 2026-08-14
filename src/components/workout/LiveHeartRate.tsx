@@ -74,7 +74,7 @@ export function LiveHeartRate() {
             : deviceName
               ? deviceName
               : t('liveHrHint', {
-                  defaultValue: 'Optional Polar / Wahoo chest strap — not used in Win Score.',
+                  defaultValue: 'Optional Polar / Wahoo chest strap — not used in Mission Score.',
                 })}
         </div>
         {error && <div className="text-[11px] text-destructive mt-0.5">{error}</div>}

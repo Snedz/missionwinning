@@ -490,7 +490,7 @@ const en: ActiveWorkoutStrings = {
   liveHrBpm: '{{bpm}} BPM',
   liveHrIdle: 'Heart rate',
   liveHrUnsupported: 'Bluetooth HR needs Chrome or another browser with Web Bluetooth.',
-  liveHrHint: 'Optional Polar / Wahoo chest strap — not used in Win Score.',
+  liveHrHint: 'Optional Polar / Wahoo chest strap — not used in Mission Score.',
   liveHrDisconnect: 'Disconnect',
   liveHrConnect: 'Connect HR',
   activeSetLoggedSr: 'Logged',

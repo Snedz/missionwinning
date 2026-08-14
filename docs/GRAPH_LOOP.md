@@ -2,7 +2,7 @@
 
 **Audience:** Founder + the next Cursor Cloud / graph agent  
 **Lane:** Engineering-Web (unless a loop says Android)  
-**Status:** ACTIVE 2026-08-14 · web `2026.07-unified.781` · Alpha 0.1.0  
+**Status:** ACTIVE 2026-08-14 · web `2026.07-unified.789` · Alpha 0.1.0 · H0 agent queue empty  
 **Does not replace:** [ORCHESTRATION.md](../ORCHESTRATION.md) (what may be built) · [CONTEXT.md](../CONTEXT.md) `## Now` (where we are) · [vision.md](../vision.md) (constitution) · [docs/THESIS.md](THESIS.md) (wedge) · [docs/PLAN.md](PLAN.md) (phases A–I)
 
 This file is the **execution queue** for the agent graph: one concern per loop, spawn, ship, mark done, spawn the next. It is not a second status block and not a license to skip standing hard bans.
@@ -43,6 +43,10 @@ Recent turns:
 | This file v2 | Horizon 0+ queue (research 2026-08-14) | Docs |
 | **H0-1** | PWA `start_url` flag-switch | `.780` this PR — **done** |
 | **H0-2** | Launch env H0 vs H1 (FREE_BETA) | `.781` this PR — **done** |
+| **H0-3** | API inventory + glob guard | `.787` — **done** |
+| **H0-5** | Win Score → Mission Score leftover copy | `.788` this PR — **done** |
+| **H0-6** | Guidebook chapter heroes | `.268` already paper; leftover glyphs `.789` — **done** |
+| **H0-7** | Runbook / scorecard vs CONTEXT | docs — **done** |
 
 ---
 
@@ -87,11 +91,11 @@ Verified in source 2026-08-14 (master `.779`). Findings with proof paths: [§ Re
 |---|------|-------|--------|
 | **H0-1** | PWA `start_url` flag-switch (same predicate as SW) | Public-flip landmine | `done` — `.780` this PR |
 | **H0-2** | `check-env --launch` vs FREE_BETA (H0 vs H1 profiles) | Launch-verify can succeed | `done` — `.781` this PR |
-| **H0-3** | API INDEX + `docs/API.md` + PROGRAM_STATUS census | Docs match reality | `open` — **next** |
-| **H0-4** | Public-flip checklist: `start_url` curl + SW; runbook pointers | Flip-day smoke | `open` |
-| **H0-5** | “Win Score” → Mission Score leftover strings | Public copy honesty | `open` |
-| **H0-6** | Guidebook chapter heroes still navy/emerald | Design honesty before baselines | `open` |
-| **H0-7** | Production-stack / runbook vs CONTEXT (Upstash, `.104`) | Docs match reality | `open` |
+| **H0-3** | API INDEX + `docs/API.md` + PROGRAM_STATUS census | Docs match reality | `done` — `.787` |
+| **H0-4** | Public-flip checklist: `start_url` curl + SW; runbook pointers | Flip-day smoke | `done` — docs |
+| **H0-5** | “Win Score” → Mission Score leftover strings | Public copy honesty | `done` — `.788` |
+| **H0-6** | Guidebook chapter heroes still navy/emerald | Design honesty before baselines | `done` — already `.268`; leftover glyphs `.789` |
+| **H0-7** | Production-stack / runbook vs CONTEXT (Upstash, `.104`) | Docs match reality | `done` — docs |
 
 ### After H0 (orientation — not open until H0-1…H0-7 are done or `founder`)
 
@@ -138,9 +142,9 @@ Do not pull these forward while H0 agent loops remain `open`.
 | W3 | Coach week earned from logs, on Coach **and** Today | `parked` |
 | W4 | Missed-day re-entry, in-app only | `parked` |
 | W5 | Form Index Wave D — next unique stills | `parked` |
-| W6 | “Win Score” leftover strings | `parked` — **same work as H0-5**; if you ship H0-5, mark W6 done too |
-| W7 | API INDEX drift | `parked` — **same work as H0-3**; if you ship H0-3, mark W7 done too |
-| W8 | Guidebook chapter heroes | `parked` — **same work as H0-6**; if you ship H0-6, mark W8 done too |
+| W6 | “Win Score” leftover strings | `done` — same as H0-5 `.788` |
+| W7 | API INDEX drift | `done` — same as H0-3 `.787` |
+| W8 | Guidebook chapter heroes | `done` — same as H0-6 `.268` / `.789` |
 
 ---
 
@@ -185,13 +189,13 @@ Headers on those routes already say “See: app/api/INDEX.md, docs/API.md”. Di
 
 [CONTEXT.md](../CONTEXT.md) `## Now` wins (`.178`). [LAUNCH_RUNBOOK.md](LAUNCH_RUNBOOK.md) §1 still talks `.104` / “CI billing cleared 2026-07-22”; §2b checks Upstash live; CONTEXT Status table: Actions exhausted, Upstash **unset**. Do not “fix” by copying the Status table into the runbook. Add a pointer: if the runbook disagrees, CONTEXT wins. H0-4 adds the missing `start_url` curl to the flip checklist.
 
-### H0-5 — Win Score leftover copy
+### H0-5 — Win Score leftover copy (`done` · `.788`)
 
-Trap term in CONTEXT: do not add new “Win Score” strings. Remaining values (2026-08-14 grep): `landingLocales`, `todayLocales`, `notificationLocales`, `historyLocales`, `guidebookLocales`, plus `src/lib/INDEX.md` notes and `winScoreSeen` **field name** in activation tests (rename the **string**, not the storage key, unless a migration exists).
+Athlete strings say Mission Score. Keys (`landingFreeWinScore`, `winScoreSeen`) unchanged. Guard: [`src/lib/missionScoreCopy.test.ts`](../src/lib/missionScoreCopy.test.ts).
 
-### H0-6 — chapter heroes
+### H0-6 — chapter heroes (`done` · already `.268` · leftover glyphs `.789`)
 
-CONTEXT `.254`: `public/learn/*.webp` 89–99% dark with teal. `check-design-system` cannot see a `.webp`. Block visual-baseline commit of `guide-human-performance.png` until re-inked.
+Every `public/learn/*.webp` measures 0–1% ink and ≥1% brand red. Guard: [`src/lib/guidebookHeroPalette.test.ts`](../src/lib/guidebookHeroPalette.test.ts). This pass only reminted “Win Score” baked into `getting-started-mw-hero` and `win-score-offline`.
 
 ### Also true (not a loop)
 
@@ -249,21 +253,21 @@ CONTEXT `.254`: `public/learn/*.webp` 89–99% dark with teal. `check-design-sys
 
 ---
 
-## H0-5 — Mission Score leftover copy
+## H0-5 — Mission Score leftover copy (`done` · `.788`)
 
-**Ship:** one i18n pass (`src/i18n/*Locales.ts`). `npm run i18n:parity`. Do not add keys. Do not rename `winScoreSeen` storage without a migration. Mark parked W6 done.
-
----
-
-## H0-6 — Guidebook chapter heroes
-
-**Ship:** re-ink `public/learn/*.webp` to paper/ink/poster red, or stop linking them from paper pages until they match. Eyes-on. Do not `--update-snapshots`. Mark parked W8 done.
+**Shipped:** i18n values + packs + `export-locales`, guidebook/leaderboard/welcome leftovers, `missionScoreCopy.test.ts`. Keys and `winScoreSeen` unchanged. W6 marked done.
 
 ---
 
-## H0-7 — Runbook / scorecard vs CONTEXT
+## H0-6 — Guidebook chapter heroes (`done` · `.789`)
 
-**Ship:** at the top of [LAUNCH_RUNBOOK.md](LAUNCH_RUNBOOK.md) §1 and [PRODUCTION_STACK.md](PRODUCTION_STACK.md) scorecard, one sentence: live ops facts live in CONTEXT `## Now`; if a checkbox here is older, CONTEXT wins. Uncheck Upstash-live if the runbook still claims it. Do not copy the Status table.
+**Already true:** `.268` paper/ink/one-red + `check-guidebook-heroes.mjs`. All 19 `public/learn/*.webp` measure 0–1% ink. **This pass:** leftover “Win Score” glyphs in two figures. W8 marked done.
+
+---
+
+## H0-7 — Runbook / scorecard vs CONTEXT (`done` · docs)
+
+**Shipped:** pointer at LAUNCH_RUNBOOK §1 and PRODUCTION_STACK scorecard. Upstash-live unchecked (CONTEXT: unset). Status table not copied.
 
 ---
 
@@ -273,7 +277,7 @@ CONTEXT `.254`: `public/learn/*.webp` 89–99% dark with teal. `check-design-sys
 You are the next Mission Winning graph-loop agent.
 
 1. Read CONTEXT.md, AGENTS.md, INDEX.md, ORCHESTRATION.md, then docs/GRAPH_LOOP.md.
-2. Implement ONLY the top loop whose Status is `open` (today: H0-3 API inventory).
+2. Implement ONLY the top loop whose Status is `open`. H0-1…H0-7 are done. Do not invent a new loop. Stop the graph unless the founder names the next concern.
 3. This session skipped Horizon W (2026-08-14). Do not unpark W0–W8. Do not write excellence status: pass.
 4. Investigate on current master before coding. If the claim is already false, mark the loop done in GRAPH_LOOP.md with proof paths and stop.
 5. One concern. One PR. [skip vercel] unless I asked for Preview.

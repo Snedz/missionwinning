@@ -16,7 +16,7 @@ One screen of truth for any AI tool or human joining cold. Read this, then [AGEN
 
 ---
 
-## Now (2026-08-14 · web `2026.07-unified.786` · Android `1.24.1`)
+## Now (2026-08-14 · web `2026.07-unified.789` · Android `1.24.1`)
 
 > The ONLY "where we are" block in the repo — [ORCHESTRATION.md](ORCHESTRATION.md) points here.
 >
@@ -323,6 +323,9 @@ One screen of truth for any AI tool or human joining cold. Read this, then [AGEN
 > and `.784` dropped `.770` detail (full text remains in LOG.md / archive)
 > and `.785` dropped `.771` detail (full text remains in LOG.md / archive)
 > and `.786` dropped `.772` detail (full text remains in LOG.md / archive)
+> and `.787` dropped `.773` detail (full text remains in LOG.md / archive)
+> and `.788` dropped `.774` detail (full text remains in LOG.md / archive)
+> and `.789` dropped `.775` detail (full text remains in LOG.md / archive)
 > to [CONTEXT-now-2026-07-30.md](docs/archive/CONTEXT-now-2026-07-30.md) after this
 > block reached **79 bullets / 103KB**. A status doc that only grows stops being read.
 
@@ -344,6 +347,9 @@ One screen of truth for any AI tool or human joining cold. Read this, then [AGEN
 > | gitleaks | **green — and scanning for the first time.** It had never scanned anything: on a `pull_request` event the action lists the PR's commits, the job declared no `permissions:` block, and it 403'd (`pull_requests=read`) before opening a file. Fixed by a `permissions:` block (`.224` carrying `.255`). It scans **only the PR's own commits**, so commit `8ea3527a`'s real Solana treasury address — scrubbed from the working file, still in history — is out of its scope. That finding stands, deliberately not allowlisted; it was never what made this check red. |
 > | Privacy / security program | **Landed `.778`** — [docs/security/PROGRAM_STATUS.md](docs/security/PROGRAM_STATUS.md). Invite-bound gate, health-bucket, DSAR, territory fail-closed. OTP-without-click can leave a ghost user. Not a cert. |
 
+- **`.789`:** (`2026.07-unified.789`) **Guidebook heroes already paper** — `.268` re-ink; this pass only remints leftover “Win Score” glyphs. Palette guard already green. No `PRIVATE_MODE` flip.
+- **`.788`:** (`2026.07-unified.788`) **Mission Score copy** — leftover “Win Score” athlete strings → Mission Score. Keys unchanged. No `PRIVATE_MODE` flip.
+- **`.787`:** (`2026.07-unified.787`) **API inventory** — every `route.ts` listed in INDEX; PROGRAM_STATUS 74; glob guard. No handler change. No `PRIVATE_MODE` flip.
 - **`.786`:** (`2026.07-unified.786`) **Preview `/` is the gate teaser** — ungated Preview no longer paints cinematic open landing. Train stays public. No `PRIVATE_MODE` flip.
 - **`.785`:** (`2026.07-unified.785`) **Locale sheet follows live path** — geo fetch can finish after I-Day lands `/active`; use `window.location` + force-close on first-set. No `PRIVATE_MODE` flip.
 - **`.784`:** (`2026.07-unified.784`) **First-set locale sheet off Train** — I-Day / `/active` / Today / teaser / feedback guess language silently. Confirm later on Profile. F-017 tap budget. No `PRIVATE_MODE` flip.
@@ -357,9 +363,6 @@ One screen of truth for any AI tool or human joining cold. Read this, then [AGEN
 - **`.778`:** (`2026.07-unified.778`) **Privacy/security program** — invite-bound gate, sign-out wipe, DSAR email-keyed export, territory fail-closed, blocked-signup reap. PAR-Q food-row already closed by `.777`. Not a cert. No `PRIVATE_MODE` flip.
 - **`.777`:** (`2026.07-unified.777`) **PAR-Q is coach intake** — Seven flags before first Mission Coach generate. Not a More/rail feature. Not a Fuel row. Today stays train. Logger ungated. No `PRIVATE_MODE` flip.
 - **`.776`:** (`2026.07-unified.776`) **Mission Server durable rooms** — Signed-in Garage posts ride the outbox to `social_messages`. Guests stay local. Missing table fail-opens. No Vercel sockets. No `PRIVATE_MODE` flip.
-- **`.775`:** (`2026.07-unified.775`) **LLM daily dollar cap** — 15¢/identity/day + $25 org breaker; fail-closed. Lifetime uses the same cap. LAUNCH_RUNBOOK §5. No `PRIVATE_MODE` flip.
-- **`.774`:** (`2026.07-unified.774`) **Form Index Wave C stills** — Unique posters for `step-ups`, `jump-squats`, `wall-ball`, `dips-chair`, `incline-bench`. Floor 43. Still-only. No `PRIVATE_MODE` flip.
-- **`.773`:** (`2026.07-unified.773`) **Coach chat local RAG + ReAct** — Premium chat retrieves catalog/guidebook in-process and may call local tools (cite last set, week, form, load band). ZDR one-shots only. No vendor Collections. No `PRIVATE_MODE` flip.
 - **`.669`:** (`2026.07-unified.669`) **Excellence RESULT + agent stop-rule** — `excellenceGate` path policy + `check-excellence-gate` on gate/PR CI; wedge still ships while unscored.
 - **Horizon W + full-launch override (2026-08-05).** Wedge excellence still required; agents may ship rewards + full surface honesty. Fuel estimate accuracy remains.
 - **Free-first beta (~4 weeks):** LLC + EIN pending — **no Bundle UI** + **full depth unlocked**; More/rail **Pillars demoted until first workout** (F-004 / `.695`) — still no Bundle ([docs/FREE_BETA.md](docs/FREE_BETA.md)).
