@@ -19,7 +19,7 @@
  * and `print-beta-invite.ts`. The old `/?access=…&invite=…` shape dead-ended:
  * when query access worked, the gate set a cookie and redirected back to `/` with
  * the invite still in the query, so the athlete saw marketing instead of the
- * invitee screen (`PrivateTeaserClient` only renders on `/private`).
+ * invitee screen (`PrivateTeaserClient` on `/private`; ungated `/` is the same teaser).
  *
  * `?access=` is appended only when `PRIVATE_ALLOW_QUERY_ACCESS=true` (preview /
  * local one-click unlock). Production rejects query bypass unless that flag is
