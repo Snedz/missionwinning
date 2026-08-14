@@ -14,7 +14,7 @@ const root = join(import.meta.dirname, '../..');
 const read = (p: string) => readFileSync(join(root, p), 'utf8');
 
 function walkTs(dir: string, out: string[] = []): string[] {
-  let entries: string[];
+  let entries;
   try {
     entries = readdirSync(dir, { withFileTypes: true });
   } catch {
@@ -101,4 +101,5 @@ test('assessment health-bucket suite is still the discover guard', () => {
   const src = read('src/lib/healthDataBucket.test.ts');
   assert.match(src, /saveNutritionEntry/);
   assert.match(src, /AssessmentsPage/);
+  assert.match(src, /persistParqScreen/);
 });
