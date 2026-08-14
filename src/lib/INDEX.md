@@ -35,6 +35,7 @@
 | **School / PFT** | `schoolClassServer.ts`, `presidentialFitness*.ts`, `fitnessTest*.ts` | America track |
 | **Gating / auth** | `privateModeFlag.ts`, `privateGate.ts`, `supabaseAuthCookies.ts`, `supabaseRequestAuth.ts` | Private beta; Preview ungated via `VERCEL_ENV` |
 | **i18n loaders** | `routeMetadata.ts`, `navConfig.ts` | Not strings — see `src/i18n/` |
+| **i18n prefs** | `i18n/` | Country picker + locale persist — country list from `legal/supportedRegions.ts` |
 | **Units** | `units.ts` | `weightStep`, metric/imperial |
 | **Backup** | `backup.ts` | Device backup export/restore |
 | **What’s New** | `whatsNew.ts` | Build-label last-seen + curated athlete bullets (D13) |

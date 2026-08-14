@@ -101,7 +101,7 @@
 | Fuel Coach engine | [src/lib/fuelCoach/INDEX.md](src/lib/fuelCoach/INDEX.md) | Adaptive meal plan |
 | Full-page UI | [src/page-components/INDEX.md](src/page-components/INDEX.md) | Page components |
 | Reusable UI | [src/components/INDEX.md](src/components/INDEX.md) | Feature components |
-| Translations | [src/i18n/INDEX.md](src/i18n/INDEX.md) | Locale strings |
+| Translations | [src/i18n/INDEX.md](src/i18n/INDEX.md) · [docs/LOCALES.md](docs/LOCALES.md) · [docs/GLOBAL_LOCALE_PLAN.md](docs/GLOBAL_LOCALE_PLAN.md) | Inventing a country list; treating language as a served market. Country policy: [`supportedRegions.ts`](src/lib/legal/supportedRegions.ts) |
 | Static content | [src/data/INDEX.md](src/data/INDEX.md) | Exercises, recipes, guidebook |
 | Database | [supabase/INDEX.md](supabase/INDEX.md) | Migrations & schema |
 | Scripts | [scripts/INDEX.md](scripts/INDEX.md) | Dev/deploy automation |

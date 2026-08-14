@@ -1,16 +1,15 @@
 'use client';
 
 /**
- * First-visit language + units from CDN country (/api/geo).
- * Skips when the user already chose prefs in Profile (explicit flags).
+ * First-visit units from CDN country (/api/geo).
+ * Does not change language — LocaleCountryChooser is the confirm step.
  */
 
 import { useEffect } from 'react';
-import i18n from '@/i18n';
-import { normalizeAppLang } from '@/i18n/appLangs';
 import {
-  LANG_EXPLICIT_KEY,
   REGION_DEFAULTS_APPLIED_KEY,
+  UNITS_EXPLICIT_KEY,
+  UNITS_STORAGE_KEY,
   type RegionDefaults,
 } from '@/lib/regionDefaults';
 import { readRaw, writeRaw } from '@/lib/storage/safeStorage';
@@ -31,14 +30,19 @@ export function RegionDefaultsBoot() {
         const data = (await res.json()) as GeoResponse;
         if (cancelled) return;
 
-        const langExplicit = readRaw(LANG_EXPLICIT_KEY) === '1';
+        const unitsExplicit = readRaw(UNITS_EXPLICIT_KEY) === '1';
+        const hasUnits = readRaw(UNITS_STORAGE_KEY);
 
-        // Units stay metric until the athlete chooses imperial in Account.
-        if (!langExplicit && data.language) {
-          const lng = normalizeAppLang(data.language);
-          // Override navigator-only first paint with region default.
-          await i18n.changeLanguage(lng);
+        if (!unitsExplicit && !hasUnits && (data.units === 'metric' || data.units === 'imperial')) {
+          writeRaw(UNITS_STORAGE_KEY, data.units);
+          window.dispatchEvent(
+            new StorageEvent('storage', { key: UNITS_STORAGE_KEY, newValue: data.units })
+          );
         }
+
+        // Language is confirmed in LocaleCountryChooser — never silently
+        // change it from /api/geo. Geo country is a hint; hosted service
+        // still follows supportedRegions.ts.
       } catch {
         /* offline or geo unavailable — defaults stay as they are */
       } finally {

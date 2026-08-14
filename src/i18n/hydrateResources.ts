@@ -149,7 +149,17 @@ export function hydrateI18nResources(instance: typeof i18n): Promise<void> {
     const { applyLocalePack } = await import('@/i18n/localePacks');
     for (const [lang, common] of Object.entries(resources)) {
       applyLocalePack(common, lang);
-      instance.addResourceBundle(lang, 'common', common, true, true);
+    }
+
+    const { applyFirstClassOverlay } = await import('@/i18n/firstClassLocales');
+    const { UI_LANGS, packLangForUi } = await import('@/i18n/appLangs');
+    for (const ui of UI_LANGS) {
+      const pack = packLangForUi(ui);
+      const base = { ...(resources[pack] ?? resources.en) };
+      applyFirstClassOverlay(base, ui);
+      instance.addResourceBundle(ui, 'common', base, true, true);
+      if (ui === 'zh-Hans') instance.addResourceBundle('zh', 'common', base, true, true);
+      if (ui === 'pt-BR') instance.addResourceBundle('pt', 'common', base, true, true);
     }
 
     // addResourceBundle emits `added`, not `loaded` — force a refresh so

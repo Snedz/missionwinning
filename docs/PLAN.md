@@ -206,7 +206,7 @@ Aligns revenue with [vision.md](../vision.md) without gating free core.
 | **I3** | Track GPS premium MVP — live recording, pace chart, weekly stats | ✅ Shipped | Track |
 | **I3b** | Mind / Move premium depth beyond unlock cards | ✅ 68 Mind + 48 Move premium sessions | Bundle proof |
 | **I3c** | Learn premium specialist chapters | ✅ 4 courses / 16 sections + course fix | Bundle proof |
-| **I4** | i18n G2 — Today/Fuel/Active/Welcome body for Tier 1 + AR RTL | 🟡 es + **fr** shipped; **de** next (one locale at a time) | Global equity |
+| **I4** | i18n G2 — Today/Fuel/Active/Welcome body for Tier 1 + AR RTL | 🟡 es + **fr** shipped; **de** next (one locale at a time). **`.737` founder override:** first-visit language + country picker — [GLOBAL_LOCALE_PLAN.md](GLOBAL_LOCALE_PLAN.md), inventory [LOCALES.md](LOCALES.md). Country list is [`supportedRegions.ts`](../src/lib/legal/supportedRegions.ts), not a new geo list. | Global equity |
 | **I5** | Cross-pillar recommendation depth (coach → multi-pillar CTAs) | ✅ Victory/guided/course CTAs + Learn in single insight | 1+1+1 > sum |
 
 **Done when:** Paying users get differentiated premium; free core unchanged; bundle LTV measurable.

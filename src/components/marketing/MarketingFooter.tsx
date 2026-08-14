@@ -12,6 +12,7 @@ import {
   footerGroups,
   type FooterLink,
 } from '@/components/marketing/footerLinks';
+import { LocaleCountryControl } from '@/components/i18n/LocaleCountryControl';
 
 function FooterColumn({
   title,
@@ -67,6 +68,7 @@ export function MarketingFooter({ className }: MarketingFooterProps) {
             <p className="mt-4 text-xs text-muted-foreground">
               © {year} Mission Winning
             </p>
+            <LocaleCountryControl className="mt-4 max-w-xs" />
           </div>
 
           {groups.map((group) => (

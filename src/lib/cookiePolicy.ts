@@ -110,6 +110,36 @@ export const STORAGE_INVENTORY: StorageEntry[] = [
     retention: "Until you clear site data",
   },
   {
+    name: "mw_locale",
+    kind: "cookie",
+    category: "necessary",
+    purpose:
+      "Remembers the language you confirmed on first visit (display preference only — not a served-market claim).",
+    retention: "1 year",
+  },
+  {
+    name: "mw_country",
+    kind: "cookie",
+    category: "necessary",
+    purpose:
+      "Remembers the country you confirmed, or a detected blocked territory so hosted signup/checkout stay closed.",
+    retention: "1 year",
+  },
+  {
+    name: STORAGE_KEYS.localeChoice,
+    kind: "localStorage",
+    category: "necessary",
+    purpose: "Records that the first-visit language and country chooser was confirmed.",
+    retention: "Until you clear site data",
+  },
+  {
+    name: STORAGE_KEYS.countryPref,
+    kind: "localStorage",
+    category: "necessary",
+    purpose: "ISO country preference paired with the language choice.",
+    retention: "Until you clear site data",
+  },
+  {
     name: "ph_*",
     isPattern: true,
     kind: "localStorage",
