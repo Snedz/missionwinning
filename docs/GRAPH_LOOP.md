@@ -2,7 +2,7 @@
 
 **Audience:** Founder + the next Hermes / Grok Build / graph agent  
 **Lane:** Engineering-Web (unless a loop says Android)  
-**Status:** ACTIVE 2026-08-14 · web `2026.07-unified.803` · Alpha 0.1.0 · **C queue empty**  
+**Status:** ACTIVE 2026-08-14 · web `2026.07-unified.803` · Alpha 0.1.0 · **C queue empty · D revised (Alpha) · not open**  
 **Does not replace:** [ORCHESTRATION.md](../ORCHESTRATION.md) (what may be built) · [CONTEXT.md](../CONTEXT.md) `## Now` (where we are) · [vision.md](../vision.md) (constitution) · [docs/THESIS.md](THESIS.md) (wedge) · [docs/PLAN.md](PLAN.md) (phases A–I)
 
 This file is the **execution queue** for the agent graph: one concern per loop, spawn, ship, mark done, spawn the next. It is not a second status block and not a license to skip standing hard bans.
@@ -127,7 +127,7 @@ Do not reopen cinematic. Do not add Compare. Club / Server / Athlete public URL 
 
 ### Now — C queue (craft · full-launch override · 2026-08-14)
 
-G is empty. Horizon W pass is founder-later. C1–C8 are done. **Do not invent C9.** Next is founder phone dogfood.
+G is empty. Horizon W pass is founder-later. C1–C8 are done. **Do not invent C9.**
 
 | # | Loop | Moves | Status |
 |---|------|-------|--------|
@@ -140,6 +140,21 @@ G is empty. Horizon W pass is founder-later. C1–C8 are done. **Do not invent C
 | **C7** | Victory Fuel/Mind ritual | Residual. Mark already-true if wired | `done (already true)` — `pickVictoryNextAction` high strain → `/mind?collection=post-train` (`src/lib/workout/workoutVictory.ts` + `.test.ts`). Wedge next stays Coach when a plan exists. No restyle. |
 | **C8** | Fuel estimate residual | Investigate. Do not invent NL tokens | `done (already true)` — `estimateLogAllowed` + `MealEstimateDraft` edit-before-log (`.270`/`.411`). Low / requireEdit cannot log until the athlete touches the draft. No invented NL tokens. |
 
+### Now — D queue (revised 2026-08-14 · Alpha)
+
+First D list mixed Alpha with leftover open-beta shop work. Product stamp is **Alpha 0.1.0**. `isFreeBeta()` is mute-pay, not the name.
+
+| # | Loop | Moves | Status |
+|---|------|-------|--------|
+| **D1** | Alpha copy leftover | Athlete-facing “open beta” → Alpha. Do not rename `isFreeBeta()` | `queued` — not open until founder Go |
+| **D2** | Alpha docs frame | `docs/FREE_BETA.md` Frame line. Mute-pay fact stays | queued |
+| **D3** | CareerLine empty → `/active` | `CareerLineCard.tsx` invitation copy, no exit | queued |
+| **D4** | Astro compare rail / www 5th nav | Hold. 3 live vs-pages. One red | hold |
+
+**Dropped:** Astro `/press` · Astro `/bundle` · Pacers (already-true) · Accept B (founder) · dual-mode FREE_BETA tests (old + already-true).
+
+After D3 residual is thin → stop for phone. Do not invent D5 to refill eight slots.
+
 ### After H0 (orientation — not open until H0-1…H0-7 are done or `founder`)
 
 Do not pull these forward while H0 agent loops remain `open`.
@@ -150,7 +165,7 @@ Do not pull these forward while H0 agent loops remain `open`.
 | **2 — PMF** | In-app return loop polish; interview-driven copy &lt;48h; one wall-metric SQL helper if the RPC shape is wrong | Week-4 proof SQL; 10 interviews; stop-acquisition call |
 | **3 — Scale** | SEO compound, i18n bodies, TWA, wearables **as inputs**, iOS | Only after week-4 holds on two cohorts |
 
-**Fuel estimate accuracy** is named remaining in ORCHESTRATION. Do **not** invent more NL tokens without founder dogfood. Not an open H0 loop.
+**Fuel estimate accuracy** already has edit-before-log (C8). Do **not** invent more NL tokens without founder dogfood.
 
 **Two week-4 definitions already exist** — set-level in [docs/METRICS.md](METRICS.md) and workout RPC `mw_week4_retention()`. Do not invent a third.
 
