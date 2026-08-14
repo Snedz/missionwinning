@@ -32,6 +32,7 @@ User guides in plain language (no code paths):
 | Doc | Purpose |
 |-----|---------|
 | [../ORCHESTRATION.md](../ORCHESTRATION.md) | Long-term horizons, gates, what to build next |
+| [GRAPH_LOOP.md](GRAPH_LOOP.md) | Agent graph execution queue — one concern per loop |
 | [PRODUCTION_STACK.md](PRODUCTION_STACK.md) | 13-layer production scorecard (ops maturity) |
 | [CACHE_LADDER.md](CACHE_LADDER.md) | Browser / CDN / Redis / Postgres — ideal vs MW |
 | [BACKUP_RESTORE.md](BACKUP_RESTORE.md) | User export + Supabase operator recovery |

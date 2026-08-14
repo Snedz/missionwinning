@@ -310,6 +310,7 @@ Pitch the **Train + Mission Coach wedge** — not “everything app.” Constitu
 ## Related
 
 - Build phases A–I detail: [docs/PLAN.md](docs/PLAN.md)  
+- Agent graph execution queue (one loop per PR): [docs/GRAPH_LOOP.md](docs/GRAPH_LOOP.md)  
 - Where we are: [CONTEXT.md](CONTEXT.md) `## Now` — the only status block ([docs/archive/VISION_STATUS-2026-07-23.md](docs/archive/VISION_STATUS-2026-07-23.md) is the retired scorecard)  
 - YC wedge / apply bar: [docs/THESIS.md](docs/THESIS.md) (full apply pack → mission-ops)  
 - Crypto rails (not product): [docs/CRYPTO_RAILS_THESIS.md](docs/CRYPTO_RAILS_THESIS.md)  
