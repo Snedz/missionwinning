@@ -36,7 +36,8 @@
 | **Payments** | `premiumServer.ts`, `premiumEnrollmentCache.ts`, `payments.ts`, `checkoutServer.ts`, `stripeServer.ts`, `stripeWebhook.ts`, `paypalWebhook.ts`, [`cryptoCheckout/`](cryptoCheckout/INDEX.md) | Stripe + Phantom USDC lifetime; enrollment Redis memo |
 | **Payments — the pure decisions** | `checkout/checkoutParams.ts` (what Stripe is asked to charge), `premium/enrollmentRow.ts` (what a paid webhook writes), `authUserId.ts` (what may go in an `auth.users` FK) | `.262` — lifted out of the `server-only` modules above, which reach Stripe/Supabase on their first line and so could not be tested at all. Dependency-free on purpose; `money.routetest.ts` covers the server halves |
 | **School / PFT** | `schoolClassServer.ts`, `presidentialFitness*.ts`, `fitnessTest*.ts` | America track |
-| **Gating / auth** | `privateGate.ts`, `privateSession.ts`, `supabaseAuthCookies.ts`, `supabaseRequestAuth.ts` | Private beta, HMAC cookie, JWT cookies |
+| **Gating / auth** | `privateGate.ts`, `privateSession.ts`, `privateModeFlag.ts`, `pwaStartUrl.ts`, `supabaseAuthCookies.ts`, `supabaseRequestAuth.ts` | Private beta, HMAC cookie, JWT cookies; PWA `start_url` follows the same gate predicate as Serwist |
+| **Launch env profiles** | `checkEnvLaunch.test.ts` | H0 vs H1 `evaluateCheckEnv` — implementation in `scripts/check-env.mjs`. FREE_BETA on → Stripe not H0-required; postal is. |
 | **Service territory** | `legal/supportedRegions.ts`, `legal/territoryAccessClient.ts`, `legal/waitlistTerritory.ts`, `legal/blockedSignup.ts` | The block list is the contract. Vercel allow is `x-vercel-ip-country` only. Blocked signup may reap a new empty account |
 | **First paint** | `firstPaintFloor.test.ts` | No raw keys, no textless public fallback, no copy that changes after hydration |
 | **i18n loaders** | `routeMetadata.ts`, `navConfig.ts` | Not strings — see `src/i18n/` |

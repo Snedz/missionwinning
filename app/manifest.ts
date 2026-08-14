@@ -1,4 +1,5 @@
 import type { MetadataRoute } from 'next';
+import { pwaStartUrl } from '@/lib/pwaStartUrl';
 
 // Installable PWA manifest (vision.md: "Full PWA experience: installable,
 // offline-first, low-data, works on any device/browser anywhere").
@@ -11,9 +12,9 @@ export default function manifest(): MetadataRoute.Manifest {
       'Free offline workout logger + adaptive Mission Coach from your logs — free core forever, works offline anywhere.',
     // id pins install identity — do not change without product sign-off.
     id: '/log',
-    // Cold PWA launch under PRIVATE_MODE: /log is gated and soft-bounces to /private.
-    // Start on the gate-public access screen so invitees land without losing path.
-    start_url: '/private',
+    // Same predicate as Serwist disable in next.config.js. Gated → /private
+    // (invite cold install). Ungated / Preview / gate-build → /log (Today).
+    start_url: pwaStartUrl(),
     scope: '/',
     display: 'standalone',
     orientation: 'portrait',

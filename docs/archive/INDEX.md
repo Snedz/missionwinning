@@ -12,6 +12,8 @@ When adding a doc:
 
 | File | Absorbed by / note |
 |------|---------------------|
+| [log/LOG-rotate-766-for-781.md](./log/LOG-rotate-766-for-781.md) | rotated 2026-08-14 for `.781` H0 vs H1 launch env (`.766`) |
+| [log/LOG-rotate-765-for-780.md](./log/LOG-rotate-765-for-780.md) | rotated 2026-08-14 for `.780` PWA start_url flag-switch (`.765`) |
 | [log/LOG-rotate-764-for-779.md](./log/LOG-rotate-764-for-779.md) | rotated 2026-08-14 for `.779` privacy land typecheck (`.764`) |
 | [log/LOG-rotate-763-for-778.md](./log/LOG-rotate-763-for-778.md) | rotated 2026-08-14 for `.778` privacy/security program (`.763`) |
 | [log/LOG-rotate-761-for-776.md](./log/LOG-rotate-761-for-776.md) | rotated 2026-08-14 when `.776` landed (`.761`) |
