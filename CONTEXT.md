@@ -16,7 +16,7 @@ One screen of truth for any AI tool or human joining cold. Read this, then [AGEN
 
 ---
 
-## Now (2026-08-14 · web `2026.07-unified.774` · Android `1.24.1`)
+## Now (2026-08-14 · web `2026.07-unified.775` · Android `1.24.1`)
 
 > The ONLY "where we are" block in the repo — [ORCHESTRATION.md](ORCHESTRATION.md) points here.
 >
@@ -333,6 +333,7 @@ One screen of truth for any AI tool or human joining cold. Read this, then [AGEN
 > | gitleaks | **green — and scanning for the first time.** It had never scanned anything: on a `pull_request` event the action lists the PR's commits, the job declared no `permissions:` block, and it 403'd (`pull_requests=read`) before opening a file. Fixed by a `permissions:` block (`.224` carrying `.255`). It scans **only the PR's own commits**, so commit `8ea3527a`'s real Solana treasury address — scrubbed from the working file, still in history — is out of its scope. That finding stands, deliberately not allowlisted; it was never what made this check red. |
 
 - **Excellence:** unscored · — · [docs/EXCELLENCE_RESULT.md](docs/EXCELLENCE_RESULT.md) — Horizon W phone sign-off home; surface PRs need `status: pass` or `Excellence-Override` (`.669`).
+- **`.775`:** (`2026.07-unified.775`) **LLM daily dollar cap** — 15¢/identity/day + $25 org breaker; fail-closed. Lifetime uses the same cap. LAUNCH_RUNBOOK §5. No `PRIVATE_MODE` flip.
 - **`.774`:** (`2026.07-unified.774`) **Form Index Wave C stills** — Unique posters for `step-ups`, `jump-squats`, `wall-ball`, `dips-chair`, `incline-bench`. Floor 43. Still-only. No `PRIVATE_MODE` flip.
 - **`.773`:** (`2026.07-unified.773`) **Coach chat local RAG + ReAct** — Premium chat retrieves catalog/guidebook in-process and may call local tools (cite last set, week, form, load band). ZDR one-shots only. No vendor Collections. No `PRIVATE_MODE` flip.
 - **`.772`:** (`2026.07-unified.772`) **Library form media honesty + Wave A/B stills** — Cards show unique Form Index posters only (no shared runner/push-up). Regen front-squat / landmine-row / hinge / burpees / thruster / lunges. Eighteen new teaching stills. Floor 38. No `PRIVATE_MODE` flip.
@@ -347,7 +348,6 @@ One screen of truth for any AI tool or human joining cold. Read this, then [AGEN
 - **`.763`:** (`2026.07-unified.763`) **Home gym kit on the free logger** — Account Home gym kit (barbell/rack/plates/dumbbells/pull-up/floor). Just Go + Coach filter, never rank. Train empty Start stays repeat-last. Originally #525 / `.733`.
 - **`.762`:** (`2026.07-unified.762`) **F-017 first-set verify iterate** — Nullish/hash-safe Sign-in chip; Welcome Begin fallback; extended first-set source-scan. Originally #538 / `.750`.
 - **`.761`:** (`2026.07-unified.761`) **e1RM from logged sets (educational)** — Epley est. 1RM on the exercise row after a working set; hideable; not a tested max. Originally #528 / `.739`.
-- **`.760`:** (`2026.07-unified.760`) **Vs last session on the set row** — After a working set saves, a tiny +kg / +rep / same vs last session. First-ever and warmups blank. Originally #530 / `.741`.
 - **`.669`:** (`2026.07-unified.669`) **Excellence RESULT + agent stop-rule** — `excellenceGate` path policy + `check-excellence-gate` on gate/PR CI; wedge still ships while unscored.
 - **Horizon W + full-launch override (2026-08-05).** Wedge excellence still required; agents may ship rewards + full surface honesty. Fuel estimate accuracy remains.
 - **Free-first beta (~4 weeks):** LLC + EIN pending — **no Bundle UI** + **full depth unlocked**; More/rail **Pillars demoted until first workout** (F-004 / `.695`) — still no Bundle ([docs/FREE_BETA.md](docs/FREE_BETA.md)).
@@ -362,7 +362,7 @@ One screen of truth for any AI tool or human joining cold. Read this, then [AGEN
 
 - **Ops:** prod ships via **Vercel Deploy Hook + GitHub webhook** (unmetered, no Actions) — [docs/VERCEL_DEPLOY_CHECKLIST.md](docs/VERCEL_DEPLOY_CHECKLIST.md) §1.1; `deploy-production` is now **manual-only** fallback. **Actions state lives in the Status table above, and only there** — this line has now been wrong in both directions within one night (it claimed "cleared" while jobs were dying at `runner_id: 0`, and the correction claimed "blocked" an hour before billing came back at 00:12 UTC on 2026-08-01). Two places describing one fact is `.178`; the fix is not a better sentence here but **no sentence here**. `npm run gate` stays the faster pre-push check. **Secrets program** + pre-public scrub shipped — [docs/SECRETS.md](docs/SECRETS.md); OSS public-ready (AGPL + CoC) — founder flips GitHub Public — [docs/OPEN_SOURCE.md](docs/OPEN_SOURCE.md). Promote **`.157`** — now on `master`; keep Supabase Site URL on www.
 - Agents **must** ship wedge habit-loop + free acquisition. Full-launch override (2026-08-05) allows rewards + surface honesty; still refuse America marketing / locale farms / F5 / free-logger gates without enable.
-- **Founder:** Accept B on Android + phone excellence → invites → YC F26. **Wire the Deploy Hook webhook** ([checklist §1.1](docs/VERCEL_DEPLOY_CHECKLIST.md)) then promote `.157`; clear Actions billing to restore the PR gate. **Before any list email: set `MAIL_POSTAL_ADDRESS`** (CAN-SPAM footer — confirm the Bizee TX registered-agent address is publishable as a business address, else PO box/CMRA; same address closes the DMCA agent row) — [LEGAL_SAFETY.md](docs/LEGAL_SAFETY.md) §3. Before Public: `npm run secrets:scan`, enable GitHub secret scanning + push protection.
+- **Founder:** Accept B on Android + phone excellence → invites → YC F26. **Wire the Deploy Hook webhook** ([checklist §1.1](docs/VERCEL_DEPLOY_CHECKLIST.md)) then promote `.157`; clear Actions billing to restore the PR gate. **Before any list email: set `MAIL_POSTAL_ADDRESS`** (CAN-SPAM footer — confirm the Bizee TX registered-agent address is publishable as a business address, else PO box/CMRA; same address closes the DMCA agent row) — [LEGAL_SAFETY.md](docs/LEGAL_SAFETY.md) §3. Before Public: `npm run secrets:scan`, enable GitHub secret scanning + push protection; **Lifetime vs Grok** ([LAUNCH_RUNBOOK](docs/LAUNCH_RUNBOOK.md) §5) — $149 must not be unlimited frontier chat (`LLM_DAILY_USD_CENTS`, default 15¢/day).
 
 ---
 ## Read next

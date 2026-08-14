@@ -1,5 +1,5 @@
-/** Shown on Profile so testers can confirm the deployed build. Bump when shipping UI to master. `.774` Form Wave C stills. */
-export const APP_BUILD_LABEL = "2026.07-unified.774";
+/** Shown on Profile so testers can confirm the deployed build. Bump when shipping UI to master. `.775` LLM daily dollar cap. */
+export const APP_BUILD_LABEL = "2026.07-unified.775";
 
 /**
  * Semver for athletes. Distinct from `APP_BUILD_LABEL`, which `/api/health`

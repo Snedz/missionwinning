@@ -2,6 +2,7 @@ import { describe, it } from 'node:test';
 import assert from 'node:assert/strict';
 import {
   DEFAULT_DAILY_CAPS,
+  allowLlmInference,
   checkLlmDailyQuota,
   dailyCapFor,
   llmQuotaKey,
@@ -82,5 +83,16 @@ describe('checkLlmDailyQuota', () => {
     };
     const d = await checkLlmDailyQuota('coach_chat', USER, { env: {}, limiter });
     assert.equal(d.ok, true);
+  });
+});
+
+describe('allowLlmInference', () => {
+  it('refuses when the dollar cap is 0 even if the request cap would allow', async () => {
+    const limiter = async () => ({ ok: true });
+    const d = await allowLlmInference('coach_chat', USER, {
+      env: { LLM_DAILY_USD_CENTS: '0', LLM_DAILY_CAP_COACH_CHAT: '60' },
+      limiter,
+    });
+    assert.equal(d.ok, false);
   });
 });

@@ -252,6 +252,7 @@ Also Horizon W: one-thumb outdoors · one clear next session · coach week earne
 - [ ] Spreadsheet for any Venmo/Zelle manual grants (stop once Stripe individual is live)
 - [ ] Calendar: migrate Stripe → LLC when EIN + business bank land
 - [ ] Phantom treasury ATA funded (optional parallel; list $149 — no amount change unless approved)
+- [ ] **Lifetime vs Grok cost** — do not sell $149 / USDC lifetime as unlimited frontier chat. Resolve §5 “Lifetime vs Grok” before the first live lifetime checkout
 
 1. Create the account: https://dashboard.stripe.com/register (**individual** is fine — required until EIN).
 2. Create **Products** with **Payment Links** (Dashboard → Product catalog → Add product → "Create payment link"). Pricing source of truth: `src/lib/bundleConfig.ts` + STRATEGY.md:
@@ -294,6 +295,25 @@ See [PHANTOM_USDC_CHECKOUT.md](PHANTOM_USDC_CHECKOUT.md). Strategy lens (crypto 
 
 ## §5 — Go public (only after §2 / §2b security + ops boxes + §3 gates)
 
+### Lifetime vs Grok (before `PRIVATE_MODE=false` *and* before the first live lifetime sale)
+
+$149 lifetime (card or Phantom USDC) is **one charge**. Grok chat/voice is **pay-per-token forever**. The hardcoded week is free to serve; `/api/coach/chat` (and insight/voice/debrief on `COACH_LLM_*`) is not. A request cap (60 chats/day) is not a dollar cap.
+
+**Shipped default:** `LLM_DAILY_USD_CENTS=15` ($0.15/day, same for monthly and lifetime) + `LLM_ORG_DAILY_USD_CENTS=2500`. Fail-closed. Tune via env.
+
+Still decide **one** before the public gate or the first lifetime checkout:
+
+1. Lifetime = premium **product** forever + this daily $ budget (honest “resets tomorrow”). Week + logger stay up. **This is the code default.**
+2. Lifetime **does not include** frontier chat — checkout and `/refunds` must say so.
+3. **Stop selling lifetime** until `llm_usage` has real numbers.
+
+Do **not** promise unlimited AI on `/bundle`. Do **not** flip public with `NEXT_PUBLIC_FREE_BETA` still unlocking Grok for everyone if the xAI key is live and the $ cap is `0` or unset-broken.
+
+- [ ] Lifetime vs Grok decision written (1 / 2 / 3 above)
+- [ ] `LLM_DAILY_USD_CENTS` set on Production (or accept the 15¢ default)
+- [ ] `/bundle` + refunds copy does not say unlimited AI
+- [ ] Free-beta Grok unlock off, or the xAI key is dark, or the $ cap is live, before `PRIVATE_MODE=false`
+
 **Automated verify** (after env is set on Vercel):
 
 ```bash
@@ -321,6 +341,7 @@ Flip checklist: [docs/archive/PUBLIC_FLIP_CHECKLIST.md](archive/PUBLIC_FLIP_CHEC
 
 - [ ] Curls pass · [ ] PRIVATE_MODE=false · [ ] PWA installs from prod
 - [ ] Launch posts up · [ ] Waitlist emailed
+- [ ] §5 Lifetime vs Grok boxes checked (or lifetime SKU not for sale)
 
 ## §6 — Operating cadence (after launch)
 

@@ -12,7 +12,7 @@ import { readCoachLlmEnv } from '@/lib/coachLlmClient';
 import { coachChatSchema, parseJsonBody } from '@/lib/apiSchemas';
 import { rejectOversizedBody } from '@/lib/requestBodyLimit';
 import { resolveLlmCaller } from '@/lib/llm/identity';
-import { checkLlmDailyQuota } from '@/lib/llm/quota';
+import { allowLlmInference } from '@/lib/llm/quota';
 import { recordLlmUsage } from '@/lib/llm/metering';
 
 export const POST = withApiLogging('coach/chat', async (request: NextRequest) => {
@@ -50,7 +50,7 @@ export const POST = withApiLogging('coach/chat', async (request: NextRequest) =>
   const llmEnv = readCoachLlmEnv();
   const llmConfigured = Boolean(llmEnv.apiUrl && llmEnv.apiKey);
   const quota = llmConfigured
-    ? await checkLlmDailyQuota('coach_chat', caller)
+    ? await allowLlmInference('coach_chat', caller)
     : { ok: true as const, retryAfterSec: undefined };
 
   const wantStream =
