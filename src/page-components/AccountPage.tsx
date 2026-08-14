@@ -49,6 +49,7 @@ import { ProfilePrivacyCard } from '@/components/profile/ProfilePrivacyCard';
 import { ProfileFeedbackCard } from '@/components/profile/ProfileFeedbackCard';
 import { ProfileTransparencyCard } from '@/components/profile/ProfileTransparencyCard';
 import { ProfileWhatsNewCard } from '@/components/profile/ProfileWhatsNewCard';
+import { UnderTheHoodCard } from '@/components/profile/UnderTheHoodCard';
 import { ProfileReferralCard } from '@/components/profile/ProfileReferralCard';
 import { ProfileWearablesCard } from '@/components/profile/ProfileWearablesCard';
 import { readRaw, writeRaw, remove as removeRaw } from '@/lib/storage/safeStorage';
@@ -415,6 +416,8 @@ export function AccountPage() {
           <ProfileWearablesCard signedIn={Boolean(email)} />
 
           <ProfileWhatsNewCard />
+
+          <UnderTheHoodCard />
 
           <ProfilePrivacyCard />
 

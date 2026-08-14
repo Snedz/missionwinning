@@ -32,7 +32,9 @@ export type OutboxKind =
   // panel report a tester who never arrived and never converted.
   | 'invite.landed'
   | 'invite.redeem'
-  | 'referral.redeem';
+  | 'referral.redeem'
+  /** Signed-in ISO-week logger rollup. Guests never enqueue this kind. */
+  | 'week.logged';
 
 export interface OutboxOp {
   id: string;

@@ -30,6 +30,7 @@ const KIND_LABEL: Record<OutboxKind, { key: string; defaultValue: string }> = {
   'invite.landed': { key: 'offlineQueueInviteLanded', defaultValue: 'Invite visit' },
   'invite.redeem': { key: 'offlineQueueInviteRedeem', defaultValue: 'Invite code' },
   'referral.redeem': { key: 'offlineQueueReferral', defaultValue: 'Referral code' },
+  'week.logged': { key: 'offlineQueueWeekLogged', defaultValue: 'Weekly log mark' },
 };
 
 /** Coarse on purpose — a queued write does not need a to-the-minute timestamp. */

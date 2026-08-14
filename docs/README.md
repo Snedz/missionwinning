@@ -64,6 +64,7 @@ User guides in plain language (no code paths):
 | [AIKIDO.md](AIKIDO.md) | Aikido Cursor MCP + CRITICAL-deps CI gate |
 | [COMPLIANCE.md](COMPLIANCE.md) | Control monitor (SOC2/ISO/HIPAA map-only) |
 | [SEO_ANALYTICS.md](SEO_ANALYTICS.md) | PostHog + Search Console |
+| [METRICS.md](METRICS.md) | Week-4 boss metric — definition, exclusions, no invented traction |
 | [LIGHTHOUSE_BASELINE.md](LIGHTHOUSE_BASELINE.md) | Performance baselines |
 
 ### Legal & sourcing

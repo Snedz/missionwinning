@@ -1,6 +1,6 @@
 # Post-launch operating cadence
 
-**Wall metric (year one):** week-4 retained weekly loggers — users who log ≥1 workout in week 4 after first workout. Everything else is vanity until this holds. ([STRATEGY.md](STRATEGY.md))
+**Wall metric (year one):** week-4 retained weekly loggers. Set-level definition, events, and exclusions: [METRICS.md](METRICS.md). The RPC below still counts **completed workouts**. Do not invent traction. ([STRATEGY.md](STRATEGY.md))
 
 ## How to measure week-4 retention
 

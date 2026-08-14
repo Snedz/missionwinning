@@ -61,6 +61,17 @@ Public while private gate is on. See [OPS_MONITORING.md](OPS_MONITORING.md).
 | Rate | 3 / 5 min / user |
 | Response | JSON attachment: every table the account owns (`EXPORT_TABLES` in [src/lib/accountDataRegistry.ts](../src/lib/accountDataRegistry.ts)), rows capped at 5000/table with a `truncated` marker. `wearable_connections.access_token`/`refresh_token` are redacted — secrets ride in no export. **401** no session · **503** admin not configured · **502** opaque on read failure |
 
+### `POST /api/metrics/week-logged`
+
+| | |
+|--|--|
+| Auth | session (cookie) |
+| Rate | 20 / min / IP |
+| Body | `{ isoWeek: "YYYY-Www" }` (`weekLoggedBodySchema`) |
+| Response | `{ ok, stored }` · **401** no session (guests stay local) · **400** bad week · **500** opaque `server_error` |
+
+Signed-in ISO-week logger rollup for the week-4 boss metric. No email, no EIN, no workout content. Guests never POST this. Migration `20260813_week_logged.sql` — CoS applies; until then the handler returns `{ ok: true, stored: false }` when admin is unset, or 500 if the table is missing.
+
 ### `POST /api/account/delete`
 
 | | |

@@ -55,7 +55,7 @@ Legend:
 |-------|---------|------|------|------|
 | `account/export` | GET | session | 3/5min/user | Art. 20 — every owned table as JSON attachment; wearable tokens redacted (`src/lib/accountDataServer.ts`) |
 | `account/delete` | POST | session | 2/5min/user | Art. 17 — Zod `accountDeleteBodySchema` (`confirm: 'DELETE'`); email-keyed cleanups then `auth.admin.deleteUser` cascade; no migration needed |
-| `account/mission-id` | GET | session | 30/min/user | Sequential Mission ID. GET only — no client mint. **401** guest · `{ ok, missionId }` |
+| `metrics/week-logged` | POST | session | 20/min/IP | Zod `weekLoggedBodySchema`; signed-in ISO-week rollup only. Guests never call. No PII. |
 
 ### Coach
 

@@ -6,13 +6,12 @@
 
 | Hook | Consumers | Depends on |
 |------|-----------|------------|
-| `useCoachPlan.ts` | `CoachPage`, coach cards | `src/lib/coach/*`, `garageSwap` line action, localStorage |
+| `useCoachPlan.ts` | `CoachPage`, coach cards | `src/lib/coach/*`, localStorage |
 | `useFuelPlan.ts` | `FuelMealPlanCard`, Nutrition | `src/lib/fuelCoach/*`, `/api/premium/recipes` |
 | `useDailyCoachInsight.ts` | `CoachInsightCard`, Today | `/api/coach/daily-insight`, `score.ts` |
 | `useMissionJourney.ts` | Journey components, guards | `missionJourney.ts` |
 | `useJourneySync.ts` | `AppLayout`, Profile | `journeySync.ts`, Supabase |
-| `useOutboxDrain.ts` | `JourneySyncInner` (idle) | `lib/sync/outbox.ts` — drains on mount / online / visible |
-| `useMissionId.ts` | Athlete Page, Account | `GET /api/account/mission-id` — display only; guests stay null |
+| `useOutboxDrain.ts` | `JourneySyncInner` (idle) | `lib/sync/outbox.ts` — drains on mount / online / visible; registers `week.logged` |
 | `usePremium.ts` | Gated UI, Bundle | `/api/premium/status` |
 | `useUnits.ts` | Workout, calculators | `units.ts`, localStorage |
 | `useUiMode.ts` | Layout, simplified UI | `uiMode.ts` |
@@ -20,7 +19,6 @@
 | `use-toast.ts` | shadcn toast primitive | UI only |
 | `useScrollReveal.ts` | marketing `Reveal` | IntersectionObserver |
 | `useFileUploadQueue.ts` | Track import, Profile backup | per-file progress/retry queue |
-| `useTransparencyReport.ts` | Visibility + Under the Hood + Account card | `src/lib/transparency/`, territory, Coach rationale |
 | `useIsCompact.ts` | `ScreenDock`, `JourneyHero` | `matchMedia('(max-width: 767px)')` — **the line between the two designs**, see below |
 
 ## Conventions

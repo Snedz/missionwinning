@@ -44,7 +44,7 @@ export const EXPORT_TABLES: readonly ExportTableSpec[] = [
   { table: 'wearable_samples', match: 'user_id' },
   { table: 'push_subscriptions', match: 'user_id_or_device' },
   { table: 'llm_usage', match: 'user_id_or_device' },
-  { table: 'mission_ids', match: 'user_id' },
+  { table: 'week_logged', match: 'user_id' },
 ] as const;
 
 /** Email-keyed rows with no user_id — cleaned explicitly before the cascade. */

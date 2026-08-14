@@ -174,6 +174,7 @@ export const STORAGE_KEYS = {
   leads: 'mw_leads',
   referralCode: 'mw_referral_code',
   squadCode: 'mw_squad_code',
+  /** Local ISO-week rollup for this install (`firstIsoWeek` + `weeks`). Not a user count. */
   week4Retention: 'mw_week4_retention',
 
   // ── America / PFT / school (parkable) ──

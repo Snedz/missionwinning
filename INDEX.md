@@ -63,7 +63,7 @@
 | **Classification / dual-repo / open safely** | [docs/CLASSIFICATION.md](docs/CLASSIFICATION.md), [docs/DUAL_REPO.md](docs/DUAL_REPO.md), `npm run ops:sync` | Committing `ops/` or `.hermes/`; putting STRATEGY war-room detail in public product git long-term |
 | **Design proposal brief (third)** | [docs/DESIGN_PROPOSAL_3.md](docs/DESIGN_PROPOSAL_3.md) | Re-opening IA, routes or tokens — those are settled, not wireframe |
 | UI/UX audit (hero flows) | [docs/DESIGN_REVIEW.md](docs/DESIGN_REVIEW.md) | Landing redesigns while beta gates red |
-| SEO / growth analytics | [docs/SEO_ANALYTICS.md](docs/SEO_ANALYTICS.md), [docs/LIGHTHOUSE_BASELINE.md](docs/LIGHTHOUSE_BASELINE.md) | — |
+| SEO / growth analytics | [docs/SEO_ANALYTICS.md](docs/SEO_ANALYTICS.md), [docs/LIGHTHOUSE_BASELINE.md](docs/LIGHTHOUSE_BASELINE.md), **boss metric:** [docs/METRICS.md](docs/METRICS.md) | Invented traction numbers |
 | Stripe + premium | [docs/STRIPE_PREMIUM_SETUP.md](docs/STRIPE_PREMIUM_SETUP.md) | — |
 | Phantom USDC lifetime | [docs/PHANTOM_USDC_CHECKOUT.md](docs/PHANTOM_USDC_CHECKOUT.md) | — |
 | Crypto rails (strategy) | [docs/CRYPTO_RAILS_THESIS.md](docs/CRYPTO_RAILS_THESIS.md) | — |
