@@ -1,9 +1,12 @@
 'use client';
 
+import { useEffect, useState } from 'react';
 import { Medal, Target } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
 import type { RewardsSummary } from '@/lib/rewards/summary';
+import { isTodayPlannedRest, setTodayPlannedRest } from '@/lib/rewards/plannedRestStorage';
 
 type Props = {
   summary: RewardsSummary;
@@ -13,6 +16,11 @@ type Props = {
 export function TodayRewardsCard({ summary }: Props) {
   const { t } = useTranslation();
   const rankTitle = t(summary.rankTitleKey, { defaultValue: summary.rankTitleDefault });
+  const [restToday, setRestToday] = useState(false);
+
+  useEffect(() => {
+    setRestToday(isTodayPlannedRest());
+  }, []);
 
   return (
     <Card className="content-card" data-testid="today-rewards-card">
@@ -72,6 +80,22 @@ export function TodayRewardsCard({ summary }: Props) {
               defaultValue: 'Hit your weekly sessions — rest days are part of the plan.',
             })}
           </p>
+          <Button
+            type="button"
+            size="sm"
+            variant="ghost"
+            data-testid="rest-today"
+            className="h-8 px-2 text-xs"
+            onClick={() => {
+              const next = !restToday;
+              setTodayPlannedRest(next);
+              setRestToday(next);
+            }}
+          >
+            {restToday
+              ? t('rewardRestTodayOn', { defaultValue: 'Rest today is planned' })
+              : t('rewardRestToday', { defaultValue: 'Rest today' })}
+          </Button>
         </div>
 
         {summary.challengesTotal > 0 ? (
