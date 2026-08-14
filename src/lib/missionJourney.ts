@@ -434,8 +434,8 @@ function daysSinceCommission(iso?: string): number {
  * Pure readiness boss pin for Today (Flow-6).
  *
  * While streak/commitment is open → train (session-2 copy at exactly one log).
- * After commitment, if PAR-Q still open → health screen (commissioning path).
- * Never returns `/learn/guide` as primary.
+ * After commitment, Today still trains. PAR-Q is coach-generate intake,
+ * not a dock boss. Never returns `/learn/guide` or `/assessments` as primary.
  */
 export function pickReadinessPrimaryAction(opts: {
   readiness: JourneyReadinessMilestones;
@@ -468,18 +468,15 @@ export function pickReadinessPrimaryAction(opts: {
     };
   }
 
-  if (!readiness.parq) {
-    return {
-      label: 'Complete health screen',
-      description: 'PAR-Q assessment — required before full training load.',
-      href: '/assessments',
-      phase: 'readiness',
-      stepLabel: 'Readiness · Health screen',
-      progressPct: 80,
-    };
-  }
-
-  return null;
+  return {
+    label: "Start today's workout",
+    description: 'Habit first. The health screen waits at Mission Coach generate.',
+    href: '/active',
+    phase: 'readiness',
+    stepLabel: 'Readiness · Train',
+    progressPct: 80,
+    startWorkout,
+  };
 }
 
 export function getPhaseLabel(phase: JourneyPhase): string {

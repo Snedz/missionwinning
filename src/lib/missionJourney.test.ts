@@ -48,14 +48,15 @@ describe('pickReadinessPrimaryAction (Flow-6 train-first)', () => {
     assert.match(action!.label, /streak|train|session/i);
   });
 
-  it('after streak met, PAR-Q can own primary (commissioning)', () => {
+  it('after streak met, Today still trains — PAR-Q is not a dock boss', () => {
     const action = pickReadinessPrimaryAction({
       readiness: { parq: false, streakMet: true, winScoreSeen: true },
       completedSessions: 7,
       startWorkout,
     });
     assert.ok(action);
-    assert.equal(action!.href, '/assessments');
+    assert.equal(action!.href, '/active');
+    assert.notEqual(action!.href, '/assessments');
   });
 
   it('never returns guidebook as primary', () => {

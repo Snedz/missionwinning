@@ -129,11 +129,11 @@ export function getFirstSteps(state: JourneyState, opts?: GetFirstStepsOpts): Fi
     {
       key: 'parq',
       done: state.readiness.parq,
-      href: '/assessments',
+      href: '/coach',
       titleKey: 'firstStepParqTitle',
-      title: 'Complete the health screen',
+      title: 'Screen before a coach plan',
       whyKey: 'firstStepParqWhy',
-      why: 'A short safety questionnaire. It is the one step the app does ask for before pushing harder.',
+      why: 'A short safety questionnaire before Mission Coach generates a week. Log set never waits on it.',
     }
   );
 

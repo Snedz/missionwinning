@@ -49,9 +49,9 @@ const FIRST_STEPS_EN: Record<string, string> = {
   firstStepLearnTitle: 'Read one guide',
   firstStepLearnWhy:
     'Knowing why a session is built the way it is makes it easier to keep going.',
-  firstStepParqTitle: 'Complete the health screen',
+  firstStepParqTitle: 'Screen before a coach plan',
   firstStepParqWhy:
-    'A short safety questionnaire. It is the one step the app does ask for before pushing harder.',
+    'A short safety questionnaire before Mission Coach generates a week. Log set never waits on it.',
 
   // Segmented-control names. A tablist with no accessible name is a group a
   // screen reader announces as nothing.

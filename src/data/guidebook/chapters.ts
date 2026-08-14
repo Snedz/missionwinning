@@ -82,7 +82,7 @@ Most general fitness blends all three across the week. A lifter who never trains
 Practical recovery levers you can control today: 7–9 hours sleep when possible, protein at most meals, hydration, easy movement on rest days (walks, mobility flows), and honest deloads when readiness rings trend down.
 
 Readiness on Today is a consistency score from your logs — not a medical device. Use it as a nudge to push, maintain, or back off — not as an excuse to skip forever.`,
-        practiceCTA: { label: 'Open health screen (PAR-Q)', href: '/assessments' },
+        practiceCTA: { label: 'Screen before a coach plan', href: '/coach' },
         relatedExerciseIds: ['bird-dog', 'plank', 'glute-bridge'],
         relatedLearnPathId: 'sleep-recovery',
         sourceRef: 'foundations — recovery',
@@ -542,7 +542,7 @@ Use Fuel recipes to pre-fill macros when planning is hard. Weekly challenges can
 Complete the in-app health screen honestly. Mission Winning is a civilian fitness tool, not medical advice.
 
 Assessments save a summary to your log for your own reference — share with your doctor or coach if useful.`,
-        practiceCTA: { label: 'Complete PAR-Q', href: '/assessments' },
+        practiceCTA: { label: 'Screen before a coach plan', href: '/coach' },
         relatedLearnPathId: 'assessments-path',
         sourceRef: 'PAR-Q screening',
         callout: {

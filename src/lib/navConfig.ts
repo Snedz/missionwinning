@@ -206,7 +206,7 @@ export const RAIL_GROUPS: { id: string; title: string; titleKey: string; hrefs: 
     id: 'toolkit',
     title: 'Toolkit',
     titleKey: 'navGroupToolkit',
-    hrefs: ['/assessments', '/library', '/builder', '/profile', '/account'],
+    hrefs: ['/library', '/builder', '/profile', '/account'],
   },
 ];
 
