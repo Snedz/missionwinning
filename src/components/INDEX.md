@@ -29,11 +29,10 @@
 | `metrics/` | CoachInsightCard, pillar scores (not weekly plan) |
 | `nutrition/` | Fuel UI — `FuelMacroOverview`, `FuelQuickLogPanel`, `FuelMoreTools`, `FuelTodayLogCard`, `FuelLogSheet`, `FuelRecipesPanel` |
 | `pillars/` | Shared pillar panels, timed flows |
-| `session/` | Guided session runner |
-| `social/` | Mission Server garage UI — channel list, messages, composer |
 | `today/` | Today dashboard — [today/INDEX.md](today/INDEX.md) |
 | `track/` | GPS / activity panels |
-| `profile/` | Athlete Page (You) + Account settings cards |
+| `profile/` | Profile settings cards (privacy, backup, referral, wearables, What’s New, Visibility) |
+| `transparency/` | Under the Hood weights panel + report downloads — [transparency/INDEX.md](transparency/INDEX.md) |
 | `ui/` | Design system primitives (`AdaptiveOverlay` — the one sheet shell, with a pinned `footer` slot; `EmptyState`, `ErrorState`, `Skeleton`, `MeterBar`, `ScoreNumeral`, `RuledRadioGroup`, `OtpInput`, `FileDropZone`, `FileUploadRow`, `HoldToConfirmButton`, `DangerZone`, shadcn) |
 | `workout/` | Active workout — [workout/INDEX.md](workout/INDEX.md) |
 

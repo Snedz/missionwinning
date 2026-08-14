@@ -126,6 +126,43 @@ const ATHLETE_EN: Record<string, string> = {
   accountOwnerSection: 'Owner tools',
   navAccount: 'Account',
   moreAccountDesc: 'Settings, notifications, backup',
+  transparencyEyebrow: 'Account',
+  transparencyTitle: 'Visibility',
+  transparencySubtitle:
+    'See if anything is limited, the exact reason, and download the full report (JSON + text).',
+  transparencyDownloadJson: 'Download JSON',
+  transparencyDownloadText: 'Download text',
+  transparencyCardTitle: 'Visibility',
+  transparencyCardLead:
+    'See if anything is limited and why. Under the Hood publishes Mission Points boosts and visibility filters. Download includes both, plus labels on this athlete.',
+  transparencyCardOpen: 'Open Visibility',
+  transparencyEarnTitle: 'Earn table (live local XP)',
+  transparencyEarnEvent: 'Event',
+  transparencyEarnPoints: 'Points',
+  transparencyEarnCap: 'Cap',
+  transparencyStatusOpen: 'Not limited',
+  transparencyStatusGated: 'Limited',
+  transparencyStatusHidden: 'Hidden',
+  transparencyStatusLimited: 'Limited',
+  transparencyStatusSkipped: 'Skipped',
+  transparencyStatusInfo: 'Explained',
+  transparencyBackAccount: 'Back to Account',
+  transparencyNoLimits: 'No limits apply',
+  transparencyLimitsApply: '{{count}} limits apply',
+  hoodEyebrow: 'Account',
+  hoodPageTitle: 'Under the Hood',
+  hoodKicker: 'Mission Winning',
+  hoodTitle: 'Scoring weights',
+  hoodSubtitle:
+    'Published Mission Points (what this device awards) and visibility filters. Filters never debit points.',
+  hoodBoosts: 'Boosts',
+  hoodBoostsPlanned: 'Boosts (Club ledger — planned)',
+  hoodPenalties: 'Penalties',
+  hoodCardOpen: 'Under the Hood',
+  hoodPenaltyNote:
+    'Report, mute, block, and hide are visibility filters. They do not debit Mission Points.',
+  hoodServerHelp:
+    'How to post well in Mission Server: replies from people you trained with beat likes. Likes are weak.',
 
   homeGymKitTitle: 'Home gym kit',
   homeGymKitBody:

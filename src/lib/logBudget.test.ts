@@ -87,13 +87,11 @@ const NEVER_SHIPPED: { from: number; to: number; why: string }[] = [
       'a prior rotate of a missing section.',
   },
   {
-    from: 671,
-    to: 678,
+    from: 698,
+    to: 728,
     why:
-      'Minted by concurrent branches that were relabeled before landing — `.671`–`.677` ' +
-      'relabel (Craft #452 owned `.671`); guidebook CTAs shipped as `.680`. No `##` heading ' +
-      'on master ever ended in these labels, so rotating `.670` walks this hole to the ' +
-      'archived `.670` once `.679` is the live bottom.',
+      'Reserved by concurrent cloud branches while master tip was `.697`. `.729` jumped the ' +
+      'occupied range; no LOG heading on master ever ended in these labels.',
   },
 ];
 const neverShipped = (x: number) => NEVER_SHIPPED.some((g) => x >= g.from && x <= g.to);

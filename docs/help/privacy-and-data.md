@@ -26,11 +26,17 @@ Connecting Apple Health, Google Health Connect, Whoop, Strava, or similar is **o
 
 Manual JSON/CSV imports on Track stay on-device (same as other Track logs) until you sign in and sync.
 
+## Visibility and Under the Hood
+
+Account → **Visibility** lists whether anything is limited and the exact reason: the logger stays free and offline, whether this deploy is invite-gated, region policy if hosted signup is blocked, whether Coach was skipped, that Mission Score stays on your device, and Super Bundle notify-only until Stripe. Download the same report as JSON or text.
+
+Account → **Under the Hood** publishes scoring weights. **Boosts** are Mission Points this device awards (session finish, coach-adjacent live events, and the planned Club ledger: session, coach-plan, and the rest). **Penalties** (report, mute, block, hide) are visibility filters — they do not debit points.
+
+How to post well in Mission Server: replies from people you trained with beat likes. Likes are weak.
+
 ## Backup and restore
 
-Profile → **Export backup** downloads a JSON file of this device (workouts, routines, nutrition, journey). Restore on a new device by importing that file. Backups are yours — store them securely.
-
-Separately, Profile → **Your training history** imports and exports Strong and Hevy CSV (0.1 beta). Import and export are **free forever** — no account, never paywalled. Files stay on this device until you sign in and sync.
+Account → **Export backup** downloads a JSON file. Restore on a new device by importing that file. Backups are yours — store them securely.
 
 ## Sign-in providers
 
@@ -56,7 +62,7 @@ Anonymous usage analytics (e.g. PostHog) may run to improve the product — see 
 
 ## Your rights
 
-- Export your backup or workout CSV anytime (both free).
+- Export your backup anytime.
 - Delete local data by clearing site data in browser settings.
 - Request account deletion via support (cloud rows removed per policy).
 

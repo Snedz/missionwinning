@@ -135,6 +135,7 @@ export const KNOWN_TOP_LEVELS: Readonly<Record<string, 'wedge' | 'surface'>> = {
   'src/lib/storage': 'wedge',
   'src/lib/sync': 'wedge',
   'src/lib/time': 'surface',
+  'src/lib/transparency': 'surface',
   'src/lib/today': 'wedge',
   'src/lib/track': 'surface',
   'src/lib/trends': 'surface',
@@ -175,6 +176,7 @@ export const KNOWN_TOP_LEVELS: Readonly<Record<string, 'wedge' | 'surface'>> = {
   'src/components/social': 'surface',
   'src/components/today': 'wedge',
   'src/components/track': 'surface',
+  'src/components/transparency': 'surface',
   'src/components/ui': 'surface',
   'src/components/workout': 'wedge',
   // apps/android (native product — surface until web excellence pass; Accept B separate)

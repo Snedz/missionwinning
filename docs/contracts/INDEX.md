@@ -7,7 +7,7 @@
 |----------|------|----------------|
 | Habit | [HABIT.md](HABIT.md) | `src/lib/habitWeekCount.ts`, Today `/log` header |
 | Identity | [IDENTITY.md](IDENTITY.md) | `packages/mw-core/src/identity/`, `src/lib/identity/`, `/profile` + `/account` |
-| Economy | [ECONOMY.md](ECONOMY.md) | `packages/mw-core/src/economy/`, `src/lib/rewards/`, [CLUB_PLAN.md](../CLUB_PLAN.md) |
+| Economy | [ECONOMY.md](ECONOMY.md) | `packages/mw-core/src/economy/`, `src/lib/rewards/`, [CLUB_PLAN.md](../CLUB_PLAN.md) · published on `/account/under-the-hood` |
 | Module host | [MODULE.md](MODULE.md) | `packages/mw-core/src/module/` |
 | AI interop | [AI_INTEROP.md](AI_INTEROP.md) | Domain `INDEX.md` resume cards, coach LLM client |
 | Log ↔ Social | (enforced) | `src/lib/domainBoundary.ts` + [IDENTITY_SOCIAL_PLAN.md](../IDENTITY_SOCIAL_PLAN.md) C1–C9 |

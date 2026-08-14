@@ -21,6 +21,8 @@
 | `/track` | Track | `TrackPage.tsx` |
 | `/profile` | You | `ProfilePage.tsx` — the Athlete Page (identity · career line · badge shelf) |
 | `/account` | Account | `AccountPage.tsx` — settings, notifications, billing, backup |
+| `/account/transparency` | Visibility | `TransparencyPage.tsx` — limits + reasons + downloadable report |
+| `/account/under-the-hood` | Under the Hood | `UnderTheHoodPage.tsx` — BOOSTS / PENALTIES weights |
 
 ### Train deeper
 

@@ -75,6 +75,7 @@ npm run export-locales     # TS + packs → public/locales/
 | `landingLocales.ts` | Marketing landing |
 | `betaLocales.ts` | Beta gates |
 | `gateLocales.ts` | Private gate |
+| `athleteLocales.ts` | Athlete Page + Account + Visibility / Under the Hood chrome |
 
 ## Pattern
 

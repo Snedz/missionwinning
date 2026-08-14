@@ -23,7 +23,6 @@
 |-------------|------------|-------------------------------|
 | **Deciding what to build next** | [ORCHESTRATION.md](ORCHESTRATION.md) | Old chat plans; infinite feature lists |
 | Implementing a feature | [ORCHESTRATION.md](ORCHESTRATION.md) horizon gate + [docs/PLAN.md](docs/PLAN.md) + `src/*/INDEX.md` | Old chat plans in `~/.cursor/plans/` |
-| **Five-event field test** | [docs/FIELD_TEST_PLAN.md](docs/FIELD_TEST_PLAN.md) + [docs/help/field-test.md](docs/help/field-test.md) + `src/lib/workout/fieldTest.ts` | America/PFT (`/fitness-test`); ACFT as a product name; #495 general Victory vs-last |
 | Launch / deploy | **[docs/LAUNCH_RUNBOOK.md](docs/LAUNCH_RUNBOOK.md) — the single source**, then [docs/ENV.md](docs/ENV.md) for what each var means | Everything in `docs/archive/` (`SOFT_LAUNCH_DAY`, `BETA_LAUNCH_OPS`, `PRE_LAUNCH_PLAN`, `LAUNCH_READY`, `TRACK_D_GO_LIVE`, `SETUP`) — all **superseded 2026-07-19** and all still contradicting the runbook |
 | **Supabase migrations (one sitting)** | [docs/MIGRATION_FOUNDER_PACK.md](docs/MIGRATION_FOUNDER_PACK.md) — ordered P1–P10 + week-4 proof | Guessing from `ls migrations/`; claiming week-4 without tombstone fix |
 | Phone dogfood notes (founder) | **[docs/LAUNCH_RUNBOOK.md](docs/LAUNCH_RUNBOOK.md) §3a** — template + poke list; paste friction to agents before inventing ships | Chat-only “test it” without written notes |
@@ -59,7 +58,7 @@
 | **Return loop for anonymous athletes** | [docs/RETURN_LOOP_PLAN.md](docs/RETURN_LOOP_PLAN.md) + [src/lib/reentry.ts](src/lib/reentry.ts) | Account-gated push/nudges as the retention answer; streak-loss copy |
 | **Club / points / tiers / boards / arcade (plan)** | [docs/CLUB_PLAN.md](docs/CLUB_PLAN.md) | Building any phase without its entry gate + founder line; loss/relegation mechanics; purchasable points; gamified theater |
 | **You surface / profile / social boundary (plan)** | [docs/IDENTITY_SOCIAL_PLAN.md](docs/IDENTITY_SOCIAL_PLAN.md) · identity code [src/lib/identity/INDEX.md](src/lib/identity/INDEX.md) | A feed; Top 8 / friend ranking; user CSS; free text on public surfaces; any Social→Log import (contract C1) |
-| **Mission Server v1 (garage text rooms)** | [docs/MISSION_SERVER_V1_PLAN.md](docs/MISSION_SERVER_V1_PLAN.md) — freeze `.726` | Discord.com embed/OAuth; voice; DMs; Top 8; feed of logs; WeChat order on first paint; primary tab |
+| **Visibility / Under the Hood** | [docs/TRANSPARENCY_PLAN.md](docs/TRANSPARENCY_PLAN.md) · code `src/lib/transparency/` · `/account/transparency` · `/account/under-the-hood` | Treating foreign ranking scores as XP; claiming we hide posts; standing on the log path |
 | **Platform contracts (identity / economy / modules / AI)** | [docs/contracts/INDEX.md](docs/contracts/INDEX.md) | Building games/metaverse product surfaces before week-4; second user systems per module |
 | **Classification / dual-repo / open safely** | [docs/CLASSIFICATION.md](docs/CLASSIFICATION.md), [docs/DUAL_REPO.md](docs/DUAL_REPO.md), `npm run ops:sync` | Committing `ops/` or `.hermes/`; putting STRATEGY war-room detail in public product git long-term |
 | **Design proposal brief (third)** | [docs/DESIGN_PROPOSAL_3.md](docs/DESIGN_PROPOSAL_3.md) | Re-opening IA, routes or tokens — those are settled, not wireframe |

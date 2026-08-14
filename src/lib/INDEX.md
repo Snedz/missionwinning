@@ -13,7 +13,6 @@
 | Domain | Key files | Notes |
 |--------|-----------|-------|
 | **Scoring / Today** | `score.ts`, `crossPillarCoach.ts`, `pillarScoreInputs.ts`, `readinessIndex.ts`, `exerciseMuscleMap.ts` | Readiness, Win Score, coach insight |
-| **Re-entry** | `reentry.ts`, `reentryTone.ts` | Missed-day quiet line + short dose (S7); outbound tone contract |
 | **Mission Rewards** | [`rewards/`](rewards/INDEX.md) | XP, ranks, badges from real logs — never gates logger |
 | **Mission Identity** | [`identity/`](identity/INDEX.md) | Call sign, Athlete Card — social projection; Log↔Social via `domainBoundary.ts` |
 | **Classification guard** | `classificationGuard.test.ts` | `.hermes/` + `ops/` never tracked |
@@ -24,12 +23,12 @@
 | **Device storage** | `storage/safeStorage.ts` | Guarded localStorage — never throws |
 | **Surface parking** | `surface.ts` | Which non-wedge surfaces are reachable (`NEXT_PUBLIC_SURFACES`) |
 | **Journey** | `missionJourney.ts`, `journeySync.ts`, `journeyGoals.ts`, `journeyAnalytics.ts` | I-Day → Commissioned |
-| **Workouts** | [`workout/`](workout/INDEX.md) subfolder (+ root re-exports); `justGoSession.ts`, `historyAnalytics.ts`, `benchmarks.ts` | Logger helpers; Just Go; next-set targets; rest/PR/superset; five-event field test |
+| **Workouts** | [`workout/`](workout/INDEX.md) subfolder (+ root re-exports); `justGoSession.ts`, `historyAnalytics.ts`, `benchmarks.ts` | Logger helpers; Just Go; next-set targets; rest/PR/superset |
 | **Local-first copy** | `localFirstCopy.ts` | Today/Active F-001 EN constants — set-log + rest never framed as cloud-required |
 | **Nutrition / Fuel** | `macroTargets.ts`, `fuelGoalWizard.ts`, `fuelDayAdapt.ts`, `openFoodFacts.ts`, `nutritionLog.ts`, `nlMealLog.ts`, `mealDraft.ts`, `savedMeals.ts`, `nutritionHighProteinDays.ts` | Fuel pillar; goal→macros; train-day targets; NL + presets; photo draft |
 | **Today primary CTA** | `todayPrimaryAction.ts`, `coach/loadCoachTodayOptional.ts` | Shared Just Go / journey primary for lean + dashboard |
 | **Fuel Coach** | `fuelCoach/` subfolder | Adaptive meal plan — see [fuelCoach/INDEX.md](fuelCoach/INDEX.md) |
-| **Payments** | `premiumServer.ts`, `premiumEnrollmentCache.ts`, `payments.ts`, `bundleShop.ts`, `checkoutServer.ts`, `stripeServer.ts`, `stripeWebhook.ts`, `paypalWebhook.ts`, [`cryptoCheckout/`](cryptoCheckout/INDEX.md) | Stripe + Phantom USDC lifetime; `/bundle` merchandising (`bundleShop.ts`); enrollment Redis memo |
+| **Payments** | `premiumServer.ts`, `premiumEnrollmentCache.ts`, `payments.ts`, `checkoutServer.ts`, `stripeServer.ts`, `stripeWebhook.ts`, `paypalWebhook.ts`, [`cryptoCheckout/`](cryptoCheckout/INDEX.md) | Stripe + Phantom USDC lifetime; enrollment Redis memo |
 | **Payments — the pure decisions** | `checkout/checkoutParams.ts` (what Stripe is asked to charge), `premium/enrollmentRow.ts` (what a paid webhook writes), `authUserId.ts` (what may go in an `auth.users` FK) | `.262` — lifted out of the `server-only` modules above, which reach Stripe/Supabase on their first line and so could not be tested at all. Dependency-free on purpose; `money.routetest.ts` covers the server halves |
 | **School / PFT** | `schoolClassServer.ts`, `presidentialFitness*.ts`, `fitnessTest*.ts` | America track |
 | **Gating / auth** | `privateGate.ts`, `supabaseAuthCookies.ts`, `supabaseRequestAuth.ts` | Private beta, JWT cookies |
@@ -42,7 +41,7 @@
 | **Compliance** | `compliance/` | Vanta-lite control catalog probes — [docs/COMPLIANCE.md](../../docs/COMPLIANCE.md) |
 | **Destructive UX** | `holdToConfirm.ts` | Hold-to-confirm helpers — [docs/DESTRUCTIVE_UX.md](../../docs/DESTRUCTIVE_UX.md) |
 | **Leaderboard** | `leaderboard/` subfolder | Local + cloud leaderboard |
-| **Mission Server** | [`social/`](social/INDEX.md) | Garage text rooms — local-first; coach/logger must not import |
+| **Visibility / Under the Hood** | [`transparency/`](transparency/INDEX.md) | Account report: limits + reasons; BOOSTS/PENALTIES; download JSON + text |
 
 ## Subfolders (one concern each)
 
@@ -52,9 +51,9 @@
 | `identity/` | Athlete identity — [identity/INDEX.md](identity/INDEX.md) |
 | `fuelCoach/` | [fuelCoach/INDEX.md](fuelCoach/INDEX.md) |
 | `workout/` | Logger, merge, rest, PR, victory — [workout/INDEX.md](workout/INDEX.md) |
+| `transparency/` | Visibility + Under the Hood — [transparency/INDEX.md](transparency/INDEX.md) |
 | `wearables/` | OAuth + hubs + BLE HR — [wearables/INDEX.md](wearables/INDEX.md) |
 | `leaderboard/` | Leaderboard compute/sync helpers — [leaderboard/INDEX.md](leaderboard/INDEX.md) |
-| `social/` | Mission Server garage text rooms — [social/INDEX.md](social/INDEX.md) |
 | `storage/` | **The only** direct localStorage access — [storage/INDEX.md](storage/INDEX.md) |
 | `sync/` | Durable outbox for cloud writes — [sync/INDEX.md](sync/INDEX.md) |
 

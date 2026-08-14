@@ -11,7 +11,7 @@ Plain-language guides for athletes, parents, and teachers. English only for now;
 | [fitness-test-and-school.md](fitness-test-and-school.md) | Presidential Fitness Test + PE class codes |
 | [pt-safety.md](pt-safety.md) | Hard sessions — stop is allowed; not medical care |
 | [premium-and-billing.md](premium-and-billing.md) | Super Bundle, what's free, restoring access |
-| [privacy-and-data.md](privacy-and-data.md) | Where your data lives, backup, youth consent, optional wearables |
+| [privacy-and-data.md](privacy-and-data.md) | Where your data lives, Visibility + Under the Hood, backup, youth consent, optional wearables |
 | [../WEARABLES.md](../WEARABLES.md) | Developer wearables strategy (Apple, Google, Whoop, …) |
 | [faq.md](faq.md) | Quick answers |
 | [troubleshooting.md](troubleshooting.md) | Offline, sync, password gate |
