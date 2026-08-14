@@ -50,4 +50,7 @@ regexes = [
   # i18n / nav key names, not API secrets (generic-api-key FP)
   '''footerLegalA11y''',
   '''labelKey:\s*'[a-zA-Z0-9_]+'''',
+  # H0-2 evaluateCheckEnv fixtures — not live keys (generic-api-key / stripe-access-token)
+  '''sb_publishable_h02fixtureanonkeyok''',
+  '''sk_test_h02fixturesecretkey''',
 ]
