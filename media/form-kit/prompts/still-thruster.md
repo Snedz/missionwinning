@@ -17,6 +17,14 @@ POSE / EXERCISE LOCK
 - Light/empty bar preferred so head silhouette stays clear
 - Full body margins ≥8% headroom ≥5% foot room
 
+IMPLEMENT
+class: barbell-empty
+count: 1
+scale: full-length Olympic bar
+origin / path: front rack at the bottom
+machine: none
+attach: @prop-barbell-sheet
+
 EQUIPMENT PHYSICS
 Bar outside torso, resting on shoulders. Never through body.
 

@@ -29,6 +29,14 @@ POSE / EXERCISE LOCK
 - Opposite knee down relative to natural press side is fine; hips square
 - Full body: head, knees, feet all in frame with margins
 
+IMPLEMENT
+class: landmine
+count: 1
+scale: empty Olympic bar; far sleeve on the floor
+origin / path: diagonal arc from the floor pivot; free end only
+machine: none
+attach: @prop-landmine-pivot
+
 EQUIPMENT PHYSICS
 - ONE barbell only. Far end contacts floor (pivot). Free end in athlete hands.
 - Bar path is diagonal arc — NOT vertical OHP, NOT horizontal bench.

@@ -14,6 +14,14 @@ POSE / EXERCISE LOCK
 - Bar IN FRONT of thighs/shins — close to legs, not through body
 - Mid-hinge (not lockout, not floor deadlift start)
 
+IMPLEMENT
+class: barbell-empty
+count: 1
+scale: full-length Olympic bar, left–right axis
+origin / path: anterior to the thighs; mid-hinge only
+machine: none
+attach: @prop-barbell-sheet
+
 BAR AXIS (hard)
 Same axis as conventional deadlift side still:
 - Empty silver Olympic bar parallel to floor

@@ -13,6 +13,14 @@ POSE / EXERCISE LOCK
 - Head fully visible with headroom — light plates
 - Full body margins
 
+IMPLEMENT
+class: barbell-empty
+count: 1
+scale: full-length Olympic bar, left–right axis
+origin / path: hangs in front of the shins; rows to the lower ribs. Never on the back.
+machine: none
+attach: @prop-barbell-sheet
+
 POSITIVE LOCKS
 Bent-over row · head clear · bar outside body
 

@@ -50,6 +50,11 @@ FAIL and do not ship if any:
 - Hyper-tight crop (subject without ≥8% headroom / ≥5% foot room)  
 - Text, logos, second accent, neon, CrossFit branding  
 - Not true side profile when labeled side  
+- **Impossible machine** — strapped seated-row feet, pulley sitting on loose plates, high unused boom feeding a horizontal “row”, extra ankle pulley, **sealed box with no visible weight stack**, slack/orphan cables that cannot lift the stack, machine that cannot exist  
+- **Toy-scale or giant-scale implement** — DB head smaller than a golf ball or larger than the athlete’s head; handle the hand cannot close around  
+- **Missing pair** — one DB on a two-hand lift (lunge, press, lateral raise, curl)  
+- **Numbers / logos on bells, plates, or stacks**  
+- **Head / skeleton facing the wrong way on the spine** (face, chest, and spine must agree)  
 
 ## Hard reject (video)
 
@@ -89,6 +94,14 @@ NOT headless, NOT melted.
 POSE / EXERCISE LOCK
 {3–6 concrete joint bullets for this exact lift at the chosen phase}
 
+IMPLEMENT (required — a prompt without this block is incomplete)
+class: {barbell-empty | db-pair | db-single | db-goblet | kettlebell | cable-row-low | cable-high | medball | box | bench | bodyweight | landmine}
+count: {n}
+scale: {one line — e.g. "hex DB, head ≈ fist, handle fills the palm"}
+origin / path: {where it starts, where it goes, what it must not do}
+machine: {named station from the catalog, or "none"}
+attach: @{prop sheet from media/form-kit/refs/}
+
 EQUIPMENT PHYSICS
 {Where implement contacts body. What it must NOT do.}
 Contact shadows under feet/implements. Nothing floats. No intersecting geometry.
@@ -123,7 +136,9 @@ POSITIVE LOCKS
 NEGATIVES
 Cropped head, headless, extra limbs, fused joints, bar through torso,
 hyper-tight crop, text, logos, Dutch, film grain stacks, neon, wrong exercise,
-side-plank-as-isolation, curl-as-core, multi-person, sports-brand logos.
+side-plank-as-isolation, curl-as-core, multi-person, sports-brand logos,
+high-pulley-as-seated-row, strapped-feet-as-seated-row, pulley-on-loose-plates,
+toy dumbbells, giant hex heads, numbered bells, missing pair, backwards head.
 ```
 
 ### Loop director template (only after still PASS)
@@ -176,16 +191,49 @@ Models invent **broken collars**: multi-prong hubs, three spring arms, star lock
 | Id / family | Equipment rule |
 |-------------|----------------|
 | glute-bridge | Bodyweight **or** bar resting **across hip crease** on pad — never through abdomen |
-| bench-press | Bar above chest; arms support bar; never through torso |
+| bench-press / incline-bench | Empty **full-length** bar above chest; hands outside shoulders; never through torso; never a short EZ / close-grip stub |
 | deadlift / RDL | Bar **in front of** legs (never through thighs or on back) · left–right axis like conventional DL · **prefer empty bar** · RDL = mid-hinge not lockout |
 | pull-ups | Full head visible; bar above head |
-| thruster / OHP / front-squat / barbell-row | **Empty bar default** · path outside body · head clear |
-| kettlebell-swing | KB outside hips; hinge + hip snap |
+| thruster / OHP / front-squat / barbell-row / squats | **Empty bar default** · path outside body · head clear |
+| kettlebell-swing | One cast KB outside hips; hinge + hip snap |
+| goblet-squat | Catalog is **Dumbbells** — one hex DB at sternum, both hands on the head; not a KB unless the id is a KB swing |
+| lunges | **Matched pair** of hex teaching DBs, both visible in side view, hanging at sides |
+| lateral-raise / bicep-curl / dumbbell-press | **Matched pair**; head ≈ fist; no numbers; plane of the lift (out to the sides for lateral, not a front raise) |
+| dumbbell-row | **One** hex teaching DB; path outside torso to hip |
+| seated cable-row | Dedicated **low** box only (`@prop-cable-row-station`). Origin = line of pull = shin-height. Unstrapped feet. One V-handle. No boom. No straps. |
+| face-pull / lat-pulldown / tricep-pushdown | High-pulley family — origin **must** be high. Do not use the seated-row station. |
 | isolation pattern | Standing DB curl only — never side plank |
 | core pattern | Forearm plank only — never curl |
 | burpee | Full body; head in frame; readable plank or stand-to-floor |
-| box-jump | Full head + box + feet; generous headroom |
-| landmine family | One bar; far end on floor as pivot; free end only — no extra prongs |
+| box-jump / step-ups | Full head + `prop-box` + feet; planted full foot on top for step-ups |
+| chair dip | Flat bench behind; hands on front edge; hips in front of bench — never a table push-up |
+| wall-ball | One `prop-medball` at sternum, size ≈ small basketball, no text |
+| landmine family | One empty bar; far sleeve planted on the floor (`@prop-landmine-pivot`); free end only — no extra prongs |
+| hip-thrust | Bar across hip crease on pad, shoulders on bench; never through abdomen |
+
+## Implement catalog
+
+One table, one home. Catalog `equipment` on the exercise row picks the family. If the catalog says Dumbbells, the still may not be empty-handed.
+
+| Family | Default object | Count | Scale | Path / origin |
+|--------|----------------|------:|-------|----------------|
+| Barbell lifts | Empty Olympic bar | 1 | Full-length sleeves past both hands | Anterior to body |
+| DB isolation (curl, lateral, raise) | Hex teaching pair `@prop-db-pair-sheet` | 2 | Head ≈ fist; 8–12 kg look; handle fills the palm | Plane of the lift |
+| DB press | Same pair, one in each hand | 2 | Distinct heads — never fused into three | Over mid-chest, vertical |
+| DB lunge / carry | Hex teaching pair | 2 | Same; **both** visible in side view | Hang at sides |
+| Single-arm DB row | `@prop-db-single-sheet` | 1 | Same | Outside torso to hip |
+| Goblet squat | One hex DB (catalog Dumbbells) | 1 | Head cupped at sternum | Vertical, close to chest |
+| KB swing | One KB from `@prop-kb-sheet` | 1 | Classic cast KB | Through the legs / hip snap |
+| Seated cable row | `@prop-cable-row-station` | 1 cable + V-handle | Side window **must show** the pin-stack on two rods | Handle → frame pulley → top sheave → **down to stack**. No sealed empty box. No slack orphans. |
+| High-cable family | Lat / face / pushdown tower | 1 cable | High boom is the working origin | Origin high; do not ship as a row |
+| Incline / flat bench | Empty full-length bar | 1 | Hands outside shoulders | Over upper / mid chest |
+| Chair dip | `@prop-bench-sheet` behind | 1 | Hands on front edge | Hips in front of bench |
+| Wall ball | `@prop-medball-sheet` | 1 | Small basketball | Sternum, eyes to wall |
+| Step-up / box jump | `@prop-box-sheet` | 1 | Mid-shin to knee | Planted, full foot on top |
+| Landmine | `@prop-landmine-pivot` | 1 bar | Empty; far sleeve on floor | Free end only |
+| Bodyweight | none | 0 | — | — |
+
+**Cable origin = line of pull.** A seated row whose cable leaves a high or mid column while the arms pull horizontally is a FAIL, even if the pose is a row. A lat pulldown whose cable leaves a low box is also a FAIL.
 
 ---
 
@@ -195,13 +243,18 @@ Models invent **broken collars**: multi-prong hubs, three spring arms, star lock
 |------|------|
 | `athlete-a-side.webp` | Primary identity — full body side, margins |
 | `athlete-a-front.webp` | Optional front |
-| `prop-barbell-sheet.webp` | Multi-view bar |
-| `prop-kb-sheet.webp` | KB |
+| `prop-barbell-sheet.webp` | Multi-view empty Olympic bar |
+| `prop-kb-sheet.webp` | Cast kettlebell |
 | `prop-box-sheet.webp` | Plyo box |
 | `prop-bench-sheet.webp` | Flat bench |
+| `prop-db-pair-sheet.webp` | Matched hex teaching pair — no numbers |
+| `prop-db-single-sheet.webp` | One of the same hex DBs |
+| `prop-cable-row-station.webp` | Dedicated low seated-row box; unstrapped footplates; V-handle |
+| `prop-medball-sheet.webp` | Medicine ball, no text |
+| `prop-landmine-pivot.webp` | Empty bar, far sleeve planted |
 | `location-paper-studio.webp` | Empty paper studio |
 
-Generate kit once; reuse via image_edit / I2V reference.
+Generate kit once; **QA the sheet itself** before any lift regen. Reuse via `image_edit` / I2V reference. A pose-only prompt with no `IMPLEMENT` block and no prop attach is incomplete — do not generate from it.
 
 ---
 

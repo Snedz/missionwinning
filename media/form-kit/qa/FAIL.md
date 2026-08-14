@@ -140,3 +140,33 @@ Regen priority: landmine-row (`prompts/still-landmine-row.md`), pattern-hinge (`
 | 2026-08-14 | `wall-ball/side.webp` (`images/49.jpg`) | Squat, med ball, wall target | **PASS still-only** |
 | 2026-08-14 | `dips-chair/side.webp` (`images/52.jpg`) | Hands behind, hips in front of bench | **PASS still-only** |
 | 2026-08-14 | `incline-bench/side.webp` (`images/53.jpg`) | 35° bench, full empty bar, hands outside shoulders | **PASS still-only** |
+
+| 2026-08-14 | `refs/prop-db-pair-sheet` | Matched hex pair, no numbers, teaching scale | **PASS kit** |
+| 2026-08-14 | `refs/prop-db-single-sheet` | One hex, no numbers | **PASS kit** |
+| 2026-08-14 | `refs/prop-medball-sheet` | Blank leather ball ≈ small basketball | **PASS kit** |
+| 2026-08-14 | `refs/prop-landmine-pivot` (`images/59.jpg`) | Empty bar, far sleeve planted | **PASS kit** |
+| 2026-08-14 | `refs/prop-cable-row-station` (`images/60.jpg`) | Low box, unstrapped plates, stack inside, V-handle from low pulley | **PASS kit** |
+
+## 2026-08-14 — Object-kit regen
+
+| Date | Asset | Notes | Action |
+|------|--------|-------|--------|
+| 2026-08-14 | cable-row gen `63` | Floating sit, no bench | FAIL |
+| 2026-08-14 | cable-row gen `67` | Bench back; unused dangling cable; pulley still on lid | FAIL — keep 44 |
+| 2026-08-14 | `cable-row/side.webp` (`images/44.jpg`) | Low box, bench, horizontal cable, unstrapped feet | **PASS still-only** — replaced lat-tower live file |
+| 2026-08-14 | DB row gen `62` | Lost three-point; two-hand hinge; numbered | FAIL |
+| 2026-08-14 | `dumbbell-row/side.webp` (`images/69.jpg`) | Three-point kept; blank hex; no yellow | **PASS still-only** |
+| 2026-08-14 | lunge gen `61` | Still one DB | FAIL |
+| 2026-08-14 | lunge gens `70`/`71` | Pair visible but numbered heads | FAIL — numbers |
+| 2026-08-14 | `lunges/side.webp` (`images/75.jpg`) | Pair visible (far head past thigh); blank hex | **PASS still-only** |
+| 2026-08-14 | DB press gens `64`/`68` | Fused/numbered; or bench removed | FAIL |
+| 2026-08-14 | `dumbbell-press/side.webp` (`images/76.jpg`) | Bench + feet; two hex; blank faces | **PASS still-only** |
+| 2026-08-14 | lateral gens `65`/`66`/`74` | Extra DBs / sagittal front-raise from side | FAIL |
+| 2026-08-14 | `lateral-raise/side.webp` (`images/77.jpg`) | 3/4 T, two blank hex, frontal plane | **PASS still-only** |
+
+| 2026-08-14 | cable-row `67` | Sealed box, **no weight stack**; slack cable from lid carabiner to an unused floor pulley — cables cannot lift anything | FAIL (founder) |
+| 2026-08-14 | `cable-row/side.webp` (`44`) | Same sealed box, no stack — demote | replaced |
+| 2026-08-14 | cable-row gens `78`/`82`/`84` | Stack visible but high-pulley origin (lat-tower line of pull) | FAIL |
+| 2026-08-14 | cable-row gens `85`/`87` | Dual/orphan cables (high + horizontal, or cable down the stack face) | FAIL |
+| 2026-08-14 | `cable-row/side.webp` (`images/83.jpg`) | Visible pin-stack on rods; horizontal handle line; top sheave down to stack | **PASS still-only** |
+| 2026-08-14 | `cable-row/side.webp` (`images/89.jpg`) | 83 machine kept; plate numbers and front-of-stack orphan cable removed by compositing a blank pin-stack crop. Horizontal handle line + top sheave + visible stack. | **PASS still-only** |

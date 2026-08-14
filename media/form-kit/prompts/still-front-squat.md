@@ -16,6 +16,14 @@ POSE / EXERCISE LOCK
 - Hip crease below the knee, torso upright
 - Full head + both feet with margins
 
+IMPLEMENT
+class: barbell-empty
+count: 1
+scale: full-length Olympic bar
+origin / path: front rack on the anterior delts — never on the traps
+machine: none
+attach: @prop-barbell-sheet
+
 EQUIPMENT
 Empty bar, no plates, no spring collars. Bar outside the neck, not on the traps.
 
