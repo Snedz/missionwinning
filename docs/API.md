@@ -62,6 +62,14 @@ Public while private gate is on. See [OPS_MONITORING.md](OPS_MONITORING.md).
 | Body | Zod `accountDeleteBodySchema` — `{ confirm: 'DELETE', deviceId? }`. Extra `userId` is rejected; the account id is the session user only. `deviceId` is accepted so old clients do not 400 and is **ignored**; anonymous device rows are cleaned only for ids already stored on this user. |
 | Behavior | Email-keyed cleanups first (`leads`, `checkout_recovery` deleted; `beta_invites` anonymized; orphan `enrollments` by email), anonymous device rows (`push_subscriptions`, `llm_usage` where `user_id is null`) only for server-linked device ids, then `auth.admin.deleteUser` — which cascades user-keyed tables. **No migration required**: every user-keyed table already declares `on delete cascade` from `auth.users`. Any failed step aborts **before** the cascade and returns **502** — success is never reported on a partial deletion. Completeness is enforced by `src/lib/accountDataCompleteness.test.ts`, which discovers tables from `supabase/migrations/` and fails on any table with no export/deletion story. |
 
+### `GET /api/account/mission-id`
+
+| | |
+|--|--|
+| Auth | `session` |
+| Rate | 30/min/user |
+| Response | `{ ok: true, missionId }`. Sequential integer for the signed-in account. No client mint. **401** no session · **503** admin not configured · **502** opaque on claim failure |
+
 ---
 
 ## Beta invites
@@ -507,6 +515,31 @@ curl -X POST "$BASE/api/stripe-webhook" -H 'Content-Type: application/json' -d '
 |--|--|
 | Auth | `session` + beta admin email allowlist, **or** `x-beta-admin-secret` |
 | Response | `{ ok, notes, truncated, persistAvailable }`. `persistAvailable` is false when `feedback_reviews` is missing — inbox still reads. **403** not admin · **503** no service role |
+
+### `POST /api/metrics/week-logged`
+
+| | |
+|--|--|
+| Auth | `session` |
+| Rate | 20/min/IP |
+| Body | Zod `weekLoggedBodySchema` |
+| Notes | Signed-in ISO-week logger rollup. Guests **401**. No PII beyond `auth.uid`. |
+
+### `GET /api/cron/day-review`
+
+| | |
+|--|--|
+| Auth | `cron` — `Authorization: Bearer $CRON_SECRET` |
+| Notes | Hourly evening doorbell. Push carries no numbers. Hobby: GitHub workflow, not `vercel.json`. |
+
+### `POST /api/mobile/premium/play-purchase`
+
+| | |
+|--|--|
+| Auth | Bearer |
+| Rate | 20/min/IP |
+| Body | `{ productId, purchaseToken, packageName?, orderId? }` |
+| Notes | Google Play Super Bundle → enrollment. Logger never depends on this. |
 
 ### `POST /api/beta/feedback`
 

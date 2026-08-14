@@ -38,7 +38,7 @@ Known-open partials: MW-PLAY-001 (Play form). Founder manuals include ACCESS-004
 
 ## Attack surface (code, this tip)
 
-**71** `app/api/**/route.ts`. Perimeter: surface parking (`isPathEnabled`) then `PRIVATE_MODE` then handler auth.
+**74** `app/api/**/route.ts` (discovered). Perimeter: surface parking (`isPathEnabled`) then `PRIVATE_MODE` then handler auth. Count is enforced by `src/lib/apiInventory.test.ts`.
 
 | Bucket | Count | Notes |
 |--------|------:|-------|
