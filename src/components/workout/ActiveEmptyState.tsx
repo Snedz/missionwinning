@@ -18,6 +18,13 @@ type Props = {
   hydrated?: boolean;
   /** Last completed session exists — Start copies it (`.717`). */
   hasLastSession?: boolean;
+  /**
+   * I-Day equipment preview (`.768`). Dock label + handler only when there is
+   * no last session. Does not go through `resolveActiveEmptyStart`.
+   */
+  previewName?: string;
+  previewExerciseCount?: number;
+  onPreviewStart?: () => void;
   victoryOpen: boolean;
   victorySummary: WorkoutVictorySummary | null;
   onVictoryOpenChange: (open: boolean) => void;
@@ -35,6 +42,9 @@ export function ActiveEmptyState({
   onStart,
   hydrated = true,
   hasLastSession = false,
+  previewName,
+  previewExerciseCount,
+  onPreviewStart,
   victoryOpen,
   victorySummary,
   onVictoryOpenChange,
@@ -157,17 +167,28 @@ export function ActiveEmptyState({
           </p>
           <button
             type="button"
-            onClick={onStart}
+            onClick={
+              !hasLastSession && onPreviewStart ? onPreviewStart : onStart
+            }
             disabled={!hydrated}
             className="primary-action min-h-[52px] w-full text-[19px] disabled:opacity-60"
             aria-busy={hydrated ? undefined : true}
+            data-testid={
+              !hasLastSession && previewName ? 'active-start-preview' : undefined
+            }
           >
             <span className="flex-1 text-start">
               {!hydrated
                 ? t('activeLoadingSession', { defaultValue: 'Restoring session…' })
                 : hasLastSession
                   ? t('activeRepeatLastSession', { defaultValue: 'Repeat last session' })
-                  : t('activeStartWorkout', { defaultValue: 'Start workout' })}
+                  : previewName
+                    ? t('activeStartPreviewSession', {
+                        defaultValue: 'Start {{name}} — {{count}} exercises',
+                        name: previewName,
+                        count: previewExerciseCount ?? 0,
+                      })
+                    : t('activeStartWorkout', { defaultValue: 'Start workout' })}
             </span>
             <ChevronRight className="ms-auto h-5 w-5 shrink-0" aria-hidden />
           </button>

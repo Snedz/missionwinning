@@ -26,6 +26,7 @@ When adding a doc:
 
 | File | Absorbed by / note |
 |------|---------------------|
+| [log/LOG-rotate-753-for-768.md](./log/LOG-rotate-753-for-768.md) | rotated 2026-08-14 for `.768` first set while gated (`.753`) |
 | [log/LOG-rotate-752-for-767.md](./log/LOG-rotate-752-for-767.md) | rotated 2026-08-14 for `.767` Dependabot security/quality batch (`.752`) |
 | [log/LOG-rotate-751-for-766.md](./log/LOG-rotate-751-for-766.md) | rotated 2026-08-14 for `.766` merge-all Cursor landing (`.751`) |
 | [log/LOG-rotate-750-for-765.md](./log/LOG-rotate-750-for-765.md) | rotated 2026-08-13 for `.765` Preview walk P0s (`.750`) |

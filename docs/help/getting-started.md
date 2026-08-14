@@ -13,13 +13,13 @@ No app store required.
 
 ## Private beta gate
 
-If you see a **password screen** (`/private`), your cohort uses a pre-launch gate. Enter the password your invite email provides. Then log your first set — no account required. Super Bundle checkout is not open — leave an email on the landing page to get notified (no charge).
+If you see the **gate** (`/private`), tap **Log a set** — no access code and no account. That opens I-Day, then Train. Super Bundle checkout is not open — leave an email to get notified (no charge). Invited testers can still enter a code.
 
 ## I-Day (your first mission)
 
 1. Go to **Welcome** or follow prompts after unlock.
 2. Complete **I-Day** — a short onboarding that sets your goals and equipment. No account is required.
-3. Land on **Today** (`/log`) — tap **Start**, then log a set. Today also shows an honest **this week: N days logged** count (zero is fine).
+3. While the site is gated you land on **Train** (`/active`) and start the previewed session. After the public flip you land on **Today** (`/log`) — tap **Start**, then log a set. Today also shows an honest **this week: N days logged** count (zero is fine).
 
 On **Account**, list your **Home gym kit** (barbell, rack, plates, dumbbells, pull-up bar, floor) so Train picks what you actually have. Free, on this device — no account.
 

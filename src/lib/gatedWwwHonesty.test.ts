@@ -29,9 +29,10 @@ const SURFACE_FILES = [
   'docs/design/concepts/05-exquisite.html',
 ];
 
-test('EN gate CTA pack is Free beta / Enter with code / Get notified', () => {
+test('EN gate CTA pack is Free beta / Log a set / Enter with code / Get notified', () => {
   const en = gateStringsFor('en');
   assert.equal(en.gateEyebrow, 'Free beta');
+  assert.equal(en.gateLogASet, 'Log a set');
   assert.equal(en.gateWaitlistTitle, 'Get notified');
   assert.equal(en.gateWaitlistSubmit, 'Get notified');
   assert.equal(en.gateAccessSubmit, 'Enter with code');

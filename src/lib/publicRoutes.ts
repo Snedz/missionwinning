@@ -33,6 +33,11 @@ export const JOURNEY_BYPASS_PATHS = [
 export const PRIVATE_GATE_PUBLIC_PATHS = [
   '/private',
   '/welcome',
+  /**
+   * `.768` — the free logger while the gate is up. Same mechanism as `/welcome`.
+   * Today / Coach / Fuel stay cookie-gated. Not a PRIVATE_MODE flip.
+   */
+  '/active',
   '/privacy',
   '/terms',
   /** A cookie policy unreachable pre-consent / pre-gate is a defect. */
