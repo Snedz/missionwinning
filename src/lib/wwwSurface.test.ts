@@ -267,6 +267,20 @@ test('/vision is additive Astro and does not steal the Next host', () => {
   assert.match(copy, /no wearable required/i);
 });
 
+test('/compare is an index; Next keeps the vs stories', () => {
+  const page = read('sites/www/src/pages/compare.astro');
+  const copy = [page, read('sites/www/src/lib/compareContent.ts')].join('\n');
+  assert.match(page, /\bterminal\b/);
+  assert.match(copy, /mission-winning-vs-hevy/);
+  assert.match(copy, /mission-winning-vs-strong/);
+  assert.match(copy, /mission-winning-vs-fitbod/);
+  assert.ok(existsSync(path.join(root, 'src/page-components/LearnVsPublicPage.tsx')));
+  assert.equal(existsSync(path.join(root, 'sites/www/public/_redirects')), false);
+  assert.doesNotMatch(copy, /america|Presidential Fitness/i);
+  const stories = copy.match(/mission-winning-vs-/g) ?? [];
+  assert.ok(stories.length >= 3);
+});
+
 test('/week anywhere movement keeps three photographs and two plates', () => {
   /*
    * Concept 02's honest greybox: five places, three frames in the repo.
