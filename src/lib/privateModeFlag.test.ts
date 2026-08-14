@@ -115,4 +115,16 @@ describe('mirrors stay on the same Preview short-circuit', () => {
       'sitemap must not keep a private copy of the gate predicate (.178)'
     );
   });
+
+  it('PWA start_url uses the shared predicate via pwaStartUrl', () => {
+    const helper = read('src/lib/pwaStartUrl.ts');
+    assert.match(helper, /isPrivateModeEnabledFromEnv/);
+    const manifest = read('app/manifest.ts');
+    assert.match(manifest, /from ['"]@\/lib\/pwaStartUrl['"]/);
+    assert.doesNotMatch(
+      manifest,
+      /start_url:\s*['"]\/private['"]/,
+      'manifest must not hardcode gated start_url — SW already flag-switches'
+    );
+  });
 });

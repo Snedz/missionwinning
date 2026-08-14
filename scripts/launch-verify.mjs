@@ -4,12 +4,15 @@
  *
  * Usage:
  *   npm run launch-verify
- *   npm run check-env -- --launch
+ *   npm run check-env -- --launch              # Horizon 0 (FREE_BETA: no Stripe)
+ *   npm run check-env -- --launch --paid       # Horizon 1 (Stripe webhook + Checkout)
+ *   LAUNCH_PAID=true npm run launch-verify     # same Horizon 1 profile
  *   SMOKE_BASE_URL=https://www.missionwinning.com SMOKE_ACCESS_SECRET=... npm run launch-verify
  *
  * After PRIVATE_MODE=false (public + PWA):
  *   SMOKE_BASE_URL=... SMOKE_ALLOW_PUBLIC=true SMOKE_EXPECT_PWA=true npm run launch-verify
- *   LAUNCH_STRICT=true npm run launch-verify   # fail on incomplete launch env + require growth/rate-limit
+ *   LAUNCH_STRICT=true npm run launch-verify   # fail on incomplete H0 launch env + require growth/rate-limit
+ *   LAUNCH_STRICT=true LAUNCH_PAID=true npm run launch-verify  # H1 + smokes
  *
  * Optional skips (non-strict only recommended):
  *   SKIP_GROWTH_SMOKE=true SKIP_RATE_LIMIT_SMOKE=true npm run launch-verify
@@ -22,6 +25,7 @@ import { spawnSync } from 'node:child_process';
 import { existsSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { dirname, join } from 'node:path';
+import { checkEnvNodeArgs, launchPaidRequested } from './check-env.mjs';
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..');
 const base = process.env.SMOKE_BASE_URL?.replace(/\/$/, '');
@@ -43,9 +47,10 @@ function run(label, cmd, args = [], { optional = false } = {}) {
 
 console.log('\n=== Mission Winning — Launch verification (Track D) ===\n');
 
-const checkEnvArgs = existsSync(envLocal)
-  ? ['--env-file', envLocal, 'scripts/check-env.mjs', '--launch']
-  : ['scripts/check-env.mjs', '--launch'];
+const checkEnvArgs = checkEnvNodeArgs({
+  envFile: existsSync(envLocal) ? envLocal : null,
+  paid: launchPaidRequested(process.argv, process.env),
+});
 
 const strict = process.env.LAUNCH_STRICT === 'true';
 

@@ -1,4 +1,4 @@
-# Rotated from LOG.md when form object kit landed
+# Rotated from LOG.md when `.780` landed
 
 ## 2026-08-13 — Preview walk P0s: consent dock + landing notify (`.765`)
 
@@ -17,4 +17,4 @@ land `.755` was occupied by unilateral L/R. Excellence-Override below.
 
 Excellence-Override: preview walk P0s (consent dock + landing notify)
 
-Rotated LOG oldest → [docs/archive/log/LOG-rotate-750-for-765.md](docs/archive/log/LOG-rotate-750-for-765.md).
+Rotated LOG oldest → [LOG-rotate-750-for-765.md](./LOG-rotate-750-for-765.md).
