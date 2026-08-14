@@ -16,7 +16,7 @@
 | `PillarPageHeader.tsx` | Pillar title + actions |
 | `InfoPageShell.tsx` | Legal/marketing pages |
 | `InfoPageFooter.tsx` | Info footer links |
-| `AppLegalFooter.tsx` | In-app legal links + public version stamp (`0.0.1 (beta)`) |
+| `AppLegalFooter.tsx` | In-app legal links + public version stamp (`Alpha 0.1.0`) + Changelog |
 | `LegalNav.tsx` | Privacy / terms / DMCA nav |
 | `HeaderAuthChip.tsx` | Sign-in avatar chip. F-017 (`.766` / `.762`): hidden until the first workout; never on `/active`. `getUser` only when the chip may show. |
 | `PageTransition.tsx` | Route transition animation |

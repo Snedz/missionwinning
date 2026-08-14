@@ -29,6 +29,7 @@
 | `presidentialFitnessStandards.json` | PFT scoring standards |
 | `fieldTestAcftScales.ts` | Published five-event scoring tables (23 March 2022) — field test only |
 | `pftWeekOneChallenge.ts` | PFT challenge data |
+| `changelog.ts` | Athlete-facing changelog (public `/changelog`). Engineering stays in `LOG.md`. |
 
 ## Coach note
 

@@ -8,7 +8,7 @@ import { describe, it } from 'node:test';
 import assert from 'node:assert/strict';
 import { readdirSync, readFileSync, statSync } from 'node:fs';
 import path from 'node:path';
-import { isPrivateGatePublicPath } from './publicRoutes.ts';
+import { isJourneyBypassPath, isPrivateGatePublicPath } from './publicRoutes.ts';
 
 const root = path.join(import.meta.dirname, '..', '..');
 const read = (p: string) => readFileSync(path.join(root, p), 'utf8');
@@ -61,6 +61,8 @@ describe('first set while gated (.768)', () => {
     assert.equal(isPrivateGatePublicPath('/active'), true);
     assert.equal(isPrivateGatePublicPath('/active/'), true);
     assert.equal(isPrivateGatePublicPath('/welcome'), true);
+    assert.equal(isPrivateGatePublicPath('/changelog'), true);
+    assert.equal(isJourneyBypassPath('/changelog'), true);
     for (const href of MUST_STAY_GATED) {
       assert.equal(
         isPrivateGatePublicPath(href),

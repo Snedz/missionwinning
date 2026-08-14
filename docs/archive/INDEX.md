@@ -26,6 +26,7 @@ When adding a doc:
 
 | File | Absorbed by / note |
 |------|---------------------|
+| [log/LOG-rotate-756-for-771.md](./log/LOG-rotate-756-for-771.md) | rotated 2026-08-14 for `.771` Alpha 0.1.0 changelog (`.756`) |
 | [log/LOG-rotate-755-for-770.md](./log/LOG-rotate-755-for-770.md) | rotated 2026-08-14 for `.770` Done Preview codes (`.755`) |
 | [log/LOG-rotate-754-for-769.md](./log/LOG-rotate-754-for-769.md) | rotated 2026-08-14 for `.769` Beta 0.0.1 stamp (`.754`) |
 | [log/LOG-rotate-753-for-768.md](./log/LOG-rotate-753-for-768.md) | rotated 2026-08-14 for `.768` first set while gated (`.753`) |

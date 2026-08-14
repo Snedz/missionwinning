@@ -15,6 +15,7 @@ describe('isPublicPathWhileGated', () => {
     assert.equal(isPublicPathWhileGated('/dmca'), true);
     assert.equal(isPublicPathWhileGated('/refunds'), true);
     assert.equal(isPublicPathWhileGated('/about'), true);
+    assert.equal(isPublicPathWhileGated('/changelog'), true);
     assert.equal(isPublicPathWhileGated('/america'), true);
     assert.equal(isPublicPathWhileGated('/auth/callback'), true);
   });

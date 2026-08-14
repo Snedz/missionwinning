@@ -2,7 +2,7 @@
 
 **Agents never flip repository visibility.** This page is a checklist for the human who owns GitHub Settings. Product posture: [OPEN_SOURCE.md](OPEN_SOURCE.md) · secrets: [SECRETS.md](SECRETS.md) · dual-repo: [DUAL_REPO.md](DUAL_REPO.md).
 
-Public name after the flip: **Beta 0.0.1** / **Mission Winning 0.0.1 (beta)**. That is not a claim that `PRIVATE_MODE` is off — the site gate stays founder-owned.
+Public name after the flip: **Alpha 0.1.0** / **Mission Winning Alpha 0.1.0**. That is not a claim that `PRIVATE_MODE` is off — the site gate stays founder-owned.
 
 ## Before Public
 
