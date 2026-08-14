@@ -44,6 +44,31 @@ export function hasConfirmedLocaleChoice(): boolean {
   return Boolean(cookieLang && cookieCountry);
 }
 
+/**
+ * First-set / I-Day surfaces. A language-and-country sheet on these paths
+ * sits on the same Continue as I-Day (F-017) and blows the first-90 tap budget.
+ * Guess language silently; confirm later on Profile / footer.
+ */
+const FIRST_SET_LOCALE_PATHS = [
+  '/',
+  '/welcome',
+  '/private',
+  '/active',
+  '/log',
+  '/feedback',
+] as const;
+
+export function isFirstSetLocaleChooserPath(pathname: string): boolean {
+  const path = (pathname.split('?')[0] || '/').replace(/\/+$/, '') || '/';
+  return FIRST_SET_LOCALE_PATHS.some((p) => path === p || (p !== '/' && path.startsWith(`${p}/`)));
+}
+
+/** Auto-open the first-visit chooser only off the first-set path, and only once. */
+export function shouldAutoOpenLocaleChooser(pathname: string): boolean {
+  if (hasConfirmedLocaleChoice()) return false;
+  return !isFirstSetLocaleChooserPath(pathname);
+}
+
 export function loadLocaleCountryPref(): LocaleCountryPref | null {
   const langRaw =
     readRaw(STORAGE_KEYS.localeChoice) === '1'
