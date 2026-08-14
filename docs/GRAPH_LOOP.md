@@ -1,25 +1,37 @@
 # Graph loop — continuation protocol
 
-**Audience:** Founder + the next Cursor Cloud / graph agent  
+**Audience:** Founder + the next Hermes / Grok Build / graph agent  
 **Lane:** Engineering-Web (unless a loop says Android)  
-**Status:** ACTIVE 2026-08-14 · web `2026.07-unified.789` · Alpha 0.1.0 · H0 agent queue empty  
+**Status:** ACTIVE 2026-08-14 · web `2026.07-unified.792` · Alpha 0.1.0 · **G1 open**  
 **Does not replace:** [ORCHESTRATION.md](../ORCHESTRATION.md) (what may be built) · [CONTEXT.md](../CONTEXT.md) `## Now` (where we are) · [vision.md](../vision.md) (constitution) · [docs/THESIS.md](THESIS.md) (wedge) · [docs/PLAN.md](PLAN.md) (phases A–I)
 
 This file is the **execution queue** for the agent graph: one concern per loop, spawn, ship, mark done, spawn the next. It is not a second status block and not a license to skip standing hard bans.
 
 ---
 
-## This session — skip Horizon W (2026-08-14)
+## Who runs the graph (Hermes vs Grok Build)
 
-Founder: *skip Horizon W for now / this session. Continue assuming Horizon W passes. Make a plan. Do deep research. Build.*
+Agents do **not** need a group chat. This file is the baton. One spawn reads the top `open` row, ships one PR, marks it `done`, exits. The next spawn (Hermes cron, or you) reads the new top row.
+
+| Machine | Job |
+|---------|-----|
+| **Hermes** (local, always-on) | Build + **machine tests** (`npm test` of the loop, typecheck if you touched TS). Serial. One loop per spawn. |
+| **Grok Build** (this terminal) | Founder **eyes**: Preview, “show me the gate/homepage”, does it still look like `.696` after Done. Not a second test runner. |
+| **Neither** | `PRIVATE_MODE`, excellence `status: pass`, postal, invites, EIN |
+
+Hermes already has tests in the loop (rule 4). Do not park a loop for “Grok will test it.” Park it only if the founder must *see* a screen.
+
+Do not run Hermes and Grok Build writing `master` at the same time.
+
+## This session — H0 done; G queue named (2026-08-14)
+
+H0-1…H0-7 shipped. Founder: keep building toward Year-1 wedge + the Next www (Alpha gate → `.696` landing). W1–W4 return as **G4–G7**.
 
 | Still true | What this session does **not** do |
 |------------|-----------------------------------|
-| [ORCHESTRATION.md](../ORCHESTRATION.md) still names Horizon W as the standing NOW | Do not write `status: pass` in [EXCELLENCE_RESULT.md](EXCELLENCE_RESULT.md) — that remains founder phone sign-off |
-| Surface PRs still need `Excellence-Override` while RESULT is `unscored` | Do not pull parked W loops 0–8 unless the founder unparks them |
+| [ORCHESTRATION.md](../ORCHESTRATION.md) still names Horizon W as the standing NOW | Do not write `status: pass` in [EXCELLENCE_RESULT.md](EXCELLENCE_RESULT.md) |
+| Surface PRs still need `Excellence-Override` while RESULT is `unscored` | Do not restore `CinematicWww` as `/` |
 | Hard bans (logger, `PRIVATE_MODE`, traction, America / wearables-as-score / iOS) | Do not invent ≥10 beta, EIN, or secrets |
-
-**Active queue = Horizon 0+** (launch unblock after an assumed W pass). Parked W loops sit at the bottom of this file.
 
 ---
 
@@ -97,6 +109,22 @@ Verified in source 2026-08-14 (master `.779`). Findings with proof paths: [§ Re
 | **H0-6** | Guidebook chapter heroes still navy/emerald | Design honesty before baselines | `done` — already `.268`; leftover glyphs `.789` |
 | **H0-7** | Production-stack / runbook vs CONTEXT (Upstash, `.104`) | Docs match reality | `done` — docs |
 
+### Now — G queue (agents · 2026-08-14)
+
+H0 is empty. Top `open` row is the only live ticket.
+
+| # | Loop | Moves | Status |
+|---|------|-------|--------|
+| **G1** | Next landing: empty Reveal bands + photo slots | After Done, `/` is `.696`. Reveal leaves blank paper; three photo slots empty | `open` |
+| **G2** | Landing chrome honesty | Status bar leftover / Alpha vs Free-beta | queued |
+| **G3** | `sites/www` **about** page only | Commissioned Astro. Do **not** steal `www.missionwinning.com` from Next | queued |
+| **G4** | Today: one next session | Old W1. Phone shows train / resume | queued |
+| **G5** | Logger one-thumb | Old W2. Outdoor set log | queued |
+| **G6** | Coach week on Coach **and** Today | Old W3. Dose + adapt visible | queued |
+| **G7** | Missed-day re-entry, in-app | Old W4. No shame copy | queued |
+
+Do not reopen cinematic. Do not add Compare. Club / Server / Athlete public URL stay off this table.
+
 ### After H0 (orientation — not open until H0-1…H0-7 are done or `founder`)
 
 Do not pull these forward while H0 agent loops remain `open`.
@@ -116,7 +144,7 @@ Do not pull these forward while H0 agent loops remain `open`.
 | # | Loop | Moves | Status |
 |---|------|-------|--------|
 | **A** | Android Accept B prep (`apps/android/**` only) | Play path | `open` — separate lane |
-| **W** | `sites/www` remaining pages / host split | Marketing die | `open` — fourth surface, not the app. Spec §6 still lists about/vision/compare/press/bundle/private; tree is `index` · `start` · `week` only. Compare rail deleted `.668`. Host `www.missionwinning.com` is claimed by both Astro and Next — no `_redirects` / wrangler / deploy workflow. CSP `form-action 'self'` blocks cross-origin POST to `/api/leads`; invite CTA must keep linking Next `/private` ([`sites/www/src/lib/appLinks.ts`](../sites/www/src/lib/appLinks.ts)). |
+| **W** | `sites/www` remaining pages / host split | Marketing die | `open` — sliced as **G3** (about only). Host still claimed by Next + Astro; do not flip DNS. |
 
 ### Founder (agents never mark done)
 
@@ -137,10 +165,10 @@ Do not pull these forward while H0 agent loops remain `open`.
 | # | Loop | Status |
 |---|------|--------|
 | W0 | Harvest closed live-walk PRs #451–#461 | `parked` |
-| W1 | Phone hero: one next session | `parked` |
-| W2 | Logger one-thumb outdoors | `parked` |
-| W3 | Coach week earned from logs, on Coach **and** Today | `parked` |
-| W4 | Missed-day re-entry, in-app only | `parked` |
+| W1 | Phone hero: one next session | queued as **G4** |
+| W2 | Logger one-thumb outdoors | queued as **G5** |
+| W3 | Coach week earned from logs, on Coach **and** Today | queued as **G6** |
+| W4 | Missed-day re-entry, in-app only | queued as **G7** |
 | W5 | Form Index Wave D — next unique stills | `parked` |
 | W6 | “Win Score” leftover strings | `done` — same as H0-5 `.788` |
 | W7 | API INDEX drift | `done` — same as H0-3 `.787` |
@@ -274,19 +302,37 @@ Every `public/learn/*.webp` measures 0–1% ink and ≥1% brand red. Guard: [`sr
 ## Copy-paste prompt (next graph agent)
 
 ```text
-You are the next Mission Winning graph-loop agent.
+You are the next Mission Winning graph-loop agent. Unattended. Local machine.
 
-1. Read CONTEXT.md, AGENTS.md, INDEX.md, ORCHESTRATION.md, then docs/GRAPH_LOOP.md.
-2. Implement ONLY the top loop whose Status is `open`. H0-1…H0-7 are done. Do not invent a new loop. Stop the graph unless the founder names the next concern.
-3. This session skipped Horizon W (2026-08-14). Do not unpark W0–W8. Do not write excellence status: pass.
-4. Investigate on current master before coding. If the claim is already false, mark the loop done in GRAPH_LOOP.md with proof paths and stop.
-5. One concern. One PR. [skip vercel] unless I asked for Preview.
-6. If you touch src|app|scripts|supabase: bump APP_BUILD_LABEL past master, LOG + CONTEXT ## Now in the same commit. Excellence-Override if the excellence gate classifies the path as surface.
-7. Free logger never gated. Do not flip PRIVATE_MODE. Do not invent traction. Do not start the next loop in this PR.
-8. When done: set this loop to `done` in docs/GRAPH_LOOP.md (Outcome = PR + label) and leave the following loop `open`. If you shipped H0-3 / H0-5 / H0-6, also mark the parked W twin done.
+BOOT (every spawn):
+1. CONTEXT.md → AGENTS.md → INDEX.md → ORCHESTRATION.md → docs/GRAPH_LOOP.md
+2. Do not use chat, ~/.grok/sessions, or .hermes/plans as product truth.
+
+QUEUE:
+3. Implement ONLY the top loop whose Status is `open` (G1 is first).
+4. Investigate on current master. If the defect is already gone, mark done (already true) with proof paths and stop this spawn.
+
+SHIP:
+5. One concern. One PR. Branch from master. [skip vercel] unless the founder asked for Preview.
+6. Touch src|app|scripts|supabase → bump APP_BUILD_LABEL past origin/master, LOG.md + CONTEXT.md ## Now in the same commit. Surface paths need Excellence-Override: <reason> while EXCELLENCE_RESULT status is unscored.
+7. Run the loop’s tests (at least the colocated npm test files). Do not leave “Grok will test it.”
+8. After merge: set this loop done in GRAPH_LOOP.md (Outcome = PR + label). Leave the next loop open. Do not start that next loop in this PR.
+
+BANS:
+- Free logger (/active) never gated
+- Do not flip PRIVATE_MODE
+- Do not write excellence status: pass
+- Do not invent traction
+- No America / wearables-as-score / iOS
+- No chat on Today
+- Do not raise TAP_BUDGET
+- Do not restore CinematicWww as /
+- Do not commit .hermes/, ops/, or .env.local
+
+STOP THE GRAPH if two loops ship without moving a queued G-item, if you are about to write another plan, or if the loop needs a founder secret — mark founder, take the next agent-open row.
+
+When this spawn finishes, print: loop id · PR + label (or already-true proof) · next open loop. Then exit.
 ```
-
-To run H0-4 instead (after H0-3 is done), replace step 2 with “Implement H0-4 only.”
 
 ---
 
