@@ -56,5 +56,5 @@ export const CONTENT_FLOORS = {
    */
   exercisePages: 228,
   /** Eyes-on form pack side stills (FORM_PACK_SIDE_IDS). */
-  formPackSide: 38,
+  formPackSide: 43,
 } as const;

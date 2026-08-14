@@ -26,6 +26,7 @@ When adding a doc:
 
 | File | Absorbed by / note |
 |------|---------------------|
+| [log/LOG-rotate-759-for-774.md](./log/LOG-rotate-759-for-774.md) | rotated 2026-08-14 when `.774` landed (`.759`) |
 | [log/LOG-rotate-758-for-773.md](./log/LOG-rotate-758-for-773.md) | rotated 2026-08-14 when `.773` landed (`.758`) |
 | [log/LOG-rotate-757-for-772.md](./log/LOG-rotate-757-for-772.md) | rotated 2026-08-14 when `.771`+`.772` both landed (`.757`) |
 | [log/LOG-rotate-756-for-771.md](./log/LOG-rotate-756-for-771.md) | rotated 2026-08-14 for `.771` Alpha 0.1.0 changelog (`.756`) |

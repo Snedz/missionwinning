@@ -71,6 +71,12 @@ export const FORM_PACK_SIDE_IDS = new Set([
   'lateral-raise',
   'dumbbell-press',
   'dumbbell-row',
+  // Wave C leftover after .772 — unique stills, still-only
+  'step-ups',
+  'jump-squats',
+  'wall-ball',
+  'dips-chair',
+  'incline-bench',
 ]);
 
 /**

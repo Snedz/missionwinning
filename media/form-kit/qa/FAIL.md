@@ -132,3 +132,11 @@ Regen priority: landmine-row (`prompts/still-landmine-row.md`), pattern-hinge (`
 | 2026-08-14 | `lateral-raise/side.webp` (`images/41.jpg`) | Standing, DBs at shoulder height | **PASS still-only** |
 | 2026-08-14 | `dumbbell-press/side.webp` (`images/34.jpg`) | Flat bench, DBs over chest | **PASS still-only** |
 | 2026-08-14 | `dumbbell-row/side.webp` (`images/33.jpg`) | Three-point row, DB at hip | **PASS still-only** |
+| 2026-08-14 | incline-bench gen (`images/46.jpg`) | Short bar / close grip; bench has printed numbers | FAIL |
+| 2026-08-14 | dips-chair gen (`images/48.jpg`) | Kneeling table push-up, not a bench dip | FAIL |
+| 2026-08-14 | dips-chair / incline gens (`images/50.jpg`, `51.jpg`) | Correct pose but title overlays | FAIL — text; stripped to 52/53 |
+| 2026-08-14 | `step-ups/side.webp` (`images/45.jpg`) | Drive-up, full foot on box | **PASS still-only** |
+| 2026-08-14 | `jump-squats/side.webp` (`images/47.jpg`) | Airborne from a squat | **PASS still-only** |
+| 2026-08-14 | `wall-ball/side.webp` (`images/49.jpg`) | Squat, med ball, wall target | **PASS still-only** |
+| 2026-08-14 | `dips-chair/side.webp` (`images/52.jpg`) | Hands behind, hips in front of bench | **PASS still-only** |
+| 2026-08-14 | `incline-bench/side.webp` (`images/53.jpg`) | 35° bench, full empty bar, hands outside shoulders | **PASS still-only** |

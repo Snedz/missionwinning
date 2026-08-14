@@ -72,23 +72,22 @@ test('form pack still wins over pattern for structured guides', () => {
 });
 
 test('long-tail cues attach honest pattern caption', () => {
-  // incline-bench has cues in enrichment path via getExerciseById after catalog load
-  const guide = getFormGuideOrCues('incline-bench', {
+  const guide = getFormGuideOrCues('suitcase-carry', {
     exercise: {
-      id: 'incline-bench',
-      name: 'Incline Bench Press',
-      muscleGroups: ['Chest', 'Shoulders'],
-      cues: 'Bench 30–45°, retract scapulae, bar to upper chest.',
+      id: 'suitcase-carry',
+      name: 'Suitcase Carry',
+      muscleGroups: ['Core', 'Full Body'],
+      cues: 'One side loaded, walk without leaning.',
     },
   });
   assert.ok(guide);
-  assert.equal(guide?.mediaUrl, resolvePatternMediaUrl('incline-bench', {
-    id: 'incline-bench',
-    name: 'Incline Bench Press',
-    muscleGroups: ['Chest', 'Shoulders'],
+  assert.equal(guide?.mediaUrl, resolvePatternMediaUrl('suitcase-carry', {
+    id: 'suitcase-carry',
+    name: 'Suitcase Carry',
+    muscleGroups: ['Core', 'Full Body'],
   }));
   assert.equal(guide?.mediaCaption, PATTERN_MEDIA_CAPTION);
-  assert.match(guide!.mediaUrl!, /pattern-push\/side\.webp$/);
+  assert.match(guide!.mediaUrl!, /pattern-loco\/side\.webp$/);
 });
 
 test('pattern caption states shared art honestly', () => {
