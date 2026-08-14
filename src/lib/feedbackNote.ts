@@ -50,6 +50,8 @@ export interface FeedbackNoteInput {
   text: string;
   /** Optional — a note without one is unanswerable, never unwelcome. */
   email?: string;
+  /** Optional display name from the considered `/feedback` form. */
+  name?: string;
   /** Route the sheet was opened from, e.g. `/active`. */
   screen: string;
   /**
@@ -88,9 +90,7 @@ export function composeFeedbackNote(input: FeedbackNoteInput): FeedbackPayload {
   ].join('\n');
 
   return {
-    // Not "Anonymous" — that is what the API substitutes for a missing name, and
-    // saying it here would claim the athlete typed it.
-    name: '',
+    name: (input.name ?? '').trim(),
     email,
     goals: `${text}${context}`,
     package_interest: FEEDBACK_SOURCE_TAG,
@@ -107,4 +107,25 @@ export function remainingChars(text: string): number {
 /** A note is sendable when it actually says something. */
 export function canSendNote(text: string): boolean {
   return text.trim().length > 0;
+}
+
+export type ParsedFeedbackContext = {
+  body: string;
+  screen: string | null;
+  previousScreen: string | null;
+  buildLabel: string | null;
+  writtenOffline: boolean;
+};
+
+export function parseFeedbackContext(goals: string): ParsedFeedbackContext {
+  const idx = goals.lastIndexOf('\n---\n');
+  const head = (idx === -1 ? goals : goals.slice(0, idx)).trim();
+  const tail = idx === -1 ? '' : goals.slice(idx);
+  return {
+    body: head,
+    screen: tail.match(/^Screen:\s+(\S+)/m)?.[1] ?? null,
+    previousScreen: tail.match(/^Came from:\s+(\S+)/m)?.[1] ?? null,
+    buildLabel: tail.match(/^Build:\s+(\S+)/m)?.[1] ?? null,
+    writtenOffline: /Written offline/.test(tail),
+  };
 }

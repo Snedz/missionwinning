@@ -28,6 +28,7 @@
 | `20260720_perf_indexes.sql` | `workout_logs(user_id, completed_at)` + leaderboard board indexes + leads filters |
 | `20260813_week_logged.sql` | Signed-in ISO-week logger rollup (CoS applies; guests local-only) |
 | `20260814_social_messages.sql` | Shared Garage rooms + presence + reports (signed-in; guests local) |
+| `20260814_feedback_reviews.sql` | Founder ratings on tester notes (`class` + dest). Applied 2026-08-14 |
 
 ## Key tables
 
@@ -44,6 +45,7 @@
 | `social_messages` | Signed-in Garage room posts |
 | `social_presence` | Signed-in self presence |
 | `social_message_reports` | Reports on another athlete's Garage message |
+| `feedback_reviews` | Founder class/dest on a lead. Cascade-delete with the lead. No athlete `user_id` |
 
 ## Related (not here)
 

@@ -46,6 +46,7 @@
 | **What’s New** | `whatsNew.ts` | Build-label last-seen + curated athlete bullets (D13) |
 | **Analytics** | `analytics.ts`, `analyticsOptOut.ts` | PostHog events; preference off until user allows |
 | **Observability** | `sentryCommon.ts`, `api/withApiLogging.ts` | Sentry (env-gated) + API request logs |
+| **Feedback triage** | `feedbackTriage.ts`, `feedbackNote.ts`, `feedbackServer.ts`, `feedbackSource.ts` | Classify tester notes; founder dest (craft/voice/park/done); no Grok |
 | **Compliance** | `compliance/`, `privacyInstill.test.ts` | Vanta-lite catalog probes + Phase 3 instill — [docs/COMPLIANCE.md](../../docs/COMPLIANCE.md) |
 | **Destructive UX** | `holdToConfirm.ts` | Hold-to-confirm helpers — [docs/DESTRUCTIVE_UX.md](../../docs/DESTRUCTIVE_UX.md) |
 | **Leaderboard** | `leaderboard/` subfolder | Local + cloud leaderboard |

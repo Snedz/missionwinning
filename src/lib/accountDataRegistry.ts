@@ -64,4 +64,6 @@ export const EXCLUDED_TABLES: Readonly<Record<string, string>> = {
     'Shared resource owned by a class, not an athlete; created_by is on delete set null, so deleting the teacher account anonymizes without destroying the class.',
   android_telemetry_heartbeats:
     'Keyed by an opaque install_id with no linkage to auth.users or email — contains no personal data to export or delete.',
+  feedback_reviews:
+    'Founder-only loop state on a lead (class/dest). No athlete user_id. Deleted by ON DELETE CASCADE when the email-keyed lead is removed. Not exported — it is the founder rating, not the tester\'s data.',
 };

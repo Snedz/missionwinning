@@ -28,6 +28,7 @@
  */
 
 import type { FeedbackNote } from '@/lib/feedbackSource';
+import { countFeedbackDests, formatDestCounts } from '@/lib/feedbackTriage';
 import { localDateKeyFromIso } from '@/lib/time/localDate';
 
 export type FounderDigestData = {
@@ -151,6 +152,9 @@ export function composeFounderDigest(data: FounderDigestData): {
   }
 
   lines.push('', `4) What people wrote (newest ${DIGEST_FEEDBACK_LIMIT})`);
+  if (data.feedback && data.feedback.length > 0) {
+    lines.push(`  ${formatDestCounts(countFeedbackDests(data.feedback))}`);
+  }
   if (data.feedback === null) {
     // Not "no feedback this week". A failed read and an empty inbox are opposite
     // facts, and only one of them means "go find users".

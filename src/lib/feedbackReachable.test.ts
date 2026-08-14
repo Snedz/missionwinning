@@ -70,6 +70,13 @@ test('the feedback card is rendered, and not gated to the founder', () => {
   );
 });
 
+test('the considered /feedback page uses the same composer as the sheet', () => {
+  const page = stripComments(read('src/page-components/FeedbackPage.tsx'));
+  assert.match(page, /composeFeedbackNote\(/);
+  assert.match(page, /screen:\s*'\/feedback'/);
+  assert.match(page, /APP_BUILD_LABEL/);
+});
+
 test('the card opens the sheet', () => {
   const card = stripComments(read(CARD));
   assert.match(card, /<FeedbackSheet\b/, 'a button that opens nothing is the defect this fixes');

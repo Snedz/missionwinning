@@ -501,6 +501,22 @@ curl -X POST "$BASE/api/stripe-webhook" -H 'Content-Type: application/json' -d '
 |--|--|
 | Auth | `session` + beta admin email allowlist |
 
+### `GET /api/beta/feedback`
+
+| | |
+|--|--|
+| Auth | `session` + beta admin email allowlist, **or** `x-beta-admin-secret` |
+| Response | `{ ok, notes, truncated, persistAvailable }`. `persistAvailable` is false when `feedback_reviews` is missing — inbox still reads. **403** not admin · **503** no service role |
+
+### `POST /api/beta/feedback`
+
+| | |
+|--|--|
+| Auth | same as GET |
+| Rate | 30/min/IP + 8 KiB |
+| Body | Zod `feedbackReviewBodySchema` — `{ leadId, dest: craft\|voice\|park\|done, class? }` |
+| Notes | Founder rates a tester note. Rules classifier can refuse dest (**409** `dest_not_allowed`). Missing table **503** `reviews_unavailable`. Never returns a Postgres `error.message`. |
+
 ---
 
 ## Mission Server (signed-in)
