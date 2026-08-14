@@ -251,3 +251,7 @@ budget when the www surface shipped. Shipped work, not cancelled work.
 - **`.625`:** (`2026.07-unified.625`) **Account Field manual** — primary stack open; More settings disclosure; owner tools grouped. Reachable: referral, feedback, billing.
 - **`.626`:** (`2026.07-unified.626`) **Feel Wave 2** — Fuel log-first; History heatmaps folded; Coach depth under disclosure. Field manual A continues.
 - **`.627`:** (`2026.07-unified.627`) **Feel Wave 3** — Learn paths-first; Move/Mind free-first; Library/Builder/Benchmarks/Leaderboard brief chrome; military tests folded. Field manual A complete across shell.
+
+## Rotated by `.770` (2026-08-14)
+
+- **`.752`:** (`2026.07-unified.752`) **Garage swap on the exercise row** — Swap on the Train row / Coach line offers 1–2 garage stand-ins; equipment change clears last load; hide when already garage. Originally #514 / `.721`.

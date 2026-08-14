@@ -184,6 +184,27 @@ describe('the language choice survived losing its wall', () => {
     );
   });
 
+  it('gives the ungated entry surface the same door', () => {
+    /*
+     * `LocaleCountryControl` only ever reached `/bundle` and `/press`. With the
+     * gate off, www is the landing page — so without this, removing the
+     * self-opening sheet would have left `/` with no route to the other 39
+     * languages, which is a regression dressed as a fix.
+     */
+    const landing = readFileSync(join(ROOT, 'src/page-components/LandingPage.tsx'), 'utf8');
+    assert.match(landing, /openLocaleChooser/);
+    assert.match(landing, /data-mw-locale-open/);
+
+    // The colophon uses literal defaults rather than importing the gate pack;
+    // pin the literal to the pack so the two cannot drift apart silently.
+    const literal = landing.match(/gateLanguageCta',\s*\{\s*defaultValue:\s*'([^']+)'/)?.[1];
+    assert.equal(
+      literal,
+      GATE_EN.gateLanguageCta,
+      'the landing floor and the English pack must say the same thing'
+    );
+  });
+
   it('does not pull the 40-language sheet into the gate bundle', () => {
     /*
      * `.768` measured what needless first-paint JS costs. The gate imports only

@@ -346,7 +346,6 @@ One screen of truth for any AI tool or human joining cold. Read this, then [AGEN
 - **`.755`:** (`2026.07-unified.755`) **Unilateral L/R on the set log** — Optional L/R/Alt on unilateral lifts; after L suggest R; bilateral strips stray side. Originally #516 / `.724`.
 - **`.754`:** (`2026.07-unified.754`) **Drop sets on the set log** — Footer Drop after a working set starts a −20% follow-up and skips rest. Originally #515 / `.723`.
 - **`.753`:** (`2026.07-unified.753`) **Habit week count + HABIT contract** — Today header always shows this week: N days logged (0 is fine). HABIT contract: daily Train is the loop. Originally #511 / `.722`.
-- **`.752`:** (`2026.07-unified.752`) **Garage swap on the exercise row** — Swap on the Train row / Coach line offers 1–2 garage stand-ins; equipment change clears last load; hide when already garage. Originally #514 / `.721`.
 - **`.669`:** (`2026.07-unified.669`) **Excellence RESULT + agent stop-rule** — `excellenceGate` path policy + `check-excellence-gate` on gate/PR CI; wedge still ships while unscored.
 - **Horizon W + full-launch override (2026-08-05).** Wedge excellence still required; agents may ship rewards + full surface honesty. Fuel estimate accuracy remains.
 - **Free-first beta (~4 weeks):** LLC + EIN pending — **no Bundle UI** + **full depth unlocked**; More/rail **Pillars demoted until first workout** (F-004 / `.695`) — still no Bundle ([docs/FREE_BETA.md](docs/FREE_BETA.md)).

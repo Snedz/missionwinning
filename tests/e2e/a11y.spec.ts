@@ -61,7 +61,13 @@ const GATED_ROUTES = [
   '/calculators',
   '/programs',
   '/guide',
-  '/server',
+  /*
+   * `.770` — `'/server'` was here **twice**, so Playwright refused to load this
+   * file at all ("duplicate test title") and the gate's accessibility step has
+   * been dead since `.766`, the mass merge that produced the duplicate. Nobody
+   * saw it because the gate halts earlier, at the coverage floor `master` also
+   * breaches. The route keeps its one entry above, next to the signed-in screens.
+   */
 ] as const;
 
 /**

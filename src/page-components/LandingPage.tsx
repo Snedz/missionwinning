@@ -11,6 +11,7 @@ import { LOCAL_FIRST_COPY } from '@/lib/localFirstCopy';
 import { CinematicWww } from '@/components/landing/CinematicWww';
 import { AppLegalFooter } from '@/components/layout/AppLegalFooter';
 import { LaunchNotifyForm } from '@/components/public/LaunchNotifyForm';
+import { openLocaleChooser } from '@/lib/i18n/localeChooserEvent';
 import '@/components/landing/cinematic.css';
 
 export function LandingPage() {
@@ -70,6 +71,22 @@ export function LandingPage() {
           <span>
             Mission Winning — {t('gateFooterTagline', { defaultValue: 'free core forever' })}
           </span>
+          {/*
+            * `.770` — the same door the gate poster got. `LocaleCountryControl`
+            * only ever reached `/bundle` and `/press`, so once the first-visit
+            * sheet stopped opening itself, this page — www with the gate off —
+            * would have had no route to the other 39 languages at all.
+            */}
+          <button
+            type="button"
+            className="min-h-[44px] text-inherit underline underline-offset-4"
+            data-mw-locale-open="true"
+            onClick={openLocaleChooser}
+          >
+            {/* Literal floor, as elsewhere in this colophon; pinned to the pack
+                by `firstPaintWall.test.ts` so the two cannot drift. */}
+            {t('gateLanguageCta', { defaultValue: 'Language / 语言 / Español' })}
+          </button>
           <AppLegalFooter className="gate-footer-links" />
         </div>
       </div>

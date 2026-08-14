@@ -83,6 +83,30 @@ restored — the only place this defect was ever visible, since a source guard
 cannot see a render and the byte smoke cannot see a sheet drawn after `/api/geo`
 answers.
 
+### Two things found only because the guard had to run in both configurations
+
+Writing the e2e to run under `PRIVATE_MODE=false` — the gate's own build — rather
+than skipping there (`.213`: a skipped check is not a passed check) turned up:
+
+- **The landing page had no language control either.** `LocaleCountryControl`
+  only ever reached `/bundle` and `/press`, so with the gate off, www is `/` and
+  the self-opening sheet was again the only route to 40 languages. Removing the
+  wall without this would have been a regression dressed as a fix. Both entry
+  surfaces now carry the same trigger, and the guard pins the landing's literal
+  floor to the English pack so the two cannot drift.
+- **The gate's accessibility step has been dead since `.766`.** `a11y.spec.ts`
+  listed `'/server'` twice — a duplicate the mass merge produced — and Playwright
+  refuses to *load* a file with a duplicate test title, so step 19 could not
+  collect a single test. Nobody saw it because the gate halts at step 8 on the
+  coverage floor `master` also breaches.
+
+**`master`'s own gate is red at four steps** and was before this branch: coverage
+floors (432 untested vs floor 395 — this branch is 432, contributing none), i18n
+coverage (70 uncovered keys, cap 0), bundle budget (`/` +29 KB, `/log` +15 KB,
+`/active` +48 KB), and the `@gate` e2e suite (12 of 32 failing in an isolated
+run on `origin/master`). Recorded rather than papered over: raising a floor to
+match a breach is how the breach becomes the standard.
+
 **A re-land dropped two edits and I did not notice for a ship.** `#546`
 cherry-picked `.767`–`.769` onto a moved `master`, and the conflict resolution
 took master's side in `privateGateRedirect.routetest.ts` — losing both the fix to
