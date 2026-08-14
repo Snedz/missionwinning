@@ -89,7 +89,7 @@ Verified in source 2026-08-14 (master `.779`). Findings with proof paths: [§ Re
 | **H0-1** | PWA `start_url` flag-switch (same predicate as SW) | Public-flip landmine | `done` — `.780` this PR |
 | **H0-2** | `check-env --launch` vs FREE_BETA (H0 vs H1 profiles) | Launch-verify can succeed | `done` — `.781` this PR |
 | **H0-3** | API INDEX + `docs/API.md` + PROGRAM_STATUS census | Docs match reality | `done` — `.787` |
-| **H0-4** | Public-flip checklist: `start_url` curl + SW; runbook pointers | Flip-day smoke | `open` |
+| **H0-4** | Public-flip checklist: `start_url` curl + SW; runbook pointers | Flip-day smoke | `done` — docs |
 | **H0-5** | “Win Score” → Mission Score leftover strings | Public copy honesty | `open` |
 | **H0-6** | Guidebook chapter heroes still navy/emerald | Design honesty before baselines | `open` |
 | **H0-7** | Production-stack / runbook vs CONTEXT (Upstash, `.104`) | Docs match reality | `open` |
@@ -274,7 +274,7 @@ CONTEXT `.254`: `public/learn/*.webp` 89–99% dark with teal. `check-design-sys
 You are the next Mission Winning graph-loop agent.
 
 1. Read CONTEXT.md, AGENTS.md, INDEX.md, ORCHESTRATION.md, then docs/GRAPH_LOOP.md.
-2. Implement ONLY the top loop whose Status is `open` (today: H0-4 flip checklist start_url).
+2. Implement ONLY the top loop whose Status is `open` (today: H0-5 Win Score leftover copy).
 3. This session skipped Horizon W (2026-08-14). Do not unpark W0–W8. Do not write excellence status: pass.
 4. Investigate on current master before coding. If the claim is already false, mark the loop done in GRAPH_LOOP.md with proof paths and stop.
 5. One concern. One PR. [skip vercel] unless I asked for Preview.

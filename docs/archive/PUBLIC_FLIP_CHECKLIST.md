@@ -25,6 +25,12 @@ This is the **agent-prepared** one-pager for the technical smoke after public mo
 - [x] `SMOKE_BASE_URL=… npm run growth-smoke` green against prod (2026-07-22, `.98`)
 - [ ] `LAUNCH_STRICT=true npm run launch-verify` against prod — **blocked:** founder must add `SUPABASE_SERVICE_ROLE_KEY` + `STRIPE_WEBHOOK_SECRET` (+ Checkout link or Sessions) to `.env.local`/CI
 - [x] `SMOKE_BASE_URL=… CRON_SECRET=… npm run week4-smoke` green (digest dryRun, 2026-07-22)
+- [ ] Manifest `start_url` is `/private` while gated (`.780`):
+  ```bash
+  curl -sS https://www.missionwinning.com/manifest.webmanifest \
+    | python3 -c "import sys,json; print(json.load(sys.stdin)['start_url'])"
+  # expect: /private
+  ```
 
 ### Founder / ops
 
@@ -81,6 +87,17 @@ npm run launch-verify
 SMOKE_BASE_URL=https://www.missionwinning.com npm run growth-smoke
 # Landing capture: open / → scroll to launch list → submit test email
 # Confirm lead row package_interest = landing-updates (Supabase)
+```
+
+### 1c. Installed home (`start_url`)
+
+After the **ungated rebuild**, the baked manifest must open Today, not the teaser (`.780`).
+
+```bash
+curl -sS https://www.missionwinning.com/manifest.webmanifest \
+  | python3 -c "import sys,json; print(json.load(sys.stdin)['start_url'])"
+# expect: /log
+# not /private, not /active, not /
 ```
 
 ### 2. Offline + service worker

@@ -328,7 +328,7 @@ SMOKE_BASE_URL=https://www.missionwinning.com SMOKE_ALLOW_PUBLIC=true SMOKE_EXPE
 ```
 
 See [docs/archive/TRACK_D_GO_LIVE.md](archive/TRACK_D_GO_LIVE.md) for Stripe enrollment + Supabase probe commands.  
-Flip checklist: [docs/archive/PUBLIC_FLIP_CHECKLIST.md](archive/PUBLIC_FLIP_CHECKLIST.md) (offline + SW spot-check Today/Train).
+Flip checklist: [docs/archive/PUBLIC_FLIP_CHECKLIST.md](archive/PUBLIC_FLIP_CHECKLIST.md) (offline + SW + **`start_url` curl**: gated `/private`, post-flip rebuild `/log`). Live ops facts stay in CONTEXT `## Now` — if a checkbox here is older, CONTEXT wins.
 
 1. Final security curls (replace domain if needed):
    ```bash
