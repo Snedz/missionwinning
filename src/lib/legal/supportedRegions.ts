@@ -265,20 +265,10 @@ export function countriesFromRequestHeaders(headers: {
 
 /** Read CDN country from request headers. Display hint — may include `x-country-code`. */
 /**
- * What is still true for a visitor we cannot serve — the sentence that turns a
- * dead end into a limit.
- *
- * Shard 1's second theme: the block "reads as a broken page, not an explained
- * limit". The block itself is founder policy and stays exactly as it is; what was
- * missing is that **the thing most people came for still works**. The free logger
- * is device-local, needs no account, and `/regions` has always said so — in the
- * fifth paragraph, in "What 'hosted service' means".
- *
- * One home, rendered by every blocked state: the gate, sign-in, checkout, and the
- * top of `/regions`.
+ * Re-exported from [territoryCopy.ts](./territoryCopy.ts) so client components can
+ * render the sentence without pulling ~100 ISO codes into their route (`.769`).
  */
-export const TERRITORY_STILL_WORKS =
-  'The free workout logger still works here: it runs on this device, needs no account, and your data stays yours to export.';
+export { TERRITORY_STILL_WORKS } from '@/lib/legal/territoryCopy';
 
 /** Read CDN country from request headers (Cloudflare / Vercel). */
 export function countryFromRequestHeaders(headers: {

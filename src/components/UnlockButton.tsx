@@ -16,7 +16,7 @@ import {
 import { submitLead } from '@/lib/supabase';
 import { track } from '@/lib/analytics';
 import { fetchTerritoryAccess } from '@/lib/legal/territoryAccessClient';
-import { TERRITORY_STILL_WORKS } from '@/lib/legal/supportedRegions';
+import { TERRITORY_STILL_WORKS } from '@/lib/legal/territoryCopy';
 
 interface Props {
   productId?: string;

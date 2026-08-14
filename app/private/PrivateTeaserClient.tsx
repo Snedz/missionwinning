@@ -7,7 +7,7 @@ import { AppLegalFooter } from '@/components/layout/AppLegalFooter';
 import { LaunchNotifyForm } from '@/components/public/LaunchNotifyForm';
 import { gateEnFloor } from '@/i18n/gateEn';
 import { track } from '@/lib/analytics';
-import { TERRITORY_STILL_WORKS } from '@/lib/legal/supportedRegions';
+import { TERRITORY_STILL_WORKS } from '@/lib/legal/territoryCopy';
 import {
   APP_PUBLIC_PRODUCT_VERSION,
   APP_PUBLIC_VERSION,

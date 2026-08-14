@@ -26,7 +26,7 @@ import {
   type OAuthProvider,
 } from '@/lib/supabase';
 import { fetchTerritoryAccess } from '@/lib/legal/territoryAccessClient';
-import { TERRITORY_STILL_WORKS } from '@/lib/legal/supportedRegions';
+import { TERRITORY_STILL_WORKS } from '@/lib/legal/territoryCopy';
 
 type SignInPanelProps = {
   /** Called after magic link is sent or user skips (Welcome flow). */
