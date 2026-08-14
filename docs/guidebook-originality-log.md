@@ -96,18 +96,11 @@ Original AI-generated chapter heroes (brand prompt pack) and instructional SVG c
 | mag-preface | MW product — magazine practice → log/Today/Coach | Mission Winning | 2026-08-12 |
 | mag-how-to | MW product — magazine practice → log/Today/Coach | Mission Winning | 2026-08-12 |
 
-## Learn vs-pages (AEO explanation, 2026-08-13)
+## Learn free intro — wedge (2026-08-12)
 
-Original MW comparison copy. Not competitor help text. Not ISSA. Not magazine chapters.
-
-| Page / section ID | Source ref (topic only) | Writer | Date |
-|-------------------|-------------------------|--------|------|
-| `mission-winning-vs-strong` | MW product — vs Strong (AEO) | Mission Winning | 2026-08-13 |
-| `vs-strong-table` · `vs-strong-wins` · `vs-strong-differs` · `vs-strong-pick` | MW product — vs Strong | Mission Winning | 2026-08-13 |
-| `mission-winning-vs-hevy` | MW product — vs Hevy (AEO) | Mission Winning | 2026-08-13 |
-| `vs-hevy-table` · `vs-hevy-wins` · `vs-hevy-differs` · `vs-hevy-pick` | MW product — vs Hevy | Mission Winning | 2026-08-13 |
-| `mission-winning-vs-fitbod` | MW product — vs Fitbod (AEO) | Mission Winning | 2026-08-13 |
-| `vs-fitbod-table` · `vs-fitbod-wins` · `vs-fitbod-differs` · `vs-fitbod-pick` | MW product — vs Fitbod | Mission Winning | 2026-08-13 |
+| Lesson ID | Source ref (topic only) | Writer | Date |
+|-----------|-------------------------|--------|------|
+| sb-0 | MW product — offline Train + Coach from logs (F-001 / F-018) | Mission Winning | 2026-08-12 |
 
 ## Localized editions
 

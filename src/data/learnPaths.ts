@@ -25,6 +25,23 @@ export const FREE_LEARN_PATHS: LearnPath[] = [
     icon: '🏋️',
     lessons: [
       {
+        id: 'sb-0',
+        title: 'Offline Log, Then Coach',
+        summary:
+          'Start on your phone with no wearable and no feed. Log sets offline; Mission Coach builds the next week from those logs alone.',
+        keyPoints: [
+          'Free offline logging works without Wi‑Fi — sync later if you sign in',
+          'No wearable required for Train or for Mission Coach plans',
+          'Coach weeks come from your logged sets and fatigue signals — not a social feed',
+          'After you log, open Today for the next session cue',
+        ],
+        body: [
+          'The wedge is Train plus Mission Coach. Log what you actually did — park, garage, hotel gym — then let Coach turn that history into a fatigue-aware week. Other Learn paths are optional depth once the log habit is real.',
+        ],
+        actionLabel: 'Start a workout',
+        actionHref: '/active',
+      },
+      {
         id: 'sb-1',
         title: 'Progressive Overload',
         summary: 'Muscles adapt when you gradually increase stress — weight, reps, or quality.',
