@@ -32,7 +32,7 @@ export function ServiceTermsPage() {
       icon={FileStack}
       eyebrow={t('infoLegalEyebrow', { defaultValue: 'Legal' })}
       title={t('infoServiceTermsTitle', { defaultValue: 'Service-Specific Terms' })}
-      lastUpdated={t('infoLastUpdated', { defaultValue: 'Last updated: August 2026' })}
+      lastUpdated={t('infoLastUpdated', { defaultValue: 'Last updated: 13 August 2026' })}
       showLegalFooter
       jumpLinks={jumpLinks}
     >

@@ -44,7 +44,7 @@ export function UsagePolicyPage() {
       icon={ShieldAlert}
       eyebrow={t('infoLegalEyebrow', { defaultValue: 'Legal' })}
       title={t('infoUsageTitle', { defaultValue: 'Usage Policy' })}
-      lastUpdated={t('infoLastUpdated', { defaultValue: 'Last updated: August 2026' })}
+      lastUpdated={t('infoLastUpdated', { defaultValue: 'Last updated: 13 August 2026' })}
       showLegalFooter
       jumpLinks={jumpLinks}
     >

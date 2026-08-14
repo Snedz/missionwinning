@@ -679,7 +679,7 @@
   "infoFeedbackSubtitle": "Cuéntenos qué resultados está viendo, qué funcionó y qué desarrollar a continuación. Los fundadores de la versión beta dan forma a la hoja de ruta.",
   "infoFeedbackThankSubtitle": "Sus comentarios ayudan a mejorar el núcleo gratuito y el Super Bundle para la misión global.",
   "infoFeedbackThankTitle": "Gracias",
-  "infoLastUpdated": "Última actualización: julio de 2026",
+  "infoLastUpdated": "Última actualización: 13 de agosto de 2026",
   "infoPrivacyAiCoach": "Entrenador de IA opcional",
   "infoPrivacyAiCoachBody": "El entrenador central gratuito se basa en reglas y no requiere una clave API de IA ni enviar sus datos a un modelo. Cuando los operadores habilitan la voz opcional del entrenador LLM o la información diaria, enviamos un resumen de contexto mínimo al proveedor configurado (recomendado: SpaceXAI/xAI). Mission Winning no vende ese contenido ni lo utiliza para anuncios. Cuando el proveedor es xAI y el operador ha habilitado la retención de datos cero (ZDR) del equipo, xAI no retiene los mensajes de API ni los resultados en reposo (consulte las preguntas frecuentes sobre seguridad de xAI sobre retención de datos cero). La sincronización en la nube, los pagos, el correo electrónico y el análisis de productos siguen siendo terceros independientes con sus propias políticas de retención; ZDR no los reemplaza.",
   "infoPrivacyChoices": "Tus elecciones",

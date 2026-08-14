@@ -553,7 +553,7 @@
   "infoFeedbackThankSubtitle": "귀하의 피드백은 무료 코어 및 슈퍼 번들을 글로벌 임무에 맞게 개선하는 데 도움이 됩니다.",
   "infoFeedbackThankTitle": "감사합니다",
   "infoFeedbackTitle": "당신의 승리를 공유하세요",
-  "infoLastUpdated": "최종 업데이트 날짜: 2026년 7월",
+  "infoLastUpdated": "최종 업데이트 날짜: 2026년 8월 13일",
   "infoPrivacyAiCoach": "선택적 AI 코치",
   "infoPrivacyAiCoachBody": "무료 핵심 코치는 규칙 기반이며 AI API 키가 필요하지 않으며 데이터를 모델로 보내지 않습니다. 운영자가 선택적 LLM 코치 음성 또는 일일 통찰력을 활성화하면 구성된 제공자에게 최소한의 상황 요약을 보냅니다(권장: SpaceXAI/xAI). Mission Winning은 해당 콘텐츠를 판매하거나 광고에 사용하지 않습니다. 공급자가 xAI이고 운영자가 팀 ZDR(Zero Data Retention)을 활성화한 경우 xAI는 미사용 API 프롬프트 또는 출력을 유지하지 않습니다(Zero Data Retention에 대한 xAI 보안 FAQ 참조). 클라우드 동기화, 결제, 이메일 및 제품 분석은 자체 보존 정책을 통해 별도의 제3자로 유지됩니다. ZDR은 이를 대체하지 않습니다.",
   "infoPrivacyChoices": "당신의 선택",

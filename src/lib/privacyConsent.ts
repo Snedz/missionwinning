@@ -31,8 +31,8 @@ export type PrivacyConsent = {
  * version may never be *newer* than the displayed date. A user must never be
  * asked to accept a version the page has not yet admitted to publishing.
  */
-const TERMS_DISPLAY_DATE = '2026-08-04';
-const PRIVACY_DISPLAY_DATE = '2026-08-04';
+const TERMS_DISPLAY_DATE = '2026-08-13';
+const PRIVACY_DISPLAY_DATE = '2026-08-13';
 
 /** Material changes only. Bumping this re-prompts every device — see above. */
 const TERMS_CONSENT_VERSION = '2026-08-04';

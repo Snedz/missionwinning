@@ -108,6 +108,7 @@ type InfoStrings = {
   infoDmcaFoot: string;
   infoRefundsTitle: string;
   infoRefundsIntro: string;
+  infoRefundsIntroOpenBeta: string;
   infoRefundsSubs: string;
   infoRefundsSubsBody: string;
   infoRefundsLifetime: string;
@@ -121,8 +122,6 @@ type InfoStrings = {
   infoTermsAcceptableUseBody: string;
   infoPrivacySubprocessors: string;
   infoPrivacySubprocessorsBody: string;
-  infoAboutMissionNorthStar: string;
-  infoAboutMissionNested: string;
   infoAboutMissionP1: string;
   infoAboutMissionP1OpenBeta: string;
   infoAboutMissionP2: string;
@@ -258,8 +257,8 @@ type InfoStrings = {
 };
 
 const en: InfoStrings = {
-  infoLastUpdated: 'Last updated: August 2026',
-  infoAboutTitle: 'About Mission Winning',
+  infoLastUpdated: 'Last updated: 13 August 2026',
+  infoAboutTitle: 'About Mission Winning 0.1 (beta)',
   infoAboutSubtitle:
     'Free offline logger + Mission Coach from your logs — free core forever; Super Bundle adds depth when you are ready.',
   infoTermsTitle: 'Terms of Service',
@@ -330,7 +329,7 @@ const en: InfoStrings = {
   infoTermsAccountsLi2: 'Do not abuse the service, attempt unauthorized access, or scrape premium content.',
   infoTermsAccountsLi3: 'Do not use the app for unlawful purposes.',
   infoTermsPremiumBody:
-    'Premium purchases (Super Bundle and related paid features) are subject to checkout terms and our Refunds & cancellation policy. Cancel subscriptions anytime via Profile → Manage billing. Contact support@missionwinning.com for billing issues.',
+    'Premium purchases (Super Bundle and related paid features) are subject to checkout terms and our Refunds & cancellation policy when paid checkout is live. The free logger is never a paid purchase. When card payments are enabled, cancel subscriptions via the billing portal shown after purchase. Contact support@missionwinning.com for billing issues.',
   infoTermsAcceptableUse: 'Acceptable use',
   infoTermsAcceptableUseBody:
     'You must follow the Usage Policy (Acceptable Use) at /usage. In short: no unlawful use; no unauthorized access; no scraping or redistributing premium content; no CSAM, illegal deepfakes, fraud, harassment, or infrastructure abuse; no presenting Mission Winning as medical diagnosis or emergency care; no abuse of youth/school features. We may suspend or terminate accounts that violate these rules. Report abuse to support@missionwinning.com (subject: AUP abuse).',
@@ -417,24 +416,22 @@ const en: InfoStrings = {
     'This page is an operational notice channel, not legal advice. Registering a designated agent with the U.S. Copyright Office is required for safe-harbor protection.',
   infoRefundsTitle: 'Refunds & cancellation',
   infoRefundsIntro:
-    'This policy applies to paid Mission Winning purchases (Super Bundle and related premium). Free core use needs no refund. Educational fitness software only — not a medical device.',
+    'The free logger never needs a refund. Super Bundle refunds apply when paid checkout is live. Educational fitness software only — not a medical device.',
+  infoRefundsIntroOpenBeta:
+    'The free logger never needs a refund. Paid Super Bundle checkout is not live during this open beta, so there is no paid charge to reverse. Super Bundle refund terms below apply when paid checkout is live. Educational fitness software only — not a medical device.',
   infoRefundsSubs: 'Subscriptions',
   infoRefundsSubsBody:
-    'Monthly and 12-month Super Bundle: request a full refund within 14 days of your first paid charge by emailing support@missionwinning.com. After that window, we do not offer mid-cycle prorated refunds. Cancel anytime in Profile → Manage billing (Stripe Customer Portal) to stop future charges; access continues through the paid period already billed.',
+    'When you have a paid Super Bundle subscription: request a full refund within 14 days of your first paid charge by emailing support@missionwinning.com. After that window, we do not offer mid-cycle prorated refunds. Cancel anytime via the billing portal shown after checkout (when card payments are enabled) to stop future charges; access continues through the paid period already billed.',
   infoRefundsLifetime: 'Lifetime / USDC',
   infoRefundsLifetimeBody:
     'Lifetime (card or Phantom USDC): request a refund within 14 days of purchase if you have not meaningfully used premium features, by emailing support@missionwinning.com. After 14 days, lifetime purchases are non-refundable. Phantom/USDC refunds are processed manually by support — there is no automated on-chain reverse transfer yet.',
   infoRefundsHow: 'How to request',
   infoRefundsHowBody:
-    'Email support@missionwinning.com with the subject “Refund request”, the email used at checkout, plan type (monthly / 12-mo / lifetime), approximate purchase date, and payment method (Stripe or Phantom). We aim to respond within a few business days.',
+    'If you made a paid purchase, email support@missionwinning.com with the subject “Refund request”, the email used at checkout, plan type (monthly / 12-mo / lifetime), approximate purchase date, and payment method. We aim to respond within a few business days.',
   infoRefundsAbuse: 'Abuse & chargebacks',
   infoRefundsAbuseBody:
     'We may refuse repeat refund requests that appear abusive. Opening a chargeback without contacting support first may delay resolution. Fraudulent payments may result in account termination. Purchases made while you are in an unsupported region (or while circumventing Supported Regions) may be cancelled and refunded as a policy or compliance correction; we are not required to provide ongoing premium access in unsupported regions.',
   infoRefundsFoot: 'See also',
-  infoAboutMissionNorthStar:
-    'The mission is advancement of civilization and propagation of consciousness to the stars.',
-  infoAboutMissionNested:
-    'That is the north star. Today we serve it through L1 Health: Train plus Mission Coach.',
   infoAboutMissionP1:
     'Mission Winning is a free offline workout logger with adaptive Mission Coach plans from your logs — no wearable required. Super Bundle unlocks Coach depth and specialist education; logging stays free forever.',
   infoAboutMissionP1OpenBeta:
@@ -445,9 +442,9 @@ const en: InfoStrings = {
     'Evidence supports structured exercise for mood and energy in research settings — but most advice stays “just go work out.” We turn that into a weekly plan you can follow on any phone. We do not diagnose or treat depression; this is educational fitness, not clinical care.',
   infoAboutAmericaLink: 'Presidential Fitness Test & youth movement →',
   infoAboutBusinessBody:
-    'Operated by Mission Winning LLC (Texas) for the app, programs, and coaching. Free core stays free; paid Super Bundle funds deeper Coach and pillar tools when you want them.',
+    'Operated by Mission Winning LLC, a Texas limited liability company, for the app, programs, and coaching. Free core stays free; paid Super Bundle funds deeper Coach and pillar tools when you want them.',
   infoAboutBusinessBodyOpenBeta:
-    'Operated by Mission Winning LLC (Texas). Beta 0.1 — full tools free while we grow with you. The logger stays free forever.',
+    'Operated by Mission Winning LLC, a Texas limited liability company. Mission Winning 0.1 (beta) is an open beta — full tools free while we grow with you. The logger stays free forever.',
   infoAboutDisclaimerEducational:
     'Educational only. Mission Winning provides practical training education and tools. We are not a federally recognized or accredited certifying agency. Completion grants a Mission Winning Certificate of Educational Achievement only.',
   infoAboutDisclaimerGov:
@@ -727,7 +724,7 @@ const en: InfoStrings = {
 
 const es: InfoStrings = {
   ...en,
-  infoAboutTitle: 'Acerca de Mission Winning',
+  infoAboutTitle: 'Acerca de Mission Winning 0.1 (beta)',
   infoTermsTitle: 'Términos de uso',
   infoPrivacyTitle: 'Política de privacidad',
   infoVisionTitle: 'Visión de Mission Winning',
@@ -758,7 +755,7 @@ const es: InfoStrings = {
 
 const zh: InfoStrings = {
   ...en,
-  infoAboutTitle: '关于 Mission Winning',
+  infoAboutTitle: '关于 Mission Winning 0.1 (beta)',
   infoTermsTitle: '使用条款',
   infoPrivacyTitle: '隐私政策',
   infoBetaTitle: '从这里开始',
@@ -766,9 +763,9 @@ const zh: InfoStrings = {
   infoProfileHelpTitle: '帮助与法律',
 };
 
-const id: InfoStrings = { ...en, infoAboutTitle: 'Tentang Mission Winning' };
-const th: InfoStrings = { ...en, infoAboutTitle: 'เกี่ยวกับ Mission Winning' };
-const ar: InfoStrings = { ...en, infoAboutTitle: 'حول Mission Winning' };
+const id: InfoStrings = { ...en, infoAboutTitle: 'Tentang Mission Winning 0.1 (beta)' };
+const th: InfoStrings = { ...en, infoAboutTitle: 'เกี่ยวกับ Mission Winning 0.1 (beta)' };
+const ar: InfoStrings = { ...en, infoAboutTitle: 'حول Mission Winning 0.1 (beta)' };
 
 const LOCALES: Partial<Record<string, InfoStrings>> = { en, es, zh, id, th, ar };
 

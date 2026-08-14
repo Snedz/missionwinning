@@ -44,13 +44,13 @@ Wedge pitch: Train + Mission Coach — not “everything app.” Constitution: r
 | Field | Value |
 |-------|--------|
 | Legal name | Mission Winning LLC |
-| Formation state | **[FOUNDER: confirm]** |
-| Registered agent / mailing address for public use | **[FOUNDER: Bizee RA vs PO box/CMRA — see LEGAL_SAFETY §3]** |
+| Formation state | Texas (confirmed 2026-08-13) |
+| Registered agent / mailing address for public use | **[FOUNDER: Bizee RA vs PO box/CMRA — see LEGAL_SAFETY §3]** — do not invent a public postal line |
 | Officers / members | **[FOUNDER]** |
 | Support email | support@missionwinning.com |
 | Coaching inquiries | hello@missionwinning.com |
-| EIN | **[FOUNDER: pending / issued]** |
-| Stripe / PayPal account state | **[FOUNDER]** |
+| EIN | issued (do not publish digits) |
+| Stripe / PayPal account state | Stripe pending business account under LLC |
 
 ---
 
@@ -112,7 +112,7 @@ Live code: `src/lib/legal/supportedRegions.ts`. Tests pin **RU/BY allowed**.
 | Published physical postal address | **Open** — blocks list email + DMCA postal line |
 | copyright.gov DMCA agent filing | **Open** — page says interim |
 | Counsel review of arbitration / class waiver | **Open** |
-| Formation state printed in Terms | **Texas** stated in live Terms (.547+) — confirm against formation docs |
+| Formation state printed in Terms | **Texas** (confirmed 2026-08-13) — live Terms governing law + About entity line |
 | Cyber liability insurance | Not purchased; do not claim in Privacy |
 | Free-beta: Bundle UI muted | Refunds still describe Super Bundle for when pay is on |
 | Youth / COPPA full policy | Parked surfaces; light language only |

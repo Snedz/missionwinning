@@ -26,15 +26,20 @@ export function RefundsPage() {
       icon={Receipt}
       eyebrow={t('infoLegalEyebrow', { defaultValue: 'Legal' })}
       title={t('infoRefundsTitle', { defaultValue: 'Refunds & cancellation' })}
-      lastUpdated={t('infoLastUpdated', { defaultValue: 'Last updated: July 2026' })}
+      lastUpdated={t('infoLastUpdated', { defaultValue: 'Last updated: 13 August 2026' })}
       showLegalFooter
       jumpLinks={jumpLinks}
     >
       <p className="text-muted-foreground">
-        {t('infoRefundsIntro', {
-          defaultValue:
-            'This policy applies to paid Mission Winning purchases (Super Bundle and related premium). Free core use needs no refund. Educational fitness software only — not a medical device.',
-        })}
+        {freeBeta
+          ? t('infoRefundsIntroOpenBeta', {
+              defaultValue:
+                'The free logger never needs a refund. Paid Super Bundle checkout is not live during this open beta, so there is no paid charge to reverse. Super Bundle refund terms below apply when paid checkout is live. Educational fitness software only — not a medical device.',
+            })
+          : t('infoRefundsIntro', {
+              defaultValue:
+                'The free logger never needs a refund. Super Bundle refunds apply when paid checkout is live. Educational fitness software only — not a medical device.',
+            })}
       </p>
 
       <InfoSection
@@ -44,7 +49,7 @@ export function RefundsPage() {
         <p className="text-muted-foreground">
           {t('infoRefundsSubsBody', {
             defaultValue:
-              'Monthly and 12-month Super Bundle: request a full refund within 14 days of your first paid charge by emailing support@missionwinning.com. After that window, we do not offer mid-cycle prorated refunds. Cancel anytime in Profile → Manage billing (Stripe Customer Portal) to stop future charges; access continues through the paid period already billed.',
+              'When you have a paid Super Bundle subscription: request a full refund within 14 days of your first paid charge by emailing support@missionwinning.com. After that window, we do not offer mid-cycle prorated refunds. Cancel anytime via the billing portal shown after checkout (when card payments are enabled) to stop future charges; access continues through the paid period already billed.',
           })}
         </p>
       </InfoSection>
@@ -65,7 +70,7 @@ export function RefundsPage() {
         <p className="text-muted-foreground">
           {t('infoRefundsHowBody', {
             defaultValue:
-              'Email support@missionwinning.com with the subject “Refund request”, the email used at checkout, plan type (monthly / 12-mo / lifetime), approximate purchase date, and payment method (Stripe or Phantom). We aim to respond within a few business days.',
+              'If you made a paid purchase, email support@missionwinning.com with the subject “Refund request”, the email used at checkout, plan type (monthly / 12-mo / lifetime), approximate purchase date, and payment method. We aim to respond within a few business days.',
           })}
         </p>
       </InfoSection>

@@ -36,7 +36,7 @@
 - [ ] Cyber liability quote (~$200–600/yr typical small-SaaS ballpark — verify with broker); bind before school/enterprise or large PII volume
 - [ ] Do **not** add “we are insured” to Privacy until a policy exists
 - [ ] Counsel review of Terms arbitration + refunds ([LLC_AND_PAYMENTS.md](LLC_AND_PAYMENTS.md) §1b)
-- [ ] LLC formation state confirmed in [LLC_AND_PAYMENTS.md](LLC_AND_PAYMENTS.md) + Terms governing law
+- [x] LLC formation state = **Texas** (confirmed 2026-08-13) — live Terms governing law + [legal/COUNSEL_BRIEF.md](legal/COUNSEL_BRIEF.md) entity table. Stripe business account under the LLC is still pending; do not treat checkout as live while FREE_BETA is on. [LLC_AND_PAYMENTS.md](LLC_AND_PAYMENTS.md) §1d still describes the pre-checkout window.
 - [ ] Trademark clearance / filing for “Mission Winning” ([LLC_AND_PAYMENTS.md](LLC_AND_PAYMENTS.md) §1c)
 - [ ] DMCA agent filed (see [LEGAL_SAFETY.md](LEGAL_SAFETY.md))
 - [ ] Support mailbox knows refund subject line + `/refunds` link
