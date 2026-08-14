@@ -92,7 +92,7 @@ export const coachPlanVoiceSchema = z.object({
   deviceId: z.string().min(1).max(64).optional(),
 });
 
-/** Premium coach chat — compact context only (never raw workout logs). */
+/** Premium coach chat — compact citations only (never raw workout logs). */
 export const coachChatSchema = z.object({
   message: z.string().min(1).max(1000),
   turns: z
@@ -125,6 +125,30 @@ export const coachChatSchema = z.object({
       })
       .optional(),
     exerciseId: z.string().max(80).optional(),
+    logFacts: z
+      .array(
+        z.object({
+          exerciseId: z.string().max(80),
+          exerciseName: z.string().max(120),
+          weight: z.number().min(0).max(2000),
+          reps: z.number().min(0).max(200),
+          at: z.string().max(40),
+        })
+      )
+      .max(12)
+      .optional(),
+    weekSessions: z
+      .array(
+        z.object({
+          name: z.string().max(120),
+          kind: z.string().max(40),
+          status: z.string().max(20),
+          exerciseIds: z.array(z.string().max(80)).max(12),
+        })
+      )
+      .max(8)
+      .optional(),
+    loadZone: z.enum(['unknown', 'light', 'steady', 'high']).optional(),
   }),
   stream: z.boolean().optional(),
   /** Metering identity only — counts, never content; see 20260731_llm_usage.sql. */

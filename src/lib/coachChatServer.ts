@@ -7,7 +7,17 @@ import { EXERCISES } from '@/data/exercises';
 import { EXERCISE_PUBLIC_ENRICHMENT } from '@/data/exercisePublicEnrichment';
 import { withPublicDepth } from '@/lib/exerciseDepthDefaults';
 import { VALID_PATHS } from '@/lib/coachDailyServer';
-import { fetchCoachLlmCompletion, streamCoachLlmCompletion } from '@/lib/coachLlmClient';
+import { fetchCoachLlmCompletion } from '@/lib/coachLlmClient';
+import { buildCoachKnowledgeCorpus } from '@/lib/coach/agent/corpus';
+import { retrieveCoachKnowledge } from '@/lib/coach/agent/retrieve';
+import { runCoachReactLoop, type CoachReactMode } from '@/lib/coach/agent/react';
+import type {
+  CoachAgentWorld,
+  CoachCompleteFn,
+  CoachLoadZoneFact,
+  CoachLogFact,
+  CoachWeekSessionFact,
+} from '@/lib/coach/agent/types';
 
 export type CoachChatTurn = { role: 'user' | 'coach'; content: string };
 
@@ -23,6 +33,10 @@ export type CoachChatContext = {
     exercises: { id: string; name: string }[];
   };
   exerciseId?: string;
+  /** Compact citations — never raw workout logs. */
+  logFacts?: CoachLogFact[];
+  weekSessions?: CoachWeekSessionFact[];
+  loadZone?: CoachLoadZoneFact;
 };
 
 export type CoachChatOk = {
@@ -109,19 +123,64 @@ export function buildChatSystemPrompt(
     .join('\n');
 }
 
-export function buildChatUserPrompt(turns: CoachChatTurn[], message: string): string {
-  const clipped = turns.slice(-MAX_TURNS).map((t) => ({
-    role: t.role,
-    content: t.content.slice(0, MAX_TURN_CHARS),
-  }));
-  const transcript = clipped
-    .map((t) => `${t.role === 'user' ? 'User' : 'Coach'}: ${t.content}`)
+export function formatCoachChatTranscript(turns: CoachChatTurn[]): string {
+  return turns
+    .slice(-MAX_TURNS)
+    .map((t) => `${t.role === 'user' ? 'User' : 'Coach'}: ${t.content.slice(0, MAX_TURN_CHARS)}`)
     .join('\n');
+}
+
+export function buildChatUserPrompt(turns: CoachChatTurn[], message: string): string {
+  const transcript = formatCoachChatTranscript(turns);
   const parts = [
     transcript ? `Prior turns:\n${transcript}` : '',
     `User: ${message.slice(0, 1000)}`,
   ].filter(Boolean);
   return parts.join('\n\n');
+}
+
+export function buildCoachAgentWorld(ctx: CoachChatContext): CoachAgentWorld {
+  return {
+    logFacts: ctx.logFacts ?? [],
+    weekSessions: ctx.weekSessions ?? [],
+    loadZone: ctx.loadZone ?? 'unknown',
+    trainDays14: ctx.trainDays14,
+    todaySession: ctx.todaySession,
+    documents: buildCoachKnowledgeCorpus(),
+  };
+}
+
+function llmComplete(): CoachCompleteFn {
+  return async (req) => {
+    const result = await fetchCoachLlmCompletion({
+      system: req.system,
+      user: req.user,
+      maxTokens: req.maxTokens,
+      temperature: req.temperature,
+    });
+    if (!result.ok) return result;
+    return { ok: true, content: result.content, usage: result.usage };
+  };
+}
+
+async function runChatAgent(
+  ctx: CoachChatContext,
+  turns: CoachChatTurn[],
+  message: string,
+  mode: CoachReactMode,
+  signal?: AbortSignal
+) {
+  const world = buildCoachAgentWorld(ctx);
+  const hits = retrieveCoachKnowledge(message, world.documents ?? [], { k: 5 });
+  return runCoachReactLoop({
+    complete: llmComplete(),
+    world,
+    hits,
+    transcript: formatCoachChatTranscript(turns),
+    message,
+    mode,
+    signal,
+  });
 }
 
 export function parseCoachChatJson(raw: string): {
@@ -159,30 +218,23 @@ export async function fetchCoachChat(
   message: string
 ): Promise<CoachChatOk | CoachChatFail> {
   const groundedId = detectExerciseFromMessage(message, ctx.exerciseId);
-  const system = buildChatSystemPrompt(ctx, groundedId);
-  const user = buildChatUserPrompt(turns, message);
-  const result = await fetchCoachLlmCompletion({
-    system,
-    user,
-    maxTokens: 350,
-    temperature: 0.5,
-  });
-  if (!result.ok) {
-    if (result.reason === 'unconfigured' || result.reason === 'zdr_inactive') {
-      return { ok: false, reason: 'unconfigured' };
-    }
+  const agent = await runChatAgent(ctx, turns, message, 'json');
+  if (!agent.ok) {
+    if (agent.reason === 'unconfigured') return { ok: false, reason: 'unconfigured' };
+    if (agent.reason === 'empty') return { ok: false, reason: 'parse' };
     return { ok: false, reason: 'unavailable' };
   }
-  const parsed = parseCoachChatJson(result.content);
-  if (!parsed) return { ok: false, reason: 'parse' };
+  const parsed = parseCoachChatJson(agent.message);
+  const messageText = (parsed?.message ?? agent.message).trim().slice(0, MAX_MESSAGE);
+  if (!messageText) return { ok: false, reason: 'parse' };
   return {
     ok: true,
-    message: parsed.message,
-    actionLabel: parsed.actionLabel,
-    actionPath: parsed.actionPath,
+    message: messageText,
+    actionLabel: parsed?.actionLabel,
+    actionPath: parsed?.actionPath,
     source: 'llm',
-    grounded: Boolean(groundedId),
-    usage: result.usage,
+    grounded: Boolean(groundedId) || agent.usedTools || Boolean(ctx.logFacts?.length),
+    usage: agent.usage,
   };
 }
 
@@ -201,30 +253,15 @@ export async function* streamCoachChat(
   void
 > {
   const groundedId = detectExerciseFromMessage(message, ctx.exerciseId);
-  const system = buildChatSystemPrompt(ctx, groundedId, 'plain');
-  const user = buildChatUserPrompt(turns, message);
-  const gen = streamCoachLlmCompletion(
-    {
-      system,
-      user,
-      maxTokens: 350,
-      temperature: 0.5,
-    },
-    { signal, timeoutMs: 30_000 }
-  );
-
-  let result = await gen.next();
-  while (!result.done) {
-    yield result.value;
-    result = await gen.next();
-  }
-
-  const final = result.value;
-  if (!final.ok) {
-    if (final.reason === 'unconfigured' || final.reason === 'zdr_inactive') {
-      return { ok: false, reason: 'unconfigured' };
-    }
+  const agent = await runChatAgent(ctx, turns, message, 'plain', signal);
+  if (!agent.ok) {
+    if (agent.reason === 'unconfigured') return { ok: false, reason: 'unconfigured' };
     return { ok: false, reason: 'unavailable' };
   }
-  return { ok: true, grounded: Boolean(groundedId), usage: final.usage };
+  yield agent.message;
+  return {
+    ok: true,
+    grounded: Boolean(groundedId) || agent.usedTools || Boolean(ctx.logFacts?.length),
+    usage: agent.usage,
+  };
 }

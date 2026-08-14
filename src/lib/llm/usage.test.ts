@@ -1,6 +1,6 @@
 import { describe, it } from 'node:test';
 import assert from 'node:assert/strict';
-import { estimateLlmUsage, parseLlmUsage } from '@/lib/llm/usage';
+import { estimateLlmUsage, parseLlmUsage, sumLlmUsage } from '@/lib/llm/usage';
 
 describe('parseLlmUsage', () => {
   it('reads an OpenAI-compatible usage block as the provider meter', () => {
@@ -32,6 +32,20 @@ describe('parseLlmUsage', () => {
     const u = parseLlmUsage({ prompt_tokens: -5, completion_tokens: 2.6 });
     assert.deepEqual(u, { promptTokens: 0, completionTokens: 3, totalTokens: 3, estimated: false });
   });
+
+  it('reads reasoning tokens — omitting them treats thinking as free', () => {
+    const u = parseLlmUsage({
+      prompt_tokens: 40,
+      completion_tokens: 12,
+      total_tokens: 140,
+      completion_tokens_details: { reasoning_tokens: 88 },
+      cost_in_usd_ticks: 1500,
+    });
+    assert.equal(u?.reasoningTokens, 88);
+    assert.equal(u?.costUsdTicks, 1500);
+    assert.equal(u?.totalTokens, 140);
+    assert.equal(parseLlmUsage({ prompt_tokens: 10, completion_tokens: 2 })?.reasoningTokens, undefined);
+  });
 });
 
 describe('estimateLlmUsage', () => {
@@ -49,6 +63,21 @@ describe('estimateLlmUsage', () => {
       promptTokens: 0,
       completionTokens: 0,
       totalTokens: 0,
+      estimated: true,
+    });
+  });
+});
+
+describe('sumLlmUsage', () => {
+  it('adds parts and marks estimated if either side was', () => {
+    assert.equal(sumLlmUsage(undefined, undefined), undefined);
+    const a = { promptTokens: 10, completionTokens: 2, totalTokens: 12, estimated: false };
+    const b = { promptTokens: 3, completionTokens: 5, totalTokens: 8, estimated: true };
+    assert.deepEqual(sumLlmUsage(undefined, a), a);
+    assert.deepEqual(sumLlmUsage(a, b), {
+      promptTokens: 13,
+      completionTokens: 7,
+      totalTokens: 20,
       estimated: true,
     });
   });

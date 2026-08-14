@@ -62,7 +62,7 @@ Legend:
 |-------|---------|------|------|------|
 | `coach/daily-insight` | POST | session or gate app access; **LLM branch: premium + daily quota** (`.188`) | 12/min + 32 KiB + daily quota | Zod |
 | `coach/plan-voice` | POST | session or gate app access + premium (LLM branch only) + daily quota | 6/min + 64 KiB | Zod |
-| `coach/chat` | POST | app access + premium | 10/min + 32 KiB + daily quota | Zod `coachChatSchema`; 402 free; 503 offline; 429 `coach_quota` |
+| `coach/chat` | POST | app access + premium | 10/min + 32 KiB + daily quota | Zod `coachChatSchema` (compact citations, never raw logs); ReAct + local RAG; 402 free; 503 offline; 429 `coach_quota` |
 | `coach/debrief-voice` | POST | app access + premium (LLM branch) + daily quota | 6/min + 16 KiB | Zod; rules fallback when free / dark / over quota |
 | `referral` | GET/POST | session | 20/min GET · 5/min POST | Lazy MW-code; redeem ≤7d; service role |
 | `cron/weekly-digest` | GET | CRON_SECRET | — | Monday founder email; dryRun |

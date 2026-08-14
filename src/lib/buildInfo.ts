@@ -1,5 +1,5 @@
-/** Shown on Profile so testers can confirm the deployed build. Bump when shipping UI to master. `.770` Done beta code on Vercel Preview. */
-export const APP_BUILD_LABEL = "2026.07-unified.770";
+/** Shown on Profile so testers can confirm the deployed build. Bump when shipping UI to master. `.773` Coach local RAG + ReAct. */
+export const APP_BUILD_LABEL = "2026.07-unified.773";
 
 /**
  * Athlete-facing marketing version. Distinct from `APP_BUILD_LABEL`, which

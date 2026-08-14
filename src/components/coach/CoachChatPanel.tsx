@@ -23,6 +23,9 @@ import {
   isCoachChatAbortError,
   readCoachChatStream,
 } from '@/lib/coach/coachChatClient';
+import { loadPlan } from '@/lib/coach/storage';
+import { loadBands } from '@/lib/coach/load';
+import { readWorkoutHistoryFromStorage } from '@/lib/workout/workoutPersistLite';
 
 type Turn = { role: 'user' | 'coach'; content: string };
 
@@ -136,6 +139,7 @@ export function CoachChatPanel({
     const prior = turns;
     setTurns([...prior, { role: 'user', content: message }, { role: 'coach', content: '' }]);
 
+    const history = readWorkoutHistoryFromStorage();
     const context = buildCoachChatRequestContext({
       readiness,
       strain,
@@ -143,6 +147,9 @@ export function CoachChatPanel({
       exerciseId,
       todaySession,
       resolveExerciseName: (id) => EXERCISES.find((x) => x.id === id)?.name ?? id,
+      history,
+      plan: loadPlan(),
+      loadZone: loadBands(history).zone,
     });
 
     abortRef.current?.abort();

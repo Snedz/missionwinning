@@ -3,6 +3,19 @@
  * UI still owns fetch/SSE; these keep HTTP and [[error:…]] mapping one-home.
  */
 
+import type { CompletedWorkoutLog } from '@/types';
+import type { CoachPlanSessions } from '@/lib/coach/agent/facts';
+import {
+  countTrainDays14,
+  slimCoachLogFacts,
+  slimCoachWeekSessions,
+} from '@/lib/coach/agent/facts';
+import type {
+  CoachLoadZoneFact,
+  CoachLogFact,
+  CoachWeekSessionFact,
+} from '@/lib/coach/agent/types';
+
 export type CoachChatCopy = {
   key: string;
   defaultValue: string;
@@ -98,6 +111,10 @@ export function buildCoachChatRequestContext(params: {
   exerciseId?: string | null;
   todaySession?: CoachChatSessionSlim | null;
   resolveExerciseName: (id: string) => string;
+  history?: CompletedWorkoutLog[];
+  plan?: CoachPlanSessions;
+  loadZone?: CoachLoadZoneFact;
+  now?: Date;
 }): {
   readiness: number;
   strain: number;
@@ -110,13 +127,27 @@ export function buildCoachChatRequestContext(params: {
     estMinutes: number;
     exercises: { id: string; name: string }[];
   };
+  logFacts: CoachLogFact[];
+  weekSessions: CoachWeekSessionFact[];
+  loadZone: CoachLoadZoneFact;
 } {
-  const { readiness, strain, recovery, exerciseId, todaySession, resolveExerciseName } = params;
+  const {
+    readiness,
+    strain,
+    recovery,
+    exerciseId,
+    todaySession,
+    resolveExerciseName,
+    history = [],
+    plan = null,
+    loadZone = 'unknown',
+    now,
+  } = params;
   return {
     readiness,
     strain,
     recovery,
-    trainDays14: 0,
+    trainDays14: countTrainDays14(history, now),
     exerciseId,
     todaySession: todaySession
       ? {
@@ -129,6 +160,9 @@ export function buildCoachChatRequestContext(params: {
           })),
         }
       : undefined,
+    logFacts: slimCoachLogFacts(history, { now }),
+    weekSessions: slimCoachWeekSessions(plan),
+    loadZone,
   };
 }
 

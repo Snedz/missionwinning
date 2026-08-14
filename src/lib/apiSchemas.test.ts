@@ -103,6 +103,24 @@ const CASES: Record<string, Case> = {
             exercises: [{ id: 'bench', name: 'Bench press' }],
           },
           exerciseId: 'bench',
+          logFacts: [
+            {
+              exerciseId: 'squats',
+              exerciseName: 'Squats',
+              weight: 80,
+              reps: 5,
+              at: 'cited-at',
+            },
+          ],
+          weekSessions: [
+            {
+              name: 'Lower',
+              kind: 'strength',
+              status: 'planned',
+              exerciseIds: ['squats'],
+            },
+          ],
+          loadZone: 'steady',
         },
         stream: false,
         deviceId: 'device-1',

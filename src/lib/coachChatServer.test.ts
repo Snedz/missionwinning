@@ -1,7 +1,10 @@
 import { describe, it } from 'node:test';
 import assert from 'node:assert/strict';
+import { readFileSync } from 'node:fs';
+import path from 'node:path';
 import {
   buildChatUserPrompt,
+  buildCoachAgentWorld,
   detectExerciseFromMessage,
   parseCoachChatJson,
   buildChatSystemPrompt,
@@ -78,5 +81,30 @@ describe('buildChatSystemPrompt grounding', () => {
     );
     assert.ok(sys.includes('Grounding exercise'));
     assert.ok(sys.includes(EXERCISES[0]!.name));
+  });
+});
+
+describe('buildCoachAgentWorld', () => {
+  it('defaults missing citations and attaches the local corpus', () => {
+    const world = buildCoachAgentWorld({
+      readiness: 50,
+      strain: 40,
+      recovery: 60,
+      trainDays14: 2,
+    });
+    assert.deepEqual(world.logFacts, []);
+    assert.equal(world.loadZone, 'unknown');
+    assert.ok((world.documents?.length ?? 0) > 0);
+    assert.ok(world.documents?.some((d) => d.id === 'exercise:squats'));
+  });
+});
+
+describe('coach chat runs the ReAct loop, not a second prompt copy', () => {
+  it('routes through runCoachReactLoop and does not call vendor Collections', () => {
+    const src = readFileSync(path.join(import.meta.dirname, 'coachChatServer.ts'), 'utf8');
+    assert.match(src, /runCoachReactLoop/);
+    assert.match(src, /retrieveCoachKnowledge/);
+    assert.doesNotMatch(src, /previous_response_id/);
+    assert.doesNotMatch(src, /collections/i);
   });
 });
