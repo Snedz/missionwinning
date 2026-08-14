@@ -61,7 +61,7 @@ const FIRST_STEPS_EN: Record<string, string> = {
   // The public status bar — true only while `isFreeBeta()`.
   // Open beta while Preview is ungated; same free-first promise on production after the flip.
   publicStatusOpenBeta:
-    '{{productVersion}} — free beta. Offline logging plus Mission Coach from your logs.',
+    '{{productVersion}} — open alpha. Offline logging plus Mission Coach from your logs.',
 };
 
 const fs = (over: Record<string, string>): Record<string, string> => ({

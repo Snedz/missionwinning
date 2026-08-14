@@ -61,6 +61,7 @@
 | `ExerciseEquipmentHubPage.tsx` | `/exercises/equipment/[slug]` |
 | `ProgramsPage.tsx` | `/programs` |
 | `AboutPage.tsx` | `/about` |
+| `ChangelogPage.tsx` | `/changelog` — athlete release notes |
 | `PressPage.tsx` | `/press` — brand & media kit |
 | `VisionPage.tsx` | `/vision` |
 

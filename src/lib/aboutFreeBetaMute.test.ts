@@ -27,7 +27,7 @@ test('infoLocales EN defines open-beta About strings without Super Bundle', () =
   assert.match(m2[1]!, /Texas limited liability company/);
   assert.match(m2[1]!, /\{\{productVersion\}\}/);
   assert.doesNotMatch(m2[1]!, /0\.1 \(beta\)/);
-  assert.match(m2[1]!, /open beta/i);
+  assert.match(m2[1]!, /open alpha/i);
   assert.doesNotMatch(m2[1]!, /invite-only|private beta/i);
   assert.match(m1[1]!, /free forever/i);
 });
