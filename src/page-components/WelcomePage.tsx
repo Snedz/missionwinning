@@ -37,6 +37,7 @@ import { BrandMonogram } from '@/components/brand/BrandMonogram';
 import { readRaw, writeRaw, remove as removeKey } from '@/lib/storage/safeStorage';
 import { STORAGE_KEYS } from '@/lib/storage/keys';
 import { navigateAfterPrivateGateUnlock } from '@/lib/privateGateNavigate';
+import { LOCAL_FIRST_COPY } from '@/lib/localFirstCopy';
 
 const EXPERIENCE_VALUES = ['beginner', 'intermediate', 'advanced'] as const;
 const EQUIPMENT_VALUES = ['bodyweight', 'dumbbells', 'full-gym'] as const;
@@ -214,9 +215,8 @@ export function WelcomePage({ initialEdit = false }: WelcomePageProps) {
                   </h1>
                   <p className="max-w-md text-base leading-relaxed text-muted-foreground">
                     {t('welcomeSubtitleBrief', {
-                      defaultValue:
-                        'A few questions, then log your first session. Free offline logging — forever.',
-                    })}
+                        defaultValue: LOCAL_FIRST_COPY.welcomeLocalFirst,
+                      })}
                   </p>
                 </div>
 
@@ -418,6 +418,20 @@ export function WelcomePage({ initialEdit = false }: WelcomePageProps) {
                 >
                   {t('welcomeSkipSignIn', { defaultValue: 'Skip — start training' })}
                 </button>
+                {/*
+                  Data-in, at the moment it is relevant. Strong/Hevy import has
+                  shipped for a while and lived three taps deep inside a
+                  collapsed section on /account, so a switcher holding a CSV — the
+                  export is how you leave Hevy once it caps your history — had no
+                  path to it. Reuses the import card's own translated strings; a
+                  link, not a red action, because the free logger comes first.
+                */}
+                <p className="text-center text-xs leading-relaxed text-muted-foreground">
+                  {t('csvImportTitle', { defaultValue: 'Switching from another app?' })}{' '}
+                  <a href="/account#import" className="underline underline-offset-2">
+                    {t('csvImportCta', { defaultValue: 'Import CSV (Strong / Hevy)' })}
+                  </a>
+                </p>
                 <Button variant="ghost" size="sm" className="w-full min-h-[44px] tap-target" onClick={() => setStep('profile')}>
                   <ChevronLeft className="h-4 w-4 mr-1" />{' '}
                   {t('welcomeBack', { defaultValue: 'Back' })}

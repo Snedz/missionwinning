@@ -232,6 +232,13 @@ export function PrivateTeaserClient({ initialInvite = '', initialNext = '' }: Pr
           <p className="gate-lede">
             {g('gateSubtitle')}
           </p>
+          {/*
+            The mechanism, on the first screen anyone sees. "Offline" is a word
+            an app with forced sync would also print; this says where the sets go.
+          */}
+          <p className="gate-foot" data-mw-local-first>
+            {g('gateLocalFirst')}
+          </p>
 
           {isInvitee ? (
             <section className="gate-section">

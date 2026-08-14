@@ -96,6 +96,22 @@ export function AccountPage() {
   const [pushBusy, setPushBusy] = useState(false);
   const [dayReviewHour, setDayReviewHour] = useState<number | null>(null);
   const [billingBusy, setBillingBusy] = useState(false);
+  /**
+   * `#import` deep link. Read in an effect, not during render: the fragment is
+   * not sent to the server, so deciding `open` from it while hydrating would be a
+   * mismatch. One frame closed, then open and scrolled, beats a hydration error.
+   */
+  const [importDeepLink, setImportDeepLink] = useState(false);
+
+  useEffect(() => {
+    if (typeof window === 'undefined' || window.location.hash !== '#import') return;
+    setImportDeepLink(true);
+    // After the details paints open, put the card on screen.
+    const id = requestAnimationFrame(() => {
+      document.getElementById('import')?.scrollIntoView({ block: 'start' });
+    });
+    return () => cancelAnimationFrame(id);
+  }, []);
 
   useEffect(() => {
     supabase.auth.getUser().then(({ data }) => {
@@ -377,7 +393,16 @@ export function AccountPage() {
         onManageBilling={handleManageBilling}
       />
 
-      <details className="group border-2 border-border bg-card">
+      {/*
+       * `.746` — `#import` opens this and scrolls to the CSV card.
+       *
+       * Strong/Hevy import has existed and shipped for a while, and it was
+       * unreachable in practice: `/account` → expand "More settings" → scroll
+       * past six cards. The East Asia shard lists data-in as its own P1 next to
+       * logging speed, and a migrant arriving with a CSV in hand had no path.
+       * I-Day and the Active empty state now link straight here.
+       */}
+      <details className="group border-2 border-border bg-card" open={importDeepLink}>
         <summary className="flex min-h-[44px] cursor-pointer list-none items-center px-4 py-3 text-sm font-semibold text-foreground [&::-webkit-details-marker]:hidden">
           {t('accountMoreSettings', { defaultValue: 'More settings' })}
         </summary>
@@ -413,7 +438,9 @@ export function AccountPage() {
 
           <ProfileBackupCard />
 
-          <ProfileImportCard />
+          <div id="import" className="scroll-mt-4">
+            <ProfileImportCard />
+          </div>
         </div>
       </details>
 

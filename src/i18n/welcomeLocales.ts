@@ -112,7 +112,7 @@ const en: WelcomeStrings = {
   welcomeSubtitle:
     'Set your path, then log your first session. One step at a time — Today always shows the next action.',
   welcomeSubtitleBrief:
-    'A few questions, then log your first session. Free offline logging — forever.',
+    'A few questions, then log your first session. No account — sets are written to this device, and nothing is uploaded unless you sign in.',
   welcomeBegin: 'Begin',
   welcomeAccept: 'I accept the path',
   welcomeContinue: 'Continue',

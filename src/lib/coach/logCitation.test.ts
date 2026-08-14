@@ -256,9 +256,16 @@ test('a Coach provenance claim never ships without a citation beside it', () => 
     `only ${claiming.length} files make a Coach provenance claim — the pattern stopped matching`
   );
 
+  /*
+   * The **rendered element**, not the import. The first draft tested
+   * `/CoachLogCite/`, which the `import` line satisfies on its own — so deleting
+   * `<CoachLogCite />` from `CoachTodayCard` and from `/coach` left this green.
+   * Two mutants survived and said so. A guard that a leftover import can satisfy
+   * is checking spelling, not behaviour.
+   */
   const uncited = claiming.filter((f) => {
     if (f in CLAIM_WITHOUT_CITE_EXEMPT) return false;
-    return !/CoachLogCite/.test(read(f));
+    return !/<CoachLogCite[\s/>]/.test(stripComments(read(f)));
   });
 
   assert.deepEqual(

@@ -16,12 +16,21 @@
  *    language packs in that route's bundle.
  */
 
+import { LOCAL_FIRST_COPY } from '@/lib/localFirstCopy';
+
 export const GATE_EN: Record<string, string> = {
   gateEyebrow: 'Invite-only open beta',
   gateTitle1: 'Train anywhere.',
   gateTitle2: 'Win daily.',
   gateSubtitle:
     'Free offline workout logging plus Mission Coach — weekly plans from your logs alone, no wearable. Full tools free for invited testers; the logger stays free forever.',
+  /**
+   * `.746` — the mechanism, not the adjective. CN/HK respondents believed the
+   * offline claim (3.97) and not the implementation; "offline" is the word an app
+   * with forced sync would also use, so the poster now says what actually
+   * happens. Single source: `LOCAL_FIRST_COPY.gateLocalFirst`.
+   */
+  gateLocalFirst: LOCAL_FIRST_COPY.gateLocalFirst,
   gateFooterTagline: 'free core forever',
   gateWaitlistTitle: 'Get an invite',
   gateWaitlistPlaceholder: 'you@example.com',
