@@ -1,5 +1,5 @@
-/** Shown on Profile so testers can confirm the deployed build. Bump when shipping UI to master. `.791` restore .696 homepage. */
-export const APP_BUILD_LABEL = "2026.07-unified.791";
+/** Shown on Profile so testers can confirm the deployed build. Bump when shipping UI to master. `.792` www gate, Alpha 0.1.0. */
+export const APP_BUILD_LABEL = "2026.07-unified.792";
 
 /**
  * Semver for athletes. Distinct from `APP_BUILD_LABEL`, which `/api/health`

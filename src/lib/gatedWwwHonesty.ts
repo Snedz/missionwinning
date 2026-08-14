@@ -2,18 +2,18 @@
  * Gated www honesty (F-008) — EN source for PRIVATE_MODE gate surfaces.
  *
  * While the private gate is on, `/` and `/log` redirect to `/private`. Cold
- * visitors must see Free beta / access-code framing — not a dead 404, not
+ * visitors must see Alpha / access-code framing — not a dead 404, not
  * opaque "Checking sign-in…", not "open beta" / "Start free" that implies
  * public open access, and not invite-only / private-beta product-status
- * language (founder BETA_LANGUAGE: gate stays; wording does not say invite-only).
+ * language (founder: gate stays; wording is Alpha 0.1.0, not invite-only).
  * One Train→Coach teaser only (no six-pillar wall).
  *
  * Does not flip PRIVATE_MODE, mint cookies, or soften the gate.
  */
 
 export const GATED_WWW_HONESTY = {
-  /** Gate eyebrow — Free beta (never "open beta" or "invite-only"). */
-  gateEyebrow: 'Free beta',
+  /** Gate eyebrow — Alpha (never "open beta" or "invite-only"). */
+  gateEyebrow: 'Alpha',
   /**
    * Primary lede on `/private` — Train logging + Mission Coach from logs.
    * Not a pillar catalog.
@@ -28,8 +28,8 @@ export const GATED_WWW_HONESTY = {
   gateLoading: 'Opening the gate…',
   /** Waitlist CTA — notify, not invite-only ask. */
   gateWaitlistTitle: 'Get notified',
-  /** Welcome (public while gated) — Free beta framing on I-Day. */
-  welcomeKicker: 'Free beta · About two minutes',
+  /** Welcome (public while gated) — Alpha framing on I-Day. */
+  welcomeKicker: 'Alpha · About two minutes',
   welcomeSubtitleBrief:
     'A few questions, then log your first Train session. Mission Coach shapes the week from those logs — enter with your code.',
   /** Marketing / landing CTA while gate is on — not "Start free" / "Enter with invite". */

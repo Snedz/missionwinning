@@ -67,7 +67,7 @@ export function LaunchNotifyForm({ source, message, variant = 'landing' }: Props
           </p>
           <p className="gate-foot">
             {t('gateWaitlistDoneFoot', {
-              defaultValue: "We'll email you the moment doors open.",
+              defaultValue: "We'll email you when Alpha access is ready.",
             })}{' '}
             {email}
           </p>
@@ -93,11 +93,11 @@ export function LaunchNotifyForm({ source, message, variant = 'landing' }: Props
           <button
             type="submit"
             disabled={busy || !email}
-            className="gate-btn gate-btn-secondary"
+            className="gate-btn gate-btn-primary"
           >
             {busy
               ? t('gateWaitlistSubmitting', { defaultValue: 'Joining…' })
-              : t('gateWaitlistSubmit', { defaultValue: 'Get notified' })}
+              : t('gateWaitlistSubmit', { defaultValue: 'Notify me' })}
           </button>
         </div>
         {error && (
@@ -115,7 +115,7 @@ export function LaunchNotifyForm({ source, message, variant = 'landing' }: Props
         <p className="inline-flex items-center gap-1.5 font-semibold text-foreground">
           <Check className="h-4 w-4" aria-hidden />
           {t('landingCaptureDone', {
-            defaultValue: "You're on the list. Check your inbox for a confirmation when email is live.",
+            defaultValue: 'You’re on the list. Check your inbox for a confirmation when email is live.',
           })}
         </p>
         <p className="mt-2 text-sm text-muted-foreground">{email}</p>

@@ -98,7 +98,7 @@ export function CinematicLogger({ doneHref = '/private', doneLabel }: Props) {
       </p>
       {done ? (
         <a className="www-cine-ghost" href={doneHref}>
-          {doneLabel ?? t('gateEyebrow', { defaultValue: 'Free beta' })}
+          {doneLabel ?? t('gateEyebrow', { defaultValue: 'Alpha' })}
         </a>
       ) : (
         <button type="button" className="primary-action" onClick={logSet}>

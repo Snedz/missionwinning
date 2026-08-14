@@ -1,6 +1,6 @@
 /**
  * Gated www copy may not say invite-only / get-an-invite / private beta / we're live.
- * CTA pack: Free beta · Enter with code · Get notified.
+ * CTA pack: Alpha · Notify me · Have an Alpha access code?.
  * docs/design/WWW_NIGHT.md §7 · docs/SOCIAL_LAUNCH.md F-008
  */
 
@@ -29,14 +29,13 @@ const SURFACE_FILES = [
   'docs/design/concepts/05-exquisite.html',
 ];
 
-test('EN gate CTA pack is Free beta / Log a set / Enter with code / Get notified', () => {
+test('EN gate CTA pack is Alpha / Notify me / Have an Alpha access code?', () => {
   const en = gateStringsFor('en');
-  assert.equal(en.gateEyebrow, 'Free beta');
-  assert.equal(en.gateLogASet, 'Log a set');
+  assert.equal(en.gateEyebrow, 'Alpha');
   assert.equal(en.gateWaitlistTitle, 'Get notified');
-  assert.equal(en.gateWaitlistSubmit, 'Get notified');
+  assert.equal(en.gateWaitlistSubmit, 'Notify me');
   assert.equal(en.gateAccessSubmit, 'Enter with code');
-  assert.equal(en.gateAccessSummary, 'Enter with code');
+  assert.equal(en.gateAccessSummary, 'Have an Alpha access code?');
 });
 
 test('nested mission: public line + Coach beat + quiet later, never a feed', () => {
