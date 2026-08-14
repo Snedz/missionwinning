@@ -90,6 +90,15 @@ regression shows up as requests first.
 **Founder, one line:** everything in shards 1–4 that is fixed is fixed on
 `master` and invisible to users. Production has not moved since `.697`.
 
+**Verified:** the legal links still navigate (`/welcome` → Terms), the returning
+path is still **2 interactions with 0 blocking sheets**, and Coach still reads
+*"From your log: Bench Press 60kg × 5 · Aug 13"*. Hero e2e **71 passed**, unit
+**2770**, lint, typecheck, i18n parity + coverage, locale split, build label,
+excellence gate. `gate-smoke`'s new script-count checks pass against a gated
+production build. `bundle-budget` unchanged from master's breach (`/` 257.1,
+`/log` 287.3, `/active` 453.6) — prefetch is invisible to it, which is half the
+reason the new ratchets exist.
+
 Label `.768` (onto `.767`, same PR). Excellence-Override below.
 
 Excellence-Override: www kaizen first-paint (RESULT unscored)
