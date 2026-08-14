@@ -59,7 +59,11 @@ export function AthletePageKitCard() {
   return (
     <Card className="bg-card" data-testid="athlete-page-kit-card">
       <CardContent className="pt-6">
-        <p className="eyebrow mb-1">{t('athleteKitTitle', { defaultValue: 'Page kit' })}</p>
+        <details className="group">
+          <summary className="flex min-h-[44px] cursor-pointer list-none items-center text-sm font-semibold text-muted-foreground hover:text-foreground [&::-webkit-details-marker]:hidden">
+            {t('athleteKitTitle', { defaultValue: 'Page kit' })}
+          </summary>
+          <div className="mt-3">
         <p className="mb-4 text-sm text-muted-foreground">
           {t('athleteKitBody', {
             defaultValue: 'How this page is laid out. Training unlocks more kits.',
@@ -104,6 +108,8 @@ export function AthletePageKitCard() {
             {t('athleteKitSaved', { defaultValue: 'Layout saved on this device.' })}
           </p>
         )}
+          </div>
+        </details>
       </CardContent>
     </Card>
   );

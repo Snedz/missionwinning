@@ -21,6 +21,8 @@ describe('buildAthletePageShareData', () => {
     assert.equal(card.title, '07  Ada');
     assert.equal(card.kicker, 'ATHLETE PAGE');
     assert.ok(!card.stats.some((s) => s.label === 'Sessions'));
+    assert.ok(!card.stats.some((s) => s.label === 'Rank'));
+    assert.ok(!card.stats.some((s) => s.label === 'Tier'));
     assert.match(card.prLine ?? '', /strength/);
     assert.match(card.prLine ?? '', /deadlift/);
   });

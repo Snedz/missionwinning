@@ -33,9 +33,11 @@ export function AthletePrivateNoteCard() {
   return (
     <Card className="bg-card" data-testid="athlete-private-note">
       <CardContent className="pt-6">
-        <p className="eyebrow mb-1">
-          {t('athletePrivateNoteTitle', { defaultValue: 'Private note' })}
-        </p>
+        <details className="group">
+          <summary className="flex min-h-[44px] cursor-pointer list-none items-center text-sm font-semibold text-muted-foreground hover:text-foreground [&::-webkit-details-marker]:hidden">
+            {t('athletePrivateNoteTitle', { defaultValue: 'Private note' })}
+          </summary>
+          <div className="mt-3">
         <p className="mb-3 text-sm text-muted-foreground">
           {t('athletePrivateNoteBody', {
             defaultValue: 'For you only on this device. Never on share cards or public pages.',
@@ -68,6 +70,8 @@ export function AthletePrivateNoteCard() {
             {t('athletePrivateNoteSaved', { defaultValue: 'Saved on this device only.' })}
           </p>
         )}
+          </div>
+        </details>
       </CardContent>
     </Card>
   );

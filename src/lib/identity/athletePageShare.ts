@@ -2,9 +2,10 @@
  * Athlete Page → share-out PNG data (S4 share half, still no public URL).
  *
  * Built only from the C5 public projection + optional derived career counts.
- * Never accepts free text or workout log rows. Cosmetics are injected as
- * painters (`.612`) so this module can stay off the `/active` graph unless a
- * profile surface imports it.
+ * Never accepts free text or workout log rows. Stats are career counts (and a
+ * kit pick) — Rank/Tier stay off this PNG so share-out is not a scoreboard.
+ * Cosmetics are injected as painters (`.612`) so this module can stay off the
+ * `/active` graph unless a profile surface imports it.
  */
 
 import { formatAthleteCardTitle } from '../../../packages/mw-core/src/identity/athleteCard';
@@ -49,10 +50,6 @@ export function buildAthletePageShareData(
   const title = formatAthleteCardTitle(name, projection.callSignNumber);
 
   const stats: ShareCardStat[] = [];
-  if (projection.rankTitle) {
-    stats.push({ label: 'Rank', value: projection.rankTitle });
-  }
-  stats.push({ label: 'Tier', value: `T${projection.tier}` });
   if (typeof options.sessions === 'number' && options.sessions > 0) {
     stats.push({ label: 'Sessions', value: String(options.sessions) });
   }

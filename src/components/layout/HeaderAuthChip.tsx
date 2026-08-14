@@ -9,7 +9,10 @@ import { getUser } from '@/lib/supabase';
 import { showHeaderSignInChip } from '@/lib/firstSetUngated';
 import { useWorkoutStore } from '@/store/workoutStore';
 
-/** Compact sign-in chip for the app header when logged out. */
+/**
+ * Compact sign-in chip for the app header when logged out.
+ * Lands on `/account` (settings), not `/profile` (authored Athlete Page).
+ */
 export function HeaderAuthChip() {
   const { t } = useTranslation();
   const pathname = usePathname() ?? '';
@@ -41,7 +44,7 @@ export function HeaderAuthChip() {
 
   return (
     <Link
-      href="/profile"
+      href="/account"
       onClick={(e) => e.stopPropagation()}
       className="inline-flex items-center gap-1.5 shrink-0 border border-primary bg-tint px-3 py-1.5 text-xs font-semibold text-primary hover:bg-primary hover:text-primary-foreground transition-colors min-h-[44px] tap-target"
     >

@@ -28,6 +28,10 @@ const SOURCES = [
   'src/page-components/AccountPage.tsx',
   'src/components/profile/AthleteIdentityCard.tsx',
   'src/components/profile/CareerLineCard.tsx',
+  'src/components/profile/AthleteTableCard.tsx',
+  'src/components/profile/AthletePageKitCard.tsx',
+  'src/components/profile/AthletePageShareCard.tsx',
+  'src/components/profile/AthletePrivateNoteCard.tsx',
 ];
 
 /** `t('key', { defaultValue: '…' })` — single-quoted literals, the house style. */

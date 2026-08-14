@@ -6,9 +6,10 @@
  * "You". The settings moved to `/account`; what stayed is the part that is
  * actually yours — docs/IDENTITY_SOCIAL_PLAN.md §3.
  *
- * Blocks: Identity · Line · Table · Kit · Card · Shelf · **Page share** · **Private
- * note**. Kits are C6 compositions. Page share is share-OUT PNG (S4a); public URL
- * is S4b (Club C2). Private note is local free text only (C5).
+ * `.706` composition: authored first viewport (identity · card · table · line ·
+ * shelf), editors collapsed, no XP/rank scoreboard. Kits are C6 compositions.
+ * Page share is share-OUT PNG (S4a); public URL is S4b (Club C2). Private note
+ * is local free text only (C5).
  *
  * **This page is Social-domain and may read rewards.** What it may never do is
  * appear on the logging path — `domainBoundary.test.ts` C3 keeps `/profile` out
@@ -21,7 +22,6 @@ import { useEffect, useMemo, useState } from 'react';
 import Link from 'next/link';
 import { useTranslation } from 'react-i18next';
 import { User } from 'lucide-react';
-import { Card, CardContent } from '@/components/ui/card';
 import { PillarPageShell } from '@/components/layout/PillarPageShell';
 import { AppLegalFooter } from '@/components/layout/AppLegalFooter';
 import { APP_BUILD_LABEL } from '@/lib/buildInfo';
@@ -43,6 +43,8 @@ import {
   pageKitById,
   resolveStoredAthletePage,
 } from '@/lib/identity/athleteProfile';
+import { ATHLETE_CARD_CHANGED } from '@/lib/identity/athleteCard';
+import { loadOperatorName } from '@/lib/leaderboard/computeLocalStats';
 import { pageKitLayoutClass } from '@/lib/identity/pageKitClasses';
 import { cn } from '@/lib/utils';
 
@@ -59,6 +61,7 @@ export function ProfilePage() {
    */
   const [ready, setReady] = useState(false);
   const [kitId, setKitId] = useState('default');
+  const [callSign, setCallSign] = useState('');
   useEffect(() => setReady(true), []);
 
   const summary = useMemo(
@@ -70,10 +73,15 @@ export function ProfilePage() {
     if (!ready || !summary) return;
     const reload = () => {
       setKitId(resolveStoredAthletePage(summary.level).kitId);
+      setCallSign(loadOperatorName());
     };
     reload();
     window.addEventListener(ATHLETE_PAGE_CHANGED, reload);
-    return () => window.removeEventListener(ATHLETE_PAGE_CHANGED, reload);
+    window.addEventListener(ATHLETE_CARD_CHANGED, reload);
+    return () => {
+      window.removeEventListener(ATHLETE_PAGE_CHANGED, reload);
+      window.removeEventListener(ATHLETE_CARD_CHANGED, reload);
+    };
   }, [ready, summary]);
 
   const career = useMemo(
@@ -83,12 +91,17 @@ export function ProfilePage() {
 
   const kit = pageKitById(kitId);
   const kitClass = pageKitLayoutClass(kit);
+  const hasName = callSign.trim().length > 0;
 
   return (
     <PillarPageShell
       icon={User}
       eyebrow={t('profileEyebrow', { defaultValue: 'You' })}
-      title={t('athletePageTitle', { defaultValue: 'Your record' })}
+      title={
+        hasName
+          ? callSign.trim()
+          : t('athletePageTitle', { defaultValue: 'You' })
+      }
       subtitle={
         isCommissioned && state.commissionedAt
           ? t('profileCommissionedDay', {
@@ -107,7 +120,7 @@ export function ProfilePage() {
         </div>
 
         <div data-athlete-block>
-          <CareerLineCard career={career} />
+          <ProfileAthleteCard career={career} />
         </div>
 
         <div data-athlete-block>
@@ -115,11 +128,7 @@ export function ProfilePage() {
         </div>
 
         <div data-athlete-block>
-          <AthletePageKitCard />
-        </div>
-
-        <div data-athlete-block>
-          <ProfileAthleteCard />
+          <CareerLineCard career={career} />
         </div>
 
         <div data-athlete-block>
@@ -127,26 +136,25 @@ export function ProfilePage() {
         </div>
 
         <div data-athlete-block>
-          <AthletePageShareCard />
+          <AthletePageKitCard />
         </div>
 
         <div data-athlete-block>
           <AthletePrivateNoteCard />
         </div>
 
-        <Card className="border-2 border-border bg-card" data-athlete-block>
-          <CardContent className="pt-6">
-            <p className="eyebrow mb-3 text-muted-foreground">
-              {t('athletePageSettingsTitle', { defaultValue: 'Settings' })}
-            </p>
-            <Link
-              href="/account"
-              className="inline-flex min-h-[44px] items-center text-sm font-semibold text-muted-foreground underline underline-offset-2 hover:text-foreground"
-            >
-              {t('athletePageSettingsLink', { defaultValue: 'Account & settings' })}
-            </Link>
-          </CardContent>
-        </Card>
+        <div data-athlete-block>
+          <AthletePageShareCard />
+        </div>
+
+        <p className="pt-2" data-athlete-block>
+          <Link
+            href="/account"
+            className="inline-flex min-h-[44px] items-center text-sm font-semibold text-muted-foreground underline underline-offset-2 hover:text-foreground"
+          >
+            {t('athletePageSettingsLink', { defaultValue: 'Account & settings' })}
+          </Link>
+        </p>
       </div>
     </PillarPageShell>
   );

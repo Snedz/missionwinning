@@ -16,6 +16,6 @@ Plain-language guides for athletes, parents, and teachers. English only for now;
 | [faq.md](faq.md) | Quick answers |
 | [troubleshooting.md](troubleshooting.md) | Offline, sync, password gate |
 
-**In the app:** Profile → legal links; Today tab = `/log`; Coach = `/coach`.
+**In the app:** Account → legal links; **You** (`/profile`) is your Athlete Page (call sign, card, record); Today tab = `/log`; Coach = `/coach`.
 
 **Support:** Use Feedback in the app or contact through your beta invite channel.

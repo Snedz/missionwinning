@@ -12,6 +12,7 @@
 
 type RewardsStrings = {
   rewardProfileTitle: string;
+  rewardProfileShelfHint: string;
   rewardProfileRank: string;
   rewardProfileChallenges: string;
   rewardProfileEmpty: string;
@@ -83,6 +84,8 @@ type RewardsStrings = {
   rewardBadgeCommissionedDesc: string;
   /** `.610` — the Athlete Card. Picks-from-sets identity; no free text, no uploads. */
   athleteCardTitle: string;
+  athleteCardPreviewEmpty: string;
+  athleteCardEdit: string;
   athleteCardBody: string;
   athleteCardPreviewKicker: string;
   athleteCardPreviewFrame: string;
@@ -97,7 +100,9 @@ type RewardsStrings = {
 
 const en: RewardsStrings = {
   athleteCardTitle: 'Your card',
-  athleteCardBody: '{{rank}} · tier {{tier}}. Training unlocks more of the card.',
+  athleteCardPreviewEmpty: 'Log a session and the card fills from your record.',
+  athleteCardEdit: 'Edit card',
+  athleteCardBody: 'Training unlocks more of the card.',
   athleteCardPreviewKicker: 'On the path',
   athleteCardPreviewFrame: '{{frame}} · {{backdrop}}',
   athleteCardFrame: 'Frame',
@@ -107,7 +112,8 @@ const en: RewardsStrings = {
   athleteCardSharing: 'Preparing…',
   athleteCardShareText: 'On the path.',
   athleteCardPrivacy: 'Rendered on this device and shared only if you send it. Nothing is uploaded.',
-  rewardProfileTitle: 'Badges & rank',
+  rewardProfileTitle: 'Badges',
+  rewardProfileShelfHint: 'Earned from logs on this device. Not a ranking.',
   rewardProfileRank: 'Level {{level}} · {{rank}} · {{xp}} XP',
   rewardProfileChallenges: '{{done}}/{{total}} weekly challenges met',
   rewardProfileEmpty: 'Log workouts and pillar wins to earn badges. Free forever.',

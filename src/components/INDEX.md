@@ -17,7 +17,6 @@
 | `benchmarks/` | Benchmark charts |
 | `beta/` | Beta admin, welcome banner |
 | `builder/` | Workout builder panels |
-| `bundle/` | Super Bundle shop cards — [bundle/INDEX.md](bundle/INDEX.md) |
 | `coach/` | Mission Coach UI — [coach/INDEX.md](coach/INDEX.md) |
 | `fitness-test/` | PFT test runner — [fitness-test/INDEX.md](fitness-test/INDEX.md) |
 | `form/` | Form guides |
@@ -32,7 +31,7 @@
 | `pillars/` | Shared pillar panels, timed flows |
 | `today/` | Today dashboard — [today/INDEX.md](today/INDEX.md) |
 | `track/` | GPS / activity panels |
-| `profile/` | Profile settings cards (privacy, backup, CSV history import/export, referral, wearables, What’s New) |
+| `profile/` | Athlete Page (You) + Account settings cards |
 | `ui/` | Design system primitives (`AdaptiveOverlay` — the one sheet shell, with a pinned `footer` slot; `EmptyState`, `ErrorState`, `Skeleton`, `MeterBar`, `ScoreNumeral`, `RuledRadioGroup`, `OtpInput`, `FileDropZone`, `FileUploadRow`, `HoldToConfirmButton`, `DangerZone`, shadcn) |
 | `workout/` | Active workout — [workout/INDEX.md](workout/INDEX.md) |
 

@@ -40,6 +40,7 @@ npm run export-locales     # TS + packs → public/locales/
 
 | File | Namespace content |
 |------|-------------------|
+| `athleteLocales.ts` | Athlete Page (You) + Account split |
 | `welcomeLocales.ts` | I-Day / welcome flow |
 | `todayLocales.ts` | Today dashboard |
 | `coachLocales.ts` | Mission Coach |

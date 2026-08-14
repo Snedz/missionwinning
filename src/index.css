@@ -387,6 +387,47 @@
     border-left-color: var(--athlete-kit-rule, hsl(var(--primary)));
   }
 
+  /*
+   * Athlete Card live preview — token composition only (C6 spirit).
+   * Frame/backdrop ids map 1:1 from clamped cosmetics; never user CSS.
+   */
+  .athlete-card-preview {
+    @apply border-2 border-border bg-background p-4;
+  }
+  .athlete-card-preview--frame-hairline {
+    @apply border-border;
+  }
+  .athlete-card-preview--frame-rule {
+    border-color: hsl(var(--foreground));
+  }
+  .athlete-card-preview--frame-double-rule {
+    border-color: hsl(var(--foreground));
+  }
+  .athlete-card-preview--frame-poster {
+    @apply border-4;
+    border-color: hsl(var(--primary));
+  }
+  .athlete-card-preview--backdrop-paper {
+    @apply bg-background;
+  }
+  .athlete-card-preview--backdrop-grid {
+    background-image: repeating-linear-gradient(
+      to right,
+      hsl(var(--border)) 0 2px,
+      transparent 2px 28px
+    );
+  }
+  .athlete-card-preview--backdrop-rule-field {
+    background-image: repeating-linear-gradient(
+      to bottom,
+      transparent 0 20px,
+      hsl(var(--border)) 20px 22px
+    );
+  }
+  .athlete-card-preview--backdrop-poster-block {
+    background-color: hsl(var(--accent-tint));
+  }
+
   /* ── Marketing field textures (single-paint, mobile-cheap) ───────── */
 
   /* Flat paper — the gradient field is retired; rules and the grid organize. */
