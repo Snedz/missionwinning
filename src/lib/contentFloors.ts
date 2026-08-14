@@ -28,7 +28,7 @@ export const CONTENT_FLOORS = {
   moveFree: 32,
   movePremium: 56,
   mindFree: 32,
-  mindPremium: 60,
+  mindPremium: 68,
   recipesFree: 48,
   recipesPremium: 140,
   learnPremiumSections: 16,

@@ -105,7 +105,7 @@ Inspired by successful freemium + bundle models (notably Freeletics' Super Bundl
 - **/train (Core Training)**: Free robust tracker, active workout logger (RPE, rests, cues), basic library. Premium: Full AI-powered personal Coach (personalized plans, unlimited combinations, real-time adjustments, 30+ plans, hybrid options). Like Freeletics Coach — the "personal trainer in your pocket."
 - **/fuel (Nutrition)**: Free basic logging, targets, seeded accessible high-protein/global recipes (DASH/Med-inspired, common ingredients). Premium: Deep plans, advanced macros, special scenarios, coaching integration.
 - **/move (Mobility & Yoga)**: Free basic mobility cues and flows (bodyweight emphasis). Premium: Full Pliability-style (sports-specific, daily maintenance, athletic longevity) + Skill Yoga (functional for athletes, real-time feedback).
-- **/mind (Mindfulness & Recovery)**: Free basic habit tools and recovery prompts. Premium: Full Calm/Waking Up-style (guided meditations, sleep stories, stress tools, expert lessons on the "why," no fluff).
+- **/mind (Mindfulness & Recovery)**: Free basic habit tools and recovery prompts. Premium: skippable journal-style training questions (before a lift, after a miss, sleep, travel) — not a meditation library, not clinical care.
 - **/track (Activity & Progress)**: Free core logging and streaks. Premium: Advanced MapMyFitness-style (detailed run/walk/bike/hike tracking, stats, coaching, cross-pillar integration).
 - **/learn (Education & Mastery)**: Free intros, basics, and assessments. Premium: Full specialist programs (repurposed high-value content from ISSA-aligned materials — PT+Nutrition, Bodybuilding, Corrective, Strength Business, Coaching, Conditioning). "The right way" education as a pillar.
 

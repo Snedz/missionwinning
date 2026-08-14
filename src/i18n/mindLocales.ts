@@ -58,10 +58,11 @@ type MindStrings = {
 const en: MindStrings = {
   mindTitle: 'Mind & Recovery',
   mindSubtitle:
-    'Free breathing timer and daily check-in. Premium unlocks guided meditations and sleep tools (Super Bundle).',
+    'Free breathing timer and daily check-in. Super Bundle adds skippable training questions — not a meditation library.',
   mindRecentWins: 'Recent Mind Wins',
-  mindPremiumTitle: 'Premium — Calm / Waking Up depth',
-  mindPremiumDesc: 'Guided sessions, sleep stories, expert lessons on building resilience.',
+  mindPremiumTitle: 'Premium — training questions, not a spa library',
+  mindPremiumDesc:
+    'Short journal-style sessions for before a lift, after a miss, sleep, and travel. Pause or skip any step. No streak. Not therapy.',
   mindPremiumBtn: 'Mind & Recovery Premium',
   mindBreathingTitle: 'Breathing Timer',
   mindBreathingSubtitle: 'Free guided patterns — no audio required. {{count}} cycles.',
@@ -94,7 +95,7 @@ const en: MindStrings = {
   mindPremiumRetry: 'Try again',
   mindPreviewPlayer: 'Press play — timed cues walk you through each step',
   mindLockedHint:
-    'Free tier includes 10 guided sessions. Premium adds 17 deeper timed sessions — focus, recovery, race calm, and travel resets.',
+    'Free: {{free}} guided sessions. Super Bundle adds {{premium}} timed sessions you can skip — training questions, not a meditation library.',
   mindCollections: 'Collections',
   mindCollectionShowAll: 'Show all sessions',
   mindCollectionEmpty: 'No sessions in this collection.',
@@ -116,7 +117,8 @@ const en: MindStrings = {
 const es: MindStrings = {
   ...en,
   mindTitle: 'Mente y recuperación',
-  mindSubtitle: 'Temporizador de respiración y check-in diario gratis. Premium desbloquea meditaciones guiadas.',
+  mindSubtitle:
+    'Temporizador de respiración y check-in diario gratis. Super Bundle añade preguntas de entrenamiento que puedes saltar — no una biblioteca de meditación.',
   mindRecentWins: 'Victorias recientes de Mind',
 };
 

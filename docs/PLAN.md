@@ -4,65 +4,6 @@ Living roadmap for the **everything app** (Freeletics Super Bundle → one PWA).
 
 **Vision comparison:** [VISION_STATUS.md](VISION_STATUS.md) — pillar scorecard, gaps, priorities.
 
----
-
-## Frozen plan — `.719` logger supersets (2026-08-13)
-
-> **Frozen.** Implement only this section. Plan commit is `[skip vercel]`.
-> Label: `2026.07-unified.719` (occupied `.698`–`.718` — do not steal).
-> Draft PR, one Preview max. Excellence-Override: logger supersets.
-> Offline, no account. Set-log table stays first paint. No social. No XP.
-> Speech never owns this.
-
-### Investigate (done — do not invent a second group id)
-
-Existing grouping already lives on the free logger:
-
-| Layer | What exists |
-|-------|-------------|
-| Type | `ActiveExerciseLog.supersetGroup?: string` |
-| Lib | `src/lib/workout/superset.ts` — `getSupersetPeers`, `supersetLabel` (`SS A`/`SS B`), `advanceAfterLog` (peer at same set index), `shouldRestAfterLog` (skip rest mid-round) |
-| Store | `toggleSupersetWithNext` / `unlinkSuperset`; `logSetAndAdvance` already calls `advanceAfterLog`; `partialize` already persists `activeWorkout` |
-| Rest | `planLogSetRest` in `activeSessionFinish.ts` already gates on `shouldRestAfterLog` — **do not edit** `restTimer.ts` or that finish helper |
-| UI | Overflow “Superset w/ next” / “Unlink”; card badge `SS A`; poster-red left edge on the card |
-
-Hevy/Strong gap: athletes expect **A1/A2 pair marks**, **exactly two consecutive** exercises, **A then B then rest**, and **the set row stays** (one table — not a second Hevy-style card stack). Current `SS A` is the wrong mark; `toggle` can merge into 3+ giant sets; `unlink` clears only one exercise (orphan peer); no persist / log-order store tests; the set table itself does not show the pair.
-
-### Ship (only this)
-
-1. **Reuse `supersetGroup`.** Add pure helpers in `superset.ts` (no second id):
-   - `pairMark(exercises, exIdx)` → `A1`/`A2`/`B1`… — groups ordered by first index; slot 1 = earlier exercise, slot 2 = later. Replace `supersetLabel` output (keep the export as an alias of `pairMark` so existing callers stay).
-   - `pairWithNext(exercises, exIdx)` — pair **exactly two consecutive**. New shared id on those two only; any prior partner of either is cleared (no giant sets).
-   - `unpair(exercises, exIdx)` — clear `supersetGroup` on **all peers** of that group.
-2. **Store wiring only** (`workoutStore.ts`): `toggleSupersetWithNext` / `unlinkSuperset` call the pure helpers. `removeExerciseFromActive` unpairs the remaining peer so a delete cannot leave an orphan. Do not change `logSet` / `logSetAndAdvance` / rest timer / repeat-last / notes.
-3. **Table first paint.** Keep `SetLogTable` / `SetLogRow` as the set list. Surface the pair mark on the existing Set cell (`A1`/`A2` prefix + set number) and the existing header badge. `data-pair-mark` on the card/table for tests. Paper, ink, one red, Archivo, radius 0 — no new card chrome, no Hevy card clone, no second table.
-4. **Log order** stays A → B → rest via existing `advanceAfterLog` + `shouldRestAfterLog`. Lock it with tests; do not re-implement rest.
-5. **Persist** is the active session on device (`partialize.activeWorkout`). Pair survives JSON round-trip / store write. Do not add template/builder pairing, completed-log pairing, cloud schema, or account gates.
-6. **Speech never owns this.** Keep the overflow menuitem. Do not add voice / Ask / coach-chat ownership of pair/unpair.
-
-### Tests
-
-- `superset.test.ts`: pair persist (JSON round-trip keeps `supersetGroup`); `pairWithNext` is exactly two and does not merge giant sets; `unpair` clears both peers; `pairMark` is `A1`/`A2`; log order A then B; rest after B only.
-- `workoutStore.test.ts`: toggle writes a shared group; unlink clears both; `logSetAndAdvance` after pairing returns the peer at the same set index.
-- `check-build-label` `.719`. LOG + CONTEXT in the same implement commit.
-
-### Docs / ship protocol
-
-- `APP_BUILD_LABEL` → `2026.07-unified.719`
-- LOG heading `## 2026-08-13 — Supersets on the set log (\`.719\`)` + rotate oldest live entry
-- CONTEXT `## Now` one `.719` bullet; keep Status table; ≤25 bullets
-- Help: one line on first-workout set log (pair two consecutive, A then B then rest)
-- `src/lib/workout/INDEX.md` if the helper list changes
-
-### Hard bans
-
-- No `PRIVATE_MODE` / `FREE_BETA` / EIN / secrets
-- Do not steal `.698` #477 or `.699` #478
-- Do not edit rest timer, repeat-last, notes, vs-pages, field test, plate math, #506
-- No social. No XP. No speech ownership.
-
----
-
 ## Design north stars (UI + product)
 
 | Source | What we borrow |
@@ -73,68 +14,6 @@ Hevy/Strong gap: athletes expect **A1/A2 pair marks**, **exactly two consecutive
 | **Muscle & Fitness / Bodybuilding.com** | Exercise library depth, filters, programs, education tone |
 
 Mission Winning is **none of these** — one unified super app, free core forever, global PWA.
-
----
-
-## Freeze — Repeat last session from the log (`.717`) — 2026-08-13
-
-> **Frozen.** Implement only this block. Do not expand. Label `2026.07-unified.717`
-> (occupied `.698`–`.716`). Draft PR. One Preview max. `[skip vercel]` on the
-> plan commit only.
-
-Strong/Hevy migrants live on **repeat last session**. History already has
-“Train this again” (`templateFromCompletedLog`). Today and Train empty Start
-do not: Active empty seeds Just Go; Today primary builds Just Go / Coach.
-This ship is **one control** that copies the last completed session into the
-free logger — not a template marketplace.
-
-### Already in the tree (deepen; do not fork)
-
-| Primitive | Role | Do not |
-|-----------|------|--------|
-| `src/lib/workout/historyRetrain.ts` `templateFromCompletedLog` | Maps a finished log → startWorkout template (names, set counts, last loads/reps as **uncompleted** targets) | Rewrite the mapper |
-| History `retrainFromLog` / `historyTrainAgain` | Same primitive for a *picked* log | Add a session picker on Today/Train |
-| `getLastPerformanceForSet` / `resolveSetInput` lastPerformance + session carry | F-013 / #489 dial prefills (Prev column + next-set carry) | Rewrite `resolveSetInput` or #489 |
-| `resolveRepeatLastTarget` / `activeRepeatLast` | Mid-session **repeat last set** | Reuse that key or label for this session control |
-| `startWorkout` | Builds uncompleted sets from the template; rest stays off | Call `startRestTimer` on start |
-
-### Behavior (one primary)
-
-**Last repeatable session** = newest `workoutHistory` entry (array is newest-first) where `templateFromCompletedLog` returns non-null (skips `deletedAt`, empty exercises, no `exerciseId`). Pure helper `repeatLastSessionTemplate(history)` in `src/lib/workout/repeatLastSession.ts` — wraps the existing mapper, does not copy its loop.
-
-1. **Resume** an in-progress session still wins (unchanged).
-2. **Train empty (`/active`):** if a last session exists → `startWorkout(template)` (not `prescribed`). Else → `startEmptyWorkout()` (existing empty logger). **Stop seeding Just Go / Coach from Active empty.** Train is the logger; Coach stays on `/coach` and on Today when a live plan exists.
-3. **Today (`/log`) one primary, in order:** resume → **live Coach session** (existing honesty: Start names the plan; do not steal this) → **repeat last session** → existing Just Go / journey seed / href. Repeat-last does **not** apply re-entry `doseScale` (copy last as-is). Do not auto-start Coach on the repeat-last branch.
-4. **Prefills:** template targets are last loads/reps. Compose with existing `getLastPerformanceForSet` / `resolveSetInput` (manual > session carry > last performance > template default). Do not auto-progress via `suggestNextSetTarget` at start.
-5. **Empty history:** existing empty logger. Shame-free — no missed / skipped / streak-loss / “get back” copy. Button stays **Start workout**.
-6. **Copy when last exists:** **Repeat last session** (new keys). Description: same exercises and last loads, log when ready. Do not reuse `activeRepeatLast` (“Repeat last set”).
-7. **Hard no:** auto-start rest; auto-start Coach on this control; social share; speech/voice owning the flow; second button / template list; gating the free logger; account/network required (local `workoutHistory` only). Set-log table remains first paint when exercises are copied.
-
-### Files (expected)
-
-- `src/lib/workout/repeatLastSession.ts` + colocated test
-- Slim `resolveActiveEmptyStart` to last-session or empty (drop Just Go/coach/dose from this path)
-- `ActiveWorkoutPage` empty start + `ActiveEmptyState` label
-- `runTodayPrimaryAction` + `justGoHeroMeta` source `repeat_last` (hero and tap must agree)
-- i18n: `activeRepeatLastSession` / `todayRepeatLastCta` (+ title/desc/kicker) in `activeWorkoutLocales` + `todayLocales`; `npm run i18n:fill` if packs require
-- Help: one sentence in `docs/help/getting-started.md`
-- INDEX: `src/lib/workout/INDEX.md` (+ Active empty row if props change)
-- Analytics: reuse `history_train_again` with `from: 'today' | 'active_empty'`
-- Ship protocol: `APP_BUILD_LABEL` `.717`, LOG (rotate oldest to stay ≤15), CONTEXT `## Now`, trailer `Excellence-Override: repeat last session`
-
-### Tests
-
-- Last-session copy: exercises, name, last loads/reps as uncompleted targets; newest-first; skip tombstone/empty
-- Empty-history path: helper null; Active empty still `startEmptyWorkout`; no guilt phrases in empty copy
-- Wiring: Active empty + Today primary call the helper; Active empty no longer `buildJustGoSession`
-- No rest on start (source scan: empty-start path does not call `startRestTimer`)
-- Copied session is not `prescribed`
-- `resolveSetInput` order untouched (do not edit that function)
-- `node scripts/check-build-label.mjs` for `.717`
-
-### Out of scope (hard bans)
-
-`PRIVATE_MODE` / `FREE_BETA` / Top 8 / EIN / field test / plate math / Super Bundle shop / public GitHub #506 / Learn vs-pages / stealing `.698`–`.716` / rewriting #489 / Builder marketplace / speech.
 
 ---
 
@@ -245,7 +124,7 @@ Aligns revenue with [vision.md](../vision.md) without gating free core.
 | **I2** | AI Coach v1 — plan generator, premium-gated Train Coach | ✅ Engine + taster + regen; polish remaining | “Personal trainer in pocket” |
 | **I2b** | Fuel Coach — adaptive meal plans synced to macros / training | ✅ Premium-gated (`src/lib/fuelCoach/`) | Fuel depth |
 | **I3** | Track GPS premium MVP — live recording, pace chart, weekly stats | ✅ Shipped | Track |
-| **I3b** | Mind / Move premium depth beyond unlock cards | ✅ 60 Mind + 56 Move premium sessions | Bundle proof |
+| **I3b** | Mind / Move premium depth beyond unlock cards | ✅ 68 Mind + 48 Move premium sessions | Bundle proof |
 | **I3c** | Learn premium specialist chapters | ✅ 4 courses / 16 sections + course fix | Bundle proof |
 | **I4** | i18n G2 — Today/Fuel/Active/Welcome body for Tier 1 + AR RTL | 🟡 es + **fr** shipped; **de** next (one locale at a time) | Global equity |
 | **I5** | Cross-pillar recommendation depth (coach → multi-pillar CTAs) | ✅ Victory/guided/course CTAs + Learn in single insight | 1+1+1 > sum |

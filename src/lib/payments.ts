@@ -74,7 +74,7 @@ export const BUNDLE_PILLARS = [
     id: 'mind',
     name: 'Mind',
     free: `Breathing timer + ${CONTENT_FLOORS.mindFree} guided sessions`,
-    premium: `${CONTENT_FLOORS.mindPremium} premium guided sessions — timed player with pause/skip`,
+    premium: `${CONTENT_FLOORS.mindPremium} timed sessions — pause/skip; journal prompts, not a meditation library`,
     standalone: '$7/mo',
     route: '/mind',
   },

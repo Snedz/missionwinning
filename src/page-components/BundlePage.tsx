@@ -1,6 +1,7 @@
 /**
- * Page: /bundle — Super Bundle shop (Free vs one paid SKU).
- * See: docs/SUPER_BUNDLE_SHOP_PLAN.md, app/INDEX.md, src/page-components/INDEX.md
+ * Page: /bundle — Super Bundle checkout
+ * See: app/INDEX.md, src/page-components/INDEX.md
+ * D4 beta composure: thin hero → one story → one offer → quiet compare.
  */
 "use client";
 
@@ -15,11 +16,14 @@ import {
   Check,
   Loader2,
   Sparkles,
+  Trophy,
 } from "lucide-react";
-import { Card, CardContent } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { PillarPageHeader } from "@/components/layout/PillarPageHeader";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { UnlockButton } from "@/components/UnlockButton";
 import dynamic from "next/dynamic";
 import { isSurfaceEnabled } from "@/lib/surface";
 import { MarketingNav } from "@/components/marketing/MarketingNav";
@@ -31,19 +35,28 @@ import {
   DEFAULT_BUNDLE_PLAN,
   PILLAR_STANDALONE_PRICES,
   bundleSavingsPercent,
+  getStripeCheckoutUrl,
   type BundlePlanId,
 } from "@/lib/bundleConfig";
 import { BUNDLE_PILLAR_I18N } from "@/i18n/bundleLocales";
-import { BundleShopStack } from "@/components/bundle/BundleShopStack";
-import { bundleShopCta } from "@/lib/bundleShop";
-import { isFreeBeta } from "@/lib/freeBeta";
-import {
-  getStripeCheckoutUrl,
-  isCheckoutSessionsEnabled,
-  isPaidCheckoutAllowed,
-} from "@/lib/payments";
+import { cn } from "@/lib/utils";
 
-// `dynamic()`, not a static import — @phantom/react-sdk is 508K gzipped.
+function planBadgeLabel(
+  badge: "popular" | "bestValue" | "limited" | undefined,
+  t: (key: string) => string
+): string | null {
+  if (badge === "popular") return t("bundleBadgePopular");
+  if (badge === "bestValue") return t("bundleBadgeBestValue");
+  if (badge === "limited") return t("bundleBadgeLimited");
+  return null;
+}
+
+// `dynamic()`, not a static import — @phantom/react-sdk is 508K gzipped and carries
+// 19 of the repo's Dependabot alerts. A static import ships all of it to every
+// /bundle visitor whether or not the crypto rail is even enabled; the surface check
+// below means a parked `cryptoRails` costs zero bytes. This page 307s to /log while
+// FREE_BETA is on, so the static version was latent — armed to land in the client
+// bundle the moment payments flip on, which is precisely the wrong moment.
 const PhantomLifetimeCheckout = dynamic(
   () =>
     import("@/components/crypto/PhantomLifetimeCheckout").then(
@@ -61,15 +74,8 @@ export function BundlePage() {
   const [unlockTimedOut, setUnlockTimedOut] = useState(false);
   const unlockedToastSent = useRef(false);
   const plan = BUNDLE_PLANS[planId];
+  const stripeUrl = getStripeCheckoutUrl("super-bundle");
   const vsSeparateSavings = bundleSavingsPercent();
-  const checkoutConfigured =
-    isCheckoutSessionsEnabled() ||
-    Boolean(getStripeCheckoutUrl(`bundle-${planId}`) || getStripeCheckoutUrl("super-bundle"));
-  const cta = bundleShopCta({
-    freeBeta: isFreeBeta(),
-    checkoutConfigured,
-    purchased: premium && !isFreeBeta(),
-  });
 
   useEffect(() => {
     track('bundle_viewed');
@@ -110,10 +116,25 @@ export function BundlePage() {
     }
   }, [checkoutSuccess, premium, premiumLoading, t, toast]);
 
+  const planTabLabel =
+    planId === "monthly"
+      ? t("bundleTabMonthly", { defaultValue: t("bundleTab3mo", { defaultValue: "Monthly" }) })
+      : planId === "12mo"
+        ? t("bundleTab12mo")
+        : t("bundleTabLifetime");
+
+  const billingLineFor = (id: BundlePlanId, price: string) =>
+    id === "lifetime"
+      ? t("bundleBilledOnce", { price })
+      : id === "monthly"
+        ? t("bundleBilledMonthly", { price, defaultValue: `$${price} billed monthly` })
+        : t("bundleBilledTotal", { price });
+
   return (
     <div className="min-h-screen bg-background text-foreground">
       <MarketingNav variant="compact" />
 
+      {/* Thin hero */}
       <div className="hero-field section-seam relative">
         <div className="relative z-[1] mx-auto max-w-4xl space-y-3 px-5 pb-10 pt-10">
           <Badge className="w-fit border-border bg-muted text-accent-900 hover:bg-muted">
@@ -136,7 +157,7 @@ export function BundlePage() {
 
       <div className="mx-auto max-w-4xl space-y-10 px-5 pb-12 pt-8">
         {checkoutSuccess && (
-          <Card className="rounded-none border-primary/40 bg-primary/10">
+          <Card className="border-primary/40 bg-primary/10">
             <CardContent className="space-y-3 pt-6">
               {premium ? (
                 <p className="text-sm font-semibold text-primary">
@@ -182,12 +203,194 @@ export function BundlePage() {
           </Card>
         )}
 
-        <BundleShopStack planId={planId} onPlanId={setPlanId} cta={cta} />
+        {/* One pillar story — prose only, no tile grid */}
+        <section className="space-y-2">
+          <p className="eyebrow">{t('bundleStoryEyebrow', { defaultValue: 'One path' })}</p>
+          <h2 className="display-section">
+            {t('bundleStoryTitle', { defaultValue: 'Mission Coach depth. Same free logger.' })}
+          </h2>
+          <p className="max-w-xl text-sm text-muted-foreground">
+            {t('bundleStoryBody', {
+              defaultValue:
+                'Bundle deepens Coach and the other pillars when you want more. The free offline logger stays free forever — never gated.',
+            })}
+          </p>
+          <p className="text-xs text-muted-foreground">
+            {t('bundleStoryProof', {
+              defaultValue: 'Product proof: Today briefing · Just Go · rest · PRs — free forever.',
+            })}
+          </p>
+        </section>
 
-        {planId === 'lifetime' && isPaidCheckoutAllowed() && isSurfaceEnabled('cryptoRails') && (
-          <PhantomLifetimeCheckout className="w-full" />
-        )}
+        {/* One offer card */}
+        <Tabs
+          value={planId}
+          onValueChange={(v) => setPlanId(v as BundlePlanId)}
+          className="w-full"
+        >
+          <TabsList className="grid h-auto w-full grid-cols-3 gap-2 bg-transparent p-0">
+            {(["monthly", "12mo", "lifetime"] as const).map((id) => {
+              const p = BUNDLE_PLANS[id];
+              const label =
+                id === "monthly"
+                  ? t("bundleTabMonthly", {
+                      defaultValue: t("bundleTab3mo", { defaultValue: "Monthly" }),
+                    })
+                  : id === "12mo"
+                    ? t("bundleTab12mo")
+                    : t("bundleTabLifetime");
+              const badgeText = planBadgeLabel(p.badge, t);
+              return (
+                <TabsTrigger
+                  key={id}
+                  value={id}
+                  className={cn(
+                    "flex h-auto flex-col items-start gap-0.5 border-2 border-border bg-card px-3 py-3 text-left data-[state=active]:border-primary data-[state=active]:bg-tint"
+                  )}
+                >
+                  <span className="text-xs font-semibold sm:text-sm">{label}</span>
+                  <span className="font-display text-lg font-semibold tabular-nums leading-none">
+                    ${p.price}
+                  </span>
+                  {p.perMonth ? (
+                    <span className="text-[10px] tabular-nums text-muted-foreground">
+                      ${p.perMonth}/mo
+                    </span>
+                  ) : (
+                    <span className="text-[10px] text-muted-foreground">once</span>
+                  )}
+                  {badgeText ? (
+                    <span className="mt-1 text-[9px] uppercase tracking-wider text-primary">
+                      {badgeText}
+                    </span>
+                  ) : null}
+                </TabsTrigger>
+              );
+            })}
+          </TabsList>
 
+          {(["monthly", "12mo", "lifetime"] as const).map((id) => {
+            const p = BUNDLE_PLANS[id];
+            const badgeText = planBadgeLabel(p.badge, t);
+            return (
+              <TabsContent key={id} value={id} className="mt-4">
+                <Card className="card-boss overflow-hidden">
+                  <CardHeader className="pb-2">
+                    <div className="flex flex-wrap items-start justify-between gap-4">
+                      <div className="space-y-1">
+                        <CardTitle className="flex items-center gap-2 text-xl sm:text-2xl">
+                          <Sparkles className="h-5 w-5 shrink-0 text-primary" />
+                          {t("bundleHeroTitle")}
+                        </CardTitle>
+                        <p className="text-sm text-muted-foreground">{t("bundleHeroSubtitle")}</p>
+                      </div>
+                      <div className="flex flex-wrap gap-2">
+                        {badgeText && (
+                          <Badge className="bg-primary-fill text-primary-foreground">{badgeText}</Badge>
+                        )}
+                        {p.savingsPercent > 0 && (
+                          <Badge variant="outline" className="border-primary/50 text-primary">
+                            {t("bundleSavePercent", { percent: p.savingsPercent })}
+                          </Badge>
+                        )}
+                      </div>
+                    </div>
+                  </CardHeader>
+                  <CardContent className="space-y-6">
+                    <div className="flex flex-wrap items-end gap-3">
+                      <span className="text-lg tabular-nums text-muted-foreground line-through">
+                        ${p.strikePrice}
+                      </span>
+                      <span className="display-mega text-primary">${p.price}</span>
+                      {p.perMonth && (
+                        <span className="pb-1 text-sm text-muted-foreground">
+                          {t("bundlePerMonth", { price: p.perMonth })}
+                        </span>
+                      )}
+                    </div>
+                    <p className="text-sm text-muted-foreground">{billingLineFor(id, p.price)}</p>
+
+                    {vsSeparateSavings > 0 && (
+                      <p className="text-sm font-semibold text-primary">
+                        {t("bundleVsSeparate", { percent: vsSeparateSavings })}
+                      </p>
+                    )}
+
+                    <p className="flex items-center gap-1.5 text-xs text-muted-foreground">
+                      <Trophy className="h-3.5 w-3.5 shrink-0 text-accent-900" />
+                      {t("bundleWinScoreNote")}
+                    </p>
+
+                    <ul className="space-y-2">
+                      <li className="flex items-start gap-2 text-sm">
+                        <Check className="mt-0.5 h-4 w-4 shrink-0 text-primary" />
+                        <span>
+                          <strong>{t('bundlePillarTrain', { defaultValue: 'Train' })}</strong>
+                          {' — '}
+                          {t('bundlePillarTrainPremium', {
+                            defaultValue: 'Mission Coach weekly plans + adapt depth',
+                          })}
+                        </span>
+                      </li>
+                      <li className="flex items-start gap-2 text-sm">
+                        <Check className="mt-0.5 h-4 w-4 shrink-0 text-primary" />
+                        <span>
+                          {t('bundleProofNearCta', {
+                            defaultValue:
+                              'Deeper Fuel, Move, Mind, Track, and Learn — one subscription, logger never gated.',
+                          })}
+                        </span>
+                      </li>
+                    </ul>
+
+                    <p className="mb-3 text-center text-[11px] text-muted-foreground">
+                      {t('bundlePayMethods', {
+                        defaultValue: 'Card · Apple Pay · Google Pay · PayPal · USDC',
+                      })}
+                    </p>
+                    {id === 'lifetime' && (
+                      <p className="mb-3 text-center text-xs text-primary">
+                        {t('bundleUsdcNote', {
+                          defaultValue:
+                            'Prefer wallet USDC? Pay with Phantom below (no Stripe) — or use USDC inside Stripe Checkout when enabled.',
+                        })}
+                      </p>
+                    )}
+                    <UnlockButton
+                      isSubscription={p.isSubscription}
+                      productId="super-bundle"
+                      planId={id}
+                      price={p.perMonth ?? p.price}
+                      stripeCheckoutUrl={getStripeCheckoutUrl(`bundle-${id}`) ?? stripeUrl}
+                      label={
+                        id === 'lifetime'
+                          ? t('bundleUnlockLifetimeCta', {
+                              defaultValue: 'Unlock lifetime — card or USDC',
+                            })
+                          : t('bundleUnlockCta')
+                      }
+                      className="w-full"
+                    />
+                    {id === 'lifetime' && isSurfaceEnabled('cryptoRails') && (
+                      <PhantomLifetimeCheckout className="mt-3 w-full" />
+                    )}
+                    <p className="mt-3 text-center text-xs text-muted-foreground">
+                      {t('bundleRefundNote', {
+                        defaultValue: '14-day money-back on first paid charge — see',
+                      })}{' '}
+                      <Link href="/refunds" className="text-primary hover:underline">
+                        {t('infoRefundsTitle', { defaultValue: 'Refunds' })}
+                      </Link>
+                      .
+                    </p>
+                  </CardContent>
+                </Card>
+              </TabsContent>
+            );
+          })}
+        </Tabs>
+
+        {/* Quiet compare — below fold, one table */}
         <details className="group">
           <summary className="cursor-pointer list-none text-sm font-semibold text-muted-foreground marker:content-none hover:text-foreground">
             <span className="flex items-center justify-between gap-4">
@@ -210,20 +413,24 @@ export function BundlePage() {
               <tbody>
                 {BUNDLE_PILLARS.map((pillar) => {
                   const keys = BUNDLE_PILLAR_I18N[pillar.id];
-                  const fuelCount =
-                    pillar.id === "fuel"
-                      ? { count: CONTENT_FLOORS.recipesPremium }
-                      : undefined;
+                  const premiumCopy = keys
+                    ? t(keys.premiumKey, {
+                        ...(pillar.id === "mind"
+                          ? { count: CONTENT_FLOORS.mindPremium }
+                          : {}),
+                        defaultValue: pillar.premium,
+                      })
+                    : pillar.premium;
                   return (
                     <tr key={pillar.id} className="border-b border-border last:border-0">
                       <td className="p-3">
                         <p className="font-semibold">{keys ? t(keys.nameKey) : pillar.name}</p>
                         <p className="text-xs text-muted-foreground sm:hidden">
-                          {keys ? t(keys.premiumKey, fuelCount) : pillar.premium}
+                          {premiumCopy}
                         </p>
                       </td>
                       <td className="hidden p-3 text-muted-foreground sm:table-cell">
-                        {keys ? t(keys.premiumKey, fuelCount) : pillar.premium}
+                        {premiumCopy}
                       </td>
                       <td className="p-3 text-end tabular-nums">
                         ${PILLAR_STANDALONE_PRICES[pillar.id] ?? "—"}
@@ -243,11 +450,7 @@ export function BundlePage() {
                       <>
                         ${plan.perMonth}
                         <span className="block text-xs font-normal text-muted-foreground">
-                          {planId === "monthly"
-                            ? t("bundleTabMonthly", { defaultValue: "Monthly" })
-                            : planId === "12mo"
-                              ? t("bundleTab12mo")
-                              : t("bundleTabLifetime")}
+                          ({planTabLabel})
                         </span>
                       </>
                     ) : (
@@ -261,18 +464,7 @@ export function BundlePage() {
               </tbody>
             </table>
           </div>
-          <p className="mt-3 text-xs text-muted-foreground">
-            {t("bundleCompareFoot")}
-            {vsSeparateSavings > 0
-              ? ` ${t("bundleVsSeparate", { percent: vsSeparateSavings })}`
-              : ""}
-          </p>
-          <p className="mt-2 text-xs text-muted-foreground">
-            {t('bundleShopIllustrative', {
-              defaultValue:
-                'Standalone $ figures are an illustrative vs-stack — not for sale separately. Super Bundle is the only paid SKU.',
-            })}
-          </p>
+          <p className="mt-3 text-xs text-muted-foreground">{t("bundleCompareFoot")}</p>
         </details>
 
         <p className="text-sm text-muted-foreground">

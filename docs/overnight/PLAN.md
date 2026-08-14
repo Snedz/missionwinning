@@ -1,163 +1,145 @@
-# Frozen plan — Free plate math + warmup (logger)
+# Overnight freeze — Super Bundle Mind premium (journal sessions)
 
-**Status:** FROZEN. Implement only this file.  
-**Ship:** `2026.07-unified.764`  
-**Excellence-Override:** free plate math + warmup (logger)  
-**Lane:** Engineering-Web · Horizon W · Train logger (`/active`)  
-**Free forever.** Not Super Bundle bait. No trial. No `PRIVATE_MODE` flip.
+**Status:** FROZEN (product scope). **Retag:** `.698` vacated — reserved for #477 gated www honesty; #500 Athlete Page took `.706`. This ship is `2026.07-unified.707`. Avoid `.698` `.699` `.700` `.705`. Sessions + floors unchanged.
 
-Overnight brief: Strong-class garage utility **on the set row**. Do not invent a new tab. Do not collide with F-013 smart defaults (#489) or E-Adjacency (#487) — those PRs exist on the same master tip; **extend or skip**, do not rewrite their cells or dial order.
+Implement only this document. Do not add tabs, audio, trials, locale farms, Android, or a meditation-library expansion.
 
----
+**Override:** `Excellence-Override: Super Bundle Mind premium (content)`  
+Horizon W RESULT is unscored; `/mind` and `src/lib/mind` are surface. Trailer required on the ship commit and draft PR body.
 
-## Problem
-
-A train-anywhere athlete loading a bar needs two answers without leaving the live set:
-
-1. **Which plates per side?**
-2. **What warmup loads before the work?**
-
-What master already has (do not rebuild):
-
-| Already shipped | Where | Gap |
-|-----------------|-------|-----|
-| Greedy plate math | `src/lib/plateCalculator.ts` | Used by header **Plates** sheet + `/calculators` tab, **not the set row** |
-| Warmup as a set kind | `setKind.ts` · LogConsole Kind expand · desktop footer chips | Buried behind Kind (F-003 collapsed it). No Strong-style ramp. Set column always shows 1, 2, 3 |
-| Session header Plates | `ActiveSessionChrome` | Keep. Not a substitute for seeing plates on the load |
-
-`/calculators` already has a Plates tab — **do not add another**.
+**INTEL_HEALTH_SEQUENCE:** not in this product git (ops / `.hermes` are LOCAL). Locked reading: **journal/question steps beat a Calm-style meditation library.** Do not invent a clinical protocol or a new series tab.
 
 ---
 
-## Set-row grammar (what ships)
+## Honest inventory (measured 2026-08-13 on `master` @ `.697`)
 
-Live barbell row (compact `SetLogRow` + desktop `SetLogTable` + compact `LogConsole`):
+| Catalog | Count | Floor (`CONTENT_FLOORS`) | What athletes can still be told |
+|---------|------:|-------------------------:|----------------------------------|
+| Free guided (`GUIDED_MIND_SESSIONS`) | **32** | `mindFree: 32` | Honest on `/mind` counted headings |
+| Premium guided (`PREMIUM_MIND_SESSIONS`) | **60** unique ids | `mindPremium: 60` | **Lies:** locked preview `10` + `17`; bundle i18n `10` + `22`; `docs/PLAN.md` I3b `17` Mind |
+| Move premium | 48 | 48 | Out of scope (do not “fix” Move this ship) |
 
-```
-W     PREVIOUS          40 kg
-      8 × 40            10 + 5 / side
+`payments.ts` `BUNDLE_PILLARS` already interpolates `CONTENT_FLOORS`. **`BundlePage` ignores those strings** and renders `t('bundlePillarMindPremium')` → **"22 guided sessions"**. Same class of defect `.606` fixed in `payments.ts`.
 
-1     PREVIOUS          100 kg
-      8 × 100           25 + 10 + 5 / side     [Log set]
-```
-
-- **W** in the set column for warmup; working sets numbered **1..n skipping warmups** (Strong).
-- **Plate line** under the load when the exercise is bar-loaded and weight > bar: compact `25 + 10 + 5 / side` from existing `calculatePlatesPerSide` + `formatPlateList`. Honest empty (no line) for BW / dumbbell / cable / machine / weight ≤ bar.
-- **Prev cell is untouchable** — E-Adjacency (#487) stacks Target above PREVIOUS there. Plates never go in Prev.
-- **Log set stays the sole poster-red primary** (F-003 / `.694`). Plate line is muted ink, not a second primary.
+`MindLockedPreview` (hidden while `FREE_BETA`) still merchandises **Calm / Waking Up** and **sleep stories**, with **10 / 17**.
 
 ---
 
-## A. Plate math on the live set
+## Goal
 
-**Pure** (extend `plateCalculator.ts`, do not fork):
+Ship **original MW** Super Bundle Mind depth that is:
 
-- `isBarLoadedEquipment(equipment?: string)` — true for `Barbell` and `Trap Bar` only (catalog `equipment` field, case-insensitive). Do not guess from the exercise name.
-- `setRowPlateLine({ equipment, weight, units })` → `string | null`  
-  null when not bar-loaded, weight ≤ `defaultBarWeight`, or no plates.  
-  Otherwise `formatPlateList(perSide, '')` so the row can append `/ side`.
+1. **Journal/question style** — timed steps the athlete *answers*, not a body-scan / box-breath library clone.
+2. **Skippable** — reuse `GuidedStepPlayer` Skip (already wired). No “don’t skip” copy.
+3. **No streak guilt** — missed days are data; no streak, freeze, or “don’t break the chain.”
+4. **No Calm clone** — no competitor names, no sleep stories, no spa library pitch.
+5. **Not clinical** — no diagnosis, therapy, SSRI, disorder, crisis care. Training questions only. [docs/EXERCISE_AS_MEDICINE.md](../EXERCISE_AS_MEDICINE.md) boundary.
+6. **Not a new tab** — stay on `/mind`. Do **not** add a collection chip, series rail, route, or nav item. Existing `MIND_COLLECTIONS` length stays **8**.
+7. **Honest counts** — floors, constants, preview, bundle Mind row, and `docs/PLAN.md` I3b all state the **new** premium count.
 
-**UI (live set only — same “only the live row” rule as E-Adjacency):**
-
-| Surface | What |
-|---------|------|
-| Compact `SetLogRow` (`isNext`) | Muted plate hint under the metric (`data-testid="set-row-plates"`). **Not** a 44px competing CTA — header Plates stays the 44px sheet opener. |
-| Compact `LogConsole` | Same line under the weight stepper (`data-testid="log-console-plates"`). Tappable ≥44px ink control → existing `PlateCalculatorSheet` (bar / remainder / Apply). |
-| Desktop `SetLogTable` active weight cell | Same line under the input (`data-testid="set-table-plates"`). Tappable → same sheet. |
-| Completed / idle rows | No plate line (F-003 density). |
-
-Keep `ActiveSessionChrome` Plates + `PlateCalculatorSheet` + `/calculators` as they are.
-
-Live compact row uses **dial weight** (parent passes it) so the hint tracks the console, not the stale template.
-
-**Free:** these modules must not import premium / Bundle / trial. Guard discovers the new files rather than enumerating a closed list.
+No trial. No `PRIVATE_MODE` flip. Draft PR. At most one preview (the PR’s).
 
 ---
 
-## B. Warmup on the set row
+## What we will add
 
-**Pure** `src/lib/workout/warmupRamp.ts` (new, colocated test):
+**+8 premium sessions** in `src/data/premiumMindSessions.ts`.
 
-Ramp of **three** steps off the **working** load, garage olympic defaults:
+| After this ship | Value |
+|-----------------|------:|
+| Premium ids / `PREMIUM_MIND_SESSION_COUNT` / `CONTENT_FLOORS.mindPremium` | **68** |
+| Free (unchanged) | **32** |
+| Unlocked total under free-beta | **100** |
 
-| % of work | Reps |
-|-----------|------|
-| 40% | 8 |
-| 60% | 5 |
-| 80% | 3 |
+### Session ids (frozen)
 
-Each step: `roundToStep` with `weightStep(units)`, then skip if `≤ bar` or `≥ work` or duplicate of another step. Empty result → do not insert.
+All ids unique vs the existing 60. Tag with **existing** collection tags only (plus `journal` for tests — `journal` is **not** a collection id).
 
-Working load (first hit wins):
+| id | Collection tags | Minutes | Job |
+|----|-----------------|--------:|-----|
+| `journal-session-size` | `pre-lift`, `focus` | 5 | Smallest session you will actually finish today |
+| `journal-missed-day` | `stress`, `recovery` | 5 | What got in the way; next physical action — no shame |
+| `journal-sleep-data` | `sleep` | 5 | Last night as data, not a morality score |
+| `journal-after-heavy` | `post-train`, `recovery` | 6 | Where the work sits; sharp vs tired |
+| `journal-travel-plan-b` | `travel`, `focus` | 4 | Hotel gym, floor, or walk — start in 10 minutes |
+| `journal-feed-vs-program` | `focus`, `anxiety` | 5 | Their highlight vs your next set |
+| `journal-one-cue` | `pre-lift`, `focus` | 4 | Keep one cue; drop one |
+| `journal-week-close` | `recovery`, `focus` | 6 | Sessions completed; one adjustment; no streak trophy |
 
-1. Live dial when the live set is a **working** set and weight > 0
-2. First incomplete working set’s planned weight > 0
-3. Last completed **working** set
-4. Else null → hide **Add warmups**
+### Step rules (every new session)
 
-`insertWarmupSets(sets, ramp)` inserts the ramp immediately before the first incomplete set. **Idempotent:** if incomplete warmup weights already match the ramp in order, return sets unchanged.
+- ≥4 steps; `minutes` 4–6; step durations sum within ~±30s of `minutes * 60`.
+- **≥2 steps contain `?`** (the journal test).
+- At most one settle-breath step; the rest are questions or a single commit line.
+- Original MW athlete voice (train-anywhere, logs, Coach week). No spa, no “inner peace,” no namaste, no chakras.
+- Forbidden substrings in new bodies: `streak`, `Calm`, `Headspace`, `Waking Up`, `sleep stor`, `diagnos`, `depress`, `therap`, `SSRI`, `PTSD`, `disorder`, `suicid`, `clinical`.
+- No “do not skip” / “must finish.” Skip is allowed.
+- Unique `id`; unique `title` (existing catalog already duplicates “After a bad session” — do not add a third).
 
-`setRowOrdinal(sets, idx)` → `{ warmup: true, label: 'W' }` or `{ warmup: false, label: '1'.. }` counting only non-warmup sets up to idx.
-
-**UI:**
-
-- Set column shows `setRowOrdinal` label on every row (`SetLogRow` + `SetLogTable`).
-- Live set number is a ≥44px **Work ↔ Warmup** toggle (`data-testid="set-row-warmup-toggle"` / `set-table-warmup-toggle`). Does **not** reopen the four-kind strip (F-003). Failure / drop stay behind Kind.
-- Exercise footer, next to **Add Set**: outline **Add warmups** (`data-testid="active-add-warmups"`) when bar-loaded **and** a working load exists **and** the ramp is not already present. One tap inserts. Hidden when already present (idempotent).
-
-**Carry (compose with F-013, do not rewrite dial order):**
-
-`priorCompletedInExercise` must skip `kind === 'warmup'` so logging a warmup cannot prefill the next **work** set with 40/60/80%. Do **not** change `resolveSetInput`’s prescribed-vs-carry-vs-suggestion order — that is F-013’s (#489) cell. Skipping warmup in the existing helper is the extend; F-013 rebase keeps the skip if it still calls this function.
-
----
-
-## C. Collisions — skip / extend
-
-| PR | Owns | This ship |
-|----|------|-----------|
-| #487 E-Adjacency | Target stacked **above PREVIOUS** in the Prev cell | **Do not** rewrite `SetLogTable` Prev `<td>` / `SetLogRow` prev span. No Target/cite work. |
-| #489 F-013 | `resolveSetInput` / `resolveActiveSetDial` session carry beats prescription on the **next** set; `log-console-reps` / `log-console-weight` | **Do not** reorder `resolveSetInput`. **Do not** add those testids (theirs). Skip warmup inside `priorCompletedInExercise` only. |
-| #477 `.698` · #478 `.699` · #494/492 `.704` | Build labels | Label **`.705`**. Do not steal `.698`–`.704`. |
-
-No restyle of Today/Train chrome. No N1 www. No `#485`. No new nav item. No Android this ship.
+Reuse `GuidedMindSession` shape. **No schema change.** Server-only file stays `import 'server-only'`.
 
 ---
 
-## Out of scope (hard)
+## Copy + count honesty (same ship)
 
-- Custom plate inventory / bumper vs iron / collar / ez-bar picker (sheet bar field already exists)
-- Auto-insert warmups without a tap
-- Numbering W1/W2 (all warmups are **W**)
-- Gating behind account, trial, or Super Bundle
-- `/calculators` tab changes
-- Freshness selection, account-lite F-017, Victory, Coach plan engine
+### Must change
+
+| File | Change |
+|------|--------|
+| `src/data/premiumMindSessions.ts` | Append the 8 sessions |
+| `src/data/premiumInventory.ts` | `PREMIUM_MIND_SESSION_COUNT = 68` |
+| `src/lib/contentFloors.ts` | `mindPremium: 68` |
+| `src/i18n/mindLocales.ts` | Drop Calm / Waking Up / sleep stories / guided-meditation pitch. `mindLockedHint` interpolates `{{free}}` + `{{premium}}` (no literal 10/17). |
+| `src/components/mind/MindLockedPreview.tsx` | Pass `getContentInventory()` into `mindLockedHint`; defaultValues match EN pack. Demo steps become question-shaped, not box-breath. |
+| `src/i18n/bundleLocales.ts` | `bundlePillarMindFree` / `bundlePillarMindPremium` use `{{count}}` (no literal 10/22). |
+| `src/page-components/BundlePage.tsx` | Mind row: `t(freeKey/premiumKey, { count: CONTENT_FLOORS.mindFree\|mindPremium, defaultValue: pillar.free\|premium })`. Other pillars unchanged. |
+| `src/lib/payments.ts` | Mind premium blurb may mention skip + journal prompts; **still interpolate** `CONTENT_FLOORS` (no new hand-typed digits). |
+| Pack overlays that still say Calm / sleep stories / `10`+`22` for those Mind keys | Replace with the new EN (mind is not a beachhead CORE_NS). |
+| `public/locales/**/mind.json` | `npm run export-locales` so HTTP overlays are not a second Calm clone. |
+| `docs/PLAN.md` I3b | `17 Mind + 11 Move` → **68 Mind + 48 Move** (honest floors). |
+| `docs/help/pillars.md` Mind | One sentence: skippable journal-style sessions, not a meditation app. |
+| `vision.md` Mind pillar bullet | Surgical: premium is skippable training questions / recovery prompts — **not** “Full Calm/Waking Up-style.” Do not rewrite the Super Bundle section. |
+
+### Must not change
+
+- `MIND_COLLECTIONS` / `MIND_SERIES` / sleep-week rail.
+- Free catalog (`guidedMindSessions.ts`).
+- `GuidedStepPlayer` (skip already exists).
+- `PRIVATE_MODE`, Stripe, trials, free-logger gates, Android, new API routes, new i18n keys unless a defaultValue has no key (prefer editing existing keys).
+- Rewriting the existing 60 premium sessions (meditation-heavy debt stays; this ship *adds* the journal pack and stops *selling* Calm).
 
 ---
 
-## Tests (falsify, then keep)
+## Tests (falsifiable)
 
-- `plateCalculator.test.ts` — `isBarLoadedEquipment` closed list; `setRowPlateLine` null vs `25 + 20` (100 kg / 20 kg bar); 225 lb exact.
-- `warmupRamp.test.ts` — 100 kg → 40/60/80 rounded; skip ≤ bar; idempotent insert; ordinal W then 1,2; mutants: empty ramp when work ≤ bar.
-- `priorCompletedInExercise` skips warmup (so F-013 cannot carry 40 kg onto work).
-- Source guard: new plate/warmup UI + lib files do not import premium/Bundle/trial; `SetLogTable` Prev cell still has no plate helper.
-- Density: LogConsole / SetLogTable still exactly one `primary-action` (existing `.694` guards).
-- i18n keys in `activeWorkoutLocales.ts` (`...en` fills other packs). Coverage stays 0 uncovered.
+1. Update `mindPremD2_588.test.ts`: floor **68**; id-count **68**; constants match file.
+2. New `src/lib/mind/mindJournalPrem.test.ts`:
+   - The 8 ids exist, unique vs whole catalog, tags, ≥2 `?` steps, duration mix.
+   - `MIND_COLLECTIONS.length === 8` and no `journal` collection id.
+   - Source scan of **new ids’ bodies** for forbidden streak/clinical/Calm tokens.
+   - `mindLocales.ts` + `MindLockedPreview.tsx` EN/defaultValues: no `Calm`, `Waking Up`, `Headspace`, `sleep stor`; `mindLockedHint` contains `{{free}}` and `{{premium}}`.
+   - Mutant: deleting one journal id or putting `Calm` back in the title must fail (run the test against a deliberate break once, then restore).
+3. Existing `contentInventory.test.ts` / `payments.test.ts` stay green via floor bump only.
+4. No new e2e. No visual baselines.
 
 ---
 
-## Docs / ship protocol (same commit as the code)
+## Ship protocol (same commit as the code)
 
-- This file (already frozen)
-- `LOG.md` + rotate oldest live entry (`.669`) so the file stays at 15
-- `CONTEXT.md` `## Now` one bullet for `.705`
-- `APP_BUILD_LABEL` → `2026.07-unified.705`
-- `src/lib/workout/INDEX.md` + `src/components/workout/INDEX.md`
-- Help: one line on getting-started — plates + warmup on the Train set row, free
+- Label `2026.07-unified.707` (past master `.697`; not `.698` `.699` `.700` `.705`).
+- `LOG.md` new heading `## 2026-08-13 — Super Bundle Mind journal sessions (`.707`)`. Rotate oldest live entry (`.669`) → `docs/archive/log/` + `docs/archive/INDEX.md` (live LOG is already 15/15).
+- `CONTEXT.md` `## Now`: add `.707` bullet; drop oldest numbered ship bullet (`.636`) so the `- **` count stays ≤25. Standing Status table untouched. Never flip `PRIVATE_MODE`.
+- Commit trailer + PR body: `Excellence-Override: Super Bundle Mind premium (content)`.
+- Draft PR. Do not merge. Do not request extra previews.
 
-Commit trailer:
+---
 
-```
-Excellence-Override: free plate math + warmup (logger)
-```
+## Out of scope (refuse if tempted)
 
-Draft PR. Preview at most one. Never flip `PRIVATE_MODE`.
+- New `/mind/*` route or collection tab.
+- Audio CDN / sleep stories / expert lesson library.
+- Wiring Mind sessions into `src/lib/journal/` (that domain is **training notes**, not this pack).
+- Clinical screening, crisis flows, streak freeze, Duo guilt.
+- Move / Fuel / Learn content.
+- Locale body farms beyond replacing Calm/stale-count overlays for the keys this ship edits.
+- Founder tasks, traction numbers, `PRIVATE_MODE`.

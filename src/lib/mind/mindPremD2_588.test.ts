@@ -12,11 +12,11 @@ function countPremiumMindIds(): number {
   return (src.match(/^\s*id:\s*'/gm) ?? []).length;
 }
 
-test('D2 mind premium floor is 60 and constants match file', () => {
-  assert.equal(CONTENT_FLOORS.mindPremium, 60);
-  assert.equal(PREMIUM_MIND_SESSION_COUNT, 60);
-  assert.equal(countPremiumMindIds(), 60);
-  assert.equal(getContentInventory().mind.premium, 60);
+test('D2 mind premium floor is 68 and constants match file', () => {
+  assert.equal(CONTENT_FLOORS.mindPremium, 68);
+  assert.equal(PREMIUM_MIND_SESSION_COUNT, 68);
+  assert.equal(countPremiumMindIds(), 68);
+  assert.equal(getContentInventory().mind.premium, 68);
 });
 
 test('sleep-week series seed sessions exist', () => {
