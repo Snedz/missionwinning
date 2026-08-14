@@ -8,7 +8,9 @@ import { withApiLogging } from '@/lib/api/withApiLogging';
 import {
   attachPrivateAccessCookie,
   matchesPrivateAccessPassword,
+  normalizePrivateAccessCode,
 } from '@/lib/privateSession';
+import { isPrivateModeEnabledFromEnv } from '@/lib/privateModeFlag';
 import { rateLimitAsync } from '@/lib/rateLimit';
 import { clientIp } from '@/lib/clientIp';
 import { privateAccessBodySchema, parseJsonBody } from '@/lib/apiSchemas';
@@ -41,7 +43,20 @@ export const POST = withApiLogging('private-access', async(request: NextRequest)
   if (!parsed.ok) {
     return NextResponse.json({ error: 'Invalid request' }, { status: 400 });
   }
-  if (!matchesPrivateAccessPassword(parsed.data.password, secret, process.env.PRIVATE_ACCESS_CODES)) {
+  const listed = matchesPrivateAccessPassword(
+    parsed.data.password,
+    secret,
+    process.env.PRIVATE_ACCESS_CODES
+  );
+  /*
+   * Preview / local are ungated. The founder code still has to mint the same
+   * cookie so `/` can show the homepage instead of I-Day. Production still
+   * requires the codes list.
+   */
+  const previewWalk =
+    !isPrivateModeEnabledFromEnv(process.env) &&
+    normalizePrivateAccessCode(parsed.data.password).toLowerCase() === 'done';
+  if (!listed && !previewWalk) {
     return NextResponse.json({ error: 'Incorrect access code' }, { status: 401 });
   }
 

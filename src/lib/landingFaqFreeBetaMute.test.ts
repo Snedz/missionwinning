@@ -8,10 +8,9 @@ import { join } from 'node:path';
 
 const root = join(import.meta.dirname, '..', '..');
 
-test('LandingPage no longer paints a FAQ band — JSON-LD still uses the shared list', () => {
+test('Landing FAQ UI and JSON-LD share the free-beta filter', () => {
   const src = readFileSync(join(root, 'src/page-components/LandingPage.tsx'), 'utf8');
-  assert.doesNotMatch(src, /landingFaqKeysForSurface/);
-  assert.doesNotMatch(src, /landingFaqEyebrow/);
+  assert.match(src, /landingFaqKeysForSurface/);
 });
 
 test('faqPageJsonLd + landing locales filter Super Bundle FAQ under free beta', () => {
