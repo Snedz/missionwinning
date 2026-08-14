@@ -150,6 +150,8 @@ type ActiveWorkoutStrings = {
   activeLastNoteLine: string;
   activeLoadingSession: string;
   activeLoadingSessionDesc: string;
+  activeReentryStart: string;
+  activeReentryStartDesc: string;
   activeNextTargetLine: string;
   activeNote: string;
   activeNotePlaceholder: string;
@@ -372,6 +374,9 @@ const en: ActiveWorkoutStrings = {
   activeLastNoteLine: 'Last note ({{date}}):',
   activeLoadingSession: 'Restoring session…',
   activeLoadingSessionDesc: 'Reading the last workout saved on this device.',
+  activeReentryStart: 'Start easier session',
+  activeReentryStartDesc:
+    'Smaller first session back — finishable, then the week rebuilds.',
   activeNextTargetLine: 'Next: {{reps}} × {{weight}} {{unit}}',
   activeNote: 'Note',
   activeNotePlaceholder: 'Note — "machine 3, seat 4", "left knee tight"…',

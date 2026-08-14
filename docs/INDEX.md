@@ -36,7 +36,8 @@
 | [SECURITY_PUBLIC_OSS_AUDIT_2026-08-08.md](SECURITY_PUBLIC_OSS_AUDIT_2026-08-08.md) | Public OSS prep audit (2026-08-08) |
 | [contracts/INDEX.md](contracts/INDEX.md) | Identity · economy · module · AI interop contracts |
 | [SECRETS.md](SECRETS.md) | Secrets program · vaults · gitleaks · rotate-on-leak |
-| [FREE_BETA.md](FREE_BETA.md) | Free-first beta mute (LLC/EIN window) — hide all paid UI |
+| [FREE_BETA.md](FREE_BETA.md) | Free-first beta: shop merchandises Super Bundle; live checkout muted |
+| [SUPER_BUNDLE_SHOP_PLAN.md](SUPER_BUNDLE_SHOP_PLAN.md) | Frozen 0.1 shop restore (Free vs Super Bundle; no trial) |
 | [ADAPTIVE_LAYOUT.md](ADAPTIVE_LAYOUT.md) | Window size classes · adaptive overlays (web + Android) |
 | [API.md](API.md) | HTTP API reference |
 | [AGENT_RECIPES.md](AGENT_RECIPES.md) | Agent task playbooks |

@@ -3,7 +3,7 @@
 ## General
 
 **Is Mission Winning really free?**  
-Yes — core workout tracking, library, history, and basic nutrition are free worldwide. Premium is optional.
+Yes — the logger, library, history, and basic nutrition are free worldwide, forever, with no account and no card. Super Bundle is optional depth (one SKU). There is no 7-day trial and no à la carte pillar prices.
 
 **Do I need an account?**  
 No for basic logging. Sign in to sync across devices, use Coach premium, and join school classes.
@@ -28,7 +28,7 @@ An estimate of how recovered your muscles are based on recent training — shown
 ## Mission Coach
 
 **Why is Coach locked?**  
-Mission Coach is premium. Try the taster or upgrade via `/bundle`.
+Mission Coach weekly depth is Super Bundle (optional). During free-first beta it is unlocked for everyone and `/bundle` is waitlist-only (Get notified — checkout is not live). After payments go live, upgrade via `/bundle`. The logger is never gated.
 
 **Why did my plan change?**  
 Coach adapts when you miss sessions, change equipment, or report low readiness.

@@ -12,11 +12,6 @@ type TodayStrings = {
   todayWeeklyChallengesDescOpenBeta: string;
   todayDayStreak: string;
   todayStartWorkout: string;
-  /** Today hero when the primary tap copies the last completed session (.717). */
-  todayRepeatLastCta: string;
-  todayRepeatLastKicker: string;
-  todayRepeatLastTitle: string;
-  todayRepeatLastDesc: string;
   todaySectionProgress: string;
   todaySectionProgressDesc: string;
   todayQuickOptions: string;
@@ -113,7 +108,6 @@ type TodayStrings = {
   todayMissionScoreDesc: string;
   todayCoachInsightTitle: string;
   todayCoachInsightDesc: string;
-  /** Chip CTA when the insight has no actionLabelKey (.743 coverage). */
   todayCoachChipAction: string;
   coachInsightHighRisk: string;
   coachInsightHighStrain: string;
@@ -176,8 +170,6 @@ type TodayStrings = {
   /** Kaizen Loop 2 L4 — week recap + debrief (.299) */
   todayWeekRecapTitle: string;
   todayWeekRecapBody: string;
-  /** Habit week-count on Today header — 0 is fine (.722). */
-  todayHabitWeekCount: string;
   todayWeekRecapShareCard: string;
   todayWeekRecapCoach: string;
   todayWeekRecapHistory: string;
@@ -252,9 +244,6 @@ type TodayStrings = {
   todayReentryLongBody: string;
   todayReentryBody: string;
   todayReentryEyebrow: string;
-  /** S7 quiet line: "{{off}}. Here's the {{minutes}}-minute version." */
-  todayReentryQuietLine: string;
-  todayReentryOffLapsed: string;
   todayMissionScoreFromLogs: string;
   todayScoreAfterFirstLog: string;
   todayScoreNotMeasured: string;
@@ -287,8 +276,6 @@ type TodayStrings = {
   todayFounderSnackHint: string;
   todayFounderSnackHintDesc: string;
   todayFounderLogSnack: string;
-  /** Fallback chip action when the insight has no actionLabelKey. */
-  todayCoachChipAction: string;
 };
 
 const en: TodayStrings = {
@@ -304,10 +291,6 @@ const en: TodayStrings = {
     'Train + Fuel + volume goals this week. Free core — open beta unlocks depth across the app.',
   todayDayStreak: '{{count}}-day streak',
   todayStartWorkout: "Start Today's Workout",
-  todayRepeatLastCta: 'Repeat last session',
-  todayRepeatLastKicker: 'Train',
-  todayRepeatLastTitle: '{{name}}',
-  todayRepeatLastDesc: 'Same as last time — last loads are ready in the set log.',
   todaySectionProgress: 'Progress & tools',
   todaySectionProgressDesc: 'Readiness, stats, and history',
   todayQuickOptions: 'Quick options',
@@ -484,7 +467,6 @@ const en: TodayStrings = {
   coachPlanRegenerate: 'Regenerate',
   todayWeekRecapTitle: 'This week',
   todayWeekRecapBody: '{{sessions}} sessions · {{sets}} sets · {{streak}}-day streak',
-  todayHabitWeekCount: 'This week: {{count}} days logged',
   todayWeekRecapShareCard: 'Share card',
   todayWeekRecapCoach: 'Open AI weekly plan',
   todayWeekRecapHistory: 'History',
@@ -558,8 +540,6 @@ const en: TodayStrings = {
   todayReentryLongBody: "Today's session is about {{pct}}% of usual so the first one back is easy to finish. Your history is still here.",
   todayReentryBody: "Today's session is about {{pct}}% of usual sets. Get it done and the week rebuilds itself.",
   todayReentryEyebrow: 'Back in',
-  todayReentryQuietLine: "{{off}}. Here's the {{minutes}}-minute version.",
-  todayReentryOffLapsed: 'A while off',
   todayMissionScoreFromLogs: 'From your logs',
   todayScoreAfterFirstLog: 'After your first log',
   todayScoreNotMeasured: 'Not measured',
@@ -594,7 +574,6 @@ const en: TodayStrings = {
   todayFounderSnackHint: 'Open Fuel',
   todayFounderSnackHintDesc: 'Log a recovery snack when you are ready.',
   todayFounderLogSnack: 'Log recovery snack',
-  todayCoachChipAction: 'Open',
 };
 
 const coachPlanDefaults = {
@@ -605,15 +584,10 @@ const coachPlanDefaults = {
   coachPlanGenerating: en.coachPlanGenerating,
   coachPlanLoad: en.coachPlanLoad,
   coachPlanRegenerate: en.coachPlanRegenerate,
-  todayRepeatLastCta: en.todayRepeatLastCta,
-  todayRepeatLastKicker: en.todayRepeatLastKicker,
-  todayRepeatLastTitle: en.todayRepeatLastTitle,
-  todayRepeatLastDesc: en.todayRepeatLastDesc,
 };
 
 const es: TodayStrings = {
   ...en,
-  todayCoachChipAction: 'Abrir',
   todayBasicEncouragement:
     'Un paso a la vez. Salud para todos — entrena, alimenta, muévete y aprende en tu camino.',
   todaySectionHealth: 'Puntuaciones de salud',
@@ -716,7 +690,6 @@ const es: TodayStrings = {
   todayMissionScoreDesc: 'Los seis pilares contribuyen — Train, Fuel, Move, Mind, Track y Learn.',
   todayCoachInsightTitle: 'Consejo del coach',
   todayCoachInsightDesc: 'Según tu preparación, carga y recuperación',
-  todayCoachChipAction: 'Abrir',
   coachInsightHighRisk:
     'Tu evaluación indicó riesgo elevado. Prioriza recuperación, movilidad y movimiento ligero hoy.',
   coachInsightHighStrain:
@@ -778,7 +751,6 @@ const es: TodayStrings = {
 };
 
 const zh: TodayStrings = {
-  todayHabitWeekCount: en.todayHabitWeekCount,
   todayWeekFailedTitle: en.todayWeekFailedTitle,
   todayWeekFailedDesc: en.todayWeekFailedDesc,
   todayWeekFailedRetry: en.todayWeekFailedRetry,
@@ -804,7 +776,6 @@ const zh: TodayStrings = {
   todayFounderSnackHint: en.todayFounderSnackHint,
   todayFounderSnackHintDesc: en.todayFounderSnackHintDesc,
   todayFounderLogSnack: en.todayFounderLogSnack,
-  todayCoachChipAction: en.todayCoachChipAction,
   continuityTitle: en.continuityTitle,
   continuitySubtitle: en.continuitySubtitle,
   todayWeekRecapTitle: en.todayWeekRecapTitle,
@@ -878,8 +849,6 @@ const zh: TodayStrings = {
   todayReentryLongBody: en.todayReentryLongBody,
   todayReentryBody: en.todayReentryBody,
   todayReentryEyebrow: en.todayReentryEyebrow,
-  todayReentryQuietLine: en.todayReentryQuietLine,
-  todayReentryOffLapsed: en.todayReentryOffLapsed,
   todayMissionScoreFromLogs: en.todayMissionScoreFromLogs,
   todayScoreAfterFirstLog: en.todayScoreAfterFirstLog,
   todayScoreNotMeasured: en.todayScoreNotMeasured,
@@ -993,7 +962,7 @@ const zh: TodayStrings = {
   todayMissionScoreDesc: '六大支柱共同贡献 — 训练、营养、活动、心理、追踪、学习。',
   todayCoachInsightTitle: '教练建议',
   todayCoachInsightDesc: '基于就绪度、负荷与恢复',
-  todayCoachChipAction: '打开',
+  todayCoachChipAction: en.todayCoachChipAction,
   coachInsightHighRisk: '评估显示风险较高。今天优先恢复、灵活性和轻度活动。',
   coachInsightHighStrain: '训练负荷高、恢复不足。灵活或休息日会让你更强归来。',
   coachInsightPrimed: '你已准备好训练。{{focusLine}}。',
@@ -1049,7 +1018,6 @@ const zh: TodayStrings = {
 };
 
 const id: TodayStrings = {
-  todayHabitWeekCount: en.todayHabitWeekCount,
   todayWeekFailedTitle: en.todayWeekFailedTitle,
   todayWeekFailedDesc: en.todayWeekFailedDesc,
   todayWeekFailedRetry: en.todayWeekFailedRetry,
@@ -1075,7 +1043,6 @@ const id: TodayStrings = {
   todayFounderSnackHint: en.todayFounderSnackHint,
   todayFounderSnackHintDesc: en.todayFounderSnackHintDesc,
   todayFounderLogSnack: en.todayFounderLogSnack,
-  todayCoachChipAction: en.todayCoachChipAction,
   continuityTitle: en.continuityTitle,
   continuitySubtitle: en.continuitySubtitle,
   todayWeekRecapTitle: en.todayWeekRecapTitle,
@@ -1149,8 +1116,6 @@ const id: TodayStrings = {
   todayReentryLongBody: en.todayReentryLongBody,
   todayReentryBody: en.todayReentryBody,
   todayReentryEyebrow: en.todayReentryEyebrow,
-  todayReentryQuietLine: en.todayReentryQuietLine,
-  todayReentryOffLapsed: en.todayReentryOffLapsed,
   todayMissionScoreFromLogs: en.todayMissionScoreFromLogs,
   todayScoreAfterFirstLog: en.todayScoreAfterFirstLog,
   todayScoreNotMeasured: en.todayScoreNotMeasured,
@@ -1266,7 +1231,7 @@ const id: TodayStrings = {
   todayMissionScoreDesc: 'Enam pilar berkontribusi — Train, Fuel, Move, Mind, Track, Learn.',
   todayCoachInsightTitle: 'Wawasan coach',
   todayCoachInsightDesc: 'Berdasarkan kesiapan, beban, dan pemulihan',
-  todayCoachChipAction: 'Buka',
+  todayCoachChipAction: en.todayCoachChipAction,
   coachInsightHighRisk:
     'Asesmen menandai risiko tinggi. Prioritaskan pemulihan, mobilitas, dan gerakan ringan hari ini.',
   coachInsightHighStrain:
@@ -1335,7 +1300,6 @@ const id: TodayStrings = {
 };
 
 const th: TodayStrings = {
-  todayHabitWeekCount: en.todayHabitWeekCount,
   todayWeekFailedTitle: en.todayWeekFailedTitle,
   todayWeekFailedDesc: en.todayWeekFailedDesc,
   todayWeekFailedRetry: en.todayWeekFailedRetry,
@@ -1361,7 +1325,6 @@ const th: TodayStrings = {
   todayFounderSnackHint: en.todayFounderSnackHint,
   todayFounderSnackHintDesc: en.todayFounderSnackHintDesc,
   todayFounderLogSnack: en.todayFounderLogSnack,
-  todayCoachChipAction: en.todayCoachChipAction,
   continuityTitle: en.continuityTitle,
   continuitySubtitle: en.continuitySubtitle,
   todayWeekRecapTitle: en.todayWeekRecapTitle,
@@ -1435,8 +1398,6 @@ const th: TodayStrings = {
   todayReentryLongBody: en.todayReentryLongBody,
   todayReentryBody: en.todayReentryBody,
   todayReentryEyebrow: en.todayReentryEyebrow,
-  todayReentryQuietLine: en.todayReentryQuietLine,
-  todayReentryOffLapsed: en.todayReentryOffLapsed,
   todayMissionScoreFromLogs: en.todayMissionScoreFromLogs,
   todayScoreAfterFirstLog: en.todayScoreAfterFirstLog,
   todayScoreNotMeasured: en.todayScoreNotMeasured,
@@ -1551,7 +1512,7 @@ const th: TodayStrings = {
   todayMissionScoreDesc: 'หกเสาหลักมีส่วน — Train, Fuel, Move, Mind, Track, Learn',
   todayCoachInsightTitle: 'คำแนะนำโค้ช',
   todayCoachInsightDesc: 'จากความพร้อม โหลด และการฟื้นตัว',
-  todayCoachChipAction: 'เปิด',
+  todayCoachChipAction: en.todayCoachChipAction,
   coachInsightHighRisk: 'การประเมินบ่งชี้ความเสี่ยงสูง วันนี้เน้นฟื้นตัว ความคล่องตัว และการเคลื่อนไหวเบา',
   coachInsightHighStrain: 'โหลดสูงแต่ฟื้นตัวต่ำ วันพักหรือ mobility จะช่วยกลับมาแข็งแกร่ง',
   coachInsightPrimed: 'คุณพร้อมฝึก {{focusLine}}',
@@ -1611,7 +1572,6 @@ const th: TodayStrings = {
 };
 
 const ar: TodayStrings = {
-  todayHabitWeekCount: en.todayHabitWeekCount,
   todayWeekFailedTitle: en.todayWeekFailedTitle,
   todayWeekFailedDesc: en.todayWeekFailedDesc,
   todayWeekFailedRetry: en.todayWeekFailedRetry,
@@ -1637,7 +1597,6 @@ const ar: TodayStrings = {
   todayFounderSnackHint: en.todayFounderSnackHint,
   todayFounderSnackHintDesc: en.todayFounderSnackHintDesc,
   todayFounderLogSnack: en.todayFounderLogSnack,
-  todayCoachChipAction: en.todayCoachChipAction,
   continuityTitle: en.continuityTitle,
   continuitySubtitle: en.continuitySubtitle,
   todayWeekRecapTitle: en.todayWeekRecapTitle,
@@ -1711,8 +1670,6 @@ const ar: TodayStrings = {
   todayReentryLongBody: en.todayReentryLongBody,
   todayReentryBody: en.todayReentryBody,
   todayReentryEyebrow: en.todayReentryEyebrow,
-  todayReentryQuietLine: en.todayReentryQuietLine,
-  todayReentryOffLapsed: en.todayReentryOffLapsed,
   todayMissionScoreFromLogs: en.todayMissionScoreFromLogs,
   todayScoreAfterFirstLog: en.todayScoreAfterFirstLog,
   todayScoreNotMeasured: en.todayScoreNotMeasured,
@@ -1826,7 +1783,7 @@ const ar: TodayStrings = {
   todayMissionScoreDesc: 'الركائز الست تساهم — Train وFuel وMove وMind وTrack وLearn.',
   todayCoachInsightTitle: 'نصيحة المدرب',
   todayCoachInsightDesc: 'بناءً على الجاهزية والحمولة والاستشفاء',
-  todayCoachChipAction: 'افتح',
+  todayCoachChipAction: en.todayCoachChipAction,
   coachInsightHighRisk: 'تقييمك أشار لخطر مرتفع. أولِّ استشفاءً وحركة خفيفة اليوم.',
   coachInsightHighStrain: 'حمولة عالية واستشفاء منخفض. يوم راحة أو movilidad يعيدك أقوى.',
   coachInsightPrimed: 'أنت جاهز للتمرين. {{focusLine}}.',
@@ -1894,7 +1851,6 @@ const LOCALES: Partial<Record<string, TodayStrings>> = {
   ar,
   fr: {
     ...en,
-    todayCoachChipAction: 'Ouvrir',
     todayBasicEncouragement:
       'Un pas à la fois. La santé pour tous — entraînez-vous, alimentez-vous, bougez et apprenez sur votre chemin.',
     todaySectionHealth: 'Scores de santé',
@@ -1997,7 +1953,6 @@ const LOCALES: Partial<Record<string, TodayStrings>> = {
     todayMissionScoreDesc: 'Les six piliers comptent — Train, Fuel, Move, Mind, Track et Learn.',
     todayCoachInsightTitle: 'Conseil du coach',
     todayCoachInsightDesc: 'Selon votre préparation, charge et récupération',
-    todayCoachChipAction: 'Ouvrir',
     coachInsightHighRisk:
       'Votre évaluation indique un risque élevé. Priorisez récupération, mobilité et mouvement léger aujourd’hui.',
     coachInsightHighStrain:
@@ -2056,17 +2011,14 @@ const LOCALES: Partial<Record<string, TodayStrings>> = {
   },
   pt: {
     ...en,
-    todayCoachChipAction: 'Abrir',
     todayBasicEncouragement:
       'Um passo de cada vez. Saúde para todos — treine, alimente-se, mova-se e aprenda.',
     todayStartWorkout: 'Começar treino de hoje',
-    todayCoachChipAction: 'Abrir',
     coachPlanTitle: 'Coach IA — plano semanal',
     coachPlanCta: 'Gerar esta semana',
   },
   de: {
     ...en,
-    todayCoachChipAction: 'Öffnen',
     todayBasicEncouragement:
       'Schritt für Schritt. Gesundheit für alle — trainiere, ernähre dich, bewege dich und lerne auf deinem Weg.',
     todaySectionHealth: 'Gesundheits-Scores',
@@ -2169,7 +2121,6 @@ const LOCALES: Partial<Record<string, TodayStrings>> = {
     todayMissionScoreDesc: 'Alle sechs Säulen zählen — Train, Fuel, Move, Mind, Track und Learn.',
     todayCoachInsightTitle: 'Coach-Tipp',
     todayCoachInsightDesc: 'Basierend auf Bereitschaft, Belastung und Erholung',
-    todayCoachChipAction: 'Öffnen',
     coachInsightHighRisk:
       'Deine Bewertung zeigt ein hohes Risiko. Priorisiere heute Erholung, Mobilität und leichte Bewegung.',
     coachInsightHighStrain:

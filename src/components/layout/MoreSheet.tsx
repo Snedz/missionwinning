@@ -33,7 +33,6 @@ import { AdaptiveOverlay } from '@/components/ui/AdaptiveOverlay';
 import { MORE_NAV } from '@/lib/navConfig';
 import { moreSheetQuietForNav, moreSheetTiersForNav } from '@/lib/moreSheetTiers';
 import { isPathEnabled } from '@/lib/surface';
-import { isFreeBeta } from '@/lib/freeBeta';
 import { MeterBar } from '@/components/ui/MeterBar';
 import { FirstStepsSheet } from '@/components/journey/FirstStepsSheet';
 import { WhatsNewSheet } from '@/components/profile/WhatsNewSheet';
@@ -144,7 +143,7 @@ export function MoreSheet({ open, onClose }: { open: boolean; onClose: () => voi
   const stepProgress = useMemo(() => summarizeFirstSteps(firstSteps), [firstSteps]);
 
   const bundle = MORE_NAV.find((i) => i.href === '/bundle');
-  const showBundle = !isFreeBeta() && isPathEnabled('/bundle') && bundle;
+  const showBundle = isPathEnabled('/bundle') && bundle;
   const quiet = useMemo(() => moreSheetQuietForNav(), []);
 
   return (

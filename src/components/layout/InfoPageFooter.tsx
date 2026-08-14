@@ -3,7 +3,6 @@
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { AppLegalFooter } from '@/components/layout/AppLegalFooter';
-import { isFreeBeta } from '@/lib/freeBeta';
 
 type InfoPageFooterProps = {
   showLegal?: boolean;
@@ -20,7 +19,7 @@ export function InfoPageFooter({
   todayLabel = 'Today',
   className = '',
 }: InfoPageFooterProps) {
-  const bundleVisible = showBundle && !isFreeBeta();
+  const bundleVisible = showBundle;
 
   return (
     <div className={`flex flex-col sm:flex-row items-center justify-between gap-4 ${className}`}>

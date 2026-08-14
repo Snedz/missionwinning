@@ -7,7 +7,6 @@ import { FREE_LEARN_PATHS } from '@/data/learnPaths';
 import { MAJOR_GROUPS } from '@/lib/muscleGroups';
 import { EQUIPMENT_HUBS, muscleHubSlug } from '@/lib/exerciseSeo';
 import { isPathEnabled } from '@/lib/surface';
-import { isFreeBeta } from '@/lib/freeBeta';
 import { isPrivateGatePublicPath } from '@/lib/publicRoutes';
 
 /**
@@ -38,9 +37,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     '',
     '/about',
     '/vision',
-    // `/bundle` is deliberately absent during the free beta: it 307s to `/`, and a
-    // sitemap should only carry URLs that answer 200. Re-add it with the paid surfaces.
-    ...(isFreeBeta() ? [] : ['/bundle']),
+    // `/bundle` is the Super Bundle shop (merchandising). Checkout stays muted
+    // while FREE_BETA is on — the page itself answers 200.
+    '/bundle',
     '/press',
     '/terms',
     '/privacy',

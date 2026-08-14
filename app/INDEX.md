@@ -37,7 +37,7 @@
 
 | URL | Page component | Notes |
 |-----|----------------|-------|
-| `/move` | `MovePage.tsx` | Mobility — `?flow=` starts a free flow (Victory S6) |
+| `/move` | `MovePage.tsx` | Mobility |
 | `/mind` | `MindPage.tsx` | Mind & recovery |
 | `/learn` | `LearnPage.tsx` | Education |
 | `/learn/guide` | `GuidebookIndexPage.tsx` | Guidebook |
@@ -54,18 +54,17 @@
 
 | URL | File |
 |-----|------|
-| `/` | `app/page.tsx` → `LandingPage` (post-unlock). Cold visitors redirect to `/private`. |
-| `/bundle` | `app/bundle/page.tsx` → `BundlePage` (marketing chrome) |
+| `/` | `app/page.tsx` → `LandingPage` |
+| `/bundle` | `app/bundle/page.tsx` → `BundlePage` — Super Bundle shop (Free vs one paid SKU; checkout muted in free-beta) |
 | `/compare` · `/compare/*` | **Removed (.668)** — permanent redirect to `/welcome` (no competitor comparison hub) |
 | `/guide`, `/exercises` | Public SEO pages |
 | `/press` | `app/press/page.tsx` → `PressPage` (brand & media kit) |
 | `/guide` (Apex reader) | `GuidePublicIndexPage` — Contents sidebar + language switcher |
 | `/guide/[chapter]` | `GuidePublicChapterPage` — same shell |
-| `/guide/mission-winning-vs-strong` · `vs-hevy` · `vs-fitbod` | `LearnVsPublicPage` — AEO comparison (not magazine chapters) |
 | `/guide/print` | Magazine print/PDF source (`GuideMagazinePrintPage`) — noindex |
 | `/exercises/muscle/[group]`, `/exercises/equipment/[slug]` | Catalog hub indexes |
 | `/paths`, `/paths/[id]` | Public Learn path teasers (in-app Learn stays `/learn`) |
-| `/private` | `app/private/page.tsx` — gated www (four cinematic scenes). The live website while `PRIVATE_MODE` is on. |
+| `/private` | `app/private/page.tsx` |
 | `/offline` | `app/offline/page.tsx` |
 | `/auth/callback` | `app/auth/callback/route.ts` (PKCE exchange + gate cookie) |
 

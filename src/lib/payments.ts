@@ -13,6 +13,7 @@ import { writeRaw } from '@/lib/storage/safeStorage';
 // Literal-only module by design — importing `contentInventory` here would drag the
 // whole catalog graph onto every route that prices anything. See contentFloors.ts.
 import { CONTENT_FLOORS } from '@/lib/contentFloors';
+import { isFreeBeta } from '@/lib/freeBeta';
 
 /** Super Bundle plan IDs — keep in sync with BUNDLE_PLANS in bundleConfig.ts. */
 export type CheckoutPlanId = 'monthly' | '12mo' | 'lifetime';
@@ -134,6 +135,14 @@ export function getStripeCheckoutUrl(productId?: string): string | null {
  */
 export function isCheckoutSessionsEnabled(): boolean {
   return process.env.NEXT_PUBLIC_STRIPE_CHECKOUT === 'true'
+}
+
+/**
+ * Live card checkout is allowed only when free-beta is off.
+ * Stripe env may already be set — FREE_BETA still mutes charges (no fake Subscribe).
+ */
+export function isPaidCheckoutAllowed(): boolean {
+  return !isFreeBeta()
 }
 
 export type CreateCheckoutForPlanResult =

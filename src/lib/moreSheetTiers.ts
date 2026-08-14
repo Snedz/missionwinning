@@ -10,8 +10,8 @@
  *   Pillars — Move · Mind · Track · Learn
  *   You     — Profile
  *
- * Quiet foot links stay for legal/meta (not full rows). Bundle remains a
- * separate premium panel when free-beta is off.
+ * Quiet foot links stay for legal/meta (not full rows). Bundle is a shop
+ * panel in MoreSheet; live checkout stays muted while free-beta is on.
  *
  * One declaration: hrefs resolve through the same `NAV_BY_HREF` map as the rail
  * so labels cannot disagree (`.178`).
@@ -95,7 +95,7 @@ export type MoreSheetNavOpts = {
 };
 
 /**
- * Resolve More sheet tiers for the current surface parking / free-beta world.
+ * Resolve More sheet tiers for the current surface parking world.
  * Empty tiers are dropped. Tab routes never appear as rows.
  */
 export function moreSheetTiersForNav(opts?: MoreSheetNavOpts): MoreSheetTier[] {

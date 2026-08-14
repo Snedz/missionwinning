@@ -10,8 +10,6 @@
  * import it without pulling react-i18next onto a static page.
  */
 
-import { isFreeBeta } from '@/lib/freeBeta';
-
 export type FooterLink = {
   href: string;
   /** i18n key — client footers translate it; server footers use `defaultValue`. */
@@ -61,17 +59,17 @@ const LEGAL: FooterLink[] = [
 ];
 
 /**
- * The four footer columns, with the Bundle link dropped during the free beta.
+ * The four footer columns. Super Bundle shop is always listed; live checkout
+ * stays muted while FREE_BETA is on ([docs/SUPER_BUNDLE_SHOP_PLAN.md]).
  *
- * A function rather than a constant because `isFreeBeta()` reads the environment, and
- * a module-level constant would freeze the answer at import time.
+ * A function rather than a constant so callers can read current surface flags.
  */
 export function footerGroups(): FooterGroup[] {
   return [
     {
       titleKey: 'footerGroupProduct',
       titleDefault: 'Product',
-      links: isFreeBeta() ? PRODUCT.filter((l) => l.href !== '/bundle') : PRODUCT,
+      links: PRODUCT,
     },
     { titleKey: 'footerGroupLearn', titleDefault: 'Learn', links: LEARN },
     { titleKey: 'footerGroupCompany', titleDefault: 'Company', links: COMPANY },
@@ -88,9 +86,7 @@ export function primaryNavLinks(): FooterLink[] {
     { href: '/exercises', labelKey: 'footerLearnExercises', defaultValue: 'Exercises' },
     { href: '/guide', labelKey: 'footerLearnGuide', defaultValue: 'Guide' },
     { href: '/paths', labelKey: 'footerLearnPaths', defaultValue: 'Paths' },
-    ...(isFreeBeta()
-      ? []
-      : [{ href: '/bundle', labelKey: 'footerProductBundle', defaultValue: 'Super Bundle' }]),
+    { href: '/bundle', labelKey: 'footerProductBundle', defaultValue: 'Super Bundle' },
     { href: '/about', labelKey: 'footerCompanyAbout', defaultValue: 'About' },
   ];
 }
