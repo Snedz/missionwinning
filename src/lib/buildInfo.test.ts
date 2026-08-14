@@ -25,9 +25,9 @@ test('internal build label stays the unified ship id', () => {
   assert.match(APP_BUILD_LABEL, /^\d{4}\.\d{2}-unified\.\d+$/);
 });
 
-test('athlete-facing version is Mission Winning 0.1 (beta)', () => {
-  assert.equal(APP_PUBLIC_VERSION, '0.1 (beta)');
-  assert.equal(APP_PUBLIC_PRODUCT_VERSION, 'Mission Winning 0.1 (beta)');
+test('athlete-facing version is Mission Winning 0.0.1 (beta)', () => {
+  assert.equal(APP_PUBLIC_VERSION, '0.0.1 (beta)');
+  assert.equal(APP_PUBLIC_PRODUCT_VERSION, 'Mission Winning 0.0.1 (beta)');
   assert.equal(validateBuildLabel(APP_PUBLIC_VERSION), false);
   assert.doesNotMatch(APP_PUBLIC_VERSION, /v1\.0/i);
   assert.doesNotMatch(APP_PUBLIC_PRODUCT_VERSION, /v1\.0|invite-only|everything.?app/i);
@@ -72,6 +72,16 @@ test('gated www, about, and version chips import the public stamp', () => {
       `${file} (${why}) does not import the public version constants`
     );
   }
+});
+
+test('About open-beta business copy interpolates productVersion', () => {
+  const src = read('src/i18n/infoLocales.ts');
+  const m = src.match(/infoAboutBusinessBodyOpenBeta:\s*\n?\s*'([^']*)'/);
+  assert.ok(m?.[1], 'infoAboutBusinessBodyOpenBeta missing');
+  assert.match(m[1], /\{\{productVersion\}\}/);
+  assert.doesNotMatch(m[1], /0\.1 \(beta\)|v1\.0/i);
+  const about = read('src/page-components/AboutPage.tsx');
+  assert.match(about, /productVersion:\s*APP_PUBLIC_PRODUCT_VERSION/);
 });
 
 test('firstSteps status key interpolates to the same English stamp', () => {

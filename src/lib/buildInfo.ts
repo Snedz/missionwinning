@@ -1,15 +1,16 @@
-/** Shown on Profile so testers can confirm the deployed build. Bump when shipping UI to master. `.768` first set while gated. */
-export const APP_BUILD_LABEL = "2026.07-unified.768";
+/** Shown on Profile so testers can confirm the deployed build. Bump when shipping UI to master. `.769` Beta 0.0.1 stamp. */
+export const APP_BUILD_LABEL = "2026.07-unified.769";
 
 /**
  * Athlete-facing marketing version. Distinct from `APP_BUILD_LABEL`, which
  * `/api/health` and deploy smoke keep as the honest unified ship id.
  *
- * Language is free beta — not invite-only, not v1.0.
+ * Language is free beta — not invite-only, not v1.0. 0.0.1 is the door
+ * stamp for invite beta; it is not a public flip.
  */
-export const APP_PUBLIC_VERSION = "0.1 (beta)";
+export const APP_PUBLIC_VERSION = "0.0.1 (beta)";
 
-/** Full product stamp: `Mission Winning 0.1 (beta)`. */
+/** Full product stamp: `Mission Winning 0.0.1 (beta)`. */
 export const APP_PUBLIC_PRODUCT_VERSION = `Mission Winning ${APP_PUBLIC_VERSION}`;
 
 /**
