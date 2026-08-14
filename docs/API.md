@@ -503,6 +503,43 @@ curl -X POST "$BASE/api/stripe-webhook" -H 'Content-Type: application/json' -d '
 
 ---
 
+## Mission Server (signed-in)
+
+### `GET /api/social/messages?channel=train`
+
+| | |
+|--|--|
+| Auth | `session` |
+| Rate | 60/min/IP |
+| Notes | Shared Garage pull. Guests **401**. Missing table → `{ available: false, messages: [] }`. Never returns a Postgres `error.message`. |
+
+### `POST /api/social/messages`
+
+| | |
+|--|--|
+| Auth | `session` |
+| Rate | 20/min/IP |
+| Body | Zod `socialMessageBodySchema` |
+| Notes | Local-first via outbox (`social.message`). Duplicate id is success. `user_id` from the session only. |
+
+### `GET /api/social/presence` · `POST /api/social/presence`
+
+| | |
+|--|--|
+| Auth | `session` |
+| Notes | Self upsert. GET returns other signed-in rows only — never invents dots. |
+
+### `POST /api/social/reports`
+
+| | |
+|--|--|
+| Auth | `session` |
+| Rate | 10/min/IP |
+| Body | Zod `socialReportBodySchema` |
+| Notes | Cannot report your own message. |
+
+---
+
 ## Zod schemas
 
 Defined in [`src/lib/apiSchemas.ts`](../src/lib/apiSchemas.ts). Add new POST bodies there; use `parseJsonBody` / `parseQuery`.

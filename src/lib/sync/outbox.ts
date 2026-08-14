@@ -34,7 +34,13 @@ export type OutboxKind =
   | 'invite.redeem'
   | 'referral.redeem'
   /** Signed-in ISO-week logger rollup. Guests never enqueue this kind. */
-  | 'week.logged';
+  | 'week.logged'
+  /** Signed-in Mission Server room post. Guests never enqueue. */
+  | 'social.message'
+  /** Signed-in self presence. Guests never enqueue. */
+  | 'social.presence'
+  /** Report another athlete's Garage message. */
+  | 'social.report';
 
 export interface OutboxOp {
   id: string;

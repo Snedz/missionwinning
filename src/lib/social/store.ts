@@ -71,6 +71,7 @@ export function postLocalMessage(
     createdAt?: string;
     id?: string;
     kind?: MessageKind;
+    origin?: GarageMessage['origin'];
   }
 ): PostMessageResult {
   const trimmed = body.trim();
@@ -82,6 +83,7 @@ export function postLocalMessage(
   if (!channel) return { ok: false, reason: 'unknown-channel' };
 
   const kind: MessageKind = opts?.kind === 'nudge' ? 'nudge' : 'text';
+  const origin = opts?.origin ?? 'local';
   const message: GarageMessage = {
     id: opts?.id ?? newMessageId(),
     channelId,
@@ -91,6 +93,7 @@ export function postLocalMessage(
     body: trimmed.slice(0, MAX_MESSAGE_BODY),
     createdAt: opts?.createdAt ?? new Date().toISOString(),
     kind,
+    origin,
   };
 
   const existing = state.server.messages[channelId] ?? [];
@@ -134,12 +137,14 @@ export function ingestRemoteMessage(raw: unknown): MissionServerState | null {
     return null;
   }
   const kind = m.kind === 'nudge' ? 'nudge' : 'text';
+  const origin = m.origin === 'local' ? 'local' : 'remote';
   const result = postLocalMessage(m.channelId, m.body, {
     id: m.id,
     authorCallSign: m.authorCallSign,
     authorMissionId: typeof m.authorMissionId === 'string' ? m.authorMissionId : null,
     createdAt: m.createdAt,
     kind,
+    origin,
   });
   return result.ok ? result.state : null;
 }

@@ -4,7 +4,13 @@ import { useTranslation } from 'react-i18next';
 import { useLocaleFormat } from '@/hooks/useLocaleFormat';
 import type { GarageMessage } from '@/lib/social/types';
 
-export function MessageList({ messages }: { messages: readonly GarageMessage[] }) {
+export function MessageList({
+  messages,
+  onReport,
+}: {
+  messages: readonly GarageMessage[];
+  onReport?: (messageId: string) => void;
+}) {
   const { t } = useTranslation();
   const fmt = useLocaleFormat();
   if (messages.length === 0) {
@@ -34,6 +40,15 @@ export function MessageList({ messages }: { messages: readonly GarageMessage[] }
               </time>
             </div>
             <p className="mt-1 whitespace-pre-wrap break-words text-sm">{body}</p>
+            {onReport && m.origin === 'remote' ? (
+              <button
+                type="button"
+                onClick={() => onReport(m.id)}
+                className="mt-1 text-xs font-semibold text-muted-foreground underline-offset-2 hover:underline"
+              >
+                {t('serverReport', { defaultValue: 'Report' })}
+              </button>
+            ) : null}
           </li>
         );
       })}

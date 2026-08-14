@@ -109,7 +109,7 @@ export const SURFACE_PATHS: Record<Surface, readonly string[]> = {
   benchmarks: ['/benchmarks'],
   calculators: ['/calculators'],
   programs: ['/programs'],
-  server: ['/server'],
+  server: ['/server', '/api/social'],
 };
 
 /**

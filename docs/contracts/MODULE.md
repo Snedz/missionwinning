@@ -54,7 +54,7 @@ module:
 | `economy.earn` | Emit earn events from allowed sources |
 | `economy.read` | Read own points/inventory |
 | `social.project` | Publish allowed projection fields only |
-| `social.channel.write` | Append a local text message in a room the athlete already belongs to (local-only in v1) |
+| `social.channel.write` | Append a text message in a room the athlete already belongs to. Local always; signed-in persist to `social_messages` |
 
 Host (future) **denies** undeclared scopes. Today the web monolith is implicit full access inside first-party code; the manifest is the long-term contract.
 

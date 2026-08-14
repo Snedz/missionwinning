@@ -8,7 +8,7 @@
 |------|------|
 | `BuddyList.tsx` | Rooms + last-line preview + self presence |
 | `ChatWindow.tsx` | Ink title bar, messages, compose, quiet nudge |
-| `MessageList.tsx` | Display name · Mission ID · body · local clock |
+| `MessageList.tsx` | Display name · Mission ID · body · local clock · Report on remote |
 | `MessageComposer.tsx` | Text + Send (one red field) |
 | `PresenceControl.tsx` | available / away / offline |
 

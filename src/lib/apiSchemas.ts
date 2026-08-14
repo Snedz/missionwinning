@@ -407,6 +407,39 @@ export const weekLoggedBodySchema = z.object({
   isoWeek: z.string().regex(/^\d{4}-W\d{2}$/).max(12),
 });
 
+const garageChannelSlug = z.enum(['train', 'garage', 'off-topic']);
+
+/** Signed-in Mission Server post. Guests never POST this. */
+export const socialMessageBodySchema = z.object({
+  id: z.string().min(1).max(80),
+  channelSlug: garageChannelSlug,
+  body: z.string().trim().min(1).max(2000),
+  kind: z.enum(['text', 'nudge']).optional(),
+  authorCallSign: z.string().trim().min(1).max(24),
+  authorMissionId: z
+    .string()
+    .regex(/^\d{2}$/)
+    .nullable()
+    .optional(),
+  createdAt: z.string().min(10).max(40),
+});
+
+export const socialMessagesQuerySchema = z.object({
+  channel: garageChannelSlug,
+  since: z.string().min(10).max(40).optional(),
+  limit: z.coerce.number().int().min(1).max(100).optional(),
+});
+
+export const socialPresenceBodySchema = z.object({
+  status: z.enum(['available', 'away', 'offline']),
+  callSign: z.string().trim().min(1).max(24),
+});
+
+export const socialReportBodySchema = z.object({
+  messageId: z.string().min(1).max(80),
+  reason: z.enum(['spam', 'abuse', 'other']).optional(),
+});
+
 export const accountDeleteBodySchema = z
   .object({
     confirm: z.literal('DELETE'),

@@ -32,6 +32,10 @@ export type GarageRealtimeDeps = {
     topic: string,
     onEvent: (payload: unknown) => void
   ) => Promise<RealtimeSubscription>;
+  subscribeInserts?: (
+    table: string,
+    onRow: (row: unknown) => void
+  ) => Promise<{ disconnect: () => void }>;
 };
 
 async function defaultDeps(): Promise<GarageRealtimeDeps> {
@@ -66,6 +70,34 @@ async function defaultDeps(): Promise<GarageRealtimeDeps> {
         },
       };
     },
+    subscribeInserts: async (table, onRow) => {
+      const ch = supabase.channel(`mw-${table}-inserts`);
+      ch.on(
+        'postgres_changes',
+        { event: 'INSERT', schema: 'public', table },
+        (evt: { new?: unknown }) => {
+          onRow(evt?.new);
+        }
+      );
+      await Promise.race([
+        new Promise<void>((resolve, reject) => {
+          ch.subscribe((status: string) => {
+            if (status === 'SUBSCRIBED') resolve();
+            if (status === 'CHANNEL_ERROR' || status === 'TIMED_OUT') {
+              reject(new Error(status));
+            }
+          });
+        }),
+        new Promise<void>((_, reject) => {
+          setTimeout(() => reject(new Error('timeout')), 3000);
+        }),
+      ]);
+      return {
+        disconnect: () => {
+          void supabase.removeChannel(ch);
+        },
+      };
+    },
   };
 }
 
@@ -87,8 +119,16 @@ export async function connectGarageRealtime(
     const userId = session?.user?.id;
     if (!userId) return { ok: false, reason: 'no-session' };
 
-    const topic = `mw-garage-${userId}`;
+    const topic = 'mw-garage';
     const sub = await d.subscribe(topic, onRemote);
+    let tableSub: { disconnect: () => void } | null = null;
+    if (d.subscribeInserts) {
+      try {
+        tableSub = await d.subscribeInserts('social_messages', onRemote);
+      } catch {
+        tableSub = null;
+      }
+    }
     return {
       ok: true,
       send: async (message) => {
@@ -101,6 +141,11 @@ export async function connectGarageRealtime(
       disconnect: () => {
         try {
           sub.disconnect();
+        } catch {
+          // ignore
+        }
+        try {
+          tableSub?.disconnect();
         } catch {
           // ignore
         }

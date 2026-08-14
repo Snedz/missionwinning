@@ -66,7 +66,7 @@ test('configured session can send after subscribe', async () => {
     isConfigured: () => true,
     getSession: async () => ({ user: { id: 'u1' } }),
     subscribe: async (topic, _onEvent) => {
-      assert.match(topic, /^mw-garage-u1$/);
+      assert.equal(topic, 'mw-garage');
       return {
         send: async (payload) => {
           sent.push(payload);

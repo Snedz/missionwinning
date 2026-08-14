@@ -69,6 +69,7 @@ test('first load persists a Garage and round-trips a message', () => {
   assert.equal(a.server.channels.length, 3);
   const posted = postLocalMessage('train', 'logged the set');
   assert.equal(posted.ok, true);
+  if (posted.ok) assert.equal(posted.message.origin, 'local');
   const b = loadMissionServer();
   assert.equal(messagesForChannel(b, 'train').length, 1);
   assert.equal(messagesForChannel(b, 'train')[0].body, 'logged the set');

@@ -106,5 +106,6 @@ function isGarageMessage(value: unknown): value is GarageMessage {
   ) {
     return false;
   }
+  if (m.origin !== undefined && m.origin !== 'local' && m.origin !== 'remote') return false;
   return true;
 }

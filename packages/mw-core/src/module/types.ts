@@ -80,7 +80,7 @@ export const HEALTH_TRAIN_MANIFEST: ModuleManifest = {
 /** Garage messenger — rooms + local presence. Free core; never gates the logger. */
 export const SOCIAL_SERVER_MANIFEST: ModuleManifest = {
   id: 'social.server',
-  version: '1.1.0',
+  version: '1.2.0',
   scopes: ['identity.read', 'social.channel.write'],
   surfaces: ['web'],
   freeCore: true,
