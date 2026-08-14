@@ -243,6 +243,30 @@ test('/about is additive Astro and does not steal the Next host', () => {
   assert.match(copy, /Texas/);
 });
 
+test('/vision is additive Astro and does not steal the Next host', () => {
+  /*
+   * C1. Commissioned fourth-surface vision page. Next keeps
+   * www.missionwinning.com and Next /vision.
+   */
+  const page = read('sites/www/src/pages/vision.astro');
+  const copy = [page, read('sites/www/src/lib/visionContent.ts')].join('\n');
+  assert.match(page, /\bterminal\b/, '/vision must terminate at the private gate');
+  assert.match(page, /href="\/"/, '/vision must link to the homepage');
+  assert.ok(
+    existsSync(path.join(root, 'src/page-components/VisionPage.tsx')),
+    'Next /vision stays — this loop does not move the SEO URL'
+  );
+  assert.equal(
+    existsSync(path.join(root, 'sites/www/public/_redirects')),
+    false,
+    'no _redirects — do not steal www.missionwinning.com'
+  );
+  assert.doesNotMatch(copy, /america|Presidential Fitness/i);
+  assert.doesNotMatch(copy, /\b\d[\d,.]*\s*(athletes|users|sign-?ups)\b/i);
+  assert.match(copy, /free forever/i);
+  assert.match(copy, /no wearable required/i);
+});
+
 test('/week anywhere movement keeps three photographs and two plates', () => {
   /*
    * Concept 02's honest greybox: five places, three frames in the repo.
