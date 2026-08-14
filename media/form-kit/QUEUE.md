@@ -1,19 +1,19 @@
 # Form Index — generation queue (resume)
 
-**Status:** `.772` library honesty + Wave A + Wave B start.  
+**Status:** `.772` library honesty + Wave A + Wave B (8 stills).  
 **Do not** run `npm run media:optimize-inbox` on the whole inbox (it rewrites unrelated packs). Targeted sharp only.
 
 ## Shipped pack (after .772)
 
 | Kind | Count | Notes |
 |------|-------|--------|
-| SIDE stills | **33** | + landmine-row + 10 Wave A + dead-bug / side-plank / mountain-climbers |
+| SIDE stills | **38** | + landmine-row + 10 Wave A + 8 Wave B |
 | VIDEO loops | **11** | demoted front-squat / burpees / thruster / lunges until I2V from new stills |
 | Pattern rasters | all 7 including hinge | hinge regen PASS |
 
 ## Next stills (Wave B remainder)
 
-`hollow-hold` (this session FAIL — V-sit), then remaining structured guides: `cable-row`, `lateral-raise`, `dumbbell-press`, `dumbbell-row`, landmine siblings, `incline-bench`, `wall-ball`, carries.
+Landmine siblings, `incline-bench`, `wall-ball`, carries, `jump-squats`, `dips-chair`, `step-ups`, isolation leftovers (`skull-crusher`, `calf-raise`, `hanging-leg-raise`).
 
 Library cards must stay unique-pack only (`formPackLibraryPosterUrl`).
 

@@ -65,6 +65,7 @@ Log every rejected generation. Do not re-ship the same glitch.
 - **Barbell row:** model often puts bar on back (good-morning) — insist “bar outside body toward ribs, not on back”.
 - **Collar / clip geometry:** models invent multi-prong hubs (3 clips from side). **Default empty bar; never spring collars.**
 - **OHP lower path:** I2V from lockout still repeatedly puts the bar **behind** the head / on traps. Prefer still-only until a front-rack path passes frame QA; stronger “in front of face only” lock is not enough alone.
+- **Floor poses (hollow / dead-bug / superman):** model flips the athlete prone or attaches the head backwards on the spine (`images/35.jpg`). That is a hard reject, not “almost a hollow.” Face, chest, and spine must agree.
 
 ## 2026-08-05 — Eyes-on wrong exercise / crop (.498)
 
@@ -122,3 +123,12 @@ Regen priority: landmine-row (`prompts/still-landmine-row.md`), pattern-hinge (`
 | 2026-08-14 | `dead-bug/side.webp` (`images/25.jpg`) | Supine, one leg tabletop, other hovering | **PASS still-only** |
 | 2026-08-14 | `side-plank/side.webp` (`images/28.jpg`) | Forearm side plank, hips stacked, top arm up | **PASS still-only** |
 | 2026-08-14 | `mountain-climbers/side.webp` (`images/29.jpg`) | High plank, one knee driving | **PASS still-only** |
+| 2026-08-14 | hollow-hold gen (`images/35.jpg`) | Impossible anatomy — head / skeleton backwards (face does not match the spine). Also prone, not hollow. | FAIL — do not wire |
+| 2026-08-14 | hollow-hold gen (`images/37.jpg`) | Superman / prone, not hollow | FAIL — do not wire |
+| 2026-08-14 | hollow-hold gen (`images/36.jpg`) | Supine rest, arms to ceiling | FAIL — do not wire |
+| 2026-08-14 | cable-row gen (`images/31.jpg`) | High-pulley seated row | FAIL — retry low/horizontal |
+| 2026-08-14 | `hollow-hold/side.webp` (`images/38.jpg`) | Supine, lumbar down, legs hover | **PASS still-only** |
+| 2026-08-14 | `cable-row/side.webp` (`images/39.jpg`) | Seated, horizontal cable, mid-pull | **PASS still-only** |
+| 2026-08-14 | `lateral-raise/side.webp` (`images/41.jpg`) | Standing, DBs at shoulder height | **PASS still-only** |
+| 2026-08-14 | `dumbbell-press/side.webp` (`images/34.jpg`) | Flat bench, DBs over chest | **PASS still-only** |
+| 2026-08-14 | `dumbbell-row/side.webp` (`images/33.jpg`) | Three-point row, DB at hip | **PASS still-only** |

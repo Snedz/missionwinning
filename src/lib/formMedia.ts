@@ -66,6 +66,11 @@ export const FORM_PACK_SIDE_IDS = new Set([
   'dead-bug',
   'side-plank',
   'mountain-climbers',
+  'hollow-hold',
+  'cable-row',
+  'lateral-raise',
+  'dumbbell-press',
+  'dumbbell-row',
 ]);
 
 /**

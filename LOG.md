@@ -22,9 +22,9 @@ still. Method aliases (`20-rep-squat` → `squats`, …). Regen PASS stills:
 front-squat, landmine-row, pattern-hinge, burpees (jump), thruster (lockout),
 lunges (dumbbells). Wave A unique stills: inverted-row, hip-thrust, face-pull,
 bicep-curl, tricep-pushdown, wall-sit, bird-dog, lat-pulldown, goblet-squat,
-pike-pushup. Wave B start: dead-bug, side-plank, mountain-climbers (retries
-after wrong-exercise FAIL). Floor 19 → 33. Loops demoted on replaced stills.
-No bulk I2V.
+pike-pushup. Wave B: dead-bug, side-plank, mountain-climbers, hollow-hold,
+cable-row, lateral-raise, dumbbell-press, dumbbell-row. Floor 19 → 38.
+Loops demoted on replaced stills. No bulk I2V.
 
 Mutants: SIDE_IDS without a disk still → red; alias to an unwired target → red;
 library poster for `incline-bench` is null (not `pattern-push`).

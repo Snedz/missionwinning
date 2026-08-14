@@ -85,13 +85,16 @@ test('Terms liability cap, Texas law, indemnify; Privacy 30-day deletion', () =>
   assert.match(locales, /required or permitted by law/);
 });
 
-test('legal + About stamp: 0.1 beta, Texas LLC, dated 13 Aug 2026, no live-Stripe claim', () => {
+test('legal + About stamp: public product version, Texas LLC, dated 13 Aug 2026, no live-Stripe claim', () => {
   const locales = readFileSync(join(root, 'src/i18n/infoLocales.ts'), 'utf8');
   const about = readFileSync(join(root, 'app/about/page.tsx'), 'utf8');
   const refunds = readFileSync(join(root, 'src/page-components/RefundsPage.tsx'), 'utf8');
   const dmca = readFileSync(join(root, 'src/i18n/infoLocales.ts'), 'utf8');
 
-  assert.match(about, /Mission Winning 0\.1 \(beta\)/);
+  // About interpolates APP_PUBLIC_PRODUCT_VERSION — do not freeze a spelling
+  // here. `.769` is 0.0.1 (beta); #550 is Alpha 0.1.0. A literal `0.1 (beta)`
+  // is how this test went red on master the day after `.769`.
+  assert.match(about, /APP_PUBLIC_PRODUCT_VERSION/);
   assert.doesNotMatch(about, /invite-only|Private beta|private beta/i);
   assert.match(locales, /Texas limited liability company/);
   assert.match(locales, /Last updated: 13 August 2026/);
