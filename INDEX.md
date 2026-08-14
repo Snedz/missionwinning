@@ -22,7 +22,7 @@
 | If you are… | Read first | Do not use as source of truth |
 |-------------|------------|-------------------------------|
 | **Deciding what to build next** | [ORCHESTRATION.md](ORCHESTRATION.md) | Old chat plans; infinite feature lists |
-| **Spawning the next agent graph loop** | [docs/GRAPH_LOOP.md](docs/GRAPH_LOOP.md) (queue) after ORCHESTRATION | Another planning memo; executing two loops in one PR; closed 2026-08-12 sand PRs as if they were master |
+| **Spawning the next agent graph loop** | [docs/GRAPH_LOOP.md](docs/GRAPH_LOOP.md) (queue) after ORCHESTRATION | Another planning memo; executing two loops in one PR; closed 2026-08-12 sand PRs as if they were master; unparking Horizon W while GRAPH_LOOP records skip-W 2026-08-14 |
 | Implementing a feature | [ORCHESTRATION.md](ORCHESTRATION.md) horizon gate + [docs/PLAN.md](docs/PLAN.md) + `src/*/INDEX.md` | Old chat plans in `~/.cursor/plans/` |
 | Launch / deploy | **[docs/LAUNCH_RUNBOOK.md](docs/LAUNCH_RUNBOOK.md) — the single source**, then [docs/ENV.md](docs/ENV.md) for what each var means | Everything in `docs/archive/` (`SOFT_LAUNCH_DAY`, `BETA_LAUNCH_OPS`, `PRE_LAUNCH_PLAN`, `LAUNCH_READY`, `TRACK_D_GO_LIVE`, `SETUP`) — all **superseded 2026-07-19** and all still contradicting the runbook |
 | **Supabase migrations (one sitting)** | [docs/MIGRATION_FOUNDER_PACK.md](docs/MIGRATION_FOUNDER_PACK.md) — ordered P1–P10 + week-4 proof | Guessing from `ls migrations/`; claiming week-4 without tombstone fix |
@@ -142,7 +142,7 @@ Root keeps only the spine: README · CONTEXT · AGENTS · INDEX · vision · ORC
 | [docs/STRATEGY.md](docs/STRATEGY.md) | **Stub** — full business plan in private mission-ops |
 | [docs/REDTEAM.md](docs/REDTEAM.md) | **Stub** — full assumptions audit in private mission-ops |
 | [docs/PLAN.md](docs/PLAN.md) | Build roadmap |
-| [docs/GRAPH_LOOP.md](docs/GRAPH_LOOP.md) | Agent graph execution queue (one concern per loop) |
+| [docs/GRAPH_LOOP.md](docs/GRAPH_LOOP.md) | Agent graph execution queue (Horizon 0+; W parked 2026-08-14) |
 | [docs/E1RM_PLAN.md](docs/E1RM_PLAN.md) | Frozen `.739` — educational Epley e1RM on logged sets |
 | [LOG.md](LOG.md) | Dev log |
 | [docs/JOURNEY.md](docs/JOURNEY.md) | Mission journey UX |

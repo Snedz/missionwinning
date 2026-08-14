@@ -167,6 +167,8 @@ This repo has no `.greptile/` tree. Instill is this recipe + `privacyInstill.tes
 6. Close the loop in `GRAPH_LOOP.md` (Outcome = PR + label). Do not start the next loop in that PR.
 7. Spawn the next agent with the copy-paste prompt in GRAPH_LOOP.md.
 
+If GRAPH_LOOP records a founder skip-W (2026-08-14), do not pull parked W loops forward. Do not write excellence `status: pass`.
+
 Hard bans stay: free logger never gated · no `PRIVATE_MODE` flip · no invented traction.
 
 ---

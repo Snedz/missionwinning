@@ -5,7 +5,21 @@
 **Status:** ACTIVE 2026-08-14 · web `2026.07-unified.779` · Alpha 0.1.0  
 **Does not replace:** [ORCHESTRATION.md](../ORCHESTRATION.md) (what may be built) · [CONTEXT.md](../CONTEXT.md) `## Now` (where we are) · [vision.md](../vision.md) (constitution) · [docs/THESIS.md](THESIS.md) (wedge) · [docs/PLAN.md](PLAN.md) (phases A–I)
 
-This file is the **execution queue** for the agent graph: one concern per loop, spawn, ship, mark done, spawn the next. It is not a second status block and not a license to skip horizon gates.
+This file is the **execution queue** for the agent graph: one concern per loop, spawn, ship, mark done, spawn the next. It is not a second status block and not a license to skip standing hard bans.
+
+---
+
+## This session — skip Horizon W (2026-08-14)
+
+Founder: *skip Horizon W for now / this session. Continue assuming Horizon W passes. Make a plan. Do deep research. Build.*
+
+| Still true | What this session does **not** do |
+|------------|-----------------------------------|
+| [ORCHESTRATION.md](../ORCHESTRATION.md) still names Horizon W as the standing NOW | Do not write `status: pass` in [EXCELLENCE_RESULT.md](EXCELLENCE_RESULT.md) — that remains founder phone sign-off |
+| Surface PRs still need `Excellence-Override` while RESULT is `unscored` | Do not pull parked W loops 0–8 unless the founder unparks them |
+| Hard bans (logger, `PRIVATE_MODE`, traction, America / wearables-as-score / iOS) | Do not invent ≥10 beta, EIN, or secrets |
+
+**Active queue = Horizon 0+** (launch unblock after an assumed W pass). Parked W loops sit at the bottom of this file.
 
 ---
 
@@ -18,52 +32,25 @@ read spine → pick the top open loop here → one PR → tests + ship protocol
     → mark the loop done in this file → spawn the next agent with the prompt below
 ```
 
-Recent turns of that cycle:
+Recent turns:
 
 | Turn | What it was | Outcome |
 |------|-------------|---------|
-| Kaizen nights | Wedge UX density (Today / logger / Pump-shaped screens) | Merged (#222, #234) — now in master as `.55x`–`.58x` guards |
-| Live-walk graph (sand, 2026-08-12) | Beta honesty: invite path, `/private` form, Welcome Skip, `/log` crash | **Partial.** Merged: #453 #454 #455 #462 #463 #464. **Closed unmerged:** #451 #452 #456 #457 #458 #459 #460 #461 — harvest in Loop 0, do not blindly reopen |
-| `.772`–`.779` | Form stills, coach RAG, LLM $ cap, Mission Server rooms, PAR-Q as intake, privacy program | On master. Craft window, not phone excellence sign-off |
-
-The next graph does **not** invent a fifteenth honesty nit. It returns to Horizon W: Train → Today → Victory → Coach until the founder scores the phone path.
+| Kaizen nights | Wedge UX density | Merged (#222, #234) |
+| Live-walk graph (sand, 2026-08-12) | Beta honesty | **Partial.** Merged #453 #454 #455 #462 #463 #464. Closed unmerged #451–#461 — harvest is parked with W |
+| `.772`–`.779` | Form stills, coach RAG, LLM $ cap, Mission Server, PAR-Q, privacy program | On master. Craft window, not phone excellence sign-off |
+| This file v1 | Horizon W queue 0–8 | Docs-only. **Parked** this session |
+| This file v2 | Horizon 0+ queue (research 2026-08-14) | **You are here.** Top open = **H0-1** |
 
 ---
 
 ## “Limitless” — how to read the founder ask
 
-This session asked for a plan with **no self-censorship of ambition**. That means:
+Map the path to the constitution. Prefer delete/refine and wedge depth over another planning memo. Do not refuse a loop because it is “too much product” if it is on **this** queue.
 
-- Map the path all the way to the constitution (six pillars, free core forever, coach that grows with you).
-- Prefer delete/refine and wedge depth over another planning memo.
-- Do not refuse a loop because it is “too much product” if it is on the queue and inside current founder overrides (full-launch 2026-08-05, www Astro 2026-08-09, pre-EIN craft 2026-08-03).
-
-It does **not** mean agents may:
-
-- Flip `PRIVATE_MODE`, invent traction, or mark founder tasks done
-- Gate the free logger
-- Start iOS, America marketing, wearables-as-score, or locale-body farms without a **new** explicit override
-- Spawn ten agents on one concern
+Agents still may not: flip `PRIVATE_MODE`, invent traction, mark founder tasks done, gate the free logger, start iOS / America marketing / wearables-as-score / locale-body farms without a **new** override, or spawn ten agents on one concern.
 
 Ambition lives in the **queue**. Each running agent still ships **one loop**.
-
----
-
-## Honest gap (vision vs now)
-
-Point, don’t copy: status → [CONTEXT.md](../CONTEXT.md) `## Now`. Thesis honesty → [docs/THESIS.md](THESIS.md) §4.
-
-| Layer | True now | Gap the loop can close |
-|-------|----------|------------------------|
-| **North star** | Written in [vision.md](../vision.md) | Not a ship. Do not pitch it. |
-| **Wedge** | Logger + Mission Coach are deep. Form Index unique stills = **43** of **228** exercise pages. Coach chat has local RAG (premium). PAR-Q is coach intake. | Phone path still **unscored** ([docs/EXCELLENCE_RESULT.md](EXCELLENCE_RESULT.md)). Coach “earned from logs” scored 2.56/5 on clarity — `logCitation` / `weekRationale` exist; Today first paint may still hide them. |
-| **Habit / return** | Code for anonymous push + shame-free re-entry shipped | **Dark:** no VAPID, SW off while gated, `MAIL_POSTAL_ADDRESS` unset. In-app re-entry can still improve. |
-| **Users** | Invite alpha. `/active` public while gated (`.768`). | ≥10 beta is a **public-flip** gate, not a code freeze. Postal + invites are founder. |
-| **Money** | Stripe / Play / USDC exist; FREE_BETA mutes pay | EIN is founder. Do not un-mute Bundle UI. |
-| **Android** | Compose v1.24.1, wedge I-Day → Victory → Coach | Accept B unscored. iOS closed. |
-| **Year 2+ pillars** | Fuel deep; Move/Mind catalogs; Track GPS + empty wearables; Learn ~5,300 words | Deepen **after** excellence pass + week-4 direction. Wallpaper is the failure mode. |
-
-**Boss metric (after public):** week-4 retained weekly loggers. Uncomputable until founder-applied `mw_week4_retention()` is proven — CONTEXT says P1–P12 + that RPC **are applied** as of 2026-08-14; the proof SQL is still founder. Agents do not claim the metric.
 
 ---
 
@@ -73,164 +60,213 @@ Point, don’t copy: status → [CONTEXT.md](../CONTEXT.md) `## Now`. Thesis hon
 2. **Take only the top `open` loop.** If you finish early, stop. Do not start the next loop in the same PR (one concern).
 3. **Investigate in source** before coding. If the loop’s claim is already false on master, mark it `done (already true)` with the file that proves it — do not restyle.
 4. **Ship protocol** if you touch `src/`, `app/`, `scripts/`, or `supabase/`: bump `APP_BUILD_LABEL` **past master**, LOG + CONTEXT `## Now` in the same commit, `[skip vercel]` unless the founder asked for Preview, `Excellence-Override: <reason>` if the path class is `surface` while RESULT is unscored. Docs-only PRs do **not** mint a version.
-5. **Hard bans (standing):** free logger never gated · no `PRIVATE_MODE` flip · no invented traction · no America/wearables/iOS · no chat on Today · do not raise `TAP_BUDGET` · do not steal occupied build labels.
+5. **Hard bans (standing):** free logger never gated · no `PRIVATE_MODE` flip · no invented traction · no America/wearables-as-score/iOS · no chat on Today · do not raise `TAP_BUDGET` · do not steal occupied build labels.
 6. **After merge:** edit this file — set the loop `done`, put the PR/label in the Outcome column, leave the next loop `open`. That edit is the baton.
 
 ### Stop the graph if
 
-- RESULT is `fail` and the founder’s defect list is empty (wait for notes)
-- Two loops in a row ship without moving W1–W4 or an explicit queue item
-- You are about to write another plan instead of executing Loop N
+- Two loops in a row ship without moving an H0 agent-allowed item (or an explicit queue item)
+- You are about to write another plan instead of executing the top `open` loop
+- A loop requires a founder secret / postal / invite / env flip — mark it `founder` and take the next **agent** `open` row
+
+Do **not** stop solely because RESULT is `unscored` while this skip-W note is in force.
 
 ---
 
 ## Queue
 
-Status key: `open` · `done` · `founder` · `blocked`.
+Status key: `open` · `done` · `parked` · `founder` · `blocked`.
 
-### Now — Horizon W (agents)
+### Now — Horizon 0 (agents)
+
+Verified in source 2026-08-14 (master `.779`). Findings with proof paths: [§ Research](#research--verified-2026-08-14).
 
 | # | Loop | Moves | Status |
 |---|------|-------|--------|
-| **0** | Harvest closed live-walk PRs | Honesty / gate | `open` — **next** |
-| **1** | Phone hero: one next session (W2 + C5) | Excellence 2, 5 | `open` |
-| **2** | Logger one-thumb outdoors (W1 + W3) | Excellence 1, 3 | `open` |
-| **3** | Coach week earned from logs, on Coach **and** Today | Excellence 3, 4 | `open` |
-| **4** | Missed-day re-entry, in-app only | Excellence 4 | `open` |
-| **5** | Form Index Wave D — next unique stills | Train honesty | `open` |
-| **6** | “Win Score” → Mission Score leftover strings | Naming honesty | `open` |
-| **7** | API INDEX + `docs/API.md` drift (9 missing handlers) | Docs match reality | `open` |
-| **8** | Guidebook chapter heroes still navy/emerald | Design honesty | `open` |
+| **H0-1** | PWA `start_url` flag-switch (same predicate as SW) | Public-flip landmine | `open` — **next** |
+| **H0-2** | `check-env --launch` vs FREE_BETA (H0 vs H1 profiles) | Launch-verify can succeed | `open` |
+| **H0-3** | API INDEX + `docs/API.md` + PROGRAM_STATUS census | Docs match reality | `open` |
+| **H0-4** | Public-flip checklist: `start_url` curl + SW; runbook pointers | Flip-day smoke | `open` |
+| **H0-5** | “Win Score” → Mission Score leftover strings | Public copy honesty | `open` |
+| **H0-6** | Guidebook chapter heroes still navy/emerald | Design honesty before baselines | `open` |
+| **H0-7** | Production-stack / runbook vs CONTEXT (Upstash, `.104`) | Docs match reality | `open` |
+
+### After H0 (orientation — not open until H0-1…H0-7 are done or `founder`)
+
+Do not pull these forward while H0 agent loops remain `open`.
+
+| Horizon | Agent-allowed | Founder-only |
+|---------|---------------|--------------|
+| **1 — Public** | Offline + SW smoke after the flip; Search Console wiring; PostHog activation baseline **code**; residual 403 matrix | `PRIVATE_MODE=false`; VAPID / Sentry / Upstash / `CRON_SECRET` / `SMOKE_BASE_URL`; EIN → unmute Bundle; Lifetime vs Grok option 1/2/3 in runbook §5 (code default 15¢/day already `.775`) |
+| **2 — PMF** | In-app return loop polish; interview-driven copy &lt;48h; one wall-metric SQL helper if the RPC shape is wrong | Week-4 proof SQL; 10 interviews; stop-acquisition call |
+| **3 — Scale** | SEO compound, i18n bodies, TWA, wearables **as inputs**, iOS | Only after week-4 holds on two cohorts |
+
+**Fuel estimate accuracy** is named remaining in ORCHESTRATION. Do **not** invent more NL tokens without founder dogfood. Not an open H0 loop.
+
+**Two week-4 definitions already exist** — set-level in [docs/METRICS.md](METRICS.md) and workout RPC `mw_week4_retention()`. Do not invent a third.
 
 ### Parallel (do not jump the wedge)
 
 | # | Loop | Moves | Status |
 |---|------|-------|--------|
 | **A** | Android Accept B prep (`apps/android/**` only) | Play path | `open` — separate lane |
-| **W** | `sites/www` remaining pages per [DESIGN_PROPOSAL_WWW.md](DESIGN_PROPOSAL_WWW.md) | Marketing die | `open` — fourth surface, not the app |
+| **W** | `sites/www` remaining pages / host split | Marketing die | `open` — fourth surface, not the app. Spec §6 still lists about/vision/compare/press/bundle/private; tree is `index` · `start` · `week` only. Compare rail deleted `.668`. Host `www.missionwinning.com` is claimed by both Astro and Next — no `_redirects` / wrangler / deploy workflow. CSP `form-action 'self'` blocks cross-origin POST to `/api/leads`; invite CTA must keep linking Next `/private` ([`sites/www/src/lib/appLinks.ts`](../sites/www/src/lib/appLinks.ts)). |
 
 ### Founder (agents never mark done)
 
 | Item | Why the graph cannot finish it |
 |------|-------------------------------|
-| `MAIL_POSTAL_ADDRESS` | Invite email hard-exits without it |
+| `MAIL_POSTAL_ADDRESS` | Invite email hard-exits (`scripts/send-beta-invite.ts`, `src/emails/renderEmail.ts`) |
 | Phone excellence `status: pass` | [EXCELLENCE_RESULT.md](EXCELLENCE_RESULT.md) |
 | Android Accept B checkbox | [apps/android/FOUNDER_ACCEPT.md](../apps/android/FOUNDER_ACCEPT.md) |
 | ≥10 invites | Public-flip gate |
-| VAPID · `CRON_SECRET` · Sentry · Upstash | Return loop / ops stay dark |
+| VAPID · `CRON_SECRET` · Sentry · Upstash · `SMOKE_BASE_URL` | Return loop / ops stay dark — CONTEXT Status table |
 | EIN → unmute Bundle | [FREE_BETA.md](FREE_BETA.md) |
 | `PRIVATE_MODE=false` | Founder only |
 | Visual baseline bootstrap | Linux CI after Actions billing |
+| CodeQL enable / secrets history scan / DMCA counsel | Founder |
 
-### After excellence pass (Horizon 0–3)
+### Parked — Horizon W (resume if founder unparks)
 
-Do not pull these forward while RESULT is `unscored` unless the founder names one:
-
-1. Residual invite / gate polish + `LAUNCH_STRICT` against prod  
-2. Public flip checklist (SW/offline smoke) — founder flips the gate  
-3. Live paid path after EIN  
-4. Week-4 retention loop (in-app + email once postal exists)  
-5. Fuel estimate accuracy (named remaining in ORCHESTRATION)  
-6. Pillar depth (Move / Mind / Learn) only if week-4 is directional  
-7. iOS lane — after Android Accept B + week-4, per [IOS_PLAYBOOK.md](IOS_PLAYBOOK.md)  
-8. Wearables as **inputs**, never as the score’s master  
-9. Years 4+ platform (B2B / schools / Foundation) — constitution, not this graph
-
----
-
-## Loop 0 — Harvest the closed live-walk PRs (next)
-
-**Concern:** The 2026-08-12 graph closed eight PRs. Some of those defects later landed under other labels (`firstPaintString` is on master; `start_url` is `/private` with a guard). Some may still be true.
-
-**Do this, in order, then stop:**
-
-1. For each closed PR, **read master**, not the old branch: #451 (raw i18n, `{{focusLine}}`, Chest vs Legs, units), #452 (subset of 451), #456 (exercise count), #457 (dead aliases), #458 (`/press` internal path), #459 (PWA `start_url` — likely already true), #460 (invite-only copy), #461 (offline meta while SW is off).
-2. If the defect is **gone**, write one row in Outcome below: `already true — <path>`. Do not restyle.
-3. If the defect is **still true**, ship **one** follow-up PR for the highest-visibility remaining item (prefer #451 units / focus mismatch / remaining raw keys). Leave the rest listed for Loop 0b.
-4. Do not reopen the old branches. Cherry-pick intent, re-implement on current master `.779`+.
-
-**Hard bans:** no Preview unless asked · no `PRIVATE_MODE` · do not “finish” all eight in one PR.
-
-**Excellence-Override** (if surface): `live-walk harvest (honesty)`
+| # | Loop | Status |
+|---|------|--------|
+| W0 | Harvest closed live-walk PRs #451–#461 | `parked` |
+| W1 | Phone hero: one next session | `parked` |
+| W2 | Logger one-thumb outdoors | `parked` |
+| W3 | Coach week earned from logs, on Coach **and** Today | `parked` |
+| W4 | Missed-day re-entry, in-app only | `parked` |
+| W5 | Form Index Wave D — next unique stills | `parked` |
+| W6 | “Win Score” leftover strings | `parked` — **same work as H0-5**; if you ship H0-5, mark W6 done too |
+| W7 | API INDEX drift | `parked` — **same work as H0-3**; if you ship H0-3, mark W7 done too |
+| W8 | Guidebook chapter heroes | `parked` — **same work as H0-6**; if you ship H0-6, mark W8 done too |
 
 ---
 
-## Loop 1 — Phone hero, one next session
+## Research — verified 2026-08-14
 
-**Excellence:** criterion 2 (one clear next session on Today) + 5 (≤90s feels intentional).
+Do not treat this as a second `## Now`. Status → [CONTEXT.md](../CONTEXT.md). These are **code proofs** for the H0 loops.
 
-**Investigate first (do not invent):**
+### H0-1 — `start_url` is not flag-switched (load-bearing)
 
-- `runTodayPrimaryAction` / `isTodayTrainReady` / `HomeTodayLean` vs `HomeTodayDashboard`
-- Dock vs consent host (`.765`) — Start must stay tappable
-- Just Go honesty: does the primary **name** the live Coach session when a plan exists, else Repeat last, else Start — never a six-pillar list above the fold
-- `TAP_BUDGET` stays **5**. No chat on Today.
+SW **is** flag-switched. Manifest **is not**.
 
-**Ship only if** a cold `/log` (after I-Day) still shows competing reds, a lying Just Go, or a dashboard before the first set. Prefer delete.
+- [`next.config.js`](../next.config.js): `pwaDisabled` when `privateGateActive` (CJS mirror of [`isPrivateModeEnabledFromEnv`](../src/lib/privateModeFlag.ts)). Preview short-circuit first.
+- [`app/manifest.ts`](../app/manifest.ts): `start_url: '/private'` **hardcoded**. `id: '/log'` (stable — do not change).
+- [`src/lib/pwaManifest.test.ts`](../src/lib/pwaManifest.test.ts): requires `start_url === '/private'` and **forbids** `/`, `/log`, `/active` **unconditionally**. After `PRIVATE_MODE=false` rebuild, this test would still demand the teaser.
+- Pattern already used: [`sites/www/src/lib/appLinks.ts`](../sites/www/src/lib/appLinks.ts) (`INVITE_URL` vs `START_URL`); [`app/sitemap.ts`](../app/sitemap.ts) imports `privateModeFlag` (guard in `privateModeFlag.test.ts`).
+- Manifest is **build-time**. Flip day is a rebuild. Gate builds already set `PRIVATE_MODE=false` so SW compiles — start_url must become `/log` in those builds.
+- [`docs/archive/PUBLIC_FLIP_CHECKLIST.md`](archive/PUBLIC_FLIP_CHECKLIST.md) does **not** mention `start_url`. Offline spec needs the ungated build ([`tests/e2e/offline.spec.ts`](../tests/e2e/offline.spec.ts)).
 
-**Done when:** one red action, copy matches destination, Playwright phone 390×844 clicks Start / Resume / Repeat without intercept.
+**Ungated start_url is `/log` (Today), not `/active`.** `.768` made `/active` gate-public so a first set can happen while gated; the installed home after flip is Today, matching `id`.
 
----
+**Preview** (`VERCEL_ENV=preview`) is ungated → start_url `/log`. That is correct for phone review.
 
-## Loop 2 — Logger one-thumb
+### H0-2 — `LAUNCH_STRICT` cannot succeed during free-first public flip
 
-**Excellence:** criterion 1 + 3 (Victory stays in the train loop).
+[`scripts/check-env.mjs`](../scripts/check-env.mjs):
 
-**Investigate:** set row on `/active` outdoors (thumb reach, Log set, rest dock, A1/A2 pair marks, Last / Drop / notes). Slim; do not add a second table or Hevy card stack. Speech never owns first paint.
+- `launchRequired` includes `STRIPE_WEBHOOK_SECRET`.
+- Missing Checkout Sessions **and** Payment Link → hard fail.
+- `MAIL_POSTAL_ADDRESS` unset → **warning only** (the actual invite blocker).
+- FREE_BETA on → a log line, **not** a skip of Stripe.
 
-**Ship only** a measured outdoor friction (control off-thumb, rest covering Log set, pair mark missing on the Set cell). No XP, no social.
+Horizon 0 public flip is planned **during** FREE_BETA. EIN / unmute pay is Horizon **1**. [`scripts/launch-verify.mjs`](../scripts/launch-verify.mjs) always runs `check-env --launch`. Classic check that cannot succeed until a later horizon.
 
----
+Shape: H0 launch profile (no Stripe required while free-beta) vs H1 paid profile. Promote `MAIL_POSTAL_ADDRESS` to fail in the H0 profile — that is the real recruit-10 blocker, and the founder still has to *set* the var.
 
-## Loop 3 — Coach week earned from logs
+### H0-3 — API inventory drift
 
-**Excellence:** criterion 3.
+`find app/api -name route.ts` = **74** handlers. [docs/security/PROGRAM_STATUS.md](security/PROGRAM_STATUS.md) still says **71** and lists 9 missing from INDEX.
 
-`weekRationale`, `logCitation`, `CoachAdaptBanner`, `CoachLogCite` already exist because survey clarity was 2.56/5. The loop is **visibility**, not a new engine.
+**Missing from [`app/api/INDEX.md`](../app/api/INDEX.md)** (verified by path substring 2026-08-14):
 
-**Ship:** when a plan exists, Today and `/coach` both show one log-cited line (input · rule · effect) or an honest empty (“needs a logged set”). No LLM on this path. Free generate/adapt stays free.
+`account/mission-id` · `beta/feedback` · `beta/invites` · `beta/invites/landed` · `beta/invites/redeem` · `cron/day-review` · `health` · `metrics/week-logged` · `mobile/premium/play-purchase`
 
----
+[`docs/API.md`](API.md) already has `GET /api/health` and `beta/invites` (+ landed/redeem). It does **not** have mission-id, week-logged, beta/feedback, cron/day-review, play-purchase.
 
-## Loop 4 — Missed-day re-entry (in-app)
+Headers on those routes already say “See: app/api/INDEX.md, docs/API.md”. Discover remaining `route.ts` rather than copying this list — a name that claims “all handlers” must fail on an unreviewed file.
 
-**Excellence:** criterion 4.
+### H0-4 / H0-7 — checklists and runbook vs CONTEXT
 
-Push is dark without VAPID. Do **not** pretend reminders work.
+[CONTEXT.md](../CONTEXT.md) `## Now` wins (`.178`). [LAUNCH_RUNBOOK.md](LAUNCH_RUNBOOK.md) §1 still talks `.104` / “CI billing cleared 2026-07-22”; §2b checks Upstash live; CONTEXT Status table: Actions exhausted, Upstash **unset**. Do not “fix” by copying the Status table into the runbook. Add a pointer: if the runbook disagrees, CONTEXT wins. H0-4 adds the missing `start_url` curl to the flip checklist.
 
-**Ship:** Today, when last log is a previous local date (use `localDateKey`, never `toISOString()`), one shame-free next session via `reentry.ts` / `nudgeCopy.ts` tone. No streak-loss, no “you missed”, no absence-length. Do not call `Notification.requestPermission` on this path.
+### H0-5 — Win Score leftover copy
 
----
+Trap term in CONTEXT: do not add new “Win Score” strings. Remaining values (2026-08-14 grep): `landingLocales`, `todayLocales`, `notificationLocales`, `historyLocales`, `guidebookLocales`, plus `src/lib/INDEX.md` notes and `winScoreSeen` **field name** in activation tests (rename the **string**, not the storage key, unless a migration exists).
 
-## Loop 5 — Form Index Wave D
+### H0-6 — chapter heroes
 
-**Floor today:** `CONTENT_FLOORS.formPackSide` = 43. Pattern rasters still stand in for the long tail.
+CONTEXT `.254`: `public/learn/*.webp` 89–99% dark with teal. `check-design-system` cannot see a `.webp`. Block visual-baseline commit of `guide-human-performance.png` until re-inked.
 
-**Ship:** 5–8 **unique** side stills for high-use catalog ids still **not** in `FORM_PACK_SIDE_IDS`. Eyes-on vs movement standard. Still-only. Failed gens stay in `media/form-kit/qa/FAIL.md`. Raise the floor only as far as the new PASS ids. No loops. No shared runner/push-up on a named lift.
+### Also true (not a loop)
 
----
-
-## Loop 6 — Mission Score leftover copy
-
-[CONTEXT.md](../CONTEXT.md) trap terms: do not add new “Win Score” strings. Remaining values live in guidebook prose, `learnPaths`, component `defaultValue`s, `notificationLocales`, and `landingLocales` (15 packs).
-
-**Ship:** one i18n pass. `npm run i18n:parity`. No product behavior change.
-
----
-
-## Loop 7 — API inventory drift
-
-[docs/security/PROGRAM_STATUS.md](security/PROGRAM_STATUS.md): `app/api/INDEX.md` misses 9 live handlers (`account/mission-id`, `beta/feedback`, `beta/invites` ×3, `cron/day-review`, `health`, `metrics/week-logged`, `mobile/premium/play-purchase`).
-
-**Ship:** rows in `app/api/INDEX.md` **and** [docs/API.md](API.md). No handler behavior change. Discover remaining `route.ts` files rather than copying that list.
+- Return-loop **code** shipped ([RETURN_LOOP_PLAN.md](RETURN_LOOP_PLAN.md)); **inert** without VAPID + SW (founder).
+- `/bundle` still 307s to `/log` while free-beta ([`src/lib/bundleShop.test.ts`](../src/lib/bundleShop.test.ts)).
+- `sites/www` photography 3 vs ~12 wanted — not blocking.
 
 ---
 
-## Loop 8 — Guidebook chapter heroes
+## H0-1 — PWA `start_url` flag-switch (next)
 
-CONTEXT: `public/learn/*.webp` chapter heroes are 89–99% dark with teal — the navy/emerald palette the Modernist rebrand retired. `check-design-system` cannot see a `.webp`.
+**Concern:** After the founder sets `PRIVATE_MODE=false` and rebuilds, installed PWAs must open Today (`/log`), not the teaser. Today they would still open `/private` because the manifest is hardcoded and the test forbids any other value.
 
-**Ship:** re-ink chapter heroes to paper/ink/poster red, or stop linking them from paper pages until they match. Do not `--update-snapshots` as a substitute.
+**Do this, then stop:**
+
+1. Extract `pwaStartUrl(env)` next to the existing predicate — `isPrivateModeEnabledFromEnv` from [`src/lib/privateModeFlag.ts`](../src/lib/privateModeFlag.ts). Do **not** copy the Preview short-circuit into a third private function. Gated → `'/private'`. Ungated → `'/log'`.
+2. [`app/manifest.ts`](../app/manifest.ts) calls `pwaStartUrl()`. Keep `id: '/log'`.
+3. Rewrite [`src/lib/pwaManifest.test.ts`](../src/lib/pwaManifest.test.ts):
+   - Source coupling: `app/manifest.ts` imports `pwaStartUrl` and has **no** `start_url: '/private'` literal (same shape as the sitemap guard in `privateModeFlag.test.ts`).
+   - Env matrix on the helper: production+unset → `/private`; `PRIVATE_MODE=false` → `/log`; `VERCEL_ENV=preview` → `/log`; explicit `PRIVATE_MODE=true` → `/private`.
+   - When gated, start_url is `isPrivateGatePublicPath`. When ungated, start_url is `/log` (not `/active`, not `/`).
+4. Falsify: a mutant that hardcodes `start_url: '/private'` in `manifest.ts` must go red. A mutant that returns `/active` when ungated must go red.
+5. `Excellence-Override: H0 PWA start_url flag-switch (founder skip-W 2026-08-14)` — `app/manifest.ts` is path class `surface`.
+6. Ship protocol: label past master `.779`, LOG + CONTEXT `## Now`, `[skip vercel]`.
+
+**Hard bans:** do not flip `PRIVATE_MODE`. Do not change `id`. Do not point start_url at `/active` (logger stays free; it is not the install home). Do not start H0-2 in this PR.
+
+**Done when:** gated production still cold-starts `/private`; ungated / Preview / gate-build cold-start `/log`; tests kill the hardcoded-teaser mutant.
+
+---
+
+## H0-2 — Launch env profiles
+
+**Concern:** `LAUNCH_STRICT=true npm run launch-verify` cannot go green on the planned free-first public flip.
+
+**Ship:** split H0 vs H1 in `scripts/check-env.mjs` (and document in `scripts/INDEX.md` + launch-verify header). While FREE_BETA is on, Stripe webhook + Checkout are **not** H0-required. `MAIL_POSTAL_ADDRESS` **is** H0-required (fail, not warn). H1/`--paid` keeps today’s Stripe hard-fails. Tests: a fixture with postal + core secrets and no Stripe must pass H0 and fail H1. Do not set any production env.
+
+---
+
+## H0-3 — API inventory
+
+**Concern:** 9 live handlers missing from INDEX; PROGRAM_STATUS census is 71 vs 74 files.
+
+**Ship:** rows in `app/api/INDEX.md` **and** the five `docs/API.md` holes (mission-id, week-logged, beta/feedback, cron/day-review, play-purchase). Update PROGRAM_STATUS count by discovering `route.ts`. Guard: a test that globs `app/api/**/route.ts` and fails if INDEX has no substring for that path — so the next handler cannot go missing silently. No handler behavior change. Mark parked W7 done.
+
+---
+
+## H0-4 — Flip checklist `start_url`
+
+**Concern:** The agent-prepared flip one-pager never asks what the baked manifest’s `start_url` is.
+
+**Ship:** one curl + expected value in [PUBLIC_FLIP_CHECKLIST.md](archive/PUBLIC_FLIP_CHECKLIST.md) (gated: `/private`; post-flip rebuild: `/log`) and a pointer from [LAUNCH_RUNBOOK.md](LAUNCH_RUNBOOK.md) §5. Do not restate CONTEXT Status. Depends on H0-1 having landed (or land the curl as “after H0-1”).
+
+---
+
+## H0-5 — Mission Score leftover copy
+
+**Ship:** one i18n pass (`src/i18n/*Locales.ts`). `npm run i18n:parity`. Do not add keys. Do not rename `winScoreSeen` storage without a migration. Mark parked W6 done.
+
+---
+
+## H0-6 — Guidebook chapter heroes
+
+**Ship:** re-ink `public/learn/*.webp` to paper/ink/poster red, or stop linking them from paper pages until they match. Eyes-on. Do not `--update-snapshots`. Mark parked W8 done.
+
+---
+
+## H0-7 — Runbook / scorecard vs CONTEXT
+
+**Ship:** at the top of [LAUNCH_RUNBOOK.md](LAUNCH_RUNBOOK.md) §1 and [PRODUCTION_STACK.md](PRODUCTION_STACK.md) scorecard, one sentence: live ops facts live in CONTEXT `## Now`; if a checkbox here is older, CONTEXT wins. Uncheck Upstash-live if the runbook still claims it. Do not copy the Status table.
 
 ---
 
@@ -240,21 +276,22 @@ CONTEXT: `public/learn/*.webp` chapter heroes are 89–99% dark with teal — th
 You are the next Mission Winning graph-loop agent.
 
 1. Read CONTEXT.md, AGENTS.md, INDEX.md, ORCHESTRATION.md, then docs/GRAPH_LOOP.md.
-2. Implement ONLY the top loop whose Status is `open` (today: Loop 0).
-3. Investigate on current master before coding. If the claim is already false, mark the loop done in GRAPH_LOOP.md with proof paths and stop.
-4. One concern. One PR. [skip vercel] unless I asked for Preview.
-5. If you touch src|app|scripts|supabase: bump APP_BUILD_LABEL past master, LOG + CONTEXT ## Now in the same commit. Excellence-Override if the excellence gate classifies the path as surface.
-6. Free logger never gated. Do not flip PRIVATE_MODE. Do not invent traction. Do not start the next loop in this PR.
-7. When done: set this loop to `done` in docs/GRAPH_LOOP.md (Outcome = PR + label) and leave the following loop `open`.
+2. Implement ONLY the top loop whose Status is `open` (today: H0-1 PWA start_url).
+3. This session skipped Horizon W (2026-08-14). Do not unpark W0–W8. Do not write excellence status: pass.
+4. Investigate on current master before coding. If the claim is already false, mark the loop done in GRAPH_LOOP.md with proof paths and stop.
+5. One concern. One PR. [skip vercel] unless I asked for Preview.
+6. If you touch src|app|scripts|supabase: bump APP_BUILD_LABEL past master, LOG + CONTEXT ## Now in the same commit. Excellence-Override if the excellence gate classifies the path as surface.
+7. Free logger never gated. Do not flip PRIVATE_MODE. Do not invent traction. Do not start the next loop in this PR.
+8. When done: set this loop to `done` in docs/GRAPH_LOOP.md (Outcome = PR + label) and leave the following loop `open`. If you shipped H0-3 / H0-5 / H0-6, also mark the parked W twin done.
 ```
 
-To run Loop 1 instead (after 0 is done), replace step 2 with “Implement Loop 1 only.”
+To run H0-2 instead (after H0-1 is done), replace step 2 with “Implement H0-2 only.”
 
 ---
 
 ## Decade map (so the graph has somewhere to go)
 
-Unchanged constitution; gates in ORCHESTRATION. This is orientation, not a build ticket.
+Unchanged constitution; gates in ORCHESTRATION. Orientation, not a build ticket.
 
 | Stage | Product | Unlock |
 |-------|---------|--------|
@@ -271,6 +308,7 @@ Pitch stays **Train + Mission Coach**. Never “everything app.”
 - Horizons / forbidden: [ORCHESTRATION.md](../ORCHESTRATION.md)  
 - Phone sign-off: [docs/EXCELLENCE_RESULT.md](EXCELLENCE_RESULT.md)  
 - Launch (founder): [docs/LAUNCH_RUNBOOK.md](LAUNCH_RUNBOOK.md)  
+- Public flip smoke: [docs/archive/PUBLIC_FLIP_CHECKLIST.md](archive/PUBLIC_FLIP_CHECKLIST.md)  
 - Form media: [docs/MEDIA_SYSTEM.md](MEDIA_SYSTEM.md) · `src/lib/formMedia.ts`  
 - Return channel: [docs/RETURN_LOOP_PLAN.md](RETURN_LOOP_PLAN.md)  
 - Agent playbooks: [docs/AGENT_RECIPES.md](AGENT_RECIPES.md) recipe 11
