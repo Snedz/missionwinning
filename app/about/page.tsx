@@ -3,11 +3,12 @@ import { publicPageMetadata } from '@/lib/seoMetadata';
 import { PublicPageShell } from '@/components/public/PublicPageShell';
 import { AboutPage } from '@/page-components/AboutPage';
 import { isFreeBeta } from '@/lib/freeBeta';
+import { APP_PUBLIC_PRODUCT_VERSION } from '@/lib/buildInfo';
 
 export const metadata: Metadata = publicPageMetadata({
-  title: 'About Mission Winning 0.1 (beta)',
+  title: `About ${APP_PUBLIC_PRODUCT_VERSION}`,
   description:
-    'Mission Winning 0.1 (beta) — open beta. Free offline logger + Mission Coach from your logs. Operated by Mission Winning LLC, a Texas limited liability company. Educational tools only, not medical care.',
+    `${APP_PUBLIC_PRODUCT_VERSION} — open beta. Free offline logger + Mission Coach from your logs. Operated by Mission Winning LLC, a Texas limited liability company. Educational tools only, not medical care.`,
   path: '/about',
 });
 
@@ -22,7 +23,7 @@ export default function About() {
   return (
     <PublicPageShell
       eyebrow="About"
-      title="Mission Winning 0.1 (beta)"
+      title={APP_PUBLIC_PRODUCT_VERSION}
       subtitle={
         isFreeBeta()
           ? 'Open beta. Free offline logger + Mission Coach from your logs — the logger stays free forever. No account required. Educational tools only, not medical care.'

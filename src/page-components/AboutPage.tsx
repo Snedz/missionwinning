@@ -117,8 +117,9 @@ export function AboutPage() {
         <p className="text-base leading-relaxed text-muted-foreground">
           {freeBeta
             ? t('infoAboutBusinessBodyOpenBeta', {
+                productVersion: APP_PUBLIC_PRODUCT_VERSION,
                 defaultValue:
-                  'Operated by Mission Winning LLC, a Texas limited liability company. Mission Winning 0.1 (beta) is an open beta — full tools free while we grow with you. The logger stays free forever.',
+                  'Operated by Mission Winning LLC, a Texas limited liability company. {{productVersion}} is an open beta — full tools free while we grow with you. The logger stays free forever.',
               })
             : t('infoAboutBusinessBody', {
                 defaultValue:
