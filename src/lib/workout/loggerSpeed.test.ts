@@ -16,6 +16,10 @@ describe('loggerSpeed', () => {
     assert.equal(consoleMatchesTarget(9, 60, { reps: 9, weight: 60 }), true);
     assert.equal(consoleMatchesTarget(8, 60, { reps: 9, weight: 60 }), false);
     assert.equal(consoleMatchesTarget(9, 60, null), false);
+    // F-013: last-set prefill uses the same equality — dial can match last
+    // while Use next still offers a different overload target (E-Adjacency).
+    assert.equal(consoleMatchesTarget(8, 70, { reps: 8, weight: 70 }), true);
+    assert.equal(shouldOfferUseNext(8, 70, { reps: 9, weight: 72.5 }), true);
   });
 
   it('offers Use next only when dialed values differ', () => {

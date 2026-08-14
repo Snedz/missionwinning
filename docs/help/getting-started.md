@@ -25,7 +25,7 @@ If you see a **password screen** (`/private`), your cohort uses a pre-launch gat
 
 1. Tap **Train** in the bottom nav (or start from Today).
 2. Pick a template from **Builder** or start a blank workout.
-3. Log sets (reps, weight, RPE). The set you are logging shows a **Target** stacked above **Previous**, cited from your last session (for example *From last Tue · sets 2–4*). No history yet? Target says *No prior sets yet — log this one* — it never invents a number. Rest timer runs automatically.
+3. Log sets (reps, weight, RPE). After you log a set, the next one starts with the same load and reps — tap **Log set** once to confirm. Rest timer runs automatically.
 4. Finish — your session saves to **History**.
 
 ## Sign in (optional but recommended)
