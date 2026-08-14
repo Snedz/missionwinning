@@ -14,7 +14,9 @@
 ## Rules
 
 - Free logger is never gated by rank.  
-- Weekly train goal is the boss consistency signal (not daily streak shame).  
+- Weekly train goal is the boss consistency signal (not daily streak shame).
+- Planned rest (`plannedRest.ts`) bridges a consecutive-day streak. It is never a session.
+  
 - Events are idempotent via `claimedEventIds`.  
 - No pay-to-win XP.
 

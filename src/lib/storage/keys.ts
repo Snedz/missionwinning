@@ -37,6 +37,8 @@ export const STORAGE_KEYS = {
    * afternoon adding +3 to a "day streak".
    */
   streakLastBump: 'mw_streak_last_bump',
+  /** YYYY-MM-DD list. Bridges a consecutive-day streak; never a train session. */
+  plannedRestDays: 'mw_planned_rest_days',
   challenges: 'mw_challenges',
   /** Mission Rewards — XP, ranks, badges (local-first). */
   rewards: 'mw_rewards',

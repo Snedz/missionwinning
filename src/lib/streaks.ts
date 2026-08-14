@@ -15,7 +15,9 @@ import { getFuelLogStreak } from '@/lib/fuelStreak';
 import { STORAGE_KEYS } from '@/lib/storage/keys';
 import { readRaw, writeRaw } from '@/lib/storage/safeStorage';
 import { localDateKey, localDateKeyFromIso } from '@/lib/time/localDate';
-import { isStreakLive, streakFromDates } from '@/lib/streakRecency';
+import { isStreakLive } from '@/lib/streakRecency';
+import { loadPlannedRestDays } from '@/lib/rewards/plannedRestStorage';
+import { streakFromDatesAllowingRest } from '@/lib/rewards/plannedRest';
 
 export const STREAK_KEY = STORAGE_KEYS.streak;
 
@@ -71,8 +73,9 @@ export function getTrainingStreak(workoutHistory: CompletedWorkoutLog[]): number
     if (last && isStreakLive(last, today)) return stored;
   }
 
-  return streakFromDates(
+  return streakFromDatesAllowingRest(
     workoutHistory.map((w) => localDateKeyFromIso(w.completedAt)),
+    loadPlannedRestDays(),
     today
   );
 }
