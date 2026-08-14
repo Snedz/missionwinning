@@ -5,6 +5,7 @@ import { useTranslation } from 'react-i18next';
 import { Sparkles } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { CoachLogCite } from '@/components/coach/CoachLogCite';
 import { cn } from '@/lib/utils';
 
 interface CoachInsightCardProps {
@@ -42,6 +43,14 @@ export function CoachInsightCard({
             defaultValue: 'From your recent training load and recovery',
           })}
         </CardDescription>
+        {/*
+          `.767` — "from your recent training load" is a claim about a derived
+          score, and shard 3 (IL/IN/SEA) repeats shard 2's finding that Coach is
+          not *visibly* grounded in logs. Load and recovery are computed from
+          sessions, so the session is the thing to show. Same component as the
+          other Coach surfaces (`.766`).
+        */}
+        <CoachLogCite className="mt-1" />
       </CardHeader>
       <CardContent className="flex flex-col sm:flex-row sm:items-center gap-4">
         <p

@@ -7,6 +7,17 @@ import { LOCAL_FIRST_COPY, localFirstCopyIsHonest } from '@/lib/localFirstCopy';
 const root = path.join(import.meta.dirname, '..', '..');
 const read = (p: string) => readFileSync(path.join(root, p), 'utf8');
 
+/**
+ * Source minus prose. A comment that *names* the constant satisfied
+ * `/LOCAL_FIRST_COPY\.gateLocalFirst/` on its own, so a mutant that replaced the
+ * rendered value with "Works offline." survived — the same shape as `.766`'s
+ * leftover-import defect, found the same way.
+ */
+const readCode = (p: string) =>
+  read(p)
+    .replace(/\/\*[\s\S]*?\*\//g, ' ')
+    .replace(/(^|[^:])\/\/[^\n]*/g, '$1');
+
 describe('localFirstCopy', () => {
   it('rejects cloud-required framing in every constant', () => {
     const result = localFirstCopyIsHonest();
@@ -14,9 +25,6 @@ describe('localFirstCopy', () => {
   });
 
   it('keeps Active / Today device-first anchors', () => {
-    assert.match(LOCAL_FIRST_COPY.activeSignInTitle, /this device/i);
-    assert.match(LOCAL_FIRST_COPY.activeSignInDesc, /offline/i);
-    assert.match(LOCAL_FIRST_COPY.activeSignInDesc, /only if/i);
     assert.match(LOCAL_FIRST_COPY.todayBackupWhenOnline, /this device/i);
     assert.doesNotMatch(LOCAL_FIRST_COPY.todayBackupWhenOnline, /cloud sync on/i);
     assert.match(LOCAL_FIRST_COPY.todayPillarWinEmpty, /this device/i);
@@ -77,18 +85,61 @@ describe('localFirstCopy', () => {
 
   it('wires both public entries to the constants', () => {
     // The gate floors every string from GATE_EN, so the constant lands there.
-    const gate = read('src/i18n/gateEn.ts');
+    const gate = readCode('src/i18n/gateEn.ts');
     assert.match(gate, /gateLocalFirst: LOCAL_FIRST_COPY\.gateLocalFirst/);
-    const teaser = read('app/private/PrivateTeaserClient.tsx');
+    const teaser = readCode('app/private/PrivateTeaserClient.tsx');
     assert.match(teaser, /g\('gateLocalFirst'\)/, 'the gate poster must render it');
 
-    const welcome = read('src/page-components/WelcomePage.tsx');
+    const welcome = readCode('src/page-components/WelcomePage.tsx');
     assert.match(welcome, /LOCAL_FIRST_COPY\.welcomeLocalFirst/);
     const welcomePack = read('src/i18n/welcomeLocales.ts');
     assert.match(
       welcomePack,
       quoteAssign('welcomeSubtitleBrief', LOCAL_FIRST_COPY.welcomeLocalFirst),
       'I-Day step one paints the pack value — it must be the same sentence'
+    );
+
+    /*
+     * `.767` — shard 3 (IL/IN/SEA) repeated CN/HK's finding, and these regions
+     * arrive on the landing page first (SEO), not on the gate. Same sentence,
+     * same source: three entries, one constant.
+     */
+    const landing = readCode('src/page-components/LandingPage.tsx');
+    assert.match(landing, /LOCAL_FIRST_COPY\.gateLocalFirst/);
+    const landingPack = read('src/i18n/landingLocales.ts');
+    assert.match(
+      landingPack,
+      quoteAssign('landingLocalFirst', LOCAL_FIRST_COPY.gateLocalFirst),
+      'the landing hero paints the pack value — it must be the same sentence'
+    );
+  });
+
+  /**
+   * All three public entries, discovered from the constants rather than listed:
+   * every `*LocalFirst` constant must be rendered somewhere. A constant nobody
+   * mounts is a promise nobody reads.
+   */
+  it('every local-first constant is actually on a screen', () => {
+    const mounted = [
+      'app/private/PrivateTeaserClient.tsx',
+      'src/page-components/WelcomePage.tsx',
+      'src/page-components/LandingPage.tsx',
+      'src/components/today/TodayPageHeader.tsx',
+      'src/components/today/TodayProgressSection.tsx',
+      'src/components/workout/ActiveEmptyState.tsx',
+      'src/page-components/ActiveWorkoutPage.tsx',
+      'src/i18n/gateEn.ts',
+    ]
+      .map(read)
+      .join('\n');
+
+    const unmounted = Object.keys(LOCAL_FIRST_COPY).filter(
+      (key) => !mounted.includes(key)
+    );
+    assert.deepEqual(
+      unmounted,
+      [],
+      `these constants are written and never shown: ${unmounted.join(', ')}`
     );
   });
 
@@ -100,8 +151,14 @@ describe('localFirstCopy', () => {
     const active = read('src/i18n/activeWorkoutLocales.ts');
     assert.match(active, quoteAssign('activeNoWorkout', LOCAL_FIRST_COPY.activeNoWorkout));
     assert.match(active, quoteAssign('activeNoWorkoutDesc', LOCAL_FIRST_COPY.activeNoWorkoutDesc));
-    assert.match(active, quoteAssign('activeSignInTitle', LOCAL_FIRST_COPY.activeSignInTitle));
-    assert.match(active, quoteAssign('activeSignInDesc', LOCAL_FIRST_COPY.activeSignInDesc));
+    /*
+     * `.767` — the Active sign-in strings are still in the pack (fifteen
+     * translations) but no longer in `LOCAL_FIRST_COPY`: master's `.746` removed
+     * the prompt that rendered them. Asserted against the pack directly so the
+     * device-first wording is still pinned if that surface ever returns.
+     */
+    assert.match(active, /activeSignInTitle: 'Sets save on this device'/);
+    assert.match(active, /Sign in only if you want the same log on another device/);
 
     const today = read('src/i18n/todayLocales.ts');
     assert.match(today, quoteAssign('todayPillarWinEmpty', LOCAL_FIRST_COPY.todayPillarWinEmpty));

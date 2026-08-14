@@ -98,6 +98,21 @@ export function SessionCheckInSheet({ open, onDismiss }: Props) {
   const [soreness, setSoreness] = useState(3);
   const [sleep, setSleep] = useState(3);
   const [motivation, setMotivation] = useState(3);
+  /**
+   * Which rows the athlete actually moved.
+   *
+   * `.767` — every row starts at 3 and `save()` used to write all three
+   * unconditionally, so the fastest way past a sheet standing between you and
+   * your first set was to tap its primary — which recorded a readiness check-in
+   * of 3/3/3 that nobody answered. `computeBodyScores` reads those, and Mission
+   * Coach reads readiness, so the friction was manufacturing the input the
+   * plan is derived from. Shard 3 reports both defects (too many taps; Coach not
+   * visibly grounded in logs); this is one place where the first one *causes*
+   * the second.
+   */
+  const [touched, setTouched] = useState<Set<'soreness' | 'sleep' | 'motivation'>>(new Set());
+  const touch = (row: 'soreness' | 'sleep' | 'motivation') =>
+    setTouched((prev) => (prev.has(row) ? prev : new Set(prev).add(row)));
 
   const skip = () => {
     track('readiness_checkin_completed', { adjusted: false });
@@ -105,10 +120,15 @@ export function SessionCheckInSheet({ open, onDismiss }: Props) {
   };
 
   const save = () => {
+    // Nothing moved: the athlete answered nothing, so record nothing.
+    if (touched.size === 0) {
+      skip();
+      return;
+    }
     const checkIn = upsertTodayPartial({
-      soreness,
-      sleep,
-      energy: motivation,
+      ...(touched.has('soreness') ? { soreness } : {}),
+      ...(touched.has('sleep') ? { sleep } : {}),
+      ...(touched.has('motivation') ? { energy: motivation } : {}),
     });
     track('readiness_checkin_completed', { adjusted: true });
     onDismiss({ completed: true, checkIn });
@@ -165,7 +185,10 @@ export function SessionCheckInSheet({ open, onDismiss }: Props) {
       <QuickRow
         label={t('sessionCheckInSoreness', { defaultValue: 'Soreness' })}
         value={soreness}
-        onChange={setSoreness}
+        onChange={(v) => {
+          touch('soreness');
+          setSoreness(v);
+        }}
         lowHint={t('sessionCheckInFresh', { defaultValue: 'Fresh' })}
         highHint={t('sessionCheckInBeaten', { defaultValue: 'Beaten up' })}
         firstButtonRef={firstControlRef}
@@ -173,14 +196,20 @@ export function SessionCheckInSheet({ open, onDismiss }: Props) {
       <QuickRow
         label={t('sessionCheckInSleep', { defaultValue: 'Sleep last night' })}
         value={sleep}
-        onChange={setSleep}
+        onChange={(v) => {
+          touch('sleep');
+          setSleep(v);
+        }}
         lowHint={t('sessionCheckInPoor', { defaultValue: 'Poor' })}
         highHint={t('sessionCheckInGreat', { defaultValue: 'Great' })}
       />
       <QuickRow
         label={t('sessionCheckInMotivation', { defaultValue: 'Motivation' })}
         value={motivation}
-        onChange={setMotivation}
+        onChange={(v) => {
+          touch('motivation');
+          setMotivation(v);
+        }}
         lowHint={t('sessionCheckInLow', { defaultValue: 'Low' })}
         highHint={t('sessionCheckInFired', { defaultValue: 'Fired up' })}
       />
@@ -193,7 +222,7 @@ export function SessionCheckInSheet({ open, onDismiss }: Props) {
  * True when the session sheet should open.
  * W1 / pure rule: [`shouldOfferSessionCheckInDecision`](../../lib/workout/sessionCheckInOffer.ts).
  */
-export function shouldOfferSessionCheckIn(): boolean {
+export function shouldOfferSessionCheckIn(loggedSetsThisSession = 0): boolean {
   if (typeof window === 'undefined') return false;
   let skippedForToday = false;
   try {
@@ -205,6 +234,7 @@ export function shouldOfferSessionCheckIn(): boolean {
     completedHistoryLength: readWorkoutHistoryFromStorage().length,
     skippedForToday,
     todayCheckInComplete: isTodayCheckInComplete(),
+    loggedSetsThisSession,
   });
 }
 
