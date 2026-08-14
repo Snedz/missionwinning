@@ -59,9 +59,9 @@ const FIRST_STEPS_EN: Record<string, string> = {
   fuelModeStripLabel: 'Log method',
 
   // The public status bar — true only while `isFreeBeta()`.
-  // Stamp interpolates APP_PUBLIC_PRODUCT_VERSION (free beta, not invite-only).
+  // Free beta wording (BETA_LANGUAGE); same free-first promise either way.
   publicStatusOpenBeta:
-    '{{productVersion}} — free beta. Offline logging plus Mission Coach from your logs.',
+    'Free beta — full platform free for testers while we grow with you',
 };
 
 const fs = (over: Record<string, string>): Record<string, string> => ({

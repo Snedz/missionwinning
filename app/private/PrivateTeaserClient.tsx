@@ -10,6 +10,8 @@ import { grantPrivateAccessFromSession } from '@/lib/grantPrivateAccessFromSessi
 import { sanitizeNextPath } from '@/lib/safeRedirect';
 import { submitLead } from '@/lib/supabase';
 import { track } from '@/lib/analytics';
+import { GATED_WWW_HONESTY } from '@/lib/gatedWwwHonesty';
+import { GatePendingChrome } from './GatePendingChrome';
 
 type Props = {
   /** Server-resolved invite so SSR HTML exposes data-mw-invitee for gate-smoke. */
@@ -136,11 +138,11 @@ export function PrivateTeaserClient({ initialInvite = '' }: Props) {
         value={password}
         onChange={(e) => setPassword(e.target.value)}
         placeholder={t('gateAccessPlaceholder', {
-          defaultValue: 'Enter code from your invite',
+          defaultValue: 'Enter your access code',
         })}
         autoComplete="off"
-        // Invitees land with the access form expanded — focus the code field.
-        // eslint-disable-next-line jsx-a11y/no-autofocus -- invite conversion
+        // Code-link landers get the access form expanded — focus the code field.
+        // eslint-disable-next-line jsx-a11y/no-autofocus -- access-code conversion
         autoFocus={isInvitee}
         className="gate-input"
         disabled={loading}
@@ -154,12 +156,12 @@ export function PrivateTeaserClient({ initialInvite = '' }: Props) {
 
   if (sessionUnlocking) {
     return (
-      <div
-        className="gate-shell gate-center"
-        data-mw-invitee={isInvitee ? '1' : '0'}
-      >
-        {t('gateCheckingSession', { defaultValue: 'Checking sign-in…' })}
-      </div>
+      <GatePendingChrome
+        isInvitee={isInvitee}
+        status={t('gateCheckingSession', {
+          defaultValue: GATED_WWW_HONESTY.gateCheckingSession,
+        })}
+      />
     );
   }
 
@@ -173,12 +175,12 @@ export function PrivateTeaserClient({ initialInvite = '' }: Props) {
           <span className="gate-brandname">Mission Winning</span>
         </span>
         <p className="gate-kicker">
-          {t('gateEyebrow', { defaultValue: 'Private beta in progress' })}
+          {t('gateEyebrow', { defaultValue: GATED_WWW_HONESTY.gateEyebrow })}
         </p>
       </header>
       <hr className="gate-rule" />
 
-      {/* Field manual: eyebrow → display → one red (invite = enter beta; cold = notify). */}
+      {/* Field manual: eyebrow → display → one red (code = enter beta; cold = notify). */}
       <main className="gate-main">
         <div className="gate-col">
           <h1 className="gate-h1">
@@ -187,20 +189,24 @@ export function PrivateTeaserClient({ initialInvite = '' }: Props) {
           </h1>
           <p className="gate-lede">
             {t('gateSubtitle', {
-              defaultValue:
-                'Free offline workout logging plus Mission Coach — weekly plans from your logs alone, no wearable. Launching soon; the core is free forever.',
+              defaultValue: GATED_WWW_HONESTY.gateSubtitle,
+            })}
+          </p>
+          <p className="gate-foot">
+            {t('gateWedgeTeaser', {
+              defaultValue: GATED_WWW_HONESTY.gateWedgeTeaser,
             })}
           </p>
 
           {isInvitee ? (
             <section className="gate-section">
               <p className="gate-kicker">
-                {t('gateInviteEyebrow', { defaultValue: 'Beta invite' })}
+                {t('gateInviteEyebrow', { defaultValue: 'Access code' })}
               </p>
               <p className="gate-invite-copy">
                 {t('gateInviteSubtitle', {
                   defaultValue:
-                    "You're invited — enter the access code from your invite email, then complete I-Day and log your first workout.",
+                    'Enter the access code from your email, then complete I-Day and log your first workout.',
                 })}
               </p>
               <form onSubmit={handleSubmit}>
@@ -216,7 +222,7 @@ export function PrivateTeaserClient({ initialInvite = '' }: Props) {
                 </div>
                 {errorNode}
                 <p className="gate-foot">
-                  {t('gateBetaGuideFoot', { defaultValue: 'Invited testers: see the' })}{' '}
+                  {t('gateBetaGuideFoot', { defaultValue: 'Beta testers: see the' })}{' '}
                   <Link href="/beta">
                     {t('gateBetaGuide', { defaultValue: 'beta start guide' })}
                   </Link>
@@ -234,7 +240,7 @@ export function PrivateTeaserClient({ initialInvite = '' }: Props) {
                   </p>
                   <p className="gate-foot">
                     {t('gateWaitlistDoneFoot', {
-                      defaultValue: "We'll email you the moment doors open.",
+                      defaultValue: "We'll email you when a seat opens.",
                     })}{' '}
                     {waitEmail}
                   </p>
@@ -242,7 +248,9 @@ export function PrivateTeaserClient({ initialInvite = '' }: Props) {
               ) : (
                 <form onSubmit={handleWaitlist}>
                   <p className="gate-kicker">
-                    {t('gateWaitlistTitle', { defaultValue: 'Get notified at launch' })}
+                    {t('gateWaitlistTitle', {
+                      defaultValue: GATED_WWW_HONESTY.gateWaitlistTitle,
+                    })}
                   </p>
                   <div className="gate-row">
                     <input
