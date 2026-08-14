@@ -44,7 +44,7 @@ function Mark({ size = 36 }: { size?: number }) {
 
 export function CinematicWww({ mode, door }: Props) {
   const { t } = useTranslation();
-  const freeBeta = t('gateEyebrow', { defaultValue: 'Free beta' });
+  const freeBeta = t('gateEyebrow', { defaultValue: 'Alpha' });
   const navLabel =
     mode === 'gate' ? freeBeta : t('landingNavStart', { defaultValue: 'Start free' });
   const doorHref = mode === 'gate' ? '#door' : '/welcome';
