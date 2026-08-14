@@ -2,7 +2,7 @@
 
 **Audience:** Founder + the next Hermes / Grok Build / graph agent  
 **Lane:** Engineering-Web (unless a loop says Android)  
-**Status:** ACTIVE 2026-08-14 · web `2026.07-unified.804` · Alpha 0.1.0 · **D3 open**  
+**Status:** ACTIVE 2026-08-14 · web `2026.07-unified.805` · Alpha 0.1.0 · **D queue residual thin · stop for phone**  
 **Does not replace:** [ORCHESTRATION.md](../ORCHESTRATION.md) (what may be built) · [CONTEXT.md](../CONTEXT.md) `## Now` (where we are) · [vision.md](../vision.md) (constitution) · [docs/THESIS.md](THESIS.md) (wedge) · [docs/PLAN.md](PLAN.md) (phases A–I)
 
 This file is the **execution queue** for the agent graph: one concern per loop, spawn, ship, mark done, spawn the next. It is not a second status block and not a license to skip standing hard bans.
@@ -148,7 +148,7 @@ First D list mixed Alpha with leftover open-beta shop work. Product stamp is **A
 |---|------|-------|--------|
 | **D1** | Alpha copy leftover | Athlete-facing “open beta” → Alpha. Do not rename `isFreeBeta()` | `done` — `.804` this PR |
 | **D2** | Alpha docs frame | `docs/FREE_BETA.md` Frame line. Mute-pay fact stays | `done` — this PR |
-| **D3** | CareerLine empty → `/active` | `CareerLineCard.tsx` invitation copy, no exit | `open` |
+| **D3** | CareerLine empty → `/active` | `CareerLineCard.tsx` invitation copy, no exit | `done` — `.805` this PR |
 | **D4** | Astro compare rail / www 5th nav | Hold. 3 live vs-pages. One red | hold |
 
 **Dropped:** Astro `/press` · Astro `/bundle` · Pacers (already-true) · Accept B (founder) · dual-mode FREE_BETA tests (old + already-true).

@@ -17,6 +17,8 @@
  */
 
 import { useTranslation } from 'react-i18next';
+import { Activity } from 'lucide-react';
+import { EmptyState } from '@/components/ui/EmptyState';
 import { Card, CardContent } from '@/components/ui/card';
 import { formatLocalNumber } from '@/lib/i18n/formatLocale';
 import type { CareerLine } from '@/lib/careerLine';
@@ -28,19 +30,16 @@ export function CareerLineCard({ career }: { career: CareerLine }) {
 
   if (!hasCareer(career)) {
     return (
-      <Card className="border-2 border-border bg-card">
-        <CardContent className="pt-6">
-          <p className="eyebrow mb-3 text-primary">
-            {t('careerLineTitle', { defaultValue: 'Your record' })}
-          </p>
-          <p className="text-sm leading-relaxed text-muted-foreground">
-            {t('careerLineEmpty', {
-              defaultValue:
-                'Log a session and this fills in — sessions, volume moved, exercises, your best week, days trained.',
-            })}
-          </p>
-        </CardContent>
-      </Card>
+      <EmptyState
+        icon={Activity}
+        title={t('careerLineTitle', { defaultValue: 'Your record' })}
+        description={t('careerLineEmpty', {
+          defaultValue:
+            'Log a session and this fills in — sessions, volume moved, exercises, your best week, days trained.',
+        })}
+        actionLabel={t('careerLineEmptyAction', { defaultValue: 'Log a session' })}
+        href="/active"
+      />
     );
   }
 
