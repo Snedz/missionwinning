@@ -13,12 +13,13 @@ import { PATTERN_FILTER_LABELS } from '@/lib/libraryFilters';
 
 export async function ExercisesPublicIndexPage() {
   await ensureFullExerciseCatalog();
+  const catalogTotal = EXERCISES.length;
 
   return (
     <PublicPageShell
       eyebrow="Think like a coach"
       title="Exercise library"
-      subtitle={`${EXERCISES.length} movements with form diagrams and coach language — open a lift, then log it free offline.`}
+      subtitle={`${catalogTotal} movements with form diagrams and coach language — open a lift, then log it free offline.`}
       ctaHref="/welcome"
       ctaLabel="Start free"
       maxWidth="4xl"
@@ -54,7 +55,7 @@ export async function ExercisesPublicIndexPage() {
           </Link>
         </div>
       </section>
-      <ExercisesPublicFilter />
+      <ExercisesPublicFilter catalogTotal={catalogTotal} />
     </PublicPageShell>
   );
 }
