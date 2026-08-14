@@ -11,9 +11,10 @@ import { ChevronRight, Rocket } from 'lucide-react';
 import { InfoPageFooter } from '@/components/layout/InfoPageFooter';
 import { InfoPageShell } from '@/components/layout/InfoPageShell';
 import { BETA_EN, BETA_STEP_DEFS } from '@/i18n/betaLocales';
+import { firstPaintString } from '@/lib/i18n/firstPaintString';
 
-function betaDefault(key: string): string {
-  return BETA_EN[key] ?? key;
+function betaLine(key: string, t: (k: string, o?: Record<string, unknown>) => string): string {
+  return firstPaintString(key, BETA_EN[key] ?? key, t);
 }
 
 export function BetaStartPage() {
@@ -41,16 +42,16 @@ export function BetaStartPage() {
         {primary ? (
           <div className="space-y-3">
             <p className="eyebrow">
-              {t(primary.titleKey, { defaultValue: betaDefault(primary.titleKey) })}
+              {betaLine(primary.titleKey, t)}
             </p>
             <p className="text-sm leading-relaxed text-muted-foreground">
-              {t(primary.bodyKey, { defaultValue: betaDefault(primary.bodyKey) })}
+              {betaLine(primary.bodyKey, t)}
             </p>
             <Link
               href={primary.href}
               className="primary-action inline-flex max-w-sm min-h-[52px] tap-target"
             >
-              {t(primary.ctaKey, { defaultValue: betaDefault(primary.ctaKey) })}
+              {betaLine(primary.ctaKey, t)}
               <ChevronRight className="h-5 w-5" />
             </Link>
           </div>
@@ -94,16 +95,16 @@ export function BetaStartPage() {
                   </span>
                   <div className="min-w-0 flex-1 space-y-1">
                     <h2 className="text-sm font-semibold text-foreground">
-                      {t(step.titleKey, { defaultValue: betaDefault(step.titleKey) })}
+                      {betaLine(step.titleKey, t)}
                     </h2>
                     <p className="text-sm leading-relaxed text-muted-foreground">
-                      {t(step.bodyKey, { defaultValue: betaDefault(step.bodyKey) })}
+                      {betaLine(step.bodyKey, t)}
                     </p>
                     <Link
                       href={step.href}
                       className="inline-flex min-h-[44px] items-center text-xs text-muted-foreground underline-offset-2 hover:text-foreground hover:underline"
                     >
-                      {t(step.ctaKey, { defaultValue: betaDefault(step.ctaKey) })}
+                      {betaLine(step.ctaKey, t)}
                       <ChevronRight className="ms-0.5 h-3.5 w-3.5" />
                     </Link>
                   </div>
