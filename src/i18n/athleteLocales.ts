@@ -53,6 +53,7 @@ const ATHLETE_EN: Record<string, string> = {
   careerLineTitle: 'Your record',
   careerLineEmpty:
     'Log a session and this fills in — sessions, volume moved, exercises, your best week, days trained.',
+  careerLineEmptyAction: 'Log a session',
   careerSignature: '{{sessions}} sessions · best week {{bestWeek}} · {{days}} days',
   careerLineSessions: 'Sessions',
   careerLineVolume: 'Volume moved',
@@ -235,6 +236,7 @@ const BY_LANG: Record<string, Record<string, string>> = {
     careerSignature: '{{sessions}} sesiones · mejor semana {{bestWeek}} · {{days}} días',
     careerLineEmpty:
       'Registra una sesión y esto se completa: sesiones, volumen movido, ejercicios, tu mejor semana y días entrenados.',
+    careerLineEmptyAction: 'Registrar una sesión',
     careerLineSessions: 'Sesiones',
     careerLineVolume: 'Volumen movido',
     careerLineExercises: 'Ejercicios',
@@ -282,6 +284,7 @@ const BY_LANG: Record<string, Record<string, string>> = {
     careerSignature: '{{sessions}} séances · meilleure semaine {{bestWeek}} · {{days}} jours',
     careerLineEmpty:
       'Enregistre une séance et tout se remplit : séances, volume déplacé, exercices, ta meilleure semaine et jours d’entraînement.',
+    careerLineEmptyAction: 'Enregistrer une séance',
     careerLineSessions: 'Séances',
     careerLineVolume: 'Volume déplacé',
     careerLineExercises: 'Exercices',
@@ -329,6 +332,7 @@ const BY_LANG: Record<string, Record<string, string>> = {
     careerSignature: '{{sessions}} sessões · melhor semana {{bestWeek}} · {{days}} dias',
     careerLineEmpty:
       'Regista uma sessão e isto preenche-se: sessões, volume movido, exercícios, a tua melhor semana e dias treinados.',
+    careerLineEmptyAction: 'Registar uma sessão',
     careerLineSessions: 'Sessões',
     careerLineVolume: 'Volume movido',
     careerLineExercises: 'Exercícios',
