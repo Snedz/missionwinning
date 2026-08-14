@@ -1,24 +1,21 @@
 # Form Index — generation queue (resume)
 
-**Status:** `.541` honesty pass — demoted failing landmine-row + pattern-hinge.  
-**Blocker for new pixels:** no image-gen API key in agent env. Use Grok Imagine UI.
+**Status:** `.772` library honesty + Wave A + Wave B start.  
+**Do not** run `npm run media:optimize-inbox` on the whole inbox (it rewrites unrelated packs). Targeted sharp only.
 
-## Shipped pack (after .541)
+## Shipped pack (after .772)
 
 | Kind | Count | Notes |
 |------|-------|--------|
-| SIDE stills | **18** | OHP + pull-ups still-only; landmine-row out |
-| VIDEO loops | **15** | unchanged |
-| Pattern rasters | squat, push, pull, loco, core, isolation | **hinge → SVG** until regen |
+| SIDE stills | **33** | + landmine-row + 10 Wave A + dead-bug / side-plank / mountain-climbers |
+| VIDEO loops | **11** | demoted front-squat / burpees / thruster / lunges until I2V from new stills |
+| Pattern rasters | all 7 including hinge | hinge regen PASS |
 
-## Next stills (priority)
+## Next stills (Wave B remainder)
 
-| # | Id | Prompt | Export |
-|---|-----|--------|--------|
-| 1 | `landmine-row` | `prompts/still-landmine-row.md` | `media/inbox/form-landmine-row-side-frame.png` |
-| 2 | `pattern-hinge` | `prompts/still-pattern-hinge.md` | `media/inbox/form-pattern-hinge-side-frame.png` |
-| 3 | Optional chin-over `pull-ups` | `prompts/still-pull-ups.md` | hang already ships |
-| 4 | Optional athlete-a identity unify | — | — |
+`hollow-hold` (this session FAIL — V-sit), then remaining structured guides: `cable-row`, `lateral-raise`, `dumbbell-press`, `dumbbell-row`, landmine siblings, `incline-bench`, `wall-ball`, carries.
+
+Library cards must stay unique-pack only (`formPackLibraryPosterUrl`).
 
 ## Pipeline
 

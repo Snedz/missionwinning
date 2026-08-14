@@ -103,3 +103,22 @@ Export naming: `media/inbox/form-{id}-side-frame.png` → `npm run media:optimiz
 | 2026-08-05 | `thruster/side.webp` | Front-rack squat bottom, empty bar, head clear | PASS (keep) |
 
 Regen priority: landmine-row (`prompts/still-landmine-row.md`), pattern-hinge (`prompts/still-pattern-hinge.md`).
+
+## 2026-08-14 — Library honesty + Wave A (`.772`)
+
+| Date | Asset | Notes | Action |
+|------|--------|--------|--------|
+| 2026-08-14 | `front-squat/side.webp` (pre) | High-bar back squat — wrong exercise | Replaced with front-rack still; VIDEO demoted |
+| 2026-08-14 | `front-squat/side.webp` | Front-rack bottom, elbows high / zombie rack, full body, no text | **PASS still-only** |
+| 2026-08-14 | `landmine-row/side.webp` | Floor sleeve planted; two-hand landmine row; no floating plates | **PASS still-only** → re-wired SIDE_IDS |
+| 2026-08-14 | `pattern-hinge/side.webp` | Full head + feet, empty bar anterior | **PASS** → `FORM_PATTERN_RASTER_IDS` |
+| 2026-08-14 | `burpees/side.webp` | Jump phase (not plank) | **PASS still-only**; VIDEO demoted |
+| 2026-08-14 | `thruster/side.webp` | Overhead lockout (not front-squat bottom) | **PASS still-only**; VIDEO demoted |
+| 2026-08-14 | `lunges/side.webp` | Dumbbells, split stance | **PASS still-only**; VIDEO demoted |
+| 2026-08-14 | dead-bug gen (`images/23.jpg`) | Side-lying reach — not a supine dead bug | FAIL — do not wire |
+| 2026-08-14 | side-plank gen (`images/24.jpg`) | Forearm *front* plank — wrong exercise | FAIL — do not wire |
+| 2026-08-14 | dead-bug gen (`images/27.jpg`) | One foot planted — not a dead bug | FAIL — do not wire |
+| 2026-08-14 | hollow-hold gen (`images/30.jpg`) | V-sit / boat, lumbar off the floor | FAIL — do not wire |
+| 2026-08-14 | `dead-bug/side.webp` (`images/25.jpg`) | Supine, one leg tabletop, other hovering | **PASS still-only** |
+| 2026-08-14 | `side-plank/side.webp` (`images/28.jpg`) | Forearm side plank, hips stacked, top arm up | **PASS still-only** |
+| 2026-08-14 | `mountain-climbers/side.webp` (`images/29.jpg`) | High plank, one knee driving | **PASS still-only** |

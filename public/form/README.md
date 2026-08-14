@@ -14,6 +14,8 @@ Clinical movement demos for Train / library / public exercises.
 
 **Quality reset (`.467`):** loops demoted; `burpees` / `box-jump` / broken patterns demoted. Prefer still-only over glitchy motion.
 
-**Landmine (`.473`):** still-only packs for `landmine-press`, `landmine-row`, `landmine-squat`. Other landmines use pattern media + structured guides.
+**Landmine (`.473` / `.772`):** still-only packs for `landmine-press`, `landmine-row` (floor pivot), `landmine-squat`. Other landmines use pattern media + structured guides.
+
+**Library cards (`.772`):** unique Form Index stills only (33 wired). Shared `pattern-*` rasters stay in the form sheet with an honest caption — they are not card posters. Wave B start: `dead-bug`, `side-plank`, `mountain-climbers`.
 
 Do not embed third-party CrossFit or YouTube demos. MW-owned assets only.

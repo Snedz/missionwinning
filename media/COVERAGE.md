@@ -1,6 +1,6 @@
 # Media coverage report
 
-Generated: 2026-08-06
+Generated: 2026-08-14 (`.772` — unique Form Index stills 33; library cards no longer use pattern rasters)
 
 ## Summary
 
