@@ -36,9 +36,10 @@ export const PRIVATE_GATE_PUBLIC_PATHS = [
   '/welcome',
   /**
    * `.768` — the free logger while the gate is up. Same mechanism as `/welcome`.
-   * Today / Coach / Fuel stay cookie-gated. Not a PRIVATE_MODE flip.
+   * GNT-1 / F-004 — Today (`/log`) is the I-Day landing. Coach / Fuel stay cookie-gated.
    */
   '/active',
+  '/log',
   '/privacy',
   '/terms',
   /** A cookie policy unreachable pre-consent / pre-gate is a defect. */

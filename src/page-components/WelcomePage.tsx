@@ -116,8 +116,7 @@ export function WelcomePage({ initialEdit = false }: WelcomePageProps) {
     track('iday_completed', { experience, equipment });
     /*
      * `.204` — never let onboarding take a session away.
-     * `.768` — while the gate build is on, Today 307s without a cookie, so
-     * cold Continue lands the public logger. After the flip, Today again.
+     * `.839` — cold Continue lands Today (`/log`), gate on or off.
      */
     go(
       idayFinishPath({

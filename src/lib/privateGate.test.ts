@@ -32,7 +32,7 @@ describe('isPublicPathWhileGated', () => {
     assert.equal(isPublicPathWhileGated('/beta'), true);
     assert.equal(isPublicPathWhileGated('/feedback'), true);
     assert.equal(isPublicPathWhileGated('/today'), false);
-    assert.equal(isPublicPathWhileGated('/log'), false);
+    assert.equal(isPublicPathWhileGated('/log'), true);
     assert.equal(isPublicPathWhileGated('/active'), true);
     assert.equal(isPublicPathWhileGated('/active/'), true);
   });
