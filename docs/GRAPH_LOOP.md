@@ -2,7 +2,7 @@
 
 **Audience:** Founder + the next Hermes / Grok Build / graph agent  
 **Lane:** Engineering-Web (unless a loop says Android)  
-**Status:** ACTIVE 2026-08-14 · web `2026.07-unified.808` · Alpha 0.1.0 · **Q2 done**  
+**Status:** ACTIVE 2026-08-14 · web `2026.07-unified.809` · Alpha 0.1.0 · **R1 done · residual thin**  
 **Does not replace:** [ORCHESTRATION.md](../ORCHESTRATION.md) (what may be built) · [CONTEXT.md](../CONTEXT.md) `## Now` (where we are) · [vision.md](../vision.md) (constitution) · [docs/THESIS.md](THESIS.md) (wedge) · [docs/PLAN.md](PLAN.md) (phases A–I)
 
 This file is the **execution queue** for the agent graph: one concern per loop, spawn, ship, mark done, spawn the next. It is not a second status block and not a license to skip standing hard bans.
@@ -182,6 +182,16 @@ Founder Continue after N1. Not N2.
 |---|------|-------|--------|
 | **Q1** | Help docs Mission Score | `docs/help` current name, not leftover Win Score | `done` — this PR |
 | **Q2** | Help first-paint title | `infoHelpTitle` defaultValue matches pack `Help`. Drift cap 216 | `done` — `.808` this PR |
+
+### Now — R (Continue after Q · 2026-08-14)
+
+Not Q3. Builder first-paint leftover.
+
+| # | Loop | Moves | Status |
+|---|------|-------|--------|
+| **R1** | Builder first-paint | count + empty saved match pack. Drift cap 214 | `done` — `.809` this PR |
+
+D4 stays hold. Do not invent R2.
 
 ### After H0 (orientation — not open until H0-1…H0-7 are done or `founder`)
 

@@ -12,6 +12,7 @@ When adding a doc:
 
 | File | Absorbed by / note |
 |------|---------------------|
+| [log/LOG-rotate-794-for-809.md](./log/LOG-rotate-794-for-809.md) | rotated 2026-08-14 for `.809` Builder first-paint (`.794`) |
 | [log/LOG-rotate-793-for-808.md](./log/LOG-rotate-793-for-808.md) | rotated 2026-08-14 for `.808` Help first-paint (`.793`) |
 | [log/LOG-rotate-792-for-807.md](./log/LOG-rotate-792-for-807.md) | rotated 2026-08-14 for `.807` www CTA (`.792`) |
 | [log/LOG-rotate-791-for-806.md](./log/LOG-rotate-791-for-806.md) | rotated 2026-08-14 for `.806` Builder empty (`.791`) |
