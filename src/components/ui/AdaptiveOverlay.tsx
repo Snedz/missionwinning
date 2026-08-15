@@ -41,6 +41,8 @@ type Props = {
    * indicator.
    */
   footer?: ReactNode;
+  /** Extra classes on the pinned footer (default `p-4`). Victory uses `p-0` so the poster field is the footer. */
+  footerClassName?: string;
   /** Hide the default header chrome (caller supplies title inside children) */
   hideHeader?: boolean;
   /** z-index layer — default above MobileNav (z-50) and consent banner (z-60) */
@@ -67,6 +69,7 @@ export function AdaptiveOverlay({
   className,
   bodyClassName,
   footer,
+  footerClassName = 'p-4',
   hideHeader = false,
   zClassName = 'z-[70]',
   titleId: titleIdProp,
@@ -211,7 +214,9 @@ export function AdaptiveOverlay({
           {children}
         </div>
         {footer ? (
-          <div className="shrink-0 border-t-2 border-border bg-card p-4">{footer}</div>
+          <div className={cn('shrink-0 border-t-2 border-border bg-card', footerClassName)}>
+            {footer}
+          </div>
         ) : null}
       </div>
     </div>

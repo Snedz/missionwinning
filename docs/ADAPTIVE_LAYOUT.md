@@ -15,8 +15,8 @@ Cross-surface rules for web PWA + Android Compose. Prefer **width** over orienta
 - Primitive: [`src/components/ui/AdaptiveOverlay.tsx`](../src/components/ui/AdaptiveOverlay.tsx)
 - **Must portal to `document.body`** — AppLayout uses `h-screen overflow-hidden` + scrollable `main`; in-tree `fixed` sheets clip under MobileNav
 - Body scroll lock while open; default z-index above MobileNav (`z-50`) and consent banner (`z-60`) → `z-[70]`
-- Pilots: Fuel log, session check-in, plate calculator, coach adjust
-- Victory uses existing Dialog with wider `md`/`xl` max-width
+- Pilots: Fuel log, session check-in, plate calculator, coach adjust, Victory
+- Victory: `AdaptiveOverlay` `size="sm"` with honor next in the pinned `footer` (`footerClassName="p-0"` so the poster field is the footer). Do not put Next in the scroll body — that parked it under the tab bar at 390×844.
 
 ### Sheet anatomy (Modernist, wave D6)
 

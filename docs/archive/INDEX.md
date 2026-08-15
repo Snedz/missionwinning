@@ -12,7 +12,7 @@ When adding a doc:
 
 | File | Absorbed by / note |
 |------|---------------------|
-| [log/LOG-rotate-825-for-839.md](./log/LOG-rotate-825-for-839.md) | rotated 2026-08-15 for `.839` GNT-1 U1 R3 (`.825`) |
+| [log/LOG-rotate-822-for-840.md](./log/LOG-rotate-822-for-840.md) | rotated 2026-08-15 for `.840` GNT-1 smoother (`.822`) |
 | [log/LOG-rotate-821-for-838.md](./log/LOG-rotate-821-for-838.md) | rotated 2026-08-15 for `.838` JSON-LD graph (`.821`) |
 | [log/LOG-rotate-820-for-837.md](./log/LOG-rotate-820-for-837.md) | rotated 2026-08-15 for `.837` GNT-1 U5 (`.820`) |
 | [log/LOG-rotate-819-for-836.md](./log/LOG-rotate-819-for-836.md) | rotated 2026-08-15 for `.836` GNT-1 U4 (`.819`) |

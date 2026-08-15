@@ -64,6 +64,7 @@ Review on a 390×844 phone viewport first (the Playwright target); desktop secon
 
 | Date | Reviewer | Flows | Issues filed |
 |------|----------|-------|--------------|
+| 2026-08-15 | Gauntlet GNT-1.smoother | Train, Today, Victory, Coach | Victory honor next pinned in `AdaptiveOverlay` footer (`z-[70]`, 44px close). Stills `SMOOTHER-today.png` · `SMOOTHER-train.png` · `SMOOTHER-victory.png` · `SMOOTHER-coach.png`. |
 | 2026-08-15 | Gauntlet GNT-1.U4 R1 | Reentry 3/7/14 | **FAIL** (no render PASS). Guard 5/5. `/log` hit `/private`. |
 | 2026-08-15 | Gauntlet GNT-1.U3 R1 | Coach week from logs | **FAIL** (no render PASS). Engine 2/2. Stills skipped — no two-history seed without demo IIFE. |
 | 2026-08-15 | Gauntlet GNT-1.U2 R1 | `/log` zero-state | **FAIL:** 1 red vs cap 0. Capture `U2-R1-cold.png` is Notify-me, not Today. |
@@ -96,6 +97,14 @@ Review on a 390×844 phone viewport first (the Playwright target); desktop secon
 | 2026-07-21 | Agent (Horizon 0) | `/`→gate, Welcome, `/log`, `/active`→Victory, `/coach` | Fixed in-sprint (no separate Issues): invite→`/private` friction; gate invitee expand; beta guide/banner wedge (Train→Coach); Coach empty-state “Unlock” vs Generate mismatch; ES/FR gate “everything app” subtitle → wedge. Post-flip residual: landing proof-chip density only (Batch C shipped in `.103`). |
 | 2026-07-22 | Agent (H0 residual) | Landing hero density; invite smoke SSR; hero Mission Score e2e | Landing chips/trust row collapsed (one subtitle + one CTA). Invitee `data-mw-invitee` SSR for gate-smoke. Mission Score path fail-closed via Active. `@visual` Linux baselines soft in CI. |
 | 2026-07-22 | Agent (.95) | Public `/guide` chapter CTAs | Wired `publicGuidePracticeCta` so anonymous practice links never dump into gated `/log`/`/nutrition` etc. Magazine body shared renderer. |
+
+### 2026-08-15 — Gauntlet GNT-1.smoother (UX_PLAYBOOK §10)
+
+- **Design better:** the honor CTA belongs in AdaptiveOverlay's pinned footer from the first draft — a scrolling Dialog body at `z-50` will lose it under the rail at 390×844 even when the copy is right.
+- **Think better:** measure the NEXT box against the viewport, not the sheet's inner scroll height. U1 R3 / U5 already named this gap; the smoother's job was to close it, not restyle the four surfaces.
+- **Communicate better:** stills after chrome has hydrated (`#screen-dock`, Start workout, EmptyState), not the skeleton/Welcome/loading frames.
+- **Create more impact:** one reachable honor exit on Victory beats another composition pass on Today/Train/Coach that already held the eight bars.
+- **Next wave differently:** any new sheet with a primary action mounts AdaptiveOverlay with `footer` on day one; do not add a second Dialog variant.
 
 ### 2026-08-09 CX/UX/UI hero pass ritual (`.637`)
 

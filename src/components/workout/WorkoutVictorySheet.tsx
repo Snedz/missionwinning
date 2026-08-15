@@ -6,14 +6,7 @@ import { Share2 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { useLocaleFormat } from '@/hooks/useLocaleFormat';
 import { Button } from '@/components/ui/button';
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from '@/components/ui/dialog';
+import { AdaptiveOverlay } from '@/components/ui/AdaptiveOverlay';
 import type { WorkoutVictorySummary } from '@/lib/workout/workoutVictory';
 import {
   formatProgressionInsight,
@@ -114,6 +107,12 @@ export function WorkoutVictorySheet({
   }, [summary]);
 
   if (!summary) return null;
+
+  const closeSheet = () => {
+    setFeelSaved(false);
+    setShareFailHint(false);
+    onOpenChange(false);
+  };
 
   const shareText = t('victoryShareText', {
     name: summary.workoutName,
@@ -239,146 +238,144 @@ export function WorkoutVictorySheet({
     track('readiness_checkin_completed', { adjusted: true, source: 'victory' });
   };
 
+  const quietLinks = (
+    <div className="flex flex-col items-center gap-1">
+      {showBackTodaySecondary ? (
+        <button
+          type="button"
+          className="text-xs text-muted-foreground hover:text-foreground underline-offset-2 hover:underline min-h-[44px] inline-flex items-center tap-target"
+          onClick={onViewToday}
+        >
+          {t('victoryBackToday', { defaultValue: 'Back to Today' })}
+        </button>
+      ) : null}
+      <div className="flex flex-wrap items-center justify-center gap-x-3 gap-y-1 text-[11px] text-muted-foreground">
+        <button
+          type="button"
+          className="hover:text-foreground underline-offset-2 hover:underline min-h-[44px] inline-flex items-center tap-target"
+          onClick={onViewHistory}
+        >
+          {t('victoryViewHistory', { defaultValue: 'History' })}
+        </button>
+        <span aria-hidden>·</span>
+        <button
+          type="button"
+          className="inline-flex items-center gap-1 hover:text-foreground underline-offset-2 hover:underline min-h-[44px] tap-target"
+          onClick={handleShare}
+        >
+          <Share2 className="h-3 w-3" />
+          {t('victoryShare', { defaultValue: 'Share' })}
+        </button>
+      </div>
+      {shareFailHint ? (
+        <p
+          role="status"
+          className="max-w-xs text-center text-[11px] leading-relaxed text-muted-foreground"
+          data-testid="victory-share-fail"
+        >
+          {t('victoryShareFailed', {
+            defaultValue: 'Couldn’t share from this browser. Tap Share again, or copy from History later.',
+          })}
+        </p>
+      ) : null}
+    </div>
+  );
+
   return (
-    <Dialog
+    <AdaptiveOverlay
       open={open}
-      onOpenChange={(next) => {
-        if (!next) {
-          setFeelSaved(false);
-          setShareFailHint(false);
-        }
-        onOpenChange(next);
-      }}
-    >
-      {/* The dialog primitive sets no max height, so this grew past the viewport once
-          the debrief was added and the "Back to Today" footer became visible but
-          unreachable — the hero e2e caught it as a click timeout, not a render error.
-          dvh, not vh, so mobile browser chrome does not eat the footer. */}
-      <DialogContent className="victory-lock sm:max-w-md md:max-w-lg xl:max-w-xl border-2 border-border bg-card max-h-[90dvh] overflow-y-auto">
-        <DialogHeader className="text-center space-y-3 victory-reveal">
-          <div className="mx-auto relative h-16 w-16 overflow-hidden border-2 border-border bg-card">
-            <Image
-              src="/brand/mascot/kalligator-celebrate.webp"
-              alt=""
-              width={64}
-              height={64}
-              className="h-full w-full object-cover"
+      onClose={closeSheet}
+      size="sm"
+      className="victory-lock"
+      eyebrow={summary.workoutName}
+      title={t('victoryTitle', { defaultValue: 'Session locked' })}
+      bodyClassName="p-5 space-y-3"
+      footerClassName="p-0"
+      footer={
+        <>
+          {summary.nextAction ? (
+            <VictoryNextActionStrip
+              nextAction={summary.nextAction}
+              onNavigate={() => onOpenChange(false)}
             />
-            <span className="sr-only">
-              {t('victoryMascotCue', { defaultValue: 'Session saved.' })}
-            </span>
-          </div>
-          <DialogTitle className="font-display text-2xl font-extrabold tracking-[-0.015em]">
-            {t('victoryTitle', { defaultValue: 'Session locked' })}
-          </DialogTitle>
-          <DialogDescription className="text-sm leading-relaxed text-muted-foreground">
-            {summary.workoutName}
-          </DialogDescription>
-        </DialogHeader>
-
-        <VictoryStatsStrip
-          totalVolume={summary.totalVolume}
-          setCount={summary.setCount}
-          durationSeconds={summary.durationSeconds}
-          unitLabel={unitLabel}
-          formatVolume={(n) => fmt.num(n)}
-          vsLast={summary.receipt?.vsLast ?? null}
-        />
-
-        {summary.receipt ? (
-          <VictoryReceiptStrip receipt={summary.receipt} unitLabel={unitLabel} />
-        ) : null}
-
-        {summary.fieldTest ? (
-          <FieldTestReceiptStrip
-            receipt={summary.fieldTest}
-            units={units}
-            onRunAgain={
-              onRunFieldTestAgain
-                ? () => {
-                    onOpenChange(false);
-                    onRunFieldTestAgain();
-                  }
-                : undefined
-            }
-          />
-        ) : null}
-
-        <VictoryRewardsLine active={open} />
-
-        <VictoryFeelStrip feelSaved={feelSaved} onSaveFeel={saveFeel} />
-
-        {summary.nextAction ? (
-          <VictoryNextActionStrip
-            nextAction={summary.nextAction}
-            onNavigate={() => onOpenChange(false)}
-          />
-        ) : null}
-
-        <VictorySecondaryLinks
-          links={secondaryLinks}
-          onNavigate={() => onOpenChange(false)}
-        />
-
-        {collapseDetails ? (
-          <details className="group border-t-2 border-border pt-3">
-            <summary className="cursor-pointer list-none text-center text-xs font-medium text-muted-foreground min-h-[44px] flex items-center justify-center hover:text-foreground [&::-webkit-details-marker]:hidden">
-              {t('victorySessionDetails', { defaultValue: 'Session details' })}
-            </summary>
-            <div className="mt-3 space-y-3">{detailsBlock}</div>
-          </details>
-        ) : (
-          detailsBlock
-        )}
-
-        <DialogFooter className="flex-col sm:flex-col gap-2 pt-1">
-          {!summary.nextAction && (
-            <Button variant="outline" className="w-full min-h-[44px] tap-target" onClick={onViewToday}>
-              {t('victoryBackToday', { defaultValue: 'Back to Today' })}
-            </Button>
-          )}
-          {showBackTodaySecondary && (
-            <button
-              type="button"
-              className="text-xs text-muted-foreground hover:text-foreground underline-offset-2 hover:underline min-h-[44px] inline-flex items-center tap-target"
-              onClick={onViewToday}
-            >
-              {t('victoryBackToday', { defaultValue: 'Back to Today' })}
-            </button>
-          )}
-          <div className="flex flex-col items-center gap-1">
-            <div className="flex flex-wrap items-center justify-center gap-x-3 gap-y-1 text-[11px] text-muted-foreground">
-              <button
-                type="button"
-                className="hover:text-foreground underline-offset-2 hover:underline min-h-[44px] inline-flex items-center tap-target"
-                onClick={onViewHistory}
+          ) : (
+            <div className="p-4">
+              <Button
+                variant="outline"
+                className="w-full min-h-[44px] tap-target"
+                onClick={onViewToday}
               >
-                {t('victoryViewHistory', { defaultValue: 'History' })}
-              </button>
-              <span aria-hidden>·</span>
-              <button
-                type="button"
-                className="inline-flex items-center gap-1 hover:text-foreground underline-offset-2 hover:underline min-h-[44px] tap-target"
-                onClick={handleShare}
-              >
-                <Share2 className="h-3 w-3" />
-                {t('victoryShare', { defaultValue: 'Share' })}
-              </button>
+                {t('victoryBackToday', { defaultValue: 'Back to Today' })}
+              </Button>
             </div>
-            {shareFailHint ? (
-              <p
-                role="status"
-                className="max-w-xs text-center text-[11px] leading-relaxed text-muted-foreground"
-                data-testid="victory-share-fail"
-              >
-                {t('victoryShareFailed', {
-                  defaultValue: 'Couldn’t share from this browser. Tap Share again, or copy from History later.',
-                })}
-              </p>
-            ) : null}
-          </div>
-        </DialogFooter>
-      </DialogContent>
-    </Dialog>
+          )}
+        </>
+      }
+    >
+      <div className="flex flex-col items-center space-y-3 victory-reveal">
+        <div className="relative h-16 w-16 overflow-hidden border-2 border-border bg-card">
+          <Image
+            src="/brand/mascot/kalligator-celebrate.webp"
+            alt=""
+            width={64}
+            height={64}
+            className="h-full w-full object-cover"
+          />
+          <span className="sr-only">
+            {t('victoryMascotCue', { defaultValue: 'Session saved.' })}
+          </span>
+        </div>
+      </div>
+
+      <VictoryStatsStrip
+        totalVolume={summary.totalVolume}
+        setCount={summary.setCount}
+        durationSeconds={summary.durationSeconds}
+        unitLabel={unitLabel}
+        formatVolume={(n) => fmt.num(n)}
+        vsLast={summary.receipt?.vsLast ?? null}
+      />
+
+      {summary.receipt ? (
+        <VictoryReceiptStrip receipt={summary.receipt} unitLabel={unitLabel} />
+      ) : null}
+
+      {summary.fieldTest ? (
+        <FieldTestReceiptStrip
+          receipt={summary.fieldTest}
+          units={units}
+          onRunAgain={
+            onRunFieldTestAgain
+              ? () => {
+                  onOpenChange(false);
+                  onRunFieldTestAgain();
+                }
+              : undefined
+          }
+        />
+      ) : null}
+
+      <VictoryRewardsLine active={open} />
+
+      <VictoryFeelStrip feelSaved={feelSaved} onSaveFeel={saveFeel} />
+
+      <VictorySecondaryLinks
+        links={secondaryLinks}
+        onNavigate={() => onOpenChange(false)}
+      />
+
+      {collapseDetails ? (
+        <details className="group border-t-2 border-border pt-3">
+          <summary className="cursor-pointer list-none text-center text-xs font-medium text-muted-foreground min-h-[44px] flex items-center justify-center hover:text-foreground [&::-webkit-details-marker]:hidden">
+            {t('victorySessionDetails', { defaultValue: 'Session details' })}
+          </summary>
+          <div className="mt-3 space-y-3">{detailsBlock}</div>
+        </details>
+      ) : (
+        detailsBlock
+      )}
+
+      {quietLinks}
+    </AdaptiveOverlay>
   );
 }

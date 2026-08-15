@@ -18,7 +18,7 @@
 | `AddExerciseSheet.tsx` | `ExercisePicker` in a sheet with the confirm in the footer. **Test contract:** keeps the `search exercises` placeholder, `option` rows and `add selected exercise` name — `logger-depth`, `first-90` and `hero-flows` all drive them |
 | `HardSessionWarningSheet.tsx` | Pre-start hard-session warning — Back does not start; never gates Log set. Stop line follows pregnancy flag (`.746` v1) |
 | `RestTimerBar.tsx` | Rest countdown — **takes the `ScreenDock` over from `LogConsole`, never both**. **Ambient running** while `remaining > 0` (`data-rest-running`, ticking `rest-clock`, depleting ambient fill + meters). Skip via `data-testid="rest-skip"`; accent fill only in final ≤10s |
-| `WorkoutVictorySheet.tsx` | Post-workout summary sheet |
+| `WorkoutVictorySheet.tsx` | Post-workout summary — `AdaptiveOverlay` (`z-[70]`), honor next in pinned `footer` |
 | `VictoryFeelStrip.tsx` | Post-session feel 1–5 energy (free ritual) (`.429`) |
 | `VictoryBodyDeltaStrip.tsx` | Readiness · strain · recovery signed deltas (`.444`) |
 | `VictoryStatsStrip.tsx` | Volume · sets · duration grid (`.447`); optional vs-last deltas from the receipt |

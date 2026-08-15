@@ -18,6 +18,37 @@ test('Victory sheet defaults avoid AI-slop phrases', () => {
   assert.match(sheet, /Session locked/);
 });
 
+test('Victory honor next is AdaptiveOverlay footer, not Dialog scroll', () => {
+  const sheet = readFileSync(
+    join(root, 'src/components/workout/WorkoutVictorySheet.tsx'),
+    'utf8'
+  );
+  const overlay = readFileSync(
+    join(root, 'src/components/ui/AdaptiveOverlay.tsx'),
+    'utf8'
+  );
+  assert.match(sheet, /AdaptiveOverlay/);
+  assert.match(sheet, /footer=\{/);
+  assert.match(sheet, /footerClassName="p-0"/);
+  assert.doesNotMatch(
+    sheet,
+    /DialogContent/,
+    'Victory must not use DialogContent — max-h overflow-y-auto parked NEXT under the rail'
+  );
+  const footerAt = sheet.indexOf('footer={');
+  const nextAt = sheet.indexOf('<VictoryNextActionStrip');
+  assert.ok(footerAt >= 0, 'Victory must pass footer={}');
+  assert.ok(
+    nextAt > footerAt,
+    'VictoryNextActionStrip must sit in the pinned footer, not the scroll body'
+  );
+  assert.match(
+    overlay,
+    /footerClassName = 'p-4'/,
+    'other AdaptiveOverlay callers keep default footer padding'
+  );
+});
+
 test('empty-finish copy is calm guidance', () => {
   const finish = readFileSync(join(root, 'src/lib/workout/activeSessionFinish.ts'), 'utf8');
   assert.match(finish, /Log a set first/);
