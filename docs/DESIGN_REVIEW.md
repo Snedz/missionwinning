@@ -64,6 +64,7 @@ Review on a 390×844 phone viewport first (the Playwright target); desktop secon
 
 | Date | Reviewer | Flows | Issues filed |
 |------|----------|-------|--------------|
+| 2026-08-15 | Gauntlet GNT-1.U5 R2 | I-Day → first set → Victory → Today next | **PASS:** first-90 22/22 (36.7s) TAP_BUDGET=5; timed walk `wall_clock_s=3.3` landed `/log`; `gnt1First90` 3/3. Stills `U5-R2-*.png`. Residual: Victory overlay stacks Session locked. |
 | 2026-08-15 | Gauntlet GNT-1.U1 R3 | I-Day Continue → Today → Train set/rest/ghost/Victory | **PASS:** logger-depth + first-90 + mobile-nav 32/32 on `npm run dev` (45.3s). Stills `U1-R3-*.png`. Residual: Victory overlay stacks Session locked. |
 | 2026-08-15 | Gauntlet GNT-1.U3 R3 | Today two weeks | **PARTIAL:** A Upper Body Strength · B Recovery. `/coach` still 307. |
 | 2026-08-15 | Gauntlet GNT-1.U4 R2 | Today reentry 3/7/14 | **PASS:** quiet 20-minute lines on `/log`. |

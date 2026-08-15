@@ -1,0 +1,13 @@
+landed_after_continue=http://localhost:3000/log
+wall_clock_s=3.3
+today_primary_before_train=Training — Just Go
+today_primary_after_victory=Just Go — Chest
+today_primary_count_after_victory=1
+viewport=390x844
+boot=npm run dev
+beats:
+  U5-R2-cold-open t=0.3s url=http://localhost:3000/welcome
+  landed_after_continue t=1.2s url=http://localhost:3000/log
+  U5-R2-first-set t=1.9s url=http://localhost:3000/active
+  U5-R2-victory t=2.2s url=http://localhost:3000/active
+  U5-R2-clear-next t=3.2s url=http://localhost:3000/log
