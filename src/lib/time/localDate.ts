@@ -34,6 +34,28 @@ export function localDateKey(d: Date = new Date()): string {
 }
 
 /**
+ * Is `value` a well-formed `YYYY-MM-DD` local date key?
+ *
+ * Shape **and** calendar: `2026-02-31` matches the regex and is not a date, so
+ * the parts are re-rendered and compared. Lives here because this module owns
+ * "what a local date key is" — four private copies of the regex-only version
+ * already exist (`healthImport.ts`, `journey/dayRecord.ts`,
+ * `journey/daysWithData.ts`, `plannedRestStorage.ts`) and none of them reject an
+ * impossible day. Consolidating those is its own change; this is the home they
+ * should point at.
+ */
+export function isLocalDateKey(value: unknown): value is string {
+  if (typeof value !== 'string' || !/^\d{4}-\d{2}-\d{2}$/.test(value)) return false;
+  const [y, m, d] = value.split('-').map(Number) as [number, number, number];
+  // Local-field construction, never Date.parse — a bare YYYY-MM-DD parses as
+  // UTC midnight, which is the previous day for anyone west of UTC.
+  const probe = new Date(y, m - 1, d);
+  return (
+    probe.getFullYear() === y && probe.getMonth() === m - 1 && probe.getDate() === d
+  );
+}
+
+/**
  * Local calendar date of an ISO timestamp, or `''` when unparseable.
  *
  * The empty string rather than a throw or a fallback date: these run over

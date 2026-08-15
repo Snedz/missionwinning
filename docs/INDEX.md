@@ -43,6 +43,7 @@
 | [ADAPTIVE_LAYOUT.md](ADAPTIVE_LAYOUT.md) | Window size classes · adaptive overlays (web + Android) |
 | [API.md](API.md) | HTTP API reference |
 | [AGENT_RECIPES.md](AGENT_RECIPES.md) | Agent task playbooks |
+| [GRAPH_MEMORY.md](GRAPH_MEMORY.md) | Agent graph memory of this repo's history — dev tooling, not product |
 | [../CONTRIBUTING.md](../CONTRIBUTING.md) | Contributor guide |
 
 ---

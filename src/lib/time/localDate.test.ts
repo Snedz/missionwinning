@@ -1,6 +1,7 @@
 import { describe, it } from 'node:test';
 import assert from 'node:assert/strict';
 import {
+  isLocalDateKey,
   localDateKey,
   localDateKeyFromIso,
   localWeekKey,
@@ -75,6 +76,38 @@ describe('localDateKey', () => {
   it('round-trips an ISO timestamp through its own local day', () => {
     const d = localAt(2026, 7, 30, 15);
     assert.equal(localDateKeyFromIso(d.toISOString()), '2026-07-30');
+  });
+});
+
+describe('isLocalDateKey', () => {
+  it('accepts what localDateKey produces, in every band', () => {
+    for (const tz of ZONES) {
+      inZone(tz, () => {
+        assert.ok(isLocalDateKey(localDateKey(localAt(2026, 7, 30, 23, 30))), tz);
+        assert.ok(isLocalDateKey(localDateKey(localAt(2026, 1, 5, 0, 30))), tz);
+      });
+    }
+  });
+
+  it('rejects a day that never existed — shape alone is not enough', () => {
+    // The four private copies of this predicate elsewhere in the repo are
+    // regex-only and would each accept these.
+    assert.equal(isLocalDateKey('2026-02-31'), false);
+    assert.equal(isLocalDateKey('2026-13-01'), false);
+    assert.equal(isLocalDateKey('2026-00-10'), false);
+    assert.equal(isLocalDateKey('2025-02-29'), false);
+  });
+
+  it('accepts a real leap day', () => {
+    assert.ok(isLocalDateKey('2028-02-29'));
+  });
+
+  it('rejects non-strings and near-misses rather than coercing', () => {
+    assert.equal(isLocalDateKey(undefined), false);
+    assert.equal(isLocalDateKey(20260730), false);
+    assert.equal(isLocalDateKey('2026-7-30'), false);
+    assert.equal(isLocalDateKey('2026-07-30T00:00:00Z'), false);
+    assert.equal(isLocalDateKey(' 2026-07-30'), false);
   });
 });
 

@@ -1,5 +1,5 @@
-/** Shown on Profile so testers can confirm the deployed build. Bump when shipping UI to master. `.839` I-Day lands Today. */
-export const APP_BUILD_LABEL = "2026.07-unified.842";
+/** Shown on Profile so testers can confirm the deployed build. Bump when shipping UI to master. `.843` Graph memory. */
+export const APP_BUILD_LABEL = "2026.07-unified.843";
 
 /**
  * Semver for athletes. Distinct from `APP_BUILD_LABEL`, which `/api/health`

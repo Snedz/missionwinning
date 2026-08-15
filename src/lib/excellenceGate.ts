@@ -115,6 +115,11 @@ export const KNOWN_TOP_LEVELS: Readonly<Record<string, 'wedge' | 'surface'>> = {
   'src/lib/cryptoCheckout': 'surface',
   'src/lib/design': 'surface',
   'src/lib/fuelCoach': 'surface',
+  // Development tooling (graph memory of the dev history), not a user surface —
+  // but `surface` is the strictest of the two values this map allows, and
+  // over-classifying costs one override trailer while under-classifying would
+  // punch a hole in the ratchet. Widening the class set is its own change.
+  'src/lib/graph': 'surface',
   'src/lib/guidebook': 'surface',
   'src/lib/history': 'surface',
   'src/lib/i18n': 'surface',
