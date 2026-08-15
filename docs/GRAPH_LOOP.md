@@ -81,6 +81,19 @@ Ambition lives in the **queue**. Each running agent still ships **one loop**.
 5. **Hard bans (standing):** free logger never gated · no `PRIVATE_MODE` flip · no invented traction · no America/wearables-as-score/iOS · no chat on Today · do not raise `TAP_BUDGET` · do not steal occupied build labels.
 6. **After merge:** edit this file — set the loop `done`, put the PR/label in the Outcome column, leave the next loop `open`. That edit is the baton.
 
+### Shapes (sequence is not a dependency)
+
+The queue is a graph. Most Continue nights ran it as a chain and paid for it: two writers on one tree, then a shim for a stale bundler.
+
+| Shape | When | How |
+|-------|------|-----|
+| **Chain** | B consumes A’s output | Ship protocol is always a chain: label, LOG, CONTEXT `## Now`. One writer. |
+| **Diamond** | Leftovers do not share files or state | Discover first. Isolated worktrees. **One** serial joiner assigns the next free label and rotates LOG/CONTEXT. Never two writers on one tree. |
+| **Router** | already-true / founder / blocked | Webpack “can’t resolve” an old path when source already imports the new module is `already true` + restart `next dev`. Not a ship. Do not put a shim back under `src/lib/rewards/` (AG1 / `.830` — C2/C7). |
+| **Controlled cycle** | Amount of work unknown | Continue after residual thin is **not** a cycle. Every cycle needs a discover proof, a hard stop, and a budget. |
+
+A join is worth the wait only for the complete set (cross-file label, LOG rotation, CONTEXT bullets). Independent first-paint leftovers do not consume each other.
+
 ### Stop the graph if
 
 - Two loops in a row ship without moving an H0 agent-allowed item (or an explicit queue item)

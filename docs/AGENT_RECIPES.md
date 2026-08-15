@@ -159,7 +159,7 @@ This repo has no `.greptile/` tree. Instill is this recipe + `privacyInstill.tes
 
 ## 11. Continue the agent graph loop
 
-1. Read [GRAPH_LOOP.md](GRAPH_LOOP.md) — the queue is the source, not chat history.
+1. Read [GRAPH_LOOP.md](GRAPH_LOOP.md) — the queue is the source, not chat history. Shapes live there (chain / diamond / router / controlled cycle).
 2. Take **only** the top `open` loop. Investigate on current master before coding.
 3. If the loop’s defect is already gone, mark it `done (already true)` with proof paths and stop.
 4. One PR. `[skip vercel]` unless the founder asked for Preview.
