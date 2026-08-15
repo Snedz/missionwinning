@@ -2,7 +2,7 @@
 
 **Audience:** Founder + the next Hermes / Grok Build / graph agent  
 **Lane:** Engineering-Web (unless a loop says Android)  
-**Status:** ACTIVE 2026-08-14 · web `2026.07-unified.815` · Alpha 0.1.0 · **W1 residual done**  
+**Status:** ACTIVE 2026-08-14 · web `2026.07-unified.816` · Alpha 0.1.0 · **X1 done · residual thin**  
 **Does not replace:** [ORCHESTRATION.md](../ORCHESTRATION.md) (what may be built) · [CONTEXT.md](../CONTEXT.md) `## Now` (where we are) · [vision.md](../vision.md) (constitution) · [docs/THESIS.md](THESIS.md) (wedge) · [docs/PLAN.md](PLAN.md) (phases A–I)
 
 This file is the **execution queue** for the agent graph: one concern per loop, spawn, ship, mark done, spawn the next. It is not a second status block and not a license to skip standing hard bans.
@@ -243,6 +243,16 @@ Not V2. Landing footer geo guess hydrates.
 | **W1 residual** | Intl country names | Country select after mount. Node ≠ browser DisplayNames | `done` — `.815` this PR |
 
 D4 stays hold. Do not invent W2.
+
+### Now — X (plan after `.815` · 2026-08-14)
+
+Not W2. Mind first-paint leftover. Not Learn.
+
+| # | Loop | Moves | Status |
+|---|------|-------|--------|
+| **X1** | Mind first-paint | Title + chrome match pack. Drift cap 201 | `done` — `.816` this PR |
+
+D4 stays hold. Do not invent X2.
 
 ### After H0 (orientation — not open until H0-1…H0-7 are done or `founder`)
 
