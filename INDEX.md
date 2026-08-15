@@ -143,7 +143,7 @@ Root keeps only the spine: README · CONTEXT · AGENTS · INDEX · vision · ORC
 | [docs/STRATEGY.md](docs/STRATEGY.md) | **Stub** — full business plan in private mission-ops |
 | [docs/REDTEAM.md](docs/REDTEAM.md) | **Stub** — full assumptions audit in private mission-ops |
 | [docs/PLAN.md](docs/PLAN.md) | Build roadmap |
-| [docs/GRAPH_LOOP.md](docs/GRAPH_LOOP.md) | Agent graph execution queue (AL1 open — GNT-1) |
+| [docs/GRAPH_LOOP.md](docs/GRAPH_LOOP.md) | Agent graph execution queue (AL1 done — GNT-1 report) |
 | [docs/GAUNTLET_LOOP.md](docs/GAUNTLET_LOOP.md) | Gauntlet grading protocol · campaigns in [docs/gauntlet/](docs/gauntlet/INDEX.md) |
 | [docs/E1RM_PLAN.md](docs/E1RM_PLAN.md) | Frozen `.739` — educational Epley e1RM on logged sets |
 | [LOG.md](LOG.md) | Dev log |

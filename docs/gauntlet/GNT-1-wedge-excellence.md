@@ -1,10 +1,10 @@
 # GNT-1 — Wedge excellence gauntlet
 
-**Status:** `open` · GRAPH_LOOP **AL1** · hard cap **≤14 build PRs** (5 spent: `.835` `.836` `.837` `.839` `.840`)  
+**Status:** report written · GRAPH_LOOP **AL1** `done` · hard cap **≤14 build PRs** (5 spent: `.835` `.836` `.837` `.839` `.840`)  
 **Product:** the evidence dossier that makes the founder’s phone walk a confirmation.  
-**Terminal agent state:** `ready-for-founder`. Only the founder writes `status: pass` in [EXCELLENCE_RESULT.md](../EXCELLENCE_RESULT.md).
+**Terminal agent state:** `ready-for-founder`. Only the founder writes `status: pass` in [EXCELLENCE_RESULT.md](../EXCELLENCE_RESULT.md). RESULT remains `unscored`.
 
-**Next spawn:** `LEAD · GNT-1 report` — U1–U5 critic PASS + smoother stills. Write the campaign report. Do not mark AL1 `done` until that report exists. Do not write `status: pass`.
+**Next spawn:** none — campaign closed. Founder scores RESULT on a phone against this dossier. GNT-2 stays `named` until the founder opens it. Do **not** write `status: pass`.
 
 Unused cap is success. The cap counts only PRs that touch `src|app|scripts|supabase`. U1/U2 already-true did not spend it. U1 R2 already-true (docs) does not spend it. U1 R3 spends `.839`. U2 R2 already-true (docs) does not spend it. U3 R2 tests/docs does not spend it. U4 R2 tests/docs does not spend it. Smoother spends `.840`.
 
@@ -64,19 +64,32 @@ Fill as rounds ship. Own-app stills under `GNT-1/evidence/` named `U<n>-R<r>-<be
 | U5 | `U5-R1-cold-open.png` · `U5-R1-first-set.png` · `U5-R1-victory.png` · `U5-R1-clear-next.png` · `U5-R1-timing.txt` | **2026-08-15 critic R1 paste:** `npx playwright test tests/e2e/first-90.spec.ts` → cold-visitor **PASS** (2.5s). File overall **10 failed / 12 passed** (homepage emerald; content-library menu; sitemap; hero demo; Today red at 19:00; logger thumb; Today block budget 9:00; /log thumb morning+evening; feedback sheet thumb). Timed walk: `start_ts=2026-08-15T07:53:54.729Z end_ts=2026-08-15T07:53:59.944Z wall_clock_s=5.215 landed_after_continue=http://localhost:3000/log today_url_after=http://localhost:3000/log` (4 taps, Today `.primary-action` count 1). `npx tsx --test src/lib/gnt1First90.test.ts` → **3 pass / 0 fail**. | no founder FLOORS — do not FAIL |
 | Smoother | `SMOOTHER-today.png` · `SMOOTHER-train.png` · `SMOOTHER-victory.png` · `SMOOTHER-coach.png` | **Smoother paste:** `npx playwright test tests/e2e/gnt1-smoother-walk.spec.ts --project=mobile-chrome` → **1 passed (6.3s)**. `smoother_victory_cta_bottom=828 viewport=844` hit ok. Today/Train red=0. Coach red=1 (boss Start). Victory red=0 short=[] (poster-field invert; close 44px after settle). Pin AdaptiveOverlay footer, no DialogContent. | no founder FLOORS — do not FAIL |
 
-## Report skeleton
+## Campaign report
 
-- Bar as written (table above)
-- Full round log
-- PASS evidence per criterion, mapped to EXCELLENCE_RESULT checklist:
+LEAD maps critic-pasted evidence onto the [EXCELLENCE_RESULT.md](../EXCELLENCE_RESULT.md) checklist. LEAD does not score RESULT. Unit bars below are critic verdicts on the written instruments, not founder phone sign-off.
 
-| RESULT line | GNT-1 unit | Evidence |
-|-------------|------------|----------|
-| W1 Activation | U1 + U5 | |
-| W2 One boss CTA | U2 | |
-| W3 Logger + Victory | U1 + U5 | |
-| W4 Coach continuity | U3 + U4 | |
-| C5 Phone hero ≤90s | U5 | |
+Bar as written: unit table above. Full round log: table above. Build PRs spent: **5 / 14** (`.835` `.836` `.837` `.839` `.840`). Unused cap is success.
 
-- Remaining gaps
-- Agent terminal state: `ready-for-founder` — **never** `status: pass`
+### RESULT mapping (W1–W4 + C5)
+
+| RESULT line | Unit | Critic bar | Evidence (critic-pasted; LEAD maps, does not score RESULT) |
+|-------------|------|------------|-------------------------------------------------------------|
+| W1 Activation | U1+U5 | **PASS** | U1 R3 (#648): `logger-depth.spec.ts` + `first-90.spec.ts` + `mobile-nav.spec.ts` **32 passed (47.4s)**; I-Day Continue → `/log`. Stills `U1-R3-after-continue.png`, `U1-R3-set-row.png`. U5 R1 (#644): TAP_BUDGET **4/5**; Continue → `/log`. Stills `U5-R1-cold-open.png`, `U5-R1-clear-next.png`. |
+| W2 One boss CTA | U2 | **PASS** | U2 R2 (#650): `/log` **0 red vs cap 0**; page title Today; Start is the one primary. Stills `U2-R2-cold.png`, `U2-R2-returning.png`, `U2-R2-mid-plan.png`. `todayPrimaryAction.test.ts` + `todayBlockBudget.test.ts` **14 pass / 0 fail**. |
+| W3 Logger + Victory | U1+U5+smoother | **PASS** | U1 R3 outdoor stills `U1-R3-set-row.png`, `U1-R3-rest.png`, `U1-R3-ghost.png`, `U1-R3-finished.png`. U5 R1 `U5-R1-first-set.png`, `U5-R1-victory.png`. Smoother `.840` (#655): Victory honor NEXT in `AdaptiveOverlay` pinned footer; `cta_bottom=828` vs viewport 844; `gnt1-smoother-walk.spec.ts` **1 passed (6.3s)**; still `SMOOTHER-victory.png`. |
+| W4 Coach continuity | U3+U4 | **PASS** | U3 R2 (#652): two-history Playwright A vs B — dose/mobility/cite **differ**; engine **2/2**; render **2 passed (6.2s)**. Stills `U3-R2-coach-history-a.png`, `U3-R2-coach-history-b.png`, `U3-R2-today-history-a.png`, `U3-R2-today-history-b.png`. U4 R2 (#654): 3/7/14 quiet lines on `/log`; forbidden=0; guard **5/5**; render **3 passed (4.2s)**. Stills `U4-R2-missed-3.png`, `U4-R2-missed-7.png`, `U4-R2-missed-14.png`. |
+| C5 Phone hero ≤90s | U5 | **PASS** | U5 R1 (#644): TAP_BUDGET **4 taps** (cap 5); timed walk `wall_clock_s=5.215` (cap 90). Stills `U5-R1-cold-open.png` → `U5-R1-first-set.png` → `U5-R1-victory.png` → `U5-R1-clear-next.png`. Pin: `gnt1First90.test.ts` TAP_BUDGET===5 **3 pass / 0 fail**. |
+
+### Remaining gaps (founder-only — not builder briefs)
+
+- `docs/EXCELLENCE_RESULT.md` is still `status: unscored` — agents never write `status: pass`.
+- Founder phone walk of W1–W4 + C5. This dossier makes that scoring a formality, not a substitute.
+- U2 returning vs mid-plan stills were pixel-identical in R2 (same demo path after the first logger session auto-generated the week); the `/log` red-count instrument still passed.
+- Victory scroll body still contains a quieter “Back to Today” at y=866; honor NEXT is in the overlay footer (`cta_bottom=828`).
+- No founder FLOORS/BANDS, so Hevy / Strong / Freeletics / Bevel A/B never FAILed a unit.
+- `/account` zero-state cap 1 vs measured 0 — not this wedge’s bar.
+- Full `first-90.spec.ts` file still carries unrelated fails (homepage emerald, sitemap, 19:00 red) that critics did not treat as U1/U5 bars.
+
+### Terminal state
+
+`ready-for-founder` — **never** `status: pass`.

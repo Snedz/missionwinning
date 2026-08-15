@@ -2,7 +2,7 @@
 
 **Audience:** Founder + LEAD / BUILDER / CRITIC spawns  
 **Lane:** Engineering-Web (unless a campaign names Android)  
-**Status:** ACTIVE 2026-08-15 · GNT-1 `open` · GRAPH_LOOP **AL1**  
+**Status:** ACTIVE 2026-08-15 · GNT-1 report written · `ready-for-founder` · GRAPH_LOOP **AL1** `done`  
 **Does not replace:** [ORCHESTRATION.md](../ORCHESTRATION.md) (what may be built) · [CONTEXT.md](../CONTEXT.md) `## Now` (where we are) · [docs/GRAPH_LOOP.md](GRAPH_LOOP.md) (the queue) · [DESIGN_ORCHESTRATION.md](DESIGN_ORCHESTRATION.md) §Surface quality bars
 
 This file is the **grading protocol**. It is not a second queue and not a second status block. Campaigns live in [docs/gauntlet/](gauntlet/INDEX.md). The baton is still one GRAPH_LOOP row per campaign.
@@ -140,7 +140,7 @@ One campaign = one file under [docs/gauntlet/](gauntlet/INDEX.md). Closed campai
 
 Skeleton: campaign header · **Next spawn** line · unit/bar table · exact instrument commands · round log (`unit | round | builder ref | critic verdict | biggest gap`) · per-unit evidence dossier · report.
 
-GRAPH_LOOP names the campaign row only (`AL1 open`). The unit and role live on **Next spawn**.
+GRAPH_LOOP names the campaign row only. The unit and role live on the workbench **Next spawn** line.
 
 Critic paste template (last lines, not a summary):
 
