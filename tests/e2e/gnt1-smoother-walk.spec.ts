@@ -15,6 +15,12 @@ import {
 const STILL = 'docs/gauntlet/GNT-1/evidence';
 const DUMP = '/tmp/gnt1-smoother-walk.json';
 
+async function hideDevOverlay(page: Page) {
+  await page.evaluate(() => {
+    document.querySelectorAll('nextjs-portal').forEach((el) => el.remove());
+  });
+}
+
 async function dumpSurface(page: Page, name: string) {
   return page.evaluate((surface) => {
     const RED: [number, number, number][] = [
@@ -75,6 +81,18 @@ async function dumpSurface(page: Page, name: string) {
 test.describe('GNT-1 smoother walk 390×844', () => {
   test.beforeEach(async ({ page, context, baseURL }) => {
     if (!baseURL) throw new Error('baseURL required');
+    await page.addInitScript(() => {
+      const hide = () => {
+        const styleId = 'gnt1-hide-nextjs-portal';
+        if (document.getElementById(styleId)) return;
+        const style = document.createElement('style');
+        style.id = styleId;
+        style.textContent = 'nextjs-portal{display:none!important}';
+        document.documentElement.appendChild(style);
+      };
+      hide();
+      document.addEventListener('DOMContentLoaded', hide);
+    });
     const ok = await unlockGate(page, context, baseURL);
     if (gateRequired() && !ok) {
       test.skip(true, 'SMOKE_ACCESS_SECRET required');
@@ -91,6 +109,7 @@ test.describe('GNT-1 smoother walk 390×844', () => {
     await gotoHydrated(page, '/log');
     await expect(page).toHaveURL(/\/log/);
     await expect(page.locator('#screen-dock')).toBeVisible({ timeout: 15_000 });
+    await hideDevOverlay(page);
     const todayDump = await dumpSurface(page, 'today');
     report.push(todayDump);
     await page.screenshot({ path: `${STILL}/SMOOTHER-today.png`, fullPage: false });
@@ -101,6 +120,7 @@ test.describe('GNT-1 smoother walk 390×844', () => {
     await expect(page.getByRole('button', { name: /^start workout$/i })).toBeVisible({
       timeout: 15_000,
     });
+    await hideDevOverlay(page);
     const trainDump = await dumpSurface(page, 'train');
     report.push(trainDump);
     await page.screenshot({ path: `${STILL}/SMOOTHER-train.png`, fullPage: false });
@@ -112,9 +132,18 @@ test.describe('GNT-1 smoother walk 390×844', () => {
       .getByRole('navigation', { name: /primary/i })
       .getByRole('button', { name: /more/i })
       .waitFor({ timeout: 15_000 });
+    await expect(page.getByRole('heading', { name: /mission coach/i })).toBeVisible({
+      timeout: 15_000,
+    });
     await expect(
-      page.getByText(/no plan this week/i).or(page.getByRole('button', { name: /generate/i }))
+      page
+        .getByText(/this week.?s dose/i)
+        .or(page.getByText(/no plan this week/i))
+        .or(page.getByRole('button', { name: /generate this week/i }))
+        .or(page.getByRole('button', { name: /start this session/i }))
+        .first()
     ).toBeVisible({ timeout: 15_000 });
+    await hideDevOverlay(page);
     const coachDump = await dumpSurface(page, 'coach');
     report.push(coachDump);
     await page.screenshot({ path: `${STILL}/SMOOTHER-coach.png`, fullPage: false });
@@ -138,6 +167,14 @@ test.describe('GNT-1 smoother walk 390×844', () => {
     await page.getByRole('button', { name: /^finish$/i }).first().click();
     await expect(page.getByRole('dialog')).toBeVisible({ timeout: 15_000 });
     await expect(page.getByText(/session locked/i).first()).toBeVisible({ timeout: 10_000 });
+    await page
+      .waitForFunction(
+        () => document.getAnimations().every((a) => a.playState !== 'running'),
+        undefined,
+        { timeout: 1000 }
+      )
+      .catch(() => {});
+    await hideDevOverlay(page);
     const victoryDump = await dumpSurface(page, 'victory');
     report.push(victoryDump);
     await page.screenshot({ path: `${STILL}/SMOOTHER-victory.png`, fullPage: false });

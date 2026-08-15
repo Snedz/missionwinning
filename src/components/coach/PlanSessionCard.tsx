@@ -200,7 +200,11 @@ export function PlanSessionCard({
               primary fills (was cap 4 = every card + Regenerate).
             */}
             <Button
-              className={primary ? 'w-full primary-action' : 'w-full'}
+              className={
+                primary
+                  ? 'w-full primary-action min-h-[44px] tap-target'
+                  : 'w-full min-h-[44px] tap-target'
+              }
               variant={primary ? 'default' : 'outline'}
               onClick={start}
             >

@@ -18,7 +18,8 @@ in the scroll body at `z-50` — the same layer as the tab bar. At 390×844
 the control's box started at y=849, under the rail.
 
 **Ship:** Victory on `AdaptiveOverlay` (`z-[70]`). Honor next is the
-pinned `footer`. Close is 44px. `TAP_BUDGET` / firstPaintFloor / bundle
+pinned `footer`. Close is 44px. Coach week-card Start is 44px (parity
+with `CoachTodayCard`). `TAP_BUDGET` / firstPaintFloor / bundle
 caps unchanged. GRAPH_LOOP AL1 left open.
 
 Label `.840` (onto `.839`).
