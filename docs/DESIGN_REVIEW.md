@@ -64,6 +64,7 @@ Review on a 390×844 phone viewport first (the Playwright target); desktop secon
 
 | Date | Reviewer | Flows | Issues filed |
 |------|----------|-------|--------------|
+| 2026-08-15 | Gauntlet GNT-1.Smoother R2 | Today · Train · Victory · Coach | **PASS** 8/8 bars × 4 surfaces at 390×844 on `npm run dev` (ungated). `.844` Victory-open empty Active mounts the honor sheet only (`noSessionRunning=false` `sessionLocked=true` thumbs=[]). Stills `SMOOTHER-today.png` · `SMOOTHER-train.png` · `SMOOTHER-victory.png` · `SMOOTHER-coach.png`. `check-design-system` 1116 files / 12 allowlisted / 0 drift. Feel (not FAIL): Today poster-sub truncated; Train title “Just Go — C…” + LOAD stepper tight; Coach `Start this session` below fold; locale chooser auto-opens on `/coach` until `mw_locale_choice`. |
 | 2026-08-15 | Gauntlet GNT-1.U3 R4 | `/coach` + `/log` two log histories | **PASS:** `npm run dev` coach_status=200; engine `gnt1HistoryDose` 2/2; stills `U3-R4-*.png`. Empty week = no-logs · mostly strength; 7 logger finishes = From your log · mixed strength & recovery. Residual: same-week adapt does not insert recovery until the plan is cleared. |
 | 2026-08-15 | Gauntlet GNT-1.U5 R2 | I-Day → first set → Victory → Today next | **PASS:** first-90 22/22 (36.7s) TAP_BUDGET=5; timed walk `wall_clock_s=3.3` landed `/log`; `gnt1First90` 3/3. Stills `U5-R2-*.png`. Residual: Victory overlay stacks Session locked. |
 | 2026-08-15 | Gauntlet GNT-1.U1 R3 | I-Day Continue → Today → Train set/rest/ghost/Victory | **PASS:** logger-depth + first-90 + mobile-nav 32/32 on `npm run dev` (45.3s). Stills `U1-R3-*.png`. Residual: Victory overlay stacks Session locked. |
@@ -105,6 +106,14 @@ Review on a 390×844 phone viewport first (the Playwright target); desktop secon
 | 2026-07-21 | Agent (Horizon 0) | `/`→gate, Welcome, `/log`, `/active`→Victory, `/coach` | Fixed in-sprint (no separate Issues): invite→`/private` friction; gate invitee expand; beta guide/banner wedge (Train→Coach); Coach empty-state “Unlock” vs Generate mismatch; ES/FR gate “everything app” subtitle → wedge. Post-flip residual: landing proof-chip density only (Batch C shipped in `.103`). |
 | 2026-07-22 | Agent (H0 residual) | Landing hero density; invite smoke SSR; hero Mission Score e2e | Landing chips/trust row collapsed (one subtitle + one CTA). Invitee `data-mw-invitee` SSR for gate-smoke. Mission Score path fail-closed via Active. `@visual` Linux baselines soft in CI. |
 | 2026-07-22 | Agent (.95) | Public `/guide` chapter CTAs | Wired `publicGuidePracticeCta` so anonymous practice links never dump into gated `/log`/`/nutrition` etc. Magazine body shared renderer. |
+
+### 2026-08-15 GNT-1 smoother ritual (`.844`)
+
+- **Design better:** grade Peak-End as what remains after Finish. U1/U5 stills showed Session locked stacked on “No session running”; `.844` mounts the honor sheet only.
+- **Think better:** `completeActiveWorkout` clears the session before the sheet opens — empty chrome under honor is a state-machine composition FAIL, not a copy bug.
+- **Communicate better:** a 390×844 Victory still after `.844` is overlay + honor card (small file). That is the proof empty Active is gone, not a cropped capture. Coach `/coach` stills need `mw_locale_choice` or the first-visit language sheet is the picture.
+- **Create more impact:** one Peak-End close at 44px beats another first-paint card.
+- **Next wave differently:** LEAD writes the GNT-1 report from this dossier. Do not open GNT-2. Do not write `status: pass`.
 
 ### 2026-08-15 GNT-1 smoother ritual (`.839`)
 
