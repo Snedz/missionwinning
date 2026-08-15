@@ -54,7 +54,7 @@ Education — structured paths and the Mission Winning guidebook (**Beyond the B
 
 **Route:** `/log` (nav label: **Today**)
 
-Not a separate pillar — Today aggregates readiness, Win Score, coach insight, journal strip, and quick links into all pillars. Start here each morning.
+Not a separate pillar — Today aggregates readiness, Mission Score, coach insight, journal strip, and quick links into all pillars. Start here each morning.
 
 ## Mission Coach (premium Train depth)
 

@@ -22,7 +22,7 @@ Mission Winning stores most workout and preference data **on your device** first
 Connecting Apple Health, Google Health Connect, Whoop, Strava, or similar is **optional** and off until the feature flag is enabled for your environment. When connected:
 
 - We store OAuth tokens and normalized activity/recovery samples so we can sync.
-- Mission / Win Score still comes from your workout and pillar logs — not heart-rate or recovery scores from a device.
+- Mission Score still comes from your workout and pillar logs — not heart-rate or recovery scores from a device.
 - Disconnect in Profile removes the connection; you can request deletion of synced samples via support.
 
 Manual JSON/CSV imports on Track stay on-device (same as other Track logs) until you sign in and sync.
