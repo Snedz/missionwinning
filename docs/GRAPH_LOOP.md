@@ -2,7 +2,7 @@
 
 **Audience:** Founder + the next Hermes / Grok Build / graph agent  
 **Lane:** Engineering-Web (unless a loop says Android)  
-**Status:** ACTIVE 2026-08-15 · web `2026.07-unified.845` · Alpha 0.1.0 · **AL1 done — GNT-1 `ready-for-founder` · AM1 open — GNT-2 U1 builder shipped `.845`, critic next**  
+**Status:** ACTIVE 2026-08-15 · web `2026.07-unified.846` · Alpha 0.1.0 · **AL1 done — GNT-1 `ready-for-founder` · AM1 open — GNT-2 U1 R3 critic PASS (engine), LEAD commissions U2 next**  
 **Does not replace:** [ORCHESTRATION.md](../ORCHESTRATION.md) (what may be built) · [CONTEXT.md](../CONTEXT.md) `## Now` (where we are) · [vision.md](../vision.md) (constitution) · [docs/THESIS.md](THESIS.md) (wedge) · [docs/PLAN.md](PLAN.md) (phases A–I)
 
 This file is the **execution queue** for the agent graph: one concern per loop, spawn, ship, mark done, spawn the next. It is not a second status block and not a license to skip standing hard bans.
@@ -431,7 +431,7 @@ Not AL2. GNT-2 opened on its own written gate — *"enters GRAPH_LOOP only after
 
 | # | Loop | Moves | Status |
 |---|------|-------|--------|
-| **AM1** | Gauntlet GNT-2 coach plan quality | [docs/gauntlet/GNT-2-coach-plan-quality.md](gauntlet/GNT-2-coach-plan-quality.md). U1 instrument `.840`; builder `.845` wired `loadZone` into the split (`high` ≠ `steady`). Next spawn is the workbench critic line | `open` |
+| **AM1** | Gauntlet GNT-2 coach plan quality | [docs/gauntlet/GNT-2-coach-plan-quality.md](gauntlet/GNT-2-coach-plan-quality.md). U1 instrument `.840`; builder `.845` wired `loadZone`; U1 R3 critic PASS (engine, TAP 3/3). Next spawn is the workbench LEAD U2 line | `open` |
 
 D4 stays hold. Do not invent AM2.
 
