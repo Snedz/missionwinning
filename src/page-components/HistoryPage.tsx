@@ -233,21 +233,18 @@ export function HistoryPage() {
     sync();
   }, [loadFromCloud]);
 
-  const sessionLabel =
-    liveHistory.length === 1
-      ? t('historySessionCount', { count: 1, defaultValue: '1 completed session' })
-      : t('historySessionCount', {
-          count: liveHistory.length,
-          defaultValue: `${liveHistory.length} completed sessions`,
-        });
+  const sessionLabel = t('historySessionCount', {
+    count: liveHistory.length,
+    defaultValue: '{{count}} completed session',
+  });
 
   return (
     <PillarPageShell
       icon={HistoryIcon}
       eyebrow={t('historyEyebrow', { defaultValue: 'History' })}
-      title={t('historyTitle', { defaultValue: 'Past sessions' })}
+      title={t('historyTitle', { defaultValue: 'Workout History' })}
       subtitle={t('historySubtitle', {
-        defaultValue: 'What you logged — powers readiness on Today and Coach week plans.',
+        defaultValue: 'Your history powers Today readiness and Mission Score.',
       })}
     >
       <div className="border-2 border-border bg-card px-4 py-3 space-y-1">
@@ -327,7 +324,7 @@ export function HistoryPage() {
             illustrationAlt=""
             title={t('historyEmptyTitle', { defaultValue: 'No sessions yet' })}
             description={t('historyEmptyDesc', {
-              defaultValue: 'Log one set from Today — finished sessions land here.',
+              defaultValue: 'Log one set from Today — History fills from what you finish.',
             })}
             actionLabel={t('historyStartWorkout', { defaultValue: 'Open Today' })}
             href="/log"
@@ -443,7 +440,7 @@ export function HistoryPage() {
           {filteredHistory.length === 0 ? (
             <EmptyState
               icon={SearchX}
-              title={t('historyNoMatches', { defaultValue: 'No sessions match' })}
+              title={t('historyNoMatches', { defaultValue: 'No sessions match these filters' })}
               description={t('historyNoMatchesDesc', {
                 defaultValue: 'Widen the range or clear search.',
               })}
