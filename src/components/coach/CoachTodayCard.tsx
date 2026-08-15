@@ -103,7 +103,7 @@ export function CoachTodayCard() {
           {t('coachPageTitle', { defaultValue: 'Mission Coach' })}
         </CardTitle>
         <p className="text-xs text-muted-foreground font-normal leading-relaxed">
-          {t('coachTodayMission', { defaultValue: 'Built from your logs — no wearable required.' })}
+          {t('coachTodayMission', { defaultValue: 'Mission Coach · adapts from logs' })}
         </p>
         {/* The line above is the claim `earnedFromLogsCopy.test.ts` pins; this is
             the evidence for it, or the admission that there is none yet. */}
@@ -163,7 +163,7 @@ export function CoachTodayCard() {
             <p className="text-xs text-muted-foreground leading-relaxed">
               {t('coachTasterFatigueNote', {
                 defaultValue:
-                  'Premium eases later sessions when load runs high so you recover without quitting the week.',
+                  'Premium also watches strain: when load runs high (≥70), future sessions auto-shift lighter so you recover without quitting the week.',
               })}
             </p>
             <Button asChild variant="outline" size="sm" className="w-full min-h-[44px] tap-target">
@@ -262,7 +262,7 @@ export function CoachTodayCard() {
         )}
         <Link href="/coach" className="text-xs text-primary hover:underline block text-center min-h-[44px] leading-[44px]">
           {locked && !freeBeta
-            ? t('coachViewLockedPlan', { defaultValue: 'View last week' })
+            ? t('coachViewLockedPlan', { defaultValue: 'View last week & unlock' })
             : t('coachViewPlan', { defaultValue: 'View full week' })}
         </Link>
       </CardContent>
