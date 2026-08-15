@@ -7,11 +7,11 @@ import { gotoHydrated } from './gotoHydrated';
  * Start stays disabled until `hasHydrated` — avoids localStorage wipe race.
  */
 export async function startEmptyActiveWorkout(page: Page): Promise<void> {
+  // I-Day equipment on the device paints "Start Just Go — …" and seeds a
+  // template with loads. This helper is the honest-empty path (no prior sets).
+  await page.evaluate(() => localStorage.removeItem('mw_equipment'));
   await gotoHydrated(page, '/active');
-  // Dock CTA is "Start workout" on a cold empty, or "Start Just Go — …" when
-  // I-Day equipment is on the device (`previewJustGoForEquipment`). Both are
-  // the one-thumb outdoor start; `/start workout/i` misses the preview label.
-  const start = page.getByRole('button', { name: /^start /i });
+  const start = page.getByRole('button', { name: /^start workout$/i });
   await expect(start).toBeVisible({ timeout: 15_000 });
   await expect(start).toBeEnabled({ timeout: 15_000 });
   await start.click();
