@@ -4,7 +4,7 @@
 **Product:** the evidence dossier that makes the founder’s phone walk a confirmation.  
 **Terminal agent state:** `ready-for-founder`. Only the founder writes `status: pass` in [EXCELLENCE_RESULT.md](../EXCELLENCE_RESULT.md).
 
-**Next spawn:** `SMOOTHER · four wedge surfaces` — I-Day lands `/log` (`.839`). first-90 green. U2–U4 render stills still FAIL. Do not write `status: pass`.
+**Next spawn:** `ready-for-founder` — smoother logged. I-Day lands `/log`. first-90 green. U2–U4 render stills still FAIL. Do not write `status: pass`.
 
 Unused cap is success. The cap counts only PRs that touch `src|app|scripts|supabase`. U1/U2 already-true did not spend it.
 
@@ -43,7 +43,8 @@ U2 (GRAPH_LOOP G4) and U4 (G7) opened evidence-first / already-true. The dossier
 | U2 | 1 | already-true on master `.834` — unit pins green. | **FAIL** — `/log` zero-state: 1 red action, cap 0. Capture is marketing Notify-me, not Today. returning/mid-plan stills not taken. | Cold `/log` e2e is not on Today (1 red vs grey-Just-Go cap 0) |
 | U3 | 1 | `.835` — engine pin `gnt1HistoryDose.test.ts` (not a render proof). | **FAIL** (no render PASS) — engine 2/2 green; Coach+Today stills skipped (cannot seed two histories without the forbidden demo IIFE). | Two-history render on `/coach` + `/log` is unproven |
 | U4 | 1 | `.836` — 3/7/14-day quiet lines + long-gap at 14. | **FAIL** (no render PASS) — guard 5/5; Today stills skipped (`/log` → `/private`). | Quiet line after 3/7/14 days is unproven on-screen |
-| U5 | 1 | `.837` — TAP_BUDGET=5 + firstPaintFloor 167 **named** (copy-drift, not 90s). | **FAIL** — first-90 cold visitor expected `/log`, got `/active`. Timed walk aborted. Source pin 3/3. | I-Day Continue must land Today, not Active |
+| U5 | 1 | `.837` — TAP_BUDGET=5 + firstPaintFloor 167 **named** (copy-drift, not 90s). | **FAIL** at critic time — first-90 expected `/log`, got `/active`. **Closed by `.839`.** | I-Day Continue must land Today — done `.839` |
+| Smoother | 1 | `.839` already on tip — first-90 green. | logged — DESIGN_REVIEW row + §10 ritual. `check-design-system` 1116 files / 0 drift. | U2–U4 on-Today stills |
 
 ## Evidence dossier (per unit)
 
@@ -56,7 +57,7 @@ Fill as rounds ship. Own-app stills under `GNT-1/evidence/` named `U<n>-R<r>-<be
 | U3 | **skipped** — cannot seed two logger histories without `seed-coach-adapt-demo.mjs` (forbidden; clobbers `mw_coach_plan`). | **2026-08-15 critic R1:** `npx tsx --test src/lib/coach/gnt1HistoryDose.test.ts` → **2 pass / 0 fail** (re-run). Engine: empty → 4 strength / 12 sets; 20 hard logs → recovery days + fewer sets; Thursday adapt keeps remaining kinds different. Workbench: engine paste is not a render PASS. | — |
 | U4 | **skipped** — `/log` redirected to `/private?next=%2Flog` (PRIVATE_MODE). Did not commit Notify-me as a 3/7/14 still. | **2026-08-15 critic R1:** `npx tsx --test src/lib/reentryCopyGuard.test.ts` → **5 pass / 0 fail**. 3d/7d gap + 14d long-gap copy still shame-free in domain. Not a Today render PASS. | no founder FLOORS — do not FAIL |
 | U5 | `U5-R1-cold-open.png` (first-90 fail: landed `/active`). first-set / victory / clear-next **not taken** — walk never reached Today. | **2026-08-15 critic R1:** `npx tsx --test src/lib/gnt1First90.test.ts` → **3 pass / 0 fail**. `npx playwright test tests/e2e/first-90.spec.ts:32 --project=mobile-chrome` → **FAIL** `Expected /\\/log/` `Received http://localhost:3000/active`. Timed ≤90s walk aborted at I-Day. firstPaintFloor 167 is not this bar. | no founder FLOORS — do not FAIL |
-| Smoother | | | |
+| Smoother | DESIGN_REVIEW ritual + Passes row this PR. | `npm run check-design-system` → 1116 files scanned, 12 allowlisted, 0 drift. first-90 green on `.839`. | — |
 
 ## Report skeleton
 
