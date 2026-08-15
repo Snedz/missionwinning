@@ -2,7 +2,7 @@
 
 **Audience:** Founder + the next Hermes / Grok Build / graph agent  
 **Lane:** Engineering-Web (unless a loop says Android)  
-**Status:** ACTIVE 2026-08-15 · web `2026.07-unified.836` · Alpha 0.1.0 · **AL1 open — GNT-1 U4 R1**  
+**Status:** ACTIVE 2026-08-15 · web `2026.07-unified.837` · Alpha 0.1.0 · **AL1 open — GNT-1**  
 **Does not replace:** [ORCHESTRATION.md](../ORCHESTRATION.md) (what may be built) · [CONTEXT.md](../CONTEXT.md) `## Now` (where we are) · [vision.md](../vision.md) (constitution) · [docs/THESIS.md](THESIS.md) (wedge) · [docs/PLAN.md](PLAN.md) (phases A–I)
 
 This file is the **execution queue** for the agent graph: one concern per loop, spawn, ship, mark done, spawn the next. It is not a second status block and not a license to skip standing hard bans.
@@ -390,7 +390,7 @@ Not AK2. Protocol + GNT-1 workbench. Grading, not a second queue.
 
 | # | Loop | Moves | Status |
 |---|------|-------|--------|
-| **AL1** | Gauntlet GNT-1 wedge excellence | [docs/GAUNTLET_LOOP.md](GAUNTLET_LOOP.md) + [docs/gauntlet/GNT-1-wedge-excellence.md](gauntlet/GNT-1-wedge-excellence.md). Builder rounds ship under this row. `done` only when the campaign report is written | `open` |
+| **AL1** | Gauntlet GNT-1 wedge excellence | [docs/GAUNTLET_LOOP.md](GAUNTLET_LOOP.md) + [docs/gauntlet/GNT-1-wedge-excellence.md](gauntlet/GNT-1-wedge-excellence.md). Next action is the workbench **Next spawn** line. `done` only when the campaign report is written | `open` |
 
 D4 stays hold. Do not invent AL2.
 
@@ -578,14 +578,19 @@ BOOT (every spawn):
 2. Do not use chat, ~/.grok/sessions, or .hermes/plans as product truth.
 
 QUEUE:
-3. Implement ONLY the top loop whose Status is `open` (G1 is first).
-4. Investigate on current master. If the defect is already gone, mark done (already true) with proof paths and stop this spawn.
+3. Take ONLY the top loop whose Status is `open`.
+4. If that row names a gauntlet campaign (GNT-*): stop using this prompt as a builder brief.
+   Read docs/GAUNTLET_LOOP.md + the campaign workbench. Follow recipe 12.
+   Do the workbench **Next spawn** line (role · unit · round). One unit-round, then exit.
+   Do not mark the GRAPH_LOOP campaign row `done` until the campaign report is written.
+5. If the row is an ordinary loop: investigate on current master. If the defect is already gone, mark done (already true) with proof paths and stop this spawn.
 
-SHIP:
-5. One concern. One PR. Branch from master. [skip vercel] unless the founder asked for Preview.
-6. Touch src|app|scripts|supabase → bump APP_BUILD_LABEL past origin/master, LOG.md + CONTEXT.md ## Now in the same commit. Surface paths need Excellence-Override: <reason> while EXCELLENCE_RESULT status is unscored.
-7. Run the loop’s tests (at least the colocated npm test files). Do not leave “Grok will test it.”
-8. After merge: set this loop done in GRAPH_LOOP.md (Outcome = PR + label). Leave the next loop open. Do not start that next loop in this PR.
+SHIP (ordinary loops, and gauntlet BUILDER rounds only):
+6. One concern. One PR. Branch from master. [skip vercel] unless the founder asked for Preview.
+7. Touch src|app|scripts|supabase → bump APP_BUILD_LABEL past origin/master, LOG.md + CONTEXT.md ## Now in the same commit. Surface paths need Excellence-Override: <reason> while EXCELLENCE_RESULT status is unscored. Gauntlet builders use: Excellence-Override: gauntlet GNT-<n>.U<u> round <r>
+8. Run the loop’s tests (at least the colocated npm test files). Do not leave “Grok will test it.”
+9. Ordinary loop: after merge, set that loop done in GRAPH_LOOP.md (Outcome = PR + label). Leave the next loop open. Do not start that next loop in this PR.
+   Campaign row: leave `open`. Update the workbench only.
 
 BANS:
 - Free logger (/active) never gated
@@ -597,10 +602,11 @@ BANS:
 - Do not raise TAP_BUDGET
 - Do not restore CinematicWww as /
 - Do not commit .hermes/, ops/, or .env.local
+- Do not implement a whole GNT-* campaign in one PR
 
 STOP THE GRAPH if two loops ship without moving a queued G-item, if you are about to write another plan, or if the loop needs a founder secret — mark founder, take the next agent-open row.
 
-When this spawn finishes, print: loop id · PR + label (or already-true proof) · next open loop. Then exit.
+When this spawn finishes, print: loop id · role (if gauntlet) · PR + label or critic verdict (or already-true proof) · next spawn. Then exit.
 ```
 
 ---

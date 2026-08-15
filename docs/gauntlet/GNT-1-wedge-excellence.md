@@ -29,6 +29,7 @@ U2 (GRAPH_LOOP G4) and U4 (G7) are expected to open evidence-first or `done (alr
 | U2 | 1 | already-true on master `.834` — instruments green (paste below). No product PR. | — | Critic: cold/returning/mid-plan stills + redActions on `/log` + Freeletics A/B |
 | U3 | 1 | `.835` this PR — `gnt1HistoryDose.test.ts` pins cold vs high-strain week kinds + Thursday adapt. | — | Critic: stills seed A vs seed B on `/coach` + Today |
 | U4 | 1 | `.836` this PR — 3/7/14-day quiet lines + long-gap at 14. | — | Critic: stills after 3/7/14 missed days |
+| U5 | 1 | `.837` this PR — TAP_BUDGET=5 + firstPaintFloor 167 + Victory walk named. | — | Critic: timed ≤90s walk + Bevel A/B measurements |
 
 ## Evidence dossier (per unit)
 
@@ -40,7 +41,7 @@ Fill as rounds ship. Own-app stills under `GNT-1/evidence/` named `U<n>-R<r>-<be
 | U2 | pending critic | 2026-08-15 builder R1: `npx tsx --test src/lib/todayPrimaryAction.test.ts src/lib/today/todayBlockBudget.test.ts src/lib/justGoHeroMeta.test.ts` → **28 pass / 0 fail**. G4 already `JourneyHero` Resume / one train CTA (`todayPrimaryAction.ts` + Lean/Dashboard `ScreenDock`). `tests/e2e/zero-state.spec.ts` exists. redActions helper: `tests/e2e/helpers/redActions.ts`. | pending critic |
 | U3 | pending critic | 2026-08-15 builder R1 `.835`: `npx tsx --test src/lib/coach/gnt1HistoryDose.test.ts` → **2 pass / 0 fail**. Empty history → 4 strength / 12 sets. 20 hard logs → recovery days enter + fewer sets. Thursday adapt keeps remaining kinds different. Goldens in `planEngine.test.ts` still use `history: []` — this pin is the two-history falsification. | pending critic |
 | U4 | pending critic | 2026-08-15 builder R1 `.836`: `npx tsx --test src/lib/reentryCopyGuard.test.ts` → **5 pass / 0 fail**. 3d/7d = gap “Three/Seven days off. Here's the 20-minute version.” 14d = long-gap “14 days off…”. FORBIDDEN lexicon still empty. | pending critic |
-| U5 | | | |
+| U5 | pending critic | 2026-08-15 builder R1 `.837`: `npx tsx --test src/lib/gnt1First90.test.ts` → **3 pass / 0 fail**. Pins `TAP_BUDGET = 5`, welcome→Today→Active→Log set, logger-depth Victory / Back to Today, `MAX_FIRST_PAINT_COPY_DRIFT = 167` down-only. Cap not raised. Timed walk stills pending critic. | pending critic |
 | Smoother | | | |
 
 ## Report skeleton
