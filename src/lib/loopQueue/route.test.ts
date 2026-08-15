@@ -1,0 +1,205 @@
+/**
+ * The router decides which of three protocols runs, so it is tested against the
+ * real queue and against the run it exists to stop.
+ *
+ * `MAX_SINGLE_ROW_RUN` is a ratchet, and the ratchet's whole value is the pinned
+ * assertion below: the committed file must stay at or under it. Sixteen
+ * consecutive one-row `Now` sections is the drift era, mechanically recovered.
+ * Adding a seventeenth turns this red, which is the first time that rule has been
+ * anything other than the sentence *"Do not invent X2"* written out again.
+ */
+
+import { test } from 'node:test';
+import assert from 'node:assert/strict';
+import { mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
+import { tmpdir } from 'node:os';
+import path from 'node:path';
+import { parseQueue, type ParsedQueue } from './parse.ts';
+import { MAX_SINGLE_ROW_RUN, isCampaign, nowSections, route, singleRowRun } from './route.ts';
+
+const root = path.join(import.meta.dirname, '..', '..', '..');
+const source = () => readFileSync(path.join(root, 'docs/GRAPH_LOOP.md'), 'utf8');
+const real = () => parseQueue(source());
+
+/** A queue holding only the given sections, for replaying a slice of history. */
+const sliceSections = (q: ParsedQueue, keep: ParsedQueue['sections']): ParsedQueue => ({
+  sections: keep,
+  rows: keep.flatMap((s) => s.rows),
+  problems: [],
+});
+
+/* ------------------------------------------------------------------ *
+ * The live ticket                                                     *
+ * ------------------------------------------------------------------ */
+
+test('the route names the top open row in a Now section', () => {
+  const q = real();
+  const r = route(root, q);
+  const open = nowSections(q).flatMap((s) => s.rows).filter((x) => x.status === 'open');
+  assert.equal(open.length > 0, true, 'no open row in any Now section — re-derive this test against the queue');
+  assert.equal(r.row?.id, open[0].id);
+  assert.equal(r.row?.sectionKind, 'now');
+});
+
+test('the Parallel lane is never the live ticket', () => {
+  const q = real();
+  const parallel = q.sections.filter((s) => s.kind === 'parallel').flatMap((s) => s.rows);
+  // Precondition: this only proves anything while Parallel actually holds open rows.
+  assert.ok(
+    parallel.some((x) => x.status === 'open'),
+    'the Parallel section holds no open rows; this guard is currently vacuous'
+  );
+  const r = route(root, q);
+  assert.ok(
+    !parallel.some((x) => x.id === r.row?.id),
+    `${r.row?.id} came from "do not jump the wedge" — the section filter is gone`
+  );
+});
+
+test('an "open"-in-Moves decoy is never the live ticket', () => {
+  const r = route(root, real());
+  assert.ok(!['D1', 'K2', 'N1'].includes(r.row?.id ?? ''), `${r.row?.id} is a done row read as open`);
+});
+
+/* ------------------------------------------------------------------ *
+ * The three routes                                                    *
+ * ------------------------------------------------------------------ */
+
+test('a GNT row routes to the gauntlet with its workbench resolved', () => {
+  const r = route(root, real());
+  assert.equal(r.kind, 'gauntlet');
+  assert.equal(r.recipe, 12);
+  assert.ok(r.workbench, 'no workbench resolved for a campaign row');
+  assert.match(r.workbench.file, /^docs\/gauntlet\/GNT-\d+-/);
+  assert.ok(r.workbench.nextSpawn?.startsWith('**Next spawn:**'));
+  assert.ok(r.workbench.role, 'the Next spawn line named no role');
+  assert.ok(r.workbench.cap && r.workbench.cap.spent < r.workbench.cap.cap);
+});
+
+test('the same row without GNT routes to an ordinary build', () => {
+  // The only edit is the campaign name, so nothing but the classifier can differ.
+  const q = parseQueue(source().replaceAll('GNT-2', 'ZZ-2').replaceAll('GNT-1', 'ZZ-1'));
+  const r = route(root, q);
+  assert.equal(r.kind, 'build');
+  assert.equal(r.recipe, 11);
+  assert.equal(r.workbench, null);
+});
+
+test('no open row routes to a harvest, not to the next letter', () => {
+  const q = real();
+  for (const s of q.sections) for (const row of s.rows) if (row.status === 'open') row.status = 'done';
+  const r = route(root, q);
+  assert.equal(r.kind, 'harvest');
+  assert.equal(r.recipe, 13);
+  assert.equal(r.row, null);
+  assert.match(r.notes.join(' '), /the honest next step is a new idea/);
+});
+
+test('a founder or blocked row is skipped to the next open row, and reported', () => {
+  const q = real();
+  const live = nowSections(q).flatMap((s) => s.rows).find((x) => x.status === 'open');
+  assert.ok(live, 'no open row to displace');
+  live.status = 'founder';
+  const r = route(root, q);
+  assert.deepEqual(r.skipped.map((x) => x.id), [live.id], 'the skip was silent');
+});
+
+/**
+ * Budget is read off disk, so this rewrites the workbench in a throwaway root
+ * rather than asserting a helper that mirrors the rule. A test that recomputes
+ * the thing it is checking has only ever checked itself.
+ */
+test('an exhausted campaign budget is reported rather than spent', () => {
+  const q = real();
+  const live = route(root, q);
+  assert.ok(live.workbench?.cap, 'no cap on the workbench; this guard is vacuous');
+  assert.ok(live.workbench.cap.spent < live.workbench.cap.cap, 'the real campaign is already exhausted');
+  assert.ok(!live.notes.some((n) => /budget exhausted/.test(n)));
+
+  const { cap } = live.workbench;
+  const tmp = mkdtempSync(path.join(tmpdir(), 'loopqueue-'));
+  const workbench = path.join(tmp, live.workbench.file);
+  mkdirSync(path.dirname(workbench), { recursive: true });
+  writeFileSync(path.join(tmp, 'docs/IDEA_LOOP.md'), 'stub');
+  writeFileSync(
+    workbench,
+    readFileSync(path.join(root, live.workbench.file), 'utf8').replace(
+      `(${cap.spent} spent`,
+      `(${cap.cap} spent`
+    )
+  );
+
+  const r = route(tmp, q);
+  assert.equal(r.kind, 'gauntlet', 'an exhausted budget must still route to the campaign, not away from it');
+  assert.equal(r.workbench?.cap?.spent, cap.cap);
+  assert.match(r.notes.join(' '), /budget exhausted means LEAD writes the report/);
+  rmSync(tmp, { recursive: true, force: true });
+});
+
+test('isCampaign reads the id or the moves cell, not one of them', () => {
+  const base = { id: 'X1', loop: '', moves: '', status: 'open' as const, statusCell: '`open`', section: '', sectionKind: 'now' as const, line: 1 };
+  assert.equal(isCampaign({ ...base, loop: 'Gauntlet GNT-3 thing' }), true);
+  assert.equal(isCampaign({ ...base, moves: 'see docs/gauntlet/GNT-3-thing.md' }), true);
+  assert.equal(isCampaign({ ...base, loop: 'Ordinary loop', moves: 'a normal brief' }), false);
+});
+
+/* ------------------------------------------------------------------ *
+ * The ratchet                                                         *
+ * ------------------------------------------------------------------ */
+
+test('the committed queue is at or under the single-row ratchet', () => {
+  const run = singleRowRun(real());
+  assert.ok(
+    run <= MAX_SINGLE_ROW_RUN,
+    `${run} consecutive one-row Now sections, over the ${MAX_SINGLE_ROW_RUN} ratchet — ` +
+      `the new section must carry ≥2 rows, or the queue needs a harvest, not another letter`
+  );
+});
+
+test('a seventeenth one-row section breaks the ratchet', () => {
+  const src = source();
+  const at = src.indexOf('\n### After H0');
+  assert.ok(at > 0, 'the queue no longer ends with `### After H0`; re-anchor this test');
+  const added =
+    src.slice(0, at) +
+    '\n\n### Now — AN (t)\n\n| # | Loop | Moves | Status |\n|---|---|---|---|\n| **AN1** | another letter | x | `open` |\n' +
+    src.slice(at);
+  const run = singleRowRun(parseQueue(added));
+  assert.equal(run, MAX_SINGLE_ROW_RUN + 1);
+  assert.ok(run > MAX_SINGLE_ROW_RUN, 'minting the next letter did not move the ratchet');
+});
+
+test('a batched section resets the run to zero', () => {
+  const src = source();
+  const at = src.indexOf('\n### After H0');
+  const added =
+    src.slice(0, at) +
+    '\n\n### Now — AN (t)\n\n| # | Loop | Moves | Status |\n|---|---|---|---|\n' +
+    '| **AN1** | one | x | `open` |\n| **AN2** | two | y | `open` |\n' +
+    src.slice(at);
+  assert.equal(singleRowRun(parseQueue(added)), 0, 'batching two rows did not pay the ratchet down');
+});
+
+test('the pre-drift slice of the same history measures 5, not 16', () => {
+  // Sliced from the real sections, so this is the queue as it actually stood
+  // before the copy-drift run — the contrast that makes 16 mean something.
+  const q = real();
+  const sections = nowSections(q);
+  const w = sections.findIndex((s) => /^Now — W\b/.test(s.heading));
+  assert.ok(w > 0, 'the W section is gone; re-derive the pre-drift slice');
+  assert.equal(sections[w].rows.length, 2, 'W no longer holds two rows; the slice boundary moved');
+  assert.equal(singleRowRun(sliceSections(q, sections.slice(0, w))), 5);
+});
+
+test('singleRowRun counts Now sections only', () => {
+  const q = real();
+  const withoutNow = sliceSections(q, q.sections.filter((s) => s.kind !== 'now'));
+  assert.equal(singleRowRun(withoutNow), 0);
+});
+
+test('the ratchet does not displace a live open row', () => {
+  const r = route(root, real());
+  assert.equal(r.atRatchet, true, 'the queue is no longer at the ratchet; this guard is vacuous');
+  assert.equal(r.kind, 'gauntlet', 'the ratchet hijacked a live campaign row');
+  assert.match(r.notes.join(' '), /at the 16 ratchet/);
+});
