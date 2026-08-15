@@ -107,7 +107,7 @@ export function MindPage() {
     <PillarPageShell
       icon={Brain}
       eyebrow={t('mindEyebrow', { defaultValue: 'Mind' })}
-      title={t('mindTitle', { defaultValue: 'Mind' })}
+      title={t('mindTitle', { defaultValue: 'Mind & Recovery' })}
       subtitle={t('mindSubtitleBrief', {
         defaultValue: 'Check in, then breathe or run a free guided session.',
       })}
@@ -277,7 +277,7 @@ export function MindPage() {
       {recentWins.length > 0 ? (
         <details className="group border-2 border-border bg-card">
           <summary className="flex min-h-[44px] cursor-pointer list-none items-center px-4 py-3 text-sm font-semibold text-muted-foreground [&::-webkit-details-marker]:hidden">
-            {t('mindRecentWins', { defaultValue: 'Recent sessions' })}
+            {t('mindRecentWins', { defaultValue: 'Recent Mind Wins' })}
           </summary>
           <div className="space-y-1 border-t-2 border-border px-4 py-3 text-sm text-muted-foreground">
             {recentWins.map((w) => (
@@ -290,9 +290,9 @@ export function MindPage() {
       ) : (
         <EmptyState
           icon={Brain}
-          title={t('mindEmptyTitle', { defaultValue: 'No mind sessions yet' })}
+          title={t('mindEmptyTitle', { defaultValue: 'No mind sessions logged yet' })}
           description={t('mindEmptyDesc', {
-            defaultValue: 'Try a guided session or breathing — your first session shows here.',
+            defaultValue: 'Try a guided session or breathing timer — your first win shows here.',
           })}
           actionLabel={t('mindEmptyCta', { defaultValue: 'Browse guided sessions' })}
           href="#mind-guided"
