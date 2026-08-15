@@ -73,7 +73,7 @@
 | [legal/MSA_TEMPLATE.md](legal/MSA_TEMPLATE.md) | B2B MSA draft (no consumer SLA promises) |
 | [MOBILE_PLAYBOOK.md](MOBILE_PLAYBOOK.md) | Native mobile umbrella — stack decision record, shared backbone, UX laws, Android → iOS gates |
 | [UX_PLAYBOOK.md](UX_PLAYBOOK.md) | UX operating system — problem register, 7-step process, flow/state/content standards, research ops, redesign track |
-| [GRAPH_LOOP.md](GRAPH_LOOP.md) | Agent graph execution queue (G1 open; H0 done) |
+| [GRAPH_LOOP.md](GRAPH_LOOP.md) | Agent graph execution queue (top `open` row; residual thin after AI1) |
 | [NATIVE_MOBILE.md](NATIVE_MOBILE.md) | Expo prototype (reference); product path is Android Compose |
 | [ANDROID_NATIVE.md](ANDROID_NATIVE.md) | Android get-started + AI orchestration · Play |
 | [IOS_PLAYBOOK.md](IOS_PLAYBOOK.md) | iOS playbook — deferred until Android accepted + week-4 retention |

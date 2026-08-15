@@ -142,7 +142,7 @@ Root keeps only the spine: README · CONTEXT · AGENTS · INDEX · vision · ORC
 | [docs/STRATEGY.md](docs/STRATEGY.md) | **Stub** — full business plan in private mission-ops |
 | [docs/REDTEAM.md](docs/REDTEAM.md) | **Stub** — full assumptions audit in private mission-ops |
 | [docs/PLAN.md](docs/PLAN.md) | Build roadmap |
-| [docs/GRAPH_LOOP.md](docs/GRAPH_LOOP.md) | Agent graph execution queue (G1 open; H0 done) |
+| [docs/GRAPH_LOOP.md](docs/GRAPH_LOOP.md) | Agent graph execution queue (top `open` row; residual thin after AI1) |
 | [docs/E1RM_PLAN.md](docs/E1RM_PLAN.md) | Frozen `.739` — educational Epley e1RM on logged sets |
 | [LOG.md](LOG.md) | Dev log |
 | [docs/JOURNEY.md](docs/JOURNEY.md) | Mission journey UX |

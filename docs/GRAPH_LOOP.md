@@ -75,15 +75,31 @@ Ambition lives in the **queue**. Each running agent still ships **one loop**.
 ## Loop rules (every agent)
 
 1. **Read** CONTEXT → AGENTS → INDEX → ORCHESTRATION → **this file** → the folder INDEX you will edit.
-2. **Take only the top `open` loop.** If you finish early, stop. Do not start the next loop in the same PR (one concern).
+2. **Take only the top `open` loop.** If you finish early, stop. Do not start the next loop in the same PR (one concern). After **residual thin**, the next spawn’s only legal job is a **discover** pass (first-paint floor + honesty twins). If it cannot name a real drifted `defaultValue` with file + pack string, it writes nothing and exits. “Do not invent X2” is not permission to invent Y1.
 3. **Investigate in source** before coding. If the loop’s claim is already false on master, mark it `done (already true)` with the file that proves it — do not restyle.
 4. **Ship protocol** if you touch `src/`, `app/`, `scripts/`, or `supabase/`: bump `APP_BUILD_LABEL` **past master**, LOG + CONTEXT `## Now` in the same commit, `[skip vercel]` unless the founder asked for Preview, `Excellence-Override: <reason>` if the path class is `surface` while RESULT is unscored. Docs-only PRs do **not** mint a version.
 5. **Hard bans (standing):** free logger never gated · no `PRIVATE_MODE` flip · no invented traction · no America/wearables-as-score/iOS · no chat on Today · do not raise `TAP_BUDGET` · do not steal occupied build labels.
 6. **After merge:** edit this file — set the loop `done`, put the PR/label in the Outcome column, leave the next loop `open`. That edit is the baton.
 
+### Shapes (sequence is not a dependency)
+
+The queue is a **graph**. Most Continue nights ran it as a chain and paid for it: AE→AF→AG→AH→AI, two writers on one tree, then AG1.
+
+| Shape | When | How |
+|-------|------|-----|
+| **Chain** | B consumes A’s output | Ship protocol is always a chain: label, LOG, CONTEXT `## Now`. One writer. |
+| **Diamond** | Leftovers do not share files or state | Discover first. Isolated worktrees. **One** serial joiner assigns the next free label and rotates LOG/CONTEXT. Never two writers on one tree. |
+| **Router** | already-true / founder / blocked | Webpack “can’t resolve” an old path when source already imports `@/lib/plannedRest` is `already true` + restart `next dev`. Not a ship. Do not put a shim back under `src/lib/rewards/` (AG1 / `.830` — C2/C7). |
+| **Controlled cycle** | Amount of work unknown | Continue after residual thin is **not** a cycle. Every cycle needs a discover proof, a hard stop, and a budget. |
+
+A join is worth the wait only for the complete set (cross-file label, LOG rotation, CONTEXT bullets). Independent first-paint leftovers do not consume each other.
+
+Verifier on the edge, before merge: domain boundary C2/C7, first-paint cap is the **measured** count, `done (already true)` when source already matches.
+
 ### Stop the graph if
 
 - Two loops in a row ship without moving an H0 agent-allowed item (or an explicit queue item)
+- Two loops in a row only invent a letter, with no discover proof (file + pack string)
 - You are about to write another plan instead of executing the top `open` loop
 - A loop requires a founder secret / postal / invite / env flip — mark it `founder` and take the next **agent** `open` row
 
@@ -340,7 +356,7 @@ Not AF2. Webpack still asked for the pre-`.825` path.
 
 | # | Loop | Moves | Status |
 |---|------|-------|--------|
-| **AG1** | plannedRest shim | `src/lib/rewards/plannedRest.ts` re-exports moved module | `done` — `.830` this PR |
+| **AG1** | plannedRest shim | `src/lib/rewards/plannedRest.ts` re-exports moved module | `done` — `.830` this PR — **anti-pattern.** Stale Turbopack, not a missing module. Restart `next dev`. Do not re-home planned rest under `rewards/`. |
 
 D4 stays hold. Do not invent AG2.
 

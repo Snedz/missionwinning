@@ -159,15 +159,17 @@ This repo has no `.greptile/` tree. Instill is this recipe + `privacyInstill.tes
 
 ## 11. Continue the agent graph loop
 
-1. Read [GRAPH_LOOP.md](GRAPH_LOOP.md) — the queue is the source, not chat history.
-2. Take **only** the top `open` loop. Investigate on current master before coding.
-3. If the loop’s defect is already gone, mark it `done (already true)` with proof paths and stop.
-4. One PR. `[skip vercel]` unless the founder asked for Preview.
-5. Touching `src|app|scripts|supabase` → bump `APP_BUILD_LABEL` past master, LOG + CONTEXT `## Now` in the same commit. Surface paths while excellence is unscored need `Excellence-Override: <reason>`.
-6. Close the loop in `GRAPH_LOOP.md` (Outcome = PR + label). Do not start the next loop in that PR.
-7. Spawn the next agent with the copy-paste prompt in GRAPH_LOOP.md.
+1. Read [GRAPH_LOOP.md](GRAPH_LOOP.md) — the queue is the source, not chat history. Shapes live there (chain / diamond / router / controlled cycle).
+2. **Discover on current master** — measure first-paint drift, list honesty twins. Empty list, or residual thin with no named `defaultValue` + pack string → write nothing, exit. “Do not invent X2” is not permission to invent Y1.
+3. If the named leftover’s defect is already gone, mark it `done (already true)` with proof paths and stop.
+4. **One leftover** → one PR (chain). **Several independent leftovers** → diamond in isolated worktrees, then **one** joiner for label / LOG / CONTEXT. Never two writers on one tree.
+5. One concern per PR. `[skip vercel]` unless the founder asked for Preview.
+6. Touching `src|app|scripts|supabase` → bump `APP_BUILD_LABEL` past master, LOG + CONTEXT `## Now` in the same commit. Surface paths while excellence is unscored need `Excellence-Override: <reason>`. Docs-only does **not** mint a version.
+7. Verifier on the edge before merge: domain boundary C2/C7, first-paint cap is the **measured** count, no `src/lib/rewards/` shim for a stale Turbopack graph (restart `next dev`).
+8. Close the loop in `GRAPH_LOOP.md` (Outcome = PR + label). Do not start the next loop in that PR.
+9. Spawn the next agent with the copy-paste prompt in GRAPH_LOOP.md — only if discover still has a named leftover.
 
-G1–G7 are the live queue (GRAPH_LOOP v2). Do not write excellence `status: pass`. Do not restore cinematic `/`.
+The live queue is the top `open` row in GRAPH_LOOP, not a remembered letter (G1–G7 are done). Do not write excellence `status: pass`. Do not restore cinematic `/`.
 
 Hard bans stay: free logger never gated · no `PRIVATE_MODE` flip · no invented traction.
 
