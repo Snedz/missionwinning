@@ -1,5 +1,5 @@
-/** Shown on Profile so testers can confirm the deployed build. Bump when shipping UI to master. `.816` Mind first paint. */
-export const APP_BUILD_LABEL = "2026.07-unified.816";
+/** Shown on Profile so testers can confirm the deployed build. Bump when shipping UI to master. `.817` Learn first paint. */
+export const APP_BUILD_LABEL = "2026.07-unified.817";
 
 /**
  * Semver for athletes. Distinct from `APP_BUILD_LABEL`, which `/api/health`
