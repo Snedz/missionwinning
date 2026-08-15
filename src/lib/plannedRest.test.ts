@@ -7,7 +7,7 @@ import {
   streakFromDatesAllowingRest,
 } from './plannedRest.ts';
 
-const root = path.join(import.meta.dirname, '..', '..', '..');
+const root = path.join(import.meta.dirname, '..', '..');
 
 test('planned rest is a date membership check', () => {
   assert.equal(isPlannedRest('2026-08-12', ['2026-08-12']), true);

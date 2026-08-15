@@ -63,11 +63,23 @@ test('session unlock does not soft-navigate before the gate cookie is confirmed'
     /router\.(replace|push)\(/,
     'PrivateTeaserClient must not client-route away from /private — use hard navigation after gate unlock'
   );
-  assert.match(
-    client,
-    /navigateAfterPrivateGateUnlock\(\s*privateGateReturnPath\(/,
-    'post-unlock must hard-navigate via navigateAfterPrivateGateUnlock(privateGateReturnPath(...))'
+  const destAssign = client.match(
+    /(?:const|let)\s+(\w+)\s*=\s*privateGateReturnPath\s*\(/
   );
+  assert.ok(
+    destAssign,
+    'unlock destination must be assigned from privateGateReturnPath(...) — inlined or hoisted, never a raw path'
+  );
+  const destName = destAssign[1];
+  const navCalls = [...client.matchAll(/navigateAfterPrivateGateUnlock\s*\(\s*([^)]+?)\s*\)/g)];
+  assert.ok(navCalls.length >= 1, 'post-unlock must hard-navigate via navigateAfterPrivateGateUnlock');
+  for (const call of navCalls) {
+    assert.equal(
+      call[1].trim(),
+      destName,
+      `navigateAfterPrivateGateUnlock must receive the sanitized ${destName}, not ${call[1].trim()}`
+    );
+  }
   assert.match(
     client,
     /confirmPrivateGateCookie\(\)/,

@@ -668,12 +668,12 @@ controls:
     frameworks: [ccpa, hipaa]
     category: privacy
     owner: agent
-    evidence: src/page-components/AssessmentsPage.tsx
+    evidence: src/lib/journey/parqIntake.ts
     probe: source_scan
     require: [STORAGE_KEYS.lastAssessment]
     forbid: [saveNutritionEntry]
     status: automated
-    notes: "Device-only mw_last_assessment. Historical Assessment: rows still filter in Fuel."
+    notes: "Persist home is persistParqScreen → mw_last_assessment. Page/card call that helper. Historical Assessment: rows still filter in Fuel."
 
   - id: MW-HEALTH-002
     title: Sign-out clears or namespaces athlete-local storage

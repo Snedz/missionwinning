@@ -145,7 +145,8 @@ test('HistoryPage: list + empty + read-only open', () => {
   assert.match(src, /session-history-list/, 'the list is marked');
   assert.match(src, /session-history-row/, 'rows are marked');
   assert.match(src, /session-history-log/, 'open target is the log dialog');
-  assert.match(src, /finished sessions land here/, 'empty stays an invitation');
+  assert.match(src, /No sessions yet/, 'empty stays an invitation');
+  assert.match(src, /Log one set from Today/, 'empty points at Today, not shame');
   assert.match(src, /setSelected\(log\)/, 'tap selects the completed log');
 
   assert.doesNotMatch(src, /Top 8|top eight/i, 'no Top 8');

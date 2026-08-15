@@ -250,6 +250,8 @@ const CLAIM_WITHOUT_CITE_EXEMPT: Record<string, string> = {
     'Shop merch names the Coach-from-logs mechanism; `/bundle` has no athlete log to quote.',
   'src/components/nutrition/FuelMealPlanCard.tsx':
     'Fuel Coach generate copy names the mechanism before a plan exists; there is no set to quote until meals are logged.',
+  'src/page-components/ProgramsPage.tsx':
+    'Education-outline catalog points at /coach; this page has no athlete log to quote.',
 };
 
 test('a Coach provenance claim never ships without a citation beside it', () => {

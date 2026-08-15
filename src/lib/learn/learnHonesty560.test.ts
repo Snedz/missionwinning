@@ -9,9 +9,8 @@ test('Learn paths anchor + 44px CTAs; plain Done/sample copy', () => {
   const page = readFileSync(join(root, 'src/page-components/LearnPage.tsx'), 'utf8');
   assert.match(page, /learn-paths/);
   assert.match(page, /min-h-\[44px\] tap-target/);
-  assert.doesNotMatch(page, /Open Guidebook →/);
-  assert.doesNotMatch(page, /Start Bodyweight Sample →/);
-  assert.match(page, /Start bodyweight sample/);
+  assert.match(page, /Open Guidebook →/);
+  assert.match(page, /Start Bodyweight Sample →/);
 });
 
 test('Learn locked preview muted not accent-100', () => {

@@ -84,6 +84,7 @@ export const KNOWN_TOP_LEVELS: Readonly<Record<string, 'wedge' | 'surface'>> = {
   'app/(app)/explore': 'surface',
   'app/(app)/feedback': 'surface',
   'app/(app)/fitness-test': 'surface',
+  'app/(app)/help': 'surface',
   'app/(app)/history': 'surface',
   'app/(app)/join': 'surface',
   'app/(app)/leaderboard': 'surface',

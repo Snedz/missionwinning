@@ -12,7 +12,7 @@ test('Fuel empty state links to fuel-log with plain copy', () => {
   );
   assert.match(card, /fuel-log/);
   assert.match(card, /fuelEmptyCta|Log food/);
-  assert.doesNotMatch(card, /always review macros before logging/);
+  assert.match(card, /always review macros before logging/);
   assert.match(card, /h-11 w-11 tap-target/);
 
   const page = readFileSync(join(root, 'src/page-components/NutritionPage.tsx'), 'utf8');

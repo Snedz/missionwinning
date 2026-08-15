@@ -49,6 +49,20 @@ test('SetLogRow: PREVIOUS row anchor + metric-first density; 44px taps', () => {
   assert.doesNotMatch(code, /primary-action|accent-poster|bg-primary-fill/);
 });
 
+test('SetLogRow: completed ratings wrap on their own row — not shrink-0 on the nowrap metric line', () => {
+  const src = workout('SetLogRow.tsx');
+  const code = src.replace(/\/\*[\s\S]*?\*\//g, '').replace(/\/\/.*$/gm, '');
+  const rateIdx = code.indexOf('data-testid="set-row-rate"');
+  assert.ok(rateIdx > 0, 'completed ratings must expose set-row-rate');
+  const around = code.slice(Math.max(0, rateIdx - 180), rateIdx + 20);
+  assert.match(around, /min-w-0 flex-wrap/, 'rate strip must be allowed to wrap inside 390px');
+  assert.doesNotMatch(
+    around,
+    /shrink-0 flex-wrap/,
+    'Easy/Med/Hard + RIR as shrink-0 is the 390 sideways scroll'
+  );
+});
+
 test('SetLogTable: Prev column anchored; one poster-red Log set; 44px inputs', () => {
   const src = workout('SetLogTable.tsx');
   const primaries = src.match(/primary-action/g) || [];

@@ -207,6 +207,14 @@ const CASES: Record<string, Case> = {
     invalid: [{ input: { q: 'a' }, because: 'a single character searches the whole food database for nothing' }],
   },
 
+  feedbackReviewBodySchema: {
+    valid: [{ leadId: 1, dest: 'craft', class: 'wedge-bug' }],
+    invalid: [
+      { input: { leadId: 1, dest: 'inbox' }, because: 'dest is the four-bin review board; a fifth bin is a typo' },
+      { input: { leadId: 0, dest: 'craft' }, because: 'lead ids are positive serials from the waitlist table' },
+    ],
+  },
+
   inviteCodeBodySchema: {
     valid: [{ code: 'MW-B-ABCDE' }],
     invalid: [
@@ -492,6 +500,78 @@ const CASES: Record<string, Case> = {
   schoolPinBodySchema: {
     valid: [{ pin: '4821' }],
     invalid: [{ input: { pin: '12' }, because: 'the PIN gates a roster of student names (.211)' }],
+  },
+
+  socialMessageBodySchema: {
+    valid: [
+      {
+        id: 'msg-1',
+        channelSlug: 'train',
+        body: 'hello',
+        kind: 'text',
+        authorCallSign: 'Athlete',
+        authorMissionId: '01',
+        createdAt: '2026-07-27T00:00:00.000Z',
+      },
+    ],
+    invalid: [
+      {
+        input: {
+          id: 'msg-1',
+          channelSlug: 'voice',
+          body: 'hello',
+          authorCallSign: 'Athlete',
+          createdAt: '2026-07-27T00:00:00.000Z',
+        },
+        because: 'garage channels are train/garage/off-topic — voice is a different product',
+      },
+      {
+        input: {
+          id: 'msg-1',
+          channelSlug: 'train',
+          body: '',
+          authorCallSign: 'Athlete',
+          createdAt: '2026-07-27T00:00:00.000Z',
+        },
+        because: 'an empty post would land a blank row in the channel',
+      },
+      {
+        input: {
+          id: 'msg-1',
+          channelSlug: 'train',
+          body: 'hello',
+          authorCallSign: 'Athlete',
+          authorMissionId: '1',
+          createdAt: '2026-07-27T00:00:00.000Z',
+        },
+        because: 'mission ids are two digits; a single digit is not a Mission ID',
+      },
+    ],
+  },
+
+  socialMessagesQuerySchema: {
+    valid: [{ channel: 'train', since: '2026-07-27T00:00:00.000Z', limit: 20 }],
+    invalid: [
+      { input: { channel: 'voice' }, because: 'the same three slugs as the write path' },
+      { input: { channel: 'train', limit: 0 }, because: 'limit 0 would return nothing, successfully' },
+      { input: { channel: 'train', limit: 101 }, because: 'the 100-row cap is what bounds a guest poll' },
+    ],
+  },
+
+  socialPresenceBodySchema: {
+    valid: [{ status: 'available', callSign: 'Athlete' }],
+    invalid: [
+      { input: { status: 'online', callSign: 'Athlete' }, because: 'presence is available/away/offline' },
+      { input: { status: 'available', callSign: '' }, because: 'an empty call sign would render a nameless presence row' },
+    ],
+  },
+
+  socialReportBodySchema: {
+    valid: [{ messageId: 'm1', reason: 'spam' }],
+    invalid: [
+      { input: { messageId: 'm1', reason: 'nope' }, because: 'report reasons are spam/abuse/other' },
+      { input: {}, because: 'a report without a message id has nothing to act on' },
+    ],
   },
 
   wearableDisconnectSchema: {

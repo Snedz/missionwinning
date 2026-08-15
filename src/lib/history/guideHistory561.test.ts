@@ -17,7 +17,8 @@ test('Guidebook index CTAs are 44px without arrow flourish', () => {
 
 test('History empty and filters stay plain with tap chips', () => {
   const page = readFileSync(join(root, 'src/page-components/HistoryPage.tsx'), 'utf8');
-  assert.match(page, /finished sessions land here/);
+  assert.match(page, /No sessions yet/);
+  assert.match(page, /Log one set from Today/);
   assert.match(page, /Widen the range or clear search/);
   assert.match(page, /hover:bg-muted/);
   assert.match(page, /View in Fuel/);

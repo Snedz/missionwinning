@@ -132,12 +132,13 @@ export function SetLogRow({
       aria-label={`${rowLabel}. ${prevWord} ${prevShown}`}
       aria-current={isNext ? 'true' : undefined}
       className={cn(
-        'flex min-h-[44px] flex-nowrap items-center gap-x-2 border-b border-border px-0.5 py-1.5 transition-colors',
+        'min-w-0 border-b border-border px-0.5 py-1.5 transition-colors',
         isNext && 'is-active-row',
         set.completed && 'border-s-[3px] border-s-primary bg-muted/40 ps-2'
       )}
       data-set-complete={set.completed ? 'true' : 'false'}
     >
+      <div className="flex min-h-[44px] min-w-0 flex-nowrap items-center gap-x-2">
       {isNext && onToggleWarmup ? (
         <button
           type="button"
@@ -251,9 +252,13 @@ export function SetLogRow({
           </TooltipContent>
         </Tooltip>
       )}
+      </div>
 
       {set.completed && (
-        <div className="ms-auto flex shrink-0 flex-wrap items-center justify-end gap-0.5">
+        <div
+          className="mt-1 flex min-w-0 flex-wrap items-center justify-end gap-0.5"
+          data-testid="set-row-rate"
+        >
           {!set.rpe ? (
             (['easy', 'med', 'hard'] as const).map((r) => (
               <Tooltip key={r}>

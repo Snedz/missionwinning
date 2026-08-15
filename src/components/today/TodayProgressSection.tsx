@@ -115,7 +115,7 @@ export function TodayProgressSection({
             ))}
             {savedWorkouts.length === 0 && (
               <Button variant="ghost" size="sm" className="min-h-[44px] tap-target" onClick={() => router.push('/builder')}>
-                {t('todayBuildCustom', { defaultValue: 'Build a custom session' })}
+                {t('todayBuildCustom', { defaultValue: 'Build a custom session →' })}
               </Button>
             )}
           </div>
@@ -184,7 +184,7 @@ export function TodayProgressSection({
           </div>
           <div className="text-muted-foreground">{t('todayRecommendedBody', { defaultValue: 'Start with a simple full-body or split from Builder, or launch a program template. Complete sessions to level up your Mission Score.' })}</div>
           <Button variant="outline" size="sm" className="min-h-[44px] tap-target" onClick={() => router.push('/builder')}>
-            {t('todayGoBuilder', { defaultValue: 'Open builder' })}
+            {t('todayGoBuilder', { defaultValue: 'Go to Builder / Choose Template →' })}
           </Button>
         </CardContent>
       </Card>
@@ -257,7 +257,7 @@ export function TodayProgressSection({
               <div>
                 {t('todayAssessmentNone', { defaultValue: 'No assessment yet.' })}{' '}
                 <a href="/assessments" className="underline">
-                  {t('todayAssessmentTake', { defaultValue: 'Take readiness assessment' })}
+                  {t('todayAssessmentTake', { defaultValue: 'Take free Readiness Assessment →' })}
                 </a>
               </div>
             )}
@@ -269,7 +269,7 @@ export function TodayProgressSection({
                   {recentPillarWins.map((w, i) => <li key={i}>{w.name} {w.date && `(${w.date})`}</li>)}
                 </ul>
                 <a href="/nutrition" className="underline">
-                  {t('todaySeeNutritionLink', { defaultValue: 'See full in Fuel' })}
+                  {t('todaySeeNutritionLink', { defaultValue: 'See full in Nutrition →' })}
                 </a>
               </div>
             ) : (
@@ -314,7 +314,7 @@ export function TodayProgressSection({
                   title: t('todayFounderMindLogged', { defaultValue: 'Mind win logged' }),
                   description: t('todayFounderStreakOnly', {
                     streak: current,
-                    defaultValue: `Streak ${current}.`,
+                    defaultValue: 'Streak {{streak}}.',
                   }),
                 });
               } catch { /* noop */ }
@@ -330,7 +330,7 @@ export function TodayProgressSection({
                   title: t('todayFounderMoveLogged', { defaultValue: 'Move win logged' }),
                   description: t('todayFounderStreakOnly', {
                     streak: current,
-                    defaultValue: `Streak ${current}.`,
+                    defaultValue: 'Streak {{streak}}.',
                   }),
                 });
               } catch { /* noop */ }
@@ -367,11 +367,11 @@ export function TodayProgressSection({
       <Card className="border-2 border-border">
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
-            <Trophy className="h-5 w-5 text-primary" /> {t('todayYourWins', { defaultValue: 'Your wins' })}
+            <Trophy className="h-5 w-5 text-primary" /> {t('todayYourWins', { defaultValue: 'Your Wins & Streaks' })}
           </CardTitle>
           <CardDescription>
             {t('todayYourWinsDesc', {
-              defaultValue: 'Milestones from your logs — streaks and volume feed Mission Score.',
+              defaultValue: 'Proof you are taking massive action. Complete these for badges and coaching priority.',
             })}
           </CardDescription>
         </CardHeader>
@@ -473,12 +473,12 @@ export function TodayProgressSection({
           <div className="col-span-2 text-xs text-muted-foreground">
             {t('todayWinBadgeFoot', {
               defaultValue:
-                'Log wins daily. Streaks and volume feed Mission Score.',
+                'Log wins daily — streaks & volume feed your Mission Score. Full cross-pillar challenges in updates.',
             })}
           </div>
           <div className="col-span-2 flex gap-2 mt-1 flex-wrap">
             <Button size="sm" variant="outline" className="text-xs min-h-[44px] tap-target" onClick={() => router.push('/leaderboard')}>
-              {t('todayViewLeaderboard', { defaultValue: 'View leaderboard' })}
+              {t('todayViewLeaderboard', { defaultValue: 'View Leaderboard →' })}
             </Button>
             {SHOW_TODAY_FOUNDER_TOOLS && (
               <>
@@ -488,7 +488,7 @@ export function TodayProgressSection({
                 title: t('todayFounderWinLogged', { defaultValue: 'Win logged' }),
                 description: t('todayFounderStreakOnly', {
                   streak: current,
-                  defaultValue: `Streak ${current}.`,
+                  defaultValue: 'Streak {{streak}}.',
                 }),
               }); 
               router.refresh(); 
@@ -510,7 +510,7 @@ export function TodayProgressSection({
                   title: t('todayFounderMindLogged', { defaultValue: 'Mind win logged' }),
                   description: t('todayFounderStreakOnly', {
                     streak: cur,
-                    defaultValue: `Streak ${cur}.`,
+                    defaultValue: 'Streak {{streak}}.',
                   }),
                 });
               } catch { /* noop */ }
@@ -522,7 +522,7 @@ export function TodayProgressSection({
                 title: t('todayFounderMobilityLogged', { defaultValue: 'Mobility habit logged' }),
                 description: t('todayFounderStreakOnly', {
                   streak: current,
-                  defaultValue: `Streak ${current}.`,
+                  defaultValue: 'Streak {{streak}}.',
                 }),
               });
               router.refresh();
@@ -613,7 +613,7 @@ export function TodayProgressSection({
             ))}
           </div>
           <Button variant="link" className="mt-2 px-0" onClick={() => router.push("/history")}>
-            {t('todayViewHistory', { defaultValue: 'View full history' })}
+            {t('todayViewHistory', { defaultValue: 'View full history →' })}
           </Button>
         </div>
       )}

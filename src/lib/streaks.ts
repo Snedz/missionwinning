@@ -16,8 +16,8 @@ import { STORAGE_KEYS } from '@/lib/storage/keys';
 import { readRaw, writeRaw } from '@/lib/storage/safeStorage';
 import { localDateKey, localDateKeyFromIso } from '@/lib/time/localDate';
 import { isStreakLive } from '@/lib/streakRecency';
-import { loadPlannedRestDays } from '@/lib/rewards/plannedRestStorage';
-import { streakFromDatesAllowingRest } from '@/lib/rewards/plannedRest';
+import { loadPlannedRestDays } from '@/lib/plannedRestStorage';
+import { streakFromDatesAllowingRest } from '@/lib/plannedRest';
 
 export const STREAK_KEY = STORAGE_KEYS.streak;
 
