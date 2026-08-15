@@ -2,7 +2,7 @@
 
 **Audience:** Founder + the next Hermes / Grok Build / graph agent  
 **Lane:** Engineering-Web (unless a loop says Android)  
-**Status:** ACTIVE 2026-08-14 · web `2026.07-unified.820` · Alpha 0.1.0 · **AB1 done · residual thin**  
+**Status:** ACTIVE 2026-08-14 · web `2026.07-unified.821` · Alpha 0.1.0 · **AC1 done · residual thin**  
 **Does not replace:** [ORCHESTRATION.md](../ORCHESTRATION.md) (what may be built) · [CONTEXT.md](../CONTEXT.md) `## Now` (where we are) · [vision.md](../vision.md) (constitution) · [docs/THESIS.md](THESIS.md) (wedge) · [docs/PLAN.md](PLAN.md) (phases A–I)
 
 This file is the **execution queue** for the agent graph: one concern per loop, spawn, ship, mark done, spawn the next. It is not a second status block and not a license to skip standing hard bans.
@@ -293,6 +293,16 @@ Not AA2. Fuel page title leftover.
 | **AB1** | Fuel title first-paint | Title is Nutrition. Drift cap 188 | `done` — `.820` this PR |
 
 D4 stays hold. Do not invent AB2.
+
+### Now — AC (Continue after AB · 2026-08-14)
+
+Not AB2. FuelTodayLogCard leftover.
+
+| # | Loop | Moves | Status |
+|---|------|-------|--------|
+| **AC1** | Fuel log card first-paint | Load from Cloud + empty match pack. Drift cap 186 | `done` — `.821` this PR |
+
+D4 stays hold. Do not invent AC2.
 
 ### After H0 (orientation — not open until H0-1…H0-7 are done or `founder`)
 

@@ -86,7 +86,7 @@ export function FuelTodayLogCard({
         </CardTitle>
         <div className="flex gap-2 flex-wrap justify-end">
           <Button variant="outline" size="sm" className="min-h-[44px] tap-target" onClick={onLoadCloud}>
-            {t('fuelLoadCloud', { defaultValue: 'Load from cloud' })}
+            {t('fuelLoadCloud', { defaultValue: 'Load from Cloud' })}
           </Button>
           {cloudStatus ? (
             <span className="text-[11px] text-primary self-center">{cloudStatus}</span>
@@ -99,7 +99,7 @@ export function FuelTodayLogCard({
             icon={UtensilsCrossed}
             title={t('fuelEmptyTitle', { defaultValue: 'No meals logged today' })}
             description={t('fuelNoEntries', {
-              defaultValue: 'Log food above, or open Log food for a full entry.',
+              defaultValue: 'Describe what you ate above, or tap Log food — always review macros before logging.',
             })}
             actionLabel={t('fuelEmptyCta', { defaultValue: 'Log food' })}
             href="#fuel-log"
