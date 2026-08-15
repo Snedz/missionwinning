@@ -38,13 +38,12 @@ test.describe('Logger depth @gate', () => {
     const logBtn = page.getByRole('button', { name: /^log( set)?$/i }).first();
     await expect(logBtn).toBeVisible({ timeout: 10_000 });
 
-    // E-Adjacency DESIGN_NEXT §A: first session is honest empty, not an invented load.
-    // Target paints only on the live row (F-003 density).
-    await expect(page.getByTestId('set-row-target-empty')).toHaveCount(1);
-    await expect(page.getByTestId('set-row-target')).toHaveCount(0);
-    await expect(page.getByTestId('set-row-target-empty')).toContainText(
-      /no prior sets yet/i
-    );
+    // First session is honest empty, not an invented load. Compact (390) paints
+    // Prev — on the live row; `set-row-target-empty` is the desktop adjacency
+    // stack, not this viewport.
+    const liveSet = page.getByRole('listitem', { name: /set 1.*prev/i }).first();
+    await expect(liveSet).toBeVisible();
+    await expect(liveSet).toContainText('—');
 
     await logBtn.click();
 
