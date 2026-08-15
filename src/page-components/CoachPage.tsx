@@ -91,7 +91,7 @@ export function CoachPage({ askExerciseId }: CoachPageProps = {}) {
       title={t('coachPageTitle', { defaultValue: 'Mission Coach' })}
       subtitle={t('coachPageSubtitle', {
         defaultValue:
-          'A week of training built from your logs — no wearable. Miss a day or crush a PR, and the plan flexes.',
+          'Weekly plans from your workout logs alone — no wearable. Adapts when you miss or crush a session.',
       })}
     >
       {/*
@@ -132,7 +132,7 @@ export function CoachPage({ askExerciseId }: CoachPageProps = {}) {
         <>
           <EmptyState
             icon={Sparkles}
-            title={t('coachGenerateEmptyTitle', { defaultValue: 'Ready for a new week?' })}
+            title={t('coachGenerateEmptyTitle', { defaultValue: 'No plan this week' })}
             description={t('coachFreeBetaNextWeek', {
               defaultValue: 'Generate next week from your latest logs. Free during Alpha.',
             })}
@@ -198,7 +198,7 @@ export function CoachPage({ askExerciseId }: CoachPageProps = {}) {
             </Button>
             <p className="text-center text-xs text-muted-foreground leading-relaxed">
               {t('coachFreeCoreNote', {
-                defaultValue: 'Workout logger, library, and Today stay free forever.',
+                defaultValue: 'Workout logger, library, and Today stay free — premium funds the mission.',
               })}
             </p>
           </CardContent>
