@@ -23,6 +23,7 @@
 |-------------|------------|-------------------------------|
 | **Deciding what to build next** | [ORCHESTRATION.md](ORCHESTRATION.md) | Old chat plans; infinite feature lists |
 | **Spawning the next agent graph loop** | [docs/GRAPH_LOOP.md](docs/GRAPH_LOOP.md) (queue) after ORCHESTRATION | Another planning memo; executing two loops in one PR; closed 2026-08-12 sand PRs as if they were master |
+| **Generating the next idea** | [docs/IDEA_LOOP.md](docs/IDEA_LOOP.md) (protocol) · graph [docs/mechanics/INDEX.md](docs/mechanics/INDEX.md) | Treating it as a second queue; emitting more than one row; letting the model that wrote a candidate judge it; targeting the loop's own process as a behaviour |
 | **Running a gauntlet campaign** | [docs/GAUNTLET_LOOP.md](docs/GAUNTLET_LOOP.md) after GRAPH_LOOP · workbench [docs/gauntlet/INDEX.md](docs/gauntlet/INDEX.md) | Builder grading its own work; treating the workbench as a second queue or status block; bars invented mid-round |
 | Implementing a feature | [ORCHESTRATION.md](ORCHESTRATION.md) horizon gate + [docs/PLAN.md](docs/PLAN.md) + `src/*/INDEX.md` | Old chat plans in `~/.cursor/plans/` |
 | Launch / deploy | **[docs/LAUNCH_RUNBOOK.md](docs/LAUNCH_RUNBOOK.md) — the single source**, then [docs/ENV.md](docs/ENV.md) for what each var means | Everything in `docs/archive/` (`SOFT_LAUNCH_DAY`, `BETA_LAUNCH_OPS`, `PRE_LAUNCH_PLAN`, `LAUNCH_READY`, `TRACK_D_GO_LIVE`, `SETUP`) — all **superseded 2026-07-19** and all still contradicting the runbook |
@@ -86,6 +87,8 @@
 | **Contributing** | [CONTRIBUTING.md](CONTRIBUTING.md) | — |
 | **Doc hub (all audiences)** | [docs/README.md](docs/README.md) | — |
 
+**Mechanic naming trap:** an idea-graph **MECHANIC** ([docs/mechanics/](docs/mechanics/INDEX.md)) is MDA's *dynamic* — the behavioural machinery under a feature, never the feature. "Stories" is a skin; "lowered creation pressure + attendance receipts + cheap reply" is the node. Recording one at surface level is the cargo-cult failure the ontology exists to prevent.
+
 **Phase naming trap:** Journey “Phase 0–3” ([docs/JOURNEY.md](docs/JOURNEY.md)) ≠ build phases A–I ([docs/PLAN.md](docs/PLAN.md)) ≠ PFT sub-phases G1–G8 ≠ Android horizons A–F ([docs/ANDROID_NATIVE.md](docs/ANDROID_NATIVE.md)) ≠ gauntlet campaigns **GNT-n** ([docs/GAUNTLET_LOOP.md](docs/GAUNTLET_LOOP.md)). Mobile work uses named gates (Accept B · week-4 · iOS lane open), not new numbers.
 
 ---
@@ -144,6 +147,7 @@ Root keeps only the spine: README · CONTEXT · AGENTS · INDEX · vision · ORC
 | [docs/REDTEAM.md](docs/REDTEAM.md) | **Stub** — full assumptions audit in private mission-ops |
 | [docs/PLAN.md](docs/PLAN.md) | Build roadmap |
 | [docs/GRAPH_LOOP.md](docs/GRAPH_LOOP.md) | Agent graph execution queue (AL1 open — GNT-1) |
+| [docs/IDEA_LOOP.md](docs/IDEA_LOOP.md) | Idea generation protocol · graph in [docs/mechanics/](docs/mechanics/INDEX.md) |
 | [docs/GAUNTLET_LOOP.md](docs/GAUNTLET_LOOP.md) | Gauntlet grading protocol · campaigns in [docs/gauntlet/](docs/gauntlet/INDEX.md) |
 | [docs/E1RM_PLAN.md](docs/E1RM_PLAN.md) | Frozen `.739` — educational Epley e1RM on logged sets |
 | [LOG.md](LOG.md) | Dev log |

@@ -107,6 +107,11 @@ export const KNOWN_TOP_LEVELS: Readonly<Record<string, 'wedge' | 'surface'>> = {
   'app/(app)/usage': 'surface',
   // src/lib
   'src/lib/activation': 'surface',
+  // Build tooling for the idea loop. Nothing here renders, and
+  // `ideaGraphContract.test.ts` forbids any rendered surface from reaching it —
+  // but the path map has no `infra` value, and `surface` is the honest side to
+  // err on: a wrong `wedge` would wave through a class of change nobody scored.
+  'src/lib/ideaGraph': 'surface',
   'src/lib/api': 'surface',
   'src/lib/beta': 'surface',
   'src/lib/checkout': 'surface',

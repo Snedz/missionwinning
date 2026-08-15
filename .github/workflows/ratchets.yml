@@ -101,6 +101,9 @@ jobs:
       - name: i18n coverage
         run: npm run i18n:coverage
 
+      - name: Idea graph
+        run: npm run idea:validate
+
       - name: Design system
         run: npm run check-design-system
 

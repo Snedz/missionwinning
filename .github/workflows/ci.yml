@@ -81,6 +81,12 @@ jobs:
       - name: Excellence gate
         run: npm run check-excellence-gate
 
+      # Reads docs/mechanics/ and the constants the constraint nodes cite. Cheap,
+      # and the failure it catches is quiet: a constraint whose enforcer has been
+      # renamed away still reads as a rule while refusing nothing.
+      - name: Idea graph
+        run: npm run idea:validate
+
       - name: Display type
         run: npm run check-display-type
 

@@ -98,15 +98,15 @@ cd apps/android && ./gradlew :app:assembleDebug
 
 Node 22 (CI). PR CI is [.github/workflows/ci.yml](.github/workflows/ci.yml); minutes-heavy jobs (critical e2e, Android, Lighthouse) are manual/weekly in `ci-extended.yml`. A push to `master` runs [.github/workflows/ratchets.yml](.github/workflows/ratchets.yml) — the no-build half of the gate, and the only workflow on that path. **Whether Actions is currently running is recorded in exactly one place — `CONTEXT.md` `## Now`** — do not restate it elsewhere.
 
-### `npm run gate` — 20 steps, in order
+### `npm run gate` — 21 steps, in order
 
 `scripts/gate.mjs` runs everything CI would, on your machine, and builds with `PRIVATE_MODE=false` so the service worker compiles (the offline spec needs one). It starts and stops its own production server.
 
-1. Port unoccupied · 2. Build label + hard rule 5 · 3. **Excellence gate** · 4. Lint · 5. Typecheck
-6. Unit tests · 7. Route contract tests · 8. **Coverage floors** · 9. i18n parity · 10. i18n coverage
-11. Dependency advisories · 12. Design system · 13. Locale split · 14. Display type
-15. Token sync (web ↔ www ↔ Android) · 16. **WWW build + checks (sites/www)** · 17. Production build · 18. Bundle budget
-19. Hero e2e (`@gate`) · 20. Accessibility (`@a11y`)
+1. Port unoccupied · 2. Build label + hard rule 5 · 3. **Excellence gate** · 4. **Idea graph** · 5. Lint
+6. Typecheck · 7. Unit tests · 8. Route contract tests · 9. **Coverage floors** · 10. i18n parity
+11. i18n coverage · 12. Dependency advisories · 13. Design system · 14. Locale split · 15. Display type
+16. Token sync (web ↔ www ↔ Android) · 17. **WWW build + checks (sites/www)** · 18. Production build · 19. Bundle budget
+20. Hero e2e (`@gate`) · 21. Accessibility (`@a11y`)
 
 > This list said **16 steps** until `.562`, and omitted **Coverage floors** entirely — the one ratchet that had been silently breached on `master` since `.544`. The port guard was missing too. **`.669` added Excellence gate** (Horizon W RESULT + surface stop-rule). A map of the gate that cannot see a step is how the step stops being run; `scripts/gate.mjs` numbers every step it executes, so the count is checkable against a single `npm run gate` run.
 
@@ -131,6 +131,7 @@ Each of these exists because the failure already happened once. Breaking one tur
 | **Locale packs stay split to the English schema**; nothing on the root-layout path may value-import locale bodies | `check-locale-split` + `bundle-budget` |
 | **Initial gzipped JS only ratchets down**, measured off prerendered HTML | `scripts/bundle-budget.mjs` |
 | **Display type** — no `text-*` utility nullifying a `.display-*` clamp | `check-display-type` |
+| **Every idea-graph constraint has a live enforcer** — an `X-` node names a file and an anchor string that must both still exist, so a rule cannot go on being cited after the test that enforced it was renamed away. Mechanics are recorded as a closed set of behavioural primitives, never as prose, so a feature cannot be filed as a mechanic | `idea:validate` ([docs/IDEA_LOOP.md](docs/IDEA_LOOP.md)) — prose diversity rules were tried first and failed sixteen queue rows in a row |
 | **Every migration is written into the runbook** | `src/lib/migrationLedger.test.ts` |
 | **`CONTEXT.md` `## Now` stays ≤25 bullets and keeps stating the governing facts** | `src/lib/contextBudget.test.ts` (`MUST_STATE`) |
 
@@ -190,6 +191,7 @@ This repo has paid repeatedly for checks that could not fail. Before adding a te
 |------|-------|
 | Status / gates | [CONTEXT.md](CONTEXT.md) `## Now` |
 | What to build next | [ORCHESTRATION.md](ORCHESTRATION.md), [docs/PLAN.md](docs/PLAN.md) |
+| Where the next idea comes from | [docs/IDEA_LOOP.md](docs/IDEA_LOOP.md), graph in [docs/mechanics/](docs/mechanics/INDEX.md) |
 | Architecture | [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) |
 | API reference | [docs/API.md](docs/API.md), [app/INDEX.md](app/INDEX.md), [app/api/INDEX.md](app/api/INDEX.md) |
 | How to add code | [CONTRIBUTING.md](CONTRIBUTING.md), [docs/AGENT_RECIPES.md](docs/AGENT_RECIPES.md) |

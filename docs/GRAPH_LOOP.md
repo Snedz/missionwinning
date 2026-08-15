@@ -44,6 +44,24 @@ read spine → pick the top open loop here → one PR → tests + ship protocol
     → mark the loop done in this file → spawn the next agent with the prompt below
 ```
 
+### Where rows come from (`.840`)
+
+Until now every row on this queue was written by an agent reading **this repo's
+own source**, and it showed: after G7 the queue ran one row per letter and
+roughly sixteen consecutive rows were the same idea — first-paint copy drift,
+cap walking 216 → 167 — which is why every block below ends with *"Do not invent
+X2."* A prose diversity rule, tried sixteen times.
+
+[docs/IDEA_LOOP.md](IDEA_LOOP.md) is the third organ: it harvests behavioural
+mechanics from outside, kills most of them on the way in, and emits **exactly one
+candidate row** here per run. It is **not a second queue** and does not write to
+this file — `npm run idea:next` prints the row and a human or the spawn taking
+the loop pastes it, because handing over the baton is not a side effect of a
+command. Rows it produced are prefixed `IL-`.
+
+Nothing else about this file changes. One `open` row at a time, one concern per
+PR, and the `done` edit is still the baton.
+
 Recent turns:
 
 | Turn | What it was | Outcome |
