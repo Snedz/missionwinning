@@ -1,3 +1,5 @@
+# Rotated from LOG.md when `.847` landed
+
 ## 2026-08-15 — Profile journey matches the core pack (`.832`)
 
 Setup first-painted Get started / Continue, then First-time setup / Begin.

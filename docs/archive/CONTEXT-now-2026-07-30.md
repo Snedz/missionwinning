@@ -252,3 +252,4 @@ budget when the www surface shipped. Shipped work, not cancelled work.
 - **`.626`:** (`2026.07-unified.626`) **Feel Wave 2** — Fuel log-first; History heatmaps folded; Coach depth under disclosure. Field manual A continues.
 - **`.627`:** (`2026.07-unified.627`) **Feel Wave 3** — Learn paths-first; Move/Mind free-first; Library/Builder/Benchmarks/Leaderboard brief chrome; military tests folded. Field manual A complete across shell.
 - **`.833`:** (`2026.07-unified.833`) **Coach insight first-paint** — title + desc match pack. Drift cap 169. No `PRIVATE_MODE` flip.
+- **`.835`:** (`2026.07-unified.835`) **GNT-1 U3** — cold vs high-strain logs change Coach week kinds + sets. No `PRIVATE_MODE` flip.

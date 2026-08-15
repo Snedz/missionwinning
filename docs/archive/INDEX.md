@@ -12,8 +12,10 @@ When adding a doc:
 
 | File | Absorbed by / note |
 |------|---------------------|
+| [log/LOG-rotate-833-for-848.md](./log/LOG-rotate-833-for-848.md) | rotated 2026-08-15 for `.848` GNT-2 U3 instrument (`.833`) |
+| [log/LOG-rotate-834-for-849.md](./log/LOG-rotate-834-for-849.md) | rotated 2026-08-15 for `.849` queue router (`.834`) |
+| [log/LOG-rotate-832-for-847.md](./log/LOG-rotate-832-for-847.md) | rotated 2026-08-15 for `.847` GNT-2 U2 instrument (`.832`) |
 | [log/LOG-rotate-831-for-846.md](./log/LOG-rotate-831-for-846.md) | rotated 2026-08-15 for `.846` Idea Loop (`.831`) |
-| [log/LOG-rotate-832-for-847.md](./log/LOG-rotate-832-for-847.md) | rotated 2026-08-15 for `.847` queue router (`.832`) |
 | [log/LOG-rotate-830-for-845.md](./log/LOG-rotate-830-for-845.md) | rotated 2026-08-15 for `.845` loadZone split (`.830`) |
 | [log/LOG-rotate-828-for-843.md](./log/LOG-rotate-828-for-843.md) | rotated 2026-08-15 for `.843` graph memory (`.828`) |
 | [log/LOG-rotate-822-for-840.md](./log/LOG-rotate-822-for-840.md) | rotated 2026-08-15 for `.840` GNT-2 coach eval (`.822`) |
