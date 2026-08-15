@@ -1,7 +1,17 @@
 import type { MuscleGroup } from '@/lib/muscleGroups';
 import { MAJOR_GROUPS } from '@/lib/muscleGroups';
 import type { SplitDay } from '@/lib/coach/types';
+import type { LoadZone } from '@/lib/coach/load';
 import { localWeekKey } from '@/lib/time/localDate';
+
+/** Signals `chooseSplit` may use to swap a strength day for recovery. */
+export type FatigueSignals = {
+  readiness: number;
+  strain: number;
+  recovery: number;
+  /** Acute:chronic band. Optional so old callers stay strain-only. */
+  loadZone?: LoadZone;
+};
 
 const ALL_GROUPS: MuscleGroup[] = [...MAJOR_GROUPS];
 
@@ -55,10 +65,28 @@ function injectRecoveryIfNeeded(
   return copy;
 }
 
-/** Readiness/strain-aware split adjustments (premium plan depth). */
+function swapLastStrengthToRecovery(split: SplitDay[]): void {
+  for (let i = split.length - 1; i >= 0; i--) {
+    if (split[i].kind === 'strength') {
+      split[i] = recoveryDay();
+      return;
+    }
+  }
+}
+
+/**
+ * Readiness/strain/load-aware split adjustments (premium plan depth).
+ *
+ * `high` loadZone uses the same primitive as `strain >= 85` — one extra
+ * strength day becomes recovery — applied *after* the strain rules so a
+ * week that already saturated on strain still moves when the acute:chronic
+ * band is high. `light` / `steady` / `unknown` are identity here; set-weight
+ * holds stay in `loadGuard`. The extra day is the founder-proposed delta,
+ * not a new set table.
+ */
 export function applyFatigueToSplit(
   days: SplitDay[],
-  signals?: { readiness: number; strain: number; recovery: number }
+  signals?: FatigueSignals
 ): SplitDay[] {
   if (!signals) return days;
   const split = [...days];
@@ -71,12 +99,11 @@ export function applyFatigueToSplit(
   }
 
   if (signals.strain >= 85) {
-    for (let i = split.length - 1; i >= 0; i--) {
-      if (split[i].kind === 'strength') {
-        split[i] = recoveryDay();
-        break;
-      }
-    }
+    swapLastStrengthToRecovery(split);
+  }
+
+  if (signals.loadZone === 'high') {
+    swapLastStrengthToRecovery(split);
   }
 
   return split;
@@ -97,7 +124,7 @@ export function chooseSplit(
   experience: string,
   goalId: string,
   assessmentRisk?: string,
-  bodySignals?: { readiness: number; strain: number; recovery: number }
+  bodySignals?: FatigueSignals
 ): SplitDay[] {
   const d = Math.max(2, Math.min(6, daysPerWeek));
   let split: SplitDay[];

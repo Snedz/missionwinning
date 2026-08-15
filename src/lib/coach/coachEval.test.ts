@@ -17,17 +17,10 @@
  * planner reads logs more finely than it did; lowering it is a regression and needs
  * a LOG entry saying so.
  *
- * **Measured 2026-08-15, and the reason the floor is 2 and not higher.** Sweeping
- * 0·2·4·…·20 logs the planner emits exactly two dose shapes: `48 sets / 0 recovery`
- * when the history is empty, and `34 sets / 2 recovery` for *every* non-empty
- * history. Two logs and twenty produce an identical week. The planner is
- * presence-sensitive and **magnitude-blind** on this axis. That does not contradict
- * `gnt1HistoryDose.test.ts` — that pin compares empty against 20, which is the one
- * boundary that does move.
- *
- * So this floor documents today's behaviour rather than endorsing it: making the
- * week respond to *how much* was trained is the GNT-2 U1 builder brief, and the
- * evidence it worked is this constant going up.
+ * **Raised `.845`.** Wiring `loadZone` into `chooseSplit` made a `high`
+ * acute:chronic week insert one extra recovery day after the strain rules.
+ * The sweep now has three shapes (cold / strained / high-zone). Floor 2
+ * would still pass a planner that only saw empty vs non-empty.
  *
  * No date literals: the week is the current local Monday, so this test cannot expire.
  */
@@ -39,7 +32,7 @@ import { generateWeek } from '@/lib/coach/planEngine';
 import { localDateKey, startOfLocalWeek } from '@/lib/time/localDate';
 
 /** Distinct (sets, recovery) pairs the strain sweep must still produce. Ratchet up only. */
-const MIN_DISTINCT_DOSE_SHAPES = 2;
+const MIN_DISTINCT_DOSE_SHAPES = 3;
 
 /** Trailing-window log counts, ascending strain. */
 const STRAIN_SWEEP = [0, 4, 8, 12, 16, 20] as const;
@@ -120,5 +113,32 @@ test('the ends of the sweep are the two states the athlete can see', () => {
   assert.ok(
     strained.sets < cold.sets,
     `high strain must cut prescribed sets: cold ${cold.sets} vs strained ${strained.sets}`,
+  );
+});
+
+test('steady and high loadZone are not the same week at the same strain', () => {
+  const history = Array.from({ length: 8 }, (_, i) => hardLog(i));
+  const base = buildCoachContextFromInputs({
+    history,
+    experience: 'intermediate',
+    equipment: 'full-gym',
+    goal: 'goal:strength',
+    daysPerWeek: 4,
+    seedId: 'gnt2-u1-zone',
+    includeCheckIn: false,
+  });
+  const monday = localDateKey(startOfLocalWeek(new Date()));
+  const dose = (zone: typeof base.loadZone) => {
+    const plan = generateWeek({ ...base, loadZone: zone }, monday, 1, monday);
+    return {
+      sets: plan.sessions.reduce((n, s) => n + s.exercises.reduce((m, e) => m + e.sets, 0), 0),
+      recovery: plan.sessions.filter((s) => s.kind === 'recovery').length,
+    };
+  };
+  const steady = dose('steady');
+  const high = dose('high');
+  assert.ok(
+    high.recovery > steady.recovery || high.sets < steady.sets,
+    `high must be a lighter week than steady at the same strain: steady ${steady.sets}:${steady.recovery} vs high ${high.sets}:${high.recovery}`,
   );
 });

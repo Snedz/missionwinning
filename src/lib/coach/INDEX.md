@@ -8,8 +8,8 @@
 2. `schedulePrefs.ts` — days per week, preferred days (`mw_days_per_week`)
 3. `equipment.ts` — `equipmentMatches` (optional Home gym kit overlay — filter only, never rank), `mapStorageEquipment`
 4. `progression.ts` — `nextTargets` (RPE, stall, deload, % of e1RM `loadPct`, optional `loadZone` cap)
-4b. `loadGuard.ts` — `capProgressionForZone`: a **high** ACWR band holds a rise. Cap-only — never deloads, never touches session shape; `light`/`unknown` are identity
-5. `splitPlanner.ts` — `chooseSplit`, `mapToCalendar`, week start helpers
+4b. `loadGuard.ts` — `capProgressionForZone`: a **high** ACWR band holds a rise. Cap-only at the set-weight layer; `light`/`unknown` are identity
+5. `splitPlanner.ts` — `chooseSplit` (`loadZone` reaches here from context), `mapToCalendar`. `high` inserts one extra recovery day after the strain rules (same primitive as `strain ≥ 85`)
 6. `selector.ts` — `pickExercises`, `buildSession` (passes `loadPct`, `ctx.loadZone`)
 7. `planEngine.ts` — `generateWeek`, `computeContextHash`
 8. `adapt.ts` — `adaptPlan`, missed sessions, readiness swap, equipment change
@@ -61,6 +61,7 @@ Shared client: `src/lib/coachLlmClient.ts` (also used by `coachDailyServer.ts` +
 | `splitPlanner.test.ts` | Splits 2–6 days, calendar |
 | `selector.test.ts` | Familiarity, recovery ids, determinism |
 | `planEngine.test.ts` | Golden personas, contextHash |
+| `coachEval.test.ts` | GNT-2 U1 strain sweep + `loadZone` high ≠ steady |
 | `adapt.test.ts` | Missed, readiness, equipment |
 | `planVoiceServer.test.ts` | Malformed LLM → rules fallback |
 

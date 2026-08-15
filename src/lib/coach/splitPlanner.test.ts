@@ -50,6 +50,36 @@ describe('chooseSplit', () => {
     const recoveryCount = split.filter((d) => d.kind === 'recovery').length;
     assert.ok(recoveryCount >= 2);
   });
+
+  it('high loadZone is not the same week as steady at the same strain', () => {
+    const signals = { readiness: 80, strain: 50, recovery: 80 };
+    const steady = chooseSplit(4, 'intermediate', 'strength', undefined, {
+      ...signals,
+      loadZone: 'steady',
+    });
+    const high = chooseSplit(4, 'intermediate', 'strength', undefined, {
+      ...signals,
+      loadZone: 'high',
+    });
+    const steadyRec = steady.filter((d) => d.kind === 'recovery').length;
+    const highRec = high.filter((d) => d.kind === 'recovery').length;
+    assert.equal(steadyRec, 0, 'steady + moderate strain stays on strength');
+    assert.ok(highRec >= 1, 'high zone inserts a recovery day');
+    assert.ok(highRec > steadyRec, 'high must be lighter than steady');
+  });
+
+  it('high loadZone still moves the week after strain has already saturated', () => {
+    const saturated = { readiness: 40, strain: 90, recovery: 30 };
+    const strainOnly = chooseSplit(4, 'intermediate', 'strength', undefined, saturated);
+    const withHigh = chooseSplit(4, 'intermediate', 'strength', undefined, {
+      ...saturated,
+      loadZone: 'high',
+    });
+    const a = strainOnly.filter((d) => d.kind === 'recovery').length;
+    const b = withHigh.filter((d) => d.kind === 'recovery').length;
+    assert.ok(a >= 2, 'strain ≥85 already inserted two recoveries');
+    assert.ok(b > a, 'high zone adds one more recovery after strain is done');
+  });
 });
 
 describe('mapToCalendar', () => {

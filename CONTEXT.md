@@ -16,7 +16,7 @@ One screen of truth for any AI tool or human joining cold. Read this, then [AGEN
 
 ---
 
-## Now (2026-08-15 · web `2026.07-unified.844` · Android `1.24.1`)
+## Now (2026-08-15 · web `2026.07-unified.845` · Android `1.24.1`)
 
 > The ONLY "where we are" block in the repo — [ORCHESTRATION.md](ORCHESTRATION.md) points here.
 >
@@ -378,6 +378,7 @@ One screen of truth for any AI tool or human joining cold. Read this, then [AGEN
 > and `.841` dropped `.827` detail (full text remains in LOG.md / archive)
 > and `.842` dropped `.828` detail (full text remains in LOG.md / archive)
 > and `.844` dropped `.830` detail (full text remains in LOG.md / archive)
+> and `.845` dropped `.831` detail (full text remains in LOG.md / archive)
 > and `.843` dropped `.829` detail (full text remains in LOG.md / archive)
 > to [CONTEXT-now-2026-07-30.md](docs/archive/CONTEXT-now-2026-07-30.md) after this
 > block reached **79 bullets / 103KB**. A status doc that only grows stops being read.
@@ -400,6 +401,7 @@ One screen of truth for any AI tool or human joining cold. Read this, then [AGEN
 > | gitleaks | **green — and scanning for the first time.** It had never scanned anything: on a `pull_request` event the action lists the PR's commits, the job declared no `permissions:` block, and it 403'd (`pull_requests=read`) before opening a file. Fixed by a `permissions:` block (`.224` carrying `.255`). It scans **only the PR's own commits**, so commit `8ea3527a`'s real Solana treasury address — scrubbed from the working file, still in history — is out of its scope. That finding stands, deliberately not allowlisted; it was never what made this check red. |
 > | Privacy / security program | **Landed `.778`** — [docs/security/PROGRAM_STATUS.md](docs/security/PROGRAM_STATUS.md). Invite-bound gate, health-bucket, DSAR, territory fail-closed. OTP-without-click can leave a ghost user. Not a cert. |
 
+- **`.845`:** (`2026.07-unified.845`) **GNT-2 U1 — `loadZone` reaches the split** — `chooseSplit` was handed `bodyScores` only, so `steady` and `high` ACWR weeks were the same `34:2` plan. `high` now inserts one extra recovery day after the strain rules (same primitive as `strain ≥ 85`). `MIN_DISTINCT_DOSE_SHAPES` 2 → 3. Founder-proposed delta, not a new set table. No `PRIVATE_MODE` flip.
 - **`.844`:** (`2026.07-unified.844`) **Coverage floor states a true number** — CI found the ratchet at **438 untested vs floor 395**, breached unseen on `master`. Triage returned nothing to write: of twelve new source files only three are untested and none warrants a unit test (a `visualViewport` hook, a Playwright-covered `HelpPage`, a two-line re-export shim). The rest is **unattributable** — `coverage.mjs` starts at its own creation commit, so there is no earlier universe to diff. Floor + HIGH_WATER → 438, measured, no headroom. **53 `src/lib` files remain the real debt.** 4 mutants killed. No `PRIVATE_MODE` flip.
 - **`.843`:** (`2026.07-unified.843`) **Graph memory of the dev history** — 795 episodes from `LOG.md` + `docs/archive/log/` + `CONTEXT.md` become a traversable temporal graph. Dev tooling only; no product runtime, and the ZDR one-shot rule for `src/lib/coach/` is untouched. Ingest at `low` effort behind a cached **≥512-token** prefix. Two gates keep secrets out: `git check-ignore` for paths, credential shapes for content, reporting rule+line and never the match. [docs/GRAPH_MEMORY.md](docs/GRAPH_MEMORY.md). No `PRIVATE_MODE` flip.
 - **`.842`:** (`2026.07-unified.842`) **CI ran and found two more** — PR CI executed `build-and-test` and `www` for the first time this window (Actions had been billing-blocked) and both went red. Three `privateGateRedirect.routetest.ts` assertions were `.839` fallout I missed by running `npm test` but not `npm run test:routes`; `/about` `/compare` `/vision` had no www budget. 4 mutants killed. No `PRIVATE_MODE` flip.
@@ -413,7 +415,6 @@ One screen of truth for any AI tool or human joining cold. Read this, then [AGEN
 - **`.834`:** (`2026.07-unified.834`) **Builder arrange first-paint** — mobility + habit stack CTAs match pack. Drift cap 167. No `PRIVATE_MODE` flip.
 - **`.833`:** (`2026.07-unified.833`) **Coach insight first-paint** — title + desc match pack. Drift cap 169. No `PRIVATE_MODE` flip.
 - **`.832`:** (`2026.07-unified.832`) **Profile journey first-paint** — First-time setup + Begin + Edit profile. Cap stays 174. No `PRIVATE_MODE` flip.
-- **`.831`:** (`2026.07-unified.831`) **Profile account first-paint** — sync + optional-sign-in match core EN pack. Cap stays 174. No `PRIVATE_MODE` flip.
 - **Form object kit (on `.781`):** IMPLEMENT block + prop sheets. Regen cable-row (visible stack), lateral-raise, DB press, lunges, DB row. Floor 43. Still-only. No `PRIVATE_MODE` flip.
 - **Excellence:** unscored · — · [docs/EXCELLENCE_RESULT.md](docs/EXCELLENCE_RESULT.md) — Horizon W phone sign-off home; surface PRs need `status: pass` or `Excellence-Override` (`.669`).
 - **`.669`:** (`2026.07-unified.669`) **Excellence RESULT + agent stop-rule** — `excellenceGate` path policy + `check-excellence-gate` on gate/PR CI; wedge still ships while unscored.

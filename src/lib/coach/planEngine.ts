@@ -22,6 +22,7 @@ export function computeContextHash(ctx: CoachContext, weekStart: string): string
     readiness: ctx.bodyScores.readiness,
     strain: ctx.bodyScores.strain,
     recovery: ctx.bodyScores.recovery,
+    loadZone: ctx.loadZone ?? '',
     units: ctx.units,
     assessmentRisk: ctx.assessmentRisk ?? '',
   };
@@ -54,6 +55,7 @@ export function generateWeek(
       readiness: ctx.bodyScores.readiness,
       strain: ctx.bodyScores.strain,
       recovery: ctx.bodyScores.recovery,
+      loadZone: ctx.loadZone,
     }
   );
   const notBefore = scheduleFromOffset(weekStart, today);

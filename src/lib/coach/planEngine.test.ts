@@ -141,10 +141,12 @@ describe('planEngine golden personas', () => {
     for (const e of highBench) {
       assert.ok(e.weight <= 100, `high zone prescribed ${e.weight}`);
     }
-    // Same exercise selection either way — the zone changes load, not the plan's shape.
-    assert.deepEqual(
-      high.sessions.map((s) => s.exercises.map((e) => e.exerciseId)),
-      steady.sessions.map((s) => s.exercises.map((e) => e.exerciseId))
+    // `.845` — high zone also inserts a recovery day (same primitive as strain ≥85).
+    const recoveryOf = (plan: typeof steady) =>
+      plan.sessions.filter((s) => s.kind === 'recovery').length;
+    assert.ok(
+      recoveryOf(high) > recoveryOf(steady),
+      'high zone must be a lighter week than steady, not just a lighter bench'
     );
   });
 });
