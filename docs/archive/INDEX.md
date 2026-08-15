@@ -12,6 +12,7 @@ When adding a doc:
 
 | File | Absorbed by / note |
 |------|---------------------|
+| [log/LOG-rotate-812-for-829.md](./log/LOG-rotate-812-for-829.md) | rotated 2026-08-15 for `.829` journal strip (`.812`) |
 | [log/LOG-rotate-811-for-828.md](./log/LOG-rotate-811-for-828.md) | rotated 2026-08-15 for `.828` Today progress (`.811`) |
 | [log/LOG-rotate-810-for-827.md](./log/LOG-rotate-810-for-827.md) | rotated 2026-08-15 for `.827` merge-bar guards (`.810`) |
 | [log/LOG-rotate-809-for-826.md](./log/LOG-rotate-809-for-826.md) | rotated 2026-08-15 for `.826` logger no side-scroll (`.809`) |
