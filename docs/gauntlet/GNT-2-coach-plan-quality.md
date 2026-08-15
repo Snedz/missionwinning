@@ -1,11 +1,11 @@
 # GNT-2 — Coach plan quality
 
-**Status:** `open` · GRAPH_LOOP **AM1** · hard cap **≤10 build PRs** (2 spent: `.840` `.845`)
+**Status:** `open` · GRAPH_LOOP **AM1** · hard cap **≤10 build PRs** (3 spent: `.840` `.845` `.847`)
 **Opened:** 2026-08-15, on the gate written in [INDEX.md](INDEX.md) — *"enters GRAPH_LOOP only after GNT-1's report"*. That report is written; GNT-1 is `ready-for-founder`.
 **Product:** an instrument that can tell a good generated week from a bad one, and a planner that clears it.
 **Terminal agent state:** `ready-for-founder`. Never `status: pass`.
 
-**Next spawn:** BUILDER on **U2 R1** — land the instrument only. Product already raises per-exercise load on easy last-session RPE (`generateWeek` 2026-08-15: bench 100 → **102.5** `coachWhyLoadUp` vs hard **90** `coachWhyDeload`; week stays `46:0`). Do **not** add a set or a day. Do not write `status: pass`.
+**Next spawn:** CRITIC on **U2 R1** — grade `.847`. Instruments: `npx tsx --test src/lib/coach/coachEvalProgression.test.ts`. Bar: green last session raises weight past last logged **and** green load > hard last-session load **and** week `sets:recovery` unchanged. STILLS: none (engine-only). Do not write `status: pass`.
 
 Instrument first: this campaign may not grade a week against taste. Every unit's bar is [GAUNTLET_LOOP.md](../GAUNTLET_LOOP.md) §3 source 1 or 2 — an existing measured instrument, or a new ratchet on the canonical pattern. Reference programmes contribute **structure bands only** (never copied text — guidebook originality-log discipline).
 
@@ -26,6 +26,7 @@ Instrument first: this campaign may not grade a week against taste. Every unit's
 | U1 | 2 | no builder — source investigation only (GRAPH_LOOP rule 3), no product change. | **bar still not met, and R1's brief was imprecise.** Three axes measured (below). The planner is not blind to *magnitude* in general — `applyFatigueToSplit` already grades `strain ≥70 → 1 recovery`, `≥85 → 2`. It is blind to **`loadZone`**: `chooseSplit` is handed `bodyScores` only, so the acute:chronic band computed in `contextBuilder` never reaches the split. `steady` (ratio 1.19) and `high` (ratio 1.70) render the same `34:2` week. | `loadZone` is computed and discarded: `steady` and `high` are the same week, which is the one distinction acute:chronic exists to make |
 | U1 | 3 | `.845` — `loadZone` passed into `chooseSplit`. `high` inserts one extra recovery after the strain rules. Floor 2 → 3. | **PASS (engine).** COMMAND `npx tsx --test src/lib/coach/coachEval.test.ts` → `# tests 3 # pass 3 # fail 0`. `ok 1` holds `shapes.size >= MIN_DISTINCT_DOSE_SHAPES` (floor 3). `ok 3` holds `high.recovery > steady.recovery \|\| high.sets < steady.sets`. STILLS: none (engine-only). | U2 is still uncommissioned, so nothing yet requires a clean green block to raise prescribed work |
 | U2 | 0 | no builder — LEAD source investigation only (GRAPH_LOOP rule 3), no product change. | **bar written; product already raises load.** The original brief ("a clean block raises prescribed work") was imprecise the same way U1 R1 was. `nextTargets` already load-ups on all-easy and deloads on all-hard (`progression.test.ts`). `selector.ts:165-172` already passes `ctx.history` + `ctx.loadZone` into `nextTargets`. `planEngine.test.ts` already asserts `generateWeek` raises bench past last session on steady/easy — but with a date literal (`2026-07-06`) and an enumerated id. What is missing is the GNT-2 ratchet: `generateWeek`, no date literals, precondition the movement is programmed, green > last **and** green > hard, week `sets:recovery` unchanged. | A builder who adds a set or a day on green fights U1 and `loadGuard.ts` ("`light` is identity, not a licence to inflate"). The engine has no "completed the prescribed week" input — green is last-session RPE on that movement |
+| U2 | 1 | `.847` — commissioned `coachEvalProgression.test.ts` (`generateWeek`, no date literals, 1 mutant killed). No planner change. | | |
 
 ## Evidence dossier
 

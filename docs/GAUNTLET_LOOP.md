@@ -2,7 +2,7 @@
 
 **Audience:** Founder + LEAD / BUILDER / CRITIC spawns  
 **Lane:** Engineering-Web (unless a campaign names Android)  
-**Status:** ACTIVE 2026-08-15 · GNT-1 `ready-for-founder` · GNT-2 U2 BUILDER R1 next · GRAPH_LOOP **AL1 `done` · AM1 `open`**  
+**Status:** ACTIVE 2026-08-15 · GNT-1 `ready-for-founder` · GNT-2 U2 R1 critic next · GRAPH_LOOP **AL1 `done` · AM1 `open`**  
 **Does not replace:** [ORCHESTRATION.md](../ORCHESTRATION.md) (what may be built) · [CONTEXT.md](../CONTEXT.md) `## Now` (where we are) · [docs/GRAPH_LOOP.md](GRAPH_LOOP.md) (the queue) · [DESIGN_ORCHESTRATION.md](DESIGN_ORCHESTRATION.md) §Surface quality bars
 
 This file is the **grading protocol**. It is not a second queue and not a second status block. Campaigns live in [docs/gauntlet/](gauntlet/INDEX.md). The baton is still one GRAPH_LOOP row per campaign.

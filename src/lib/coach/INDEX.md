@@ -62,6 +62,7 @@ Shared client: `src/lib/coachLlmClient.ts` (also used by `coachDailyServer.ts` +
 | `selector.test.ts` | Familiarity, recovery ids, determinism |
 | `planEngine.test.ts` | Golden personas, contextHash |
 | `coachEval.test.ts` | GNT-2 U1 strain sweep + `loadZone` high ≠ steady |
+| `coachEvalProgression.test.ts` | GNT-2 U2: clean last session raises load at `generateWeek` |
 | `adapt.test.ts` | Missed, readiness, equipment |
 | `planVoiceServer.test.ts` | Malformed LLM → rules fallback |
 
