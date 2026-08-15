@@ -33,6 +33,10 @@ backfires:
     how: without the insurance half, the counter converts a voluntary act into a perceived daily duty and breaking it reads as failure
     class: E2
     why_not_e1: the streak-distress literature is largely correlational and commentary rather than experimental
+  - behavior: B-02
+    how: the repair mechanism attenuates the intact streak's own motivating force, so the humane knob and the effective knob are the same knob turned opposite ways
+    class: E2
+    url: https://academic.oup.com/jcr/article-abstract/49/6/1095/6623414
 ---
 
 **The non-obvious half.** A streak is usually copied as a counter. The counter is
@@ -48,6 +52,15 @@ product's job is to honour it without commentary.
 `streakFromDatesAllowingRest` means a declared rest day does not break the run,
 and `src/lib/rewards/INDEX.md` states the surrounding rule — the weekly train
 goal is the boss consistency signal, not daily streak shame.
+
+**The finding harvest 1 added, and it is uncomfortable.** Silverman and Barasch
+(Journal of Consumer Research, 2023, seven studies) find that the effect of an
+intact streak is **attenuated when the streak can be repaired**, and that
+consumers treat maintaining *the log* as a goal in its own right — decoupled from
+the underlying activity. So forgiveness is not a free kindness bolted onto a
+working mechanic: **the knob that makes a streak humane is the knob that makes it
+weaker.** Anyone proposing to strengthen a streak here should expect to be
+proposing to make it crueller, and should say so.
 
 That is why this node produced no candidate. A generator that correctly declines
 to build what already exists is `GRAPH_LOOP` rule 3 arriving by itself, and it

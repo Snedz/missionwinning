@@ -58,5 +58,27 @@ you cannot pause and cannot be forgiven on is the configuration that turns
 engagement into obligation. That is the row cargo-culting drops, and it is why
 the ontology requires it.
 
+**The cross-check harvest 1 ran, and it is the most useful result in the whole
+sweep.** Taking a negative corpus seriously — Foursquare, Fitocracy, Nike
+FuelBand, Zynga, Clubhouse, Quibi, BeReal, Fleets — almost **nothing** in the
+standard engagement toolkit discriminates winners from losers. Streaks, points,
+badges, public leaderboards, ephemerality, daily drip and reciprocity gates all
+appear in currently-successful products *and* in dead ones. Nike's FuelBand died
+with the same abstract-score-plus-daily-ring mechanic Apple Watch won with.
+
+Two discriminators survived the cross-check:
+
+1. **A status good that regenerates versus a fixed scarce slot.** Foursquare's
+   mayorship is one slot per venue and dilutes as the population grows; Strava's
+   segments regenerate every ride. Same mechanic class, opposite trajectory.
+2. **Voluntariness with an exit.** The same real-time ranked-rate display is
+   Peloton's leaderboard and Disneyland's laundry "electronic whip"; a rider
+   chose the class and can hide the board, a laundry worker could do neither.
+
+`M-07` fails both, which is a better reason than any effect size.
+
+This is also the answer to why `also_seen_in_failures` is a required field. Had
+the graph mined only winners, every mechanic in it would look causal.
+
 `H-04` is the translation, recorded as `killed` with both citations, so the
 anti-library has a fingerprint to match against.

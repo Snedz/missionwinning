@@ -60,10 +60,10 @@ edits a doc as a side effect is how the doc stops being read.
 
 | | activate | return | trust | depth | tell | pay |
 |---|---|---|---|---|---|---|
-| **add** | — | H-03 · H-04 killed | — | — | — | H-06 blocked-on-telemetry |
-| **change** | — | — | H-02 | — | — | — |
-| **remove** | H-05 | — | — | — | — | — |
-| **measure** | H-01 | — | — | — | — | — |
+| **add** | — | H-03 · H-04 killed | H-11 killed | — | — | H-06 blocked-on-telemetry |
+| **change** | — | H-07 | H-02 | — | — | — |
+| **remove** | H-05 | — | H-08 | H-10 blocked-on-telemetry | — | — |
+| **measure** | H-01 | H-09 | — | — | — | — |
 
 Empty cells are not a backlog. They are where the next harvest is pointed, and a
 candidate that scores badly while occupying one is kept as a stepping stone

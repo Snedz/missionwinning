@@ -29,6 +29,11 @@ also_seen_in_failures:
   - Google Wave inline threaded edits — the same proposal-and-history machinery shipped with under a million users a year after general availability
 produces:
   - B-03
+backfires:
+  - behavior: B-03
+    how: the mechanic silently assumes proposals are scarce relative to attention; at high arrival rate consent degrades into rubber-stamping or abandonment with no change to the interface
+    class: E2
+    url: https://nesbitt.io/2026/01/10/16-best-practices-for-reducing-dependabot-noise.html
 ---
 
 **The parts, separated from the skin.** A change is *proposed* rather than
@@ -50,3 +55,9 @@ and today it does so without showing its work.
 **What it must not become.** The diff is `self-only`. A proposal visible to
 anyone else is a different mechanic with a different primitive row, and it dies
 against `X-01`.
+
+**The precondition this node shipped without (added in harvest 1).** Dependabot
+runs exactly this machinery — propose, diff, evidence attached, approve, history
+persists — and roughly **85% of its security pull requests go unmerged**. Nothing
+about the interface is wrong; the arrival rate is. See `M-10`, and `H-08`, which
+exists to keep `H-02` from becoming Dependabot.

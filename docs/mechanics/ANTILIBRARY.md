@@ -32,6 +32,7 @@ refused by the selector with the citation attached.
 | `trust+add+wearable+score+strap+sync` | Wearables may be inputs, never the score's master — REDTEAM A8 | `docs/WEARABLES.md`, `vision.md` |
 | `activate+add+america+school+pft+marketing` | America and school tracks are parked by default and need legal plus a real channel | `src/lib/surface.ts`, `ORCHESTRATION.md` |
 | `pay+change+gate+logger+paywall+free` | The free logger is never gated. Ever | `X-02` |
+| `trust+add+M-15+calibrated+confidence+misreading+readiness` | Shows a number the engine knows to be untrue; `X-07` is the one rule this codebase is built on | `H-11`, `M-15`, `load.ts` header |
 | `return+add+season+boost+tier+start` | The T4 season-start boost was struck by decision; standing is monotonic, no decay and no relegation | `docs/IDENTITY_SOCIAL_PLAN.md` C9 |
 
 ---
@@ -55,6 +56,17 @@ content marketing or to secondary summaries of a primary source nobody had read.
 | `strivecloud.io` | gamification vendor content marketing; no methodology stated |
 | `trypropel.ai` | vendor teardown; retention figures with no method |
 | `vwo.com` | conversion vendor; attributes an unread primary source |
+| `globenewswire.com` (gamification PR) | the "$700M in failed gamification projects" figure is a vendor press release with no denominator |
+| `orizon.co` · `darewell.co` · `digia.tech` | the Duolingo retention-statistic cluster; every figure traces back to the same unmethodologised marketing posts |
+
+### Named claims that may never be cited, whatever the host
+
+| claim | why |
+|---|---|
+| Gartner "80% of gamified applications will fail by 2014" | A **prediction issued in Nov 2012 about 2014**, not a measurement. No sample, no denominator, no operationalisation of "fail", never retrospectively measured. Cite Brian Burke's *diagnosis* — points-badges-leaderboards instead of an economy — never the number |
+| "Users approve 93% of agent permission prompts" | No study exists. Traced to blog posts attributed to unlinked telemetry |
+| "30–50% of software features have no or marginal value" | Widely repeated, primary source never confirmed |
+| "Runna's adaptive plans cut marathon DNF rates 38% in clinical trials" | No trial, protocol or publication named; "clinical trial" is an implausible frame for a consumer training app |
 
 **Defensible anchors instead.** Roughly one third of well-designed experiments at
 a mature experimentation platform move their target metric — that is the number
@@ -62,3 +74,15 @@ to budget against, not a vendor's success story. And an evolutionary coding agen
 with *perfect machine-checkable evaluators* improved on the state of the art in
 about a fifth of open problems it attempted; this product's evaluator is far
 weaker than that.
+
+**On what gamification is worth here, specifically.** BE ACTIVE (*Circulation*,
+Apr 2024, n=1,062, 12-month intervention plus 6-month follow-up) found that after
+the intervention ended, **gamification alone was not significantly above
+control** — only gamification *plus* financial incentives held. TRIPPA
+(*Lancet Diabetes & Endocrinology*, 2016) found the cash-incentive effect did not
+survive withdrawal of the cash, and no health outcome moved in any arm.
+
+This corroborates the line `docs/IDENTITY_SOCIAL_PLAN.md` already carries —
+*"durable effect is g=0.15, so rewards support the loop and are never the
+retention thesis"* — and it caps what any future rewards candidate may claim.
+Both are `E2 / indexed`: neither paper was opened.

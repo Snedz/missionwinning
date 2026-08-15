@@ -22,10 +22,37 @@ hard cap is ≤14 build PRs and spending fewer is the good outcome.
 | run | date | scout | anatomist | translator | red team | cap declared | spent | emitted | survived red team | later PASS |
 |---|---|---|---|---|---|---|---|---|---|---|
 | seed | 2026-08-15 | — | — | — | — | 1 PR | 1 PR | 0 | — | — |
+| harvest-1 | 2026-08-15 | 3 | inline | inline | inline | ≤10 M / ≤8 H / **0 PR** | 7 M / 5 H / **1 PR** | 0 | 5 of 5 | — |
 
 The seed run harvested nothing. Its nodes were hand-written from repo truth and
 one research pass, which is why the scout, anatomist, translator and red-team
 columns are empty rather than zero — those roles do not exist until Phase 3.
+
+**harvest-1 notes.** Three scouts (in-category · out-of-category · negative
+corpus), ~110 searches. Anatomist, translator and red-team ran inline rather than
+as separate spawns — Phase 3 has not shipped, so the role *separation* that makes
+a red team worth having was **not** in force this run. Every candidate below
+should be read as translator-graded, and the first genuinely separate red-team
+pass is owed.
+
+**The cap was overrun and is recorded as an overrun.** 0 build PRs were declared;
+1 was spent, on `.841` — a defect the harvest exposed in the harvest tooling
+(`emptyCells` aimed at the wrong signal; `E1` had no way to know whether anyone
+had read the page). A cap that moves to fit the spend is not a cap, so the
+declared figure stays as written.
+
+**Yield: 0 emitted.** Correct, and the point. `idea:next` still returns `H-01`,
+because nothing harvested beats powering the measurement chain while every
+behaviour node reads `blocked-on-telemetry`. A harvest that displaced it would
+have meant the scoring had been talked into something. Coverage went 5 → 10 of 24
+cells; the harvest's own product is coverage, not throughput.
+
+**Cost signal for the next run.** Every scout fetch was blocked, so the marginal
+cost of *verification* was infinite and the marginal cost of *breadth* was
+ordinary. That is the opposite of the usual shape and it explains the evidence
+classes: breadth was cheap, depth was unavailable. The single highest-value
+action for harvest 2 is not more searching — it is opening ten already-cited
+pages and upgrading them to `E1`.
 
 ---
 
