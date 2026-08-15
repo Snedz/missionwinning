@@ -6,7 +6,7 @@ Mission Winning is **mostly free**. Premium unlocks depth across pillars through
 
 - Workout logger, library, builder, history, benchmarks
 - Basic nutrition logging and calculators
-- Today dashboard, readiness, Win Score
+- Today dashboard, readiness, Mission Score
 - Public guide chapters and exercise catalog
 - PFT fitness test (core flow)
 
