@@ -2,7 +2,7 @@
 
 **Audience:** Founder + the next Hermes / Grok Build / graph agent  
 **Lane:** Engineering-Web (unless a loop says Android)  
-**Status:** ACTIVE 2026-08-14 · web `2026.07-unified.814` · Alpha 0.1.0 · **W1 done · residual thin**  
+**Status:** ACTIVE 2026-08-14 · web `2026.07-unified.815` · Alpha 0.1.0 · **W1 residual done**  
 **Does not replace:** [ORCHESTRATION.md](../ORCHESTRATION.md) (what may be built) · [CONTEXT.md](../CONTEXT.md) `## Now` (where we are) · [vision.md](../vision.md) (constitution) · [docs/THESIS.md](THESIS.md) (wedge) · [docs/PLAN.md](PLAN.md) (phases A–I)
 
 This file is the **execution queue** for the agent graph: one concern per loop, spawn, ship, mark done, spawn the next. It is not a second status block and not a license to skip standing hard bans.
@@ -239,7 +239,8 @@ Not V2. Landing footer geo guess hydrates.
 
 | # | Loop | Moves | Status |
 |---|------|-------|--------|
-| **W1** | Locale control hydrate | Country lock waits for mount. No timezone first-paint | `done` — `.814` this PR |
+| **W1** | Locale control hydrate | Country lock waits for mount. No timezone first-paint | `done` — `.814` |
+| **W1 residual** | Intl country names | Country select after mount. Node ≠ browser DisplayNames | `done` — `.815` this PR |
 
 D4 stays hold. Do not invent W2.
 

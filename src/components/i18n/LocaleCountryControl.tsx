@@ -88,9 +88,9 @@ export function LocaleCountryControl({ className }: Props) {
           </option>
         ))}
       </select>
-      {countryLocked ? (
+      {ready && countryLocked ? (
         <p className="mt-2 text-xs text-muted-foreground">{block?.message}</p>
-      ) : (
+      ) : ready ? (
         <>
           <label className="sr-only" htmlFor="mw-ctrl-country">
             {t('localeChooserCountry', { defaultValue: 'Country' })}
@@ -109,7 +109,7 @@ export function LocaleCountryControl({ className }: Props) {
             ))}
           </select>
         </>
-      )}
+      ) : null}
     </div>
   );
 }

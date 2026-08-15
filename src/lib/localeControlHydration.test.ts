@@ -25,3 +25,14 @@ test('LocaleCountryControl does not detect country on first paint', () => {
   assert.match(src, /detectCountryHint/);
   assert.match(src, /setReady\(true\)/);
 });
+
+test('countryDisplayName is not first-painted', () => {
+  assert.match(src, /ready \?/);
+  assert.match(src, /countryDisplayName/);
+  const beforeReady = src.split('ready && countryLocked')[0] ?? src;
+  assert.doesNotMatch(
+    beforeReady,
+    /countryDisplayName\(code/,
+    'Intl.DisplayNames differs Node vs browser (Falkland Islands)',
+  );
+});
