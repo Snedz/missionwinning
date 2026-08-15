@@ -64,6 +64,7 @@ Review on a 390×844 phone viewport first (the Playwright target); desktop secon
 
 | Date | Reviewer | Flows | Issues filed |
 |------|----------|-------|--------------|
+| 2026-08-15 | Gauntlet GNT-1.U2 R2 | `/log` Today cold / returning / mid-plan | **PASS** `/log` red cap 0 on `npm run dev`. Stills `U2-R2-cold.png` · `U2-R2-returning.png` · `U2-R2-mid-plan.png` are Today, not Notify-me. Full `zero-state.spec.ts` 16 passed / 1 failed (`/account` below cap — not this bar). |
 | 2026-08-15 | Gauntlet GNT-1.U4 R1 | Reentry 3/7/14 | **FAIL** (no render PASS). Guard 5/5. `/log` hit `/private`. |
 | 2026-08-15 | Gauntlet GNT-1.U3 R1 | Coach week from logs | **FAIL** (no render PASS). Engine 2/2. Stills skipped — no two-history seed without demo IIFE. |
 | 2026-08-15 | Gauntlet GNT-1.U2 R1 | `/log` zero-state | **FAIL:** 1 red vs cap 0. Capture `U2-R1-cold.png` is Notify-me, not Today. |
