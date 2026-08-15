@@ -163,6 +163,9 @@ test.describe('First 90 seconds @gate', () => {
   test('the content library is reachable on a phone @gate', async ({ page }) => {
     // MarketingNav hid every link behind `sm:flex` with no menu anywhere in the repo, so
     // at 390px a visitor could reach `/` and `/welcome` and nothing else.
+    await page.addInitScript(() => {
+      localStorage.setItem('mw_locale_choice', '1');
+    });
     await page.goto('/exercises/push-ups', { waitUntil: 'domcontentloaded' });
 
     const trigger = page.getByRole('button', { name: /menu/i });
@@ -285,7 +288,7 @@ test.describe('First 90 seconds @gate', () => {
     // established user opening the Train tab.
     await seedLegacyOnboarding(page);
     await gotoHydrated(page, '/active');
-    const start = page.getByRole('button', { name: /start workout/i });
+    const start = page.getByRole('button', { name: /^start /i });
     await expect(start).toBeEnabled({ timeout: 15_000 });
     await start.click();
 

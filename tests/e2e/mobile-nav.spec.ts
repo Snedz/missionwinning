@@ -33,6 +33,9 @@ const REACH_BUDGET = 2;
  * the first workout, and every screen is inside the budget once one exists. The
  * fresh-device half is the stronger assertion, because it is the one that would
  * catch the options wall coming back to I-Day.
+ *
+ * `/assessments` is not a More row — PAR-Q is coach-generate intake
+ * (`moreSheetTiers.test.ts`). REACH_BUDGET stays 2.
  */
 const ALWAYS_REACHABLE = [
   '/log',
@@ -41,7 +44,6 @@ const ALWAYS_REACHABLE = [
   /* Fuel is the fourth tab, so it survives the demotion the rail group does not. */
   '/nutrition',
   '/history',
-  '/assessments',
   '/library',
   '/builder',
   '/profile',

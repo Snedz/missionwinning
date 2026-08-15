@@ -10,6 +10,9 @@ export async function seedLegacyOnboarding(page: Page): Promise<void> {
   await page.evaluate(() => {
     localStorage.setItem('mw_experience', 'beginner');
     localStorage.setItem('mw_equipment', 'bodyweight');
+    // Confirmed locale — otherwise LocaleCountryChooser auto-opens on /account
+    // and intercepts Send feedback (`shouldAutoOpenLocaleChooser`).
+    localStorage.setItem('mw_locale_choice', '1');
     localStorage.setItem('mw_primary_goal', 'goal:general');
     localStorage.setItem('mw_goals', 'goal:general');
     // Local YYYY-MM-DD — matches todayCheckInDate in mindCheckIns (not UTC ISO).

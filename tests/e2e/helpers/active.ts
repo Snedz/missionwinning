@@ -8,7 +8,10 @@ import { gotoHydrated } from './gotoHydrated';
  */
 export async function startEmptyActiveWorkout(page: Page): Promise<void> {
   await gotoHydrated(page, '/active');
-  const start = page.getByRole('button', { name: /start workout/i });
+  // Dock CTA is "Start workout" on a cold empty, or "Start Just Go — …" when
+  // I-Day equipment is on the device (`previewJustGoForEquipment`). Both are
+  // the one-thumb outdoor start; `/start workout/i` misses the preview label.
+  const start = page.getByRole('button', { name: /^start /i });
   await expect(start).toBeVisible({ timeout: 15_000 });
   await expect(start).toBeEnabled({ timeout: 15_000 });
   await start.click();
