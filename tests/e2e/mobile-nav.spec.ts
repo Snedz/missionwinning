@@ -2,8 +2,6 @@ import { test, expect } from '@playwright/test';
 import { gateRequired, unlockGate } from './helpers/gate';
 import { seedLegacyOnboarding } from './helpers/journey';
 import { gotoHydrated } from './helpers/gotoHydrated';
-import { MORE_SHEET_TIER_HREFS, moreSheetRowHrefs } from '../../src/lib/moreSheetTiers';
-import { MOBILE_TAB_HREFS } from '../../src/lib/primaryNav';
 
 /**
  * The tab bar, as a budget rather than an opinion.
@@ -37,22 +35,31 @@ const REACH_BUDGET = 2;
  * catch the options wall coming back to I-Day.
  */
 /**
- * Tabs + More rows for a device with no logged workout. Discovered from
- * `moreSheetRowHrefs({ hasFirstWorkout: false })` so `/assessments` cannot
- * sneak back in (PAR-Q is coach-generate intake, not a More row).
+ * Tabs + More rows for a device with no logged workout.
+ *
+ * Playwright cannot import `moreSheetTiers` (lucide CJS `require`). The lists
+ * below are the resolved `MOBILE_TAB_HREFS` + `moreSheetRowHrefs({
+ * hasFirstWorkout: false })`. `gnt1U1DevIdle.test.ts` parses this array and
+ * fails if it drifts. `/assessments` is not a More row (PAR-Q is coach intake).
  */
 const ALWAYS_REACHABLE = [
-  ...MOBILE_TAB_HREFS,
-  ...moreSheetRowHrefs({ hasFirstWorkout: false }),
-];
+  '/log',
+  '/active',
+  '/coach',
+  '/nutrition',
+  '/history',
+  '/leaderboard',
+  '/library',
+  '/builder',
+  '/profile',
+  '/server',
+  '/account',
+] as const;
 
 /** Dropped from the rail until `basic.workout` — see `.695`. */
-const PILLAR_SCREENS = MORE_SHEET_TIER_HREFS.find((t) => t.id === 'pillars')!.hrefs;
+const PILLAR_SCREENS = ['/move', '/mind', '/track', '/learn'] as const;
 
-const RAIL_SCREENS = [
-  ...MOBILE_TAB_HREFS,
-  ...moreSheetRowHrefs({ hasFirstWorkout: true }),
-];
+const RAIL_SCREENS = [...ALWAYS_REACHABLE, ...PILLAR_SCREENS] as const;
 
 /** One completed session, in the shape `workoutStore`'s persist layer writes. */
 const SEEDED_HISTORY = {
