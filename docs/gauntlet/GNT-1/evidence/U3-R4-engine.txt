@@ -1,0 +1,33 @@
+coach_status=200
+coach_url=http://localhost:3000/coach
+landed_after_continue=http://localhost:3000/log
+viewport=390x844
+boot=npm run dev (NODE_ENV=development)
+seed=logger (7 finished sessions); not scripts/seed-coach-adapt-demo.mjs
+history_a_cite=no-logs
+history_a_dose=This week’s dose: 2 sessions · mostly strength · ~120 min
+history_b_cite=session From your log: Full Body Strength · Aug 15
+history_b_dose=This week’s dose: 2 sessions · mixed strength & recovery · ~92 min
+
+COMMAND: npx tsx --test src/lib/coach/gnt1HistoryDose.test.ts
+LAST LINES:
+TAP version 13
+# Subtest: cold vs high-strain history changes Coach week kinds and set count
+ok 1 - cold vs high-strain history changes Coach week kinds and set count
+  ---
+  duration_ms: 4.729141
+  ...
+# Subtest: Thursday adapt keeps the two weeks visibly different
+ok 2 - Thursday adapt keeps the two weeks visibly different
+  ---
+  duration_ms: 1.961713
+  ...
+1..2
+# tests 2
+# suites 0
+# pass 2
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 179.633819
