@@ -48,10 +48,10 @@ BOOT:
 
 COMMISSION:
 3. Bars written in the workbench before round 1. No legal bar (§3) → first round commissions the instrument.
-4. Budget written before round 1 (default 3 rounds/unit; campaign hard cap in the workbench).
-5. One BUILDER per unit-round, serial. One fresh CRITIC per shipped round.
-6. Paste the critic’s verdict verbatim into the workbench round log.
-7. FAIL → the “Biggest remaining gap” sentence is the next builder brief.
+4. Budget written before round 1 (default 3 rounds/unit; campaign hard cap in the workbench). Unused cap is success. The cap counts only PRs that touch src|app|scripts|supabase.
+5. One BUILDER per unit-round, serial. Critic the oldest shipped unit (empty critic cell) before the next builder. Next action lives in the workbench **Next spawn** line.
+6. Paste a valid critic verdict verbatim into the workbench round log. Invalid (no trio) → do not paste; re-spawn the critic.
+7. Instrument FAIL → the “Biggest remaining gap” sentence is the next builder brief. A feel-sentence labeled founder-only is not a builder brief.
 8. Two flat rounds (instruments, not vibes) → split smaller or mark blocked-for-founder.
 9. All units green → one fresh SMOOTHER pass, then write the report. Terminal state: ready-for-founder. Never write status: pass.
 
@@ -68,10 +68,10 @@ Do not grade yourself. Do not declare PASS.
 
 BUILD:
 1. Build only against the written bar. If the bar is already true, mark done (already true) with proof and stop.
-2. Run the unit’s instruments locally before the PR. A red instrument is your problem, not the critic’s discovery.
+2. Run the workbench’s exact instrument commands locally before the PR. A red instrument is your problem, not the critic’s discovery. Chromium missing is not a product red — install it (`npx playwright install chromium`) or say the command could not run.
 3. GRAPH_LOOP rules 4–7: one concern; [skip vercel] unless Preview was asked; src|app|scripts|supabase → label + LOG + CONTEXT ## Now; surface paths need
    Excellence-Override: gauntlet GNT-<n>.U<u> round <r>
-4. Append a facts-only line to the workbench round log (unit, round, PR/label). No verdict.
+4. Append a facts-only builder-ref to the workbench round log (unit, round, PR/label). No verdict. LEAD writes critic cells.
 
 BANS: same as GRAPH_LOOP. Do not raise TAP_BUDGET / firstPaintFloor / bundle caps. Do not write status: pass.
 ```
@@ -83,15 +83,22 @@ You are the Mission Winning gauntlet CRITIC. Fresh context. You do not read the 
 
 BOOT: CONTEXT → AGENTS → INDEX → ORCHESTRATION → GRAPH_LOOP → GAUNTLET_LOOP → the workbench unit + written bar only.
 
-EVIDENCE (all three, or the verdict is invalid):
-1. Drive the real flow in a running app at 390×844.
-2. Commit round-stamped stills under docs/gauntlet/<ID>/evidence/ (own-app only). Competitor pixels never enter git.
-3. Run the unit’s instruments and paste actual output. A summary of output is not output.
+CRITIC BOOT (running app):
+- Local: `npm run dev`. Viewport 390×844.
+- Do not `next start` / `npm run build && npm start` unless PRIVATE_MODE=false and the gate cookie is set — a production start stills the /private teaser.
+- Playwright stills: pin viewport 390×844 (see docs/gauntlet/<ID>/evidence/README.md). `npx playwright install chromium` if e2e is named.
+- This role needs a machine that can see the app (Grok / human). Hermes machine-tests-only is not a critic.
 
-Blind A/B when the unit names a reference: write the verdict before unblinding. Only measurements enter the workbench.
+EVIDENCE (all three, or the verdict is invalid):
+1. Drive the real flow in that running app at 390×844.
+2. Commit round-stamped stills under docs/gauntlet/<ID>/evidence/ (own-app only). Competitor pixels never enter git.
+3. Run the workbench’s exact commands and paste actual last lines. “Tests passed” is not output.
+
+Reference captures (Hevy / Strong / Freeletics / Bevel / Duolingo) are measurements-only until the workbench has founder FLOORS/BANDS. They are not a FAIL condition you invent this round.
 
 VERDICT:
-- Every criterion PASS or FAIL with one evidence line.
+- Every written instrument PASS or FAIL with one evidence line.
+- Optional one sentence labeled: FEEL (founder-only, not a builder brief): …
 - Exactly one sentence: Biggest remaining gap: …
 - Hero-surface passes also append a dated DESIGN_REVIEW.md §Passes row, Reviewer `Gauntlet <ID>.<U> R<r>`.
 
@@ -100,17 +107,51 @@ Never fix code. Never soften a bar. Never write status: pass.
 
 ## 5. Rounds, budget, stop
 
-Default **3 rounds per unit**. Campaign hard cap is set by LEAD before round 1 (GNT-1: ≤14 build PRs).
+Default **3 rounds per unit**. Campaign hard cap is set by LEAD before round 1 (GNT-1: ≤14 build PRs). Unused cap is success.
+
+The cap counts only PRs that touch `src|app|scripts|supabase`. Already-true dossiers and critic-still PRs are docs and do not spend it.
 
 Stop when: all units clear · two consecutive flat rounds (measured) · budget exhausted.
 
+| Condition | Means | Next spawn | Spends cap? |
+|-----------|--------|------------|-------------|
+| No legal bar | §3 | BUILDER commissions the instrument | yes if src\|app\|scripts\|supabase |
+| Already-true (instruments green) | GRAPH_LOOP rule 3 | CRITIC stills + paste; no product PR | no |
+| Critic verdict missing trio | Invalid | Re-spawn CRITIC. Do not paste | no |
+| Instrument FAIL | Product gap | BUILDER on that gap | yes if code |
+| Feel-only note | Founder-only | Not a builder brief | no |
+| Two flat instrument rounds | Split or blocked | LEAD splits or `blocked-for-founder` | — |
+| Budget exhausted | Stop building | LEAD writes the report with remaining gaps; GRAPH_LOOP row → `blocked-for-founder` (not `done`) | — |
+| Missing founder FLOORS for a named reference | A/B cannot FAIL | Record measurements if you have them; do not FAIL the unit | no |
+
 A green round does not end the campaign. The smoother pass and the report do. Terminal agent state: **`ready-for-founder`**, never `pass`.
+
+### SMOOTHER
+
+```text
+You are the Mission Winning gauntlet SMOOTHER. One pass after every unit is green (or already-true + critic dossier).
+Walk Train / Today / Victory / Coach at 390×844 against DESIGN_ORCHESTRATION’s 8 surface bars.
+Append a UX_PLAYBOOK §10 closing block to DESIGN_REVIEW.md. Do not open a new unit. Do not write status: pass.
+```
 
 ## 6. Workbench
 
 One campaign = one file under [docs/gauntlet/](gauntlet/INDEX.md). Closed campaigns rotate to `docs/archive/` like LOG.
 
-Skeleton: campaign header · unit/bar table · round log (`unit | round | builder ref | critic verdict | biggest gap`) · per-unit evidence dossier · report.
+Skeleton: campaign header · **Next spawn** line · unit/bar table · exact instrument commands · round log (`unit | round | builder ref | critic verdict | biggest gap`) · per-unit evidence dossier · report.
+
+GRAPH_LOOP names the campaign row only (`AL1 open`). The unit and role live on **Next spawn**.
+
+Critic paste template (last lines, not a summary):
+
+```text
+COMMAND: <exact from the workbench>
+LAST LINES:
+<paste>
+STILLS: U<n>-R<r>-<beat>.png …
+FEEL (founder-only, not a builder brief): <optional>
+Biggest remaining gap: <one sentence>
+```
 
 **GNT-n** is a naming trap: not GRAPH_LOOP G1, not PFT G1–G8, not journey/build phases. See root INDEX.md.
 
