@@ -268,7 +268,14 @@ export const FIELDS: Record<NodeType, Record<string, FieldSpec>> = {
   },
   verdict: {
     ...COMMON_FIELDS,
-    settles: { kind: 'scalar', required: true },
+    /**
+     * The hypothesis this settles, when the loop was an `H-NN`. Optional when
+     * `campaign` is set — a gauntlet is not a hypothesis, and pretending GNT-2
+     * settled H-07 is how a ledger starts lying.
+     */
+    settles: { kind: 'scalar', required: false },
+    /** `GNT-n` when the loop was a campaign. Optional when `settles` is set. */
+    campaign: { kind: 'scalar', required: false },
     outcome: { kind: 'scalar', required: true, oneOf: ['pass', 'fail', 'already-true', 'abandoned'] },
     evidence: { kind: 'scalar', required: true },
     learned: { kind: 'scalar', required: true },

@@ -103,6 +103,24 @@ export function buildPack(root: string, graph: LoadedGraph, behaviorClass: Behav
     included.push(h.id);
   }
 
+  // 6. Verdicts that settle those hypotheses, or campaign lessons on this
+  //    axis's already-proposed ids. A pack that cannot see what the last loop
+  //    learned will re-propose it.
+  const wantedH = new Set(existing.map((h) => h.id));
+  const verdicts = graph.nodes.filter((n) => {
+    if (n.type !== 'verdict') return false;
+    if (typeof n.fm.settles === 'string' && wantedH.has(n.fm.settles)) return true;
+    return typeof n.fm.campaign === 'string';
+  });
+  if (verdicts.length > 0) {
+    sections.push('\n## Lessons from closed loops\n');
+    for (const v of verdicts) {
+      const subject = (v.fm.campaign as string | undefined) ?? (v.fm.settles as string | undefined) ?? v.id;
+      sections.push(`- **${v.id}** ${subject} · ${v.fm.outcome} — ${v.fm.learned}`);
+      included.push(v.id);
+    }
+  }
+
   const text = sections.join('\n');
   const bytes = Buffer.byteLength(text, 'utf8');
   return { behaviorClass, text, bytes, overBudget: bytes > MAX_PACK_BYTES, included };

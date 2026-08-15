@@ -20,6 +20,7 @@ performs, because otherwise the whole graph lands in the client bundle and
 | `validate.ts` | Every rule the graph must satisfy, asserted against a parsed shape |
 | `derive.ts` | Nodes → candidates; fingerprints; emitted history read back from `GRAPH_LOOP.md` |
 | `select.ts` | MAP-Elites selection. The four diversity rules |
+| `learn.ts` | Verdicts → status rewrite, kill fingerprints, lessons the next spawn can read |
 | `pack.ts` | The bounded context pack a spawn is allowed to read |
 | `report.ts` | The archive as a grid. Printed by `idea:cells`, checked against `docs/mechanics/INDEX.md` |
 
@@ -41,10 +42,11 @@ So the split is deliberate — the six role prompts stay fenced prose in
 
 ## Tests
 
-`parse.test.ts` (grammar rejections) · `validate.test.ts` (25 mutants, one per
+`parse.test.ts` (grammar rejections) · `validate.test.ts` (mutants, one per
 rule, against a temp-root fixture) · `select.test.ts` (each diversity rule alone,
-plus the replay of the real Q→AK queue) · `ideaGraphContract.test.ts` (the
-shipped graph validates, bundle safety, doc parity).
+plus the replay of the real Q→AK queue) · `learn.test.ts` (verdicts change the
+next pick) · `ideaGraphContract.test.ts` (the shipped graph validates, bundle
+safety, doc parity).
 
 The replay is the honest acceptance test: feed the real copy-drift history in
 and the selector must refuse the second row. If it emits them, nothing else in

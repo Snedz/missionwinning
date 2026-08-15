@@ -2,7 +2,7 @@
 
 **Audience:** Founder + the next Hermes / Grok Build / graph agent  
 **Lane:** Engineering-Web (unless a loop says Android)  
-**Status:** ACTIVE 2026-08-15 · web `2026.07-unified.850` · Alpha 0.1.0 · **AL1 done — GNT-1 `ready-for-founder` · AM1 done — GNT-2 `ready-for-founder`**  
+**Status:** ACTIVE 2026-08-15 · web `2026.07-unified.851` · Alpha 0.1.0 · **AL1 done — GNT-1 `ready-for-founder` · AM1 done — GNT-2 `ready-for-founder`**  
 **Does not replace:** [ORCHESTRATION.md](../ORCHESTRATION.md) (what may be built) · [CONTEXT.md](../CONTEXT.md) `## Now` (where we are) · [vision.md](../vision.md) (constitution) · [docs/THESIS.md](THESIS.md) (wedge) · [docs/PLAN.md](PLAN.md) (phases A–I)
 
 This file is the **execution queue** for the agent graph: one concern per loop, spawn, ship, mark done, spawn the next. It is not a second status block and not a license to skip standing hard bans.
@@ -68,8 +68,9 @@ PR, and the `done` edit is still the baton.
 only, tables addressed by header name, status taken from the parsed Status cell.
 It names the live ticket, the route (`build` · `gauntlet` · `harvest`), the recipe,
 the workbench and its `Next spawn` line, and any `founder`/`blocked` row it stepped
-over. Like `idea:next` it prints and never writes; the `done` edit is still the
-baton. Recipe 14, and `src/lib/loopQueue/`.
+over. It also prints closed-loop **lessons** (`docs/mechanics/verdicts/`) and, on
+a harvest route, the `idea:next` pick. Like `idea:next` it prints and never writes;
+the `done` edit is still the baton. Recipe 14, `src/lib/loopQueue/`, `src/lib/ideaGraph/learn.ts`.
 
 Two things it settles that prose could not:
 

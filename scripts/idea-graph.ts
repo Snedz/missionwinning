@@ -14,9 +14,9 @@
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { validateGraph } from '../src/lib/ideaGraph/validate.ts';
-import { readAntiLibrary } from '../src/lib/ideaGraph/load.ts';
 import { buildPack, MAX_PACK_BYTES } from '../src/lib/ideaGraph/pack.ts';
 import { readEmittedHistory, toCandidates } from '../src/lib/ideaGraph/derive.ts';
+import { selectionInputs } from '../src/lib/ideaGraph/learn.ts';
 import { allCells, cellKey, scoreOf, selectNext } from '../src/lib/ideaGraph/select.ts';
 import { BEHAVIOR_CLASSES, type BehaviorClass } from '../src/lib/ideaGraph/schema.ts';
 import { fillTable } from '../src/lib/ideaGraph/report.ts';
@@ -28,12 +28,6 @@ const bold = (s: string) => `\x1b[1m${s}\x1b[0m`;
 const red = (s: string) => `\x1b[31m${s}\x1b[0m`;
 const green = (s: string) => `\x1b[32m${s}\x1b[0m`;
 const dim = (s: string) => `\x1b[2m${s}\x1b[0m`;
-
-function killedFingerprints(): string[][] {
-  return readAntiLibrary(root)
-    .filter((e) => !e.fingerprint.includes('.')) // hosts live in the unciteable table
-    .map((e) => e.fingerprint.split('+').map((t) => t.trim()));
-}
 
 function validate(): number {
   const { graph, violations } = validateGraph(root);
@@ -55,9 +49,9 @@ function next(): number {
     console.error(red('✗ graph does not validate — fix that first (npm run idea:validate)'));
     return 1;
   }
-  const candidates = toCandidates(graph);
+  const { candidates, antiLibrary } = selectionInputs(root, graph);
   const history = readEmittedHistory(root, graph);
-  const { emit, refusals, unvisitedCells, uncoveredCells } = selectNext(candidates, history, killedFingerprints());
+  const { emit, refusals, unvisitedCells, uncoveredCells } = selectNext(candidates, history, antiLibrary);
 
   console.log(bold('\nIdea Loop — next row\n'));
   console.log(dim(`  ${candidates.length} hypotheses · ${history.length} already emitted · ` +
