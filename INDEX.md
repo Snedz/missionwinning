@@ -22,6 +22,7 @@
 | If you are… | Read first | Do not use as source of truth |
 |-------------|------------|-------------------------------|
 | **Deciding what to build next** | [ORCHESTRATION.md](ORCHESTRATION.md) | Old chat plans; infinite feature lists |
+| **Starting a turn / choosing between the three loops** | `npm run graph` — it names the row, the route and the recipe ([docs/AGENT_RECIPES.md](docs/AGENT_RECIPES.md) §14) | Your memory of which row was open; a header line restating the queue; routing around the command instead of fixing it |
 | **Spawning the next agent graph loop** | [docs/GRAPH_LOOP.md](docs/GRAPH_LOOP.md) (queue) after ORCHESTRATION | Another planning memo; executing two loops in one PR; closed 2026-08-12 sand PRs as if they were master |
 | **Generating the next idea** | [docs/IDEA_LOOP.md](docs/IDEA_LOOP.md) (protocol) · graph [docs/mechanics/INDEX.md](docs/mechanics/INDEX.md) | Treating it as a second queue; emitting more than one row; letting the model that wrote a candidate judge it; targeting the loop's own process as a behaviour |
 | **Running a gauntlet campaign** | [docs/GAUNTLET_LOOP.md](docs/GAUNTLET_LOOP.md) after GRAPH_LOOP · workbench [docs/gauntlet/INDEX.md](docs/gauntlet/INDEX.md) | Builder grading its own work; treating the workbench as a second queue or status block; bars invented mid-round |
@@ -146,7 +147,7 @@ Root keeps only the spine: README · CONTEXT · AGENTS · INDEX · vision · ORC
 | [docs/STRATEGY.md](docs/STRATEGY.md) | **Stub** — full business plan in private mission-ops |
 | [docs/REDTEAM.md](docs/REDTEAM.md) | **Stub** — full assumptions audit in private mission-ops |
 | [docs/PLAN.md](docs/PLAN.md) | Build roadmap |
-| [docs/GRAPH_LOOP.md](docs/GRAPH_LOOP.md) | Agent graph execution queue (AL1 open — GNT-1) |
+| [docs/GRAPH_LOOP.md](docs/GRAPH_LOOP.md) | Agent graph execution queue — live row from `npm run graph`, never restated here |
 | [docs/IDEA_LOOP.md](docs/IDEA_LOOP.md) | Idea generation protocol · graph in [docs/mechanics/](docs/mechanics/INDEX.md) |
 | [docs/GAUNTLET_LOOP.md](docs/GAUNTLET_LOOP.md) | Gauntlet grading protocol · campaigns in [docs/gauntlet/](docs/gauntlet/INDEX.md) |
 | [docs/E1RM_PLAN.md](docs/E1RM_PLAN.md) | Frozen `.739` — educational Epley e1RM on logged sets |

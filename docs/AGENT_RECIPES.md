@@ -233,9 +233,48 @@ rather than another letter. It is the alternative to inventing `AK2`.
 
 ---
 
+## 14. Boot the graph from outside the repo
+
+**Required reads:** whatever `npm run graph` names. That is the point of it.
+
+Recipes 11 · 12 · 13 each state when they win, in three different files. This one
+decides between them, and works when the shell is not already in the repo — the
+`/graph` skill (machine-local, `~/.claude/skills/graph/`, never `.claude/skills/`:
+hard rule 6) is a thin loader over exactly these steps.
+
+1. **Find the repo and verify it.** cwd, walking up · `$MW_REPO` · `~/missionwinning`
+   and the usual siblings. A candidate counts only when **all three** hold:
+   `docs/GRAPH_LOOP.md` exists, `vision.md` exists, `package.json` `name` is
+   `mission-winning`. A directory with the right basename is not the repo.
+2. **Boot the spine** — `CONTEXT.md` → `AGENTS.md` → `INDEX.md` → `ORCHESTRATION.md`
+   → [GRAPH_LOOP.md](GRAPH_LOOP.md), whose § *Copy-paste prompt* BANS block you read
+   **verbatim** rather than from memory. Then the folder `INDEX.md` you will edit.
+3. **`npm run graph`.** It names the live ticket, the route, the recipe, the
+   workbench and its `Next spawn` line, any `founder`/`blocked` row it skipped, and
+   the monoculture ratchet. It prints; it never edits the queue.
+4. **Take the route it named**, and only that one — `build` → recipe 11 · `gauntlet`
+   → recipe 12 · `harvest` → recipe 13. Not a more interesting row, not two rows.
+5. **One loop, then stop** ([GRAPH_LOOP.md](GRAPH_LOOP.md) loop rule 2). Print
+   `loop id · role (if gauntlet) · PR + label (or already-true proof) · next spawn`.
+
+**Required tests:** `npx tsx --test "src/lib/loopQueue/*.test.ts"` if you touched the
+router; otherwise the loop's own tests, per the recipe you were routed to.
+
+**Never**
+
+- Choose the route yourself when `graph` disagrees — fix the queue or the
+  router, in its own PR
+- Write another plan instead of executing the row ([GRAPH_LOOP.md](GRAPH_LOOP.md) § *Stop the graph if*)
+- Mint the next letter section to refill a thin queue — that is what routing to a
+  harvest is for, and `MAX_SINGLE_ROW_RUN` now goes red instead of asking nicely
+- Put this skill in `.claude/skills/` (hard rule 6) · merge your own PR · push `master`
+
+---
+
 ## Quick commands
 
 ```bash
+npm run graph            # which loop runs next, and under which recipe
 npm test
 npm run build
 npm run lint

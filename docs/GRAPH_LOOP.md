@@ -2,7 +2,7 @@
 
 **Audience:** Founder + the next Hermes / Grok Build / graph agent  
 **Lane:** Engineering-Web (unless a loop says Android)  
-**Status:** ACTIVE 2026-08-15 · web `2026.07-unified.849` · Alpha 0.1.0 · **AL1 done — GNT-1 `ready-for-founder` · AM1 done — GNT-2 `ready-for-founder`**  
+**Status:** ACTIVE 2026-08-15 · web `2026.07-unified.850` · Alpha 0.1.0 · **AL1 done — GNT-1 `ready-for-founder` · AM1 done — GNT-2 `ready-for-founder`**  
 **Does not replace:** [ORCHESTRATION.md](../ORCHESTRATION.md) (what may be built) · [CONTEXT.md](../CONTEXT.md) `## Now` (where we are) · [vision.md](../vision.md) (constitution) · [docs/THESIS.md](THESIS.md) (wedge) · [docs/PLAN.md](PLAN.md) (phases A–I)
 
 This file is the **execution queue** for the agent graph: one concern per loop, spawn, ship, mark done, spawn the next. It is not a second status block and not a license to skip standing hard bans.
@@ -61,6 +61,27 @@ command. Rows it produced are prefixed `IL-`.
 
 Nothing else about this file changes. One `open` row at a time, one concern per
 PR, and the `done` edit is still the baton.
+
+### Which row is live (`.850`)
+
+`npm run graph` answers that by **reading this file** — the `## Queue` region
+only, tables addressed by header name, status taken from the parsed Status cell.
+It names the live ticket, the route (`build` · `gauntlet` · `harvest`), the recipe,
+the workbench and its `Next spawn` line, and any `founder`/`blocked` row it stepped
+over. Like `idea:next` it prints and never writes; the `done` edit is still the
+baton. Recipe 14, and `src/lib/loopQueue/`.
+
+Two things it settles that prose could not:
+
+- **A grep cannot read this file.** `grep '`open`'` returns thirteen hits, nine of
+  them prose, and three of the remaining table rows are `done` rows whose *Moves*
+  text contains the word — `D1`, `K2`, `N1`. Status is a cell, not a spelling.
+- **`MAX_SINGLE_ROW_RUN` is *"Do not invent X2"* with teeth.** Rows per `Now`
+  section run `7 7 8 4 2 1 2 1 1 1 1 1 2 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1`: a
+  trailing run of **sixteen** one-row sections, which is the drift era measured
+  rather than described. It is a ratchet and may only go down — a new `Now` section
+  carries ≥2 rows, or the queue takes a harvest first. It never displaces a live
+  `open` row; it bites at the moment the last row closes.
 
 Recent turns:
 
@@ -124,7 +145,7 @@ Do **not** stop solely because RESULT is `unscored` while this skip-W note is in
 
 ## Queue
 
-Status key: `open` · `done` · `parked` · `founder` · `blocked`.
+Status key: `open` · `done` · `parked` · `hold` · `founder` · `blocked`. Backticked, in the Status cell — `npm run graph` reads that cell as a value, not the row as text.
 
 ### Now — Horizon 0 (agents)
 
@@ -180,7 +201,7 @@ First D list mixed Alpha with leftover open-beta shop work. Product stamp is **A
 | **D1** | Alpha copy leftover | Athlete-facing “open beta” → Alpha. Do not rename `isFreeBeta()` | `done` — `.804` this PR |
 | **D2** | Alpha docs frame | `docs/FREE_BETA.md` Frame line. Mute-pay fact stays | `done` — this PR |
 | **D3** | CareerLine empty → `/active` | `CareerLineCard.tsx` invitation copy, no exit | `done` — `.805` this PR |
-| **D4** | Astro compare rail / www 5th nav | Hold. 3 live vs-pages. One red | hold |
+| **D4** | Astro compare rail / www 5th nav | Hold. 3 live vs-pages. One red | `hold` |
 
 **Dropped:** Astro `/press` · Astro `/bundle` · Pacers (already-true) · Accept B (founder) · dual-mode FREE_BETA tests (old + already-true).
 
@@ -619,12 +640,18 @@ BOOT (every spawn):
 2. Do not use chat, ~/.grok/sessions, or .hermes/plans as product truth.
 
 QUEUE:
-3. Take ONLY the top loop whose Status is `open`.
-4. If that row names a gauntlet campaign (GNT-*): stop using this prompt as a builder brief.
+3. Run `npm run graph`. It names the live ticket, the route and the recipe by
+   reading this file — status from the parsed Status cell, not from the row text.
+   Take the route it names. If you disagree with it, fix the queue or the router in
+   its own PR; do not route around it. (Recipe 14.)
+4. Route `gauntlet` (GNT-*): stop using this prompt as a builder brief.
    Read docs/GAUNTLET_LOOP.md + the campaign workbench. Follow recipe 12.
    Do the workbench **Next spawn** line (role · unit · round). One unit-round, then exit.
    Do not mark the GRAPH_LOOP campaign row `done` until the campaign report is written.
-5. If the row is an ordinary loop: investigate on current master. If the defect is already gone, mark done (already true) with proof paths and stop this spawn.
+5. Route `build`: investigate on current master. If the defect is already gone, mark done (already true) with proof paths and stop this spawn.
+5b. Route `harvest` (no agent-open row): follow recipe 13 and docs/IDEA_LOOP.md.
+   It emits ONE row, prefixed `IL-`, and you paste it. Do not mint the next letter
+   section instead — `MAX_SINGLE_ROW_RUN` is red-on-breach, not advice.
 
 SHIP (ordinary loops, and gauntlet BUILDER rounds only):
 6. One concern. One PR. Branch from master. [skip vercel] unless the founder asked for Preview.

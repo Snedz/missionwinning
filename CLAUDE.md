@@ -35,6 +35,7 @@ Constitution: [vision.md](vision.md). Pitch the **Train + Mission Coach wedge**,
 | **Fuel** | Route `/nutrition` |
 | Journey phase 0–3 | UX arc ([docs/JOURNEY.md](docs/JOURNEY.md)) ≠ build phases A–I ([docs/PLAN.md](docs/PLAN.md)) ≠ PFT G1–G8 |
 | Horizon W / 0–3 | What may be built now — [ORCHESTRATION.md](ORCHESTRATION.md) |
+| **Graph** | Four different things: `src/lib/graph/` (`npm run graph:ingest`) = memory of *our dev history* · `src/lib/ideaGraph/` + `docs/mechanics/` = the *idea* graph · `docs/GRAPH_LOOP.md` + `src/lib/loopQueue/` (`npm run graph`) = the *execution queue* · `/graph` = the machine-local skill that boots that queue from any directory |
 
 ---
 
@@ -84,6 +85,7 @@ src/i18n/*Locales.ts            → user-visible strings
 
 ```bash
 npm run dev              # local dev server
+npm run graph            # which loop runs next + which recipe (reads docs/GRAPH_LOOP.md)
 npm run lint             # eslint app src --max-warnings 0
 npm run typecheck        # tsc --noEmit (app + tests)
 npm test                 # unit tests — tsx --test "src/**/*.test.ts" (~190 files)
@@ -192,6 +194,7 @@ This repo has paid repeatedly for checks that could not fail. Before adding a te
 | Status / gates | [CONTEXT.md](CONTEXT.md) `## Now` |
 | What to build next | [ORCHESTRATION.md](ORCHESTRATION.md), [docs/PLAN.md](docs/PLAN.md) |
 | Where the next idea comes from | [docs/IDEA_LOOP.md](docs/IDEA_LOOP.md), graph in [docs/mechanics/](docs/mechanics/INDEX.md) |
+| Which loop runs next | `npm run graph` — [docs/AGENT_RECIPES.md](docs/AGENT_RECIPES.md) §14, router in [src/lib/loopQueue/](src/lib/loopQueue/INDEX.md) |
 | Architecture | [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) |
 | API reference | [docs/API.md](docs/API.md), [app/INDEX.md](app/INDEX.md), [app/api/INDEX.md](app/api/INDEX.md) |
 | How to add code | [CONTRIBUTING.md](CONTRIBUTING.md), [docs/AGENT_RECIPES.md](docs/AGENT_RECIPES.md) |

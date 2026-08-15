@@ -136,6 +136,10 @@ export const KNOWN_TOP_LEVELS: Readonly<Record<string, 'wedge' | 'surface'>> = {
   'src/lib/legal': 'surface',
   'src/lib/library': 'surface',
   'src/lib/llm': 'surface',
+  // The graph-loop router behind `npm run graph`. Reads `docs/GRAPH_LOOP.md`
+  // and never renders; classified `surface` for the same reason as `ideaGraph`
+  // and `graph` above — it is the stricter of the two values this map allows.
+  'src/lib/loopQueue': 'surface',
   'src/lib/mind': 'surface',
   'src/lib/move': 'surface',
   'src/lib/nutrition': 'surface',

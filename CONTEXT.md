@@ -16,7 +16,7 @@ One screen of truth for any AI tool or human joining cold. Read this, then [AGEN
 
 ---
 
-## Now (2026-08-15 · web `2026.07-unified.849` · Android `1.24.1`)
+## Now (2026-08-15 · web `2026.07-unified.850` · Android `1.24.1`)
 
 > The ONLY "where we are" block in the repo — [ORCHESTRATION.md](ORCHESTRATION.md) points here.
 >
@@ -384,6 +384,7 @@ One screen of truth for any AI tool or human joining cold. Read this, then [AGEN
 > and `.848` dropped `.834` detail (full text remains in LOG.md / archive)
 > and `.849` dropped `.835` detail (full text remains in LOG.md / archive)
 > and `.843` dropped `.829` detail (full text remains in LOG.md / archive)
+> and `.849` moved `.834` and `.835` (full text remains in LOG.md / archive)
 > to [CONTEXT-now-2026-07-30.md](docs/archive/CONTEXT-now-2026-07-30.md) after this
 > block reached **79 bullets / 103KB**. A status doc that only grows stops being read.
 
@@ -405,6 +406,7 @@ One screen of truth for any AI tool or human joining cold. Read this, then [AGEN
 > | gitleaks | **green — and scanning for the first time.** It had never scanned anything: on a `pull_request` event the action lists the PR's commits, the job declared no `permissions:` block, and it 403'd (`pull_requests=read`) before opening a file. Fixed by a `permissions:` block (`.224` carrying `.255`). It scans **only the PR's own commits**, so commit `8ea3527a`'s real Solana treasury address — scrubbed from the working file, still in history — is out of its scope. That finding stands, deliberately not allowlisted; it was never what made this check red. |
 > | Privacy / security program | **Landed `.778`** — [docs/security/PROGRAM_STATUS.md](docs/security/PROGRAM_STATUS.md). Invite-bound gate, health-bucket, DSAR, territory fail-closed. OTP-without-click can leave a ghost user. Not a cert. |
 
+- **`.850`:** (`2026.07-unified.850`) **`npm run graph` decides which loop runs** — three protocols behind one queue, and the routing between them was prose written three times in three files. It reads `GRAPH_LOOP.md`'s `## Queue` region and names the live ticket, the route (`build` · `gauntlet` · `harvest`), the recipe, and the workbench `Next spawn` line; it prints and never writes, so the `done` edit is still the baton. Two rules stop being prose: status is read from the parsed Status cell (three `done` rows carry "open" in their *Moves* text — `D1` `K2` `N1`), and **`MAX_SINGLE_ROW_RUN = 16`** turns *"Do not invent X2"* into a ratchet measured off the queue's own section shape. Recipe 14 + `src/lib/loopQueue/`. `/graph` is the machine-local skill over it (`~/.claude/skills/`, never `.claude/skills/` — hard rule 6). 6 mutants killed. No `PRIVATE_MODE` flip.
 - **`.849`:** (`2026.07-unified.849`) **GNT-2 U4 — `generateWeek` gear instrument** — `equipmentMatches` already filters the catalog; `generateWeek` already programs 0 illegal moves. The `bench` substring persona was not this bar. `coachEvalGear.test.ts` discovers `EXERCISES` across bodyweight / dumbbells / full-gym + one kit. 1 mutant killed. No planner change. No `PRIVATE_MODE` flip.
 - **`.848`:** (`2026.07-unified.848`) **GNT-2 U3 — mid-week adapt instrument** — `adaptPlan` already records misses and does not cut remaining sets. Date-literal `adapt.test.ts` and hand-built `adaptMissedNarration` were not this bar. `coachEvalAdapt.test.ts` pins `generateWeek` + `adaptPlan` on the local Monday+Thursday (miss recorded, remaining fits, remaining sets do not rise). 1 mutant killed. No planner change. No `PRIVATE_MODE` flip.
 - **`.847`:** (`2026.07-unified.847`) **GNT-2 U2 — `generateWeek` progression instrument** — last-session easy RPE already raises load; `nextTargets` and a date-literal `planEngine` case were not this bar. `coachEvalProgression.test.ts` pins the rise at `generateWeek` (green > last, green > hard, week `sets:recovery` unchanged). 1 mutant killed. No planner change. No `PRIVATE_MODE` flip.
@@ -418,7 +420,6 @@ One screen of truth for any AI tool or human joining cold. Read this, then [AGEN
 - **`.839`:** (`2026.07-unified.839`) **I-Day lands Today** — cold Continue → `/log`; `/log` gate-public. first-90 green. No `PRIVATE_MODE` flip.
 - **`.838`:** (`2026.07-unified.838`) **JSON-LD `@graph`** — homepage no longer stringifies a bare array (`@context`.toLowerCase). No `PRIVATE_MODE` flip.
 - **`.837`:** (`2026.07-unified.837`) **GNT-1 U5** — TAP_BUDGET=5 + firstPaintFloor 167 named as one pin. No `PRIVATE_MODE` flip.
-- **`.836`:** (`2026.07-unified.836`) **GNT-1 U4** — 3/7/14-day reentry lines stay shame-free. No `PRIVATE_MODE` flip.
 - **Form object kit (on `.781`):** IMPLEMENT block + prop sheets. Regen cable-row (visible stack), lateral-raise, DB press, lunges, DB row. Floor 43. Still-only. No `PRIVATE_MODE` flip.
 - **Excellence:** unscored · — · [docs/EXCELLENCE_RESULT.md](docs/EXCELLENCE_RESULT.md) — Horizon W phone sign-off home; surface PRs need `status: pass` or `Excellence-Override` (`.669`).
 - **`.669`:** (`2026.07-unified.669`) **Excellence RESULT + agent stop-rule** — `excellenceGate` path policy + `check-excellence-gate` on gate/PR CI; wedge still ships while unscored.
