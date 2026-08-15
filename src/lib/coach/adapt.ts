@@ -299,6 +299,7 @@ export function regenerateFutureSessions(plan: CoachPlan, ctx: CoachContext, tod
     readiness: ctx.bodyScores.readiness,
     strain: ctx.bodyScores.strain,
     recovery: ctx.bodyScores.recovery,
+    loadZone: ctx.loadZone,
   });
   const preferred = ctx.preferredDays.filter((d) => d >= todayOffset);
   const calendar = mapToCalendar(split, preferred.length ? preferred : [], plan.weekStart);

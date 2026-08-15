@@ -1,11 +1,11 @@
 # GNT-2 — Coach plan quality
 
-**Status:** `open` · GRAPH_LOOP **AM1** · hard cap **≤10 build PRs** (1 spent: `.840`)
+**Status:** `open` · GRAPH_LOOP **AM1** · hard cap **≤10 build PRs** (2 spent: `.840` `.845`)
 **Opened:** 2026-08-15, on the gate written in [INDEX.md](INDEX.md) — *"enters GRAPH_LOOP only after GNT-1's report"*. That report is written; GNT-1 is `ready-for-founder`.
 **Product:** an instrument that can tell a good generated week from a bad one, and a planner that clears it.
 **Terminal agent state:** `ready-for-founder`. Never `status: pass`.
 
-**Next spawn:** BUILDER on **U1** — wire `loadZone` into the split so a **`high`** acute:chronic week is not the same week as a **`steady`** one. R2 (below) located the break precisely, so this is no longer a search. Evidence it worked is `MIN_DISTINCT_DOSE_SHAPES` going up **and** the R2 axis-B table separating `steady` from `high`. The dosing delta itself (how much lighter a `high` week should be) is a **founder call** — propose it in the PR, do not invent it silently.
+**Next spawn:** CRITIC on **U1 R3** — grade `.845`. Instruments: `npx tsx --test src/lib/coach/coachEval.test.ts`. Bar: `MIN_DISTINCT_DOSE_SHAPES` rose **and** `steady` ≠ `high` at the same strain. Founder-proposed delta in the PR: one extra recovery day after the strain rules. Do not write `status: pass`.
 
 Instrument first: this campaign may not grade a week against taste. Every unit's bar is [GAUNTLET_LOOP.md](../GAUNTLET_LOOP.md) §3 source 1 or 2 — an existing measured instrument, or a new ratchet on the canonical pattern. Reference programmes contribute **structure bands only** (never copied text — guidebook originality-log discipline).
 
@@ -24,6 +24,7 @@ Instrument first: this campaign may not grade a week against taste. Every unit's
 |------|-------|-------------|----------------|-------------|
 | U1 | 1 | `.840` — commissioned `coachEval.test.ts` (sweep ratchet, 2 mutants killed). No planner change. | **instrument landed; bar not yet met.** The sweep measures 2 dose shapes across 11 strain levels — `48:0` cold, `34:2` for every non-empty history. | The week is magnitude-blind: 2 logs and 20 logs produce an identical plan |
 | U1 | 2 | no builder — source investigation only (GRAPH_LOOP rule 3), no product change. | **bar still not met, and R1's brief was imprecise.** Three axes measured (below). The planner is not blind to *magnitude* in general — `applyFatigueToSplit` already grades `strain ≥70 → 1 recovery`, `≥85 → 2`. It is blind to **`loadZone`**: `chooseSplit` is handed `bodyScores` only, so the acute:chronic band computed in `contextBuilder` never reaches the split. `steady` (ratio 1.19) and `high` (ratio 1.70) render the same `34:2` week. | `loadZone` is computed and discarded: `steady` and `high` are the same week, which is the one distinction acute:chronic exists to make |
+| U1 | 3 | `.845` — `loadZone` passed into `chooseSplit`. `high` inserts one extra recovery after the strain rules. Floor 2 → 3. No critic yet. | | |
 
 ## Evidence dossier
 
