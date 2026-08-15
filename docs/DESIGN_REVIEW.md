@@ -64,6 +64,7 @@ Review on a 390×844 phone viewport first (the Playwright target); desktop secon
 
 | Date | Reviewer | Flows | Issues filed |
 |------|----------|-------|--------------|
+| 2026-08-15 | Gauntlet GNT-1.U2 R1 | `/log` zero-state | **FAIL:** 1 red vs cap 0. Capture `U2-R1-cold.png` is Notify-me, not Today. |
 | 2026-08-15 | Gauntlet GNT-1.U1 R1 | I-Day → `/active`; Just Go set/rest/finish | **FAIL:** first-90 expected `/log`, landed `/active`. Logger mid-session stills in `docs/gauntlet/GNT-1/evidence/`. |
 | 2026-08-09 | Agent (empty Active dock · .638) | `/active` zero | Closed `.637` S2: EmptyState invite-only; docked poster-field Start; Today/Builder secondary. |
 | 2026-08-09 | Agent (CX/UX/UI hero walk · .637) | Welcome→Active→Victory→Today→Coach; reentry; zero | **S1 fixed:** raw i18n on readiness Today. Residual empty Active Start → closed in `.638`. |
