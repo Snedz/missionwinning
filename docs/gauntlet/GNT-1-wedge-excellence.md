@@ -4,7 +4,7 @@
 **Product:** the evidence dossier that makes the founder’s phone walk a confirmation.  
 **Terminal agent state:** `ready-for-founder`. Only the founder writes `status: pass` in [EXCELLENCE_RESULT.md](../EXCELLENCE_RESULT.md).
 
-**Next spawn:** `CRITIC · GNT-1 U3 R1` — U1 and U2 critics landed FAIL. Finish U3–U5 critics before a builder.
+**Next spawn:** `CRITIC · GNT-1 U4 R1` — U1–U3 critics landed. Finish U4–U5 critics before a builder.
 
 Unused cap is success. The cap counts only PRs that touch `src|app|scripts|supabase`. U1/U2 already-true did not spend it.
 
@@ -41,7 +41,7 @@ U2 (GRAPH_LOOP G4) and U4 (G7) opened evidence-first / already-true. The dossier
 |------|-------|-------------|----------------|-------------|
 | U1 | 1 | already-true on master `.834` — unit pins green. | **FAIL** — first-90 cold visitor: expected `/log`, got `/active`. Logger stills exist. | I-Day Continue lands on `/active` (Active dump), not Today |
 | U2 | 1 | already-true on master `.834` — unit pins green. | **FAIL** — `/log` zero-state: 1 red action, cap 0. Capture is marketing Notify-me, not Today. returning/mid-plan stills not taken. | Cold `/log` e2e is not on Today (1 red vs grey-Just-Go cap 0) |
-| U3 | 1 | `.835` — engine pin `gnt1HistoryDose.test.ts` (not a render proof). | — | Critic U3 after U2 |
+| U3 | 1 | `.835` — engine pin `gnt1HistoryDose.test.ts` (not a render proof). | **FAIL** (no render PASS) — engine 2/2 green; Coach+Today stills skipped (cannot seed two histories without the forbidden demo IIFE). | Two-history render on `/coach` + `/log` is unproven |
 | U4 | 1 | `.836` — 3/7/14-day quiet lines + long-gap at 14. | — | Critic U4 after U3 |
 | U5 | 1 | `.837` — TAP_BUDGET=5 + firstPaintFloor 167 **named** (copy-drift, not 90s). | — | Critic U5 timed walk after U4 |
 
@@ -53,7 +53,7 @@ Fill as rounds ship. Own-app stills under `GNT-1/evidence/` named `U<n>-R<r>-<be
 |------|--------|------------------|-------------------------|
 | U1 | `U1-R1-set-row.png` · `U1-R1-rest.png` · `U1-R1-ghost.png` · `U1-R1-finished.png` · `U1-R1-first-90-landed-active.png` | **2026-08-15 critic R1 e2e (paste):** `npx playwright test tests/e2e/logger-depth.spec.ts tests/e2e/first-90.spec.ts:32 --project=mobile-chrome` → first-90 cold visitor **FAIL** `Expected pattern: /\\/log/` `Received: http://localhost:3000/active` (timeout 15s). logger-depth empty-start **FAIL** `page.goto /active waitUntil networkidle` hit 60s test timeout. Unit pins (36) still green. Stills: one red Log set; rest 1:21 + Skip; PREV column present (underscore on first Just Go); finish = Session locked + red NEXT. | no founder FLOORS — do not FAIL |
 | U2 | `U2-R1-cold.png` (zero-state failure capture). returning / mid-plan **not taken** — `/log` e2e never painted Today. | **2026-08-15 critic R1:** `npx tsx --test src/lib/todayPrimaryAction.test.ts src/lib/today/todayBlockBudget.test.ts` → **14 pass / 0 fail**. `npx playwright test tests/e2e/zero-state.spec.ts --project=mobile-chrome -g "/log offers"` → **FAIL** `/log: 1 red actions, cap 0` (cap reason: docked hero is grey Just Go before any data). Failure PNG is the Alpha Notify-me poster (`/private` or `/`), not JourneyHero. | no founder FLOORS — do not FAIL |
-| U3 | pending critic | 2026-08-15 builder R1 `.835`: `npx tsx --test src/lib/coach/gnt1HistoryDose.test.ts` → **2 pass / 0 fail**. Engine-only. Not a Coach/Today render PASS. | — |
+| U3 | **skipped** — cannot seed two logger histories without `seed-coach-adapt-demo.mjs` (forbidden; clobbers `mw_coach_plan`). | **2026-08-15 critic R1:** `npx tsx --test src/lib/coach/gnt1HistoryDose.test.ts` → **2 pass / 0 fail** (re-run). Engine: empty → 4 strength / 12 sets; 20 hard logs → recovery days + fewer sets; Thursday adapt keeps remaining kinds different. Workbench: engine paste is not a render PASS. | — |
 | U4 | pending critic | 2026-08-15 builder R1 `.836`: `npx tsx --test src/lib/reentryCopyGuard.test.ts` → **5 pass / 0 fail**. | no founder FLOORS — do not FAIL |
 | U5 | pending critic | 2026-08-15 builder R1 `.837`: `npx tsx --test src/lib/gnt1First90.test.ts` → **3 pass / 0 fail**. Source pin. Critic runs `first-90.spec.ts` and the timed walk. | no founder FLOORS — do not FAIL |
 | Smoother | | | |
