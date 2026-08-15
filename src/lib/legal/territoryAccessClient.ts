@@ -5,6 +5,7 @@
  * country allow (local / non-prod) is returned once and is not cached, so a
  * later platform header can still block the same tab.
  */
+import { sessionStore } from '@/lib/storage/safeSessionStorage';
 import { TERRITORY_BLOCK_MESSAGES } from './supportedRegions';
 
 export type TerritoryAccessClient = {
@@ -33,15 +34,6 @@ export function canCacheTerritoryAccess(v: TerritoryAccessClient): boolean {
   if (v.blocked) return true;
   if (!v.country) return false;
   return v.source === 'cdn';
-}
-
-function sessionStore(): Storage | null {
-  try {
-    const store = (globalThis as { sessionStorage?: Storage }).sessionStorage;
-    return store ?? null;
-  } catch {
-    return null;
-  }
 }
 
 export function readCachedTerritoryAccess(): TerritoryAccessClient | null {

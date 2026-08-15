@@ -1,5 +1,5 @@
-/** Shown on Profile so testers can confirm the deployed build. Bump when shipping UI to master. `.826` logger no side-scroll. */
-export const APP_BUILD_LABEL = "2026.07-unified.826";
+/** Shown on Profile so testers can confirm the deployed build. Bump when shipping UI to master. `.827` merge-bar guards. */
+export const APP_BUILD_LABEL = "2026.07-unified.827";
 
 /**
  * Semver for athletes. Distinct from `APP_BUILD_LABEL`, which `/api/health`

@@ -342,6 +342,10 @@ test('nothing reads a field through a cast that the type does not declare', () =
       why: 'narrowing `window` to probe for localStorage — a DOM shape',
       fixWhen: 'never',
     },
+    'src/lib/storage/safeSessionStorage.ts': {
+      why: 'narrowing `window` to probe for sessionStorage — a DOM shape',
+      fixWhen: 'never',
+    },
   };
 
   const offenders: string[] = [];
