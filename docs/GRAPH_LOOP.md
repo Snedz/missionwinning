@@ -392,7 +392,17 @@ Not AK2. Protocol + GNT-1 workbench. Grading, not a second queue.
 |---|------|-------|--------|
 | **AL1** | Gauntlet GNT-1 wedge excellence | [docs/GAUNTLET_LOOP.md](GAUNTLET_LOOP.md) + [docs/gauntlet/GNT-1-wedge-excellence.md](gauntlet/GNT-1-wedge-excellence.md). U2/U3/U4 R2 critic pass closed the render gap; report written; 4 of ≤14 build PRs spent | `done` — `ready-for-founder`. **Founder action:** phone walk against the report, then `status: pass` in [EXCELLENCE_RESULT.md](EXCELLENCE_RESULT.md) if it holds. Agents never write it |
 
-D4 stays hold. Do not invent AL2. GNT-2 is `named`, not open — it enters only after the founder scores GNT-1 ([docs/gauntlet/INDEX.md](gauntlet/INDEX.md)).
+D4 stays hold. Do not invent AL2.
+
+### Now — AM (gauntlet GNT-2 · 2026-08-15)
+
+Not AL2. GNT-2 opened on its own written gate — *"enters GRAPH_LOOP only after GNT-1's report"* — and that report is written. Grading, not a second queue.
+
+| # | Loop | Moves | Status |
+|---|------|-------|--------|
+| **AM1** | Gauntlet GNT-2 coach plan quality | [docs/gauntlet/GNT-2-coach-plan-quality.md](gauntlet/GNT-2-coach-plan-quality.md). U1 instrument landed `.840` and the bar is **not** met: the week is magnitude-blind (2 logs and 20 produce the same plan). Next action is the workbench **Next spawn** line | `open` |
+
+D4 stays hold. Do not invent AM2.
 
 ### After H0 (orientation — not open until H0-1…H0-7 are done or `founder`)
 
