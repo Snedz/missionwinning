@@ -13,7 +13,7 @@ export function HelpPage() {
     <InfoPageShell
       icon={CircleHelp}
       eyebrow={t('infoHelpEyebrow', { defaultValue: 'Help' })}
-      title={t('infoHelpTitle', { defaultValue: 'Frequently asked' })}
+      title={t('infoHelpTitle', { defaultValue: 'Help' })}
       subtitle={t('infoHelpSubtitle', {
         defaultValue: 'Short answers. The free logger is never gated.',
       })}

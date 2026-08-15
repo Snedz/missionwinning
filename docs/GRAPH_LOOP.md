@@ -2,7 +2,7 @@
 
 **Audience:** Founder + the next Hermes / Grok Build / graph agent  
 **Lane:** Engineering-Web (unless a loop says Android)  
-**Status:** ACTIVE 2026-08-14 · web `2026.07-unified.807` · Alpha 0.1.0 · **Q1 done · residual scan**  
+**Status:** ACTIVE 2026-08-14 · web `2026.07-unified.808` · Alpha 0.1.0 · **Q2 done**  
 **Does not replace:** [ORCHESTRATION.md](../ORCHESTRATION.md) (what may be built) · [CONTEXT.md](../CONTEXT.md) `## Now` (where we are) · [vision.md](../vision.md) (constitution) · [docs/THESIS.md](THESIS.md) (wedge) · [docs/PLAN.md](PLAN.md) (phases A–I)
 
 This file is the **execution queue** for the agent graph: one concern per loop, spawn, ship, mark done, spawn the next. It is not a second status block and not a license to skip standing hard bans.
@@ -181,6 +181,7 @@ Founder Continue after N1. Not N2.
 | # | Loop | Moves | Status |
 |---|------|-------|--------|
 | **Q1** | Help docs Mission Score | `docs/help` current name, not leftover Win Score | `done` — this PR |
+| **Q2** | Help first-paint title | `infoHelpTitle` defaultValue matches pack `Help`. Drift cap 216 | `done` — `.808` this PR |
 
 ### After H0 (orientation — not open until H0-1…H0-7 are done or `founder`)
 
