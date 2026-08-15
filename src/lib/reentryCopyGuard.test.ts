@@ -5,7 +5,8 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
-import { formatReentryQuietLine } from '@/lib/reentry';
+import { formatReentryQuietLine, computeReentry } from '@/lib/reentry';
+import type { CompletedWorkoutLog } from '@/types';
 
 const FORBIDDEN = [
   /you missed/i,
@@ -56,4 +57,38 @@ test('the quiet line is not an outbound nudge', () => {
   assert.doesNotMatch(src, /formatReentryQuietLine/);
   assert.doesNotMatch(src, /20-minute version/);
   assert.doesNotMatch(src, /days off/);
+});
+
+function logDaysAgo(days: number): CompletedWorkoutLog {
+  const now = Date.UTC(2026, 6, 22, 12, 0, 0);
+  const then = now - days * 86_400_000;
+  return {
+    id: `r-${days}`,
+    workoutName: 'S',
+    startedAt: new Date(then - 3_600_000).toISOString(),
+    completedAt: new Date(then).toISOString(),
+    durationSeconds: 1800,
+    exercises: [],
+    totalVolume: 0,
+  };
+}
+
+const NOW = Date.UTC(2026, 6, 22, 12, 0, 0);
+
+test('3 / 7 / 14 calendar days off stay shame-free and keep the short session', () => {
+  const expectLine: Record<number, { tone: 'gap' | 'long-gap'; line: string }> = {
+    3: { tone: 'gap', line: "Three days off. Here's the 20-minute version." },
+    7: { tone: 'gap', line: "Seven days off. Here's the 20-minute version." },
+    14: { tone: 'long-gap', line: "14 days off. Here's the 20-minute version." },
+  };
+  for (const days of [3, 7, 14] as const) {
+    const r = computeReentry([logDaysAgo(days)], NOW);
+    assert.equal(r.show, true, `${days}d should show`);
+    assert.equal(r.tone, expectLine[days].tone, `${days}d tone`);
+    const line = formatReentryQuietLine(r);
+    assert.equal(line, expectLine[days].line);
+    for (const re of FORBIDDEN) {
+      assert.doesNotMatch(line, re, line);
+    }
+  }
 });
