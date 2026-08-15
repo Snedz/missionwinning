@@ -12,6 +12,7 @@ When adding a doc:
 
 | File | Absorbed by / note |
 |------|---------------------|
+| [log/LOG-rotate-818-for-835.md](./log/LOG-rotate-818-for-835.md) | rotated 2026-08-15 for `.835` GNT-1 U3 (`.818`) |
 | [log/LOG-rotate-817-for-834.md](./log/LOG-rotate-817-for-834.md) | rotated 2026-08-15 for `.834` Builder arrange (`.817`) |
 | [log/LOG-rotate-816-for-833.md](./log/LOG-rotate-816-for-833.md) | rotated 2026-08-15 for `.833` Coach insight (`.816`) |
 | [log/LOG-rotate-815-for-832.md](./log/LOG-rotate-815-for-832.md) | rotated 2026-08-15 for `.832` Profile journey (`.815`) |
