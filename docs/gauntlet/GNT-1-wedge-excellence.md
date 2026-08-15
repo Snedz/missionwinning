@@ -4,7 +4,7 @@
 **Product:** the evidence dossier that makes the founder’s phone walk a confirmation.  
 **Terminal agent state:** in-campaign. Only the founder writes `status: pass` in [EXCELLENCE_RESULT.md](../EXCELLENCE_RESULT.md). Do not mark AL1 `done` until the campaign report exists. Do not open GNT-2.
 
-**Next spawn:** `SMOOTHER · GNT-1` — U5 R2 closed the last unclosed instrument FAIL (U5 R1 I-Day abort). U3 `/coach` stills remain PARTIAL. Do **not** write `status: pass`. `npm run dev` critic boot stays the law.
+**Next spawn:** `CRITIC · GNT-1 U3 /coach stills` — U5 stopped (written bar met). U3 remains PARTIAL: Today docks differ; `/coach` stills missing. Re-critic on `npm run dev` (ungated). A gated `next start` 307 is not a builder brief and is not a `PRIVATE_MODE` flip. Do **not** spawn SMOOTHER until U3 is green. Do **not** write `status: pass`.
 
 Unused cap is success. The cap counts only PRs that touch `src|app|scripts|supabase`. U1/U2 already-true did not spend it. `.839`, `.840` and `.841` spent it. Do not merge `cursor/gnt-1-report-f368` (#656) — it closed AL1 against a stack that is not this master.
 
