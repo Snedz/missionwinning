@@ -2,7 +2,7 @@
 
 **Audience:** Founder + the next Hermes / Grok Build / graph agent  
 **Lane:** Engineering-Web (unless a loop says Android)  
-**Status:** ACTIVE 2026-08-15 · web `2026.07-unified.834` · Alpha 0.1.0 · **AK1 done · residual thin**  
+**Status:** ACTIVE 2026-08-15 · web `2026.07-unified.834` · Alpha 0.1.0 · **AL1 open — GNT-1**  
 **Does not replace:** [ORCHESTRATION.md](../ORCHESTRATION.md) (what may be built) · [CONTEXT.md](../CONTEXT.md) `## Now` (where we are) · [vision.md](../vision.md) (constitution) · [docs/THESIS.md](THESIS.md) (wedge) · [docs/PLAN.md](PLAN.md) (phases A–I)
 
 This file is the **execution queue** for the agent graph: one concern per loop, spawn, ship, mark done, spawn the next. It is not a second status block and not a license to skip standing hard bans.
@@ -384,6 +384,16 @@ Not AJ2. Builder arrange leftover.
 
 D4 stays hold. Do not invent AK2.
 
+### Now — AL (gauntlet · founder-directed 2026-08-15)
+
+Not AK2. Protocol + GNT-1 workbench. Grading, not a second queue.
+
+| # | Loop | Moves | Status |
+|---|------|-------|--------|
+| **AL1** | Gauntlet GNT-1 wedge excellence | [docs/GAUNTLET_LOOP.md](GAUNTLET_LOOP.md) + [docs/gauntlet/GNT-1-wedge-excellence.md](gauntlet/GNT-1-wedge-excellence.md). Builder rounds ship under this row. `done` only when the campaign report is written | `open` |
+
+D4 stays hold. Do not invent AL2.
+
 ### After H0 (orientation — not open until H0-1…H0-7 are done or `founder`)
 
 Do not pull these forward while H0 agent loops remain `open`.
@@ -617,4 +627,5 @@ Pitch stays **Train + Mission Coach**. Never “everything app.”
 - Public flip smoke: [docs/archive/PUBLIC_FLIP_CHECKLIST.md](archive/PUBLIC_FLIP_CHECKLIST.md)  
 - Form media: [docs/MEDIA_SYSTEM.md](MEDIA_SYSTEM.md) · `src/lib/formMedia.ts`  
 - Return channel: [docs/RETURN_LOOP_PLAN.md](RETURN_LOOP_PLAN.md)  
-- Agent playbooks: [docs/AGENT_RECIPES.md](AGENT_RECIPES.md) recipe 11
+- Agent playbooks: [docs/AGENT_RECIPES.md](AGENT_RECIPES.md) recipes 11–12
+- Grading protocol: [docs/GAUNTLET_LOOP.md](GAUNTLET_LOOP.md) · campaigns [docs/gauntlet/INDEX.md](gauntlet/INDEX.md)

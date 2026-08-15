@@ -173,6 +173,31 @@ Hard bans stay: free logger never gated · no `PRIVATE_MODE` flip · no invented
 
 ---
 
+## 12. Run a gauntlet campaign round
+
+**Required reads:** [GAUNTLET_LOOP.md](GAUNTLET_LOOP.md) · the campaign workbench · [GRAPH_LOOP.md](GRAPH_LOOP.md) · [EXCELLENCE_RESULT.md](EXCELLENCE_RESULT.md) if the campaign maps to RESULT.
+
+1. LEAD boots the spine + workbench. Bars and budget already written, or this spawn *is* the instrument-commission round.
+2. One BUILDER, one unit, one PR. Instruments green locally before the PR. Surface paths: `Excellence-Override: gauntlet GNT-<n>.U<u> round <r>`.
+3. Fresh CRITIC. Does not read the builder’s PR body or chat. Evidence trio: 390×844 walk · own-app stills under `docs/gauntlet/<ID>/evidence/` · pasted instrument output.
+4. Verdict: every criterion PASS/FAIL + exactly one “Biggest remaining gap.” Hero-surface passes append a DESIGN_REVIEW §Passes row, Reviewer `Gauntlet <ID>.<U> R<r>`.
+5. LEAD pastes the verdict verbatim. FAIL → that gap is the next builder brief. Two flat rounds → split or `blocked-for-founder`.
+6. All units green → one SMOOTHER pass → report. Terminal state `ready-for-founder`. Never write `status: pass`.
+7. GRAPH_LOOP campaign row goes `done` only when the report is written.
+
+**Required tests:** the unit’s named instruments (see the workbench table). Plus the GRAPH_LOOP loop tests if the builder touched `src|app|scripts|supabase`.
+
+**Never**
+
+- Builder grades itself
+- Treat the workbench as a second queue or `## Now` block
+- Invent a bar mid-round
+- Commit competitor pixels
+- Write excellence `status: pass`
+- Flip `PRIVATE_MODE` / raise TAP_BUDGET / firstPaintFloor / bundle caps
+
+---
+
 ## Quick commands
 
 ```bash

@@ -134,7 +134,7 @@ Rule: **if behavior isn't obvious from the spec, attach a debug-build walkthroug
 ## 10. Design org + standing ritual
 
 - **Principal designer** = the orchestrating agent session; **founder** = accept authority (device walks, FOUNDER_ACCEPT — never delegated).
-- The agent bench, by altitude: **lead** = research/audit agents that frame problems and evidence · **senior** = flow + wireframe drafters and build agents inside the existing eng lanes · **mid/junior** = teardown collectors, review miners, consistency checkers · **critique panel** = design-review agents scoring against the §6 laws + 8 quality bars. Lanes and gates in [../ORCHESTRATION.md](../ORCHESTRATION.md) always win.
+- The agent bench, by altitude: **lead** = research/audit agents that frame problems and evidence · **senior** = flow + wireframe drafters and build agents inside the existing eng lanes · **mid/junior** = teardown collectors, review miners, consistency checkers · **critique panel** = design-review agents scoring against the §6 laws + 8 quality bars. Multi-round campaigns run under [GAUNTLET_LOOP.md](GAUNTLET_LOOP.md). Lanes and gates in [../ORCHESTRATION.md](../ORCHESTRATION.md) always win.
 - `.claude/skills/` tooling may support design work (repo rule: design/marketing/SEO tooling only — never app architecture).
 - **Standing ritual:** every wave closes by answering, in one short block appended to [DESIGN_REVIEW.md](DESIGN_REVIEW.md)'s dated log: **how do we design better · think better · communicate better · create more impact** — plus the one thing the next wave does differently.
 

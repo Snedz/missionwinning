@@ -128,6 +128,7 @@ When you add a feature folder, add or update its `INDEX.md`.
 | **New coach rule** | `crossPillarCoach.ts` or `coach/adapt.ts` + colocated `*.test.ts` |
 | **New i18n string** | `src/i18n/*Locales.ts` — not `src/locales/` |
 | **Next graph loop** | [docs/GRAPH_LOOP.md](docs/GRAPH_LOOP.md) — one open loop per PR; recipe 11 |
+| **Gauntlet campaign round** | [docs/GAUNTLET_LOOP.md](docs/GAUNTLET_LOOP.md) — LEAD / BUILDER / CRITIC; recipe 12 |
 
 Full playbooks: [docs/AGENT_RECIPES.md](docs/AGENT_RECIPES.md).
 
