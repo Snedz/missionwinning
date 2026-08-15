@@ -19,6 +19,7 @@ import { buildPack, MAX_PACK_BYTES } from '../src/lib/ideaGraph/pack.ts';
 import { readEmittedHistory, toCandidates } from '../src/lib/ideaGraph/derive.ts';
 import { allCells, cellKey, scoreOf, selectNext } from '../src/lib/ideaGraph/select.ts';
 import { BEHAVIOR_CLASSES, type BehaviorClass } from '../src/lib/ideaGraph/schema.ts';
+import { fillTable } from '../src/lib/ideaGraph/report.ts';
 
 const root = path.join(path.dirname(fileURLToPath(import.meta.url)), '..');
 const [command = 'validate', arg] = process.argv.slice(2);
@@ -56,11 +57,12 @@ function next(): number {
   }
   const candidates = toCandidates(graph);
   const history = readEmittedHistory(root, graph);
-  const { emit, refusals, emptyCells } = selectNext(candidates, history, killedFingerprints());
+  const { emit, refusals, unvisitedCells, uncoveredCells } = selectNext(candidates, history, killedFingerprints());
 
   console.log(bold('\nIdea Loop — next row\n'));
   console.log(dim(`  ${candidates.length} hypotheses · ${history.length} already emitted · ` +
-    `${emptyCells.length}/${allCells().length} cells empty\n`));
+    `${uncoveredCells.length}/${allCells().length} cells uncovered · ` +
+    `${unvisitedCells.length} never emitted\n`));
 
   if (!emit) {
     console.log(red('  nothing to emit.'));
@@ -89,7 +91,9 @@ function next(): number {
     console.log(dim('  Refused this round:'));
     for (const r of refusals) console.log(dim(`    ${r.id} — ${r.rule}: ${r.because}`));
   }
-  console.log(dim(`\n  Empty cells (aim the next harvest here): ${emptyCells.slice(0, 8).join(', ')}…\n`));
+  // Uncovered, not unvisited. The first harvest was aimed at the wrong one of
+  // these two and would have re-covered three cells that already held candidates.
+  console.log(dim(`\n  Uncovered cells (aim the next harvest here): ${uncoveredCells.slice(0, 8).join(', ')}…\n`));
   return 0;
 }
 
@@ -113,7 +117,14 @@ function pack(): number {
   return p.overBudget ? 1 : 0;
 }
 
-const commands: Record<string, () => number> = { validate, next, pack };
+
+function cells(): number {
+  const { graph } = validateGraph(root);
+  console.log(fillTable(toCandidates(graph)));
+  return 0;
+}
+
+const commands: Record<string, () => number> = { validate, next, pack, cells };
 const run = commands[command];
 if (!run) {
   console.error(red(`unknown command \`${command}\` — one of ${Object.keys(commands).join(', ')}`));

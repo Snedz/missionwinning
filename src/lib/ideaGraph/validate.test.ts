@@ -82,6 +82,7 @@ const CLEAN: Files = {
       '  - product: A tool',
       '    url: https://example.com/tool',
       '    date: 2020-01-01',
+      '    retrieval: fetched',
       '    class: E1',
       'also_seen_in_failures:',
       '  - A product that died with the same machinery',
@@ -178,6 +179,24 @@ test('an E1 claim with no URL fails', () => {
 test('citing an unciteable source as E1 fails', () => {
   const mutant = CLEAN['docs/mechanics/mechanics/M-01.md'].replace('https://example.com/tool', 'https://vendor.example/case-study');
   assert.ok(matches(violations({ 'docs/mechanics/mechanics/M-01.md': mutant }), /ANTILIBRARY lists it as unciteable/).length === 1);
+});
+
+test('an E1 claim nobody actually opened fails', () => {
+  // The first real harvest produced ~40 correct URLs with plausible dates and
+  // not one opened page, because the egress proxy blocked every fetch. Without
+  // this rule that batch would have entered the graph as documented evidence.
+  const mutant = CLEAN['docs/mechanics/mechanics/M-01.md'].replace('    retrieval: fetched', '    retrieval: indexed');
+  assert.ok(matches(violations({ 'docs/mechanics/mechanics/M-01.md': mutant }), /A page nobody opened is/).length === 1);
+});
+
+test('an E1 claim with no retrieval at all fails', () => {
+  const mutant = CLEAN['docs/mechanics/mechanics/M-01.md'].replace('    retrieval: fetched\n', '');
+  assert.ok(matches(violations({ 'docs/mechanics/mechanics/M-01.md': mutant }), /`retrieval` is `unset`/).length === 1);
+});
+
+test('an unknown retrieval value fails', () => {
+  const mutant = CLEAN['docs/mechanics/mechanics/M-01.md'].replace('    retrieval: fetched', '    retrieval: probably');
+  assert.ok(matches(violations({ 'docs/mechanics/mechanics/M-01.md': mutant }), /say fetched \| indexed/).length === 1);
 });
 
 test('an edge pointing at nothing fails', () => {

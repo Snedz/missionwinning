@@ -16,7 +16,9 @@ seen_in:
   - product: Duolingo streak freeze
     url: https://blog.duolingo.com/how-duolingo-streak-builds-habit/
     date: 2024-01-01
-    class: E1
+    class: E2
+    retrieval: indexed
+    why_not_e1: search-index synthesis only; no scout in either run could open the page (egress proxy blocked every fetch), so the citation is a pointer, not a reading
   - product: Mission Winning planned rest
     instrument: src/lib/plannedRest.ts
     value: streakFromDatesAllowingRest — a declared rest day does not break the run

@@ -21,6 +21,7 @@ performs, because otherwise the whole graph lands in the client bundle and
 | `derive.ts` | Nodes → candidates; fingerprints; emitted history read back from `GRAPH_LOOP.md` |
 | `select.ts` | MAP-Elites selection. The four diversity rules |
 | `pack.ts` | The bounded context pack a spawn is allowed to read |
+| `report.ts` | The archive as a grid. Printed by `idea:cells`, checked against `docs/mechanics/INDEX.md` |
 
 ## Why any of this is code at all
 
@@ -55,4 +56,5 @@ this folder matters.
 npm run idea:validate
 npm run idea:pack <activate|return|trust|depth|tell|pay>
 npm run idea:next
+npm run idea:cells
 ```

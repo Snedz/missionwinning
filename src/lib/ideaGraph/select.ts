@@ -63,8 +63,26 @@ export interface Refusal {
 export interface Selection {
   emit: Candidate | null;
   refusals: Refusal[];
-  /** Cells with no elite. These are where the next harvest is pointed. */
-  emptyCells: string[];
+  /**
+   * Cells no emitted row has ever come from. Feeds the tie-break below, and
+   * nothing else.
+   */
+  unvisitedCells: string[];
+  /**
+   * Cells holding **no candidate at all**. This is the harvest's target list.
+   *
+   * These two were one field called `emptyCells` until the first real harvest,
+   * and the CLI printed it under *"aim the next harvest here"*. That label was
+   * wrong: with nothing emitted yet it reported all 24 cells empty while five
+   * already held candidates, so a harvest aimed at it would have re-covered
+   * `H-01`, `H-03` and `H-05`.
+   *
+   * The value was never wrong for the tie-break — "has a row from this cell
+   * been emitted?" is exactly what the sort needs. It was wrong for the second
+   * job someone gave the same number. A name claiming a wider scope than it
+   * computes is `.220`, and it arrived here inside the system built to catch it.
+   */
+  uncoveredCells: string[];
 }
 
 /**
@@ -205,14 +223,19 @@ export function selectNext(
     survivors.push(c);
   }
 
-  const filled = new Set(history.map((r) => cellKey(r.behaviorClass, r.moveClass)));
-  const emptyCells = allCells().filter((k) => !filled.has(k));
+  // Two different questions, deliberately answered from two different inputs.
+  // `visited` asks what has been *emitted*; `covered` asks what the archive
+  // *holds*. Conflating them is what sent the first harvest at the wrong cells.
+  const visited = new Set(history.map((r) => cellKey(r.behaviorClass, r.moveClass)));
+  const covered = new Set(candidates.map((c) => cellKey(c.behaviorClass, c.moveClass)));
+  const unvisitedCells = allCells().filter((k) => !visited.has(k));
+  const uncoveredCells = allCells().filter((k) => !covered.has(k));
 
   survivors.sort((a, b) => {
     // Illumination first: a candidate in a never-visited cell wins on tie-break
     // *before* score, because coverage is the thing a ranked list cannot buy.
-    const aNew = filled.has(cellKey(a.behaviorClass, a.moveClass)) ? 1 : 0;
-    const bNew = filled.has(cellKey(b.behaviorClass, b.moveClass)) ? 1 : 0;
+    const aNew = visited.has(cellKey(a.behaviorClass, a.moveClass)) ? 1 : 0;
+    const bNew = visited.has(cellKey(b.behaviorClass, b.moveClass)) ? 1 : 0;
     if (aNew !== bNew) return aNew - bNew;
     const s = scoreOf(b) - scoreOf(a);
     if (s !== 0) return s;
@@ -222,5 +245,5 @@ export function selectNext(
     return a.id < b.id ? -1 : a.id > b.id ? 1 : 0;
   });
 
-  return { emit: survivors[0] ?? null, refusals, emptyCells };
+  return { emit: survivors[0] ?? null, refusals, unvisitedCells, uncoveredCells };
 }

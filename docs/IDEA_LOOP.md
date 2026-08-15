@@ -89,7 +89,13 @@ argue with.
 ### Evidence classes
 
 `E0` measured here (instrument + value + date) · `E1` documented elsewhere (URL +
-date) · `E2` reported (must say why it is not E1) · `E3` agent inference.
+date **and `retrieval: fetched`**) · `E2` reported (must say why it is not E1) ·
+`E3` agent inference.
+
+**`E1` requires that somebody actually opened the page.** The first real harvest
+produced ~40 correct URLs with plausible dates and not one opened page, because
+the egress proxy blocked every fetch. That whole batch is `E2`. Open the page,
+flip `retrieval`, and only then may the class rise.
 
 **An evidence class is never upgraded.** `E3` may not be written up as `E1`, and
 `ANTILIBRARY.md` carries a list of sources whose numbers circulate with no stated
@@ -291,6 +297,7 @@ Inherited from `GRAPH_LOOP`, plus four this analysis adds.
 npm run idea:validate            # the graph is well-formed; every constraint has a live enforcer
 npm run idea:pack <class>        # exactly what a spawn may read
 npm run idea:next                # the one row, or the rule that refused each candidate
+npm run idea:cells               # the archive as a grid; INDEX.md must match
 ```
 
 Step 4 of `npm run gate` runs the validator.

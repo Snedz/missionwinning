@@ -54,16 +54,23 @@ Over budget → split the node, or rotate a settled one to `docs/archive/mechani
 
 ## Current fill
 
+Generated — `npm run idea:cells` prints this, and `ideaGraphContract.test.ts`
+fails if the two disagree. The command does not write the file: a command that
+edits a doc as a side effect is how the doc stops being read.
+
 | | activate | return | trust | depth | tell | pay |
 |---|---|---|---|---|---|---|
-| **add** | — | `H-03` · `H-04` killed | — | — | — | `H-06` blocked |
-| **change** | — | — | `H-02` | — | — | — |
-| **remove** | `H-05` | — | — | — | — | — |
-| **measure** | `H-01` | — | — | — | — | — |
+| **add** | — | H-03 · H-04 killed | — | — | — | H-06 blocked-on-telemetry |
+| **change** | — | — | H-02 | — | — | — |
+| **remove** | H-05 | — | — | — | — | — |
+| **measure** | H-01 | — | — | — | — | — |
 
-Nineteen of twenty-four cells are empty. That is not a backlog — empty cells are
-where the next harvest is pointed, and a candidate that scores badly while
-occupying one is kept as a stepping stone rather than ranked away.
+Empty cells are not a backlog. They are where the next harvest is pointed, and a
+candidate that scores badly while occupying one is kept as a stepping stone
+rather than ranked away.
+
+**Aim a harvest with `uncoveredCells`, never `unvisitedCells`.** The first real
+harvest was very nearly aimed at the wrong one — see `select.ts`.
 
 ## Related
 

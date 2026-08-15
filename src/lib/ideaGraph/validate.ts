@@ -17,6 +17,7 @@ import path from 'node:path';
 import { asMap, asMapList, type FrontMatter } from './parse.ts';
 import {
   DECIDING_EVIDENCE,
+  RETRIEVALS,
   EVIDENCE_CLASSES,
   FIELDS,
   PRIMITIVES,
@@ -167,6 +168,10 @@ function checkEvidence(node: GraphNode, unciteable: Set<string>, out: Violation[
     }
     if (!row.product) out.push({ file: node.file, message: `${at} needs \`product:\`` });
 
+    if (row.retrieval !== undefined && !(RETRIEVALS as readonly string[]).includes(row.retrieval)) {
+      out.push({ file: node.file, message: `${at} \`retrieval: ${row.retrieval}\` — say ${RETRIEVALS.join(' | ')}` });
+    }
+
     if (cls === 'E1') {
       if (!row.url) {
         out.push({
@@ -178,6 +183,14 @@ function checkEvidence(node: GraphNode, unciteable: Set<string>, out: Violation[
         out.push({
           file: node.file,
           message: `${at} is class E1 with no ISO \`date:\` — an undated claim cannot be re-checked`,
+        });
+      }
+      if (row.retrieval !== 'fetched') {
+        out.push({
+          file: node.file,
+          message:
+            `${at} is class E1 but \`retrieval\` is \`${row.retrieval ?? 'unset'}\`. A page nobody opened is ` +
+            `not a documented claim — record it E2 with a reason, and upgrade only after actually reading it`,
         });
       }
       const host = row.url ? hostOf(row.url) : '';

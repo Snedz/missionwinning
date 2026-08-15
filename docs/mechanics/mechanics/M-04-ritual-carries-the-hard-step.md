@@ -16,7 +16,9 @@ seen_in:
   - product: WeChat red envelopes, Spring Festival 2014
     url: https://www.forbes.com/sites/davidyin/2015/02/19/tencents-wechat-sends-1-billion-virtual-red-envelopes-on-new-years-eve/
     date: 2015-02-19
-    class: E1
+    class: E2
+    retrieval: indexed
+    why_not_e1: search-index synthesis only; no scout in either run could open the page (egress proxy blocked every fetch), so the citation is a pointer, not a reading
 also_seen_in_failures:
   - Google Plus circles bound to an existing Gmail graph — an existing relationship structure did not carry the new behaviour, and the product was shut for low adoption and limited interaction
 produces:

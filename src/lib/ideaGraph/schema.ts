@@ -126,6 +126,25 @@ export type CostClass = (typeof COST_CLASSES)[number];
 export const EVIDENCE_CLASSES = ['E0', 'E1', 'E2', 'E3'] as const;
 export type EvidenceClass = (typeof EVIDENCE_CLASSES)[number];
 
+/**
+ * How the source was actually obtained.
+ *
+ * `fetched` — the page was opened and read.
+ * `indexed` — only a search engine's synthesis of the page was seen.
+ *
+ * This field exists because the first real harvest ran with every `WebFetch`
+ * blocked by the egress proxy. Three scouts produced roughly forty citations
+ * with correct URLs and plausible dates, and **not one page had been opened.**
+ *
+ * A URL nobody read is not a documented claim, so `E1` now requires `fetched`
+ * and the whole first batch landed as `E2`. The point is not to be pious about
+ * it — it is that the upgrade path becomes mechanical: open the page, flip the
+ * field, and only then may the class rise. Without the field, "we'll verify
+ * those later" is a promise, and promises are what `X-07` exists to replace.
+ */
+export const RETRIEVALS = ['fetched', 'indexed'] as const;
+export type Retrieval = (typeof RETRIEVALS)[number];
+
 /** Classes strong enough to kill a hypothesis or to pass one. */
 export const DECIDING_EVIDENCE: readonly EvidenceClass[] = ['E0', 'E1'];
 

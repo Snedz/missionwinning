@@ -16,7 +16,9 @@ seen_in:
   - product: Whoop weekly and monthly performance assessments
     url: https://www.whoop.com/us/en/thelocker/
     date: 2026-08-15
-    class: E1
+    class: E2
+    retrieval: indexed
+    why_not_e1: search-index synthesis only; no scout in either run could open the page (egress proxy blocked every fetch), so the citation is a pointer, not a reading
   - product: Mission Winning under-the-hood retention readout
     instrument: src/lib/week4Logger.ts
     value: retained_week_4 computed on-device and shown at /account/under-the-hood

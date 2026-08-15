@@ -16,11 +16,15 @@ seen_in:
   - product: GitHub pull request
     url: https://docs.github.com/en/pull-requests
     date: 2026-08-15
-    class: E1
+    class: E2
+    retrieval: indexed
+    why_not_e1: search-index synthesis only; no scout in either run could open the page (egress proxy blocked every fetch), so the citation is a pointer, not a reading
   - product: Google Docs suggesting mode
     url: https://support.google.com/docs/answer/6033474
     date: 2026-08-15
-    class: E1
+    class: E2
+    retrieval: indexed
+    why_not_e1: search-index synthesis only; no scout in either run could open the page (egress proxy blocked every fetch), so the citation is a pointer, not a reading
 also_seen_in_failures:
   - Google Wave inline threaded edits — the same proposal-and-history machinery shipped with under a million users a year after general availability
 produces:

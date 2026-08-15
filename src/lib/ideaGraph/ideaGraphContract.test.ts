@@ -22,6 +22,7 @@ import { buildPack, MAX_PACK_BYTES } from './pack.ts';
 import { toCandidates } from './derive.ts';
 import { DELETION_QUOTA_WINDOW, NOVELTY_EPSILON, allCells, selectNext } from './select.ts';
 import { BEHAVIOR_CLASSES } from './schema.ts';
+import { fillTable } from './report.ts';
 
 const root = path.join(import.meta.dirname, '..', '..', '..');
 const read = (file: string): string | null => {
@@ -175,6 +176,20 @@ test('the protocol keeps stating the bans that make refusal mechanical', () => {
   assert.deepEqual(missing, [], `${PROTOCOL} no longer states: ${missing.join(', ')}`);
 });
 
+test('the INDEX fill table matches the archive it claims to describe', () => {
+  // Same shape as `gateDocParity`: derive from the source of truth, compare to
+  // the number the doc prints. A hand-maintained coverage table is stale the
+  // first time somebody adds a node and forgets, and a stale coverage table
+  // aims the next harvest at ground that is already covered.
+  const { graph } = validateGraph(root);
+  const doc = read('docs/mechanics/INDEX.md') ?? '';
+  const table = fillTable(toCandidates(graph));
+  assert.ok(
+    doc.includes(table),
+    `docs/mechanics/INDEX.md's fill table is stale. Run \`npm run idea:cells\` and paste:\n\n${table}`
+  );
+});
+
 /* ------------------------------------------------------------------ *
  * 4. Packs stay retrievable                                            *
  * ------------------------------------------------------------------ */
@@ -196,6 +211,24 @@ test('the archive reports its own empty cells', () => {
   // Empty cells are the harvest's target list. A system that could not say
   // which regions it had never visited would be a ranked list wearing a grid.
   const { graph } = validateGraph(root);
-  const { emptyCells } = selectNext(toCandidates(graph), []);
-  assert.equal(emptyCells.length, allCells().length, 'nothing has been emitted yet, so every cell should read empty');
+  const candidates = toCandidates(graph);
+  const { unvisitedCells, uncoveredCells } = selectNext(candidates, []);
+
+  // Nothing has been emitted, so every cell is unvisited.
+  assert.equal(unvisitedCells.length, allCells().length, 'nothing emitted, so every cell should read unvisited');
+
+  // But cells holding candidates are covered. These two numbers being equal is
+  // the exact defect the first harvest hit: the CLI aimed a harvest at
+  // `unvisited` under a label that promised `uncovered`.
+  const occupied = new Set(candidates.map((c) => `${c.behaviorClass}/${c.moveClass}`));
+  assert.ok(occupied.size > 0, 'no candidate occupies any cell — the pool is empty');
+  assert.equal(uncoveredCells.length, allCells().length - occupied.size);
+  assert.notEqual(
+    uncoveredCells.length,
+    unvisitedCells.length,
+    'uncovered and unvisited agree, so the two signals have collapsed back into one'
+  );
+  for (const cell of occupied) {
+    assert.ok(!uncoveredCells.includes(cell), `${cell} holds a candidate but reads uncovered`);
+  }
 });

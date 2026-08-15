@@ -16,7 +16,9 @@ seen_in:
   - product: Duolingo leagues
     url: https://blog.duolingo.com/leaderboards-and-leagues/
     date: 2024-01-01
-    class: E1
+    class: E2
+    retrieval: indexed
+    why_not_e1: search-index synthesis only; no scout in either run could open the page (egress proxy blocked every fetch), so the citation is a pointer, not a reading
   - product: Peloton live leaderboard
     url: https://www.onepeloton.com/press
     date: 2026-08-15
@@ -29,7 +31,9 @@ produces:
 backfires:
   - behavior: B-03
     how: rank visible to the logging path gives the athlete a reason to shade what they log, which is the failure X-01 exists to prevent
-    class: E1
+    class: E2
+    retrieval: indexed
+    why_not_e1: search-index synthesis only; no scout in either run could open the page (egress proxy blocked every fetch), so the citation is a pointer, not a reading
     url: https://pmc.ncbi.nlm.nih.gov/articles/PMC12938745/
 ---
 

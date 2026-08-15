@@ -16,7 +16,9 @@ seen_in:
   - product: Instagram Stories
     url: https://techcrunch.com/2017/04/13/instagram-stories-bigger-than-snapchat/
     date: 2017-04-13
-    class: E1
+    class: E2
+    retrieval: indexed
+    why_not_e1: search-index synthesis only; no scout in either run could open the page (egress proxy blocked every fetch), so the citation is a pointer, not a reading
 also_seen_in_failures:
   - Threads at launch — a low-friction posting surface with enormous distribution whose daily actives fell roughly seventy per cent within two weeks, because cheap posting was never the scarce thing on that network
 produces:

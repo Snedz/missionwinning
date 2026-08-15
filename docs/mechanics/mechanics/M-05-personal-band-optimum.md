@@ -16,7 +16,9 @@ seen_in:
   - product: Whoop Strain, calibrated against personal Recovery
     url: https://www.whoop.com/us/en/thelocker/how-does-whoop-strain-work-101/
     date: 2026-08-15
-    class: E1
+    class: E2
+    retrieval: indexed
+    why_not_e1: search-index synthesis only; no scout in either run could open the page (egress proxy blocked every fetch), so the citation is a pointer, not a reading
   - product: Mission Winning acute-to-chronic load
     instrument: src/lib/coach/loadGuard.ts
     value: a high ratio holds progression and never deloads or cuts sets
