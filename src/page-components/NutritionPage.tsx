@@ -459,7 +459,7 @@ export function NutritionPage() {
       className="max-w-3xl pb-24"
       icon={UtensilsCrossed}
       eyebrow={t('fuelEyebrow', { defaultValue: 'Fuel' })}
-      title={t('fuelTitle', { defaultValue: 'What you ate' })}
+      title={t('fuelTitle', { defaultValue: 'Nutrition' })}
       subtitle={t('fuelSubtitleBrief', {
         defaultValue: 'Log meals on this device. Targets and recipes when you need them.',
       })}
