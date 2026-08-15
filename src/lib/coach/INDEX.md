@@ -64,6 +64,7 @@ Shared client: `src/lib/coachLlmClient.ts` (also used by `coachDailyServer.ts` +
 | `coachEval.test.ts` | GNT-2 U1 strain sweep + `loadZone` high ≠ steady |
 | `coachEvalProgression.test.ts` | GNT-2 U2: clean last session raises load at `generateWeek` |
 | `coachEvalAdapt.test.ts` | GNT-2 U3: mid-week `adaptPlan` records misses; remaining load does not rise |
+| `coachEvalGear.test.ts` | GNT-2 U4: `generateWeek` programs only catalog ids legal for declared gear |
 | `adapt.test.ts` | Missed, readiness, equipment |
 | `planVoiceServer.test.ts` | Malformed LLM → rules fallback |
 
