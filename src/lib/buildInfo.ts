@@ -1,5 +1,5 @@
-/** Shown on Profile so testers can confirm the deployed build. Bump when shipping UI to master. `.841` GNT-1 U1 e2e empty-start / REACH / teaser match npm run dev. */
-export const APP_BUILD_LABEL = "2026.07-unified.841";
+/** Shown on Profile so testers can confirm the deployed build. Bump when shipping UI to master. `.844` GNT-1 smoother Victory Peak-End. */
+export const APP_BUILD_LABEL = "2026.07-unified.844";
 
 /**
  * Semver for athletes. Distinct from `APP_BUILD_LABEL`, which `/api/health`

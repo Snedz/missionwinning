@@ -58,6 +58,7 @@ Root-level `@/lib/{name}` paths re-export from here for compatibility — prefer
 | `workoutPr.test.ts` | PR detection |
 | `workoutMerge.test.ts` | Conflict / cap / fingerprint |
 | `workoutVictory.test.ts` | Victory next action |
+| `victoryPeakEnd.test.ts` | Victory-open empty Active mounts the sheet only; close is 44px (`.844`) |
 | `victoryReceipt.test.ts` | Vs-last session + per-lift receipt (`.713`) |
 | `activeSessionFinish.test.ts` | Log-set rest/PR + Victory assembly including receipt |
 | `activeWorkoutHelpers.test.ts` | Next set, last session stats |

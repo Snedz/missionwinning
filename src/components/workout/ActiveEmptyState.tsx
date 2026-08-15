@@ -56,6 +56,27 @@ export function ActiveEmptyState({
 }: Props) {
   const { t } = useTranslation();
 
+  /*
+   * Peak-End is one job. `completeActiveWorkout` clears the session before the
+   * sheet opens, so this empty shell would otherwise paint "No session running"
+   * + a second dock Start under Session locked. GNT-1 U1/U5 critics stills
+   * showed both. Honor mounts the sheet alone; dismiss returns the invite.
+   */
+  if (victoryOpen) {
+    return (
+      <WorkoutVictorySheet
+        open={victoryOpen}
+        summary={victorySummary}
+        debrief={debrief}
+        fragments={fragments}
+        workoutId={workoutId}
+        onOpenChange={onVictoryOpenChange}
+        onViewToday={onViewToday}
+        onViewHistory={onViewHistory}
+      />
+    );
+  }
+
   return (
     /*
      * `aria-busy` while persist rehydrates, because this screen *is* busy.
@@ -194,16 +215,6 @@ export function ActiveEmptyState({
           </button>
         </div>
       </ScreenDock>
-      <WorkoutVictorySheet
-        open={victoryOpen}
-        summary={victorySummary}
-        debrief={debrief}
-        fragments={fragments}
-        workoutId={workoutId}
-        onOpenChange={onVictoryOpenChange}
-        onViewToday={onViewToday}
-        onViewHistory={onViewHistory}
-      />
     </div>
   );
 }

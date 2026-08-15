@@ -254,7 +254,7 @@ export function WorkoutVictorySheet({
           the debrief was added and the "Back to Today" footer became visible but
           unreachable — the hero e2e caught it as a click timeout, not a render error.
           dvh, not vh, so mobile browser chrome does not eat the footer. */}
-      <DialogContent className="victory-lock sm:max-w-md md:max-w-lg xl:max-w-xl border-2 border-border bg-card max-h-[90dvh] overflow-y-auto">
+      <DialogContent className="victory-lock sm:max-w-md md:max-w-lg xl:max-w-xl border-2 border-border bg-card max-h-[90dvh] overflow-y-auto [&>button]:inline-flex [&>button]:min-h-[44px] [&>button]:min-w-[44px] [&>button]:items-center [&>button]:justify-center">
         <DialogHeader className="text-center space-y-3 victory-reveal">
           <div className="mx-auto relative h-16 w-16 overflow-hidden border-2 border-border bg-card">
             <Image
