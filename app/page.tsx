@@ -7,6 +7,7 @@ import { hasPrivateAccessCookieOnServer } from '@/lib/privateGateServer';
 import { isPrivateModeEnabled } from '@/lib/privateModeFlag';
 import { publicPageMetadata } from '@/lib/seoMetadata';
 import {
+  asJsonLdGraph,
   faqPageJsonLd,
   organizationJsonLd,
   softwareApplicationJsonLd,
@@ -30,17 +31,20 @@ export const metadata: Metadata = publicPageMetadata({
  * Production public flip (gate off) → homepage with no door.
  */
 function Homepage() {
-  const graph = [
-    organizationJsonLd(),
-    webSiteJsonLd(),
-    softwareApplicationJsonLd(),
-    faqPageJsonLd(),
-  ];
   return (
     <>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(graph) }}
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(
+            asJsonLdGraph([
+              organizationJsonLd(),
+              webSiteJsonLd(),
+              softwareApplicationJsonLd(),
+              faqPageJsonLd(),
+            ]),
+          ),
+        }}
       />
       <LandingPage />
     </>

@@ -1,5 +1,5 @@
-/** Shown on Profile so testers can confirm the deployed build. Bump when shipping UI to master. `.837` GNT-1 U5. */
-export const APP_BUILD_LABEL = "2026.07-unified.837";
+/** Shown on Profile so testers can confirm the deployed build. Bump when shipping UI to master. `.838` JSON-LD graph. */
+export const APP_BUILD_LABEL = "2026.07-unified.838";
 
 /**
  * Semver for athletes. Distinct from `APP_BUILD_LABEL`, which `/api/health`
