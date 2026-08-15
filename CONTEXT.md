@@ -16,7 +16,7 @@ One screen of truth for any AI tool or human joining cold. Read this, then [AGEN
 
 ---
 
-## Now (2026-08-14 · web `2026.07-unified.821` · Android `1.24.1`)
+## Now (2026-08-14 · web `2026.07-unified.822` · Android `1.24.1`)
 
 > The ONLY "where we are" block in the repo — [ORCHESTRATION.md](ORCHESTRATION.md) points here.
 >
@@ -358,6 +358,7 @@ One screen of truth for any AI tool or human joining cold. Read this, then [AGEN
 > and `.819` dropped `.805` detail (full text remains in LOG.md / archive)
 > and `.820` dropped `.806` detail (full text remains in LOG.md / archive)
 > and `.821` dropped `.807` detail (full text remains in LOG.md / archive)
+> and `.822` dropped `.808` detail (full text remains in LOG.md / archive)
 > to [CONTEXT-now-2026-07-30.md](docs/archive/CONTEXT-now-2026-07-30.md) after this
 > block reached **79 bullets / 103KB**. A status doc that only grows stops being read.
 
@@ -379,6 +380,7 @@ One screen of truth for any AI tool or human joining cold. Read this, then [AGEN
 > | gitleaks | **green — and scanning for the first time.** It had never scanned anything: on a `pull_request` event the action lists the PR's commits, the job declared no `permissions:` block, and it 403'd (`pull_requests=read`) before opening a file. Fixed by a `permissions:` block (`.224` carrying `.255`). It scans **only the PR's own commits**, so commit `8ea3527a`'s real Solana treasury address — scrubbed from the working file, still in history — is out of its scope. That finding stands, deliberately not allowlisted; it was never what made this check red. |
 > | Privacy / security program | **Landed `.778`** — [docs/security/PROGRAM_STATUS.md](docs/security/PROGRAM_STATUS.md). Invite-bound gate, health-bucket, DSAR, territory fail-closed. OTP-without-click can leave a ghost user. Not a cert. |
 
+- **`.822`:** (`2026.07-unified.822`) **Learn locked preview** — Read intro chapter →. Drift cap 185. No `PRIVATE_MODE` flip.
 - **`.821`:** (`2026.07-unified.821`) **Fuel log card first-paint** — Load from Cloud + empty match pack. Drift cap 186. No `PRIVATE_MODE` flip.
 - **`.820`:** (`2026.07-unified.820`) **Fuel title first-paint** — title is Nutrition. Drift cap 188. No `PRIVATE_MODE` flip.
 - **`.819`:** (`2026.07-unified.819`) **Today Coach card** — mission + locked chrome match pack. Drift cap 189. No `PRIVATE_MODE` flip.
@@ -392,7 +394,6 @@ One screen of truth for any AI tool or human joining cold. Read this, then [AGEN
 - **`.811`:** (`2026.07-unified.811`) **Visibility access Alpha** — access details say mute-pay, not Open-beta. No `PRIVATE_MODE` flip.
 - **`.810`:** (`2026.07-unified.810`) **Visibility Alpha frame** — Super Bundle row says mute-pay, not free-first beta. No `PRIVATE_MODE` flip.
 - **`.809`:** (`2026.07-unified.809`) **Builder first-paint** — program count interpolates; empty saved matches pack. Drift cap 214. No `PRIVATE_MODE` flip.
-- **`.808`:** (`2026.07-unified.808`) **Help first-paint** — title is Help, not Frequently asked. Drift cap 216. No `PRIVATE_MODE` flip.
 - **Form object kit (on `.781`):** IMPLEMENT block + prop sheets. Regen cable-row (visible stack), lateral-raise, DB press, lunges, DB row. Floor 43. Still-only. No `PRIVATE_MODE` flip.
 - **Excellence:** unscored · — · [docs/EXCELLENCE_RESULT.md](docs/EXCELLENCE_RESULT.md) — Horizon W phone sign-off home; surface PRs need `status: pass` or `Excellence-Override` (`.669`).
 - **`.669`:** (`2026.07-unified.669`) **Excellence RESULT + agent stop-rule** — `excellenceGate` path policy + `check-excellence-gate` on gate/PR CI; wedge still ships while unscored.

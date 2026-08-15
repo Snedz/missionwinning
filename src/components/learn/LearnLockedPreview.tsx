@@ -47,7 +47,7 @@ export function LearnLockedPreview() {
             <p className="text-sm text-muted-foreground">{intro.subtitle}</p>
             <Button variant="default" size="sm" className="min-h-[44px] tap-target" asChild>
               <Link href={`/learn/guide/${intro.id}`}>
-                {t('learnReadIntro', { defaultValue: 'Read intro chapter' })}
+                {t('learnReadIntro', { defaultValue: 'Read intro chapter →' })}
               </Link>
             </Button>
           </div>
