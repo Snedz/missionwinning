@@ -274,7 +274,7 @@ export const MANUAL: ManualEntry[] = [
 export const CLOSE = {
   eyebrow: 'What it costs',
   statement: 'Nothing, for the part you just used.',
-  body: 'The logger and the weekly plan are free permanently — not a trial. No wearable, no gym, no account. Access is invite-only while the beta runs.',
+  body: 'The logger and the weekly plan are free permanently — not a trial. No wearable, no gym, no account. Access is invite-only while Alpha is gated.',
 };
 
 export const COLOPHON = {
