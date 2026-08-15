@@ -16,17 +16,25 @@ export async function startEmptyActiveWorkout(page: Page): Promise<void> {
   await page.addInitScript(() => {
     try {
       const raw = localStorage.getItem('mw_journey_state');
-      const prev = raw ? (JSON.parse(raw) as { iDay?: { completedAt?: string } }) : {};
-      const completedAt = prev.iDay?.completedAt || new Date().toISOString();
+      const prev = raw ? (JSON.parse(raw) as Record<string, unknown>) : {};
+      const prevIDay = (prev.iDay as { completedAt?: string } | undefined) ?? {};
       localStorage.setItem(
         'mw_journey_state',
         JSON.stringify({
-          phase: 'basic',
-          iDay: { ...(prev.iDay ?? {}), completedAt },
-          basic: { workout: false, fuel: false, move: false, mind: false, learn: false },
-          readiness: { parq: false, streakMet: false, winScoreSeen: false },
-          ...prev,
-          iDay: { ...(prev.iDay ?? {}), completedAt },
+          phase: prev.phase ?? 'basic',
+          iDay: { ...prevIDay, completedAt: prevIDay.completedAt ?? new Date().toISOString() },
+          basic: prev.basic ?? {
+            workout: false,
+            fuel: false,
+            move: false,
+            mind: false,
+            learn: false,
+          },
+          readiness: prev.readiness ?? {
+            parq: false,
+            streakMet: false,
+            winScoreSeen: false,
+          },
         })
       );
       localStorage.removeItem('mw_equipment');
