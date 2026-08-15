@@ -126,18 +126,18 @@ export function ProfileAccountCard({
             </div>
             <p className="text-xs text-muted-foreground leading-relaxed">
               {t('cloudSyncActive', {
-                defaultValue: 'Cloud sync on — workouts and preferences merge across devices.',
+                defaultValue: 'Journey synced to cloud',
               })}
             </p>
           </>
         ) : (
           <div className="border-2 border-border bg-card p-4">
             <p className="font-semibold mb-1 text-sm">
-              {t('signInOptional', { defaultValue: 'Sign in (optional)' })}
+              {t('signInOptional', { defaultValue: 'Sign in optional — progress stays on this device.' })}
             </p>
             <p className="text-xs text-muted-foreground mb-4 leading-relaxed">
               {t('cloudSyncPending', {
-                defaultValue: 'Sync progress across devices. Logging works offline without an account.',
+                defaultValue: 'Sign in to sync journey across devices',
               })}
             </p>
             <SignInPanel nextPath="/profile" compact />

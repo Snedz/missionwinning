@@ -2,7 +2,7 @@
 
 **Audience:** Founder + the next Hermes / Grok Build / graph agent  
 **Lane:** Engineering-Web (unless a loop says Android)  
-**Status:** ACTIVE 2026-08-15 · web `2026.07-unified.830` · Alpha 0.1.0 · **AG1 done**  
+**Status:** ACTIVE 2026-08-15 · web `2026.07-unified.831` · Alpha 0.1.0 · **AH1 done · residual thin**  
 **Does not replace:** [ORCHESTRATION.md](../ORCHESTRATION.md) (what may be built) · [CONTEXT.md](../CONTEXT.md) `## Now` (where we are) · [vision.md](../vision.md) (constitution) · [docs/THESIS.md](THESIS.md) (wedge) · [docs/PLAN.md](PLAN.md) (phases A–I)
 
 This file is the **execution queue** for the agent graph: one concern per loop, spawn, ship, mark done, spawn the next. It is not a second status block and not a license to skip standing hard bans.
@@ -343,6 +343,16 @@ Not AF2. Webpack still asked for the pre-`.825` path.
 | **AG1** | plannedRest shim | `src/lib/rewards/plannedRest.ts` re-exports moved module | `done` — `.830` this PR |
 
 D4 stays hold. Do not invent AG2.
+
+### Now — AH (Continue after AG · 2026-08-15)
+
+Not AG2. Profile account leftover.
+
+| # | Loop | Moves | Status |
+|---|------|-------|--------|
+| **AH1** | Profile account first-paint | Sync + optional-sign-in match core EN pack | `done` — `.831` this PR |
+
+D4 stays hold. Do not invent AH2.
 
 ### After H0 (orientation — not open until H0-1…H0-7 are done or `founder`)
 
