@@ -92,7 +92,6 @@ import {
 } from '@/lib/workout/dropSet';
 import { shouldScrollAfterRestEnds } from '@/lib/workout/restTimer';
 import { resolveActiveEmptyStart } from '@/lib/workout/resolveActiveEmptyStart';
-import { previewJustGoForEquipment } from '@/lib/justGoSession';
 import { track } from '@/lib/analytics';
 import type { SetKind } from '@/types';
 
@@ -583,30 +582,11 @@ export function ActiveWorkoutPage() {
     startEmptyWorkout();
   };
 
-  const handlePreviewStart = () => {
-    const equipment = readRaw(STORAGE_KEYS.equipment);
-    if (!equipment) return;
-    const preview = previewJustGoForEquipment(equipment);
-    startWorkout(preview.name, preview.exercises);
-    track('history_train_again', {
-      exerciseCount: preview.exercises.length,
-      from: 'active_empty_preview',
-    });
-  };
-
   if (!activeWorkout) {
     const emptyStart = resolveActiveEmptyStart(workoutHistory);
-    const equipment = hasHydrated ? readRaw(STORAGE_KEYS.equipment) : null;
-    const preview =
-      emptyStart.kind === 'empty' && equipment
-        ? previewJustGoForEquipment(equipment)
-        : null;
     return (
       <ActiveEmptyState
         onStart={handleEmptyStart}
-        onPreviewStart={preview ? handlePreviewStart : undefined}
-        previewName={preview?.name}
-        previewExerciseCount={preview?.exercises.length}
         hydrated={hasHydrated}
         hasLastSession={emptyStart.kind === 'repeat_last'}
         victoryOpen={victoryOpen}

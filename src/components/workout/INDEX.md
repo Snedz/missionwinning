@@ -6,7 +6,7 @@
 
 | File | Purpose |
 |------|---------|
-| `ActiveEmptyState.tsx` | No-session shell — start quick workout |
+| `ActiveEmptyState.tsx` | No-session shell — Start workout (honest empty; Just Go stays on I-Day) |
 | `ActiveSessionChrome.tsx` | Session bar — Elapsed/Sets pair, progress, Plates + Finish; **Add exercise is a trigger** for `AddExerciseSheet`, not an inline picker |
 | `ActiveSessionDock.tsx` | One `ScreenDock` for rest **or** compact `LogConsole` — never both (`.440`). Mode from `resolveActiveDockMode` |
 | `ActiveWorkoutSheets.tsx` | Check-in · hard-session warning · form · add · plates · victory overlay cluster (`.450`) |

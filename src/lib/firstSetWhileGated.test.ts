@@ -118,19 +118,17 @@ describe('first set while gated (.768)', () => {
   it('resolveActiveEmptyStart still never seeds Just Go', () => {
     const helper = read('src/lib/workout/resolveActiveEmptyStart.ts');
     const emptyStart = read('src/page-components/ActiveWorkoutPage.tsx');
+    const emptyUi = read('src/components/workout/ActiveEmptyState.tsx');
     const handle = emptyStart.slice(
       emptyStart.indexOf('const handleEmptyStart'),
-      emptyStart.indexOf('const handlePreviewStart')
+      emptyStart.indexOf('if (!activeWorkout)')
     );
     assert.doesNotMatch(helper, /justGoSession|buildJustGoSession|previewJustGo/);
     assert.match(handle, /Do not seed Just Go/);
     assert.doesNotMatch(handle, /previewJustGoForEquipment|startWorkout\(preview/);
-    assert.match(emptyStart, /previewJustGoForEquipment/);
-    assert.match(emptyStart, /handlePreviewStart/);
-    const previewStart = emptyStart.indexOf('const handlePreviewStart');
-    const preview = emptyStart.slice(previewStart, previewStart + 400);
-    assert.match(preview, /startWorkout\(preview\.name/);
-    assert.doesNotMatch(preview, /startRestTimer|startEmptyWorkout/);
+    assert.doesNotMatch(emptyStart, /previewJustGoForEquipment|handlePreviewStart/);
+    assert.match(emptyUi, /onClick=\{onStart\}/);
+    assert.doesNotMatch(emptyUi, /onPreviewStart|activeStartPreviewSession/);
   });
 
   it('Active still opens the check-in sheet only via shouldOfferSessionCheckIn', () => {

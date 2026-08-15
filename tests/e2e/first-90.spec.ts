@@ -288,7 +288,7 @@ test.describe('First 90 seconds @gate', () => {
     // established user opening the Train tab.
     await seedLegacyOnboarding(page);
     await gotoHydrated(page, '/active');
-    const start = page.getByRole('button', { name: /^start /i });
+    const start = page.getByRole('button', { name: /^start workout$/i });
     await expect(start).toBeEnabled({ timeout: 15_000 });
     await start.click();
 

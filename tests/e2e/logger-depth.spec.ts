@@ -75,10 +75,14 @@ test.describe('Logger depth @gate', () => {
   });
 
   test('logging a set does not scroll the phone sideways', async ({ page }) => {
-    await page.goto('/active', { waitUntil: 'domcontentloaded' });
-    const justGo = page.getByRole('button', { name: /start just go/i });
-    await expect(justGo).toBeVisible({ timeout: 15_000 });
-    await justGo.click();
+    await startEmptyActiveWorkout(page);
+
+    await page.getByRole('button', { name: /^add exercise$/i }).click();
+    const search = page.getByPlaceholder(/search exercises/i);
+    await expect(search).toBeVisible();
+    await search.fill('push-ups');
+    await page.getByRole('option', { name: /push-ups/i }).first().click();
+    await page.getByRole('button', { name: /add selected exercise/i }).click();
 
     const logBtn = page.getByRole('button', { name: /^log set$/i });
     await expect(logBtn).toBeVisible({ timeout: 10_000 });
