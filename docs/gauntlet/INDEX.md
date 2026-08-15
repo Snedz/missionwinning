@@ -18,6 +18,6 @@ Closed campaigns rotate to [docs/archive/](../archive/INDEX.md) the same way LOG
 
 Largest unbarred dimension after the wedge dossier. **Instrument first:** logged-history → expected dose / progression / recovery envelopes, no date literals, plus reference-programme *structure* bands (structures, never copied text — originality-log discipline). Units = plan dimensions (dose bands · progression on green logs · deload/adapt on missed or high-strain weeks · exercise-selection sanity).
 
-Opened on its written gate — GNT-1's report is done, so the campaign is eligible. **U1 R3 critic PASS (engine).** U2 LEAD corrected the brief; **U2 R1** landed `coachEvalProgression.test.ts` (`.847`, instrument only). Next spawn: CRITIC U2 R1. Details in [GNT-2-coach-plan-quality.md](GNT-2-coach-plan-quality.md).
+Opened on its written gate — GNT-1's report is done, so the campaign is eligible. **U1 R3 critic PASS (engine).** **U2 R1 critic PASS (engine)** — TAP `# tests 2 # pass 2 # fail 0`; easy last session raises load at `generateWeek`; week shape unchanged. Next spawn: LEAD commissions U3. Details in [GNT-2-coach-plan-quality.md](GNT-2-coach-plan-quality.md).
 
 It shipped as a colocated test rather than the sketched `scripts/coach-eval.mjs` ↔ test pair: a new npm check would have to be wired into the gate or `NOT_RUN` (`ciTruth.test.ts`), and a new gate step drags [CLAUDE.md](../../CLAUDE.md) §4 in with it (`gateDocParity.test.ts`). A test-only ratchet is the same pattern the repo already uses for `firstPaintFloor` and `designWeights`, and it runs in `npm test` today.
