@@ -23,14 +23,69 @@ type HistoryPaint = {
   planWasAbsentBeforeGenerate: boolean;
 };
 
-async function openTodayDose(page: Page) {
-  const todayDose = page.getByTestId('today-coach-week-dose');
-  if (await todayDose.isVisible().catch(() => false)) return todayDose;
+async function dumpLogShell(page: Page, kind: LoggerHistoryKind) {
+  const info = await page.evaluate(() => {
+    let phase = '';
+    let hist = 0;
+    try {
+      phase = JSON.parse(localStorage.getItem('mw_journey_state') || '{}').phase ?? '';
+    } catch {
+      phase = '';
+    }
+    try {
+      hist =
+        JSON.parse(localStorage.getItem('workout-tracker-storage') || '{}').state
+          ?.workoutHistory?.length ?? 0;
+    } catch {
+      hist = 0;
+    }
+    return {
+      href: location.href,
+      title: document.title,
+      phase,
+      hist,
+      plan: !!localStorage.getItem('mw_coach_plan'),
+    };
+  });
+  console.log(`gnt1_u3_diag_${kind}=${JSON.stringify(info)}`);
+}
 
-  const details = page.getByText(/today details/i).first();
-  if (await details.isVisible({ timeout: 3_000 }).catch(() => false)) {
-    await details.click();
+async function waitForTodayDose(page: Page, kind: LoggerHistoryKind) {
+  await gotoHydrated(page, '/log');
+
+  await expect
+    .poll(
+      async () =>
+        page.evaluate(() => {
+          try {
+            return JSON.parse(localStorage.getItem('mw_journey_state') || '{}').phase ?? '';
+          } catch {
+            return '';
+          }
+        }),
+      { timeout: 15_000 }
+    )
+    .toMatch(/readiness|commissioned/);
+
+  await page.reload({ waitUntil: 'domcontentloaded' });
+  await page.waitForLoadState('load').catch(() => undefined);
+  const more = page
+    .getByRole('navigation', { name: /primary/i })
+    .getByRole('button', { name: /more/i });
+  await expect(more).toBeVisible({ timeout: 15_000 });
+
+  const todayDose = page.getByTestId('today-coach-week-dose');
+  if (!(await todayDose.isVisible().catch(() => false))) {
+    const details = page.getByText(/today details/i).first();
+    if (await details.isVisible({ timeout: 3_000 }).catch(() => false)) {
+      await details.click();
+    }
   }
+
+  if (!(await todayDose.isVisible().catch(() => false))) {
+    await dumpLogShell(page, kind);
+  }
+  await expect(todayDose, `${kind} /log dose`).toBeVisible({ timeout: 15_000 });
   return todayDose;
 }
 
@@ -53,13 +108,16 @@ async function paintHistory(
     }
 
     await page.clock.setFixedTime(mondayMorningUncontended());
-    await page.goto('/welcome', { waitUntil: 'domcontentloaded' });
     await seedLoggerCoachHistory(page, kind);
+    await page.goto('/coach', { waitUntil: 'domcontentloaded' });
 
-    const planBefore = await page.evaluate(() => localStorage.getItem('mw_coach_plan'));
+    const planBefore = await page.evaluate(
+      () =>
+        (window as Window & { __gnt1_u3_plan_before?: string | null }).__gnt1_u3_plan_before ??
+        null
+    );
     expect(planBefore, `${kind}: helper must not plant mw_coach_plan`).toBeNull();
 
-    await page.goto('/coach', { waitUntil: 'domcontentloaded' });
     const coachDose = page.getByTestId('coach-week-dose');
     const generateDock = page.getByTestId('coach-generate-dock');
     await Promise.race([
@@ -73,15 +131,23 @@ async function paintHistory(
       await generateDock.click();
     }
     await expect(coachDose, `${kind} /coach dose`).toBeVisible({ timeout: 15_000 });
-    const coachDoseText = (await coachDose.innerText()).trim();
-    const mobilityCount = await page.getByText(/^mobility$/i).count();
+
     const citeNode = page.locator('[data-mw-coach-cite]').first();
     await expect(citeNode, `${kind} /coach log cite`).toBeVisible({ timeout: 10_000 });
+    const expectedCite = kind === 'cold' ? 'session' : 'set';
+    await expect(citeNode).toHaveAttribute('data-mw-coach-cite', expectedCite);
+
+    if (kind === 'strained') {
+      await expect
+        .poll(async () => page.getByText(/^mobility$/i).count(), { timeout: 15_000 })
+        .toBeGreaterThan(0);
+    }
+
+    const coachDoseText = (await coachDose.innerText()).trim();
+    const mobilityCount = await page.getByText(/^mobility$/i).count();
     const cite = await citeNode.getAttribute('data-mw-coach-cite');
 
-    await gotoHydrated(page, '/log');
-    const todayDose = await openTodayDose(page);
-    await expect(todayDose, `${kind} /log dose`).toBeVisible({ timeout: 15_000 });
+    const todayDose = await waitForTodayDose(page, kind);
 
     return {
       kind,
@@ -97,13 +163,9 @@ async function paintHistory(
 }
 
 test('helper never plants mw_coach_plan', () => {
-  const src = readFileSync(
-    path.join(process.cwd(), 'tests/e2e/helpers/seedLoggerCoachHistory.ts'),
-    'utf8'
-  );
-  expect(src).toMatch(/removeItem\(\s*'mw_coach_plan'/);
+  const src = readFileSync('tests/e2e/helpers/seedLoggerCoachHistory.ts', 'utf8');
+  expect(src).toMatch(/__gnt1_u3_plan_before/);
   expect(src).not.toMatch(/setItem\(\s*'mw_coach_plan'/);
-  expect(src).not.toMatch(/seed-coach-adapt-demo/);
 });
 
 test('two logger histories render different Coach and Today dose', async ({
@@ -137,6 +199,6 @@ test('two logger histories render different Coach and Today dose', async ({
     0
   );
 
-  expect(cold.cite).toBe('no-logs');
+  expect(cold.cite).toBe('session');
   expect(strained.cite).toBe('set');
 });

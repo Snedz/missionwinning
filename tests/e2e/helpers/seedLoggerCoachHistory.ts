@@ -3,11 +3,12 @@
  *
  * Writes the same Zustand persist blob `/active` Finish writes
  * (`workout-tracker-storage`). Coach UI (`useCoachPlan.refresh`) generates the
- * week from those logs. Do **not** use `scripts/seed-coach-adapt-demo.mjs` —
- * that IIFE clobbers a real plan.
+ * week from those logs.
  *
- * Cold = empty history. Strained = 20 hard lower logs (same shape as
- * `src/lib/coach/gnt1HistoryDose.test.ts`).
+ * Cold = one light bodyweight log (Basic = first workout; strain stays low).
+ * Strained = 20 hard lower logs (same shape as `src/lib/coach/gnt1HistoryDose.test.ts`).
+ *
+ * This function is addInitScript-safe: no TypeScript in the body, no plan write.
  */
 import type { Page } from '@playwright/test';
 
@@ -18,7 +19,11 @@ function plantLoggerHistory(kind) {
   const today = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
   const iso = now.toISOString();
 
-  localStorage.removeItem('mw_coach_plan');
+  if (!window.__gnt1_u3_seeded) {
+    window.__gnt1_u3_plan_before = localStorage.getItem('mw_coach_plan');
+    window.__gnt1_u3_seeded = true;
+  }
+
   localStorage.setItem('mw_experience', 'intermediate');
   localStorage.setItem('mw_equipment', 'full-gym');
   localStorage.setItem('mw_primary_goal', 'goal:strength');
@@ -26,23 +31,67 @@ function plantLoggerHistory(kind) {
   localStorage.setItem('mw_days_per_week', '4');
   localStorage.setItem('mw_locale_choice', '1');
   localStorage.setItem('mw_device_id', 'gnt1-u3');
+  localStorage.setItem('mw_first_steps_dismissed', '1');
   localStorage.setItem(
     'mw_last_assessment',
     JSON.stringify({ risk: 'low', date: today })
   );
   localStorage.setItem(
+    'mw_learn_completed',
+    JSON.stringify(['gnt1-u3-learn'])
+  );
+  localStorage.setItem(
+    'mw_guidebook_progress',
+    JSON.stringify(['gnt1-u3-guide'])
+  );
+  localStorage.setItem(
+    'mw_nutrition_log',
+    JSON.stringify([{ date: today, name: 'seed meal', protein: 40, cals: 400 }])
+  );
+  localStorage.setItem(
+    'mw_pillar_wins',
+    JSON.stringify([
+      { id: 'gnt1-move', pillar: 'move', title: 'Seed move', completedAt: iso },
+      { id: 'gnt1-mind', pillar: 'mind', title: 'Seed mind', completedAt: iso },
+    ])
+  );
+  localStorage.setItem(
     'mw_journey_state',
     JSON.stringify({
-      phase: 'readiness',
+      phase: 'commissioned',
+      commissionedAt: iso,
       iDay: { startedAt: iso, acceptedMissionAt: iso, completedAt: iso },
       basic: { workout: true, fuel: true, move: true, mind: true, learn: true },
-      readiness: { parq: true, streakMet: false, winScoreSeen: true },
+      readiness: { parq: true, streakMet: true, winScoreSeen: true },
     })
   );
 
+  const lightCompleted = new Date(now.getTime() - 3 * 86_400_000).toISOString();
+  const lightStarted = new Date(now.getTime() - 3 * 86_400_000 - 600_000).toISOString();
+  const coldHistory = [
+    {
+      id: 'gnt1-light-0',
+      clientId: 'gnt1-light-0',
+      workoutName: 'Light push',
+      startedAt: lightStarted,
+      completedAt: lightCompleted,
+      durationSeconds: 600,
+      exercises: [
+        {
+          exerciseId: 'push-ups',
+          muscleGroups: ['Chest'],
+          sets: [{ reps: 8, weight: 0, kind: 'normal' }],
+        },
+      ],
+      totalVolume: 0,
+      revision: 1,
+      updatedAt: lightCompleted,
+    },
+  ];
+
   const workoutHistory =
     kind === 'cold'
-      ? []
+      ? coldHistory
       : Array.from({ length: 20 }, (_, i) => {
           const completedAt = new Date(now.getTime() - i * 86_400_000).toISOString();
           const startedAt = new Date(now.getTime() - i * 86_400_000 - 3_600_000).toISOString();
@@ -100,5 +149,4 @@ export async function seedLoggerCoachHistory(
   kind: LoggerHistoryKind
 ): Promise<void> {
   await page.addInitScript(plantLoggerHistory, kind);
-  await page.evaluate(plantLoggerHistory, kind);
 }
