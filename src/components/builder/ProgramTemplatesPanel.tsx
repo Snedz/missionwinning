@@ -2,7 +2,8 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { ChevronDown } from "lucide-react";
+import { ChevronDown, LayoutList } from "lucide-react";
+import { EmptyState } from "@/components/ui/EmptyState";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
@@ -57,9 +58,15 @@ function ProgramList({
 
   if (programs.length === 0) {
     return (
-      <p className="text-sm text-muted-foreground py-4 text-center">
-        {t('builderNoPrograms', { defaultValue: 'No programs in this category.' })}
-      </p>
+      <EmptyState
+        icon={LayoutList}
+        title={t('builderNoPrograms', { defaultValue: 'No programs in this category.' })}
+        description={t('builderNoProgramsHint', {
+          defaultValue: 'Pick another category, or log a session from scratch.',
+        })}
+        actionLabel={t('builderNoProgramsAction', { defaultValue: 'Log a session' })}
+        href="/active"
+      />
     );
   }
 
