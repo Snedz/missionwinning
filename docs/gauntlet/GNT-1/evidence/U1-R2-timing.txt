@@ -13,3 +13,30 @@ last-set-ghost_count=0
 U1-R2-ghost.png url=http://localhost:3000/active viewport=390x844
 finished_url=http://localhost:3000/active
 U1-R2-finished.png url=http://localhost:3000/active viewport=390x844
+
+---
+COMMAND: npx playwright test tests/e2e/logger-depth.spec.ts tests/e2e/first-90.spec.ts tests/e2e/mobile-nav.spec.ts
+
+  21 failed
+    [mobile-chrome] › tests/e2e/first-90.spec.ts:82:7 › First 90 seconds @gate › the homepage uses the brand display face and one emerald action 
+    [mobile-chrome] › tests/e2e/first-90.spec.ts:154:7 › First 90 seconds @gate › the content library is reachable on a phone @gate 
+    [mobile-chrome] › tests/e2e/first-90.spec.ts:173:7 › First 90 seconds @gate › every URL in the sitemap resolves @gate 
+    [mobile-chrome] › tests/e2e/first-90.spec.ts:194:7 › First 90 seconds @gate › the hero demo lets a visitor perform the product claim 
+    [mobile-chrome] › tests/e2e/first-90.spec.ts:223:9 › First 90 seconds @gate › Today shows one red action at 9:00 @gate 
+    [mobile-chrome] › tests/e2e/first-90.spec.ts:223:9 › First 90 seconds @gate › Today shows one red action at 19:00 @gate 
+    [mobile-chrome] › tests/e2e/first-90.spec.ts:257:7 › First 90 seconds @gate › every control on the logger is thumb-sized 
+    [mobile-chrome] › tests/e2e/first-90.spec.ts:301:9 › First 90 seconds @gate › Today renders within its block budget at 9:00 @gate 
+    [mobile-chrome] › tests/e2e/first-90.spec.ts:301:9 › First 90 seconds @gate › Today renders within its block budget at 19:00 @gate 
+    [mobile-chrome] › tests/e2e/first-90.spec.ts:330:9 › First 90 seconds @gate › every control on /log (morning) is thumb-sized @gate 
+    [mobile-chrome] › tests/e2e/first-90.spec.ts:330:9 › First 90 seconds @gate › every control on /log (evening — day review visible) is thumb-sized @gate 
+    [mobile-chrome] › tests/e2e/first-90.spec.ts:330:9 › First 90 seconds @gate › every control on /profile (settings + feedback) is thumb-sized @gate 
+    [mobile-chrome] › tests/e2e/first-90.spec.ts:346:7 › First 90 seconds @gate › every control in the feedback sheet is thumb-sized @gate 
+    [mobile-chrome] › tests/e2e/logger-depth.spec.ts:20:7 › Logger depth @gate › start empty, add push-ups, log set, rest timer, skip rest, finish 
+    [mobile-chrome] › tests/e2e/logger-depth.spec.ts:119:9 › Logger resilience @gate › /active survives unparseable JSON in persisted storage @gate 
+    [mobile-chrome] › tests/e2e/logger-depth.spec.ts:119:9 › Logger resilience @gate › /active survives valid JSON of the wrong shape in persisted storage @gate 
+    [mobile-chrome] › tests/e2e/logger-depth.spec.ts:119:9 › Logger resilience @gate › /active survives a null active workout in persisted storage @gate 
+    [mobile-chrome] › tests/e2e/logger-depth.spec.ts:119:9 › Logger resilience @gate › /active survives an active workout with no exercises array in persisted storage @gate 
+    [mobile-chrome] › tests/e2e/mobile-nav.spec.ts:141:7 › Mobile navigation @gate › before the first workout the pillars are not on the rail at all 
+    [mobile-chrome] › tests/e2e/mobile-nav.spec.ts:158:7 › Mobile navigation @gate › every rail screen is reachable within the tap budget 
+    [mobile-chrome] › tests/e2e/mobile-nav.spec.ts:174:7 › Mobile navigation @gate › the More sheet closes on Escape and restores focus 
+  11 passed (18.8m)
