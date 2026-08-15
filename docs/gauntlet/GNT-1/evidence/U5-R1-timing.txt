@@ -1,0 +1,12 @@
+start_ts=2026-08-15T07:53:54.729Z
+end_ts=2026-08-15T07:53:59.944Z
+wall_clock_s=5.215
+cold_door=/welcome
+landed_after_continue=http://localhost:3000/log
+today_url_after=http://localhost:3000/log
+viewport=390x844
+taps_to_first_set=4
+TAP_BUDGET=5
+today_primary_action_count_after=1
+beats=cold-open,first-set,victory,clear-next
+notes=Playwright cold context after route warm (compile not in clock). Begin→Continue→Start(.primary-action)→Log set (rest visible)→Finish→Back to Today. Victory NEXT clipped at fold on 390x844 still.

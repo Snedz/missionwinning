@@ -64,6 +64,7 @@ Review on a 390×844 phone viewport first (the Playwright target); desktop secon
 
 | Date | Reviewer | Flows | Issues filed |
 |------|----------|-------|--------------|
+| 2026-08-15 | Gauntlet GNT-1.U5 R1 | Phone hero `/welcome` → first set → Victory → Today | TAP_BUDGET cold-visitor green (4 taps / budget 5). Timed walk 5.215s, Continue→`/log`, Today `.primary-action` count 1. Stills `U5-R1-*.png`. Victory NEXT clipped below 390×844 fold. |
 | 2026-08-15 | Gauntlet GNT-1.U4 R1 | Reentry 3/7/14 | **FAIL** (no render PASS). Guard 5/5. `/log` hit `/private`. |
 | 2026-08-15 | Gauntlet GNT-1.U3 R1 | Coach week from logs | **FAIL** (no render PASS). Engine 2/2. Stills skipped — no two-history seed without demo IIFE. |
 | 2026-08-15 | Gauntlet GNT-1.U2 R1 | `/log` zero-state | **FAIL:** 1 red vs cap 0. Capture `U2-R1-cold.png` is Notify-me, not Today. |
