@@ -64,7 +64,8 @@ Review on a 390×844 phone viewport first (the Playwright target); desktop secon
 
 | Date | Reviewer | Flows | Issues filed |
 |------|----------|-------|--------------|
-| 2026-08-15 | Gauntlet GNT-1.U5 R1 | first-90 cold visitor | **FAIL:** expected `/log`, got `/active`. Timed walk aborted. `U5-R1-cold-open.png`. |
+| 2026-08-15 | Gauntlet GNT-1.Smoother R1 | Today · Train · Victory · Coach | `check-design-system` green (1116 files). first-90 green after `.839`. U2–U4 render stills still FAIL. |
+| 2026-08-15 | Gauntlet GNT-1.U5 R1 | first-90 cold visitor | **FAIL** at critic time (pre-`.839`). Timed walk aborted. `U5-R1-cold-open.png`. Closed by I-Day → `/log`. |
 | 2026-08-15 | Gauntlet GNT-1.U4 R1 | Reentry 3/7/14 | **FAIL** (no render PASS). Guard 5/5. `/log` hit `/private`. |
 | 2026-08-15 | Gauntlet GNT-1.U3 R1 | Coach week from logs | **FAIL** (no render PASS). Engine 2/2. Stills skipped — no two-history seed without demo IIFE. |
 | 2026-08-15 | Gauntlet GNT-1.U2 R1 | `/log` zero-state | **FAIL:** 1 red vs cap 0. Capture `U2-R1-cold.png` is Notify-me, not Today. |
@@ -97,6 +98,14 @@ Review on a 390×844 phone viewport first (the Playwright target); desktop secon
 | 2026-07-21 | Agent (Horizon 0) | `/`→gate, Welcome, `/log`, `/active`→Victory, `/coach` | Fixed in-sprint (no separate Issues): invite→`/private` friction; gate invitee expand; beta guide/banner wedge (Train→Coach); Coach empty-state “Unlock” vs Generate mismatch; ES/FR gate “everything app” subtitle → wedge. Post-flip residual: landing proof-chip density only (Batch C shipped in `.103`). |
 | 2026-07-22 | Agent (H0 residual) | Landing hero density; invite smoke SSR; hero Mission Score e2e | Landing chips/trust row collapsed (one subtitle + one CTA). Invitee `data-mw-invitee` SSR for gate-smoke. Mission Score path fail-closed via Active. `@visual` Linux baselines soft in CI. |
 | 2026-07-22 | Agent (.95) | Public `/guide` chapter CTAs | Wired `publicGuidePracticeCta` so anonymous practice links never dump into gated `/log`/`/nutrition` etc. Magazine body shared renderer. |
+
+### 2026-08-15 GNT-1 smoother ritual (`.839`)
+
+- **Design better:** grade the running first-90 walk, not the unit pin. U1/U5 already-true hid I-Day dumping to `/active`.
+- **Think better:** `.768` “gate on → logger” fought F-004. `/log` gate-public is the landing; Coach stays gated.
+- **Communicate better:** `/private` Notify-me is not a Today or reentry still. Do not commit it as evidence.
+- **Create more impact:** I-Day → Today (`.839`) unblocks the 90s walk more than another first-paint card.
+- **Next wave differently:** U2–U4 need on-Today stills (cookie or public `/log`), not another engine pin.
 
 ### 2026-08-09 CX/UX/UI hero pass ritual (`.637`)
 
