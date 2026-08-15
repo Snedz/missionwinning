@@ -2,7 +2,7 @@
 
 **Audience:** Founder + the next Hermes / Grok Build / graph agent  
 **Lane:** Engineering-Web (unless a loop says Android)  
-**Status:** ACTIVE 2026-08-15 · web `2026.07-unified.849` · Alpha 0.1.0 · **AL1 done — GNT-1 `ready-for-founder` · AM1 open — GNT-2 U1–U4 critic PASS (engine), SMOOTHER next**  
+**Status:** ACTIVE 2026-08-15 · web `2026.07-unified.849` · Alpha 0.1.0 · **AL1 done — GNT-1 `ready-for-founder` · AM1 open — GNT-2 SMOOTHER R1 walked, LEAD report next**  
 **Does not replace:** [ORCHESTRATION.md](../ORCHESTRATION.md) (what may be built) · [CONTEXT.md](../CONTEXT.md) `## Now` (where we are) · [vision.md](../vision.md) (constitution) · [docs/THESIS.md](THESIS.md) (wedge) · [docs/PLAN.md](PLAN.md) (phases A–I)
 
 This file is the **execution queue** for the agent graph: one concern per loop, spawn, ship, mark done, spawn the next. It is not a second status block and not a license to skip standing hard bans.
@@ -431,7 +431,7 @@ Not AL2. GNT-2 opened on its own written gate — *"enters GRAPH_LOOP only after
 
 | # | Loop | Moves | Status |
 |---|------|-------|--------|
-| **AM1** | Gauntlet GNT-2 coach plan quality | [docs/gauntlet/GNT-2-coach-plan-quality.md](gauntlet/GNT-2-coach-plan-quality.md). U1–U4 critic PASS (engine). Next spawn is the workbench SMOOTHER line, then the campaign report. Do not mark this row `done` until the report is written | `open` |
+| **AM1** | Gauntlet GNT-2 coach plan quality | [docs/gauntlet/GNT-2-coach-plan-quality.md](gauntlet/GNT-2-coach-plan-quality.md). U1–U4 critic PASS (engine). SMOOTHER R1 walked (Today / Train / Victory; Coach gated on this host). Next spawn is the workbench LEAD report. Do not mark this row `done` until the report is written | `open` |
 
 D4 stays hold. Do not invent AM2.
 

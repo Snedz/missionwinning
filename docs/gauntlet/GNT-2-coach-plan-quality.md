@@ -5,7 +5,7 @@
 **Product:** an instrument that can tell a good generated week from a bad one, and a planner that clears it.
 **Terminal agent state:** `ready-for-founder`. Never `status: pass`.
 
-**Next spawn:** SMOOTHER — U1–U4 critic PASS (engine). Walk Train / Today / Victory / Coach at 390×844 against DESIGN_ORCHESTRATION’s 8 surface bars. Append a UX_PLAYBOOK §10 closing block to DESIGN_REVIEW.md. Do not open a new unit. Do not write `status: pass`. Then LEAD writes the campaign report (`ready-for-founder`).
+**Next spawn:** LEAD writes the campaign report — SMOOTHER R1 walked. U1–U4 critic PASS (engine). Terminal state `ready-for-founder`. Do not write `status: pass`. Do not open a new unit.
 
 Instrument first: this campaign may not grade a week against taste. Every unit's bar is [GAUNTLET_LOOP.md](../GAUNTLET_LOOP.md) §3 source 1 or 2 — an existing measured instrument, or a new ratchet on the canonical pattern. Reference programmes contribute **structure bands only** (never copied text — guidebook originality-log discipline).
 
