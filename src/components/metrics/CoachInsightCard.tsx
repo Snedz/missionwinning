@@ -30,7 +30,7 @@ export function CoachInsightCard({
       <CardHeader className="pb-2">
         <CardTitle className="flex items-center gap-2 text-base font-semibold">
           <Sparkles className="h-4 w-4 text-primary" />
-          {t('todayCoachInsightTitle', { defaultValue: 'Coach note' })}
+          {t('todayCoachInsightTitle', { defaultValue: 'Coach insight' })}
           {source === 'llm' && (
             <span className="text-[10px] font-semibold text-primary border border-primary px-2 py-0.5">
               {t('coachAiBadge', { defaultValue: 'Live' })}
@@ -39,7 +39,7 @@ export function CoachInsightCard({
         </CardTitle>
         <CardDescription className="leading-relaxed">
           {t('todayCoachInsightDesc', {
-            defaultValue: 'From your recent training load and recovery',
+            defaultValue: 'Based on your readiness, strain, and recovery',
           })}
         </CardDescription>
       </CardHeader>
