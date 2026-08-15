@@ -1,0 +1,4 @@
+landed_after_continue=http://localhost:3000/log
+repeat_last_set=true
+last_set_ghost=false
+viewport=390x844
