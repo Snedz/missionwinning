@@ -71,7 +71,7 @@ export function ProfileJourneyCard({
       <Card className="bg-card">
         <CardHeader>
           <CardTitle className="text-base font-semibold">
-            {t('firstTimeSetup', { defaultValue: 'Get started' })}
+            {t('firstTimeSetup', { defaultValue: 'First-time setup' })}
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-3 text-sm">
@@ -82,7 +82,7 @@ export function ProfileJourneyCard({
             })}
           </p>
           <Button className="w-full min-h-[44px]" onClick={() => router.push('/welcome')}>
-            {t('welcomeBegin', { defaultValue: 'Continue' })}
+            {t('welcomeBegin', { defaultValue: 'Begin' })}
           </Button>
         </CardContent>
       </Card>
@@ -93,7 +93,7 @@ export function ProfileJourneyCard({
     <Card className="bg-card">
       <CardHeader>
         <CardTitle className="text-base font-semibold">
-          {t('editJourneyProfile', { defaultValue: 'Training profile' })}
+          {t('editJourneyProfile', { defaultValue: 'Edit profile' })}
         </CardTitle>
       </CardHeader>
       <CardContent className="space-y-3 text-sm">
@@ -179,7 +179,7 @@ export function ProfileJourneyCard({
           className="w-full min-h-[44px]"
           onClick={() => router.push('/welcome?edit=1')}
         >
-          {t('editJourneyProfile', { defaultValue: 'Edit journey profile' })}
+          {t('editJourneyProfile', { defaultValue: 'Edit profile' })}
         </Button>
       </CardContent>
     </Card>
