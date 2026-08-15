@@ -5,6 +5,7 @@ import { DIALOG_CONTROL_SELECTOR, expectThumbSized } from './helpers/thumbSweep'
 import { expectOneRedAction } from './helpers/redActions';
 import { TODAY_MAX_TOP_LEVEL_BLOCKS } from '../../src/lib/today/todayBlockBudget';
 import { fixedTimeAt } from './helpers/fixedClock';
+import { gotoHydrated } from './helpers/gotoHydrated';
 
 /**
  * The first 90 seconds, as a budget rather than an opinion.
@@ -80,7 +81,8 @@ test.describe('First 90 seconds @gate', () => {
   });
 
   test('the homepage uses the brand display face and one emerald action', async ({ page }) => {
-    await page.goto('/', { waitUntil: 'domcontentloaded' });
+    await gotoHydrated(page, '/');
+    await expect(page.locator('h1').first()).toBeVisible({ timeout: 15_000 });
 
     // Regression: the hero H1 rendered in Inter for months because LandingPage set
     // ad-hoc type instead of `.display-hero`, while every other marketing page used
@@ -160,7 +162,7 @@ test.describe('First 90 seconds @gate', () => {
     await expect(trigger).toBeVisible();
     await trigger.click();
 
-    const dialog = page.getByRole('dialog');
+    const dialog = page.getByRole('dialog', { name: /menu/i });
     await expect(dialog).toBeVisible();
     await expect(dialog.getByRole('link', { name: /exercises/i }).first()).toBeVisible();
 
@@ -184,7 +186,10 @@ test.describe('First 90 seconds @gate', () => {
     const broken: string[] = [];
     for (const p of paths) {
       const res = await request.get(p || '/', { maxRedirects: 0 });
-      if (res.status() !== 200) broken.push(`${res.status()} ${p}`);
+      if (res.status() === 200) continue;
+      // Free-first mutes the shop: `app/bundle/page.tsx` 307s /bundle → /log.
+      if (res.status() === 307 && (p === '/bundle' || p.endsWith('/bundle'))) continue;
+      broken.push(`${res.status()} ${p}`);
     }
     expect(broken, `sitemap advertises URLs that do not answer 200:\n${broken.join('\n')}`).toEqual(
       []
@@ -192,7 +197,7 @@ test.describe('First 90 seconds @gate', () => {
   });
 
   test('the hero demo lets a visitor perform the product claim', async ({ page }) => {
-    await page.goto('/', { waitUntil: 'networkidle' });
+    await gotoHydrated(page, '/');
 
     // The claim is "your week rewrites itself". If logging a set does not change what
     // the page says next, the homepage is asserting something it never shows.
@@ -223,7 +228,7 @@ test.describe('First 90 seconds @gate', () => {
     test(`Today shows one red action at ${hour}:00 @gate`, async ({ page }) => {
       await seedEveningReview(page);
       await page.clock.setFixedTime(fixedTimeAt(hour));
-      await page.goto('/log', { waitUntil: 'networkidle' });
+      await gotoHydrated(page, '/log');
 
       /*
        * The guard asserts its own preconditions, in full.
@@ -258,7 +263,7 @@ test.describe('First 90 seconds @gate', () => {
     // JourneyGuard sends a cold visitor to /welcome; this case is about an
     // established user opening the Train tab.
     await seedLegacyOnboarding(page);
-    await page.goto('/active', { waitUntil: 'networkidle' });
+    await gotoHydrated(page, '/active');
     const start = page.getByRole('button', { name: /start workout/i });
     await expect(start).toBeEnabled({ timeout: 15_000 });
     await start.click();
@@ -301,7 +306,7 @@ test.describe('First 90 seconds @gate', () => {
     test(`Today renders within its block budget at ${hour}:00 @gate`, async ({ page }) => {
       await seedLegacyOnboarding(page);
       await page.clock.setFixedTime(fixedTimeAt(hour));
-      await page.goto('/log', { waitUntil: 'networkidle' });
+      await gotoHydrated(page, '/log');
       const shell = page.locator('.today-shell').first();
       await expect(shell).toBeVisible({ timeout: 15_000 });
       const blocks = await shell.locator(':scope > *').count();
@@ -332,7 +337,7 @@ test.describe('First 90 seconds @gate', () => {
       // Fixed clock: the evening surfaces are the ones that were never swept,
       // and "run the suite after 18:00" is not a test strategy.
       await page.clock.setFixedTime(fixedTimeAt(hour));
-      await page.goto(path, { waitUntil: 'networkidle' });
+      await gotoHydrated(page, path);
       await expectThumbSized(page, what);
     });
   }
@@ -346,7 +351,7 @@ test.describe('First 90 seconds @gate', () => {
   test('every control in the feedback sheet is thumb-sized @gate', async ({ page }) => {
     await seedLegacyOnboarding(page);
     // The card moved with the settings in the `.606` /profile split.
-    await page.goto('/account', { waitUntil: 'networkidle' });
+    await gotoHydrated(page, '/account');
     await page.getByRole('button', { name: /send feedback/i }).click();
     await expect(page.getByRole('dialog')).toBeVisible();
     await expectThumbSized(page, 'feedback sheet', DIALOG_CONTROL_SELECTOR);

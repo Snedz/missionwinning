@@ -1,6 +1,7 @@
 import { test, expect } from '@playwright/test';
 import { gateRequired, unlockGate } from './helpers/gate';
 import { seedLegacyOnboarding } from './helpers/journey';
+import { gotoHydrated } from './helpers/gotoHydrated';
 
 /**
  * The tab bar, as a budget rather than an opinion.
@@ -116,18 +117,23 @@ test.describe('Mobile navigation @gate', () => {
    * in an open sheet is one tap.
    */
   async function readReach(page: import('@playwright/test').Page) {
-    // networkidle — this case opens the sheet, and More only works once
-    // hydrated. See the Escape case below.
-    await page.goto('/log', { waitUntil: 'networkidle' });
+    // More is a button, not a link — it is a no-op until React hydrates.
+    // Do not wait for networkidle: `npm run dev` HMR never idles. Retry the
+    // click until the sheet opens (hydration), then read hrefs.
+    await gotoHydrated(page, '/log');
 
     const bar = page.getByRole('navigation', { name: /primary/i });
+    await expect(bar).toBeVisible({ timeout: 15_000 });
+    const more = bar.getByRole('button', { name: /more/i });
+    await expect(more).toBeVisible({ timeout: 15_000 });
+    const sheet = page.getByRole('dialog', { name: /mission winning/i });
+    await expect(async () => {
+      if ((await sheet.count()) === 0) await more.click();
+      await expect(sheet).toBeVisible();
+    }).toPass({ timeout: 15_000 });
     const tabHrefs = await bar.locator('a').evaluateAll((els) =>
       els.map((el) => el.getAttribute('href') ?? '')
     );
-
-    await bar.getByRole('button', { name: /more/i }).click();
-    const sheet = page.getByRole('dialog');
-    await expect(sheet).toBeVisible();
     const sheetHrefs = await sheet.locator('a').evaluateAll((els) =>
       els.map((el) => el.getAttribute('href') ?? '')
     );
@@ -172,18 +178,20 @@ test.describe('Mobile navigation @gate', () => {
   });
 
   test('the More sheet closes on Escape and restores focus', async ({ page }) => {
-    // networkidle, not domcontentloaded: More is the one slot in the bar that
-    // is a button rather than a link, so it does nothing at all until React
-    // has hydrated and attached its handler.
-    await page.goto('/log', { waitUntil: 'networkidle' });
+    // More is a button, not a link — wait for hydration by retrying the open,
+    // not for networkidle (`npm run dev` HMR never idles).
+    await gotoHydrated(page, '/log');
 
     const trigger = page.getByRole('navigation', { name: /primary/i }).getByRole('button', { name: /more/i });
-    await expect(trigger).toBeVisible();
-    await trigger.click();
-    await expect(page.getByRole('dialog')).toBeVisible();
+    await expect(trigger).toBeVisible({ timeout: 15_000 });
+    const sheet = page.getByRole('dialog', { name: /mission winning/i });
+    await expect(async () => {
+      if ((await sheet.count()) === 0) await trigger.click();
+      await expect(sheet).toBeVisible();
+    }).toPass({ timeout: 15_000 });
 
     await page.keyboard.press('Escape');
-    await expect(page.getByRole('dialog')).toHaveCount(0);
+    await expect(sheet).toHaveCount(0);
     // Focus must come back to the trigger, or a keyboard user is stranded.
     await expect(trigger).toBeFocused();
   });

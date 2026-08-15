@@ -1,12 +1,13 @@
 import type { Page } from '@playwright/test';
 import { expect } from '@playwright/test';
+import { gotoHydrated } from './gotoHydrated';
 
 /**
  * Start an empty Active session after Zustand persist rehydration.
  * Start stays disabled until `hasHydrated` — avoids localStorage wipe race.
  */
 export async function startEmptyActiveWorkout(page: Page): Promise<void> {
-  await page.goto('/active', { waitUntil: 'networkidle' });
+  await gotoHydrated(page, '/active');
   const start = page.getByRole('button', { name: /start workout/i });
   await expect(start).toBeVisible({ timeout: 15_000 });
   await expect(start).toBeEnabled({ timeout: 15_000 });

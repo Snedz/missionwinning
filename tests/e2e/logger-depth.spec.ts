@@ -2,6 +2,7 @@ import { test, expect } from '@playwright/test';
 import { gateRequired, unlockGate } from './helpers/gate';
 import { seedLegacyOnboarding } from './helpers/journey';
 import { startEmptyActiveWorkout } from './helpers/active';
+import { gotoHydrated } from './helpers/gotoHydrated';
 
 /**
  * Deeper /active logger path: empty start → pick exercise → log set → rest chrome.
@@ -125,7 +126,7 @@ test.describe('Logger resilience @gate', () => {
       const errors: string[] = [];
       page.on('pageerror', (e) => errors.push(e.message));
 
-      await page.goto('/active', { waitUntil: 'networkidle' });
+      await gotoHydrated(page, '/active');
 
       // Something usable rendered — not the generic error screen, and not a blank.
       await expect(page.locator('main, [role="main"]').first()).toBeVisible({ timeout: 15_000 });

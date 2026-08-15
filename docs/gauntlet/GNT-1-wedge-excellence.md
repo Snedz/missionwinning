@@ -1,12 +1,12 @@
 # GNT-1 — Wedge excellence gauntlet
 
-**Status:** `open` · GRAPH_LOOP **AL1** · hard cap **≤14 build PRs** (3 spent: `.835` `.836` `.837`)  
+**Status:** `open` · GRAPH_LOOP **AL1** · hard cap **≤14 build PRs** (5 spent: `.835` `.836` `.837` `.839` `.840`)  
 **Product:** the evidence dossier that makes the founder’s phone walk a confirmation.  
-**Terminal agent state:** `ready-for-founder`. Only the founder writes `status: pass` in [EXCELLENCE_RESULT.md](../EXCELLENCE_RESULT.md).
+**Terminal agent state:** in-campaign. Only the founder writes `status: pass` in [EXCELLENCE_RESULT.md](../EXCELLENCE_RESULT.md). Do not mark AL1 `done` until the campaign report exists. Do not open GNT-2.
 
-**Next spawn:** `ready-for-founder` — U2/U4 PASS. U3 Today two-week docks differ; `/coach` still 307. Do not write `status: pass`.
+**Next spawn:** `CRITIC · GNT-1 U1 R3` — grade empty-start / REACH / thumb-sweep on `npm run dev` after `.840` `gotoHydrated`. Do **not** raise TAP_BUDGET. Do **not** write `status: pass`. `npm run dev` critic boot stays the law.
 
-Unused cap is success. The cap counts only PRs that touch `src|app|scripts|supabase`. U1/U2 already-true did not spend it.
+Unused cap is success. The cap counts only PRs that touch `src|app|scripts|supabase`. U1/U2 already-true did not spend it. `.839` and `.840` spent it. Do not merge `cursor/gnt-1-report-f368` (#656) — it closed AL1 against a stack that is not this master.
 
 Split by the **five founder criteria** (not the four surfaces). Surfaces cross-cut them.
 
@@ -40,6 +40,8 @@ U2 (GRAPH_LOOP G4) and U4 (G7) opened evidence-first / already-true. The dossier
 | unit | round | builder ref | critic verdict | biggest gap |
 |------|-------|-------------|----------------|-------------|
 | U1 | 1 | already-true on master `.834` — unit pins green. | **FAIL** — first-90 cold visitor: expected `/log`, got `/active`. Logger stills exist. | I-Day Continue lands on `/active` (Active dump), not Today |
+| U1 | 2 | already-true on origin/master `.839` — `idayFinishPath` cold → `/log`; `/log` gate-public; first-90 cold visitor green per LOG. Coach stays gated in production. No product this spawn. | **FAIL** — landed_after_continue=http://localhost:3000/log. Walk 390×844: Continue → Today → Chest Just Go → 8×BW+20 Log set → rest 1:30 → PREV — (no last-set-ghost) → Victory. COMMAND: `npx playwright test tests/e2e/logger-depth.spec.ts tests/e2e/first-90.spec.ts tests/e2e/mobile-nav.spec.ts` LAST LINES: `18 failed` / `14 passed (15.9m)`. logger-depth **FAIL** (empty-start `goto /active waitUntil networkidle` 60s; sideways-scroll PASS). first-90 **FAIL** (cold visitor PASS 2.0s `/log`; homepage `.primary-action` expected 2 got 0; library Escape leaves dialog; sitemap `307 /bundle`; rest mostly networkidle 60s). mobile-nav **FAIL** (tab bar fits PASS; REACH + More Escape `goto /log waitUntil networkidle` 60s — REACH_BUDGET=2 ungraded). STILLS: `U1-R2-landed-after-continue.png` · `U1-R2-set-row.png` · `U1-R2-rest.png` · `U1-R2-ghost.png` · `U1-R2-finished.png`. FEEL (founder-only, not a builder brief): Victory sheet leaves Session locked / empty Active stacked under the overlay. | Logger-depth empty-start, REACH, and thumb-sweep still `goto(..., { waitUntil: 'networkidle' })` which never settles on `npm run dev`, so those written U1 cases cannot grade. |
+| U1 | 3 | `.840` — `gotoHydrated` (DOMContentLoaded + load) on empty-start / REACH / thumb-sweep. Branch `cursor/gnt-1-u1-r3-networkidle-f368`. TAP_BUDGET stays 5. No `PRIVATE_MODE` flip. | | |
 | U2 | 2 | `.839` `/log` gate-public | **PASS** (Today stills + zero-state `/log` green 3.4s). Cold = one dock Just Go. | Sign-in chip on returning stills — not the dock |
 | U3 | 3 | Today two injected weeks (plan cleared). `/coach` 307. | **PARTIAL** — Today A dock Upper Body Strength; B Recovery & Mobility. Engine 2/2. No `/coach` stills. | `/coach` stills (gate cookie) |
 | U4 | 2 | `/log` public after `.839` | **PASS** — quiet lines on Today: 3/7/14 days off + 20-minute version. Guard 5/5. No streak-guilt. | — |
@@ -52,7 +54,7 @@ Fill as rounds ship. Own-app stills under `GNT-1/evidence/` named `U<n>-R<r>-<be
 
 | unit | stills | instrument paste | A/B (measurements only) |
 |------|--------|------------------|-------------------------|
-| U1 | `U1-R1-set-row.png` · `U1-R1-rest.png` · `U1-R1-ghost.png` · `U1-R1-finished.png` · `U1-R1-first-90-landed-active.png` | **2026-08-15 critic R1 e2e (paste):** `npx playwright test tests/e2e/logger-depth.spec.ts tests/e2e/first-90.spec.ts:32 --project=mobile-chrome` → first-90 cold visitor **FAIL** `Expected pattern: /\\/log/` `Received: http://localhost:3000/active` (timeout 15s). logger-depth empty-start **FAIL** `page.goto /active waitUntil networkidle` hit 60s test timeout. Unit pins (36) still green. Stills: one red Log set; rest 1:21 + Skip; PREV column present (underscore on first Just Go); finish = Session locked + red NEXT. | no founder FLOORS — do not FAIL |
+| U1 | R2: `U1-R2-landed-after-continue.png` · `U1-R2-set-row.png` · `U1-R2-rest.png` · `U1-R2-ghost.png` · `U1-R2-finished.png`. R1 kept. | **2026-08-15 critic R2 e2e (paste):** `npx playwright test tests/e2e/logger-depth.spec.ts tests/e2e/first-90.spec.ts tests/e2e/mobile-nav.spec.ts` LAST LINES: `18 failed` then the 18 names (homepage primary-action 0≠2; library Escape dialog still 1; sitemap `307 /bundle`; first-90 hero-demo / 19:00 red / logger thumb / Today 9:00 blocks / /log morning thumb / /mind thumb / feedback thumb; logger-depth empty-start + 4 resilience; mobile-nav pillars-absent / REACH / More Escape) then `14 passed (15.9m)`. Cold visitor PASS 2.0s landed `/log`. Sideways-scroll PASS. Tab bar fits PASS. Empty-start error: `helpers/active.ts:9` `page.goto('/active', { waitUntil: 'networkidle' })` 60s. REACH error: `mobile-nav.spec.ts:121` `page.goto('/log', { waitUntil: 'networkidle' })` 60s. Walk: landed_after_continue=http://localhost:3000/log; Log set 8×BW+20; rest REST 1:30; PREV —; last-set-ghost=false; Back to Today on Victory. | no founder FLOORS — do not FAIL |
 | U2 | R2: `U2-R2-cold.png` · `U2-R2-returning.png` · `U2-R2-mid-plan.png`. R1 Notify-me kept as historical fail. | **2026-08-15 R2:** `npx playwright test tests/e2e/zero-state.spec.ts -g "/log offers"` → **1 passed (4.1s)**. Cold dock = Chest Just Go. | no founder FLOORS |
 | U3 | R3: `U3-R3-today-history-a.png` (Upper Body Strength) · `U3-R3-today-history-b.png` (Recovery & Mobility). `/coach` 307. | Injected generateWeek-shaped plans after clearing `mw_coach_plan`. Today docks differ. Engine `gnt1HistoryDose` 2/2. | — |
 | U4 | `U4-R2-missed-3.png` · `U4-R2-missed-7.png` · `U4-R2-missed-14.png` | **2026-08-15 R2:** dock lines “Seven days off. Here's the 20-minute version.” / “14 days off…”. Guard 5/5. No you-missed / streak-guilt. | no founder FLOORS |
