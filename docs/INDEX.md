@@ -75,6 +75,8 @@
 | [MOBILE_PLAYBOOK.md](MOBILE_PLAYBOOK.md) | Native mobile umbrella — stack decision record, shared backbone, UX laws, Android → iOS gates |
 | [UX_PLAYBOOK.md](UX_PLAYBOOK.md) | UX operating system — problem register, 7-step process, flow/state/content standards, research ops, redesign track |
 | [GRAPH_LOOP.md](GRAPH_LOOP.md) | Agent graph execution queue (AL1 open — GNT-1) |
+| [IDEA_LOOP.md](IDEA_LOOP.md) | Idea generation protocol — one row per run into GRAPH_LOOP |
+| [mechanics/INDEX.md](mechanics/INDEX.md) | The idea graph — behaviours, mechanics, hypotheses, constraints |
 | [GAUNTLET_LOOP.md](GAUNTLET_LOOP.md) | Gauntlet grading protocol |
 | [gauntlet/INDEX.md](gauntlet/INDEX.md) | Gauntlet campaign workbench |
 | [NATIVE_MOBILE.md](NATIVE_MOBILE.md) | Expo prototype (reference); product path is Android Compose |

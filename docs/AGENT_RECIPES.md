@@ -202,6 +202,37 @@ This recipe wins when the top GRAPH_LOOP `open` row is a campaign (`GNT-*`). The
 
 ---
 
+## 13. Run an idea-loop harvest
+
+**Required reads:** [IDEA_LOOP.md](IDEA_LOOP.md) · [docs/mechanics/INDEX.md](mechanics/INDEX.md) · [GRAPH_LOOP.md](GRAPH_LOOP.md).
+
+Wins when the queue's residual is thin and the honest next step is *a new idea*
+rather than another letter. It is the alternative to inventing `AK2`.
+
+1. **SCOUT** (cheap, batched) writes observations into `docs/mechanics/inbox/` — facts, a link, a date. Never a recommendation. Look outside this category on purpose.
+2. **ANATOMIST** promotes one observation to a `mechanic` node or discards it. All nine primitives answered, `precondition` and `also_seen_in_failures` included — those two are the fields cargo-culting always drops.
+3. `npm run idea:next` names the behaviour axis with an empty cell. **You do not choose it.**
+4. **TRANSLATOR** reads only `npm run idea:pack <class>` and proposes hypotheses against that axis. Every one needs `removes`, `guardrail` and `kill_criterion`.
+5. **RED TEAM** — fresh context, a *different model family* — tries to refute each: constraint violation, precondition arithmetic, anti-library hit, backfire edge, fake instrument, prospective hindsight. Default to refuted when uncertain.
+6. `npm run idea:validate`, then `npm run idea:next`. Paste the single row into GRAPH_LOOP as the top `open` row, prefixed `IL-`.
+7. Record the run in `docs/mechanics/LEDGER.md` — spawns, tier, cap, spend, yield.
+8. After the gauntlet closes it, **HISTORIAN** writes the `verdict` node and the `ANTILIBRARY.md` row — **whether it won or lost.**
+
+**Required tests:** `npm run idea:validate` plus the colocated guards (`npx tsx --test "src/lib/ideaGraph/*.test.ts"`).
+
+**Never**
+
+- Emit more than one row per run
+- Let the model that wrote a candidate judge it
+- Target the loop's own process, tooling or queue hygiene as a behaviour
+- Upgrade an evidence class, or score a candidate on how good its argument sounds
+- Record a mechanic at surface level ("add badges" must stay unwritable)
+- Commit competitor pixels · invent an `AnalyticsEvent` name · raise a ratchet
+
+**Stop** when two consecutive harvests yield nothing that survives the constitution filter, novelty and an unfilled cell. That is the measured replacement for "Do not invent X2" — do not refill.
+
+---
+
 ## Quick commands
 
 ```bash

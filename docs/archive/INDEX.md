@@ -12,6 +12,7 @@ When adding a doc:
 
 | File | Absorbed by / note |
 |------|---------------------|
+| [log/LOG-rotate-831-for-846.md](./log/LOG-rotate-831-for-846.md) | rotated 2026-08-15 for `.846` Idea Loop (`.831`) |
 | [log/LOG-rotate-830-for-845.md](./log/LOG-rotate-830-for-845.md) | rotated 2026-08-15 for `.845` loadZone split (`.830`) |
 | [log/LOG-rotate-828-for-843.md](./log/LOG-rotate-828-for-843.md) | rotated 2026-08-15 for `.843` graph memory (`.828`) |
 | [log/LOG-rotate-822-for-840.md](./log/LOG-rotate-822-for-840.md) | rotated 2026-08-15 for `.840` GNT-2 coach eval (`.822`) |
@@ -61,6 +62,8 @@ When adding a doc:
 | [log/LOG-rotate-782-for-797.md](./log/LOG-rotate-782-for-797.md) | rotated 2026-08-14 for `.797` Today Coach week dose (`.782`) |
 | [log/LOG-rotate-781-for-795.md](./log/LOG-rotate-781-for-795.md) | rotated 2026-08-14 for `.795` www about (form kit + `.781`) |
 | [log/LOG-rotate-780-for-794.md](./log/LOG-rotate-780-for-794.md) | rotated 2026-08-14 for `.794` landing chrome Alpha (`.780`) |
+| [log/LOG-rotate-826-for-841.md](./log/LOG-rotate-826-for-841.md) | rotated 2026-08-15 for `.841` harvest 1 tooling (`.826`) |
+| [log/LOG-rotate-822-for-840.md](./log/LOG-rotate-822-for-840.md) | rotated 2026-08-15 for `.840` Idea Loop installed (`.822`) |
 | [log/LOG-rotate-779-for-793.md](./log/LOG-rotate-779-for-793.md) | rotated 2026-08-14 for `.793` landing Reveal paints (`.779`) |
 | [log/LOG-rotate-778-for-792.md](./log/LOG-rotate-778-for-792.md) | rotated 2026-08-14 for `.792` www gate Alpha (`.778`) |
 | [log/LOG-rotate-777-for-791.md](./log/LOG-rotate-777-for-791.md) | rotated 2026-08-14 for `.791` restore .696 homepage (`.777`) |

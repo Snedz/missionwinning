@@ -33,6 +33,7 @@ User guides in plain language (no code paths):
 |-----|---------|
 | [../ORCHESTRATION.md](../ORCHESTRATION.md) | Long-term horizons, gates, what to build next |
 | [GRAPH_LOOP.md](GRAPH_LOOP.md) | Agent graph execution queue — one concern per loop |
+| [IDEA_LOOP.md](IDEA_LOOP.md) | Generation protocol — what deserves to exist |
 | [GAUNTLET_LOOP.md](GAUNTLET_LOOP.md) | Grading protocol — builder never grades itself |
 | [PRODUCTION_STACK.md](PRODUCTION_STACK.md) | 13-layer production scorecard (ops maturity) |
 | [CACHE_LADDER.md](CACHE_LADDER.md) | Browser / CDN / Redis / Postgres — ideal vs MW |

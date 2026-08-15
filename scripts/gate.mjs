@@ -133,6 +133,18 @@ function hasChromium() {
 // branches announce the same version.
 run('Build label + hard rule 5', 'npm', ['run', 'check-build-label']);
 run('Excellence gate (Horizon W result)', 'npm', ['run', 'check-excellence-gate']);
+/*
+ * Cheap, and placed before lint for the same reason the label check is: it reads
+ * `docs/mechanics/` and a handful of source constants, so it fails in under a
+ * second when a node is malformed or a constraint's enforcer has been renamed
+ * out from under it.
+ *
+ * That second case is the one worth catching here rather than in review. A
+ * constraint node whose enforcer no longer exists still *reads* as a rule, and
+ * the Idea Loop would keep citing it while refusing nothing — prose wearing a
+ * guard's clothes, which is the exact failure the loop was built to end.
+ */
+run('Idea graph (nodes, edges, live enforcers)', 'npm', ['run', 'idea:validate']);
 run('Lint', 'npm', ['run', 'lint']);
 run('Typecheck', 'npm', ['run', 'typecheck']);
 run('Unit tests', 'npm', ['test']);
