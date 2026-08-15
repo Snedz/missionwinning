@@ -4,7 +4,7 @@
 import { STORAGE_KEYS } from '@/lib/storage/keys';
 import { readJson, writeJson } from '@/lib/storage/safeStorage';
 import { localDateKey } from '@/lib/time/localDate';
-import { isPlannedRest } from '@/lib/rewards/plannedRest';
+import { isPlannedRest } from '@/lib/plannedRest';
 
 export function loadPlannedRestDays(): string[] {
   const raw = readJson<string[]>(STORAGE_KEYS.plannedRestDays, []);

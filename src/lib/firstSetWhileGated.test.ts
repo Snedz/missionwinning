@@ -34,6 +34,7 @@ const MUST_STAY_GATED = [
   '/programs',
   '/coaching',
   '/fitness-test',
+  '/help',
   '/join/class',
   '/school/class',
 ] as const;

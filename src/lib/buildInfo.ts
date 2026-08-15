@@ -1,5 +1,5 @@
-/** Shown on Profile so testers can confirm the deployed build. Bump when shipping UI to master. `.822` Learn locked preview. */
-export const APP_BUILD_LABEL = "2026.07-unified.822";
+/** Shown on Profile so testers can confirm the deployed build. Bump when shipping UI to master. `.825` guard drift. */
+export const APP_BUILD_LABEL = "2026.07-unified.825";
 
 /**
  * Semver for athletes. Distinct from `APP_BUILD_LABEL`, which `/api/health`

@@ -15,7 +15,7 @@
 
 - Free logger is never gated by rank.  
 - Weekly train goal is the boss consistency signal (not daily streak shame).
-- Planned rest (`plannedRest.ts`) bridges a consecutive-day streak. It is never a session.
+- Planned rest lives in `src/lib/plannedRest.ts` — streak math, not standing. Rewards UI may mark rest; the logger must not import this folder to do it.
   
 - Events are idempotent via `claimedEventIds`.  
 - No pay-to-win XP.

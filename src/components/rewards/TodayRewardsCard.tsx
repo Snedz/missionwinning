@@ -6,7 +6,7 @@ import { useTranslation } from 'react-i18next';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import type { RewardsSummary } from '@/lib/rewards/summary';
-import { isTodayPlannedRest, setTodayPlannedRest } from '@/lib/rewards/plannedRestStorage';
+import { isTodayPlannedRest, setTodayPlannedRest } from '@/lib/plannedRestStorage';
 
 type Props = {
   summary: RewardsSummary;
