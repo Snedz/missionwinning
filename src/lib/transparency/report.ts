@@ -48,10 +48,10 @@ function accessRow(input: TransparencyInput): TransparencyRow {
   const details: string[] = [];
   if (input.freeBeta) {
     details.push(
-      'Open-beta (FREE_BETA) unlocks Coach depth on this deploy and mutes Super Bundle checkout until payments are live.'
+      'Alpha mute-pay (FREE_BETA) unlocks Coach depth on this deploy and mutes Super Bundle checkout until payments are live.'
     );
   } else {
-    details.push('Open-beta mute is off. Premium depth follows enrollment; the logger stays free.');
+    details.push('Alpha mute-pay is off. Premium depth follows enrollment; the logger stays free.');
   }
 
   if (input.privateGateEnabled) {

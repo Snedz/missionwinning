@@ -1,5 +1,5 @@
-/** Shown on Profile so testers can confirm the deployed build. Bump when shipping UI to master. `.810` visibility Alpha. */
-export const APP_BUILD_LABEL = "2026.07-unified.810";
+/** Shown on Profile so testers can confirm the deployed build. Bump when shipping UI to master. `.811` visibility access. */
+export const APP_BUILD_LABEL = "2026.07-unified.811";
 
 /**
  * Semver for athletes. Distinct from `APP_BUILD_LABEL`, which `/api/health`

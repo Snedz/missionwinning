@@ -13,6 +13,7 @@ const src = readFileSync(
 
 test('visibility report does not say free-first beta', () => {
   assert.doesNotMatch(src, /free-first beta/i);
-  assert.match(src, /Alpha/);
+  assert.doesNotMatch(src, /Open-beta/i);
+  assert.match(src, /Alpha mute-pay/);
   assert.match(src, /logger stays free/i);
 });
