@@ -38,13 +38,13 @@ test.describe('Logger depth @gate', () => {
     const logBtn = page.getByRole('button', { name: /^log( set)?$/i }).first();
     await expect(logBtn).toBeVisible({ timeout: 10_000 });
 
-    // E-Adjacency DESIGN_NEXT §A: first session is honest empty, not an invented load.
-    // Target paints only on the live row (F-003 density).
-    await expect(page.getByTestId('set-row-target-empty')).toHaveCount(1);
+    // Honest empty: Prev is the metric anchor (`SetLogRow`), not an invented
+    // last-session load. `set-row-target-empty` lives on unused AdjacencyStack.
+    await expect(
+      page.locator('[data-testid="set-row-prev"][data-prev-anchor="empty"]').first()
+    ).toBeVisible({ timeout: 5_000 });
     await expect(page.getByTestId('set-row-target')).toHaveCount(0);
-    await expect(page.getByTestId('set-row-target-empty')).toContainText(
-      /no prior sets yet/i
-    );
+    await expect(page.getByTestId('set-row-prev').first()).toContainText('—');
 
     await logBtn.click();
 
