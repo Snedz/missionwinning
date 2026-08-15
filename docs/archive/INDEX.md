@@ -14,6 +14,7 @@ When adding a doc:
 |------|---------------------|
 | [log/LOG-rotate-828-for-843.md](./log/LOG-rotate-828-for-843.md) | rotated 2026-08-15 for `.843` graph memory (`.828`) |
 | [log/LOG-rotate-822-for-840.md](./log/LOG-rotate-822-for-840.md) | rotated 2026-08-15 for `.840` GNT-2 coach eval (`.822`) |
+| [log/LOG-rotate-829-for-844.md](./log/LOG-rotate-829-for-844.md) | rotated 2026-08-15 for `.844` coverage floor states a true number (`.829`) |
 | [log/LOG-rotate-827-for-842.md](./log/LOG-rotate-827-for-842.md) | rotated 2026-08-15 for `.842` CI found two more (`.827`) |
 | [log/LOG-rotate-826-for-841.md](./log/LOG-rotate-826-for-841.md) | rotated 2026-08-15 for `.841` guards match shipped code (`.826`) |
 | [log/LOG-rotate-825-for-839.md](./log/LOG-rotate-825-for-839.md) | rotated 2026-08-15 for `.839` I-Day Today (`.825`) |
