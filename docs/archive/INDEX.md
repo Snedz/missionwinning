@@ -12,6 +12,7 @@ When adding a doc:
 
 | File | Absorbed by / note |
 |------|---------------------|
+| [log/LOG-rotate-800-for-815.md](./log/LOG-rotate-800-for-815.md) | rotated 2026-08-14 for `.815` locale names (`.800`) |
 | [log/LOG-rotate-799-for-814.md](./log/LOG-rotate-799-for-814.md) | rotated 2026-08-14 for `.814` locale hydrate (`.799`) |
 | [log/LOG-rotate-798-for-813.md](./log/LOG-rotate-798-for-813.md) | rotated 2026-08-14 for `.813` Move first-paint (`.798`) |
 | [log/LOG-rotate-797-for-812.md](./log/LOG-rotate-797-for-812.md) | rotated 2026-08-14 for `.812` History first-paint (`.797`) |
