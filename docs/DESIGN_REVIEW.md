@@ -64,6 +64,7 @@ Review on a 390×844 phone viewport first (the Playwright target); desktop secon
 
 | Date | Reviewer | Flows | Issues filed |
 |------|----------|-------|--------------|
+| 2026-08-15 | Gauntlet GNT-1.U1 R2 | I-Day Continue → Today → Just Go set/rest/finish | **FAIL** written instruments (18 failed / 14 passed). Walk: landed `/log`. Stills `U1-R2-*`. |
 | 2026-08-15 | Gauntlet GNT-1.U3 R3 | Today two weeks | **PARTIAL:** A Upper Body Strength · B Recovery. `/coach` still 307. |
 | 2026-08-15 | Gauntlet GNT-1.U4 R2 | Today reentry 3/7/14 | **PASS:** quiet 20-minute lines on `/log`. |
 | 2026-08-15 | Gauntlet GNT-1.U3 R2 | Today two histories | **FAIL** `/coach` 307. Today A/B not a clean dose pair. |
