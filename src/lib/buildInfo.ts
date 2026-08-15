@@ -1,5 +1,5 @@
-/** Shown on Profile so testers can confirm the deployed build. Bump when shipping UI to master. `.821` Fuel log card. */
-export const APP_BUILD_LABEL = "2026.07-unified.821";
+/** Shown on Profile so testers can confirm the deployed build. Bump when shipping UI to master. `.822` Learn locked preview. */
+export const APP_BUILD_LABEL = "2026.07-unified.822";
 
 /**
  * Semver for athletes. Distinct from `APP_BUILD_LABEL`, which `/api/health`
