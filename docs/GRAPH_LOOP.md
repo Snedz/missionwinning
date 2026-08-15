@@ -2,7 +2,7 @@
 
 **Audience:** Founder + the next Hermes / Grok Build / graph agent  
 **Lane:** Engineering-Web (unless a loop says Android)  
-**Status:** ACTIVE 2026-08-15 · web `2026.07-unified.839` · Alpha 0.1.0 · **AL1 open — GNT-1**  
+**Status:** ACTIVE 2026-08-15 · web `2026.07-unified.844` · Alpha 0.1.0 · **AL1 done — GNT-1 report**  
 **Does not replace:** [ORCHESTRATION.md](../ORCHESTRATION.md) (what may be built) · [CONTEXT.md](../CONTEXT.md) `## Now` (where we are) · [vision.md](../vision.md) (constitution) · [docs/THESIS.md](THESIS.md) (wedge) · [docs/PLAN.md](PLAN.md) (phases A–I)
 
 This file is the **execution queue** for the agent graph: one concern per loop, spawn, ship, mark done, spawn the next. It is not a second status block and not a license to skip standing hard bans.
@@ -390,7 +390,7 @@ Not AK2. Protocol + GNT-1 workbench. Grading, not a second queue.
 
 | # | Loop | Moves | Status |
 |---|------|-------|--------|
-| **AL1** | Gauntlet GNT-1 wedge excellence | [docs/GAUNTLET_LOOP.md](GAUNTLET_LOOP.md) + [docs/gauntlet/GNT-1-wedge-excellence.md](gauntlet/GNT-1-wedge-excellence.md). Next action is the workbench **Next spawn** line. `done` only when the campaign report is written | `open` |
+| **AL1** | Gauntlet GNT-1 wedge excellence | Report: [docs/gauntlet/GNT-1-wedge-excellence.md](gauntlet/GNT-1-wedge-excellence.md). Terminal agent state `ready-for-founder`. RESULT remains founder-scored. | `done` |
 
 D4 stays hold. Do not invent AL2.
 

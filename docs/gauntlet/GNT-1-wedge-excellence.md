@@ -1,10 +1,10 @@
 # GNT-1 — Wedge excellence gauntlet
 
-**Status:** `open` · GRAPH_LOOP **AL1** · hard cap **≤14 build PRs** (7 spent: `.835` `.836` `.837` `.839` `.840` `.841` `.844`)  
+**Status:** report written · GRAPH_LOOP **AL1** `done` · hard cap **≤14 build PRs** (7 spent: `.835` `.836` `.837` `.839` `.840` `.841` `.844`)  
 **Product:** the evidence dossier that makes the founder’s phone walk a confirmation.  
-**Terminal agent state:** in-campaign. Only the founder writes `status: pass` in [EXCELLENCE_RESULT.md](../EXCELLENCE_RESULT.md). Do not mark AL1 `done` until the campaign report exists. Do not open GNT-2.
+**Terminal agent state:** `ready-for-founder`. Only the founder writes `status: pass` in [EXCELLENCE_RESULT.md](../EXCELLENCE_RESULT.md). RESULT remains `unscored`.
 
-**Next spawn:** `LEAD · GNT-1 report` — all five units critic PASS; smoother R2 walked Train / Today / Victory / Coach at 390×844 on `npm run dev`. Do **not** write `status: pass`. Do not open GNT-2.
+**Next spawn:** none — campaign closed. Founder scores RESULT on a phone against this dossier. GNT-2 stays `named` until the founder opens it. Do **not** write `status: pass`. Do not merge `#656`.
 
 Unused cap is success. The cap counts only PRs that touch `src|app|scripts|supabase`. U1/U2 already-true did not spend it. `.839`, `.840`, `.841` and `.844` spent it. Do not merge `cursor/gnt-1-report-f368` (#656) — it closed AL1 against a stack that is not this master.
 
@@ -64,19 +64,32 @@ Fill as rounds ship. Own-app stills under `GNT-1/evidence/` named `U<n>-R<r>-<be
 | U5 | R2: `U5-R2-cold-open.png` · `U5-R2-first-set.png` · `U5-R2-victory.png` · `U5-R2-clear-next.png` + `U5-R2-timing.txt` (`landed_after_continue=http://localhost:3000/log` · `wall_clock_s=3.3`). R1 `U5-R1-cold-open.png` kept (landed `/active`). | **2026-08-15 critic R2:** COMMAND: `npx playwright test tests/e2e/first-90.spec.ts` LAST LINES: `✓   1 … a cold visitor logs a set within the tap budget, with no interstitial (2.5s)` / `✓  22 … every control in the feedback sheet is thumb-sized @gate (1.7s)` / `22 passed (36.7s)`. COMMAND: `npx tsx --test src/lib/gnt1First90.test.ts` LAST LINES: `ok 1 - first-90 TAP_BUDGET is 5 and must not be raised` / `ok 2 - logger-depth walk reaches Victory / Back to Today` / `ok 3 - first-paint drift cap is 167 and down-only` / `# tests 3` `# pass 3` `# fail 0` `# duration_ms 142.949559`. Timed walk ≤90s **PASS** (3.3s). firstPaintFloor 167 is not this bar. | no founder FLOORS — do not FAIL |
 | Smoother | R2: `SMOOTHER-today.png` · `SMOOTHER-train.png` · `SMOOTHER-victory.png` · `SMOOTHER-coach.png`. DESIGN_REVIEW Passes row + UX_PLAYBOOK §10 closing ritual this PR. | `npm run check-design-system` → 1116 files scanned, 12 allowlisted, 0 drift. Walk 390×844 `npm run dev`. Victory: no “No session running” under Session locked (`.844`). Coach cite: From your log: Just Go — Chest · Aug 15. | — |
 
-## Report skeleton
+## Campaign report
 
-- Bar as written (table above)
-- Full round log
-- PASS evidence per criterion, mapped to EXCELLENCE_RESULT checklist:
+LEAD maps critic-pasted evidence onto the [EXCELLENCE_RESULT.md](../EXCELLENCE_RESULT.md) checklist. LEAD does not score RESULT. Unit bars below are critic verdicts on the written instruments, not founder phone sign-off.
 
-| RESULT line | GNT-1 unit | Evidence |
-|-------------|------------|----------|
-| W1 Activation | U1 + U5 | |
-| W2 One boss CTA | U2 | |
-| W3 Logger + Victory | U1 + U5 | |
-| W4 Coach continuity | U3 + U4 | |
-| C5 Phone hero ≤90s | U5 | |
+Bar as written: unit table above. Full round log: table above. Build PRs spent: **7 / 14** (`.835` `.836` `.837` `.839` `.840` `.841` `.844`). Unused cap is success.
 
-- Remaining gaps
-- Agent terminal state: `ready-for-founder` — **never** `status: pass`
+### RESULT mapping (W1–W4 + C5)
+
+| RESULT line | Unit | Critic bar | Evidence (critic-pasted; LEAD maps, does not score RESULT) |
+|-------------|------|------------|-------------------------------------------------------------|
+| W1 Activation | U1+U5 | **PASS** | U1 R3: Continue → `/log`; logger-depth + first-90 + mobile-nav **32 passed (45.3s)**. Stills `U1-R3-landed-after-continue.png`, `U1-R3-set-row.png`. U5 R2: TAP_BUDGET cold visitor **2.5s**; Continue → `/log`. Stills `U5-R2-cold-open.png`, `U5-R2-clear-next.png`. |
+| W2 One boss CTA | U2 | **PASS** | U2 R2: `/log` zero-state **1 passed (4.1s)**; cold dock Chest Just Go. Stills `U2-R2-cold.png`, `U2-R2-returning.png`, `U2-R2-mid-plan.png`. |
+| W3 Logger + Victory | U1+U5+smoother | **PASS** | U1 R3 outdoor stills `U1-R3-set-row.png` · `rest` · `ghost` · `finished`. U5 R2 `U5-R2-first-set.png`, `U5-R2-victory.png`. Smoother R2 `.844`: Victory honor sheet only (`noSessionRunning=false`); still `SMOOTHER-victory.png`. |
+| W4 Coach continuity | U3+U4 | **PASS** | U3 R4: engine **2/2**; `/coach` **200** on `npm run dev`; logger 0 vs 7 finishes change dose (mostly strength → mixed + mobility). Stills `U3-R4-coach-history-a.png` · `U3-R4-coach-history-b.png`. U4 R2: 3/7/14 quiet lines; guard 5/5. Stills `U4-R2-missed-3.png` · `missed-7` · `missed-14`. |
+| C5 Phone hero ≤90s | U5 | **PASS** | U5 R2: TAP_BUDGET **5**; timed walk `wall_clock_s=3.3`; first-90 **22 passed (36.7s)**; pin `gnt1First90.test.ts` **3/3**. Stills `U5-R2-cold-open.png` → `first-set` → `victory` → `clear-next`. |
+
+### Remaining gaps (founder-only — not builder briefs)
+
+- `docs/EXCELLENCE_RESULT.md` is still `status: unscored` — agents never write `status: pass`.
+- Founder phone walk of W1–W4 + C5. This dossier makes that scoring a formality, not a substitute.
+- U3: a week generated from empty logs did not earn recovery until `mw_coach_plan` was cleared; Today dock stayed Full Body Strength on both histories.
+- U2 returning stills carry a Sign-in chip (not the dock).
+- I-Day copy still reads ABOUT TWO MINUTES and can preview a different Just Go than Today docks.
+- No founder FLOORS/BANDS, so Hevy / Strong / Freeletics / Bevel A/B never FAILed a unit.
+- `#656` closed AL1 against an unmerged stack — ignore it.
+
+### Terminal state
+
+`ready-for-founder` — **never** `status: pass`.

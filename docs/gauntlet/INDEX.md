@@ -9,11 +9,11 @@ Closed campaigns rotate to [docs/archive/](../archive/INDEX.md) the same way LOG
 
 | id | Title | Status | Workbench | GRAPH_LOOP row |
 |----|-------|--------|-----------|----------------|
-| **GNT-1** | Wedge excellence | `open` | [GNT-1-wedge-excellence.md](GNT-1-wedge-excellence.md) | **AL1** |
+| **GNT-1** | Wedge excellence | report written · `ready-for-founder` | [GNT-1-wedge-excellence.md](GNT-1-wedge-excellence.md) | **AL1** `done` |
 | **GNT-2** | Coach plan quality eval harness | `named` | sketch below | after GNT-1 report |
 
 **Naming trap:** `GNT-n` is not GRAPH_LOOP G1, not PFT G1–G8, not journey/build phases. See root [INDEX.md](../../INDEX.md) §2.
 
 ## GNT-2 (named, not open)
 
-Largest unbarred dimension after the wedge dossier. **Instrument first:** golden-week fixtures (logged-history → expected dose / progression / recovery envelopes, no date literals) + reference-programme *structure* bands (structures, never copied text — originality-log discipline), as `scripts/coach-eval.mjs` ↔ `coachEval.test.ts`. Units = plan dimensions (dose bands · progression on green logs · deload/adapt on missed or high-strain weeks · exercise-selection sanity). Enters GRAPH_LOOP only after GNT-1’s report.
+Largest unbarred dimension after the wedge dossier. **Instrument first:** golden-week fixtures (logged-history → expected dose / progression / recovery envelopes, no date literals) + reference-programme *structure* bands (structures, never copied text — originality-log discipline), as `scripts/coach-eval.mjs` ↔ `coachEval.test.ts`. Units = plan dimensions (dose bands · progression on green logs · deload/adapt on missed or high-strain weeks · exercise-selection sanity). GNT-1’s report is written; GNT-2 stays `named` until the founder opens it.

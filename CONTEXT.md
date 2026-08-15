@@ -413,7 +413,7 @@ One screen of truth for any AI tool or human joining cold. Read this, then [AGEN
 - **`.830`:** (`2026.07-unified.830`) **plannedRest shim** — old rewards path re-exports moved module. No `PRIVATE_MODE` flip.
 - **`.829`:** (`2026.07-unified.829`) **Today journal strip** — Log check-in →. Drift cap 174. No `PRIVATE_MODE` flip.
 - **Form object kit (on `.781`):** IMPLEMENT block + prop sheets. Regen cable-row (visible stack), lateral-raise, DB press, lunges, DB row. Floor 43. Still-only. No `PRIVATE_MODE` flip.
-- **Excellence:** unscored · — · [docs/EXCELLENCE_RESULT.md](docs/EXCELLENCE_RESULT.md) — Horizon W phone sign-off home; surface PRs need `status: pass` or `Excellence-Override` (`.669`).
+- **Excellence:** unscored · GNT-1 dossier `ready-for-founder` · [docs/gauntlet/GNT-1-wedge-excellence.md](docs/gauntlet/GNT-1-wedge-excellence.md) · founder scores [docs/EXCELLENCE_RESULT.md](docs/EXCELLENCE_RESULT.md); surface PRs still need `status: pass` or `Excellence-Override` (`.669`).
 - **`.669`:** (`2026.07-unified.669`) **Excellence RESULT + agent stop-rule** — `excellenceGate` path policy + `check-excellence-gate` on gate/PR CI; wedge still ships while unscored.
 - **Horizon W + full-launch override (2026-08-05).** Wedge excellence still required; agents may ship rewards + full surface honesty. Fuel estimate accuracy remains.
 - **Free-first beta (~4 weeks):** LLC + EIN pending — **no Bundle UI** + **full depth unlocked**; More/rail **Pillars demoted until first workout** (F-004 / `.695`) — still no Bundle ([docs/FREE_BETA.md](docs/FREE_BETA.md)).
