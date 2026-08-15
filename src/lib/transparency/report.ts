@@ -160,10 +160,10 @@ function bundleRow(input: TransparencyInput): TransparencyRow {
       title: 'Super Bundle',
       status: 'limited',
       reason:
-        'Notify only. Checkout is off until Stripe is live on this deploy (free-first beta and/or Stripe unset).',
+        'Notify only. Checkout is off until Stripe is live on this deploy (Alpha mute-pay and/or Stripe unset).',
       details: [
         'The logger stays free. Coach depth stays unlocked while FREE_BETA is on.',
-        'When Stripe is live and free-beta is off, Super Bundle checkout appears. Until then: join the notify list.',
+        'When Stripe is live and mute-pay is off, Super Bundle checkout appears. Until then: join the notify list.',
       ],
     };
   }
