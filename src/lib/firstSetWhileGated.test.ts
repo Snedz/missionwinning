@@ -13,9 +13,16 @@ import { isJourneyBypassPath, isPrivateGatePublicPath } from './publicRoutes.ts'
 const root = path.join(import.meta.dirname, '..', '..');
 const read = (p: string) => readFileSync(path.join(root, p), 'utf8');
 
-/** Habit / account surfaces that must stay 307 while gated. */
+/**
+ * Habit / account surfaces that must stay 307 while gated.
+ *
+ * `.839` removed `/log` from this list, not from the guard: Today became the
+ * I-Day landing, so `publicRoutes.ts` lists it in `PRIVATE_GATE_PUBLIC_PATHS`
+ * alongside `/active`. That ship updated `privateGate`, `privateGateNavigate`
+ * and `publicRoutes` tests and missed this one, which then asserted the
+ * opposite of shipped truth. Coach / Fuel / the rest stay here.
+ */
 const MUST_STAY_GATED = [
-  '/log',
   '/coach',
   '/nutrition',
   '/history',

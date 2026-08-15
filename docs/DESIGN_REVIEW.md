@@ -64,6 +64,8 @@ Review on a 390×844 phone viewport first (the Playwright target); desktop secon
 
 | Date | Reviewer | Flows | Issues filed |
 |------|----------|-------|--------------|
+| 2026-08-15 | Gauntlet GNT-1.U3 R4 | Coach two-history (`/coach` + Today) | **PASS (render)** — closes R3's `/coach` 307: the gate is not hit on `npm run dev` once `mw_locale_choice` is seeded. Cold = "2 sessions · mostly strength · ~120 min"; 20 hard logs = "1 sessions · recovery-heavy · ~60 min" + Sat Mobility, each with a WHY-THIS-WEEK-FROM-YOUR-LOGS panel. `U3-R4-*.png`. |
+| 2026-08-15 | Gauntlet GNT-1.U2 R3 · U4 R3 | Today cold/returning/mid-plan · Reentry 3/7/14 | **PASS (render)**, second critic in a parallel session. Adds the measurement R2 did not take: red in `main` **0** (cap 0) on all three Today states by computed background, the one red being the dock hero. zero-state 17/17. `U2-R3-*.png` · `U4-R3-*.png`. |
 | 2026-08-15 | Gauntlet GNT-1.U3 R3 | Today two weeks | **PARTIAL:** A Upper Body Strength · B Recovery. `/coach` still 307. |
 | 2026-08-15 | Gauntlet GNT-1.U4 R2 | Today reentry 3/7/14 | **PASS:** quiet 20-minute lines on `/log`. |
 | 2026-08-15 | Gauntlet GNT-1.U3 R2 | Today two histories | **FAIL** `/coach` 307. Today A/B not a clean dose pair. |
