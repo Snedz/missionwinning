@@ -143,11 +143,11 @@ export function BuilderArrangeStep({
 
         <Button variant="outline" size="sm" className="text-xs min-h-[44px] tap-target" onClick={onQuickMobility}>
           {t('builderQuickMobility', {
-            defaultValue: 'Add mobility warm-up (5 moves)',
+            defaultValue: '+ Quick Add Free Mobility Warm-up (5 moves)',
           })}
         </Button>
         <Button variant="ghost" size="sm" className="text-xs ml-2 min-h-[44px] tap-target" onClick={onLoadHabitStack}>
-          {t('builderLoadHabitStack', { defaultValue: 'Load habit + mobility stack' })}
+          {t('builderLoadHabitStack', { defaultValue: 'Load Free Habit/Mobility Stack' })}
         </Button>
 
         {exercises.map((ex, exIndex) => {
