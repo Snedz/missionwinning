@@ -363,6 +363,32 @@ function checkRatchets(node: GraphNode, root: string, out: Violation[]): void {
 }
 
 /* ------------------------------------------------------------------ *
+ * 6b. Verdicts must settle something real                              *
+ * ------------------------------------------------------------------ */
+
+const CAMPAIGN_ID = /^GNT-\d+$/;
+
+function checkVerdict(node: GraphNode, out: Violation[]): void {
+  if (node.type !== 'verdict') return;
+  const settles = typeof node.fm.settles === 'string' ? node.fm.settles.trim() : '';
+  const campaign = typeof node.fm.campaign === 'string' ? node.fm.campaign.trim() : '';
+  if (!settles && !campaign) {
+    out.push({
+      file: node.file,
+      message:
+        'a verdict must name `settles: H-NN` or `campaign: GNT-n`. A lesson with no subject is a diary entry, and the next spawn cannot use it',
+    });
+    return;
+  }
+  if (campaign && !CAMPAIGN_ID.test(campaign)) {
+    out.push({
+      file: node.file,
+      message: `\`campaign: ${campaign}\` is not \`GNT-n\` — that is the only campaign id this ledger accepts`,
+    });
+  }
+}
+
+/* ------------------------------------------------------------------ *
  * 7. Hypothesis coherence                                              *
  * ------------------------------------------------------------------ */
 
@@ -530,6 +556,7 @@ export function validateGraph(root: string): ValidationResult {
     checkConstraintLiveness(node, root, out);
     checkRatchets(node, root, out);
     checkHypothesis(node, root, out);
+    checkVerdict(node, out);
     checkBehavior(node, events, out);
   }
   checkBudgets(graph, root, out);

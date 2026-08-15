@@ -161,6 +161,8 @@ Own-app stills: `docs/gauntlet/<ID>/evidence/`. Competitor pixels stay local.
 
 Bar as written · full round log · PASS evidence per criterion · remaining gaps · for founder-scored campaigns a map to [EXCELLENCE_RESULT.md](EXCELLENCE_RESULT.md) checklist lines (W1–W4 + C5 at that file’s criteria checklist). Do not write `status: pass`.
 
+The same PR writes a historian `V-NN` under `docs/mechanics/verdicts/` (`campaign: GNT-n`, `learned` one line). A campaign marked `done` with no verdict is a loop the next harvest cannot get smarter from.
+
 ## 8. Queue entry / exit
 
 Exactly **one GRAPH_LOOP row per campaign**. The workbench is not a queue. Builder rounds are ordinary versioned loop PRs under that row. The row’s `done` edit is the baton — only when the campaign report is written.

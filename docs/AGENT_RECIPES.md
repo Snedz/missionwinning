@@ -187,7 +187,7 @@ This recipe wins when the top GRAPH_LOOP `open` row is a campaign (`GNT-*`). The
 4. Verdict: every **written instrument** PASS/FAIL + exactly one “Biggest remaining gap.” A feel sentence is `founder-only, not a builder brief`. Hero-surface passes append a DESIGN_REVIEW §Passes row, Reviewer `Gauntlet <ID>.<U> R<r>`.
 5. LEAD pastes a **valid** verdict verbatim (trio present). Missing stills or “tests passed” is invalid — do not paste; re-spawn the critic. Instrument FAIL → that gap is the next builder brief. Feel-only FAIL is not.
 6. All units green → one SMOOTHER pass → report. Terminal state `ready-for-founder`. Never write `status: pass`.
-7. GRAPH_LOOP campaign row goes `done` only when the report is written.
+7. GRAPH_LOOP campaign row goes `done` only when the report is written. The same PR writes a `V-NN` (`campaign: GNT-n`). `npm run graph` prints that lesson on the next spawn.
 
 **Required tests:** the unit’s named instruments (see the workbench table). Plus the GRAPH_LOOP loop tests if the builder touched `src|app|scripts|supabase`.
 
@@ -250,8 +250,9 @@ hard rule 6) is a thin loader over exactly these steps.
    → [GRAPH_LOOP.md](GRAPH_LOOP.md), whose § *Copy-paste prompt* BANS block you read
    **verbatim** rather than from memory. Then the folder `INDEX.md` you will edit.
 3. **`npm run graph`.** It names the live ticket, the route, the recipe, the
-   workbench and its `Next spawn` line, any `founder`/`blocked` row it skipped, and
-   the monoculture ratchet. It prints; it never edits the queue.
+   workbench and its `Next spawn` line, any `founder`/`blocked` row it skipped,
+   the monoculture ratchet, closed-loop lessons, and — on harvest — the
+   `idea:next` pick. It prints; it never edits the queue.
 4. **Take the route it named**, and only that one — `build` → recipe 11 · `gauntlet`
    → recipe 12 · `harvest` → recipe 13. Not a more interesting row, not two rows.
 5. **One loop, then stop** ([GRAPH_LOOP.md](GRAPH_LOOP.md) loop rule 2). Print

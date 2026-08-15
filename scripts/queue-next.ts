@@ -20,7 +20,11 @@ import path from 'node:path';
 import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { parseQueue } from '../src/lib/loopQueue/parse.ts';
-import { MAX_SINGLE_ROW_RUN, route } from '../src/lib/loopQueue/route.ts';
+import { MAX_SINGLE_ROW_RUN, isCampaign, nowSections, route } from '../src/lib/loopQueue/route.ts';
+import { validateGraph } from '../src/lib/ideaGraph/validate.ts';
+import { readEmittedHistory } from '../src/lib/ideaGraph/derive.ts';
+import { campaignsWithoutVerdict, selectionInputs } from '../src/lib/ideaGraph/learn.ts';
+import { cellKey, scoreOf, selectNext } from '../src/lib/ideaGraph/select.ts';
 
 const root = path.join(path.dirname(fileURLToPath(import.meta.url)), '..');
 const QUEUE = 'docs/GRAPH_LOOP.md';
@@ -95,6 +99,56 @@ function run(): number {
   );
 
   for (const note of r.notes) console.log(`\n  ${yellow('•')} ${note}`);
+
+  const { graph, violations } = validateGraph(root);
+  if (violations.length > 0) {
+    console.log(`\n  ${yellow('•')} idea graph has ${violations.length} violation(s) — \`npm run idea:validate\``);
+  } else {
+    const { candidates, antiLibrary, lessons } = selectionInputs(root, graph);
+    const doneCampaigns = nowSections(queue)
+      .flatMap((s) => s.rows)
+      .filter((row) => isCampaign(row) && row.status === 'done')
+      .map((row) => /GNT-\d+/.exec(`${row.loop} ${row.moves}`)?.[0])
+      .filter((id): id is string => Boolean(id));
+    const missing = campaignsWithoutVerdict(graph, [...new Set(doneCampaigns)]);
+    for (const id of missing) {
+      console.log(
+        `\n  ${yellow('•')} ${id} is done on the queue with no verdict — historian writes a V-NN before the next harvest`
+      );
+    }
+    if (lessons.length > 0) {
+      console.log(bold('\n  Lessons (last loops, oldest first)\n'));
+      for (const lesson of lessons) {
+        const subject = lesson.campaign ?? lesson.settles ?? lesson.id;
+        console.log(field(lesson.id, `${subject} · ${lesson.outcome}`));
+        console.log(field('', dim(lesson.learned)));
+      }
+    }
+    if (r.kind === 'harvest') {
+      const history = readEmittedHistory(root, graph);
+      const { emit } = selectNext(candidates, history, antiLibrary);
+      console.log(bold('\n  Harvest pick (print only — paste is the baton)\n'));
+      if (!emit) {
+        console.log(field('emit', dim('nothing — two empty harvests means stop, do not refill')));
+      } else {
+        console.log(field('emit', `${bold(emit.id)} — ${emit.title}`));
+        console.log(
+          field(
+            '',
+            dim(
+              `${cellKey(emit.behaviorClass, emit.moveClass, emit.costClass)} · score ${scoreOf(emit)} · ${emit.evidence}`
+            )
+          )
+        );
+        console.log(
+          field(
+            'paste',
+            `| **IL-${emit.id}** | ${emit.title} | docs/mechanics/hypotheses/ | \`open\` |`
+          )
+        );
+      }
+    }
+  }
 
   console.log(
     dim(

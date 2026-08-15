@@ -296,3 +296,35 @@ test('an INDEX that stops stating its own budgets fails', () => {
   const found = violations({ 'docs/mechanics/INDEX.md': 'Some prose with no numbers in it.' });
   assert.ok(matches(found, /must state its own budgets/).length === 1);
 });
+
+const VERDICT = [
+  '---',
+  'id: V-01',
+  'type: verdict',
+  'title: GNT-9 closed',
+  'campaign: GNT-9',
+  'outcome: already-true',
+  'evidence: docs/gauntlet/GNT-9.md',
+  'learned: the brief named the wrong axis',
+  '---',
+  '',
+  'One lesson.',
+  '',
+].join('\n');
+
+test('a campaign verdict with no settles validates', () => {
+  assert.deepEqual(violations({ 'docs/mechanics/verdicts/V-01.md': VERDICT }), []);
+});
+
+test('a verdict with neither settles nor campaign fails', () => {
+  const mutant = VERDICT.replace('campaign: GNT-9\n', '');
+  assert.ok(
+    matches(violations({ 'docs/mechanics/verdicts/V-01.md': mutant }), /must name `settles: H-NN` or `campaign: GNT-n`/)
+      .length === 1
+  );
+});
+
+test('a verdict that settles a missing hypothesis fails', () => {
+  const mutant = VERDICT.replace('campaign: GNT-9\n', 'settles: H-99\n');
+  assert.ok(matches(violations({ 'docs/mechanics/verdicts/V-01.md': mutant }), /points at no node/).length === 1);
+});
