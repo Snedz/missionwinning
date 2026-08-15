@@ -25,7 +25,7 @@ U2 (GRAPH_LOOP G4) and U4 (G7) are expected to open evidence-first or `done (alr
 
 | unit | round | builder ref | critic verdict | biggest gap |
 |------|-------|-------------|----------------|-------------|
-| — | — | — | — | — |
+| U1 | 1 | already-true on master `.834` — instruments green (paste below). No product PR. Critic stills not this spawn. | — | Critic: 390×844 stills of set row / rest / ghost / finished + blind A/B measurements vs Hevy/Strong |
 
 ## Evidence dossier (per unit)
 
@@ -33,7 +33,7 @@ Fill as rounds ship. Own-app stills under `GNT-1/evidence/` named `U<n>-R<r>-<be
 
 | unit | stills | instrument paste | A/B (if named) |
 |------|--------|------------------|----------------|
-| U1 | | | |
+| U1 | pending critic | 2026-08-15 builder R1: `npx tsx --test src/lib/workout/lastSetGhost.test.ts src/lib/workout/setTableDensity694.test.ts src/lib/firstSetUngated.test.ts` → **36 pass / 0 fail**. `setTableDensity694`: LogConsole one `primary-action` + `min-h-[52px]`; SetLogRow `min-h-[44px]` + `data-prev-anchor` + `prevLabel`; SetLogTable `min-h-[44px]` + `set-table-prev`; LastSetGhostButton outline, never poster-red; both LogConsole and SetLogTable mount ghost. `lastSetGhost`: last working set not warmup; tombstones skipped. `firstSetUngated`: first-90 TAP_BUDGET stays 5. Source pins: `tests/e2e/first-90.spec.ts` `const TAP_BUDGET = 5`; `tests/e2e/mobile-nav.spec.ts` `const REACH_BUDGET = 2` (not `first-steps-reach.spec.ts`, which is More-checklist reachability). `tests/e2e/logger-depth.spec.ts` exists (set-row-target-empty → rest → Victory). | pending critic |
 | U2 | | | |
 | U3 | | | |
 | U4 | | | |
