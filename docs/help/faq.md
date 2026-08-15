@@ -31,7 +31,7 @@ An estimate of how recovered your muscles are based on recent training — shown
 ## Mission Coach
 
 **Why is Coach locked?**  
-Mission Coach weekly depth is Super Bundle (optional). During free-first beta it is unlocked for everyone and `/bundle` is waitlist-only (Get notified — checkout is not live). After payments go live, upgrade via `/bundle`. The logger is never gated.
+Mission Coach weekly depth is Super Bundle (optional). During Alpha it is unlocked for everyone and `/bundle` is waitlist-only (Get notified — checkout is not live). After payments go live, upgrade via `/bundle`. The logger is never gated.
 
 **Why did my plan change?**  
 Coach adapts when you miss sessions, change equipment, or report low readiness.
@@ -69,10 +69,10 @@ Sign in with the **same email** as Stripe checkout. Wait a minute and refresh Pr
 **Can I share premium with family?**  
 One enrollment per paying email — family plans may come later.
 
-## Privacy and beta
+## Privacy and gate
 
 **Why does the site ask for a password?**  
-Private beta gate — use the password from your invite.
+Invite gate — use the password from your invite.
 
 **How do I delete my data?**  
 Export backup first if needed, then contact support or clear site data locally.

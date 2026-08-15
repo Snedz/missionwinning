@@ -5,7 +5,7 @@
 1. Hard refresh (Ctrl+Shift+R or clear cache).
 2. Try incognito — extensions sometimes block storage.
 3. Update your browser to the latest version.
-4. If on private beta, unlock at `/private` first.
+4. If you see the invite gate, unlock at `/private` first.
 
 ## Password gate / can't get past /private
 

@@ -2,7 +2,7 @@
 
 **Audience:** Founder + the next Hermes / Grok Build / graph agent  
 **Lane:** Engineering-Web (unless a loop says Android)  
-**Status:** ACTIVE 2026-08-14 · web `2026.07-unified.807` · Alpha 0.1.0 · **K residual thin**  
+**Status:** ACTIVE 2026-08-14 · web `2026.07-unified.807` · Alpha 0.1.0 · **N1 done · residual thin**  
 **Does not replace:** [ORCHESTRATION.md](../ORCHESTRATION.md) (what may be built) · [CONTEXT.md](../CONTEXT.md) `## Now` (where we are) · [vision.md](../vision.md) (constitution) · [docs/THESIS.md](THESIS.md) (wedge) · [docs/PLAN.md](PLAN.md) (phases A–I)
 
 This file is the **execution queue** for the agent graph: one concern per loop, spawn, ship, mark done, spawn the next. It is not a second status block and not a license to skip standing hard bans.
@@ -163,6 +163,16 @@ D is done except D4 hold. Founder skipped phone. Goal: leftover empty rooms + le
 |---|------|-------|--------|
 | **K1** | Builder category empty | `ProgramTemplatesPanel` dead `<p>` → EmptyState `/active` | `done` — `.806` this PR |
 | **K2** | www CTA leftover | `Get an invite` / `when the beta opens` vs Alpha | `done` — `.807` this PR |
+
+### Now — N1 (plan after `.807`)
+
+K residual was thin. Founder Execute of `.hermes/plans/2026-08-14_200951-next-after-807.md`.
+
+| # | Loop | Moves | Status |
+|---|------|-------|--------|
+| **N1** | Help markdown Alpha frame | `docs/help` names Alpha, not free-first / open / private beta | `done` — this PR |
+
+Do not invent N2. D4 stays hold.
 
 ### After H0 (orientation — not open until H0-1…H0-7 are done or `founder`)
 

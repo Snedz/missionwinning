@@ -73,6 +73,6 @@ Product analytics (PostHog) stay **off** until you allow them in the first-visit
 
 - Premium content is server-gated — not hidden only in the client.
 - Payment webhooks are verified; we never store full card numbers.
-- Private beta uses a password gate — do not share gate passwords in public channels.
+- The invite gate uses a password — do not share gate passwords in public channels.
 
 Technical detail for operators: [PROTECTION.md](../PROTECTION.md) (developers).

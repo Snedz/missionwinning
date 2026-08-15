@@ -58,9 +58,9 @@ Fuel can **match today’s training** from your local workout log (same rules as
 
 Rings and “remaining” use the adjusted budget. **Edit targets** still edits your **base**; use **Use base** to turn off the train-day flex. Week bars stay vs base for a stable trend.
 
-## Free vs open beta
+## Free vs Alpha
 
-| Always free | Open beta (current) | Paid Super Bundle (when re-enabled) |
+| Always free | Alpha (current) | Paid Super Bundle (when re-enabled) |
 |-------------|---------------------|-------------------------------------|
 | Logger, search, barcode, photo path, recipes core | Full depth unlocked | Fuel Coach plans / deeper content |
 
