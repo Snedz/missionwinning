@@ -72,6 +72,28 @@ test.describe('Logger depth @gate', () => {
       timeout: 15_000,
     });
   });
+
+  test('logging a set does not scroll the phone sideways', async ({ page }) => {
+    await page.goto('/active', { waitUntil: 'domcontentloaded' });
+    const justGo = page.getByRole('button', { name: /start just go/i });
+    await expect(justGo).toBeVisible({ timeout: 15_000 });
+    await justGo.click();
+
+    const logBtn = page.getByRole('button', { name: /^log set$/i });
+    await expect(logBtn).toBeVisible({ timeout: 10_000 });
+    await logBtn.click();
+
+    await expect(page.getByTestId('set-row-rate')).toBeVisible({ timeout: 10_000 });
+    const geom = await page.evaluate(() => ({
+      scroll: document.documentElement.scrollWidth,
+      inner: window.innerWidth,
+    }));
+    expect(geom.inner, 'default project is 390×844').toBe(390);
+    expect(
+      geom.scroll,
+      `logging a set scrolled the page sideways (${geom.scroll} vs ${geom.inner})`
+    ).toBe(geom.inner);
+  });
 });
 
 /**
