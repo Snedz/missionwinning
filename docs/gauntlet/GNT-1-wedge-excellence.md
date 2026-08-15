@@ -4,7 +4,7 @@
 **Product:** the evidence dossier that makes the founder’s phone walk a confirmation.  
 **Terminal agent state:** in-campaign. Only the founder writes `status: pass` in [EXCELLENCE_RESULT.md](../EXCELLENCE_RESULT.md). Do not mark AL1 `done` until the campaign report exists. Do not open GNT-2.
 
-**Next spawn:** `LEAD · GNT-1 after U1 R3 critic` — U1 R3 critic cell filled (instruments 32/32 on `npm run dev`). Do **not** raise TAP_BUDGET. Do **not** write `status: pass`.
+**Next spawn:** `CRITIC · GNT-1 U5 R2` — U1 stopped (written bar met, budget 3). Oldest unclosed FAIL is U5 R1 (walk aborted at I-Day). Do not treat the U1 Peak-End FEEL as a U1 R4 builder brief. Do **not** write `status: pass`. `npm run dev` critic boot stays the law.
 
 Unused cap is success. The cap counts only PRs that touch `src|app|scripts|supabase`. U1/U2 already-true did not spend it. `.839`, `.840` and `.841` spent it. Do not merge `cursor/gnt-1-report-f368` (#656) — it closed AL1 against a stack that is not this master.
 
