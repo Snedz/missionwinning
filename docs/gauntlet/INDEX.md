@@ -10,7 +10,7 @@ Closed campaigns rotate to [docs/archive/](../archive/INDEX.md) the same way LOG
 | id | Title | Status | Workbench | GRAPH_LOOP row |
 |----|-------|--------|-----------|----------------|
 | **GNT-1** | Wedge excellence | `ready-for-founder` | [GNT-1-wedge-excellence.md](GNT-1-wedge-excellence.md) | **AL1** (`done`) |
-| **GNT-2** | Coach plan quality eval harness | `open` | [GNT-2-coach-plan-quality.md](GNT-2-coach-plan-quality.md) | **AM1** |
+| **GNT-2** | Coach plan quality eval harness | `ready-for-founder` | [GNT-2-coach-plan-quality.md](GNT-2-coach-plan-quality.md) | **AM1** (`done`) |
 
 **Naming trap:** `GNT-n` is not GRAPH_LOOP G1, not PFT G1–G8, not journey/build phases. See root [INDEX.md](../../INDEX.md) §2.
 
@@ -18,6 +18,6 @@ Closed campaigns rotate to [docs/archive/](../archive/INDEX.md) the same way LOG
 
 Largest unbarred dimension after the wedge dossier. **Instrument first:** logged-history → expected dose / progression / recovery envelopes, no date literals, plus reference-programme *structure* bands (structures, never copied text — originality-log discipline). Units = plan dimensions (dose bands · progression on green logs · deload/adapt on missed or high-strain weeks · exercise-selection sanity).
 
-Opened on its written gate — GNT-1's report is done, so the campaign is eligible. **U1–U4 critic PASS (engine).** SMOOTHER R1 walked Today / Train / Victory at 390×844; Coach 307→`/private` on the :3000 host (gate). Next spawn: LEAD writes the report (`ready-for-founder`). Details in [GNT-2-coach-plan-quality.md](GNT-2-coach-plan-quality.md).
+Opened on its written gate — GNT-1's report is done, so the campaign is eligible. **Report written. Status `ready-for-founder`.** U1–U4 critic PASS (engine). SMOOTHER R1 walked Today / Train / Victory at 390×844; Coach 307→`/private` on the :3000 host (gate). 5 of ≤10 build PRs spent (only `.845` changed the planner). Next spawn: founder walk against the report. Do not write `status: pass`. Do not invent AM2. Details in [GNT-2-coach-plan-quality.md](GNT-2-coach-plan-quality.md).
 
 It shipped as a colocated test rather than the sketched `scripts/coach-eval.mjs` ↔ test pair: a new npm check would have to be wired into the gate or `NOT_RUN` (`ciTruth.test.ts`), and a new gate step drags [CLAUDE.md](../../CLAUDE.md) §4 in with it (`gateDocParity.test.ts`). A test-only ratchet is the same pattern the repo already uses for `firstPaintFloor` and `designWeights`, and it runs in `npm test` today.
