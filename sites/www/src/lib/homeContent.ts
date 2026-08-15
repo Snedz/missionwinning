@@ -121,7 +121,7 @@ export const NAV_LINKS = [
 
 export const CTA = {
   label: 'Get an invite',
-  reassurance: 'One email when the beta opens, one at launch.',
+  reassurance: 'One email when Alpha is public. Logger stays free forever.',
 };
 
 /*
