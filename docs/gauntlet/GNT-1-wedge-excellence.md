@@ -1,12 +1,12 @@
 # GNT-1 — Wedge excellence gauntlet
 
-**Status:** `open` · GRAPH_LOOP **AL1** · hard cap **≤14 build PRs** (3 spent: `.835` `.836` `.837`)  
+**Status:** `open` · GRAPH_LOOP **AL1** · hard cap **≤14 build PRs** (4 spent: `.835` `.836` `.837` `.839`)  
 **Product:** the evidence dossier that makes the founder’s phone walk a confirmation.  
-**Terminal agent state:** `ready-for-founder`. Only the founder writes `status: pass` in [EXCELLENCE_RESULT.md](../EXCELLENCE_RESULT.md).
+**Terminal agent state:** in-campaign. Only the founder writes `status: pass` in [EXCELLENCE_RESULT.md](../EXCELLENCE_RESULT.md). Do not mark AL1 `done` until the campaign report exists. Do not open GNT-2.
 
-**Next spawn:** `ready-for-founder` — U2/U4 PASS. U3 Today two-week docks differ; `/coach` still 307. Do not write `status: pass`.
+**Next spawn:** `CRITIC · GNT-1 U1 R2` — oldest FAIL is U1 R1 (Continue landed `/active`). `.839` ships Continue → `/log` and first-90 green. Critic that on `npm run dev` (ungated) at 390×844. Do **not** `next start` — a gated boot 307s `/coach` (U3 leftover); that is not a builder brief and is not a PRIVATE_MODE flip. Do **not** write `status: pass`.
 
-Unused cap is success. The cap counts only PRs that touch `src|app|scripts|supabase`. U1/U2 already-true did not spend it.
+Unused cap is success. The cap counts only PRs that touch `src|app|scripts|supabase`. U1/U2 already-true did not spend it. `.839` spent it. Do not merge `cursor/gnt-1-report-f368` (#656) — it closed AL1 against a stack that is not this master.
 
 Split by the **five founder criteria** (not the four surfaces). Surfaces cross-cut them.
 
@@ -40,6 +40,7 @@ U2 (GRAPH_LOOP G4) and U4 (G7) opened evidence-first / already-true. The dossier
 | unit | round | builder ref | critic verdict | biggest gap |
 |------|-------|-------------|----------------|-------------|
 | U1 | 1 | already-true on master `.834` — unit pins green. | **FAIL** — first-90 cold visitor: expected `/log`, got `/active`. Logger stills exist. | I-Day Continue lands on `/active` (Active dump), not Today |
+| U1 | 2 | already-true on origin/master `.839` — `idayFinishPath` cold → `/log`; `/log` gate-public; first-90 cold visitor green per LOG. Coach stays gated in production. No product this spawn. | | |
 | U2 | 2 | `.839` `/log` gate-public | **PASS** (Today stills + zero-state `/log` green 3.4s). Cold = one dock Just Go. | Sign-in chip on returning stills — not the dock |
 | U3 | 3 | Today two injected weeks (plan cleared). `/coach` 307. | **PARTIAL** — Today A dock Upper Body Strength; B Recovery & Mobility. Engine 2/2. No `/coach` stills. | `/coach` stills (gate cookie) |
 | U4 | 2 | `/log` public after `.839` | **PASS** — quiet lines on Today: 3/7/14 days off + 20-minute version. Guard 5/5. No streak-guilt. | — |

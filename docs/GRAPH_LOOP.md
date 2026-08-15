@@ -390,7 +390,7 @@ Not AK2. Protocol + GNT-1 workbench. Grading, not a second queue.
 
 | # | Loop | Moves | Status |
 |---|------|-------|--------|
-| **AL1** | Gauntlet GNT-1 wedge excellence | [docs/GAUNTLET_LOOP.md](GAUNTLET_LOOP.md) + [docs/gauntlet/GNT-1-wedge-excellence.md](gauntlet/GNT-1-wedge-excellence.md). Next action is the workbench **Next spawn** line. `done` only when the campaign report is written | `open` |
+| **AL1** | Gauntlet GNT-1 wedge excellence | [docs/GAUNTLET_LOOP.md](GAUNTLET_LOOP.md) + [docs/gauntlet/GNT-1-wedge-excellence.md](gauntlet/GNT-1-wedge-excellence.md). Next spawn: **CRITIC · GNT-1 U1 R2**. `done` only when the campaign report is written. Do not invent AL2. Do not open GNT-2. | `open` |
 
 D4 stays hold. Do not invent AL2.
 
