@@ -2,7 +2,7 @@
 
 **Audience:** Founder + the next Hermes / Grok Build / graph agent  
 **Lane:** Engineering-Web (unless a loop says Android)  
-**Status:** ACTIVE 2026-08-15 · web `2026.07-unified.828` · Alpha 0.1.0 · **AE1 done · residual thin**  
+**Status:** ACTIVE 2026-08-15 · web `2026.07-unified.829` · Alpha 0.1.0 · **AF1 done · residual thin**  
 **Does not replace:** [ORCHESTRATION.md](../ORCHESTRATION.md) (what may be built) · [CONTEXT.md](../CONTEXT.md) `## Now` (where we are) · [vision.md](../vision.md) (constitution) · [docs/THESIS.md](THESIS.md) (wedge) · [docs/PLAN.md](PLAN.md) (phases A–I)
 
 This file is the **execution queue** for the agent graph: one concern per loop, spawn, ship, mark done, spawn the next. It is not a second status block and not a license to skip standing hard bans.
@@ -323,6 +323,16 @@ Not AD2. Today progress leftover. #621 shipped the test only.
 | **AE1** | Today progress first-paint | CTAs + wins chrome match pack. Drift cap 176 | `done` — `.828` this PR |
 
 D4 stays hold. Do not invent AE2.
+
+### Now — AF (Continue after AE · 2026-08-15)
+
+Not AE2. Journal strip leftover. plannedRest import is already `@/lib/plannedRest` (stale webpack).
+
+| # | Loop | Moves | Status |
+|---|------|-------|--------|
+| **AF1** | Today journal strip | Log check-in →. Drift cap 174 | `done` — `.829` this PR |
+
+D4 stays hold. Do not invent AF2.
 
 ### After H0 (orientation — not open until H0-1…H0-7 are done or `founder`)
 
