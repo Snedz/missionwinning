@@ -119,10 +119,9 @@ describe('first set while gated (.768)', () => {
     const helper = read('src/lib/workout/resolveActiveEmptyStart.ts');
     const emptyStart = read('src/page-components/ActiveWorkoutPage.tsx');
     const emptyUi = read('src/components/workout/ActiveEmptyState.tsx');
-    const handle = emptyStart.slice(
-      emptyStart.indexOf('const handleEmptyStart'),
-      emptyStart.indexOf('if (!activeWorkout)')
-    );
+    const startAt = emptyStart.indexOf('const handleEmptyStart');
+    assert.ok(startAt >= 0, 'handleEmptyStart missing');
+    const handle = emptyStart.slice(startAt, startAt + 700);
     assert.doesNotMatch(helper, /justGoSession|buildJustGoSession|previewJustGo/);
     assert.match(handle, /Do not seed Just Go/);
     assert.doesNotMatch(handle, /previewJustGoForEquipment|startWorkout\(preview/);

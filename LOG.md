@@ -157,15 +157,15 @@ Label `.826` (onto `.825`).
 
 Excellence-Override: logger no side-scroll (G1 hotfix; RESULT unscored)
 
-## 2026-08-15 — Guards match shipped first-paint; planned rest leaves rewards (`.825`)
+## 2026-08-14 — Learn locked preview matches the pack (`.822`)
 
-Eleven unit tests were red on master. Four were copy twins of first-paint. `/help` was off two maps. Streaks read planned rest through `rewards/`, so C2/C7 fired.
+The locked intro CTA first-painted without the arrow.
 
-**Ship:** planned rest → `src/lib/plannedRest*.ts`. Honesty tests match the pack. `/help` gated + mapped. Programs catalog exempt from CoachLogCite. Close #621's half-rotate of `.808`.
+**Ship:** Read intro chapter →. Drift 186 → 185.
 
-Label `.825` (onto master `.822`; #621 titled `.823` without bumping the label).
+Label `.822` (onto master `.821`).
 
-Excellence-Override: guard drift (hotfix; RESULT unscored)
+Excellence-Override: Learn locked preview (surface; RESULT unscored)
 
-Rotated LOG oldest → [docs/archive/log/LOG-rotate-822-for-839.md](docs/archive/log/LOG-rotate-822-for-839.md).
+Rotated LOG oldest → [docs/archive/log/LOG-rotate-825-for-839.md](docs/archive/log/LOG-rotate-825-for-839.md).
 
