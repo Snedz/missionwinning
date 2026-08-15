@@ -262,7 +262,7 @@ function driftingCalls(): string[] {
  * The cap went up because the merge landed real UI, not because first-paint
  * got sloppier. Down only from here.
  */
-const MAX_FIRST_PAINT_COPY_DRIFT = 201;
+const MAX_FIRST_PAINT_COPY_DRIFT = 195;
 
 test('first-paint copy drift only ever decreases', () => {
   const drifting = driftingCalls();

@@ -117,7 +117,7 @@ export function LearnPage() {
     <PillarPageShell
       icon={BookOpen}
       eyebrow={t('learnEyebrow', { defaultValue: 'Learn' })}
-      title={t('learnTitle', { defaultValue: 'Learn' })}
+      title={t('learnTitle', { defaultValue: 'Learn & Master' })}
       subtitle={
         freeBeta
           ? t('learnSubtitleBriefOpenBeta', {
@@ -146,9 +146,9 @@ export function LearnPage() {
           {filteredPaths.length === 0 && (
             <EmptyState
               icon={BookOpen}
-              title={t('learnNoMatches', { defaultValue: 'No paths match' })}
+              title={t('learnNoMatches', { defaultValue: 'No paths match that search.' })}
               description={t('learnNoMatchesDesc', {
-                defaultValue: 'Try another keyword, or clear search.',
+                defaultValue: 'Try a different keyword, or clear search to see all free paths.',
               })}
               actionLabel={t('learnClearSearch', { defaultValue: 'Clear search' })}
               onAction={() => setPathQuery('')}
@@ -247,7 +247,7 @@ export function LearnPage() {
               <div className="flex flex-wrap gap-2">
                 <Button variant="outline" size="sm" className="min-h-[44px] tap-target" asChild>
                   <Link href="/learn/guide">
-                    {t('learnOpenGuidebook', { defaultValue: 'Open Guidebook' })}
+                    {t('learnOpenGuidebook', { defaultValue: 'Open Guidebook →' })}
                   </Link>
                 </Button>
                 <Button variant="outline" size="sm" className="min-h-[44px] tap-target" asChild>
@@ -275,7 +275,7 @@ export function LearnPage() {
                   router.push('/active');
                 }}
               >
-                {t('learnSampleBtn', { defaultValue: 'Start bodyweight sample' })}
+                {t('learnSampleBtn', { defaultValue: 'Start Bodyweight Sample →' })}
               </Button>
             </div>
 
@@ -298,7 +298,7 @@ export function LearnPage() {
                 </p>
                 <Button variant="outline" size="sm" className="min-h-[44px] tap-target" asChild>
                   <Link href="/learn/course">
-                    {t('learnOpenCourses', { defaultValue: 'Open specialist courses' })}
+                    {t('learnOpenCourses', { defaultValue: 'Open specialist courses →' })}
                   </Link>
                 </Button>
               </div>
