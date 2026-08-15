@@ -11,7 +11,7 @@ Welcome to Mission Winning — a free workout tracker and health companion that 
 
 No app store required.
 
-## Private beta gate
+## Invite gate
 
 If you see the **gate** (`/private`), tap **Log a set** — no access code and no account. That opens I-Day, then Train. Super Bundle checkout is not open — leave an email to get notified (no charge). Invited testers can still enter a code.
 
