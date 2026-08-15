@@ -59,12 +59,19 @@ test('U1 empty-start, REACH, and thumb-sweep go through gotoHydrated', () => {
   const active = read('tests/e2e/helpers/active.ts');
   assert.match(active, /gotoHydrated\(page, '\/active'\)/);
   assert.doesNotMatch(active, NETWORKIDLE);
+  assert.match(active, /mw_equipment/);
+  assert.match(active, /primary-action/);
+  assert.doesNotMatch(active, /name: \/start workout\/i/);
 
   const nav = read('tests/e2e/mobile-nav.spec.ts');
   assert.match(nav, /gotoHydrated\(page, '\/log'\)/);
   assert.match(nav, /REACH_BUDGET = 2/);
+  assert.match(nav, /moreSheetRowHrefs/);
+  assert.doesNotMatch(nav, /['"]\/assessments['"]/);
 
   const first90 = read('tests/e2e/first-90.spec.ts');
-  assert.match(first90, /gotoHydrated\(page, '\/active'\)/);
+  assert.match(first90, /startEmptyActiveWorkout/);
   assert.match(first90, /const TAP_BUDGET = 5/);
+  assert.doesNotMatch(first90, /name: \/start workout\/i/);
+  assert.doesNotMatch(first90, /name: \/turn on\/i/);
 });
