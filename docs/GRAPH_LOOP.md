@@ -2,7 +2,7 @@
 
 **Audience:** Founder + the next Hermes / Grok Build / graph agent  
 **Lane:** Engineering-Web (unless a loop says Android)  
-**Status:** ACTIVE 2026-08-15 · web `2026.07-unified.848` · Alpha 0.1.0 · **AL1 done — GNT-1 `ready-for-founder` · AM1 open — GNT-2 U3 R1 critic PASS (engine), LEAD commissions U4 next**  
+**Status:** ACTIVE 2026-08-15 · web `2026.07-unified.849` · Alpha 0.1.0 · **AL1 done — GNT-1 `ready-for-founder` · AM1 open — GNT-2 U1–U4 critic PASS (engine), SMOOTHER next**  
 **Does not replace:** [ORCHESTRATION.md](../ORCHESTRATION.md) (what may be built) · [CONTEXT.md](../CONTEXT.md) `## Now` (where we are) · [vision.md](../vision.md) (constitution) · [docs/THESIS.md](THESIS.md) (wedge) · [docs/PLAN.md](PLAN.md) (phases A–I)
 
 This file is the **execution queue** for the agent graph: one concern per loop, spawn, ship, mark done, spawn the next. It is not a second status block and not a license to skip standing hard bans.
@@ -62,7 +62,7 @@ command. Rows it produced are prefixed `IL-`.
 Nothing else about this file changes. One `open` row at a time, one concern per
 PR, and the `done` edit is still the baton.
 
-### Which row is live (`.849`)
+### Which row is live (`.850`)
 
 `npm run queue:next` answers that by **reading this file** — the `## Queue` region
 only, tables addressed by header name, status taken from the parsed Status cell.
@@ -452,7 +452,7 @@ Not AL2. GNT-2 opened on its own written gate — *"enters GRAPH_LOOP only after
 
 | # | Loop | Moves | Status |
 |---|------|-------|--------|
-| **AM1** | Gauntlet GNT-2 coach plan quality | [docs/gauntlet/GNT-2-coach-plan-quality.md](gauntlet/GNT-2-coach-plan-quality.md). U1–U3 closed (engine). Next spawn is the workbench LEAD U4 line | `open` |
+| **AM1** | Gauntlet GNT-2 coach plan quality | [docs/gauntlet/GNT-2-coach-plan-quality.md](gauntlet/GNT-2-coach-plan-quality.md). U1–U4 critic PASS (engine). Next spawn is the workbench SMOOTHER line, then the campaign report. Do not mark this row `done` until the report is written | `open` |
 
 D4 stays hold. Do not invent AM2.
 

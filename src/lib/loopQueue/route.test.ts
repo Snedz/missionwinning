@@ -15,7 +15,7 @@ import { mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'nod
 import { tmpdir } from 'node:os';
 import path from 'node:path';
 import { parseQueue, type ParsedQueue } from './parse.ts';
-import { MAX_SINGLE_ROW_RUN, isCampaign, nowSections, route, singleRowRun } from './route.ts';
+import { MAX_SINGLE_ROW_RUN, isCampaign, nowSections, readWorkbench, route, singleRowRun, type Role } from './route.ts';
 
 const root = path.join(import.meta.dirname, '..', '..', '..');
 const source = () => readFileSync(path.join(root, 'docs/GRAPH_LOOP.md'), 'utf8');
@@ -133,6 +133,42 @@ test('an exhausted campaign budget is reported rather than spent', () => {
   assert.equal(r.kind, 'gauntlet', 'an exhausted budget must still route to the campaign, not away from it');
   assert.equal(r.workbench?.cap?.spent, cap.cap);
   assert.match(r.notes.join(' '), /budget exhausted means LEAD writes the report/);
+  rmSync(tmp, { recursive: true, force: true });
+});
+
+/**
+ * Replayed from the real `Next spawn` lines this campaign has actually carried.
+ *
+ * The SMOOTHER line is the one that caught the defect: scanning `ROLES` in
+ * declaration order reported `LEAD`, because LEAD appears later in the sentence
+ * as the step *after* the smoother, and a bare `U\d` scan reported `U1` out of
+ * the range "U1–U4". Both answers have to come from the sentence.
+ */
+test('the Next spawn reader takes the role the sentence names, not the first one it knows', () => {
+  const cases: { line: string; role: Role | null; unit: string | null; round: string | null }[] = [
+    {
+      line: '**Next spawn:** SMOOTHER — U1–U4 critic PASS (engine). Walk Train / Today / Victory / Coach. Then LEAD writes the campaign report (`ready-for-founder`).',
+      role: 'SMOOTHER',
+      unit: null,
+      round: null,
+    },
+    { line: '**Next spawn:** LEAD on **U4 R1** — U3 R1 critic PASS (engine).', role: 'LEAD', unit: 'U4', round: 'R1' },
+    { line: '**Next spawn:** BUILDER on **U1** — wire `loadZone` into the split.', role: 'BUILDER', unit: 'U1', round: null },
+    { line: '**Next spawn:** CRITIC on **U4 R1** — the instrument is written and green.', role: 'CRITIC', unit: 'U4', round: 'R1' },
+    { line: '**Next spawn:** `ready-for-founder` — every unit now has render evidence.', role: null, unit: null, round: null },
+  ];
+
+  const tmp = mkdtempSync(path.join(tmpdir(), 'loopqueue-spawn-'));
+  mkdirSync(path.join(tmp, 'docs/gauntlet'), { recursive: true });
+  const row = { ...real().rows[0], moves: '[wb](gauntlet/GNT-9-replay.md)' };
+
+  for (const c of cases) {
+    writeFileSync(path.join(tmp, 'docs/gauntlet/GNT-9-replay.md'), `# GNT-9\n\n${c.line}\n`);
+    const wb = readWorkbench(tmp, row);
+    assert.equal(wb?.role, c.role, `role from: ${c.line.slice(0, 60)}…`);
+    assert.equal(wb?.unit, c.unit, `unit from: ${c.line.slice(0, 60)}…`);
+    assert.equal(wb?.round, c.round, `round from: ${c.line.slice(0, 60)}…`);
+  }
   rmSync(tmp, { recursive: true, force: true });
 });
 

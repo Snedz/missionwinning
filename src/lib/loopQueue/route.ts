@@ -119,9 +119,30 @@ export function readWorkbench(root: string, row: QueueRow): Workbench | null {
 
   // GNT-1's line opens `ready-for-founder` with no role at all, so every field
   // here is optional. An absent role is reported, not guessed at.
-  const role = nextSpawn ? (ROLES.find((r) => new RegExp(`\\b${r}\\b`).test(nextSpawn)) ?? null) : null;
-  const unit = nextSpawn ? (/\bU(\d+)\b/.exec(nextSpawn)?.[0] ?? null) : null;
-  const round = nextSpawn ? (/\bR(\d+)\b/.exec(nextSpawn)?.[0] ?? null) : null;
+  //
+  // Both readers below are positional on purpose, and both were wrong once.
+  //
+  // `ROLES.find(...)` scanned in *this file's* declaration order, so the
+  // SMOOTHER line — "SMOOTHER — U1–U4 critic PASS … Then LEAD writes the
+  // campaign report" — reported `LEAD`, because LEAD is first in the array and
+  // is mentioned as the step *after* this one. The answer has to come from the
+  // sentence, not from how the constant happens to be sorted.
+  const role =
+    nextSpawn === null
+      ? null
+      : (ROLES.map((r) => ({ r, at: nextSpawn.search(new RegExp(`\\b${r}\\b`)) }))
+          .filter((x) => x.at >= 0)
+          .sort((a, b) => a.at - b.at)[0]?.r ?? null);
+
+  // The unit is only ever written as `<ROLE> on **U<n> R<r>**`. A bare scan for
+  // `U\d` picked `U1` out of the range "U1–U4", which describes what is already
+  // done rather than what to do next — and a SMOOTHER round has no unit at all.
+  const assignment =
+    role && nextSpawn
+      ? new RegExp(`\\b${role}\\b\\s+on\\s+\\*{0,2}(U\\d+)(?:\\s+(R\\d+))?`).exec(nextSpawn)
+      : null;
+  const unit = assignment?.[1] ?? null;
+  const round = assignment?.[2] ?? null;
 
   const capLine = /hard cap\s+\*\*≤(\d+)\s+build PRs\*\*\s*\((\d+)\s+spent/.exec(src);
   const cap = capLine ? { cap: Number(capLine[1]), spent: Number(capLine[2]) } : null;
