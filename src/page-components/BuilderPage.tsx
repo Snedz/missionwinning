@@ -23,6 +23,7 @@ const ProgramTemplatesPanel = dynamic(
     ),
   }
 );
+import { FREE_TEMPLATE_PROGRAM_COUNT } from "@/components/builder/ProgramTemplatesPanel";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -320,7 +321,10 @@ export function BuilderPage() {
             {t('builderTemplatesTitle', { defaultValue: 'Program Templates' })}
           </h3>
           <Badge variant="secondary">
-            {t('builderProgramCount', { defaultValue: 'Free programs' })}
+            {t('builderProgramCount', {
+              count: FREE_TEMPLATE_PROGRAM_COUNT,
+              defaultValue: '{{count}} programs',
+            })}
           </Badge>
         </div>
         <p className="text-xs text-muted-foreground">
@@ -413,7 +417,7 @@ export function BuilderPage() {
           )}
         </div>
       ) : (
-        <EmptyState icon={PenTool} title={t('builderNoSaved', { defaultValue: 'No saved routines yet' })} description={t('builderNoSavedDesc', {
+        <EmptyState icon={PenTool} title={t('builderNoSaved', { defaultValue: 'No saved workouts yet. Build one above or load a template.' })} description={t('builderNoSavedDesc', {
             defaultValue: 'Build a workout and save it — your routines appear here.',
           })}
           actionLabel={t('builderStartBlank', { defaultValue: 'Blank workout' })}
