@@ -4,7 +4,7 @@
 **Product:** the evidence dossier that makes the founder’s phone walk a confirmation.  
 **Terminal agent state:** `ready-for-founder`. Only the founder writes `status: pass` in [EXCELLENCE_RESULT.md](../EXCELLENCE_RESULT.md).
 
-**Next spawn:** `ready-for-founder` — U2/U4 Today stills PASS. U3 still no `/coach` render. first-90 green. Do not write `status: pass`.
+**Next spawn:** `ready-for-founder` — U2/U4 PASS. U3 Today two-week docks differ; `/coach` still 307. Do not write `status: pass`.
 
 Unused cap is success. The cap counts only PRs that touch `src|app|scripts|supabase`. U1/U2 already-true did not spend it.
 
@@ -41,7 +41,7 @@ U2 (GRAPH_LOOP G4) and U4 (G7) opened evidence-first / already-true. The dossier
 |------|-------|-------------|----------------|-------------|
 | U1 | 1 | already-true on master `.834` — unit pins green. | **FAIL** — first-90 cold visitor: expected `/log`, got `/active`. Logger stills exist. | I-Day Continue lands on `/active` (Active dump), not Today |
 | U2 | 2 | `.839` `/log` gate-public | **PASS** (Today stills + zero-state `/log` green 3.4s). Cold = one dock Just Go. | Sign-in chip on returning stills — not the dock |
-| U3 | 2 | no `/coach` (307). Today A/B stills taken. | **FAIL** (no Coach render PASS) — today-a still showed leftover `Full body B` plan; today-b same dock + 20-day streak. Engine 2/2. | Two-history `/coach` stills (route gated) |
+| U3 | 3 | Today two injected weeks (plan cleared). `/coach` 307. | **PARTIAL** — Today A dock Upper Body Strength; B Recovery & Mobility. Engine 2/2. No `/coach` stills. | `/coach` stills (gate cookie) |
 | U4 | 2 | `/log` public after `.839` | **PASS** — quiet lines on Today: 3/7/14 days off + 20-minute version. Guard 5/5. No streak-guilt. | — |
 | U5 | 1 | `.837` — TAP_BUDGET=5 + firstPaintFloor 167 **named** (copy-drift, not 90s). | **FAIL** at critic time — first-90 expected `/log`, got `/active`. **Closed by `.839`.** | I-Day Continue must land Today — done `.839` |
 | Smoother | 1 | `.839` already on tip — first-90 green. | logged — DESIGN_REVIEW row + §10 ritual. `check-design-system` 1116 files / 0 drift. | U2–U4 on-Today stills |
@@ -54,7 +54,7 @@ Fill as rounds ship. Own-app stills under `GNT-1/evidence/` named `U<n>-R<r>-<be
 |------|--------|------------------|-------------------------|
 | U1 | `U1-R1-set-row.png` · `U1-R1-rest.png` · `U1-R1-ghost.png` · `U1-R1-finished.png` · `U1-R1-first-90-landed-active.png` | **2026-08-15 critic R1 e2e (paste):** `npx playwright test tests/e2e/logger-depth.spec.ts tests/e2e/first-90.spec.ts:32 --project=mobile-chrome` → first-90 cold visitor **FAIL** `Expected pattern: /\\/log/` `Received: http://localhost:3000/active` (timeout 15s). logger-depth empty-start **FAIL** `page.goto /active waitUntil networkidle` hit 60s test timeout. Unit pins (36) still green. Stills: one red Log set; rest 1:21 + Skip; PREV column present (underscore on first Just Go); finish = Session locked + red NEXT. | no founder FLOORS — do not FAIL |
 | U2 | R2: `U2-R2-cold.png` · `U2-R2-returning.png` · `U2-R2-mid-plan.png`. R1 Notify-me kept as historical fail. | **2026-08-15 R2:** `npx playwright test tests/e2e/zero-state.spec.ts -g "/log offers"` → **1 passed (4.1s)**. Cold dock = Chest Just Go. | no founder FLOORS |
-| U3 | `U3-R2-today-history-a.png` · `U3-R2-today-history-b.png`. `/coach` 307 skipped. | Engine still 2/2. Today-a contaminated by leftover `mw_coach_plan` (Full body B). Today-b: 6 days logged + 20-day streak, same dock. Not a Coach render PASS. | — |
+| U3 | R3: `U3-R3-today-history-a.png` (Upper Body Strength) · `U3-R3-today-history-b.png` (Recovery & Mobility). `/coach` 307. | Injected generateWeek-shaped plans after clearing `mw_coach_plan`. Today docks differ. Engine `gnt1HistoryDose` 2/2. | — |
 | U4 | `U4-R2-missed-3.png` · `U4-R2-missed-7.png` · `U4-R2-missed-14.png` | **2026-08-15 R2:** dock lines “Seven days off. Here's the 20-minute version.” / “14 days off…”. Guard 5/5. No you-missed / streak-guilt. | no founder FLOORS |
 | U5 | `U5-R1-cold-open.png` (first-90 fail: landed `/active`). first-set / victory / clear-next **not taken** — walk never reached Today. | **2026-08-15 critic R1:** `npx tsx --test src/lib/gnt1First90.test.ts` → **3 pass / 0 fail**. `npx playwright test tests/e2e/first-90.spec.ts:32 --project=mobile-chrome` → **FAIL** `Expected /\\/log/` `Received http://localhost:3000/active`. Timed ≤90s walk aborted at I-Day. firstPaintFloor 167 is not this bar. | no founder FLOORS — do not FAIL |
 | Smoother | DESIGN_REVIEW ritual + Passes row this PR. | `npm run check-design-system` → 1116 files scanned, 12 allowlisted, 0 drift. first-90 green on `.839`. | — |
