@@ -57,6 +57,7 @@ Review on a 390×844 phone viewport first (the Playwright target); desktop secon
 ## Cadence
 
 - Full pass before any public flip; then quarterly (pairs with the a11y quarterly in the standing queues).
+- Gauntlet critics append a §Passes row, Reviewer `Gauntlet <ID>.<U> R<r>` — no second review log.
 - Log each pass: date + flows covered + Issues filed, appended below.
 
 ## Passes
