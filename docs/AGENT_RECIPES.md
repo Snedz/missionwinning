@@ -235,7 +235,7 @@ rather than another letter. It is the alternative to inventing `AK2`.
 
 ## 14. Boot the graph from outside the repo
 
-**Required reads:** whatever `npm run queue:next` names. That is the point of it.
+**Required reads:** whatever `npm run graph` names. That is the point of it.
 
 Recipes 11 · 12 · 13 each state when they win, in three different files. This one
 decides between them, and works when the shell is not already in the repo — the
@@ -249,7 +249,7 @@ hard rule 6) is a thin loader over exactly these steps.
 2. **Boot the spine** — `CONTEXT.md` → `AGENTS.md` → `INDEX.md` → `ORCHESTRATION.md`
    → [GRAPH_LOOP.md](GRAPH_LOOP.md), whose § *Copy-paste prompt* BANS block you read
    **verbatim** rather than from memory. Then the folder `INDEX.md` you will edit.
-3. **`npm run queue:next`.** It names the live ticket, the route, the recipe, the
+3. **`npm run graph`.** It names the live ticket, the route, the recipe, the
    workbench and its `Next spawn` line, any `founder`/`blocked` row it skipped, and
    the monoculture ratchet. It prints; it never edits the queue.
 4. **Take the route it named**, and only that one — `build` → recipe 11 · `gauntlet`
@@ -262,7 +262,7 @@ router; otherwise the loop's own tests, per the recipe you were routed to.
 
 **Never**
 
-- Choose the route yourself when `queue:next` disagrees — fix the queue or the
+- Choose the route yourself when `graph` disagrees — fix the queue or the
   router, in its own PR
 - Write another plan instead of executing the row ([GRAPH_LOOP.md](GRAPH_LOOP.md) § *Stop the graph if*)
 - Mint the next letter section to refill a thin queue — that is what routing to a
@@ -274,7 +274,7 @@ router; otherwise the loop's own tests, per the recipe you were routed to.
 ## Quick commands
 
 ```bash
-npm run queue:next       # which loop runs next, and under which recipe
+npm run graph            # which loop runs next, and under which recipe
 npm test
 npm run build
 npm run lint

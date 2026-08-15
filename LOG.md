@@ -11,6 +11,85 @@ Archive: [2026-06 → 2026-07-20](docs/archive/log/LOG-2026-06_to_2026-07-20.md)
 
 --- · [`.492` for `.507`](docs/archive/log/LOG-rotate-507.md). · [`.493` for `.508`](docs/archive/log/LOG-rotate-508.md). · [`.494` for `.509`](docs/archive/log/LOG-rotate-509.md). · [`.495` for `.510`](docs/archive/log/LOG-rotate-510.md). · [`.496` for `.511`](docs/archive/log/LOG-rotate-511.md). · [`.497` for `.512`](docs/archive/log/LOG-rotate-512.md). · [`.498` for `.513`](docs/archive/log/LOG-rotate-513.md). · [`.499` for `.514`](docs/archive/log/LOG-rotate-514.md). · [`.500` for `.515`](docs/archive/log/LOG-rotate-515.md). · [`.501` for `.516`](docs/archive/log/LOG-rotate-516.md). · [`.502` for `.517`](docs/archive/log/LOG-rotate-517.md). · [`.503` for `.518`](docs/archive/log/LOG-rotate-518.md). · [`.504` for `.519`](docs/archive/log/LOG-rotate-519.md). · [`.505` for `.520`](docs/archive/log/LOG-rotate-520.md). · [`.506` for `.521`](docs/archive/log/LOG-rotate-521.md). · [`.507` for `.522`](docs/archive/log/LOG-rotate-522.md). · [`.508` for `.523`](docs/archive/log/LOG-rotate-523.md). · [`.509` for `.524`](docs/archive/log/LOG-rotate-524.md). · [`.510` for `.525`](docs/archive/log/LOG-rotate-525.md). · [`.511` for `.526`](docs/archive/log/LOG-rotate-526.md). · [`.512` for `.527`](docs/archive/log/LOG-rotate-527.md). · [`.513` for `.528`](docs/archive/log/LOG-rotate-528.md). · [`.514` for `.529`](docs/archive/log/LOG-rotate-529.md). · [`.515` for `.530`](docs/archive/log/LOG-rotate-530.md). · [`.516` for `.531`](docs/archive/log/LOG-rotate-531.md). · [`.517` for `.532`](docs/archive/log/LOG-rotate-532.md). · [`.518` for `.533`](docs/archive/log/LOG-rotate-533.md). · [`.519` for `.534`](docs/archive/log/LOG-rotate-534.md). · [`.520` for `.535`](docs/archive/log/LOG-rotate-535.md). · [`.521` for `.536`](docs/archive/log/LOG-rotate-536.md). · [`.522` for `.537`](docs/archive/log/LOG-rotate-537.md). · [`.523` for `.538`](docs/archive/log/LOG-rotate-538.md). · [`.524` for `.539`](docs/archive/log/LOG-rotate-539.md). · [`.525` for `.540`](docs/archive/log/LOG-rotate-540.md). · [`.526` for `.541`](docs/archive/log/LOG-rotate-541.md). · [`.527` for `.542`](docs/archive/log/LOG-rotate-542.md). · [`.528` for `.543`](docs/archive/log/LOG-rotate-543.md). · [`.529` for `.544`](docs/archive/log/LOG-rotate-544.md). · [`.530` for `.545`](docs/archive/log/LOG-rotate-545.md). · [`.531` for `.546`](docs/archive/log/LOG-rotate-546.md). · [`.532` for `.547`](docs/archive/log/LOG-rotate-547.md). · [`.533` for `.548`](docs/archive/log/LOG-rotate-548.md). · [`.534` for `.549`](docs/archive/log/LOG-rotate-549.md). · [`.535` for `.550`](docs/archive/log/LOG-rotate-550.md). · [`.536` for `.551`](docs/archive/log/LOG-rotate-551.md). · [`.537` for `.552`](docs/archive/log/LOG-rotate-552.md). · [`.538` for `.553`](docs/archive/log/LOG-rotate-553.md). · [`.539` for `.554`](docs/archive/log/LOG-rotate-554.md). · [`.540` for `.555`](docs/archive/log/LOG-rotate-555.md). · [`.541` for `.556`](docs/archive/log/LOG-rotate-556.md). · [`.542` for `.557`](docs/archive/log/LOG-rotate-557.md). · [`.543` for `.558`](docs/archive/log/LOG-rotate-558.md). · [`.544` for `.559`](docs/archive/log/LOG-rotate-559.md). · [`.545` for `.560`](docs/archive/log/LOG-rotate-560.md). · [`.546` for `.561`](docs/archive/log/LOG-rotate-561.md). · [`.547` for `.562`](docs/archive/log/LOG-rotate-562.md). · [`.548` for `.563`](docs/archive/log/LOG-rotate-563.md). · [`.549` for `.564`](docs/archive/log/LOG-rotate-564.md). · [`.550` for `.565`](docs/archive/log/LOG-rotate-565.md). · [`.551` for `.566`](docs/archive/log/LOG-rotate-566.md). · [`.552` for `.567`](docs/archive/log/LOG-rotate-567.md). · [`.553` for `.568`](docs/archive/log/LOG-rotate-568.md). · [`.554` for `.569`](docs/archive/log/LOG-rotate-569.md). · [`.555` for `.570`](docs/archive/log/LOG-rotate-570.md). · [`.556` for `.571`](docs/archive/log/LOG-rotate-571.md). · [`.557` for `.572`](docs/archive/log/LOG-rotate-572.md). · [`.558` for `.573`](docs/archive/log/LOG-rotate-573.md). · [`.559` for `.574`](docs/archive/log/LOG-rotate-574.md). · [`.560` for `.575`](docs/archive/log/LOG-rotate-575.md). · [`.561` for `.576`](docs/archive/log/LOG-rotate-576.md). · [`.562` for `.577`](docs/archive/log/LOG-rotate-577.md). · [`.563` for `.578`](docs/archive/log/LOG-rotate-578.md). · [`.564` for `.579`](docs/archive/log/LOG-rotate-579.md). · [`.565` for `.580`](docs/archive/log/LOG-rotate-580.md). · [`.566` for `.581`](docs/archive/log/LOG-rotate-581.md). · [`.567` for `.582`](docs/archive/log/LOG-rotate-582.md). · [`.568` for `.583`](docs/archive/log/LOG-rotate-583.md). · [`.569` for `.584`](docs/archive/log/LOG-rotate-584.md). · [`.570` for `.585`](docs/archive/log/LOG-rotate-585.md). · [`.571` for `.586`](docs/archive/log/LOG-rotate-586.md). · [`.572` for `.587`](docs/archive/log/LOG-rotate-587.md). · [`.573` for `.588`](docs/archive/log/LOG-rotate-588.md). · [`.574` for `.589`](docs/archive/log/LOG-rotate-589.md). · [`.575` for `.590`](docs/archive/log/LOG-rotate-590.md). · [`.576` for `.591`](docs/archive/log/LOG-rotate-591.md). · [`.577` for `.592`](docs/archive/log/LOG-rotate-592.md). · [`.578` for `.593`](docs/archive/log/LOG-rotate-593.md). · [`.581` for `.596`](docs/archive/log/LOG-rotate-596.md). · [`.582` for `.597`](docs/archive/log/LOG-rotate-597.md). · [`.583` for `.598`](docs/archive/log/LOG-rotate-598.md). · [`.584` for `.599`](docs/archive/log/LOG-rotate-599.md). · [`.585` for `.600`](docs/archive/log/LOG-rotate-600.md). · [`.586` for `.601`](docs/archive/log/LOG-rotate-601.md). · [`.587` for `.602`](docs/archive/log/LOG-rotate-602.md). · [`.588` for `.603`](docs/archive/log/LOG-rotate-603.md). · [`.590` for `.606`](docs/archive/log/LOG-rotate-606.md). · [`.596` for `.612`](docs/archive/log/LOG-rotate-612.md). · [`.597` for `.613`](docs/archive/log/LOG-rotate-613.md). · [`.599` for `.614`](docs/archive/log/LOG-rotate-614.md). · [`.600` for `.615`](docs/archive/log/LOG-rotate-615.md). · [`.601` for `.616`](docs/archive/log/LOG-rotate-616.md). · [`.602` for `.617`](docs/archive/log/LOG-rotate-617.md). · [`.603` for `.618`](docs/archive/log/LOG-rotate-618.md). · [`.604` for `.619`](docs/archive/log/LOG-rotate-619.md). · [`.655` for `.670`](docs/archive/log/LOG-rotate-655-for-670.md). · [`.656` for `.679`](docs/archive/log/LOG-rotate-656-for-679.md). · [`.657` for `.680`](docs/archive/log/LOG-rotate-657-for-680.md). · [`.658` for `.684`](docs/archive/log/LOG-rotate-658-for-684.md). · [`.659` for `.685`](docs/archive/log/LOG-rotate-659-for-685.md). · [`.660` for `.689`](docs/archive/log/LOG-rotate-660-for-689.md). · [`.661` for `.690`](docs/archive/log/LOG-rotate-661-for-690.md). · [`.662` for `.691`](docs/archive/log/LOG-rotate-662-for-691.md). · [`.663` for `.692`](docs/archive/log/LOG-rotate-663-for-692.md). · [`.664` for `.693`](docs/archive/log/LOG-rotate-664-for-693.md). · [`.665` for `.694`](docs/archive/log/LOG-rotate-665-for-694.md). · [`.666` for `.695`](docs/archive/log/LOG-rotate-666-for-695.md). · [`.667` for `.696`](docs/archive/log/LOG-rotate-667-for-696.md). · [`.668` for `.697`](docs/archive/log/LOG-rotate-668-for-697.md). · [`.669` for `.714`](docs/archive/log/LOG-rotate-669-for-714.md). · [`.669` for `.743`](docs/archive/log/LOG-rotate-669-for-743.md). · [`.670` for `.743`](docs/archive/log/LOG-rotate-670-for-743.md). · [`.669` for `.744`](docs/archive/log/LOG-rotate-669-for-744.md). · [`.679` for `.744`](docs/archive/log/LOG-rotate-679-for-744.md). · [`.680` for `.745`](docs/archive/log/LOG-rotate-680-for-745.md). · [`.684` for `.746`](docs/archive/log/LOG-rotate-684-for-746.md). · [`.750` for `.765`](docs/archive/log/LOG-rotate-750-for-765.md). · [`.753` for `.768`](docs/archive/log/LOG-rotate-753-for-768.md). · [`.762` for `.777`](docs/archive/log/LOG-rotate-762-for-777.md). · [`.765` for `.780`](docs/archive/log/LOG-rotate-765-for-780.md). · [`.766` for `.781`](docs/archive/log/LOG-rotate-766-for-781.md). · [`.767` for form-object-kit](docs/archive/log/LOG-rotate-767-for-form-object-kit.md). · [`.768` for `.782`](docs/archive/log/LOG-rotate-768-for-782.md). · [`.769` for `.783`](docs/archive/log/LOG-rotate-769-for-783.md). · [`.770` for `.784`](docs/archive/log/LOG-rotate-770-for-784.md). · [`.771` for `.785`](docs/archive/log/LOG-rotate-771-for-785.md). · [`.772` for `.786`](docs/archive/log/LOG-rotate-772-for-786.md). · [`.773` for `.787`](docs/archive/log/LOG-rotate-773-for-787.md). · [`.774` for `.788`](docs/archive/log/LOG-rotate-774-for-788.md). · [`.775` for `.789`](docs/archive/log/LOG-rotate-775-for-789.md). · [`.776` for `.790`](docs/archive/log/LOG-rotate-776-for-790.md). · [`.777` for `.791`](docs/archive/log/LOG-rotate-777-for-791.md). · [`.778` for `.792`](docs/archive/log/LOG-rotate-778-for-792.md). · [`.826` for `.841`](docs/archive/log/LOG-rotate-826-for-841.md). · [`.827` for `.842`](docs/archive/log/LOG-rotate-827-for-842.md). · [`.829` for `.844`](docs/archive/log/LOG-rotate-829-for-844.md). · [`.830` for `.845`](docs/archive/log/LOG-rotate-830-for-845.md). · [`.831` for `.846`](docs/archive/log/LOG-rotate-831-for-846.md). · [`.828` for `.843`](docs/archive/log/LOG-rotate-828-for-843.md). · [`.832` for `.847`](docs/archive/log/LOG-rotate-832-for-847.md). · [`.833` for `.848`](docs/archive/log/LOG-rotate-833-for-848.md). · [`.834` for `.849`](docs/archive/log/LOG-rotate-834-for-849.md).
 
+## 2026-08-15 — One command decides which loop runs (`.850`)
+
+Three protocols now sit behind one queue — `GRAPH_LOOP` builds, `GAUNTLET_LOOP`
+grades, `IDEA_LOOP` generates — and choosing between them was prose, written three
+times. `AGENT_RECIPES` §11 says "if that row is a gauntlet campaign, stop and use
+recipe 12"; the `GRAPH_LOOP` copy-paste prompt says the same thing differently and
+does not mention the idea loop at all; §13 names its own trigger in a third place.
+A routing table with three homes is what `.178` exists to prevent, and it was only
+reachable from inside the repo.
+
+**Ship:** `npm run graph` (`queue:next` is the same command) — `src/lib/loopQueue/` + `scripts/queue-next.ts`.
+It reads the `## Queue` region of `GRAPH_LOOP.md` and names the live ticket, the
+route (`build` · `gauntlet` · `harvest`), the recipe, the workbench and its `Next
+spawn` line, and any `founder`/`blocked` row it stepped over. Like `idea:next` it
+prints and never writes: the `done` edit is still the baton. Recipe **14** is the
+procedure, including finding the repo from another directory.
+
+**Two things that could not stay prose.**
+
+*A grep cannot read this file.* `grep '`open`'` over `GRAPH_LOOP.md` returns
+thirteen hits, nine of them prose, and three of the remaining table rows are
+`done` rows whose *Moves* text contains the word — `D1` ("open beta"), `K2`
+("when the beta opens"), `N1` ("open / private beta"). A router keyed to that
+spelling names the wrong live ticket on a file nobody edited wrongly. So tables
+are addressed by header name and status is read from the parsed cell; those three
+rows are the acceptance test.
+
+*`MAX_SINGLE_ROW_RUN` is "Do not invent X2" with teeth.* Rows per `Now` section,
+in document order, are `7 7 8 4 2 1 2 1 1 1 1 1 2 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1`
+— a trailing run of **sixteen** one-row sections, recovering by measurement the
+number `IDEA_LOOP.md` states about itself. That sentence is written at the foot of
+sixteen consecutive blocks and was obeyed zero times. As a ratchet it may only go
+down: a new `Now` section carries ≥2 rows, or the queue takes a harvest first. It
+never displaces a live `open` row — it bites at the moment one closes.
+
+**Rejected on measurement, recorded so nobody re-derives it.** The first design
+was a text-similarity check reusing `tokenize`/`jaccard` from `ideaGraph`.
+Consecutive Jaccard over the drift rows' Moves cells came back
+0.07 / 0.23 / 0.00 / 0.36 / 0.00 / 0.50 — indistinguishable from the H0 and G
+batches at 0.00–0.17. Those rows repeat *structurally*, not lexically. A check
+that does not separate is not a check, so it was dropped rather than tuned.
+
+**Found by the parser on its first run:** `D4`'s status is `hold`, a state used in
+earnest (it closes ~20 section blocks) and absent from the file's own status key,
+and unbackticked besides. The key was stale, not the row; both corrected.
+
+**Falsified, 6 mutants, each alone:** status read as a line grep (5 red) · section
+filter widened to include the Parallel lane (2) · the `GNT-*` branch deleted (3) ·
+the ratchet counting sections of 1 *or* 2 (4) · a drifted-header table silently
+skipped instead of reported (1) · the `founder`/`blocked` skip made silent (1).
+Baseline 0.
+
+`/graph` is the machine-local skill over this — `~/.claude/skills/graph/`, never
+`.claude/skills/` (hard rule 6), following the gstack precedent in `CLAUDE.md`
+§gstack. It is a loader: locate and *verify* the repo, boot the spine, run
+`npm run graph`, take that one route, ship one PR, print the next spawn. Where it and
+the repo disagree, the repo wins.
+
+**Found by the router disagreeing with the workbench, and it was mine.** The
+`Next spawn` reader picked the role with `ROLES.find(...)`, which scans in *this
+file's* declaration order — so `SMOOTHER — U1–U4 critic PASS … Then LEAD writes
+the campaign report` reported **`LEAD U1`**: `LEAD` because it is first in the
+array and named as the step *after* this one, `U1` out of the range `U1–U4` that
+describes what is already done. Two positional readers, both answering from
+incidental text rather than from the sentence — `.220` again, in the file written
+to stop it. Role is now the earliest role *in the line*; the unit is only read
+from the `<ROLE> on **U<n> R<r>**` shape every spawn line actually uses, so a
+SMOOTHER round correctly has no unit. Replayed against all five real `Next spawn`
+lines this campaign and GNT-1 have carried; both readers falsified independently.
+
+Label `.850` (onto master `.849`). Cut twice before this: `.847`, taken by
+GNT-2 U2 (#677) while this was open, then `.849`, taken by GNT-2 U4 (#684) the
+same way. Stealing an occupied label is a standing ban (loop rule 5), so this
+renumbered both times rather than force-landing.
+
+Excellence-Override: dev tooling, no product surface (RESULT unscored)
+
+Rotated LOG oldest → [docs/archive/log/LOG-rotate-835-for-850.md](docs/archive/log/LOG-rotate-835-for-850.md).
+
 ## 2026-08-15 — generateWeek programs only catalog ids legal for declared gear (`.849`)
 
 GNT-2 U4. `equipmentMatches` already filters the catalog. `selector` already
@@ -76,85 +155,6 @@ Label `.847` (onto master `.846`).
 Excellence-Override: gauntlet GNT-2.U2 round 1 (wedge; RESULT unscored)
 
 Rotated LOG oldest → [docs/archive/log/LOG-rotate-832-for-847.md](docs/archive/log/LOG-rotate-832-for-847.md).
-
-## 2026-08-15 — One command decides which loop runs (`.850`)
-
-Three protocols now sit behind one queue — `GRAPH_LOOP` builds, `GAUNTLET_LOOP`
-grades, `IDEA_LOOP` generates — and choosing between them was prose, written three
-times. `AGENT_RECIPES` §11 says "if that row is a gauntlet campaign, stop and use
-recipe 12"; the `GRAPH_LOOP` copy-paste prompt says the same thing differently and
-does not mention the idea loop at all; §13 names its own trigger in a third place.
-A routing table with three homes is what `.178` exists to prevent, and it was only
-reachable from inside the repo.
-
-**Ship:** `npm run queue:next` — `src/lib/loopQueue/` + `scripts/queue-next.ts`.
-It reads the `## Queue` region of `GRAPH_LOOP.md` and names the live ticket, the
-route (`build` · `gauntlet` · `harvest`), the recipe, the workbench and its `Next
-spawn` line, and any `founder`/`blocked` row it stepped over. Like `idea:next` it
-prints and never writes: the `done` edit is still the baton. Recipe **14** is the
-procedure, including finding the repo from another directory.
-
-**Two things that could not stay prose.**
-
-*A grep cannot read this file.* `grep '`open`'` over `GRAPH_LOOP.md` returns
-thirteen hits, nine of them prose, and three of the remaining table rows are
-`done` rows whose *Moves* text contains the word — `D1` ("open beta"), `K2`
-("when the beta opens"), `N1` ("open / private beta"). A router keyed to that
-spelling names the wrong live ticket on a file nobody edited wrongly. So tables
-are addressed by header name and status is read from the parsed cell; those three
-rows are the acceptance test.
-
-*`MAX_SINGLE_ROW_RUN` is "Do not invent X2" with teeth.* Rows per `Now` section,
-in document order, are `7 7 8 4 2 1 2 1 1 1 1 1 2 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1`
-— a trailing run of **sixteen** one-row sections, recovering by measurement the
-number `IDEA_LOOP.md` states about itself. That sentence is written at the foot of
-sixteen consecutive blocks and was obeyed zero times. As a ratchet it may only go
-down: a new `Now` section carries ≥2 rows, or the queue takes a harvest first. It
-never displaces a live `open` row — it bites at the moment one closes.
-
-**Rejected on measurement, recorded so nobody re-derives it.** The first design
-was a text-similarity check reusing `tokenize`/`jaccard` from `ideaGraph`.
-Consecutive Jaccard over the drift rows' Moves cells came back
-0.07 / 0.23 / 0.00 / 0.36 / 0.00 / 0.50 — indistinguishable from the H0 and G
-batches at 0.00–0.17. Those rows repeat *structurally*, not lexically. A check
-that does not separate is not a check, so it was dropped rather than tuned.
-
-**Found by the parser on its first run:** `D4`'s status is `hold`, a state used in
-earnest (it closes ~20 section blocks) and absent from the file's own status key,
-and unbackticked besides. The key was stale, not the row; both corrected.
-
-**Falsified, 6 mutants, each alone:** status read as a line grep (5 red) · section
-filter widened to include the Parallel lane (2) · the `GNT-*` branch deleted (3) ·
-the ratchet counting sections of 1 *or* 2 (4) · a drifted-header table silently
-skipped instead of reported (1) · the `founder`/`blocked` skip made silent (1).
-Baseline 0.
-
-`/graph` is the machine-local skill over this — `~/.claude/skills/graph/`, never
-`.claude/skills/` (hard rule 6), following the gstack precedent in `CLAUDE.md`
-§gstack. It is a loader: locate and *verify* the repo, boot the spine, run
-`queue:next`, take that one route, ship one PR, print the next spawn. Where it and
-the repo disagree, the repo wins.
-
-**Found by the router disagreeing with the workbench, and it was mine.** The
-`Next spawn` reader picked the role with `ROLES.find(...)`, which scans in *this
-file's* declaration order — so `SMOOTHER — U1–U4 critic PASS … Then LEAD writes
-the campaign report` reported **`LEAD U1`**: `LEAD` because it is first in the
-array and named as the step *after* this one, `U1` out of the range `U1–U4` that
-describes what is already done. Two positional readers, both answering from
-incidental text rather than from the sentence — `.220` again, in the file written
-to stop it. Role is now the earliest role *in the line*; the unit is only read
-from the `<ROLE> on **U<n> R<r>**` shape every spawn line actually uses, so a
-SMOOTHER round correctly has no unit. Replayed against all five real `Next spawn`
-lines this campaign and GNT-1 have carried; both readers falsified independently.
-
-Label `.850` (onto master `.849`). Cut twice before this: `.847`, taken by
-GNT-2 U2 (#677) while this was open, then `.849`, taken by GNT-2 U4 (#684) the
-same way. Stealing an occupied label is a standing ban (loop rule 5), so this
-renumbered both times rather than force-landing.
-
-Excellence-Override: dev tooling, no product surface (RESULT unscored)
-
-Rotated LOG oldest → [docs/archive/log/LOG-rotate-835-for-850.md](docs/archive/log/LOG-rotate-835-for-850.md).
 
 ## 2026-08-15 — The Idea Loop, the third organ (`.846`)
 

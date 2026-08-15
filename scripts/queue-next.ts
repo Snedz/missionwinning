@@ -1,5 +1,5 @@
 /**
- * `npm run queue:next`
+ * `npm run graph` (`queue:next` is the same command)
  *
  * The graph loop's entry point. It reads `docs/GRAPH_LOOP.md`, names the live
  * ticket, and says which of the three protocols runs — build (recipe 11),

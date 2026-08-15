@@ -2,7 +2,7 @@
 
 **Audience:** Founder + the next Hermes / Grok Build / graph agent  
 **Lane:** Engineering-Web (unless a loop says Android)  
-**Status:** ACTIVE 2026-08-15 · web `2026.07-unified.849` · Alpha 0.1.0 · **AL1 done — GNT-1 `ready-for-founder` · AM1 done — GNT-2 `ready-for-founder`**  
+**Status:** ACTIVE 2026-08-15 · web `2026.07-unified.850` · Alpha 0.1.0 · **AL1 done — GNT-1 `ready-for-founder` · AM1 done — GNT-2 `ready-for-founder`**  
 **Does not replace:** [ORCHESTRATION.md](../ORCHESTRATION.md) (what may be built) · [CONTEXT.md](../CONTEXT.md) `## Now` (where we are) · [vision.md](../vision.md) (constitution) · [docs/THESIS.md](THESIS.md) (wedge) · [docs/PLAN.md](PLAN.md) (phases A–I)
 
 This file is the **execution queue** for the agent graph: one concern per loop, spawn, ship, mark done, spawn the next. It is not a second status block and not a license to skip standing hard bans.
@@ -64,7 +64,7 @@ PR, and the `done` edit is still the baton.
 
 ### Which row is live (`.850`)
 
-`npm run queue:next` answers that by **reading this file** — the `## Queue` region
+`npm run graph` answers that by **reading this file** — the `## Queue` region
 only, tables addressed by header name, status taken from the parsed Status cell.
 It names the live ticket, the route (`build` · `gauntlet` · `harvest`), the recipe,
 the workbench and its `Next spawn` line, and any `founder`/`blocked` row it stepped
@@ -145,7 +145,7 @@ Do **not** stop solely because RESULT is `unscored` while this skip-W note is in
 
 ## Queue
 
-Status key: `open` · `done` · `parked` · `hold` · `founder` · `blocked`. Backticked, in the Status cell — `npm run queue:next` reads that cell as a value, not the row as text.
+Status key: `open` · `done` · `parked` · `hold` · `founder` · `blocked`. Backticked, in the Status cell — `npm run graph` reads that cell as a value, not the row as text.
 
 ### Now — Horizon 0 (agents)
 
@@ -640,7 +640,7 @@ BOOT (every spawn):
 2. Do not use chat, ~/.grok/sessions, or .hermes/plans as product truth.
 
 QUEUE:
-3. Run `npm run queue:next`. It names the live ticket, the route and the recipe by
+3. Run `npm run graph`. It names the live ticket, the route and the recipe by
    reading this file — status from the parsed Status cell, not from the row text.
    Take the route it names. If you disagree with it, fix the queue or the router in
    its own PR; do not route around it. (Recipe 14.)

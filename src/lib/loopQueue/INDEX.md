@@ -2,7 +2,7 @@
 
 **One concern:** deciding which loop runs next, from
 [docs/GRAPH_LOOP.md](../../../docs/GRAPH_LOOP.md). Printed by
-`npm run queue:next`; procedure in
+`npm run graph`; procedure in
 [docs/AGENT_RECIPES.md](../../../docs/AGENT_RECIPES.md) §14.
 
 Build tooling that happens to be typed. It reads the queue and **never writes

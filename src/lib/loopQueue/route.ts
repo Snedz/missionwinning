@@ -5,7 +5,7 @@
  * grades, `IDEA_LOOP` generates — and choosing between them is currently a thing
  * a spawn is *told* to do in prose (`AGENT_RECIPES.md:170`, and the copy-paste
  * prompt's rule 4, which does not mention the idea loop at all). This file makes
- * the choice computable, so `npm run queue:next` can name the row, the route and
+ * the choice computable, so `npm run graph` can name the row, the route and
  * the recipe instead of an agent remembering all three.
  *
  * ## The ratchet
@@ -144,7 +144,7 @@ export function readWorkbench(root: string, row: QueueRow): Workbench | null {
   const unit = assignment?.[1] ?? null;
   const round = assignment?.[2] ?? null;
 
-  const capLine = /hard cap\s+\*\*≤(\d+)\s+build PRs\*\*\s*\((\d+)\s+spent/.exec(src);
+  const capLine = /hard cap\s+\*\*≤(\d+)\s+build PRs\*\*\s*\(\*{0,2}(\d+)\s+spent/.exec(src);
   const cap = capLine ? { cap: Number(capLine[1]), spent: Number(capLine[2]) } : null;
 
   return { file, nextSpawn, role, unit, round, cap };

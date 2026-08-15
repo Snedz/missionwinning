@@ -28,17 +28,44 @@ const sliceSections = (q: ParsedQueue, keep: ParsedQueue['sections']): ParsedQue
   problems: [],
 });
 
+/** Inject a Now section just before After H0 so fixtures sit on the real file. */
+function injectNow(src: string, rows: string): string {
+  const at = src.indexOf('\n### After H0');
+  assert.ok(at > 0, 'the queue no longer ends with `### After H0`; re-anchor this helper');
+  return (
+    src.slice(0, at) +
+    '\n\n### Now — TEST\n\n| # | Loop | Moves | Status |\n|---|---|---|---|\n' +
+    rows +
+    src.slice(at)
+  );
+}
+
 /* ------------------------------------------------------------------ *
  * The live ticket                                                     *
  * ------------------------------------------------------------------ */
 
-test('the route names the top open row in a Now section', () => {
+test('the committed queue has no Now-open row and routes to a harvest', () => {
   const q = real();
-  const r = route(root, q);
   const open = nowSections(q).flatMap((s) => s.rows).filter((x) => x.status === 'open');
-  assert.equal(open.length > 0, true, 'no open row in any Now section — re-derive this test against the queue');
-  assert.equal(r.row?.id, open[0].id);
+  assert.equal(
+    open.length,
+    0,
+    `Now still has open ${open.map((x) => x.id).join(', ')} — this pin is the empty-queue case`
+  );
+  const r = route(root, q);
+  assert.equal(r.kind, 'harvest');
+  assert.equal(r.recipe, 13);
+  assert.equal(r.row, null);
+  assert.match(r.notes.join(' '), /the honest next step is a new idea/);
+  assert.equal(r.atRatchet, true);
+});
+
+test('an injected Now-open row is the live ticket', () => {
+  const q = parseQueue(injectNow(source(), '| **ZZ1** | Ordinary thing | a brief | `open` |\n'));
+  const r = route(root, q);
+  assert.equal(r.row?.id, 'ZZ1');
   assert.equal(r.row?.sectionKind, 'now');
+  assert.equal(r.kind, 'build');
 });
 
 test('the Parallel lane is never the live ticket', () => {
@@ -65,20 +92,54 @@ test('an "open"-in-Moves decoy is never the live ticket', () => {
  * The three routes                                                    *
  * ------------------------------------------------------------------ */
 
-test('a GNT row routes to the gauntlet with its workbench resolved', () => {
-  const r = route(root, real());
+test('an injected GNT row routes to the gauntlet with its workbench resolved', () => {
+  const tmp = mkdtempSync(path.join(tmpdir(), 'loopqueue-gnt-'));
+  mkdirSync(path.join(tmp, 'docs/gauntlet'), { recursive: true });
+  writeFileSync(path.join(tmp, 'docs/IDEA_LOOP.md'), 'stub');
+  writeFileSync(
+    path.join(tmp, 'docs/gauntlet/GNT-9-replay.md'),
+    [
+      '# GNT-9',
+      '',
+      '**Status:** `open` · hard cap **≤10 build PRs** (2 spent: `.001` `.002`)',
+      '**Next spawn:** LEAD on **U1 R1** — instrument first.',
+      '',
+    ].join('\n')
+  );
+  const q = parseQueue(
+    injectNow(
+      source(),
+      '| **AM9** | Gauntlet GNT-9 replay | [wb](gauntlet/GNT-9-replay.md) | `open` |\n'
+    )
+  );
+  const r = route(tmp, q);
   assert.equal(r.kind, 'gauntlet');
   assert.equal(r.recipe, 12);
   assert.ok(r.workbench, 'no workbench resolved for a campaign row');
-  assert.match(r.workbench.file, /^docs\/gauntlet\/GNT-\d+-/);
+  assert.equal(r.workbench.file, 'docs/gauntlet/GNT-9-replay.md');
   assert.ok(r.workbench.nextSpawn?.startsWith('**Next spawn:**'));
-  assert.ok(r.workbench.role, 'the Next spawn line named no role');
-  assert.ok(r.workbench.cap && r.workbench.cap.spent < r.workbench.cap.cap);
+  assert.equal(r.workbench.role, 'LEAD');
+  assert.deepEqual(r.workbench.cap, { cap: 10, spent: 2 });
+  rmSync(tmp, { recursive: true, force: true });
+});
+
+test('the GNT-2 workbench cap survives house-style emphasis around spent', () => {
+  const row = {
+    id: 'AM1',
+    loop: 'Gauntlet GNT-2',
+    moves: '[wb](gauntlet/GNT-2-coach-plan-quality.md)',
+    status: 'done' as const,
+    statusCell: '`done`',
+    section: '',
+    sectionKind: 'now' as const,
+    line: 1,
+  };
+  const wb = readWorkbench(root, row);
+  assert.deepEqual(wb?.cap, { cap: 10, spent: 5 });
 });
 
 test('the same row without GNT routes to an ordinary build', () => {
-  // The only edit is the campaign name, so nothing but the classifier can differ.
-  const q = parseQueue(source().replaceAll('GNT-2', 'ZZ-2').replaceAll('GNT-1', 'ZZ-1'));
+  const q = parseQueue(injectNow(source(), '| **ZZ1** | Ordinary thing | a brief | `open` |\n'));
   const r = route(root, q);
   assert.equal(r.kind, 'build');
   assert.equal(r.recipe, 11);
@@ -96,12 +157,15 @@ test('no open row routes to a harvest, not to the next letter', () => {
 });
 
 test('a founder or blocked row is skipped to the next open row, and reported', () => {
-  const q = real();
-  const live = nowSections(q).flatMap((s) => s.rows).find((x) => x.status === 'open');
-  assert.ok(live, 'no open row to displace');
-  live.status = 'founder';
+  const q = parseQueue(
+    injectNow(
+      source(),
+      '| **F1** | founder thing | x | `founder` |\n| **ZZ1** | next | y | `open` |\n'
+    )
+  );
   const r = route(root, q);
-  assert.deepEqual(r.skipped.map((x) => x.id), [live.id], 'the skip was silent');
+  assert.deepEqual(r.skipped.map((x) => x.id), ['F1'], 'the skip was silent');
+  assert.equal(r.row?.id, 'ZZ1');
 });
 
 /**
@@ -110,28 +174,28 @@ test('a founder or blocked row is skipped to the next open row, and reported', (
  * the thing it is checking has only ever checked itself.
  */
 test('an exhausted campaign budget is reported rather than spent', () => {
-  const q = real();
-  const live = route(root, q);
-  assert.ok(live.workbench?.cap, 'no cap on the workbench; this guard is vacuous');
-  assert.ok(live.workbench.cap.spent < live.workbench.cap.cap, 'the real campaign is already exhausted');
-  assert.ok(!live.notes.some((n) => /budget exhausted/.test(n)));
-
-  const { cap } = live.workbench;
   const tmp = mkdtempSync(path.join(tmpdir(), 'loopqueue-'));
-  const workbench = path.join(tmp, live.workbench.file);
-  mkdirSync(path.dirname(workbench), { recursive: true });
+  mkdirSync(path.join(tmp, 'docs/gauntlet'), { recursive: true });
   writeFileSync(path.join(tmp, 'docs/IDEA_LOOP.md'), 'stub');
   writeFileSync(
-    workbench,
-    readFileSync(path.join(root, live.workbench.file), 'utf8').replace(
-      `(${cap.spent} spent`,
-      `(${cap.cap} spent`
+    path.join(tmp, 'docs/gauntlet/GNT-9-replay.md'),
+    [
+      '# GNT-9',
+      '',
+      '**Status:** `open` · hard cap **≤3 build PRs** (3 spent: `.001` `.002` `.003`)',
+      '**Next spawn:** LEAD on **U1 R1** — write the report.',
+      '',
+    ].join('\n')
+  );
+  const q = parseQueue(
+    injectNow(
+      source(),
+      '| **AM9** | Gauntlet GNT-9 replay | [wb](gauntlet/GNT-9-replay.md) | `open` |\n'
     )
   );
-
   const r = route(tmp, q);
   assert.equal(r.kind, 'gauntlet', 'an exhausted budget must still route to the campaign, not away from it');
-  assert.equal(r.workbench?.cap?.spent, cap.cap);
+  assert.equal(r.workbench?.cap?.spent, 3);
   assert.match(r.notes.join(' '), /budget exhausted means LEAD writes the report/);
   rmSync(tmp, { recursive: true, force: true });
 });
@@ -234,8 +298,23 @@ test('singleRowRun counts Now sections only', () => {
 });
 
 test('the ratchet does not displace a live open row', () => {
-  const r = route(root, real());
-  assert.equal(r.atRatchet, true, 'the queue is no longer at the ratchet; this guard is vacuous');
+  const tmp = mkdtempSync(path.join(tmpdir(), 'loopqueue-ratchet-'));
+  mkdirSync(path.join(tmp, 'docs/gauntlet'), { recursive: true });
+  writeFileSync(path.join(tmp, 'docs/IDEA_LOOP.md'), 'stub');
+  writeFileSync(
+    path.join(tmp, 'docs/gauntlet/GNT-9-replay.md'),
+    '# GNT-9\n\n**Next spawn:** LEAD on **U1 R1**.\n'
+  );
+  const q = parseQueue(
+    injectNow(
+      source(),
+      '| **AM9** | Gauntlet GNT-9 replay | [wb](gauntlet/GNT-9-replay.md) | `open` |\n'
+    )
+  );
+  const r = route(tmp, q);
+  assert.equal(r.atRatchet, true, 'injecting one more one-row Now section must stay at the ratchet');
   assert.equal(r.kind, 'gauntlet', 'the ratchet hijacked a live campaign row');
+  assert.equal(r.row?.id, 'AM9');
   assert.match(r.notes.join(' '), /at the 16 ratchet/);
+  rmSync(tmp, { recursive: true, force: true });
 });

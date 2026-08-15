@@ -74,6 +74,6 @@ Bar as written (table above). Full round log above. This campaign is **instrumen
 5. **`loadSeries` does not read `totalVolume`.** U1 R2 axis C: same session count, 16× per-session volume, identical `acute` / `chronic`. Unfiled. Not this unit's bar.
 6. **SMOOTHER Coach stills on :3000 are the gate.** GNT-1 U3 R4 already showed `/coach` paints on `npm run dev` once `mw_locale_choice` is seeded. Do not reopen GNT-1.
 7. **Stills are seeded local dev, not a production phone.** Same residual as GNT-1.
-8. **Leftover GitHub #680** (`queue:next`) is not this campaign. Do not land it to "fill" the queue. Do not paste `idea:next` H-01 onto GRAPH_LOOP. Do not invent AM2.
+8. **Do not invent AM2.** `npm run graph` is the router (`.850`). It prints; it never writes. Do not paste `idea:next` H-01 onto GRAPH_LOOP.
 
 - Agent terminal state: `ready-for-founder` — **never** `status: pass`
