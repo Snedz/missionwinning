@@ -4,7 +4,7 @@
 **Product:** the evidence dossier that makes the founder’s phone walk a confirmation.  
 **Terminal agent state:** `ready-for-founder`. Only the founder writes `status: pass` in [EXCELLENCE_RESULT.md](../EXCELLENCE_RESULT.md).
 
-**Next spawn:** `CRITIC · GNT-1 U1 R1` — oldest shipped unit with an empty critic cell. Do not open a builder (including a U3 render instrument) until U1–U5 critics land.
+**Next spawn:** `CRITIC · GNT-1 U2 R1` — U1 critic landed FAIL. Finish U2–U5 critics before a builder. Do not open U3 render or smoother yet.
 
 Unused cap is success. The cap counts only PRs that touch `src|app|scripts|supabase`. U1/U2 already-true did not spend it.
 
@@ -39,7 +39,7 @@ U2 (GRAPH_LOOP G4) and U4 (G7) opened evidence-first / already-true. The dossier
 
 | unit | round | builder ref | critic verdict | biggest gap |
 |------|-------|-------------|----------------|-------------|
-| U1 | 1 | already-true on master `.834` — instruments green (paste below). No product PR. | — | Critic U1: stills + e2e last lines |
+| U1 | 1 | already-true on master `.834` — unit pins green. | **FAIL** — first-90 cold visitor: expected `/log`, got `/active`. Logger stills exist. | I-Day Continue lands on `/active` (Active dump), not Today |
 | U2 | 1 | already-true on master `.834` — instruments green (paste below). No product PR. | — | Critic U2 after U1 |
 | U3 | 1 | `.835` — engine pin `gnt1HistoryDose.test.ts` (not a render proof). | — | Critic U3 after U2 |
 | U4 | 1 | `.836` — 3/7/14-day quiet lines + long-gap at 14. | — | Critic U4 after U3 |
@@ -51,7 +51,7 @@ Fill as rounds ship. Own-app stills under `GNT-1/evidence/` named `U<n>-R<r>-<be
 
 | unit | stills | instrument paste | A/B (measurements only) |
 |------|--------|------------------|-------------------------|
-| U1 | pending critic | 2026-08-15 builder R1: `npx tsx --test src/lib/workout/lastSetGhost.test.ts src/lib/workout/setTableDensity694.test.ts src/lib/firstSetUngated.test.ts` → **36 pass / 0 fail**. Critic must also run the **e2e** commands in the unit table (unit-only paste is not the named bar). | no founder FLOORS — do not FAIL |
+| U1 | `U1-R1-set-row.png` · `U1-R1-rest.png` · `U1-R1-ghost.png` · `U1-R1-finished.png` · `U1-R1-first-90-landed-active.png` | **2026-08-15 critic R1 e2e (paste):** `npx playwright test tests/e2e/logger-depth.spec.ts tests/e2e/first-90.spec.ts:32 --project=mobile-chrome` → first-90 cold visitor **FAIL** `Expected pattern: /\\/log/` `Received: http://localhost:3000/active` (timeout 15s). logger-depth empty-start **FAIL** `page.goto /active waitUntil networkidle` hit 60s test timeout. Unit pins (36) still green. Stills: one red Log set; rest 1:21 + Skip; PREV column present (underscore on first Just Go); finish = Session locked + red NEXT. | no founder FLOORS — do not FAIL |
 | U2 | pending critic | 2026-08-15 builder R1: `npx tsx --test src/lib/todayPrimaryAction.test.ts src/lib/today/todayBlockBudget.test.ts src/lib/justGoHeroMeta.test.ts` → **28 pass / 0 fail**. Critic runs `zero-state.spec.ts` + those unit tests. | no founder FLOORS — do not FAIL |
 | U3 | pending critic | 2026-08-15 builder R1 `.835`: `npx tsx --test src/lib/coach/gnt1HistoryDose.test.ts` → **2 pass / 0 fail**. Engine-only. Not a Coach/Today render PASS. | — |
 | U4 | pending critic | 2026-08-15 builder R1 `.836`: `npx tsx --test src/lib/reentryCopyGuard.test.ts` → **5 pass / 0 fail**. | no founder FLOORS — do not FAIL |
