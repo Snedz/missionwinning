@@ -4,6 +4,14 @@ import { BUNDLE_PLANS, type BundlePlanId } from '@/lib/bundleConfig';
 import { landingFaqKeysForSurface, landingStringsFor } from '@/i18n/landingLocales';
 import { siteBaseUrl } from '@/lib/seoMetadata';
 
+/** One object so `parsed[\"@context\"].toLowerCase()` does not throw on a bare array. */
+export function asJsonLdGraph(nodes: ReadonlyArray<Record<string, unknown>>) {
+  return {
+    '@context': 'https://schema.org',
+    '@graph': nodes.map(({ ['@context']: _ctx, ...rest }) => rest),
+  };
+}
+
 export function organizationJsonLd(baseUrl = siteBaseUrl()) {
   return {
     '@context': 'https://schema.org',

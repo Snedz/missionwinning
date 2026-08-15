@@ -1,6 +1,9 @@
 import { describe, it } from 'node:test';
 import assert from 'node:assert/strict';
+import { readFileSync } from 'node:fs';
+import path from 'node:path';
 import {
+  asJsonLdGraph,
   faqPageJsonLd,
   organizationJsonLd,
   productJsonLd,
@@ -55,5 +58,24 @@ describe('publicSeo', () => {
     const f = faqPageJsonLd();
     const blob = JSON.stringify(f);
     assert.doesNotMatch(blob, /Super Bundle/i);
+  });
+
+  it('asJsonLdGraph exposes @context so a parser can call toLowerCase', () => {
+    const payload = asJsonLdGraph([
+      organizationJsonLd('https://www.missionwinning.com'),
+      webSiteJsonLd('https://www.missionwinning.com'),
+    ]);
+    const parsed = JSON.parse(JSON.stringify(payload)) as { '@context'?: string; '@graph': unknown[] };
+    assert.equal(typeof parsed['@context'], 'string');
+    assert.equal(parsed['@context']!.toLowerCase(), 'https://schema.org');
+    assert.equal(Array.isArray(parsed['@graph']), true);
+    assert.equal(parsed['@graph'].length, 2);
+    assert.equal(Array.isArray(JSON.parse(JSON.stringify([organizationJsonLd()]))), true);
+  });
+
+  it('the homepage wraps JSON-LD in asJsonLdGraph, not a bare array', () => {
+    const src = readFileSync(path.join(import.meta.dirname, '..', '..', 'app/page.tsx'), 'utf8');
+    assert.match(src, /asJsonLdGraph\(/);
+    assert.doesNotMatch(src, /JSON\.stringify\(graph\)/);
   });
 });
