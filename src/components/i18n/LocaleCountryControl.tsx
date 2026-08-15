@@ -25,13 +25,16 @@ type Props = {
 export function LocaleCountryControl({ className }: Props) {
   const { t } = useTranslation();
   const served = useMemo(() => servedCountryCodes(), []);
-  const saved = loadLocaleCountryPref();
-  const [language, setLanguage] = useState<UiLang>(() =>
-    normalizeUiLang(saved?.language ?? i18n.language)
-  );
-  const [country, setCountry] = useState(() => saved?.country ?? detectCountryHint());
-  const block = territoryMessageForCountry(country);
-  const countryLocked = Boolean(block);
+  const [language, setLanguage] = useState<UiLang>('en');
+  const [country, setCountry] = useState('US');
+  const [ready, setReady] = useState(false);
+
+  useEffect(() => {
+    const saved = loadLocaleCountryPref();
+    setLanguage(normalizeUiLang(saved?.language ?? i18n.language));
+    setCountry(saved?.country ?? detectCountryHint());
+    setReady(true);
+  }, []);
 
   useEffect(() => {
     const onPref = (ev: Event) => {
@@ -42,6 +45,9 @@ export function LocaleCountryControl({ className }: Props) {
     window.addEventListener('mw-locale-pref', onPref);
     return () => window.removeEventListener('mw-locale-pref', onPref);
   }, []);
+
+  const block = ready ? territoryMessageForCountry(country) : null;
+  const countryLocked = Boolean(block);
 
   const applyLang = (raw: string) => {
     const next = normalizeUiLang(raw);
