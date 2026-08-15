@@ -72,9 +72,11 @@ describe('the private gate redirect (PRIVATE_MODE=true)', () => {
    * the athlete to marketing rather than where they were going.
    */
   it('records the destination so the gate can return the visitor to it', async () => {
-    const to = await redirectFor('/log?src=push');
+    // Subject was `/log` until `.839` made Today gate-public; the claim is about
+    // deep links to *gated* routes, so it moves rather than disappears.
+    const to = await redirectFor('/nutrition?src=push');
     assert.ok(to);
-    assert.equal(to.searchParams.get('next'), '/log');
+    assert.equal(to.searchParams.get('next'), '/nutrition');
     assert.equal(to.searchParams.get('src'), 'push', 'unrelated query params survive too');
   });
 
@@ -97,7 +99,7 @@ describe('the private gate redirect (PRIVATE_MODE=true)', () => {
    * fire, which is the same class of silent overwrite as the original bug.
    */
   it('leaves an explicit next alone', async () => {
-    const to = await redirectFor('/log?next=/coach');
+    const to = await redirectFor('/nutrition?next=/coach');
     assert.ok(to);
     assert.equal(to.searchParams.get('next'), '/coach');
   });
@@ -110,11 +112,23 @@ describe('the private gate redirect (PRIVATE_MODE=true)', () => {
     assert.equal(await redirectFor('/active?exercise=squats'), null, 'query stays on the logger');
   });
 
-  it('Today still 307s to the gate (blast radius — not a PRIVATE_MODE flip)', async () => {
-    const to = await redirectFor('/log');
-    assert.ok(to);
-    assert.equal(to.pathname, '/private');
-    assert.equal(to.searchParams.get('next'), '/log');
+  /**
+   * This asserted the opposite until `.839`. Today became the I-Day landing, so
+   * `/log` joined `/active` in `PRIVATE_GATE_PUBLIC_PATHS` — a deliberate ship,
+   * not a `PRIVATE_MODE` flip. The blast-radius claim is what matters and it
+   * survives: opening Today did not open the rest of the habit shell, so the
+   * check is now stated from both sides.
+   */
+  it('Today is gate-public since `.839`; the rest of the shell still 307s', async () => {
+    assert.equal(await redirectFor('/log'), null, 'Today is the I-Day landing');
+    assert.equal(await redirectFor('/log?src=push'), null, 'query does not re-gate it');
+
+    for (const gated of ['/coach', '/nutrition', '/history', '/profile']) {
+      const to = await redirectFor(gated);
+      assert.ok(to, `${gated} must stay cookie-gated`);
+      assert.equal(to.pathname, '/private');
+      assert.equal(to.searchParams.get('next'), gated);
+    }
   });
 
   /** Admin share links and the beta email both land here — no redirect, invite intact. */

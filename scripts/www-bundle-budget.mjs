@@ -39,6 +39,21 @@ const BUDGETS_KB = {
   '/': 20,
   '/start': 20,
   '/week': 20,
+  /*
+   * `.842` — these three shipped without an entry, so the discovery rule above
+   * did exactly what it promises and failed the build. It had been failing on
+   * `master` unseen: Actions was billing-blocked, so nothing ran the `www` job.
+   *
+   * Measured 2026-08-15 off `sites/www/dist`: `/about` 0.25 KB, `/compare`
+   * 0.00 KB, `/vision` 0.25 KB gzipped — static pages carrying one small inline
+   * script and no `_astro/` module at all. 2 KB is ~8x headroom on the largest
+   * and still an order of magnitude under what one hydrated island would cost,
+   * which is the thing this file exists to catch. The 20s above are the older,
+   * looser convention; lowering them is a separate concern with its own diff.
+   */
+  '/about': 2,
+  '/compare': 2,
+  '/vision': 2,
 };
 
 /** Every route the build emits, as route → dist-relative HTML path. */
