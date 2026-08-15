@@ -183,7 +183,7 @@ export function MovePage() {
                   className="min-h-[44px] tap-target"
                   onClick={() => setActiveFlowId(flow.id)}
                 >
-                  {t('moveStartFlow', { defaultValue: 'Start' })}
+                  {t('moveStartFlow', { defaultValue: 'Start Flow' })}
                 </Button>
               </CardContent>
             </Card>
@@ -197,7 +197,7 @@ export function MovePage() {
     <PillarPageShell
       icon={Wind}
       eyebrow={t('moveEyebrow', { defaultValue: 'Move' })}
-      title={t('moveTitle', { defaultValue: 'Mobility' })}
+      title={t('moveTitle', { defaultValue: 'Move & Mobility' })}
       subtitle={
         freeBeta
           ? t('moveSubtitleBriefOpenBeta', {
@@ -294,7 +294,7 @@ export function MovePage() {
                 })
               : t('movePremiumOffline', {
                   defaultValue:
-                    'Premium recovery flows unavailable offline — free flows above still work.',
+                    'Premium recovery flows unavailable offline — free flows below still work.',
                 })
           }
         />
@@ -324,7 +324,7 @@ export function MovePage() {
       {recentWins.length > 0 ? (
         <details className="group border-2 border-border bg-card">
           <summary className="flex min-h-[44px] cursor-pointer list-none items-center px-4 py-3 text-sm font-semibold text-muted-foreground [&::-webkit-details-marker]:hidden">
-            {t('moveRecentWins', { defaultValue: 'Recent sessions' })}
+            {t('moveRecentWins', { defaultValue: 'Recent Move Wins' })}
           </summary>
           <div className="space-y-1 border-t-2 border-border px-4 py-3 text-sm text-muted-foreground">
             {recentWins.map((w) => (
@@ -337,9 +337,9 @@ export function MovePage() {
       ) : (
         <EmptyState
           icon={Wind}
-          title={t('moveEmptyTitle', { defaultValue: 'No mobility sessions yet' })}
+          title={t('moveEmptyTitle', { defaultValue: 'No Move sessions logged yet' })}
           description={t('moveEmptyDesc', {
-            defaultValue: 'Start a free flow — your first session shows here.',
+            defaultValue: 'Start a free mobility flow — your first win shows here.',
           })}
           actionLabel={t('moveEmptyCta', { defaultValue: 'Browse free flows' })}
           href="#move-flows"
