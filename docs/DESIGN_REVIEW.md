@@ -64,8 +64,13 @@ Review on a 390×844 phone viewport first (the Playwright target); desktop secon
 
 | Date | Reviewer | Flows | Issues filed |
 |------|----------|-------|--------------|
-| 2026-08-15 | Gauntlet GNT-1.U2–U4 R2 | Today `/log` (cold · returning · mid-plan) · Coach two-history · Reentry 3/7/14 | **PASS (render).** R1's blocker was a gated origin, not the product: `npm run dev` is ungated (`privateModeFlag`), so Today paints. zero-state 17/17 incl. `/log`. Red in `main` 0 (cap 0) on all three Today states; the one red is the dock hero. Coach cold = "2 sessions · mostly strength"; 20 hard logs = "1 sessions · recovery-heavy" + Sat Mobility. Reentry lines render at 3/7/14. 10 stills `U{2,3,4}-R2-*.png`. |
-| 2026-08-15 | Gauntlet GNT-1.Smoother R1 | Today · Train · Victory · Coach | `check-design-system` green (1116 files). first-90 green after `.839`. U2–U4 render stills still FAIL. |
+| 2026-08-15 | Gauntlet GNT-1.U3 R4 | Coach two-history (`/coach` + Today) | **PASS (render)** — closes R3's `/coach` 307: the gate is not hit on `npm run dev` once `mw_locale_choice` is seeded. Cold = "2 sessions · mostly strength · ~120 min"; 20 hard logs = "1 sessions · recovery-heavy · ~60 min" + Sat Mobility, each with a WHY-THIS-WEEK-FROM-YOUR-LOGS panel. `U3-R4-*.png`. |
+| 2026-08-15 | Gauntlet GNT-1.U2 R3 · U4 R3 | Today cold/returning/mid-plan · Reentry 3/7/14 | **PASS (render)**, second critic in a parallel session. Adds the measurement R2 did not take: red in `main` **0** (cap 0) on all three Today states by computed background, the one red being the dock hero. zero-state 17/17. `U2-R3-*.png` · `U4-R3-*.png`. |
+| 2026-08-15 | Gauntlet GNT-1.U3 R3 | Today two weeks | **PARTIAL:** A Upper Body Strength · B Recovery. `/coach` still 307. |
+| 2026-08-15 | Gauntlet GNT-1.U4 R2 | Today reentry 3/7/14 | **PASS:** quiet 20-minute lines on `/log`. |
+| 2026-08-15 | Gauntlet GNT-1.U3 R2 | Today two histories | **FAIL** `/coach` 307. Today A/B not a clean dose pair. |
+| 2026-08-15 | Gauntlet GNT-1.U2 R2 | Today cold/returning/mid | **PASS:** `/log` painted. zero-state `/log` green. |
+| 2026-08-15 | Gauntlet GNT-1.Smoother R1 | Today · Train · Victory · Coach | `check-design-system` green (1116 files). first-90 green after `.839`. |
 | 2026-08-15 | Gauntlet GNT-1.U5 R1 | first-90 cold visitor | **FAIL** at critic time (pre-`.839`). Timed walk aborted. `U5-R1-cold-open.png`. Closed by I-Day → `/log`. |
 | 2026-08-15 | Gauntlet GNT-1.U4 R1 | Reentry 3/7/14 | **FAIL** (no render PASS). Guard 5/5. `/log` hit `/private`. |
 | 2026-08-15 | Gauntlet GNT-1.U3 R1 | Coach week from logs | **FAIL** (no render PASS). Engine 2/2. Stills skipped — no two-history seed without demo IIFE. |
