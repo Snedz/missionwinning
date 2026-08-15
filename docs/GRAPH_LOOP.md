@@ -2,7 +2,7 @@
 
 **Audience:** Founder + the next Hermes / Grok Build / graph agent  
 **Lane:** Engineering-Web (unless a loop says Android)  
-**Status:** ACTIVE 2026-08-14 · web `2026.07-unified.805` · Alpha 0.1.0 · **D queue residual thin · stop for phone**  
+**Status:** ACTIVE 2026-08-14 · web `2026.07-unified.806` · Alpha 0.1.0 · **K2 open**  
 **Does not replace:** [ORCHESTRATION.md](../ORCHESTRATION.md) (what may be built) · [CONTEXT.md](../CONTEXT.md) `## Now` (where we are) · [vision.md](../vision.md) (constitution) · [docs/THESIS.md](THESIS.md) (wedge) · [docs/PLAN.md](PLAN.md) (phases A–I)
 
 This file is the **execution queue** for the agent graph: one concern per loop, spawn, ship, mark done, spawn the next. It is not a second status block and not a license to skip standing hard bans.
@@ -154,6 +154,15 @@ First D list mixed Alpha with leftover open-beta shop work. Product stamp is **A
 **Dropped:** Astro `/press` · Astro `/bundle` · Pacers (already-true) · Accept B (founder) · dual-mode FREE_BETA tests (old + already-true).
 
 After D3 residual is thin → stop for phone. Do not invent D5 to refill eight slots.
+
+### Now — K queue (kaizen · founder Continue 2026-08-14)
+
+D is done except D4 hold. Founder skipped phone. Goal: leftover empty rooms + leftover “beta opens” words. Not a letter after D.
+
+| # | Loop | Moves | Status |
+|---|------|-------|--------|
+| **K1** | Builder category empty | `ProgramTemplatesPanel` dead `<p>` → EmptyState `/active` | `done` — `.806` this PR |
+| **K2** | www CTA leftover | `Get an invite` / `when the beta opens` vs Alpha | `open` |
 
 ### After H0 (orientation — not open until H0-1…H0-7 are done or `founder`)
 

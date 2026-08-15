@@ -54,6 +54,8 @@ type BuilderStrings = {
   builderSavedMeta: string;
   builderSessionReps: string;
   builderNoPrograms: string;
+  builderNoProgramsHint: string;
+  builderNoProgramsAction: string;
   builderDetails: string;
   builderSaveAll: string;
   builderSessionMeta: string;
@@ -148,6 +150,8 @@ const en: BuilderStrings = {
   builderSavedMeta: '{{count}} exercises · {{date}}',
   builderSessionReps: '{{name}}: {{sets}}× ({{reps}} reps)',
   builderNoPrograms: 'No programs in this category.',
+  builderNoProgramsHint: 'Pick another category, or log a session from scratch.',
+  builderNoProgramsAction: 'Log a session',
   builderDetails: 'Details',
   builderSaveAll: 'Save all ({{count}})',
   builderSessionMeta: '{{exercises}} exercises · {{sets}} sets',
