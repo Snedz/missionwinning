@@ -30,7 +30,7 @@ function stripComments(src: string): string {
 }
 
 /** Wedge routes that must not render via soft nav while PRIVATE_MODE is on without a cookie. */
-const BETA_FIELD_GATED_WEDGE = ['/log', '/coach', '/profile'] as const;
+const BETA_FIELD_GATED_WEDGE = ['/coach', '/profile'] as const;
 
 test('beta field: gated wedge routes require hard nav when gate is on (no cookie)', () => {
   const prev = process.env.NEXT_PUBLIC_PRIVATE_GATE;
@@ -46,10 +46,11 @@ test('beta field: gated wedge routes require hard nav when gate is on (no cookie
     }
     assert.equal(privateGateRequiresHardNavigation('/welcome'), false);
     assert.equal(privateGateRequiresHardNavigation('/private'), false);
+    assert.equal(privateGateRequiresHardNavigation('/active'), false);
     assert.equal(
-      privateGateRequiresHardNavigation('/active'),
+      privateGateRequiresHardNavigation('/log'),
       false,
-      '.768 /active is gate-public — I-Day may soft-nav the logger'
+      'GNT-1 / F-004 /log is gate-public — I-Day may soft-nav Today'
     );
   } finally {
     process.env.NEXT_PUBLIC_PRIVATE_GATE = prev;

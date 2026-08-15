@@ -30,10 +30,10 @@ describe('idayFinishPath', () => {
     );
   });
 
-  it('cold I-Day: gate on → Active (logger is public); gate off → Today', () => {
+  it('cold I-Day always lands Today, gate on or off', () => {
     assert.equal(
       idayFinishPath({ isEdit: false, hasLoggedWork: false, gateOn: true }),
-      '/active'
+      '/log'
     );
     assert.equal(
       idayFinishPath({ isEdit: false, hasLoggedWork: false, gateOn: false }),

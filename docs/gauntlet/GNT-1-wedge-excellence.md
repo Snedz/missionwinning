@@ -4,7 +4,7 @@
 **Product:** the evidence dossier that makes the founder’s phone walk a confirmation.  
 **Terminal agent state:** `ready-for-founder`. Only the founder writes `status: pass` in [EXCELLENCE_RESULT.md](../EXCELLENCE_RESULT.md).
 
-**Next spawn:** `BUILDER · I-Day Continue → /log` — U1–U5 critics landed. Shared gap: first-90 expected `/log`, got `/active`. One concern. Do not write `status: pass`.
+**Next spawn:** `SMOOTHER · four wedge surfaces` — I-Day lands `/log` (`.839`). first-90 green. U2–U4 render stills still FAIL. Do not write `status: pass`.
 
 Unused cap is success. The cap counts only PRs that touch `src|app|scripts|supabase`. U1/U2 already-true did not spend it.
 

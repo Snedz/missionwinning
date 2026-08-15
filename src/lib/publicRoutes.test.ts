@@ -26,7 +26,8 @@ describe('publicRoutes', () => {
     assert.equal(isPrivateGatePublicPath('/vision'), true);
     assert.equal(isPrivateGatePublicPath('/beta'), true);
     assert.equal(isPrivateGatePublicPath('/press'), true);
-    assert.equal(isPrivateGatePublicPath('/log'), false);
+    assert.equal(isPrivateGatePublicPath('/log'), true);
+    assert.equal(isPrivateGatePublicPath('/active'), true);
     assert.equal(isPrivateGatePublicPath('/_next/static/chunk.js'), true);
   });
 });
