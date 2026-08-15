@@ -1,7 +1,7 @@
 # docs/gauntlet/ — campaign workbench
 
 **Audience:** LEAD / BUILDER / CRITIC after [GAUNTLET_LOOP.md](../GAUNTLET_LOOP.md)  
-**Not a queue.** The baton is one [GRAPH_LOOP.md](../GRAPH_LOOP.md) row per campaign.
+**Not a queue.** The baton is one [GRAPH_LOOP.md](../GRAPH_LOOP.md) row per campaign. The role and unit live on the workbench **Next spawn** line.
 
 Closed campaigns rotate to [docs/archive/](../archive/INDEX.md) the same way LOG entries do. Own-app stills live under `docs/gauntlet/<ID>/evidence/`. **Competitor pixels stay out of git.**
 

@@ -164,10 +164,12 @@ This repo has no `.greptile/` tree. Instill is this recipe + `privacyInstill.tes
 3. If the loop’s defect is already gone, mark it `done (already true)` with proof paths and stop.
 4. One PR. `[skip vercel]` unless the founder asked for Preview.
 5. Touching `src|app|scripts|supabase` → bump `APP_BUILD_LABEL` past master, LOG + CONTEXT `## Now` in the same commit. Surface paths while excellence is unscored need `Excellence-Override: <reason>`.
-6. Close the loop in `GRAPH_LOOP.md` (Outcome = PR + label). Do not start the next loop in that PR.
+6. Ordinary loop: close it in `GRAPH_LOOP.md` (Outcome = PR + label). Campaign row: leave `open`; update the workbench only. Do not start the next loop in that PR.
 7. Spawn the next agent with the copy-paste prompt in GRAPH_LOOP.md.
 
-G1–G7 are the live queue (GRAPH_LOOP v2). Do not write excellence `status: pass`. Do not restore cinematic `/`.
+The live queue is the top `open` row in GRAPH_LOOP.md. If that row is a gauntlet campaign (`GNT-*`), **stop** and use recipe 12. Do not implement the campaign as one PR. Do not mark the campaign row `done` after one builder.
+
+Do not write excellence `status: pass`. Do not restore cinematic `/`.
 
 Hard bans stay: free logger never gated · no `PRIVATE_MODE` flip · no invented traction.
 
@@ -177,11 +179,13 @@ Hard bans stay: free logger never gated · no `PRIVATE_MODE` flip · no invented
 
 **Required reads:** [GAUNTLET_LOOP.md](GAUNTLET_LOOP.md) · the campaign workbench · [GRAPH_LOOP.md](GRAPH_LOOP.md) · [EXCELLENCE_RESULT.md](EXCELLENCE_RESULT.md) if the campaign maps to RESULT.
 
-1. LEAD boots the spine + workbench. Bars and budget already written, or this spawn *is* the instrument-commission round.
-2. One BUILDER, one unit, one PR. Instruments green locally before the PR. Surface paths: `Excellence-Override: gauntlet GNT-<n>.U<u> round <r>`.
-3. Fresh CRITIC. Does not read the builder’s PR body or chat. Evidence trio: 390×844 walk · own-app stills under `docs/gauntlet/<ID>/evidence/` · pasted instrument output.
-4. Verdict: every criterion PASS/FAIL + exactly one “Biggest remaining gap.” Hero-surface passes append a DESIGN_REVIEW §Passes row, Reviewer `Gauntlet <ID>.<U> R<r>`.
-5. LEAD pastes the verdict verbatim. FAIL → that gap is the next builder brief. Two flat rounds → split or `blocked-for-founder`.
+This recipe wins when the top GRAPH_LOOP `open` row is a campaign (`GNT-*`). The first action is the workbench **Next spawn** line (role · unit · round).
+
+1. LEAD boots the spine + workbench. Bars and budget already written, or this spawn *is* the instrument-commission round. Critic the oldest shipped unit (empty critic cell) before commissioning the next builder.
+2. One BUILDER, one unit, one PR — only if Next spawn is BUILDER. Instruments = the workbench’s exact commands, green locally before the PR. Surface paths: `Excellence-Override: gauntlet GNT-<n>.U<u> round <r>`.
+3. Fresh CRITIC. Does not read the builder’s PR body or chat. Boot: [GAUNTLET_LOOP.md](GAUNTLET_LOOP.md) §4 critic boot (`npm run dev`, never gated `next start`). Evidence trio: 390×844 walk · own-app stills under `docs/gauntlet/<ID>/evidence/` · pasted instrument output.
+4. Verdict: every **written instrument** PASS/FAIL + exactly one “Biggest remaining gap.” A feel sentence is `founder-only, not a builder brief`. Hero-surface passes append a DESIGN_REVIEW §Passes row, Reviewer `Gauntlet <ID>.<U> R<r>`.
+5. LEAD pastes a **valid** verdict verbatim (trio present). Missing stills or “tests passed” is invalid — do not paste; re-spawn the critic. Instrument FAIL → that gap is the next builder brief. Feel-only FAIL is not.
 6. All units green → one SMOOTHER pass → report. Terminal state `ready-for-founder`. Never write `status: pass`.
 7. GRAPH_LOOP campaign row goes `done` only when the report is written.
 

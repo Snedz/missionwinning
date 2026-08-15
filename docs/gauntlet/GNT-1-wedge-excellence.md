@@ -1,47 +1,61 @@
 # GNT-1 — Wedge excellence gauntlet
 
-**Status:** `open` · GRAPH_LOOP **AL1** · hard cap **≤14 build PRs**  
+**Status:** `open` · GRAPH_LOOP **AL1** · hard cap **≤14 build PRs** (3 spent: `.835` `.836` `.837`)  
 **Product:** the evidence dossier that makes the founder’s phone walk a confirmation.  
 **Terminal agent state:** `ready-for-founder`. Only the founder writes `status: pass` in [EXCELLENCE_RESULT.md](../EXCELLENCE_RESULT.md).
 
+**Next spawn:** `CRITIC · GNT-1 U1 R1` — oldest shipped unit with an empty critic cell. Do not open a builder (including a U3 render instrument) until U1–U5 critics land.
+
+Unused cap is success. The cap counts only PRs that touch `src|app|scripts|supabase`. U1/U2 already-true did not spend it.
+
 Split by the **five founder criteria** (not the four surfaces). Surfaces cross-cut them.
 
-Own-app stills: [GNT-1/evidence/](GNT-1/evidence/README.md). Competitor pixels stay local.
+Own-app stills: [GNT-1/evidence/](GNT-1/evidence/README.md). Competitor pixels stay local. Named references (Hevy / Strong / Freeletics / Bevel / Duolingo) are **measurements-only** until this file has founder FLOORS/BANDS. They are not a FAIL condition.
 
 ## Units / bars (written before round 1)
 
-| Unit | Bar (criterion) | Instruments / reference | Critic evidence | Budget |
-|------|-----------------|-------------------------|-----------------|--------|
-| **U1** | One-thumb outdoor set logging | thumbSweep 44px · `tests/e2e/logger-depth.spec.ts` · first-90 TAP_BUDGET=5 · first-steps-reach REACH_BUDGET=2 · ref: Hevy/Strong set table + previous-set ghost | Stills of set row / rest / ghost / finished; real instrument output; blind A/B vs Hevy/Strong *measurements* | 3 rounds |
-| **U2** | One clear next session on Today | redActions on `/log` · Today ≤6 blocks (`todayBlockBudget`) · `tests/e2e/zero-state.spec.ts` · `src/lib/todayPrimaryAction.test.ts` · ref: Freeletics “one Start” | Cold / returning / mid-plan stills; instrument output; A/B verdict | 2 rounds |
-| **U3** | Coach week feels earned from logs | `planEngine.test` / `adapt.test` goldens · `scripts/seed-coach-adapt-demo.mjs` seeded states · falsification: two log histories must render visibly different dose+adapt on Coach and Today | Stills under seed A vs seed B; rendered diff; test output | 3 rounds |
-| **U4** | Missed-day re-entry without shame | `src/lib/reentryCopyGuard.test.ts` · shame-lexicon sweep (extend the guard if a new phrase class appears — discover, don’t enumerate) · anti-ref: Duolingo guilt (MASCOT anti-guilt) | Stills after simulated 3 / 7 / 14 missed days; guard output | 2 rounds |
-| **U5** | Phone hero ≤90s feels intentional | first-90 TAP_BUDGET=5 · firstPaintFloor **167** (never raise) · timed walk: cold open → set → Victory → clear next ≤90s · ref: Bevel metric hierarchy | Timestamped per-beat walk + still per beat; instrument output; blind A/B vs Bevel *measurements* | 3 rounds |
+| Unit | Bar (criterion) | Instruments (exact commands) | Critic evidence | Budget |
+|------|-----------------|------------------------------|-----------------|--------|
+| **U1** | One-thumb outdoor set logging | `npx playwright install chromium` if needed. `npx playwright test tests/e2e/logger-depth.spec.ts tests/e2e/first-90.spec.ts tests/e2e/mobile-nav.spec.ts`. Unit pins already pasted. REACH is `mobile-nav.spec.ts` (`REACH_BUDGET = 2`), **not** `first-steps-reach.spec.ts` (More-checklist). | Stills: set-row / rest / ghost / finished. Pasted e2e last lines. | 3 rounds |
+| **U2** | One clear next session on Today | `npx playwright test tests/e2e/zero-state.spec.ts`. `npx tsx --test src/lib/todayPrimaryAction.test.ts src/lib/today/todayBlockBudget.test.ts`. redActions: `tests/e2e/helpers/redActions.ts`. | Stills: cold / returning / mid-plan. Pasted output. | 2 rounds |
+| **U3** | Coach week feels earned from logs | Engine pin (shipped `.835`, not a render proof): `npx tsx --test src/lib/coach/gnt1HistoryDose.test.ts`. **Do not** use `scripts/seed-coach-adapt-demo.mjs` — that is a one-plan 60s IIFE and can clobber a real `mw_coach_plan`. A Coach+Today two-history **render** instrument is not commissioned until U1–U5 critics land. | Stills of `/coach` + `/log` under two log histories if you can seed them via the logger. Engine paste is not a render PASS. | 3 rounds |
+| **U4** | Missed-day re-entry without shame | `npx tsx --test src/lib/reentryCopyGuard.test.ts`. | Stills after 3 / 7 / 14 missed days + guard last lines. | 2 rounds |
+| **U5** | Phone hero ≤90s feels intentional | `npx playwright test tests/e2e/first-90.spec.ts` (`TAP_BUDGET = 5`). Timed walk (not `firstPaintFloor` 167 — that ratchet is i18n copy-drift, a standing gate, **not** a U5 pass): cold open → first set logged → Victory → clear next on Today, wall-clock ≤90s. `.837` `gnt1First90.test.ts` is a source pin of TAP_BUDGET + the 167 floor; it does not time 90 seconds. | Timestamped still per beat + first-90 last lines. | 3 rounds |
 | **Smoother** | Four wedge surfaces read as one app | DESIGN_ORCHESTRATION 8 surface bars | DESIGN_REVIEW dated row + UX_PLAYBOOK §10 closing ritual | 1 round |
 
-U2 (GRAPH_LOOP G4) and U4 (G7) are expected to open evidence-first or `done (already true)` — the dossier is still produced.
+U2 (GRAPH_LOOP G4) and U4 (G7) opened evidence-first / already-true. The dossier is still produced.
+
+## Walk beats (critic)
+
+| Unit | Beats (filename `U<n>-R1-<beat>.png`) |
+|------|----------------------------------------|
+| U1 | `set-row` · `rest` · `ghost` · `finished` |
+| U2 | `cold` · `returning` · `mid-plan` |
+| U3 | `coach-history-a` · `coach-history-b` · `today-history-a` · `today-history-b` (skip render stills if you cannot seed two histories without the demo IIFE; say so) |
+| U4 | `missed-3` · `missed-7` · `missed-14` |
+| U5 | `cold-open` · `first-set` · `victory` · `clear-next` + wall-clock on the still or in the paste |
 
 ## Round log
 
 | unit | round | builder ref | critic verdict | biggest gap |
 |------|-------|-------------|----------------|-------------|
-| U1 | 1 | already-true on master `.834` — instruments green (paste below). No product PR. Critic stills not this spawn. | — | Critic: 390×844 stills of set row / rest / ghost / finished + blind A/B measurements vs Hevy/Strong |
-| U2 | 1 | already-true on master `.834` — instruments green (paste below). No product PR. | — | Critic: cold/returning/mid-plan stills + redActions on `/log` + Freeletics A/B |
-| U3 | 1 | `.835` this PR — `gnt1HistoryDose.test.ts` pins cold vs high-strain week kinds + Thursday adapt. | — | Critic: stills seed A vs seed B on `/coach` + Today |
-| U4 | 1 | `.836` this PR — 3/7/14-day quiet lines + long-gap at 14. | — | Critic: stills after 3/7/14 missed days |
-| U5 | 1 | `.837` this PR — TAP_BUDGET=5 + firstPaintFloor 167 + Victory walk named. | — | Critic: timed ≤90s walk + Bevel A/B measurements |
+| U1 | 1 | already-true on master `.834` — instruments green (paste below). No product PR. | — | Critic U1: stills + e2e last lines |
+| U2 | 1 | already-true on master `.834` — instruments green (paste below). No product PR. | — | Critic U2 after U1 |
+| U3 | 1 | `.835` — engine pin `gnt1HistoryDose.test.ts` (not a render proof). | — | Critic U3 after U2 |
+| U4 | 1 | `.836` — 3/7/14-day quiet lines + long-gap at 14. | — | Critic U4 after U3 |
+| U5 | 1 | `.837` — TAP_BUDGET=5 + firstPaintFloor 167 **named** (copy-drift, not 90s). | — | Critic U5 timed walk after U4 |
 
 ## Evidence dossier (per unit)
 
 Fill as rounds ship. Own-app stills under `GNT-1/evidence/` named `U<n>-R<r>-<beat>.png`.
 
-| unit | stills | instrument paste | A/B (if named) |
-|------|--------|------------------|----------------|
-| U1 | pending critic | 2026-08-15 builder R1: `npx tsx --test src/lib/workout/lastSetGhost.test.ts src/lib/workout/setTableDensity694.test.ts src/lib/firstSetUngated.test.ts` → **36 pass / 0 fail**. `setTableDensity694`: LogConsole one `primary-action` + `min-h-[52px]`; SetLogRow `min-h-[44px]` + `data-prev-anchor` + `prevLabel`; SetLogTable `min-h-[44px]` + `set-table-prev`; LastSetGhostButton outline, never poster-red; both LogConsole and SetLogTable mount ghost. `lastSetGhost`: last working set not warmup; tombstones skipped. `firstSetUngated`: first-90 TAP_BUDGET stays 5. Source pins: `tests/e2e/first-90.spec.ts` `const TAP_BUDGET = 5`; `tests/e2e/mobile-nav.spec.ts` `const REACH_BUDGET = 2` (not `first-steps-reach.spec.ts`, which is More-checklist reachability). `tests/e2e/logger-depth.spec.ts` exists (set-row-target-empty → rest → Victory). | pending critic |
-| U2 | pending critic | 2026-08-15 builder R1: `npx tsx --test src/lib/todayPrimaryAction.test.ts src/lib/today/todayBlockBudget.test.ts src/lib/justGoHeroMeta.test.ts` → **28 pass / 0 fail**. G4 already `JourneyHero` Resume / one train CTA (`todayPrimaryAction.ts` + Lean/Dashboard `ScreenDock`). `tests/e2e/zero-state.spec.ts` exists. redActions helper: `tests/e2e/helpers/redActions.ts`. | pending critic |
-| U3 | pending critic | 2026-08-15 builder R1 `.835`: `npx tsx --test src/lib/coach/gnt1HistoryDose.test.ts` → **2 pass / 0 fail**. Empty history → 4 strength / 12 sets. 20 hard logs → recovery days enter + fewer sets. Thursday adapt keeps remaining kinds different. Goldens in `planEngine.test.ts` still use `history: []` — this pin is the two-history falsification. | pending critic |
-| U4 | pending critic | 2026-08-15 builder R1 `.836`: `npx tsx --test src/lib/reentryCopyGuard.test.ts` → **5 pass / 0 fail**. 3d/7d = gap “Three/Seven days off. Here's the 20-minute version.” 14d = long-gap “14 days off…”. FORBIDDEN lexicon still empty. | pending critic |
-| U5 | pending critic | 2026-08-15 builder R1 `.837`: `npx tsx --test src/lib/gnt1First90.test.ts` → **3 pass / 0 fail**. Pins `TAP_BUDGET = 5`, welcome→Today→Active→Log set, logger-depth Victory / Back to Today, `MAX_FIRST_PAINT_COPY_DRIFT = 167` down-only. Cap not raised. Timed walk stills pending critic. | pending critic |
+| unit | stills | instrument paste | A/B (measurements only) |
+|------|--------|------------------|-------------------------|
+| U1 | pending critic | 2026-08-15 builder R1: `npx tsx --test src/lib/workout/lastSetGhost.test.ts src/lib/workout/setTableDensity694.test.ts src/lib/firstSetUngated.test.ts` → **36 pass / 0 fail**. Critic must also run the **e2e** commands in the unit table (unit-only paste is not the named bar). | no founder FLOORS — do not FAIL |
+| U2 | pending critic | 2026-08-15 builder R1: `npx tsx --test src/lib/todayPrimaryAction.test.ts src/lib/today/todayBlockBudget.test.ts src/lib/justGoHeroMeta.test.ts` → **28 pass / 0 fail**. Critic runs `zero-state.spec.ts` + those unit tests. | no founder FLOORS — do not FAIL |
+| U3 | pending critic | 2026-08-15 builder R1 `.835`: `npx tsx --test src/lib/coach/gnt1HistoryDose.test.ts` → **2 pass / 0 fail**. Engine-only. Not a Coach/Today render PASS. | — |
+| U4 | pending critic | 2026-08-15 builder R1 `.836`: `npx tsx --test src/lib/reentryCopyGuard.test.ts` → **5 pass / 0 fail**. | no founder FLOORS — do not FAIL |
+| U5 | pending critic | 2026-08-15 builder R1 `.837`: `npx tsx --test src/lib/gnt1First90.test.ts` → **3 pass / 0 fail**. Source pin. Critic runs `first-90.spec.ts` and the timed walk. | no founder FLOORS — do not FAIL |
 | Smoother | | | |
 
 ## Report skeleton
