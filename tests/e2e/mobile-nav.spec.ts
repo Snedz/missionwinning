@@ -1,6 +1,7 @@
 import { test, expect } from '@playwright/test';
 import { gateRequired, unlockGate } from './helpers/gate';
 import { seedLegacyOnboarding } from './helpers/journey';
+import { gotoHydrated } from './helpers/gotoHydrated';
 
 /**
  * The tab bar, as a budget rather than an opinion.
@@ -116,9 +117,9 @@ test.describe('Mobile navigation @gate', () => {
    * in an open sheet is one tap.
    */
   async function readReach(page: import('@playwright/test').Page) {
-    // networkidle — this case opens the sheet, and More only works once
-    // hydrated. See the Escape case below.
-    await page.goto('/log', { waitUntil: 'networkidle' });
+    // More is a button, not a link — click is a no-op until React hydrates.
+    // `networkidle` never fires on `npm run dev` (HMR / long-lived fetches).
+    await gotoHydrated(page, '/log');
 
     const bar = page.getByRole('navigation', { name: /primary/i });
     const tabHrefs = await bar.locator('a').evaluateAll((els) =>
@@ -172,10 +173,9 @@ test.describe('Mobile navigation @gate', () => {
   });
 
   test('the More sheet closes on Escape and restores focus', async ({ page }) => {
-    // networkidle, not domcontentloaded: More is the one slot in the bar that
-    // is a button rather than a link, so it does nothing at all until React
-    // has hydrated and attached its handler.
-    await page.goto('/log', { waitUntil: 'networkidle' });
+    // More is a button, not a link — click is a no-op until React hydrates.
+    // `networkidle` never fires on `npm run dev` (HMR / long-lived fetches).
+    await gotoHydrated(page, '/log');
 
     const trigger = page.getByRole('navigation', { name: /primary/i }).getByRole('button', { name: /more/i });
     await expect(trigger).toBeVisible();
