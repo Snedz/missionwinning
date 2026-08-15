@@ -91,3 +91,7 @@ apps/android/upload-keystore.jks
 ops/
 .gstack/
 .local-preview/
+
+# LOCAL graph memory: Neo4j volume, extraction output, real MCP config (never product git)
+.graph/
+.mcp.json

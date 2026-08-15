@@ -193,6 +193,7 @@ This repo has paid repeatedly for checks that could not fail. Before adding a te
 | Architecture | [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) |
 | API reference | [docs/API.md](docs/API.md), [app/INDEX.md](app/INDEX.md), [app/api/INDEX.md](app/api/INDEX.md) |
 | How to add code | [CONTRIBUTING.md](CONTRIBUTING.md), [docs/AGENT_RECIPES.md](docs/AGENT_RECIPES.md) |
+| Agent graph memory (dev tooling) | [docs/GRAPH_MEMORY.md](docs/GRAPH_MEMORY.md) — ingest at low effort, traverse at high; not product runtime |
 | Launch / deploy | [docs/LAUNCH_RUNBOOK.md](docs/LAUNCH_RUNBOOK.md) (single source), [docs/VERCEL_DEPLOY_CHECKLIST.md](docs/VERCEL_DEPLOY_CHECKLIST.md) |
 | Env / secrets | [docs/ENV.md](docs/ENV.md), [docs/SECRETS.md](docs/SECRETS.md), [.env.example](.env.example) |
 | Security | [docs/PROTECTION.md](docs/PROTECTION.md), [docs/OWASP_AUDIT.md](docs/OWASP_AUDIT.md), [SECURITY.md](SECURITY.md) |

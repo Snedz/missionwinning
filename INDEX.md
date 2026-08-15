@@ -165,6 +165,7 @@ Root keeps only the spine: README · CONTEXT · AGENTS · INDEX · vision · ORC
 | [docs/issa-source-map.md](docs/issa-source-map.md) | ISSA topic map → guidebook |
 | Magazine PDF | `public/magazine/beyond-the-basics.pdf` · print source `/guide/print` |
 | [docs/ENV.md](docs/ENV.md) | Environment variables |
+| [docs/GRAPH_MEMORY.md](docs/GRAPH_MEMORY.md) | Agent graph memory of the dev history — local Neo4j + Graphiti, `npm run graph:ingest` |
 | [docs/archive/SETUP.md](docs/archive/SETUP.md) | One-time setup — **archived, stale PayPal-first** |
 | [docs/PROTECTION.md](docs/PROTECTION.md) | Security checklist |
 | [docs/COMPLIANCE.md](docs/COMPLIANCE.md) | SOC2/ISO/HIPAA map-only control monitor (not a certification) |

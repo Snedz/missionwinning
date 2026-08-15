@@ -1,0 +1,32 @@
+# Neo4j for local graph memory. Development tooling — never product infrastructure.
+#
+# Separate compose file rather than a `docker-compose.yml` at the root, because
+# the product has no containerised services: Next.js runs on Vercel and the
+# database is hosted Supabase. A root compose file would read as "this is how you
+# run Mission Winning", which is wrong. Name it explicitly:
+#
+#   docker compose -f docker-compose.graph.yml up -d
+#   docker compose -f docker-compose.graph.yml down
+#
+# The volume lives under .graph/ (gitignored) so the graph never enters product
+# git, matching the .hermes/ and .gstack/ convention for local agent state.
+services:
+  neo4j:
+    image: neo4j:5-community
+    container_name: mw-graph-neo4j
+    ports:
+      - '7474:7474' # browser
+      - '7687:7687' # bolt
+    environment:
+      # No default. An unset password fails the container rather than starting an
+      # open database on a developer's machine.
+      NEO4J_AUTH: neo4j/${NEO4J_PASSWORD:?set NEO4J_PASSWORD in .env.local}
+      NEO4J_server_memory_heap_max__size: 1G
+    volumes:
+      - ./.graph/neo4j/data:/data
+      - ./.graph/neo4j/logs:/logs
+    healthcheck:
+      test: ['CMD-SHELL', 'wget -qO- http://localhost:7474 >/dev/null || exit 1']
+      interval: 10s
+      timeout: 5s
+      retries: 12
