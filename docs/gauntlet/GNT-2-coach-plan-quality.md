@@ -1,11 +1,11 @@
 # GNT-2 — Coach plan quality
 
-**Status:** `open` · GRAPH_LOOP **AM1** · hard cap **≤10 build PRs** (5 spent: `.840` `.845` `.847` `.848` `.849`)
+**Status:** `ready-for-founder` · GRAPH_LOOP **AM1** (`done`) · hard cap **≤10 build PRs** (**5 spent**: `.840` `.845` `.847` `.848` `.849` — unused cap is success)
 **Opened:** 2026-08-15, on the gate written in [INDEX.md](INDEX.md) — *"enters GRAPH_LOOP only after GNT-1's report"*. That report is written; GNT-1 is `ready-for-founder`.
 **Product:** an instrument that can tell a good generated week from a bad one, and a planner that clears it.
 **Terminal agent state:** `ready-for-founder`. Never `status: pass`.
 
-**Next spawn:** SMOOTHER — U1–U4 critic PASS (engine). Walk Train / Today / Victory / Coach at 390×844 against DESIGN_ORCHESTRATION’s 8 surface bars. Append a UX_PLAYBOOK §10 closing block to DESIGN_REVIEW.md. Do not open a new unit. Do not write `status: pass`. Then LEAD writes the campaign report (`ready-for-founder`).
+**Next spawn:** `ready-for-founder` — **report written.** U1–U4 critic PASS (engine). SMOOTHER R1 walked Today / Train / Victory; Coach 307→`/private` on the :3000 host (gate, not a planner defect). No open builder brief. Next action is the **founder walk** against the report below. This campaign does **not** write [EXCELLENCE_RESULT.md](../EXCELLENCE_RESULT.md) — that remains GNT-1 / Horizon W. Only the founder writes `status: pass`. Do not invent AM2. Do not paste `idea:next` H-01.
 
 Instrument first: this campaign may not grade a week against taste. Every unit's bar is [GAUNTLET_LOOP.md](../GAUNTLET_LOOP.md) §3 source 1 or 2 — an existing measured instrument, or a new ratchet on the canonical pattern. Reference programmes contribute **structure bands only** (never copied text — guidebook originality-log discipline).
 
@@ -31,6 +31,7 @@ Instrument first: this campaign may not grade a week against taste. Every unit's
 | U3 | 1 | `.848` — commissioned `coachEvalAdapt.test.ts` (`generateWeek` + `adaptPlan`, no date literals, 1 mutant killed). No planner change. | **PASS (engine).** COMMAND `npx tsx --test src/lib/coach/coachEvalAdapt.test.ts` → `# tests 1 # pass 1 # fail 0`. `ok 1` holds `generateWeek` then `adaptPlan`, fail-not-skip on past planned, `missed.length === pastPlanned.length`, remaining `dayOffset >= 3` and `count ≤ leftover days`, remaining sets do not rise. STILLS: none (engine-only). | U4 is still uncommissioned, so nothing yet requires exercise selection to be sane for the declared gear |
 | U4 | 0 | no builder — LEAD source investigation only (GRAPH_LOOP rule 3), no product change. | **bar written; product already filters gear.** `selector.pickExercises` already calls `equipmentMatches(ex, ctx.equipment, ctx.homeGymKit)`. `equipment.test.ts` already discovers the catalog for the **predicate** (bodyweight never barbell/machine/cable). `planEngine.test.ts` asserts `!exerciseId.includes('bench')` on one persona — one spelling, date literal. `adjust.test.ts` checks `equipmentMatches` on **adjustTodaySession**, not `generateWeek`. What is missing is the GNT-2 ratchet: `generateWeek`, all three profiles + one kit, every programmed id in `EXERCISES` and legal for that gear. | A builder who lists banned ids (`bench`, sled, …) is writing the vacuous guard U4's own row forbids. Recovery picks from a closed `RECOVERY_IDS` list — those ids must still pass `equipmentMatches` for the profile, not get a skip |
 | U4 | 1 | `.849` — commissioned `coachEvalGear.test.ts` (`generateWeek`, catalog discover, 1 mutant killed). No planner change. | **PASS (engine).** COMMAND `npx tsx --test src/lib/coach/coachEvalGear.test.ts` → `# tests 2 # pass 2 # fail 0`. `ok 1` catalog not empty. `ok 2` holds `generateWeek` (not `equipmentMatches` alone), fail-not-skip on empty week, every id in `EXERCISES`, every id `equipmentMatches` bodyweight / dumbbells / full-gym + kit. No banned-id list. STILLS: none (engine-only). | All four units are green. Campaign still needs the SMOOTHER walk and the report |
+| Smoother | 1 | already-true surfaces on tip `.849`. Walk + stills harvested #687. | **logged** — DESIGN_REVIEW §Passes row + UX_PLAYBOOK §10 ritual. `check-design-system` 1127 files / 0 drift. Today / Train / Victory paint at 390×844. Coach hard-nav and dock tab 307 → `/private` on this host (PRIVATE_MODE / gate cookie) — same GNT-1 residual, not a GNT-2 planner regression. STILLS: `docs/gauntlet/GNT-2/evidence/SMOOTHER-*.png`. | Report was the remaining agent work |
 
 ## Evidence dossier
 
@@ -46,7 +47,33 @@ Instrument first: this campaign may not grade a week against taste. Every unit's
 | **U4 LEAD** | **2026-08-15 — `generateWeek` local Monday, intermediate 4-day strength, catalog `EXERCISES.length === 130`:**<br>**bodyweight** → 16 programmed / 12 unique · 0 missing · 0 illegal<br>**dumbbells** → 16 / 11 · 0 missing · 0 illegal<br>**full-gym** → 16 / 15 · 0 missing · 0 illegal<br>**full-gym + kit** `{barbell, rack, plates, floor}` → 16 / 11 · 0 missing · 0 illegal | R1 of this unit is the instrument, not a planner change. `equipment.test.ts` and the `bench` substring persona are not this bar — a planner that computes `equipmentMatches` and discards it at `generateWeek` would still pass those. Kit overlay is declared gear: honor `homeGymKit` the same way as the three-way profile. |
 | **U4 R1** | **2026-08-15 critic (paste):** `npx tsx --test src/lib/coach/coachEvalGear.test.ts` → `# tests 2 # pass 2 # fail 0`. `ok 1 - the catalog this instrument discovers is not empty`. `ok 2 - generateWeek programs only catalog ids legal for the declared gear`. STILLS: none (engine-only; no walk beats on the GNT-2 workbench for U4). `weekFor` calls `generateWeek` (`coachEvalGear.test.ts:52`). Fail-not-skip on empty week (`:62`). `EXERCISES.find` (`:67`) + `assert.deepEqual(missing, [])` (`:74`). `equipmentMatches(data, profile, kit)` on bodyweight / dumbbells / full-gym + `GARAGE` kit (`:36-38`, `:72-79`, `:87-90`). No banned-id list. | FEEL (founder-only, not a builder brief): the pin is real, but it only swears the week is legal for the garage — it never has to look like a garage week, only like nothing the kit cannot do. |
 
-## Report skeleton
+## Report
 
-- Bar as written · round log · PASS evidence per unit · remaining gaps
+Bar as written (table above). Full round log above. This campaign is **instrument-first**, not a founder-scored RESULT walk — there is no map to [EXCELLENCE_RESULT.md](../EXCELLENCE_RESULT.md) W1–W4. GNT-1 still owns that.
+
+**2026-08-15 LEAD re-run on tip `.849`:** `npx tsx --test src/lib/coach/coachEval.test.ts src/lib/coach/coachEvalProgression.test.ts src/lib/coach/coachEvalAdapt.test.ts src/lib/coach/coachEvalGear.test.ts` → `# tests 8 # pass 8 # fail 0`.
+
+| Unit | Bar (as written) | PASS evidence |
+|------|------------------|---------------|
+| **U1** | The week's dose moves with training **magnitude**, not just presence | `.845` wired `loadZone` into `chooseSplit`. `high` inserts one extra recovery after the strain rules. Floor 2 → 3. Critic: `coachEval.test.ts` `# tests 3 # pass 3 # fail 0`. `ok 1` `shapes.size >= MIN_DISTINCT_DOSE_SHAPES` (floor 3). `ok 3` `high.recovery > steady.recovery \|\| high.sets < steady.sets`. The only planner change in this campaign. |
+| **U2** | A clean **last session** raises prescribed **load** at `generateWeek`; week `sets:recovery` must not move | Already true. `.847` commissioned `coachEvalProgression.test.ts` (no planner change). Critic: `# tests 2 # pass 2 # fail 0`. `ok 2` holds `generateWeek` (not `nextTargets`), `easyLoad.weight > LAST_WEIGHT`, `moreLoad(easy, hard)`, week `${sets}:${recovery}` equal. LEAD numbers: last session 100 kg easy → **102.5** `coachWhyLoadUp`; hard → **90** `coachWhyDeload`; both weeks **46:0**. |
+| **U3** | Mid-week `adaptPlan` records every past planned day as `missed` and keeps remaining load inside leftover days; remaining sets must not rise | Already true. `.848` commissioned `coachEvalAdapt.test.ts` (no planner change). Critic: `# tests 1 # pass 1 # fail 0`. `ok 1` holds `generateWeek` then `adaptPlan`, fail-not-skip on past planned, `missed.length === pastPlanned.length`, remaining `dayOffset >= 3` and `count ≤ leftover days`, remaining sets do not rise (24=24). Local Monday + Thursday via `localDateKey` / `startOfLocalWeek`. |
+| **U4** | Every exercise `generateWeek` programs exists in `EXERCISES` and passes `equipmentMatches` for the declared profile (and kit) | Already true. `.849` commissioned `coachEvalGear.test.ts` (no planner change). Critic: `# tests 2 # pass 2 # fail 0`. Catalog discovered (`EXERCISES.length === 130`); 0 missing / 0 illegal on bodyweight, dumbbells, full-gym, and full-gym + `{barbell, rack, plates, floor}`. No banned-id list. |
+| **Smoother** | Four wedge surfaces still read as one app after the engine campaign | DESIGN_REVIEW 2026-08-15 GNT-2.Smoother R1. `check-design-system` 1127 files / 0 drift. I-Day Continue → `/log`. Today: `Chest — Just Go` then `Full Body Strength` + First Steps; red in `main` **0**. Train empty = EmptyState. Live set row + rest 1:29 ±15s / Skip. Victory: Session locked · Start session 2. Coach 307→`/private` on :3000 (gate). Stills: [GNT-2/evidence/](GNT-2/evidence/README.md). |
+
+**Cap:** 5 of ≤10 build PRs spent (all five touched `src/`). Unused cap is success. Only `.845` changed the planner. `.840` `.847` `.848` `.849` are GNT-2 ratchets on already-true `generateWeek` / `adaptPlan` behaviour.
+
+**Recurring LEAD finding:** the original unit briefs were imprecise the same way every time. U1 was "magnitude-blind" when the discarded input was `loadZone`. U2 was "a clean block raises work" when green is last-session RPE and `loadGuard` `light` is identity. U3 was "deload on miss" when `adaptPlan` records and re-spreads, and does not cut remaining sets. U4 was "`!bench`" when the bar is catalog discover. A builder who added sets on green, cut leftover work on a miss, or listed banned ids would have fought a rule the engine does not have.
+
+**Remaining gaps (honest):**
+
+1. **The third dose shape only ever sheds work.** `high` swaps one last strength day for recovery. Nothing in this campaign makes a clean week *bigger*. That is U1 / `loadGuard` by design, not an unfixed FAIL.
+2. **Green last session only moves the number on the bar.** Week `sets:recovery` is frozen on the U2 contrast (46:0 = 46:0). The athlete cannot see a bigger week for a clean session.
+3. **A miss is a label, not a lighter leftover week.** Thursday still owes Monday's sets (24=24). Mid-week `regenerateFutureSessions` on high strain is a separate, unfiled observation (U3 R0 / U1 R2 axis C), not this bar.
+4. **Gear legality is not gear character.** The week must be doable with the kit. It does not have to *look like* a garage week.
+5. **`loadSeries` does not read `totalVolume`.** U1 R2 axis C: same session count, 16× per-session volume, identical `acute` / `chronic`. Unfiled. Not this unit's bar.
+6. **SMOOTHER Coach stills on :3000 are the gate.** GNT-1 U3 R4 already showed `/coach` paints on `npm run dev` once `mw_locale_choice` is seeded. Do not reopen GNT-1.
+7. **Stills are seeded local dev, not a production phone.** Same residual as GNT-1.
+8. **Leftover GitHub #680** (`queue:next`) is not this campaign. Do not land it to "fill" the queue. Do not paste `idea:next` H-01 onto GRAPH_LOOP. Do not invent AM2.
+
 - Agent terminal state: `ready-for-founder` — **never** `status: pass`
