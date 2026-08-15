@@ -1,0 +1,15 @@
+opened_welcome url=http://localhost:3000/welcome
+clicked_begin url=http://localhost:3000/welcome
+landed_after_continue=http://localhost:3000/log
+U1-R2-after-continue.png url=http://localhost:3000/log viewport=390x844
+after_start url=http://localhost:3000/active
+set-row-prev_before_log="PREV\n—"
+U1-R2-set-row.png url=http://localhost:3000/active viewport=390x844
+rest_visible text=REST 1:30 −15s +15s Skip DEFAULT 60s 90s 120s 180s
+U1-R2-rest.png url=http://localhost:3000/active viewport=390x844
+clicked_rest-skip
+set-row-prev_after_skip=["PREV\n—","PREV\n—","PREV\n—","PREV\n—","PREV\n—","PREV\n—","PREV\n—","PREV\n—","PREV\n—","PREV\n—","PREV\n—","PREV\n—"]
+last-set-ghost_count=0
+U1-R2-ghost.png url=http://localhost:3000/active viewport=390x844
+finished_url=http://localhost:3000/active
+U1-R2-finished.png url=http://localhost:3000/active viewport=390x844
