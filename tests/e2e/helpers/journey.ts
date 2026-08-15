@@ -12,6 +12,9 @@ export async function seedLegacyOnboarding(page: Page): Promise<void> {
     localStorage.setItem('mw_equipment', 'bodyweight');
     localStorage.setItem('mw_primary_goal', 'goal:general');
     localStorage.setItem('mw_goals', 'goal:general');
+    // First-visit language sheet covers /account; confirm so U1 cases are not
+    // blocked by /api/geo timing. Not an I-Day step (F-017).
+    localStorage.setItem('mw_locale_choice', '1');
     // Local YYYY-MM-DD — matches todayCheckInDate in mindCheckIns (not UTC ISO).
     const now = new Date();
     const today = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;

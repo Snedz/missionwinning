@@ -163,6 +163,13 @@ test.describe('First 90 seconds @gate', () => {
   test('the content library is reachable on a phone @gate', async ({ page }) => {
     // MarketingNav hid every link behind `sm:flex` with no menu anywhere in the repo, so
     // at 390px a visitor could reach `/` and `/welcome` and nothing else.
+    await page.addInitScript(() => {
+      try {
+        localStorage.setItem('mw_locale_choice', '1');
+      } catch {
+        /* Safari private */
+      }
+    });
     await page.goto('/exercises/push-ups', { waitUntil: 'domcontentloaded' });
 
     const trigger = page.getByRole('button', { name: /menu/i });
@@ -353,6 +360,11 @@ test.describe('First 90 seconds @gate', () => {
     await seedLegacyOnboarding(page);
     // The card moved with the settings in the `.606` /profile split.
     await gotoHydrated(page, '/account');
+    const localeSheet = page.getByRole('dialog', { name: /language and country/i });
+    if (await localeSheet.isVisible({ timeout: 1_500 }).catch(() => false)) {
+      await localeSheet.getByRole('button', { name: /continue/i }).click();
+      await expect(localeSheet).toHaveCount(0);
+    }
     await page.getByRole('button', { name: /send feedback/i }).click();
     await expect(page.getByRole('dialog')).toBeVisible();
     await expectThumbSized(page, 'feedback sheet', DIALOG_CONTROL_SELECTOR);
