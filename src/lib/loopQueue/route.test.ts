@@ -15,6 +15,7 @@ import { mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'nod
 import { tmpdir } from 'node:os';
 import path from 'node:path';
 import { parseQueue, type ParsedQueue } from './parse.ts';
+import { excellenceStatusAt } from './criticalPath.ts';
 import { MAX_SINGLE_ROW_RUN, isCampaign, isHarvestRow, nowSections, readWorkbench, route, singleRowRun, type Role } from './route.ts';
 
 const root = path.join(import.meta.dirname, '..', '..', '..');
@@ -45,17 +46,35 @@ function injectNow(src: string, rows: string): string {
  * The live ticket                                                     *
  * ------------------------------------------------------------------ */
 
-test('the committed queue has no Now-open row and routes to path C5', () => {
+/*
+ * This asserted `path` / `C5` flat against the live root, which held only while
+ * RESULT was `unscored` — so the founder scoring the gate turned a green suite
+ * red (`.876`). The queue half is genuinely durable and stays pinned; the
+ * routing half is a *rule* about status, so it is asserted as that rule and
+ * evaluated against whatever is committed. The `unscored` → C5 branch keeps its
+ * own fixture-root coverage below ("two zero generates route to C5").
+ */
+test('the committed queue has no Now-open row, and routing follows RESULT status', () => {
   const q = real();
   const open = nowSections(q).flatMap((s) => s.rows).filter((x) => x.status === 'open');
   assert.equal(open.length, 0, `Now still has open ${open.map((x) => x.id).join(', ')}`);
+
   const r = route(root, q);
-  assert.equal(r.kind, 'path');
-  assert.equal(r.recipe, 15);
   assert.notEqual(r.harvestAction, 'generate');
-  assert.equal(r.path?.id, 'C5');
   assert.equal(typeof r.singleRowRun, 'number');
   assert.equal(r.atRatchet, false);
+
+  if (excellenceStatusAt(root) === 'pass') {
+    // Horizon W is scored: no critical-path gap is left, and the router must
+    // stop rather than mint a letter.
+    assert.equal(r.kind, 'stalled');
+    assert.equal(r.recipe, null);
+    assert.equal(r.path, null);
+  } else {
+    assert.equal(r.kind, 'path');
+    assert.equal(r.recipe, 15);
+    assert.equal(r.path?.id, 'C5');
+  }
 });
 
 test('an injected Now-open row is the live ticket', () => {
@@ -144,17 +163,21 @@ test('the same row without GNT routes to an ordinary build', () => {
   assert.equal(r.workbench, null);
 });
 
-test('no open row, empty idea:next, and mined generate routes to path, not harvest', () => {
+test('no open row, empty idea:next, and mined generate never routes to harvest', () => {
   const q = real();
   for (const s of q.sections) for (const row of s.rows) if (row.status === 'open') row.status = 'done';
   const r = route(root, q);
   // After IL-H-15 is on the queue, idea:next is empty. Generate is mined out:
   // harvest-13 and harvest-14 were two consecutive scout>0 runs at 0-of-N.
   // harvest-11's spare is no longer the last generate.
-  assert.equal(r.kind, 'path');
-  assert.equal(r.recipe, 15);
-  assert.equal(r.harvestAction, null);
+  //
+  // That claim — the harvest branch is exhausted — is what this test is for,
+  // and it holds whatever RESULT says. Which side of harvest we land on does
+  // depend on status, so it is asserted as the rule rather than as today's
+  // reading (`.876`).
   assert.notEqual(r.kind, 'harvest');
+  assert.equal(r.harvestAction, null);
+  assert.equal(r.kind, excellenceStatusAt(root) === 'pass' ? 'stalled' : 'path');
 });
 
 test('no open row, nothing to emit, but generate still legal routes to harvest generate', () => {
