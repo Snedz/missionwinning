@@ -45,20 +45,19 @@ function injectNow(src: string, rows: string): string {
  * The live ticket                                                     *
  * ------------------------------------------------------------------ */
 
-test('the committed queue has no Now-open row and routes to a harvest', () => {
+test('the committed queue live ticket is the harvest paste IL-H-09', () => {
   const q = real();
   const open = nowSections(q).flatMap((s) => s.rows).filter((x) => x.status === 'open');
-  assert.equal(
-    open.length,
-    0,
-    `Now still has open ${open.map((x) => x.id).join(', ')} — IL-H-01 should be done`
+  assert.deepEqual(
+    open.map((x) => x.id),
+    ['IL-H-09'],
+    `Now open ${open.map((x) => x.id).join(', ') || '(none)'} — expected IL-H-09`
   );
   const r = route(root, q);
-  assert.equal(r.kind, 'harvest');
-  assert.equal(r.recipe, 13);
-  assert.equal(r.row, null);
-  assert.match(r.notes.join(' '), /the honest next step is a new idea/);
-  assert.equal(r.atRatchet, false, 'the closed IL- section must keep the 16-run closed');
+  assert.equal(r.kind, 'build');
+  assert.equal(r.recipe, 11);
+  assert.equal(r.row?.id, 'IL-H-09');
+  assert.equal(r.atRatchet, false, 'an IL- section must keep the 16-run closed');
 });
 
 test('an injected Now-open row is the live ticket', () => {
@@ -269,11 +268,10 @@ test('a one-row letter after a harvest starts a new run of one, not 17', () => {
   assert.equal(run, 1, 'a letter after an IL- closer is a new run of one, not 17');
 });
 
-test('turning the harvest row into a letter makes the 16-run 17', () => {
-  const src = source().replace('**IL-H-01**', '**AN1**');
+test('turning every harvest row into a letter reopens the 16-run', () => {
+  const src = source().replace(/\*\*IL-H-\d+\*\*/g, '**XX1**');
   const run = singleRowRun(parseQueue(src));
-  assert.equal(run, MAX_SINGLE_ROW_RUN + 1);
-  assert.ok(run > MAX_SINGLE_ROW_RUN, 'a letter wearing the harvest slot did not move the ratchet');
+  assert.ok(run > MAX_SINGLE_ROW_RUN, 'letters wearing the harvest slots did not move the ratchet');
 });
 
 test('a harvest IL- row after the 16-run resets the run to zero', () => {
@@ -319,7 +317,7 @@ test('the ratchet does not displace a live open row', () => {
     path.join(tmp, 'docs/gauntlet/GNT-9-replay.md'),
     '# GNT-9\n\n**Next spawn:** LEAD on **U1 R1**.\n'
   );
-  const withoutHarvest = source().replace(/\n### Now — AN \(harvest[\s\S]*?(?=\n### After H0)/, '\n');
+  const withoutHarvest = source().replace(/\n### Now — [A-Z]+ \(harvest[\s\S]*?(?=\n### )/g, '\n');
   const q = parseQueue(
     injectNow(
       withoutHarvest,
