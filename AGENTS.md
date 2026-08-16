@@ -129,7 +129,7 @@ When you add a feature folder, add or update its `INDEX.md`.
 | **New lib domain** | After ~5 files: `src/lib/foo/` + `INDEX.md` (model: `src/lib/coach/`) |
 | **New coach rule** | `crossPillarCoach.ts` or `coach/adapt.ts` + colocated `*.test.ts` |
 | **New i18n string** | `src/i18n/*Locales.ts` — not `src/locales/` |
-| **Which loop runs next** | `npm run harness` — names the row, the route and the recipe; recipe 14. Empty queue + empty harvest → Horizon W path (recipe 15) |
+| **Which loop runs next** | `npm run harness` — names the row, the route and the recipe; recipe 14. Empty queue + empty harvest → path (recipe 15) while RESULT is unscored; `stalled` after RESULT `pass` (stop, do not invent a letter) |
 | **Next idea (queue residual thin)** | [docs/IDEA_LOOP.md](docs/IDEA_LOOP.md) — one row per run; recipe 13 |
 | **Next graph loop** | [docs/GRAPH_LOOP.md](docs/GRAPH_LOOP.md) — one open loop per PR; recipe 11 |
 | **Gauntlet campaign round** | [docs/GAUNTLET_LOOP.md](docs/GAUNTLET_LOOP.md) — LEAD / BUILDER / CRITIC; recipe 12 |

@@ -257,10 +257,11 @@ hard rule 6) is a thin loader over exactly these steps. `/graph` is an alias.
    the first product edit (`ticket` = the live id, `done_means` one sentence,
    `accept` one command).
 4. **Take the route it named**, and only that one — `build` → recipe 11 · `gauntlet`
-   → recipe 12 · `harvest` → recipe 13 · `path` → recipe 15. Not a more interesting
-   row, not two rows.
-5. **`npm run harness:done`** before claiming the hop shipped. It is the closer.
-   It does not write the queue. Then one loop, then stop
+   → recipe 12 · `harvest` → recipe 13 · `path` → recipe 15 · `stalled` → print
+   the note and exit. Do not write `HOP.md`. Do not run `harness:done`. Do not
+   invent a letter. Not a more interesting row, not two rows.
+5. **`npm run harness:done`** before claiming the hop shipped (not on `stalled`).
+   It is the closer. It does not write the queue. Then one loop, then stop
    ([GRAPH_LOOP.md](GRAPH_LOOP.md) loop rule 2). Print
    `loop id · role (if gauntlet) · PR + label (or already-true proof) · next spawn`.
 
@@ -284,10 +285,11 @@ router; otherwise the loop's own tests, per the recipe you were routed to.
 **Required reads:** [ORCHESTRATION.md](../ORCHESTRATION.md) Horizon W ·
 [EXCELLENCE_RESULT.md](EXCELLENCE_RESULT.md) · whatever `npm run harness` named.
 
-Wins when GRAPH_LOOP has no agent-open row, `idea:next` emits nothing, **and**
-generate is mined out (two consecutive scout-harvests at zero survivors).
-The standing NOW is still Horizon W. This recipe takes the first unproven
-W-gap, from instruments, not taste (`src/lib/loopQueue/criticalPath.ts`).
+Wins when GRAPH_LOOP has no agent-open row, `idea:next` emits nothing,
+generate is mined out (two consecutive scout-harvests at zero survivors),
+**and** RESULT is not `pass`. After RESULT `pass`, `npm run harness` prints
+`stalled` — that is recipe 14, not this recipe. This recipe takes the first
+unproven W-gap, from instruments, not taste (`src/lib/loopQueue/criticalPath.ts`).
 
 1. **`npm run harness` names the ticket** (`W1`…`W4` or `C5`). You do not pick.
 2. **Owner `founder`** (C5 while RESULT is unscored): print the ticket and stop.

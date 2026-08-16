@@ -10,6 +10,7 @@ The queue is GRAPH_LOOP. What may be built is ORCHESTRATION.
 - One concern. One PR. Do not invent the next letter.
 - Empty queue + a living `idea:next` pick → harvest **paste** (`npm run idea:paste`). `/harness` is the paste.
 - Empty queue + nothing to emit + generate still legal → harvest **generate**, then paste if one survives.
-- Two consecutive generate-harvests at zero survivors → Horizon W path (C5 phone). Not AU2.
+- Two consecutive generate-harvests at zero survivors → Horizon W path (C5 phone) while RESULT is unscored. Not AU2.
+- RESULT pass + empty queue + mined harvest → route `stalled`. Stop. Do not invent a letter.
 - Builder never grades itself. `npm run harness:done` before claiming the hop shipped.
 - Do not commit `.hermes/`, `ops/`, or `.env.local`.

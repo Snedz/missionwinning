@@ -66,7 +66,7 @@ PR, and the `done` edit is still the baton.
 
 `npm run harness` answers that by **reading this file** — the `## Queue` region
 only, tables addressed by header name, status taken from the parsed Status cell.
-It names the live ticket, the route (`build` · `gauntlet` · `harvest`), the recipe,
+It names the live ticket, the route (`build` · `gauntlet` · `harvest` · `path` · `stalled`), the recipe,
 the workbench and its `Next spawn` line, and any `founder`/`blocked` row it stepped
 over. It also prints closed-loop **lessons** (`docs/mechanics/verdicts/`) and, on
 a harvest route, the `idea:next` pick and whether to **paste** or **generate**.
@@ -740,8 +740,10 @@ QUEUE:
    then pastes if a row emits. `--paste` is an alias, not a gate. Do not mint
    the next letter — `MAX_SINGLE_ROW_RUN` is red-on-breach, not advice.
 5c. Route `path` (no open row AND harvest mined out — two consecutive
-   generate-harvests at zero survivors): follow recipe 15. Owner `founder`
-   means stop for phone sign-off — do not invent AU2.
+   generate-harvests at zero survivors AND RESULT is not pass): follow recipe 15.
+   Owner `founder` means stop for phone sign-off — do not invent AU2.
+5d. Route `stalled` (RESULT pass, queue empty, harvest mined): stop. Do not
+   invent a letter. Do not write HOP.md. Do not start Horizon 0.
 
 SHIP (ordinary loops, and gauntlet BUILDER rounds only):
 6. One concern. One PR. Branch from master. [skip vercel] unless the founder asked for Preview.
