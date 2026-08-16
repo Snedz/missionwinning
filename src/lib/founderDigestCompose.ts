@@ -29,6 +29,7 @@
 
 import type { FeedbackNote } from '@/lib/feedbackSource';
 import { countFeedbackDests, formatDestCounts } from '@/lib/feedbackTriage';
+import { formatFramedCohort } from '@/lib/selectionFrame';
 import { localDateKeyFromIso } from '@/lib/time/localDate';
 
 export type FounderDigestData = {
@@ -39,7 +40,10 @@ export type FounderDigestData = {
     basicComplete: number;
     commissioned: number;
   } | null;
-  retention: { cohort_eligible: number; week4_retained: number } | null;
+  retention: {
+    cohort_eligible: { value: number; frame: { included: string; excluded: string; unknown: boolean } };
+    week4_retained: { value: number; frame: { included: string; excluded: string; unknown: boolean } };
+  } | null;
   referrals: {
     attributedTotal: number;
     topCodes: Array<{ code: string; count: number }>;
@@ -120,16 +124,13 @@ export function composeFounderDigest(data: FounderDigestData): {
 
   lines.push('', '2) Week-4 retention (signed-in cloud loggers)');
   if (data.retention) {
+    const eligible = data.retention.cohort_eligible;
+    const retained = data.retention.week4_retained;
     const rate =
-      data.retention.cohort_eligible > 0
-        ? (
-            (100 * data.retention.week4_retained) /
-            data.retention.cohort_eligible
-          ).toFixed(1)
-        : 'n/a';
+      eligible.value > 0 ? ((100 * retained.value) / eligible.value).toFixed(1) : 'n/a';
     lines.push(
-      `  Cohort eligible (≥28d since first workout): ${data.retention.cohort_eligible}`,
-      `  Week-4 retained: ${data.retention.week4_retained} (${rate}%)`,
+      `  Cohort eligible: ${formatFramedCohort(eligible)}`,
+      `  Week-4 retained: ${formatFramedCohort(retained)} (${rate}%)`,
       '  Target: ≥10% across two cohorts'
     );
   } else {
