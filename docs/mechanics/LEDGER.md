@@ -30,6 +30,7 @@ hard cap is ≤14 build PRs and spending fewer is the good outcome.
 | harvest-6 | 2026-08-16 | 0 | — | — | — | **1 PR** (paste) | **1 PR** | 1 (`IL-H-02`) | — | — |
 | harvest-7 | 2026-08-16 | 0 | — | — | — | **1 PR** (paste) | **1 PR** | 1 (`IL-H-05`) | — | — |
 | harvest-8 | 2026-08-16 | 0 | — | — | — | **1 PR** (paste) | **1 PR** | 1 (`IL-H-07`) | — | — |
+| harvest-9 | 2026-08-16 | 3 | 1 | 3 | 1 spawn | ≤3 inbox / ≤1 M / ≤3 H / **0 PR** | 3 inbox / 1 M / 3 H / **0 PR** | 0 | 0 of 3 | — |
 
 The seed run harvested nothing. Its nodes were hand-written from repo truth and
 one research pass, which is why the scout, anatomist, translator and red-team
@@ -69,6 +70,15 @@ H-02 is `H-05`; this run's only product is the paste (`IL-H-05` on GRAPH_LOOP AS
 **harvest-8 notes.** Founder `/graph --paste`. No new scout. The pick after
 H-05 is `H-07`; this run's only product is the paste (`IL-H-07` on GRAPH_LOOP AT).
 1 PR spent on that, not on missed-session dose — that is the next hop.
+
+**harvest-9 notes.** Founder override: regenerate, wait for approval. Source
+class changed: three pages **opened** (GitHub draft PR docs, Stripe test-clock
+docs, Gmail Undo Send help + 2023-02-07 Keyword post). Anatomist promoted
+Gmail Undo Send to `M-16` (E1). Discarded GitHub drafts (`precondition` is a
+reviewer graph) and Stripe clocks (sandbox time-skip, sits next to `X-07`).
+Translator wrote H-12 / H-13 / H-14 into uncovered cells. Separate red-team
+spawn killed all three (fake instrument ×2, own-axis backfire ×1). No paste.
+Unused PR cap held.
 
 **Cost signal for the next run.** Every scout fetch was blocked, so the marginal
 cost of *verification* was infinite and the marginal cost of *breadth* was
