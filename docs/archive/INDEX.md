@@ -12,6 +12,7 @@ When adding a doc:
 
 | File | Absorbed by / note |
 |------|---------------------|
+| [log/LOG-rotate-846-for-861.md](./log/LOG-rotate-846-for-861.md) | rotated 2026-08-16 for `.861` H-02 week diff (`.846`) |
 | [log/LOG-rotate-845-for-860.md](./log/LOG-rotate-845-for-860.md) | rotated 2026-08-16 for `.860` H-02 paste (`.845`) |
 | [log/LOG-rotate-844-for-859.md](./log/LOG-rotate-844-for-859.md) | rotated 2026-08-16 for `.859` material adapt (`.844`) |
 | [log/LOG-rotate-843-for-858.md](./log/LOG-rotate-843-for-858.md) | rotated 2026-08-16 for `.858` H-08 paste (`.843`) |

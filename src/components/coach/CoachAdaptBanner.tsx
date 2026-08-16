@@ -1,5 +1,6 @@
 'use client';
 
+import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useTranslation } from 'react-i18next';
 import type { CoachPlan } from '@/lib/coach/types';
@@ -11,10 +12,22 @@ import {
 import { coachAdaptReentrySession } from '@/lib/coach/coachAdaptReentry';
 import { coachWhyLine } from '@/lib/coach/coachWhyDefaults';
 import {
+  COACH_CITATION_COPY,
+  coachCitationFact,
+  coachLogCitationFromStorage,
+  type CoachLogCitation,
+} from '@/lib/coach/logCitation';
+import {
+  formatCoachWeekDiffLine,
+  sessionCountChangeFromPlan,
+} from '@/lib/coach/weekDiff';
+import {
   buildWeekRationale,
   type WeekRationaleHints,
 } from '@/lib/coach/weekRationale';
 import { useStartCoachSession } from '@/hooks/useStartCoachSession';
+import { useUnits } from '@/hooks/useUnits';
+import { weightUnitLabel } from '@/lib/units';
 
 type Props = {
   plan: CoachPlan;
@@ -45,6 +58,7 @@ type Props = {
  * D2: glanceable — headline + one beat by default; full list only when not compact.
  * `.287`: day-named adapt beats + today's prescription why keys (why panel).
  * `.693`: log-cited why-this-week / adapt rationale (inputs · rule · effect).
+ * `.861`: session-count proposal replaces the assertion when adapt changed the count (H-02).
  */
 export function CoachAdaptBanner({
   plan,
@@ -54,12 +68,26 @@ export function CoachAdaptBanner({
   rationaleHints,
   showWeekRationale,
 }: Props) {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   // Above the early returns below — this component bails in two places before
   // the re-entry block renders, and a hook after a conditional return is a
   // Rules-of-Hooks violation that only shows up once the bail path is taken.
   const startCoachSession = useStartCoachSession();
+  const units = useUnits();
+  const [citation, setCitation] = useState<CoachLogCitation | null>(null);
+  useEffect(() => {
+    setCitation(coachLogCitationFromStorage());
+  }, []);
   const beats = summarizeCoachAdaptations(plan);
+  const countChange = sessionCountChangeFromPlan(plan);
+  const showCountDiff = countChange.beforeCount !== countChange.afterCount;
+  const citeFact =
+    citation && citation.kind !== 'no-logs'
+      ? coachCitationFact(citation, i18n.language, weightUnitLabel(units))
+      : null;
+  const weekDiffLine = showCountDiff
+    ? formatCoachWeekDiffLine(countChange.beforeCount, countChange.afterCount, citeFact)
+    : null;
   const whyKeys =
     !compact && typeof todayOffset === 'number'
       ? todaySessionWhyKeys(plan, todayOffset)
@@ -106,18 +134,44 @@ export function CoachAdaptBanner({
             ? 'eyebrow text-[10px] text-accent-900'
             : 'eyebrow text-accent-900'
         }
+        data-testid={weekDiffLine ? 'coach-week-diff' : undefined}
       >
-        {adaptSignal
-          ? t('coachAdaptHeadline', {
-              defaultValue: 'Adapted from your logs — no wearable needed',
+        {weekDiffLine
+          ? t('coachWeekDiffHeadline', {
+              before: countChange.beforeCount,
+              after: countChange.afterCount,
+              defaultValue:
+                countChange.beforeCount === 1
+                  ? `1 session → ${countChange.afterCount}`
+                  : `${countChange.beforeCount} sessions → ${countChange.afterCount}`,
             })
-          : t('coachWhyWeekEyebrow', {
-              defaultValue: 'Why this week — from your logs',
-            })}
+          : adaptSignal
+            ? t('coachAdaptHeadline', {
+                defaultValue: 'Adapted from your logs — no wearable needed',
+              })
+            : t('coachWhyWeekEyebrow', {
+                defaultValue: 'Why this week — from your logs',
+              })}
       </p>
 
+      {weekDiffLine && citeFact ? (
+        <p
+          className={
+            compact
+              ? 'text-xs text-muted-foreground leading-relaxed'
+              : 'text-sm text-muted-foreground leading-relaxed'
+          }
+          data-testid="coach-week-diff-cite"
+        >
+          {t('coachCiteFromLog', {
+            fact: citeFact,
+            defaultValue: COACH_CITATION_COPY.fromLog,
+          })}
+        </p>
+      ) : null}
+
       {/* Log-cited inspectability: inputs → rule → effect (Alpha Progression beat). */}
-      {rationale && compact ? (
+      {rationale && compact && !weekDiffLine ? (
         <p
           className="text-xs text-muted-foreground leading-relaxed"
           data-testid="coach-week-rationale"
