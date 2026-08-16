@@ -303,6 +303,7 @@ npm run idea:validate            # the graph is well-formed; every constraint ha
 npm run idea:pack <class>        # exactly what a spawn may read
 npm run idea:next                # the one row, or the rule that refused each candidate
 npm run idea:cells               # the archive as a grid; INDEX.md must match
+npm run idea:paste               # write the one IL- row `/harness` named
 ```
 
 Step 4 of `npm run gate` runs the validator.

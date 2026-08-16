@@ -5,10 +5,8 @@
  * the graph, prints the one candidate the selector would emit, and builds the
  * bounded context pack a spawn is allowed to read.
  *
- * It **prints** a queue row. It does not write one. Appending to
- * `docs/GRAPH_LOOP.md` is the baton, and the baton is handed over by a human or
- * by the spawn that is about to take the loop — not as a side effect of a
- * validation command.
+ * `next` prints. `paste` writes one `IL-` row — that is the `/harness`
+ * harvest baton, not a side effect of validate.
  */
 
 import path from 'node:path';
@@ -20,6 +18,7 @@ import { selectionInputs } from '../src/lib/ideaGraph/learn.ts';
 import { allCells, cellKey, scoreOf, selectNext } from '../src/lib/ideaGraph/select.ts';
 import { BEHAVIOR_CLASSES, type BehaviorClass } from '../src/lib/ideaGraph/schema.ts';
 import { fillTable } from '../src/lib/ideaGraph/report.ts';
+import { pasteHarvestFile } from '../src/lib/loopQueue/pasteHarvest.ts';
 
 const root = path.join(path.dirname(fileURLToPath(import.meta.url)), '..');
 const [command = 'validate', arg] = process.argv.slice(2);
@@ -118,7 +117,39 @@ function cells(): number {
   return 0;
 }
 
-const commands: Record<string, () => number> = { validate, next, pack, cells };
+function paste(): number {
+  const { graph, violations } = validateGraph(root);
+  if (violations.length > 0) {
+    console.error(red('✗ graph does not validate — fix that first (npm run idea:validate)'));
+    return 1;
+  }
+  const { candidates, antiLibrary } = selectionInputs(root, graph);
+  const history = readEmittedHistory(root, graph);
+  const { emit } = selectNext(candidates, history, antiLibrary);
+  if (!emit) {
+    console.error(red('✗ nothing to emit — generate or stop, do not invent a letter'));
+    return 1;
+  }
+  const node = graph.byId.get(emit.id);
+  if (!node) {
+    console.error(red(`✗ ${emit.id} is not in the graph`));
+    return 1;
+  }
+  const href = node.file.replace(/^docs\//, '');
+  const out = pasteHarvestFile(root, { id: emit.id, title: emit.title, href });
+  if (!out.ok) {
+    console.error(red(`✗ paste failed — ${out.reason}`));
+    return 1;
+  }
+  if (out.already) {
+    console.log(green(`✓ ${out.rowId} is already on the queue (${out.sectionId})`));
+    return 0;
+  }
+  console.log(green(`✓ pasted ${out.rowId} as Now — ${out.sectionId}`));
+  return 0;
+}
+
+const commands: Record<string, () => number> = { validate, next, pack, cells, paste };
 const run = commands[command];
 if (!run) {
   console.error(red(`unknown command \`${command}\` — one of ${Object.keys(commands).join(', ')}`));

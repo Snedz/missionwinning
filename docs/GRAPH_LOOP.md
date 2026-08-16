@@ -2,7 +2,7 @@
 
 **Audience:** Founder + the next Hermes / Grok Build / graph agent  
 **Lane:** Engineering-Web (unless a loop says Android)  
-**Status:** ACTIVE 2026-08-16 · web `2026.07-unified.870` · Alpha 0.1.0 · **AL1 done — GNT-1 `ready-for-founder` · AM1 done — GNT-2 `ready-for-founder` · AN–AT done — `IL-H-07` `.865` · founder no-French `.866` · W1 I-Day → `/log` `.867` · hop contract `.868` · process `/harness` `.869` · empty queue → Horizon W path `.870`**  
+**Status:** ACTIVE 2026-08-16 · web `2026.07-unified.871` · Alpha 0.1.0 · **AL1 done — GNT-1 `ready-for-founder` · AM1 done — GNT-2 `ready-for-founder` · AN–AT done — `IL-H-07` `.865` · founder no-French `.866` · W1 I-Day → `/log` `.867` · hop contract `.868` · process `/harness` `.869` · empty queue → Horizon W path `.870` · `/harness` pastes harvest `.871`**  
 **Does not replace:** [ORCHESTRATION.md](../ORCHESTRATION.md) (what may be built) · [CONTEXT.md](../CONTEXT.md) `## Now` (where we are) · [vision.md](../vision.md) (constitution) · [docs/THESIS.md](THESIS.md) (wedge) · [docs/PLAN.md](PLAN.md) (phases A–I)
 
 This file is the **execution queue** for the agent graph: one concern per loop, spawn, ship, mark done, spawn the next. It is not a second status block and not a license to skip standing hard bans.
@@ -69,8 +69,9 @@ only, tables addressed by header name, status taken from the parsed Status cell.
 It names the live ticket, the route (`build` · `gauntlet` · `harvest`), the recipe,
 the workbench and its `Next spawn` line, and any `founder`/`blocked` row it stepped
 over. It also prints closed-loop **lessons** (`docs/mechanics/verdicts/`) and, on
-a harvest route, the `idea:next` pick. Like `idea:next` it prints and never writes;
-the `done` edit is still the baton. Recipe 14, `src/lib/loopQueue/`, `src/lib/ideaGraph/learn.ts`.
+a harvest route, the `idea:next` pick and whether to **paste** or **generate**.
+It still prints. `npm run idea:paste` writes the one `IL-` row. Recipe 14,
+`src/lib/loopQueue/`, `src/lib/ideaGraph/learn.ts`.
 
 Two things it settles that prose could not:
 
@@ -723,12 +724,14 @@ QUEUE:
    Do the workbench **Next spawn** line (role · unit · round). One unit-round, then exit.
    Do not mark the GRAPH_LOOP campaign row `done` until the campaign report is written.
 5. Route `build`: investigate on current master. If the defect is already gone, mark done (already true) with proof paths and stop this spawn.
-5b. Route `harvest` (no agent-open row AND idea:next names a row): follow recipe 13
-   and docs/IDEA_LOOP.md. It emits ONE row, prefixed `IL-`. Paste only with --paste.
-   Do not mint the next letter — `MAX_SINGLE_ROW_RUN` is red-on-breach, not advice.
-5c. Route `path` (no open row AND harvest empty): follow recipe 15. Take the
-   Horizon W ticket `npm run harness` named. Already-true with proof, or one PR.
-   Owner `founder` means stop for phone sign-off — do not invent AU2.
+5b. Route `harvest`: follow recipe 13 and docs/IDEA_LOOP.md. `npm run harness`
+   names `paste` or `generate`. Paste (`npm run idea:paste`) writes ONE `IL-`
+   row. Generate runs scout → anatomist → translator → other-model red team,
+   then pastes if a row emits. `--paste` is an alias, not a gate. Do not mint
+   the next letter — `MAX_SINGLE_ROW_RUN` is red-on-breach, not advice.
+5c. Route `path` (no open row AND harvest mined out — two consecutive
+   generate-harvests at zero survivors): follow recipe 15. Owner `founder`
+   means stop for phone sign-off — do not invent AU2.
 
 SHIP (ordinary loops, and gauntlet BUILDER rounds only):
 6. One concern. One PR. Branch from master. [skip vercel] unless the founder asked for Preview.

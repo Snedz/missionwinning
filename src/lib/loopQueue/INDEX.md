@@ -5,9 +5,8 @@
 `npm run harness`; procedure in
 [docs/AGENT_RECIPES.md](../../../docs/AGENT_RECIPES.md) §14.
 
-Build tooling that happens to be typed. It reads the queue and **never writes
-it** — marking a row `done` is the baton, and a baton handed over as the side
-effect of a command is not handed over.
+Build tooling that happens to be typed. `npm run harness` still **prints**.
+`npm run idea:paste` writes one harvest row — that is the harvest baton.
 
 ## Files
 
@@ -17,6 +16,7 @@ effect of a command is not handed over.
 | `route.ts` | Live ticket → build (11) · gauntlet (12) · harvest (13) · path (15), plus the single-row-section ratchet (`IL-*` closes the run) |
 | `criticalPath.ts` | Horizon W checklist when the queue is empty and harvest emits nothing |
 | `hop.ts` | Live hop file (`docs/harness/HOP.md`) — ticket / done_means / accept. Closer is `npm run harness:done` |
+| `pasteHarvest.ts` | Write one `IL-` harvest section. Called by `npm run idea:paste` |
 
 ## Why this is code and not another paragraph
 

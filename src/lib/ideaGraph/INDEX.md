@@ -23,6 +23,7 @@ performs, because otherwise the whole graph lands in the client bundle and
 | `learn.ts` | Verdicts → status rewrite, kill fingerprints, lessons the next spawn can read |
 | `pack.ts` | The bounded context pack a spawn is allowed to read |
 | `report.ts` | The archive as a grid. Printed by `idea:cells`, checked against `docs/mechanics/INDEX.md` |
+| `harvestGate.ts` | LEDGER generate-runs: two trailing zero-survivor scouts → mined out |
 
 ## Why any of this is code at all
 
@@ -59,4 +60,5 @@ npm run idea:validate
 npm run idea:pack <activate|return|trust|depth|tell|pay>
 npm run idea:next
 npm run idea:cells
+npm run idea:paste
 ```

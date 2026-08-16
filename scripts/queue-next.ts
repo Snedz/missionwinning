@@ -40,7 +40,7 @@ const field = (label: string, value: string) => `  ${dim(label.padEnd(13))}${val
 const RECIPE: Record<number, string> = {
   11: 'docs/AGENT_RECIPES.md §11 — one concern, one PR, close the row after merge',
   12: 'docs/AGENT_RECIPES.md §12 — one unit-round; the campaign row stays `open`',
-  13: 'docs/AGENT_RECIPES.md §13 — harvest; emits exactly one `IL-` row, and you paste it',
+  13: 'docs/AGENT_RECIPES.md §13 — harvest; `/harness` pastes one `IL-` row (`npm run idea:paste`)',
   15: 'docs/AGENT_RECIPES.md §15 — Horizon W critical path; already-true with proof, or one PR',
 };
 
@@ -132,9 +132,12 @@ function run(): number {
     if (r.kind === 'harvest') {
       const history = readEmittedHistory(root, graph);
       const { emit } = selectNext(candidates, history, antiLibrary);
-      console.log(bold('\n  Harvest pick (print only — paste is the baton)\n'));
-      if (!emit) {
-        console.log(field('emit', dim('nothing — two empty harvests means stop, do not refill')));
+      const action = r.harvestAction ?? (emit ? 'paste' : 'generate');
+      console.log(bold(`\n  Harvest ${action}\n`));
+      if (action === 'generate' && !emit) {
+        console.log(field('emit', dim('nothing yet — scout / anatomist / translator / red team, then idea:paste')));
+      } else if (!emit) {
+        console.log(field('emit', dim('nothing — two zero generates means stop, do not refill')));
       } else {
         console.log(field('emit', `${bold(emit.id)} — ${emit.title}`));
         console.log(
@@ -145,12 +148,7 @@ function run(): number {
             )
           )
         );
-        console.log(
-          field(
-            'paste',
-            `| **IL-${emit.id}** | ${emit.title} | docs/mechanics/hypotheses/ | \`open\` |`
-          )
-        );
+        console.log(field('do', 'npm run idea:paste'));
       }
     }
   }
@@ -159,7 +157,7 @@ function run(): number {
     dim(
       '\n  Boot before acting: CONTEXT.md → AGENTS.md → INDEX.md → ORCHESTRATION.md → ' +
         `${QUEUE} (§ Copy-paste prompt, BANS verbatim) → the folder INDEX.md you will edit.\n` +
-        '  This command does not edit the queue. Marking a row `done` is the baton.\n'
+        '  `npm run idea:paste` writes one harvest row. Marking a row `done` is the other baton.\n'
     )
   );
 
