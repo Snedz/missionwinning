@@ -22,8 +22,8 @@
 
 ## §1 — Entity + bank
 
-- [ ] Form **Mission Winning LLC** (or equivalent) via state portal / attorney / formation service
-- [ ] Get **EIN** (US) or local tax ID
+- [x] Form **Mission Winning LLC** (Texas, Active / Good Standing — formed 2026-07-22). Do not commit EIN digits or the formation street.
+- [x] **EIN issued** (digits stay off git — [PUBLIC_GITHUB.md](PUBLIC_GITHUB.md))
 - [ ] Open **business checking** (Mercury, Relay, or local bank)
 - [ ] Decide support inbox: `support@missionwinning.com` (or `hello@`) — create mailbox before charging anyone
 - [ ] Cyber liability insurance (optional day one; required before institutional data at scale) — [PAY_READY_LEGAL.md](PAY_READY_LEGAL.md)
@@ -58,17 +58,17 @@ Cheap insurance vs later rebrand. Use a trademark attorney or reputable filing f
 
 ---
 
-## §1d — Pre-EIN interim payments (Texas LLC pending)
+## §1d — Mute-pay after EIN (pricing study later)
 
-**Founder override (2026-07-23):** Free-first beta for ~4 weeks while LLC + EIN clear. **Do not** take individual Stripe / PayPal / crypto checkout until business accounts exist. `/bundle` merchandises Super Bundle; **live checkout stays muted** — [FREE_BETA.md](FREE_BETA.md). Escape-hatch Venmo only if founder manually grants enrollments offline (rare).
+**Founder standing (2026-08-16):** LLC formed + EIN issued. **Do not** take Stripe / PayPal / crypto checkout until the pricing study and business bank / Stripe under the LLC. `/bundle` merchandises Super Bundle; **live checkout stays muted** — [FREE_BETA.md](FREE_BETA.md). Escape-hatch Venmo only if founder manually grants enrollments offline (rare).
 
-**Situation:** LLC filed (e.g. Bizee → state, ~4 weeks) + EIN service pending. **Business** Stripe/PayPal will not open without EIN.
+**Situation:** Entity is live (Texas LLC, Active / Good Standing). Mute-pay continues so the public-alpha launch price can be set later. **Do not commit EIN digits or the formation postal street.** `MAIL_POSTAL_ADDRESS` stays unset — no commercial email until the founder chooses a public mailing line.
 
-**Not legal/tax advice.** Do not claim the LLC is formed in `/terms` until the state filing is approved.
+**Not legal/tax advice.** Terms already name Mission Winning LLC (Texas).
 
 ### Suspended for this window — Stripe as individual / sole proprietor
 
-~~Primary path was individual Stripe this week.~~ Overridden: free platform first; re-enable Bundle the week EIN + business Stripe land.
+~~Primary path was individual Stripe this week.~~ Overridden: free platform first; re-enable Bundle after the pricing study + business Stripe.
 
 ### Parallel — Phantom Lifetime USDC
 
@@ -81,15 +81,15 @@ Venmo/Zelle/Cash App → spreadsheet → founder manual `enrollments` grant — 
 ### Do not
 
 - Show Super Bundle / checkout / founders pricing while FREE_BETA is on.
-- Open PayPal Business as primary until EIN.
+- Open PayPal Business as primary before the pricing study + business Stripe.
 - Add Lemon Squeezy / Paddle / new processors in Horizon 0.
 - Market crypto or add new chains/SKUs during free beta.
 
-### When LLC + EIN land (~4 weeks)
+### When the pricing study + business Stripe land
 
-1. Business checking under LLC.
+1. Business checking under LLC (if not already).
 2. Stripe + PayPal under the LLC.
-3. Set `NEXT_PUBLIC_FREE_BETA=false` and `MwFreeBeta.ENABLED = false`; restore Bundle; grandfather beta testers with founders pricing.
+3. Set `NEXT_PUBLIC_FREE_BETA=false` and `MwFreeBeta.ENABLED = false`; restore Bundle; grandfather early users with the launch price.
 4. Update [CONTEXT.md](../CONTEXT.md) `## Now`.
 5. Check off [PRE_REVENUE_CHECKLIST.md](PRE_REVENUE_CHECKLIST.md) entity rows; counsel: governing law = Texas.
 

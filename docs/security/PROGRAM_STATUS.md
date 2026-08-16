@@ -16,7 +16,7 @@ Living checklists stay in [PROTECTION.md](../PROTECTION.md) and [OWASP_AUDIT.md]
 | CCPA / CPRA | US signed-in PII | Access + delete + no sale/share **in code** |
 | COPPA | Youth surface (parked) | Fail-closed secrets; notify not an open relay |
 | FTC AI + exercise-as-medicine | Coach / claims | LEGAL_SAFETY §3a + coach boundaries |
-| CAN-SPAM | List email | Founder: `MAIL_POSTAL_ADDRESS` (unset) |
+| CAN-SPAM | List email | Founder: `MAIL_POSTAL_ADDRESS` (unset by choice — not a flip blocker) |
 | Play Data safety | Android Internal | Fill only from LEGAL_SAFETY §2 |
 | SOC 2 TSC / ISO 27001 Annex A | Evidence **map** | Catalog only — never market pass counts |
 | HIPAA Security Rule | Map-only | **Never claim.** Not a covered entity |

@@ -1,7 +1,7 @@
 # Search Console prep checklist — PRIVATE_MODE
 
 **Status:** draft 2026-08-12 — prep only. Not a live SEO report.
-**PRIVATE_MODE:** ON until EIN. Do **not** claim organic traction, impressions growth, or rankings.
+**PRIVATE_MODE:** ON until the founder flips it. Do **not** claim organic traction, impressions growth, or rankings.
 
 Companion: [docs/SEO_ANALYTICS.md](../../docs/SEO_ANALYTICS.md) · index: [../PREP_INDEX.md](../PREP_INDEX.md) · copy: mission-ops `memory/BETA_LANGUAGE.md`
 

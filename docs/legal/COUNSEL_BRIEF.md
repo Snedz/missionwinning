@@ -45,7 +45,7 @@ Wedge pitch: Train + Mission Coach — not “everything app.” Constitution: r
 |-------|--------|
 | Legal name | Mission Winning LLC |
 | Formation state | Texas (confirmed 2026-08-13) |
-| Registered agent / mailing address for public use | **[FOUNDER: Bizee RA vs PO box/CMRA — see LEGAL_SAFETY §3]** — do not invent a public postal line |
+| Registered agent / mailing address for public use | **Unset (2026-08-16).** Founder left the postal line out — do not invent or commit a street. Set only when they choose a public mailing address for CAN-SPAM / DMCA. |
 | Officers / members | **[FOUNDER]** |
 | Support email | support@missionwinning.com |
 | Coaching inquiries | hello@missionwinning.com |

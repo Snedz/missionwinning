@@ -11,7 +11,7 @@ An honest, public, crawlable file so agents (ChatGPT, Claude, etc.) read the **s
 - Mission Winning: free forever offline workout logger (no account required to log a set).
 - Mission Coach: weekly plan from **your logs**; no wearable required; opt-in (logger works if you skip Coach).
 - Vs-last: previous set on the log row is **your** last session, not a leaderboard.
-- Gate until EIN: free beta; Enter with code / Get notified — not invite-only, not "we're live" while gated.
+- Gate until founder flip: mute-pay public alpha; Enter with code / Get notified — not invite-only, not "we're live" while gated.
 - After flip: how to start (`/welcome` → log a set).
 - What we are not: in-app social Feed; wearable-required coach; everything-app.
 

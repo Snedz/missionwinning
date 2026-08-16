@@ -1,6 +1,6 @@
 # Social & launch media kit
 
-**Purpose:** Copy-paste posts, filming shot list, and channel rules for **free beta** (gated until EIN) → public flip.  
+**Purpose:** Copy-paste posts, filming shot list, and channel rules for **mute-pay public alpha** (gated until the founder flips `PRIVATE_MODE`).  
 **Visual assets:** Brand logos, colors, OG image → [/press](https://www.missionwinning.com/press) · [brand-guidelines.md](brand-guidelines.md)  
 **Mascot:** Kalligator — [MASCOT.md](MASCOT.md) · `/brand/mascot/`  
 **Social creatives:** `public/social/` · playbook [MEDIA_SYSTEM.md](MEDIA_SYSTEM.md) · manifest [`media/manifest.json`](../media/manifest.json)  
@@ -12,11 +12,11 @@
 
 **Wedge line (use everywhere):** Free forever offline logger + adaptive Mission Coach from logs (no wearable). Six pillars stay below the fold / second sentence — not the hook.
 
-**MatrAIx + founder beta copy (until EIN):**
+**MatrAIx + founder copy (until public-alpha flip):**
 
 - **F-005:** Pitch Train+Coach / free forever offline logger only. Do **not** merchandise in-app social Feed, community, or everything-app framing.
-- **F-016:** Do **not** lead with Super Bundle / checkout. Free forever offline logger is the wedge; Super Bundle never gates the logger (mention Bundle only deep secondary, after free core, if at all).
-- **F-008 / PRIVATE_MODE:** Keep the gate + access key until EIN. Framing: **free beta**. Allowed CTAs: **Enter with code** → `/private`; waitlist **Get notified**. Banned: invite-only, get an invite, private beta, we're live/public, open beta, building in public (as product-status), Start free.
+- **F-016:** Do **not** lead with Super Bundle / checkout. Free forever offline logger is the wedge; Super Bundle never gates the logger (mention Bundle only deep secondary, after free core, if at all). Pricing study later.
+- **F-008 / PRIVATE_MODE:** Keep the gate + access key until the founder flips `PRIVATE_MODE`. Framing: **public alpha, still gated**. Allowed CTAs: **Enter with code** → `/private`; waitlist **Get notified**. Banned: invite-only, get an invite, private beta, we're live/public, open beta, building in public (as product-status), Start free.
 
 ### Creative stills (`public/social/`)
 
@@ -116,7 +116,7 @@ missionwinning.com/guide
 
 ## AEO + Reddit (prep now, post after flip)
 
-Full rules: [seo/aeo/AEO_PREP.md](../seo/aeo/AEO_PREP.md). Gated www **cannot** earn citations — PRIVATE_MODE stays until EIN.
+Full rules: [seo/aeo/AEO_PREP.md](../seo/aeo/AEO_PREP.md). Gated www **cannot** earn citations — `PRIVATE_MODE` stays on until the founder flips it.
 
 **ChatGPT ≈ Bing.** Reddit is a **ChatGPT-only** citation channel (Claude/Gemini ignore Reddit). Own site is the #2 cited source after flip — that's why vs-pages live on `/guide`, not Medium. Skip **X** and **LinkedIn** as citation channels.
 

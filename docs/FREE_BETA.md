@@ -1,7 +1,7 @@
 # Alpha mute-pay (`isFreeBeta` flag)
 
 **Status:** ON by default via `isFreeBeta()` / `MwFreeBeta.ENABLED`  
-**Why:** Texas LLC filed (~4 weeks) + EIN pending — business Stripe/PayPal cannot open yet. Founder chose **hard no** on individual Stripe interim ([LLC_AND_PAYMENTS.md](LLC_AND_PAYMENTS.md) §1d overridden for this window).
+**Why:** LLC formed + EIN issued. Mute-pay **stays on** so a later pricing study can set a better launch price. Founder chose **hard no** on individual Stripe interim ([LLC_AND_PAYMENTS.md](LLC_AND_PAYMENTS.md) §1d). Launch shape is a **public alpha** — not a 10-person invite cohort.
 
 **Launch name:** Mission Winning **Alpha 0.1.0**. This file names the mute-pay flag, not the product.
 
@@ -54,7 +54,7 @@ Then grandfather early beta users with founders price / enrollment grants — no
 - Acquire free users; measure activated workouts + D7 return + week-4 retention.
 - Watch Coach LLM spend (rate limits stay on).
 - YC F26: apply with honest free-beta / pre-revenue status (Jul 27 deadline).
-- EIN week: flip flags; Subscribe Now becomes live; founders pricing for beta cohort.
+- After the pricing study + business Stripe under the LLC: flip flags; Subscribe Now becomes live; grandfather early users with the launch price — not leftover credits.
 
 ## Related
 

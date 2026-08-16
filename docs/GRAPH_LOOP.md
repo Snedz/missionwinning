@@ -563,12 +563,12 @@ Do not pull these forward while H0 agent loops remain `open`.
 
 | Item | Why the graph cannot finish it |
 |------|-------------------------------|
-| `MAIL_POSTAL_ADDRESS` | Invite email hard-exits (`scripts/send-beta-invite.ts`, `src/emails/renderEmail.ts`) |
-| Phone excellence `status: pass` | [EXCELLENCE_RESULT.md](EXCELLENCE_RESULT.md) |
+| `MAIL_POSTAL_ADDRESS` | Unset by choice. Invite / list email hard-exits until the founder sets it (`scripts/send-beta-invite.ts`, `src/emails/renderEmail.ts`). Not a flip blocker. |
+| Phone excellence `status: pass` | [EXCELLENCE_RESULT.md](EXCELLENCE_RESULT.md) — scored 2026-08-16 |
 | Android Accept B checkbox | [apps/android/FOUNDER_ACCEPT.md](../apps/android/FOUNDER_ACCEPT.md) |
-| ≥10 invites | Public-flip gate |
+| ≥10 invites | **Retired.** Public alpha; no invite cohort. |
 | VAPID · `CRON_SECRET` · Sentry · Upstash · `SMOKE_BASE_URL` | Return loop / ops stay dark — CONTEXT Status table |
-| EIN → unmute Bundle | [FREE_BETA.md](FREE_BETA.md) |
+| Pricing study → unmute Bundle | [FREE_BETA.md](FREE_BETA.md) — EIN issued; mute-pay stays |
 | `PRIVATE_MODE=false` | Founder only |
 | Visual baseline bootstrap | Linux CI after Actions billing |
 | CodeQL enable / secrets history scan / DMCA counsel | Founder |

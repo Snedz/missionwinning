@@ -1,7 +1,7 @@
 # AEO prep — citation-shaped owned pages (draft)
 
 **Status:** draft 2026-08-13 — not live marketing.  
-**PRIVATE_MODE:** ON until EIN. **Do not publish** these pages or Reddit posts until `PRIVATE_MODE=false` + PWA smoke. **Do not run AEO on a gated www.** Do not Preview this as a product ship.
+**PRIVATE_MODE:** ON until the founder flips it. **Do not publish** these pages or Reddit posts until `PRIVATE_MODE=false` + PWA smoke. **Do not run AEO on a gated www.** Do not Preview this as a product ship.
 
 **Wedge only:** free forever offline logger (no account) + Mission Coach from logs (no wearable).  
 **Forbidden:** invented traction, user counts, testimonials, invite-only, Feed merch (F-005), Bundle-as-hero (F-016), third-party ARR as ours, America/MAHA, medical hero, **agent-only dark coupons** ("10% extra if you sign up now" that only agents see).
@@ -47,7 +47,7 @@ ChatGPT ≈ Bing for this work. Do not treat Claude/Gemini Reddit strategy as Ch
 
 | Constraint | Effect |
 |------------|--------|
-| `PRIVATE_MODE=true` until EIN | `/` is a teaser. LLM crawlers will not treat gated www as a public product. |
+| `PRIVATE_MODE=true` until founder flip | `/` is a teaser. LLM crawlers will not treat gated www as a public product. |
 | Zero organic / zero citations | Honest baseline. Do not invent "we're cited." |
 | Free beta copy | Enter with code / Get notified — not invite-only, not "we're live." |
 

@@ -33,7 +33,7 @@ You may take beta dollars on **Stripe individual / sole prop** (and optional Pha
 
 | Done | Item |
 |------|------|
-| ⬜ | Stripe account (**individual OK until EIN**; then migrate to LLC) + live Checkout / Payment Links |
+| ⬜ | Stripe account **under the LLC** after the pricing study + live Checkout / Payment Links |
 | ⬜ | Webhook `https://www.missionwinning.com/api/stripe-webhook` with enrollment **and** dispute events ([STRIPE_PREMIUM_SETUP.md](STRIPE_PREMIUM_SETUP.md)) |
 | ⬜ | `/refunds` linked on Bundle + UnlockButton; Stripe Checkout custom text points to refunds URL |
 | ⬜ | Profile → Manage billing (Customer Portal) works |

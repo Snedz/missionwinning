@@ -10,7 +10,7 @@ Working folder for SEO notes, exports, briefs, and reports. Agents: read this fi
 | **OpenSEO project** | `Default` — id `abdf037a-2175-421d-8781-dcc56a0393d0` (US / en) |
 | **Search Console** | Connected natively in OpenSEO (`sc-domain:missionwinning.com`) — use `get_search_console_performance`, no CSV exports needed |
 | **Market** | Global English first (wherever Reddit/PH/IndieHackers outreach lands); product built for low-resource markets (BR, IN, NG, ID, EE, RU) — multi-language SEO later |
-| **Site stage** | Pre-public-launch (Aug 2026). `PRIVATE_MODE` gate still on until EIN → GSC shows 0 impressions. Organic baseline starts when the gate flips. **Free beta** (enter with code / Get notified) — not invite-only, not open beta. AEO citations cannot run on a gated www; prep pages now, publish after flip. |
+| **Site stage** | Pre-public-alpha (Aug 2026). `PRIVATE_MODE` stays on until the founder flips it → GSC shows 0 impressions. Organic baseline starts when the gate flips. **Mute-pay public alpha** (enter with code / Get notified) — not invite-only, not a 10-person cohort. AEO citations cannot run on a gated www; prep pages now, publish after flip. |
 | **Stack** | Next.js PWA on Vercel. `app/sitemap.ts` + `app/robots.ts` exist. |
 
 ## MatrAIx gates (Growth copy)

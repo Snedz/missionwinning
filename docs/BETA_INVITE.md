@@ -1,23 +1,21 @@
 # Beta Invite Kit — Mission Winning
 
-Use this when inviting the first **10 private beta operators**. Prod is live at **https://www.missionwinning.com** (private gate on). Share the access code from Vercel `PRIVATE_ACCESS_SECRET` / `PRIVATE_ACCESS_CODES`.
-
-**Current status (2026-07-22):** www target **`.104`** (verify `/api/health` after deploy). **Recruiting is the critical path** before `PRIVATE_MODE=false` — cohort target **2026-08-02**. Demo film: `npm run seed-coach-adapt-demo` → [ACCELERATOR_SPRINT.md](ACCELERATOR_SPRINT.md).
+**Leftover kit.** Launch shape is a **public alpha** (2026-08-16) — there is no 10-person invite cohort. Use this file only if the founder later wants a personal share link. Prod is live at **https://www.missionwinning.com** (private gate on). Share the access code from Vercel `PRIVATE_ACCESS_SECRET` / `PRIVATE_ACCESS_CODES`.
 
 **Founder sprint checklist (agents cannot mark these done):**
 
 1. Verify www `/api/health` / Profile build label matches latest master after deploy (see [VERCEL_DEPLOY_CHECKLIST.md](VERCEL_DEPLOY_CHECKLIST.md) §1.3, §1.6 free-tier quota).
-2. **Unblock mail:** set `MAIL_POSTAL_ADDRESS` (CAN-SPAM footer) — without it invite email hard-exits ([LAUNCH_RUNBOOK.md](LAUNCH_RUNBOOK.md) § env).
+2. **Mail stays off:** `MAIL_POSTAL_ADDRESS` is unset by choice. Invite email hard-exits until the founder sets it ([LAUNCH_RUNBOOK.md](LAUNCH_RUNBOOK.md) §2).
 3. Apply pending Supabase migrations (runbook order) so `beta_invites` / panel progress exist.
 4. Phone hero QA: `/private` → access → `/welcome` → workout → Mission Score → sign-in. Note #1 confusion.
-5. Issue ≥10 invites via Profile → Beta panel (`/private?invite=MW-B-…` + access code out-of-band). Prefer personal DMs if email still blocked.
+5. ~~Issue ≥10 invites~~ **Retired.** Public alpha; no invite cohort.
 6. Day-2 / day-7 follow-ups (scripts below).
 7. After web hero feels solid: Android [FOUNDER_ACCEPT.md](../apps/android/FOUNDER_ACCEPT.md) 15-min Accept B → Play Internal.
 8. Wave A: Sentry `NEXT_PUBLIC_SENTRY_DSN` · optional Aikido MCP permissions + `AIKIDO_SECRET_KEY`.
 
-**Order that unblocks A5 (users):** postal → migrations → first invite → phone QA feedback → more invites. Craft ships do not substitute for step 5.
+**A5 is a measurement, not a flip gate.** Public alpha when the founder says the product is ready.
 
-**Deferral:** Cohort of ≥10 invites still the public-flip gate (A5). Founder owns phone hero QA + personal invites; agents fix only #1 confusion from tester feedback and never invent traction.
+**Standing:** No invite cohort. Founder owns phone hero QA + the `PRIVATE_MODE` flip; agents fix #1 confusion from dogfood notes and never invent traction.
 
 **Paid help:** Optional outreach VA — [docs/OUTREACH_VA_BRIEF.md](OUTREACH_VA_BRIEF.md). **Zero paid ads** until week-4 ([docs/PRELAUNCH_CAPITAL.md](PRELAUNCH_CAPITAL.md)).
 

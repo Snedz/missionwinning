@@ -1,7 +1,7 @@
 # Founder sign-off checklist — SEO / launch prep
 
 **Status:** draft 2026-08-12 — not live marketing.  
-**PRIVATE_MODE:** ON until EIN. Nothing below is approved for merge into public landing or launch posts until checked.
+**PRIVATE_MODE:** ON until the founder flips it. Nothing below is approved for merge into public landing or launch posts until checked.
 
 Beta copy policy: mission-ops `memory/BETA_LANGUAGE.md`.
 

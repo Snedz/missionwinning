@@ -1,7 +1,7 @@
 # SEO Prep Index — Mission Winning
 
 **Status:** draft 2026-08-13 — not live marketing.  
-**PRIVATE_MODE:** ON until EIN. These files are prep only. Do not treat as published campaigns, traction claims, or organic results.
+**PRIVATE_MODE:** ON until the founder flips it. These files are prep only. Do not treat as published campaigns, traction claims, or organic results.
 
 Pitch wedge only: free forever offline workout logger (no account) + Mission Coach / plans from logs (no wearable). ICP: train-anywhere lifter (home / park / garage, bodyweight or minimal kit, subscription-fatigued).
 

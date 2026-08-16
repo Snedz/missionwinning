@@ -9,7 +9,7 @@ Public name after the flip: **Alpha 0.1.0** / **Mission Winning Alpha 0.1.0**. T
 1. This product tree is the public repo (`Snedz/missionwinning`). War room stays in private `Snedz/mission-ops`.
 2. Stubs still stubs (`RELOCATED_TO_MISSION_OPS`). `.hermes/` and `ops/` untracked.
 3. `npm run secrets:scan` clean (0 findings).
-4. Do not commit EIN, Stripe live keys, deploy hooks, or personal email.
+4. Do not commit EIN digits, a postal / formation street, Stripe live keys, deploy hooks, or personal email.
 
 ## GitHub Settings (you click these)
 
@@ -25,6 +25,6 @@ Public name after the flip: **Alpha 0.1.0** / **Mission Winning Alpha 0.1.0**. T
 |------|--------|----------------|
 | `PRIVATE_MODE` | Founder (Vercel env) | Unchanged |
 | `FREE_BETA` | Founder | Unchanged |
-| Production Stripe live | Founder after EIN | Not this click |
+| Production Stripe live | Founder after the pricing study | Not this click |
 
 `PRIVATE_MODE` is the **site** gate. GitHub Public is the **source** offer. They are not the same switch.

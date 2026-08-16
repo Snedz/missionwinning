@@ -21,9 +21,9 @@
 >
 > **Agent-verified 2026-07-22 evening:** www `/api/health` was still **`2026.07-unified.103`** before the `.104` push. **Deploy production** succeeded on master for `.103` (token may already work — confirm after `.104` lands). **CodeQL** still fails upload until Code scanning is enabled (workflow is soft `continue-on-error` so master CI is not blocked). **Aikido** job no longer hard-fails when `AIKIDO_SECRET_KEY` is unset.
 >
-> **Still founder-owned:** enable Code scanning; confirm www shows `.104` after deploy; phone QA + ≥10 invites; Android Accept B; Sentry DSN; Aikido MCP permissions + `AIKIDO_SECRET_KEY`.
+> **Still founder-owned:** enable Code scanning; confirm www shows latest label after deploy; phone dogfood; Android Accept B; Sentry DSN; Aikido MCP permissions + `AIKIDO_SECRET_KEY`.
 >
-> **Beta sprint (through 2026-08-02):** Code is not the bottleneck. Finish §1 CodeQL + verify `.104`, then §3 phone QA + ≥10 invites. Android Accept B + Wave A Sentry before any public flip.
+> **Standing (2026-08-16):** launch is a **public alpha**, not a 10-invite cohort. Keep `PRIVATE_MODE` on and **build until the product is good enough to flip**. `MAIL_POSTAL_ADDRESS` stays unset (no commercial email). Pricing study later — mute-pay stays on.
 
 1. **GitHub → Settings → Billing:** spending limit / payment cleared **2026-07-22** — CI no longer dies in ~2s on billing. Re-check if Actions fail again.
 2. **Confirm / rotate GH Actions secret `VERCEL_TOKEN`** if Deploy production fails again — and confirm `VERCEL_ORG_ID` / `VERCEL_PROJECT_ID` still valid.
@@ -55,7 +55,7 @@
    - `BETA_ADMIN_EMAILS=founder@example.com`
    - `YOUTH_CONSENT_SECRET` and `NUDGE_SECRET` (dedicated `openssl rand -base64 32` each — do not reuse gate secret)
    - `RESEND_API_KEY` + `RESEND_FROM` (consent, nudges, welcome, weekly digest)
-   - `MAIL_POSTAL_ADDRESS` — physical address printed in every email footer (CAN-SPAM). **Blocks list mail until set**: waitlist confirmations drop to text-only, launch broadcast + beta invite refuse to send. Confirm the Bizee registered-agent address is usable as a public business address first — see [LEGAL_SAFETY.md](LEGAL_SAFETY.md) §3
+   - `MAIL_POSTAL_ADDRESS` — **unset by founder choice (2026-08-16).** Required only when sending commercial mail (CAN-SPAM footer). Not a public-alpha flip blocker. Do not invent a footer or commit a formation street. `LAUNCH_STRICT` / `npm run launch-verify` will still fail this var until it is set — expected while mail is off. See [LEGAL_SAFETY.md](LEGAL_SAFETY.md) §3
    - `CRON_SECRET` (Vercel cron: daily nudges + Monday founder digest)
    - `FOUNDER_DIGEST_EMAIL=you@…` (Monday digest + Stripe `charge.dispute.*` alerts; skip send if unset)
    - Optional: `NEXT_PUBLIC_POSTHOG_KEY` (product analytics after user allow)
@@ -161,17 +161,17 @@ Scorecard: [docs/PRODUCTION_STACK.md](PRODUCTION_STACK.md). Recovery: [docs/BACK
 
 > Agents draft; **counsel** owns enforceability. Pack: [legal/COUNSEL_BRIEF.md](legal/COUNSEL_BRIEF.md) · frozen EN text in [legal/exports/](legal/exports/) · [PAY_READY_LEGAL.md](PAY_READY_LEGAL.md) · [LEGAL_SAFETY.md](LEGAL_SAFETY.md).
 
-- [ ] Fill entity blanks in [COUNSEL_BRIEF.md](legal/COUNSEL_BRIEF.md) (formation state, officers, EIN)
-- [ ] Decide public **postal address** (Bizee RA publishable vs PO box/CMRA); set `MAIL_POSTAL_ADDRESS` on Vercel Production + Preview
+- [ ] Fill remaining entity blanks in [COUNSEL_BRIEF.md](legal/COUNSEL_BRIEF.md) (officers). Formation state + EIN-issued are recorded; **digits stay off git**.
+- [ ] **Postal deferred.** Leave `MAIL_POSTAL_ADDRESS` unset until the founder chooses a public mailing line. Not a flip blocker.
 - [ ] File **DMCA agent** at [copyright.gov](https://www.copyright.gov/dmca-directory/); put exact name/email/postal on `/dmca`
 - [ ] Outside counsel review of Terms + Privacy + Refunds (+ DMCA agent block) before first real Stripe/PayPal/USDC charge
 - [ ] Optional: trademark clearance; cyber liability quote before school/enterprise (do not claim “insured” in Privacy until bound)
 
 ---
 
-## §3 — Beta: 10 real users (target: **2026-08-02**)
+## §3 — Public alpha prep (10-invite cohort **retired**)
 
-> **Sprint order:** **`MAIL_POSTAL_ADDRESS`** (§2 — invites cannot send without it) → migrations → **dogfood notes** (below) → issue 10 invites → day-2/day-7 follow-ups. Do not flip `PRIVATE_MODE` until gates pass.
+> **Sprint order:** **dogfood notes** (below) → keep building the wedge → flip `PRIVATE_MODE` when the founder says the product is ready. `MAIL_POSTAL_ADDRESS` stays unset — send no commercial email. Do not recruit a 10-person invite cohort.
 
 ### §3a — Dogfood notes (standing founder todo)
 
@@ -213,21 +213,20 @@ Nice-to-have only if it slowed you:
 
 Also Horizon W: one-thumb outdoors · one clear next session · coach week earned · re-entry after a gap · ≤90s first open not a chore list.
 
-**Still founder-only (agents cannot complete):** set `MAIL_POSTAL_ADDRESS` · apply pending Supabase migrations · flip `PRIVATE_MODE` · live Stripe / EIN · recruit ≥10 · counsel review · secrets/history scan before Public.
+**Still founder-only (agents cannot complete):** flip `PRIVATE_MODE` · pricing study + live Stripe · set `MAIL_POSTAL_ADDRESS` only if sending mail · counsel review · secrets/history scan before GitHub Public.
 
 - [ ] Dogfood notes taken on current build (paste to agent or keep; at least **#1 friction** written down)
 - [ ] Hero flow QA'd on a real phone: teaser → access → I-Day → first workout → Victory → Coach/Today
-- [ ] 10+ testers invited · [ ] gates met (check the beta panel) — **target 2026-08-02**
+- [x] ~~10+ testers invited~~ **Retired.** Public alpha; no invite cohort.
 
 1. Smoke-check the hero flow yourself **on your phone** (table above). **Write down the #1 confusion** — agents fix only that until you paste new notes.
-2. Recruit using the scripts in [STRATEGY.md §First 10 users](STRATEGY.md). Send personal invites with the URL + access code. Preferred: Profile → Beta panel → `MW-B-…` link. **Blocked until `MAIL_POSTAL_ADDRESS` is set.**
-3. Track the funnel: Profile → founder beta panel (`BETA_ADMIN_EMAILS`). Gates: **10+ users, I-Day ≥80%, Basic Training ≥60%.**  
+2. Keep building. Do **not** run an invite campaign. [BETA_INVITE.md](BETA_INVITE.md) is leftover kit if a personal share is ever needed.
+3. Observation only (not a flip gate): Profile → founder beta panel (`BETA_ADMIN_EMAILS`). I-Day ≥80% / Basic Training ≥60% remain **panel numbers**.  
    Client drop-off (after analytics allow): PostHog funnel  
    `iday_started → iday_mission_accepted → iday_profile_completed → iday_completed → first_workout_completed`  
    ([docs/SEO_ANALYTICS.md](SEO_ANALYTICS.md)). Monday email digest repeats server funnel + week-4 RPC.
-4. Message every tester at day 2 and day 7 (script in STRATEGY.md + [BETA_INVITE.md](BETA_INVITE.md)). Fix the #1 confusion each week.
 
-- **Invite format:** `/private?invite=MW-B-XXXXX` + access code out-of-band — [BETA_INVITE.md](BETA_INVITE.md)
+- **Personal share (optional, leftover):** `/private?invite=MW-B-XXXXX` + access code out-of-band — [BETA_INVITE.md](BETA_INVITE.md)
 
 
 ## §4 — Money: Stripe in ~1 hour (do in parallel with §3)
@@ -239,15 +238,15 @@ Also Horizon W: one-thumb outdoors · one clear next session · coach week earne
 > until business accounts exist."* Following this section as written would have opened
 > an SSN-based account the current policy forbids, then required migrating it.
 >
-> **Current policy: free-first beta.** No checkout of any kind until LLC + EIN +
-> business bank land. `NEXT_PUBLIC_FREE_BETA` defaults **on** and mutes all Bundle UI —
-> [FREE_BETA.md](FREE_BETA.md).
+> **Current policy: mute-pay through public alpha.** LLC + EIN exist. No checkout
+> until the pricing study + business Stripe under the LLC. `NEXT_PUBLIC_FREE_BETA`
+> defaults **on** — [FREE_BETA.md](FREE_BETA.md).
 >
-> The checklist below is the **post-EIN** path. Work it when the entity clears, not now.
+> The checklist below is the **post-pricing** path. Work it after that study, not now.
 
 *This is not legal/tax advice — check your local requirements.*
 
-### Post-EIN checklist (do NOT start before the entity clears)
+### Post-pricing checklist (do NOT start before the study + business Stripe)
 
 - [ ] Stripe account **under the LLC** (EIN), not individual/sole-prop
 - [ ] Beta 80% Prices or Payment Links (prefer 12‑mo / Lifetime; keep monthly as anchor)

@@ -21,7 +21,7 @@ Do not use old chat plans as source of truth — prefer this file + PLAN + LOG.
 | Still required | Still forbidden |
 |----------------|-----------------|
 | Horizon W excellence criteria on phone | Gate free logger |
-| Free-first mute pay until EIN | Agents invent traction or flip `PRIVATE_MODE` |
+| Free-first mute pay until the pricing study | Agents invent traction or flip `PRIVATE_MODE` |
 | Honest empty states / no wallpaper unlocks | America/wearables without enable or legal |
 | One concern per PR; ship protocol | Fake leaderboard humans without Pacer label |
 
@@ -40,14 +40,14 @@ Rewards domain: `src/lib/rewards/`. Plan: `.hermes/plans/2026-08-05_163500-full-
 
 Scope note: this override is **narrow by design**. Everything else on the Horizon W forbidden list below stays forbidden.
 
-### Founder override — pre-EIN craft window (2026-08-03)
+### Founder override — craft window (2026-08-03; standing 2026-08-16)
 
-**≥10 beta users is no longer a build freeze.** REDTEAM A5 remains a *launch/public-flip* signal, not a ban on product work. EIN/payments may take weeks — use the window for **excellence craft, habit loop, return channel, and launch prep**.
+**≥10 beta users is not a build freeze and is not a public-flip gate.** REDTEAM A5 remains a *measurement* (still no 10-person cohort). Launch shape is a **public alpha** when the founder says the product is ready. EIN is issued; mute-pay continues until the pricing study. Use the window for **excellence craft, habit loop, return channel, and launch prep**.
 
 | Still required | Still forbidden |
 |----------------|-----------------|
 | Horizon W excellence (phone path, no AI slop) | Gate free logger |
-| Free-first mute pay until EIN | Agents invent traction or flip `PRIVATE_MODE` |
+| Free-first mute pay until the pricing study | Agents invent traction or flip `PRIVATE_MODE` |
 | One concern per PR; ship protocol | America marketing without legal; wearables as score; iOS before Android Accept B |
 
 Agents may ship beyond “hero bugs only” for this window. Prefer delete/refine over new pillars.
@@ -56,7 +56,7 @@ Agents may ship beyond “hero bugs only” for this window. Prefer delete/refin
 
 ## Principles
 
-1. **Wedge excellence before beta theater** — build Train → Today → Victory → Coach until the founder scores “not lame.” ≥10 invites are a **public-flip** gate, not a code freeze.
+1. **Wedge excellence before launch theater** — build Train → Today → Victory → Coach until the founder scores “not lame.” The flip is a **public alpha** when the founder says the product is ready — no ≥10-invite gate.
 2. **Train + Mission Coach are the product** — other pillars stay free-usable; do not deepen them while the wedge feels weak.
 3. **One boss metric (after public)** — week-4 retained weekly loggers. Languages, pillars, stars alone are vanity.
 4. **Two workstreams** — Founder (users, money, legal, excellence sign-off) and Agents (wedge code, tests, perf, docs) in parallel; agents never mark founder work done.
@@ -69,8 +69,8 @@ flowchart TB
     W[Wedge excellence W1-W4]
     S[Founder signoff]
   end
-  subgraph H0 [Horizon 0 - Flip prep]
-    B[Beta 10 users]
+  subgraph H0 [Horizon 0 - Public alpha prep]
+    B[Craft until founder flip]
   end
   subgraph H1 [Horizon 1 - Public]
     P[PRIVATE_MODE false]
@@ -118,7 +118,7 @@ flowchart TB
 
 **Agent-forbidden (unless explicit founder override):** New pillar depth, America/PFT, locale body farms, guidebook expansion, wearables, Android F5, YC thesis churn as daily work. — *`landing redesign` was struck 2026-08-09; see the [www surface override](#founder-override--www-surface-on-astro-2026-08-09) above, which is narrow and leaves the rest of this list intact.*
 
-**Done when:** Founder phone path says pass → then Horizon 0 flip prep (recruit ≥10).
+**Done when:** Founder phone path says pass. Scored `pass` 2026-08-16. Next is **craft toward a public alpha** — not an invite cohort. `PRIVATE_MODE` stays on until the founder flips it.
 
 **Where sign-off is written:** [docs/EXCELLENCE_RESULT.md](docs/EXCELLENCE_RESULT.md) — one home for `status: unscored | pass | fail`. `CONTEXT.md` `## Now` points at it in one bullet. Android Accept B stays separate ([apps/android/FOUNDER_ACCEPT.md](apps/android/FOUNDER_ACCEPT.md)).
 
@@ -126,36 +126,38 @@ flowchart TB
 
 ---
 
-## Horizon 0 — Launch unblock (after excellence sign-off)
+## Horizon 0 — Public alpha prep (after excellence sign-off)
 
-**Owner:** Founder primary · Agents: hero bugs + launch docs/scripts + residual wedge polish.
+**Owner:** Founder primary · Agents: wedge craft + hero bugs + launch docs.
+
+**Standing (2026-08-16, founder):** the launch is a **public alpha**, not a private 10-person beta. There is no invite-cohort gate. Keep `PRIVATE_MODE` on and **build until the product is good enough to flip**. Pricing is a later study — mute pay stays on so the launch price can be set then. `MAIL_POSTAL_ADDRESS` stays unset; send no commercial email until the founder sets it.
 
 ### Founder critical path
 
 | # | Task | Doc |
 |---|------|-----|
-| 0 | **`MAIL_POSTAL_ADDRESS`** (invite email hard-blocked without it) | [docs/LAUNCH_RUNBOOK.md](docs/LAUNCH_RUNBOOK.md) §2 · CONTEXT status |
+| 0 | **`MAIL_POSTAL_ADDRESS`** — unset on purpose. Required only when sending commercial mail (CAN-SPAM). Not a flip blocker. | [docs/LAUNCH_RUNBOOK.md](docs/LAUNCH_RUNBOOK.md) §2 · CONTEXT status |
 | 0b | Pending Supabase migrations (return loop / week-4 / push) | [docs/LAUNCH_RUNBOOK.md](docs/LAUNCH_RUNBOOK.md) §2–§3 |
 | 1 | Vercel Production: `SUPABASE_SERVICE_ROLE_KEY`, `DEMO_PREMIUM=false`, rotated `PRIVATE_ACCESS_SECRET` | [docs/LAUNCH_RUNBOOK.md](docs/LAUNCH_RUNBOOK.md) §2 |
-| 2 | Stripe monthly / 12-mo $59 / lifetime $149 links + `STRIPE_WEBHOOK_SECRET` — **after EIN** (free-first beta now) | [docs/STRIPE_PREMIUM_SETUP.md](docs/STRIPE_PREMIUM_SETUP.md), [docs/FREE_BETA.md](docs/FREE_BETA.md) |
+| 2 | Stripe / Bundle — **after** the pricing study. EIN exists; mute-pay continues. | [docs/STRIPE_PREMIUM_SETUP.md](docs/STRIPE_PREMIUM_SETUP.md), [docs/FREE_BETA.md](docs/FREE_BETA.md) |
 | 3 | **Dogfood notes** on current build (2–5 min; paste #1 friction to agents) | [docs/LAUNCH_RUNBOOK.md](docs/LAUNCH_RUNBOOK.md) **§3a** |
-| 4 | Recruit ≥10 beta users **(after excellence pass + postal)** | [docs/BETA_INVITE.md](docs/BETA_INVITE.md), [docs/THESIS.md](docs/THESIS.md) |
-| 5 | **Gates (the one home for these numbers): I-Day ≥80%, Basic Training ≥60%.** Basic Training means **first workout completed** ([docs/JOURNEY.md](docs/JOURNEY.md) Phase 1) — Horizon W retired the 5/5 scavenger hunt. `.605`: this gate had carried three different values across three files (≥40% 5/5, ≥60% 5/5, first-workout-only); other docs now point here rather than restate. | Profile beta panel, [docs/JOURNEY.md](docs/JOURNEY.md) Phase 1 |
+| 4 | ~~Recruit ≥10 beta users~~ **Retired.** Public alpha; no invite cohort. | — |
+| 5 | I-Day ≥80% / Basic Training ≥60% remain **observation** numbers on the beta panel, not a flip gate. Basic Training = first workout ([docs/JOURNEY.md](docs/JOURNEY.md) Phase 1). | Profile beta panel |
 | 6 | Mobile hero QA: Welcome → first set → Victory → Coach (with dogfood notes) | Manual + `npm run e2e:critical` + §3a |
-| 7 | `LAUNCH_STRICT=true npm run launch-verify` against prod | Scripts |
-| 8 | Public flip day (after gates) | [docs/archive/SOFT_LAUNCH_DAY.md](docs/archive/SOFT_LAUNCH_DAY.md) + [docs/archive/PUBLIC_FLIP_CHECKLIST.md](docs/archive/PUBLIC_FLIP_CHECKLIST.md) |
+| 7 | `LAUNCH_STRICT=true npm run launch-verify` against prod **when flipping** | Scripts |
+| 8 | Public alpha flip (founder sets `PRIVATE_MODE=false`) | [docs/archive/PUBLIC_FLIP_CHECKLIST.md](docs/archive/PUBLIC_FLIP_CHECKLIST.md) |
 | 9 | Ops maturity Wave A: Upstash + Sentry DSN + `SMOKE_BASE_URL` / `VERCEL_*` + backup drill | [docs/PRODUCTION_STACK.md](docs/PRODUCTION_STACK.md), [docs/BACKUP_RESTORE.md](docs/BACKUP_RESTORE.md) |
 
 ### Agent-allowed (Horizon 0)
 
 - Hero-flow / gate / premium 403 regressions
-- Beta invite / founder panel / launch-verify + **growth-smoke** clarity
+- Founder panel / launch-verify + **growth-smoke** clarity
 - Keep CI green; docs match reality (build label, LAUNCH_READY)
-- Public-flip offline/SW checklist maintenance
+- Public-alpha offline/SW checklist maintenance
 - Production-stack scorecard + rate-limit smoke script + backup runbook (no new pillars)
-- Residual wedge polish
+- Residual wedge polish — **build more and make it better** while gated
 
-**Done when:** Excellence already passed + 10+ profiles, BT ≥60%, secrets green, ready to flip public.
+**Done when:** Founder says the product is good enough to flip `PRIVATE_MODE`. Excellence already passed. Mute-pay stays on through the flip. No invite-cohort number.
 
 ---
 
@@ -232,7 +234,7 @@ Unlock **only after** week-4 retention holds.
 | America/MAHA marketing | Legal + school channel |
 | Paid ads | Organic funnel known |
 | Greenfield rewrite | Never as default |
-| Features while beta gates red | **Waived 2026-08-03 (pre-EIN craft window)** — excellence still required; public flip still needs founder readiness |
+| Features while A5 measurement is red | **Waived 2026-08-03 (craft window)** — excellence still required; public alpha flip is founder readiness, not a 10-user count |
 
 ---
 
@@ -269,8 +271,8 @@ Founder-only lanes (never delegated): accounts/secrets, pricing, legal filings, 
 
 | Week | Founder | Agents |
 |------|---------|--------|
-| 1–2 | Secrets, Stripe, 10 invites, hero phone QA | Bugfix; launch-verify |
-| 3–4 | Follow-ups; BT gate | PWA/Serwist spike; Lighthouse |
+| 1–2 | Secrets, hero phone QA, dogfood notes | Wedge craft; launch-verify |
+| 3–4 | Follow-ups; dogfood notes | Wedge craft; Lighthouse |
 | 5–6 | Soft launch; founders offer | Public mode; SEO Console; perf ≥90 |
 | 7–10 | User calls; wall metric | Retention loop only |
 | 11–13 | Go/no-go Horizon 3 | Unlocked scale items only |
@@ -281,7 +283,7 @@ Founder-only lanes (never delegated): accounts/secrets, pricing, legal filings, 
 
 | Horizon | Pass |
 |---------|------|
-| **0** | ≥10 beta, BT ≥60%, secrets + Stripe path verified |
+| **0** | Public alpha flip (founder) after craft; mute-pay still on |
 | **1** | Public + offline core + ≥1 paid path + activation baselined |
 | **2** | Week-4 ≥10% (two cohorts) **or** explicit pivot |
 | **3** | SEO/i18n/TWA/B2B only with retention; free core still free |
@@ -300,7 +302,7 @@ Founder-only lanes (never delegated): accounts/secrets, pricing, legal filings, 
 | Demo | 60s: I-Day → log → Coach adapts week |
 | Interviews | 20 written “why I almost quit” notes |
 
-**Founder path (order):** private beta (≥10) → public → week-4 + paid signal → YC only if numbers are rising.  
+**Founder path (order):** craft while gated → public alpha (founder flip) → week-4 + paid signal → YC only if numbers are rising.  
 Measure: [docs/POST_LAUNCH_CADENCE.md](docs/POST_LAUNCH_CADENCE.md). Flip day: [docs/archive/SOFT_LAUNCH_DAY.md](docs/archive/SOFT_LAUNCH_DAY.md).
 
 Pitch the **Train + Mission Coach wedge** — not “everything app.” Constitution stays [vision.md](vision.md).
