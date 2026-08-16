@@ -351,51 +351,6 @@ const es: WelcomeStrings = {
   saveProfile: 'Guardar perfil',
 };
 
-const fr: WelcomeStrings = {
-  ...en,
-  welcomeKicker: 'Là où le chemin commence',
-  welcomeIDay: 'Jour I',
-  welcomeMissionLead: 'La mission :',
-  welcomeMissionBody1:
-    'Mission Winning est une app santé mondiale gratuite. Entraînez-vous, alimentez-vous, bougez, esprit, suivi et apprentissage — un seul endroit, un chemin.',
-  welcomeMissionP2:
-    'Les bases sont gratuites pour toujours. Premium approfondit chaque pilier pour qui veut plus — jamais obligatoire pour commencer.',
-  welcomeMissionP3:
-    'Votre travail aujourd’hui : une étape à la fois. Le hub Aujourd’hui montre toujours votre prochaine action.',
-  welcomeProfileTitle: 'Trois questions rapides',
-  welcomeProfileEditHint:
-    'Mettez à jour expérience, matériel et objectif. Les changements se synchronisent à la connexion.',
-  welcomeProfileHint: 'Pour qu’Aujourd’hui recommande le meilleur point de départ.',
-  welcomeExperience: 'Expérience',
-  welcomeExpBeginner: 'Nouveau à l’entraînement',
-  welcomeExpIntermediate: 'Un peu d’expérience',
-  welcomeExpAdvanced: 'Des années d’entraînement',
-  welcomeGearCheck: 'Matériel — qu’avez-vous aujourd’hui ?',
-  welcomeEquipBodyweight: 'Poids du corps seulement',
-  welcomeEquipDumbbells: 'Haltères ou bandes',
-  welcomeEquipFullGym: 'Salle complète',
-  welcomePrimaryGoal: 'Objectif principal',
-  welcomeGoalPresetsLabel: 'Choix rapides (ou écrivez le vôtre ci-dessous)',
-  welcomeBack: 'Retour',
-  headerSignIn: 'Connexion',
-  photoLogTitle: 'Enregistrer avec une photo',
-  navOurMission: 'Notre mission',
-  navBetaGuide: 'Guide bêta',
-  welcomeTitle: 'Bienvenue, membre de la mission',
-  welcomeSubtitle:
-    'Commencez votre chemin vers une santé durable — une étape à la fois. Environ deux minutes.',
-  welcomeBegin: 'Commencer',
-  welcomeAccept: 'J’accepte le chemin',
-  welcomeContinue: 'Continuer',
-  welcomeSignInTitle: 'Sauvegarder la progression — à vous de choisir',
-  welcomeSignInSubtitle:
-    'Connectez-vous avec Google ou e-mail pour synchroniser. Passez quand vous voulez — le progrès local fonctionne.',
-  welcomeSkipSignIn: 'Passer — commencer l’entraînement',
-  welcomeRemindersOptIn:
-    'Écrivez-moi si je disparais, et un bilan après ma première semaine. Jamais plus d’un tous les deux jours — désabonnement en un clic.',
-  editJourneyProfile: 'Modifier le profil de parcours',
-  saveProfile: 'Enregistrer le profil',
-};
 
 const pt: WelcomeStrings = {
   ...en,
@@ -474,7 +429,6 @@ const LOCALES: Partial<Record<string, WelcomeStrings>> = {
   th,
   es,
   ar,
-  fr,
   pt,
   de,
   it,

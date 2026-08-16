@@ -334,18 +334,6 @@ const de: BundleStrings = {
   bundleFreeForeverTitle: 'Für immer gratis',
 };
 
-const fr: BundleStrings = {
-  ...en,
-  bundleHeadline: 'Super Bundle — six piliers, un abonnement',
-  bundleSubhead: 'Profondeur premium quand tu veux. Le cœur gratuit reste gratuit pour toujours.',
-  bundleTabMonthly: 'Mensuel',
-  bundleTab12mo: '12 mois',
-  bundleTabLifetime: 'À vie',
-  bundleUnlockCta: 'Débloquer le Super Bundle',
-  bundleFreeForeverTitle: 'Gratuit pour toujours',
-  bundleFreeForeverBody:
-    'Chaque pilier a un niveau gratuit. Le Bundle approfondit le Coach et le contenu premium — jamais obligatoire pour logger les entraînements.',
-};
 
 /** Batch C — LLM-drafted; founder review before public flip. */
 const it: BundleStrings = {
@@ -576,7 +564,6 @@ const LOCALES: Partial<Record<string, BundleStrings>> = {
   ar,
   pt,
   de,
-  fr,
   it,
   ru,
   ko,

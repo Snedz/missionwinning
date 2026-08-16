@@ -63,7 +63,7 @@ const root = path.join(path.dirname(fileURLToPath(import.meta.url)), '..');
  * against a locale pack that never landed, and the kaizen sweep (`.548`–`.561`)
  * added more — 58 keys existed in no EN pack, nearly four times this cap, on a
  * lane no workflow was evaluating. Every one of them rendered its English
- * `defaultValue` in all 15 languages.
+ * `defaultValue` in all 14 languages.
  *
  * All 58 now sit in catalogs. Four keys that previously *could not* be
  * catalogued — `moveSubtitleDepth`, `mindSubtitleDepth`,
@@ -148,7 +148,7 @@ if (count > MAX_UNCOVERED_KEYS) {
   const fresh = [...uncovered.entries()].slice(0, 20);
   console.error(
     `\n✗ ${count} keys are used in the UI but exist in no EN pack — ${count - MAX_UNCOVERED_KEYS} more than the cap.\n` +
-      `  A key with no pack entry renders its English \`defaultValue\` in all 15 languages.\n` +
+      `  A key with no pack entry renders its English \`defaultValue\` in all 14 languages.\n` +
       `  Add the key to the right \`src/i18n/*Locales.ts\`, then run \`npm run i18n:fill\`.\n`
   );
   for (const [key, file] of fresh) console.error(`    ${key}  (${file})`);

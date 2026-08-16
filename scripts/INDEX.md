@@ -32,7 +32,7 @@
 | `generate-premium-programs.ts` | manual `tsx` | Regenerate premium program content |
 | `strip-pro-programs.ts` | manual `tsx` | Strip pro programs from export |
 | `print-beta-invite.ts` | `npm run print-beta-invite` | Beta invite: `/private?invite=` + out-of-band access code (no default `?access=`) |
-| `build-guidebook-pdf.ts` | `npm run build-guidebook-pdf` | Generate `public/magazine/beyond-the-basics[.lang].pdf` from `/guide/print?lang=` (app must be serving). Set `GUIDEBOOK_PDF_AUTO_SERVER=1` to spawn `next start`. Set `GUIDEBOOK_PDF_LANGS=all` (or `en,es,fr`) for localized PDFs. Asserts ~12–28 pages. |
+| `build-guidebook-pdf.ts` | `npm run build-guidebook-pdf` | Generate `public/magazine/beyond-the-basics[.lang].pdf` from `/guide/print?lang=` (app must be serving). Set `GUIDEBOOK_PDF_AUTO_SERVER=1` to spawn `next start`. Set `GUIDEBOOK_PDF_LANGS=all` (or `en,es,pt`) for localized PDFs. Asserts ~12–28 pages. |
 | `optimize-media-inbox.mjs` | `npm run media:optimize-inbox` | Google Flow / Imagine frames in `media/inbox/` → WebP under `public/learn/` or `public/social/` ([MEDIA_SYSTEM.md](../docs/MEDIA_SYSTEM.md)) |
 | `media-coverage-report.mjs` | `npm run media:coverage` | Exercises × text guides × form SVGs → stdout + `media/COVERAGE.md` |
 | `generate-form-guides-t0.mjs` | `npm run media:form-t0` | Rebuild T0 de-cloned form SVGs via `scripts/form-kit/` |

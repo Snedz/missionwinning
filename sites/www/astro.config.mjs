@@ -35,7 +35,7 @@ export default defineConfig({
         // /compare hub — do not re-import it. The alias still has to resolve
         // `@/lib/contentFloors` here as well as in tsconfig. Nothing under
         // this alias may be imported by an island:
-        // landingLocales alone is one 52KB module whose 15 packs do not
+        // landingLocales alone is one 52KB module whose 14 packs do not
         // tree-shake, and wwwSurface.test.ts fails the build if it is.
         '@': fileURLToPath(new URL('../../src', import.meta.url)),
       },

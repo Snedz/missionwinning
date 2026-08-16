@@ -1,6 +1,6 @@
 /** Tier-1 UI strings — nav, journey chrome, welcome, profile. Merged into i18n resources. */
 
-export const TIER1_LANGS = ['en', 'es', 'fr', 'pt', 'ru', 'de', 'it', 'ko', 'ja'] as const;
+export const TIER1_LANGS = ['en', 'es', 'pt', 'ru', 'de', 'it', 'ko', 'ja'] as const;
 export type Tier1Lang = (typeof TIER1_LANGS)[number];
 
 type CoreStrings = {
@@ -339,40 +339,6 @@ const es: CoreStrings = {
   saveProfile: 'Guardar perfil',
 };
 
-const fr: CoreStrings = {
-  ...en,
-  navToday: 'Aujourd\'hui',
-  navTrain: 'Entraînement',
-  navFuel: 'Nutrition',
-  navTrack: 'Suivi',
-  navYou: 'Profil',
-  navMore: 'Plus d\'outils',
-  yourNextStep: 'Prochaine étape',
-  formGuide: 'Guide technique',
-  gotItStartSet: 'Compris — commencer la série',
-  setup: 'Préparation',
-  execute: 'Exécution',
-  avoid: 'Éviter',
-  breath: 'Respiration',
-  simpleMode: 'Simple',
-  proMode: 'Pro',
-  appMode: 'Mode app',
-  commissionedTitle: 'Prêt pour le quotidien',
-  commissionedCta: 'Continuer vers Aujourd\'hui',
-  welcomeBegin: 'Commencer',
-  welcomeTitle: 'Bienvenue',
-  welcomeAccept: 'J\'accepte le chemin',
-  welcomeContinue: 'Continuer',
-  welcomeSkipSignIn: 'Passer — commencer l\'entraînement',
-  lang_de: 'Deutsch',
-  lang_it: 'Italiano',
-  lang_ko: '한국어',
-  lang_ja: '日本語',
-  editJourneyProfile: 'Modifier le profil parcours',
-  cloudSyncActive: 'Parcours synchronisé dans le cloud',
-  cloudSyncPending: 'Connectez-vous pour synchroniser entre appareils',
-  saveProfile: 'Enregistrer le profil',
-};
 
 const pt: CoreStrings = {
   ...en,
@@ -493,7 +459,6 @@ const ja: CoreStrings = {
 export const CORE_LOCALES: Record<Tier1Lang, CoreStrings> = {
   en,
   es,
-  fr,
   pt,
   ru,
   de,

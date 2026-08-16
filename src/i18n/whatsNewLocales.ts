@@ -57,17 +57,6 @@ const BY_LANG: Record<string, Record<string, string>> = {
     whatsNewMoreUnseen: 'Nuevo',
     firstStepsShowAgain: 'Mostrar Primeros pasos otra vez',
   }),
-  fr: wn({
-    whatsNewEyebrow: 'Mises à jour',
-    whatsNewTitle: 'Nouveautés',
-    whatsNewDone: 'Compris',
-    whatsNewCardTitle: 'Nouveautés',
-    whatsNewOpen: 'Nouveautés',
-    whatsNewOpenUnseen: 'Voir les nouveautés',
-    whatsNewMoreRow: 'Nouveautés',
-    whatsNewMoreUnseen: 'Nouveau',
-    firstStepsShowAgain: 'Réafficher Premiers pas',
-  }),
   pt: wn({
     whatsNewEyebrow: 'Atualizações',
     whatsNewTitle: 'Novidades',

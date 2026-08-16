@@ -99,7 +99,7 @@
 
 ## i18n foundation (Phase 16)
 
-- Locales: **en** (default) · **es** · **pt** · **fr** — [I18N.md](I18N.md)
+- Locales: **en** (default) · **es** · **pt** — [I18N.md](I18N.md). French is not offered.
 - Shared chrome strings in `:core:designsystem` (`mw_*`); bottom nav + key CTAs wired
 
 ## Toolchain (Phase 0)

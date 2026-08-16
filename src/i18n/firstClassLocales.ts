@@ -1128,26 +1128,6 @@ const AR = overlay({
   changeLanguage: 'تغيير اللغة',
 });
 
-const FR = overlay({
-  localeChooserTitle: 'Langue et pays',
-  localeChooserEyebrow: 'Première visite',
-  localeChooserBody: 'Nous avons deviné depuis le navigateur. Langue et pays sont indépendants.',
-  localeChooserLanguage: 'Langue',
-  localeChooserCountry: 'Pays',
-  localeChooserContinue: 'Continuer',
-  localeChooserHint: 'Vous pourrez changer plus tard dans le profil ou le pied de page.',
-  localeChooserLanguageNote:
-    'La langue est une préférence d’affichage. Elle ne signifie pas que nous desservons un pays.',
-  localeChooserLoggerStillWorks:
-    'Le journal gratuit fonctionne. L’inscription et le paiement hébergés ne sont pas disponibles.',
-  localeControlLabel: 'Langue et pays',
-  localeControlChange: 'Changer la langue ou le pays',
-  cookieBannerAccept: 'Accepter',
-  cookieBannerReject: 'Refuser les non essentiels',
-  cookieBannerManage: 'Gérer',
-  language: 'Langue',
-  changeLanguage: 'Changer de langue',
-});
 
 const DE = overlay({
   localeChooserTitle: 'Sprache und Land',
@@ -1383,7 +1363,6 @@ const OVERLAYS: Record<string, Record<string, string>> = {
   sw: SW,
   am: AM,
   ar: AR,
-  fr: FR,
   de: DE,
   id: ID,
   tr: TR,

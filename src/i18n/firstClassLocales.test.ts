@@ -10,7 +10,7 @@ const BRAND_OK = /Mission Coach|Mission Winning/;
 
 describe('first-class overlays', () => {
   it('covers every picker row', () => {
-    assert.equal(UI_LANGS.length, 40);
+    assert.equal(UI_LANGS.length, 39);
     for (const lang of UI_LANGS) {
       const row = firstClassOverlayFor(lang);
       assert.ok(row.localeChooserTitle, lang);

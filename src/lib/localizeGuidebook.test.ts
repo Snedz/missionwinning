@@ -6,8 +6,8 @@ import { BEYOND_THE_BASICS_CHAPTERS } from '@/data/guidebook/chapters';
 import { buildGuidebookContentLocaleKeys } from '@/lib/guidebook/buildGuidebookLocaleKeys';
 
 describe('appLangs', () => {
-  it('has 15 canonical languages including Profile set', () => {
-    assert.equal(APP_LANGS.length, 15);
+  it('has 14 canonical languages including Profile set', () => {
+    assert.equal(APP_LANGS.length, 14);
     assert.ok(isAppLang('es'));
     assert.ok(isAppLang('hi'));
     assert.equal(normalizeAppLang('pt-BR'), 'pt');

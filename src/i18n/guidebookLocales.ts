@@ -78,20 +78,6 @@ const GUIDEBOOK_ES: Record<string, string> = {
   magazineOpenContents: 'Abrir contenido',
 };
 
-const GUIDEBOOK_FR: Record<string, string> = {
-  ...GUIDEBOOK_EN,
-  guidebookTitle: 'Au-delà des bases',
-  guidebookSubtitle:
-    "Encore plus de contenu ! Le guide Mission Winning — comprendre l'entraînement depuis les fondations.",
-  navGuidebook: 'Guide',
-  learnOpenGuidebook: 'Ouvrir le guide →',
-  guideLanguage: 'Langue',
-  magazineTitle: 'Au-delà des bases',
-  magazineDownloadPdf: 'Télécharger le PDF',
-  'guideChapter_human-performance_title': 'Science de la performance humaine',
-  'guideChapter_movement-mechanics_title': 'Mécanique du mouvement',
-  'guideChapter_programming-tuning_title': 'Programmation et réglage',
-};
 
 const GUIDEBOOK_DE: Record<string, string> = {
   ...GUIDEBOOK_EN,
@@ -195,7 +181,6 @@ const GUIDEBOOK_ID: Record<string, string> = {
 const BY_LANG: Record<string, Record<string, string>> = {
   en: GUIDEBOOK_EN,
   es: GUIDEBOOK_ES,
-  fr: GUIDEBOOK_FR,
   de: GUIDEBOOK_DE,
   it: GUIDEBOOK_IT,
   pt: GUIDEBOOK_PT,

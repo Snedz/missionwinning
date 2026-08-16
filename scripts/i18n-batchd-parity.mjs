@@ -11,7 +11,6 @@ const BATCH_D = ['hi', 'id', 'th', 'zh', 'vi', 'ar'];
 const APP_LANGS = [
   'en',
   'es',
-  'fr',
   'pt',
   'ru',
   'de',

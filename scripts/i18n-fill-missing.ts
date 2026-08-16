@@ -40,7 +40,6 @@ function isSkipped(key: string, enVal: string): boolean {
 
 const LANG_NAMES: Record<string, string> = {
   es: 'Spanish',
-  fr: 'French',
   pt: 'Portuguese',
   ru: 'Russian',
   de: 'German',
@@ -57,7 +56,6 @@ const LANG_NAMES: Record<string, string> = {
 
 const MM_CODE: Record<string, string> = {
   es: 'es',
-  fr: 'fr',
   pt: 'pt',
   ru: 'ru',
   de: 'de',

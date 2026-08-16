@@ -45,7 +45,6 @@ const FIELD_TEST_EN: Record<string, string> = {
 const BY_LANG: Record<string, Record<string, string>> = {
   en: FIELD_TEST_EN,
   es: { ...FIELD_TEST_EN },
-  fr: { ...FIELD_TEST_EN },
   pt: { ...FIELD_TEST_EN },
   ru: { ...FIELD_TEST_EN },
   de: { ...FIELD_TEST_EN },

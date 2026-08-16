@@ -248,33 +248,6 @@ const ar: Partial<NavStrings> = {
   fuelPremiumRecipesFoot: 'من علم البروتين ومبادئ DASH/Med.',
 };
 
-const fr: Partial<NavStrings> = {
-  ...en,
-  navOpenBeta: 'Bêta ouverte',
-  navInviteOnlyBeta: 'Bêta sur invitation',
-  navAssess: 'Évaluer',
-  navMore: 'Plus',
-  navCoachTab: 'Coach',
-  navMoreEyebrow: 'Tous les écrans',
-  navGroupMission: 'Mission',
-  navGroupPillars: 'Piliers',
-  navGroupToolkit: 'Outils',
-  navSectionRecover: 'Récupération',
-  navSectionTrain: 'Entraînement approfondi',
-  navSectionLearn: 'Apprendre et mesurer',
-  navMove: 'Mouvement',
-  navMind: 'Esprit',
-  navLearn: 'Apprendre',
-  navBuilder: 'Constructeur',
-  navLibrary: 'Bibliothèque',
-  navHistory: 'Historique',
-  navLeaderboard: 'Classement',
-  navReadiness: 'Tests de préparation',
-  navHealth: 'Bilan santé',
-  navCalculators: 'Calculateurs',
-  journeyBasicFoot: 'Une étape à la fois. Plus d\'outils s\'ouvrent avec votre progression.',
-  fuelHighProteinNote: 'Les jours riches en protéines boostent votre',
-};
 
 const de: Partial<NavStrings> = {
   ...en,
@@ -444,7 +417,7 @@ const ru: Partial<NavStrings> = {
   fuelHighProteinNote: 'Дни с высоким белком усиливают ваш',
 };
 
-const LOCALES: Partial<Record<string, Partial<NavStrings>>> = { en, es, zh, id, th, ar, fr, de, it, ko, ja, pt, ru };
+const LOCALES: Partial<Record<string, Partial<NavStrings>>> = { en, es, zh, id, th, ar, de, it, ko, ja, pt, ru };
 
 export function navStringsFor(lang: string): NavStrings {
   const code = lang.split('-')[0];

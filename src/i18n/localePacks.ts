@@ -7,7 +7,6 @@ import type { AppLang } from '@/i18n/appLangs';
 import { normalizeAppLang } from '@/i18n/appLangs';
 
 import es from '@/i18n/packs/es.json';
-import fr from '@/i18n/packs/fr.json';
 import pt from '@/i18n/packs/pt.json';
 import ru from '@/i18n/packs/ru.json';
 import de from '@/i18n/packs/de.json';
@@ -23,7 +22,6 @@ import ar from '@/i18n/packs/ar.json';
 
 const PACKS: Partial<Record<AppLang, Record<string, string>>> = {
   es: es as Record<string, string>,
-  fr: fr as Record<string, string>,
   pt: pt as Record<string, string>,
   ru: ru as Record<string, string>,
   de: de as Record<string, string>,

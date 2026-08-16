@@ -417,53 +417,6 @@ const LANDING_DE: Record<string, string> = {
 };
 
 /** LLM-drafted FR — founder review before public flip. */
-const LANDING_FR: Record<string, string> = {
-  ...LANDING_EN,
-  landingNavPath: 'Le parcours',
-  landingNavPillars: 'Piliers',
-  landingNavStart: 'Commencer gratuit',
-  landingNavHome: 'Accueil',
-  landingHeroEyebrow: 'Tracker gratuit · PWA hors ligne',
-  landingHeroTitle1: 'Entraîne-toi partout.',
-  landingHeroTitle2: 'Gagne chaque jour.',
-  landingHeroSubtitle:
-    'Le tracker d’entraînement gratuit qui marche hors ligne — pas de compte, pas de store, pas de paywall sur l’essentiel. Nutrition, mobilité, mental et apprentissage dans le même Mission Score.',
-  landingSeeHow: 'Comment ça marche',
-  landingCtaStart: 'Commence ton parcours',
-  landingJourneyTitle: 'Le parcours membre',
-  landingJourneyHeadline1: 'Un début clair.',
-  landingJourneyHeadline2: 'Une étape à la fois.',
-  landingFreeEyebrow: 'Le cœur gratuit',
-  landingFreeTitle1: 'Gratuit est la mission,',
-  landingFreeTitle2: 'pas l’essai.',
-  landingPillarsEyebrow: 'Six piliers',
-  landingPillarsTitle: 'Tout renforce tout.',
-  landingBundleEyebrow: 'Le Super Bundle',
-  landingBundleTitle1: 'Six outils premium.',
-  landingBundleTitle2: 'Un abonnement.',
-  landingBundleCta: 'Voir le bundle',
-  landingFinalCtaTitle: 'Le parcours commence par un entraînement.',
-  landingFinalCtaButton: 'Commencer gratuit — sans compte',
-  landingNotifyEyebrow: 'Super Bundle',
-  landingNotifyTitle: 'On vous prévient quand le paiement ouvre',
-  landingNotifyBody:
-    'Stripe n’est pas encore en ligne. Laissez un e-mail — on ne vous facture pas. Le logger reste gratuit.',
-  landingNotifyFoot: 'Pas de spam. Un e-mail quand le checkout Super Bundle ouvre.',
-  landingNotifyEmailAria: 'E-mail pour être prévenu quand le checkout Super Bundle ouvre',
-  landingCaptureEyebrow: 'Liste de lancement',
-  landingCaptureTitle: 'Notes de lancement. Cœur gratuit pour toujours.',
-  landingCaptureButton: 'Me prévenir',
-  landingCaptureBody:
-    'Un e-mail au lancement public, plus de rares conseils free core. Pas de spam. Désinscription à tout moment.',
-  landingCapturePlaceholder: 'toi@email.com',
-  landingCaptureDone: 'Tu es sur la liste.',
-  landingCapturePrivacy: 'On garde ton e-mail seulement pour les news de lancement.',
-  footerGroupProduct: 'Produit',
-  footerGroupLearn: 'Apprendre',
-  footerGroupCompany: 'Entreprise',
-  footerGroupLegal: 'Légal',
-  footerTagline: 'Entraîne-toi partout. Gagne chaque jour.',
-};
 
 /** Batch C — LLM-drafted conversion surfaces; founder review before public flip. */
 const LANDING_IT: Record<string, string> = {
@@ -980,7 +933,6 @@ const BY_LANG: Record<string, Record<string, string>> = {
   es: LANDING_ES,
   pt: LANDING_PT,
   de: LANDING_DE,
-  fr: LANDING_FR,
   it: LANDING_IT,
   ru: LANDING_RU,
   ko: LANDING_KO,

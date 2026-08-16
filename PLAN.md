@@ -76,7 +76,7 @@ Expand `athleteLocales.test.ts` SOURCES to the Athlete Page components this cata
 
 ### 4.6 Docs / i18n / ship protocol
 
-- Keys in `src/i18n/athleteLocales.ts` (+ card/shelf strings already in `rewardsLocales.ts`). `defaultValue` matches EN. Beachhead es/fr/pt for new lines; others inherit EN.
+- Keys in `src/i18n/athleteLocales.ts` (+ card/shelf strings already in `rewardsLocales.ts`). `defaultValue` matches EN. Beachhead es/pt for new lines; others inherit EN.
 - Help: getting-started sign-in points at Account, not Profile.
 - `src/lib/identity/INDEX.md` + `src/i18n/INDEX.md` (athleteLocales row).
 - Hard rule 5 on the **implementation** commit: `APP_BUILD_LABEL` `.706`, `LOG.md` (rotate oldest `.669` — live log is already 15), `CONTEXT.md` `## Now` (rotate oldest ship bullet to stay ≤25).

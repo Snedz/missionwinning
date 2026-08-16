@@ -486,80 +486,6 @@ const es: FuelStrings = {
   fuelSubtitle: 'Núcleo gratis: registro diario, agua, objetivos y recetas accesibles en todo el mundo.',
 };
 
-const fr: FuelStrings = {
-  ...en,
-  fuelPremiumActive: ' Premium : bibliothèque complète + plans approfondis (Super Bundle).',
-  fuelBundleUpsell: ' Super Bundle ajoute des recettes protein-first et la semaine Fuel Coach — le journal reste gratuit.',
-  fuelWinScore: 'Score de mission',
-  fuelTargetsTitle: 'Objectifs du jour',
-  fuelCalories: 'Calories',
-  fuelProtein: 'Protéines',
-  fuelMacrosSummary: 'Glucides : {{carbs}}g • Lipides : {{fat}}g • Eau : {{water}} / 8 verres',
-  fuelPillarWinsToday: 'Victoires du jour (Move/Mind/Assess) : {{count}} — ex. {{example}}',
-  fuelHydrationTitle: 'Hydratation',
-  fuelGlasses: 'verres',
-  fuelHydrationHint: 'Objectif 8+ (ajustez selon climat/activité)',
-  fuelQuickLogTitle: 'Journal rapide',
-  fuelQuickLogFoot:
-    'Base plus complète + recettes dans le programme Nutrition. Ajustez les objectifs via Calculateurs.',
-  fuelCustomEntryTitle: 'Entrée personnalisée',
-  fuelFoodLabel: 'Aliment',
-  fuelProteinGLabel: 'Protéines g',
-  fuelCalsLabel: 'Cal',
-  fuelLogBtn: 'Enregistrer',
-  fuelTodayLogTitle: 'Journal du jour',
-  fuelClearDay: 'Effacer le jour',
-  fuelLoadCloud: 'Charger depuis le cloud',
-  fuelCloudLoading: 'Chargement…',
-  fuelCloudLoaded: 'Cloud chargé (connexion requise)',
-  fuelNoEntries: 'Aucune entrée. Utilisez le journal rapide ou personnalisé ci-dessus.',
-  fuelTotals: 'Totaux',
-  fuelTotalsLine: '{{protein}}g protéines • {{cals}} kcal',
-  fuelLocalNote:
-    'Données locales (synchronisées à la connexion). Plans repas complets dans le cours Nutrition payant.',
-  fuelFreeRecipesTitle: 'Recettes gratuites ({{count}} — mission de base)',
-  fuelPremiumRecipesTitle: 'Recettes premium (Super Bundle)',
-  fuelPremiumLockedTitle: '+{{count}} recettes premium',
-  fuelPremiumLockedBody:
-    'Super Bundle ajoute la bibliothèque protein-first — assiettes garage et voyage, pas une base alimentaire. Le journal reste gratuit.',
-  fuelExploreBundle: 'Explorer Super Bundle',
-  fuelLogFab: 'Enregistrer un repas',
-  fuelLogSheetTitle: 'Ajouter à Fuel',
-  fuelTabQuick: 'Rapide',
-  fuelTabCustom: 'Perso',
-  fuelTabPhoto: 'Photo',
-  fuelMealBreakfast: 'Petit-déjeuner',
-  fuelMealLunch: 'Déjeuner',
-  fuelMealDinner: 'Dîner',
-  fuelMealSnack: 'Collation',
-  fuelMealOther: 'Autre',
-  fuelLogStreak: 'Série de {{count}} jours de journal',
-  fuelMealPlanTitle: 'Plan repas riche en protéines (7 jours)',
-  fuelMealPlanLocked:
-    '+{{count}} jours de plus — stratégies de timing et repas synchronisés aux macros dans Super Bundle.',
-  fuelScienceCh5:
-    'Protéines : essentielles pour la croissance, la réparation et les hormones. Clients actifs : souvent 1,6–2,2 g/kg.',
-  fuelScienceCh12:
-    'Nutrition sportive : glucides complexes pour l’entraînement ; lipides sains pour les hormones. Hydratez-vous.',
-  fuelQuickLog: 'Journal rapide',
-  fuelRepeatYesterday: 'Répéter hier ({{count}} éléments)',
-  fuelSearchTitle: 'Rechercher des aliments',
-  fuelEmptyTitle: 'Aucun repas enregistré aujourd’hui',
-  fuelLogFirstMeal: 'Enregistrer le premier repas',
-  fuelSubtitle:
-    'Noyau gratuit : journal quotidien, eau, objectifs et recettes accessibles partout.',
-  fuelCoachTitle: 'Fuel Coach — plan repas adaptatif',
-  fuelCoachGenerateDesc:
-    'Protéines d’abord depuis vos logs — un plan d’assiettes 7 jours avec des staples garage, puis des glucides autour des séances dures. Pas une base alimentaire.',
-  fuelCoachGenerate: 'Générer le plan repas',
-  fuelCoachWeekTitle: 'Votre plan repas adaptatif',
-  fuelCoachRegenerate: 'Régénérer',
-  fuelCoachDayTotals: 'Totaux du jour',
-  fuelCoachLockedDesc:
-    'Semaine protein-first depuis vos cibles et votre charge — des repas garage à cuisiner, pas un catalogue code-barres.',
-  fuelCoachTargets: 'Vos objectifs',
-  fuelCoachPreviewNote: 'Protéines d’abord, puis glucides les jours lourds. Recettes de la bibliothèque Fuel.',
-};
 
 const zh: FuelStrings = {
   ...en,
@@ -783,7 +709,6 @@ const de: FuelStrings = {
 const LOCALES: Partial<Record<string, FuelStrings>> = {
   en,
   es,
-  fr,
   zh,
   id,
   th,
