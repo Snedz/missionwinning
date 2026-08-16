@@ -16,12 +16,12 @@ One screen of truth for any AI tool or human joining cold. Read this, then [AGEN
 
 ---
 
-## Now (2026-08-16 · web `2026.07-unified.876` · Android `1.24.1`)
+## Now (2026-08-16 · web `2026.07-unified.880` · Android `1.24.1`)
 
 > The ONLY "where we are" block in the repo — [ORCHESTRATION.md](ORCHESTRATION.md) points here.
 >
 > **Budget: ≤25 bullets.** Enforced by `src/lib/contextBudget.test.ts`. When over,
-> rotate the oldest *shipped* entries to `docs/archive/` — `.873` dropped `.859` · `.872` dropped `.858` · `.871` dropped `.857` · `.870` dropped `.856` · `.869` dropped `.855` · `.868` dropped `.854` · `.867` dropped `.853` · `.866` dropped `.852` · `.865` dropped `.851` · `.864` dropped `.850` · `.863` dropped `.849` · `.862` dropped `.848` · `.861` dropped `.847` · `.860` dropped `.846` · `.859` dropped `.845` · `.858` dropped `.844` · `.857` dropped `.843` · `.856` dropped `.842` · `.855` dropped `.841` · `.854` dropped `.840` · `.853` dropped `.839` · `.852` dropped `.837` (full text remains in LOG.md / archive) · `.203` moved `.123`–`.189`,
+> rotate the oldest *shipped* entries to `docs/archive/` — `.880` dropped `.863` · `.873` dropped `.859` · `.872` dropped `.858` · `.871` dropped `.857` · `.870` dropped `.856` · `.869` dropped `.855` · `.868` dropped `.854` · `.867` dropped `.853` · `.866` dropped `.852` · `.865` dropped `.851` · `.864` dropped `.850` · `.863` dropped `.849` · `.862` dropped `.848` · `.861` dropped `.847` · `.860` dropped `.846` · `.859` dropped `.845` · `.858` dropped `.844` · `.857` dropped `.843` · `.856` dropped `.842` · `.855` dropped `.841` · `.854` dropped `.840` · `.853` dropped `.839` · `.852` dropped `.837` (full text remains in LOG.md / archive) · `.203` moved `.123`–`.189`,
 > `.207` moved `.190`–`.193`, `.211` moved `.194`–`.197`, `.215` moved `.198`
 > `.216` moved `.200`, `.217` moved `.199`, `.218` moved `.201`, `.219` moved `.202`
 > `.220` moved `.203`, `.221` moved `.204`, `.222` moved `.205`, `.223` moved `.206`,
@@ -388,6 +388,7 @@ One screen of truth for any AI tool or human joining cold. Read this, then [AGEN
 > and `.843` dropped `.829` detail (full text remains in LOG.md / archive)
 > and `.866` dropped `.852` detail (full text remains in LOG.md / archive)
 > and `.867` dropped `.853` detail (full text remains in LOG.md / archive)
+> and `.880` dropped `.863` detail (full text remains in LOG.md / archive)
 > to [CONTEXT-now-2026-07-30.md](docs/archive/CONTEXT-now-2026-07-30.md) after this
 > block reached **79 bullets / 103KB**. A status doc that only grows stops being read.
 
@@ -409,6 +410,7 @@ One screen of truth for any AI tool or human joining cold. Read this, then [AGEN
 > | gitleaks | **green — and scanning for the first time.** It had never scanned anything: on a `pull_request` event the action lists the PR's commits, the job declared no `permissions:` block, and it 403'd (`pull_requests=read`) before opening a file. Fixed by a `permissions:` block (`.224` carrying `.255`). It scans **only the PR's own commits**, so commit `8ea3527a`'s real Solana treasury address — scrubbed from the working file, still in history — is out of its scope. That finding stands, deliberately not allowlisted; it was never what made this check red. |
 > | Privacy / security program | **Landed `.778`** — [docs/security/PROGRAM_STATUS.md](docs/security/PROGRAM_STATUS.md). Invite-bound gate, health-bucket, DSAR, territory fail-closed. OTP-without-click can leave a ghost user. Not a cert. |
 
+- **`.880`:** (`2026.07-unified.880`) **i18n coverage is 0 again** — `i18n:coverage` (cap 0) was red on every PR because it walked `LOCALE_EXPORTS` and never the first-class overlay, while hydrate never called `mergeFirstClassStrings` either. Keys that existed still rendered English `defaultValue`. Overlay is now visible to the ratchet and merged at runtime; leftover defaultValue-only keys catalogued; week-diff headline ternary split (`One`/`Many`). Cap stays 0. `.877`–`.879` reserved by the open Victory stack. No `PRIVATE_MODE` flip.
 - **`.876`:** (`2026.07-unified.876`) **Horizon W is scored `pass`** — founder scored the phone path on the Preview of `18737b0` (production is gated, Preview is ungated with the SW built). Surface PRs no longer need a trailer. `firstCriticalGap` is `null`; harness says stop, do not invent a letter. `criticalPath.test.ts` had pinned `unscored` on the live repo — an expiry-*event* test that would have gone red on the founder scoring; de-pinned to fixtures, 4 mutants killed. No `PRIVATE_MODE` flip.
 - **`.875`:** (`2026.07-unified.875`) **The harvest paste stamped a UTC day** — `pasteHarvest.ts` defaulted `today` to `toISOString().slice(0,10)`, the CLAUDE.md §5 hard rule; red on `master` since `.871`. Between local and UTC midnight it files today's harvest row under yesterday (shown under `TZ=Asia/Tokyo`). Now `localDateKey()`. Suite 3653/3653. No `PRIVATE_MODE` flip.
 - **`.874`:** (`2026.07-unified.874`) **The excellence override was borrowed from `master`** — the gate read trailers from `git log base...HEAD` (symmetric difference), so any branch behind `master` inherited one of the 24-in-40 trailers there and shipped surface unscored; at the tip the same change blocked. Log is now `base..HEAD`, diff keeps three dots, verb+range travel as one argv. RESULT stays `unscored` — C5 is founder-scored. No `PRIVATE_MODE` flip.
@@ -422,7 +424,6 @@ One screen of truth for any AI tool or human joining cold. Read this, then [AGEN
 - **`.866`:** (`2026.07-unified.866`) **No French** — France is founder-excluded. Pack 14 · picker 39 · `fr`/`fr-*` → English. No `PRIVATE_MODE` flip.
 - **`.865`:** (`2026.07-unified.865`) **Returning dose follows missed sessions** — `IL-H-07`. Same 14-day gap, 4/week vs 1/week dose differs. No plan keeps calendar scale. No `PRIVATE_MODE` flip.
 - **`.864`:** (`2026.07-unified.864`) **H-07 is on the queue** — first session back follows missed sessions. `IL-H-07` is Now AT. No `PRIVATE_MODE` flip.
-- **`.863`:** (`2026.07-unified.863`) **One tap off the cold path** — `IL-H-05`. `TAP_BUDGET` 5→4. Last stored set beats a suggestion. Cold history stays blank. No `PRIVATE_MODE` flip.
 - **Form object kit (on `.781`):** IMPLEMENT block + prop sheets. Regen cable-row (visible stack), lateral-raise, DB press, lunges, DB row. Floor 43. Still-only. No `PRIVATE_MODE` flip.
 - **Excellence:** **pass** · 2026-08-16 · Snedz · [docs/EXCELLENCE_RESULT.md](docs/EXCELLENCE_RESULT.md) — Horizon W phone sign-off home. Scored on the Preview of `18737b0`; surface PRs no longer need `Excellence-Override` (`.669` · `.876`).
 - **`.669`:** (`2026.07-unified.669`) **Excellence RESULT + agent stop-rule** — `excellenceGate` path policy + `check-excellence-gate` on gate/PR CI; wedge still ships while unscored.

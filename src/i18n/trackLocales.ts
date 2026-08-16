@@ -107,6 +107,7 @@ type TrackStrings = {
   trackImportCsvSample: string;
   trackImportHowTo: string;
   sessions: string;
+  trackNoStrapRequired: string;
 };
 
 const en: TrackStrings = {
@@ -217,6 +218,7 @@ const en: TrackStrings = {
   trackImportHowTo:
     'Apple: Shortcuts → Find Workouts → Get Details → Save File as JSON with date, type, durationMin. Google: export Fit activities (or Takeout) and convert to the same fields, or use CSV.',
   sessions: 'sessions',
+  trackNoStrapRequired: 'No strap required. GPS and a typed walk are the live Track.',
 };
 
 const es: TrackStrings = {

@@ -284,6 +284,8 @@ type TodayStrings = {
   todayFounderSnackHint: string;
   todayFounderSnackHintDesc: string;
   todayFounderLogSnack: string;
+  todayReentryQuietLineBare: string;
+  todayReentryQuietLine: string;
 };
 
 const en: TodayStrings = {
@@ -587,6 +589,8 @@ const en: TodayStrings = {
   todayFounderSnackHint: 'Open Fuel',
   todayFounderSnackHintDesc: 'Log a recovery snack when you are ready.',
   todayFounderLogSnack: 'Log recovery snack',
+  todayReentryQuietLineBare: "Here's the {{minutes}}-minute version.",
+  todayReentryQuietLine: "Back from {{exercise}}. Here's the {{minutes}}-minute version.",
 };
 
 const coachPlanDefaults = {
@@ -796,6 +800,8 @@ const zh: TodayStrings = {
   todayFounderSnackHint: en.todayFounderSnackHint,
   todayFounderSnackHintDesc: en.todayFounderSnackHintDesc,
   todayFounderLogSnack: en.todayFounderLogSnack,
+  todayReentryQuietLineBare: en.todayReentryQuietLineBare,
+  todayReentryQuietLine: en.todayReentryQuietLine,
   continuityTitle: en.continuityTitle,
   continuitySubtitle: en.continuitySubtitle,
   todayWeekRecapTitle: en.todayWeekRecapTitle,
@@ -1064,6 +1070,8 @@ const id: TodayStrings = {
   todayFounderSnackHint: en.todayFounderSnackHint,
   todayFounderSnackHintDesc: en.todayFounderSnackHintDesc,
   todayFounderLogSnack: en.todayFounderLogSnack,
+  todayReentryQuietLineBare: en.todayReentryQuietLineBare,
+  todayReentryQuietLine: en.todayReentryQuietLine,
   continuityTitle: en.continuityTitle,
   continuitySubtitle: en.continuitySubtitle,
   todayWeekRecapTitle: en.todayWeekRecapTitle,
@@ -1347,6 +1355,8 @@ const th: TodayStrings = {
   todayFounderSnackHint: en.todayFounderSnackHint,
   todayFounderSnackHintDesc: en.todayFounderSnackHintDesc,
   todayFounderLogSnack: en.todayFounderLogSnack,
+  todayReentryQuietLineBare: en.todayReentryQuietLineBare,
+  todayReentryQuietLine: en.todayReentryQuietLine,
   continuityTitle: en.continuityTitle,
   continuitySubtitle: en.continuitySubtitle,
   todayWeekRecapTitle: en.todayWeekRecapTitle,
@@ -1620,6 +1630,8 @@ const ar: TodayStrings = {
   todayFounderSnackHint: en.todayFounderSnackHint,
   todayFounderSnackHintDesc: en.todayFounderSnackHintDesc,
   todayFounderLogSnack: en.todayFounderLogSnack,
+  todayReentryQuietLineBare: en.todayReentryQuietLineBare,
+  todayReentryQuietLine: en.todayReentryQuietLine,
   continuityTitle: en.continuityTitle,
   continuitySubtitle: en.continuitySubtitle,
   todayWeekRecapTitle: en.todayWeekRecapTitle,

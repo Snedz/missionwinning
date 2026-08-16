@@ -31,6 +31,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { BOOTSTRAP_EN } from '../src/i18n/bootstrapResources';
 import { coreStringsFor } from '../src/i18n/coreLocales';
+import { firstClassOverlayFor } from '../src/i18n/firstClassLocales';
 import { LOCALE_EXPORTS } from '../src/lib/exportLocales';
 
 const root = path.join(path.dirname(fileURLToPath(import.meta.url)), '..');
@@ -110,6 +111,7 @@ function englishKeys(): Set<string> {
   const keys = new Set<string>([
     ...Object.keys(BOOTSTRAP_EN),
     ...Object.keys(coreStringsFor('en') as Record<string, string>),
+    ...Object.keys(firstClassOverlayFor('en')),
   ]);
   for (const entry of LOCALE_EXPORTS) {
     for (const k of Object.keys(entry.stringsFor('en') as Record<string, string>)) keys.add(k);
