@@ -42,6 +42,7 @@ const RECIPE: Record<number, string> = {
   12: 'docs/AGENT_RECIPES.md §12 — one unit-round; the campaign row stays `open`',
   13: 'docs/AGENT_RECIPES.md §13 — harvest; `/harness` pastes one `IL-` row (`npm run idea:paste`)',
   15: 'docs/AGENT_RECIPES.md §15 — Horizon W critical path; already-true with proof, or one PR',
+  16: 'docs/AGENT_RECIPES.md §16 — craft the wedge after pass; one named friction, no letter',
 };
 
 function run(): number {
