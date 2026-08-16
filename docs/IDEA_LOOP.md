@@ -219,7 +219,7 @@ historian writes one `verdict` node plus one `ANTILIBRARY.md` row after the
 gauntlet closes a campaign, **whether the idea won or lost**, and keeps the
 anti-library row when the dossier later rotates to `docs/archive/mechanics/`.
 A campaign verdict names `campaign: GNT-n` and does not fake-settle an `H-NN`.
-`src/lib/ideaGraph/learn.ts` is what makes the next `idea:next` / `npm run graph`
+`src/lib/ideaGraph/learn.ts` is what makes the next `idea:next` / `npm run harness`
 actually see it: settled hypotheses stop being candidates, failed ones join the
 refuse list by fingerprint, and the `learned` line is printed. A done GNT row
 with no `V-NN` is a yellow note, not a silent close.

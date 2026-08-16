@@ -1,9 +1,9 @@
 /**
- * Live hop contract — `docs/graph/HOP.md`.
+ * Live hop contract — `docs/harness/HOP.md`.
  *
  * The queue names the ticket. This file is what a fresh spawn reads after a
  * crash: what this hop is, what done means in one sentence, and the command
- * that is allowed to say so. `npm run graph:done` is the closer. The agent's
+ * that is allowed to say so. `npm run harness:done` is the closer. The agent's
  * last message is not.
  *
  * Discover the hop file rather than hardcoding a second path. Zero or two
@@ -69,7 +69,7 @@ function field(src: string, key: string): string {
   return (m?.[1] ?? '').trim();
 }
 
-export function parseHop(src: string, file = 'docs/graph/HOP.md'): HopContract | HopParseFail {
+export function parseHop(src: string, file = 'docs/harness/HOP.md'): HopContract | HopParseFail {
   const ticket = field(src, 'ticket');
   const doneMeans = field(src, 'done_means');
   const accept = field(src, 'accept');
@@ -88,7 +88,7 @@ export function readHop(root: string): HopContract | HopParseFail {
 /** Live ticket from `route()`. Harvest / stalled have none. */
 export function hopMatchesTicket(hop: HopContract, liveId: string | null): string | null {
   if (!liveId) {
-    return 'no open GRAPH_LOOP ticket — graph:done does not close a harvest or a stall';
+    return 'no open GRAPH_LOOP ticket — harness:done does not close a harvest or a stall';
   }
   if (hop.ticket !== liveId) {
     return `HOP.md ticket ${hop.ticket} ≠ live ticket ${liveId} — stale hop file`;

@@ -54,7 +54,7 @@ describe('hop contract', () => {
   it('discovers exactly one HOP.md under docs/', () => {
     const found = discoverHopFiles(root);
     assert.equal(found.length, 1, `expected one hop file, found ${found.join(', ')}`);
-    assert.equal(path.relative(root, found[0]), 'docs/graph/HOP.md');
+    assert.equal(path.relative(root, found[0]), 'docs/harness/HOP.md');
   });
 
   it('the committed hop file is the empty template', () => {
@@ -64,11 +64,11 @@ describe('hop contract', () => {
   });
 
   it('PINNED.md stays short enough to re-read after compaction', () => {
-    const src = readFileSync(path.join(root, 'docs/graph/PINNED.md'), 'utf8');
+    const src = readFileSync(path.join(root, 'docs/harness/PINNED.md'), 'utf8');
     const n = pinnedLineCount(src);
     assert.ok(n > 4, 'PINNED.md is missing');
     assert.ok(n <= PINNED_MAX_LINES, `PINNED.md is ${n} lines; cap is ${PINNED_MAX_LINES}`);
-    assert.match(src, /graph:done/);
+    assert.match(src, /harness:done/);
     assert.match(src, /PRIVATE_MODE/);
   });
 });

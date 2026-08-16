@@ -18,6 +18,8 @@
     "check-display-type": "node scripts/check-display-type.mjs",
     "check-build-label": "node scripts/check-build-label.mjs",
     "check-excellence-gate": "tsx scripts/check-excellence-gate.ts",
+    "harness": "tsx scripts/queue-next.ts",
+    "harness:done": "tsx scripts/graph-hop-done.ts",
     "graph": "tsx scripts/queue-next.ts",
     "graph:done": "tsx scripts/graph-hop-done.ts",
     "queue:next": "tsx scripts/queue-next.ts",

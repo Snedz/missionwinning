@@ -2,7 +2,7 @@
 
 **One concern:** deciding which loop runs next, from
 [docs/GRAPH_LOOP.md](../../../docs/GRAPH_LOOP.md). Printed by
-`npm run graph`; procedure in
+`npm run harness`; procedure in
 [docs/AGENT_RECIPES.md](../../../docs/AGENT_RECIPES.md) §14.
 
 Build tooling that happens to be typed. It reads the queue and **never writes
@@ -15,7 +15,7 @@ effect of a command is not handed over.
 |---|---|
 | `parse.ts` | The `## Queue` region as a shape. Tables addressed by header name, status read from the parsed cell |
 | `route.ts` | Live ticket → build (11) · gauntlet (12) · harvest (13), plus the single-row-section ratchet (`IL-*` closes the run) |
-| `hop.ts` | Live hop file (`docs/graph/HOP.md`) — ticket / done_means / accept. Closer is `npm run graph:done` |
+| `hop.ts` | Live hop file (`docs/harness/HOP.md`) — ticket / done_means / accept. Closer is `npm run harness:done` |
 
 ## Why this is code and not another paragraph
 

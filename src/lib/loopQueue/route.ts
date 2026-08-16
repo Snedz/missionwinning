@@ -5,7 +5,7 @@
  * grades, `IDEA_LOOP` generates — and choosing between them is currently a thing
  * a spawn is *told* to do in prose (`AGENT_RECIPES.md:170`, and the copy-paste
  * prompt's rule 4, which does not mention the idea loop at all). This file makes
- * the choice computable, so `npm run graph` can name the row, the route and
+ * the choice computable, so `npm run harness` can name the row, the route and
  * the recipe instead of an agent remembering all three.
  *
  * ## The ratchet

@@ -6,7 +6,7 @@
  * are filled, accept exits 0, and (when app paths moved) the build-label check
  * passes. Never writes GRAPH_LOOP.md — the `done` edit is still the baton.
  *
- * Run: npm run graph:done
+ * Run: npm run harness:done
  */
 import { spawnSync } from 'node:child_process';
 import { readFileSync } from 'node:fs';
