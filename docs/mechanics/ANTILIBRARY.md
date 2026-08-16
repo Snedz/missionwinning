@@ -47,6 +47,9 @@ refused by the selector with the citation attached.
 | `tell+remove+M-20+today+no+tell` | First-session Today already has no share control | `H-23` |
 | `pay+change+M-20+identify+after+dated` | Sign-in chip already hidden until first workout | `H-24` |
 | `pay+measure+M-20+identify+on+today` | Unit already holds; no /log waitlist telemetry | `H-25` |
+| `activate+add+M-21+leech+not+first+session` | Cold visitor has no lapse history; first set cannot be a leech | `H-26` |
+| `return+change+M-21+return+skips+leech` | No lapse field on logs | `H-27` |
+| `trust+measure+M-21+leech+lapses` | No lapse event or corpus | `H-28` |
 
 ---
 
