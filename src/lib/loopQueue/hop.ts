@@ -88,7 +88,7 @@ export function readHop(root: string): HopContract | HopParseFail {
 /** Live ticket from `route()`. Harvest / stalled have none. */
 export function hopMatchesTicket(hop: HopContract, liveId: string | null): string | null {
   if (!liveId) {
-    return 'no open GRAPH_LOOP ticket — harness:done does not close a harvest or a stall';
+    return 'no live ticket — harness:done does not close a harvest, a stall, or founder phone';
   }
   if (hop.ticket !== liveId) {
     return `HOP.md ticket ${hop.ticket} ≠ live ticket ${liveId} — stale hop file`;

@@ -47,7 +47,7 @@ describe('hop contract', () => {
     const hop = parseHop(FILLED);
     assert.ok(!isHopParseFail(hop));
     assert.match(hopMatchesTicket(hop, 'W2') ?? '', /stale/);
-    assert.match(hopMatchesTicket(hop, null) ?? '', /harvest|stall/);
+    assert.match(hopMatchesTicket(hop, null) ?? '', /harvest|stall|founder/);
     assert.equal(hopMatchesTicket(hop, 'W1'), null);
   });
 

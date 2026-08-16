@@ -2,8 +2,8 @@
  * `npm run harness` (`graph` and `queue:next` are the same command)
  *
  * The graph loop's entry point. It reads `docs/GRAPH_LOOP.md`, names the live
- * ticket, and says which of the three protocols runs — build (recipe 11),
- * gauntlet (recipe 12) or harvest (recipe 13).
+ * ticket, and says which protocol runs — build (11), gauntlet (12),
+ * harvest (13), or Horizon W path (15).
  *
  * It **prints**. It never edits `docs/GRAPH_LOOP.md`, for the same reason
  * `idea:next` does not: that file is the baton, and the baton is handed over by
@@ -41,6 +41,7 @@ const RECIPE: Record<number, string> = {
   11: 'docs/AGENT_RECIPES.md §11 — one concern, one PR, close the row after merge',
   12: 'docs/AGENT_RECIPES.md §12 — one unit-round; the campaign row stays `open`',
   13: 'docs/AGENT_RECIPES.md §13 — harvest; emits exactly one `IL-` row, and you paste it',
+  15: 'docs/AGENT_RECIPES.md §15 — Horizon W critical path; already-true with proof, or one PR',
 };
 
 function run(): number {
@@ -70,6 +71,10 @@ function run(): number {
   if (r.row) {
     console.log(field('live ticket', `${bold(r.row.id)} — ${r.row.loop}`));
     console.log(field('', dim(`${QUEUE}:${r.row.line} · ${r.row.section}`)));
+  } else if (r.path) {
+    console.log(field('live ticket', `${bold(r.path.id)} — ${r.path.claim}`));
+    console.log(field('owner', r.path.owner === 'founder' ? yellow('founder — phone, not a builder brief') : 'agent'));
+    console.log(field('accept', dim(r.path.accept)));
   } else {
     console.log(field('live ticket', dim('none — no agent-open row in any `### Now` section')));
   }

@@ -53,7 +53,10 @@ if (queue.problems.length > 0) {
 }
 
 const r = route(root, queue);
-const liveId = r.row?.id ?? null;
+if (r.kind === 'path' && r.path?.owner === 'founder') {
+  fail(`${r.path.id} is founder phone — harness:done does not close it`);
+}
+const liveId = r.row?.id ?? r.path?.id ?? null;
 const mismatch = hopMatchesTicket(hop, liveId);
 if (mismatch) fail(mismatch);
 if (r.row && r.row.status !== 'open') {
