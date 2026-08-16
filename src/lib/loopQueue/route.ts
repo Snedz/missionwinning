@@ -38,6 +38,11 @@
 import { existsSync, readFileSync } from 'node:fs';
 import path from 'node:path';
 import type { ParsedQueue, QueueRow, QueueSection } from './parse.ts';
+import { firstCriticalGap, type PathGap } from './criticalPath.ts';
+import { validateGraph } from '@/lib/ideaGraph/validate.ts';
+import { readEmittedHistory } from '@/lib/ideaGraph/derive.ts';
+import { selectionInputs } from '@/lib/ideaGraph/learn.ts';
+import { selectNext } from '@/lib/ideaGraph/select.ts';
 
 /**
  * The committed queue's trailing run of one-row `Now` sections. Pinned by
@@ -55,7 +60,7 @@ const WORKBENCH_LINK = /\(?(gauntlet\/GNT-\d+-[a-z0-9-]+\.md)\)/i;
 const ROLES = ['LEAD', 'BUILDER', 'CRITIC', 'SMOOTHER'] as const;
 export type Role = (typeof ROLES)[number];
 
-export type RouteKind = 'build' | 'gauntlet' | 'harvest' | 'stalled';
+export type RouteKind = 'build' | 'gauntlet' | 'harvest' | 'path' | 'stalled';
 
 export interface Workbench {
   file: string;
@@ -71,7 +76,7 @@ export interface Workbench {
 export interface Route {
   kind: RouteKind;
   /** Recipe number in `docs/AGENT_RECIPES.md`. */
-  recipe: 11 | 12 | 13 | null;
+  recipe: 11 | 12 | 13 | 15 | null;
   row: QueueRow | null;
   workbench: Workbench | null;
   /** `founder` / `blocked` rows passed over on the way to the live ticket. Never silent. */
@@ -81,6 +86,8 @@ export interface Route {
   atRatchet: boolean;
   /** Conditions a human has to decide about. Reported, never auto-resolved. */
   notes: string[];
+  /** Horizon W gap when `kind` is `path`. */
+  path: PathGap | null;
 }
 
 /** `Now` sections only, in document order. Parallel / Founder / Parked are other lanes. */
@@ -191,15 +198,7 @@ export function route(root: string, queue: ParsedQueue): Route {
   }
 
   if (!live) {
-    const hasIdeaLoop = existsSync(path.join(root, 'docs/IDEA_LOOP.md'));
-    if (!hasIdeaLoop) {
-      notes.push('no agent-open row, and `docs/IDEA_LOOP.md` is absent — there is no generator to route to');
-      return { kind: 'stalled', recipe: null, row: null, workbench: null, skipped, singleRowRun: run, atRatchet, notes };
-    }
-    notes.push(
-      'no agent-open row in any `### Now` section — the honest next step is a new idea, not the next letter'
-    );
-    return { kind: 'harvest', recipe: 13, row: null, workbench: null, skipped, singleRowRun: run, atRatchet, notes };
+    return emptyQueueRoute(root, { singleRowRun: run, atRatchet, skipped, notes });
   }
 
   if (isCampaign(live)) {
@@ -214,8 +213,73 @@ export function route(root: string, queue: ParsedQueue): Route {
           `budget exhausted means LEAD writes the report, not another builder`
       );
     }
-    return { kind: 'gauntlet', recipe: 12, row: live, workbench, skipped, singleRowRun: run, atRatchet, notes };
+    return {
+      kind: 'gauntlet',
+      recipe: 12,
+      row: live,
+      workbench,
+      skipped,
+      singleRowRun: run,
+      atRatchet,
+      notes,
+      path: null,
+    };
   }
 
-  return { kind: 'build', recipe: 11, row: live, workbench: null, skipped, singleRowRun: run, atRatchet, notes };
+  return {
+    kind: 'build',
+    recipe: 11,
+    row: live,
+    workbench: null,
+    skipped,
+    singleRowRun: run,
+    atRatchet,
+    notes,
+    path: null,
+  };
+}
+
+function harvestWouldEmit(root: string): boolean {
+  try {
+    const { graph, violations } = validateGraph(root);
+    if (violations.length > 0) return false;
+    const { candidates, antiLibrary } = selectionInputs(root, graph);
+    const history = readEmittedHistory(root, graph);
+    return selectNext(candidates, history, antiLibrary).emit !== null;
+  } catch {
+    return false;
+  }
+}
+
+function emptyQueueRoute(
+  root: string,
+  base: Pick<Route, 'singleRowRun' | 'atRatchet' | 'skipped' | 'notes'>
+): Route {
+  const { singleRowRun: run, atRatchet, skipped, notes } = base;
+  const blank = { row: null, workbench: null, skipped, singleRowRun: run, atRatchet, path: null as PathGap | null };
+
+  if (harvestWouldEmit(root)) {
+    notes.push(
+      'no agent-open row in any `### Now` section — the honest next step is a new idea, not the next letter'
+    );
+    return { kind: 'harvest', recipe: 13, notes, ...blank };
+  }
+
+  const gap = firstCriticalGap(root);
+  if (gap) {
+    notes.push(
+      gap.owner === 'founder'
+        ? `no queue row and no harvest — next is ${gap.id} (${gap.owner} phone), not AU2`
+        : `no queue row and no harvest — next is Horizon W ${gap.id}`
+    );
+    return { kind: 'path', recipe: 15, notes, ...blank, path: gap };
+  }
+
+  if (!existsSync(path.join(root, 'docs/IDEA_LOOP.md'))) {
+    notes.push('no agent-open row, no harvest, and no critical-path gap — stalled');
+    return { kind: 'stalled', recipe: null, notes, ...blank };
+  }
+
+  notes.push('Horizon W instruments are green and RESULT is pass — stop, do not invent a letter');
+  return { kind: 'stalled', recipe: null, notes, ...blank };
 }

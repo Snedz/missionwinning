@@ -45,12 +45,16 @@ function injectNow(src: string, rows: string): string {
  * The live ticket                                                     *
  * ------------------------------------------------------------------ */
 
-test('the committed queue has no Now-open row and routes to a harvest', () => {
+test('the committed queue has no Now-open row and routes to the critical path', () => {
   const q = real();
   const open = nowSections(q).flatMap((s) => s.rows).filter((x) => x.status === 'open');
   assert.equal(open.length, 0, `Now still has open ${open.map((x) => x.id).join(', ')}`);
   const r = route(root, q);
-  assert.equal(r.kind, 'harvest');
+  assert.equal(r.kind, 'path');
+  assert.equal(r.recipe, 15);
+  assert.equal(r.path?.id, 'C5');
+  assert.equal(r.path?.owner, 'founder');
+  assert.equal(typeof r.singleRowRun, 'number');
   assert.equal(r.atRatchet, false);
 });
 
@@ -140,14 +144,15 @@ test('the same row without GNT routes to an ordinary build', () => {
   assert.equal(r.workbench, null);
 });
 
-test('no open row routes to a harvest, not to the next letter', () => {
+test('no open row and an empty harvest route to the critical path, not the next letter', () => {
   const q = real();
   for (const s of q.sections) for (const row of s.rows) if (row.status === 'open') row.status = 'done';
   const r = route(root, q);
-  assert.equal(r.kind, 'harvest');
-  assert.equal(r.recipe, 13);
+  assert.equal(r.kind, 'path');
+  assert.equal(r.recipe, 15);
   assert.equal(r.row, null);
-  assert.match(r.notes.join(' '), /the honest next step is a new idea/);
+  assert.equal(r.path?.id, 'C5');
+  assert.match(r.notes.join(' '), /not AU2|Horizon W/);
 });
 
 test('a founder or blocked row is skipped to the next open row, and reported', () => {

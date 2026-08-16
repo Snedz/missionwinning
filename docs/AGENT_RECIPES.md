@@ -257,7 +257,8 @@ hard rule 6) is a thin loader over exactly these steps. `/graph` is an alias.
    the first product edit (`ticket` = the live id, `done_means` one sentence,
    `accept` one command).
 4. **Take the route it named**, and only that one — `build` → recipe 11 · `gauntlet`
-   → recipe 12 · `harvest` → recipe 13. Not a more interesting row, not two rows.
+   → recipe 12 · `harvest` → recipe 13 · `path` → recipe 15. Not a more interesting
+   row, not two rows.
 5. **`npm run harness:done`** before claiming the hop shipped. It is the closer.
    It does not write the queue. Then one loop, then stop
    ([GRAPH_LOOP.md](GRAPH_LOOP.md) loop rule 2). Print
@@ -271,9 +272,39 @@ router; otherwise the loop's own tests, per the recipe you were routed to.
 - Choose the route yourself when `harness` disagrees — fix the queue or the
   router, in its own PR
 - Write another plan instead of executing the row ([GRAPH_LOOP.md](GRAPH_LOOP.md) § *Stop the harness if*)
-- Mint the next letter section to refill a thin queue — that is what routing to a
-  harvest is for, and `MAX_SINGLE_ROW_RUN` now goes red instead of asking nicely
+- Mint the next letter section to refill a thin queue — harvest if `idea:next`
+  has a row; otherwise the Horizon W path (recipe 15). `MAX_SINGLE_ROW_RUN` goes
+  red instead of asking nicely
 - Put this skill in `.claude/skills/` (hard rule 6) · merge your own PR · push `master`
+
+---
+
+## 15. Follow the Horizon W critical path
+
+**Required reads:** [ORCHESTRATION.md](../ORCHESTRATION.md) Horizon W ·
+[EXCELLENCE_RESULT.md](EXCELLENCE_RESULT.md) · whatever `npm run harness` named.
+
+Wins when GRAPH_LOOP has no agent-open row **and** `idea:next` emits nothing.
+That used to print "stop, do not refill" and sit. The standing NOW is still
+Horizon W. This recipe takes the first unproven W-gap, from instruments, not
+taste (`src/lib/loopQueue/criticalPath.ts`).
+
+1. **`npm run harness` names the ticket** (`W1`…`W4` or `C5`). You do not pick.
+2. **Owner `founder`** (C5 while RESULT is unscored): print the ticket and stop.
+   Do not invent a builder brief. Do not write `status: pass`.
+3. **Owner `agent`:** write `docs/harness/HOP.md`. Investigate on master. Already
+   true → proof paths, no restyle. Still false → one PR against that claim only.
+4. `npm run harness:done` before claiming the hop shipped. It does not write
+   GRAPH_LOOP.
+
+**Required tests:** the accept command printed for that ticket.
+
+**Never**
+
+- Invent AU2 / the next letter
+- Write excellence `status: pass`
+- Take a more interesting W-id than the one named
+- Raise TAP_BUDGET / firstPaintFloor / bundle caps
 
 ---
 

@@ -8,6 +8,7 @@ The queue is GRAPH_LOOP. What may be built is ORCHESTRATION.
 - Do not invent traction. Do not raise `TAP_BUDGET`.
 - No America / wearables-as-score / iOS. No chat on Today.
 - One concern. One PR. Do not invent the next letter.
+- Empty queue + empty harvest → Horizon W path (`npm run harness`), not AU2.
 - Harvest paste only with `--paste`.
 - Builder never grades itself. `npm run harness:done` before claiming the hop shipped.
 - Do not commit `.hermes/`, `ops/`, or `.env.local`.
