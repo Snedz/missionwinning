@@ -1,6 +1,7 @@
 /** Track pillar UI copy — merged into i18n `common` namespace. */
 
 type TrackStrings = {
+  trackNoStrapRequired: string;
   trackTitle: string;
   trackSubtitle: string;
   trackSubtitleBrief: string;
@@ -110,6 +111,7 @@ type TrackStrings = {
 };
 
 const en: TrackStrings = {
+  trackNoStrapRequired: 'No strap required. GPS and a typed walk are the live Track.',
   trackTitle: 'Track Activity',
   trackSubtitle:
     'Free manual activity log — walk, run, bike, hike. Premium adds GPS and advanced stats (MapMy-style, Super Bundle).',

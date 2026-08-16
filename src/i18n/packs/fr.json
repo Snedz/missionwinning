@@ -1189,6 +1189,8 @@
   "todayQuickNightDesc": "Séances de 22h00 à 05h00",
   "todayQuickRankingsDesc": "Score de mission et séquences",
   "todayRecommendedBody": "Commencez avec un simple corps entier ou divisé à partir de Builder, ou lancez un modèle de programme. Terminez des sessions pour améliorer votre score de victoire.",
+  "todayReentryOffLapsed": "Absent un moment",
+  "todayReentryQuietLine": "{{off}}. Voici la version en {{minutes}} minutes.",
   "todaySectionJournalDesc": "Activité récente dans tous les piliers",
   "todayTrendActive": "Min actif",
   "todayTrendProtein": "Protéine",

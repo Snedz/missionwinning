@@ -1,6 +1,7 @@
 /** Info, legal, and marketing-in-app page chrome — merged into i18n `common` namespace. */
 
 type InfoStrings = {
+  infoCookiesLocaleLi: string;
   /** GDPR / cookies / a11y pack keys may extend beyond the core list. */
   [key: string]: string;
   infoLastUpdated: string;
@@ -263,6 +264,7 @@ type InfoStrings = {
 };
 
 const en: InfoStrings = {
+  infoCookiesLocaleLi: 'mw_locale and mw_country are strictly necessary first-party cookies. Language is a display preference; country follows the hosted-service geo-block in supportedRegions.ts. Counsel should review this inventory before a public flip — this page does not rewrite the Privacy or Terms bodies.',
   infoLastUpdated: 'Last updated: 13 August 2026',
   infoAboutTitle: 'About Mission Winning',
   infoHelpTitle: 'Help',

@@ -28,10 +28,10 @@
  */
 import fs from 'node:fs';
 import path from 'node:path';
+import { createRequire } from 'node:module';
 import { fileURLToPath } from 'node:url';
 import { BOOTSTRAP_EN } from '../src/i18n/bootstrapResources';
 import { coreStringsFor } from '../src/i18n/coreLocales';
-import { LOCALE_EXPORTS } from '../src/lib/exportLocales';
 
 const root = path.join(path.dirname(fileURLToPath(import.meta.url)), '..');
 
@@ -105,14 +105,56 @@ function walk(dir: string, out: string[] = []): string[] {
   return out;
 }
 
-/** Every EN string the app can resolve: bootstrap + core + all namespace packs. */
+/**
+ * Every EN source on disk — discovered, not the exported subset.
+ *
+ * This read `BOOTSTRAP_EN + coreStringsFor('en') + LOCALE_EXPORTS` until `.846`,
+ * which is the **bundled** set, not the catalogued one. Five `*Locales.ts` packs
+ * are absent from `LOCALE_EXPORTS`, some deliberately — `firstClassLocales` is
+ * kept off the root-layout static path by `check-locale-split` + `bundle-budget`.
+ * Their keys were therefore invisible here and reported as *used but in no EN
+ * pack*: **24 of them**, including 10 `localeChooser*` keys that already carried
+ * 21–40 translations each. The fix a reader would reach for — add those keys to
+ * some other pack — would have duplicated shipped translations and broken the
+ * one-definition-per-domain rule.
+ *
+ * Naming the two offenders would fix today and re-break on the sixth pack, so
+ * this walks `src/i18n/*Locales.ts` and requires each to expose a
+ * `*StringsFor(lang)` or `*OverlayFor(lang)`. A pack exposing neither **throws**
+ * rather than being skipped: a scanner that quietly ignores a catalogue is
+ * exactly how those 24 came to be reported as missing.
+ */
 function englishKeys(): Set<string> {
   const keys = new Set<string>([
     ...Object.keys(BOOTSTRAP_EN),
     ...Object.keys(coreStringsFor('en') as Record<string, string>),
   ]);
-  for (const entry of LOCALE_EXPORTS) {
-    for (const k of Object.keys(entry.stringsFor('en') as Record<string, string>)) keys.add(k);
+
+  const packs = fs
+    .readdirSync(path.join(root, 'src/i18n'))
+    .filter((f) => f.endsWith('Locales.ts'))
+    .sort();
+  if (!packs.length) throw new Error('i18n-coverage: no *Locales.ts packs found — bad root?');
+
+  // `require`, not `import()`: tsx emits CJS here, so top-level await is out and
+  // making this async would push the whole script into a wrapper for nothing.
+  const requirePack = createRequire(import.meta.url);
+  for (const file of packs) {
+    const mod = requirePack(path.join(root, 'src/i18n', file)) as Record<string, unknown>;
+    const sources = Object.entries(mod).filter(
+      ([name, v]) => typeof v === 'function' && /(StringsFor|OverlayFor)$/.test(name),
+    );
+    if (!sources.length) {
+      throw new Error(
+        `i18n-coverage: ${file} exposes no *StringsFor / *OverlayFor, so its EN keys ` +
+          `cannot be read. Add one, or this scanner will report every key it owns as ` +
+          `missing — the defect .846 fixed. Do not special-case it here.`,
+      );
+    }
+    for (const [, fn] of sources) {
+      const strings = (fn as (lang: string) => Record<string, string>)('en');
+      for (const k of Object.keys(strings ?? {})) keys.add(k);
+    }
   }
   return keys;
 }

@@ -1,6 +1,9 @@
 /** Mission Server messenger strings — merged into i18n `common` namespace. */
 
 const SERVER_EN: Record<string, string> = {
+  serverChannelsLabel: 'Channels',
+  serverMembersLabel: 'Members',
+  serverMemberCount: '1 member',
   navServer: 'Messenger',
   moreServerDesc: 'Shared rooms when signed in',
   serverEyebrow: 'Mission Server',

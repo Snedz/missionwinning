@@ -1,6 +1,18 @@
 /** Active workout / rest timer copy — merged into i18n `common` namespace. */
 
 type ActiveWorkoutStrings = {
+  activeSetDropTip: string;
+  victoryDeltaWeight: string;
+  victoryDeltaReps: string;
+  victoryReceiptLabel: string;
+  victoryPrsOne: string;
+  victoryPrsMany: string;
+  victoryPrBadge: string;
+  victoryReceiptSetsCaption: string;
+  victoryReceiptLoad: string;
+  victoryVsLast: string;
+  victorySecondaryMoveBecause: string;
+  victoryDuration: string;
   activeNoWorkout: string;
   activeNoWorkoutDesc: string;
   activeStartWorkout: string;
@@ -268,6 +280,18 @@ type ActiveWorkoutStrings = {
 };
 
 const en: ActiveWorkoutStrings = {
+  activeSetDropTip: 'Drop set — lighter follow-up; not a PR attempt',
+  victoryDeltaWeight: '{{signed}} {{unit}}',
+  victoryDeltaReps: '{{signed}} reps',
+  victoryReceiptLabel: 'This session',
+  victoryPrsOne: '1 PR',
+  victoryPrsMany: '{{count}} PRs',
+  victoryPrBadge: 'PR',
+  victoryReceiptSetsCaption: '{{name}} sets',
+  victoryReceiptLoad: 'Load',
+  victoryVsLast: 'vs last',
+  victorySecondaryMoveBecause: '{{flow}} — because you trained {{muscle}}',
+  victoryDuration: 'Duration',
   activeLiveSession: 'Live session',
   activeCoachSessionEyebrow: 'Mission Coach session',
   activeElapsed: 'Elapsed',

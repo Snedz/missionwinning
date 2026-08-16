@@ -11,6 +11,8 @@
  */
 
 type RewardsStrings = {
+  rewardRestTodayOn: string;
+  rewardRestToday: string;
   rewardProfileTitle: string;
   rewardProfileShelfHint: string;
   rewardProfileRank: string;
@@ -99,6 +101,8 @@ type RewardsStrings = {
 };
 
 const en: RewardsStrings = {
+  rewardRestTodayOn: 'Rest today is planned',
+  rewardRestToday: 'Rest today',
   athleteCardTitle: 'Your card',
   athleteCardPreviewEmpty: 'Log a session and the card fills from your record.',
   athleteCardEdit: 'Edit card',

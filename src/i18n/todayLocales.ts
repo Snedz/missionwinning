@@ -1,6 +1,8 @@
 /** Today screen UI copy — merged into i18n `common` namespace. */
 
 type TodayStrings = {
+  todayReentryOffLapsed: string;
+  todayReentryQuietLine: string;
   todayBasicEncouragement: string;
   todaySectionHealth: string;
   todaySectionHealthDesc: string;
@@ -287,6 +289,8 @@ type TodayStrings = {
 };
 
 const en: TodayStrings = {
+  todayReentryOffLapsed: 'A while off',
+  todayReentryQuietLine: "{{off}}. Here's the {{minutes}}-minute version.",
   todayBasicEncouragement:
     'One step at a time. Log a set — Mission Coach shapes the week from your history.',
   todaySectionHealth: 'Health scores',
@@ -769,6 +773,8 @@ const es: TodayStrings = {
 };
 
 const zh: TodayStrings = {
+  todayReentryOffLapsed: en.todayReentryOffLapsed,
+  todayReentryQuietLine: en.todayReentryQuietLine,
   todayCoachChipAction: '打开',
   todayHabitWeekCount: en.todayHabitWeekCount,
   todayWeekFailedTitle: en.todayWeekFailedTitle,
@@ -1037,6 +1043,8 @@ const zh: TodayStrings = {
 };
 
 const id: TodayStrings = {
+  todayReentryOffLapsed: en.todayReentryOffLapsed,
+  todayReentryQuietLine: en.todayReentryQuietLine,
   todayCoachChipAction: 'Buka',
   todayHabitWeekCount: en.todayHabitWeekCount,
   todayWeekFailedTitle: en.todayWeekFailedTitle,
@@ -1320,6 +1328,8 @@ const id: TodayStrings = {
 };
 
 const th: TodayStrings = {
+  todayReentryOffLapsed: en.todayReentryOffLapsed,
+  todayReentryQuietLine: en.todayReentryQuietLine,
   todayCoachChipAction: 'เปิด',
   todayHabitWeekCount: en.todayHabitWeekCount,
   todayWeekFailedTitle: en.todayWeekFailedTitle,
@@ -1593,6 +1603,8 @@ const th: TodayStrings = {
 };
 
 const ar: TodayStrings = {
+  todayReentryOffLapsed: en.todayReentryOffLapsed,
+  todayReentryQuietLine: en.todayReentryQuietLine,
   todayCoachChipAction: 'افتح',
   todayHabitWeekCount: en.todayHabitWeekCount,
   todayWeekFailedTitle: en.todayWeekFailedTitle,

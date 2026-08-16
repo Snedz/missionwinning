@@ -1,6 +1,8 @@
 /** Programs page filter chip labels + catalog — merged into i18n `common` namespace. */
 
 const PROGRAMS_EN: Record<string, string> = {
+  programsCoachPointer: 'Mission Coach writes the week from your logs.',
+  programsNotAStore: 'These cards are education outlines, not a second store.',
   programsEyebrow: 'Programs',
   programsCatalogIntro:
     'Specialist education outlines below. Free core tools live in Learn and the public guide. Super Bundle unlocks full premium depth.',

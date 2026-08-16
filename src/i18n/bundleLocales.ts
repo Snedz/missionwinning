@@ -3,6 +3,7 @@
 import { CONTENT_FLOORS } from '@/lib/contentFloors';
 
 type BundleStrings = {
+  unlockGetNotified: string;
   bundleBadge: string;
   bundleHeadline: string;
   bundleSubhead: string;
@@ -82,6 +83,7 @@ type BundleStrings = {
 };
 
 const en: BundleStrings = {
+  unlockGetNotified: 'Get notified',
   bundleBadge: 'Super Bundle',
   bundleHeadline: 'Mission Coach + depth. One honest price.',
   bundleSubhead:
