@@ -89,15 +89,27 @@ export function nowSections(queue: ParsedQueue): QueueSection[] {
 }
 
 /**
+ * An Idea Loop paste. The notes already said a harvest row is the other legal
+ * way off the 16-run; the counter has to see the same fact or pasting `IL-H-01`
+ * is a seventeenth letter.
+ */
+export function isHarvestRow(row: QueueRow): boolean {
+  return /^IL-/.test(row.id);
+}
+
+/**
  * Consecutive `Now` sections holding exactly one row, counted back from the last.
  * A section with two or more rows resets it — that is the whole point: batching is
- * the behaviour this rewards.
+ * the behaviour this rewards. A one-row harvest (`IL-*`) also closes the run:
+ * that is the exception the ratchet notes already named.
  */
 export function singleRowRun(queue: ParsedQueue): number {
   const sections = nowSections(queue);
   let run = 0;
   for (let i = sections.length - 1; i >= 0; i -= 1) {
-    if (sections[i].rows.length !== 1) break;
+    const rows = sections[i].rows;
+    if (rows.length !== 1) break;
+    if (rows[0] && isHarvestRow(rows[0])) break;
     run += 1;
   }
   return run;
