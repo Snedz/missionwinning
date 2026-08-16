@@ -316,24 +316,6 @@ const es: FitnessTestStrings = {
   teacherPrintReport: 'Imprimir informe',
 };
 
-const fr: FitnessTestStrings = {
-  ...en,
-  councilTitle: 'Mission fitness nationale',
-  councilBodyAspirational:
-    'Mission Winning s\'aligne sur les priorités nationales sport, fitness et nutrition — des outils gratuits pour aider les enfants à bouger.',
-  councilBodyPending:
-    'Mission Winning soutient le mouvement national pour restaurer la forme des jeunes — en avançant les priorités du Conseil.',
-  councilBodyMember:
-    'Mission Winning porte la mission du Conseil présidentiel du sport, du fitness et de la nutrition dans chaque foyer et école.',
-  americaHeroTitle: 'La force pour la prochaine génération',
-  americaHeroCouncilMember:
-    'Mission Winning soutient les priorités nationales de fitness avec des outils gratuits du Presidential Fitness Test.',
-  americaHeroCouncilPending:
-    'Mission Winning fait avancer les outils nationaux de fitness en coordination avec le leadership sportif jeunesse.',
-  schoolTitle: 'École et cours d\'EPS',
-  teacherDownloadCsv: 'Télécharger CSV',
-  teacherPrintReport: 'Imprimer le rapport',
-};
 
 const ja: FitnessTestStrings = {
   ...en,
@@ -393,7 +375,6 @@ const zh: FitnessTestStrings = {
 const FITNESS_TEST_LOCALES: Record<string, FitnessTestStrings> = {
   en,
   es,
-  fr,
   ja,
   de,
   zh,

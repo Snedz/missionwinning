@@ -51,7 +51,6 @@ const LOCALES: Partial<Record<string, Record<string, string>>> = {
   id: pack({ navExplore: 'Jelajah', exploreTitle: 'Jelajah' }),
   th: pack({ navExplore: 'สำรวจ', exploreTitle: 'สำรวจ' }),
   ar: pack({ navExplore: 'استكشف', exploreTitle: 'استكشف' }),
-  fr: pack({ navExplore: 'Explorer', exploreTitle: 'Explorer' }),
   de: pack({ navExplore: 'Entdecken', exploreTitle: 'Entdecken' }),
   it: pack({ navExplore: 'Esplora', exploreTitle: 'Esplora' }),
   pt: pack({ navExplore: 'Explorar', exploreTitle: 'Explorar' }),

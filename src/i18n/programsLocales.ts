@@ -130,20 +130,6 @@ function programsUi(
 const BY_LANG: Record<string, Record<string, string>> = {
   en: PROGRAMS_EN,
   es: PROGRAMS_ES,
-  fr: programsUi({
-    programsFilterGoal: 'Filtrer par objectif :',
-    programsFilterEquip: 'Équipement :',
-    programsGoalAll: 'Tous',
-    programsGoalHypertrophy: 'Hypertrophie',
-    programsGoalCorrective: 'Correctif',
-    programsGoalStrengthBusiness: 'Force/Business',
-    programsGoalConditioning: 'Conditionnement',
-    programsEquipBodyweight: 'Poids du corps/Minimal',
-    programsEquipGym: 'Salle/Barre',
-    programsWhatYouGet: 'Ce que vous obtenez',
-    programsBundleNote: 'Intro gratuite — complet dans Super Bundle',
-    programsDownloadSummary: 'Télécharger le résumé',
-  }),
   pt: programsUi({
     programsFilterGoal: 'Filtrar por objetivo:',
     programsFilterEquip: 'Equipamento:',

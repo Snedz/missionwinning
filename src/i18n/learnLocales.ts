@@ -162,15 +162,6 @@ const LOCALES: Partial<Record<string, LearnStrings>> = {
   id,
   th,
   ar,
-  fr: {
-    ...en,
-    learnSubtitleOpenBeta:
-      "{{count}} parcours éducatifs — fondations d'abord. Guide et cours spécialistes ouverts en bêta ouverte.",
-    learnSubtitleBrief:
-      "Parcours gratuits d'abord. Profondeur Guide et Bundle quand vous voulez.",
-    learnSubtitleBriefOpenBeta:
-      "Parcours gratuits d'abord. Profondeur du guide et des spécialistes quand vous voulez.",
-  },
   pt: {
     ...en,
     learnSubtitleOpenBeta:

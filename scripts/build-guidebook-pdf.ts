@@ -5,7 +5,7 @@
  * Prerequisites: app serving locally (or GUIDEBOOK_PDF_BASE_URL).
  *   npm run build && npm run start
  *   npm run build-guidebook-pdf
- *   GUIDEBOOK_PDF_LANGS=en,es,fr npm run build-guidebook-pdf
+ *   GUIDEBOOK_PDF_LANGS=en,es,pt npm run build-guidebook-pdf
  *   GUIDEBOOK_PDF_LANGS=all npm run build-guidebook-pdf
  *
  * Optional:

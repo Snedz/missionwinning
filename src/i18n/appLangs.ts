@@ -1,9 +1,10 @@
 /**
  * Canonical pack languages + first-class UI locales (BCP 47).
  *
- * APP_LANGS — 15 pack / i18n:parity / guidebook keys. Do not invent a second
+ * APP_LANGS — 14 pack / i18n:parity / guidebook keys. Do not invent a second
  * pack list. UI_LANGS — language picker + <html lang>. Country policy is
  * NOT here — import isHostedServiceSupportedCountry from supportedRegions.ts.
+ * French is not a pack or picker language — France is founder-excluded.
  *
  * Never split('-')[0] for zh-Hant / pt-PT / zh-Hans — that silently merges siblings.
  */
@@ -11,7 +12,6 @@
 export const APP_LANGS = [
   'en',
   'es',
-  'fr',
   'pt',
   'ru',
   'de',
@@ -29,7 +29,7 @@ export const APP_LANGS = [
 export type AppLang = (typeof APP_LANGS)[number];
 
 /**
- * Language picker + html lang. 40 BCP 47 rows. Siblings never merge.
+ * Language picker + html lang. 39 BCP 47 rows. Siblings never merge.
  * zh-Hans / pt-BR are picker tags; packs stay zh / pt.
  */
 export const UI_LANGS = [
@@ -56,7 +56,6 @@ export const UI_LANGS = [
   'es',
   'pt-BR',
   'pt-PT',
-  'fr',
   'de',
   'it',
   'nl',
@@ -130,7 +129,6 @@ export const UI_LANG_PICKER_LABELS: Record<UiLang, string> = {
   es: 'Español · Spanish',
   'pt-BR': 'Português (Brasil) · Portuguese (Brazil)',
   'pt-PT': 'Português (Portugal) · Portuguese (Portugal)',
-  fr: 'Français · French',
   de: 'Deutsch · German',
   it: 'Italiano · Italian',
   nl: 'Nederlands · Dutch',
@@ -153,7 +151,6 @@ export const UI_LANG_PICKER_LABELS: Record<UiLang, string> = {
 export const APP_LANG_NATIVE_NAMES: Record<AppLang, string> = {
   en: 'English',
   es: 'Español',
-  fr: 'Français',
   pt: 'Português',
   ru: 'Русский',
   de: 'Deutsch',
@@ -201,6 +198,7 @@ export function normalizeUiLang(code: string | undefined | null): UiLang {
   }
   if (lower === 'pt-pt') return 'pt-PT';
   if (lower === 'pt-br' || lower === 'pt') return 'pt-BR';
+  if (lower === 'fr' || lower.startsWith('fr-')) return 'en';
   if (lower === 'tl' || lower === 'fil') return 'fil';
   if (lower === 'nb' || lower === 'no' || lower.startsWith('nb-') || lower.startsWith('no-')) {
     return 'nb';

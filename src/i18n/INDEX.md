@@ -4,8 +4,10 @@
 
 ## Canonical languages
 
-[`appLangs.ts`](appLangs.ts) exports **`APP_LANGS`** (15):  
-`en es fr pt ru de it ko ja th vi hi zh id ar`
+[`appLangs.ts`](appLangs.ts) exports **`APP_LANGS`** (14):  
+`en es pt ru de it ko ja th vi hi zh id ar`
+
+French is not a pack or picker language — France is founder-excluded.
 
 Use this list everywhere (Profile, `/guide` locale select, export, CI). Do not invent parallel lang arrays.
 

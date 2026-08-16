@@ -14,8 +14,9 @@ import {
 } from '@/i18n/appLangs';
 
 describe('appLangs UI picker', () => {
-  it('keeps 15 pack langs and maps pt-BR to pt', () => {
-    assert.equal(APP_LANGS.length, 15);
+  it('keeps 14 pack langs, no French, and maps pt-BR to pt', () => {
+    assert.equal(APP_LANGS.length, 14);
+    assert.ok(!(APP_LANGS as readonly string[]).includes('fr'));
     assert.equal(normalizeAppLang('pt-BR'), 'pt');
     assert.equal(packLangForUi('pt-BR'), 'pt');
     assert.equal(packLangForUi('zh-Hans'), 'zh');
@@ -23,9 +24,10 @@ describe('appLangs UI picker', () => {
     assert.equal(packLangForUi('yue'), 'en');
   });
 
-  it('lists 40 picker rows and never merges siblings', () => {
-    assert.equal(UI_LANGS.length, 40);
-    assert.equal(new Set(UI_LANGS).size, 40);
+  it('lists 39 picker rows and never merges siblings', () => {
+    assert.equal(UI_LANGS.length, 39);
+    assert.equal(new Set(UI_LANGS).size, 39);
+    assert.ok(!(UI_LANGS as readonly string[]).includes('fr'));
     assert.equal(normalizeUiLang('zh-HK'), 'yue');
     assert.equal(normalizeUiLang('yue'), 'yue');
     assert.equal(normalizeUiLang('zh-TW'), 'zh-Hant');
@@ -35,6 +37,8 @@ describe('appLangs UI picker', () => {
     assert.equal(normalizeUiLang('pt'), 'pt-BR');
     assert.equal(normalizeUiLang('pt-PT'), 'pt-PT');
     assert.notEqual(normalizeUiLang('pt-BR'), normalizeUiLang('pt-PT'));
+    assert.equal(normalizeUiLang('fr'), 'en');
+    assert.equal(normalizeUiLang('fr-FR'), 'en');
     assert.equal(normalizeUiLang('tl'), 'fil');
     assert.equal(normalizeUiLang('iw'), 'he');
     assert.equal(normalizeUiLang('nb'), 'nb');

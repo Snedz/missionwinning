@@ -3,7 +3,7 @@
  * Full-site i18n parity gate.
  *
  * Default (CI): key-set for all namespaces + guidebook content must be translated
- * for every APP_LANG + beachhead (es/fr/pt) core namespaces under placeholder cap.
+ * for every APP_LANG + beachhead (es/pt) core namespaces under placeholder cap.
  *
  * Strict (I18N_PARITY_STRICT=1): every non-allowlisted key must differ from EN.
  *
@@ -54,7 +54,7 @@ function isGuidebookContentKey(key: string): boolean {
   );
 }
 
-const BEACHHEAD = ['es', 'fr', 'pt'] as const;
+const BEACHHEAD = ['es', 'pt'] as const;
 const CORE_NS = new Set([
   'nav',
   'welcome',

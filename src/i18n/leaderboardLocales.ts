@@ -130,18 +130,6 @@ const es: LeaderboardStrings = {
   lbBoardDawnsEarlyLight: 'Al amanecer',
 };
 
-const fr: LeaderboardStrings = {
-  ...en,
-  navLeaderboard: 'Classement',
-  leaderboardRankings: 'Classement',
-  leaderboardTitle: 'Classement',
-  leaderboardSubtitle:
-    'Comparez les opérateurs mondialement, par région, pays, locale ou escouade.',
-  leaderboardSync: 'Synchroniser',
-  lbScopeSquad: 'Escouade',
-  lbBoardUnderTheStars: 'Sous les étoiles',
-  lbBoardDawnsEarlyLight: 'À la première lumière',
-};
 
 const ja: LeaderboardStrings = {
   ...en,
@@ -218,7 +206,6 @@ const id: LeaderboardStrings = {
 export const LEADERBOARD_LOCALES: Record<string, LeaderboardStrings> = {
   en,
   es,
-  fr,
   ja,
   de,
   th,

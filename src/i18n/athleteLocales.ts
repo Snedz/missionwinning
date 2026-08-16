@@ -10,8 +10,8 @@
  *
  * Same English-first `Record<string, string>` shape as
  * [`notificationLocales`](./notificationLocales.ts): every language falls back to
- * `EN`, so a language can carry the lines that matter to it without a fifteen-way
- * pass blocking the wave. The beachhead languages (es/fr/pt) are translated here;
+ * `EN`, so a language can carry the lines that matter to it without a fourteen-way
+ * pass blocking the wave. The beachhead languages (es/pt) are translated here;
  * the rest inherit English until a translation pass reaches them, which
  * `i18n:parity` permits for a non-core namespace and reports rather than fails.
  *
@@ -258,54 +258,6 @@ const BY_LANG: Record<string, Record<string, string>> = {
     homeGymKitItem_dumbbells: 'Mancuernas',
     homeGymKitItem_pull_up_bar: 'Barra de dominadas',
     homeGymKitItem_floor: 'Suelo',
-  }),
-  fr: al({
-    athletePageTitle: 'Toi',
-    athletePageSubtitle: 'Écrit ici. Compté honnêtement. À toi, sur cet appareil.',
-    athletePageSettingsLink: 'Compte et réglages',
-    athleteIdentityTitle: 'Indicatif',
-    athleteIdentityNameLabel: 'Nom',
-    athleteIdentityNumber: 'Numéro',
-    athleteIdentityNumberNone: '—',
-    athleteIdentityHeroEmpty: 'Choisis un indicatif',
-    athleteIdentitySave: 'Enregistrer',
-    athleteIdentitySince: 'Ici à l’entraînement depuis le {{date}}',
-    athleteIdentityNoStart: 'Ta première séance enregistrée ouvre le relevé.',
-    athleteIdentitySaved: 'Enregistré sur cet appareil.',
-    athleteIdentityRejectEmpty: 'Choisis d’abord un indicatif.',
-    athleteIdentityRejectLong: 'Trop long — 24 caractères au maximum.',
-    athleteIdentityRejectReserved:
-      'Celui-là passe pour l’app ou son équipe. Choisis-en un qui soit le tien.',
-    athleteIdentityRejectLink: 'Pas de liens ni d’adresses dans un indicatif.',
-    athleteIdentityRejectUnsafe:
-      'Il contient des caractères qui cassent une liste partagée. Utilise lettres et chiffres.',
-    missionIdLabel: 'ID de mission',
-    careerLineTitle: 'Ton relevé',
-    careerSignature: '{{sessions}} séances · meilleure semaine {{bestWeek}} · {{days}} jours',
-    careerLineEmpty:
-      'Enregistre une séance et tout se remplit : séances, volume déplacé, exercices, ta meilleure semaine et jours d’entraînement.',
-    careerLineEmptyAction: 'Enregistrer une séance',
-    careerLineSessions: 'Séances',
-    careerLineVolume: 'Volume déplacé',
-    careerLineExercises: 'Exercices',
-    careerLineBestWeek: 'Meilleure semaine',
-    careerLineDays: 'Jours d’entraînement',
-    athleteTableEdit: 'Modifier le tableau',
-    accountEyebrow: 'Compte',
-    accountTitle: 'Réglages',
-    accountSubtitle:
-      'Connexion, unités, notifications et sauvegarde. Ta progression reste sur cet appareil sauf si tu te connectes.',
-    navAccount: 'Compte',
-    moreAccountDesc: 'Réglages, notifications, sauvegarde',
-    homeGymKitTitle: 'Kit de salle à la maison',
-    homeGymKitBody:
-      'Indique ce que tu as vraiment. Gratuit, reste sur cet appareil. Laisse tel quel si tu t’entraînes en salle complète.',
-    homeGymKitItem_barbell: 'Barre',
-    homeGymKitItem_rack: 'Rack',
-    homeGymKitItem_plates: 'Disques',
-    homeGymKitItem_dumbbells: 'Haltères',
-    homeGymKitItem_pull_up_bar: 'Barre de traction',
-    homeGymKitItem_floor: 'Sol',
   }),
   pt: al({
     athletePageTitle: 'Tu',

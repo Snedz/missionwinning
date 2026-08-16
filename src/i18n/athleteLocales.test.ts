@@ -85,7 +85,7 @@ test('every language carries the full English key set', () => {
   // property rather than trusting it, since a hand-written entry could replace
   // the spread and silently drop keys for one language.
   const en = Object.keys(athleteStringsFor('en')).sort();
-  for (const lang of ['en', 'es', 'fr', 'pt', 'de', 'ja']) {
+  for (const lang of ['en', 'es', 'pt', 'de', 'ja']) {
     const got = Object.keys(athleteStringsFor(lang)).sort();
     assert.deepEqual(got, en, `${lang} does not carry the full English key set`);
   }
@@ -93,7 +93,7 @@ test('every language carries the full English key set', () => {
 
 test('no catalogue value is empty', () => {
   const empty: string[] = [];
-  for (const lang of ['en', 'es', 'fr', 'pt']) {
+  for (const lang of ['en', 'es', 'pt']) {
     for (const [k, v] of Object.entries(athleteStringsFor(lang))) {
       if (!v || !v.trim()) empty.push(`${lang}.${k}`);
     }

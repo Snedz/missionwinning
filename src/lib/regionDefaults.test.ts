@@ -27,6 +27,9 @@ describe('regionDefaults', () => {
     assert.equal(languageForCountry('JP'), 'ja');
     assert.equal(languageForCountry('DE'), 'de');
     assert.equal(languageForCountry('SA'), 'ar');
+    assert.equal(languageForCountry('FR'), 'en');
+    assert.equal(languageForCountry('BE'), 'en');
+    assert.equal(languageForCountry('CH'), 'de');
   });
 
   it('builds defaults for a country', () => {

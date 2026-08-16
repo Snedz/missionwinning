@@ -91,16 +91,6 @@ function betaUi(partial: Partial<Record<string, string>>): Record<string, string
 const BY_LANG: Record<string, Record<string, string>> = {
   en: BETA_EN,
   es: BETA_ES,
-  fr: betaUi({
-    betaStep1Title: 'Débloquer l’accès',
-    betaStep2Title: 'Terminer le I-Day (≈2 min)',
-    betaStep3Title: 'Enregistrer votre première séance',
-    betaStep3Cta: 'Aller à Aujourd’hui',
-    betaStep4Title: 'Ouvrir Mission Coach',
-    betaStep4Cta: 'Ouvrir Mission Coach',
-    betaStep5Title: 'Se connecter (recommandé)',
-    betaStep5Cta: 'Profil & connexion',
-  }),
   pt: betaUi({
     betaStep1Title: 'Desbloquear acesso',
     betaStep2Title: 'Concluir o I-Day (≈2 min)',

@@ -1,7 +1,7 @@
 # GLOBAL_LOCALE_PLAN — first-visit language + country (`.737`)
 
-**Status:** frozen 2026-08-13 · **amended** 2026-08-13 (fuller first-wave list) · **amended** 2026-08-13 (geo-block is the country list)  
-**Ship:** `2026.07-unified.737`  
+**Status:** frozen 2026-08-13 · **amended** 2026-08-13 (fuller first-wave list) · **amended** 2026-08-13 (geo-block is the country list) · **amended** 2026-08-16 (no French — France is blocked)  
+**Ship:** `2026.07-unified.866`  
 **Excellence-Override:** founder-ordered global first-visit language + country; Hebrew + Cantonese first-class; fuller picker; country picker abides existing geo-block (RESULT unscored)
 
 This is the plan-then-build file for this ship. It does **not** replace [docs/PLAN.md](PLAN.md) (build phases A–I). Phase I4 in PLAN.md points here.
@@ -29,7 +29,7 @@ Open by founder choice (do not block): RU, BY, IL, US, JP, KR, TW, HK, CN, SG, I
 
 **Country picker:** only ISO codes where `isHostedServiceSupportedCountry` is true. If they pick or are detected as a blocked country, show existing `TERRITORY_BLOCK_MESSAGES`. Do not let them continue into hosted signup/checkout. Do not list France, Germany, UK, Canada, Indonesia, Saudi, Turkey, Ukraine, etc. as served.
 
-**Language ≠ country.** A person in the US may pick Arabic, French, German, Indonesian, Turkish. That is a locale preference. It does **not** mean we serve OIC or Europe. Never “Available in Saudi Arabia” or “Launching in France.”
+**Language ≠ country.** A person in the US may pick Arabic, German, Indonesian, Turkish. That is a locale preference. It does **not** mean we serve OIC or Europe. Never “Available in Saudi Arabia” or “Launching in France.” French is not offered — France is founder-excluded.
 
 Detected blocked country: geo-block wins for hosted service even if they picked Hebrew or Korean. Free logger stays usable.
 
@@ -50,15 +50,15 @@ Honest copy: global product with commercial exclusions — not “available ever
 | SE Asia | `th` `vi` `id` `ms` `fil` |
 | South Asia | `hi` `bn` `ta` `te` `ur` (ur is RTL) |
 | West / Central Asia | `ar` (RTL) `he` (RTL) `fa` (RTL) `tr` |
-| Europe | `es` `pt-BR` `pt-PT` `fr` `de` `it` `nl` `pl` `uk` `ru` `cs` `ro` `el` `sv` `da` `nb` `fi` `hu` |
+| Europe | `es` `pt-BR` `pt-PT` `de` `it` `nl` `pl` `uk` `ru` `cs` `ro` `el` `sv` `da` `nb` `fi` `hu` |
 | Africa | `sw` `am` |
 | Americas | covered by `es` / `pt-BR` / `en` |
 
-**40 language-picker rows.** Honest copy may say 40 languages — never “50” unless 50 complete wedge locales actually ship. Language count is not a served-country count.
+**39 language-picker rows.** Honest copy may say 39 languages — never “50” unless 50 complete wedge locales actually ship. Language count is not a served-country count.
 
-Wedge + chrome + picker + legal chrome + `<html lang>` / `dir` are **complete (not English-fallback)** for served-market languages first: `en ja ko zh-Hans zh-Hant yue he es pt-BR hi bn ta te th vi fil ru` (plus `sw` / `am` — KE / ET are served). Diaspora locales (`ar fa ur id ms tr de fr …`) stay in the **language** picker as preferences, labeled as language not as a served market. English-fallback is allowed **only** for Super Bundle / Learn / guidebook body. [LOCALES.md](LOCALES.md) says so honestly.
+Wedge + chrome + picker + legal chrome + `<html lang>` / `dir` are **complete (not English-fallback)** for served-market languages first: `en ja ko zh-Hans zh-Hant yue he es pt-BR hi bn ta te th vi fil ru` (plus `sw` / `am` — KE / ET are served). Diaspora locales (`ar fa ur id ms tr de …`) stay in the **language** picker as preferences, labeled as language not as a served market. `fr` is not a picker or pack language. English-fallback is allowed **only** for Super Bundle / Learn / guidebook body. [LOCALES.md](LOCALES.md) says so honestly.
 
-`APP_LANGS` stays the 15 pack / `i18n:parity` / guidebook key set. Picker tags live in `UI_LANGS`. Pack aliases: `zh-Hans` → pack `zh`; `pt-BR` → pack `pt`. `pt-PT` is its own overlay (not Brazilian). `zh-Hant` / `yue` start from English + overlay (not from `zh`).
+`APP_LANGS` stays the 14 pack / `i18n:parity` / guidebook key set. Picker tags live in `UI_LANGS`. Pack aliases: `zh-Hans` → pack `zh`; `pt-BR` → pack `pt`. `pt-PT` is its own overlay (not Brazilian). `zh-Hant` / `yue` start from English + overlay (not from `zh`).
 
 RTL: `ar` `he` `fa` `ur` set `<html dir="rtl">` and use logical CSS. Logger table must stay usable.
 
@@ -67,7 +67,7 @@ RTL: `ar` `he` `fa` `ur` set `<html dir="rtl">` and use logical CSS. Logger tabl
 ## What already exists (do not rebuild)
 
 - Custom i18next (`src/i18n.ts`) + `*Locales.ts` + `packs/{lang}.json`. Not next-intl.
-- 15 pack langs: `en es fr pt ru de it ko ja th vi hi zh id ar`.
+- 14 pack langs: `en es pt ru de it ko ja th vi hi zh id ar`.
 - `HtmlLangSync` sets `lang` + `dir`.
 - `RegionDefaultsBoot` **silently** applies `/api/geo` language — replace with a visible chooser. Geo country remains a **hint**; it must not silently change language.
 - `ProfileLanguageSwitcher` + `/guide` locale select (guide stays pack langs).
@@ -82,8 +82,8 @@ RTL: `ar` `he` `fa` `ur` set `<html dir="rtl">` and use logical CSS. Logger tabl
 
 ### 1. Locale model
 
-- `APP_LANGS` — unchanged 15.
-- `UI_LANGS` — the 40 BCP 47 tags above (language picker + html).
+- `APP_LANGS` — 14 pack langs (French removed `.866`).
+- `UI_LANGS` — the 39 BCP 47 tags above (language picker + html).
 - `normalizeUiLang` / `packLangForUi` — never `split('-')[0]` for `zh-Hant`, `pt-PT`, `zh-Hans`.
 - `htmlLangTag` / `isRtlLang` — `ar he fa ur` → `dir=rtl`.
 - `firstClassLocales.ts` — complete wedge/chrome overlay for every `UI_LANGS` row we can translate well.
@@ -92,7 +92,7 @@ RTL: `ar` `he` `fa` `ur` set `<html dir="rtl">` and use logical CSS. Logger tabl
 
 - Compact `AdaptiveOverlay` on marketing **and** app shell. Product stays visible. One tap Continue (dismiss = accept preselect).
 - Language + country, **independent**.
-- Language list: all 40 `UI_LANGS`.
+- Language list: all 39 `UI_LANGS`.
 - Country list: `servedCountryCodes()` = ISO 3166-1 filtered by `isHostedServiceSupportedCountry`. No parallel block list.
 - Pre-select: saved cookie/storage → `?hl=` → `navigator.languages` → timezone hint → `/api/geo` (hint only).
 - If detected/picked country is blocked: show `TERRITORY_BLOCK_MESSAGES`; persist language; persist the blocked country so hosted signup/checkout stays blocked; free logger still works. Do not offer a served-country override that pretends geo-block lost.

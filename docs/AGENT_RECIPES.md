@@ -107,7 +107,7 @@ Define `yourSchema` in `apiSchemas.ts` with max string lengths.
 6. Brand / proper nouns that stay identical: add to `scripts/i18n-allowlist.json`
 7. **Do not** use `src/locales/`
 
-Canonical langs: [`src/i18n/appLangs.ts`](../src/i18n/appLangs.ts) (`APP_LANGS`, 15 languages).
+Canonical langs: [`src/i18n/appLangs.ts`](../src/i18n/appLangs.ts) (`APP_LANGS`, 14 languages). French is not a pack language — France is founder-excluded.
 
 ---
 

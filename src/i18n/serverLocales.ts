@@ -39,15 +39,6 @@ const BY_LANG: Record<string, Record<string, string>> = {
     serverPresenceAway: 'Ausente',
     serverPresenceOffline: 'Desconectado',
   },
-  fr: {
-    ...SERVER_EN,
-    navServer: 'Messagerie',
-    serverSend: 'Envoyer',
-    serverMemberSelf: 'Toi',
-    serverPresenceAvailable: 'Disponible',
-    serverPresenceAway: 'Absent',
-    serverPresenceOffline: 'Hors ligne',
-  },
   pt: {
     ...SERVER_EN,
     navServer: 'Mensageiro',

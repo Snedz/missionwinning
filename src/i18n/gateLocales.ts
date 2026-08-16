@@ -32,28 +32,6 @@ const GATE_ES: Record<string, string> = {
   gateFooterTagline: 'núcleo gratis para siempre',
 };
 
-const GATE_FR: Record<string, string> = {
-  ...GATE_EN,
-  gateEyebrow: 'Bêta gratuite',
-  gateTitle1: 'Entraînez-vous partout.',
-  gateTitle2: 'Gagnez chaque jour.',
-  gateSubtitle:
-    'Journal offline gratuit + Mission Coach depuis vos logs (sans wearable). Outils complets gratuits pour les invités ; le logger reste gratuit pour toujours.',
-  gateLogASet: 'Enregistrer une série',
-  gateWaitlistTitle: 'Demander une invitation',
-  gateWaitlistSubmit: 'Me prévenir',
-  gateWaitlistSubmitting: 'Inscription…',
-  gateWaitlistDone: 'Vous êtes sur la liste.',
-  gateAccessSummary: 'Vous avez un code d’accès bêta ?',
-  gateAccessLabel: 'Code d’accès',
-  gateAccessPlaceholder: 'Code de votre invitation',
-  gateAccessSubmit: 'Entrer dans la bêta',
-  gateAccessChecking: 'Vérification…',
-  offlineEyebrow: 'Hors ligne',
-  offlineTitle: 'Hors ligne — toujours en mission.',
-  offlineCta: 'Ouvrir Aujourd’hui',
-  gateFooterTagline: 'cœur gratuit pour toujours',
-};
 
 const GATE_PT: Record<string, string> = {
   ...GATE_EN,
@@ -253,7 +231,6 @@ const GATE_AR: Record<string, string> = {
 const BY_LANG: Record<string, Record<string, string>> = {
   en: GATE_EN,
   es: GATE_ES,
-  fr: GATE_FR,
   pt: GATE_PT,
   de: GATE_DE,
   it: GATE_IT,

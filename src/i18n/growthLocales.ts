@@ -86,22 +86,6 @@ const de: GrowthStrings = {
   growthShareFailed: 'Teilen fehlgeschlagen',
 };
 
-const fr: GrowthStrings = {
-  ...en,
-  growthReferralTitle: 'Inviter un ami',
-  growthReferralDesc:
-    'Partagez votre code. Quand quelqu’un commence le parcours gratuit avec, la mission grandit. Reconnaissance seulement — pas de récompenses payantes pour l’instant.',
-  growthReferralInvite: 'Inviter un ami',
-  growthReferralCode: 'Votre code',
-  growthReferralCount: '{{count}} recrutés',
-  growthReferralSignIn: 'Se connecter',
-  growthReferralSignInHint: 'Connectez-vous pour obtenir votre code d’invitation.',
-  growthRecognition3: 'Recruteur',
-  growthRecognition10: 'Recruteur de terrain',
-  growthRecognition25: 'Recruteur de mission',
-  growthShareCopied: 'Lien copié',
-  growthShareFailed: 'Partage impossible',
-};
 
 // Batch C — full records (LLM-drafted)
 const it: GrowthStrings = {
@@ -238,7 +222,6 @@ const BY_LANG: Record<string, GrowthStrings> = {
   es,
   pt,
   de,
-  fr,
   it,
   ru,
   ko,

@@ -85,10 +85,10 @@ const NOTIFICATION_EN: Record<string, string> = {
   profileSetupHint: 'Answer a few questions so sessions match your gear (~2 minutes).',
   changeLanguage: 'Change language',
   /**
-   * `.765` — the picker lists Français, Deutsch, Italiano, العربية and Bahasa
-   * Indonesia, whose largest markets are all on the hosted block list. Offering
-   * a language is not a claim to serve a country, and the picker was the one
-   * place that read as though it were.
+   * `.765` — the picker lists Deutsch, Italiano, العربية and Bahasa Indonesia,
+   * whose largest markets are all on the hosted block list. Offering a language
+   * is not a claim to serve a country, and the picker was the one place that
+   * read as though it were. French is not listed — France is founder-excluded.
    */
   languageNotAvailability:
     'Choosing a language does not change where the hosted service is offered.',
@@ -248,17 +248,6 @@ const BY_LANG: Record<string, Record<string, string>> = {
     windDownAsk: '¿Quieres un aviso en tardes como esta?',
     windDownEnable: 'Activar notas de la tarde',
     windDownNotNow: 'Ahora no',
-  }),
-  fr: nl({
-    remindersPushDesc:
-      'Sur cet appareil uniquement — l’abonnement est lié à ce navigateur, pas à votre compte.',
-    remindersKindsLabel: 'Ce que cet appareil recevra',
-    remindersKindComeback: 'Si vous disparaissez : un message, à votre rythme et non à date fixe.',
-    remindersKindWindDown: 'Après une séance plus dure que d’habitude : une note le soir.',
-    remindersKindWeekRecap: 'Un bilan à la fin de votre première semaine, avec ce que vous avez enregistré.',
-    windDownAsk: 'Un mot les soirs comme celui-ci ?',
-    windDownEnable: 'Activer les notes du soir',
-    windDownNotNow: 'Pas maintenant',
   }),
   pt: nl({
     remindersPushDesc:

@@ -21,7 +21,7 @@ describe('deployReadiness', () => {
     // `.243` 30→31 with `notification` (450→465). `.281` 31→32 with `whatsNew`
     // (465→480). 32→33 with `rewards` (480→495): the rewards surface shipped in
     // `.505`–`.543` and its pack never landed, so 17 keys resolved to no
-    // catalogue and rendered English in all 15 languages — this assertion is
+    // catalogue and rendered English in all 14 languages — this assertion is
     // what a namespace *arriving* looks like. Pinned rather than derived on
     // purpose: a namespace silently dropping out of the export plan is how a
     // language loses a screen, and a test that recomputed the number from the
@@ -34,7 +34,8 @@ describe('deployReadiness', () => {
     // `rewardsKeyParity.test.ts` proves the pack is complete.
     // `.742` 34→35 with `places` (510→525): Explore pin-board + place-dex.
     // `.766` 35→36 with `server` messenger (525→540).
-    assert.equal(r.localeFiles, 540);
+    // `.866` 540→504: French dropped (36 namespaces × 14 pack langs).
+    assert.equal(r.localeFiles, 504);
     assert.equal(r.localeNamespaces, 36);
     assert.ok(r.minTodayKeys >= 100);
     assert.equal(r.target, 'ci');

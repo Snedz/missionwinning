@@ -83,17 +83,6 @@ function fb(partial: Partial<Record<string, string>>): Record<string, string> {
 const BY_LANG: Record<string, Record<string, string>> = {
   en: FEEDBACK_EN,
   es: FEEDBACK_ES,
-  fr: fb({
-    feedbackNameLabel: 'Nom complet (facultatif)',
-    feedbackEmailLabel: 'E-mail (suivi)',
-    feedbackResultsLabel: 'Résultats clés jusqu’ici',
-    feedbackTestimonialLabel: 'Votre témoignage',
-    feedbackRatingLabel: 'Notez vos résultats (1–5)',
-    feedbackActionLabel: 'Plus grande action prise',
-    feedbackSubmit: 'Envoyer le feedback',
-    feedbackSubmitting: 'Envoi…',
-    feedbackBackToday: 'Retour à Aujourd’hui',
-  }),
   pt: fb({
     feedbackNameLabel: 'Nome completo (opcional)',
     feedbackEmailLabel: 'E-mail (para retorno)',
