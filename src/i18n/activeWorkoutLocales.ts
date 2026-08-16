@@ -115,6 +115,8 @@ type ActiveWorkoutStrings = {
   victoryTitle: string;
   victoryScoutCue: string;
   victoryVolume: string;
+  /** Unit when Victory volume is working reps (bodyweight session). */
+  victoryRepsUnit: string;
   victorySets: string;
   victoryFeelSaved: string;
   victoryFeelPrompt: string;
@@ -369,6 +371,7 @@ const en: ActiveWorkoutStrings = {
   victoryTitle: 'Session locked',
   victoryScoutCue: 'Session saved.',
   victoryVolume: 'Volume',
+  victoryRepsUnit: 'reps',
   victorySets: 'Sets',
   victoryFeelSaved: 'Saved for readiness.',
   victoryFeelPrompt: 'How do you feel after this session?',

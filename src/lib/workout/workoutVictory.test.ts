@@ -9,6 +9,8 @@ import {
   pickVictoryNextAction,
   shouldShowVictoryBackTodaySecondary,
   summarizeWorkoutVictory,
+  victoryVolumeStat,
+  workingRepsTowardVolume,
 } from './workoutVictory.ts';
 import type { CompletedWorkoutLog } from '@/types';
 import fs from 'node:fs';
@@ -297,6 +299,32 @@ describe('summarizeWorkoutVictory', () => {
     assert.equal(s.exerciseCount, 2);
     assert.equal(s.streak, 3);
     assert.equal(s.workoutName, 'Push');
+    assert.deepEqual(s.volumeStat, { value: 5000, unit: 'load' });
+  });
+
+  it('prints working reps when volume is 0 (bodyweight session) (.878)', () => {
+    const log: CompletedWorkoutLog = {
+      id: '1',
+      workoutName: 'Just Go — Chest',
+      startedAt: '2026-07-01T10:00:00Z',
+      completedAt: '2026-07-01T10:01:00Z',
+      durationSeconds: 33,
+      totalVolume: 0,
+      exercises: [
+        {
+          exerciseId: 'push-up',
+          sets: [
+            { reps: 8, weight: 0, kind: 'warmup' },
+            { reps: 8, weight: 0 },
+          ],
+        },
+      ],
+    };
+    assert.equal(workingRepsTowardVolume(log), 8);
+    assert.deepEqual(victoryVolumeStat(0, 8), { value: 8, unit: 'reps' });
+    assert.deepEqual(summarizeWorkoutVictory(log, 0).volumeStat, { value: 8, unit: 'reps' });
+    assert.deepEqual(victoryVolumeStat(500, 13), { value: 500, unit: 'load' });
+    assert.deepEqual(victoryVolumeStat(0, 0), { value: 0, unit: 'load' });
   });
 
   it('attaches working-set muscles for the Move seam', () => {

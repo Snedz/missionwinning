@@ -8,6 +8,7 @@
 
 import { useTranslation } from 'react-i18next';
 import { formatDuration } from '@/lib/utils';
+import type { VictoryVolumeStat } from '@/lib/workout/workoutVictory';
 import type { VictorySessionCompare } from '@/lib/workout/victoryReceipt';
 import {
   formatReceiptDurationDelta,
@@ -15,7 +16,7 @@ import {
 } from '@/lib/workout/victoryReceipt';
 
 type Props = {
-  totalVolume: number;
+  volumeStat: VictoryVolumeStat;
   setCount: number;
   durationSeconds: number;
   unitLabel: string;
@@ -33,7 +34,7 @@ function VsLastLine({ children }: { children: string | null }) {
 }
 
 export function VictoryStatsStrip({
-  totalVolume,
+  volumeStat,
   setCount,
   durationSeconds,
   unitLabel,
@@ -42,13 +43,17 @@ export function VictoryStatsStrip({
 }: Props) {
   const { t } = useTranslation();
   const vs = t('victoryVsLast', { defaultValue: 'vs last' });
+  const volumeUnit =
+    volumeStat.unit === 'reps'
+      ? t('victoryRepsUnit', { defaultValue: 'reps' })
+      : unitLabel;
 
   const durationDelta =
     vsLast && vsLast.durationDelta !== 0
       ? `${formatReceiptDurationDelta(vsLast.durationDelta)} ${vs}`
       : null;
   const volumeDelta =
-    vsLast && vsLast.volumeDelta !== 0
+    volumeStat.unit === 'load' && vsLast && vsLast.volumeDelta !== 0
       ? `${formatReceiptSigned(vsLast.volumeDelta)} ${unitLabel} ${vs}`
       : null;
   const setsDelta =
@@ -72,8 +77,8 @@ export function VictoryStatsStrip({
           {t('victoryVolume', { defaultValue: 'Volume' })}
         </p>
         <p className="text-xl font-semibold tabular-nums text-foreground">
-          {formatVolume(totalVolume)}
-          <span className="ms-1 text-xs font-semibold text-muted-foreground">{unitLabel}</span>
+          {formatVolume(volumeStat.value)}{' '}
+          <span className="text-xs font-semibold text-muted-foreground">{volumeUnit}</span>
         </p>
         <VsLastLine>{volumeDelta}</VsLastLine>
       </div>

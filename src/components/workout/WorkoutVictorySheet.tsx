@@ -115,13 +115,17 @@ export function WorkoutVictorySheet({
 
   if (!summary) return null;
 
+  const volumeUnit =
+    summary.volumeStat.unit === 'reps'
+      ? t('victoryRepsUnit', { defaultValue: 'reps' })
+      : unitLabel;
   const shareText = t('victoryShareText', {
     name: summary.workoutName,
-    volume: fmt.num(summary.totalVolume),
-    unit: unitLabel,
+    volume: fmt.num(summary.volumeStat.value),
+    unit: volumeUnit,
     sets: summary.setCount,
     streak: summary.streak,
-    defaultValue: `Session done: ${summary.workoutName} — ${fmt.num(summary.totalVolume)} ${unitLabel}, ${summary.setCount} sets${summary.streak > 0 ? `, ${summary.streak}-day streak` : ''}.`,
+    defaultValue: `Session done: ${summary.workoutName} — ${fmt.num(summary.volumeStat.value)} ${volumeUnit}, ${summary.setCount} sets${summary.streak > 0 ? `, ${summary.streak}-day streak` : ''}.`,
   });
 
   /**
@@ -278,7 +282,7 @@ export function WorkoutVictorySheet({
         </DialogHeader>
 
         <VictoryStatsStrip
-          totalVolume={summary.totalVolume}
+          volumeStat={summary.volumeStat}
           setCount={summary.setCount}
           durationSeconds={summary.durationSeconds}
           unitLabel={unitLabel}

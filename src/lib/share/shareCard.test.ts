@@ -14,6 +14,7 @@ import type { WeeklyDebrief } from '@/lib/weeklyDebrief';
 const SUMMARY: WorkoutVictorySummary = {
   workoutName: 'Push Day',
   totalVolume: 5200,
+  volumeStat: { value: 5200, unit: 'load' },
   durationSeconds: 3900,
   setCount: 18,
   exerciseCount: 5,
@@ -57,6 +58,16 @@ describe('shareCard data builders', () => {
       card.stats.map((s) => s.value),
       ['5,200 kg', '18', '1h 5m', '4 days']
     );
+  });
+
+  it('bodyweight victory card prints reps, not 0 kg (.878)', () => {
+    const card = buildVictoryCardData(
+      { ...SUMMARY, totalVolume: 0, volumeStat: { value: 8, unit: 'reps' }, setCount: 1 },
+      [],
+      'kg'
+    );
+    assert.ok(card.stats.some((s) => s.label === 'Volume' && s.value === '8 reps'));
+    assert.ok(!card.stats.some((s) => /0 kg/.test(s.value)));
   });
 
   it('a one-day streak is not a streak worth printing', () => {

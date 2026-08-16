@@ -123,7 +123,12 @@ export function buildVictoryCardData(
   unitLabel: string
 ): ShareCardData {
   const stats: ShareCardStat[] = [
-    { label: 'Volume', value: `${formatLocalNumber(summary.totalVolume, EN_ONLY_SURFACE)} ${unitLabel}` },
+    {
+      label: 'Volume',
+      value: `${formatLocalNumber(summary.volumeStat.value, EN_ONLY_SURFACE)} ${
+        summary.volumeStat.unit === 'reps' ? 'reps' : unitLabel
+      }`,
+    },
     { label: 'Sets', value: String(summary.setCount) },
     { label: 'Time', value: formatDuration(summary.durationSeconds) },
   ];

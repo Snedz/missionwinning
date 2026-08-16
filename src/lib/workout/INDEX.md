@@ -17,7 +17,7 @@ Root-level `@/lib/{name}` paths re-export from here for compatibility — prefer
 6. `workoutTemplate.ts` — template → logged sets  
 7. `workoutPr.ts` — personal record detection  
 8. `workoutMerge.ts` — local/cloud history fingerprint merge  
-9. `workoutVictory.ts` — post-workout summary; early/no-plan → Mission Coach; freestyle progression skipped when prescribed (`.410`); one-exit secondary Today helper (`.422`); vs-last `receipt` from `victoryReceipt.ts` (`.713` / merge-all)
+9. `workoutVictory.ts` — post-workout summary; early/no-plan → Mission Coach; freestyle progression skipped when prescribed (`.410`); one-exit secondary Today helper (`.422`); vs-last `receipt` from `victoryReceipt.ts` (`.713` / merge-all); BW volume is working reps not 0 kg (`.878`)
 9b. `victoryReceipt.ts` — vs-last session totals + per-lift rows for Victory (`.713`)  
 10. `activeWorkoutHelpers.ts` — next incomplete set, last session, set stats, `buildConsoleSet` / `planApplyTargets` / `resolveActiveSetDial` (`.297`/`.303`)  
 10a. `repeatLastSession.ts` — last completed log → startWorkout template (`.717`); wraps `historyRetrain.templateFromCompletedLog`  

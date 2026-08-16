@@ -3,6 +3,7 @@ import type { UnitsPref } from '@/lib/units';
 import { weightStep, weightUnitLabel } from '@/lib/units';
 import { suggestNextSetTarget } from '@/lib/workout/nextSetTargets';
 import { sessionIsCoachPrescribed } from '@/lib/workout/activeWorkoutHelpers';
+import { countsTowardVolume } from '@/lib/workout/setKind';
 import { getExerciseById } from '@/data/exercises';
 import type { FieldTestReceipt } from '@/lib/workout/fieldTestReceipt';
 import type { VictoryReceipt } from '@/lib/workout/victoryReceipt';
@@ -39,6 +40,12 @@ export type ProgressionInsight = {
   weight: number;
 };
 
+/** Loaded kg/lb, or working reps when every countable set was bodyweight. */
+export type VictoryVolumeStat = {
+  value: number;
+  unit: 'load' | 'reps';
+};
+
 export interface WorkoutVictorySummary {
   workoutName: string;
   totalVolume: number;
@@ -58,6 +65,24 @@ export interface WorkoutVictorySummary {
   workingMuscleGroups?: string[][];
   /** Vs-last receipt from local logs — instant, offline, free (.713). */
   receipt?: VictoryReceipt;
+  /**
+   * What the Volume cell should print. Load×reps when anything was loaded;
+   * working reps when the session was bodyweight (0 kg is a lie).
+   */
+  volumeStat: VictoryVolumeStat;
+}
+
+export function workingRepsTowardVolume(log: CompletedWorkoutLog): number {
+  return log.exercises
+    .flatMap((e) => e.sets)
+    .filter((s) => countsTowardVolume(s.kind))
+    .reduce((sum, s) => sum + (Number(s.reps) || 0), 0);
+}
+
+export function victoryVolumeStat(totalVolume: number, workingReps: number): VictoryVolumeStat {
+  if (totalVolume > 0) return { value: totalVolume, unit: 'load' };
+  if (workingReps > 0) return { value: workingReps, unit: 'reps' };
+  return { value: 0, unit: 'load' };
 }
 
 /** Rank working sets: load×reps when loaded; reps alone when bodyweight. */
@@ -205,6 +230,7 @@ export function summarizeWorkoutVictory(
   return {
     workoutName: log.workoutName,
     totalVolume: log.totalVolume,
+    volumeStat: victoryVolumeStat(log.totalVolume, workingRepsTowardVolume(log)),
     durationSeconds: log.durationSeconds,
     setCount,
     exerciseCount: log.exercises.length,
