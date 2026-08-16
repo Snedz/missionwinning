@@ -2,7 +2,7 @@
 
 **Audience:** Founder + the next Hermes / Grok Build / graph agent  
 **Lane:** Engineering-Web (unless a loop says Android)  
-**Status:** ACTIVE 2026-08-16 · web `2026.07-unified.871` · Alpha 0.1.0 · **AL1 done — GNT-1 `ready-for-founder` · AM1 done — GNT-2 `ready-for-founder` · AN–AT done — `IL-H-07` `.865` · founder no-French `.866` · W1 I-Day → `/log` `.867` · hop contract `.868` · process `/harness` `.869` · empty queue → Horizon W path `.870` · `/harness` pastes harvest `.871`**  
+**Status:** ACTIVE 2026-08-16 · web `2026.07-unified.871` · Alpha 0.1.0 · **AL1 done — GNT-1 `ready-for-founder` · AM1 done — GNT-2 `ready-for-founder` · AN–AT done — `IL-H-07` `.865` · founder no-French `.866` · W1 I-Day → `/log` `.867` · hop contract `.868` · process `/harness` `.869` · empty queue → Horizon W path `.870` · `/harness` pastes harvest `.871` · AU open — `IL-H-15`**  
 **Does not replace:** [ORCHESTRATION.md](../ORCHESTRATION.md) (what may be built) · [CONTEXT.md](../CONTEXT.md) `## Now` (where we are) · [vision.md](../vision.md) (constitution) · [docs/THESIS.md](THESIS.md) (wedge) · [docs/PLAN.md](PLAN.md) (phases A–I)
 
 This file is the **execution queue** for the agent graph: one concern per loop, spawn, ship, mark done, spawn the next. It is not a second status block and not a license to skip standing hard bans.
@@ -527,6 +527,16 @@ Not AS2. Next `idea:next` pick. One `IL-` row.
 | **IL-H-07** | The first session back scales with sessions missed, not days elapsed | [H-07](mechanics/hypotheses/H-07-dose-follows-missed-sessions.md) | `done` — `.865` this PR. Stored miss count sets dose; no plan keeps calendar scale |
 
 D4 stays hold. Do not invent AT2.
+
+### Now — AU (harvest · 2026-08-16)
+
+Not AT2. Next `idea:next` pick. One `IL-` row.
+
+| # | Loop | Moves | Status |
+|---|------|-------|--------|
+| **IL-H-15** | The next lift stays off screen until the current set is logged | [H-15](mechanics/hypotheses/H-15-withhold-next-lift-until-set.md) | `open` |
+
+D4 stays hold. Do not invent AU2.
 
 ### After H0 (orientation — not open until H0-1…H0-7 are done or `founder`)
 
