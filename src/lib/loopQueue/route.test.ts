@@ -15,7 +15,7 @@ import { mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'nod
 import { tmpdir } from 'node:os';
 import path from 'node:path';
 import { parseQueue, type ParsedQueue } from './parse.ts';
-import { MAX_SINGLE_ROW_RUN, isCampaign, nowSections, readWorkbench, route, singleRowRun, type Role } from './route.ts';
+import { MAX_SINGLE_ROW_RUN, isCampaign, isHarvestRow, nowSections, readWorkbench, route, singleRowRun, type Role } from './route.ts';
 
 const root = path.join(import.meta.dirname, '..', '..', '..');
 const source = () => readFileSync(path.join(root, 'docs/GRAPH_LOOP.md'), 'utf8');
@@ -28,10 +28,11 @@ const sliceSections = (q: ParsedQueue, keep: ParsedQueue['sections']): ParsedQue
   problems: [],
 });
 
-/** Inject a Now section just before After H0 so fixtures sit on the real file. */
+/** Inject a Now section ahead of the live harvest row (or After H0 if none). */
 function injectNow(src: string, rows: string): string {
-  const at = src.indexOf('\n### After H0');
-  assert.ok(at > 0, 'the queue no longer ends with `### After H0`; re-anchor this helper');
+  const an = src.indexOf('\n### Now — AN');
+  const at = an > 0 ? an : src.indexOf('\n### After H0');
+  assert.ok(at > 0, 'cannot find an insert point for a Now fixture');
   return (
     src.slice(0, at) +
     '\n\n### Now — TEST\n\n| # | Loop | Moves | Status |\n|---|---|---|---|\n' +
@@ -44,20 +45,19 @@ function injectNow(src: string, rows: string): string {
  * The live ticket                                                     *
  * ------------------------------------------------------------------ */
 
-test('the committed queue has no Now-open row and routes to a harvest', () => {
+test('the committed queue live ticket is the harvest paste IL-H-01', () => {
   const q = real();
   const open = nowSections(q).flatMap((s) => s.rows).filter((x) => x.status === 'open');
-  assert.equal(
-    open.length,
-    0,
-    `Now still has open ${open.map((x) => x.id).join(', ')} — this pin is the empty-queue case`
+  assert.deepEqual(
+    open.map((x) => x.id),
+    ['IL-H-01'],
+    `Now open ${open.map((x) => x.id).join(', ') || '(none)'} — expected the pasted harvest row`
   );
   const r = route(root, q);
-  assert.equal(r.kind, 'harvest');
-  assert.equal(r.recipe, 13);
-  assert.equal(r.row, null);
-  assert.match(r.notes.join(' '), /the honest next step is a new idea/);
-  assert.equal(r.atRatchet, true);
+  assert.equal(r.kind, 'build');
+  assert.equal(r.recipe, 11);
+  assert.equal(r.row?.id, 'IL-H-01');
+  assert.equal(r.atRatchet, false, 'an IL- section must close the 16-run, not extend it');
 });
 
 test('an injected Now-open row is the live ticket', () => {
@@ -256,17 +256,30 @@ test('the committed queue is at or under the single-row ratchet', () => {
   );
 });
 
-test('a seventeenth one-row section breaks the ratchet', () => {
+test('a one-row letter after a harvest starts a new run of one, not 17', () => {
   const src = source();
   const at = src.indexOf('\n### After H0');
   assert.ok(at > 0, 'the queue no longer ends with `### After H0`; re-anchor this test');
   const added =
     src.slice(0, at) +
-    '\n\n### Now — AN (t)\n\n| # | Loop | Moves | Status |\n|---|---|---|---|\n| **AN1** | another letter | x | `open` |\n' +
+    '\n\n### Now — AO (t)\n\n| # | Loop | Moves | Status |\n|---|---|---|---|\n| **AO1** | another letter | x | `open` |\n' +
     src.slice(at);
   const run = singleRowRun(parseQueue(added));
+  assert.equal(run, 1, 'a letter after an IL- closer is a new run of one, not 17');
+});
+
+test('turning the harvest row into a letter makes the 16-run 17', () => {
+  const src = source().replace('**IL-H-01**', '**AN1**');
+  const run = singleRowRun(parseQueue(src));
   assert.equal(run, MAX_SINGLE_ROW_RUN + 1);
-  assert.ok(run > MAX_SINGLE_ROW_RUN, 'minting the next letter did not move the ratchet');
+  assert.ok(run > MAX_SINGLE_ROW_RUN, 'a letter wearing the harvest slot did not move the ratchet');
+});
+
+test('a harvest IL- row after the 16-run resets the run to zero', () => {
+  const q = real();
+  assert.equal(singleRowRun(q), 0, 'the pasted IL-H-01 section did not close the 16-run');
+  const last = nowSections(q).at(-1);
+  assert.ok(last && last.rows.length === 1 && isHarvestRow(last.rows[0]));
 });
 
 test('a batched section resets the run to zero', () => {
@@ -274,8 +287,8 @@ test('a batched section resets the run to zero', () => {
   const at = src.indexOf('\n### After H0');
   const added =
     src.slice(0, at) +
-    '\n\n### Now — AN (t)\n\n| # | Loop | Moves | Status |\n|---|---|---|---|\n' +
-    '| **AN1** | one | x | `open` |\n| **AN2** | two | y | `open` |\n' +
+    '\n\n### Now — AO (t)\n\n| # | Loop | Moves | Status |\n|---|---|---|---|\n' +
+    '| **AO1** | one | x | `open` |\n| **AO2** | two | y | `open` |\n' +
     src.slice(at);
   assert.equal(singleRowRun(parseQueue(added)), 0, 'batching two rows did not pay the ratchet down');
 });
@@ -305,9 +318,10 @@ test('the ratchet does not displace a live open row', () => {
     path.join(tmp, 'docs/gauntlet/GNT-9-replay.md'),
     '# GNT-9\n\n**Next spawn:** LEAD on **U1 R1**.\n'
   );
+  const withoutHarvest = source().replace(/\n### Now — AN \(harvest[\s\S]*?(?=\n### After H0)/, '\n');
   const q = parseQueue(
     injectNow(
-      source(),
+      withoutHarvest,
       '| **AM9** | Gauntlet GNT-9 replay | [wb](gauntlet/GNT-9-replay.md) | `open` |\n'
     )
   );

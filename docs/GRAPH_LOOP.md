@@ -2,7 +2,7 @@
 
 **Audience:** Founder + the next Hermes / Grok Build / graph agent  
 **Lane:** Engineering-Web (unless a loop says Android)  
-**Status:** ACTIVE 2026-08-15 · web `2026.07-unified.851` · Alpha 0.1.0 · **AL1 done — GNT-1 `ready-for-founder` · AM1 done — GNT-2 `ready-for-founder`**  
+**Status:** ACTIVE 2026-08-16 · web `2026.07-unified.852` · Alpha 0.1.0 · **AL1 done — GNT-1 `ready-for-founder` · AM1 done — GNT-2 `ready-for-founder` · AN open — `IL-H-01`**  
 **Does not replace:** [ORCHESTRATION.md](../ORCHESTRATION.md) (what may be built) · [CONTEXT.md](../CONTEXT.md) `## Now` (where we are) · [vision.md](../vision.md) (constitution) · [docs/THESIS.md](THESIS.md) (wedge) · [docs/PLAN.md](PLAN.md) (phases A–I)
 
 This file is the **execution queue** for the agent graph: one concern per loop, spawn, ship, mark done, spawn the next. It is not a second status block and not a license to skip standing hard bans.
@@ -455,7 +455,17 @@ Not AL2. GNT-2 opened on its own written gate — *"enters GRAPH_LOOP only after
 |---|------|-------|--------|
 | **AM1** | Gauntlet GNT-2 coach plan quality | [docs/gauntlet/GNT-2-coach-plan-quality.md](gauntlet/GNT-2-coach-plan-quality.md). Report written. U1–U4 critic PASS (engine). SMOOTHER R1 walked. 5 of ≤10 build PRs spent (only `.845` changed the planner) | `done` — `ready-for-founder`. **Founder action:** walk the planner-quality report. This campaign does **not** write [EXCELLENCE_RESULT.md](EXCELLENCE_RESULT.md) — that remains GNT-1 / Horizon W. Agents never write `status: pass` |
 
-D4 stays hold. Do not invent AM2. Do not paste `idea:next` H-01 onto this file.
+D4 stays hold. Do not invent AM2. Do not paste a second idea onto this AM section.
+
+### Now — AN (harvest · 2026-08-16)
+
+Not AM2. One `IL-` row from `idea:next`. A harvest row closes the 16-run; it is not the next letter.
+
+| # | Loop | Moves | Status |
+|---|------|-------|--------|
+| **IL-H-01** | Power the working-set measurement chain end to end on one real install | [H-01](mechanics/hypotheses/H-01-power-the-working-set-chain.md) | `open` |
+
+D4 stays hold. Do not invent AN2.
 
 ### After H0 (orientation — not open until H0-1…H0-7 are done or `founder`)
 

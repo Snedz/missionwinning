@@ -23,6 +23,7 @@ hard cap is ≤14 build PRs and spending fewer is the good outcome.
 |---|---|---|---|---|---|---|---|---|---|---|
 | seed | 2026-08-15 | — | — | — | — | 1 PR | 1 PR | 0 | — | — |
 | harvest-1 | 2026-08-15 | 3 | inline | inline | inline | ≤10 M / ≤8 H / **0 PR** | 7 M / 5 H / **1 PR** | 0 | 5 of 5 | — |
+| harvest-2 | 2026-08-16 | 0 | — | — | — | **1 PR** (paste) | **1 PR** | 1 (`IL-H-01`) | — | — |
 
 The seed run harvested nothing. Its nodes were hand-written from repo truth and
 one research pass, which is why the scout, anatomist, translator and red-team
@@ -41,11 +42,15 @@ pass is owed.
 had read the page). A cap that moves to fit the spend is not a cap, so the
 declared figure stays as written.
 
-**Yield: 0 emitted.** Correct, and the point. `idea:next` still returns `H-01`,
-because nothing harvested beats powering the measurement chain while every
-behaviour node reads `blocked-on-telemetry`. A harvest that displaced it would
-have meant the scoring had been talked into something. Coverage went 5 → 10 of 24
-cells; the harvest's own product is coverage, not throughput.
+**Yield: 0 emitted.** Correct, and the point. `idea:next` still returned `H-01`
+after harvest-1, because nothing harvested beats powering the measurement chain
+while every behaviour node reads `blocked-on-telemetry`. Coverage went 5 → 10 of
+24 cells; that harvest's product was coverage, not throughput.
+
+**harvest-2 notes.** Founder `/graph --paste`. No new scout. The pick was still
+`H-01`; this run's only product is the paste (`IL-H-01` on GRAPH_LOOP AN) and
+the ratchet seeing an `IL-` row as the closer the notes already named. 1 PR
+spent on that, not on the week-4 chain — that is hop 2.
 
 **Cost signal for the next run.** Every scout fetch was blocked, so the marginal
 cost of *verification* was infinite and the marginal cost of *breadth* was
