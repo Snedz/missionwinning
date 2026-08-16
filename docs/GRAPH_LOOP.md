@@ -2,7 +2,7 @@
 
 **Audience:** Founder + the next Hermes / Grok Build / graph agent  
 **Lane:** Engineering-Web (unless a loop says Android)  
-**Status:** ACTIVE 2026-08-16 · web `2026.07-unified.871` · Alpha 0.1.0 · **AL1 done — GNT-1 `ready-for-founder` · AM1 done — GNT-2 `ready-for-founder` · AN–AT done — `IL-H-07` `.865` · founder no-French `.866` · W1 I-Day → `/log` `.867` · hop contract `.868` · process `/harness` `.869` · empty queue → Horizon W path `.870` · `/harness` pastes harvest `.871` · AU open — `IL-H-15`**  
+**Status:** ACTIVE 2026-08-16 · web `2026.07-unified.872` · Alpha 0.1.0 · **AL1 done — GNT-1 `ready-for-founder` · AM1 done — GNT-2 `ready-for-founder` · AN–AU done — `IL-H-15` `.872` · founder no-French `.866` · W1 I-Day → `/log` `.867` · hop contract `.868` · process `/harness` `.869` · empty queue → Horizon W path `.870` · `/harness` pastes harvest `.871`**  
 **Does not replace:** [ORCHESTRATION.md](../ORCHESTRATION.md) (what may be built) · [CONTEXT.md](../CONTEXT.md) `## Now` (where we are) · [vision.md](../vision.md) (constitution) · [docs/THESIS.md](THESIS.md) (wedge) · [docs/PLAN.md](PLAN.md) (phases A–I)
 
 This file is the **execution queue** for the agent graph: one concern per loop, spawn, ship, mark done, spawn the next. It is not a second status block and not a license to skip standing hard bans.
@@ -534,7 +534,7 @@ Not AT2. Next `idea:next` pick. One `IL-` row.
 
 | # | Loop | Moves | Status |
 |---|------|-------|--------|
-| **IL-H-15** | The next lift stays off screen until the current set is logged | [H-15](mechanics/hypotheses/H-15-withhold-next-lift-until-set.md) | `open` |
+| **IL-H-15** | The next lift stays off screen until the current set is logged | [H-15](mechanics/hypotheses/H-15-withhold-next-lift-until-set.md) | `done` — `.872` this PR. `laterLiftVisible`; first-90 counts one `[data-exercise-id]` before Log set |
 
 D4 stays hold. Do not invent AU2.
 

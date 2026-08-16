@@ -11,6 +11,7 @@ import { repRangeForGoal } from '@/lib/coach/progression';
 import {
   getLastSessionSets,
   isOpenIdx,
+  laterLiftVisible,
 } from '@/lib/workout/activeWorkoutHelpers';
 import { garageSwapsWhenOpen, listGarageSwaps } from '@/lib/workout/garageSwap';
 import { resolveActiveTableSetControls } from '@/lib/workout/activeTableSetControls';
@@ -104,6 +105,7 @@ export function ActiveExerciseList({
   return (
     <div className="space-y-3">
       {exercises.map((exLog, exIdx) => {
+        if (!laterLiftVisible(exercises, exIdx)) return null;
         const exercise = getExerciseById(exLog.exerciseId);
         if (!exercise) return null;
         const swapOptions = listGarageSwaps(exercise.id);

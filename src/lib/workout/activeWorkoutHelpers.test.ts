@@ -36,6 +36,7 @@ import {
   toggleOpenIdx,
   isOpenIdx,
   exerciseHasCompletedSet,
+  laterLiftVisible,
   exerciseHasPlannedSet,
   firstPlannedSetIdx,
   holdsActiveExercise,
@@ -1277,6 +1278,33 @@ describe('isOpenIdx', () => {
       /noteOpen=\{noteOpenIdx\s*===\s*exIdx\}/,
       'note open prop must stay inside isOpenIdx'
     );
+  });
+});
+
+describe('laterLiftVisible', () => {
+  const squat = { sets: [{ completed: false }, { completed: false }] };
+  const push = { sets: [{ completed: false }] };
+  const plank = { sets: [{ completed: false }] };
+
+  it('hides later lifts until the first set of the session is logged', () => {
+    assert.equal(laterLiftVisible([squat, push, plank], 0), true);
+    assert.equal(laterLiftVisible([squat, push, plank], 1), false);
+    assert.equal(laterLiftVisible([squat, push, plank], 2), false);
+  });
+
+  it('ActiveExerciseList withholds later lifts through laterLiftVisible', () => {
+    const src = readFileSync(
+      path.join(import.meta.dirname, '..', '..', 'components', 'workout', 'ActiveExerciseList.tsx'),
+      'utf8'
+    );
+    assert.match(src, /laterLiftVisible\(/);
+  });
+
+  it('shows every lift after any set is logged', () => {
+    const after = [{ sets: [{ completed: true }, { completed: false }] }, push, plank];
+    assert.equal(laterLiftVisible(after, 0), true);
+    assert.equal(laterLiftVisible(after, 1), true);
+    assert.equal(laterLiftVisible(after, 2), true);
   });
 });
 
