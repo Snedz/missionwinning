@@ -16,12 +16,12 @@ One screen of truth for any AI tool or human joining cold. Read this, then [AGEN
 
 ---
 
-## Now (2026-08-16 · web `2026.07-unified.864` · Android `1.24.1`)
+## Now (2026-08-16 · web `2026.07-unified.865` · Android `1.24.1`)
 
 > The ONLY "where we are" block in the repo — [ORCHESTRATION.md](ORCHESTRATION.md) points here.
 >
 > **Budget: ≤25 bullets.** Enforced by `src/lib/contextBudget.test.ts`. When over,
-> rotate the oldest *shipped* entries to `docs/archive/` — `.864` dropped `.850` · `.863` dropped `.849` · `.862` dropped `.848` · `.861` dropped `.847` · `.860` dropped `.846` · `.859` dropped `.845` · `.858` dropped `.844` · `.857` dropped `.843` · `.856` dropped `.842` · `.855` dropped `.841` · `.854` dropped `.840` · `.853` dropped `.839` · `.852` dropped `.837` (full text remains in LOG.md / archive) · `.203` moved `.123`–`.189`,
+> rotate the oldest *shipped* entries to `docs/archive/` — `.865` dropped `.851` · `.864` dropped `.850` · `.863` dropped `.849` · `.862` dropped `.848` · `.861` dropped `.847` · `.860` dropped `.846` · `.859` dropped `.845` · `.858` dropped `.844` · `.857` dropped `.843` · `.856` dropped `.842` · `.855` dropped `.841` · `.854` dropped `.840` · `.853` dropped `.839` · `.852` dropped `.837` (full text remains in LOG.md / archive) · `.203` moved `.123`–`.189`,
 > `.207` moved `.190`–`.193`, `.211` moved `.194`–`.197`, `.215` moved `.198`
 > `.216` moved `.200`, `.217` moved `.199`, `.218` moved `.201`, `.219` moved `.202`
 > `.220` moved `.203`, `.221` moved `.204`, `.222` moved `.205`, `.223` moved `.206`,
@@ -408,6 +408,7 @@ One screen of truth for any AI tool or human joining cold. Read this, then [AGEN
 > | gitleaks | **green — and scanning for the first time.** It had never scanned anything: on a `pull_request` event the action lists the PR's commits, the job declared no `permissions:` block, and it 403'd (`pull_requests=read`) before opening a file. Fixed by a `permissions:` block (`.224` carrying `.255`). It scans **only the PR's own commits**, so commit `8ea3527a`'s real Solana treasury address — scrubbed from the working file, still in history — is out of its scope. That finding stands, deliberately not allowlisted; it was never what made this check red. |
 > | Privacy / security program | **Landed `.778`** — [docs/security/PROGRAM_STATUS.md](docs/security/PROGRAM_STATUS.md). Invite-bound gate, health-bucket, DSAR, territory fail-closed. OTP-without-click can leave a ghost user. Not a cert. |
 
+- **`.865`:** (`2026.07-unified.865`) **Returning dose follows missed sessions** — `IL-H-07`. Same 14-day gap, 4/week vs 1/week dose differs. No plan keeps calendar scale. No `PRIVATE_MODE` flip.
 - **`.864`:** (`2026.07-unified.864`) **H-07 is on the queue** — first session back follows missed sessions. `IL-H-07` is Now AT. No `PRIVATE_MODE` flip.
 - **`.863`:** (`2026.07-unified.863`) **One tap off the cold path** — `IL-H-05`. `TAP_BUDGET` 5→4. Last stored set beats a suggestion. Cold history stays blank. No `PRIVATE_MODE` flip.
 - **`.862`:** (`2026.07-unified.862`) **H-05 is on the queue** — one tap off the cold path. `IL-H-05` is Now AS. No `PRIVATE_MODE` flip.
@@ -421,7 +422,6 @@ One screen of truth for any AI tool or human joining cold. Read this, then [AGEN
 - **`.854`:** (`2026.07-unified.854`) **H-09 is on the queue** — next `idea:next` after H-01 emitted. `IL-H-09` is Now AO. Cohort numbers must declare their selection frame. No `PRIVATE_MODE` flip.
 - **`.853`:** (`2026.07-unified.853`) **Week-4 chain is one instrument** — `IL-H-01`. One install, two local ISO weeks: hood snapshot = device state = account enqueue. PostHog is not required (kill criterion did not fire). No new analytics event, no count of other people. No `PRIVATE_MODE` flip.
 - **`.852`:** (`2026.07-unified.852`) **H-01 is on the queue** — founder `/graph --paste`. `IL-H-01` is Now AN, not AM2. An `IL-` section closes the 16-run (`isHarvestRow`); without that the paste was a seventeenth letter. `npm run graph` now names the build ticket. No `PRIVATE_MODE` flip.
-- **`.851`:** (`2026.07-unified.851`) **Each closed loop writes a lesson** — GNT-1/GNT-2 had reports and no `V-NN`, so the next harvest could not see them. `learn.ts` applies verdicts to the pick (failed fingerprints refused; settled ids stop being candidates). `npm run graph` prints `V-01`/`V-02` and the harvest pick; it still does not write the queue. 6 mutants killed. No `PRIVATE_MODE` flip.
 - **Form object kit (on `.781`):** IMPLEMENT block + prop sheets. Regen cable-row (visible stack), lateral-raise, DB press, lunges, DB row. Floor 43. Still-only. No `PRIVATE_MODE` flip.
 - **Excellence:** unscored · — · [docs/EXCELLENCE_RESULT.md](docs/EXCELLENCE_RESULT.md) — Horizon W phone sign-off home; surface PRs need `status: pass` or `Excellence-Override` (`.669`).
 - **`.669`:** (`2026.07-unified.669`) **Excellence RESULT + agent stop-rule** — `excellenceGate` path policy + `check-excellence-gate` on gate/PR CI; wedge still ships while unscored.

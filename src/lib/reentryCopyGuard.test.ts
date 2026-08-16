@@ -5,7 +5,11 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
-import { formatReentryQuietLine, computeReentry } from '@/lib/reentry';
+import {
+  formatReentryQuietLine,
+  computeReentry,
+  doseScaleForMissedSessions,
+} from '@/lib/reentry';
 import type { CompletedWorkoutLog } from '@/types';
 
 const FORBIDDEN = [
@@ -98,4 +102,40 @@ test('3 / 7 / 14 days: line cites the stored set and never the gap length', () =
       assert.doesNotMatch(line, re, line);
     }
   }
+});
+
+test('H-07: same fourteen-day gap, dose follows missed sessions not days', () => {
+  const history = [logDaysAgo(14)];
+  const fourAWeek = {
+    sessions: [
+      { status: 'done' },
+      { status: 'missed' },
+      { status: 'missed' },
+      { status: 'missed' },
+    ],
+  };
+  const oneAWeek = { sessions: [{ status: 'done' }] };
+  const heavy = computeReentry(history, NOW, fourAWeek);
+  const light = computeReentry(history, NOW, oneAWeek);
+  assert.equal(heavy.daysSince, light.daysSince);
+  assert.equal(heavy.daysSince, 14);
+  assert.ok(
+    heavy.doseScale < light.doseScale,
+    `4/week miss (${heavy.doseScale}) must ease more than 1/week on-schedule (${light.doseScale})`
+  );
+  assert.equal(light.doseScale, 1, 'zero stored misses is a full session');
+  assert.equal(heavy.doseScale, doseScaleForMissedSessions(3));
+  const line = formatReentryQuietLine(heavy);
+  assert.doesNotMatch(line, /days off|\b\d+\s+day/i, line);
+  assert.doesNotMatch(line, /missed/i, line);
+  for (const re of FORBIDDEN) {
+    assert.doesNotMatch(line, re, line);
+  }
+});
+
+test('H-07: no stored plan keeps the calendar short-session dose', () => {
+  const history = [logDaysAgo(14)];
+  const none = computeReentry(history, NOW);
+  const withPlan = computeReentry(history, NOW, { sessions: [{ status: 'done' }] });
+  assert.notEqual(none.doseScale, withPlan.doseScale);
 });

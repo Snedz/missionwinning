@@ -169,13 +169,40 @@ export function doseScaleForShortSession(
   return Math.max(REENTRY_MIN_DOSE, Math.min(1, targetMinutes / usualMinutes));
 }
 
-export function computeReentry(history: CompletedWorkoutLog[], now: number): Reentry {
+/**
+ * H-07: ease by planned sessions actually missed. Each miss is 10% off the
+ * full session, floored at `REENTRY_MIN_DOSE`. Zero misses is a full session —
+ * a once-a-week athlete fourteen days on is on schedule, not in trouble.
+ * Null plan is not zero; that path keeps the calendar short-session scale.
+ */
+export function doseScaleForMissedSessions(missed: number): number {
+  if (!(missed > 0)) return 1;
+  return Math.max(REENTRY_MIN_DOSE, 1 - missed * 0.1);
+}
+
+/** Stored miss markers only. Null when there is no plan to read. */
+export function storedMissedSessionCount(
+  plan: { sessions: readonly { status: string }[] } | null | undefined
+): number | null {
+  if (!plan) return null;
+  return plan.sessions.filter((s) => s.status === 'missed').length;
+}
+
+export function computeReentry(
+  history: CompletedWorkoutLog[],
+  now: number,
+  plan?: { sessions: readonly { status: string }[] } | null
+): Reentry {
   const daysSince = daysSinceLastSession(history, now);
   const witness = witnessedSetFromHistory(history);
   // Never logged: that is onboarding, not re-entry — I-Day owns that story.
   if (daysSince === null) return NONE;
   if (daysSince < REENTRY_MIN_DAYS) return { ...NONE, daysSince, witness };
-  const doseScale = doseScaleForShortSession(usualSessionMinutes(history));
+  const missed = storedMissedSessionCount(plan);
+  const doseScale =
+    missed === null
+      ? doseScaleForShortSession(usualSessionMinutes(history))
+      : doseScaleForMissedSessions(missed);
   if (daysSince > REENTRY_MAX_DAYS) {
     // Long enough that pretending to continue a plan would be a lie.
     return { daysSince, tone: 'lapsed', show: true, doseScale, witness };

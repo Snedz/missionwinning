@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 import {
   computeReentry,
   daysSinceLastSession,
+  doseScaleForMissedSessions,
   doseScaleForShortSession,
   doseScalePercent,
   easedSetCount,
@@ -118,6 +119,14 @@ test('reentry', async (t) => {
     const history = [{ ...log(0), completedAt: mondayEvening, startedAt: mondayEvening }];
     assert.equal(daysSinceLastSession(history, wednesdayMorning), 2);
     assert.equal(computeReentry(history, wednesdayMorning).show, true);
+  });
+
+  await t.test('doseScaleForMissedSessions eases per stored miss and never grows', () => {
+    assert.equal(doseScaleForMissedSessions(0), 1);
+    assert.equal(doseScaleForMissedSessions(1), 0.9);
+    assert.equal(doseScaleForMissedSessions(4), 0.6);
+    assert.equal(doseScaleForMissedSessions(8), 0.4);
+    assert.equal(doseScaleForMissedSessions(20), 0.4, 'floor so the session does not vanish');
   });
 
   await t.test('doseScaleForShortSession never grows the ask', () => {

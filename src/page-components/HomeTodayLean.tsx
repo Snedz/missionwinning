@@ -137,7 +137,7 @@ export function HomeTodayLean() {
   const { dismissed: betaDismissed } = useDismissed(FIRST_STEPS_DISMISS_KEY);
 
   useEffect(() => {
-    setReentry(computeReentry(workoutHistory, Date.now()));
+    setReentry(computeReentry(workoutHistory, Date.now(), loadPlan()));
   }, [workoutHistory]);
 
   /** Rewards after first log — dynamic import keeps cold path free of rewards graph. */
