@@ -27,6 +27,7 @@ hard cap is ≤14 build PRs and spending fewer is the good outcome.
 | harvest-3 | 2026-08-16 | 0 | — | — | — | **1 PR** (paste) | **1 PR** | 1 (`IL-H-09`) | — | — |
 | harvest-4 | 2026-08-16 | 0 | — | — | — | **1 PR** (paste) | **1 PR** | 1 (`IL-H-03`) | — | — |
 | harvest-5 | 2026-08-16 | 0 | — | — | — | **1 PR** (paste) | **1 PR** | 1 (`IL-H-08`) | — | — |
+| harvest-6 | 2026-08-16 | 0 | — | — | — | **1 PR** (paste) | **1 PR** | 1 (`IL-H-02`) | — | — |
 
 The seed run harvested nothing. Its nodes were hand-written from repo truth and
 one research pass, which is why the scout, anatomist, translator and red-team
@@ -54,6 +55,10 @@ while every behaviour node reads `blocked-on-telemetry`. Coverage went 5 → 10 
 `H-01`; this run's only product is the paste (`IL-H-01` on GRAPH_LOOP AN) and
 the ratchet seeing an `IL-` row as the closer the notes already named. 1 PR
 spent on that, not on the week-4 chain — that is hop 2.
+
+**harvest-6 notes.** Founder `/graph --paste`. No new scout. The pick after
+H-08 is `H-02`; this run's only product is the paste (`IL-H-02` on GRAPH_LOOP AR).
+1 PR spent on that, not on the visible-diff replace — that is the next hop.
 
 **Cost signal for the next run.** Every scout fetch was blocked, so the marginal
 cost of *verification* was infinite and the marginal cost of *breadth* was
