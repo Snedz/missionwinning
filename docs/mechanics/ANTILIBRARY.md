@@ -38,6 +38,9 @@ refused by the selector with the citation attached.
 | `activate+change+M-16+hold+first+log+window` | M-16's own B-01 backfire is this target; first-90 only ratifies TAP_BUDGET not rising | `H-13` |
 | `trust+measure+M-16+planner+ignores+inflight` | No window means an identity filter; adapt.test cannot fail until a sibling ships | `H-14` |
 | `depth+change+M-17+victory+finish+next+action` | Victory only mounts after Finish; named instrument cannot fail | `H-16` |
+| `depth+add+M-18+one+new+work+after+due+session` | Victory already returns exactly one next action; named instrument cannot fail | `H-17` |
+| `depth+measure+M-18+week+does+not+add+while+due` | adapt already never introduces a new lift id on a later-day rewrite; subset assertion cannot fail | `H-18` |
+| `tell+add+M-18+share+waits+due+set` | first-90 path already has no share control before Log set; assertion cannot fail | `H-19` |
 
 ---
 
