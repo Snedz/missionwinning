@@ -2,7 +2,7 @@
 
 **Audience:** Founder + the next Hermes / Grok Build / graph agent  
 **Lane:** Engineering-Web (unless a loop says Android)  
-**Status:** ACTIVE 2026-08-16 · web `2026.07-unified.854` · Alpha 0.1.0 · **AL1 done — GNT-1 `ready-for-founder` · AM1 done — GNT-2 `ready-for-founder` · AN done — `IL-H-01` · AO open — `IL-H-09`**  
+**Status:** ACTIVE 2026-08-16 · web `2026.07-unified.855` · Alpha 0.1.0 · **AL1 done — GNT-1 `ready-for-founder` · AM1 done — GNT-2 `ready-for-founder` · AN done — `IL-H-01` · AO done — `IL-H-09` `.855`**  
 **Does not replace:** [ORCHESTRATION.md](../ORCHESTRATION.md) (what may be built) · [CONTEXT.md](../CONTEXT.md) `## Now` (where we are) · [vision.md](../vision.md) (constitution) · [docs/THESIS.md](THESIS.md) (wedge) · [docs/PLAN.md](PLAN.md) (phases A–I)
 
 This file is the **execution queue** for the agent graph: one concern per loop, spawn, ship, mark done, spawn the next. It is not a second status block and not a license to skip standing hard bans.
@@ -473,7 +473,7 @@ Not AN2. Next `idea:next` pick after H-01 was emitted. One `IL-` row.
 
 | # | Loop | Moves | Status |
 |---|------|-------|--------|
-| **IL-H-09** | Every cohort number declares the selection it was drawn from | [H-09](mechanics/hypotheses/H-09-selection-frame-guard.md) | `open` |
+| **IL-H-09** | Every cohort number declares the selection it was drawn from | [H-09](mechanics/hypotheses/H-09-selection-frame-guard.md) | `done` — `.855` this PR. `frameCohort` + discover guard. `unknown=yes` stays in the output |
 
 D4 stays hold. Do not invent AO2.
 

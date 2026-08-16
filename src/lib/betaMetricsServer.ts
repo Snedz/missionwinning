@@ -13,6 +13,7 @@ import type { JourneyState } from '@/lib/missionJourney';
 import { aggregateBetaFunnel, type BetaProfileRow } from '@/lib/beta/funnelAggregate';
 import { buildInviteShareLink, inviteTotals } from '@/lib/beta/inviteShareLink';
 import type { BetaFunnelAggregate } from '@/types/betaMetrics';
+import { WEEK4_RPC_FRAME, frameCohort, type FramedCohort } from '@/lib/selectionFrame';
 import { getSupabaseAdmin } from '@/lib/supabaseAdmin';
 
 export type { BetaFunnelAggregate };
@@ -87,8 +88,8 @@ export function isBetaAdminEmail(email: string | null | undefined): boolean {
 }
 
 export type Week4Retention = {
-  cohort_eligible: number;
-  week4_retained: number;
+  cohort_eligible: FramedCohort;
+  week4_retained: FramedCohort;
 };
 
 /** Null-safe if migration / RPC missing. */
@@ -101,8 +102,8 @@ export async function computeWeek4Retention(): Promise<Week4Retention | null> {
     const row = Array.isArray(data) ? data[0] : data;
     if (!row) return null;
     return {
-      cohort_eligible: Number(row.cohort_eligible) || 0,
-      week4_retained: Number(row.week4_retained) || 0,
+      cohort_eligible: frameCohort(Number(row.cohort_eligible) || 0, WEEK4_RPC_FRAME),
+      week4_retained: frameCohort(Number(row.week4_retained) || 0, WEEK4_RPC_FRAME),
     };
   } catch {
     return null;

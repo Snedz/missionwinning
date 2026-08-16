@@ -1,5 +1,5 @@
-/** Shown on Profile so testers can confirm the deployed build. Bump when shipping UI to master. `.854` H-09 paste. */
-export const APP_BUILD_LABEL = "2026.07-unified.854";
+/** Shown on Profile so testers can confirm the deployed build. Bump when shipping UI to master. `.855` selection frame. */
+export const APP_BUILD_LABEL = "2026.07-unified.855";
 
 /**
  * Semver for athletes. Distinct from `APP_BUILD_LABEL`, which `/api/health`

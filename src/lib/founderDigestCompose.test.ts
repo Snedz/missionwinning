@@ -12,7 +12,24 @@ describe('composeFounderDigest', () => {
         basicComplete: 6,
         commissioned: 3,
       },
-      retention: { cohort_eligible: 40, week4_retained: 5 },
+      retention: {
+        cohort_eligible: {
+          value: 40,
+          frame: {
+            included: 'signed-in first workout ≥28d',
+            excluded: 'guests, tombstones',
+            unknown: false,
+          },
+        },
+        week4_retained: {
+          value: 5,
+          frame: {
+            included: 'signed-in first workout ≥28d',
+            excluded: 'guests, tombstones',
+            unknown: false,
+          },
+        },
+      },
       referrals: {
         attributedTotal: 8,
         topCodes: [{ code: 'MW-ABC12', count: 3 }],
@@ -22,7 +39,7 @@ describe('composeFounderDigest', () => {
     assert.match(subject, /2026-07-19/);
     assert.match(text, /I-Day complete: 10/);
     assert.match(text, /iday_mission_accepted/);
-    assert.match(text, /Week-4 retained: 5/);
+    assert.match(text, /Week-4 retained: 5 \[/);
     assert.match(text, /12\.5%/);
     assert.match(text, /MW-ABC12: 3/);
     assert.match(text, /recognition only/i);
