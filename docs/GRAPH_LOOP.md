@@ -2,7 +2,7 @@
 
 **Audience:** Founder + the next Hermes / Grok Build / graph agent  
 **Lane:** Engineering-Web (unless a loop says Android)  
-**Status:** ACTIVE 2026-08-16 · web `2026.07-unified.861` · Alpha 0.1.0 · **AL1 done — GNT-1 `ready-for-founder` · AM1 done — GNT-2 `ready-for-founder` · AN–AR done — `IL-H-02` `.861`**  
+**Status:** ACTIVE 2026-08-16 · web `2026.07-unified.862` · Alpha 0.1.0 · **AL1 done — GNT-1 `ready-for-founder` · AM1 done — GNT-2 `ready-for-founder` · AN–AR done · AS open — `IL-H-05`**  
 **Does not replace:** [ORCHESTRATION.md](../ORCHESTRATION.md) (what may be built) · [CONTEXT.md](../CONTEXT.md) `## Now` (where we are) · [vision.md](../vision.md) (constitution) · [docs/THESIS.md](THESIS.md) (wedge) · [docs/PLAN.md](PLAN.md) (phases A–I)
 
 This file is the **execution queue** for the agent graph: one concern per loop, spawn, ship, mark done, spawn the next. It is not a second status block and not a license to skip standing hard bans.
@@ -506,6 +506,16 @@ Not AQ2. Next `idea:next` pick. One `IL-` row.
 | **IL-H-02** | The Coach week arrives as a proposal with a visible diff | [H-02](mechanics/hypotheses/H-02-coach-week-as-proposal.md) | `done` — `.861` this PR. Session-count proposal replaces the banner. Citation is the stored set |
 
 D4 stays hold. Do not invent AR2.
+
+### Now — AS (harvest · 2026-08-16)
+
+Not AR2. Next `idea:next` pick. One `IL-` row.
+
+| # | Loop | Moves | Status |
+|---|------|-------|--------|
+| **IL-H-05** | Take one tap out of the cold path to a first set | [H-05](mechanics/hypotheses/H-05-drop-a-tap-from-cold-open.md) | `open` |
+
+D4 stays hold. Do not invent AS2.
 
 ### After H0 (orientation — not open until H0-1…H0-7 are done or `founder`)
 
