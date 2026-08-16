@@ -60,8 +60,8 @@ edits a doc as a side effect is how the doc stops being read.
 
 | | activate | return | trust | depth | tell | pay |
 |---|---|---|---|---|---|---|
-| **add** | — | H-03 · H-04 killed | H-11 killed | — | — | H-06 blocked-on-telemetry |
-| **change** | H-13 killed | H-07 | H-02 | — | — | — |
+| **add** | H-15 | H-03 · H-04 killed | H-11 killed | — | — | H-06 blocked-on-telemetry |
+| **change** | H-13 killed | H-07 | H-02 | H-16 killed | — | — |
 | **remove** | H-05 | H-12 killed | H-08 | H-10 blocked-on-telemetry | — | — |
 | **measure** | H-01 | H-09 | H-14 killed | — | — | — |
 

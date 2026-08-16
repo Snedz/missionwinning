@@ -37,6 +37,7 @@ refused by the selector with the citation attached.
 | `return+remove+M-16+undo+first+set+back+window` | History/outbox absence mid-session already holds without a window, so the named instrument cannot fail; does not grade return | `H-12` |
 | `activate+change+M-16+hold+first+log+window` | M-16's own B-01 backfire is this target; first-90 only ratifies TAP_BUDGET not rising | `H-13` |
 | `trust+measure+M-16+planner+ignores+inflight` | No window means an identity filter; adapt.test cannot fail until a sibling ships | `H-14` |
+| `depth+change+M-17+victory+finish+next+action` | Victory only mounts after Finish; named instrument cannot fail | `H-16` |
 
 ---
 

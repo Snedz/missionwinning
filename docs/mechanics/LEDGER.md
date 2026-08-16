@@ -32,6 +32,7 @@ hard cap is ≤14 build PRs and spending fewer is the good outcome.
 | harvest-8 | 2026-08-16 | 0 | — | — | — | **1 PR** (paste) | **1 PR** | 1 (`IL-H-07`) | — | — |
 | harvest-9 | 2026-08-16 | 3 | 1 | 3 | 1 spawn | ≤3 inbox / ≤1 M / ≤3 H / **0 PR** | 3 inbox / 1 M / 3 H / **0 PR** | 0 | 0 of 3 | — |
 | harvest-10 | 2026-08-16 | 0 | — | — | — | ≤10 pages / **0 product PR** | 10 opened / **0 product PR** | 0 | — | — |
+| harvest-11 | 2026-08-16 | 3 | 1 | 2 | 1 spawn | ≤3 inbox / ≤1 M / ≤3 H / **0 product PR** | 3 inbox / 1 M / 2 H / **0 product PR** | 0 | 1 of 2 | — |
 
 The seed run harvested nothing. Its nodes were hand-written from repo truth and
 one research pass, which is why the scout, anatomist, translator and red-team
@@ -71,6 +72,17 @@ H-02 is `H-05`; this run's only product is the paste (`IL-H-05` on GRAPH_LOOP AS
 **harvest-8 notes.** Founder `/graph --paste`. No new scout. The pick after
 H-05 is `H-07`; this run's only product is the paste (`IL-H-07` on GRAPH_LOOP AT).
 1 PR spent on that, not on missed-session dose — that is the next hop.
+
+**harvest-11 notes.** Founder: new source class, then maybe one helper job.
+Scout opened three pages outside gym-logger and undo: Yousician Wait To Play
+(help, E1), Physitrack/PhysiApp discomfort log (product page, E1), NASA Degani
+checklist citation (NASA-CR-177549, E1). Anatomist promoted Wait To Play to
+`M-17` (withhold next beat until the current act). Discarded Degani (crew
+`precondition`) and PhysiApp dashboard (clinician graph). Translator wrote
+H-15 (`activate+add`) and H-16 (`depth+change`). Separate red-team spawn
+spared H-15 (first-workout list shows 4 lifts before any log; first-90 does
+not assert next-lift absence) and killed H-16 (Victory only mounts after
+Finish; fake instrument). No paste. Unused product-PR cap held.
 
 **harvest-10 notes.** Founder keep-working. No new scout. Opened already-cited
 pages. Upgraded to E1 where the page supports the cite: GitHub PRs, Google Docs
