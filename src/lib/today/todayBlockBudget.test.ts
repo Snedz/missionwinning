@@ -137,7 +137,7 @@ describe('planTodayBlocks', () => {
 
   /**
    * H-02: the Coach week proposal replaces the adapt banner. A seventh
-   * top-level block is the kill criterion. TAP_BUDGET stays 5.
+   * top-level block is the kill criterion. TAP_BUDGET is a down-only ratchet.
    */
   it('H-02: the week diff is the banner, not a seventh Today block', () => {
     assert.equal(TODAY_MAX_TOP_LEVEL_BLOCKS, 6);
@@ -156,6 +156,6 @@ describe('planTodayBlocks', () => {
     assert.match(banner, /coach-week-diff/);
 
     const first90 = readFileSync(join(root, 'tests/e2e/first-90.spec.ts'), 'utf8');
-    assert.match(first90, /const TAP_BUDGET = 5/);
+    assert.match(first90, /const TAP_BUDGET = 4/);
   });
 });

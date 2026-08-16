@@ -15,7 +15,7 @@ target `return`, `trust` or `depth` for an athlete who never logged anything.
 
 **What already serves it.** `/active` is gate-public so a first set can happen
 while the site is private; `.839` made cold Continue land on `/log` rather than
-dumping into an empty Active screen; `TAP_BUDGET` caps the path at five taps.
+dumping into an empty Active screen; `TAP_BUDGET` caps the path at four taps.
 
 **Why `blocked-on-telemetry`.** The event exists in the union and the code fires
 it, but `PRIVATE_MODE` is on, no invite can be sent while `MAIL_POSTAL_ADDRESS`

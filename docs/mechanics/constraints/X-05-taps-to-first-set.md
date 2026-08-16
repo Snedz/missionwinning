@@ -4,7 +4,7 @@ type: constraint
 title: Taps from cold open to a logged set only go down
 rule: The tap count from a cold /welcome to a working set on the board is capped by TAP_BUDGET in the hero e2e. Never raise it. Lowering it is the whole game.
 enforcer: tests/e2e/first-90.spec.ts
-enforcer_anchor: const TAP_BUDGET = 5
+enforcer_anchor: const TAP_BUDGET = 4
 authority: ORCHESTRATION.md Horizon W criterion 5
 ---
 

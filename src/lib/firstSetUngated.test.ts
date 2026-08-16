@@ -158,9 +158,9 @@ describe('firstSetUngated wiring', () => {
     assert.doesNotMatch(body, /getUser|getSession|flushOutbox|flush\s*\(/);
   });
 
-  it('first-90 TAP_BUDGET stays 5 and Skip-sign-in is gone', () => {
+  it('first-90 TAP_BUDGET stays 4 and Skip-sign-in is gone', () => {
     const spec = read('tests/e2e/first-90.spec.ts');
-    assert.match(spec, /const TAP_BUDGET = 5;/);
+    assert.match(spec, /const TAP_BUDGET = 4;/);
     assert.doesNotMatch(spec, /TAP_BUDGET\s*=\s*[6-9]/);
     assert.doesNotMatch(spec, /Skip — start training|Skip-sign-in|skipSignIn/i);
     const cold = spec.slice(

@@ -16,7 +16,7 @@ import { fixedTimeAt } from './helpers/fixedClock';
  */
 
 /** Taps from a cold /welcome to a set on the board. Lower is better; never raise this. */
-const TAP_BUDGET = 5;
+const TAP_BUDGET = 4;
 
 /* The pinned clock and why it is derived, not literal: `helpers/fixedClock`. */
 

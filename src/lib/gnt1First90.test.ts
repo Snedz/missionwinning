@@ -9,9 +9,9 @@ import path from 'node:path';
 const root = path.join(import.meta.dirname, '..', '..');
 const read = (p: string) => readFileSync(path.join(root, p), 'utf8');
 
-test('first-90 TAP_BUDGET is 5 and must not be raised', () => {
+test('first-90 TAP_BUDGET is 4 and must not be raised', () => {
   const src = read('tests/e2e/first-90.spec.ts');
-  assert.match(src, /const TAP_BUDGET = 5/);
+  assert.match(src, /const TAP_BUDGET = 4/);
   assert.match(src, /never raise this/);
   assert.match(src, /goto\('\/welcome'/);
   assert.match(src, /toHaveURL\(\/\\\/log\//);
