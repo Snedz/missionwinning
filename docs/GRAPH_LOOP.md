@@ -2,7 +2,7 @@
 
 **Audience:** Founder + the next Hermes / Grok Build / graph agent  
 **Lane:** Engineering-Web (unless a loop says Android)  
-**Status:** ACTIVE 2026-08-16 · web `2026.07-unified.867` · Alpha 0.1.0 · **AL1 done — GNT-1 `ready-for-founder` · AM1 done — GNT-2 `ready-for-founder` · AN–AT done — `IL-H-07` `.865` · founder no-French `.866` · W1 I-Day → `/log` `.867`**  
+**Status:** ACTIVE 2026-08-16 · web `2026.07-unified.868` · Alpha 0.1.0 · **AL1 done — GNT-1 `ready-for-founder` · AM1 done — GNT-2 `ready-for-founder` · AN–AT done — `IL-H-07` `.865` · founder no-French `.866` · W1 I-Day → `/log` `.867` · hop contract `.868`**  
 **Does not replace:** [ORCHESTRATION.md](../ORCHESTRATION.md) (what may be built) · [CONTEXT.md](../CONTEXT.md) `## Now` (where we are) · [vision.md](../vision.md) (constitution) · [docs/THESIS.md](THESIS.md) (wedge) · [docs/PLAN.md](PLAN.md) (phases A–I)
 
 This file is the **execution queue** for the agent graph: one concern per loop, spawn, ship, mark done, spawn the next. It is not a second status block and not a license to skip standing hard bans.
@@ -117,7 +117,7 @@ Ambition lives in the **queue**. Each running agent still ships **one loop**.
 1. **Read** CONTEXT → AGENTS → INDEX → ORCHESTRATION → **this file** → the folder INDEX you will edit.
 2. **Take only the top `open` loop.** If you finish early, stop. Do not start the next loop in the same PR (one concern).
 3. **Investigate in source** before coding. If the loop’s claim is already false on master, mark it `done (already true)` with the file that proves it — do not restyle.
-4. **Ship protocol** if you touch `src/`, `app/`, `scripts/`, or `supabase/`: bump `APP_BUILD_LABEL` **past master**, LOG + CONTEXT `## Now` in the same commit, `[skip vercel]` unless the founder asked for Preview, `Excellence-Override: <reason>` if the path class is `surface` while RESULT is unscored. Docs-only PRs do **not** mint a version.
+4. **Ship protocol** if you touch `src/`, `app/`, `scripts/`, or `supabase/`: bump `APP_BUILD_LABEL` **past master**, LOG + CONTEXT `## Now` in the same commit, `[skip vercel]` unless the founder asked for Preview, `Excellence-Override: <reason>` if the path class is `surface` while RESULT is unscored. Docs-only PRs do **not** mint a version. `npm run graph:done` before claiming the hop shipped — it does not write this file.
 5. **Hard bans (standing):** free logger never gated · no `PRIVATE_MODE` flip · no invented traction · no America/wearables-as-score/iOS · no chat on Today · do not raise `TAP_BUDGET` · do not steal occupied build labels.
 6. **After merge:** edit this file — set the loop `done`, put the PR/label in the Outcome column, leave the next loop `open`. That edit is the baton.
 
@@ -711,10 +711,13 @@ BOOT (every spawn):
 2. Do not use chat, ~/.grok/sessions, or .hermes/plans as product truth.
 
 QUEUE:
-3. Run `npm run graph`. It names the live ticket, the route and the recipe by
-   reading this file — status from the parsed Status cell, not from the row text.
-   Take the route it names. If you disagree with it, fix the queue or the router in
-   its own PR; do not route around it. (Recipe 14.)
+3. Re-read docs/graph/PINNED.md. Run `npm run graph`. It names the live ticket,
+   the route and the recipe by reading this file — status from the parsed Status
+   cell, not from the row text. Take the route it names. If you disagree with it,
+   fix the queue or the router in its own PR; do not route around it. (Recipe 14.)
+   Write docs/graph/HOP.md before the first product edit: ticket = that id,
+   done_means = one sentence, accept = one command. `npm run graph:done` is the
+   closer — it does not write this file.
 4. Route `gauntlet` (GNT-*): stop using this prompt as a builder brief.
    Read docs/GAUNTLET_LOOP.md + the campaign workbench. Follow recipe 12.
    Do the workbench **Next spawn** line (role · unit · round). One unit-round, then exit.

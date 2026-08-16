@@ -252,10 +252,15 @@ hard rule 6) is a thin loader over exactly these steps.
 3. **`npm run graph`.** It names the live ticket, the route, the recipe, the
    workbench and its `Next spawn` line, any `founder`/`blocked` row it skipped,
    the monoculture ratchet, closed-loop lessons, and — on harvest — the
-   `idea:next` pick. It prints; it never edits the queue.
+   `idea:next` pick. It prints; it never edits the queue. Re-read
+   [graph/PINNED.md](graph/PINNED.md). Fill [graph/HOP.md](graph/HOP.md) before
+   the first product edit (`ticket` = the live id, `done_means` one sentence,
+   `accept` one command).
 4. **Take the route it named**, and only that one — `build` → recipe 11 · `gauntlet`
    → recipe 12 · `harvest` → recipe 13. Not a more interesting row, not two rows.
-5. **One loop, then stop** ([GRAPH_LOOP.md](GRAPH_LOOP.md) loop rule 2). Print
+5. **`npm run graph:done`** before claiming the hop shipped. It is the closer.
+   It does not write the queue. Then one loop, then stop
+   ([GRAPH_LOOP.md](GRAPH_LOOP.md) loop rule 2). Print
    `loop id · role (if gauntlet) · PR + label (or already-true proof) · next spawn`.
 
 **Required tests:** `npx tsx --test "src/lib/loopQueue/*.test.ts"` if you touched the
