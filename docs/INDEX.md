@@ -74,8 +74,8 @@
 | [legal/MSA_TEMPLATE.md](legal/MSA_TEMPLATE.md) | B2B MSA draft (no consumer SLA promises) |
 | [MOBILE_PLAYBOOK.md](MOBILE_PLAYBOOK.md) | Native mobile umbrella — stack decision record, shared backbone, UX laws, Android → iOS gates |
 | [UX_PLAYBOOK.md](UX_PLAYBOOK.md) | UX operating system — problem register, 7-step process, flow/state/content standards, research ops, redesign track |
-| [GRAPH_LOOP.md](GRAPH_LOOP.md) | Agent graph execution queue — live row from `npm run graph`, never restated here |
-| [graph/INDEX.md](graph/INDEX.md) | Live hop contract (`HOP.md`) + compaction pin (`PINNED.md`). Closer: `npm run graph:done` |
+| [GRAPH_LOOP.md](GRAPH_LOOP.md) | Harness execution queue — live row from `npm run harness`, never restated here |
+| [harness/INDEX.md](harness/INDEX.md) | Live hop contract (`HOP.md`) + compaction pin (`PINNED.md`). Closer: `npm run harness:done` |
 | [IDEA_LOOP.md](IDEA_LOOP.md) | Idea generation protocol — one row per run into GRAPH_LOOP |
 | [mechanics/INDEX.md](mechanics/INDEX.md) | The idea graph — behaviours, mechanics, hypotheses, constraints |
 | [GAUNTLET_LOOP.md](GAUNTLET_LOOP.md) | Gauntlet grading protocol |

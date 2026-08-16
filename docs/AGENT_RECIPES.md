@@ -187,7 +187,7 @@ This recipe wins when the top GRAPH_LOOP `open` row is a campaign (`GNT-*`). The
 4. Verdict: every **written instrument** PASS/FAIL + exactly one “Biggest remaining gap.” A feel sentence is `founder-only, not a builder brief`. Hero-surface passes append a DESIGN_REVIEW §Passes row, Reviewer `Gauntlet <ID>.<U> R<r>`.
 5. LEAD pastes a **valid** verdict verbatim (trio present). Missing stills or “tests passed” is invalid — do not paste; re-spawn the critic. Instrument FAIL → that gap is the next builder brief. Feel-only FAIL is not.
 6. All units green → one SMOOTHER pass → report. Terminal state `ready-for-founder`. Never write `status: pass`.
-7. GRAPH_LOOP campaign row goes `done` only when the report is written. The same PR writes a `V-NN` (`campaign: GNT-n`). `npm run graph` prints that lesson on the next spawn.
+7. GRAPH_LOOP campaign row goes `done` only when the report is written. The same PR writes a `V-NN` (`campaign: GNT-n`). `npm run harness` prints that lesson on the next spawn.
 
 **Required tests:** the unit’s named instruments (see the workbench table). Plus the GRAPH_LOOP loop tests if the builder touched `src|app|scripts|supabase`.
 
@@ -233,14 +233,14 @@ rather than another letter. It is the alternative to inventing `AK2`.
 
 ---
 
-## 14. Boot the graph from outside the repo
+## 14. Boot the harness from outside the repo
 
-**Required reads:** whatever `npm run graph` names. That is the point of it.
+**Required reads:** whatever `npm run harness` names. That is the point of it.
 
 Recipes 11 · 12 · 13 each state when they win, in three different files. This one
 decides between them, and works when the shell is not already in the repo — the
-`/graph` skill (machine-local, `~/.claude/skills/graph/`, never `.claude/skills/`:
-hard rule 6) is a thin loader over exactly these steps.
+`/harness` skill (machine-local, `~/.claude/skills/harness/`, never `.claude/skills/`:
+hard rule 6) is a thin loader over exactly these steps. `/graph` is an alias.
 
 1. **Find the repo and verify it.** cwd, walking up · `$MW_REPO` · `~/missionwinning`
    and the usual siblings. A candidate counts only when **all three** hold:
@@ -249,16 +249,16 @@ hard rule 6) is a thin loader over exactly these steps.
 2. **Boot the spine** — `CONTEXT.md` → `AGENTS.md` → `INDEX.md` → `ORCHESTRATION.md`
    → [GRAPH_LOOP.md](GRAPH_LOOP.md), whose § *Copy-paste prompt* BANS block you read
    **verbatim** rather than from memory. Then the folder `INDEX.md` you will edit.
-3. **`npm run graph`.** It names the live ticket, the route, the recipe, the
+3. **`npm run harness`.** It names the live ticket, the route, the recipe, the
    workbench and its `Next spawn` line, any `founder`/`blocked` row it skipped,
    the monoculture ratchet, closed-loop lessons, and — on harvest — the
    `idea:next` pick. It prints; it never edits the queue. Re-read
-   [graph/PINNED.md](graph/PINNED.md). Fill [graph/HOP.md](graph/HOP.md) before
+   [harness/PINNED.md](harness/PINNED.md). Fill [harness/HOP.md](harness/HOP.md) before
    the first product edit (`ticket` = the live id, `done_means` one sentence,
    `accept` one command).
 4. **Take the route it named**, and only that one — `build` → recipe 11 · `gauntlet`
    → recipe 12 · `harvest` → recipe 13. Not a more interesting row, not two rows.
-5. **`npm run graph:done`** before claiming the hop shipped. It is the closer.
+5. **`npm run harness:done`** before claiming the hop shipped. It is the closer.
    It does not write the queue. Then one loop, then stop
    ([GRAPH_LOOP.md](GRAPH_LOOP.md) loop rule 2). Print
    `loop id · role (if gauntlet) · PR + label (or already-true proof) · next spawn`.
@@ -268,9 +268,9 @@ router; otherwise the loop's own tests, per the recipe you were routed to.
 
 **Never**
 
-- Choose the route yourself when `graph` disagrees — fix the queue or the
+- Choose the route yourself when `harness` disagrees — fix the queue or the
   router, in its own PR
-- Write another plan instead of executing the row ([GRAPH_LOOP.md](GRAPH_LOOP.md) § *Stop the graph if*)
+- Write another plan instead of executing the row ([GRAPH_LOOP.md](GRAPH_LOOP.md) § *Stop the harness if*)
 - Mint the next letter section to refill a thin queue — that is what routing to a
   harvest is for, and `MAX_SINGLE_ROW_RUN` now goes red instead of asking nicely
 - Put this skill in `.claude/skills/` (hard rule 6) · merge your own PR · push `master`
@@ -280,7 +280,7 @@ router; otherwise the loop's own tests, per the recipe you were routed to.
 ## Quick commands
 
 ```bash
-npm run graph            # which loop runs next, and under which recipe
+npm run harness          # which loop runs next, and under which recipe (`graph` is an alias)
 npm test
 npm run build
 npm run lint
