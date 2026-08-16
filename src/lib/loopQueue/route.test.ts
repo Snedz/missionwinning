@@ -45,15 +45,14 @@ function injectNow(src: string, rows: string): string {
  * The live ticket                                                     *
  * ------------------------------------------------------------------ */
 
-test('the committed queue has no Now-open row and routes to the critical path', () => {
+test('the committed queue has no Now-open row and routes to harvest paste', () => {
   const q = real();
   const open = nowSections(q).flatMap((s) => s.rows).filter((x) => x.status === 'open');
   assert.equal(open.length, 0, `Now still has open ${open.map((x) => x.id).join(', ')}`);
   const r = route(root, q);
-  assert.equal(r.kind, 'path');
-  assert.equal(r.recipe, 15);
-  assert.equal(r.path?.id, 'C5');
-  assert.equal(r.path?.owner, 'founder');
+  assert.equal(r.kind, 'harvest');
+  assert.equal(r.recipe, 13);
+  assert.equal(r.harvestAction, 'paste');
   assert.equal(typeof r.singleRowRun, 'number');
   assert.equal(r.atRatchet, false);
 });
@@ -144,15 +143,57 @@ test('the same row without GNT routes to an ordinary build', () => {
   assert.equal(r.workbench, null);
 });
 
-test('no open row and an empty harvest route to the critical path, not the next letter', () => {
+test('no open row and a living idea:next pick routes to harvest paste, not C5', () => {
   const q = real();
   for (const s of q.sections) for (const row of s.rows) if (row.status === 'open') row.status = 'done';
   const r = route(root, q);
-  assert.equal(r.kind, 'path');
-  assert.equal(r.recipe, 15);
+  assert.equal(r.kind, 'harvest');
+  assert.equal(r.recipe, 13);
+  assert.equal(r.harvestAction, 'paste');
   assert.equal(r.row, null);
-  assert.equal(r.path?.id, 'C5');
-  assert.match(r.notes.join(' '), /not AU2|Horizon W/);
+  assert.match(r.notes.join(' '), /pastes the `idea:next` row/);
+});
+
+test('no open row, nothing to emit, but generate still legal routes to harvest generate', () => {
+  const tmp = mkdtempSync(path.join(tmpdir(), 'loopqueue-gen-'));
+  mkdirSync(path.join(tmp, 'docs/mechanics'), { recursive: true });
+  writeFileSync(path.join(tmp, 'docs/IDEA_LOOP.md'), 'stub');
+  writeFileSync(
+    path.join(tmp, 'docs/mechanics/LEDGER.md'),
+    `| run | date | scout | anatomist | translator | red team | cap declared | spent | emitted | survived red team | later PASS |
+|---|---|---|---|---|---|---|---|---|---|---|
+| harvest-9 | 2026-08-16 | 3 | 1 | 3 | 1 | 0 | 0 | 0 | 0 of 3 | — |
+| harvest-11 | 2026-08-16 | 3 | 1 | 2 | 1 | 0 | 0 | 0 | 1 of 2 | — |
+`
+  );
+  const q = real();
+  for (const s of q.sections) for (const row of s.rows) if (row.status === 'open') row.status = 'done';
+  const r = route(tmp, q);
+  assert.equal(r.kind, 'harvest');
+  assert.equal(r.harvestAction, 'generate');
+  rmSync(tmp, { recursive: true, force: true });
+});
+
+test('no open row, nothing to emit, and two zero generates route to C5', () => {
+  const tmp = mkdtempSync(path.join(tmpdir(), 'loopqueue-mined-'));
+  mkdirSync(path.join(tmp, 'docs/mechanics'), { recursive: true });
+  writeFileSync(path.join(tmp, 'docs/IDEA_LOOP.md'), 'stub');
+  writeFileSync(
+    path.join(tmp, 'docs/mechanics/LEDGER.md'),
+    `| run | date | scout | anatomist | translator | red team | cap declared | spent | emitted | survived red team | later PASS |
+|---|---|---|---|---|---|---|---|---|---|---|
+| harvest-8 | 2026-08-16 | 3 | 1 | 1 | 1 | 0 | 0 | 0 | 0 of 2 | — |
+| harvest-9 | 2026-08-16 | 3 | 1 | 1 | 1 | 0 | 0 | 0 | 0 of 3 | — |
+`
+  );
+  const q = real();
+  for (const s of q.sections) for (const row of s.rows) if (row.status === 'open') row.status = 'done';
+  const r = route(tmp, q);
+  assert.equal(r.kind, 'path', 'mined harvest must not invent a letter');
+  assert.equal(r.recipe, 15);
+  assert.equal(r.harvestAction, null);
+  assert.ok(r.path, 'path names a Horizon W gap');
+  rmSync(tmp, { recursive: true, force: true });
 });
 
 test('a founder or blocked row is skipped to the next open row, and reported', () => {

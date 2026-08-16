@@ -8,7 +8,8 @@ The queue is GRAPH_LOOP. What may be built is ORCHESTRATION.
 - Do not invent traction. Do not raise `TAP_BUDGET`.
 - No America / wearables-as-score / iOS. No chat on Today.
 - One concern. One PR. Do not invent the next letter.
-- Empty queue + empty harvest → Horizon W path (`npm run harness`), not AU2.
-- Harvest paste only with `--paste`.
+- Empty queue + a living `idea:next` pick → harvest **paste** (`npm run idea:paste`). `/harness` is the paste.
+- Empty queue + nothing to emit + generate still legal → harvest **generate**, then paste if one survives.
+- Two consecutive generate-harvests at zero survivors → Horizon W path (C5 phone). Not AU2.
 - Builder never grades itself. `npm run harness:done` before claiming the hop shipped.
 - Do not commit `.hermes/`, `ops/`, or `.env.local`.

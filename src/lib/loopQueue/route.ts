@@ -43,6 +43,7 @@ import { validateGraph } from '@/lib/ideaGraph/validate.ts';
 import { readEmittedHistory } from '@/lib/ideaGraph/derive.ts';
 import { selectionInputs } from '@/lib/ideaGraph/learn.ts';
 import { selectNext } from '@/lib/ideaGraph/select.ts';
+import { generateHarvestLegal } from '@/lib/ideaGraph/harvestGate.ts';
 
 /**
  * The committed queue's trailing run of one-row `Now` sections. Pinned by
@@ -61,6 +62,9 @@ const ROLES = ['LEAD', 'BUILDER', 'CRITIC', 'SMOOTHER'] as const;
 export type Role = (typeof ROLES)[number];
 
 export type RouteKind = 'build' | 'gauntlet' | 'harvest' | 'path' | 'stalled';
+
+/** What a harvest hop must do. Null when the route is not harvest. */
+export type HarvestAction = 'paste' | 'generate' | null;
 
 export interface Workbench {
   file: string;
@@ -88,6 +92,8 @@ export interface Route {
   notes: string[];
   /** Horizon W gap when `kind` is `path`. */
   path: PathGap | null;
+  /** Set when `kind` is `harvest`. */
+  harvestAction: HarvestAction;
 }
 
 /** `Now` sections only, in document order. Parallel / Founder / Parked are other lanes. */
@@ -223,6 +229,7 @@ export function route(root: string, queue: ParsedQueue): Route {
       atRatchet,
       notes,
       path: null,
+      harvestAction: null,
     };
   }
 
@@ -236,6 +243,7 @@ export function route(root: string, queue: ParsedQueue): Route {
     atRatchet,
     notes,
     path: null,
+    harvestAction: null,
   };
 }
 
@@ -256,21 +264,36 @@ function emptyQueueRoute(
   base: Pick<Route, 'singleRowRun' | 'atRatchet' | 'skipped' | 'notes'>
 ): Route {
   const { singleRowRun: run, atRatchet, skipped, notes } = base;
-  const blank = { row: null, workbench: null, skipped, singleRowRun: run, atRatchet, path: null as PathGap | null };
+  const blank = {
+    row: null,
+    workbench: null,
+    skipped,
+    singleRowRun: run,
+    atRatchet,
+    path: null as PathGap | null,
+    harvestAction: null as HarvestAction,
+  };
 
   if (harvestWouldEmit(root)) {
     notes.push(
-      'no agent-open row in any `### Now` section — the honest next step is a new idea, not the next letter'
+      'no agent-open row — `/harness` pastes the `idea:next` row. That is the baton.'
     );
-    return { kind: 'harvest', recipe: 13, notes, ...blank };
+    return { kind: 'harvest', recipe: 13, notes, ...blank, harvestAction: 'paste' };
+  }
+
+  if (generateHarvestLegal(root)) {
+    notes.push(
+      'no agent-open row and nothing to emit — generate a harvest (recipe 13), then paste if one survives'
+    );
+    return { kind: 'harvest', recipe: 13, notes, ...blank, harvestAction: 'generate' };
   }
 
   const gap = firstCriticalGap(root);
   if (gap) {
     notes.push(
       gap.owner === 'founder'
-        ? `no queue row and no harvest — next is ${gap.id} (${gap.owner} phone), not AU2`
-        : `no queue row and no harvest — next is Horizon W ${gap.id}`
+        ? `no queue row, harvest mined out — next is ${gap.id} (${gap.owner} phone), not AU2`
+        : `no queue row, harvest mined out — next is Horizon W ${gap.id}`
     );
     return { kind: 'path', recipe: 15, notes, ...blank, path: gap };
   }

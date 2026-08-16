@@ -214,7 +214,7 @@ rather than another letter. It is the alternative to inventing `AK2`.
 3. `npm run idea:next` names the behaviour axis with an empty cell. **You do not choose it.**
 4. **TRANSLATOR** reads only `npm run idea:pack <class>` and proposes hypotheses against that axis. Every one needs `removes`, `guardrail` and `kill_criterion`.
 5. **RED TEAM** — fresh context, a *different model family* — tries to refute each: constraint violation, precondition arithmetic, anti-library hit, backfire edge, fake instrument, prospective hindsight. Default to refuted when uncertain.
-6. `npm run idea:validate`, then `npm run idea:next`. Paste the single row into GRAPH_LOOP as the top `open` row, prefixed `IL-`.
+6. `npm run idea:validate`, then `npm run idea:next`. `/harness` pastes the single `IL-` row (`npm run idea:paste`). `--paste` is an alias, not a gate.
 7. Record the run in `docs/mechanics/LEDGER.md` — spawns, tier, cap, spend, yield.
 8. After the gauntlet closes it, **HISTORIAN** writes the `verdict` node and the `ANTILIBRARY.md` row — **whether it won or lost.**
 
@@ -272,8 +272,8 @@ router; otherwise the loop's own tests, per the recipe you were routed to.
 - Choose the route yourself when `harness` disagrees — fix the queue or the
   router, in its own PR
 - Write another plan instead of executing the row ([GRAPH_LOOP.md](GRAPH_LOOP.md) § *Stop the harness if*)
-- Mint the next letter section to refill a thin queue — harvest if `idea:next`
-  has a row; otherwise the Horizon W path (recipe 15). `MAX_SINGLE_ROW_RUN` goes
+- Mint the next letter section to refill a thin queue — harvest paste or
+  generate; path only when generate is mined out. `MAX_SINGLE_ROW_RUN` goes
   red instead of asking nicely
 - Put this skill in `.claude/skills/` (hard rule 6) · merge your own PR · push `master`
 
@@ -284,10 +284,10 @@ router; otherwise the loop's own tests, per the recipe you were routed to.
 **Required reads:** [ORCHESTRATION.md](../ORCHESTRATION.md) Horizon W ·
 [EXCELLENCE_RESULT.md](EXCELLENCE_RESULT.md) · whatever `npm run harness` named.
 
-Wins when GRAPH_LOOP has no agent-open row **and** `idea:next` emits nothing.
-That used to print "stop, do not refill" and sit. The standing NOW is still
-Horizon W. This recipe takes the first unproven W-gap, from instruments, not
-taste (`src/lib/loopQueue/criticalPath.ts`).
+Wins when GRAPH_LOOP has no agent-open row, `idea:next` emits nothing, **and**
+generate is mined out (two consecutive scout-harvests at zero survivors).
+The standing NOW is still Horizon W. This recipe takes the first unproven
+W-gap, from instruments, not taste (`src/lib/loopQueue/criticalPath.ts`).
 
 1. **`npm run harness` names the ticket** (`W1`…`W4` or `C5`). You do not pick.
 2. **Owner `founder`** (C5 while RESULT is unscored): print the ticket and stop.
