@@ -250,11 +250,12 @@ export function WorkoutVictorySheet({
         onOpenChange(next);
       }}
     >
-      {/* The dialog primitive sets no max height, so this grew past the viewport once
-          the debrief was added and the "Back to Today" footer became visible but
-          unreachable — the hero e2e caught it as a click timeout, not a render error.
-          dvh, not vh, so mobile browser chrome does not eat the footer. */}
-      <DialogContent className="victory-lock sm:max-w-md md:max-w-lg xl:max-w-xl border-2 border-border bg-card max-h-[90dvh] overflow-y-auto">
+      {/* The dialog primitive sets no max height, so this grew past the viewport
+          once (hero e2e click timeout on an unreachable footer). dvh, not vh.
+          The one red Next must not live in the scroll — first-session rewards +
+          feel + stats already push it below 390×844. Dock it. */}
+      <DialogContent className="victory-lock sm:max-w-md md:max-w-lg xl:max-w-xl flex flex-col border-2 border-border bg-card max-h-[90dvh] overflow-hidden p-0">
+        <div data-testid="victory-scroll" className="min-h-0 flex-1 space-y-4 overflow-y-auto p-6">
         <DialogHeader className="text-center space-y-3 victory-reveal">
           <div className="mx-auto relative h-16 w-16 overflow-hidden border-2 border-border bg-card">
             <Image
@@ -308,13 +309,6 @@ export function WorkoutVictorySheet({
 
         <VictoryFeelStrip feelSaved={feelSaved} onSaveFeel={saveFeel} />
 
-        {summary.nextAction ? (
-          <VictoryNextActionStrip
-            nextAction={summary.nextAction}
-            onNavigate={() => onOpenChange(false)}
-          />
-        ) : null}
-
         <VictorySecondaryLinks
           links={secondaryLinks}
           onNavigate={() => onOpenChange(false)}
@@ -332,11 +326,6 @@ export function WorkoutVictorySheet({
         )}
 
         <DialogFooter className="flex-col sm:flex-col gap-2 pt-1">
-          {!summary.nextAction && (
-            <Button variant="outline" className="w-full min-h-[44px] tap-target" onClick={onViewToday}>
-              {t('victoryBackToday', { defaultValue: 'Back to Today' })}
-            </Button>
-          )}
           {showBackTodaySecondary && (
             <button
               type="button"
@@ -378,6 +367,23 @@ export function WorkoutVictorySheet({
             ) : null}
           </div>
         </DialogFooter>
+        </div>
+
+        <div
+          data-testid="victory-next-dock"
+          className="shrink-0 border-t-2 border-border bg-card px-6 pb-6 pt-3"
+        >
+          {summary.nextAction ? (
+            <VictoryNextActionStrip
+              nextAction={summary.nextAction}
+              onNavigate={() => onOpenChange(false)}
+            />
+          ) : (
+            <Button variant="outline" className="w-full min-h-[44px] tap-target" onClick={onViewToday}>
+              {t('victoryBackToday', { defaultValue: 'Back to Today' })}
+            </Button>
+          )}
+        </div>
       </DialogContent>
     </Dialog>
   );
