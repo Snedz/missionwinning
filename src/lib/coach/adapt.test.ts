@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import type { CompletedWorkoutLog } from '@/types';
 import { buildCoachContextFromInputs } from '@/lib/coach/contextBuilder';
 import { generateWeek } from '@/lib/coach/planEngine';
-import { adaptPlan, adaptForEquipmentChange, regenerateFutureSessions } from '@/lib/coach/adapt';
+import { adaptPlan, adaptForEquipmentChange, regenerateFutureSessions, sessionsMateriallyEqual } from '@/lib/coach/adapt';
 
 describe('adaptPlan', () => {
   /*
@@ -217,6 +217,33 @@ describe('adaptPlan', () => {
         'that is what made the "your coach adapted your week" banner permanent'
     );
     assert.deepEqual(twice.sessions, once.sessions, 'and the week itself must be unchanged');
+  });
+
+  it('H-08: order-only week is not a material adapt', () => {
+    const ctx = buildCoachContextFromInputs({
+      history: [],
+      experience: 'beginner',
+      equipment: 'bodyweight',
+      goal: 'goal:general',
+      daysPerWeek: 3,
+      seedId: 'adapt-order-only',
+    });
+    const plan = generateWeek(ctx, '2026-07-06');
+    assert.ok(plan.sessions.length >= 2, 'need two sessions to reorder');
+    const reversed = [...plan.sessions].reverse();
+    assert.equal(
+      sessionsMateriallyEqual(plan.sessions, reversed),
+      true,
+      'the same sessions in another array order must not mount a diff'
+    );
+    const dropped = plan.sessions.map((s, i) =>
+      i === 0 ? { ...s, exercises: [] } : s
+    );
+    assert.equal(
+      sessionsMateriallyEqual(plan.sessions, dropped),
+      false,
+      'dropping a session\'s exercises is material — the banner must still fire'
+    );
   });
 
   it('still bumps the revision when the week really changes', () => {
