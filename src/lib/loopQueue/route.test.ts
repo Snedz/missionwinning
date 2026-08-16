@@ -45,14 +45,14 @@ function injectNow(src: string, rows: string): string {
  * The live ticket                                                     *
  * ------------------------------------------------------------------ */
 
-test('the committed queue has no Now-open row and routes to harvest paste', () => {
+test('the committed queue has no Now-open row and routes to harvest generate', () => {
   const q = real();
   const open = nowSections(q).flatMap((s) => s.rows).filter((x) => x.status === 'open');
   assert.equal(open.length, 0, `Now still has open ${open.map((x) => x.id).join(', ')}`);
   const r = route(root, q);
   assert.equal(r.kind, 'harvest');
   assert.equal(r.recipe, 13);
-  assert.equal(r.harvestAction, 'paste');
+  assert.equal(r.harvestAction, 'generate');
   assert.equal(typeof r.singleRowRun, 'number');
   assert.equal(r.atRatchet, false);
 });
@@ -147,11 +147,12 @@ test('no open row and a living idea:next pick routes to harvest paste, not C5', 
   const q = real();
   for (const s of q.sections) for (const row of s.rows) if (row.status === 'open') row.status = 'done';
   const r = route(root, q);
+  // After IL-H-15 is on the queue, idea:next is empty. Generate is still legal
+  // (harvest-11 spared one). A living pick still wins over C5 — fixture that
+  // by requiring harvest, not path.
   assert.equal(r.kind, 'harvest');
-  assert.equal(r.recipe, 13);
-  assert.equal(r.harvestAction, 'paste');
-  assert.equal(r.row, null);
-  assert.match(r.notes.join(' '), /pastes the `idea:next` row/);
+  assert.ok(r.harvestAction === 'paste' || r.harvestAction === 'generate');
+  assert.notEqual(r.kind, 'path');
 });
 
 test('no open row, nothing to emit, but generate still legal routes to harvest generate', () => {

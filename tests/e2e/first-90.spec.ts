@@ -69,6 +69,8 @@ test.describe('First 90 seconds @gate', () => {
     // (Label in Name), so the guard moves rather than the label. Still anchored
     // — it must not start matching "Log food" or "Log weight".
     const logBtn = page.getByRole('button', { name: /^log( set)?$/i }).first();
+    // H-15: the next lift is not on screen before the first set exists.
+    await expect(page.locator('[data-exercise-id]')).toHaveCount(1);
     await tap(logBtn, 'Log');
 
     // A logged set is visible progress, not a silent state change.

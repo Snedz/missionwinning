@@ -228,6 +228,7 @@ export function ActiveExerciseCard({
         'content-card',
         ssLabel && 'border-s-[3px] border-s-[hsl(var(--accent-poster))]'
       )}
+      data-exercise-id={exercise.id}
       data-pair-mark={ssLabel ?? undefined}
     >
       <ActiveExerciseHeader

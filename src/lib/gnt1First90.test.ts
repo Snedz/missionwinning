@@ -17,6 +17,8 @@ test('first-90 TAP_BUDGET is 4 and must not be raised', () => {
   assert.match(src, /toHaveURL\(\/\\\/log\//);
   assert.match(src, /toHaveURL\(\/\\\/active\//);
   assert.match(src, /\/\^log\( set\)\?\$\/i/);
+  assert.match(src, /data-exercise-id/);
+  assert.match(src, /toHaveCount\(1\)/);
 });
 
 test('logger-depth walk reaches Victory / Back to Today', () => {

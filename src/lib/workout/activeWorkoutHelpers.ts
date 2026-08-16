@@ -670,6 +670,20 @@ export function exerciseHasCompletedSet(
   return sets.some((s) => s.completed);
 }
 
+/**
+ * H-15: later lifts stay off the board until the first set of this session
+ * is logged. Current + earlier cards stay. After any completed set, all lifts
+ * are visible again.
+ */
+export function laterLiftVisible(
+  exercises: { sets: { completed: boolean }[] }[],
+  exIdx: number
+): boolean {
+  if (exercises.some((ex) => exerciseHasCompletedSet(ex.sets))) return true;
+  const current = findNextSet(exercises)?.exIdx ?? 0;
+  return exIdx <= current;
+}
+
 /** True when any set on this exercise is still open to log. */
 export function exerciseHasPlannedSet(
   sets: { completed: boolean }[]
