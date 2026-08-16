@@ -19,6 +19,7 @@
     "check-build-label": "node scripts/check-build-label.mjs",
     "check-excellence-gate": "tsx scripts/check-excellence-gate.ts",
     "graph": "tsx scripts/queue-next.ts",
+    "graph:done": "tsx scripts/graph-hop-done.ts",
     "queue:next": "tsx scripts/queue-next.ts",
     "idea:validate": "tsx scripts/idea-graph.ts validate",
     "idea:next": "tsx scripts/idea-graph.ts next",

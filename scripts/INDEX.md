@@ -15,6 +15,7 @@
 | `compliance-status.ts` | `npm run compliance:status` | Vanta-lite control report (`--ci`, `--write-md`) |
 | `growth-smoke.mjs` | `npm run growth-smoke` | Leads/unsub/welcome perimeter (Wave 2) |
 | `check-build-label.mjs` | `npm run check-build-label` | **Hard rule 5, executable.** Label must exceed `origin/master`'s and be cited in LOG.md + CONTEXT.md. Gate step 2 — before the build, so an unbumped label doesn't cost 3 min |
+| `graph-hop-done.ts` | `npm run graph:done` | Mechanical hop closer. HOP.md ticket must match the live GRAPH_LOOP row; `accept` must exit 0. Does not write the queue |
 | `week4-smoke.mjs` | `npm run week4-smoke` | Weekly-digest dryRun + optional `mw_week4_retention` RPC |
 | `../supabase/checks/week4_retention_proof.sql` | `psql "$DATABASE_URL" -v ON_ERROR_STOP=1 -f supabase/checks/week4_retention_proof.sql` | Seeds every boundary case for the boss metric, asserts 5 eligible / 2 retained, then **rolls back**. `week4-smoke` proves the RPC *answers*; this proves it answers *correctly* |
 | `launch-verify.mjs` | `npm run launch-verify` | Track D chain: env + Supabase + Stripe gates + gate-smoke + growth-smoke + rate-limit-smoke + e2e:critical. Default env profile is Horizon 0 (`--launch`). `LAUNCH_PAID=true` or `--paid` selects Horizon 1 (Stripe webhook + Checkout). |

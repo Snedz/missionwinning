@@ -15,6 +15,7 @@ effect of a command is not handed over.
 |---|---|
 | `parse.ts` | The `## Queue` region as a shape. Tables addressed by header name, status read from the parsed cell |
 | `route.ts` | Live ticket → build (11) · gauntlet (12) · harvest (13), plus the single-row-section ratchet (`IL-*` closes the run) |
+| `hop.ts` | Live hop file (`docs/graph/HOP.md`) — ticket / done_means / accept. Closer is `npm run graph:done` |
 
 ## Why this is code and not another paragraph
 
