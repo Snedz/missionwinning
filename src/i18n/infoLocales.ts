@@ -260,6 +260,7 @@ type InfoStrings = {
   joinClassFailedTitle: string;
   joinClassFailedDesc: string;
   joinClassFailedHome: string;
+  infoCookiesLocaleLi: string;
 };
 
 const en: InfoStrings = {
@@ -675,6 +676,8 @@ const en: InfoStrings = {
   joinClassFailedDesc:
     'Check the code with your teacher — codes are short letter-number combinations. Nothing was saved.',
   joinClassFailedHome: 'Go to Today',
+  infoCookiesLocaleLi:
+    'mw_locale and mw_country are strictly necessary first-party cookies. Language is a display preference; country follows the hosted-service geo-block in supportedRegions.ts. Counsel should review this inventory before a public flip — this page does not rewrite the Privacy or Terms bodies.',
   infoPrivacyChanges: 'Changes to this policy',
   infoPrivacyChangesBody:
     'This policy is versioned; the date above is the version you accept. Material changes re-prompt for consent in the app before your next sign-in, and are announced in the app or by email where appropriate. Earlier versions are available on request.',

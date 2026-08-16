@@ -14,7 +14,7 @@ export function reentryQuietLine(
   if (!reentry.witness?.exerciseId) {
     return t('todayReentryQuietLineBare', {
       minutes: REENTRY_SHORT_MINUTES,
-      defaultValue: "Here's the 20-minute version.",
+      defaultValue: "Here's the {{minutes}}-minute version.",
     });
   }
   return t('todayReentryQuietLine', {

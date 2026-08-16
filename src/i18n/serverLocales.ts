@@ -25,6 +25,9 @@ const SERVER_EN: Record<string, string> = {
   serverPresenceOffline: 'Offline',
   serverNudge: 'Nudge',
   serverNudgeLine: 'Nudge',
+  serverChannelsLabel: 'Channels',
+  serverMembersLabel: 'Members',
+  serverMemberCount: '1 member',
 };
 
 const BY_LANG: Record<string, Record<string, string>> = {

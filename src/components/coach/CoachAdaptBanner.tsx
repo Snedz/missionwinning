@@ -137,14 +137,16 @@ export function CoachAdaptBanner({
         data-testid={weekDiffLine ? 'coach-week-diff' : undefined}
       >
         {weekDiffLine
-          ? t('coachWeekDiffHeadline', {
-              before: countChange.beforeCount,
-              after: countChange.afterCount,
-              defaultValue:
-                countChange.beforeCount === 1
-                  ? `1 session → ${countChange.afterCount}`
-                  : `${countChange.beforeCount} sessions → ${countChange.afterCount}`,
-            })
+          ? countChange.beforeCount === 1
+            ? t('coachWeekDiffHeadlineOne', {
+                after: countChange.afterCount,
+                defaultValue: '1 session → {{after}}',
+              })
+            : t('coachWeekDiffHeadlineMany', {
+                before: countChange.beforeCount,
+                after: countChange.afterCount,
+                defaultValue: '{{before}} sessions → {{after}}',
+              })
           : adaptSignal
             ? t('coachAdaptHeadline', {
                 defaultValue: 'Adapted from your logs — no wearable needed',

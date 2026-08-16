@@ -247,6 +247,8 @@ type CoachStrings = {
   coachSessionMobility: string;
   coachAiBadge: string;
   coachLoading: string;
+  coachWeekDiffHeadlineOne: string;
+  coachWeekDiffHeadlineMany: string;
 };
 
 const en: CoachStrings = {
@@ -553,6 +555,8 @@ const en: CoachStrings = {
   coachSessionMobility: 'Mobility',
   coachAiBadge: 'Live',
   coachLoading: 'Looking at your week…',
+  coachWeekDiffHeadlineOne: '1 session → {{after}}',
+  coachWeekDiffHeadlineMany: '{{before}} sessions → {{after}}',
 };
 
 const es: CoachStrings = {

@@ -32,6 +32,8 @@ const PROGRAMS_EN: Record<string, string> = {
     'Bundle all programs for significant discount (coming soon). Existing purchasers get notified of updates.',
   programsFootOpenBeta:
     'Education outlines for every track. Free core paths live in Learn — share feedback if something is unclear.',
+  programsCoachPointer: 'Mission Coach writes the week from your logs.',
+  programsNotAStore: 'These cards are education outlines, not a second store.',
   progPtTitle: 'Elite Personal Training Education + Nutrition',
   progPtPrice: '$497',
   progPtDuration: 'Self-paced • ~40 hours core content',

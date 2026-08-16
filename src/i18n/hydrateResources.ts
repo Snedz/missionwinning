@@ -146,6 +146,11 @@ export function hydrateI18nResources(instance: typeof i18n): Promise<void> {
       mergeServerStrings(resources[lang], lang);
     }
 
+    const { mergeFirstClassStrings } = await import('@/i18n/firstClassLocales');
+    for (const lang of Object.keys(resources)) {
+      mergeFirstClassStrings(resources[lang], lang);
+    }
+
     const { applyLocalePack } = await import('@/i18n/localePacks');
     for (const [lang, common] of Object.entries(resources)) {
       applyLocalePack(common, lang);

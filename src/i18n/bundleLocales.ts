@@ -79,6 +79,29 @@ type BundleStrings = {
   unlockFoundersEmail: string;
   unlockJoining: string;
   unlockJoinFounders: string;
+  unlockGetNotified: string;
+  bundleShopPaidCoach: string;
+  bundleShopPaidRecipes: string;
+  bundleShopPaidMove: string;
+  bundleShopPaidMind: string;
+  bundleShopPaidLearn: string;
+  bundleShopFreeEyebrow: string;
+  bundleShopFreeTitle: string;
+  bundleShopFreeBody: string;
+  bundleShopFreeCta: string;
+  bundleShopPaidEyebrow: string;
+  bundleShopPaidLead: string;
+  bundleShopVsStack: string;
+  bundleShopPerYear: string;
+  bundleShopSecondaryPrices: string;
+  bundleShopPlanChooser: string;
+  bundleShopPaidLogger: string;
+  bundleShopAlreadyIncluded: string;
+  bundleShopAlreadyIncludedBody: string;
+  bundleShopOpenCoach: string;
+  bundleShopSubscribe: string;
+  bundleShopGetNotified: string;
+  bundleShopCheckoutSoon: string;
 };
 
 const en: BundleStrings = {
@@ -164,6 +187,30 @@ const en: BundleStrings = {
   unlockFoundersEmail: "We'll email {{email}} when checkout opens.",
   unlockJoining: 'Joining…',
   unlockJoinFounders: 'Join founders list',
+  unlockGetNotified: 'Get notified',
+  bundleShopPaidCoach: 'Mission Coach weekly plans from your logs',
+  bundleShopPaidRecipes: '{{count}} premium recipes',
+  bundleShopPaidMove: '{{count}} premium Move flows',
+  bundleShopPaidMind: '{{count}} premium Mind sessions',
+  bundleShopPaidLearn: '{{count}} premium Learn sections',
+  bundleShopFreeEyebrow: 'Always yours',
+  bundleShopFreeTitle: 'Free forever',
+  bundleShopFreeBody:
+    'Logger and free floors. No account. No card. Super Bundle is optional depth — never required to log a set.',
+  bundleShopFreeCta: 'Start training',
+  bundleShopPaidEyebrow: 'One Super Bundle',
+  bundleShopPaidLead: 'Coach depth plus pillar catalogs in one install — not four apps.',
+  bundleShopVsStack: 'One Super Bundle vs {{stack}}.',
+  bundleShopPerYear: '/year founders',
+  bundleShopSecondaryPrices: '${{monthly}}/mo · ${{lifetime}} lifetime',
+  bundleShopPlanChooser: 'Super Bundle plan',
+  bundleShopPaidLogger: 'Logger stays free. Never gated.',
+  bundleShopAlreadyIncluded: 'Already included',
+  bundleShopAlreadyIncludedBody: 'Super Bundle depth is on this account.',
+  bundleShopOpenCoach: 'Open Coach',
+  bundleShopSubscribe: 'Subscribe Now',
+  bundleShopGetNotified: 'Get notified',
+  bundleShopCheckoutSoon: 'Checkout opens when payments go live.',
 };
 
 const es: BundleStrings = {

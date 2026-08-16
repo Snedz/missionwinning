@@ -136,6 +136,24 @@ type FitnessTestStrings = {
    * route is currently served.
    */
   pftBackAmerica: string;
+  fieldTestGarageAction: string;
+  fieldTestSkipAction: string;
+  fieldTestGarageHint: string;
+  fieldTestStartHint: string;
+  fieldTestReceiptTitle: string;
+  fieldTestScaleLabel: string;
+  fieldTestScaleNone: string;
+  fieldTestAgeBand: string;
+  fieldTestScaleColumnM: string;
+  fieldTestScaleColumnF: string;
+  fieldTestEventGarage: string;
+  fieldTestRawReps: string;
+  fieldTestPoints: string;
+  fieldTestVsLast: string;
+  fieldTestTotal: string;
+  fieldTestBandMap: string;
+  fieldTestScoreCite: string;
+  fieldTestRunAgain: string;
 };
 
 const en: FitnessTestStrings = {
@@ -287,6 +305,25 @@ const en: FitnessTestStrings = {
   youthSending: 'Sending…',
   schoolJoinedTeacherNote: 'Complete a fitness test while signed in to sync your score. Teachers view standings on the class dashboard.',
   pftBackAmerica: 'National fitness',
+  fieldTestGarageAction: 'No sled — shuttle + farmer carry',
+  fieldTestSkipAction: 'Skip this event',
+  fieldTestGarageHint: 'Unscored. Drops the 0–500 total.',
+  fieldTestStartHint: 'Optional: pick a published scale column on the receipt to see points.',
+  fieldTestReceiptTitle: 'Field test',
+  fieldTestScaleLabel: 'Published scale column',
+  fieldTestScaleNone: 'Not set — raw only',
+  fieldTestAgeBand: 'Column M',
+  fieldTestScaleColumnM: 'Column M',
+  fieldTestScaleColumnF: 'Column F',
+  fieldTestEventGarage: 'Shuttle + farmer carry',
+  fieldTestRawReps: '{{value}} reps',
+  fieldTestPoints: '{{points}} / 100',
+  fieldTestVsLast: 'vs last field test',
+  fieldTestTotal: '{{total}} / 500',
+  fieldTestBandMap:
+    'Bands are Mission Winning labels on the published 0–100 point rows (60 / 70–89 / 90–100).',
+  fieldTestScoreCite: 'Points from the published ACFT scoring tables (23 March 2022).',
+  fieldTestRunAgain: 'Run again',
 };
 
 const es: FitnessTestStrings = {
