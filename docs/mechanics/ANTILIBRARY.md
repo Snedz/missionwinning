@@ -41,6 +41,9 @@ refused by the selector with the citation attached.
 | `depth+add+M-18+one+new+work+after+due+session` | Victory already returns exactly one next action; named instrument cannot fail | `H-17` |
 | `depth+measure+M-18+week+does+not+add+while+due` | adapt already never introduces a new lift id on a later-day rewrite; subset assertion cannot fail | `H-18` |
 | `tell+add+M-18+share+waits+due+set` | first-90 path already has no share control before Log set; assertion cannot fail | `H-19` |
+| `tell+change+M-19+share+waits+box` | Share is Finish-only and absent on the logger; no box exists to wait for | `H-20` |
+| `pay+remove+M-19+identify+off+box` | Identification chrome already absent on first-90 and `/active` | `H-21` |
+| `tell+measure+M-19+share+after+box` | Share×elapsed cannot be measured (no field, no corpus, no box) | `H-22` |
 
 ---
 

@@ -16,12 +16,12 @@ One screen of truth for any AI tool or human joining cold. Read this, then [AGEN
 
 ---
 
-## Now (2026-08-16 · web `2026.07-unified.872` · Android `1.24.1`)
+## Now (2026-08-16 · web `2026.07-unified.873` · Android `1.24.1`)
 
 > The ONLY "where we are" block in the repo — [ORCHESTRATION.md](ORCHESTRATION.md) points here.
 >
 > **Budget: ≤25 bullets.** Enforced by `src/lib/contextBudget.test.ts`. When over,
-> rotate the oldest *shipped* entries to `docs/archive/` — `.872` dropped `.858` · `.871` dropped `.857` · `.870` dropped `.856` · `.869` dropped `.855` · `.868` dropped `.854` · `.867` dropped `.853` · `.866` dropped `.852` · `.865` dropped `.851` · `.864` dropped `.850` · `.863` dropped `.849` · `.862` dropped `.848` · `.861` dropped `.847` · `.860` dropped `.846` · `.859` dropped `.845` · `.858` dropped `.844` · `.857` dropped `.843` · `.856` dropped `.842` · `.855` dropped `.841` · `.854` dropped `.840` · `.853` dropped `.839` · `.852` dropped `.837` (full text remains in LOG.md / archive) · `.203` moved `.123`–`.189`,
+> rotate the oldest *shipped* entries to `docs/archive/` — `.873` dropped `.859` · `.872` dropped `.858` · `.871` dropped `.857` · `.870` dropped `.856` · `.869` dropped `.855` · `.868` dropped `.854` · `.867` dropped `.853` · `.866` dropped `.852` · `.865` dropped `.851` · `.864` dropped `.850` · `.863` dropped `.849` · `.862` dropped `.848` · `.861` dropped `.847` · `.860` dropped `.846` · `.859` dropped `.845` · `.858` dropped `.844` · `.857` dropped `.843` · `.856` dropped `.842` · `.855` dropped `.841` · `.854` dropped `.840` · `.853` dropped `.839` · `.852` dropped `.837` (full text remains in LOG.md / archive) · `.203` moved `.123`–`.189`,
 > `.207` moved `.190`–`.193`, `.211` moved `.194`–`.197`, `.215` moved `.198`
 > `.216` moved `.200`, `.217` moved `.199`, `.218` moved `.201`, `.219` moved `.202`
 > `.220` moved `.203`, `.221` moved `.204`, `.222` moved `.205`, `.223` moved `.206`,
@@ -409,6 +409,7 @@ One screen of truth for any AI tool or human joining cold. Read this, then [AGEN
 > | gitleaks | **green — and scanning for the first time.** It had never scanned anything: on a `pull_request` event the action lists the PR's commits, the job declared no `permissions:` block, and it 403'd (`pull_requests=read`) before opening a file. Fixed by a `permissions:` block (`.224` carrying `.255`). It scans **only the PR's own commits**, so commit `8ea3527a`'s real Solana treasury address — scrubbed from the working file, still in history — is out of its scope. That finding stands, deliberately not allowlisted; it was never what made this check red. |
 > | Privacy / security program | **Landed `.778`** — [docs/security/PROGRAM_STATUS.md](docs/security/PROGRAM_STATUS.md). Invite-bound gate, health-bucket, DSAR, territory fail-closed. OTP-without-click can leave a ghost user. Not a cert. |
 
+- **`.873`:** (`2026.07-unified.873`) **Generate is mined out** — harvest-13 + harvest-14 both scout 3 / `0 of 3`. Empty queue → C5 / path, not another generate. No `PRIVATE_MODE` flip.
 - **`.872`:** (`2026.07-unified.872`) **First session one lift until a set** — `IL-H-15`. Later cards stay off until `completed`. TAP_BUDGET 4. No `PRIVATE_MODE` flip.
 - **`.871`:** (`2026.07-unified.871`) **`/harness` pastes harvest** — living `idea:next` → `idea:paste`. Empty + generate legal → generate. Two zero generates → C5. No `PRIVATE_MODE` flip.
 - **`.870`:** (`2026.07-unified.870`) **Harness follows Horizon W** — empty queue + empty harvest → path (recipe 15), not stop. No `PRIVATE_MODE` flip.
@@ -422,7 +423,6 @@ One screen of truth for any AI tool or human joining cold. Read this, then [AGEN
 - **`.862`:** (`2026.07-unified.862`) **H-05 is on the queue** — one tap off the cold path. `IL-H-05` is Now AS. No `PRIVATE_MODE` flip.
 - **`.861`:** (`2026.07-unified.861`) **Coach week arrives as a visible diff** — `IL-H-02`. Banner headline is `N sessions → M` plus the stored set. Same Today slot. TAP_BUDGET holds. No `PRIVATE_MODE` flip.
 - **`.860`:** (`2026.07-unified.860`) **H-02 is on the queue** — Coach week as a visible diff. `IL-H-02` is Now AR. No `PRIVATE_MODE` flip.
-- **`.859`:** (`2026.07-unified.859`) **Adapt banner needs a material week** — `IL-H-08`. `sessionsMateriallyEqual` ignores array order. Dropping exercises still fires. No `PRIVATE_MODE` flip.
 - **Form object kit (on `.781`):** IMPLEMENT block + prop sheets. Regen cable-row (visible stack), lateral-raise, DB press, lunges, DB row. Floor 43. Still-only. No `PRIVATE_MODE` flip.
 - **Excellence:** unscored · — · [docs/EXCELLENCE_RESULT.md](docs/EXCELLENCE_RESULT.md) — Horizon W phone sign-off home; surface PRs need `status: pass` or `Excellence-Override` (`.669`).
 - **`.669`:** (`2026.07-unified.669`) **Excellence RESULT + agent stop-rule** — `excellenceGate` path policy + `check-excellence-gate` on gate/PR CI; wedge still ships while unscored.

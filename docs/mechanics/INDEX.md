@@ -61,9 +61,9 @@ edits a doc as a side effect is how the doc stops being read.
 | | activate | return | trust | depth | tell | pay |
 |---|---|---|---|---|---|---|
 | **add** | H-15 | H-03 · H-04 killed | H-11 killed | H-17 killed | H-19 killed | H-06 blocked-on-telemetry |
-| **change** | H-13 killed | H-07 | H-02 | H-16 killed | — | — |
-| **remove** | H-05 | H-12 killed | H-08 | H-10 blocked-on-telemetry | — | — |
-| **measure** | H-01 | H-09 | H-14 killed | H-18 killed | — | — |
+| **change** | H-13 killed | H-07 | H-02 | H-16 killed | H-20 killed | — |
+| **remove** | H-05 | H-12 killed | H-08 | H-10 blocked-on-telemetry | — | H-21 killed |
+| **measure** | H-01 | H-09 | H-14 killed | H-18 killed | H-22 killed | — |
 
 Empty cells are not a backlog. They are where the next harvest is pointed, and a
 candidate that scores badly while occupying one is kept as a stepping stone

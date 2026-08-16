@@ -35,6 +35,7 @@ hard cap is ≤14 build PRs and spending fewer is the good outcome.
 | harvest-11 | 2026-08-16 | 3 | 1 | 2 | 1 spawn | ≤3 inbox / ≤1 M / ≤3 H / **0 product PR** | 3 inbox / 1 M / 2 H / **0 product PR** | 0 | 1 of 2 | — |
 | harvest-12 | 2026-08-16 | 0 | — | — | — | **1 PR** (paste) | **1 PR** | 1 (`IL-H-15`) | — | — |
 | harvest-13 | 2026-08-16 | 3 | 1 | 3 | 1 spawn | ≤3 inbox / ≤1 M / ≤3 H / **0 product PR** | 3 inbox / 1 M / 3 H / **0 product PR** | 0 | 0 of 3 | — |
+| harvest-14 | 2026-08-16 | 3 | 1 | 3 | 1 spawn | ≤3 inbox / ≤1 M / ≤3 H / **0 product PR** | 3 inbox / 1 M / 3 H / **0 product PR** | 0 | 0 of 3 | — |
 
 The seed run harvested nothing. Its nodes were hand-written from repo truth and
 one research pass, which is why the scout, anatomist, translator and red-team
@@ -74,6 +75,17 @@ H-02 is `H-05`; this run's only product is the paste (`IL-H-05` on GRAPH_LOOP AS
 **harvest-8 notes.** Founder `/graph --paste`. No new scout. The pick after
 H-05 is `H-07`; this run's only product is the paste (`IL-H-07` on GRAPH_LOOP AT).
 1 PR spent on that, not on missed-session dose — that is the next hop.
+
+**harvest-14 notes.** Timed `/harness` generate. New source class:
+session bound / energy (not Anki quota). Scout opened Duolingo Energy
+(2025-07-03, E1), Forest focus timer (E1), Pomodoro Technique + Cirillo
+site (E1). Anatomist promoted M-19 (session ends when the box ends).
+Discarded Forest Plant Together (group), tree-death shame, Energy gem/ad
+refill (`X-02`). Translator wrote H-20 (`change+tell`), H-21
+(`remove+pay`), H-22 (`measure+tell`). Separate red-team spawn killed
+all three (fake instrument ×3: share already Finish-only; identify
+already absent on first-90; share×elapsed unmeasurable). Second
+consecutive 0-of-N generate. Generate now mined out. No paste.
 
 **harvest-13 notes.** Timed `/harness` generate. New source class: spaced
 repetition / daily cap (not logger, undo, or Yousician). Scout opened Anki

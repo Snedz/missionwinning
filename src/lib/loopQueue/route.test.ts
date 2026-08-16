@@ -45,14 +45,15 @@ function injectNow(src: string, rows: string): string {
  * The live ticket                                                     *
  * ------------------------------------------------------------------ */
 
-test('the committed queue has no Now-open row and routes to harvest generate', () => {
+test('the committed queue has no Now-open row and routes to path C5', () => {
   const q = real();
   const open = nowSections(q).flatMap((s) => s.rows).filter((x) => x.status === 'open');
   assert.equal(open.length, 0, `Now still has open ${open.map((x) => x.id).join(', ')}`);
   const r = route(root, q);
-  assert.equal(r.kind, 'harvest');
-  assert.equal(r.recipe, 13);
-  assert.equal(r.harvestAction, 'generate');
+  assert.equal(r.kind, 'path');
+  assert.equal(r.recipe, 15);
+  assert.notEqual(r.harvestAction, 'generate');
+  assert.equal(r.path?.id, 'C5');
   assert.equal(typeof r.singleRowRun, 'number');
   assert.equal(r.atRatchet, false);
 });
@@ -143,16 +144,17 @@ test('the same row without GNT routes to an ordinary build', () => {
   assert.equal(r.workbench, null);
 });
 
-test('no open row and a living idea:next pick routes to harvest paste, not C5', () => {
+test('no open row, empty idea:next, and mined generate routes to path, not harvest', () => {
   const q = real();
   for (const s of q.sections) for (const row of s.rows) if (row.status === 'open') row.status = 'done';
   const r = route(root, q);
-  // After IL-H-15 is on the queue, idea:next is empty. Generate is still legal
-  // (harvest-11 spared one). A living pick still wins over C5 — fixture that
-  // by requiring harvest, not path.
-  assert.equal(r.kind, 'harvest');
-  assert.ok(r.harvestAction === 'paste' || r.harvestAction === 'generate');
-  assert.notEqual(r.kind, 'path');
+  // After IL-H-15 is on the queue, idea:next is empty. Generate is mined out:
+  // harvest-13 and harvest-14 were two consecutive scout>0 runs at 0-of-N.
+  // harvest-11's spare is no longer the last generate.
+  assert.equal(r.kind, 'path');
+  assert.equal(r.recipe, 15);
+  assert.equal(r.harvestAction, null);
+  assert.notEqual(r.kind, 'harvest');
 });
 
 test('no open row, nothing to emit, but generate still legal routes to harvest generate', () => {
