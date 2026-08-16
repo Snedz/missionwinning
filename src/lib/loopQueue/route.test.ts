@@ -45,13 +45,12 @@ function injectNow(src: string, rows: string): string {
  * The live ticket                                                     *
  * ------------------------------------------------------------------ */
 
-test('the committed queue live ticket is the harvest paste IL-H-02', () => {
+test('the committed queue has no Now-open row and routes to a harvest', () => {
   const q = real();
   const open = nowSections(q).flatMap((s) => s.rows).filter((x) => x.status === 'open');
-  assert.deepEqual(open.map((x) => x.id), ['IL-H-02']);
+  assert.equal(open.length, 0, `Now still has open ${open.map((x) => x.id).join(', ')}`);
   const r = route(root, q);
-  assert.equal(r.kind, 'build');
-  assert.equal(r.row?.id, 'IL-H-02');
+  assert.equal(r.kind, 'harvest');
   assert.equal(r.atRatchet, false);
 });
 

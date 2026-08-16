@@ -17,6 +17,7 @@
 8c. `weekDose.ts` — plain-language weekly “dose” (session count · intent · minutes) for Coach UI
 8c2. `weekRationale.ts` — log-cited why-this-week / adapt rationale (inputs · rule · effect) for Coach inspectability (`.693`)
 8c3. `logCitation.ts` — the log fact under every Coach line, or `no-logs`; quotes a stored set, never infers (`.766`, survey clarity 2.56/5)
+8c4. `weekDiff.ts` — session-count proposal (`N sessions → M`) plus the stored fact; replaces the adapt assertion (H-02 / `.861`)
 8d. `coachAdaptReentry.ts` — pure: adapt-banner re-entry is coach day vs freestyle Just Go
 8e. `resolveCoachBossSessionId.ts` — which session gets filled Start on `/coach` (today pending else next)
 8f. `coachChatClient.ts` — HTTP status → copy + stream `[[error:…]]` + slims log/week citations + `readCoachChatStream` (.445/.453)
@@ -51,6 +52,7 @@ Shared client: `src/lib/coachLlmClient.ts` (also used by `coachDailyServer.ts` +
 | `agent/*.test.ts` | Local corpus · BM25 retrieve · log/week slims · tools · MCP · ReAct · no social imports |
 | `weekDose.test.ts` | Session counts + strength/mixed intent labels |
 | `weekRationale.test.ts` | Log-cited adapt / why-this-week (inputs · rule · effect) + banner/page wiring |
+| `weekDiff.test.ts` | H-02: engine session-count change + citation on the existing banner slot |
 
 ## Tests (colocated)
 

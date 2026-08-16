@@ -1,5 +1,7 @@
 import { describe, it } from 'node:test';
 import assert from 'node:assert/strict';
+import { readFileSync } from 'node:fs';
+import { join } from 'node:path';
 import {
   TODAY_MAX_TOP_LEVEL_BLOCKS,
   planTodayBlocks,
@@ -131,5 +133,29 @@ describe('planTodayBlocks', () => {
 
   it('an empty screen plans to nothing rather than throwing', () => {
     assert.deepEqual(planTodayBlocks([]), { top: [], inMore: [] });
+  });
+
+  /**
+   * H-02: the Coach week proposal replaces the adapt banner. A seventh
+   * top-level block is the kill criterion. TAP_BUDGET stays 5.
+   */
+  it('H-02: the week diff is the banner, not a seventh Today block', () => {
+    assert.equal(TODAY_MAX_TOP_LEVEL_BLOCKS, 6);
+    assert.ok(!('coach-week-diff' in TODAY_BLOCK_PRIORITY));
+    assert.ok(!('coach-adapt' in TODAY_BLOCK_PRIORITY));
+    const { top } = planTodayBlocks(TODAY_BLOCKS);
+    assert.ok(top.length <= TODAY_MAX_TOP_LEVEL_BLOCKS);
+
+    const root = join(import.meta.dirname, '..', '..', '..');
+    const dash = readFileSync(join(root, 'src/page-components/HomeTodayDashboard.tsx'), 'utf8');
+    assert.match(dash, /'coach-week'/);
+    assert.doesNotMatch(dash, /'coach-week-diff'|'coach-adapt'/);
+
+    const banner = readFileSync(join(root, 'src/components/coach/CoachAdaptBanner.tsx'), 'utf8');
+    assert.match(banner, /sessionCountChangeFromPlan/);
+    assert.match(banner, /coach-week-diff/);
+
+    const first90 = readFileSync(join(root, 'tests/e2e/first-90.spec.ts'), 'utf8');
+    assert.match(first90, /const TAP_BUDGET = 5/);
   });
 });

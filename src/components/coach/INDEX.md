@@ -6,7 +6,7 @@
 
 | File | Purpose |
 |------|---------|
-| `CoachAdaptBanner.tsx` | Demo-critical: adapted from logs / missed / swapped; `.693` log-cited why-this-week (inputs · rule · effect) |
+| `CoachAdaptBanner.tsx` | Demo-critical: adapted from logs / missed / swapped; `.693` log-cited why-this-week (inputs · rule · effect); `.861` session-count proposal replaces the assertion (H-02) |
 | `CoachTodayCard.tsx` | Today commissioned card → links `/coach` |
 | `CoachLogCite.tsx` | The quoted log under a Coach claim, or the no-logs admission (`.766`) |
 | `WeekStrip.tsx` | Week navigation on Coach page |
