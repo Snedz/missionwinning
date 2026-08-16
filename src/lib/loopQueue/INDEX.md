@@ -13,7 +13,7 @@ Build tooling that happens to be typed. `npm run harness` still **prints**.
 | File | Concern |
 |---|---|
 | `parse.ts` | The `## Queue` region as a shape. Tables addressed by header name, status read from the parsed cell |
-| `route.ts` | Live ticket → build (11) · gauntlet (12) · harvest (13) · path (15), plus the single-row-section ratchet (`IL-*` closes the run) |
+| `route.ts` | Live ticket → build (11) · gauntlet (12) · harvest (13) · path (15) · craft (16) · stalled, plus the single-row-section ratchet (`IL-*` closes the run) |
 | `criticalPath.ts` | Horizon W checklist when the queue is empty and harvest emits nothing |
 | `hop.ts` | Live hop file (`docs/harness/HOP.md`) — ticket / done_means / accept. Closer is `npm run harness:done` |
 | `pasteHarvest.ts` | Write one `IL-` harvest section. Called by `npm run idea:paste` |

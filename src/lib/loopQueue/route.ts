@@ -61,7 +61,24 @@ const WORKBENCH_LINK = /\(?(gauntlet\/GNT-\d+-[a-z0-9-]+\.md)\)/i;
 const ROLES = ['LEAD', 'BUILDER', 'CRITIC', 'SMOOTHER'] as const;
 export type Role = (typeof ROLES)[number];
 
-export type RouteKind = 'build' | 'gauntlet' | 'harvest' | 'path' | 'stalled';
+export type RouteKind = 'build' | 'gauntlet' | 'harvest' | 'path' | 'craft' | 'stalled';
+
+/**
+ * Ticket the closer and HOP.md use when RESULT is pass, the queue is empty,
+ * and harvest is mined. Not a GRAPH_LOOP letter. Not a W-id.
+ */
+export const CRAFT_TICKET = 'craft';
+
+export const CRAFT_GAP: PathGap = {
+  id: CRAFT_TICKET,
+  claim: 'Walk Train → Today → Victory → Coach; ship one named first-session friction',
+  instrument: 'docs/AGENT_RECIPES.md',
+  anchor: '16. Craft the wedge after Horizon W pass',
+  orchAnchor: 'Wedge excellence before beta theater',
+  owner: 'agent',
+  accept: 'npx tsx --test src/lib/loopQueue/route.test.ts',
+  reason: 'Horizon W is pass; firstCriticalGap is null; do not invent a letter',
+};
 
 /** What a harvest hop must do. Null when the route is not harvest. */
 export type HarvestAction = 'paste' | 'generate' | null;
@@ -80,7 +97,7 @@ export interface Workbench {
 export interface Route {
   kind: RouteKind;
   /** Recipe number in `docs/AGENT_RECIPES.md`. */
-  recipe: 11 | 12 | 13 | 15 | null;
+  recipe: 11 | 12 | 13 | 15 | 16 | null;
   row: QueueRow | null;
   workbench: Workbench | null;
   /** `founder` / `blocked` rows passed over on the way to the live ticket. Never silent. */
@@ -303,6 +320,8 @@ function emptyQueueRoute(
     return { kind: 'stalled', recipe: null, notes, ...blank };
   }
 
-  notes.push('Horizon W instruments are green and RESULT is pass — stop, do not invent a letter');
-  return { kind: 'stalled', recipe: null, notes, ...blank };
+  notes.push(
+    'Horizon W is pass, queue empty, harvest mined — craft hop (recipe 16). Walk the wedge; one named friction; do not invent a letter'
+  );
+  return { kind: 'craft', recipe: 16, notes, ...blank, path: CRAFT_GAP };
 }
