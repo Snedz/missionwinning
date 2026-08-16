@@ -18,7 +18,7 @@ seen_in:
     date: 2024-01-01
     class: E2
     retrieval: indexed
-    why_not_e1: search-index synthesis only; no scout in either run could open the page (egress proxy blocked every fetch), so the citation is a pointer, not a reading
+    why_not_e1: opened 2026-08-16; the URL 404s, so the cite stays a pointer
   - product: Peloton live leaderboard
     url: https://www.onepeloton.com/press
     date: 2026-08-15
@@ -31,9 +31,9 @@ produces:
 backfires:
   - behavior: B-03
     how: rank visible to the logging path gives the athlete a reason to shade what they log, which is the failure X-01 exists to prevent
-    class: E2
-    retrieval: indexed
-    why_not_e1: search-index synthesis only; no scout in either run could open the page (egress proxy blocked every fetch), so the citation is a pointer, not a reading
+    class: E1
+    retrieval: fetched
+    date: 2026-02-03
     url: https://pmc.ncbi.nlm.nih.gov/articles/PMC12938745/
 ---
 

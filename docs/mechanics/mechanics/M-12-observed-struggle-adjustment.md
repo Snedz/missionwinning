@@ -21,10 +21,9 @@ seen_in:
     why_not_e1: search-index synthesis only; the egress proxy blocked every fetch in harvest 1
   - product: Celeste Assist Mode — granular dials the player sets, and a documented rewrite of the explanatory text
     url: https://www.vice.com/en/article/celeste-assist-mode-change-and-accessibility/
-    date: 2018-02-01
-    class: E2
-    retrieval: indexed
-    why_not_e1: search-index synthesis only; the page was blocked in harvest 1
+    date: 2019-09-09
+    class: E1
+    retrieval: fetched
 also_seen_in_failures:
   - Duolingo Energy, 2025 — an adjustment applied to everyone with no opt-out and no revert, replacing a system paying users could switch off entirely. Same axis, moved the wrong way, and it produced public quitting
 produces:

@@ -17,8 +17,8 @@ seen_in:
     url: https://nesbitt.io/2026/01/10/16-best-practices-for-reducing-dependabot-noise.html
     date: 2026-01-10
     class: E2
-    retrieval: indexed
-    why_not_e1: search-index synthesis only; the egress proxy blocked every fetch in harvest 1
+    retrieval: fetched
+    why_not_e1: page opened 2026-08-16; satirical Dependabot advice (open-pull-requests-limit 0), not a source for an 85% unmerged-security-PR figure
   - product: Browser security warnings — the most common SSL warning had the lowest adherence rate
     url: https://www.researchgate.net/publication/262285806_Alice_in_warningland_A_large-scale_field_study_of_browser_security_warning_effectiveness
     date: 2013-08-14

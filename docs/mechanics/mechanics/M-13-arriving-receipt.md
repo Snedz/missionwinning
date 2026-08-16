@@ -22,9 +22,8 @@ seen_in:
   - product: The same data delivered by push notification instead — usage fell in 75% of participants during the intervention week
     url: https://arxiv.org/pdf/2507.14702
     date: 2025-07-19
-    class: E2
-    retrieval: indexed
-    why_not_e1: arxiv.org was blocked in harvest 1; abstract-level only
+    class: E1
+    retrieval: fetched
 also_seen_in_failures:
   - Spotify Wrapped 2024 and Facebook Year in Review 2014 — arriving receipts that the recipient audited against their own memory and found wrong. The second led with a photo of a user's dead child, pre-filled
 produces:
