@@ -96,6 +96,8 @@ type RewardsStrings = {
   athleteCardSharing: string;
   athleteCardShareText: string;
   athleteCardPrivacy: string;
+  rewardRestToday: string;
+  rewardRestTodayOn: string;
 };
 
 const en: RewardsStrings = {
@@ -167,6 +169,8 @@ const en: RewardsStrings = {
   rewardBadgeComebackDesc: 'Trained again after a week or more away.',
   rewardBadgeCommissioned: 'Commissioned',
   rewardBadgeCommissionedDesc: 'Completed the Mission Journey path.',
+  rewardRestToday: 'Rest today',
+  rewardRestTodayOn: 'Rest today is planned',
 };
 
 const LOCALES: Partial<Record<string, Partial<RewardsStrings>>> = {};

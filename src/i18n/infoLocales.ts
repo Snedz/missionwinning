@@ -260,6 +260,7 @@ type InfoStrings = {
   joinClassFailedTitle: string;
   joinClassFailedDesc: string;
   joinClassFailedHome: string;
+  infoCookiesLocaleLi: string;
 };
 
 const en: InfoStrings = {
@@ -735,6 +736,8 @@ const en: InfoStrings = {
     'If you use Mission Winning as a consumer habitually resident in the European Union, the United Kingdom, or the EEA: the arbitration clause and class-action waiver above do not apply to you. Nothing in these terms deprives you of the protection of mandatory consumer law of your country of residence, and you may bring proceedings in the courts of that country. The European Commission provides an online dispute resolution platform at ec.europa.eu/consumers/odr.',
 
   infoPrivacyRegionsLink: 'Where we offer the service',
+  infoCookiesLocaleLi:
+    'mw_locale and mw_country are strictly necessary first-party cookies. Language is a display preference; country follows the hosted-service geo-block in supportedRegions.ts. Counsel should review this inventory before a public flip — this page does not rewrite the Privacy or Terms bodies.',
 };
 
 const es: InfoStrings = {

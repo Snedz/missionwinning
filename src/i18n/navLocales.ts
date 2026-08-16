@@ -38,6 +38,16 @@ type NavStrings = {
   resumeWorkout: string;
   offlineBannerShort: string;
   offlineWaitingCount: string;
+  localeChooserEyebrow: string;
+  localeChooserTitle: string;
+  localeChooserContinue: string;
+  localeChooserBody: string;
+  localeChooserLanguageNote: string;
+  localeChooserLanguage: string;
+  localeChooserLoggerStillWorks: string;
+  localeChooserCountry: string;
+  localeChooserHint: string;
+  localeControlLabel: string;
 };
 
 const en: NavStrings = {
@@ -80,6 +90,19 @@ const en: NavStrings = {
   resumeWorkout: 'Resume workout',
   offlineBannerShort: 'Offline — logging still works',
   offlineWaitingCount: '{{count}} waiting',
+  localeChooserEyebrow: 'First visit',
+  localeChooserTitle: 'Language and country',
+  localeChooserContinue: 'Continue',
+  localeChooserBody:
+    'We guessed from your browser. Change either — language and country are independent.',
+  localeChooserLanguageNote:
+    'Language is a preference. It does not change which countries we serve.',
+  localeChooserLanguage: 'Language',
+  localeChooserLoggerStillWorks:
+    'The free logger still works. Hosted signup and checkout are not available.',
+  localeChooserCountry: 'Country',
+  localeChooserHint: 'You can change this later in Profile or the footer.',
+  localeControlLabel: 'Language and country',
 };
 
 const es: NavStrings = {

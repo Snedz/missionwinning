@@ -99,6 +99,8 @@ const PROGRAMS_EN: Record<string, string> = {
   progCondDisclaimer:
     'Educational content for training professionals and dedicated athletes.',
   programsShareFeedback: 'Share feedback',
+  programsCoachPointer: 'Mission Coach writes the week from your logs.',
+  programsNotAStore: 'These cards are education outlines, not a second store.',
 };
 
 const PROGRAMS_ES: Record<string, string> = {

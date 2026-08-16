@@ -24,6 +24,7 @@ type CoachStrings = {
   coachAdaptSwappedNote: string;
   coachAdaptLoggedNote: string;
   coachAdaptRevisionNote: string;
+  coachWeekDiffHeadline: string;
   /** Why panel: today's prescription rationales (`.287`). */
   coachWhyTodayEyebrow: string;
   /** `.693` — log-cited why-this-week / adapt rationale (inputs · rule · effect). */
@@ -288,6 +289,7 @@ const en: CoachStrings = {
     'Week updated from workouts you already logged — plan revision bumped, no wearable required.',
   coachAdaptRevisionNote:
     'Plan revision {{rev}} — week reshaped from workout history alone.',
+  coachWeekDiffHeadline: '{{before}} sessions → {{after}}',
   coachWhyTodayEyebrow: "Why today's plan",
   coachWhyWeekEyebrow: 'Why this week — from your logs',
   coachWhySessionEyebrow: 'Why this session — from your logs',

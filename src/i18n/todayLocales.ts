@@ -252,6 +252,8 @@ type TodayStrings = {
   todayReentryLongBody: string;
   todayReentryBody: string;
   todayReentryEyebrow: string;
+  todayReentryQuietLineBare: string;
+  todayReentryQuietLine: string;
   todayMissionScoreFromLogs: string;
   todayScoreAfterFirstLog: string;
   todayScoreNotMeasured: string;
@@ -553,6 +555,8 @@ const en: TodayStrings = {
   todayReentryLongBody: "Today's session is about {{pct}}% of usual so the first one back is easy to finish. Your history is still here.",
   todayReentryBody: "Today's session is about {{pct}}% of usual sets. Get it done and the week rebuilds itself.",
   todayReentryEyebrow: 'Back in',
+  todayReentryQuietLineBare: "Here's the 20-minute version.",
+  todayReentryQuietLine: "Back from {{exercise}}. Here's the {{minutes}}-minute version.",
   todayMissionScoreFromLogs: 'From your logs',
   todayScoreAfterFirstLog: 'After your first log',
   todayScoreNotMeasured: 'Not measured',
