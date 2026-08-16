@@ -52,7 +52,7 @@ test('reentry', async (t) => {
     assert.equal(r.daysSince, 2);
     assert.equal(
       formatReentryQuietLine(r),
-      "Two days off. Here's the 20-minute version."
+      "Back from push-ups. Here's the 20-minute version."
     );
     assert.equal(r.doseScale, doseScaleForShortSession(30));
   });
@@ -79,8 +79,8 @@ test('reentry', async (t) => {
     assert.equal(r.doseScale, doseScaleForShortSession(30));
     assert.equal(
       formatReentryQuietLine(r),
-      "A while off. Here's the 20-minute version.",
-      'lapsed copy does not name a large absence'
+      "Back from push-ups. Here's the 20-minute version.",
+      'lapsed copy quotes the last set, not the absence'
     );
   });
 

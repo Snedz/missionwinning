@@ -23,7 +23,7 @@ test('TodayReentryCard defaults stay shame-free', () => {
     join(import.meta.dirname, '..', 'components', 'today', 'TodayReentryCard.tsx'),
     'utf8'
   );
-  const defaults = [...src.matchAll(/defaultValue:\s*['`]([^'`]+)['`]/g)].map((m) => m[1]);
+  const defaults = [...src.matchAll(/defaultValue:\s*(["'`])((?:(?!\1).)*)\1/g)].map((m) => m[2]);
   assert.ok(defaults.length >= 1, 'expected reentry default copy');
   for (const d of defaults) {
     for (const re of FORBIDDEN) {
@@ -32,9 +32,14 @@ test('TodayReentryCard defaults stay shame-free', () => {
   }
 });
 
-test('the two-day working line is the S7 sentence', () => {
-  const line = formatReentryQuietLine({ daysSince: 2, tone: 'gap' });
-  assert.equal(line, "Two days off. Here's the 20-minute version.");
+test('the two-day working line quotes a stored set, not the gap', () => {
+  const line = formatReentryQuietLine({
+    daysSince: 2,
+    tone: 'gap',
+    witness: { exerciseId: 'squat' },
+  });
+  assert.equal(line, "Back from squat. Here's the 20-minute version.");
+  assert.doesNotMatch(line, /days off/i);
   for (const re of FORBIDDEN) {
     assert.doesNotMatch(line, re, line);
   }
@@ -68,25 +73,27 @@ function logDaysAgo(days: number): CompletedWorkoutLog {
     startedAt: new Date(then - 3_600_000).toISOString(),
     completedAt: new Date(then).toISOString(),
     durationSeconds: 1800,
-    exercises: [],
+    exercises: [{ exerciseId: 'squat', sets: [{ reps: 5, weight: 100 }] }],
     totalVolume: 0,
   };
 }
 
 const NOW = Date.UTC(2026, 6, 22, 12, 0, 0);
 
-test('3 / 7 / 14 calendar days off stay shame-free and keep the short session', () => {
-  const expectLine: Record<number, { tone: 'gap' | 'long-gap'; line: string }> = {
-    3: { tone: 'gap', line: "Three days off. Here's the 20-minute version." },
-    7: { tone: 'gap', line: "Seven days off. Here's the 20-minute version." },
-    14: { tone: 'long-gap', line: "14 days off. Here's the 20-minute version." },
+test('3 / 7 / 14 days: line cites the stored set and never the gap length', () => {
+  const expectTone: Record<number, 'gap' | 'long-gap'> = {
+    3: 'gap',
+    7: 'gap',
+    14: 'long-gap',
   };
   for (const days of [3, 7, 14] as const) {
     const r = computeReentry([logDaysAgo(days)], NOW);
     assert.equal(r.show, true, `${days}d should show`);
-    assert.equal(r.tone, expectLine[days].tone, `${days}d tone`);
+    assert.equal(r.tone, expectTone[days], `${days}d tone`);
     const line = formatReentryQuietLine(r);
-    assert.equal(line, expectLine[days].line);
+    assert.equal(line, "Back from squat. Here's the 20-minute version.");
+    assert.doesNotMatch(line, /days off|\b\d+\s+day/i, line);
+    assert.doesNotMatch(line, /xp|rank|tier|leaderboard|badge|squad/i, line);
     for (const re of FORBIDDEN) {
       assert.doesNotMatch(line, re, line);
     }
