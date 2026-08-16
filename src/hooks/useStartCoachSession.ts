@@ -19,6 +19,7 @@ import { useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import { useWorkoutStore } from '@/store/workoutStore';
 import { resolveCoachSessionStart } from '@/lib/coach/coachSessionStart';
+import { loadPlan } from '@/lib/coach/storage';
 import { track } from '@/lib/analytics';
 import type { PlanSession } from '@/lib/coach/types';
 
@@ -38,7 +39,7 @@ export function useStartCoachSession() {
       // lives in `resolveCoachSessionStart`, which is pure and unit-tested. This
       // hook is wiring only, so there is no branch here to get wrong and nothing
       // untested hiding behind the React boundary.
-      const start = resolveCoachSessionStart(session, workoutHistory, Date.now());
+      const start = resolveCoachSessionStart(session, workoutHistory, Date.now(), loadPlan());
       if (!start) return;
 
       startWorkout(start.name, start.templates);

@@ -46,10 +46,11 @@ export function coachSessionTemplates(
 export function resolveCoachSessionStart(
   session: PlanSession | null | undefined,
   history: CompletedWorkoutLog[],
-  now: number
+  now: number,
+  plan?: { sessions: readonly { status: string }[] } | null
 ): { name: string; templates: WorkoutExerciseTemplate[]; doseScale: number } | null {
   if (!session || session.status === 'done') return null;
-  const { doseScale } = computeReentry(history, now);
+  const { doseScale } = computeReentry(history, now, plan);
   return {
     name: session.name,
     templates: coachSessionTemplates(session, doseScale),

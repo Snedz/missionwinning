@@ -155,7 +155,7 @@ export function HomeTodayDashboard() {
   // Coming back after a gap — computed in an effect so the date is client-side only.
   const [reentry, setReentry] = useState<Reentry | null>(null);
   useEffect(() => {
-    setReentry(computeReentry(workoutHistory, Date.now()));
+    setReentry(computeReentry(workoutHistory, Date.now(), loadPlan()));
   }, [workoutHistory]);
 
   const [userEmail, setUserEmail] = useState<string | null>(null);
