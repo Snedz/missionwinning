@@ -34,6 +34,11 @@ const USUAL_MINUTES_FALLBACK = 40;
 
 export type ReentryTone = 'none' | 'gap' | 'long-gap' | 'lapsed';
 
+export type ReentryWitness = {
+  /** Stored exercise id from the last live log. Not a catalog lookup. */
+  exerciseId: string;
+};
+
 export interface Reentry {
   daysSince: number | null;
   tone: ReentryTone;
@@ -44,9 +49,11 @@ export interface Reentry {
    * first session back should feel easy enough to finish.
    */
   doseScale: number;
+  /** Last stored working set, or null when the log has no set to quote. */
+  witness: ReentryWitness | null;
 }
 
-const NONE: Reentry = { daysSince: null, tone: 'none', show: false, doseScale: 1 };
+const NONE: Reentry = { daysSince: null, tone: 'none', show: false, doseScale: 1, witness: null };
 
 const OFF_WORDS = [
   '',
@@ -131,6 +138,18 @@ export function lastSessionAt(history: CompletedWorkoutLog[]): string | null {
   return ms === null ? null : new Date(ms).toISOString();
 }
 
+/** First stored set on the latest live log. No catalog lookup, no inferred load. */
+export function witnessedSetFromHistory(history: CompletedWorkoutLog[]): ReentryWitness | null {
+  const log = latestLiveLog(history);
+  if (!log) return null;
+  for (const ex of log.exercises ?? []) {
+    if (ex.exerciseId && (ex.sets?.length ?? 0) > 0) {
+      return { exerciseId: ex.exerciseId };
+    }
+  }
+  return null;
+}
+
 export function daysSinceLastSession(
   history: CompletedWorkoutLog[],
   now: number
@@ -152,16 +171,17 @@ export function doseScaleForShortSession(
 
 export function computeReentry(history: CompletedWorkoutLog[], now: number): Reentry {
   const daysSince = daysSinceLastSession(history, now);
+  const witness = witnessedSetFromHistory(history);
   // Never logged: that is onboarding, not re-entry — I-Day owns that story.
   if (daysSince === null) return NONE;
-  if (daysSince < REENTRY_MIN_DAYS) return { ...NONE, daysSince };
+  if (daysSince < REENTRY_MIN_DAYS) return { ...NONE, daysSince, witness };
   const doseScale = doseScaleForShortSession(usualSessionMinutes(history));
   if (daysSince > REENTRY_MAX_DAYS) {
     // Long enough that pretending to continue a plan would be a lie.
-    return { daysSince, tone: 'lapsed', show: true, doseScale };
+    return { daysSince, tone: 'lapsed', show: true, doseScale, witness };
   }
-  if (daysSince >= 14) return { daysSince, tone: 'long-gap', show: true, doseScale };
-  return { daysSince, tone: 'gap', show: true, doseScale };
+  if (daysSince >= 14) return { daysSince, tone: 'long-gap', show: true, doseScale, witness };
+  return { daysSince, tone: 'gap', show: true, doseScale, witness };
 }
 
 /**
@@ -176,15 +196,16 @@ export function formatReentryOffSpan(daysSince: number): string {
 }
 
 /**
- * The working Today line. Design may own wording later; this is the shipped sentence.
- * Lapsed (90+ days) does not name the large count.
+ * The working Today line. H-03: the subject is the last stored set, never the gap.
+ * A line that cannot quote a stored set does not invent one or name the absence.
  */
-export function formatReentryQuietLine(reentry: Pick<Reentry, 'daysSince' | 'tone'>): string {
+export function formatReentryQuietLine(
+  reentry: Pick<Reentry, 'daysSince' | 'tone'> & { witness?: ReentryWitness | null }
+): string {
   const minutes = REENTRY_SHORT_MINUTES;
-  if (reentry.tone === 'lapsed' || reentry.daysSince === null) {
-    return `A while off. Here's the ${minutes}-minute version.`;
-  }
-  return `${formatReentryOffSpan(reentry.daysSince)}. Here's the ${minutes}-minute version.`;
+  const id = reentry.witness?.exerciseId;
+  if (id) return `Back from ${id}. Here's the ${minutes}-minute version.`;
+  return `Here's the ${minutes}-minute version.`;
 }
 
 /** Set count for the first session back — always at least one set, never more than usual. */
