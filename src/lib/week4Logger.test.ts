@@ -5,12 +5,15 @@ import path from 'node:path';
 import { STORAGE_KEYS } from '@/lib/storage/keys';
 import { __resetForTests as resetStorage } from '@/lib/storage/safeStorage';
 import { __resetAuthPresenceForTests, setLoggerAuthPresence } from '@/lib/authPresence';
+import { isoWeekOffset, localIsoWeekKey } from '@/lib/time/localDate';
 import {
   applyWorkingSetWeek,
   computeRetainedWeek4,
   emptyWeek4State,
   isWorkingSetKind,
+  readWeek4LoggerState,
   recordWorkingSetLogged,
+  week4HoodSnapshot,
 } from '@/lib/week4Logger';
 
 const root = path.join(import.meta.dirname, '..', '..');
@@ -191,5 +194,79 @@ describe('week4Logger wiring', () => {
     assert.match(doc, /Empty sessions/);
     assert.match(doc, /Guests stay on-device|Guest[\s\S]*Never/);
     assert.doesNotMatch(doc, /\b\d{2,}\s+users retained\b/i);
+  });
+});
+
+describe('H-01 end-to-end working-set chain', () => {
+  it('one install: first week + a later week, hood matches device and enqueue', () => {
+    const enqueued: string[] = [];
+    const firstNow = new Date(2026, 0, 5, 12);
+    const laterNow = new Date(2026, 0, 26, 12);
+    const week1 = localIsoWeekKey(firstNow);
+    const weekLater = localIsoWeekKey(laterNow);
+    const offset = isoWeekOffset(week1, weekLater);
+    assert.ok(offset !== null && offset >= 3, `need ≥3 weeks between ${week1} and ${weekLater}`);
+
+    const first = recordWorkingSetLogged(
+      { kind: 'normal', exerciseId: 'squat', weight: 100 },
+      {
+        source: 'account',
+        now: firstNow,
+        track: () => undefined,
+        enqueueWeekLogged: (week) => {
+          enqueued.push(week);
+        },
+      }
+    );
+    assert.equal(first.firedSetLogged, true);
+    assert.equal(first.firedWeekLogged, true);
+    assert.equal(first.enqueuedWeek, true);
+
+    const hood1 = week4HoodSnapshot(firstNow);
+    assert.equal(hood1.firstIsoWeek, week1);
+    assert.equal(hood1.thisWeek, week1);
+    assert.equal(hood1.loggedThisWeek, true);
+    assert.equal(hood1.retainedWeek4, false);
+    assert.deepEqual(enqueued, [hood1.thisWeek]);
+
+    const later = recordWorkingSetLogged(
+      { kind: 'normal', exerciseId: 'squat', weight: 105 },
+      {
+        source: 'account',
+        now: laterNow,
+        track: () => undefined,
+        enqueueWeekLogged: (week) => {
+          enqueued.push(week);
+        },
+      }
+    );
+    assert.equal(later.firedSetLogged, true);
+    assert.equal(later.firedWeekLogged, true);
+    assert.equal(later.enqueuedWeek, true);
+
+    const hood = week4HoodSnapshot(laterNow);
+    const device = readWeek4LoggerState();
+    assert.equal(hood.firstIsoWeek, week1);
+    assert.equal(hood.thisWeek, weekLater);
+    assert.equal(hood.loggedThisWeek, true);
+    assert.equal(hood.retainedWeek4, true);
+    assert.equal(hood.retainedWeek4, computeRetainedWeek4(device, weekLater));
+    assert.deepEqual(device.weeks, [week1, weekLater]);
+    assert.deepEqual(enqueued, [week1, weekLater]);
+    assert.equal(enqueued[1], hood.thisWeek);
+  });
+
+  it('hood card and week-logged API consume the snapshot and the same week key', () => {
+    const card = read('src/components/profile/UnderTheHoodCard.tsx');
+    assert.match(card, /week4HoodSnapshot/);
+    assert.match(card, /We do not invent traction/);
+    assert.doesNotMatch(card, /\b\d{2,}\s+users retained\b/i);
+    const route = read('app/api/metrics/week-logged/route.ts');
+    assert.match(route, /weekLoggedBodySchema/);
+    const sync = read('src/lib/week4LoggerSync.ts');
+    assert.match(sync, /isoWeek/);
+    const events = read('src/lib/analytics.ts');
+    assert.match(events, /'set_logged'/);
+    assert.match(events, /'week_logged'/);
   });
 });

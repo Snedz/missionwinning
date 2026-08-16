@@ -45,19 +45,20 @@ function injectNow(src: string, rows: string): string {
  * The live ticket                                                     *
  * ------------------------------------------------------------------ */
 
-test('the committed queue live ticket is the harvest paste IL-H-01', () => {
+test('the committed queue has no Now-open row and routes to a harvest', () => {
   const q = real();
   const open = nowSections(q).flatMap((s) => s.rows).filter((x) => x.status === 'open');
-  assert.deepEqual(
-    open.map((x) => x.id),
-    ['IL-H-01'],
-    `Now open ${open.map((x) => x.id).join(', ') || '(none)'} — expected the pasted harvest row`
+  assert.equal(
+    open.length,
+    0,
+    `Now still has open ${open.map((x) => x.id).join(', ')} — IL-H-01 should be done`
   );
   const r = route(root, q);
-  assert.equal(r.kind, 'build');
-  assert.equal(r.recipe, 11);
-  assert.equal(r.row?.id, 'IL-H-01');
-  assert.equal(r.atRatchet, false, 'an IL- section must close the 16-run, not extend it');
+  assert.equal(r.kind, 'harvest');
+  assert.equal(r.recipe, 13);
+  assert.equal(r.row, null);
+  assert.match(r.notes.join(' '), /the honest next step is a new idea/);
+  assert.equal(r.atRatchet, false, 'the closed IL- section must keep the 16-run closed');
 });
 
 test('an injected Now-open row is the live ticket', () => {
