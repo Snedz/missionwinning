@@ -8,6 +8,8 @@
 import { existsSync, readFileSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
 
+import { localDateKey } from '@/lib/time/localDate';
+
 export const QUEUE_REL = 'docs/GRAPH_LOOP.md';
 
 const AFTER_H0 = '\n### After H0';
@@ -88,7 +90,7 @@ D4 stays hold. Do not invent ${sectionId}2.
 export function pasteHarvestFile(
   root: string,
   pick: PastePick,
-  today = new Date().toISOString().slice(0, 10)
+  today = localDateKey()
 ): PasteResult {
   const full = path.join(root, QUEUE_REL);
   if (!existsSync(full)) return { ok: false, reason: `missing ${QUEUE_REL}` };

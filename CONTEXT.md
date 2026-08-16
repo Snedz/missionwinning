@@ -16,7 +16,7 @@ One screen of truth for any AI tool or human joining cold. Read this, then [AGEN
 
 ---
 
-## Now (2026-08-16 · web `2026.07-unified.874` · Android `1.24.1`)
+## Now (2026-08-16 · web `2026.07-unified.875` · Android `1.24.1`)
 
 > The ONLY "where we are" block in the repo — [ORCHESTRATION.md](ORCHESTRATION.md) points here.
 >
@@ -409,6 +409,7 @@ One screen of truth for any AI tool or human joining cold. Read this, then [AGEN
 > | gitleaks | **green — and scanning for the first time.** It had never scanned anything: on a `pull_request` event the action lists the PR's commits, the job declared no `permissions:` block, and it 403'd (`pull_requests=read`) before opening a file. Fixed by a `permissions:` block (`.224` carrying `.255`). It scans **only the PR's own commits**, so commit `8ea3527a`'s real Solana treasury address — scrubbed from the working file, still in history — is out of its scope. That finding stands, deliberately not allowlisted; it was never what made this check red. |
 > | Privacy / security program | **Landed `.778`** — [docs/security/PROGRAM_STATUS.md](docs/security/PROGRAM_STATUS.md). Invite-bound gate, health-bucket, DSAR, territory fail-closed. OTP-without-click can leave a ghost user. Not a cert. |
 
+- **`.875`:** (`2026.07-unified.875`) **The harvest paste stamped a UTC day** — `pasteHarvest.ts` defaulted `today` to `toISOString().slice(0,10)`, the CLAUDE.md §5 hard rule; red on `master` since `.871`. Between local and UTC midnight it files today's harvest row under yesterday (shown under `TZ=Asia/Tokyo`). Now `localDateKey()`. Suite 3653/3653. No `PRIVATE_MODE` flip.
 - **`.874`:** (`2026.07-unified.874`) **The excellence override was borrowed from `master`** — the gate read trailers from `git log base...HEAD` (symmetric difference), so any branch behind `master` inherited one of the 24-in-40 trailers there and shipped surface unscored; at the tip the same change blocked. Log is now `base..HEAD`, diff keeps three dots, verb+range travel as one argv. RESULT stays `unscored` — C5 is founder-scored. No `PRIVATE_MODE` flip.
 - **`.873`:** (`2026.07-unified.873`) **Generate is mined out** — harvest-13 + harvest-14 both scout 3 / `0 of 3`. Empty queue → C5 / path, not another generate. No `PRIVATE_MODE` flip.
 - **`.872`:** (`2026.07-unified.872`) **First session one lift until a set** — `IL-H-15`. Later cards stay off until `completed`. TAP_BUDGET 4. No `PRIVATE_MODE` flip.
@@ -422,7 +423,6 @@ One screen of truth for any AI tool or human joining cold. Read this, then [AGEN
 - **`.864`:** (`2026.07-unified.864`) **H-07 is on the queue** — first session back follows missed sessions. `IL-H-07` is Now AT. No `PRIVATE_MODE` flip.
 - **`.863`:** (`2026.07-unified.863`) **One tap off the cold path** — `IL-H-05`. `TAP_BUDGET` 5→4. Last stored set beats a suggestion. Cold history stays blank. No `PRIVATE_MODE` flip.
 - **`.862`:** (`2026.07-unified.862`) **H-05 is on the queue** — one tap off the cold path. `IL-H-05` is Now AS. No `PRIVATE_MODE` flip.
-- **`.861`:** (`2026.07-unified.861`) **Coach week arrives as a visible diff** — `IL-H-02`. Banner headline is `N sessions → M` plus the stored set. Same Today slot. TAP_BUDGET holds. No `PRIVATE_MODE` flip.
 - **Form object kit (on `.781`):** IMPLEMENT block + prop sheets. Regen cable-row (visible stack), lateral-raise, DB press, lunges, DB row. Floor 43. Still-only. No `PRIVATE_MODE` flip.
 - **Excellence:** unscored · — · [docs/EXCELLENCE_RESULT.md](docs/EXCELLENCE_RESULT.md) — Horizon W phone sign-off home; surface PRs need `status: pass` or `Excellence-Override` (`.669`).
 - **`.669`:** (`2026.07-unified.669`) **Excellence RESULT + agent stop-rule** — `excellenceGate` path policy + `check-excellence-gate` on gate/PR CI; wedge still ships while unscored.
