@@ -21,7 +21,10 @@ import { resolve } from 'node:path';
 import {
   EXCELLENCE_RESULT_PATH,
   blockedSurfacePaths,
+  changedPathDiffArgs,
+  changedPathRange,
   classifyPath,
+  overrideLogArgs,
   readExcellenceOverride,
   readExcellenceStatus,
   topLevelClassificationGaps,
@@ -86,10 +89,10 @@ if (head && baseSha && head === baseSha) {
   process.exit(0);
 }
 
-const changedRaw = git('diff', '--name-only', `${base}...HEAD`);
+const changedRaw = git(...changedPathDiffArgs(base));
 if (changedRaw === null) {
   fail(
-    `Excellence gate: git diff ${base}...HEAD failed.\n` +
+    `Excellence gate: git diff ${changedPathRange(base)} failed.\n` +
       `  Ensure ${base} exists locally (git fetch origin master).`
   );
 }
@@ -100,7 +103,9 @@ if (changed.length === 0) {
   process.exit(0);
 }
 
-const logRange = git('log', '--format=%B', `${base}...HEAD`) ?? '';
+// Branch-side commits only — see overrideCommitRange. A base-side trailer is
+// not this branch's consent, and `...` here handed out borrowed overrides.
+const logRange = git(...overrideLogArgs(base)) ?? '';
 const commitMessages = logRange ? [logRange] : [];
 
 let prBody = process.env.EXCELLENCE_PR_BODY ?? '';

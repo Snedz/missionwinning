@@ -240,6 +240,48 @@ export function allowsSurfaceShip(status: ExcellenceStatus, override: boolean): 
   return status === 'pass' || override === true;
 }
 
+/**
+ * Commits whose trailers may authorise *this* branch.
+ *
+ * Two-dot on purpose. The override reader was handed `git log base...HEAD` —
+ * the **symmetric difference**, which includes every commit on the base side
+ * that the branch has not merged yet. 24 of the last 40 `master` commits carry
+ * an `Excellence-Override:` trailer, so any branch even one commit behind
+ * `master` silently borrowed one and shipped surface paths the founder never
+ * scored. The gate printed `(override)` for a branch that never asked.
+ *
+ * The pair is asymmetric by design and easy to mix up: the **diff** stays
+ * three-dot (`base...HEAD` = changes since the merge base, what this branch
+ * touched), the **log** is two-dot (`base..HEAD` = commits this branch adds).
+ * Same two refs, opposite dot counts, and only one of them is a range of
+ * commits that can consent to anything.
+ */
+export function overrideCommitRange(base: string): string {
+  return `${base}..HEAD`;
+}
+
+/** Changed-path range: merge-base diff, so base-side edits are not this branch's. */
+export function changedPathRange(base: string): string {
+  return `${base}...HEAD`;
+}
+
+/*
+ * Each git verb ships with its own range, because the two are only correct in
+ * one pairing and nothing about reading `log` next to `diff` suggests their dot
+ * counts should differ. Handing out full argv makes the pairing unswappable at
+ * the call site instead of something a guard has to police afterwards.
+ */
+
+/** argv for the commits that may authorise this branch. */
+export function overrideLogArgs(base: string): string[] {
+  return ['log', '--format=%B', overrideCommitRange(base)];
+}
+
+/** argv for the paths this branch changed. */
+export function changedPathDiffArgs(base: string): string[] {
+  return ['diff', '--name-only', changedPathRange(base)];
+}
+
 export function readExcellenceOverride(opts: {
   commitMessages: string[];
   prBody?: string;
