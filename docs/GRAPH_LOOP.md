@@ -2,7 +2,7 @@
 
 **Audience:** Founder + the next Hermes / Grok Build / graph agent  
 **Lane:** Engineering-Web (unless a loop says Android)  
-**Status:** ACTIVE 2026-08-16 · web `2026.07-unified.852` · Alpha 0.1.0 · **AL1 done — GNT-1 `ready-for-founder` · AM1 done — GNT-2 `ready-for-founder` · AN open — `IL-H-01`**  
+**Status:** ACTIVE 2026-08-16 · web `2026.07-unified.853` · Alpha 0.1.0 · **AL1 done — GNT-1 `ready-for-founder` · AM1 done — GNT-2 `ready-for-founder` · AN done — `IL-H-01` `.853`**  
 **Does not replace:** [ORCHESTRATION.md](../ORCHESTRATION.md) (what may be built) · [CONTEXT.md](../CONTEXT.md) `## Now` (where we are) · [vision.md](../vision.md) (constitution) · [docs/THESIS.md](THESIS.md) (wedge) · [docs/PLAN.md](PLAN.md) (phases A–I)
 
 This file is the **execution queue** for the agent graph: one concern per loop, spawn, ship, mark done, spawn the next. It is not a second status block and not a license to skip standing hard bans.
@@ -463,7 +463,7 @@ Not AM2. One `IL-` row from `idea:next`. A harvest row closes the 16-run; it is 
 
 | # | Loop | Moves | Status |
 |---|------|-------|--------|
-| **IL-H-01** | Power the working-set measurement chain end to end on one real install | [H-01](mechanics/hypotheses/H-01-power-the-working-set-chain.md) | `open` |
+| **IL-H-01** | Power the working-set measurement chain end to end on one real install | [H-01](mechanics/hypotheses/H-01-power-the-working-set-chain.md) | `done` — `.853` this PR. Device rollup, hood snapshot, and account enqueue are one chain; PostHog is not required |
 
 D4 stays hold. Do not invent AN2.
 
