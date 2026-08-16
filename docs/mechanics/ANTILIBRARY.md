@@ -34,6 +34,9 @@ refused by the selector with the citation attached.
 | `pay+change+gate+logger+paywall+free` | The free logger is never gated. Ever | `X-02` |
 | `trust+add+M-15+calibrated+confidence+misreading+readiness` | Shows a number the engine knows to be untrue; `X-07` is the one rule this codebase is built on | `H-11`, `M-15`, `load.ts` header |
 | `return+add+season+boost+tier+start` | The T4 season-start boost was struck by decision; standing is monotonic, no decay and no relegation | `docs/IDENTITY_SOCIAL_PLAN.md` C9 |
+| `return+remove+M-16+undo+first+set+back+window` | History/outbox absence mid-session already holds without a window, so the named instrument cannot fail; does not grade return | `H-12` |
+| `activate+change+M-16+hold+first+log+window` | M-16's own B-01 backfire is this target; first-90 only ratifies TAP_BUDGET not rising | `H-13` |
+| `trust+measure+M-16+planner+ignores+inflight` | No window means an identity filter; adapt.test cannot fail until a sibling ships | `H-14` |
 
 ---
 
