@@ -2,7 +2,7 @@
 
 **Audience:** Founder + the next Hermes / Grok Build / graph agent  
 **Lane:** Engineering-Web (unless a loop says Android)  
-**Status:** ACTIVE 2026-08-16 · web `2026.07-unified.857` · Alpha 0.1.0 · **AL1 done — GNT-1 `ready-for-founder` · AM1 done — GNT-2 `ready-for-founder` · AN–AO done · AP done — `IL-H-03` `.857`**  
+**Status:** ACTIVE 2026-08-16 · web `2026.07-unified.858` · Alpha 0.1.0 · **AL1 done — GNT-1 `ready-for-founder` · AM1 done — GNT-2 `ready-for-founder` · AN–AP done · AQ open — `IL-H-08`**  
 **Does not replace:** [ORCHESTRATION.md](../ORCHESTRATION.md) (what may be built) · [CONTEXT.md](../CONTEXT.md) `## Now` (where we are) · [vision.md](../vision.md) (constitution) · [docs/THESIS.md](THESIS.md) (wedge) · [docs/PLAN.md](PLAN.md) (phases A–I)
 
 This file is the **execution queue** for the agent graph: one concern per loop, spawn, ship, mark done, spawn the next. It is not a second status block and not a license to skip standing hard bans.
@@ -486,6 +486,16 @@ Not AO2. Next `idea:next` pick. One `IL-` row.
 | **IL-H-03** | The Coach witnesses the specific thing, with nobody else present | [H-03](mechanics/hypotheses/H-03-coach-witnesses-the-specific-thing.md) | `done` — `.857` this PR. Quiet line quotes the last stored exerciseId; never the gap |
 
 D4 stays hold. Do not invent AP2.
+
+### Now — AQ (harvest · 2026-08-16)
+
+Not AP2. Next `idea:next` pick. One `IL-` row.
+
+| # | Loop | Moves | Status |
+|---|------|-------|--------|
+| **IL-H-08** | The Coach diff appears only when the change is material | [H-08](mechanics/hypotheses/H-08-diff-only-when-material.md) | `open` |
+
+D4 stays hold. Do not invent AQ2.
 
 ### After H0 (orientation — not open until H0-1…H0-7 are done or `founder`)
 
