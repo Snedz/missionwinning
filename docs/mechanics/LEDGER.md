@@ -34,6 +34,7 @@ hard cap is ≤14 build PRs and spending fewer is the good outcome.
 | harvest-10 | 2026-08-16 | 0 | — | — | — | ≤10 pages / **0 product PR** | 10 opened / **0 product PR** | 0 | — | — |
 | harvest-11 | 2026-08-16 | 3 | 1 | 2 | 1 spawn | ≤3 inbox / ≤1 M / ≤3 H / **0 product PR** | 3 inbox / 1 M / 2 H / **0 product PR** | 0 | 1 of 2 | — |
 | harvest-12 | 2026-08-16 | 0 | — | — | — | **1 PR** (paste) | **1 PR** | 1 (`IL-H-15`) | — | — |
+| harvest-13 | 2026-08-16 | 3 | 1 | 3 | 1 spawn | ≤3 inbox / ≤1 M / ≤3 H / **0 product PR** | 3 inbox / 1 M / 3 H / **0 product PR** | 0 | 0 of 3 | — |
 
 The seed run harvested nothing. Its nodes were hand-written from repo truth and
 one research pass, which is why the scout, anatomist, translator and red-team
@@ -73,6 +74,18 @@ H-02 is `H-05`; this run's only product is the paste (`IL-H-05` on GRAPH_LOOP AS
 **harvest-8 notes.** Founder `/graph --paste`. No new scout. The pick after
 H-05 is `H-07`; this run's only product is the paste (`IL-H-07` on GRAPH_LOOP AT).
 1 PR spent on that, not on missed-session dose — that is the next hop.
+
+**harvest-13 notes.** Timed `/harness` generate. New source class: spaced
+repetition / daily cap (not logger, undo, or Yousician). Scout opened Anki
+daily limits + algorithm FAQ (E1), Lichess Puzzle Streak changelog 2021-03-29
+(E1), Beeminder commitment contract (E1). Anatomist promoted Anki's "new
+cards stay off while reviews are due; missed day does not raise tomorrow's
+new quota" to `M-18`. Discarded Streak (one miss ends the run; skip is M-03)
+and Beeminder (charge enforcement, `X-02`). Translator wrote H-17
+(`add+depth`), H-18 (`measure+depth`), H-19 (`add+tell`). Separate red-team
+spawn killed all three (fake instrument ×3: Victory already one action;
+adapt never appends a new lift id; first-90 already has no share). No paste.
+Unused product-PR cap held.
 
 **harvest-12 notes.** `/harness` paste hop. No new scout. The pick is `H-15`;
 this run's only product is the paste (`IL-H-15` on GRAPH_LOOP AU).
