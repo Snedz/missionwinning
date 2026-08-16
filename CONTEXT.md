@@ -16,7 +16,7 @@ One screen of truth for any AI tool or human joining cold. Read this, then [AGEN
 
 ---
 
-## Now (2026-08-16 · web `2026.07-unified.866` · Android `1.24.1`)
+## Now (2026-08-16 · web `2026.07-unified.867` · Android `1.24.1`)
 
 > The ONLY "where we are" block in the repo — [ORCHESTRATION.md](ORCHESTRATION.md) points here.
 >
@@ -386,7 +386,8 @@ One screen of truth for any AI tool or human joining cold. Read this, then [AGEN
 > and `.849` dropped `.835` detail (full text remains in LOG.md / archive)
 > and `.851` dropped `.838` detail (full text remains in LOG.md / archive)
 > and `.843` dropped `.829` detail (full text remains in LOG.md / archive)
-> and `.849` moved `.834` and `.835` (full text remains in LOG.md / archive)
+> and `.866` dropped `.852` detail (full text remains in LOG.md / archive)
+> and `.867` dropped `.853` detail (full text remains in LOG.md / archive)
 > to [CONTEXT-now-2026-07-30.md](docs/archive/CONTEXT-now-2026-07-30.md) after this
 > block reached **79 bullets / 103KB**. A status doc that only grows stops being read.
 
@@ -408,6 +409,7 @@ One screen of truth for any AI tool or human joining cold. Read this, then [AGEN
 > | gitleaks | **green — and scanning for the first time.** It had never scanned anything: on a `pull_request` event the action lists the PR's commits, the job declared no `permissions:` block, and it 403'd (`pull_requests=read`) before opening a file. Fixed by a `permissions:` block (`.224` carrying `.255`). It scans **only the PR's own commits**, so commit `8ea3527a`'s real Solana treasury address — scrubbed from the working file, still in history — is out of its scope. That finding stands, deliberately not allowlisted; it was never what made this check red. |
 > | Privacy / security program | **Landed `.778`** — [docs/security/PROGRAM_STATUS.md](docs/security/PROGRAM_STATUS.md). Invite-bound gate, health-bucket, DSAR, territory fail-closed. OTP-without-click can leave a ghost user. Not a cert. |
 
+- **`.867`:** (`2026.07-unified.867`) **W1 lands Today** — ORCHESTRATION I-Day → `/log`. Pin `orchestrationW1Landing`. No `PRIVATE_MODE` flip.
 - **`.866`:** (`2026.07-unified.866`) **No French** — France is founder-excluded. Pack 14 · picker 39 · `fr`/`fr-*` → English. No `PRIVATE_MODE` flip.
 - **`.865`:** (`2026.07-unified.865`) **Returning dose follows missed sessions** — `IL-H-07`. Same 14-day gap, 4/week vs 1/week dose differs. No plan keeps calendar scale. No `PRIVATE_MODE` flip.
 - **`.864`:** (`2026.07-unified.864`) **H-07 is on the queue** — first session back follows missed sessions. `IL-H-07` is Now AT. No `PRIVATE_MODE` flip.
@@ -421,7 +423,6 @@ One screen of truth for any AI tool or human joining cold. Read this, then [AGEN
 - **`.856`:** (`2026.07-unified.856`) **H-03 is on the queue** — Coach witnesses the specific thing. `IL-H-03` is Now AP. No `PRIVATE_MODE` flip.
 - **`.855`:** (`2026.07-unified.855`) **Cohort numbers declare their frame** — `IL-H-09`. `frameCohort` + discover guard on `week4_retained` / `cohort_eligible`. `unknown=yes` stays visible. X-09 now has an enforcer. No `PRIVATE_MODE` flip.
 - **`.854`:** (`2026.07-unified.854`) **H-09 is on the queue** — next `idea:next` after H-01 emitted. `IL-H-09` is Now AO. Cohort numbers must declare their selection frame. No `PRIVATE_MODE` flip.
-- **`.853`:** (`2026.07-unified.853`) **Week-4 chain is one instrument** — `IL-H-01`. One install, two local ISO weeks: hood snapshot = device state = account enqueue. PostHog is not required (kill criterion did not fire). No new analytics event, no count of other people. No `PRIVATE_MODE` flip.
 - **Form object kit (on `.781`):** IMPLEMENT block + prop sheets. Regen cable-row (visible stack), lateral-raise, DB press, lunges, DB row. Floor 43. Still-only. No `PRIVATE_MODE` flip.
 - **Excellence:** unscored · — · [docs/EXCELLENCE_RESULT.md](docs/EXCELLENCE_RESULT.md) — Horizon W phone sign-off home; surface PRs need `status: pass` or `Excellence-Override` (`.669`).
 - **`.669`:** (`2026.07-unified.669`) **Excellence RESULT + agent stop-rule** — `excellenceGate` path policy + `check-excellence-gate` on gate/PR CI; wedge still ships while unscored.

@@ -109,7 +109,7 @@ flowchart TB
 
 | Stream | Outcome |
 |--------|---------|
-| W1 Activation | I-Day → `/active` with gear-matched session; no Mind modal on first missions |
+| W1 Activation | I-Day → `/log` (Today, one Start); gear-matched session; no Mind modal on first missions |
 | W2 One boss CTA | Basic = Train (+ soft Coach); Just Go does not lie; Commissioned demotes boards |
 | W3 Logger + Victory | Slim set row; Victory stays in Coach/train loop |
 | W4 Coach continuity | Free weekly generate/adapt; Bundle = voice/chat/regen depth |
