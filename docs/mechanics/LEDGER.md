@@ -37,6 +37,7 @@ hard cap is ≤14 build PRs and spending fewer is the good outcome.
 | harvest-13 | 2026-08-16 | 3 | 1 | 3 | 1 spawn | ≤3 inbox / ≤1 M / ≤3 H / **0 product PR** | 3 inbox / 1 M / 3 H / **0 product PR** | 0 | 0 of 3 | — |
 | harvest-14 | 2026-08-16 | 3 | 1 | 3 | 1 spawn | ≤3 inbox / ≤1 M / ≤3 H / **0 product PR** | 3 inbox / 1 M / 3 H / **0 product PR** | 0 | 0 of 3 | — |
 | harvest-15 | 2026-08-16 | 3 | 1 | 3 | 1 spawn | ≤3 inbox / ≤1 M / ≤3 H / **0 product PR** | 3 inbox / 1 M / 3 H / **0 product PR** | 0 | 0 of 3 | — |
+| harvest-16 | 2026-08-16 | 3 | 1 | 3 | 1 spawn | ≤3 inbox / ≤1 M / ≤3 H / **0 product PR** | 3 opened / 1 M / 3 H / **0 product PR** | 0 | 0 of 3 | — |
 
 The seed run harvested nothing. Its nodes were hand-written from repo truth and
 one research pass, which is why the scout, anatomist, translator and red-team
@@ -76,6 +77,15 @@ H-02 is `H-05`; this run's only product is the paste (`IL-H-05` on GRAPH_LOOP AS
 **harvest-8 notes.** Founder `/graph --paste`. No new scout. The pick after
 H-05 is `H-07`; this run's only product is the paste (`IL-H-07` on GRAPH_LOOP AT).
 1 PR spent on that, not on missed-session dose — that is the next hop.
+
+**harvest-16 notes.** Founder hour while they walk C5. New class:
+retire-stuck (Anki leeches), not Today-filter. Scout opened Anki
+leeches + lapses (E1), NYT Wordle daily/archive help (E1), Linear
+Cycles (E1). Anatomist promoted M-21 (item that keeps failing is
+taken out of the working set). Discarded Linear (mid-cycle adds are
+first-class) and Wordle (calendar ration is M-20). H-26–28 written
+killed: first session has no lapses; no lapse field; no corpus. 0 of
+3. No paste.
 
 **harvest-15 notes.** Founder override: hunt again while they walk C5.
 New source class: Today-as-date-filter (Things 3), not Anki quota or
