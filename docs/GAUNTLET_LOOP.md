@@ -26,7 +26,7 @@ This file is the **grading protocol**. It is not a second queue and not a second
 
 A unit’s bar must be **one** of these four, written before round 1. No legal bar → the first commission is the instrument itself, as its own round.
 
-1. **Existing measured instrument** — e.g. redActions 0 / ≤1 · thumbSweep 44px · TAP_BUDGET=5 · REACH_BUDGET=2 · Today ≤6 blocks · firstPaintFloor **167** (never raise) · coverage floors · bundle caps (never raise) · MAX_UNCOVERED_KEYS=0 · MAX_ACCEPTED_HIGH=1.
+1. **Existing measured instrument** — e.g. redActions 0 / ≤1 · thumbSweep 44px · TAP_BUDGET=4 · REACH_BUDGET=2 · Today ≤6 blocks · firstPaintFloor **167** (never raise) · coverage floors · bundle caps (never raise) · MAX_UNCOVERED_KEYS=0 · MAX_ACCEPTED_HIGH=1.
 2. **New ratchet** — canonical script ↔ high-water test (`bundle-budget.mjs` ↔ `bundleBudget.test.ts`). New script ⇒ versioned ship (hard rule 5). New gate step ⇒ CLAUDE.md §4 in the same commit (`gateDocParity`).
 3. **Reference capture** — Waves 10–11 method: founder captures → numeric FLOORS/BANDS. **Competitor pixels stay out of git.** Only measurements and verdicts enter the workbench.
 4. **The founder’s RESULT** — [EXCELLENCE_RESULT.md](EXCELLENCE_RESULT.md). Agents **serve** this bar. They never **declare** it.

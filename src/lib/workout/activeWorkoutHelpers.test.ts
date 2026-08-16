@@ -205,14 +205,32 @@ describe('resolveSetInput', () => {
     assert.equal(out.weight, 90, 'the back-off weight must survive');
   });
 
-  it('freestyle work still gets the suggestion', () => {
+  it('H-05: the athlete\'s last stored set beats a suggestion', () => {
     const out = resolveSetInput({
       ...base,
       prescribed: false,
       suggestion: { reps: 9, weight: 80 },
       lastPerformance: { reps: 8, weight: 80 },
     });
+    assert.deepEqual(out, { reps: 8, weight: 80 });
+  });
+
+  it('freestyle with no stored set still gets the suggestion', () => {
+    const out = resolveSetInput({
+      ...base,
+      prescribed: false,
+      suggestion: { reps: 9, weight: 80 },
+    });
     assert.deepEqual(out, { reps: 9, weight: 80 });
+  });
+
+  it('H-05: empty history does not invent a number', () => {
+    const out = resolveSetInput({
+      defaultReps: 10,
+      defaultWeight: 0,
+      prescribed: false,
+    });
+    assert.deepEqual(out, { reps: 10, weight: 0 });
   });
 
   it('same-session carry beats last-session suggestion (gym speed)', () => {

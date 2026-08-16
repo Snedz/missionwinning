@@ -30,7 +30,7 @@ Walk: mission-ops #19 — local `VERCEL_ENV=preview` of `.728` / `cursor/eday-un
 Not these (do not “fix”):
 
 - Cold `/active` → `/welcome` is **JourneyGuard**, not `PRIVATE_MODE`. First-set path stays I-Day → `/log` → Start → Log set.
-- F-017: no `SignInPrompt` under the logger; `TAP_BUDGET` stays **5**.
+- F-017: no `SignInPrompt` under the logger; `TAP_BUDGET` stays **4**.
 - Geo-block law holds. No country picker that lets blocked ISOs through.
 - Logger stays reachable in blocked territories (offline logger ≠ hosted service).
 
@@ -71,7 +71,7 @@ Do **not** flip `PRIVATE_MODE`. Do **not** charge. Do **not** invent waitlist tr
 - **Consent click (Playwright, phone 390×844):** `?mw_force_consent=1`, banner `role="dialog"` visible, Today's `.primary-action` / Start is the `elementFromPoint` at its center and **clicks** (not intercepted). Do not add a tap to `first-90`. Do not raise `TAP_BUDGET`.
 - **Notify form (unit / source):** `LandingPage` mounts `LaunchNotifyForm`; email + submit; `submitLead`; no checkout URL / no `/bundle` href on the form. `first-90` still counts 2 `.primary-action` on `/`. `PrivateTeaserClient` still uses the shared form. Mutant deleting the landing mount dies.
 - **Notify form (Playwright or unit):** fill email, submit path does not navigate to Stripe / checkout. No traction numerals in copy.
-- Geo-block / JourneyGuard / F-017 / `TAP_BUDGET` 5 — no edits that weaken them.
+- Geo-block / JourneyGuard / F-017 / `TAP_BUDGET` 4 — no edits that weaken them.
 - `check-build-label` `.765`. LOG + CONTEXT in the same implement commit.
 
 ### Docs / ship protocol

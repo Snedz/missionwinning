@@ -136,8 +136,10 @@ export function priorCompletedInExercise(
  *  1. What the athlete typed. Always wins.
  *  2. The coach's prescription, when this exercise came from a plan.
  *  3. Same-session carry — prior completed set of this exercise (gym speed, `.289`).
- *  4. The suggestion engine, for freestyle work, inside the athlete's goal range.
- *  5. The same set last time, then the template default.
+ *  4. The same set last time — the athlete's own stored set (H-05). A
+ *     suggestion that beats this is a fabricated log.
+ *  5. The suggestion engine, for freestyle work with no stored set.
+ *  6. The template default.
  */
 export function resolveSetInput(params: {
   manual?: { reps: number; weight: number };
@@ -161,8 +163,8 @@ export function resolveSetInput(params: {
   if (manual) return manual;
   if (prescribed) return { reps: defaultReps, weight: defaultWeight };
   if (sessionCarry) return { reps: sessionCarry.reps, weight: sessionCarry.weight };
-  if (suggestion) return { reps: suggestion.reps, weight: suggestion.weight };
   if (lastPerformance) return { reps: lastPerformance.reps, weight: lastPerformance.weight };
+  if (suggestion) return { reps: suggestion.reps, weight: suggestion.weight };
   return { reps: defaultReps, weight: defaultWeight };
 }
 

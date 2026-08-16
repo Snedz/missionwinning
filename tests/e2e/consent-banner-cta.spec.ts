@@ -6,7 +6,7 @@ import { seedLegacyOnboarding } from './helpers/journey';
  * Preview walk P0-1: on a phone, the analytics consent dialog must not
  * intercept Today's first-set Start. P0-2: landing has a real notify form.
  *
- * `@gate` — first-set path. Does not add a tap to first-90. TAP_BUDGET stays 5.
+ * `@gate` — first-set path. Does not add a tap to first-90. TAP_BUDGET stays 4.
  */
 
 test.describe('Preview walk P0s @gate', () => {
