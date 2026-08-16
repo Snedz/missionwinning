@@ -36,6 +36,7 @@ hard cap is ≤14 build PRs and spending fewer is the good outcome.
 | harvest-12 | 2026-08-16 | 0 | — | — | — | **1 PR** (paste) | **1 PR** | 1 (`IL-H-15`) | — | — |
 | harvest-13 | 2026-08-16 | 3 | 1 | 3 | 1 spawn | ≤3 inbox / ≤1 M / ≤3 H / **0 product PR** | 3 inbox / 1 M / 3 H / **0 product PR** | 0 | 0 of 3 | — |
 | harvest-14 | 2026-08-16 | 3 | 1 | 3 | 1 spawn | ≤3 inbox / ≤1 M / ≤3 H / **0 product PR** | 3 inbox / 1 M / 3 H / **0 product PR** | 0 | 0 of 3 | — |
+| harvest-15 | 2026-08-16 | 3 | 1 | 3 | 1 spawn | ≤3 inbox / ≤1 M / ≤3 H / **0 product PR** | 3 inbox / 1 M / 3 H / **0 product PR** | 0 | 0 of 3 | — |
 
 The seed run harvested nothing. Its nodes were hand-written from repo truth and
 one research pass, which is why the scout, anatomist, translator and red-team
@@ -75,6 +76,16 @@ H-02 is `H-05`; this run's only product is the paste (`IL-H-05` on GRAPH_LOOP AS
 **harvest-8 notes.** Founder `/graph --paste`. No new scout. The pick after
 H-05 is `H-07`; this run's only product is the paste (`IL-H-07` on GRAPH_LOOP AT).
 1 PR spent on that, not on missed-session dose — that is the next hop.
+
+**harvest-15 notes.** Founder override: hunt again while they walk C5.
+New source class: Today-as-date-filter (Things 3), not Anki quota or
+time-box. Scout opened Things product + Today/Inbox support (E1),
+SuperMemo incremental reading help (E1), Kindle series/recaps (E1).
+Anatomist promoted M-20 (current surface is a date filter; undated
+capture stays off it). Discarded incremental reading (Anki-adjacent)
+and Kindle recap (different primitive). Translator wrote H-23
+(`remove+tell`), H-24 (`change+pay`), H-25 (`measure+pay`). Red team
+killed all three (fake instrument ×3). No paste.
 
 **harvest-14 notes.** Timed `/harness` generate. New source class:
 session bound / energy (not Anki quota). Scout opened Duolingo Energy

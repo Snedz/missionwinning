@@ -44,6 +44,9 @@ refused by the selector with the citation attached.
 | `tell+change+M-19+share+waits+box` | Share is Finish-only and absent on the logger; no box exists to wait for | `H-20` |
 | `pay+remove+M-19+identify+off+box` | Identification chrome already absent on first-90 and `/active` | `H-21` |
 | `tell+measure+M-19+share+after+box` | Share×elapsed cannot be measured (no field, no corpus, no box) | `H-22` |
+| `tell+remove+M-20+today+no+tell` | First-session Today already has no share control | `H-23` |
+| `pay+change+M-20+identify+after+dated` | Sign-in chip already hidden until first workout | `H-24` |
+| `pay+measure+M-20+identify+on+today` | Unit already holds; no /log waitlist telemetry | `H-25` |
 
 ---
 
