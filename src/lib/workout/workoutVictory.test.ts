@@ -128,6 +128,33 @@ describe('shouldShowVictoryBackTodaySecondary', () => {
       'next CTA lives in VictoryNextActionStrip'
     );
   });
+
+  it('docks Next outside the scroll so a first session cannot bury it (.877)', () => {
+    const src = fs.readFileSync(
+      path.join(import.meta.dirname, '..', '..', 'components', 'workout', 'WorkoutVictorySheet.tsx'),
+      'utf8'
+    );
+    assert.match(src, /data-testid="victory-scroll"/);
+    assert.match(src, /data-testid="victory-next-dock"/);
+    assert.match(
+      src,
+      /flex flex-col[\s\S]*max-h-\[90dvh\][\s\S]*overflow-hidden/,
+      'the sheet is a column; only the middle pane scrolls'
+    );
+    assert.doesNotMatch(
+      src,
+      /DialogContent className="[^"]*overflow-y-auto/,
+      'overflow-y-auto on DialogContent is how Next fell below 390×844'
+    );
+    assert.match(
+      src,
+      /<\/DialogFooter>\s*<\/div>\s*<div\s+data-testid="victory-next-dock"/,
+      'dock is a sibling after the scroll pane closes — not a child of it'
+    );
+    const dockAt = src.indexOf('data-testid="victory-next-dock"');
+    const stripAt = src.indexOf('<VictoryNextActionStrip');
+    assert.ok(dockAt !== -1 && stripAt !== -1 && dockAt < stripAt);
+  });
 });
 
 describe('formatVictorySignedDelta', () => {

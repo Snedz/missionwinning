@@ -16,12 +16,12 @@ One screen of truth for any AI tool or human joining cold. Read this, then [AGEN
 
 ---
 
-## Now (2026-08-16 · web `2026.07-unified.881` · Android `1.24.1`)
+## Now (2026-08-16 · web `2026.07-unified.882` · Android `1.24.1`)
 
 > The ONLY "where we are" block in the repo — [ORCHESTRATION.md](ORCHESTRATION.md) points here.
 >
 > **Budget: ≤25 bullets.** Enforced by `src/lib/contextBudget.test.ts`. When over,
-> rotate the oldest *shipped* entries to `docs/archive/` — `.881` dropped `.864` · `.880` dropped `.863` · `.873` dropped `.859` · `.872` dropped `.858` · `.871` dropped `.857` · `.870` dropped `.856` · `.869` dropped `.855` · `.868` dropped `.854` · `.867` dropped `.853` · `.866` dropped `.852` · `.865` dropped `.851` · `.864` dropped `.850` · `.863` dropped `.849` · `.862` dropped `.848` · `.861` dropped `.847` · `.860` dropped `.846` · `.859` dropped `.845` · `.858` dropped `.844` · `.857` dropped `.843` · `.856` dropped `.842` · `.855` dropped `.841` · `.854` dropped `.840` · `.853` dropped `.839` · `.852` dropped `.837` (full text remains in LOG.md / archive) · `.203` moved `.123`–`.189`,
+> rotate the oldest *shipped* entries to `docs/archive/` — `.882` dropped `.865` · `.881` dropped `.864` · `.880` dropped `.863` · `.873` dropped `.859` · `.872` dropped `.858` · `.871` dropped `.857` · `.870` dropped `.856` · `.869` dropped `.855` · `.868` dropped `.854` · `.867` dropped `.853` · `.866` dropped `.852` · `.865` dropped `.851` · `.864` dropped `.850` · `.863` dropped `.849` · `.862` dropped `.848` · `.861` dropped `.847` · `.860` dropped `.846` · `.859` dropped `.845` · `.858` dropped `.844` · `.857` dropped `.843` · `.856` dropped `.842` · `.855` dropped `.841` · `.854` dropped `.840` · `.853` dropped `.839` · `.852` dropped `.837` (full text remains in LOG.md / archive) · `.203` moved `.123`–`.189`,
 > `.207` moved `.190`–`.193`, `.211` moved `.194`–`.197`, `.215` moved `.198`
 > `.216` moved `.200`, `.217` moved `.199`, `.218` moved `.201`, `.219` moved `.202`
 > `.220` moved `.203`, `.221` moved `.204`, `.222` moved `.205`, `.223` moved `.206`,
@@ -390,6 +390,7 @@ One screen of truth for any AI tool or human joining cold. Read this, then [AGEN
 > and `.867` dropped `.853` detail (full text remains in LOG.md / archive)
 > and `.880` dropped `.863` detail (full text remains in LOG.md / archive)
 > and `.881` dropped `.864` detail (full text remains in LOG.md / archive)
+> and `.882` dropped `.865` detail (full text remains in LOG.md / archive)
 > to [CONTEXT-now-2026-07-30.md](docs/archive/CONTEXT-now-2026-07-30.md) after this
 > block reached **79 bullets / 103KB**. A status doc that only grows stops being read.
 
@@ -411,6 +412,7 @@ One screen of truth for any AI tool or human joining cold. Read this, then [AGEN
 > | gitleaks | **green — and scanning for the first time.** It had never scanned anything: on a `pull_request` event the action lists the PR's commits, the job declared no `permissions:` block, and it 403'd (`pull_requests=read`) before opening a file. Fixed by a `permissions:` block (`.224` carrying `.255`). It scans **only the PR's own commits**, so commit `8ea3527a`'s real Solana treasury address — scrubbed from the working file, still in history — is out of its scope. That finding stands, deliberately not allowlisted; it was never what made this check red. |
 > | Privacy / security program | **Landed `.778`** — [docs/security/PROGRAM_STATUS.md](docs/security/PROGRAM_STATUS.md). Invite-bound gate, health-bucket, DSAR, territory fail-closed. OTP-without-click can leave a ghost user. Not a cert. |
 
+- **`.882`:** (`2026.07-unified.882`) **Victory Next stays on the first-session screen** — after a first set on 390×844, `Start session 2` sat at y=850 (below the fold). Sheet is a column; the middle pane scrolls; Next docks below it (`victory-next-dock`). Craft hop. No `PRIVATE_MODE` flip.
 - **`.881`:** (`2026.07-unified.881`) **Autodrive after pass is craft, not a stall** — empty queue + mined harvest + RESULT `pass` now routes to `craft` (recipe 16): walk Train → Today → Victory → Coach, ship one named first-session friction, ticket `craft`. Still not a GRAPH_LOOP letter. `stalled` remains only when `IDEA_LOOP.md` is missing. `/harness 2 hours` can keep hopping. No `PRIVATE_MODE` flip.
 - **`.880`:** (`2026.07-unified.880`) **i18n coverage is 0 again** — `i18n:coverage` (cap 0) was red on every PR because it walked `LOCALE_EXPORTS` and never the first-class overlay, while hydrate never called `mergeFirstClassStrings` either. Keys that existed still rendered English `defaultValue`. Overlay is now visible to the ratchet and merged at runtime; leftover defaultValue-only keys catalogued; week-diff headline ternary split (`One`/`Many`). Cap stays 0. `.877`–`.879` reserved by the open Victory stack. No `PRIVATE_MODE` flip.
 - **`.876`:** (`2026.07-unified.876`) **Horizon W is scored `pass`** — founder scored the phone path on the Preview of `18737b0` (production is gated, Preview is ungated with the SW built). Surface PRs no longer need a trailer. `firstCriticalGap` is `null`; harness says stop, do not invent a letter. `criticalPath.test.ts` had pinned `unscored` on the live repo — an expiry-*event* test that would have gone red on the founder scoring; de-pinned to fixtures, 4 mutants killed. No `PRIVATE_MODE` flip.
@@ -424,7 +426,6 @@ One screen of truth for any AI tool or human joining cold. Read this, then [AGEN
 - **`.868`:** (`2026.07-unified.868`) **Hop contract** — `docs/graph/HOP.md` + `npm run graph:done`. Done is a command. No `PRIVATE_MODE` flip.
 - **`.867`:** (`2026.07-unified.867`) **W1 lands Today** — ORCHESTRATION I-Day → `/log`. Pin `orchestrationW1Landing`. No `PRIVATE_MODE` flip.
 - **`.866`:** (`2026.07-unified.866`) **No French** — France is founder-excluded. Pack 14 · picker 39 · `fr`/`fr-*` → English. No `PRIVATE_MODE` flip.
-- **`.865`:** (`2026.07-unified.865`) **Returning dose follows missed sessions** — `IL-H-07`. Same 14-day gap, 4/week vs 1/week dose differs. No plan keeps calendar scale. No `PRIVATE_MODE` flip.
 - **Form object kit (on `.781`):** IMPLEMENT block + prop sheets. Regen cable-row (visible stack), lateral-raise, DB press, lunges, DB row. Floor 43. Still-only. No `PRIVATE_MODE` flip.
 - **Excellence:** **pass** · 2026-08-16 · Snedz · [docs/EXCELLENCE_RESULT.md](docs/EXCELLENCE_RESULT.md) — Horizon W phone sign-off home. Scored on the Preview of `18737b0`; surface PRs no longer need `Excellence-Override` (`.669` · `.876`).
 - **`.669`:** (`2026.07-unified.669`) **Excellence RESULT + agent stop-rule** — `excellenceGate` path policy + `check-excellence-gate` on gate/PR CI; wedge still ships while unscored.
