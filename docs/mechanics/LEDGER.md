@@ -31,6 +31,7 @@ hard cap is ≤14 build PRs and spending fewer is the good outcome.
 | harvest-7 | 2026-08-16 | 0 | — | — | — | **1 PR** (paste) | **1 PR** | 1 (`IL-H-05`) | — | — |
 | harvest-8 | 2026-08-16 | 0 | — | — | — | **1 PR** (paste) | **1 PR** | 1 (`IL-H-07`) | — | — |
 | harvest-9 | 2026-08-16 | 3 | 1 | 3 | 1 spawn | ≤3 inbox / ≤1 M / ≤3 H / **0 PR** | 3 inbox / 1 M / 3 H / **0 PR** | 0 | 0 of 3 | — |
+| harvest-10 | 2026-08-16 | 0 | — | — | — | ≤10 pages / **0 product PR** | 10 opened / **0 product PR** | 0 | — | — |
 
 The seed run harvested nothing. Its nodes were hand-written from repo truth and
 one research pass, which is why the scout, anatomist, translator and red-team
@@ -70,6 +71,14 @@ H-02 is `H-05`; this run's only product is the paste (`IL-H-05` on GRAPH_LOOP AS
 **harvest-8 notes.** Founder `/graph --paste`. No new scout. The pick after
 H-05 is `H-07`; this run's only product is the paste (`IL-H-07` on GRAPH_LOOP AT).
 1 PR spent on that, not on missed-session dose — that is the next hop.
+
+**harvest-10 notes.** Founder keep-working. No new scout. Opened already-cited
+pages. Upgraded to E1 where the page supports the cite: GitHub PRs, Google Docs
+suggesting, Duolingo streak freeze (date corrected to 2022-01-31), Instagram
+Stories (TechCrunch 2017-04-13), Garmin adaptive explanations, Celeste Assist
+Mode (Vice), PMC 12938745 (Strava delete/hide), arXiv 2507.14702 (75% usage
+drop). Left E2: nesbitt.io (opened; satire, not an 85% measurement), Duolingo
+leagues (404), Whoop and Hades wiki (challenge wall). No paste. No new H.
 
 **harvest-9 notes.** Founder override: regenerate, wait for approval. Source
 class changed: three pages **opened** (GitHub draft PR docs, Stripe test-clock

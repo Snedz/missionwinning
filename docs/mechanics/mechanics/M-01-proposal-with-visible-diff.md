@@ -15,16 +15,14 @@ primitives:
 seen_in:
   - product: GitHub pull request
     url: https://docs.github.com/en/pull-requests
-    date: 2026-08-15
-    class: E2
-    retrieval: indexed
-    why_not_e1: search-index synthesis only; no scout in either run could open the page (egress proxy blocked every fetch), so the citation is a pointer, not a reading
+    date: 2026-08-16
+    class: E1
+    retrieval: fetched
   - product: Google Docs suggesting mode
     url: https://support.google.com/docs/answer/6033474
-    date: 2026-08-15
-    class: E2
-    retrieval: indexed
-    why_not_e1: search-index synthesis only; no scout in either run could open the page (egress proxy blocked every fetch), so the citation is a pointer, not a reading
+    date: 2026-08-16
+    class: E1
+    retrieval: fetched
 also_seen_in_failures:
   - Google Wave inline threaded edits — the same proposal-and-history machinery shipped with under a million users a year after general availability
 produces:
@@ -33,6 +31,8 @@ backfires:
   - behavior: B-03
     how: the mechanic silently assumes proposals are scarce relative to attention; at high arrival rate consent degrades into rubber-stamping or abandonment with no change to the interface
     class: E2
+    retrieval: fetched
+    why_not_e1: page opened 2026-08-16; it is satirical Dependabot advice (open-pull-requests-limit 0), not a measurement of unmerged security PRs
     url: https://nesbitt.io/2026/01/10/16-best-practices-for-reducing-dependabot-noise.html
 ---
 

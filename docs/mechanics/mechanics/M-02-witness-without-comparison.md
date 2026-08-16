@@ -21,10 +21,9 @@ seen_in:
     why_not_e1: search-index synthesis only; no scout in either run could open the page (egress proxy blocked every fetch), so the citation is a pointer, not a reading
   - product: Strava kudos — documented backfire in the same literature
     url: https://pmc.ncbi.nlm.nih.gov/articles/PMC12938745/
-    date: 2025-01-01
-    class: E2
-    retrieval: indexed
-    why_not_e1: search-index synthesis only; no scout in either run could open the page (egress proxy blocked every fetch), so the citation is a pointer, not a reading
+    date: 2026-02-03
+    class: E1
+    retrieval: fetched
 also_seen_in_failures:
   - Peach waves and Google Plus plus-ones — the same cheap acknowledgement gesture, on networks that never reached the density it needs
 produces:
@@ -32,9 +31,9 @@ produces:
 backfires:
   - behavior: B-03
     how: athletes who perceive their performance as poor hide or delete sessions, which corrupts the planner's only input
-    class: E2
-    retrieval: indexed
-    why_not_e1: search-index synthesis only; no scout in either run could open the page (egress proxy blocked every fetch), so the citation is a pointer, not a reading
+    class: E1
+    retrieval: fetched
+    date: 2026-02-03
     url: https://pmc.ncbi.nlm.nih.gov/articles/PMC12938745/
 ---
 

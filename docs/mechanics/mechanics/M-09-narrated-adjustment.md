@@ -16,9 +16,8 @@ seen_in:
   - product: Garmin adaptive training plans
     url: https://the5krunner.com/2024/11/12/garmin-adaptive-plans-get-improved-explanations/
     date: 2024-11-12
-    class: E2
-    retrieval: indexed
-    why_not_e1: search-index synthesis only; the egress proxy blocked every fetch in harvest 1
+    class: E1
+    retrieval: fetched
 also_seen_in_failures:
   - Strava Athlete Intelligence and Garmin Active Intelligence — narration layers with nothing under them. The first went viral in 2024 for telling a user hit by a car that their data showed a consistent athlete; the second was reviewed as good for nothing after a month
 produces:
