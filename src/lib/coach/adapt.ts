@@ -266,28 +266,33 @@ export function adaptPlan(plan: CoachPlan, ctx: CoachContext, today: string): Co
 }
 
 /**
- * Did the week actually change?
+ * Did the week actually change, in a way an athlete should be told about?
  *
- * Field-wise rather than `JSON.stringify`, because key order is not a fact about
- * the plan and a reordered spread would read as an adaptation.
+ * H-08: array order is not material. Field-wise rather than `JSON.stringify`,
+ * because key order is not a fact about the plan either. A reordered spread
+ * must not read as an adaptation.
  */
-function sessionsEqual(a: PlanSession[], b: PlanSession[]): boolean {
+function sessionSignature(s: PlanSession): string {
+  return [
+    s.id,
+    String(s.dayOffset),
+    s.status,
+    s.kind,
+    s.name,
+    String(s.estMinutes),
+    s.exercises.map((ex) => ex.exerciseId).join(','),
+  ].join('|');
+}
+
+export function sessionsMateriallyEqual(a: PlanSession[], b: PlanSession[]): boolean {
   if (a.length !== b.length) return false;
-  return a.every((s, i) => {
-    const o = b[i];
-    return (
-      s.id === o.id &&
-      s.dayOffset === o.dayOffset &&
-      s.status === o.status &&
-      s.kind === o.kind &&
-      s.name === o.name &&
-      s.estMinutes === o.estMinutes &&
-      // The recovery swap replaces a session's whole exercise list, so comparing
-      // only the header would call a changed week unchanged.
-      s.exercises.length === o.exercises.length &&
-      s.exercises.every((ex, j) => ex.exerciseId === o.exercises[j].exerciseId)
-    );
-  });
+  const left = a.map(sessionSignature).sort();
+  const right = b.map(sessionSignature).sort();
+  return left.every((k, i) => k === right[i]);
+}
+
+function sessionsEqual(a: PlanSession[], b: PlanSession[]): boolean {
+  return sessionsMateriallyEqual(a, b);
 }
 
 export function regenerateFutureSessions(plan: CoachPlan, ctx: CoachContext, todayOffset: number): CoachPlan {
