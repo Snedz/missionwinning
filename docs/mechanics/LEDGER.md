@@ -26,6 +26,7 @@ hard cap is ≤14 build PRs and spending fewer is the good outcome.
 | harvest-2 | 2026-08-16 | 0 | — | — | — | **1 PR** (paste) | **1 PR** | 1 (`IL-H-01`) | — | — |
 | harvest-3 | 2026-08-16 | 0 | — | — | — | **1 PR** (paste) | **1 PR** | 1 (`IL-H-09`) | — | — |
 | harvest-4 | 2026-08-16 | 0 | — | — | — | **1 PR** (paste) | **1 PR** | 1 (`IL-H-03`) | — | — |
+| harvest-5 | 2026-08-16 | 0 | — | — | — | **1 PR** (paste) | **1 PR** | 1 (`IL-H-08`) | — | — |
 
 The seed run harvested nothing. Its nodes were hand-written from repo truth and
 one research pass, which is why the scout, anatomist, translator and red-team
