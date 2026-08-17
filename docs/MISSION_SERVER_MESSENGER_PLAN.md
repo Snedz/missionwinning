@@ -44,7 +44,7 @@ Ops #8 already locked native-not-discord.com. Honour it: no Discord OAuth, widge
 | Quiet nudge (optional) | One local system line in the open room. **No sound.** Not a push. Not on Today. |
 | Classic messenger chrome | Ruled window: list | conversation. Ink-panel title bar (`neutral-900` / `neutral-100` — already sanctioned for rest-dock / flow runner). Metric-quiet. |
 
-**Craft, not a theme flip.** Design gate is paper / ink, radius 0, Archivo, light-only. Steal Bevel’s *metric-quiet density*, not a dark-mode product. Not Clippy. Not Discord purple. Not a game HUD. One red field per page = **Send**.
+**Craft, not a theme flip.** Design gate is paper / ink, radius 0, Archivo, light-only. Steal a metric-quiet health app’s *metric-quiet density*, not a dark-mode product. Not Clippy. Not Discord purple. Not a game HUD. One red field per page = **Send**.
 
 ---
 

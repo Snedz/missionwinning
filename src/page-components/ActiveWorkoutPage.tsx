@@ -567,7 +567,7 @@ export function ActiveWorkoutPage() {
 
   const handleEmptyStart = () => {
     /*
-     * Strong/Hevy empty start: copy the last completed session when one exists.
+     * set-table empty start: copy the last completed session when one exists.
      * Cold devices stay freestyle empty. Do not seed Just Go or Coach here —
      * Train is the logger; rest stays off until a set is logged.
      */

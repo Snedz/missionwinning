@@ -125,7 +125,7 @@ export function getYesterdayEntries(logs: NutritionLogRow[], todayIso: string): 
 
 /**
  * Most recently logged unique foods (today + yesterday first by reverse log order).
- * MacroFactor/MFP-style recents for one-tap re-log.
+ * an adaptive-calorie app/a food diary-style recents for one-tap re-log.
  */
 export function getRecentFoods(
   logs: NutritionLogRow[],

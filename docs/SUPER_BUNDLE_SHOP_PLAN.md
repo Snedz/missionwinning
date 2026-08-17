@@ -30,7 +30,7 @@ Paid card sells **content quality**, not empty SKUs. Counts come from `CONTENT_F
 | Premium Learn sections | `learnPremiumSections` (16) |
 | Mission Coach depth | weekly plans from logs (no fake count) |
 
-Vs-stack copy (illustrative, not live SKUs): **one Super Bundle vs Strong + MyFitnessPal + Pliability + Calm**. Pillar `$15/$10/…` may remain in the below-fold compare table as illustrative only.
+Vs-stack copy (illustrative, not live SKUs): **one Super Bundle vs a gym logger + a food diary + a mobility app + Calm**. Pillar `$15/$10/…` may remain in the below-fold compare table as illustrative only.
 
 Optional third state: paid card reads **Already included** only on real enrollment (`!isFreeBeta() && premium`). Free-beta depth bypass is not a purchase.
 
@@ -70,7 +70,7 @@ Shop cards, checkout mute, `/bundle` 200, discovery restore, and mute-test rewri
 
 ## Refuse
 
-- No 7-day / One Week Trial card, trial SKU, “credit card required,” or Fitbod-style trial
+- No 7-day / One Week Trial card, trial SKU, “credit card required,” or a programming app-style trial
 - No à la carte pillar SKUs (Train/Fuel/Move/Mind/Learn are not sold separately)
 - No live Stripe unmute; no `PRIVATE_MODE` flip
 - No bait-and-switch: keep `isFreeBetaPremiumUnlocked()` depth

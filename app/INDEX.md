@@ -63,7 +63,7 @@
 | `/changelog` | `app/changelog/page.tsx` → `ChangelogPage` (athlete release notes; marketing chrome) |
 | `/guide` (Apex reader) | `GuidePublicIndexPage` — Contents sidebar + language switcher |
 | `/guide/[chapter]` | `GuidePublicChapterPage` — same shell |
-| `/guide/mission-winning-vs-strong` · `vs-hevy` · `vs-fitbod` | `LearnVsPublicPage` — AEO comparison (not magazine chapters) |
+| `/guide/mission-winning-vs-:slug` | **Unpublished** — permanent redirect to `/welcome`. Named compare drafts live in ops. |
 | `/guide/print` | Magazine print/PDF source (`GuideMagazinePrintPage`) — noindex |
 | `/exercises/muscle/[group]`, `/exercises/equipment/[slug]` | Catalog hub indexes |
 | `/paths`, `/paths/[id]` | Public Learn path teasers (in-app Learn stays `/learn`) |

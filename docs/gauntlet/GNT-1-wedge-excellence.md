@@ -10,7 +10,7 @@ Unused cap is success. The cap counts only PRs that touch `src|app|scripts|supab
 
 Split by the **five founder criteria** (not the four surfaces). Surfaces cross-cut them.
 
-Own-app stills: [GNT-1/evidence/](GNT-1/evidence/README.md). Competitor pixels stay local. Named references (Hevy / Strong / Freeletics / Bevel / Duolingo) are **measurements-only** until this file has founder FLOORS/BANDS. They are not a FAIL condition.
+Own-app stills: [GNT-1/evidence/](GNT-1/evidence/README.md). Competitor pixels stay local. Named references (set-table / a bodyweight coach app / a metric-quiet health app / a streak league) are **measurements-only** until this file has founder FLOORS/BANDS. They are not a FAIL condition.
 
 ## Units / bars (written before round 1)
 
@@ -88,7 +88,7 @@ Fill as rounds ship. Own-app stills under `GNT-1/evidence/` named `U<n>-R<r>-<be
 **Remaining gaps (honest):**
 
 1. **The ≤90s wall-clock is unmeasured by an agent.** `first-90` pins taps, not seconds; `firstPaintFloor` is copy drift. C5 stays a founder observation.
-2. **No founder FLOORS/BANDS for the named references** (Hevy · Strong · Freeletics · Bevel · Duolingo). Every A/B cell reads *measurements-only* by design — a reference with no numeric floor cannot FAIL a unit (GAUNTLET_LOOP §5).
+2. **No founder FLOORS/BANDS for the named references** (the set-table logger · Strong · a bodyweight coach app · a metric-quiet health app · a streak league). Every A/B cell reads *measurements-only* by design — a reference with no numeric floor cannot FAIL a unit (GAUNTLET_LOOP §5).
 3. **Stills are seeded local dev, not a production phone.** Seeds go through the app's own storage keys and no product code was changed, but a gated production origin still paints `/private` — which is exactly what R1 hit.
 4. **U2 `returning` and `mid-plan` render the same Today** (both have a session inside the week). The bar does not separate them; a distinct mid-plan state would need a generated plan on the device.
 5. `e2e:visual` remains the dark gate repo-wide — unrelated to this campaign, still unbaselined.

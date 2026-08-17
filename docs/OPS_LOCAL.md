@@ -19,4 +19,10 @@ npm run ops:sync         # refresh strategy copies (never overwrites full memos 
 
 Cold start for any model: `ops/CONTINUITY/INDEX.md` + `ops/CONTINUITY/CURRENT.md`.
 
+**Intel brain** (named research, store stills, steal/avoid): `ops/intel/INDEX.md` → `SYNTHESIS.md` → `WIREFRAME.md` → `patterns/`. Product code never imports this tree.
+
+After an intel wave: `cd ops && git add intel && git commit && git push` to private `mission-ops`. Never stage `ops/` in the product repo.
+
+`npm run names:check` reads `ops/intel/NAME_DENYLIST.md` when mounted and fails if a denied name is in tracked product files.
+
 Product agents without ops mounted still use CONTEXT → AGENTS → INDEX → ORCHESTRATION.

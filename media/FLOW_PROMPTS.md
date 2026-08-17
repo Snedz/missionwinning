@@ -60,7 +60,7 @@ Create a reusable brand mascot character named Kalligator for Mission Winning.
 
 SPECIES / SILHOUETTE
 - Cute stylized cartoon crocodile/alligator (Kalligator). Teal body, cream belly, red spines.
-- NOT an owl. NOT Duolingo green. NOT a photoreal bird. NOT a human in a costume.
+- NOT an owl. NOT a streak league green. NOT a photoreal bird. NOT a human in a costume.
 - Compact body, readable at tiny UI sizes: big head-to-body ratio like a product icon, but still clearly a bird of prey.
 - Clean silhouette: pointed beak, short hooked tip, alert round head, folded wings that form a chevron shape when idle.
 

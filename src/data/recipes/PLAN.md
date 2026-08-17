@@ -5,7 +5,7 @@
 **Build label:** `2026.07-unified.700` (do not mint `.698` or `.699`).  
 **Excellence-Override:** Super Bundle Fuel premium recipes (content)
 
-Overnight founder order: Super Bundle content depth so $59 beats buying MFP + Pliability + Calm separately. This PR owns **Fuel only**. Other agents own Move / Mind.
+Overnight founder order: Super Bundle content depth so $59 beats buying a food diary + a mobility app + Calm separately. This PR owns **Fuel only**. Other agents own Move / Mind.
 
 ---
 
@@ -39,7 +39,7 @@ Overnight founder order: Super Bundle content depth so $59 beats buying MFP + Pl
 
 ## Why 140 (not another +8)
 
-`.591` added 8 and stopped at 110. Super Bundle vs MFP is not a barcode catalog — it is a **cookable protein-first library** for garage / travel / leftover kitchens. +30 is one extra month of dinners, or a week of 4-slot days, without slop-farming hundreds of near-duplicates.
+`.591` added 8 and stopped at 110. Super Bundle vs a food diary is not a barcode catalog — it is a **cookable protein-first library** for garage / travel / leftover kitchens. +30 is one extra month of dinners, or a week of 4-slot days, without slop-farming hundreds of near-duplicates.
 
 Free stays 48. Shop must say those two numbers, or interpolate them.
 
@@ -108,7 +108,7 @@ Append these exact names to `src/data/recipes/premiumRecipes.ts`. No collisions 
 | `cals` | > 0 and plausible vs macros |
 | `ingredients` / `instructions` / `tip` | all present; ingredients > 10 chars |
 | Voice | Original MW — garage / train-anywhere / leftover. Mission briefing, not gym-bro. |
-| Forbidden in new text | ISSA, Ch5, Ch12, MyFitnessPal, MFP, barcode, TDEE, “Free core”, competitor product names |
+| Forbidden in new text | ISSA, Ch5, Ch12, a food diary, a food diary, barcode, TDEE, “Free core”, competitor product names |
 | Equipment | Pantry + one pan / microwave / no-cook. No restaurant plating. |
 | Tip job | Coach the plate: protein first, then carbs around hard sessions. |
 

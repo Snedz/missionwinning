@@ -18,6 +18,8 @@ Open source is a **trust product** for the free core. It is not a reason to publ
 
 **Rule of thumb:** if a document would help a funded competitor kill the company in 90 days, it is **INTERNAL**, not PUBLIC.
 
+**Third-party consumer fitness product names** (research, steal/avoid, vs-copy, “like {app}” comments) are **INTERNAL**. They live in `ops/intel/` (local mount of private mission-ops). The product tree uses Mission Winning vocabulary only: set table, Fuel notepad, photo log, pinned home, Super Bundle. OS health stores (Apple Health, Health Connect) and live OAuth partners the product actually talks to may be named at the integration boundary. The plaintext name list is **not** in this file — listing it here would be the leak. Local check: `npm run names:check` (runs when `ops/intel/NAME_DENYLIST.md` is mounted).
+
 ---
 
 ## PUBLIC (safe in this repo)
@@ -48,6 +50,7 @@ Product tree keeps **stubs** (marker `RELOCATED_TO_MISSION_OPS`). Full text: pri
 | `docs/PRICING_REVIEW_2026-08.md` | Pricing experiments |
 | `docs/applications/*` answers | Already gitignored — keep that way |
 | Long-term everything / board memos | `ops/` or mission-ops only |
+| Competitive intel, named steal/avoid, store stills, vs-copy | `ops/intel/` (and mission-ops once pushed). Product ships nameless patterns. |
 | Session plans under `.hermes/` | LOCAL — gitignored |
 
 **Scrubbed for public OSS (2026-08-08):** war-room + YC/accelerator/pricing full text removed from product tip; stubs only. Agents **must not** recreate full memos in the product tree — write only in private ops.

@@ -1,7 +1,7 @@
 # Android UX notes — Mission Winning
 
 **Product path:** Compose wedge (Train + Coach).  
-**Overhaul:** Hevy/Strong-class presentation (1.23+) — tokens, motion, screen composition. Architecture unchanged (Room SoT, Hilt, feature modules).  
+**Overhaul:** set-table-class presentation (1.23+) — tokens, motion, screen composition. Architecture unchanged (Room SoT, Hilt, feature modules).  
 **Design OS:** [docs/DESIGN_ORCHESTRATION.md](../../docs/DESIGN_ORCHESTRATION.md) — emotion arc, quality bars, craft waves D0–D3 (parity with web).
 
 ## Principles

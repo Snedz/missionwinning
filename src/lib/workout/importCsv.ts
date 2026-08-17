@@ -1,14 +1,13 @@
 /**
  * CSV history transfer — 0.1 (beta), then freeze.
  *
- * Product in+out is **Strong and Hevy**, free forever, never gated. Boostcamp
+ * Product in+out is workout CSV, free forever, never gated. A program-log
  * dumps and Mission Winning native CSV still *import* (a file in the hand must
  * not bounce); they are not 0.1 export dialects. JSON device backup stays on
  * Profile for full-app restore; this is the log.
  *
  * Switchers are the early market for a new logger, and every one of them is
- * holding a CSV: Hevy caps free history at three months, Strong paywalls export
- * of your own logs. This module turns those files into the web's native shape
+ * holding a CSV from another logger. This module turns those files into the web's native shape
  * so `personalRecordsFor`, `e1rmSeries`, `loadBands` light up against years of
  * the athlete's own history — and writes the same dialects back out.
  *
@@ -17,7 +16,7 @@
  * imported as 12.
  *
  * Shapes this parser refuses to guess about:
- * - **Quoted fields can contain newlines** (Hevy exercise notes routinely do), so
+ * - **Quoted fields can contain newlines** (the set-table logger exercise notes routinely do), so
  *   records are split by a real CSV scanner, never `text.split('\n')`.
  * - **Unknown set types stay 'normal', unknown RPE stays absent.** Dropping a set
  *   because its label is unrecognised would silently shrink someone's history.
@@ -31,15 +30,15 @@ import { EXERCISES } from '@/data/exercises';
 import { rpeCategoryToNumber, rpeNumberToCategory } from '@/lib/sync/normalizeExercises';
 import { compareKeys } from '@/lib/i18n/formatLocale';
 
-export type CsvFormat = 'hevy' | 'strong' | 'boostcamp' | 'mw';
+export type CsvFormat = 'set-table-a' | 'set-table-b' | 'program-log' | 'mw';
 
-/** Official Hevy workout-export header (kg). Parser also accepts Android's `weight_lbs` column. */
-export const HEVY_CSV_HEADER =
+/** Official the set-table logger workout-export header (kg). Parser also accepts Android's `weight_lbs` column. */
+export const SET_TABLE_A_CSV_HEADER =
   'title,start_time,end_time,description,exercise_title,superset_id,exercise_notes,' +
   'set_index,set_type,weight_kg,reps,distance_km,duration_seconds,rpe';
 
 /** Strong workout-export header. Set Order is 1-based; Weight Unit is `kg` or `lbs`. */
-export const STRONG_CSV_HEADER =
+export const SET_TABLE_B_CSV_HEADER =
   'Date,Workout Name,Duration,Exercise Name,Set Order,Weight,Weight Unit,Reps,RPE,Notes';
 
 /** Android `WorkoutTransfer.toMwCsv` header — kept for import + tests, not the 0.1 Profile download. */
@@ -47,8 +46,8 @@ export const MW_CSV_HEADER =
   'workout_id,workout_name,completed_at,duration_seconds,weight_unit,' +
   'exercise_id,exercise_name,set_index,reps,weight,rpe,set_kind,note,superset_group';
 
-/** 0.1 Profile download dialects. Boostcamp/MW stay import-only. */
-export type WorkoutCsvDialect = 'strong' | 'hevy';
+/** 0.1 Profile download dialects. a program-log app/MW stay import-only. */
+export type WorkoutCsvDialect = 'set-table-b' | 'set-table-a';
 
 export interface CsvImportResult {
   workouts: CompletedWorkoutLog[];
@@ -116,25 +115,25 @@ export function detectCsvFormat(text: string): CsvFormat | null {
   const header = firstRecord.map((h) => h.trim().toLowerCase());
   const has = (...names: string[]) => names.every((n) => header.includes(n));
   if (has('exercise_title') && (header.includes('set_index') || header.includes('start_time'))) {
-    return 'hevy';
+    return 'set-table-a';
   }
-  if (has('exercise name', 'set order')) return 'strong';
+  if (has('exercise name', 'set order')) return 'set-table-b';
   if (has('workout_name', 'exercise_name')) return 'mw';
-  if (has('session_date', 'exercise_name')) return 'boostcamp';
+  if (has('session_date', 'exercise_name')) return 'program-log';
   if (
     header.includes('exercise') &&
     header.includes('set') &&
     (header.includes('workout') || header.includes('date')) &&
     header.includes('unit')
   ) {
-    return 'boostcamp';
+    return 'program-log';
   }
   return null;
 }
 
 /**
  * Catalog match by normalised name, with the equipment parenthetical stripped —
- * Hevy writes "Bench Press (Barbell)", the catalog says "Bench Press". A name that
+ * the set-table logger writes "Bench Press (Barbell)", the catalog says "Bench Press". A name that
  * matches nothing becomes a slug id, which is how custom exercises already work; the
  * set is preserved either way. Matching must never be the reason a set is lost.
  */
@@ -186,7 +185,7 @@ function toIso(raw: string): string | null {
     );
     return Number.isNaN(d.getTime()) ? null : d.toISOString();
   }
-  // Hevy: "14 Jul 2026, 18:05" or ISO; Strong: "2026-07-14 18:05:00".
+  // the set-table logger: "14 Jul 2026, 18:05" or ISO; Strong: "2026-07-14 18:05:00".
   const direct = new Date(t);
   if (!Number.isNaN(direct.getTime())) return direct.toISOString();
   const strongish = new Date(t.replace(' ', 'T'));
@@ -195,10 +194,10 @@ function toIso(raw: string): string | null {
 }
 
 /**
- * Boostcamp History→CSV writes slash dates: EU `dd/mm/yy` when the row unit is kg,
+ * a program-log app History→CSV writes slash dates: EU `dd/mm/yy` when the row unit is kg,
  * US `mm/dd/yy` when it is lb. Unambiguous ISO stays ISO.
  */
-export function parseBoostcampDate(raw: string, unit: string): string | null {
+export function parseProgramLogDate(raw: string, unit: string): string | null {
   const m = /^(\d{1,2})\/(\d{1,2})\/(\d{2}|\d{4})$/.exec(raw.trim());
   if (m) {
     // Slash dates must not go through Date.parse — it is US-biased (`03/04/26`
@@ -363,7 +362,7 @@ function headerIndex(header: string[]): (...names: string[]) => number {
   };
 }
 
-function parseHevy(records: string[][], units: UnitsPref, newId: () => string): CsvImportResult {
+function parseSetTableA(records: string[][], units: UnitsPref, newId: () => string): CsvImportResult {
   const idx = headerIndex(records[0]);
   const iTitle = idx('title');
   const iStart = idx('start_time');
@@ -376,7 +375,7 @@ function parseHevy(records: string[][], units: UnitsPref, newId: () => string): 
   const iReps = idx('reps');
   const iRpe = idx('rpe');
   if (iTitle < 0 || iEx < 0) {
-    return { workouts: [], format: 'hevy', skippedRows: 0, error: 'missing_columns' };
+    return { workouts: [], format: 'set-table-a', skippedRows: 0, error: 'missing_columns' };
   }
 
   let skipped = 0;
@@ -405,10 +404,10 @@ function parseHevy(records: string[][], units: UnitsPref, newId: () => string): 
     });
   }
 
-  return { workouts: assembleWorkouts(sets, newId), format: 'hevy', skippedRows: skipped };
+  return { workouts: assembleWorkouts(sets, newId), format: 'set-table-a', skippedRows: skipped };
 }
 
-function parseStrong(records: string[][], units: UnitsPref, newId: () => string): CsvImportResult {
+function parseSetTableB(records: string[][], units: UnitsPref, newId: () => string): CsvImportResult {
   const idx = headerIndex(records[0]);
   const iDate = idx('date');
   const iName = idx('workout name');
@@ -420,7 +419,7 @@ function parseStrong(records: string[][], units: UnitsPref, newId: () => string)
   const iReps = idx('reps');
   const iRpe = idx('rpe');
   if (iDate < 0 || iEx < 0) {
-    return { workouts: [], format: 'strong', skippedRows: 0, error: 'missing_columns' };
+    return { workouts: [], format: 'set-table-b', skippedRows: 0, error: 'missing_columns' };
   }
 
   let skipped = 0;
@@ -456,7 +455,7 @@ function parseStrong(records: string[][], units: UnitsPref, newId: () => string)
     });
   }
 
-  return { workouts: assembleWorkouts(sets, newId), format: 'strong', skippedRows: skipped };
+  return { workouts: assembleWorkouts(sets, newId), format: 'set-table-b', skippedRows: skipped };
 }
 
 function isTruthyFlag(raw: string): boolean {
@@ -536,7 +535,7 @@ function parseMw(records: string[][], units: UnitsPref, newId: () => string): Cs
   return { workouts: assembleWorkouts(sets, newId), format: 'mw', skippedRows: skipped };
 }
 
-function parseBoostcamp(
+function parseProgramLog(
   records: string[][],
   units: UnitsPref,
   newId: () => string
@@ -555,7 +554,7 @@ function parseBoostcamp(
   const iSkip = idx('set_skipped', 'skipped');
   const iWarm = idx('iswarmup', 'set_iswarmup', 'is_warmup');
   if (iEx < 0 || iDate < 0) {
-    return { workouts: [], format: 'boostcamp', skippedRows: 0, error: 'missing_columns' };
+    return { workouts: [], format: 'program-log', skippedRows: 0, error: 'missing_columns' };
   }
 
   let skipped = 0;
@@ -574,7 +573,7 @@ function parseBoostcamp(
     }
     const rowUnit = col(iUnit);
     const date = col(iDate);
-    const startIso = parseBoostcampDate(date, rowUnit);
+    const startIso = parseProgramLogDate(date, rowUnit);
     const week = col(iWeek);
     const day = col(iDay);
     const workoutName =
@@ -599,7 +598,7 @@ function parseBoostcamp(
     });
   }
 
-  return { workouts: assembleWorkouts(sets, newId), format: 'boostcamp', skippedRows: skipped };
+  return { workouts: assembleWorkouts(sets, newId), format: 'program-log', skippedRows: skipped };
 }
 
 export function csvEscape(value: string): string {
@@ -645,7 +644,7 @@ export function workoutsToMwCsv(workouts: CompletedWorkoutLog[], units: UnitsPre
   return `${lines.join('\n')}\n`;
 }
 
-const HEVY_MONTHS = [
+const SET_TABLE_A_MONTHS = [
   'Jan',
   'Feb',
   'Mar',
@@ -665,23 +664,23 @@ function pad2(n: number): string {
 }
 
 /**
- * Hevy `"d MMM yyyy, HH:mm"` from local fields. English month names are the
+ * the set-table logger `"d MMM yyyy, HH:mm"` from local fields. English month names are the
  * dialect, not the athlete's UI language.
  */
-export function formatHevyLocal(iso: string): string {
+export function formatSetTableALocal(iso: string): string {
   const d = new Date(iso);
   if (Number.isNaN(d.getTime())) return '';
-  return `${d.getDate()} ${HEVY_MONTHS[d.getMonth()]} ${d.getFullYear()}, ${pad2(d.getHours())}:${pad2(d.getMinutes())}`;
+  return `${d.getDate()} ${SET_TABLE_A_MONTHS[d.getMonth()]} ${d.getFullYear()}, ${pad2(d.getHours())}:${pad2(d.getMinutes())}`;
 }
 
 /** Strong `"YYYY-MM-DD HH:mm:ss"` from local fields. */
-export function formatStrongLocal(iso: string): string {
+export function formatSetTableBLocal(iso: string): string {
   const d = new Date(iso);
   if (Number.isNaN(d.getTime())) return '';
   return `${d.getFullYear()}-${pad2(d.getMonth() + 1)}-${pad2(d.getDate())} ${pad2(d.getHours())}:${pad2(d.getMinutes())}:${pad2(d.getSeconds())}`;
 }
 
-function hevySetType(kind?: SetKind): string {
+function setTableASetType(kind?: SetKind): string {
   if (kind === 'warmup') return 'warmup';
   if (kind === 'drop') return 'dropset';
   if (kind === 'failure') return 'failure';
@@ -693,11 +692,11 @@ function storedToKg(weight: number, units: UnitsPref): number {
 }
 
 /**
- * Hevy infers session length from start/end. Strong imports store duration
- * separately with identical timestamps — offset the end so a Hevy round-trip
+ * the set-table logger infers session length from start/end. Strong imports store duration
+ * separately with identical timestamps — offset the end so a the set-table logger round-trip
  * keeps the minutes.
  */
-function hevyEndIso(w: CompletedWorkoutLog): string {
+function setTableAEndIso(w: CompletedWorkoutLog): string {
   const start = w.startedAt || w.completedAt;
   const end = w.completedAt || w.startedAt;
   if (!end) return '';
@@ -716,15 +715,15 @@ function csvRow(cells: Array<string | number>): string {
 }
 
 /**
- * Official Hevy workout CSV (kg column). Re-import is a no-op against the
+ * Official the set-table logger workout CSV (kg column). Re-import is a no-op against the
  * history it came from (merge identity is minute + name + set count).
  */
-export function workoutsToHevyCsv(workouts: CompletedWorkoutLog[], units: UnitsPref): string {
-  const lines = [HEVY_CSV_HEADER];
+export function workoutsToSetTableACsv(workouts: CompletedWorkoutLog[], units: UnitsPref): string {
+  const lines = [SET_TABLE_A_CSV_HEADER];
   for (const w of workouts) {
     if (w.deletedAt) continue;
-    const start = formatHevyLocal(w.startedAt || w.completedAt);
-    const end = formatHevyLocal(hevyEndIso(w));
+    const start = formatSetTableALocal(w.startedAt || w.completedAt);
+    const end = formatSetTableALocal(setTableAEndIso(w));
     for (const ex of w.exercises) {
       const name = exerciseNameForId(ex.exerciseId);
       const note = ex.note ?? '';
@@ -740,7 +739,7 @@ export function workoutsToHevyCsv(workouts: CompletedWorkoutLog[], units: UnitsP
             '',
             note,
             String(i),
-            hevySetType(s.kind),
+            setTableASetType(s.kind),
             String(storedToKg(s.weight, units)),
             String(s.reps),
             '',
@@ -757,14 +756,14 @@ export function workoutsToHevyCsv(workouts: CompletedWorkoutLog[], units: UnitsP
 /**
  * Strong workout CSV. Set Order is 1-based per exercise. Re-import is a no-op.
  * Strong has no set-kind column — warmup/drop/failure flatten to normal on the
- * way out (Hevy is the dialect that keeps kinds).
+ * way out (the set-table logger is the dialect that keeps kinds).
  */
-export function workoutsToStrongCsv(workouts: CompletedWorkoutLog[], units: UnitsPref): string {
+export function workoutsToSetTableBCsv(workouts: CompletedWorkoutLog[], units: UnitsPref): string {
   const unit = units === 'imperial' ? 'lbs' : 'kg';
-  const lines = [STRONG_CSV_HEADER];
+  const lines = [SET_TABLE_B_CSV_HEADER];
   for (const w of workouts) {
     if (w.deletedAt) continue;
-    const date = formatStrongLocal(w.startedAt || w.completedAt);
+    const date = formatSetTableBLocal(w.startedAt || w.completedAt);
     const duration = formatDurationSeconds(w.durationSeconds);
     for (const ex of w.exercises) {
       const name = exerciseNameForId(ex.exerciseId);
@@ -802,7 +801,7 @@ function defaultNewId(): string {
   return `import-${Date.now()}-${idCounter}`;
 }
 
-/** Parse a Strong, Hevy, Boostcamp, or Mission Winning CSV. Format from the header, never the filename. */
+/** Parse a Strong, the set-table logger, a program-log app, or Mission Winning CSV. Format from the header, never the filename. */
 export function parseWorkoutCsv(
   text: string,
   units: UnitsPref,
@@ -813,10 +812,10 @@ export function parseWorkoutCsv(
   if (!format) return { workouts: [], format: null, skippedRows: 0, error: 'unrecognized_format' };
   const records = splitCsvRecords(body);
   if (records.length < 2) return { workouts: [], format, skippedRows: 0, error: 'no_data_rows' };
-  if (format === 'hevy') return parseHevy(records, units, newId);
-  if (format === 'strong') return parseStrong(records, units, newId);
+  if (format === 'set-table-a') return parseSetTableA(records, units, newId);
+  if (format === 'set-table-b') return parseSetTableB(records, units, newId);
   if (format === 'mw') return parseMw(records, units, newId);
-  return parseBoostcamp(records, units, newId);
+  return parseProgramLog(records, units, newId);
 }
 
 /**

@@ -77,6 +77,7 @@ const nextConfig = {
     return [
       { source: '/compare', destination: '/welcome', permanent: true },
       { source: '/compare/:path*', destination: '/welcome', permanent: true },
+      { source: '/guide/mission-winning-vs-:slug', destination: '/welcome', permanent: true },
       { source: '/today', destination: '/log', permanent: true },
       { source: '/train', destination: '/active', permanent: true },
       { source: '/dashboard', destination: '/log', permanent: true },

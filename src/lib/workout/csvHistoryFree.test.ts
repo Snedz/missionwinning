@@ -4,10 +4,10 @@ import { readFileSync, readdirSync } from 'node:fs';
 import path from 'node:path';
 
 /**
- * History CSV in/out is free forever. Strong paywalls export; Hevy caps graphs;
- * this path must never grow a premium check. Discover the transfer files rather
- * than list them — a stale allowlist is how a paywall lands next to the importer
- * and this guard stays green.
+ * History CSV in/out is free forever. This path must never grow a premium
+ * check. Discover the transfer files rather than list them — a stale
+ * allowlist is how a paywall lands next to the importer and this guard stays
+ * green.
  */
 
 const root = path.join(import.meta.dirname, '..', '..', '..');
@@ -67,22 +67,22 @@ describe('csvHistoryFree', () => {
     }
   });
 
-  it('the parser still names Strong, Hevy, Boostcamp, and MW; 0.1 export is Strong/Hevy', () => {
+  it('the parser still names set-table, program-log, and MW dialects; 0.1 export is the two set-table layouts', () => {
     const src = read('src/lib/workout/importCsv.ts');
-    assert.match(src, /CsvFormat = 'hevy' \| 'strong' \| 'boostcamp' \| 'mw'/);
+    assert.match(src, /CsvFormat = 'set-table-a' \| 'set-table-b' \| 'program-log' \| 'mw'/);
     assert.match(src, /export function workoutsToMwCsv/);
-    assert.match(src, /export function workoutsToStrongCsv/);
-    assert.match(src, /export function workoutsToHevyCsv/);
+    assert.match(src, /export function workoutsToSetTableBCsv/);
+    assert.match(src, /export function workoutsToSetTableACsv/);
     assert.match(src, /export function parseWorkoutCsv/);
     assert.doesNotMatch(src, /workoutsToBoostcampCsv/);
   });
 
-  it('the Profile card wires Strong/Hevy import and export with no disabled gate', () => {
+  it('the Profile card wires workout-CSV import and export with no disabled gate', () => {
     const src = stripComments(read('src/components/profile/ProfileImportCard.tsx'));
     assert.match(src, /importWorkoutCsvText/);
     assert.match(src, /downloadWorkoutCsv\(/);
-    assert.match(src, /handleExport\('strong'\)/);
-    assert.match(src, /handleExport\('hevy'\)/);
+    assert.match(src, /handleExport\('set-table-b'\)/);
+    assert.match(src, /handleExport\('set-table-a'\)/);
     assert.doesNotMatch(src, /downloadWorkoutCsv\(\)/);
     assert.doesNotMatch(
       src,
@@ -101,11 +101,11 @@ describe('csvHistoryFree', () => {
     const dir = path.join(root, 'src/lib/workout/fixtures');
     const names = readdirSync(dir).filter((f) => f.endsWith('.csv')).sort();
     assert.deepEqual(names, [
-      'boostcamp-flatten-sample.csv',
-      'boostcamp-sample.csv',
-      'hevy-sample.csv',
       'mw-native-sample.csv',
-      'strong-sample.csv',
+      'program-log-flatten-sample.csv',
+      'program-log-sample.csv',
+      'set-table-a-sample.csv',
+      'set-table-b-sample.csv',
     ]);
     const tests = read('src/lib/workout/importCsv.test.ts');
     for (const name of names) {

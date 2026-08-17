@@ -1,6 +1,6 @@
 /**
  * The DOM half of CSV history transfer: parse → merge into the persisted store,
- * and export the current log as Strong or Hevy CSV (0.1 beta).
+ * and export the current log as Strong or the set-table logger CSV (0.1 beta).
  *
  * Mirrors `backup.ts`'s restore path deliberately — write the zustand persist
  * payload under `WORKOUT_STORE_KEY` and let the caller refresh, rather than mutating
@@ -23,8 +23,8 @@ import type { CompletedWorkoutLog } from '@/types';
 import {
   mergeImportedLogs,
   parseWorkoutCsv,
-  workoutsToHevyCsv,
-  workoutsToStrongCsv,
+  workoutsToSetTableACsv,
+  workoutsToSetTableBCsv,
   type CsvFormat,
   type WorkoutCsvDialect,
 } from '@/lib/workout/importCsv';
@@ -99,9 +99,9 @@ export function buildWorkoutCsvDownload(dialect: WorkoutCsvDialect): CsvExportRe
     const existing = (current.state?.workoutHistory ?? []).filter((l) => !l.deletedAt);
     if (existing.length === 0) return { ok: false, error: 'empty' };
     const csv =
-      dialect === 'hevy'
-        ? workoutsToHevyCsv(existing, displayUnits())
-        : workoutsToStrongCsv(existing, displayUnits());
+      dialect === 'set-table-a'
+        ? workoutsToSetTableACsv(existing, displayUnits())
+        : workoutsToSetTableBCsv(existing, displayUnits());
     return { ok: true, csv, count: existing.length, dialect };
   } catch {
     return { ok: false, error: 'storage' };

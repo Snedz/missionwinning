@@ -23,13 +23,13 @@ seen_in:
     date: 2026-08-16
     class: E1
     retrieval: fetched
-  - product: Duolingo Energy
+  - product: a streak league Energy
     url: https://blog.duolingo.com/duolingo-energy/
     date: 2025-07-03
     class: E1
     retrieval: fetched
 also_seen_in_failures:
-  - Duolingo Hearts — a mistake tax that stopped beginners mid-lesson; the company replaced it because the box punished being wrong, not using the session
+  - a streak league Hearts — a mistake tax that stopped beginners mid-lesson; the company replaced it because the box punished being wrong, not using the session
 produces:
   - B-01
   - B-02
@@ -54,5 +54,5 @@ a payment to lift the cap fails the field.
 
 **Discarded this harvest (not this mechanic).** Forest Plant Together: the
 tree dies for the whole room — `precondition` is a group. Forest tree-death
-as shame copy. Duolingo gem/ad refill: that is a gate on continuing, and
+as shame copy. a streak league gem/ad refill: that is a gate on continuing, and
 `X-02` forbids gating the logger.

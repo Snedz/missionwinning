@@ -223,7 +223,7 @@ export function HomeTodayDashboard() {
       });
   }, []);
 
-  // Freeletics-inspired free core note (per vision.md): Generous basics for everyone; premium for "awesome" depth + bundle synergy.
+  // generous-core free core note (per vision.md): Generous basics for everyone; premium for "awesome" depth + bundle synergy.
   const totalSessions = workoutHistory.length;
   // Both of these walk the entire history and both ran on every render — every
   // keystroke in the customise dialog, every idle-callback state flip. History

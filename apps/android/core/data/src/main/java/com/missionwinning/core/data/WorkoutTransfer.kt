@@ -11,7 +11,7 @@ import java.util.UUID
 
 /**
  * Import / export workouts as CSV or JSON (Phase 12).
- * Supports Hevy workout export schema and Mission Winning native CSV.
+ * Supports the set-table logger workout export schema and Mission Winning native CSV.
  * Pure parsing — no Android deps beyond domain.
  */
 object WorkoutTransfer {
@@ -60,7 +60,7 @@ object WorkoutTransfer {
         DateTimeFormatter.ofPattern("dd MMM yyyy, HH:mm", Locale.ENGLISH)
 
     /**
-     * Detect and parse Hevy or MW native CSV.
+     * Detect and parse the set-table logger or MW native CSV.
      */
     fun parseCsv(csvText: String, preferUnit: String = "kg"): ImportResult {
         val text = csvText.trim().removePrefix("\uFEFF")
@@ -72,14 +72,14 @@ object WorkoutTransfer {
         val header = parseCsvRow(lines.first()).map { it.trim().lowercase(Locale.US) }
         return when {
             header.contains("exercise_title") && header.contains("start_time") ->
-                parseHevy(lines, preferUnit)
+                parseSetTableA(lines, preferUnit)
             header.contains("workout_name") && header.contains("exercise_name") ->
                 parseMwNative(lines, preferUnit)
             header.contains("title") && header.contains("exercise_title") ->
-                parseHevy(lines, preferUnit)
+                parseSetTableA(lines, preferUnit)
             else -> ImportResult(
                 emptyList(),
-                error = "Unrecognized CSV. Export from Hevy (workouts) or Mission Winning.",
+                error = "Unrecognized CSV. Export from the set-table logger (workouts) or Mission Winning.",
             )
         }
     }
@@ -128,8 +128,8 @@ object WorkoutTransfer {
         return sb.toString()
     }
 
-    /** Hevy-compatible export (weight always in lbs column as stored unit-aware). */
-    fun toHevyCsv(
+    /** the set-table logger-compatible export (weight always in lbs column as stored unit-aware). */
+    fun toSetTableACsv(
         workouts: List<Pair<WorkoutLogEntity, List<SetLogEntity>>>,
     ): String {
         val sb = StringBuilder()
@@ -198,8 +198,8 @@ object WorkoutTransfer {
         return """{"format":"missionwinning-workouts-v1","count":${workouts.size},"workouts":[${parts.joinToString(",")}]}"""
     }
 
-    private fun parseHevy(lines: List<String>, preferUnit: String): ImportResult {
-        if (lines.size < 2) return ImportResult(emptyList(), format = "hevy", error = "No data rows")
+    private fun parseSetTableA(lines: List<String>, preferUnit: String): ImportResult {
+        if (lines.size < 2) return ImportResult(emptyList(), format = "set-table-a", error = "No data rows")
         val header = parseCsvRow(lines.first()).map { it.trim().lowercase(Locale.US) }
         fun idx(vararg names: String): Int {
             for (n in names) {
@@ -222,7 +222,7 @@ object WorkoutTransfer {
         val iRpe = idx("rpe")
         val iDur = idx("duration_seconds")
         if (iTitle < 0 || iEx < 0) {
-            return ImportResult(emptyList(), format = "hevy", error = "Missing title/exercise_title")
+            return ImportResult(emptyList(), format = "set-table-a", error = "Missing title/exercise_title")
         }
 
         data class Row(
@@ -290,7 +290,7 @@ object WorkoutTransfer {
         val workouts = grouped.map { (key, group) ->
             val (title, start) = key
             val end = group.first().end
-            val completed = parseHevyTime(end).ifBlank { parseHevyTime(start) }
+            val completed = parseSetTableATime(end).ifBlank { parseSetTableATime(start) }
                 .ifBlank { java.time.Instant.now().toString() }
             val duration = durationBetween(start, end).coerceAtLeast(
                 group.maxOfOrNull { it.durationHint } ?: 0,
@@ -306,7 +306,7 @@ object WorkoutTransfer {
             )
         }.sortedBy { it.completedAtIso }
 
-        return ImportResult(workouts = workouts, skippedRows = skipped, format = "hevy")
+        return ImportResult(workouts = workouts, skippedRows = skipped, format = "set-table-a")
     }
 
     private fun parseMwNative(lines: List<String>, preferUnit: String): ImportResult {
@@ -404,7 +404,7 @@ object WorkoutTransfer {
         return if (base.isBlank()) "ex-${UUID.randomUUID().toString().take(8)}" else base
     }
 
-    private fun parseHevyTime(raw: String): String {
+    private fun parseSetTableATime(raw: String): String {
         if (raw.isBlank()) return ""
         // Already ISO?
         runCatching { java.time.Instant.parse(raw); return raw }
@@ -419,8 +419,8 @@ object WorkoutTransfer {
     }
 
     private fun durationBetween(startRaw: String, endRaw: String): Int {
-        val s = parseHevyTime(startRaw)
-        val e = parseHevyTime(endRaw)
+        val s = parseSetTableATime(startRaw)
+        val e = parseSetTableATime(endRaw)
         if (s.isBlank() || e.isBlank()) return 0
         return runCatching {
             Duration.between(java.time.Instant.parse(s), java.time.Instant.parse(e))

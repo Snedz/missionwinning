@@ -105,7 +105,7 @@ const en: WelcomeStrings = {
   photoLogDesc: 'Snap a meal — optional AI estimates macros (beta).',
   photoLogChoose: 'Choose photo',
   photoLogComingSoon: 'Photo logging is in development. Use quick log or recipes for now.',
-  photoLogBetaNote: 'Bevel-style meal capture — privacy-first, on-device when possible.',
+  photoLogBetaNote: 'Photo meal capture — privacy-first, on-device when possible.',
   navOurMission: 'Our mission',
   navBetaGuide: 'Beta guide',
   welcomeTitle: 'Welcome',
@@ -300,7 +300,7 @@ const ar: WelcomeStrings = {
   photoLogDesc: 'صوّر وجبتك — نقدّر الماكرو (نسخة تجريبية قريباً).',
   photoLogChoose: 'اختر صورة',
   photoLogComingSoon: 'تسجيل الصور قيد التطوير. استخدم التسجيل السريع أو الوصفات.',
-  photoLogBetaNote: 'التقاط الوجبات بأسلوب Bevel — الخصوصية أولاً على الجهاز عند الإمكان.',
+  photoLogBetaNote: 'التقاط الوجبات بالصورة — الخصوصية أولاً على الجهاز عند الإمكان.',
   navOurMission: 'مهمتنا',
   navBetaGuide: 'دليل النسخة التجريبية',
 };

@@ -1,10 +1,10 @@
 /**
- * Rest timer helpers — Strong/Hevy-style smart defaults.
+ * Rest timer helpers — set-table-style smart defaults.
  *
  * `.292` — one fallback everywhere. The store used to default `startRestTimer()`
  * to **30s** while this module and the rest dock initial state used **90s**. A
  * bare `startRestTimer()` (or a future caller that omits seconds) was half a
- * Hevy rest — wrong for compounds and inconsistent with the preset strip.
+ * the set-table logger rest — wrong for compounds and inconsistent with the preset strip.
  */
 
 import { STORAGE_KEYS } from '@/lib/storage/keys';

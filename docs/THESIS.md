@@ -56,7 +56,7 @@ The engineering asset that does not show up in a feature list: an **anti-fabrica
 
 ## 5. Competition, and the honest moat
 
-Short form — Hevy/Strong win logger UX and social; Freeletics wins brand; HYBRD/Imperfect win wearable-native AI; we win free-core-forever, no app-store tax, and coaching that needs no sensor. Pricing experiments and full YC matrix: private mission-ops.
+Short form — set-table win logger UX and social; a bodyweight coach app wins brand; a wearable-first coach/Imperfect win wearable-native AI; we win free-core-forever, no app-store tax, and coaching that needs no sensor. Pricing experiments and full YC matrix: private mission-ops.
 
 **There is no defensible moat yet.** What exists: shipping velocity, free-core trust, and — newly promoted into the pitch — one capability that is a model rather than a policy. The thing that would actually become a moat is the one we do not have: **an owned relationship with users** (email habit, founder brand, community). Without that, the next ad wins.
 

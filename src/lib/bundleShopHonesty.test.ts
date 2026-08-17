@@ -133,9 +133,9 @@ test('exported bundle.json cannot re-lie on leftover Move/Train keys — discove
 
 test('help vs-stack page names the four-app stack and refuses a trial', () => {
   const help = read('docs/help/super-bundle-vs-stack.md');
-  assert.match(help, /MyFitnessPal/);
-  assert.match(help, /Pliability/);
-  assert.match(help, /Calm/);
+  assert.match(help, /food diary/);
+  assert.match(help, /mobility/);
+  assert.match(help, /sit app|sit library|Mind sessions/);
   assert.match(help, /no trial/i);
   assert.match(help, /inputs/);
   assert.match(help, /adapt/i);

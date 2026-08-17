@@ -11,7 +11,7 @@
 | `flags.ts` | `NEXT_PUBLIC_WEARABLES` + provider credential checks |
 | `types.ts` | Sample kinds, provider ids, labels |
 | `adapter.ts` | OAuth adapter + hub ingest contracts |
-| `oauthProviders.ts` | Whoop, Strava, Oura, Garmin, Fitbit, Polar |
+| `oauthProviders.ts` | Whoop, Strava, a ring tracker, Garmin, Fitbit, Polar |
 | `oauthState.ts` | Signed OAuth `state` (dedicated secret, no source fallback) + origin-bound redirect URI |
 | `hubs.ts` | HealthKit / Health Connect / Fit native bridge normalize |
 | `mapSamples.ts` | Samples → Track activity hints |

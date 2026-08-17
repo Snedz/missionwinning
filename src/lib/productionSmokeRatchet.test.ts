@@ -2,7 +2,7 @@
  * Production smoke ratchet — privacy/terms English floors + retired /compare.
  *
  * Live prod on `.618` painted raw `infoPrivacy*` / `infoTerms*` and served
- * Hevy/Strong at `/compare` (200). Tip already has floors (`.653`) and the
+ * set-table at `/compare` (200). Tip already has floors (`.653`) and the
  * permanent redirect (`.668`); this file fails CI if either disappears.
  *
  * Discover keys from the page sources (no closed allowlist of section titles)

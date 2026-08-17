@@ -26,7 +26,7 @@ test.describe('Phase H hero flows @gate', () => {
     }
   });
 
-  test('I-Day finish lands on Today with one Start (F-004 / Hevy)', async ({ page }) => {
+  test('I-Day finish lands on Today with one Start (F-004 / the set-table logger)', async ({ page }) => {
     await page.goto('/welcome', { waitUntil: 'domcontentloaded' });
     const begin = page.getByRole('button', { name: /^begin$/i }).first();
     await expect(begin).toBeVisible({ timeout: 10_000 });

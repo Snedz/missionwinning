@@ -13,7 +13,7 @@ primitives:
   optimum_direction: personal-band
   precondition: existing-habit
 seen_in:
-  - product: Duolingo streak freeze
+  - product: a streak league streak freeze
     url: https://blog.duolingo.com/how-duolingo-streak-builds-habit/
     date: 2022-01-31
     class: E1

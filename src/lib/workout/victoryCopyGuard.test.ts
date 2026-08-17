@@ -36,7 +36,7 @@ test('Victory collapses long details; Active gates empty finish', () => {
     join(root, 'src/components/workout/VictoryStatsStrip.tsx'),
     'utf8'
   );
-  assert.match(stats, /grid-cols-3/, 'Hevy receipt header is Duration · Volume · Sets');
+  assert.match(stats, /grid-cols-3/, 'the set-table logger receipt header is Duration · Volume · Sets');
   assert.match(stats, /text-muted-foreground/, 'vs-last deltas stay muted in both directions');
   const receipt = readFileSync(
     join(root, 'src/components/workout/VictoryReceiptStrip.tsx'),

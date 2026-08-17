@@ -12,8 +12,8 @@ Root-level `@/lib/{name}` paths re-export from here for compatibility — prefer
 1d. `bodyweightLoad.ts` — BW + added load on one row (`.758`); `weight` is belt/vest  
 2. `restTimer.ts` — rest seconds, clock format, defaults, last-rest per exercise (`.745`)  
 3. `superset.ts` — pair-of-two (`pairWithNext` / `unpair` / `pairMark` A1/A2), advance after log, rest gate (`.749`)  
-4. `nextSetTargets.ts` — Strong/Hevy-style next set suggestions  
-5. `percentLoad.ts` — TrainHeroic-style % of e1RM → absolute weight (`loadPct`)  
+4. `nextSetTargets.ts` — set-table-style next set suggestions  
+5. `percentLoad.ts` — a team-training app-style % of e1RM → absolute weight (`loadPct`)  
 6. `workoutTemplate.ts` — template → logged sets  
 7. `workoutPr.ts` — personal record detection  
 8. `workoutMerge.ts` — local/cloud history fingerprint merge  
@@ -38,7 +38,7 @@ Root-level `@/lib/{name}` paths re-export from here for compatibility — prefer
 25. `vsLastSet.ts` — after-save vs-last delta on the set row (`.760`); working-set index; not ghost prefill
 26. `sessionE1rm.ts` — educational Epley e1RM from this session's working sets (`.761`); hide pref `mw_show_session_e1rm`
 27. `homeGymKit.ts` — local Home gym kit (barbell/rack/plates/dumbbells/pull-up-bar/floor). Logger + Just Go + Coach filter; never rank; Train empty Start stays repeat-last (`.763`)
-28. `warmupRamp.ts` — free Strong-class 40/60/80 warmup insert + set-column `W` ordinals (`.764`); plate line is `src/lib/plateCalculator.ts` `setRowPlateLine`
+28. `warmupRamp.ts` — free set-table 40/60/80 warmup insert + set-column `W` ordinals (`.764`); plate line is `src/lib/plateCalculator.ts` `setRowPlateLine`
 
 ## Tests (colocated)
 
@@ -49,7 +49,7 @@ Root-level `@/lib/{name}` paths re-export from here for compatibility — prefer
 | `unilateral.test.ts` | L/R/Alt persist, skip bilateral, suggest next side (`.755`) |
 | `bodyweightLoad.test.ts` | BW + belt format + plus-load detect (`.758`) |
 | `bodyweightLoadGuard.test.ts` | Free logger; skip-at-0; one formatter (`.758`) |
-| `importReach.test.ts` | Strong/Hevy CSV import stays reachable from I-Day + empty logger (`.766`) |
+| `importReach.test.ts` | set-table CSV import stays reachable from I-Day + empty logger (`.766`) |
 | `restTimer.test.ts` | Clock + defaults + start seconds (`.292`) + last-rest recall / skip (`.745`) |
 | `superset.test.ts` | Pair persist, pair-of-two, A1/A2 marks, advance, rest gate (`.749`) |
 | `nextSetTargets.test.ts` | Progression targets |

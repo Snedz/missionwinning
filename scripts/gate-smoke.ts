@@ -147,7 +147,7 @@ async function main() {
   }
 
   // Production smoke ratchet (.682): retired compare hub + legal English floors.
-  // Live `.618` returned 200 with Hevy/Strong; tip redirects permanently to /welcome.
+  // Live `.618` returned 200 with set-table; tip redirects permanently to /welcome.
   for (const path of ['/compare', '/compare/forge']) {
     try {
       const res = await headOrGet(path, { redirect: 'manual' });
@@ -161,12 +161,8 @@ async function main() {
         ? `${res.status} → ${loc}`
         : `status ${res.status}${loc ? ` → ${loc}` : ''} (expected permanent redirect to /welcome)`;
       if (res.status === 200) {
-        const html = await res.text();
-        const competitorHub = /\bHevy\b/.test(html) && /\bStrong\b/.test(html);
         ok = false;
-        detail = competitorHub
-          ? '200 with Hevy/Strong compare hub — deploy tip (.668+) or restore next.config redirects'
-          : '200 without redirect to /welcome';
+        detail = '200 without redirect to /welcome — deploy tip (.668+) or restore next.config redirects';
       }
       checks.push({ name: `GET ${path} → /welcome`, ok, detail });
     } catch (e) {

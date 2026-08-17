@@ -13,7 +13,7 @@ class WorkoutTransferTest {
     }
 
     @Test
-    fun parseHevy_sample() {
+    fun parseSetTableA_sample() {
         val csv = """
             title,start_time,end_time,description,exercise_title,superset_id,exercise_notes,set_index,set_type,weight_lbs,reps,distance_miles,duration_seconds,rpe
             "Thursday Upper","28 Mar 2025, 17:29","28 Mar 2025, 18:52","","Bench Press",,"",0,"normal",135,8,,0,7
@@ -21,7 +21,7 @@ class WorkoutTransferTest {
             "Thursday Upper","28 Mar 2025, 17:29","28 Mar 2025, 18:52","","Row",,"",0,"normal",95,10,,0,
         """.trimIndent()
         val result = WorkoutTransfer.parseCsv(csv, preferUnit = "lb")
-        assertEquals("hevy", result.format)
+        assertEquals("set-table-a", result.format)
         assertEquals(1, result.workouts.size)
         val w = result.workouts.first()
         assertEquals("Thursday Upper", w.workoutName)

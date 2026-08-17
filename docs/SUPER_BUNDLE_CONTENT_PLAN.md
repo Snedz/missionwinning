@@ -6,7 +6,7 @@
 
 **Status (parent):** frozen 2026-08-13. Do not add catalog volume, new tabs, a trial, à la carte pillars, or a food database.
 
-This is **not** [docs/PLAN.md](PLAN.md) (build phases A–I). One concern: paid depth that is credibly better than buying MFP + Pliability + Calm + Fitbod-Coach, while Strong-class logging stays free.
+This is **not** [docs/PLAN.md](PLAN.md) (build phases A–I). One concern: paid depth that is credibly better than buying a food diary + a mobility app + Calm + a programming app-Coach, while set-table logging stays free.
 
 Excellence-Override: Super Bundle content depth vs competitor stack.
 
@@ -34,9 +34,9 @@ If a count would change, **stop** and update inventory + floors + shop interpola
 | Comp | They sell | Super Bundle sells instead |
 |------|-----------|----------------------------|
 | **Strong** | Paid logger | Logger stays **free**. Never gate `/active`. |
-| **Fitbod / Coach apps** | Chatbot + black-box plan | Log-cited **why** + **adapt** on the week (already `.693`). Chat is not the SKU. |
-| **Pliability** | Video mobility shelf | One flow **prescribed from last session** on existing `/move`. |
-| **MyFitnessPal** | Food DB / barcode | Recipes + **protein-first Fuel Coach** (training-load adapt). Barcode may exist as a tool; it is **not** the paid pitch. |
+| **a programming app / Coach apps** | Chatbot + black-box plan | Log-cited **why** + **adapt** on the week (already `.693`). Chat is not the SKU. |
+| **a mobility app** | Video mobility shelf | One flow **prescribed from last session** on existing `/move`. |
+| **a food diary** | Food DB / barcode | Recipes + **protein-first Fuel Coach** (training-load adapt). Barcode may exist as a tool; it is **not** the paid pitch. |
 | **Calm** | Meditation library + streaks | Short, **skippable**, training-adjacent sessions. **No streak guilt.** |
 
 No trial. No à la carte. Seams not rooms (no new tabs/routes).
@@ -51,7 +51,7 @@ No trial. No à la carte. Seams not rooms (no new tabs/routes).
 
 - EN (and stale locale overrides) interpolate floors or drop hardcoded counts.
 - `/bundle` table passes `count` from `CONTENT_FLOORS`.
-- Strip clone framing: Pliability, Calm / Waking Up, “sleep stories”, ISSA-cert course list.
+- Strip clone framing: a mobility shelf, a sit library, “sleep stories”, cert-course lists.
 - Train premium copy: log-cited why + adapt — not “unlimited plans / chatbot”.
 - Fuel premium copy: recipes + protein-first coaching — not barcode / food database.
 - Help: [help/premium-and-billing.md](help/premium-and-billing.md) matches the same story.
@@ -84,7 +84,7 @@ Do **not** change `adapt.ts` / `weekRationale.ts`. Sell what already ships on `/
 - Rename overlapping titles (`post-loss-reset` vs `anger-after-bad-session` both “After a bad session”).
 - Tag untagged premium sessions. Do not add sessions. Do not add sleep stories.
 
-### 4. Fuel — not MFP
+### 4. Fuel — not a food diary
 
 - Do **not** expand OpenFoodFacts / barcode / search as the SKU.
 - Rewrite premium recipe **tips**: forbid “Free core”. Protein-first + train-anywhere. Keep the 110 recipes.
@@ -123,7 +123,7 @@ Log originality. Update Learn locked preview teasers. Drop “Coaching Business�
 - Floors still 32/48, 32/60, 48/110, 16; inventory = file id/name counts
 - Premium Move/Mind ids ∩ free ids = ∅; premium recipe names ∩ free names = ∅
 - No `Free core` in `premiumRecipes.ts` tips
-- Merch EN: no Pliability / Calm / Waking Up / MyFitnessPal / Fitbod clone framing; `/bundle` interpolates floors
+- Merch EN: no clone framing of other consumer apps; `/bundle` interpolates floors
 - `prescribeFromTraining`: empty history → null; legs today → post-legs flagship; no shame copy
 - Sleep-week copy matches skip / no-streak
 - Premium Learn: 16 sections, each has `diataxis` in {tutorial, how-to, explanation, reference}; CTAs only `/active|/coach|/log`

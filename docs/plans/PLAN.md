@@ -13,7 +13,7 @@ This is the overnight session plan. It is **not** the living roadmap at [docs/PL
 
 Super Bundle **Move** is prescribed, train-anywhere, original timed flows — press play, follow cues. It is **not**:
 
-- a Pliability / ROMWOD video library
+- a a mobility app / ROMWOD video library
 - a mobility score
 - a new tab / nav item
 - a trial, a logger gate, or a `PRIVATE_MODE` flip
@@ -86,7 +86,7 @@ Edit `src/data/premiumMobilityFlows.ts`:
 3. **Clock honesty:** for every premium flow, `sum(steps.durationSec) >= durationMin * 60 - 60` (within one advertised minute). Prefer **lengthening holds/steps** so long-form cards stay long; do not silently drop `durationMin` on rows already sold as 15–20 min.
 4. **Train-anywhere:** any step that names foam roller / band / bar / wall must include a no-gear alternative in the same cue.
 5. **Fix** `post-upper-flush`: drop `post-legs`; keep shoulders / thoracic / recovery.
-6. Original cues only. No Pliability / ROMWOD product names in flow `name` / `focus` / `cue`. No medical-treatment claims; “stop if sharp pain” is allowed on joint-care rows.
+6. Original cues only. No a mobility app / ROMWOD product names in flow `name` / `focus` / `cue`. No medical-treatment claims; “stop if sharp pain” is allowed on joint-care rows.
 
 ### 3.3 Add eight original premium flows (48 → 56)
 
@@ -113,7 +113,7 @@ After the eight rows exist:
 | `src/data/premiumInventory.ts` | `PREMIUM_MOVE_FLOW_COUNT = 56` |
 | `src/lib/move/movePremD2_587.test.ts` | Stop asserting floor **equals** 48. Keep D2 id presence. Floor equality moves to the new test. |
 | New `src/lib/move/movePremD3_709.test.ts` | Floor 56; eight new ids; unique ids vs free; clock honesty; tags; collision gone; S6 target ids still present on free catalog. |
-| `moveLockedHint` + `MoveLockedPreview` | Interpolate `CONTENT_FLOORS.moveFree` / `movePremium`. No hand-typed counts. EN drops “Pliability” product voice (timed original flows, not a video library). |
+| `moveLockedHint` + `MoveLockedPreview` | Interpolate `CONTENT_FLOORS.moveFree` / `movePremium`. No hand-typed counts. EN drops “a mobility app” product voice (timed original flows, not a video library). |
 | [docs/PLAN.md](../PLAN.md) I3b | Honest current floors (Mind premium 60, Move premium 56) — one line, not a second inventory. |
 
 `payments.ts` already interpolates `CONTENT_FLOORS`; no hand-typed Move counts there.

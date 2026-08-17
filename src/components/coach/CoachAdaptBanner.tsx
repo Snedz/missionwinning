@@ -172,7 +172,7 @@ export function CoachAdaptBanner({
         </p>
       ) : null}
 
-      {/* Log-cited inspectability: inputs → rule → effect (Alpha Progression beat). */}
+      {/* Log-cited inspectability: inputs → rule → effect (a progression logger beat). */}
       {rationale && compact && !weekDiffLine ? (
         <p
           className="text-xs text-muted-foreground leading-relaxed"

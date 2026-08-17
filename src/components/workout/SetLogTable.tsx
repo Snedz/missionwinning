@@ -1,11 +1,10 @@
 'use client';
 
 /**
- * The desktop logger's set list — a table, per handoff 2.
+ * The logger's set list — the Train atom on every surface.
  *
- * Strong/Hevy density: Set · Prev · weight · Reps, tabular nums, one inline
- * Log set on the active row (sole red primary at md+). Compact uses
- * `SetLogRow` + docked `LogConsole` instead — never both entry paths.
+ * Set · Prev · weight · Reps · Log. Tabular nums. One inline Log set
+ * (sole red primary). No second dock console under the rows.
  *
  * Completed rows mirror compact `SetLogRow` cues (primary edge, check, a11y).
  */
@@ -86,7 +85,7 @@ export function SetLogTable({
   const { t } = useTranslation();
 
   return (
-    <div className="w-full max-w-[640px]">
+    <div className="w-full min-w-0 overflow-x-auto">
     <table
       className="w-full border-collapse text-sm"
       data-testid="set-log-table"

@@ -19,7 +19,7 @@ export interface PlanExercise {
   reps: number;
   weight: number;
   whyKey: string;
-  /** Percent of working max when weight was materialized from e1RM (TrainHeroic-style). */
+  /** Percent of working max when weight was materialized from e1RM (a team-training app-style). */
   loadPct?: number;
 }
 

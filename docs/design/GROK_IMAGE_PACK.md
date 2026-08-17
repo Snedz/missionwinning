@@ -39,7 +39,7 @@ Paste this at the end of **every** prompt, unchanged. Camera language, not adjec
 
 ## Three rules the prompts must not break
 
-- **No physique display.** No shirtless torsos, no abs, no before/after, no mirror poses. Body-composition proof is a positioning this product has explicitly refused ([brand-guidelines](../brand-guidelines.md) § Voice), and Wave 10 §10.6 lists Freeletics' transformation grid under *Avoid*. Shoot hands, gear, environment, motion — not bodies as evidence.
+- **No physique display.** No shirtless torsos, no abs, no before/after, no mirror poses. Body-composition proof is a positioning this product has explicitly refused ([brand-guidelines](../brand-guidelines.md) § Voice), and Wave 10 §10.6 lists a bodyweight coach app' transformation grid under *Avoid*. Shoot hands, gear, environment, motion — not bodies as evidence.
 - **No branded equipment and no readable text.** A legible logo is a trademark problem and a legible word is usually a garbled one.
 - **Train-anywhere, not gym-glamour.** Garage, hallway, hotel room, driveway, stairwell, balcony, park. If it looks like a commercial gym with racked lighting, it is the wrong picture.
 

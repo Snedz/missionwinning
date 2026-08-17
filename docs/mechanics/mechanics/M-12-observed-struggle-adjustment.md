@@ -25,7 +25,7 @@ seen_in:
     class: E1
     retrieval: fetched
 also_seen_in_failures:
-  - Duolingo Energy, 2025 — an adjustment applied to everyone with no opt-out and no revert, replacing a system paying users could switch off entirely. Same axis, moved the wrong way, and it produced public quitting
+  - a streak league Energy, 2025 — an adjustment applied to everyone with no opt-out and no revert, replacing a system paying users could switch off entirely. Same axis, moved the wrong way, and it produced public quitting
 produces:
   - B-02
 ---

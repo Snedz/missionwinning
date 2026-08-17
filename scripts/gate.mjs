@@ -133,6 +133,7 @@ function hasChromium() {
 // branches announce the same version.
 run('Build label + hard rule 5', 'npm', ['run', 'check-build-label']);
 run('Excellence gate (Horizon W result)', 'npm', ['run', 'check-excellence-gate']);
+run('Competitor names (ops denylist; no-op if unmounted)', 'npm', ['run', 'names:check']);
 /*
  * Cheap, and placed before lint for the same reason the label check is: it reads
  * `docs/mechanics/` and a handful of source constants, so it fails in under a

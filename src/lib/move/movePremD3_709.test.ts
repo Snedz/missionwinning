@@ -122,7 +122,7 @@ test('S6 Victory free deep-link ids still exist with name prefixes', () => {
   }
 });
 
-test('locked Move preview interpolates floors and does not say Pliability', () => {
+test('locked Move preview interpolates floors and does not say a mobility app', () => {
   const preview = readFileSync(join(root, 'src/components/move/MoveLockedPreview.tsx'), 'utf8');
   const locales = readFileSync(join(root, 'src/i18n/moveLocales.ts'), 'utf8');
   assert.match(preview, /CONTENT_FLOORS\.moveFree/);
@@ -144,8 +144,8 @@ test('locked Move preview interpolates floors and does not say Pliability', () =
     /\d/,
     'MoveLockedPreview defaultValue still hard-codes a count'
   );
-  assert.doesNotMatch(preview, /Pliability/);
-  assert.doesNotMatch(en, /Pliability/);
+  assert.doesNotMatch(preview, /a mobility app/);
+  assert.doesNotMatch(en, /a mobility app/);
 });
 
 test('premium cues do not carry stripped-second leftovers', () => {

@@ -1,7 +1,7 @@
 /**
  * Share cards: the session or the week as an image the athlete chooses to send.
  *
- * This is the growth surface a privacy-first logger is allowed to have. Hevy's loop
+ * This is the growth surface a privacy-first logger is allowed to have. the set-table logger's loop
  * is an in-app social feed; ours is share OUT — the workout content stays on this
  * device, and what leaves is a PNG the athlete deliberately hands to their group
  * chat, with their referral link riding along. Nothing here talks to a server.

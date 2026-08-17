@@ -1,6 +1,6 @@
 /**
  * One-line session “why” for Today/Coach — Wave 8 steal (coach-platform clarity)
- * without Fitbod black-box tone. Pure; copy defaults in English for tests.
+ * without a programming app black-box tone. Pure; copy defaults in English for tests.
  */
 
 export type SessionWhyInput = {

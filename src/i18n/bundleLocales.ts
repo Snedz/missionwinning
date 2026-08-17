@@ -127,7 +127,7 @@ const en: BundleStrings = {
   bundleUnlockCta: 'Unlock Super Bundle',
   bundleOneAppTitle: 'One app — not seven',
   bundleOneAppDesc:
-    'Freeletics Super Bundle spans multiple apps. Mission Winning keeps Train, Fuel, Move, Mind, Track, and Learn in one PWA with one Mission Score.',
+    'Other apps sell a bundle of separate installs. Mission Winning keeps Train, Fuel, Move, Mind, Track, and Learn in one PWA with one Mission Score.',
   bundleWinScoreNote: 'Today Mission Score ties every pillar together.',
   bundleCompareTitle: 'Compare standalone vs bundle',
   bundleColPillar: 'Pillar',
@@ -233,7 +233,7 @@ const es: BundleStrings = {
   bundleUnlockCta: 'Desbloquear Super Bundle',
   bundleOneAppTitle: 'Una app — no siete',
   bundleOneAppDesc:
-    'Freeletics vende apps separadas. Mission Winning mantiene Entrenar, Nutrición, Movimiento, Mente, Seguimiento y Aprender en una sola instalación con un Mission Score.',
+    'Otras apps venden apps separadas. Mission Winning mantiene Entrenar, Nutrición, Movimiento, Mente, Seguimiento y Aprender en una sola instalación con un Mission Score.',
   bundleWinScoreNote: 'El Mission Score en Hoy une todos los pilares.',
   bundleCompareTitle: 'Comparar individual vs bundle',
   bundleColPillar: 'Pilar',
@@ -269,7 +269,7 @@ const zh: BundleStrings = {
   bundleUnlockCta: '解锁 Super Bundle',
   bundleOneAppTitle: '一个应用 — 不是七个',
   bundleOneAppDesc:
-    'Freeletics 卖多个独立应用。Mission Winning 把训练、营养、活动、心理、追踪、学习放在一个安装里，共用一个 Mission Score。',
+    '其他应用拆成多个独立安装。Mission Winning 把训练、营养、活动、心理、追踪、学习放在一个安装里，共用一个 Mission Score。',
   bundleWinScoreNote: 'Today 的 Mission Score 串联所有支柱。',
   bundleCompareTitle: '单独购买 vs 捆绑',
   bundleColPillar: '支柱',
@@ -343,7 +343,7 @@ const ar: BundleStrings = {
   bundleUnlockCta: 'افتح Super Bundle',
   bundleOneAppTitle: 'تطبيق واحد — لا سبعة',
   bundleOneAppDesc:
-    'Freeletics تبيع تطبيقات منفصلة. Mission Winning يجمع Train وFuel وMove وMind وTrack وLearn في تثبيت واحد مع Mission Score واحد.',
+    'تطبيقات أخرى تبيع تطبيقات منفصلة. Mission Winning يجمع Train وFuel وMove وMind وTrack وLearn في تثبيت واحد مع Mission Score واحد.',
   bundleWinScoreNote: 'Mission Score في Today يربط كل الأركان.',
   bundleCompareTitle: 'مقارنة منفرد vs الحزمة',
   bundleColPillar: 'الركن',

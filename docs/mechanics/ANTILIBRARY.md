@@ -73,7 +73,7 @@ content marketing or to secondary summaries of a primary source nobody had read.
 | `trypropel.ai` | vendor teardown; retention figures with no method |
 | `vwo.com` | conversion vendor; attributes an unread primary source |
 | `globenewswire.com` (gamification PR) | the "$700M in failed gamification projects" figure is a vendor press release with no denominator |
-| `orizon.co` · `darewell.co` · `digia.tech` | the Duolingo retention-statistic cluster; every figure traces back to the same unmethodologised marketing posts |
+| `orizon.co` · `darewell.co` · `digia.tech` | the a streak league retention-statistic cluster; every figure traces back to the same unmethodologised marketing posts |
 
 ### Named claims that may never be cited, whatever the host
 

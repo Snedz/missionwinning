@@ -1,5 +1,5 @@
 /**
- * Victory vs-last receipt — what Hevy's logged-out workout page is for: the
+ * Victory vs-last receipt — what the set-table logger's logged-out workout page is for: the
  * session you just did, against the last time, from logs already on the device.
  *
  * Instant, offline, free. No account, no feed, no share-to-unlock. Numbers come

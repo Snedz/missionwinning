@@ -1,6 +1,6 @@
 # Mission Winning — Build Plan
 
-Living roadmap for the **everything app** (Freeletics Super Bundle → one PWA). Filter every task through [vision.md](../vision.md).
+Living roadmap for the **everything app** (a bodyweight coach app Super Bundle → one PWA). Filter every task through [vision.md](../vision.md).
 
 **Vision comparison:** [VISION_STATUS.md](VISION_STATUS.md) — pillar scorecard, gaps, priorities.
 
@@ -121,7 +121,7 @@ Existing grouping already lives on the free logger:
 | Rest | `planLogSetRest` in `activeSessionFinish.ts` already gates on `shouldRestAfterLog` — **do not edit** `restTimer.ts` or that finish helper |
 | UI | Overflow “Superset w/ next” / “Unlink”; card badge `SS A`; poster-red left edge on the card |
 
-Hevy/Strong gap: athletes expect **A1/A2 pair marks**, **exactly two consecutive** exercises, **A then B then rest**, and **the set row stays** (one table — not a second Hevy-style card stack). Current `SS A` is the wrong mark; `toggle` can merge into 3+ giant sets; `unlink` clears only one exercise (orphan peer); no persist / log-order store tests; the set table itself does not show the pair.
+set-table gap: athletes expect **A1/A2 pair marks**, **exactly two consecutive** exercises, **A then B then rest**, and **the set row stays** (one table — not a second set-table card stack). Current `SS A` is the wrong mark; `toggle` can merge into 3+ giant sets; `unlink` clears only one exercise (orphan peer); no persist / log-order store tests; the set table itself does not show the pair.
 
 ### Ship (only this)
 
@@ -130,7 +130,7 @@ Hevy/Strong gap: athletes expect **A1/A2 pair marks**, **exactly two consecutive
    - `pairWithNext(exercises, exIdx)` — pair **exactly two consecutive**. New shared id on those two only; any prior partner of either is cleared (no giant sets).
    - `unpair(exercises, exIdx)` — clear `supersetGroup` on **all peers** of that group.
 2. **Store wiring only** (`workoutStore.ts`): `toggleSupersetWithNext` / `unlinkSuperset` call the pure helpers. `removeExerciseFromActive` unpairs the remaining peer so a delete cannot leave an orphan. Do not change `logSet` / `logSetAndAdvance` / rest timer / repeat-last / notes.
-3. **Table first paint.** Keep `SetLogTable` / `SetLogRow` as the set list. Surface the pair mark on the existing Set cell (`A1`/`A2` prefix + set number) and the existing header badge. `data-pair-mark` on the card/table for tests. Paper, ink, one red, Archivo, radius 0 — no new card chrome, no Hevy card clone, no second table.
+3. **Table first paint.** Keep `SetLogTable` / `SetLogRow` as the set list. Surface the pair mark on the existing Set cell (`A1`/`A2` prefix + set number) and the existing header badge. `data-pair-mark` on the card/table for tests. Paper, ink, one red, Archivo, radius 0 — no new card chrome, no the set-table logger card clone, no second table.
 4. **Log order** stays A → B → rest via existing `advanceAfterLog` + `shouldRestAfterLog`. Lock it with tests; do not re-implement rest.
 5. **Persist** is the active session on device (`partialize.activeWorkout`). Pair survives JSON round-trip / store write. Do not add template/builder pairing, completed-log pairing, cloud schema, or account gates.
 6. **Speech never owns this.** Keep the overflow menuitem. Do not add voice / Ask / coach-chat ownership of pair/unpair.
@@ -162,8 +162,8 @@ Hevy/Strong gap: athletes expect **A1/A2 pair marks**, **exactly two consecutive
 
 | Source | What we borrow |
 |--------|----------------|
-| **Bevel** | Dark premium UI, metric-first dashboard (Readiness / Strain / Recovery) |
-| **Freeletics** | Freemium core, Coach, Super Bundle, streaks, challenges, pillar structure |
+| **a metric-quiet health app** | Dark premium UI, metric-first dashboard (Readiness / Strain / Recovery) |
+| **a bodyweight coach app** | Freemium core, Coach, Super Bundle, streaks, challenges, pillar structure |
 | **CrossFit app** | WOD logging, timers, daily workout rotation, benchmark culture |
 | **Muscle & Fitness / Bodybuilding.com** | Exercise library depth, filters, programs, education tone |
 
@@ -177,7 +177,7 @@ Mission Winning is **none of these** — one unified super app, free core foreve
 > (occupied `.698`–`.716`). Draft PR. One Preview max. `[skip vercel]` on the
 > plan commit only.
 
-Strong/Hevy migrants live on **repeat last session**. History already has
+set-table migrants live on **repeat last session**. History already has
 “Train this again” (`templateFromCompletedLog`). Today and Train empty Start
 do not: Active empty seeds Just Go; Today primary builds Just Go / Coach.
 This ship is **one control** that copies the last completed session into the
@@ -349,7 +349,7 @@ without waiting for the other shards, as instructed.
 |---|---------|--------------------|
 | 1 | **Coach-from-logs clarity 2.56/5 — the lowest item**, from an AI-skeptical / Alpha-curious cohort: *"coach output has no log-derived labels"*. Every Coach surface made a *provenance claim* ("built from your logs", "AI weekly plan") and none showed evidence | [logCitation.ts](../src/lib/coach/logCitation.ts) quotes the device's own last loaded set, or says `no-logs`. Any `t('coach…')` claim matching *from your logs* must sit beside a rendered `<CoachLogCite />` |
 | 2 | **CN/HK believe the offline claim (3.97) and not the implementation** — "forced cloud sync / data opacity" | Both public entries name the mechanism from one source (`LOCAL_FIRST_COPY.gateLocalFirst` / `.welcomeLocalFirst`): no account, written to this device, nothing uploaded unless you sign in |
-| 3 | **Strong/Hevy migrants: logging speed *and* CSV data-in are separate P1s** | The importer existed and was unreachable. I-Day and the empty logger link `/account#import`; the fragment opens the `<details>` it targets. Speed is not touched here — `.694` owns it |
+| 3 | **set-table migrants: logging speed *and* CSV data-in are separate P1s** | The importer existed and was unreachable. I-Day and the empty logger link `/account#import`; the fragment opens the `<details>` it targets. Speed is not touched here — `.694` owns it |
 
 Out of scope for this shard: `navCoach` stays "AI weekly plan" — `primaryNav.ts`
 records that screen name as a kept decision, and overturning it on one shard is

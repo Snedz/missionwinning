@@ -173,7 +173,7 @@ export const stravaAdapter = makeCodeAdapter({
 
 export const ouraAdapter = makeCodeAdapter({
   id: 'oura',
-  label: 'Oura',
+  label: 'a ring tracker',
   authorizeUrl: 'https://cloud.ouraring.com/oauth/authorize',
   tokenUrl: 'https://api.ouraring.com/oauth/token',
   scopes: 'email personal daily',

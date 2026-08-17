@@ -203,7 +203,7 @@ The free forever offline logger is the product. If it helped you train, the best
 Mission Winning is a free forever PWA for people who train at home or in a park. Log sets without an account, works offline. Mission Coach builds weekly plans from your logs alone — no wearable. Super Bundle (optional) never gates the logger.
 
 **First comment (builder):**  
-I got tired of Strong/Hevy locking basics and wearable-first coaches assuming a $300 sensor. So I shipped a free core that works on any phone with spotty signal, plus a coach that adapts from workout logs. Try: open the site → Welcome (I-Day) → log one set → check Mission Coach. No email required for the first workout. Honest feedback welcome — especially where you got stuck.
+I got tired of set-table locking basics and wearable-first coaches assuming a $300 sensor. So I shipped a free core that works on any phone with spotty signal, plus a coach that adapts from workout logs. Try: open the site → Welcome (I-Day) → log one set → check Mission Coach. No email required for the first workout. Honest feedback welcome — especially where you got stuck.
 
 ### 3. Show HN
 

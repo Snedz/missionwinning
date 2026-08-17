@@ -271,7 +271,7 @@ export const THEMES = [
     name: 'C3 · Cinematic',
     family: 'C — from scratch',
     argues:
-      'What Freeletics, Call of Duty and TrainHeroic actually do: near-black, imagery to the edges, warm highlight, weight over picture. It is here so the differentiation argument is made against something real rather than a straw man — this is the look the category has converged on, and it converged for reasons.',
+      'What a bodyweight coach app, Call of Duty and a team-training app actually do: near-black, imagery to the edges, warm highlight, weight over picture. It is here so the differentiation argument is made against something real rather than a straw man — this is the look the category has converged on, and it converged for reasons.',
     fonts: 'Archivo 900, normal width, very large.',
     cost: 'Full palette change, and it buys the least differentiation of the eight.',
     photo: 'base',

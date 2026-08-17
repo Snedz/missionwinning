@@ -31,7 +31,7 @@ type Props = {
 
 type Phase = 'idle' | 'preview' | 'processing' | 'estimate' | 'error';
 
-/** Bevel-style photo meal log — drop zone, honest %, inline retry without re-pick. */
+/** metric-quiet photo meal log — drop zone, honest %, inline retry without re-pick. */
 export function PhotoMealLogger({ onLogEstimate }: Props) {
   const { t } = useTranslation();
   const { toast } = useToast();

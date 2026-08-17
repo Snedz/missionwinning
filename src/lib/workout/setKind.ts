@@ -1,4 +1,4 @@
-/** Set classification — Hevy/Strong-style warmup, failure, and drop markers. */
+/** Set classification — set-table-style warmup, failure, and drop markers. */
 
 export type SetKind = 'normal' | 'warmup' | 'failure' | 'drop';
 

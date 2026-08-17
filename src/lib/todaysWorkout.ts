@@ -7,7 +7,7 @@ export interface TodaysWorkout {
   exercises: WorkoutExerciseTemplate[];
 }
 
-/** Rotating daily workouts — CrossFit / Freeletics inspired, all free core. */
+/** Rotating daily workouts — CrossFit / a bodyweight coach app inspired, all free core. */
 const ROTATION: TodaysWorkout[] = [
   {
     name: "Today's WOD — Full Body AMRAP",

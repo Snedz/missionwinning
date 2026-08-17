@@ -119,7 +119,7 @@ fun TodayScreen(
                     color = MwColors.TextMuted,
                 )
 
-                // First viewport: one session, one Start (Fitbod-clarity)
+                // First viewport: one session, one Start (a programming app-clarity)
                 if (state.loading) {
                     MwCard(elevated = true) {
                         MwSectionLabel("Loading")

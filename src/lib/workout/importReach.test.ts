@@ -1,17 +1,15 @@
 /**
  * A feature nobody can find has not shipped.
  *
- * Strong/Hevy CSV import is real and tested — [importCsv.ts](./importCsv.ts)
- * detects both formats, rebuilds sessions, converts units and de-duplicates on
- * re-import. It was also, in practice, unreachable: the only entry point was
- * `/account` → expand a collapsed "More settings" `<details>` → scroll past six
- * cards. Nothing in the product mentioned it at the moment it matters.
+ * Workout CSV import is real and tested — [importCsv.ts](./importCsv.ts)
+ * detects both common gym-logger layouts, rebuilds sessions, converts units
+ * and de-duplicates on re-import. It was also, in practice, unreachable: the
+ * only entry point was `/account` → expand a collapsed "More settings"
+ * `<details>` → scroll past six cards. Nothing in the product mentioned it at
+ * the moment it matters.
  *
- * The East Asia shard (mission-ops #13) lists data-in as its **own** P1 beside
- * logging speed, with the instruction not to fix only speed. Switchers arrive
- * holding a CSV — the export is how you leave Hevy once it caps free history at
- * three months — so the file in hand is the whole opportunity, and it was three
- * taps and a scroll behind a summary element.
+ * Switchers arrive holding a CSV, so the file in hand is the whole
+ * opportunity, and it was three taps and a scroll behind a summary element.
  *
  * These tests hold the path open. They assert reachability, not copy: a link
  * from the surfaces where a switcher actually is, and an `/account#import` deep
@@ -72,19 +70,14 @@ test('the deep link opens the section it points into', () => {
   );
 });
 
-test('the importer still exists and still names both apps it claims', () => {
+test('the importer still exists and still detects both gym-logger layouts', () => {
   // Guarding a link to a feature that has been deleted is worse than no guard.
   const card = read('src/components/profile/ProfileImportCard.tsx');
   assert.match(card, /importWorkoutCsvText/, 'the card must still perform an import');
   const strings = read('src/i18n/notificationLocales.ts');
-  for (const app of ['Strong', 'Hevy']) {
-    assert.ok(
-      new RegExp(app).test(strings),
-      `${app} must stay named: "import your data" is a promise a switcher checks by brand`
-    );
-  }
+  assert.match(strings, /Import workout CSV/, 'the CTA must stay a workout-CSV import');
   const parser = read('src/lib/workout/importCsv.ts');
-  for (const fmt of ["'hevy'", "'strong'"]) {
+  for (const fmt of ["'set-table-a'", "'set-table-b'"]) {
     assert.ok(parser.includes(fmt), `the parser must still detect ${fmt}`);
   }
 });

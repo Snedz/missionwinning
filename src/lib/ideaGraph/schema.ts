@@ -70,7 +70,7 @@ export const PRIMITIVES = {
    */
   reversibility: ['yes', 'no'],
   /**
-   * Is there an insurance or pause mechanism. Duolingo's streak works because
+   * Is there an insurance or pause mechanism. a streak league's streak works because
    * it can be *protected*; a streak clone without a freeze is the canonical
    * surface-level copy.
    */
@@ -82,8 +82,8 @@ export const PRIMITIVES = {
    */
   optimum_direction: ['more', 'less', 'personal-band'],
   /**
-   * What must already be true for it to work at all. Duolingo's leagues need a
-   * population; Peloton's leaderboard needs concurrency; Strava's kudos need a
+   * What must already be true for it to work at all. a streak league's leagues need a
+   * population; a bike-class app's leaderboard needs concurrency; Strava's kudos need a
    * club. Cargo-culting always drops this field, which is why it is required.
    */
   precondition: ['population-n', 'concurrency', 'social-graph', 'existing-habit', 'none'],

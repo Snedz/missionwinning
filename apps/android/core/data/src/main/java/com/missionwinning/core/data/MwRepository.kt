@@ -118,7 +118,7 @@ class MwRepository(
         transfer.importCsv(csvText, preferUnit)
 
     suspend fun exportWorkoutsMwCsv(): String = transfer.exportMwCsv()
-    suspend fun exportWorkoutsHevyCsv(): String = transfer.exportHevyCsv()
+    suspend fun exportWorkoutsSetTableACsv(): String = transfer.exportSetTableACsv()
     suspend fun exportWorkoutsJson(): String = transfer.exportJson()
 
     companion object {

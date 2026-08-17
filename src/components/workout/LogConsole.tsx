@@ -3,7 +3,7 @@
 /**
  * The logger's one console — the only place a set is entered (compact).
  *
- * Strong/Hevy density on ink: metric steppers under the thumb, one poster-red
+ * set-table density on ink: metric steppers under the thumb, one poster-red
  * Log set, no filled accent chrome competing with it (kind / Use next stay
  * outline-ink). Kind strip collapses to Work + expand so Log stays in the
  * easy thumb zone (F-003 / MatrAIx).

@@ -11,7 +11,7 @@ import { CONTENT_FLOORS } from '@/lib/contentFloors';
 import { BUNDLE_PLANS, DEFAULT_BUNDLE_PLAN, type BundlePlanId } from '@/lib/bundleConfig';
 
 /** Illustrative competitor stack — not live SKUs, not à la carte pillars. */
-export const BUNDLE_VS_STACK = ['Strong', 'MyFitnessPal', 'Pliability', 'Calm'] as const;
+export const BUNDLE_VS_STACK = ['Strong', 'a food diary', 'a mobility app', 'Calm'] as const;
 
 export type BundlePaidInventoryLine = {
   id: 'coach' | 'recipes' | 'move' | 'mind' | 'learn';

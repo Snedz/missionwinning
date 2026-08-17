@@ -131,7 +131,7 @@ function withLoadPct(
 }
 
 /**
- * Weighted compounds with a known max: prescribe via loadPct (TrainHeroic-style).
+ * Weighted compounds with a known max: prescribe via loadPct (a team-training app-style).
  * Bodyweight / no max: absolute last-session progression (unchanged).
  *
  * `loadZone` is the athlete's own acute:chronic band (`load.ts`). It is optional and

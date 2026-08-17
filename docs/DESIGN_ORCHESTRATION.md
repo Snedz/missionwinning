@@ -57,7 +57,7 @@ say so in its row above.
 
 ## North star (emotional design)
 
-Mission Winning already owns a rare brand lane: **mission briefing**, now in the Modernist register (ink on paper, one red), free offline logger, log-based Mission Coach. Peers win on craft density (Hevy/Strong), one-CTA coach clarity (Freeletics), or metric calm (Bevel/WHOOP). We win by combining **Strong-class private logging + Freeletics-class adaptive coach + clinical honor** — never social feeds, wearable gates, or gym-bro confetti.
+Mission Winning already owns a rare brand lane: **mission briefing**, now in the Modernist register (ink on paper, one red), free offline logger, log-based Mission Coach. Peers win on craft density (set-table), one-CTA coach clarity (a bodyweight coach app), or metric calm (a metric-quiet health app/WHOOP). We win by combining **set-table private logging + a bodyweight coach app-class adaptive coach + clinical honor** — never social feeds, wearable gates, or gym-bro confetti.
 
 | Emotion | When | Expression |
 |---------|------|------------|
@@ -119,9 +119,9 @@ Full matrices: [DESIGN_RESEARCH.md](DESIGN_RESEARCH.md) (Waves 1–7). Summary:
 
 | Peer | Steal | Avoid | MW owns |
 |------|-------|-------|---------|
-| **Hevy / Strong** | Set table, previous-set ghost, 2-tap complete | Hevy blue, social PR feeds | Free forever + offline |
-| **Freeletics** | One Start; light I-Day → plan | Hard paywall before logger value | Logger free without Coach lock-in |
-| **Bevel / WHOOP** | Metric hierarchy + one insight line | Ring-dashboard clone; wearable home | Mission Score from **logs** |
+| **set-table** | Set table, previous-set ghost, 2-tap complete | the set-table logger blue, social PR feeds | Free forever + offline |
+| **a bodyweight coach app** | One Start; light I-Day → plan | Hard paywall before logger value | Logger free without Coach lock-in |
+| **a metric-quiet health app / WHOOP** | Metric hierarchy + one insight line | Ring-dashboard clone; wearable home | Mission Score from **logs** |
 | **NTC / Fitness+** | Discovery polish on Learn/Move later | Video chrome inside set row | Train stays table-first |
 | **Linear / Arc** | Chrome recedes; match weight to task | Decorative card wallpaper | Briefing density on Today |
 | **RepStack / Forge** | Next-set auto-seed; Just Go | Paywall progression / BYOK | Targets + Just Go stay free |
@@ -412,7 +412,7 @@ engine (preferred days + adapt already cover flexible miss recovery).
 ## Explicit non-goals
 
 - Reviving navy/emerald/brass, or drifting toward purple/cream AI-default themes
-- Becoming WHOOP/Bevel (wearable-first) or Hevy (social-first)
+- Becoming WHOOP/a metric-quiet health app (wearable-first) or the set-table logger (social-first)
 - Website or Android teardown during Horizon 0
 - Gating logger, rest, PRs, or Just Go behind Bundle
 - Confetti, streak theater, XP loot as retention

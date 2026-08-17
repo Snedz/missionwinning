@@ -20,7 +20,7 @@ wants it to go: a club with points, tiers, collectible gear, boards, and eventua
 | Source | What we take | What we leave |
 |--------|-------------|---------------|
 | **Williams F1 WClub** | 4-tier ladder (Grid 50–299 · Podium 300–699 · Champion 700–1499 · Legend 1500+); dashboard = tier card + progress bar ("240 pts to Podium Tier") + short "Next ways to earn" list with `+N` chips; Driver Card (helmet style · backdrop · race number · tier chip · edit/share) with a **card editor** — live preview + category tabs + Save — whose unlocks are **grouped into collections** by season/source; badges collected per event **unlock more card customization**; double-points event weeks; arcade of small domain-tied games (predictions ≈ 5 pts, "Tyre or Lower" quiz, "Circuit Breaker") | Purchase-based earning (+0.5/£1), sweepstakes/prize draws, sponsor-presented games, crypto partner branding |
-| **Duolingo leagues** | ~30-person cohorts matched by activity level — winnable at any user count, no geography needed | Relegation + demotion-threat pushes (violates our tone contract) |
+| **a streak league leagues** | ~30-person cohorts matched by activity level — winnable at any user count, no geography needed | Relegation + demotion-threat pushes (violates our tone contract) |
 | **Gran Turismo** | Country/region identity as something you *contribute to* (Nations Cup); rating separate from participation points | Skill rating as public hierarchy |
 | **Zwift** | Dual progression: levels auto-unlock cosmetics; effort-earned currency is optional and cosmetic-only | Spendable-currency shop (deferred; maybe never) |
 | **Sweatcoin** | Server-side plausibility validation, per-source caps, quarantine-then-review | Steps as money |

@@ -45,7 +45,7 @@ Honest posture: **pre-launch, `PRIVATE_MODE` on, no user cohort yet** — so no 
 
 | Track | Source | Cadence |
 |-------|--------|---------|
-| **A — Competitor / market** | [DESIGN_RESEARCH.md](DESIGN_RESEARCH.md) waves: steal/avoid + MW gap + register updates. Wave 8 covers the coach-platform category (Trainerize, TrueCoach, Everfit) + adaptive consumer apps (Fitbod, Runna, Ladder…), **app-store review mining as the user-complaint / drop-off proxy**, pricing models, onboarding patterns, positioning angles, feature gaps | Per wave |
+| **A — Competitor / market** | [DESIGN_RESEARCH.md](DESIGN_RESEARCH.md) waves: steal/avoid + MW gap + register updates. Wave 8 covers the coach-platform category (a trainer-client app, a trainer-client app, a trainer-client app) + adaptive consumer apps (a programming app, Runna, Ladder…), **app-store review mining as the user-complaint / drop-off proxy**, pricing models, onboarding patterns, positioning angles, feature gaps | Per wave |
 | **B — Own telemetry** | The moment invites open: I-Day completion funnel, first-workout-24h, week-4 wall ([POST_LAUNCH_CADENCE.md](POST_LAUNCH_CADENCE.md)). Metrics are already named; instrumenting the funnel is a listed code work item | Weekly once live |
 | **C — Moderated walks** | Founder + first testers on device; [../apps/android/FOUNDER_ACCEPT.md](../apps/android/FOUNDER_ACCEPT.md) walk scripts double as usability scripts; note where the walker hesitates, not just where they fail | Per accept + per wave |
 | **D — Heuristic audits** | Our own surfaces scored against [MOBILE_PLAYBOOK.md](MOBILE_PLAYBOOK.md) §6 laws + the 8 quality bars | Per wave |

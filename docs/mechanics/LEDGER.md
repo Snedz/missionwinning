@@ -98,7 +98,7 @@ and Kindle recap (different primitive). Translator wrote H-23
 killed all three (fake instrument ×3). No paste.
 
 **harvest-14 notes.** Timed `/harness` generate. New source class:
-session bound / energy (not Anki quota). Scout opened Duolingo Energy
+session bound / energy (not Anki quota). Scout opened a streak league Energy
 (2025-07-03, E1), Forest focus timer (E1), Pomodoro Technique + Cirillo
 site (E1). Anatomist promoted M-19 (session ends when the box ends).
 Discarded Forest Plant Together (group), tree-death shame, Energy gem/ad
@@ -136,10 +136,10 @@ Finish; fake instrument). No paste. Unused product-PR cap held.
 
 **harvest-10 notes.** Founder keep-working. No new scout. Opened already-cited
 pages. Upgraded to E1 where the page supports the cite: GitHub PRs, Google Docs
-suggesting, Duolingo streak freeze (date corrected to 2022-01-31), Instagram
+suggesting, a streak league streak freeze (date corrected to 2022-01-31), Instagram
 Stories (TechCrunch 2017-04-13), Garmin adaptive explanations, Celeste Assist
 Mode (Vice), PMC 12938745 (Strava delete/hide), arXiv 2507.14702 (75% usage
-drop). Left E2: nesbitt.io (opened; satire, not an 85% measurement), Duolingo
+drop). Left E2: nesbitt.io (opened; satire, not an 85% measurement), a streak league
 leagues (404), Whoop and Hades wiki (challenge wall). No paste. No new H.
 
 **harvest-9 notes.** Founder override: regenerate, wait for approval. Source

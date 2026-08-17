@@ -366,7 +366,7 @@ fun AuthScreen(
             MwCard(elevated = true) {
                 MwSectionLabel("Data portability")
                 Text(
-                    "Import Hevy workout CSV or Mission Winning export. Export stays free — your logs, your file. Import never requires an account.",
+                    "Import a workout CSV or Mission Winning export. Export stays free — your logs, your file. Import never requires an account.",
                     style = MwTypography.bodyMedium,
                     color = MwColors.TextMuted,
                 )
@@ -394,10 +394,10 @@ fun AuthScreen(
                     },
                 )
                 MwGhostButton(
-                    text = "Export Hevy-format CSV",
-                    contentDescription = "Export workouts as Hevy-compatible CSV",
+                    text = "Export set CSV",
+                    contentDescription = "Export workouts as set-table CSV",
                     onClick = {
-                        shareExport(ExportFormat.HevyCsv, "text/csv", "workouts-hevy.csv")
+                        shareExport(ExportFormat.SetTableACsv, "text/csv", "workouts-set-table-a.csv")
                     },
                 )
                 MwGhostButton(

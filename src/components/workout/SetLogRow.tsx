@@ -2,8 +2,8 @@
 /**
  * One set in the active workout list — a read-only record, not a control band.
  *
- * Strong/Hevy density: metric-first (`8 × 60 kg`), not prose ("In the console").
- * **PREVIOUS is the row anchor** (Hevy web withholds this; we show it) — prior
+ * set-table density: metric-first (`8 × 60 kg`), not prose ("In the console").
+ * **PREVIOUS is the row anchor** (the set-table logger web withholds this; we show it) — prior
  * performance sits beside the set number before this session's metric.
  * After a working set saves, a tiny vs-last token (`+2.5 kg` / `+1 rep` / `same`)
  * sits next to this session's metric (.741). First-ever is silence.
@@ -51,7 +51,7 @@ type Props = {
   weightLabel: string;
   /**
    * Prior-session performance for this set index (`8 × 60`), or null.
-   * Hevy Experience: PREVIOUS is the visible row anchor — never omit the slot.
+   * the set-table logger Experience: PREVIOUS is the visible row anchor — never omit the slot.
    */
   prevLabel?: string | null;
   /** A1/A2 pair mark — prefix on the Set cell so the row stays identifiable. */
@@ -176,7 +176,7 @@ export function SetLogRow({
         </span>
       ) : null}
 
-      {/* PREVIOUS — set-row metric anchor (Hevy web withholds; we show). */}
+      {/* PREVIOUS — set-row metric anchor (the set-table logger web withholds; we show). */}
       <span
         className="flex w-[5.5rem] shrink-0 flex-col justify-center leading-none"
         data-testid="set-row-prev"
@@ -195,7 +195,7 @@ export function SetLogRow({
         </span>
       </span>
 
-      {/* This session's metric — Strong/Hevy density; no "In the console" chrome. */}
+      {/* This session's metric — set-table density; no "In the console" chrome. */}
       <span
         className={cn(
           'min-w-0 flex-1 truncate text-[15px] tabular-nums',

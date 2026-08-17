@@ -10,7 +10,7 @@ Last updated: 2026-08-05 (founder launch §2c security checklist; S2 2026-07-22;
 
 ## Executive summary
 
-Mission Winning has a strong **free-core vision** and solid pillar scaffolding, but going public against Bevel, Freeletics, Strong, MyFitnessPal, and Calm requires both **security hardening** and **product depth**. This pass implemented critical protections; remaining gaps are prioritized below.
+Mission Winning has a strong **free-core vision** and solid pillar scaffolding, but going public against a metric-quiet health app, a bodyweight coach app, Strong, a food diary, and Calm requires both **security hardening** and **product depth**. This pass implemented critical protections; remaining gaps are prioritized below.
 
 | Layer | Status |
 |-------|--------|
@@ -140,13 +140,13 @@ Mission Winning’s **positioning** (free global PWA, six pillars, Super Bundle)
 
 | Competitor | Their strength | Our gap | Priority |
 |------------|----------------|---------|----------|
-| **Bevel** | Polish, readiness/strain/recovery rings, AI coach UX | AI coach is rule-based; no wearables; metrics less refined | P1 post-launch |
-| **Freeletics** | AI Coach, 30+ plans, video, brand | No video cues; coach is templates not adaptive ML | P1 |
-| **Strong / Hevy** | Best-in-class logging UX, charts, social | Logging solid; charts/social minimal | P2 |
-| **MyFitnessPal** | Massive food DB, barcode scan | Manual food log only; no barcode | P2 |
+| **a metric-quiet health app** | Polish, readiness/strain/recovery rings, AI coach UX | AI coach is rule-based; no wearables; metrics less refined | P1 post-launch |
+| **a bodyweight coach app** | AI Coach, 30+ plans, video, brand | No video cues; coach is templates not adaptive ML | P1 |
+| **set-table** | Best-in-class logging UX, charts, social | Logging solid; charts/social minimal | P2 |
+| **a food diary** | Massive food DB, barcode scan | Manual food log only; no barcode | P2 |
 | **Strava / MapMy** | GPS, segments, social | Track pillar is manual log only | P1 for Track premium |
-| **Calm / Headspace** | Audio libraries, sleep stories | Mind is breathing + check-in only | P2 |
-| **Pliability / ROMWOD** | Video mobility, sport-specific | Move has timed flows, no video | P2 |
+| **Calm / a sit library** | Audio libraries, sleep stories | Mind is breathing + check-in only | P2 |
+| **a mobility app / ROMWOD** | Video mobility, sport-specific | Move has timed flows, no video | P2 |
 
 **What we already compete on:**
 - Unified Win Score across six pillars (unique)
@@ -241,7 +241,7 @@ Repeat before each major release:
 2. **Perimeter scan** — curl gate, headers, webhook rejection
 3. **Paywall drill** — confirm premium APIs 403 without enrollment
 4. **Bundle recon** — search client chunks for premium filenames (`premiumRecipes`, pro program ids)
-5. **Competitive spot-check** — one user journey vs Freeletics/Bevel on mobile
+5. **Competitive spot-check** — one user journey vs a bodyweight coach app/a metric-quiet health app on mobile
 
 ---
 

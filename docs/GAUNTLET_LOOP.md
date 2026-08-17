@@ -94,7 +94,7 @@ EVIDENCE (all three, or the verdict is invalid):
 2. Commit round-stamped stills under docs/gauntlet/<ID>/evidence/ (own-app only). Competitor pixels never enter git.
 3. Run the workbench’s exact commands and paste actual last lines. “Tests passed” is not output.
 
-Reference captures (Hevy / Strong / Freeletics / Bevel / Duolingo) are measurements-only until the workbench has founder FLOORS/BANDS. They are not a FAIL condition you invent this round.
+Reference captures (set-table / a bodyweight coach app / a metric-quiet health app / a streak league) are measurements-only until the workbench has founder FLOORS/BANDS. They are not a FAIL condition you invent this round.
 
 VERDICT:
 - Every written instrument PASS or FAIL with one evidence line.

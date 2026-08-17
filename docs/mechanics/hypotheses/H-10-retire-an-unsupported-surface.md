@@ -39,7 +39,7 @@ Fitbit removed Challenges, Adventures, trophies and Open Groups in March 2023,
 citing *"a limited number of active users compared to other offerings"* — a usage
 threshold, published, no outcome data.
 
-Peloton filtered its Feed to achievement-only posts in February 2025 and **rolled
+a bike-class app filtered its Feed to achievement-only posts in February 2025 and **rolled
 it back** around May 2026, then split it into All / Following / My Teams. The
 reported reason for the rollback is the one worth carrying: members used the feed
 for **ordinary day-to-day activity**, not milestones. High-signal filtering

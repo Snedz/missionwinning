@@ -55,7 +55,7 @@
 
 ## Sync scale + portability (Phase 12)
 
-- Account: **Import CSV** (Hevy + MW), export MW CSV / Hevy CSV / JSON (share sheet)
+- Account: **Import CSV** (the set-table logger + MW), export MW CSV / the set-table logger CSV / JSON (share sheet)
 - Sync pull up to 50 pages; `SyncRunResult` + conflict notes (local pending wins)
 - Free forever — import/export never gated
 
@@ -148,7 +148,7 @@ Signing template: [keystore.properties.example](keystore.properties.example) · 
 
 Screenshots for Play: [store-assets/README.md](store-assets/README.md)
 
-**Platform rebuild:** Hilt + UDF ViewModels + feature modules + Hevy/Strong-class Active logger. See [ARCHITECTURE.md](ARCHITECTURE.md).  
+**Platform rebuild:** Hilt + UDF ViewModels + feature modules + set-table-class Active logger. See [ARCHITECTURE.md](ARCHITECTURE.md).  
 **Long-term queue:** [BACKLOG.md](BACKLOG.md) — F0 Accept B founder-owned; F5 gated; F3.1 / F6–F11 Done.  
 **UX overhaul:** [UX.md](UX.md) — 3-tab hub, Today mission control, Active current-set card, Coach tiles.  
 **Founder accept:** [FOUNDER_ACCEPT.md](FOUNDER_ACCEPT.md) — 15-min Accept B short path; device checklist before Play Internal (`./scripts/release-smoke.sh` first).  

@@ -45,7 +45,7 @@ test.describe('First 90 seconds @gate', () => {
     await tap(page.getByRole('button', { name: /^begin$/i }).first(), 'Begin');
     await tap(page.getByRole('button', { name: /continue|continuar/i }).first(), 'Continue');
 
-    // F-004 / Hevy: I-Day lands on Today with one Start — not empty feed, not Active dump.
+    // F-004 / the set-table logger: I-Day lands on Today with one Start — not empty feed, not Active dump.
     await expect(page).toHaveURL(/\/log/, { timeout: 15_000 });
     await expect(page.locator('.primary-action')).toHaveCount(1);
     await tap(

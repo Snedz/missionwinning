@@ -416,7 +416,7 @@ Multi-vendor sync — see [docs/WEARABLES.md](WEARABLES.md). Opt-in; off unless 
 | `MEAL_VISION_REQUIRE_ZDR` | `true` to require ZDR response header (same fail-closed pattern as `COACH_LLM_REQUIRE_ZDR`) |
 
 Without `MEAL_VISION_*`, photo logging still works: **rough local heuristic** + Open Food Facts name match. Users always edit macros before log. Help: [help/fuel-and-nutrition.md](help/fuel-and-nutrition.md).
-| `OURA_CLIENT_ID` / `OURA_CLIENT_SECRET` | Oura OAuth |
+| `OURA_CLIENT_ID` / `OURA_CLIENT_SECRET` | a ring tracker OAuth |
 | `GARMIN_CLIENT_ID` / `GARMIN_CLIENT_SECRET` | Garmin OAuth |
 | `FITBIT_CLIENT_ID` / `FITBIT_CLIENT_SECRET` | Fitbit OAuth |
 | `POLAR_CLIENT_ID` / `POLAR_CLIENT_SECRET` | Polar AccessLink OAuth |

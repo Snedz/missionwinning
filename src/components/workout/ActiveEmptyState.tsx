@@ -140,7 +140,7 @@ export function ActiveEmptyState({
           href="/account#import"
           className="min-h-[44px] inline-flex items-center text-muted-foreground underline-offset-2 hover:text-foreground hover:underline"
         >
-          {t('csvImportCta', { defaultValue: 'Import CSV (Strong / Hevy)' })}
+          {t('csvImportCta', { defaultValue: 'Import workout CSV' })}
         </a>
       </div>
       {/*

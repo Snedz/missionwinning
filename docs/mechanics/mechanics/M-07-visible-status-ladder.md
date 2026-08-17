@@ -13,13 +13,13 @@ primitives:
   optimum_direction: more
   precondition: population-n
 seen_in:
-  - product: Duolingo leagues
+  - product: a streak league leagues
     url: https://blog.duolingo.com/leaderboards-and-leagues/
     date: 2024-01-01
     class: E2
     retrieval: indexed
     why_not_e1: opened 2026-08-16; the URL 404s, so the cite stays a pointer
-  - product: Peloton live leaderboard
+  - product: a bike-class app live leaderboard
     url: https://www.onepeloton.com/press
     date: 2026-08-15
     class: E2
@@ -72,7 +72,7 @@ Two discriminators survived the cross-check:
    mayorship is one slot per venue and dilutes as the population grows; Strava's
    segments regenerate every ride. Same mechanic class, opposite trajectory.
 2. **Voluntariness with an exit.** The same real-time ranked-rate display is
-   Peloton's leaderboard and Disneyland's laundry "electronic whip"; a rider
+   a bike-class app's leaderboard and Disneyland's laundry "electronic whip"; a rider
    chose the class and can hide the board, a laundry worker could do neither.
 
 `M-07` fails both, which is a better reason than any effect size.

@@ -1,5 +1,5 @@
 /**
- * Repeat last completed session (Strong/Hevy empty-start).
+ * Repeat last completed session (set-table empty-start).
  *
  * One control: copy the newest viable log via `templateFromCompletedLog`.
  * Does not generate Just Go, does not mark Coach-prescribed, does not start rest.

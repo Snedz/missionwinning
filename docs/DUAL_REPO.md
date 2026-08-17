@@ -62,10 +62,12 @@ Agents never run the `gh repo create` or visibility flip unless the founder expl
 
 | Actor | Product repo | Ops repo / `ops/` |
 |-------|--------------|-------------------|
-| Coding agents | Default workspace | Read only if mounted; never push |
-| Founder strategy sessions | Thin pointers | Write VISION, STATUS_PRIVATE, strategy |
-| CI | Product only | Never clone ops on public runners |
+| Coding agents | Default workspace. Ship MW vocabulary only — no consumer fitness product names. | Read `ops/intel/` if mounted; write named notes and stills there; never `git add ops/` from the product repo |
+| Founder strategy sessions | Thin pointers | Write VISION, STATUS_PRIVATE, strategy, intel |
+| CI | Product only. `names:check` no-ops without the ops denylist. | Never clone ops on public runners |
 | Public flip | Scrub INTERNAL paths first | Unaffected (stays private) |
+
+Research happens in `ops/intel/`. Product PRs translate patterns (`logger-table`, `fuel-modes`, `home-summary`) into `src/` / `docs/` without naming the source app. Compare / AEO drafts that name rivals stay in `ops/intel/seo/` until a founder GTM exception republishes them.
 
 ---
 

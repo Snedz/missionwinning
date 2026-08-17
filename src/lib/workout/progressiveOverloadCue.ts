@@ -2,7 +2,7 @@
  * Progressive-overload cue for the live logger (last · next · why).
  * Pure — no i18n; UI maps reason codes to translated chips.
  *
- * Industry table stakes (Hevy / Alpha Progression / Strong): the app should
+ * Industry table stakes (the set-table logger / a progression logger / Strong): the app should
  * remember the gym better than the athlete. This is the one place mid-set
  * that answers “what did I do / what should I do / why”.
  */

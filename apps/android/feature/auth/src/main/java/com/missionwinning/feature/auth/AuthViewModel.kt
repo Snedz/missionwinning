@@ -19,7 +19,7 @@ import javax.inject.Inject
 
 enum class AuthStep { Email, Code, SignedIn }
 
-enum class ExportFormat { MwCsv, HevyCsv, Json }
+enum class ExportFormat { MwCsv, SetTableACsv, Json }
 
 data class AuthScreenState(
     val step: AuthStep = AuthStep.Email,
@@ -202,7 +202,7 @@ class AuthViewModel @Inject constructor(
         runCatching {
             when (format) {
                 ExportFormat.MwCsv -> repository.exportWorkoutsMwCsv()
-                ExportFormat.HevyCsv -> repository.exportWorkoutsHevyCsv()
+                ExportFormat.SetTableACsv -> repository.exportWorkoutsSetTableACsv()
                 ExportFormat.Json -> repository.exportWorkoutsJson()
             }
         }.getOrNull()

@@ -22,8 +22,8 @@ describe('bundleShop merchandising', () => {
     assert.equal(byId.coach.count, undefined);
   });
 
-  it('vs-stack is Strong + MFP + Pliability + Calm — four apps, one bundle', () => {
-    assert.deepEqual([...BUNDLE_VS_STACK], ['Strong', 'MyFitnessPal', 'Pliability', 'Calm']);
+  it('vs-stack is Strong + a food diary + a mobility app + Calm — four apps, one bundle', () => {
+    assert.deepEqual([...BUNDLE_VS_STACK], ['Strong', 'a food diary', 'a mobility app', 'Calm']);
   });
 
   it('CTA: free-beta always notifies, even if checkout looks configured', () => {

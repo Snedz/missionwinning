@@ -151,6 +151,10 @@ const CI_ONLY_EXEMPT: { script: string; why: string }[] = [
     script: 'a11y',
     why: 'Needs a running server, and the one local run of it flaked: axe measured skeleton text at 1.05 contrast on /profile before the page settled. Adding a step that can go red for a render race would make CI a coin flip, and a check people re-run until green teaches them to ignore it. Fix the settle race first, then add it.',
   },
+  {
+    script: 'names:check',
+    why: 'The plaintext denylist is INTERNAL under ops/intel. Public CI never mounts ops, so the script exits 0 there — a vacuous green. The local gate runs it when ops is mounted.',
+  },
 ];
 
 function npmScripts(text: string, pattern: RegExp): Set<string> {

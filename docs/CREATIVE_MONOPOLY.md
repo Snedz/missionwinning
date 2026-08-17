@@ -32,7 +32,7 @@ Pitch the **wedge**, never the north-star “everything app” as the company li
 
 ## 2. What valuable company is nobody building?
 
-Not “beat Hevy.” Own the stack nobody fully owns:
+Not “beat the set-table logger.” Own the stack nobody fully owns:
 
 > Free offline logger forever + weekly plan that adapts from **logs alone** + honest training-load reading (no strap) + re-entry without shame + phone/park ICP.
 
@@ -93,8 +93,8 @@ Still **uncomputable** without the week-4 RPC migration — [LAUNCH_RUNBOOK.md](
 
 | Mute | Build |
 |------|--------|
-| Hevy feature race | Outdoor log + outbox |
-| Freeletics hard paywall | Free core + honest Bundle later |
+| the set-table logger feature race | Outdoor log + outbox |
+| a bodyweight coach app hard paywall | Free core + honest Bundle later |
 | WHOOP ring home | Log-derived load, silent until evidence |
 | Everything-app pitch | Wedge sentence only |
 | Competitor changelogs | Horizon W + week-4 |

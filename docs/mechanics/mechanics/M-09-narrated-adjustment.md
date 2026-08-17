@@ -29,7 +29,7 @@ trying to achieve · how to execute it · why the change was suggested.** The th
 is the rare one.
 
 **Why this node exists at all.** Harvest 1 swept the whole category — Strava
-Instant Workouts, Fitbod, Freeletics, Peloton IQ, Alpha Progression, RP,
+Instant Workouts, a programming app, a bodyweight coach app, a bike-class app IQ, a progression logger, RP,
 Juggernaut — and **Garmin is the only one that ships the third clause.** Everyone
 else emits an output and asserts it. RP is a partial exception by accident: it
 does not explain per session, but it publishes its target variable, so the logic

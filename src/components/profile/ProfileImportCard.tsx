@@ -1,11 +1,11 @@
 'use client';
 /**
- * Import / export training history as Strong or Hevy CSV (0.1 beta).
+ * Import / export training history as a workout CSV (0.1 beta).
  *
- * The switching moment: every would-be switcher is holding a CSV — Hevy caps free
- * history at three months, Strong paywalls export. One file in, and the PR/e1RM/load
- * engines light up against years of the athlete's own history. Export is the same
- * contract in reverse, in those dialects, free forever, no account.
+ * The switching moment: every would-be switcher is holding a CSV from another
+ * logger. One file in, and the PR/e1RM/load engines light up against years of
+ * the athlete's own history. Export is the same contract in reverse, free
+ * forever, no account.
  *
  * Parsing and merging are pure (`lib/workout/importCsv.ts`); this card only owns
  * the file picker, the download click, and the report. Never gated. No extra
@@ -45,7 +45,7 @@ export function ProfileImportCard() {
         return;
       }
       track('csv_exported', { count: result.count, format: dialect });
-      const formatLabel = dialect === 'hevy' ? 'Hevy' : 'Strong';
+      const formatLabel = dialect === 'set-table-a' ? 'set' : 'session';
       toast({
         title: t('csvExportDone', { defaultValue: 'History exported' }),
         description: t('csvExportDoneDesc', {
@@ -73,7 +73,7 @@ export function ProfileImportCard() {
               result.error === 'unrecognized_format'
                 ? t('csvImportUnrecognized', {
                     defaultValue:
-                      'Expected a Strong or Hevy CSV. Export from the other app, then drop the file here.',
+                      'Could not recognise that workout file. Drop a workout CSV export, then try again.',
                   })
                 : t('csvImportEmpty', { defaultValue: 'No workout rows found in the file.' }),
             variant: 'destructive',
@@ -113,23 +113,23 @@ export function ProfileImportCard() {
         <p className="text-sm text-muted-foreground">
           {t('csvImportSubtitle', {
             defaultValue:
-              '0.1 beta — import or export Strong and Hevy CSV. Free forever, no account. History is never paywalled.',
+              'Import or export a workout CSV. Free forever, no account. History is never paywalled.',
           })}
         </p>
         <div className="flex flex-col gap-2 sm:flex-row sm:flex-wrap">
           <Button
             variant="outline"
             className="min-h-[44px] tap-target"
-            onClick={() => handleExport('strong')}
+            onClick={() => handleExport('set-table-b')}
           >
-            {t('csvExportStrongCta', { defaultValue: 'Export Strong CSV' })}
+            {t('csvExportSessionCta', { defaultValue: 'Export session CSV' })}
           </Button>
           <Button
             variant="outline"
             className="min-h-[44px] tap-target"
-            onClick={() => handleExport('hevy')}
+            onClick={() => handleExport('set-table-a')}
           >
-            {t('csvExportHevyCta', { defaultValue: 'Export Hevy CSV' })}
+            {t('csvExportSetCta', { defaultValue: 'Export set CSV' })}
           </Button>
           {!showDrop ? (
             <Button
@@ -137,7 +137,7 @@ export function ProfileImportCard() {
               className="min-h-[44px] tap-target"
               onClick={() => setShowDrop(true)}
             >
-              {t('csvImportCta', { defaultValue: 'Import CSV (Strong / Hevy)' })}
+              {t('csvImportCta', { defaultValue: 'Import workout CSV' })}
             </Button>
           ) : null}
         </div>
@@ -145,14 +145,14 @@ export function ProfileImportCard() {
           <FileDropZone
             accept="text/csv,.csv"
             aria-label={t('csvImportDropIdle', {
-              defaultValue: 'Drop a Strong or Hevy CSV or click to browse',
+              defaultValue: 'Drop a workout CSV or click to browse',
             })}
             idleLabel={
               <span className="flex flex-col items-center gap-2 py-8 px-4">
                 <FileSpreadsheet className="h-6 w-6 text-primary" />
                 <span className="text-sm font-medium text-foreground">
                   {t('csvImportDropIdle', {
-                    defaultValue: 'Drop a Strong or Hevy CSV or click to browse',
+                    defaultValue: 'Drop a workout CSV or click to browse',
                   })}
                 </span>
               </span>
@@ -170,7 +170,7 @@ export function ProfileImportCard() {
               toast({
                 title: t('uploadWrongType', { defaultValue: 'Wrong file type' }),
                 description: t('csvImportNeedCsv', {
-                  defaultValue: 'Use the CSV export from Strong or Hevy.',
+                  defaultValue: 'Use a workout CSV export from your previous logger.',
                 }),
                 variant: 'destructive',
               })

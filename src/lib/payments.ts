@@ -36,7 +36,7 @@ export const BUNDLE_DISCOUNT_NOTE =
   'Founders annual ~$4.92/mo ($59/yr) · monthly $11.99 · lifetime $149 — free core forever'
 
 /**
- * Pillars included in the Super Bundle (Freeletics 7-in-1 model → our unified super app).
+ * Pillars included in the Super Bundle (a bodyweight coach app 7-in-1 model → our unified super app).
  *
  * Counts are interpolated from `CONTENT_FLOORS`, never typed by hand. Every
  * hand-typed number here had drifted *downward* against shipped content by `.606`

@@ -1,5 +1,5 @@
 /**
- * Strong-class warmup ramp for the free logger — garage olympic defaults.
+ * set-table warmup ramp for the free logger — garage olympic defaults.
  * Pure. Never gates. Insert is a tap, never automatic.
  */
 

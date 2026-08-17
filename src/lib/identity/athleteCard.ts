@@ -7,7 +7,7 @@
  * same `ShareCardData` shape the victory and recap cards already use.
  *
  * **Nothing here talks to a server, and that is the design, not a limitation.**
- * `shareCard.ts`'s header states the product's position: *"Hevy's loop is an in-app
+ * `shareCard.ts`'s header states the product's position: *"the set-table logger's loop is an in-app
  * social feed; ours is share OUT."* A card that syncs would need a table, a policy
  * change, a consent re-prompt, and a moderation surface. A card that renders on the
  * device and leaves as a PNG needs none of those and is the thing an athlete

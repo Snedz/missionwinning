@@ -26,7 +26,7 @@ const inkButton =
 
 /**
  * Rest dock — full-bleed ink panel. Takes `ScreenDock` over from `LogConsole`,
- * never both. **Ambient running rest** (Hevy withholds this): large ticking
+ * never both. **Ambient running rest** (the set-table logger withholds this): large ticking
  * clock + live depleting meter stay visible while remaining > 0 — not a static
  * badge. Dense Field manual; Skip fills accent only in final ≤10s.
  */

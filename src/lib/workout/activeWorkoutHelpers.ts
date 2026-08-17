@@ -40,7 +40,7 @@ export function getLastSessionSets(
 }
 
 /**
- * Previous value for the matching set index (Strong/Hevy-style), falling back
+ * Previous value for the matching set index (set-table style), falling back
  * to the last set when this session plans more sets than last time.
  */
 export function getLastPerformanceForSet(
@@ -106,7 +106,7 @@ export function sessionSetStats(
 
 /**
  * Most recent completed set before `setIdx` in this exercise (same session).
- * Hevy/Strong gym-speed: the next dial starts where you just left off — not a
+ * set-table gym-speed: the next dial starts where you just left off — not a
  * second copy of last session's set 2 while set 1 of *today* is already logged.
  * Null when nothing earlier in this exercise is completed.
  */

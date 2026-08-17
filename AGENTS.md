@@ -14,7 +14,7 @@ Works in Cursor, Claude Code, Grok, Copilot, Gemini, and other agents — tool-a
 4. Read the `INDEX.md` in the folder you are about to edit.
 5. Prefer indexed paths over repo-wide grep for planning docs.
 6. Do not use old chat plans as source of truth — use `ORCHESTRATION.md`, `docs/PLAN.md`, and `LOG.md`.
-7. Private continuity (diary, strategy full text, Mission Control dashboard): mount `ops/` / mission-ops — [docs/OPS_LOCAL.md](docs/OPS_LOCAL.md). Run `npm run ops:dashboard` locally when available.
+7. Private continuity (diary, strategy full text, Mission Control dashboard): mount `ops/` / mission-ops — [docs/OPS_LOCAL.md](docs/OPS_LOCAL.md). Run `npm run ops:dashboard` locally when available. Competitive product names and store stills live only in `ops/intel/`. Do not write them in this repo.
 
 **Horizon rule:** **Horizon 0 (now)** — RESULT is pass. Release is **Alpha 0.1.0**. Offer is free tracker or Super Bundle. Agents take Horizon 0 path tickets (keep CI green, Alpha chrome, flip-prep). Wedge excellence still required. Postal is later. There is no 10-invite beta. Refuse new pillars / locales / America / F5 unless the founder explicitly overrides.
 
@@ -133,6 +133,7 @@ When you add a feature folder, add or update its `INDEX.md`.
 | **Next idea (queue residual thin)** | [docs/IDEA_LOOP.md](docs/IDEA_LOOP.md) — one row per run; recipe 13 |
 | **Next graph loop** | [docs/GRAPH_LOOP.md](docs/GRAPH_LOOP.md) — one open loop per PR; recipe 11 |
 | **Gauntlet campaign round** | [docs/GAUNTLET_LOOP.md](docs/GAUNTLET_LOOP.md) — LEAD / BUILDER / CRITIC; recipe 12 |
+| **Competitor names** | `npm run names:check` when `ops/` is mounted. Named intel only in `ops/intel/`. |
 
 Full playbooks: [docs/AGENT_RECIPES.md](docs/AGENT_RECIPES.md).
 

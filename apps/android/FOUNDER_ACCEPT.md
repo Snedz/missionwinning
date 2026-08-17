@@ -192,8 +192,8 @@ Optional: `maestro test .maestro/wedge.yaml` (same Account round-trip + Active `
 | U8 | Signed-in premium: “Super Bundle” chip; copy says purchase not in-app | |
 | U9 | Cloud sync card shows pending/failed counts; Retry sync updates status | |
 | U10 | **Debug only:** Design system gallery opens from Account → About | |
-| U11 | Import Hevy CSV sample → workouts appear in Recent / Progress | |
-| U12 | Export MW CSV / Hevy CSV / JSON opens share sheet with content | |
+| U11 | Import the set-table logger CSV sample → workouts appear in Recent / Progress | |
+| U12 | Export MW CSV / the set-table logger CSV / JSON opens share sheet with content | |
 | U13 | After multi-device routine edit: conflict note or local pending kept message | |
 
 ---

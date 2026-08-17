@@ -97,8 +97,8 @@ class WorkoutImportRepository(
     suspend fun exportMwCsv(limit: Int = 2000): String =
         WorkoutTransfer.toMwCsv(exportAllPairs(limit))
 
-    suspend fun exportHevyCsv(limit: Int = 2000): String =
-        WorkoutTransfer.toHevyCsv(exportAllPairs(limit))
+    suspend fun exportSetTableACsv(limit: Int = 2000): String =
+        WorkoutTransfer.toSetTableACsv(exportAllPairs(limit))
 
     suspend fun exportJson(limit: Int = 2000): String =
         WorkoutTransfer.toJsonSummary(exportAllPairs(limit))

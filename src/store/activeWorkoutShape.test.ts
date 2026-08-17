@@ -70,7 +70,7 @@ describe('isUsableActiveWorkout', () => {
  *
  * `startWorkout` replaces `activeWorkout` outright, which is correct when the
  * athlete taps Start. I-Day finish no longer auto-starts a preview (F-004 /
- * Hevy): it lands on Today. `hasLoggedWork` still decides whether finish
+ * the set-table logger): it lands on Today. `hasLoggedWork` still decides whether finish
  * resumes an in-progress Active session instead of Today.
  *
  * The line is a **completed set**, not the existence of a session. A session

@@ -33,7 +33,7 @@ function pairGroups(exercises: ActiveExerciseLog[]): number[][] {
   return groups;
 }
 
-/** Hevy/Strong pair mark: first pair is A1/A2, second is B1/B2. */
+/** set-table pair mark: first pair is A1/A2, second is B1/B2. */
 export function pairMark(exercises: ActiveExerciseLog[], exIdx: number): string | null {
   const groups = pairGroups(exercises);
   const gi = groups.findIndex((g) => g.includes(exIdx));

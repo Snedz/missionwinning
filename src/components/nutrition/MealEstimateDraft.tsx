@@ -51,7 +51,7 @@ function servingLabel(s: number): string {
 
 /**
  * Editable macro draft before logging — accuracy depends on user correction.
- * Serving chips scale from a base snapshot (speed logging steal from MFP/MacroFactor).
+ * Serving chips scale from a base snapshot (speed logging steal from a food diary/an adaptive-calorie app).
  * Low / requireEdit drafts keep Log disabled until the athlete touches a field
  * or scales servings away from 1× (Fuel honesty, edit-before-log).
  */

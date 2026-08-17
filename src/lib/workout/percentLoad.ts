@@ -1,5 +1,5 @@
 /**
- * TrainHeroic-style percent-of-max load — resolve e1RM, prescribe weight from loadPct.
+ * a team-training app-style percent-of-max load — resolve e1RM, prescribe weight from loadPct.
  * Free forever. See docs/DESIGN_RESEARCH.md § Wave 6.
  */
 

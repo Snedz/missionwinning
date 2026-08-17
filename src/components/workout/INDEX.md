@@ -12,7 +12,7 @@
 | `ActiveWorkoutSheets.tsx` | Check-in · hard-session warning · form · add · plates · victory overlay cluster (`.450`) |
 | `ActiveExerciseList.tsx` | Maps session exercises → `ActiveExerciseCard` (swap candidates, table controls, open-idx). Page mounts this instead of inlining the map (`.439`) |
 | `ActiveExerciseCard.tsx` | Dense exercise block — Info → form guide; overflow for Note/Swap/SS/Ask/Remove. **Swap** is `AdaptiveOverlay` + `ExercisePicker` (not an inline max-h-48 list) |
-| `SetLogTable.tsx` | **Desktop** set list — Strong/Hevy density (`Set · Prev · kg · Reps`); **Prev is the row anchor** (`data-prev-anchor`); ≥44px inputs; one poster-red inline `Log set` (sole red at md+). Compact uses `SetLogRow` + `LogConsole` |
+| `SetLogTable.tsx` | **Desktop** set list — set-table density (`Set · Prev · kg · Reps`); **Prev is the row anchor** (`data-prev-anchor`); ≥44px inputs; one poster-red inline `Log set` (sole red at md+). Compact uses `SetLogRow` + `LogConsole` |
 | `SetLogRow.tsx` | **Read-only set record** — **Prev metric anchor** + this-session line (no "In the console" prose), kind/PR/RPE, `Check`. ≥44px row + RPE. No filled red — entry is `LogConsole` |
 | `LogConsole.tsx` | **Compact only** — **the only place a set is entered.** Dense ink `ScreenDock`: name + `Set n of m`, overload cue, collapsed Work/Kind chips (ink selected, never accent fill), 52px steppers, one poster-red `Log set` in the thumb zone (F-003) |
 | `AddExerciseSheet.tsx` | `ExercisePicker` in a sheet with the confirm in the footer. **Test contract:** keeps the `search exercises` placeholder, `option` rows and `add selected exercise` name — `logger-depth`, `first-90` and `hero-flows` all drive them |

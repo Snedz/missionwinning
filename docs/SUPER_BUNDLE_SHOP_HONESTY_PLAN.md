@@ -7,7 +7,7 @@ Specialists landed first. Do not collide:
 | PR | Owns — do not touch |
 |----|---------------------|
 | **#498** | `/bundle` shop restore, `BundlePage` layout, `BundleShopStack`, checkout mute, `faq.md`, `premium-and-billing.md`, today/activeWorkout catalog keys |
-| **#497** | Move catalog + `MoveLockedPreview` / `moveLocales` Pliability copy |
+| **#497** | Move catalog + `MoveLockedPreview` / `moveLocales` a mobility app copy |
 | **#499** | Fuel recipes + Fuel shop `{{count}}` strings + `FuelLockedPreview` |
 | **#501** | Mind sessions (label **`.707`**) + Mind shop strings + `MindLockedPreview` |
 | **#502** | Learn chapters + Learn shop string + `LearnLockedPreview` |
@@ -23,7 +23,7 @@ Ship label: **`2026.07-unified.710`**. Do not steal `.707` (Mind #501). Also tak
 
 ## One concern
 
-The **below-fold `/bundle` compare table** still advertises **10 / 18 Move flows** (floors are **32 / 48**) and Train premium as **unlimited plans / chatbot**. Help still has no vs-stack page that names MFP + Pliability + Calm as what we are *not*.
+The **below-fold `/bundle` compare table** still advertises **10 / 18 Move flows** (floors are **32 / 48**) and Train premium as **unlimited plans / chatbot**. Help still has no vs-stack page that names a food diary + a mobility app + Calm as what we are *not*.
 
 #498's new shop cards interpolate other pillars with i18next `{{count}}`. This leftover does **not** rewrite that layout. Move table strings bake `CONTENT_FLOORS` so the table stays honest **without** editing `BundlePage` (Fuel/Mind specialists pass `count` only for their pillars).
 
@@ -44,9 +44,9 @@ Other floors stay specialists' problem. This ship does not raise or lower any fl
 | Comp | They sell | Our leftover merch |
 |------|-----------|--------------------|
 | **Strong** | Paid logger | Unchanged — logger stays free. |
-| **Fitbod / Coach apps** | Chatbot + black-box plan | Train table: log-cited **why** (inputs · rule · effect) + **adapt**. Do not change `adapt.ts` / `weekRationale.ts`. |
-| **Pliability** | Video shelf | Table counts from floors. Catalog quality is #497. |
-| **MyFitnessPal / Calm** | Food DB / streaks | Named only on the **help vs-stack** page as what we are not. Do not steal Fuel/Mind shop strings. |
+| **a programming app / Coach apps** | Chatbot + black-box plan | Train table: log-cited **why** (inputs · rule · effect) + **adapt**. Do not change `adapt.ts` / `weekRationale.ts`. |
+| **a mobility app** | Video shelf | Table counts from floors. Catalog quality is #497. |
+| **a food diary / Calm** | Food DB / streaks | Named only on the **help vs-stack** page as what we are not. Do not steal Fuel/Mind shop strings. |
 
 No trial. No à la carte. No new tabs. No `PRIVATE_MODE`. No Stripe unmute. No `BundlePage` rewrite.
 

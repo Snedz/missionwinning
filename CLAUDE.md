@@ -101,15 +101,15 @@ cd apps/android && ./gradlew :app:assembleDebug
 
 Node 22 (CI). PR CI is [.github/workflows/ci.yml](.github/workflows/ci.yml); minutes-heavy jobs (critical e2e, Android, Lighthouse) are manual/weekly in `ci-extended.yml`. A push to `master` runs [.github/workflows/ratchets.yml](.github/workflows/ratchets.yml) — the no-build half of the gate, and the only workflow on that path. **Whether Actions is currently running is recorded in exactly one place — `CONTEXT.md` `## Now`** — do not restate it elsewhere.
 
-### `npm run gate` — 21 steps, in order
+### `npm run gate` — 22 steps, in order
 
 `scripts/gate.mjs` runs everything CI would, on your machine, and builds with `PRIVATE_MODE=false` so the service worker compiles (the offline spec needs one). It starts and stops its own production server.
 
-1. Port unoccupied · 2. Build label + hard rule 5 · 3. **Excellence gate** · 4. **Idea graph** · 5. Lint
-6. Typecheck · 7. Unit tests · 8. Route contract tests · 9. **Coverage floors** · 10. i18n parity
-11. i18n coverage · 12. Dependency advisories · 13. Design system · 14. Locale split · 15. Display type
-16. Token sync (web ↔ www ↔ Android) · 17. **WWW build + checks (sites/www)** · 18. Production build · 19. Bundle budget
-20. Hero e2e (`@gate`) · 21. Accessibility (`@a11y`)
+1. Port unoccupied · 2. Build label + hard rule 5 · 3. **Excellence gate** · 4. **Competitor names** (ops denylist; no-op if unmounted) · 5. **Idea graph**
+6. Lint · 7. Typecheck · 8. Unit tests · 9. Route contract tests · 10. **Coverage floors**
+11. i18n parity · 12. i18n coverage · 13. Dependency advisories · 14. Design system · 15. Locale split
+16. Display type · 17. Token sync (web ↔ www ↔ Android) · 18. **WWW build + checks (sites/www)** · 19. Production build · 20. Bundle budget
+21. Hero e2e (`@gate`) · 22. Accessibility (`@a11y`)
 
 > This list said **16 steps** until `.562`, and omitted **Coverage floors** entirely — the one ratchet that had been silently breached on `master` since `.544`. The port guard was missing too. **`.669` added Excellence gate** (Horizon W RESULT + surface stop-rule). A map of the gate that cannot see a step is how the step stops being run; `scripts/gate.mjs` numbers every step it executes, so the count is checkable against a single `npm run gate` run.
 
@@ -180,6 +180,7 @@ This repo has paid repeatedly for checks that could not fail. Before adding a te
 
 1. **Horizon rule** — build only what [ORCHESTRATION.md](ORCHESTRATION.md) currently allows. No new pillars / locales / America / F5 without an explicit founder override.
 2. **The free logger is never gated. Ever.**
+2a. **Consumer fitness product names are INTERNAL.** Write them only in `ops/intel/`. Product tree uses MW vocabulary. `npm run names:check` when ops is mounted.
 3. Agents never flip `PRIVATE_MODE`, never invent traction numbers, never mark founder tasks done.
 4. Do not open stale/deleted paths — [INDEX.md](INDEX.md) §4. Highlights: `src/lib/coachPlan.ts`, `CoachPlanCard.tsx`, `app/api/coach/plan/route.ts` (**deleted** — use `src/lib/coach/`); `src/locales/` (**deprecated**); empty ghost dirs under `app/about/` etc. (routes live in `app/(app)/`).
 5. Docs match reality — see §7.

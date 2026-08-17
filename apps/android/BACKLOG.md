@@ -104,6 +104,6 @@
 
 ## F5 — Explicitly later (gated)
 
-Fuel · Mind · Learn · Social · Wearables-as-score · iOS · Hevy-scale video library · OpenAPI codegen / KMP
+Fuel · Mind · Learn · Social · Wearables-as-score · iOS · large-library video library · OpenAPI codegen / KMP
 
 **Do not start F5** until founder Accept B Pass ([FOUNDER_ACCEPT.md](FOUNDER_ACCEPT.md)) **and** week-4 retention is directionally OK. Wedge craft polish only from Accept Fail rows / Internal tester notes — no invented pillars.

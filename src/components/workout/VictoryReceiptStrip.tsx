@@ -1,7 +1,7 @@
 'use client';
 
 /**
- * Per-lift vs-last receipt on Victory — Hevy logged-out workout body:
+ * Per-lift vs-last receipt on Victory — the set-table logger logged-out workout body:
  * Set · Prev · Load · vs last, PR. Presentation only; numbers from
  * buildVictoryReceipt. Prev is the actual last-time load, not only a delta.
  */

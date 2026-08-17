@@ -38,17 +38,9 @@ Human capability starts with a body that can show up. Hundreds of clinical trial
 
 ---
 
-## Bevel-Inspired UI (Visual Layer Only)
+## Metric-quiet presentation (visual layer only)
 
-**Mission Winning is not becoming Bevel.** Bevel Health is the visual north star for premium dark UI and metric-first layout. All product vision, free-core promise, Super Bundle model, and pillar features below remain unchanged.
-
-We adopt Bevel's *presentation* philosophy:
-
-- Clean, metric-first dashboard (Readiness, Strain, Recovery score rings)
-- Strong AI coaching with personalized recommendations
-- Excellent strength training tools (700+ exercise feel, smart logging, progression)
-- Holistic view: training + recovery + habits
-- Premium, motivating UI/UX
+The constitution is paper / ink / Archivo / radius 0 / light-only. Presentation is metric-quiet density — scores, one coach line, a set table — not a theme flip and not a clone of anyone else’s chrome. All product vision, free-core promise, Super Bundle model, and pillar features below remain unchanged.
 
 **UI implementation pillars:**
 1. **Dashboard** — Central hub with scores, AI insights, quick actions
@@ -58,7 +50,7 @@ We adopt Bevel's *presentation* philosophy:
 5. **Journal / Habits** — Daily logging, mood, recovery notes
 6. **Future** — Wearable integration (optional; scores work from workout logs today)
 
-**Success criteria (UI):** Users describe it as "Bevel but more gym/strength focused and accessible."
+**Success criteria (UI):** Users describe it as a field manual that is gym-first and accessible.
 
 **Tech stack:** Next.js 16 (App Router) + TypeScript, Tailwind + shadcn/ui, Supabase, AI integration (Grok, Claude, etc.), PWA, Vercel.
 
@@ -99,33 +91,33 @@ The fundamentals that make the world healthier must be available to all, with **
 Premium features deepen the path for those who can contribute — they do not gate the mission itself.
 
 ## The Super App Structure: Accessible Routes, Synergistic Pillars
-Inspired by successful freemium + bundle models (notably Freeletics' Super Bundle of 7 holistic apps/tools), Mission Winning is structured as modular "universes" or pillars. Each route/section is **accessible** (free entry points and basics for everyone) yet serves as a revenue stream through premium layers, advanced tools, and content.
+Mission Winning is structured as modular "universes" or pillars. Each route/section is **accessible** (free entry points and basics for everyone) yet serves as a revenue stream through premium layers, advanced tools, and content.
 
 **The Pillars (Holistic Synergy — 1+1+1 > Sum)**:
-- **/train (Core Training)**: Free robust tracker, active workout logger (RPE, rests, cues), basic library. Premium: Full AI-powered personal Coach (personalized plans, unlimited combinations, real-time adjustments, 30+ plans, hybrid options). Like Freeletics Coach — the "personal trainer in your pocket."
+- **/train (Core Training)**: Free robust tracker, active workout logger (RPE, rests, cues), basic library. Premium: Full AI-powered personal Coach (personalized plans, unlimited combinations, real-time adjustments, 30+ plans, hybrid options) — the personal trainer in your pocket.
 - **/fuel (Nutrition)**: Free basic logging, targets, seeded accessible high-protein/global recipes (DASH/Med-inspired, common ingredients). Premium: Deep plans, advanced macros, special scenarios, coaching integration.
-- **/move (Mobility & Yoga)**: Free basic mobility cues and flows (bodyweight emphasis). Premium: Full Pliability-style (sports-specific, daily maintenance, athletic longevity) + Skill Yoga (functional for athletes, real-time feedback).
+- **/move (Mobility & Yoga)**: Free basic mobility cues and flows (bodyweight emphasis). Premium: sports-specific mobility, daily maintenance, athletic longevity + Skill Yoga (functional for athletes, real-time feedback).
 - **/mind (Mindfulness & Recovery)**: Free basic habit tools and recovery prompts. Premium: skippable journal-style training questions (before a lift, after a miss, sleep, travel) — not a meditation library, not clinical care.
-- **/track (Activity & Progress)**: Free core logging and streaks. Premium: Advanced MapMyFitness-style (detailed run/walk/bike/hike tracking, stats, coaching, cross-pillar integration).
+- **/track (Activity & Progress)**: Free core logging and streaks. Premium: detailed run/walk/bike/hike tracking, stats, coaching, cross-pillar integration.
 - **/learn (Education & Mastery)**: Free intros, basics, and assessments. Premium: Full specialist programs (repurposed high-value content from ISSA-aligned materials — PT+Nutrition, Bodybuilding, Corrective, Strength Business, Coaching, Conditioning). "The right way" education as a pillar.
 
-**The Super Bundle**: The flagship offering. One subscription unlocks premium depth across multiple (or all) pillars — "X premium tools for the price of 1-2." Modeled directly on Freeletics:
+**The Super Bundle**: The flagship offering. One subscription unlocks premium depth across multiple (or all) pillars — "X premium tools for the price of 1-2."
 - 50% off introductory pricing for first 6–12 months.
 - Annual discounts for better value.
 - Limited-time "Founders Bundle" or promo access (early adopters get special rates + perks).
 - Holistic value: "Train + Fuel + Move + Mind + Track + Learn = better results, consistency, and lifelong health."
-- Clear mechanics (like Freeletics): Bundle signup gives immediate core access + email links for partner-style pillar unlocks. Separate renewals for sustainability; not automatic cross-billing complexity.
+- Clear mechanics: Bundle signup gives immediate core access + email links for partner-style pillar unlocks. Separate renewals for sustainability; not automatic cross-billing complexity.
 
 Entry to every pillar is free and useful. Premium + Bundle provide the "awesome" depth, personalization, and synergy that turn good habits into transformation — while funding the mission for everyone.
 
 ## Revenue for Sustainability (Not at the Expense of Mission)
-- **Freemium Core**: Free forever for acquisition, virality, and global impact. Drives  the massive user base (aim for Freeletics-scale: tens of millions of sessions).
+- **Freemium Core**: Free forever for acquisition, virality, and global impact. Drives the massive user base (tens of millions of sessions as the decade aim).
 - **Premium Layers**: Individual pillar subscriptions or one-time unlocks (e.g., full /learn programs, advanced Coach).
 - **Super Bundle**: Primary revenue engine (higher ARPU via value stacking and synergy). Discounted entry (50% off promos) converts free users; renewals sustain.
 - **Additional Streams** (ethical, mission-aligned): In-app (non-intrusive), B2B/team plans, coach affiliates, optional lifetime premium (core always free), Foundation partnerships/grants.
 - **Balance**: Generous free (useful basics + community) to hook and deliver impact. Premium reserved for advanced personalization, exclusive content, and tools. Never starve the mission for short-term revenue. "Mainly a free app" serving the vision.
 
-This mirrors proven freemium success (Freeletics: free limited workouts hook 60M+ users; Coach ~85% revenue; bundle as holistic upsell). Volume + converters + bundle LTV = sustainable revenue to "be paid to survive" while scaling impact.
+This is a proven freemium shape: free useful core, paid coach depth, bundle as the holistic upsell. Volume + converters + bundle LTV = sustainable revenue to "be paid to survive" while scaling impact.
 
 ## Values & Principles
 - **Accessibility & Equity First**: PWA (zero store fees/cuts, install anywhere, offline). Global design (bodyweight/minimal-equip priority, common ingredients, neutral language, metric default, multi-lang: EN/ES/FR/PT/RU+ priority for Africa, Russia, LatAm, etc.). Low-resource friendly. Core mission free for all humans.
@@ -137,7 +129,7 @@ This mirrors proven freemium success (Freeletics: free limited workouts hook 60M
 - **Transparency & Trust**: Clear free vs. premium. Disclaimers ("educational tools... not medical advice"). Privacy-first (local-first + optional cloud). 30-day guarantees on premium.
 
 ## Goals (Measurable, Vision-Driven)
-- **#1 Health Everything App**: By active users, sessions, and global reach (surpass Freeletics-scale benchmarks: 60M+ users, hundreds of millions of sessions).
+- **#1 Health Everything App**: By active users, sessions, and global reach (decade-scale: tens of millions of users, hundreds of millions of sessions).
 - **Massive Free Impact**: 100M+ users with core free features. Measurable habit formation (streaks, consistency metrics) and stories from all economic backgrounds.
 - **Sustainable Revenue via Bundles**: Target freemium conversion benchmarks (e.g., meaningful % to bundle/individual premium). Bundle as primary ARPU driver with 50%+ off promos for acquisition.
 - **Holistic Synergy Proof**: Users in multiple pillars show better retention/results (internal metrics).
@@ -152,7 +144,7 @@ Free core delivers the mission immediately. Premium + Super Bundle make the full
 ## How We Build Toward This (Principles)
 - **Start with Free Core**: Tracker, basic tools, library, nutrition logging, assessments — excellent and complete for real use, worldwide, today.
 - **Add Synergistic Pillars**: One by one, with free entry + premium depth. Cross-pillar intelligence and recommendations.
-- **Bundle as Flagship**: 50% off promos, clear value ("7 pillars for the price of 1"), modeled on Freeletics success.
+- **Bundle as Flagship**: 50% off promos, clear value ("six pillars for the price of 1").
 - **Content Authenticity**: Deep use of available materials (ISSA PDFs for protein science, recipes, cues, programs, OARS, forms; M&S for scale/filters) blended originally. Global first.
 - **Tech for Accessibility**: Next.js PWA (already in place), Supabase (sync + premium), i18n, offline, low-friction.
 - **Marketing Aligned**: Mission storytelling + bundle value + freemium proof (scale, testimonials) + promotions. Adapted "massive action" for habits and the right path.

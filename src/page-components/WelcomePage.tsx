@@ -340,10 +340,10 @@ export function WelcomePage({ initialEdit = false }: WelcomePageProps) {
                     : t('welcomeContinue', { defaultValue: 'Continue' })}
                 </button>
                 {/*
-                  Data-in, on the last screen before the first log. Strong/Hevy
+                  Data-in, on the last screen before the first log. set-table
                   import has shipped for a while and lived three taps deep inside
                   a collapsed section on /account, so a switcher holding a CSV —
-                  the export is how you leave Hevy once it caps free history —
+                  the export is how you leave another logger once it caps free history —
                   had no path to it. `.766` moved this off the sign-in step that
                   `.759`–`.764` removed. Reuses the import card's own translated strings;
                   a link, not a red action, because the free logger comes first.
@@ -351,7 +351,7 @@ export function WelcomePage({ initialEdit = false }: WelcomePageProps) {
                 <p className="text-center text-xs leading-relaxed text-muted-foreground">
                   {t('csvImportTitle', { defaultValue: 'Your training history' })}{' '}
                   <a href="/account#import" className="underline underline-offset-2">
-                    {t('csvImportCta', { defaultValue: 'Import CSV (Strong / Hevy)' })}
+                    {t('csvImportCta', { defaultValue: 'Import workout CSV' })}
                   </a>
                 </p>
                 <Button

@@ -15,7 +15,7 @@ const read = (p: string) => readFileSync(path.join(root, p), 'utf8');
 
 /** Phrases that must not appear in EN info vision/feedback marketing strings. */
 const VISION_BANNED =
-  /everything app|synergistic|Freeletics|#1 Health|super app structure|universes|path of destruction/i;
+  /everything app|synergistic|a bodyweight coach app|#1 Health|super app structure|universes|path of destruction/i;
 
 test('EN vision strings match wedge — no everything-app pitch', () => {
   const src = read('src/i18n/infoLocales.ts');

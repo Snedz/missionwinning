@@ -101,21 +101,21 @@ const NOTIFICATION_EN: Record<string, string> = {
   /** Kaizen Loop 6 P1 — Profile privacy / premium / CSV / sync (.313) */
   csvImportFailed: 'Could not read that file',
   csvImportUnrecognized:
-    'Expected a Strong or Hevy CSV. Export from the other app, then drop the file here.',
+    'Could not recognise that workout file. Drop a workout CSV export, then try again.',
   csvImportEmpty: 'No workout rows found in the file.',
   csvImportDone: 'History imported',
   csvImportDoneDesc:
     '{{added}} workouts imported ({{duplicates}} already here). Your PRs, 1RM trends and load band now use them. Reloading…',
   csvImportTitle: 'Your training history',
   csvImportSubtitle:
-    '0.1 beta — import or export Strong and Hevy CSV. Free forever, no account. History is never paywalled.',
-  csvImportCta: 'Import CSV (Strong / Hevy)',
-  csvImportDropIdle: 'Drop a Strong or Hevy CSV or click to browse',
+    'Import or export a workout CSV. Free forever, no account. History is never paywalled.',
+  csvImportCta: 'Import workout CSV',
+  csvImportDropIdle: 'Drop a workout CSV or click to browse',
   csvImportDropActive: 'Drop to import',
-  csvImportNeedCsv: 'Use the CSV export from Strong or Hevy.',
+  csvImportNeedCsv: 'Use a workout CSV export from your previous logger.',
   csvExportCta: 'Export CSV',
-  csvExportStrongCta: 'Export Strong CSV',
-  csvExportHevyCta: 'Export Hevy CSV',
+  csvExportSessionCta: 'Export session CSV',
+  csvExportSetCta: 'Export set CSV',
   csvExportDone: 'History exported',
   csvExportDoneDesc: '{{count}} workouts saved as {{format}} CSV. Free — your log is yours.',
   csvExportEmpty: 'Nothing to export yet',

@@ -52,13 +52,13 @@ Wave 10 §10.2 measured reference display type at 70–100pt and section heads a
 | `.eyebrow` | 13px caps · ls 0.08em · `tnum` | — | **none** |
 | Body | 17/28 marketing | — | **none** |
 
-**Why `.display-mega`'s ceiling moves.** It is the stat tier, and today it caps *below* `.display-hero` — a headline outranks a number. Both references that use a stat tier invert that: TrainHeroic sets `500,000+` at **100pt**, above its own 70pt hero; La Huella's statement type is 96pt. 96px restores the intended order and lands on the measured value.
+**Why `.display-mega`'s ceiling moves.** It is the stat tier, and today it caps *below* `.display-hero` — a headline outranks a number. Both references that use a stat tier invert that: a team-training app sets `500,000+` at **100pt**, above its own 70pt hero; La Huella's statement type is 96pt. 96px restores the intended order and lands on the measured value.
 
 **Why `.display-statement` is a new class and not a re-use.** `.display-mega` is numerals — `leading-none` and `tabular-nums`, tuned so a ticking figure does not jitter. A statement is prose and needs 0.94 leading and a measure cap. Same ceiling, different job; collapsing them would put `tabular-nums` on a sentence. Cap the measure at `18ch` — at 96px an uncapped line runs past comfortable reading and the statement stops landing as one block.
 
-**Not proposed: a width axis.** CoD (Hitmarker Condensed) and La Huella (CWM) set condensed display; Freeletics and TrainHeroic do not — 2-of-4, so it is an option, not a requirement. Switching Archivo from three static weights to the variable `wdth` build is a real bundle cost on routes already under a ratchet. Left as open decision §11.3.
+**Not proposed: a width axis.** CoD (Hitmarker Condensed) and La Huella (CWM) set condensed display; a bodyweight coach app and a team-training app do not — 2-of-4, so it is an option, not a requirement. Switching Archivo from three static weights to the variable `wdth` build is a real bundle cost on routes already under a ratchet. Left as open decision §11.3.
 
-**Not proposed: a mono micro-label face.** Freeletics reserves Iosevka for telemetry captions. `.eyebrow` (Archivo caps + `tnum`) already occupies that register at one-typeface cost, and `second-typeface` is a gate rule.
+**Not proposed: a mono micro-label face.** a bodyweight coach app reserves Iosevka for telemetry captions. `.eyebrow` (Archivo caps + `tnum`) already occupies that register at one-typeface cost, and `second-typeface` is a gate rule.
 
 ## 4. Vertical rhythm — the actual delta
 
@@ -77,7 +77,7 @@ Everything else holds: 2px `--border` rules (never hairlines), the gutters-are-r
 
 ## 5. The one action
 
-Wave 10 §10.6: all four references repeat **one CTA shape** and change only the verb — Freeletics runs *Start now · Start your plan now · Got It Now · Start your transformation* as the same white pill + `→`. MW's [`.primary-action`](../src/index.css) (52px, 19px/800, flush left, poster red) is already that shape.
+Wave 10 §10.6: all four references repeat **one CTA shape** and change only the verb — a bodyweight coach app runs *Start now · Start your plan now · Got It Now · Start your transformation* as the same white pill + `→`. MW's [`.primary-action`](../src/index.css) (52px, 19px/800, flush left, poster red) is already that shape.
 
 ```
 <CtaSlot/>   // one component, every page, same position and weight
@@ -85,7 +85,7 @@ Wave 10 §10.6: all four references repeat **one CTA shape** and change only the
   gate off  → "Start free — no account" → /welcome
 ```
 
-Under it, always, a **reassurance line** in `.eyebrow` — TrainHeroic's *"14-Day Free Trial. No Credit Card Required."* move. MW already writes these; they belong under the button, not buried in a paragraph:
+Under it, always, a **reassurance line** in `.eyebrow` — a team-training app's *"14-Day Free Trial. No Credit Card Required."* move. MW already writes these; they belong under the button, not buried in a paragraph:
 
 > *Under three minutes to your first logged set. Nothing to install, nothing to pay.*
 
@@ -176,7 +176,7 @@ Judged against the existing bars ([DESIGN_PROPOSAL_3.md](DESIGN_PROPOSAL_3.md) �
 
 **Out of scope:** the 250 SEO routes (stay in Next.js, this handoff) · IA or route renames · token changes · the app surfaces ([DESIGN_PROPOSAL_3.md](DESIGN_PROPOSAL_3.md) owns those) · Android · locale-prefixed URLs + hreflang (Horizon 3) · anything requiring `PRIVATE_MODE` to flip.
 
-**Refused on sight:** a JS-gated body · purple or any gradient · emoji icons · centred hero copy · before/after body-composition proof (Freeletics' transformation grid — a positioning [brand-guidelines](brand-guidelines.md) § Voice has already refused) · testimonials or logo walls while the beta is private · **any traction number** (hard rule 3) · a second typeface at the auth boundary (CoD's own sign-in break, Wave 10 §10.6) · sale countdowns · navy, emerald or brass.
+**Refused on sight:** a JS-gated body · purple or any gradient · emoji icons · centred hero copy · before/after body-composition proof (a bodyweight coach app' transformation grid — a positioning [brand-guidelines](brand-guidelines.md) § Voice has already refused) · testimonials or logo walls while the beta is private · **any traction number** (hard rule 3) · a second typeface at the auth boundary (CoD's own sign-in break, Wave 10 §10.6) · sale countdowns · navy, emerald or brass.
 
 ## 11. Open decisions — before commissioning
 

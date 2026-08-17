@@ -63,8 +63,8 @@ Read in the mandatory order. Locked lines, quoted — not paraphrased into a new
 **Steal (structure, not skin)**
 
 - SpaceX: scene = viewport. UI disappears. Type on the scene. One CTA shape, repeated. No card wallpaper.
-- Freeletics Nutrition (Wave 11): CTA discipline, not shortness. One string, every ~800–1000px.
-- TrainHeroic: a reassurance line under the action (*no account / nothing to install*), not buried in a paragraph.
+- a bodyweight coach app Nutrition (Wave 11): CTA discipline, not shortness. One string, every ~800–1000px.
+- a team-training app: a reassurance line under the action (*no account / nothing to install*), not buried in a paragraph.
 - CoD: type on full-bleed; the fold is an image.
 - La Huella: statement gap. Delivery refused.
 - Comp B: the product performing is our rocket footage. Stacked real MW mark.

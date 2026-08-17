@@ -65,6 +65,7 @@
 | **Mission Server messenger** | [docs/MISSION_SERVER_MESSENGER_PLAN.md](docs/MISSION_SERVER_MESSENGER_PLAN.md) (freeze `.752`; continues #518) | Discord.com; DMs; workout feed; chat on Today/Train; Vercel sockets |
 | **Platform contracts (identity / economy / modules / AI)** | [docs/contracts/INDEX.md](docs/contracts/INDEX.md) | Building games/metaverse product surfaces before week-4; second user systems per module |
 | **Classification / dual-repo / open safely** | [docs/CLASSIFICATION.md](docs/CLASSIFICATION.md), [docs/DUAL_REPO.md](docs/DUAL_REPO.md), `npm run ops:sync` | Committing `ops/` or `.hermes/`; putting STRATEGY war-room detail in public product git long-term |
+| **Competitive names / intel** | [docs/CLASSIFICATION.md](docs/CLASSIFICATION.md) + [docs/OPS_LOCAL.md](docs/OPS_LOCAL.md) + `ops/intel/` (if mounted) + `npm run names:check` | Writing rival product names into `src/`, `docs/`, `vision.md`, comments, or help; treating [docs/DESIGN_RESEARCH.md](docs/DESIGN_RESEARCH.md) as the named matrix (relocated) |
 | **Design proposal brief (third)** | [docs/DESIGN_PROPOSAL_3.md](docs/DESIGN_PROPOSAL_3.md) | Re-opening IA, routes or tokens — those are settled, not wireframe |
 | UI/UX audit (hero flows) | [docs/DESIGN_REVIEW.md](docs/DESIGN_REVIEW.md) | Landing redesigns while beta gates red |
 | SEO / growth analytics | [docs/SEO_ANALYTICS.md](docs/SEO_ANALYTICS.md), [docs/LIGHTHOUSE_BASELINE.md](docs/LIGHTHOUSE_BASELINE.md) | — |

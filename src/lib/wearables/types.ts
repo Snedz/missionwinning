@@ -57,7 +57,7 @@ export const OAUTH_PROVIDER_ORDER: WearableOAuthProviderId[] = [
 export const PROVIDER_LABELS: Record<WearableProviderId, string> = {
   whoop: 'Whoop',
   strava: 'Strava',
-  oura: 'Oura',
+  oura: 'a ring tracker',
   garmin: 'Garmin',
   fitbit: 'Fitbit',
   polar: 'Polar',

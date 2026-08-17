@@ -137,7 +137,7 @@
 
   /* Ceiling raised 4.5rem → 6rem. It is the stat tier and it capped BELOW
      display-hero, so a headline outranked a number; both references with a
-     stat tier invert that (TrainHeroic sets 500,000+ at 100pt above its own
+     stat tier invert that (a team-training app sets 500,000+ at 100pt above its own
      70pt hero). tabular-nums so a counting figure cannot jitter. */
   .display-mega {
     font-weight: 800;
@@ -149,7 +149,7 @@
 
   /* The marketing hero runs to the TOP of the measured band rather than sitting
      at its floor. Wave 10 §10.2: reference display type at 1440pt spans 70–100pt
-     (Freeletics 74, CoD 69.7, La Huella 96, TrainHeroic 100). The app ships 76 —
+     (a bodyweight coach app 74, CoD 69.7, La Huella 96, a team-training app 100). The app ships 76 —
      inside the band, at the bottom of it. This is the one page whose whole job
      is a first impression, so it takes the ceiling. Not a new claim: the same
      band, at the other end. */

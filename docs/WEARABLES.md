@@ -11,7 +11,7 @@
 ## Two lanes
 
 1. **Platform hubs** (highest device coverage) — Apple HealthKit, Google Health Connect / Fit, Samsung via Health Connect. Need thin native shell ([TWA_MOBILE_PLAYBOOK.md](TWA_MOBILE_PLAYBOOK.md)).
-2. **Brand OAuth** (web-friendly) — Whoop, Strava, Oura, Garmin, Fitbit, Polar, ….
+2. **Brand OAuth** (web-friendly) — Whoop, Strava, a ring tracker, Garmin, Fitbit, Polar, ….
 
 All sources normalize to one ingest shape before UI:
 
@@ -35,7 +35,7 @@ All sources normalize to one ingest shape before UI:
 | Apple Watch | HR, workouts, sleep via Health | Indirect | Same HealthKit path |
 | Google Health Connect | Android hub (Fit, Pixel Watch, many wearables) | No | TWA/Capacitor + Health Connect |
 | Google Fit API | Legacy cloud | Declining | Prefer Health Connect; Fit REST only if needed |
-| Samsung Health | Galaxy Watch | No | Prefer Health Connect |
+| Galaxy Watch | Watch via the Android health store | No | Prefer Health Connect |
 
 ### B — Brand OAuth (web)
 
@@ -43,13 +43,13 @@ All sources normalize to one ingest shape before UI:
 |--------|----------|--------------|
 | Whoop | Recovery / strain / sleep | `WHOOP_CLIENT_ID`, `WHOOP_CLIENT_SECRET` |
 | Strava | Runs / rides (Track) | `STRAVA_CLIENT_ID`, `STRAVA_CLIENT_SECRET` |
-| Oura | Sleep / readiness | `OURA_CLIENT_ID`, `OURA_CLIENT_SECRET` |
+| a ring tracker | Sleep / readiness | `OURA_CLIENT_ID`, `OURA_CLIENT_SECRET` |
 | Garmin | Training load / activities | `GARMIN_CLIENT_ID`, `GARMIN_CLIENT_SECRET` |
 | Fitbit (Google) | Steps / sleep / activities | `FITBIT_CLIENT_ID`, `FITBIT_CLIENT_SECRET` |
 | Polar AccessLink | Training + HR zones | `POLAR_CLIENT_ID`, `POLAR_CLIENT_SECRET` |
 | Coros / Suunto / Ultrahuman | Demand-driven | Add adapter when API + beachhead request |
 
-Ship order when unlocked: Whoop → Strava → Oura → Garmin → Fitbit → Polar.
+Ship order when unlocked: Whoop → Strava → a ring tracker → Garmin → Fitbit → Polar.
 
 ### C — No account linking
 

@@ -38,7 +38,7 @@ test('SetLogRow: PREVIOUS row anchor + metric-first density; 44px taps', () => {
   assert.match(code, /min-h-\[44px\]/);
   assert.match(code, /data-set-complete/);
   assert.match(code, /set-logged-check/);
-  // Hevy Experience: PREVIOUS is a clear set-row metric anchor.
+  // PREVIOUS is a clear set-row metric anchor.
   assert.match(code, /prevLabel/);
   assert.match(code, /set-row-prev/);
   assert.match(code, /data-prev-anchor/);

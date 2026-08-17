@@ -85,7 +85,7 @@ MySpace let users write raw CSS. The result was expressive and frequently unread
 
 **The translation is curated variation, not free authorship.** A *page kit* is a named, designed composition — a poster layout — selected from a manifest. Every kit is drawn by the design lane inside the Modernist system, so every kit passes the design gate by construction, and every page still looks like Mission Winning while no two look alike.
 
-That gives up the long tail of genuinely weird pages. It buys: no moderation surface, no XSS surface, no broken layouts, no accessibility regressions, and a system where adding expressiveness later is adding kits to a manifest rather than loosening a guard. It is also how the platforms that survived profile customisation actually do it now — console profile cards, Discord profile themes, Duolingo avatars are all pick-from-set.
+That gives up the long tail of genuinely weird pages. It buys: no moderation surface, no XSS surface, no broken layouts, no accessibility regressions, and a system where adding expressiveness later is adding kits to a manifest rather than loosening a guard. It is also how the platforms that survived profile customisation actually do it now — console profile cards, Discord profile themes, a streak league avatars are all pick-from-set.
 
 **The unlock loop is already specified.** [CLUB_PLAN.md](CLUB_PLAN.md)'s collection→customisation model (badges unlock card options) extends unchanged: badges unlock **kits**. The shelf and the page are the same economy.
 
@@ -173,7 +173,7 @@ Numbered to interleave with [CLUB_PLAN.md](CLUB_PLAN.md)'s C-phases, which own t
 | **Profile** | **Here** | Athlete Page, page kits, the table, Account split |
 | **Social** | **Here** | Two domains, one-way crossing, C1–C9. Squad before boards; never a feed |
 | **Gaming / arcade** | [CLUB_PLAN.md](CLUB_PLAN.md) C7 | Unchanged — still needs a vision.md amendment before any code |
-| **Bundle story** | [DESIGN_RESEARCH.md](DESIGN_RESEARCH.md) Wave 9 | Freeletics sells 7 apps and 7 logins; MW's pillars share one score and one log. That is the comparison to make |
+| **Bundle story** | [DESIGN_RESEARCH.md](DESIGN_RESEARCH.md) Wave 9 | a bodyweight coach app sells 7 apps and 7 logins; MW's pillars share one score and one log. That is the comparison to make |
 
 ## 8. Refused
 
@@ -198,7 +198,7 @@ A feed · comments · DMs · **Top 8 or any friend ranking** · follower counts 
 **Still open:**
 
 4. **Strike the T4 season-start boost** from [CLUB_PLAN.md](CLUB_PLAN.md)? Recommended yes (Wave 9 §9.5).
-5. **Re-cut positioning angle 1** — "free forever" is now Bevel's line too, in writing. Recommended replacement: **free, on Android, from your logs alone, offline, no watch, no account.**
+5. **Re-cut positioning angle 1** — "free forever" is now a metric-quiet health app's line too, in writing. Recommended replacement: **free, on Android, from your logs alone, offline, no watch, no account.**
 6. **Naming** — Athlete Page / call sign / page kit are internal names, consistent with [CLUB_PLAN.md](CLUB_PLAN.md)'s brand-agnostic invariant 10. Display names remain a founder branding call.
 
 ## 10. Why this is inside the horizon gate

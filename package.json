@@ -18,6 +18,7 @@
     "check-display-type": "node scripts/check-display-type.mjs",
     "check-build-label": "node scripts/check-build-label.mjs",
     "check-excellence-gate": "tsx scripts/check-excellence-gate.ts",
+    "names:check": "node scripts/check-competitor-names.mjs",
     "harness": "tsx scripts/queue-next.ts",
     "harness:done": "tsx scripts/graph-hop-done.ts",
     "graph": "tsx scripts/queue-next.ts",

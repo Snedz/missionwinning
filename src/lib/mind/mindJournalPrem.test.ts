@@ -20,7 +20,7 @@ const JOURNAL_IDS = [
 ] as const;
 
 const FORBIDDEN =
-  /streak|Headspace|Waking Up|sleep stor|diagnos|depress|therap|SSRI|PTSD|disorder|suicid|clinical|Calm\s*\/\s*Waking/i;
+  /streak|a sit library|Waking Up|sleep stor|diagnos|depress|therap|SSRI|PTSD|disorder|suicid|clinical|Calm\s*\/\s*Waking/i;
 
 function premiumSrc(): string {
   return readFileSync(join(root, 'src/data/premiumMindSessions.ts'), 'utf8');
@@ -91,7 +91,7 @@ test('Mind merch is original MW and interpolates inventory counts', () => {
     ['mindLocales', locales],
     ['MindLockedPreview', preview],
   ] as const) {
-    assert.doesNotMatch(src, /Calm|Waking Up|Headspace|sleep stor/i, name);
+    assert.doesNotMatch(src, /Calm|Waking Up|a sit library|sleep stor/i, name);
   }
   assert.match(locales, /mindLockedHint:[\s\S]*\{\{free\}\}/);
   assert.match(locales, /mindLockedHint:[\s\S]*\{\{premium\}\}/);

@@ -1,7 +1,7 @@
 package com.missionwinning.core.model
 
 /**
- * Set classification — Hevy/Strong-style warmup, failure, and drop markers.
+ * Set classification — set-table-style warmup, failure, and drop markers.
  * Mirrors web `src/lib/workout/setKind.ts`.
  */
 enum class SetKind(val code: String) {

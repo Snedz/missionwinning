@@ -432,7 +432,7 @@ export function AccountPage() {
       {/*
        * `.766` — `#import` opens this and scrolls to the CSV card.
        *
-       * Strong/Hevy import has existed and shipped for a while, and it was
+       * set-table import has existed and shipped for a while, and it was
        * unreachable in practice: `/account` → expand "More settings" → scroll
        * past six cards. The East Asia shard lists data-in as its own P1 next to
        * logging speed, and a migrant arriving with a CSV in hand had no path.
