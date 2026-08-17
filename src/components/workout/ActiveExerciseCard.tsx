@@ -8,7 +8,6 @@
 import { useEffect, useRef, useState, type RefObject } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Card, CardContent } from '@/components/ui/card';
-import { SetLogRow } from '@/components/workout/SetLogRow';
 import { SetLogTable } from '@/components/workout/SetLogTable';
 import { ActiveExerciseHeader } from '@/components/workout/ActiveExerciseHeader';
 import { ActiveExerciseFooter } from '@/components/workout/ActiveExerciseFooter';
@@ -18,7 +17,6 @@ import {
   exerciseHasCompletedSet,
   exerciseHasPlannedSet,
   holdsActiveExercise,
-  isActiveSetCell,
   activeSetIdxForExercise,
   resolveExerciseNextTarget,
   formatPrevSetLabels,
@@ -254,61 +252,33 @@ export function ActiveExerciseCard({
         onSwapTo={onSwapTo}
         onRepeatLast={onRepeatLast}
       />
-      <CardContent className="space-y-2 p-3 pt-0">
-        {isCompact ? (
-          exLog.sets.map((set, setIdx) => {
-            const isNext = isActiveSetCell(nextSet, exIdx, setIdx);
-            return (
-              <div key={set.id} ref={isNext ? nextSetRef : undefined}>
-                <SetLogRow
-                  setNumber={setIdx + 1}
-                  set={set}
-                  isNext={isNext}
-                  weightLabel={unitLabel}
-                  prevLabel={prevLabels[setIdx]}
-                  pairMark={ssLabel}
-                  plusLoad={plusLoad}
-                  vsLastLabel={vsLastLabels[setIdx]}
-                  ordinalLabel={ordinalLabels[setIdx]}
-                  plateLine={isNext ? livePlateLine : null}
-                  onToggleWarmup={
-                    isNext ? () => onSetKindChange(nextWarmupKind(set.kind)) : undefined
-                  }
-                  onRate={(rpe) => onRate(setIdx, rpe)}
-                  onRateRir={(rir) => onRateRir(setIdx, rir)}
-                  onRateTempo={(tempo) => onRateTempo(setIdx, tempo)}
-                />
-              </div>
-            );
-          })
-        ) : (
-          <div ref={holdsActiveExercise(nextSet, exIdx) ? nextSetRef : undefined}>
-            <SetLogTable
-              sets={exLog.sets}
-              activeSetIdx={activeSetIdxForExercise(nextSet, exIdx)}
-              weightLabel={unitLabel}
-              prevLabels={prevLabels}
-              pairMark={ssLabel}
-              vsLastLabels={vsLastLabels}
-              ordinalLabels={ordinalLabels}
-              plateLine={livePlateLine}
-              onToggleWarmup={() => onSetKindChange(nextWarmupKind(activeSetKind))}
-              onOpenPlates={onOpenPlates}
-              input={setInput}
-              plusLoad={plusLoad}
-              onInputChange={onSetInputChange}
-              onLog={() => nextSet && onLogSet(nextSet.setIdx)}
-              onRate={onRate}
-              onRateRir={onRateRir}
-              onRateTempo={onRateTempo}
-              lastSetGhost={lastSetGhost}
-              onAcceptGhost={(target) => {
-                onSetInputChange('reps', target.reps);
-                onSetInputChange('weight', target.weight);
-              }}
-            />
-          </div>
-        )}
+      <CardContent className="min-w-0 space-y-2 p-3 pt-0">
+        <div ref={holdsActiveExercise(nextSet, exIdx) ? nextSetRef : undefined}>
+          <SetLogTable
+            sets={exLog.sets}
+            activeSetIdx={activeSetIdxForExercise(nextSet, exIdx)}
+            weightLabel={unitLabel}
+            prevLabels={prevLabels}
+            pairMark={ssLabel}
+            vsLastLabels={vsLastLabels}
+            ordinalLabels={ordinalLabels}
+            plateLine={livePlateLine}
+            onToggleWarmup={() => onSetKindChange(nextWarmupKind(activeSetKind))}
+            onOpenPlates={onOpenPlates}
+            input={setInput}
+            plusLoad={plusLoad}
+            onInputChange={onSetInputChange}
+            onLog={() => nextSet && onLogSet(nextSet.setIdx)}
+            onRate={onRate}
+            onRateRir={onRateRir}
+            onRateTempo={onRateTempo}
+            lastSetGhost={lastSetGhost}
+            onAcceptGhost={(target) => {
+              onSetInputChange('reps', target.reps);
+              onSetInputChange('weight', target.weight);
+            }}
+          />
+        </div>
         <ExerciseNoteField
           value={exLog.note ?? ''}
           onChange={onNoteChange}

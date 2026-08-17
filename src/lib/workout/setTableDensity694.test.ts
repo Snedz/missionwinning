@@ -38,7 +38,7 @@ test('SetLogRow: PREVIOUS row anchor + metric-first density; 44px taps', () => {
   assert.match(code, /min-h-\[44px\]/);
   assert.match(code, /data-set-complete/);
   assert.match(code, /set-logged-check/);
-  // PREVIOUS is a clear set-row metric anchor.
+  // the set-table logger Experience: PREVIOUS is a clear set-row metric anchor.
   assert.match(code, /prevLabel/);
   assert.match(code, /set-row-prev/);
   assert.match(code, /data-prev-anchor/);
@@ -63,6 +63,14 @@ test('SetLogRow: completed ratings wrap on their own row — not shrink-0 on the
   );
 });
 
+test('ActiveExerciseCard mounts the table on every surface', () => {
+  const src = workout('ActiveExerciseCard.tsx');
+  const code = src.replace(/\/\*[\s\S]*?\*\//g, '').replace(/\/\/.*$/gm, '');
+  assert.match(code, /<SetLogTable/);
+  assert.doesNotMatch(code, /<SetLogRow/);
+  assert.doesNotMatch(code, /isCompact\s*\?\s*\(/);
+});
+
 test('SetLogTable: Prev column anchored; one poster-red Log set; 44px inputs', () => {
   const src = workout('SetLogTable.tsx');
   const primaries = src.match(/primary-action/g) || [];
@@ -74,7 +82,11 @@ test('SetLogTable: Prev column anchored; one poster-red Log set; 44px inputs', (
   assert.match(src, /border-s-primary|border-s-\[3px\]/);
   assert.match(src, /set-table-prev/);
   assert.match(src, /data-prev-anchor/);
+  assert.match(src, /set-table-rate/);
   assert.match(src, /set-table-vs-last/);
+  assert.match(src, /table-fixed/);
+  assert.match(src, /overflow-x-hidden/);
+  assert.match(src, /colSpan=\{5\}/);
   assert.doesNotMatch(src, /hover:bg-accent-100/);
 });
 
@@ -109,12 +121,10 @@ test('LogConsole and SetLogTable mount the last-set ghost', () => {
   assert.match(workout('ActiveExerciseCard.tsx'), /resolveLastSetGhost/);
 });
 
-test('ActiveExerciseCard wires prevLabels and vs-last into compact SetLogRow', () => {
+test('ActiveExerciseCard wires prevLabels and vs-last into the set table', () => {
   const src = workout('ActiveExerciseCard.tsx');
   assert.match(src, /formatPrevSetLabels/);
-  assert.match(src, /prevLabel=\{prevLabels\[setIdx\]\}/);
   assert.match(src, /prevLabels=\{prevLabels\}/);
   assert.match(src, /formatVsLastSetDeltas/);
-  assert.match(src, /vsLastLabel=\{vsLastLabels\[setIdx\]\}/);
   assert.match(src, /vsLastLabels=\{vsLastLabels\}/);
 });

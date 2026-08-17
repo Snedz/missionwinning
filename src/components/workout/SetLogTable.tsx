@@ -9,6 +9,7 @@
  * Completed rows mirror compact `SetLogRow` cues (primary edge, check, a11y).
  */
 
+import { Fragment } from 'react';
 import { Check } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { Badge } from '@/components/ui/badge';
@@ -54,11 +55,11 @@ type Props = {
   onAcceptGhost?: (target: { reps: number; weight: number }) => void;
 };
 
-const cell = 'px-2 py-1.5 align-middle';
+const cell = 'px-1.5 py-1.5 align-middle';
 
-/** 2px rules and radius 0 come from the system; width is the mock's. ≥44px taps. */
+/** 2px rules and radius 0 come from the system. ≥44px taps. Width follows the column. */
 const numberInput =
-  'h-11 min-h-[44px] border-2 border-border bg-background px-2 text-center text-sm font-semibold tabular-nums ' +
+  'h-11 min-h-[44px] w-full min-w-0 border-2 border-border bg-background px-1 text-center text-sm font-semibold tabular-nums ' +
   'focus:outline-none focus:ring-2 focus:ring-ring';
 
 export function SetLogTable({
@@ -85,27 +86,34 @@ export function SetLogTable({
   const { t } = useTranslation();
 
   return (
-    <div className="w-full min-w-0 overflow-x-auto">
+    <div className="w-full min-w-0 max-w-full overflow-x-hidden">
     <table
-      className="w-full border-collapse text-sm"
+      className="w-full table-fixed border-collapse text-sm"
       data-testid="set-log-table"
       data-pair-mark={pairMark ?? undefined}
     >
+      <colgroup>
+        <col className={pairMark ? 'w-[14%]' : 'w-[12%]'} />
+        <col className="w-[20%]" />
+        <col className="w-[24%]" />
+        <col className="w-[18%]" />
+        <col className="w-[26%]" />
+      </colgroup>
       <thead>
         <tr className="border-b-2 border-border text-[11px] font-semibold uppercase tracking-[0.1em] text-muted-foreground">
-          <th scope="col" className={cn(cell, pairMark ? 'w-14' : 'w-10', 'text-start')}>
+          <th scope="col" className={cn(cell, 'text-start')}>
             {t('activeColSet', { defaultValue: 'Set' })}
           </th>
-          <th scope="col" className={cn(cell, 'min-w-[4.5rem] text-start')}>
+          <th scope="col" className={cn(cell, 'text-start')}>
             {t('activeColPrev', { defaultValue: 'Prev' })}
           </th>
-          <th scope="col" className={cn(cell, 'w-[88px] text-start')}>
+          <th scope="col" className={cn(cell, 'text-start')}>
             {weightLabel}
           </th>
-          <th scope="col" className={cn(cell, 'w-[4.5rem] text-start')}>
+          <th scope="col" className={cn(cell, 'text-start')}>
             {t('activeColReps', { defaultValue: 'Reps' })}
           </th>
-          <th scope="col" className={cn(cell, 'w-[6.5rem]')}>
+          <th scope="col" className={cell}>
             <span className="sr-only">{t('activeColAction', { defaultValue: 'Action' })}</span>
           </th>
         </tr>
@@ -119,11 +127,11 @@ export function SetLogTable({
           const vsLast = vsLastLabels[setIdx] ?? null;
 
           return (
+            <Fragment key={set.id}>
             <tr
-              key={set.id}
               data-set-complete={completed ? 'true' : 'false'}
               className={cn(
-                'border-b border-border',
+                !completed && 'border-b border-border',
                 isActive && 'is-active-row',
                 completed && !isActive && 'bg-muted/40 text-foreground',
                 !completed && !isActive && 'text-muted-foreground'
@@ -191,7 +199,7 @@ export function SetLogTable({
                       <input
                         type="text"
                         inputMode="decimal"
-                        className={cn(numberInput, plusLoad ? 'w-[56px]' : 'w-[72px]')}
+                        className={numberInput}
                         value={input.weight}
                         aria-label={
                           plusLoad
@@ -239,7 +247,7 @@ export function SetLogTable({
                     <input
                       type="text"
                       inputMode="numeric"
-                      className={cn(numberInput, 'w-[60px]')}
+                      className={numberInput}
                       value={input.reps}
                       aria-label={t('activeReps', { defaultValue: 'Reps' })}
                       onFocus={(e) => e.target.select()}
@@ -258,7 +266,7 @@ export function SetLogTable({
                       type="button"
                       onClick={onLog}
                       data-testid="set-table-log-set"
-                      className="primary-action min-h-[44px] tap-target bg-[hsl(var(--accent-poster))] px-3 py-1.5 text-sm font-extrabold text-background transition-colors hover:bg-[hsl(var(--primary-fill))]"
+                      className="primary-action min-h-[44px] w-full tap-target bg-[hsl(var(--accent-poster))] px-1.5 py-1.5 text-xs font-extrabold leading-tight text-background transition-colors hover:bg-[hsl(var(--primary-fill))]"
                     >
                       {t('activeLogSet', { defaultValue: 'Log set' })}
                     </button>
@@ -280,82 +288,89 @@ export function SetLogTable({
                     {completed ? set.reps : set.reps}
                   </td>
                   <td className={cn(cell, 'text-end')}>
-                    <div className="flex flex-wrap items-center justify-end gap-1">
-                      {completed && vsLast ? (
-                        <span
-                          className="text-[11px] tabular-nums text-muted-foreground"
-                          data-testid="set-table-vs-last"
-                          aria-label={t('activeVsLastAria', {
-                            delta: vsLast,
-                            defaultValue: 'versus last {{delta}}',
-                          })}
-                        >
-                          {vsLast}
-                        </span>
-                      ) : null}
-                      {kind !== 'normal' && (
-                        <Badge
-                          variant="outline"
-                          className={cn('text-[10px] uppercase', setKindBadgeClass(kind))}
-                        >
-                          {t(setKindLabelKey(kind), { defaultValue: setKindDefaultLabel(kind) })}
-                        </Badge>
-                      )}
-                      {set.isPr && (
-                        <Badge variant="honor">{t('activePrBadge', { defaultValue: 'PR' })}</Badge>
-                      )}
-                      {completed && !set.isPr && !set.rpe && (
-                        <div className="flex items-center gap-0.5">
-                          {(['easy', 'med', 'hard'] as const).map((r) => (
-                            <button
-                              key={r}
-                              type="button"
-                              onClick={() => onRate(setIdx, r)}
-                              className="min-h-[44px] min-w-[44px] border-2 border-border px-1.5 text-[11px] font-semibold hover:bg-muted tap-target"
-                            >
-                              {t(rpeLabelKey(r), { defaultValue: rpeDefaultLabel(r) })}
-                            </button>
-                          ))}
-                        </div>
-                      )}
-                      {completed && set.rpe && (
-                        <span className="text-[11px] text-muted-foreground">
-                          {t(rpeLabelKey(set.rpe), {
-                            defaultValue: rpeDefaultLabel(set.rpe),
-                          })}
-                        </span>
-                      )}
-                      {completed && (
-                        <SetRirSelect
-                          rir={set.rir}
-                          onRateRir={(rir) => onRateRir(setIdx, rir)}
-                          testId="set-table-rir"
-                        />
-                      )}
-                      {completed && (
-                        <SetTempoField
-                          tempo={set.tempo}
-                          onRateTempo={(tempo) => onRateTempo(setIdx, tempo)}
-                          testId="set-table-tempo"
-                        />
-                      )}
-                      {completed && (
-                        <>
-                          <Check
-                            className="h-4 w-4 shrink-0 text-primary"
-                            aria-hidden
-                            data-testid="set-table-logged-check"
-                          />
-                          <span className="sr-only">
-                            {t('activeSetLoggedSr', { defaultValue: 'Logged' })}
-                          </span>
-                        </>
-                      )}
-                    </div>
+                    {completed ? (
+                      <Check
+                        className="ms-auto h-4 w-4 shrink-0 text-primary"
+                        aria-hidden
+                        data-testid="set-table-logged-check"
+                      />
+                    ) : null}
+                    {completed ? (
+                      <span className="sr-only">
+                        {t('activeSetLoggedSr', { defaultValue: 'Logged' })}
+                      </span>
+                    ) : null}
                   </td>
                 </>
               )}
             </tr>
+            {completed ? (
+              <tr className={cn('border-b border-border', !isActive && 'bg-muted/40')}>
+                <td
+                  colSpan={5}
+                  className={cn(cell, 'min-w-0')}
+                  data-testid="set-table-rate"
+                >
+                  <div className="flex min-w-0 flex-wrap items-center justify-end gap-1">
+                    {vsLast ? (
+                      <span
+                        className="text-[11px] tabular-nums text-muted-foreground"
+                        data-testid="set-table-vs-last"
+                        aria-label={t('activeVsLastAria', {
+                          delta: vsLast,
+                          defaultValue: 'versus last {{delta}}',
+                        })}
+                      >
+                        {vsLast}
+                      </span>
+                    ) : null}
+                    {kind !== 'normal' && (
+                      <Badge
+                        variant="outline"
+                        className={cn('text-[10px] uppercase', setKindBadgeClass(kind))}
+                      >
+                        {t(setKindLabelKey(kind), { defaultValue: setKindDefaultLabel(kind) })}
+                      </Badge>
+                    )}
+                    {set.isPr && (
+                      <Badge variant="honor">{t('activePrBadge', { defaultValue: 'PR' })}</Badge>
+                    )}
+                    {!set.isPr && !set.rpe && (
+                      <div className="flex min-w-0 flex-wrap items-center justify-end gap-0.5">
+                        {(['easy', 'med', 'hard'] as const).map((r) => (
+                          <button
+                            key={r}
+                            type="button"
+                            onClick={() => onRate(setIdx, r)}
+                            className="min-h-[44px] min-w-[44px] border-2 border-border px-1.5 text-[11px] font-semibold hover:bg-muted tap-target"
+                          >
+                            {t(rpeLabelKey(r), { defaultValue: rpeDefaultLabel(r) })}
+                          </button>
+                        ))}
+                      </div>
+                    )}
+                    {set.rpe && (
+                      <span className="text-[11px] text-muted-foreground">
+                        {t(rpeLabelKey(set.rpe), {
+                          defaultValue: rpeDefaultLabel(set.rpe),
+                        })}
+                      </span>
+                    )}
+                    <SetRirSelect
+                      rir={set.rir}
+                      onRateRir={(rir) => onRateRir(setIdx, rir)}
+                      testId="set-table-rir"
+                    />
+                    <SetTempoField
+                      tempo={set.tempo}
+                      onRateTempo={(tempo) => onRateTempo(setIdx, tempo)}
+                      testId="set-table-tempo"
+                    />
+                  </div>
+                </td>
+              </tr>
+            ) : null}
+            </Fragment>
           );
         })}
       </tbody>

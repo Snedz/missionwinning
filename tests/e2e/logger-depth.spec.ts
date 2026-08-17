@@ -37,13 +37,13 @@ test.describe('Logger depth @gate', () => {
     const logBtn = page.getByRole('button', { name: /^log( set)?$/i }).first();
     await expect(logBtn).toBeVisible({ timeout: 10_000 });
 
-    // E-Adjacency DESIGN_NEXT §A: first session is honest empty, not an invented load.
-    // Target paints only on the live row (F-003 density).
-    await expect(page.getByTestId('set-row-target-empty')).toHaveCount(1);
-    await expect(page.getByTestId('set-row-target')).toHaveCount(0);
-    await expect(page.getByTestId('set-row-target-empty')).toContainText(
-      /no prior sets yet/i
+    // First session is honest empty: Prev is the dash, not an invented load.
+    await expect(page.getByTestId('set-log-table')).toBeVisible({ timeout: 10_000 });
+    await expect(page.getByTestId('set-table-prev').first()).toHaveAttribute(
+      'data-prev-anchor',
+      'empty'
     );
+    await expect(page.getByTestId('set-row-target')).toHaveCount(0);
 
     await logBtn.click();
 
@@ -83,7 +83,7 @@ test.describe('Logger depth @gate', () => {
     await expect(logBtn).toBeVisible({ timeout: 10_000 });
     await logBtn.click();
 
-    await expect(page.getByTestId('set-row-rate')).toBeVisible({ timeout: 10_000 });
+    await expect(page.getByTestId('set-table-rate')).toBeVisible({ timeout: 10_000 });
     const geom = await page.evaluate(() => ({
       scroll: document.documentElement.scrollWidth,
       inner: window.innerWidth,

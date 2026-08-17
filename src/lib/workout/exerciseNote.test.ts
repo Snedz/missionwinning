@@ -128,12 +128,10 @@ describe('exercise-note surface guards', () => {
       path.join(root, 'src/components/workout/ActiveExerciseCard.tsx'),
       'utf8'
     );
-    const row = src.indexOf('<SetLogRow');
     const table = src.indexOf('<SetLogTable');
     const field = src.indexOf('<ExerciseNoteField');
     const footer = src.indexOf('<ActiveExerciseFooter');
-    assert.ok(row !== -1 && table !== -1 && field !== -1 && footer !== -1);
-    assert.ok(field > row, 'ExerciseNoteField must follow SetLogRow');
+    assert.ok(table !== -1 && field !== -1 && footer !== -1);
     assert.ok(field > table, 'ExerciseNoteField must follow SetLogTable');
     assert.ok(field < footer, 'ExerciseNoteField must sit before the footer');
     assert.doesNotMatch(src, /lastNotesFor/, 'prefill is store-time, not render-time');

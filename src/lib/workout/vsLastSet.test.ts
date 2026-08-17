@@ -239,7 +239,6 @@ describe('vs-last stays off the ghost / social lanes', () => {
     assert.match(row, /set-row-vs-last/);
     assert.match(table, /set-table-vs-last/);
     assert.match(card, /formatVsLastSetDeltas/);
-    assert.match(card, /vsLastLabel=\{vsLastLabels\[setIdx\]\}/);
     assert.match(card, /vsLastLabels=\{vsLastLabels\}/);
     assert.doesNotMatch(row, /elite/i);
     assert.doesNotMatch(table, /elite/i);

@@ -814,10 +814,10 @@ describe('resolveActiveDockMode', () => {
     );
   });
 
-  it('console only when compact and a set is open', () => {
+  it('set entry stays in the table — dock is rest only', () => {
     assert.equal(
       resolveActiveDockMode({ restTimerActive: false, hasConsoleSet: true, isCompact: true }),
-      'console'
+      null
     );
     assert.equal(
       resolveActiveDockMode({ restTimerActive: false, hasConsoleSet: true, isCompact: false }),
@@ -1404,16 +1404,16 @@ describe('isActiveSetCell', () => {
     assert.equal(isActiveSetCell({ exIdx: 1, setIdx: 2 }, 1, 0), false);
   });
 
-  it('ActiveExerciseCard uses isActiveSetCell rather than an inline pair compare', () => {
+  it('ActiveExerciseCard uses activeSetIdxForExercise rather than an inline pair compare', () => {
     const src = readFileSync(
       path.join(import.meta.dirname, '..', '..', 'components', 'workout', 'ActiveExerciseCard.tsx'),
       'utf8'
     );
-    assert.match(src, /isActiveSetCell\(/);
+    assert.match(src, /activeSetIdxForExercise\(/);
     assert.doesNotMatch(
       src,
       /nextSet\?\.exIdx\s*===\s*exIdx\s*&&\s*nextSet\?\.setIdx\s*===\s*setIdx/,
-      'active set cell compare must stay inside isActiveSetCell'
+      'active set index must stay inside activeSetIdxForExercise'
     );
   });
 });

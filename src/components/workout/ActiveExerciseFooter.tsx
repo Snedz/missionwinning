@@ -70,7 +70,7 @@ export function ActiveExerciseFooter({
   const { t } = useTranslation();
 
   return (
-    <div className="flex flex-nowrap items-center gap-2 pt-1">
+    <div className="flex flex-wrap items-center gap-2 pt-1">
       <Button variant="outline" size="sm" className="min-h-[44px] tap-target" onClick={onAddSet}>
         <Plus className="h-3 w-3 me-1" /> {t('activeAddSet', { defaultValue: 'Add Set' })}
       </Button>
@@ -112,11 +112,10 @@ export function ActiveExerciseFooter({
         <Timer className="h-4 w-4" />
       </Button>
       {/*
-        Set kind on desktop. It lives in `LogConsole` on compact, and the
-        console does not render at md+ — so without this, a desktop user
-        cannot mark a warm-up or a drop set at all.
+        Set kind — table is the entry path on every surface, so the chips
+        cannot live only in a compact console.
       */}
-      {!isCompact && holdsActiveSet && (
+      {holdsActiveSet && (
         <div className="flex flex-wrap items-center gap-1">
           {SET_KINDS.map((k) => (
             <button

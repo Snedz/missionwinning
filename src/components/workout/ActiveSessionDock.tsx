@@ -1,8 +1,8 @@
 'use client';
 
 /**
- * One ScreenDock for rest OR compact log console — never both (.440).
- * Mode stays in resolveActiveDockMode; this is chrome only.
+ * One ScreenDock for rest. Set entry is the table; the console branch
+ * is leftover for a dockMode we no longer emit.
  */
 
 import { ScreenDock } from '@/components/layout/ScreenDock';

@@ -40,7 +40,7 @@ export function getLastSessionSets(
 }
 
 /**
- * Previous value for the matching set index (set-table style), falling back
+ * Previous value for the matching set index (set-table-style), falling back
  * to the last set when this session plans more sets than last time.
  */
 export function getLastPerformanceForSet(
@@ -488,8 +488,8 @@ export function resolveRepeatLastTarget(ex: {
 }
 
 /**
- * Active bottom dock: rest takes the console over; compact freestyle gets
- * LogConsole; desktop set entry stays in the row. Never both docks.
+ * Active bottom dock: rest takes the dock. Set entry is the table on every
+ * surface — never a second console under the rows.
  */
 export type ActiveDockMode = 'rest' | 'console' | null;
 
@@ -499,7 +499,8 @@ export function resolveActiveDockMode(params: {
   isCompact: boolean;
 }): ActiveDockMode {
   if (params.restTimerActive) return 'rest';
-  if (params.hasConsoleSet && params.isCompact) return 'console';
+  void params.hasConsoleSet;
+  void params.isCompact;
   return null;
 }
 
