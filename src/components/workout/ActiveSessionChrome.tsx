@@ -14,7 +14,6 @@ import { formatDuration } from '@/lib/utils';
 import {
   activeCoachTipKind,
   activeSessionEyebrowKind,
-  sessionSetsProgressPct,
 } from '@/lib/workout/activeWorkoutHelpers';
 
 type Props = {
@@ -81,6 +80,16 @@ export function ActiveSessionChrome({
             <h1 className="truncate font-display text-[1.35rem] font-extrabold leading-[1.08] tracking-[-0.015em] md:text-[1.65rem]">
               {workoutName}
             </h1>
+            <p
+              className="mt-0.5 truncate text-[11px] tabular-nums text-muted-foreground"
+              role="timer"
+              aria-live="polite"
+              aria-label={t('activeSessionTimer', { defaultValue: 'Session timer' })}
+            >
+              {formatDuration(elapsedSeconds)}
+              {' · '}
+              {completedSets}/{totalSets}
+            </p>
           </div>
 
           <Button
@@ -149,40 +158,6 @@ export function ActiveSessionChrome({
               </>
             )}
           </div>
-        </div>
-
-        {/* Elapsed and sets as a labelled stat pair, per the handoff — the
-            timer was a bordered chip competing with the workout name. */}
-        <div
-          className="mt-2 flex items-end gap-6"
-          role="timer"
-          aria-live="polite"
-          aria-label={t('activeSessionTimer', { defaultValue: 'Session timer' })}
-        >
-          <div>
-            <p className="text-[10px] font-semibold uppercase tracking-[0.12em] text-muted-foreground">
-              {t('activeElapsed', { defaultValue: 'Elapsed' })}
-            </p>
-            <p className="text-[30px] font-extrabold leading-none tabular-nums">
-              {formatDuration(elapsedSeconds)}
-            </p>
-          </div>
-          <div>
-            <p className="text-[10px] font-semibold uppercase tracking-[0.12em] text-muted-foreground">
-              {t('activeSetsLabel', { defaultValue: 'Sets' })}
-            </p>
-            <p className="text-[30px] font-extrabold leading-none tabular-nums">
-              {completedSets}
-              <span className="text-base text-muted-foreground">/{totalSets}</span>
-            </p>
-          </div>
-        </div>
-
-        <div className="mt-2 h-1.5 overflow-hidden bg-neutral-300">
-          <div
-            className="h-full bg-primary-fill transition-[width] duration-500"
-            style={{ width: `${sessionSetsProgressPct(completedSets, totalSets)}%` }}
-          />
         </div>
       </div>
 

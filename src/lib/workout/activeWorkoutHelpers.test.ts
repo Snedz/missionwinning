@@ -1167,19 +1167,6 @@ describe('sessionSetsProgressPct', () => {
     assert.equal(sessionSetsProgressPct(1, 3), 33);
     assert.equal(sessionSetsProgressPct(3, 3), 100);
   });
-
-  it('ActiveSessionChrome uses sessionSetsProgressPct rather than an inline ratio', () => {
-    const src = readFileSync(
-      path.join(import.meta.dirname, '..', '..', 'components', 'workout', 'ActiveSessionChrome.tsx'),
-      'utf8'
-    );
-    assert.match(src, /sessionSetsProgressPct\(/);
-    assert.doesNotMatch(
-      src,
-      /totalSets\s*>\s*0\s*\?\s*Math\.round/,
-      'sets meter percent must stay inside sessionSetsProgressPct'
-    );
-  });
 });
 
 describe('activeCoachTipKind', () => {

@@ -44,6 +44,15 @@ test('Active page does not import speech, and extras sit in Show all', () => {
   assert.match(src, /<SessionJotField\b/);
 });
 
+test('header is name plus a compact elapsed/sets line, not a poster timer', () => {
+  const src = chrome();
+  const header = src.slice(src.indexOf('sticky top-0'), src.indexOf('{menuOpen &&'));
+  assert.match(header, /formatDuration\(elapsedSeconds\)/);
+  assert.match(header, /completedSets/);
+  assert.doesNotMatch(header, /text-\[30px\]/, 'poster numerals are on first paint');
+  assert.doesNotMatch(src, /sessionSetsProgressPct/, 'progress meter competes with the table');
+});
+
 test('first paint still has the table and rest dock', () => {
   const src = page();
   const open = src.slice(src.indexOf('<ActiveSessionChrome'), src.indexOf('<details'));
