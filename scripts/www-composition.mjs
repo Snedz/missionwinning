@@ -246,6 +246,23 @@ async function main() {
   }
 
   console.log(`\n✓ composition floors met on ${routes.length} route(s): ${routes.join(' · ')}\n`);
+
+  // H01 proof. A single-route measure is not the site. The script existing is not the proof.
+  if (!URL_ARG) {
+    const { writeFileSync } = await import('node:fs');
+    writeFileSync(
+      new URL('../sites/www/COMPOSITION_PASS.md', import.meta.url),
+      [
+        '# www composition — H01 stamp',
+        '',
+        '- **status:** pass',
+        '',
+        `Routes: ${routes.join(' · ')}`,
+        'Do not hand-write this file. `scripts/www-composition.mjs` writes it on pass.',
+        '',
+      ].join('\n'),
+    );
+  }
 }
 
 main();

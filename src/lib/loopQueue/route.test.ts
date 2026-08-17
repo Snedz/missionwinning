@@ -65,12 +65,11 @@ test('the committed queue has no Now-open row, and routing follows RESULT status
   assert.equal(r.atRatchet, false);
 
   if (excellenceStatusAt(root) === 'pass') {
-    // Horizon W is scored: the mermaid continues at Horizon 0. First unproven
-    // agent stream is H01 (www composition). Not a craft walk. Not a letter.
-    assert.equal(r.kind, 'path');
-    assert.equal(r.recipe, 15);
-    assert.equal(r.path?.id, 'H01');
-    assert.equal(r.path?.owner, 'agent');
+    // Horizon W is scored and H01/H03 instruments are on this tree.
+    // Remaining flip work is founder. Not a craft walk. Not a letter.
+    assert.equal(r.kind, 'stalled');
+    assert.equal(r.recipe, null);
+    assert.equal(r.path, null);
   } else {
     assert.equal(r.kind, 'path');
     assert.equal(r.recipe, 15);
@@ -178,9 +177,14 @@ test('no open row, empty idea:next, and mined generate never routes to harvest',
   // reading (`.876`).
   assert.notEqual(r.kind, 'harvest');
   assert.equal(r.harvestAction, null);
-  assert.equal(r.kind, 'path');
-  assert.equal(r.recipe, 15);
-  assert.equal(r.path?.id, excellenceStatusAt(root) === 'pass' ? 'H01' : 'C5');
+  if (excellenceStatusAt(root) === 'pass') {
+    assert.equal(r.kind, 'stalled');
+    assert.equal(r.path, null);
+  } else {
+    assert.equal(r.kind, 'path');
+    assert.equal(r.recipe, 15);
+    assert.equal(r.path?.id, 'C5');
+  }
 });
 
 test('no open row, nothing to emit, but generate still legal routes to harvest generate', () => {
