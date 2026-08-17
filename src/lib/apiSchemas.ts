@@ -407,6 +407,50 @@ export const weekLoggedBodySchema = z.object({
   isoWeek: z.string().regex(/^\d{4}-W\d{2}$/).max(12),
 });
 
+/**
+ * Signed-in PFT persist. Event scores only — overall_tier and class_code are
+ * not accepted; the server scores the session and leaves class_code null.
+ */
+/**
+ * Signed-in leaderboard persist. Display + athlete zone only — scores are
+ * computed on the server from that user's logs.
+ */
+export const leaderboardSnapshotBodySchema = z.object({
+  operatorName: z.string().trim().max(24).optional(),
+  timeZone: z
+    .string()
+    .trim()
+    .min(1)
+    .max(80)
+    .refine((zone) => {
+      try {
+        Intl.DateTimeFormat('en-US', { timeZone: zone }).format();
+        return true;
+      } catch {
+        return false;
+      }
+    }),
+  locale: z.string().trim().min(2).max(16).optional(),
+  squadCode: z.string().trim().max(16).optional(),
+});
+
+export const pftResultBodySchema = z.object({
+  id: z.string().min(1).max(80).optional(),
+  completedAt: z.string().min(4).max(40),
+  age: z.number().int().min(1).max(120),
+  sex: z.enum(['male', 'female']),
+  mode: z.enum(['full', 'mini']).optional(),
+  events: z
+    .array(
+      z.object({
+        eventId: z.enum(['curl_ups', 'push_ups', 'sit_reach', 'mile_run', 'pull_ups']),
+        value: z.number().finite().min(-100).max(100_000),
+      })
+    )
+    .min(1)
+    .max(5),
+});
+
 const garageChannelSlug = z.enum(['train', 'garage', 'off-topic']);
 
 /** Signed-in Mission Server post. Guests never POST this. */

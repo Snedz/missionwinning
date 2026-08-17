@@ -384,7 +384,29 @@ Gated by `NEXT_PUBLIC_WEARABLES=true`. See [WEARABLES.md](WEARABLES.md).
 
 ---
 
+## Leaderboard
+
+### `POST /api/leaderboard/snapshot`
+
+| | |
+|--|--|
+| Auth | `session` |
+| Rate | 20/min/IP |
+| Schema | `leaderboardSnapshotBodySchema` |
+| Body | `{ operatorName?, timeZone, locale?, squadCode? }` |
+| Notes | Service-role upsert. Standings come from `workout_logs` / `nutrition_logs` / `fitness_test_results` in the athlete's IANA zone. Client `mission_score` / streak / volume are ignored. |
+
 ## School / PFT
+
+### `POST /api/pft/results`
+
+| | |
+|--|--|
+| Auth | `session` |
+| Rate | 20/min/IP |
+| Schema | `pftResultBodySchema` |
+| Body | `{ id?, completedAt, age, sex, mode?, events: [{ eventId, value }] }` |
+| Notes | Service-role insert. Server scores `overall_tier`. `class_code` is always NULL (no membership table). Client `overall_tier` / `class_code` / `user_id` are ignored. |
 
 ### `POST /api/school/class`
 

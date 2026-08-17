@@ -12,6 +12,7 @@ When adding a doc:
 
 | File | Absorbed by / note |
 |------|---------------------|
+| [log/LOG-rotate-893-for-908.md](./log/LOG-rotate-893-for-908.md) | rotated 2026-08-17 for `.908` client writes (`.893`) |
 | [log/LOG-rotate-892-for-907.md](./log/LOG-rotate-892-for-907.md) | rotated 2026-08-17 for `.907` no Live session eyebrow (`.892`) |
 | [log/LOG-rotate-891-for-906.md](./log/LOG-rotate-891-for-906.md) | rotated 2026-08-17 for `.906` session is Chest (`.891`) |
 | [log/LOG-rotate-890-for-905.md](./log/LOG-rotate-890-for-905.md) | rotated 2026-08-17 for `.905` compact header (`.890`) |

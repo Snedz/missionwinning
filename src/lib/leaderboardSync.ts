@@ -48,39 +48,45 @@ export function registerLeaderboardSyncHandler(): void {
   });
 }
 
+/**
+ * 4xx (except 408/429) is done — a signed-out or invalid payload must not retry.
+ * 5xx / network throw retries.
+ */
+export function leaderboardSnapshotDeliveryDone(status: number): boolean {
+  if (status === 408 || status === 429) return false;
+  if (status >= 200 && status < 300) return true;
+  if (status >= 400 && status < 500) return true;
+  return false;
+}
+
 /** Resolves true when the snapshot is stored (or intentionally skipped). */
 export async function pushLeaderboardSnapshot(snap: LeaderboardSnapshot): Promise<boolean> {
   if (!process.env.NEXT_PUBLIC_SUPABASE_URL) return true;
   const user = await getUser();
   if (!user) return true; // signed out — not a failure
 
-  const { error } = await supabase.from('leaderboard_snapshots').upsert(
-    {
-      user_id: user.id,
-      operator_name: snap.operatorName,
-      mission_score: snap.missionScore,
-      training_streak: snap.trainingStreak,
-      weekly_volume: snap.weeklyVolume,
-      fuel_days: snap.fuelDays,
-      night_sessions: snap.nightSessions,
-      dawn_sessions: snap.dawnSessions,
-      pft_score: snap.pftScore,
-      pft_tier: snap.pftTier ?? null,
-      squad_code: snap.squadCode || null,
-      region: snap.region,
-      country_code: snap.countryCode,
-      country_name: snap.countryName,
-      locale: snap.locale,
-      updated_at: new Date().toISOString(),
-    },
-    { onConflict: 'user_id' }
-  );
+  const timeZone =
+    typeof Intl !== 'undefined'
+      ? Intl.DateTimeFormat().resolvedOptions().timeZone
+      : 'UTC';
 
-  if (error) {
-    console.warn('leaderboard sync', error.message);
-    return false; // let the outbox retry instead of losing the snapshot
+  let res: Response;
+  try {
+    res = await fetch('/api/leaderboard/snapshot', {
+      method: 'POST',
+      credentials: 'same-origin',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        operatorName: snap.operatorName,
+        timeZone,
+        locale: snap.locale,
+        squadCode: snap.squadCode,
+      }),
+    });
+  } catch {
+    return false;
   }
-  return true;
+  return leaderboardSnapshotDeliveryDone(res.status);
 }
 
 export async function fetchCloudLeaderboardSnapshots(

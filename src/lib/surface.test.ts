@@ -129,11 +129,13 @@ test('surface', async (t) => {
       assert.equal(isPathEnabled('/america'), false);
       assert.equal(isPathEnabled('/api/wearables/status'), false);
       assert.equal(isPathEnabled('/leaderboard'), true);
+      assert.equal(isPathEnabled('/api/leaderboard/snapshot'), true);
       assert.equal(isPathEnabled('/move'), true);
       assert.equal(isPathEnabled('/server'), true);
       assert.equal(isPathEnabled('/active'), true);
     });
     withSurfaces('wedge', () => {
+      assert.equal(isPathEnabled('/api/leaderboard/snapshot'), false, 'leaderboard API parks with wedge');
       assert.equal(isPathEnabled('/server'), false, '/server parks with wedge');
       assert.equal(isPathEnabled('/api/social/messages'), false, 'social API parks with wedge');
       assert.equal(isPathEnabled('/move'), false);

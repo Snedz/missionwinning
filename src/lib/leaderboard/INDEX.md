@@ -8,6 +8,8 @@
 2. `boards.ts` — board definitions (PFT, volume, etc.)
 3. `regions.ts` — geo scopes, scope labels
 4. `computeLocalStats.ts` — score from local history / PFT
+5. `computeStandingFromLogs.ts` — published standings from synced logs (no client scores)
+6. `athleteCalendar.ts` — IANA-zone date/week/hour for the server snapshot
 5. `demoPopulation.ts` — demo filler when sparse
 6. `rank.ts` — `buildRankedLeaderboard`, `ClassLeaderboardRow`
 
@@ -15,7 +17,8 @@
 
 | File | Role |
 |------|------|
-| `../leaderboardSync.ts` | Push local snapshot after workout |
+| `../leaderboardSync.ts` | POST `/api/leaderboard/snapshot` after workout (display fields only) |
+| `../leaderboardSnapshotServer.ts` | Service-role upsert of server-computed standings |
 | `../schoolClassServer.ts` | Class cloud leaderboard (teacher-gated API) |
 
 ## UI consumers

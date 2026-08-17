@@ -98,6 +98,18 @@ Legend:
 | `fuel/barcode` | GET | public/gate | 30/min | query |
 | `fuel/estimate-meal` | POST | session or gate; **vision branch: premium + daily quota** (`.188`) | 10/min | multipart photo; hasAppAccess; heuristic never gated |
 
+### Leaderboard
+
+| Route | Methods | Auth | Rate | Notes |
+|-------|---------|------|------|-------|
+| `leaderboard/snapshot` | POST | session | 20/min/IP | Zod `leaderboardSnapshotBodySchema`. Service-role upsert. Server computes standings from that user's logs. Client scores are ignored. |
+
+### PFT
+
+| Route | Methods | Auth | Rate | Notes |
+|-------|---------|------|------|-------|
+| `pft/results` | POST | session | 20/min/IP | Zod `pftResultBodySchema`. Service-role insert. Server computes `overall_tier` from event scores. `class_code` is always NULL — no membership table. |
+
 ### School
 
 | Route | Methods | Auth | Rate | Notes |

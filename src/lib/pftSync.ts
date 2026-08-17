@@ -1,6 +1,5 @@
-import { supabase, getUser } from '@/lib/supabase';
+import { getUser } from '@/lib/supabase';
 import type { FitnessTestSession } from '@/lib/presidentialFitnessTest';
-import { getJoinedClassCode } from '@/lib/schoolClass';
 import { enqueue, registerHandler } from '@/lib/sync/outbox';
 
 /**
@@ -30,26 +29,40 @@ export function registerPftSyncHandler(): void {
   });
 }
 
+/**
+ * 4xx (except 408/429) is done — a signed-out or invalid payload must not retry.
+ * 5xx / network throw retries.
+ */
+export function pftResultDeliveryDone(status: number): boolean {
+  if (status === 408 || status === 429) return false;
+  if (status >= 200 && status < 300) return true;
+  if (status >= 400 && status < 500) return true;
+  return false;
+}
+
 /** Resolves true when the result is stored (or intentionally skipped). */
 export async function pushPftResult(session: FitnessTestSession): Promise<boolean> {
   if (!process.env.NEXT_PUBLIC_SUPABASE_URL) return true;
   const user = await getUser();
   if (!user) return true; // signed out — not a failure
 
-  const classCode = getJoinedClassCode();
-
-  const { error } = await supabase.from('fitness_test_results').insert({
-    user_id: user.id,
-    class_code: classCode,
-    session,
-    overall_tier: session.overallTier,
-    age: session.age,
-    completed_at: session.completedAt,
-  });
-
-  if (error) {
-    console.warn('pft sync', error.message);
-    return false; // let the outbox retry
+  let res: Response;
+  try {
+    res = await fetch('/api/pft/results', {
+      method: 'POST',
+      credentials: 'same-origin',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        id: session.id,
+        completedAt: session.completedAt,
+        age: session.age,
+        sex: session.sex,
+        mode: session.mode,
+        events: session.events.map((e) => ({ eventId: e.eventId, value: e.value })),
+      }),
+    });
+  } catch {
+    return false;
   }
-  return true;
+  return pftResultDeliveryDone(res.status);
 }

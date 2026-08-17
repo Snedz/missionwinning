@@ -314,13 +314,11 @@ export const useWorkoutStore = create<WorkoutState>()(
           durationMin: Math.round(log.durationSeconds / 60),
         });
 
+        // Cloud write first so a following leaderboard flush can see this session.
+        enqueueWorkoutUpsert(log);
+
         const savedCount = get().savedWorkouts.length;
         scheduleLeaderboardPush(get().workoutHistory, savedCount);
-
-        // Cloud write goes to the durable outbox: it survives this tab closing,
-        // retries with backoff, and cannot duplicate the row (keyed on clientId).
-        // The log is already in local persist, so nothing here can lose it.
-        enqueueWorkoutUpsert(log);
 
         return log;
       },

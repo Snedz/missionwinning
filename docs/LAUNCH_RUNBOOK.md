@@ -85,6 +85,10 @@
    19. **`20260813_mission_ids.sql`** — monotonic `mission_ids` per signed-in account (id 1 reserved). **Without it `/api/mission-id` 500s** after sign-in; guests are unaffected. CoS applies via MCP — agents do not apply.  
    20. **`20260814_social_messages.sql`** — shared Garage rooms (`social_messages` + presence + reports). **Without it signed-in Mission Server stays local-only** (runtime fail-opens; outbox 401/missing-table finishes). Guests unaffected. Applied 2026-08-14.  
    21. **`20260814_feedback_reviews.sql`** — founder ratings on tester notes (`feedback_reviews`). **Without it the inbox loop has nowhere to store class/dest.** Inbox still reads if missing. Applied 2026-08-14.  
+   22. **`20260817_profiles_protect_nudge_cols.sql`** — freeze `profiles.email` / `created_at` / `last_nudge_at` on owner UPDATE. **Without it a signed-in client can rewrite the daily nudge mailbox and cooldown markers**; service role still writes `last_nudge_at` for `markNudged`. The cron sends to verified `auth.users.email`, not the profile column.  
+   23. **`20260817_fitness_test_results_api_only.sql`** — drop client INSERT on `fitness_test_results` and revoke INSERT from anon/authenticated. **Without it a signed-in PostgREST insert can attach a forged PFT tier to any class.** Writes go through `/api/pft/results` (service role) only.  
+   24. **`20260817_school_classes_revoke_anon_select.sql`** — drop the open school_classes SELECT policy and revoke leftover column grants so the published anon key cannot list PE class join codes. Lookups stay on the service-role path in schoolClassServer.  
+   25. **`20260817_leaderboard_snapshots_server_write.sql`** — drop client INSERT/UPDATE on `leaderboard_snapshots`. **Without it a signed-in PostgREST upsert can publish an arbitrary mission_score.** Writes go through `/api/leaderboard/snapshot` (service role) only.  
 4. Redeploy, then verify on the Profile page in-app: build label matches the latest commit (`src/lib/buildInfo.ts`).
 5. **Smoke after env** (from a machine with secrets):
    ```bash

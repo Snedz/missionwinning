@@ -94,3 +94,67 @@ test('every migration entry says what it gates', () => {
     `these runbook entries name a migration without saying what breaks without it:\n  ${thin.join('\n  ')}`
   );
 });
+
+const OPEN_CLASS_SELECT = 'Anyone can read school class names';
+
+function readMigration(file: string): string {
+  return readFileSync(path.join(root, MIGRATIONS_DIR, file), 'utf8');
+}
+
+/**
+ * 20250629 opened school_classes to PUBLIC SELECT. A later migration must
+ * drop that policy and leave it dropped — recreating the name is the leak.
+ */
+test('school_classes world-readable SELECT policy does not survive later migrations', () => {
+  const actionRe = new RegExp(
+    `(drop policy if exists|create policy)\\s+"${OPEN_CLASS_SELECT}"`,
+    'gi'
+  );
+  let last: 'drop' | 'create' | null = null;
+  let lastFile = '';
+  for (const file of migrationFiles()) {
+    const sql = readMigration(file);
+    let m: RegExpExecArray | null;
+    actionRe.lastIndex = 0;
+    while ((m = actionRe.exec(sql))) {
+      last = m[1].toLowerCase().startsWith('drop') ? 'drop' : 'create';
+      lastFile = file;
+    }
+  }
+  assert.equal(
+    last,
+    'drop',
+    `open SELECT policy "${OPEN_CLASS_SELECT}" last action is ${last} in ${lastFile || '(none)'} — anon GET /rest/v1/school_classes?select=code must not return rows`
+  );
+});
+
+/**
+ * 20260702 hid teacher_pin then re-GRANTed SELECT on the remaining columns.
+ * After every file is applied, anon/authenticated must hold no SELECT grant.
+ */
+test('anon and authenticated hold no school_classes SELECT grant after later migrations', () => {
+  const stmtRe =
+    /\b(grant|revoke)\s+(all|select)(?:\s*\([^)]+\))?\s+on\s+table\s+public\.school_classes\s+(?:to|from)\s+([^;]+)/gi;
+  let anonSelect = false;
+  let lastFile = '';
+  for (const file of migrationFiles()) {
+    const sql = readMigration(file);
+    let m: RegExpExecArray | null;
+    stmtRe.lastIndex = 0;
+    while ((m = stmtRe.exec(sql))) {
+      const verb = m[1].toLowerCase();
+      const priv = m[2].toLowerCase();
+      const roles = m[3].toLowerCase();
+      const touchesApi = /\banon\b/.test(roles) || /\bauthenticated\b/.test(roles);
+      if (!touchesApi) continue;
+      if (priv !== 'all' && priv !== 'select') continue;
+      anonSelect = verb === 'grant';
+      lastFile = file;
+    }
+  }
+  assert.equal(
+    anonSelect,
+    false,
+    `school_classes still GRANTs SELECT to anon/authenticated after ${lastFile || '(no grant/revoke found)'} — revoke leftover column grants`
+  );
+});

@@ -38,13 +38,13 @@ Known-open partials: MW-PLAY-001 (Play form). Founder manuals include ACCESS-004
 
 ## Attack surface (code, this tip)
 
-**74** `app/api/**/route.ts` (discovered). Perimeter: surface parking (`isPathEnabled`) then `PRIVATE_MODE` then handler auth. Count is enforced by `src/lib/apiInventory.test.ts`.
+**76** `app/api/**/route.ts` (discovered). Perimeter: surface parking (`isPathEnabled`) then `PRIVATE_MODE` then handler auth. Count is enforced by `src/lib/apiInventory.test.ts`.
 
 | Bucket | Count | Notes |
 |--------|------:|-------|
 | Public / no login in handler | 20 | Includes password gate, HMAC unsubscribe, optional-session push, parked youth |
 | Gate-or-session (`hasAppAccess`) | 5 | Coach insight/voice/chat + meal estimate. Cookie only — not Bearer |
-| Session / Bearer required | 37 | Account, checkout, premium catalogs, mobile sync, parked wearables/school |
+| Session / Bearer required | 39 | Account, checkout, premium catalogs, mobile sync, parked wearables/school, PFT results, leaderboard snapshot |
 | Admin / cron / privileged | 7 + `health?deep=1` | `CRON_SECRET` or beta admin |
 | Webhooks | 2 | Stripe HMAC; PayPal REST (PayPal surface parked) |
 | File / photo upload | 1 | `POST /api/fuel/estimate-meal` ≤6 MiB; photo not stored |

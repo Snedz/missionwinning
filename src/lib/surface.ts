@@ -98,7 +98,7 @@ export const SURFACE_PATHS: Record<Surface, readonly string[]> = {
   america: ['/america', '/fitness-test'],
   school: ['/school/class', '/join/class', '/api/school', '/api/youth', '/youth/consent'],
   wearables: ['/api/wearables'],
-  leaderboard: ['/leaderboard'],
+  leaderboard: ['/leaderboard', '/api/leaderboard'],
   cryptoRails: ['/api/crypto-checkout'],
   paypal: ['/api/paypal-webhook'],
   move: ['/move'],

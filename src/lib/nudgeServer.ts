@@ -12,6 +12,10 @@ import {
 import { localHourFor, windDownDue } from '@/lib/windDown';
 import { dayReviewDue } from '@/lib/dayReviewNudge';
 import type { NudgeCandidate, NudgeKind } from '@/lib/nudgeCopy';
+import {
+  attachNudgeMailboxes,
+  type AuthMailboxUser,
+} from '@/lib/nudgeMailbox';
 
 /**
  * Retention nudge IO (beta-scale: computes candidates in JS over the opted-in
@@ -26,6 +30,37 @@ export type { NudgeCandidate, NudgeKind };
 export { decideNudge };
 
 const NUDGE_COOLDOWN_MS = 44 * 60 * 60 * 1000;
+const AUTH_MAILBOX_CONCURRENCY = 20;
+
+async function loadAuthMailboxUsers(
+  admin: NonNullable<ReturnType<typeof getSupabaseAdmin>>,
+  userIds: string[]
+): Promise<Map<string, AuthMailboxUser | undefined>> {
+  const unique = [...new Set(userIds.filter(Boolean))];
+  const out = new Map<string, AuthMailboxUser | undefined>();
+  for (let i = 0; i < unique.length; i += AUTH_MAILBOX_CONCURRENCY) {
+    const chunk = unique.slice(i, i + AUTH_MAILBOX_CONCURRENCY);
+    const rows = await Promise.all(
+      chunk.map(async (id) => {
+        const { data, error } = await admin.auth.admin.getUserById(id);
+        if (error || !data?.user) return null;
+        const user = data.user;
+        return [
+          id,
+          {
+            email: user.email ?? null,
+            email_confirmed_at: user.email_confirmed_at ?? null,
+            confirmed_at: user.confirmed_at ?? null,
+          } satisfies AuthMailboxUser,
+        ] as const;
+      })
+    );
+    for (const row of rows) {
+      if (row) out.set(row[0], row[1]);
+    }
+  }
+  return out;
+}
 
 function nudgeSecret(): string {
   const dedicated = process.env.NUDGE_SECRET?.trim();
@@ -57,11 +92,11 @@ export async function collectNudgeCandidates(now = new Date()): Promise<NudgeRun
   const appUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://www.missionwinning.com';
   const cooldownCutoff = new Date(now.getTime() - NUDGE_COOLDOWN_MS).toISOString();
 
+  // Do not read profiles.email — owner UPDATE can rewrite it. To: is auth.users.
   const { data: profiles, error } = await admin
     .from('profiles')
-    .select('id, email, created_at, last_nudge_at')
+    .select('id, created_at, last_nudge_at')
     .eq('reminders_opt_in', true)
-    .not('email', 'is', null)
     .or(`last_nudge_at.is.null,last_nudge_at.lt.${cooldownCutoff}`)
     .limit(500);
 
@@ -71,7 +106,17 @@ export async function collectNudgeCandidates(now = new Date()): Promise<NudgeRun
 
   const since = new Date(now.getTime() - 14 * 86_400_000).toISOString();
   const candidates: NudgeCandidate[] = [];
-  const eligible = profiles.filter((p): p is typeof p & { email: string } => !!p.email);
+  const authById = await loadAuthMailboxUsers(
+    admin,
+    profiles.map((p) => p.id as string)
+  );
+  const eligible = attachNudgeMailboxes(
+    profiles.map((p) => ({
+      id: p.id as string,
+      created_at: p.created_at as string,
+    })),
+    authById
+  );
   if (eligible.length === 0) {
     return { considered: profiles.length, candidates };
   }
@@ -112,20 +157,20 @@ export async function collectNudgeCandidates(now = new Date()): Promise<NudgeRun
     if (uid && dpw) cadenceByUser.set(uid, dpw);
   }
 
-  for (const profile of eligible) {
-    const logs = logsByUser.get(profile.id) ?? [];
+  for (const athlete of eligible) {
+    const logs = logsByUser.get(athlete.id) ?? [];
     const workoutDays = [...new Set(logs.map((l) => utcDay(l.completed_at)))];
     const candidate = decideNudge({
-      email: profile.email,
-      userId: profile.id,
-      createdAt: profile.created_at,
+      email: athlete.email,
+      userId: athlete.id,
+      createdAt: athlete.created_at,
       workoutDays,
       workoutCount14d: logs.length,
       totalVolume14d: logs.reduce((s, l) => s + (l.total_volume ?? 0), 0),
-      daysPerWeek: cadenceByUser.get(profile.id),
+      daysPerWeek: cadenceByUser.get(athlete.id),
       now,
       appUrl,
-      unsubscribeUrl: `${appUrl}/api/nudges/unsubscribe?u=${profile.id}&t=${unsubscribeToken(profile.id)}`,
+      unsubscribeUrl: `${appUrl}/api/nudges/unsubscribe?u=${athlete.id}&t=${unsubscribeToken(athlete.id)}`,
     });
     if (candidate) candidates.push(candidate);
   }

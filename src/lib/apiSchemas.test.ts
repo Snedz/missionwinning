@@ -58,6 +58,73 @@ const CASES: Record<string, Case> = {
     ],
   },
 
+  leaderboardSnapshotBodySchema: {
+    valid: [
+      {
+        operatorName: 'Oak',
+        timeZone: 'America/New_York',
+        locale: 'en',
+        squadCode: 'MW1',
+      },
+    ],
+    invalid: [
+      {
+        input: { operatorName: 'Oak', locale: 'en' },
+        because: 'timeZone is required so standings use the athlete calendar',
+      },
+      {
+        input: { timeZone: 'x'.repeat(81) },
+        because: 'timeZone max 80',
+      },
+      {
+        input: { timeZone: 'Not/AZone' },
+        because: 'timeZone must be a real IANA zone',
+      },
+    ],
+  },
+
+  pftResultBodySchema: {
+    valid: [
+      {
+        id: 'pft-1',
+        completedAt: '2026-08-17T00:00:00.000Z',
+        age: 25,
+        sex: 'male',
+        mode: 'mini',
+        events: [{ eventId: 'curl_ups', value: 40 }],
+      },
+    ],
+    invalid: [
+      {
+        input: {
+          completedAt: '2026-08-17T00:00:00.000Z',
+          age: 25,
+          sex: 'male',
+          events: [],
+        },
+        because: 'zero events would store a below-tier row with no test',
+      },
+      {
+        input: {
+          completedAt: '2026-08-17T00:00:00.000Z',
+          age: 25,
+          sex: 'male',
+          events: [{ eventId: 'bench', value: 1 }],
+        },
+        because: 'only PFT events score; a client-invented event must not parse',
+      },
+      {
+        input: {
+          completedAt: '2026-08-17T00:00:00.000Z',
+          age: 0,
+          sex: 'male',
+          events: [{ eventId: 'curl_ups', value: 40 }],
+        },
+        because: 'age 0 is not a test subject',
+      },
+    ],
+  },
+
   accountDeleteBodySchema: {
     valid: [{ confirm: 'DELETE', deviceId: 'device-1' }],
     invalid: [
