@@ -7,7 +7,7 @@
 | File | Purpose |
 |------|---------|
 | `ActiveEmptyState.tsx` | No-session shell — start quick workout |
-| `ActiveSessionChrome.tsx` | Session bar — Elapsed/Sets pair, progress, Plates + Finish; **Add exercise is a trigger** for `AddExerciseSheet`, not an inline picker |
+| `ActiveSessionChrome.tsx` | Session bar — name, Elapsed/Sets, Finish. Plates + coach tip in overflow. Add exercise is a trigger for `AddExerciseSheet` |
 | `ActiveSessionDock.tsx` | One `ScreenDock` for rest only. Set entry is `SetLogTable`; `resolveActiveDockMode` no longer emits `console` |
 | `ActiveWorkoutSheets.tsx` | Check-in · hard-session warning · form · add · plates · victory overlay cluster (`.450`) |
 | `ActiveExerciseList.tsx` | Maps session exercises → `ActiveExerciseCard` (swap candidates, table controls, open-idx). Page mounts this instead of inlining the map (`.439`) |

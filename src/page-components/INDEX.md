@@ -21,7 +21,7 @@
 
 | File | Route |
 |------|-------|
-| `ActiveWorkoutPage.tsx` | `/active` |
+| `ActiveWorkoutPage.tsx` | `/active` | Live session is name + table + rest; plates / jot / HR in Show all |
 | `BuilderPage.tsx` | `/builder` | First paint is Blank workout; program templates in Show all |
 | `HistoryPage.tsx` | `/history` | First paint is the session list; calendar / charts / journal in Show all |
 | `LibraryPage.tsx` | `/library` | First paint is a pick list; posters / templates in Show all |

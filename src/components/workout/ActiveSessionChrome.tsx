@@ -81,23 +81,7 @@ export function ActiveSessionChrome({
             <h1 className="truncate font-display text-[1.35rem] font-extrabold leading-[1.08] tracking-[-0.015em] md:text-[1.65rem]">
               {workoutName}
             </h1>
-            <p className="mt-0.5 truncate text-[11px] text-muted-foreground">{coachTip}</p>
           </div>
-
-          {/* Plates was buried in the overflow menu; the handoff puts it on the
-              header, which is where you reach for it — mid-set, one-handed. */}
-          <Button
-            variant="outline"
-            size="sm"
-            className="h-11 min-h-[44px] shrink-0 px-3 tap-target"
-            onClick={onOpenPlateCalc}
-            aria-label={t('activeOpenPlateCalc', { defaultValue: 'Plates' })}
-          >
-            <Scale className="h-4 w-4 md:me-1" aria-hidden />
-            <span className="hidden md:inline">
-              {t('activeOpenPlateCalc', { defaultValue: 'Plates' })}
-            </span>
-          </Button>
 
           <Button
             variant="outline"
@@ -129,15 +113,29 @@ export function ActiveSessionChrome({
                   aria-label={t('activeCloseMenu', { defaultValue: 'Close menu' })}
                   onClick={() => setMenuOpen(false)}
                 />
-                {/* Plates moved out to the header, so discard is all that is
-                    left in here — which is the right amount for a menu whose
-                    only remaining item is destructive. */}
+                {/* Plates and the coach tip sit here so the header stays name + Finish. */}
                 {/* Not role=menu — HoldToConfirm is a button with aria-busy,
                     which axe aria-required-children rejects as a menuitem child.
                     Single destructive action: plain disclosure panel. */}
                 <div
                   className="absolute end-0 top-full z-50 mt-1 min-w-[11rem] border-2 border-border bg-card p-1"
                 >
+                  <p className="px-2 py-1.5 text-[11px] leading-snug text-muted-foreground">
+                    {coachTip}
+                  </p>
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    size="sm"
+                    className="w-full justify-start min-h-[44px] tap-target"
+                    onClick={() => {
+                      setMenuOpen(false);
+                      onOpenPlateCalc();
+                    }}
+                  >
+                    <Scale className="h-4 w-4 me-2" aria-hidden />
+                    {t('activeOpenPlateCalc', { defaultValue: 'Plates' })}
+                  </Button>
                   <HoldToConfirmButton
                     size="sm"
                     className="w-full justify-start"
