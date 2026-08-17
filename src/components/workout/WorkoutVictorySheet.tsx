@@ -35,7 +35,6 @@ import { FieldTestReceiptStrip } from '@/components/workout/FieldTestReceiptStri
 import { VictorySecondaryLinks } from '@/components/workout/VictorySecondaryLinks';
 import { VictoryRewardsLine } from '@/components/rewards/VictoryRewardsLine';
 import { buildVictorySecondaryLinks } from '@/lib/workout/victorySecondaryLinks';
-import { shouldCollapseVictoryDetails } from '@/lib/workout/victoryLayout';
 import { isSurfaceEnabled } from '@/lib/surface';
 import { parseNutritionLog } from '@/lib/nutritionQuickLog';
 import { readRaw } from '@/lib/storage/safeStorage';
@@ -201,13 +200,6 @@ export function WorkoutVictorySheet({
     summary.nextAction?.href
   );
 
-  const collapseDetails = shouldCollapseVictoryDetails({
-    hasBodyDelta: Boolean(summary.bodyDelta),
-    hasDebrief: Boolean(debrief),
-    fragmentCount: fragments?.length ?? 0,
-    hasProgression: Boolean(summary.progressionInsight),
-  });
-
   const detailsBlock = (
     <>
       {summary.bodyDelta ? <VictoryBodyDeltaStrip bodyDelta={summary.bodyDelta} /> : null}
@@ -294,6 +286,14 @@ export function WorkoutVictorySheet({
           vsLast={summary.receipt?.vsLast ?? null}
         />
 
+        <details className="group border-2 border-border bg-card">
+          <summary
+            className="flex min-h-[44px] cursor-pointer list-none items-center justify-center px-4 py-3 text-sm font-semibold text-foreground [&::-webkit-details-marker]:hidden"
+            data-testid="victory-show-all"
+          >
+            {t('fuelShowMore', { defaultValue: 'Show all' })}
+          </summary>
+          <div className="space-y-4 border-t-2 border-border p-4">
         {summary.receipt ? (
           <VictoryReceiptStrip receipt={summary.receipt} unitLabel={unitLabel} />
         ) : null}
@@ -322,16 +322,7 @@ export function WorkoutVictorySheet({
           onNavigate={() => onOpenChange(false)}
         />
 
-        {collapseDetails ? (
-          <details className="group border-t-2 border-border pt-3">
-            <summary className="cursor-pointer list-none text-center text-xs font-medium text-muted-foreground min-h-[44px] flex items-center justify-center hover:text-foreground [&::-webkit-details-marker]:hidden">
-              {t('victorySessionDetails', { defaultValue: 'Session details' })}
-            </summary>
-            <div className="mt-3 space-y-3">{detailsBlock}</div>
-          </details>
-        ) : (
-          detailsBlock
-        )}
+        {detailsBlock}
 
         <DialogFooter className="flex-col sm:flex-col gap-2 pt-1">
           {showBackTodaySecondary && (
@@ -375,6 +366,8 @@ export function WorkoutVictorySheet({
             ) : null}
           </div>
         </DialogFooter>
+          </div>
+        </details>
         </div>
 
         <div

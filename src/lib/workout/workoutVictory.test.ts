@@ -150,7 +150,7 @@ describe('shouldShowVictoryBackTodaySecondary', () => {
     );
     assert.match(
       src,
-      /<\/DialogFooter>\s*<\/div>\s*<div\s+data-testid="victory-next-dock"/,
+      /<\/details>\s*<\/div>\s*<div\s+data-testid="victory-next-dock"/,
       'dock is a sibling after the scroll pane closes — not a child of it'
     );
     const dockAt = src.indexOf('data-testid="victory-next-dock"');

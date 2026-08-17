@@ -30,8 +30,8 @@ test('Victory collapses long details; Active gates empty finish', () => {
     join(root, 'src/components/workout/WorkoutVictorySheet.tsx'),
     'utf8'
   );
-  assert.match(sheet, /shouldCollapseVictoryDetails/);
-  assert.match(sheet, /victorySessionDetails|Session details/);
+  assert.match(sheet, /data-testid="victory-show-all"/);
+  assert.match(sheet, /victorySessionDetails|Session details|Show all/);
   const stats = readFileSync(
     join(root, 'src/components/workout/VictoryStatsStrip.tsx'),
     'utf8'
@@ -49,12 +49,14 @@ test('Victory collapses long details; Active gates empty finish', () => {
     /<thead className="sr-only">/,
     'Set · Prev · Load headers stay visible — a receipt you can read'
   );
-  const receiptAt = sheet.indexOf('VictoryReceiptStrip');
-  const detailsAt = sheet.indexOf('<details');
+  const jsx = sheet.slice(sheet.indexOf('return ('));
+  const receiptAt = jsx.indexOf('<VictoryReceiptStrip');
+  const detailsAt = jsx.indexOf('<details');
   assert.ok(receiptAt >= 0, 'Victory mounts the vs-last receipt');
+  assert.ok(detailsAt >= 0, 'Victory houses extras in Show all');
   assert.ok(
-    detailsAt < 0 || receiptAt < detailsAt,
-    'receipt must sit above Session details, not inside it'
+    receiptAt > detailsAt,
+    'vs-last lift receipt lives in Show all; first paint is Duration · Volume · Sets'
   );
   assert.doesNotMatch(sheet, /share-to-unlock|unlock.{0,20}share/i);
 
