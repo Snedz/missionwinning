@@ -41,7 +41,7 @@
 |------|-------|
 | `NutritionPage.tsx` | `/nutrition` (Fuel) — shell + state; logging UI in `src/components/nutrition/` |
 | `MovePage.tsx` | `/move` |
-| `MindPage.tsx` | `/mind` |
+| `MindPage.tsx` | `/mind` | First paint is check-in + breathe; sessions in Show all |
 | `TrackPage.tsx` | `/track` |
 | `LearnPage.tsx` | `/learn` |
 | `GuidebookIndexPage.tsx` | `/learn/guide` |

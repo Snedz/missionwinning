@@ -12,7 +12,7 @@ When adding a doc:
 
 | File | Absorbed by / note |
 |------|---------------------|
-| [log/LOG-rotate-885-for-900.md](./log/LOG-rotate-885-for-900.md) | rotated 2026-08-17 for `.900` Coach talk (`.885`) |
+| [log/LOG-rotate-885-for-900.md](./log/LOG-rotate-885-for-900.md) | rotated 2026-08-17 for `.900` Mind check-in (`.885`) |
 | [log/LOG-rotate-884-for-899.md](./log/LOG-rotate-884-for-899.md) | rotated 2026-08-17 for `.899` Builder start (`.884`) |
 | [log/LOG-rotate-883-for-898.md](./log/LOG-rotate-883-for-898.md) | rotated 2026-08-17 for `.898` Library list (`.883`) |
 | [log/LOG-rotate-882-for-897.md](./log/LOG-rotate-882-for-897.md) | rotated 2026-08-17 for `.897` History list (`.882`) |

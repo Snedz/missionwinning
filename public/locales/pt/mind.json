@@ -43,7 +43,7 @@
   "mindPremiumPreviewCount": "Sessões guiadas premium ({{count}})",
   "mindSubtitleDepthBeta": "{{free}} sessões guiadas gratuitas · {{unlocked}} desbloqueadas na beta aberta — respiração e check-in incluídos.",
   "mindSubtitleDepthPaid": "{{free}} sessões guiadas gratuitas · O Super Bundle acrescenta {{premium}} sessões cronometradas mais profundas.",
-  "mindSubtitleBrief": "Check in, then breathe or run a free guided session.",
+  "mindSubtitleBrief": "Check in, then breathe.",
   "mindSeriesSleepWeekBlurb": "A {{count}}-night sequence — do nights in order when you can. Premium sessions only.",
   "mindSeriesSleepWeekBlurbOpenBeta": "A {{count}}-night sequence — do nights in order when you can."
 }

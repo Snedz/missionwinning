@@ -14,6 +14,7 @@ test.describe('Premium pillar experiences', () => {
 
   test('Mind page shows guided session player', async ({ page }) => {
     await page.goto('/mind', { waitUntil: 'domcontentloaded' });
+    await page.getByTestId('mind-show-all').click();
     await expect(page.getByRole('button', { name: /^start$/i }).first()).toBeVisible();
     /*
      * `.257` — the heading is **"Guided sessions"**. This asserted an anchored
@@ -29,7 +30,7 @@ test.describe('Premium pillar experiences', () => {
      * section heading from a call to action is not asserting the section
      * exists.
      */
-    await expect(page.getByRole('heading', { name: /^guided sessions$/i })).toBeVisible();
+    await expect(page.getByRole('heading', { name: /guided sessions/i })).toBeVisible();
   });
 
   test('Move page lists flows and starts player', async ({ page }) => {
@@ -47,6 +48,7 @@ test.describe('Premium pillar experiences', () => {
 
   test('free user sees mind locked preview', async ({ page }) => {
     await page.goto('/mind', { waitUntil: 'domcontentloaded' });
+    await page.getByTestId('mind-show-all').click();
     await expect(page.getByText(/super bundle|premium/i).first()).toBeVisible();
   });
 

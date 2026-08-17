@@ -107,7 +107,7 @@ const en: MindStrings = {
     '{{free}} free guided sessions · {{unlocked}} unlocked in Alpha — breathing + check-in included.',
   mindSubtitleDepthPaid:
     '{{free}} free guided sessions · Super Bundle adds {{premium}} deeper timed sessions.',
-  mindSubtitleBrief: 'Check in, then breathe or run a free guided session.',
+  mindSubtitleBrief: 'Check in, then breathe.',
   mindSeriesSleepWeekBlurb:
     'A {{count}}-night sequence — do nights in order when you can. Premium sessions only.',
   mindSeriesSleepWeekBlurbOpenBeta:

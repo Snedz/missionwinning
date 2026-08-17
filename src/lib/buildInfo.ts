@@ -1,5 +1,5 @@
-/** Shown on Profile so testers can confirm the deployed build. Bump when shipping UI to master. `.899` Builder start. */
-export const APP_BUILD_LABEL = "2026.07-unified.899";
+/** Shown on Profile so testers can confirm the deployed build. Bump when shipping UI to master. `.900` Mind check-in. */
+export const APP_BUILD_LABEL = "2026.07-unified.900";
 
 /**
  * Semver for athletes. Distinct from `APP_BUILD_LABEL`, which `/api/health`
