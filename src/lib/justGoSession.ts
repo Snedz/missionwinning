@@ -170,7 +170,7 @@ export function buildJustGoSession(opts: {
       seedExerciseFromHistory(p.exerciseId, 3, p.reps, 0, history, units)
     );
     return {
-      name: `Just Go — ${focus.group}`,
+      name: focus.group,
       focusGroup: focus.group,
       exercises,
       source: 'focus',
@@ -196,7 +196,7 @@ export function buildJustGoSession(opts: {
   );
 
   return {
-    name: `Just Go — ${focus.group}`,
+    name: focus.group,
     focusGroup: focus.group,
     exercises,
     source: 'starter',

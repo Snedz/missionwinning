@@ -40,7 +40,39 @@ describe('justGoSession', () => {
     assert.ok(session.exercises.length >= 2);
     assert.equal(session.focusGroup, 'Chest');
     assert.ok(session.source === 'focus' || session.source === 'starter');
-    assert.match(session.name, /Just Go|Chest/i);
+    assert.equal(session.name, 'Chest');
+    assert.doesNotMatch(session.name, /Just Go/i);
+  });
+
+  it('never names a freestyle session Just Go', () => {
+    for (const group of MAJOR_GROUPS) {
+      const session = buildJustGoSession({
+        focus: { group, statusKey: 'todayReadinessPrime' },
+        readiness: readinessAll(5),
+        history: [],
+        units: 'metric',
+        equipment: 'bodyweight',
+      });
+      if (session.source === 'coach') continue;
+      assert.equal(session.name, group, `${group} session is branded Just Go`);
+      assert.doesNotMatch(session.name, /Just Go/i);
+    }
+  });
+
+  it('names a starter fallback by the work, not Just Go', () => {
+    // Pull-up bar only cannot seed two Chest movements, so this path
+    // falls through to the starter program instead of the focus picker.
+    const session = buildJustGoSession({
+      focus: { group: 'Chest', statusKey: 'todayReadinessPrime' },
+      readiness: readinessAll(5),
+      history: [],
+      units: 'metric',
+      equipment: 'full-gym',
+      homeGymKit: parseHomeGymKit(['pull-up-bar']),
+    });
+    assert.equal(session.source, 'starter');
+    assert.equal(session.name, 'Chest');
+    assert.doesNotMatch(session.name, /Just Go/i);
   });
 
   it('prefers coach today when available', () => {
