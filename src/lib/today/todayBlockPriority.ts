@@ -26,6 +26,7 @@
 export type TodayBlockKey =
   | 'beta'
   | 'header'
+  | 'summary-pins'
   | 'reentry'
   | 'rewards'
   | 'continuity'
@@ -44,6 +45,8 @@ export const TODAY_BLOCK_PRIORITY: Record<TodayBlockKey, number> = {
   // Pinned chrome — priced anyway so the ordering reads top to bottom here.
   beta: 0,
   header: 1,
+  /** Last session / Start pin grid — after the date, before ceremony. */
+  'summary-pins': 3,
   reentry: 2,
   /** Weekly goal + rank — after re-entry, before coach ceremony. */
   rewards: 4,

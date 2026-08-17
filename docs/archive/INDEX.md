@@ -12,6 +12,7 @@ When adding a doc:
 
 | File | Absorbed by / note |
 |------|---------------------|
+| [log/LOG-rotate-873-for-891.md](./log/LOG-rotate-873-for-891.md) | rotated 2026-08-17 for `.891` Summary pin (`.873`) |
 | [log/LOG-rotate-872-for-890.md](./log/LOG-rotate-872-for-890.md) | rotated 2026-08-17 for `.890` Today Summary (`.872`) |
 | [log/LOG-rotate-871-for-889.md](./log/LOG-rotate-871-for-889.md) | rotated 2026-08-17 for `.889` set table on the phone (`.871`) |
 | [log/LOG-rotate-870-for-888.md](./log/LOG-rotate-870-for-888.md) | rotated 2026-08-17 for `.888` names stay in ops (`.870`) |

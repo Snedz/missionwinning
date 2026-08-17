@@ -11,13 +11,10 @@ import { useRouter } from 'next/navigation';
 import { useTranslation } from 'react-i18next';
 import { JourneyHero } from '@/components/journey/JourneyHero';
 
-const CoachLogCite = dynamic(
-  () => import('@/components/coach/CoachLogCite').then((m) => m.CoachLogCite),
-  { ssr: false }
-);
 import { dayReviewMayMount } from '@/lib/today/dayReviewMount';
 import { reentryCardMayMount } from '@/lib/today/todayGuidanceMount';
-import { todayCoachInviteMayMount } from '@/lib/today/todayCoachInviteMount';
+import { TodaySummaryPins } from '@/components/today/TodaySummaryPins';
+import { defaultSummaryPins } from '@/lib/today/summaryPins';
 import { loadPlan } from '@/lib/coach/storage';
 
 import { TODAY_BLOCK_PRIORITY as P } from '@/lib/today/todayBlockPriority';
@@ -300,6 +297,24 @@ export function HomeTodayLean() {
         />
       ),
     },
+    {
+      key: 'summary-pins',
+      priority: P['summary-pins'],
+      pinned: true,
+      node: (
+        <TodaySummaryPins
+          pins={defaultSummaryPins({
+            lastSessionName:
+              lastSession?.name ??
+              [...workoutHistory]
+                .filter((w) => !w.deletedAt)
+                .sort((a, b) => (a.completedAt < b.completedAt ? 1 : -1))[0]?.name ??
+              null,
+            hasActiveWorkout,
+          })}
+        />
+      ),
+    },
   ];
 
   if (rewardsSummary && workoutHistory.length > 0) {
@@ -336,55 +351,6 @@ export function HomeTodayLean() {
 
   if (mayShowDayReview) {
     blocks.push({ key: 'day-review', priority: P['day-review'], node: <TodayDayReviewCard /> });
-  }
-
-  // Flow-7 / K3 — invite when early sessions and no plan (week strip owns plan).
-  if (
-    todayCoachInviteMayMount({
-      phase: journeyState.phase,
-      totalSessions: workoutHistory.length,
-      hasCoachPlan: typeof window !== 'undefined' ? !!loadPlan() : false,
-    })
-  ) {
-    blocks.push({
-      key: 'coach-invite',
-      priority: P['coach-invite'],
-      node: (
-        /* Recut to the shipped system: 2px rules, no hairline at 40%, and
-           `font-semibold` — Archivo loads 400/600/800, so `font-semibold` was
-           synthesising a weight the face does not have. */
-        <a
-          href="/coach"
-          className="block border-y-2 border-border py-3.5 transition-colors hover:bg-muted"
-        >
-          <p className="mb-0.5 text-[11px] font-semibold uppercase tracking-[0.1em] text-muted-foreground">
-            {t('todayCoachInviteEyebrow', { defaultValue: 'Mission Coach' })}
-          </p>
-          <p className="text-[15px] font-semibold leading-snug text-foreground">
-            {t('todayCoachInviteTitle', {
-              defaultValue: 'Turn your logs into this week’s plan',
-            })}
-          </p>
-          {/* "Turn your logs into…" is a claim; this is the log it means. */}
-          <CoachLogCite className="mt-1" />
-        </a>
-      ),
-    });
-  }
-
-  if (journeyState.phase === 'basic' && streak === 0) {
-    blocks.push({
-      key: 'encourage',
-      priority: P.encourage,
-      node: (
-        <p className="text-center text-sm text-muted-foreground px-4">
-          {t('todayBasicEncouragement', {
-            defaultValue:
-              'One step at a time. Log a set — Mission Coach shapes the week from your history.',
-          })}
-        </p>
-      ),
-    });
   }
 
   const plan = planTodayBlocks(blocks);
