@@ -52,6 +52,38 @@ Scope note: this override is **narrow by design**. Everything else on the Horizo
 
 Agents may ship beyond “hero bugs only” for this window. Prefer delete/refine over new pillars.
 
+### Founder override — test-first surface hops + Fable 5 frontend (2026-08-17)
+
+**Hop shape, not a new loop.** No GRAPH_LOOP letter. Same stack (Next.js + tokens). Fable 5 means Claude Fable 5 as the **frontend implementer** (vision + 390 stills). It is not a framework and not a rewrite. Principle 5 still holds.
+
+**Surface hop order** (Train / Today / Victory / Coach pixels, or any athlete-facing UI):
+
+1. Name the claim in one sentence and the accept command.
+2. Write the test so the claim is false — or pin the already-true proof.
+3. Run it. Red or already-green, recorded. `docs/harness/HOP.md` carries `test_written: yes` before the first product edit.
+4. Smallest product change.
+5. Pixels → recipe 17 (Fable 5). Token-only. 390×844 stills vs the bar.
+6. Re-run the **same** accept command. A screenshot is not PASS.
+
+| Still required | Still forbidden |
+|----------------|-----------------|
+| Accept command is a real test | Greenfield rewrite / second frontend stack |
+| Phone 390 is the product surface | Video membership, class CMS, TV / watchOS apps |
+| Free logger never gated | Community feed; founder-face content |
+| Nameless public git | Studio / rival names in product docs |
+
+**Growth grain** (social prep, not a product pivot). Full copy: [docs/SOCIAL_LAUNCH.md](docs/SOCIAL_LAUNCH.md) § Grain.
+
+| Grain | Means | Not now |
+|-------|--------|---------|
+| App-first | Phone 390 is the gym. www is the funnel. | A second app shell |
+| Open → today → Start | Today *is* the calendar. One red Start. | A class timetable |
+| Named monthly hook | Later: one named week as a social object (copy + Coach week). | A Challenges pillar |
+| Welcome + free guide | Email + existing Beyond the Basics reader (no download). | A new manuscript |
+| Watch drop-off | Week-4 retained weekly loggers. Win-back is founder email. | A community analytics suite |
+| Social is the door | IG/TikTok → Alpha / Super Bundle. | Paid ads (still locked) |
+| Faceless later | Generated or hired coaches. Never founder face. Horizon 3. | Video factory / player / studio CMS |
+
 ---
 
 ## Principles
@@ -214,7 +246,7 @@ Unlock **only after** week-4 retention holds.
 
 | Area | Work |
 |------|------|
-| **Acquisition** | SEO v2; Shorts system; es/pt/id body for Train+Fuel+Today; founder community |
+| **Acquisition** | SEO v2; Shorts system; es/pt/id body for Train+Fuel+Today; founder community; **faceless** generated films or hired coaches as Learn/Coach depth (never founder face; not a membership CMS) |
 | **Platform** | Android TWA if PWA install fails A1; web push after install base; wearables last; native last |
 | **Premium / B2B** | Per-pillar unlocks; human coaching ops; school/America with legal; teams later |
 | **Engineering** | Observability; CSP/Upstash; coverage on coach/fuel/sync; token lint CI |

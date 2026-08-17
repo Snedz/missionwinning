@@ -8,6 +8,7 @@ closer — the agent's last message is not.
 ticket:
 done_means:
 accept:
+test_written:
 
 ## progress
 

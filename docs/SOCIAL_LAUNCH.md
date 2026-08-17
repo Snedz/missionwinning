@@ -12,6 +12,23 @@
 
 **Wedge line (use everywhere):** Free forever offline logger + adaptive Mission Coach from logs (no wearable). Six pillars stay below the fold / second sentence — not the hook.
 
+### Grain (social prep — not a product pivot)
+
+Studio memberships grow because the **door is social** and the **home is
+today’s session**. Steal that grain. Do not become a video membership.
+
+| Grain | We do | We do not |
+|-------|--------|-----------|
+| App-first | Phone 390 is the gym. www is the funnel. | Pitch the website as the workout |
+| Open → today → Start | Today *is* the calendar. One red Start. | A class timetable product |
+| Named month | Later: one named week as a social object | A Challenges pillar |
+| Welcome + guide | Email + Beyond the Basics reader (no download) | A new book this week |
+| Watch drop-off | Week-4 retained weekly loggers | A community analytics suite |
+| Faceless later | Horizon 3: generated or hired coaches | Founder face; a video factory now |
+
+Public git stays **nameless**. No studio brands in posts or docs. Paid ads
+stay locked until week-4 holds. Community feed stays refused (F-005).
+
 **MatrAIx + founder beta copy (until EIN):**
 
 - **F-005:** Pitch Train+Coach / free forever offline logger only. Do **not** merchandise in-app social Feed, community, or everything-app framing.

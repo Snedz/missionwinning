@@ -255,7 +255,8 @@ hard rule 6) is a thin loader over exactly these steps. `/graph` is an alias.
    `idea:next` pick. It prints; it never edits the queue. Re-read
    [harness/PINNED.md](harness/PINNED.md). Fill [harness/HOP.md](harness/HOP.md) before
    the first product edit (`ticket` = the live id, `done_means` one sentence,
-   `accept` one command).
+   `accept` one command, `test_written: yes` after that command has been run).
+   Surface pixels then follow recipe 16 then 17.
 4. **Take the route it named**, and only that one — `build` → recipe 11 · `gauntlet`
    → recipe 12 · `harvest` → recipe 13 · `path` → recipe 15 ·
    `stalled` → print the note and exit (no `HOP.md`, no `harness:done`). Not a more
@@ -302,9 +303,10 @@ invent a GRAPH_LOOP letter to refill.
 2. **Owner `founder`** (C5 while RESULT is unscored): print the ticket and stop.
    Do not invent a builder brief. Do not write `status: pass`.
 3. **Owner `agent`:** write `docs/harness/HOP.md`. Investigate on master. Already
-   true → proof paths, no restyle. Still false → one PR against that claim only.
-   Split the ticket if the instrument names more than one surface (one PR can
-   still be one concern).
+   true → proof paths, no restyle. Still false → **write the accept test first**
+   (recipe 16), run it, set `test_written: yes`, then one PR against that claim
+   only. Pixels: recipe 17. Split the ticket if the instrument names more than
+   one surface (one PR can still be one concern).
 4. Run the accept command yourself. A red instrument is the builder’s problem.
    Do not declare PASS from a screenshot.
 5. `npm run harness:done` before claiming the hop shipped. It does not write
@@ -324,6 +326,65 @@ invent a GRAPH_LOOP letter to refill.
 - Raise TAP_BUDGET / firstPaintFloor / bundle caps
 - Treat residual wedge polish as a harness ticket
 - Grade your own hop with “looks right”
+
+---
+
+## 16. Test-first surface hop
+
+**Required reads:** [ORCHESTRATION.md](../ORCHESTRATION.md) (test-first override) ·
+[harness/PINNED.md](harness/PINNED.md) · [harness/HOP.md](harness/HOP.md).
+
+Wins on any hop that will change athlete-facing UI or the claim a UI hop
+rests on. Does not invent a ticket. The live ticket is still whatever
+`npm run harness` named.
+
+1. Write `done_means` as one sentence the athlete can check.
+2. Write or name the `accept` command. If the test does not exist, add it so
+   the claim is **false** (or pin the already-true proof).
+3. Run that command. Record red or already-green.
+4. Set `test_written: yes` in `HOP.md`. **Stop.** No product edit before this
+   line exists.
+5. Then the smallest product change. Pixels → recipe 17. Re-run the **same**
+   accept command.
+
+**Required tests:** the `accept` command in `HOP.md`.
+
+**Never**
+
+- Implement first and “add tests after”
+- Treat a screenshot as PASS
+- Skip this because the change “is only CSS”
+- Invent a GRAPH_LOOP letter so you have somewhere to put the test
+
+---
+
+## 17. Fable 5 frontend hop
+
+**Required reads:** recipe 16 (must already be true) · [docs/DESIGN_SYSTEM.md](DESIGN_SYSTEM.md) ·
+[docs/UX_PLAYBOOK.md](UX_PLAYBOOK.md).
+
+Fable 5 = Claude Fable 5 as the implementer for **pixels**. Same Next.js
+tree, same tokens, same i18n packs. Not F# Fable. Not a second app.
+
+1. Recipe 16 is done (`test_written: yes`, accept command exists).
+2. Walk the surface at **390×844** the way an athlete would (click, type,
+   submit). Desktop only if the ticket names the desktop split.
+3. Stills of the failing or proving state. Vision vs the bar, not vs taste.
+4. Implement the smallest token-only fix. No new typeface, no off-palette
+   hex, no second red, no glow.
+5. Re-run the same accept command. Re-walk 390. Hunt the nearby routes that
+   share the state.
+
+**Required tests:** the hop’s `accept` command, plus any colocated density
+guard the surface already owns.
+
+**Never**
+
+- Start a greenfield frontend
+- Commit studio / rival screenshots into product git
+- Build a video membership, player, or studio CMS
+- Declare PASS from a still alone
+- Use founder-face media
 
 ---
 
