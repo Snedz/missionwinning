@@ -288,19 +288,29 @@ router; otherwise the loop's own tests, per the recipe you were routed to.
 Wins when GRAPH_LOOP has no agent-open row, `idea:next` emits nothing, **and**
 generate is mined out (two consecutive scout-harvests at zero survivors).
 The standing NOW is the first unproven `PATH_STEPS` row: Horizon W while
-RESULT is not `pass`, then Horizon 0 agent streams. Instruments, not taste
+RESULT is not `pass`, then Horizon 0 path tickets. Instruments, not taste
 (`src/lib/loopQueue/criticalPath.ts`). A walk of the wedge is not a step.
 
+This hop is a **gauntlet unit**, not a taste walk. Goal = the ticket claim.
+Bar = the printed `accept` command (a measured instrument). Builder never
+grades itself. Critic is the instrument on the real artifact. Keep hopping
+(`/harness 2 hours`) until the path is proven or the clock stops. Do not
+invent a GRAPH_LOOP letter to refill.
+
 1. **`npm run harness` names the ticket** (`W1`…`W4`, `C5`, then `H01`…).
-   You do not pick.
+   You do not pick. `npm run harness` only prints.
 2. **Owner `founder`** (C5 while RESULT is unscored): print the ticket and stop.
    Do not invent a builder brief. Do not write `status: pass`.
 3. **Owner `agent`:** write `docs/harness/HOP.md`. Investigate on master. Already
    true → proof paths, no restyle. Still false → one PR against that claim only.
-4. `npm run harness:done` before claiming the hop shipped. It does not write
+   Split the ticket if the instrument names more than one surface (one PR can
+   still be one concern).
+4. Run the accept command yourself. A red instrument is the builder’s problem.
+   Do not declare PASS from a screenshot.
+5. `npm run harness:done` before claiming the hop shipped. It does not write
    GRAPH_LOOP.
-5. When every agent stream is proven, the route is `stalled`. Remaining flip
-   work is founder (postal, secrets, `PRIVATE_MODE`). Stop. Do not invent a
+6. When every path ticket is proven, the route is `stalled`. Remaining flip
+   work is founder (`PRIVATE_MODE`). Postal is later. Stop. Do not invent a
    letter. Do not walk Train → Today → Victory → Coach to mint a ticket.
 
 **Required tests:** the accept command printed for that ticket.
@@ -312,6 +322,7 @@ RESULT is not `pass`, then Horizon 0 agent streams. Instruments, not taste
 - Take a more interesting W-id or H-id than the one named
 - Raise TAP_BUDGET / firstPaintFloor / bundle caps
 - Treat residual wedge polish as a harness ticket
+- Grade your own hop with “looks right”
 
 ---
 

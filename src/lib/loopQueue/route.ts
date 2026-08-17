@@ -300,7 +300,7 @@ function emptyQueueRoute(
 
   notes.push(
     existsSync(path.join(root, 'docs/IDEA_LOOP.md'))
-      ? 'Horizon W is pass and Horizon 0 agent streams are proven — remaining flip work is founder (postal, secrets, PRIVATE_MODE). Do not invent a letter or a craft walk'
+      ? 'Horizon W is pass and Horizon 0 path tickets are proven — remaining flip work is founder (PRIVATE_MODE). Postal later. Do not invent a letter or a craft walk'
       : 'no agent-open row, no harvest, and no critical-path gap — stalled'
   );
   return { kind: 'stalled', recipe: null, notes, ...blank };
