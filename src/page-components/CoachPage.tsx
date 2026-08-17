@@ -99,17 +99,6 @@ export function CoachPage({ askExerciseId }: CoachPageProps = {}) {
           'Weekly plans from your workout logs alone — no wearable. Adapts when you miss or crush a session.',
       })}
     >
-      {!loading ? (
-        <CoachLiveVoice
-          entitled={premium}
-          readiness={ctx.bodyScores.readiness}
-          strain={ctx.bodyScores.strain}
-          recovery={ctx.bodyScores.recovery}
-          todaySession={todaySession}
-          className="mb-5"
-        />
-      ) : null}
-
       {loading && <CoachPlanSkeleton className="py-2" />}
 
       {!loading && locked && plan && (
@@ -305,7 +294,22 @@ export function CoachPage({ askExerciseId }: CoachPageProps = {}) {
               loadZone: ctx.loadZone ?? null,
             }}
           />
+        </div>
+      )}
 
+      {!loading ? (
+        <CoachLiveVoice
+          entitled={premium}
+          readiness={ctx.bodyScores.readiness}
+          strain={ctx.bodyScores.strain}
+          recovery={ctx.bodyScores.recovery}
+          todaySession={todaySession}
+          className="mb-5"
+        />
+      ) : null}
+
+      {plan && !locked && (
+        <div className="space-y-5">
           {askExerciseId ? (
             <div id="coach-chat">
               <CoachChatPanel

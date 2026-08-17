@@ -133,6 +133,10 @@ type CoachStrings = {
   coachVoiceError: string;
   coachVoiceOffline: string;
   coachVoiceErrorDesc: string;
+  coachVoiceListen: string;
+  coachVoiceListenAria: string;
+  coachVoiceStop: string;
+  coachVoiceStopAria: string;
   /** `.608` — the load band. `coachLoadUnmeasured*` is the honest pre-evidence state. */
   coachLoadTitle: string;
   coachLoadUnmeasured: string;
@@ -240,6 +244,26 @@ type CoachStrings = {
   coachChatQuota: string;
   coachChatStopped: string;
   coachChatStop: string;
+  coachChatMic: string;
+  coachChatMicAria: string;
+  coachChatMicListening: string;
+  coachChatMicStopAria: string;
+  coachChatListenReply: string;
+  coachChatListenReplyAria: string;
+  coachChatStopReplyAria: string;
+  coachLiveTitle: string;
+  coachLiveLead: string;
+  coachLiveReady: string;
+  coachLiveListening: string;
+  coachLiveThinking: string;
+  coachLiveSpeaking: string;
+  coachLiveTalk: string;
+  coachLiveEnd: string;
+  coachLiveOffline: string;
+  coachLiveTalkAria: string;
+  coachLiveListeningAria: string;
+  coachLiveEndAria: string;
+  coachLiveNoMic: string;
   coachTodayBandHigh: string;
   coachTodayBandLight: string;
   coachTodayBandSteady: string;
@@ -451,6 +475,10 @@ const en: CoachStrings = {
   coachVoiceError: 'Could not load briefing',
   coachVoiceOffline: 'You appear offline — try again when connected.',
   coachVoiceErrorDesc: 'Tap retry to load commander intent.',
+  coachVoiceListen: 'Listen',
+  coachVoiceListenAria: 'Read the weekly briefing aloud',
+  coachVoiceStop: 'Stop',
+  coachVoiceStopAria: 'Stop reading the weekly briefing',
   coachTasterLocked: 'Your free week is complete',
   coachTasterLockedDesc:
     'You got one free Coach week. Super Bundle unlocks a new plan every Monday, on-demand regeneration, and Commander\'s intent tuned to readiness.',
@@ -548,6 +576,26 @@ const en: CoachStrings = {
   coachChatQuota: "Today's chat limit reached — resets tomorrow. Your plan and logger are unaffected.",
   coachChatStopped: 'Stopped.',
   coachChatStop: 'Stop',
+  coachChatMic: 'Mic',
+  coachChatMicAria: 'Speak to your coach',
+  coachChatMicListening: 'Listening',
+  coachChatMicStopAria: 'Stop listening',
+  coachChatListenReply: 'Listen',
+  coachChatListenReplyAria: 'Read the coach reply aloud',
+  coachChatStopReplyAria: 'Stop reading the coach reply',
+  coachLiveTitle: 'Talk to your coach',
+  coachLiveLead: 'Signed in and online — speak, then hear the answer. Same coach as chat.',
+  coachLiveReady: 'Tap to talk. I’ll answer out loud.',
+  coachLiveListening: 'Listening…',
+  coachLiveThinking: 'Thinking…',
+  coachLiveSpeaking: 'Speaking…',
+  coachLiveTalk: 'Talk',
+  coachLiveEnd: 'End',
+  coachLiveOffline: 'You’re offline — reconnect to talk. Your week still works.',
+  coachLiveTalkAria: 'Start talking to your coach',
+  coachLiveListeningAria: 'Stop listening',
+  coachLiveEndAria: 'End the voice conversation',
+  coachLiveNoMic: 'This browser cannot hear you — type in chat below.',
   coachTodayBandHigh: 'Your last week is running heavier than your month.',
   coachTodayBandLight: 'Last week is lighter than your month.',
   coachTodayBandSteady: 'Your week is tracking with your month.',

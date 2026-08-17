@@ -45,6 +45,31 @@ test('first paint is the week strip plus the one session', () => {
   assert.match(jsx, /mode="week"/);
 });
 
+test('Talk sits after this week’s session, not above the strip', () => {
+  const src = page();
+  const jsx = src.slice(src.lastIndexOf('return ('));
+  const open = jsx.split('<details')[0];
+  const week = open.indexOf('<WeekStrip');
+  const sheet = open.indexOf('mode="sheet"');
+  const live = open.indexOf('<CoachLiveVoice');
+  assert.ok(week >= 0, 'week strip is on first paint');
+  assert.ok(sheet >= 0, 'today’s session sheet is on first paint');
+  assert.ok(live >= 0, 'live talk is on the main Coach surface');
+  assert.ok(live > week, 'Talk sits after the week strip');
+  assert.ok(live > sheet, 'Talk sits after this week’s session sheet');
+  assert.doesNotMatch(jsx.split('<details')[1] ?? '', /<CoachLiveVoice\b/, 'Talk is not in Show all');
+});
+
+test('Talk is ready when the page is ready — a missing week is not a missing coach', () => {
+  const src = page();
+  assert.equal((src.match(/<CoachLiveVoice\b/g) || []).length, 1, 'one Talk mount');
+  assert.match(
+    src,
+    /\{!loading \? \(\s*<CoachLiveVoice\b/,
+    'Talk mounts on !loading, not only inside plan && !locked'
+  );
+});
+
 test('session cards still live in the grid, sheet mode uses the boss helper', () => {
   const src = grid();
   assert.match(src, /coachSheetSessions/);
