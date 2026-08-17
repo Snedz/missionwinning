@@ -28,6 +28,9 @@ describe('lean dock copy is Start, not I-Day', () => {
     assert.doesNotMatch(start, /yourNextStep/);
     assert.doesNotMatch(start, /action\.label/);
     assert.doesNotMatch(start, /action\.description/);
+    assert.doesNotMatch(start, /justGoCta|justGoTitle|justGoDesc|justGoEyebrow/);
+    assert.doesNotMatch(start, /resolveJustGoHeroCopy/);
+    assert.match(start, /todayStartCta/);
   });
 });
 
