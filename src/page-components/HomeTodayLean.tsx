@@ -46,11 +46,11 @@ import { shouldRepeatLastOnToday } from '@/lib/workout/repeatLastSession';
 import { formatLocalDateKey, localDateKey } from '@/lib/time/localDate';
 
 const SSR_ACTION: JourneyAction = {
-  label: 'Begin I-Day',
-  description: 'Where the journey begins — in-processing takes about 2 minutes.',
-  href: '/welcome',
+  label: 'Start',
+  description: '',
+  href: '/active',
   phase: 'i-day',
-  stepLabel: 'I-Day · Where you start',
+  stepLabel: '',
   progressPct: 0,
 };
 
@@ -172,6 +172,7 @@ export function HomeTodayLean() {
         equipment: userEquip,
         homeGymKit: loadHomeGymKit(),
         includeBasicJustGo: false,
+        includeColdStart: true,
         doseScale: reentry?.show ? reentry.doseScale : 1,
         startWorkout: (name, exercises) => startWorkoutFromStore(name, exercises),
         navigate: (href) => router.push(href),
@@ -196,6 +197,7 @@ export function HomeTodayLean() {
       href: action.href,
       hasStartWorkout: !!action.startWorkout,
       phase: action.phase,
+      includeColdStart: true,
     }),
     focusLabel:
       focusLabel || t('todaySessionFocus', { defaultValue: 'Training' }),
@@ -271,6 +273,7 @@ export function HomeTodayLean() {
       </div>
       <ScreenDock>
         <JourneyHero
+          dock="start"
           action={action}
           onPrimaryClick={handleJourneyPrimary}
           activeWorkout={hasActiveWorkout}

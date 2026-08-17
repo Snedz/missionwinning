@@ -76,6 +76,8 @@ interface JourneyHeroProps {
    * unclamped, no streak. Hidden while a workout is already open.
    */
   reentry?: Reentry | null;
+  /** Lean Today: Start / Resume. Never I-Day. */
+  dock?: 'journey' | 'start';
 }
 
 export function JourneyHero({
@@ -85,7 +87,40 @@ export function JourneyHero({
   justGoMeta,
   completedSessions,
   reentry,
+  dock = 'journey',
 }: JourneyHeroProps) {
+  if (dock === 'start') {
+    return (
+      <StartDockHero
+        onPrimaryClick={onPrimaryClick}
+        activeWorkout={activeWorkout}
+        justGoMeta={justGoMeta}
+        completedSessions={completedSessions}
+        reentry={reentry}
+      />
+    );
+  }
+
+  return (
+    <JourneyDockHero
+      action={action}
+      onPrimaryClick={onPrimaryClick}
+      activeWorkout={activeWorkout}
+      justGoMeta={justGoMeta}
+      completedSessions={completedSessions}
+      reentry={reentry}
+    />
+  );
+}
+
+function JourneyDockHero({
+  action,
+  onPrimaryClick,
+  activeWorkout,
+  justGoMeta,
+  completedSessions,
+  reentry,
+}: Omit<JourneyHeroProps, 'dock'>) {
   const { t } = useTranslation();
   const isCompact = useIsCompact();
   const useTrainCta = !activeWorkout && !!justGoMeta;
@@ -190,6 +225,99 @@ export function JourneyHero({
           {description}
         </p>
       )}
+      <button
+        type="button"
+        onClick={onPrimaryClick}
+        className="primary-action min-h-[52px] w-full text-[19px]"
+      >
+        <span className="flex-1 text-start">{title}</span>
+        <ChevronRight className="ms-auto h-5 w-5 shrink-0" />
+      </button>
+    </div>
+  );
+}
+
+function StartDockHero({
+  onPrimaryClick,
+  activeWorkout,
+  justGoMeta,
+  completedSessions,
+  reentry,
+}: {
+  onPrimaryClick: () => void;
+  activeWorkout?: boolean;
+  justGoMeta?: JustGoHeroMeta | null;
+  completedSessions?: number;
+  reentry?: Reentry | null;
+}) {
+  const { t } = useTranslation();
+  const isCompact = useIsCompact();
+  const heroCopy = justGoMeta
+    ? resolveJustGoHeroCopy(justGoMeta, { completedSessions })
+    : null;
+
+  const label = activeWorkout
+    ? t('resumeWorkout', { defaultValue: 'Resume workout' })
+    : heroCopy
+      ? t(heroCopy.labelKey, { defaultValue: heroCopy.defaultLabel })
+      : t('todayStartCta', { defaultValue: 'Start' });
+
+  const kicker = heroCopy
+    ? t(heroCopy.kickerKey, { defaultValue: heroCopy.defaultKicker })
+    : t('todayStartKicker', { defaultValue: 'Train' });
+
+  const title = heroCopy
+    ? t(heroCopy.titleKey, {
+        ...(heroCopy.titleParams ?? {}),
+        defaultValue: heroCopy.defaultTitle,
+      })
+    : label;
+
+  const description = heroCopy
+    ? t(heroCopy.descKey, {
+        ...(heroCopy.descParams ?? {}),
+        defaultValue: heroCopy.defaultDesc,
+      })
+    : '';
+
+  const quietLine = reentry?.show && !activeWorkout ? reentry : null;
+
+  if (!isCompact) {
+    return (
+      <div className="poster-field space-y-4 p-7">
+        <div>
+          <p className="poster-kicker mb-2.5 text-[11px] font-semibold uppercase tracking-[0.12em]">
+            {kicker}
+          </p>
+          <h3 className="font-display text-[1.6rem] font-extrabold leading-[1.05] md:text-[1.9rem]">
+            {title}
+          </h3>
+          {quietLine ? (
+            <TodayReentryCard reentry={quietLine} />
+          ) : description ? (
+            <p className="poster-sub mt-1.5 text-sm leading-relaxed tabular-nums">{description}</p>
+          ) : null}
+        </div>
+        <button type="button" onClick={onPrimaryClick} className="primary-action w-auto">
+          {label}
+          <ChevronRight className="h-5 w-5" />
+        </button>
+      </div>
+    );
+  }
+
+  return (
+    <div className="poster-field px-4 pb-4 pt-3.5">
+      <p className="poster-kicker mb-2 text-[11px] font-semibold uppercase tracking-[0.12em]">
+        {kicker}
+      </p>
+      {quietLine ? (
+        <TodayReentryCard reentry={quietLine} />
+      ) : description ? (
+        <p className="poster-sub mb-2.5 line-clamp-1 text-sm leading-relaxed tabular-nums">
+          {description}
+        </p>
+      ) : null}
       <button
         type="button"
         onClick={onPrimaryClick}

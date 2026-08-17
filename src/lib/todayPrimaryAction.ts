@@ -30,12 +30,15 @@ export function isTodayTrainReady(opts: {
   phase: JourneyAction['phase'];
   /** Full-shell primary CTA: also treat basic phase as train-ready. */
   includeBasicJustGo?: boolean;
+  /** Lean dock: cold I-Day is still Start, not Welcome. */
+  includeColdStart?: boolean;
 }): boolean {
   return (
     opts.href === '/active' ||
     opts.hasStartWorkout ||
     opts.phase === 'commissioned' ||
-    (!!opts.includeBasicJustGo && opts.phase === 'basic')
+    (!!opts.includeBasicJustGo && opts.phase === 'basic') ||
+    !!opts.includeColdStart
   );
 }
 
@@ -50,6 +53,8 @@ export type TodayPrimaryActionOpts = {
   homeGymKit?: HomeGymKit | null;
   /** When true, treat basic phase train-ready like lean (href /active or startWorkout or basic). */
   includeBasicJustGo?: boolean;
+  /** Lean dock: never send the red field to `/welcome`. */
+  includeColdStart?: boolean;
   /**
    * Re-entry dose from `computeReentry` (1 = full). When &lt; 1, Just Go / plan
    * starts with fewer sets so the first session back is finishable.
@@ -70,6 +75,7 @@ export async function runTodayPrimaryAction(opts: TodayPrimaryActionOpts): Promi
     equipment,
     homeGymKit = null,
     includeBasicJustGo = false,
+    includeColdStart = false,
     doseScale = 1,
     startWorkout,
     navigate,
@@ -89,6 +95,7 @@ export async function runTodayPrimaryAction(opts: TodayPrimaryActionOpts): Promi
     hasStartWorkout: !!action.startWorkout,
     phase: action.phase,
     includeBasicJustGo,
+    includeColdStart,
   });
 
   if (trainReady) {
@@ -140,7 +147,7 @@ export async function runTodayPrimaryAction(opts: TodayPrimaryActionOpts): Promi
       navigate('/active');
       return;
     }
-    navigate(action.href);
+    navigate(leanSafeHref(action.href, includeColdStart));
     return;
   }
 
@@ -158,5 +165,10 @@ export async function runTodayPrimaryAction(opts: TodayPrimaryActionOpts): Promi
     return;
   }
 
-  navigate(action.href);
+  navigate(leanSafeHref(action.href, includeColdStart));
+}
+
+function leanSafeHref(href: string, includeColdStart: boolean): string {
+  if (includeColdStart && href === '/welcome') return '/active';
+  return href;
 }

@@ -48,6 +48,8 @@ type NavStrings = {
   sourceCode: string;
   feedback: string;
   resumeWorkout: string;
+  todayStartCta: string;
+  todayStartKicker: string;
   offlineBannerShort: string;
   offlineWaitingCount: string;
 };
@@ -102,6 +104,8 @@ const en: NavStrings = {
   sourceCode: 'Source',
   feedback: 'Feedback',
   resumeWorkout: 'Resume workout',
+  todayStartCta: 'Start',
+  todayStartKicker: 'Train',
   offlineBannerShort: 'Offline — logging still works',
   offlineWaitingCount: '{{count}} waiting',
 };
