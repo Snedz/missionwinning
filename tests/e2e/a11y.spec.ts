@@ -327,9 +327,10 @@ test.describe('Accessibility @a11y', () => {
     }
     await seedLegacyOnboarding(page);
     await page.goto('/nutrition', { waitUntil: 'domcontentloaded' });
-    const fab = page.getByRole('button', { name: /log food/i }).first();
-    await expect(fab).toBeVisible({ timeout: 15_000 });
-    await fab.click();
+    await page.getByText(/show all/i).first().click();
+    const photo = page.getByRole('button', { name: /detailed log/i }).first();
+    await expect(photo).toBeVisible({ timeout: 15_000 });
+    await photo.click();
     await expect(page.getByRole('button', { name: /^describe$/i }).or(page.getByText(/^describe$/i)).first()).toBeVisible({
       timeout: 10_000,
     });

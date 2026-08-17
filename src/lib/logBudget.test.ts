@@ -94,6 +94,13 @@ const NEVER_SHIPPED: { from: number; to: number; why: string }[] = [
       '`.685` → `.689`. No LOG heading on master ever ended in those labels, so rotating ' +
       '`.685` leaves `.689` as the live floor without a missing section.',
   },
+  {
+    from: 877,
+    to: 879,
+    why:
+      'Reserved by the open Victory stack; master jumped `.876` → `.880`. No LOG heading ' +
+      'on master ever ended in those labels.',
+  },
 ];
 const neverShipped = (x: number) => NEVER_SHIPPED.some((g) => x >= g.from && x <= g.to);
 

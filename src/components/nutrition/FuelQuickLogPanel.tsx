@@ -33,6 +33,11 @@ type Props = {
   onWaterChange: (water: number) => void;
   yesterdayMeals: NutritionLogRow[];
   onRepeatYesterday: () => void;
+  /**
+   * notepad — first paint: recents + type + water.
+   * tools — Show all: meal chips, frequent, saved, photo, yesterday.
+   */
+  mode?: 'full' | 'notepad' | 'tools';
 };
 
 export function FuelQuickLogPanel({
@@ -53,7 +58,10 @@ export function FuelQuickLogPanel({
   onWaterChange,
   yesterdayMeals,
   onRepeatYesterday,
+  mode = 'full',
 }: Props) {
+  const notepad = mode === 'notepad';
+  const tools = mode === 'tools';
   const { t } = useTranslation();
   const [draft, setDraft] = useState<MealDraftFields | null>(null);
   const [draftFromDb, setDraftFromDb] = useState(false);
@@ -102,7 +110,7 @@ export function FuelQuickLogPanel({
 
   return (
     <>
-      {recentFoods.length > 0 && (
+      {tools ? null : recentFoods.length > 0 && (
         <div className="space-y-1.5">
           <p className="text-xs font-medium text-muted-foreground">
             {t('fuelRecents', { defaultValue: 'Recent' })}
@@ -139,32 +147,31 @@ export function FuelQuickLogPanel({
         </div>
       )}
 
+      {tools ? null : (
       <div className="space-y-2">
         <label className="text-sm font-medium" htmlFor="fuel-nl-meal">
           {t('fuelNlTitle', { defaultValue: 'Describe what you ate' })}
         </label>
-        {/* Two-up on a phone, not four left-packed chips: the fourth chip lands in
-            the Fuel FAB's column, narrow enough to be 100% hidden at some scroll
-            offset (tests/e2e/fuel-floating-action.spec.ts). Half-width tabs clear
-            the FAB's left edge whatever the label says in any locale. */}
-        <div
-          className="grid grid-cols-2 gap-1.5 sm:grid-cols-4"
-          role="group"
-          aria-label={t('fuelMealPicker', { defaultValue: 'Meal' })}
-        >
-          {(['breakfast', 'lunch', 'dinner', 'snack'] as MealType[]).map((m) => (
-            <Button
-              key={m}
-              type="button"
-              size="sm"
-              variant={activeMeal === m ? 'selected' : 'outline'}
-              className="min-h-[44px] h-11 text-xs tap-target "
-              onClick={() => onActiveMealChange(m)}
-            >
-              {mealLabel(m)}
-            </Button>
-          ))}
-        </div>
+        {notepad ? null : (
+          <div
+            className="grid grid-cols-2 gap-1.5 sm:grid-cols-4"
+            role="group"
+            aria-label={t('fuelMealPicker', { defaultValue: 'Meal' })}
+          >
+            {(['breakfast', 'lunch', 'dinner', 'snack'] as MealType[]).map((m) => (
+              <Button
+                key={m}
+                type="button"
+                size="sm"
+                variant={activeMeal === m ? 'selected' : 'outline'}
+                className="min-h-[44px] h-11 text-xs tap-target "
+                onClick={() => onActiveMealChange(m)}
+              >
+                {mealLabel(m)}
+              </Button>
+            ))}
+          </div>
+        )}
         <input
           id="fuel-nl-meal"
           type="text"
@@ -231,7 +238,9 @@ export function FuelQuickLogPanel({
           </div>
         ) : null}
       </div>
+      )}
 
+      {notepad ? null : (
       <div className="space-y-1.5">
         <p className="text-xs font-medium text-muted-foreground">
           {t('fuelFrequent', { defaultValue: 'Frequent' })}
@@ -250,8 +259,9 @@ export function FuelQuickLogPanel({
           ))}
         </div>
       </div>
+      )}
 
-      {savedMeals.length > 0 && (
+      {notepad ? null : savedMeals.length > 0 && (
         <div className="space-y-1.5">
           <p className="text-xs font-medium text-muted-foreground">
             {t('fuelSavedMeals', { defaultValue: 'Saved meals' })}
@@ -272,15 +282,13 @@ export function FuelQuickLogPanel({
         </div>
       )}
 
-      <div className="flex flex-wrap gap-2 items-center">
+      {tools ? (
         <Button variant="outline" size="sm" onClick={onOpenLogSheet}>
           <Plus className="h-3.5 w-3.5 me-1" />
           {t('fuelLogDetailed', { defaultValue: 'Photo & detailed log' })}
         </Button>
-        {/* `ms-auto` only from `sm`: on a phone this row wraps and the end-aligned
-            water stepper puts a 33px "+" wholly inside the Fuel FAB's column
-            (tests/e2e/fuel-floating-action.spec.ts). */}
-        <div className="flex items-center gap-1 sm:ms-auto">
+      ) : (
+        <div className="flex items-center gap-1">
           <Button size="sm" variant="ghost" onClick={() => onWaterChange(Math.max(0, water - 1))}>
             −
           </Button>
@@ -291,9 +299,9 @@ export function FuelQuickLogPanel({
             +
           </Button>
         </div>
-      </div>
+      )}
 
-      {yesterdayMeals.length > 0 && (
+      {notepad ? null : yesterdayMeals.length > 0 && (
         <Button variant="secondary" size="sm" onClick={onRepeatYesterday}>
           {t('fuelRepeatYesterday', {
             count: yesterdayMeals.length,

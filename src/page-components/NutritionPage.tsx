@@ -6,7 +6,6 @@
 
 import { useState, useEffect, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Button } from '@/components/ui/button';
 import { getUser, saveNutritionEntry, getUserNutritionForDate } from '@/lib/supabase';
 import { isNonFoodEntryName } from '@/lib/pillarLog';
 import { syncProteinChallengeFromNutrition } from '@/lib/challenges';
@@ -48,7 +47,7 @@ import {
 } from '@/lib/fuelDayAdapt';
 import { useWorkoutStore } from '@/store/workoutStore';
 import { SignInPrompt } from '@/components/auth/SignInPrompt';
-import { Plus, UtensilsCrossed } from 'lucide-react';
+import { UtensilsCrossed } from 'lucide-react';
 import { PillarPageShell } from '@/components/layout/PillarPageShell';
 import { useToast } from '@/hooks/use-toast';
 import { readRaw, writeJson, writeRaw } from '@/lib/storage/safeStorage';
@@ -456,7 +455,7 @@ export function NutritionPage() {
 
   return (
     <PillarPageShell
-      className="max-w-3xl pb-24"
+      className="max-w-3xl pb-8"
       icon={UtensilsCrossed}
       eyebrow={t('fuelEyebrow', { defaultValue: 'Fuel' })}
       title={t('fuelTitle', { defaultValue: 'Nutrition' })}
@@ -474,9 +473,21 @@ export function NutritionPage() {
         ) : undefined
       }
     >
-      {/* Field manual: log first — macros/targets no longer block the fold. */}
+      <FuelMacroOverview
+        totalCals={totalCals}
+        targetCals={dayTargets.cals}
+        totalProtein={totalProtein}
+        targetProtein={dayTargets.protein}
+        totalCarbs={totalCarbs}
+        carbsTarget={carbsTarget}
+        totalFat={totalFat}
+        fatTarget={fatTarget}
+        water={water}
+      />
+
       <div id="fuel-log" className="scroll-mt-20 space-y-4">
         <FuelQuickLogPanel
+          mode="notepad"
           activeMeal={activeMeal}
           onActiveMealChange={setActiveMeal}
           mealLabel={mealLabel}
@@ -526,32 +537,38 @@ export function NutritionPage() {
         }}
       />
 
-      <FuelMacroOverview
-        totalCals={totalCals}
-        targetCals={dayTargets.cals}
-        totalProtein={totalProtein}
-        targetProtein={dayTargets.protein}
-        totalCarbs={totalCarbs}
-        carbsTarget={carbsTarget}
-        totalFat={totalFat}
-        fatTarget={fatTarget}
-        water={water}
-      >
-        <FuelAdaptBanner
-          load={dayAdapt.load}
-          isAdapted={dayAdapt.isAdapted}
-          note={dayAdapt.note}
-          deltaSummary={adaptDelta}
-          adaptEnabled={adaptEnabled}
-          onToggleAdapt={handleToggleAdapt}
-        />
-      </FuelMacroOverview>
-
       <details className="group border-2 border-border bg-card">
         <summary className="flex min-h-[44px] cursor-pointer list-none items-center px-4 py-3 text-sm font-semibold text-foreground [&::-webkit-details-marker]:hidden">
-          {t('fuelMoreTools', { defaultValue: 'Targets, week & weight' })}
+          {t('fuelShowMore', { defaultValue: 'Show all' })}
         </summary>
         <div className="space-y-4 border-t-2 border-border p-4">
+          <FuelQuickLogPanel
+            mode="tools"
+            activeMeal={activeMeal}
+            onActiveMealChange={setActiveMeal}
+            mealLabel={mealLabel}
+            nlMealText={nlMealText}
+            onNlMealTextChange={handleNlMealTextChange}
+            nlPreview={nlPreview}
+            onLogNlMeal={handleLogNlMeal}
+            recentFoods={[]}
+            frequentFoods={frequentFoods}
+            onQuickLog={addEntry}
+            savedMeals={savedMeals}
+            onOpenLogSheet={() => setLogSheetOpen(true)}
+            water={water}
+            onWaterChange={setWater}
+            yesterdayMeals={yesterdayMeals}
+            onRepeatYesterday={handleRepeatYesterday}
+          />
+          <FuelAdaptBanner
+            load={dayAdapt.load}
+            isAdapted={dayAdapt.isAdapted}
+            note={dayAdapt.note}
+            deltaSummary={adaptDelta}
+            adaptEnabled={adaptEnabled}
+            onToggleAdapt={handleToggleAdapt}
+          />
           <FuelTargetsEditor
             targetCals={targetCals}
             targetProtein={targetProtein}
@@ -582,14 +599,6 @@ export function NutritionPage() {
           />
           <FuelWeekGlance days={weekDays} todayIso={today} targetCals={targetCals} />
           <FuelWeightStrip todayIso={today} />
-        </div>
-      </details>
-
-      <details className="group border-2 border-border bg-card">
-        <summary className="flex min-h-[44px] cursor-pointer list-none items-center px-4 py-3 text-sm font-semibold text-foreground [&::-webkit-details-marker]:hidden">
-          {t('fuelShowMore', { defaultValue: 'Search, barcode & recipes' })}
-        </summary>
-        <div className="space-y-4 border-t-2 border-border p-4">
           <FuelMoreTools onLogFood={addEntry} />
           <FuelRecipesPanel
             freeRecipes={freeRecipes}
@@ -618,44 +627,26 @@ export function NutritionPage() {
               })}
             </p>
           )}
+          <FuelPastDaysCard
+            logs={allLogs}
+            todayIso={today}
+            onCopyDayToToday={handleCopyDayToToday}
+          />
+          <p className="text-xs leading-relaxed text-muted-foreground">
+            {t('fuelLocalNote', {
+              defaultValue:
+                'Meals stay on this device. Sign in anytime to sync across phones and the web.',
+            })}
+          </p>
+          <SignInPrompt
+            className="mt-2"
+            nextPath="/nutrition"
+            description={t('fuelSignInDesc', {
+              defaultValue: 'Sync meals and macro history across devices.',
+            })}
+          />
         </div>
       </details>
-
-      <FuelPastDaysCard
-        logs={allLogs}
-        todayIso={today}
-        onCopyDayToToday={handleCopyDayToToday}
-      />
-
-      <div className="text-xs leading-relaxed text-muted-foreground">
-        {t('fuelLocalNote', {
-          defaultValue:
-            'Meals stay on this device. Sign in anytime to sync across phones and the web.',
-        })}
-      </div>
-
-      <SignInPrompt
-        className="mt-2"
-        nextPath="/nutrition"
-        description={t('fuelSignInDesc', {
-          defaultValue: 'Sync meals and macro history across devices.',
-        })}
-      />
-
-      {!logSheetOpen ? (
-        <Button
-          variant="default"
-          size="lg"
-          /* 56px, not 52 — the tab bar's real height since the five-tab recut.
-             It is in flow now, so this offset clears an element that actually
-             occupies the bottom of the shell rather than one overlaying it. */
-          className="fixed bottom-[calc(56px+env(safe-area-inset-bottom)+12px)] end-4 z-40 h-14 gap-2 px-5 md:bottom-6"
-          onClick={() => setLogSheetOpen(true)}
-        >
-          <Plus className="h-5 w-5" />
-          {t('fuelLogFab', { defaultValue: 'Log food' })}
-        </Button>
-      ) : null}
 
       <FuelLogSheet
         open={logSheetOpen}
