@@ -23,4 +23,4 @@ Forbidden on Next spawn: postal, EIN, live Stripe, `PRIVATE_MODE=false`, America
 
 | unit | round | builder ref | critic verdict | biggest gap |
 |------|-------|-------------|----------------|-------------|
-| U1 | 1 | `.886` — wired `formatWorkoutVolumeDisplay` / `sumWorkingReps` into Victory + share card. No `victoryVolumeStat`. | | |
+| U1 | 1 | #735 `.886` — wired `formatWorkoutVolumeDisplay` / `sumWorkingReps` into Victory + share card. No `victoryVolumeStat`. | | |
