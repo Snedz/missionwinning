@@ -27,6 +27,7 @@ export type TodayBlockKey =
   | 'beta'
   | 'header'
   | 'summary-pins'
+  | 'highlights'
   | 'reentry'
   | 'rewards'
   | 'continuity'
@@ -47,6 +48,8 @@ export const TODAY_BLOCK_PRIORITY: Record<TodayBlockKey, number> = {
   header: 1,
   /** Last session / Start pin grid — after the date, before ceremony. */
   'summary-pins': 3,
+  /** One honest sentence. Empty is allowed. */
+  highlights: 5,
   reentry: 2,
   /** Weekly goal + rank — after re-entry, before coach ceremony. */
   rewards: 4,

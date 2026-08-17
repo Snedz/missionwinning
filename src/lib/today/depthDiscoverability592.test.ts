@@ -5,12 +5,13 @@ import { join } from 'node:path';
 
 const root = join(import.meta.dirname, '..', '..', '..');
 
-test('HomeTodayLean passes localHour for evening sleep-week continuity', () => {
+test('HomeTodayLean does not mount the continuity strip', () => {
   const src = readFileSync(
     join(root, 'src/page-components/HomeTodayLean.tsx'),
     'utf8'
   );
-  assert.match(src, /localHour:\s*new Date\(\)\.getHours\(\)/);
+  assert.doesNotMatch(src, /buildContinuitySuggestions/);
+  assert.doesNotMatch(src, /ContinuityStrip/);
 });
 
 test('Fuel page subtitle uses content inventory depth counts', () => {

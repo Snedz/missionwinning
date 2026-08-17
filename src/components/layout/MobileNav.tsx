@@ -3,11 +3,11 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useMemo } from 'react';
-import { LayoutGrid } from 'lucide-react';
+import { Search } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { cn } from '@/lib/utils';
 import { useActiveWorkoutPulse } from '@/hooks/useActiveWorkoutPulse';
-import { MOBILE_TAB_HREFS, PRIMARY_NAV, TAB_LABEL_OVERRIDES } from '@/lib/primaryNav';
+import { PRIMARY_NAV, TAB_LABEL_OVERRIDES, resolveMobileTabHrefs } from '@/lib/primaryNav';
 
 function pathActive(pathname: string, href: string): boolean {
   if (href === '/log') return pathname === '/log' || pathname === '/';
@@ -29,35 +29,21 @@ export function MobileNav({
   const { t } = useTranslation();
   const hasActiveWorkout = useActiveWorkoutPulse();
 
-  /**
-   * Four routed tabs plus More. The bar used to flatten all thirteen rail
-   * screens onto a horizontal scroller — 13 × 68px is 884px of track in a 390px
-   * window, so seven destinations sat off-screen with nothing saying they were
-   * there, including the only route to sign-in and settings. Five at `flex-1`
-   * is 78px each, which clears the 44px floor with room to spare.
-   */
   /*
-   * `.201` — this threw, on the render path of the persistent bottom nav.
+   * `.201` — never throw on the render path of the persistent bottom nav.
+   * Drop an unresolvable href; `mobileNavTabs.test.ts` catches the mismatch.
    *
-   * A `MOBILE_TAB_HREFS` entry missing from `PRIMARY_NAV` did not degrade one
-   * tab: it threw inside `useMemo`, and the app has no nested `error.tsx`
-   * segment boundaries (`app/error.tsx:8-10` says so), so the whole route
-   * blanked to the generic error screen. Every mobile screen, from a typo in a
-   * list of five strings.
-   *
-   * Dropping the unknown href is strictly better in production — four tabs beat
-   * zero screens — and the mismatch is caught in development by
-   * `mobileNavTabs.test.ts`, which pins the two lists against each other. A
-   * render-path throw is not a safety net; it is the failure.
+   * `.892` — cold bar is Summary + Search. Train joins only while a session
+   * is live. Coach and Fuel left the bar.
    */
   const tabs = useMemo(
     () =>
-      MOBILE_TAB_HREFS.map((href) => {
+      resolveMobileTabHrefs({ hasActiveWorkout }).map((href) => {
         const item = PRIMARY_NAV.find((n) => n.href === href);
         if (!item) return null;
         return { ...item, ...(TAB_LABEL_OVERRIDES[href] ?? {}) };
       }).filter((tab): tab is NonNullable<typeof tab> => tab !== null),
-    []
+    [hasActiveWorkout]
   );
 
   return (
@@ -116,8 +102,8 @@ export function MobileNav({
               : 'font-semibold text-muted-foreground hover:text-foreground'
           )}
         >
-          <LayoutGrid className="h-5 w-5" aria-hidden />
-          <span className="max-w-full truncate">{t('navMore', { defaultValue: 'More' })}</span>
+          <Search className="h-5 w-5" aria-hidden />
+          <span className="max-w-full truncate">{t('navSearch', { defaultValue: 'Search' })}</span>
         </button>
       </div>
     </nav>

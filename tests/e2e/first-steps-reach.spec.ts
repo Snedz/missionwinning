@@ -28,7 +28,7 @@ async function openMore(page: import('@playwright/test').Page) {
   await page.goto('/log', { waitUntil: 'networkidle' });
   await page
     .getByRole('navigation', { name: /primary/i })
-    .getByRole('button', { name: /more/i })
+    .getByRole('button', { name: /search/i })
     .click();
   const sheet = page.getByRole('dialog');
   await expect(sheet).toBeVisible();

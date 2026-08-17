@@ -1,5 +1,5 @@
-/** Shown on Profile so testers can confirm the deployed build. Bump when shipping UI to master. `.891` Today Summary pin. */
-export const APP_BUILD_LABEL = "2026.07-unified.891";
+/** Shown on Profile so testers can confirm the deployed build. Bump when shipping UI to master. `.892` Summary + Search. */
+export const APP_BUILD_LABEL = "2026.07-unified.892";
 
 /**
  * Semver for athletes. Distinct from `APP_BUILD_LABEL`, which `/api/health`

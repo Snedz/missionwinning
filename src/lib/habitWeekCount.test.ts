@@ -92,7 +92,7 @@ describe('Today header wiring', () => {
 
     const lean = read('src/page-components/HomeTodayLean.tsx');
     const dash = read('src/page-components/HomeTodayDashboard.tsx');
-    assert.match(lean, /daysLoggedThisWeek=\{countTrainDaysThisWeek\(/);
+    assert.match(lean, /showHabitMeta=\{false\}/);
     assert.match(dash, /daysLoggedThisWeek=\{countTrainDaysThisWeek\(/);
     assert.doesNotMatch(lean, /JourneyHero[\s\S]*todayHabitWeekCount/);
     assert.doesNotMatch(dash, /JourneyHero[\s\S]*todayHabitWeekCount/);

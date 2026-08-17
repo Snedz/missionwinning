@@ -42,19 +42,15 @@ describe('todayCoachInviteMayMount (Flow-7 · K3)', () => {
     assert.equal(todayCoachInviteMayMount({ phase: 'i-day', totalSessions: 1 }), false);
   });
 
-  it('buildTodayCandidates + lean + dashboard use one definition', () => {
+  it('buildTodayCandidates + dashboard use one definition; lean drops the invite', () => {
     const root = path.join(import.meta.dirname, '..', '..', '..');
-    for (const rel of [
-      'src/lib/today/buildTodayCandidates.ts',
-      'src/page-components/HomeTodayLean.tsx',
-      'src/page-components/HomeTodayDashboard.tsx',
-    ]) {
-      const src = readFileSync(path.join(root, rel), 'utf8');
-      assert.match(src, /hasCoachPlan/, rel);
-      if (rel.includes('buildTodayCandidates') || rel.includes('HomeTodayLean')) {
-        assert.match(src, /todayCoachInviteMayMount\(/, rel);
-      }
-    }
+    const ladder = readFileSync(path.join(root, 'src/lib/today/buildTodayCandidates.ts'), 'utf8');
+    const dash = readFileSync(path.join(root, 'src/page-components/HomeTodayDashboard.tsx'), 'utf8');
+    const lean = readFileSync(path.join(root, 'src/page-components/HomeTodayLean.tsx'), 'utf8');
+    assert.match(ladder, /todayCoachInviteMayMount\(/);
+    assert.match(ladder, /hasCoachPlan/);
+    assert.match(dash, /hasCoachPlan/);
+    assert.doesNotMatch(lean, /todayCoachInviteMayMount\(/);
   });
 });
 

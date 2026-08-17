@@ -8,7 +8,7 @@ import {
   moreSheetRowHrefs,
   moreSheetTiersForNav,
 } from './moreSheetTiers';
-import { MOBILE_TAB_HREFS } from './primaryNav';
+
 
 test('More tiers are Wedge · Pillars · You with declared hrefs', () => {
   assert.deepEqual(
@@ -24,20 +24,28 @@ test('More tiers are Wedge · Pillars · You with declared hrefs', () => {
   const pillars = MORE_SHEET_TIER_HREFS.find((t) => t.id === 'pillars')!;
   assert.ok(pillars.hrefs.includes('/move'));
   assert.ok(pillars.hrefs.includes('/learn'));
-  assert.ok(!pillars.hrefs.includes('/nutrition'), 'Fuel is a tab — not a More row');
+  assert.ok(wedge.hrefs.includes('/active'), 'Train is Search when it is not a live tab');
+  assert.ok(wedge.hrefs.includes('/coach'), 'Coach is Search, not a tab');
+  assert.ok(wedge.hrefs.includes('/nutrition'), 'Fuel is Search, not a tab');
   const you = MORE_SHEET_TIER_HREFS.find((t) => t.id === 'you')!;
   assert.deepEqual([...you.hrefs], ['/profile', '/server', '/account']);
 });
 
-test('resolved tiers never include a mobile tab href', () => {
-  const rows = moreSheetRowHrefs();
-  for (const tab of MOBILE_TAB_HREFS) {
-    assert.ok(!rows.includes(tab), `${tab} is a tab — must not appear in More rows`);
-  }
-  assert.ok(rows.includes('/history'));
-  assert.ok(rows.includes('/leaderboard'));
-  assert.ok(rows.includes('/profile'));
-  assert.ok(rows.includes('/server'));
+test('resolved tiers exclude only live tabs', () => {
+  const cold = moreSheetRowHrefs({ hasActiveWorkout: false });
+  assert.ok(cold.includes('/active'), 'cold Search must list Train');
+  assert.ok(cold.includes('/coach'));
+  assert.ok(cold.includes('/nutrition'));
+  assert.ok(cold.includes('/history'));
+  assert.ok(cold.includes('/leaderboard'));
+  assert.ok(cold.includes('/profile'));
+  assert.ok(cold.includes('/server'));
+  assert.ok(!cold.includes('/log'), 'Summary is the remaining tab');
+
+  const live = moreSheetRowHrefs({ hasActiveWorkout: true });
+  assert.ok(!live.includes('/active'), 'live Train is a tab — not a Search row');
+  assert.ok(live.includes('/coach'));
+  assert.ok(live.includes('/nutrition'));
 });
 
 test('moreSheetTiersForNav returns non-empty items with labels', () => {
@@ -87,7 +95,9 @@ test('MoreSheet consumes moreSheetTiersForNav, not railGroupsForNav', () => {
   assert.match(src, /moreSheetQuietForNav/);
   assert.match(
     src,
-    /moreSheetTiersForNav\(\{\s*hasFirstWorkout\s*\}\)/,
+    /hasFirstWorkout/,
     'MoreSheet must pass the first-workout gate — default-true would keep the options wall'
   );
+  assert.match(src, /hasActiveWorkout/, 'Search must hide Train only while a session is live');
+  assert.match(src, /navSearch/);
 });

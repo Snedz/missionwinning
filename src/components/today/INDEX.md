@@ -20,6 +20,7 @@
 | `Sparkline.tsx` | Shared mini chart |
 | `TodayReentryCard.tsx` | S7 0.1 (beta) quiet line on the Start field (`JourneyHero`) |
 | `TodaySummaryPins.tsx` | Summary pin grid (0–4). Last session / Start. Not poster-red. |
+| `TodayHighlights.tsx` | One honest Highlights sentence. Empty is allowed. |
 
 ## Related
 

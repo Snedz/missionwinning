@@ -18,25 +18,20 @@ test('continuity is after coach session/week (what-to-train stays boss)', () => 
   assert.ok(TODAY_BLOCK_PRIORITY.continuity > TODAY_BLOCK_PRIORITY['coach-week']);
 });
 
-test('HomeTodayLean dynamically loads TodayRewardsCard after history', () => {
+test('HomeTodayLean does not load rewards theater', () => {
   const src = readFileSync(
     join(import.meta.dirname, '..', '..', 'page-components', 'HomeTodayLean.tsx'),
     'utf8'
   );
-  assert.match(src, /TodayRewardsCard/);
-  assert.match(src, /summarizeRewards/);
-  assert.match(src, /workoutHistory\.length > 0/);
-  // Cold path: rewards via dynamic import, not static store of rewards engine
-  assert.match(src, /dynamic\([\s\S]*TodayRewardsCard/);
+  assert.doesNotMatch(src, /TodayRewardsCard/);
+  assert.doesNotMatch(src, /summarizeRewards/);
 });
 
-test('HomeTodayLean mounts ContinuityStrip after first train', () => {
+test('HomeTodayLean does not mount ContinuityStrip', () => {
   const src = readFileSync(
     join(import.meta.dirname, '..', '..', 'page-components', 'HomeTodayLean.tsx'),
     'utf8'
   );
-  assert.match(src, /ContinuityStrip/);
-  assert.match(src, /buildContinuitySuggestions/);
-  assert.match(src, /key: 'continuity'/);
-  assert.match(src, /localHour:\s*new Date\(\)\.getHours\(\)/);
+  assert.doesNotMatch(src, /ContinuityStrip/);
+  assert.doesNotMatch(src, /buildContinuitySuggestions/);
 });

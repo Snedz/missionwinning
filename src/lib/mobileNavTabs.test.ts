@@ -17,7 +17,14 @@
 
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { MOBILE_TAB_HREFS, PRIMARY_NAV, TAB_LABEL_OVERRIDES } from '@/lib/primaryNav';
+import { readFileSync } from 'node:fs';
+import path from 'node:path';
+import {
+  MOBILE_TAB_HREFS,
+  PRIMARY_NAV,
+  TAB_LABEL_OVERRIDES,
+  resolveMobileTabHrefs,
+} from '@/lib/primaryNav';
 
 test('every mobile tab resolves to a primary nav item', () => {
   const known = new Set(PRIMARY_NAV.map((n) => n.href));
@@ -30,16 +37,32 @@ test('every mobile tab resolves to a primary nav item', () => {
 });
 
 /**
- * The bar is four routed tabs plus More. Five at `flex-1` is ~78px each at
- * 390px, which clears the 44px floor; six would not, and the previous design
- * (all thirteen rail screens on a horizontal scroller) put seven destinations
- * off-screen with nothing indicating they existed.
+ * Cold chrome is Summary + Search. Train joins only while a session is live.
+ * Coach and Fuel are Search rows, not rooms on the first session.
+ */
+test('cold dock is Summary only; live dock adds Train', () => {
+  assert.deepEqual([...resolveMobileTabHrefs({ hasActiveWorkout: false })], ['/log']);
+  assert.deepEqual([...resolveMobileTabHrefs({ hasActiveWorkout: true })], [
+    '/log',
+    '/active',
+  ]);
+  for (const live of [false, true]) {
+    const hrefs = resolveMobileTabHrefs({ hasActiveWorkout: live });
+    assert.ok(!hrefs.includes('/coach'), 'Coach is Search, not a cold tab');
+    assert.ok(!hrefs.includes('/nutrition'), 'Fuel is Search, not a cold tab');
+  }
+});
+
+/**
+ * The bar is at most two routed tabs plus Search. Five rooms was the
+ * six-room house. Two at `flex-1` is a thumb each.
  */
 test('the tab count stays within what a 390px bar can hold', () => {
   assert.ok(
-    MOBILE_TAB_HREFS.length <= 4,
-    `${MOBILE_TAB_HREFS.length} routed tabs plus More will not fit a 390px bar at 44px minimum — see MobileNav's header`
+    MOBILE_TAB_HREFS.length <= 2,
+    `${MOBILE_TAB_HREFS.length} candidate tabs plus Search will not fit a 390px bar at 44px minimum`
   );
+  assert.ok(resolveMobileTabHrefs({ hasActiveWorkout: true }).length <= 2);
 });
 
 /** A label override for a tab that is not in the bar is dead configuration. */
@@ -51,4 +74,14 @@ test('every tab label override applies to a tab that exists', () => {
     [],
     `TAB_LABEL_OVERRIDES entries for hrefs that are not tabs: ${stale.join(', ')}`
   );
+});
+
+test('MobileNav resolves live tabs and labels the sheet Search', () => {
+  const src = readFileSync(
+    path.join(import.meta.dirname, '..', 'components', 'layout', 'MobileNav.tsx'),
+    'utf8'
+  );
+  assert.match(src, /resolveMobileTabHrefs\(/);
+  assert.match(src, /navSearch/);
+  assert.doesNotMatch(src, /t\('navMore'/);
 });

@@ -3,8 +3,12 @@
 type NavStrings = {
   navAssess: string;
   navMore: string;
+  navSearch: string;
+  navSummary: string;
   navCoachTab: string;
   navMoreEyebrow: string;
+  todayHighlightsTrained: string;
+  todayHighlightsLast: string;
   navOpenBeta: string;
   navInviteOnlyBeta: string;
   navGroupMission: string;
@@ -45,8 +49,12 @@ const en: NavStrings = {
   navInviteOnlyBeta: 'Alpha',
   navAssess: 'Assess',
   navMore: 'More',
+  navSearch: 'Search',
+  navSummary: 'Summary',
   navCoachTab: 'Coach',
   navMoreEyebrow: 'All screens',
+  todayHighlightsTrained: 'You already trained today.',
+  todayHighlightsLast: '{{name}} is waiting.',
   navGroupMission: 'Mission',
   navGroupPillars: 'Pillars',
   navGroupToolkit: 'Toolkit',

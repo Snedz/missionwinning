@@ -19,7 +19,7 @@
 
 import type { NavLinkItem } from '@/lib/navConfig';
 import { MORE_NAV, PRIMARY_NAV } from '@/lib/navConfig';
-import { MOBILE_TAB_HREFS } from '@/lib/primaryNav';
+import { resolveMobileTabHrefs } from '@/lib/primaryNav';
 import { isPathEnabled } from '@/lib/surface';
 
 export type MoreSheetTier = {
@@ -46,7 +46,7 @@ export const MORE_SHEET_TIER_HREFS: {
     id: 'wedge',
     title: 'Wedge',
     titleKey: 'moreTierWedge',
-    hrefs: ['/history', '/leaderboard', '/library', '/builder'],
+    hrefs: ['/active', '/coach', '/nutrition', '/history', '/leaderboard', '/library', '/builder'],
   },
   {
     id: 'pillars',
@@ -84,8 +84,6 @@ const RAIL_LABEL_OVERRIDES: Record<string, { label: string; labelKey: string }> 
   '/assessments': { label: 'Assess', labelKey: 'navAssess' },
 };
 
-const TAB_SET = new Set<string>(MOBILE_TAB_HREFS);
-
 export type MoreSheetNavOpts = {
   /**
    * F-004 — when false, drop the Pillars tier (Move · Mind · Track · Learn)
@@ -93,21 +91,26 @@ export type MoreSheetNavOpts = {
    * guards and SSR see the full map; call sites pass the live journey signal.
    */
   hasFirstWorkout?: boolean;
+  /** Live Train is a tab — hide it from Search only then. */
+  hasActiveWorkout?: boolean;
 };
 
 /**
- * Resolve More sheet tiers for the current surface parking world.
- * Empty tiers are dropped. Tab routes never appear as rows.
+ * Resolve Search sheet tiers. Empty tiers are dropped. Live tab routes
+ * never appear as rows.
  */
 export function moreSheetTiersForNav(opts?: MoreSheetNavOpts): MoreSheetTier[] {
   const revealPillars = opts?.hasFirstWorkout !== false;
+  const liveTabs = new Set(
+    resolveMobileTabHrefs({ hasActiveWorkout: !!opts?.hasActiveWorkout })
+  );
   return MORE_SHEET_TIER_HREFS.filter((tier) => revealPillars || tier.id !== 'pillars')
     .map((tier) => ({
       id: tier.id,
       title: tier.title,
       titleKey: tier.titleKey,
       items: tier.hrefs
-        .filter((href) => !TAB_SET.has(href) && isPathEnabled(href))
+        .filter((href) => !liveTabs.has(href) && isPathEnabled(href))
         .map((href) => {
           const base = NAV_BY_HREF.get(href);
           if (!base) throw new Error(`MORE_SHEET_TIER_HREFS: no nav item for ${href}`);

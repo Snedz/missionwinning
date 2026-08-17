@@ -21,6 +21,10 @@ interface Props {
   action: JourneyAction;
   showEditToday?: boolean;
   onEditToday?: () => void;
+  /** Lean Summary cuts the journey meter. Default on for the dashboard. */
+  showJourneyStrip?: boolean;
+  /** Lean Summary is date + Start. Habit week / streak stay on the dashboard. */
+  showHabitMeta?: boolean;
 }
 
 /**
@@ -37,6 +41,8 @@ export function TodayPageHeader({
   action,
   showEditToday,
   onEditToday,
+  showJourneyStrip = true,
+  showHabitMeta = true,
 }: Props) {
   const { t } = useTranslation();
 
@@ -69,39 +75,40 @@ export function TodayPageHeader({
           </button>
         )}
       </div>
-      {/* Meta stays one line and small so the docked Start is the job of the fold. */}
-      <div className="flex flex-wrap items-center gap-x-2.5 gap-y-1 text-xs text-muted-foreground">
-        <span className="tabular-nums" data-testid="today-habit-week-count">
-          {t('todayHabitWeekCount', {
-            count: daysLoggedThisWeek,
-            defaultValue: HABIT_WEEK_COUNT_EN,
-          })}
-        </span>
-        {streak > 0 && (
-          <>
-            <StreakChip streak={streak} variant="inline" />
-            <a href="/leaderboard" className="underline underline-offset-2 hover:text-foreground">
-              {t('leaderboardRankings', { defaultValue: 'Rankings' })}
-            </a>
-          </>
-        )}
-        {userEmail ? (
-          <span>
-            {t('cloudSyncOn', {
-              defaultValue: LOCAL_FIRST_COPY.todayBackupWhenOnline,
+      {showHabitMeta ? (
+        <div className="flex flex-wrap items-center gap-x-2.5 gap-y-1 text-xs text-muted-foreground">
+          <span className="tabular-nums" data-testid="today-habit-week-count">
+            {t('todayHabitWeekCount', {
+              count: daysLoggedThisWeek,
+              defaultValue: HABIT_WEEK_COUNT_EN,
             })}
           </span>
-        ) : hasFirstWorkout && !userEmail ? (
-          <span>
-            <a href="/profile" className="underline underline-offset-2 hover:text-foreground">
-              {t('signInOptional', {
-                defaultValue: LOCAL_FIRST_COPY.todaySignInOptional,
+          {streak > 0 && (
+            <>
+              <StreakChip streak={streak} variant="inline" />
+              <a href="/leaderboard" className="underline underline-offset-2 hover:text-foreground">
+                {t('leaderboardRankings', { defaultValue: 'Rankings' })}
+              </a>
+            </>
+          )}
+          {userEmail ? (
+            <span>
+              {t('cloudSyncOn', {
+                defaultValue: LOCAL_FIRST_COPY.todayBackupWhenOnline,
               })}
-            </a>
-          </span>
-        ) : null}
-      </div>
-      <JourneyStrip action={action} />
+            </span>
+          ) : hasFirstWorkout && !userEmail ? (
+            <span>
+              <a href="/profile" className="underline underline-offset-2 hover:text-foreground">
+                {t('signInOptional', {
+                  defaultValue: LOCAL_FIRST_COPY.todaySignInOptional,
+                })}
+              </a>
+            </span>
+          ) : null}
+        </div>
+      ) : null}
+      {showJourneyStrip ? <JourneyStrip action={action} /> : null}
     </header>
   );
 }

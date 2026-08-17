@@ -37,10 +37,8 @@ const ALWAYS_REACHABLE = [
   '/log',
   '/active',
   '/coach',
-  /* Fuel is the fourth tab, so it survives the demotion the rail group does not. */
   '/nutrition',
   '/history',
-  '/assessments',
   '/library',
   '/builder',
   '/profile',
@@ -100,9 +98,9 @@ test.describe('Mobile navigation @gate', () => {
       `tab track is ${overflow.scroll}px inside ${overflow.client}px`
     ).toBeLessThanOrEqual(overflow.client + 1);
 
-    // Five slots, all thumb-sized.
+    // Cold chrome is Summary + Search (two slots). All thumb-sized.
     const slots = bar.locator('a, button');
-    await expect(slots).toHaveCount(5);
+    await expect(slots).toHaveCount(2);
     for (const slot of await slots.all()) {
       const box = await slot.boundingBox();
       expect(box, 'tab slot must have a hit area').not.toBeNull();
@@ -125,7 +123,7 @@ test.describe('Mobile navigation @gate', () => {
       els.map((el) => el.getAttribute('href') ?? '')
     );
 
-    await bar.getByRole('button', { name: /more/i }).click();
+    await bar.getByRole('button', { name: /search/i }).click();
     const sheet = page.getByRole('dialog');
     await expect(sheet).toBeVisible();
     const sheetHrefs = await sheet.locator('a').evaluateAll((els) =>
@@ -177,7 +175,7 @@ test.describe('Mobile navigation @gate', () => {
     // has hydrated and attached its handler.
     await page.goto('/log', { waitUntil: 'networkidle' });
 
-    const trigger = page.getByRole('navigation', { name: /primary/i }).getByRole('button', { name: /more/i });
+    const trigger = page.getByRole('navigation', { name: /primary/i }).getByRole('button', { name: /search/i });
     await expect(trigger).toBeVisible();
     await trigger.click();
     await expect(page.getByRole('dialog')).toBeVisible();

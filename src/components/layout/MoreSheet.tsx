@@ -41,6 +41,7 @@ import { syncJourneyPhase } from '@/lib/missionJourney';
 import { APP_BUILD_LABEL, APP_PUBLIC_PRODUCT_VERSION } from '@/lib/buildInfo';
 import { isWhatsNewUnseen } from '@/lib/whatsNew';
 import { useWorkoutStore } from '@/store/workoutStore';
+import { useActiveWorkoutPulse } from '@/hooks/useActiveWorkoutPulse';
 
 /**
  * Live figures, read once when the sheet opens.
@@ -104,6 +105,7 @@ export function MoreSheet({ open, onClose }: { open: boolean; onClose: () => voi
   const hasHydrated = useWorkoutStore((s) => s.hasHydrated);
   const completedSessions = useWorkoutStore((s) => s.workoutHistory.length);
   const hasFirstWorkout = hasHydrated && completedSessions > 0;
+  const hasActiveWorkout = useActiveWorkoutPulse();
 
   /**
    * Computed during render, not in an effect. `moreSheetTiersForNav()` is sync,
@@ -111,8 +113,8 @@ export function MoreSheet({ open, onClose }: { open: boolean; onClose: () => voi
    * only bought one frame of an open sheet with nothing in it.
    */
   const groups = useMemo(
-    () => moreSheetTiersForNav({ hasFirstWorkout }),
-    [hasFirstWorkout]
+    () => moreSheetTiersForNav({ hasFirstWorkout, hasActiveWorkout }),
+    [hasFirstWorkout, hasActiveWorkout]
   );
 
   /**
@@ -151,7 +153,7 @@ export function MoreSheet({ open, onClose }: { open: boolean; onClose: () => voi
       open={open}
       onClose={onClose}
       size="sm"
-      eyebrow={t('navMoreEyebrow', { defaultValue: 'More' })}
+      eyebrow={t('navSearch', { defaultValue: 'Search' })}
       title={t('appName', { defaultValue: 'Mission Winning' })}
       bodyClassName="pb-2"
     >

@@ -235,53 +235,31 @@ test('the victory sheet annotates the entry the same completion just saved', () 
  * returning null; that decision belongs in the card, not in which file
  * someone remembered to edit.
  */
-const TODAY_SHELLS = [
-  'src/page-components/HomeTodayLean.tsx',
-  'src/page-components/HomeTodayDashboard.tsx',
-];
-
-const WAVE_CARDS = ['TodayDayReviewCard'];
-
 /**
- * Rendered, not merely mentioned.
- *
- * The first version of this test counted name occurrences, and a mutant that
- * deleted the JSX walked straight through it: the name still appeared inside
- * `dynamic(() => import('@/components/today/TodayDayReviewCard'))`, so the
- * shell "referenced" a card it never put on screen. An importing-is-not-using
- * hole in a test written specifically to catch importing-is-not-using.
+ * Lean Summary is not the dashboard. Evening review stays on the
+ * readiness+ shell. A card in both shells is how the tour got on I-Day.
  */
-test('a Today card is mounted in every Today shell', () => {
-  for (const card of WAVE_CARDS) {
-    const missing = TODAY_SHELLS.filter(
-      (shell) => !new RegExp(`<${card}\\b`).test(stripComments(read(shell)))
-    );
-    assert.deepEqual(
-      missing,
-      [],
-      `${card} is never rendered in ${missing.join(', ')} — athletes routed to that shell never see it`
-    );
-  }
+test('lean Today does not mount the evening review card', () => {
+  const lean = stripComments(read('src/page-components/HomeTodayLean.tsx'));
+  assert.doesNotMatch(lean, /<TodayDayReviewCard\b/);
+  const dash = stripComments(read('src/page-components/HomeTodayDashboard.tsx'));
+  assert.match(dash, /<TodayDayReviewCard\b/);
 });
 
 /**
- * The mount decision itself lives in one place, not re-derived per shell.
- *
- * Lean calls `dayReviewMayMount` at the mount site. Dashboard goes through
- * `buildTodayCandidates`, which is the one pure ladder that already asks
- * `dayReviewMayMount` (guarded in buildTodayCandidates tests) — so a shell that
- * only spells the helper name is not the only honest path.
+ * Dashboard still asks the shared evening-card question. Lean does not
+ * mount the card, so it must not re-derive a mount it deleted.
  */
-test('both Today shells ask the same question about the evening card', () => {
-  for (const shell of TODAY_SHELLS) {
-    const src = read(shell);
-    const viaHelper = mentions(src, 'dayReviewMayMount') > 0;
-    const viaLadder = mentions(src, 'buildTodayCandidates') > 0;
-    assert.ok(
-      viaHelper || viaLadder,
-      `${shell} mounts the evening card without dayReviewMayMount or buildTodayCandidates — two shells deciding "who sees this" separately is how they drift`
-    );
-  }
+test('dashboard asks the shared question about the evening card', () => {
+  const dash = read('src/page-components/HomeTodayDashboard.tsx');
+  const viaHelper = mentions(dash, 'dayReviewMayMount') > 0;
+  const viaLadder = mentions(dash, 'buildTodayCandidates') > 0;
+  assert.ok(
+    viaHelper || viaLadder,
+    'dashboard mounts the evening card without dayReviewMayMount or buildTodayCandidates'
+  );
+  const lean = read('src/page-components/HomeTodayLean.tsx');
+  assert.equal(mentions(lean, 'dayReviewMayMount'), 0);
 });
 
 /* ------------------------------------------------------------------ *
