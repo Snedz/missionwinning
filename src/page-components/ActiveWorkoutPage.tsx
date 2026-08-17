@@ -207,6 +207,7 @@ export function ActiveWorkoutPage() {
   const [readinessBefore, setReadinessBefore] = useState<number | null>(null);
   const [readinessAfter, setReadinessAfter] = useState<number | null>(null);
   const [offerVolumeTrim, setOfferVolumeTrim] = useState(false);
+  const [logPulse, setLogPulse] = useState(0);
   const nextSetRef = useRef<HTMLDivElement | null>(null);
 
   const sessionKey = activeWorkout
@@ -416,6 +417,7 @@ export function ActiveWorkoutPage() {
     if (rest.takeRest) {
       startRestTimer(rest.restSeconds, exerciseId);
     }
+    setLogPulse((n) => n + 1);
 
     // Honor = inline brass PR chip on the set row (Design Orchestration D0).
     const haptic = planPrHaptic(isPr);
@@ -625,6 +627,18 @@ export function ActiveWorkoutPage() {
   const { completed: completedSets, total: totalSets, hardCount } = sessionSetStats(
     activeWorkout.exercises
   );
+  const nextCue = (() => {
+    if (!nextSet) return null;
+    const exLog = activeWorkout.exercises[nextSet.exIdx];
+    if (!exLog) return null;
+    const set = exLog.sets[nextSet.setIdx];
+    const dial = getSetInput(nextSet.exIdx, nextSet.setIdx, set?.reps ?? 10, set?.weight ?? 0);
+    return {
+      exerciseName: getExerciseById(exLog.exerciseId)?.name ?? '',
+      weight: dial.weight,
+      reps: dial.reps,
+    };
+  })();
   const formGuideSheet = resolveFormGuideSheet({
     formGuideId,
     getExerciseById,
@@ -639,6 +653,9 @@ export function ActiveWorkoutPage() {
         totalSets={totalSets}
         hardCount={hardCount}
         elapsedSeconds={elapsedSeconds}
+        restTimerActive={restTimerActive}
+        nextCue={nextCue}
+        logPulse={logPulse}
         onOpenPlateCalc={() => setPlateCalcOpen(true)}
         onDiscard={discardWorkout}
         onFinish={handleComplete}

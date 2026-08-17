@@ -9,6 +9,6 @@ On-device coach ear. Speech is presentation of words the rest of the app already
 | `listen.ts` | Browser SpeechRecognition → transcript. No upload |
 | `coachVoiceSession.ts` | Live talk access, phase machine, `#coach-live` href |
 
-UI: `src/components/coach/CoachLiveVoice.tsx` (signed-in loop).
+UI: `src/components/coach/CoachLiveVoice.tsx` (signed-in loop) · `src/components/speech/ActiveTrainCues.tsx` (Train Cue me, overflow).
 
 Do not import this folder from `/active` logger files (`firstSetUngated.test.ts`).
