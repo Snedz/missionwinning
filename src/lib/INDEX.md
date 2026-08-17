@@ -57,6 +57,7 @@
 | Folder | INDEX |
 |--------|-------|
 | `coach/` | [coach/INDEX.md](coach/INDEX.md) |
+| `builder/` | Blank first; templates in Show all — [builder/INDEX.md](builder/INDEX.md) |
 | `history/` | Session list + month grid — [history/INDEX.md](history/INDEX.md) |
 | `identity/` | Athlete identity — [identity/INDEX.md](identity/INDEX.md) |
 | `fuelCoach/` | [fuelCoach/INDEX.md](fuelCoach/INDEX.md) |

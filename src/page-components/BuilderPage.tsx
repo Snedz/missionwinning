@@ -311,6 +311,63 @@ export function BuilderPage() {
             </CardContent>
           </Card>
 
+          {savedWorkouts.length > 0 ? (
+        <div>
+          <h3 className="text-lg font-semibold mb-3">
+            {t('builderSavedTitle', { defaultValue: 'Saved workouts' })}
+          </h3>
+          <div className="grid gap-3">
+            {(showAllSaved ? savedWorkouts : savedWorkouts.slice(0, 6)).map((w) => (
+              <Card key={w.id} className="content-card pressable-card">
+                <CardContent className="flex items-center justify-between p-4">
+                  <div>
+                    <p className="font-semibold">{w.name}</p>
+                    <p className="text-sm text-muted-foreground">
+                      {t('builderSavedMeta', {
+                        count: w.exercises.length,
+                        date: fmt.date(w.createdAt),
+                        defaultValue: `${w.exercises.length} exercises · ${fmt.date(w.createdAt)}`,
+                      })}
+                    </p>
+                  </div>
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    className="min-h-[44px] tap-target"
+                    onClick={() => loadSaved(w)}
+                  >
+                    {t('builderLoadSaved', { defaultValue: 'Load' })}
+                  </Button>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+          {savedWorkouts.length > 6 && (
+            <Button
+              variant="ghost"
+              size="sm"
+              className="mt-2 min-h-[44px] w-full tap-target"
+              onClick={() => setShowAllSaved((v) => !v)}
+            >
+              {showAllSaved
+                ? t('builderShowLessSaved', { defaultValue: 'Show less' })
+                : t('builderShowAllSaved', {
+                    count: savedWorkouts.length,
+                    defaultValue: `Show all ${savedWorkouts.length}`,
+                  })}
+            </Button>
+          )}
+        </div>
+          ) : null}
+
+          <details className="group border-2 border-border bg-card">
+            <summary
+              className="flex min-h-[44px] cursor-pointer list-none items-center px-4 py-3 text-sm font-semibold text-foreground [&::-webkit-details-marker]:hidden"
+              data-testid="builder-show-all"
+            >
+              {t('fuelShowMore', { defaultValue: 'Show all' })}
+            </summary>
+            <div className="space-y-4 border-t-2 border-border p-4">
           <section
             id="program-templates"
             className="content-card space-y-4 border-2 border-border p-5 md:p-6"
@@ -369,61 +426,23 @@ export function BuilderPage() {
         />
       </section>
 
-      {savedWorkouts.length > 0 ? (
-        <div>
-          <h3 className="text-lg font-semibold mb-3">
-            {t('builderSavedTitle', { defaultValue: 'Saved workouts' })}
-          </h3>
-          <div className="grid gap-3">
-            {(showAllSaved ? savedWorkouts : savedWorkouts.slice(0, 6)).map((w) => (
-              <Card key={w.id} className="content-card pressable-card">
-                <CardContent className="flex items-center justify-between p-4">
-                  <div>
-                    <p className="font-semibold">{w.name}</p>
-                    <p className="text-sm text-muted-foreground">
-                      {t('builderSavedMeta', {
-                        count: w.exercises.length,
-                        date: fmt.date(w.createdAt),
-                        defaultValue: `${w.exercises.length} exercises · ${fmt.date(w.createdAt)}`,
-                      })}
-                    </p>
-                  </div>
-                  <Button
-                    size="sm"
-                    variant="outline"
-                    className="min-h-[44px] tap-target"
-                    onClick={() => loadSaved(w)}
-                  >
-                    {t('builderLoadSaved', { defaultValue: 'Load' })}
-                  </Button>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-          {savedWorkouts.length > 6 && (
-            <Button
-              variant="ghost"
-              size="sm"
-              className="mt-2 min-h-[44px] w-full tap-target"
-              onClick={() => setShowAllSaved((v) => !v)}
-            >
-              {showAllSaved
-                ? t('builderShowLessSaved', { defaultValue: 'Show less' })
-                : t('builderShowAllSaved', {
-                    count: savedWorkouts.length,
-                    defaultValue: `Show all ${savedWorkouts.length}`,
-                  })}
-            </Button>
-          )}
-        </div>
-      ) : (
+      {savedWorkouts.length === 0 ? (
         <EmptyState icon={PenTool} title={t('builderNoSaved', { defaultValue: 'No saved workouts yet. Build one above or load a template.' })} description={t('builderNoSavedDesc', {
             defaultValue: 'Build a workout and save it — your routines appear here.',
           })}
           actionLabel={t('builderStartBlank', { defaultValue: 'Blank workout' })}
           onAction={startBlank}
         />
-      )}
+      ) : null}
+              <SignInPrompt
+                className="mt-2"
+                nextPath="/builder"
+                description={t('builderSignInFoot', {
+                  defaultValue: 'Sign in to sync saved routines across devices.',
+                })}
+              />
+            </div>
+          </details>
         </div>
       )}
 
@@ -612,13 +631,6 @@ export function BuilderPage() {
           )}
         </DialogContent>
       </Dialog>
-
-      <SignInPrompt
-        className="mt-6"
-        nextPath="/builder" description={t('builderSignInFoot', {
-          defaultValue: 'Sign in to sync saved routines across devices.',
-        })}
-      />
     </PillarPageShell>
   );
 }

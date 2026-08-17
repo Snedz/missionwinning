@@ -22,7 +22,7 @@
 | File | Route |
 |------|-------|
 | `ActiveWorkoutPage.tsx` | `/active` |
-| `BuilderPage.tsx` | `/builder` |
+| `BuilderPage.tsx` | `/builder` | First paint is Blank workout; program templates in Show all |
 | `HistoryPage.tsx` | `/history` | First paint is the session list; calendar / charts / journal in Show all |
 | `LibraryPage.tsx` | `/library` | First paint is a pick list; posters / templates in Show all |
 | `BenchmarksPage.tsx` | `/benchmarks` |
