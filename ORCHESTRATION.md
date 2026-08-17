@@ -42,7 +42,7 @@ Scope note: this override is **narrow by design**. Everything else on the Horizo
 
 ### Founder override — pre-EIN craft window (2026-08-03)
 
-**≥10 beta users is no longer a build freeze.** REDTEAM A5 remains a *launch/public-flip* signal, not a ban on product work. EIN/payments may take weeks — use the window for **excellence craft, habit loop, return channel, and launch prep**.
+**The 10-invite beta program is retired.** Current release is **Alpha 0.1.0** — free tracker or Super Bundle (checkout muted until EIN). Beta is a later stage after public + week-4, not a harness ticket. EIN/payments may take weeks — use the window to keep building the wedge, www, and flip-prep.
 
 | Still required | Still forbidden |
 |----------------|-----------------|
@@ -56,7 +56,7 @@ Agents may ship beyond “hero bugs only” for this window. Prefer delete/refin
 
 ## Principles
 
-1. **Wedge excellence before beta theater** — build Train → Today → Victory → Coach until the founder scores “not lame.” ≥10 invites are a **public-flip** gate, not a code freeze.
+1. **Wedge excellence before flip theater** — build Train → Today → Victory → Coach until the founder scores “not lame.” The 10-invite program is retired. Public is `PRIVATE_MODE=false`.
 2. **Train + Mission Coach are the product** — other pillars stay free-usable; do not deepen them while the wedge feels weak.
 3. **One boss metric (after public)** — week-4 retained weekly loggers. Languages, pillars, stars alone are vanity.
 4. **Two workstreams** — Founder (users, money, legal, excellence sign-off) and Agents (wedge code, tests, perf, docs) in parallel; agents never mark founder work done.
@@ -70,7 +70,7 @@ flowchart TB
     S[Founder signoff]
   end
   subgraph H0 [Horizon 0 - Now]
-    B[Beta 10 users]
+    B[Alpha flip prep]
   end
   subgraph H1 [Horizon 1 - Public]
     P[PRIVATE_MODE false]
@@ -118,7 +118,7 @@ flowchart TB
 
 **Agent-forbidden (unless explicit founder override):** New pillar depth, America/PFT, locale body farms, guidebook expansion, wearables, Android F5, YC thesis churn as daily work. — *`landing redesign` was struck 2026-08-09; see the [www surface override](#founder-override--www-surface-on-astro-2026-08-09) above, which is narrow and leaves the rest of this list intact.*
 
-**Done when:** Founder phone path says pass → then Horizon 0 flip prep (recruit ≥10). RESULT is `pass` (2026-08-16). Harness tickets after that are the Horizon 0 agent-required streams, not a wedge walk.
+**Done when:** Founder phone path says pass → then Horizon 0 Alpha flip prep. RESULT is `pass` (2026-08-16). Harness tickets after that are the Horizon 0 path tickets, not a wedge walk.
 
 **Where sign-off is written:** [docs/EXCELLENCE_RESULT.md](docs/EXCELLENCE_RESULT.md) — one home for `status: unscored | pass | fail`. `CONTEXT.md` `## Now` points at it in one bullet. Android Accept B stays separate ([apps/android/FOUNDER_ACCEPT.md](apps/android/FOUNDER_ACCEPT.md)).
 
@@ -128,26 +128,27 @@ flowchart TB
 
 ## Horizon 0 — Launch unblock (NOW · after excellence sign-off)
 
-**Owner:** Founder primary · Agents: the streams below. Postal / ≥10 beta stay **public-flip** signals (override 2026-08-03), not harness tickets. Residual wedge polish is founder dogfood ([LAUNCH_RUNBOOK](docs/LAUNCH_RUNBOOK.md) §3a), not an empty-queue walk.
+**Owner:** Founder primary · Agents: the path tickets below. Postal is later (you). There is no 10-invite beta — release is **Alpha 0.1.0**, offer is free tracker or Super Bundle. Residual wedge polish is founder dogfood ([LAUNCH_RUNBOOK](docs/LAUNCH_RUNBOOK.md) §3a), not an empty-queue walk.
 
-### Agent-required workstreams
+### Path tickets
 
 Closed checklist. Adding an H-id here without a `PATH_STEPS` row is red (`criticalPath.test.ts`). The first unproven row is the live `/harness` ticket.
 
-| Stream | Outcome |
+| Ticket | Outcome |
 |--------|---------|
 | H01 Keep CI green | www composition floors pass (`npm --prefix sites/www run check`). Proven by `sites/www/COMPOSITION_PASS.md` (`status: pass`) — the check script existing is not the proof |
+| H03 Alpha chrome | Athlete launch chrome says Alpha, not Free beta (`src/lib/alphaNavHonesty.test.ts`) |
 
 ### Founder critical path
 
 | # | Task | Doc |
 |---|------|-----|
-| 0 | **`MAIL_POSTAL_ADDRESS`** (invite email hard-blocked without it) | [docs/LAUNCH_RUNBOOK.md](docs/LAUNCH_RUNBOOK.md) §2 · CONTEXT status |
+| 0 | **`MAIL_POSTAL_ADDRESS`** — later. Invite email hard-blocked without it; not a build freeze | [docs/LAUNCH_RUNBOOK.md](docs/LAUNCH_RUNBOOK.md) §2 · CONTEXT status |
 | 0b | Pending Supabase migrations (return loop / week-4 / push) | [docs/LAUNCH_RUNBOOK.md](docs/LAUNCH_RUNBOOK.md) §2–§3 |
 | 1 | Vercel Production: `SUPABASE_SERVICE_ROLE_KEY`, `DEMO_PREMIUM=false`, rotated `PRIVATE_ACCESS_SECRET` | [docs/LAUNCH_RUNBOOK.md](docs/LAUNCH_RUNBOOK.md) §2 |
-| 2 | Stripe monthly / 12-mo $59 / lifetime $149 links + `STRIPE_WEBHOOK_SECRET` — **after EIN** (free-first beta now) | [docs/STRIPE_PREMIUM_SETUP.md](docs/STRIPE_PREMIUM_SETUP.md), [docs/FREE_BETA.md](docs/FREE_BETA.md) |
+| 2 | Stripe monthly / 12-mo $59 / lifetime $149 links + `STRIPE_WEBHOOK_SECRET` — **after EIN** (mute-pay now) | [docs/STRIPE_PREMIUM_SETUP.md](docs/STRIPE_PREMIUM_SETUP.md), [docs/FREE_BETA.md](docs/FREE_BETA.md) |
 | 3 | **Dogfood notes** on current build (2–5 min; paste #1 friction to agents) | [docs/LAUNCH_RUNBOOK.md](docs/LAUNCH_RUNBOOK.md) **§3a** |
-| 4 | Recruit ≥10 beta users **(after excellence pass + postal)** | [docs/BETA_INVITE.md](docs/BETA_INVITE.md), [docs/THESIS.md](docs/THESIS.md) |
+| 4 | ~~Recruit ≥10 beta users~~ **Retired.** No invite-beta program. Release is Alpha 0.1.0. | — |
 | 5 | **Gates (the one home for these numbers): I-Day ≥80%, Basic Training ≥60%.** Basic Training means **first workout completed** ([docs/JOURNEY.md](docs/JOURNEY.md) Phase 1) — Horizon W retired the 5/5 scavenger hunt. `.605`: this gate had carried three different values across three files (≥40% 5/5, ≥60% 5/5, first-workout-only); other docs now point here rather than restate. | Profile beta panel, [docs/JOURNEY.md](docs/JOURNEY.md) Phase 1 |
 | 6 | Mobile hero QA: Welcome → first set → Victory → Coach (with dogfood notes) | Manual + `npm run e2e:critical` + §3a |
 | 7 | `LAUNCH_STRICT=true npm run launch-verify` against prod | Scripts |
@@ -157,13 +158,14 @@ Closed checklist. Adding an H-id here without a `PATH_STEPS` row is red (`critic
 ### Agent-allowed (Horizon 0)
 
 - Hero-flow / gate / premium 403 regressions
-- Beta invite / founder panel / launch-verify + **growth-smoke** clarity
+- Launch-verify + **growth-smoke** clarity
 - Keep CI green; docs match reality (build label, LAUNCH_READY)
 - Public-flip offline/SW checklist maintenance
 - Production-stack scorecard + rate-limit smoke script + backup runbook (no new pillars)
 - Residual wedge polish
+- Keep building until the flip — do not stall for postal or a retired invite count
 
-**Done when:** Excellence already passed + 10+ profiles, BT ≥60%, secrets green, ready to flip public.
+**Done when:** Excellence already passed + flip checklist ready. Not 10+ profiles. Beta is a later stage after public + week-4.
 
 ---
 
@@ -289,7 +291,7 @@ Founder-only lanes (never delegated): accounts/secrets, pricing, legal filings, 
 
 | Horizon | Pass |
 |---------|------|
-| **0** | ≥10 beta, BT ≥60%, secrets + Stripe path verified |
+| **0** | Alpha flip-prep ready (checklist, secrets path); BT ≥60% is a later measure, not a freeze |
 | **1** | Public + offline core + ≥1 paid path + activation baselined |
 | **2** | Week-4 ≥10% (two cohorts) **or** explicit pivot |
 | **3** | SEO/i18n/TWA/B2B only with retention; free core still free |
@@ -308,7 +310,7 @@ Founder-only lanes (never delegated): accounts/secrets, pricing, legal filings, 
 | Demo | 60s: I-Day → log → Coach adapts week |
 | Interviews | 20 written “why I almost quit” notes |
 
-**Founder path (order):** private beta (≥10) → public → week-4 + paid signal → YC only if numbers are rising.  
+**Founder path (order):** Alpha (gated, keep building) → public (`PRIVATE_MODE=false`) → week-4 + paid signal → later: beta as a stage, then YC only if numbers are rising.  
 Measure: [docs/POST_LAUNCH_CADENCE.md](docs/POST_LAUNCH_CADENCE.md). Flip day: [docs/archive/SOFT_LAUNCH_DAY.md](docs/archive/SOFT_LAUNCH_DAY.md).
 
 Pitch the **Train + Mission Coach wedge** — not “everything app.” Constitution stays [vision.md](vision.md).

@@ -16,13 +16,16 @@ Archive: [2026-06 → 2026-07-20](docs/archive/log/LOG-2026-06_to_2026-07-20.md)
 After RESULT `pass`, `firstCriticalGap` was `null`. `.881` filled that
 vacuum with `craft`: walk Train → Today → Victory → Coach and invent a
 friction. That is not the mermaid. Horizon W is scored; the next box is
-Horizon 0 — flip prep toward public, Stripe, and the week-4 wall metric.
-A taste walk is how the harness stops building the vision.
+Horizon 0 — Alpha flip prep toward public, Stripe, and the week-4 wall
+metric. A taste walk is how the harness stops building the vision.
 
-**Ship:** Horizon 0 agent-required stream `H01` (www composition) on
-`PATH_STEPS`. Recipe 16 deleted. Empty queue after pass names `H01`, not
-`craft`. Path proven → `stalled` (founder postal / secrets / `PRIVATE_MODE`).
-Still no GRAPH_LOOP letter.
+The 10-invite beta program is retired. Release is **Alpha 0.1.0**. Offer
+is free tracker or Super Bundle. Mute-pay until EIN. Postal later.
+Athlete nav said "Free beta"; it now says Alpha.
+
+**Ship:** Horizon 0 path tickets `H01` (www composition) and `H03`
+(Alpha chrome). Recipe 16 deleted. Empty queue after pass names `H01`,
+not `craft`. Still no GRAPH_LOOP letter.
 
 Label `.883` (onto master `.882`).
 

@@ -60,7 +60,7 @@ describe('critical path', () => {
    * on status is proved with fixtures in both directions rather than by
    * whichever value happens to be committed today.
    */
-  it('on this repo W1–W4 are proven by their instruments; H01 is not', () => {
+  it('on this repo W1–W4 and H03 are proven by their instruments; H01 is not', () => {
     for (const step of PATH_STEPS) {
       if (step.id === 'C5' || step.id === 'H01') continue;
       assert.equal(isStepProven(step, root), true, `${step.id} should already be proven`);

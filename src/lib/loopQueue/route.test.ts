@@ -295,6 +295,7 @@ test('mined harvest + RESULT pass + H01 stamp stalls — founder flip work, not 
   writeFileSync(path.join(tmp, 'tests/e2e/first-90.spec.ts'), 'First 90 seconds @gate');
   mkdirSync(path.join(tmp, 'scripts'), { recursive: true });
   writeFileSync(path.join(tmp, 'scripts/www-composition.mjs'), 'composition floors');
+  writeFileSync(path.join(tmp, 'src/lib/alphaNavHonesty.test.ts'), 'athlete launch chrome is Alpha');
 
   const q = real();
   for (const s of q.sections) for (const row of s.rows) if (row.status === 'open') row.status = 'done';

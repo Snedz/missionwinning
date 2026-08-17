@@ -99,6 +99,15 @@ export const PATH_STEPS: readonly PathStep[] = [
     owner: 'agent',
     accept: 'npm --prefix sites/www run check',
   },
+  {
+    id: 'H03',
+    claim: 'Athlete launch chrome says Alpha, not Free beta',
+    instrument: 'src/lib/alphaNavHonesty.test.ts',
+    anchor: 'athlete launch chrome is Alpha',
+    orchAnchor: 'H03 Alpha chrome',
+    owner: 'agent',
+    accept: 'npx tsx --test src/lib/alphaNavHonesty.test.ts',
+  },
 ];
 
 /** Agent-required workstream rows: `| W1 Activation |` (and the parked `| W1 |` table). */

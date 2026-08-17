@@ -23,7 +23,7 @@
 | Web | `NEXT_PUBLIC_FREE_BETA` | **ON** unless `false` / `0` / `off` |
 | Android | `MwFreeBeta.ENABLED` in designsystem | `true` |
 
-Helpers: `isFreeBeta()` · `isFreeBetaPremiumUnlocked()` · `isPaidCheckoutAllowed()` · server `isPremiumBypassEnabled()` (demo **or** free beta).
+Helpers: `isFreeBeta()` · `isFreeBetaPremiumUnlocked()` · `isPaidCheckoutAllowed()` · server `isPremiumBypassEnabled()` (demo **or** mute-pay). The identifier is mute-pay, not the product name.
 
 Turn off after business bank + Stripe/PayPal live:
 
@@ -37,7 +37,7 @@ NEXT_PUBLIC_FREE_BETA=false
 const val ENABLED: Boolean = false
 ```
 
-Then grandfather early beta users with founders price / enrollment grants — not leftover credits.
+Then grandfather early Alpha users with founders price / enrollment grants — not leftover credits.
 
 ## Code entry points
 

@@ -16,7 +16,7 @@ Works in Cursor, Claude Code, Grok, Copilot, Gemini, and other agents — tool-a
 6. Do not use old chat plans as source of truth — use `ORCHESTRATION.md`, `docs/PLAN.md`, and `LOG.md`.
 7. Private continuity (diary, strategy full text, Mission Control dashboard): mount `ops/` / mission-ops — [docs/OPS_LOCAL.md](docs/OPS_LOCAL.md). Run `npm run ops:dashboard` locally when available.
 
-**Horizon rule:** **Horizon 0 (now)** — RESULT is pass. Agents take Horizon 0 agent-required streams (keep CI green, flip-prep). Wedge excellence still required. ≥10 beta / postal are **public-flip** signals, not a build freeze. Refuse new pillars / locales / America / F5 unless the founder explicitly overrides.
+**Horizon rule:** **Horizon 0 (now)** — RESULT is pass. Release is **Alpha 0.1.0**. Offer is free tracker or Super Bundle. Agents take Horizon 0 path tickets (keep CI green, Alpha chrome, flip-prep). Wedge excellence still required. Postal is later. There is no 10-invite beta. Refuse new pillars / locales / America / F5 unless the founder explicitly overrides.
 
 ---
 
