@@ -1,12 +1,12 @@
 'use client';
 
 /**
- * The fifth tab — a door to screens that have no tab.
+ * Search — a field over existing rooms, not a `/search` route.
  *
- * **Flow-4 tiers** (`moreSheetTiersForNav`): Wedge · Pillars · You — not a
- * mirror of the desktop rail. Tab routes never appear as rows. Quiet foot
- * links cover tools + legal. Labels resolve through the same nav registry as
- * the rail so names cannot disagree.
+ * Type to flatten Wedge · Pillars · You · quiet foot. Fuel, Coach, and Train
+ * can pin to Summary from the row. Tab routes never appear as rows. Quiet
+ * foot links cover tools + legal. Labels resolve through the same nav
+ * registry as the rail so names cannot disagree.
  *
  * Rows carry a live figure on the right where an honest one exists, so the
  * sheet reads as a status board rather than a menu. Where there is no honest
@@ -23,10 +23,10 @@
  * meant. Being a status board already, the sheet is where an athlete would look.
  */
 
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { ChevronRight } from 'lucide-react';
+import { ChevronRight, type LucideIcon } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { cn } from '@/lib/utils';
 import { AdaptiveOverlay } from '@/components/ui/AdaptiveOverlay';
@@ -42,6 +42,14 @@ import { APP_BUILD_LABEL, APP_PUBLIC_PRODUCT_VERSION } from '@/lib/buildInfo';
 import { isWhatsNewUnseen } from '@/lib/whatsNew';
 import { useWorkoutStore } from '@/store/workoutStore';
 import { useActiveWorkoutPulse } from '@/hooks/useActiveWorkoutPulse';
+import { filterSearchCatalog, summaryPinIdForHref } from '@/lib/searchCatalog';
+import {
+  parseSummaryPinIds,
+  toggleSummaryPinId,
+  type SummaryPinId,
+} from '@/lib/today/summaryPins';
+import { readRaw, writeJson } from '@/lib/storage/safeStorage';
+import { STORAGE_KEYS } from '@/lib/storage/keys';
 
 /**
  * Live figures, read once when the sheet opens.
@@ -116,6 +124,9 @@ export function MoreSheet({ open, onClose }: { open: boolean; onClose: () => voi
     () => moreSheetTiersForNav({ hasFirstWorkout, hasActiveWorkout }),
     [hasFirstWorkout, hasActiveWorkout]
   );
+  const searchRef = useRef<HTMLInputElement>(null);
+  const [query, setQuery] = useState('');
+  const [pinIds, setPinIds] = useState<SummaryPinId[]>(() => parseSummaryPinIds(null));
 
   /**
    * The checklist, read when the sheet opens.
@@ -148,6 +159,56 @@ export function MoreSheet({ open, onClose }: { open: boolean; onClose: () => voi
   const showBundle = isPathEnabled('/bundle') && bundle;
   const quiet = useMemo(() => moreSheetQuietForNav(), []);
 
+  useEffect(() => {
+    if (!open) {
+      setQuery('');
+      return;
+    }
+    setPinIds(parseSummaryPinIds(readRaw(STORAGE_KEYS.summaryPins)));
+  }, [open]);
+
+  const catalog = useMemo(
+    () => [
+      ...groups.flatMap((group) =>
+        group.items.map((item) => ({
+          href: item.href,
+          label: item.label,
+          labelKey: item.labelKey,
+          icon: item.icon,
+        }))
+      ),
+      ...quiet.map((link) => ({
+        href: link.href,
+        label: link.label,
+        labelKey: link.labelKey,
+        icon: undefined as LucideIcon | undefined,
+      })),
+    ],
+    [groups, quiet]
+  );
+
+  const searching = query.trim().length > 0;
+  const matches = useMemo(() => {
+    if (!searching) return [];
+    const hits = filterSearchCatalog(
+      catalog.map((item) => ({
+        href: item.href,
+        label: `${item.label} ${t(item.labelKey, { defaultValue: item.label })}`,
+      })),
+      query
+    );
+    return hits
+      .map((hit) => catalog.find((item) => item.href === hit.href))
+      .filter((item): item is (typeof catalog)[number] => item != null);
+  }, [catalog, query, searching, t]);
+
+  const persistPins = (id: SummaryPinId) => {
+    const next = toggleSummaryPinId(pinIds, id);
+    setPinIds(next);
+    writeJson(STORAGE_KEYS.summaryPins, next);
+    window.dispatchEvent(new Event('mw-journey-event'));
+  };
+
   return (
     <AdaptiveOverlay
       open={open}
@@ -156,6 +217,7 @@ export function MoreSheet({ open, onClose }: { open: boolean; onClose: () => voi
       eyebrow={t('navSearch', { defaultValue: 'Search' })}
       title={t('appName', { defaultValue: 'Mission Winning' })}
       bodyClassName="pb-2"
+      initialFocusRef={searchRef}
     >
       {/*
         Above the groups because it is the one row that is about *you* rather
@@ -163,7 +225,46 @@ export function MoreSheet({ open, onClose }: { open: boolean; onClose: () => voi
         permanent surface is a permanent row saying nothing, which is the
         reference app's notification-centre defect in miniature.
       */}
-      {!stepProgress.complete && stepProgress.total > 0 ? (
+      <div className="border-b-2 border-border px-4 py-3">
+        <input
+          ref={searchRef}
+          type="search"
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
+          data-testid="search-catalog-field"
+          placeholder={t('navSearch', { defaultValue: 'Search' })}
+          aria-label={t('navSearch', { defaultValue: 'Search' })}
+          autoComplete="off"
+          enterKeyHint="search"
+          className="min-h-[44px] w-full border-2 border-border bg-background px-3 py-2.5 text-sm"
+        />
+      </div>
+
+      {searching ? (
+        <ul data-testid="search-catalog-results">
+          {matches.map((item) => {
+            const pinId = summaryPinIdForHref(item.href);
+            return (
+              <CatalogRow
+                key={item.href}
+                href={item.href}
+                label={t(item.labelKey, { defaultValue: item.label })}
+                Icon={item.icon}
+                figure={figures[item.href]}
+                active={pathname === item.href || pathname.startsWith(item.href + '/')}
+                pinId={pinId}
+                pinned={pinId != null && pinIds.includes(pinId)}
+                pinOnLabel={t('todayPinOn', { defaultValue: 'Pinned' })}
+                pinOffLabel={t('todayPinOff', { defaultValue: 'Off' })}
+                onPin={persistPins}
+                onNavigate={onClose}
+              />
+            );
+          })}
+        </ul>
+      ) : null}
+
+      {!searching && !stepProgress.complete && stepProgress.total > 0 ? (
         <div className="border-b-2 border-border">
           <button
             type="button"
@@ -201,6 +302,7 @@ export function MoreSheet({ open, onClose }: { open: boolean; onClose: () => voi
         </div>
       ) : null}
 
+      {!searching ? (
       <div className="border-b-2 border-border">
         <button
           type="button"
@@ -225,46 +327,40 @@ export function MoreSheet({ open, onClose }: { open: boolean; onClose: () => voi
           }}
         />
       </div>
+      ) : null}
 
-      {groups.map((group) => (
+      {!searching
+        ? groups.map((group) => (
         <div key={group.id} className="border-b-2 border-border">
           <h3 className="px-4 pt-4 pb-2 text-[11px] font-semibold uppercase tracking-[0.1em] text-muted-foreground">
             {t(group.titleKey, { defaultValue: group.title })}
           </h3>
           <ul>
             {group.items.map((item) => {
-              const Icon = item.icon;
-              const active = pathname === item.href || pathname.startsWith(item.href + '/');
-              const figure = figures[item.href];
+              const pinId = summaryPinIdForHref(item.href);
               return (
-                <li key={item.href} className="border-t border-border">
-                  <Link
-                    href={item.href}
-                    onClick={onClose}
-                    aria-current={active ? 'page' : undefined}
-                    className={cn(
-                      'flex min-h-[52px] items-center gap-3 px-4 transition-colors hover:bg-muted',
-                      active && 'is-active-row'
-                    )}
-                  >
-                    <Icon className="h-[18px] w-[18px] shrink-0 text-muted-foreground" aria-hidden />
-                    <span className="flex-1 truncate text-[15px] font-semibold">
-                      {t(item.labelKey, { defaultValue: item.label })}
-                    </span>
-                    {figure ? (
-                      <span className="shrink-0 text-xs tabular-nums text-muted-foreground">
-                        {figure}
-                      </span>
-                    ) : null}
-                  </Link>
-                </li>
+                <CatalogRow
+                  key={item.href}
+                  href={item.href}
+                  label={t(item.labelKey, { defaultValue: item.label })}
+                  Icon={item.icon}
+                  figure={figures[item.href]}
+                  active={pathname === item.href || pathname.startsWith(item.href + '/')}
+                  pinId={pinId}
+                  pinned={pinId != null && pinIds.includes(pinId)}
+                  pinOnLabel={t('todayPinOn', { defaultValue: 'Pinned' })}
+                  pinOffLabel={t('todayPinOff', { defaultValue: 'Off' })}
+                  onPin={persistPins}
+                  onNavigate={onClose}
+                />
               );
             })}
           </ul>
         </div>
-      ))}
+          ))
+        : null}
 
-      {showBundle ? (
+      {!searching && showBundle ? (
         /* --primary #ae1800, never poster #ec3013: this panel carries an 11px
            kicker, and nothing at that size clears 4.5:1 on poster red. */
         <Link
@@ -281,6 +377,7 @@ export function MoreSheet({ open, onClose }: { open: boolean; onClose: () => voi
         </Link>
       ) : null}
 
+      {!searching ? (
       <div className="flex flex-wrap gap-x-4 gap-y-2 px-4 py-4 text-xs text-muted-foreground">
         {quiet.map((link) => (
           <Link
@@ -293,6 +390,7 @@ export function MoreSheet({ open, onClose }: { open: boolean; onClose: () => voi
           </Link>
         ))}
       </div>
+      ) : null}
       <p
         className="px-4 pb-4 text-[10px] font-semibold uppercase tracking-[0.1em] text-muted-foreground"
         data-mw-public-version
@@ -300,5 +398,65 @@ export function MoreSheet({ open, onClose }: { open: boolean; onClose: () => voi
         {APP_PUBLIC_PRODUCT_VERSION}
       </p>
     </AdaptiveOverlay>
+  );
+}
+
+function CatalogRow({
+  href,
+  label,
+  Icon,
+  figure,
+  active,
+  pinId,
+  pinned,
+  pinOnLabel,
+  pinOffLabel,
+  onPin,
+  onNavigate,
+}: {
+  href: string;
+  label: string;
+  Icon?: LucideIcon;
+  figure?: string;
+  active: boolean;
+  pinId: SummaryPinId | null;
+  pinned: boolean;
+  pinOnLabel: string;
+  pinOffLabel: string;
+  onPin: (id: SummaryPinId) => void;
+  onNavigate: () => void;
+}) {
+  return (
+    <li className="flex items-stretch border-t border-border">
+      <Link
+        href={href}
+        onClick={onNavigate}
+        aria-current={active ? 'page' : undefined}
+        className={cn(
+          'flex min-h-[52px] min-w-0 flex-1 items-center gap-3 px-4 transition-colors hover:bg-muted',
+          active && 'is-active-row'
+        )}
+      >
+        {Icon ? (
+          <Icon className="h-[18px] w-[18px] shrink-0 text-muted-foreground" aria-hidden />
+        ) : null}
+        <span className="flex-1 truncate text-[15px] font-semibold">{label}</span>
+        {figure ? (
+          <span className="shrink-0 text-xs tabular-nums text-muted-foreground">{figure}</span>
+        ) : null}
+      </Link>
+      {pinId ? (
+        <button
+          type="button"
+          data-testid="search-catalog-pin"
+          data-pin-id={pinId}
+          aria-pressed={pinned}
+          className="shrink-0 px-3 text-[11px] font-semibold uppercase tracking-[0.08em] text-muted-foreground"
+          onClick={() => onPin(pinId)}
+        >
+          {pinned ? pinOnLabel : pinOffLabel}
+        </button>
+      ) : null}
+    </li>
   );
 }
