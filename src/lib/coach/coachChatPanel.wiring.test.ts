@@ -45,6 +45,8 @@ describe('CoachChatPanel peels (.437)', () => {
     assert.match(transcript, /role="log"/);
     assert.match(composer, /coach-chat-input/);
     assert.match(composer, /coachChatSend/);
+    assert.match(composer, /coach-chat-mic/);
+    assert.doesNotMatch(panel, /coach-chat-mic/, 'mic lives in CoachChatComposer');
     assert.doesNotMatch(
       panel,
       /role="log"/,
@@ -54,6 +56,34 @@ describe('CoachChatPanel peels (.437)', () => {
       panel,
       /coach-chat-input/,
       'composer input lives in CoachChatComposer'
+    );
+  });
+});
+
+describe('Coach live voice (signed-in + online)', () => {
+  it('CoachPage mounts the live talk surface, not only buried chat', () => {
+    const page = readFileSync(
+      path.join(root, 'src/page-components/CoachPage.tsx'),
+      'utf8'
+    );
+    const live = readFileSync(
+      path.join(root, 'src/components/coach/CoachLiveVoice.tsx'),
+      'utf8'
+    );
+    assert.match(page, /CoachLiveVoice/);
+    assert.match(live, /coach-live-voice/);
+    assert.match(live, /postCoachChatMessage/);
+    assert.match(live, /nextCoachVoicePhase/);
+    const liveJsx = page.indexOf('<CoachLiveVoice');
+    const week = page.indexOf('<WeekStrip');
+    const sheet = page.indexOf('mode="sheet"');
+    const details = page.indexOf('<details');
+    assert.ok(liveJsx >= 0, 'live voice JSX is on CoachPage');
+    assert.ok(week >= 0 && liveJsx > week, 'Talk sits after the week strip');
+    assert.ok(sheet >= 0 && liveJsx > sheet, 'Talk sits after this week’s session sheet');
+    assert.ok(
+      details < 0 || liveJsx < details,
+      'live voice sits on the main Coach surface, not inside Show all'
     );
   });
 });

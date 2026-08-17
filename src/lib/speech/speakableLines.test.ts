@@ -4,8 +4,12 @@ import {
   SILENT_KINDS,
   SPOKEN_KINDS,
   joinForSpeech,
+  shouldSpeakOnRestEnd,
+  speakableChatReply,
   speakableDebriefLines,
   speakableDebriefText,
+  speakableNextCue,
+  speakableSetProgress,
 } from '@/lib/speech/speakableLines';
 import type { Debrief, DebriefLineKind } from '@/lib/coach/debrief';
 
@@ -96,5 +100,66 @@ describe('speakableDebriefLines', () => {
       '700 kg moved. Steady week. Sleep was 2/5!'
     );
     assert.equal(joinForSpeech([]), '');
+  });
+});
+
+describe('speakableNextCue', () => {
+  it('names the next lift and load from the live store — nothing invented', () => {
+    assert.equal(
+      speakableNextCue({ exerciseName: 'Bench press', weight: 80, reps: 5 }),
+      'Rest. Next: Bench press, 80 × 5.'
+    );
+  });
+
+  it('bodyweight (0 load) speaks reps, not a fake bar', () => {
+    assert.equal(
+      speakableNextCue({ exerciseName: 'Push-up', weight: 0, reps: 12 }),
+      'Rest. Next: Push-up, 12 reps.'
+    );
+  });
+
+  it('a name with no targets is still a direction, not silence', () => {
+    assert.equal(speakableNextCue({ exerciseName: 'Squat' }), 'Rest. Next: Squat.');
+  });
+
+  it('blank or missing name is silence — no filler coach', () => {
+    assert.equal(speakableNextCue(null), '');
+    assert.equal(speakableNextCue(undefined), '');
+    assert.equal(speakableNextCue({ exerciseName: '   ' }), '');
+  });
+});
+
+describe('speakableSetProgress', () => {
+  it('speaks completed of planned from the store counts', () => {
+    assert.equal(speakableSetProgress({ completed: 2, target: 4 }), '2 of 4.');
+  });
+
+  it('zero or inverted counts are silence, not "0 of 0"', () => {
+    assert.equal(speakableSetProgress(null), '');
+    assert.equal(speakableSetProgress({ completed: 0, target: 4 }), '');
+    assert.equal(speakableSetProgress({ completed: 2, target: 0 }), '');
+  });
+});
+
+describe('shouldSpeakOnRestEnd', () => {
+  it('speaks only when Cue me is on and rest just ended', () => {
+    assert.equal(shouldSpeakOnRestEnd(true, false, true), true);
+    assert.equal(shouldSpeakOnRestEnd(true, false, false), false);
+    assert.equal(shouldSpeakOnRestEnd(false, false, true), false);
+    assert.equal(shouldSpeakOnRestEnd(true, true, true), false);
+  });
+});
+
+describe('speakableChatReply', () => {
+  it('speaks the reply text without markdown markers', () => {
+    assert.equal(
+      speakableChatReply('Keep **elbows** under the bar.'),
+      'Keep elbows under the bar.'
+    );
+  });
+
+  it('blank is silence', () => {
+    assert.equal(speakableChatReply(''), '');
+    assert.equal(speakableChatReply(null), '');
   });
 });

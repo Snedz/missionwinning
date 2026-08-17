@@ -199,3 +199,38 @@ export async function readCoachChatStream(
 export function isCoachChatAbortError(err: unknown): boolean {
   return err instanceof Error && err.name === 'AbortError';
 }
+
+export type CoachChatTurn = { role: 'user' | 'coach'; content: string };
+
+export type CoachChatContextBody = ReturnType<typeof buildCoachChatRequestContext>;
+
+/**
+ * One coach chat turn — same JSON path the typed panel uses.
+ * Live voice and the composer both go through here.
+ */
+export async function postCoachChatMessage(opts: {
+  message: string;
+  turns: CoachChatTurn[];
+  context: CoachChatContextBody;
+  deviceId: string;
+  signal?: AbortSignal;
+  onPartial: (text: string) => void;
+}): Promise<{ kind: 'http'; status: number } | CoachChatStreamReadResult> {
+  const res = await fetch('/api/coach/chat', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Accept: 'text/plain',
+    },
+    body: JSON.stringify({
+      message: opts.message,
+      turns: opts.turns.slice(-12),
+      context: opts.context,
+      stream: true,
+      deviceId: opts.deviceId,
+    }),
+    signal: opts.signal,
+  });
+  if (!res.ok || !res.body) return { kind: 'http', status: res.status };
+  return readCoachChatStream(res.body, opts.onPartial);
+}

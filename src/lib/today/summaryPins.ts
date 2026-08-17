@@ -3,6 +3,8 @@
  * Extra rooms (Fuel, Coach) are optional pins, not tabs.
  */
 
+import { COACH_LIVE_HREF } from '@/lib/speech/coachVoiceSession';
+
 export const SUMMARY_PIN_MAX = 4;
 
 export const SUMMARY_PIN_CATALOG = ['session', 'fuel', 'coach'] as const;
@@ -87,7 +89,7 @@ export function resolveSummaryPins(input: {
     } else if (id === 'fuel') {
       out.push({ id: 'fuel', kind: 'fuel', sessionName: null, href: '/nutrition' });
     } else if (id === 'coach') {
-      out.push({ id: 'coach', kind: 'coach', sessionName: null, href: '/coach' });
+      out.push({ id: 'coach', kind: 'coach', sessionName: null, href: COACH_LIVE_HREF });
     }
   }
   return clampSummaryPins(out);

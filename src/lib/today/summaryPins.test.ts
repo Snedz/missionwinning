@@ -93,5 +93,5 @@ test('resolve keeps session as start/last/resume and adds door pins', () => {
   assert.equal(pins[1].kind, 'fuel');
   assert.equal(pins[1].href, '/nutrition');
   assert.equal(pins[2].kind, 'coach');
-  assert.equal(pins[2].href, '/coach');
+  assert.equal(pins[2].href, '/coach#coach-live');
 });

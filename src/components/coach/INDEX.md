@@ -20,6 +20,7 @@
 | `CoachChatPanel.tsx` | Premium chat; free = soft tip or form cues for `?ask=` (not brass paywall) |
 | `CoachChatTranscript.tsx` | Premium turn log (`role="log"`) (`.448`) |
 | `CoachChatComposer.tsx` | Premium input + send/stop (`.448`) |
+| `CoachLiveVoice.tsx` | Signed-in + online talk loop (listen → think → speak → listen). After this week’s session — not above the strip |
 
 ## Related
 

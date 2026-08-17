@@ -65,6 +65,7 @@
 | `workout/` | Logger, merge, rest, PR, victory — [workout/INDEX.md](workout/INDEX.md) |
 | `wearables/` | OAuth + hubs + BLE HR — [wearables/INDEX.md](wearables/INDEX.md) |
 | `leaderboard/` | Leaderboard compute/sync helpers — [leaderboard/INDEX.md](leaderboard/INDEX.md) |
+| `speech/` | On-device speak + listen + live talk session — [speech/INDEX.md](speech/INDEX.md) |
 | `storage/` | **The only** direct localStorage access — [storage/INDEX.md](storage/INDEX.md) |
 | `sync/` | Durable outbox for cloud writes — [sync/INDEX.md](sync/INDEX.md) |
 

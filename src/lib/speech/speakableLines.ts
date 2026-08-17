@@ -21,6 +21,10 @@
  * Order is the debrief's own order, not a re-ranking: effort, then any record, then
  * the load band, then a plateau, then readiness. That is the sequence the tone tests
  * were written against, and re-sorting for the ear would silently escape them.
+ *
+ * Train cues (`speakableNextCue`, `speakableSetProgress`) are the same contract:
+ * they format store facts (name, weight, reps, set counts). They do not invent
+ * coaching. Cue me must be an explicit tap; iOS Safari drops timer-only speak.
  */
 
 import type { Debrief, DebriefLineKind } from '@/lib/coach/debrief';
@@ -73,4 +77,72 @@ export function joinForSpeech(lines: string[]): string {
 
 export function speakableDebriefText(debrief: Debrief | null | undefined): string {
   return joinForSpeech(speakableDebriefLines(debrief));
+}
+
+/** Next-set direction from live logger state. Speech is presentation only. */
+export type NextCueInput = {
+  exerciseName: string;
+  weight?: number | null;
+  reps?: number | null;
+};
+
+/**
+ * Rest-end / Cue-me utterance. Every token is a field the store already shows.
+ * Blank name → silence (same refusal as an empty debrief). Weight 0 is
+ * bodyweight — speak reps, never a fake loaded bar.
+ */
+export function speakableNextCue(input: NextCueInput | null | undefined): string {
+  const name = input?.exerciseName?.trim() ?? '';
+  if (!name) return '';
+
+  const reps = input?.reps;
+  const weight = input?.weight;
+  const hasReps = typeof reps === 'number' && Number.isFinite(reps) && reps > 0;
+  const hasWeight = typeof weight === 'number' && Number.isFinite(weight) && weight > 0;
+
+  if (hasReps && hasWeight) return joinForSpeech([`Rest. Next: ${name}, ${weight} × ${reps}`]);
+  if (hasReps) return joinForSpeech([`Rest. Next: ${name}, ${reps} reps`]);
+  return joinForSpeech([`Rest. Next: ${name}`]);
+}
+
+export type SetProgressInput = {
+  completed: number;
+  target: number;
+};
+
+/** Logged-set confirmation. Silence when counts are not a real progress fact. */
+export function speakableSetProgress(input: SetProgressInput | null | undefined): string {
+  if (!input) return '';
+  const { completed, target } = input;
+  if (
+    !Number.isFinite(completed) ||
+    !Number.isFinite(target) ||
+    completed <= 0 ||
+    target <= 0
+  ) {
+    return '';
+  }
+  return joinForSpeech([`${completed} of ${target}`]);
+}
+
+/**
+ * Rest-end speech needs Cue me on *and* an active → inactive edge.
+ * Timer-fired speak is best-effort (iOS Safari drops non-gesture speak);
+ * Skip rest is a tap, so the same edge is a legal gesture on that path.
+ */
+export function shouldSpeakOnRestEnd(
+  prevActive: boolean,
+  nowActive: boolean,
+  cueMe: boolean
+): boolean {
+  return cueMe && prevActive && !nowActive;
+}
+
+/**
+ * Coach chat reply for the ear. Same words as the bubble, stripped of
+ * markdown markers so TTS does not say "asterisk asterisk".
+ */
+export function speakableChatReply(text: string | null | undefined): string {
+  if (!text) return '';
+  return text.replace(/[*_`#]+/g, '').replace(/\s+/g, ' ').trim();
 }
