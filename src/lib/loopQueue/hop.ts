@@ -85,7 +85,7 @@ export function readHop(root: string): HopContract | HopParseFail {
   return parseHop(readFileSync(found.file, 'utf8'), path.relative(root, found.file));
 }
 
-/** Live ticket from `route()`. Harvest / stalled have none. Craft uses `craft`. */
+/** Live ticket from `route()`. Harvest / stalled have none. Path uses the step id. */
 export function hopMatchesTicket(hop: HopContract, liveId: string | null): string | null {
   if (!liveId) {
     return 'no live ticket — harness:done does not close a harvest, a stall, or founder phone';

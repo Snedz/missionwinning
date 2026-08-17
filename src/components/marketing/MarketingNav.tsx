@@ -48,8 +48,8 @@ export function MarketingNav({ variant = 'full', className }: MarketingNavProps)
         </Link>
 
         <div className="flex items-center gap-6">
-          {/* Real wayfinding from md up. This used to be one `/#coach` anchor during the
-              free beta, which meant the ~250-page library had no route from the chrome at
+          {/* Real wayfinding from md up. This used to be one `/#coach` anchor,
+              which meant the ~250-page library had no route from the chrome at
               any width. Below md it moves into PublicNavMenu. */}
           {variant === 'full' ? (
             <ul className="hidden items-center gap-6 text-sm md:flex">

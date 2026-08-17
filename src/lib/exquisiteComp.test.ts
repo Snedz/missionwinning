@@ -20,7 +20,7 @@ test('05-exquisite is a self-contained HTML document', () => {
 });
 
 test('05-exquisite carries the gated CTA pack and refuses invite-only', () => {
-  assert.match(html, /Free beta/);
+  assert.match(html, />Alpha</);
   assert.match(html, /Enter with code/);
   assert.match(html, /Get notified/);
   assert.doesNotMatch(html, /invite-only/i);

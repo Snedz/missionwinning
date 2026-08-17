@@ -16,7 +16,7 @@ Works in Cursor, Claude Code, Grok, Copilot, Gemini, and other agents — tool-a
 6. Do not use old chat plans as source of truth — use `ORCHESTRATION.md`, `docs/PLAN.md`, and `LOG.md`.
 7. Private continuity (diary, strategy full text, Mission Control dashboard): mount `ops/` / mission-ops — [docs/OPS_LOCAL.md](docs/OPS_LOCAL.md). Run `npm run ops:dashboard` locally when available.
 
-**Horizon rule:** **Horizon W (now)** — agents **must** ship Train / Today / Victory / Coach wedge excellence until founder phone sign-off. ≥10 beta is a **public-flip** gate after that — not a build freeze. Refuse new pillars / locales / America / F5 unless the founder explicitly overrides.
+**Horizon rule:** **Horizon 0 (now)** — RESULT is pass. Release is **Alpha 0.1.0**. Offer is free tracker or Super Bundle. Agents take Horizon 0 path tickets (keep CI green, Alpha chrome, flip-prep). Wedge excellence still required. Postal is later. There is no 10-invite beta. Refuse new pillars / locales / America / F5 unless the founder explicitly overrides.
 
 ---
 
@@ -129,7 +129,7 @@ When you add a feature folder, add or update its `INDEX.md`.
 | **New lib domain** | After ~5 files: `src/lib/foo/` + `INDEX.md` (model: `src/lib/coach/`) |
 | **New coach rule** | `crossPillarCoach.ts` or `coach/adapt.ts` + colocated `*.test.ts` |
 | **New i18n string** | `src/i18n/*Locales.ts` — not `src/locales/` |
-| **Which loop runs next** | `npm run harness` — names the row, the route and the recipe; recipe 14. Empty queue + empty harvest → path (15) while RESULT is not pass, else craft (16) |
+| **Which loop runs next** | `npm run harness` — names the row, the route and the recipe; recipe 14. Empty queue + empty harvest → path (15): Horizon W while RESULT is not pass, then Horizon 0 agent streams. Path proven → stop |
 | **Next idea (queue residual thin)** | [docs/IDEA_LOOP.md](docs/IDEA_LOOP.md) — one row per run; recipe 13 |
 | **Next graph loop** | [docs/GRAPH_LOOP.md](docs/GRAPH_LOOP.md) — one open loop per PR; recipe 11 |
 | **Gauntlet campaign round** | [docs/GAUNTLET_LOOP.md](docs/GAUNTLET_LOOP.md) — LEAD / BUILDER / CRITIC; recipe 12 |

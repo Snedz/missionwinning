@@ -1,6 +1,6 @@
 # Social & launch media kit
 
-**Purpose:** Copy-paste posts, filming shot list, and channel rules for **free beta** (gated until EIN) → public flip.  
+**Purpose:** Copy-paste posts, filming shot list, and channel rules for **Alpha 0.1.0** (gated until you flip `PRIVATE_MODE`) → public.  
 **Visual assets:** Brand logos, colors, OG image → [/press](https://www.missionwinning.com/press) · [brand-guidelines.md](brand-guidelines.md)  
 **Mascot:** Kalligator — [MASCOT.md](MASCOT.md) · `/brand/mascot/`  
 **Social creatives:** `public/social/` · playbook [MEDIA_SYSTEM.md](MEDIA_SYSTEM.md) · manifest [`media/manifest.json`](../media/manifest.json)  
@@ -16,7 +16,7 @@
 
 - **F-005:** Pitch Train+Coach / free forever offline logger only. Do **not** merchandise in-app social Feed, community, or everything-app framing.
 - **F-016:** Do **not** lead with Super Bundle / checkout. Free forever offline logger is the wedge; Super Bundle never gates the logger (mention Bundle only deep secondary, after free core, if at all).
-- **F-008 / PRIVATE_MODE:** Keep the gate + access key until EIN. Framing: **free beta**. Allowed CTAs: **Enter with code** → `/private`; waitlist **Get notified**. Banned: invite-only, get an invite, private beta, we're live/public, open beta, building in public (as product-status), Start free.
+- **F-008 / PRIVATE_MODE:** Keep the gate + access key until you flip. Framing: **Alpha 0.1.0**. Offer: free tracker or Super Bundle. Allowed CTAs: **Enter with code** → `/private`; waitlist **Get notified**. Banned: free beta, invite-only, get an invite, private beta, we're live/public, open beta, building in public (as product-status), Start free.
 
 ### Creative stills (`public/social/`)
 
@@ -42,25 +42,25 @@ Set locked. Win logged.
 
 ---
 
-## Phase A — Free beta (now)
+## Phase A — Alpha 0.1.0 (now, gated)
 
 ### Channels
 
 | Channel | Action |
 |---------|--------|
 | Warm DMs | Highest ROI — point to Enter with code / Get notified (ops: [BETA_INVITE.md](BETA_INVITE.md)) |
-| 2 communities you already use | Value first, then builder-story **free beta** ask (product pitch stays Train+Coach — not Feed/community features) |
+| 2 communities you already use | Value first, then builder-story **Alpha** ask (product pitch stays Train+Coach — not Feed/community features) |
 | **One** vertical account | TikTok **or** Instagram Reels (same clips) — you the builder |
 | Skip as **citation** channels | **X** (never cited) · **LinkedIn** (noise) · tiny Reddit subs |
 | Skip | LinkedIn company page, daily Twitter/X, Discord server, paid boosts, **Reddit promo while gated** |
 
-Cadence: **≤1 public post/week** while recruiting. Prefer DMs. Framing: **free beta** (enter with code; waitlist = Get notified). Not open/public launch.
+Cadence: **≤1 public post/week** while gated. Prefer DMs. Framing: **Alpha 0.1.0** (enter with code; waitlist = Get notified). Not open/public launch. Not free beta.
 
 ### Bio (when you open the account)
 
 ```
 Building Mission Winning — free forever offline logger + AI coach that adapts from your logs (no wearable).
-Free beta: enter with code at missionwinning.com — or get notified.
+Alpha 0.1.0: enter with code at missionwinning.com — or get notified.
 ```
 
 ### Film once (30–60s) — shot list
@@ -75,16 +75,16 @@ Record on phone, portrait, silent UI or soft click sounds. **YC demo variant:** 
 | 5–20 | Tap through I-Day → Today | "Three minutes to start." |
 | 20–40 | `/active` — Log one set | "Log a set. Offline works." |
 | 40–55 | `/coach` or Today Coach card | "Coach reshapes the week from logs — no wearable." |
-| 55–60 | End card | "missionwinning.com — free beta, enter with code" |
+| 55–60 | End card | "missionwinning.com — Alpha, enter with code" |
 
-**Do not** say "we're live / public launch / open beta / building in public / invite-only" while `PRIVATE_MODE=true`. Soft caption: "Building a free forever offline logger + adaptive coach from logs (no wearable) — free beta. Enter with code, or get notified."
+**Do not** say "we're live / public launch / open beta / free beta / building in public / invite-only" while `PRIVATE_MODE=true`. Soft caption: "Building a free forever offline logger + adaptive coach from logs (no wearable) — Alpha 0.1.0. Enter with code, or get notified."
 
-### Soft post caption (optional, during beta)
+### Soft post caption (optional, during Alpha)
 
 ```
 Tired of subscription trackers and wearable-only AI coaches. Building a free forever offline logger + Mission Coach that adapts from your logs alone.
 
-Free beta. Enter with code, or get notified.
+Alpha 0.1.0. Enter with code, or get notified.
 
 #bodyweightfitness #homegym #calisthenics
 ```
@@ -98,7 +98,7 @@ Exercise has strong trial support for mild–moderate mood symptoms — yet most
 
 Building Mission Winning: a clear, adaptive weekly training plan on any phone — free forever offline logger + Mission Coach. Not a medical product. Not medical advice.
 
-Free beta: enter with code, or get notified.
+Alpha 0.1.0: enter with code, or get notified.
 ```
 
 ### Magazine angle (optional caption beat)

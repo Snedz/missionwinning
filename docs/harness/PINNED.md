@@ -10,6 +10,6 @@ The queue is GRAPH_LOOP. What may be built is ORCHESTRATION.
 - One concern. One PR. Do not invent the next letter.
 - Empty queue + a living `idea:next` pick → harvest **paste** (`npm run idea:paste`). `/harness` is the paste.
 - Empty queue + nothing to emit + generate still legal → harvest **generate**, then paste if one survives.
-- Two consecutive generate-harvests at zero survivors → Horizon W path while RESULT is not pass. After pass → craft (recipe 16). Not AU2.
+- Two consecutive generate-harvests at zero survivors → orchestration path (recipe 15): a gauntlet unit. Goal = ticket claim. Bar = accept command. Builder ≠ critic. Keep hopping until the path is proven or the clock stops. Path proven → stop. Not AU2. Not a craft walk.
 - Builder never grades itself. `npm run harness:done` before claiming the hop shipped.
 - Do not commit `.hermes/`, `ops/`, or `.env.local`.

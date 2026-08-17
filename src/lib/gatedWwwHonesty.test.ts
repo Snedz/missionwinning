@@ -14,11 +14,13 @@ const root = path.join(import.meta.dirname, '..', '..');
 const read = (p: string) => readFileSync(path.join(root, p), 'utf8');
 
 const BANNED =
-  /invite-only|get an invite|private beta|we're live|we’re live|checking sign-in|publicly available/i;
+  /invite-only|get an invite|private beta|free beta|we're live|we’re live|checking sign-in|publicly available/i;
 
 const SURFACE_FILES = [
   'src/i18n/gateLocales.ts',
   'src/i18n/firstStepsLocales.ts',
+  'src/i18n/navLocales.ts',
+  'src/components/layout/AppHeader.tsx',
   'src/components/landing/CinematicWww.tsx',
   'src/components/landing/CinematicLogger.tsx',
   'src/page-components/LandingPage.tsx',

@@ -16,12 +16,12 @@ One screen of truth for any AI tool or human joining cold. Read this, then [AGEN
 
 ---
 
-## Now (2026-08-16 · web `2026.07-unified.882` · Android `1.24.1`)
+## Now (2026-08-16 · web `2026.07-unified.883` · Android `1.24.1`)
 
 > The ONLY "where we are" block in the repo — [ORCHESTRATION.md](ORCHESTRATION.md) points here.
 >
 > **Budget: ≤25 bullets.** Enforced by `src/lib/contextBudget.test.ts`. When over,
-> rotate the oldest *shipped* entries to `docs/archive/` — `.882` dropped `.865` · `.881` dropped `.864` · `.880` dropped `.863` · `.873` dropped `.859` · `.872` dropped `.858` · `.871` dropped `.857` · `.870` dropped `.856` · `.869` dropped `.855` · `.868` dropped `.854` · `.867` dropped `.853` · `.866` dropped `.852` · `.865` dropped `.851` · `.864` dropped `.850` · `.863` dropped `.849` · `.862` dropped `.848` · `.861` dropped `.847` · `.860` dropped `.846` · `.859` dropped `.845` · `.858` dropped `.844` · `.857` dropped `.843` · `.856` dropped `.842` · `.855` dropped `.841` · `.854` dropped `.840` · `.853` dropped `.839` · `.852` dropped `.837` (full text remains in LOG.md / archive) · `.203` moved `.123`–`.189`,
+> rotate the oldest *shipped* entries to `docs/archive/` — `.883` dropped `.866` · `.882` dropped `.865` · `.881` dropped `.864` · `.880` dropped `.863` · `.873` dropped `.859` · `.872` dropped `.858` · `.871` dropped `.857` · `.870` dropped `.856` · `.869` dropped `.855` · `.868` dropped `.854` · `.867` dropped `.853` · `.866` dropped `.852` · `.865` dropped `.851` · `.864` dropped `.850` · `.863` dropped `.849` · `.862` dropped `.848` · `.861` dropped `.847` · `.860` dropped `.846` · `.859` dropped `.845` · `.858` dropped `.844` · `.857` dropped `.843` · `.856` dropped `.842` · `.855` dropped `.841` · `.854` dropped `.840` · `.853` dropped `.839` · `.852` dropped `.837` (full text remains in LOG.md / archive) · `.203` moved `.123`–`.189`,
 > `.207` moved `.190`–`.193`, `.211` moved `.194`–`.197`, `.215` moved `.198`
 > `.216` moved `.200`, `.217` moved `.199`, `.218` moved `.201`, `.219` moved `.202`
 > `.220` moved `.203`, `.221` moved `.204`, `.222` moved `.205`, `.223` moved `.206`,
@@ -402,9 +402,9 @@ One screen of truth for any AI tool or human joining cold. Read this, then [AGEN
 >
 > | Fact | State |
 > |---|---|
-> | **REDTEAM A5 falsifier** ([REDTEAM.md](docs/REDTEAM.md)) — *"14 days… still no 10 beta users"* | **FIRED** as a *public-flip* signal — still no 10 beta. **Founder override 2026-08-03:** not a build freeze while EIN is pending. Craft window open (excellence + anti-slop); free-first mute pay continues; agents still never flip `PRIVATE_MODE` or invent traction. |
-> | `PRIVATE_MODE` | **on** in production. The gate is up; `/` serves the `/private` teaser. Also disables the service worker, so **no beta tester can install the PWA or log offline** — deliberate (do not offline-cache a private app), and the offline promise gets zero beta validation until the flip. Post-flip check is in [LAUNCH_RUNBOOK](docs/LAUNCH_RUNBOOK.md) §5. |
-> | `MAIL_POSTAL_ADDRESS` | **unset** — `send-beta-invite.ts` hard-exits and `renderEmail.ts` refuses to render, so **no invite email can be sent**. `.204` fixed the link; this is the remaining blocker to the first 10 users. |
+> | **REDTEAM A5 falsifier** ([REDTEAM.md](docs/REDTEAM.md)) — *"14 days… still no 10 beta users"* | **Retired as a program.** There is no 10-invite beta. Release is **Alpha 0.1.0** — free tracker or Super Bundle. Mute-pay until EIN. Keep building until the `PRIVATE_MODE` flip. Agents never flip the gate or invent traction. |
+> | `PRIVATE_MODE` | **on** in production. The gate is up; `/` serves the `/private` teaser. Also disables the service worker, so **no gated visitor can install the PWA or log offline** — deliberate (do not offline-cache a private app). Offline promise gets zero public validation until the flip. Post-flip check is in [LAUNCH_RUNBOOK](docs/LAUNCH_RUNBOOK.md) §5. |
+> | `MAIL_POSTAL_ADDRESS` | **unset, later** — `send-beta-invite.ts` hard-exits and `renderEmail.ts` refuses to render. Not a build freeze. |
 > | Repo visibility | **private since 2026-08-02 00:49Z** — it was public until then, and four GitHub security features went with it, all needing Advanced Security on a private repo: **secret scanning + push protection** (had been on), **code scanning** (`/code-scanning/default-setup` → 403), **private vulnerability reporting** (→ 404), and the **Dependency Review API** (→ 403, so `dependency-review-action` cannot run here at all). **Dependabot alerts and security updates are unaffected** and still on — 3 open advisories, all high. That leaves `gitleaks` as the only secret gate. Flipping back to public restores all four at no cost; until then, do not propose them. |
 > | GitHub Actions | **minutes exhausted / billing-blocked for paid jobs.** ~50 draft PRs show `build-and-test` red. Merge bar while red: **Cursor-local green** (`npm test`, lint, typecheck, excellence) + craft LGTM — [docs/CI_LOCAL.md](docs/CI_LOCAL.md). Actions red is not a product fail. Security jobs (gitleaks / CodeQL / aikido) stay on. `[skip vercel]` on commits unless the founder asked for a Preview. |
 > | VAPID keys · `CRON_SECRET` · `SMOKE_BASE_URL` · Sentry DSN · Upstash | **unset.** Push ships dark, the hourly sweeps `exit 0`, there is no server request logging, and rate limiting is per-instance in memory. |
@@ -412,6 +412,7 @@ One screen of truth for any AI tool or human joining cold. Read this, then [AGEN
 > | gitleaks | **green — and scanning for the first time.** It had never scanned anything: on a `pull_request` event the action lists the PR's commits, the job declared no `permissions:` block, and it 403'd (`pull_requests=read`) before opening a file. Fixed by a `permissions:` block (`.224` carrying `.255`). It scans **only the PR's own commits**, so commit `8ea3527a`'s real Solana treasury address — scrubbed from the working file, still in history — is out of its scope. That finding stands, deliberately not allowlisted; it was never what made this check red. |
 > | Privacy / security program | **Landed `.778`** — [docs/security/PROGRAM_STATUS.md](docs/security/PROGRAM_STATUS.md). Invite-bound gate, health-bucket, DSAR, territory fail-closed. OTP-without-click can leave a ghost user. Not a cert. |
 
+- **`.883`:** (`2026.07-unified.883`) **Harness follows Horizon 0; chrome is Alpha** — after RESULT `pass`, empty queue named `craft` and walked the wedge. Path continues to Horizon 0 tickets (`H01` www composition). Athlete nav says **Alpha**, not Free beta. No 10-invite program. Offer is free tracker or Super Bundle. Postal later. No letter. No `PRIVATE_MODE` flip.
 - **`.882`:** (`2026.07-unified.882`) **Victory Next stays on the first-session screen** — after a first set on 390×844, `Start session 2` sat at y=850 (below the fold). Sheet is a column; the middle pane scrolls; Next docks below it (`victory-next-dock`). Craft hop. No `PRIVATE_MODE` flip.
 - **`.881`:** (`2026.07-unified.881`) **Autodrive after pass is craft, not a stall** — empty queue + mined harvest + RESULT `pass` now routes to `craft` (recipe 16): walk Train → Today → Victory → Coach, ship one named first-session friction, ticket `craft`. Still not a GRAPH_LOOP letter. `stalled` remains only when `IDEA_LOOP.md` is missing. `/harness 2 hours` can keep hopping. No `PRIVATE_MODE` flip.
 - **`.880`:** (`2026.07-unified.880`) **i18n coverage is 0 again** — `i18n:coverage` (cap 0) was red on every PR because it walked `LOCALE_EXPORTS` and never the first-class overlay, while hydrate never called `mergeFirstClassStrings` either. Keys that existed still rendered English `defaultValue`. Overlay is now visible to the ratchet and merged at runtime; leftover defaultValue-only keys catalogued; week-diff headline ternary split (`One`/`Many`). Cap stays 0. `.877`–`.879` reserved by the open Victory stack. No `PRIVATE_MODE` flip.
@@ -425,12 +426,11 @@ One screen of truth for any AI tool or human joining cold. Read this, then [AGEN
 - **`.869`:** (`2026.07-unified.869`) **Process is `/harness`** — `npm run harness` / `harness:done`. `/graph` is an alias. Queue file still GRAPH_LOOP. No `PRIVATE_MODE` flip.
 - **`.868`:** (`2026.07-unified.868`) **Hop contract** — `docs/graph/HOP.md` + `npm run graph:done`. Done is a command. No `PRIVATE_MODE` flip.
 - **`.867`:** (`2026.07-unified.867`) **W1 lands Today** — ORCHESTRATION I-Day → `/log`. Pin `orchestrationW1Landing`. No `PRIVATE_MODE` flip.
-- **`.866`:** (`2026.07-unified.866`) **No French** — France is founder-excluded. Pack 14 · picker 39 · `fr`/`fr-*` → English. No `PRIVATE_MODE` flip.
 - **Form object kit (on `.781`):** IMPLEMENT block + prop sheets. Regen cable-row (visible stack), lateral-raise, DB press, lunges, DB row. Floor 43. Still-only. No `PRIVATE_MODE` flip.
 - **Excellence:** **pass** · 2026-08-16 · Snedz · [docs/EXCELLENCE_RESULT.md](docs/EXCELLENCE_RESULT.md) — Horizon W phone sign-off home. Scored on the Preview of `18737b0`; surface PRs no longer need `Excellence-Override` (`.669` · `.876`).
 - **`.669`:** (`2026.07-unified.669`) **Excellence RESULT + agent stop-rule** — `excellenceGate` path policy + `check-excellence-gate` on gate/PR CI; wedge still ships while unscored.
 - **Horizon W + full-launch override (2026-08-05).** Wedge excellence still required; agents may ship rewards + full surface honesty. Fuel estimate accuracy remains.
-- **Free-first beta (~4 weeks):** LLC + EIN pending — **no Bundle UI** + **full depth unlocked**; More/rail **Pillars demoted until first workout** (F-004 / `.695`) — still no Bundle ([docs/FREE_BETA.md](docs/FREE_BETA.md)).
+- **Alpha 0.1.0 · mute-pay:** LLC + EIN pending — Super Bundle shop merchandised, checkout muted; full depth unlocked; More/rail **Pillars demoted until first workout** (F-004 / `.695`). Offer is free tracker or Super Bundle ([docs/FREE_BETA.md](docs/FREE_BETA.md)).
 - **`e2e:visual` is the one dark gate.** Its three baselines were generated **2026-07-22, before the rebrand**, and depicted the old navy/emerald dark design — black grounds, emerald CTAs, rounded corners. Verified by opening one, not inferred from dates. **Deleted**, because a known-wrong baseline is worse than none: the first Linux run would have shown four huge diffs, and the reflex there is `--update-snapshots` without looking, which launders whatever renders that day into truth. `home-reduced.png` **never had a baseline at all**, so the homepage has been silently self-approving since the case was written. **First Linux CI run after billing clears must bootstrap all four** (`npx playwright test --grep @visual --update-snapshots`, then commit the artifact) — it cannot be done on macOS, the pixels will not match.
 
 
@@ -478,7 +478,7 @@ Android: `cd apps/android && ./gradlew :app:assembleDebug`.
 
 ## Hard rules
 
-1. **Horizon rule** — Horizon W: build wedge excellence (Train/Today/Victory/Coach). No new pillars/locales/America/F5 without explicit founder override. ≥10 beta only after excellence sign-off.
+1. **Horizon rule** — Horizon 0: Alpha 0.1.0, keep building until the flip. Wedge excellence still required. No new pillars/locales/America/F5 without explicit founder override. No 10-invite beta.
 2. **The free logger is never gated. Ever.**
 3. Agents never flip `PRIVATE_MODE`, never invent traction numbers, never mark founder tasks done.
 4. Do not open stale/deleted paths — [INDEX.md](INDEX.md) §4.

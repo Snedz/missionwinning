@@ -3,7 +3,7 @@
  *
  * The graph loop's entry point. It reads `docs/GRAPH_LOOP.md`, names the live
  * ticket, and says which protocol runs — build (11), gauntlet (12),
- * harvest (13), or Horizon W path (15).
+ * harvest (13), or the orchestration path (15).
  *
  * It **prints**. It never edits `docs/GRAPH_LOOP.md`, for the same reason
  * `idea:next` does not: that file is the baton, and the baton is handed over by
@@ -41,8 +41,7 @@ const RECIPE: Record<number, string> = {
   11: 'docs/AGENT_RECIPES.md §11 — one concern, one PR, close the row after merge',
   12: 'docs/AGENT_RECIPES.md §12 — one unit-round; the campaign row stays `open`',
   13: 'docs/AGENT_RECIPES.md §13 — harvest; `/harness` pastes one `IL-` row (`npm run idea:paste`)',
-  15: 'docs/AGENT_RECIPES.md §15 — Horizon W critical path; already-true with proof, or one PR',
-  16: 'docs/AGENT_RECIPES.md §16 — craft the wedge after pass; one named friction, no letter',
+  15: 'docs/AGENT_RECIPES.md §15 — orchestration critical path (W then H0); already-true with proof, or one PR',
 };
 
 function run(): number {
