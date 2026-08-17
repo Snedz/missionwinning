@@ -71,3 +71,22 @@ test('first paint still has the table and rest dock', () => {
   assert.match(open, /<ActiveExerciseList\b/);
   assert.match(src, /ActiveSessionDock|RestTimerBar/);
 });
+
+test('Add exercise is after the table, not above it', () => {
+  const chromeSrc = chrome();
+  assert.doesNotMatch(chromeSrc, /onOpenAddExercise/);
+  assert.doesNotMatch(chromeSrc, /activeAddExerciseTitle/);
+  const src = page();
+  const headerToList = src.slice(
+    src.indexOf('<ActiveSessionChrome'),
+    src.indexOf('<ActiveExerciseList')
+  );
+  assert.doesNotMatch(
+    headerToList,
+    /activeAddExerciseTitle/,
+    'Add exercise sits between the name and the table'
+  );
+  const afterList = src.slice(src.indexOf('<ActiveExerciseList'));
+  assert.match(afterList, /activeAddExerciseTitle/);
+  assert.match(afterList, /setAddExerciseOpen\(true\)/);
+});

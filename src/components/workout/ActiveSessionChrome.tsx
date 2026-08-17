@@ -6,7 +6,7 @@
  */
 
 import { useState } from 'react';
-import { Check, MoreVertical, Plus, Scale } from 'lucide-react';
+import { Check, MoreVertical, Scale } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { Button } from '@/components/ui/button';
 import { HoldToConfirmButton } from '@/components/ui/HoldToConfirmButton';
@@ -19,7 +19,6 @@ type Props = {
   totalSets: number;
   hardCount: number;
   elapsedSeconds: number;
-  onOpenAddExercise: () => void;
   onOpenPlateCalc: () => void;
   onDiscard: () => void;
   onFinish: () => void;
@@ -31,7 +30,6 @@ export function ActiveSessionChrome({
   totalSets,
   hardCount,
   elapsedSeconds,
-  onOpenAddExercise,
   onOpenPlateCalc,
   onDiscard,
   onFinish,
@@ -49,7 +47,6 @@ export function ActiveSessionChrome({
         });
 
   return (
-    <div className="space-y-3">
       <div
         className={[
           'sticky top-0 z-30 -mx-1 px-1 py-2',
@@ -144,21 +141,5 @@ export function ActiveSessionChrome({
           </div>
         </div>
       </div>
-
-      {/* One trigger, not a search field and forty results competing with the
-          session for height. The picker lives in a sheet now. */}
-      <Button
-        type="button"
-        variant="outline"
-        /* Compact only — desktop adds an exercise inline at the foot of the
-           list, where the handoff puts it, so this would be a second entry
-           point to the same action. */
-        className="min-h-[44px] w-full justify-start border-2 md:hidden"
-        onClick={onOpenAddExercise}
-      >
-        <Plus className="h-4 w-4 me-2" aria-hidden />
-        {t('activeAddExerciseTitle', { defaultValue: 'Add exercise' })}
-      </Button>
-    </div>
   );
 }

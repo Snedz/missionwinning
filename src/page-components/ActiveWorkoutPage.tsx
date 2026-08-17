@@ -24,6 +24,8 @@ import {
 } from '@/lib/seoExerciseBridge';
 import { getFormGuideOrCues } from '@/lib/formGuides';
 import { useIsCompact } from '@/hooks/useIsCompact';
+import { Plus } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 import { ActiveEmptyState } from '@/components/workout/ActiveEmptyState';
 import { ActiveSessionChrome } from '@/components/workout/ActiveSessionChrome';
 import { ActiveReadinessDeltaStrip } from '@/components/workout/ActiveReadinessDeltaStrip';
@@ -637,7 +639,6 @@ export function ActiveWorkoutPage() {
         totalSets={totalSets}
         hardCount={hardCount}
         elapsedSeconds={elapsedSeconds}
-        onOpenAddExercise={() => setAddExerciseOpen(true)}
         onOpenPlateCalc={() => setPlateCalcOpen(true)}
         onDiscard={discardWorkout}
         onFinish={handleComplete}
@@ -649,7 +650,7 @@ export function ActiveWorkoutPage() {
            state since `.150`. */
         <p className="border-y-2 border-border py-6 text-[15px] leading-relaxed text-muted-foreground">
           {t('activeEmptyExercises', {
-            defaultValue: 'Add exercises above to begin logging sets.',
+            defaultValue: 'Add an exercise to begin logging sets.',
           })}
         </p>
       ) : (
@@ -724,6 +725,18 @@ export function ActiveWorkoutPage() {
           }}
         />
       )}
+
+        {isCompact && (
+          <Button
+            type="button"
+            variant="outline"
+            className="min-h-[44px] w-full justify-start border-2"
+            onClick={() => setAddExerciseOpen(true)}
+          >
+            <Plus className="h-4 w-4 me-2" aria-hidden />
+            {t('activeAddExerciseTitle', { defaultValue: 'Add exercise' })}
+          </Button>
+        )}
 
         {/*
           Desktop adds an exercise inline at the foot of the list, as the

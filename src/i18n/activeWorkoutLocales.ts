@@ -265,6 +265,10 @@ type ActiveWorkoutStrings = {
   /** Split from a `finalSeconds` ternary default — see moveLocales. */
   activeRestSkipAriaFinal: string;
   activeRestSkipAriaPlain: string;
+  activeCueMe: string;
+  activeCueMeOn: string;
+  activeCueMeAria: string;
+  activeCueMeOnAria: string;
   activeSetDropTip: string;
   victoryDeltaWeight: string;
   victoryDeltaReps: string;
@@ -304,7 +308,7 @@ const en: ActiveWorkoutStrings = {
   activeSwapPlaceholder: 'Swap to… (same muscles first)',
   activeSwapGarageLead: 'Same pattern. Floor, chair, or a bar you already have.',
   activeChooseExercise: 'Choose exercise...',
-  activeEmptyExercises: 'Add exercises above to begin logging sets.',
+  activeEmptyExercises: 'Add an exercise to begin logging sets.',
   activeFormGuide: 'Form guide',
   activeLoadPctChip: '{{pct}}% · {{weight}} {{unit}}',
   activeAddSet: 'Add Set',
@@ -521,6 +525,10 @@ const en: ActiveWorkoutStrings = {
   victorySessionDetails: 'Session details',
   activeRestSkipAriaFinal: 'Skip rest — go',
   activeRestSkipAriaPlain: 'Skip rest',
+  activeCueMe: 'Cue me',
+  activeCueMeOn: 'Cues on',
+  activeCueMeAria: 'Speak next-set directions',
+  activeCueMeOnAria: 'Stop spoken set directions',
   activeSetDropTip: 'Drop set — lighter follow-up; not a PR attempt',
   victoryDeltaWeight: '{{signed}} {{unit}}',
   victoryDeltaReps: '{{signed}} reps',
@@ -598,7 +606,7 @@ const es: ActiveWorkoutStrings = {
   activeSwapPlaceholder: 'Cambiar a… (mismos músculos primero)',
   activeSwapGarageLead: 'Mismo patrón. Suelo, silla o una barra que ya tengas.',
   activeChooseExercise: 'Elegir ejercicio…',
-  activeEmptyExercises: 'Añade ejercicios arriba para registrar series.',
+  activeEmptyExercises: 'Añade un ejercicio para registrar series.',
   activeFormGuide: 'Guía de forma',
   activeLoadPctChip: '{{pct}}% · {{weight}} {{unit}}',
   activeAddSet: 'Añadir serie',
@@ -706,7 +714,7 @@ const de: ActiveWorkoutStrings = {
   activeSwapTitle: 'Übung tauschen',
   activeSwapPlaceholder: 'Tauschen zu… (gleiche Muskeln zuerst)',
   activeChooseExercise: 'Übung wählen…',
-  activeEmptyExercises: 'Füge oben Übungen hinzu, um Sätze zu protokollieren.',
+  activeEmptyExercises: 'Füge eine Übung hinzu, um Sätze zu protokollieren.',
   activeFormGuide: 'Form-Guide',
   activeLoadPctChip: '{{pct}}% · {{weight}} {{unit}}',
   activeAddSet: 'Satz hinzufügen',
