@@ -1,10 +1,10 @@
 /**
- * Horizon W critical path — what `/harness` takes when GRAPH_LOOP is empty
+ * Orchestration critical path — what `/harness` takes when GRAPH_LOOP is empty
  * and the idea harvest has nothing to emit.
  *
- * This is not a second queue. The claims live in ORCHESTRATION.md. Each step
- * is proven by an instrument that already exists, or it is the ticket.
- * Taste is not an input.
+ * This is not a second queue. The claims live in ORCHESTRATION.md (Horizon W,
+ * then Horizon 0). Each step is proven by an instrument that already exists,
+ * or it is the ticket. Taste is not an input. A walk of the wedge is not a step.
  */
 
 import { existsSync, readFileSync } from 'node:fs';
@@ -36,10 +36,13 @@ export type PathGap = PathStep & {
 };
 
 /**
- * Closed checklist. Adding a W-id in ORCHESTRATION without a row here is red
- * (`criticalPath.test.ts` discovers the W-stream rows). Do not grow this by
- * taste.
+ * Closed checklist. Adding a W-id or H-id in ORCHESTRATION without a row here
+ * is red (`criticalPath.test.ts` discovers both stream tables). Do not grow
+ * this by taste.
  */
+export const COMPOSITION_PASS_PATH = 'sites/www/COMPOSITION_PASS.md';
+export const COMPOSITION_PASS_ANCHOR = '- **status:** pass';
+
 export const PATH_STEPS: readonly PathStep[] = [
   {
     id: 'W1',
@@ -87,16 +90,36 @@ export const PATH_STEPS: readonly PathStep[] = [
     owner: 'founder',
     accept: 'npx tsx --test src/lib/gnt1First90.test.ts',
   },
+  {
+    id: 'H01',
+    claim: 'www composition floors pass so flip-prep CI stays green',
+    instrument: 'scripts/www-composition.mjs',
+    anchor: 'composition floors',
+    orchAnchor: 'H01 Keep CI green',
+    owner: 'agent',
+    accept: 'npm --prefix sites/www run check',
+  },
 ];
 
 /** Agent-required workstream rows: `| W1 Activation |` (and the parked `| W1 |` table). */
 const W_STREAM = /^\|\s+\*{0,2}W(\d+)\b/;
+
+/** Horizon 0 agent-required rows: `| H01 Keep CI green |`. */
+const H_STREAM = /^\|\s+\*{0,2}H(\d+)\b/;
 
 export function orchestrationWIds(orch: string): string[] {
   const ids: string[] = [];
   let m: RegExpExecArray | null;
   const re = new RegExp(W_STREAM.source, 'gm');
   while ((m = re.exec(orch)) !== null) ids.push(`W${m[1]}`);
+  return [...new Set(ids)];
+}
+
+export function orchestrationHIds(orch: string): string[] {
+  const ids: string[] = [];
+  let m: RegExpExecArray | null;
+  const re = new RegExp(H_STREAM.source, 'gm');
+  while ((m = re.exec(orch)) !== null) ids.push(`H${m[1]}`);
   return [...new Set(ids)];
 }
 
@@ -116,6 +139,11 @@ export function excellenceStatusAt(root: string): ExcellenceStatus {
   return readExcellenceStatus(raw);
 }
 
+export function compositionPassAt(root: string): boolean {
+  const stamp = read(root, COMPOSITION_PASS_PATH);
+  return stamp !== null && stamp.includes(COMPOSITION_PASS_ANCHOR);
+}
+
 export function isStepProven(step: PathStep, root: string): boolean {
   const src = read(root, step.instrument);
   if (src === null || !src.includes(step.anchor)) return false;
@@ -123,6 +151,9 @@ export function isStepProven(step: PathStep, root: string): boolean {
     if (!existsSync(path.join(root, extra))) return false;
   }
   if (step.id === 'C5') return excellenceStatusAt(root) === 'pass';
+  // The composition script existing is not the proof — floors have been red
+  // with that file on the tree. H01 is the stamp the check writes on pass.
+  if (step.id === 'H01') return compositionPassAt(root);
   return true;
 }
 
@@ -135,6 +166,12 @@ export function firstCriticalGap(root: string): PathGap | null {
         ...step,
         owner: 'founder',
         reason: 'Horizon W phone sign-off is still unscored — founder eyes, not another letter',
+      };
+    }
+    if (step.id === 'H01') {
+      return {
+        ...step,
+        reason: `${COMPOSITION_PASS_PATH} does not prove H01 yet — the composition script existing is not the proof`,
       };
     }
     return {

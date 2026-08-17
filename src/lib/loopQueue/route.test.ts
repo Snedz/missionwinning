@@ -65,11 +65,11 @@ test('the committed queue has no Now-open row, and routing follows RESULT status
   assert.equal(r.atRatchet, false);
 
   if (excellenceStatusAt(root) === 'pass') {
-    // Horizon W is scored: no W-gap is left. Autodrive continues as craft —
-    // walk the wedge, one named friction — not as a new GRAPH_LOOP letter.
-    assert.equal(r.kind, 'craft');
-    assert.equal(r.recipe, 16);
-    assert.equal(r.path?.id, 'craft');
+    // Horizon W is scored: the mermaid continues at Horizon 0. First unproven
+    // agent stream is H01 (www composition). Not a craft walk. Not a letter.
+    assert.equal(r.kind, 'path');
+    assert.equal(r.recipe, 15);
+    assert.equal(r.path?.id, 'H01');
     assert.equal(r.path?.owner, 'agent');
   } else {
     assert.equal(r.kind, 'path');
@@ -178,7 +178,9 @@ test('no open row, empty idea:next, and mined generate never routes to harvest',
   // reading (`.876`).
   assert.notEqual(r.kind, 'harvest');
   assert.equal(r.harvestAction, null);
-  assert.equal(r.kind, excellenceStatusAt(root) === 'pass' ? 'craft' : 'path');
+  assert.equal(r.kind, 'path');
+  assert.equal(r.recipe, 15);
+  assert.equal(r.path?.id, excellenceStatusAt(root) === 'pass' ? 'H01' : 'C5');
 });
 
 test('no open row, nothing to emit, but generate still legal routes to harvest generate', () => {
@@ -223,8 +225,8 @@ test('no open row, nothing to emit, and two zero generates route to C5', () => {
   rmSync(tmp, { recursive: true, force: true });
 });
 
-test('mined harvest + RESULT pass routes to craft, not a letter and not a stall', () => {
-  const tmp = mkdtempSync(path.join(tmpdir(), 'loopqueue-craft-'));
+test('mined harvest + RESULT pass routes to H01, not a letter and not a craft walk', () => {
+  const tmp = mkdtempSync(path.join(tmpdir(), 'loopqueue-h01-'));
   mkdirSync(path.join(tmp, 'docs/mechanics'), { recursive: true });
   mkdirSync(path.join(tmp, 'src/lib'), { recursive: true });
   writeFileSync(path.join(tmp, 'docs/IDEA_LOOP.md'), 'stub');
@@ -238,6 +240,7 @@ test('mined harvest + RESULT pass routes to craft, not a letter and not a stall'
 `
   );
   // W1–W4 prove from instruments on this root; C5 proves from RESULT pass.
+  // H01 stays open: the composition script is present, the stamp is not.
   writeFileSync(
     path.join(tmp, 'src/lib/orchestrationW1Landing.test.ts'),
     'W1 Activation lands I-Day on Today'
@@ -249,14 +252,57 @@ test('mined harvest + RESULT pass routes to craft, not a letter and not a stall'
   writeFileSync(path.join(tmp, 'src/lib/reentryCopyGuard.test.ts'), 'shame-free');
   mkdirSync(path.join(tmp, 'tests/e2e'), { recursive: true });
   writeFileSync(path.join(tmp, 'tests/e2e/first-90.spec.ts'), 'First 90 seconds @gate');
+  mkdirSync(path.join(tmp, 'scripts'), { recursive: true });
+  writeFileSync(path.join(tmp, 'scripts/www-composition.mjs'), 'composition floors');
 
   const q = real();
   for (const s of q.sections) for (const row of s.rows) if (row.status === 'open') row.status = 'done';
   const r = route(tmp, q);
-  assert.equal(r.kind, 'craft', 'pass + mined must not invent a letter or park');
-  assert.equal(r.recipe, 16);
-  assert.equal(r.path?.id, 'craft');
+  assert.equal(r.kind, 'path', 'pass + mined must name Horizon 0, not invent a letter');
+  assert.equal(r.recipe, 15);
+  assert.equal(r.path?.id, 'H01');
+  assert.equal(r.path?.owner, 'agent');
   assert.equal(r.harvestAction, null);
+  rmSync(tmp, { recursive: true, force: true });
+});
+
+test('mined harvest + RESULT pass + H01 stamp stalls — founder flip work, not craft', () => {
+  const tmp = mkdtempSync(path.join(tmpdir(), 'loopqueue-h0-done-'));
+  mkdirSync(path.join(tmp, 'docs/mechanics'), { recursive: true });
+  mkdirSync(path.join(tmp, 'src/lib'), { recursive: true });
+  mkdirSync(path.join(tmp, 'sites/www'), { recursive: true });
+  writeFileSync(path.join(tmp, 'docs/IDEA_LOOP.md'), 'stub');
+  writeFileSync(path.join(tmp, 'docs/EXCELLENCE_RESULT.md'), '- **status:** pass\n');
+  writeFileSync(path.join(tmp, 'sites/www/COMPOSITION_PASS.md'), '- **status:** pass\n');
+  writeFileSync(
+    path.join(tmp, 'docs/mechanics/LEDGER.md'),
+    `| run | date | scout | anatomist | translator | red team | cap declared | spent | emitted | survived red team | later PASS |
+|---|---|---|---|---|---|---|---|---|---|---|
+| harvest-8 | 2026-08-16 | 3 | 1 | 1 | 1 | 0 | 0 | 0 | 0 of 2 | — |
+| harvest-9 | 2026-08-16 | 3 | 1 | 1 | 1 | 0 | 0 | 0 | 0 of 3 | — |
+`
+  );
+  writeFileSync(
+    path.join(tmp, 'src/lib/orchestrationW1Landing.test.ts'),
+    'W1 Activation lands I-Day on Today'
+  );
+  writeFileSync(path.join(tmp, 'src/lib/todayPrimaryAction.test.ts'), 'isTodayTrainReady');
+  writeFileSync(path.join(tmp, 'src/lib/gnt1First90.test.ts'), 'TAP_BUDGET is 4');
+  mkdirSync(path.join(tmp, 'src/lib/workout'), { recursive: true });
+  writeFileSync(path.join(tmp, 'src/lib/workout/workoutVictory.test.ts'), 'stub');
+  writeFileSync(path.join(tmp, 'src/lib/reentryCopyGuard.test.ts'), 'shame-free');
+  mkdirSync(path.join(tmp, 'tests/e2e'), { recursive: true });
+  writeFileSync(path.join(tmp, 'tests/e2e/first-90.spec.ts'), 'First 90 seconds @gate');
+  mkdirSync(path.join(tmp, 'scripts'), { recursive: true });
+  writeFileSync(path.join(tmp, 'scripts/www-composition.mjs'), 'composition floors');
+
+  const q = real();
+  for (const s of q.sections) for (const row of s.rows) if (row.status === 'open') row.status = 'done';
+  const r = route(tmp, q);
+  assert.equal(r.kind, 'stalled', 'exhausted agent path must stop, not walk the wedge');
+  assert.equal(r.recipe, null);
+  assert.equal(r.path, null);
+  assert.match(r.notes.join(' '), /founder/);
   rmSync(tmp, { recursive: true, force: true });
 });
 

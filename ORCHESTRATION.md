@@ -65,11 +65,11 @@ Agents may ship beyond “hero bugs only” for this window. Prefer delete/refin
 
 ```mermaid
 flowchart TB
-  subgraph HW [Horizon W - Now]
+  subgraph HW [Horizon W - scored]
     W[Wedge excellence W1-W4]
     S[Founder signoff]
   end
-  subgraph H0 [Horizon 0 - Flip prep]
+  subgraph H0 [Horizon 0 - Now]
     B[Beta 10 users]
   end
   subgraph H1 [Horizon 1 - Public]
@@ -94,7 +94,7 @@ flowchart TB
 
 ---
 
-## Horizon W — Wedge excellence (NOW · founder override 2026-07-23)
+## Horizon W — Wedge excellence (scored 2026-08-16 · founder override 2026-07-23)
 
 **Owner:** Agents build · Founder scores pass/fail on phone.
 
@@ -118,7 +118,7 @@ flowchart TB
 
 **Agent-forbidden (unless explicit founder override):** New pillar depth, America/PFT, locale body farms, guidebook expansion, wearables, Android F5, YC thesis churn as daily work. — *`landing redesign` was struck 2026-08-09; see the [www surface override](#founder-override--www-surface-on-astro-2026-08-09) above, which is narrow and leaves the rest of this list intact.*
 
-**Done when:** Founder phone path says pass → then Horizon 0 flip prep (recruit ≥10).
+**Done when:** Founder phone path says pass → then Horizon 0 flip prep (recruit ≥10). RESULT is `pass` (2026-08-16). Harness tickets after that are the Horizon 0 agent-required streams, not a wedge walk.
 
 **Where sign-off is written:** [docs/EXCELLENCE_RESULT.md](docs/EXCELLENCE_RESULT.md) — one home for `status: unscored | pass | fail`. `CONTEXT.md` `## Now` points at it in one bullet. Android Accept B stays separate ([apps/android/FOUNDER_ACCEPT.md](apps/android/FOUNDER_ACCEPT.md)).
 
@@ -126,9 +126,17 @@ flowchart TB
 
 ---
 
-## Horizon 0 — Launch unblock (after excellence sign-off)
+## Horizon 0 — Launch unblock (NOW · after excellence sign-off)
 
-**Owner:** Founder primary · Agents: hero bugs + launch docs/scripts + residual wedge polish.
+**Owner:** Founder primary · Agents: the streams below. Postal / ≥10 beta stay **public-flip** signals (override 2026-08-03), not harness tickets. Residual wedge polish is founder dogfood ([LAUNCH_RUNBOOK](docs/LAUNCH_RUNBOOK.md) §3a), not an empty-queue walk.
+
+### Agent-required workstreams
+
+Closed checklist. Adding an H-id here without a `PATH_STEPS` row is red (`criticalPath.test.ts`). The first unproven row is the live `/harness` ticket.
+
+| Stream | Outcome |
+|--------|---------|
+| H01 Keep CI green | www composition floors pass (`npm --prefix sites/www run check`). Proven by `sites/www/COMPOSITION_PASS.md` (`status: pass`) — the check script existing is not the proof |
 
 ### Founder critical path
 

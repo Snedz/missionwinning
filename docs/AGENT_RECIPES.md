@@ -257,7 +257,7 @@ hard rule 6) is a thin loader over exactly these steps. `/graph` is an alias.
    the first product edit (`ticket` = the live id, `done_means` one sentence,
    `accept` one command).
 4. **Take the route it named**, and only that one — `build` → recipe 11 · `gauntlet`
-   → recipe 12 · `harvest` → recipe 13 · `path` → recipe 15 · `craft` → recipe 16 ·
+   → recipe 12 · `harvest` → recipe 13 · `path` → recipe 15 ·
    `stalled` → print the note and exit (no `HOP.md`, no `harness:done`). Not a more
    interesting row, not two rows.
 5. **`npm run harness:done`** before claiming the hop shipped. It is the closer.
@@ -280,23 +280,28 @@ router; otherwise the loop's own tests, per the recipe you were routed to.
 
 ---
 
-## 15. Follow the Horizon W critical path
+## 15. Follow the orchestration critical path
 
-**Required reads:** [ORCHESTRATION.md](../ORCHESTRATION.md) Horizon W ·
+**Required reads:** [ORCHESTRATION.md](../ORCHESTRATION.md) ·
 [EXCELLENCE_RESULT.md](EXCELLENCE_RESULT.md) · whatever `npm run harness` named.
 
 Wins when GRAPH_LOOP has no agent-open row, `idea:next` emits nothing, **and**
 generate is mined out (two consecutive scout-harvests at zero survivors).
-The standing NOW is still Horizon W. This recipe takes the first unproven
-W-gap, from instruments, not taste (`src/lib/loopQueue/criticalPath.ts`).
+The standing NOW is the first unproven `PATH_STEPS` row: Horizon W while
+RESULT is not `pass`, then Horizon 0 agent streams. Instruments, not taste
+(`src/lib/loopQueue/criticalPath.ts`). A walk of the wedge is not a step.
 
-1. **`npm run harness` names the ticket** (`W1`…`W4` or `C5`). You do not pick.
+1. **`npm run harness` names the ticket** (`W1`…`W4`, `C5`, then `H01`…).
+   You do not pick.
 2. **Owner `founder`** (C5 while RESULT is unscored): print the ticket and stop.
    Do not invent a builder brief. Do not write `status: pass`.
 3. **Owner `agent`:** write `docs/harness/HOP.md`. Investigate on master. Already
    true → proof paths, no restyle. Still false → one PR against that claim only.
 4. `npm run harness:done` before claiming the hop shipped. It does not write
    GRAPH_LOOP.
+5. When every agent stream is proven, the route is `stalled`. Remaining flip
+   work is founder (postal, secrets, `PRIVATE_MODE`). Stop. Do not invent a
+   letter. Do not walk Train → Today → Victory → Coach to mint a ticket.
 
 **Required tests:** the accept command printed for that ticket.
 
@@ -304,42 +309,9 @@ W-gap, from instruments, not taste (`src/lib/loopQueue/criticalPath.ts`).
 
 - Invent AU2 / the next letter
 - Write excellence `status: pass`
-- Take a more interesting W-id than the one named
+- Take a more interesting W-id or H-id than the one named
 - Raise TAP_BUDGET / firstPaintFloor / bundle caps
-
----
-
-## 16. Craft the wedge after Horizon W pass
-
-**Required reads:** [ORCHESTRATION.md](../ORCHESTRATION.md) · whatever
-`npm run harness` named · the running app (Train `/active`, Today `/log`,
-Victory, Coach `/coach`).
-
-Wins when GRAPH_LOOP has no agent-open row, harvest is mined out, **and**
-`firstCriticalGap` is `null` (RESULT is `pass`). The instruments have
-nothing left to name. Autodrive continues as **craft**, not as a new letter
-and not as a park.
-
-1. **`npm run harness` names `craft`.** You do not pick a GRAPH_LOOP id.
-2. **Walk the wedge** the way a first-session athlete would. Name **one**
-   friction the walk actually hit — a defect, a lie, a tap over budget, a
-   string that is English in every language. Not a new feature. Not a
-   pillar. Not AU2.
-3. Write `docs/harness/HOP.md` (`ticket: craft`, `done_means` one sentence,
-   `accept` the command that proves *this* friction). One PR. Do not add a
-   GRAPH_LOOP row.
-4. `npm run harness:done` before claiming the hop shipped. It does not write
-   GRAPH_LOOP.
-5. Two hops that move no product (`--moved 0`) still stop the timed session.
-
-**Required tests:** the accept command written in `HOP.md` for that walk.
-
-**Never**
-
-- Invent a GRAPH_LOOP letter to refill the queue
-- Raise TAP_BUDGET / firstPaintFloor / bundle caps
-- Gate the free logger · flip `PRIVATE_MODE` · write `status: pass`
-- Take a more interesting surface than the one the walk named
+- Treat residual wedge polish as a harness ticket
 
 ---
 

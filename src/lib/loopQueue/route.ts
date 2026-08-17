@@ -61,24 +61,7 @@ const WORKBENCH_LINK = /\(?(gauntlet\/GNT-\d+-[a-z0-9-]+\.md)\)/i;
 const ROLES = ['LEAD', 'BUILDER', 'CRITIC', 'SMOOTHER'] as const;
 export type Role = (typeof ROLES)[number];
 
-export type RouteKind = 'build' | 'gauntlet' | 'harvest' | 'path' | 'craft' | 'stalled';
-
-/**
- * Ticket the closer and HOP.md use when RESULT is pass, the queue is empty,
- * and harvest is mined. Not a GRAPH_LOOP letter. Not a W-id.
- */
-export const CRAFT_TICKET = 'craft';
-
-export const CRAFT_GAP: PathGap = {
-  id: CRAFT_TICKET,
-  claim: 'Walk Train → Today → Victory → Coach; ship one named first-session friction',
-  instrument: 'docs/AGENT_RECIPES.md',
-  anchor: '16. Craft the wedge after Horizon W pass',
-  orchAnchor: 'Wedge excellence before beta theater',
-  owner: 'agent',
-  accept: 'npx tsx --test src/lib/loopQueue/route.test.ts',
-  reason: 'Horizon W is pass; firstCriticalGap is null; do not invent a letter',
-};
+export type RouteKind = 'build' | 'gauntlet' | 'harvest' | 'path' | 'stalled';
 
 /** What a harvest hop must do. Null when the route is not harvest. */
 export type HarvestAction = 'paste' | 'generate' | null;
@@ -97,7 +80,7 @@ export interface Workbench {
 export interface Route {
   kind: RouteKind;
   /** Recipe number in `docs/AGENT_RECIPES.md`. */
-  recipe: 11 | 12 | 13 | 15 | 16 | null;
+  recipe: 11 | 12 | 13 | 15 | null;
   row: QueueRow | null;
   workbench: Workbench | null;
   /** `founder` / `blocked` rows passed over on the way to the live ticket. Never silent. */
@@ -107,7 +90,7 @@ export interface Route {
   atRatchet: boolean;
   /** Conditions a human has to decide about. Reported, never auto-resolved. */
   notes: string[];
-  /** Horizon W gap when `kind` is `path`. */
+  /** Orchestration-path gap when `kind` is `path`. */
   path: PathGap | null;
   /** Set when `kind` is `harvest`. */
   harvestAction: HarvestAction;
@@ -310,18 +293,15 @@ function emptyQueueRoute(
     notes.push(
       gap.owner === 'founder'
         ? `no queue row, harvest mined out — next is ${gap.id} (${gap.owner} phone), not AU2`
-        : `no queue row, harvest mined out — next is Horizon W ${gap.id}`
+        : `no queue row, harvest mined out — next is ${gap.id} (${gap.claim})`
     );
     return { kind: 'path', recipe: 15, notes, ...blank, path: gap };
   }
 
-  if (!existsSync(path.join(root, 'docs/IDEA_LOOP.md'))) {
-    notes.push('no agent-open row, no harvest, and no critical-path gap — stalled');
-    return { kind: 'stalled', recipe: null, notes, ...blank };
-  }
-
   notes.push(
-    'Horizon W is pass, queue empty, harvest mined — craft hop (recipe 16). Walk the wedge; one named friction; do not invent a letter'
+    existsSync(path.join(root, 'docs/IDEA_LOOP.md'))
+      ? 'Horizon W is pass and Horizon 0 agent streams are proven — remaining flip work is founder (postal, secrets, PRIVATE_MODE). Do not invent a letter or a craft walk'
+      : 'no agent-open row, no harvest, and no critical-path gap — stalled'
   );
-  return { kind: 'craft', recipe: 16, notes, ...blank, path: CRAFT_GAP };
+  return { kind: 'stalled', recipe: null, notes, ...blank };
 }
