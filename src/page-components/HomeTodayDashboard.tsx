@@ -66,11 +66,6 @@ import { loadPlan } from '@/lib/coach/storage';
 import { buildJustGoHeroMeta, type JustGoHeroMeta } from '@/lib/justGoHeroMeta';
 import { shouldRepeatLastOnToday } from '@/lib/workout/repeatLastSession';
 
-const FirstStepsCard = dynamic(
-  () => import('@/components/journey/FirstStepsCard').then((m) => m.FirstStepsCard),
-  { ssr: false, loading: () => null }
-);
-
 const CommandersIntent = dynamic(
   () => import('@/components/journey/CommandersIntent').then((m) => m.CommandersIntent),
   { ssr: false, loading: () => <SkeletonBlock className="h-16 w-full" /> }
@@ -635,7 +630,6 @@ export function HomeTodayDashboard() {
   });
 
   const nodesByKey: Partial<Record<TodayBlockKey, ReactNode>> = {
-    beta: <FirstStepsCard state={state} />,
     header: (
       <TodayPageHeader
         today={todayLabel}

@@ -138,9 +138,9 @@ describe('week-1 activation contract after composure (.404)', () => {
   });
 
   it('dense evening budget keeps coach session, spills Mission Score', () => {
-    // Pinned first-steps + header + reentry consume 3 of 6; room = 3 spillable.
+    // Pinned header + reentry consume 2 of 6; room = 4 spillable. First Steps
+    // is off Today (.890) — Start is the instruction.
     const candidates = [
-      { key: 'beta', priority: TODAY_BLOCK_PRIORITY.beta, pinned: true, node: 'fs' },
       { key: 'header', priority: TODAY_BLOCK_PRIORITY.header, pinned: true, node: 'h' },
       { key: 'reentry', priority: TODAY_BLOCK_PRIORITY.reentry, pinned: true, node: 'r' },
       { key: 'coach-today', priority: TODAY_BLOCK_PRIORITY['coach-today'], node: 'ct' },
@@ -155,7 +155,7 @@ describe('week-1 activation contract after composure (.404)', () => {
     const topKeys = plan.top.map((c) => c.key);
     const moreKeys = plan.inMore.map((c) => c.key);
 
-    assert.ok(topKeys.includes('beta'), 'First Steps stay pinned for week-1');
+    assert.ok(!topKeys.includes('beta'), 'First Steps stay off Today');
     assert.ok(topKeys.includes('coach-today'), 'next session stays above the fold');
     assert.ok(
       moreKeys.includes('dashboard'),

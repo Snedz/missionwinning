@@ -1,5 +1,5 @@
-/** Shown on Profile so testers can confirm the deployed build. Bump when shipping UI to master. `.889` set table on the phone. */
-export const APP_BUILD_LABEL = "2026.07-unified.889";
+/** Shown on Profile so testers can confirm the deployed build. Bump when shipping UI to master. `.890` Today Start, not First Steps. */
+export const APP_BUILD_LABEL = "2026.07-unified.890";
 
 /**
  * Semver for athletes. Distinct from `APP_BUILD_LABEL`, which `/api/health`

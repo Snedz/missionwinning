@@ -22,10 +22,11 @@ function densestEvening(overrides: Partial<BuildTodayCandidatesInput> = {}): Bui
 }
 
 describe('buildTodayCandidates', () => {
-  it('pins only beta and header when they mount', () => {
+  it('pins only the header — First Steps is off Today', () => {
     const specs = buildTodayCandidates(densestEvening());
+    assert.ok(!specs.some((s) => s.key === 'beta'));
     for (const s of specs) {
-      if (s.key === 'beta' || s.key === 'header') {
+      if (s.key === 'header') {
         assert.equal(s.pinned, true, `${s.key} must be pinned`);
       } else {
         assert.equal(s.pinned, undefined, `${s.key} must not be pinned`);
@@ -43,7 +44,6 @@ describe('buildTodayCandidates', () => {
   it('commissioned dense evening declaration order', () => {
     const keys = buildTodayCandidates(densestEvening()).map((s) => s.key);
     assert.deepEqual(keys, [
-      'beta',
       'header',
       'intent',
       'continuity',

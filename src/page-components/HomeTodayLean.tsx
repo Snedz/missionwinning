@@ -16,11 +16,10 @@ const CoachLogCite = dynamic(
   { ssr: false }
 );
 import { dayReviewMayMount } from '@/lib/today/dayReviewMount';
-import { firstStepsMayMount, reentryCardMayMount } from '@/lib/today/todayGuidanceMount';
+import { reentryCardMayMount } from '@/lib/today/todayGuidanceMount';
 import { todayCoachInviteMayMount } from '@/lib/today/todayCoachInviteMount';
 import { loadPlan } from '@/lib/coach/storage';
-import { FIRST_STEPS_DISMISS_KEY } from '@/lib/today/firstStepsDismissed';
-import { useDismissed } from '@/hooks/useDismissed';
+
 import { TODAY_BLOCK_PRIORITY as P } from '@/lib/today/todayBlockPriority';
 import { planTodayBlocks, type TodayBlockCandidate } from '@/lib/today/todayBlockBudget';
 import { ScreenDock } from '@/components/layout/ScreenDock';
@@ -70,11 +69,6 @@ const TodayDayReviewCard = dynamic(
  * render. Missed-day re-entry (0.1 beta) is the Start field's one line, not a
  * second card.
  */
-const FirstStepsCard = dynamic(
-  () => import('@/components/journey/FirstStepsCard').then((m) => m.FirstStepsCard),
-  { ssr: false, loading: () => null }
-);
-
 /** After first session — rank + weekly goal; cold path stays free of rewards chunk. */
 const TodayRewardsCard = dynamic(
   () => import('@/components/rewards/TodayRewardsCard').then((m) => m.TodayRewardsCard),
@@ -134,8 +128,6 @@ export function HomeTodayLean() {
    */
   const [reentry, setReentry] = useState<ReturnType<typeof computeReentry> | null>(null);
   const [rewardsSummary, setRewardsSummary] = useState<RewardsSummary | null>(null);
-  const { dismissed: betaDismissed } = useDismissed(FIRST_STEPS_DISMISS_KEY);
-
   useEffect(() => {
     setReentry(computeReentry(workoutHistory, Date.now(), loadPlan()));
   }, [workoutHistory]);
@@ -292,9 +284,6 @@ export function HomeTodayLean() {
    * instead of being a free `+1`, which is the whole history of the other shell.
    */
   const blocks: TodayBlockCandidate<React.ReactNode>[] = [
-    ...(firstStepsMayMount({ phase: journeyState.phase, dismissed: betaDismissed })
-      ? [{ key: 'beta', priority: P.beta, pinned: true, node: <FirstStepsCard state={journeyState} /> }]
-      : []),
     {
       key: 'header',
       priority: P.header,

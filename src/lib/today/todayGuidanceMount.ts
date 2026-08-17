@@ -35,18 +35,16 @@ export interface FirstStepsMountInput {
 }
 
 /**
- * The first-steps checklist card.
+ * The first-steps checklist card — off Today (`.890`).
  *
- * Dismissal is part of *may it mount*, not only of *what it renders*. The block
- * is `pinned`, and `planTodayBlocks` shrinks `room` by every pinned **candidate**
- * regardless of whether it draws anything — so a card that returns `null` was
- * still spending a top-level Today slot for the life of the install. See
- * [`firstStepsDismissed.ts`](./firstStepsDismissed.ts) for why the check lives
- * there and is passed in rather than duplicated here.
+ * Start is the instruction. The checklist still lives in More
+ * (`firstStepsReachable`). Dismissal / phase stay on the input so a later
+ * remount cannot invent a second private rule; they do not bring the card back.
  */
 export function firstStepsMayMount({ phase, dismissed }: FirstStepsMountInput): boolean {
-  if (dismissed) return false;
-  return phase !== 'i-day';
+  void phase;
+  void dismissed;
+  return false;
 }
 
 export interface ReentryMountInput {

@@ -1,14 +1,10 @@
 /**
- * The card that tells you what to do must reach you before you have done it.
+ * Today is Summary. First Steps is a tour card. Start is the instruction.
  *
- * `.204` — the first-run guidance card was mounted in `HomeTodayDashboard` only, and
- * `HomePage` routes `i-day` and `basic` to `HomeTodayLean`. A new tester is
- * `basic` until `detectBasicMilestones` sees all five pillars, so the banner
- * saying *"Finish I-Day, log one workout, then open Mission Coach"* appeared
- * only to athletes who had already done all of it.
- *
- * These are enumerations, not spot checks: the defect was never a wrong answer
- * for a phase, it was a phase nobody asked about.
+ * `.204` / `.240` put the card on both shells so the checklist could not hide
+ * on the lean path. That fixed a mount-site bug and left a tour on the first
+ * screen. Summary v1 (`.890`) turns the predicate off. The checklist still
+ * lives in More (`firstStepsReachable`). Re-entry stays the quiet line.
  */
 
 import { test } from 'node:test';
@@ -23,13 +19,12 @@ const read = (p: string) => readFileSync(path.join(root, p), 'utf8');
 
 const PHASES: JourneyPhase[] = ['i-day', 'basic', 'readiness', 'commissioned'];
 
-test('the first-steps card reaches every phase that can act on it', () => {
+test('the first-steps card never mounts on Today', () => {
   for (const phase of PHASES) {
     assert.equal(
       firstStepsMayMount({ phase, dismissed: false }),
-      phase !== 'i-day',
-      `phase ${phase}: the card instructs "finish I-Day, log one workout, open Coach" — ` +
-        `it is useful to everyone past in-processing and to nobody still inside it`
+      false,
+      `phase ${phase}: Start is the instruction; First Steps is a tour`
     );
   }
 });
@@ -84,13 +79,13 @@ test('an open session is not a return', () => {
  */
 const SHELLS = ['src/page-components/HomeTodayLean.tsx', 'src/page-components/HomeTodayDashboard.tsx'];
 
-test('both Today shells render the guidance cards', () => {
+test('both Today shells keep the quiet line and drop First Steps', () => {
   for (const shell of SHELLS) {
     const src = read(shell);
-    assert.match(
+    assert.doesNotMatch(
       src,
       /<FirstStepsCard\b/,
-      `${shell} never renders <FirstStepsCard> — a card in one shell is a card half the athletes cannot see`
+      `${shell} still mounts <FirstStepsCard> — Today is Summary, not a tour`
     );
     assert.match(
       src,
@@ -110,16 +105,11 @@ test('both Today shells render the guidance cards', () => {
  * Lean calls the helpers at the mount site. Dashboard routes guidance through
  * `buildTodayCandidates` (the pure ladder that already calls both helpers).
  */
-test('both shells ask the shared mount rule rather than re-deriving it', () => {
+test('both shells ask the shared re-entry rule rather than re-deriving it', () => {
   for (const shell of SHELLS) {
     const src = read(shell);
     const viaLadder = /buildTodayCandidates\(/.test(src);
-    const viaFirst = /firstStepsMayMount\(/.test(src);
     const viaReentry = /reentryCardMayMount\(/.test(src);
-    assert.ok(
-      viaFirst || viaLadder,
-      `${shell} must gate first-steps on the shared rule (firstStepsMayMount or buildTodayCandidates)`
-    );
     assert.ok(
       viaReentry || viaLadder,
       `${shell} must gate re-entry on the shared rule (reentryCardMayMount or buildTodayCandidates)`
