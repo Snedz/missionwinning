@@ -11,6 +11,7 @@ Closed campaigns rotate to [docs/archive/](../archive/INDEX.md) the same way LOG
 |----|-------|--------|-----------|----------------|
 | **GNT-1** | Wedge excellence | `ready-for-founder` | [GNT-1-wedge-excellence.md](GNT-1-wedge-excellence.md) | **AL1** (`done`) |
 | **GNT-2** | Coach plan quality eval harness | `ready-for-founder` | [GNT-2-coach-plan-quality.md](GNT-2-coach-plan-quality.md) | **AM1** (`done`) |
+| **VISION** | Standing vision gauntlet | `open` | [VISION.md](VISION.md) | none — not a letter |
 
 **Naming trap:** `GNT-n` is not GRAPH_LOOP G1, not PFT G1–G8, not journey/build phases. See root [INDEX.md](../../INDEX.md) §2.
 

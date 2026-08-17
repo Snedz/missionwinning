@@ -65,11 +65,12 @@ test('the committed queue has no Now-open row, and routing follows RESULT status
   assert.equal(r.atRatchet, false);
 
   if (excellenceStatusAt(root) === 'pass') {
-    // Horizon W is scored and H01/H03 instruments are on this tree.
-    // Remaining flip work is founder. Not a craft walk. Not a letter.
-    assert.equal(r.kind, 'stalled');
-    assert.equal(r.recipe, null);
-    assert.equal(r.path, null);
+    // Path tickets are proven. Goal is still in the repo — vision gauntlet.
+    assert.equal(r.kind, 'gauntlet');
+    assert.equal(r.recipe, 12);
+    assert.equal(r.row?.id, 'VISION');
+    assert.equal(r.workbench?.file, 'docs/gauntlet/VISION.md');
+    assert.equal(r.workbench?.role, 'LEAD');
   } else {
     assert.equal(r.kind, 'path');
     assert.equal(r.recipe, 15);
@@ -178,8 +179,8 @@ test('no open row, empty idea:next, and mined generate never routes to harvest',
   assert.notEqual(r.kind, 'harvest');
   assert.equal(r.harvestAction, null);
   if (excellenceStatusAt(root) === 'pass') {
-    assert.equal(r.kind, 'stalled');
-    assert.equal(r.path, null);
+    assert.equal(r.kind, 'gauntlet');
+    assert.equal(r.row?.id, 'VISION');
   } else {
     assert.equal(r.kind, 'path');
     assert.equal(r.recipe, 15);
@@ -304,10 +305,57 @@ test('mined harvest + RESULT pass + H01 stamp stalls — founder flip work, not 
   const q = real();
   for (const s of q.sections) for (const row of s.rows) if (row.status === 'open') row.status = 'done';
   const r = route(tmp, q);
-  assert.equal(r.kind, 'stalled', 'exhausted agent path must stop, not walk the wedge');
+  assert.equal(r.kind, 'stalled', 'no VISION.md must stall, not walk the wedge');
   assert.equal(r.recipe, null);
   assert.equal(r.path, null);
-  assert.match(r.notes.join(' '), /founder/);
+  rmSync(tmp, { recursive: true, force: true });
+});
+
+test('mined harvest + path proven + VISION.md routes to the vision gauntlet', () => {
+  const tmp = mkdtempSync(path.join(tmpdir(), 'loopqueue-vision-'));
+  mkdirSync(path.join(tmp, 'docs/mechanics'), { recursive: true });
+  mkdirSync(path.join(tmp, 'docs/gauntlet'), { recursive: true });
+  mkdirSync(path.join(tmp, 'src/lib'), { recursive: true });
+  mkdirSync(path.join(tmp, 'sites/www'), { recursive: true });
+  writeFileSync(path.join(tmp, 'docs/IDEA_LOOP.md'), 'stub');
+  writeFileSync(path.join(tmp, 'docs/EXCELLENCE_RESULT.md'), '- **status:** pass\n');
+  writeFileSync(path.join(tmp, 'sites/www/COMPOSITION_PASS.md'), '- **status:** pass\n');
+  writeFileSync(
+    path.join(tmp, 'docs/gauntlet/VISION.md'),
+    '# Vision\n\n**Next spawn:** LEAD — commission the first unit.\n'
+  );
+  writeFileSync(
+    path.join(tmp, 'docs/mechanics/LEDGER.md'),
+    `| run | date | scout | anatomist | translator | red team | cap declared | spent | emitted | survived red team | later PASS |
+|---|---|---|---|---|---|---|---|---|---|---|
+| harvest-8 | 2026-08-16 | 3 | 1 | 1 | 1 | 0 | 0 | 0 | 0 of 2 | — |
+| harvest-9 | 2026-08-16 | 3 | 1 | 1 | 1 | 0 | 0 | 0 | 0 of 3 | — |
+`
+  );
+  writeFileSync(
+    path.join(tmp, 'src/lib/orchestrationW1Landing.test.ts'),
+    'W1 Activation lands I-Day on Today'
+  );
+  writeFileSync(path.join(tmp, 'src/lib/todayPrimaryAction.test.ts'), 'isTodayTrainReady');
+  writeFileSync(path.join(tmp, 'src/lib/gnt1First90.test.ts'), 'TAP_BUDGET is 4');
+  mkdirSync(path.join(tmp, 'src/lib/workout'), { recursive: true });
+  writeFileSync(path.join(tmp, 'src/lib/workout/workoutVictory.test.ts'), 'stub');
+  writeFileSync(path.join(tmp, 'src/lib/reentryCopyGuard.test.ts'), 'shame-free');
+  mkdirSync(path.join(tmp, 'tests/e2e'), { recursive: true });
+  writeFileSync(path.join(tmp, 'tests/e2e/first-90.spec.ts'), 'First 90 seconds @gate');
+  mkdirSync(path.join(tmp, 'scripts'), { recursive: true });
+  writeFileSync(path.join(tmp, 'scripts/www-composition.mjs'), 'composition floors');
+  writeFileSync(path.join(tmp, 'src/lib/alphaNavHonesty.test.ts'), 'athlete launch chrome is Alpha');
+
+  const q = real();
+  for (const s of q.sections) for (const row of s.rows) if (row.status === 'open') row.status = 'done';
+  const r = route(tmp, q);
+  assert.equal(r.kind, 'gauntlet');
+  assert.equal(r.recipe, 12);
+  assert.equal(r.row?.id, 'VISION');
+  assert.equal(r.workbench?.file, 'docs/gauntlet/VISION.md');
+  assert.equal(r.workbench?.role, 'LEAD');
+  assert.ok(r.workbench?.nextSpawn?.includes('LEAD'));
   rmSync(tmp, { recursive: true, force: true });
 });
 

@@ -66,7 +66,7 @@ PR, and the `done` edit is still the baton.
 
 `npm run harness` answers that by **reading this file** — the `## Queue` region
 only, tables addressed by header name, status taken from the parsed Status cell.
-It names the live ticket, the route (`build` · `gauntlet` · `harvest` · `path` · `stalled`), the recipe,
+It names the live ticket, the route (`build` · `gauntlet` · `harvest` · `path` · `stalled`; empty + path proven → standing `VISION` gauntlet), the recipe,
 the workbench and its `Next spawn` line, and any `founder`/`blocked` row it stepped
 over. It also prints closed-loop **lessons** (`docs/mechanics/verdicts/`) and, on
 a harvest route, the `idea:next` pick and whether to **paste** or **generate**.
@@ -743,9 +743,11 @@ QUEUE:
    generate-harvests at zero survivors): follow recipe 15. Ticket is the first
    unproven ORCHESTRATION step (`W1`–`W4`, `C5`, then `H01`…). Owner `founder`
    means stop for phone sign-off — do not invent AU2.
-5d. Route `stalled` (path proven, or no IDEA_LOOP.md): print the note and exit.
-   Remaining flip work is founder. Do not invent a letter. Do not walk the
-   wedge to mint a ticket. No HOP.md.
+5d. Route `gauntlet` on `docs/gauntlet/VISION.md` (path proven, harvest mined):
+   follow recipe 12. Standing workbench, not a GRAPH_LOOP letter. Take the
+   **Next spawn** line. Do not invent AU2.
+5e. Route `stalled` (no VISION.md, or no IDEA_LOOP.md): print the note and exit.
+   No HOP.md.
 
 SHIP (ordinary loops, and gauntlet BUILDER rounds only):
 6. One concern. One PR. Branch from master. [skip vercel] unless the founder asked for Preview.

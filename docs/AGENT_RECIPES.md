@@ -179,10 +179,10 @@ Hard bans stay: free logger never gated · no `PRIVATE_MODE` flip · no invented
 
 **Required reads:** [GAUNTLET_LOOP.md](GAUNTLET_LOOP.md) · the campaign workbench · [GRAPH_LOOP.md](GRAPH_LOOP.md) · [EXCELLENCE_RESULT.md](EXCELLENCE_RESULT.md) if the campaign maps to RESULT.
 
-This recipe wins when the top GRAPH_LOOP `open` row is a campaign (`GNT-*`). The first action is the workbench **Next spawn** line (role · unit · round).
+This recipe wins when the top GRAPH_LOOP `open` row is a campaign (`GNT-*`), **or** when the queue is empty, harvest is mined, and path tickets are proven — then the workbench is the standing [VISION.md](gauntlet/VISION.md) (not a letter). The first action is the workbench **Next spawn** line (role · unit · round).
 
 1. LEAD boots the spine + workbench. Bars and budget already written, or this spawn *is* the instrument-commission round. Critic the oldest shipped unit (empty critic cell) before commissioning the next builder.
-2. One BUILDER, one unit, one PR — only if Next spawn is BUILDER. Instruments = the workbench’s exact commands, green locally before the PR. Surface paths: `Excellence-Override: gauntlet GNT-<n>.U<u> round <r>`.
+2. One BUILDER, one unit, one PR — only if Next spawn is BUILDER. Instruments = the workbench’s exact commands, green locally before the PR. Surface paths: `Excellence-Override: gauntlet GNT-<n>.U<u> round <r>` (or `VISION.U<u>`). RESULT `pass` needs no trailer.
 3. Fresh CRITIC. Does not read the builder’s PR body or chat. Boot: [GAUNTLET_LOOP.md](GAUNTLET_LOOP.md) §4 critic boot (`npm run dev`, never gated `next start`). Evidence trio: 390×844 walk · own-app stills under `docs/gauntlet/<ID>/evidence/` · pasted instrument output.
 4. Verdict: every **written instrument** PASS/FAIL + exactly one “Biggest remaining gap.” A feel sentence is `founder-only, not a builder brief`. Hero-surface passes append a DESIGN_REVIEW §Passes row, Reviewer `Gauntlet <ID>.<U> R<r>`.
 5. LEAD pastes a **valid** verdict verbatim (trio present). Missing stills or “tests passed” is invalid — do not paste; re-spawn the critic. Instrument FAIL → that gap is the next builder brief. Feel-only FAIL is not.
@@ -309,9 +309,10 @@ invent a GRAPH_LOOP letter to refill.
    Do not declare PASS from a screenshot.
 5. `npm run harness:done` before claiming the hop shipped. It does not write
    GRAPH_LOOP.
-6. When every path ticket is proven, the route is `stalled`. Remaining flip
-   work is founder (`PRIVATE_MODE`). Postal is later. Stop. Do not invent a
-   letter. Do not walk Train → Today → Victory → Coach to mint a ticket.
+6. When every path ticket is proven, the route is the standing vision
+   gauntlet (`docs/gauntlet/VISION.md`, recipe 12). Remaining flip work is
+   founder (`PRIVATE_MODE`). Postal is later. Do not invent a letter. Do
+   not walk Train → Today → Victory → Coach to mint a ticket.
 
 **Required tests:** the accept command printed for that ticket.
 
