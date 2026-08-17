@@ -53,17 +53,35 @@ import { META, HERO, SECTIONS } from '../lib/visionContent';
     </section>
 
     {
-      SECTIONS.map((section) => (
-        <section class="px-5 py-section sm:px-8 lg:py-section-lg">
-          <div class="mx-auto max-w-3xl">
-            <p class="eyebrow">{section.index}</p>
-            <h2 class="display-section mt-4 max-w-[24ch]">{section.title}</h2>
+      SECTIONS.map((section, i) =>
+        i === 1 ? (
+          <section class="stage on-dark flex min-h-[72svh] flex-col justify-end px-5 pb-14 pt-24 sm:px-8 lg:pb-20">
+            <StagePhoto
+              base="/photo/home-rack"
+              alt=""
+              position="40% 50%"
+              drift
+            />
+            <div class="stage-body mx-auto w-full max-w-6xl">
+              <p class="eyebrow eyebrow-live">{section.index}</p>
+              <h2 class="display-section mt-4 max-w-[24ch]">{section.title}</h2>
+              {section.body.map((p) => (
+                <p class="mt-4 max-w-[52ch] text-[17px] leading-[1.55] text-quiet">{p}</p>
+              ))}
+            </div>
+          </section>
+        ) : (
+          <section class="px-5 py-section sm:px-8 lg:py-section-lg">
+            <div class="mx-auto max-w-3xl">
+              <p class="eyebrow">{section.index}</p>
+              <h2 class="display-section mt-4 max-w-[24ch]">{section.title}</h2>
             {section.body.map((p) => (
               <p class="mt-4 max-w-[62ch] text-[17px] leading-[1.55] text-quiet">{p}</p>
             ))}
           </div>
         </section>
-      ))
+        )
+      )
     }
   </main>
 

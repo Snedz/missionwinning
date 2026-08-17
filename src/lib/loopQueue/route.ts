@@ -55,8 +55,12 @@ export const MAX_SINGLE_ROW_RUN = 16;
 /** `GNT-1`, `GNT-2` … A campaign row routes to the gauntlet, never to a builder. */
 const CAMPAIGN = /\bGNT-(\d+)\b/;
 
-/** `[…](gauntlet/GNT-2-coach-plan-quality.md)` — links in this file are `docs/`-relative. */
-const WORKBENCH_LINK = /\(?(gauntlet\/GNT-\d+-[a-z0-9-]+\.md)\)/i;
+/** `[…](gauntlet/GNT-2-coach-plan-quality.md)` or `[…](gauntlet/VISION.md)`. */
+const WORKBENCH_LINK = /\(?(gauntlet\/[A-Za-z0-9][A-Za-z0-9-]*\.md)\)/i;
+
+/** Standing vision gauntlet — not a GRAPH_LOOP letter. */
+export const VISION_WORKBENCH = 'docs/gauntlet/VISION.md';
+export const VISION_TICKET = 'VISION';
 
 const ROLES = ['LEAD', 'BUILDER', 'CRITIC', 'SMOOTHER'] as const;
 export type Role = (typeof ROLES)[number];
@@ -296,6 +300,35 @@ function emptyQueueRoute(
         : `no queue row, harvest mined out — next is ${gap.id} (${gap.claim})`
     );
     return { kind: 'path', recipe: 15, notes, ...blank, path: gap };
+  }
+
+  const visionFile = path.join(root, VISION_WORKBENCH);
+  if (existsSync(visionFile)) {
+    const visionRow: QueueRow = {
+      id: VISION_TICKET,
+      loop: 'Vision gauntlet',
+      moves: '[wb](gauntlet/VISION.md)',
+      status: 'open',
+      statusCell: '`open`',
+      section: 'Vision',
+      sectionKind: 'now',
+      line: 0,
+    };
+    const workbench = readWorkbench(root, visionRow);
+    notes.push(
+      'Horizon W is pass and Horizon 0 path tickets are proven — vision gauntlet (recipe 12). Goal is already in the repo. Not a letter. Not a craft walk'
+    );
+    if (!workbench?.nextSpawn) {
+      notes.push(`${VISION_WORKBENCH} has no \`**Next spawn:**\` line — LEAD writes it`);
+    }
+    return {
+      kind: 'gauntlet',
+      recipe: 12,
+      notes,
+      ...blank,
+      row: visionRow,
+      workbench,
+    };
   }
 
   notes.push(

@@ -3,6 +3,7 @@ import type { UnitsPref } from '@/lib/units';
 import { weightStep, weightUnitLabel } from '@/lib/units';
 import { suggestNextSetTarget } from '@/lib/workout/nextSetTargets';
 import { sessionIsCoachPrescribed } from '@/lib/workout/activeWorkoutHelpers';
+import { sumWorkingReps } from '@/lib/workout/volumeDisplay';
 import { getExerciseById } from '@/data/exercises';
 import type { FieldTestReceipt } from '@/lib/workout/fieldTestReceipt';
 import type { VictoryReceipt } from '@/lib/workout/victoryReceipt';
@@ -42,6 +43,8 @@ export type ProgressionInsight = {
 export interface WorkoutVictorySummary {
   workoutName: string;
   totalVolume: number;
+  /** Countable working-set reps — Victory prints these when load volume is 0. */
+  workingReps: number;
   durationSeconds: number;
   setCount: number;
   exerciseCount: number;
@@ -205,6 +208,7 @@ export function summarizeWorkoutVictory(
   return {
     workoutName: log.workoutName,
     totalVolume: log.totalVolume,
+    workingReps: sumWorkingReps(log.exercises),
     durationSeconds: log.durationSeconds,
     setCount,
     exerciseCount: log.exercises.length,

@@ -21,7 +21,7 @@
 | `WorkoutVictorySheet.tsx` | Post-workout summary sheet — Next docks below the scroll (`.877`) |
 | `VictoryFeelStrip.tsx` | Post-session feel 1–5 energy (free ritual) (`.429`) |
 | `VictoryBodyDeltaStrip.tsx` | Readiness · strain · recovery signed deltas (`.444`) |
-| `VictoryStatsStrip.tsx` | Volume · sets · duration grid (`.447`); optional vs-last deltas from the receipt |
+| `VictoryStatsStrip.tsx` | Volume · sets · duration grid (`.447`); BW prints reps via `formatWorkoutVolumeDisplay` (`.886`) |
 | `VictoryReceiptStrip.tsx` | Per-lift vs-last receipt on Victory (`.713`) |
 | `VictoryNextActionStrip.tsx` | Primary Next CTA block (`.447`) |
 | `PlateCalculatorSheet.tsx` | Plate math sheet |

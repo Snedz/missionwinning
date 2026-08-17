@@ -2,10 +2,10 @@
 
 **Audience:** Founder + LEAD / BUILDER / CRITIC spawns  
 **Lane:** Engineering-Web (unless a campaign names Android)  
-**Status:** ACTIVE 2026-08-15 · GNT-1 `ready-for-founder` · GNT-2 `ready-for-founder` · GRAPH_LOOP **AL1 `done` · AM1 `done`**  
+**Status:** ACTIVE 2026-08-16 · GNT-1 `ready-for-founder` · GNT-2 `ready-for-founder` · GRAPH_LOOP **AL1 `done` · AM1 `done`** · standing **VISION** workbench (not a letter)  
 **Does not replace:** [ORCHESTRATION.md](../ORCHESTRATION.md) (what may be built) · [CONTEXT.md](../CONTEXT.md) `## Now` (where we are) · [docs/GRAPH_LOOP.md](GRAPH_LOOP.md) (the queue) · [DESIGN_ORCHESTRATION.md](DESIGN_ORCHESTRATION.md) §Surface quality bars
 
-This file is the **grading protocol**. It is not a second queue and not a second status block. Campaigns live in [docs/gauntlet/](gauntlet/INDEX.md). The baton is still one GRAPH_LOOP row per campaign.
+This file is the **grading protocol**. It is not a second queue and not a second status block. Campaigns live in [docs/gauntlet/](gauntlet/INDEX.md). The baton is still one GRAPH_LOOP row per named campaign. The standing [VISION.md](gauntlet/VISION.md) workbench has no letter — `npm run harness` names it after path tickets are proven.
 
 ---
 

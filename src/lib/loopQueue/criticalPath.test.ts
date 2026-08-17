@@ -60,15 +60,12 @@ describe('critical path', () => {
    * on status is proved with fixtures in both directions rather than by
    * whichever value happens to be committed today.
    */
-  it('on this repo W1–W4 and H03 are proven by their instruments; H01 is not', () => {
+  it('on this repo W1–W4, H01, and H03 are proven by their instruments', () => {
     for (const step of PATH_STEPS) {
-      if (step.id === 'C5' || step.id === 'H01') continue;
+      if (step.id === 'C5') continue;
       assert.equal(isStepProven(step, root), true, `${step.id} should already be proven`);
     }
-    const h01 = PATH_STEPS.find((s) => s.id === 'H01');
-    assert.ok(h01, 'H01 must exist in PATH_STEPS');
-    assert.equal(isStepProven(h01, root), false, 'www composition stamp must not be on the live tree');
-    assert.equal(compositionPassAt(root), false);
+    assert.equal(compositionPassAt(root), true);
   });
 
   it('C5 is proven by RESULT status alone, both ways', () => {

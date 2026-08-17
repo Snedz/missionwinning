@@ -15,6 +15,7 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog';
 import type { WorkoutVictorySummary } from '@/lib/workout/workoutVictory';
+import { formatWorkoutVolumeDisplay } from '@/lib/workout/volumeDisplay';
 import {
   formatProgressionInsight,
   progressionInsightKey,
@@ -115,13 +116,19 @@ export function WorkoutVictorySheet({
 
   if (!summary) return null;
 
+  const volume = formatWorkoutVolumeDisplay(
+    summary.totalVolume,
+    summary.workingReps,
+    unitLabel,
+    (n) => fmt.num(n)
+  );
   const shareText = t('victoryShareText', {
     name: summary.workoutName,
-    volume: fmt.num(summary.totalVolume),
-    unit: unitLabel,
+    volume: volume.value,
+    unit: volume.unit,
     sets: summary.setCount,
     streak: summary.streak,
-    defaultValue: `Session done: ${summary.workoutName} — ${fmt.num(summary.totalVolume)} ${unitLabel}, ${summary.setCount} sets${summary.streak > 0 ? `, ${summary.streak}-day streak` : ''}.`,
+    defaultValue: `Session done: ${summary.workoutName} — ${volume.value} ${volume.unit}, ${summary.setCount} sets${summary.streak > 0 ? `, ${summary.streak}-day streak` : ''}.`,
   });
 
   /**
@@ -279,6 +286,7 @@ export function WorkoutVictorySheet({
 
         <VictoryStatsStrip
           totalVolume={summary.totalVolume}
+          workingReps={summary.workingReps}
           setCount={summary.setCount}
           durationSeconds={summary.durationSeconds}
           unitLabel={unitLabel}

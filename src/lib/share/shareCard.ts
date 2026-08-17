@@ -18,6 +18,7 @@
 
 import type { PersonalRecord } from '@/lib/coach/progress';
 import type { WorkoutVictorySummary } from '@/lib/workout/workoutVictory';
+import { formatWorkoutVolumeDisplay } from '@/lib/workout/volumeDisplay';
 import type { WeeklyDebrief } from '@/lib/weeklyDebrief';
 import { EN_ONLY_SURFACE, formatLocalNumber } from '@/lib/i18n/formatLocale';
 import type {
@@ -122,8 +123,14 @@ export function buildVictoryCardData(
   records: PersonalRecord[],
   unitLabel: string
 ): ShareCardData {
+  const volume = formatWorkoutVolumeDisplay(
+    summary.totalVolume,
+    summary.workingReps,
+    unitLabel,
+    (n) => formatLocalNumber(n, EN_ONLY_SURFACE)
+  );
   const stats: ShareCardStat[] = [
-    { label: 'Volume', value: `${formatLocalNumber(summary.totalVolume, EN_ONLY_SURFACE)} ${unitLabel}` },
+    { label: 'Volume', value: `${volume.value} ${volume.unit}` },
     { label: 'Sets', value: String(summary.setCount) },
     { label: 'Time', value: formatDuration(summary.durationSeconds) },
   ];
