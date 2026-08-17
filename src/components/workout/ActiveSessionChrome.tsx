@@ -10,6 +10,7 @@ import { Check, MoreVertical, Scale } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { Button } from '@/components/ui/button';
 import { HoldToConfirmButton } from '@/components/ui/HoldToConfirmButton';
+import { ActiveTrainCues } from '@/components/speech/ActiveTrainCues';
 import { formatDuration } from '@/lib/utils';
 import { activeCoachTipKind } from '@/lib/workout/activeWorkoutHelpers';
 
@@ -19,6 +20,9 @@ type Props = {
   totalSets: number;
   hardCount: number;
   elapsedSeconds: number;
+  restTimerActive: boolean;
+  nextCue: { exerciseName: string; weight?: number | null; reps?: number | null } | null;
+  logPulse: number;
   onOpenPlateCalc: () => void;
   onDiscard: () => void;
   onFinish: () => void;
@@ -30,6 +34,9 @@ export function ActiveSessionChrome({
   totalSets,
   hardCount,
   elapsedSeconds,
+  restTimerActive,
+  nextCue,
+  logPulse,
   onOpenPlateCalc,
   onDiscard,
   onFinish,
@@ -126,6 +133,15 @@ export function ActiveSessionChrome({
                     <Scale className="h-4 w-4 me-2" aria-hidden />
                     {t('activeOpenPlateCalc', { defaultValue: 'Plates' })}
                   </Button>
+                  <div className="px-1 py-1">
+                    <ActiveTrainCues
+                      restTimerActive={restTimerActive}
+                      nextCue={nextCue}
+                      completedSets={completedSets}
+                      totalSets={totalSets}
+                      logPulse={logPulse}
+                    />
+                  </div>
                   <HoldToConfirmButton
                     size="sm"
                     className="w-full justify-start"

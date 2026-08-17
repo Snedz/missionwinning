@@ -30,6 +30,7 @@ test('plates and the coach tip live in the overflow, not the header', () => {
   const menu = src.slice(src.indexOf('{menuOpen &&'));
   assert.match(menu, /onOpenPlateCalc/);
   assert.match(menu, /coachTip/);
+  assert.match(menu, /<ActiveTrainCues\b/, 'Cue me lives in overflow');
 });
 
 test('Active page does not import speech, and extras sit in Show all', () => {
