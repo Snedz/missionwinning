@@ -12,6 +12,7 @@ When adding a doc:
 
 | File | Absorbed by / note |
 |------|---------------------|
+| [log/LOG-rotate-881-for-896.md](./log/LOG-rotate-881-for-896.md) | rotated 2026-08-17 for `.896` Coach sheet (`.881`) |
 | [log/LOG-rotate-880-for-895.md](./log/LOG-rotate-880-for-895.md) | rotated 2026-08-17 for `.895` Search catalog (`.880`) |
 | [log/LOG-rotate-876-for-894.md](./log/LOG-rotate-876-for-894.md) | rotated 2026-08-17 for `.894` Fuel notepad (`.876`) |
 | [log/LOG-rotate-875-for-893.md](./log/LOG-rotate-875-for-893.md) | rotated 2026-08-17 for `.893` pin tap + Edit (`.875`) |

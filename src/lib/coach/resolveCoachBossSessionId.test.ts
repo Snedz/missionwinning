@@ -2,7 +2,10 @@ import assert from 'node:assert/strict';
 import { describe, it } from 'node:test';
 import { readFileSync } from 'node:fs';
 import path from 'node:path';
-import { resolveCoachBossSessionId } from '@/lib/coach/resolveCoachBossSessionId';
+import {
+  coachSheetSessions,
+  resolveCoachBossSessionId,
+} from '@/lib/coach/resolveCoachBossSessionId';
 
 describe('resolveCoachBossSessionId', () => {
   const week = [
@@ -22,6 +25,24 @@ describe('resolveCoachBossSessionId', () => {
 
   it('on a rest day in the middle, picks next pending at or after today', () => {
     assert.equal(resolveCoachBossSessionId(week, 3), 'fri');
+  });
+
+  it('sheet first paint is the boss session only', () => {
+    assert.deepEqual(
+      coachSheetSessions(week, 1).map((s) => s.id),
+      ['tue']
+    );
+    assert.deepEqual(coachSheetSessions(week, 0).map((s) => s.id), ['tue']);
+    assert.deepEqual(
+      coachSheetSessions(
+        [
+          { id: 'a', dayOffset: 0, status: 'done' },
+          { id: 'b', dayOffset: 2, status: 'done' },
+        ],
+        1
+      ),
+      []
+    );
   });
 
   it('returns undefined when every session is done', () => {

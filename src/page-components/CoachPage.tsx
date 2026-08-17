@@ -38,6 +38,11 @@ const CoachChatPanel = dynamic(
   { ssr: false, loading: () => <SkeletonCard className="min-h-[5rem]" /> }
 );
 
+const CoachLiveVoice = dynamic(
+  () => import('@/components/coach/CoachLiveVoice').then((m) => m.CoachLiveVoice),
+  { ssr: false, loading: () => <SkeletonCard className="min-h-[8rem]" /> }
+);
+
 type CoachPageProps = {
   /** From /coach?ask=<exerciseId> — form Q&A entry (Wave 9). */
   askExerciseId?: string;
@@ -94,13 +99,16 @@ export function CoachPage({ askExerciseId }: CoachPageProps = {}) {
           'Weekly plans from your workout logs alone — no wearable. Adapts when you miss or crush a session.',
       })}
     >
-      {/*
-       * Directly under the subtitle's "built from your logs" claim, before any
-       * plan renders: the log it is built from, or the fact that there is none.
-       * `emphasis` because on this screen the citation *is* the argument — the
-       * survey's lowest-scoring item was clarity about exactly this.
-       */}
-      <CoachLogCite emphasis className="mb-3" />
+      {!loading ? (
+        <CoachLiveVoice
+          entitled={premium}
+          readiness={ctx.bodyScores.readiness}
+          strain={ctx.bodyScores.strain}
+          recovery={ctx.bodyScores.recovery}
+          todaySession={todaySession}
+          className="mb-5"
+        />
+      ) : null}
 
       {loading && <CoachPlanSkeleton className="py-2" />}
 
@@ -256,7 +264,6 @@ export function CoachPage({ askExerciseId }: CoachPageProps = {}) {
 
       {plan && !locked && (
         <div className="space-y-5">
-          {/* Field manual: week + adapt first; voice/load/chat secondary. */}
           <div>
             <p className="eyebrow mb-3 text-primary">{weekEyebrow}</p>
             <WeekStrip weekStart={weekStart} sessions={plan.sessions} todayOffset={todayOffset} />
@@ -274,8 +281,8 @@ export function CoachPage({ askExerciseId }: CoachPageProps = {}) {
 
           <CoachAdaptBanner
             plan={plan}
+            compact
             todayOffset={todayOffset}
-            showWeekRationale
             rationaleHints={{
               loggedWorkoutCount: ctx.history.length,
               loadZone: ctx.loadZone ?? null,
@@ -287,7 +294,18 @@ export function CoachPage({ askExerciseId }: CoachPageProps = {}) {
             }
           />
 
-          {/* Form deep-link (?ask=): show free cues / chat near top */}
+          <CoachPlanSessionGrid
+            mode="sheet"
+            sessions={plan.sessions}
+            todayOffset={todayOffset}
+            onAdjustToday={() => setAdjustOpen(true)}
+            onSwapExercise={swapSessionExercise}
+            rationaleHints={{
+              loggedWorkoutCount: ctx.history.length,
+              loadZone: ctx.loadZone ?? null,
+            }}
+          />
+
           {askExerciseId ? (
             <div id="coach-chat">
               <CoachChatPanel
@@ -301,25 +319,6 @@ export function CoachPage({ askExerciseId }: CoachPageProps = {}) {
             </div>
           ) : null}
 
-          <div className="flex flex-wrap items-center gap-3">
-            <button
-              type="button"
-              className="min-h-[44px] text-sm text-muted-foreground hover:text-foreground hover:underline"
-              onClick={() => setManageOpen(true)}
-            >
-              {t('coachManageWeek', { defaultValue: 'Manage this week' })}
-            </button>
-            {todaySession && todaySession.status !== 'done' && !adjustOpen ? (
-              <button
-                type="button"
-                className="min-h-[44px] text-sm text-muted-foreground hover:underline"
-                onClick={() => setAdjustOpen(true)}
-              >
-                {t('coachAdjustToday', { defaultValue: 'Adjust today' })}
-              </button>
-            ) : null}
-          </div>
-
           <AdjustSessionSheet
             open={adjustOpen}
             onClose={() => setAdjustOpen(false)}
@@ -328,31 +327,66 @@ export function CoachPage({ askExerciseId }: CoachPageProps = {}) {
             }}
           />
 
-          <CoachManageSheet
-            open={manageOpen}
-            onClose={() => setManageOpen(false)}
-            canAdjustToday={!!todaySession && todaySession.status !== 'done'}
-            onAdjustToday={() => setAdjustOpen(true)}
-            canRegenerate={premium}
-            onRegenerate={() => generate()}
-          />
-
-          <CoachPlanSessionGrid
-            sessions={plan.sessions}
-            todayOffset={todayOffset}
-            onAdjustToday={() => setAdjustOpen(true)}
-            onSwapExercise={swapSessionExercise}
-            rationaleHints={{
-              loggedWorkoutCount: ctx.history.length,
-              loadZone: ctx.loadZone ?? null,
-            }}
-          />
-
           <details className="group border-2 border-border bg-card">
-            <summary className="flex min-h-[44px] cursor-pointer list-none items-center px-4 py-3 text-sm font-semibold text-foreground [&::-webkit-details-marker]:hidden">
-              {t('coachMoreDepth', { defaultValue: 'Voice, load & chat' })}
+            <summary
+              className="flex min-h-[44px] cursor-pointer list-none items-center px-4 py-3 text-sm font-semibold text-foreground [&::-webkit-details-marker]:hidden"
+              data-testid="coach-show-all"
+            >
+              {t('fuelShowMore', { defaultValue: 'Show all' })}
             </summary>
             <div className="space-y-4 border-t-2 border-border p-4">
+              <CoachLogCite emphasis />
+              <CoachAdaptBanner
+                plan={plan}
+                todayOffset={todayOffset}
+                showWeekRationale
+                rationaleHints={{
+                  loggedWorkoutCount: ctx.history.length,
+                  loadZone: ctx.loadZone ?? null,
+                }}
+                onAdjustToday={
+                  todaySession && todaySession.status !== 'done'
+                    ? () => setAdjustOpen(true)
+                    : undefined
+                }
+              />
+              <div className="flex flex-wrap items-center gap-3">
+                <button
+                  type="button"
+                  className="min-h-[44px] text-sm text-muted-foreground hover:text-foreground hover:underline"
+                  onClick={() => setManageOpen(true)}
+                >
+                  {t('coachManageWeek', { defaultValue: 'Manage this week' })}
+                </button>
+                {todaySession && todaySession.status !== 'done' && !adjustOpen ? (
+                  <button
+                    type="button"
+                    className="min-h-[44px] text-sm text-muted-foreground hover:underline"
+                    onClick={() => setAdjustOpen(true)}
+                  >
+                    {t('coachAdjustToday', { defaultValue: 'Adjust today' })}
+                  </button>
+                ) : null}
+              </div>
+              <CoachManageSheet
+                open={manageOpen}
+                onClose={() => setManageOpen(false)}
+                canAdjustToday={!!todaySession && todaySession.status !== 'done'}
+                onAdjustToday={() => setAdjustOpen(true)}
+                canRegenerate={premium}
+                onRegenerate={() => generate()}
+              />
+              <CoachPlanSessionGrid
+                mode="week"
+                sessions={plan.sessions}
+                todayOffset={todayOffset}
+                onAdjustToday={() => setAdjustOpen(true)}
+                onSwapExercise={swapSessionExercise}
+                rationaleHints={{
+                  loggedWorkoutCount: ctx.history.length,
+                  loadZone: ctx.loadZone ?? null,
+                }}
+              />
               <CoachVoiceCard plan={plan} bodyScores={ctx.bodyScores} premium={premium} />
               <CoachLoadBand />
               {!askExerciseId ? (
@@ -366,17 +400,19 @@ export function CoachPage({ askExerciseId }: CoachPageProps = {}) {
                   />
                 </div>
               ) : null}
+              {todaySession ? (
+                <p className="text-xs text-center text-muted-foreground">
+                  <Link
+                    href="/log"
+                    className="text-primary hover:underline min-h-[44px] inline-flex items-center tap-target"
+                  >
+                    {t('navToday', { defaultValue: 'Today' })}
+                  </Link>
+                </p>
+              ) : null}
             </div>
           </details>
         </div>
-      )}
-
-      {todaySession && (
-        <p className="text-xs text-center text-muted-foreground">
-          <Link href="/log" className="text-primary hover:underline min-h-[44px] inline-flex items-center tap-target">
-            {t('navToday', { defaultValue: 'Today' })}
-          </Link>
-        </p>
       )}
     </PillarPageShell>
   );

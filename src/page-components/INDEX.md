@@ -32,7 +32,7 @@
 
 | File | Route | Notes |
 |------|-------|-------|
-| `CoachPage.tsx` | `/coach` | Weekly AI plan |
+| `CoachPage.tsx` | `/coach` | Weekly AI plan — first paint is this week’s session; house in Show all |
 | `CoachingPage.tsx` | `/coaching` | **Human** lead form — not AI Coach |
 
 ### Fuel / Move / Mind / Track / Learn

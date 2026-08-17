@@ -1,11 +1,14 @@
 'use client';
 
 /**
- * Week session grid on `/coach` — sorted cards + one boss Start (.442).
+ * Week session grid on `/coach`. Sheet mode is the one Start. Week mode is Show all.
  */
 
 import { PlanSessionCard } from '@/components/coach/PlanSessionCard';
-import { resolveCoachBossSessionId } from '@/lib/coach/resolveCoachBossSessionId';
+import {
+  coachSheetSessions,
+  resolveCoachBossSessionId,
+} from '@/lib/coach/resolveCoachBossSessionId';
 import type { SessionRationaleHints } from '@/lib/coach/sessionRationale';
 import type { PlanSession } from '@/lib/coach/types';
 
@@ -19,6 +22,8 @@ type Props = {
    * Only the primary Start card paints; other days stay quiet.
    */
   rationaleHints?: SessionRationaleHints;
+  /** sheet — first paint, the one session. week — Show all. */
+  mode?: 'week' | 'sheet';
 };
 
 export function CoachPlanSessionGrid({
@@ -27,34 +32,36 @@ export function CoachPlanSessionGrid({
   onAdjustToday,
   onSwapExercise,
   rationaleHints,
+  mode = 'week',
 }: Props) {
   const bossId = resolveCoachBossSessionId(sessions, todayOffset);
+  const rows =
+    mode === 'sheet'
+      ? coachSheetSessions(sessions, todayOffset)
+      : sessions.slice().sort((a, b) => a.dayOffset - b.dayOffset);
 
   return (
     <div className="grid gap-4 sm:grid-cols-2">
-      {sessions
-        .slice()
-        .sort((a, b) => a.dayOffset - b.dayOffset)
-        .map((session) => {
-          const isToday = session.dayOffset === todayOffset;
-          return (
-            <PlanSessionCard
-              key={session.id}
-              session={session}
-              isToday={isToday}
-              isPrimaryStart={session.id === bossId}
-              rationaleHints={rationaleHints}
-              onAdjust={
-                isToday && session.status !== 'done' ? onAdjustToday : undefined
-              }
-              onSwapExercise={
-                session.status !== 'done' && onSwapExercise
-                  ? (fromId, toId) => onSwapExercise(session.id, fromId, toId)
-                  : undefined
-              }
-            />
-          );
-        })}
+      {rows.map((session) => {
+        const isToday = session.dayOffset === todayOffset;
+        return (
+          <PlanSessionCard
+            key={session.id}
+            session={session}
+            isToday={isToday}
+            isPrimaryStart={session.id === bossId}
+            rationaleHints={rationaleHints}
+            onAdjust={
+              isToday && session.status !== 'done' ? onAdjustToday : undefined
+            }
+            onSwapExercise={
+              session.status !== 'done' && onSwapExercise
+                ? (fromId, toId) => onSwapExercise(session.id, fromId, toId)
+                : undefined
+            }
+          />
+        );
+      })}
     </div>
   );
 }

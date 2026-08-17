@@ -22,3 +22,13 @@ export function resolveCoachBossSessionId(
     pending.find((s) => s.dayOffset >= todayOffset) ?? pending[0];
   return (todayPending ?? nextPending)?.id;
 }
+
+/** First paint is the one session you start. The week lives in Show all. */
+export function coachSheetSessions<T extends BossSessionRef>(
+  sessions: readonly T[],
+  todayOffset: number
+): T[] {
+  const id = resolveCoachBossSessionId([...sessions], todayOffset);
+  if (!id) return [];
+  return sessions.filter((session) => session.id === id);
+}
