@@ -24,7 +24,7 @@
 | `ActiveWorkoutPage.tsx` | `/active` |
 | `BuilderPage.tsx` | `/builder` |
 | `HistoryPage.tsx` | `/history` | First paint is the session list; calendar / charts / journal in Show all |
-| `LibraryPage.tsx` | `/library` |
+| `LibraryPage.tsx` | `/library` | First paint is a pick list; posters / templates in Show all |
 | `BenchmarksPage.tsx` | `/benchmarks` |
 | `LeaderboardPage.tsx` | `/leaderboard` |
 

@@ -163,16 +163,6 @@ export function LibraryPage() {
         defaultValue: 'Search movements. Filters when you need them.',
       })}
     >
-      <p className="text-xs text-muted-foreground">
-        <Link href="/log" className="underline underline-offset-2 hover:text-foreground">
-          {t('libraryTodayHub', { defaultValue: 'Today' })}
-        </Link>
-        {' · '}
-        <Link href="/builder" className="underline underline-offset-2 hover:text-foreground">
-          {t('libraryProgramTemplates', { defaultValue: 'Program templates' })}
-        </Link>
-      </p>
-
       <div className="sticky top-0 z-10 -mx-1 space-y-2 border-b-2 border-border bg-background py-2">
         <div className="flex gap-2">
           <div className="relative flex-1">
@@ -238,20 +228,13 @@ export function LibraryPage() {
           </div>
         )}
 
-        <div className="flex flex-wrap items-center justify-between gap-2">
-          <p className="text-xs text-muted-foreground">
-            {t('libraryShowingCount', {
-              shown: filtered.length,
-              total: EXERCISES.length,
-              defaultValue: `Showing ${filtered.length} of ${EXERCISES.length}`,
-            })}
-          </p>
-          <p className="text-[10px] font-mono uppercase tracking-wider text-muted-foreground">
-            {t('libraryPickHint', {
-              defaultValue: 'Tap ✓ to build a session · open card for form',
-            })}
-          </p>
-        </div>
+        <p className="text-xs text-muted-foreground">
+          {t('libraryShowingCount', {
+            shown: filtered.length,
+            total: EXERCISES.length,
+            defaultValue: `Showing ${filtered.length} of ${EXERCISES.length}`,
+          })}
+        </p>
       </div>
 
       <Dialog open={filtersOpen} onOpenChange={setFiltersOpen}>
@@ -376,115 +359,57 @@ export function LibraryPage() {
         </DialogContent>
       </Dialog>
 
-      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
-        {visibleExercises.map((ex, idx) => {
-          /*
-            Craft-index card (GrokFilm-style metadata at a glance):
-            mono pattern label · form-diagram reel-dot · level · tags.
-            No nested interactive roles — real Button inside is the keyboard stop.
-          */
-          const pattern = inferFormPattern(ex.id, ex);
-          const guideMedia = getFormGuideOrCues(ex.id, { exercise: ex });
-          const hasForm = !!guideMedia?.mediaUrl;
-          const posterUrl = formPackLibraryPosterUrl(ex.id);
+      <ul data-testid="library-exercise-list">
+        {visibleExercises.map((ex) => {
           const isPicked = pickedIds.includes(ex.id);
           return (
-          <Card
-            key={ex.id}
-            className={cn(
-              'content-card pressable-card cursor-pointer overflow-hidden',
-              isPicked && 'border-primary ring-1 ring-primary'
-            )}
-            onClick={() => setDetailId(ex.id)}
-          >
-            {posterUrl ? (
-              <div className="border-b-2 border-border bg-background">
-                {/* Form Index still under /public — plain img is intentional. */}
-                <img
-                  src={posterUrl}
-                  alt=""
-                  loading="lazy"
-                  decoding="async"
-                  className="aspect-[4/3] w-full object-cover object-center"
-                />
-              </div>
-            ) : null}
-            <CardHeader className="pb-2">
-              <div className="flex items-baseline justify-between gap-2">
-                <span className="font-mono text-[10px] tracking-wider text-muted-foreground tabular-nums">
-                  {String(idx + 1).padStart(3, '0')}
-                </span>
-                <div className="flex items-center gap-2">
-                  <span className="font-mono text-[10px] tracking-wider text-primary uppercase">
-                    {hasForm ? (
-                      <span className="me-1.5 inline-block h-1.5 w-1.5 bg-primary align-middle" aria-hidden />
-                    ) : null}
-                    {pattern ? PATTERN_FILTER_LABELS[pattern] : t('libraryPatternUnknown', { defaultValue: 'Move' })}
-                  </span>
-                  <button
-                    type="button"
-                    className={cn(
-                      'flex h-9 w-9 shrink-0 items-center justify-center border-2 border-border',
-                      isPicked
-                        ? 'border-primary bg-primary text-primary-foreground'
-                        : 'bg-background text-muted-foreground hover:border-primary'
-                    )}
-                    aria-pressed={isPicked}
-                    aria-label={
-                      isPicked
-                        ? t('libraryUnpick', { name: ex.name, defaultValue: `Remove ${ex.name} from session` })
-                        : t('libraryPick', { name: ex.name, defaultValue: `Add ${ex.name} to session` })
-                    }
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      togglePick(ex.id);
-                    }}
-                  >
-                    <Check className="h-4 w-4" aria-hidden />
-                  </button>
-                </div>
-              </div>
-              <CardTitle className="text-lg mt-2">{ex.name}</CardTitle>
-              <div className="text-xs text-muted-foreground">
-                {ex.muscleGroups.join(' • ')} · {ex.equipment || 'Various'}
-              </div>
-              <div className="flex flex-wrap gap-1 mt-1">
-                {(ex.tags ?? []).slice(0, 3).map((tagId) => (
-                  <Badge key={tagId} variant="outline" className="text-[10px]">
-                    {PROGRAM_TAG_LABELS[tagId]}
-                  </Badge>
-                ))}
-                {ex.level && (
-                  <Badge variant="secondary" className="text-[10px] capitalize">
-                    {ex.level}
-                  </Badge>
+            <li key={ex.id} className="flex items-stretch border-t border-border">
+              <button
+                type="button"
+                className={cn(
+                  'flex h-[52px] w-[52px] shrink-0 items-center justify-center border-r border-border',
+                  isPicked
+                    ? 'bg-primary text-primary-foreground'
+                    : 'bg-background text-muted-foreground'
                 )}
-              </div>
-            </CardHeader>
-            <CardContent className="text-sm">
-              <p className="text-muted-foreground line-clamp-2">
-                {exerciseCraftBlurb(ex)}
-              </p>
+                aria-pressed={isPicked}
+                aria-label={
+                  isPicked
+                    ? t('libraryUnpick', { name: ex.name, defaultValue: `Remove ${ex.name} from session` })
+                    : t('libraryPick', { name: ex.name, defaultValue: `Add ${ex.name} to session` })
+                }
+                onClick={() => togglePick(ex.id)}
+              >
+                <Check className="h-4 w-4" aria-hidden />
+              </button>
+              <button
+                type="button"
+                data-testid="library-exercise-row"
+                className="min-h-[52px] min-w-0 flex-1 px-3 py-2 text-left"
+                onClick={() => setDetailId(ex.id)}
+              >
+                <p className="truncate text-[15px] font-semibold">{ex.name}</p>
+                <p className="truncate text-xs text-muted-foreground">
+                  {ex.muscleGroups.join(' · ')}
+                  {ex.equipment ? ` · ${ex.equipment}` : ''}
+                </p>
+              </button>
               <Button
                 variant="ghost"
                 size="sm"
-                className="mt-2 w-full text-xs"
+                className="min-h-[52px] shrink-0 text-xs"
                 aria-label={t('libraryViewDetailsFor', {
                   name: ex.name,
                   defaultValue: `View details for ${ex.name}`,
                 })}
-                onClick={(e) => {
-                  e.stopPropagation();
-                  setDetailId(ex.id);
-                }}
+                onClick={() => setDetailId(ex.id)}
               >
                 {t('libraryViewDetails', { defaultValue: 'View details' })}
               </Button>
-            </CardContent>
-          </Card>
+            </li>
           );
         })}
-      </div>
+      </ul>
 
       {filtered.length > visibleCount ? (
         <div className="flex justify-center pt-2">
@@ -513,6 +438,96 @@ export function LibraryPage() {
           onAction={() => setFilters({ ...DEFAULT_LIBRARY_FILTERS })}
         />
       )}
+
+      <details className="group border-2 border-border bg-card">
+        <summary
+          className="flex min-h-[44px] cursor-pointer list-none items-center px-4 py-3 text-sm font-semibold text-foreground [&::-webkit-details-marker]:hidden"
+          data-testid="library-show-all"
+        >
+          {t('fuelShowMore', { defaultValue: 'Show all' })}
+        </summary>
+        <div className="space-y-4 border-t-2 border-border p-4">
+          <p className="text-xs text-muted-foreground">
+            <Link href="/log" className="underline underline-offset-2 hover:text-foreground">
+              {t('libraryTodayHub', { defaultValue: 'Today' })}
+            </Link>
+            {' · '}
+            <Link href="/builder" className="underline underline-offset-2 hover:text-foreground">
+              {t('libraryProgramTemplates', { defaultValue: 'Program templates' })}
+            </Link>
+          </p>
+          <p className="text-[10px] font-mono uppercase tracking-wider text-muted-foreground">
+            {t('libraryPickHint', {
+              defaultValue: 'Tap ✓ to build a session · open card for form',
+            })}
+          </p>
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {visibleExercises.slice(0, 12).map((ex, idx) => {
+              const pattern = inferFormPattern(ex.id, ex);
+              const guideMedia = getFormGuideOrCues(ex.id, { exercise: ex });
+              const hasForm = !!guideMedia?.mediaUrl;
+              const posterUrl = formPackLibraryPosterUrl(ex.id);
+              const isPicked = pickedIds.includes(ex.id);
+              return (
+                <Card
+                  key={ex.id}
+                  className={cn(
+                    'content-card cursor-pointer overflow-hidden',
+                    isPicked && 'border-primary'
+                  )}
+                  onClick={() => setDetailId(ex.id)}
+                >
+                  {posterUrl ? (
+                    <div className="border-b-2 border-border bg-background">
+                      <img
+                        src={posterUrl}
+                        alt=""
+                        loading="lazy"
+                        decoding="async"
+                        className="aspect-[4/3] w-full object-cover object-center"
+                      />
+                    </div>
+                  ) : null}
+                  <CardHeader className="pb-2">
+                    <div className="flex items-baseline justify-between gap-2">
+                      <span className="font-mono text-[10px] tracking-wider text-muted-foreground tabular-nums">
+                        {String(idx + 1).padStart(3, '0')}
+                      </span>
+                      <span className="font-mono text-[10px] tracking-wider text-primary uppercase">
+                        {hasForm ? (
+                          <span className="me-1.5 inline-block h-1.5 w-1.5 bg-primary align-middle" aria-hidden />
+                        ) : null}
+                        {pattern
+                          ? PATTERN_FILTER_LABELS[pattern]
+                          : t('libraryPatternUnknown', { defaultValue: 'Move' })}
+                      </span>
+                    </div>
+                    <CardTitle className="text-lg mt-2">{ex.name}</CardTitle>
+                    <div className="text-xs text-muted-foreground">
+                      {ex.muscleGroups.join(' • ')} · {ex.equipment || 'Various'}
+                    </div>
+                    <div className="flex flex-wrap gap-1 mt-1">
+                      {(ex.tags ?? []).slice(0, 3).map((tagId) => (
+                        <Badge key={tagId} variant="outline" className="text-[10px]">
+                          {PROGRAM_TAG_LABELS[tagId]}
+                        </Badge>
+                      ))}
+                      {ex.level && (
+                        <Badge variant="secondary" className="text-[10px] capitalize">
+                          {ex.level}
+                        </Badge>
+                      )}
+                    </div>
+                  </CardHeader>
+                  <CardContent className="text-sm">
+                    <p className="text-muted-foreground line-clamp-2">{exerciseCraftBlurb(ex)}</p>
+                  </CardContent>
+                </Card>
+              );
+            })}
+          </div>
+        </div>
+      </details>
 
       <LibraryDetailSheet
         exercise={detailExercise}
