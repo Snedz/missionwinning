@@ -13,9 +13,11 @@ import {
   formatReceiptDurationDelta,
   formatReceiptSigned,
 } from '@/lib/workout/victoryReceipt';
+import { formatWorkoutVolumeDisplay } from '@/lib/workout/volumeDisplay';
 
 type Props = {
   totalVolume: number;
+  workingReps: number;
   setCount: number;
   durationSeconds: number;
   unitLabel: string;
@@ -34,6 +36,7 @@ function VsLastLine({ children }: { children: string | null }) {
 
 export function VictoryStatsStrip({
   totalVolume,
+  workingReps,
   setCount,
   durationSeconds,
   unitLabel,
@@ -42,6 +45,7 @@ export function VictoryStatsStrip({
 }: Props) {
   const { t } = useTranslation();
   const vs = t('victoryVsLast', { defaultValue: 'vs last' });
+  const volume = formatWorkoutVolumeDisplay(totalVolume, workingReps, unitLabel, formatVolume);
 
   const durationDelta =
     vsLast && vsLast.durationDelta !== 0
@@ -72,8 +76,8 @@ export function VictoryStatsStrip({
           {t('victoryVolume', { defaultValue: 'Volume' })}
         </p>
         <p className="text-xl font-semibold tabular-nums text-foreground">
-          {formatVolume(totalVolume)}
-          <span className="ms-1 text-xs font-semibold text-muted-foreground">{unitLabel}</span>
+          {volume.value}
+          <span className="ms-1 text-xs font-semibold text-muted-foreground">{volume.unit}</span>
         </p>
         <VsLastLine>{volumeDelta}</VsLastLine>
       </div>

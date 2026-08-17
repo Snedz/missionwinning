@@ -122,6 +122,8 @@ describe('shouldShowVictoryBackTodaySecondary', () => {
       /victoryVolume/,
       'volume/sets grid lives in VictoryStatsStrip'
     );
+    assert.match(src, /formatWorkoutVolumeDisplay/);
+    assert.match(src, /workingReps/);
     assert.doesNotMatch(
       src,
       /victoryNextLabel/,
@@ -173,6 +175,21 @@ describe('formatVictorySignedDelta', () => {
     assert.match(src, /victoryReadinessDelta/);
     assert.match(src, /victoryStrainDelta/);
     assert.match(src, /victoryRecoveryDelta/);
+  });
+});
+
+describe('Victory volume display wiring', () => {
+  it('the stats strip calls formatWorkoutVolumeDisplay, not raw kg', () => {
+    const src = fs.readFileSync(
+      path.join(import.meta.dirname, '..', '..', 'components', 'workout', 'VictoryStatsStrip.tsx'),
+      'utf8'
+    );
+    assert.match(src, /formatWorkoutVolumeDisplay/);
+    assert.doesNotMatch(
+      src,
+      /formatVolume\(totalVolume\)/,
+      'raw load volume is 0 kg on a push-up session'
+    );
   });
 });
 
@@ -297,6 +314,30 @@ describe('summarizeWorkoutVictory', () => {
     assert.equal(s.exerciseCount, 2);
     assert.equal(s.streak, 3);
     assert.equal(s.workoutName, 'Push');
+    assert.equal(s.workingReps, 18);
+  });
+
+  it('bodyweight working reps survive so Victory can print them, not 0 kg', () => {
+    const log: CompletedWorkoutLog = {
+      id: '1',
+      workoutName: 'Just Go chest',
+      startedAt: '2026-07-01T10:00:00Z',
+      completedAt: '2026-07-01T10:30:00Z',
+      durationSeconds: 1800,
+      totalVolume: 0,
+      exercises: [
+        {
+          exerciseId: 'push-ups',
+          sets: [
+            { reps: 8, weight: 0 },
+            { reps: 5, weight: 0, kind: 'warmup' },
+          ],
+        },
+      ],
+    };
+    const s = summarizeWorkoutVictory(log, 1);
+    assert.equal(s.totalVolume, 0);
+    assert.equal(s.workingReps, 8);
   });
 
   it('attaches working-set muscles for the Move seam', () => {
