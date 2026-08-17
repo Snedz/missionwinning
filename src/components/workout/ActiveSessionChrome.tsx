@@ -11,10 +11,7 @@ import { useTranslation } from 'react-i18next';
 import { Button } from '@/components/ui/button';
 import { HoldToConfirmButton } from '@/components/ui/HoldToConfirmButton';
 import { formatDuration } from '@/lib/utils';
-import {
-  activeCoachTipKind,
-  activeSessionEyebrowKind,
-} from '@/lib/workout/activeWorkoutHelpers';
+import { activeCoachTipKind } from '@/lib/workout/activeWorkoutHelpers';
 
 type Props = {
   workoutName: string;
@@ -22,11 +19,6 @@ type Props = {
   totalSets: number;
   hardCount: number;
   elapsedSeconds: number;
-  /**
-   * True when at least one exercise was prescribed by Mission Coach.
-   * Eyebrow must not say a generic "Live session" that hides the plan origin.
-   */
-  fromCoachPlan?: boolean;
   onOpenAddExercise: () => void;
   onOpenPlateCalc: () => void;
   onDiscard: () => void;
@@ -39,7 +31,6 @@ export function ActiveSessionChrome({
   totalSets,
   hardCount,
   elapsedSeconds,
-  fromCoachPlan = false,
   onOpenAddExercise,
   onOpenPlateCalc,
   onDiscard,
@@ -57,11 +48,6 @@ export function ActiveSessionChrome({
           defaultValue: 'Rate Easy / Med / Hard after each set so Coach can learn.',
         });
 
-  const sessionEyebrow =
-    activeSessionEyebrowKind(fromCoachPlan) === 'coach'
-      ? t('activeCoachSessionEyebrow', { defaultValue: 'Mission Coach session' })
-      : t('activeLiveSession', { defaultValue: 'Live session' });
-
   return (
     <div className="space-y-3">
       <div
@@ -71,11 +57,9 @@ export function ActiveSessionChrome({
           'border-b-2 border-border',
         ].join(' ')}
       >
-        {/* Field manual: mono intent eyebrow + session name. Log set (dock/row)
-            is the one red under load — Finish stays outline so chrome does not
-            compete with the set. */}
-        <p className="eyebrow text-primary">{sessionEyebrow}</p>
-        <div className="mt-0.5 flex min-w-0 flex-nowrap items-center gap-2">
+        {/* Name + compact clock. No Live session eyebrow — the name is the
+            session. Log set is the one red under load; Finish stays outline. */}
+        <div className="flex min-w-0 flex-nowrap items-center gap-2">
           <div className="min-w-0 flex-1">
             <h1 className="truncate font-display text-[1.35rem] font-extrabold leading-[1.08] tracking-[-0.015em] md:text-[1.65rem]">
               {workoutName}

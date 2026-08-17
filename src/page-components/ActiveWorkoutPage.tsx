@@ -78,7 +78,6 @@ import {
   resolveActiveGoalId,
   activeSessionHasExercises,
   activePostSessionPath,
-  sessionIsCoachPrescribed,
   sessionSetStats,
   setInputKey,
   toggleOpenIdx,
@@ -638,7 +637,6 @@ export function ActiveWorkoutPage() {
         totalSets={totalSets}
         hardCount={hardCount}
         elapsedSeconds={elapsedSeconds}
-        fromCoachPlan={sessionIsCoachPrescribed(activeWorkout.exercises)}
         onOpenAddExercise={() => setAddExerciseOpen(true)}
         onOpenPlateCalc={() => setPlateCalcOpen(true)}
         onDiscard={discardWorkout}

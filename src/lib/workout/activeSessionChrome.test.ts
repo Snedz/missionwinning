@@ -53,6 +53,18 @@ test('header is name plus a compact elapsed/sets line, not a poster timer', () =
   assert.doesNotMatch(src, /sessionSetsProgressPct/, 'progress meter competes with the table');
 });
 
+test('header is the name, not a Live session eyebrow', () => {
+  const src = chrome();
+  const header = src.slice(src.indexOf('sticky top-0'), src.indexOf('{menuOpen &&'));
+  assert.match(header, /workoutName/);
+  assert.doesNotMatch(header, /sessionEyebrow/);
+  assert.doesNotMatch(header, /activeLiveSession/);
+  assert.doesNotMatch(header, /activeCoachSessionEyebrow/);
+  assert.doesNotMatch(header, /activeSessionEyebrowKind/);
+  assert.doesNotMatch(header, /className="eyebrow/, 'Live session / Coach eyebrow is on first paint');
+  assert.doesNotMatch(src, /fromCoachPlan/);
+});
+
 test('first paint still has the table and rest dock', () => {
   const src = page();
   const open = src.slice(src.indexOf('<ActiveSessionChrome'), src.indexOf('<details'));

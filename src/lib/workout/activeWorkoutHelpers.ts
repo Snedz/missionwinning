@@ -638,17 +638,6 @@ export function activeCoachTipKind(
 }
 
 /**
- * Active session eyebrow band — Mission Coach vs freestyle live session.
- */
-export type ActiveSessionEyebrowKind = 'coach' | 'live';
-
-export function activeSessionEyebrowKind(
-  fromCoachPlan: boolean
-): ActiveSessionEyebrowKind {
-  return fromCoachPlan ? 'coach' : 'live';
-}
-
-/**
  * Accordion-style open index: open `idx` when closed / another row open;
  * close when `idx` is already open.
  */
