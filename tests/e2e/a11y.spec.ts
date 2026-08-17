@@ -221,9 +221,8 @@ test.describe('Accessibility @a11y', () => {
     }
     await seedHistoryAndMissedCoach(page);
     await page.goto('/history', { waitUntil: 'domcontentloaded' });
-    await expect(page.getByRole('tab', { name: /exercises/i }).or(page.getByText(/exercises/i).first())).toBeVisible({
-      timeout: 15_000,
-    });
+    await expect(page.getByTestId('history-show-all')).toBeVisible({ timeout: 15_000 });
+    await page.getByTestId('history-show-all').click();
     // Open Exercises so heatmaps/charts mount (SegmentedControl is not ARIA tabs).
     await page.getByText(/^Exercises$/i).first().click();
     await axeSerious(page, '/history (seeded exercises)');
@@ -241,6 +240,8 @@ test.describe('Accessibility @a11y', () => {
     }
     await seedHistoryAndMissedCoach(page);
     await page.goto('/coach', { waitUntil: 'domcontentloaded' });
+    await expect(page.getByTestId('coach-show-all')).toBeVisible({ timeout: 15_000 });
+    await page.getByTestId('coach-show-all').click();
     await expect(page.getByText(/missed/i).first()).toBeVisible({ timeout: 15_000 });
     await axeSerious(page, '/coach (seeded missed)');
   });

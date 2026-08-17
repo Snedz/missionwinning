@@ -87,7 +87,7 @@ import {
 const HEATMAP_WINDOW_DAYS = 14;
 
 type RangeFilter = '7' | '30' | 'all';
-type HistoryTab = 'calendar' | 'sessions' | 'exercises' | 'journal';
+type HistoryTab = 'calendar' | 'exercises' | 'journal';
 
 export function HistoryPage() {
   const router = useRouter();
@@ -124,7 +124,7 @@ export function HistoryPage() {
   const [nameQuery, setNameQuery] = useState('');
   const [range, setRange] = useState<RangeFilter>('30');
   const [visibleCount, setVisibleCount] = useState(30);
-  const [tab, setTab] = useState<HistoryTab>('sessions');
+  const [tab, setTab] = useState<HistoryTab>('calendar');
 
   /*
    * Days the athlete used the app without lifting.
@@ -247,73 +247,6 @@ export function HistoryPage() {
         defaultValue: 'Your history powers Today readiness and Mission Score.',
       })}
     >
-      <div className="border-2 border-border bg-card px-4 py-3 space-y-1">
-        <p className="text-xs font-semibold tracking-wide text-muted-foreground">
-          {t('historyMissionStory', { defaultValue: 'At a glance' })}
-        </p>
-        <p className="text-sm text-foreground leading-relaxed">{briefingLine}</p>
-        {dayStats.count > 0 && (
-          /*
-            `.247` — **"days logged", not "days on mission"**. For an athlete
-            already past a cap when this shipped, the sweep can only see what
-            survived, so this is a lower bound. "Days logged" is true either
-            way; "days since you started" would imply a continuity nothing here
-            can prove, and inventing that is `.208` on the most emotive number
-            in the product.
-          */
-          <p className="text-sm text-foreground tabular-nums leading-relaxed">
-            {t('historyDaysLogged', {
-              count: dayStats.count,
-              defaultValue: `${fmt.num(dayStats.count)} days logged`,
-            })}
-            {dayStats.count > 0 && (
-              <>
-                {' · '}
-                {/*
-                  `.251` — the count is now a way in. Without this the day
-                  replay would be a route nothing links to, which is `.195`:
-                  built, and nobody can reach it.
-                */}
-                <Link href={`/history/${localDateKey()}`} className="text-primary underline">
-                  {t('historyDayToday', { defaultValue: 'replay today' })}
-                </Link>
-              </>
-            )}
-            {dayStats.first && (
-              <span className="text-muted-foreground">
-                {' · '}
-                {t('historyDaysSince', {
-                  date: formatLocalDateKey(dayStats.first, i18n.language),
-                  defaultValue: `since ${formatLocalDateKey(dayStats.first, i18n.language)}`,
-                })}
-              </span>
-            )}
-          </p>
-        )}
-        {summary.sessionCount > 0 && (
-          <p className="text-xs text-muted-foreground tabular-nums leading-relaxed">
-            {t('historyAvgVolume', {
-              avg: fmt.num(summary.avgVolume),
-              unit: unitLabel,
-              defaultValue: `Recent avg volume ${fmt.num(summary.avgVolume)} ${unitLabel}`,
-            })}
-          </p>
-        )}
-      </div>
-
-      <div>
-        <p className="text-muted-foreground text-sm">
-          <Link href="/log" className="underline">
-            {t('navToday', { defaultValue: 'Today' })}
-          </Link>
-        </p>
-        <p className="mt-1 text-muted-foreground">
-          {sessionLabel}
-          {syncing && t('historySyncing', { defaultValue: ' — syncing cloud…' })}
-          {!syncing && cloudSynced && t('historyCloudMerged', { defaultValue: ' — cloud merged' })}
-        </p>
-      </div>
-
       {!hasHydrated ? (
         <SkeletonBlock className="h-32" label="Loading sessions" />
       ) : liveHistory.length === 0 ? (
@@ -332,72 +265,6 @@ export function HistoryPage() {
         </div>
       ) : (
         <div className="space-y-3">
-          {/* D11 — Exercises is Trends promoted: volume / 1RM / heat as a first-class tab
-              (Pump History → Exercises shape, Modernist chrome). */}
-          <SegmentedControl
-            options={[
-              { value: 'calendar' as const, label: t('historyTabCalendar', { defaultValue: 'Calendar' }) },
-              { value: 'sessions' as const, label: t('historyTabSessions', { defaultValue: 'Sessions' }) },
-              { value: 'exercises' as const, label: t('historyTabExercises', { defaultValue: 'Exercises' }) },
-              { value: 'journal' as const, label: t('historyTabJournal', { defaultValue: 'Journal' }) },
-            ]}
-            value={tab}
-            onChange={setTab}
-            ariaLabel={t('historyTabsLabel', { defaultValue: 'History view' })}
-          />
-          {tab === 'calendar' ? (
-            <HistoryCalendar history={workoutHistory} loggedKeys={loggedDayKeys} />
-          ) : tab === 'journal' ? (
-            <JournalTimeline />
-          ) : tab === 'exercises' ? (
-            <div className="space-y-4" data-testid="history-exercises">
-              <p className="text-sm text-muted-foreground leading-relaxed">
-                {t('historyTrendsDesc', {
-                  defaultValue: 'Volume, estimated 1RM, and muscle heatmap',
-                })}
-              </p>
-              <div className="grid gap-4 lg:grid-cols-2">
-                <HistoryVolumeChart data={weeklyVolume} />
-                <div className="space-y-2">
-                  {exerciseIds.length > 1 && (
-                    <Select value={activeChartId} onValueChange={setChartExerciseId}>
-                      <SelectTrigger className="w-full min-h-[44px]">
-                        <SelectValue
-                          placeholder={t('historySelectExercise', {
-                            defaultValue: 'Chart exercise',
-                          })}
-                        />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {exerciseIds.map((id) => {
-                          const ex = getExerciseById(id);
-                          return (
-                            <SelectItem key={id} value={id}>
-                              {ex?.name ?? id}
-                            </SelectItem>
-                          );
-                        })}
-                      </SelectContent>
-                    </Select>
-                  )}
-                  <History1RMChart
-                    data={oneRmData}
-                    exerciseName={getExerciseById(activeChartId)?.name ?? activeChartId}
-                  />
-                </div>
-              </div>
-              <details className="group border-2 border-border bg-card">
-                <summary className="flex min-h-[44px] cursor-pointer list-none items-center px-4 py-3 text-sm font-semibold text-foreground [&::-webkit-details-marker]:hidden">
-                  {t('historyHeatmaps', { defaultValue: 'Muscle heatmaps' })}
-                </summary>
-                <div className="space-y-4 border-t-2 border-border p-4">
-                  <AnatomyHeatMap cells={heatmapCells} />
-                  <MuscleHeatmap cells={heatmapCells} windowDays={HEATMAP_WINDOW_DAYS} />
-                </div>
-              </details>
-            </div>
-          ) : (
-          <>
           <div className="flex flex-col gap-2 sm:flex-row sm:items-center">
             <Input
               type="search"
@@ -545,10 +412,133 @@ export function HistoryPage() {
             ) : null}
             </div>
           )}
-          </>
-          )}
         </div>
       )}
+
+      <details className="group border-2 border-border bg-card">
+        <summary
+          className="flex min-h-[44px] cursor-pointer list-none items-center px-4 py-3 text-sm font-semibold text-foreground [&::-webkit-details-marker]:hidden"
+          data-testid="history-show-all"
+        >
+          {t('fuelShowMore', { defaultValue: 'Show all' })}
+        </summary>
+        <div className="space-y-4 border-t-2 border-border p-4">
+      <div className="border-2 border-border bg-card px-4 py-3 space-y-1">
+        <p className="text-xs font-semibold tracking-wide text-muted-foreground">
+          {t('historyMissionStory', { defaultValue: 'At a glance' })}
+        </p>
+        <p className="text-sm text-foreground leading-relaxed">{briefingLine}</p>
+        {dayStats.count > 0 && (
+          <p className="text-sm text-foreground tabular-nums leading-relaxed">
+            {t('historyDaysLogged', {
+              count: dayStats.count,
+              defaultValue: `${fmt.num(dayStats.count)} days logged`,
+            })}
+            {dayStats.count > 0 && (
+              <>
+                {' · '}
+                <Link href={`/history/${localDateKey()}`} className="text-primary underline">
+                  {t('historyDayToday', { defaultValue: 'replay today' })}
+                </Link>
+              </>
+            )}
+            {dayStats.first && (
+              <span className="text-muted-foreground">
+                {' · '}
+                {t('historyDaysSince', {
+                  date: formatLocalDateKey(dayStats.first, i18n.language),
+                  defaultValue: `since ${formatLocalDateKey(dayStats.first, i18n.language)}`,
+                })}
+              </span>
+            )}
+          </p>
+        )}
+        {summary.sessionCount > 0 && (
+          <p className="text-xs text-muted-foreground tabular-nums leading-relaxed">
+            {t('historyAvgVolume', {
+              avg: fmt.num(summary.avgVolume),
+              unit: unitLabel,
+              defaultValue: `Recent avg volume ${fmt.num(summary.avgVolume)} ${unitLabel}`,
+            })}
+          </p>
+        )}
+      </div>
+
+      <div>
+        <p className="text-muted-foreground text-sm">
+          <Link href="/log" className="underline">
+            {t('navToday', { defaultValue: 'Today' })}
+          </Link>
+        </p>
+        <p className="mt-1 text-muted-foreground">
+          {sessionLabel}
+          {syncing && t('historySyncing', { defaultValue: ' — syncing cloud…' })}
+          {!syncing && cloudSynced && t('historyCloudMerged', { defaultValue: ' — cloud merged' })}
+        </p>
+      </div>
+
+          <SegmentedControl
+            options={[
+              { value: 'calendar' as const, label: t('historyTabCalendar', { defaultValue: 'Calendar' }) },
+              { value: 'exercises' as const, label: t('historyTabExercises', { defaultValue: 'Exercises' }) },
+              { value: 'journal' as const, label: t('historyTabJournal', { defaultValue: 'Journal' }) },
+            ]}
+            value={tab}
+            onChange={setTab}
+            ariaLabel={t('historyTabsLabel', { defaultValue: 'History view' })}
+          />
+          {tab === 'calendar' ? (
+            <HistoryCalendar history={workoutHistory} loggedKeys={loggedDayKeys} />
+          ) : tab === 'journal' ? (
+            <JournalTimeline />
+          ) : tab === 'exercises' ? (
+            <div className="space-y-4" data-testid="history-exercises">
+              <p className="text-sm text-muted-foreground leading-relaxed">
+                {t('historyTrendsDesc', {
+                  defaultValue: 'Volume, estimated 1RM, and muscle heatmap',
+                })}
+              </p>
+              <div className="grid gap-4 lg:grid-cols-2">
+                <HistoryVolumeChart data={weeklyVolume} />
+                <div className="space-y-2">
+                  {exerciseIds.length > 1 && (
+                    <Select value={activeChartId} onValueChange={setChartExerciseId}>
+                      <SelectTrigger className="w-full min-h-[44px]">
+                        <SelectValue
+                          placeholder={t('historySelectExercise', {
+                            defaultValue: 'Chart exercise',
+                          })}
+                        />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {exerciseIds.map((id) => {
+                          const ex = getExerciseById(id);
+                          return (
+                            <SelectItem key={id} value={id}>
+                              {ex?.name ?? id}
+                            </SelectItem>
+                          );
+                        })}
+                      </SelectContent>
+                    </Select>
+                  )}
+                  <History1RMChart
+                    data={oneRmData}
+                    exerciseName={getExerciseById(activeChartId)?.name ?? activeChartId}
+                  />
+                </div>
+              </div>
+              <details className="group border-2 border-border bg-card">
+                <summary className="flex min-h-[44px] cursor-pointer list-none items-center px-4 py-3 text-sm font-semibold text-foreground [&::-webkit-details-marker]:hidden">
+                  {t('historyHeatmaps', { defaultValue: 'Muscle heatmaps' })}
+                </summary>
+                <div className="space-y-4 border-t-2 border-border p-4">
+                  <AnatomyHeatMap cells={heatmapCells} />
+                  <MuscleHeatmap cells={heatmapCells} windowDays={HEATMAP_WINDOW_DAYS} />
+                </div>
+              </details>
+            </div>
+          ) : null}
 
       <div>
         <h3 className="text-xl font-semibold flex items-center gap-2 mb-2">
@@ -592,6 +582,8 @@ export function HistoryPage() {
           </p>
         )}
       </div>
+        </div>
+      </details>
 
       <Dialog open={!!selected} onOpenChange={(open) => !open && setSelected(null)}>
         <DialogContent

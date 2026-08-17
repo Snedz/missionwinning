@@ -1,5 +1,5 @@
-/** Shown on Profile so testers can confirm the deployed build. Bump when shipping UI to master. `.896` Coach sheet. */
-export const APP_BUILD_LABEL = "2026.07-unified.896";
+/** Shown on Profile so testers can confirm the deployed build. Bump when shipping UI to master. `.897` History list. */
+export const APP_BUILD_LABEL = "2026.07-unified.897";
 
 /**
  * Semver for athletes. Distinct from `APP_BUILD_LABEL`, which `/api/health`

@@ -4,8 +4,9 @@
 
 ## Read order
 
-1. `sessionHistoryList.ts` — the Sessions tab scan (date · title/muscles · set count)
+1. `sessionHistoryList.ts` — the first-paint scan (date · title/muscles · set count)
 2. `monthGrid.ts` — calendar marks (trained / logged / blank; never “missed”)
+3. `historySheetChrome.test.ts` — list first; calendar / charts / journal in Show all
 
 ## Files
 

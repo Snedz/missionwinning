@@ -23,7 +23,7 @@
 |------|-------|
 | `ActiveWorkoutPage.tsx` | `/active` |
 | `BuilderPage.tsx` | `/builder` |
-| `HistoryPage.tsx` | `/history` |
+| `HistoryPage.tsx` | `/history` | First paint is the session list; calendar / charts / journal in Show all |
 | `LibraryPage.tsx` | `/library` |
 | `BenchmarksPage.tsx` | `/benchmarks` |
 | `LeaderboardPage.tsx` | `/leaderboard` |
