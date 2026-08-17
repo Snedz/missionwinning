@@ -13,8 +13,12 @@ import { JourneyHero } from '@/components/journey/JourneyHero';
 import { reentryCardMayMount } from '@/lib/today/todayGuidanceMount';
 import { TodaySummaryPins } from '@/components/today/TodaySummaryPins';
 import { TodayHighlights } from '@/components/today/TodayHighlights';
-import { defaultSummaryPins } from '@/lib/today/summaryPins';
-import { todayHighlightsSentence } from '@/lib/today/highlightsSentence';
+import {
+  parseSummaryPinIds,
+  resolveSummaryPins,
+  type SummaryPinId,
+} from '@/lib/today/summaryPins';
+import { todayHighlightsFromLogs } from '@/lib/today/highlightsSentence';
 import { loadPlan } from '@/lib/coach/storage';
 
 import { TODAY_BLOCK_PRIORITY as P } from '@/lib/today/todayBlockPriority';
@@ -34,12 +38,12 @@ import {
 import type { CompletedWorkoutLog } from '@/types';
 import { runTodayPrimaryAction, isTodayTrainReady } from '@/lib/todayPrimaryAction';
 import { STORAGE_KEYS } from '@/lib/storage/keys';
-import { readRaw } from '@/lib/storage/safeStorage';
+import { readRaw, writeJson } from '@/lib/storage/safeStorage';
 import { loadHomeGymKit } from '@/lib/workout/homeGymKit';
 import { peekCoachToday } from '@/lib/coach/peekCoachToday';
 import { buildJustGoHeroMeta, type JustGoHeroMeta } from '@/lib/justGoHeroMeta';
 import { shouldRepeatLastOnToday } from '@/lib/workout/repeatLastSession';
-import { formatLocalDateKey, localDateKey, localDateKeyFromIso } from '@/lib/time/localDate';
+import { formatLocalDateKey, localDateKey } from '@/lib/time/localDate';
 
 const SSR_ACTION: JourneyAction = {
   label: 'Begin I-Day',
@@ -70,6 +74,8 @@ export function HomeTodayLean() {
   /** Focus label for Just Go — filled after idle import of score/readiness. */
   const [focusLabel, setFocusLabel] = useState('');
   const [reentry, setReentry] = useState<ReturnType<typeof computeReentry> | null>(null);
+  const [pinIds, setPinIds] = useState<SummaryPinId[]>(() => parseSummaryPinIds(null));
+  const [editingPins, setEditingPins] = useState(false);
 
   useEffect(() => {
     setReentry(computeReentry(workoutHistory, Date.now(), loadPlan()));
@@ -78,6 +84,7 @@ export function HomeTodayLean() {
   const refreshFromStorage = useCallback(() => {
     const history = readWorkoutHistoryFromStorage();
     setWorkoutHistory(history);
+    setPinIds(parseSummaryPinIds(readRaw(STORAGE_KEYS.summaryPins)));
     const next = syncJourneyPhase(history);
     setJourneyState(next);
     setAction(getNextAction(history));
@@ -183,9 +190,6 @@ export function HomeTodayLean() {
       .filter((w) => !w.deletedAt)
       .sort((a, b) => (a.completedAt < b.completedAt ? 1 : -1))[0]?.workoutName ??
     null;
-  const trainedToday = workoutHistory.some(
-    (w) => !w.deletedAt && localDateKeyFromIso(w.completedAt) === localDateKey()
-  );
   const justGoMeta: JustGoHeroMeta | null = buildJustGoHeroMeta({
     hasActiveWorkout,
     trainReady: isTodayTrainReady({
@@ -224,10 +228,20 @@ export function HomeTodayLean() {
       pinned: true,
       node: (
         <TodaySummaryPins
-          pins={defaultSummaryPins({
+          pins={resolveSummaryPins({
+            ids: pinIds,
             lastSessionName: lastLoggedName,
             hasActiveWorkout,
           })}
+          selectedIds={pinIds}
+          editing={editingPins}
+          onEdit={() => setEditingPins(true)}
+          onDone={() => setEditingPins(false)}
+          onChangeIds={(next) => {
+            setPinIds(next);
+            writeJson(STORAGE_KEYS.summaryPins, next);
+          }}
+          onSessionPin={handleJourneyPrimary}
         />
       ),
     },
@@ -237,9 +251,9 @@ export function HomeTodayLean() {
       pinned: true,
       node: (
         <TodayHighlights
-          sentence={todayHighlightsSentence({
-            trainedToday,
-            lastSessionName: lastLoggedName,
+          sentence={todayHighlightsFromLogs({
+            history: workoutHistory,
+            todayKey: localDateKey(),
           })}
         />
       ),

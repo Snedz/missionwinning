@@ -17,9 +17,9 @@ test('lean Today is date + pins + highlights + docked Start', () => {
   assert.match(src, /<TodayPageHeader\b/);
   assert.match(src, /showJourneyStrip=\{false\}/);
   assert.match(src, /<TodaySummaryPins\b/);
-  assert.match(src, /todayHighlightsSentence\(/);
+  assert.match(src, /todayHighlightsFromLogs\(/);
   assert.match(src, /<ScreenDock>[\s\S]*?<JourneyHero/);
-  assert.match(src, /defaultSummaryPins\(/);
+  assert.match(src, /resolveSummaryPins\(/);
 });
 
 test('lean Today deletes tour blocks instead of hiding them', () => {

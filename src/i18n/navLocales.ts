@@ -9,6 +9,14 @@ type NavStrings = {
   navMoreEyebrow: string;
   todayHighlightsTrained: string;
   todayHighlightsLast: string;
+  todayHighlightsTrainedSets: string;
+  todayPinned: string;
+  todayPinSession: string;
+  todayPinOn: string;
+  todayPinOff: string;
+  todayPinFuelKicker: string;
+  todayPinCoachKicker: string;
+  todayPinsDone: string;
   navOpenBeta: string;
   navInviteOnlyBeta: string;
   navGroupMission: string;
@@ -55,6 +63,14 @@ const en: NavStrings = {
   navMoreEyebrow: 'All screens',
   todayHighlightsTrained: 'You already trained today.',
   todayHighlightsLast: '{{name}} is waiting.',
+  todayHighlightsTrainedSets: '{{count}} sets today.',
+  todayPinned: 'Pinned',
+  todayPinSession: 'Session',
+  todayPinOn: 'Pinned',
+  todayPinOff: 'Off',
+  todayPinFuelKicker: 'Log food',
+  todayPinCoachKicker: 'This week',
+  todayPinsDone: 'Done',
   navGroupMission: 'Mission',
   navGroupPillars: 'Pillars',
   navGroupToolkit: 'Toolkit',

@@ -17,7 +17,12 @@ export function TodayHighlights({ sentence }: { sentence: HighlightsSentence | n
           name: sentence.sessionName,
           defaultValue: '{{name}} is waiting.',
         })
-      : t('todayHighlightsTrained', { defaultValue: 'You already trained today.' });
+      : sentence.key === 'todayHighlightsTrainedSets'
+        ? t('todayHighlightsTrainedSets', {
+            count: sentence.count,
+            defaultValue: '{{count}} sets today.',
+          })
+        : t('todayHighlightsTrained', { defaultValue: 'You already trained today.' });
 
   return (
     <p className="text-sm leading-relaxed text-muted-foreground" data-testid="today-highlights">
