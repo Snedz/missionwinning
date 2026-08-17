@@ -24,4 +24,4 @@ Forbidden on Next spawn: postal, EIN, live Stripe, `PRIVATE_MODE=false`, America
 | unit | round | builder ref | critic verdict | biggest gap |
 |------|-------|-------------|----------------|-------------|
 | U1 | 1 | #735 `.886` — wired `formatWorkoutVolumeDisplay` / `sumWorkingReps` into Victory + share card. No `victoryVolumeStat`. | **PASS** (trio). Live 390×844 Volume **8 reps**, not 0 kg. Instrument 37/37. Stills `docs/gauntlet/VISION/evidence/U1-R1-*.png`. FEEL (founder-only, not a builder brief): The receipt finally reads as work done — eight push-ups look like eight push-ups. Biggest remaining gap: The share card never painted on this live walk (Web Share: “Couldn’t share from this browser”), so share-card pixels are instrument-only. | Share-card PNG is instrument-only (not an instrument FAIL) |
-| U2 | 1 | `.887` — `week_one.svg` three bars; guard fails if `L32 20 L44 38 Z` returns. | | |
+| U2 | 1 | #736 `.887` — `week_one.svg` three bars; guard fails if `L32 20 L44 38 Z` returns. | | |
