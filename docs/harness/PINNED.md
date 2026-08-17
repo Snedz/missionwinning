@@ -11,8 +11,8 @@ The queue is GRAPH_LOOP. What may be built is ORCHESTRATION.
 - Empty queue + a living `idea:next` pick → harvest **paste** (`npm run idea:paste`). `/harness` is the paste.
 - Empty queue + nothing to emit + generate still legal → harvest **generate**, then paste if one survives.
 - Two consecutive generate-harvests at zero survivors → orchestration path (recipe 15). Path proven → vision gauntlet (`docs/gauntlet/VISION.md`, recipe 12). Goal is already in the repo. Not AU2. Not a craft walk.
-- Surface hop: write the accept test **before** the first product edit. `HOP.md` `test_written: yes`.
-- Pixels: recipe 17 (Fable 5). Same stack. A screenshot is not PASS.
+- Surface hop: ops intel or a live 390 walk first (names stay in ops). Then accept test **before** the first product edit. `HOP.md` `test_written: yes`.
+- Six stages: research → plan → daily code → tests → complex only if stuck → Fable 5 pixels. A screenshot is not PASS.
 - Social is the door. Today Start is the calendar. No video factory.
 - Builder never grades itself. `npm run harness:done` before claiming the hop shipped.
 - Do not commit `.hermes/`, `ops/`, or `.env.local`.

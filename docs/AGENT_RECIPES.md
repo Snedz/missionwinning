@@ -253,14 +253,16 @@ hard rule 6) is a thin loader over exactly these steps. `/graph` is an alias.
    workbench and its `Next spawn` line, any `founder`/`blocked` row it skipped,
    the monoculture ratchet, closed-loop lessons, and — on harvest — the
    `idea:next` pick. It prints; it never edits the queue. Re-read
-   [harness/PINNED.md](harness/PINNED.md). Fill [harness/HOP.md](harness/HOP.md) before
-   the first product edit (`ticket` = the live id, `done_means` one sentence,
-   `accept` one command, `test_written: yes` after that command has been run).
-   Surface pixels then follow recipe 16 then 17.
+   [harness/PINNED.md](harness/PINNED.md). Surface work follows the **six-stage
+   pipeline** in [ORCHESTRATION.md](../ORCHESTRATION.md): research (ops intel or
+   a 390 walk) → plan (`HOP.md` claim) → daily code → recipe 16 (`test_written:
+   yes` **before** the first product edit) → complex only if stuck → recipe 17
+   (pixels). Recipe 13 is harvest (world → one row), not every-hop research.
 4. **Take the route it named**, and only that one — `build` → recipe 11 · `gauntlet`
    → recipe 12 · `harvest` → recipe 13 · `path` → recipe 15 ·
    `stalled` → print the note and exit (no `HOP.md`, no `harness:done`). Not a more
-   interesting row, not two rows.
+   interesting row, not two rows. Surface hops still walk stages 1–6 on top of
+   that route.
 5. **`npm run harness:done`** before claiming the hop shipped. It is the closer.
    It does not write the queue. Then one loop, then stop
    ([GRAPH_LOOP.md](GRAPH_LOOP.md) loop rule 2). Print

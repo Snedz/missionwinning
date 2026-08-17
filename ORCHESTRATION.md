@@ -1,7 +1,7 @@
 # Mission Winning — Long-Term Orchestration
 
 **Audience:** Founder + AI agents  
-**Build baseline:** `2026.07-unified.90`+  
+**Build baseline:** live label in [CONTEXT.md](CONTEXT.md) `## Now` — do not restamp it here  
 **#1 metric (year one):** week-4 retained weekly loggers — [docs/THESIS.md](docs/THESIS.md)  
 **Constitution:** [vision.md](vision.md) · **Wedge / public truth:** [docs/THESIS.md](docs/THESIS.md) · **Crypto = rail:** [docs/CRYPTO_RAILS_THESIS.md](docs/CRYPTO_RAILS_THESIS.md) · **Risk notes:** product stubs + private mission-ops (`strategy/REDTEAM`) · **Build phases:** [docs/PLAN.md](docs/PLAN.md) · **Launch:** [docs/LAUNCH_RUNBOOK.md](docs/LAUNCH_RUNBOOK.md)
 
@@ -25,7 +25,7 @@ Do not use old chat plans as source of truth — prefer this file + PLAN + LOG.
 | Honest empty states / no wallpaper unlocks | America/wearables without enable or legal |
 | One concern per PR; ship protocol | Fake leaderboard humans without Pacer label |
 
-Rewards domain: `src/lib/rewards/`. Plan: `.hermes/plans/2026-08-05_163500-full-launch-everything.md`.
+Rewards domain: `src/lib/rewards/`. Session plans (`.hermes`, `~/.grok/sessions`) are not product truth.
 
 ### Founder override — www surface on Astro (2026-08-09)
 
@@ -52,18 +52,29 @@ Scope note: this override is **narrow by design**. Everything else on the Horizo
 
 Agents may ship beyond “hero bugs only” for this window. Prefer delete/refine over new pillars.
 
-### Founder override — test-first surface hops + Fable 5 frontend (2026-08-17)
+### Founder override — six-stage hop pipeline (2026-08-17)
 
-**Hop shape, not a new loop.** No GRAPH_LOOP letter. Same stack (Next.js + tokens). Fable 5 means Claude Fable 5 as the **frontend implementer** (vision + 390 stills). It is not a framework and not a rewrite. Principle 5 still holds.
+**Hop shape, not a new loop.** No GRAPH_LOOP letter. Store intel is closed (ops brain). Same stack (Next.js + tokens). Fable 5 means Claude Fable 5 as the **frontend implementer**. It is not a framework and not a rewrite. Principle 5 still holds.
 
-**Surface hop order** (Train / Today / Victory / Coach pixels, or any athlete-facing UI):
+**Train table is shipped** (`.889`). **Next product floor** (not a letter, not a path ticket until it has an instrument): Today is Summary — pin-grid, one Start. `/log` is still a tour.
 
-1. Name the claim in one sentence and the accept command.
-2. Write the test so the claim is false — or pin the already-true proof.
-3. Run it. Red or already-green, recorded. `docs/harness/HOP.md` carries `test_written: yes` before the first product edit.
-4. Smallest product change.
-5. Pixels → recipe 17 (Fable 5). Token-only. 390×844 stills vs the bar.
-6. Re-run the **same** accept command. A screenshot is not PASS.
+**Six stages** (surface hops: Train / Today / Victory / Coach pixels, or any athlete-facing UI):
+
+| # | Stage | Do |
+|---|--------|----|
+| 1 | Realtime research | Re-read the matching ops intel pattern and/or walk *our* 390 screen. Skip if that pattern is already warm. Names stay in ops. Not a second queue. |
+| 2 | Planning | One sentence claim + accept command in `docs/harness/HOP.md`. |
+| 3 | Day-to-day code | Smallest product change. |
+| 4 | Write & run tests | Recipe 16 — **before** the first product edit. `test_written: yes`. |
+| 5 | Complex code/debug | Only if the accept bar stays red after a fair try, or the defect crosses domains. |
+| 6 | Front end | Recipe 17. Token-only. 390×844 stills vs the bar. Re-run the **same** accept command. A screenshot is not PASS. |
+
+Order:
+
+```
+(ops stills if needed) → HOP claim → test written & run
+  → daily code → (complex only if stuck) → Fable 5 pixels → same accept
+```
 
 | Still required | Still forbidden |
 |----------------|-----------------|
@@ -71,6 +82,7 @@ Agents may ship beyond “hero bugs only” for this window. Prefer delete/refin
 | Phone 390 is the product surface | Video membership, class CMS, TV / watchOS apps |
 | Free logger never gated | Community feed; founder-face content |
 | Nameless public git | Studio / rival names in product docs |
+| Intel closed unless a claim has zero stills | Wave 8 of apps; research as a standing campaign |
 
 **Growth grain** (social prep, not a product pivot). Full copy: [docs/SOCIAL_LAUNCH.md](docs/SOCIAL_LAUNCH.md) § Grain.
 
@@ -81,7 +93,7 @@ Agents may ship beyond “hero bugs only” for this window. Prefer delete/refin
 | Named monthly hook | Later: one named week as a social object (copy + Coach week). | A Challenges pillar |
 | Welcome + free guide | Email + existing Beyond the Basics reader (no download). | A new manuscript |
 | Watch drop-off | Week-4 retained weekly loggers. Win-back is founder email. | A community analytics suite |
-| Social is the door | IG/TikTok → Alpha / Super Bundle. | Paid ads (still locked) |
+| Social is the door | IG/TikTok → Alpha / **free logger**. Super Bundle is never the hook ([docs/SOCIAL_LAUNCH.md](docs/SOCIAL_LAUNCH.md) F-016). | Paid ads (still locked) |
 | Faceless later | Generated or hired coaches. Never founder face. Horizon 3. | Video factory / player / studio CMS |
 
 ---
@@ -299,7 +311,7 @@ The agent half of the role split, refined into lanes. Every task belongs to exac
 | **Engineering-iOS** | closed until gate | [docs/IOS_PLAYBOOK.md](docs/IOS_PLAYBOOK.md) | `apps/ios/**` (does not exist yet) |
 | **Design / Brand** | agents, founder approves | [docs/DESIGN_ORCHESTRATION.md](docs/DESIGN_ORCHESTRATION.md) + [docs/brand-guidelines.md](docs/brand-guidelines.md) + [docs/DESIGN_SYSTEM.md](docs/DESIGN_SYSTEM.md) + [docs/DESIGN_REVIEW.md](docs/DESIGN_REVIEW.md) | `src/components/`, `src/index.css`, `public/brand/`, `apps/android/core/designsystem/`, `apps/android/UX.md`, `.claude/skills/` |
 | **Content / Book** | agents; originality log mandatory | [docs/guidebook-originality-log.md](docs/guidebook-originality-log.md) + [docs/issa-source-map.md](docs/issa-source-map.md) | `src/data/guidebook/`, `docs/help/` |
-| **Growth / SEO** | agents | [docs/SEO_ANALYTICS.md](docs/SEO_ANALYTICS.md) + [docs/SOCIAL_LAUNCH.md](docs/SOCIAL_LAUNCH.md) | `seo/`, `docs/` |
+| **Growth / SEO** | agents draft; founder posts | [docs/SOCIAL_LAUNCH.md](docs/SOCIAL_LAUNCH.md) + [docs/SEO_ANALYTICS.md](docs/SEO_ANALYTICS.md) + recipes 18–19 | `seo/`, `docs/` (nameless). Named intel only in `ops/intel/` |
 | **Ops / Security** | founder + agents | [docs/PRODUCTION_STACK.md](docs/PRODUCTION_STACK.md) + [docs/PROTECTION.md](docs/PROTECTION.md) | `.github/`, `scripts/`, `supabase/` |
 | **Data / Analytics** | agents | [docs/POST_LAUNCH_CADENCE.md](docs/POST_LAUNCH_CADENCE.md) | `scripts/`, `docs/` |
 
