@@ -258,6 +258,7 @@ type TodayStrings = {
   todayScoreNeedsSessions: string;
   todayMissionScoreTip: string;
   todayMoreSummary: string;
+  todayShowAll: string;
   todaySessionFocus: string;
   /** ContinuityStrip on the full Today dashboard (`.536`). */
   continuityTitle: string;
@@ -561,6 +562,7 @@ const en: TodayStrings = {
   todayScoreNeedsSessions: 'Needs 3 sessions',
   todayMissionScoreTip: 'Daily score from all six pillars. Log training, fuel, move, mind, track, and learn to raise it.',
   todayMoreSummary: 'Today details',
+  todayShowAll: 'Show all',
   todaySessionFocus: 'Training',
   continuityTitle: 'After training',
   continuitySubtitle: 'Move, mind, or fuel when you want them.',
@@ -619,6 +621,7 @@ const es: TodayStrings = {
   todayWeeklyChallengesDesc: 'Metas de entrenamiento + nutrición + volumen. Núcleo gratis.',
   todayWeeklyChallengesDescOpenBeta: en.todayWeeklyChallengesDescOpenBeta,
   todayDayStreak: 'Racha de {{count}} días',
+  todayShowAll: 'Mostrar todo',
   todayStartWorkout: 'Empezar entrenamiento de hoy',
   todaySectionProgress: 'Progreso y herramientas',
   todaySectionProgressDesc: 'Preparación, estadísticas e historial',
@@ -881,6 +884,7 @@ const zh: TodayStrings = {
   todayScoreNeedsSessions: en.todayScoreNeedsSessions,
   todayMissionScoreTip: en.todayMissionScoreTip,
   todayMoreSummary: en.todayMoreSummary,
+  todayShowAll: en.todayShowAll,
   todaySessionFocus: en.todaySessionFocus,
   todayBasicEncouragement: '一步一步来。健康属于每个人 — 在你的路上训练、营养、活动和学习。',
   todaySectionHealth: '健康评分',
@@ -1151,6 +1155,7 @@ const id: TodayStrings = {
   todayScoreNeedsSessions: en.todayScoreNeedsSessions,
   todayMissionScoreTip: en.todayMissionScoreTip,
   todayMoreSummary: en.todayMoreSummary,
+  todayShowAll: en.todayShowAll,
   todaySessionFocus: en.todaySessionFocus,
   todayBasicEncouragement:
     'Satu langkah demi langkah. Kesehatan untuk semua — latihan, nutrisi, gerak, dan belajar.',
@@ -1436,6 +1441,7 @@ const th: TodayStrings = {
   todayScoreNeedsSessions: en.todayScoreNeedsSessions,
   todayMissionScoreTip: en.todayMissionScoreTip,
   todayMoreSummary: en.todayMoreSummary,
+  todayShowAll: en.todayShowAll,
   todaySessionFocus: en.todaySessionFocus,
   todayBasicEncouragement:
     'ทีละขั้น สุขภาพสำหรับทุกคน — ฝึก โภชนาการ เคลื่อนไหว และเรียนรู้บนเส้นทางของคุณ',
@@ -1711,6 +1717,7 @@ const ar: TodayStrings = {
   todayScoreNeedsSessions: en.todayScoreNeedsSessions,
   todayMissionScoreTip: en.todayMissionScoreTip,
   todayMoreSummary: en.todayMoreSummary,
+  todayShowAll: en.todayShowAll,
   todaySessionFocus: en.todaySessionFocus,
   todayBasicEncouragement: 'خطوة بخطوة. الصحة للجميع — تدريب وتغذية وحركة وتعلّم على مسارك.',
   todaySectionHealth: 'درجات الصحة',
