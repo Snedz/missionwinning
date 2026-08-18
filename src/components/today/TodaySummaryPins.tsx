@@ -39,7 +39,7 @@ export function TodaySummaryPins({
       ? t('todayPinSession', { defaultValue: 'Session' })
       : id === 'fuel'
         ? t('navFuel', { defaultValue: 'Fuel' })
-        : t('navCoach', { defaultValue: 'Coach' });
+        : t('navCoachTab', { defaultValue: 'Coach' });
 
   return (
     <section data-testid="today-pinned">
@@ -97,7 +97,7 @@ export function TodaySummaryPins({
               pin.kind === 'fuel'
                 ? t('navFuel', { defaultValue: 'Fuel' })
                 : pin.kind === 'coach'
-                  ? t('navCoach', { defaultValue: 'Coach' })
+                  ? t('navCoachTab', { defaultValue: 'Coach' })
                   : pin.sessionName ??
                     (pin.kind === 'resume'
                       ? t('resumeWorkout', { defaultValue: 'Resume workout' })
