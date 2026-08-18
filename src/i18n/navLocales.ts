@@ -16,6 +16,8 @@ type NavStrings = {
   todayPinOff: string;
   todayPinFuelKicker: string;
   todayPinCoachKicker: string;
+  todayPinStartKicker: string;
+  todayPinsEdit: string;
   todayPinsDone: string;
   navOpenBeta: string;
   navInviteOnlyBeta: string;
@@ -72,6 +74,8 @@ const en: NavStrings = {
   todayPinOff: 'Off',
   todayPinFuelKicker: 'Log food',
   todayPinCoachKicker: 'This week',
+  todayPinStartKicker: "Today's session",
+  todayPinsEdit: 'Edit',
   todayPinsDone: 'Done',
   navGroupMission: 'Mission',
   navGroupPillars: 'Pillars',
@@ -116,8 +120,12 @@ const es: NavStrings = {
   navInviteOnlyBeta: 'Alpha',
   navAssess: 'Evaluar',
   navMore: 'Más',
+  navSearch: 'Buscar',
   navCoachTab: 'Coach',
   navMoreEyebrow: 'Todas las pantallas',
+  todayPinned: 'Fijado',
+  todayPinStartKicker: 'La sesión de hoy',
+  todayPinsEdit: 'Editar',
   navGroupMission: 'Misión',
   navGroupPillars: 'Pilares',
   navGroupToolkit: 'Herramientas',
@@ -395,8 +403,12 @@ const pt: Partial<NavStrings> = {
   navInviteOnlyBeta: 'Alpha',
   navAssess: 'Avaliar',
   navMore: 'Mais',
+  navSearch: 'Buscar',
   navCoachTab: 'Treinador',
   navMoreEyebrow: 'Todas as telas',
+  todayPinned: 'Fixado',
+  todayPinStartKicker: 'Sessão de hoje',
+  todayPinsEdit: 'Editar',
   navGroupMission: 'Missão',
   navGroupPillars: 'Pilares',
   navGroupToolkit: 'Ferramentas',

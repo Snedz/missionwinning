@@ -12,6 +12,7 @@ When adding a doc:
 
 | File | Absorbed by / note |
 |------|---------------------|
+| [log/LOG-rotate-898-for-913.md](./log/LOG-rotate-898-for-913.md) | rotated 2026-08-17 for `.913` Today pin copy (`.898`) |
 | [log/LOG-rotate-897-for-912.md](./log/LOG-rotate-897-for-912.md) | rotated 2026-08-17 for `.912` Today is Summary (`.897`) |
 | [log/LOG-rotate-896-for-911.md](./log/LOG-rotate-896-for-911.md) | rotated 2026-08-17 for `.911` Cue me overflow (`.896`) |
 | [log/LOG-rotate-895-for-910.md](./log/LOG-rotate-895-for-910.md) | rotated 2026-08-17 for `.910` Talk under the week (`.895`) |
