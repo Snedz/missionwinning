@@ -188,7 +188,7 @@ export function ActiveEmptyState({
                         name: previewName,
                         count: previewExerciseCount ?? 0,
                       })
-                    : t('activeStartWorkout', { defaultValue: 'Start workout' })}
+                    : t('activeStartWorkout', { defaultValue: 'Start Workout' })}
             </span>
             <ChevronRight className="ms-auto h-5 w-5 shrink-0" aria-hidden />
           </button>
