@@ -13,7 +13,7 @@
 
 | File | Route |
 |------|-------|
-| `HomePage.tsx` | `/log` (Today) |
+| `HomePage.tsx` | `/log` (Today) | Summary first paint in every phase — date, pins, one Start |
 | `WelcomePage.tsx` | `/welcome` |
 | `LandingPage.tsx` | `/` |
 
