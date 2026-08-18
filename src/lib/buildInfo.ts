@@ -1,5 +1,5 @@
-/** Shown on Profile so testers can confirm the deployed build. Bump when shipping UI to master. `.923` PAR-Q door. */
-export const APP_BUILD_LABEL = "2026.07-unified.923";
+/** Shown on Profile so testers can confirm the deployed build. Bump when shipping UI to master. `.924` Today Coach pin. */
+export const APP_BUILD_LABEL = "2026.07-unified.924";
 
 /**
  * Semver for athletes. Distinct from `APP_BUILD_LABEL`, which `/api/health`
