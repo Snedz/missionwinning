@@ -73,7 +73,7 @@ export function AdjustSessionSheet({ open, onClose, onAdjust }: Props) {
       open={open}
       onClose={handleClose}
       size="sm"
-      title={t('coachAdjustTitle', { defaultValue: "Adjust today's session" })}
+      title={t('coachAdjustTitle', { defaultValue: 'Adjust today’s session' })}
       bodyClassName="p-5 space-y-5"
     >
       {/* Three labelled groups, not four flat chips. "20 min", "30 min", "No
