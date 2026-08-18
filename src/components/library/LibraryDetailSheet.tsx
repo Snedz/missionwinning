@@ -148,7 +148,7 @@ export function LibraryDetailSheet({
             <Button variant="default" className="w-full min-h-[52px] tap-target" onClick={addToSession}>
               <Plus className="h-4 w-4 mr-2" />
               {activeWorkout
-                ? t('libraryAddToActive', { defaultValue: 'Add to session' })
+                ? t('libraryAddToActive', { defaultValue: "Add to today's session" })
                 : t('libraryTrainThis', { defaultValue: 'Train this' })}
             </Button>
           ) : undefined
