@@ -1,5 +1,5 @@
-/** Shown on Profile so testers can confirm the deployed build. Bump when shipping UI to master. `.920` Adjust session title. */
-export const APP_BUILD_LABEL = "2026.07-unified.920";
+/** Shown on Profile so testers can confirm the deployed build. Bump when shipping UI to master. `.921` Talk placeholder. */
+export const APP_BUILD_LABEL = "2026.07-unified.921";
 
 /**
  * Semver for athletes. Distinct from `APP_BUILD_LABEL`, which `/api/health`

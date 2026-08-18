@@ -29,7 +29,7 @@ export function CoachChatTranscript({ turns, sending, logRef }: Props) {
       {turns.length === 0 ? (
         <p className="text-muted-foreground text-xs">
           {t('coachChatPlaceholder', {
-            defaultValue: "Ask about today's session, form, or recovery…",
+            defaultValue: 'Ask about today’s session, form, or recovery…',
           })}
         </p>
       ) : null}
