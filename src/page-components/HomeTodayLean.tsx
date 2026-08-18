@@ -2,7 +2,7 @@
 /**
  * Lean Today — Summary. Date, 0–4 pins, one highlights sentence, one Start.
  * Tour chrome (journey strip, rewards, continuity, day-review) is deleted.
- * Full dashboard still loads for readiness+ via HomePage code-split.
+ * Coach week lives in Show all. Dashboard is not this route.
  */
 
 import { useCallback, useEffect, useState } from 'react';
@@ -13,6 +13,7 @@ import { JourneyHero } from '@/components/journey/JourneyHero';
 import { reentryCardMayMount } from '@/lib/today/todayGuidanceMount';
 import { TodaySummaryPins } from '@/components/today/TodaySummaryPins';
 import { TodayHighlights } from '@/components/today/TodayHighlights';
+import { TodayShowAll } from '@/components/today/TodayShowAll';
 import {
   parseSummaryPinIds,
   resolveSummaryPins,
@@ -270,6 +271,7 @@ export function HomeTodayLean() {
         {plan.top.map(({ key, node }) => (
           <div key={key}>{node}</div>
         ))}
+        <TodayShowAll />
       </div>
       <ScreenDock>
         <JourneyHero
