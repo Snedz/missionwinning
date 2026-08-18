@@ -22,6 +22,17 @@ test('Fuel opens remaining then type-in then today — not recipes first', () =>
   assert.ok(macro < typeIn && typeIn < today, 'order is remaining → type → today');
 });
 
+test('the Fuel house door first-paints Search, barcode & recipes, not Show all', () => {
+  const src = page();
+  assert.match(src, /fuelShowMore/);
+  assert.match(src, /defaultValue: 'Search, barcode & recipes'/);
+  assert.doesNotMatch(
+    src,
+    /fuelShowMore[\s\S]{0,80}defaultValue: 'Show all'/,
+    'packs win — Show all hydrates into the Fuel lecture'
+  );
+});
+
 test('the nutrition house is behind Show all, not on first paint', () => {
   const src = page();
   const jsx = src.slice(src.lastIndexOf('return ('));

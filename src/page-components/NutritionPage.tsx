@@ -539,7 +539,7 @@ export function NutritionPage() {
 
       <details className="group border-2 border-border bg-card">
         <summary className="flex min-h-[44px] cursor-pointer list-none items-center px-4 py-3 text-sm font-semibold text-foreground [&::-webkit-details-marker]:hidden">
-          {t('fuelShowMore', { defaultValue: 'Show all' })}
+          {t('fuelShowMore', { defaultValue: 'Search, barcode & recipes' })}
         </summary>
         <div className="space-y-4 border-t-2 border-border p-4">
           <FuelQuickLogPanel
