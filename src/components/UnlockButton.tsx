@@ -273,7 +273,7 @@ export function UnlockButton({
       <button type="submit" className="primary-action w-full min-h-[52px] tap-target" disabled={submitting || !email.trim()}>
         {submitting
           ? t('unlockJoining', { defaultValue: 'Joining…' })
-          : label || t('unlockGetNotified', { defaultValue: t('unlockJoinFounders', { defaultValue: 'Get notified' }) })}
+          : label || t('unlockGetNotified', { defaultValue: 'Get notified' })}
       </button>
       {waitlistError && (
         <p className="text-center text-xs text-destructive" role="alert">

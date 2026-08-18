@@ -41,7 +41,7 @@
 | **Gating / auth** | `privateGate.ts`, `privateSession.ts`, `privateModeFlag.ts`, `homeSurface.ts`, `pwaStartUrl.ts`, `supabaseAuthCookies.ts`, `supabaseRequestAuth.ts` | Private beta, HMAC cookie, JWT cookies; `/` after Done is cookie → `.696` homepage (`homeSurface.ts`); PWA `start_url` follows the same gate predicate as Serwist |
 | **Launch env profiles** | `checkEnvLaunch.test.ts` | H0 vs H1 `evaluateCheckEnv` — implementation in `scripts/check-env.mjs`. FREE_BETA on → Stripe not H0-required; postal is. |
 | **Service territory** | `legal/supportedRegions.ts`, `legal/territoryAccessClient.ts`, `legal/waitlistTerritory.ts`, `legal/blockedSignup.ts` | The block list is the contract. Vercel allow is `x-vercel-ip-country` only. Blocked signup may reap a new empty account |
-| **First paint** | `firstPaintFloor.test.ts` | No raw keys, no textless public fallback, no copy that changes after hydration |
+| **First paint** | `firstPaintFloor.test.ts`, `unlockWaitlistHonesty.test.ts` | No raw keys, no textless public fallback, no copy that changes after hydration |
 | **i18n loaders** | `routeMetadata.ts`, `navConfig.ts` | Not strings — see `src/i18n/` |
 | **Units** | `units.ts` | `weightStep`, metric/imperial |
 | **Backup** | `backup.ts` | Device backup export/restore |
