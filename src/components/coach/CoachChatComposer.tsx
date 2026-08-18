@@ -36,7 +36,7 @@ export function CoachChatComposer({
         value={input}
         disabled={sending}
         placeholder={t('coachChatPlaceholder', {
-          defaultValue: "Ask about today's session, form, or recovery…",
+          defaultValue: 'Ask about today’s session, form, or recovery…',
         })}
         onChange={(e) => onInputChange(e.target.value)}
         onKeyDown={(e) => {
