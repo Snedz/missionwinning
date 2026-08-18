@@ -21,7 +21,7 @@
 | `TodayReentryCard.tsx` | S7 0.1 (beta) quiet line on the Start field (`JourneyHero`) |
 | `TodaySummaryPins.tsx` | Summary pin grid (0–4). Session tap starts. Edit persists. |
 | `TodayHighlights.tsx` | One honest Highlights sentence. Empty is allowed. |
-| `TodayShowAll.tsx` | Lean house door. Coach week strip. Not first paint. |
+| `TodayShowAll.tsx` | Lean house door. Coach week + First Steps row. Not first paint. |
 
 ## Related
 
