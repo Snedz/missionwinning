@@ -109,6 +109,7 @@
 | [COMPLIANCE.md](COMPLIANCE.md) | SOC2/ISO/HIPAA map-only control monitor (not a certification) |
 | [security/PROGRAM_STATUS.md](security/PROGRAM_STATUS.md) | Phase 0 census + hunt re-verify — frameworks apply/refuse, DSAR, open P1/P2 |
 | [SECURITY_AUDIT_TRIAGE.md](SECURITY_AUDIT_TRIAGE.md) | npm audit high triage (Phantom/Solana) |
+| [VERCEL_SANDBOX_CHALLENGE_PLAN.md](VERCEL_SANDBOX_CHALLENGE_PLAN.md) | **External** — participation plan for Vercel's sanctioned $1M Sandbox bug-bounty challenge (strategy + methodology, no PoCs). Not MW product security. |
 | [SEO_ANALYTICS.md](SEO_ANALYTICS.md) | PostHog + Search Console |
 | [LIGHTHOUSE_BASELINE.md](LIGHTHOUSE_BASELINE.md) | Lighthouse baselines |
 | [ROADMAP_V4_EXPERIENCE.md](archive/ROADMAP_V4_EXPERIENCE.md) | Experience build v4 |
