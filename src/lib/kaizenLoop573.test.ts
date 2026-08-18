@@ -9,11 +9,11 @@ test('UnlockButton is i18n-backed with 52px primary', () => {
   const src = readFileSync(join(root, 'src/components/UnlockButton.tsx'), 'utf8');
   assert.match(src, /useTranslation/);
   assert.match(src, /unlockStartingCheckout/);
-  assert.match(src, /unlockJoinFounders/);
+  assert.match(src, /unlockGetNotified/);
   assert.match(src, /min-h-\[52px\]/);
   assert.match(src, /unlockFoundersListed/);
   assert.doesNotMatch(src, />Starting checkout…</);
-  assert.match(src, /unlockJoinFounders/);
+  assert.match(src, /unlockGetNotified/);
 });
 
 test('Public shell + marketing nav + import samples have hit targets', () => {

@@ -12,6 +12,7 @@ When adding a doc:
 
 | File | Absorbed by / note |
 |------|---------------------|
+| [log/LOG-rotate-904-for-919.md](./log/LOG-rotate-904-for-919.md) | rotated 2026-08-18 for `.919` Unlock waitlist (`.904`) |
 | [log/LOG-rotate-903-for-918.md](./log/LOG-rotate-903-for-918.md) | rotated 2026-08-18 for `.918` Fuel house door (`.903`) |
 | [log/LOG-rotate-902-for-917.md](./log/LOG-rotate-902-for-917.md) | rotated 2026-08-18 for `.917` excellence path map (`.902`) |
 | [log/LOG-rotate-901-for-916.md](./log/LOG-rotate-901-for-916.md) | rotated 2026-08-18 for `.916` Show all is Show all (`.901`) |
