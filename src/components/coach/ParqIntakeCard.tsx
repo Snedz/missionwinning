@@ -27,15 +27,15 @@ export function ParqIntakeCard({ onDone }: Props) {
     const { risk } = scoreParqAnswers(answers);
     const notes =
       risk === 'high'
-        ? t('assessRiskHighNotes', {
+        ? t('firstStepParqNotesHigh', {
             defaultValue:
               'Multiple flags. Talk to a qualified professional before loading intensity.',
           })
         : risk === 'moderate'
-          ? t('assessRiskModerateNotes', {
+          ? t('firstStepParqNotesModerate', {
               defaultValue: 'Some flags. Train, but get medical advice if anything worsens.',
             })
-          : t('assessRiskLowNotes', {
+          : t('firstStepParqNotesLow', {
               defaultValue: 'Educational screen only — not medical advice.',
             });
     persistParqScreen({ risk, notes });
@@ -82,10 +82,10 @@ export function ParqIntakeCard({ onDone }: Props) {
         onClick={submit}
         disabled={!ready}
       >
-        {t('submitAssessment', { defaultValue: 'Continue to this week' })}
+        {t('firstStepParqContinue', { defaultValue: 'Continue to this week' })}
       </Button>
       <p className="text-xs text-muted-foreground">
-        {t('assessDisclaimer', {
+        {t('firstStepParqDisclaimer', {
           defaultValue: 'Educational screening only — not medical advice.',
         })}
       </p>
