@@ -52,6 +52,12 @@ const FIRST_STEPS_EN: Record<string, string> = {
   firstStepParqTitle: 'Screen before a coach plan',
   firstStepParqWhy:
     'A short safety questionnaire before Mission Coach generates a week. Log set never waits on it.',
+  firstStepParqContinue: 'Continue to this week',
+  firstStepParqDisclaimer: 'Educational screening only — not medical advice.',
+  firstStepParqNotesHigh:
+    'Multiple flags. Talk to a qualified professional before loading intensity.',
+  firstStepParqNotesModerate: 'Some flags. Train, but get medical advice if anything worsens.',
+  firstStepParqNotesLow: 'Educational screen only — not medical advice.',
 
   // Segmented-control names. A tablist with no accessible name is a group a
   // screen reader announces as nothing.
