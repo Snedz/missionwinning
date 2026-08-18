@@ -62,7 +62,7 @@ export function TodaySummaryPins({
             onClick={onEdit}
             data-testid="today-pins-edit"
           >
-            {t('todayEditToday', { defaultValue: 'Edit' })}
+            {t('todayPinsEdit', { defaultValue: 'Edit' })}
           </button>
         )}
       </div>
@@ -112,7 +112,7 @@ export function TodaySummaryPins({
                     : pin.kind === 'last'
                       ? t('todayRepeatLastKicker', { defaultValue: 'Train' })
                       : pin.kind === 'start'
-                        ? t('todayRecommendedStart', { defaultValue: "Today's session" })
+                        ? t('todayPinStartKicker', { defaultValue: "Today's session" })
                         : null;
 
             const body = (
