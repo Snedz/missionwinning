@@ -268,7 +268,7 @@ export function CoachChatPanel({
                     setSendError(null);
                   }}
                 >
-                  {t('retry', { defaultValue: 'Try again' })}
+                  {t('retry', { defaultValue: 'Retry' })}
                 </Button>
               </div>
             ) : null}

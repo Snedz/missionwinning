@@ -12,6 +12,7 @@ When adding a doc:
 
 | File | Absorbed by / note |
 |------|---------------------|
+| [log/LOG-rotate-907-for-922.md](./log/LOG-rotate-907-for-922.md) | rotated 2026-08-18 for `.922` Talk retry (`.907`) |
 | [log/LOG-rotate-906-for-921.md](./log/LOG-rotate-906-for-921.md) | rotated 2026-08-18 for `.921` Talk placeholder (`.906`) |
 | [log/LOG-rotate-905-for-920.md](./log/LOG-rotate-905-for-920.md) | rotated 2026-08-18 for `.920` Adjust session title (`.905`) |
 | [log/LOG-rotate-904-for-919.md](./log/LOG-rotate-904-for-919.md) | rotated 2026-08-18 for `.919` Unlock waitlist (`.904`) |
