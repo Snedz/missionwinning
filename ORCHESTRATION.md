@@ -56,7 +56,7 @@ Agents may ship beyond “hero bugs only” for this window. Prefer delete/refin
 
 **Hop shape, not a new loop.** No GRAPH_LOOP letter. Store intel is closed (ops brain). Same stack (Next.js + tokens). Fable 5 means Claude Fable 5 as the **frontend implementer**. It is not a framework and not a rewrite. Principle 5 still holds.
 
-**Train table is shipped** (`.889`). **Next product floor** (not a letter, not a path ticket until it has an instrument): Today is Summary — pin-grid, one Start. `/log` is still a tour.
+**Train table is shipped** (`.889`). **Today is Summary** (`.912`) — pin-grid, one Start, every phase. Dashboard is not `/log`.
 
 **Six stages** (surface hops: Train / Today / Victory / Coach pixels, or any athlete-facing UI):
 
