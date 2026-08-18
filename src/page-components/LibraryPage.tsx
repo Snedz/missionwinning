@@ -444,7 +444,7 @@ export function LibraryPage() {
           className="flex min-h-[44px] cursor-pointer list-none items-center px-4 py-3 text-sm font-semibold text-foreground [&::-webkit-details-marker]:hidden"
           data-testid="library-show-all"
         >
-          {t('fuelShowMore', { defaultValue: 'Show all' })}
+          {t('todayShowAll', { defaultValue: 'Show all' })}
         </summary>
         <div className="space-y-4 border-t-2 border-border p-4">
           <p className="text-xs text-muted-foreground">
