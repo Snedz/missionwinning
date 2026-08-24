@@ -40,7 +40,7 @@ test('cinematic www nested mission stays public line + support on fold 1', () =>
   assert.match(gateEn, /Log a set\. Offline\./);
   assert.match(gateEn, /No account\. No wearable\./);
   assert.match(gateEn, /Mission Coach/);
-  assert.match(gateEn, /Not a feed/);
+  assert.match(gateEn, /Today is not a Feed/);
   assert.doesNotMatch(cine, /Train Anywhere\. Win Daily\./);
   assert.doesNotMatch(gateEn, /Train Anywhere\. Win Daily\./);
   assert.doesNotMatch(cine, /WeChat/i);

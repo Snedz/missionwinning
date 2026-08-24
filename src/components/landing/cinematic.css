@@ -647,8 +647,7 @@
   font-size: 15px;
 }
 
-.www-cine-later,
-.www-cine-never {
+.www-cine-later {
   padding: 20px clamp(16px, 4vw, 48px) 8px;
   font-size: 13px;
   line-height: 1.55;
@@ -657,10 +656,14 @@
   margin: 0;
 }
 
-.www-cine-never {
-  padding-top: 0;
-  padding-bottom: 28px;
-  letter-spacing: 0.04em;
+.www-cine-strip .www-cine-never {
+  margin: 14px 0 0;
+  padding: 0;
+  font-size: 12px;
+  letter-spacing: 0.06em;
+  line-height: 1.5;
+  color: hsl(var(--muted-foreground));
+  max-width: 46ch;
 }
 
 .www-cine-lnw {

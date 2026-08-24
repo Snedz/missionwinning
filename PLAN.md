@@ -120,7 +120,7 @@ Still four scenes. Still the `.933` brand pack. No Comp B recut. No HUD overlay 
 | Double MW | HUD mark only. Kill the 64–96 cover mark. Door mark stays. |
 | 1440×900 fold | Keep the existing 1100×max-h 960 compact table. Hide the DEMO note if 03 + LOG SET need the pixels. Phone stays `100svh` and does **not** take that compact table. |
 | Demo beats | Logger shows **Last · Next · Why** on the field. Quiet “30s in the browser” as the demo note — not a new route. |
-| History / feed | Quiet later line: **History you own.** + existing “Not a feed.” Dated Never list after `</main>` (feed · wearable required · account to log). Not a fifth scene. |
+| History / feed | Quiet later line: **History you own.** **Today is not a Feed.** Dated Never list on the door strip (feed · wearable required · account to log). Not a fifth scene. Not a new route. |
 | Ghosts | Free → `/private#door`. Never filled red on SET / ANYWHERE / WEEK. |
 | Door chrome | Drop colophon “free core forever”. Invite/guide keys drop Alpha. Enter with code stays `<details>`. |
 | OG leak | Root `openGraph` / `twitter` descriptions drop nutrition / mobility / mind / learning. Wedge only: **Log a set. Offline. No account. No wearable.** Title already correct. |
@@ -136,6 +136,7 @@ Extend existing honesty / teaser / consent tests. Falsify each new claim.
 5. **Consent:** banner never `fixed bottom-0` / `z-[60]`. Host still between dock and `MobileNav`.
 6. **Probe does not withhold the page:** no `if (sessionUnlocking) return` before the four scenes.
 7. **First-paint floor:** `CinematicWww` + door `t()` defaults match `gateEn.ts`.
+8. **Intel beats stay on existing scenes:** logger TARGET `30s` + Last/Next/Why; later line History you own + Today is not a Feed; door foot 30s-in-the-browser; dated Never on the door strip. No `/history` `/never` `/feed`. No traction numerals.
 
 ## 5. Non-goals (refuse)
 

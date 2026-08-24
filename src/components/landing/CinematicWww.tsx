@@ -121,7 +121,6 @@ export function CinematicWww({ mode, door }: Props) {
         </section>
       </main>
       <p className="www-cine-later">{g('cineLater')}</p>
-      <p className="www-cine-never">{g('cineNever')}</p>
     </div>
   );
 }

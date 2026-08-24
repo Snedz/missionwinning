@@ -130,6 +130,7 @@ test('logger demo row is last + next + why; compact 1440 hides the demo note', (
   assert.match(logger, />Last</);
   assert.match(logger, />Next</);
   assert.match(logger, /www-cine-why-k">Why</);
+  assert.match(logger, /TARGET · Squat · 30s/);
   assert.match(logger, /30s in the browser/);
   assert.match(css, /min-width:\s*1100px\) and \(max-height:\s*960px/);
   assert.match(css, /\.www-cine-demo \{\s*display:\s*none;/);
@@ -147,6 +148,27 @@ test('door colophon drops free-core-forever; later line is not a fifth scene', (
   const cine = read('src/components/landing/CinematicWww.tsx');
   assert.doesNotMatch(teaser, /gateFooterTagline/);
   assert.match(cine, /www-cine-later/);
-  assert.match(cine, /www-cine-never/);
+  assert.match(teaser, /cineNever/);
   assert.doesNotMatch(cine, /www-cine-scene www-cine-later|www-cine-scene www-cine-never/);
+});
+
+test('intel beats stay on existing scenes — no new routes, no traction', () => {
+  const logger = read('src/components/landing/CinematicLogger.tsx');
+  const cine = read('src/components/landing/CinematicWww.tsx');
+  const teaser = read('app/private/PrivateTeaserClient.tsx');
+  const home = read('app/page.tsx');
+  const landing = read('src/page-components/LandingPage.tsx');
+  assert.match(logger, /TARGET · Squat · 30s/);
+  assert.match(logger, />Last</);
+  assert.match(logger, />Next</);
+  assert.match(logger, />Why</);
+  assert.match(GATE_EN.cineLater, /History you own/);
+  assert.match(GATE_EN.cineLater, /Today is not a Feed/);
+  assert.match(GATE_EN.cineNever, /Never · 24 Aug 2026/);
+  assert.match(GATE_EN.cineDoorFoot, /30s in the browser/);
+  assert.doesNotMatch(GATE_EN.cineDoorFoot, /three minutes/);
+  assert.match(teaser, /cineNever/);
+  assert.doesNotMatch(cine + teaser + logger, /athletes signed|10,?000|users and counting/i);
+  assert.doesNotMatch(home + landing, /app\/feed|href=["']\/feed["']/);
+  assert.doesNotMatch(cine, /id="never"|id="history"|id="thirty"/);
 });

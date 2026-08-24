@@ -58,7 +58,7 @@ export function CinematicLogger({ doneHref = '/private', doneLabel }: Props) {
   return (
     <div className="www-cine-logger">
       <div className="www-cine-logger-head">
-        <p className="eyebrow">TARGET · Squat</p>
+        <p className="eyebrow">TARGET · Squat · 30s</p>
         <p className="www-cine-count">
           {logged.length}/{PLANNED_SETS}
         </p>
@@ -128,7 +128,7 @@ export function CinematicLoggerFallback() {
   return (
     <div className="www-cine-logger" aria-hidden>
       <div className="www-cine-logger-head">
-        <p className="eyebrow">TARGET · Squat</p>
+        <p className="eyebrow">TARGET · Squat · 30s</p>
         <p className="www-cine-count">0/3</p>
       </div>
       <dl className="www-cine-lnw">
