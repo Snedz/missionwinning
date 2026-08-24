@@ -77,7 +77,7 @@ export function ProfileImportCard() {
               })
             : t('csvImportEmpty', {
                 defaultValue: 'No workout or measurement rows found in the file.',
-              })
+              }),
         variant: 'destructive',
       });
     },
