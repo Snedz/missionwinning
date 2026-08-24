@@ -15,9 +15,11 @@
  * ## What "last time" means
  *
  * - Session totals (volume / sets / duration): last earlier log with the same
- *   workout name. A Push does not compare to a random Cardio.
+ *   **session shape** — sorted unique exercise ids that have at least one set.
+ *   A Push of bench+ohp does not compare to a Push that was actually cardio.
+ *   Week 2 Push vs Week 3 Push with the same lifts does. Name is not the key.
  * - Per lift: last earlier log that actually contains that exercise — even if
- *   the session name differs. Bench vs last bench is the honest row.
+ *   the session name or shape differs. Bench vs last bench is the honest row.
  *
  * A first session is still a receipt: the sets you logged, with no invented
  * zeros and no PR for a first-ever (same rule as the debrief).
@@ -61,7 +63,7 @@ export type VictorySessionCompare = {
 };
 
 export type VictoryReceipt = {
-  /** Null when no earlier same-named session exists. */
+  /** Null when no earlier same-shape session exists. */
   vsLast: VictorySessionCompare | null;
   exercises: VictoryExerciseReceipt[];
   /** Beaten records only (previous exists). */
@@ -84,7 +86,43 @@ function normName(name: string | undefined): string {
   return (name ?? '').trim().toLowerCase();
 }
 
-/** Last earlier session with the same workout name. */
+/**
+ * Sorted unique lift ids that actually logged a set. Empty is not comparable.
+ * Log order does not change the shape; adding or dropping a lift does.
+ */
+export function sessionShape(
+  log: Pick<CompletedWorkoutLog, 'exercises'>
+): string {
+  const ids = new Set<string>();
+  for (const ex of log.exercises ?? []) {
+    if (!ex.exerciseId || !ex.sets?.length) continue;
+    ids.add(ex.exerciseId);
+  }
+  return [...ids].sort().join('\0');
+}
+
+/** Last earlier session with the same lift shape — not the workout name. */
+export function pickPriorSameShapeSession(
+  current: CompletedWorkoutLog,
+  history: CompletedWorkoutLog[]
+): CompletedWorkoutLog | null {
+  const shape = sessionShape(current);
+  if (!shape) return null;
+  let best: CompletedWorkoutLog | null = null;
+  let bestAt = -Infinity;
+  for (const log of history) {
+    if (!isPriorLog(log, current)) continue;
+    if (sessionShape(log) !== shape) continue;
+    const at = Date.parse(log.completedAt);
+    if (at > bestAt) {
+      best = log;
+      bestAt = at;
+    }
+  }
+  return best;
+}
+
+/** Last earlier session with the same workout name. Not used for session totals. */
 export function pickPriorSameNamedSession(
   current: CompletedWorkoutLog,
   history: CompletedWorkoutLog[]
@@ -255,7 +293,7 @@ export function buildVictoryReceipt(
     opts?.resolveName ??
     ((id: string) => getExerciseById(id)?.name ?? id.replace(/-/g, ' '));
 
-  const priorSession = pickPriorSameNamedSession(log, history);
+  const priorSession = pickPriorSameShapeSession(log, history);
   const vsLast: VictorySessionCompare | null = priorSession
     ? {
         volumeDelta: log.totalVolume - priorSession.totalVolume,

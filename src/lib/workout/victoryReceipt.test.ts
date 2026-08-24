@@ -1,5 +1,6 @@
 import { describe, it } from 'node:test';
 import assert from 'node:assert/strict';
+import { readFileSync } from 'node:fs';
 import type { CompletedWorkoutLog, SetKind } from '@/types';
 import { PR_EPSILON } from '@/lib/coach/progress';
 import {
@@ -11,7 +12,9 @@ import {
   isPriorLog,
   pickPriorExerciseLog,
   pickPriorSameNamedSession,
+  pickPriorSameShapeSession,
   receiptSetDeltas,
+  sessionShape,
 } from './victoryReceipt.ts';
 
 const T0 = '2026-08-13T16:00:00.000Z';
@@ -47,6 +50,66 @@ describe('isPriorLog', () => {
     assert.equal(isPriorLog(current, current), false);
     assert.equal(isPriorLog(log({ id: 'x', completedAt: T0, deletedAt: '2026-08-13T16:01:00.000Z' }), current), false);
     assert.equal(isPriorLog(log({ id: 'y', completedAt: 'not-a-date' }), current), false);
+  });
+});
+
+describe('sessionShape', () => {
+  it('is sorted unique lift ids; empty sets and missing ids do not count', () => {
+    assert.equal(
+      sessionShape({
+        exercises: [
+          { exerciseId: 'squat', sets: [{ reps: 5, weight: 140 }] },
+          { exerciseId: 'bench-press', sets: [{ reps: 5, weight: 100 }] },
+          { exerciseId: 'bench-press', sets: [{ reps: 5, weight: 100 }] },
+          { exerciseId: 'skip', sets: [] },
+          { exerciseId: '', sets: [{ reps: 8, weight: 0 }] },
+        ],
+      }),
+      ['bench-press', 'squat'].join('\0')
+    );
+    assert.equal(sessionShape({ exercises: [] }), '');
+  });
+});
+
+describe('pickPriorSameShapeSession', () => {
+  it('picks the latest earlier same shape even when the name differs', () => {
+    const current = log({
+      id: 'now',
+      completedAt: T1,
+      workoutName: 'Week 3 Push',
+    });
+    const older = log({
+      id: 'old',
+      completedAt: T2,
+      workoutName: 'Week 1 Push',
+      totalVolume: 800,
+    });
+    const last = log({
+      id: 'last',
+      completedAt: T0,
+      workoutName: 'Week 2 Push',
+      totalVolume: 900,
+    });
+    const pull = log({
+      id: 'pull',
+      completedAt: T0,
+      workoutName: 'Pull',
+      totalVolume: 2000,
+      exercises: [{ exerciseId: 'barbell-row', sets: [{ reps: 8, weight: 80 }] }],
+    });
+    const picked = pickPriorSameShapeSession(current, [pull, last, older, current]);
+    assert.equal(picked?.id, 'last');
+  });
+
+  it('skips a same-named session whose lifts differ', () => {
+    const current = log({ id: 'now', completedAt: T1, workoutName: 'Push' });
+    const cardio = log({
+      id: 'cardio',
+      completedAt: T0,
+      workoutName: 'Push',
+      exercises: [{ exerciseId: 'run', sets: [{ reps: 1, weight: 0 }] }],
+    });
+    assert.equal(pickPriorSameShapeSession(current, [cardio]), null);
   });
 });
 
@@ -168,7 +231,32 @@ describe('buildVictoryReceipt', () => {
     assert.equal(r.vsLast?.volumeDelta, 300);
   });
 
-  it('session vs-last stays quiet when the name differs; lift vs-last still fills', () => {
+  it('session vs-last fills when the name differs but the shape matches', () => {
+    const push = log({
+      id: '1',
+      completedAt: T0,
+      workoutName: 'Week 2 Push',
+      totalVolume: 800,
+      durationSeconds: 1500,
+      exercises: [{ exerciseId: 'bench-press', sets: [{ reps: 5, weight: 100 }] }],
+    });
+    const upper = log({
+      id: '2',
+      completedAt: T1,
+      workoutName: 'Week 3 Push',
+      totalVolume: 900,
+      durationSeconds: 1800,
+      exercises: [{ exerciseId: 'bench-press', sets: [{ reps: 5, weight: 100 }] }],
+    });
+    const r = buildVictoryReceipt(upper, [push], { resolveName: (id) => id });
+    assert.ok(r.vsLast);
+    assert.equal(r.vsLast!.volumeDelta, 100);
+    assert.equal(r.vsLast!.setCountDelta, 0);
+    assert.equal(r.vsLast!.durationDelta, 300);
+    assert.equal(r.exercises[0].sets[0].priorWeight, 100);
+  });
+
+  it('session vs-last stays quiet when the name matches but the shape differs; lift vs-last still fills', () => {
     const push = log({
       id: '1',
       completedAt: T0,
@@ -176,16 +264,20 @@ describe('buildVictoryReceipt', () => {
       totalVolume: 800,
       exercises: [{ exerciseId: 'bench-press', sets: [{ reps: 5, weight: 100 }] }],
     });
-    const upper = log({
+    const alsoPush = log({
       id: '2',
       completedAt: T1,
-      workoutName: 'Upper',
+      workoutName: 'Push',
       totalVolume: 900,
-      exercises: [{ exerciseId: 'bench-press', sets: [{ reps: 5, weight: 100 }] }],
+      exercises: [
+        { exerciseId: 'bench-press', sets: [{ reps: 5, weight: 100 }] },
+        { exerciseId: 'ohp', sets: [{ reps: 8, weight: 40 }] },
+      ],
     });
-    const r = buildVictoryReceipt(upper, [push], { resolveName: (id) => id });
+    const r = buildVictoryReceipt(alsoPush, [push], { resolveName: (id) => id });
     assert.equal(r.vsLast, null);
     assert.equal(r.exercises[0].sets[0].priorWeight, 100);
+    assert.equal(r.exercises[1].sets[0].priorReps, null);
   });
 
   it('ignores tombstoned priors', () => {
@@ -347,6 +439,19 @@ describe('receipt display helpers', () => {
         isPr: false,
       }),
       { weight: null, reps: null }
+    );
+  });
+});
+
+describe('session totals pick shape, not name', () => {
+  it('buildVictoryReceipt calls pickPriorSameShapeSession', () => {
+    const src = readFileSync(new URL('./victoryReceipt.ts', import.meta.url), 'utf8');
+    const build = src.slice(src.indexOf('export function buildVictoryReceipt'));
+    assert.match(build, /pickPriorSameShapeSession\(/);
+    assert.doesNotMatch(
+      build,
+      /pickPriorSameNamedSession\(/,
+      'session totals must not fall back to workout name'
     );
   });
 });
