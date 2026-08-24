@@ -34,7 +34,7 @@ An estimate of how recovered your muscles are based on recent training — shown
 Mission Coach weekly depth is Super Bundle (optional). During Alpha it is unlocked for everyone and `/bundle` is waitlist-only (Get notified — checkout is not live). After payments go live, upgrade via `/bundle`. The logger is never gated.
 
 **Why did my plan change?**  
-Coach adapts when you miss sessions, change equipment, or report low readiness.
+Coach adapts when you miss sessions, change equipment, or report low readiness. If you skip a planned day, Today and Coach offer do it now, skip, or slide — skip is not a fail.
 
 **Is Coach medical advice?**  
 No — general fitness guidance only. Consult a professional for injuries or conditions.

@@ -67,3 +67,11 @@ export function reentryCardMayMount({
   if (!show) return false;
   return phase !== 'i-day';
 }
+
+/**
+ * Planned-miss prompt — same mount rule as the calendar-gap quiet line.
+ * No plan / no overdue session is `show: false` from `findPlannedMiss`.
+ */
+export function plannedMissMayMount(input: ReentryMountInput): boolean {
+  return reentryCardMayMount(input);
+}

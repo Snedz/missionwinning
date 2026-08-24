@@ -4,7 +4,7 @@
  * See: src/components/journey/INDEX.md
  */
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, type ReactNode } from 'react';
 import { ChevronRight } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import type { JourneyAction } from '@/lib/missionJourney';
@@ -15,6 +15,8 @@ import {
   type JustGoHeroMeta,
 } from '@/lib/justGoHeroMeta';
 import { TodayReentryCard } from '@/components/today/TodayReentryCard';
+import { TodayPlannedMissPrompt } from '@/components/today/TodayPlannedMissPrompt';
+import type { PlannedMissOffer } from '@/lib/coach/plannedMiss';
 import type { Reentry } from '@/lib/reentry';
 
 export function JourneyStrip({ action }: { action: JourneyAction }) {
@@ -76,6 +78,14 @@ interface JourneyHeroProps {
    * unclamped, no streak. Hidden while a workout is already open.
    */
   reentry?: Reentry | null;
+  /**
+   * `.945` — planned-day miss offer. Mounted only when a planned session
+   * is overdue. Skip / slide / do-it-now; not a streak card.
+   */
+  plannedMiss?: PlannedMissOffer | null;
+  onPlannedMissDoNow?: () => void;
+  onPlannedMissSkip?: () => void;
+  onPlannedMissSlide?: () => void;
   /** Lean Today: Start / Resume. Never I-Day. */
   dock?: 'journey' | 'start';
 }
@@ -87,6 +97,10 @@ export function JourneyHero({
   justGoMeta,
   completedSessions,
   reentry,
+  plannedMiss,
+  onPlannedMissDoNow,
+  onPlannedMissSkip,
+  onPlannedMissSlide,
   dock = 'journey',
 }: JourneyHeroProps) {
   if (dock === 'start') {
@@ -97,6 +111,10 @@ export function JourneyHero({
         justGoMeta={justGoMeta}
         completedSessions={completedSessions}
         reentry={reentry}
+        plannedMiss={plannedMiss}
+        onPlannedMissDoNow={onPlannedMissDoNow}
+        onPlannedMissSkip={onPlannedMissSkip}
+        onPlannedMissSlide={onPlannedMissSlide}
       />
     );
   }
@@ -109,8 +127,41 @@ export function JourneyHero({
       justGoMeta={justGoMeta}
       completedSessions={completedSessions}
       reentry={reentry}
+      plannedMiss={plannedMiss}
+      onPlannedMissDoNow={onPlannedMissDoNow}
+      onPlannedMissSkip={onPlannedMissSkip}
+      onPlannedMissSlide={onPlannedMissSlide}
     />
   );
+}
+
+function PlannedMissOrQuiet({
+  plannedMiss,
+  quietLine,
+  fallback,
+  onDoNow,
+  onSkip,
+  onSlide,
+}: {
+  plannedMiss?: PlannedMissOffer | null;
+  quietLine: Reentry | null;
+  fallback?: ReactNode;
+  onDoNow?: () => void;
+  onSkip?: () => void;
+  onSlide?: () => void;
+}) {
+  if (plannedMiss?.show && onDoNow && onSkip && onSlide) {
+    return (
+      <TodayPlannedMissPrompt
+        offer={plannedMiss}
+        onDoNow={onDoNow}
+        onSkip={onSkip}
+        onSlide={onSlide}
+      />
+    );
+  }
+  if (quietLine) return <TodayReentryCard reentry={quietLine} />;
+  return fallback ?? null;
 }
 
 function JourneyDockHero({
@@ -120,6 +171,10 @@ function JourneyDockHero({
   justGoMeta,
   completedSessions,
   reentry,
+  plannedMiss,
+  onPlannedMissDoNow,
+  onPlannedMissSkip,
+  onPlannedMissSlide,
 }: Omit<JourneyHeroProps, 'dock'>) {
   const { t } = useTranslation();
   const isCompact = useIsCompact();
@@ -174,11 +229,16 @@ function JourneyDockHero({
           <h3 className="font-display text-[1.6rem] font-extrabold leading-[1.05] md:text-[1.9rem]">
             {title}
           </h3>
-          {quietLine ? (
-            <TodayReentryCard reentry={quietLine} />
-          ) : (
-            <p className="poster-sub mt-1.5 text-sm leading-relaxed tabular-nums">{description}</p>
-          )}
+          <PlannedMissOrQuiet
+            plannedMiss={plannedMiss}
+            quietLine={quietLine}
+            onDoNow={onPlannedMissDoNow}
+            onSkip={onPlannedMissSkip}
+            onSlide={onPlannedMissSlide}
+            fallback={
+              <p className="poster-sub mt-1.5 text-sm leading-relaxed tabular-nums">{description}</p>
+            }
+          />
         </div>
         {/* `w-auto` beats `.primary-action`'s `w-full` — utilities layer after
             components. The handoff's `.btn` is `inline-flex`, i.e. sized to its
@@ -218,13 +278,18 @@ function JourneyDockHero({
         {kicker}
       </p>
       {/* One line. Missed-day re-entry (0.1 beta) is the full sentence, unclamped. */}
-      {quietLine ? (
-        <TodayReentryCard reentry={quietLine} />
-      ) : (
-        <p className="poster-sub mb-2.5 line-clamp-1 text-sm leading-relaxed tabular-nums">
-          {description}
-        </p>
-      )}
+      <PlannedMissOrQuiet
+        plannedMiss={plannedMiss}
+        quietLine={quietLine}
+        onDoNow={onPlannedMissDoNow}
+        onSkip={onPlannedMissSkip}
+        onSlide={onPlannedMissSlide}
+        fallback={
+          <p className="poster-sub mb-2.5 line-clamp-1 text-sm leading-relaxed tabular-nums">
+            {description}
+          </p>
+        }
+      />
       <button
         type="button"
         onClick={onPrimaryClick}
@@ -242,12 +307,20 @@ function StartDockHero({
   activeWorkout,
   justGoMeta,
   reentry,
+  plannedMiss,
+  onPlannedMissDoNow,
+  onPlannedMissSkip,
+  onPlannedMissSlide,
 }: {
   onPrimaryClick: () => void;
   activeWorkout?: boolean;
   justGoMeta?: JustGoHeroMeta | null;
   completedSessions?: number;
   reentry?: Reentry | null;
+  plannedMiss?: PlannedMissOffer | null;
+  onPlannedMissDoNow?: () => void;
+  onPlannedMissSkip?: () => void;
+  onPlannedMissSlide?: () => void;
 }) {
   const { t } = useTranslation();
   const isCompact = useIsCompact();
@@ -265,7 +338,13 @@ function StartDockHero({
   if (!isCompact) {
     return (
       <div className="poster-field space-y-4 p-7">
-        {quietLine ? <TodayReentryCard reentry={quietLine} /> : null}
+        <PlannedMissOrQuiet
+          plannedMiss={plannedMiss}
+          quietLine={quietLine}
+          onDoNow={onPlannedMissDoNow}
+          onSkip={onPlannedMissSkip}
+          onSlide={onPlannedMissSlide}
+        />
         <button type="button" onClick={onPrimaryClick} className="primary-action w-auto">
           {label}
           <ChevronRight className="h-5 w-5" />
@@ -276,7 +355,13 @@ function StartDockHero({
 
   return (
     <div className="poster-field px-4 pb-4 pt-3.5">
-      {quietLine ? <TodayReentryCard reentry={quietLine} /> : null}
+      <PlannedMissOrQuiet
+        plannedMiss={plannedMiss}
+        quietLine={quietLine}
+        onDoNow={onPlannedMissDoNow}
+        onSkip={onPlannedMissSkip}
+        onSlide={onPlannedMissSlide}
+      />
       <button
         type="button"
         onClick={onPrimaryClick}

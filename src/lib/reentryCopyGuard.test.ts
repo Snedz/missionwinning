@@ -49,6 +49,25 @@ test('the two-day working line quotes a stored set, not the gap', () => {
   }
 });
 
+test('planned-miss prompt defaults stay shame-free', () => {
+  const src = readFileSync(
+    join(import.meta.dirname, '..', 'components', 'today', 'TodayPlannedMissPrompt.tsx'),
+    'utf8'
+  );
+  const defaults = [...src.matchAll(/defaultValue:\s*(["'`])((?:(?!\1).)*)\1/g)].map((m) => m[2]);
+  assert.ok(defaults.length >= 3, 'expected do-it-now / skip / slide copy');
+  assert.ok(
+    defaults.some((d) => /skip/i.test(d)),
+    'one missed day must be skippable'
+  );
+  for (const d of defaults) {
+    for (const re of FORBIDDEN) {
+      assert.doesNotMatch(d, re, `planned-miss copy: ${d}`);
+    }
+    assert.doesNotMatch(d, /streak/i, d);
+  }
+});
+
 test('TodayReentryCard is a quiet line, not a streak card', () => {
   const src = readFileSync(
     join(import.meta.dirname, '..', 'components', 'today', 'TodayReentryCard.tsx'),
