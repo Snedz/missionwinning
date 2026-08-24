@@ -30,7 +30,7 @@ test('plate/warmup logger files do not import premium or trial', () => {
     'src/lib/plateCalculator.ts',
   ].filter(
     (p) =>
-      /warmupRamp|plateCalculator|SetLogRow|SetLogTable|LogConsole|ActiveExerciseFooter/.test(p)
+      /warmupRamp|plateCalculator|SetLogRow|SetLogTable|SetLogPlateLine|LogConsole|ActiveExerciseFooter/.test(p)
   );
   assert.ok(files.includes('src/lib/workout/warmupRamp.ts'), 'warmupRamp.ts must exist');
   assert.ok(files.includes('src/lib/plateCalculator.ts'), 'plateCalculator.ts must exist');

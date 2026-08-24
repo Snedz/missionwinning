@@ -1,5 +1,5 @@
-/** Shown on Profile so testers can confirm the deployed build. Bump when shipping UI to master. `.949` guest sets survive sign-in (past master `.947`; `.948` is plate math). */
-export const APP_BUILD_LABEL = "2026.07-unified.949";
+/** Shown on Profile so testers can confirm the deployed build. Bump when shipping UI to master. `.950` plate math on the free set row (past master `.949`; planned as `.948`). */
+export const APP_BUILD_LABEL = "2026.07-unified.950";
 
 /**
  * Semver for athletes. Distinct from `APP_BUILD_LABEL`, which `/api/health`

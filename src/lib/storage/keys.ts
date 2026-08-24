@@ -129,6 +129,11 @@ export const STORAGE_KEYS = {
   commissionedCelebrated: 'mw_commissioned_celebrated',
   operatorName: 'mw_operator_name',
   units: 'mw_units',
+  /**
+   * `.948` — editable barbell weight on the free set row. Shape
+   * `{ metric, imperial }`. Missing / invalid falls back to 20 / 45.
+   */
+  barWeight: 'mw_bar_weight',
   unitsExplicit: 'mw_units_explicit',
   langExplicit: 'mw_lang_explicit',
   /** Explicit first-visit language choice (not detector drift). */

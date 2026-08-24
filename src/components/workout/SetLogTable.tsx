@@ -24,6 +24,7 @@ import { cn } from '@/lib/utils';
 import type { LastSetGhost } from '@/lib/workout/lastSetGhost';
 import { LastSetGhostButton } from '@/components/workout/LastSetGhostButton';
 import { SetLogNextCite } from '@/components/workout/SetLogNextCite';
+import { SetLogPlateLine } from '@/components/workout/SetLogPlateLine';
 import {
   formatAfterCompleteParts,
   type AfterCompleteCite,
@@ -43,8 +44,11 @@ type Props = {
   vsLastLabels?: (string | null)[];
   /** Strong set column: `W` or working-set `1..n`. */
   ordinalLabels?: string[];
-  /** Live barbell row only — compact per-side stack. */
+  /** Live barbell row only — both-sides plate counts (`2×45`). */
   plateLine?: string | null;
+  /** Editable bar for the live plate line. Default 45 lb / 20 kg. */
+  barWeight?: number;
+  onBarWeightChange?: (next: number) => void;
   onToggleWarmup?: () => void;
   onOpenPlates?: () => void;
   input: { reps: number; weight: number };
@@ -79,8 +83,9 @@ export function SetLogTable({
   vsLastLabels = [],
   ordinalLabels,
   plateLine = null,
+  barWeight,
+  onBarWeightChange,
   onToggleWarmup,
-  onOpenPlates,
   input,
   onInputChange,
   onLog,
@@ -96,6 +101,7 @@ export function SetLogTable({
   const [skippedCiteIds, setSkippedCiteIds] = useState<ReadonlySet<string>>(
     () => new Set()
   );
+  const [platesSkipped, setPlatesSkipped] = useState(false);
 
   return (
     <div className="w-full min-w-0 max-w-full overflow-x-hidden">
@@ -229,30 +235,13 @@ export function SetLogTable({
                         }}
                       />
                     </div>
-                    {plateLine ? (
-                      onOpenPlates ? (
-                        <button
-                          type="button"
-                          onClick={onOpenPlates}
-                          data-testid="set-table-plates"
-                          className="mt-1 flex min-h-[44px] w-full items-center text-start text-[11px] tabular-nums text-muted-foreground tap-target hover:bg-muted"
-                        >
-                          {t('activePlatePerSideLine', {
-                            plates: plateLine,
-                            defaultValue: `${plateLine} / side`,
-                          })}
-                        </button>
-                      ) : (
-                        <span
-                          className="mt-1 block text-[11px] tabular-nums text-muted-foreground"
-                          data-testid="set-table-plates"
-                        >
-                          {t('activePlatePerSideLine', {
-                            plates: plateLine,
-                            defaultValue: `${plateLine} / side`,
-                          })}
-                        </span>
-                      )
+                    {plateLine && !platesSkipped && barWeight != null && onBarWeightChange ? (
+                      <SetLogPlateLine
+                        barWeight={barWeight}
+                        platesLine={plateLine}
+                        onBarWeightChange={onBarWeightChange}
+                        onSkip={() => setPlatesSkipped(true)}
+                      />
                     ) : null}
                   </td>
                   <td className={cell}>
