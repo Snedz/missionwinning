@@ -12,6 +12,7 @@ When adding a doc:
 
 | File | Absorbed by / note |
 |------|---------------------|
+| [log/LOG-rotate-923-for-943.md](./log/LOG-rotate-923-for-943.md) | rotated 2026-08-24 for `.943` Strong CSV export (`.923`) |
 | [log/LOG-rotate-922-for-942.md](./log/LOG-rotate-922-for-942.md) | rotated 2026-08-24 for `.942` gated www craft (`.922`) |
 | [log/LOG-rotate-921-for-941.md](./log/LOG-rotate-921-for-941.md) | rotated 2026-08-24 for `.941` account-lite auth harden (`.921`) |
 | [log/LOG-rotate-920-for-940.md](./log/LOG-rotate-920-for-940.md) | rotated 2026-08-24 for `.940` Strong CSV import (`.920`) |

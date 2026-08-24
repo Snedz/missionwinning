@@ -98,6 +98,24 @@ describe('csvHistoryFree', () => {
     assert.doesNotMatch(src, /toISOString/);
   });
 
+  it('empty history is a header-only download, not a refuse', () => {
+    const src = read('src/lib/workout/importCsvRestore.ts');
+    assert.match(src, /count: existing.length/);
+    assert.doesNotMatch(
+      src,
+      /error:\s*'empty'/,
+      'empty persist must download the Strong header, not fail'
+    );
+    const card = stripComments(read('src/components/profile/ProfileImportCard.tsx'));
+    assert.match(card, /downloadWorkoutCsv\(dialect\)/);
+    assert.doesNotMatch(card, /previewWorkoutCsvText\(dialect\)/);
+    assert.doesNotMatch(
+      card,
+      /oneExport|exportCap|exportLimit|exportedOnce/,
+      'a second export must still be allowed'
+    );
+  });
+
   it('sample fixtures used by the parser tests still exist', () => {
     const dir = path.join(root, 'src/lib/workout/fixtures');
     const names = readdirSync(dir).filter((f) => f.endsWith('.csv')).sort();
