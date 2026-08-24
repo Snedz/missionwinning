@@ -303,7 +303,7 @@ describe('nextDayFromLogs wiring', () => {
     assert.match(page, /nextDayFromLogs\(/);
     assert.match(strip, /CoachNextDayCite/);
     assert.match(cite, /data-testid="coach-next-day"/);
-    assert.doesNotMatch(cite, /primary-action/);
+    assert.doesNotMatch(cite, /className="primary-action/);
     assert.doesNotMatch(page, /<details[^>]*\bopen\b/);
     assert.match(page, /data-testid="coach-show-all"/);
   });

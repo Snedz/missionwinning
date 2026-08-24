@@ -48,7 +48,7 @@ function liveNamedLogs(history: readonly CompletedWorkoutLog[]): CompletedWorkou
   return history
     .filter((log) => isLiveLog(log) && sessionName(log))
     .slice()
-    .sort((a, b) => a.completedAt.localeCompare(b.completedAt));
+    .sort((a, b) => (a.completedAt < b.completedAt ? -1 : a.completedAt > b.completedAt ? 1 : 0));
 }
 
 function planOwnsNextDay(plan: CoachPlan | null | undefined, now: NextDayFromLogsNow): PlanSession | null {

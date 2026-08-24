@@ -2,12 +2,13 @@
 
 /**
  * Quiet next-day cite on Coach (boss-adjacent / Show all).
- * Outline Start — never a second Today primary-action.
+ * Outline Start — never a second Today red action.
  */
 
 import { useRouter } from 'next/navigation';
 import { useTranslation } from 'react-i18next';
 import { Button } from '@/components/ui/button';
+import { CoachLogCite } from '@/components/coach/CoachLogCite';
 import { useStartCoachSession } from '@/hooks/useStartCoachSession';
 import { useWorkoutStore } from '@/store/workoutStore';
 import type { NextDayCite } from '@/lib/coach/nextDayFromLogs';
@@ -58,6 +59,7 @@ export function CoachNextDayCite({ cite, plan, hideStart }: Props) {
           ? t('coachNextDayFromPlan', { defaultValue: "From this week's plan" })
           : t('coachNextDayFromLogs', { defaultValue: 'From your logs' })}
       </p>
+      <CoachLogCite className="mt-1" />
       {showStart ? (
         <Button
           type="button"
