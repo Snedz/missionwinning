@@ -39,7 +39,7 @@ How to post well in Mission Server: replies from people you trained with beat li
 
 Account → **Export backup** downloads a JSON file. Restore on a new device by importing that file. Backups are yours — store them securely.
 
-Account → **Import workout CSV** reads a workout export into local history (Title Case session file or snake_case set file). You see a preview and confirm before anything is written. Failed rows are skipped and counted. You can import more than one file. **Export session CSV** downloads that history (empty history is a header-only file). You can export more than once. No account required.
+Account → **Import workout CSV** reads a workout export into local history (Title Case session file or snake_case set file). A Hevy measurements export uses the same path and merges into body metrics on this device — existing numbers stay. You see a preview and confirm before anything is written. Failed rows are skipped and counted. You can import more than one file. **Export session CSV** downloads that history (empty history is a header-only file). You can export more than once. No account required.
 
 ## Sign-in providers
 

@@ -8,7 +8,9 @@ import { readJson, writeJson } from '@/lib/storage/safeStorage';
 import { compareKeys } from '@/lib/i18n/formatLocale';
 
 export const BODY_METRICS_KEY = STORAGE_KEYS.bodyMetrics;
-const MAX_ENTRIES = 200;
+/** Hard cap on persisted rows. Import must never drop an existing row to make room. */
+export const BODY_METRICS_MAX_ENTRIES = 200;
+const MAX_ENTRIES = BODY_METRICS_MAX_ENTRIES;
 
 export type BodyMetricEntry = {
   date: string; // YYYY-MM-DD

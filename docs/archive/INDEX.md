@@ -12,6 +12,7 @@ When adding a doc:
 
 | File | Absorbed by / note |
 |------|---------------------|
+| [log/LOG-rotate-930-for-951.md](./log/LOG-rotate-930-for-951.md) | rotated 2026-08-24 for `.951` Hevy-native diary in (`.930`) |
 | [log/LOG-rotate-929-for-950.md](./log/LOG-rotate-929-for-950.md) | rotated 2026-08-24 for `.950` plate math on the free set row (`.929`) |
 | [log/LOG-rotate-928-for-949.md](./log/LOG-rotate-928-for-949.md) | rotated 2026-08-24 for `.949` guest sets survive sign-in (`.928`) |
 | [log/LOG-rotate-927-for-947.md](./log/LOG-rotate-927-for-947.md) | rotated 2026-08-24 for `.947` Hevy English CSV import (`.927`) |

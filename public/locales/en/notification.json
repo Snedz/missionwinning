@@ -52,11 +52,11 @@
   "saveGoals": "Save Goals",
   "csvImportFailed": "Could not read that file",
   "csvImportUnrecognized": "Could not recognise that workout file. Drop a workout CSV export, then try again.",
-  "csvImportEmpty": "No workout rows found in the file.",
+  "csvImportEmpty": "No workout or measurement rows found in the file.",
   "csvImportDone": "History imported",
   "csvImportDoneDesc": "{{added}} workouts imported ({{duplicates}} already here). Your PRs, 1RM trends and load band now use them. Reloading…",
   "csvImportTitle": "Your training history",
-  "csvImportSubtitle": "Import or export a workout CSV. Free forever, no account. History is never paywalled.",
+  "csvImportSubtitle": "Import or export a workout CSV, or a Hevy measurements export. Free forever, no account. History is never paywalled.",
   "csvImportCta": "Import workout CSV",
   "csvImportDropIdle": "Drop a workout CSV or click to browse",
   "csvImportDropActive": "Drop to import",
@@ -163,5 +163,7 @@
   "pregnancyFlagPregnant": "Pregnant",
   "pregnancyFlagPostpartum": "Postpartum",
   "pregnancyFlagStop": "If you have bleeding, cramping, feel faint, have chest pain, or cannot talk: stop and get help. This app is not emergency services.",
-  "pregnancyFlagNotCare": "This is not prenatal care and does not prevent miscarriage or complications. Not medical advice — ask your clinician."
+  "pregnancyFlagNotCare": "This is not prenatal care and does not prevent miscarriage or complications. Not medical advice — ask your clinician.",
+  "csvImportPreviewMeasurements": "{{count}} measurements",
+  "csvImportDoneMeasurements": "{{added}} measurements imported ({{duplicates}} already here). Reloading…"
 }

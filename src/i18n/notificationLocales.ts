@@ -102,7 +102,7 @@ const NOTIFICATION_EN: Record<string, string> = {
   csvImportFailed: 'Could not read that file',
   csvImportUnrecognized:
     'Could not recognise that workout file. Drop a workout CSV export, then try again.',
-  csvImportEmpty: 'No workout rows found in the file.',
+  csvImportEmpty: 'No workout or measurement rows found in the file.',
   csvImportDone: 'History imported',
   csvImportDoneDesc:
     '{{added}} workouts imported ({{duplicates}} already here). Your PRs, 1RM trends and load band now use them. Reloading…',
@@ -110,13 +110,16 @@ const NOTIFICATION_EN: Record<string, string> = {
     '{{added}} workouts imported ({{duplicates}} already here, {{skipped}} rows skipped). Reloading…',
   csvImportTitle: 'Your training history',
   csvImportSubtitle:
-    'Import or export a workout CSV. Free forever, no account. History is never paywalled.',
+    'Import or export a workout CSV, or a Hevy measurements export. Free forever, no account. History is never paywalled.',
   csvImportCta: 'Import workout CSV',
   csvImportDropIdle: 'Drop a workout CSV or click to browse',
   csvImportDropActive: 'Drop to import',
   csvImportNeedCsv: 'Use a workout CSV export from your previous logger.',
   csvImportPreviewTitle: 'Ready to import',
   csvImportPreviewSummary: '{{workouts}} workouts · {{sets}} sets',
+  csvImportPreviewMeasurements: '{{count}} measurements',
+  csvImportDoneMeasurements:
+    '{{added}} measurements imported ({{duplicates}} already here). Reloading…',
   csvImportPreviewSkipped: '{{count}} rows skipped',
   csvImportPreviewAlready: '{{count}} already here',
   csvImportConfirm: 'Import',

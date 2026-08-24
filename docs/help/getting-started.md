@@ -43,7 +43,7 @@ Sign in with **Google, Apple, Microsoft, Facebook, or email** from Profile (avai
 
 You can use core logging without an account; data stays on your device until you sign in.
 
-Bring an existing workout CSV (English export) on **Account → Import workout CSV**. Title Case session files and snake_case set files (`title`, `exercise_title`) use the same path. The app shows a preview — workouts, sets, and any skipped rows — then you confirm. You can import more than one file. **Account → Export session CSV** downloads the same workout file so you can leave or round-trip; empty history is a header-only file. No account. Works offline.
+Bring an existing workout CSV (English export) on **Account → Import workout CSV**. Title Case session files and snake_case set files (`title`, `exercise_title`) use the same path. A Hevy measurements export (`date`, `weight_kg`, `fat_percent`) uses that same door and lands as body metrics — it does not replace workouts you already logged. The app shows a preview, then you confirm. You can import more than one file. **Account → Export session CSV** downloads the same workout file so you can leave or round-trip; empty history is a header-only file. No account. Works offline.
 
 ## What's free vs premium
 
