@@ -44,9 +44,9 @@ function Mark({ size = 36 }: { size?: number }) {
 
 export function CinematicWww({ mode, door }: Props) {
   const { t } = useTranslation();
-  const freeBeta = t('gateEyebrow', { defaultValue: 'Alpha' });
+  const doorGhost = t('gateEyebrow', { defaultValue: 'Free' });
   const navLabel =
-    mode === 'gate' ? freeBeta : t('landingNavStart', { defaultValue: 'Start free' });
+    mode === 'gate' ? doorGhost : t('landingNavStart', { defaultValue: 'Start free' });
   const doorHref = mode === 'gate' ? '#door' : '/welcome';
 
   return (
@@ -71,15 +71,14 @@ export function CinematicWww({ mode, door }: Props) {
                 <Mark size={96} />
               </div>
               <p className="eyebrow-live www-cine-kicker www-cine-mark-follow">
-                {t('cinePublicLine', { defaultValue: 'Train Anywhere. Win Daily.' })}
+                {t('cinePublicLine', { defaultValue: 'Log a set. Offline.' })}
               </p>
               <h1 className="display-hero">
                 {t('cineHeroHeadline', { defaultValue: 'Log a set. Offline.' })}
               </h1>
               <p className="www-cine-lede">
                 {t('cineHeroLead', {
-                  defaultValue:
-                    'Mission Coach plans the week from the log. No wearable.',
+                  defaultValue: 'No account. No wearable.',
                 })}
               </p>
             </div>

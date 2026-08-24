@@ -10,7 +10,11 @@
 **Phase B paste kits (preferred):** [seo/launch/PHASE_B_DRAFT_KIT.md](../seo/launch/PHASE_B_DRAFT_KIT.md) — DO NOT PUBLISH until flip.  
 **AEO (prep only):** [seo/aeo/AEO_PREP.md](../seo/aeo/AEO_PREP.md) — citation pages, vs-pages, Reddit=ChatGPT only. Publish after flip.
 
-**Wedge line (use everywhere):** Free forever offline logger + adaptive Mission Coach from logs (no wearable). Six pillars stay below the fold / second sentence — not the hook.
+**Public line (use everywhere):** Log a set. Offline.
+**Support:** No account. No wearable.
+**Door pack:** Free · Enter with code · Get notified.
+**Wedge line (second sentence):** Free forever offline logger + adaptive Mission Coach from logs. Six pillars stay below the fold — not the hook.
+**Forbidden-retired as the company tagline:** Train Anywhere. Win Daily. “Anywhere” stays a scene line.
 
 ### Grain (social prep — not a product pivot)
 

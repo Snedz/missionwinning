@@ -46,7 +46,7 @@ export function appUrl(pathname: `/${string}`): string {
 }
 
 /*
- * Gated: get an invite. The private gate is the only working capture point in
+ * Gated: enter with code or get notified. The private gate is the only working capture point in
  * the product — PrivateTeaserClient calls submitLead({ source:
  * 'launch-waitlist' }), which POSTs /api/leads. A static Cloudflare page cannot
  * POST there itself: next.config.js sets `form-action 'self'` and

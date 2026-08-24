@@ -4,13 +4,12 @@ import { GATE_EN } from '@/i18n/gateEn';
 
 const GATE_ES: Record<string, string> = {
   ...GATE_EN,
-  gateEyebrow: 'Beta gratis',
   gateTitle1: 'Entrena en cualquier lugar.',
   gateTitle2: 'Gana a diario.',
   gateSubtitle:
     'Registro offline gratis + Mission Coach desde tus logs (sin wearable). Herramientas completas gratis para invitados; el logger es gratis para siempre.',
   gateLogASet: 'Registrar una serie',
-  gateWaitlistTitle: 'Pide una invitación',
+  gateWaitlistTitle: 'Avísame',
   gateWaitlistPlaceholder: 'tu@correo.com',
   gateWaitlistSubmit: 'Avísame',
   gateWaitlistSubmitting: 'Uniendo…',
@@ -35,13 +34,12 @@ const GATE_ES: Record<string, string> = {
 
 const GATE_PT: Record<string, string> = {
   ...GATE_EN,
-  gateEyebrow: 'Beta grátis',
   gateTitle1: 'Treine em qualquer lugar.',
   gateTitle2: 'Vença todo dia.',
   gateSubtitle:
     'Registro offline grátis + Mission Coach a partir dos seus logs (sem wearable). Ferramentas completas grátis para convidados; o logger fica grátis para sempre.',
   gateLogASet: 'Registrar uma série',
-  gateWaitlistTitle: 'Peça um convite',
+  gateWaitlistTitle: 'Avise-me',
   gateWaitlistSubmit: 'Avise-me',
   gateWaitlistSubmitting: 'Entrando…',
   gateWaitlistDone: 'Você está na lista.',
@@ -58,12 +56,11 @@ const GATE_PT: Record<string, string> = {
 
 const GATE_DE: Record<string, string> = {
   ...GATE_EN,
-  gateEyebrow: 'Kostenlose Beta',
   gateTitle1: 'Überall trainieren.',
   gateTitle2: 'Täglich gewinnen.',
   gateSubtitle:
     'Kostenloses Offline-Logging + Mission Coach aus deinen Logs (ohne Wearable). Volle Tools gratis für Eingeladene; der Logger bleibt für immer gratis.',
-  gateWaitlistTitle: 'Einladung anfragen',
+  gateWaitlistTitle: 'Benachrichtigen',
   gateWaitlistSubmit: 'Benachrichtigen',
   gateWaitlistSubmitting: 'Beitritt…',
   gateWaitlistDone: 'Du bist auf der Liste.',
@@ -80,7 +77,6 @@ const GATE_DE: Record<string, string> = {
 
 const GATE_IT: Record<string, string> = {
   ...GATE_EN,
-  gateEyebrow: 'Beta aperta solo su invito',
   gateTitle1: 'Allena ovunque.',
   gateTitle2: 'Vinci ogni giorno.',
   gateWaitlistTitle: 'Avvisami al lancio',
@@ -95,7 +91,6 @@ const GATE_IT: Record<string, string> = {
 
 const GATE_RU: Record<string, string> = {
   ...GATE_EN,
-  gateEyebrow: 'Открытая бета по приглашению',
   gateTitle1: 'Тренируйся где угодно.',
   gateTitle2: 'Побеждай каждый день.',
   gateWaitlistTitle: 'Уведомить о запуске',
@@ -110,7 +105,6 @@ const GATE_RU: Record<string, string> = {
 
 const GATE_JA: Record<string, string> = {
   ...GATE_EN,
-  gateEyebrow: '招待制オープンベータ',
   gateTitle1: 'どこでもトレーニング。',
   gateTitle2: '毎日勝つ。',
   gateWaitlistTitle: 'ローンチ時に通知',
@@ -125,7 +119,6 @@ const GATE_JA: Record<string, string> = {
 
 const GATE_KO: Record<string, string> = {
   ...GATE_EN,
-  gateEyebrow: '초대 전용 오픈 베타',
   gateTitle1: '어디서나 훈련하세요.',
   gateTitle2: '매일 승리하세요.',
   gateWaitlistTitle: '출시 알림 받기',
@@ -140,7 +133,6 @@ const GATE_KO: Record<string, string> = {
 
 const GATE_ZH: Record<string, string> = {
   ...GATE_EN,
-  gateEyebrow: '仅邀请开放测试',
   gateTitle1: '随处训练。',
   gateTitle2: '每日取胜。',
   gateWaitlistTitle: '上线时通知我',
@@ -155,7 +147,6 @@ const GATE_ZH: Record<string, string> = {
 
 const GATE_TH: Record<string, string> = {
   ...GATE_EN,
-  gateEyebrow: 'โอเพนเบต้าเฉพาะผู้ได้รับเชิญ',
   gateTitle1: 'ฝึกได้ทุกที่',
   gateTitle2: 'ชนะทุกวัน',
   gateWaitlistTitle: 'แจ้งเมื่อเปิดตัว',
@@ -170,7 +161,6 @@ const GATE_TH: Record<string, string> = {
 
 const GATE_VI: Record<string, string> = {
   ...GATE_EN,
-  gateEyebrow: 'Beta mở chỉ theo lời mời',
   gateTitle1: 'Tập luyện mọi nơi.',
   gateTitle2: 'Chiến thắng mỗi ngày.',
   gateWaitlistTitle: 'Báo khi ra mắt',
@@ -185,7 +175,6 @@ const GATE_VI: Record<string, string> = {
 
 const GATE_HI: Record<string, string> = {
   ...GATE_EN,
-  gateEyebrow: 'केवल आमंत्रण ओपन बीटा',
   gateTitle1: 'कहीं भी ट्रेन करें।',
   gateTitle2: 'रोज जीतें।',
   gateWaitlistTitle: 'लॉन्च पर सूचित करें',
@@ -200,7 +189,6 @@ const GATE_HI: Record<string, string> = {
 
 const GATE_ID: Record<string, string> = {
   ...GATE_EN,
-  gateEyebrow: 'Beta terbuka hanya undangan',
   gateTitle1: 'Latihan di mana saja.',
   gateTitle2: 'Menang setiap hari.',
   gateWaitlistTitle: 'Beritahu saat peluncuran',
@@ -215,7 +203,6 @@ const GATE_ID: Record<string, string> = {
 
 const GATE_AR: Record<string, string> = {
   ...GATE_EN,
-  gateEyebrow: 'بيتا مفتوحة بالدعوة فقط',
   gateTitle1: 'تدرب في أي مكان.',
   gateTitle2: 'انتصِر يوميًا.',
   gateWaitlistTitle: 'أبلغني عند الإطلاق',

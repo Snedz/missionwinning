@@ -6,10 +6,6 @@ import { useTranslation } from 'react-i18next';
 import { AppLegalFooter } from '@/components/layout/AppLegalFooter';
 import { LaunchNotifyForm } from '@/components/public/LaunchNotifyForm';
 import { gateEnFloor } from '@/i18n/gateEn';
-import {
-  APP_PUBLIC_PRODUCT_VERSION,
-  APP_PUBLIC_VERSION,
-} from '@/lib/buildInfo';
 import { confirmPrivateGateCookie } from '@/lib/confirmPrivateGateCookie';
 import {
   grantPrivateAccessFromSession,
@@ -206,8 +202,8 @@ export function PrivateTeaserClient({
           </span>
           <span className="gate-brandname">Mission Winning</span>
         </span>
-        <p className="gate-kicker" data-mw-public-version={APP_PUBLIC_VERSION}>
-          {APP_PUBLIC_VERSION} · {g('gateEyebrow')}
+        <p className="gate-kicker">
+          {g('gateEyebrow')}
         </p>
       </header>
       <hr className="gate-rule" />
@@ -324,7 +320,6 @@ export function PrivateTeaserClient({
       <div className="gate-footer">
         <div className="gate-footer-inner">
           <span>
-            {APP_PUBLIC_PRODUCT_VERSION} —{' '}
             {g('gateFooterTagline')}
           </span>
           <AppLegalFooter className="gate-footer-links" />

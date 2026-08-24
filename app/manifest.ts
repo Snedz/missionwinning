@@ -6,7 +6,7 @@ import { pwaStartUrl } from '@/lib/pwaStartUrl';
 // Theme colors match the --background token in src/index.css.
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: 'Mission Winning — Train Anywhere. Win Daily.',
+    name: 'Mission Winning — Log a set. Offline.',
     short_name: 'Mission Winning',
     description:
       'Free offline workout logger + adaptive Mission Coach from your logs — free core forever, works offline anywhere.',

@@ -29,16 +29,17 @@ test('cinematic www is four scenes, ghost CTA, real mark', () => {
   assert.doesNotMatch(cine, /href="#"/);
 });
 
-test('cinematic www nested mission stays Train+Coach on fold 1', () => {
+test('cinematic www nested mission stays public line + support on fold 1', () => {
   assert.match(cine, /cinePublicLine/);
-  assert.match(cine, /Train Anywhere\. Win Daily\./);
-  assert.match(cine, /cineHeroHeadline/);
   assert.match(cine, /Log a set\. Offline\./);
+  assert.match(cine, /cineHeroHeadline/);
   assert.match(cine, /cineHeroLead/);
+  assert.match(cine, /No account\. No wearable\./);
   assert.match(cine, /cineWeekKicker/);
   assert.match(cine, /Mission Coach/);
   assert.match(cine, /www-cine-later/);
   assert.match(cine, /Not a feed/);
+  assert.doesNotMatch(cine, /Train Anywhere\. Win Daily\./);
   assert.doesNotMatch(cine, /WeChat/i);
   assert.doesNotMatch(cine, /mini-program/i);
   assert.doesNotMatch(cine, /Fuel · Move · Mind/);

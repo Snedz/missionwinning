@@ -11,13 +11,18 @@
 
 | | |
 |--|--|
-| **Name** | Mission Winning |
-| **Tagline** | Train Anywhere. Win Daily. |
+| **Name** | Mission Winning — never shortened to MW in athlete-facing sentences except the monogram |
+| **Public line** | Log a set. Offline. |
+| **Support line** | No account. No wearable. |
+| **Door pack** | Free · Enter with code · Get notified |
+| **Mark** | Ink square / paper MW monogram. Kalligator is not the logo. |
 | **URL** | https://www.missionwinning.com |
 
-**Short one-liner:** Free offline workout tracker — no account required to start.
+**Short one-liner:** Log a set. Offline. No account. No wearable.
 
 **Medium boilerplate:** Mission Winning is a free offline workout logger plus adaptive Mission Coach from your logs — no wearable required. Free core forever. Works offline as a PWA. Premium Super Bundle unlocks Coach depth and other pillars — never gates the logger.
+
+**Forbidden-retired as the company tagline:** “Train Anywhere. Win Daily.” Keep “Train anywhere” / “Anywhere” only as a scene line. Do not invent a third brand — Mission Coach is the Coach product; Super Bundle is the future SKU.
 
 ---
 
@@ -26,7 +31,9 @@
 - **Mission briefing** — clear, direct, respectful of the reader’s time.
 - Clinical metrics over gamification slang; lucide-style clarity, not emoji spam.
 - Free core is a product promise, not a guilt trip about competitors.
-- Avoid gym-bro hype, paywall shame bait, fake testimonials, and “we’re live” claims while private beta is on.
+- Avoid gym-bro hype, paywall shame bait, and fake testimonials.
+- Forbidden on consumer chrome: “Train Anywhere. Win Daily.” as the company tagline; “Free beta”; “open alpha”; “invite-only”; “private beta”; “get an invite”. Alpha 0.1.0 stays on Profile / legal / status bar — not the gated door.
+- Civilization / Team Humanity / everything-app never on fold 1 or the teaser.
 
 ### Exercise, mood, and medical claims
 
@@ -41,7 +48,7 @@ Full thesis + cite table: [EXERCISE_AS_MEDICINE.md](EXERCISE_AS_MEDICINE.md).
 | Adaptive weekly plan as the product story | Leading landing hero / PH with clinical depression |
 | Educational + “not medical advice” disclaimer | Crisis-as-feature or clinical-care framing |
 
-Consumer hook stays **Train Anywhere / free logger + Mission Coach**. Evidence language belongs in About, Learn, founder narrative — not the company one-liner.
+Consumer hook stays **Log a set. Offline.** + **No account. No wearable.** Mission Coach is the Coach product — not a second brand. Evidence language belongs in About, Learn, founder narrative — not the company one-liner.
 
 ---
 
