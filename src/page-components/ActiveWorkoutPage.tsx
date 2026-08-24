@@ -68,8 +68,8 @@ import { planWarmupRamp, resolveWorkingLoad } from '@/lib/workout/warmupRamp';
 import {
   buildConsoleSet,
   findNextSet,
-  getLastPerformanceForSet,
   getLastSessionSets,
+  lastWorkingForDial,
   nextSetInput,
   planApplyTargets,
   resolveActiveDockMode,
@@ -325,7 +325,7 @@ export function ActiveWorkoutPage() {
       units,
       repMin: range.min,
       repMax: range.max,
-      lastPerformance: getLastPerformanceForSet(workoutHistory, exerciseId, setIdx),
+      lastPerformance: lastWorkingForDial(workoutHistory, exerciseId),
     });
   };
 

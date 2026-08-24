@@ -239,13 +239,13 @@ describe('resolveSetInput', () => {
     assert.deepEqual(out, { reps: 8, weight: 80 });
   });
 
-  it('freestyle with no stored set still gets the suggestion', () => {
+  it('freestyle with no stored set does not take a program bump', () => {
     const out = resolveSetInput({
       ...base,
       prescribed: false,
       suggestion: { reps: 9, weight: 80 },
     });
-    assert.deepEqual(out, { reps: 9, weight: 80 });
+    assert.deepEqual(out, { reps: 0, weight: 0 });
   });
 
   it('H-05: empty history does not invent a number', () => {
@@ -254,7 +254,7 @@ describe('resolveSetInput', () => {
       defaultWeight: 0,
       prescribed: false,
     });
-    assert.deepEqual(out, { reps: 10, weight: 0 });
+    assert.deepEqual(out, { reps: 0, weight: 0 });
   });
 
   it('same-session carry beats last-session suggestion (gym speed)', () => {
@@ -291,14 +291,14 @@ describe('resolveSetInput', () => {
     );
   });
 
-  it('falls back through last performance to the template default', () => {
+  it('falls back through last performance to an empty row', () => {
     assert.deepEqual(
       resolveSetInput({ ...base, suggestion: null, lastPerformance: { reps: 7, weight: 75 } }),
       { reps: 7, weight: 75 }
     );
     assert.deepEqual(resolveSetInput({ ...base, suggestion: null, lastPerformance: null }), {
-      reps: 5,
-      weight: 85,
+      reps: 0,
+      weight: 0,
     });
   });
 });

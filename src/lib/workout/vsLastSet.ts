@@ -1,7 +1,7 @@
 /**
  * After-save vs-last delta for a logged working set (.741).
  *
- * Ghost / Prev / `.738` prefill is a different lane (`getLastPerformanceForSet`,
+ * Ghost / Prev / F-013 dial prefill is a different lane (`lastWorkingForDial`,
  * `formatPrevSetLabels`, `resolveSetInput`). This module only answers: after a
  * working set is saved, what tiny token belongs on that row vs the last
  * session's matching working set. Self only. Guests use local history.

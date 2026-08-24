@@ -2,9 +2,9 @@
  * Last working-set ghost for the Train logger (.738).
  *
  * Last time this exercise was actually *worked* — not warmup W, not a
- * tombstone, not an invented number. One tap accepts weight × reps into the
- * existing dial (same patch path as Use next). First-ever is null: the empty
- * row still logs.
+ * tombstone, not an invented number. The dial prefills these numbers (F-013 /
+ * `.946`). One tap accepts weight × reps when the dial has diverged (same
+ * patch path as Use next). First-ever is null: the empty row still logs.
  *
  * Optional tempo / RIR / side are *displayed* when the last working set object
  * already carries them. This module does not mint those fields.
