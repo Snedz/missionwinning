@@ -5,6 +5,7 @@
 
 import type { CompletedWorkoutLog } from '@/types';
 import { localDateKeyFromIso } from '@/lib/time/localDate';
+import { countCompletedLogSets } from '@/lib/workout/completedLogSets';
 
 export type HighlightsSentence = {
   key: 'todayHighlightsTrained' | 'todayHighlightsLast' | 'todayHighlightsTrainedSets';
@@ -30,10 +31,6 @@ function liveLogs(history: readonly CompletedWorkoutLog[]): CompletedWorkoutLog[
   return history.filter((w) => !w.deletedAt);
 }
 
-function setCount(log: CompletedWorkoutLog): number {
-  return log.exercises.reduce((n, ex) => n + ex.sets.length, 0);
-}
-
 export function todayHighlightsFromLogs(input: {
   history: readonly CompletedWorkoutLog[];
   todayKey: string;
@@ -41,7 +38,7 @@ export function todayHighlightsFromLogs(input: {
   const live = liveLogs(input.history);
   const todayLogs = live.filter((w) => localDateKeyFromIso(w.completedAt) === input.todayKey);
   if (todayLogs.length > 0) {
-    const count = todayLogs.reduce((n, w) => n + setCount(w), 0);
+    const count = todayLogs.reduce((n, w) => n + countCompletedLogSets(w), 0);
     if (count > 0) return { key: 'todayHighlightsTrainedSets', count };
     return { key: 'todayHighlightsTrained' };
   }
