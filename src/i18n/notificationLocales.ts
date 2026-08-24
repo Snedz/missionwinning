@@ -106,6 +106,8 @@ const NOTIFICATION_EN: Record<string, string> = {
   csvImportDone: 'History imported',
   csvImportDoneDesc:
     '{{added}} workouts imported ({{duplicates}} already here). Your PRs, 1RM trends and load band now use them. Reloading…',
+  csvImportDoneSkipped:
+    '{{added}} workouts imported ({{duplicates}} already here, {{skipped}} rows skipped). Reloading…',
   csvImportTitle: 'Your training history',
   csvImportSubtitle:
     'Import or export a workout CSV. Free forever, no account. History is never paywalled.',
@@ -113,6 +115,12 @@ const NOTIFICATION_EN: Record<string, string> = {
   csvImportDropIdle: 'Drop a workout CSV or click to browse',
   csvImportDropActive: 'Drop to import',
   csvImportNeedCsv: 'Use a workout CSV export from your previous logger.',
+  csvImportPreviewTitle: 'Ready to import',
+  csvImportPreviewSummary: '{{workouts}} workouts · {{sets}} sets',
+  csvImportPreviewSkipped: '{{count}} rows skipped',
+  csvImportPreviewAlready: '{{count}} already here',
+  csvImportConfirm: 'Import',
+  csvImportCancel: 'Cancel',
   csvExportCta: 'Export CSV',
   csvExportSessionCta: 'Export session CSV',
   csvExportSetCta: 'Export set CSV',

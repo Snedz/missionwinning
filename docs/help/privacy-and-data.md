@@ -39,6 +39,8 @@ How to post well in Mission Server: replies from people you trained with beat li
 
 Account → **Export backup** downloads a JSON file. Restore on a new device by importing that file. Backups are yours — store them securely.
 
+Account → **Import workout CSV** reads a workout export into local history. You see a preview and confirm before anything is written. Failed rows are skipped and counted. No account required.
+
 ## Sign-in providers
 
 Google, Apple, Microsoft, Facebook, and magic-link email use standard OAuth — we receive your email and profile name for account linking, not your password.

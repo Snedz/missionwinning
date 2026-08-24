@@ -79,6 +79,7 @@ describe('csvHistoryFree', () => {
 
   it('the Profile card wires workout-CSV import and export with no disabled gate', () => {
     const src = stripComments(read('src/components/profile/ProfileImportCard.tsx'));
+    assert.match(src, /previewWorkoutCsvText/);
     assert.match(src, /importWorkoutCsvText/);
     assert.match(src, /downloadWorkoutCsv\(/);
     assert.match(src, /handleExport\('set-table-b'\)/);
@@ -106,6 +107,9 @@ describe('csvHistoryFree', () => {
       'program-log-sample.csv',
       'set-table-a-sample.csv',
       'set-table-b-sample.csv',
+      'strong-empty.csv',
+      'strong-malformed-row.csv',
+      'strong-one-workout.csv',
     ]);
     const tests = read('src/lib/workout/importCsv.test.ts');
     for (const name of names) {

@@ -51,7 +51,11 @@ Root-level `@/lib/{name}` paths re-export from here for compatibility — prefer
 | `unilateral.test.ts` | L/R/Alt persist, skip bilateral, suggest next side (`.755`) |
 | `bodyweightLoad.test.ts` | BW + belt format + plus-load detect (`.758`) |
 | `bodyweightLoadGuard.test.ts` | Free logger; skip-at-0; one formatter (`.758`) |
-| `importReach.test.ts` | set-table CSV import stays reachable from I-Day + empty logger (`.766`) |
+| `importCsv.ts` | Workout CSV parse + merge. English Strong export is `set-table-b` |
+| `importCsvRestore.ts` | Preview (dry-run) then confirm write; session/set export (`.940`) |
+| `importCsv.test.ts` | Strong fixtures: empty, one workout, malformed row; no invented sets |
+| `importCsvRestore.test.ts` | Preview does not write; confirm writes; second file still adds (`.940`) |
+| `importReach.test.ts` | set-table CSV import stays reachable from I-Day + empty logger (`.766`); preview + confirm (`.940`) |
 | `restTimer.test.ts` | Clock + defaults + start seconds (`.292`) + last-rest recall / skip (`.745`) |
 | `superset.test.ts` | Pair persist, pair-of-two, A1/A2 marks, advance, rest gate (`.749`) |
 | `nextSetTargets.test.ts` | Progression targets |
