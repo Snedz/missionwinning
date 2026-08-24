@@ -27,6 +27,7 @@
 | `logSet` / `logSetAndAdvance` | Record set; superset advance; working-set week-4 events (`week4Logger`) |
 | `completeActiveWorkout` | Mint `clientId`, push to history, enqueue the cloud write on the outbox, analytics, leaderboard push |
 | `loadFromCloud` | Merge Supabase history with local |
+| `syncCurrentHistoryToCloud` | Re-queue local logs — called from `useJourneySync` on `SIGNED_IN` (`.949`) |
 | `cancelActiveWorkout` | Discard in-progress |
 
 ## Who reads / writes

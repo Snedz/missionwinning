@@ -67,7 +67,7 @@ export async function pushWorkout(payload: unknown): Promise<boolean> {
   if (!process.env.NEXT_PUBLIC_SUPABASE_URL) return true; // no cloud configured
   const user = await getUser();
   // Signed out is not a failure — local storage is the source of truth. The log
-  // is re-queued on sign-in by `syncCurrentHistoryToCloud`.
+  // is re-queued on SIGNED_IN by `useJourneySync` → `syncCurrentHistoryToCloud`.
   if (!user) return true;
 
   const row = {

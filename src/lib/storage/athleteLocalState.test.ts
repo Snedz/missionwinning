@@ -12,6 +12,7 @@ import {
   ATHLETE_LOCAL_KEEP,
   EXPLICIT_SIGN_OUT_FRESH_MS,
   applySignedOutStorage,
+  applySignInStoragePlan,
   bindStorageOwner,
   clearAthleteLocalState,
   hasFreshExplicitSignOut,
@@ -19,6 +20,7 @@ import {
   planSignInStorage,
   planSignedOutStorage,
   readStorageOwner,
+  shouldAdoptGuestHistory,
   stripRestrictedHealthLocal,
 } from '@/lib/storage/athleteLocalState';
 
@@ -73,12 +75,68 @@ afterEach(() => {
   __resetForTests();
 });
 
-test('plan: same owner merges; foreign owner replaces; guest follows cloud', () => {
+test('plan: same owner merges; foreign owner replaces; unbound guest always adopts', () => {
   assert.equal(planSignInStorage('u1', 'u1', true), 'merge');
   assert.equal(planSignInStorage('u1', 'u2', true), 'replace-from-cloud');
-  assert.equal(planSignInStorage(null, 'u2', true), 'replace-from-cloud');
+  assert.equal(planSignInStorage(null, 'u2', true), 'adopt-guest-sans-health');
   assert.equal(planSignInStorage(null, 'u2', false), 'adopt-guest-sans-health');
   assert.equal(planSignInStorage('', 'u2', false), 'adopt-guest-sans-health');
+  assert.equal(planSignInStorage(undefined, 'u2', true), 'adopt-guest-sans-health');
+});
+
+test('shouldAdoptGuestHistory is adopt + merge only', () => {
+  assert.equal(shouldAdoptGuestHistory('adopt-guest-sans-health'), true);
+  assert.equal(shouldAdoptGuestHistory('merge'), true);
+  assert.equal(shouldAdoptGuestHistory('replace-from-cloud'), false);
+});
+
+test('adopt keeps guest workout store and still strips restricted health', () => {
+  const planted = JSON.stringify({ state: { workoutHistory: [{ id: 'guest-1' }] } });
+  writeRaw(WORKOUT_STORE_KEY, planted);
+  writeRaw(STORAGE_KEYS.lastAssessment, '{"risk":"high"}');
+  writeRaw(STORAGE_KEYS.pregnancyFlag, '1');
+  writeRaw(
+    STORAGE_KEYS.journeyState,
+    JSON.stringify({ readiness: { parq: true }, iDay: { completedAt: 't' } })
+  );
+
+  applySignInStoragePlan('adopt-guest-sans-health');
+
+  assert.equal(readRaw(WORKOUT_STORE_KEY), planted);
+  assert.equal(readRaw(STORAGE_KEYS.lastAssessment), null);
+  assert.equal(readRaw(STORAGE_KEYS.pregnancyFlag), null);
+  const journey = JSON.parse(readRaw(STORAGE_KEYS.journeyState) ?? '{}') as {
+    iDay?: { completedAt?: string };
+    readiness?: { parq?: boolean };
+  };
+  assert.equal(journey.iDay?.completedAt, 't');
+  assert.equal(journey.readiness?.parq, false);
+});
+
+test('foreign replace still wipes the workout store', () => {
+  writeRaw(WORKOUT_STORE_KEY, JSON.stringify({ state: { workoutHistory: [{ id: 'left-1' }] } }));
+  applySignInStoragePlan('replace-from-cloud');
+  assert.equal(readRaw(WORKOUT_STORE_KEY), null);
+});
+
+test('merge does not wipe the workout store', () => {
+  const planted = JSON.stringify({ state: { workoutHistory: [{ id: 'same-1' }] } });
+  writeRaw(WORKOUT_STORE_KEY, planted);
+  applySignInStoragePlan('merge');
+  assert.equal(readRaw(WORKOUT_STORE_KEY), planted);
+});
+
+test('mutant: clear workout store on any SIGNED_IN plan dies', () => {
+  const planted = JSON.stringify({ state: { workoutHistory: [{ id: 'guest-keep' }] } });
+  for (const plan of ['adopt-guest-sans-health', 'merge'] as const) {
+    writeRaw(WORKOUT_STORE_KEY, planted);
+    applySignInStoragePlan(plan);
+    assert.equal(
+      readRaw(WORKOUT_STORE_KEY),
+      planted,
+      `${plan} must not restore the wipe-on-any-SIGNED_IN defect`
+    );
+  }
 });
 
 test('clearAthleteLocalState drops PAR-Q, journey, logs, and the workout store', () => {
@@ -209,4 +267,35 @@ test('useJourneySync wipes on SIGNED_OUT only through the predicate', () => {
     /clearAthleteLocalState\s*\(/,
     'unconditional wipe on SIGNED_OUT is the guest silent-wipe defect'
   );
+});
+
+test('SIGNED_IN re-queues guest history after the planner — no Force Sync tap', () => {
+  const src = readFileSync(join(root, 'src/hooks/useJourneySync.ts'), 'utf8');
+  const signedIn = src.slice(src.indexOf("event === 'SIGNED_IN'"), src.indexOf("event === 'TOKEN_REFRESHED'"));
+  assert.match(signedIn, /syncJourneyOnSignIn/);
+  assert.match(signedIn, /shouldAdoptGuestHistory/);
+  assert.match(signedIn, /syncCurrentHistoryToCloud/);
+  assert.ok(
+    signedIn.indexOf('syncJourneyOnSignIn') < signedIn.indexOf('syncCurrentHistoryToCloud'),
+    'planner must run before re-queue so foreign replace does not enqueue leftovers'
+  );
+  assert.doesNotMatch(
+    signedIn,
+    /clearAthleteLocalState\s*\(/,
+    'SIGNED_IN must not restore wipe-on-any-sign-in'
+  );
+});
+
+test('Train/Coach history readers stay store-keyed — no owner gate', () => {
+  const files = [
+    'src/lib/workout/setRowAdjacency.ts',
+    'src/lib/workout/activeWorkoutHelpers.ts',
+    'src/lib/coach/contextBuilder.ts',
+    'src/lib/coach/weekRationale.ts',
+  ];
+  for (const rel of files) {
+    const src = readFileSync(join(root, rel), 'utf8');
+    assert.doesNotMatch(src, /readStorageOwner|STORAGE_KEYS\.storageOwner/, rel);
+    assert.doesNotMatch(src, /shouldAdoptGuestHistory/, rel);
+  }
 });

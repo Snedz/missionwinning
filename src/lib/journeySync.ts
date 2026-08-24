@@ -21,11 +21,11 @@ import { mergeCoachPlans } from '@/lib/coachSync';
 import type { CoachPlan } from '@/lib/coach/types';
 import { enqueue, registerHandler } from '@/lib/sync/outbox';
 import {
+  applySignInStoragePlan,
   bindStorageOwner,
-  clearAthleteLocalState,
   planSignInStorage,
   readStorageOwner,
-  stripRestrictedHealthLocal,
+  type SignInStoragePlan,
 } from '@/lib/storage/athleteLocalState';
 
 export interface CloudProfileSlice {
@@ -219,38 +219,39 @@ function afterSignInSideEffects(pushed: boolean): void {
 
 /**
  * On sign-in: merge only when this device already belongs to the same user.
- * Foreign leftover or a guest sitting on an existing account is replaced from
- * cloud (no OR-merge of PAR-Q). A first-time account on a guest device may
- * keep I-Day, but restricted health is stripped before the push.
+ * Foreign leftover is replaced from cloud (no OR-merge of PAR-Q, no leftover
+ * log). An unbound guest keeps the workout store — restricted health is
+ * stripped; cloud journey/prefs replace when present (`.949`).
  */
-export async function syncJourneyOnSignIn(): Promise<void> {
+export async function syncJourneyOnSignIn(): Promise<SignInStoragePlan | null> {
   const user = await getUser();
-  if (!user) return;
+  if (!user) return null;
 
   const profile = await fetchCloudProfile();
   const cloudHasJourney = !!(
     profile?.journey_state && typeof profile.journey_state === 'object'
   );
   const plan = planSignInStorage(readStorageOwner(), user.id, cloudHasJourney);
+  applySignInStoragePlan(plan);
 
   if (plan === 'replace-from-cloud') {
-    clearAthleteLocalState();
     if (profile) applyCloudJourney(profile, 'replace');
     bindStorageOwner(user.id);
     afterSignInSideEffects(true);
-    return;
+    return plan;
   }
 
   if (plan === 'adopt-guest-sans-health') {
-    stripRestrictedHealthLocal();
+    if (profile) applyCloudJourney(profile, cloudHasJourney ? 'replace' : 'merge');
     bindStorageOwner(user.id);
     const pushed = await pushJourneyToCloud();
     afterSignInSideEffects(pushed);
-    return;
+    return plan;
   }
 
   if (profile) applyCloudJourney(profile, 'merge');
   bindStorageOwner(user.id);
   const pushed = await pushJourneyToCloud();
   afterSignInSideEffects(pushed);
+  return plan;
 }

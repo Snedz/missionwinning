@@ -10,6 +10,9 @@
  * JWT, and demo mode. Those are not a leave. Wiping there deletes a guest's
  * local log (the product promise). Wipe only when `planSignedOutStorage`
  * says so.
+ *
+ * `.949` — unbound guest `SIGNED_IN` adopts without wiping `WORKOUT_STORE_KEY`.
+ * Foreign owner still replaces. Restricted health still strips on adopt.
  */
 import {
   MW_PREFIX,
@@ -79,14 +82,41 @@ const RESTRICTED_HEALTH_KEYS = [
 
 export type SignInStoragePlan = 'merge' | 'replace-from-cloud' | 'adopt-guest-sans-health';
 
+/**
+ * Unbound guest is always adopt — even when the account already has a cloud
+ * journey. `replace-from-cloud` used to wipe `WORKOUT_STORE_KEY` on that path,
+ * so a guest who logged then signed in lost the log (`.949`).
+ *
+ * `cloudHasJourney` stays on the signature so callers share one plan; it does
+ * not choose wipe-vs-keep. Journey/prefs apply mode is decided after this.
+ */
 export function planSignInStorage(
   owner: string | null | undefined,
   userId: string,
-  cloudHasJourney: boolean
+  _cloudHasJourney: boolean
 ): SignInStoragePlan {
   if (owner === userId) return 'merge';
   if (owner && owner !== userId) return 'replace-from-cloud';
-  return cloudHasJourney ? 'replace-from-cloud' : 'adopt-guest-sans-health';
+  return 'adopt-guest-sans-health';
+}
+
+/** Guest or same-owner local history is this athlete. Foreign leftover is not. */
+export function shouldAdoptGuestHistory(plan: SignInStoragePlan): boolean {
+  return plan === 'adopt-guest-sans-health' || plan === 'merge';
+}
+
+/**
+ * Local mutation only. Cloud apply / bind / push stay in `syncJourneyOnSignIn`.
+ * Adopt strips restricted health and **keeps** the workout store.
+ */
+export function applySignInStoragePlan(plan: SignInStoragePlan): void {
+  if (plan === 'replace-from-cloud') {
+    clearAthleteLocalState();
+    return;
+  }
+  if (plan === 'adopt-guest-sans-health') {
+    stripRestrictedHealthLocal();
+  }
 }
 
 export function readStorageOwner(): string | null {
