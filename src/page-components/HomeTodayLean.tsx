@@ -46,6 +46,7 @@ import { peekCoachToday } from '@/lib/coach/peekCoachToday';
 import { buildJustGoHeroMeta, type JustGoHeroMeta } from '@/lib/justGoHeroMeta';
 import { shouldRepeatLastOnToday } from '@/lib/workout/repeatLastSession';
 import { formatLocalDateKey, localDateKey } from '@/lib/time/localDate';
+import { todayReturnCite } from '@/lib/today/todayReturnCite';
 
 const SSR_ACTION: JourneyAction = {
   label: 'Start',
@@ -194,6 +195,23 @@ export function HomeTodayLean() {
       .filter((w) => !w.deletedAt)
       .sort((a, b) => (a.completedAt < b.completedAt ? 1 : -1))[0]?.workoutName ??
     null;
+  const reentryShowing = !!(
+    reentry &&
+    reentryCardMayMount({
+      phase: journeyState.phase,
+      show: reentry.show,
+      sessionOpen: hasActiveWorkout,
+    })
+  );
+  const plannedMissShowing = !!(plannedMiss.offer?.show && !hasActiveWorkout);
+  const nextSessionName = coachPeek?.name?.trim() || lastSession?.name?.trim() || null;
+  const returnCite = todayReturnCite({
+    lastSessionName: lastLoggedName,
+    nextSessionName,
+    reentryShowing,
+    plannedMissShowing,
+    sessionOpen: hasActiveWorkout,
+  });
   const justGoMeta: JustGoHeroMeta | null = buildJustGoHeroMeta({
     hasActiveWorkout,
     trainReady: isTodayTrainReady({
@@ -297,6 +315,7 @@ export function HomeTodayLean() {
           onPlannedMissDoNow={plannedMiss.doNow}
           onPlannedMissSkip={plannedMiss.skip}
           onPlannedMissSlide={plannedMiss.slide}
+          returnCite={returnCite}
         />
       </ScreenDock>
     </>

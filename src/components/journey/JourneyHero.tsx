@@ -18,6 +18,7 @@ import { TodayReentryCard } from '@/components/today/TodayReentryCard';
 import { TodayPlannedMissPrompt } from '@/components/today/TodayPlannedMissPrompt';
 import type { PlannedMissOffer } from '@/lib/coach/plannedMiss';
 import type { Reentry } from '@/lib/reentry';
+import type { TodayReturnCite } from '@/lib/today/todayReturnCite';
 
 export function JourneyStrip({ action }: { action: JourneyAction }) {
   const { t } = useTranslation();
@@ -88,6 +89,8 @@ interface JourneyHeroProps {
   onPlannedMissSlide?: () => void;
   /** Lean Today: Start / Resume. Never I-Day. */
   dock?: 'journey' | 'start';
+  /** Last + next cite on the Start field. Empty when history/plan do not exist. */
+  returnCite?: TodayReturnCite | null;
 }
 
 export function JourneyHero({
@@ -102,6 +105,7 @@ export function JourneyHero({
   onPlannedMissSkip,
   onPlannedMissSlide,
   dock = 'journey',
+  returnCite,
 }: JourneyHeroProps) {
   if (dock === 'start') {
     return (
@@ -115,6 +119,7 @@ export function JourneyHero({
         onPlannedMissDoNow={onPlannedMissDoNow}
         onPlannedMissSkip={onPlannedMissSkip}
         onPlannedMissSlide={onPlannedMissSlide}
+        returnCite={returnCite}
       />
     );
   }
@@ -302,6 +307,28 @@ function JourneyDockHero({
   );
 }
 
+function StartReturnCite({ cite }: { cite?: TodayReturnCite | null }) {
+  const { t } = useTranslation();
+  if (!cite?.last && !cite?.next) return null;
+  return (
+    <div className="mb-2.5 space-y-0.5" data-testid="today-return-cite">
+      {cite.last ? (
+        <p
+          className="poster-kicker text-[11px] font-semibold uppercase tracking-[0.12em]"
+          data-testid="today-return-last"
+        >
+          {t('todayReturnLast', { name: cite.last, defaultValue: 'Last · {{name}}' })}
+        </p>
+      ) : null}
+      {cite.next ? (
+        <p className="poster-sub text-sm leading-relaxed" data-testid="today-return-next">
+          {t('todayReturnNext', { name: cite.next, defaultValue: 'Next · {{name}}' })}
+        </p>
+      ) : null}
+    </div>
+  );
+}
+
 function StartDockHero({
   onPrimaryClick,
   activeWorkout,
@@ -311,6 +338,7 @@ function StartDockHero({
   onPlannedMissDoNow,
   onPlannedMissSkip,
   onPlannedMissSlide,
+  returnCite,
 }: {
   onPrimaryClick: () => void;
   activeWorkout?: boolean;
@@ -321,6 +349,7 @@ function StartDockHero({
   onPlannedMissDoNow?: () => void;
   onPlannedMissSkip?: () => void;
   onPlannedMissSlide?: () => void;
+  returnCite?: TodayReturnCite | null;
 }) {
   const { t } = useTranslation();
   const isCompact = useIsCompact();
@@ -338,6 +367,7 @@ function StartDockHero({
   if (!isCompact) {
     return (
       <div className="poster-field space-y-4 p-7">
+        <StartReturnCite cite={returnCite} />
         <PlannedMissOrQuiet
           plannedMiss={plannedMiss}
           quietLine={quietLine}
@@ -355,6 +385,7 @@ function StartDockHero({
 
   return (
     <div className="poster-field px-4 pb-4 pt-3.5">
+      <StartReturnCite cite={returnCite} />
       <PlannedMissOrQuiet
         plannedMiss={plannedMiss}
         quietLine={quietLine}

@@ -31,7 +31,7 @@
 | **First-set ungated** | `firstSetUngated.ts` | F-017 / `.766` + `.762` + `.941` + `.949` — `showHeaderSignInChip`. Hide Sign in until the first workout; never on `/active`. Guest `SIGNED_OUT` does not wipe the local log. Guest `SIGNED_IN` keeps it. |
 | **Nutrition / Fuel** | `macroTargets.ts`, `fuelGoalWizard.ts`, `fuelDayAdapt.ts`, `openFoodFacts.ts`, `nutritionLog.ts`, `nlMealLog.ts`, `mealDraft.ts`, `savedMeals.ts`, `nutritionHighProteinDays.ts` | Fuel pillar; goal→macros; train-day targets; NL + presets; photo draft |
 | **Habit week count** | `habitWeekCount.ts` | Unique local Train days this week — [HABIT.md](../../docs/contracts/HABIT.md) |
-| **Today primary CTA** | `todayPrimaryAction.ts`, `coach/loadCoachTodayOptional.ts` | Shared Just Go / journey primary for lean + dashboard |
+| **Today primary CTA** | `todayPrimaryAction.ts`, `coach/loadCoachTodayOptional.ts`, `today/todayReturnCite.ts` | Shared Just Go / journey primary for lean + dashboard; last/next cite on Start (`.954`) |
 | **Search catalog** | `searchCatalog.ts` | Filter More rooms by query; map Fuel/Coach/Train to Summary pin ids |
 | **Fuel Coach** | `fuelCoach/` subfolder | Adaptive meal plan — see [fuelCoach/INDEX.md](fuelCoach/INDEX.md) |
 | **Payments** | `premiumServer.ts`, `premiumEnrollmentCache.ts`, `payments.ts`, `checkoutServer.ts`, `stripeServer.ts`, `stripeWebhook.ts`, `paypalWebhook.ts`, [`cryptoCheckout/`](cryptoCheckout/INDEX.md) | Stripe + Phantom USDC lifetime; enrollment Redis memo |
