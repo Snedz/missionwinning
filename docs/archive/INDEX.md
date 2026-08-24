@@ -12,6 +12,7 @@ When adding a doc:
 
 | File | Absorbed by / note |
 |------|---------------------|
+| [log/LOG-rotate-926-for-946.md](./log/LOG-rotate-926-for-946.md) | rotated 2026-08-24 for `.946` F-013 smart defaults (`.926`) |
 | [log/LOG-rotate-925-for-945.md](./log/LOG-rotate-925-for-945.md) | rotated 2026-08-24 for `.945` missed-day re-entry (`.925`) |
 | [log/LOG-rotate-924-for-944.md](./log/LOG-rotate-924-for-944.md) | rotated 2026-08-24 for `.944` E-Victory receipt (`.924`) |
 | [log/LOG-rotate-923-for-943.md](./log/LOG-rotate-923-for-943.md) | rotated 2026-08-24 for `.943` Strong CSV export (`.923`) |

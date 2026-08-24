@@ -13,6 +13,21 @@ Archive: [2026-06 → 2026-07-20](docs/archive/log/LOG-2026-06_to_2026-07-20.md)
 
 
 
+## 2026-08-24 — F-013 smart defaults on the free logger (`.946`)
+
+The dial already prefills last time. Empty history
+still invented 10 reps. Warmup at set-index 0 could
+leak into the next working row.
+
+**Ship:** next set starts from the last working set
+(ghost numbers). Empty or warmup-only history is
+0 × 0. Editable. Log a set never waits. Cite / Last
+/ Prev stay their own lanes. No program bump.
+
+Label `.946` (past master `.945`). No `PRIVATE_MODE` flip.
+
+Rotated LOG oldest → [docs/archive/log/LOG-rotate-926-for-946.md](docs/archive/log/LOG-rotate-926-for-946.md).
+
 ## 2026-08-24 — Missed-day re-entry: skippable (`.945`)
 
 Coach week already painted the hole. Today’s quiet
@@ -240,15 +255,3 @@ Same add.
 Label `.927` (stacked on `.926`).
 
 Rotated LOG oldest → [docs/archive/log/LOG-rotate-912-for-927.md](docs/archive/log/LOG-rotate-912-for-927.md).
-
-## 2026-08-18 — Journal empty keeps the debrief sentence (`.926`)
-
-The timeline defaulted a short line. Packs keep the
-debrief sentence. First paint listed it after America.
-
-**Ship:** defaultValue matches the pack. Same empty
-state. History stays behind Show all.
-
-Label `.926` (stacked on `.925`).
-
-Rotated LOG oldest → [docs/archive/log/LOG-rotate-911-for-926.md](docs/archive/log/LOG-rotate-911-for-926.md).

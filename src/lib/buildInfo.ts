@@ -1,5 +1,5 @@
-/** Shown on Profile so testers can confirm the deployed build. Bump when shipping UI to master. `.945` missed-day re-entry (past master `.944`). */
-export const APP_BUILD_LABEL = "2026.07-unified.945";
+/** Shown on Profile so testers can confirm the deployed build. Bump when shipping UI to master. `.946` F-013 smart defaults (past master `.945`). */
+export const APP_BUILD_LABEL = "2026.07-unified.946";
 
 /**
  * Semver for athletes. Distinct from `APP_BUILD_LABEL`, which `/api/health`

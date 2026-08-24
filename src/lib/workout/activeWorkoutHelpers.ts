@@ -54,6 +54,19 @@ export function getLastPerformanceForSet(
   return { reps: match.reps, weight: match.weight };
 }
 
+/**
+ * Dial prefill (F-013): last *working* set of this exercise.
+ * Reuses the ghost reader so warmup / 0-rep / tombstone stay excluded.
+ * Prev column still uses `getLastPerformanceForSet` (set-index last-actuals).
+ */
+export function lastWorkingForDial(
+  workoutHistory: CompletedWorkoutLog[],
+  exerciseId: string
+): { reps: number; weight: number } | null {
+  const ghost = resolveLastSetGhost(workoutHistory, exerciseId);
+  return ghost ? { reps: ghost.reps, weight: ghost.weight } : null;
+}
+
 /** Prev-column labels for the set table — one format, one home (.425). */
 export function formatPrevSetLabels(
   workoutHistory: CompletedWorkoutLog[],
@@ -132,14 +145,15 @@ export function priorCompletedInExercise(
  * no RPE, and has no concept of a deload. A strength plan of 3×5 prefilled as 6, and
  * on a back-off week the coach said "×0.9" while the logger quietly said "add a rep".
  *
- * Order:
+ * Order (F-013 / `.946`):
  *  1. What the athlete typed. Always wins.
  *  2. The coach's prescription, when this exercise came from a plan.
- *  3. Same-session carry — prior completed set of this exercise (gym speed, `.289`).
- *  4. The same set last time — the athlete's own stored set (H-05). A
- *     suggestion that beats this is a fabricated log.
- *  5. The suggestion engine, for freestyle work with no stored set.
- *  6. The template default.
+ *  3. Same-session carry — prior completed *working* set of this exercise (`.289`).
+ *  4. Last working set of this exercise (ghost numbers). Not a warmup. Not a bump.
+ *  5. Empty `{ 0, 0 }` — no fake 10, no `suggestNextSetTarget` on the dial.
+ *
+ * `suggestion` stays on the signature so Apply targets / cite callers do not
+ * break. The starting dial must not apply a program bump.
  */
 export function resolveSetInput(params: {
   manual?: { reps: number; weight: number };
@@ -160,12 +174,12 @@ export function resolveSetInput(params: {
     suggestion,
     lastPerformance,
   } = params;
+  void suggestion;
   if (manual) return manual;
   if (prescribed) return { reps: defaultReps, weight: defaultWeight };
   if (sessionCarry) return { reps: sessionCarry.reps, weight: sessionCarry.weight };
   if (lastPerformance) return { reps: lastPerformance.reps, weight: lastPerformance.weight };
-  if (suggestion) return { reps: suggestion.reps, weight: suggestion.weight };
-  return { reps: defaultReps, weight: defaultWeight };
+  return { reps: 0, weight: 0 };
 }
 
 /**
@@ -439,37 +453,27 @@ export function resolveActiveSetDial(params: {
   repMax: number;
   lastPerformance: { reps: number; weight: number } | null;
 }): { reps: number; weight: number } {
+  void params.lastSets;
+  void params.units;
+  void params.repMin;
+  void params.repMax;
   const currentKind = params.sets[params.setIdx]?.kind;
   if (currentKind === 'warmup') {
-    // Ramp weights are on the set itself — last-session suggestion must not
-    // replace a 40 kg warmup with last week's work set (freestyle).
-    return resolveSetInput({
-      manual: params.manual,
-      prescribed: false,
-      defaultReps: params.defaultReps,
-      defaultWeight: params.defaultWeight,
-      sessionCarry: null,
-      suggestion: null,
-      lastPerformance: null,
-    });
+    // Ramp weights are on the set itself — last-working / empty-dial must not
+    // replace a 40 kg warmup with last week's work set or 0 × 0.
+    if (params.manual) return params.manual;
+    return { reps: params.defaultReps, weight: params.defaultWeight };
   }
   const sessionCarry = params.prescribed
     ? null
     : priorCompletedInExercise(params.sets, params.setIdx);
-  const suggestion =
-    !params.prescribed && params.lastSets
-      ? suggestNextSetTarget(params.lastSets, params.setIdx, params.units, {
-          repMin: params.repMin,
-          repMax: params.repMax,
-        })
-      : null;
   return resolveSetInput({
     manual: params.manual,
     prescribed: params.prescribed,
     defaultReps: params.defaultReps,
     defaultWeight: params.defaultWeight,
     sessionCarry,
-    suggestion,
+    suggestion: null,
     lastPerformance: params.lastPerformance,
   });
 }
