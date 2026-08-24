@@ -232,7 +232,7 @@ describe('assembleActiveVictory', () => {
     assert.equal(out.victorySummary.receipt.vsLast, null);
   });
 
-  it('attaches vs-last on the receipt when a prior same-named log exists', () => {
+  it('attaches vs-last on the receipt when a prior same-shape log exists', () => {
     const prior = log({
       id: 'w0',
       startedAt: '2026-08-03T10:00:00Z',
@@ -254,6 +254,34 @@ describe('assembleActiveVictory', () => {
     const vsLast = out.victorySummary.receipt?.vsLast;
     assert.ok(vsLast);
     assert.equal(vsLast.volumeDelta, 400);
+  });
+
+  it('attaches vs-last when the prior session has the same lifts under a different name', () => {
+    const prior = log({
+      id: 'w0',
+      workoutName: 'Week 2 Push',
+      startedAt: '2026-08-03T10:00:00Z',
+      completedAt: '2026-08-03T10:25:00Z',
+      durationSeconds: 1500,
+      totalVolume: 1800,
+    });
+    const finished = log({
+      workoutName: 'Week 3 Push',
+      totalVolume: 2200,
+      durationSeconds: 1900,
+    });
+    const out = assembleActiveVictory({
+      log: finished,
+      historyBefore: [prior],
+      checkIn: null,
+      sessionNote: '',
+      units: 'metric',
+      goalId: 'general',
+      hasCoachPlan: true,
+      resolveExerciseName: (id) => id,
+    });
+    assert.ok(out.victorySummary.receipt?.vsLast);
+    assert.equal(out.victorySummary.receipt.vsLast.volumeDelta, 400);
   });
 });
 

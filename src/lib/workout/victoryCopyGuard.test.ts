@@ -59,6 +59,7 @@ test('Victory collapses long details; Active gates empty finish', () => {
     'vs-last lift receipt lives in Show all; first paint is Duration · Volume · Sets'
   );
   assert.doesNotMatch(sheet, /share-to-unlock|unlock.{0,20}share/i);
+  assert.doesNotMatch(sheet, /\blikes?\b|\bfeed\b/i);
 
   const active = readFileSync(
     join(root, 'src/page-components/ActiveWorkoutPage.tsx'),

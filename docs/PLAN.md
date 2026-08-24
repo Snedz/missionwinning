@@ -6,6 +6,86 @@ Living roadmap for the **everything app** (a bodyweight coach app Super Bundle �
 
 ---
 
+## Frozen plan — `.944` E-Victory receipt (vs-last, same shape) (2026-08-24)
+
+> **Frozen.** Implement only this section. Plan commit is `[skip vercel]`.
+> Label: `2026.07-unified.944` — next free after master `.943` (Strong CSV export).
+> Ready for squash. Preview will not deploy. No `PRIVATE_MODE` flip.
+> Offline. No account. Log a set. Free. Never invent a first-ever PR.
+> Do not restyle Today. Do not add likes, a feed, a share card, or ranks.
+> Keep master's product + brand pack: **Log a set. Offline.**
+
+After Finish, Victory is a quiet receipt vs last time — same session
+shape — not a feed. Empty history stays empty. One prior same-shape
+session fills vs-last. Reuse the existing sheet.
+
+### Investigate (done — hypothesis holds, with one gap)
+
+Victory is already a sheet after Finish (`WorkoutVictorySheet`). There
+is no `/victory` page and we will not add one. vs-last is already
+assembled and mounted. last-set ghost is the logger prefill, not this
+receipt. The remaining defect is **what “last time” means**.
+
+| Layer | What exists | Gap this ship closes |
+|-------|-------------|----------------------|
+| Surface | `WorkoutVictorySheet` after Finish. First paint: Duration · Volume · Sets + muted vs-last lines + Next dock. Lift table / feel / share / rewards / debrief live in Show all | Hypothesis holds. Reuse. Do not restyle first paint. Do not restyle Today |
+| Session vs-last | `pickPriorSameNamedSession` — latest earlier log with the same **name** | Same name + different lifts still compares volume. Different name + same lifts stays quiet (Coach week titles, renamed sessions) |
+| Per-lift vs-last | `pickPriorExerciseLog` — last earlier log that contains that exercise, any session name | Keep. Bench vs last bench stays honest even when the session shape differs |
+| Assembly | `assembleActiveVictory` → `buildVictoryReceipt` → `summary.receipt` → `VictoryStatsStrip` / `VictoryReceiptStrip` | Wire stays. Switch the session picker only |
+| Empty / first-ever | `vsLast: null`, `prCount: 0`, no invented zeros (`.713`) | Keep. Lock: empty history is honest empty, no fake PR |
+| Logger ghosts | `lastSetGhost.ts` (Last tap) · `vsLastSet.ts` (after-save row delta) | Do not rewrite. Not Victory |
+| Share / ranks | Share + rewards already in Show all | Do not add likes, a feed, a new share card, or ranks. Do not promote Share onto first paint |
+
+Not these (do not “fix”):
+
+- Today / HomePage / pin grid / Start
+- last-set ghost, after-save set-row vs-last, next-set cite (`.939`)
+- Strong CSV import/export (`.940` / `.943`)
+- Field-test receipt (its own vs-last)
+- Share ladder, rewards line, feel strip, debrief
+- New Victory route, likes, feed, ranks, XP
+
+### Ship (only this)
+
+1. **Session shape** in `victoryReceipt.ts` (one home). `sessionShape(log)` is the sorted unique `exerciseId`s that have at least one logged set. Empty shape is not comparable. Order of logging does not change the shape; adding or dropping a lift does.
+
+2. **`pickPriorSameShapeSession`** replaces the name picker for **session totals** (`vsLast` volume / sets / duration). Latest earlier non-deleted log with the same shape. Keep `pickPriorSameNamedSession` only if a test still names it — session totals must not use it.
+
+3. **Empty history stays empty.** First session (or no prior same shape): `vsLast === null`, `prCount === 0`, no PR badge, no invented `+0`. Per-lift Prev stays `—`. Do not print a fake “vs last”.
+
+4. **One prior same-shape session fills vs-last** even when the workout name differs (Week 2 Push vs Week 3 Push; two Just Go days with the same lifts). Same name + different lifts stays quiet on session totals; per-lift vs-last still fills.
+
+5. **Surface.** Keep Peak-End: stats + Next on first paint; lift receipt in Show all. `assembleActiveVictory` already passes `historyBefore` — do not add a second assembly. Free, offline, no account.
+
+### Tests
+
+- `victoryReceipt.test.ts`: empty history → no vs-last, no PR. One prior same shape (names differ) → volume/sets/duration deltas. Same name + different lifts → `vsLast === null`; lift Prev still fills when that lift existed. Tombstone still ignored. Mutant restoring name-only session pick dies.
+- `activeSessionFinish.test.ts`: first finish stays `receipt.vsLast === null`; one prior same-shape log attaches deltas (update the “same-named” case if the fixture already shares a shape).
+- `victoryCopyGuard` / `victorySheetChrome`: lift receipt stays in Show all; Share / rewards stay off first paint; no likes / feed.
+- `check-build-label` `.944`. LOG + CONTEXT in the same implement commit.
+
+### Docs / ship protocol
+
+- `APP_BUILD_LABEL` → `2026.07-unified.944`
+- LOG heading `## 2026-08-24 — E-Victory receipt: vs-last same shape (\`.944\`)` + rotate oldest live entry
+- CONTEXT `## Now` one `.944` bullet; rotate oldest shipped version bullet (`.925`); keep Status table; ≤25 bullets
+- Help: Finish shows vs last time when you have done the same lifts before; a first session has no invented PR
+- `src/lib/workout/INDEX.md` — session totals match shape, not name
+- i18n: reuse `victoryVsLast` / receipt keys. No new share/rank copy
+- Every commit: `[skip vercel]`. PR body: how to verify empty finish + one prior same-shape finish
+
+### Hard bans
+
+- No `PRIVATE_MODE` / promote / EIN / secrets / feed / likes / ranks
+- Do not steal `.943` or any in-flight label
+- Do not restyle Today
+- Do not add a Victory page or share card
+- Do not rewrite last-set ghost or set-row vs-last
+- Do not gate the free logger or require an account
+- Brand pack: **Log a set. Offline.**
+
+---
+
 ## Frozen plan — `.943` Strong CSV export (round-trip) (2026-08-24)
 
 > **Frozen.** Implement only this section. Plan commit is `[skip vercel]`.
