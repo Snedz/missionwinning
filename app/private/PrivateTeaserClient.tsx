@@ -218,6 +218,9 @@ export function PrivateTeaserClient({
           <p className="gate-lede">
             {g('gateSubtitle')}
           </p>
+          <p className="gate-foot" data-mw-wedge-teaser>
+            {g('gateWedgeTeaser')}
+          </p>
           {/*
             The mechanism, on the first screen anyone sees. "Offline" is a word
             an app with forced sync would also print; this says where the sets go.

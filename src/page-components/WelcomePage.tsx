@@ -42,6 +42,7 @@ import {
 } from '@/lib/privateGateNavigate';
 import { idayFinishPath } from '@/lib/idayFinishPath';
 import { LOCAL_FIRST_COPY } from '@/lib/localFirstCopy';
+import { GATED_WWW_HONESTY } from '@/lib/gatedWwwHonesty';
 
 const EXPERIENCE_VALUES = ['beginner', 'intermediate', 'advanced'] as const;
 const EQUIPMENT_VALUES = ['bodyweight', 'dumbbells', 'full-gym'] as const;
@@ -64,6 +65,7 @@ export function WelcomePage({ initialEdit = false }: WelcomePageProps) {
   const router = useRouter();
   const isEdit = initialEdit;
   const { t } = useTranslation();
+  const gateOn = !isEdit && isClientPrivateGateEnabled();
   const [step, setStep] = useState<Step>('welcome');
   const [experience, setExperience] = useState('beginner');
   const [equipment, setEquipment] = useState('bodyweight');
@@ -210,16 +212,31 @@ export function WelcomePage({ initialEdit = false }: WelcomePageProps) {
                 {/* Field manual: briefing type — eyebrow → display → one red. */}
                 <div className="space-y-4">
                   <p className="eyebrow text-primary">
-                    {t('welcomeKicker', { defaultValue: 'About two minutes' })}
+                    {gateOn
+                      ? t('welcomeGateKicker', {
+                          defaultValue: GATED_WWW_HONESTY.welcomeKicker,
+                        })
+                      : t('welcomeKicker', { defaultValue: 'About two minutes' })}
                   </p>
                   <h1 className="display-section max-w-[16ch] text-balance text-foreground">
                     {t('welcomeTitle', { defaultValue: 'Welcome' })}
                   </h1>
                   <p className="max-w-md text-base leading-relaxed text-muted-foreground">
-                    {t('welcomeSubtitleBrief', {
-                        defaultValue: LOCAL_FIRST_COPY.welcomeLocalFirst,
-                      })}
+                    {gateOn
+                      ? t('welcomeGateSubtitleBrief', {
+                          defaultValue: GATED_WWW_HONESTY.welcomeSubtitleBrief,
+                        })
+                      : t('welcomeSubtitleBrief', {
+                          defaultValue: LOCAL_FIRST_COPY.welcomeLocalFirst,
+                        })}
                   </p>
+                  {gateOn ? (
+                    <p className="max-w-md text-sm leading-relaxed text-muted-foreground">
+                      {t('gateWedgeTeaser', {
+                        defaultValue: GATED_WWW_HONESTY.gateWedgeTeaser,
+                      })}
+                    </p>
+                  ) : null}
                 </div>
 
                 <div className="card-elevated space-y-1.5 px-4 py-3.5">

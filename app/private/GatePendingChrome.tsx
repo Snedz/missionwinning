@@ -1,6 +1,6 @@
 /**
  * Honest loading chrome for `/private` while Suspense / session unlock runs.
- * Same brand + Alpha kicker as the ready gate — not a bare "Loading…"
+ * Same brand + Free beta kicker as the ready gate — not a bare "Loading…"
  * or "Checking sign-in…" dead-end (F-008 / BETA_LANGUAGE).
  */
 
