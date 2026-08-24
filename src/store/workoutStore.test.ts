@@ -502,4 +502,12 @@ test('workoutStore', async (t) => {
     assert.equal(after?.sets[0]?.weight, 0);
     assert.equal(after?.sets[0]?.reps, 10);
   });
+
+  await t.test('addExercise on empty history seeds empty rows, not fake 10s (.946)', () => {
+    useWorkoutStore.getState().startEmptyWorkout();
+    useWorkoutStore.getState().addExerciseToActive('bench-press');
+    const sets = useWorkoutStore.getState().activeWorkout?.exercises[0]?.sets ?? [];
+    assert.equal(sets.length, 3);
+    assert.ok(sets.every((s) => s.reps === 0 && s.weight === 0 && !s.completed));
+  });
 });

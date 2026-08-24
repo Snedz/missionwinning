@@ -139,7 +139,7 @@ import { materializeTemplates } from '@/lib/workout/materializeProgram';
 import { applyHistoryNote } from '@/lib/workout/exerciseNote';
 import { insertWarmupSets, warmupRampAlreadyPresent } from '@/lib/workout/warmupRamp';
 
-function createLoggedSets(count: number, reps = 10, weight = 0): LoggedSet[] {
+function createLoggedSets(count: number, reps = 0, weight = 0): LoggedSet[] {
   const now = Date.now();
   return Array.from({ length: count }, (_, i) => ({
     id: `set-${now}-${i}`,
@@ -580,7 +580,7 @@ export const useWorkoutStore = create<WorkoutState>()(
               ...ex.sets,
               {
                 id: `set-${Date.now()}`,
-                reps: lastSet?.reps ?? 10,
+                reps: lastSet?.reps ?? 0,
                 weight: lastSet?.weight ?? 0,
                 completed: false,
                 kind: lastSet?.kind ?? 'normal',
