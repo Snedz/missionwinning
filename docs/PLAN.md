@@ -6,6 +6,135 @@ Living roadmap for the **everything app** (a bodyweight coach app Super Bundle �
 
 ---
 
+## Frozen plan — `.945` missed-day re-entry (skippable) (2026-08-24)
+
+> **Frozen.** Implement only this section. Plan commit is `[skip vercel]`.
+> Label: `2026.07-unified.945` — next free after master `.944` (E-Victory).
+> Ready for squash. Preview will not deploy. No `PRIVATE_MODE` flip.
+> Offline. No account. Log a set. Free. No medical claims.
+> Do not restyle the Train set row. Do not add a feed, leaderboard, or red shame.
+> Keep master's product + brand pack: **Log a set. Offline.**
+
+If the athlete skipped a planned day, Today and Coach offer a quiet
+way back — do it now, skip, or slide — without shame scores or
+streak-break theater.
+
+### Investigate (done — hypothesis holds)
+
+Coach week already has the hole. `adaptPlan` stamps a past
+`planned` session `missed`, keeps it on the strip (struck
+"Missed", dashed card), and re-spreads remaining days. The
+calendar-gap quiet line on Today (`computeReentry`, 2+ days
+since last log) is a different trigger: it fires with no plan
+and does not offer skip or slide.
+
+The gap this ship closes is **Today/Coach choice copy for a
+planned miss**, not a new week engine.
+
+| Layer | What exists | Gap this ship closes |
+|-------|-------------|----------------------|
+| Coach week hole | `WeekStrip` strikethrough · `PlanSessionCard` dashed + Missed badge · `adaptPlan` auto-marks + re-spreads remaining | Leave the hole. Do not restyle. Do not add a red ✕ |
+| Coach re-entry | `CoachAdaptBanner` (full, not compact): "Ready to train again?" + Start this session / Just Go / Open Today | No Skip. No athlete-chosen Slide. Compact Today week strip hides this block |
+| Today copy | `TodayReentryCard` = 20-minute line from **days since last log** (`REENTRY_MIN_DAYS = 2`). Mounted on both Today shells via `reentryCardMayMount` | Fires with **no plan**. No skip / slide. Not keyed to a missed planned day |
+| Dose | `doseScaleForMissedSessions` + `useStartCoachSession` already ease the session that starts | Keep. Do not rewrite the logger |
+| Tone | `reentryTone.ts` + `reentryCopyGuard.test.ts` — no streak-loss / fail copy | New prompt must pass the same shame-free gate |
+
+Not these (do not “fix”):
+
+- Train set row / next-set cite (`.939`)
+- Calendar-gap quiet line + dose (`computeReentry`) — leave it
+- WeekStrip / PlanSessionCard missed treatment
+- `adaptPlan` auto-slide of *remaining* days
+- Victory (`.944`), CSV (`.943` / `.940`), gated www, account-lite
+- Feed, leaderboard, streak flames, red ✕, shame scores
+- Push / email return channel (`RETURN_LOOP_PLAN.md` — still ops-inert)
+
+### Ship (only this)
+
+1. **Pure offer** in `src/lib/coach/plannedMiss.ts` (one home).
+   `findPlannedMiss(plan, todayOffset)`:
+   - No plan / empty sessions / no overdue not-done session → `{ show: false }`.
+   - One (or more) session with `dayOffset < todayOffset` and
+     `status !== 'done'` → `{ show: true, session }` for the
+     **earliest** such day. Not a stack of shame cards.
+   - `canSlide` is true only when a later empty day exists
+     (`todayOffset…6` with no session).
+   - Recovery days count (a planned day is a planned day).
+   - Stale week (`weekStart` not this week) is not this offer —
+     callers pass the live week or the finder sees no current hole.
+
+2. **Skip does not invent a fail identity.**
+   `applyPlannedMissSkip(plan, sessionId)` **removes** that
+   session. It must not write `status: 'missed'`, must not add
+   a fail / streak field, must not mint shame copy. The week
+   strip hole becomes the existing empty-day "—" — not a new
+   "Failed" badge. Bump `revision` so persist matches adapt.
+
+3. **Slide is athlete-chosen**, not a second auto-adapt.
+   `applyPlannedMissSlide(plan, sessionId, todayOffset)` moves
+   that session to the next empty day as `planned`. No empty
+   slot → plan unchanged (`canSlide` was false). Do not
+   reimplement strength-spacing; reuse the empty-day slot.
+
+4. **Do it now** starts that session via
+   `useStartCoachSession(..., { from: 'reentry' })`. No plan
+   rewrite required. Dose already applies.
+
+5. **Today chrome** — both shells (`HomeTodayLean` +
+   `HomeTodayDashboard`) → `JourneyHero`. A skippable prompt
+   (`TodayPlannedMissPrompt`) mounts only when
+   `plannedMissMayMount` is true (shared helper next to
+   `reentryCardMayMount`: not i-day, not mid-set, `show`).
+   Quiet line + text actions (Do it now / Skip / Slide). Not a
+   second red. Not a streak card. Calendar-gap `TodayReentryCard`
+   stays; when the planned-miss prompt shows, it is the
+   planned-day chrome the tests name.
+
+6. **Coach chrome** — full `CoachAdaptBanner` re-entry block
+   adds Skip + Slide beside the existing Start. Compact Today
+   week strip stays compact (no extra banner). Do not restyle
+   `WeekStrip`.
+
+7. **Persist.** Skip / slide call `savePlan` (Today via the
+   pure apply + `savePlan`; Coach via `useCoachPlan`). Free.
+   Offline. No account.
+
+### Tests
+
+- `plannedMiss.test.ts`: no plan / no overdue session →
+  `show === false`. One overdue `planned` or `missed` →
+  skippable offer. Skip removes the session and does **not**
+  write `missed` / fail identity. Slide lands `planned` on the
+  next empty day. Mutant that skip-stamps `missed` dies.
+- `todayGuidanceMount` / shell source: both Today shells pass
+  the planned-miss offer; no plan → prompt not mounted.
+- `reentryCopyGuard`: new default copy stays shame-free (no
+  you-missed / broken streak / failed / guilt).
+- `check-build-label` `.945`. LOG + CONTEXT in the same
+  implement commit.
+
+### Docs / ship protocol
+
+- `APP_BUILD_LABEL` → `2026.07-unified.945`
+- LOG heading `## 2026-08-24 — Missed-day re-entry: skippable (\`.945\`)` + rotate oldest live entry (`.925`)
+- CONTEXT `## Now` one `.945` bullet; rotate oldest shipped version bullet (`.926`); keep Status table; ≤25 bullets
+- Help: one line — if you skip a planned day, Today/Coach offer do it now, skip, or slide. Skip is not a fail. No streak theater.
+- `src/lib/coach/INDEX.md` + `src/components/today/INDEX.md` list the offer
+- i18n: new keys in `coachLocales.ts` (common namespace). Shame-free EN. Other langs inherit via `...en`
+- Every commit: `[skip vercel]`. PR body: how to verify no-plan (no chrome) + one missed day (skippable prompt)
+
+### Hard bans
+
+- No `PRIVATE_MODE` / promote / EIN / secrets / feed / Discord / leaderboard
+- Do not steal `.944` or any in-flight label
+- Do not restyle the Train set row
+- Do not add red shame, streak-break theater, or a fail score
+- Do not rewrite `adaptPlan` or `computeReentry`
+- Do not gate the free logger or require an account
+- Brand pack: **Log a set. Offline.**
+
+---
+
 ## Frozen plan — `.944` E-Victory receipt (vs-last, same shape) (2026-08-24)
 
 > **Frozen.** Implement only this section. Plan commit is `[skip vercel]`.
