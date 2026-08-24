@@ -127,6 +127,7 @@ const NOTIFICATION_EN: Record<string, string> = {
   csvExportCta: 'Export CSV',
   csvExportSessionCta: 'Export session CSV',
   csvExportSetCta: 'Export set CSV',
+  csvExportMwCta: 'Export MW CSV',
   csvExportDone: 'History exported',
   csvExportDoneDesc: '{{count}} workouts saved as {{format}} CSV. Free — your log is yours.',
   csvExportEmpty: 'Nothing to export yet',

@@ -1,7 +1,7 @@
 /**
  * The DOM half of CSV history transfer: preview (dry-run) → confirm write
- * into the persisted store, and export the current log as Strong or the
- * set-table logger CSV (0.1 beta). File pick never writes.
+ * into the persisted store, and export the current log as Strong, the
+ * set-table logger, or Mission Winning native CSV (0.1 beta). File pick never writes.
  *
  * Mirrors `backup.ts`'s restore path deliberately — write the zustand persist
  * payload under `WORKOUT_STORE_KEY` and let the caller refresh, rather than mutating
@@ -30,6 +30,7 @@ import { countCompletedLogSets } from '@/lib/workout/completedLogSets';
 import {
   mergeImportedLogs,
   parseWorkoutCsv,
+  workoutsToMwCsv,
   workoutsToSetTableACsv,
   workoutsToSetTableBCsv,
   type CsvFormat,
@@ -273,7 +274,9 @@ export function buildWorkoutCsvDownload(dialect: WorkoutCsvDialect): CsvExportRe
     const csv =
       dialect === 'set-table-a'
         ? workoutsToSetTableACsv(existing, displayUnits())
-        : workoutsToSetTableBCsv(existing, displayUnits());
+        : dialect === 'mw'
+          ? workoutsToMwCsv(existing, displayUnits())
+          : workoutsToSetTableBCsv(existing, displayUnits());
     return { ok: true, csv, count: existing.length, dialect };
   } catch {
     return { ok: false, error: 'storage' };

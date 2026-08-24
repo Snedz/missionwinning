@@ -1,5 +1,5 @@
-/** Shown on Profile so testers can confirm the deployed build. Bump when shipping UI to master. `.952` failRead comma (past master `.951`). */
-export const APP_BUILD_LABEL = "2026.07-unified.952";
+/** Shown on Profile so testers can confirm the deployed build. Bump when shipping UI to master. `.953` MW export round-trip (past master `.952`). */
+export const APP_BUILD_LABEL = "2026.07-unified.953";
 
 /**
  * Semver for athletes. Distinct from `APP_BUILD_LABEL`, which `/api/health`

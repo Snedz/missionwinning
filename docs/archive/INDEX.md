@@ -15,6 +15,7 @@ When adding a doc:
 | [log/LOG-rotate-933-for-952.md](./log/LOG-rotate-933-for-952.md) | rotated 2026-08-24 for `.952` failRead comma (`.933`) |
 | [log/LOG-rotate-930-for-951.md](./log/LOG-rotate-930-for-951.md) | rotated 2026-08-24 for `.951` Hevy-native diary in (`.930`) |
 | [log/LOG-rotate-929-for-950.md](./log/LOG-rotate-929-for-950.md) | rotated 2026-08-24 for `.950` plate math on the free set row (`.929`) |
+| [log/LOG-rotate-934-for-953.md](./log/LOG-rotate-934-for-953.md) | rotated 2026-08-24 for `.953` MW export round-trip (`.934`) |
 | [log/LOG-rotate-928-for-949.md](./log/LOG-rotate-928-for-949.md) | rotated 2026-08-24 for `.949` guest sets survive sign-in (`.928`) |
 | [log/LOG-rotate-927-for-947.md](./log/LOG-rotate-927-for-947.md) | rotated 2026-08-24 for `.947` Hevy English CSV import (`.927`) |
 | [log/LOG-rotate-926-for-946.md](./log/LOG-rotate-926-for-946.md) | rotated 2026-08-24 for `.946` F-013 smart defaults (`.926`) |
