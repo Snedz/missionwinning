@@ -11,13 +11,15 @@ import { Info } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { CardHeader, CardTitle } from '@/components/ui/card';
-import { AdaptiveOverlay } from '@/components/ui/AdaptiveOverlay';
+import { HoldToConfirmButton } from '@/components/ui/HoldToConfirmButton';
 import { ActiveExerciseMoreMenu } from '@/components/workout/ActiveExerciseMoreMenu';
-import { GarageSwapList } from '@/components/workout/GarageSwapList';
-import { shouldShowGarageSwap } from '@/lib/workout/garageSwap';
+import { SessionSwapSheet } from '@/components/workout/SessionSwapSheet';
+import { isSkippedThisSession } from '@/lib/workout/sessionExerciseOnce';
 import {
   firstWeightedLoad,
+  shouldShowExerciseSwapMenuitem,
   shouldShowLoadPctChip,
+  shouldShowSessionSkip,
 } from '@/lib/workout/activeWorkoutHelpers';
 import {
   SESSION_E1RM_COPY,
@@ -47,6 +49,7 @@ type Props = {
   onUnlinkSuperset: () => void;
   onToggleNote: () => void;
   onToggleSwap: () => void;
+  onSkip: () => void;
   onRemove: () => void;
   onSwapTo: (id: string) => void;
   onRepeatLast: () => void;
@@ -71,10 +74,12 @@ export function ActiveExerciseHeader({
   onUnlinkSuperset,
   onToggleNote,
   onToggleSwap,
+  onSkip,
   onRemove,
   onSwapTo,
   onRepeatLast,
 }: Props) {
+  const skipped = isSkippedThisSession(exLog);
   const { t } = useTranslation();
   const [showE1rm, setShowE1rm] = useState(loadSessionE1rmVisible);
   const sessionE1rm = sessionE1rmFromSets(exLog.sets);
@@ -119,10 +124,7 @@ export function ActiveExerciseHeader({
               <Info className="h-5 w-5" />
             </Button>
           )}
-          {shouldShowGarageSwap({
-            hasCompletedSet: hasCompleted,
-            optionCount: swapOptionCount,
-          }) && (
+          {shouldShowExerciseSwapMenuitem(hasCompleted, swapOptionCount, skipped) && (
             <Button
               type="button"
               variant="ghost"
@@ -140,6 +142,7 @@ export function ActiveExerciseHeader({
             hasNextExercise={hasNext}
             supersetted={!!exLog.supersetGroup}
             hasCompletedSet={hasCompleted}
+            skippedThisSession={skipped}
             swapOptionCount={swapOptionCount}
             onToggleSuperset={onToggleSuperset}
             onUnlinkSuperset={onUnlinkSuperset}
@@ -147,6 +150,7 @@ export function ActiveExerciseHeader({
             onToggleSwap={onToggleSwap}
             onToggleE1rm={onToggleE1rm}
             e1rmVisible={showE1rm}
+            onSkip={onSkip}
             onRemove={onRemove}
           />
         </div>
@@ -177,7 +181,25 @@ export function ActiveExerciseHeader({
         </p>
       )}
 
-      {hasCompleted && (
+      {skipped ? (
+        <p className="text-sm text-muted-foreground" data-testid="session-skipped-exercise">
+          {t('activeSkippedThisSession', { defaultValue: 'Skipped this session' })}
+        </p>
+      ) : null}
+
+      {shouldShowSessionSkip({ skippedThisSession: skipped }) && (
+        <HoldToConfirmButton
+          variant="outline"
+          size="sm"
+          className="w-fit justify-start"
+          label={t('activeSkipThisExerciseHold', {
+            defaultValue: 'Skip this exercise — this session',
+          })}
+          onConfirm={onSkip}
+        />
+      )}
+
+      {hasCompleted && !skipped && (
         <Button
           type="button"
           variant="outline"
@@ -189,20 +211,13 @@ export function ActiveExerciseHeader({
         </Button>
       )}
 
-      {!hasCompleted && (
-        <AdaptiveOverlay
-          open={swapOpen}
-          onClose={onToggleSwap}
-          size="sm"
-          eyebrow={t('activeSwapEyebrow', { defaultValue: 'No machine' })}
-          title={t('activeSwapTitle', {
-            defaultValue: 'Swap',
-          })}
-          bodyClassName="p-4"
-        >
-          <GarageSwapList options={swapCandidates} onChoose={onSwapTo} />
-        </AdaptiveOverlay>
-      )}
+      <SessionSwapSheet
+        open={swapOpen && !hasCompleted && !skipped}
+        onClose={onToggleSwap}
+        currentId={exercise.id}
+        garageOptions={swapCandidates}
+        onConfirm={onSwapTo}
+      />
     </CardHeader>
   );
 }

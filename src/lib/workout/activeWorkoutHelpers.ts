@@ -17,11 +17,14 @@ import { isUnilateralExercise, parseSetSide } from '@/lib/workout/unilateral';
 import { formatPrevPlusLoadLabel, formatSetLoadLine } from '@/lib/workout/bodyweightLoad';
 
 /** First incomplete set across the active session, or null when all done. */
-export function findNextSet(exercises: { sets: { completed: boolean }[] }[]): {
+export function findNextSet(
+  exercises: { sets: { completed: boolean }[]; skippedThisSession?: boolean }[]
+): {
   exIdx: number;
   setIdx: number;
 } | null {
   for (let exIdx = 0; exIdx < exercises.length; exIdx++) {
+    if (exercises[exIdx].skippedThisSession) continue;
     const setIdx = exercises[exIdx].sets.findIndex((s) => !s.completed);
     if (setIdx >= 0) return { exIdx, setIdx };
   }
@@ -670,9 +673,10 @@ export function exerciseHasCompletedSet(
  * are visible again.
  */
 export function laterLiftVisible(
-  exercises: { sets: { completed: boolean }[] }[],
+  exercises: { sets: { completed: boolean }[]; skippedThisSession?: boolean }[],
   exIdx: number
 ): boolean {
+  if (exercises[exIdx]?.skippedThisSession) return true;
   if (exercises.some((ex) => exerciseHasCompletedSet(ex.sets))) return true;
   const current = findNextSet(exercises)?.exIdx ?? 0;
   return exIdx <= current;
@@ -779,12 +783,20 @@ export function shouldShowSupersetLinkMenuitem(
   return hasNextExercise && !alreadySupersetted;
 }
 
-/** Swap is for unstarted exercises that have a garage stand-in. */
+/** Swap this session — another movement, not only a garage stand-in (`.959`). */
 export function shouldShowExerciseSwapMenuitem(
   hasCompletedSet: boolean,
-  optionCount = 0
+  _optionCount = 0,
+  skippedThisSession = false
 ): boolean {
-  return !hasCompletedSet && optionCount > 0;
+  return !hasCompletedSet && !skippedThisSession;
+}
+
+/** Skip this exercise once, this session — not a fail and not a discard. */
+export function shouldShowSessionSkip(params: {
+  skippedThisSession?: boolean;
+}): boolean {
+  return !params.skippedThisSession;
 }
 
 export type ExerciseNextTarget = { reps: number; weight: number };

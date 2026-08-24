@@ -23,6 +23,7 @@ type Props = {
   hasNextExercise: boolean;
   supersetted: boolean;
   hasCompletedSet: boolean;
+  skippedThisSession?: boolean;
   swapOptionCount: number;
   onToggleSuperset: () => void;
   onUnlinkSuperset: () => void;
@@ -30,6 +31,7 @@ type Props = {
   onToggleSwap: () => void;
   onToggleE1rm: () => void;
   e1rmVisible: boolean;
+  onSkip: () => void;
   onRemove: () => void;
 };
 
@@ -40,6 +42,7 @@ export function ActiveExerciseMoreMenu({
   hasNextExercise,
   supersetted,
   hasCompletedSet,
+  skippedThisSession = false,
   swapOptionCount,
   onToggleSuperset,
   onUnlinkSuperset,
@@ -47,6 +50,7 @@ export function ActiveExerciseMoreMenu({
   onToggleSwap,
   onToggleE1rm,
   e1rmVisible,
+  onSkip,
   onRemove,
 }: Props) {
   const { t } = useTranslation();
@@ -119,7 +123,11 @@ export function ActiveExerciseMoreMenu({
               >
                 {t('activeNote', { defaultValue: 'Note' })}
               </button>
-              {shouldShowExerciseSwapMenuitem(hasCompletedSet, swapOptionCount) && (
+              {shouldShowExerciseSwapMenuitem(
+                hasCompletedSet,
+                swapOptionCount,
+                skippedThisSession
+              ) && (
                 <button
                   type="button"
                   role="menuitem"
@@ -146,7 +154,21 @@ export function ActiveExerciseMoreMenu({
                   : t('activeE1rmShow', { defaultValue: SESSION_E1RM_COPY.show })}
               </button>
             </div>
-            <div className="border-t-2 border-border px-1 pt-1">
+            <div className="border-t-2 border-border px-1 pt-1 space-y-1">
+              {!skippedThisSession && (
+                <HoldToConfirmButton
+                  variant="outline"
+                  size="sm"
+                  className="w-full justify-start"
+                  label={t('activeSkipThisExerciseHold', {
+                    defaultValue: 'Skip this exercise — this session',
+                  })}
+                  onConfirm={() => {
+                    onOpenChange(false);
+                    onSkip();
+                  }}
+                />
+              )}
               <HoldToConfirmButton
                 size="sm"
                 className="w-full justify-start"

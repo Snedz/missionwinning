@@ -210,17 +210,20 @@ describe('garage swap stays a line action', () => {
     }
   });
 
-  it('ActiveExerciseList uses garageSwapsWhenOpen; header list is not ExercisePicker', () => {
+  it('ActiveExerciseList uses garageSwapsWhenOpen; Train swap confirms via SessionSwapSheet', () => {
     const list = read('src/components/workout/ActiveExerciseList.tsx');
     const header = read('src/components/workout/ActiveExerciseHeader.tsx');
+    const sheet = read('src/components/workout/SessionSwapSheet.tsx');
     const page = read('src/page-components/ActiveWorkoutPage.tsx');
     assert.match(list, /garageSwapsWhenOpen\(/);
     assert.match(list, /listGarageSwaps\(/);
     assert.doesNotMatch(list, /resolveSwapCandidatesWhenOpen\(/);
     assert.doesNotMatch(page, /garageSwapsWhenOpen\(/);
-    assert.match(header, /GarageSwapList/);
+    assert.match(header, /SessionSwapSheet/);
     assert.doesNotMatch(header, /ExercisePicker/);
-    assert.match(header, /garage-swap-list|GarageSwapList/);
+    assert.match(sheet, /GarageSwapList/);
+    assert.match(sheet, /ExercisePicker/);
+    assert.match(sheet, /session-swap-confirm/);
   });
 
   it('Coach line swap does not call generateWeek', () => {

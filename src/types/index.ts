@@ -107,6 +107,8 @@ export interface ActiveExerciseLog {
   loadPct?: number;
   /** These sets were prescribed by the Coach plan; the logger must not override them. */
   prescribed?: boolean;
+  /** Taken / skipped once — this open session only (`.959`). Not a plan rewrite. */
+  skippedThisSession?: boolean;
 }
 
 export interface ActiveWorkout {

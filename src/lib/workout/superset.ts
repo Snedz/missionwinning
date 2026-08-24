@@ -104,6 +104,7 @@ export function advanceAfterLog(
   }
 
   for (let ei = exIdx; ei < exercises.length; ei++) {
+    if (exercises[ei].skippedThisSession) continue;
     const startSet = ei === exIdx ? setIdx + 1 : 0;
     for (let si = startSet; si < exercises[ei].sets.length; si++) {
       if (!exercises[ei].sets[si].completed) {

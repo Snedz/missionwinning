@@ -48,6 +48,7 @@ type Props = {
   onUnlinkSuperset: (exIdx: number) => void;
   onToggleNote: (exIdx: number) => void;
   onToggleSwap: (exIdx: number) => void;
+  onSkip: (exIdx: number) => void;
   onRemove: (exIdx: number) => void;
   onSwapTo: (exIdx: number, id: string) => void;
   onNoteChange: (exIdx: number, note: string) => void;
@@ -84,6 +85,7 @@ export function ActiveExerciseList({
   onUnlinkSuperset,
   onToggleNote,
   onToggleSwap,
+  onSkip,
   onRemove,
   onSwapTo,
   onNoteChange,
@@ -145,6 +147,7 @@ export function ActiveExerciseList({
             onUnlinkSuperset={() => onUnlinkSuperset(exIdx)}
             onToggleNote={() => onToggleNote(exIdx)}
             onToggleSwap={() => onToggleSwap(exIdx)}
+            onSkip={() => onSkip(exIdx)}
             onRemove={() => onRemove(exIdx)}
             onSwapTo={(id) => onSwapTo(exIdx, id)}
             onNoteChange={(note) => onNoteChange(exIdx, note)}

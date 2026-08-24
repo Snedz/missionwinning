@@ -1618,8 +1618,9 @@ describe('resolveExerciseNextTarget / menu visibility', () => {
     assert.equal(shouldShowSupersetLinkMenuitem(true, false), true);
     assert.equal(shouldShowSupersetLinkMenuitem(true, true), false);
     assert.equal(shouldShowExerciseSwapMenuitem(false, 2), true);
-    assert.equal(shouldShowExerciseSwapMenuitem(false, 0), false);
+    assert.equal(shouldShowExerciseSwapMenuitem(false, 0), true);
     assert.equal(shouldShowExerciseSwapMenuitem(true, 2), false);
+    assert.equal(shouldShowExerciseSwapMenuitem(false, 2, true), false);
   });
 
   it('ActiveExerciseCard wires the next-target and header/footer', () => {
