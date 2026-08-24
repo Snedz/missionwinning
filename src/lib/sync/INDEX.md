@@ -46,8 +46,8 @@ now live in `src/lib/surfaceReality.test.ts`.
 
 **Signed out is not a failure.** Handlers return `true` when there is no user or no
 Supabase configured: local storage is the source of truth and the op is re-queued on
-sign-in. Returning `false` there would spin the backoff against a condition that
-retrying cannot fix.
+`SIGNED_IN` by `useJourneySync` → `syncCurrentHistoryToCloud` (`.949`). Returning
+`false` there would spin the backoff against a condition that retrying cannot fix.
 
 ## Contract
 

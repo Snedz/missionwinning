@@ -10,9 +10,11 @@ import { pullJourneyFromCloud, scheduleJourneyPush, syncJourneyOnSignIn } from '
 import {
   applySignedOutStorage,
   hasFreshExplicitSignOut,
+  shouldAdoptGuestHistory,
 } from '@/lib/storage/athleteLocalState';
 import { restorePremiumCourseProgressForUser } from '@/lib/learnCourseProgress';
 import { setLoggerAuthPresence } from '@/lib/authPresence';
+import { useWorkoutStore } from '@/store/workoutStore';
 
 /** Keeps journey state in sync with Supabase profiles when signed in. */
 export function useJourneySync() {
@@ -20,18 +22,30 @@ export function useJourneySync() {
     const { data: sub } = supabase.auth.onAuthStateChange((event, session) => {
       setLoggerAuthPresence(!!session?.user);
       if (event === 'SIGNED_IN' && session?.user) {
-        void syncJourneyOnSignIn();
-        /*
-         * `.203` — the other half of a mirror that was only ever written.
-         *
-         * `markPremiumSectionComplete` has been writing a per-user copy of
-         * course progress on every completion, and
-         * `restorePremiumCourseProgressForUser` — its only reader — had **zero
-         * callers anywhere**. Sign-in is when a restore is meaningful, and it is
-         * where the parallel fuel mirror is already read from
-         * (`useFuelPlan.ts:64`). The learn path was the one left half-connected.
-         */
-        restorePremiumCourseProgressForUser(session.user.id);
+        void (async () => {
+          const plan = await syncJourneyOnSignIn();
+          /*
+           * `.949` — guest outbox ops ACK while signed out. Re-queue the
+           * store history here so Train/Coach do not need a Force Sync tap.
+           * Foreign replace already wiped persist; do not enqueue leftovers.
+           */
+          if (plan && shouldAdoptGuestHistory(plan)) {
+            const store = useWorkoutStore.getState();
+            await store.syncCurrentHistoryToCloud();
+            await store.loadFromCloud();
+          }
+          /*
+           * `.203` — the other half of a mirror that was only ever written.
+           *
+           * `markPremiumSectionComplete` has been writing a per-user copy of
+           * course progress on every completion, and
+           * `restorePremiumCourseProgressForUser` — its only reader — had **zero
+           * callers anywhere**. Sign-in is when a restore is meaningful, and it is
+           * where the parallel fuel mirror is already read from
+           * (`useFuelPlan.ts:64`). The learn path was the one left half-connected.
+           */
+          restorePremiumCourseProgressForUser(session.user.id);
+        })();
       }
       if (event === 'TOKEN_REFRESHED' && session?.user) {
         void pullJourneyFromCloud();

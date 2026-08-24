@@ -179,6 +179,7 @@ describe('firstSetUngated wiring', () => {
     assert.doesNotMatch(page, /\/api\/private-access/);
     assert.doesNotMatch(page, /submitLead|LaunchNotifyForm|UnlockButton/);
     assert.doesNotMatch(page, /need an account|create an account|sign in to (?:log|start|train)/i);
+    assert.doesNotMatch(page, /Force Sync|Session Expired|sign in to (?:keep|save) these sets/i);
 
     const empty = read('src/components/workout/ActiveEmptyState.tsx');
     assert.doesNotMatch(empty, /SignInPrompt|SignInPanel/);
