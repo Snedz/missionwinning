@@ -6,12 +6,13 @@ Living roadmap for the **everything app** (a bodyweight coach app Super Bundle �
 
 ---
 
-## Frozen plan — `.934` E-Adjacency next-set cite (2026-08-24)
+## Frozen plan — `.939` E-Adjacency next-set cite (2026-08-24)
 
 > **Frozen.** Implement only this section. Plan commit is `[skip vercel]`.
-> Label: `2026.07-unified.934` (master is `.930`).
-> Do not steal `.931` (F-008 honesty #775) · `.932` (Coach why-line #774) · `.933` (brand #776).
-> Draft PR. Preview will not deploy (`[skip vercel]` on every commit).
+> Label: `2026.07-unified.939` (master is `.938` after #775).
+> Do not steal `.934` (Coach why-line #774, landed) · `.938` (honesty #775, landed).
+> In-flight leftovers: `#778` `.935` · this PR was `.936` · `#779` `.937`.
+> Ready for squash. Preview will not deploy (`[skip vercel]` on every commit).
 > Excellence is pass — still do not restyle Train.
 > No `PRIVATE_MODE` flip. No Public GitHub. No promote. No Discord. No DMs/feed/Top 8.
 > Public line stays **Log a set. Offline.** Do not put Train Anywhere. Win Daily. on the door.
@@ -114,13 +115,13 @@ a **visible, skippable, cited next-set after complete** on the free logger.
 - Warmup complete stays quiet. Tombstone history is not evidence (existing last-live rule).
 - Source: does not import `sessionRationale` / PlanSessionCard / readiness.
 - Door / teaser / www do not gain an "E-Adjacency" string.
-- `check-build-label` `.934`. LOG + CONTEXT in the same implement commit.
+- `check-build-label` `.939`. LOG + CONTEXT in the same implement commit.
 
 ### Docs / ship protocol
 
-- `APP_BUILD_LABEL` → `2026.07-unified.934`
-- LOG heading `## 2026-08-24 — Next-set cite after a logged set (\`.934\`)` + rotate oldest live entry
-- CONTEXT `## Now` one `.934` bullet; rotate oldest shipped version bullet (`.917`); keep Status table; ≤25 bullets
+- `APP_BUILD_LABEL` → `2026.07-unified.939`
+- LOG heading `## 2026-08-24 — Next-set cite after a logged set (\`.939\`)` + rotate oldest live entry
+- CONTEXT `## Now` one `.939` bullet; rotate oldest shipped version bullet (`.920`); keep Status table; ≤25 bullets
 - i18n: cite / skip / weekday / rest keys in `activeWorkoutLocales.ts`; `npm run i18n:fill` + parity
 - INDEX: `src/lib/workout/INDEX.md` + `src/components/workout/INDEX.md`
 - Every commit: `[skip vercel]`
@@ -136,6 +137,9 @@ a **visible, skippable, cited next-set after complete** on the free logger.
 - Do not invent new geo-blocks
 - Do not gate the free logger
 - Do not raise `TAP_BUDGET`
+
+---
+
 ## Frozen plan — `.932` Coach why-this-session (reserved `.699` / F-012) (2026-08-24)
 
 > **Frozen.** Implement only this section. Plan commit is `[skip vercel]`.

@@ -1,7 +1,7 @@
 'use client';
 
 /**
- * After-complete next-set cite on the live set table (.934).
+ * After-complete next-set cite on the live set table (.939).
  * Quiet ink — Log set owns poster red. Skip never blocks logging.
  * Not a last-actuals ghost (last-set ghost already copies last).
  * Not a feed. Not a paywall. Not a door name.

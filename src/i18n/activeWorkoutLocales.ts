@@ -260,7 +260,7 @@ type ActiveWorkoutStrings = {
   activeVsLastRep: string;
   activeVsLastReps: string;
   activeVsLastAria: string;
-  /** After-complete next-set cite (.934). */
+  /** After-complete next-set cite (.939). */
   activeNextCiteRest: string;
   activeNextCiteFromSession: string;
   activeNextCiteLastRest: string;

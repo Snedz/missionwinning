@@ -20,7 +20,7 @@ Root-level `@/lib/{name}` paths re-export from here for compatibility — prefer
 9. `workoutVictory.ts` — post-workout summary; early/no-plan → Mission Coach; freestyle progression skipped when prescribed (`.410`); one-exit secondary Today helper (`.422`); vs-last `receipt` from `victoryReceipt.ts` (`.713` / merge-all); `workingReps` for BW volume (`.886`)
 9b. `victoryReceipt.ts` — vs-last session totals + per-lift rows for Victory (`.713`)  
 9c. `completedLogSets.ts` — one set-count for a completed log (Today highlights + Victory) (`.930`)  
-10. `activeWorkoutHelpers.ts` — next incomplete set, last session, set stats, `buildConsoleSet` / `planApplyTargets` / `resolveActiveSetDial` (`.297`/`.303`); `getLastSessionSets` reads `lastLiveSessionForExercise` (`.936` recovers #487 leftover)  
+10. `activeWorkoutHelpers.ts` — next incomplete set, last session, set stats, `buildConsoleSet` / `planApplyTargets` / `resolveActiveSetDial` (`.297`/`.303`); `getLastSessionSets` reads `lastLiveSessionForExercise` (`.939` recovers #487 leftover)  
 10a. `repeatLastSession.ts` — last completed log → startWorkout template (`.717`); wraps `historyRetrain.templateFromCompletedLog`  
 11. `activeWorkoutPulse.ts` — nav pulse flag without store
 12. `workoutPersistLite.ts` — history/streak from localStorage (cold path)
@@ -37,7 +37,7 @@ Root-level `@/lib/{name}` paths re-export from here for compatibility — prefer
 23. `tempo.ts` — optional ecc/pause/con parse + last-tempo recall (`.757`)
 24. `lastSetGhost.ts` — last **working** set ghost (not warmup W); one-tap accept (`.759`)
 25. `vsLastSet.ts` — after-save vs-last delta on the set row (`.760`); working-set index; not ghost prefill
-25b. `setRowAdjacency.ts` — next-set target + log cite; `resolveAfterCompleteCite` after a completed working set (`.934`)
+25b. `setRowAdjacency.ts` — next-set target + log cite; `resolveAfterCompleteCite` after a completed working set (`.939`)
 26. `sessionE1rm.ts` — educational Epley e1RM from this session's working sets (`.761`); hide pref `mw_show_session_e1rm`
 27. `homeGymKit.ts` — local Home gym kit (barbell/rack/plates/dumbbells/pull-up-bar/floor). Logger + Just Go + Coach filter; never rank; Train empty Start stays repeat-last (`.763`)
 28. `warmupRamp.ts` — free set-table 40/60/80 warmup insert + set-column `W` ordinals (`.764`); plate line is `src/lib/plateCalculator.ts` `setRowPlateLine`
@@ -66,7 +66,7 @@ Root-level `@/lib/{name}` paths re-export from here for compatibility — prefer
 | `activeWorkoutHelpers.test.ts` | Next set, last session stats |
 | `repeatLastSession.test.ts` | Last-session copy + empty-history path (`.717`) |
 | `vsLastSet.test.ts` | After-save vs-last: +weight / +reps / first-ever (`.760`) |
-| `setRowAdjacency.test.ts` | Honest empty + one-set skippable cite; no all-prescribed bump; not a last-actuals ghost; Train-only (`.936`) |
+| `setRowAdjacency.test.ts` | Honest empty + one-set skippable cite; no all-prescribed bump; not a last-actuals ghost; Train-only (`.939`) |
 | `sessionCheckInOffer.test.ts` | First-mission never offers check-in (`.293`) |
 | `loggerSpeed.test.ts` | Use-next offer rules (`.288`) |
 | `exerciseNote.test.ts` | Prefill / clear / persist seed + first-paint guards (`.748`) |

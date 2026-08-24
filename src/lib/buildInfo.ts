@@ -1,5 +1,5 @@
-/** Shown on Profile so testers can confirm the deployed build. Bump when shipping UI to master. `.934` next-set cite. */
-export const APP_BUILD_LABEL = "2026.07-unified.934";
+/** Shown on Profile so testers can confirm the deployed build. Bump when shipping UI to master. `.939` next-set cite (past master `.938`). */
+export const APP_BUILD_LABEL = "2026.07-unified.939";
 
 /**
  * Semver for athletes. Distinct from `APP_BUILD_LABEL`, which `/api/health`
