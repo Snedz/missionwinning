@@ -71,7 +71,9 @@ export function CinematicWww({ mode, door }: Props) {
             <div className="www-cine-cover www-cine-rise">
               <p className="eyebrow-live www-cine-kicker">{g('cineSetEyebrow')}</p>
               <h1 className="display-hero">{g('cineHeroHeadline')}</h1>
-              <p className="www-cine-lede">{g('cineHeroLead')}</p>
+              <p className="www-cine-lede" data-mw-wedge-teaser>
+                {g('cineHeroLead')}
+              </p>
             </div>
             <CinematicLogger doneHref={doorHref} doneLabel={navLabel} />
           </div>

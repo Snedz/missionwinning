@@ -1,5 +1,5 @@
-/** Shown on Profile so testers can confirm the deployed build. Bump when shipping UI to master. `.941` account-lite auth harden (past master `.940`). */
-export const APP_BUILD_LABEL = "2026.07-unified.941";
+/** Shown on Profile so testers can confirm the deployed build. Bump when shipping UI to master. `.942` gated www craft (past master `.941`). */
+export const APP_BUILD_LABEL = "2026.07-unified.942";
 
 /**
  * Semver for athletes. Distinct from `APP_BUILD_LABEL`, which `/api/health`

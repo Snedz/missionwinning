@@ -127,12 +127,13 @@ test('locale pack overlays do not restore private-beta or Free beta eyebrows', (
   assert.deepEqual(hits, [], `pack gateEyebrow still positions as invite/private:\n${hits.join('\n')}`);
 });
 
-test('PrivateTeaser floors honesty copy and marks one support lede', () => {
-  const src = read('app/private/PrivateTeaserClient.tsx');
-  assert.match(src, /gateEnFloor/);
-  assert.match(src, /data-mw-wedge-teaser/);
-  assert.match(src, /gateSubtitle/);
-  assert.match(src, /gateLocalFirst/);
+test('PrivateTeaser floors honesty copy; SET marks one support lede', () => {
+  const teaser = read('app/private/PrivateTeaserClient.tsx');
+  assert.match(teaser, /gateEnFloor/);
+  assert.match(teaser, /gateLocalFirst/);
+  const field = read('src/components/landing/CinematicWww.tsx');
+  assert.match(field, /data-mw-wedge-teaser/);
+  assert.match(field, /cineHeroLead/);
 });
 
 test('MarketingNav gated CTA is Enter with code → /private', () => {

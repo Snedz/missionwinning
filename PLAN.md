@@ -1,9 +1,9 @@
-# PLAN.md — Gated www craft (`.935`)
+# PLAN.md — Gated www craft (`.942`)
 
 **Freeze.** Implement only this file. Do not reopen refused items mid-build.
 **Not** [docs/PLAN.md](docs/PLAN.md) (build phases A–I). Thesis: [docs/design/WWW_NIGHT.md](docs/design/WWW_NIGHT.md). Comp: [docs/design/concepts/05-exquisite.html](docs/design/concepts/05-exquisite.html).
 **Lane:** Engineering-Web · gated first paint · **Horizon:** 0 / W craft window
-**Label:** `2026.07-unified.935` (master is `.933`. `.931` honesty #775 is still open. `.934` unused — founder named `.935`.)
+**Label:** `2026.07-unified.942` (master is `.941` after #780. `.935` was this PR’s first mint; do not keep it.)
 **Excellence-Override:** gated www craft (no Today/Train restyle)
 
 ---
@@ -161,6 +161,6 @@ Extend existing honesty / teaser / consent tests. Falsify each new claim.
 
 ## 6. Ship protocol
 
-Same implement commit: `APP_BUILD_LABEL` → `2026.07-unified.935` · `LOG.md` heading ending `(.935)` · `CONTEXT.md` `## Now` names the full label. Rotate LOG oldest live entry and the oldest *shipped* Now bullet so budgets hold. `[skip vercel]` on every commit.
+Same implement commit: `APP_BUILD_LABEL` → `2026.07-unified.942` · `LOG.md` heading ending `(.942)` · `CONTEXT.md` `## Now` names the full label. Rotate LOG oldest live entry and the oldest *shipped* Now bullet so budgets hold. `[skip vercel]` on every commit.
 
 Draft PR. Screenshots of `/private` desktop (1440×900) + phone (390×844). Local tests green.
