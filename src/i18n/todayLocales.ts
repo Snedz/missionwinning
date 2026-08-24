@@ -290,6 +290,11 @@ type TodayStrings = {
   /** Quiet last/next cite on Today's Start (`.954`). */
   todayReturnLast: string;
   todayReturnNext: string;
+  /** Stable next day from the diary (`.955`) — Coach / Show all, not a second Today Start. */
+  coachNextDayEyebrow: string;
+  coachNextDayFromLogs: string;
+  coachNextDayFromPlan: string;
+  coachNextDayStart: string;
 };
 
 const en: TodayStrings = {
@@ -598,6 +603,10 @@ const en: TodayStrings = {
   todayReentryQuietLine: "Back from {{exercise}}. Here's the {{minutes}}-minute version.",
   todayReturnLast: 'Last · {{name}}',
   todayReturnNext: 'Next · {{name}}',
+  coachNextDayEyebrow: 'Next day',
+  coachNextDayFromLogs: 'From your logs',
+  coachNextDayFromPlan: "From this week's plan",
+  coachNextDayStart: 'Start {{name}}',
 };
 
 const coachPlanDefaults = {
@@ -614,6 +623,10 @@ const coachPlanDefaults = {
   todayRepeatLastDesc: en.todayRepeatLastDesc,
   todayReturnLast: en.todayReturnLast,
   todayReturnNext: en.todayReturnNext,
+  coachNextDayEyebrow: en.coachNextDayEyebrow,
+  coachNextDayFromLogs: en.coachNextDayFromLogs,
+  coachNextDayFromPlan: en.coachNextDayFromPlan,
+  coachNextDayStart: en.coachNextDayStart,
 };
 
 const es: TodayStrings = {
