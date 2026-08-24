@@ -45,8 +45,8 @@ describe('CoachChatPanel peels (.437)', () => {
     assert.match(transcript, /role="log"/);
     assert.match(composer, /coach-chat-input/);
     assert.match(composer, /coachChatSend/);
-    assert.match(composer, /coach-chat-mic/);
-    assert.doesNotMatch(panel, /coach-chat-mic/, 'mic lives in CoachChatComposer');
+    assert.doesNotMatch(composer, /coach-chat-mic/, 'Talk path has no mic');
+    assert.doesNotMatch(panel, /coach-chat-mic/, 'Talk path has no mic');
     assert.doesNotMatch(
       panel,
       /role="log"/,

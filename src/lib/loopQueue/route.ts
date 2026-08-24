@@ -156,8 +156,14 @@ export function readWorkbench(root: string, row: QueueRow): Workbench | null {
   // campaign report" — reported `LEAD`, because LEAD is first in the array and
   // is mentioned as the step *after* this one. The answer has to come from the
   // sentence, not from how the constant happens to be sorted.
+  //
+  // VISION's ready-for-founder line then named SMOOTHER as *history*
+  // ("SMOOTHER R1 walked…"). The first role word is not the next spawn when
+  // the line already named `ready-for-founder`.
+  const spawnBody = nextSpawn?.replace(/^\*\*Next spawn:\*\*\s*/, '').trim() ?? '';
+  const readyFirst = /^`?ready-for-founder`?/.test(spawnBody);
   const role =
-    nextSpawn === null
+    nextSpawn === null || readyFirst
       ? null
       : (ROLES.map((r) => ({ r, at: nextSpawn.search(new RegExp(`\\b${r}\\b`)) }))
           .filter((x) => x.at >= 0)
