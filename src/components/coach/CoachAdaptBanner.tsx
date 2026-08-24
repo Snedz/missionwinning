@@ -28,6 +28,12 @@ import {
 import { useStartCoachSession } from '@/hooks/useStartCoachSession';
 import { useUnits } from '@/hooks/useUnits';
 import { weightUnitLabel } from '@/lib/units';
+import {
+  applyPlannedMissSkip,
+  applyPlannedMissSlide,
+  findPlannedMiss,
+} from '@/lib/coach/plannedMiss';
+import { savePlan } from '@/lib/coach/storage';
 
 type Props = {
   plan: CoachPlan;
@@ -111,8 +117,14 @@ export function CoachAdaptBanner({
 
   const visibleBeats = compact ? beats.slice(0, 1) : beats.slice(0, 3);
   const missedCount = plan.sessions.filter((s) => s.status === 'missed').length;
-  const showReentry = !compact && missedCount > 0;
-  const reentrySession = coachAdaptReentrySession(plan, todayOffset);
+  const plannedMiss =
+    !compact && typeof todayOffset === 'number'
+      ? findPlannedMiss(plan, todayOffset, { weekStart: plan.weekStart })
+      : { show: false as const, session: null, canSlide: false as const };
+  const showReentry = !compact && (missedCount > 0 || plannedMiss.show);
+  const reentrySession =
+    (plannedMiss.show ? plannedMiss.session : null) ??
+    coachAdaptReentrySession(plan, todayOffset);
   const adaptSignal = hasCoachAdaptationSignal(plan);
 
   return (
@@ -326,6 +338,32 @@ export function CoachAdaptBanner({
             >
               {t('coachAdaptLighterWeek', { defaultValue: 'Open Today' })}
             </Link>
+            {plannedMiss.show ? (
+              <>
+                <button
+                  type="button"
+                  data-testid="planned-miss-skip"
+                  onClick={() => savePlan(applyPlannedMissSkip(plan, plannedMiss.session.id))}
+                  className="inline-flex min-h-[44px] items-center px-3 text-sm text-muted-foreground hover:text-foreground tap-target"
+                >
+                  {t('plannedMissSkip', { defaultValue: 'Skip' })}
+                </button>
+                {plannedMiss.canSlide ? (
+                  <button
+                    type="button"
+                    data-testid="planned-miss-slide"
+                    onClick={() =>
+                      savePlan(
+                        applyPlannedMissSlide(plan, plannedMiss.session.id, todayOffset ?? 0)
+                      )
+                    }
+                    className="inline-flex min-h-[44px] items-center px-3 text-sm text-muted-foreground hover:text-foreground tap-target"
+                  >
+                    {t('plannedMissSlide', { defaultValue: 'Slide' })}
+                  </button>
+                ) : null}
+              </>
+            ) : null}
           </div>
         </div>
       )}

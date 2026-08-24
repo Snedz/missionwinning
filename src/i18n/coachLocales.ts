@@ -130,6 +130,11 @@ type CoachStrings = {
   coachAdaptReentryLead: string;
   coachAdaptJustGo: string;
   coachAdaptLighterWeek: string;
+  /** `.945` — planned-day miss prompt (Today + Coach). Shame-free. */
+  plannedMissLine: string;
+  plannedMissDoNow: string;
+  plannedMissSkip: string;
+  plannedMissSlide: string;
   coachNoSessionToday: string;
   coachRestDay: string;
   coachDaysPerWeek: string;
@@ -479,6 +484,10 @@ const en: CoachStrings = {
   coachAdaptReentryLead: 'Ready to train again?',
   coachAdaptJustGo: 'Just Go — log one set',
   coachAdaptLighterWeek: 'Open Today',
+  plannedMissLine: 'A planned session is still here.',
+  plannedMissDoNow: 'Do it now',
+  plannedMissSkip: 'Skip',
+  plannedMissSlide: 'Slide',
   coachNoSessionToday: 'Rest or recovery day — light movement still counts.',
   coachRestDay: 'Rest day',
   coachDaysPerWeek: 'How many days a week?',

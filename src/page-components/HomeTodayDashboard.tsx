@@ -34,6 +34,7 @@ import {
 import { loadTodayDashboardPrefs, type TodayDashboardPrefs } from "@/lib/todayDashboardPrefs";
 import { StaggerGroup, StaggerItem } from "@/components/layout/StaggerReveal";
 import { useMissionJourney } from "@/hooks/useMissionJourney";
+import { usePlannedMissOffer } from "@/hooks/usePlannedMissOffer";
 import { getTodayLayout } from "@/hooks/useTodayLayout";
 import { formatStoredGoal, goalPresetValue } from "@/lib/journeyGoals";
 import { useUnits } from "@/hooks/useUnits";
@@ -144,6 +145,7 @@ export function HomeTodayDashboard() {
   const units = useUnits();
   const { action, state } = useMissionJourney();
   const layout = getTodayLayout(state.phase);
+  const plannedMiss = usePlannedMissOffer(state.phase, !!activeWorkout);
 
   const recent = workoutHistory.slice(0, 3);
 
@@ -830,6 +832,10 @@ export function HomeTodayDashboard() {
               ? reentry
               : null
           }
+          plannedMiss={plannedMiss.offer}
+          onPlannedMissDoNow={plannedMiss.doNow}
+          onPlannedMissSkip={plannedMiss.skip}
+          onPlannedMissSlide={plannedMiss.slide}
         />
       </ScreenDock>
     </>

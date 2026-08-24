@@ -12,7 +12,11 @@ import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import path from 'node:path';
 import type { JourneyPhase } from '@/lib/missionJourney';
-import { firstStepsMayMount, reentryCardMayMount } from '@/lib/today/todayGuidanceMount';
+import {
+  firstStepsMayMount,
+  plannedMissMayMount,
+  reentryCardMayMount,
+} from '@/lib/today/todayGuidanceMount';
 
 const root = path.join(import.meta.dirname, '..', '..', '..');
 const read = (p: string) => readFileSync(path.join(root, p), 'utf8');
@@ -115,6 +119,30 @@ test('both shells ask the shared re-entry rule rather than re-deriving it', () =
       `${shell} must gate re-entry on the shared rule (reentryCardMayMount or buildTodayCandidates)`
     );
   }
+});
+
+test('planned-miss chrome follows the same mount rule as the quiet line', () => {
+  assert.equal(plannedMissMayMount({ phase: 'basic', show: false }), false);
+  assert.equal(plannedMissMayMount({ phase: 'i-day', show: true }), false);
+  assert.equal(plannedMissMayMount({ phase: 'basic', show: true }), true);
+  assert.equal(
+    plannedMissMayMount({ phase: 'basic', show: true, sessionOpen: true }),
+    false
+  );
+});
+
+test('both Today shells pass the planned-miss offer', () => {
+  for (const shell of SHELLS) {
+    const src = read(shell);
+    assert.match(
+      src,
+      /plannedMiss=\{/,
+      `${shell} must pass the planned-miss offer so skippable chrome can mount`
+    );
+    assert.match(src, /usePlannedMissOffer\(/);
+  }
+  const hero = read('src/components/journey/JourneyHero.tsx');
+  assert.match(hero, /<TodayPlannedMissPrompt\b/);
 });
 
 test('both shells hide the quiet line while a workout is open', () => {

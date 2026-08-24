@@ -9,6 +9,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useTranslation } from 'react-i18next';
 import { JourneyHero } from '@/components/journey/JourneyHero';
+import { usePlannedMissOffer } from '@/hooks/usePlannedMissOffer';
 
 import { reentryCardMayMount } from '@/lib/today/todayGuidanceMount';
 import { TodaySummaryPins } from '@/components/today/TodaySummaryPins';
@@ -70,6 +71,7 @@ export function HomeTodayLean() {
   const hasActiveWorkout = useActiveWorkoutPulse();
   const [workoutHistory, setWorkoutHistory] = useState<CompletedWorkoutLog[]>([]);
   const [journeyState, setJourneyState] = useState<JourneyState>(() => getDefaultJourneyState());
+  const plannedMiss = usePlannedMissOffer(journeyState.phase, hasActiveWorkout);
   const [action, setAction] = useState<JourneyAction>(() => SSR_ACTION);
   const [todayLabel, setTodayLabel] = useState('');
   /** Focus label for Just Go — filled after idle import of score/readiness. */
@@ -291,6 +293,10 @@ export function HomeTodayLean() {
               ? reentry
               : null
           }
+          plannedMiss={plannedMiss.offer}
+          onPlannedMissDoNow={plannedMiss.doNow}
+          onPlannedMissSkip={plannedMiss.skip}
+          onPlannedMissSlide={plannedMiss.slide}
         />
       </ScreenDock>
     </>
