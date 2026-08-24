@@ -19,11 +19,10 @@
 import { LOCAL_FIRST_COPY } from '@/lib/localFirstCopy';
 
 export const GATE_EN: Record<string, string> = {
-  gateEyebrow: 'Alpha',
-  gateTitle1: 'Train anywhere.',
-  gateTitle2: 'Win daily.',
-  gateSubtitle:
-    'Free offline workout logging plus Mission Coach — weekly plans from your logs alone, no wearable. Full tools free in this Alpha; the logger stays free forever.',
+  gateEyebrow: 'Free',
+  gateTitle1: 'Log a set.',
+  gateTitle2: 'Offline.',
+  gateSubtitle: 'No account. No wearable.',
   /**
    * `.766` — the mechanism, not the adjective. CN/HK respondents believed the
    * offline claim (3.97) and not the implementation; "offline" is the word an app
@@ -54,9 +53,9 @@ export const GATE_EN: Record<string, string> = {
     'Enter the access code from your email, then complete I-Day and log your first workout.',
   gateBetaGuide: 'Alpha start guide',
   gateBetaGuideFoot: 'Have a code? See the',
-  cinePublicLine: 'Train Anywhere. Win Daily.',
+  cinePublicLine: 'Log a set. Offline.',
   cineHeroHeadline: 'Log a set. Offline.',
-  cineHeroLead: 'Mission Coach plans the week from the log. No wearable.',
+  cineHeroLead: 'No account. No wearable.',
   cineWeekKicker: 'Mission Coach',
   cineWeekTitle: 'A logged set is a new plan.',
   cineWeekLead:

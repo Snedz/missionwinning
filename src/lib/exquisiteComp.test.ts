@@ -20,19 +20,22 @@ test('05-exquisite is a self-contained HTML document', () => {
 });
 
 test('05-exquisite carries the gated CTA pack and refuses invite-only', () => {
-  assert.match(html, />Alpha</);
+  assert.match(html, />Free</);
   assert.match(html, /Enter with code/);
   assert.match(html, /Get notified/);
   assert.doesNotMatch(html, /invite-only/i);
   assert.doesNotMatch(html, /Get an invite/i);
   assert.doesNotMatch(html, /we're live/i);
+  assert.doesNotMatch(html, /Free beta/i);
 });
 
 test('05-exquisite nested mission: public line on fold 1, Coach beat, quiet later', () => {
-  assert.match(html, /Train Anywhere\. Win Daily\./);
+  assert.match(html, /<title>Mission Winning — Log a set\. Offline\./);
   assert.match(html, /<h1[^>]*>Log a set\. Offline\./);
+  assert.match(html, /<p class="kicker">Anywhere<\/p>/);
   assert.match(html, /Mission Coach/);
   assert.match(html, /class="later">Mission Winning Health\. Later: an athlete page you author\. Not a feed\./);
+  assert.doesNotMatch(html, /Train Anywhere\. Win Daily\./i);
   assert.doesNotMatch(html, /WeChat/i);
   assert.doesNotMatch(html, /mini-program/i);
   assert.doesNotMatch(html, /Fuel · Move · Mind/);
@@ -45,7 +48,7 @@ test('05-exquisite SET is a full-viewport field, not a split widget', () => {
   const setBlock = html.slice(setStart, anywhereStart);
   assert.match(setBlock, /class="set-field"/);
   assert.doesNotMatch(setBlock, /class="inner"/);
-  assert.match(setBlock, /Mission Coach plans the week from the log\. No wearable\./);
+  assert.match(setBlock, /No account\. No wearable\./);
 });
 
 test('05-exquisite scene order is SET → ANYWHERE → WEEK → DOOR', () => {

@@ -1,5 +1,5 @@
 {
-  "gateEyebrow": "Beta aperta solo su invito",
+  "gateEyebrow": "Free",
   "gateTitle1": "Allena ovunque.",
   "gateTitle2": "Vinci ogni giorno.",
   "gateSubtitle": "Free offline workout logging plus Mission Coach — weekly plans from your logs alone, no wearable. Full tools free in this Alpha; the logger stays free forever.",
@@ -26,9 +26,9 @@
   "gateInviteSubtitle": "Enter the access code from your email, then complete I-Day and log your first workout.",
   "gateBetaGuide": "Alpha start guide",
   "gateBetaGuideFoot": "Have a code? See the",
-  "cinePublicLine": "Train Anywhere. Win Daily.",
+  "cinePublicLine": "Log a set. Offline.",
   "cineHeroHeadline": "Log a set. Offline.",
-  "cineHeroLead": "Mission Coach plans the week from the log. No wearable.",
+  "cineHeroLead": "No account. No wearable.",
   "cineWeekKicker": "Mission Coach",
   "cineWeekTitle": "A logged set is a new plan.",
   "cineWeekLead": "Miss a day, travel, only a band — the week reshapes from the log. Not from a wearable, not from a schedule you already broke.",

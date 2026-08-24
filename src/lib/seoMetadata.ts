@@ -43,7 +43,7 @@ const DEFAULT_OG_IMAGE = {
   url: '/brand/og-default.png',
   width: 1200,
   height: 630,
-  alt: 'Mission Winning — Train Anywhere. Win Daily.',
+  alt: 'Mission Winning — Log a set. Offline.',
 } as const;
 
 export function publicPageMetadata(input: PublicPageMetaInput): Metadata {

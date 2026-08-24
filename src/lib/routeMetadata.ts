@@ -3,7 +3,7 @@ import type { Metadata } from 'next';
 /** Static English page titles for app routes (localized generateMetadata deferred to i18n G2). */
 export const ROUTE_TITLES = {
   home: 'Today',
-  landing: 'Train Anywhere. Win Daily.',
+  landing: 'Log a set. Offline.',
   log: 'Today',
   active: 'Active Workout',
   nutrition: 'Nutrition',

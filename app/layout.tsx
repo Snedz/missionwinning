@@ -17,7 +17,7 @@ const archivo = Archivo({
 
 export const metadata: Metadata = {
   title: {
-    default: 'Mission Winning — Train Anywhere. Win Daily.',
+    default: 'Mission Winning — Log a set. Offline.',
     template: '%s · Mission Winning',
   },
   description:
@@ -27,7 +27,7 @@ export const metadata: Metadata = {
     type: 'website',
     locale: 'en_US',
     siteName: 'Mission Winning',
-    title: 'Mission Winning — Train Anywhere. Win Daily.',
+    title: 'Mission Winning — Log a set. Offline.',
     description:
       'Free workout tracking, nutrition, mobility, mind, and learning — one path forward. Works offline. Mission Coach plans your week.',
     images: [
@@ -35,13 +35,13 @@ export const metadata: Metadata = {
         url: '/brand/og-default.png',
         width: 1200,
         height: 630,
-        alt: 'Mission Winning — Train Anywhere. Win Daily.',
+        alt: 'Mission Winning — Log a set. Offline.',
       },
     ],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Mission Winning — Train Anywhere. Win Daily.',
+    title: 'Mission Winning — Log a set. Offline.',
     description:
       'Free workout tracking, nutrition, mobility, mind, and learning — one path forward. Works offline.',
     images: ['/brand/og-default.png'],

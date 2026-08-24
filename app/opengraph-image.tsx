@@ -1,6 +1,6 @@
 import { ImageResponse } from 'next/og';
 
-export const alt = 'Mission Winning — Train Anywhere. Win Daily.';
+export const alt = 'Mission Winning — Log a set. Offline.';
 export const size = { width: 1200, height: 630 };
 export const contentType = 'image/png';
 
@@ -60,7 +60,7 @@ export default function OpenGraphImage() {
               maxWidth: 900,
             }}
           >
-            Train anywhere. Win daily.
+            Log a set. Offline.
           </div>
           <div style={{ marginTop: 20, fontSize: 24, color: '#5f5e5d', maxWidth: 800 }}>
             Free core forever · Offline PWA · Mission Coach weekly plans

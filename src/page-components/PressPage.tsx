@@ -16,7 +16,7 @@ import { cn } from '@/lib/utils';
 import { isFreeBeta } from '@/lib/freeBeta';
 
 const SHORT_BOILERPLATE =
-  'Free offline workout tracker — no account required to start.';
+  'Log a set. Offline. No account. No wearable.';
 
 const MEDIUM_BOILERPLATE =
   'Mission Winning is a free offline workout logger plus adaptive Mission Coach from your logs — no wearable required. Free core forever. Works offline as a PWA. Premium Super Bundle unlocks Coach depth and other pillars — never gates the logger.';
@@ -202,10 +202,10 @@ export function PressPage() {
             </Reveal>
             <Reveal delayMs={90}>
               <p className="text-sm text-muted-foreground">
-                Tagline:{' '}
-                <span className="text-primary">Train Anywhere. Win Daily.</span>
+                Public line:{' '}
+                <span className="text-primary">Log a set. Offline.</span>
                 {' · '}
-                <CopyButton text="Train Anywhere. Win Daily." />
+                <CopyButton text="Log a set. Offline." />
               </p>
             </Reveal>
           </div>

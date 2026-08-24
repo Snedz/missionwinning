@@ -1,7 +1,8 @@
 /**
- * Gated www copy may not say invite-only / get-an-invite / private beta / we're live.
- * CTA pack: Alpha · Notify me · Have an Alpha access code?.
- * docs/design/WWW_NIGHT.md §7 · docs/SOCIAL_LAUNCH.md F-008
+ * Gated www copy may not say invite-only / get-an-invite / private beta /
+ * Free beta / we're live / Train Anywhere. Win Daily. as the company line.
+ * Door pack: Free · Get notified · Enter with code.
+ * docs/design/WWW_NIGHT.md §7 · docs/SOCIAL_LAUNCH.md F-008 · PLAN.md `.933`
  */
 
 import { test } from 'node:test';
@@ -9,15 +10,21 @@ import assert from 'node:assert/strict';
 import { readFileSync, readdirSync } from 'node:fs';
 import path from 'path';
 import { gateStringsFor } from '@/i18n/gateLocales';
+import {
+  GATED_WWW_HONESTY,
+  gatedWwwHonestyIsHonest,
+} from '@/lib/gatedWwwHonesty';
 
 const root = path.join(import.meta.dirname, '..', '..');
 const read = (p: string) => readFileSync(path.join(root, p), 'utf8');
 
 const BANNED =
-  /invite-only|get an invite|private beta|free beta|we're live|we’re live|checking sign-in|publicly available/i;
+  /invite-only|get an invite|private beta|free beta|we're live|we’re live|checking sign-in|publicly available|train anywhere\. win daily\./i;
 
 const SURFACE_FILES = [
+  'src/i18n/gateEn.ts',
   'src/i18n/gateLocales.ts',
+  'src/lib/gatedWwwHonesty.ts',
   'src/i18n/firstStepsLocales.ts',
   'src/i18n/navLocales.ts',
   'src/components/layout/AppHeader.tsx',
@@ -29,29 +36,58 @@ const SURFACE_FILES = [
   'src/components/marketing/MarketingNav.tsx',
   'src/components/public/PublicStatusBar.tsx',
   'docs/design/concepts/05-exquisite.html',
+  'docs/brand-guidelines.md',
 ];
 
-test('EN gate CTA pack is Alpha / Notify me / Have an Alpha access code?', () => {
+function isNamedBan(line: string): boolean {
+  return (
+    line.includes('Forbidden') ||
+    line.includes('banned') ||
+    /^\s*(\/\/|\*|\/\*)/.test(line)
+  );
+}
+
+test('EN door pack is Free / Get notified / Enter with code', () => {
   const en = gateStringsFor('en');
-  assert.equal(en.gateEyebrow, 'Alpha');
+  assert.equal(en.gateEyebrow, 'Free');
   assert.equal(en.gateWaitlistTitle, 'Get notified');
   assert.equal(en.gateWaitlistSubmit, 'Notify me');
   assert.equal(en.gateAccessSubmit, 'Enter with code');
-  assert.equal(en.gateAccessSummary, 'Have an Alpha access code?');
+  assert.equal(GATED_WWW_HONESTY.gateEyebrow, 'Free');
+  assert.equal(GATED_WWW_HONESTY.gateWaitlistTitle, 'Get notified');
+  assert.equal(GATED_WWW_HONESTY.landingNavStartGated, 'Enter with code');
 });
 
-test('nested mission: public line + Coach beat + quiet later, never a feed', () => {
+test('nested mission: public line + support + Coach beat + quiet later, never a feed', () => {
   const en = gateStringsFor('en');
-  assert.equal(en.cinePublicLine, 'Train Anywhere. Win Daily.');
+  assert.equal(en.cinePublicLine, 'Log a set. Offline.');
   assert.equal(en.cineHeroHeadline, 'Log a set. Offline.');
-  assert.equal(
-    en.cineHeroLead,
-    'Mission Coach plans the week from the log. No wearable.'
-  );
+  assert.equal(en.cineHeroLead, 'No account. No wearable.');
+  assert.equal(en.gateSubtitle, 'No account. No wearable.');
   assert.equal(en.cineWeekKicker, 'Mission Coach');
   assert.match(en.cineLater, /Mission Winning Health/);
   assert.match(en.cineLater, /Not a feed/);
   assert.doesNotMatch(en.cineLater, /WeChat|mini-program|MySpace|Fuel · Move · Mind/i);
+});
+
+test('banned regex catches Win Daily-as-tagline and Free beta on the door', () => {
+  assert.match('Train Anywhere. Win Daily.', BANNED);
+  assert.match('Free beta', BANNED);
+  assert.match('invite-only', BANNED);
+  assert.doesNotMatch('Log a set. Offline.', BANNED);
+  assert.doesNotMatch('Anywhere', BANNED);
+  assert.doesNotMatch('Free', BANNED);
+  const mutantLine = gatedWwwHonestyIsHonest({
+    ...GATED_WWW_HONESTY,
+    gateEyebrow: 'Free beta',
+  });
+  assert.equal(mutantLine.ok, false);
+  const mutantTag = gatedWwwHonestyIsHonest({
+    ...GATED_WWW_HONESTY,
+    gateSubtitle: 'Train Anywhere. Win Daily.',
+  });
+  assert.equal(mutantTag.ok, false);
+  assert.equal(gatedWwwHonestyIsHonest().ok, true);
 });
 
 test('gated www surfaces do not carry banned product-status English', () => {
@@ -60,7 +96,7 @@ test('gated www surfaces do not carry banned product-status English', () => {
     const src = read(file);
     const lines = src.split('\n');
     lines.forEach((line, i) => {
-      if (BANNED.test(line) && !line.includes('Forbidden') && !line.includes('banned')) {
+      if (BANNED.test(line) && !isNamedBan(line)) {
         hits.push(`${file}:${i + 1}: ${line.trim()}`);
       }
     });
@@ -68,14 +104,18 @@ test('gated www surfaces do not carry banned product-status English', () => {
   assert.deepEqual(hits, [], `banned product-status copy:\n${hits.join('\n')}`);
 });
 
-test('locale pack overlays do not restore private-beta eyebrows', () => {
+test('locale pack overlays do not restore private-beta or Free beta eyebrows', () => {
   const dir = path.join(root, 'src/i18n/packs');
   const hits: string[] = [];
   for (const name of readdirSync(dir).filter((f) => f.endsWith('.json'))) {
     const src = read(`src/i18n/packs/${name}`);
     const m = /"gateEyebrow"\s*:\s*"([^"]+)"/.exec(src);
     if (!m) continue;
-    if (/privée|privada|private beta|招待制|비공개|riêng tư|ส่วนตัว|Invite-only|invitation|invito|convite|Einladung|приглашен|초대|邀请|เชิญ|lời mời|आमंत्रण|undangan|دعوة/i.test(m[1])) {
+    if (
+      /free beta|privée|privada|private beta|招待制|비공개|riêng tư|ส่วนตัว|Invite-only|invitation|invito|convite|Einladung|приглашен|초대|邀请|เชิญ|lời mời|आमंत्रण|undangan|دعوة/i.test(
+        m[1]
+      )
+    ) {
       hits.push(`${name}: ${m[1]}`);
     }
   }
