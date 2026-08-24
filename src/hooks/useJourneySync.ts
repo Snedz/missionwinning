@@ -7,7 +7,10 @@
 import { useEffect } from 'react';
 import { supabase } from '@/lib/supabase';
 import { pullJourneyFromCloud, scheduleJourneyPush, syncJourneyOnSignIn } from '@/lib/journeySync';
-import { clearAthleteLocalState } from '@/lib/storage/athleteLocalState';
+import {
+  applySignedOutStorage,
+  hasFreshExplicitSignOut,
+} from '@/lib/storage/athleteLocalState';
 import { restorePremiumCourseProgressForUser } from '@/lib/learnCourseProgress';
 import { setLoggerAuthPresence } from '@/lib/authPresence';
 
@@ -35,7 +38,12 @@ export function useJourneySync() {
       }
       if (event === 'SIGNED_OUT') {
         setLoggerAuthPresence(false);
-        clearAthleteLocalState();
+        /*
+         * `.941` — SIGNED_OUT is also boot / expiry / demo. Wipe only when
+         * Account marked an explicit leave. A guest returning to this device
+         * keeps the same local log.
+         */
+        applySignedOutStorage({ explicitSignOut: hasFreshExplicitSignOut() });
       }
     });
 

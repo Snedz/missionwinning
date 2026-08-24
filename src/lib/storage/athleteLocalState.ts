@@ -3,8 +3,13 @@
  *
  * Sign-out used to leave every `mw_*` key in place. The next account then
  * OR-merged `readiness.parq` and pushed it to that profile. Wipe athlete
- * keys on sign-out, bind an owner on sign-in, and never merge foreign or
- * guest health into another account.
+ * keys on **explicit** sign-out, bind an owner on sign-in, and never merge
+ * foreign or guest health into another account.
+ *
+ * `.941` — Supabase also emits `SIGNED_OUT` on boot-with-no-session, expired
+ * JWT, and demo mode. Those are not a leave. Wiping there deletes a guest's
+ * local log (the product promise). Wipe only when `planSignedOutStorage`
+ * says so.
  */
 import {
   MW_PREFIX,
@@ -24,7 +29,43 @@ export const ATHLETE_LOCAL_KEEP = [
   STORAGE_KEYS.regionDefaults,
   STORAGE_KEYS.privateAccess,
   STORAGE_KEYS.whatsNewSeenLabel,
+  STORAGE_KEYS.explicitSignOut,
 ] as const;
+
+/** How long an explicit sign-out mark stays valid across tabs. */
+export const EXPLICIT_SIGN_OUT_FRESH_MS = 30_000;
+
+export type SignedOutStoragePlan = 'wipe-athlete' | 'keep-local';
+
+/**
+ * `SIGNED_OUT` is not "the athlete asked to leave".
+ * Boot / expiry / demo keep the device log. Only an explicit mark wipes.
+ */
+export function planSignedOutStorage(opts: {
+  explicitSignOut: boolean;
+}): SignedOutStoragePlan {
+  return opts.explicitSignOut ? 'wipe-athlete' : 'keep-local';
+}
+
+export function markExplicitSignOut(now = Date.now()): void {
+  writeRaw(STORAGE_KEYS.explicitSignOut, String(now));
+}
+
+export function hasFreshExplicitSignOut(now = Date.now()): boolean {
+  const raw = readRaw(STORAGE_KEYS.explicitSignOut);
+  const at = raw ? Number(raw) : NaN;
+  if (!Number.isFinite(at) || at <= 0) return false;
+  const age = now - at;
+  return age >= 0 && age < EXPLICIT_SIGN_OUT_FRESH_MS;
+}
+
+export function applySignedOutStorage(opts: {
+  explicitSignOut: boolean;
+}): SignedOutStoragePlan {
+  const plan = planSignedOutStorage(opts);
+  if (plan === 'wipe-athlete') clearAthleteLocalState();
+  return plan;
+}
 
 const KEEP = new Set<string>(ATHLETE_LOCAL_KEEP);
 

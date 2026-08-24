@@ -10,9 +10,14 @@ import {
 } from '@/lib/storage/safeStorage';
 import {
   ATHLETE_LOCAL_KEEP,
+  EXPLICIT_SIGN_OUT_FRESH_MS,
+  applySignedOutStorage,
   bindStorageOwner,
   clearAthleteLocalState,
+  hasFreshExplicitSignOut,
+  markExplicitSignOut,
   planSignInStorage,
+  planSignedOutStorage,
   readStorageOwner,
   stripRestrictedHealthLocal,
 } from '@/lib/storage/athleteLocalState';
@@ -134,13 +139,74 @@ test('keep-list is closed — a new consent key must be added here on purpose', 
   const keep = new Set<string>(ATHLETE_LOCAL_KEEP);
   assert.ok(keep.has(STORAGE_KEYS.privacyConsent));
   assert.ok(keep.has(STORAGE_KEYS.analyticsPref));
+  assert.ok(keep.has(STORAGE_KEYS.explicitSignOut));
   assert.ok(!keep.has(STORAGE_KEYS.lastAssessment));
   assert.ok(!keep.has(STORAGE_KEYS.journeyState));
   assert.ok(!keep.has(STORAGE_KEYS.pregnancyFlag));
 });
 
-test('AccountPage actually calls clearAthleteLocalState on sign-out', () => {
+test('AccountPage marks explicit leave before the wipe', () => {
   const src = readFileSync(join(root, 'src/page-components/AccountPage.tsx'), 'utf8');
-  assert.match(src, /clearAthleteLocalState\s*\(/);
-  assert.match(src, /handleSignOut/);
+  const fn = src.slice(src.indexOf('const handleSignOut'), src.indexOf('const handleManageBilling'));
+  assert.match(fn, /markExplicitSignOut\s*\(/);
+  assert.match(fn, /clearAthleteLocalState\s*\(/);
+  assert.ok(
+    fn.indexOf('markExplicitSignOut') < fn.indexOf('clearAthleteLocalState'),
+    'intent must be written before the wipe so other tabs can see it'
+  );
+  assert.match(fn, /signOut\s*\(/);
+});
+
+test('SIGNED_OUT without an explicit leave keeps the guest log', () => {
+  writeRaw(WORKOUT_STORE_KEY, JSON.stringify({ state: { history: [{ id: 'guest-1' }] } }));
+  writeRaw(STORAGE_KEYS.deviceId, 'dev-guest');
+  writeRaw(STORAGE_KEYS.journeyState, JSON.stringify({ phase: 'basic' }));
+
+  assert.equal(planSignedOutStorage({ explicitSignOut: false }), 'keep-local');
+  const plan = applySignedOutStorage({ explicitSignOut: false });
+  assert.equal(plan, 'keep-local');
+  assert.equal(
+    readRaw(WORKOUT_STORE_KEY),
+    JSON.stringify({ state: { history: [{ id: 'guest-1' }] } })
+  );
+  assert.equal(readRaw(STORAGE_KEYS.deviceId), 'dev-guest');
+  assert.equal(readRaw(STORAGE_KEYS.journeyState), JSON.stringify({ phase: 'basic' }));
+});
+
+test('explicit sign-out still wipes athlete keys (shared-device privacy)', () => {
+  writeRaw(WORKOUT_STORE_KEY, JSON.stringify({ state: { history: [{ id: 'acct-1' }] } }));
+  writeRaw(STORAGE_KEYS.deviceId, 'dev-acct');
+  writeRaw(STORAGE_KEYS.privacyConsent, 'accepted');
+
+  assert.equal(planSignedOutStorage({ explicitSignOut: true }), 'wipe-athlete');
+  applySignedOutStorage({ explicitSignOut: true });
+  assert.equal(readRaw(WORKOUT_STORE_KEY), null);
+  assert.equal(readRaw(STORAGE_KEYS.deviceId), null);
+  assert.equal(readRaw(STORAGE_KEYS.privacyConsent), 'accepted');
+});
+
+test('explicit sign-out mark is fresh only for a short window', () => {
+  const now = 1_700_000_000_000;
+  markExplicitSignOut(now);
+  assert.equal(hasFreshExplicitSignOut(now), true);
+  assert.equal(hasFreshExplicitSignOut(now + EXPLICIT_SIGN_OUT_FRESH_MS - 1), true);
+  assert.equal(hasFreshExplicitSignOut(now + EXPLICIT_SIGN_OUT_FRESH_MS), false);
+  assert.equal(hasFreshExplicitSignOut(now - 1), false);
+});
+
+test('keep-list holds the sign-out mark so other tabs can see it', () => {
+  const keep = new Set<string>(ATHLETE_LOCAL_KEEP);
+  assert.ok(keep.has(STORAGE_KEYS.explicitSignOut));
+});
+
+test('useJourneySync wipes on SIGNED_OUT only through the predicate', () => {
+  const src = readFileSync(join(root, 'src/hooks/useJourneySync.ts'), 'utf8');
+  const signedOut = src.slice(src.indexOf("event === 'SIGNED_OUT'"));
+  assert.match(signedOut, /applySignedOutStorage/);
+  assert.match(signedOut, /hasFreshExplicitSignOut/);
+  assert.doesNotMatch(
+    signedOut.slice(0, signedOut.indexOf('});')),
+    /clearAthleteLocalState\s*\(/,
+    'unconditional wipe on SIGNED_OUT is the guest silent-wipe defect'
+  );
 });

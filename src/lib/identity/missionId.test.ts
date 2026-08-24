@@ -184,6 +184,14 @@ describe('no client mint · not on the log path', () => {
     assert.match(route, /claimMissionIdForUser/);
   });
 
+  it('useMissionId stays null when mint is dark — no invented integer', () => {
+    const src = read('src/hooks/useMissionId.ts');
+    assert.match(src, /if \(!isSupabaseConfigured\(\)\) return/);
+    assert.match(src, /if \(!res\.ok\) return/);
+    assert.doesNotMatch(src, /setMissionId\(\s*[1-9]/);
+    assert.match(src, /Guests stay null/);
+  });
+
   it('client surfaces never write mission_ids or stash an id locally', () => {
     const clientDirs = [
       'src/components',
