@@ -25,7 +25,10 @@ import { EmptyState } from '@/components/ui/EmptyState';
 import { CoachPlanSkeleton, SkeletonCard } from '@/components/ui/Skeleton';
 import { useCoachPlan } from '@/hooks/useCoachPlan';
 import { ParqIntakeCard } from '@/components/coach/ParqIntakeCard';
+import { CoachNextDayCite } from '@/components/coach/CoachNextDayCite';
 import { summarizeWeekDose } from '@/lib/coach/weekDose';
+import { nextDayFromLogs } from '@/lib/coach/nextDayFromLogs';
+import { resolveCoachBossSessionId } from '@/lib/coach/resolveCoachBossSessionId';
 import { isFreeBeta } from '@/lib/freeBeta';
 
 const CoachVoiceCard = dynamic(
@@ -87,6 +90,14 @@ export function CoachPage({ askExerciseId }: CoachPageProps = {}) {
 
   const freeBeta = isFreeBeta();
   const weekEyebrow = t('coachWeekEyebrow', { defaultValue: 'This week' });
+  const nextDay = nextDayFromLogs({
+    history: ctx.history,
+    plan,
+    now: { weekStart, dayOffset: todayOffset },
+  });
+  const bossId = plan ? resolveCoachBossSessionId(plan.sessions, todayOffset) : undefined;
+  const hideNextDayStart =
+    nextDay?.source === 'plan' && !!nextDay.planSessionId && nextDay.planSessionId === bossId;
 
   return (
     <PillarPageShell
@@ -223,6 +234,9 @@ export function CoachPage({ askExerciseId }: CoachPageProps = {}) {
                 : 'One week from your logs. Free every week; Bundle adds chat and regenerate.',
             })}
           />
+          {nextDay ? (
+            <CoachNextDayCite cite={nextDay} plan={plan} hideStart={hideNextDayStart} />
+          ) : null}
           <ScreenDock>
             <div className="poster-field px-4 pb-4 pt-3.5">
               <p className="poster-kicker mb-2 text-[11px] font-semibold uppercase tracking-[0.12em]">
@@ -294,6 +308,9 @@ export function CoachPage({ askExerciseId }: CoachPageProps = {}) {
               loadZone: ctx.loadZone ?? null,
             }}
           />
+          {nextDay ? (
+            <CoachNextDayCite cite={nextDay} plan={plan} hideStart={hideNextDayStart} />
+          ) : null}
         </div>
       )}
 
@@ -380,6 +397,9 @@ export function CoachPage({ askExerciseId }: CoachPageProps = {}) {
                 canRegenerate={premium}
                 onRegenerate={() => generate()}
               />
+              {nextDay ? (
+                <CoachNextDayCite cite={nextDay} plan={plan} hideStart={hideNextDayStart} />
+              ) : null}
               <CoachPlanSessionGrid
                 mode="week"
                 sessions={plan.sessions}

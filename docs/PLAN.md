@@ -6,6 +6,168 @@ Living roadmap for the **everything app** (a bodyweight coach app Super Bundle �
 
 ---
 
+## Frozen plan — `.955` Wednesday from their logs (2026-08-24)
+
+> **Frozen.** Implement only this section. Plan commit is `[skip vercel]`.
+> Label: `2026.07-unified.955` — next free after master `.954`
+> (`#791` squash `497b68ed` — one Start, last/next on it).
+> Do **not** steal `.954`. Do **not** restyle Today. Do **not** rebuild
+> last/next, why-line, vs-last, missed-day, plate math, Hevy/MW export,
+> or identity.
+> Implement commit may allow one Preview. No empty-commit retrigger.
+> No `PRIVATE_MODE` flip. Live www stays `.696`.
+> Guest path. Brand: **Log a set. Offline.** / No account. No wearable.
+> Coach stays opt-in / skippable. Train + Coach only.
+
+A returning athlete already has a diary. Today's Start (`.954`)
+cites last + next for **this visit**. They still cannot see a
+**stable next day** (Wednesday) taken from that diary. Coach
+`generateWeek` / Monday overwrite can re-roll. Repeat-last is
+do-yesterday-again. `peekCoachToday` is silent without a live
+plan. `programContinuity` labels a plan; it does not name
+Wednesday from logs. Empty history must invent nothing. First
+set still needs no account.
+
+### One concern
+
+Wednesday from their logs. Stable next session from the diary
+they already have. Not a shop, not a daily re-roll, not an 11k
+catalog, not Trainer onboarding, not a plan wall before a log.
+
+### Investigate (done — hypothesis holds)
+
+Read `origin/master` tip `497b68ed` / `.954` (`#791`).
+
+| Layer | What exists | Gap this ship closes |
+|-------|-------------|----------------------|
+| Today Start cite | `todayReturnCite` + `StartDockHero` — last + next for **this visit**. `nextSessionName` is `peekCoachToday` name, else repeat-last name. One `.primary-action`. Lean does not mount `CoachTodayCard`. `TodayShowAll` is a closed `<details>`. | **Do not restyle. Do not rebuild last/next.** This visit stays `.954`. Wednesday is not a second Start on Today. |
+| Repeat last | `repeatLastSessionTemplate` / `shouldRepeatLastOnToday` / `templateFromCompletedLog` | Do-yesterday-again. Not a rotation. Reuse the template mapper when source is logs. Do not rewrite. |
+| Live plan peek | `peekCoachToday` — current-week session at `todayDayOffset`, silent if no plan / wrong week / done / no exercises | Names **today**, not Wednesday. Silent without a live plan. |
+| Week / boss | `generateWeek` + `splitPlanner` + `storage.loadPlan`. `resolveCoachBossSessionId` = today pending else next **on a live plan**. Sheet first paint is that one session; week lives in Coach Show all. | Boss is today's (or next pending) **plan** card. No log-rotation Wednesday when the plan is missing or only owns today. `generateWeek` picks catalog work — **do not call it** for this path. |
+| Continuity | `programContinuity` — ordinal (`Session N`) + plan block name (`Push / Pull / Legs`) | Labels a plan. Does not name Wednesday from logs. |
+| Why / cite | `sessionRationale` / `weekRationale` / `logCitation` | Already shipped. Do not rebuild. |
+| Coach empty | No-plan `/coach` is EmptyState + red **Generate this week** | Generate re-rolls a catalog week. A diary with Push then Pull still cannot start Wednesday from their own last Pull (or unused slot). |
+
+Hypothesis (verified, keep):
+
+A **pure** helper over live history (tombstones / 0-rep-only /
+deleted excluded) returns a stable next-day session cite
+`{ name, source: 'logs' \| 'plan', template? }` by walking
+their own recent **named** session rotation. Same diary + same
+`now` window ⇒ same Wednesday. Do not call `generateWeek` to
+invent catalog work. If a **live** Coach plan already owns the
+next calendar day (`weekStart` matches, pending session with
+`dayOffset > todayOffset`), cite that plan session (do not
+fight it). Empty, unnamed-only, or fewer than two distinct
+named live logs ⇒ `null`. Guest path.
+
+Rotation rule (closed, no catalog, no RNG):
+
+1. Live logs = no `deletedAt`, at least one performed set
+   (`reps > 0`). Unnamed = blank / whitespace `workoutName`.
+2. Distinct names in **first-seen** order (oldest → newest,
+   trim + case-insensitive key, display last-seen spelling)
+   are the rotation. Need **≥ 2** distinct names.
+3. Current cycle = names since the last time the rotation
+   wrapped (or the whole diary if shorter than one cycle).
+   **Unused slot** = first rotation name not yet in that
+   cycle. If the cycle is complete, wrap to the first name.
+   Push then Pull ⇒ next is Pull after Push, or Push after
+   Pull (the unused / wrap slot). Push · Pull · Legs with
+   Push then Pull logged ⇒ Legs.
+4. `now` (`weekStart` + `dayOffset`) is used **only** to ask
+   whether a live plan owns the next day. Advancing the clock
+   two days without a new log does **not** rename Wednesday.
+   Logging Wednesday advances the following day (not a re-roll
+   of Wednesday).
+5. Template when `source === 'logs'`: `templateFromCompletedLog`
+   on the newest live log whose name matches the cite. No
+   template when that log cannot retrain. `source === 'plan'`
+   starts the existing plan session (`useStartCoachSession`) —
+   not a new catalog pick.
+
+### Ship (only this)
+
+1. **Pure helper** `src/lib/coach/nextDayFromLogs.ts`.
+   Inputs: live history, optional live plan, `now: { weekStart,
+   dayOffset }`. Output: `{ name, source, template?,
+   planSessionId? }` or `null`. Deterministic. No RNG, no
+   catalog pick, no shop, no `generateWeek` import.
+
+2. **Surface on Coach, not as a second Today Start.**
+   - `/coach` **boss-adjacent** (visible without opening Show
+     all): quiet next-day cite + **outline** Start. Not
+     `.primary-action`. Generate / boss Start stay the one red.
+   - Coach **Show all** (`data-testid="coach-show-all"`) may
+     repeat the cite; do **not** auto-expand (`open`).
+   - Today **Show all** (`TodayShowAll` / week strip) may show
+     the same quiet cite + outline Start. Do **not** remount
+     `CoachTodayCard` on lean Today. Do not auto-expand Show
+     all. Today fold stays one Start (`.954`).
+
+3. **Start that next-day session** (when they choose it):
+   `source === 'logs'` → `startWorkout(template.name,
+   template.exercises)` and `/active`. First set stays ungated.
+   No plan wall. No login wall. `source === 'plan'` → existing
+   `useStartCoachSession` on that session id.
+
+4. **Count of `.primary-action` on Today after I-Day stays 1.**
+
+### Tests
+
+- Empty history ⇒ `null` (invents nothing)
+- One unnamed live log ⇒ `null`
+- Push then Pull in the diary ⇒ next name in that rotation
+  (or the unused slot); stable across two calls with the same
+  `now`
+- Same diary two days later still names the same Wednesday
+  until that session is logged
+- After they log Wednesday, the following day advances (not a
+  re-roll of Wednesday)
+- Live Coach plan owning the next day wins over a guessed
+  rotation
+- Tombstoned / 0-rep / deleted logs do not count
+- Mutant that calls `generateWeek` / catalog pick / shop /
+  Trainer onboarding for this path dies
+- Source: Today lean still one `.primary-action`; no
+  `CoachTodayCard` remount; Show all stays closed `<details>`
+  without `open`
+- `firstSetUngated` stays green; no Feed / Top 8 / likes /
+  login wall strings
+- Typecheck: new i18n keys inherit via `coachPlanDefaults` for
+  zh/id/th/ar (`todayLocales.ts`). Coach copy uses `t(key, {
+  defaultValue })` so packs that spread EN stay typed.
+
+### Refuse
+
+Shop, daily re-roll, 11k catalog, Trainer onboarding, plan wall
+before a log, restyle Today, second Start, why-line rebuild,
+vs-last rebuild, missed-day rebuild, plate math / set-row,
+Hevy/MW export redo, identity redo, social Feed, Top 8, likes,
+comments, DMs, dock-as-Feed, six-pillar hunt, counsel-hold
+(field test / PT / pregnancy), login wall, SignInPrompt as
+hero, auto-expand Coach, live promote, `PRIVATE_MODE` flip,
+America marketing, wearables-as-score, iOS.
+
+### Docs / ship protocol
+
+- `APP_BUILD_LABEL` → `2026.07-unified.955`
+- LOG heading `## 2026-08-24 — Wednesday from their logs (\`.955\`)` + rotate oldest live entry (`.939`)
+- `CONTEXT.md` `## Now` one-line `.955`; rotate oldest shipped Now bullet (`.940`) so the block stays ≤25
+- Folder INDEX only if a file list changes (`src/lib/coach/INDEX.md`, maybe `src/components/coach/INDEX.md`)
+- PR title: `Wednesday from their logs: stable next day (.955)`
+- Plan commit `[skip vercel]`. Implement commit: one Preview max. No empty-commit retrigger.
+- Draft PR against master. Do not merge. Do not promote. Live www stays `.696`.
+
+### Done when
+
+- This section was frozen before product code.
+- Same diary + same now names the same Wednesday. Empty invents nothing. Plan owning the next day wins. Today still has one Start.
+- Label `.955`. PR against master. Title:
+  `Wednesday from their logs: stable next day (.955)`.
+
+---
+
 ## Frozen plan — `.954` Today return path: one Start, last/next on it (2026-08-24)
 
 > **Frozen.** Implement only this section. Plan commit is `[skip vercel]`.

@@ -8,13 +8,24 @@ import { WeekStrip } from '@/components/coach/WeekStrip';
 import { CoachLogCite } from '@/components/coach/CoachLogCite';
 import { CoachAdaptBanner } from '@/components/coach/CoachAdaptBanner';
 import { useCoachPlan } from '@/hooks/useCoachPlan';
+import { CoachNextDayCite } from '@/components/coach/CoachNextDayCite';
+import { nextDayFromLogs } from '@/lib/coach/nextDayFromLogs';
+import { resolveCoachBossSessionId } from '@/lib/coach/resolveCoachBossSessionId';
 import { summarizeWeekDose } from '@/lib/coach/weekDose';
 
 /** Compact coach week overview for the Today hub. */
 export function TodayCoachWeekStrip() {
   const { t } = useTranslation();
-  const { plan, loading, todayOffset, weekStart } = useCoachPlan();
+  const { plan, loading, todayOffset, weekStart, ctx } = useCoachPlan();
   const weekDose = plan ? summarizeWeekDose(plan) : null;
+  const nextDay = nextDayFromLogs({
+    history: ctx.history,
+    plan,
+    now: { weekStart, dayOffset: todayOffset },
+  });
+  const bossId = plan ? resolveCoachBossSessionId(plan.sessions, todayOffset) : undefined;
+  const hideNextDayStart =
+    nextDay?.source === 'plan' && !!nextDay.planSessionId && nextDay.planSessionId === bossId;
   const doseIntent =
     weekDose?.intent === 'strength'
       ? t('coachWeekDoseStrength', { defaultValue: 'mostly strength' })
@@ -42,6 +53,9 @@ export function TodayCoachWeekStrip() {
         </CardTitle>
       </CardHeader>
       <CardContent className="space-y-2">
+        {nextDay ? (
+          <CoachNextDayCite cite={nextDay} plan={plan} hideStart={hideNextDayStart} />
+        ) : null}
         {plan ? (
           <>
             <WeekStrip weekStart={weekStart} sessions={plan.sessions} todayOffset={todayOffset} />
