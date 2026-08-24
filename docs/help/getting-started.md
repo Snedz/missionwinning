@@ -11,9 +11,9 @@ Welcome to Mission Winning — a free workout tracker and health companion that 
 
 No app store required.
 
-## Free beta gate
+## Free gate
 
-If you see the **gate** (`/private`), the door says **Free beta**. Leave an email to **Get notified**, or **Enter with code** if you have an access code. Super Bundle checkout is not open. The logger stays free.
+If you see the **gate** (`/private`), the door says **Free**. Public line: **Log a set. Offline.** Support: **No account. No wearable.** Leave an email to **Get notified**, or **Enter with code** if you have an access code. Super Bundle checkout is not open. The logger stays free.
 
 ## I-Day (your first mission)
 

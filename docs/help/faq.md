@@ -72,7 +72,7 @@ One enrollment per paying email — family plans may come later.
 ## Privacy and gate
 
 **Why does the site ask for a password?**  
-Free beta — enter with your access code, or get notified.
+Free — enter with your access code, or get notified. No account. No wearable.
 
 **How do I delete my data?**  
 Export backup first if needed, then contact support or clear site data locally.

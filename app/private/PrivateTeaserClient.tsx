@@ -215,11 +215,8 @@ export function PrivateTeaserClient({
             <span>{g('gateTitle1')}</span>
             <span>{g('gateTitle2')}</span>
           </h1>
-          <p className="gate-lede">
+          <p className="gate-lede" data-mw-wedge-teaser>
             {g('gateSubtitle')}
-          </p>
-          <p className="gate-foot" data-mw-wedge-teaser>
-            {g('gateWedgeTeaser')}
           </p>
           {/*
             The mechanism, on the first screen anyone sees. "Offline" is a word

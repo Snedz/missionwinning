@@ -100,6 +100,14 @@ Not these (do not “fix”):
 > steal `#778` `.935` · `#777` `.936` · `#779` `.937`). Do not fight `#776` on
 > Free / Log a set. Offline. Do not squash-merge this hour.
 
+> **Founder brand review (2026-08-24).** Door pack is now **Free / Enter with code / Get notified**.
+> Public line: **Log a set. Offline.** Support: **No account. No wearable.**
+> Do not use Train Anywhere. Win Daily. as the company tagline on the door.
+> Do not use Free beta, invite-only, open alpha, or private beta on the door.
+> Name Mission Winning is locked. Visual tokens unchanged.
+> Sibling `.933` landed brand-guidelines — do not rewrite those files.
+> If a surface already says Free beta, swap to **Free**. Ship label is now `.938`.
+
 > **Frozen.** Implement only this section. Plan commit is `[skip vercel]`.
 > This is the `.698` concern (F-008 honesty). Build number is `.931` because master is `.930`.
 > Old PR #477 (`Gated www honesty under PRIVATE_MODE (.698)`) closed unmerged 2026-08-14.
@@ -142,19 +150,20 @@ Not these (do not “fix”):
 - `PRIVATE_MODE` / Public GitHub / production promote / SOCIAL_LAUNCH rewrite.
 - Email templates (`scripts/send-beta-invite.ts`) — operator mail, not the public door.
 
-### Ship (only this)
+### Ship (founder pack — only this)
 
-1. Restore `GATED_WWW_HONESTY` to the #477 pack: eyebrow **Free beta**, Train→Coach teaser, Confirming access… / Opening the gate…, waitlist **Get notified**, Welcome kicker **Free beta · About two minutes**, marketing CTA **Enter with code**. Forbidden list stays closed: open beta, checking sign-in, start free, we’re live, publicly available, doors open, invite-only, enter with invite, get an invite, after invite, private beta. **Do not add `free beta` to the ban list.**
-2. Floor the same strings in `gateEn.ts` so first paint cannot disagree. `PrivateTeaserClient` + `GatePendingChrome` read those floors. Re-surface `gateWedgeTeaser` under the lede.
-3. Rewrite invite-only `gateLocales` overlays (eyebrows + “ask for an invitation” waitlists) to free-beta / notify / access-code. Discover overlays rather than leaving a stale allowlist. Packs that already say `Free beta` stay.
-4. Gated teaser chrome only: Cinematic HUD + `05-exquisite.html` ghosts **Free beta**; MarketingNav / Welcome when `isClientPrivateGateEnabled()`. Post-unlock / post-flip CTAs stay **Start free**.
-5. `sites/www` CLOSE.body drops invite-only. Comment on `INVITE_URL` may say the door is `/private`, not “get an invite”.
-6. Help: `/private` is **Free beta / Enter with code / Get notified**, not “Invite gate”.
+1. `GATED_WWW_HONESTY` is the founder pack: eyebrow **Free**, public line **Log a set. Offline.**, support **No account. No wearable.**, waitlist **Get notified**, Welcome kicker **Free · About two minutes**, marketing CTA **Enter with code**. Forbidden list is closed and now includes **free beta**, **open alpha**, and **Train Anywhere. Win Daily.**
+2. Floor the same strings in `gateEn.ts` so first paint cannot disagree. `PrivateTeaserClient` + `GatePendingChrome` read those floors. One support paragraph (no duplicate teaser).
+3. Locale overlays inherit EN public line + support. Eyebrows are Free equivalents — no beta. Packs that said `Free beta` become `Free`.
+4. Gated teaser chrome only: Cinematic HUD + `05-exquisite.html` ghosts **Free**; cover kicker is not TAWD. MarketingNav / Welcome when `isClientPrivateGateEnabled()`. Post-unlock / post-flip CTAs stay **Start free**.
+5. `sites/www` CLOSE.body is Free / Enter with code / Get notified. Comment on `INVITE_URL` may say the door is `/private`.
+6. Help: `/private` is **Free / Enter with code / Get notified**, not “Invite gate” or “Free beta”.
+7. Do not rewrite `docs/design/WWW_NIGHT.md` or `docs/brand-guidelines.md` — sibling `.933`.
 
 ### Tests
 
-- `gatedWwwHonesty.test.ts`: EN pack is Free beta / Get notified / Enter with code. Surfaces do not carry invite-only / get an invite / we’re live. Mutant restoring those spellings, or `gateEyebrow: 'Alpha'` / `'Invite-only open beta'`, dies. Locale overlays do not restore invite/private eyebrows (scan `gateLocales.ts` **and** packs).
-- `exquisiteComp.test.ts`: HUD pack is **Free beta**, not `>Alpha<`. Still refuses invite-only / get an invite / we’re live.
+- `gatedWwwHonesty.test.ts`: EN pack is Free / Get notified / Enter with code plus public line + support. Door surfaces do not carry Free beta / invite-only / open alpha / TAWD / we’re live. Mutant `gateEyebrow: 'Free beta'` dies. Do not scan athlete chrome for open alpha.
+- `exquisiteComp.test.ts`: HUD pack is **Free**, not `>Alpha<` or `>Free beta<`. No TAWD on the cover.
 - Keep `alphaNavHonesty.test.ts` green — athlete badge stays Alpha.
 - `check-build-label` `.931`. LOG + CONTEXT in the same implement commit.
 

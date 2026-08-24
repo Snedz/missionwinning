@@ -230,13 +230,6 @@ export function WelcomePage({ initialEdit = false }: WelcomePageProps) {
                           defaultValue: LOCAL_FIRST_COPY.welcomeLocalFirst,
                         })}
                   </p>
-                  {gateOn ? (
-                    <p className="max-w-md text-sm leading-relaxed text-muted-foreground">
-                      {t('gateWedgeTeaser', {
-                        defaultValue: GATED_WWW_HONESTY.gateWedgeTeaser,
-                      })}
-                    </p>
-                  ) : null}
                 </div>
 
                 <div className="card-elevated space-y-1.5 px-4 py-3.5">
