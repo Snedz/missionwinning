@@ -162,13 +162,3 @@ Durable, non-obvious notes for agents on a VM where the update script (`npm inst
 - **E2E/gate need Chromium.** `npm run gate`, `npm run e2e:*`, and `npm run a11y` run Playwright, whose browsers are not installed by the update script (`npx playwright install chromium` first). Plain `npm run dev`/`test`/`build`/`lint`/`typecheck` need no browser.
 - **Actions minutes red:** merge bar is Cursor-local green — [docs/CI_LOCAL.md](docs/CI_LOCAL.md). `[skip vercel]` on every commit unless the founder asked for a Preview. Do not treat `build-and-test` red as a product fail.
 
-
-<!-- BEGIN:nextjs-agent-rules -->
-
-# This is NOT the Next.js you know
-
-This version has breaking changes — APIs, conventions, and file structure may all differ from your training data. Read the relevant guide in `node_modules/next/dist/docs/` (resolved from this file's directory; in monorepos the `next` package may not be visible from the repo root) before writing any code. Heed deprecation notices.
-
-This block is written and re-added by `next dev` — verify at `node_modules/next/dist/server/lib/generate-agent-files.js`. Removing it from a diff only re-creates the uncommitted change; committing it with your work keeps the tree clean.
-
-<!-- END:nextjs-agent-rules -->
