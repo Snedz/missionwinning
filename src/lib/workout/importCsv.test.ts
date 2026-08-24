@@ -5,6 +5,7 @@ import path from 'node:path';
 import {
   csvEscape,
   detectCsvFormat,
+  SET_TABLE_B_CSV_HEADER,
   exerciseIdForName,
   formatDurationSeconds,
   formatSetTableALocal,
@@ -303,6 +304,13 @@ describe('importCsv', () => {
     const { added, duplicates } = mergeImportedLogs(imported.workouts, back.workouts);
     assert.equal(added, 0, 'exporting then importing the same log must not duplicate');
     assert.equal(duplicates, 2);
+  });
+
+  it('empty Strong export is header-only and keeps the official columns', () => {
+    const csv = workoutsToSetTableBCsv([], 'metric');
+    assert.equal(csv.trimEnd(), SET_TABLE_B_CSV_HEADER);
+    assert.equal(csv.split('\n')[0], SET_TABLE_B_CSV_HEADER);
+    assert.doesNotMatch(csv, /distance_km|superset_id|weight_kg/);
   });
 
   it('round-trip: Strong fixture → session CSV → parse → merge is a no-op', () => {

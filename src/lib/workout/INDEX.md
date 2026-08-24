@@ -41,6 +41,7 @@ Root-level `@/lib/{name}` paths re-export from here for compatibility — prefer
 26. `sessionE1rm.ts` — educational Epley e1RM from this session's working sets (`.761`); hide pref `mw_show_session_e1rm`
 27. `homeGymKit.ts` — local Home gym kit (barbell/rack/plates/dumbbells/pull-up-bar/floor). Logger + Just Go + Coach filter; never rank; Train empty Start stays repeat-last (`.763`)
 28. `warmupRamp.ts` — free set-table 40/60/80 warmup insert + set-column `W` ordinals (`.764`); plate line is `src/lib/plateCalculator.ts` `setRowPlateLine`
+29. `importCsv.ts` + `importCsvRestore.ts` — workout CSV in/out. Strong session export is `workoutsToSetTableBCsv` / `buildWorkoutCsvDownload('set-table-b')`. Empty history is header-only (`.943`). Import preview + confirm stays `.940`
 
 ## Tests (colocated)
 
@@ -83,6 +84,9 @@ Root-level `@/lib/{name}` paths re-export from here for compatibility — prefer
 | `homeGymKit.test.ts` | Parse, $0 floor, matching, I-Day seed, free-path (`.763`) |
 | `warmupRamp.test.ts` | 40/60/80 ramp, ordinals, idempotent insert (`.764`) |
 | `plateWarmupFree.test.ts` | Plate/warmup path never imports premium (`.764`) |
+| `importCsv.test.ts` | Strong / set-table / MW parse + header-only empty Strong export (`.943`) |
+| `importCsvRestore.test.ts` | Preview vs confirm (`.940`); persist-layer Strong export round-trip (`.943`) |
+| `csvHistoryFree.test.ts` | Transfer path never consults premium; empty export is not a refuse |
 
 ## UI & integration (not in this folder)
 

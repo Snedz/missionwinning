@@ -6,6 +6,87 @@ Living roadmap for the **everything app** (a bodyweight coach app Super Bundle �
 
 ---
 
+## Frozen plan — `.943` Strong CSV export (round-trip) (2026-08-24)
+
+> **Frozen.** Implement only this section. Plan commit is `[skip vercel]`.
+> Label: `2026.07-unified.943` — next free after master `.942` (#778).
+> Ready for squash. Preview will not deploy. No `PRIVATE_MODE` flip.
+> Offline. No account. Log a set. Never invent sets.
+> Do not invent set-table-a-only columns on the Strong file.
+> Do not fight open PRs. No Discord. Do not cite a 3-workout cap.
+> Keep master's product + brand pack: **Log a set. Offline.**
+
+Athlete can leave (or round-trip) with a Strong-shaped session CSV.
+Preview/confirm is **not** required on export — it is a read-only
+download. Import already exists (`.940` / #779). Multiple exports
+allowed. F-017 guest path stays: no sign-in on the card.
+
+### Investigate (done — hypothesis holds)
+
+Export already exists as session/set buttons on Account. Strong
+shape is already `workoutsToSetTableBCsv`. Do not rewrite the
+parser or start a second exporter.
+
+| Layer | What exists | Gap this ship closes |
+|-------|-------------|----------------------|
+| Parser / shaper | `importCsv.ts` — `SET_TABLE_B_CSV_HEADER` + `workoutsToSetTableBCsv`. Parser-level Strong in+out already in `importCsv.test.ts` | Persist-layer empty / one-fixture / skipped-row export is untested |
+| Restore | `importCsvRestore.ts` `buildWorkoutCsvDownload` / `downloadWorkoutCsv`. Reads persist, no write | Empty history returns `{ ok: false, error: 'empty' }` and toasts — no file |
+| Card | `ProfileImportCard` on `/account#import` — **Export session CSV** (`set-table-b`) next to import; **Export set CSV** (`set-table-a`) stays | Wire is already there. Empty must download header-only (or honest empty file), not refuse |
+| Other downloads | `ProfileBackupCard` JSON device backup; signed-in `ProfileAccountCard` cloud JSON | Leave them. Not the interchange format |
+| Reach / guest | I-Day + empty Train → `/account#import`. Card has no `getUser` | Keep. Export must not ask for an account |
+
+Not these (do not “fix”):
+
+- Import preview + confirm (`.940`) — leave pick → preview → confirm
+- Set-table-a export button — keep; do not add its columns to Strong
+- JSON backup / cloud DSAR download
+- #778 gated www / #780 account-lite
+- Localized Strong headers, cloud upload, account gate, one-export cap
+
+### Ship (only this)
+
+1. **Empty history is a file.** `buildWorkoutCsvDownload('set-table-b')` on empty persist (or missing store) returns `{ ok: true, csv, count: 0 }` where `csv` is the Strong header plus a trailing newline — no invented data row. Same for `set-table-a` (shared helper). Storage failure still `{ ok: false, error: 'storage' }`. Drop the `'empty'` refuse.
+
+2. **Card downloads, does not preview.** Session CTA still calls `downloadWorkoutCsv('set-table-b')` immediately. No confirm sheet. Empty still clicks and downloads. Toast may say 0 workouts / header-only — never “nothing to export” after a file landed. A second click still downloads (no one-export lock).
+
+3. **Round-trip through persist.** Import the existing Strong fixtures, then export session CSV from the same persist the card reads:
+   - `strong-one-workout.csv` → export → parse → exactly those two bench sets. No padded / invented sets. Re-import of the export is a no-op against that history.
+   - `strong-malformed-row.csv` → import skips Ghost Press → export must not rewrite that skipped row as a valid set.
+   - Header of the Strong download stays `SET_TABLE_B_CSV_HEADER` — no extra columns.
+
+4. **Guest / free.** Card still has no `getUser` / premium check. `/account#import` still opens. F-017 / `TAP_BUDGET` 4 untouched.
+
+### Tests
+
+- `importCsvRestore.test.ts`: empty persist → header-only Strong file, `count === 0`, persist unchanged; one imported fixture round-trips without invented sets; malformed import’s skipped row is absent from the export; two downloads of the same history match (no one-export cap). Mutant restoring `error: 'empty'` on zero history dies.
+- `importCsv.test.ts`: `workoutsToSetTableBCsv([])` is header-only; exported header equals `SET_TABLE_B_CSV_HEADER`.
+- Card source: session export still `handleExport('set-table-b')`; no preview/confirm on the export path; no `getUser` / premium / one-export lock.
+- `importReach` + `csvHistoryFree` still hold.
+- `check-build-label` `.943`. LOG + CONTEXT in the same implement commit.
+
+### Docs / ship protocol
+
+- `APP_BUILD_LABEL` → `2026.07-unified.943`
+- LOG heading `## 2026-08-24 — Strong CSV export: round-trip (\`.943\`)` + rotate oldest live entry (`.923`)
+- CONTEXT `## Now` one `.943` bullet; rotate oldest shipped version bullet (`.924`); keep Status table; ≤25 bullets
+- Help: one line — Account → Export session CSV downloads the workout file (empty history is header-only). No account. Offline.
+- `src/lib/workout/INDEX.md` lists export + persist-layer tests
+- i18n: reuse export keys; only add a key if empty-download copy cannot reuse `csvExportDone` / count 0
+- Every commit: `[skip vercel]`. PR body: how to verify the download from Account.
+
+### Hard bans
+
+- No `PRIVATE_MODE` / promote / EIN / secrets / feed / Discord
+- Do not steal `.942` or any in-flight label
+- Do not invent set-table-a-only columns on the Strong file
+- Do not invent sets or rewrite skipped import rows as valid
+- Do not add preview/confirm on export
+- Do not gate the free logger or require an account
+- Do not cite a 3-workout free cap
+- Brand pack: **Log a set. Offline.**
+
+---
+
 ## Frozen plan — `.941` account-lite auth harden (2026-08-24)
 
 > **Frozen.** Implement only this section. Plan commit is `[skip vercel]`.

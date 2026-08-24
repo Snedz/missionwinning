@@ -51,7 +51,7 @@ export interface CsvRestoreResult {
 
 export type CsvExportResult =
   | { ok: true; csv: string; count: number; dialect: WorkoutCsvDialect }
-  | { ok: false; error: 'empty' | 'storage' };
+  | { ok: false; error: 'storage' };
 
 /** Dry-run of a file pick. Never writes. Confirm calls `importWorkoutCsvText`. */
 export interface CsvImportPreview {
@@ -164,13 +164,13 @@ export function importWorkoutCsvText(text: string): CsvRestoreResult {
   }
 }
 
-/** Pure-enough: read persist, shape CSV. No download — tests can call this. */
+/** Pure-enough: read persist, shape CSV. No download — tests can call this.
+ *  Empty history is a header-only file (`count: 0`), not an error. */
 export function buildWorkoutCsvDownload(dialect: WorkoutCsvDialect): CsvExportResult {
   try {
     const raw = readRaw(WORKOUT_STORE_KEY);
     const current: PersistedWorkoutState = raw ? (JSON.parse(raw) as PersistedWorkoutState) : {};
     const existing = (current.state?.workoutHistory ?? []).filter((l) => !l.deletedAt);
-    if (existing.length === 0) return { ok: false, error: 'empty' };
     const csv =
       dialect === 'set-table-a'
         ? workoutsToSetTableACsv(existing, displayUnits())
