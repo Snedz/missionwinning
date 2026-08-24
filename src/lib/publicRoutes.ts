@@ -28,6 +28,7 @@ export const JOURNEY_BYPASS_PATHS = [
   '/paths',
   '/press',
   '/join/class',
+  '/notify',
 ] as const;
 
 /** Page routes reachable without the private access cookie while gated. */
@@ -65,6 +66,12 @@ export const PRIVATE_GATE_PUBLIC_PATHS = [
   '/learn',
   '/paths',
   '/press',
+  /**
+   * F-047 — Super Bundle “Get notified until Stripe”. `/private` redirects when
+   * the gate is off, so this is the public capture page. Door pack stays on
+   * `/private`; landing still does not remount the form.
+   */
+  '/notify',
   /** Public no-auth calculators (prefix also covers /calculators/1rm etc.) */
   '/calculators',
   /** Beyond the Basics magazine PDF + assets under public/magazine/ */

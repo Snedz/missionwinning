@@ -436,14 +436,13 @@ export function LandingPage() {
               })}
             </p>
             <p className="mt-6 text-sm">
-              {!isFreeBeta() && (
-                <>
-                  <Link href="/bundle" className="underline underline-offset-4">
-                    {t('landingNavBundle', { defaultValue: 'Super Bundle' })}
-                  </Link>
-                  {' · '}
-                </>
-              )}
+              <Link
+                href={isFreeBeta() ? '/notify' : '/bundle'}
+                className="underline underline-offset-4"
+              >
+                {t('landingNavBundle', { defaultValue: 'Super Bundle' })}
+              </Link>
+              {' · '}
               <Link href="/vision" className="underline underline-offset-4">
                 {t('landingMissionLink', { defaultValue: 'Read the full vision' })}
               </Link>

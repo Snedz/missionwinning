@@ -57,10 +57,10 @@ describe('bundleShop merchandising', () => {
 });
 
 describe('shop source guards', () => {
-  it('route redirects /bundle to /log while free-beta mutes the shop', () => {
+  it('route redirects /bundle to /notify while free-beta mutes the shop', () => {
     const src = read('app/bundle/page.tsx');
     assert.match(src, /isFreeBeta/);
-    assert.match(src, /redirect\s*\(\s*['"]\/log['"]\s*\)/);
+    assert.match(src, /redirect\s*\(\s*['"]\/notify['"]\s*\)/);
   });
 
   it('shop UI has no trial SKU and names the vs-stack', () => {

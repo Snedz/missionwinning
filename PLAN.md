@@ -125,6 +125,13 @@ Still four scenes. Still the `.933` brand pack. No Comp B recut. No HUD overlay 
 | Door chrome | Drop colophon “free core forever”. Invite/guide keys drop Alpha. Enter with code stays `<details>`. |
 | OG leak | Root `openGraph` / `twitter` descriptions drop nutrition / mobility / mind / learning. Wedge only: **Log a set. Offline. No account. No wearable.** Title already correct. |
 
+### 3.8 Stale-Preview walk (F-039 · F-047 — same label, no new Preview)
+
+Door pack unchanged. Do not request a Preview deploy.
+
+- **F-039:** `proxy.ts` 308s `DEAD_ALIAS_PATHS` (`/today` → `/log`, `/train` → `/active`) **before** parking and the gate. Config redirects stay. Aliases are not public paths — they hop.
+- **F-047:** public `/notify` mounts `LaunchNotifyForm` (`landing-super-bundle-notify`). Honest Stripe-not-live copy. No checkout. No traction. Landing still has no form. `/bundle` free-beta 307s here, not Today.
+
 ## 4. Tests (write / run before claiming done)
 
 Extend existing honesty / teaser / consent tests. Falsify each new claim.
@@ -138,6 +145,8 @@ Extend existing honesty / teaser / consent tests. Falsify each new claim.
 7. **First-paint floor:** `CinematicWww` + door `t()` defaults match `gateEn.ts`.
 8. **Intel beats stay on existing scenes:** logger TARGET `30s` + Last/Next/Why; later line History you own + Today is not a Feed; door foot 30s-in-the-browser; dated Never on the door strip. No `/history` `/never` `/feed`. No traction numerals.
 9. **Twelve design-polish nits stay source-locked:** Free ghosts, one SET line, HUD mark only, compact 1440, phone 100svh, ink Anywhere (no JPEG), three week beats, paper-strip door, one poster red, JS-off fallback. OG wedge. No Alpha-on-the-door.
+10. **F-039 aliases 308 before the gate:** `proxy.ts` maps `DEAD_ALIAS_PATHS` (`/today` → `/log`, `/train` → `/active`) with 308 before `isPathEnabled`. Mutant deleting the hop dies. Config redirects stay.
+11. **F-047 `/notify` has the form:** `LaunchNotifyForm` + `landing-super-bundle-notify`. Landing still has no form. Door pack unchanged. `/bundle` free-beta lands here, not Today. No checkout URL. No traction.
 
 ## 5. Non-goals (refuse)
 
