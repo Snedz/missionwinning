@@ -1,16 +1,19 @@
 import { describe, it } from 'node:test';
 import assert from 'node:assert/strict';
-import { readFileSync } from 'node:fs';
+import { readdirSync, readFileSync, statSync } from 'node:fs';
 import path from 'node:path';
 import type { CompletedWorkoutLog } from '@/types';
 import {
   formatAdjacencyCiteLine,
+  formatAfterCompleteParts,
   formatSetRowAdjacency,
   lastLiveSessionForExercise,
+  resolveAfterCompleteCite,
   resolveSetRowAdjacency,
 } from '@/lib/workout/setRowAdjacency';
 
 const src = readFileSync(path.join(import.meta.dirname, 'setRowAdjacency.ts'), 'utf8');
+const root = path.join(import.meta.dirname, '..', '..', '..');
 
 /** Previous occurrence of `jsDay` (0=Sun) at local noon — no fixture date literals. */
 function isoOnPreviousJsWeekday(jsDay: number): string {
@@ -301,5 +304,333 @@ describe('setRowAdjacency honesty', () => {
 
   it('never claims AI-suggested or optimized-for-you', () => {
     assert.doesNotMatch(code, /AI suggested|optimized for you/i);
+  });
+
+  it('does not steal Coach why-line or readiness', () => {
+    assert.doesNotMatch(src, /sessionRationale/);
+    assert.doesNotMatch(src, /PlanSessionCard/);
+    assert.doesNotMatch(src, /from ['"]@\/lib\/readiness/);
+    assert.doesNotMatch(src, /from ['"]@\/lib\/premium/);
+  });
+
+  it('does not print E-Adjacency on the door', () => {
+    const gate = readFileSync(path.join(root, 'src/i18n/gateEn.ts'), 'utf8');
+    assert.doesNotMatch(gate, /E-Adjacency/);
+  });
+
+  it('supersedes #487 surface — Train does not remount TARGET-above-PREVIOUS', () => {
+    const table = readFileSync(
+      path.join(root, 'src/components/workout/SetLogTable.tsx'),
+      'utf8'
+    );
+    const card = readFileSync(
+      path.join(root, 'src/components/workout/ActiveExerciseCard.tsx'),
+      'utf8'
+    );
+    assert.doesNotMatch(table, /SetLogAdjacencyStack/);
+    assert.doesNotMatch(card, /formatSetRowAdjacency/);
+    assert.match(card, /resolveAfterCompleteCite/);
+  });
+});
+
+describe('resolveAfterCompleteCite', () => {
+  const plannedNext = [
+    { reps: 8, weight: 60, completed: true, kind: 'normal' as const },
+    { reps: 8, weight: 60, completed: false, kind: 'normal' as const },
+  ];
+
+  it('empty history does not invent a next set', () => {
+    const out = resolveAfterCompleteCite({
+      workoutHistory: [],
+      exerciseId: 'bench-press',
+      sessionSets: [
+        { reps: 8, weight: 60, completed: false, kind: 'normal' },
+        { reps: 8, weight: 60, completed: false, kind: 'normal' },
+      ],
+      completedSetIdx: 0,
+      units: 'metric',
+      lastRestSeconds: null,
+    });
+    assert.equal(out, null);
+  });
+
+  it('one logged set produces a skippable load cite from this session', () => {
+    const out = resolveAfterCompleteCite({
+      workoutHistory: [],
+      exerciseId: 'bench-press',
+      sessionSets: plannedNext,
+      completedSetIdx: 0,
+      units: 'metric',
+      lastRestSeconds: null,
+    });
+    assert.ok(out);
+    assert.equal(out?.suggestion.kind, 'load');
+    if (out?.suggestion.kind !== 'load') return;
+    assert.equal(out.suggestion.reps, 9);
+    assert.equal(out.suggestion.weight, 60);
+    assert.equal(out.cite.kind, 'session');
+    if (out.cite.kind !== 'session') return;
+    assert.equal(out.cite.setFrom, 1);
+    assert.equal(out.cite.setTo, 1);
+    const parts = formatAfterCompleteParts(out, (key, opts) =>
+      String(opts?.defaultValue ?? key)
+    );
+    assert.equal(parts.target, '9 × 60');
+    assert.match(parts.provenance, /this session/);
+    assert.match(parts.line, /9 × 60/);
+  });
+
+  it('cites last session when history exists — not an invented weekday for today', () => {
+    const hist = historyWith(
+      'squat',
+      [{ reps: 10, weight: 80 }],
+      isoOnPreviousJsWeekday(1)
+    );
+    const out = resolveAfterCompleteCite({
+      workoutHistory: hist,
+      exerciseId: 'squat',
+      sessionSets: [
+        { reps: 10, weight: 80, completed: true, kind: 'normal' },
+        { reps: 8, weight: 80, completed: false, kind: 'normal' },
+      ],
+      completedSetIdx: 0,
+      units: 'metric',
+      lastRestSeconds: null,
+    });
+    assert.ok(out);
+    assert.equal(out?.suggestion.kind, 'load');
+    if (out?.suggestion.kind !== 'load') return;
+    assert.equal(out.suggestion.reps, 11);
+    assert.equal(out.suggestion.weight, 80);
+    assert.equal(out.cite.kind, 'logs');
+    if (out.cite.kind !== 'logs') return;
+    assert.equal(out.cite.weekdayShort, 'Mon');
+  });
+
+  it('stays quiet on a warmup complete', () => {
+    const out = resolveAfterCompleteCite({
+      workoutHistory: [],
+      exerciseId: 'bench-press',
+      sessionSets: [
+        { reps: 8, weight: 40, completed: true, kind: 'warmup' },
+        { reps: 8, weight: 60, completed: false, kind: 'normal' },
+      ],
+      completedSetIdx: 0,
+      units: 'metric',
+      lastRestSeconds: 90,
+    });
+    assert.equal(out, null);
+  });
+
+  it('cites last rest when this exercise has no next set', () => {
+    const out = resolveAfterCompleteCite({
+      workoutHistory: [],
+      exerciseId: 'bench-press',
+      sessionSets: [{ reps: 8, weight: 60, completed: true, kind: 'normal' }],
+      completedSetIdx: 0,
+      units: 'metric',
+      lastRestSeconds: 150,
+    });
+    assert.deepEqual(out, {
+      suggestion: { kind: 'rest', seconds: 150 },
+      cite: { kind: 'last-rest' },
+    });
+    const parts = formatAfterCompleteParts(
+      out!,
+      (key, opts) => String(opts?.defaultValue ?? key),
+      '2:30'
+    );
+    assert.equal(parts.target, 'Rest 2:30');
+    assert.equal(parts.provenance, 'Last rest');
+  });
+
+  it('does not invent rest from a missing last-rest', () => {
+    const out = resolveAfterCompleteCite({
+      workoutHistory: [],
+      exerciseId: 'bench-press',
+      sessionSets: [{ reps: 8, weight: 60, completed: true, kind: 'normal' }],
+      completedSetIdx: 0,
+      units: 'metric',
+      lastRestSeconds: null,
+    });
+    assert.equal(out, null);
+  });
+
+  it('prescribed next row cites Coach plan, not a fake Tuesday', () => {
+    const hist = historyWith(
+      'bench-press',
+      [{ reps: 8, weight: 60 }],
+      isoOnPreviousJsWeekday(2)
+    );
+    const out = resolveAfterCompleteCite({
+      workoutHistory: hist,
+      exerciseId: 'bench-press',
+      sessionSets: [
+        { reps: 5, weight: 100, completed: true, kind: 'normal' },
+        { reps: 5, weight: 100, completed: false, kind: 'normal' },
+      ],
+      completedSetIdx: 0,
+      prescribed: true,
+      units: 'metric',
+      lastRestSeconds: null,
+    });
+    assert.deepEqual(out, {
+      suggestion: { kind: 'load', reps: 5, weight: 100 },
+      cite: { kind: 'coach' },
+    });
+  });
+
+  it('does not persist a next-session program bump when every prescribed set hits the top of the range', () => {
+    const hist = historyWith(
+      'bench-press',
+      [
+        { reps: 12, weight: 60 },
+        { reps: 12, weight: 60 },
+        { reps: 12, weight: 60 },
+      ],
+      isoOnPreviousJsWeekday(1)
+    );
+    const snapshot = structuredClone(hist);
+    const planned = [
+      { reps: 8, weight: 60, completed: true, kind: 'normal' as const },
+      { reps: 8, weight: 60, completed: false, kind: 'normal' as const },
+      { reps: 8, weight: 60, completed: false, kind: 'normal' as const },
+    ];
+    const out = resolveAfterCompleteCite({
+      workoutHistory: hist,
+      exerciseId: 'bench-press',
+      sessionSets: planned,
+      completedSetIdx: 0,
+      prescribed: true,
+      units: 'metric',
+      goalRange: { min: 8, max: 12 },
+      lastRestSeconds: null,
+    });
+    assert.deepEqual(hist, snapshot);
+    assert.deepEqual(out, {
+      suggestion: { kind: 'load', reps: 8, weight: 60 },
+      cite: { kind: 'coach' },
+    });
+  });
+});
+
+describe('after-complete cite competitive refuse', () => {
+  function walkTs(dir: string, acc: string[] = []): string[] {
+    for (const name of readdirSync(dir)) {
+      const p = path.join(dir, name);
+      if (statSync(p).isDirectory()) walkTs(p, acc);
+      else if (/\.(tsx|ts)$/.test(name)) acc.push(p);
+    }
+    return acc;
+  }
+
+  it('every painted cite carries a why from the logs', () => {
+    const session = resolveAfterCompleteCite({
+      workoutHistory: [],
+      exerciseId: 'bench-press',
+      sessionSets: [
+        { reps: 8, weight: 60, completed: true, kind: 'normal' },
+        { reps: 8, weight: 60, completed: false, kind: 'normal' },
+      ],
+      completedSetIdx: 0,
+      units: 'metric',
+      lastRestSeconds: null,
+    });
+    assert.ok(session);
+    const sessionParts = formatAfterCompleteParts(session!, (key, opts) =>
+      String(opts?.defaultValue ?? key)
+    );
+    assert.match(sessionParts.provenance, /this session/);
+
+    const rest = resolveAfterCompleteCite({
+      workoutHistory: [],
+      exerciseId: 'bench-press',
+      sessionSets: [{ reps: 8, weight: 60, completed: true, kind: 'normal' }],
+      completedSetIdx: 0,
+      units: 'metric',
+      lastRestSeconds: 90,
+    });
+    const restParts = formatAfterCompleteParts(
+      rest!,
+      (key, opts) => String(opts?.defaultValue ?? key),
+      '1:30'
+    );
+    assert.equal(restParts.provenance, 'Last rest');
+  });
+
+  it('cite path does not wire CSV import', () => {
+    const citeUi = readFileSync(
+      path.join(root, 'src/components/workout/SetLogNextCite.tsx'),
+      'utf8'
+    );
+    const table = readFileSync(
+      path.join(root, 'src/components/workout/SetLogTable.tsx'),
+      'utf8'
+    );
+    assert.doesNotMatch(src, /strongCsv|parseStrong|from ['"]@\/lib\/import/i);
+    assert.doesNotMatch(citeUi, /csv|importWorkout/i);
+    assert.doesNotMatch(table, /csv|importWorkout/i);
+  });
+
+  it('cite is the next set from logs, not a last-actuals ghost', () => {
+    const citeUi = readFileSync(
+      path.join(root, 'src/components/workout/SetLogNextCite.tsx'),
+      'utf8'
+    );
+    assert.doesNotMatch(citeUi, /lastSetGhost|resolveLastSetGhost/);
+    const out = resolveAfterCompleteCite({
+      workoutHistory: [],
+      exerciseId: 'bench-press',
+      sessionSets: [
+        { reps: 8, weight: 60, completed: true, kind: 'normal' },
+        { reps: 8, weight: 60, completed: false, kind: 'normal' },
+      ],
+      completedSetIdx: 0,
+      units: 'metric',
+      lastRestSeconds: null,
+    });
+    assert.ok(out);
+    assert.equal(out?.suggestion.kind, 'load');
+    if (out?.suggestion.kind !== 'load') return;
+    assert.equal(out.suggestion.reps, 9);
+    assert.equal(out.suggestion.weight, 60);
+    assert.notEqual(out.suggestion.reps, 8);
+  });
+
+  it('does not call Prev marketing or claim mid-set data-loss', () => {
+    const citeUi = readFileSync(
+      path.join(root, 'src/components/workout/SetLogNextCite.tsx'),
+      'utf8'
+    );
+    const table = readFileSync(
+      path.join(root, 'src/components/workout/SetLogTable.tsx'),
+      'utf8'
+    );
+    const plan = readFileSync(path.join(root, 'docs/PLAN.md'), 'utf8');
+    const frozen = plan.slice(0, plan.indexOf('## Frozen plan — `.765`'));
+    const blob = `${src}\n${citeUi}\n${table}\n${frozen}`;
+    assert.doesNotMatch(blob, /PREVIOUS is marketing|Prev is marketing|previous is marketing/i);
+    assert.doesNotMatch(citeUi, /data[-\s]?loss|lost a set|mid-set/i);
+    assert.doesNotMatch(src.replace(/\/\*[\s\S]*?\*\//g, ''), /data[-\s]?loss|lost a set|mid-set/i);
+  });
+
+  it('stays on Train — Today / Fuel / Coach and other pages do not mount the cite', () => {
+    const allowed =
+      /\/(SetLogTable|SetLogNextCite|ActiveExerciseCard|setRowAdjacency|setRowAdjacency\.test|setTableDensity694\.test)\./;
+    const roots = [
+      path.join(root, 'src/page-components'),
+      path.join(root, 'src/components'),
+    ];
+    const leaks: string[] = [];
+    for (const dir of roots) {
+      for (const file of walkTs(dir)) {
+        if (allowed.test(file.replace(/\\/g, '/'))) continue;
+        const text = readFileSync(file, 'utf8');
+        if (/resolveAfterCompleteCite|SetLogNextCite/.test(text)) {
+          leaks.push(path.relative(root, file));
+        }
+      }
+    }
+    assert.deepEqual(leaks, []);
   });
 });

@@ -9,7 +9,7 @@
  * Completed rows mirror compact `SetLogRow` cues (primary edge, check, a11y).
  */
 
-import { Fragment } from 'react';
+import { Fragment, useState } from 'react';
 import { Check } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { Badge } from '@/components/ui/badge';
@@ -23,6 +23,12 @@ import { formatPlusLoadWeightCell } from '@/lib/workout/bodyweightLoad';
 import { cn } from '@/lib/utils';
 import type { LastSetGhost } from '@/lib/workout/lastSetGhost';
 import { LastSetGhostButton } from '@/components/workout/LastSetGhostButton';
+import { SetLogNextCite } from '@/components/workout/SetLogNextCite';
+import {
+  formatAfterCompleteParts,
+  type AfterCompleteCite,
+} from '@/lib/workout/setRowAdjacency';
+import { formatRestClock } from '@/lib/workout/restTimer';
 
 type Props = {
   sets: LoggedSet[];
@@ -53,6 +59,8 @@ type Props = {
   /** Last working set (not warmup). One tap accepts into the active dial. */
   lastSetGhost?: LastSetGhost | null;
   onAcceptGhost?: (target: { reps: number; weight: number }) => void;
+  /** After-complete next-set cite; null slots stay unpainted. */
+  afterCompleteCites?: (AfterCompleteCite | null)[];
 };
 
 const cell = 'px-1.5 py-1.5 align-middle';
@@ -82,8 +90,12 @@ export function SetLogTable({
   plusLoad = false,
   lastSetGhost,
   onAcceptGhost,
+  afterCompleteCites = [],
 }: Props) {
   const { t } = useTranslation();
+  const [skippedCiteIds, setSkippedCiteIds] = useState<ReadonlySet<string>>(
+    () => new Set()
+  );
 
   return (
     <div className="w-full min-w-0 max-w-full overflow-x-hidden">
@@ -370,6 +382,28 @@ export function SetLogTable({
                 </td>
               </tr>
             ) : null}
+            {(() => {
+              const cite = completed ? (afterCompleteCites[setIdx] ?? null) : null;
+              if (!cite || skippedCiteIds.has(set.id)) return null;
+              const restClock =
+                cite.suggestion.kind === 'rest'
+                  ? formatRestClock(cite.suggestion.seconds)
+                  : undefined;
+              const parts = formatAfterCompleteParts(cite, t, restClock);
+              return (
+                <tr className={cn('border-b border-border', !isActive && 'bg-muted/40')}>
+                  <td colSpan={5} className={cn(cell, 'min-w-0')}>
+                    <SetLogNextCite
+                      target={parts.target}
+                      provenance={parts.provenance}
+                      onSkip={() =>
+                        setSkippedCiteIds((prev) => new Set([...prev, set.id]))
+                      }
+                    />
+                  </td>
+                </tr>
+              );
+            })()}
             </Fragment>
           );
         })}

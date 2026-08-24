@@ -1,10 +1,11 @@
 /**
- * E-Adjacency — next-set target + log cite for the set row (above PREVIOUS).
+ * E-Adjacency — next-set target + log cite after a completed working set.
  *
- * Free forever. The number is double-progression (or the coach prescription).
- * The cite is the last *live* session that produced it (weekday + working set
- * numbers). Tombstones (`deletedAt`) are not history. Freshness may later veto
- * dose — it never picks the lift, so this module must not import readiness /
+ * Free forever. Prev is official last-actuals beside the row; it does not
+ * fill the next number. This module cites the next set from logs (or Coach
+ * plan). It is not a last-actuals ghost — `lastSetGhost` already copies last.
+ * Tombstones (`deletedAt`) are not history. Freshness may later veto dose —
+ * it never picks the lift, so this module must not import readiness /
  * freshness / Recovery %.
  */
 
@@ -27,7 +28,28 @@ export type SetRowLogCite = {
 
 export type SetRowCoachCite = { kind: 'coach' };
 
+/** First-ever this session — no invented weekday for an unfinished workout. */
+export type SetRowSessionCite = {
+  kind: 'session';
+  setFrom: number;
+  setTo: number;
+};
+
+export type SetRowLastRestCite = { kind: 'last-rest' };
+
 export type SetRowCite = SetRowLogCite | SetRowCoachCite;
+
+export type AfterCompleteProvenance = SetRowCite | SetRowSessionCite | SetRowLastRestCite;
+
+export type AfterCompleteSuggestion =
+  | { kind: 'load'; reps: number; weight: number }
+  | { kind: 'rest'; seconds: number };
+
+/** Visible next-set cite after a completed working set. Always skippable in UI. */
+export type AfterCompleteCite = {
+  suggestion: AfterCompleteSuggestion;
+  cite: AfterCompleteProvenance;
+};
 
 export type SetRowAdjacency = {
   targetLabel: string | null;
@@ -93,28 +115,58 @@ function formatTargetLabel(reps: number, weight: number): string {
 /** i18n `t` — weekday keys stay literal (coverage forbids computed keys). */
 export type AdjacencyCiteT = (key: string, opts?: Record<string, unknown>) => string;
 
+function formatSetSpan(setFrom: number, setTo: number, t: AdjacencyCiteT): string {
+  return setFrom === setTo
+    ? t('activeTargetCiteSet', { n: setFrom, defaultValue: `set ${setFrom}` })
+    : t('activeTargetCiteSets', {
+        from: setFrom,
+        to: setTo,
+        defaultValue: `sets ${setFrom}–${setTo}`,
+      });
+}
+
 export function formatAdjacencyCiteLine(
-  cite: SetRowCite | null,
+  cite: AfterCompleteProvenance | SetRowCite | null,
   t: AdjacencyCiteT
 ): string | null {
   if (!cite) return null;
   if (cite.kind === 'coach') {
     return t('activeTargetCiteCoach', { defaultValue: 'Coach plan' });
   }
+  if (cite.kind === 'last-rest') {
+    return t('activeNextCiteLastRest', { defaultValue: 'Last rest' });
+  }
+  if (cite.kind === 'session') {
+    return t('activeNextCiteFromSession', {
+      sets: formatSetSpan(cite.setFrom, cite.setTo, t),
+      defaultValue: `From this session · ${formatSetSpan(cite.setFrom, cite.setTo, t)}`,
+    });
+  }
   const day = weekdayWord(cite.weekdayMondayOffset, t);
-  const sets =
-    cite.setFrom === cite.setTo
-      ? t('activeTargetCiteSet', { n: cite.setFrom, defaultValue: `set ${cite.setFrom}` })
-      : t('activeTargetCiteSets', {
-          from: cite.setFrom,
-          to: cite.setTo,
-          defaultValue: `sets ${cite.setFrom}–${cite.setTo}`,
-        });
+  const sets = formatSetSpan(cite.setFrom, cite.setTo, t);
   return t('activeTargetCiteFromLast', {
     day,
     sets,
     defaultValue: `From last ${day} · ${sets}`,
   });
+}
+
+/** Target + provenance for the after-complete strip. Rest clock is preformatted. */
+export function formatAfterCompleteParts(
+  row: AfterCompleteCite,
+  t: AdjacencyCiteT,
+  restClock?: string
+): { target: string; provenance: string; line: string } {
+  const target =
+    row.suggestion.kind === 'load'
+      ? formatTargetLabel(row.suggestion.reps, row.suggestion.weight)
+      : t('activeNextCiteRest', {
+          clock: restClock ?? `${row.suggestion.seconds}s`,
+          defaultValue: `Rest ${restClock ?? `${row.suggestion.seconds}s`}`,
+        });
+  const provenance = formatAdjacencyCiteLine(row.cite, t) ?? '';
+  const line = provenance ? `${target} · ${provenance}` : target;
+  return { target, provenance, line };
 }
 
 function weekdayWord(offset: number, t: AdjacencyCiteT): string {
@@ -211,4 +263,117 @@ export function formatSetRowAdjacency(params: {
       goalRange: params.goalRange,
     })
   );
+}
+
+function nextIncompleteIdx(
+  sets: { completed?: boolean }[],
+  afterIdx: number
+): number {
+  for (let i = afterIdx + 1; i < sets.length; i++) {
+    if (!sets[i]?.completed) return i;
+  }
+  return -1;
+}
+
+function sessionCompletedWorking(sets: {
+  completed?: boolean;
+  reps: number;
+  weight: number;
+  kind?: string;
+}[]): { set: { reps: number; weight: number; kind?: string }; original: number }[] {
+  const out: { set: { reps: number; weight: number; kind?: string }; original: number }[] = [];
+  for (let i = 0; i < sets.length; i++) {
+    const s = sets[i];
+    if (!s?.completed || s.kind === 'warmup' || s.reps < 1) continue;
+    out.push({ set: s, original: i + 1 });
+  }
+  return out;
+}
+
+/**
+ * After a working set saves: the next load/reps the logs earn, or last rest
+ * when this exercise has no next set. Empty evidence stays quiet — never invent.
+ * Skip lives in the UI.
+ */
+export function resolveAfterCompleteCite(params: {
+  workoutHistory: CompletedWorkoutLog[];
+  exerciseId: string;
+  sessionSets: Array<{
+    completed?: boolean;
+    reps: number;
+    weight: number;
+    kind?: string;
+  }>;
+  completedSetIdx: number;
+  prescribed?: boolean;
+  units: UnitsPref;
+  goalRange?: { min: number; max: number };
+  /** Stored last rest for this exercise — null means do not invent rest. */
+  lastRestSeconds: number | null;
+}): AfterCompleteCite | null {
+  const done = params.sessionSets[params.completedSetIdx];
+  if (!done?.completed || done.kind === 'warmup') return null;
+
+  const nextIdx = nextIncompleteIdx(params.sessionSets, params.completedSetIdx);
+  if (nextIdx >= 0) {
+    const next = params.sessionSets[nextIdx]!;
+    if (next.kind === 'warmup') return null;
+
+    if (params.prescribed) {
+      return {
+        suggestion: { kind: 'load', reps: next.reps, weight: next.weight },
+        cite: { kind: 'coach' },
+      };
+    }
+
+    const lastLog = lastLiveSessionForExercise(params.workoutHistory, params.exerciseId);
+    const lastEx = lastLog?.exercises.find((e) => e.exerciseId === params.exerciseId);
+    if (lastEx) {
+      const suggestion = suggestNextSetTarget(lastEx.sets, nextIdx, params.units, {
+        repMin: params.goalRange?.min,
+        repMax: params.goalRange?.max,
+      });
+      const lastAdj = resolveSetRowAdjacency({
+        workoutHistory: params.workoutHistory,
+        exerciseId: params.exerciseId,
+        setIdx: nextIdx,
+        planned: { reps: next.reps, weight: next.weight, kind: next.kind },
+        units: params.units,
+        goalRange: params.goalRange,
+      });
+      if (suggestion && lastAdj.cite && !lastAdj.empty) {
+        return {
+          suggestion: { kind: 'load', reps: suggestion.reps, weight: suggestion.weight },
+          cite: lastAdj.cite,
+        };
+      }
+    }
+
+    const sessionWork = sessionCompletedWorking(params.sessionSets);
+    if (!sessionWork.length) return null;
+    const suggestion = suggestNextSetTarget(
+      sessionWork.map((w) => w.set),
+      Math.max(0, sessionWork.length - 1),
+      params.units,
+      { repMin: params.goalRange?.min, repMax: params.goalRange?.max }
+    );
+    if (!suggestion) return null;
+    const cited = suggestion.evidenceWorkingIdx
+      .map((i) => sessionWork[i]?.original)
+      .filter((n): n is number => typeof n === 'number');
+    const setFrom = cited.length ? Math.min(...cited) : (sessionWork[0]?.original ?? 1);
+    const setTo = cited.length ? Math.max(...cited) : setFrom;
+    return {
+      suggestion: { kind: 'load', reps: suggestion.reps, weight: suggestion.weight },
+      cite: { kind: 'session', setFrom, setTo },
+    };
+  }
+
+  if (params.lastRestSeconds != null && params.lastRestSeconds > 0) {
+    return {
+      suggestion: { kind: 'rest', seconds: params.lastRestSeconds },
+      cite: { kind: 'last-rest' },
+    };
+  }
+  return null;
 }

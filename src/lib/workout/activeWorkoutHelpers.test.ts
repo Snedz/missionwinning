@@ -120,6 +120,30 @@ describe('activeWorkoutHelpers', () => {
     assert.equal(getLastSessionSets(hist, 'missing'), null);
   });
 
+  it('getLastSessionSets skips tombstones and 0-rep junk — one last-live reader (#487 leftover)', () => {
+    const live = historyWith('squats', [{ reps: 5, weight: 80 }]);
+    const dead = historyWith('squats', [{ reps: 5, weight: 999 }]);
+    dead[0] = { ...dead[0]!, id: 'dead', deletedAt: new Date().toISOString() };
+    const zero = historyWith('squats', [{ reps: 0, weight: 200 }]);
+    zero[0] = { ...zero[0]!, id: 'zero' };
+    const sets = getLastSessionSets([dead[0]!, zero[0]!, live[0]!], 'squats');
+    assert.equal(sets?.[0]?.weight, 80);
+  });
+
+  it('getLastSessionSets uses lastLiveSessionForExercise — no second last-session loop', () => {
+    const helpers = readFileSync(
+      path.join(import.meta.dirname, 'activeWorkoutHelpers.ts'),
+      'utf8'
+    );
+    const code = helpers.replace(/\/\*[\s\S]*?\*\//g, '').replace(/\/\/.*$/gm, '');
+    assert.match(code, /from ['"]@\/lib\/workout\/setRowAdjacency['"]/);
+    assert.match(code, /lastLiveSessionForExercise\(/);
+    const privateLoop = /for \(const log of workoutHistory\)[\s\S]*exerciseId/;
+    const fn = code.slice(code.indexOf('export function getLastSessionSets'));
+    const body = fn.slice(0, fn.indexOf('export function getLastPerformanceForSet'));
+    assert.doesNotMatch(body, privateLoop);
+  });
+
   it('getLastPerformanceForSet matches set index then falls back', () => {
     const hist = historyWith('bench-press', [
       { reps: 8, weight: 60 },
