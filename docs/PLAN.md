@@ -93,6 +93,102 @@ Not these (do not “fix”):
 
 ---
 
+## Frozen plan — `.931` F-008 gated www honesty (old `.698` / #477) (2026-08-24)
+
+> **Rebase note (2026-08-24).** `#774` / `.934` is on master. `#776` owns the door
+> strings. This PR keeps leftover F-008 honesty and ships as **`.938`** (do not
+> steal `#778` `.935` · `#777` `.936` · `#779` `.937`). Do not fight `#776` on
+> Free / Log a set. Offline. Do not squash-merge this hour.
+
+> **Founder brand review (2026-08-24).** Door pack is now **Free / Enter with code / Get notified**.
+> Public line: **Log a set. Offline.** Support: **No account. No wearable.**
+> Do not use Train Anywhere. Win Daily. as the company tagline on the door.
+> Do not use Free beta, invite-only, open alpha, or private beta on the door.
+> Name Mission Winning is locked. Visual tokens unchanged.
+> Sibling `.933` landed brand-guidelines — do not rewrite those files.
+> If a surface already says Free beta, swap to **Free**. Ship label is now `.938`.
+
+> **Frozen.** Implement only this section. Plan commit is `[skip vercel]`.
+> This is the `.698` concern (F-008 honesty). Build number is `.931` because master is `.930`.
+> Old PR #477 (`Gated www honesty under PRIVATE_MODE (.698)`) closed unmerged 2026-08-14.
+> Do not reuse `.698` as `APP_BUILD_LABEL`. Do not steal `.699` why-line work.
+> Draft PR. **Preview will not deploy** (`[skip vercel]` on every commit).
+> Excellence-Override: F-008 gated www honesty.
+> No `PRIVATE_MODE` flip. No promote. No Public GitHub flip. No invented traction.
+> Do not touch #505 #519 #536. Do not add a feed, DMs, Top 8, or invite-only language.
+> WWW N1 four-scene thesis stays on master. This ship is **copy honesty on the gated door**, not a cinematic restyle of Today / Train.
+
+### Investigate (done — leftover invite-only + inverted honesty guard)
+
+Constitution / WWW_NIGHT copy pack: **Free beta / Enter with code / Get notified**.
+No “invite-only”. No “we’re live”. No traction. Gate stays up.
+
+#477 already wrote that pack (`gateEyebrow: 'Free beta'`) plus a closed forbidden list. After it closed, later ships kept the module but **inverted the claim**: EN first paint and the honesty test now say **Alpha** and **ban “free beta”** on the door. That is the defect.
+
+| Surface | Master `.930` | Required |
+|---------|---------------|----------|
+| `GATED_WWW_HONESTY.gateEyebrow` | `Alpha` | **Free beta** |
+| `gateEn.ts` first paint | `Alpha` | **Free beta** |
+| `PrivateTeaserClient` kicker | floors `gateEyebrow` → Alpha | **Free beta** |
+| Waitlist title / submit | Get notified / Notify me | keep |
+| Access submit | Enter with code | keep |
+| `gatedWwwHonesty.test.ts` `BANNED` | includes `free beta` | ban invite-only / get an invite / we’re live — **not** Free beta |
+| `gateLocales` overlays IT/RU/JA/KO/ZH/TH/VI/HI/ID/AR | invite-only / “by invitation” eyebrows | free-beta equivalents |
+| ES/PT/DE waitlist | “ask for an invitation” | notify equivalents |
+| Cinematic HUD `defaultValue` | `Alpha` | **Free beta** (gated mode only) |
+| `05-exquisite.html` HUD ghosts | `Alpha` | **Free beta** (copy pack; no scene restyle) |
+| MarketingNav while gate on | always **Start free** → `/welcome` | **Enter with code** → `/private` |
+| Welcome while gate on | no Free beta framing | Free beta kicker + Train→Coach teaser |
+| `sites/www` CLOSE.body | “Access is invite-only while Alpha is gated.” | free-beta / Enter with code / Get notified |
+| Athlete nav (`navOpenBeta` / `AppHeader`) | **Alpha** | **leave Alpha** (H03 / `.883` — different surface) |
+
+Not these (do not “fix”):
+
+- Athlete launch chrome stays **Alpha** (`alphaNavHonesty.test.ts`). Mute-pay flag stays `isFreeBeta()`.
+- Four-scene SET → ANYWHERE → WEEK → DOOR structure. No Today / Train restyle.
+- `.699` why-line. Counsel-hold #505 #519 #536.
+- `PRIVATE_MODE` / Public GitHub / production promote / SOCIAL_LAUNCH rewrite.
+- Email templates (`scripts/send-beta-invite.ts`) — operator mail, not the public door.
+
+### Ship (founder pack — only this)
+
+1. `GATED_WWW_HONESTY` is the founder pack: eyebrow **Free**, public line **Log a set. Offline.**, support **No account. No wearable.**, waitlist **Get notified**, Welcome kicker **Free · About two minutes**, marketing CTA **Enter with code**. Forbidden list is closed and now includes **free beta**, **open alpha**, and **Train Anywhere. Win Daily.**
+2. Floor the same strings in `gateEn.ts` so first paint cannot disagree. `PrivateTeaserClient` + `GatePendingChrome` read those floors. One support paragraph (no duplicate teaser).
+3. Locale overlays inherit EN public line + support. Eyebrows are Free equivalents — no beta. Packs that said `Free beta` become `Free`.
+4. Gated teaser chrome only: Cinematic HUD + `05-exquisite.html` ghosts **Free**; cover kicker is not TAWD. MarketingNav / Welcome when `isClientPrivateGateEnabled()`. Post-unlock / post-flip CTAs stay **Start free**.
+5. `sites/www` CLOSE.body is Free / Enter with code / Get notified. Comment on `INVITE_URL` may say the door is `/private`.
+6. Help: `/private` is **Free / Enter with code / Get notified**, not “Invite gate” or “Free beta”.
+7. Do not rewrite `docs/design/WWW_NIGHT.md` or `docs/brand-guidelines.md` — sibling `.933`.
+
+### Tests
+
+- `gatedWwwHonesty.test.ts`: EN pack is Free / Get notified / Enter with code plus public line + support. Door surfaces do not carry Free beta / invite-only / open alpha / TAWD / we’re live. Mutant `gateEyebrow: 'Free beta'` dies. Do not scan athlete chrome for open alpha.
+- `exquisiteComp.test.ts`: HUD pack is **Free**, not `>Alpha<` or `>Free beta<`. No TAWD on the cover.
+- Keep `alphaNavHonesty.test.ts` green — athlete badge stays Alpha.
+- `check-build-label` `.938`. LOG + CONTEXT in the same implement commit.
+
+### Docs / ship protocol
+
+- `APP_BUILD_LABEL` → `2026.07-unified.938` (past `#774` / `.934`; skip `#778` `.935` · `#777` `.936` · `#779` `.937`)
+- LOG heading `## 2026-08-24 — F-008 gated www honesty (\`.938\`)` + rotate oldest live entry
+- CONTEXT `## Now` one `.938` bullet; rotate oldest shipped version bullet (`.919`); keep Status table; ≤25 bullets
+- `src/lib/INDEX.md` lists `gatedWwwHonesty.ts`
+- Commit trailer: `Excellence-Override: F-008 gated www honesty`
+- Every commit: `[skip vercel]`. PR title tells humans this is reserved **F-008 / old .698 honesty**. PR body writes: “This is the .698 concern (F-008 honesty). Build number is .931 because master is .930.”
+
+### Hard bans
+
+- No `PRIVATE_MODE` / promote / EIN / secrets / Public GitHub flip
+- No invented traction / “we’re live”
+- Do not steal `.698` as the build number or `.699` why-line
+- Do not touch #505 #519 #536
+- Do not add a feed, DMs, Top 8, or invite-only language
+- Do not restyle Today / Train / the four-scene thesis
+- Do not rewrite athlete nav from Alpha to Free beta
+- Do not gate the free logger
+
+---
+
 ## Frozen plan — `.765` Preview walk P0s (consent dock + landing notify) (2026-08-13)
 
 > **Frozen.** Implement only this section. Plan commit is `[skip vercel]`.

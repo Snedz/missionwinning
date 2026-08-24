@@ -67,7 +67,7 @@ export function LaunchNotifyForm({ source, message, variant = 'landing' }: Props
           </p>
           <p className="gate-foot">
             {t('gateWaitlistDoneFoot', {
-              defaultValue: "We'll email you when Alpha access is ready.",
+              defaultValue: "We'll email you when access is ready.",
             })}{' '}
             {email}
           </p>

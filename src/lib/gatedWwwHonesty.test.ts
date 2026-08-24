@@ -122,3 +122,34 @@ test('locale pack overlays do not restore private-beta or Free beta eyebrows', (
   }
   assert.deepEqual(hits, [], `pack gateEyebrow still positions as invite/private:\n${hits.join('\n')}`);
 });
+
+test('PrivateTeaser floors honesty copy and marks one support lede', () => {
+  const src = read('app/private/PrivateTeaserClient.tsx');
+  assert.match(src, /gateEnFloor/);
+  assert.match(src, /data-mw-wedge-teaser/);
+  assert.match(src, /gateSubtitle/);
+  assert.match(src, /gateLocalFirst/);
+});
+
+test('MarketingNav gated CTA is Enter with code → /private', () => {
+  const src = read('src/components/marketing/MarketingNav.tsx');
+  assert.match(src, /isClientPrivateGateEnabled/);
+  assert.match(src, /GATED_WWW_HONESTY/);
+  assert.match(src, /landingNavStartGated/);
+  assert.match(src, /ctaHref = gateOn \? '\/private'/);
+});
+
+test('Welcome gated framing uses honesty constants', () => {
+  const src = read('src/page-components/WelcomePage.tsx');
+  assert.match(src, /isClientPrivateGateEnabled/);
+  assert.match(src, /GATED_WWW_HONESTY/);
+  assert.match(src, /welcomeGateKicker/);
+  assert.match(src, /welcomeGateSubtitleBrief/);
+});
+
+test('/private document title stays Log a set. Offline., not Free beta', () => {
+  const src = read('src/lib/routeMetadata.ts');
+  assert.match(src, /private:\s*'Log a set\. Offline\.'/);
+  assert.doesNotMatch(src, /private:\s*'Free beta'/);
+  assert.doesNotMatch(src, /private:\s*'Private Beta'/);
+});

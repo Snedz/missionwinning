@@ -215,7 +215,7 @@ export function PrivateTeaserClient({
             <span>{g('gateTitle1')}</span>
             <span>{g('gateTitle2')}</span>
           </h1>
-          <p className="gate-lede">
+          <p className="gate-lede" data-mw-wedge-teaser>
             {g('gateSubtitle')}
           </p>
           {/*

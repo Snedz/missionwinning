@@ -4,6 +4,7 @@
  */
 
 import { BETA_EN } from '@/i18n/betaLocales';
+import { GATED_WWW_HONESTY } from '@/lib/gatedWwwHonesty';
 
 export const BOOTSTRAP_EN: Record<string, string> = {
   ...BETA_EN,
@@ -59,6 +60,11 @@ export const BOOTSTRAP_EN: Record<string, string> = {
   todayCoachInviteTitle: 'Turn your logs into this week’s plan',
   todayCoachInviteBody: 'Built from your gear and days per week — free every week.',
   landingNavStart: 'Start free',
+  landingNavStartGated: GATED_WWW_HONESTY.landingNavStartGated,
+  welcomeGateKicker: GATED_WWW_HONESTY.welcomeKicker,
+  welcomeGateSubtitleBrief: GATED_WWW_HONESTY.welcomeSubtitleBrief,
+  gateWedgeTeaser: GATED_WWW_HONESTY.gateWedgeTeaser,
+  gateEyebrow: GATED_WWW_HONESTY.gateEyebrow,
   landingFaqEyebrow: 'Straight answers',
   landingFaqFreeQ: 'Is the free version actually complete?',
   landingFaqFreeA:
