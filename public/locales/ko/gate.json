@@ -17,7 +17,7 @@
   "gateWaitlistFailed": "저장되지 않았습니다. 연결을 확인한 뒤 다시 시도하세요.",
   "gateAccessSummary": "베타 액세스 코드가 있습니까?",
   "gateAccessLabel": "액세스 코드",
-  "gateAccessPlaceholder": "초대에 있는 코드를 입력하세요.",
+  "gateAccessPlaceholder": "액세스 코드를 입력하세요.",
   "gateAccessSubmit": "베타에 참여하세요",
   "gateAccessChecking": "확인 중…",
   "gateCheckingSession": "로그인 확인 중…",

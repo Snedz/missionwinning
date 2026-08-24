@@ -17,7 +17,7 @@
   "gateWaitlistFailed": "No se guardó. Revisa tu conexión e inténtalo de nuevo.",
   "gateAccessSummary": "¿Tienes un código de acceso beta?",
   "gateAccessLabel": "código de acceso",
-  "gateAccessPlaceholder": "Ingresa el código de tu invitación",
+  "gateAccessPlaceholder": "Ingresa tu código de acceso",
   "gateAccessSubmit": "Entra en la beta",
   "gateAccessChecking": "De cheques…",
   "gateCheckingSession": "Comprobando sesión…",

@@ -17,7 +17,7 @@
   "gateWaitlistFailed": "Chưa lưu được. Kiểm tra kết nối và thử lại.",
   "gateAccessSummary": "Có mã truy cập beta?",
   "gateAccessLabel": "Mã truy cập",
-  "gateAccessPlaceholder": "Nhập mã từ lời mời của bạn",
+  "gateAccessPlaceholder": "Nhập mã truy cập của bạn",
   "gateAccessSubmit": "Nhập phiên bản beta",
   "gateAccessChecking": "Đang kiểm tra…",
   "gateCheckingSession": "Đang kiểm tra đăng nhập…",

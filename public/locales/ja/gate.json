@@ -17,7 +17,7 @@
   "gateWaitlistFailed": "保存できませんでした。接続を確認してもう一度お試しください。",
   "gateAccessSummary": "ベータ招待コードをお持ちですか？",
   "gateAccessLabel": "アクセスコード",
-  "gateAccessPlaceholder": "招待状のコードを入力してください",
+  "gateAccessPlaceholder": "アクセスコードを入力してください",
   "gateAccessSubmit": "ベータ版に参加する",
   "gateAccessChecking": "チェック中…",
   "gateCheckingSession": "サインインを確認中…",

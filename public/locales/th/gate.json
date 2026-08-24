@@ -17,7 +17,7 @@
   "gateWaitlistFailed": "บันทึกไม่สำเร็จ ตรวจสอบการเชื่อมต่อแล้วลองอีกครั้ง",
   "gateAccessSummary": "มีรหัสการเข้าถึงเบต้าหรือไม่?",
   "gateAccessLabel": "รหัสการเข้าถึง",
-  "gateAccessPlaceholder": "ป้อนรหัสจากคำเชิญของคุณ",
+  "gateAccessPlaceholder": "ป้อนรหัสเข้าถึงของคุณ",
   "gateAccessSubmit": "เข้าสู่รุ่นเบต้า",
   "gateAccessChecking": "กำลังตรวจสอบ...",
   "gateCheckingSession": "กำลังตรวจสอบการเข้าสู่ระบบ…",
