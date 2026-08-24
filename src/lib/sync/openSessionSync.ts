@@ -1,9 +1,12 @@
 /**
  * Open Train session → `profiles.open_session`, over the outbox (`.958`).
  *
- * Latest-state: one dedupe key. Handler uses the enqueued snapshot
- * (live or tombstone). Signed out / missing column / no cloud is ACK —
- * do not spin backoff. No Force Sync screen.
+ * Latest-state: one dedupe key. Handler writes the **enqueued** snapshot
+ * (live or tombstone). It does not re-read the store the way `coach.plan`
+ * does: Finish clears `activeWorkout`, so a re-read would upsert `null`
+ * and the other surface would treat empty remote as `push-local` and
+ * reopen a closed session. Tombstone keeps `clientId`. Signed out /
+ * missing column / no cloud is ACK — do not spin backoff. No Force Sync.
  */
 import { supabase, getUser } from '@/lib/supabase';
 import { enqueue, registerHandler } from '@/lib/sync/outbox';

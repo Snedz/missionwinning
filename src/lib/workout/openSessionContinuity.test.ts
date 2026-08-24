@@ -216,4 +216,22 @@ describe('openSessionContinuity source lock', () => {
     assert.doesNotMatch(helper, /generateWeek|Trainer|shop|EXERCISES/);
     assert.doesNotMatch(helper, /from\s+['"]@\/lib\/coach\/planEngine/);
   });
+
+  it('does not smash Today Start, Wednesday cite, close receipt, or /private', () => {
+    const hero = read('src/components/journey/JourneyHero.tsx');
+    const start = hero.slice(hero.indexOf('function StartDockHero'));
+    const buttons = start.match(/className="primary-action/g) ?? [];
+    assert.equal(buttons.length, 2, 'Today still one Start (desktop + compact)');
+
+    const cite = read('src/components/coach/CoachNextDayCite.tsx');
+    assert.match(cite, /data-testid="coach-next-day"/);
+    assert.doesNotMatch(cite, /className="primary-action/);
+
+    const receipt = read('src/lib/workout/victoryReceipt.ts');
+    assert.doesNotMatch(receipt, /permalink|publicUrl|share\/workout/i);
+
+    const teaser = read('app/private/GateTeaser.tsx');
+    assert.doesNotMatch(teaser, /CinematicWww/);
+    assert.match(teaser, /PrivateTeaserClient/);
+  });
 });

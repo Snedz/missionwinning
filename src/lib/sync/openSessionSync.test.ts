@@ -27,6 +27,23 @@ describe('openSessionSync', () => {
     assert.match(drain, /registerOpenSessionSyncHandler\(\)/);
   });
 
+  it('SIGNED_IN history adopt also enqueues the open session', () => {
+    const store = read('src/store/workoutStore.ts');
+    const fn = store.slice(store.indexOf('syncCurrentHistoryToCloud: async'));
+    assert.match(fn, /enqueueOpenSession\(open\)/);
+    assert.ok(
+      fn.indexOf('enqueueWorkoutUpsert') < fn.indexOf('enqueueOpenSession(open)'),
+      'history rows queue first; open session rides the same flush'
+    );
+  });
+
+  it('handler writes the enqueued snapshot — a store re-read would resurrect', () => {
+    const src = stripComments(read('src/lib/sync/openSessionSync.ts'));
+    assert.match(src, /registerHandler\('workout\.active', pushOpenSession\)/);
+    assert.match(src, /open_session: snapshot/);
+    assert.doesNotMatch(src, /useWorkoutStore|getState\(\)\.activeWorkout/);
+  });
+
   it('SIGNED_IN reconciles the open session without a tap', () => {
     const src = read('src/hooks/useJourneySync.ts');
     const signedIn = src.slice(
