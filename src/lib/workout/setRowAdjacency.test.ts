@@ -317,6 +317,20 @@ describe('setRowAdjacency honesty', () => {
     const gate = readFileSync(path.join(root, 'src/i18n/gateEn.ts'), 'utf8');
     assert.doesNotMatch(gate, /E-Adjacency/);
   });
+
+  it('supersedes #487 surface — Train does not remount TARGET-above-PREVIOUS', () => {
+    const table = readFileSync(
+      path.join(root, 'src/components/workout/SetLogTable.tsx'),
+      'utf8'
+    );
+    const card = readFileSync(
+      path.join(root, 'src/components/workout/ActiveExerciseCard.tsx'),
+      'utf8'
+    );
+    assert.doesNotMatch(table, /SetLogAdjacencyStack/);
+    assert.doesNotMatch(card, /formatSetRowAdjacency/);
+    assert.match(card, /resolveAfterCompleteCite/);
+  });
 });
 
 describe('resolveAfterCompleteCite', () => {

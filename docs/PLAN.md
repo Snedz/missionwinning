@@ -24,6 +24,24 @@ the logs earn (weight/reps or rest), cited from their last sets. Skippable.
 Never blocks logging. Not a feed. Not a paywall. Not a wearable. **E-Adjacency
 is not a marketing name on the door.**
 
+### Prior art — closed #487 (`.703`, 2026-08-13)
+
+Product PR #487 drafted E-Adjacency as TARGET stacked above PREVIOUS on the
+**live incomplete** row (`SetLogAdjacencyStack`). Craft LGTM, then closed as
+superseded by #544 / `.766`. Engines landed (`setRowAdjacency`,
+`suggestNextSetTarget`, last-live reader). The stack was **never imported**.
+
+This ship **supersedes #487's surface**, not its engines:
+
+- Recover the cite + double-progression numbers.
+- Recover #487 leftover: `getLastSessionSets` must use `lastLiveSessionForExercise`
+  (tombstones / 0-rep junk are not Prev evidence). Master still had a private loop.
+- Do **not** remount TARGET-above-PREVIOUS (that is last-actuals chrome; we
+  already have last-set ghost). Hevy PREVIOUS is official last-actuals beside
+  the row — it does not fill the next number. Our beat is after complete.
+- Do not invent program auto-progression (Boostcamp next-session bump).
+- Import (Strong CSV first) is a later PR.
+
 ### Investigate (done — hypothesis holds, with one extra unused stack)
 
 | Primitive | What it already does | Gap |
@@ -70,6 +88,8 @@ a **visible, skippable, cited next-set after complete** on the free logger.
 - Empty history + no completed working set → `resolveAfterCompleteCite` is `null` (does not invent).
 - One logged working set + a next planned row → skippable load cite (target + provenance).
 - Skip wiring: `SetLogTable` mounts Skip; Log set is still `primary-action`; Skip is not red.
+- `getLastSessionSets` skips tombstones / 0-rep junk via `lastLiveSessionForExercise` (#487 leftover).
+- `SetLogTable` does not remount `SetLogAdjacencyStack` (#487 surface stays superseded).
 - Warmup complete stays quiet. Tombstone history is not evidence (existing last-live rule).
 - Source: does not import `sessionRationale` / PlanSessionCard / readiness.
 - Door / teaser / www do not gain an "E-Adjacency" string.

@@ -22,7 +22,10 @@ cite on the set row.
 **Ship:** `resolveAfterCompleteCite` reuses the existing
 engine. Empty history does not invent. One logged set
 cites the next load from this session. Skip never blocks
-Log set. Not a feed. Not a door name.
+Log set. `getLastSessionSets` now reads
+`lastLiveSessionForExercise` — #487 leftover private
+loop (tombstones / 0-rep junk). Not a feed. Not a door
+name. Not TARGET-above-PREVIOUS.
 
 Label `.936` (past master `.938`; `#775` landed `.938`; `#774` is `.934`).
 

@@ -414,7 +414,7 @@ One screen of truth for any AI tool or human joining cold. Read this, then [AGEN
 > | Privacy / security program | **Landed `.778`** — [docs/security/PROGRAM_STATUS.md](docs/security/PROGRAM_STATUS.md). Invite-bound gate, health-bucket, DSAR, territory fail-closed. OTP-without-click can leave a ghost user. Not a cert. |
 
 - **`.938`:** (`2026.07-unified.938`) **F-008 gated www honesty** — leftover honesty on the `#776` door after `#774` took `.934`. Free / Log a set. Offline. / No account. No wearable. Not Free beta. Skips `.935` `#778` · `.936` `#777` · `.937` `#779`. No `PRIVATE_MODE` flip.
-- **`.936`:** (`2026.07-unified.936`) **Next-set cite after a logged set** — skippable load/reps or last rest on the Train set row, cited from the log. Empty history does not invent. Supersedes closed #487. No `PRIVATE_MODE` flip.
+- **`.936`:** (`2026.07-unified.936`) **Next-set cite after a logged set** — skippable load/reps or last rest on the Train set row, cited from the log. Empty history does not invent. Supersedes closed #487 (engines + last-live reader; TARGET-above-PREVIOUS stays unmounted). No `PRIVATE_MODE` flip.
 - **`.934`:** (`2026.07-unified.934`) **Coach why-this-session** — reserved `.699` / F-012 / #774. Boss-card cite from logs, or honest empty. Coach skippable. Why stays free. Door copy stays `.933`. No `PRIVATE_MODE` flip.
 - **`.933`:** (`2026.07-unified.933`) **Brand copy lock** — public line Log a set. Offline.; support No account. No wearable.; door Free · Enter with code · Get notified. Name stays Mission Winning. No `PRIVATE_MODE` flip.
 - **`.930`:** (`2026.07-unified.930`) **One set-count for a completed log** — Today highlights and Victory receipt share `countCompletedLogSets`. No `PRIVATE_MODE` flip.

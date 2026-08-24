@@ -20,7 +20,7 @@ Root-level `@/lib/{name}` paths re-export from here for compatibility — prefer
 9. `workoutVictory.ts` — post-workout summary; early/no-plan → Mission Coach; freestyle progression skipped when prescribed (`.410`); one-exit secondary Today helper (`.422`); vs-last `receipt` from `victoryReceipt.ts` (`.713` / merge-all); `workingReps` for BW volume (`.886`)
 9b. `victoryReceipt.ts` — vs-last session totals + per-lift rows for Victory (`.713`)  
 9c. `completedLogSets.ts` — one set-count for a completed log (Today highlights + Victory) (`.930`)  
-10. `activeWorkoutHelpers.ts` — next incomplete set, last session, set stats, `buildConsoleSet` / `planApplyTargets` / `resolveActiveSetDial` (`.297`/`.303`)  
+10. `activeWorkoutHelpers.ts` — next incomplete set, last session, set stats, `buildConsoleSet` / `planApplyTargets` / `resolveActiveSetDial` (`.297`/`.303`); `getLastSessionSets` reads `lastLiveSessionForExercise` (`.936` recovers #487 leftover)  
 10a. `repeatLastSession.ts` — last completed log → startWorkout template (`.717`); wraps `historyRetrain.templateFromCompletedLog`  
 11. `activeWorkoutPulse.ts` — nav pulse flag without store
 12. `workoutPersistLite.ts` — history/streak from localStorage (cold path)
