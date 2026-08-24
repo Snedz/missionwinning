@@ -12,6 +12,7 @@ When adding a doc:
 
 | File | Absorbed by / note |
 |------|---------------------|
+| [log/LOG-rotate-915-for-930.md](./log/LOG-rotate-915-for-930.md) | rotated 2026-08-24 for `.930` one set-count (`.915`) |
 | [log/LOG-rotate-914-for-929.md](./log/LOG-rotate-914-for-929.md) | rotated 2026-08-24 for `.929` restore local green (`.914`) |
 | [log/LOG-rotate-913-for-928.md](./log/LOG-rotate-913-for-928.md) | rotated 2026-08-24 for `.928` public Alpha snapshot (`.913`) |
 | [log/LOG-rotate-912-for-927.md](./log/LOG-rotate-912-for-927.md) | rotated 2026-08-18 for `.927` Library add (`.912`) |
