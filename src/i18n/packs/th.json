@@ -228,7 +228,7 @@
   "gateAccessLabel": "รหัสการเข้าถึง",
   "gateAccessPlaceholder": "ป้อนรหัสเข้าถึงของคุณ",
   "gateAccessSubmit": "เข้าสู่รุ่นเบต้า",
-  "gateAccessSummary": "มีรหัสการเข้าถึงเบต้าหรือไม่?",
+  "gateAccessSummary": "Enter with code",
   "gateBetaGuide": "คู่มือเริ่มต้นเบต้า",
   "gateBetaGuideFoot": "ผู้ทดสอบที่ได้รับเชิญ: ดูที่",
   "gateCheckingSession": "กำลังตรวจสอบการเข้าสู่ระบบ…",

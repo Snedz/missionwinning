@@ -55,6 +55,7 @@
 | File | Route |
 |------|-------|
 | `BundlePage.tsx` | `/bundle` |
+| `NotifyPage.tsx` | `/notify` — Super Bundle waitlist (Get notified; no checkout) |
 | `LearnPathsPublicIndexPage.tsx` | `/paths` |
 | `LearnPathPublicPage.tsx` | `/paths/[id]` |
 | `ExerciseMuscleHubPage.tsx` | `/exercises/muscle/[group]` |

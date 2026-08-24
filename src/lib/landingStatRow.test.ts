@@ -12,6 +12,7 @@ const root = path.join(import.meta.dirname, '..', '..');
 const landing = readFileSync(path.join(root, 'src/page-components/LandingPage.tsx'), 'utf8');
 const cine = readFileSync(path.join(root, 'src/components/landing/CinematicWww.tsx'), 'utf8');
 const css = readFileSync(path.join(root, 'src/components/landing/cinematic.css'), 'utf8');
+const gateEn = readFileSync(path.join(root, 'src/i18n/gateEn.ts'), 'utf8');
 
 test('LandingPage is the .696 marketing homepage, not cinematic www', () => {
   assert.match(landing, /LogToPlanHero/);
@@ -30,16 +31,18 @@ test('cinematic www is four scenes, ghost CTA, real mark', () => {
 });
 
 test('cinematic www nested mission stays public line + support on fold 1', () => {
-  assert.match(cine, /cinePublicLine/);
-  assert.match(cine, /Log a set\. Offline\./);
   assert.match(cine, /cineHeroHeadline/);
+  assert.match(cine, /cineSetEyebrow/);
+  assert.match(gateEn, /cinePublicLine/);
   assert.match(cine, /cineHeroLead/);
-  assert.match(cine, /No account\. No wearable\./);
   assert.match(cine, /cineWeekKicker/);
-  assert.match(cine, /Mission Coach/);
   assert.match(cine, /www-cine-later/);
-  assert.match(cine, /Not a feed/);
+  assert.match(gateEn, /Log a set\. Offline\./);
+  assert.match(gateEn, /No account\. No wearable\./);
+  assert.match(gateEn, /Mission Coach/);
+  assert.match(gateEn, /Today is not a Feed/);
   assert.doesNotMatch(cine, /Train Anywhere\. Win Daily\./);
+  assert.doesNotMatch(gateEn, /Train Anywhere\. Win Daily\./);
   assert.doesNotMatch(cine, /WeChat/i);
   assert.doesNotMatch(cine, /mini-program/i);
   assert.doesNotMatch(cine, /Fuel · Move · Mind/);
@@ -55,6 +58,7 @@ test('cinematic www SET is a field, Anywhere before Week, HUD nav', () => {
   assert.match(setBlock, /www-cine-set-inner/);
   assert.doesNotMatch(setBlock, /www-cine-split/);
   assert.match(setBlock, /cineHeroLead/);
+  assert.doesNotMatch(setBlock, /logo-icon/);
   assert.match(cine, /www-cine-nav/);
   assert.doesNotMatch(cine, /www-cine-word/);
   assert.match(css, /\.www-cine-nav \{[^}]*position:\s*fixed/);

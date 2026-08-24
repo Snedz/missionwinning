@@ -146,16 +146,14 @@ export function PrivateTeaserClient({
   };
 
   const errorNode = error ? (
-    <p role="alert" aria-live="assertive" className="gate-error">
+    <p role="alert" aria-live="assertive" className="www-cine-foot">
       {error}
     </p>
   ) : null;
 
   const codeField = (
-    <label className="gate-field">
-      <span className="gate-label">
-        {g('gateAccessLabel')}
-      </span>
+    <label className="www-cine-field">
+      <span>{g('gateAccessLabel')}</span>
       <input
         type="password"
         value={password}
@@ -165,7 +163,6 @@ export function PrivateTeaserClient({
         // Invitees land with the access form expanded — focus the code field.
         // eslint-disable-next-line jsx-a11y/no-autofocus -- invite conversion
         autoFocus={isInvitee}
-        className="gate-input"
         disabled={loading}
       />
     </label>
@@ -177,7 +174,7 @@ export function PrivateTeaserClient({
 
   /** Announced, never blocking — the poster is already on screen behind it. */
   const probeNote = sessionUnlocking ? (
-    <p className="gate-foot" aria-live="polite">
+    <p className="www-cine-foot" aria-live="polite">
       {g('gateCheckingSession')}
     </p>
   ) : null;
@@ -185,7 +182,7 @@ export function PrivateTeaserClient({
   /** `notice` = country unconfirmed (Tor / some VPNs). Say so; keep the form. */
   const territoryNote =
     territory.stance === 'notice' && territory.message ? (
-      <p className="gate-foot" data-mw-territory={territory.reason}>
+      <p className="www-cine-foot" data-mw-territory={territory.reason}>
         {territory.message}{' '}
         <Link href="/regions">
           {t('infoRegionsTitle', { defaultValue: 'Supported Regions' })}
@@ -194,134 +191,81 @@ export function PrivateTeaserClient({
     ) : null;
 
   return (
-    <div className="gate-shell page-enter" data-mw-invitee={isInvitee ? '1' : '0'}>
-      <header className="gate-header">
-        <span className="gate-brand">
-          <span className="gate-mark" data-brand-monogram aria-hidden>
-            MW
-          </span>
-          <span className="gate-brandname">Mission Winning</span>
-        </span>
-        <p className="gate-kicker">
-          {g('gateEyebrow')}
-        </p>
-      </header>
-      <hr className="gate-rule" />
-
-      {/* Field manual: eyebrow → display → one red (invite = code; cold = notify). */}
-      <main className="gate-main">
-        <div className="gate-col">
-          <h1 className="gate-h1">
-            <span>{g('gateTitle1')}</span>
-            <span>{g('gateTitle2')}</span>
-          </h1>
-          <p className="gate-lede" data-mw-wedge-teaser>
-            {g('gateSubtitle')}
-          </p>
-          {/*
-            The mechanism, on the first screen anyone sees. "Offline" is a word
-            an app with forced sync would also print; this says where the sets go.
-          */}
-          <p className="gate-foot" data-mw-local-first>
-            {g('gateLocalFirst')}
-          </p>
-
-          {isInvitee ? (
-            <section className="gate-section">
-              <p className="gate-kicker">
-                {g('gateInviteEyebrow')}
+    <div data-mw-invitee={isInvitee ? '1' : '0'}>
+      {isInvitee ? (
+        <section>
+          <p className="www-cine-lede">{g('gateInviteSubtitle')}</p>
+          <form onSubmit={handleSubmit}>
+            {codeField}
+            <div className="www-cine-row">
+              <button type="submit" disabled={loading || !password} className="www-cine-ghost">
+                {submitLabel}
+              </button>
+            </div>
+            {errorNode}
+            <p className="www-cine-foot">
+              {g('gateBetaGuideFoot')}{' '}
+              <Link href="/beta">{g('gateBetaGuide')}</Link>
+              . If you installed the app before the gate, clear site data or reinstall.
+            </p>
+          </form>
+        </section>
+      ) : (
+        <section>
+          {territory.stance === 'refuse' ? (
+            <div data-mw-territory={territory.reason}>
+              <p className="www-cine-lede">
+                {t('infoRegionsTitle', { defaultValue: 'Supported Regions' })}
               </p>
-              <p className="gate-invite-copy">
-                {g('gateInviteSubtitle')}
+              <p className="www-cine-foot">{territory.message}</p>
+              <p className="www-cine-foot">
+                <Link href="/regions">
+                  {t('infoRegionsNotSupported', {
+                    defaultValue: 'Where we do not support the hosted service',
+                  })}
+                </Link>
               </p>
-              <form onSubmit={handleSubmit}>
-                {codeField}
-                <div className="gate-actions">
-                  <button
-                    type="submit"
-                    disabled={loading || !password}
-                    className="gate-btn gate-btn-primary"
-                  >
-                    {submitLabel}
-                  </button>
-                </div>
-                {errorNode}
-                <p className="gate-foot">
-                  {g('gateBetaGuideFoot')}{' '}
-                  <Link href="/beta">
-                    {g('gateBetaGuide')}
-                  </Link>
-                  . If you installed the app before the gate, clear site data or reinstall.
-                </p>
-              </form>
-            </section>
+            </div>
           ) : (
-            <section className="gate-section">
-              {territory.stance === 'refuse' ? (
-                /*
-                 * A named excluded territory. The poster still stands — the
-                 * product exists and the source is public — but we do not ask
-                 * for an address we could only ever ignore. The access-code
-                 * details below stay open, so a hand-picked tester passing
-                 * through is not locked out of their own invite.
-                 */
-                <div data-mw-territory={territory.reason}>
-                  <p className="gate-kicker">
-                    {t('infoRegionsTitle', { defaultValue: 'Supported Regions' })}
-                  </p>
-                  <p className="gate-invite-copy">{territory.message}</p>
-                  <p className="gate-foot">
-                    <Link href="/regions">
-                      {t('infoRegionsNotSupported', {
-                        defaultValue: 'Where we do not support the hosted service',
-                      })}
-                    </Link>
-                  </p>
-                </div>
-              ) : (
-                <>
-                  <p className="gate-kicker">{g('gateWaitlistTitle')}</p>
-                  <LaunchNotifyForm
-                    source="launch-waitlist"
-                    message="Private gate waitlist"
-                    variant="gate"
-                  />
-                  <p className="gate-foot">{g('gateWaitlistFoot')}</p>
-                  {territoryNote}
-                </>
-              )}
-
-              {/* Access code secondary — never competes with Notify me red. */}
-              <details className="gate-details" open={false}>
-                <summary className="gate-details-summary">
-                  {g('gateAccessSummary')}
-                </summary>
-                <form onSubmit={handleSubmit}>
-                  {codeField}
-                  <div className="gate-actions">
-                    <button
-                      type="submit"
-                      disabled={loading || !password}
-                      className="gate-btn gate-btn-secondary"
-                    >
-                      {submitLabel}
-                    </button>
-                  </div>
-                  {errorNode}
-                </form>
-              </details>
-            </section>
+            <>
+              <p className="www-cine-lede">{g('cineDoorLead')}</p>
+              <LaunchNotifyForm
+                source="launch-waitlist"
+                message="Private gate waitlist"
+                variant="cine"
+              />
+              <p className="www-cine-foot">{g('cineDoorFoot')}</p>
+              {territoryNote}
+            </>
           )}
 
-          {probeNote}
-        </div>
-      </main>
+          <details className="www-cine-details" open={false}>
+            <summary>{g('gateAccessSummary')}</summary>
+            <form onSubmit={handleSubmit}>
+              {codeField}
+              <div className="www-cine-row">
+                <button
+                  type="submit"
+                  disabled={loading || !password}
+                  className="www-cine-ghost"
+                >
+                  {submitLabel}
+                </button>
+              </div>
+              {errorNode}
+            </form>
+          </details>
+        </section>
+      )}
 
-      <div className="gate-footer">
-        <div className="gate-footer-inner">
-          <span>
-            {g('gateFooterTagline')}
-          </span>
+      <p className="www-cine-foot" data-mw-local-first>
+        {g('gateLocalFirst')}
+      </p>
+      <p className="www-cine-never">{g('cineNever')}</p>
+      {probeNote}
+
+      <div className="www-cine-colophon">
+        <div className="www-cine-colophon-inner">
           <AppLegalFooter className="gate-footer-links" />
         </div>
       </div>

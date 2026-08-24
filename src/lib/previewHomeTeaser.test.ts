@@ -1,6 +1,7 @@
 /**
- * Preview / local `/` is the gate teaser until the signed cookie, then the
- * `.696` homepage. Not cinematic. Production with the gate on is unchanged.
+ * Preview / local `/` is the gated door until the signed cookie, then the
+ * `.696` homepage. The door is the four-scene field. Production with the
+ * gate on still 307s `/` → `/private`. Cinematic www is not the homepage.
  */
 
 import { test } from 'node:test';
@@ -27,11 +28,13 @@ test('ungated `/` is the teaser until the cookie, then the homepage', () => {
   assert.match(page, /<GateTeaser walkOpen/, 'cold Preview still shows the door');
 });
 
-test('GateTeaser is the mw-gate door, not the cinematic www', () => {
+test('GateTeaser is the mw-gate cinematic door; homepage is not', () => {
   const teaser = read('app/private/GateTeaser.tsx');
   assert.match(teaser, /mw-gate/);
+  assert.match(teaser, /CinematicWww/);
   assert.match(teaser, /PrivateTeaserClient/);
-  assert.doesNotMatch(teaser, /CinematicWww|www-cine/);
+  const landing = read('src/page-components/LandingPage.tsx');
+  assert.doesNotMatch(landing, /CinematicWww|www-cine/);
 });
 
 test('`/active` stays public while gated (logger never gated)', () => {

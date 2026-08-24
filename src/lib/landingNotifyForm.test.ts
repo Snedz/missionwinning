@@ -1,7 +1,8 @@
 /**
- * Preview walk P0-2: Super Bundle "get notified until Stripe" must have a
- * real email form on the public landing. `/private` always redirects when
- * the gate is off, so that page cannot be the only capture point.
+ * F-047 / Preview walk P0-2: Super Bundle "get notified until Stripe" must
+ * have a real email form on a public page. `/private` always redirects when
+ * the gate is off, so the door cannot be the only capture point. Landing
+ * stays Start free (`.696`) and does not remount the form.
  */
 
 import { test } from 'node:test';
@@ -17,8 +18,28 @@ test('gate teaser owns LaunchNotifyForm; landing is Start free only', () => {
   const gate = read('app/private/PrivateTeaserClient.tsx');
   assert.match(gate, /LaunchNotifyForm/, 'waitlist stays on the door');
   assert.doesNotMatch(landing, /LaunchNotifyForm/, '.696 homepage has no notify band');
+  assert.match(
+    landing,
+    /isFreeBeta\(\)\s*\?\s*['"]\/notify['"]/,
+    'free-beta Super Bundle merch points at /notify, not a dead /bundle shop'
+  );
   const primaries = landing.match(/primary-action/g) || [];
   assert.ok(primaries.length <= 2, 'landing keeps at most two red Start free actions');
+});
+
+test('/notify mounts the Super Bundle notify form (F-047)', () => {
+  const page = read('src/page-components/NotifyPage.tsx');
+  const route = read('app/notify/page.tsx');
+  assert.match(page, /LaunchNotifyForm/, 'public notify page has a real form');
+  assert.match(page, /landing-super-bundle-notify/, 'shop waitlist keeps its source');
+  assert.match(route, /ctaHref="\/active"/, 'notify chrome points at the logger');
+  assert.match(route, /ctaLabel="Log a set"/, 'do not sell Start free / Free beta here');
+  assert.doesNotMatch(page, /createCheckoutForPlan|\/api\/checkout|stripe\.com/);
+  assert.doesNotMatch(
+    page,
+    /\b\d{2,}\s+(people|testers|waiting|joined)\b/i,
+    'do not invent waitlist traction numbers'
+  );
 });
 
 test('LaunchNotifyForm collects email via submitLead and never opens checkout', () => {

@@ -70,6 +70,10 @@
   letter-spacing: -0.01em;
   text-decoration: none;
   text-align: left;
+  cursor: pointer;
+  font-family: inherit;
+  appearance: none;
+  border-radius: 0;
 }
 
 .www-cine-ghost:hover {
@@ -105,6 +109,34 @@
   color: hsl(var(--muted-foreground));
   font-size: 17px;
   line-height: 1.55;
+}
+
+.www-cine .display-hero {
+  max-width: 11ch;
+  font-size: clamp(2.625rem, 7vw, 4.75rem);
+}
+
+.www-cine .display-section {
+  max-width: 14ch;
+  font-size: clamp(2.25rem, 6vw, 4.25rem);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .www-cine-rise,
+  .www-cine-logger {
+    animation: www-cine-rise 700ms ease-out both;
+  }
+}
+
+@keyframes www-cine-rise {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
 }
 
 .www-cine-mark {
@@ -269,6 +301,17 @@
   color: hsl(var(--muted-foreground));
 }
 
+.www-cine-why-k {
+  display: block;
+  margin: 0 0 4px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: hsl(var(--muted-foreground));
+  font-feature-settings: 'tnum' 1;
+}
+
 .www-cine-demo {
   margin: 14px 0 0;
   font-size: 12px;
@@ -290,11 +333,6 @@
   .www-cine-set {
     padding-top: 52px;
     padding-bottom: 20px;
-  }
-
-  .www-cine-set .www-cine-mark img {
-    width: 64px;
-    height: 64px;
   }
 
   .www-cine-set .display-hero {
@@ -332,7 +370,11 @@
   }
 
   .www-cine-demo {
-    margin-top: 8px;
+    display: none;
+  }
+
+  .www-cine-lnw {
+    margin-bottom: 8px;
   }
 }
 
@@ -439,6 +481,10 @@
   max-width: 36rem;
 }
 
+.www-cine-door .www-cine-mark {
+  margin-bottom: 8px;
+}
+
 .www-cine-door .www-cine-lede {
   color: hsl(var(--background));
   font-size: 19px;
@@ -538,7 +584,7 @@
   min-height: 52px;
   padding: 10px 14px;
   border: 2px solid hsl(var(--border));
-  background: hsl(var(--card));
+  background: hsl(var(--background));
   color: hsl(var(--foreground));
   border-radius: 0;
 }
@@ -605,12 +651,52 @@
   margin: 0;
 }
 
+.www-cine-strip .www-cine-never {
+  margin: 14px 0 0;
+  padding: 0;
+  font-size: 12px;
+  letter-spacing: 0.06em;
+  line-height: 1.5;
+  color: hsl(var(--muted-foreground));
+  max-width: 46ch;
+}
+
+.www-cine-lnw {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 14rem));
+  gap: 10px 28px;
+  margin: 0 0 16px;
+}
+
+.www-cine-lnw dt {
+  margin: 0 0 4px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: hsl(var(--muted-foreground));
+  font-feature-settings: 'tnum' 1;
+}
+
+.www-cine-lnw dd {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  font-feature-settings: 'tnum' 1;
+}
+
 .www-cine-colophon {
   border-top: 2px solid hsl(var(--foreground));
   padding: 28px clamp(16px, 4vw, 48px) 40px;
   font-size: 13px;
   line-height: 1.55;
   color: hsl(var(--muted-foreground));
+}
+
+.www-cine-strip .www-cine-colophon {
+  padding: 22px 0 0;
+  margin-top: 28px;
 }
 
 .www-cine-colophon-inner {

@@ -104,22 +104,19 @@ describe('first set while gated (.768)', () => {
     assert.deepEqual(stale, [], `MUST_STAY_GATED stale entries:\n${stale.join('\n')}`);
   });
 
-  it('cold /private primary is Notify me; Log a set does not skip the door', () => {
+  it('cold /private notify stays on the door; Log a set does not skip it', () => {
     const teaser = read('app/private/PrivateTeaserClient.tsx');
     const notify = read('src/components/public/LaunchNotifyForm.tsx');
+    const logger = read('src/components/landing/CinematicLogger.tsx');
     assert.doesNotMatch(
       teaser,
       /href=["']\/welcome["']/,
       'cold poster must not send /welcome — that bypasses the gate'
     );
     assert.doesNotMatch(teaser, /gateLogASet/);
-    const gateVariant = notify.slice(notify.indexOf("variant === 'gate'"));
-    assert.match(gateVariant, /gate-btn-primary/);
-    assert.doesNotMatch(
-      gateVariant,
-      /gate-btn-secondary/,
-      'waitlist Notify me is the one red on /private'
-    );
+    assert.match(teaser, /LaunchNotifyForm/);
+    assert.match(notify, /www-cine-ghost/);
+    assert.match(logger, /primary-action/);
   });
 
   it('resolveActiveEmptyStart still never seeds Just Go', () => {

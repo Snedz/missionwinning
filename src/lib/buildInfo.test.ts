@@ -79,12 +79,17 @@ test('about and version chips import the public stamp', () => {
 });
 
 test('gated door does not stamp Alpha 0.1.0', () => {
-  const src = read('app/private/PrivateTeaserClient.tsx');
-  assert.doesNotMatch(
-    src,
-    /APP_PUBLIC_VERSION|APP_PUBLIC_PRODUCT_VERSION|APP_PUBLIC_STATUS_LINE_EN/,
-    'gated www (`/` while PRIVATE_MODE) must not paint the Alpha stamp'
-  );
+  for (const file of [
+    'app/private/PrivateTeaserClient.tsx',
+    'src/components/landing/CinematicWww.tsx',
+  ]) {
+    const src = read(file);
+    assert.doesNotMatch(
+      src,
+      /APP_PUBLIC_VERSION|APP_PUBLIC_PRODUCT_VERSION|APP_PUBLIC_STATUS_LINE_EN/,
+      `${file}: gated www must not paint the Alpha stamp`
+    );
+  }
 });
 
 test('About open-beta business copy interpolates productVersion', () => {

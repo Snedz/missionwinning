@@ -9,9 +9,28 @@ import {
   queryGrantsAccess,
 } from '@/lib/privateGate';
 import { attachPrivateAccessCookie } from '@/lib/privateSession';
+import { DEAD_ALIAS_PATHS } from '@/lib/safeRedirect';
 import { isPathEnabled } from '@/lib/surface';
 
+function aliasCanonical(pathname: string): string | undefined {
+  const path = pathname.length > 1 && pathname.endsWith('/') ? pathname.slice(0, -1) : pathname;
+  return DEAD_ALIAS_PATHS[path];
+}
+
 export function proxy(request: NextRequest) {
+  // F-039 — retired spellings 308 before parking and the gate. `next.config.js`
+  // already lists the same map, but middleware runs first: without this hop a
+  // gated `/today` or `/train` 307s to `/private` (or 404s on a build that
+  // predates the config redirects) instead of landing on `/log` / `/active`.
+  const aliasTarget = aliasCanonical(request.nextUrl.pathname);
+  if (aliasTarget) {
+    // Do not clone: `/today/` keeps trailingSlash and would 308 to `/log/`.
+    // `new URL(path, origin)` + copy search is the query-safe hop.
+    const dest = new URL(aliasTarget, request.nextUrl.origin);
+    dest.search = request.nextUrl.search;
+    return NextResponse.redirect(dest, 308);
+  }
+
   // Parked surfaces are unreachable before anything else runs, so a parked API is
   // not an attack surface and parking does not depend on the private gate.
   //

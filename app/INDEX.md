@@ -56,7 +56,8 @@
 | URL | File |
 |-----|------|
 | `/` | `app/page.tsx` → teaser until the gate cookie; cookie → `.696` `LandingPage` (not cinematic). Gated + no cookie → `/private`. |
-| `/bundle` | `app/bundle/page.tsx` → `BundlePage` (marketing chrome) |
+| `/bundle` | `app/bundle/page.tsx` → `BundlePage` (marketing chrome). Free-beta 307s to `/notify`. |
+| `/notify` | `app/notify/page.tsx` → `NotifyPage` — Super Bundle email waitlist (checkout not live). Public while gated. `robots: noindex`. |
 | `/compare` · `/compare/*` | **Removed (.668)** — permanent redirect to `/welcome` (no competitor comparison hub) |
 | `/guide`, `/exercises` | Public SEO pages |
 | `/press` | `app/press/page.tsx` → `PressPage` (brand & media kit) |
@@ -67,7 +68,7 @@
 | `/guide/print` | Magazine print/PDF source (`GuideMagazinePrintPage`) — noindex |
 | `/exercises/muscle/[group]`, `/exercises/equipment/[slug]` | Catalog hub indexes |
 | `/paths`, `/paths/[id]` | Public Learn path teasers (in-app Learn stays `/learn`) |
-| `/private` | `app/private/page.tsx` |
+| `/private` | `app/private/page.tsx` → `GateTeaser` → four-scene `CinematicWww` (`mode="gate"`). Door slot is notify + Enter with code. |
 | `/offline` | `app/offline/page.tsx` |
 | `/auth/callback` | `app/auth/callback/route.ts` (PKCE exchange + gate cookie) |
 

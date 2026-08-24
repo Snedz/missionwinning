@@ -282,6 +282,7 @@ test('first-paint copy drift only ever decreases', () => {
  */
 const FRONT_DOOR_FILES = [
   'app/private/PrivateTeaserClient.tsx',
+  'src/components/landing/CinematicWww.tsx',
   'src/components/layout/AppHeader.tsx',
   'src/page-components/WelcomePage.tsx',
   'src/components/profile/ProfileLanguageSwitcher.tsx',
@@ -433,26 +434,20 @@ test('every textless-fallback exemption still names a real file', () => {
  */
 
 test('the gate poster is not withheld pending a session probe', () => {
-  const src = stripComments(read('app/private/PrivateTeaserClient.tsx'));
+  const cine = stripComments(read('src/components/landing/CinematicWww.tsx'));
+  const door = stripComments(read('app/private/PrivateTeaserClient.tsx'));
 
-  // The headline and the probe both still exist…
-  assert.match(src, /gateTitle1/, 'Gate headline key is gone — did the poster move?');
-  assert.match(src, /grantPrivateAccessFromSession/, 'Session recovery probe is gone.');
+  assert.match(cine, /cineHeroHeadline/, 'SET headline key is gone — did the field move?');
+  assert.match(door, /grantPrivateAccessFromSession/, 'Session recovery probe is gone.');
 
-  /*
-   * …and the probe's state may not stand between the reader and the poster.
-   * Checked by position rather than by spelling: whatever the flag is called,
-   * the poster must not be reachable only after it resolves.
-   */
-  const headline = src.indexOf('gateTitle1');
-  const earlyReturn = /if\s*\(\s*sessionUnlocking\s*\)\s*\{?\s*return/.exec(src);
+  const earlyReturn = /if\s*\(\s*sessionUnlocking\s*\)\s*\{?\s*return/.exec(door);
   assert.equal(
     earlyReturn,
     null,
-    'PrivateTeaserClient returns before its headline while the session probe ' +
+    'PrivateTeaserClient returns before the four scenes while the session probe ' +
       'runs. With PRIVATE_MODE on, that return value is the whole website.'
   );
-  assert.ok(headline > 0);
+  assert.ok(cine.indexOf('cineHeroHeadline') > 0);
 });
 
 test('/welcome resolves its query on the server so I-Day step one is in the HTML', () => {

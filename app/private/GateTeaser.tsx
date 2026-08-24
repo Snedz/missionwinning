@@ -1,7 +1,8 @@
+import { CinematicWww } from '@/components/landing/CinematicWww';
 import { PrivateTeaserClient } from './PrivateTeaserClient';
 import './gate.css';
 
-/** Shared door: gated www and ungated Preview/local `/`. */
+/** Shared door: gated www and ungated Preview/local `/`. Four N1 scenes. */
 export function GateTeaser(props: {
   initialInvite?: string;
   initialNext?: string;
@@ -10,10 +11,15 @@ export function GateTeaser(props: {
 }) {
   return (
     <div className="mw-gate">
-      <PrivateTeaserClient
-        initialInvite={props.initialInvite}
-        initialNext={props.initialNext}
-        walkOpen={props.walkOpen === true}
+      <CinematicWww
+        mode="gate"
+        door={
+          <PrivateTeaserClient
+            initialInvite={props.initialInvite}
+            initialNext={props.initialNext}
+            walkOpen={props.walkOpen === true}
+          />
+        }
       />
     </div>
   );

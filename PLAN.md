@@ -1,144 +1,166 @@
-# PLAN.md — Brand copy lock (`.933`)
+# PLAN.md — Gated www craft (`.942`)
 
 **Freeze.** Implement only this file. Do not reopen refused items mid-build.
-**Not** [docs/PLAN.md](docs/PLAN.md) (build phases A–I). Brand law: [docs/brand-guidelines.md](docs/brand-guidelines.md).
-**Lane:** Engineering-Web · copy only · **Horizon:** 0 / W craft window
-**Label:** `2026.07-unified.933` (master is `.930`. `.931` is in-flight F-008 honesty #775. `.932` is reserved why-this-session #774.)
-**Excellence-Override:** Brand copy lock (no Today/Train restyle)
+**Not** [docs/PLAN.md](docs/PLAN.md) (build phases A–I). Thesis: [docs/design/WWW_NIGHT.md](docs/design/WWW_NIGHT.md). Comp: [docs/design/concepts/05-exquisite.html](docs/design/concepts/05-exquisite.html).
+**Lane:** Engineering-Web · gated first paint · **Horizon:** 0 / W craft window
+**Label:** `2026.07-unified.942` (master is `.941` after #780. `.935` was this PR’s first mint; do not keep it.)
+**Excellence-Override:** gated www craft (no Today/Train restyle)
 
 ---
 
 ## 0. What this is
 
-The product **name** “Mission Winning” is untouchable. Everything else in the consumer voice pack may change. CoS locked the pack below. This PR implements it.
+`.933` locked the **words**. Cold visitors still do not see the **page**.
 
-**Hypothesis (confirmed):** the collision is copy keys + teaser + www kicker, not design tokens. Paper / ink / poster red / Archivo / radius 0 stay. No new palette. Kalligator is not the logo.
+`PRIVATE_MODE` stays on. This is a gated-www craft pass, not a public flip.
 
-## 1. Locked pack (do not invent)
+## 1. Investigate (done — hypothesis was half-right)
 
-| Slot | String |
-|------|--------|
-| **Name** | Mission Winning (never shorten to MW in athlete-facing sentences except the monogram) |
-| **Mark** | Ink square / paper MW monogram |
-| **Public line** (hero / kicker) | Log a set. Offline. |
-| **Support line** | No account. No wearable. |
-| **Door pack** | **Free** · **Enter with code** · **Get notified** |
-| **Coach product** | Mission Coach |
-| **Future SKU** | Super Bundle |
+Founder hypothesis: *the words are locked; the gap is motion, type scale, and door hierarchy.*
 
-**Kill from consumer chrome**
+| Claim | Verified on master `.933` |
+|-------|---------------------------|
+| Words locked | **Yes.** EN `gateEyebrow` is Free. Public line / support / door pack live in `gateEn.ts` + `gatedWwwHonesty.ts`. Tests already ban invite-only / Free beta / Win Daily-as-tagline. |
+| Motion / type / hierarchy | **Yes, and they are not the whole gap.** |
+| Visitors see 05-exquisite | **No.** |
 
-- “Train Anywhere. Win Daily.” as the *company* tagline
-- “Free beta” · “open alpha” · “invite-only” · “private beta” · “we’re live” · “get an invite”
+**What a cold visitor actually gets**
 
-**Keep**
+- Prod `/` 307s to `/private`.
+- `/private` is `GateTeaser` → `PrivateTeaserClient`: one paper column (MW wordmark · H1 · lede · email row · access `<details>`). That is a **signup sheet**.
+- `CinematicWww` already ports N1 (SET / ANYWHERE / WEEK / DOOR) and is **dead to visitors**. `LandingPage` must not mount it (GRAPH_LOOP / `.696`). `previewHomeTeaser.test.ts` currently forbids it on `GateTeaser` — that test is protecting the *homepage*, and it accidentally kept the *door* as the old sheet.
 
-- “Train anywhere” / “Anywhere” as a *scene* line only (SET is not that scene)
-- Alpha 0.1.0 / `APP_PUBLIC_*` on Profile / legal / status bar only — **not** the gated door
-- Civilization / Team Humanity / everything-app **never** on fold 1 or the teaser
-- Visual system unchanged. Today / Train pixels unchanged. No feed. No medical claims.
+**Leftovers that survived `.933` (door chrome, not Profile)**
 
-## 2. Overlap with `.931` honesty (#775)
+- `gateAccessSummary`: “Have an Alpha access code?”
+- `gateWaitlistFoot` / `gateWaitlistDoneFoot`: “when Alpha access is ready”
+- Locale overlays still sell the retired company line on `gateTitle1` / `gateTitle2` (hydration-only; SSR floors EN)
 
-#775 (draft) puts **Free beta** on `/private` and the cinematic HUD. This pack kills “Free beta” from consumer chrome and sets the door word to **Free**.
+**Already true — do not “fix” again**
 
-**This PR is the source of the new strings.** Do not merge #775’s “Free beta” kicker. Do not fight #775 on layout, forms, or honesty machinery — only the words. If both land, ours win on:
+- Consent is **not** `fixed bottom-0`. AppLayout host sits between `#screen-dock` and `MobileNav` (`.765` / ops #19). Marketing fallback is in-flow after children.
+- `LaunchNotifyForm` already mounts on `/private` (`source: 'launch-waitlist'`).
+- `#775` F-008 is open and dirty. **Do not fight its copy.** Brand pack on master wins the words. This PR owns craft + leftover Alpha-on-the-door.
 
-- `gateEyebrow`
-- `gateTitle1` / `gateTitle2`
-- `gateSubtitle`
-- `cinePublicLine` / `cineHeroLead`
-- door HUD ghosts in `05-exquisite.html` + `CinematicWww`
+**Conclusion:** mount the four-scene field on the live door. Then raise type scale, door hierarchy, and a reduced-motion-safe rise so first paint matches 05-exquisite — field manual, not SaaS signup.
 
-#775 may still land Enter with code / Get notified / locale invite-scrub. Those already match this pack.
+## 2. Scene lock (do not invent a fifth)
 
-## 3. Defect this PR closes
+| Scene | Ground | What it is |
+|-------|--------|------------|
+| **1 · SET** | Paper. Logger *is* the photography. | Stacked MW. Public line **Log a set. Offline.** Support **No account. No wearable.** TARGET / set table. **LOG SET** is the one poster control. |
+| **2 · ANYWHERE** | One inverted field. Honest ink slot (no generated photo as live cover). | Type on the field, lower-left, max ~520px. Kicker **Anywhere**. |
+| **3 · WEEK** | Paper. | **Mission Coach.** Authored Miss / Travel / Band. Title **The week does not fail.** |
+| **4 · DOOR** | Poster `#ec3013`. | Kicker **Free.** Display **Get notified.** Form on a **paper strip**. Enter with code is `<details>`, never a second poster control. |
 
-Cold visitors see the retired company line as the first sentence of the website:
+HUD: fixed, transparent, mix-blend difference, mark left, ghost **Free** → `#door`. No wordmark mass. No Kalligator. No photo-first cover. Civilization / everything-app stay off fold 1.
 
-- `/private` H1 is still “Train anywhere. / Win daily.”
-- Cinematic kicker + brand guidelines + SEO titles still sell “Train Anywhere. Win Daily.”
-- The door stamps Alpha 0.1.0 in the header/footer (that stamp belongs on Profile / legal / status bar)
-- WWW_NIGHT and `05-exquisite.html` still lead the cover with the retired line
-- Tests *assert* the retired line, so a later agent cannot change it without going red for the wrong reason
+## 3. Ship (only this)
 
-## 4. Ship (only this)
+### 3.1 PLAN (this file)
 
-### 4.1 PLAN + brand law
+Replace the `.933` freeze. Implement commit follows.
 
-- This file.
-- [docs/brand-guidelines.md](docs/brand-guidelines.md) **Name & tagline** + **Voice**:
-  - Tagline → **Log a set. Offline.**
-  - Support → **No account. No wearable.**
-  - Door pack named.
-  - Voice: drop “while private beta is on”; ban the kill-list; keep Train anywhere as a scene line, not the company line.
-  - Consumer hook line under medical claims: logger + Mission Coach, not Train Anywhere / Win Daily.
+### 3.2 Live door = four scenes
 
-### 4.2 Gated door (`/private`)
+`GateTeaser` wraps `CinematicWww mode="gate"` and passes `PrivateTeaserClient` as `door`.
 
-EN first paint is `src/i18n/gateEn.ts` (the only words SSR can show).
+- Prod `/private` and Preview/local `/` (until cookie) show the same field.
+- Cookie / gate-off `/` stays `.696` `LandingPage`. **Do not restore `CinematicWww` as `/`.**
+- Update `previewHomeTeaser.test.ts`: the door *is* cinematic; the homepage is not.
+
+### 3.3 Door slot is forms only
+
+`PrivateTeaserClient` drops the second header / H1 / lede (those are scene 1). It keeps:
+
+- `LaunchNotifyForm` (`launch-waitlist`) — required while `/private` is the door
+- Access-code `<details>` (invitee: form expanded, not a second poster button)
+- Territory refuse / notice
+- Session probe **under** the poster, never an early return
+- Legal footer on the paper strip
+
+Door hierarchy matches 05-exquisite: stacked mark (from `CinematicWww`) · **Free** · **Get notified.** · paper strip · Enter with code as summary.
+
+Floor every `t()` default from `gateEnFloor` so SSR and hydrate cannot disagree.
+
+### 3.4 Craft — type, motion, hierarchy
+
+Scoped to `.www-cine` / `cinematic.css`. No new palette. No second face. Radius 0.
+
+- SET / WEEK display sizes match the comp clamps (`h1` 2.625–4.75rem, `h2` 2.25–4.25rem). Do not add `text-*` on `.display-*`.
+- One reduced-motion-safe rise on cover / logger / week / door (opacity + 12px). `prefers-reduced-motion: reduce` kills it.
+- LOG SET remains the only `.primary-action` / poster control on paper. Door submit stays ghost on the strip.
+- Week title in `gateEn.ts` → **The week does not fail.** (pack currently disagrees with the component default — that is first-paint drift the moment this page is live.)
+
+### 3.5 Kill leftover Alpha-on-the-door
+
+EN (and overlays that restore the defect):
 
 | Key | From | To |
 |-----|------|----|
-| `gateEyebrow` | Alpha | **Free** |
-| `gateTitle1` | Train anywhere. | **Log a set.** |
-| `gateTitle2` | Win daily. | **Offline.** |
-| `gateSubtitle` | long Train+Coach sentence | **No account. No wearable.** |
-| `cinePublicLine` | Train Anywhere. Win Daily. | **Log a set. Offline.** |
-| `cineHeroHeadline` | Log a set. Offline. | *unchanged* |
-| `cineHeroLead` | Mission Coach plans the week from the log. No wearable. | **No account. No wearable.** |
+| `gateAccessSummary` | Have an Alpha access code? | **Enter with code** |
+| `gateWaitlistFoot` | …when Alpha access is ready. | **No spam — one email when access is ready.** |
+| `gateWaitlistDoneFoot` | We'll email you when Alpha access is ready. | **We'll email you when access is ready.** |
 
-`PrivateTeaserClient`: remove `APP_PUBLIC_VERSION` / `APP_PUBLIC_PRODUCT_VERSION` from the door header and footer. Keep the MW monogram + “Mission Winning”. Footer may keep `gateFooterTagline` (“free core forever”) without the Alpha stamp.
+Do **not** strip Alpha 0.1.0 from Profile / legal / `PublicStatusBar`.
 
-`gatedWwwHonesty.ts`: `gateEyebrow` → **Free**. `gateSubtitle` → support line. Comments must not say the door wording is Alpha 0.1.0.
+Invite-only / Free beta / Win Daily-as-tagline stay banned. Discover surfaces; do not invent a second denylist.
 
-Locale overlays that restore “Free beta” / invite-only / get-an-invite on door keys (`gateEyebrow`, waitlist ask-for-invite) inherit EN or say **Free** / **Get notified**. Packs `th/ko/ja/vi` already overlay `gateEyebrow: "Free beta"` — those four keys change.
+### 3.6 Consent (P0, already docked — re-assert)
 
-### 4.3 Landing / cinematic / www kickers
+Do not put the banner `fixed bottom-0`. Do not cover Today's Start. Do not cover SET's LOG SET with a fixed overlay. `/private` has no AppLayout host — in-flow after children is correct.
 
-- `CinematicWww.tsx` defaults match §4.2. HUD ghost uses `gateEyebrow` → **Free**. Anywhere kicker stays **Anywhere**.
-- EN `landingHeroTitle1` / `landingHeroTitle2` (leftover company H1, not rendered on today’s LandingPage) → **Log a set.** / **Offline.** Same for `firstClassLocales` EN only.
-- `sites/www` `META.title` drops Win Daily as the company line.
-- SEO chrome that *is* the company title: `app/layout.tsx`, `app/page.tsx`, `app/manifest.ts`, `app/opengraph-image.tsx`, `src/lib/seoMetadata.ts`, `src/lib/routeMetadata.ts` `landing` → **Log a set. Offline.** (with “Mission Winning —” where a document title needs the name).
-- `/press` tagline copy button matches brand-guidelines.
-- `README.md` company line (not the constitution sentence) → public line.
-- `CONTEXT.md` “What this is” kicker → public line.
-- Email footers that print the company line (`launch-day`, `beta-invite`, `waitlist-confirm`) → public line.
-- `docs/SOCIAL_LAUNCH.md`: it already bans invite-only / Free beta. Add the locked public + support lines so the kit cannot drift back to Win Daily as the company line.
+### 3.7 Craft polish (same label, same cage)
 
-### 4.4 WWW_NIGHT + 05-exquisite
+Still four scenes. Still the `.933` brand pack. No Comp B recut. No HUD overlay on SET.
 
-- Public line / narrative / SET cover kicker: **Log a set. Offline.** SET `<h1>` stays **Log a set. Offline.**
-- Support / SET lede: **No account. No wearable.**
-- Copy pack / HUD ghosts / door kicker: **Free** (not Alpha, not Free beta).
-- Scene 2 kicker stays **Anywhere**. WEEK kicker stays **Mission Coach**.
-- Notes / constitution table: do not lead with Train Anywhere. Win Daily. as the company line.
-- Door lede must not say “when the beta opens”.
+| Nit | Ship |
+|-----|------|
+| Duplicate SET line | One display `Log a set. Offline.` + 13px / 0.08em / `--primary` eyebrow **Set**. Pack keeps `cinePublicLine` as the locked sentence; do not reprint it. |
+| Double MW | HUD mark only. Kill the 64–96 cover mark. Door mark stays. |
+| 1440×900 fold | Keep the existing 1100×max-h 960 compact table. Hide the DEMO note if 03 + LOG SET need the pixels. Phone stays `100svh` and does **not** take that compact table. |
+| Demo beats | Logger shows **Last · Next · Why** on the field. Quiet “30s in the browser” as the demo note — not a new route. |
+| History / feed | Quiet later line: **History you own.** **Today is not a Feed.** Dated Never list on the door strip (feed · wearable required · account to log). Not a fifth scene. Not a new route. |
+| Ghosts | Free → `/private#door`. Never filled red on SET / ANYWHERE / WEEK. |
+| Door chrome | Drop colophon “free core forever”. Invite/guide keys drop Alpha. Enter with code stays `<details>`. |
+| OG leak | Root `openGraph` / `twitter` descriptions drop nutrition / mobility / mind / learning. Wedge only: **Log a set. Offline. No account. No wearable.** Title already correct. |
 
-### 4.5 Tests (write / run before claiming done)
+### 3.8 Stale-Preview walk (F-039 · F-047 — same label, no new Preview)
 
-Extend existing honesty tests — do not invent a parallel denylist.
+Door pack unchanged. Do not request a Preview deploy.
 
-1. **Door pack:** EN `gateEyebrow === 'Free'`, waitlist **Get notified**, access **Enter with code**.
-2. **Public + support:** `cinePublicLine` and `cineHeroHeadline` are **Log a set. Offline.** `cineHeroLead` / `gateSubtitle` are **No account. No wearable.**
-3. **Banned on door / cinematic / teaser / exquisite / brand Name & tagline:** `invite-only` · `get an invite` · `private beta` · `we're live` · `Free beta` · `Train Anywhere. Win Daily.`
-4. **05-exquisite:** HUD / door kicker **Free**; SET h1 still **Log a set. Offline.**; no Win Daily-as-tagline; Anywhere kicker still present.
-5. Falsify: a mutant that puts “Train Anywhere. Win Daily.” back on `cinePublicLine` or “Free beta” on `gateEyebrow` must go red.
+- **F-039:** `proxy.ts` 308s `DEAD_ALIAS_PATHS` (`/today` → `/log`, `/train` → `/active`) **before** parking and the gate. Config redirects stay. Aliases are not public paths — they hop.
+- **F-047:** public `/notify` mounts `LaunchNotifyForm` (`landing-super-bundle-notify`). Honest Stripe-not-live copy. No checkout. No traction. Landing still has no form. `/bundle` free-beta 307s here, not Today.
 
-Discover files rather than hoping the list is closed: keep the existing `SURFACE_FILES` list and add any file this PR touches that can paint the door or the company line (`gateEn.ts`, `gatedWwwHonesty.ts`, `brand-guidelines.md` Name & tagline). A comment that *names* a banned phrase in order to forbid it may stay.
+## 4. Tests (write / run before claiming done)
 
-Do **not** ban “Train anywhere” on the Anywhere scene. Do **not** ban “Alpha” / `APP_PUBLIC_*` on Profile, legal, or `PublicStatusBar`.
+Extend existing honesty / teaser / consent tests. Falsify each new claim.
+
+1. **Door is cinematic:** `GateTeaser` mounts `CinematicWww`. Scene ids `set` → `anywhere` → `week` → `door`. Mutant deleting the wrap dies.
+2. **Homepage ban holds:** `LandingPage` / cookie `/` still has no `CinematicWww`.
+3. **Banned strings stay gone** on door / cine / teaser / 05-exquisite: invite-only · Free beta · Win Daily-as-tagline · Alpha-on-the-door keys above. Mutant restoring “Have an Alpha access code?” dies.
+4. **Notify form:** `LaunchNotifyForm` + `launch-waitlist` still on the door. No checkout URL. No traction numerals.
+5. **Consent:** banner never `fixed bottom-0` / `z-[60]`. Host still between dock and `MobileNav`.
+6. **Probe does not withhold the page:** no `if (sessionUnlocking) return` before the four scenes.
+7. **First-paint floor:** `CinematicWww` + door `t()` defaults match `gateEn.ts`.
+8. **Intel beats stay on existing scenes:** logger TARGET `30s` + Last/Next/Why; later line History you own + Today is not a Feed; door foot 30s-in-the-browser; dated Never on the door strip. No `/history` `/never` `/feed`. No traction numerals.
+9. **Twelve design-polish nits stay source-locked:** Free ghosts, one SET line, HUD mark only, compact 1440, phone 100svh, ink Anywhere (no JPEG), three week beats, paper-strip door, one poster red, JS-off fallback. OG wedge. No Alpha-on-the-door.
+10. **F-039 aliases 308 before the gate:** `proxy.ts` maps `DEAD_ALIAS_PATHS` (`/today` → `/log`, `/train` → `/active`) with 308 before `isPathEnabled`. Mutant deleting the hop dies. Config redirects stay.
+11. **F-047 `/notify` has the form:** `LaunchNotifyForm` + `landing-super-bundle-notify`. Landing still has no form. Door pack unchanged. `/bundle` free-beta lands here, not Today. No checkout URL. No traction.
 
 ## 5. Non-goals (refuse)
 
+- Flip `PRIVATE_MODE`. Public GitHub. Promote. Preview (`[skip vercel]`).
 - Restyle Today or Train. New feed. New palette. New typeface. New radius.
-- Rename Mission Winning. Invent a third brand. Make Kalligator the logo.
-- Flip `PRIVATE_MODE`. Flip Public GitHub. Promote. Preview (`[skip vercel]`).
-- Medical claims. Civilization / Team Humanity / everything-app on fold 1 or the teaser.
-- Fight #775 on structure. Steal #774 why-line.
-- Locale-body farms beyond the door keys that would restore banned English.
+- Photo-first cover. Ship a generated still as the live photograph.
+- Restore `CinematicWww` as the `.696` homepage.
+- Fight #775 F-008 copy. Steal #774 why-line.
+- Medical claims. Civilization / Team Humanity / everything-app on fold 1.
+- Locale-body farms beyond door keys that would restore banned English / Alpha-on-the-door.
 - Android / Expo.
 
 ## 6. Ship protocol
 
-Same commit as the words: `APP_BUILD_LABEL` → `2026.07-unified.933` · `LOG.md` heading ending `(.933)` · `CONTEXT.md` `## Now` names the full label. Rotate LOG (`.916`) and the oldest *shipped* Now bullet (`.917`) so budgets hold. `[skip vercel]` on every commit.
+Same implement commit: `APP_BUILD_LABEL` → `2026.07-unified.942` · `LOG.md` heading ending `(.942)` · `CONTEXT.md` `## Now` names the full label. Rotate LOG oldest live entry and the oldest *shipped* Now bullet so budgets hold. `[skip vercel]` on every commit.
+
+Draft PR. Screenshots of `/private` desktop (1440×900) + phone (390×844). Local tests green.

@@ -56,9 +56,9 @@ test('UnlockButton mutes live checkout under free-beta and still has waitlist + 
   assert.match(src, /grantPremiumDemo|submitLead/);
 });
 
-test('Bundle route stays muted to /log while free-beta is on', () => {
+test('Bundle route stays muted to /notify while free-beta is on', () => {
   const src = readFileSync(path.join(root, 'app/bundle/page.tsx'), 'utf8');
   assert.match(src, /isFreeBeta/);
-  assert.match(src, /redirect\s*\(\s*['"]\/log['"]\s*\)/);
+  assert.match(src, /redirect\s*\(\s*['"]\/notify['"]\s*\)/);
   assert.match(src, /BundlePage/);
 });

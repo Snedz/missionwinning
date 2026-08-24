@@ -16,7 +16,8 @@ export const metadata: Metadata = publicPageMetadata({
 
 export default function SuperBundleRoute() {
   // Free-first beta: no paid merchandising while LLC/EIN clears.
-  if (isFreeBeta()) redirect('/log');
+  // F-047 — land on the notify form, not Today. Checkout stays dark.
+  if (isFreeBeta()) redirect('/notify');
 
   const jsonLd = productJsonLd();
   return (
