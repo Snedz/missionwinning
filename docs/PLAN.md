@@ -6,6 +6,207 @@ Living roadmap for the **everything app** (a bodyweight coach app Super Bundle �
 
 ---
 
+## Frozen plan — `.951` Hevy-native diary in: workouts + measurements (2026-08-24)
+
+> **Frozen.** Implement only this section. Plan commit is `[skip vercel]`.
+> Label: `2026.07-unified.951` — next free after master `.950` (plate math, `#786` / `9f8497d6`).
+> Do **not** steal `.950`. Do **not** touch plate-math / set-row files. Implement commit may
+> allow one Preview. No empty-commit retrigger. No `PRIVATE_MODE` flip.
+> Live www stays `.696`. Offline. No account. Confirm-gated. No silent wipe.
+> Keep master's product + brand pack: **Log a set. Offline.**
+
+Someone who started on Hevy can bring their own export and land
+it as their diary: workout history **and** measurements. Same
+Account card as `.947` / `#785`. Preview, then confirm. Existing
+native workouts and body metrics never silently replace. Re-import
+is a no-op (or adds only new rows). More than one file. Guest path.
+
+### Investigate (done — long-format hypothesis does **not** hold)
+
+The non-binding guess was `measurements.csv` as
+`date + measurement name + value + unit`. **That is not the
+official English Hevy measurement export.**
+
+No checked-in Hevy measurement sample lives in this repo.
+Hevy Help ([Export & Import Data](https://help.hevyapp.com/hc/en-us/articles/38001424401943-How-to-Import-Strong-App-CSV-Files-and-Export-Your-Data-in-Hevy))
+exports **Workouts** or **Measurements** as two separate actions,
+not one combined zip. The file the measurement export writes is
+`measurement_data.csv` (wide). Two independent third-party
+real-export fixtures (openbody-ts OB-56 dogfood + a metric `_cm`
+export) lock this header — detection is **header-only**, never
+filename-only:
+
+```
+date,weight_kg,fat_percent,neck_{in|cm},shoulder_{in|cm},
+chest_{in|cm},left_bicep_{in|cm},right_bicep_{in|cm},
+left_forearm_{in|cm},right_forearm_{in|cm},abdomen_{in|cm},
+waist_{in|cm},hips_{in|cm},left_thigh_{in|cm},
+right_thigh_{in|cm},left_calf_{in|cm},right_calf_{in|cm}
+```
+
+Real exports also quote the header
+(`"date","weight_kg","fat_percent",…`). Dates match the
+workout dialect: `9 Feb 2023, 00:00` / `3 Jan 2024, 07:30`
+(also seen: single-digit days). Most cells on a row are blank.
+`weight_kg` is always kilograms. `fat_percent` is always a
+percent. Circumference columns follow the athlete's Hevy length
+unit (`_in` or `_cm`).
+
+Workout-only English Hevy CSV is already `set-table-a` (`.947`).
+A measurements file currently bounces as `unrecognized_format`
+because `detectCsvFormat` looks for `exercise_title`. That is
+the gap this ship closes.
+
+| Layer | What exists | Gap this ship closes |
+|-------|-------------|----------------------|
+| Workout parse | `set-table-a` + Hevy empty/one/malformed fixtures (`.947`) | **Do not rewrite.** Workout-only must keep working exactly |
+| Strong / MW / program-log | `set-table-b` / `mw` / `program-log` | **Do not rewrite.** |
+| Restore | `previewWorkoutCsvText` dry-run; `importWorkoutCsvText` commit; no one-import lock | Preview/confirm must also land measurements. Preview must not write either store |
+| Card | `/account#import` · pick → preview → confirm · guest · two export CTAs | Same door. No second CTA. Preview can name workouts **and** measurements |
+| Body metrics | `src/lib/bodyMetrics.ts` → `STORAGE_KEYS.bodyMetrics`. One row per local date. Fuel / Today / trends already read it | No writer that **merges** imported cells. `saveBodyMetric` replaces the whole date — **must not** be the import write |
+| Health scope | `.949` adopt strips `bodyMetrics`; foreign owner replaces | **Do not change.** Do not OR-merge guest measurements onto a foreign account |
+| Zip | None. No zip dependency | Official Hevy path is two CSVs. **Do not take zip this wave** (see refuse) |
+
+Accepted columns (header-only detect). A file is Hevy
+measurements when the first record has `date` **and** at least
+one of `weight_kg` / `fat_percent` / a `*_in` or `*_cm`
+circumference stem above, **and** does **not** have
+`exercise_title` / `set_index` / `start_time` (those stay
+`set-table-a`).
+
+Mapped into the existing store (nothing else is invented):
+
+| Hevy column | `BodyMetricEntry` |
+|-------------|-------------------|
+| `date` → local `YYYY-MM-DD` | `date` |
+| `weight_kg` | `weightKg` |
+| `fat_percent` | `bodyFatPct` |
+| `waist_cm` / `waist_in` | `waistCm` (in → cm) |
+| `chest_cm` / `chest_in` | `chestCm` |
+| `hips_cm` / `hips_in` | `hipCm` |
+| `left_bicep_*` / `right_bicep_*` | `armCm` — one value: right if present, else left. Never average. Never invent a second arm field |
+
+Unmapped circumferences (neck, shoulder, abdomen, forearm,
+thigh, calf) and blank / unparseable cells are skipped and
+counted. They do not bounce a file that also has mapped cells.
+A header-only / empty-data file errors and writes nothing.
+
+Merge identity for measurements is **date + field**. Existing
+native field values win. Same date may fill only missing
+fields. Re-import is a no-op. Cap (`MAX_ENTRIES` 200) never
+drops an existing row to make room for an import.
+
+### Ship (only this)
+
+1. **New module** `src/lib/workout/importHevyMeasurements.ts`
+   (header detect, parse, `mergeBodyMetrics`). Reuse
+   `splitCsvRecords` from `importCsv.ts`. Do not add a
+   `hevy-measurements` `CsvFormat` to the workout union —
+   measurements are not workouts. `detectCsvFormat` on a
+   measurements header stays `null`.
+
+2. **Restore orchestrator** in `importCsvRestore.ts`:
+   `previewDiaryImport` / `importDiaryText` (names may vary;
+   one pair). File pick dry-runs. Confirm writes. A
+   workout-only file uses the existing `.947` path unchanged.
+   A measurements-only file does not bounce. Preview of either
+   kind writes **neither** `WORKOUT_STORE_KEY` nor
+   `bodyMetrics`. Confirm merges workouts via
+   `mergeImportedLogs` and measurements via
+   `mergeBodyMetrics`. Do not call `saveBodyMetric` (it
+   replaces the whole date).
+
+3. **Same card.** `ProfileImportCard` stays the only door.
+   CTA stays `Import workout CSV` (`importReach` pins that
+   string). Subtitle / drop / preview may name measurements.
+   One confirm. Cancel drops the preview. Picker stays so a
+   second file still adds. No `getUser`. No zip accept token
+   unless a later wave takes zip.
+
+4. **Fixtures** under `src/lib/workout/fixtures/`:
+   - `hevy-measurements-empty.csv` — official header only →
+     error, 0 rows, neither store written
+   - `hevy-measurements-one.csv` — one date with weight
+     (and optionally fat); exact known values
+   - `hevy-measurements-malformed.csv` — good cells + one
+     unreadable date or non-numeric value → skip counted,
+     good cells kept
+   Optional inline `_cm` / quoted-header case in tests so
+   the metric circumference export is not `_in`-only folklore.
+
+5. **Multiple imports.** Workout then measurements both add.
+   Two different measurement files both add new dates/fields.
+   Re-import of the same measurement file is a no-op.
+   Existing native body-metric fields survive. No cap.
+
+### Tests
+
+- `importCsv.test.ts`: measurements header is **not**
+  `set-table-a` / `set-table-b`. Workout Hevy fixtures stay
+  green. `csvHistoryFree` fixture list updated (discover the
+  new files; a transfer test must read them).
+- New `importHevyMeasurements.test.ts`: empty / one /
+  malformed; `_cm` waist converts; unmapped neck skipped;
+  merge existing-wins; re-import no-op; second file adds.
+- `importCsvRestore.test.ts`: measurements preview does not
+  write workouts **or** metrics; confirm merges; empty leaves
+  both stores unchanged; workout-only still works as `.947`;
+  measurements-only works; workout then measurements both
+  add; no one-import cap.
+- Card / `importReach` / `csvHistoryFree`: still
+  preview-then-confirm; no `getUser` / premium / one-import
+  lock; CTA still `Import workout CSV`.
+- `firstSetUngated` stays green. Diff must not include
+  `plateMath.ts`, `SetLogBarbellRow`, `SetLogTable`,
+  `SetLogRow`, `warmupRamp`.
+- `check-build-label` `.951`. LOG + CONTEXT in the same
+  implement commit.
+
+### Docs / ship protocol
+
+- `APP_BUILD_LABEL` → `2026.07-unified.951`
+- LOG heading `## 2026-08-24 — Hevy-native diary in (\`.951\`)` + rotate oldest live entry
+- CONTEXT `## Now` one `.951` bullet; rotate oldest shipped version bullet still in the list; keep Status table; ≤25 bullets
+- Help: one line — the Hevy measurements export (wide `date` / `weight_kg` / `fat_percent`) imports on the same Account path. Preview, then confirm. More than one file. No account.
+- `src/lib/workout/INDEX.md` lists the new module + fixtures
+- New i18n keys only for preview/done copy that must name measurements; keep the workout CTA. Fill packs.
+- Plan commit: `[skip vercel]`. Implement commit: one Preview allowed. No empty-commit retrigger.
+
+### Hard bans / refuse list
+
+- No `PRIVATE_MODE` / promote / EIN / secrets / feed / Discord / marketplace
+- Do not steal `.950`. Stamp `.951` only
+- Do not rewrite Strong / MW / program-log / `.947` workout parse
+- Do not start a Hevy-layout export. Do not change
+  `workoutsToSetTableACsv` / export buttons / column order
+- Do not touch plate math or the set-row (`plateMath.ts`,
+  `SetLogBarbellRow`, `SetLogTable`, `SetLogRow`, warmup ramp)
+- Do not invent a second import door or a Track pillar page
+- Do not take zip this wave (official Hevy is two CSVs;
+  athlete unzips; header-detect still lands an extracted
+  `measurement_data.csv`)
+- Do not invent a long-format `measurement_name,value,unit`
+  dialect. Do not detect by filename
+- Do not silent-wipe workouts or existing body-metric fields
+- Do not cite a 3-workout / 3-month / one-import cap
+- Do not gate the free logger or require an account
+- Do not change `.949` adopt/strip (guest measurements stay
+  athlete-scoped; adopt still strips restricted health)
+- Do not add counsel-hold / pregnancy / PAR-Q copy
+- Brand pack: **Log a set. Offline.**
+
+### Done when
+
+- This plan written first, then implemented
+- Hevy workout CSV still imports as `.947`
+- Hevy measurements preview + confirm into `bodyMetrics`
+  without wiping workouts or prior metrics
+- No silent wipe. No one-import cap. No export-layout vanity
+- Label `.951`. PR against master. Title:
+  `Hevy-native diary in: workouts + measurements (.951)`
+
+---
+
 ## Frozen plan — `.948` plate math on the free set row (2026-08-24)
 
 > **Frozen.** Implement only this section. Plan commit is `[skip vercel]`.
