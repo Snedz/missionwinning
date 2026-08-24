@@ -6,6 +6,99 @@ Living roadmap for the **everything app** (a bodyweight coach app Super Bundle �
 
 ---
 
+## Frozen plan — `.954` Today return path: one Start, last/next on it (2026-08-24)
+
+> **Frozen.** Implement only this section. Plan commit is `[skip vercel]`.
+> Label: `2026.07-unified.954` — next free after master `.953` (`#790` MW export).
+> Do **not** steal `.953`. Do **not** redo why-line, vs-last, missed-day,
+> plate math, Hevy/Strong/MW export, or identity.
+> Implement commit may allow one Preview. No empty-commit retrigger.
+> No `PRIVATE_MODE` flip. Live www stays `.696`.
+> Guest path. Brand: **Log a set. Offline.** / No account. No wearable.
+
+A returning athlete opens Today (`/log`) and sees **one** primary Start
+(one `.primary-action` / poster-red boss). Last session and next session
+sit on that Start as quiet cite (what they did, what to do). Not a Feed.
+Not a dashboard of pillars. Coach stays collapsed / opt-in / skippable.
+
+### One concern
+
+Today is the return path. One Start, not a Feed. Last + next on that
+Start. Coach stays quiet.
+
+### Investigate (done — Start exists; last/next are off it)
+
+| Claim | Finding |
+|-------|---------|
+| Today already has one Start | **Holds.** `HomeTodayLean` docks `JourneyHero` with `dock="start"`. `StartDockHero` has exactly one `.primary-action`. `CoachTodayCard` is not on lean first paint — only on unused `HomeTodayDashboard`. Coach week lives in collapsed `TodayShowAll`. |
+| Last / next sit on that Start | **Fails.** `StartDockHero` shows planned-miss **or** reentry quiet line **or** nothing, then the button. `lastLoggedName` and `justGoMeta.sessionName` are computed in `HomeTodayLean` but used for pins / CTA label, not as a cite on the hero. |
+| Coach drowns the return | **Does not hold on first paint.** Lean does not mount `CoachTodayCard`. `TodayShowAll` is a `<details>` (opt-in). Do not remount Coach on the fold. Do not auto-expand Show all. Do not force why-line. |
+| Pins / Highlights are a Feed | **Not this ship.** Pins are not poster-red. Highlights is one sentence. Do not restyle the whole page. Last + next move onto the Start; do not add a Feed row or a second boss. |
+
+Already shipped — do not rebuild:
+
+- Coach week why (`weekRationale` / `CoachAdaptBanner`) and session why (`sessionRationale` / `PlanSessionCard`)
+- E-Victory vs-last receipt
+- Missed-day shame-free re-entry (`missedDay` / `JourneyHero` planned-miss + `TodayReentryCard`) — reuse when they already occupy the Start line
+- E-Adjacency next-set cite on Train
+- F-004 one JourneyHero Start after I-Day; F-001 local-first empties
+
+### Ship (only this)
+
+1. **Pure cite helper.** Add `src/lib/today/todayReturnCite.ts`:
+   - Inputs: last session name (from live history — same sort `HomeTodayLean` already uses), next session name (Coach peek name, else repeat-last name, else null), flags for reentry-showing / planned-miss-showing / session-open.
+   - Output: `{ last: string \| null; next: string \| null }`.
+   - Empty last → no last line. Empty next → no next line. Do not invent names, PRs, or a Feed.
+   - When planned miss already occupies the Start line, `next` is null (that prompt *is* the next).
+   - When reentry already occupies the Start line, `last` is null (that quiet line *is* the last).
+   - Session open → both null (Resume is the cite).
+   - Do not rewrite `repeatLastSession`, `peekCoachToday`, `computeReentry`, or `findPlannedMiss`.
+
+2. **Last + next sit on the Start.** `StartDockHero` renders the cite as
+   poster-kicker / poster-sub on the same `poster-field` as the one
+   `.primary-action`. Not a second button. Not a dock. Not a Feed row.
+   Pass last/next from `HomeTodayLean` (already has `lastLoggedName` and
+   `justGoMeta`). Keep planned-miss / reentry mount as they are.
+
+3. **Coach stays quiet.** Lean must not import or mount `CoachTodayCard`.
+   `TodayShowAll` stays a closed `<details>`. Do not auto-expand. Do not
+   force `weekRationale` / `sessionRationale` on Today. `CoachTodayCard`
+   outline buttons stay off this path.
+
+4. **One Start.** Count of `.primary-action` on Today after I-Day stays 1.
+   Pins / Highlights / Show all stay non-red. No SignInPrompt as hero.
+   First set stays ungated.
+
+### Tests
+
+- `todayReturnCite`: last+next when history and a next name exist; last-only; next-only; empty invents nothing; planned-miss suppresses next; reentry suppresses last; session-open suppresses both
+- Source: `StartDockHero` renders last/next testids on the same poster-field as the one `.primary-action`; no second `primary-action`
+- Lean does not mount `CoachTodayCard`; `TodayShowAll` stays `<details>` without `open`
+- `leanDockStart` still forbids Just Go lecture / I-Day on the dock
+- `firstSetUngated` stays green; no Feed / Top 8 / likes / comments / DMs strings on the lean path
+- Mutant that adds a second `.primary-action` on `StartDockHero` dies
+- Mutant that invents last/next from empty history dies
+
+### Docs / ship protocol
+
+- `APP_BUILD_LABEL` → `2026.07-unified.954`
+- LOG heading `## 2026-08-24 — Today return path: one Start, last/next on it (\`.954\`)` + rotate oldest live entry
+- `CONTEXT.md` `## Now` one-line `.954` bullet; rotate oldest shipped if over 25
+- Folder INDEX only if a file list changes
+- PR title: `Today return path: one Start, last/next on it (.954)`
+- One Preview max. Do not merge. Do not promote.
+
+### Refuse
+
+Top 8, likes, comments, DMs, follower counts, social Feed, dock-as-Feed,
+everything-app, six-pillar hunt, wallpaper tour, counsel-hold, set-row /
+plate math, Hevy-in redo, MW export redo, login wall, SignInPrompt as
+hero, auto-expand Coach, forced why-line, restyle of the whole Today
+page, live promote, `PRIVATE_MODE` flip.
+
+---
+
+
 ## Frozen plan — `.953` MW export re-imports (round-trip) (2026-08-24)
 
 > **Frozen.** Implement only this section. Plan commit is `[skip vercel]`.
