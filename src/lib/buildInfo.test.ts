@@ -2,7 +2,8 @@
  * Public marketing version vs internal unified build label.
  *
  * `/api/health` must stay on `APP_BUILD_LABEL` (gate-smoke / deploy). Athlete
- * chrome (gated www, about, version chips) stamps `APP_PUBLIC_*`.
+ * chrome (about, version chips, status bar) stamps `APP_PUBLIC_*`. The gated
+ * door does not — Alpha 0.1.0 stays off `/private` (brand copy lock `.933`).
  */
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
@@ -53,11 +54,11 @@ test('health liveness reports APP_BUILD_LABEL, not the public stamp', () => {
 });
 
 /**
- * Surfaces named in the ship: gated www, about, version chips. Enumerating
+ * Surfaces named in the ship: about, version chips, status bar. Enumerating
  * them is the claim — a file that should stamp and does not is the failure.
+ * The gated door is the closed complement: it must not stamp.
  */
 const MUST_STAMP: { file: string; why: string }[] = [
-  { file: 'app/private/PrivateTeaserClient.tsx', why: 'gated www (`/` while PRIVATE_MODE)' },
   { file: 'src/page-components/AboutPage.tsx', why: 'about body' },
   { file: 'src/components/public/PublicStatusBar.tsx', why: 'public chrome status strip' },
   { file: 'src/components/marketing/MarketingNav.tsx', why: 'landing chrome status bar after Done' },
@@ -66,7 +67,7 @@ const MUST_STAMP: { file: string; why: string }[] = [
   { file: 'src/components/layout/AppLegalFooter.tsx', why: 'Profile/Account version chip' },
 ];
 
-test('gated www, about, and version chips import the public stamp', () => {
+test('about and version chips import the public stamp', () => {
   for (const { file, why } of MUST_STAMP) {
     const src = read(file);
     assert.match(
@@ -75,6 +76,15 @@ test('gated www, about, and version chips import the public stamp', () => {
       `${file} (${why}) does not import the public version constants`
     );
   }
+});
+
+test('gated door does not stamp Alpha 0.1.0', () => {
+  const src = read('app/private/PrivateTeaserClient.tsx');
+  assert.doesNotMatch(
+    src,
+    /APP_PUBLIC_VERSION|APP_PUBLIC_PRODUCT_VERSION|APP_PUBLIC_STATUS_LINE_EN/,
+    'gated www (`/` while PRIVATE_MODE) must not paint the Alpha stamp'
+  );
 });
 
 test('About open-beta business copy interpolates productVersion', () => {
