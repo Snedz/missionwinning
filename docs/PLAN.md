@@ -6,6 +6,143 @@ Living roadmap for the **everything app** (a bodyweight coach app Super Bundle �
 
 ---
 
+## Frozen plan — `.947` Hevy English CSV import (same Account path) (2026-08-24)
+
+> **Frozen.** Implement only this section. Plan commit is `[skip vercel]`.
+> Label: `2026.07-unified.947` — next free after master `.946` (F-013).
+> Ready for squash. Preview will not deploy. No `PRIVATE_MODE` flip.
+> Offline. No account. Log a set. Never invent sets. Failed rows skip with a count.
+> Do not rewrite Strong. Do not start a Hevy-layout export. Do not remount F-013.
+> Keep master's product + brand pack: **Log a set. Offline.**
+
+English Hevy workout export on the same Account import path as
+Strong. Preview + confirm already exists — reuse. More than one
+file allowed. Guest path, no account.
+
+### Investigate (done — hypothesis does **not** hold)
+
+The non-binding guess was "Hevy export is Strong-shaped already
+and this is a fixture + docs ship." **Headers differ.**
+
+Hevy English workout CSV is snake_case set-table, not Title Case
+Strong:
+
+```
+title,start_time,end_time,description,exercise_title,superset_id,
+exercise_notes,set_index,set_type,weight_kg,reps,distance_km,
+duration_seconds,rpe
+```
+
+Imperial Hevy files swap `weight_kg`/`distance_km` for
+`weight_lbs`/`distance_miles`. Dates look like
+`14 Jul 2026, 18:05` (also seen: `Jul 5, 2026, 10:21 AM`).
+Notes can contain quoted newlines.
+
+That layout is already `set-table-a` in `importCsv.ts` (the
+`.180` scanner). Strong stays `set-table-b`. Detection is header
+only (`exercise_title` + `set_index`/`start_time`).
+`parseSetTableA` already reads `weight_lbs`. Preview + confirm
+in `importCsvRestore.ts` / `ProfileImportCard` is
+format-agnostic.
+
+So this is **not** a Strong rewrite and **not** a new dialect
+name. It is first-class Hevy fixtures + empty/one/malformed +
+preview-then-confirm tests, proving the existing set-table-a
+path. Do not invent a `hevy` `CsvFormat`. Do not add a third
+export button.
+
+| Layer | What exists | Gap this ship closes |
+|-------|-------------|----------------------|
+| Parser | `parseSetTableA` + `SET_TABLE_A_CSV_HEADER`; `weight_lbs` accepted; skip on blank name / non-numeric reps | No first-class Hevy empty / one-workout / malformed fixtures. Imperial header is untested as a named file |
+| Strong | `set-table-b` + `strong-*.csv` + preview/confirm tests (`.940` / `.943`) | **Do not rewrite.** A Hevy file must not change Strong parse or export |
+| Restore | `previewWorkoutCsvText` dry-run; `importWorkoutCsvText` commit; no one-import lock | Hevy fixtures never go through preview → confirm |
+| Card | `/account#import` · pick → preview → confirm · guest · two export CTAs | Keep. No new CTA. No `getUser` |
+| Export | Session = Strong (`set-table-b`); set = set-table-a | Leave. **Do not start a Hevy-layout export** |
+
+Not these (do not “fix”):
+
+- Strong parse / export / fixtures (`.940` / `.943`)
+- F-013 dial prefills (`.946`)
+- Train set row, Victory, missed-day, gated www, account-lite
+- Localized Hevy headers, cloud upload, account gate
+- A 3-workout free cap. Discord. Feed.
+
+### Ship (only this)
+
+1. **Route Hevy through set-table-a.** If the header is Hevy
+   English (kg or lbs), `detectCsvFormat` stays `set-table-a`.
+   Do not add a parser fork unless a fixture header fails the
+   existing detector — then extend `parseSetTableA` / detect
+   only, never `parseSetTableB`.
+
+2. **Never invent a set.** Missing `exercise_title` or
+   non-numeric `reps` → skip + count. Empty / header-only →
+   error, 0 workouts, persist unchanged. Good rows in the same
+   file still land.
+
+3. **Reuse preview + confirm.** File pick calls
+   `previewWorkoutCsvText`. Confirm calls
+   `importWorkoutCsvText`. Cancel drops the preview. Picker
+   stays so a second file can be imported (Hevy then Strong,
+   or two different Hevy files). No one-import lock. No account.
+
+4. **English Hevy fixtures** under `src/lib/workout/fixtures/`:
+   - `hevy-empty.csv` — header-only official kg header → 0
+     workouts, error (`no_data_rows`), no write
+   - `hevy-one-workout.csv` — one session, exact known sets,
+     no invented sets
+   - `hevy-malformed-row.csv` — good rows + one unreadable row
+     → skip counted, good sets kept
+
+   One of the parse tests also feeds a `weight_lbs` header
+   (inline or the one-workout file) so the imperial English
+   export is not kg-only folklore.
+
+5. **Multiple imports.** Two different Hevy files both add.
+   Hevy then Strong both add. Re-import of the same Hevy file
+   is a no-op. No cap.
+
+### Tests
+
+- `importCsv.test.ts`: empty Hevy header-only → error, 0
+  workouts; one workout exact set count; malformed skip + keep;
+  `weight_lbs` header detects `set-table-a` and converts; two
+  files both add. Strong fixtures stay green and unread by the
+  new cases except the mixed Hevy+Strong add.
+- `importCsvRestore.test.ts`: Hevy preview does not write;
+  confirm writes; empty leaves persist unchanged; skipped
+  count returned; second file still adds.
+- `csvHistoryFree` fixture list updated (discover the new
+  files; tests must read them).
+- Card / `importReach`: still preview-then-confirm; no
+  `getUser` / premium / one-import lock.
+- `check-build-label` `.947`. LOG + CONTEXT in the same
+  implement commit.
+
+### Docs / ship protocol
+
+- `APP_BUILD_LABEL` → `2026.07-unified.947`
+- LOG heading `## 2026-08-24 — Hevy English CSV import (\`.947\`)` + rotate oldest live entry (`.927`)
+- CONTEXT `## Now` one `.947` bullet; rotate oldest shipped version bullet (`.928`); keep Status table; ≤25 bullets
+- Help: one line — the snake_case set-table English export (title / exercise_title) imports on the same Account path as the Title Case session file. Preview, then confirm. More than one file. No account.
+- `src/lib/workout/INDEX.md` lists the Hevy fixtures + tests
+- No new i18n keys unless the card copy must name the second English layout — prefer the existing "workout CSV" CTA
+- Every commit: `[skip vercel]`. PR body: how to verify from Account (guest)
+
+### Hard bans
+
+- No `PRIVATE_MODE` / promote / EIN / secrets / feed / Discord
+- Do not steal `.946` or any in-flight label
+- Do not rewrite Strong parse, export, or `strong-*.csv`
+- Do not start a Hevy-layout export
+- Do not invent sets
+- Do not silent-wipe on a bad row
+- Do not gate the free logger or require an account
+- Do not cite a 3-workout free cap
+- Brand pack: **Log a set. Offline.**
+
+---
+
 ## Frozen plan — `.946` F-013 smart defaults on the free logger (2026-08-24)
 
 > **Frozen.** Implement only this section. Plan commit is `[skip vercel]`.
