@@ -4,6 +4,7 @@
  * Header Sign-in chrome is wayfinding, never a logger gate. Cold / first
  * session and mid-set `/active` must not paint it (and must not call getUser
  * to decide). One predicate — do not invent a second flag.
+ * `.958` — desk → gym uses the same ungated logger; no Force Sync wall.
  */
 
 export function normalizeAppPath(pathname: string | null | undefined): string {

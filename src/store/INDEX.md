@@ -14,7 +14,8 @@
 |-------|-------------|-------|
 | `savedWorkouts` | zustand persist | Builder templates |
 | `workoutHistory` | zustand persist | Completed logs — merges with cloud |
-| `activeWorkout` | memory + persist | In-progress session |
+| `activeWorkout` | memory + persist | In-progress session — `clientId` / `revision` ride for desk → gym (`.958`) |
+| `pendingRemoteOpenSession` | memory | Other-device session waiting on confirm — never silent-wipe |
 | `restTimer*` | memory | Rest countdown between sets |
 | `elapsedSeconds` | memory | Workout clock |
 | `hasHydrated` | memory | True once rehydration settles — gates Active Start. Owned by the reconciliation block *after* `create()`, never inside `onRehydrateStorage` (zustand runs that synchronously during `create()`, so touching the store there throws a swallowed TDZ error and the logger stays disabled). |
@@ -27,8 +28,10 @@
 | `logSet` / `logSetAndAdvance` | Record set; superset advance; working-set week-4 events (`week4Logger`) |
 | `completeActiveWorkout` | Mint `clientId`, push to history, enqueue the cloud write on the outbox, analytics, leaderboard push |
 | `loadFromCloud` | Merge Supabase history with local |
-| `syncCurrentHistoryToCloud` | Re-queue local logs — called from `useJourneySync` on `SIGNED_IN` (`.949`) |
-| `cancelActiveWorkout` | Discard in-progress |
+| `syncCurrentHistoryToCloud` | Re-queue local logs — called from `useJourneySync` on `SIGNED_IN` (`.949`). Also enqueues the open session (`.958`) |
+| `restoreActiveWorkout` | Adopt a remote open session without minting a second `clientId` (`.958`) |
+| `ensureOpenSessionIdentity` | Stamp `clientId` once on a pre-`.958` persist |
+| `cancelActiveWorkout` | Discard in-progress. Tombstones the open session so the other surface does not reopen it |
 
 ## Who reads / writes
 

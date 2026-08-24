@@ -29,12 +29,13 @@
 | `20260813_week_logged.sql` | Signed-in ISO-week logger rollup (CoS applies; guests local-only) |
 | `20260814_social_messages.sql` | Shared Garage rooms + presence + reports (signed-in; guests local) |
 | `20260814_feedback_reviews.sql` | Founder ratings on tester notes (`class` + dest). Applied 2026-08-14 |
+| `20260824_profiles_open_session.sql` | `profiles.open_session` jsonb — in-progress Train session (`.958`). Not applied |
 
 ## Key tables
 
 | Table | Purpose |
 |-------|---------|
-| `profiles` | User prefs, journey, coach plan JSON, locale, units |
+| `profiles` | User prefs, journey, coach plan JSON, locale, units, `open_session` (`.958`) |
 | `enrollments` | Premium subscription records |
 | `crypto_payment_intents` | Solana Pay reference intents for Phantom USDC |
 | `wearable_connections` | OAuth/hub connection tokens (service-role write) |

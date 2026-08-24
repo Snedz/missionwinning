@@ -19,6 +19,7 @@ import { listPending, type OutboxKind, type PendingItem } from '@/lib/sync/outbo
 /** What each queued kind is, in words a user recognises. */
 const KIND_LABEL: Record<OutboxKind, { key: string; defaultValue: string }> = {
   'workout.upsert': { key: 'offlineQueueWorkout', defaultValue: 'Workout' },
+  'workout.active': { key: 'offlineQueueOpenSession', defaultValue: 'Open session' },
   'coach.plan': { key: 'offlineQueueCoach', defaultValue: 'Coach plan' },
   'journey.state': { key: 'offlineQueueJourney', defaultValue: 'Progress' },
   'leaderboard.push': { key: 'offlineQueueLeaderboard', defaultValue: 'Leaderboard entry' },

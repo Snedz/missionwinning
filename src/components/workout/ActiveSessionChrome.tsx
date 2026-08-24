@@ -26,6 +26,7 @@ type Props = {
   onOpenPlateCalc: () => void;
   onDiscard: () => void;
   onFinish: () => void;
+  onTakeOtherSession?: () => void;
 };
 
 export function ActiveSessionChrome({
@@ -40,6 +41,7 @@ export function ActiveSessionChrome({
   onOpenPlateCalc,
   onDiscard,
   onFinish,
+  onTakeOtherSession,
 }: Props) {
   const { t } = useTranslation();
   const [menuOpen, setMenuOpen] = useState(false);
@@ -142,6 +144,19 @@ export function ActiveSessionChrome({
                       logPulse={logPulse}
                     />
                   </div>
+                  {onTakeOtherSession ? (
+                    <HoldToConfirmButton
+                      size="sm"
+                      className="w-full justify-start"
+                      label={t('openSessionTakeOther', {
+                        defaultValue: 'Continue the other session',
+                      })}
+                      onConfirm={() => {
+                        setMenuOpen(false);
+                        onTakeOtherSession();
+                      }}
+                    />
+                  ) : null}
                   <HoldToConfirmButton
                     size="sm"
                     className="w-full justify-start"

@@ -171,6 +171,8 @@ type ActiveWorkoutStrings = {
   activeCoachNotesDefault: string;
   activeCoachNotesHighEffort: string;
   activeDiscardWorkout: string;
+  /** `.958` — confirm before replacing this device's logged session. */
+  openSessionTakeOther: string;
   activeEmptySubtitle: string;
   activeEmptySubtitleNoSw: string;
   /** Mid-session optional sign-in — device-first (F-001). */
@@ -463,6 +465,7 @@ const en: ActiveWorkoutStrings = {
   activeCoachNotesDefault: 'Rate Easy / Med / Hard after each set so Coach can learn.',
   activeCoachNotesHighEffort: 'Hard sets stacking up — leave a little in the tank if form slips.',
   activeDiscardWorkout: 'Discard workout',
+  openSessionTakeOther: 'Continue the other session',
   activeEmptySubtitle: 'Log sets with rest timers, PRs, and form cues — offline ready.',
   activeEmptySubtitleNoSw:
     'Log sets with rest timers, PRs, and form cues. Lose signal mid-session and logging keeps going.',

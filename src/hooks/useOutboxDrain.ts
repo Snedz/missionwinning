@@ -3,6 +3,7 @@
 import { useEffect } from 'react';
 import { flush, msUntilNextAttempt, retryStuck } from '@/lib/sync/outbox';
 import { registerWorkoutSyncHandler } from '@/lib/sync/workoutSync';
+import { registerOpenSessionSyncHandler } from '@/lib/sync/openSessionSync';
 import { registerCoachSyncHandler } from '@/lib/coachSync';
 import { registerJourneySyncHandler } from '@/lib/journeySync';
 import { registerLeaderboardSyncHandler } from '@/lib/leaderboardSync';
@@ -25,6 +26,7 @@ export function useOutboxDrain(): void {
     // Every declared OutboxKind needs a handler, or its ops queue forever while the
     // type claims they are supported.
     registerWorkoutSyncHandler();
+    registerOpenSessionSyncHandler();
     registerCoachSyncHandler();
     registerJourneySyncHandler();
     registerLeaderboardSyncHandler();

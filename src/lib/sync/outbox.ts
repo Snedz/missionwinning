@@ -22,6 +22,7 @@ import { readJson, writeJson } from '@/lib/storage/safeStorage';
 
 export type OutboxKind =
   | 'workout.upsert'
+  | 'workout.active'
   | 'coach.plan'
   | 'journey.state'
   | 'leaderboard.push'

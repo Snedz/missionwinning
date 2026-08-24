@@ -15,6 +15,7 @@ import {
 import { restorePremiumCourseProgressForUser } from '@/lib/learnCourseProgress';
 import { setLoggerAuthPresence } from '@/lib/authPresence';
 import { useWorkoutStore } from '@/store/workoutStore';
+import { reconcileOpenSession } from '@/lib/workout/reconcileOpenSession';
 
 /** Keeps journey state in sync with Supabase profiles when signed in. */
 export function useJourneySync() {
@@ -34,6 +35,7 @@ export function useJourneySync() {
             await store.syncCurrentHistoryToCloud();
             await store.loadFromCloud();
           }
+          await reconcileOpenSession();
           /*
            * `.203` — the other half of a mirror that was only ever written.
            *
@@ -66,6 +68,7 @@ export function useJourneySync() {
       setLoggerAuthPresence(!!data.session?.user);
       if (data.session?.user) {
         await pullJourneyFromCloud();
+        await reconcileOpenSession();
       }
     })();
 
@@ -76,10 +79,15 @@ export function useJourneySync() {
     const onLocalJourneyChange = () => scheduleJourneyPush();
     const onUiModeChange = () => scheduleJourneyPush();
 
+    const onVisible = () => {
+      if (document.visibilityState === 'visible') void reconcileOpenSession();
+    };
+
     window.addEventListener('storage', onLocalChange);
     window.addEventListener('mw-journey-synced', onJourneySaved);
     window.addEventListener('mw-journey-local-change', onLocalJourneyChange);
     window.addEventListener('mw-ui-mode', onUiModeChange);
+    document.addEventListener('visibilitychange', onVisible);
 
     return () => {
       sub.subscription.unsubscribe();
@@ -87,6 +95,7 @@ export function useJourneySync() {
       window.removeEventListener('mw-journey-synced', onJourneySaved);
       window.removeEventListener('mw-journey-local-change', onLocalJourneyChange);
       window.removeEventListener('mw-ui-mode', onUiModeChange);
+      document.removeEventListener('visibilitychange', onVisible);
     };
   }, []);
 }
