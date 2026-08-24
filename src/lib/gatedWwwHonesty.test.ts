@@ -37,6 +37,7 @@ const SURFACE_FILES = [
   'src/components/public/PublicStatusBar.tsx',
   'docs/design/concepts/05-exquisite.html',
   'docs/brand-guidelines.md',
+  'src/lib/routeMetadata.ts',
 ];
 
 function isNamedBan(line: string): boolean {
