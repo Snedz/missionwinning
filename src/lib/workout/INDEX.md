@@ -66,7 +66,7 @@ Root-level `@/lib/{name}` paths re-export from here for compatibility — prefer
 | `activeWorkoutHelpers.test.ts` | Next set, last session stats |
 | `repeatLastSession.test.ts` | Last-session copy + empty-history path (`.717`) |
 | `vsLastSet.test.ts` | After-save vs-last: +weight / +reps / first-ever (`.760`) |
-| `setRowAdjacency.test.ts` | Honest empty + one-set skippable cite; no next-session bump; Train-only (`.936`) |
+| `setRowAdjacency.test.ts` | Honest empty + one-set skippable cite; no all-prescribed bump; not a last-actuals ghost; Train-only (`.936`) |
 | `sessionCheckInOffer.test.ts` | First-mission never offers check-in (`.293`) |
 | `loggerSpeed.test.ts` | Use-next offer rules (`.288`) |
 | `exerciseNote.test.ts` | Prefill / clear / persist seed + first-paint guards (`.748`) |

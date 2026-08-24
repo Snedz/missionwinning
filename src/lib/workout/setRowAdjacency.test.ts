@@ -480,33 +480,37 @@ describe('resolveAfterCompleteCite', () => {
     });
   });
 
-  it('does not persist a next-session program bump when the set hits the top of the range', () => {
+  it('does not persist a next-session program bump when every prescribed set hits the top of the range', () => {
     const hist = historyWith(
       'bench-press',
-      [{ reps: 12, weight: 60 }],
+      [
+        { reps: 12, weight: 60 },
+        { reps: 12, weight: 60 },
+        { reps: 12, weight: 60 },
+      ],
       isoOnPreviousJsWeekday(1)
     );
     const snapshot = structuredClone(hist);
+    const planned = [
+      { reps: 8, weight: 60, completed: true, kind: 'normal' as const },
+      { reps: 8, weight: 60, completed: false, kind: 'normal' as const },
+      { reps: 8, weight: 60, completed: false, kind: 'normal' as const },
+    ];
     const out = resolveAfterCompleteCite({
       workoutHistory: hist,
       exerciseId: 'bench-press',
-      sessionSets: [
-        { reps: 12, weight: 60, completed: true, kind: 'normal' },
-        { reps: 8, weight: 60, completed: false, kind: 'normal' },
-      ],
+      sessionSets: planned,
       completedSetIdx: 0,
+      prescribed: true,
       units: 'metric',
       goalRange: { min: 8, max: 12 },
       lastRestSeconds: null,
     });
     assert.deepEqual(hist, snapshot);
-    assert.ok(out);
-    assert.equal(out?.suggestion.kind, 'load');
-    assert.ok(out?.cite.kind === 'logs' || out?.cite.kind === 'session');
-    const parts = formatAfterCompleteParts(out!, (key, opts) =>
-      String(opts?.defaultValue ?? key)
-    );
-    assert.ok(parts.provenance.length > 0);
+    assert.deepEqual(out, {
+      suggestion: { kind: 'load', reps: 8, weight: 60 },
+      cite: { kind: 'coach' },
+    });
   });
 });
 
@@ -566,6 +570,48 @@ describe('after-complete cite competitive refuse', () => {
     assert.doesNotMatch(src, /strongCsv|parseStrong|from ['"]@\/lib\/import/i);
     assert.doesNotMatch(citeUi, /csv|importWorkout/i);
     assert.doesNotMatch(table, /csv|importWorkout/i);
+  });
+
+  it('cite is the next set from logs, not a last-actuals ghost', () => {
+    const citeUi = readFileSync(
+      path.join(root, 'src/components/workout/SetLogNextCite.tsx'),
+      'utf8'
+    );
+    assert.doesNotMatch(citeUi, /lastSetGhost|resolveLastSetGhost/);
+    const out = resolveAfterCompleteCite({
+      workoutHistory: [],
+      exerciseId: 'bench-press',
+      sessionSets: [
+        { reps: 8, weight: 60, completed: true, kind: 'normal' },
+        { reps: 8, weight: 60, completed: false, kind: 'normal' },
+      ],
+      completedSetIdx: 0,
+      units: 'metric',
+      lastRestSeconds: null,
+    });
+    assert.ok(out);
+    assert.equal(out?.suggestion.kind, 'load');
+    if (out?.suggestion.kind !== 'load') return;
+    assert.equal(out.suggestion.reps, 9);
+    assert.equal(out.suggestion.weight, 60);
+    assert.notEqual(out.suggestion.reps, 8);
+  });
+
+  it('does not call Prev marketing or claim mid-set data-loss', () => {
+    const citeUi = readFileSync(
+      path.join(root, 'src/components/workout/SetLogNextCite.tsx'),
+      'utf8'
+    );
+    const table = readFileSync(
+      path.join(root, 'src/components/workout/SetLogTable.tsx'),
+      'utf8'
+    );
+    const plan = readFileSync(path.join(root, 'docs/PLAN.md'), 'utf8');
+    const frozen = plan.slice(0, plan.indexOf('## Frozen plan — `.765`'));
+    const blob = `${src}\n${citeUi}\n${table}\n${frozen}`;
+    assert.doesNotMatch(blob, /PREVIOUS is marketing|Prev is marketing|previous is marketing/i);
+    assert.doesNotMatch(citeUi, /data[-\s]?loss|lost a set|mid-set/i);
+    assert.doesNotMatch(src.replace(/\/\*[\s\S]*?\*\//g, ''), /data[-\s]?loss|lost a set|mid-set/i);
   });
 
   it('stays on Train — Today / Fuel / Coach and other pages do not mount the cite', () => {

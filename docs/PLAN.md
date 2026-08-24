@@ -36,23 +36,27 @@ This ship **supersedes #487's surface**, not its engines:
 - Recover the cite + double-progression numbers.
 - Recover #487 leftover: `getLastSessionSets` must use `lastLiveSessionForExercise`
   (tombstones / 0-rep junk are not Prev evidence). Master still had a private loop.
-- Do **not** remount TARGET-above-PREVIOUS (that is last-actuals chrome; we
-  already have last-set ghost). Last-actuals beside the row do not fill the
-  next number. Our beat is after complete.
-- Do not invent program auto-progression (next-session weight bump when the
-  athlete hits the top of the range). Cite this session's next set from logs.
-- Import (CSV first) is a later PR. Stay on Train.
+- Do **not** remount TARGET-above-PREVIOUS. Prev is official last-actuals
+  beside the row — it does **not** fill the next number. Do not call Prev
+  marketing. Last-set ghost already copies last into the dial. Cite is
+  after complete, not a second last-actuals ghost.
+- Do not invent a program bump. The category bump fires when **all
+  prescribed working sets** hit the top of the range (next session's load).
+  We do not write that. Cite this session's next set from logs, or Coach
+  plan numbers as-is.
+- Import / sync is a later chore (CSV first). Do not claim mid-set
+  data-loss. Stay on Train.
 
 ### Competitive refuse (Market Intel 2026-08-24)
 
-Beat, not copy:
+Beat, not copy. **Do not call Prev marketing.**
 
 | Category move | Our refuse / beat |
 |---------------|-------------------|
 | Rest timer is table stakes | Already free. Cite may recall last rest; it is not a rest-timer product. |
-| Last-actuals beside the live row | Do not copy. Prev + last-set ghost already show last. Cite is **after complete**, skippable, with a why. |
-| Planner / program auto-progression | Do not write next session's load. `prescribed` cites Coach plan numbers as-is. |
-| History import | Later PR. This ship reads same-device logs only. |
+| Last-actuals beside the live row (Prev) | Official help. They do not fill the next number. We already have Prev + last-set ghost. Cite is **after complete**, skippable, with a why — not another last-actuals ghost. |
+| Planner bump | Fires when **every prescribed working set** hits the top of the range → next session load. We do not write that. `prescribed` cites Coach plan numbers as-is. |
+| Sync / import | Later PR (chore). Do not claim mid-set data-loss. Same-device logs, offline. |
 
 Stay on Train. No Today restyle. No feed.
 
@@ -104,7 +108,8 @@ a **visible, skippable, cited next-set after complete** on the free logger.
 - Skip wiring: `SetLogTable` mounts Skip; Log set is still `primary-action`; Skip is not red.
 - `getLastSessionSets` skips tombstones / 0-rep junk via `lastLiveSessionForExercise` (#487 leftover).
 - `SetLogTable` does not remount `SetLogAdjacencyStack` (#487 surface stays superseded).
-- Hitting the top of the rep range does not mutate history or write a next-session bump.
+- All prescribed sets at the top of the range still cite Coach plan numbers; history is not rewritten.
+- Cite is next-from-logs, not last-set ghost. Cite path does not call Prev marketing or claim mid-set data-loss.
 - Cite path does not wire CSV import. Today / Fuel / Coach do not mount the cite.
 - Warmup complete stays quiet. Tombstone history is not evidence (existing last-live rule).
 - Source: does not import `sessionRationale` / PlanSessionCard / readiness.

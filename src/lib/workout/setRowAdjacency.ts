@@ -1,10 +1,11 @@
 /**
- * E-Adjacency — next-set target + log cite for the set row (above PREVIOUS).
+ * E-Adjacency — next-set target + log cite after a completed working set.
  *
- * Free forever. The number is double-progression (or the coach prescription).
- * The cite is the last *live* session that produced it (weekday + working set
- * numbers). Tombstones (`deletedAt`) are not history. Freshness may later veto
- * dose — it never picks the lift, so this module must not import readiness /
+ * Free forever. Prev is official last-actuals beside the row; it does not
+ * fill the next number. This module cites the next set from logs (or Coach
+ * plan). It is not a last-actuals ghost — `lastSetGhost` already copies last.
+ * Tombstones (`deletedAt`) are not history. Freshness may later veto dose —
+ * it never picks the lift, so this module must not import readiness /
  * freshness / Recovery %.
  */
 
