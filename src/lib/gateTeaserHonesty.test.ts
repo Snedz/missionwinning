@@ -11,14 +11,16 @@ import path from 'path';
 const root = path.join(import.meta.dirname, '..', '..');
 const read = (p: string) => readFileSync(path.join(root, p), 'utf8');
 
-test('gate notify title and foot live only on the teaser, not inside the form', () => {
+test('gate notify title lives on the door scene; form does not reprint the kicker', () => {
   const form = read('src/components/public/LaunchNotifyForm.tsx');
-  const gateVariant = form.slice(form.indexOf("variant === 'gate'"));
-  assert.doesNotMatch(gateVariant, /gateWaitlistTitle/, 'form must not reprint the kicker');
-  assert.doesNotMatch(gateVariant, /gateWaitlistFoot/, 'form must not reprint the no-spam line');
+  const cine = read('src/components/landing/CinematicWww.tsx');
   const teaser = read('app/private/PrivateTeaserClient.tsx');
-  assert.equal([...teaser.matchAll(/gateWaitlistTitle/g)].length, 1);
-  assert.equal([...teaser.matchAll(/gateWaitlistFoot/g)].length, 1);
+  const cineVariant = form.slice(form.indexOf("variant === 'cine'"));
+  assert.doesNotMatch(form.slice(0, form.indexOf("variant === 'cine'")), /gateWaitlistFoot/);
+  assert.match(cine, /gateWaitlistTitle/);
+  assert.match(teaser, /cineDoorLead/);
+  assert.doesNotMatch(teaser, /gateWaitlistTitle/);
+  assert.match(cineVariant, /gateWaitlistTitle/, 'cine submit uses Get notified');
 });
 
 test('ungated walk-open POSTs the code and returns to `/` (homepage)', () => {

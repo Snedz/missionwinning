@@ -12,6 +12,7 @@ import Link from 'next/link';
 import dynamic from 'next/dynamic';
 import { useTranslation } from 'react-i18next';
 import { CinematicLoggerFallback } from '@/components/landing/CinematicLogger';
+import { gateEnFloor } from '@/i18n/gateEn';
 import './cinematic.css';
 
 const CinematicLogger = dynamic(
@@ -44,7 +45,8 @@ function Mark({ size = 36 }: { size?: number }) {
 
 export function CinematicWww({ mode, door }: Props) {
   const { t } = useTranslation();
-  const doorGhost = t('gateEyebrow', { defaultValue: 'Free' });
+  const g = (key: string) => t(key, { defaultValue: gateEnFloor(key) });
+  const doorGhost = g('gateEyebrow');
   const navLabel =
     mode === 'gate' ? doorGhost : t('landingNavStart', { defaultValue: 'Start free' });
   const doorHref = mode === 'gate' ? '#door' : '/welcome';
@@ -66,21 +68,15 @@ export function CinematicWww({ mode, door }: Props) {
       <main>
         <section className="www-cine-scene www-cine-set" id="set">
           <div className="www-cine-set-inner">
-            <div className="www-cine-cover">
+            <div className="www-cine-cover www-cine-rise">
               <div className="www-cine-mark">
                 <Mark size={96} />
               </div>
               <p className="eyebrow-live www-cine-kicker www-cine-mark-follow">
-                {t('cinePublicLine', { defaultValue: 'Log a set. Offline.' })}
+                {g('cinePublicLine')}
               </p>
-              <h1 className="display-hero">
-                {t('cineHeroHeadline', { defaultValue: 'Log a set. Offline.' })}
-              </h1>
-              <p className="www-cine-lede">
-                {t('cineHeroLead', {
-                  defaultValue: 'No account. No wearable.',
-                })}
-              </p>
+              <h1 className="display-hero">{g('cineHeroHeadline')}</h1>
+              <p className="www-cine-lede">{g('cineHeroLead')}</p>
             </div>
             <CinematicLogger doneHref={doorHref} doneLabel={navLabel} />
           </div>
@@ -88,20 +84,9 @@ export function CinematicWww({ mode, door }: Props) {
 
         <section className="www-cine-scene www-cine-anywhere" id="anywhere">
           <div className="www-cine-on-photo">
-            <p className="eyebrow www-cine-kicker">
-              {t('cineAnywhereKicker', { defaultValue: 'Anywhere' })}
-            </p>
-            <h2 className="display-section">
-              {t('cineAnywhereTitle', {
-                defaultValue: 'Garage. Hotel carpet. A park at dusk.',
-              })}
-            </h2>
-            <p className="www-cine-lede">
-              {t('cineAnywhereLead', {
-                defaultValue:
-                  'Sets save on the device. Signal is optional. The plan comes from what you logged, so nothing needs charging for it to work.',
-              })}
-            </p>
+            <p className="eyebrow www-cine-kicker">{g('cineAnywhereKicker')}</p>
+            <h2 className="display-section">{g('cineAnywhereTitle')}</h2>
+            <p className="www-cine-lede">{g('cineAnywhereLead')}</p>
             <p className="www-cine-mark-follow">
               <a className="www-cine-ghost" href={doorHref}>
                 {navLabel}
@@ -110,19 +95,10 @@ export function CinematicWww({ mode, door }: Props) {
           </div>
         </section>
 
-        <section className="www-cine-scene www-cine-week" id="week">
-          <p className="eyebrow www-cine-kicker">
-            {t('cineWeekKicker', { defaultValue: 'Mission Coach' })}
-          </p>
-          <h2 className="display-section">
-            {t('cineWeekTitle', { defaultValue: 'The week does not fail.' })}
-          </h2>
-          <p className="www-cine-lede">
-            {t('cineWeekLead', {
-              defaultValue:
-                'Authored from the log. Not a calendar you already broke. Not a wearable.',
-            })}
-          </p>
+        <section className="www-cine-scene www-cine-week www-cine-rise" id="week">
+          <p className="eyebrow www-cine-kicker">{g('cineWeekKicker')}</p>
+          <h2 className="display-section">{g('cineWeekTitle')}</h2>
+          <p className="www-cine-lede">{g('cineWeekLead')}</p>
           <ol className="www-cine-breaks">
             {BREAKS.map((beat) => (
               <li key={beat.k}>
@@ -139,15 +115,17 @@ export function CinematicWww({ mode, door }: Props) {
         </section>
 
         <section className="www-cine-scene www-cine-door" id="door">
-          <div className="www-cine-door-inner">{door}</div>
+          <div className="www-cine-door-inner">
+            <div className="www-cine-mark www-cine-rise">
+              <Mark size={72} />
+            </div>
+            <p className="www-cine-kicker eyebrow-live">{doorGhost}</p>
+            <h2 className="display-section">{g('gateWaitlistTitle')}.</h2>
+            <div className="www-cine-strip">{door}</div>
+          </div>
         </section>
       </main>
-      <p className="www-cine-later">
-        {t('cineLater', {
-          defaultValue:
-            'Mission Winning Health. Later: an athlete page you author. Not a feed.',
-        })}
-      </p>
+      <p className="www-cine-later">{g('cineLater')}</p>
     </div>
   );
 }

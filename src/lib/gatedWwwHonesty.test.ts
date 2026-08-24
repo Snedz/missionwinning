@@ -54,6 +54,7 @@ test('EN door pack is Free / Get notified / Enter with code', () => {
   assert.equal(en.gateWaitlistTitle, 'Get notified');
   assert.equal(en.gateWaitlistSubmit, 'Notify me');
   assert.equal(en.gateAccessSubmit, 'Enter with code');
+  assert.equal(en.gateAccessSummary, 'Enter with code');
   assert.equal(GATED_WWW_HONESTY.gateEyebrow, 'Free');
   assert.equal(GATED_WWW_HONESTY.gateWaitlistTitle, 'Get notified');
   assert.equal(GATED_WWW_HONESTY.landingNavStartGated, 'Enter with code');

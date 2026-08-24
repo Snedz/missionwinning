@@ -70,6 +70,10 @@
   letter-spacing: -0.01em;
   text-decoration: none;
   text-align: left;
+  cursor: pointer;
+  font-family: inherit;
+  appearance: none;
+  border-radius: 0;
 }
 
 .www-cine-ghost:hover {
@@ -105,6 +109,34 @@
   color: hsl(var(--muted-foreground));
   font-size: 17px;
   line-height: 1.55;
+}
+
+.www-cine .display-hero {
+  max-width: 11ch;
+  font-size: clamp(2.625rem, 7vw, 4.75rem);
+}
+
+.www-cine .display-section {
+  max-width: 14ch;
+  font-size: clamp(2.25rem, 6vw, 4.25rem);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .www-cine-rise,
+  .www-cine-logger {
+    animation: www-cine-rise 700ms ease-out both;
+  }
+}
+
+@keyframes www-cine-rise {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
 }
 
 .www-cine-mark {
@@ -439,6 +471,10 @@
   max-width: 36rem;
 }
 
+.www-cine-door .www-cine-mark {
+  margin-bottom: 8px;
+}
+
 .www-cine-door .www-cine-lede {
   color: hsl(var(--background));
   font-size: 19px;
@@ -611,6 +647,11 @@
   font-size: 13px;
   line-height: 1.55;
   color: hsl(var(--muted-foreground));
+}
+
+.www-cine-strip .www-cine-colophon {
+  padding: 22px 0 0;
+  margin-top: 28px;
 }
 
 .www-cine-colophon-inner {

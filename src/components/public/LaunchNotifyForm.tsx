@@ -10,14 +10,15 @@ import { useTranslation } from 'react-i18next';
 import { Check } from 'lucide-react';
 import { submitLead } from '@/lib/supabase';
 import { track } from '@/lib/analytics';
+import { gateEnFloor } from '@/i18n/gateEn';
 
 export type LaunchNotifySource = 'launch-waitlist' | 'landing-super-bundle-notify';
 
 type Props = {
   source: LaunchNotifySource;
   message: string;
-  /** `gate` keeps the private-teaser classes; `landing` is the public band. */
-  variant?: 'landing' | 'gate';
+  /** `gate` keeps the private-teaser classes; `cine` is the paper-strip door; `landing` is the public band. */
+  variant?: 'landing' | 'gate' | 'cine';
 };
 
 export function LaunchNotifyForm({ source, message, variant = 'landing' }: Props) {
@@ -57,17 +58,18 @@ export function LaunchNotifyForm({ source, message, variant = 'landing' }: Props
     setBusy(false);
   };
 
-  if (variant === 'gate') {
+  if (variant === 'gate' || variant === 'cine') {
+    const cine = variant === 'cine';
     if (done) {
       return (
         <>
-          <p className="gate-done">
+          <p className={cine ? 'www-cine-lede' : 'gate-done'}>
             <Check className="h-4 w-4" strokeWidth={2} aria-hidden />
-            {t('gateWaitlistDone', { defaultValue: "You're on the list." })}
+            {t('gateWaitlistDone', { defaultValue: gateEnFloor('gateWaitlistDone') })}
           </p>
-          <p className="gate-foot">
+          <p className={cine ? 'www-cine-foot' : 'gate-foot'}>
             {t('gateWaitlistDoneFoot', {
-              defaultValue: "We'll email you when access is ready.",
+              defaultValue: gateEnFloor('gateWaitlistDoneFoot'),
             })}{' '}
             {email}
           </p>
@@ -76,32 +78,63 @@ export function LaunchNotifyForm({ source, message, variant = 'landing' }: Props
     }
 
     return (
-      <form onSubmit={handleSubmit} data-mw-launch-notify="gate">
-        <div className="gate-row">
-          <input
-            type="email"
-            required
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            placeholder={t('gateWaitlistPlaceholder', {
-              defaultValue: 'you@example.com',
-            })}
-            aria-label="Email for the launch waitlist"
-            className="gate-input"
-            disabled={busy}
-          />
-          <button
-            type="submit"
-            disabled={busy || !email}
-            className="gate-btn gate-btn-primary"
-          >
-            {busy
-              ? t('gateWaitlistSubmitting', { defaultValue: 'Joining…' })
-              : t('gateWaitlistSubmit', { defaultValue: 'Notify me' })}
-          </button>
-        </div>
+      <form onSubmit={handleSubmit} data-mw-launch-notify={cine ? 'cine' : 'gate'}>
+        {cine ? (
+          <label className="www-cine-field">
+            <span>{t('gateWaitlistEmailLabel', { defaultValue: gateEnFloor('gateWaitlistEmailLabel') })}</span>
+            <input
+              type="email"
+              required
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder={t('gateWaitlistPlaceholder', {
+                defaultValue: gateEnFloor('gateWaitlistPlaceholder'),
+              })}
+              aria-label="Email for the launch waitlist"
+              autoComplete="email"
+              disabled={busy}
+            />
+          </label>
+        ) : (
+          <div className="gate-row">
+            <input
+              type="email"
+              required
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder={t('gateWaitlistPlaceholder', {
+                defaultValue: gateEnFloor('gateWaitlistPlaceholder'),
+              })}
+              aria-label="Email for the launch waitlist"
+              className="gate-input"
+              disabled={busy}
+            />
+            <button
+              type="submit"
+              disabled={busy || !email}
+              className="gate-btn gate-btn-primary"
+            >
+              {busy
+                ? t('gateWaitlistSubmitting', { defaultValue: gateEnFloor('gateWaitlistSubmitting') })
+                : t('gateWaitlistSubmit', { defaultValue: gateEnFloor('gateWaitlistSubmit') })}
+            </button>
+          </div>
+        )}
+        {cine ? (
+          <div className="www-cine-row">
+            <button type="submit" disabled={busy || !email} className="www-cine-ghost">
+              {busy
+                ? t('gateWaitlistSubmitting', { defaultValue: gateEnFloor('gateWaitlistSubmitting') })
+                : t('gateWaitlistTitle', { defaultValue: gateEnFloor('gateWaitlistTitle') })}
+            </button>
+          </div>
+        ) : null}
         {error && (
-          <p className="gate-foot" role="alert" style={{ color: 'var(--destructive)' }}>
+          <p
+            className={cine ? 'www-cine-foot' : 'gate-foot'}
+            role="alert"
+            style={cine ? undefined : { color: 'var(--destructive)' }}
+          >
             {error}
           </p>
         )}

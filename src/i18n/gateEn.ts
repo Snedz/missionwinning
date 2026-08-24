@@ -38,10 +38,10 @@ export const GATE_EN: Record<string, string> = {
   gateWaitlistSubmit: 'Notify me',
   gateWaitlistSubmitting: 'Joining…',
   gateWaitlistDone: "You're on the list.",
-  gateWaitlistDoneFoot: "We'll email you when Alpha access is ready.",
-  gateWaitlistFoot: 'No spam — one email when Alpha access is ready.',
+  gateWaitlistDoneFoot: "We'll email you when access is ready.",
+  gateWaitlistFoot: 'No spam — one email when access is ready.',
   gateWaitlistFailed: 'That did not save. Check your connection and try again.',
-  gateAccessSummary: 'Have an Alpha access code?',
+  gateAccessSummary: 'Enter with code',
   gateAccessLabel: 'Access code',
   gateAccessPlaceholder: 'Enter your access code',
   gateAccessSubmit: 'Enter with code',
@@ -57,9 +57,13 @@ export const GATE_EN: Record<string, string> = {
   cineHeroHeadline: 'Log a set. Offline.',
   cineHeroLead: 'No account. No wearable.',
   cineWeekKicker: 'Mission Coach',
-  cineWeekTitle: 'A logged set is a new plan.',
+  cineWeekTitle: 'The week does not fail.',
   cineWeekLead:
-    'Miss a day, travel, only a band — the week reshapes from the log. Not from a wearable, not from a schedule you already broke.',
+    'Authored from the log. Not a calendar you already broke. Not a wearable.',
+  cineDoorLead:
+    'Enter with a code if you have one. Or leave an email — one note when access is ready. No spam.',
+  cineDoorFoot:
+    'Under three minutes to a first logged set once you are in. Nothing to install, nothing to pay.',
   cineWeekWhy:
     'Wednesday was a gym squat. You logged travel. The session became a hotel-room push-up. The week did not fail.',
   cineAnywhereKicker: 'Anywhere',
