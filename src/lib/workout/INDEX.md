@@ -37,6 +37,7 @@ Root-level `@/lib/{name}` paths re-export from here for compatibility — prefer
 23. `tempo.ts` — optional ecc/pause/con parse + last-tempo recall (`.757`)
 24. `lastSetGhost.ts` — last **working** set ghost (not warmup W); one-tap accept (`.759`)
 25. `vsLastSet.ts` — after-save vs-last delta on the set row (`.760`); working-set index; not ghost prefill
+25b. `setRowAdjacency.ts` — next-set target + log cite; `resolveAfterCompleteCite` after a completed working set (`.934`)
 26. `sessionE1rm.ts` — educational Epley e1RM from this session's working sets (`.761`); hide pref `mw_show_session_e1rm`
 27. `homeGymKit.ts` — local Home gym kit (barbell/rack/plates/dumbbells/pull-up-bar/floor). Logger + Just Go + Coach filter; never rank; Train empty Start stays repeat-last (`.763`)
 28. `warmupRamp.ts` — free set-table 40/60/80 warmup insert + set-column `W` ordinals (`.764`); plate line is `src/lib/plateCalculator.ts` `setRowPlateLine`
@@ -65,6 +66,7 @@ Root-level `@/lib/{name}` paths re-export from here for compatibility — prefer
 | `activeWorkoutHelpers.test.ts` | Next set, last session stats |
 | `repeatLastSession.test.ts` | Last-session copy + empty-history path (`.717`) |
 | `vsLastSet.test.ts` | After-save vs-last: +weight / +reps / first-ever (`.760`) |
+| `setRowAdjacency.test.ts` | Honest empty + one-set skippable cite (`.934`) |
 | `sessionCheckInOffer.test.ts` | First-mission never offers check-in (`.293`) |
 | `loggerSpeed.test.ts` | Use-next offer rules (`.288`) |
 | `exerciseNote.test.ts` | Prefill / clear / persist seed + first-paint guards (`.748`) |

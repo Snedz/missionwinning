@@ -128,3 +128,21 @@ test('ActiveExerciseCard wires prevLabels and vs-last into the set table', () =>
   assert.match(src, /formatVsLastSetDeltas/);
   assert.match(src, /vsLastLabels=\{vsLastLabels\}/);
 });
+
+test('SetLogTable paints a skippable after-complete cite; Log set stays the only red', () => {
+  const table = workout('SetLogTable.tsx');
+  const cite = workout('SetLogNextCite.tsx');
+  const card = workout('ActiveExerciseCard.tsx');
+  assert.match(card, /resolveAfterCompleteCite/);
+  assert.match(card, /afterCompleteCites=\{afterCompleteCites\}/);
+  assert.match(table, /SetLogNextCite/);
+  assert.match(cite, /set-table-next-cite/);
+  assert.match(cite, /set-table-next-cite-skip/);
+  assert.match(cite, /min-h-\[44px\]/);
+  assert.doesNotMatch(cite, /primary-action/);
+  assert.doesNotMatch(cite, /accent-poster/);
+  const citeCode = cite.replace(/\/\*[\s\S]*?\*\//g, '').replace(/\/\/.*$/gm, '');
+  const tableCode = table.replace(/\/\*[\s\S]*?\*\//g, '').replace(/\/\/.*$/gm, '');
+  assert.doesNotMatch(citeCode, /E-Adjacency/);
+  assert.doesNotMatch(tableCode, /E-Adjacency/);
+});

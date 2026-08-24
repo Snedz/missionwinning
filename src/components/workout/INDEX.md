@@ -12,7 +12,9 @@
 | `ActiveWorkoutSheets.tsx` | Check-in · hard-session warning · form · add · plates · victory overlay cluster (`.450`) |
 | `ActiveExerciseList.tsx` | Maps session exercises → `ActiveExerciseCard` (swap candidates, table controls, open-idx). Page mounts this instead of inlining the map (`.439`) |
 | `ActiveExerciseCard.tsx` | Dense exercise block — Info → form guide; overflow for Note/Swap/SS/Ask/Remove. **Swap** is `AdaptiveOverlay` + `ExercisePicker` (not an inline max-h-48 list) |
-| `SetLogTable.tsx` | Set list on **every** surface — Set · Prev · kg · Reps · Log. Prev is the row anchor. ≥44px inputs. One poster-red inline `Log set`. |
+| `SetLogTable.tsx` | Set list on **every** surface — Set · Prev · kg · Reps · Log. Prev is the row anchor. ≥44px inputs. One poster-red inline `Log set`. After-complete cite via `SetLogNextCite`. |
+| `SetLogNextCite.tsx` | Skippable next-set cite after a completed working set (`.934`). Not a feed. |
+| `SetLogAdjacencyStack.tsx` | Unused TARGET-above-PREVIOUS stack — do not remount into Prev (would restyle the table). |
 | `SetLogRow.tsx` | Legacy read-only set record (not mounted on Active). Kept for tests of the old compact density. |
 | `LogConsole.tsx` | Legacy compact dock entry. Active dock is rest-only; set entry is the table. |
 | `AddExerciseSheet.tsx` | `ExercisePicker` in a sheet with the confirm in the footer. **Test contract:** keeps the `search exercises` placeholder, `option` rows and `add selected exercise` name — `logger-depth`, `first-90` and `hero-flows` all drive them |

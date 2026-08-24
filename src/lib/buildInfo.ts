@@ -1,5 +1,5 @@
-/** Shown on Profile so testers can confirm the deployed build. Bump when shipping UI to master. `.938` F-008 honesty on `.933` door (past `#774` `.934`; skip `#778` `.935` `#777` `.936` `#779` `.937`). */
-export const APP_BUILD_LABEL = "2026.07-unified.938";
+/** Shown on Profile so testers can confirm the deployed build. Bump when shipping UI to master. `.934` next-set cite. */
+export const APP_BUILD_LABEL = "2026.07-unified.934";
 
 /**
  * Semver for athletes. Distinct from `APP_BUILD_LABEL`, which `/api/health`

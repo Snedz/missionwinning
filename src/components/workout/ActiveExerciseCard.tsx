@@ -23,6 +23,7 @@ import {
 } from '@/lib/workout/activeWorkoutHelpers';
 import { resolveLastSetGhost } from '@/lib/workout/lastSetGhost';
 import { formatVsLastSetDeltas } from '@/lib/workout/vsLastSet';
+import { resolveAfterCompleteCite } from '@/lib/workout/setRowAdjacency';
 import { isBarLoadedEquipment, setRowPlateLine } from '@/lib/plateCalculator';
 import {
   nextWarmupKind,
@@ -32,7 +33,7 @@ import {
 } from '@/lib/workout/warmupRamp';
 import { getFormGuideOrCues } from '@/lib/formGuides';
 import { canStartDrop } from '@/lib/workout/dropSet';
-import { resolveRestForNextSet } from '@/lib/workout/restTimer';
+import { recallLastRest, resolveRestForNextSet } from '@/lib/workout/restTimer';
 import { supersetLabel } from '@/lib/workout/superset';
 import { isPlusLoadExercise } from '@/lib/workout/bodyweightLoad';
 import { cn } from '@/lib/utils';
@@ -197,6 +198,19 @@ export function ActiveExerciseCard({
       reps: t('activeVsLastReps', { defaultValue: 'reps' }),
     }
   );
+  const lastRestSeconds = recallLastRest(exLog.exerciseId);
+  const afterCompleteCites = exLog.sets.map((_, setIdx) =>
+    resolveAfterCompleteCite({
+      workoutHistory,
+      exerciseId: exLog.exerciseId,
+      sessionSets: exLog.sets,
+      completedSetIdx: setIdx,
+      prescribed: exLog.prescribed,
+      units,
+      goalRange,
+      lastRestSeconds,
+    })
+  );
   const ordinalLabels = exLog.sets.map((_, i) => setRowOrdinal(exLog.sets, i).label);
   const barLoaded = isBarLoadedEquipment(exercise.equipment);
   const liveSetIdx = activeSetIdxForExercise(nextSet, exIdx);
@@ -277,6 +291,7 @@ export function ActiveExerciseCard({
               onSetInputChange('reps', target.reps);
               onSetInputChange('weight', target.weight);
             }}
+            afterCompleteCites={afterCompleteCites}
           />
         </div>
         <ExerciseNoteField

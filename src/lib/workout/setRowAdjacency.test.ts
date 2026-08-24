@@ -5,12 +5,15 @@ import path from 'node:path';
 import type { CompletedWorkoutLog } from '@/types';
 import {
   formatAdjacencyCiteLine,
+  formatAfterCompleteParts,
   formatSetRowAdjacency,
   lastLiveSessionForExercise,
+  resolveAfterCompleteCite,
   resolveSetRowAdjacency,
 } from '@/lib/workout/setRowAdjacency';
 
 const src = readFileSync(path.join(import.meta.dirname, 'setRowAdjacency.ts'), 'utf8');
+const root = path.join(import.meta.dirname, '..', '..', '..');
 
 /** Previous occurrence of `jsDay` (0=Sun) at local noon — no fixture date literals. */
 function isoOnPreviousJsWeekday(jsDay: number): string {
@@ -301,5 +304,165 @@ describe('setRowAdjacency honesty', () => {
 
   it('never claims AI-suggested or optimized-for-you', () => {
     assert.doesNotMatch(code, /AI suggested|optimized for you/i);
+  });
+
+  it('does not steal Coach why-line or readiness', () => {
+    assert.doesNotMatch(src, /sessionRationale/);
+    assert.doesNotMatch(src, /PlanSessionCard/);
+    assert.doesNotMatch(src, /from ['"]@\/lib\/readiness/);
+    assert.doesNotMatch(src, /from ['"]@\/lib\/premium/);
+  });
+
+  it('does not print E-Adjacency on the door', () => {
+    const gate = readFileSync(path.join(root, 'src/i18n/gateEn.ts'), 'utf8');
+    assert.doesNotMatch(gate, /E-Adjacency/);
+  });
+});
+
+describe('resolveAfterCompleteCite', () => {
+  const plannedNext = [
+    { reps: 8, weight: 60, completed: true, kind: 'normal' as const },
+    { reps: 8, weight: 60, completed: false, kind: 'normal' as const },
+  ];
+
+  it('empty history does not invent a next set', () => {
+    const out = resolveAfterCompleteCite({
+      workoutHistory: [],
+      exerciseId: 'bench-press',
+      sessionSets: [
+        { reps: 8, weight: 60, completed: false, kind: 'normal' },
+        { reps: 8, weight: 60, completed: false, kind: 'normal' },
+      ],
+      completedSetIdx: 0,
+      units: 'metric',
+      lastRestSeconds: null,
+    });
+    assert.equal(out, null);
+  });
+
+  it('one logged set produces a skippable load cite from this session', () => {
+    const out = resolveAfterCompleteCite({
+      workoutHistory: [],
+      exerciseId: 'bench-press',
+      sessionSets: plannedNext,
+      completedSetIdx: 0,
+      units: 'metric',
+      lastRestSeconds: null,
+    });
+    assert.ok(out);
+    assert.equal(out?.suggestion.kind, 'load');
+    if (out?.suggestion.kind !== 'load') return;
+    assert.equal(out.suggestion.reps, 9);
+    assert.equal(out.suggestion.weight, 60);
+    assert.equal(out.cite.kind, 'session');
+    if (out.cite.kind !== 'session') return;
+    assert.equal(out.cite.setFrom, 1);
+    assert.equal(out.cite.setTo, 1);
+    const parts = formatAfterCompleteParts(out, (key, opts) =>
+      String(opts?.defaultValue ?? key)
+    );
+    assert.equal(parts.target, '9 × 60');
+    assert.match(parts.provenance, /this session/);
+    assert.match(parts.line, /9 × 60/);
+  });
+
+  it('cites last session when history exists — not an invented weekday for today', () => {
+    const hist = historyWith(
+      'squat',
+      [{ reps: 10, weight: 80 }],
+      isoOnPreviousJsWeekday(1)
+    );
+    const out = resolveAfterCompleteCite({
+      workoutHistory: hist,
+      exerciseId: 'squat',
+      sessionSets: [
+        { reps: 10, weight: 80, completed: true, kind: 'normal' },
+        { reps: 8, weight: 80, completed: false, kind: 'normal' },
+      ],
+      completedSetIdx: 0,
+      units: 'metric',
+      lastRestSeconds: null,
+    });
+    assert.ok(out);
+    assert.equal(out?.suggestion.kind, 'load');
+    if (out?.suggestion.kind !== 'load') return;
+    assert.equal(out.suggestion.reps, 11);
+    assert.equal(out.suggestion.weight, 80);
+    assert.equal(out.cite.kind, 'logs');
+    if (out.cite.kind !== 'logs') return;
+    assert.equal(out.cite.weekdayShort, 'Mon');
+  });
+
+  it('stays quiet on a warmup complete', () => {
+    const out = resolveAfterCompleteCite({
+      workoutHistory: [],
+      exerciseId: 'bench-press',
+      sessionSets: [
+        { reps: 8, weight: 40, completed: true, kind: 'warmup' },
+        { reps: 8, weight: 60, completed: false, kind: 'normal' },
+      ],
+      completedSetIdx: 0,
+      units: 'metric',
+      lastRestSeconds: 90,
+    });
+    assert.equal(out, null);
+  });
+
+  it('cites last rest when this exercise has no next set', () => {
+    const out = resolveAfterCompleteCite({
+      workoutHistory: [],
+      exerciseId: 'bench-press',
+      sessionSets: [{ reps: 8, weight: 60, completed: true, kind: 'normal' }],
+      completedSetIdx: 0,
+      units: 'metric',
+      lastRestSeconds: 150,
+    });
+    assert.deepEqual(out, {
+      suggestion: { kind: 'rest', seconds: 150 },
+      cite: { kind: 'last-rest' },
+    });
+    const parts = formatAfterCompleteParts(
+      out!,
+      (key, opts) => String(opts?.defaultValue ?? key),
+      '2:30'
+    );
+    assert.equal(parts.target, 'Rest 2:30');
+    assert.equal(parts.provenance, 'Last rest');
+  });
+
+  it('does not invent rest from a missing last-rest', () => {
+    const out = resolveAfterCompleteCite({
+      workoutHistory: [],
+      exerciseId: 'bench-press',
+      sessionSets: [{ reps: 8, weight: 60, completed: true, kind: 'normal' }],
+      completedSetIdx: 0,
+      units: 'metric',
+      lastRestSeconds: null,
+    });
+    assert.equal(out, null);
+  });
+
+  it('prescribed next row cites Coach plan, not a fake Tuesday', () => {
+    const hist = historyWith(
+      'bench-press',
+      [{ reps: 8, weight: 60 }],
+      isoOnPreviousJsWeekday(2)
+    );
+    const out = resolveAfterCompleteCite({
+      workoutHistory: hist,
+      exerciseId: 'bench-press',
+      sessionSets: [
+        { reps: 5, weight: 100, completed: true, kind: 'normal' },
+        { reps: 5, weight: 100, completed: false, kind: 'normal' },
+      ],
+      completedSetIdx: 0,
+      prescribed: true,
+      units: 'metric',
+      lastRestSeconds: null,
+    });
+    assert.deepEqual(out, {
+      suggestion: { kind: 'load', reps: 5, weight: 100 },
+      cite: { kind: 'coach' },
+    });
   });
 });

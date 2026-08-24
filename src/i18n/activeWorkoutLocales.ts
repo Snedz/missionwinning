@@ -260,6 +260,23 @@ type ActiveWorkoutStrings = {
   activeVsLastRep: string;
   activeVsLastReps: string;
   activeVsLastAria: string;
+  /** After-complete next-set cite (.934). */
+  activeNextCiteRest: string;
+  activeNextCiteFromSession: string;
+  activeNextCiteLastRest: string;
+  activeNextCiteSkip: string;
+  activeNextCiteAria: string;
+  activeTargetCiteCoach: string;
+  activeTargetCiteSet: string;
+  activeTargetCiteSets: string;
+  activeTargetCiteFromLast: string;
+  activeWeekdayMon: string;
+  activeWeekdayTue: string;
+  activeWeekdayWed: string;
+  activeWeekdayThu: string;
+  activeWeekdayFri: string;
+  activeWeekdaySat: string;
+  activeWeekdaySun: string;
   victoryMascotCue: string;
   victorySessionDetails: string;
   /** Split from a `finalSeconds` ternary default — see moveLocales. */
@@ -521,6 +538,22 @@ const en: ActiveWorkoutStrings = {
   activeVsLastRep: 'rep',
   activeVsLastReps: 'reps',
   activeVsLastAria: 'versus last {{delta}}',
+  activeNextCiteRest: 'Rest {{clock}}',
+  activeNextCiteFromSession: 'From this session · {{sets}}',
+  activeNextCiteLastRest: 'Last rest',
+  activeNextCiteSkip: 'Skip',
+  activeNextCiteAria: 'Next from your logs: {{line}}',
+  activeTargetCiteCoach: 'Coach plan',
+  activeTargetCiteSet: 'set {{n}}',
+  activeTargetCiteSets: 'sets {{from}}–{{to}}',
+  activeTargetCiteFromLast: 'From last {{day}} · {{sets}}',
+  activeWeekdayMon: 'Mon',
+  activeWeekdayTue: 'Tue',
+  activeWeekdayWed: 'Wed',
+  activeWeekdayThu: 'Thu',
+  activeWeekdayFri: 'Fri',
+  activeWeekdaySat: 'Sat',
+  activeWeekdaySun: 'Sun',
   victoryMascotCue: 'Session saved.',
   victorySessionDetails: 'Session details',
   activeRestSkipAriaFinal: 'Skip rest — go',
