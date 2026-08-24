@@ -12,6 +12,7 @@ When adding a doc:
 
 | File | Absorbed by / note |
 |------|---------------------|
+| [log/LOG-rotate-917-for-934.md](./log/LOG-rotate-917-for-934.md) | rotated 2026-08-24 for `.934` Coach why-this-session (`.917`) |
 | [log/LOG-rotate-916-for-933.md](./log/LOG-rotate-916-for-933.md) | rotated 2026-08-24 for `.933` brand copy lock (`.916`) |
 | [log/LOG-rotate-915-for-930.md](./log/LOG-rotate-915-for-930.md) | rotated 2026-08-24 for `.930` one set-count (`.915`) |
 | [log/LOG-rotate-914-for-929.md](./log/LOG-rotate-914-for-929.md) | rotated 2026-08-24 for `.929` restore local green (`.914`) |

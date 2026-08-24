@@ -9,7 +9,8 @@
  *   3. Expected effect (what this session is for)
  *
  * Pure. UI mounts only on the Coach boss session card (`PlanSessionCard` when
- * primary Start) — never forced onto Train / Today / I-Day.
+ * primary Start) — never forced onto Train / Today / I-Day. Why stays free.
+ * Known-empty history is an honest line, not silence (`.932` / reserved `.699`).
  */
 
 import type { PlanSession } from '@/lib/coach/types';
@@ -25,6 +26,7 @@ export type SessionRationaleHints = {
 export type CoachSessionRationale = {
   /** Stable key for the story kind (tests + analytics-friendly). */
   kind:
+    | 'session-empty'
     | 'session-swapped'
     | 'session-recovery'
     | 'session-deload'
@@ -79,11 +81,13 @@ function kindLabel(session: PlanSession): string {
 }
 
 /**
- * Build at most one primary session rationale. Null when nothing true to say
- * (done/missed, empty exercises with no logs, clean-start silence).
+ * Build at most one primary session rationale. Null only for done/missed
+ * (week-story territory). A planned/swapped boss session with a known empty
+ * history gets `session-empty` — honest, not silent, not “0 workouts” theater.
  *
- * Post-first-workout quiet gate: without a prescription whyKey and without
- * logged history, stay silent — do not invent a “0 workouts” story.
+ * whyKey stories that cite “your logs” require `loggedWorkoutCount !== 0`.
+ * An omitted count still lets story-kind unit tests fire; CoachPage always
+ * passes `ctx.history.length`.
  */
 export function buildSessionRationale(
   session: PlanSession,
@@ -91,6 +95,23 @@ export function buildSessionRationale(
 ): CoachSessionRationale | null {
   // Past days are week-story territory (weekRationale) — not “why this session”.
   if (session.status === 'done' || session.status === 'missed') return null;
+
+  if (hints.loggedWorkoutCount === 0) {
+    return {
+      kind: 'session-empty',
+      inputKey: 'coachSessionRationaleEmptyInput',
+      inputDefault:
+        'No sets logged yet — this session is the week’s starting pick, not a wearable.',
+      ruleKey: 'coachSessionRationaleEmptyRule',
+      ruleDefault:
+        'Session pick — week split and gear until a logged set can cite the next one.',
+      effectKey: 'coachSessionRationaleEmptyEffect',
+      effectDefault: 'Log a set and the next why-line will quote it.',
+      compactKey: 'coachSessionRationaleEmptyCompact',
+      compactDefault:
+        'No sets logged yet — week split starting pick. Log one and Coach cites it.',
+    };
+  }
 
   const logCount = hints.loggedWorkoutCount ?? 0;
   const why = dominantSessionWhyKey(session);
@@ -262,7 +283,7 @@ export function buildSessionRationale(
     };
   }
 
-  // Clean start / no prescription signal — stay quiet (no “0 workouts” theater).
+  // No whyKey and no known history — stay quiet (do not invent a count).
   return null;
 }
 

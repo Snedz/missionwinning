@@ -18,6 +18,7 @@
 8c2. `weekRationale.ts` — log-cited why-this-week / adapt rationale (inputs · rule · effect) for Coach inspectability (`.693`)
 8c3. `logCitation.ts` — the log fact under every Coach line, or `no-logs`; quotes a stored set, never infers (`.766`, survey clarity 2.56/5)
 8c4. `weekDiff.ts` — session-count proposal (`N sessions → M`) plus the stored fact; replaces the adapt assertion (H-02 / `.861`)
+8c5. `sessionRationale.ts` — log-cited why-this-session for the boss/next session (inputs · rule · effect), or honest empty; Coach opt-in only (`.932` / reserved `.699` / F-012)
 8d. `coachAdaptReentry.ts` — pure: adapt-banner re-entry is coach day vs freestyle Just Go
 8e. `resolveCoachBossSessionId.ts` — which session gets filled Start on `/coach` (today pending else next); `coachSheetSessions` is that one session for first paint
 8f. `coachChatClient.ts` — HTTP status → copy + stream `[[error:…]]` + slims log/week citations + `readCoachChatStream` + `postCoachChatMessage` (.445/.453/.909)
@@ -53,6 +54,7 @@ Shared client: `src/lib/coachLlmClient.ts` (also used by `coachDailyServer.ts` +
 | `weekDose.test.ts` | Session counts + strength/mixed intent labels |
 | `weekRationale.test.ts` | Log-cited adapt / why-this-week (inputs · rule · effect) + banner/page wiring |
 | `weekDiff.test.ts` | H-02: engine session-count change + citation on the existing banner slot |
+| `sessionRationale.test.ts` | Log-cited why-this-session (or honest empty) + boss-card / grid wiring; why never paywalled |
 
 ## Tests (colocated)
 

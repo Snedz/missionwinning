@@ -34,6 +34,9 @@ test('PlanSessionCard surfaces log-cited session rationale on boss card', () => 
   assert.match(src, /coachRationaleInputLabel|From your logs/);
   assert.match(src, /coachRationaleRuleLabel|Rule applied/);
   assert.match(src, /coachRationaleEffectLabel|Expected effect/);
+  // Honest empty is one compact line — not three invented labels.
+  assert.match(src, /session-empty/);
+  assert.match(src, /compactKey/);
   // Craft: single "From your logs" via input label — no redundant eyebrow key.
   assert.doesNotMatch(src, /coachWhySessionEyebrow/);
   assert.doesNotMatch(src, /className=\{?["']eyebrow/);
@@ -41,4 +44,6 @@ test('PlanSessionCard surfaces log-cited session rationale on boss card', () => 
   assert.match(src, /border-s-primary/);
   assert.doesNotMatch(src, /border-s-\[hsl\(var\(--accent-poster\)\)\]/);
   assert.doesNotMatch(src, /TrainerRail|forceCoach|PRIVATE_MODE/);
+  // Why stays free — never paywall the session line.
+  assert.doesNotMatch(src, /premium|isPremium|usePremium|entitled/);
 });

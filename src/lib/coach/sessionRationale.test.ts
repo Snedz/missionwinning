@@ -33,12 +33,44 @@ describe('buildSessionRationale', () => {
     assert.equal(hasSessionRationale(session({ id: 'a', status: 'done' })), false);
   });
 
-  it('stays quiet on clean start with no whyKey and no logs', () => {
+  it('honest empty on clean start with no whyKey and no logs', () => {
     const r = buildSessionRationale(
       session({ id: 'a', status: 'planned', exercises: [] }),
       { loggedWorkoutCount: 0 }
     );
-    assert.equal(r, null);
+    assert.ok(r);
+    assert.equal(r!.kind, 'session-empty');
+    assert.equal(hasSessionRationale(session({ id: 'a', status: 'planned' }), { loggedWorkoutCount: 0 }), true);
+    assert.match(r!.compactDefault, /No sets logged yet/i);
+    assert.doesNotMatch(r!.compactDefault, /\b0 workouts\b/i);
+    assert.doesNotMatch(r!.compactDefault, /wearable claim|predicted|ACWR/i);
+    assert.doesNotMatch(r!.inputDefault, /recent sets in your logs/i);
+  });
+
+  it('whyKey + zero logs is empty, not a fake log cite', () => {
+    const r = buildSessionRationale(
+      session({
+        id: 'a',
+        status: 'planned',
+        exercises: [ex('coachWhyDeload')],
+      }),
+      { loggedWorkoutCount: 0 }
+    );
+    assert.ok(r);
+    assert.equal(r!.kind, 'session-empty');
+    assert.doesNotMatch(r!.inputDefault, /Recent sets in your logs/i);
+    assert.doesNotMatch(r!.compactDefault, /Deload session/i);
+  });
+
+  it('omitted log count still lets whyKey stories fire (unit kind tests)', () => {
+    const r = buildSessionRationale(
+      session({
+        id: 'a',
+        status: 'planned',
+        exercises: [ex('coachWhyDeload')],
+      })
+    );
+    assert.equal(r!.kind, 'session-deload');
   });
 
   it('swapped session → readiness input + recovery rule + effect', () => {
@@ -167,7 +199,18 @@ describe('sessionRationale wiring', () => {
     const src = readFileSync(join(root, 'components/coach/PlanSessionCard.tsx'), 'utf8');
     assert.match(src, /buildSessionRationale/);
     assert.match(src, /coach-session-rationale/);
+    assert.match(src, /data-rationale-kind/);
+    assert.match(src, /session-empty/);
     assert.match(src, /isPrimaryStart/);
+    assert.doesNotMatch(src, /premium|isPremium|usePremium|entitled/);
+    assert.doesNotMatch(src, /\blocked\b/);
+  });
+
+  it('Train and Today do not mount session rationale', () => {
+    const active = readFileSync(join(root, 'page-components/ActiveWorkoutPage.tsx'), 'utf8');
+    const home = readFileSync(join(root, 'page-components/HomePage.tsx'), 'utf8');
+    assert.doesNotMatch(active, /buildSessionRationale|coach-session-rationale/);
+    assert.doesNotMatch(home, /buildSessionRationale|coach-session-rationale/);
   });
 
   it('CoachPlanSessionGrid passes log hints into session cards', () => {
