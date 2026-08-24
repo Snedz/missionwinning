@@ -73,7 +73,16 @@ test('the deep link opens the section it points into', () => {
 test('the importer still exists and still detects both gym-logger layouts', () => {
   // Guarding a link to a feature that has been deleted is worse than no guard.
   const card = read('src/components/profile/ProfileImportCard.tsx');
+  assert.match(card, /previewWorkoutCsvText/, 'file pick must dry-run before write');
   assert.match(card, /importWorkoutCsvText/, 'the card must still perform an import');
+  assert.match(card, /csvImportConfirm/, 'confirm is required — drop must not write');
+  assert.match(card, /csvImportCancel/, 'cancel must drop the preview');
+  assert.doesNotMatch(card, /getUser/, 'F-017: import never asks for an account');
+  assert.doesNotMatch(
+    card,
+    /importedOnce|oneImport|importCap|importLimit/,
+    'a second file must still be allowed'
+  );
   const strings = read('src/i18n/notificationLocales.ts');
   assert.match(strings, /Import workout CSV/, 'the CTA must stay a workout-CSV import');
   const parser = read('src/lib/workout/importCsv.ts');

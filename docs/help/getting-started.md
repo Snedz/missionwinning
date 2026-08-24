@@ -43,6 +43,8 @@ Sign in with **Google, Apple, Microsoft, Facebook, or email** from Profile (avai
 
 You can use core logging without an account; data stays on your device until you sign in.
 
+Bring an existing workout CSV (English export) on **Account → Import workout CSV**. The app shows a preview — workouts, sets, and any skipped rows — then you confirm. You can import more than one file. No account. Works offline.
+
 ## What's free vs premium
 
 **Always free:** Workout logger, exercise library, basic nutrition log, calculators, history, benchmarks, and most of Today.

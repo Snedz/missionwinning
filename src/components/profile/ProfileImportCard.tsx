@@ -7,9 +7,9 @@
  * the athlete's own history. Export is the same contract in reverse, free
  * forever, no account.
  *
- * Parsing and merging are pure (`lib/workout/importCsv.ts`); this card only owns
- * the file picker, the download click, and the report. Never gated. No extra
- * surfaces — two export buttons here, not a new page.
+ * Parsing and merging are pure (`lib/workout/importCsv.ts`); this card owns
+ * the file picker, a dry-run preview, confirm, and the report. Never gated.
+ * No extra surfaces — two export buttons here, not a new page.
  */
 
 import { reloadAfterRestore } from '@/lib/storage/reloadAfterRestore';
@@ -21,7 +21,12 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { FileDropZone } from '@/components/ui/FileDropZone';
 import { useToast } from '@/hooks/use-toast';
 import { track } from '@/lib/analytics';
-import { downloadWorkoutCsv, importWorkoutCsvText } from '@/lib/workout/importCsvRestore';
+import {
+  downloadWorkoutCsv,
+  importWorkoutCsvText,
+  previewWorkoutCsvText,
+  type CsvImportPreview,
+} from '@/lib/workout/importCsvRestore';
 import type { WorkoutCsvDialect } from '@/lib/workout/importCsv';
 
 export function ProfileImportCard() {
@@ -29,6 +34,8 @@ export function ProfileImportCard() {
   const { toast } = useToast();
   const [showDrop, setShowDrop] = useState(false);
   const [busy, setBusy] = useState(false);
+  const [pendingText, setPendingText] = useState<string | null>(null);
+  const [preview, setPreview] = useState<CsvImportPreview | null>(null);
 
   const handleExport = useCallback(
     (dialect: WorkoutCsvDialect) => {
@@ -58,6 +65,23 @@ export function ProfileImportCard() {
     [t, toast]
   );
 
+  const failRead = useCallback(
+    (error?: string) => {
+      toast({
+        title: t('csvImportFailed', { defaultValue: 'Could not read that file' }),
+        description:
+          error === 'unrecognized_format'
+            ? t('csvImportUnrecognized', {
+                defaultValue:
+                  'Could not recognise that workout file. Drop a workout CSV export, then try again.',
+              })
+            : t('csvImportEmpty', { defaultValue: 'No workout rows found in the file.' }),
+        variant: 'destructive',
+      });
+    },
+    [t, toast]
+  );
+
   const handleFiles = useCallback(
     async (files: File[]) => {
       const file = files[0];
@@ -65,42 +89,66 @@ export function ProfileImportCard() {
       setBusy(true);
       try {
         const text = await file.text();
-        const result = importWorkoutCsvText(text);
-        if (!result.ok) {
-          toast({
-            title: t('csvImportFailed', { defaultValue: 'Could not read that file' }),
-            description:
-              result.error === 'unrecognized_format'
-                ? t('csvImportUnrecognized', {
-                    defaultValue:
-                      'Could not recognise that workout file. Drop a workout CSV export, then try again.',
-                  })
-                : t('csvImportEmpty', { defaultValue: 'No workout rows found in the file.' }),
-            variant: 'destructive',
-          });
+        const next = previewWorkoutCsvText(text);
+        if (!next.ok) {
+          setPreview(null);
+          setPendingText(null);
+          failRead(next.error);
           return;
         }
-        track('csv_imported', {
-          format: result.format ?? 'unknown',
-          added: result.added ?? 0,
-          duplicates: result.duplicates ?? 0,
-        });
-        toast({
-          title: t('csvImportDone', { defaultValue: 'History imported' }),
-          description: t('csvImportDoneDesc', {
-            defaultValue:
-              '{{added}} workouts imported ({{duplicates}} already here). Your PRs, 1RM trends and load band now use them. Reloading…',
-            added: result.added ?? 0,
-            duplicates: result.duplicates ?? 0,
-          }),
-        });
-        reloadAfterRestore();
+        setPendingText(text);
+        setPreview(next);
       } finally {
         setBusy(false);
       }
     },
-    [busy, t, toast]
+    [busy, failRead]
   );
+
+  const handleCancelPreview = useCallback(() => {
+    setPreview(null);
+    setPendingText(null);
+  }, []);
+
+  const handleConfirmImport = useCallback(() => {
+    if (!pendingText || busy) return;
+    setBusy(true);
+    try {
+      const result = importWorkoutCsvText(pendingText);
+      if (!result.ok) {
+        failRead(result.error);
+        return;
+      }
+      track('csv_imported', {
+        format: result.format ?? 'unknown',
+        added: result.added ?? 0,
+        duplicates: result.duplicates ?? 0,
+        skipped: result.skippedRows ?? 0,
+      });
+      const skipped = result.skippedRows ?? 0;
+      toast({
+        title: t('csvImportDone', { defaultValue: 'History imported' }),
+        description:
+          skipped > 0
+            ? t('csvImportDoneSkipped', {
+                defaultValue:
+                  '{{added}} workouts imported ({{duplicates}} already here, {{skipped}} rows skipped). Reloading…',
+                added: result.added ?? 0,
+                duplicates: result.duplicates ?? 0,
+                skipped,
+              })
+            : t('csvImportDoneDesc', {
+                defaultValue:
+                  '{{added}} workouts imported ({{duplicates}} already here). Your PRs, 1RM trends and load band now use them. Reloading…',
+                added: result.added ?? 0,
+                duplicates: result.duplicates ?? 0,
+              }),
+      });
+      reloadAfterRestore();
+    } finally {
+      setBusy(false);
+    }
+  }, [busy, failRead, pendingText, t, toast]);
 
   return (
     <Card>
@@ -176,6 +224,63 @@ export function ProfileImportCard() {
               })
             }
           />
+        ) : null}
+        {preview ? (
+          <div
+            role="region"
+            aria-label={t('csvImportPreviewTitle', { defaultValue: 'Ready to import' })}
+            className="space-y-3 border-2 border-border bg-background p-4"
+            data-csv-import-preview=""
+          >
+            <p className="text-sm font-semibold text-foreground">
+              {t('csvImportPreviewTitle', { defaultValue: 'Ready to import' })}
+            </p>
+            <p className="text-sm text-muted-foreground">
+              {t('csvImportPreviewSummary', {
+                defaultValue: '{{workouts}} workouts · {{sets}} sets',
+                workouts: preview.workouts.length,
+                sets: preview.setCount,
+              })}
+            </p>
+            {preview.skippedRows > 0 ? (
+              <p className="text-sm text-muted-foreground" data-csv-import-skipped="">
+                {t('csvImportPreviewSkipped', {
+                  defaultValue: '{{count}} rows skipped',
+                  count: preview.skippedRows,
+                })}
+              </p>
+            ) : null}
+            {preview.duplicates > 0 ? (
+              <p className="text-sm text-muted-foreground">
+                {t('csvImportPreviewAlready', {
+                  defaultValue: '{{count}} already here',
+                  count: preview.duplicates,
+                })}
+              </p>
+            ) : null}
+            <ul className="space-y-1 text-sm text-foreground">
+              {preview.workouts.slice(0, 5).map((w) => (
+                <li key={w.id}>{w.workoutName}</li>
+              ))}
+            </ul>
+            <div className="flex flex-col gap-2 sm:flex-row">
+              <Button
+                className="min-h-[44px] tap-target"
+                disabled={busy}
+                onClick={handleConfirmImport}
+              >
+                {t('csvImportConfirm', { defaultValue: 'Import' })}
+              </Button>
+              <Button
+                variant="outline"
+                className="min-h-[44px] tap-target"
+                disabled={busy}
+                onClick={handleCancelPreview}
+              >
+                {t('csvImportCancel', { defaultValue: 'Cancel' })}
+              </Button>
+            </div>
+          </div>
         ) : null}
       </CardContent>
     </Card>

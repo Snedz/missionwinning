@@ -1,6 +1,7 @@
 /**
- * The DOM half of CSV history transfer: parse → merge into the persisted store,
- * and export the current log as Strong or the set-table logger CSV (0.1 beta).
+ * The DOM half of CSV history transfer: preview (dry-run) → confirm write
+ * into the persisted store, and export the current log as Strong or the
+ * set-table logger CSV (0.1 beta). File pick never writes.
  *
  * Mirrors `backup.ts`'s restore path deliberately — write the zustand persist
  * payload under `WORKOUT_STORE_KEY` and let the caller refresh, rather than mutating
@@ -20,6 +21,7 @@ import { STORAGE_KEYS } from '@/lib/storage/keys';
 import { localDateKey } from '@/lib/time/localDate';
 import type { UnitsPref } from '@/lib/units';
 import type { CompletedWorkoutLog } from '@/types';
+import { countCompletedLogSets } from '@/lib/workout/completedLogSets';
 import {
   mergeImportedLogs,
   parseWorkoutCsv,
@@ -51,8 +53,79 @@ export type CsvExportResult =
   | { ok: true; csv: string; count: number; dialect: WorkoutCsvDialect }
   | { ok: false; error: 'empty' | 'storage' };
 
+/** Dry-run of a file pick. Never writes. Confirm calls `importWorkoutCsvText`. */
+export interface CsvImportPreview {
+  ok: boolean;
+  error?: CsvRestoreResult['error'];
+  format?: CsvFormat | null;
+  workouts: CompletedWorkoutLog[];
+  skippedRows: number;
+  added: number;
+  duplicates: number;
+  setCount: number;
+}
+
 function displayUnits(): UnitsPref {
   return readRaw(STORAGE_KEYS.units) === 'imperial' ? 'imperial' : 'metric';
+}
+
+function countImportSets(workouts: CompletedWorkoutLog[]): number {
+  return workouts.reduce((n, w) => n + countCompletedLogSets(w), 0);
+}
+
+function emptyPreview(
+  error: CsvRestoreResult['error'],
+  format: CsvFormat | null | undefined,
+  skippedRows = 0
+): CsvImportPreview {
+  return {
+    ok: false,
+    error,
+    format,
+    workouts: [],
+    skippedRows,
+    added: 0,
+    duplicates: 0,
+    setCount: 0,
+  };
+}
+
+function readExistingHistory():
+  | { ok: true; existing: CompletedWorkoutLog[] }
+  | { ok: false; error: 'storage' } {
+  try {
+    const raw = readRaw(WORKOUT_STORE_KEY);
+    const current: PersistedWorkoutState = raw ? (JSON.parse(raw) as PersistedWorkoutState) : {};
+    return { ok: true, existing: current.state?.workoutHistory ?? [] };
+  } catch {
+    return { ok: false, error: 'storage' };
+  }
+}
+
+/** Parse + merge counts against persist. Does not write. */
+export function previewWorkoutCsvText(text: string): CsvImportPreview {
+  const parsed = parseWorkoutCsv(text, displayUnits());
+  if (parsed.error || parsed.format === null) {
+    return emptyPreview(
+      (parsed.error as CsvRestoreResult['error']) ?? 'unrecognized_format',
+      parsed.format,
+      parsed.skippedRows
+    );
+  }
+  const history = readExistingHistory();
+  if (!history.ok) {
+    return emptyPreview('storage', parsed.format, parsed.skippedRows);
+  }
+  const { added, duplicates } = mergeImportedLogs(history.existing, parsed.workouts);
+  return {
+    ok: true,
+    format: parsed.format,
+    workouts: parsed.workouts,
+    skippedRows: parsed.skippedRows,
+    added,
+    duplicates,
+    setCount: countImportSets(parsed.workouts),
+  };
 }
 
 export function importWorkoutCsvText(text: string): CsvRestoreResult {

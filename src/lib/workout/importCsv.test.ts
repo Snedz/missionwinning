@@ -32,6 +32,9 @@ const SET_TABLE_B = fixture('set-table-b-sample.csv');
 const PROGRAM_LOG = fixture('program-log-sample.csv');
 const PROGRAM_LOG_FLAT = fixture('program-log-flatten-sample.csv');
 const MW = fixture('mw-native-sample.csv');
+const STRONG_EMPTY = fixture('strong-empty.csv');
+const STRONG_ONE = fixture('strong-one-workout.csv');
+const STRONG_MALFORMED = fixture('strong-malformed-row.csv');
 
 describe('importCsv', () => {
   it('detects format from the header, not the filename', () => {
@@ -193,6 +196,52 @@ describe('importCsv', () => {
     const { merged, added } = mergeImportedLogs([native], [r.workouts[0]]);
     assert.equal(added, 0);
     assert.equal(merged.find((l) => l.totalVolume === 999_999)?.id, 'native-1');
+  });
+
+  it('an empty Strong file is an error, not a silent wipe', () => {
+    const r = parseWorkoutCsv(STRONG_EMPTY, 'metric', testId);
+    assert.equal(r.workouts.length, 0);
+    assert.ok(r.error, 'empty file must not look like a successful import');
+    assert.equal(r.skippedRows, 0);
+  });
+
+  it('a one-workout Strong fixture keeps the exact sets — never invents', () => {
+    const r = parseWorkoutCsv(STRONG_ONE, 'metric', testId);
+    assert.equal(r.format, 'set-table-b');
+    assert.equal(r.error, undefined);
+    assert.equal(r.workouts.length, 1);
+    assert.equal(r.workouts[0].workoutName, 'Push Day');
+    const bench = r.workouts[0].exercises.find((e) => e.exerciseId === 'bench-press');
+    assert.ok(bench);
+    assert.equal(bench.sets.length, 2, 'exactly the two rows in the file');
+    assert.equal(bench.sets[0].reps, 5);
+    assert.equal(bench.sets[0].weight, 100);
+    assert.equal(bench.sets[1].reps, 5);
+    const setCount = r.workouts[0].exercises.reduce((n, e) => n + e.sets.length, 0);
+    assert.equal(setCount, 2, 'do not pad empty sets');
+  });
+
+  it('a malformed Strong row is skipped and counted; good sets stay', () => {
+    const r = parseWorkoutCsv(STRONG_MALFORMED, 'metric', testId);
+    assert.equal(r.format, 'set-table-b');
+    assert.equal(r.error, undefined);
+    assert.equal(r.skippedRows, 1, 'empty-reps Ghost Press is skipped, not invented');
+    assert.equal(r.workouts.length, 1);
+    const names = r.workouts[0].exercises.map((e) => e.exerciseId);
+    assert.ok(!names.includes('ghost-press'), 'failed row must not invent a set');
+    const bench = r.workouts[0].exercises.find((e) => e.exerciseId === 'bench-press');
+    assert.ok(bench);
+    assert.equal(bench.sets.length, 2);
+  });
+
+  it('two different Strong files both add — no one-import cap', () => {
+    const first = parseWorkoutCsv(STRONG_ONE, 'metric', testId);
+    const second = parseWorkoutCsv(SET_TABLE_B, 'metric', testId);
+    const once = mergeImportedLogs([], first.workouts);
+    assert.equal(once.added, 1);
+    const twice = mergeImportedLogs(once.merged, second.workouts);
+    assert.ok(twice.added >= 1, 'a second file must still add new sessions');
+    assert.equal(twice.merged.length, once.merged.length + twice.added);
   });
 
   it('reports skipped rows instead of swallowing them', () => {
