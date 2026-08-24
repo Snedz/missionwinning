@@ -120,7 +120,7 @@ export const NAV_LINKS = [
 ] as const;
 
 export const CTA = {
-  label: 'Get an invite',
+  label: 'Get notified',
   reassurance: 'One email when Alpha is public. Logger stays free forever.',
 };
 

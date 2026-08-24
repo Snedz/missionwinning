@@ -32,7 +32,7 @@ const { variant = 'primary', terminal = false, class: className = '' } = Astro.p
 
 const gated = import.meta.env.PUBLIC_PRIVATE_MODE !== 'false';
 
-const label = gated ? 'Get an invite' : 'Start free — no account';
+const label = gated ? 'Get notified' : 'Start free — no account';
 // The terminal targets live in ../lib/appLinks — the gated branch used to be
 // `/#invite` against a fragment that exists nowhere, and the flipped branch
 // `/welcome` against a route this build does not emit. See that file for why
