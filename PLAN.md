@@ -1,104 +1,144 @@
-# PLAN.md — Athlete Page authored identity (0.1 / L2-quiet)
+# PLAN.md — Brand copy lock (`.933`)
 
 **Freeze.** Implement only this file. Do not reopen refused items mid-build.
-**Not** [docs/PLAN.md](docs/PLAN.md) (build phases A–I). Product law: [docs/IDENTITY_SOCIAL_PLAN.md](docs/IDENTITY_SOCIAL_PLAN.md).
-**Lane:** Engineering-Web · **Horizon:** W craft window · **Override:** `Excellence-Override: Athlete Page authored identity (no Top 8)`
-**Label:** `2026.07-unified.706` (retagged off `.698` — that number is reserved for #477 gated www honesty).
+**Not** [docs/PLAN.md](docs/PLAN.md) (build phases A–I). Brand law: [docs/brand-guidelines.md](docs/brand-guidelines.md).
+**Lane:** Engineering-Web · copy only · **Horizon:** 0 / W craft window
+**Label:** `2026.07-unified.933` (master is `.930`. `.931` is in-flight F-008 honesty #775. `.932` is reserved why-this-session #774.)
+**Excellence-Override:** Brand copy lock (no Today/Train restyle)
 
 ---
 
-## 1. What this is
+## 0. What this is
 
-`/profile` already exists (S2–S4a). It is **not** a missing page. It is a **settings stack wearing a person's name**: eight always-open editors, a live card that quotes rank/tier, and a shelf titled “Badges & rank” that prints Level · rank · XP plus weekly challenges. That is a scoreboard. IDENTITY_SOCIAL_PLAN §3 asked for an **authored page** (MySpace profile, not MySpace feed). This overnight makes that true.
+The product **name** “Mission Winning” is untouchable. Everything else in the consumer voice pack may change. CoS locked the pack below. This PR implements it.
 
-**L2-quiet:** reachable, not promoted. `/profile` stays off `MOBILE_TAB_HREFS` (C3). No new first-paint tab. More sheet You · desktop rail Toolkit · header chip remain the doors.
+**Hypothesis (confirmed):** the collision is copy keys + teaser + www kicker, not design tokens. Paper / ink / poster red / Archivo / radius 0 stay. No new palette. Kalligator is not the logo.
 
-## 2. What already shipped (do not rebuild)
+## 1. Locked pack (do not invent)
 
-| Piece | Home | Status |
-|---|---|---|
-| Account split | `/account` | `.606` |
-| Call sign + 00–99 + signature | `AthleteIdentityCard` | S2.5 — edit already in `<details>` |
-| Career line | `CareerLineCard` | S2 — counts only |
-| Table picks | `AthleteTableCard` | S3a — still a form |
-| Kits C6 | `pageKits.ts` + CSS | S3b — default kit only until unlocked |
-| Card cosmetics | `ProfileAthleteCard` | `.610` — preview is a rank stub |
-| Share-out PNG | `AthletePageShareCard` | S4a — no public URL |
-| Private note | `AthletePrivateNoteCard` | C5 local free text |
-| Contracts C1–C4, C6, C7 | `domainBoundary.test.ts` | Enforced |
+| Slot | String |
+|------|--------|
+| **Name** | Mission Winning (never shorten to MW in athlete-facing sentences except the monogram) |
+| **Mark** | Ink square / paper MW monogram |
+| **Public line** (hero / kicker) | Log a set. Offline. |
+| **Support line** | No account. No wearable. |
+| **Door pack** | **Free** · **Enter with code** · **Get notified** |
+| **Coach product** | Mission Coach |
+| **Future SKU** | Super Bundle |
+
+**Kill from consumer chrome**
+
+- “Train Anywhere. Win Daily.” as the *company* tagline
+- “Free beta” · “open alpha” · “invite-only” · “private beta” · “we’re live” · “get an invite”
+
+**Keep**
+
+- “Train anywhere” / “Anywhere” as a *scene* line only (SET is not that scene)
+- Alpha 0.1.0 / `APP_PUBLIC_*` on Profile / legal / status bar only — **not** the gated door
+- Civilization / Team Humanity / everything-app **never** on fold 1 or the teaser
+- Visual system unchanged. Today / Train pixels unchanged. No feed. No medical claims.
+
+## 2. Overlap with `.931` honesty (#775)
+
+#775 (draft) puts **Free beta** on `/private` and the cinematic HUD. This pack kills “Free beta” from consumer chrome and sets the door word to **Free**.
+
+**This PR is the source of the new strings.** Do not merge #775’s “Free beta” kicker. Do not fight #775 on layout, forms, or honesty machinery — only the words. If both land, ours win on:
+
+- `gateEyebrow`
+- `gateTitle1` / `gateTitle2`
+- `gateSubtitle`
+- `cinePublicLine` / `cineHeroLead`
+- door HUD ghosts in `05-exquisite.html` + `CinematicWww`
+
+#775 may still land Enter with code / Get notified / locale invite-scrub. Those already match this pack.
 
 ## 3. Defect this PR closes
 
-The first viewport is a **form farm**, not a person. Rank/XP/challenges sit on You as if standing were the point of the page. Two share buttons compete. Editors are always open. The table never looks authored.
+Cold visitors see the retired company line as the first sentence of the website:
+
+- `/private` H1 is still “Train anywhere. / Win daily.”
+- Cinematic kicker + brand guidelines + SEO titles still sell “Train Anywhere. Win Daily.”
+- The door stamps Alpha 0.1.0 in the header/footer (that stamp belongs on Profile / legal / status bar)
+- WWW_NIGHT and `05-exquisite.html` still lead the cover with the retired line
+- Tests *assert* the retired line, so a later agent cannot change it without going red for the wrong reason
 
 ## 4. Ship (only this)
 
-### 4.1 Authored first viewport
+### 4.1 PLAN + brand law
 
-Order on `/profile`:
+- This file.
+- [docs/brand-guidelines.md](docs/brand-guidelines.md) **Name & tagline** + **Voice**:
+  - Tagline → **Log a set. Offline.**
+  - Support → **No account. No wearable.**
+  - Door pack named.
+  - Voice: drop “while private beta is on”; ban the kill-list; keep Train anywhere as a scene line, not the company line.
+  - Consumer hook line under medical claims: logger + Mission Coach, not Train Anywhere / Win Daily.
 
-1. **Identity** — call sign · number · career signature (unchanged hero; edit stays in `<details>`).
-2. **The card** — live preview as a visual artifact (frame/backdrop token classes). Body is career signature / table picks — **never rank, XP, or level**.
-3. **The table** — answered rows as a definition list. Picks editor in `<details>`. Empty: honest invitation, not a void (D8).
-4. **The line** — career counts (unchanged).
-5. **The shelf** — owned badge medallions only. Strip Level / rank / XP / weekly challenges from `ProfileRewardsCard`. Title becomes badges, not “Badges & rank”. Today’s rewards card is unchanged.
-6. **Tools, collapsed** — kit picker, card cosmetics (frame/backdrop/badge slots), private note: `<details>`. Outline Save. **0 red actions**.
-7. **Share page** — one quiet outline action for the C5 page PNG. Card PNG share stays inside the card cosmetics disclosure (two artifacts, one not competing in the fold).
-8. **Account link** — quiet text, not a ninth settings card.
+### 4.2 Gated door (`/private`)
 
-Shell: eyebrow stays “You”. Title is the call sign when set, else “You” — stop duplicating “Your record” on the shell and the line.
+EN first paint is `src/i18n/gateEn.ts` (the only words SSR can show).
 
-### 4.2 Card preview (token composition, not a canvas)
+| Key | From | To |
+|-----|------|----|
+| `gateEyebrow` | Alpha | **Free** |
+| `gateTitle1` | Train anywhere. | **Log a set.** |
+| `gateTitle2` | Win daily. | **Offline.** |
+| `gateSubtitle` | long Train+Coach sentence | **No account. No wearable.** |
+| `cinePublicLine` | Train Anywhere. Win Daily. | **Log a set. Offline.** |
+| `cineHeroHeadline` | Log a set. Offline. | *unchanged* |
+| `cineHeroLead` | Mission Coach plans the week from the log. No wearable. | **No account. No wearable.** |
 
-Add closed CSS classes in `src/index.css` (paper/ink/primary/border only): frame hairline / rule / double-rule / poster; backdrop paper / grid / rule-field / poster-block. `ProfileAthleteCard` applies them from clamped cosmetics. No hex, no user CSS, no second typeface (C6 spirit). Grid uses token-coloured rules, not a decorative gradient language.
+`PrivateTeaserClient`: remove `APP_PUBLIC_VERSION` / `APP_PUBLIC_PRODUCT_VERSION` from the door header and footer. Keep the MW monogram + “Mission Winning”. Footer may keep `gateFooterTagline` (“free core forever”) without the Alpha stamp.
 
-### 4.3 Share PNG is not a scoreboard
+`gatedWwwHonesty.ts`: `gateEyebrow` → **Free**. `gateSubtitle` → support line. Comments must not say the door wording is Alpha 0.1.0.
 
-`buildAthletePageShareData`: drop **Rank** and **Tier** from `stats`. Keep Sessions / Days when positive, kit pick if not default, table/badge provenance line. DTO may still carry `rankTitle` for S4b; this surface must not print it.
+Locale overlays that restore “Free beta” / invite-only / get-an-invite on door keys (`gateEyebrow`, waitlist ask-for-invite) inherit EN or say **Free** / **Get notified**. Packs `th/ko/ja/vi` already overlay `gateEyebrow: "Free beta"` — those four keys change.
 
-### 4.4 Sign-in is Account, not You
+### 4.3 Landing / cinematic / www kickers
 
-`HeaderAuthChip` “Sign in” → `/account`. You is authored identity; dumping sign-in onto it re-makes `/profile` into settings. Do not restyle Train. Do not add `/profile` to the tab bar.
+- `CinematicWww.tsx` defaults match §4.2. HUD ghost uses `gateEyebrow` → **Free**. Anywhere kicker stays **Anywhere**.
+- EN `landingHeroTitle1` / `landingHeroTitle2` (leftover company H1, not rendered on today’s LandingPage) → **Log a set.** / **Offline.** Same for `firstClassLocales` EN only.
+- `sites/www` `META.title` drops Win Daily as the company line.
+- SEO chrome that *is* the company title: `app/layout.tsx`, `app/page.tsx`, `app/manifest.ts`, `app/opengraph-image.tsx`, `src/lib/seoMetadata.ts`, `src/lib/routeMetadata.ts` `landing` → **Log a set. Offline.** (with “Mission Winning —” where a document title needs the name).
+- `/press` tagline copy button matches brand-guidelines.
+- `README.md` company line (not the constitution sentence) → public line.
+- `CONTEXT.md` “What this is” kicker → public line.
+- Email footers that print the company line (`launch-day`, `beta-invite`, `waitlist-confirm`) → public line.
+- `docs/SOCIAL_LAUNCH.md`: it already bans invite-only / Free beta. Add the locked public + support lines so the kit cannot drift back to Win Daily as the company line.
 
-### 4.5 Guards (discover, then falsify)
+### 4.4 WWW_NIGHT + 05-exquisite
 
-New `src/lib/identity/athletePageAuthored.test.ts`:
+- Public line / narrative / SET cover kicker: **Log a set. Offline.** SET `<h1>` stays **Log a set. Offline.**
+- Support / SET lede: **No account. No wearable.**
+- Copy pack / HUD ghosts / door kicker: **Free** (not Alpha, not Free beta).
+- Scene 2 kicker stays **Anywhere**. WEEK kicker stays **Mission Coach**.
+- Notes / constitution table: do not lead with Train Anywhere. Win Daily. as the company line.
+- Door lede must not say “when the beta opens”.
 
-- Discover Athlete Page surface files (page + `Athlete*` + `ProfileAthleteCard` + `ProfileRewardsCard` + `CareerLineCard`). Fail on Top 8 / friend rank / DM / feed / follower-count copy.
-- `ProfileRewardsCard` source must not render `xpTotal`, `challengesComplete`, or `rewardProfileRank`.
-- `ProfileAthleteCard` preview must not interpolate rank/XP into the visible body.
-- Share builder: no `label: 'Rank'` / `'Tier'` stats.
-- `MOBILE_TAB_HREFS` still excludes `/profile` (already C3; this test names the quiet-path rule so a tab promotion fails here too).
+### 4.5 Tests (write / run before claiming done)
 
-Rewrite `profileChallengesLine.test.ts`: challenges line stays on **Today** (`TodayRewardsCard`), not on You.
+Extend existing honesty tests — do not invent a parallel denylist.
 
-Expand `athleteLocales.test.ts` SOURCES to the Athlete Page components this catalogue actually serves (table, kit, share, note, card) — the current list is four files and cannot see a new key.
+1. **Door pack:** EN `gateEyebrow === 'Free'`, waitlist **Get notified**, access **Enter with code**.
+2. **Public + support:** `cinePublicLine` and `cineHeroHeadline` are **Log a set. Offline.** `cineHeroLead` / `gateSubtitle` are **No account. No wearable.**
+3. **Banned on door / cinematic / teaser / exquisite / brand Name & tagline:** `invite-only` · `get an invite` · `private beta` · `we're live` · `Free beta` · `Train Anywhere. Win Daily.`
+4. **05-exquisite:** HUD / door kicker **Free**; SET h1 still **Log a set. Offline.**; no Win Daily-as-tagline; Anywhere kicker still present.
+5. Falsify: a mutant that puts “Train Anywhere. Win Daily.” back on `cinePublicLine` or “Free beta” on `gateEyebrow` must go red.
 
-### 4.6 Docs / i18n / ship protocol
+Discover files rather than hoping the list is closed: keep the existing `SURFACE_FILES` list and add any file this PR touches that can paint the door or the company line (`gateEn.ts`, `gatedWwwHonesty.ts`, `brand-guidelines.md` Name & tagline). A comment that *names* a banned phrase in order to forbid it may stay.
 
-- Keys in `src/i18n/athleteLocales.ts` (+ card/shelf strings already in `rewardsLocales.ts`). `defaultValue` matches EN. Beachhead es/pt for new lines; others inherit EN.
-- Help: getting-started sign-in points at Account, not Profile.
-- `src/lib/identity/INDEX.md` + `src/i18n/INDEX.md` (athleteLocales row).
-- Hard rule 5 on the **implementation** commit: `APP_BUILD_LABEL` `.706`, `LOG.md` (rotate oldest `.669` — live log is already 15), `CONTEXT.md` `## Now` (rotate oldest ship bullet to stay ≤25).
-- Commit trailer: `Excellence-Override: Athlete Page authored identity (no Top 8)`.
-- Draft PR. At most one preview.
+Do **not** ban “Train anywhere” on the Anywhere scene. Do **not** ban “Alpha” / `APP_PUBLIC_*` on Profile, legal, or `PublicStatusBar`.
 
-## 5. Refused (named so they cannot sneak in)
+## 5. Non-goals (refuse)
 
-- Top 8 / any friend ranking
-- Feed, comments, likes on a session, DMs, follower counts
-- Public URL / S4b projection host
-- Squad / S5
-- User CSS/HTML, free text on share or public DTO (C5)
-- Profile / call sign step in I-Day (C7)
-- New first-paint tab / promoting You onto `MOBILE_TAB_HREFS`
-- N1 restyle of Train / `/active`
-- `PRIVATE_MODE` flip
-- Invented traction
-- Planner or logger reading standing (C1/C2)
-- XP / rank / challenges as the Athlete Page’s job (Today and `/leaderboard` keep theirs)
-- Purchasable identity, completeness meters, streak-loss copy
+- Restyle Today or Train. New feed. New palette. New typeface. New radius.
+- Rename Mission Winning. Invent a third brand. Make Kalligator the logo.
+- Flip `PRIVATE_MODE`. Flip Public GitHub. Promote. Preview (`[skip vercel]`).
+- Medical claims. Civilization / Team Humanity / everything-app on fold 1 or the teaser.
+- Fight #775 on structure. Steal #774 why-line.
+- Locale-body farms beyond the door keys that would restore banned English.
+- Android / Expo.
 
-## 6. Done looks like
+## 6. Ship protocol
 
-An athlete opens **More → You** and sees a page that is **theirs**: name, number, a card that looks like a card, a table of answers, honest counts, badges they earned. Editors are there when wanted. Nothing ranks anyone else. Nothing on Train changed. No new tab.
+Same commit as the words: `APP_BUILD_LABEL` → `2026.07-unified.933` · `LOG.md` heading ending `(.933)` · `CONTEXT.md` `## Now` names the full label. Rotate LOG (`.916`) and the oldest *shipped* Now bullet (`.917`) so budgets hold. `[skip vercel]` on every commit.
