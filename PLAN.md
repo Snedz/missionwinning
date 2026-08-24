@@ -137,6 +137,7 @@ Extend existing honesty / teaser / consent tests. Falsify each new claim.
 6. **Probe does not withhold the page:** no `if (sessionUnlocking) return` before the four scenes.
 7. **First-paint floor:** `CinematicWww` + door `t()` defaults match `gateEn.ts`.
 8. **Intel beats stay on existing scenes:** logger TARGET `30s` + Last/Next/Why; later line History you own + Today is not a Feed; door foot 30s-in-the-browser; dated Never on the door strip. No `/history` `/never` `/feed`. No traction numerals.
+9. **Twelve design-polish nits stay source-locked:** Free ghosts, one SET line, HUD mark only, compact 1440, phone 100svh, ink Anywhere (no JPEG), three week beats, paper-strip door, one poster red, JS-off fallback. OG wedge. No Alpha-on-the-door.
 
 ## 5. Non-goals (refuse)
 

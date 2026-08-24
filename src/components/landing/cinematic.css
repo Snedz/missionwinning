@@ -335,11 +335,6 @@
     padding-bottom: 20px;
   }
 
-  .www-cine-set .www-cine-mark img {
-    width: 64px;
-    height: 64px;
-  }
-
   .www-cine-set .display-hero {
     font-size: clamp(2.5rem, 4vw, 3.25rem);
   }
@@ -589,7 +584,7 @@
   min-height: 52px;
   padding: 10px 14px;
   border: 2px solid hsl(var(--border));
-  background: hsl(var(--card));
+  background: hsl(var(--background));
   color: hsl(var(--foreground));
   border-radius: 0;
 }

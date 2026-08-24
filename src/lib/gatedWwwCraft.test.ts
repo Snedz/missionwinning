@@ -172,3 +172,80 @@ test('intel beats stay on existing scenes — no new routes, no traction', () =>
   assert.doesNotMatch(home + landing, /app\/feed|href=["']\/feed["']/);
   assert.doesNotMatch(cine, /id="never"|id="history"|id="thirty"/);
 });
+
+test('design polish nits stay source-locked — cage, not a Comp B recut', () => {
+  const cine = read('src/components/landing/CinematicWww.tsx');
+  const css = read('src/components/landing/cinematic.css');
+  const teaser = read('app/private/PrivateTeaserClient.tsx');
+  const logger = read('src/components/landing/CinematicLogger.tsx');
+  const layout = read('app/layout.tsx');
+  const notify = read('src/components/public/LaunchNotifyForm.tsx');
+  const set = cine.slice(cine.indexOf('id="set"'), cine.indexOf('id="anywhere"'));
+  const anywhere = cine.slice(cine.indexOf('id="anywhere"'), cine.indexOf('id="week"'));
+  const week = cine.slice(cine.indexOf('id="week"'), cine.indexOf('id="door"'));
+  const door = cine.slice(cine.indexOf('id="door"'));
+  const nav = css.slice(css.indexOf('.www-cine-nav {'), css.indexOf('.www-cine-nav a'));
+
+  assert.equal(GATE_EN.gateEyebrow, 'Free');
+  assert.doesNotMatch(GATE_EN.gateEyebrow, /beta/i);
+  assert.equal(GATE_EN.cineHeroHeadline, 'Log a set. Offline.');
+  assert.equal(GATE_EN.cineHeroLead, 'No account. No wearable.');
+  assert.equal(GATE_EN.cineAnywhereKicker, 'Anywhere');
+  assert.equal(GATE_EN.gateWaitlistTitle, 'Get notified');
+  assert.equal(GATE_EN.gateAccessSummary, 'Enter with code');
+  assert.doesNotMatch(set, /cineAnywhere|Train Anywhere/);
+  assert.match(anywhere, /cineAnywhereKicker/);
+
+  assert.match(css, /min-width:\s*1100px\) and \(max-height:\s*960px/);
+
+  assert.equal(GATE_EN.cineSetEyebrow, 'Set');
+  assert.match(set, /eyebrow-live www-cine-kicker/);
+  assert.match(set, /cineHeroHeadline/);
+  assert.doesNotMatch(set, /cinePublicLine/);
+
+  assert.doesNotMatch(set, /logo-icon|Mark /);
+  assert.match(cine, /<Mark size=\{28\} \/>/);
+  assert.match(door, /<Mark size=\{72\} \/>/);
+  assert.doesNotMatch(css, /\.www-cine-set \.www-cine-mark img/);
+
+  assert.match(css, /\.www-cine-demo \{\s*display:\s*none;/);
+
+  assert.match(css, /\.www-cine-scene \{[\s\S]*?min-height:\s*100svh/);
+  assert.doesNotMatch(css, /max-width:\s*760px[\s\S]*www-cine-setrow[\s\S]*min-height:\s*64px/);
+
+  assert.doesNotMatch(cine, /\.(jpe?g|webp|avif)/i);
+  assert.match(css, /\.www-cine-on-photo \{[\s\S]*?max-width:\s*520px/);
+  assert.match(css, /max-width:\s*760px[\s\S]*?\.www-cine-on-photo/);
+  assert.match(css, /\.www-cine-anywhere \{[\s\S]*?background:\s*hsl\(var\(--foreground\)\)/);
+
+  assert.match(cine, /\{ k: 'Miss\.'/);
+  assert.match(cine, /\{ k: 'Travel\.'/);
+  assert.match(cine, /\{ k: 'Band\.'/);
+  assert.match(week, /www-cine-breaks/);
+  assert.match(week, /href=\{doorHref\}/);
+  assert.match(cine, /mode === 'gate' \? '\/private#door'/);
+
+  assert.match(door, /www-cine-strip/);
+  assert.match(teaser, /<details/);
+  assert.doesNotMatch(teaser, /primary-action|gate-btn-primary/);
+  assert.match(notify, /<button type="submit" disabled=\{busy \|\| !email\} className="www-cine-ghost">/);
+  assert.match(css, /\.www-cine-field input \{[\s\S]*?background:\s*hsl\(var\(--background\)\)/);
+
+  assert.match(nav, /position:\s*fixed/);
+  assert.match(nav, /background:\s*transparent/);
+  assert.match(nav, /border:\s*0/);
+  assert.match(nav, /mix-blend-mode:\s*difference/);
+  assert.doesNotMatch(cine, />Mission Winning</);
+
+  assert.match(logger, /primary-action/);
+  assert.doesNotMatch(set + anywhere + week, /primary-action|accent-poster/);
+  assert.match(css, /\.www-cine-ghost \{[\s\S]*?text-align:\s*left/);
+
+  assert.match(cine, /CinematicLoggerFallback/);
+  assert.doesNotMatch(css + cine, /D-DIN|SpaceX black|Mars red|#000000/i);
+  assert.doesNotMatch(cine, /testimonial|nine-band/i);
+
+  assert.doesNotMatch(teaser, /gateFooterTagline/);
+  assert.match(layout, /Log a set\. Offline\. No account\. No wearable\./);
+  assert.doesNotMatch(layout, /nutrition|mobility|mind, and learning/i);
+});
