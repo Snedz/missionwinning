@@ -21,7 +21,7 @@
 
 ## Sync not working across devices
 
-1. Sign in with the **same provider/email** on both devices.
+1. Sign in with the **same provider/email** on both devices. An open Train session follows that account — there is no Force Sync button.
 2. Wait for network — sync runs after login and on key actions.
 3. Pull to refresh or revisit Today after a minute.
 

@@ -18,6 +18,7 @@ Android already had sync v2 (`client_id`, `revision`, tombstones — see
 |------|---------|
 | `outbox.ts` | Durable queue: persist → retry with backoff → ack. No handler imports. |
 | `workoutSync.ts` | The `workout.upsert` handler; read-by-`client_id` then update/insert |
+| `openSessionSync.ts` | The `workout.active` handler; `profiles.open_session` latest-state (`.958`) |
 
 ## Kinds and their handlers
 
@@ -27,6 +28,7 @@ while the type claims support. Registration happens in `src/hooks/useOutboxDrain
 | Kind | Handler | dedupeKey | Notes |
 |------|---------|-----------|-------|
 | `workout.upsert` | `sync/workoutSync.ts` | `clientId` | Per-entity — sessions must not collapse |
+| `workout.active` | `sync/openSessionSync.ts` | one per kind | Latest-state open Train session (`.958`). Handler uses the snapshot. Signed out / missing column ACK. |
 | `coach.plan` | `lib/coachSync.ts` | one per kind | Latest-state; handler re-reads storage |
 | `journey.state` | `lib/journeySync.ts` | one per kind | Latest-state; handler re-reads storage |
 | `leaderboard.push` | `lib/leaderboardSync.ts` | one per kind | Snapshot computed at enqueue — queuing a whole history would bloat storage. **Not enqueued at all while the `leaderboard` surface is parked** |

@@ -11,7 +11,7 @@
 | `useFuelPlan.ts` | `FuelMealPlanCard`, Nutrition | `src/lib/fuelCoach/*`, `/api/premium/recipes` |
 | `useDailyCoachInsight.ts` | `CoachInsightCard`, Today | `/api/coach/daily-insight`, `score.ts` |
 | `useMissionJourney.ts` | Journey components, guards | `missionJourney.ts` |
-| `useJourneySync.ts` | `AppLayout`, Profile | `journeySync.ts`, Supabase. `SIGNED_OUT` wipes only after `markExplicitSignOut` (`.941`). `SIGNED_IN` adopts guest history and calls `syncCurrentHistoryToCloud` — no Force Sync tap (`.949`) |
+| `useJourneySync.ts` | `AppLayout`, Profile | `journeySync.ts`, Supabase. `SIGNED_OUT` wipes only after `markExplicitSignOut` (`.941`). `SIGNED_IN` adopts guest history and calls `syncCurrentHistoryToCloud` — no Force Sync tap (`.949`). Also `reconcileOpenSession` on sign-in / visible (`.958`) |
 | `useOutboxDrain.ts` | `JourneySyncInner` (idle) | `lib/sync/outbox.ts` — drains on mount / online / visible; registers `week.logged` |
 | `usePremium.ts` | Gated UI, Bundle | `/api/premium/status` |
 | `useUnits.ts` | Workout, calculators | `units.ts`, localStorage |

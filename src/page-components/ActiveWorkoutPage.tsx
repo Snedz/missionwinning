@@ -15,6 +15,7 @@ import { useTranslation } from 'react-i18next';
 import { toast } from '@/hooks/use-toast';
 import { ensureFullExerciseCatalog, getExerciseById } from '@/data/exercises';
 import { useWorkoutStore, hasLoggedWork } from '@/store/workoutStore';
+import { reconcileOpenSession } from '@/lib/workout/reconcileOpenSession';
 import {
   parseSeoExerciseParam,
   seoExerciseSessionTemplate,
@@ -138,10 +139,19 @@ export function ActiveWorkoutPage() {
   const startRestTimer = useWorkoutStore((s) => s.startRestTimer);
   const workoutHistory = useWorkoutStore((s) => s.workoutHistory);
   const hasHydrated = useWorkoutStore((s) => s.hasHydrated);
+  const pendingRemoteOpenSession = useWorkoutStore((s) => s.pendingRemoteOpenSession);
+  const acceptPendingRemoteOpenSession = useWorkoutStore(
+    (s) => s.acceptPendingRemoteOpenSession
+  );
 
   useEffect(() => {
     void ensureFullExerciseCatalog();
   }, []);
+
+  useEffect(() => {
+    if (!hasHydrated) return;
+    void reconcileOpenSession();
+  }, [hasHydrated]);
 
   /**
    * Flow-2 — SEO `/exercises/[id]` lands here with `?exercise=`. After persist
@@ -659,6 +669,9 @@ export function ActiveWorkoutPage() {
         onOpenPlateCalc={() => setPlateCalcOpen(true)}
         onDiscard={discardWorkout}
         onFinish={handleComplete}
+        onTakeOtherSession={
+          pendingRemoteOpenSession ? acceptPendingRemoteOpenSession : undefined
+        }
       />
 
       {!activeSessionHasExercises(activeWorkout.exercises) ? (

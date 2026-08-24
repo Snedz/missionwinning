@@ -33,8 +33,15 @@ import { track } from "@/lib/analytics";
 import { recordWorkingSetLogged } from "@/lib/week4Logger";
 import { setActiveWorkoutFlag } from "@/lib/workout/activeWorkoutPulse";
 import { enqueueWorkoutUpsert } from "@/lib/sync/workoutSync";
+import { enqueueOpenSession } from "@/lib/sync/openSessionSync";
 import { flush as flushOutbox } from "@/lib/sync/outbox";
 import { newClientId } from "@/lib/workout/clientId";
+import {
+  snapshotFromActive,
+  tombstoneFromActive,
+  touchOpenSession,
+  type OpenSessionSnapshot,
+} from "@/lib/workout/openSessionContinuity";
 import { applyGarageSwapToActive, garageEquipmentChanged } from "@/lib/workout/garageSwap";
 import { getExerciseById } from "@/data/exercises";
 import { readRaw, writeRaw } from "@/lib/storage/safeStorage";
@@ -132,6 +139,13 @@ interface WorkoutState {
   getRecentHistory: (limit?: number) => CompletedWorkoutLog[];
   loadFromCloud: () => Promise<void>;
   syncCurrentHistoryToCloud: () => Promise<void>;
+  /** Other-device open session waiting on confirm (memory only — `.958`). */
+  pendingRemoteOpenSession: OpenSessionSnapshot | null;
+  setPendingRemoteOpenSession: (remote: OpenSessionSnapshot | null) => void;
+  restoreActiveWorkout: (active: ActiveWorkout) => void;
+  acceptPendingRemoteOpenSession: () => void;
+  /** Stamp `clientId` once on a pre-`.958` persist. Never mint a second id. */
+  ensureOpenSessionIdentity: () => void;
 }
 
 import { templateSetsToLogged } from '@/lib/workout/workoutTemplate';
@@ -162,6 +176,7 @@ export const useWorkoutStore = create<WorkoutState>()(
       restExerciseId: null,
       elapsedSeconds: 0,
       hasHydrated: false,
+      pendingRemoteOpenSession: null,
 
       addSavedWorkout: (workout) => {
         const newWorkout: SavedWorkout = {
@@ -184,7 +199,7 @@ export const useWorkoutStore = create<WorkoutState>()(
         const units = readRaw(STORAGE_KEYS.units) === 'imperial' ? 'imperial' : 'metric';
         const history = get().workoutHistory;
         const resolved = materializeTemplates(exercises, history, units);
-        const active: ActiveWorkout = {
+        const active: ActiveWorkout = touchOpenSession({
           workoutId,
           workoutName: name,
           startedAt: new Date().toISOString(),
@@ -199,7 +214,7 @@ export const useWorkoutStore = create<WorkoutState>()(
               history
             )
           ),
-        };
+        });
         syncActiveFlag(active);
         set({
           activeWorkout: active,
@@ -208,15 +223,17 @@ export const useWorkoutStore = create<WorkoutState>()(
           restTimerActive: false,
           restTimerInitialSeconds: FALLBACK_REST_SECONDS,
           restExerciseId: null,
+          pendingRemoteOpenSession: null,
         });
+        enqueueOpenSession(snapshotFromActive(active));
       },
 
       startEmptyWorkout: () => {
-        const active = {
+        const active = touchOpenSession({
           workoutName: "Quick Workout",
           startedAt: new Date().toISOString(),
           exercises: [] as ActiveWorkout['exercises'],
-        };
+        });
         syncActiveFlag(active);
         set({
           activeWorkout: active,
@@ -225,10 +242,13 @@ export const useWorkoutStore = create<WorkoutState>()(
           restTimerActive: false,
           restTimerInitialSeconds: FALLBACK_REST_SECONDS,
           restExerciseId: null,
+          pendingRemoteOpenSession: null,
         });
+        enqueueOpenSession(snapshotFromActive(active));
       },
 
       cancelActiveWorkout: () => {
+        const tomb = tombstoneFromActive(get().activeWorkout);
         syncActiveFlag(null);
         set({
           activeWorkout: null,
@@ -237,7 +257,9 @@ export const useWorkoutStore = create<WorkoutState>()(
           restTimerActive: false,
           restTimerInitialSeconds: FALLBACK_REST_SECONDS,
           restExerciseId: null,
+          pendingRemoteOpenSession: null,
         });
+        if (tomb) enqueueOpenSession(tomb);
       },
 
       completeActiveWorkout: () => {
@@ -292,6 +314,7 @@ export const useWorkoutStore = create<WorkoutState>()(
 
         const isFirstWorkout = get().workoutHistory.length === 0;
 
+        const tomb = tombstoneFromActive(activeWorkout);
         syncActiveFlag(null);
         set((s) => ({
           workoutHistory: [log, ...s.workoutHistory],
@@ -301,6 +324,7 @@ export const useWorkoutStore = create<WorkoutState>()(
           restTimerActive: false,
           restTimerInitialSeconds: FALLBACK_REST_SECONDS,
           restExerciseId: null,
+          pendingRemoteOpenSession: null,
         }));
 
         recordWorkoutCompleted(log);
@@ -315,6 +339,7 @@ export const useWorkoutStore = create<WorkoutState>()(
         });
 
         // Cloud write first so a following leaderboard flush can see this session.
+        if (tomb) enqueueOpenSession(tomb);
         enqueueWorkoutUpsert(log);
 
         const savedCount = get().savedWorkouts.length;
@@ -327,7 +352,7 @@ export const useWorkoutStore = create<WorkoutState>()(
         set((s) => {
           if (!s.activeWorkout) return s;
           return {
-            activeWorkout: {
+            activeWorkout: touchOpenSession({
               ...s.activeWorkout,
               exercises: [
                 ...s.activeWorkout.exercises,
@@ -340,9 +365,10 @@ export const useWorkoutStore = create<WorkoutState>()(
                   s.workoutHistory
                 ),
               ],
-            },
+            }),
           };
         });
+        enqueueOpenSession(snapshotFromActive(get().activeWorkout));
       },
 
       logSet: (exerciseIndex, setIndex, reps, weight, rpe, isPr) => {
@@ -377,9 +403,10 @@ export const useWorkoutStore = create<WorkoutState>()(
           exercises[exerciseIndex] = ex;
           if (lastTempo) rememberLastTempo(ex.exerciseId, lastTempo);
           return {
-            activeWorkout: { ...s.activeWorkout, exercises },
+            activeWorkout: touchOpenSession({ ...s.activeWorkout, exercises }),
           };
         });
+        enqueueOpenSession(snapshotFromActive(get().activeWorkout));
 
         if (isFirstEverSet) {
           const startedAt = readRaw(STORAGE_KEYS.journeyStarted);
@@ -782,6 +809,50 @@ export const useWorkoutStore = create<WorkoutState>()(
         }
       },
 
+      setPendingRemoteOpenSession: (remote) => {
+        set({ pendingRemoteOpenSession: remote });
+      },
+
+      restoreActiveWorkout: (active) => {
+        const next = {
+          ...active,
+          clientId: active.clientId ?? newClientId(),
+          revision: active.revision ?? 1,
+          updatedAt: active.updatedAt ?? new Date().toISOString(),
+        };
+        syncActiveFlag(next);
+        set({
+          activeWorkout: next,
+          elapsedSeconds: elapsedSecondsFrom(next.startedAt),
+          restSecondsRemaining: 0,
+          restTimerActive: false,
+          restTimerInitialSeconds: FALLBACK_REST_SECONDS,
+          restExerciseId: null,
+          pendingRemoteOpenSession: null,
+        });
+      },
+
+      acceptPendingRemoteOpenSession: () => {
+        const remote = get().pendingRemoteOpenSession;
+        if (!remote?.workout) return;
+        const adopted: ActiveWorkout = {
+          workoutId: remote.workout.workoutId,
+          workoutName: remote.workout.workoutName,
+          startedAt: remote.workout.startedAt,
+          exercises: remote.workout.exercises,
+          clientId: remote.clientId,
+          revision: remote.revision,
+          updatedAt: remote.updatedAt,
+        };
+        get().restoreActiveWorkout(adopted);
+      },
+
+      ensureOpenSessionIdentity: () => {
+        const active = get().activeWorkout;
+        if (!active || active.clientId) return;
+        set({ activeWorkout: touchOpenSession(active) });
+      },
+
       syncCurrentHistoryToCloud: async () => {
         const user = await getUser();
         if (!user) return;
@@ -792,6 +863,8 @@ export const useWorkoutStore = create<WorkoutState>()(
           if (log.id.startsWith('cloud-')) continue;
           enqueueWorkoutUpsert(log);
         }
+        const open = snapshotFromActive(get().activeWorkout);
+        if (open) enqueueOpenSession(open);
         await flushOutbox();
       },
     }),
@@ -859,6 +932,14 @@ export const useWorkoutStore = create<WorkoutState>()(
          */
         if (state && !isUsableActiveWorkout(state.activeWorkout)) {
           state.activeWorkout = null;
+        }
+        if (
+          state?.activeWorkout &&
+          isUsableActiveWorkout(state.activeWorkout) &&
+          !state.activeWorkout.clientId
+        ) {
+          const stamped = touchOpenSession(state.activeWorkout);
+          state.activeWorkout = stamped;
         }
         syncActiveFlag(state?.activeWorkout ?? null);
         // NOTE: with a synchronous storage (i.e. every browser) zustand runs this

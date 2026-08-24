@@ -138,6 +138,7 @@ const ATHLETE_EN: Record<string, string> = {
   accountUnderTheHoodNone: 'No working set logged yet',
   accountUnderTheHoodYes: 'yes',
   accountUnderTheHoodNo: 'no',
+  offlineQueueOpenSession: 'Open session',
   offlineQueueWeekLogged: 'Weekly log mark',
   offlineQueueSocialMessage: 'Messenger note',
   offlineQueueSocialPresence: 'Messenger status',

@@ -6,7 +6,10 @@
 Yes — the logger, library, history, and basic nutrition are free worldwide, forever, with no account and no card. Super Bundle is optional depth (one SKU). There is no 7-day trial and no à la carte pillar prices.
 
 **Do I need an account?**  
-No for basic logging. Sign in to sync across devices, use Coach premium, and join school classes. A **Mission ID** (`#N`) is issued when you sign in — an early number, not a rank. Offline logging never requires one.
+No for basic logging. Sign in to sync across devices, use Coach premium, and join school classes. A **Mission ID** (`#N`) is issued when you sign in — an early number, not a rank. Offline logging never requires one. Signed in, a session you start on a laptop continues on your phone — same diary, no Force Sync button.
+
+**Can I start on my laptop and finish on my phone?**  
+Yes when you are signed in on both. Open Train on the phone — it is the same in-progress session. A guest log stays on that device until you sign in. There is no public workout link and no wearable required.
 
 **What is a Mission ID?**  
 A sequential number for signed-in accounts, shown on You (Athlete Page) and Account as `#N`. It is not a leaderboard place, not XP, and not the 00–99 call-sign. Guests do not have one.

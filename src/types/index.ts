@@ -115,6 +115,14 @@ export interface ActiveWorkout {
   startedAt: string;
   exercises: ActiveExerciseLog[];
   /**
+   * Stable id for the *open* session across surfaces (`.958`).
+   * Minted at Start. Desk → gym is the same `clientId`.
+   */
+  clientId?: string;
+  /** Monotonic open-session revision; highest wins on reconcile. */
+  revision?: number;
+  updatedAt?: string;
+  /**
    * Session-level field note, jotted in the rest window ("knee twinge set 3").
    * Journal content in the Day One sense: at finish it becomes fragments in the
    * device-only journal — it is deliberately NOT copied onto CompletedWorkoutLog,

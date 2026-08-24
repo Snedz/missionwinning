@@ -23,7 +23,6 @@ test('workoutStore', async (t) => {
   // Imported dynamically so the localStorage stub above is in place first —
   // zustand's persist middleware reads storage while the module initialises.
   const { useWorkoutStore } = await import('@/store/workoutStore');
-  const outbox = await import('@/lib/sync/outbox');
   const { STORAGE_KEYS } = await import('@/lib/storage/keys');
   const { mergeWorkoutHistoriesDetailed: mergeDetailed } = await import('@/lib/workout/workoutMerge');
 
@@ -141,7 +140,10 @@ test('workoutStore', async (t) => {
     store.logSet(0, 0, 10, 50);
     useWorkoutStore.getState().completeActiveWorkout();
 
-    assert.equal(outbox.getState().pending, 1, 'the cloud write must outlive this tab');
+    const upserts = JSON.parse(storageMap.get(STORAGE_KEYS.outbox) as string).filter(
+      (op: { kind: string }) => op.kind === 'workout.upsert'
+    );
+    assert.equal(upserts.length, 1, 'the history write must outlive this tab');
   });
 
   await t.test('two sessions queue two ops — they must not collapse', () => {
@@ -155,7 +157,10 @@ test('workoutStore', async (t) => {
     useWorkoutStore.getState().logSet(0, 0, 8, 0);
     useWorkoutStore.getState().completeActiveWorkout();
 
-    assert.equal(outbox.getState().pending, 2);
+    const upserts = JSON.parse(storageMap.get(STORAGE_KEYS.outbox) as string).filter(
+      (op: { kind: string }) => op.kind === 'workout.upsert'
+    );
+    assert.equal(upserts.length, 2, 'two completed logs must not collapse');
   });
 
   // Note: zustand's persist writes via `window.localStorage`, which does not exist
@@ -168,7 +173,9 @@ test('workoutStore', async (t) => {
     useWorkoutStore.getState().logSet(0, 1, 8, 55);
     const log = useWorkoutStore.getState().completeActiveWorkout();
 
-    const queued = JSON.parse(storageMap.get(STORAGE_KEYS.outbox) as string);
+    const queued = JSON.parse(storageMap.get(STORAGE_KEYS.outbox) as string).filter(
+      (op: { kind: string }) => op.kind === 'workout.upsert'
+    );
     assert.equal(queued.length, 1);
     assert.equal(queued[0].kind, 'workout.upsert');
     assert.equal(queued[0].dedupeKey, log?.clientId, 'keyed on clientId — a retry cannot duplicate');
