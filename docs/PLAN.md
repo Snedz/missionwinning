@@ -6,6 +6,160 @@ Living roadmap for the **everything app** (a bodyweight coach app Super Bundle �
 
 ---
 
+## Frozen plan — `.958` Desk → gym, one session (2026-08-24)
+
+> **Frozen.** Implement only this section. Plan commit is `[skip vercel]`.
+> Label: `2026.07-unified.958` — next free after master `.957`
+> (`#794` squash `44f05e8f` — tight `/private` lock).
+> Do **not** remount the four-scene door. Do **not** smash
+> E-Victory `.956`, Wednesday `.955`, Today Start `.954`, or
+> one-identity `.949`.
+> Implement commit may allow one Preview. No empty-commit retrigger.
+> No `PRIVATE_MODE` flip. No promote. Live www stays `.696`.
+> Cookie `/` stays `.696`. Copy lock stays **Log a set. Offline.**
+> / **No account. No wearable.**
+> Guest path. First set on Train stays ungated. Confirm-gated
+> anything that writes. No Force Sync theater. No watch pitch.
+
+They start a session on the laptop (browser Train) and finish
+it on the phone. Same diary. `.949` already made guest sets
+survive sign-in. `.954` Start is whichever surface they open.
+The remaining bounce is continuity of the **open session**
+across devices — not a second account and not a wearable.
+
+A rival watch live-syncs in-set. We win if desk plan + gym log
+are the same diary. One web logger they can leave and resume.
+
+### One concern
+
+Desk → gym, one open session. Not a sync screen. Not a
+wearable. Not a second login. Not a four-scene www door.
+
+### Investigate (done — hypothesis holds)
+
+Read `origin/master` tip `44f05e8f` / `.957` (`#794`).
+
+| Layer | What exists | Gap this ship closes |
+|-------|-------------|----------------------|
+| Same-device persist | Zustand `activeWorkout` in `workout-tracker-storage`. Survives reload on **this** device. `hasLoggedWork` protects a completed set from I-Day overwrite. Today Resume when `sessionOpen`. | Phone is a different store. Desk Start is invisible there. |
+| Completed history | `completeActiveWorkout` mints `clientId` and `enqueueWorkoutUpsert`. Outbox `workout.upsert`. `loadFromCloud` merges. | Cloud write is **Finish only**. The open session never leaves. |
+| One identity `.949` | Unbound adopt keeps the workout store. `SIGNED_IN` → `syncCurrentHistoryToCloud` + `loadFromCloud`. No Force Sync tap. Foreign owner still replaces. | Re-queues **history**. Does not push/pull the in-progress session. |
+| Guest / wipe `.941` | `SIGNED_OUT` wipes only after explicit leave. First set ungated. | **Keep.** Guest on one device stays. Cross-device needs the same signed-in identity — not a second account. |
+| Today / Wednesday | `.954` one Start. `.955` next-day cite on Coach. | **Do not restyle.** Resume is still the one Start when the store holds a session. |
+| Close receipt `.956` | Private keepable receipt after Finish. | **Do not smash.** Finish on phone is the same close. |
+| `/private` `.957` | Tight lock. Copy lock. | **Do not remount** SET → ANYWHERE → WEEK → DOOR. |
+| Profiles / outbox | `coach.plan` + `journey.state` are latest-state upserts on `profiles`. No `open_session` column. `workout_logs.completed_at` is NOT NULL — cannot stash a draft there. | Need one latest-state home for the open session. |
+
+Hypothesis (verified, keep):
+
+A **pure** decide over `{ local, remote }` open-session
+snapshots (`clientId`, `revision`, `updatedAt`, completed-set
+count) returns one action. Same identity. No Force Sync
+button. Train on the other surface continues or clearly
+resumes the same `clientId`. Guest stays local (outbox ACK
+while signed out; `SIGNED_IN` then pushes). Empty phone +
+desk session ⇒ adopt. Surface change never wipes logged
+work. Two different sessions both with logged work ⇒
+confirm before replacing local (default keep local).
+
+### Ship (only this)
+
+1. **Pure helper** `src/lib/workout/openSessionContinuity.ts`.
+   Snapshot: `{ clientId, revision, updatedAt, startedAt,
+   workoutName, workout }` (`sessionNote` stripped — journal
+   never leaves the device). `decideOpenSession(local, remote)`
+   → `empty` | `keep-local` | `adopt-remote` | `push-local` |
+   `needs-confirm`. Deterministic. No RNG. No wearable. No
+   catalog. Same `clientId` ⇒ higher revision (tie:
+   `updatedAt`). Local empty ⇒ adopt remote (including a
+   started session with 0 completed sets). Remote empty ⇒
+   push local. Different `clientId` + both have
+   `hasLoggedWork` ⇒ `needs-confirm` (do not silent-wipe).
+
+2. **Identity on the open session.** Mint `clientId` at
+   `startWorkout` / `startEmptyWorkout`. Bump `revision` +
+   `updatedAt` on logged-set mutations (and clear). Persist
+   with the existing store partialize. Do not invent a second
+   store.
+
+3. **Outbox kind** `workout.active` — latest-state, one
+   dedupe key. Handler re-reads the store at flush (coach.plan
+   shape). Signed out / no cloud ⇒ ACK (do not spin). Missing
+   `open_session` column ⇒ ACK (degrade; founder apply).
+   Finish / discard with confirm enqueue `null` so the other
+   surface does not reopen a closed session. Register in
+   `useOutboxDrain`. `KIND_LABEL` on the offline page (not a
+   sync screen — queue row only).
+
+4. **Column** `profiles.open_session jsonb` —
+   `supabase/migrations/20260824_profiles_open_session.sql` +
+   runbook row (what stays broken until applied). RLS already
+   owner-only. Isolated upsert — never fold into journey
+   merge.
+
+5. **Pull, no theater.** After persist hydrate, on
+   `SIGNED_IN` (after `.949` adopt + history re-queue), and
+   when the tab becomes visible: pull + `decideOpenSession` +
+   apply. Empty phone continues the desk session. No Force
+   Sync / Session Expired / “sign in to keep these sets”
+   copy. No second login to keep the set.
+
+6. **Confirm-gated write** only when decide is
+   `needs-confirm`. Hold-to-confirm to adopt the other
+   session. Default keeps local (no wipe). Discard of an open
+   session stays the existing HoldToConfirm.
+
+7. **Help one-liner.** Start on laptop, open Train on phone
+   (same account) — same session. Guest stays on this device
+   until sign-in. No public URL. No wearable.
+
+### Tests
+
+- Desk start → phone empty ⇒ same `clientId`; phone finish is
+  one history log (desk sets + phone sets). Mutant that mints
+  a second `clientId` on the empty surface dies.
+- Guest: first set ungated; local open session survives;
+  signed-out handler ACK; `SIGNED_IN` adopt enqueues the open
+  session (no Force Sync tap). `firstSetUngated` stays green.
+- Source: no `Force Sync` / `Session Expired` / `sign in to
+  keep these sets` on Train / Today / Coach.
+- Surface change does not wipe: local logged work + empty
+  remote ⇒ `keep-local`. Two different logged sessions ⇒
+  `needs-confirm`, default keep local.
+- Finish / confirmed discard clears the cloud snapshot
+  (enqueue `null`). Empty Finish still no-ops (`.956`).
+- Mutant that remounts the four-scene door, adds a sync
+  screen, or gates Log a set dies.
+- Today still one `.primary-action`. Wednesday still a cite.
+  Close receipt stays private.
+
+### Refuse
+
+Watch-as-pitch. Wearable permission to train. Second account.
+Promote live. Feed. Public URL. Four-scene www door. Catalog.
+Trainer. Super Bundle on Today. Counsel-hold (field test / PT
+/ pregnancy). Force Sync button. Identity redo. Today / next-
+day / close-receipt rewrite. `PRIVATE_MODE` flip. Merge.
+
+### Docs / ship protocol
+
+- `APP_BUILD_LABEL` → `2026.07-unified.958`
+- LOG heading `## 2026-08-24 — Desk → gym, one session (\`.958\`)` + rotate oldest live entry (`.942`)
+- `CONTEXT.md` `## Now` one-line `.958`; rotate oldest shipped Now bullet (`.943`) so the block stays ≤25
+- `src/lib/workout/INDEX.md` + `src/lib/sync/INDEX.md` + `src/store/INDEX.md` + `supabase/INDEX.md`
+- i18n: offline queue label + confirm copy via `defaultValue`
+- Plan commit `[skip vercel]`. Implement commit: one Preview max. No empty-commit retrigger.
+- Draft PR against master. Do not merge. Do not promote. Live www stays `.696`.
+
+### Done when
+
+Signed-in desk Start is the same open session on phone Train
+(or clearly resumes it). Guest path intact. No Force Sync.
+No wipe on surface change. Label `.958`. Draft PR. Title:
+`Desk → gym, one session (.958)`.
+
+---
+
 ## Frozen plan — `.957` restore the tight `/private` lock (2026-08-24)
 
 > **Frozen.** Implement only this section. Door freeze also lives in
