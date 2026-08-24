@@ -6,8 +6,8 @@ gets a matching frozen section so agents following the boot order find this
 ship; this file is the door freeze (same home as the `.942` four-scene plan
 this ship reverses).
 **Lane:** Engineering-Web · gated first paint · **Horizon:** 0
-**Label:** `2026.07-unified.957` (master is `.955`. Do **not** steal `.956`
-E-Victory close receipt.)
+**Label:** `2026.07-unified.957` (master is `.956` / `#793` `8b71ea50`.
+Do **not** smash E-Victory `.956`.)
 **Excellence-Override:** restore tight gated lock (no Today/Train restyle)
 
 ---
@@ -127,19 +127,17 @@ Mutant that restores `Train anywhere. Win daily.` on the door dies
 - Restore old words (Win Daily / Private Beta / Get notified at launch as
   the company line).
 - Delete F-039 aliases or `/notify`.
-- Touch `.956` E-Victory close receipt.
-- Merge.
+- Smash E-Victory `.956`.
 
 ## 5. Ship protocol
 
 - `APP_BUILD_LABEL` → `2026.07-unified.957`
 - LOG heading `## 2026-08-24 — Restore the tight /private lock (\`.957\`)`
-  + rotate oldest live entry (`.940`)
-- If `.956` is still not on master at implement, declare `956` in
-  `logBudget` `NEVER_SHIPPED` (reserved by the in-flight E-Victory close
-  receipt). If that ship landed first, drop the gap and rebase.
-- `CONTEXT.md` `## Now` one-line `.957`; rotate oldest shipped Now bullet
-  (`.941`) so the block stays ≤25
+  + rotate oldest live entry (`.941`; `.940` already rotated by `.956`)
+- `.956` landed as `#793` — do **not** declare `956` in
+  `logBudget` `NEVER_SHIPPED`.
+- `CONTEXT.md` `## Now` one-line `.957`; keep the `.956` Now bullet;
+  rotate oldest shipped Now bullet (`.942`) so the block stays ≤25
 - Plan commit `[skip vercel]`. Implement commit `[skip vercel]` (founder
   did not ask for a Preview). Screenshot the restored `/private` in the PR.
 - Draft PR. Do not merge. Do not promote.

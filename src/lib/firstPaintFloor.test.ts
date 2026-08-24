@@ -434,20 +434,19 @@ test('every textless-fallback exemption still names a real file', () => {
  */
 
 test('the gate poster is not withheld pending a session probe', () => {
-  const cine = stripComments(read('src/components/landing/CinematicWww.tsx'));
   const door = stripComments(read('app/private/PrivateTeaserClient.tsx'));
 
-  assert.match(cine, /cineHeroHeadline/, 'SET headline key is gone — did the field move?');
+  assert.match(door, /gateTitle1/, 'tight-lock headline key is gone — did the poster move?');
+  assert.match(door, /gate-h1/, 'tight-lock h1 is gone.');
   assert.match(door, /grantPrivateAccessFromSession/, 'Session recovery probe is gone.');
 
   const earlyReturn = /if\s*\(\s*sessionUnlocking\s*\)\s*\{?\s*return/.exec(door);
   assert.equal(
     earlyReturn,
     null,
-    'PrivateTeaserClient returns before the four scenes while the session probe ' +
+    'PrivateTeaserClient returns before the poster while the session probe ' +
       'runs. With PRIVATE_MODE on, that return value is the whole website.'
   );
-  assert.ok(cine.indexOf('cineHeroHeadline') > 0);
 });
 
 test('/welcome resolves its query on the server so I-Day step one is in the HTML', () => {

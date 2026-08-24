@@ -107,7 +107,6 @@ describe('first set while gated (.768)', () => {
   it('cold /private notify stays on the door; Log a set does not skip it', () => {
     const teaser = read('app/private/PrivateTeaserClient.tsx');
     const notify = read('src/components/public/LaunchNotifyForm.tsx');
-    const logger = read('src/components/landing/CinematicLogger.tsx');
     assert.doesNotMatch(
       teaser,
       /href=["']\/welcome["']/,
@@ -115,8 +114,8 @@ describe('first set while gated (.768)', () => {
     );
     assert.doesNotMatch(teaser, /gateLogASet/);
     assert.match(teaser, /LaunchNotifyForm/);
-    assert.match(notify, /www-cine-ghost/);
-    assert.match(logger, /primary-action/);
+    assert.match(teaser, /variant="gate"/);
+    assert.match(notify, /gate-btn-primary/);
   });
 
   it('resolveActiveEmptyStart still never seeds Just Go', () => {
