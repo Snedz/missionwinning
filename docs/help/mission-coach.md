@@ -14,8 +14,9 @@ If Coach shows a lock icon, see [premium-and-billing.md](premium-and-billing.md)
 1. **Context** — Coach reads your equipment, days per week, goals, workout history, and readiness scores from Today.
 2. **Generate** — Each week you get sessions (strength, conditioning, recovery) with specific exercises from the library.
 3. **Why this week** — The plan cites **inputs · rule · effect** from your logs (not a chatbot).
-4. **Adapt** — Miss a session, change equipment, or report low readiness — the plan adjusts (swap to recovery, reschedule focus).
-5. **Voice briefing** (optional) — A short weekly summary via AI when configured; falls back to rule-based messages if AI is unavailable.
+4. **Why this session** — The current or next session on Coach cites why from your logs, or says there are none yet. Coach is optional — Train stays free without it. The why-line is never locked.
+5. **Adapt** — Miss a session, change equipment, or report low readiness — the plan adjusts (swap to recovery, reschedule focus).
+6. **Voice briefing** (optional) — A short weekly summary via AI when configured; falls back to rule-based messages if AI is unavailable.
 
 Chat on `/coach` is Super Bundle chrome. It does not replace the week.
 

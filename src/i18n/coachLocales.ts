@@ -116,6 +116,11 @@ type CoachStrings = {
   coachSessionRationaleFocusRule: string;
   coachSessionRationaleFocusEffect: string;
   coachSessionRationaleFocusCompact: string;
+  /** `.932` — honest empty when the athlete opted into Coach with no logs. */
+  coachSessionRationaleEmptyInput: string;
+  coachSessionRationaleEmptyRule: string;
+  coachSessionRationaleEmptyEffect: string;
+  coachSessionRationaleEmptyCompact: string;
   coachAdaptKeepVersion: string;
   coachWeekDose: string;
   coachWeekDoseStrength: string;
@@ -457,6 +462,13 @@ const en: CoachStrings = {
     'Train {{focus}} as planned — miss or crush it and the week flexes.',
   coachSessionRationaleFocusCompact:
     '{{count}} logged → {{kind}} session ({{focus}}) → next work from your plan.',
+  coachSessionRationaleEmptyInput:
+    'No sets logged yet — this session is the week’s starting pick, not a wearable.',
+  coachSessionRationaleEmptyRule:
+    'Session pick — week split and gear until a logged set can cite the next one.',
+  coachSessionRationaleEmptyEffect: 'Log a set and the next why-line will quote it.',
+  coachSessionRationaleEmptyCompact:
+    'No sets logged yet — week split starting pick. Log one and Coach cites it.',
   coachAdaptKeepVersion: 'Adjust or keep my version of today',
   coachWeekDose:
     'This week’s dose: {{count}} sessions · {{intent}} · ~{{minutes}} min',

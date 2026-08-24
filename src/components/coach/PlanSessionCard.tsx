@@ -141,41 +141,53 @@ export function PlanSessionCard({
           /*
            * Quiet inset on the boss card — ink primary edge (not poster) so it
            * does not compete with Start. No eyebrow: the input label alone
-           * carries the log cite (Design polish on `.699`).
+           * carries the log cite (Design polish on `.699`). Empty history is
+           * one compact line (F-025), not three invented labels.
            */
           <div
             className="space-y-1.5 border-s-[3px] border-s-primary bg-muted px-3 py-2"
             data-testid="coach-session-rationale"
+            data-rationale-kind={sessionRationale.kind}
           >
-            <p className="text-xs text-muted-foreground leading-relaxed">
-              <span className="font-medium text-foreground">
-                {t('coachRationaleInputLabel', { defaultValue: 'From your logs' })}
-                {': '}
-              </span>
-              {t(sessionRationale.inputKey, {
-                ...sessionRationale.inputParams,
-                defaultValue: sessionRationale.inputDefault,
-              })}
-            </p>
-            <p className="text-xs text-muted-foreground leading-relaxed">
-              <span className="font-medium text-foreground">
-                {t('coachRationaleRuleLabel', { defaultValue: 'Rule applied' })}
-                {': '}
-              </span>
-              {t(sessionRationale.ruleKey, {
-                defaultValue: sessionRationale.ruleDefault,
-              })}
-            </p>
-            <p className="text-xs text-muted-foreground leading-relaxed">
-              <span className="font-medium text-foreground">
-                {t('coachRationaleEffectLabel', { defaultValue: 'Expected effect' })}
-                {': '}
-              </span>
-              {t(sessionRationale.effectKey, {
-                ...sessionRationale.effectParams,
-                defaultValue: sessionRationale.effectDefault,
-              })}
-            </p>
+            {sessionRationale.kind === 'session-empty' ? (
+              <p className="text-xs text-muted-foreground leading-relaxed">
+                {t(sessionRationale.compactKey, {
+                  defaultValue: sessionRationale.compactDefault,
+                })}
+              </p>
+            ) : (
+              <>
+                <p className="text-xs text-muted-foreground leading-relaxed">
+                  <span className="font-medium text-foreground">
+                    {t('coachRationaleInputLabel', { defaultValue: 'From your logs' })}
+                    {': '}
+                  </span>
+                  {t(sessionRationale.inputKey, {
+                    ...sessionRationale.inputParams,
+                    defaultValue: sessionRationale.inputDefault,
+                  })}
+                </p>
+                <p className="text-xs text-muted-foreground leading-relaxed">
+                  <span className="font-medium text-foreground">
+                    {t('coachRationaleRuleLabel', { defaultValue: 'Rule applied' })}
+                    {': '}
+                  </span>
+                  {t(sessionRationale.ruleKey, {
+                    defaultValue: sessionRationale.ruleDefault,
+                  })}
+                </p>
+                <p className="text-xs text-muted-foreground leading-relaxed">
+                  <span className="font-medium text-foreground">
+                    {t('coachRationaleEffectLabel', { defaultValue: 'Expected effect' })}
+                    {': '}
+                  </span>
+                  {t(sessionRationale.effectKey, {
+                    ...sessionRationale.effectParams,
+                    defaultValue: sessionRationale.effectDefault,
+                  })}
+                </p>
+              </>
+            )}
           </div>
         ) : null}
         <ul className="space-y-2 text-sm">

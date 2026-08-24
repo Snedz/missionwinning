@@ -6,6 +6,93 @@ Living roadmap for the **everything app** (a bodyweight coach app Super Bundle �
 
 ---
 
+## Frozen plan — `.932` Coach why-this-session (reserved `.699` / F-012) (2026-08-24)
+
+> **Frozen.** Implement only this section. Plan commit is `[skip vercel]`.
+> This is the **`.699` concern** (F-012 / F-002 session why-line + F-025/F-031 quiet/skippable).
+> Build number is **`2026.07-unified.932`** because master is `.930`. Sibling F-008 honesty may take `.931` — do not steal it.
+> Old PR **#478** closed unmerged 2026-08-14 (claimed superseded by #544 / `.766`; `.766` is `logCitation`, not this ship).
+> Draft PR. **Preview will not deploy** (`[skip vercel]` on every commit).
+> No `PRIVATE_MODE` flip. No promote. No Stripe. No invented traction.
+> Do not start E-Adjacency. Do not touch field test / PT / pregnancy counsel-holds.
+> No feed, no DMs, no injury forecast, no wearable claims. Never cite a 3-workout cap by competitor name.
+
+Week rationale is already on master (`.693` / `weekRationale.ts`). This ship is the **session why-line**: one cite-able story on the Coach boss `PlanSessionCard` that says why this session exists from the athlete’s logs — or an honest empty when there are none. Why stays **free**. Coach stays opt-in / skippable. Free logger untouched.
+
+### Investigate (done — recover, do not rewrite)
+
+| Claim | Verified on master `.930` |
+|-------|---------------------------|
+| **#478 shape landed via merge-all** | **Yes.** `sessionRationale.ts`, boss-card 3-part paint, grid/page hints, i18n keys, and `sessionRationale.test.ts` are on master. INDEX read-order dropped the file when `.766` took `8c3` for `logCitation.ts`. |
+| **#478 ≠ `.766`** | **Yes.** Founder closed #478 as “superseded by #544 / `.766`”. `.766` is the quotable log fact (`CoachLogCite` / `no-logs`). Session why is a different concern that hitchhiked. |
+| **Silent empty is the gap** | **Yes.** `buildSessionRationale` returns `null` on clean start (`loggedWorkoutCount === 0`, no whyKey). WhyKey stories can still say “recent sets in your logs” with zero workouts. Done bar now wants an **honest empty**, not theater and not a fake cite. |
+| **Coach is already skippable** | **Yes.** Why paints only on `/coach` boss `PlanSessionCard` (`isPrimaryStart`). Not Train, not Today, not I-Day. `CoachTodayCard` has a separate Wave-8 one-liner — do not expand it. |
+| **Why is not paywalled in the card** | **Yes today.** `PlanSessionCard` does not read `premium`. Generate is free; Bundle is voice/chat/regen. Guard that. Do not wrap the why in `locked` / `premium`. |
+
+Not these (do not “fix”):
+
+- Week rationale / `CoachAdaptBanner` / `weekDiff` (already shipped).
+- `logCitation.ts` / `CoachLogCite` exemption for `PlanSessionCard` — session rationale *is* the cite; do not stack a second `CoachLogCite` under it.
+- E-Adjacency / `SetLog*` / Active density.
+- F-008 growth honesty / Alpha chrome / PRIVATE_MODE copy.
+- Field test, PT, pregnancy.
+- Feed, DMs, injury forecast, wearables as score.
+
+### Ship (only this)
+
+1. **Keep the #478 engine.** `buildSessionRationale` still picks one shame-free story from signals the prescription already carries (swap/recovery, progression `whyKey`, load-band hold, post-first-workout focus). Same inspectability shape as week rationale: inputs · rule · effect. Compact line stays on the type for tests.
+
+2. **Honest empty when there are no logs.** On a planned/swapped boss session with `loggedWorkoutCount === 0`, return a `session-empty` kind — one quiet line, no “0 workouts” shame, no wearable claim, no invented set. Do **not** fire whyKey stories that say “your logs” when history is empty.
+
+3. **Paint only on the Coach boss card.** `PlanSessionCard` when `isPrimaryStart`. Other grid days stay quiet. Empty uses the same `data-testid="coach-session-rationale"` plus a kind hook (`data-rationale-kind`). Paper, ink, primary inset edge (not poster). No eyebrow. No Trainer rail. No force onto `/active` or `/log`.
+
+4. **Why stays free.** No `premium` / `locked` / `entitled` branch around the why. Source guard: `PlanSessionCard` does not import premium helpers.
+
+5. **Coach stays skippable (F-025 / F-031).** Athlete can skip `/coach` and log on Train. Why never becomes a Today/I-Day requirement. Do not raise `TAP_BUDGET`. Do not put chat on Today.
+
+6. **INDEX + help.** Put `sessionRationale.ts` back in `src/lib/coach/INDEX.md` (after `logCitation` / `weekDiff`, not instead of them). One help line on [docs/help/mission-coach.md](help/mission-coach.md): the boss session cites why from logs, or says there are none yet. Do not edit PT / pregnancy / field-test help.
+
+### Tests
+
+- `sessionRationale.test.ts`:
+  - Empty history → `session-empty` (not `null`); copy does not say “0 workouts” / wearable / predicted.
+  - whyKey + `loggedWorkoutCount === 0` → empty, not a fake “recent sets in your logs” story.
+  - Existing story kinds still fire when `loggedWorkoutCount > 0`.
+  - Done/missed still `null`.
+  - Wiring: boss card mounts it; grid passes hints; `CoachPage` wires `ctx.history.length`; no Train/Today force.
+- `earnedFromLogsCopy.test.ts`: boss card still surfaces From your logs · Rule · Effect on a cited story; empty kind is allowed; no poster edge; no `premium` import on the card.
+- New (or extended) guard: `PlanSessionCard` / session why path does not read `premium` / `isPremium` / `locked`.
+- Mutant that restores silent `null` on `loggedWorkoutCount === 0` dies.
+- Mutant that paints why on a non-boss card dies (existing `isPrimaryStart` wiring).
+- `check-build-label` `.932`. LOG + CONTEXT in the same implement commit.
+
+### Docs / ship protocol
+
+- `APP_BUILD_LABEL` → `2026.07-unified.932`
+- LOG heading `## 2026-08-24 — Coach why-this-session (\`.932\`)` + rotate oldest live entry
+- CONTEXT `## Now` one `.932` bullet that names the `.699` concern; rotate oldest shipped version bullet; keep Status table; ≤25 bullets
+- Help: one line on mission-coach — session why cites logs or honest empty; Coach skippable
+- `src/lib/coach/INDEX.md` lists `sessionRationale.ts`
+- i18n: add empty-kind keys next to existing `coachSessionRationale*`; `npm run i18n:fill` + parity
+- Commit trailer: this is the `.699` concern (F-012 why-line). Build number is `.932` because master is `.930`.
+- Every commit: `[skip vercel]`. PR title/body say the same label sentence.
+
+### Hard bans
+
+- No `PRIVATE_MODE` / promote / EIN / secrets
+- Do not steal F-008 honesty or `.931`
+- Do not start E-Adjacency / rewrite `SetLog*`
+- Do not touch field test / PT / pregnancy counsel-holds
+- No feed, no DMs, no injury forecast, no wearable claims
+- Never cite a competitor 3-workout cap
+- Do not gate the free logger
+- Do not paywall the why-line
+- Do not force Coach chrome onto Train / Today / I-Day
+- Do not stack a second `CoachLogCite` under the session why (exemption stands)
+- Do not change week rationale / generate engine / adapt rules — reuse existing signals only
+
+---
+
 ## Frozen plan — `.765` Preview walk P0s (consent dock + landing notify) (2026-08-13)
 
 > **Frozen.** Implement only this section. Plan commit is `[skip vercel]`.
