@@ -6,7 +6,7 @@
 
 | File | Purpose |
 |------|---------|
-| `JourneyHero.tsx` | Phase hero banner — **two forms**, on `useIsCompact()`. Lean `dock="start"` is one word: Start / Resume / Repeat last / this session. Never I-Day. Never Just Go lecture. |
+| `JourneyHero.tsx` | Phase hero banner — **two forms**, on `useIsCompact()`. Lean `dock="start"` is one word: Start / Resume / Repeat last / this session, plus last/next cite (`.954`). Never I-Day. Never Just Go lecture. |
 | `JourneyGuard.tsx` | Redirect if I-Day incomplete |
 | `CommandersIntent.tsx` | Goal statement card |
 | `TodaySection.tsx` | Journey block on Today |

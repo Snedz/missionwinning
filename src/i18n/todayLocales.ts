@@ -287,6 +287,9 @@ type TodayStrings = {
   todayFounderLogSnack: string;
   todayReentryQuietLineBare: string;
   todayReentryQuietLine: string;
+  /** Quiet last/next cite on Today's Start (`.954`). */
+  todayReturnLast: string;
+  todayReturnNext: string;
 };
 
 const en: TodayStrings = {
@@ -593,6 +596,8 @@ const en: TodayStrings = {
   todayFounderLogSnack: 'Log recovery snack',
   todayReentryQuietLineBare: "Here's the {{minutes}}-minute version.",
   todayReentryQuietLine: "Back from {{exercise}}. Here's the {{minutes}}-minute version.",
+  todayReturnLast: 'Last · {{name}}',
+  todayReturnNext: 'Next · {{name}}',
 };
 
 const coachPlanDefaults = {
@@ -607,6 +612,8 @@ const coachPlanDefaults = {
   todayRepeatLastKicker: en.todayRepeatLastKicker,
   todayRepeatLastTitle: en.todayRepeatLastTitle,
   todayRepeatLastDesc: en.todayRepeatLastDesc,
+  todayReturnLast: en.todayReturnLast,
+  todayReturnNext: en.todayReturnNext,
 };
 
 const es: TodayStrings = {
