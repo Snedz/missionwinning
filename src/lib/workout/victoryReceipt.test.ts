@@ -4,7 +4,11 @@ import { readFileSync } from 'node:fs';
 import type { CompletedWorkoutLog, SetKind } from '@/types';
 import { PR_EPSILON } from '@/lib/coach/progress';
 import {
+  buildCloseReceipt,
+  buildCloseReceiptDownload,
   buildVictoryReceipt,
+  closeReceiptReady,
+  formatCloseReceiptText,
   formatReceiptDurationDelta,
   formatReceiptNumber,
   formatReceiptSetLoad,
@@ -440,6 +444,126 @@ describe('receipt display helpers', () => {
       }),
       { weight: null, reps: null }
     );
+  });
+});
+
+describe('close receipt ready + keep', () => {
+  it('empty session is not a receipt and exports nothing', () => {
+    const empty = log({
+      id: '0',
+      completedAt: T1,
+      exercises: [],
+      totalVolume: 0,
+      durationSeconds: 0,
+    });
+    assert.equal(closeReceiptReady(empty), false);
+    assert.equal(buildCloseReceipt(empty, []), null);
+    const fake = {
+      vsLast: null,
+      exercises: [] as ReturnType<typeof buildVictoryReceipt>['exercises'],
+      prCount: 0,
+    };
+    assert.equal(
+      formatCloseReceiptText({
+        workoutName: 'Push',
+        durationSeconds: 0,
+        setCount: 0,
+        volumeLabel: '0 kg',
+        receipt: fake,
+      }),
+      null
+    );
+    assert.deepEqual(
+      buildCloseReceiptDownload({
+        workoutName: 'Push',
+        durationSeconds: 0,
+        setCount: 0,
+        volumeLabel: '0 kg',
+        receipt: fake,
+        dateKey: '2026-08-24',
+      }),
+      { ok: false, reason: 'empty' }
+    );
+  });
+
+  it('finished session is one keepable receipt; duration and vs-last only when we have them', () => {
+    const first = log({
+      id: '1',
+      completedAt: T0,
+      durationSeconds: 1500,
+      totalVolume: 1000,
+    });
+    const second = log({
+      id: '2',
+      completedAt: T1,
+      durationSeconds: 1800,
+      totalVolume: 1230,
+    });
+    assert.equal(closeReceiptReady(second), true);
+    const receipt = buildCloseReceipt(second, [first], { resolveName: (id) => id });
+    assert.ok(receipt);
+    assert.equal(receipt.exercises.length, 1);
+    const text = formatCloseReceiptText({
+      workoutName: 'Push',
+      durationSeconds: 1800,
+      setCount: 1,
+      volumeLabel: '1230 kg',
+      receipt,
+    });
+    assert.ok(text);
+    assert.match(text, /^Push\n/);
+    assert.match(text, /Duration 30:00/);
+    assert.match(text, /Volume 1230 kg/);
+    assert.match(text, /Sets 1/);
+    assert.match(text, /vs last \+230 vol · \+5:00/);
+    assert.match(text, /bench-press/);
+    assert.match(text, /100 × 5/);
+    assert.match(text, /prev 100 × 5/);
+    assert.doesNotMatch(text, /https?:\/\//);
+    const silent = formatCloseReceiptText({
+      workoutName: 'Push',
+      durationSeconds: 0,
+      setCount: 1,
+      volumeLabel: '1230 kg',
+      receipt: { ...receipt, vsLast: null },
+    });
+    assert.ok(silent);
+    assert.doesNotMatch(silent, /Duration /);
+    assert.doesNotMatch(silent, /vs last /);
+    const kept = buildCloseReceiptDownload({
+      workoutName: 'Push',
+      durationSeconds: 1800,
+      setCount: 1,
+      volumeLabel: '1230 kg',
+      receipt,
+      dateKey: '2026-08-24',
+    });
+    assert.equal(kept.ok, true);
+    if (kept.ok) {
+      assert.equal(kept.filename, 'receipt-2026-08-24.txt');
+      assert.doesNotMatch(kept.text, /https?:\/\//);
+    }
+    assert.deepEqual(
+      buildCloseReceiptDownload({
+        workoutName: 'Push',
+        durationSeconds: 1800,
+        setCount: 1,
+        volumeLabel: '1230 kg',
+        receipt,
+        dateKey: '2026-08-24T16:00:00.000Z',
+      }),
+      { ok: false, reason: 'empty' },
+      'ISO instant is not a local date key'
+    );
+  });
+
+  it('close helpers do not mint a public permalink', () => {
+    const src = readFileSync(new URL('./victoryReceipt.ts', import.meta.url), 'utf8');
+    const close = src.slice(src.indexOf('export function closeReceiptReady'));
+    assert.doesNotMatch(close, /https?:\/\//);
+    assert.doesNotMatch(close, /\/workout\//);
+    assert.doesNotMatch(close, /toISOString\(/);
+    assert.match(close, /receipt-\$\{input\.dateKey\}\.txt/);
   });
 });
 
