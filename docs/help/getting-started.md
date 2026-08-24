@@ -33,7 +33,7 @@ On **Account**, list your **Home gym kit** (barbell, rack, plates, dumbbells, pu
 
 ## Sign in (optional — after your first set)
 
-You can log sets with **no account**. Come back on this device and the same local log is still there — a signed-out refresh does not wipe it. Sign in later from Profile if you want the same diary on another device. Signing out of an account on this device does clear local athlete data so the next person does not inherit it.
+You can log sets with **no account**. Come back on this device and the same local log is still there — a signed-out refresh does not wipe it. Sign in later from Profile if you want the same diary on another device — the sets you already logged here stay yours. Restricted health answers (PAR-Q, pregnancy) do not follow a guest onto another account. Signing out of an account on this device does clear local athlete data so the next person does not inherit it.
 
 Sign in with **Google, Apple, Microsoft, Facebook, or email** from Profile (available options depend on your cohort):
 

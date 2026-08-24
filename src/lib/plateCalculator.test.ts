@@ -108,6 +108,16 @@ describe('setRowPlateBreakdown', () => {
       }).show,
       false
     );
+    // Typing 135 hits 1 then 13 first — never invent plates under the bar.
+    assert.equal(
+      setRowPlateBreakdown({ equipment: 'Barbell', weight: 1, units: 'imperial' }).show,
+      false
+    );
+    assert.equal(
+      setRowPlateBreakdown({ equipment: 'Barbell', weight: 13, units: 'imperial' })
+        .platesLine,
+      null
+    );
   });
 
   it('135 lb = 45 bar + 2×45', () => {

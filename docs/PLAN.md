@@ -9,7 +9,8 @@ Living roadmap for the **everything app** (a bodyweight coach app Super Bundle �
 ## Frozen plan — `.948` plate math on the free set row (2026-08-24)
 
 > **Frozen.** Implement only this section. Plan commit is `[skip vercel]`.
-> Label: `2026.07-unified.948` — next free after master `.947` (Hevy import).
+> Label: `2026.07-unified.950` — planned as `.948`; master took `.949` while in flight.
+> Next free after master `.949` (one identity).
 > Ready for squash. Preview will not deploy. No `PRIVATE_MODE` flip.
 > Offline. No account. Log a set. Free. No medical claims. No wearable.
 > Do not restyle Today. Do not restyle the Train table chrome.
@@ -88,14 +89,14 @@ Not these (do not “fix”):
 - `SetLogTable` source: Skip is present; Log set is not gated on
   plates / skip / bar.
 - `plateWarmupFree`: still free (no premium import).
-- `check-build-label` `.948`. LOG + CONTEXT in the same
+- `check-build-label` `.950`. LOG + CONTEXT in the same
   implement commit.
 
 ### Docs / ship protocol
 
-- `APP_BUILD_LABEL` → `2026.07-unified.948`
-- LOG heading `## 2026-08-24 — Plate math on the free set row (\`.948\`)` + rotate oldest live entry (`.928`)
-- CONTEXT `## Now` one `.948` bullet; rotate oldest shipped version bullet (`.929`); keep Status table; ≤25 bullets
+- `APP_BUILD_LABEL` → `2026.07-unified.950` (planned as `.948`)
+- LOG heading `## 2026-08-24 — Plate math on the free set row (\`.950\`)` + rotate oldest live entry (`.929`)
+- CONTEXT `## Now` one `.950` bullet; rotate oldest shipped version bullet (`.930`); keep Status table; ≤25 bullets
 - Help: one line — on a barbell set, after you type the load, a skippable plate line may show (e.g. 2×45). Bar defaults to 45 lb / 20 kg and is editable. Skip never blocks Log a set.
 - `src/lib/INDEX.md` + `src/lib/workout/INDEX.md` + `src/components/workout/INDEX.md` name the breakdown
 - Every commit: `[skip vercel]`. PR body: how to verify 0 weight (no plates) + 135 lb (45 + 2×45) + Skip + kg
@@ -103,13 +104,142 @@ Not these (do not “fix”):
 ### Hard bans
 
 - No `PRIVATE_MODE` / promote / EIN / secrets / feed / Discord
-- Do not steal `.947` or any in-flight label
+- Do not steal `.949` or any in-flight label
 - Do not restyle Today
 - Do not restyle the Train table (Prev / Log set / cite stay)
 - Do not invent plates for empty or 0
 - Do not require a wearable, account, or the calculator sheet
 - Do not gate Log a set
 - Brand pack: **Log a set. Offline.**
+
+## Frozen plan — `.949` one identity: guest sets survive sign-in (2026-08-24)
+
+> **Frozen.** Implement only this section. Plan commit is `[skip vercel]`.
+> Label: `2026.07-unified.949` — next free after master `.947` (Hevy CSV).
+> `.948` is plate math in flight (`#786` / `cursor/plate-math-set-row-ac5d`). Do not steal it.
+> One Preview max on the implement commit. No `PRIVATE_MODE` flip.
+> Offline. No account. First set still ungated. No Force Sync chore on Train/Coach.
+> Keep master's product + brand pack: **Log a set. Offline.**
+
+A guest can log sets with no account (F-017). When they later
+sign in on this device, those sets stay theirs: Train history,
+rest/log, E-Adjacency cite, and Coach why-from-logs all see one
+athlete. No Force Sync / Session Expired / “sign in to keep
+these sets” chore on the log path.
+
+### One concern
+
+Workout/set identity on `SIGNED_IN`. Not a new OAuth provider.
+Not a second guest architecture. `.941` guest-log-survives-
+`SIGNED_OUT` stays.
+
+### Investigate (done — both wipe + missing re-queue are real)
+
+| Claim | Finding |
+|-------|---------|
+| Guest + cloud journey wipes the log | **Holds.** `planSignInStorage(null, userId, true)` returns `replace-from-cloud`. `syncJourneyOnSignIn` then calls `clearAthleteLocalState()`, which `remove`s `WORKOUT_STORE_KEY`. Opposite of “same person.” |
+| Sign-in never re-queues guest history | **Holds.** `syncCurrentHistoryToCloud` exists on the store and is named in `workoutSync.ts`, but has **zero callers**. Guest `pushWorkout` returns `true` with no user (ACK — do not spin backoff). The comment says sign-in re-queues. It does not. `SIGNED_IN` only runs `syncJourneyOnSignIn`. |
+| Coach / E-Adjacency treat unbound history as someone else | **Consequence of the wipe, not a second reader bug.** `setRowAdjacency` / `getLastSessionSets` / `useCoachPlan` read `workoutHistory` from the store with no `userId` / owner gate. If the store survives bind, they already see one athlete. Do not invent a user-keyed history filter. |
+
+Not these (already shipped — do not redo):
+
+- `.941` / #780: `planSignedOutStorage` / `applySignedOutStorage` / `markExplicitSignOut`
+- F-017: no `SignInPrompt` on Train, no I-Day sign-in step, header chip off until first workout and never on `/active`
+- Journey adopt for prefs/health: same owner merge · foreign replace · guest + no cloud `adopt-guest-sans-health` (strip PAR-Q / pregnancy / mind / body)
+
+### Ship (only this)
+
+1. **Planner: unbound guest is never `replace-from-cloud`.**
+   In `planSignInStorage`:
+   - same `owner === userId` → `merge` (unchanged)
+   - foreign `owner && owner !== userId` → `replace-from-cloud` (unchanged — wipe leftover, no steal)
+   - unbound (`!owner`) → **always** `adopt-guest-sans-health`, even when `cloudHasJourney`
+   Add `shouldAdoptGuestHistory(plan)` — `true` for adopt + merge, `false` for replace.
+   Guest-set adopt is unbound local history on this device for the
+   person who just signed in. It is not a foreign leftover.
+
+2. **Adopt keeps the workout store.**
+   `syncJourneyOnSignIn` adopt path:
+   - `stripRestrictedHealthLocal()` first (guest health never follows)
+   - if cloud journey exists → `applyCloudJourney(profile, 'replace')` for journey/prefs **without** `clearAthleteLocalState`
+   - bind owner · push journey
+   - never `remove(WORKOUT_STORE_KEY)` on adopt
+   Foreign replace still `clearAthleteLocalState()` then cloud replace.
+
+3. **SIGNED_IN re-queues without a tap.**
+   `useJourneySync` after `syncJourneyOnSignIn`: when
+   `shouldAdoptGuestHistory` (adopt or merge), call
+   `syncCurrentHistoryToCloud()` then `loadFromCloud()`.
+   Foreign replace does not enqueue wiped leftovers.
+   Lib stays store-free — the hook wires the store.
+   Guest ACK-on-no-user stays (do not spin backoff).
+
+4. **Readers stay store-keyed.**
+   No new userId filter on E-Adjacency or Coach why-from-logs.
+   A source guard: those readers do not import `storageOwner`
+   or require a signed-in id to cite a live session.
+
+5. **Copy stays honest. No chore on Train.**
+   Do not add Force Sync / Session Expired / “sign in to save
+   these sets” on `/active` or Train. `localFirstCopy` stays.
+   Existing first-set ungated + first-90 guards stay green.
+   Account `SyncStatusRow` “Retry” may remain — it is not the
+   log path.
+
+### Tests
+
+- `planSignInStorage(null, userId, true) === 'adopt-guest-sans-health'`
+- Adopt with a planted `WORKOUT_STORE_KEY` keeps the guest session;
+  `stripRestrictedHealthLocal` still clears PAR-Q / pregnancy
+- Foreign owner still `replace-from-cloud` and wipe
+- Explicit Account sign-out still wipes (`.941` tests stay)
+- Boot / expiry `SIGNED_OUT` still `keep-local`
+- `useJourneySync` `SIGNED_IN` calls `syncCurrentHistoryToCloud` after
+  the planner (source). Replace branch does not
+- Mutant that restores “clear workout store on any `SIGNED_IN`” dies
+- `firstSetUngated` + Train-has-no-`SignInPrompt` stay green
+- Adjacency / Coach context builders still have no owner gate
+
+### Docs / ship protocol
+
+- `APP_BUILD_LABEL` → `2026.07-unified.949`
+- LOG heading `## 2026-08-24 — One identity: guest sets survive sign-in (\`.949\`)` + rotate oldest live entry
+- CONTEXT `## Now` one `.949` bullet; rotate oldest shipped version bullet; keep Status table; ≤25 bullets
+- Help (`getting-started` sign-in section): signing in on this device keeps the sets you already logged here. Restricted health still does not follow a guest onto another account
+- `src/lib/storage/INDEX.md` + `src/hooks/INDEX.md` + `src/lib/sync/INDEX.md` name the adopt-keep-log + sign-in re-queue
+- Plan commit: `[skip vercel]`. Implement commit: one Preview max. No empty-commit retrigger
+
+### Files this ship may touch
+
+- `src/lib/storage/athleteLocalState.ts` + `.test.ts`
+- `src/lib/journeySync.ts` + `.test.ts`
+- `src/hooks/useJourneySync.ts`
+- `src/store/workoutStore.ts` only if the existing `syncCurrentHistoryToCloud` / `loadFromCloud` need a thin export comment — **no persist rewrite**
+- `src/lib/sync/workoutSync.ts` comment (name the real caller)
+- Copy guards: `src/lib/firstSetUngated.test.ts` / `localFirstCopy.ts` only if a new forbidden phrase is needed
+- Source guard for adjacency / coach readers (colocated test, no engine rewrite)
+- `src/lib/buildInfo.ts` · `LOG.md` · `CONTEXT.md` · folder `INDEX.md`s · `docs/help/getting-started.md`
+
+### Refuse list
+
+- No `PRIVATE_MODE` / Production promote / EIN / secrets
+- No SignInPrompt on Train or `/active`. No “Sign in to start.” No login wall
+- Do not force Coach chrome on Train/Today. Coach stays opt-in / skippable
+- Do not touch counsel-hold: field test, PT safety, pregnancy flag / `pregnancySafety` / FieldTest* / PT copy. `stripRestrictedHealthLocal` stays
+- Do not touch `plateMath.ts`, `SetLogBarbellRow`, warmup ramp, or #786
+- Do not steal label `.948`
+- No Feed / social / Athlete Page / Mission ID client mint
+- No second guest architecture. No OAuth provider. No outbox ACK rewrite that spins backoff while signed out
+- Free logger stays ungated. Rest / log-set stay local-first (never await auth/network to log a set)
+- Never clone extra remotes
+
+### Done when
+
+- This plan written first, then implemented
+- Guest logs ≥1 set with no account → later `SIGNED_IN` on this device → same sets visible on Train and usable by Coach why-from-logs / adjacency, with **no** Force Sync tap and **no** Session Expired wall
+- First set still needs no account
+- Explicit Account sign-out still wipes. Restricted health still stripped on guest-adopt. Foreign owner still replace
+- Label `.949`. PR against master. Title: `One identity: guest sets survive sign-in (.949)`
 
 ---
 

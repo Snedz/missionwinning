@@ -1,4 +1,4 @@
-# Rotated from LOG.md for `.948`
+# Rotated from LOG.md for `.949`
 
 ## 2026-08-24 — Public Alpha snapshot exporter (`.928`)
 

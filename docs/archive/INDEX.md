@@ -12,7 +12,8 @@ When adding a doc:
 
 | File | Absorbed by / note |
 |------|---------------------|
-| [log/LOG-rotate-928-for-948.md](./log/LOG-rotate-928-for-948.md) | rotated 2026-08-24 for `.948` plate math on the free set row (`.928`) |
+| [log/LOG-rotate-929-for-950.md](./log/LOG-rotate-929-for-950.md) | rotated 2026-08-24 for `.950` plate math on the free set row (`.929`) |
+| [log/LOG-rotate-928-for-949.md](./log/LOG-rotate-928-for-949.md) | rotated 2026-08-24 for `.949` guest sets survive sign-in (`.928`) |
 | [log/LOG-rotate-927-for-947.md](./log/LOG-rotate-927-for-947.md) | rotated 2026-08-24 for `.947` Hevy English CSV import (`.927`) |
 | [log/LOG-rotate-926-for-946.md](./log/LOG-rotate-926-for-946.md) | rotated 2026-08-24 for `.946` F-013 smart defaults (`.926`) |
 | [log/LOG-rotate-925-for-945.md](./log/LOG-rotate-925-for-945.md) | rotated 2026-08-24 for `.945` missed-day re-entry (`.925`) |

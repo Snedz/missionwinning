@@ -21,7 +21,7 @@ at every call site.
 | `safeStorage.ts` | `readRaw` / `writeRaw` / `readJson` / `writeJson` / `remove` / `keysWithPrefix` — never throw |
 | `safeSessionStorage.ts` | `sessionStore()` — sessionStorage probe, never throw, null when denied |
 | `keys.ts` | Registry of every app-owned key (typing + discoverability) |
-| `athleteLocalState.ts` | Explicit sign-out wipe + storage-owner bind so PAR-Q cannot follow the next account (P1-5). `SIGNED_OUT` without `markExplicitSignOut` keeps the guest log (`.941`) |
+| `athleteLocalState.ts` | Explicit sign-out wipe + storage-owner bind so PAR-Q cannot follow the next account (P1-5). `SIGNED_OUT` without `markExplicitSignOut` keeps the guest log (`.941`). Unbound guest `SIGNED_IN` adopts without wiping `WORKOUT_STORE_KEY` (`.949`) |
 
 ## Rules
 
