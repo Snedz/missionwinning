@@ -6,6 +6,87 @@ Living roadmap for the **everything app** (a bodyweight coach app Super Bundle �
 
 ---
 
+## Frozen plan — `.940` Strong CSV import (preview + confirm) (2026-08-24)
+
+> **Frozen.** Implement only this section. Plan commit is `[skip vercel]`.
+> Label: `2026.07-unified.940` (master is `.939` after #777 + Dependabot `8d0300f1`).
+> Do not steal `.935` (#778 gated www, still running) · `.938` (#780 account-lite, draft).
+> Preview will not deploy. Excellence-Override: Strong CSV import (preview + confirm).
+> Offline. No account. Log a set. Never invent sets. Failed rows skip with a count.
+> Do not fight #778 #780. Keep master's product + brand pack: **Log a set. Offline.**
+
+English Strong-app export first (`Date,Workout Name,Duration,Exercise Name,Set Order,Weight,Weight Unit,Reps,RPE,Notes`). More than one import allowed — no one-file cap. F-017 path stays: I-Day + empty Train still link `/account#import`; the card never asks for sign-in.
+
+### Investigate (done — hypothesis holds)
+
+A parser already exists from the `.180` draft. Do not rewrite it.
+
+| Layer | What exists | Gap this ship closes |
+|-------|-------------|----------------------|
+| Parser | `src/lib/workout/importCsv.ts` — `set-table-b` is the English Strong header; quote-aware scanner; `skippedRows`; merge identity (minute + name + set count); existing history wins | Empty / one-workout / malformed Strong fixtures are not first-class; skipped count never reaches the athlete |
+| Restore | `importCsvRestore.ts` `importWorkoutCsvText` parses **and writes** in one call | No dry-run. Drop writes immediately |
+| Card | `ProfileImportCard` — picker then toast + `reloadAfterRestore` | No preview. No confirm. Toast omits `skippedRows` |
+| Reach | I-Day + empty logger → `/account#import` (`.766` / `importReach.test.ts`) | Keep. Do not move. Do not add SignInPrompt |
+| Export | `workoutsToSetTableBCsv` + session/set download buttons already on the card | Leave as-is. **Do not start a Hevy-layout export.** Round-trip tests already cover Strong in+out — do not expand |
+
+Not these (do not “fix”):
+
+- #777 next-set cite (`setRowAdjacency`, Train table) — landed `.939`
+- #774 Coach why-line (`sessionRationale`)
+- #778 gated www / #780 account-lite
+- Hevy export, localized Strong headers, cloud upload, account gate
+- Mid-set sync data-loss claims. A 3-workout free cap. Force Sync.
+
+### Ship (only this)
+
+1. **Preview is a dry-run.** Add `previewWorkoutCsvText(text)` in `importCsvRestore.ts`: parse + `mergeImportedLogs` against current persist, **do not write**. Return format, workouts, `setCount`, `skippedRows`, `added`, `duplicates`, error. `importWorkoutCsvText` stays the commit. Never invent a set: missing exercise name or non-numeric reps → skip + count; empty / header-only → error, 0 workouts, history unchanged.
+
+2. **Card: pick → preview → confirm.** `ProfileImportCard` parses on file pick, paints a paper preview (workout count, set count, skipped-row count, first few names), then **Confirm** writes and **Cancel** drops the preview. Confirm is a button, not hold-to-confirm (merge is additive; existing history wins). Picker stays after a commit so a second file can be imported. No one-import lock.
+
+3. **Report the skip count.** Preview and the done toast both name `skippedRows` when > 0. A failed row never wipes good rows in the same file.
+
+4. **English Strong fixtures.** New files under `src/lib/workout/fixtures/`:
+   - `strong-empty.csv` — empty (or header-only) → 0 workouts, error, no write
+   - `strong-one-workout.csv` — one session, exact known sets
+   - `strong-malformed-row.csv` — good rows + one unreadable row → skip counted, good sets kept
+
+5. **Multiple imports.** Two different Strong files both add. Re-import of the same file stays a no-op. No cap.
+
+### Tests
+
+- `importCsv.test.ts` + new fixtures: empty file, one workout (exact set count, no invented sets), malformed row (skip + keep), two different files both add.
+- `importCsvRestore.test.ts` (new): preview does not write; confirm writes; empty preview leaves persist unchanged; skipped count returned.
+- Card source: preview before write; Confirm/Cancel present; no `getUser` / premium / one-import lock; still calls `importWorkoutCsvText` only on confirm.
+- `csvHistoryFree` fixture list updated (discover the new files; tests must read them).
+- `importReach` still holds. F-017 / `TAP_BUDGET` 4 — no edits that weaken them.
+- `check-build-label` `.940`. LOG + CONTEXT in the same implement commit.
+
+### Docs / ship protocol
+
+- `APP_BUILD_LABEL` → `2026.07-unified.940`
+- LOG heading `## 2026-08-24 — Strong CSV import: preview + confirm (\`.940\`)` + rotate oldest live entry
+- CONTEXT `## Now` one `.940` bullet; rotate oldest shipped version bullet if over budget; keep Status table; ≤25 bullets
+- Help: one line — import a workout CSV on Account (preview, then confirm). No account. Offline.
+- `src/lib/workout/INDEX.md` lists preview + new tests
+- i18n: preview / confirm / skipped-count keys on `notificationLocales.ts`; `npm run i18n:fill` + parity
+- Commit trailer: `Excellence-Override: Strong CSV import (preview + confirm)`
+- Every commit: `[skip vercel]`. PR body: how to verify on a desktop file picker.
+
+### Hard bans
+
+- No `PRIVATE_MODE` / promote / EIN / secrets / feed / Discord
+- Do not steal `.935` (#778) or `.938` (#780)
+- Do not touch #778 #780
+- Do not start a Hevy-layout export
+- Do not invent sets
+- Do not silent-wipe on a bad row
+- Do not gate the free logger or require an account
+- Do not cite a 3-workout free cap
+- Do not claim mid-set sync data-loss
+- Brand pack: **Log a set. Offline.**
+
+---
+
 ## Frozen plan — `.939` E-Adjacency next-set cite (2026-08-24)
 
 > **Frozen.** Implement only this section. Plan commit is `[skip vercel]`.
