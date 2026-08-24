@@ -129,6 +129,7 @@ Strong/Hevy describes).
 
 - `APP_BUILD_LABEL` → `2026.07-unified.953`
 - LOG heading `## 2026-08-24 — MW export re-imports (round-trip) (\`.953\`)` + rotate oldest live entry (`.934`)
+- Rotating `.934` leaves live floor `.938`. Declare `.935`–`.937` in `logBudget` `NEVER_SHIPPED` (those labels never had a master LOG heading; they were skipped by `.938` / `.940` / `.941`).
 - `CONTEXT.md` `## Now` one-line `.953`; rotate oldest shipped Now bullet (`.938`) so the block stays ≤25
 - Plan commit `[skip vercel]`. Implement commit: one Preview max. No empty-commit retrigger.
 
