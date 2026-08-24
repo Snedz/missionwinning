@@ -27,6 +27,7 @@ import type { CompletedWorkoutLog, SetKind } from '@/types';
 import { getExerciseById } from '@/data/exercises';
 import { estimate1rm, PR_EPSILON, type PrKind } from '@/lib/coach/progress';
 import { countsTowardStrengthEstimate } from '@/lib/workout/setKind';
+import { countCompletedLogSets } from '@/lib/workout/completedLogSets';
 
 export type VictoryReceiptPr = {
   kind: PrKind;
@@ -81,10 +82,6 @@ export function isPriorLog(
 
 function normName(name: string | undefined): string {
   return (name ?? '').trim().toLowerCase();
-}
-
-function setCount(log: CompletedWorkoutLog): number {
-  return log.exercises.reduce((sum, ex) => sum + ex.sets.length, 0);
 }
 
 /** Last earlier session with the same workout name. */
@@ -262,7 +259,7 @@ export function buildVictoryReceipt(
   const vsLast: VictorySessionCompare | null = priorSession
     ? {
         volumeDelta: log.totalVolume - priorSession.totalVolume,
-        setCountDelta: setCount(log) - setCount(priorSession),
+        setCountDelta: countCompletedLogSets(log) - countCompletedLogSets(priorSession),
         durationDelta: log.durationSeconds - priorSession.durationSeconds,
       }
     : null;

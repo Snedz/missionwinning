@@ -1,5 +1,5 @@
-/** Shown on Profile so testers can confirm the deployed build. Bump when shipping UI to master. `.929` restore local green. */
-export const APP_BUILD_LABEL = "2026.07-unified.929";
+/** Shown on Profile so testers can confirm the deployed build. Bump when shipping UI to master. `.930` one setCount. */
+export const APP_BUILD_LABEL = "2026.07-unified.930";
 
 /**
  * Semver for athletes. Distinct from `APP_BUILD_LABEL`, which `/api/health`
