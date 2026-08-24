@@ -1,5 +1,5 @@
-/** Shown on Profile so testers can confirm the deployed build. Bump when shipping UI to master. `.947` Hevy English CSV import (past master `.946`). */
-export const APP_BUILD_LABEL = "2026.07-unified.947";
+/** Shown on Profile so testers can confirm the deployed build. Bump when shipping UI to master. `.948` plate math on the free set row (past master `.947`). */
+export const APP_BUILD_LABEL = "2026.07-unified.948";
 
 /**
  * Semver for athletes. Distinct from `APP_BUILD_LABEL`, which `/api/health`

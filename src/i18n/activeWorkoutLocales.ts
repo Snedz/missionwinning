@@ -70,6 +70,10 @@ type ActiveWorkoutStrings = {
   activeOpenPlateCalc: string;
   /** Live set-row per-side stack (`25 + 15 / side`). */
   activePlatePerSideLine: string;
+  /** Live set-row both-sides breakdown (`45 + 2×45`). */
+  activePlateBarLine: string;
+  activePlateSkip: string;
+  activePlateBreakdownAria: string;
   activeAddWarmups: string;
   activeToggleWarmupAria: string;
   activeToggleWorkAria: string;
@@ -365,6 +369,9 @@ const en: ActiveWorkoutStrings = {
   activePlateApply: 'Use {{weight}} {{unit}}',
   activeOpenPlateCalc: 'Plates',
   activePlatePerSideLine: '{{plates}} / side',
+  activePlateBarLine: '{{bar}} + {{plates}}',
+  activePlateSkip: 'Skip',
+  activePlateBreakdownAria: 'Plates on the bar: {{line}}',
   activeAddWarmups: 'Add warmups',
   activeToggleWarmupAria: 'Mark as warmup',
   activeToggleWorkAria: 'Mark as work set',

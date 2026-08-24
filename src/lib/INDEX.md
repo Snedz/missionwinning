@@ -45,6 +45,7 @@
 | **First paint** | `firstPaintFloor.test.ts`, `gatedWwwCraft.test.ts`, `unlockWaitlistHonesty.test.ts`, `adjustSessionHonesty.test.ts`, `coachChatPlaceholderHonesty.test.ts`, `talkRetryHonesty.test.ts`, `parqDoorHonesty.test.ts`, `todayCoachPinHonesty.test.ts`, `trainEmptyStartHonesty.test.ts`, `journalEmptyHonesty.test.ts`, `libraryAddHonesty.test.ts` | No raw keys, no textless public fallback, no copy that changes after hydration; gated door is the four-scene field |
 | **i18n loaders** | `routeMetadata.ts`, `navConfig.ts` | Not strings — see `src/i18n/` |
 | **Units** | `units.ts` | `weightStep`, metric/imperial |
+| **Plates** | `plateCalculator.ts` | Greedy bar load; set-row both-sides breakdown (`.948`) |
 | **Backup** | `backup.ts` | Device backup export/restore |
 | **What’s New** | `whatsNew.ts` | Build-label last-seen + curated athlete bullets (D13) |
 | **Analytics** | `analytics.ts`, `analyticsOptOut.ts` | PostHog events; preference off until user allows |

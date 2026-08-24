@@ -24,7 +24,8 @@ import {
 import { resolveLastSetGhost } from '@/lib/workout/lastSetGhost';
 import { formatVsLastSetDeltas } from '@/lib/workout/vsLastSet';
 import { resolveAfterCompleteCite } from '@/lib/workout/setRowAdjacency';
-import { isBarLoadedEquipment, setRowPlateLine } from '@/lib/plateCalculator';
+import { isBarLoadedEquipment, setRowPlateBreakdown } from '@/lib/plateCalculator';
+import { useBarWeight } from '@/hooks/useBarWeight';
 import {
   nextWarmupKind,
   resolveWorkingLoad,
@@ -147,6 +148,7 @@ export function ActiveExerciseCard({
   onAddWarmups,
 }: Props) {
   const { t } = useTranslation();
+  const [barWeight, setBarWeight] = useBarWeight(units);
   const isCompact = useIsCompact();
   const [menuOpen, setMenuOpen] = useState(false);
   const [footerOpen, setFooterOpen] = useState(false);
@@ -214,14 +216,15 @@ export function ActiveExerciseCard({
   const ordinalLabels = exLog.sets.map((_, i) => setRowOrdinal(exLog.sets, i).label);
   const barLoaded = isBarLoadedEquipment(exercise.equipment);
   const liveSetIdx = activeSetIdxForExercise(nextSet, exIdx);
-  const livePlateLine =
+  const livePlateOffer =
     holdsActiveSet && liveSetIdx >= 0
-      ? setRowPlateLine({
+      ? setRowPlateBreakdown({
           equipment: exercise.equipment,
           weight: setInput.weight,
           units,
+          barWeight,
         })
-      : null;
+      : { show: false, barWeight, platesLine: null };
   const workingLoad = resolveWorkingLoad({
     sets: exLog.sets,
     liveSetIdx: holdsActiveSet && liveSetIdx >= 0 ? liveSetIdx : null,
@@ -276,7 +279,9 @@ export function ActiveExerciseCard({
             pairMark={ssLabel}
             vsLastLabels={vsLastLabels}
             ordinalLabels={ordinalLabels}
-            plateLine={livePlateLine}
+            plateLine={livePlateOffer.show ? livePlateOffer.platesLine : null}
+            barWeight={livePlateOffer.barWeight}
+            onBarWeightChange={setBarWeight}
             onToggleWarmup={() => onSetKindChange(nextWarmupKind(activeSetKind))}
             onOpenPlates={onOpenPlates}
             input={setInput}

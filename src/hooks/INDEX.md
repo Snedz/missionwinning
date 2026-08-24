@@ -15,6 +15,7 @@
 | `useOutboxDrain.ts` | `JourneySyncInner` (idle) | `lib/sync/outbox.ts` — drains on mount / online / visible; registers `week.logged` |
 | `usePremium.ts` | Gated UI, Bundle | `/api/premium/status` |
 | `useUnits.ts` | Workout, calculators | `units.ts`, localStorage |
+| `useBarWeight.ts` | Train set-row plate line | `plateCalculator.ts`, `mw_bar_weight` (`.948`) |
 | `useUiMode.ts` | Layout, simplified UI | `uiMode.ts` |
 | `useTodayLayout.ts` | Today sections | `missionJourney.ts` phase flags |
 | `use-toast.ts` | shadcn toast primitive | UI only |
