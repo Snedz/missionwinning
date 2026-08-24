@@ -49,7 +49,7 @@ export function CinematicWww({ mode, door }: Props) {
   const doorGhost = g('gateEyebrow');
   const navLabel =
     mode === 'gate' ? doorGhost : t('landingNavStart', { defaultValue: 'Start free' });
-  const doorHref = mode === 'gate' ? '#door' : '/welcome';
+  const doorHref = mode === 'gate' ? '/private#door' : '/welcome';
 
   return (
     <div className="www-cine">
@@ -69,12 +69,7 @@ export function CinematicWww({ mode, door }: Props) {
         <section className="www-cine-scene www-cine-set" id="set">
           <div className="www-cine-set-inner">
             <div className="www-cine-cover www-cine-rise">
-              <div className="www-cine-mark">
-                <Mark size={96} />
-              </div>
-              <p className="eyebrow-live www-cine-kicker www-cine-mark-follow">
-                {g('cinePublicLine')}
-              </p>
+              <p className="eyebrow-live www-cine-kicker">{g('cineSetEyebrow')}</p>
               <h1 className="display-hero">{g('cineHeroHeadline')}</h1>
               <p className="www-cine-lede">{g('cineHeroLead')}</p>
             </div>
@@ -126,6 +121,7 @@ export function CinematicWww({ mode, door }: Props) {
         </section>
       </main>
       <p className="www-cine-later">{g('cineLater')}</p>
+      <p className="www-cine-never">{g('cineNever')}</p>
     </div>
   );
 }

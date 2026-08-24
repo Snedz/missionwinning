@@ -301,6 +301,17 @@
   color: hsl(var(--muted-foreground));
 }
 
+.www-cine-why-k {
+  display: block;
+  margin: 0 0 4px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: hsl(var(--muted-foreground));
+  font-feature-settings: 'tnum' 1;
+}
+
 .www-cine-demo {
   margin: 14px 0 0;
   font-size: 12px;
@@ -364,7 +375,11 @@
   }
 
   .www-cine-demo {
-    margin-top: 8px;
+    display: none;
+  }
+
+  .www-cine-lnw {
+    margin-bottom: 8px;
   }
 }
 
@@ -632,13 +647,45 @@
   font-size: 15px;
 }
 
-.www-cine-later {
+.www-cine-later,
+.www-cine-never {
   padding: 20px clamp(16px, 4vw, 48px) 8px;
   font-size: 13px;
   line-height: 1.55;
   color: hsl(var(--muted-foreground));
   max-width: 52ch;
   margin: 0;
+}
+
+.www-cine-never {
+  padding-top: 0;
+  padding-bottom: 28px;
+  letter-spacing: 0.04em;
+}
+
+.www-cine-lnw {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 14rem));
+  gap: 10px 28px;
+  margin: 0 0 16px;
+}
+
+.www-cine-lnw dt {
+  margin: 0 0 4px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: hsl(var(--muted-foreground));
+  font-feature-settings: 'tnum' 1;
+}
+
+.www-cine-lnw dd {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  font-feature-settings: 'tnum' 1;
 }
 
 .www-cine-colophon {

@@ -28,8 +28,7 @@ export const metadata: Metadata = {
     locale: 'en_US',
     siteName: 'Mission Winning',
     title: 'Mission Winning — Log a set. Offline.',
-    description:
-      'Free workout tracking, nutrition, mobility, mind, and learning — one path forward. Works offline. Mission Coach plans your week.',
+    description: 'Log a set. Offline. No account. No wearable.',
     images: [
       {
         url: '/brand/og-default.png',
@@ -42,8 +41,7 @@ export const metadata: Metadata = {
   twitter: {
     card: 'summary_large_image',
     title: 'Mission Winning — Log a set. Offline.',
-    description:
-      'Free workout tracking, nutrition, mobility, mind, and learning — one path forward. Works offline.',
+    description: 'Log a set. Offline. No account. No wearable.',
     images: ['/brand/og-default.png'],
   },
   icons: {

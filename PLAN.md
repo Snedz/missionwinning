@@ -110,6 +110,21 @@ Invite-only / Free beta / Win Daily-as-tagline stay banned. Discover surfaces; d
 
 Do not put the banner `fixed bottom-0`. Do not cover Today's Start. Do not cover SET's LOG SET with a fixed overlay. `/private` has no AppLayout host — in-flow after children is correct.
 
+### 3.7 Craft polish (same label, same cage)
+
+Still four scenes. Still the `.933` brand pack. No Comp B recut. No HUD overlay on SET.
+
+| Nit | Ship |
+|-----|------|
+| Duplicate SET line | One display `Log a set. Offline.` + 13px / 0.08em / `--primary` eyebrow **Set**. Pack keeps `cinePublicLine` as the locked sentence; do not reprint it. |
+| Double MW | HUD mark only. Kill the 64–96 cover mark. Door mark stays. |
+| 1440×900 fold | Keep the existing 1100×max-h 960 compact table. Hide the DEMO note if 03 + LOG SET need the pixels. Phone stays `100svh` and does **not** take that compact table. |
+| Demo beats | Logger shows **Last · Next · Why** on the field. Quiet “30s in the browser” as the demo note — not a new route. |
+| History / feed | Quiet later line: **History you own.** + existing “Not a feed.” Dated Never list after `</main>` (feed · wearable required · account to log). Not a fifth scene. |
+| Ghosts | Free → `/private#door`. Never filled red on SET / ANYWHERE / WEEK. |
+| Door chrome | Drop colophon “free core forever”. Invite/guide keys drop Alpha. Enter with code stays `<details>`. |
+| OG leak | Root `openGraph` / `twitter` descriptions drop nutrition / mobility / mind / learning. Wedge only: **Log a set. Offline. No account. No wearable.** Title already correct. |
+
 ## 4. Tests (write / run before claiming done)
 
 Extend existing honesty / teaser / consent tests. Falsify each new claim.

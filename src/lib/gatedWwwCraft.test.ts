@@ -63,10 +63,14 @@ test('door keys do not stamp Alpha; week title matches the field', () => {
   const en = gateStringsFor('en');
   assert.equal(en.cineWeekTitle, 'The week does not fail.');
   assert.equal(en.gateAccessSummary, 'Enter with code');
+  assert.equal(en.gateInviteHeadline, 'Enter your access code to join.');
+  assert.equal(en.gateBetaGuide, 'Start guide');
   for (const key of [
     'gateAccessSummary',
     'gateWaitlistFoot',
     'gateWaitlistDoneFoot',
+    'gateInviteHeadline',
+    'gateBetaGuide',
     'cineDoorLead',
     'cineDoorFoot',
   ] as const) {
@@ -102,5 +106,47 @@ test('consent stays after children — never a fixed overlay on LOG SET', () => 
 test('exported EN gate JSON does not restore Alpha-on-the-door', () => {
   const json = read('public/locales/en/gate.json');
   assert.match(json, /"gateAccessSummary": "Enter with code"/);
-  assert.doesNotMatch(json, /Have an Alpha access code|when Alpha access is ready/i);
+  assert.match(json, /"gateInviteHeadline": "Enter your access code to join."/);
+  assert.match(json, /"gateBetaGuide": "Start guide"/);
+  assert.doesNotMatch(json, /Have an Alpha access code|when Alpha access is ready|join the Alpha|Alpha start guide/i);
+});
+
+test('SET is one display line, HUD mark only, ghosts go to the door', () => {
+  const cine = read('src/components/landing/CinematicWww.tsx');
+  const set = cine.indexOf('id="set"');
+  const anywhere = cine.indexOf('id="anywhere"');
+  const setBlock = cine.slice(set, anywhere);
+  assert.match(setBlock, /cineSetEyebrow/);
+  assert.match(setBlock, /cineHeroHeadline/);
+  assert.doesNotMatch(setBlock, /cinePublicLine/);
+  assert.doesNotMatch(setBlock, /logo-icon|Mark /);
+  assert.match(cine, /\/private#door/);
+});
+
+test('logger demo row is last + next + why; compact 1440 hides the demo note', () => {
+  const logger = read('src/components/landing/CinematicLogger.tsx');
+  const css = read('src/components/landing/cinematic.css');
+  assert.match(logger, /www-cine-lnw/);
+  assert.match(logger, />Last</);
+  assert.match(logger, />Next</);
+  assert.match(logger, /www-cine-why-k">Why</);
+  assert.match(logger, /30s in the browser/);
+  assert.match(css, /min-width:\s*1100px\) and \(max-height:\s*960px/);
+  assert.match(css, /\.www-cine-demo \{\s*display:\s*none;/);
+  assert.doesNotMatch(css, /max-width:\s*760px[\s\S]*www-cine-setrow[\s\S]*min-height:\s*64px/);
+});
+
+test('root OG description is the Train + Coach wedge, not six pillars', () => {
+  const layout = read('app/layout.tsx');
+  assert.match(layout, /Log a set\. Offline\. No account\. No wearable\./);
+  assert.doesNotMatch(layout, /nutrition|mobility|mind, and learning/i);
+});
+
+test('door colophon drops free-core-forever; later line is not a fifth scene', () => {
+  const teaser = read('app/private/PrivateTeaserClient.tsx');
+  const cine = read('src/components/landing/CinematicWww.tsx');
+  assert.doesNotMatch(teaser, /gateFooterTagline/);
+  assert.match(cine, /www-cine-later/);
+  assert.match(cine, /www-cine-never/);
+  assert.doesNotMatch(cine, /www-cine-scene www-cine-later|www-cine-scene www-cine-never/);
 });

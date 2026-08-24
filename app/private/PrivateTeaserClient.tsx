@@ -265,7 +265,6 @@ export function PrivateTeaserClient({
 
       <div className="www-cine-colophon">
         <div className="www-cine-colophon-inner">
-          <span>{g('gateFooterTagline')}</span>
           <AppLegalFooter className="gate-footer-links" />
         </div>
       </div>

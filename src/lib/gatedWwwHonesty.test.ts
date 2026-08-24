@@ -68,7 +68,10 @@ test('nested mission: public line + support + Coach beat + quiet later, never a 
   assert.equal(en.gateSubtitle, 'No account. No wearable.');
   assert.equal(en.cineWeekKicker, 'Mission Coach');
   assert.match(en.cineLater, /Mission Winning Health/);
+  assert.match(en.cineLater, /History you own/);
   assert.match(en.cineLater, /Not a feed/);
+  assert.match(en.cineNever, /Never/);
+  assert.doesNotMatch(en.cineNever, /traction|users|athletes signed/i);
   assert.doesNotMatch(en.cineLater, /WeChat|mini-program|MySpace|Fuel · Move · Mind/i);
 });
 

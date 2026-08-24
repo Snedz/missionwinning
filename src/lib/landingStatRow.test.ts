@@ -31,8 +31,9 @@ test('cinematic www is four scenes, ghost CTA, real mark', () => {
 });
 
 test('cinematic www nested mission stays public line + support on fold 1', () => {
-  assert.match(cine, /cinePublicLine/);
   assert.match(cine, /cineHeroHeadline/);
+  assert.match(cine, /cineSetEyebrow/);
+  assert.match(gateEn, /cinePublicLine/);
   assert.match(cine, /cineHeroLead/);
   assert.match(cine, /cineWeekKicker/);
   assert.match(cine, /www-cine-later/);
@@ -57,6 +58,7 @@ test('cinematic www SET is a field, Anywhere before Week, HUD nav', () => {
   assert.match(setBlock, /www-cine-set-inner/);
   assert.doesNotMatch(setBlock, /www-cine-split/);
   assert.match(setBlock, /cineHeroLead/);
+  assert.doesNotMatch(setBlock, /logo-icon/);
   assert.match(cine, /www-cine-nav/);
   assert.doesNotMatch(cine, /www-cine-word/);
   assert.match(css, /\.www-cine-nav \{[^}]*position:\s*fixed/);

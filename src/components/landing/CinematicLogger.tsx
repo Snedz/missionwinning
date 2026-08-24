@@ -63,6 +63,16 @@ export function CinematicLogger({ doneHref = '/private', doneLabel }: Props) {
           {logged.length}/{PLANNED_SETS}
         </p>
       </div>
+      <dl className="www-cine-lnw">
+        <div>
+          <dt>Last</dt>
+          <dd>3 × 12 · 80 kg</dd>
+        </div>
+        <div>
+          <dt>Next</dt>
+          <dd>{fmt(todayTarget)}</dd>
+        </div>
+      </dl>
       <div className="www-cine-legend" aria-hidden>
         <span>Set</span>
         <span>Target</span>
@@ -86,6 +96,7 @@ export function CinematicLogger({ doneHref = '/private', doneLabel }: Props) {
         );
       })}
       <p className="www-cine-why" aria-live="polite">
+        <span className="www-cine-why-k">Why</span>
         {done && nextTarget
           ? `${t('heroDemoNextSession', { defaultValue: 'Next session' })} ${fmt(nextTarget)} — ${t(
               'heroDemoNextWhy',
@@ -106,7 +117,7 @@ export function CinematicLogger({ doneHref = '/private', doneLabel }: Props) {
         </button>
       )}
       <p className="www-cine-demo">
-        {t('heroDemoLabel', { defaultValue: 'Demo · same engine as the app' })}
+        {t('heroDemoLabel', { defaultValue: '30s in the browser · same engine as the app' })}
       </p>
     </div>
   );
@@ -120,6 +131,16 @@ export function CinematicLoggerFallback() {
         <p className="eyebrow">TARGET · Squat</p>
         <p className="www-cine-count">0/3</p>
       </div>
+      <dl className="www-cine-lnw">
+        <div>
+          <dt>Last</dt>
+          <dd>3 × 12 · 80 kg</dd>
+        </div>
+        <div>
+          <dt>Next</dt>
+          <dd>8 × 82.5 kg</dd>
+        </div>
+      </dl>
       <div className="www-cine-legend" aria-hidden>
         <span>Set</span>
         <span>Target</span>
@@ -133,10 +154,11 @@ export function CinematicLoggerFallback() {
         </div>
       ))}
       <p className="www-cine-why">
+        <span className="www-cine-why-k">Why</span>
         Last squat session you finished 3 × 12 at 80 kg, so today asks for more load.
       </p>
       <div className="primary-action">Log set · 8 × 82.5 kg</div>
-      <p className="www-cine-demo">Demo · same engine as the app</p>
+      <p className="www-cine-demo">30s in the browser · same engine as the app</p>
     </div>
   );
 }
