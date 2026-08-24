@@ -1,5 +1,5 @@
-/** Shown on Profile so testers can confirm the deployed build. Bump when shipping UI to master. `.946` F-013 smart defaults (past master `.945`). */
-export const APP_BUILD_LABEL = "2026.07-unified.946";
+/** Shown on Profile so testers can confirm the deployed build. Bump when shipping UI to master. `.947` Hevy English CSV import (past master `.946`). */
+export const APP_BUILD_LABEL = "2026.07-unified.947";
 
 /**
  * Semver for athletes. Distinct from `APP_BUILD_LABEL`, which `/api/health`

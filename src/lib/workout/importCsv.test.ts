@@ -5,6 +5,7 @@ import path from 'node:path';
 import {
   csvEscape,
   detectCsvFormat,
+  SET_TABLE_A_CSV_HEADER,
   SET_TABLE_B_CSV_HEADER,
   exerciseIdForName,
   formatDurationSeconds,
@@ -36,10 +37,14 @@ const MW = fixture('mw-native-sample.csv');
 const STRONG_EMPTY = fixture('strong-empty.csv');
 const STRONG_ONE = fixture('strong-one-workout.csv');
 const STRONG_MALFORMED = fixture('strong-malformed-row.csv');
+const HEVY_EMPTY = fixture('hevy-empty.csv');
+const HEVY_ONE = fixture('hevy-one-workout.csv');
+const HEVY_MALFORMED = fixture('hevy-malformed-row.csv');
 
 describe('importCsv', () => {
   it('detects format from the header, not the filename', () => {
     assert.equal(detectCsvFormat(SET_TABLE_A), 'set-table-a');
+    assert.equal(detectCsvFormat(HEVY_ONE), 'set-table-a');
     assert.equal(detectCsvFormat(SET_TABLE_B), 'set-table-b');
     assert.equal(detectCsvFormat(PROGRAM_LOG), 'program-log');
     assert.equal(detectCsvFormat(PROGRAM_LOG_FLAT), 'program-log');
@@ -242,6 +247,84 @@ describe('importCsv', () => {
     assert.equal(once.added, 1);
     const twice = mergeImportedLogs(once.merged, second.workouts);
     assert.ok(twice.added >= 1, 'a second file must still add new sessions');
+    assert.equal(twice.merged.length, once.merged.length + twice.added);
+  });
+
+  it('an empty Hevy file is an error, not a silent wipe', () => {
+    assert.equal(HEVY_EMPTY.trimEnd(), SET_TABLE_A_CSV_HEADER);
+    const r = parseWorkoutCsv(HEVY_EMPTY, 'metric', testId);
+    assert.equal(r.format, 'set-table-a');
+    assert.equal(r.workouts.length, 0);
+    assert.equal(r.error, 'no_data_rows');
+    assert.equal(r.skippedRows, 0);
+  });
+
+  it('a one-workout Hevy fixture keeps the exact sets — never invents', () => {
+    const r = parseWorkoutCsv(HEVY_ONE, 'metric', testId);
+    assert.equal(r.format, 'set-table-a');
+    assert.equal(r.error, undefined);
+    assert.equal(r.workouts.length, 1);
+    assert.equal(r.workouts[0].workoutName, 'Push Day');
+    const bench = r.workouts[0].exercises.find((e) => e.exerciseId === 'bench-press');
+    assert.ok(bench);
+    assert.equal(bench.sets.length, 2, 'exactly the two rows in the file');
+    assert.equal(bench.sets[0].reps, 5);
+    assert.equal(bench.sets[0].weight, 100);
+    assert.equal(bench.sets[1].reps, 5);
+    const setCount = r.workouts[0].exercises.reduce((n, e) => n + e.sets.length, 0);
+    assert.equal(setCount, 2, 'do not pad empty sets');
+    assert.equal(r.workouts[0].durationSeconds, 65 * 60);
+  });
+
+  it('a malformed Hevy row is skipped and counted; good sets stay', () => {
+    const r = parseWorkoutCsv(HEVY_MALFORMED, 'metric', testId);
+    assert.equal(r.format, 'set-table-a');
+    assert.equal(r.error, undefined);
+    assert.equal(r.skippedRows, 1, 'empty-reps Ghost Press is skipped, not invented');
+    assert.equal(r.workouts.length, 1);
+    const names = r.workouts[0].exercises.map((e) => e.exerciseId);
+    assert.ok(!names.includes('ghost-press'), 'failed row must not invent a set');
+    const bench = r.workouts[0].exercises.find((e) => e.exerciseId === 'bench-press');
+    assert.ok(bench);
+    assert.equal(bench.sets.length, 2);
+  });
+
+  it('an imperial Hevy header (weight_lbs) is still set-table-a', () => {
+    const csv =
+      'title,start_time,end_time,description,exercise_title,superset_id,exercise_notes,' +
+      'set_index,set_type,weight_lbs,reps,distance_miles,duration_seconds,rpe\n' +
+      '"Push Day","14 Jul 2026, 18:05","14 Jul 2026, 19:10",,"Bench Press (Barbell)",,,0,normal,220,5,,,\n';
+    assert.equal(detectCsvFormat(csv), 'set-table-a');
+    const imperial = parseWorkoutCsv(csv, 'imperial', testId);
+    assert.equal(imperial.format, 'set-table-a');
+    assert.equal(imperial.error, undefined);
+    assert.equal(imperial.workouts.length, 1);
+    const bench = imperial.workouts[0].exercises.find((e) => e.exerciseId === 'bench-press');
+    assert.ok(bench);
+    assert.equal(bench.sets.length, 1);
+    assert.equal(bench.sets[0].weight, 220, 'lbs column stays lbs in imperial display');
+    assert.equal(bench.sets[0].reps, 5);
+  });
+
+  it('two different Hevy files both add — no one-import cap', () => {
+    const first = parseWorkoutCsv(HEVY_ONE, 'metric', testId);
+    const second = parseWorkoutCsv(SET_TABLE_A, 'metric', testId);
+    const once = mergeImportedLogs([], first.workouts);
+    assert.equal(once.added, 1);
+    const twice = mergeImportedLogs(once.merged, second.workouts);
+    assert.ok(twice.added >= 1, 'a second Hevy file must still add new sessions');
+    assert.equal(twice.merged.length, once.merged.length + twice.added);
+  });
+
+  it('Hevy then Strong both add on the same path', () => {
+    const hevy = parseWorkoutCsv(HEVY_ONE, 'metric', testId);
+    const strongSample = parseWorkoutCsv(SET_TABLE_B, 'metric', testId);
+    assert.equal(hevy.format, 'set-table-a');
+    assert.equal(strongSample.format, 'set-table-b');
+    const once = mergeImportedLogs([], hevy.workouts);
+    assert.equal(once.added, 1);
+    const twice = mergeImportedLogs(once.merged, strongSample.workouts);
+    assert.ok(twice.added >= 1, 'a Strong file after a Hevy file must still add');
     assert.equal(twice.merged.length, once.merged.length + twice.added);
   });
 

@@ -25,6 +25,10 @@ const STRONG_EMPTY = fixture('strong-empty.csv');
 const STRONG_ONE = fixture('strong-one-workout.csv');
 const STRONG_MALFORMED = fixture('strong-malformed-row.csv');
 const SET_TABLE_B = fixture('set-table-b-sample.csv');
+const HEVY_EMPTY = fixture('hevy-empty.csv');
+const HEVY_ONE = fixture('hevy-one-workout.csv');
+const HEVY_MALFORMED = fixture('hevy-malformed-row.csv');
+const SET_TABLE_A = fixture('set-table-a-sample.csv');
 
 function installStorage(): () => void {
   const map = new Map<string, string>();
@@ -133,6 +137,85 @@ describe('importCsvRestore preview vs commit', () => {
     assert.equal(preview.added, 0);
     assert.equal(preview.duplicates, 1);
     const again = importWorkoutCsvText(STRONG_ONE);
+    assert.equal(again.ok, true);
+    assert.equal(again.added, 0);
+    assert.equal(again.duplicates, 1);
+    assert.equal(historyLen(), 1);
+  });
+});
+
+describe('importCsvRestore Hevy preview vs commit', () => {
+  it('preview of an empty Hevy file does not write', () => {
+    writeRaw(WORKOUT_STORE_KEY, JSON.stringify({ version: 0, state: { workoutHistory: [] } }));
+    const preview = previewWorkoutCsvText(HEVY_EMPTY);
+    assert.equal(preview.ok, false);
+    assert.equal(preview.error, 'no_data_rows');
+    assert.equal(preview.format, 'set-table-a');
+    assert.equal(preview.workouts.length, 0);
+    assert.equal(preview.setCount, 0);
+    assert.equal(historyLen(), 0, 'empty preview must leave persist untouched');
+  });
+
+  it('preview of one Hevy workout reports counts and does not write', () => {
+    const preview = previewWorkoutCsvText(HEVY_ONE);
+    assert.equal(preview.ok, true);
+    assert.equal(preview.format, 'set-table-a');
+    assert.equal(preview.workouts.length, 1);
+    assert.equal(preview.setCount, 2);
+    assert.equal(preview.added, 1);
+    assert.equal(preview.skippedRows, 0);
+    assert.equal(historyLen(), 0, 'preview is a dry-run');
+  });
+
+  it('confirm writes; a second different Hevy file still adds', () => {
+    const first = importWorkoutCsvText(HEVY_ONE);
+    assert.equal(first.ok, true);
+    assert.equal(first.added, 1);
+    assert.equal(historyLen(), 1);
+
+    const preview = previewWorkoutCsvText(SET_TABLE_A);
+    assert.equal(preview.ok, true);
+    assert.ok((preview.added ?? 0) >= 1);
+    assert.equal(historyLen(), 1, 'preview of a second file must not write');
+
+    const second = importWorkoutCsvText(SET_TABLE_A);
+    assert.equal(second.ok, true);
+    assert.ok((second.added ?? 0) >= 1, 'no one-import cap');
+    assert.equal(historyLen(), 1 + (second.added ?? 0));
+  });
+
+  it('Hevy then Strong both add on confirm', () => {
+    assert.equal(importWorkoutCsvText(HEVY_ONE).added, 1);
+    const preview = previewWorkoutCsvText(SET_TABLE_B);
+    assert.equal(preview.ok, true);
+    assert.equal(historyLen(), 1, 'preview of Strong after Hevy must not write');
+    const second = importWorkoutCsvText(SET_TABLE_B);
+    assert.equal(second.ok, true);
+    assert.ok((second.added ?? 0) >= 1, 'Strong after Hevy must still add');
+    assert.equal(historyLen(), 1 + (second.added ?? 0));
+  });
+
+  it('malformed Hevy rows are counted; good sets land on confirm', () => {
+    const preview = previewWorkoutCsvText(HEVY_MALFORMED);
+    assert.equal(preview.ok, true);
+    assert.equal(preview.skippedRows, 1);
+    assert.equal(preview.setCount, 2);
+    assert.equal(historyLen(), 0);
+
+    const committed = importWorkoutCsvText(HEVY_MALFORMED);
+    assert.equal(committed.ok, true);
+    assert.equal(committed.skippedRows, 1);
+    assert.equal(committed.added, 1);
+    assert.equal(historyLen(), 1);
+  });
+
+  it('re-import of the same Hevy file is a no-op on confirm', () => {
+    assert.equal(importWorkoutCsvText(HEVY_ONE).added, 1);
+    const preview = previewWorkoutCsvText(HEVY_ONE);
+    assert.equal(preview.ok, true);
+    assert.equal(preview.added, 0);
+    assert.equal(preview.duplicates, 1);
+    const again = importWorkoutCsvText(HEVY_ONE);
     assert.equal(again.ok, true);
     assert.equal(again.added, 0);
     assert.equal(again.duplicates, 1);
