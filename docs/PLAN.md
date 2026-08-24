@@ -6,6 +6,113 @@ Living roadmap for the **everything app** (a bodyweight coach app Super Bundle �
 
 ---
 
+## Frozen plan — `.948` plate math on the free set row (2026-08-24)
+
+> **Frozen.** Implement only this section. Plan commit is `[skip vercel]`.
+> Label: `2026.07-unified.948` — next free after master `.947` (Hevy import).
+> Ready for squash. Preview will not deploy. No `PRIVATE_MODE` flip.
+> Offline. No account. Log a set. Free. No medical claims. No wearable.
+> Do not restyle Today. Do not restyle the Train table chrome.
+> Keep master's product + brand pack: **Log a set. Offline.**
+
+After the athlete types a barbell weight, the live set row
+shows an optional skippable plate breakdown for the load on
+the bar (e.g. `2×45 + 2×10`). Default bar is 45 lb / 20 kg
+from their unit. Bar weight is editable. Empty or 0 weight
+invents no plates. Log a set never waits.
+
+### Investigate (done — hypothesis holds)
+
+A plate helper already exists. This ship does **not** invent
+a second greedy loader.
+
+| Layer | What exists | Gap this ship closes |
+|-------|-------------|----------------------|
+| Math | `src/lib/plateCalculator.ts` — greedy per-side, default bar 45 lb / 20 kg, closed barbell / trap-bar list | `setRowPlateLine` prints per-side `45 + 45`, not both-sides `2×45`. Bar is always the unit default |
+| Set row | `SetLogTable` mounts `plateLine` under the live weight cell; tap opens the sheet | Format is `{{plates}} / side`. No Skip. Bar not editable on the row |
+| Sheet | `PlateCalculatorSheet` + `PlateCalculatorPanel` — full loader, local bar state | Deep tool. Not the row. Bar resets to default on unit change |
+| Prefs | API `barWeightKg` / `barWeightLb` (20 / 45) | Cloud prefs only. The free logger never reads them |
+| Units | `useUnits` + `units.ts` + `STORAGE_KEYS.units` | Reuse. Do not add a second unit store |
+| Android | `PlateCalculator.kt` already formats `2×25 + 1×10` **per side** | Web only. Do not rewrite Android |
+
+Not these (do not “fix”):
+
+- Today / Summary / missed-day (`.945`)
+- F-013 dial prefills (`.946`)
+- Hevy / Strong CSV (`.947` / `.943` / `.940`)
+- Next-set cite (`.939`) — Skip pattern is the model, not a rewrite
+- Warmup ramp, Victory, gated www, account-lite
+- Wearable / HR. Calculators page. A second greedy algorithm
+- Feed, leaderboard, medical claims
+
+### Ship (only this)
+
+1. **One home for the row offer** in `src/lib/plateCalculator.ts`.
+   `setRowPlateBreakdown({ equipment, weight, units, barWeight, skipped })`:
+   - Not bar-loaded / skipped / weight missing / `≤ 0` / `≤ bar`
+     → `{ show: false }`. No invented plates.
+   - Else greedy via existing `calculatePlatesPerSide`. Both-sides
+     counts: one 45 per side → `2×45`. 135 lb + 45 bar →
+     `{ show: true, barWeight: 45, platesLine: '2×45' }`.
+   - kg path: 100 kg + 20 kg bar → `2×25 + 2×15`.
+   - Custom bar is an argument. Default is `defaultBarWeight(units)`.
+   - Keep `setRowPlateLine` as a thin wrapper (same refusals) so
+     warmup / dock callers do not fork.
+
+2. **Editable bar, local.** `STORAGE_KEYS.barWeight` (`mw_bar_weight`)
+   via `safeStorage`. Shape `{ metric, imperial }`. Missing → 20 / 45.
+   Invalid / non-finite / `≤ 0` falls back to the unit default.
+   Never `localStorage` directly. Never require an account or cloud
+   prefs. Never a wearable.
+
+3. **Skippable chrome on the live Train set row only.**
+   `SetLogTable` under the weight cell: plates line + Skip.
+   Session-local skip (same shape as next-cite `skippedCiteIds`).
+   Skip hides the line and does **not** disable or delay Log a set.
+   Small bar field on the same line (default 45 / 20). Editing the
+   bar never writes the set. The existing sheet stays as the deep
+   loader — do not make the sheet required.
+
+4. **Copy.** New EN keys in `activeWorkoutLocales.ts` (other langs
+   inherit via `...en`). Brand **Log a set**. Quiet ink — Log set
+   owns poster red. No `/ side` on the new line.
+
+### Tests
+
+- `plateCalculator.test.ts`:
+  - empty / `0` / missing equipment / dumbbells → `show === false`
+  - 135 lb + 45 bar → `2×45`
+  - 100 kg + 20 kg bar → `2×25 + 2×15`
+  - skipped → `show === false` even at 135
+  - mutant that invents plates at 0 dies
+- `SetLogTable` source: Skip is present; Log set is not gated on
+  plates / skip / bar.
+- `plateWarmupFree`: still free (no premium import).
+- `check-build-label` `.948`. LOG + CONTEXT in the same
+  implement commit.
+
+### Docs / ship protocol
+
+- `APP_BUILD_LABEL` → `2026.07-unified.948`
+- LOG heading `## 2026-08-24 — Plate math on the free set row (\`.948\`)` + rotate oldest live entry (`.928`)
+- CONTEXT `## Now` one `.948` bullet; rotate oldest shipped version bullet (`.929`); keep Status table; ≤25 bullets
+- Help: one line — on a barbell set, after you type the load, a skippable plate line may show (e.g. 2×45). Bar defaults to 45 lb / 20 kg and is editable. Skip never blocks Log a set.
+- `src/lib/INDEX.md` + `src/lib/workout/INDEX.md` + `src/components/workout/INDEX.md` name the breakdown
+- Every commit: `[skip vercel]`. PR body: how to verify 0 weight (no plates) + 135 lb (45 + 2×45) + Skip + kg
+
+### Hard bans
+
+- No `PRIVATE_MODE` / promote / EIN / secrets / feed / Discord
+- Do not steal `.947` or any in-flight label
+- Do not restyle Today
+- Do not restyle the Train table (Prev / Log set / cite stay)
+- Do not invent plates for empty or 0
+- Do not require a wearable, account, or the calculator sheet
+- Do not gate Log a set
+- Brand pack: **Log a set. Offline.**
+
+---
+
 ## Frozen plan — `.947` Hevy English CSV import (same Account path) (2026-08-24)
 
 > **Frozen.** Implement only this section. Plan commit is `[skip vercel]`.
