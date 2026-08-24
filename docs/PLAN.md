@@ -6,6 +6,111 @@ Living roadmap for the **everything app** (a bodyweight coach app Super Bundle �
 
 ---
 
+## Frozen plan — `.946` F-013 smart defaults on the free logger (2026-08-24)
+
+> **Frozen.** Implement only this section. Plan commit is `[skip vercel]`.
+> Label: `2026.07-unified.946` — next free after master `.945` (missed-day).
+> Master already has `.945` missed-day — do not smash it.
+> Ready for squash. Preview will not deploy. No `PRIVATE_MODE` flip.
+> Offline. No account. **Log a set.** Never invent a number.
+> Do not remount TARGET-above-PREVIOUS. Do not restyle Today.
+> Do not steal the Victory sheet. Keep master's brand: **Log a set. Offline.**
+
+When starting a set, the next row already holds their last
+same-exercise working set (weight/reps). Skippable. Editable.
+Never blocks Log a set. Empty history is an empty row — no
+fake 10, no wearable, no program bump.
+
+### Investigate (done — hypothesis is half-right)
+
+F-013 / #489 is the **dial prefill**, not a new Prev column.
+last-set ghost is the one-tap **Last** copy of the same number.
+The gap is empty-history honesty **and** warmup leaking into
+the dial via set-index last-actuals.
+
+| Layer | What exists | Finding |
+|-------|-------------|---------|
+| Dial (`resolveSetInput` / `resolveActiveSetDial`) | manual → prescribed → session carry (skips W) → lastPerformance → **suggestion (program bump)** → template default (`10` / `0`) | Prefill already exists. Empty history still invents `10`. A test named *"empty history does not invent a number"* asserts `10 × 0`. Suggestion still sits in the chain for freestyle with no stored set |
+| lastPerformance | `getLastPerformanceForSet` — matching **set index** from last live session | Last session set 0 can be a warmup. Dial then starts at the ramp, not the last working set. Ghost already refuses that |
+| last-set ghost (`.759`) | `resolveLastSetGhost` — last **working** set, not W, not 0-rep, not tombstone. One-tap Last. Hidden when the dial already matches | Reuse these numbers for the dial. Do not add a second Last / Prev |
+| vs-last (`.760`) | After-save `+2.5 kg` / `+1 rep` / `same` on the completed row | Different lane. Leave it |
+| Next-set cite (`.939`) | After-complete skippable next-from-logs (`suggestNextSetTarget` + cite). Not a last-actuals ghost | Different lane. Cite may bump; the **dial** must not. Leave cite |
+| e1RM (`.761`) | Educational Epley readout after a working set | Must not feed the dial. Leave it |
+| Prev column | `formatPrevSetLabels` / `getLastPerformanceForSet` — last-actuals beside the row | Official help. Do not remount Hevy PREVIOUS / `SetLogAdjacencyStack` |
+| Victory (`.944`) | Same-shape vs-last receipt after Finish | Leave it |
+| Missed-day (`.945`) | Today/Coach skippable prompt | On master. Do not smash |
+
+Not these (do not “fix”):
+
+- Today / HomePage / pin grid / Start
+- Victory sheet / `.944` receipt
+- Next-set cite surface, vs-last token, e1RM line
+- `SetLogAdjacencyStack` / TARGET-above-PREVIOUS (stays unmounted)
+- Wearable / program bump / `suggestNextSetTarget` as the starting dial
+- Missed-day `.945`
+
+### Ship (only this)
+
+1. **One last-working reader for the dial.** Reuse `resolveLastSetGhost`
+   (last working set, warmup / 0-rep / tombstone already excluded).
+   `getSetInput` / `resolveActiveSetDial` pass `{ reps, weight }` from
+   that ghost as `lastPerformance`. Do not fork a second last-session
+   loop. Leave `getLastPerformanceForSet` for the Prev column.
+
+2. **Empty history is empty.** Freestyle with no session carry and no
+   last working set returns `{ reps: 0, weight: 0 }` — not template
+   `10`, not `suggestNextSetTarget`. `resolveSetInput` keeps `suggestion`
+   as a param so callers do not break; the dial must not apply it.
+   Prescribed still echoes the plan. Manual still wins. Session carry
+   still copies today's last working set onto the next row.
+
+3. **Warmup stays on the ramp.** A live warmup row still uses the set's
+   own numbers (`resolveActiveSetDial` already does this). A warmup-only
+   history is first-ever: empty dial, no ghost.
+
+4. **Skippable / editable / never blocks.** Athlete can edit the prefill
+   (manual wins). Last tap stays for when the dial diverges. Log set
+   stays the sole poster-red primary. Do not add a second Prev, a new
+   Skip on the prefill, or a Use/Apply for this ship (cite + Use next
+   already cover next-from-logs).
+
+5. **Free forever.** No account. Offline. Same-device logs. No wearable.
+   No e1RM in the resolver.
+
+### Tests
+
+- Empty history (and warmup-only history) → dial `{ reps: 0, weight: 0 }`.
+  Mutant restoring template `10` or `suggestNextSetTarget` as the empty
+  prefill dies. The old H-05 case that asserted `10 × 0` is the defect.
+- One prior working set → dial prefills those load/reps; a manual edit
+  still wins. Session carry still beats last week on set 2.
+- Cite / ghost / Prev are not remounted as a second Prev:
+  `SetLogTable` still does not import `SetLogAdjacencyStack`; Last tap
+  stays `LastSetGhostButton`; `formatPrevSetLabels` stays the Prev column.
+- Dial path does not import `sessionE1rm` / readiness / Victory / Today.
+- `check-build-label` `.946`. LOG + CONTEXT in the same implement commit.
+
+### Docs / ship protocol
+
+- `APP_BUILD_LABEL` → `2026.07-unified.946`
+- LOG heading `## 2026-08-24 — F-013 smart defaults on the free logger (\`.946\`)` + rotate oldest live entry
+- CONTEXT `## Now` one `.946` bullet; rotate oldest shipped version bullet (`.926`); keep Status table; ≤25 bullets
+- Help: one sentence — the next set starts with last time's working load; first-ever is empty; edit or tap Last; Log a set never waits
+- `src/lib/workout/INDEX.md` — dial last-working + honest empty
+- i18n: reuse `activeLastPerformance` / Log a set. No new Prev chrome
+- Every commit: `[skip vercel]`. PR body: how to verify empty first set + one prior prefill on Train
+
+### Hard bans
+
+- No `PRIVATE_MODE` / promote / EIN / secrets / feed
+- Do not smash master `.945` missed-day or steal `.944`
+- Do not remount Hevy PREVIOUS / `SetLogAdjacencyStack`
+- Do not restyle Today
+- Do not steal the Victory sheet
+- Do not invent a wearable or program-bump default
+
+---
+
 ## Frozen plan — `.945` missed-day re-entry (skippable) (2026-08-24)
 
 > **Frozen.** Implement only this section. Plan commit is `[skip vercel]`.
