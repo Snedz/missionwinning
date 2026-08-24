@@ -146,6 +146,12 @@ export const STORAGE_KEYS = {
    * onto the next account (P1-5).
    */
   storageOwner: 'mw_storage_owner',
+  /**
+   * Timestamp (ms) written immediately before an athlete-initiated sign-out.
+   * Survives the wipe keep-list so other tabs can see the intent.
+   * `SIGNED_OUT` without a fresh mark must not clear the guest log.
+   */
+  explicitSignOut: 'mw_explicit_sign_out',
   /** Counsel-hold pregnancy / postpartum flag — symptom line only. */
   pregnancyFlag: 'mw_pregnancy_flag',
   /** Five-event field test published-table scale key. */

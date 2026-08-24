@@ -18,7 +18,10 @@ import { useTranslation } from 'react-i18next';
 import { Settings } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 import { supabase, signOut } from '@/lib/supabase';
-import { clearAthleteLocalState } from '@/lib/storage/athleteLocalState';
+import {
+  clearAthleteLocalState,
+  markExplicitSignOut,
+} from '@/lib/storage/athleteLocalState';
 import { formatOAuthError } from '@/lib/oauthConfig';
 import { useMissionJourney } from '@/hooks/useMissionJourney';
 import { daysSinceCommission } from '@/lib/missionJourney';
@@ -258,6 +261,7 @@ export function AccountPage() {
   };
 
   const handleSignOut = async () => {
+    markExplicitSignOut();
     clearAthleteLocalState();
     await signOut();
     if (typeof window !== 'undefined') {

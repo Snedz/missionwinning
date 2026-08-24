@@ -6,6 +6,87 @@ Living roadmap for the **everything app** (a bodyweight coach app Super Bundle �
 
 ---
 
+## Frozen plan — `.941` account-lite auth harden (2026-08-24)
+
+> **Frozen.** Implement only this section. Plan commit is `[skip vercel]`.
+> Label: `2026.07-unified.941` — next free after master `.940` (#779).
+> Do not steal `.935` (#778 gated www, still running).
+> Ready for squash. Preview will not deploy. No `PRIVATE_MODE` flip.
+> No login wall. No new IdP. No Discord. No invite-only. No Vercel
+> Deployment Protection as product auth. Mission ID mint stays
+> server-only (503/502 when admin/project is dark).
+> F-017 first set without account stays.
+> Keep master's product + brand pack: **Log a set. Offline.**
+
+### Investigate (done — hypothesis holds)
+
+The gap is **session restore + copy that still frames an account as
+required**, not a missing OAuth provider.
+
+| Layer | What exists | Finding |
+|-------|-------------|---------|
+| **Guest first set (F-017)** | `firstSetUngated.ts`, Welcome has no sign-in step, Train does not mount `SignInPrompt`, header chip waits for first workout and never paints on `/active` | Already shipped (`.746` / `.762` / `.766`). Keep. |
+| **Optional sign-in** | Magic link + Google (Apple/Azure/Facebook env-gated) in `SignInPanel`. No password theater. Skip exists for Welcome-style `allowSkip`. | Do **not** add Discord, SSO on the logger, or a new IdP. |
+| **Waitlist / Enter with code** | `/private` teaser + `POST /api/private-access`. Waitlist is `submitLead`. Proxy parks ungated visitors on `/private`, not on Train itself. | Gated-www door. Not a Train lock. Do not move it onto `/active`. |
+| **Cookies / session** | `@supabase/ssr` cookie client (`supabase.ts`). Server reads `sb-*-auth-token` in `supabaseAuthCookies.ts`. Gate cookie is HMAC `privateSession`, separate from auth. | No guest JWT. Guest identity is device storage (`mw_device_id` + zustand `workout-tracker-storage`). |
+| **Mission ID** | Server mint `GET /api/account/mission-id` → `claimMissionIdForUser` on `mission_ids`. Client `useMissionId` stays null on 401/503/502. Display-only `identity/missionId.ts`. | **Not local-only.** Do not invent a client mint. CONTEXT records the table applied; if the project is paused the route already fails closed. Leave it. |
+| **Silent wipe** | `useJourneySync` calls `clearAthleteLocalState()` on **every** `SIGNED_OUT`. That helper deletes the workout store, journey, device id, and every `mw_*` key except consent/locale. Account page also wipes on explicit sign-out (correct). | **This is the defect.** Supabase emits `SIGNED_OUT` on boot-with-no-session, expired JWT, demo client, and token-refresh failure — not only on Profile → Sign out. A returning guest (or a signed-in athlete whose cookie died) loses the local log. |
+| **Copy** | `LOCAL_FIRST_COPY` is honest. Train/Today/Welcome already say no account. `SignInPrompt` default (`signInPromptDefault`) still says "Sign in to sync workouts…" on Fuel/Builder/etc. Header "Sign in" is wayfinding after the first workout. | Harden first-set surfaces so they cannot say an account is required to log. Do not restyle Fuel's optional prompt into a wall. |
+
+Not these (do not "fix"):
+
+- Do not add a login wall, skip-sign-in step on I-Day, or `SignInPrompt` under the logger.
+- Do not enable Vercel Deployment Protection as product auth.
+- Do not flip `PRIVATE_MODE`, promote, open Public GitHub, or add feed/DMs.
+- Do not mint Mission ID locally or pretend `/api/account/mission-id` succeeded.
+- Geo-blocks stay. No new regions. No pregnancy/PT work.
+- Brand: Log a set. Offline. / No account. No wearable.
+
+### Ship (only this)
+
+1. **Pure wipe decision** in `athleteLocalState.ts` (one home):
+   - `planSignedOutStorage({ explicitSignOut })` → `'wipe-athlete' | 'keep-local'`.
+   - Wipe only when the athlete marked an explicit sign-out.
+   - `SIGNED_OUT` without that mark **keeps** the workout store and guest keys.
+   - `markExplicitSignOut` / `hasFreshExplicitSignOut` use a timestamp key on the keep-list so other tabs can see the intent. Stale marks do not wipe.
+2. **Wire:**
+   - `AccountPage.handleSignOut` marks intent, then clears, then `signOut()` (privacy wipe for a real leave stays).
+   - `useJourneySync` `SIGNED_OUT` uses the predicate. Presence still flips to guest. No wipe on boot/expiry.
+3. **Copy / Train CTA:**
+   - First-set surfaces (Welcome, Train, Today header, `LOCAL_FIRST_COPY`, `firstSetUngated`) must not say you need an account to log.
+   - Optional auth chrome cannot sit on `/active` or cover the first-set CTA. Reuse F-017 wiring; do not raise `TAP_BUDGET`.
+   - Waitlist / Enter with code stays on `/private`. Source guard: Train does not import waitlist, private-access, or `SignInPanel`.
+4. **Mission ID:** no product change. Keep fail-closed display. Add a source lock that the client never writes `mission_ids` / never invents an integer.
+
+### Tests
+
+- **Guest first set still works:** existing `firstSetUngated` + `TAP_BUDGET` 4. Mutant adding `SignInPrompt` on Train dies.
+- **Signed-out restore does not wipe:** persist a workout-store payload; run `SIGNED_OUT` with `explicitSignOut: false`; history key still present. Explicit mark wipes. Mutant restoring unconditional `clearAthleteLocalState()` in the listener dies.
+- **Optional auth cannot block Train CTA:** header chip predicate false on `/active` and before first workout; Welcome has no sign-in step; Train does not import `SignInPanel` / waitlist / private-access.
+- `check-build-label` `.941`. LOG + CONTEXT in the same implement commit.
+
+### Docs / ship protocol
+
+- `APP_BUILD_LABEL` → `2026.07-unified.941`
+- LOG heading `## 2026-08-24 — Account-lite auth harden (\`.941\`)` + rotate oldest live entry (`.921`)
+- CONTEXT `## Now` one `.941` bullet; rotate oldest shipped version bullet (`.922`); keep Status table; ≤25 bullets
+- Help: one line — returning to this device restores the same local log; sign-out of an account still clears this device
+- `src/lib/storage/INDEX.md` + `src/hooks/INDEX.md` if the wipe rule / hook contract changed
+- Every commit: `[skip vercel]`
+
+### Hard bans
+
+- No `PRIVATE_MODE` / promote / Public GitHub / invented traction
+- No login wall / SSO on the logger / Discord / invite-only
+- No new IdP / password theater
+- No Vercel Deployment Protection as product auth
+- No local Mission ID mint
+- Do not steal `.935` (#778) or master's `.940`
+- Do not gate the free logger
+- Do not weaken geo-block
+
+---
+
 ## Frozen plan — `.940` Strong CSV import (preview + confirm) (2026-08-24)
 
 > **Frozen.** Implement only this section. Plan commit is `[skip vercel]`.

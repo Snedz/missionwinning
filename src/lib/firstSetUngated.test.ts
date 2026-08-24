@@ -172,6 +172,27 @@ describe('firstSetUngated wiring', () => {
     assert.doesNotMatch(cold, /skip/i);
   });
 
+  it('optional auth cannot block the Train CTA', () => {
+    const page = read('src/page-components/ActiveWorkoutPage.tsx');
+    assert.doesNotMatch(page, /from\s+['"]@\/components\/auth\/SignInPanel['"]/);
+    assert.doesNotMatch(page, /SignInPanel/);
+    assert.doesNotMatch(page, /\/api\/private-access/);
+    assert.doesNotMatch(page, /submitLead|LaunchNotifyForm|UnlockButton/);
+    assert.doesNotMatch(page, /need an account|create an account|sign in to (?:log|start|train)/i);
+
+    const empty = read('src/components/workout/ActiveEmptyState.tsx');
+    assert.doesNotMatch(empty, /SignInPrompt|SignInPanel/);
+    assert.doesNotMatch(empty, /need an account|create an account/i);
+
+    const welcome = read('src/page-components/WelcomePage.tsx');
+    assert.doesNotMatch(welcome, /<SignInPanel/);
+    assert.doesNotMatch(welcome, /need an account to/i);
+
+    assert.equal(showHeaderSignInChip({ hasFirstWorkout: false, pathname: '/log' }), false);
+    assert.equal(showHeaderSignInChip({ hasFirstWorkout: false, pathname: '/active' }), false);
+    assert.equal(showHeaderSignInChip({ hasFirstWorkout: true, pathname: '/active' }), false);
+  });
+
   it('speech does not own Active first paint or the set-log table', () => {
     const firstPaint = [
       'src/page-components/ActiveWorkoutPage.tsx',
