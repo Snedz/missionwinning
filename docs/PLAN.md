@@ -6,6 +6,95 @@ Living roadmap for the **everything app** (a bodyweight coach app Super Bundle �
 
 ---
 
+## Frozen plan — `.934` E-Adjacency next-set cite (2026-08-24)
+
+> **Frozen.** Implement only this section. Plan commit is `[skip vercel]`.
+> Label: `2026.07-unified.934` (master is `.930`).
+> Do not steal `.931` (F-008 honesty #775) · `.932` (Coach why-line #774) · `.933` (brand #776).
+> Draft PR. Preview will not deploy (`[skip vercel]` on every commit).
+> Excellence is pass — still do not restyle Train.
+> No `PRIVATE_MODE` flip. No Public GitHub. No promote. No Discord. No DMs/feed/Top 8.
+> Public line stays **Log a set. Offline.** Do not put Train Anywhere. Win Daily. on the door.
+> Name Mission Winning stays. Paper/ink/red tokens stay.
+> No medical or PT-safety claims. No field-test work.
+> Canada/EEA geo-blocks stay as coded.
+
+Free. On Train / the set row, after a completed working set, show the next set
+the logs earn (weight/reps or rest), cited from their last sets. Skippable.
+Never blocks logging. Not a feed. Not a paywall. Not a wearable. **E-Adjacency
+is not a marketing name on the door.**
+
+### Investigate (done — hypothesis holds, with one extra unused stack)
+
+| Primitive | What it already does | Gap |
+|-----------|----------------------|-----|
+| `suggestNextSetTarget` | Double-progression next weight/reps from last working sets (`evidenceWorkingIdx`) | Numbers only — no after-complete paint |
+| `setRowAdjacency.ts` | Target + weekday/set cite from last *live* session; honest empty; coach cite when prescribed | **Never mounted** on Train |
+| `SetLogAdjacencyStack.tsx` | TARGET + cite above PREVIOUS | **Never imported** |
+| `lastSetGhost` | One-tap copy of the *last* working set into the dial | Last, not next; not a cite |
+| `vsLastSet` | After-save `+2.5 kg` / `+1 rep` / `same` | Comparison of the set just logged, not the next one |
+| Header `activeNextTargetLine` | Uncited `Next: 8 × 60 kg` | No provenance; not skippable; not on the set row |
+| Coach why-line (#774) | Session story on the Coach **boss card** | Different surface — do not steal |
+
+Conclusion: last-set ghost + vs-last already have *last* numbers. Next-set
+numbers already live in `suggestNextSetTarget` / `setRowAdjacency`. The gap is
+a **visible, skippable, cited next-set after complete** on the free logger.
+
+### Ship (only this)
+
+1. **One new resolver** in `setRowAdjacency.ts` — `resolveAfterCompleteCite`.
+   Reuse `suggestNextSetTarget`, `lastLiveSessionForExercise`, `formatAdjacencyCiteLine`.
+   Do not fork double-progression. Do not import readiness / freshness / Recovery % /
+   `sessionRationale` / premium.
+2. **Evidence, in order:**
+   - The completed row must be a **working** set (`completed`, not warmup). Else quiet.
+   - Empty history **and** no completed working set this session → `null`. Never invent 8 × 60.
+   - One completed working set this session (first-ever) → load/reps from that set via
+     `suggestNextSetTarget`; cite `From this session · set N` (no invented weekday).
+   - Last live session exists → existing log cite (`From last {day} · set N`).
+   - Prescribed next row → planned numbers + `Coach plan` cite (not a fake Tuesday).
+   - No next incomplete set, but `recallLastRest` has seconds → rest cite (`Rest 2:30 · Last rest`).
+     Do **not** invent rest from the name heuristic — that is not a log.
+3. **Paint on `SetLogTable` only** (the live set row). After the completed set's
+   rate row: quiet ink line `9 × 60 · From last Mon · set 2` (or rest) + outline **Skip**.
+   `data-testid="set-table-next-cite"` / `set-table-next-cite-skip`.
+   Skip is session-local state (hide this set id). Log set stays the sole red primary.
+   Do not remount `SetLogAdjacencyStack` into the Prev column (that restyles the table).
+   Do not add Use/Apply here — ghost and Use next already write the dial.
+4. **Free forever.** No premium read. No account. Offline. Same device logs.
+5. **Help:** one sentence on the first-workout set log — after a working set, the
+   next load or last rest is cited from the log; Skip is fine.
+
+### Tests
+
+- Empty history + no completed working set → `resolveAfterCompleteCite` is `null` (does not invent).
+- One logged working set + a next planned row → skippable load cite (target + provenance).
+- Skip wiring: `SetLogTable` mounts Skip; Log set is still `primary-action`; Skip is not red.
+- Warmup complete stays quiet. Tombstone history is not evidence (existing last-live rule).
+- Source: does not import `sessionRationale` / PlanSessionCard / readiness.
+- Door / teaser / www do not gain an "E-Adjacency" string.
+- `check-build-label` `.934`. LOG + CONTEXT in the same implement commit.
+
+### Docs / ship protocol
+
+- `APP_BUILD_LABEL` → `2026.07-unified.934`
+- LOG heading `## 2026-08-24 — Next-set cite after a logged set (\`.934\`)` + rotate oldest live entry
+- CONTEXT `## Now` one `.934` bullet; rotate oldest shipped version bullet (`.917`); keep Status table; ≤25 bullets
+- i18n: cite / skip / weekday / rest keys in `activeWorkoutLocales.ts`; `npm run i18n:fill` + parity
+- INDEX: `src/lib/workout/INDEX.md` + `src/components/workout/INDEX.md`
+- Every commit: `[skip vercel]`
+
+### Hard bans
+
+- No `PRIVATE_MODE` / Public GitHub / promote / Discord / DMs / feed / Top 8
+- Do not steal #774 why-line (Coach boss card) / #775 honesty / #776 brand
+- Do not restyle the whole Train screen
+- Do not put Train Anywhere. Win Daily. or Win Daily as a company tagline
+- Do not print E-Adjacency on the door or in athlete chrome
+- No medical / PT-safety / field-test work
+- Do not invent new geo-blocks
+- Do not gate the free logger
+- Do not raise `TAP_BUDGET`
 ## Frozen plan — `.932` Coach why-this-session (reserved `.699` / F-012) (2026-08-24)
 
 > **Frozen.** Implement only this section. Plan commit is `[skip vercel]`.
