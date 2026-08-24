@@ -1,166 +1,151 @@
-# PLAN.md — Gated www craft (`.942`)
+# PLAN.md — Restore the tight `/private` lock (`.957`)
 
 **Freeze.** Implement only this file. Do not reopen refused items mid-build.
-**Not** [docs/PLAN.md](docs/PLAN.md) (build phases A–I). Thesis: [docs/design/WWW_NIGHT.md](docs/design/WWW_NIGHT.md). Comp: [docs/design/concepts/05-exquisite.html](docs/design/concepts/05-exquisite.html).
-**Lane:** Engineering-Web · gated first paint · **Horizon:** 0 / W craft window
-**Label:** `2026.07-unified.942` (master is `.941` after #780. `.935` was this PR’s first mint; do not keep it.)
-**Excellence-Override:** gated www craft (no Today/Train restyle)
+**Not** [docs/PLAN.md](docs/PLAN.md) (build phases A–I). The living roadmap
+gets a matching frozen section so agents following the boot order find this
+ship; this file is the door freeze (same home as the `.942` four-scene plan
+this ship reverses).
+**Lane:** Engineering-Web · gated first paint · **Horizon:** 0
+**Label:** `2026.07-unified.957` (master is `.956` / `#793` `8b71ea50`.
+Do **not** smash E-Victory `.956`.)
+**Excellence-Override:** restore tight gated lock (no Today/Train restyle)
 
 ---
 
 ## 0. What this is
 
-`.933` locked the **words**. Cold visitors still do not see the **page**.
+Founder verdict 2026-08-24: the four-scene gated www door on Preview `.955`
+is refused. The live lock at https://www.missionwinning.com/private
+(build `.696`) is the density they want: one hero, one notify form, one
+access-code section, header badge. Tight. Not a marketing scroll.
 
-`PRIVATE_MODE` stays on. This is a gated-www craft pass, not a public flip.
+`#778` (`.942`) turned `/private` into SET → ANYWHERE → WEEK → DOOR.
+That layout is refused as first paint. Restore the old lock chrome.
+Keep the `#776` copy lock. Do not bring old words back.
 
-## 1. Investigate (done — hypothesis was half-right)
+`PRIVATE_MODE` stays on. This is a gate restore, not a public flip.
+Live www stays `.696`. Do not promote.
 
-Founder hypothesis: *the words are locked; the gap is motion, type scale, and door hierarchy.*
+## 1. Investigate (done — hypothesis holds)
 
-| Claim | Verified on master `.933` |
-|-------|---------------------------|
-| Words locked | **Yes.** EN `gateEyebrow` is Free. Public line / support / door pack live in `gateEn.ts` + `gatedWwwHonesty.ts`. Tests already ban invite-only / Free beta / Win Daily-as-tagline. |
-| Motion / type / hierarchy | **Yes, and they are not the whole gap.** |
-| Visitors see 05-exquisite | **No.** |
+| Claim | Verified on `origin/master` `.955` (`2d9428a2`) |
+|-------|-----------------------------------------------|
+| First paint is the four-scene field | **Yes.** `GateTeaser` wraps `CinematicWww mode="gate"` and passes `PrivateTeaserClient` as `door`. Scenes `id="set"` → `anywhere` → `week` → `door`. SET mounts `CinematicLogger` (squat demo). |
+| Cookie / gate-off `/` is `.696` | **Yes.** `app/page.tsx` cookie → `LandingPage`. Do not restore `CinematicWww` as `/`. |
+| `#776` copy lock is still the pack | **Yes.** `gateEn.ts`: `Log a set.` / `Offline.` · `No account. No wearable.` · `Free` · `Get notified` · `Enter with code`. `gatedWwwHonesty.ts` still bans Win Daily / Alpha / Beta / invite-only / Free beta / Private Beta / Get an invite / We're live. |
+| Pre-`.942` door was the tight lock | **Yes.** Parent of `82fcc739` (`GateTeaser` mounts `PrivateTeaserClient` only). Markup: `gate-shell` · MW mark + Mission Winning · `gate-h1` (`gateTitle1` / `gateTitle2`) · `gate-lede` (`gateSubtitle`) · `LaunchNotifyForm variant="gate"` · `<details>` Enter with code · legal footer. That is image 1 density with locked copy already in the pack. |
+| `#778` leftovers that are not the scroll | **Keep.** F-039 `/today` `/train` 308 in `proxy.ts`. `/notify` Super Bundle form (`NotifyPage` + `app/notify/page.tsx`). `LaunchNotifyForm` still has `variant="gate"`. Session probe, territory refuse, invitee expand, `?next=` stay on the teaser. |
 
-**What a cold visitor actually gets**
+**Conclusion:** smallest revert is unmount `CinematicWww` from `GateTeaser` and
+restore the pre-`.942` teaser chrome. Do not delete `CinematicWww` /
+`CinematicLogger` / `cinematic.css` (concept + unused port). Do not remount
+them on `/` or `/private`. Do not revert F-039 or `/notify`.
 
-- Prod `/` 307s to `/private`.
-- `/private` is `GateTeaser` → `PrivateTeaserClient`: one paper column (MW wordmark · H1 · lede · email row · access `<details>`). That is a **signup sheet**.
-- `CinematicWww` already ports N1 (SET / ANYWHERE / WEEK / DOOR) and is **dead to visitors**. `LandingPage` must not mount it (GRAPH_LOOP / `.696`). `previewHomeTeaser.test.ts` currently forbids it on `GateTeaser` — that test is protecting the *homepage*, and it accidentally kept the *door* as the old sheet.
+## 2. Lock (density + copy)
 
-**Leftovers that survived `.933` (door chrome, not Profile)**
+First paint of gated `/` and `/private`:
 
-- `gateAccessSummary`: “Have an Alpha access code?”
-- `gateWaitlistFoot` / `gateWaitlistDoneFoot`: “when Alpha access is ready”
-- Locale overlays still sell the retired company line on `gateTitle1` / `gateTitle2` (hydration-only; SSR floors EN)
+| Slot | Chrome | Copy (locked) |
+|------|--------|----------------|
+| Header | MW badge + Mission Winning · eyebrow right | **Free** (`gateEyebrow`) |
+| Hero | `gate-h1` two lines · lede | **Log a set.** / **Offline.** · **No account. No wearable.** |
+| Notify | one section, one red | **Get notified** · email · **Notify me** · no-spam foot |
+| Code | `<details>` below a rule | **Enter with code** |
+| Footer | tagline + legal | `gateFooterTagline` · existing `AppLegalFooter` |
 
-**Already true — do not “fix” again**
+Banned on the door (already enforced): Win Daily, Alpha, Beta, invite-only,
+Free beta, Private Beta, Get an invite, We're live.
 
-- Consent is **not** `fixed bottom-0`. AppLayout host sits between `#screen-dock` and `MobileNav` (`.765` / ops #19). Marketing fallback is in-flow after children.
-- `LaunchNotifyForm` already mounts on `/private` (`source: 'launch-waitlist'`).
-- `#775` F-008 is open and dirty. **Do not fight its copy.** Brand pack on master wins the words. This PR owns craft + leftover Alpha-on-the-door.
-
-**Conclusion:** mount the four-scene field on the live door. Then raise type scale, door hierarchy, and a reduced-motion-safe rise so first paint matches 05-exquisite — field manual, not SaaS signup.
-
-## 2. Scene lock (do not invent a fifth)
-
-| Scene | Ground | What it is |
-|-------|--------|------------|
-| **1 · SET** | Paper. Logger *is* the photography. | Stacked MW. Public line **Log a set. Offline.** Support **No account. No wearable.** TARGET / set table. **LOG SET** is the one poster control. |
-| **2 · ANYWHERE** | One inverted field. Honest ink slot (no generated photo as live cover). | Type on the field, lower-left, max ~520px. Kicker **Anywhere**. |
-| **3 · WEEK** | Paper. | **Mission Coach.** Authored Miss / Travel / Band. Title **The week does not fail.** |
-| **4 · DOOR** | Poster `#ec3013`. | Kicker **Free.** Display **Get notified.** Form on a **paper strip**. Enter with code is `<details>`, never a second poster control. |
-
-HUD: fixed, transparent, mix-blend difference, mark left, ghost **Free** → `#door`. No wordmark mass. No Kalligator. No photo-first cover. Civilization / everything-app stay off fold 1.
+No squat demo. No Anywhere scene. No Coach Miss / Travel / Band. No
+four-scene field. One screen, not SET → ANYWHERE → WEEK → DOOR.
 
 ## 3. Ship (only this)
 
-### 3.1 PLAN (this file)
+### 3.1 PLAN (this file + `docs/PLAN.md` section)
 
-Replace the `.933` freeze. Implement commit follows.
+This freeze. Implement commit follows. Plan commit is `[skip vercel]`.
 
-### 3.2 Live door = four scenes
+### 3.2 Live door = tight lock
 
-`GateTeaser` wraps `CinematicWww mode="gate"` and passes `PrivateTeaserClient` as `door`.
+`GateTeaser` mounts `PrivateTeaserClient` only. No `CinematicWww` wrap.
 
-- Prod `/private` and Preview/local `/` (until cookie) show the same field.
-- Cookie / gate-off `/` stays `.696` `LandingPage`. **Do not restore `CinematicWww` as `/`.**
-- Update `previewHomeTeaser.test.ts`: the door *is* cinematic; the homepage is not.
+- Prod `/private` and Preview/local `/` (until cookie) show the same lock.
+- Cookie / gate-off `/` stays `.696` `LandingPage`.
+- Restore `PrivateTeaserClient` to the pre-`.942` `gate-shell` layout
+  (header / h1 / notify / details / footer). Keep session probe under the
+  poster (no early return). Keep territory refuse / notice. Keep invitee
+  expanded code form. Keep `LaunchNotifyForm` `source="launch-waitlist"`
+  `variant="gate"`.
+- One red: **Notify me** (`gate-btn-primary`). Enter with code is
+  secondary (`gate-btn-secondary`).
 
-### 3.3 Door slot is forms only
+### 3.3 Keep later-safe `#778` bits (not first paint)
 
-`PrivateTeaserClient` drops the second header / H1 / lede (those are scene 1). It keeps:
+- F-039 `/today` `/train` 308 before the gate (`proxy.ts`).
+- `/notify` Super Bundle form. Do not put Super Bundle on the door.
+- Copy lock + honesty pack. Do not restore "Train anywhere. Win daily."
+- `CinematicWww` stays in tree, unmounted from the door.
 
-- `LaunchNotifyForm` (`launch-waitlist`) — required while `/private` is the door
-- Access-code `<details>` (invitee: form expanded, not a second poster button)
-- Territory refuse / notice
-- Session probe **under** the poster, never an early return
-- Legal footer on the paper strip
+### 3.4 Tests
 
-Door hierarchy matches 05-exquisite: stacked mark (from `CinematicWww`) · **Free** · **Get notified.** · paper strip · Enter with code as summary.
+Door copy lock stays green (`gatedWwwHonesty.test.ts` pack + banned regex).
 
-Floor every `t()` default from `gateEnFloor` so SSR and hydrate cannot disagree.
+Rewrite first-paint assertions that require SET / ANYWHERE / WEEK on
+`/private`:
 
-### 3.4 Craft — type, motion, hierarchy
+| File | Change |
+|------|--------|
+| `gatedWwwCraft.test.ts` | Door is tight lock (`gate-shell` / `gate-h1` / no `CinematicWww` on `GateTeaser`). Mutant remounting the wrap dies. Homepage ban holds. Consent still after children. Alpha-on-the-door still banned. Drop scene-order / squat-demo / four-scene polish as *door* assertions. |
+| `previewHomeTeaser.test.ts` | `GateTeaser` is the tight lock; homepage is not cinematic. |
+| `gateTeaserHonesty.test.ts` | Notify title lives on the teaser again (`gateWaitlistTitle`). |
+| `gatedWwwHonesty.test.ts` | Wedge teaser + support lede live on `PrivateTeaserClient` (`data-mw-wedge-teaser` / `gateSubtitle`). |
+| `firstPaintFloor.test.ts` | Gate poster is the teaser h1, not `cineHeroHeadline`. Session probe still must not early-return. |
+| `firstSetWhileGated.test.ts` | Notify stays on the door; form uses `gate` variant (primary notify), not cine ghost. |
 
-Scoped to `.www-cine` / `cinematic.css`. No new palette. No second face. Radius 0.
+Leave as concept-only (not first paint): `exquisiteComp.test.ts` (HTML
+comp), `landingStatRow.test.ts` (component still exists, still not `/`).
 
-- SET / WEEK display sizes match the comp clamps (`h1` 2.625–4.75rem, `h2` 2.25–4.25rem). Do not add `text-*` on `.display-*`.
-- One reduced-motion-safe rise on cover / logger / week / door (opacity + 12px). `prefers-reduced-motion: reduce` kills it.
-- LOG SET remains the only `.primary-action` / poster control on paper. Door submit stays ghost on the strip.
-- Week title in `gateEn.ts` → **The week does not fail.** (pack currently disagrees with the component default — that is first-paint drift the moment this page is live.)
+`landingNotifyForm.test.ts` `/notify` + shared form stay. F-039
+`proxyAliasRedirect.test.ts` stays.
 
-### 3.5 Kill leftover Alpha-on-the-door
+Mutant that remounts `<CinematicWww` on `GateTeaser` dies.
+Mutant that restores `Train anywhere. Win daily.` on the door dies
+(existing honesty).
 
-EN (and overlays that restore the defect):
+### 3.5 Docs that would lie if left on four-scene-as-door
 
-| Key | From | To |
-|-----|------|----|
-| `gateAccessSummary` | Have an Alpha access code? | **Enter with code** |
-| `gateWaitlistFoot` | …when Alpha access is ready. | **No spam — one email when access is ready.** |
-| `gateWaitlistDoneFoot` | We'll email you when Alpha access is ready. | **We'll email you when access is ready.** |
+- `app/INDEX.md` `/private` row
+- `src/components/landing/INDEX.md` (`CinematicWww` is not the live door)
+- `src/lib/INDEX.md` first-paint row
 
-Do **not** strip Alpha 0.1.0 from Profile / legal / `PublicStatusBar`.
+## 4. Refuse
 
-Invite-only / Free beta / Win Daily-as-tagline stay banned. Discover surfaces; do not invent a second denylist.
+- Promote live. Flip `PRIVATE_MODE`. Feed. Public identity. Counsel-hold.
+- Super Bundle on the door.
+- Today / Train / Coach product (`.954` one Start, `.955` Wednesday cite).
+- Restore `CinematicWww` as `/`.
+- Restore old words (Win Daily / Private Beta / Get notified at launch as
+  the company line).
+- Delete F-039 aliases or `/notify`.
+- Smash E-Victory `.956`.
 
-### 3.6 Consent (P0, already docked — re-assert)
+## 5. Ship protocol
 
-Do not put the banner `fixed bottom-0`. Do not cover Today's Start. Do not cover SET's LOG SET with a fixed overlay. `/private` has no AppLayout host — in-flow after children is correct.
+- `APP_BUILD_LABEL` → `2026.07-unified.957`
+- LOG heading `## 2026-08-24 — Restore the tight /private lock (\`.957\`)`
+  + rotate oldest live entry (`.941`; `.940` already rotated by `.956`)
+- `.956` landed as `#793` — do **not** declare `956` in
+  `logBudget` `NEVER_SHIPPED`.
+- `CONTEXT.md` `## Now` one-line `.957`; keep the `.956` Now bullet;
+  rotate oldest shipped Now bullet (`.942`) so the block stays ≤25
+- Plan commit `[skip vercel]`. Implement commit `[skip vercel]` (founder
+  did not ask for a Preview). Screenshot the restored `/private` in the PR.
+- Draft PR. Do not merge. Do not promote.
 
-### 3.7 Craft polish (same label, same cage)
+## 6. Done when
 
-Still four scenes. Still the `.933` brand pack. No Comp B recut. No HUD overlay on SET.
-
-| Nit | Ship |
-|-----|------|
-| Duplicate SET line | One display `Log a set. Offline.` + 13px / 0.08em / `--primary` eyebrow **Set**. Pack keeps `cinePublicLine` as the locked sentence; do not reprint it. |
-| Double MW | HUD mark only. Kill the 64–96 cover mark. Door mark stays. |
-| 1440×900 fold | Keep the existing 1100×max-h 960 compact table. Hide the DEMO note if 03 + LOG SET need the pixels. Phone stays `100svh` and does **not** take that compact table. |
-| Demo beats | Logger shows **Last · Next · Why** on the field. Quiet “30s in the browser” as the demo note — not a new route. |
-| History / feed | Quiet later line: **History you own.** **Today is not a Feed.** Dated Never list on the door strip (feed · wearable required · account to log). Not a fifth scene. Not a new route. |
-| Ghosts | Free → `/private#door`. Never filled red on SET / ANYWHERE / WEEK. |
-| Door chrome | Drop colophon “free core forever”. Invite/guide keys drop Alpha. Enter with code stays `<details>`. |
-| OG leak | Root `openGraph` / `twitter` descriptions drop nutrition / mobility / mind / learning. Wedge only: **Log a set. Offline. No account. No wearable.** Title already correct. |
-
-### 3.8 Stale-Preview walk (F-039 · F-047 — same label, no new Preview)
-
-Door pack unchanged. Do not request a Preview deploy.
-
-- **F-039:** `proxy.ts` 308s `DEAD_ALIAS_PATHS` (`/today` → `/log`, `/train` → `/active`) **before** parking and the gate. Config redirects stay. Aliases are not public paths — they hop.
-- **F-047:** public `/notify` mounts `LaunchNotifyForm` (`landing-super-bundle-notify`). Honest Stripe-not-live copy. No checkout. No traction. Landing still has no form. `/bundle` free-beta 307s here, not Today.
-
-## 4. Tests (write / run before claiming done)
-
-Extend existing honesty / teaser / consent tests. Falsify each new claim.
-
-1. **Door is cinematic:** `GateTeaser` mounts `CinematicWww`. Scene ids `set` → `anywhere` → `week` → `door`. Mutant deleting the wrap dies.
-2. **Homepage ban holds:** `LandingPage` / cookie `/` still has no `CinematicWww`.
-3. **Banned strings stay gone** on door / cine / teaser / 05-exquisite: invite-only · Free beta · Win Daily-as-tagline · Alpha-on-the-door keys above. Mutant restoring “Have an Alpha access code?” dies.
-4. **Notify form:** `LaunchNotifyForm` + `launch-waitlist` still on the door. No checkout URL. No traction numerals.
-5. **Consent:** banner never `fixed bottom-0` / `z-[60]`. Host still between dock and `MobileNav`.
-6. **Probe does not withhold the page:** no `if (sessionUnlocking) return` before the four scenes.
-7. **First-paint floor:** `CinematicWww` + door `t()` defaults match `gateEn.ts`.
-8. **Intel beats stay on existing scenes:** logger TARGET `30s` + Last/Next/Why; later line History you own + Today is not a Feed; door foot 30s-in-the-browser; dated Never on the door strip. No `/history` `/never` `/feed`. No traction numerals.
-9. **Twelve design-polish nits stay source-locked:** Free ghosts, one SET line, HUD mark only, compact 1440, phone 100svh, ink Anywhere (no JPEG), three week beats, paper-strip door, one poster red, JS-off fallback. OG wedge. No Alpha-on-the-door.
-10. **F-039 aliases 308 before the gate:** `proxy.ts` maps `DEAD_ALIAS_PATHS` (`/today` → `/log`, `/train` → `/active`) with 308 before `isPathEnabled`. Mutant deleting the hop dies. Config redirects stay.
-11. **F-047 `/notify` has the form:** `LaunchNotifyForm` + `landing-super-bundle-notify`. Landing still has no form. Door pack unchanged. `/bundle` free-beta lands here, not Today. No checkout URL. No traction.
-
-## 5. Non-goals (refuse)
-
-- Flip `PRIVATE_MODE`. Public GitHub. Promote. Preview (`[skip vercel]`).
-- Restyle Today or Train. New feed. New palette. New typeface. New radius.
-- Photo-first cover. Ship a generated still as the live photograph.
-- Restore `CinematicWww` as the `.696` homepage.
-- Fight #775 F-008 copy. Steal #774 why-line.
-- Medical claims. Civilization / Team Humanity / everything-app on fold 1.
-- Locale-body farms beyond door keys that would restore banned English / Alpha-on-the-door.
-- Android / Expo.
-
-## 6. Ship protocol
-
-Same implement commit: `APP_BUILD_LABEL` → `2026.07-unified.942` · `LOG.md` heading ending `(.942)` · `CONTEXT.md` `## Now` names the full label. Rotate LOG oldest live entry and the oldest *shipped* Now bullet so budgets hold. `[skip vercel]` on every commit.
-
-Draft PR. Screenshots of `/private` desktop (1440×900) + phone (390×844). Local tests green.
+- This section was frozen before product code.
+- First paint of gated `/` and `/private` is the tight lock with locked copy.
+- No four-scene field on the door. Cookie `/` is still `LandingPage`.
+- Label `.957`. Draft PR against master. Title:
+  `Restore the tight /private lock (.957)`.

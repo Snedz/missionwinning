@@ -68,7 +68,7 @@
 | `/guide/print` | Magazine print/PDF source (`GuideMagazinePrintPage`) — noindex |
 | `/exercises/muscle/[group]`, `/exercises/equipment/[slug]` | Catalog hub indexes |
 | `/paths`, `/paths/[id]` | Public Learn path teasers (in-app Learn stays `/learn`) |
-| `/private` | `app/private/page.tsx` → `GateTeaser` → four-scene `CinematicWww` (`mode="gate"`). Door slot is notify + Enter with code. |
+| `/private` | `app/private/page.tsx` → `GateTeaser` → tight lock (`PrivateTeaserClient`: hero + notify + Enter with code). `CinematicWww` is not first paint. |
 | `/offline` | `app/offline/page.tsx` |
 | `/auth/callback` | `app/auth/callback/route.ts` (PKCE exchange + gate cookie) |
 
