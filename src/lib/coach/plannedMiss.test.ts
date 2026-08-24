@@ -109,8 +109,8 @@ test('Today planned-miss wiring does not auto-generate a week', () => {
   assert.match(hook, /loadPlan\(/);
   assert.doesNotMatch(
     hook,
-    /useCoachPlan/,
-    'useCoachPlan auto-generates a week — Today must only read the stored plan'
+    /from ['"]@\/hooks\/useCoachPlan['"]/,
+    'importing useCoachPlan would auto-generate a week — Today must only read the stored plan'
   );
 });
 
