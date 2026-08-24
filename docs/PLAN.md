@@ -6,6 +6,60 @@ Living roadmap for the **everything app** (a bodyweight coach app Super Bundle �
 
 ---
 
+## Frozen plan — `.957` restore the tight `/private` lock (2026-08-24)
+
+> **Frozen.** Implement only this section. Door freeze also lives in
+> root [PLAN.md](../PLAN.md) (same home as the `.942` four-scene plan
+> this ship reverses). Plan commit is `[skip vercel]`.
+> Label: `2026.07-unified.957` — next free after master `.956`
+> (`#793` squash `8b71ea50` — E-Victory close receipt).
+> Do **not** smash E-Victory `.956`.
+> No `PRIVATE_MODE` flip. No promote. Live www stays `.696`.
+> Cookie `/` stays `.696` `LandingPage`. Do not restore
+> `CinematicWww` as `/`. Copy lock stays **Log a set. Offline.**
+
+`#778` (`.942`) mounted SET → ANYWHERE → WEEK → DOOR on `/private`.
+Founder refused that as first paint. Restore the old tight lock:
+hero + notify + enter-with-code. One screen. Keep F-039 aliases and
+`/notify` (not first paint). Keep the `#776` door pack.
+
+### One concern
+
+Gated first paint is the tight lock again. Not a four-scene field.
+Not a Today / Train / Coach change. Not an E-Victory rewrite.
+
+### Investigate (done — hypothesis holds)
+
+`GateTeaser` wraps `CinematicWww`. Parent of `#778` (`82fcc739^`)
+mounted `PrivateTeaserClient` only (`gate-shell` / `gate-h1` /
+`LaunchNotifyForm variant="gate"` / `<details>` Enter with code).
+Pack already has the locked copy. F-039 and `/notify` do not change
+first paint — keep them.
+
+### Ship (only this)
+
+1. `GateTeaser` mounts `PrivateTeaserClient` only. No cinematic wrap.
+2. Restore pre-`.942` teaser chrome. One red: Notify me. Code is
+   secondary. Session probe stays under the poster.
+3. Rewrite four-scene *door* assertions (`gatedWwwCraft`,
+   `previewHomeTeaser`, `gateTeaserHonesty`, `gatedWwwHonesty` SET
+   lede, `firstPaintFloor` poster, `firstSetWhileGated` cine ghost)
+   to the tight lock. Honesty pack stays green.
+4. INDEX rows that still call the door the four-scene field.
+
+### Refuse
+
+Promote. Flip `PRIVATE_MODE`. Feed. Super Bundle on the door.
+Today / Train / Coach. Restore `CinematicWww` as `/`. Old words.
+Delete F-039 or `/notify`. Smash E-Victory `.956`.
+
+### Done when
+
+Tight lock on gated `/` and `/private` with locked copy. Label
+`.957`. Draft PR. Title: `Restore the tight /private lock (.957)`.
+
+---
+
 ## Frozen plan — `.956` E-Victory close receipt (2026-08-24)
 
 > **Frozen.** Implement only this section. Plan commit is `[skip vercel]`.
