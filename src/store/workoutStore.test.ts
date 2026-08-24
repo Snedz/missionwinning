@@ -23,7 +23,6 @@ test('workoutStore', async (t) => {
   // Imported dynamically so the localStorage stub above is in place first —
   // zustand's persist middleware reads storage while the module initialises.
   const { useWorkoutStore } = await import('@/store/workoutStore');
-  const outbox = await import('@/lib/sync/outbox');
   const { STORAGE_KEYS } = await import('@/lib/storage/keys');
   const { mergeWorkoutHistoriesDetailed: mergeDetailed } = await import('@/lib/workout/workoutMerge');
 
