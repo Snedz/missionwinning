@@ -30,7 +30,7 @@ export function TodayPlannedMissPrompt({
         <button
           type="button"
           onClick={onDoNow}
-          className="min-h-[44px] text-sm font-medium text-primary underline-offset-2 hover:underline"
+          className="poster-sub min-h-[44px] text-sm font-medium underline underline-offset-2"
         >
           {t('plannedMissDoNow', { defaultValue: 'Do it now' })}
         </button>
@@ -38,7 +38,7 @@ export function TodayPlannedMissPrompt({
           type="button"
           data-testid="planned-miss-skip"
           onClick={onSkip}
-          className="min-h-[44px] text-sm text-muted-foreground hover:text-foreground"
+          className="poster-sub min-h-[44px] text-sm"
         >
           {t('plannedMissSkip', { defaultValue: 'Skip' })}
         </button>
@@ -46,7 +46,7 @@ export function TodayPlannedMissPrompt({
           <button
             type="button"
             onClick={onSlide}
-            className="min-h-[44px] text-sm text-muted-foreground hover:text-foreground"
+            className="poster-sub min-h-[44px] text-sm"
           >
             {t('plannedMissSlide', { defaultValue: 'Slide' })}
           </button>

@@ -66,6 +66,13 @@ test('planned-miss prompt defaults stay shame-free', () => {
     }
     assert.doesNotMatch(d, /streak/i, d);
   }
+  // Ink tokens vanish on Today's red Start field (see .poster-field in index.css).
+  assert.match(src, /poster-sub/);
+  assert.doesNotMatch(
+    src,
+    /text-primary|text-muted-foreground/,
+    'Do it now / Skip / Slide must use poster-sub, not ink tokens'
+  );
 });
 
 test('TodayReentryCard is a quiet line, not a streak card', () => {
