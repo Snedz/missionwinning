@@ -3,23 +3,35 @@
 **Audience:** Founder (owns the private repo and visibility flips)  
 **Related:** [CLASSIFICATION.md](CLASSIFICATION.md) · [OPEN_SOURCE.md](OPEN_SOURCE.md) · [SECRETS.md](SECRETS.md)
 
-GitHub visibility is all-or-nothing per repository. Mission Winning therefore uses **two trees**:
+GitHub visibility is all-or-nothing per repository. Mission Winning therefore uses **three trees**:
 
 ```text
-github.com/Snedz/missionwinning     → product (AGPL, public-ready)
-github.com/Snedz/mission-ops        → INTERNAL forever (private)
+github.com/Snedz/missionwinning              → working product (daily origin, PRs, Vercel)
+github.com/Mission-Winning/missionwinning    → Alpha progress snapshot (orphan; not daily origin)
+github.com/Snedz/mission-ops                 → INTERNAL forever (private)
 ```
+
+Refresh the snapshot from this checkout: `npm run snapshot:public`. It does **not** change `origin`, does not push, and does not delete local caches. Founder clicks Public on the **org** repo. Agents never flip visibility or `PRIVATE_MODE`.
 
 Local staging for ops content: **`ops/`** at the product-repo root (gitignored).  
 Sync helper: `npm run ops:sync` → copies templates + listed INTERNAL files into `ops/`.
 
 ---
 
-## Product repo (this tree)
+## Working product repo (this tree)
 
 - All application code, tests, public docs, agent conventions, `docs/contracts/`
 - `CONTEXT.md` states product facts that agents need (gates, PRIVATE_MODE, migrations)
+- Daily `git remote origin` stays `Snedz/missionwinning`
 - Does **not** hold competitive strategy dumps, capital, outreach scripts, or session plans
+
+## Public Alpha snapshot (org)
+
+- Filtered **progress report** of Alpha 0.1.0 — Train + Mission Coach, tests, product docs
+- One orphan commit per refresh. No 1,155-commit working history
+- Not the Vercel project. App footer **Source** stays on Snedz until a later cutover
+- Drop leftover `PLAN.md` / hop folders / gauntlet stills. Keep `docs/archive/` (unit tests need rotation history)
+- Command: `npm run snapshot:public` · deny tests: `npm run snapshot:check`
 
 ## Ops repo (private)
 
@@ -60,12 +72,12 @@ Agents never run the `gh repo create` or visibility flip unless the founder expl
 
 ## Workflow
 
-| Actor | Product repo | Ops repo / `ops/` |
-|-------|--------------|-------------------|
-| Coding agents | Default workspace. Ship MW vocabulary only — no consumer fitness product names. | Read `ops/intel/` if mounted; write named notes and stills there; never `git add ops/` from the product repo |
-| Founder strategy sessions | Thin pointers | Write VISION, STATUS_PRIVATE, strategy, intel |
-| CI | Product only. `names:check` no-ops without the ops denylist. | Never clone ops on public runners |
-| Public flip | Scrub INTERNAL paths first | Unaffected (stays private) |
+| Actor | Working product (`Snedz/…`) | Snapshot (`Mission-Winning/…`) | Ops repo / `ops/` |
+|-------|------------------------------|--------------------------------|-------------------|
+| Coding agents | Default workspace. Ship MW vocabulary only. | Refresh with `npm run snapshot:public` when asked. Never force-push Snedz. | Read `ops/intel/` if mounted; never `git add ops/` from the product repo |
+| Founder strategy sessions | Thin pointers | Skim the tree, then Public click | Write VISION, STATUS_PRIVATE, strategy, intel |
+| CI | Product only. `names:check` no-ops without the ops denylist. | Snapshot is not the deploy origin. Do not merge Dependabot there. | Never clone ops on public runners |
+| Public flip | Stays the working cloud copy | Founder-only. Secret scanning free once Public. | Unaffected (stays private) |
 
 Research happens in `ops/intel/`. Product PRs translate patterns (`logger-table`, `fuel-modes`, `home-summary`) into `src/` / `docs/` without naming the source app. Compare / AEO drafts that name rivals stay in `ops/intel/seo/` until a founder GTM exception republishes them.
 
@@ -80,8 +92,9 @@ Research happens in `ops/intel/`. Product PRs translate patterns (`logger-table`
 4. [ ] Confirm `.hermes/` and `ops/` are gitignored and untracked  
 5. [ ] `npm run secrets:scan` + optional `gitleaks detect --source . -v` on history  
 6. [ ] Enable secret scanning + push protection (free on public)  
-7. [ ] Founder flips visibility — agents never do  
+7. [ ] Founder flips **`Mission-Winning/missionwinning`** Public — agents never do  
 8. [ ] Do **not** flip `PRIVATE_MODE` as part of going open source  
+9. [ ] Do **not** archive or transfer `Snedz/missionwinning` in this step  
 
 ---
 

@@ -1,7 +1,8 @@
 # Open source — Mission Winning
 
 **License:** [AGPL-3.0](../LICENSE) (`AGPL-3.0-only` in `package.json`)  
-**Source:** [github.com/Snedz/missionwinning](https://github.com/Snedz/missionwinning)  
+**Working origin:** [github.com/Snedz/missionwinning](https://github.com/Snedz/missionwinning)  
+**Alpha snapshot (progress report):** [github.com/Mission-Winning/missionwinning](https://github.com/Mission-Winning/missionwinning)  
 **Conduct:** [CODE_OF_CONDUCT.md](../CODE_OF_CONDUCT.md) · **Contribute:** [CONTRIBUTING.md](../CONTRIBUTING.md) · **Security:** [SECURITY.md](../SECURITY.md)
 
 Mission Winning is open source so anyone can inspect the free core, improve the harness, and verify privacy claims. Hosted product secrets stay with operators.
@@ -17,7 +18,7 @@ Mission Winning is open source so anyone can inspect the free core, improve the 
 | Android Compose | [`apps/android`](../apps/android) — same license |
 | Docs | Product, architecture, help, contracts, design — **not** war-room strategy (stubs only; full text in private mission-ops) |
 
-AGPL §13: operators who modify and run a network service must offer corresponding source. The live app footer links to this GitHub repo (**Source**).
+AGPL §13: operators who modify and run a network service must offer corresponding source. The live app footer **Source** still points at `Snedz/missionwinning` until a later cutover. The inspectable Alpha photo is the org snapshot.
 
 ---
 
@@ -48,14 +49,14 @@ Agents never change repository visibility. Full checklist: [SECRETS.md § Pre-pu
 6. Accelerator **paste packs** stay local (`docs/applications/*` gitignored — see [applications/README.md](applications/README.md)).
 7. Enable GitHub **Secret scanning** + **Push protection** (free once Public).
 8. Prefer GitHub **Environments** with required reviewers for `deploy-production` / `sync-vercel-env` / `apply-migration` ([VERCEL_DEPLOY_CHECKLIST.md](VERCEL_DEPLOY_CHECKLIST.md)).
-9. GitHub → Settings → **Change repository visibility → Public** (founder only). One-pager: [PUBLIC_GITHUB.md](PUBLIC_GITHUB.md).
-10. Optional: topics (`agpl-3.0`, `pwa`, `fitness`, `nextjs`) and LICENSE badge.
+9. GitHub → Settings on **`Mission-Winning/missionwinning`** → **Change repository visibility → Public** (founder only). One-pager: [PUBLIC_GITHUB.md](PUBLIC_GITHUB.md).
+10. Optional: topics (`agpl-3.0`, `pwa`, `fitness`, `nextjs`) and LICENSE badge. Disable Dependabot on the snapshot repo — it is not the working origin.
 
-**Cleanup shipped 2026-08-08** — scrub + dual-repo structure. **Visibility flip remains founder-owned.**
+**Cleanup shipped 2026-08-08** — scrub + dual-repo structure. Snapshot exporter `.928`. **Visibility flip remains founder-owned.**
 
 `PRIVATE_MODE` (site gate) is unrelated to GitHub visibility — do not flip it as part of going open source.
 
-**Dual-repo:** product code is this tree; INTERNAL strategy lives in private `mission-ops` (local staging: `ops/`).
+**Three trees:** working product is `Snedz/missionwinning`; the public Alpha photo is `Mission-Winning/missionwinning` (`npm run snapshot:public`); INTERNAL strategy lives in private `mission-ops` (local staging: `ops/`).
 
 ---
 

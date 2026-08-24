@@ -1,5 +1,5 @@
-/** Shown on Profile so testers can confirm the deployed build. Bump when shipping UI to master. `.927` Library add. */
-export const APP_BUILD_LABEL = "2026.07-unified.927";
+/** Shown on Profile so testers can confirm the deployed build. Bump when shipping UI to master. `.928` public Alpha snapshot exporter. */
+export const APP_BUILD_LABEL = "2026.07-unified.928";
 
 /**
  * Semver for athletes. Distinct from `APP_BUILD_LABEL`, which `/api/health`

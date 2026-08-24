@@ -6,18 +6,22 @@ Public name after the flip: **Alpha 0.1.0** / **Mission Winning Alpha 0.1.0**. T
 
 ## Before Public
 
-1. This product tree is the public repo (`Snedz/missionwinning`). War room stays in private `Snedz/mission-ops`.
+1. The **snapshot** to flip is `Mission-Winning/missionwinning` (Alpha progress report). Daily work stays on `Snedz/missionwinning`. War room stays in private `Snedz/mission-ops`.
 2. Stubs still stubs (`RELOCATED_TO_MISSION_OPS`). `.hermes/` and `ops/` untracked.
-3. `npm run secrets:scan` clean (0 findings).
+3. `npm run secrets:scan` clean (0 findings). Refresh with `npm run snapshot:public` so the org copy includes the exporter.
 4. Do not commit EIN, Stripe live keys, deploy hooks, or personal email.
+5. Do not merge Dependabot on the snapshot repo (it is not the working origin).
 
 ## GitHub Settings (you click these)
+
+On **`Mission-Winning/missionwinning`**, not on Snedz:
 
 1. **Settings → General → Danger zone → Change repository visibility → Public.**
 2. **Settings → Code security → Secret scanning** — on.
 3. **Push protection** — on (blocks commits that look like secrets).
 4. **Topics** (About → gear): `agpl-3.0`, `pwa`, `fitness`, `nextjs`, `offline-first`.
 5. Confirm the LICENSE file is AGPL-3.0 and the README badges resolve.
+6. Optional: turn Dependabot PRs off on this repo.
 
 ## Do not flip with visibility
 
