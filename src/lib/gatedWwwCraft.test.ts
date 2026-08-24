@@ -51,13 +51,12 @@ test('door forms stay on the teaser; LOG SET is the paper poster', () => {
   assert.doesNotMatch(teaser, /href=["']\/welcome["']/);
   assert.match(logger, /primary-action/);
   assert.match(notify, /variant === 'cine'/);
-  assert.match(notify, /www-cine-ghost/);
-  const cineBlock = notify.slice(notify.indexOf("variant === 'cine'"));
-  assert.doesNotMatch(
-    cineBlock,
-    /gate-btn-primary/,
+  assert.match(
+    notify,
+    /<button type="submit" disabled=\{busy \|\| !email\} className="www-cine-ghost">/,
     'paper-strip submit is ghost — LOG SET keeps the one red control'
   );
+  assert.doesNotMatch(teaser, /gate-btn-primary|primary-action/);
 });
 
 test('door keys do not stamp Alpha; week title matches the field', () => {
