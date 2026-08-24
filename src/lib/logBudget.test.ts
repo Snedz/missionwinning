@@ -109,6 +109,15 @@ const NEVER_SHIPPED: { from: number; to: number; why: string }[] = [
       'landed later as `.938` and `.934`. No LOG heading on master ever ended in `.931` or ' +
       '`.932`, so rotating `.930` leaves `.933` as the live floor without a missing section.',
   },
+  {
+    from: 935,
+    to: 937,
+    why:
+      'Concurrent branches minted `.935` (#778), `.936` (#777), and `.937` (#779) while ' +
+      'master sat on `.934`. They were skipped; the ships landed as `.941` / `.940` / ' +
+      '`.938`. No LOG heading on master ever ended in those labels, so rotating `.934` ' +
+      'leaves `.938` as the live floor without a missing section.',
+  },
 ];
 const neverShipped = (x: number) => NEVER_SHIPPED.some((g) => x >= g.from && x <= g.to);
 

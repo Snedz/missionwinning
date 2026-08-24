@@ -6,6 +6,143 @@ Living roadmap for the **everything app** (a bodyweight coach app Super Bundle �
 
 ---
 
+## Frozen plan — `.953` MW export re-imports (round-trip) (2026-08-24)
+
+> **Frozen.** Implement only this section. Plan commit is `[skip vercel]`.
+> Label: `2026.07-unified.953` — next free after master `.952` (`#789` failRead comma).
+> Do **not** steal `.952`. Leave the `failRead` comma. Do **not** redo Hevy-in
+> (`.947` / `.951`). Do **not** touch plate-math / set-row files.
+> Implement commit may allow one Preview. No empty-commit retrigger.
+> No `PRIVATE_MODE` flip. Live www stays `.696`. Offline. No account.
+> Confirm-gated. No silent wipe. Guest path.
+> Keep master's product + brand pack: **Log a set. Offline.**
+
+An athlete who exports **our** file (Mission Winning native CSV)
+can drop it back on the same Account import door. Preview, then
+confirm. Re-import of the same file is a no-op (`added=0`).
+Existing local history is never silently replaced. First set
+still needs no account.
+
+### One concern
+
+MW native CSV **out** on the existing Account card, then **in**
+on the same preview + confirm path. Not a new dialect. Not a
+Hevy rewrite. Not a Strong rewrite. Strong already has a dump;
+the beat is MW round-trip.
+
+### Investigate (done — hypothesis holds)
+
+Read `origin/master` tip `604fe3f1` / `.952`. `workoutsToMwCsv`,
+`parseMw`, `MW_CSV_HEADER`, and `mergeImportedLogs` (minute +
+name + set count) already exist. A **pure** unit test already
+proves `native logs → workoutsToMwCsv → parse → merge added=0`.
+That is not the gap.
+
+The gap is the **Account door**:
+
+| Layer | What exists | Gap this ship closes |
+|-------|-------------|----------------------|
+| Parse / merge | `detectCsvFormat` → `mw` on `workout_name` + `exercise_name`; `parseMw`; merge is existing-wins | **Do not rewrite** unless a dump fails detect/parse. Prefer not. |
+| Pure MW dump | `workoutsToMwCsv` + fixture `mw-native-sample.csv` | Already a no-op against the history it came from. Keep. |
+| Persist dump | `buildWorkoutCsvDownload` only calls `workoutsToSetTableACsv` / `workoutsToSetTableBCsv` | **This is the hole.** `WorkoutCsvDialect` is `'set-table-b' \| 'set-table-a'`. Comment says "MW stay import-only." |
+| Card | Two CTAs: session (Strong / set-table-b) and set (Hevy / set-table-a). Same preview/confirm. `failRead` comma is `.952` | No MW export button. "Our file" cannot come back from the card. |
+| Strong dump tests | `importCsvRestore.test.ts` persist: empty header-only; one fixture round-trip; skipped rows stay skipped; second export matches | **Pattern, not a rewrite.** Add the same block for `'mw'`. |
+| Hevy-in | `.947` workout + `.951` measurements | **Do not redo.** Do not touch `importHevyMeasurements.ts` or measurement fixtures. |
+| Guards | `csvHistoryFree` asserts the two set-table `handleExport` calls and "0.1 export is the two set-table layouts" | Must name the third dialect once it exists, or the guard will lie. |
+
+### Ship (only this)
+
+1. **`WorkoutCsvDialect` includes `'mw'`.**
+   In `importCsv.ts`: add `'mw'` to the union. Update the
+   "import-only" comment — MW is now a 0.1 Profile download.
+   Program-log stays import-only. Do not change `parseMw`,
+   `mergeImportedLogs`, or Strong/Hevy parsers unless a mutant
+   proves the dump cannot come back (investigate first; prefer
+   not).
+
+2. **Persist dump writes MW.**
+   `buildWorkoutCsvDownload('mw')` calls `workoutsToMwCsv`
+   against the same persist payload as the other two. Empty
+   history is header-only (`MW_CSV_HEADER`, `count: 0`), not an
+   error. Tombstones stay skipped (already in `workoutsToMwCsv`).
+   Filename stays `${dialect}-history-${localDateKey()}.csv`
+   (`mw-history-…`). Never `toISOString()`.
+
+3. **Account card CTA.**
+   Third outline button next to the two existing ones:
+   `handleExport('mw')`. Same preview/confirm import path —
+   no second door, no write on drop. `failRead` comma stays.
+   Toast format label for `'mw'` is `MW` (not "session"/"set").
+   New i18n key `csvExportMwCta` in `notificationLocales.ts`
+   (`Export MW CSV`). EN + `defaultValue`. Run `export-locales`
+   so `public/locales/*/notification.json` stays in schema.
+
+4. **Help one-liner.**
+   `docs/help/getting-started.md` and `privacy-and-data.md`
+   already name session CSV. Add that **Export MW CSV** is the
+   native file that re-imports on the same door. Do not invent
+   a new help page.
+
+5. **INDEX row.**
+   `src/lib/workout/INDEX.md` — MW is no longer import-only.
+   Strong + Hevy export CTAs stay.
+
+### Tests
+
+Pattern: Strong persist dump in `importCsvRestore.test.ts`.
+New describe `importCsvRestore MW export` (do not rewrite the
+Strong/Hevy describes).
+
+- Empty persist downloads header-only `MW_CSV_HEADER`; does
+  not write
+- Plant current history (import `mw-native-sample.csv` or a
+  Strong fixture then dump as MW) → `buildWorkoutCsvDownload('mw')`
+  → `parseWorkoutCsv` format `'mw'` → `previewWorkoutCsvText`
+  does **not** write and reports `added=0` → confirm
+  `importWorkoutCsvText` is a no-op (`added=0`, history length
+  unchanged)
+- A second **different** MW file still adds on confirm (no
+  one-import cap)
+- Existing native session wins: planted history is not replaced
+  by the re-import
+- Strong + Hevy persist paths still pass unchanged
+- `csvHistoryFree` discovers `handleExport('mw')` and still
+  forbids a premium check
+- `firstSetUngated` stays green (run, do not rewrite)
+- Mutant that leaves `WorkoutCsvDialect` as the two set-table
+  layouts (or wires the new button to Strong) dies
+
+### Refuse
+
+- Plate math / set-row: `plateMath.ts`, `SetLogBarbellRow`,
+  `SetLogTable`, `SetLogRow`, `warmupRamp`
+- Hevy-in: `importHevyMeasurements.ts`, measurement fixtures,
+  new Hevy dialects, export-layout vanity
+- `.952` `failRead` comma — leave it
+- Login wall / counsel-hold / Feed / one-import cap /
+  3-workout copy
+- New route, new card, JSON rewrite, zip
+- `PRIVATE_MODE` flip, Production promote, www cookie
+- Merge
+
+### Docs / ship protocol
+
+- `APP_BUILD_LABEL` → `2026.07-unified.953`
+- LOG heading `## 2026-08-24 — MW export re-imports (round-trip) (\`.953\`)` + rotate oldest live entry (`.934`)
+- Rotating `.934` leaves live floor `.938`. Declare `.935`–`.937` in `logBudget` `NEVER_SHIPPED` (those labels never had a master LOG heading; they were skipped by `.938` / `.940` / `.941`).
+- `CONTEXT.md` `## Now` one-line `.953`; rotate oldest shipped Now bullet (`.938`) so the block stays ≤25
+- Plan commit `[skip vercel]`. Implement commit: one Preview max. No empty-commit retrigger.
+
+### Done when
+
+- This section was frozen before product code.
+- MW native CSV exported from current history re-imports as a
+  no-op via preview + confirm.
+- Label `.953`. PR against master. Title:
+  `MW export re-imports (round-trip) (.953)`.
+
+---
+
 ## Frozen plan — `.951` Hevy-native diary in: workouts + measurements (2026-08-24)
 
 > **Frozen.** Implement only this section. Plan commit is `[skip vercel]`.

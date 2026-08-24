@@ -7,6 +7,7 @@ import { loadBodyMetrics } from '@/lib/bodyMetrics';
 import { __resetForTests as resetStorage, readRaw, writeRaw } from '@/lib/storage/safeStorage';
 import type { CompletedWorkoutLog } from '@/types';
 import {
+  MW_CSV_HEADER,
   SET_TABLE_A_CSV_HEADER,
   SET_TABLE_B_CSV_HEADER,
   mergeImportedLogs,
@@ -32,6 +33,10 @@ const HEVY_EMPTY = fixture('hevy-empty.csv');
 const HEVY_ONE = fixture('hevy-one-workout.csv');
 const HEVY_MALFORMED = fixture('hevy-malformed-row.csv');
 const SET_TABLE_A = fixture('set-table-a-sample.csv');
+const MW_NATIVE = fixture('mw-native-sample.csv');
+const MW_OTHER = `${MW_CSV_HEADER}
+w-other,Other Day,2026-08-01T12:00:00.000Z,1800,kg,squats,Squats,0,5,80,,normal,,
+`;
 const HEVY_MEAS_EMPTY = fixture('hevy-measurements-empty.csv');
 const HEVY_MEAS_ONE = fixture('hevy-measurements-one.csv');
 const HEVY_MEAS_MALFORMED = fixture('hevy-measurements-malformed.csv');
@@ -320,6 +325,101 @@ describe('importCsvRestore Strong export', () => {
 
   it('pure empty Strong shape is header-only', () => {
     assert.equal(workoutsToSetTableBCsv([], 'metric').trimEnd(), SET_TABLE_B_CSV_HEADER);
+  });
+});
+
+describe('importCsvRestore MW export', () => {
+  it('empty persist downloads a header-only MW file and does not write', () => {
+    const missing = buildWorkoutCsvDownload('mw');
+    assert.equal(missing.ok, true);
+    if (!missing.ok) return;
+    assert.equal(missing.count, 0);
+    assert.equal(missing.dialect, 'mw');
+    assert.equal(missing.csv.trimEnd(), MW_CSV_HEADER);
+    assert.equal(dataRows(missing.csv).length, 0, 'empty history must not invent a set');
+
+    writeRaw(WORKOUT_STORE_KEY, JSON.stringify({ version: 0, state: { workoutHistory: [] } }));
+    const built = buildWorkoutCsvDownload('mw');
+    assert.equal(built.ok, true);
+    if (!built.ok) return;
+    assert.equal(built.count, 0);
+    assert.equal(built.csv.trimEnd(), MW_CSV_HEADER);
+    assert.equal(historyLen(), 0, 'export is read-only');
+  });
+
+  it('MW dump of current history re-imports as a no-op via preview then confirm', () => {
+    const planted = importWorkoutCsvText(MW_NATIVE);
+    assert.equal(planted.ok, true);
+    assert.equal(planted.added, 2);
+    const before = history();
+    assert.equal(before.length, 2);
+    const nativeIds = before.map((w) => w.id).sort();
+
+    const built = buildWorkoutCsvDownload('mw');
+    assert.equal(built.ok, true);
+    if (!built.ok) return;
+    assert.equal(built.dialect, 'mw');
+    assert.equal(built.count, 2);
+    assert.ok(built.csv.startsWith(MW_CSV_HEADER));
+    assert.equal(historyLen(), 2, 'export must not write');
+
+    const parsed = parseWorkoutCsv(built.csv, 'metric');
+    assert.equal(parsed.error, undefined);
+    assert.equal(parsed.format, 'mw');
+    assert.equal(parsed.workouts.length, 2);
+
+    const preview = previewWorkoutCsvText(built.csv);
+    assert.equal(preview.ok, true);
+    assert.equal(preview.format, 'mw');
+    assert.equal(preview.added, 0, 'preview of our own dump is a no-op');
+    assert.equal(preview.duplicates, 2);
+    assert.equal(historyLen(), 2, 'preview does not write');
+
+    const confirmed = importWorkoutCsvText(built.csv);
+    assert.equal(confirmed.ok, true);
+    assert.equal(confirmed.added, 0, 'confirm of the same MW file is a no-op');
+    assert.equal(confirmed.duplicates, 2);
+    assert.equal(historyLen(), 2, 'existing native sessions must stay');
+    const after = history();
+    assert.deepEqual(
+      after.map((w) => w.id).sort(),
+      nativeIds,
+      're-import must not replace existing native sessions'
+    );
+  });
+
+  it('a second different MW file still adds on confirm', () => {
+    assert.equal(importWorkoutCsvText(MW_NATIVE).added, 2);
+    const dump = buildWorkoutCsvDownload('mw');
+    assert.equal(dump.ok, true);
+    if (!dump.ok) return;
+    assert.equal(importWorkoutCsvText(dump.csv).added, 0);
+    assert.equal(historyLen(), 2);
+
+    const preview = previewWorkoutCsvText(MW_OTHER);
+    assert.equal(preview.ok, true);
+    assert.equal(preview.format, 'mw');
+    assert.ok((preview.added ?? 0) >= 1);
+    assert.equal(historyLen(), 2, 'preview of a second MW file must not write');
+
+    const second = importWorkoutCsvText(MW_OTHER);
+    assert.equal(second.ok, true);
+    assert.ok((second.added ?? 0) >= 1, 'no one-import cap');
+    assert.equal(historyLen(), 2 + (second.added ?? 0));
+  });
+
+  it('Strong persist dump is unchanged when MW export is asked for the same history', () => {
+    assert.equal(importWorkoutCsvText(STRONG_ONE).added, 1);
+    const strong = buildWorkoutCsvDownload('set-table-b');
+    const mw = buildWorkoutCsvDownload('mw');
+    assert.equal(strong.ok, true);
+    assert.equal(mw.ok, true);
+    if (!strong.ok || !mw.ok) return;
+    assert.equal(strong.dialect, 'set-table-b');
+    assert.ok(strong.csv.startsWith(SET_TABLE_B_CSV_HEADER));
+    assert.ok(mw.csv.startsWith(MW_CSV_HEADER));
+    assert.notEqual(strong.csv, mw.csv);
+    assert.equal(historyLen(), 1);
   });
 });
 

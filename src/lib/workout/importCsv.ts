@@ -1,10 +1,11 @@
 /**
  * CSV history transfer — 0.1 (beta), then freeze.
  *
- * Product in+out is workout CSV, free forever, never gated. A program-log
- * dumps and Mission Winning native CSV still *import* (a file in the hand must
- * not bounce); they are not 0.1 export dialects. JSON device backup stays on
- * Profile for full-app restore; this is the log.
+ * Product in+out is workout CSV, free forever, never gated. 0.1 Profile
+ * downloads are Strong (`set-table-b`), the set-table logger (`set-table-a`),
+ * and Mission Winning native (`mw`). A program-log dump still *imports*
+ * (a file in the hand must not bounce) but is not a 0.1 export dialect.
+ * JSON device backup stays on Profile for full-app restore; this is the log.
  *
  * Switchers are the early market for a new logger, and every one of them is
  * holding a CSV from another logger. This module turns those files into the web's native shape
@@ -41,13 +42,13 @@ export const SET_TABLE_A_CSV_HEADER =
 export const SET_TABLE_B_CSV_HEADER =
   'Date,Workout Name,Duration,Exercise Name,Set Order,Weight,Weight Unit,Reps,RPE,Notes';
 
-/** Android `WorkoutTransfer.toMwCsv` header — kept for import + tests, not the 0.1 Profile download. */
+/** Android `WorkoutTransfer.toMwCsv` header — 0.1 Profile download + import. */
 export const MW_CSV_HEADER =
   'workout_id,workout_name,completed_at,duration_seconds,weight_unit,' +
   'exercise_id,exercise_name,set_index,reps,weight,rpe,set_kind,note,superset_group';
 
-/** 0.1 Profile download dialects. a program-log app/MW stay import-only. */
-export type WorkoutCsvDialect = 'set-table-b' | 'set-table-a';
+/** 0.1 Profile download dialects. A program-log dump stays import-only. */
+export type WorkoutCsvDialect = 'set-table-b' | 'set-table-a' | 'mw';
 
 export interface CsvImportResult {
   workouts: CompletedWorkoutLog[];

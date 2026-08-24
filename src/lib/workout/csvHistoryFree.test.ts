@@ -67,9 +67,10 @@ describe('csvHistoryFree', () => {
     }
   });
 
-  it('the parser still names set-table, program-log, and MW dialects; 0.1 export is the two set-table layouts', () => {
+  it('the parser still names set-table, program-log, and MW dialects; 0.1 export includes MW', () => {
     const src = read('src/lib/workout/importCsv.ts');
     assert.match(src, /CsvFormat = 'set-table-a' \| 'set-table-b' \| 'program-log' \| 'mw'/);
+    assert.match(src, /WorkoutCsvDialect = 'set-table-b' \| 'set-table-a' \| 'mw'/);
     assert.match(src, /export function workoutsToMwCsv/);
     assert.match(src, /export function workoutsToSetTableBCsv/);
     assert.match(src, /export function workoutsToSetTableACsv/);
@@ -84,6 +85,7 @@ describe('csvHistoryFree', () => {
     assert.match(src, /downloadWorkoutCsv\(/);
     assert.match(src, /handleExport\('set-table-b'\)/);
     assert.match(src, /handleExport\('set-table-a'\)/);
+    assert.match(src, /handleExport\('mw'\)/);
     assert.doesNotMatch(src, /downloadWorkoutCsv\(\)/);
     assert.doesNotMatch(
       src,

@@ -9,7 +9,7 @@
  *
  * Parsing and merging are pure (`lib/workout/importCsv.ts`); this card owns
  * the file picker, a dry-run preview, confirm, and the report. Never gated.
- * No extra surfaces — two export buttons here, not a new page.
+ * No extra surfaces — three export buttons here, not a new page.
  */
 
 import { reloadAfterRestore } from '@/lib/storage/reloadAfterRestore';
@@ -52,7 +52,8 @@ export function ProfileImportCard() {
         return;
       }
       track('csv_exported', { count: result.count, format: dialect });
-      const formatLabel = dialect === 'set-table-a' ? 'set' : 'session';
+      const formatLabel =
+        dialect === 'mw' ? 'MW' : dialect === 'set-table-a' ? 'set' : 'session';
       toast({
         title: t('csvExportDone', { defaultValue: 'History exported' }),
         description: t('csvExportDoneDesc', {
@@ -189,6 +190,13 @@ export function ProfileImportCard() {
             onClick={() => handleExport('set-table-a')}
           >
             {t('csvExportSetCta', { defaultValue: 'Export set CSV' })}
+          </Button>
+          <Button
+            variant="outline"
+            className="min-h-[44px] tap-target"
+            onClick={() => handleExport('mw')}
+          >
+            {t('csvExportMwCta', { defaultValue: 'Export MW CSV' })}
           </Button>
           {!showDrop ? (
             <Button
