@@ -120,6 +120,9 @@ describe('csvHistoryFree', () => {
     const dir = path.join(root, 'src/lib/workout/fixtures');
     const names = readdirSync(dir).filter((f) => f.endsWith('.csv')).sort();
     assert.deepEqual(names, [
+      'hevy-empty.csv',
+      'hevy-malformed-row.csv',
+      'hevy-one-workout.csv',
       'mw-native-sample.csv',
       'program-log-flatten-sample.csv',
       'program-log-sample.csv',
