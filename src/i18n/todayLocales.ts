@@ -612,6 +612,8 @@ const coachPlanDefaults = {
   todayRepeatLastKicker: en.todayRepeatLastKicker,
   todayRepeatLastTitle: en.todayRepeatLastTitle,
   todayRepeatLastDesc: en.todayRepeatLastDesc,
+  todayReturnLast: en.todayReturnLast,
+  todayReturnNext: en.todayReturnNext,
 };
 
 const es: TodayStrings = {

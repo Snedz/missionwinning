@@ -79,12 +79,16 @@ describe('todayReturnCite', () => {
 describe('todayReturnCite wiring', () => {
   it('StartDockHero cites last/next on the same poster-field as one primary-action', () => {
     const hero = read('src/components/journey/JourneyHero.tsx');
+    const citeAt = hero.indexOf('function StartReturnCite');
     const startAt = hero.indexOf('function StartDockHero');
+    assert.ok(citeAt >= 0, 'JourneyHero has no StartReturnCite');
     assert.ok(startAt >= 0, 'JourneyHero has no StartDockHero');
+    const cite = hero.slice(citeAt, startAt);
     const start = hero.slice(startAt);
-    assert.match(start, /data-testid="today-return-last"/);
-    assert.match(start, /data-testid="today-return-next"/);
-    assert.match(start, /returnCite/);
+    assert.match(cite, /data-testid="today-return-last"/);
+    assert.match(cite, /data-testid="today-return-next"/);
+    assert.match(start, /<StartReturnCite cite=\{returnCite\} \/>/);
+    assert.match(start, /className="poster-field[\s\S]*<StartReturnCite/);
     const buttons = start.match(/className="primary-action/g) ?? [];
     assert.equal(buttons.length, 2, 'desktop + compact each have one primary-action');
     assert.ok(
