@@ -57,6 +57,6 @@ export function learnVsJsonLdBundle(page: LearnVsPage, baseUrl = siteBaseUrl()) 
   ];
 }
 
-export function otherLearnVsPages(id: LearnVsPageId): LearnVsPage[] {
+export function otherLearnVsPages(id: string): LearnVsPage[] {
   return LEARN_VS_PAGES.filter((p) => p.id !== id);
 }

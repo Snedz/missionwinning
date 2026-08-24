@@ -31,7 +31,7 @@ test('Journal empty offers Open Today', () => {
     'utf8'
   );
   assert.match(src, /href=.\/log/);
-  assert.match(src, /Finish a session — debriefs/);
+  assert.match(src, /Finish a session and its debrief is kept here/);
 });
 
 test('Guidebook continue card plain CTA 44px', () => {

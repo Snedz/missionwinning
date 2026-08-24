@@ -70,7 +70,7 @@ test('the committed queue has no Now-open row, and routing follows RESULT status
     assert.equal(r.recipe, 12);
     assert.equal(r.row?.id, 'VISION');
     assert.equal(r.workbench?.file, 'docs/gauntlet/VISION.md');
-    assert.equal(r.workbench?.role, 'LEAD');
+    assert.equal(r.workbench?.role, null);
   } else {
     assert.equal(r.kind, 'path');
     assert.equal(r.recipe, 15);
@@ -423,6 +423,12 @@ test('the Next spawn reader takes the role the sentence names, not the first one
     { line: '**Next spawn:** BUILDER on **U1** — wire `loadZone` into the split.', role: 'BUILDER', unit: 'U1', round: null },
     { line: '**Next spawn:** CRITIC on **U4 R1** — the instrument is written and green.', role: 'CRITIC', unit: 'U4', round: 'R1' },
     { line: '**Next spawn:** `ready-for-founder` — every unit now has render evidence.', role: null, unit: null, round: null },
+    {
+      line: '**Next spawn:** `ready-for-founder` — **report written.** U1–U2 critic PASS. SMOOTHER R1 walked Today / Train / Victory; Coach 307→`/private` on this host (`PRIVATE_MODE` explicit, not a product FAIL). No open builder brief. Next action is the **founder walk** against the report below. Do not write `status: pass`. Do not invent a GRAPH_LOOP letter. Do not open a unit for the below-fold thumb residual.',
+      role: null,
+      unit: null,
+      round: null,
+    },
   ];
 
   const tmp = mkdtempSync(path.join(tmpdir(), 'loopqueue-spawn-'));
