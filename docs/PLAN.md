@@ -6,6 +6,132 @@ Living roadmap for the **everything app** (a bodyweight coach app Super Bundle �
 
 ---
 
+## Frozen plan — `.956` E-Victory close receipt (2026-08-24)
+
+> **Frozen.** Implement only this section. Plan commit is `[skip vercel]`.
+> Label: `2026.07-unified.956` — next free after master `.955`
+> (`#792` squash `2d9428a2` — Wednesday from their logs).
+> Do **not** steal `.955` / `.954`. Do **not** redo vs-last math (`.944`).
+> Do **not** restyle Today. Do **not** remount Coach on the receipt.
+> Implement commit may allow one Preview. No empty-commit retrigger.
+> No `PRIVATE_MODE` flip. Live www stays `.696`.
+> Guest path. Brand: **Log a set. Offline.** / No account. No wearable.
+> Today still one Start. Next day still a cite. Confirm-gated writes.
+
+The session **close**: a private, dense, scannable “I was here”
+receipt they can keep. Today (`.954`) is the open. vs-last on
+the set row is already during the set. `.944` already shipped
+the vs-last **math**. This ship is not a redo. After Finish
+they see one private receipt (sets, load, vs last if we have
+it, duration if we have it) they can stay on, screenshot, or
+export. One session, one receipt. Steal the density of a
+logged-out workout page; refuse the Feed and the public
+identity. No public URL as identity.
+
+### One concern
+
+Close receipt. Dense + keepable + private. Not a Feed. Not a
+permalink. Not a second Victory route. Not a vs-last rewrite.
+Not a plan wall before a log.
+
+### Investigate (done — `.944` covers math; close-keep is the gap)
+
+Read `origin/master` tip `2d9428a2` / `.955` (`#792`).
+
+| Layer | What exists | Gap this ship closes |
+|-------|-------------|----------------------|
+| Empty finish | `finishBlockedReason` → `no_sets` until one completed set. Toast “Log a set first”. Store empty Finish is a no-op. | **Keep.** Lock: empty session never opens Victory and never invents a receipt. |
+| Vs-last math | `victoryReceipt.ts` — session totals by **shape** (`.944`); per-lift Prev; first-ever `vsLast: null`, `prCount: 0`. | **Do not rewrite.** Empty history stays honest. |
+| Assembly | `assembleActiveVictory` always calls `buildVictoryReceipt` after Finish is allowed. | Finished session already has numbers. Wire stays. Add a ready-gate so a 0-set log (if it ever reaches assembly) returns **no** receipt. |
+| First paint | Peak-End: `VictoryStatsStrip` (Duration · Volume · Sets + muted vs-last) + Next dock. `VictoryReceiptStrip` (the set table) is **behind Show all**. Guards `victorySheetChrome` + `victoryCopyGuard` assert that. | **This is the hole.** They cannot stay on / screenshot the “I was here” table without opening Show all. Promote the lift receipt to first paint. One strip, not a second copy inside Show all. |
+| Share | Show all: marketing `/?ref` or `/?utm_source=share`. Share card PNG. No `/workout/:id`. No `/victory` page. | **Leave in Show all.** Do not promote Share. Do not mint a public workout permalink. Export is a **private file**, not a URL. |
+| Keep / export | Account card dumps **all** history (Strong / Hevy / MW). No one-session keep on Victory. | Add a private text download of **this** session from the receipt they see. Not a new dialect. Not an Account rewrite. |
+| Guest | Finish + sheet have no `SignInPrompt` / `getUser` gate. `firstSetUngated` covers Train. | **Keep.** Guest who just logged a set sees the receipt. No login wall. |
+| Today / next day | `.954` one Start. `.955` Wednesday cite on Coach, not a second Today Start. | **Do not touch.** Do not remount `CoachTodayCard` on the receipt. Next dock stays the existing one-exit. |
+
+Hypothesis (verified, keep):
+
+`.944` is the compare. `.956` is the close surface: first paint
+**is** the receipt, and they can keep a private copy. Empty
+never fakes one. No public identity.
+
+### Ship (only this)
+
+1. **Ready-gate** in `victoryReceipt.ts` (one home).
+   `closeReceiptReady(log)` is true iff `countCompletedLogSets(log) > 0`.
+   `buildCloseReceipt(log, history, opts)` returns
+   `buildVictoryReceipt(...)` when ready, else `null`.
+   `assembleActiveVictory` attaches `receipt` only when ready.
+   Do not change shape pick, PR epsilon, or per-lift Prev.
+
+2. **First paint is the close receipt.**
+   `WorkoutVictorySheet`: `VictoryStatsStrip` then
+   `VictoryReceiptStrip` (when `summary.receipt` is set), then
+   Show all, then the Next dock. Remove the strip from inside
+   `<details>` — one session, one receipt. Feel / rewards /
+   share / debrief / field-test stay in Show all. Do not
+   remount Coach. Do not add likes, Feed, or a permalink.
+
+3. **Private keep.** Pure
+   `formatCloseReceiptText` / `buildCloseReceiptDownload` in
+   the same home: workout name, duration if `durationSeconds > 0`,
+   volume, sets, vs-last lines if present, then each lift’s
+   Set · Load · Prev (when we have it). Empty / not-ready →
+   `{ ok: false, reason: 'empty' }` and **no file**. Filename
+   `receipt-${localDateKey()}.txt`. Never `toISOString()`.
+   Blob download on the device. **No `http` in the body.**
+   Quiet outline **Save receipt** on the receipt (not Share).
+   Read-only — no confirm, no storage write.
+
+4. **Help one-liner.** `docs/help/getting-started.md` +
+   `faq.md`: Finish shows the session you just did; you can
+   stay, screenshot, or save a private copy. No public link.
+   A session with no sets has no receipt.
+
+### Tests
+
+New describe in `victoryReceipt.test.ts` (and chrome/copy
+guards). Do not rewrite `.944` shape cases.
+
+- Empty session (0 completed sets / `finishBlockedReason === 'no_sets'`) → no Victory, `buildCloseReceipt` is `null`, export is `empty`. No invented sets / PR / vs-last.
+- Finished session (one completed set) → exactly one receipt on first paint (`<VictoryReceiptStrip` before `<details>`; count is 1). Stats still on first paint. Next dock stays.
+- Guest: `WorkoutVictorySheet` + `assembleActiveVictory` do not import `SignInPrompt` / `getUser`. `firstSetUngated` stays green (run, do not rewrite).
+- No public permalink: no new `/victory` / `/workout/` / `/w/` route. Export text has no `http`. Share stays inside Show all and still only uses `/?ref` or `/?utm` — not a workout URL. Mutant that puts a `/workout/` href on the receipt dies.
+- `victorySheetChrome` / `victoryCopyGuard`: invert the “receipt in Show all” asserts; keep feel / share / rewards off first paint; no likes / feed / share-to-unlock.
+- Duration line omitted when `durationSeconds` is 0; vs-last lines omitted when `vsLast` is null.
+- Mutant that leaves the lift table only inside `<details>`, or mounts two strips, dies.
+
+### Refuse
+
+Public identity, Feed, likes, followers, another human’s
+number, social permalink, `/victory` page, wearable, catalog,
+Trainer, Super Bundle pillars, counsel-hold (field test / PT /
+pregnancy), remount Coach on the receipt, plan wall before a
+log, restyle Today, second Start, redo `.944` vs-last,
+`.954` / `.955` rewrite, plate math / set-row, Hevy/MW Account
+export redo, login wall, invent traction, `PRIVATE_MODE` flip,
+Production promote, www cookie, merge.
+
+### Docs / ship protocol
+
+- `APP_BUILD_LABEL` → `2026.07-unified.956`
+- LOG heading `## 2026-08-24 — E-Victory close receipt (\`.956\`)` + rotate oldest live entry (`.940`)
+- `CONTEXT.md` `## Now` one-line `.956`; rotate oldest shipped Now bullet (`.941`) so the block stays ≤25
+- `src/lib/workout/INDEX.md` + `src/components/workout/INDEX.md` — first paint is the keepable receipt
+- i18n: `victorySaveReceipt` in `activeWorkoutLocales.ts` (`Save receipt`) + `defaultValue`. Other langs inherit via `...en`. Run `export-locales` if packs need the key.
+- Plan commit `[skip vercel]`. Implement commit: one Preview max. No empty-commit retrigger.
+- Draft PR against master. Do not merge. Do not promote. Live www stays `.696`.
+- Keep Grok Bot out of this.
+
+### Done when
+
+- This section was frozen before product code.
+- Empty session → no fake receipt. Finished session → one private receipt on first paint. Guest sees it. No public permalink.
+- Label `.956`. PR against master. Title:
+  `E-Victory close receipt (.956)`.
+
+---
+
 ## Frozen plan — `.955` Wednesday from their logs (2026-08-24)
 
 > **Frozen.** Implement only this section. Plan commit is `[skip vercel]`.

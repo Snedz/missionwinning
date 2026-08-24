@@ -55,11 +55,22 @@ test('Victory collapses long details; Active gates empty finish', () => {
   assert.ok(receiptAt >= 0, 'Victory mounts the vs-last receipt');
   assert.ok(detailsAt >= 0, 'Victory houses extras in Show all');
   assert.ok(
-    receiptAt > detailsAt,
-    'vs-last lift receipt lives in Show all; first paint is Duration · Volume · Sets'
+    receiptAt < detailsAt,
+    'close receipt is first paint — stay / screenshot / save, not buried in Show all'
+  );
+  assert.equal(
+    (jsx.match(/<VictoryReceiptStrip\b/g) ?? []).length,
+    1,
+    'one session, one receipt'
   );
   assert.doesNotMatch(sheet, /share-to-unlock|unlock.{0,20}share/i);
   assert.doesNotMatch(sheet, /\blikes?\b|\bfeed\b/i);
+  assert.doesNotMatch(
+    sheet,
+    /['"`]\/workout\/|['"`]\/w\/|['"`]\/victory/,
+    'no public workout permalink on Victory'
+  );
+  assert.doesNotMatch(sheet, /SignInPrompt|getUser\(/);
 
   const active = readFileSync(
     join(root, 'src/page-components/ActiveWorkoutPage.tsx'),

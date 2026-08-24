@@ -5,6 +5,8 @@
  */
 import type { CompletedWorkoutLog } from '@/types';
 
-export function countCompletedLogSets(log: CompletedWorkoutLog): number {
+export function countCompletedLogSets(
+  log: Pick<CompletedWorkoutLog, 'exercises'>
+): number {
   return log.exercises.reduce((n, ex) => n + ex.sets.length, 0);
 }

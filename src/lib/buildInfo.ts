@@ -1,5 +1,5 @@
-/** Shown on Profile so testers can confirm the deployed build. Bump when shipping UI to master. `.955` Wednesday from their logs (past master `.954`). */
-export const APP_BUILD_LABEL = "2026.07-unified.955";
+/** Shown on Profile so testers can confirm the deployed build. Bump when shipping UI to master. `.956` E-Victory close receipt (past master `.955`). */
+export const APP_BUILD_LABEL = "2026.07-unified.956";
 
 /**
  * Semver for athletes. Distinct from `APP_BUILD_LABEL`, which `/api/health`

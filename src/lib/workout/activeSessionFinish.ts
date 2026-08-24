@@ -26,7 +26,7 @@ import {
   bodyScoreDeltas,
   type BodyScoreTriple,
 } from '@/lib/workout/activeWorkoutHelpers';
-import { buildVictoryReceipt } from '@/lib/workout/victoryReceipt';
+import { buildCloseReceipt } from '@/lib/workout/victoryReceipt';
 import {
   buildProgressionInsight,
   summarizeWorkoutVictory,
@@ -221,9 +221,9 @@ export function assembleActiveVictory(params: {
       strainDelta: scoreDeltas.strain,
     },
     undefined,
-    buildVictoryReceipt(params.log, params.historyBefore, {
+    buildCloseReceipt(params.log, params.historyBefore, {
       resolveName: params.resolveExerciseName,
-    })
+    }) ?? undefined
   );
 
   return {

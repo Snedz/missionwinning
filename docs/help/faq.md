@@ -15,7 +15,7 @@ A sequential number for signed-in accounts, shown on You (Athlete Page) and Acco
 Yes as a PWA — log workouts offline; sync when back online if signed in.
 
 **What does Victory show after I finish?**  
-A receipt of the session you just logged — duration, volume, sets, and vs last time when you have done the same lifts before. Each lift can show last-time **Prev** and beaten PRs. A first session has no invented PR. Instant, offline, and free. Share is optional; nothing is unlocked by posting.
+A private receipt of the session you just logged — sets, load, duration when the clock ran, and vs last time when you have done the same lifts before. Each lift can show last-time **Prev** and beaten PRs. Stay, screenshot, or save a copy on this device. There is no public workout link. A session with no sets has no receipt. A first session has no invented PR. Instant, offline, and free. Share is optional; nothing is unlocked by posting.
 
 **Which phones are supported?**  
 Any modern browser — iPhone Safari, Android Chrome, desktop. Install to home screen for best experience.

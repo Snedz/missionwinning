@@ -50,6 +50,10 @@ import {
   nextVictoryShareAfterFile,
   nextVictoryShareAfterText,
 } from '@/lib/share/victoryShare';
+import {
+  buildCloseReceiptDownload,
+  triggerCloseReceiptDownload,
+} from '@/lib/workout/victoryReceipt';
 
 type Props = {
   open: boolean;
@@ -196,6 +200,20 @@ export function WorkoutVictorySheet({
     setShareFailHint(true);
   };
 
+  const handleSaveReceipt = () => {
+    if (!summary.receipt) return;
+    const built = buildCloseReceiptDownload({
+      workoutName: summary.workoutName,
+      durationSeconds: summary.durationSeconds,
+      setCount: summary.setCount,
+      volumeLabel: `${volume.value} ${volume.unit}`,
+      receipt: summary.receipt,
+      dateKey: localDateKey(),
+    });
+    if (!built.ok) return;
+    triggerCloseReceiptDownload(built);
+  };
+
   const showBackTodaySecondary = shouldShowVictoryBackTodaySecondary(
     summary.nextAction?.href
   );
@@ -286,6 +304,14 @@ export function WorkoutVictorySheet({
           vsLast={summary.receipt?.vsLast ?? null}
         />
 
+        {summary.receipt ? (
+          <VictoryReceiptStrip
+            receipt={summary.receipt}
+            unitLabel={unitLabel}
+            onSaveReceipt={handleSaveReceipt}
+          />
+        ) : null}
+
         <details className="group border-2 border-border bg-card">
           <summary
             className="flex min-h-[44px] cursor-pointer list-none items-center justify-center px-4 py-3 text-sm font-semibold text-foreground [&::-webkit-details-marker]:hidden"
@@ -294,9 +320,6 @@ export function WorkoutVictorySheet({
             {t('todayShowAll', { defaultValue: 'Show all' })}
           </summary>
           <div className="space-y-4 border-t-2 border-border p-4">
-        {summary.receipt ? (
-          <VictoryReceiptStrip receipt={summary.receipt} unitLabel={unitLabel} />
-        ) : null}
 
         {summary.fieldTest ? (
           <FieldTestReceiptStrip

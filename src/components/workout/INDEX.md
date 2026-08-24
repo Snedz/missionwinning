@@ -21,11 +21,11 @@
 | `AddExerciseSheet.tsx` | `ExercisePicker` in a sheet with the confirm in the footer. **Test contract:** keeps the `search exercises` placeholder, `option` rows and `add selected exercise` name — `logger-depth`, `first-90` and `hero-flows` all drive them |
 | `HardSessionWarningSheet.tsx` | Pre-start hard-session warning — Back does not start; never gates Log set. Stop line follows pregnancy flag (`.746` v1) |
 | `RestTimerBar.tsx` | Rest countdown — **takes the `ScreenDock` over from `LogConsole`, never both**. **Ambient running** while `remaining > 0` (`data-rest-running`, ticking `rest-clock`, depleting ambient fill + meters). Skip via `data-testid="rest-skip"`; accent fill only in final ≤10s |
-| `WorkoutVictorySheet.tsx` | Post-workout receipt — stats + Next. Feel, share, rewards, debrief in Show all |
+| `WorkoutVictorySheet.tsx` | Post-workout close receipt — stats + lift table + Next on first paint. Feel, share, rewards, debrief in Show all (`.956`) |
 | `VictoryFeelStrip.tsx` | Post-session feel 1–5 energy (free ritual) (`.429`) |
 | `VictoryBodyDeltaStrip.tsx` | Readiness · strain · recovery signed deltas (`.444`) |
 | `VictoryStatsStrip.tsx` | Volume · sets · duration grid (`.447`); BW prints reps via `formatWorkoutVolumeDisplay` (`.886`) |
-| `VictoryReceiptStrip.tsx` | Per-lift vs-last receipt on Victory (`.713`); session totals match shape (`.944`) |
+| `VictoryReceiptStrip.tsx` | Per-lift vs-last receipt on Victory first paint (`.713` / `.944` / `.956`); private Save receipt |
 | `VictoryNextActionStrip.tsx` | Primary Next CTA block (`.447`) |
 | `PlateCalculatorSheet.tsx` | Plate math sheet |
 | `LiveHeartRate.tsx` | Optional Web Bluetooth BPM strip (wearables flag) |

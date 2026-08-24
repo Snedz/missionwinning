@@ -299,6 +299,7 @@ type ActiveWorkoutStrings = {
   victoryPrBadge: string;
   victoryReceiptSetsCaption: string;
   victoryReceiptLoad: string;
+  victorySaveReceipt: string;
   victoryVsLast: string;
   victorySecondaryMoveBecause: string;
   victoryDuration: string;
@@ -578,6 +579,7 @@ const en: ActiveWorkoutStrings = {
   victoryPrBadge: 'PR',
   victoryReceiptSetsCaption: '{{name}} sets',
   victoryReceiptLoad: 'Load',
+  victorySaveReceipt: 'Save receipt',
   victoryVsLast: 'vs last',
   victorySecondaryMoveBecause: '{{flow}} — because you trained {{muscle}}',
   victoryDuration: 'Duration',

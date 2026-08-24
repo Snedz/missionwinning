@@ -23,6 +23,12 @@
  *
  * A first session is still a receipt: the sets you logged, with no invented
  * zeros and no PR for a first-ever (same rule as the debrief).
+ *
+ * ## Close receipt (`.956`)
+ *
+ * After Finish, first paint *is* this receipt — stay, screenshot, or save a
+ * private text copy. A session with no logged sets is not a receipt. The file
+ * is a device download, never a public workout URL.
  */
 
 import type { CompletedWorkoutLog, SetKind } from '@/types';
@@ -282,6 +288,99 @@ function setProducesPr(
     }
   }
   return false;
+}
+
+/** A close receipt exists only when the log actually recorded a set. */
+export function closeReceiptReady(
+  log: Pick<CompletedWorkoutLog, 'exercises'>
+): boolean {
+  return countCompletedLogSets(log) > 0;
+}
+
+/**
+ * One session, one receipt. Empty / 0-set logs return null — never a fake table.
+ * Compare math stays in `buildVictoryReceipt`.
+ */
+export function buildCloseReceipt(
+  log: CompletedWorkoutLog,
+  history: CompletedWorkoutLog[],
+  opts?: { resolveName?: (exerciseId: string) => string }
+): VictoryReceipt | null {
+  if (!closeReceiptReady(log)) return null;
+  return buildVictoryReceipt(log, history, opts);
+}
+
+export type CloseReceiptTextInput = {
+  workoutName: string;
+  durationSeconds: number;
+  setCount: number;
+  volumeLabel: string;
+  receipt: VictoryReceipt;
+};
+
+/** Plain-text keep of the close receipt. Null when there is nothing to keep. */
+export function formatCloseReceiptText(input: CloseReceiptTextInput): string | null {
+  if (input.receipt.exercises.length === 0) return null;
+
+  const lines: string[] = [input.workoutName.trim() || 'Session'];
+  if (input.durationSeconds > 0) {
+    lines.push(`Duration ${formatMmSs(input.durationSeconds)}`);
+  }
+  lines.push(`Volume ${input.volumeLabel}`);
+  lines.push(`Sets ${input.setCount}`);
+
+  const vs = input.receipt.vsLast;
+  if (vs) {
+    const bits: string[] = [];
+    if (vs.volumeDelta !== 0) bits.push(`${formatReceiptSigned(vs.volumeDelta)} vol`);
+    if (vs.setCountDelta !== 0) bits.push(`${formatReceiptSigned(vs.setCountDelta)} sets`);
+    if (vs.durationDelta !== 0) bits.push(formatReceiptDurationDelta(vs.durationDelta));
+    if (bits.length > 0) lines.push(`vs last ${bits.join(' · ')}`);
+  }
+
+  for (const ex of input.receipt.exercises) {
+    lines.push('');
+    lines.push(ex.exerciseName);
+    for (const set of ex.sets) {
+      let row = `${set.setIndex + 1}  ${formatReceiptSetLoad(set.reps, set.weight)}`;
+      if (set.priorReps !== null && set.priorWeight !== null) {
+        row += `  prev ${formatReceiptSetLoad(set.priorReps, set.priorWeight)}`;
+      }
+      lines.push(row);
+    }
+  }
+  return `${lines.join('\n')}\n`;
+}
+
+export type CloseReceiptDownload =
+  | { ok: true; text: string; filename: string }
+  | { ok: false; reason: 'empty' };
+
+/**
+ * Private keep of this session. `dateKey` must be a local `YYYY-MM-DD`
+ * (`localDateKey`) — never an ISO instant.
+ */
+export function buildCloseReceiptDownload(
+  input: CloseReceiptTextInput & { dateKey: string }
+): CloseReceiptDownload {
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(input.dateKey)) {
+    return { ok: false, reason: 'empty' };
+  }
+  const text = formatCloseReceiptText(input);
+  if (!text) return { ok: false, reason: 'empty' };
+  return { ok: true, text, filename: `receipt-${input.dateKey}.txt` };
+}
+
+/** Device download of a built keep. No-op without `document`. Revokes the blob URL. */
+export function triggerCloseReceiptDownload(built: Extract<CloseReceiptDownload, { ok: true }>): void {
+  if (typeof document === 'undefined') return;
+  const blob = new Blob([built.text], { type: 'text/plain;charset=utf-8' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = built.filename;
+  a.click();
+  URL.revokeObjectURL(url);
 }
 
 export function buildVictoryReceipt(

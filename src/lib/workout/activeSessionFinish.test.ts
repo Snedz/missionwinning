@@ -283,6 +283,21 @@ describe('assembleActiveVictory', () => {
     assert.ok(out.victorySummary.receipt?.vsLast);
     assert.equal(out.victorySummary.receipt.vsLast.volumeDelta, 400);
   });
+
+  it('0-set log attaches no close receipt', () => {
+    const empty = log({ exercises: [], totalVolume: 0, durationSeconds: 0 });
+    const out = assembleActiveVictory({
+      log: empty,
+      historyBefore: [],
+      checkIn: null,
+      sessionNote: '',
+      units: 'metric',
+      goalId: 'general',
+      hasCoachPlan: false,
+      resolveExerciseName: (id) => id,
+    });
+    assert.equal(out.victorySummary.receipt, undefined);
+  });
 });
 
 describe('Active page wiring (.405/.409)', () => {
@@ -294,6 +309,12 @@ describe('Active page wiring (.405/.409)', () => {
     assert.match(src, /logSetIsPr\(/);
     assert.match(src, /planLogSetRest\(/);
     assert.match(src, /assembleActiveVictory\(/);
+    const finish = readFileSync(
+      path.join(root, 'src/lib/workout/activeSessionFinish.ts'),
+      'utf8'
+    );
+    assert.match(finish, /buildCloseReceipt\(/);
+    assert.doesNotMatch(finish, /SignInPrompt|getUser\(/);
     assert.match(src, /resolveLogSetPayload\(/);
     assert.match(src, /planPrHaptic\(/);
     assert.match(src, /nothingLoggedToastCopy\(/);
@@ -308,6 +329,7 @@ describe('Active page wiring (.405/.409)', () => {
       /buildDebrief\(/,
       'debrief must live inside assembleActiveVictory'
     );
+    assert.doesNotMatch(src, /SignInPrompt|getUser\(/, 'guest sees Victory without a login wall');
     assert.doesNotMatch(
       src,
       /shouldRestAfterLog\(/,

@@ -18,6 +18,8 @@ import { setKindDefaultLabel } from '@/lib/workout/setKind';
 type Props = {
   receipt: VictoryReceipt;
   unitLabel: string;
+  /** Private keep of this session — device file, not a public URL. */
+  onSaveReceipt?: () => void;
 };
 
 const headCell =
@@ -55,7 +57,7 @@ function SetDeltaCell({
   return <span className="text-muted-foreground tabular-nums">{parts.join(' · ')}</span>;
 }
 
-export function VictoryReceiptStrip({ receipt, unitLabel }: Props) {
+export function VictoryReceiptStrip({ receipt, unitLabel, onSaveReceipt }: Props) {
   const { t } = useTranslation();
 
   if (receipt.exercises.length === 0) return null;
@@ -70,16 +72,28 @@ export function VictoryReceiptStrip({ receipt, unitLabel }: Props) {
         <p className="text-xs font-semibold uppercase tracking-[0.1em] text-muted-foreground">
           {t('victoryReceiptLabel', { defaultValue: 'This session' })}
         </p>
-        {receipt.prCount > 0 ? (
-          <p className="text-xs font-semibold tabular-nums text-primary" data-testid="victory-pr-count">
-            {receipt.prCount === 1
-              ? t('victoryPrsOne', { defaultValue: '1 PR' })
-              : t('victoryPrsMany', {
-                  count: receipt.prCount,
-                  defaultValue: `${receipt.prCount} PRs`,
-                })}
-          </p>
-        ) : null}
+        <div className="flex items-center gap-3">
+          {receipt.prCount > 0 ? (
+            <p className="text-xs font-semibold tabular-nums text-primary" data-testid="victory-pr-count">
+              {receipt.prCount === 1
+                ? t('victoryPrsOne', { defaultValue: '1 PR' })
+                : t('victoryPrsMany', {
+                    count: receipt.prCount,
+                    defaultValue: `${receipt.prCount} PRs`,
+                  })}
+            </p>
+          ) : null}
+          {onSaveReceipt ? (
+            <button
+              type="button"
+              className="text-xs font-semibold text-foreground underline-offset-2 hover:underline min-h-[44px] inline-flex items-center tap-target"
+              data-testid="victory-save-receipt"
+              onClick={onSaveReceipt}
+            >
+              {t('victorySaveReceipt', { defaultValue: 'Save receipt' })}
+            </button>
+          ) : null}
+        </div>
       </div>
 
       {receipt.exercises.map((ex, exIdx) => {
