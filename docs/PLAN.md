@@ -165,13 +165,13 @@ Not these (do not “fix”):
 - `gatedWwwHonesty.test.ts`: EN pack is Free / Get notified / Enter with code plus public line + support. Door surfaces do not carry Free beta / invite-only / open alpha / TAWD / we’re live. Mutant `gateEyebrow: 'Free beta'` dies. Do not scan athlete chrome for open alpha.
 - `exquisiteComp.test.ts`: HUD pack is **Free**, not `>Alpha<` or `>Free beta<`. No TAWD on the cover.
 - Keep `alphaNavHonesty.test.ts` green — athlete badge stays Alpha.
-- `check-build-label` `.934`. LOG + CONTEXT in the same implement commit.
+- `check-build-label` `.938`. LOG + CONTEXT in the same implement commit.
 
 ### Docs / ship protocol
 
-- `APP_BUILD_LABEL` → `2026.07-unified.934` (past `#776` / `.933`)
-- LOG heading `## 2026-08-24 — F-008 gated www honesty (\`.934\`)` + rotate oldest live entry
-- CONTEXT `## Now` one `.934` bullet; rotate oldest shipped version bullet (`.918`); keep Status table; ≤25 bullets
+- `APP_BUILD_LABEL` → `2026.07-unified.938` (past `#774` / `.934`; skip `#778` `.935` · `#777` `.936` · `#779` `.937`)
+- LOG heading `## 2026-08-24 — F-008 gated www honesty (\`.938\`)` + rotate oldest live entry
+- CONTEXT `## Now` one `.938` bullet; rotate oldest shipped version bullet (`.919`); keep Status table; ≤25 bullets
 - `src/lib/INDEX.md` lists `gatedWwwHonesty.ts`
 - Commit trailer: `Excellence-Override: F-008 gated www honesty`
 - Every commit: `[skip vercel]`. PR title tells humans this is reserved **F-008 / old .698 honesty**. PR body writes: “This is the .698 concern (F-008 honesty). Build number is .931 because master is .930.”
