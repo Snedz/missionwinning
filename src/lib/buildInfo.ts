@@ -1,5 +1,5 @@
-/** Shown on Profile so testers can confirm the deployed build. Bump when shipping UI to master. `.951` Hevy diary in (past master `.950` plate math / `#786`). */
-export const APP_BUILD_LABEL = "2026.07-unified.951";
+/** Shown on Profile so testers can confirm the deployed build. Bump when shipping UI to master. `.952` failRead comma (past master `.951`). */
+export const APP_BUILD_LABEL = "2026.07-unified.952";
 
 /**
  * Semver for athletes. Distinct from `APP_BUILD_LABEL`, which `/api/health`
