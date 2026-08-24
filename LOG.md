@@ -25,7 +25,9 @@ cites the next load from this session. Skip never blocks
 Log set. `getLastSessionSets` now reads
 `lastLiveSessionForExercise` — #487 leftover private
 loop (tombstones / 0-rep junk). Not a feed. Not a door
-name. Not TARGET-above-PREVIOUS.
+name. Not TARGET-above-PREVIOUS. Competitive refuse:
+last-actuals chrome stays unmounted; no next-session
+program bump; CSV import later; Train only.
 
 Label `.936` (past master `.938`; `#775` landed `.938`; `#774` is `.934`).
 

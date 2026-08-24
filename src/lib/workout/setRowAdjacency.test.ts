@@ -1,6 +1,6 @@
 import { describe, it } from 'node:test';
 import assert from 'node:assert/strict';
-import { readFileSync } from 'node:fs';
+import { readdirSync, readFileSync, statSync } from 'node:fs';
 import path from 'node:path';
 import type { CompletedWorkoutLog } from '@/types';
 import {
@@ -478,5 +478,113 @@ describe('resolveAfterCompleteCite', () => {
       suggestion: { kind: 'load', reps: 5, weight: 100 },
       cite: { kind: 'coach' },
     });
+  });
+
+  it('does not persist a next-session program bump when the set hits the top of the range', () => {
+    const hist = historyWith(
+      'bench-press',
+      [{ reps: 12, weight: 60 }],
+      isoOnPreviousJsWeekday(1)
+    );
+    const snapshot = structuredClone(hist);
+    const out = resolveAfterCompleteCite({
+      workoutHistory: hist,
+      exerciseId: 'bench-press',
+      sessionSets: [
+        { reps: 12, weight: 60, completed: true, kind: 'normal' },
+        { reps: 8, weight: 60, completed: false, kind: 'normal' },
+      ],
+      completedSetIdx: 0,
+      units: 'metric',
+      goalRange: { min: 8, max: 12 },
+      lastRestSeconds: null,
+    });
+    assert.deepEqual(hist, snapshot);
+    assert.ok(out);
+    assert.equal(out?.suggestion.kind, 'load');
+    assert.ok(out?.cite.kind === 'logs' || out?.cite.kind === 'session');
+    const parts = formatAfterCompleteParts(out!, (key, opts) =>
+      String(opts?.defaultValue ?? key)
+    );
+    assert.ok(parts.provenance.length > 0);
+  });
+});
+
+describe('after-complete cite competitive refuse', () => {
+  function walkTs(dir: string, acc: string[] = []): string[] {
+    for (const name of readdirSync(dir)) {
+      const p = path.join(dir, name);
+      if (statSync(p).isDirectory()) walkTs(p, acc);
+      else if (/\.(tsx|ts)$/.test(name)) acc.push(p);
+    }
+    return acc;
+  }
+
+  it('every painted cite carries a why from the logs', () => {
+    const session = resolveAfterCompleteCite({
+      workoutHistory: [],
+      exerciseId: 'bench-press',
+      sessionSets: [
+        { reps: 8, weight: 60, completed: true, kind: 'normal' },
+        { reps: 8, weight: 60, completed: false, kind: 'normal' },
+      ],
+      completedSetIdx: 0,
+      units: 'metric',
+      lastRestSeconds: null,
+    });
+    assert.ok(session);
+    const sessionParts = formatAfterCompleteParts(session!, (key, opts) =>
+      String(opts?.defaultValue ?? key)
+    );
+    assert.match(sessionParts.provenance, /this session/);
+
+    const rest = resolveAfterCompleteCite({
+      workoutHistory: [],
+      exerciseId: 'bench-press',
+      sessionSets: [{ reps: 8, weight: 60, completed: true, kind: 'normal' }],
+      completedSetIdx: 0,
+      units: 'metric',
+      lastRestSeconds: 90,
+    });
+    const restParts = formatAfterCompleteParts(
+      rest!,
+      (key, opts) => String(opts?.defaultValue ?? key),
+      '1:30'
+    );
+    assert.equal(restParts.provenance, 'Last rest');
+  });
+
+  it('cite path does not wire CSV import', () => {
+    const citeUi = readFileSync(
+      path.join(root, 'src/components/workout/SetLogNextCite.tsx'),
+      'utf8'
+    );
+    const table = readFileSync(
+      path.join(root, 'src/components/workout/SetLogTable.tsx'),
+      'utf8'
+    );
+    assert.doesNotMatch(src, /strongCsv|parseStrong|from ['"]@\/lib\/import/i);
+    assert.doesNotMatch(citeUi, /csv|importWorkout/i);
+    assert.doesNotMatch(table, /csv|importWorkout/i);
+  });
+
+  it('stays on Train — Today / Fuel / Coach and other pages do not mount the cite', () => {
+    const allowed =
+      /\/(SetLogTable|SetLogNextCite|ActiveExerciseCard|setRowAdjacency|setRowAdjacency\.test|setTableDensity694\.test)\./;
+    const roots = [
+      path.join(root, 'src/page-components'),
+      path.join(root, 'src/components'),
+    ];
+    const leaks: string[] = [];
+    for (const dir of roots) {
+      for (const file of walkTs(dir)) {
+        if (allowed.test(file.replace(/\\/g, '/'))) continue;
+        const text = readFileSync(file, 'utf8');
+        if (/resolveAfterCompleteCite|SetLogNextCite/.test(text)) {
+          leaks.push(path.relative(root, file));
+        }
+      }
+    }
+    assert.deepEqual(leaks, []);
   });
 });

@@ -37,10 +37,24 @@ This ship **supersedes #487's surface**, not its engines:
 - Recover #487 leftover: `getLastSessionSets` must use `lastLiveSessionForExercise`
   (tombstones / 0-rep junk are not Prev evidence). Master still had a private loop.
 - Do **not** remount TARGET-above-PREVIOUS (that is last-actuals chrome; we
-  already have last-set ghost). Hevy PREVIOUS is official last-actuals beside
-  the row — it does not fill the next number. Our beat is after complete.
-- Do not invent program auto-progression (Boostcamp next-session bump).
-- Import (Strong CSV first) is a later PR.
+  already have last-set ghost). Last-actuals beside the row do not fill the
+  next number. Our beat is after complete.
+- Do not invent program auto-progression (next-session weight bump when the
+  athlete hits the top of the range). Cite this session's next set from logs.
+- Import (CSV first) is a later PR. Stay on Train.
+
+### Competitive refuse (Market Intel 2026-08-24)
+
+Beat, not copy:
+
+| Category move | Our refuse / beat |
+|---------------|-------------------|
+| Rest timer is table stakes | Already free. Cite may recall last rest; it is not a rest-timer product. |
+| Last-actuals beside the live row | Do not copy. Prev + last-set ghost already show last. Cite is **after complete**, skippable, with a why. |
+| Planner / program auto-progression | Do not write next session's load. `prescribed` cites Coach plan numbers as-is. |
+| History import | Later PR. This ship reads same-device logs only. |
+
+Stay on Train. No Today restyle. No feed.
 
 ### Investigate (done — hypothesis holds, with one extra unused stack)
 
@@ -90,6 +104,8 @@ a **visible, skippable, cited next-set after complete** on the free logger.
 - Skip wiring: `SetLogTable` mounts Skip; Log set is still `primary-action`; Skip is not red.
 - `getLastSessionSets` skips tombstones / 0-rep junk via `lastLiveSessionForExercise` (#487 leftover).
 - `SetLogTable` does not remount `SetLogAdjacencyStack` (#487 surface stays superseded).
+- Hitting the top of the rep range does not mutate history or write a next-session bump.
+- Cite path does not wire CSV import. Today / Fuel / Coach do not mount the cite.
 - Warmup complete stays quiet. Tombstone history is not evidence (existing last-live rule).
 - Source: does not import `sessionRationale` / PlanSessionCard / readiness.
 - Door / teaser / www do not gain an "E-Adjacency" string.
