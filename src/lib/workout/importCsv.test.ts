@@ -40,6 +40,9 @@ const STRONG_MALFORMED = fixture('strong-malformed-row.csv');
 const HEVY_EMPTY = fixture('hevy-empty.csv');
 const HEVY_ONE = fixture('hevy-one-workout.csv');
 const HEVY_MALFORMED = fixture('hevy-malformed-row.csv');
+const HEVY_MEASUREMENTS_EMPTY = fixture('hevy-measurements-empty.csv');
+const HEVY_MEASUREMENTS_ONE = fixture('hevy-measurements-one.csv');
+const HEVY_MEASUREMENTS_MALFORMED = fixture('hevy-measurements-malformed.csv');
 
 describe('importCsv', () => {
   it('detects format from the header, not the filename', () => {
@@ -50,6 +53,13 @@ describe('importCsv', () => {
     assert.equal(detectCsvFormat(PROGRAM_LOG_FLAT), 'program-log');
     assert.equal(detectCsvFormat(MW), 'mw');
     assert.equal(detectCsvFormat('a,b,c\n1,2,3'), null);
+    assert.equal(
+      detectCsvFormat(HEVY_MEASUREMENTS_EMPTY),
+      null,
+      'Hevy measurements are not a workout dialect'
+    );
+    assert.equal(detectCsvFormat(HEVY_MEASUREMENTS_ONE), null);
+    assert.equal(detectCsvFormat(HEVY_MEASUREMENTS_MALFORMED), null);
   });
 
   it('a UTF-8 BOM does not hide a Strong header', () => {

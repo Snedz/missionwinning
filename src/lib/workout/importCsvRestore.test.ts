@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import path from 'node:path';
 import { WORKOUT_STORE_KEY } from '@/lib/backup';
+import { loadBodyMetrics } from '@/lib/bodyMetrics';
 import { __resetForTests as resetStorage, readRaw, writeRaw } from '@/lib/storage/safeStorage';
 import type { CompletedWorkoutLog } from '@/types';
 import {
@@ -14,7 +15,9 @@ import {
 } from '@/lib/workout/importCsv';
 import {
   buildWorkoutCsvDownload,
+  importDiaryText,
   importWorkoutCsvText,
+  previewDiaryImport,
   previewWorkoutCsvText,
 } from '@/lib/workout/importCsvRestore';
 
@@ -29,6 +32,9 @@ const HEVY_EMPTY = fixture('hevy-empty.csv');
 const HEVY_ONE = fixture('hevy-one-workout.csv');
 const HEVY_MALFORMED = fixture('hevy-malformed-row.csv');
 const SET_TABLE_A = fixture('set-table-a-sample.csv');
+const HEVY_MEAS_EMPTY = fixture('hevy-measurements-empty.csv');
+const HEVY_MEAS_ONE = fixture('hevy-measurements-one.csv');
+const HEVY_MEAS_MALFORMED = fixture('hevy-measurements-malformed.csv');
 
 function installStorage(): () => void {
   const map = new Map<string, string>();
@@ -314,5 +320,95 @@ describe('importCsvRestore Strong export', () => {
 
   it('pure empty Strong shape is header-only', () => {
     assert.equal(workoutsToSetTableBCsv([], 'metric').trimEnd(), SET_TABLE_B_CSV_HEADER);
+  });
+});
+
+describe('importCsvRestore Hevy measurements preview vs commit', () => {
+  it('preview of an empty measurements file does not write workouts or metrics', () => {
+    writeRaw(WORKOUT_STORE_KEY, JSON.stringify({ version: 0, state: { workoutHistory: [] } }));
+    const preview = previewDiaryImport(HEVY_MEAS_EMPTY);
+    assert.equal(preview.ok, false);
+    assert.equal(preview.error, 'no_data_rows');
+    assert.equal(preview.kind, 'measurements');
+    assert.equal(preview.measurements.length, 0);
+    assert.equal(historyLen(), 0);
+    assert.equal(loadBodyMetrics().length, 0);
+  });
+
+  it('preview of one measurements file reports counts and does not write', () => {
+    const preview = previewDiaryImport(HEVY_MEAS_ONE);
+    assert.equal(preview.ok, true);
+    assert.equal(preview.kind, 'measurements');
+    assert.equal(preview.measurements.length, 1);
+    assert.equal(preview.measurementAdded, 2);
+    assert.equal(preview.added, 0);
+    assert.equal(historyLen(), 0, 'preview must not write workouts');
+    assert.equal(loadBodyMetrics().length, 0, 'preview must not write metrics');
+  });
+
+  it('confirm merges measurements; existing native fields win; workouts untouched', () => {
+    writeRaw(WORKOUT_STORE_KEY, JSON.stringify({ version: 0, state: { workoutHistory: [] } }));
+    const first = importDiaryText(HEVY_MEAS_ONE);
+    assert.equal(first.ok, true);
+    assert.equal(first.kind, 'measurements');
+    assert.equal(first.measurementAdded, 2);
+    assert.equal(historyLen(), 0);
+    assert.equal(loadBodyMetrics().length, 1);
+    assert.equal(loadBodyMetrics()[0].weightKg, 82.5);
+
+    const again = importDiaryText(HEVY_MEAS_ONE);
+    assert.equal(again.ok, true);
+    assert.equal(again.measurementAdded, 0);
+    assert.equal(again.measurementDuplicates, 2);
+    assert.equal(loadBodyMetrics().length, 1);
+
+    const workout = importDiaryText(HEVY_ONE);
+    assert.equal(workout.ok, true);
+    assert.equal(workout.kind, 'workout');
+    assert.equal(workout.added, 1);
+    assert.equal(historyLen(), 1);
+    assert.equal(loadBodyMetrics().length, 1, 'workout import must not wipe metrics');
+  });
+
+  it('measurements-only does not bounce; a second file still adds', () => {
+    const first = importDiaryText(HEVY_MEAS_ONE);
+    assert.equal(first.ok, true);
+    const secondCsv =
+      'date,weight_kg,fat_percent,neck_in,shoulder_in,chest_in,left_bicep_in,' +
+      'right_bicep_in,left_forearm_in,right_forearm_in,abdomen_in,waist_in,' +
+      'hips_in,left_thigh_in,right_thigh_in,left_calf_in,right_calf_in\n' +
+      '"20 Jul 2026, 08:00",81.0,,,,,,,,,,,,,,,\n';
+    const preview = previewDiaryImport(secondCsv);
+    assert.equal(preview.ok, true);
+    assert.equal(loadBodyMetrics().length, 1, 'preview of a second file must not write');
+    const second = importDiaryText(secondCsv);
+    assert.equal(second.ok, true);
+    assert.ok((second.measurementAdded ?? 0) >= 1, 'no one-import cap');
+    assert.equal(loadBodyMetrics().length, 2);
+  });
+
+  it('malformed measurement rows are counted; good cells land on confirm', () => {
+    const preview = previewDiaryImport(HEVY_MEAS_MALFORMED);
+    assert.equal(preview.ok, true);
+    assert.equal(preview.skippedRows, 2);
+    assert.equal(loadBodyMetrics().length, 0);
+    const committed = importDiaryText(HEVY_MEAS_MALFORMED);
+    assert.equal(committed.ok, true);
+    assert.equal(committed.skippedRows, 2);
+    assert.equal(loadBodyMetrics().length, 2);
+  });
+
+  it('workout-only still works exactly as .947 through the diary door', () => {
+    const preview = previewDiaryImport(HEVY_ONE);
+    assert.equal(preview.ok, true);
+    assert.equal(preview.kind, 'workout');
+    assert.equal(preview.format, 'set-table-a');
+    assert.equal(preview.workouts.length, 1);
+    assert.equal(historyLen(), 0);
+    const committed = importDiaryText(HEVY_ONE);
+    assert.equal(committed.ok, true);
+    assert.equal(committed.added, 1);
+    assert.equal(historyLen(), 1);
+    assert.equal(loadBodyMetrics().length, 0);
   });
 });

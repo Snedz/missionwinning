@@ -18,7 +18,7 @@ function stripComments(src: string): string {
 }
 
 const TRANSFER_NAME =
-  /^(importCsv|exportCsv|csvTransfer)/;
+  /^(importCsv|exportCsv|csvTransfer|importHevyMeasurements)/;
 
 function walkTs(dir: string, out: string[] = []): string[] {
   for (const name of readdirSync(dir, { withFileTypes: true })) {
@@ -79,8 +79,8 @@ describe('csvHistoryFree', () => {
 
   it('the Profile card wires workout-CSV import and export with no disabled gate', () => {
     const src = stripComments(read('src/components/profile/ProfileImportCard.tsx'));
-    assert.match(src, /previewWorkoutCsvText/);
-    assert.match(src, /importWorkoutCsvText/);
+    assert.match(src, /previewDiaryImport/);
+    assert.match(src, /importDiaryText/);
     assert.match(src, /downloadWorkoutCsv\(/);
     assert.match(src, /handleExport\('set-table-b'\)/);
     assert.match(src, /handleExport\('set-table-a'\)/);
@@ -122,6 +122,9 @@ describe('csvHistoryFree', () => {
     assert.deepEqual(names, [
       'hevy-empty.csv',
       'hevy-malformed-row.csv',
+      'hevy-measurements-empty.csv',
+      'hevy-measurements-malformed.csv',
+      'hevy-measurements-one.csv',
       'hevy-one-workout.csv',
       'mw-native-sample.csv',
       'program-log-flatten-sample.csv',

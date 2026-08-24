@@ -23,8 +23,8 @@ import { useToast } from '@/hooks/use-toast';
 import { track } from '@/lib/analytics';
 import {
   downloadWorkoutCsv,
-  importWorkoutCsvText,
-  previewWorkoutCsvText,
+  importDiaryText,
+  previewDiaryImport,
   type CsvImportPreview,
 } from '@/lib/workout/importCsvRestore';
 import type { WorkoutCsvDialect } from '@/lib/workout/importCsv';
@@ -75,7 +75,9 @@ export function ProfileImportCard() {
                 defaultValue:
                   'Could not recognise that workout file. Drop a workout CSV export, then try again.',
               })
-            : t('csvImportEmpty', { defaultValue: 'No workout rows found in the file.' }),
+            : t('csvImportEmpty', {
+                defaultValue: 'No workout or measurement rows found in the file.',
+              })
         variant: 'destructive',
       });
     },
@@ -89,7 +91,7 @@ export function ProfileImportCard() {
       setBusy(true);
       try {
         const text = await file.text();
-        const next = previewWorkoutCsvText(text);
+        const next = previewDiaryImport(text);
         if (!next.ok) {
           setPreview(null);
           setPendingText(null);
@@ -114,35 +116,44 @@ export function ProfileImportCard() {
     if (!pendingText || busy) return;
     setBusy(true);
     try {
-      const result = importWorkoutCsvText(pendingText);
+      const result = importDiaryText(pendingText);
       if (!result.ok) {
         failRead(result.error);
         return;
       }
       track('csv_imported', {
-        format: result.format ?? 'unknown',
+        format: result.format ?? result.kind ?? 'unknown',
         added: result.added ?? 0,
         duplicates: result.duplicates ?? 0,
         skipped: result.skippedRows ?? 0,
+        measurements: result.measurementAdded ?? 0,
       });
       const skipped = result.skippedRows ?? 0;
+      const measurementAdded = result.measurementAdded ?? 0;
       toast({
         title: t('csvImportDone', { defaultValue: 'History imported' }),
         description:
-          skipped > 0
-            ? t('csvImportDoneSkipped', {
+          result.kind === 'measurements'
+            ? t('csvImportDoneMeasurements', {
                 defaultValue:
-                  '{{added}} workouts imported ({{duplicates}} already here, {{skipped}} rows skipped). Reloading…',
-                added: result.added ?? 0,
-                duplicates: result.duplicates ?? 0,
-                skipped,
+                  '{{added}} measurements imported ({{duplicates}} already here). Reloading…',
+                added: measurementAdded,
+                duplicates: result.measurementDuplicates ?? 0,
               })
-            : t('csvImportDoneDesc', {
-                defaultValue:
-                  '{{added}} workouts imported ({{duplicates}} already here). Your PRs, 1RM trends and load band now use them. Reloading…',
-                added: result.added ?? 0,
-                duplicates: result.duplicates ?? 0,
-              }),
+            : skipped > 0
+              ? t('csvImportDoneSkipped', {
+                  defaultValue:
+                    '{{added}} workouts imported ({{duplicates}} already here, {{skipped}} rows skipped). Reloading…',
+                  added: result.added ?? 0,
+                  duplicates: result.duplicates ?? 0,
+                  skipped,
+                })
+              : t('csvImportDoneDesc', {
+                  defaultValue:
+                    '{{added}} workouts imported ({{duplicates}} already here). Your PRs, 1RM trends and load band now use them. Reloading…',
+                  added: result.added ?? 0,
+                  duplicates: result.duplicates ?? 0,
+                }),
       });
       reloadAfterRestore();
     } finally {
@@ -161,7 +172,7 @@ export function ProfileImportCard() {
         <p className="text-sm text-muted-foreground">
           {t('csvImportSubtitle', {
             defaultValue:
-              'Import or export a workout CSV. Free forever, no account. History is never paywalled.',
+              'Import or export a workout CSV, or a Hevy measurements export. Free forever, no account. History is never paywalled.',
           })}
         </p>
         <div className="flex flex-col gap-2 sm:flex-row sm:flex-wrap">
@@ -235,13 +246,22 @@ export function ProfileImportCard() {
             <p className="text-sm font-semibold text-foreground">
               {t('csvImportPreviewTitle', { defaultValue: 'Ready to import' })}
             </p>
-            <p className="text-sm text-muted-foreground">
-              {t('csvImportPreviewSummary', {
-                defaultValue: '{{workouts}} workouts · {{sets}} sets',
-                workouts: preview.workouts.length,
-                sets: preview.setCount,
-              })}
-            </p>
+            {preview.kind === 'measurements' || preview.measurements.length > 0 ? (
+              <p className="text-sm text-muted-foreground">
+                {t('csvImportPreviewMeasurements', {
+                  defaultValue: '{{count}} measurements',
+                  count: preview.measurements.length,
+                })}
+              </p>
+            ) : (
+              <p className="text-sm text-muted-foreground">
+                {t('csvImportPreviewSummary', {
+                  defaultValue: '{{workouts}} workouts · {{sets}} sets',
+                  workouts: preview.workouts.length,
+                  sets: preview.setCount,
+                })}
+              </p>
+            )}
             {preview.skippedRows > 0 ? (
               <p className="text-sm text-muted-foreground" data-csv-import-skipped="">
                 {t('csvImportPreviewSkipped', {
@@ -250,18 +270,27 @@ export function ProfileImportCard() {
                 })}
               </p>
             ) : null}
-            {preview.duplicates > 0 ? (
+            {(preview.kind === 'measurements'
+              ? preview.measurementDuplicates
+              : preview.duplicates) > 0 ? (
               <p className="text-sm text-muted-foreground">
                 {t('csvImportPreviewAlready', {
                   defaultValue: '{{count}} already here',
-                  count: preview.duplicates,
+                  count:
+                    preview.kind === 'measurements'
+                      ? preview.measurementDuplicates
+                      : preview.duplicates,
                 })}
               </p>
             ) : null}
             <ul className="space-y-1 text-sm text-foreground">
-              {preview.workouts.slice(0, 5).map((w) => (
-                <li key={w.id}>{w.workoutName}</li>
-              ))}
+              {preview.kind === 'measurements'
+                ? preview.measurements.slice(0, 5).map((m) => (
+                    <li key={m.date}>{m.date}</li>
+                  ))
+                : preview.workouts.slice(0, 5).map((w) => (
+                    <li key={w.id}>{w.workoutName}</li>
+                  ))}
             </ul>
             <div className="flex flex-col gap-2 sm:flex-row">
               <Button

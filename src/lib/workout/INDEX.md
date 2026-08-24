@@ -42,6 +42,7 @@ Root-level `@/lib/{name}` paths re-export from here for compatibility — prefer
 27. `homeGymKit.ts` — local Home gym kit (barbell/rack/plates/dumbbells/pull-up-bar/floor). Logger + Just Go + Coach filter; never rank; Train empty Start stays repeat-last (`.763`)
 28. `warmupRamp.ts` — free set-table 40/60/80 warmup insert + set-column `W` ordinals (`.764`); plate line is `src/lib/plateCalculator.ts` `setRowPlateBreakdown` (`.948`)
 29. `importCsv.ts` + `importCsvRestore.ts` — workout CSV in/out. Strong session export is `workoutsToSetTableBCsv` / `buildWorkoutCsvDownload('set-table-b')`. Empty history is header-only (`.943`). Import preview + confirm stays `.940`. English Hevy workout CSV is `set-table-a` (`.947`) — same Account path, no new dialect
+29b. `importHevyMeasurements.ts` — Hevy official wide `measurement_data.csv` → `bodyMetrics`. Header-only detect. Existing native fields win (`.951`)
 
 ## Tests (colocated)
 
@@ -53,9 +54,11 @@ Root-level `@/lib/{name}` paths re-export from here for compatibility — prefer
 | `bodyweightLoad.test.ts` | BW + belt format + plus-load detect (`.758`) |
 | `bodyweightLoadGuard.test.ts` | Free logger; skip-at-0; one formatter (`.758`) |
 | `importCsv.ts` | Workout CSV parse + merge. English Strong export is `set-table-b`; English Hevy workout export is `set-table-a` |
-| `importCsvRestore.ts` | Preview (dry-run) then confirm write; session/set export (`.940`) |
-| `importCsv.test.ts` | Strong + Hevy fixtures: empty, one workout, malformed row; no invented sets |
-| `importCsvRestore.test.ts` | Preview does not write; confirm writes; second file still adds (`.940` / `.947`) |
+| `importCsvRestore.ts` | Preview (dry-run) then confirm write; session/set export (`.940`). Diary door also lands Hevy measurements (`.951`) |
+| `importHevyMeasurements.ts` | Hevy measurement header detect + parse + merge. Wide `date`/`weight_kg`/`fat_percent`/`*_in`/`*_cm` |
+| `importCsv.test.ts` | Strong + Hevy fixtures: empty, one workout, malformed row; no invented sets; measurements header is not a workout dialect (`.951`) |
+| `importCsvRestore.test.ts` | Preview does not write; confirm writes; second file still adds (`.940` / `.947` / `.951`) |
+| `importHevyMeasurements.test.ts` | Empty / one / malformed measurements; merge existing-wins; re-import no-op (`.951`) |
 | `importReach.test.ts` | set-table CSV import stays reachable from I-Day + empty logger (`.766`); preview + confirm (`.940`) |
 | `restTimer.test.ts` | Clock + defaults + start seconds (`.292`) + last-rest recall / skip (`.745`) |
 | `superset.test.ts` | Pair persist, pair-of-two, A1/A2 marks, advance, rest gate (`.749`) |
@@ -86,7 +89,8 @@ Root-level `@/lib/{name}` paths re-export from here for compatibility — prefer
 | `warmupRamp.test.ts` | 40/60/80 ramp, ordinals, idempotent insert (`.764`) |
 | `plateWarmupFree.test.ts` | Plate/warmup path never imports premium (`.764`) |
 | `importCsv.test.ts` | Strong / Hevy / set-table / MW parse + header-only empty Strong export (`.943`) |
-| `importCsvRestore.test.ts` | Preview vs confirm (`.940` / `.947`); persist-layer Strong export round-trip (`.943`) |
+| `importCsvRestore.test.ts` | Preview vs confirm (`.940` / `.947` / `.951`); persist-layer Strong export round-trip (`.943`) |
+| `importHevyMeasurements.test.ts` | Hevy measurement_data.csv header + merge (`.951`) |
 | `csvHistoryFree.test.ts` | Transfer path never consults premium; empty export is not a refuse |
 
 ## UI & integration (not in this folder)

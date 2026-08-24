@@ -16,7 +16,12 @@
  */
 
 import { WORKOUT_STORE_KEY } from '@/lib/backup';
-import { readRaw, writeRaw } from '@/lib/storage/safeStorage';
+import {
+  BODY_METRICS_KEY,
+  loadBodyMetrics,
+  type BodyMetricEntry,
+} from '@/lib/bodyMetrics';
+import { readRaw, writeJson, writeRaw } from '@/lib/storage/safeStorage';
 import { STORAGE_KEYS } from '@/lib/storage/keys';
 import { localDateKey } from '@/lib/time/localDate';
 import type { UnitsPref } from '@/lib/units';
@@ -30,6 +35,11 @@ import {
   type CsvFormat,
   type WorkoutCsvDialect,
 } from '@/lib/workout/importCsv';
+import {
+  isHevyMeasurementsCsv,
+  mergeBodyMetrics,
+  parseHevyMeasurementsCsv,
+} from '@/lib/workout/importHevyMeasurements';
 
 interface PersistedWorkoutState {
   version?: number;
@@ -53,16 +63,28 @@ export type CsvExportResult =
   | { ok: true; csv: string; count: number; dialect: WorkoutCsvDialect }
   | { ok: false; error: 'storage' };
 
-/** Dry-run of a file pick. Never writes. Confirm calls `importWorkoutCsvText`. */
+export type DiaryImportKind = 'workout' | 'measurements';
+
+/** Dry-run of a file pick. Never writes. Confirm calls `importDiaryText`. */
 export interface CsvImportPreview {
   ok: boolean;
   error?: CsvRestoreResult['error'];
   format?: CsvFormat | null;
+  kind?: DiaryImportKind;
   workouts: CompletedWorkoutLog[];
+  measurements: BodyMetricEntry[];
   skippedRows: number;
   added: number;
   duplicates: number;
+  measurementAdded: number;
+  measurementDuplicates: number;
   setCount: number;
+}
+
+export interface DiaryRestoreResult extends CsvRestoreResult {
+  kind?: DiaryImportKind;
+  measurementAdded?: number;
+  measurementDuplicates?: number;
 }
 
 function displayUnits(): UnitsPref {
@@ -76,16 +98,21 @@ function countImportSets(workouts: CompletedWorkoutLog[]): number {
 function emptyPreview(
   error: CsvRestoreResult['error'],
   format: CsvFormat | null | undefined,
-  skippedRows = 0
+  skippedRows = 0,
+  kind?: DiaryImportKind
 ): CsvImportPreview {
   return {
     ok: false,
     error,
     format,
+    kind,
     workouts: [],
+    measurements: [],
     skippedRows,
     added: 0,
     duplicates: 0,
+    measurementAdded: 0,
+    measurementDuplicates: 0,
     setCount: 0,
   };
 }
@@ -109,23 +136,95 @@ export function previewWorkoutCsvText(text: string): CsvImportPreview {
     return emptyPreview(
       (parsed.error as CsvRestoreResult['error']) ?? 'unrecognized_format',
       parsed.format,
-      parsed.skippedRows
+      parsed.skippedRows,
+      'workout'
     );
   }
   const history = readExistingHistory();
   if (!history.ok) {
-    return emptyPreview('storage', parsed.format, parsed.skippedRows);
+    return emptyPreview('storage', parsed.format, parsed.skippedRows, 'workout');
   }
   const { added, duplicates } = mergeImportedLogs(history.existing, parsed.workouts);
   return {
     ok: true,
     format: parsed.format,
+    kind: 'workout',
     workouts: parsed.workouts,
+    measurements: [],
     skippedRows: parsed.skippedRows,
     added,
     duplicates,
+    measurementAdded: 0,
+    measurementDuplicates: 0,
     setCount: countImportSets(parsed.workouts),
   };
+}
+
+function previewMeasurementsText(text: string): CsvImportPreview {
+  const parsed = parseHevyMeasurementsCsv(text);
+  if (parsed.error) {
+    return emptyPreview(parsed.error, null, parsed.skippedRows, 'measurements');
+  }
+  const { added, duplicates } = mergeBodyMetrics(loadBodyMetrics(), parsed.entries);
+  return {
+    ok: true,
+    format: null,
+    kind: 'measurements',
+    workouts: [],
+    measurements: parsed.entries,
+    skippedRows: parsed.skippedRows,
+    added: 0,
+    duplicates: 0,
+    measurementAdded: added,
+    measurementDuplicates: duplicates,
+    setCount: 0,
+  };
+}
+
+/** Dry-run for a workout CSV or a Hevy measurements CSV. Never writes. */
+export function previewDiaryImport(text: string): CsvImportPreview {
+  if (isHevyMeasurementsCsv(text)) return previewMeasurementsText(text);
+  return previewWorkoutCsvText(text);
+}
+
+function importMeasurementsText(text: string): DiaryRestoreResult {
+  const parsed = parseHevyMeasurementsCsv(text);
+  if (parsed.error) {
+    return {
+      ok: false,
+      error: parsed.error,
+      format: null,
+      kind: 'measurements',
+      skippedRows: parsed.skippedRows,
+    };
+  }
+  try {
+    const { merged, added, duplicates } = mergeBodyMetrics(
+      loadBodyMetrics(),
+      parsed.entries
+    );
+    if (!writeJson(BODY_METRICS_KEY, merged)) {
+      return { ok: false, error: 'storage', format: null, kind: 'measurements' };
+    }
+    return {
+      ok: true,
+      format: null,
+      kind: 'measurements',
+      added: 0,
+      duplicates: 0,
+      measurementAdded: added,
+      measurementDuplicates: duplicates,
+      skippedRows: parsed.skippedRows,
+    };
+  } catch {
+    return { ok: false, error: 'storage', format: null, kind: 'measurements' };
+  }
+}
+
+/** Confirm write for a workout CSV or a Hevy measurements CSV. */
+export function importDiaryText(text: string): DiaryRestoreResult {
+  if (isHevyMeasurementsCsv(text)) return importMeasurementsText(text);
+  return { ...importWorkoutCsvText(text), kind: 'workout' };
 }
 
 export function importWorkoutCsvText(text: string): CsvRestoreResult {
