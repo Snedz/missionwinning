@@ -48,6 +48,8 @@
 | `design-concepts/serve.mjs` | `npm run design:concepts` | Local design studio on **127.0.0.1:4177**. Serves `docs/design/` (board, 04, studio sheet, stills). Does not replace live `/` or `/start`. |
 | `design-concepts/stills.mjs` | `npm run design:stills` | Fold PNGs of 04 at 390×844 and 1440×900 into `docs/design/`. Optional `/start` stills if www is already up. |
 | `sync-ops-pack.mjs` | `npm run ops:sync` | Stage INTERNAL + founder critical path into gitignored `ops/` for private mission-ops ([DUAL_REPO.md](../docs/DUAL_REPO.md)) |
+| `export-public-snapshot.mjs` | `npm run snapshot:public` | Filtered **progress-report** copy for `Mission-Winning/missionwinning`. Sibling dir, orphan git, **does not push**, does not change origin. `--force` restores an existing org remote. Deny rules: [public-snapshot/](public-snapshot/INDEX.md) |
+| `public-snapshot/deny.test.mjs` | `npm run snapshot:check` | Deny-list unit tests. Not a gate step. |
 
 ## Related (not here)
 

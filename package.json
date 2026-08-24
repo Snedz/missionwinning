@@ -84,7 +84,9 @@
     "check-locale-split": "node scripts/split-locale-packs.mjs --check",
     "ops:sync": "node scripts/sync-ops-pack.mjs",
     "ops:dashboard": "npm --prefix ops/dashboard run dev",
-    "ops:session": "node ops/scripts/new-session.mjs"
+    "ops:session": "node ops/scripts/new-session.mjs",
+    "snapshot:public": "node scripts/export-public-snapshot.mjs --out ../missionwinning-public-snapshot --git --force",
+    "snapshot:check": "node --test scripts/public-snapshot/deny.test.mjs"
   },
   "dependencies": {
     "@phantom/react-sdk": "^2.0.2",

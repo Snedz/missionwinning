@@ -34,7 +34,7 @@
 | [ARCHITECTURE.md](ARCHITECTURE.md) | System design, layers, state |
 | [OPEN_SOURCE.md](OPEN_SOURCE.md) | AGPL posture · public flip · what stays secret |
 | [CLASSIFICATION.md](CLASSIFICATION.md) | PUBLIC / INTERNAL / SECRET / LOCAL path classes |
-| [DUAL_REPO.md](DUAL_REPO.md) | Product repo vs private mission-ops · `npm run ops:sync` |
+| [DUAL_REPO.md](DUAL_REPO.md) | Working Snedz · Alpha snapshot org · private mission-ops · `npm run snapshot:public` |
 | [SECURITY_PUBLIC_OSS_AUDIT_2026-08-08.md](SECURITY_PUBLIC_OSS_AUDIT_2026-08-08.md) | Public OSS prep audit (2026-08-08) |
 | [contracts/INDEX.md](contracts/INDEX.md) | Identity · economy · module · AI interop contracts |
 | [MISSION_SERVER_MESSENGER_PLAN.md](MISSION_SERVER_MESSENGER_PLAN.md) | Frozen `.752` messenger (MSN rooms + presence; continues #518) |

@@ -29,7 +29,7 @@ Open source is a **trust product** for the free core. It is not a reason to publ
 | `src/`, `app/`, `packages/`, `apps/`, `tests/`, `scripts/` | Product code (no secrets) |
 | `docs/help/`, `docs/ARCHITECTURE.md`, `docs/API.md`, `docs/DESIGN_*` | Customer + engineering |
 | `docs/contracts/` | Interop specs for multi-agent / multi-module future |
-| `docs/CLASSIFICATION.md`, `docs/DUAL_REPO.md`, `docs/OPEN_SOURCE.md`, `docs/SECRETS.md` | Security posture |
+| `docs/CLASSIFICATION.md`, `docs/DUAL_REPO.md`, `docs/OPEN_SOURCE.md`, `docs/SECRETS.md` | Security posture. Snapshot refresh: `npm run snapshot:public` |
 | `AGENTS.md`, `INDEX.md`, `vision.md` (constitution), `CONTRIBUTING.md` | Agent spine |
 | `CONTEXT.md` | Product status only — no private capital/personal PII |
 | `ORCHESTRATION.md` | Horizon gates (product discipline, not competitive intel dumps) |
