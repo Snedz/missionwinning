@@ -114,7 +114,7 @@
     "react-dom": "^19.2.8",
     "react-i18next": "^17.0.11",
     "recharts": "^2.15.4",
-    "resend": "^6.12.4",
+    "resend": "^6.21.0",
     "server-only": "^0.0.1",
     "serwist": "^9.5.11",
     "stripe": "^22.5.0",
