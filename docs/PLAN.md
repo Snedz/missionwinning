@@ -6,6 +6,95 @@ Living roadmap for the **everything app** (a bodyweight coach app Super Bundle �
 
 ---
 
+## Frozen plan — `.1003` Delete this finished session (2026-08-25)
+
+> **Frozen.** Implement only this section + root
+> [PLAN.md](../PLAN.md). Plan commit is `[skip vercel]`.
+> Label: `2026.07-unified.1003` — from master
+> `.1002` (`f0b10181` — Merge duplicate
+> exercises). Stamp stays `.1003`. Do not bump.
+> Title stays **Delete this finished session
+> (.1003)**. Same PR. Do not merge this PR
+> yourself. Merge `.1002` + Pause `.1001` +
+> Backfill `.1000` + in-set PR `.999` +
+> Reorder `.998` + History Edit `.997` +
+> Exercise note + pin `.996` + Per-exercise
+> rest `.995` + Set-row type `.994` +
+> This-movement history `.993` + Custom
+> `.992` + Start this again `.991` + Quiet
+> Track trend `.989` + EMOM `.988` +
+> drop-set `.986` + warmup `.985` + notes
+> `.983` + 1RM `.981` + Supersets `.980` +
+> Learn `.978` + week strip `.977` + Quiet
+> Track `.976` + Quiet Move `.974` + cues
+> `.973` + honesty `.971` + tags `.970` +
+> RPE `.967` + Fuel `.965` + resume `.963` +
+> notebook `.960` are on master. Do not smash
+> them. Every commit `[skip vercel]`. No Preview.
+> No `PRIVATE_MODE` flip. No promote. Live www
+> stays `.696`. Guest path. First set stays
+> ungated. Today stays one Start. Brand:
+> **Log a set. Offline.** / No account. No
+> wearable.
+
+Backfill creates days. Edit corrects a
+session that exists. Missing: undo a
+bogus Monday (wrong date, test log,
+imported junk). Hevy deletes one
+workout and cannot recover. Strong
+cannot delete one session (only Start
+History From or wipe the account).
+
+### First check (done — hypothesis holds)
+
+Read tip `f0b10181` / `.1002`.
+Confirmed:
+
+- **Identity is the finished log.**
+  `CompletedWorkoutLog.id` is the
+  History row key. `clientId` is the
+  sync identity. Live is
+  `ActiveWorkout` with its own
+  `clientId` — not in history until
+  Finish. Cancel / discard of the
+  live set is already
+  `cancelActiveWorkout`.
+- **Tombstone, not wipe.** Readers
+  (History list, week strip,
+  this-movement `.993`, PR diary)
+  already skip `deletedAt`. One
+  tombstone removes that Monday
+  everywhere. Other days stay. Sync
+  already ships tombstones.
+- **Confirm-gated History detail.**
+  Same door shape as Edit `.997` /
+  Backfill `.1000` / Merge `.1002`.
+  Not a Today home row. Not a
+  second Start. Not merge-dupes.
+  Not pause clock `.1001`.
+- **Empty / live / missing invent
+  nothing.** `decideDeleteFinishedSession`
+  never mints a row. Never auto-deletes.
+
+### Lock
+
+1. Confirm-gated. Copy says it
+   cannot be recovered.
+2. After confirm: that one finished
+   session is gone from History /
+   week strip / this-movement
+   history / PR diary. Other days
+   stay.
+3. Live session is not this
+   feature.
+4. Empty / live / missing id
+   invents nothing (noop).
+5. No Today chrome. No second
+   Start. No `/private` leak. No
+   Feed.
+
+---
+
 ## Frozen plan — `.1002` Merge duplicate exercises (2026-08-25)
 
 > **Frozen.** Implement only this section + root

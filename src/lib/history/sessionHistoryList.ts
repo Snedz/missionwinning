@@ -3,7 +3,8 @@
  *
  * `/history` Sessions is the list (PLAN.md `.720`). Calendar and day-replay
  * are other surfaces. This module is the scan: date, title, muscles, set count.
- * It does not decide how to open a row (the page opens the log; `.997` can edit).
+ * It does not decide how to open a row (the page opens the log; `.997` can edit;
+ * `.1003` can delete one finished session).
  */
 
 import { EXERCISES } from '@/data/exercises';

@@ -20,6 +20,9 @@ Yes as a PWA — log workouts offline; sync when back online if signed in.
 **I logged the same lift under two names.**  
 On History or Library, open **Merge duplicate exercises**. Pick the name to move data from and the name to keep, then confirm. History, PRs, notes, tags, rest, and 1RM ride the name you kept. This cannot be undone. The app does not guess a match.
 
+**I logged a session on the wrong day.**  
+Open that finished session in History and **Delete this session**. Confirm — it cannot be recovered. Other days stay. This does not wipe your account and does not cancel a live workout.
+
 **What does Victory show after I finish?**  
 A private receipt of the session you just logged — sets, load, duration when the clock ran (you can pause the session clock on Train so a phone call does not count), and vs last time when you have done the same lifts before. Each lift can show last-time **Prev** and beaten PRs. Stay, screenshot, or save a copy on this device. There is no public workout link. A session with no sets has no receipt. A first session has no invented PR. Instant, offline, and free. Share is optional; nothing is unlocked by posting.
 

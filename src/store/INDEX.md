@@ -12,7 +12,7 @@
 | `setRpe10.test.ts` | Optional 1–10 RPE persist / complete / empty (`.967`) |
 | `setLoadPct.test.ts` | Optional % of known 1RM persist / complete / empty (`.981`) |
 | `sessionNote.store.test.ts` | Live jot → completed log; receipt edit / clear stays local (`.982` / stamp `.983`) |
-| `workoutStore.test.ts` | Insert / remove free warmup batch from working weight (`.984` / stamp `.985`). This-session note does not prefill from History (`.996`). History Save replaces the diary and leaves the live set (`.997`). Backfill prepends a new log and leaves the live set (`.1000`). Merge remaps history onto the keeper (`.1002`). |
+| `workoutStore.test.ts` | Insert / remove free warmup batch from working weight (`.984` / stamp `.985`). This-session note does not prefill from History (`.996`). History Save replaces the diary and leaves the live set (`.997`). Backfill prepends a new log and leaves the live set (`.1000`). Merge remaps history onto the keeper (`.1002`). Delete tombs one finished log and leaves the live set (`.1003`). |
 
 ## State slices (`workoutStore`)
 
@@ -41,6 +41,7 @@
 | `saveEditedHistoryLog` | History Save of a finished session they own. Same id. Confirm lives in the helper. Never wipes. Leaves the live set (`.997`) |
 | `saveBackfillLog` | History Save of a past session they typed. New id. Never overwrites. Leaves the live set (`.1000`) |
 | `applyMergedExercises` | Confirm-gated merge of two exercise ids. Source identity gone. Sets travel (`.1002`) |
+| `deleteFinishedHistoryLog` | History delete of one finished session. Confirm lives in the helper. Never wipes the account. Leaves the live set (`.1003`) |
 | `loadFromCloud` | Merge Supabase history with local |
 | `syncCurrentHistoryToCloud` | Re-queue local logs — called from `useJourneySync` on `SIGNED_IN` (`.949`). Also enqueues the open session (`.958`) |
 | `restoreActiveWorkout` | Adopt a remote open session without minting a second `clientId` (`.958`) |
