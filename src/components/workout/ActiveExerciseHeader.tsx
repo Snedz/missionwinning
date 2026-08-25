@@ -13,6 +13,7 @@ import { Button } from '@/components/ui/button';
 import { CardHeader, CardTitle } from '@/components/ui/card';
 import { HoldToConfirmButton } from '@/components/ui/HoldToConfirmButton';
 import { ActiveExerciseMoreMenu } from '@/components/workout/ActiveExerciseMoreMenu';
+import { ExerciseReorderHandle } from '@/components/workout/ExerciseReorderHandle';
 import { MovementHistorySheet } from '@/components/workout/MovementHistorySheet';
 import { SessionSwapSheet } from '@/components/workout/SessionSwapSheet';
 import { listMovementHistory } from '@/lib/workout/movementHistory';
@@ -58,6 +59,11 @@ type Props = {
   onRemove: () => void;
   onSwapTo: (id: string) => void;
   onRepeatLast: () => void;
+  canReorder?: boolean;
+  canMoveUp?: boolean;
+  canMoveDown?: boolean;
+  onReorder?: (fromIndex: number, toIndex: number) => void;
+  exIdx?: number;
 };
 
 export function ActiveExerciseHeader({
@@ -85,6 +91,11 @@ export function ActiveExerciseHeader({
   onRemove,
   onSwapTo,
   onRepeatLast,
+  canReorder = false,
+  canMoveUp = false,
+  canMoveDown = false,
+  onReorder,
+  exIdx = 0,
 }: Props) {
   const skipped = isSkippedThisSession(exLog);
   const { t } = useTranslation();
@@ -103,6 +114,15 @@ export function ActiveExerciseHeader({
     <CardHeader className="p-3 pb-2 space-y-2">
       <div className="flex items-start gap-2">
         <CardTitle className="text-base sm:text-lg flex flex-wrap items-center gap-2 min-w-0 flex-1">
+          {canReorder && onReorder ? (
+            <ExerciseReorderHandle
+              name={exercise.name}
+              exIdx={exIdx}
+              canMoveUp={canMoveUp}
+              canMoveDown={canMoveDown}
+              onReorder={onReorder}
+            />
+          ) : null}
           <button
             type="button"
             className="leading-tight font-extrabold min-h-[44px] text-left tap-target"

@@ -51,6 +51,7 @@ type Props = {
   onToggleSwap: (exIdx: number) => void;
   onSkip: (exIdx: number) => void;
   onRemove: (exIdx: number) => void;
+  onReorder?: (fromIndex: number, toIndex: number) => void;
   onSwapTo: (exIdx: number, id: string) => void;
   onNoteChange: (exIdx: number, note: string) => void;
   onRate: (exIdx: number, setIdx: number, rpe: NonNullable<LoggedSet['rpe']>) => void;
@@ -95,6 +96,7 @@ export function ActiveExerciseList({
   onToggleSwap,
   onSkip,
   onRemove,
+  onReorder,
   onSwapTo,
   onNoteChange,
   onRate,
@@ -119,6 +121,9 @@ export function ActiveExerciseList({
   onStartWorkClock,
   onStopWorkClock,
 }: Props) {
+  const visibleCount = exercises.filter((_, i) => laterLiftVisible(exercises, i)).length;
+  const canReorder = visibleCount >= 2 && !!onReorder;
+
   return (
     <div className="space-y-3">
       {exercises.map((exLog, exIdx) => {
@@ -164,6 +169,10 @@ export function ActiveExerciseList({
             onToggleSwap={() => onToggleSwap(exIdx)}
             onSkip={() => onSkip(exIdx)}
             onRemove={() => onRemove(exIdx)}
+            onReorder={onReorder}
+            canReorder={canReorder}
+            canMoveUp={canReorder && exIdx > 0}
+            canMoveDown={canReorder && exIdx < exercises.length - 1}
             onSwapTo={(id) => onSwapTo(exIdx, id)}
             onNoteChange={(note) => onNoteChange(exIdx, note)}
             onRate={(setIdx, rpe) => onRate(exIdx, setIdx, rpe)}

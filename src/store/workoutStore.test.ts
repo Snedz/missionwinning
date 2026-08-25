@@ -663,4 +663,25 @@ test('workoutStore', async (t) => {
     assert.equal(wiped, null);
     assert.equal(useWorkoutStore.getState().workoutHistory[0]?.exercises[0]?.sets[0]?.weight, 225);
   });
+
+  await t.test('reordering a live lift keeps logged sets (.998)', () => {
+    useWorkoutStore.getState().startWorkout('Push', [
+      { exerciseId: 'bench-press', sets: [{ reps: 5, weight: 100 }, { reps: 5, weight: 100 }] },
+      { exerciseId: 'squat', sets: [{ reps: 5, weight: 140 }] },
+      { exerciseId: 'cable-row', sets: [{ reps: 8, weight: 80 }] },
+    ]);
+    useWorkoutStore.getState().logSet(0, 0, 5, 100);
+    useWorkoutStore.getState().reorderExerciseInActive(0, 2);
+    const ids = (useWorkoutStore.getState().activeWorkout?.exercises ?? []).map((ex) => ex.exerciseId);
+    assert.deepEqual(ids, ['squat', 'cable-row', 'bench-press']);
+    const bench = useWorkoutStore.getState().activeWorkout?.exercises[2];
+    assert.equal(bench?.sets[0]?.completed, true);
+    assert.equal(bench?.sets[0]?.weight, 100);
+    useWorkoutStore.getState().reorderExerciseInActive(0, 0);
+    assert.deepEqual(
+      (useWorkoutStore.getState().activeWorkout?.exercises ?? []).map((ex) => ex.exerciseId),
+      ['squat', 'cable-row', 'bench-press'],
+      'same-index reorder invents nothing'
+    );
+  });
 });

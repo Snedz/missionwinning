@@ -142,6 +142,7 @@ export function ActiveWorkoutPage() {
   const removeLastPlannedSet = useWorkoutStore((s) => s.removeLastPlannedSet);
   const removeExerciseFromActive = useWorkoutStore((s) => s.removeExerciseFromActive);
   const skipExerciseInActive = useWorkoutStore((s) => s.skipExerciseInActive);
+  const reorderExerciseInActive = useWorkoutStore((s) => s.reorderExerciseInActive);
   const replaceExerciseInActive = useWorkoutStore((s) => s.replaceExerciseInActive);
   const setExerciseNote = useWorkoutStore((s) => s.setExerciseNote);
   const setSessionNote = useWorkoutStore((s) => s.setSessionNote);
@@ -787,6 +788,12 @@ export function ActiveWorkoutPage() {
           }}
           onRemove={(exIdx) => {
             removeExerciseFromActive(exIdx);
+            setSwapOpenIdx(null);
+            setNoteOpenIdx(null);
+            setSetInputs({});
+          }}
+          onReorder={(fromIndex, toIndex) => {
+            reorderExerciseInActive(fromIndex, toIndex);
             setSwapOpenIdx(null);
             setNoteOpenIdx(null);
             setSetInputs({});

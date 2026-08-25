@@ -48,6 +48,7 @@ Root-level `@/lib/{name}` paths re-export from here for compatibility — prefer
 20b. `exercisePin.ts` — pinned reminder per lift id. Returns next session. Not History (`.996`)
 21. `garageSwap.ts` — 1–2 bodyweight/garage stand-ins on a logger or Coach plan line (`.752`); not a generate rewrite
 21b. `sessionExerciseOnce.ts` — skip or swap this exercise **this session** (`.959`); does not write Wednesday / saved / plan
+21c. `sessionReorder.ts` — drag the live list **this session** (`.998`); does not write Wednesday / saved / plan
 22. `rir.ts` — optional integer 0–5 reps in reserve; empty valid; never replaces RPE (`.756`)
 22b. `rpe10.ts` — optional integer 1–10 RPE; empty valid; never required to log (`.967`)
 22c. `workSetIntensity.ts` — last work set RPE/RIR cite token; empty stays empty (`.967`)
@@ -118,6 +119,8 @@ Root-level `@/lib/{name}` paths re-export from here for compatibility — prefer
 | `editFinishedSessionSurface.test.ts` | History door; Today one Start; not Resume; no permalink (`.997`) |
 | `garageSwap.test.ts` | Garage list ≤2, load clear, plan-line swap, wiring (`.752`) |
 | `sessionExerciseOnce.test.ts` | Skip once leaves the rest; swap once does not change Wednesday; empty invents nothing (`.959`) |
+| `sessionReorder.test.ts` | Move a card; sets travel; empty / same / OOB invent nothing (`.998`) |
+| `sessionReorderSurface.test.ts` | Handle on the name row; Today one Start; later lifts stay hidden until first set (`.998`) |
 | `rir.test.ts` | Optional 0–5 parse; empty OK; Log set ungated (`.756`) |
 | `rpe10.test.ts` | Optional 1–10 parse; empty OK; Log set ungated (`.967`) |
 | `setRowPercent.test.ts` | Known max is a logged single; type 80% + max ⇒ load; no max invents nothing (`.981`) |

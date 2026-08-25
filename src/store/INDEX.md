@@ -43,6 +43,7 @@
 | `ensureOpenSessionIdentity` | Stamp `clientId` once on a pre-`.958` persist |
 | `cancelActiveWorkout` | Discard in-progress. Tombstones the open session so the other surface does not reopen it |
 | `skipExerciseInActive` | Skip this exercise once, this session (`.959`). Keeps logged sets. Does not rewrite the plan |
+| `reorderExerciseInActive` | Move this exercise in the live list, this session (`.998`). Sets travel. Does not rewrite the plan |
 | `insertWarmupRampOnExercise` / `removePlannedSetAt` | Free warmup batch from the working weight; athlete can delete any incomplete warmup (`.984` / stamp `.985`) |
 
 ## Who reads / writes

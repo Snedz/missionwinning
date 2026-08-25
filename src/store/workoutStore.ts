@@ -44,6 +44,7 @@ import {
   type OpenSessionSnapshot,
 } from "@/lib/workout/openSessionContinuity";
 import { skipExerciseThisSession, swapExerciseThisSession } from "@/lib/workout/sessionExerciseOnce";
+import { reorderSessionExercises } from "@/lib/workout/sessionReorder";
 import { finishPartialFromActive, protectLiveStart } from "@/lib/workout/sessionResume";
 import { readRaw, writeRaw } from "@/lib/storage/safeStorage";
 import { STORAGE_KEYS } from "@/lib/storage/keys";
@@ -153,6 +154,8 @@ interface WorkoutState {
   removeExerciseFromActive: (exerciseIndex: number) => void;
   /** Skip this exercise once — this session. Keeps logged sets. */
   skipExerciseInActive: (exerciseIndex: number) => void;
+  /** Move this exercise in the live list — this session (`.998`). */
+  reorderExerciseInActive: (fromIndex: number, toIndex: number) => void;
   /** Swap to a different exercise — only while no sets are completed. */
   replaceExerciseInActive: (
     exerciseIndex: number,
@@ -812,6 +815,19 @@ export const useWorkoutStore = create<WorkoutState>()(
         set((s) => {
           if (!s.activeWorkout) return s;
           const exercises = skipExerciseThisSession(s.activeWorkout.exercises, exerciseIndex);
+          if (!exercises) return s;
+          return { activeWorkout: { ...s.activeWorkout, exercises } };
+        });
+      },
+
+      reorderExerciseInActive: (fromIndex, toIndex) => {
+        set((s) => {
+          if (!s.activeWorkout) return s;
+          const exercises = reorderSessionExercises(
+            s.activeWorkout.exercises,
+            fromIndex,
+            toIndex
+          );
           if (!exercises) return s;
           return { activeWorkout: { ...s.activeWorkout, exercises } };
         });

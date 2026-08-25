@@ -48,6 +48,10 @@ type ActiveWorkoutStrings = {
   activeMovementHistoryEyebrow: string;
   activeMovementHistoryEmpty: string;
   activeMovementHistoryClose: string;
+  /** Drag the live list (`.998`). */
+  activeReorderHandleAria: string;
+  activeReorderMoveUp: string;
+  activeReorderMoveDown: string;
   activeMovementHistoryOpenAria: string;
   /** Short written cues on the open live exercise (`.973`). */
   activeInSetCues: string;
@@ -400,6 +404,9 @@ const en: ActiveWorkoutStrings = {
   activeMovementHistoryEmpty: 'No prior sessions yet — log this one',
   activeMovementHistoryClose: 'Close',
   activeMovementHistoryOpenAria: 'Prior sessions of {{name}}',
+  activeReorderHandleAria: 'Drag to reorder {{name}}',
+  activeReorderMoveUp: 'Move {{name}} up',
+  activeReorderMoveDown: 'Move {{name}} down',
   activeInSetCues: 'Cues',
   activeInSetCuesHide: 'Hide cues',
   activeInSetCuesDemoAlt: '{{name}} setup',
