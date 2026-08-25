@@ -27,7 +27,7 @@ import {
 import { resolveLastSetGhost } from '@/lib/workout/lastSetGhost';
 import { formatVsLastSetDeltas } from '@/lib/workout/vsLastSet';
 import { resolveAfterCompleteCite } from '@/lib/workout/setRowAdjacency';
-import { isBarLoadedEquipment, setRowPlateBreakdown } from '@/lib/plateCalculator';
+import { setRowPlateBreakdown } from '@/lib/plateCalculator';
 import { useBarWeight } from '@/hooks/useBarWeight';
 import {
   nextWarmupKind,
@@ -284,7 +284,6 @@ export function ActiveExerciseCard({
     })
   );
   const ordinalLabels = exLog.sets.map((_, i) => setRowOrdinal(exLog.sets, i).label);
-  const barLoaded = isBarLoadedEquipment(exercise.equipment);
   const liveSetIdx = activeSetIdxForExercise(nextSet, exIdx);
   const livePlateOffer =
     holdsActiveSet && liveSetIdx >= 0
