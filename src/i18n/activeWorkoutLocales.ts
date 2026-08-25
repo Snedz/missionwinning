@@ -671,6 +671,9 @@ const en: ActiveWorkoutStrings = {
 
 const es: ActiveWorkoutStrings = {
   ...en,
+  activeExerciseRestWork: 'Descanso de trabajo',
+  activeExerciseRestWarmup: 'Descanso de calentamiento',
+  activeExerciseRestSetAria: 'Fijar {{lane}} en {{clock}}',
   activeSetAddedLoad: 'Carga',
   activeLiveSession: 'Sesión en vivo',
   activeCoachSessionEyebrow: 'Sesión Mission Coach',
@@ -902,6 +905,9 @@ const LOCALES: Partial<Record<string, ActiveWorkoutStrings>> = {
   de,
   pt: {
     ...en,
+    activeExerciseRestWork: 'Descanso de trabalho',
+    activeExerciseRestWarmup: 'Descanso de aquecimento',
+    activeExerciseRestSetAria: 'Definir {{lane}} para {{clock}}',
     activeSetAddedLoad: 'Carga',
     activeNoWorkout: 'Nenhum treino ativo',
     activeSavedRoutineStart: 'Começar {{name}}',

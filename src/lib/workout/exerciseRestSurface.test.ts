@@ -18,8 +18,8 @@ describe('per-exercise rest surface lock (.995)', () => {
   it('open lift mounts two rest lanes; presets write the exercise not Profile', () => {
     const strip = read('src/components/workout/ExerciseRestStrip.tsx');
     assert.match(strip, /data-testid="exercise-rest-strip"/);
-    assert.match(strip, /data-testid="exercise-rest-work"/);
-    assert.match(strip, /data-testid="exercise-rest-warmup"/);
+    assert.match(strip, /testId="exercise-rest-work"/);
+    assert.match(strip, /testId="exercise-rest-warmup"/);
     assert.match(strip, /rememberLastRest|onSetLane/);
     assert.doesNotMatch(strip, /saveDefaultRestSeconds/);
     assert.doesNotMatch(strip, /primary-action|bg-primary-fill/);
