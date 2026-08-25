@@ -53,6 +53,7 @@ import { buildJustGoHeroMeta, type JustGoHeroMeta } from '@/lib/justGoHeroMeta';
 import { shouldRepeatLastOnToday } from '@/lib/workout/repeatLastSession';
 import { formatLocalDateKey, localDateKey } from '@/lib/time/localDate';
 import { todayReturnCite } from '@/lib/today/todayReturnCite';
+import { loadBodyMetrics, type BodyMetricEntry } from '@/lib/bodyMetrics';
 import { quietWeekGlance } from '@/lib/today/quietWeekGlance';
 import { loadQuietWeekRows, type QuietWeekRow } from '@/lib/today/quietWeekRow';
 
@@ -89,6 +90,7 @@ export function HomeTodayLean() {
   const [pinIds, setPinIds] = useState<SummaryPinId[]>(() => parseSummaryPinIds(null));
   const [editingPins, setEditingPins] = useState(false);
   const [quietRows, setQuietRows] = useState<QuietWeekRow[]>([]);
+  const [trackEntries, setTrackEntries] = useState<BodyMetricEntry[]>([]);
 
   useEffect(() => {
     setReentry(computeReentry(workoutHistory, Date.now(), loadPlan()));
@@ -98,6 +100,7 @@ export function HomeTodayLean() {
     const history = readWorkoutHistoryFromStorage();
     setWorkoutHistory(history);
     setQuietRows(loadQuietWeekRows());
+    setTrackEntries(loadBodyMetrics());
     setPinIds(parseSummaryPinIds(readRaw(STORAGE_KEYS.summaryPins)));
     const next = syncJourneyPhase(history);
     setJourneyState(next);
@@ -311,8 +314,8 @@ export function HomeTodayLean() {
           <div key={key}>{node}</div>
         ))}
         <TodayQuietWeekStrip
-          glance={quietWeekGlance({ history: workoutHistory, quietRows })}
-          onLogged={() => setQuietRows(loadQuietWeekRows())}
+          glance={quietWeekGlance({ history: workoutHistory, quietRows, trackEntries })}
+          onLogged={refreshFromStorage}
         />
         <TodayShowAll />
       </div>

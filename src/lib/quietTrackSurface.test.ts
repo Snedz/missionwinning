@@ -52,6 +52,8 @@ describe('quiet track surface lock', () => {
     const allow = new Set([
       'src/lib/today/quietWeekRow.ts',
       'src/lib/today/quietWeekRow.test.ts',
+      'src/lib/today/quietWeekTrackTrend.ts',
+      'src/lib/today/quietWeekTrackTrend.test.ts',
     ]);
     const todayFiles = walk(path.join(root, 'src/components/today')).concat(
       walk(path.join(root, 'src/lib/today'))

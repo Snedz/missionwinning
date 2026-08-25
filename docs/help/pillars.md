@@ -54,7 +54,7 @@ Education — one free first-success intro on `/learn` (log a set, then Coach fr
 
 **Route:** `/log` (nav label: **Today**)
 
-Not a separate pillar — Today aggregates readiness, Mission Score, coach insight, journal strip, and quick links into all pillars. Start here each morning. An empty rest day on This week can take one optional Fuel restock, easy walk, or scale/tape. That is not a second Start.
+Not a separate pillar — Today aggregates readiness, Mission Score, coach insight, journal strip, and quick links into all pillars. Start here each morning. An empty rest day on This week can take one optional Fuel restock, easy walk, or scale/tape. If you logged scale or tape twice, that rest day can show last → this. That is not a second Start.
 
 ## Mission Coach (premium Train depth)
 

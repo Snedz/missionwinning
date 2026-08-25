@@ -6,6 +6,141 @@ Living roadmap for the **everything app** (a bodyweight coach app Super Bundle �
 
 ---
 
+## Frozen plan — `.989` Quiet Track trend (2026-08-25)
+
+> **Frozen.** Implement only this section + root
+> [PLAN.md](../PLAN.md). Plan commit is `[skip vercel]`.
+> Label: `2026.07-unified.989` — next free after master `.988`
+> (`277b55d3` — EMOM/AMRAP timer). Title stays
+> **Quiet Track trend (.989)**.
+> EMOM `.988` + drop-set `.986` + warmup `.985` + notes
+> `.983` + 1RM `.981` + Supersets `.980` + Learn `.978` +
+> week strip `.977` + Quiet Track `.976` + Quiet Move
+> `.974` + cues `.973` + honesty `.971` + tags `.970` +
+> RPE `.967` + Fuel `.965` + resume `.963` are on master.
+> Do not smash them.
+> Do **not** smash week strip `.961`, notebook `.960`,
+> swap/skip `.959`, desk→gym `.958`, `/private` `.957`,
+> close receipt `.956`, Wednesday `.955`, Today Start
+> `.954`, or identity `.949`.
+> Every commit `[skip vercel]`. No Preview. No
+> `PRIVATE_MODE` flip. No promote. Live www stays `.696`.
+> Guest path. First set stays ungated. Today stays one
+> Start. Brand: **Log a set. Offline.** / No account. No
+> wearable.
+
+Track `.976` already logs scale / tape on
+`/track`. Week strip `.977` already lets
+one optional Fuel / Walk / Scale row sit
+on an empty rest day. Missing: they
+logged twice and cannot see last-vs-this
+without leaving Train-as-home for the
+diary.
+
+### First check (done — no leak)
+
+Read `origin/master` tip `277b55d3` /
+`.988`. Lean Today still date · pins ·
+highlights · `TodayQuietWeekStrip` · Show
+all · one `JourneyHero` `dock="start"`.
+A Track quiet day paints **Scale** only.
+Glance does not read `bodyMetrics`.
+`/track` already charts when two diary
+rows exist. `/private` stays the tight
+`.957` lock. **Nothing to unmount first.**
+Do not mount `BodyMetricsCard` or a
+sparkline on Today.
+
+### One concern
+
+If they have two Track weight (or tape)
+logs, the existing week-strip day can
+show one muted last → this. Empty
+invents nothing. `/track` stays the
+diary. Today stays Start workout.
+
+### Investigate (done — hypothesis holds, with a diary gap)
+
+| Layer | What exists | Gap this ship closes |
+|-------|-------------|----------------------|
+| Week strip `.977` | Empty rest day: one Fuel / Walk / Scale row. Done = Train. Quiet does not score `thin`. | Track day paints **Scale** only. |
+| Quiet Track `.976` | `/track` scale / tape. `quietTrackSnapshot`. Chart at 2+ rows. | Diary stays on `/track`. |
+| Glance `.961` / `.971` | `history` + `quietRows`. Empty stays four keys. | Does not read Track diary. A `/track` log without a strip write is invisible. |
+| `bodyMetrics.delta` | Days-ago cutoff via `Date.now()`. | Do not reuse (fixture expiry). Injected helper. |
+| Today sparklines | `Sparkline.tsx` + `TodayMetricsSparklineRow` on dashboard. | **Do not mount.** Rings-adjacent. Last-vs-this only. |
+| Today / door | One Start. Tight `/private`. Resume `.963`. | **Keep.** No second Start. No Track card. |
+
+Hypothesis (founder): fold last-vs-this
+(or a tiny sparkline) into the existing
+strip day using Track diary data.
+
+**Verdict: keep the fold.** Lock
+**last-vs-this**, not a sparkline (cell
+is 44px; two-point line reads as a ring;
+dashboard sparkline chrome stays off
+lean Today). Close the diary gap: a
+rest day with a Track number and no
+Fuel / Walk paints Scale.
+
+Closed rules: see root [PLAN.md](../PLAN.md)
+§2–3. Short form:
+
+1. Two same-metric logs or nothing.
+   Prefer weight; else first overlapping
+   tape key. No shame colour.
+2. `trackTrend` only on the later rest
+   day on this week's strip.
+3. Diary paints Scale. Done wins. Fuel
+   / Walk that day swallows trend.
+4. Not a Today widget. Not rings. Not
+   photos. `/track` stays the diary.
+5. Honesty still Train-only. Guest.
+   First set ungated. One Start.
+
+### Ship (only this)
+
+Root [PLAN.md](../PLAN.md) §3 is the
+file list: `quietWeekTrackTrend.ts`,
+glance `trackEntries`, strip paint,
+`HomeTodayLean` refresh, tests, help
+one-liner.
+
+### Refuse
+
+WeChat home. Four-scene door. Feed /
+DMs / marketplace. Health gate before
+Train. Body photos. Shame slope. Bevel
+strain / rings. Counsel-hold. Promote.
+`PRIVATE_MODE` flip. Merge. Second
+Today Start. Discord.com. Mind.
+Sparkline / recharts on the strip.
+Moving Track onto Today.
+
+### Docs / ship protocol
+
+- `APP_BUILD_LABEL` → `2026.07-unified.989`
+- LOG heading `## 2026-08-25 — Quiet Track trend (\`.989\`)`
+- `CONTEXT.md` `## Now` cites the full label
+- Plan commit `[skip vercel]`. Implement
+  commits `[skip vercel]`.
+- Draft PR. Title: `Quiet Track trend (.989)`.
+  Do not merge. Do not promote.
+
+### Done when
+
+- This section was frozen before product
+  code.
+- Two Track weight or tape logs ⇒ muted
+  last → this on that week-strip day.
+  Empty invents nothing.
+- Today one Start. `/private` stays
+  `.957`. `/track` stays the diary.
+  Guest. First set ungated. Honesty
+  `.971` scores Train only. Label
+  `.989`. Draft PR.
+
+---
+
 ## Frozen plan — `.986` Drop-set rest-zero (2026-08-25)
 
 > **Frozen.** Implement only this section. Plan commit is `[skip vercel]`.

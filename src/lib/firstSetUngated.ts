@@ -18,6 +18,7 @@
  * `.985` — free warmup batch from the working weight (concern `.984`). Never a login wall.
  * `.986` — drop-tagged set skips rest / zeros a running timer. Never a login wall.
  * `.988` — optional EMOM / AMRAP on the live set row (title `.987`). Never a login wall.
+ * `.989` — muted last-vs-this on a week-strip Track day. Never a login wall.
  */
 
 export function normalizeAppPath(pathname: string | null | undefined): string {
