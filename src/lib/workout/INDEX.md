@@ -31,6 +31,7 @@ Root-level `@/lib/{name}` paths re-export from here for compatibility — prefer
 10a2. `honorSavedRoutine.ts` — saved notebook over Wednesday / Just Go (`.960`). `pickHonoredStart` / `honorCiteStart` / confirm-gated `decideSavedWrite`. Empty invents nothing.  
 10a4. `startAgain.ts` — session-out Start this again from a finished log (`.991`). Wraps `templateFromCompletedLog` + `protectLiveStart`. Empty invents nothing. Not a shop.  
 10a5. `movementHistory.ts` — prior sessions of the open lift (`.993`). Newest first. Empty invents nothing. Short list stays a notebook. Not a chart.  
+10a6. `editFinishedSession.ts` — edit the sets on a finished History log (`.997`). Confirm-gated. Empty invents nothing. Never wipes. Not Resume.  
 10a3. `thinHistory.ts` — 1–2 live sessions are a notebook (`.971`). Wednesday and the week strip both read `isThinHistory`. Empty invents nothing.  
 10b. `openSessionContinuity.ts` — desk → gym decide for the *open* session (`.958`); `reconcileOpenSession.ts` pulls/applies. `sessionNote` stays on device
 10b2. `sessionResume.ts` — this-device leave/return + Finish-partial (`.963`). Live Start is keep. Empty leftovers invent no volume
@@ -113,6 +114,8 @@ Root-level `@/lib/{name}` paths re-export from here for compatibility — prefer
 | `exerciseNote.test.ts` | This-session note + appearance wipe; last History is not a pin (`.748` / `.996`) |
 | `exercisePin.test.ts` | Pin normalize / per-id persist / cap / refuse History seed (`.996`) |
 | `exerciseNotePinSurface.test.ts` | Open-lift note + pin; Today one Start; pin off History (`.996`) |
+| `editFinishedSession.test.ts` | Finished-session edit: typo applies; empty does not wipe; drop needs confirm (`.997`) |
+| `editFinishedSessionSurface.test.ts` | History door; Today one Start; not Resume; no permalink (`.997`) |
 | `garageSwap.test.ts` | Garage list ≤2, load clear, plan-line swap, wiring (`.752`) |
 | `sessionExerciseOnce.test.ts` | Skip once leaves the rest; swap once does not change Wednesday; empty invents nothing (`.959`) |
 | `rir.test.ts` | Optional 0–5 parse; empty OK; Log set ungated (`.756`) |

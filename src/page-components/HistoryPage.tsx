@@ -10,7 +10,6 @@ import { useRouter } from 'next/navigation';
 import { useTranslation } from 'react-i18next';
 import { useLocaleFormat } from '@/hooks/useLocaleFormat';
 import { Calendar, Dumbbell, History as HistoryIcon, SearchX, Timer, Trophy } from 'lucide-react';
-import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import {
@@ -27,14 +26,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from '@/components/ui/table';
 import dynamic from 'next/dynamic';
 import { SkeletonBlock } from '@/components/ui/Skeleton';
 import { MuscleHeatmap } from '@/components/history/MuscleHeatmap';
@@ -53,8 +44,12 @@ const HistoryVolumeChart = dynamic(
 );
 import { resolveExercise } from '@/lib/workout/customExercise';
 import { useUnits, weightUnitLabel } from '@/hooks/useUnits';
-import { cn, formatDuration } from '@/lib/utils';
-import { countsTowardVolume, setKindBadgeClass, setKindDefaultLabel, setKindLabelKey } from '@/lib/workout/setKind';
+import { formatDuration } from '@/lib/utils';
+import { HistorySessionEdit } from '@/components/history/HistorySessionEdit';
+import {
+  decideEditSave,
+  type FinishedSessionDraft,
+} from '@/lib/workout/editFinishedSession';
 import {
   build1RMChartData,
   buildMuscleHeatmap,
@@ -107,6 +102,64 @@ export function HistoryPage() {
   const activeWorkout = useWorkoutStore((s) => s.activeWorkout);
   const liveHistory = useMemo(() => liveSessionLogs(workoutHistory), [workoutHistory]);
   const [selected, setSelected] = useState<CompletedWorkoutLog | null>(null);
+  const [editing, setEditing] = useState(false);
+  const [pendingDraft, setPendingDraft] = useState<FinishedSessionDraft | null>(null);
+  const [confirmOpen, setConfirmOpen] = useState(false);
+  const saveEditedHistoryLog = useWorkoutStore((s) => s.saveEditedHistoryLog);
+
+  const openLog = (log: CompletedWorkoutLog) => {
+    setEditing(false);
+    setPendingDraft(null);
+    setConfirmOpen(false);
+    setSelected(log);
+  };
+
+  const closeSelected = () => {
+    setSelected(null);
+    setEditing(false);
+    setPendingDraft(null);
+    setConfirmOpen(false);
+  };
+
+  const requestEditSave = (draft: FinishedSessionDraft) => {
+    const decision = decideEditSave({ original: selected, draft });
+    if (decision.kind === 'empty') {
+      toast({
+        title: t('historyEditEmpty', { defaultValue: 'Nothing to save' }),
+        description: t('historyEditEmptyDesc', {
+          defaultValue: 'Empty invents nothing — this session stays as it was.',
+        }),
+      });
+      return;
+    }
+    if (decision.kind === 'noop') {
+      setEditing(false);
+      return;
+    }
+    if (decision.kind === 'needs-confirm') {
+      setPendingDraft(draft);
+      setConfirmOpen(true);
+      return;
+    }
+    const saved = saveEditedHistoryLog(decision.next);
+    if (saved) setSelected(saved);
+    setEditing(false);
+  };
+
+  const confirmEditSave = () => {
+    if (!selected || !pendingDraft) {
+      setConfirmOpen(false);
+      return;
+    }
+    const decision = decideEditSave({ original: selected, draft: pendingDraft });
+    if (decision.kind === 'apply' || decision.kind === 'needs-confirm') {
+      const saved = saveEditedHistoryLog(decision.next);
+      if (saved) setSelected(saved);
+    }
+    setConfirmOpen(false);
+    setPendingDraft(null);
+    setEditing(false);
+  };
 
   /** K7/K11 / `.991` — start this finished log again; never wipe a live session. */
   const retrainFromLog = (log: CompletedWorkoutLog) => {
@@ -344,7 +397,7 @@ export function HistoryPage() {
                     type="button"
                     data-testid="session-history-row"
                     className="min-h-[44px] min-w-0 flex-1 text-left"
-                    onClick={() => setSelected(log)}
+                    onClick={() => openLog(log)}
                     aria-label={t('historyOpenLog', {
                       name: row.title,
                       defaultValue: `Open log: ${row.title}`,
@@ -389,7 +442,7 @@ export function HistoryPage() {
                       className="min-h-[44px]"
                       onClick={(e) => {
                         e.stopPropagation();
-                        setSelected(log);
+                        openLog(log);
                       }}
                     >
                       {t('historyDetails', { defaultValue: 'Details' })}
@@ -587,7 +640,7 @@ export function HistoryPage() {
         </div>
       </details>
 
-      <Dialog open={!!selected} onOpenChange={(open) => !open && setSelected(null)}>
+      <Dialog open={!!selected} onOpenChange={(open) => !open && closeSelected()}>
         <DialogContent
           className="max-w-lg max-h-[85vh] overflow-y-auto"
           data-testid="session-history-log"
@@ -636,89 +689,22 @@ export function HistoryPage() {
                     </div>
                   );
                 })()}
-                {selected.exercises.map((ex) => {
-                  const exercise = resolveExercise(ex.exerciseId);
-                  return (
-                    <div key={ex.exerciseId} className="space-y-2">
-                      <div className="flex items-center gap-2">
-                        <h4 className="font-semibold">{exercise?.name ?? ex.exerciseId}</h4>
-                        {exercise?.muscleGroups.map((mg) => (
-                          <Badge key={mg} variant="muscle" className="text-[10px]">
-                            {mg}
-                          </Badge>
-                        ))}
-                      </div>
-                      {/* The note the athlete typed mid-session. It was written and
-                          synced from day one — and never displayed anywhere until
-                          `.184`. A note nobody can re-read is a note nobody writes. */}
-                      {ex.note?.trim() ? (
-                        <p className="text-sm italic text-muted-foreground border-l-2 border-border pl-3">
-                          {ex.note}
-                        </p>
-                      ) : null}
-                      <Table>
-                        <TableHeader>
-                          <TableRow>
-                            <TableHead>{t('historyTableSet', { defaultValue: 'Set' })}</TableHead>
-                            <TableHead>{t('historyTableType', { defaultValue: 'Type' })}</TableHead>
-                            <TableHead>{t('historyTableReps', { defaultValue: 'Reps' })}</TableHead>
-                            <TableHead>{t('historyTableWeight', { defaultValue: 'Weight' })}</TableHead>
-                            <TableHead>{t('historyTableVolume', { defaultValue: 'Volume' })}</TableHead>
-                          </TableRow>
-                        </TableHeader>
-                        <TableBody>
-                          {ex.sets.map((set, i) => {
-                            const kind = set.kind ?? 'normal';
-                            const countsVolume = countsTowardVolume(kind);
-                            return (
-                              <TableRow
-                                key={i}
-                                className={cn(
-                                  // No per-kind row tint — the WARMUP /
-                                  // FAILURE tag says it, same call as
-                                  // src/lib/workout/setKind.ts.
-                                  kind !== 'normal' && 'bg-card'
-                                )}
-                              >
-                                <TableCell>{i + 1}</TableCell>
-                                <TableCell>
-                                  {kind === 'normal' ? (
-                                    <span className="text-muted-foreground">—</span>
-                                  ) : (
-                                    <Badge
-                                      variant="outline"
-                                      className={cn('text-[10px] uppercase', setKindBadgeClass(kind))}
-                                    >
-                                      {t(setKindLabelKey(kind), {
-                                        defaultValue: setKindDefaultLabel(kind),
-                                      })}
-                                    </Badge>
-                                  )}
-                                </TableCell>
-                                <TableCell>{set.reps}</TableCell>
-                                <TableCell>
-                                  {set.weight} {unitLabel}
-                                </TableCell>
-                                <TableCell>
-                                  {countsVolume ? (
-                                    <>
-                                      {fmt.num(set.reps * set.weight)} {unitLabel}
-                                    </>
-                                  ) : (
-                                    t('historyWarmupExcluded', { defaultValue: '—' })
-                                  )}
-                                </TableCell>
-                              </TableRow>
-                            );
-                          })}
-                        </TableBody>
-                      </Table>
-                    </div>
-                  );
-                })}
+                <HistorySessionEdit
+                  log={selected}
+                  unitLabel={unitLabel}
+                  editing={editing}
+                  onEditingChange={setEditing}
+                  onSaveRequest={requestEditSave}
+                  confirmOpen={confirmOpen}
+                  onConfirm={confirmEditSave}
+                  onConfirmCancel={() => {
+                    setConfirmOpen(false);
+                    setPendingDraft(null);
+                  }}
+                />
               </div>
               {/* K7 — return path: replay this session in Train. */}
-              {templateFromCompletedLog(selected) ? (
+              {!editing && templateFromCompletedLog(selected) ? (
                 <div className="pt-2 space-y-2 border-t-2 border-border">
                   <Button
                     type="button"

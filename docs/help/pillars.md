@@ -11,7 +11,7 @@ Strength and conditioning — log workouts, browse exercises, run programs, and 
 - **Active workout** — live set logging with rest timer and PR detection. The open row honors weight, bodyweight, time, or assist. Each lift can remember a work rest and a warmup rest. Tap a lift to see prior sessions of that movement. Empty invents nothing.
 - **Builder** — custom workouts and program templates
 - **Library** — searchable exercises with cues and alternatives
-- **History** — past sessions (date, muscles, set count); tap a row to open that log
+- **History** — past sessions (date, muscles, set count); tap a row to open that log and edit the sets you logged, then Save. Confirm before a destructive change. Empty invents nothing.
 
 ## Fuel
 
