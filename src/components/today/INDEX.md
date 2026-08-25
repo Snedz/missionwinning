@@ -23,7 +23,7 @@
 | `TodaySummaryPins.tsx` | Summary pin grid (0–4). Session tap starts. Edit persists. |
 | `TodayHighlights.tsx` | One honest Highlights sentence. Empty is allowed. |
 | `TodayShowAll.tsx` | Lean house door. Coach week + First Steps row. Not first paint. |
-| `TodayQuietWeekStrip.tsx` | `.961` — quiet Mon–Sun diary glance. Done marked. Empty stays empty. Not a Start. `.964` — 1–2 sessions stay `thin`; no streak / on-track score. `.977` — empty rest day can log one optional Fuel / Move / Track row. |
+| `TodayQuietWeekStrip.tsx` | `.961` — quiet Mon–Sun diary glance. Done marked. Empty stays empty. Not a Start. `.964` — 1–2 sessions stay `thin`; no streak / on-track score. `.977` — empty rest day can log one optional Fuel / Move / Track row. `.989` — two Track diary numbers can show muted last → this on that Scale day. |
 
 ## Related
 

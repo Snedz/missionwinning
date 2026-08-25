@@ -12,7 +12,13 @@ import {
   localDateKeyFromIso,
   startOfLocalWeek,
 } from '@/lib/time/localDate';
+import type { BodyMetricEntry } from '@/lib/bodyMetrics';
 import { quietKindForDate, type QuietWeekRow, type QuietWeekRowKind } from './quietWeekRow';
+import {
+  decideQuietWeekTrackTrend,
+  trackQuietDateKeys,
+  type QuietWeekTrackTrend,
+} from './quietWeekTrackTrend';
 
 export type QuietWeekDay = {
   dateKey: string;
@@ -21,6 +27,8 @@ export type QuietWeekDay = {
   isToday: boolean;
   /** Present only on an empty rest day that already has one quiet row. */
   quiet?: QuietWeekRowKind;
+  /** Two Track diary numbers — last → this. Never on Done / Fuel / Walk. */
+  trackTrend?: QuietWeekTrackTrend;
 };
 
 export type QuietWeekGlance = {
@@ -63,6 +71,7 @@ function loggedDateKeys(history: readonly CompletedWorkoutLog[]): Set<string> {
 export function quietWeekGlance(opts: {
   history: readonly CompletedWorkoutLog[];
   quietRows?: readonly QuietWeekRow[];
+  trackEntries?: readonly BodyMetricEntry[];
   now?: Date;
 }): QuietWeekGlance {
   const now = opts.now ?? new Date();
@@ -70,6 +79,8 @@ export function quietWeekGlance(opts: {
   const todayKey = localDateKey(now);
   const doneKeys = loggedDateKeys(opts.history);
   const quietRows = opts.quietRows ?? [];
+  const trackEntries = opts.trackEntries ?? [];
+  const diaryTrackDates = trackQuietDateKeys(trackEntries);
   const days: QuietWeekDay[] = [];
   let todayOffset = 0;
 
@@ -78,13 +89,21 @@ export function quietWeekGlance(opts: {
     const isToday = dateKey === todayKey;
     if (isToday) todayOffset = offset;
     const done = doneKeys.has(dateKey);
-    const quiet = !done ? quietKindForDate(quietRows, dateKey) : undefined;
+    const rowKind = quietKindForDate(quietRows, dateKey);
+    const quiet = !done
+      ? rowKind ?? (diaryTrackDates.has(dateKey) ? 'track' : undefined)
+      : undefined;
+    const trackTrend =
+      !done && quiet === 'track'
+        ? decideQuietWeekTrackTrend({ entries: trackEntries, date: dateKey }) ?? undefined
+        : undefined;
     days.push({
       dateKey,
       offset,
       done,
       isToday,
       ...(quiet ? { quiet } : {}),
+      ...(trackTrend ? { trackTrend } : {}),
     });
   }
 

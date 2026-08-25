@@ -2,7 +2,8 @@
 
 /**
  * Quiet Mon–Sun glance on Today. Done days marked. Empty rest days
- * can take one optional Fuel / Move / Track row. Not a Start.
+ * can take one optional Fuel / Move / Track row. A Track day with
+ * two diary numbers can show muted last → this. Not a Start.
  * See: src/components/today/INDEX.md
  */
 
@@ -20,6 +21,7 @@ import {
   persistQuietWeekRow,
   type QuietWeekRowKind,
 } from '@/lib/today/quietWeekRow';
+import { formatQuietWeekTrackTrend } from '@/lib/today/quietWeekTrackTrend';
 
 type Props = {
   glance: QuietWeekGlance;
@@ -133,6 +135,10 @@ export function TodayQuietWeekStrip({ glance, onLogged }: Props) {
             );
           }
           if (day.quiet) {
+            const trendLabel =
+              day.quiet === 'track' && day.trackTrend
+                ? formatQuietWeekTrackTrend(day.trackTrend, units)
+                : null;
             return (
               <div
                 key={day.dateKey}
@@ -141,15 +147,22 @@ export function TodayQuietWeekStrip({ glance, onLogged }: Props) {
                 data-done="false"
                 data-quiet={day.quiet}
                 data-today={day.isToday ? 'true' : 'false'}
+                {...(trendLabel ? { 'data-testid': 'quiet-week-track-trend' } : {})}
               >
                 {weekday}
-                <span className="text-[9px] font-semibold text-foreground">
-                  {quietWeekKindCopy(
-                    day.quiet,
-                    t('todayQuietWeekFuel', { defaultValue: 'Fuel' }),
-                    t('todayQuietWeekMove', { defaultValue: 'Walk' }),
-                    t('todayQuietWeekTrack', { defaultValue: 'Scale' })
+                <span
+                  className={cn(
+                    'text-[9px] font-semibold',
+                    trendLabel ? 'tabular-nums text-muted-foreground' : 'text-foreground'
                   )}
+                >
+                  {trendLabel ??
+                    quietWeekKindCopy(
+                      day.quiet,
+                      t('todayQuietWeekFuel', { defaultValue: 'Fuel' }),
+                      t('todayQuietWeekMove', { defaultValue: 'Walk' }),
+                      t('todayQuietWeekTrack', { defaultValue: 'Scale' })
+                    )}
                 </span>
               </div>
             );
