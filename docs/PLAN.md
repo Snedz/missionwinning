@@ -6,6 +6,127 @@ Living roadmap for the **everything app** (a bodyweight coach app Super Bundle �
 
 ---
 
+## Frozen plan — `.998` Live session reorder (2026-08-25)
+
+> **Frozen.** Implement only this section + root
+> [PLAN.md](../PLAN.md). Plan commit is `[skip vercel]`.
+> Label: `2026.07-unified.998` — next free after master `.997`
+> (`bb13642b` — Edit a finished session). Title stays
+> **Live session reorder (.998)**.
+> History Edit `.997` + Exercise note + pin `.996` + Per-exercise rest
+> `.995` + Set-row type `.994` + This-movement
+> history `.993` + Custom `.992` + Start this
+> again `.991` + Quiet Track trend `.989` + EMOM
+> `.988` + drop-set `.986` + warmup `.985` +
+> notes `.983` + 1RM `.981` + Supersets `.980` +
+> Learn `.978` + week strip `.977` + Quiet Track
+> `.976` + Quiet Move `.974` + cues `.973` +
+> honesty `.971` + tags `.970` + RPE `.967` +
+> Fuel `.965` + resume `.963` + notebook `.960`
+> are on master. Do not smash them.
+> Do **not** smash week strip `.961`, notebook
+> `.960`, swap/skip `.959`, desk→gym `.958`,
+> `/private` `.957`, close receipt `.956`,
+> Wednesday `.955`, Today Start `.954`, or
+> identity `.949`.
+> Every commit `[skip vercel]`. No Preview. No
+> `PRIVATE_MODE` flip. No promote. Live www
+> stays `.696`.
+> Guest path. First set stays ungated. Today
+> stays one Start. Brand: **Log a set. Offline.**
+> / No account. No wearable.
+
+Swap/skip `.959` replaces a
+movement. Session-Start `.991`
+replays last order. Missing: drag
+the lifts in the live session.
+Strong: drag-and-drop on the
+exercise name. Name tap stays
+history `.993`. Today is still
+one Start. Note+pin `.996` did
+not put chrome on Today.
+History Edit `.997` stays on
+History, not Today.
+
+### First check (done — hypothesis holds; no Today leak)
+
+Read `origin/master` tip `bb13642b`
+/ `.997`. Skip/swap do not move
+the card. `decideStartAgain`
+replays the finished array. No
+`reorderExerciseInActive`. Name
+opens movement history. Today is
+one `dock="start"`. Lean does not
+import pin / rest / history /
+set-row type / History Edit.
+`/private` stays
+the tight `.957` lock. **Nothing
+to unmount first.** Do not
+replace swap/skip or session-
+Start. Do not make reorder a
+second home. History Edit
+`.997` stays on History.
+
+### Lock
+
+Drag the visible live list. One
+helper `reorderSessionExercises`.
+This session only — not
+Wednesday, not the saved
+notebook. Sets travel with the
+card. `laterLiftVisible` stays.
+Name tap stays history. Grip on
+the name row. Guest. First set
+ungated. Today still one Start.
+Honesty `.971` still applies.
+Swap/skip and Start this again
+stay.
+
+1. Empty / same / OOB invents
+   nothing.
+2. Chrome on the live list only.
+   Not Today. Not `/private`. Not
+   a Feed. Not a paywall.
+3. This-movement history `.993`
+   stays on the name tap. Today
+   stays one `JourneyHero`
+   `dock="start"`.
+4. Note+pin `.996`, rest `.995`,
+   set-row type `.994`, and
+   History Edit `.997` still
+   hold.
+
+### Refuse
+
+- Replace swap/skip or session-
+  Start
+- Feed / DMs / marketplace /
+  Discord.com / shame / four-
+  scene door
+- Counsel-hold (field test / PT /
+  pregnancy)
+- Flip `PRIVATE_MODE`
+- Promote live off `.696`
+- Make reorder a second home
+- Steal the name tap from history
+- Open later cards just to enable
+  reorder
+- Put History Edit `.997` on Today
+
+### Done when
+
+- Live session exercises can be
+  reordered
+- Today still one Start · first
+  set ungated
+- Label `2026.07-unified.998`
+
+Excellence-Override: leftover
+reorder of the live session.
+
+Implement only root [PLAN.md](../PLAN.md).
+
+
 ## Frozen plan — `.997` Edit a finished session (2026-08-25)
 
 > **Frozen.** Implement only this section + root

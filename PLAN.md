@@ -1,118 +1,123 @@
-# PLAN.md — Edit a finished session (`.997`)
+# PLAN.md — Live session reorder (`.998`)
 
 **Freeze.** Implement only this file. Do not reopen refused items mid-build.
 **Not** [docs/PLAN.md](docs/PLAN.md) (build phases A–I). The living roadmap
 gets a matching frozen section so agents following the boot order find this
-ship; this file is the open-diary edit freeze.
+ship; this file is the live-session reorder freeze.
 **Lane:** Engineering-Web · Train logger · **Horizon:** 0
-**Label:** `2026.07-unified.997` (master is `.996` / `2be854e6`
-Exercise note + pinned reminder). Title stays
-**Edit a finished session (.997)**.
-**Excellence-Override:** leftover edit of a finished session they own
-(not Resume, not a silent wipe, not a public permalink)
+**Label:** `2026.07-unified.998` (master is `.997` / `bb13642b`
+Edit a finished session). Title stays **Live session reorder (.998)**.
+**Excellence-Override:** leftover reorder of the live session
+(not a second home, not a plan rewrite, not swap/skip)
 
 ---
 
 ## 0. What this is
 
-History now cites the diary. The session list opens the log
-**read-only**. A typo (225 instead of 135) stays on the
-completed row, and Coach / Wednesday / 1RM / volume all
-read it — a leftover that poisons week-4.
+Swap/skip `.959` replaces a movement
+or marks it skipped. Session-Start
+`.991` replays last order from a
+finished log. Builder already has
+up/down on a draft. Missing: drag
+the lifts **in the live session**.
 
-Resume `.963` is the **live** set (leave Today / week /
-receipt, come back). That is not this ship.
+Strong leftover: drag-and-drop on
+the exercise name. Tap the name
+still opens this-movement history
+(`.993`). Guest. First set ungated.
+Honesty `.971` still applies. Diary
+stays free.
 
-Strong leftover: open a past workout at any time, edit the
-sets they actually logged, then **Save**. Confirm-gated.
-No silent wipe. Guest. First set ungated. Honesty `.971`
-still applies. Diary stays free.
-
-Today still one Start. `/private` stays the tight `.957`
-lock. Note+pin `.996` stays on the open Train lift.
-
-`PRIVATE_MODE` stays on. Live www stays `.696`. Do not
-promote.
+`PRIVATE_MODE` stays on. Live www
+stays `.696`. Do not promote. Do
+not merge.
 
 ---
 
 ## 1. Investigate (done — hypothesis holds; no Today leak)
 
-Checked on `origin/master` `.996`
+Checked first on `origin/master` `.996`
 (`2be854e633271e8926e615c29e14c6214c54ebeb`).
+Rebased onto `#823` squash `.997`
+(`bb13642b7d5c01153a95995dcf01c62fc79f5448`).
 
 | Claim | Verified |
 |-------|----------|
-| History cites the diary | **Yes.** `/history` first paint is the session list. Tap opens `session-history-log` with the sets they finished. `sessionHistoryList.ts` says the page opens the log **read-only**. |
-| A typo poisons week-4 | **Yes.** No set-edit path after Finish. `setHistorySessionNote` edits the jot only. Coach `nextDayFromLogs` / generateWeek / 1RM charts / volume / receipt all read `workoutHistory` numbers. |
-| Resume `.963` is the live set | **Yes.** `sessionResume` / `protectLiveStart` / Today Resume. Not History. **Do not treat Resume as this ship.** |
-| Strong edit + Save | **Missing.** History detail is a table of numbers. Outline **Start this again** / **Save as routine** only. No Edit. No Save of the diary. |
-| `.996` put note chrome on Today | **No.** `HomeTodayLean` is date · pins · highlights · week strip · Show all · one `JourneyHero` `dock="start"`. `exerciseNotePinSurface.test.ts` forbids pin/note on lean / `/private`. **Nothing to unmount first.** |
+| Swap/skip `.959` replaces a movement | **Yes.** `swapExerciseThisSession` writes a new id (refuses after a logged set). `skipExerciseThisSession` marks `skippedThisSession`. Neither moves the card. |
+| Session-Start `.991` replays last order | **Yes.** `decideStartAgain` → `templateFromCompletedLog` copies the finished log's exercise array. Live this-device session still wins (`.963`). |
+| Live session can already drag lifts | **No.** No `reorderExerciseInActive`. `ActiveExerciseList` maps in store order. Builder `reorderDraftExercises` is draft-only. Today section up/down is not Train. |
+| Name tap is history | **Yes.** `data-testid="movement-history-open"` on the name. Sheet is sets, not a plan. |
+| Later lifts stay off the board until first set | **Yes.** `laterLiftVisible` hides later cards until any set is logged (or that card is skipped). After first set, all cards show. |
+| Note+pin `.996` on Today | **No.** Lean is date · pins · highlights · week strip · Show all · one `JourneyHero` `dock="start"`. Surface tests forbid pin / rest / history / set-row type on lean and `/private`. **Nothing to unmount first.** |
+| History Edit `.997` on Today | **No.** `editFinishedSession` / `HistorySessionEdit` live on History. Surface tests forbid them on lean Today. Keep that lock. |
+| Today / door | One Start. Resume `.963`. `/private` is the tight `.957` lock. Honesty `.971` is Train session-count. |
+| dnd library | **None.** Do not add one. |
 
-**Hypothesis (founder, non-binding):** History now cites
-the diary; a typo poisons week-4. Resume `.963` is the live
-set. Strong lets you edit a past workout at any time, then
-Save. Also verify `.996` did not put note chrome on Today's
-home.
+**Hypothesis (founder, non-binding):** swap/skip
+replaces a movement; session-Start replays last
+order; missing is drag the lifts in the live
+session. Strong: drag-and-drop on the exercise
+name. Also verify Today is still one Start.
 
-**Verdict: keep.** The leftover is edit of a finished
-session they own. Resume stays live. Today stays one Start.
+**Verdict: keep.** The leftover is the live list.
+Do not replace swap/skip or session-Start.
+Do not make reorder a second home.
 
-### `.996` / Today leak?
+### `.996` / `.997` / Today leak?
 
-**No. Nothing to unmount first.** Note + pin stay on the
-open Train lift. Keep that lock in tests.
+**No. Nothing to unmount first.** History stays
+on the open lift name. Note+pin stay on the
+open lift. Rest stays on the open lift. Set-row
+type stays on the row. History Edit `.997`
+stays on History. Keep those locks in tests.
 
 ---
 
-## 2. Lock (History can correct the diary)
+## 2. Lock (drag the visible live list)
 
 Closed rules:
 
-1. **One home.** `editFinishedSession` in
-   `src/lib/workout/editFinishedSession.ts`. No second
-   private copy in the page / store / receipt.
-2. **Open from History.** The finished-session dialog
-   (`session-history-log`) is the door. Not Today. Not
-   `/private`. Not the movement-history sheet. Not a
-   public permalink.
-3. **Edit the sets they actually logged.** Weight · reps ·
-   duration (honor `.994` type). Optional add a set on a
-   lift already on the log. Kind / RPE / RIR / tempo /
-   note stay unless they change the number fields. Do not
-   add a new exercise. Do not rename. Do not change the
-   date.
-4. **Same session.** `id` / `clientId` / `startedAt` /
-   `completedAt` / `durationSeconds` / `workoutName` stay.
-   Bump `revision`. Recalc `totalVolume` via `setRowVolume`.
-   Never mint a second log. Never set `deletedAt`.
-5. **Confirm before destructive change.** Typo that still
-   has work → Save applies. Dropping a set/lift that had
-   work → confirm door, then write. Empty draft invents
-   nothing — **does not wipe, does not tombstone**.
-6. **Empty invents nothing.** Tombstone / missing log /
-   draft with no work after strip → `empty`. A 0/0/0 save
-   is not a delete.
-7. **Guest. First set ungated.** Edit never paywalls. No
-   account. Opening Edit is never required to log.
-8. **Today still one Start** (Resume when live). Not a new
-   Today widget. Not a second Start. Not on `/private`.
-9. **Honesty `.971` still scores Train** — session count,
-   not a new edit score. Correcting a set does not invent
-   a third session. Short diary stays a notebook.
-10. **Resume `.963` stays the live set.** Edit does not
-    call `startWorkout`. Does not write `activeWorkout`.
-    Does not treat a finished log as Resume.
-11. **Cloud is the same upsert.** `enqueueWorkoutUpsert`
-    on the corrected log (revision wins). Guest stays
-    local. Session note stays local (`.983`).
-12. **Do not rewrite Android.** Web PWA only.
-13. **Do not smash** note+pin `.996`, rest `.995`,
-    set-row type `.994`, movement history `.993`, custom
-    `.992`, Start this again `.991`, EMOM, drop-set,
-    warmup, notes, 1RM %, supersets, Learn, week strip,
-    Track, Move, cues, tags, RPE, Fuel, resume, notebook,
-    `/private`.
+1. **One home.** `reorderSessionExercises` in
+   `src/lib/workout/sessionReorder.ts`. No
+   second private copy in the card / store /
+   Builder / Today.
+2. **This session only.** Does not write
+   Wednesday, saved notebook, or
+   `swapExerciseInPlan`. Finish still writes
+   the completed log in the order they left
+   it, so Start this again `.991` replays
+   that finished order. Empty invents
+   nothing.
+3. **Visible cards only.** `laterLiftVisible`
+   stays. After first set (or skip), the
+   list is visible and they can drag. Do
+   not open later cards just to enable
+   reorder. One lift: no handle.
+4. **Name tap stays history.** Grip on the
+   name row is the drag source. A tap that
+   does not travel still opens `.993`. Do
+   not steal the name button.
+5. **Sets travel with the card.** Logged
+   sets, skip mark, this-session note,
+   pin-by-id, rest lanes, and group id
+   stay on the moved card. Reorder is not
+   a swap and not a remove.
+6. **Guest. First set ungated.** Reorder
+   never paywalls. No account. Log set
+   stays the one red. Opening reorder is
+   never required.
+7. **Today still one Start** (Resume when
+   live). Not a Today widget. Not on
+   `/private`. Not a Feed.
+8. **Honesty `.971` still scores Train** —
+   session count, not an order score.
+9. **Do not replace** swap/skip `.959` or
+   session-Start `.991`. Do not smash
+   History Edit `.997`, note+pin `.996`,
+   rest `.995`, set-row type `.994`,
+   this-movement history `.993`.
+10. **Do not rewrite Android.** Web PWA
+    only. No new dnd package.
 
 ---
 
@@ -120,145 +125,164 @@ Closed rules:
 
 ### 3.1 PLAN (this file + `docs/PLAN.md` section)
 
-This freeze. Implement commit follows. Plan commit is `[skip vercel]`.
-Every later commit is `[skip vercel]`.
+This freeze. Implement commit follows. Plan
+commit is `[skip vercel]`. Every later commit
+is `[skip vercel]`.
 
-### 3.2 Pure helper — `src/lib/workout/editFinishedSession.ts`
+### 3.2 Pure helper — `src/lib/workout/sessionReorder.ts`
 
-One module. Deterministic. No premium / rewards / social /
-Health / speech / wearables. No store import.
+One module. Deterministic. No premium /
+rewards / social / Health / speech /
+wearables / `bodyMetrics`. No store import.
 
 | Export | Rule |
 |--------|------|
-| `FinishedSetDraft` | exerciseId + set fields they can type (reps, weight, durationSeconds) plus kept kind / ratings |
-| `FinishedSessionDraft` | exercises[] of drafts. Identity is the original log's. |
-| `draftFromLog(log)` | Copy of sets they logged. Tombstone / missing → `null`. |
-| `setDraftHasWork(set)` | `setRowHasWork` — reps **or** duration. Warmup is not work. |
-| `draftHasWork(draft)` | Any lift has work. |
-| `isDestructiveEdit(original, draft)` | True when a previously-working set or lift is gone / emptied. Adding a set is not destructive. Typo is not. |
-| `decideEditSave({ original, draft })` | `empty` \| `noop` \| `apply` \| `needs-confirm` |
-| `applyEditedLog(original, draft)` | Same identity. Recalc volume. Bump revision. Never `deletedAt`. Empty → `null`. |
-| `parseFinishedSetNumber(raw)` | Finite ≥ 0. Blank / junk → 0. |
+| `reorderSessionExercises(exercises, fromIndex, toIndex)` | Move one card. Same index / empty / non-integer / OOB → `null`. Never padded. Never invented. |
 
-`decideEditSave`:
+Does not import `swapExerciseInPlan`,
+`savePlan`, `generateWeek`, `skipExerciseThisSession`,
+or `swapExerciseThisSession`. Skip/swap stay
+the replace path.
 
-- no original / tombstone / malformed / draft with no work → **empty**
-- same work as original → **noop** (no write)
-- work remains, no dropped working set/lift → **apply**
-- work remains, dropped a working set/lift → **needs-confirm**
-  (confirm then `applyEditedLog`)
+### 3.3 Store — `reorderExerciseInActive`
 
-Empty never tombstones. Mutant that Save-wipes the session
-dies. Mutant that mints a second `clientId` dies. Mutant
-that calls `startWorkout` / writes `activeWorkout` dies.
+`reorderExerciseInActive(fromIndex, toIndex)`
+applies the helper to `activeWorkout.exercises`.
+No-op when the helper returns null. Persist
+is the existing active session write. Do not
+enqueue a plan rewrite.
 
-### 3.3 History door — `HistoryPage` + edit chrome
+### 3.4 Open list — name-row drag
 
-`session-history-log` gains outline **Edit**. Edit mode
-shows type-honest inputs (`.994`) on the sets they logged.
-**Save** runs `decideEditSave`. Confirm door when
-`needs-confirm`. Cancel discards the draft.
+Chrome on the **live list** only.
 
-| Control | Rule |
-|---------|------|
-| Edit | Outline. Not the red Start. `data-testid="session-history-edit"` |
-| Save | Applies or opens confirm. `data-testid="session-history-edit-save"` |
-| Confirm | Named verb — "Save these changes?" — not "Are you sure?" `data-testid="session-history-edit-confirm"` |
-| Cancel | Back to read-only. Draft dies. |
+- Grip handle on the exercise name row
+  (`data-testid="exercise-reorder-handle"`).
+  `min-h-[44px]`. Not `primary-action`.
+- Pointer drag with a travel threshold.
+  Drop onto another visible card's index.
+- A tap that does not travel still opens
+  movement history (`.993`).
+- Keyboard Move up / Move down (44px) when
+  two or more cards are visible — a11y, not
+  a second home.
+- One visible lift: no handle.
+- `ActiveExerciseList` / header own the
+  handle. Do not add a reorder sheet, a
+  Today widget, or a Builder-style arrange
+  step on Train.
 
-Start this again / Save as routine stay. They are not this
-ship. Movement-history sheet stays read-only (`.993`).
-Receipt stays receipt (`.991` / `.983`).
+### 3.5 Surfaces that do not change
 
-Store: `saveEditedHistoryLog(log)` replaces by `id`,
-enqueues upsert, leaves `activeWorkout` alone.
-
-### 3.4 Surfaces that do not change
-
-- Today lean stays date · pins · highlights · strip · Show all ·
-  one `JourneyHero` `dock="start"`. `.996` note + pin stay
-  on the open lift. `.993` history stays on the lift name.
+- Today lean stays date · pins · highlights
+  · strip · Show all · one `JourneyHero`
+  `dock="start"`. `.993` history stays on
+  the lift name. `.996` note+pin stay on
+  the open lift. `.995` rest stays on the
+  open lift. `.989` trend stays in the
+  strip cell.
+- History Edit `.997` stays on History.
+  Not on Today. Not a live-list rewrite.
 - `/private` stays the tight `.957` lock.
-- Resume `.963` stays leave/return of the **live** session.
-- `/move` stays the quiet walk diary.
+- Swap / skip stay this-session replace.
+- Start this again stays session-out replay.
+- Builder draft up/down stays Builder.
+- `laterLiftVisible` stays.
 - Android Room path stays. No F5. No Expo.
-- Honesty `.971`, first set ungated, custom `.992`,
-  Start this again `.991`, movement history `.993`,
-  set-row type `.994`, rest `.995`, note+pin `.996` stay.
+- Honesty `.971`, resume `.963`, first set
+  ungated stay.
 
-### 3.5 Tests (write before product edit)
+### 3.6 Tests (write before product edit)
 
-- `draftFromLog`: live log → draft of the sets; tombstone /
-  null / `{}` → `null`. Empty invents nothing.
-- `decideEditSave`: 135 → 225 with work remaining →
-  `apply`. Drop the only working set → `empty` (no wipe).
-  Drop one of two working sets → `needs-confirm`. Same
-  numbers → `noop`. Mutant that tombstones on empty Save
-  dies. Mutant that mints a new `clientId` dies.
-- `applyEditedLog`: identity stays; volume uses
-  `setRowVolume`; revision + 1; `deletedAt` unset.
-- Duration plank: time edit is work; `45 × 0` is not the
-  saved line.
-- Store: `saveEditedHistoryLog` replaces the row; does not
-  touch `activeWorkout`; does not call `startWorkout`.
-- Surface: History detail mounts Edit / Save. Today lean
-  still one `dock="start"`. No edit import on lean Today
-  or `/private`. Movement-history sheet stays read-only.
-- No `isPremium` / `/bundle` / UnlockButton / permalink /
-  Health / speech / Force Sync / Session Expired on the
-  helper or the History edit branch.
-- `firstSetUngated` stays green. `thinHistory` stays green.
-- No Feed / Discord.com / likes / XP / four-scene door /
-  counsel-hold / WeChat / Mind / Resume-as-this-ship.
+- `reorderSessionExercises`: `[A,B,C]` 0→2
+  → `[B,C,A]`; 2→0 → `[C,A,B]`; same index
+  / empty / `-1` / `3` / `1.5` → `null`.
+  Sets and skip mark travel with the card.
+- Mutant that calls `swapExerciseInPlan` /
+  `savePlan` / `generateWeek` dies.
+- Mutant that treats reorder as swap
+  (changes `exerciseId`, drops sets) dies.
+- Surface: `data-testid="exercise-reorder-handle"`
+  on the live name row. Lean Today and
+  `/private` do not import
+  `sessionReorder` / `reorderExerciseInActive`.
+- Name tap still matches
+  `data-testid="movement-history-open"`.
+- Today lock: lean still one `dock="start"`.
+- `laterLiftVisible` still hides later
+  cards until first set.
+- History Edit `.997` stays off lean Today
+  and off the live reorder helper.
+- `firstSetUngated` stays green.
+  `thinHistory` stays green.
+- Swap/skip and Start this again tests
+  stay green.
+- No Feed / Discord.com / likes / XP /
+  four-scene door / counsel-hold / WeChat
+  / Mind / UnlockButton / `isPremium`.
 
-### 3.6 Help / i18n / INDEX
+### 3.7 Help / i18n / INDEX
 
-- Help one-liner (getting-started + pillars History):
-  open a finished session from History, edit the sets you
-  logged, Save. Confirm before a destructive change.
-  Empty invents nothing. Today stays Start workout.
-- i18n: add keys to `historyLocales.ts` +
-  `t(key, { defaultValue })` matching EN. Coverage cap stays 0.
-- Folder INDEX if the file list changes (`src/lib/INDEX.md`,
-  `src/lib/workout/INDEX.md`, `src/store/INDEX.md`,
-  `src/components/workout/INDEX.md` or history).
+- Help one-liner (getting-started Train):
+  on the live session they can drag the
+  lifts to a new order. Tap the name still
+  opens prior sessions of that lift. Today
+  stays Start workout.
+- i18n: add keys to `activeWorkoutLocales.ts`
+  + `t(key, { defaultValue })` matching EN.
+  Coverage cap stays 0.
+- Folder INDEX if the file list changes
+  (`src/lib/INDEX.md`, `src/lib/workout/INDEX.md`,
+  `src/components/workout/INDEX.md`,
+  `src/store/INDEX.md`).
 
 ## 4. Refuse
 
-Silent delete / wipe a session. Treat Resume as this ship.
-Invent a public permalink of the edit. Feed / DMs /
-marketplace / shame / four-scene door. Counsel-hold
-(field test / PT / pregnancy). `PRIVATE_MODE` flip.
-Promote. Merge. Second Today Start. Android rewrite.
-Add a new exercise from History. Change the date.
-Paywall edit.
+Replace swap/skip or session-Start. Feed /
+DMs / marketplace / Discord.com / shame /
+four-scene door. Counsel-hold (field test /
+PT / pregnancy). Flip `PRIVATE_MODE`.
+Promote live off `.696`. Merge. Paywall
+reorder. Android rewrite. Second Today
+Start. New dnd package. Open later cards
+just to enable reorder. Steal the name
+tap from history. Rewrite Wednesday /
+saved notebook from a drag. Put History
+Edit `.997` on Today.
 
-Do not smash `.996` / `.995` / `.994` / `.993` / `.992` /
-`.991` / `.989` / `.988` / `.986` / `.985` / `.983` /
-`.981` / `.980` / `.978` / `.977` / `.976` / `.974` /
-`.973` / `.971` / `.970` / `.967` / `.965` / `.963` /
-`.961` / `.960` / `.957`.
+Do not smash `.997` / `.996` / `.995` /
+`.994` / `.993` / `.992` / `.991` / `.989` /
+`.988` / `.986` / `.985` / `.983` / `.981` /
+`.980` / `.978` / `.977` / `.976` / `.974` /
+`.973` / `.971` / `.970` / `.967` / `.965` /
+`.963` / `.961` / `.959` / `.957`.
 
 ## 5. Docs / ship protocol
 
-- `APP_BUILD_LABEL` → `2026.07-unified.997`
-- LOG heading `## 2026-08-25 — Edit a finished session (\`.997`)` +
+- `APP_BUILD_LABEL` → `2026.07-unified.998`
+- LOG heading `## 2026-08-25 — Live session reorder (\`.998`)` +
   rotate oldest live entry so LOG stays ≤15
-- `CONTEXT.md` `## Now` one-line `.997` citing the full label;
-  keep `.996` … rotate oldest shipped Now bullet so the
-  block stays ≤25
-- Plan commit `[skip vercel]`. Implement commits `[skip vercel]`.
-- One draft PR against master. Title: `Edit a finished session (.997)`.
-  Do not merge. Do not promote. Live www stays `.696`.
-- `tsc --noEmit` clean. `check-build-label` `.997` > master `.996`.
+- `CONTEXT.md` `## Now` one-line `.998` citing the
+  full label; keep `.997` … rotate oldest
+  shipped Now bullet so the block stays ≤25
+- Plan commit `[skip vercel]`. Implement
+  commits `[skip vercel]`.
+- One draft PR against master. Title:
+  `Live session reorder (.998)`.
+  Do not merge. Do not promote. Live www
+  stays `.696`.
+- `tsc --noEmit` clean. `check-build-label`
+  `.998` > master `.997`.
 
 ## 6. Done when
 
-- A finished session can be opened from History and
-  edited, then Saved.
-- Confirm before destructive change; empty invents nothing.
+- Live session exercises can be reordered.
 - Today still one Start. First set ungated.
-- Honesty `.971` still applies. Diary stays free.
+- Honesty `.971` still applies. Diary stays
+  free.
 - `/private` stays the tight `.957` lock.
-- Label `2026.07-unified.997`. Draft PR against master.
-  Title: `Edit a finished session (.997)`.
+- Swap/skip and session-Start still hold.
+- History Edit `.997` stays on History.
+- Label `2026.07-unified.998`. Draft PR
+  against master. Title:
+  `Live session reorder (.998)`.
