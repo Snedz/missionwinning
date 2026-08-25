@@ -6,6 +6,139 @@ Living roadmap for the **everything app** (a bodyweight coach app Super Bundle �
 
 ---
 
+## Frozen plan — `.995` Per-exercise rest (2026-08-25)
+
+> **Frozen.** Implement only this section + root
+> [PLAN.md](../PLAN.md). Plan commit is `[skip vercel]`.
+> Label: `2026.07-unified.995` — next free after master `.994`
+> (`bc03b98e` — Set-row type). Title stays
+> **Per-exercise rest (.995)**.
+> Set-row type `.994` + This-movement history `.993` +
+> Custom `.992` + Start this again `.991` + Quiet Track
+> trend `.989` + EMOM `.988` + drop-set `.986` +
+> warmup `.985` + notes `.983` + 1RM `.981` +
+> Supersets `.980` + Learn `.978` + week strip `.977` +
+> Quiet Track `.976` + Quiet Move `.974` + cues `.973` +
+> honesty `.971` + tags `.970` + RPE `.967` + Fuel
+> `.965` + resume `.963` + notebook `.960` are on
+> master. Do not smash them.
+> Do **not** smash week strip `.961`, notebook `.960`,
+> swap/skip `.959`, desk→gym `.958`, `/private` `.957`,
+> close receipt `.956`, Wednesday `.955`, Today Start
+> `.954`, or identity `.949`.
+> Every commit `[skip vercel]`. No Preview. No
+> `PRIVATE_MODE` flip. No promote. Live www stays `.696`.
+> Guest path. First set stays ungated. Today stays one
+> Start. Brand: **Log a set. Offline.** / No account. No
+> wearable.
+
+Global rest + last-rest recall + drop
+rest-zero `.986` + EMOM/AMRAP already
+exist. Missing: bench rests 3:00,
+laterals rest 1:00, warmup ≠ work.
+Tags `.970` already mark warmup.
+`.993` history stays on the open lift
+name — not on Today. Set-row type
+`.994` still honors weight ·
+bodyweight · duration · assisted.
+
+### First check (done — hypothesis holds)
+
+Read `origin/master` tip `bc03b98e` /
+`.994`. `mw_last_rest_by_exercise` is
+**one number** per id. `planLogSetRest`
+does not read set kind. Warmup and work
+share that number. Name heuristic
+already says bench 180 / raise 60, but
+`resolveRestSeconds` is `max(suggested,
+userDefault)` so a 90s global swallows
+laterals. Dock **Default** chips still
+write the global. Today is one
+`dock="start"`. Lean does not import
+`movementHistory`. `/private` stays the
+tight `.957` lock. **Nothing to unmount
+first.** Do not add a second rest home
+in Profile / Settings.
+
+### Lock
+
+Rest duration lives on the exercise.
+Two lanes: **warmup** and **work**.
+Settable on the open Train lift.
+Logging a warmup starts warmup rest;
+logging a work set starts work rest.
+Drop still zeros. EMOM still skips
+auto rest. Global default stays the
+fallback only — not a second home.
+Empty invents nothing. Guest. First
+set ungated. Today still one Start.
+Honesty `.971` still applies.
+
+1. One map, two fields. Evolve
+   `mw_last_rest_by_exercise` so a
+   stored number is work (legacy).
+   Warmup is a sibling field. Cap
+   still 80 ids. Skip never writes.
+2. `resolveRestForNextSet` takes a
+   lane. Work: last work → name
+   heuristic ∪ session default.
+   Warmup: last warmup → **60s**
+   isolation floor, never the work
+   3:00. Bench work can be 180 while
+   bench warmup is 60.
+3. Setting a lane writes that lane
+   only. +15s that grows the initial
+   writes the running lane. Dock
+   Default chips still adjust the
+   running clock + global fallback;
+   they do not become the setter.
+4. `planLogSetRest` reads the logged
+   set's kind. `composeDropRest` still
+   owns drop. Work clock still skips
+   auto rest.
+5. Chrome on the **open** lift only.
+   Not Today. Not `/private`. Not a
+   Feed. Not a paywall. Not a live
+   share. Not Watch-as-pitch.
+6. This-movement history `.993` stays
+   on the name tap. Today stays one
+   `JourneyHero` `dock="start"`.
+
+### Refuse
+
+- Paywall the timer
+- Live-share the clock
+- Watch-as-pitch / wearable as
+  permission
+- Feed / DMs / marketplace / shame /
+  four-scene door
+- Counsel-hold (field test / PT /
+  pregnancy)
+- Flip `PRIVATE_MODE`
+- Promote live off `.696`
+- Change global rest into a second
+  home
+- Put rest chrome on Today
+- Smash drop-zero / EMOM / history /
+  set-row type `.994`
+
+### Done when
+
+- Per-exercise rest is settable;
+  warmup vs work can differ
+- Bench work 3:00 and laterals work
+  1:00 can both live
+- Today still one Start · first set
+  ungated
+- Label `2026.07-unified.995`
+
+Excellence-Override: leftover
+per-exercise rest (warmup vs work) on
+the open Train lift.
+
+Implement only root [PLAN.md](../PLAN.md).
+
+
 ## Frozen plan — `.994` Set-row type (2026-08-25)
 
 > **Frozen.** Implement only this section + root
