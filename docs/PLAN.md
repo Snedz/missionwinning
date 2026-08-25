@@ -6,6 +6,172 @@ Living roadmap for the **everything app** (a bodyweight coach app Super Bundle �
 
 ---
 
+## Frozen plan — `.960` Honor the notebook (2026-08-25)
+
+> **Frozen.** Implement only this section. Plan commit is `[skip vercel]`.
+> Label: `2026.07-unified.960` — next free after master `.959`
+> (`#796` squash `eb2f4432` — swap / skip this session).
+> Do **not** smash swap/skip `.959`, desk→gym `.958`, `/private`
+> `.957`, close receipt `.956`, Wednesday `.955`, or Today
+> Start `.954`.
+> Implement commit may allow one Preview. No empty-commit retrigger.
+> No `PRIVATE_MODE` flip. No promote. Live www stays `.696`.
+> Guest path. First set stays ungated. Confirm-gated writes.
+> Brand: **Log a set. Offline.** / No account. No wearable.
+> Coach stays opt-in / skippable. Train + Coach only.
+
+`.955` names Wednesday from the diary. Strong migrants
+already have a program they typed or brought. If Start
+loads Wednesday's log-shape (or Just Go / Coach generate)
+over their PPL, they bounce. We are not a program shop.
+Free Strong = 3 custom templates. Hevy free = 4 routines.
+Honor *their* notebook — one saved routine they can
+recognize. Logs still drive the set-row cite. Blank
+notebook stays valid (F-028: no plan wall before a log).
+
+### One concern
+
+Honor the saved routine they brought. Not a marketplace.
+Not Trainer generate-first. Not a Wednesday overwrite.
+
+### Investigate (done — hypothesis holds)
+
+Read `origin/master` tip `eb2f4432` / `.959` (`#796`).
+
+| Layer | What exists | Gap this ship closes |
+|-------|-------------|----------------------|
+| Saved list | `SavedWorkout` + `addSavedWorkout` / `deleteSavedWorkout`. Builder types a name and writes. Persist with history. | Start never reads the list. Same-name save appends (silent duplicate). Finish / History have no save-as-theirs door. |
+| Import | Strong / Hevy / MW CSV → **history** (preview + confirm). Distinct named sessions stay logs. | Import does not mint a shop of routines. **Keep.** They save one named session they recognize. Auto-extracting every imported name would invent a program. |
+| Today Start | Resume → `shouldRepeatLastOnToday` (null when live Coach) → Just Go (`peekCoachToday` wins) → journey. One `.primary-action`. | Live Coach / Wednesday log-template / Just Go can own the tap while a saved PPL sits unused. |
+| Train empty | `resolveActiveEmptyStart` = repeat last or blank Quick Workout. Never Just Go / Coach. | Repeat-last is do-yesterday. Saved notebook is ignored. |
+| Wednesday cite | `nextDayFromLogs` + `CoachNextDayCite` outline Start. Template = newest live log of that name. | Cite stays. Outline Start must not replace a saved PPL with the log-shape (or generateWeek). |
+| Set-row cite | F-013 / last working / vs-last / `.939` adjacency. `startWorkout` materializes against history. | **Do not rewrite.** Notebook is the lift list; logs still fill the row. |
+| Swap / skip | `.959` this-session only. Does not write saved / plan. | **Keep.** |
+| Blank / F-028 | Empty Train Start = Quick Workout. `firstSetUngated`. No account. | **Keep.** Empty saved + empty history invents no program and does not wall the first set. |
+
+Hypothesis (verified, keep):
+
+A **pure** helper over `{ saved, history }` returns the
+honored Start (`{ name, exercises, id }` or `null`).
+Saved list is the notebook. Same-name rotation against
+live named history picks the next unused saved slot
+(Push · Pull · Legs with Push then Pull logged ⇒ saved
+Legs). One saved routine ⇒ that one. Empty saved ⇒
+`null` (existing Start / Wednesday log-cite stand).
+Empty saved + empty history ⇒ `null` (invents nothing).
+Wednesday cite still *names* the next day from logs
+when they have no saved routine. When they have a
+saved PPL, Start uses the notebook exercises — never
+`cite.template`, never `generateWeek`, never Just Go.
+Confirm before any saved write. Same-name replace is
+explicit (no silent wipe). Guest path.
+
+Closed rules (no catalog shop, no RNG, no plan write):
+
+1. **Save theirs.** Session they just did (Victory) or
+   typed (Builder) or picked from History (imported
+   log) → name they recognize + confirm. Empty name /
+   no exercises ⇒ `null`. Same name key (trim,
+   case-insensitive) + no replace flag ⇒ `needs-replace`
+   (do not append, do not wipe). Replace updates that
+   row in place. Guest. No login wall.
+2. **Start honors the notebook.** Today one Start and
+   Train empty Start call the helper **before** repeat
+   last / Just Go / Coach peek. Resume still wins when
+   a session is open. `workoutId` is the saved id.
+3. **Wednesday does not overwrite.** `nextDayFromLogs`
+   stays the cite. Outline Start: no saved ⇒ existing
+   log template; saved ⇒ helper (notebook), never
+   `cite.template`. Mutant that starts the log-shape
+   while a saved PPL exists dies.
+4. **Blank stays valid.** No saved + no history ⇒ no
+   invented program, first set ungated, no plan wall.
+5. **Surfaces.** Today still one `.primary-action`.
+   Swap/skip stays this-session. Close receipt stays
+   private. `/private` stays the tight `.957` lock.
+   Set-row cite / F-013 / vs-last untouched.
+
+### Ship (only this)
+
+1. **Pure helper** `src/lib/workout/honorSavedRoutine.ts`.
+   `routineFromSession` · `decideSavedWrite` ·
+   `pickHonoredStart` · `honorCiteStart`. Deterministic.
+   No `generateWeek` / catalog pick / shop / Just Go
+   import.
+
+2. **Store.** `replaceSavedWorkout(id, patch)` for the
+   confirm-replace path. `addSavedWorkout` stays append
+   for a new name. Writes only after confirm.
+
+3. **Start wiring.** `runTodayPrimaryAction` and
+   `resolveActiveEmptyStart` take `saved` and honor it
+   first (after resume). Hero copy may name the saved
+   routine — still one Start, never a second red.
+
+4. **Wednesday Start.** `CoachNextDayCite` goes through
+   `honorCiteStart`. Cite display stays `.955`.
+
+5. **Save doors.** Victory (just did) + Builder (typed)
+   + History (imported session). Name field. Confirm
+   in the footer. Not `.primary-action`. Replace
+   confirm when the name is already theirs.
+
+6. **Help one-liner.** Save the routine you just did
+   (or typed). Start uses it. Wednesday from logs does
+   not replace it.
+
+### Tests
+
+- Save then Start uses their routine (name + exercise
+  ids from the notebook, not Just Go / last log).
+  Mutant that ignores `saved` on Start dies.
+- Wednesday cite does not overwrite a saved PPL:
+  `honorCiteStart` with saved Push/Pull/Legs returns
+  the saved Legs exercises, not `cite.template`.
+  Mutant that returns `cite.template` while saved
+  exists dies.
+- Empty history + empty saved invents no program
+  (`null` / Train empty). First set still ungated.
+- Same-name save without replace ⇒ `needs-replace`
+  (no silent wipe / no silent append).
+- Confirm-gated: save write is not a silent one-tap.
+  Source: confirm in the door footer.
+- `firstSetUngated` stays green; no Feed / Top 8 /
+  likes / login wall / Force Sync / four-scene door.
+  Today still one `.primary-action`. Swap/skip path
+  still does not write saved / plan.
+
+### Refuse
+
+Program shop. 11k catalog. Trainer generate-first.
+F-028 plan wall. Auto-mint routines from every
+imported session name. Four-scene door. Counsel-hold.
+Super Bundle on Today. Injury product. Promote live.
+`PRIVATE_MODE` flip. Merge. Today / Wednesday /
+close-receipt / desk→gym / swap-skip rewrite.
+
+### Docs / ship protocol
+
+- `APP_BUILD_LABEL` → `2026.07-unified.960`
+- LOG heading `## 2026-08-25 — Honor the notebook (\`.960\`)` + rotate oldest live entry (`.944`)
+- `CONTEXT.md` `## Now` one-line `.960`; rotate oldest shipped Now bullet (`.945`) so the block stays ≤25
+- Folder INDEX only if a file list changes (`src/lib/workout/INDEX.md`, maybe store / Today / Victory)
+- i18n: save / honor-start copy via `t(key, { defaultValue })` on `activeWorkoutLocales.ts` / `builderLocales.ts` / `todayLocales.ts`
+- Help: one line on getting-started (save the routine you brought; Start uses it)
+- Plan commit `[skip vercel]`. Implement commit: one Preview max. No empty-commit retrigger.
+- Draft PR against master. Do not merge. Do not promote. Live www stays `.696`.
+
+### Done when
+
+- This section was frozen before product code.
+- Save then Start uses their routine. Wednesday cite
+  does not overwrite a saved PPL. Empty invents
+  nothing. Blank notebook still logs.
+- Label `.960`. Draft PR against master. Title:
+  `Honor the notebook they brought (.960)`.
+
+---
+
 ## Frozen plan — `.959` Swap / skip this exercise, this session (2026-08-24)
 
 > **Frozen.** Implement only this section. Plan commit is `[skip vercel]`.
