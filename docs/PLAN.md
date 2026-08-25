@@ -6,6 +6,161 @@ Living roadmap for the **everything app** (a bodyweight coach app Super Bundle �
 
 ---
 
+## Frozen plan — `.961` Quiet week strip (2026-08-25)
+
+> **Frozen.** Implement only this section. Plan commit is `[skip vercel]`.
+> Label: `2026.07-unified.961` — next free after master `.960`
+> (`#797` squash `cb986b1a` — honor the notebook).
+> Do **not** smash notebook `.960`, swap/skip `.959`, desk→gym
+> `.958`, `/private` `.957`, close receipt `.956`, Wednesday
+> `.955`, Today Start `.954`, or missed-day `.945`.
+> Implement commit may allow one Preview. No empty-commit retrigger.
+> No `PRIVATE_MODE` flip. No promote. Live www stays `.696`.
+> Guest path. First set stays ungated. Confirm-gated writes.
+> Brand: **Log a set. Offline.** / No account. No wearable.
+> Coach stays opt-in / skippable. Train + Coach only.
+
+Today + Wednesday + missed-day re-entry are on git.
+Week-4 is seeing Mon–Sun **without** a missed-day ✕
+scoreboard. Coach `WeekStrip` lives in Show all and
+marks holes (`Missed` + strikethrough). A number
+(`habitWeekCount`) is not a glance. One strip: what’s
+done, what’s next Start, empty days stay empty. Not a
+calendar product. Not Fuel/Move/Mind.
+
+### One concern
+
+Quiet Mon–Sun glance on Today. Done days marked.
+Empty days stay empty. The next Start is still the
+one Start.
+
+### Investigate (done — hypothesis holds)
+
+Read `origin/master` tip `cb986b1a` / `.960` (`#797`).
+
+| Layer | What exists | Gap this ship closes |
+|-------|-------------|----------------------|
+| Today Start | `todayReturnCite` + `StartDockHero` — last + next for **this visit**. Honored saved (`.960`) owns Start when they have one. One `.primary-action`. Lean does not mount `CoachTodayCard`. | **Do not restyle. Do not add a Start per day.** Next Start stays the one Start (`.954`). |
+| Missed-day | `computeReentry` + `TodayReentryCard` + `TodayPlannedMissPrompt` (`.945`) — do it now / skip / slide on the Start field. Skip is not a fail. | Choice stays on Start. The glance must not become a ✕ scoreboard of holes. |
+| Wednesday | `nextDayFromLogs` + `CoachNextDayCite` — outline Start, not `.primary-action`. | Cite stays. Not a second Today Start. |
+| Coach week | `WeekStrip` / `TodayCoachWeekStrip` — plan sessions; `missed` = strikethrough **Missed**. Lives in collapsed `TodayShowAll`. | Week-4 cannot see Mon–Sun without opening Show all, and that strip marks holes. **Do not restyle Coach `WeekStrip`.** |
+| Habit count | `countTrainDaysThisWeek` — unique local Train days. 0 is valid. Header on lean passes `0` (count is off first paint). | A number is not a glance. |
+| History | Month grid (`HistoryCalendar`) | Not Today. Not this ship. |
+| Saved / swap / private | `.960` Start honor · `.959` this-session · `.957` tight lock | **Keep.** |
+
+Hypothesis (verified, keep):
+
+A **pure** helper over live history + `now` returns
+seven days (Mon–Sun of `startOfLocalWeek`). Done =
+a live log on that local calendar day (no
+`deletedAt`, at least one performed set `reps > 0`).
+Date from `completedAt` / `startedAt` via
+`localDateKeyFromIso` — never `toISOString()`.
+Empty stays empty. An optional Coach plan may be
+passed only so a mutant that copies `status ===
+'missed'` dies — the glance **never** inherits
+plan holes. Empty history ⇒ seven empty cells, no
+shame mark. Guest path. Blank notebook valid.
+The strip has no Start button. Confirm is N/A
+(read-only; no write).
+
+Closed rules (no shame grid, no calendar, no pillars):
+
+1. **Diary, not plan.** Status comes from live logs
+   only. Planned-and-not-logged is empty, not ✕,
+   not `Missed`, not strikethrough.
+2. **Empty stays empty.** No em-dash, no rest
+   invented, no glyph on a day without a live log.
+   Tombstone / 0-rep / unparseable date do not
+   count.
+3. **One Start.** Days are not buttons. No
+   `.primary-action` on the strip. Resume / honored
+   saved / Wednesday cite / planned-miss stay their
+   lanes.
+4. **Today outline only.** Current local day may
+   take the 2px accent outline so “now” reads.
+   That is not a second Start and not a streak.
+5. **Surfaces.** Mount on lean Today first paint
+   (or immediately under the Summary blocks, before
+   Show all). Do **not** remount `TodayCoachWeekStrip`
+   on the fold. Do not auto-expand Show all.
+   `/private` stays the tight `.957` lock.
+
+### Ship (only this)
+
+1. **Pure helper** `src/lib/today/quietWeekGlance.ts`.
+   Inputs: live history, `now`. Output: `{ weekStart,
+   todayOffset, days: [{ dateKey, offset, done,
+   isToday }] }` — always seven days. Deterministic.
+   No `generateWeek` / catalog / shop / rewards /
+   streak import. Plan status is not an input to
+   `done`.
+
+2. **Glance UI** `src/components/today/TodayQuietWeekStrip.tsx`.
+   Mon–Sun. Done = quiet ink mark + Done. Empty =
+   empty. Today outline. No tap. Not
+   `.primary-action`. Aria on the row. Guest.
+
+3. **Today lean.** Render the strip on
+   `HomeTodayLean` after Summary blocks, before
+   `TodayShowAll`. Not inside Show all. Not in the
+   Start dock. Not on Fuel/Move/Mind.
+
+4. **Help one-liner.** Today shows this week at a
+   glance — logged days marked, empty days empty.
+   Start is still Start.
+
+### Tests
+
+- Empty week invents no shame: seven days, all
+  `done === false`; no `missed` / ✕ / `Missed` /
+  strikethrough in helper output or strip source.
+  Mutant that marks empty as missed dies.
+- Logged Mon (week-start local day) shows `done`;
+  other days stay empty.
+- Planned miss without a log stays empty (pass a
+  plan session `status: 'missed'` — glance ignores
+  it). Mutant that copies plan status dies.
+- Tombstone / 0-rep / bad date invent nothing.
+- One Start remains: strip source has no
+  `.primary-action` / `onClick` Start; lean still
+  one dock Start. `TodayCoachWeekStrip` stays in
+  Show all.
+- `firstSetUngated` stays green; no Feed / Top 8 /
+  likes / XP / streak theater / login wall /
+  Force Sync / four-scene door.
+
+### Refuse
+
+Shame grid. Category streaks. Boostcamp Sunday
+recap as the habit. Hevy Feed as home. Four-scene
+door. Counsel-hold. Super Bundle pillars. Calendar
+product. Month nav. Tap-day Start. Promote live.
+`PRIVATE_MODE` flip. Merge. Today Start / Wednesday
+/ missed-day prompt / notebook / swap-skip /
+`/private` rewrite.
+
+### Docs / ship protocol
+
+- `APP_BUILD_LABEL` → `2026.07-unified.961`
+- LOG heading `## 2026-08-25 — Quiet week strip (\`.961\`)` + rotate oldest live entry (`.945`)
+- `CONTEXT.md` `## Now` one-line `.961`; rotate oldest shipped Now bullet (`.946`) so the block stays ≤25
+- Folder INDEX only if a file list changes (`src/lib/INDEX.md`, `src/components/today/INDEX.md`)
+- i18n: glance copy via `t(key, { defaultValue })` on the strip
+- Help: one line on getting-started (this week at a glance; empty days stay empty)
+- Plan commit `[skip vercel]`. Implement commit: one Preview max. No empty-commit retrigger.
+- Draft PR against master. Do not merge. Do not promote. Live www stays `.696`.
+
+### Done when
+
+- This section was frozen before product code.
+- Empty week invents no shame. Logged Mon is done.
+  Missed day is empty, not ✕. One Start remains.
+- Label `.961`. Draft PR against master. Title:
+  `Quiet week strip (.961)`.
+
+---
+
 ## Frozen plan — `.960` Honor the notebook (2026-08-25)
 
 > **Frozen.** Implement only this section. Plan commit is `[skip vercel]`.
