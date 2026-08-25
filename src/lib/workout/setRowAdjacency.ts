@@ -74,7 +74,8 @@ export type SetRowAdjacency = {
 const QUIET: SetRowAdjacency = { targetLabel: null, cite: null, empty: false };
 const HONEST_EMPTY: SetRowAdjacency = { targetLabel: null, cite: null, empty: true };
 
-function hasUsableWorkingSet(
+/** Working set with reps — warmup / 0-rep are not diary evidence. */
+export function hasUsableWorkingSet(
   sets: CompletedWorkoutLog['exercises'][number]['sets']
 ): boolean {
   return sets.some((s) => s.kind !== 'warmup' && s.reps > 0);

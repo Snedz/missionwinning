@@ -21,6 +21,7 @@
  * `.989` — muted last-vs-this on a week-strip Track day. Never a login wall.
  * `.990` / stamp `.992` — named custom on the live Train picker. Unlimited. Free. Never a login wall.
  * `.991` — Start this again from the close receipt / History. Never a login wall.
+ * `.993` — tap the open lift for prior sessions of that movement. Never a login wall.
  */
 
 export function normalizeAppPath(pathname: string | null | undefined): string {

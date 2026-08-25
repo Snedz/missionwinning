@@ -11,7 +11,9 @@
 | `ActiveSessionDock.tsx` | One `ScreenDock` for rest only. Set entry is `SetLogTable`; `resolveActiveDockMode` no longer emits `console` |
 | `ActiveWorkoutSheets.tsx` | Check-in · hard-session warning · form · add · plates · victory overlay cluster (`.450`) |
 | `ActiveExerciseList.tsx` | Maps session exercises → `ActiveExerciseCard` (swap candidates, table controls, open-idx). Page mounts this instead of inlining the map (`.439`) |
-| `ActiveExerciseCard.tsx` | Dense exercise block — Info → form guide; overflow for Note/Swap/Skip/SS/Ask/Remove. Skip / swap are **this session** (`.959`). Open lift shows short written cues (`.973`). Group of two or more is one round (`.980` / concern `.979`). Free warmup batch from the working weight (`.984` / stamp `.985`). |
+| `ActiveExerciseCard.tsx` | Dense exercise block — Info → form guide; overflow for Note/Swap/Skip/SS/Ask/Remove. Skip / swap are **this session** (`.959`). Open lift shows short written cues (`.973`). Tap the name for prior sessions of that lift (`.993`). Group of two or more is one round (`.980` / concern `.979`). Free warmup batch from the working weight (`.984` / stamp `.985`). |
+| `ActiveExerciseHeader.tsx` | Title, menus, next line, e1RM. Name opens this-movement history (`.993`). |
+| `MovementHistorySheet.tsx` | Prior sessions of the open lift — their diary. Empty invents nothing. Not a chart (`.993`). |
 | `InSetCueList.tsx` | Short setup / execute on the open live exercise. Optional still. Hide never blocks Log set (`.973`). Quiet link to Learn when they want more than a rack card (`.978`) |
 | `SessionSwapSheet.tsx` | This-session swap door — garage stand-ins + another movement; confirm in the footer (`.959`) |
 | `SetLogTable.tsx` | Set list on **every** surface — Set · Prev · kg · Reps · Log. Prev is the row anchor. ≥44px inputs. One poster-red inline `Log set`. Optional free W / D / F chips per set (`.966`). Optional % of a known 1-rep max (`.981`). After-complete cite via `SetLogNextCite`. Incomplete warmup batch rows show planned weight and can be removed (`.984` / stamp `.985`). Optional EMOM / AMRAP on the live row (`.987`). |
