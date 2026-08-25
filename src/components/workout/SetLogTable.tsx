@@ -18,6 +18,7 @@ import { setKindBadgeClass, setKindDefaultLabel, setKindLabelKey } from '@/lib/w
 import { parseSetSide, setSideDefaultLabel, setSideLabelKey } from '@/lib/workout/unilateral';
 import { rpeDefaultLabel, rpeLabelKey } from '@/lib/workout/rpeLabel';
 import { SetRirSelect } from '@/components/workout/SetRirSelect';
+import { SetRpe10Select } from '@/components/workout/SetRpe10Select';
 import { SetTempoField } from '@/components/workout/SetTempoField';
 import { formatPlusLoadWeightCell } from '@/lib/workout/bodyweightLoad';
 import { cn } from '@/lib/utils';
@@ -57,6 +58,8 @@ type Props = {
   onRate: (setIdx: number, rpe: 'easy' | 'med' | 'hard') => void;
   /** Optional 0–5 RIR — independent of RPE; never required (`.725`). */
   onRateRir: (setIdx: number, rir: number | undefined) => void;
+  /** Optional 1–10 RPE — never required (`.967`). */
+  onRateRpe10: (setIdx: number, rpe10: number | undefined) => void;
   /** Optional ecc/pause/con — never required (`.734`). */
   onRateTempo: (setIdx: number, tempo: SetTempo | undefined) => void;
   plusLoad?: boolean;
@@ -91,6 +94,7 @@ export function SetLogTable({
   onLog,
   onRate,
   onRateRir,
+  onRateRpe10,
   onRateTempo,
   plusLoad = false,
   lastSetGhost,
@@ -357,6 +361,11 @@ export function SetLogTable({
                         })}
                       </span>
                     )}
+                    <SetRpe10Select
+                      rpe10={set.rpe10}
+                      onRateRpe10={(rpe10) => onRateRpe10(setIdx, rpe10)}
+                      testId="set-table-rpe10"
+                    />
                     <SetRirSelect
                       rir={set.rir}
                       onRateRir={(rir) => onRateRir(setIdx, rir)}

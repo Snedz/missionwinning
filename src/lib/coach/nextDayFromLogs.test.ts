@@ -258,6 +258,62 @@ describe('nextDayFromLogs', () => {
     assert.equal(cite?.name, 'Push');
     assert.notEqual(cite?.name, 'Legs');
   });
+
+  it('quotes last work set RPE/RIR when the cited log has them', () => {
+    const history = [
+      log({
+        id: 'p1',
+        workoutName: 'Push',
+        completedAt: '2026-08-17T11:00:00.000Z',
+        exercises: [
+          { exerciseId: 'bench-press', sets: [{ reps: 5, weight: 100, rpe10: 9, rir: 1 }] },
+        ],
+      }),
+      log({
+        id: 'p2',
+        workoutName: 'Pull',
+        completedAt: '2026-08-18T11:00:00.000Z',
+        exercises: [{ exerciseId: 'barbell-row', sets: [{ reps: 8, weight: 80 }] }],
+      }),
+    ];
+    const cite = nextDayFromLogs({ history, now: NOW });
+    assert.equal(cite?.name, 'Push');
+    assert.equal(cite?.intensity, 'RPE 9 · RIR 1');
+  });
+
+  it('empty last work set invents no intensity token', () => {
+    const history = [
+      log({ id: 'p1', workoutName: 'Push', completedAt: '2026-08-17T11:00:00.000Z' }),
+      log({
+        id: 'p2',
+        workoutName: 'Pull',
+        completedAt: '2026-08-18T11:00:00.000Z',
+        exercises: [{ exerciseId: 'barbell-row', sets: [{ reps: 8, weight: 80 }] }],
+      }),
+    ];
+    const cite = nextDayFromLogs({ history, now: NOW });
+    assert.equal(cite?.name, 'Push');
+    assert.equal(cite && 'intensity' in cite, false);
+  });
+
+  it('does not invent RPE 9 from categorical hard', () => {
+    const history = [
+      log({
+        id: 'p1',
+        workoutName: 'Push',
+        completedAt: '2026-08-17T11:00:00.000Z',
+        exercises: [{ exerciseId: 'bench-press', sets: [{ reps: 5, weight: 100, rpe: 'hard' }] }],
+      }),
+      log({
+        id: 'p2',
+        workoutName: 'Pull',
+        completedAt: '2026-08-18T11:00:00.000Z',
+        exercises: [{ exerciseId: 'barbell-row', sets: [{ reps: 8, weight: 80 }] }],
+      }),
+    ];
+    const cite = nextDayFromLogs({ history, now: NOW });
+    assert.equal(cite && 'intensity' in cite, false);
+  });
 });
 
 describe('nextDayFromLogs refuses catalog / shop / generateWeek', () => {

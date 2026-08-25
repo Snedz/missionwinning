@@ -120,6 +120,7 @@ export function ActiveWorkoutPage() {
   const logSetAndAdvance = useWorkoutStore((s) => s.logSetAndAdvance);
   const rateSet = useWorkoutStore((s) => s.rateSet);
   const rateSetRir = useWorkoutStore((s) => s.rateSetRir);
+  const rateSetRpe10 = useWorkoutStore((s) => s.rateSetRpe10);
   const rateSetTempo = useWorkoutStore((s) => s.rateSetTempo);
   const setSetKind = useWorkoutStore((s) => s.setSetKind);
   const setSetSide = useWorkoutStore((s) => s.setSetSide);
@@ -733,6 +734,7 @@ export function ActiveWorkoutPage() {
           onNoteChange={(exIdx, note) => setExerciseNote(exIdx, note)}
           onRate={(exIdx, setIdx, rpe) => rateSet(exIdx, setIdx, rpe)}
           onRateRir={(exIdx, setIdx, rir) => rateSetRir(exIdx, setIdx, rir)}
+          onRateRpe10={(exIdx, setIdx, rpe10) => rateSetRpe10(exIdx, setIdx, rpe10)}
           onRateTempo={(exIdx, setIdx, tempo) => rateSetTempo(exIdx, setIdx, tempo)}
           onApplyAllTargets={(exIdx) => applyTargetsForExercise(exIdx)}
           onAddSet={(exIdx) => addSetToExercise(exIdx)}

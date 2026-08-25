@@ -13,6 +13,7 @@ import type { CompletedWorkoutLog } from '@/types';
 import type { UnitsPref } from '@/lib/units';
 import { localDateKeyFromIso } from '@/lib/time/localDate';
 import { suggestNextSetTarget } from '@/lib/workout/nextSetTargets';
+import { appendIntensityCite, lastWorkSetIntensity } from '@/lib/workout/workSetIntensity';
 
 /** Monday=0 … Sunday=6 — same order as coach `weekdayLabel`. */
 const WEEKDAYS = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'] as const;
@@ -24,6 +25,8 @@ export type SetRowLogCite = {
   /** 1-based original set numbers from the last session (warmup excluded). */
   setFrom: number;
   setTo: number;
+  /** Last work set RPE/RIR when present — never invented (`.967`). */
+  intensity?: string;
 };
 
 export type SetRowCoachCite = { kind: 'coach' };
@@ -33,6 +36,8 @@ export type SetRowSessionCite = {
   kind: 'session';
   setFrom: number;
   setTo: number;
+  /** Last work set RPE/RIR when present — never invented (`.967`). */
+  intensity?: string;
 };
 
 export type SetRowLastRestCite = { kind: 'last-rest' };
@@ -137,18 +142,24 @@ export function formatAdjacencyCiteLine(
     return t('activeNextCiteLastRest', { defaultValue: 'Last rest' });
   }
   if (cite.kind === 'session') {
-    return t('activeNextCiteFromSession', {
-      sets: formatSetSpan(cite.setFrom, cite.setTo, t),
-      defaultValue: `From this session · ${formatSetSpan(cite.setFrom, cite.setTo, t)}`,
-    });
+    return appendIntensityCite(
+      t('activeNextCiteFromSession', {
+        sets: formatSetSpan(cite.setFrom, cite.setTo, t),
+        defaultValue: `From this session · ${formatSetSpan(cite.setFrom, cite.setTo, t)}`,
+      }),
+      cite.intensity
+    );
   }
   const day = weekdayWord(cite.weekdayMondayOffset, t);
   const sets = formatSetSpan(cite.setFrom, cite.setTo, t);
-  return t('activeTargetCiteFromLast', {
-    day,
-    sets,
-    defaultValue: `From last ${day} · ${sets}`,
-  });
+  return appendIntensityCite(
+    t('activeTargetCiteFromLast', {
+      day,
+      sets,
+      defaultValue: `From last ${day} · ${sets}`,
+    }),
+    cite.intensity
+  );
 }
 
 /** Target + provenance for the after-complete strip. Rest clock is preformatted. */
@@ -227,6 +238,7 @@ export function resolveSetRowAdjacency(params: {
   const setTo = citedNums.length ? Math.max(...citedNums) : setFrom;
 
   const day = weekdayFromIso(lastLog.completedAt) ?? weekdayFromIso(lastLog.startedAt);
+  const intensity = lastWorkSetIntensity(lastEx.sets) ?? undefined;
 
   return {
     targetLabel: formatTargetLabel(suggestion.reps, suggestion.weight),
@@ -237,6 +249,7 @@ export function resolveSetRowAdjacency(params: {
           weekdayShort: day.short,
           setFrom,
           setTo,
+          ...(intensity ? { intensity } : {}),
         }
       : null,
     empty: false,
@@ -363,9 +376,10 @@ export function resolveAfterCompleteCite(params: {
       .filter((n): n is number => typeof n === 'number');
     const setFrom = cited.length ? Math.min(...cited) : (sessionWork[0]?.original ?? 1);
     const setTo = cited.length ? Math.max(...cited) : setFrom;
+    const intensity = lastWorkSetIntensity(params.sessionSets) ?? undefined;
     return {
       suggestion: { kind: 'load', reps: suggestion.reps, weight: suggestion.weight },
-      cite: { kind: 'session', setFrom, setTo },
+      cite: { kind: 'session', setFrom, setTo, ...(intensity ? { intensity } : {}) },
     };
   }
 

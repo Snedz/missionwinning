@@ -23,6 +23,7 @@ function logWith(
     kind?: string;
     tempo?: string;
     rir?: number;
+    rpe10?: number;
     side?: string;
   }[],
   over: Partial<CompletedWorkoutLog> = {}
@@ -46,6 +47,7 @@ function logWith(
           kind: (s.kind ?? 'normal') as 'normal' | 'warmup' | 'failure' | 'drop',
           ...(s.tempo ? { tempo: s.tempo } : {}),
           ...(s.rir != null ? { rir: s.rir } : {}),
+          ...(s.rpe10 != null ? { rpe10: s.rpe10 } : {}),
           ...(s.side ? { side: s.side } : {}),
         })),
       },
@@ -159,6 +161,7 @@ describe('resolveLastSetGhost', () => {
           weight: 80,
           kind: 'normal',
           tempo: '3-1-1',
+          rpe10: 9,
           rir: 2,
           side: 'L',
         },
@@ -168,6 +171,7 @@ describe('resolveLastSetGhost', () => {
       reps: 5,
       weight: 80,
       tempo: '3-1-1',
+      rpe10: 9,
       rir: 2,
       side: 'L',
     });
@@ -180,6 +184,7 @@ describe('resolveLastSetGhost', () => {
     );
     assert.equal(ghost && 'tempo' in ghost, false);
     assert.equal(ghost && 'rir' in ghost, false);
+    assert.equal(ghost && 'rpe10' in ghost, false);
     assert.equal(ghost && 'side' in ghost, false);
   });
 });
@@ -206,16 +211,17 @@ describe('formatLastSetGhostExtras', () => {
     assert.equal(formatLastSetGhostExtras({ reps: 5, weight: 80 }), '');
   });
 
-  it('joins tempo, RIR, and side when present', () => {
+  it('joins tempo, RPE, RIR, and side when present', () => {
     assert.equal(
       formatLastSetGhostExtras({
         reps: 5,
         weight: 80,
         tempo: '3-1-1',
+        rpe10: 9,
         rir: 2,
         side: 'L',
       }),
-      ' · 3-1-1 · RIR 2 · L'
+      ' · 3-1-1 · RPE 9 · RIR 2 · L'
     );
   });
 });

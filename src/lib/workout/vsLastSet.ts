@@ -9,6 +9,7 @@
 import type { CompletedWorkoutLog } from '@/types';
 import { getLastSessionSets } from '@/lib/workout/activeWorkoutHelpers';
 import { workingSets } from '@/lib/workout/setMath';
+import { appendIntensityCite, lastWorkSetIntensity } from '@/lib/workout/workSetIntensity';
 
 /** Load changed if the stored weights differ by at least this (kg or display lbs). */
 export const VS_LAST_WEIGHT_EPS = 0.05;
@@ -102,9 +103,13 @@ export function formatVsLastSetDeltas(
 ): (string | null)[] {
   const lastSets = getLastSessionSets(workoutHistory, exerciseId);
   const lastWorking = lastSets ? workingSets(lastSets) : [];
+  const intensity = lastWorkSetIntensity(lastSets);
+  const lastWorkWi = lastWorking.length ? lastWorking.length - 1 : -1;
   return currentSets.map((set, setIdx) => {
     const wi = workingSetIndex(currentSets, setIdx);
     const last = wi === null ? null : (lastWorking[wi] ?? null);
-    return formatVsLastDelta(vsLastDeltaForSet(set, last), unitLabel, words);
+    const token = formatVsLastDelta(vsLastDeltaForSet(set, last), unitLabel, words);
+    if (wi === lastWorkWi && token) return appendIntensityCite(token, intensity);
+    return token;
   });
 }

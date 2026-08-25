@@ -1,5 +1,5 @@
-/** Shown on Profile so testers can confirm the deployed build. Bump when shipping UI to master. `.965` this week's restock they take (past master `.963`; `.964` reserved for #801). */
-export const APP_BUILD_LABEL = "2026.07-unified.965";
+/** Shown on Profile so testers can confirm the deployed build. Bump when shipping UI to master. `.967` RPE/RIR on the set row (past master `.965`; skip `.966` set tags and `.968` honesty rebase). */
+export const APP_BUILD_LABEL = "2026.07-unified.967";
 
 /**
  * Semver for athletes. Distinct from `APP_BUILD_LABEL`, which `/api/health`

@@ -6,6 +6,7 @@
  * to decide). One predicate — do not invent a second flag.
  * `.958` — desk → gym uses the same ungated logger; no Force Sync wall.
  * `.963` — leave Today / week / receipt, come back; same session. No Session Expired.
+ * `.967` — optional RPE 1–10 / RIR on a logged set. Never a login wall.
  */
 
 export function normalizeAppPath(pathname: string | null | undefined): string {

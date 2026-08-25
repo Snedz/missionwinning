@@ -8,6 +8,7 @@
 |------|---------|
 | `workoutStore.ts` | Single store: saved workouts, history, active session, rest timer |
 | `sessionResume.store.test.ts` | This-device leave/return + Finish-partial through the store (`.963`) |
+| `setRpe10.test.ts` | Optional 1–10 RPE persist / complete / empty (`.967`) |
 
 ## State slices (`workoutStore`)
 
@@ -28,6 +29,7 @@
 | `addSavedWorkout` / `replaceSavedWorkout` | Append a new named routine, or replace one in place after confirm (`.960`) |
 | `startWorkout` / `startEmptyWorkout` | Begin active session. Refuse to replace a live session (`.963`) |
 | `logSet` / `logSetAndAdvance` | Record set; superset advance; working-set week-4 events (`week4Logger`) |
+| `rateSetRpe10` | Optional 1–10 RPE on a logged set (`.967`). Empty is valid. Never required to log |
 | `completeActiveWorkout` | Finish-partial through `finishPartialFromActive` (`.963`); mint `clientId`, push to history, enqueue the cloud write on the outbox, analytics, leaderboard push |
 | `loadFromCloud` | Merge Supabase history with local |
 | `syncCurrentHistoryToCloud` | Re-queue local logs — called from `useJourneySync` on `SIGNED_IN` (`.949`). Also enqueues the open session (`.958`) |

@@ -13,6 +13,7 @@ import {
   templateFromCompletedLog,
   type HistoryRetrainTemplate,
 } from '@/lib/workout/historyRetrain';
+import { sessionLastWorkSetIntensity } from '@/lib/workout/workSetIntensity';
 
 export type NextDayFromLogsNow = {
   weekStart: string;
@@ -24,6 +25,8 @@ export type NextDayCite = {
   source: 'logs' | 'plan';
   template?: HistoryRetrainTemplate;
   planSessionId?: string;
+  /** Last work set RPE/RIR on the cited log — omitted when empty (`.967`). */
+  intensity?: string;
 };
 
 function isPerformedSet(set: { reps?: number }): boolean {
@@ -138,6 +141,28 @@ export function nextDayFromLogs(input: {
   const key = nextKeyFromRotation(named, rotation);
   const name = displayNameFor(named, key);
   const template = templateForName(input.history, key);
+  const intensity = intensityForName(input.history, key);
 
-  return template ? { name, source: 'logs', template } : { name, source: 'logs' };
+  return {
+    name,
+    source: 'logs',
+    ...(template ? { template } : {}),
+    ...(intensity ? { intensity } : {}),
+  };
+}
+
+function intensityForName(
+  history: readonly CompletedWorkoutLog[],
+  key: string
+): string | undefined {
+  const newestFirst = history
+    .filter((log) => isLiveLog(log))
+    .slice()
+    .sort((a, b) => (a.completedAt < b.completedAt ? 1 : -1));
+  for (const row of newestFirst) {
+    const rowName = sessionName(row);
+    if (!rowName || nameKey(rowName) !== key) continue;
+    return sessionLastWorkSetIntensity(row.exercises) ?? undefined;
+  }
+  return undefined;
 }

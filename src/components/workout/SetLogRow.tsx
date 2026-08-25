@@ -27,6 +27,7 @@ import { parseSetSide, setSideDefaultLabel, setSideLabelKey } from '@/lib/workou
 import { rpeDefaultLabel, rpeLabelKey } from '@/lib/workout/rpeLabel';
 import { formatLoggedSetLine } from '@/lib/workout/activeWorkoutHelpers';
 import { SetRirSelect } from '@/components/workout/SetRirSelect';
+import { SetRpe10Select } from '@/components/workout/SetRpe10Select';
 import { SetTempoField } from '@/components/workout/SetTempoField';
 import { cn } from '@/lib/utils';
 
@@ -67,6 +68,8 @@ type Props = {
   onRate: (rpe: 'easy' | 'med' | 'hard') => void;
   /** Optional 0–5 RIR — independent of RPE; never required (`.725`). */
   onRateRir: (rir: number | undefined) => void;
+  /** Optional 1–10 RPE — never required (`.967`). */
+  onRateRpe10: (rpe10: number | undefined) => void;
   /** Optional ecc/pause/con — never required (`.734`). */
   onRateTempo: (tempo: SetTempo | undefined) => void;
   /** Bodyweight move — `weight` is added load. */
@@ -86,6 +89,7 @@ export function SetLogRow({
   onToggleWarmup,
   onRate,
   onRateRir,
+  onRateRpe10,
   onRateTempo,
   plusLoad = false,
 }: Props) {
@@ -282,6 +286,7 @@ export function SetLogRow({
               {t(rpeLabelKey(set.rpe), { defaultValue: rpeDefaultLabel(set.rpe) })}
             </Badge>
           )}
+          <SetRpe10Select rpe10={set.rpe10} onRateRpe10={onRateRpe10} />
           <SetRirSelect rir={set.rir} onRateRir={onRateRir} />
           <SetTempoField tempo={set.tempo} onRateTempo={onRateTempo} />
           <Check

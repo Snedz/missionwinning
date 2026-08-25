@@ -15,7 +15,7 @@ const WORDS = { same: 'same', rep: 'rep', reps: 'reps' };
 
 function historyWith(
   exerciseId: string,
-  sets: { reps: number; weight: number; kind?: SetKind }[]
+  sets: { reps: number; weight: number; kind?: SetKind; rpe10?: number; rir?: number }[]
 ): CompletedWorkoutLog[] {
   return [
     {
@@ -28,7 +28,13 @@ function historyWith(
       exercises: [
         {
           exerciseId,
-          sets: sets.map((s) => ({ reps: s.reps, weight: s.weight, kind: s.kind })),
+          sets: sets.map((s) => ({
+            reps: s.reps,
+            weight: s.weight,
+            kind: s.kind,
+            ...(s.rpe10 != null ? { rpe10: s.rpe10 } : {}),
+            ...(s.rir != null ? { rir: s.rir } : {}),
+          })),
         },
       ],
     },
@@ -216,6 +222,32 @@ describe('formatVsLastSetDeltas', () => {
       WORDS
     );
     assert.deepEqual(labels, ['same', null]);
+  });
+
+  it('appends last work set RPE when present', () => {
+    const hist = historyWith('bench-press', [
+      { reps: 5, weight: 100, kind: 'normal', rpe10: 9 },
+    ]);
+    const labels = formatVsLastSetDeltas(
+      hist,
+      'bench-press',
+      [{ completed: true, reps: 5, weight: 102.5, kind: 'normal' }],
+      'kg',
+      WORDS
+    );
+    assert.deepEqual(labels, ['+2.5 kg · RPE 9']);
+  });
+
+  it('empty last work intensity leaves the load token alone', () => {
+    const hist = historyWith('bench-press', [{ reps: 5, weight: 100, kind: 'normal' }]);
+    const labels = formatVsLastSetDeltas(
+      hist,
+      'bench-press',
+      [{ completed: true, reps: 5, weight: 102.5, kind: 'normal' }],
+      'kg',
+      WORDS
+    );
+    assert.deepEqual(labels, ['+2.5 kg']);
   });
 });
 
