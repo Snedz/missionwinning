@@ -6,6 +6,53 @@ Living roadmap for the **everything app** (a bodyweight coach app Super Bundle �
 
 ---
 
+## Frozen plan — `.994` Set-row type (2026-08-25)
+
+> **Frozen.** Implement only this section + root
+> [PLAN.md](../PLAN.md). Plan commit is `[skip vercel]`.
+> Label: `2026.07-unified.994` — next free after master `.993`
+> (`75350127` — This-movement history). Title stays
+> **Set-row type (.994)**.
+> This-movement history `.993` + Custom `.992` + Start this
+> again `.991` + Quiet Track trend `.989` + EMOM `.988` +
+> drop-set `.986` + warmup `.985` + notes `.983` + 1RM
+> `.981` + Supersets `.980` + Learn `.978` + week strip
+> `.977` + Quiet Track `.976` + Quiet Move `.974` + cues
+> `.973` + honesty `.971` + tags `.970` + RPE `.967` +
+> Fuel `.965` + resume `.963` + notebook `.960` are on
+> master. Do not smash them.
+> Do **not** smash week strip `.961`, notebook `.960`,
+> swap/skip `.959`, desk→gym `.958`, `/private` `.957`,
+> close receipt `.956`, Wednesday `.955`, Today Start
+> `.954`, or identity `.949`.
+> Every commit `[skip vercel]`. No Preview. No
+> `PRIVATE_MODE` flip. No promote. Live www stays `.696`.
+> Guest path. First set stays ungated. Today stays one
+> Start. Brand: **Log a set. Offline.** / No account. No
+> wearable.
+
+Custom `.992` names the movement. Plus-load `.758`
+already prints BW / vest. The open set row still
+speaks kg × reps. Pull-ups and planks get a fake
+load. Missing: the open row honors the type —
+weight · bodyweight reps · duration · assisted.
+Optional +kg vest. Empty / unknown stays
+weight×reps. Do not invent Track / profile
+bodyweight into volume.
+
+### First check (done — hypothesis holds; no Today leak)
+
+Read `origin/master` tip `75350127` / `.993`.
+`SetLogTable` thead is always kg + Reps.
+`isPlusLoadExercise` treats plank as BW+vest.
+Custom has no type. Lean Today still date · pins ·
+highlights · `TodayQuietWeekStrip` · Show all · one
+`JourneyHero` `dock="start"`. `.993` history is the
+open lift name, not Today. `/private` stays the
+tight `.957` lock. **Nothing to unmount first.**
+
+Implement only root [PLAN.md](../PLAN.md).
+
 ## Frozen plan — `.993` This-movement history (2026-08-25)
 
 > **Frozen.** Implement only this section + root
