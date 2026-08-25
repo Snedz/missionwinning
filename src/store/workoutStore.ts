@@ -169,6 +169,8 @@ interface WorkoutState {
   setHistorySessionNote: (logId: string, note: string) => void;
   /** History Save of a finished session they own. Same id. Never wipes. */
   saveEditedHistoryLog: (log: CompletedWorkoutLog) => CompletedWorkoutLog | null;
+  /** History Save of a past session they typed. New id. Leaves the live set. */
+  saveBackfillLog: (log: CompletedWorkoutLog) => CompletedWorkoutLog | null;
   startRestTimer: (seconds?: number, exerciseId?: string, lane?: RestLane) => void;
   adjustRestTimer: (delta: number) => void;
   tickRestTimer: () => void;
@@ -884,6 +886,27 @@ export const useWorkoutStore = create<WorkoutState>()(
         const next = { ...log, deletedAt: null };
         set((s) => ({
           workoutHistory: s.workoutHistory.map((row) => (row.id === log.id ? next : row)),
+        }));
+        enqueueWorkoutUpsert(next);
+        return next;
+      },
+
+      saveBackfillLog: (log) => {
+        if (!log || log.deletedAt) return null;
+        const id = log.id?.trim();
+        const clientId = log.clientId?.trim();
+        if (!id || !clientId) return null;
+        if (
+          get().workoutHistory.some(
+            (row) => row.id === id || (row.clientId && row.clientId === clientId)
+          )
+        ) {
+          return null;
+        }
+        if (!log.exercises?.some((ex) => (ex.sets ?? []).length > 0)) return null;
+        const next = { ...log, id, clientId, deletedAt: null };
+        set((s) => ({
+          workoutHistory: [next, ...s.workoutHistory],
         }));
         enqueueWorkoutUpsert(next);
         return next;

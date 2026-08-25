@@ -46,10 +46,16 @@ import { resolveExercise } from '@/lib/workout/customExercise';
 import { useUnits, weightUnitLabel } from '@/hooks/useUnits';
 import { formatDuration } from '@/lib/utils';
 import { HistorySessionEdit } from '@/components/history/HistorySessionEdit';
+import { HistoryBackfill } from '@/components/history/HistoryBackfill';
 import {
   decideEditSave,
   type FinishedSessionDraft,
 } from '@/lib/workout/editFinishedSession';
+import {
+  decideBackfillSession,
+  type BackfillDraft,
+} from '@/lib/workout/backfillSession';
+import { newClientId } from '@/lib/workout/clientId';
 import {
   build1RMChartData,
   buildMuscleHeatmap,
@@ -105,7 +111,9 @@ export function HistoryPage() {
   const [editing, setEditing] = useState(false);
   const [pendingDraft, setPendingDraft] = useState<FinishedSessionDraft | null>(null);
   const [confirmOpen, setConfirmOpen] = useState(false);
+  const [backfillOpen, setBackfillOpen] = useState(false);
   const saveEditedHistoryLog = useWorkoutStore((s) => s.saveEditedHistoryLog);
+  const saveBackfillLog = useWorkoutStore((s) => s.saveBackfillLog);
 
   const openLog = (log: CompletedWorkoutLog) => {
     setEditing(false);
@@ -119,6 +127,41 @@ export function HistoryPage() {
     setEditing(false);
     setPendingDraft(null);
     setConfirmOpen(false);
+  };
+
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    const params = new URLSearchParams(window.location.search);
+    if (params.get('backfill') === '1') setBackfillOpen(true);
+  }, []);
+
+  const openBackfill = () => {
+    setBackfillOpen(true);
+    setSelected(null);
+    setEditing(false);
+  };
+
+  const requestBackfillSave = (draft: BackfillDraft) => {
+    const decision = decideBackfillSession({
+      draft,
+      todayKey: localDateKey(),
+      id: `log-${newClientId()}`,
+      clientId: newClientId(),
+    });
+    if (decision.kind === 'empty') {
+      toast({
+        title: t('historyBackfillEmpty', { defaultValue: 'Nothing to save' }),
+        description: t('historyBackfillEmptyDesc', {
+          defaultValue: 'Empty invents nothing — pick a date and the sets you remember.',
+        }),
+      });
+      return;
+    }
+    const saved = saveBackfillLog(decision.next);
+    if (saved) {
+      setBackfillOpen(false);
+      setSelected(saved);
+    }
   };
 
   const requestEditSave = (draft: FinishedSessionDraft) => {
@@ -317,9 +360,27 @@ export function HistoryPage() {
             actionLabel={t('historyStartWorkout', { defaultValue: 'Open Today' })}
             href="/log"
           />
+          <Button
+            type="button"
+            variant="outline"
+            className="mt-3 w-full min-h-[44px] tap-target"
+            data-testid="session-history-backfill-open"
+            onClick={openBackfill}
+          >
+            {t('historyBackfill', { defaultValue: 'Log a past session' })}
+          </Button>
         </div>
       ) : (
         <div className="space-y-3">
+          <Button
+            type="button"
+            variant="outline"
+            className="w-full min-h-[44px] tap-target"
+            data-testid="session-history-backfill-open"
+            onClick={openBackfill}
+          >
+            {t('historyBackfill', { defaultValue: 'Log a past session' })}
+          </Button>
           <div className="flex flex-col gap-2 sm:flex-row sm:items-center">
             <Input
               type="search"
@@ -650,7 +711,11 @@ export function HistoryPage() {
               <DialogHeader>
                 <DialogTitle>{selected.workoutName}</DialogTitle>
                 <DialogDescription>
-                  {fmt.longDate(selected.completedAt)} · {formatDuration(selected.durationSeconds)} ·{' '}
+                  {fmt.longDate(selected.completedAt)}
+                  {selected.durationSeconds > 0
+                    ? ` · ${formatDuration(selected.durationSeconds)}`
+                    : ''}{' '}
+                  ·{' '}
                   {t('historySessionVolume', {
                     volume: fmt.num(selected.totalVolume),
                     unit: unitLabel,
@@ -741,6 +806,33 @@ export function HistoryPage() {
               ) : null}
             </>
           )}
+        </DialogContent>
+      </Dialog>
+
+      <Dialog open={backfillOpen} onOpenChange={(open) => !open && setBackfillOpen(false)}>
+        <DialogContent
+          className="max-w-lg max-h-[85vh] overflow-y-auto"
+          data-testid="session-history-backfill-dialog"
+        >
+          <DialogHeader>
+            <DialogTitle>
+              {t('historyBackfillTitle', { defaultValue: 'Log a past session' })}
+            </DialogTitle>
+            <DialogDescription>
+              {t('historyBackfillDesc', {
+                defaultValue:
+                  'If you trained and never opened the app, log that session with the date it happened. Empty invents nothing.',
+              })}
+            </DialogDescription>
+          </DialogHeader>
+          {backfillOpen ? (
+            <HistoryBackfill
+              history={liveHistory}
+              unitLabel={unitLabel}
+              onSaveRequest={requestBackfillSave}
+              onCancel={() => setBackfillOpen(false)}
+            />
+          ) : null}
         </DialogContent>
       </Dialog>
 

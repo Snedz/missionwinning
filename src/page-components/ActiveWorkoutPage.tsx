@@ -756,6 +756,7 @@ export function ActiveWorkoutPage() {
         onTakeOtherSession={
           pendingRemoteOpenSession ? acceptPendingRemoteOpenSession : undefined
         }
+        onLogPastSession={() => router.push('/history?backfill=1')}
       />
 
       {!activeSessionHasExercises(activeWorkout.exercises) ? (

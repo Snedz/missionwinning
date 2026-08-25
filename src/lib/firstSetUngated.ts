@@ -28,6 +28,7 @@
  * `.997` — edit a finished session from History. Never a login wall.
  * `.998` — drag the lifts in the live session. Never a login wall.
  * `.999` — quiet diary PR on the live set. Never a login wall.
+ * `.1000` — log a past session from History. Never a login wall.
  */
 
 export function normalizeAppPath(pathname: string | null | undefined): string {
