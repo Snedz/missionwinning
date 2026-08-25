@@ -1,5 +1,5 @@
-/** Shown on Profile so testers can confirm the deployed build. Bump when shipping UI to master. `.993` This-movement history (past master `.992` Custom exercise `7bb7c464`; keep custom `.992` + Start this again `.991` + Track trend `.989` + EMOM `.988` + drop-set `.986` + warmup `.985` + notes `.983` + 1RM `.981` + supersets `.980` + Learn `.978` + week strip `.977` + Track `.976` + Move `.974` + honesty `.971` + tags `.970` + RPE `.967` + Fuel `.965` + resume `.963` + notebook `.960`). */
-export const APP_BUILD_LABEL = "2026.07-unified.993";
+/** Shown on Profile so testers can confirm the deployed build. Bump when shipping UI to master. `.994` Set-row type (past master `.993` This-movement history `75350127`; keep this-movement `.993` + custom `.992` + Start this again `.991` + Track trend `.989` + EMOM `.988` + drop-set `.986` + warmup `.985` + notes `.983` + 1RM `.981` + supersets `.980` + Learn `.978` + week strip `.977` + Track `.976` + Move `.974` + honesty `.971` + tags `.970` + RPE `.967` + Fuel `.965` + resume `.963` + notebook `.960`). */
+export const APP_BUILD_LABEL = "2026.07-unified.994";
 
 /**
  * Semver for athletes. Distinct from `APP_BUILD_LABEL`, which `/api/health`

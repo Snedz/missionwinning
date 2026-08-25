@@ -26,12 +26,17 @@ export interface SetTempo {
 
 export type ExerciseLevel = "beginner" | "intermediate" | "advanced";
 
+/** How the open Train set row speaks — empty/unknown stays weight × reps. */
+export type SetRowType = "weight" | "bodyweight" | "duration" | "assisted";
+
 export interface Exercise {
   id: string;
   name: string;
   muscleGroups: MuscleGroup[];
   equipment?: string;
   cues?: string;
+  /** Open-row type. Omit = infer, then weight. Custom leftover stays weight. */
+  logType?: SetRowType;
   /** Primary program styles this exercise supports (Phase D). */
   tags?: ProgramTag[];
   /** Substitute exercise ids when equipment or skill differs. */
@@ -106,6 +111,11 @@ export interface LoggedSet {
   isPr?: boolean;
   /** L / R / Alt — only meaningful on a unilateral exercise; omit on bilateral. */
   side?: SetSide;
+  /**
+   * Hold / finish time in seconds (`.994`). Duration rows only.
+   * Omit on weight / bodyweight / assisted. Empty invents nothing.
+   */
+  durationSeconds?: number;
 }
 
 export interface ActiveExerciseLog {

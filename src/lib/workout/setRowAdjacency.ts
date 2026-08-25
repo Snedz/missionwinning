@@ -15,6 +15,7 @@ import { localDateKeyFromIso } from '@/lib/time/localDate';
 import { suggestNextSetTarget } from '@/lib/workout/nextSetTargets';
 import { appendIntensityCite, lastWorkSetIntensity } from '@/lib/workout/workSetIntensity';
 import { appendKnownMaxPctCite, loadPctOfKnownMax } from '@/lib/workout/setRowPercent';
+import { setRowHasWork } from '@/lib/workout/setRowType';
 
 /** Monday=0 … Sunday=6 — same order as coach `weekdayLabel`. */
 const WEEKDAYS = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'] as const;
@@ -74,11 +75,11 @@ export type SetRowAdjacency = {
 const QUIET: SetRowAdjacency = { targetLabel: null, cite: null, empty: false };
 const HONEST_EMPTY: SetRowAdjacency = { targetLabel: null, cite: null, empty: true };
 
-/** Working set with reps — warmup / 0-rep are not diary evidence. */
+/** Working set with reps or a hold/finish time — warmup / empty are not diary evidence. */
 export function hasUsableWorkingSet(
   sets: CompletedWorkoutLog['exercises'][number]['sets']
 ): boolean {
-  return sets.some((s) => s.kind !== 'warmup' && s.reps > 0);
+  return sets.some((s) => setRowHasWork(s));
 }
 
 /**

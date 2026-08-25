@@ -16,6 +16,7 @@ import { ActiveExerciseMoreMenu } from '@/components/workout/ActiveExerciseMoreM
 import { MovementHistorySheet } from '@/components/workout/MovementHistorySheet';
 import { SessionSwapSheet } from '@/components/workout/SessionSwapSheet';
 import { listMovementHistory } from '@/lib/workout/movementHistory';
+import { resolveSetRowType } from '@/lib/workout/setRowType';
 import { isSkippedThisSession } from '@/lib/workout/sessionExerciseOnce';
 import {
   firstWeightedLoad,
@@ -243,6 +244,7 @@ export function ActiveExerciseHeader({
         onClose={() => setHistoryOpen(false)}
         exerciseName={exercise.name}
         rows={historyRows}
+        rowType={resolveSetRowType(exercise)}
       />
     </CardHeader>
   );

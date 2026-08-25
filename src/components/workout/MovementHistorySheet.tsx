@@ -14,15 +14,23 @@ import {
   isShortMovementHistory,
   type MovementHistoryRow,
 } from '@/lib/workout/movementHistory';
+import type { SetRowType } from '@/types';
 
 type Props = {
   open: boolean;
   onClose: () => void;
   exerciseName: string;
   rows: MovementHistoryRow[];
+  rowType?: SetRowType;
 };
 
-export function MovementHistorySheet({ open, onClose, exerciseName, rows }: Props) {
+export function MovementHistorySheet({
+  open,
+  onClose,
+  exerciseName,
+  rows,
+  rowType = 'weight',
+}: Props) {
   const { t, i18n } = useTranslation();
   const empty = rows.length === 0;
   const short = isShortMovementHistory(rows);
@@ -69,7 +77,7 @@ export function MovementHistorySheet({ open, onClose, exerciseName, rows }: Prop
                 ) : null}
                 <p className="text-sm font-semibold">{row.workoutName}</p>
                 <p className="text-sm tabular-nums text-muted-foreground">
-                  {formatMovementHistorySets(row.sets)}
+                  {formatMovementHistorySets(row.sets, rowType)}
                 </p>
               </li>
             ))}

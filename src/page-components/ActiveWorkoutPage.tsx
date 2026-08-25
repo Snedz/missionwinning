@@ -72,6 +72,7 @@ import {
   buildConsoleSet,
   findNextSet,
   getLastSessionSets,
+  getLastPerformanceForSet,
   lastWorkingForDial,
   nextSetInput,
   planApplyTargets,
@@ -88,6 +89,7 @@ import {
   toggleOpenIdx,
 } from '@/lib/workout/activeWorkoutHelpers';
 import { isPlusLoadExercise } from '@/lib/workout/bodyweightLoad';
+import { resolveSetRowType } from '@/lib/workout/setRowType';
 import { prefersReducedMotion } from '@/lib/motion';
 import {
   composeDropRest,
@@ -214,7 +216,9 @@ export function ActiveWorkoutPage() {
   ]);
 
   const [addExerciseId, setAddExerciseId] = useState('');
-  const [setInputs, setSetInputs] = useState<Record<string, { reps: number; weight: number }>>({});
+  const [setInputs, setSetInputs] = useState<
+    Record<string, { reps: number; weight: number; durationSeconds?: number }>
+  >({});
   const [swapOpenIdx, setSwapOpenIdx] = useState<number | null>(null);
   const [noteOpenIdx, setNoteOpenIdx] = useState<number | null>(null);
   const [formGuideId, setFormGuideId] = useState<string | null>(null);
@@ -345,7 +349,7 @@ export function ActiveWorkoutPage() {
     if (!exLog) return { reps: defaultReps, weight: defaultWeight };
     const exerciseId = exLog.exerciseId;
     const range = repRangeForGoal(goalId);
-    return resolveActiveSetDial({
+    const dial = resolveActiveSetDial({
       manual: setInputs[setInputKey(exIdx, setIdx)],
       prescribed: exLog.prescribed,
       defaultReps,
@@ -358,9 +362,28 @@ export function ActiveWorkoutPage() {
       repMax: range.max,
       lastPerformance: lastWorkingForDial(workoutHistory, exerciseId),
     });
+    const lastPerf = getLastPerformanceForSet(
+      workoutHistory,
+      exerciseId,
+      setIdx,
+      exLog.sets
+    );
+    const lastDuration =
+      setInputs[setInputKey(exIdx, setIdx)]?.durationSeconds ??
+      lastPerf?.durationSeconds ??
+      0;
+    return {
+      ...dial,
+      durationSeconds: Number.isFinite(lastDuration) && lastDuration > 0 ? lastDuration : 0,
+    };
   };
 
-  const updateSetInput = (exIdx: number, setIdx: number, field: 'reps' | 'weight', value: number) => {
+  const updateSetInput = (
+    exIdx: number,
+    setIdx: number,
+    field: 'reps' | 'weight' | 'duration',
+    value: number
+  ) => {
     const key = setInputKey(exIdx, setIdx);
     /*
      * `.206` — the set's own numbers, not `10, 0`.
@@ -421,6 +444,7 @@ export function ActiveWorkoutPage() {
     if (!payload) return;
     const { exerciseId, setKind, input } = payload;
     const exercise = resolveExercise(exerciseId);
+    const rowType = resolveSetRowType(exercise);
     const isPr = logSetIsPr({
       exerciseId,
       reps: input.reps,
@@ -429,7 +453,18 @@ export function ActiveWorkoutPage() {
       workoutHistory,
     });
 
-    const next = logSetAndAdvance(exIdx, setIdx, input.reps, input.weight, isPr);
+    const hold = Number(
+      getSetInput(exIdx, setIdx, set?.reps ?? 10, set?.weight ?? 0).durationSeconds
+    );
+    if (rowType === 'duration' && !(Number.isFinite(hold) && hold > 0)) return;
+    const next = logSetAndAdvance(
+      exIdx,
+      setIdx,
+      rowType === 'duration' ? 0 : input.reps,
+      rowType === 'duration' ? 0 : input.weight,
+      rowType === 'duration' ? false : isPr,
+      rowType === 'duration' ? hold : undefined
+    );
     const updatedExercises =
       useWorkoutStore.getState().activeWorkout?.exercises ??
       activeWorkout?.exercises ??

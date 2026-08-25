@@ -205,6 +205,27 @@ describe('listMovementHistory', () => {
     assert.equal(rows.length, 1);
     assert.equal(rows[0]?.dateKey, '');
   });
+
+  it('plank history speaks time — not 45 × 0', () => {
+    const rows = listMovementHistory(
+      [
+        log({
+          id: 'core',
+          workoutName: 'Core',
+          exercises: [
+            {
+              exerciseId: 'plank',
+              sets: [{ reps: 0, weight: 0, durationSeconds: 45 }],
+            },
+          ],
+        }),
+      ],
+      'plank'
+    );
+    assert.equal(rows.length, 1);
+    assert.equal(formatMovementHistorySets(rows[0]!.sets, 'duration'), '0:45');
+    assert.doesNotMatch(formatMovementHistorySets(rows[0]!.sets, 'duration'), /45 × 0/);
+  });
 });
 
 describe('movementHistory refuse', () => {

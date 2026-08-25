@@ -256,6 +256,10 @@ type ActiveWorkoutStrings = {
   activeColSet: string;
   activeColPrev: string;
   activeColReps: string;
+  activeColTime: string;
+  activeColAssist: string;
+  activeSetTime: string;
+  activeSetAssist: string;
   activeColAction: string;
   activePrBadge: string;
   activeSetInConsole: string;
@@ -577,6 +581,10 @@ const en: ActiveWorkoutStrings = {
   activeColSet: 'Set',
   activeColPrev: 'Prev',
   activeColReps: 'Reps',
+  activeColTime: 'Time',
+  activeColAssist: 'Assist',
+  activeSetTime: 'Time',
+  activeSetAssist: 'Assist',
   activeColAction: 'Action',
   activePrBadge: 'PR',
   activeSetInConsole: 'In the console',
