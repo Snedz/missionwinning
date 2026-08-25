@@ -85,7 +85,7 @@ export const MORE_NAV: NavLinkItem[] = [
     label: 'Track',
     icon: MapPin,
     descriptionKey: 'moreTrackDesc',
-    description: 'Runs, walks, GPS activities',
+    description: 'Weight and tape — a number you already have',
   },
   {
     href: '/library',

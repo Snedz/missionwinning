@@ -25,11 +25,11 @@ import { kgToDisplay } from '@/lib/units';
 import {
   type BodyMetricEntry,
   type BodyMetricKey,
-  latest,
   loadBodyMetrics,
   saveBodyMetric,
   series,
 } from '@/lib/bodyMetrics';
+import { canSaveQuietTrack, quietTrackSnapshot } from '@/lib/quietTrack';
 import { track } from '@/lib/analytics';
 import { BodyMetricsSheet } from '@/components/track/BodyMetricsSheet';
 
@@ -45,11 +45,12 @@ export function BodyMetricsCard({ refreshKey = 0, onChanged }: Props) {
   const [metric, setMetric] = useState<BodyMetricKey>('weightKg');
   const [tick, setTick] = useState(0);
 
-  const last = useMemo(() => {
+  const snap = useMemo(() => {
     void refreshKey;
     void tick;
-    return latest();
+    return quietTrackSnapshot(loadBodyMetrics());
   }, [refreshKey, tick]);
+  const last = snap.last;
   const chartData = useMemo(() => {
     void refreshKey;
     void tick;
@@ -66,6 +67,7 @@ export function BodyMetricsCard({ refreshKey = 0, onChanged }: Props) {
   };
 
   const handleSave = (entry: BodyMetricEntry) => {
+    if (!canSaveQuietTrack(entry)) return;
     saveBodyMetric(entry);
     track('body_metric_logged', { metric: 'weightKg' in entry && entry.weightKg != null ? 'weight' : 'other' });
     setTick((x) => x + 1);
@@ -74,16 +76,16 @@ export function BodyMetricsCard({ refreshKey = 0, onChanged }: Props) {
   };
 
   return (
-    <Card className="content-card">
+    <Card className="content-card" data-testid="quiet-track-log">
       <CardHeader className="flex flex-row items-start justify-between gap-2 space-y-0">
         <div>
           <CardTitle className="flex items-center gap-2 text-base">
             <Scale className="h-4 w-4 text-primary" aria-hidden />
-            {t('bodyMetricsTitle', { defaultValue: 'Body metrics' })}
+            {t('bodyMetricsTitle', { defaultValue: 'Weight & tape' })}
           </CardTitle>
           <CardDescription>
             {t('bodyMetricsLead', {
-              defaultValue: 'Weight and measures on this device. Included in JSON backup.',
+              defaultValue: 'A number you already have. Scale or tape. Never required to train.',
             })}
           </CardDescription>
         </div>
@@ -98,6 +100,14 @@ export function BodyMetricsCard({ refreshKey = 0, onChanged }: Props) {
         </Button>
       </CardHeader>
       <CardContent className="space-y-4">
+        {snap.empty ? (
+          <p className="text-sm text-muted-foreground" data-testid="quiet-track-empty">
+            {t('bodyMetricsEmpty', {
+              defaultValue: 'No number yet. Log the one on the scale or tape.',
+            })}
+          </p>
+        ) : (
+        <>
         <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 text-sm">
           <Stat
             label={t('bodyWeight', { defaultValue: 'Weight' })}
@@ -194,6 +204,8 @@ export function BodyMetricsCard({ refreshKey = 0, onChanged }: Props) {
             defaultValue: `${loadBodyMetrics().length} entries on device`,
           })}
         </p>
+        </>
+        )}
       </CardContent>
 
       <BodyMetricsSheet

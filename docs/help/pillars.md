@@ -40,9 +40,9 @@ Recovery and focus — daily check-in, breathing timer, and skippable guided ses
 
 **Route:** `/track`
 
-Activity and GPS — log runs, walks, and imports. Complements Train for endurance and general movement.
+Weight and tape — log a number you already have (scale or measuring tape). Optional. Never required to train. Empty invents nothing. Measurements stay free.
 
-You can import activity files without linking a watch: Apple Health Shortcuts JSON, Google Fit / Takeout export, or a simple CSV (`date`, `type`, `durationMin`, `distanceKm`). Live watch sync (Apple Health, Google Health Connect, Whoop, and others) is planned behind an optional Profile setting when enabled — Mission Score still comes from your logs, not from a wearable.
+Walks, GPS, and activity import live under Show more. You can import activity files without linking a watch: Apple Health Shortcuts JSON, Google Fit / Takeout export, or a simple CSV (`date`, `type`, `durationMin`, `distanceKm`). Live watch sync is planned behind an optional Profile setting when enabled — Mission Score still comes from your logs, not from a wearable.
 
 ## Learn
 

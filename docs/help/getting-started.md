@@ -23,6 +23,8 @@ If you see the **gate** (`/private`), the door says **Free**. Public line: **Log
 
 On **Account**, list your **Home gym kit** (barbell, rack, plates, dumbbells, pull-up bar, floor) so Train picks what you actually have. Free, on this device — no account.
 
+**Track** (`/track`) is the scale / tape log — a number you already have. Optional. Never required to train. Empty invents nothing.
+
 ## Your first workout
 
 1. Tap **Train** in the bottom nav (or start from Today).
