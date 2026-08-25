@@ -29,6 +29,11 @@ export const MW_PREFIX = 'mw_';
 export const STORAGE_KEYS = {
   // ── Train / Today (wedge) ──
   lastWorkoutDate: 'mw_last_workout_date',
+  /**
+   * `.990` — named custom movements they typed on Train. Device-local
+   * notebook, not a public catalog. Unlimited. Empty invents nothing.
+   */
+  customExercises: 'mw_custom_exercises',
   streak: 'mw_streak',
   /**
    * `.217` — the day `mw_streak` was last incremented. The override was a

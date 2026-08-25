@@ -17,7 +17,7 @@ import {
 } from '@/components/ui/table';
 import { ExercisePicker } from '@/components/library/ExercisePicker';
 import { AdaptiveOverlay } from '@/components/ui/AdaptiveOverlay';
-import { getExerciseById } from '@/data/exercises';
+import { resolveExercise } from '@/lib/workout/customExercise';
 import { useIsCompact } from '@/hooks/useIsCompact';
 import type { WorkoutExerciseTemplate } from '@/types';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
@@ -151,7 +151,7 @@ export function BuilderArrangeStep({
         </Button>
 
         {exercises.map((ex, exIndex) => {
-          const exercise = getExerciseById(ex.exerciseId);
+          const exercise = resolveExercise(ex.exerciseId);
           if (!exercise) return null;
           return (
             <Card key={ex.key} className="bg-card">

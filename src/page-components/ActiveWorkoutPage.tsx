@@ -14,6 +14,7 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import { useTranslation } from 'react-i18next';
 import { toast } from '@/hooks/use-toast';
 import { ensureFullExerciseCatalog, getExerciseById } from '@/data/exercises';
+import { exerciseDisplayName, resolveExercise } from '@/lib/workout/customExercise';
 import { useWorkoutStore, hasLoggedWork } from '@/store/workoutStore';
 import { reconcileOpenSession } from '@/lib/workout/reconcileOpenSession';
 import {
@@ -396,7 +397,7 @@ export function ActiveWorkoutPage() {
     goalId,
     unitLabel,
     bodyweightLabel: t('activeSetBodyweight', { defaultValue: 'BW' }),
-    resolveExerciseName: (id) => getExerciseById(id)?.name ?? id,
+    resolveExerciseName: (id) => exerciseDisplayName(id) || id,
     resolvePlusLoad: (id) => isPlusLoadExercise(getExerciseById(id) ?? { id }),
     resolveBarLoaded: (id) => isBarLoadedEquipment(getExerciseById(id)?.equipment),
     resolveInput: getSetInput,
@@ -419,7 +420,7 @@ export function ActiveWorkoutPage() {
     });
     if (!payload) return;
     const { exerciseId, setKind, input } = payload;
-    const exercise = getExerciseById(exerciseId);
+    const exercise = resolveExercise(exerciseId);
     const isPr = logSetIsPr({
       exerciseId,
       reps: input.reps,
@@ -444,7 +445,7 @@ export function ActiveWorkoutPage() {
         groupLeadName: (() => {
           const peers = getSupersetPeers(updatedExercises, exIdx);
           const leadId = updatedExercises[peers[0]]?.exerciseId;
-          return leadId ? getExerciseById(leadId)?.name : undefined;
+          return leadId ? exerciseDisplayName(leadId) || undefined : undefined;
         })(),
         workClockActive: useWorkoutStore.getState().workClockActive,
       }),
@@ -538,7 +539,7 @@ export function ActiveWorkoutPage() {
       units,
       goalId,
       hasCoachPlan: !!plan,
-      resolveExerciseName: (id) => getExerciseById(id)?.name ?? id.replace(/-/g, ' '),
+      resolveExerciseName: (id) => exerciseDisplayName(id) || id.replace(/-/g, ' '),
     });
     setDebrief(assembled.debrief);
     setEntryFragments(assembled.entry.fragments);
@@ -686,7 +687,7 @@ export function ActiveWorkoutPage() {
     const set = exLog.sets[nextSet.setIdx];
     const dial = getSetInput(nextSet.exIdx, nextSet.setIdx, set?.reps ?? 10, set?.weight ?? 0);
     return {
-      exerciseName: getExerciseById(exLog.exerciseId)?.name ?? '',
+      exerciseName: exerciseDisplayName(exLog.exerciseId),
       weight: dial.weight,
       reps: dial.reps,
     };
@@ -756,7 +757,7 @@ export function ActiveWorkoutPage() {
             setSetInputs({});
           }}
           onSwapTo={(exIdx, id) => {
-            const ex = getExerciseById(id);
+            const ex = resolveExercise(id);
             replaceExerciseInActive(exIdx, id, ex?.muscleGroups);
             setSwapOpenIdx(null);
             setSetInputs({});

@@ -6,7 +6,7 @@ Mission Winning organizes health into six pillars. The bottom nav highlights the
 
 **Route:** `/active`, `/builder`, `/library`, `/history`
 
-Strength and conditioning — log workouts, browse exercises, run programs, and review past sessions. This is the free core of the app.
+Strength and conditioning — log workouts, browse exercises, run programs, and review past sessions. This is the free core of the app. During a live session you can type a name the library does not have and keep logging. Unlimited. Free. Stays on this device.
 
 - **Active workout** — live set logging with rest timer and PR detection
 - **Builder** — custom workouts and program templates
