@@ -6,6 +6,124 @@ Living roadmap for the **everything app** (a bodyweight coach app Super Bundle �
 
 ---
 
+## Frozen plan — `.997` Edit a finished session (2026-08-25)
+
+> **Frozen.** Implement only this section + root
+> [PLAN.md](../PLAN.md). Plan commit is `[skip vercel]`.
+> Label: `2026.07-unified.997` — next free after master `.996`
+> (`2be854e6` — Exercise note + pinned reminder). Title stays
+> **Edit a finished session (.997)**.
+> Note+pin `.996` + Per-exercise rest `.995` + Set-row type
+> `.994` + This-movement history `.993` + Custom `.992` +
+> Start this again `.991` + Quiet Track trend `.989` + EMOM
+> `.988` + drop-set `.986` + warmup `.985` + notes `.983` +
+> 1RM `.981` + Supersets `.980` + Learn `.978` + week strip
+> `.977` + Quiet Track `.976` + Quiet Move `.974` + cues
+> `.973` + honesty `.971` + tags `.970` + RPE `.967` +
+> Fuel `.965` + resume `.963` + notebook `.960` are on
+> master. Do not smash them.
+> Do **not** smash week strip `.961`, notebook `.960`,
+> swap/skip `.959`, desk→gym `.958`, `/private` `.957`,
+> close receipt `.956`, Wednesday `.955`, Today Start
+> `.954`, or identity `.949`.
+> Every commit `[skip vercel]`. No Preview. No
+> `PRIVATE_MODE` flip. No promote. Live www stays `.696`.
+> Guest path. First set stays ungated. Today stays one
+> Start. Brand: **Log a set. Offline.** / No account. No
+> wearable.
+
+History cites the diary
+read-only. A typo poisons
+week-4 (Coach / Wednesday /
+1RM / volume). Resume `.963`
+is the live set — not this
+ship. Strong leftover: open
+a finished session, edit the
+sets they logged, Save.
+Confirm-gated. No silent wipe.
+`.996` did not put note chrome
+on Today.
+
+### First check (done — hypothesis holds; no Today leak)
+
+Read `origin/master` tip `2be854e6`
+/ `.996`. History detail is a
+read-only table. `setHistorySessionNote`
+edits the jot only. `sessionResume`
+is leave/return of the live
+session. Today is one
+`dock="start"`. Lean does not
+import note / pin / rest /
+history / set-row type.
+`/private` stays the tight
+`.957` lock. **Nothing to
+unmount first.** Do not treat
+Resume as this ship.
+
+### Lock
+
+Open a finished session from
+History. Edit the sets they
+actually logged. Save. Same
+`id` / `clientId`. Bump
+revision. Recalc volume.
+Confirm before a destructive
+change. Empty invents nothing
+— does not wipe, does not
+tombstone. Guest. First set
+ungated. Today still one
+Start. Honesty `.971` still
+applies. Resume `.963` stays
+the live set.
+
+1. One helper:
+   `editFinishedSession.ts`.
+2. Chrome on History detail
+   only. Not Today. Not
+   `/private`. Not a Feed.
+   Not a public permalink.
+3. Do not add a new exercise.
+   Do not change the date.
+   Do not call `startWorkout`.
+4. Note+pin `.996`, rest
+   `.995`, type `.994` still
+   hold.
+
+### Refuse
+
+- Silent delete / wipe a
+  session
+- Treat Resume as this ship
+- Invent a public permalink
+  of the edit
+- Feed / DMs / marketplace /
+  Discord.com / shame / four-
+  scene door
+- Counsel-hold (field test /
+  PT / pregnancy)
+- Flip `PRIVATE_MODE`
+- Promote live off `.696`
+- Put edit chrome on Today
+
+### Done when
+
+- A finished session can be
+  opened and edited, then
+  Saved
+- Confirm before destructive
+  change; empty invents
+  nothing
+- Today still one Start ·
+  first set ungated
+- Label `2026.07-unified.997`
+
+Excellence-Override: leftover
+edit of a finished session
+they own.
+
+Implement only root [PLAN.md](../PLAN.md).
+
+
 ## Frozen plan — `.996` Exercise note + pinned reminder (2026-08-25)
 
 > **Frozen.** Implement only this section + root

@@ -1,34 +1,35 @@
-# PLAN.md — Exercise note + pinned reminder (`.996`)
+# PLAN.md — Edit a finished session (`.997`)
 
 **Freeze.** Implement only this file. Do not reopen refused items mid-build.
 **Not** [docs/PLAN.md](docs/PLAN.md) (build phases A–I). The living roadmap
 gets a matching frozen section so agents following the boot order find this
-ship; this file is the open-lift note+pin freeze.
+ship; this file is the open-diary edit freeze.
 **Lane:** Engineering-Web · Train logger · **Horizon:** 0
-**Label:** `2026.07-unified.996` (master is `.995` / `8f7f19c9`
-Per-exercise rest). Title stays **Exercise note + pinned reminder (.996)**.
-**Excellence-Override:** leftover exercise note + pinned reminder
-on the open Train lift (not History, not a Feed, not our cues)
+**Label:** `2026.07-unified.997` (master is `.996` / `2be854e6`
+Exercise note + pinned reminder). Title stays
+**Edit a finished session (.997)**.
+**Excellence-Override:** leftover edit of a finished session they own
+(not Resume, not a silent wipe, not a public permalink)
 
 ---
 
 ## 0. What this is
 
-Session notes `.983` cover the **workout**. Cues `.973` are
-**our** rack card. `.748` already has a one-line field on the
-lift, but it prefills last History note — a one-time "left
-shoulder felt off" becomes next week's box. Missing is
-**their** sentence on this lift, and a **sticky they pin**
-that comes back next time they open it.
+History now cites the diary. The session list opens the log
+**read-only**. A typo (225 instead of 135) stays on the
+completed row, and Coach / Wednesday / 1RM / volume all
+read it — a leftover that poisons week-4.
 
-Strong leftover: Exercise Notes ("left shoulder felt off") +
-Pinned Notes ("45 degree incline") that show every time and
-do not go on History.
+Resume `.963` is the **live** set (leave Today / week /
+receipt, come back). That is not this ship.
 
-Guest. First set ungated. Honesty `.971` still applies.
-Today still one Start. Resume `.963` kept. Set-row type
-`.994` still honors weight · bodyweight · duration ·
-assisted. Per-exercise rest `.995` still holds.
+Strong leftover: open a past workout at any time, edit the
+sets they actually logged, then **Save**. Confirm-gated.
+No silent wipe. Guest. First set ungated. Honesty `.971`
+still applies. Diary stays free.
+
+Today still one Start. `/private` stays the tight `.957`
+lock. Note+pin `.996` stays on the open Train lift.
 
 `PRIVATE_MODE` stays on. Live www stays `.696`. Do not
 promote.
@@ -37,73 +38,81 @@ promote.
 
 ## 1. Investigate (done — hypothesis holds; no Today leak)
 
-Checked on `origin/master` `.995`
-(`8f7f19c9fe7cc1ac9bd73aa63e90c0db1183c5aa`).
+Checked on `origin/master` `.996`
+(`2be854e633271e8926e615c29e14c6214c54ebeb`).
 
 | Claim | Verified |
 |-------|----------|
-| Session notes `.983` cover the workout | **Yes.** `sessionNote` + `SessionJotField` on Show all + close receipt. Not a lift field. |
-| Cues `.973` are *our* rack card | **Yes.** `inSetCues` / `InSetCueList` from form-guide setup. Cap 3. Not their words. |
-| `.748` exercise note exists | **Yes.** `ExerciseNoteField` after the set table. `setExerciseNote` writes `ex.note`. Finish copies it onto the completed log. History **detail** of that session prints `ex.note`. |
-| Last History note is treated as a pin | **Yes.** `applyHistoryNote` seeds `noteFromHistory` / `lastNotesFor` at start / add / swap. A one-time observation prefills next time. That is not a pin they chose. |
-| Independent pin store | **No.** There is no per-exercise sticky. `mw_last_rest_by_exercise` is rest only. |
-| Pin / note on History as a surface | Movement-history `.993` lists sets, not notes, not a pin. History **page** detail shows this-session `ex.note` only. No pin field. |
-| `.993` / `.994` / `.995` chrome on Today | **No.** Lean is date · pins · highlights · week strip · Show all · one `JourneyHero` `dock="start"`. Surface tests forbid rest / history / set-row type on lean and `/private`. **Nothing to unmount first.** |
-| Today / door | One Start. Resume `.963`. `/private` is the tight `.957` lock. Honesty `.971` is Train session-count. |
+| History cites the diary | **Yes.** `/history` first paint is the session list. Tap opens `session-history-log` with the sets they finished. `sessionHistoryList.ts` says the page opens the log **read-only**. |
+| A typo poisons week-4 | **Yes.** No set-edit path after Finish. `setHistorySessionNote` edits the jot only. Coach `nextDayFromLogs` / generateWeek / 1RM charts / volume / receipt all read `workoutHistory` numbers. |
+| Resume `.963` is the live set | **Yes.** `sessionResume` / `protectLiveStart` / Today Resume. Not History. **Do not treat Resume as this ship.** |
+| Strong edit + Save | **Missing.** History detail is a table of numbers. Outline **Start this again** / **Save as routine** only. No Edit. No Save of the diary. |
+| `.996` put note chrome on Today | **No.** `HomeTodayLean` is date · pins · highlights · week strip · Show all · one `JourneyHero` `dock="start"`. `exerciseNotePinSurface.test.ts` forbids pin/note on lean / `/private`. **Nothing to unmount first.** |
 
-**Hypothesis (founder, non-binding):** session notes cover the
-workout; cues are ours; missing is their sentence on this lift
-and a sticky that comes back. Also verify `.993` / `.994` /
-`.995` did not put chrome on Today's home.
+**Hypothesis (founder, non-binding):** History now cites
+the diary; a typo poisons week-4. Resume `.963` is the live
+set. Strong lets you edit a past workout at any time, then
+Save. Also verify `.996` did not put note chrome on Today's
+home.
 
-**Verdict: keep.** The leftover is the open lift. Do not add
-a History notes tab. Do not replace cues or session notes.
-Do not treat last History note as a pin.
+**Verdict: keep.** The leftover is edit of a finished
+session they own. Resume stays live. Today stays one Start.
 
-### `.993` / `.994` / `.995` / Today leak?
+### `.996` / Today leak?
 
-**No. Nothing to unmount first.** History stays on the open
-lift name. Set-row type stays on the row. Rest stays on the
-open lift. Keep those locks in tests.
+**No. Nothing to unmount first.** Note + pin stay on the
+open Train lift. Keep that lock in tests.
 
 ---
 
-## 2. Lock (their note + their pin on the open lift)
-
-| Field | This session | Next session of that lift | History |
-|-------|--------------|---------------------------|---------|
-| **Exercise note** | Their sentence on this lift. Empty invents nothing. | Starts empty. Last time's sentence is not stuffed in. | Stays on **that** completed session's detail (`.748`). Not a History tab. Not a Feed. |
-| **Pinned reminder** | Optional. They write it. They can clear it. | Returns when they open that lift. | **Never.** Not the History page. Not the movement-history sheet. Not the completed log. Not the receipt. Not the cloud payload. |
+## 2. Lock (History can correct the diary)
 
 Closed rules:
 
-1. **Two homes, two stores.** This-session note stays
-   `ex.note` on the live / completed session. Pin lives in
-   `mw_pinned_note_by_exercise` (safeStorage), keyed by
-   exercise id. One module owns the pin map. No second
-   private copy in the card / store / History.
-2. **Pin is opt-in.** Last History note is not a pin.
-   `applyHistoryNote` still drops a leaked prior-lift note
-   on swap (`.748` leak rule). It does **not** write
-   `noteFromHistory` into the field. Pin loads separately.
-3. **Empty invents nothing.** Blank / whitespace omit.
-   Cap 200 (same as `EXERCISE_NOTE_MAX`). Cap 80 ids
-   (same as last-rest). Oldest id drops when the map
-   would grow without bound.
-4. **Guest. First set ungated.** Note and pin never
-   paywall. No account. Log set stays the one red.
-   Opening the fields is never required.
-5. **Today still one Start** (Resume when live). Not a
-   Today widget. Not on `/private`. Not a Feed. Not a
-   public URL. Not another human's number.
-6. **Honesty `.971` still scores Train** — session count,
-   not a notes score. Short diary stays a notebook.
-7. **Do not replace** cues `.973` (ours) or session notes
-   `.983` (the workout). Do not smash rest `.995`,
-   set-row type `.994`, this-movement history `.993`.
-8. **Do not rewrite Android.** Web PWA only.
-9. **Custom `.992` ids work.** A typed leftover can hold
-   a pin. Empty invents nothing.
+1. **One home.** `editFinishedSession` in
+   `src/lib/workout/editFinishedSession.ts`. No second
+   private copy in the page / store / receipt.
+2. **Open from History.** The finished-session dialog
+   (`session-history-log`) is the door. Not Today. Not
+   `/private`. Not the movement-history sheet. Not a
+   public permalink.
+3. **Edit the sets they actually logged.** Weight · reps ·
+   duration (honor `.994` type). Optional add a set on a
+   lift already on the log. Kind / RPE / RIR / tempo /
+   note stay unless they change the number fields. Do not
+   add a new exercise. Do not rename. Do not change the
+   date.
+4. **Same session.** `id` / `clientId` / `startedAt` /
+   `completedAt` / `durationSeconds` / `workoutName` stay.
+   Bump `revision`. Recalc `totalVolume` via `setRowVolume`.
+   Never mint a second log. Never set `deletedAt`.
+5. **Confirm before destructive change.** Typo that still
+   has work → Save applies. Dropping a set/lift that had
+   work → confirm door, then write. Empty draft invents
+   nothing — **does not wipe, does not tombstone**.
+6. **Empty invents nothing.** Tombstone / missing log /
+   draft with no work after strip → `empty`. A 0/0/0 save
+   is not a delete.
+7. **Guest. First set ungated.** Edit never paywalls. No
+   account. Opening Edit is never required to log.
+8. **Today still one Start** (Resume when live). Not a new
+   Today widget. Not a second Start. Not on `/private`.
+9. **Honesty `.971` still scores Train** — session count,
+   not a new edit score. Correcting a set does not invent
+   a third session. Short diary stays a notebook.
+10. **Resume `.963` stays the live set.** Edit does not
+    call `startWorkout`. Does not write `activeWorkout`.
+    Does not treat a finished log as Resume.
+11. **Cloud is the same upsert.** `enqueueWorkoutUpsert`
+    on the corrected log (revision wins). Guest stays
+    local. Session note stays local (`.983`).
+12. **Do not rewrite Android.** Web PWA only.
+13. **Do not smash** note+pin `.996`, rest `.995`,
+    set-row type `.994`, movement history `.993`, custom
+    `.992`, Start this again `.991`, EMOM, drop-set,
+    warmup, notes, 1RM %, supersets, Learn, week strip,
+    Track, Move, cues, tags, RPE, Fuel, resume, notebook,
+    `/private`.
 
 ---
 
@@ -111,144 +120,145 @@ Closed rules:
 
 ### 3.1 PLAN (this file + `docs/PLAN.md` section)
 
-This freeze. Implement commit follows. Plan commit is
-`[skip vercel]`. Every later commit is `[skip vercel]`.
+This freeze. Implement commit follows. Plan commit is `[skip vercel]`.
+Every later commit is `[skip vercel]`.
 
-### 3.2 Pure helper — `src/lib/workout/exercisePin.ts`
+### 3.2 Pure helper — `src/lib/workout/editFinishedSession.ts`
 
 One module. Deterministic. No premium / rewards / social /
-Health / speech / wearables / `bodyMetrics`. No store import.
+Health / speech / wearables. No store import.
 
 | Export | Rule |
 |--------|------|
-| `EXERCISE_PIN_MAX` | 200 — same width as the this-session note |
-| `EXERCISE_PIN_MAX_IDS` | 80 |
-| `normalizeExercisePin(value)` | Trim. Empty / non-string → `undefined`. Over-cap truncated. Never padded. Never invented from History / volume / cues. |
-| `readPinnedNote(exerciseId)` | Map lookup. Unknown / blank id → `undefined`. |
-| `writePinnedNote(exerciseId, value)` | Normalize. Empty deletes that id. Cap evicts oldest. Skip never writes. |
-| `clearPinnedNote(exerciseId)` | Drop that id. |
+| `FinishedSetDraft` | exerciseId + set fields they can type (reps, weight, durationSeconds) plus kept kind / ratings |
+| `FinishedSessionDraft` | exercises[] of drafts. Identity is the original log's. |
+| `draftFromLog(log)` | Copy of sets they logged. Tombstone / missing → `null`. |
+| `setDraftHasWork(set)` | `setRowHasWork` — reps **or** duration. Warmup is not work. |
+| `draftHasWork(draft)` | Any lift has work. |
+| `isDestructiveEdit(original, draft)` | True when a previously-working set or lift is gone / emptied. Adding a set is not destructive. Typo is not. |
+| `decideEditSave({ original, draft })` | `empty` \| `noop` \| `apply` \| `needs-confirm` |
+| `applyEditedLog(original, draft)` | Same identity. Recalc volume. Bump revision. Never `deletedAt`. Empty → `null`. |
+| `parseFinishedSetNumber(raw)` | Finite ≥ 0. Blank / junk → 0. |
 
-Storage key `STORAGE_KEYS.pinnedNoteByExercise` =
-`mw_pinned_note_by_exercise`. Backup already prefix-scans
-`mw_*`.
+`decideEditSave`:
 
-`applyHistoryNote` keeps the swap leak drop. Stop seeding
-`noteFromHistory` into `ex.note`. Last note stays readable
-on that session and via the `.993` name tap.
+- no original / tombstone / malformed / draft with no work → **empty**
+- same work as original → **noop** (no write)
+- work remains, no dropped working set/lift → **apply**
+- work remains, dropped a working set/lift → **needs-confirm**
+  (confirm then `applyEditedLog`)
 
-### 3.3 Open lift — `ExerciseNoteField` + pin strip
+Empty never tombstones. Mutant that Save-wipes the session
+dies. Mutant that mints a second `clientId` dies. Mutant
+that calls `startWorkout` / writes `activeWorkout` dies.
 
-Chrome on the **open** lift only.
+### 3.3 History door — `HistoryPage` + edit chrome
 
-- Keep `ExerciseNoteField` after the set table (this-session
-  note). Placeholder speaks *this session* ("left shoulder
-  felt off") — not last time's cue as if it were a pin.
-- Add `ExercisePinnedNoteField` (or one strip that owns both
-  lines) for the pin. Label: Pin. Placeholder: "45 degree
-  incline". `data-testid="exercise-pin"`. `min-h-[44px]`.
-  No `autoFocus`. Not `primary-action`.
-- Pin sits with the note, after the table, before the
-  footer. Not above load / reps. Not on Today.
-- Writing the pin writes the map for that `exerciseId`.
-  Clearing unsets. Custom leftover ids work.
+`session-history-log` gains outline **Edit**. Edit mode
+shows type-honest inputs (`.994`) on the sets they logged.
+**Save** runs `decideEditSave`. Confirm door when
+`needs-confirm`. Cancel discards the draft.
 
-`ActiveExerciseCard` reads the pin by id and writes it.
-Swap loads the new id's pin; the old lift's this-session
-note does not leak.
+| Control | Rule |
+|---------|------|
+| Edit | Outline. Not the red Start. `data-testid="session-history-edit"` |
+| Save | Applies or opens confirm. `data-testid="session-history-edit-save"` |
+| Confirm | Named verb — "Save these changes?" — not "Are you sure?" `data-testid="session-history-edit-confirm"` |
+| Cancel | Back to read-only. Draft dies. |
+
+Start this again / Save as routine stay. They are not this
+ship. Movement-history sheet stays read-only (`.993`).
+Receipt stays receipt (`.991` / `.983`).
+
+Store: `saveEditedHistoryLog(log)` replaces by `id`,
+enqueues upsert, leaves `activeWorkout` alone.
 
 ### 3.4 Surfaces that do not change
 
-- Today lean stays date · pins · highlights · strip · Show
-  all · one `JourneyHero` `dock="start"`. `.993` history
-  stays on the lift name. `.995` rest stays on the open
-  lift. `.989` trend stays in the strip cell.
+- Today lean stays date · pins · highlights · strip · Show all ·
+  one `JourneyHero` `dock="start"`. `.996` note + pin stay
+  on the open lift. `.993` history stays on the lift name.
 - `/private` stays the tight `.957` lock.
-- Movement-history sheet stays sets, not pin.
-- History page does not grow a pin column / pin tab.
-- Session jot `.983` stays the workout field.
-- Cues `.973` stay our rack card.
-- Completed-log `ex.note` stays this-session only. Pin is
-  never copied onto the log, receipt, or `toSyncPayload`.
+- Resume `.963` stays leave/return of the **live** session.
+- `/move` stays the quiet walk diary.
 - Android Room path stays. No F5. No Expo.
-- Honesty `.971`, resume `.963`, first set ungated, rest
-  `.995`, set-row type `.994` stay.
+- Honesty `.971`, first set ungated, custom `.992`,
+  Start this again `.991`, movement history `.993`,
+  set-row type `.994`, rest `.995`, note+pin `.996` stay.
 
 ### 3.5 Tests (write before product edit)
 
-- `normalizeExercisePin`: `'  45 degree incline  '` →
-  `'45 degree incline'`; `''` / `'   '` / `null` →
-  `undefined`; over-cap truncated.
-- `write` / `read`: bench pin returns next read; squat
-  does not see bench. Empty write deletes. Cap 80 evicts
-  oldest. Blank id never writes.
-- Mutant that seeds `ex.note` from `noteFromHistory` on
-  appearance dies — `applyHistoryNote` drops a leaked
-  note and does not write last History into the field.
-- Pin helper / field never import History list, movement
-  history, session jot, cues, premium, rewards, identity,
-  coach planner, LLM.
-- Surface: `data-testid="exercise-pin"` on the open lift.
-  Movement-history sheet and History page do not match
-  `exercise-pin` / `readPinnedNote` / `mw_pinned_note`.
-- Today lock: lean still one `dock="start"`. No pin /
-  exercise-note import on lean Today or `/private`.
+- `draftFromLog`: live log → draft of the sets; tombstone /
+  null / `{}` → `null`. Empty invents nothing.
+- `decideEditSave`: 135 → 225 with work remaining →
+  `apply`. Drop the only working set → `empty` (no wipe).
+  Drop one of two working sets → `needs-confirm`. Same
+  numbers → `noop`. Mutant that tombstones on empty Save
+  dies. Mutant that mints a new `clientId` dies.
+- `applyEditedLog`: identity stays; volume uses
+  `setRowVolume`; revision + 1; `deletedAt` unset.
+- Duration plank: time edit is work; `45 × 0` is not the
+  saved line.
+- Store: `saveEditedHistoryLog` replaces the row; does not
+  touch `activeWorkout`; does not call `startWorkout`.
+- Surface: History detail mounts Edit / Save. Today lean
+  still one `dock="start"`. No edit import on lean Today
+  or `/private`. Movement-history sheet stays read-only.
+- No `isPremium` / `/bundle` / UnlockButton / permalink /
+  Health / speech / Force Sync / Session Expired on the
+  helper or the History edit branch.
 - `firstSetUngated` stays green. `thinHistory` stays green.
 - No Feed / Discord.com / likes / XP / four-scene door /
-  counsel-hold / WeChat / Mind.
+  counsel-hold / WeChat / Mind / Resume-as-this-ship.
 
 ### 3.6 Help / i18n / INDEX
 
-- Help one-liner (getting-started Train): on the open lift
-  they can write a note for this movement, and pin a
-  reminder that returns next time. The pin is not History.
-  Today stays Start workout.
-- i18n: add keys to `activeWorkoutLocales.ts` +
-  `t(key, { defaultValue })` matching EN. Coverage cap
-  stays 0.
+- Help one-liner (getting-started + pillars History):
+  open a finished session from History, edit the sets you
+  logged, Save. Confirm before a destructive change.
+  Empty invents nothing. Today stays Start workout.
+- i18n: add keys to `historyLocales.ts` +
+  `t(key, { defaultValue })` matching EN. Coverage cap stays 0.
 - Folder INDEX if the file list changes (`src/lib/INDEX.md`,
-  `src/lib/workout/INDEX.md`, `src/components/workout/INDEX.md`,
-  `src/store/INDEX.md`).
+  `src/lib/workout/INDEX.md`, `src/store/INDEX.md`,
+  `src/components/workout/INDEX.md` or history).
 
 ## 4. Refuse
 
-Put the note or pin on History as a tab / Feed / public
-URL / another human's number. Feed / DMs / marketplace /
-Discord.com / shame / four-scene door. Replace cues `.973`
-or session notes `.983`. Treat last History note as a pin.
-Counsel-hold (field test / PT / pregnancy). Flip
-`PRIVATE_MODE`. Promote live off `.696`. Auto-add Track
-bodyweight into volume. Paywall a note. Android rewrite.
-Second Today Start.
+Silent delete / wipe a session. Treat Resume as this ship.
+Invent a public permalink of the edit. Feed / DMs /
+marketplace / shame / four-scene door. Counsel-hold
+(field test / PT / pregnancy). `PRIVATE_MODE` flip.
+Promote. Merge. Second Today Start. Android rewrite.
+Add a new exercise from History. Change the date.
+Paywall edit.
 
-Do not smash `.995` / `.994` / `.993` / `.992` / `.991` /
-`.989` / `.988` / `.986` / `.985` / `.983` / `.981` /
-`.980` / `.978` / `.977` / `.976` / `.974` / `.973` /
-`.971` / `.970` / `.967` / `.965` / `.963` / `.961` /
-`.957`.
+Do not smash `.996` / `.995` / `.994` / `.993` / `.992` /
+`.991` / `.989` / `.988` / `.986` / `.985` / `.983` /
+`.981` / `.980` / `.978` / `.977` / `.976` / `.974` /
+`.973` / `.971` / `.970` / `.967` / `.965` / `.963` /
+`.961` / `.960` / `.957`.
 
 ## 5. Docs / ship protocol
 
-- `APP_BUILD_LABEL` → `2026.07-unified.996`
-- LOG heading `## 2026-08-25 — Exercise note + pinned reminder (\`.996`)` +
+- `APP_BUILD_LABEL` → `2026.07-unified.997`
+- LOG heading `## 2026-08-25 — Edit a finished session (\`.997`)` +
   rotate oldest live entry so LOG stays ≤15
-- `CONTEXT.md` `## Now` one-line `.996` citing the full
-  label; keep `.995` … rotate oldest shipped Now bullet
-  so the block stays ≤25
-- Plan commit `[skip vercel]`. Implement commits
-  `[skip vercel]`.
-- One draft PR against master. Title:
-  `Exercise note + pinned reminder (.996)`.
+- `CONTEXT.md` `## Now` one-line `.997` citing the full label;
+  keep `.996` … rotate oldest shipped Now bullet so the
+  block stays ≤25
+- Plan commit `[skip vercel]`. Implement commits `[skip vercel]`.
+- One draft PR against master. Title: `Edit a finished session (.997)`.
   Do not merge. Do not promote. Live www stays `.696`.
-- `tsc --noEmit` clean. `check-build-label` `.996` >
-  master `.995`.
+- `tsc --noEmit` clean. `check-build-label` `.997` > master `.996`.
 
 ## 6. Done when
 
-- Open lift has their note + optional pin that returns
-  next session of that lift.
-- Pin does not appear on History.
+- A finished session can be opened from History and
+  edited, then Saved.
+- Confirm before destructive change; empty invents nothing.
 - Today still one Start. First set ungated.
 - Honesty `.971` still applies. Diary stays free.
 - `/private` stays the tight `.957` lock.
-- Label `2026.07-unified.996`. Draft PR against master.
-  Title: `Exercise note + pinned reminder (.996)`.
+- Label `2026.07-unified.997`. Draft PR against master.
+  Title: `Edit a finished session (.997)`.
