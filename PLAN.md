@@ -5,10 +5,9 @@
 gets a matching frozen section so agents following the boot order find this
 ship; this file is the work-clock freeze.
 **Lane:** Engineering-Web · in-set Train · **Horizon:** 0
-**Label:** `2026.07-unified.987` (master is `.985` / `8a9fe41f`
-Warmup batch. Concern `.986` is the clock. Stamp skips `.986` so a
-concurrent drop-set can take that number. If drop-set `.986` merges
-first, rebase and keep this stamp **greater than** the new master.)
+**Label:** `2026.07-unified.988` (title stays `.987`. Drop-set
+`.986` landed on master `9c3b2ce6`; stamp is the next free after
+that tip. Concern stays the in-set clock.)
 **Excellence-Override:** in-set interval / countdown on the live set
 row (not Watch, not rest-dock reuse)
 
@@ -208,15 +207,13 @@ supersets `.980` / Learn `.978` / week strip `.977` / `.976` /
 
 ## 5. Ship protocol
 
-- `APP_BUILD_LABEL` → `2026.07-unified.987` (past master `.985`;
-  concern `.986`). If drop-set `.986` merges first, rebase and bump
-  so the stamp stays greater than the new master. Title stays
-  `EMOM/AMRAP timer (.987)`.
-- LOG heading `## 2026-08-25 — EMOM/AMRAP timer (\`.987\`)` + rotate
+- `APP_BUILD_LABEL` → `2026.07-unified.988` (past master `.986`
+  drop-set `9c3b2ce6`). Title stays `EMOM/AMRAP timer (.987)`.
+- LOG heading `## 2026-08-25 — EMOM/AMRAP timer (\`.988\`)` + rotate
   oldest live entry
-- `CONTEXT.md` `## Now` cites the full label `2026.07-unified.987`;
-  keep warmup `.985` + notes `.983` + 1RM `.981`; rotate oldest
-  shipped Now bullet so the block stays ≤25
+- `CONTEXT.md` `## Now` cites the full label `2026.07-unified.988`;
+  keep drop-set `.986` + warmup `.985` + notes `.983` + 1RM `.981`;
+  rotate oldest shipped Now bullet so the block stays ≤25
 - Plan commit `[skip vercel]`. Every later commit `[skip vercel]`
   (Hobby quota is burned). No Preview.
 - Draft PR against master. Title: `EMOM/AMRAP timer (.987)`.
@@ -234,5 +231,5 @@ supersets `.980` / Learn `.978` / week strip `.977` / `.976` /
 - Clock is local, in-flow, on the set they are logging. Not a
   second home. Not a dashboard. Not a Watch pitch.
 - Targeted tests + rest + `firstSetUngated` + `localFirstRestGuard`
-  green. `tsc --noEmit` clean. Label `.987`. Draft PR. Title:
+  green. `tsc --noEmit` clean. Label `.988`. Draft PR. Title:
   `EMOM/AMRAP timer (.987)`.

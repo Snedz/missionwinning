@@ -175,6 +175,13 @@ const NEVER_SHIPPED: { from: number; to: number; why: string }[] = [
       'Warmup batch concern. The ship stamp is `.985` after master `.983`. No LOG heading ' +
       'on master ever ended in `.984`.',
   },
+  {
+    from: 987,
+    to: 987,
+    why:
+      'EMOM/AMRAP timer title stays `.987`. Drop-set rest-zero took `.986` on master ' +
+      '(`9c3b2ce6`); this ship stamp is `.988`. No LOG heading on master ever ended in `.987`.',
+  },
 ];
 const neverShipped = (x: number) => NEVER_SHIPPED.some((g) => x >= g.from && x <= g.to);
 

@@ -275,11 +275,10 @@ Today still one Start.
 
 > **Frozen.** Implement only this section + root
 > [PLAN.md](../PLAN.md). Plan commit is `[skip vercel]`.
-> Label: `2026.07-unified.987` — next free after master `.985`
-> (`8a9fe41f` — Warmup batch). Concern stays `.986`.
-> Stamp skips `.986` so a concurrent drop-set can take that
-> number. If drop-set `.986` merges first, rebase and keep
-> this stamp **greater than** the new master.
+> Label: `2026.07-unified.988` — next free after master `.986`
+> (`9c3b2ce6` — Drop-set rest-zero). Title stays
+> **EMOM/AMRAP timer (.987)**. Drop-set landed first; stamp
+> stays greater than that tip.
 > Warmup `.985` + notes `.983` + 1RM `.981` + Supersets
 > `.980` + Learn `.978` + week strip `.977` + Quiet Track
 > `.976` + Quiet Move `.974` + cues `.973` + honesty `.971`
@@ -377,8 +376,8 @@ shop. Persist the ticking clock.
 
 ### Docs / ship protocol
 
-- `APP_BUILD_LABEL` → `2026.07-unified.987`
-- LOG heading `## 2026-08-25 — EMOM/AMRAP timer (\`.987\`)`
+- `APP_BUILD_LABEL` → `2026.07-unified.988`
+- LOG heading `## 2026-08-25 — EMOM/AMRAP timer (\`.988\`)`
 - `CONTEXT.md` `## Now` cites the full label
 - Plan commit `[skip vercel]`. Implement
   commits `[skip vercel]`.
@@ -394,7 +393,7 @@ shop. Persist the ticking clock.
 - Ordinary rest still works. Empty
   invents nothing. Guest. First set
   ungated. Today one Start. `/private`
-  stays `.957`. Label `.987`. Draft PR.
+  stays `.957`. Label `.988`. Draft PR.
 
 ---
 
