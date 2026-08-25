@@ -12,6 +12,7 @@ import { CoachLogCite } from '@/components/coach/CoachLogCite';
 import { useStartCoachSession } from '@/hooks/useStartCoachSession';
 import { useWorkoutStore } from '@/store/workoutStore';
 import { honorCiteStart } from '@/lib/workout/honorSavedRoutine';
+import { protectLiveStart } from '@/lib/workout/sessionResume';
 import type { NextDayCite } from '@/lib/coach/nextDayFromLogs';
 import type { CoachPlan } from '@/lib/coach/types';
 
@@ -26,6 +27,7 @@ export function CoachNextDayCite({ cite, plan, hideStart }: Props) {
   const { t } = useTranslation();
   const router = useRouter();
   const startWorkout = useWorkoutStore((s) => s.startWorkout);
+  const activeWorkout = useWorkoutStore((s) => s.activeWorkout);
   const savedWorkouts = useWorkoutStore((s) => s.savedWorkouts);
   const workoutHistory = useWorkoutStore((s) => s.workoutHistory);
   const startCoachSession = useStartCoachSession();
@@ -40,6 +42,10 @@ export function CoachNextDayCite({ cite, plan, hideStart }: Props) {
   const showStart = !hideStart && (canStartLogs || canStartPlan);
 
   const start = () => {
+    if (protectLiveStart(activeWorkout) === 'keep') {
+      router.push('/active');
+      return;
+    }
     if (honored?.source === 'saved') {
       startWorkout(honored.routine.name, honored.routine.exercises, honored.routine.id);
       router.push('/active');
@@ -81,11 +87,13 @@ export function CoachNextDayCite({ cite, plan, hideStart }: Props) {
           onClick={start}
           data-testid="coach-next-day-start"
         >
-          {t('coachNextDayStart', {
-            name:
-              honored?.source === 'saved' ? honored.routine.name : cite.name,
-            defaultValue: 'Start {{name}}',
-          })}
+          {protectLiveStart(activeWorkout) === 'keep'
+            ? t('resumeWorkout', { defaultValue: 'Resume workout' })
+            : t('coachNextDayStart', {
+                name:
+                  honored?.source === 'saved' ? honored.routine.name : cite.name,
+                defaultValue: 'Start {{name}}',
+              })}
         </Button>
       ) : null}
     </div>
