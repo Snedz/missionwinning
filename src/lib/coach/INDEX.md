@@ -22,7 +22,7 @@
 8d. `coachAdaptReentry.ts` — pure: adapt-banner re-entry is coach day vs freestyle Just Go
 8d2. `plannedMiss.ts` — planned-day miss offer (do it now / skip / slide). Skip does not stamp `missed` (`.945`)
 8e. `resolveCoachBossSessionId.ts` — which session gets filled Start on `/coach` (today pending else next); `coachSheetSessions` is that one session for first paint
-8e2. `nextDayFromLogs.ts` — stable next day (Wednesday) from the live diary, or the live plan when it owns the next calendar day (`.955`). Warmup-only sessions are not a day; mixed templates drop W (`.966`). Does not call `generateWeek`
+8e2. `nextDayFromLogs.ts` — stable next day (Wednesday) from the live diary, or the live plan when it owns the next calendar day (`.955`). Warmup-only sessions are not a day; mixed templates drop W (`.966`). Thin diary (1–2 live sessions) invents nothing (`.971`). Does not call `generateWeek`
 8f. `coachChatClient.ts` — HTTP status → copy + stream `[[error:…]]` + slims log/week citations + `readCoachChatStream` + `postCoachChatMessage` (.445/.453/.909)
 8g. `agent/` — local RAG + MCP-shaped tools + ReAct loop for premium chat (ZDR one-shot only) — [agent/INDEX.md](agent/INDEX.md)
 9. `storage.ts` — `loadPlan`, `savePlan`, taster flags, device id
@@ -52,7 +52,7 @@ Shared client: `src/lib/coachLlmClient.ts` (also used by `coachDailyServer.ts` +
 | `coachAdaptReentry.test.ts` | Adapt-banner re-entry is coach-prescribed vs Just Go |
 | `plannedMiss.test.ts` | No plan → no offer; one overdue day → skippable; skip is not a fail identity |
 | `resolveCoachBossSessionId.test.ts` | Boss Start pick + grid wiring |
-| `nextDayFromLogs.test.ts` | Wednesday from logs: empty invents nothing; rotation stable; plan next-day wins; tombstones/0-rep out; warmup-only is not a day (`.966`) |
+| `nextDayFromLogs.test.ts` | Wednesday from logs: empty / two sessions invent nothing; 3+ rotation stable; plan next-day wins; tombstones/0-rep out; warmup-only is not a day (`.966`) |
 | `coachChatClient.test.ts` | Status copy · stream tags · request context + panel wiring |
 | `agent/*.test.ts` | Local corpus · BM25 retrieve · log/week slims · tools · MCP · ReAct · no social imports |
 | `weekDose.test.ts` | Session counts + strength/mixed intent labels |

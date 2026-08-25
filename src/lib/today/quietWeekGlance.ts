@@ -6,6 +6,7 @@
  */
 
 import type { CompletedWorkoutLog } from '@/types';
+import { isThinHistory } from '@/lib/workout/thinHistory';
 import {
   localDateKey,
   localDateKeyFromIso,
@@ -23,6 +24,8 @@ export type QuietWeekGlance = {
   weekStart: string;
   todayOffset: number;
   days: QuietWeekDay[];
+  /** 0–2 live sessions — a notebook, not a dataset. */
+  thin: boolean;
 };
 
 function isPerformedSet(set: { reps?: number }): boolean {
@@ -77,5 +80,5 @@ export function quietWeekGlance(opts: {
     });
   }
 
-  return { weekStart, todayOffset, days };
+  return { weekStart, todayOffset, days, thin: isThinHistory(opts.history) };
 }

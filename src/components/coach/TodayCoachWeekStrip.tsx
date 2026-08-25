@@ -53,9 +53,7 @@ export function TodayCoachWeekStrip() {
         </CardTitle>
       </CardHeader>
       <CardContent className="space-y-2">
-        {nextDay ? (
-          <CoachNextDayCite cite={nextDay} plan={plan} hideStart={hideNextDayStart} />
-        ) : null}
+        <CoachNextDayCite cite={nextDay} plan={plan} hideStart={hideNextDayStart} />
         {plan ? (
           <>
             <WeekStrip weekStart={weekStart} sessions={plan.sessions} todayOffset={todayOffset} />

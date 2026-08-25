@@ -1,5 +1,5 @@
-/** Shown on Profile so testers can confirm the deployed build. Bump when shipping UI to master. `.970` free set tags (concern `.966`; past master `.967`; skip `.968` honesty and `.969` Quiet Move). */
-export const APP_BUILD_LABEL = "2026.07-unified.970";
+/** Shown on Profile so testers can confirm the deployed build. Bump when shipping UI to master. `.971` thin-history honesty (past master `.970`; title may stay `.964`; skip `.972` Quiet Move). */
+export const APP_BUILD_LABEL = "2026.07-unified.971";
 
 /**
  * Semver for athletes. Distinct from `APP_BUILD_LABEL`, which `/api/health`

@@ -303,6 +303,8 @@ type TodayStrings = {
   coachNextDayFromLogs: string;
   coachNextDayFromPlan: string;
   coachNextDayStart: string;
+  /** Thin diary — Wednesday does not invent a next day (`.964`). */
+  coachNextDayEmpty: string;
 };
 
 const en: TodayStrings = {
@@ -621,6 +623,7 @@ const en: TodayStrings = {
   coachNextDayFromLogs: 'From your logs',
   coachNextDayFromPlan: "From this week's plan",
   coachNextDayStart: 'Start {{name}}',
+  coachNextDayEmpty: 'Not enough logs yet — keep logging.',
 };
 
 const coachPlanDefaults = {
@@ -647,6 +650,7 @@ const coachPlanDefaults = {
   coachNextDayFromLogs: en.coachNextDayFromLogs,
   coachNextDayFromPlan: en.coachNextDayFromPlan,
   coachNextDayStart: en.coachNextDayStart,
+  coachNextDayEmpty: en.coachNextDayEmpty,
 };
 
 const es: TodayStrings = {

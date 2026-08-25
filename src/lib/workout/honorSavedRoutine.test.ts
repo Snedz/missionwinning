@@ -225,6 +225,21 @@ describe('Wednesday cite does not overwrite a saved PPL', () => {
   });
 });
 
+describe('thin history does not overwrite a saved notebook', () => {
+  it('two named logs invent no Wednesday; honorCiteStart still returns saved', () => {
+    const cite = nextDayFromLogs({ history: HISTORY_PUSH_PULL, now: NOW });
+    assert.equal(cite, null);
+    const start = honorCiteStart({
+      cite,
+      saved: PPL,
+      history: HISTORY_PUSH_PULL,
+    });
+    assert.equal(start?.source, 'saved');
+    if (start?.source !== 'saved') return;
+    assert.equal(start.routine.exercises[0]?.exerciseId, 'squat');
+  });
+});
+
 describe('empty history invents no program', () => {
   it('empty saved + empty history ⇒ null / Train empty', () => {
     assert.equal(pickHonoredStart({ saved: [], history: [] }), null);

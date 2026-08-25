@@ -49,7 +49,10 @@ describe('quietWeekGlance', () => {
     }
     assert.equal(glance.days.filter((d) => d.isToday).length, 1);
     assert.equal(glance.days[2]?.isToday, true);
-    assert.doesNotMatch(JSON.stringify(glance), /missed|✕|failed/i);
+    assert.equal(glance.thin, true);
+    assert.equal('streak' in glance, false);
+    assert.equal('onTrack' in glance, false);
+    assert.doesNotMatch(JSON.stringify(glance), /missed|✕|failed|on track|consistency/i);
   });
 
   it('logged Mon shows done; other days stay empty', () => {
@@ -57,6 +60,7 @@ describe('quietWeekGlance', () => {
     assert.equal(glance.days[0]?.dateKey, '2026-08-10');
     assert.equal(glance.days[0]?.done, true);
     assert.equal(glance.days[0]?.isToday, false);
+    assert.equal(glance.thin, true);
     for (let i = 1; i < 7; i++) {
       assert.equal(glance.days[i]?.done, false, `offset ${i} must stay empty`);
     }
@@ -92,6 +96,23 @@ describe('quietWeekGlance', () => {
     assert.equal(glance.days.every((d) => !d.done), true);
   });
 
+  it('three live sessions are not thin; empty days still have no score', () => {
+    const glance = quietWeekGlance({
+      history: [logOn(-2), logOn(-1), logOn(0)],
+      now: NOW,
+    });
+    assert.equal(glance.thin, false);
+    assert.equal(glance.days[0]?.done, true);
+    assert.equal(glance.days[1]?.done, true);
+    assert.equal(glance.days[2]?.done, true);
+    for (let i = 3; i < 7; i++) {
+      assert.equal(glance.days[i]?.done, false, `offset ${i} must stay empty`);
+    }
+    assert.equal('streak' in glance, false);
+    assert.equal('onTrack' in glance, false);
+    assert.equal('consistency' in glance, false);
+  });
+
   it('two logs on Monday still one done day', () => {
     const glance = quietWeekGlance({
       history: [logOn(-2), logOn(-2, { id: 'b' })],
@@ -120,6 +141,7 @@ describe('quietWeekGlance source', () => {
   it('strip is a glance — no Start, no shame mark, no theater', () => {
     const src = read('src/components/today/TodayQuietWeekStrip.tsx');
     assert.match(src, /data-testid="today-quiet-week"/);
+    assert.match(src, /data-thin=/);
     assert.doesNotMatch(src, /primary-action|bg-primary-fill|bg-accent-poster/);
     assert.doesNotMatch(src, /onClick|onKeyDown|<button|<Link\b/);
     assert.doesNotMatch(src, /Missed|line-through|✕|✗|&times;|streak|XP|Top 8|Feed/);
