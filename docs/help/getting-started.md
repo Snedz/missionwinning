@@ -19,7 +19,7 @@ If you see the **gate** (`/private`), the door says **Free**. Public line: **Log
 
 1. Go to **Welcome** or follow prompts after unlock.
 2. Complete **I-Day** — a short onboarding that sets your goals and equipment. No account is required.
-3. While the site is gated you land on **Train** (`/active`) and start the previewed session. After the public flip you land on **Today** (`/log`) — tap **Start**, then log a set. Today also shows an honest **this week: N days logged** count (zero is fine).
+3. While the site is gated you land on **Train** (`/active`) and start the previewed session. After the public flip you land on **Today** (`/log`) — tap **Start**, then log a set. Today shows this week at a glance — logged days marked, empty days empty. Start is still Start. Zero days is fine.
 
 On **Account**, list your **Home gym kit** (barbell, rack, plates, dumbbells, pull-up bar, floor) so Train picks what you actually have. Free, on this device — no account.
 
