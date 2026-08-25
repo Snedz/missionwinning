@@ -6,6 +6,202 @@ Living roadmap for the **everything app** (a bodyweight coach app Super Bundle �
 
 ---
 
+## Frozen plan — `.999` In-set PR they hit (2026-08-25)
+
+> **Frozen.** Implement only this section + root
+> [PLAN.md](../PLAN.md). Plan commit is `[skip vercel]`.
+> Label: `2026.07-unified.999` — next free after master `.998`
+> (`8d5d1c1d` — Live session reorder). Title stays
+> **In-set PR they hit (.999)**.
+> Reorder `.998` + History Edit `.997` +
+> Exercise note + pin `.996` + Per-exercise rest
+> `.995` + Set-row type `.994` + This-movement
+> history `.993` + Custom `.992` + Start this
+> again `.991` + Quiet Track trend `.989` + EMOM
+> `.988` + drop-set `.986` + warmup `.985` +
+> notes `.983` + 1RM `.981` + Supersets `.980` +
+> Learn `.978` + week strip `.977` + Quiet Track
+> `.976` + Quiet Move `.974` + cues `.973` +
+> honesty `.971` + tags `.970` + RPE `.967` +
+> Fuel `.965` + resume `.963` + notebook `.960`
+> are on master. Do not smash them.
+> Do **not** smash week strip `.961`, notebook
+> `.960`, swap/skip `.959`, desk→gym `.958`,
+> `/private` `.957`, close receipt `.956`,
+> Wednesday `.955`, Today Start `.954`, or
+> identity `.949`.
+> Every commit `[skip vercel]`. No Preview. No
+> `PRIVATE_MODE` flip. No promote. Live www
+> stays `.696`.
+> Guest path. First set stays ungated. Today
+> stays one Start. Brand: **Log a set. Offline.**
+> / No account. No wearable.
+
+Hevy leftover: when they log a
+working set that is actually a
+personal record vs their own
+diary, a small felt-win on the
+live set. Best logged 5,
+heaviest, most reps — numbers
+they already wrote. Honesty
+`.971` when there is no prior:
+invent nothing. No projected
+1RM banner. No medals-as-Feed.
+
+### First check (done — hypothesis holds; no Today leak)
+
+Read tip `8d5d1c1d` / `.998`.
+Confirmed:
+
+- **vs-last** already exists after
+  a working set (`vsLastSet.ts`,
+  `set-table-vs-last`). Keep it.
+- **e1RM** exists and is hideable
+  (`sessionE1rm.ts`,
+  `mw_show_session_e1rm`). Keep
+  hide. This ship is not that
+  line.
+- **1RM %** `.981` exists
+  (`setRowPercent.ts`). Keep it.
+- **History** cites the diary.
+  Edit `.997` stays on History.
+- **Movement history** `.993`
+  lists prior sessions of that
+  lift. Name tap stays that door.
+- **Thin-history honesty** `.971`
+  scores Train session count, not
+  a PR score. Hitting a PR does
+  not invent a third session.
+- **Today lean** is still date ·
+  pins · highlights · week strip
+  · Show all · one `JourneyHero`
+  `dock="start"`. Reorder `.998`
+  did not put chrome on Today.
+- Existing `workoutPr.ts` /
+  `isPersonalRecord` is Epley
+  e1RM and mints a PR on
+  first-ever. **Not this ship.**
+  Do not use it for the live
+  felt-win. Do not smash the
+  helper for weekly debrief.
+
+**Nothing to unmount first.** Do
+not treat vs-last as this ship.
+Do not treat e1RM as this ship.
+
+### Lock
+
+1. One home helper in
+   `src/lib/workout/`
+   (`decideInSetPr`).
+   Deterministic. No store
+   import. No premium / rewards /
+   social / Health / speech /
+   wearables / bodyMetrics.
+2. Compare the just-logged
+   WORKING set to prior completed
+   logs of the SAME `exerciseId`.
+   Warmup / drop / empty never
+   count as a PR. Use existing
+   `setRowHasWork` / set-row type
+   `.994` (weight · bodyweight
+   reps · duration · assisted).
+   Vest is extra only — never
+   auto-add Track/profile
+   bodyweight into volume or into
+   a PR.
+3. Kinds they can actually hit
+   (only if a prior working set
+   of that kind exists):
+   - heaviest (max weight on a
+     working set of that lift)
+   - most reps (max reps at that
+     load, or max reps for
+     bodyweight/duration as
+     type-honest)
+   - best logged 5 (best 5-rep
+     working set they logged — a
+     real 5 they wrote, not an
+     estimated 5RM)
+4. Honesty: no prior working set
+   of that lift → empty / invent
+   nothing. First-ever lift is
+   not a PR banner. First session
+   invents nothing. Short diary
+   stays a notebook. Do not mint
+   a PR from one set. Do not use
+   Epley / projected 1RM as a
+   PR. Existing e1RM hide stays.
+5. Chrome on the LIVE set / live
+   exercise card only, after Log
+   a set succeeds. Checkbox /
+   quiet felt-win. Not Today.
+   Not `/private`. Not a Feed.
+   Not History medals. Not the
+   close receipt as a trophy
+   wall. Not a public permalink.
+6. Guest. First set ungated. PR
+   never paywalls. Opening it is
+   never required to log.
+7. Today still one Start (Resume
+   when live). Not a new Today
+   widget. Not a second Start.
+8. Honesty `.971` still scores
+   Train session count, not a PR
+   score. Hitting a PR does not
+   invent a third session.
+9. Same session id. Do not
+   rewrite History. Do not smash
+   reorder `.998`, History Edit
+   `.997`, note+pin `.996`, rest
+   `.995`, set-row type `.994`,
+   movement history `.993`,
+   custom `.992`, session-Start
+   `.991`, swap/skip `.959`,
+   `/private` `.957`, resume
+   `.963`.
+10. Web PWA only. Do not rewrite
+    Android.
+
+### Refuse
+
+- Projected 1RM as a PR
+- Medals / XP / likes /
+  streak-shame / Feed / DMs /
+  Discord.com / WeChat / four-
+  scene door
+- Counsel-hold (field test / PT /
+  pregnancy)
+- Flip `PRIVATE_MODE`
+- Promote live off `.696`
+- Merge
+- Paywall
+- Invent a PR on first-ever
+- Put PR chrome on Today or
+  `/private`
+- Treat vs-last as this ship
+  (keep vs-last)
+- Treat e1RM as this ship (keep
+  hide)
+
+### Done when
+
+- A working set that is actually
+  heavier / more reps / a best
+  logged 5 vs their diary shows
+  a quiet felt-win on the live
+  set
+- No prior → nothing
+- Today still one Start · first
+  set ungated
+- Label `2026.07-unified.999`
+
+Excellence-Override: leftover
+honest in-set PR vs their diary.
+
+Implement only root [PLAN.md](../PLAN.md).
+
+
 ## Frozen plan — `.998` Live session reorder (2026-08-25)
 
 > **Frozen.** Implement only this section + root
