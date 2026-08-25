@@ -6,6 +6,103 @@ Living roadmap for the **everything app** (a bodyweight coach app Super Bundle �
 
 ---
 
+## Frozen plan — `.1006` Restore a deleted session (2026-08-25)
+
+> **Frozen.** Implement only this section + root
+> [PLAN.md](../PLAN.md). Plan commit is `[skip vercel]`.
+> Label: `2026.07-unified.1006` — from master
+> `.1005` (`a6856d74` — Start history from
+> this date). Stamp stays `.1006`. Do not
+> bump. Title stays **Restore a deleted
+> session (.1006)**. Same PR. Do not merge
+> this PR yourself. Start-from `.1005` +
+> Hide `.1004` + Delete `.1003` + Merge
+> `.1002` + Pause `.1001` + Backfill
+> `.1000` + in-set PR `.999` + Reorder
+> `.998` + History Edit `.997` + Exercise
+> note + pin `.996` + Per-exercise rest
+> `.995` + Set-row type `.994` +
+> This-movement history `.993` + Custom
+> `.992` + Start this again `.991` + Quiet
+> Track trend `.989` + EMOM `.988` +
+> drop-set `.986` + warmup `.985` + notes
+> `.983` + 1RM `.981` + Supersets `.980` +
+> Learn `.978` + week strip `.977` + Quiet
+> Track `.976` + Quiet Move `.974` + cues
+> `.973` + honesty `.971` + tags `.970` +
+> RPE `.967` + Fuel `.965` + resume `.963`
+> + notebook `.960` are on master. Do not
+> smash them. Every commit `[skip vercel]`.
+> No Preview. No `PRIVATE_MODE` flip. No
+> promote. Live www stays `.696`. Guest
+> path. First set stays ungated. Today
+> stays one Start. Brand: **Log a set.
+> Offline.** / No account. No wearable.
+
+`.1003` already tombstones a finished
+log. Copy still says it cannot be
+recovered. Missing: Restore on History
+so a bogus Monday they just deleted
+comes back. Confirm on delete stays.
+Empty / not-deleted / missing invents
+nothing. Do not undelete a live
+session. Not wipe-account.
+
+### First check (done — hypothesis holds)
+
+Read tip `a6856d74` / `.1005`.
+Confirmed:
+
+- **Tombstone, not wipe.**
+  `applyDeleteFinishedSession` sets
+  `deletedAt`. Readers skip it. Sync
+  already ships tombstones.
+- **Tombstone always wins — restore
+  would lose.** `workoutSync.ts`,
+  mobile workout upsert, and
+  `pickWinner` prefer deleted over a
+  newer live row. Merge also **drops
+  tombstones** from `workoutHistory`,
+  so Restore has nothing after a
+  cloud pull. Revision must win,
+  including clearing `deletedAt`.
+  Live cap stays; tombstones ride
+  along and do not evict the diary.
+- **History, not Today.** Same door
+  family as Delete `.1003` / Backfill
+  `.1000`. No second Start. No
+  `/private` leak. No Feed.
+- **Empty / not-deleted / missing /
+  live invent nothing.**
+  `decideRestoreFinishedSession`
+  never mints a row.
+
+### Lock
+
+1. Delete stays confirm-gated. Copy
+   no longer says it cannot be
+   recovered.
+2. Restore on History: after delete
+   keep the detail on the tombstone;
+   overflow **Deleted sessions** when
+   any tombstone exists. Empty list
+   invents nothing.
+3. Restore clears `deletedAt`, bumps
+   revision, returns that one log to
+   History / week strip /
+   this-movement / PR diary. Other
+   days stay.
+4. Live session is not this feature.
+5. Empty / not-deleted / missing id
+   invents nothing (noop).
+6. No Today chrome. No second Start.
+   No `/private` leak. No Feed.
+7. Counsel-hold stays drafts. Do not
+   touch field test / PT / pregnancy.
+8. `[skip vercel]` on every commit.
+
+---
+
 ## Frozen plan — `.1005` Start history from this date (2026-08-25)
 
 > **Frozen.** Implement only this section + root
