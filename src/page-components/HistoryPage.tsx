@@ -47,6 +47,7 @@ import { useUnits, weightUnitLabel } from '@/hooks/useUnits';
 import { formatDuration } from '@/lib/utils';
 import { HistorySessionEdit } from '@/components/history/HistorySessionEdit';
 import { HistoryBackfill } from '@/components/history/HistoryBackfill';
+import { HistoryMergeExercises } from '@/components/history/HistoryMergeExercises';
 import {
   decideEditSave,
   type FinishedSessionDraft,
@@ -55,6 +56,7 @@ import {
   decideBackfillSession,
   type BackfillDraft,
 } from '@/lib/workout/backfillSession';
+import { decideMergeExercises, knownIdsForMerge } from '@/lib/workout/mergeExercises';
 import { newClientId } from '@/lib/workout/clientId';
 import {
   build1RMChartData,
@@ -112,8 +114,11 @@ export function HistoryPage() {
   const [pendingDraft, setPendingDraft] = useState<FinishedSessionDraft | null>(null);
   const [confirmOpen, setConfirmOpen] = useState(false);
   const [backfillOpen, setBackfillOpen] = useState(false);
+  const [mergeOpen, setMergeOpen] = useState(false);
   const saveEditedHistoryLog = useWorkoutStore((s) => s.saveEditedHistoryLog);
   const saveBackfillLog = useWorkoutStore((s) => s.saveBackfillLog);
+  const applyMergedExercises = useWorkoutStore((s) => s.applyMergedExercises);
+  const savedWorkouts = useWorkoutStore((s) => s.savedWorkouts);
 
   const openLog = (log: CompletedWorkoutLog) => {
     setEditing(false);
@@ -137,6 +142,12 @@ export function HistoryPage() {
 
   const openBackfill = () => {
     setBackfillOpen(true);
+    setSelected(null);
+    setEditing(false);
+  };
+
+  const openMerge = () => {
+    setMergeOpen(true);
     setSelected(null);
     setEditing(false);
   };
@@ -369,6 +380,15 @@ export function HistoryPage() {
           >
             {t('historyBackfill', { defaultValue: 'Log a past session' })}
           </Button>
+          <Button
+            type="button"
+            variant="outline"
+            className="mt-2 w-full min-h-[44px] tap-target"
+            data-testid="session-history-merge-open"
+            onClick={openMerge}
+          >
+            {t('historyMerge', { defaultValue: 'Merge duplicate exercises' })}
+          </Button>
         </div>
       ) : (
         <div className="space-y-3">
@@ -380,6 +400,15 @@ export function HistoryPage() {
             onClick={openBackfill}
           >
             {t('historyBackfill', { defaultValue: 'Log a past session' })}
+          </Button>
+          <Button
+            type="button"
+            variant="outline"
+            className="w-full min-h-[44px] tap-target"
+            data-testid="session-history-merge-open"
+            onClick={openMerge}
+          >
+            {t('historyMerge', { defaultValue: 'Merge duplicate exercises' })}
           </Button>
           <div className="flex flex-col gap-2 sm:flex-row sm:items-center">
             <Input
@@ -833,6 +862,55 @@ export function HistoryPage() {
               unitLabel={unitLabel}
               onSaveRequest={requestBackfillSave}
               onCancel={() => setBackfillOpen(false)}
+            />
+          ) : null}
+        </DialogContent>
+      </Dialog>
+
+      <Dialog open={mergeOpen} onOpenChange={(open) => !open && setMergeOpen(false)}>
+        <DialogContent
+          className="max-w-lg max-h-[85vh] overflow-y-auto"
+          data-testid="session-history-merge-dialog"
+        >
+          <DialogHeader>
+            <DialogTitle>
+              {t('historyMergeTitle', { defaultValue: 'Merge duplicate exercises' })}
+            </DialogTitle>
+            <DialogDescription>
+              {t('historyMergeDesc', {
+                defaultValue:
+                  'If you logged the same movement under two names, pick which name to keep. This cannot be undone.',
+              })}
+            </DialogDescription>
+          </DialogHeader>
+          {mergeOpen ? (
+            <HistoryMergeExercises
+              history={liveHistory}
+              live={activeWorkout?.exercises ?? null}
+              saved={savedWorkouts}
+              onConfirm={(sourceId, keeperId) => {
+                const decision = decideMergeExercises({
+                  sourceId,
+                  keeperId,
+                  knownIds: knownIdsForMerge({
+                    history: liveHistory,
+                    live: activeWorkout?.exercises ?? null,
+                    saved: savedWorkouts,
+                  }),
+                });
+                if (decision.kind !== 'needs-confirm') return;
+                const ok = applyMergedExercises(sourceId, keeperId);
+                if (ok) {
+                  setMergeOpen(false);
+                  toast({
+                    title: t('historyMergeDone', { defaultValue: 'Merged' }),
+                    description: t('historyMergeDoneDesc', {
+                      defaultValue: 'History, PRs, notes, and rest now use the name you kept.',
+                    }),
+                  });
+                }
+              }}
+              onCancel={() => setMergeOpen(false)}
             />
           ) : null}
         </DialogContent>

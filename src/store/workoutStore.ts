@@ -45,6 +45,14 @@ import {
 } from "@/lib/workout/openSessionContinuity";
 import { skipExerciseThisSession, swapExerciseThisSession } from "@/lib/workout/sessionExerciseOnce";
 import { reorderSessionExercises } from "@/lib/workout/sessionReorder";
+import { loadCustomExercises } from "@/lib/workout/customExercise";
+import {
+  applyMergeExercises,
+  knownIdsForMerge,
+  loadMergePrefMaps,
+  persistMergedCustoms,
+  persistMergedPrefs,
+} from "@/lib/workout/mergeExercises";
 import { finishPartialFromActive, protectLiveStart } from "@/lib/workout/sessionResume";
 import { readRaw, writeRaw } from "@/lib/storage/safeStorage";
 import { STORAGE_KEYS } from "@/lib/storage/keys";
@@ -177,6 +185,8 @@ interface WorkoutState {
   saveEditedHistoryLog: (log: CompletedWorkoutLog) => CompletedWorkoutLog | null;
   /** History Save of a past session they typed. New id. Leaves the live set. */
   saveBackfillLog: (log: CompletedWorkoutLog) => CompletedWorkoutLog | null;
+  /** Confirm-gated merge of two exercise ids. Source identity gone. */
+  applyMergedExercises: (sourceId: string, keeperId: string) => boolean;
   startRestTimer: (seconds?: number, exerciseId?: string, lane?: RestLane) => void;
   adjustRestTimer: (delta: number) => void;
   tickRestTimer: () => void;
@@ -922,6 +932,53 @@ export const useWorkoutStore = create<WorkoutState>()(
         }));
         enqueueWorkoutUpsert(next);
         return next;
+      },
+
+      applyMergedExercises: (sourceId, keeperId) => {
+        const state = get();
+        const customs = loadCustomExercises();
+        const prefs = loadMergePrefMaps();
+        const knownIds = knownIdsForMerge({
+          customs,
+          history: state.workoutHistory,
+          live: state.activeWorkout?.exercises ?? null,
+          saved: state.savedWorkouts,
+        });
+        const next = applyMergeExercises({
+          sourceId,
+          keeperId,
+          knownIds,
+          history: state.workoutHistory,
+          live: state.activeWorkout?.exercises ?? null,
+          customs,
+          saved: state.savedWorkouts,
+          rest: prefs.rest,
+          pins: prefs.pins,
+          tempo: prefs.tempo,
+        });
+        if (!next) return false;
+        persistMergedPrefs({ rest: next.rest, pins: next.pins, tempo: next.tempo });
+        persistMergedCustoms(next.customs);
+        set((s) => ({
+          workoutHistory: next.history,
+          savedWorkouts: next.saved,
+          activeWorkout:
+            s.activeWorkout && next.live
+              ? touchOpenSession({ ...s.activeWorkout, exercises: next.live })
+              : s.activeWorkout,
+          restExerciseId:
+            s.restExerciseId && s.restExerciseId === sourceId.trim()
+              ? keeperId.trim()
+              : s.restExerciseId,
+        }));
+        const beforeById = new Map(state.workoutHistory.map((row) => [row.id, row]));
+        for (const log of next.history) {
+          if (beforeById.get(log.id) !== log) enqueueWorkoutUpsert(log);
+        }
+        if (get().activeWorkout) {
+          enqueueOpenSession(snapshotFromActive(get().activeWorkout));
+        }
+        return true;
       },
 
       startRestTimer: (seconds?: number, exerciseId?: string, lane?: RestLane) => {

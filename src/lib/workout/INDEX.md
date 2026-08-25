@@ -34,6 +34,7 @@ Root-level `@/lib/{name}` paths re-export from here for compatibility — prefer
 10a5. `movementHistory.ts` — prior sessions of the open lift (`.993`). Newest first. Empty invents nothing. Short list stays a notebook. Not a chart.  
 10a6. `editFinishedSession.ts` — edit the sets on a finished History log (`.997`). Confirm-gated. Empty invents nothing. Never wipes. Not Resume.  
 10a7. `backfillSession.ts` — mint one completed log they already did (`.1000`). Honest date. Empty invents nothing. Not Resume. Not Edit.  
+10a8. `mergeExercises.ts` — confirm-gated merge of two exercise ids (`.1002`). Empty / same / missing invents nothing.  
 10a3. `thinHistory.ts` — 1–2 live sessions are a notebook (`.971`). Wednesday and the week strip both read `isThinHistory`. Empty invents nothing.  
 10b. `openSessionContinuity.ts` — desk → gym decide for the *open* session (`.958`); `reconcileOpenSession.ts` pulls/applies. `sessionNote` stays on device
 10b2. `sessionResume.ts` — this-device leave/return + Finish-partial (`.963`). Live Start is keep. Empty leftovers invent no volume
@@ -124,6 +125,8 @@ Root-level `@/lib/{name}` paths re-export from here for compatibility — prefer
 | `exerciseNotePinSurface.test.ts` | Open-lift note + pin; Today one Start; pin off History (`.996`) |
 | `editFinishedSession.test.ts` | Finished-session edit: typo applies; empty does not wipe; drop needs confirm (`.997`) |
 | `editFinishedSessionSurface.test.ts` | History door; Today one Start; not Resume; no permalink (`.997`) |
+| `mergeExercises.test.ts` | Confirm-gated merge; empty / same / missing invent nothing; PRs recompute (`.1002`) |
+| `mergeExercisesSurface.test.ts` | History / library door; Today one Start; confirm cannot be undone (`.1002`) |
 | `backfillSession.test.ts` | Past-session mint: date + work applies; empty / 0/0/0 / future invent nothing; timing off is duration 0 (`.1000`) |
 | `backfillSessionSurface.test.ts` | History + Train overflow door; Today one Start; Edit stays on History (`.1000`) |
 | `garageSwap.test.ts` | Garage list ≤2, load clear, plan-line swap, wiring (`.752`) |
