@@ -474,10 +474,12 @@ export function HistoryPage() {
                         {fmt.longDate(row.completedAt)}
                       </span>
                       <span>{setLabel}</span>
-                      <span className="inline-flex items-center gap-1">
-                        <Timer className="h-3 w-3" />
-                        {formatDuration(log.durationSeconds)}
-                      </span>
+                      {log.durationSeconds > 0 ? (
+                        <span className="inline-flex items-center gap-1">
+                          <Timer className="h-3 w-3" />
+                          {formatDuration(log.durationSeconds)}
+                        </span>
+                      ) : null}
                       <span>
                         {fmt.num(log.totalVolume)} {unitLabel}
                       </span>

@@ -23,6 +23,11 @@ describe('backfill a past session surface lock (.1000)', () => {
     assert.match(page, /HistoryBackfill/);
     assert.match(page, /decideEditSave/);
     assert.match(page, /HistorySessionEdit/);
+    assert.equal(
+      [...page.matchAll(/durationSeconds > 0/g)].length,
+      2,
+      'list + detail omit duration when timing is off'
+    );
     assert.doesNotMatch(page, IN_SET_PR);
     assert.doesNotMatch(page, BANNED);
     assert.doesNotMatch(page, FEED);
