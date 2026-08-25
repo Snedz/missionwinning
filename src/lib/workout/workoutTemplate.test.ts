@@ -24,5 +24,25 @@ describe('templateSetsToLogged', () => {
     assert.equal(sets[2].weight, 80);
     assert.equal(sets[0].completed, false);
     assert.equal(sets[0].kind, 'normal');
+    assert.equal(sets[0].loadPct, undefined);
+  });
+
+  it('copies notebook loadPct when authored and invents none when empty', () => {
+    const withPct = templateSetsToLogged(
+      {
+        exerciseId: 'bench-press',
+        sets: [{ reps: 5, weight: 0, loadPct: 80 }],
+      },
+      2000
+    );
+    assert.equal(withPct[0]?.loadPct, 80);
+    const empty = templateSetsToLogged(
+      {
+        exerciseId: 'bench-press',
+        sets: [{ reps: 5, weight: 60 }],
+      },
+      2001
+    );
+    assert.equal(empty[0]?.loadPct, undefined);
   });
 });

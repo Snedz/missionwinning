@@ -96,6 +96,12 @@ export interface LoggedSet {
   rir?: number;
   /** Optional ecc/pause/con seconds (`.734`). Never required to log. */
   tempo?: SetTempo;
+  /**
+   * Optional percent of a known 1-rep max (`.981`). Never required.
+   * Persist only what they typed or the notebook already authored.
+   * Do not invent from weight.
+   */
+  loadPct?: number;
   /** Set at log time when this beat prior e1RM — brass chip on row. */
   isPr?: boolean;
   /** L / R / Alt — only meaningful on a unilateral exercise; omit on bilateral. */
@@ -173,6 +179,8 @@ export interface CompletedWorkoutLog {
       /** Optional 0–5; omitted when the athlete did not rate RIR (`.756`). */
       rir?: number;
       tempo?: SetTempo;
+      /** Optional % of a known 1-rep max when they typed it (`.981`). */
+      loadPct?: number;
     }[];
     note?: string;
     /** Snapshot from catalog at complete time — readiness can skip EXERCISES lookup. */

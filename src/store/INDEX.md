@@ -9,6 +9,7 @@
 | `workoutStore.ts` | Single store: saved workouts, history, active session, rest timer |
 | `sessionResume.store.test.ts` | This-device leave/return + Finish-partial through the store (`.963`) |
 | `setRpe10.test.ts` | Optional 1–10 RPE persist / complete / empty (`.967`) |
+| `setLoadPct.test.ts` | Optional % of known 1RM persist / complete / empty (`.981`) |
 
 ## State slices (`workoutStore`)
 

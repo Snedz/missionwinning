@@ -6,6 +6,290 @@ Living roadmap for the **everything app** (a bodyweight coach app Super Bundle �
 
 ---
 
+## Frozen plan — `.981` 1RM percent (2026-08-25)
+
+> **Frozen.** Implement only this section. Plan commit is `[skip vercel]`.
+> Label: `2026.07-unified.981` — next free after master `.980`
+> (`17039cb3` — Supersets).
+> Supersets `.980` + Learn `.978` + week strip `.977`
+> + Quiet Track `.976` + Quiet Move `.974` + cues `.973`
+> + honesty `.971` + tags `.970` + RPE `.967` + Fuel `.965`
+> + resume `.963` are on master. Do not smash them.
+> Do **not** smash week strip `.961`, notebook `.960`,
+> swap/skip `.959`, desk→gym `.958`, `/private` `.957`,
+> close receipt `.956`, Wednesday `.955`, Today Start
+> `.954`, or identity `.949`.
+> Implement commit may allow one Preview. No empty-commit retrigger.
+> No `PRIVATE_MODE` flip. No promote. Live www stays `.696`.
+> Guest path. First set stays ungated. Confirm-gated writes.
+> Brand: **Log a set. Offline.** / No account. No wearable.
+> Coach stays opt-in / skippable. Train + Coach only.
+> Today stays one Start.
+> Grammar only — not AP Pro picking the weight.
+
+Notebook programs (`.960`) already
+author `loadPct` (5/3/1 waves talk
+80%). The live set row still only
+takes kg × reps. Educational Epley
+(`.739`) is a formula estimate, not
+a tested max. Honesty `.971`: empty
+invents nothing. Missing: type 80%
+and get a load **when they have a
+known max**, or show percent of that
+max next to the target. No max ⇒
+no number.
+
+### First check (done — no leak)
+
+Read `origin/master` tip `17039cb3`
+/ `.980`. Today lean
+(`HomeTodayLean`) still mounts
+date · pins · highlights ·
+`TodayQuietWeekStrip` · Show all ·
+one `JourneyHero` `dock="start"`.
+No `superset` import. No pairing
+widget. No second Start. No
+six-pillar dock. Surface lock in
+`superset.test.ts` still holds
+(Today / door / Fuel do not import
+the group helper). **Nothing to
+unmount first.**
+
+### One concern
+
+Optional percent field (or % of
+known max) on the live set row /
+next-set cite. Type 80% and get a
+load, or show percent of a known
+max next to the target. Empty
+invents nothing.
+
+### Investigate (done — hypothesis holds)
+
+Read `origin/master` tip `17039cb3`
+/ `.980`. Pairing stays on Train.
+Today still one Start.
+
+| Layer | What exists | Gap this ship closes |
+|-------|-------------|----------------------|
+| Notebook `.960` | `WorkoutSetTemplate.loadPct`. 5/3/1 waves author 58.5 / 67.5 / 76.5. | Live row cannot type or show the percent they already saved. |
+| Materialize | `materializeTemplates` fills weight from `workingMaxFromHistory` (estimated e1RM) at Start. No history ⇒ weight 0. | **Keep.** Do not rewrite coach / catalog materialize. This ship is live-row grammar. |
+| `percentLoad.ts` | `weightFromLoadPct` / `loadPctFromWeight` / `workingMaxFromHistory` (Epley/Brzycki from countable sets). | Reuse the two converters. **Do not** use `workingMaxFromHistory` as the known max. |
+| Benchmarks | `bestActual1RM` = heaviest logged **1-rep** working set. | **That is the known max.** One 5-rep set is not a max. |
+| Session e1RM `.739` | Educational Epley on the exercise header. Copy forbids "your max". | **Keep.** Formula estimate is not a known max. |
+| Set row | kg × reps. Optional tags / RPE / RIR / tempo / plates. Next-set cite is `5 × 80 · From last Wed`. | No % field. Cite never shows % of max. |
+| `LoggedSet` | No `loadPct`. Template already has it. | Persist only what they typed or the notebook already authored. |
+| Today / door | One Start. Tight `/private` `.957`. Resume `.963`. | **Keep.** No % widget on Today. |
+
+Hypothesis (verified, keep):
+
+A **pure** known-max reader returns
+the best actual 1-rep working set
+for that lift (same rule as
+benchmarks `bestActual1RM`):
+`reps === 1`, `weight > 0`, not
+warmup, not tombstoned. Empty /
+one 5-rep set / Epley-only history
+⇒ `null`. A **pure** parse accepts
+1–100 (notebook waves keep one
+decimal, e.g. 76.5); empty /
+omitted / out of range drop, never
+clamp. Type 80% + known max ⇒
+`weightFromLoadPct`. Type 80% +
+no max ⇒ no load. A target
+weight + known max ⇒ show `80%`
+on the cite / next to the number.
+Never invent a max from one set.
+Never map RPE → %. Guest. First
+set ungated. Today still one
+Start.
+
+Closed rules:
+
+1. **Known max is a logged single.**
+   Same home as benchmarks actual
+   1RM. Not Epley. Not session
+   e1RM. Not `workingMaxFromHistory`.
+   One working set invents nothing.
+2. **Optional.** Log set never
+   waits for %. Empty is valid.
+   Out of range dropped, not
+   clamped.
+3. **Grammar, not AP Pro.** Typing
+   80% fills load only when a
+   known max exists. The app does
+   not pick the percent. RPE does
+   not pick the load.
+4. **Cite quotes.** Next-set cite
+   may append `% of known max`
+   when both the target weight and
+   a known max exist. No max ⇒
+   the line they already have.
+5. **Honor the notebook.** A saved
+   set that already carries
+   `loadPct` may prefill the %
+   field. Empty notebook invents
+   none.
+6. **Surfaces.** Today still one
+   `.primary-action`. Resume /
+   Finish-partial stay `.963`.
+   `/private` stays the tight
+   `.957` lock. No four-scene
+   door. Tags / RPE / cues /
+   supersets stay optional.
+
+### Ship (only this)
+
+1. **Pure helper** `src/lib/workout/setRowPercent.ts`.
+   `knownMaxFromHistory` ·
+   `parseOptionalLoadPct` ·
+   `weightFromKnownMaxPct` ·
+   `loadPctOfKnownMax` ·
+   `formatKnownMaxPct` ·
+   `appendKnownMaxPctCite`.
+   Deterministic. Inject history /
+   units. Reuse `weightFromLoadPct`
+   / `loadPctFromWeight`. Do not
+   import `workingMaxFromHistory`
+   or `estimate1rm`. No rewards /
+   social / premium.
+
+2. **Live row.** Compact optional
+   `%` field on `SetLogTable` (live
+   weight cell) + legacy
+   `SetLogRow` if the cite needs
+   it. Native text. Not filled
+   red. Log set stays the only
+   primary. Typing a valid %
+   fills weight **only** when
+   `knownMaxFromHistory` is a
+   number. Empty / no max leaves
+   weight alone.
+
+3. **Cite.** `formatAfterCompleteParts`
+   / next-set target may append
+   `80%` when the suggestion is a
+   load and a known max exists.
+   Rest cites stay rest. Empty
+   stays empty.
+
+4. **Persist.** Optional
+   `loadPct?: number` on
+   `LoggedSet` + completed sets
+   when they typed it or the
+   notebook already had it.
+   `logSetAndAdvance` does not
+   invent a percent from weight.
+   Finish-partial copies when
+   set; omits when empty.
+
+5. **Help one-liner.** Optional
+   percent on the set. Type 80%
+   to get a load when you have
+   logged a 1-rep max. No max
+   invents nothing.
+
+### Tests
+
+- Known max: 100×1 ⇒ 100. One
+  80×5 ⇒ `null`. Warmup 100×1
+  ⇒ `null`. Tombstone ignored.
+  Mutant that calls
+  `workingMaxFromHistory` or
+  `estimate1rm` dies.
+- Parse: 80 / 76.5 survive;
+  empty / 0 / 101 / NaN drop.
+- Type 80% + max 100 + kg ⇒
+  weight 80. Type 80% + no max
+  ⇒ weight unchanged. Mutant
+  that fills from Epley dies.
+- Cite: target 80 + max 100 ⇒
+  contains `80%`. No max ⇒ no
+  `%` token. Rest cite stays
+  rest.
+- Log set without % still
+  saves. Mutant that stamps
+  `loadPct` from weight on
+  `logSetAndAdvance` dies.
+- Notebook `loadPct` prefills
+  the field; empty notebook
+  invents none.
+- Helper + row do not import
+  premium / trial / rewards /
+  social / Health.
+- Today / `/private` / gated
+  door do not import
+  `setRowPercent` or mount a
+  % widget. Mutant that mounts
+  percent on Today dies.
+- `firstSetUngated` stays
+  green; no Feed / Discord.com
+  / likes / XP / login wall /
+  Force Sync / Session Expired
+  / four-scene door. Today
+  still one `.primary-action`.
+- Resume / Finish-partial
+  contracts stay green. Tags /
+  RPE / cues / supersets stay
+  optional. Log set never
+  waits.
+
+### Refuse
+
+Autoreg-as-identity. Invented
+max. Trainer-rail. WeChat home.
+Feed. Discord.com. Marketplace.
+Promote. `PRIVATE_MODE` flip.
+Counsel-hold. Merge the PR
+yourself. Four-scene door.
+Second Today Start. Do not
+smash Supersets `.980` / Learn
+`.978` / week strip `.977` /
+`.976` / `.974` / `.973` /
+`.971` / `.970` / `.967` /
+`.965` / `.963` / `.960`.
+
+### Docs / ship protocol
+
+- `APP_BUILD_LABEL` → `2026.07-unified.981` (past master `.980`)
+- LOG heading `## 2026-08-25 — 1RM percent (\`.981\`)` + rotate oldest live entry
+- `CONTEXT.md` `## Now` one-line `.981`; keep Supersets `.980` + Learn `.978` + week strip `.977` + Track `.976` + Move `.974` + cues `.973` + honesty `.971` + tags `.970` + RPE `.967`; rotate oldest shipped Now bullet so the block stays ≤25
+- Folder INDEX if the file list changes (`src/lib/workout/INDEX.md`, types, components)
+- i18n: compact `%` / `activeSetPctAria` in `activeWorkoutLocales.ts`; cite token stays `80%`
+- Help: one line on getting-started
+- Plan commit `[skip vercel]`. Implement commit: one Preview max. No empty-commit retrigger.
+- Draft PR against master. Title: `1RM percent (.981)`. Do not merge. Do not promote. Live www stays `.696`.
+
+### Done when
+
+- This section was frozen before
+  product code.
+- Optional percent field (or %
+  of known max) on the live set
+  row / next-set cite. Empty
+  invents nothing. No invented
+  max from one set. No
+  autoreg-as-identity. Guest.
+  First set ungated. Today
+  still one Start. Resume
+  kept. `/private` stays `.957`.
+  No four-scene door. Unit
+  tests. tsc clean. Label
+  `.981`. Draft PR against
+  master. Title:
+  `1RM percent (.981)`.
+
+**Landed `.981`:** `knownMaxFromHistory` /
+`parseOptionalLoadPct` /
+`weightFromKnownMaxPct` in
+`src/lib/workout/setRowPercent.ts`.
+Known max is a logged single.
+Optional `%` on `SetLogTable`. Cite
+appends `%` when a known max exists.
+Empty invents nothing.
+
+---
+
 ## Frozen plan — `.979` Supersets (2026-08-25)
 
 > **Frozen.** Implement only this section. Plan commit is `[skip vercel]`.

@@ -41,6 +41,7 @@ import { canStartDrop } from '@/lib/workout/dropSet';
 import { recallLastRest, resolveRestForNextSet } from '@/lib/workout/restTimer';
 import { isMidRoundPeerOpen, isNextInThisGroup, supersetLabel } from '@/lib/workout/superset';
 import { isPlusLoadExercise } from '@/lib/workout/bodyweightLoad';
+import { knownMaxFromHistory, weightFromKnownMaxPct } from '@/lib/workout/setRowPercent';
 import { cn } from '@/lib/utils';
 import type { UnitsPref } from '@/lib/units';
 import type {
@@ -88,6 +89,8 @@ type Props = {
   onRate: (setIdx: number, rpe: NonNullable<LoggedSet['rpe']>) => void;
   onRateRir: (setIdx: number, rir: number | undefined) => void;
   onRateRpe10: (setIdx: number, rpe10: number | undefined) => void;
+  /** Optional % of known max — never required (`.981`). */
+  onSetLoadPct: (setIdx: number, loadPct: number | undefined) => void;
   onRateTempo: (setIdx: number, tempo: SetTempo | undefined) => void;
   onApplyAllTargets: () => void;
   onAddSet: () => void;
@@ -138,6 +141,7 @@ export function ActiveExerciseCard({
   onRate,
   onRateRir,
   onRateRpe10,
+  onSetLoadPct,
   onRateTempo,
   onApplyAllTargets,
   onAddSet,
@@ -210,6 +214,7 @@ export function ActiveExerciseCard({
     }
   );
   const lastSetGhost = resolveLastSetGhost(workoutHistory, exLog.exerciseId);
+  const knownMax = knownMaxFromHistory(exLog.exerciseId, workoutHistory);
   /** After-save vs-last — working-set index, independent of Prev/ghost prefill. */
   const vsLastLabels = formatVsLastSetDeltas(
     workoutHistory,
@@ -326,6 +331,12 @@ export function ActiveExerciseCard({
             input={setInput}
             plusLoad={plusLoad}
             onInputChange={onSetInputChange}
+            knownMax={knownMax}
+            onSetLoadPct={(setIdx, pct) => {
+              onSetLoadPct(setIdx, pct);
+              const nextWeight = weightFromKnownMaxPct(knownMax, pct, units);
+              if (nextWeight != null) onSetInputChange('weight', nextWeight);
+            }}
             onLog={() => nextSet && onLogSet(nextSet.setIdx)}
             onRate={onRate}
             onRateRir={onRateRir}

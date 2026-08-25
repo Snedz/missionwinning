@@ -13,7 +13,8 @@ Root-level `@/lib/{name}` paths re-export from here for compatibility — prefer
 2. `restTimer.ts` — rest seconds, clock format, defaults, last-rest per exercise (`.745`)  
 3. `superset.ts` — group of two or more (`groupWithNext` / `unpair` / `pairMark` A1/A2/A3), advance after log, rest gate, rest identity on first peer (`.749` / `.980` / concern `.979`)  
 4. `nextSetTargets.ts` — set-table-style next set suggestions  
-5. `percentLoad.ts` — a team-training app-style % of e1RM → absolute weight (`loadPct`)  
+5. `percentLoad.ts` — a team-training app-style % of e1RM → absolute weight (`loadPct`)
+5b. `setRowPercent.ts` — optional % of a **known** 1-rep max on the live set row (`.981`). Empty invents nothing. Not Epley.  
 6. `workoutTemplate.ts` — template → logged sets  
 7. `workoutPr.ts` — personal record detection  
 8. `workoutMerge.ts` — local/cloud history fingerprint merge  
@@ -96,6 +97,7 @@ Root-level `@/lib/{name}` paths re-export from here for compatibility — prefer
 | `sessionExerciseOnce.test.ts` | Skip once leaves the rest; swap once does not change Wednesday; empty invents nothing (`.959`) |
 | `rir.test.ts` | Optional 0–5 parse; empty OK; Log set ungated (`.756`) |
 | `rpe10.test.ts` | Optional 1–10 parse; empty OK; Log set ungated (`.967`) |
+| `setRowPercent.test.ts` | Known max is a logged single; type 80% + max ⇒ load; no max invents nothing (`.981`) |
 | `workSetIntensity.test.ts` | Last work set cite; no invented number; warmup skipped (`.967`) |
 | `tempo.test.ts` | Optional tempo parse / last-tempo / not a Log set gate (`.757`) |
 | `lastSetGhost.test.ts` | First-ever no ghost; returning last working set not warmup (`.759`) |

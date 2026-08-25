@@ -9,6 +9,7 @@
 import { calculateVolume } from '@/lib/utils';
 import { parseOptionalRir } from '@/lib/workout/rir';
 import { parseOptionalRpe10 } from '@/lib/workout/rpe10';
+import { parseOptionalLoadPct } from '@/lib/workout/setRowPercent';
 import { countsTowardVolume } from '@/lib/workout/setKind';
 import { parseOptionalTempo } from '@/lib/workout/tempo';
 import { completedLoggedSet } from '@/lib/workout/unilateral';
@@ -81,11 +82,13 @@ export function finishPartialFromActive(
           const rir = parseOptionalRir(s.rir);
           const rpe10 = parseOptionalRpe10(s.rpe10);
           const tempo = parseOptionalTempo(s.tempo);
+          const loadPct = parseOptionalLoadPct(s.loadPct);
           return {
             ...rec,
             ...(rir !== undefined ? { rir } : {}),
             ...(rpe10 !== undefined ? { rpe10 } : {}),
             ...(tempo ? { tempo } : {}),
+            ...(loadPct !== undefined ? { loadPct } : {}),
           };
         });
       return {

@@ -9,7 +9,7 @@
  * Completed rows mirror compact `SetLogRow` cues (primary edge, check, a11y).
  */
 
-import { Fragment, useState } from 'react';
+import { Fragment, useEffect, useState } from 'react';
 import { Check } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { Badge } from '@/components/ui/badge';
@@ -37,6 +37,11 @@ import {
   type AfterCompleteCite,
 } from '@/lib/workout/setRowAdjacency';
 import { formatRestClock } from '@/lib/workout/restTimer';
+import {
+  formatKnownMaxPct,
+  loadPctOfKnownMax,
+  parseOptionalLoadPct,
+} from '@/lib/workout/setRowPercent';
 
 type Props = {
   sets: LoggedSet[];
@@ -62,6 +67,9 @@ type Props = {
   onOpenPlates?: () => void;
   input: { reps: number; weight: number };
   onInputChange: (field: 'reps' | 'weight', value: number) => void;
+  /** Optional % of a known 1-rep max — never required (`.981`). */
+  knownMax?: number | null;
+  onSetLoadPct?: (setIdx: number, loadPct: number | undefined) => void;
   onLog: () => void;
   onRate: (setIdx: number, rpe: 'easy' | 'med' | 'hard') => void;
   /** Optional 0–5 RIR — independent of RPE; never required (`.725`). */
@@ -100,6 +108,8 @@ export function SetLogTable({
   onSetKind,
   input,
   onInputChange,
+  knownMax = null,
+  onSetLoadPct,
   onLog,
   onRate,
   onRateRir,
@@ -248,6 +258,14 @@ export function SetLogTable({
                         }}
                       />
                     </div>
+                    {onSetLoadPct ? (
+                      <SetRowPercentField
+                        authored={set.loadPct}
+                        weight={input.weight}
+                        knownMax={knownMax}
+                        onChange={(pct) => onSetLoadPct(setIdx, pct)}
+                      />
+                    ) : null}
                     {plateLine && !platesSkipped && barWeight != null && onBarWeightChange ? (
                       <SetLogPlateLine
                         barWeight={barWeight}
@@ -297,6 +315,13 @@ export function SetLogTable({
                           )
                         : set.weight
                       : '—'}
+                    {completed ? (
+                      <SetRowPercentCite
+                        authored={set.loadPct}
+                        weight={set.weight}
+                        knownMax={knownMax}
+                      />
+                    ) : null}
                   </td>
                   <td className={cn(cell, completed && 'font-semibold')}>
                     {completed ? set.reps : set.reps}
@@ -411,7 +436,7 @@ export function SetLogTable({
                 cite.suggestion.kind === 'rest'
                   ? formatRestClock(cite.suggestion.seconds)
                   : undefined;
-              const parts = formatAfterCompleteParts(cite, t, restClock);
+              const parts = formatAfterCompleteParts(cite, t, restClock, knownMax);
               return (
                 <tr className={cn('border-b border-border', !isActive && 'bg-muted/40')}>
                   <td colSpan={5} className={cn(cell, 'min-w-0')}>
@@ -440,6 +465,76 @@ export function SetLogTable({
       />
     ) : null}
     </div>
+  );
+}
+
+function SetRowPercentField({
+  authored,
+  weight,
+  knownMax,
+  onChange,
+}: {
+  authored?: number;
+  weight: number;
+  knownMax: number | null;
+  onChange: (pct: number | undefined) => void;
+}) {
+  const { t } = useTranslation();
+  const [draft, setDraft] = useState(authored != null ? String(authored) : '');
+  useEffect(() => {
+    setDraft(authored != null ? String(authored) : '');
+  }, [authored]);
+  const computed = authored == null ? loadPctOfKnownMax(knownMax, weight) : null;
+  const commit = () => onChange(parseOptionalLoadPct(draft));
+  return (
+    <div className="mt-1 flex min-w-0 items-center gap-1">
+      <input
+        type="text"
+        inputMode="decimal"
+        data-testid="set-table-load-pct"
+        className={numberInput}
+        value={draft}
+        placeholder={
+          computed != null
+            ? formatKnownMaxPct(computed) ?? '%'
+            : t('activeSetPct', { defaultValue: '%' })
+        }
+        aria-label={t('activeSetPctAria', {
+          defaultValue: 'Percent of known one-rep max. Optional.',
+        })}
+        onFocus={(e) => e.target.select()}
+        onChange={(e) => setDraft(e.target.value)}
+        onBlur={commit}
+        onKeyDown={(e) => {
+          if (e.key === 'Enter') {
+            e.preventDefault();
+            commit();
+          }
+        }}
+      />
+    </div>
+  );
+}
+
+function SetRowPercentCite({
+  authored,
+  weight,
+  knownMax,
+}: {
+  authored?: number;
+  weight: number;
+  knownMax: number | null;
+}) {
+  const token =
+    formatKnownMaxPct(authored) ?? formatKnownMaxPct(loadPctOfKnownMax(knownMax, weight));
+  if (!token) return null;
+  return (
+    <span
+      className="ms-1 text-[11px] font-semibold tabular-nums text-muted-foreground"
+      data-testid="set-table-load-pct-cite"
+    >
+      {token}
+    </span>
   );
 }
 
