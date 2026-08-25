@@ -144,6 +144,51 @@ describe('finishPartialFromActive', () => {
     assert.equal(finishPartialFromActive(empty), null);
     assert.equal(finishPartialFromActive(null), null);
   });
+
+  it('keeps a shared group when both peers logged; orphan invents none', () => {
+    const open: ActiveWorkout = {
+      workoutName: 'Push',
+      startedAt: 't0',
+      clientId: 'sess-ss',
+      exercises: [
+        {
+          exerciseId: 'bench-press',
+          supersetGroup: 'g1',
+          sets: [set(true, 5, 100), set(false, 5, 100)],
+        },
+        {
+          exerciseId: 'bent-over-row',
+          supersetGroup: 'g1',
+          sets: [set(true, 8, 60), set(false, 8, 60)],
+        },
+      ],
+    };
+    const partial = finishPartialFromActive(open);
+    assert.ok(partial);
+    assert.equal(partial.exercises[0]?.supersetGroup, 'g1');
+    assert.equal(partial.exercises[1]?.supersetGroup, 'g1');
+
+    const onlyA: ActiveWorkout = {
+      workoutName: 'Push',
+      startedAt: 't0',
+      exercises: [
+        {
+          exerciseId: 'bench-press',
+          supersetGroup: 'g1',
+          sets: [set(true, 5, 100)],
+        },
+        {
+          exerciseId: 'bent-over-row',
+          supersetGroup: 'g1',
+          sets: [set(false, 8, 60)],
+        },
+      ],
+    };
+    const leftover = finishPartialFromActive(onlyA);
+    assert.ok(leftover);
+    assert.equal(leftover.exercises.length, 1);
+    assert.equal(leftover.exercises[0]?.supersetGroup, undefined);
+  });
 });
 
 describe('sessionResume wiring', () => {

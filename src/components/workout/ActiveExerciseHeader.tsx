@@ -37,6 +37,7 @@ type Props = {
   hasFormGuide: boolean;
   hasCompleted: boolean;
   hasNext: boolean;
+  nextInThisGroup: boolean;
   menuOpen: boolean;
   onMenuOpenChange: (open: boolean) => void;
   swapOpen: boolean;
@@ -63,6 +64,7 @@ export function ActiveExerciseHeader({
   hasFormGuide,
   hasCompleted,
   hasNext,
+  nextInThisGroup,
   menuOpen,
   onMenuOpenChange,
   swapOpen,
@@ -140,6 +142,7 @@ export function ActiveExerciseHeader({
             onOpenChange={onMenuOpenChange}
             exerciseId={exercise.id}
             hasNextExercise={hasNext}
+            nextInThisGroup={nextInThisGroup}
             supersetted={!!exLog.supersetGroup}
             hasCompletedSet={hasCompleted}
             skippedThisSession={skipped}

@@ -1,10 +1,27 @@
-/** Light pairing — two consecutive exercises share a rest; numbered A1/A2. */
+/** Exercise groups — two or more share a rest; numbered A1/A2/A3. */
 
 import type { ActiveExerciseLog } from '@/types';
 
-function stripGroup(ex: ActiveExerciseLog): ActiveExerciseLog {
+function stripGroup<T extends { supersetGroup?: string }>(ex: T): T {
   const { supersetGroup: _, ...rest } = ex;
-  return rest;
+  return rest as T;
+}
+
+/** Drop a group id that no longer has two peers. Orphan is not a group. */
+export function stripOrphanGroups<T extends { supersetGroup?: string }>(items: T[]): T[] {
+  const counts = new Map<string, number>();
+  for (const item of items) {
+    const group = item.supersetGroup?.trim();
+    if (!group) continue;
+    counts.set(group, (counts.get(group) ?? 0) + 1);
+  }
+  return items.map((item) => {
+    const group = item.supersetGroup?.trim();
+    if (!group || (counts.get(group) ?? 0) < 2) {
+      return item.supersetGroup ? stripGroup(item) : item;
+    }
+    return item;
+  });
 }
 
 /** Indices that share this exercise's group id (self only when unpaired). */
@@ -33,7 +50,7 @@ function pairGroups(exercises: ActiveExerciseLog[]): number[][] {
   return groups;
 }
 
-/** set-table pair mark: first pair is A1/A2, second is B1/B2. */
+/** set-table pair mark: first group is A1/A2/A3, second is B1/B2. */
 export function pairMark(exercises: ActiveExerciseLog[], exIdx: number): string | null {
   const groups = pairGroups(exercises);
   const gi = groups.findIndex((g) => g.includes(exIdx));
@@ -47,28 +64,64 @@ export function supersetLabel(exercises: ActiveExerciseLog[], exIdx: number): st
   return pairMark(exercises, exIdx);
 }
 
+/** Next exercise already shares this group — do not offer "Superset w/ next". */
+export function isNextInThisGroup(exercises: ActiveExerciseLog[], exIdx: number): boolean {
+  const current = exercises[exIdx]?.supersetGroup;
+  const next = exercises[exIdx + 1]?.supersetGroup;
+  return !!current && !!next && current === next;
+}
+
 /**
- * Pair exactly two consecutive exercises. Prior partners of either are cleared
- * so this cannot grow into a giant set.
+ * A peer still owes this set index — A2 is the same round, not a new exercise.
  */
-export function pairWithNext(
+export function isMidRoundPeerOpen(
+  exercises: ActiveExerciseLog[],
+  exIdx: number,
+  setIdx: number
+): boolean {
+  const group = exercises[exIdx]?.supersetGroup;
+  if (!group) return false;
+  return getSupersetPeers(exercises, exIdx).some((pi) => {
+    if (pi === exIdx) return false;
+    const set = exercises[pi]?.sets[setIdx];
+    return !!set && !set.completed;
+  });
+}
+
+/**
+ * Append the next exercise to this group, or start a pair.
+ * Reuses the existing group id when either side already has one.
+ */
+export function groupWithNext(
   exercises: ActiveExerciseLog[],
   exIdx: number,
   groupId = `ss-${Date.now()}`
 ): ActiveExerciseLog[] {
   const nextIdx = exIdx + 1;
   if (nextIdx >= exercises.length || exIdx < 0) return exercises;
-  const oldA = exercises[exIdx]?.supersetGroup;
-  const oldB = exercises[nextIdx]?.supersetGroup;
-  return exercises.map((ex, i) => {
-    if (i === exIdx || i === nextIdx) {
-      return { ...ex, supersetGroup: groupId };
-    }
-    if (ex.supersetGroup && (ex.supersetGroup === oldA || ex.supersetGroup === oldB)) {
-      return stripGroup(ex);
-    }
-    return ex;
-  });
+  const current = exercises[exIdx];
+  const next = exercises[nextIdx];
+  if (!current || !next) return exercises;
+  if (current.supersetGroup && current.supersetGroup === next.supersetGroup) {
+    return exercises;
+  }
+  const id = current.supersetGroup || next.supersetGroup || groupId;
+  const mapped = exercises.map((ex, i) =>
+    i === exIdx || i === nextIdx ? { ...ex, supersetGroup: id } : ex
+  );
+  return stripOrphanGroups(mapped);
+}
+
+/**
+ * Pair exactly two consecutive exercises when neither is grouped.
+ * When a group already exists, grows it (`.979`) — alias of `groupWithNext`.
+ */
+export function pairWithNext(
+  exercises: ActiveExerciseLog[],
+  exIdx: number,
+  groupId = `ss-${Date.now()}`
+): ActiveExerciseLog[] {
+  return groupWithNext(exercises, exIdx, groupId);
 }
 
 /** Clear the group on every peer — unlink must not leave an orphan. */
@@ -93,7 +146,7 @@ export function advanceAfterLog(
         return { exerciseIndex: pi, setIndex: setIdx };
       }
     }
-    // Pair round done — next incomplete set on the first peer (A then B then rest).
+    // Round done — next incomplete set on the first peer (A then B then rest).
     for (const pi of peers) {
       for (let si = setIdx + 1; si < (exercises[pi]?.sets.length ?? 0); si++) {
         if (!exercises[pi].sets[si].completed) {
@@ -127,4 +180,23 @@ export function shouldRestAfterLog(
   return !(
     exercises[next.exerciseIndex]?.supersetGroup === group && next.setIndex === setIdx
   );
+}
+
+/**
+ * Rest after a group round keys on the first peer (A), not A2/A3.
+ * Mid-round returns the logged exercise (caller should not start rest).
+ */
+export function restIdentityAfterLog(
+  exercises: ActiveExerciseLog[],
+  exIdx: number,
+  setIdx: number,
+  next: { exerciseIndex: number; setIndex: number } | null
+): { exerciseId?: string } {
+  const logged = exercises[exIdx];
+  if (!logged) return {};
+  if (!logged.supersetGroup || !shouldRestAfterLog(exercises, exIdx, setIdx, next)) {
+    return { exerciseId: logged.exerciseId };
+  }
+  const peers = getSupersetPeers(exercises, exIdx);
+  return { exerciseId: exercises[peers[0]]?.exerciseId ?? logged.exerciseId };
 }

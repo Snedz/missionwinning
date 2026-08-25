@@ -12,6 +12,7 @@ When adding a doc:
 
 | File | Absorbed by / note |
 |------|---------------------|
+| [log/LOG-rotate-957-for-980.md](./log/LOG-rotate-957-for-980.md) | rotated 2026-08-25 for `.980` supersets (`.957`) |
 | [log/LOG-rotate-956-for-978.md](./log/LOG-rotate-956-for-978.md) | rotated 2026-08-25 for `.978` Quiet Learn (`.956`) |
 | [log/LOG-rotate-955-for-977.md](./log/LOG-rotate-955-for-977.md) | rotated 2026-08-25 for `.977` week strip quiet row (`.955`) |
 | [log/LOG-rotate-954-for-976.md](./log/LOG-rotate-954-for-976.md) | rotated 2026-08-25 for `.976` Quiet Track (`.954`; concern `.975`) |

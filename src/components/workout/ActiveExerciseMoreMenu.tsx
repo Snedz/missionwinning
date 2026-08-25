@@ -21,6 +21,7 @@ type Props = {
   onOpenChange: (open: boolean) => void;
   exerciseId: string;
   hasNextExercise: boolean;
+  nextInThisGroup: boolean;
   supersetted: boolean;
   hasCompletedSet: boolean;
   skippedThisSession?: boolean;
@@ -40,6 +41,7 @@ export function ActiveExerciseMoreMenu({
   onOpenChange,
   exerciseId,
   hasNextExercise,
+  nextInThisGroup,
   supersetted,
   hasCompletedSet,
   skippedThisSession = false,
@@ -86,7 +88,7 @@ export function ActiveExerciseMoreMenu({
               >
                 {t('activeAskAboutForm', { defaultValue: 'Ask about form' })}
               </Link>
-              {shouldShowSupersetLinkMenuitem(hasNextExercise, supersetted) && (
+              {shouldShowSupersetLinkMenuitem(hasNextExercise, nextInThisGroup) && (
                 <button
                   type="button"
                   role="menuitem"

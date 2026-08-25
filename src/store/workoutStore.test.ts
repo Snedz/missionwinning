@@ -509,6 +509,34 @@ test('workoutStore', async (t) => {
     assert.equal(a?.weight, 40);
   });
 
+  await t.test('grouping a third exercise keeps A1 and grows to A3 (.979)', () => {
+    useWorkoutStore.getState().startWorkout('Push', [
+      ...template('bench-press', 2),
+      ...template('bent-over-row', 2),
+      ...template('squat', 2),
+    ]);
+    useWorkoutStore.getState().toggleSupersetWithNext(0);
+    useWorkoutStore.getState().toggleSupersetWithNext(1);
+    const exercises = useWorkoutStore.getState().activeWorkout?.exercises ?? [];
+    assert.ok(exercises[0].supersetGroup);
+    assert.equal(exercises[0].supersetGroup, exercises[1].supersetGroup);
+    assert.equal(exercises[1].supersetGroup, exercises[2].supersetGroup);
+    const afterA = useWorkoutStore.getState().logSetAndAdvance(0, 0, 5, 100);
+    assert.deepEqual(afterA, { exerciseIndex: 1, setIndex: 0 });
+    const afterB = useWorkoutStore.getState().logSetAndAdvance(1, 0, 8, 60);
+    assert.deepEqual(afterB, { exerciseIndex: 2, setIndex: 0 });
+  });
+
+  await t.test('Start from a saved group keeps the shared id (.979)', () => {
+    useWorkoutStore.getState().startWorkout('PPL', [
+      { exerciseId: 'bench-press', sets: [{ reps: 5, weight: 80 }], supersetGroup: 'g-saved' },
+      { exerciseId: 'bent-over-row', sets: [{ reps: 8, weight: 70 }], supersetGroup: 'g-saved' },
+    ]);
+    const exercises = useWorkoutStore.getState().activeWorkout?.exercises ?? [];
+    assert.equal(exercises[0].supersetGroup, 'g-saved');
+    assert.equal(exercises[1].supersetGroup, 'g-saved');
+  });
+
   await t.test('garage swap clears planned weight when equipment changes', () => {
     const store = useWorkoutStore.getState();
     store.startWorkout('Push', template('bench-press', 2));

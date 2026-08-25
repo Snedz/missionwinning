@@ -6,6 +6,279 @@ Living roadmap for the **everything app** (a bodyweight coach app Super Bundle �
 
 ---
 
+## Frozen plan — `.979` Supersets (2026-08-25)
+
+> **Frozen.** Implement only this section. Plan commit is `[skip vercel]`.
+> Label: `2026.07-unified.980` — next free after master `.978`
+> (`1a06fbd7` — Quiet Learn). Concern stays `.979`.
+> Learn `.978` + week strip `.977` + Quiet Track `.976` + Quiet Move `.974`
+> + cues `.973` + honesty `.971` + tags `.970` + RPE `.967`
+> + Fuel `.965` + resume `.963` are on master. Do not smash them.
+> Do **not** smash week strip `.961`, notebook `.960`,
+> swap/skip `.959`, desk→gym `.958`, `/private` `.957`,
+> close receipt `.956`, Wednesday `.955`, Today Start
+> `.954`, or identity `.949`.
+> Implement commit may allow one Preview. No empty-commit retrigger.
+> No `PRIVATE_MODE` flip. No promote. Live www stays `.696`.
+> Guest path. First set stays ungated. Confirm-gated writes.
+> Brand: **Log a set. Offline.** / No account. No wearable.
+> Coach stays opt-in / skippable. Train + Coach only.
+> Today stays one Start.
+
+A named-app set log treats a
+superset as a **group**, not a tag.
+`.719` shipped pair-of-two (A1/A2,
+A then B then rest). After tags
+(`.970`), RPE (`.967`), and cues
+(`.973`), leftover in-set grammar:
+pair movements so rest + vs-last
+do not treat A2 as a new exercise.
+Circuits / push-pull they already
+run — honor notebook `.960`. Empty
+invents nothing. Optional.
+
+### One concern
+
+Two or more exercises group as one
+superset in the live log. Rest and
+vs-last treat the group as one
+round, not a new exercise at A2.
+
+### Investigate (done — hypothesis holds)
+
+Read `origin/master` tip `1a06fbd7`
+/ `.978` (`#807` Quiet Learn).
+Pair-of-two `.719` is on the
+logger. Learn / week strip / tags /
+RPE / cues / notebook stay.
+
+| Layer | What exists | Gap this ship closes |
+|-------|-------------|----------------------|
+| Type | `ActiveExerciseLog.supersetGroup?: string`. Template + completed log have **no** group field. | Save / Start / Repeat last / Finish-partial drop the group. Circuits they already run are lost. |
+| Pair | `pairWithNext` is exactly two. Prior partners of either are cleared so this cannot grow into a circuit. | Push-pull of three (or a giant they typed) cannot stay one group. |
+| Menu | `shouldShowSupersetLinkMenuitem` hides when already supersetted. | Cannot add the next movement to an existing group. |
+| Advance / rest gate | `advanceAfterLog` + `shouldRestAfterLog` skip rest while the next slot is the same group at the same set index. `planLogSetRest` already calls the gate. | **Keep the gate.** Mid-round skip already works for 3+ if the group can exist. After the last peer, rest seconds resolve on **A2's** id / name — isolation rest, as if A2 were a new exercise. |
+| vs-last | `formatVsLastSetDeltas` keys on `exerciseId` + working-set index. Correct per movement. | After-complete cite on A1 finds A1's next set or last-rest — treats the round as over / A2 as a new start. A2 vs-last must stay A2's last session, never A1's numbers, never an invented first-ever. |
+| Notebook `.960` | `validExercises` / `startWorkout` / `templateFromCompletedLog` / `finishPartialFromActive` omit `supersetGroup`. | Honor the group they saved. Empty / unpaired invents nothing. |
+| Today / door | One Start. Tight `/private` `.957`. Resume `.963`. Tags / RPE / cues stay optional. Learn `.978` stays off Today. | **Keep.** No group widget on Today. No four-scene door. |
+
+Hypothesis (verified, keep):
+
+Reuse `supersetGroup`. A **pure**
+`groupWithNext` appends the next
+exercise to this group (or starts
+a pair). `pairMark` already emits
+`A1`/`A2`/`A3` once a group has
+three. Rest after the last peer
+in the round uses the **first
+peer's** rest (the group), not
+A2. vs-last on each movement
+stays that movement's last
+working set. After-complete cite
+is quiet mid-round (no rest
+suggestion, no "next A1 set").
+Persist the group on the template
+and the completed log so Start /
+Save / Repeat last honor a saved
+PPL or circuit. Empty invents
+nothing. Guest. First set ungated.
+Never required to log.
+
+Closed rules:
+
+1. **A group, not a tag.** W / D / F
+   stay set tags (`.970`). This is
+   shared `supersetGroup` on the
+   exercises. Optional. Unlink
+   clears every peer.
+2. **Two or more.** Pair stays
+   valid. A third consecutive
+   movement can join. Do not invent
+   a shop of circuits.
+3. **One round.** Rest only after
+   the last peer at this set
+   index. Mid-round A2 is not a
+   new exercise. Rest duration
+   after the round is the first
+   peer's rest, not A2's isolation
+   heuristic.
+4. **vs-last is per movement.**
+   A2 set N compares to last
+   session's A2 set N. First-ever
+   A2 stays empty. After-complete
+   cite does not suggest rest or
+   A1's next set while a peer at
+   the same index is open.
+5. **Honor the notebook.** Saved
+   routine / Repeat last / Finish-
+   partial keep the group when
+   they had one. Empty / unpaired
+   invents nothing.
+6. **Surfaces.** Today still one
+   `.primary-action`. Resume /
+   Finish-partial stay `.963`.
+   `/private` stays the tight
+   `.957` lock. No four-scene
+   door. Tags / RPE / cues stay
+   optional. Week strip `.977`
+   and Learn `.978` stay.
+
+### Ship (only this)
+
+1. **Pure helpers** in
+   `src/lib/workout/superset.ts`.
+   `groupWithNext` (append or
+   start). `pairWithNext` may
+   become the two-exercise path
+   of the same helper — do not
+   keep a second id. `pairMark` /
+   `advanceAfterLog` /
+   `shouldRestAfterLog` stay.
+   `restExerciseIdAfterRound` =
+   first peer when the round
+   ends, else the logged
+   exercise. Deterministic.
+   Inject the list. No rewards /
+   social / premium.
+
+2. **Rest + vs-last as one round.**
+   `planLogSetRest` uses the first
+   peer's id / name when
+   `takeRest` is the end of a
+   group round. After-complete
+   cite is null mid-round.
+   `formatVsLastSetDeltas` stays
+   per `exerciseId`. Mutant that
+   paints A1's last on A2 dies.
+   Mutant that starts rest at A2
+   mid-round dies.
+
+3. **Menu + persist.** Show
+   "Superset w/ next" when the
+   next exercise exists and is
+   not already in this group
+   (so a pair can grow). Store
+   `toggleSupersetWithNext` calls
+   `groupWithNext`. Template +
+   completed log +
+   `validExercises` +
+   `startWorkout` +
+   `templateFromCompletedLog` +
+   `finishPartialFromActive`
+   copy `supersetGroup` when
+   present. Orphan (one left)
+   is not a group — no mark.
+
+4. **Help one-liner.** Pair two
+   or more in the live log.
+   Rest after the round. Optional.
+   Saved routine keeps the group.
+
+### Tests
+
+- `groupWithNext` on two unpaired
+  ⇒ shared id, `A1`/`A2`. Third
+  consecutive joins ⇒ `A3`. Mutant
+  that still clears the first peer
+  (old pair-of-two smash) dies.
+- `unpair` clears every peer.
+  Orphan after delete is unmarked.
+- Advance A → B → C then rest.
+  `shouldRestAfterLog` false at A
+  and B, true after C. Rest
+  exercise id after C is A, not C.
+- vs-last on B set 1 uses B's last
+  session, not A's. First-ever B
+  is empty. After-complete cite
+  after A set 1 (peer B open at
+  same index) is null. Mutant that
+  emits last-rest there dies.
+- Save then Start keeps the group.
+  Repeat last / Finish-partial
+  keep it when present. Empty
+  notebook invents none.
+- Menu helper: next exists and is
+  not in this group ⇒ show. Next
+  already in this group ⇒ hide.
+- Helper + card do not import
+  premium / trial / rewards /
+  social / Health.
+- Today / `/private` / gated door
+  do not import `superset` or
+  mount a group widget. Mutant
+  that mounts pairing on Today
+  dies.
+- `firstSetUngated` stays green;
+  no Feed / Discord.com / likes /
+  XP / login wall / Force Sync /
+  Session Expired / four-scene
+  door. Today still one
+  `.primary-action`.
+- Resume / Finish-partial
+  contracts stay green. Tags /
+  RPE / cues stay optional.
+  Log set never waits.
+
+### Refuse
+
+Drop-set theater. Trainer-rail
+pairing. Marketplace "buy a
+circuit". WeChat home. Feed.
+Discord.com. Promote.
+`PRIVATE_MODE` flip. Counsel-hold.
+Merge. Four-scene door. Second
+Today Start. Do not smash Learn
+`.978` / week strip `.977` /
+`.976` / `.974` / `.973` / `.971`
+/ `.970` / `.967` / `.965` /
+`.963` / `.960`.
+
+**Landed `.980` (concern `.979`):** `groupWithNext` /
+`isNextInThisGroup` /
+`isMidRoundPeerOpen` /
+`restIdentityAfterLog` /
+`stripOrphanGroups` in
+`src/lib/workout/superset.ts`.
+`pairWithNext` is an alias. Rest
+after last peer keys the first
+peer. Cite is quiet mid-round.
+Group persists on template,
+completed log, Save, Start,
+Repeat last, Finish-partial.
+Menu stays until the next lift
+is already in this group.
+
+### Docs / ship protocol
+
+- `APP_BUILD_LABEL` → `2026.07-unified.980` (past master `.978`; concern `.979`)
+- LOG heading `## 2026-08-25 — Supersets (\`.980\`)` + rotate oldest live entry
+- `CONTEXT.md` `## Now` one-line `.980`; keep Learn `.978` + week strip `.977` + Track `.976` + Move `.974` + cues `.973` + honesty `.971` + tags `.970` + RPE `.967`; rotate oldest shipped Now bullet so the block stays ≤25
+- Folder INDEX if the file list changes (`src/lib/workout/INDEX.md`, types, store)
+- i18n: existing `activeSupersetLink` / unlink via `t(key, { defaultValue })` — grow-copy may stay "Superset w/ next"
+- Help: one line on getting-started (group two or more; rest after the round; optional)
+- Plan commit `[skip vercel]`. Implement commit: one Preview max. No empty-commit retrigger.
+- Draft PR against master. Title: `Supersets (.979)`. Do not merge. Do not promote. Live www stays `.696`.
+
+### Done when
+
+- This section was frozen before
+  product code.
+- Two or more exercises can be
+  grouped as one superset in the
+  live log. Rest timer and vs-last
+  treat the group as one round,
+  not a new exercise at A2. Empty
+  invents nothing. Optional.
+  Guest. First set ungated.
+  Today still one Start. Resume
+  kept. `/private` stays `.957`.
+  No four-scene door. Unit tests.
+  tsc clean. Label `.980`. Draft
+  PR against master. Title:
+  `Supersets (.979)`.
+
+---
+
 ## Frozen plan — `.978` Quiet Learn (2026-08-25)
 
 > **Frozen.** Implement only this section. Plan commit is `[skip vercel]`.

@@ -686,6 +686,22 @@ describe('after-complete cite competitive refuse', () => {
     assert.equal(restParts.provenance, 'Last rest');
   });
 
+  it('mid-round peer (A2 still open) invents no rest / next-A1 cite', () => {
+    const out = resolveAfterCompleteCite({
+      workoutHistory: [],
+      exerciseId: 'bench-press',
+      sessionSets: [
+        { reps: 8, weight: 60, completed: true, kind: 'normal' },
+        { reps: 8, weight: 60, completed: false, kind: 'normal' },
+      ],
+      completedSetIdx: 0,
+      units: 'metric',
+      lastRestSeconds: 90,
+      midRoundPeer: true,
+    });
+    assert.equal(out, null);
+  });
+
   it('cite path does not wire CSV import', () => {
     const citeUi = readFileSync(
       path.join(root, 'src/components/workout/SetLogNextCite.tsx'),

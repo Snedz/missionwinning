@@ -55,6 +55,8 @@ export interface WorkoutSetTemplate {
 export interface WorkoutExerciseTemplate {
   exerciseId: string;
   sets: WorkoutSetTemplate[];
+  /** Shared id — same group as a live superset (`.979`). Optional. */
+  supersetGroup?: string;
   /** Percent of working max when started from Coach % prescription. */
   loadPct?: number;
   /**
@@ -158,6 +160,8 @@ export interface CompletedWorkoutLog {
   durationSeconds: number;
   exercises: {
     exerciseId: string;
+    /** Shared id when this log was a superset (`.979`). Optional. */
+    supersetGroup?: string;
     sets: {
       reps: number;
       weight: number;

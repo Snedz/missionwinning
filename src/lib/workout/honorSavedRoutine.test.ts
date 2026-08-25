@@ -149,6 +149,30 @@ describe('routineFromSession / decideSavedWrite', () => {
     });
     assert.equal(add.kind, 'add');
   });
+
+  it('save keeps a shared group; orphan invents none', () => {
+    const kept = routineFromSession({
+      name: 'PPL circuit',
+      exercises: [
+        { exerciseId: 'bench-press', sets: [{ reps: 5, weight: 80 }], supersetGroup: 'g1' },
+        { exerciseId: 'barbell-row', sets: [{ reps: 8, weight: 70 }], supersetGroup: 'g1' },
+        { exerciseId: 'curl', sets: [{ reps: 10, weight: 20 }] },
+      ],
+    });
+    assert.ok(kept);
+    assert.equal(kept!.exercises[0]?.supersetGroup, 'g1');
+    assert.equal(kept!.exercises[1]?.supersetGroup, 'g1');
+    assert.equal(kept!.exercises[2]?.supersetGroup, undefined);
+
+    const orphan = routineFromSession({
+      name: 'Solo',
+      exercises: [
+        { exerciseId: 'bench-press', sets: [{ reps: 5, weight: 80 }], supersetGroup: 'lonely' },
+      ],
+    });
+    assert.ok(orphan);
+    assert.equal(orphan!.exercises[0]?.supersetGroup, undefined);
+  });
 });
 
 describe('pickHonoredStart — save then Start uses their routine', () => {

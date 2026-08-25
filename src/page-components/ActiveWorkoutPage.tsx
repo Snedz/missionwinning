@@ -58,6 +58,7 @@ import {
   planPrHaptic,
   resolveLogSetPayload,
 } from '@/lib/workout/activeSessionFinish';
+import { getSupersetPeers } from '@/lib/workout/superset';
 import {
   planSessionCheckInDismiss,
 } from '@/lib/workout/activeSessionCheckIn';
@@ -424,11 +425,16 @@ export function ActiveWorkoutPage() {
         advanceNext: next,
         exerciseName: exercise?.name,
         exerciseId,
+        groupLeadName: (() => {
+          const peers = getSupersetPeers(updatedExercises, exIdx);
+          const leadId = updatedExercises[peers[0]]?.exerciseId;
+          return leadId ? getExerciseById(leadId)?.name : undefined;
+        })(),
       }),
       setKind
     );
     if (rest.takeRest) {
-      startRestTimer(rest.restSeconds, exerciseId);
+      startRestTimer(rest.restSeconds, rest.rememberExerciseId ?? exerciseId);
     }
     setLogPulse((n) => n + 1);
 

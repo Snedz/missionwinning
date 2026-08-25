@@ -332,9 +332,12 @@ export function resolveAfterCompleteCite(params: {
   goalRange?: { min: number; max: number };
   /** Stored last rest for this exercise — null means do not invent rest. */
   lastRestSeconds: number | null;
+  /** Peer in this group still owes this set index — A2 is not a new exercise. */
+  midRoundPeer?: boolean;
 }): AfterCompleteCite | null {
   const done = params.sessionSets[params.completedSetIdx];
   if (!done?.completed || done.kind === 'warmup') return null;
+  if (params.midRoundPeer) return null;
 
   const nextIdx = nextIncompleteIdx(params.sessionSets, params.completedSetIdx);
   if (nextIdx >= 0) {

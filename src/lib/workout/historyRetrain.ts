@@ -7,6 +7,7 @@
 
 import type { CompletedWorkoutLog, WorkoutExerciseTemplate } from '@/types';
 import { workingSets } from '@/lib/workout/setMath';
+import { stripOrphanGroups } from '@/lib/workout/superset';
 
 export type HistoryRetrainTemplate = {
   name: string;
@@ -53,11 +54,15 @@ export function templateFromCompletedLog(
       .filter((s) => s.reps > 0);
     // Warmup-only (or empty) exercise is omitted — do not invent 8 × 0 work.
     if (sets.length === 0) continue;
-    exercises.push({ exerciseId: ex.exerciseId, sets });
+    exercises.push({
+      exerciseId: ex.exerciseId,
+      sets,
+      ...(ex.supersetGroup?.trim() ? { supersetGroup: ex.supersetGroup.trim() } : {}),
+    });
   }
 
   if (exercises.length === 0) return null;
 
   const name = (log.workoutName || 'Session').trim() || 'Session';
-  return { name, exercises };
+  return { name, exercises: stripOrphanGroups(exercises) };
 }

@@ -8,6 +8,7 @@
 
 import type { CompletedWorkoutLog, SavedWorkout, WorkoutExerciseTemplate } from '@/types';
 import type { NextDayCite } from '@/lib/coach/nextDayFromLogs';
+import { stripOrphanGroups } from '@/lib/workout/superset';
 
 export type HonoredRoutine = {
   id: string;
@@ -69,9 +70,10 @@ function validExercises(
       sets,
       ...(ex.loadPct != null && ex.loadPct > 0 ? { loadPct: ex.loadPct } : {}),
       ...(ex.prescribed ? { prescribed: true } : {}),
+      ...(ex.supersetGroup?.trim() ? { supersetGroup: ex.supersetGroup.trim() } : {}),
     });
   }
-  return out;
+  return stripOrphanGroups(out);
 }
 
 /** Name + lifts they can recognize. Empty name or no lifts ⇒ nothing. */
