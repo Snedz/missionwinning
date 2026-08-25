@@ -1,101 +1,119 @@
-# PLAN.md — This session becomes a Start (`.991`)
+# PLAN.md — Custom exercise (`.990`)
 
 **Freeze.** Implement only this file. Do not reopen refused items mid-build.
 **Not** [docs/PLAN.md](docs/PLAN.md) (build phases A–I). The living roadmap
 gets a matching frozen section so agents following the boot order find this
-ship; this file is the session-out Start freeze.
-**Lane:** Engineering-Web · close receipt / History · **Horizon:** 0
-**Label:** `2026.07-unified.991` (master is `.989` / `adad3e58`
-Quiet Track trend). Title stays **This session becomes a Start (.991)**.
-If custom exercise `.990` lands on master first, rebase onto that tip
-and bump the stamp so it stays greater than the new master. Title
-keeps `.991`.
-**Excellence-Override:** session-out Start this again on the existing
-receipt / History (not a shop, not a second Today Start)
+ship; this file is the live-set named-custom freeze.
+**Lane:** Engineering-Web · Train logger · **Horizon:** 0
+**Label:** `2026.07-unified.992` (master is `.991` / `d561b8a5`
+This session becomes a Start). Title stays **Custom exercise (.990)**.
+Rebased onto that tip so Start this again `.991` still holds.
+**Excellence-Override:** leftover local named custom on the live
+picker (not a marketplace, not a video shop)
 
 ---
 
 ## 0. What this is
 
-Honor notebook (`.960`) is **program-in**: they save a named routine;
-Start uses that notebook. Repeat last (`.717`) copies the *newest*
-log. Resume (`.963`) keeps the *open* session.
+The live set picker already searches the static catalog. A library
+miss ends the add: "No matches", and a session row whose id is not
+in `EXERCISES` is dropped (`ActiveExerciseList` `if (!exercise)
+return null`). They cannot name a movement during a live workout
+and keep logging.
 
-Missing is **session-out**: Thursday starts Monday's log without
-rebuilding an empty Train. One action off the close receipt (`.956`)
-and History: **Start this again**. Same movements. Not a shop.
+This ship is leftover, not a new marketplace. They type a name in
+the existing Train add/swap picker, the name persists locally and
+in the session, and they log sets without leaving Train. Unlimited.
+Free. Guest. First set still ungated. Empty invents nothing.
 
-Strong grammar (do not copy UI or brand): a finished workout is a
-starting point for a new session — sets are not completed; last
-loads/reps are targets. You can start it from the end of the workout
-or from History. We do **not** take the 3-template cap, a template
-library, or an update-template prompt.
+Android already creates a custom during the live add sheet
+(`custom-${uuid}`, Room, "free forever"). Web has the cloud table
+and CSV slug leftover, not the live invent path.
 
 `PRIVATE_MODE` stays on. Live www stays `.696`. Do not promote.
 
-## 1. Investigate (done — hypothesis holds)
+---
+
+## 1. Investigate (done — hypothesis holds; Today leak is no)
 
 Checked on `origin/master` `.989` (`adad3e58`).
 
 | Claim | Verified |
 |-------|----------|
-| Repeat last already exists | **Yes.** `repeatLastSessionTemplate` wraps `templateFromCompletedLog`. Train empty and Today Start (when no live Coach / no notebook) copy the **newest** viable log. |
-| Resume already exists | **Yes.** `.963` `sessionResume` + `protectLiveStart`. `startWorkout` keeps a live this-device session. Leave Today / week / receipt and come back — same session. A **closed** log is not resume. |
-| Honor notebook is program-in | **Yes.** `honorSavedRoutine` + confirm door. Receipt and History already have outline **Save as routine**. Start uses `pickHonoredStart` before repeat last / Just Go. Empty notebook invents nothing. **Keep. Do not rewrite.** |
-| History can start a finished log | **Yes.** K7/K11: list **Again**, details **Train this again**, day **Train this again**. All call `templateFromCompletedLog` then `startWorkout`. Live logged work → `/active` without wipe. Not a shop. |
-| Close receipt can Start this again | **No.** First paint is stats + lift table + notes + outline Save as routine. Next dock is Coach / Today (`.447` / `.956`). No session-out Start. |
-| Receipt first paint may grow a red Start | **No.** `sessionNoteSurface` forbids `primary-action` / `bg-primary-fill` on the open receipt (notes are not a red Start). Next dock stays the one red. **Start this again is outline.** |
-| Today is one Start | **Yes.** Lean `dock="start"`. Resume when live. Do not add a second Start. |
-| Empty invents a template | **No.** `templateFromCompletedLog` is null for empty / tombstone / warmup-only. Honor save is already empty-gated. |
-| `/private` | Tight `.957` lock. Do not touch. |
-| Custom exercise `.990` | Not on this master tip. Rebase + bump if it merges first. |
+| Live picker already has library search | **Yes.** `ExercisePicker` filters `EXERCISES` (cap 40). `AddExerciseSheet` / inline add / swap all mount it. E2E keeps `search exercises`, `option` rows, `add selected exercise`. |
+| Named custom persists locally + in the session | **No on web.** Store `addExerciseToActive` accepts any id, but nothing mints a named leftover. No `mw_` notebook. |
+| Library miss kills the log | **Yes, twice.** Empty query-miss copy is "No matches" (no invent). A session / Repeat-last / CSV slug id that `getExerciseById` misses is **unmounted** — the set row never paints. |
+| CSV already slugs unknown names | **Yes.** `exerciseIdForName` → slug when catalog misses. Comment already calls that "how custom exercises already work." Display then dies on the live list. |
+| Android already has live create | **Yes.** `CreateCustomExercise` from the add sheet. Id `custom-${UUID}`. No cap. Sync is Android / `/api/mobile/sync/customs`. |
+| Web public Library is a catalog | **Yes.** `LibraryPage` is `EXERCISES`. Do not add a shop or a public custom feed. |
+| Unlimited / free / guest | Web picker has no create, so no cap and no paywall — and no path. Android copy: free forever. Hevy free cap is 7; we do not copy that. |
+| Today / door | Lean Today is date · pins · highlights · week strip · Show all · one `JourneyHero` `dock="start"`. Resume `.963`. `/private` is the tight `.957` lock. |
 
-**Hypothesis (founder, non-binding):** Repeat last / resume already
-exist; leftover is turning a completed session into a Start target
-from the receipt or History without becoming a program marketplace.
+**Hypothesis (founder, non-binding):** the live set picker already
+has a library search; a named custom that persists locally (and in
+the session) is leftover, not a new marketplace.
 
-**Verdict: keep.** The leftover is session-out. Reuse the existing
-mapper. Do not add a template library. Do not change Today Start.
-Honor notebook stays program-in.
+**Verdict: keep.** The picker is the door. The notebook is local.
+Do not build a shop. Do not require a video. Do not cap the 8th.
 
-**Strong we take / leave:**
+### Track trend `.989` — leaked last-vs-this onto Today's home?
 
-- Take: finished session → new Start (same lifts, last loads as
-  targets, sets not completed). Door on the close **and** History.
-- Leave: 3-template lore as our cap. Template folders / shop.
-  Update Template / Keep Original prompt. Feed-share the template.
-  Trainer-rail.
+**No. Nothing to unmount first.**
 
-## 2. Lock (session-out only)
+`.989` last-vs-this paints only inside the existing week-strip
+cell (`data-testid="quiet-week-track-trend"`, 9px muted tabular).
+Lean Today still one `dock="start"`. No `BodyMetricsCard`, no
+`Sparkline`, no `TodayMetricsSparklineRow` on lean Today. Not a
+pin. Not Highlights. Not a second Start. `/track` stays the diary.
 
-| Surface | Empty / no template | Finished session with lifts |
-|---------|---------------------|-----------------------------|
-| Close receipt first paint | No Start this again. Empty session still invents no receipt (`.956`). | Outline **Start this again**. Same mapper as History. Save as routine stays (`.960`). Next dock stays Coach / Today. |
-| History list / details / day | No Again button (already). | Same helper. Copy becomes **Start this again** (short list may stay **Again**). Not a shop. |
-| Today Start | Unchanged. One Start. Resume when live. Notebook / repeat last / Just Go stay their lanes. | Not a second Start. This ship does not pin Monday onto the dock. |
-| Train empty | Unchanged. Notebook → repeat last → blank. | Start this again *is* `startWorkout` from receipt / History, not a new empty-start kind. |
+Keep that lock in this PR's tests. Do not revert `.989`. Do not
+lift last-vs-this onto a Today widget.
+
+---
+
+## 2. Lock (live name + local notebook)
+
+| Slot | Empty / miss | Named |
+|------|--------------|--------|
+| Live add / swap / inline picker | Catalog search. Blank query invents nothing. Whitespace invents nothing. | Type a name that is not the catalog (and not a name they already keep) → one Use-this-name action. Persist. Select. Add selected exercise still confirms. Stay on Train. |
+| Live set row | Catalog miss used to unmount the row. | Resolve catalog, then their notebook, then a leftover id so a real session row never vanishes. Log set stays ungated. No video required. |
+| Repeat last / Start this again / diary | Ids already copy. Names died when catalog missed. | Same ids. Names come from the notebook (or leftover humanize). Not a public catalog. |
+| Library page / `/private` / Today Start | Unchanged. | Unchanged. Customs are not a public catalog. Today stays one Start. |
 
 Closed rules:
 
-1. **Session-out, not program-in.** This action starts a **new**
-   session from a completed log. It does not write `savedWorkouts`.
-   It does not change `pickHonoredStart` / Wednesday / Builder.
-   Save as routine stays the notebook door.
-2. **One mapper.** `templateFromCompletedLog` stays the only lift
-   list. Working sets only (warmup omitted, `.966`). Superset
-   groups kept (`.980`). Empty / tombstone / warmup-only ⇒ no
-   action. Do not fork the loop.
-3. **Live session wins.** If `protectLiveStart` is `keep`, navigate
-   `/active` and do not mint a second session (`.963`). After a
-   normal Finish the active session is gone, so the receipt tap
-   starts.
-4. **Outline on the receipt.** Not `.primary-action`. Not a second
-   Today Start. Next dock stays the one red. Guest. First set
-   ungated.
-5. **Not a shop.** No template library, folder, cap, marketplace,
-   Feed share, or Trainer-rail. History stays a diary of logs.
-6. **Empty invents nothing.** No Start this again until they had
-   a session with at least one working set.
+1. **Lives on the live Train picker.** Not a Library shop. Not a
+   Builder-only form. Not on Today. Not on `/private`.
+2. **Name is enough.** No muscle, equipment, or video required.
+   Empty cues stay empty (`.973` invents nothing).
+3. **Empty invents nothing.** Blank / whitespace → no write, no
+   fake library row. Empty query → no invent action. Do not seed
+   a starter custom list.
+4. **Catalog wins.** A typed name that matches a catalog name
+   (trim, case-insensitive) picks the catalog id. Do not mint a
+   custom "Bench Press".
+5. **Reuse their name.** Same notebook name (trim, case-insensitive)
+   reuses that id. Unlimited means no cap, not eight copies of
+   one name.
+6. **Unlimited. Free. Guest.** No 7-cap. No premium. No account.
+   First set still ungated. The 8th named custom still creates.
+7. **Theirs, not a catalog.** Local `mw_custom_exercises` via
+   `safeStorage`. Repeat last / Start this again / History /
+   Victory resolve the name. `LibraryPage` stays `EXERCISES`.
+8. **Id shape.** New rows: `custom-` + uuid (Android leftover).
+   CSV slug leftovers already in a session still resolve so the
+   row is not killed.
+9. **No video. No paywall. No invented library-size traction.**
+   Do not add a new `300+` / count boast. Existing Library
+   subtitle stays put; do not restamp it.
+10. **Today still one Start** (Resume when live). `/private`
+    stays the tight `.957` lock. `.989` last-vs-this stays on
+    the strip cell only.
+11. **No PWA → mobile customs sync this ship.** Guest local is
+    the path. Do not call `/api/mobile/sync/customs` from web.
+    Do not rewrite Android.
+
+---
 
 ## 3. Ship (only this)
 
@@ -104,117 +122,150 @@ Closed rules:
 This freeze. Implement commit follows. Plan commit is `[skip vercel]`.
 Every later commit is `[skip vercel]`.
 
-### 3.2 Pure helper — `src/lib/workout/startAgain.ts`
+### 3.2 Pure helper — `src/lib/workout/customExercise.ts`
 
-One module. Deterministic. No store. No DOM. No premium / rewards /
-social. Wraps `templateFromCompletedLog` + `protectLiveStart`.
+One module. Deterministic create/reuse/resolve. Persist through
+`safeStorage` + `STORAGE_KEYS.customExercises` (`mw_custom_exercises`).
+No premium / rewards / social / Health / speech / wearables.
+No store import. Injectable `now` / `id` / storage for tests so
+fixtures do not expire.
 
 | Export | Rule |
 |--------|------|
-| `StartAgainDecision` | `{ kind: 'empty' }` · `{ kind: 'resume-live' }` · `{ kind: 'start'; name; exercises }` |
-| `decideStartAgain({ log, active })` | No template ⇒ `empty`. Live keep ⇒ `resume-live`. Else `start` with the mapper's name + exercises. |
+| `CustomExercise` | `{ id, name, createdAt }` — name is trimmed, non-empty. |
+| `normalizeCustomName(raw)` | Trim + collapse inner space. Blank → `''`. |
+| `decideNamedCustom({ name, catalog, existing })` | `null` if blank. `{ kind: 'catalog', id }` on catalog name match. `{ kind: 'reuse', id }` on existing custom name match. Else `{ kind: 'create', name }`. |
+| `mintCustomId()` | `custom-` + uuid. |
+| `upsertCustomExercise(name)` | `decideNamedCustom` then persist only on `create`. Catalog / reuse / blank write nothing new. Returns `{ id, name }` or `null`. |
+| `loadCustomExercises()` | Valid rows only. Drop blank names / bad ids. Empty storage → `[]`. |
+| `resolveExercise(id)` | Catalog `getExerciseById` first. Then notebook. Then leftover synthetic `{ id, name: humanize(id), muscleGroups: [] }` so a live row is never unmounted. Unknown empty id → `null`. |
+| `exercisesForPicker(catalog)` | Catalog plus **their** notebook rows as `Exercise`s. Do not invent leftovers that were never named. |
 
-Do not import this from Today, `/private`, Coach generate, or www.
-History and the receipt are the only callers.
+Do not import this from `/private`, Coach plan engine, www, or
+`LibraryPage` as a public catalog.
 
-### 3.3 Close receipt
+### 3.3 Picker — invent on a typed miss
 
-On `WorkoutVictorySheet` first paint, when the finished log has a
-template, outline **Start this again** (`data-testid="victory-start-again"`).
+`ExercisePicker` (so add sheet, inline add, and swap all get it):
 
-- `empty` ⇒ no button.
-- `resume-live` ⇒ close sheet, `/active` (do not wipe).
-- `start` ⇒ `startWorkout(name, exercises)`, close sheet, `/active`.
+- Search list = `exercisesForPicker` then existing `filterExercises`.
+- Their named customs may appear when the query matches **or**
+  when the query is empty and they already named some (theirs,
+  not fake).
+- When `decideNamedCustom` is `create`, show one invent action
+  `data-testid="exercise-picker-use-name"`. Copy via
+  `t('exercisePickerUseName', { defaultValue: 'Use "{{name}}"' })`.
+- Click persist + `onChange(id)`. Footer **Add selected exercise**
+  stays the confirm (e2e contract).
+- Keep `search exercises` placeholder and `option` rows.
+- Blank query: no invent action.
 
-Sit with / after outline Save as routine. Do not replace the Next
-dock. Do not open the honor save door. Do not share.
+`ActiveInlineAddExercise` / add sheet confirm resolve via
+`resolveExercise`, not catalog-only `getExerciseById`.
 
-### 3.4 History
+### 3.4 Live list + diary names
 
-`HistoryPage` list + details and `HistoryDayPage` call the same
-helper instead of inlining `templateFromCompletedLog` +
-`hasLoggedWork`. Copy: **Start this again** (keep a short **Again**
-on the tight list row if 44px needs it). Save as routine stays on
-the details door. Do not add a template grid.
+`ActiveExerciseList` uses `resolveExercise`. **Delete**
+`if (!exercise) return null` as the catalog-miss kill.
+
+`ActiveWorkoutPage` name resolvers, History / Victory / Builder
+display of a logged or saved id, and Repeat last / honor-saved
+start use `resolveExercise` so the name they typed stays theirs.
+
+Cues / form still / Info stay empty when there is no catalog
+media. Hide never blocks Log set.
 
 ### 3.5 Surfaces that do not change
 
 - Today lean stays date · pins · highlights · strip · Show all ·
-  one `JourneyHero` `dock="start"`.
-- Honor notebook `.960` (save door, `pickHonoredStart`, Wednesday
-  cite) stays program-in.
-- Resume `.963`, Repeat last `.717`, close receipt keep `.956`,
-  `/private` `.957`.
-- First set ungated. Guest.
+  one `JourneyHero` `dock="start"`. `.989` trend stays in the
+  strip cell.
+- `/private` stays the tight `.957` lock.
+- `LibraryPage` stays the static catalog. No shop. No video
+  required. No custom marketplace.
+- Android Room path stays. No F5. No Expo.
+- Honesty `.971`, resume `.963`, first set ungated, EMOM `.988`,
+  drop-set `.986`, warmup `.985` stay.
 
 ### 3.6 Tests
 
-- Helper: empty / tombstone / warmup-only ⇒ `empty`. Mutant that
-  invents a template dies.
-- Helper: live keep ⇒ `resume-live` (no start payload). Mutant
-  that starts over a live session dies.
-- Helper: finished Push with bench 5×100 ⇒ `start` with bench,
-  5 / 100, sets not completed. Warmup omitted. Group kept.
-- Receipt source: `victory-start-again` present; first-paint open
-  still has no `primary-action` / `bg-primary-fill`. Empty /
-  missing log has no button. Save as routine still there.
-  No shop / Feed / `discord.com` / marketplace / 3-template cap.
-- History source: list / details / day call `decideStartAgain`.
-  No catalog / folder / shop.
-- `firstSetUngated` stays green (comment this ship). Today lean
-  still one `dock="start"`. `todayPrimaryAction` does not import
-  `startAgain`.
-- Honor tests stay green. `/private` lock untouched.
+- Blank / whitespace / empty query → no create, no notebook write.
+  Mutant that seeds a fake library row dies.
+- Catalog name (any case) → catalog id, no write.
+- New name → `custom-` uuid, persist, resolve by id.
+- Same name again → reuse, notebook length unchanged.
+- Eight distinct names all persist (no cap). Mutant that refuses
+  the 8th dies.
+- `resolveExercise` catalog hit / notebook hit / leftover slug
+  still returns a paint-able `Exercise` (live list must not
+  `return null` on miss).
+- Picker source: invent action only on a create miss. Keeps
+  search placeholder + add-selected-exercise. No `UnlockButton`
+  / `/bundle` / `isPremium` / video-required / `300+` new boast.
+- Live list source: `resolveExercise`; no catalog-miss unmount.
+- Repeat-last / honor-saved / History / Victory resolve the
+  typed name. `LibraryPage` does not import the notebook as a
+  public catalog.
+- Today lock: lean still one `dock="start"`. No
+  `BodyMetricsCard` / `Sparkline` / `TodayMetricsSparklineRow`
+  on lean Today. `quiet-week-track-trend` stays on the strip
+  only.
+- `firstSetUngated` stays green. Custom path never mounts
+  SignInPrompt / login wall / Force Sync / Session Expired.
+- No Feed / Discord.com / likes / XP / four-scene door /
+  Health / counsel-hold / WeChat home / Mind.
 
 ### 3.7 Help / i18n / INDEX
 
-- Help one-liner on getting-started: after Finish (or from
-  History) they can **Start this again** — same movements, last
-  loads as targets. Empty invents nothing. Today stays Start
-  workout. Save as routine is still the named notebook.
-- i18n via `t(key, { defaultValue: 'Start this again' })`. Reuse
-  `historyTrainAgain` / `historyTrainAgainShort` (update EN
-  default) or one new key with defaultValue. No Strong product
-  names.
-- Folder INDEX if the file list changes (`src/lib/workout/INDEX.md`,
-  `src/components/workout/INDEX.md`).
+- Help one-liner (getting-started Train): during a live session
+  they can type a name the library does not have and keep
+  logging. Unlimited. Free. Stays on this device. Empty
+  invents nothing. Today stays Start workout.
+- i18n: add keys to `libraryLocales.ts` + `t(key, { defaultValue })`
+  matching EN. Coverage cap stays 0.
+- Folder INDEX if the file list changes (`src/lib/INDEX.md`,
+  `src/lib/workout/INDEX.md`, `src/components/workout/INDEX.md`,
+  `src/store/INDEX.md`, `src/lib/storage` keys).
 
 ## 4. Refuse
 
-Program marketplace. 3-template lore as our cap. Feed-share the
-template. Trainer-rail. WeChat home. Four-scene door. Health gate.
-Counsel-hold. Promote. `PRIVATE_MODE` flip. Merge. Second Today
-Start. Discord.com. Mind. Update-template prompt. Template folders.
-Pinning Monday onto the Today dock. Rewriting honor notebook.
+Paywall custom. Marketplace exercise shop. Require a video.
+Invented library-size traction. Cap the 8th. WeChat home.
+Four-scene door. Feed / DMs. Health gate. Counsel-hold.
+Promote. `PRIVATE_MODE` flip. Merge. Second Today Start.
+Discord.com. Mind. PWA customs cloud sync. Android rewrite.
+Seeding fake library rows. Lifting `.989` last-vs-this onto
+a Today widget.
 
-Do not smash `.989` / `.988` / `.986` / `.985` / `.983` / `.981` /
-`.980` / `.978` / `.977` / `.976` / `.974` / `.973` / `.971` /
-`.970` / `.967` / `.965` / `.963` / `.961` / `.960` / `.957` /
-`.956`.
+Do not smash `.991` / `.989` / `.988` / `.986` / `.985` / `.983` /
+`.981` / `.980` / `.978` / `.977` / `.976` / `.974` / `.973` /
+`.971` / `.970` / `.967` / `.965` / `.963` / `.961` / `.957`.
 
 ## 5. Docs / ship protocol
 
-- `APP_BUILD_LABEL` → `2026.07-unified.991`
-- LOG heading `## 2026-08-25 — This session becomes a Start (\`.991`)` +
+- `APP_BUILD_LABEL` → `2026.07-unified.990`
+- LOG heading `## 2026-08-25 — Custom exercise (\`.990`)` +
   rotate oldest live entry so LOG stays ≤15
-- `CONTEXT.md` `## Now` one-line `.991` citing the full label;
-  keep `.989` … `.970`; rotate oldest shipped Now bullet so the
-  block stays ≤25
+- `CONTEXT.md` `## Now` one-line `.990` citing the full label;
+  keep `.989` … `.971`; rotate oldest shipped Now bullet
+  (`.970`) so the block stays ≤25
 - Plan commit `[skip vercel]`. Implement commits `[skip vercel]`.
-- One draft PR against master. Title: `This session becomes a Start (.991)`.
+- One draft PR against master. Title: `Custom exercise (.990)`.
   Do not merge. Do not promote. Live www stays `.696`.
-- `tsc --noEmit` clean. `check-build-label` `.991` > master `.989`.
+- `tsc --noEmit` clean. `check-build-label` `.990` > master `.989`.
 
 ## 6. Done when
 
-- From the close receipt and History they can **Start this again**
-  (same movements, not a rebuilt empty log).
-- Optional. Guest. First set still ungated. Empty invents nothing
-  (no Start this again until they had a session).
-- Not a shop. Not a 3-template cap as our identity. Not Feed-share.
-  Not Trainer-rail.
-- Today still one Start (Resume when live). `/private` stays the
-  tight `.957` lock.
-- Honor notebook (`.960`) stays program-in. This is session-out only.
-- Unit tests. tsc clean. Label `.991`. Draft PR against master.
-  Title: `This session becomes a Start (.991)`.
+- During a live session they can name a custom exercise and log
+  sets on it without leaving Train.
+- Unlimited. Free. Guest. First set still ungated. Empty invents
+  nothing (no fake library entries).
+- Custom they named stays theirs on Repeat last / Start this
+  again / the local diary. Not a public catalog.
+- Today still one Start (Resume when live). `/private` stays
+  the tight `.957` lock. `.989` last-vs-this stays on the strip
+  cell only.
+- No video required. No paywall. No invented traction on
+  library size.
+- Unit tests. tsc clean. Label `.990`. Draft PR against master.
+  Title: `Custom exercise (.990)`.
