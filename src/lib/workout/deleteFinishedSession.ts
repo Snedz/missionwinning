@@ -25,15 +25,11 @@ export function normalizeSessionId(raw: unknown): string {
   return raw.trim();
 }
 
-function isRecord(value: unknown): value is Record<string, unknown> {
-  return !!value && typeof value === 'object' && !Array.isArray(value);
-}
-
 function liveSessionIds(
   live: ActiveWorkout | null | undefined
 ): Set<string> {
   const ids = new Set<string>();
-  if (!live || !isRecord(live)) return ids;
+  if (!live) return ids;
   const clientId = normalizeSessionId(live.clientId);
   const workoutId = normalizeSessionId(live.workoutId);
   if (clientId) ids.add(clientId);
@@ -49,7 +45,7 @@ export function findFinishedSession(
   const id = normalizeSessionId(sessionId);
   if (!id || !Array.isArray(history)) return null;
   for (const log of history) {
-    if (!log || !isRecord(log) || log.deletedAt) continue;
+    if (!log || log.deletedAt) continue;
     if (normalizeSessionId(log.id) === id) return log;
     if (normalizeSessionId(log.clientId) === id) return log;
   }
