@@ -6,6 +6,271 @@ Living roadmap for the **everything app** (a bodyweight coach app Super Bundle �
 
 ---
 
+## Frozen plan — `.986` Drop-set rest-zero (2026-08-25)
+
+> **Frozen.** Implement only this section. Plan commit is `[skip vercel]`.
+> Label: `2026.07-unified.986` — next free after master `.985`
+> (`8a9fe41f` — Warmup batch). Title stays
+> **Drop-set rest-zero (.986)**.
+> Warmup `.985` + notes `.983` + 1RM `.981` +
+> Supersets `.980` + Learn `.978` + week strip
+> `.977` + Quiet Track `.976` + Quiet Move
+> `.974` + cues `.973` + honesty `.971` +
+> tags `.970` + RPE `.967` + Fuel `.965` +
+> resume `.963` are on master. Do not smash
+> them.
+> Do **not** smash week strip `.961`, notebook
+> `.960`, swap/skip `.959`, desk→gym `.958`,
+> `/private` `.957`, close receipt `.956`,
+> Wednesday `.955`, Today Start `.954`, or
+> identity `.949`.
+> Every commit `[skip vercel]`. No Preview.
+> No empty-commit retrigger. No
+> `PRIVATE_MODE` flip. No promote. Live www
+> stays `.696`. Guest path. First set stays
+> ungated. Confirm-gated writes. Brand:
+> **Log a set. Offline.** / No account. No
+> wearable. Coach stays opt-in / skippable.
+> Train + Coach only. Today stays one Start.
+
+Tags (`.970`) already mark a set as
+drop. Missing: a drop series is
+performed without resting. After they
+log a drop-tagged set and start the
+next drop, the rest timer must not
+start (or must stay at zero). A
+running 2:00 after a drop is a lie.
+
+Strong grammar (do not copy UI or
+brand): drop sets are a series
+performed without resting.
+
+### First check (done — no Today leak)
+
+Read `origin/master` tip `8a9fe41f` /
+`.985`. Warmup batch lives on Train:
+`planWarmupBatch` / footer **Add
+warmups** / `insertWarmupRampOnExercise`.
+`.985` did not touch `HomePage` /
+`HomeTodayLean` / `HomeTodayDashboard`.
+`warmupRamp.test.ts` already kills a
+mutant that imports the batch on Today
+or `/private`. Lean Today still one
+`dock="start"`. `/private` stays the
+tight `.957` lock. **Nothing to unmount
+first.** Do not add warmup chrome to
+Today in this PR either.
+
+### One concern
+
+Logging a set tagged drop does not
+start the rest timer for the next drop
+in that series. A running timer goes
+to zero. A working set (not drop)
+still starts rest as today.
+
+### Investigate (done — hypothesis holds, with a gap)
+
+| Layer | What exists | Gap this ship closes |
+|-------|-------------|----------------------|
+| Tags `.970` | Optional W / D / F. `toggleSetTag` writes `kind`. Warmup is not Prev / vs-last / why-line / Wednesday. | **Keep taxonomy.** Drop stays `kind: 'drop'`. Warmup stays warmup (still out of cites). Do not invent a fourth kind. |
+| Rest plan | `planLogSetRest` → `shouldRestAfterLog` + `resolveRestForNextSet`. Solo set with a next set ⇒ `takeRest: true`. Blind to kind. | Keep last-rest / group-round rules for work. |
+| Compose `.754` | `composeDropRest(plan, kind)` sets `takeRest: false`, `restSeconds: 0` when `kind === 'drop'`. `handleLogSet` already wraps `planLogSetRest` with it. | **Skip-start is wired.** Tests prove compose in isolation. They do not prove the page zeros a running timer. |
+| Log path | `resolveLogSetPayload` reads `set.kind ?? 'normal'`. Tags write kind before Log set. `if (rest.takeRest) startRestTimer(...)`. | Does **not** call `stopRestTimer` when takeRest is false. Log work → 2:00 runs → log drop → compose skips a *new* start, leftover 2:00 keeps ticking. That is the lie. |
+| Start drop | `handleStartDrop` already `stopRestTimer()`. | `handleSetKindChange` (the `.970` chips) does not. Tapping Drop on the next set leaves work-set rest running. |
+| `startRestTimer(0)` | `resolveStartRestSeconds(0)` treats non-positive as "omit" and falls back to last rest / 90s. | Landmine, not the live path (page gates on `takeRest`). Do not call `startRestTimer` with 0. Zero means stop. |
+| Warmup rest | Warmup is out of cites, not out of rest. `composeDropRest` leaves warmup / failure / work untouched. | **Keep.** Do not skip rest on warmup. |
+| Today / door | One Start. Tight `/private`. Resume `.963`. Warmup `.985` off Today. | **Keep.** No new Today chrome. |
+
+Hypothesis (verified, keep the door):
+
+Rest starts in the log-set path
+(`planLogSetRest` / `handleLogSet` /
+`localFirstRestGuard`). Drop kind from
+set tags already skips *starting* rest
+via `composeDropRest`. The missing
+behavior is **stay at zero**: after a
+drop-tagged log, stop any running
+rest. Tagging the next incomplete set
+as drop stops rest the same way
+`handleStartDrop` already does. Work
+still starts rest. Empty invents
+nothing.
+
+Closed rules:
+
+1. **One kind.** `kind: 'drop'` from
+   `.970`. No new tag taxonomy. No
+   drop mode. No pairing UI. No
+   animated drops.
+2. **Series without rest.** Log a
+   drop-tagged set ⇒ do not start
+   rest; stop a running timer. Tag
+   the next incomplete set drop ⇒
+   stop rest. Work set still starts
+   rest as today.
+3. **Zero means stop.** Never call
+   `startRestTimer(0)` — that
+   resolves to last rest / 90s.
+   `stopRestTimer` is the zero.
+4. **Warmup stays warmup.** Still
+   out of cites. Still not a rest
+   skip. Failure still rests.
+5. **Surfaces.** Today still one
+   `.primary-action`. Resume /
+   Finish-partial stay `.963`.
+   `/private` stays the tight `.957`
+   lock. No four-scene door. No
+   Health gate. No Feed. Warmup
+   batch stays on Train.
+
+### Ship (only this)
+
+1. **Keep `composeDropRest` as the
+   one drop-rest rule** in
+   `src/lib/workout/dropSet.ts`.
+   Do not fold drop into
+   `planLogSetRest` / last-rest
+   memory. Work / warmup / failure
+   plans pass through.
+
+2. **Log path zeros rest.** In
+   `handleLogSet`, when the composed
+   plan has `takeRest: false` because
+   the logged set is drop, call
+   `stopRestTimer()` (or equivalent
+   stay-at-zero). Do not call
+   `startRestTimer`. Work still
+   `startRestTimer` when
+   `takeRest`. Guest. Sync. First
+   set ungated. `localFirstRestGuard`
+   stays: no await / fetch / outbox
+   before rest start or stop.
+
+3. **Tag path matches Start drop.**
+   `handleSetKindChange` to `drop` on
+   an incomplete set stops rest —
+   same as `handleStartDrop`. No new
+   chrome. No second control.
+
+4. **Help one-liner.** A set tagged
+   Drop does not start rest. The
+   next drop in that series is
+   without rest. Work still rests.
+   Optional. Free.
+
+### Tests
+
+- `composeDropRest(work, 'drop')` ⇒
+  `takeRest: false`, `restSeconds: 0`.
+  Work / warmup / failure /
+  undefined pass through. Mutant
+  that starts rest on drop dies.
+- Log a drop-tagged set does not
+  start rest. A running timer is
+  stopped (stay at zero). Mutant
+  that leaves 2:00 running dies.
+- Log a working set still starts
+  rest as today (`takeRest` +
+  `restSeconds >= 60`). Mutant that
+  skips rest on work dies.
+- Tagging the next incomplete set
+  drop stops rest. Start-drop still
+  stops rest. Warmup tag does not
+  become a rest skip.
+- `startRestTimer` is never called
+  with 0 after a drop (fallback
+  would invent 90s / last rest).
+- `firstSetUngated` +
+  `localFirstRestGuard` stay green.
+  No await / auth / outbox on the
+  rest path.
+- `setRowTags` taxonomy unchanged
+  (`warmup` / `drop` / `failure`).
+  Warmup still out of cites.
+- Today / `/private` / gated door
+  still do not import warmup batch
+  or mount Add warmups. No new
+  Today chrome. Mutant that mounts
+  drop theater on Today dies.
+- Helper + page do not import
+  premium / trial / rewards /
+  social / Health.
+- No Feed / Discord.com / likes /
+  XP / login wall / Force Sync /
+  Session Expired / four-scene
+  door. Today still one
+  `.primary-action`.
+- Resume / Finish-partial
+  contracts stay green. Tags /
+  RPE / cues / supersets / 1RM /
+  notes / warmup batch stay
+  optional. Log set never waits.
+
+### Refuse
+
+Drop-set theater (animated drops,
+pairing UI, a special drop mode).
+Trainer-rail pairing. Paywall.
+WeChat home. Four-scene door.
+Feed / DMs / marketplace.
+Wearable. Counsel-hold (field
+test / PT / pregnancy). Promote.
+`PRIVATE_MODE` flip. Merge.
+Second Today Start. Discord.com.
+Do not smash warmup `.985` /
+notes `.983` / 1RM `.981` /
+supersets `.980` / Learn `.978`
+/ week strip `.977` / `.976` /
+`.974` / `.973` / `.971` /
+`.970` / `.967` / `.965` /
+`.963` / `.960`.
+
+### Docs / ship protocol
+
+- `APP_BUILD_LABEL` → `2026.07-unified.986` (past master `.985` / `8a9fe41f`)
+- LOG heading `## 2026-08-25 — Drop-set rest-zero (\`.986\`)` + rotate oldest live entry
+- `CONTEXT.md` `## Now` cites the full label `2026.07-unified.986`; keep warmup `.985` + notes `.983` + 1RM `.981`; rotate oldest shipped Now bullet so the block stays ≤25
+- Folder INDEX if the file list or concerns change (`src/lib/workout/INDEX.md`)
+- i18n: no new pack keys unless a visible string must change; reuse existing Drop copy
+- Help: one line on getting-started (Drop does not start rest; the series is without rest)
+- Every commit `[skip vercel]`. No Preview. Hobby quota is burned.
+- One draft PR against master. Title: `Drop-set rest-zero (.986)`. Do not merge. Do not promote. Live www stays `.696`.
+- `tsc --noEmit` clean. `check-build-label` `.986` > master `.985`. Targeted tests for rest + tags + `firstSetUngated` + `localFirstRestGuard`.
+- If `origin/master` moves ahead before the PR opens, rebase onto the new tip and bump the stamp so it stays greater than the new master. Title can keep Drop-set rest-zero (.986).
+
+### Done when
+
+- This section was frozen before
+  product code.
+- Logging a set tagged drop does
+  not start the rest timer for the
+  next drop in that series. A
+  running timer stays at zero. A
+  working set still starts rest.
+  Warmup kind stays warmup. No new
+  tag taxonomy. Optional. Guest.
+  First set still ungated. Empty
+  invents nothing. Today still one
+  Start (Resume when live).
+  `/private` stays the tight `.957`
+  lock. No new Today chrome. No
+  Health gate. No Feed. Unit tests.
+  tsc clean. Label `.986`. Draft PR
+  against master. Title:
+  `Drop-set rest-zero (.986)`.
+
+**Landed `.986`:** `composeDropRest` stays the
+one drop-rest rule.
+`restActionAfterCompose` starts work rest
+or `stopRestTimer` after a drop (never
+`startRestTimer(0)`). Tagging an incomplete
+set drop stops rest the same way Start
+drop already did. Warmup stays warmup.
+Today still one Start.
+
+---
+
 ## Frozen plan — `.984` Warmup batch (2026-08-25)
 
 > **Frozen.** Implement only this section. Plan commit is `[skip vercel]`.

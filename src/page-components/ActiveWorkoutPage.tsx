@@ -90,6 +90,8 @@ import { isPlusLoadExercise } from '@/lib/workout/bodyweightLoad';
 import { prefersReducedMotion } from '@/lib/motion';
 import {
   composeDropRest,
+  restActionAfterCompose,
+  shouldStopRestOnDropTag,
   planStartDrop,
   suggestDropFromPrior,
 } from '@/lib/workout/dropSet';
@@ -435,8 +437,11 @@ export function ActiveWorkoutPage() {
       }),
       setKind
     );
-    if (rest.takeRest) {
+    const restAction = restActionAfterCompose(rest, setKind);
+    if (restAction === 'start') {
       startRestTimer(rest.restSeconds, rest.rememberExerciseId ?? exerciseId);
+    } else if (restAction === 'stop') {
+      stopRestTimer();
     }
     setLogPulse((n) => n + 1);
 
@@ -469,9 +474,12 @@ export function ActiveWorkoutPage() {
     if (kind !== 'drop') return;
     const ex = activeWorkout?.exercises[exIdx];
     const target = ex?.sets[setIdx];
-    if (!ex || !target || target.completed) return;
-    const prefill = suggestDropFromPrior(ex.sets, setIdx, units);
-    if (prefill) applyDropDial(exIdx, setIdx, prefill.reps, prefill.weight);
+    if (!ex || !target) return;
+    if (shouldStopRestOnDropTag(kind, target.completed)) {
+      stopRestTimer();
+      const prefill = suggestDropFromPrior(ex.sets, setIdx, units);
+      if (prefill) applyDropDial(exIdx, setIdx, prefill.reps, prefill.weight);
+    }
   };
 
   const handleRepeatLast = (exIdx: number) => {

@@ -16,6 +16,7 @@
  * `.981` — optional % of a known 1-rep max on the set row. Never a login wall.
  * `.983` — optional private session notes on the live session / close receipt (concern `.982`). Never a login wall.
  * `.985` — free warmup batch from the working weight (concern `.984`). Never a login wall.
+ * `.986` — drop-tagged set skips rest / zeros a running timer. Never a login wall.
  */
 
 export function normalizeAppPath(pathname: string | null | undefined): string {

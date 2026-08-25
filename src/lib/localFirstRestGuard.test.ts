@@ -99,10 +99,14 @@ describe('localFirstRestGuard', () => {
     assert.doesNotMatch(body, /\basync\b/);
     assert.doesNotMatch(body, /getUser|getSession|flushOutbox|flush\s*\(/);
     assert.match(body, /planLogSetRest/);
+    assert.match(body, /composeDropRest/);
+    assert.match(body, /restActionAfterCompose/);
     assert.match(
       body,
       /startRestTimer\(rest\.restSeconds,\s*(?:rest\.rememberExerciseId\s*\?\?\s*)?exerciseId\)/
     );
+    assert.match(body, /stopRestTimer\(\)/);
+    assert.doesNotMatch(body, /startRestTimer\(\s*0/);
   });
 
   it('store logSet + logSetAndAdvance + startRestTimer never await network/auth', () => {
