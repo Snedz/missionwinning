@@ -401,6 +401,12 @@ describe('nextDayFromLogs', () => {
         completedAt: '2026-08-18T11:00:00.000Z',
         exercises: [{ exerciseId: 'barbell-row', sets: [{ reps: 8, weight: 80 }] }],
       }),
+      log({
+        id: 'legs',
+        workoutName: 'Legs',
+        completedAt: '2026-08-19T11:00:00.000Z',
+        exercises: [{ exerciseId: 'squats', sets: [{ reps: 5, weight: 140 }] }],
+      }),
     ];
     const cite = nextDayFromLogs({ history, now: NOW });
     assert.equal(cite?.name, 'Push');
