@@ -25,6 +25,7 @@
  * `.994` — open set row honors type (weight / BW / duration / assisted). Never a login wall.
  * `.995` — per-exercise rest (warmup vs work) on the open lift. Never a login wall.
  * `.996` — their exercise note + pinned reminder on the open lift. Never a login wall.
+ * `.997` — edit a finished session from History. Never a login wall.
  */
 
 export function normalizeAppPath(pathname: string | null | undefined): string {

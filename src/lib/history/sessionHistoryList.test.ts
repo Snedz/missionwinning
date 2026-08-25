@@ -147,7 +147,7 @@ test('HistoryPage: list + empty + read-only open', () => {
   assert.match(src, /session-history-log/, 'open target is the log dialog');
   assert.match(src, /No sessions yet/, 'empty stays an invitation');
   assert.match(src, /Log one set from Today/, 'empty points at Today, not shame');
-  assert.match(src, /setSelected\(log\)/, 'tap selects the completed log');
+  assert.match(src, /openLog\(log\)|setSelected\(log\)/, 'tap selects the completed log');
 
   assert.doesNotMatch(src, /Top 8|top eight/i, 'no Top 8');
   assert.doesNotMatch(src, /you missed|streak broken|days behind/i, 'no streak-as-shame');
@@ -159,5 +159,5 @@ test('row tap is not resume — startWorkout stays off the card handler', () => 
   const card = src.slice(src.indexOf('session-history-row'), src.indexOf('session-history-log'));
   assert.ok(card.length > 40, 'could not slice the list→log region');
   assert.doesNotMatch(card, /startWorkout\(/, 'row tap must not start a workout');
-  assert.match(card, /setSelected\(log\)/, 'row tap opens the log');
+  assert.match(card, /openLog\(log\)|setSelected\(log\)/, 'row tap opens the log');
 });

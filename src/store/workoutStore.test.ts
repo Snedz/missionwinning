@@ -631,4 +631,36 @@ test('workoutStore', async (t) => {
     assert.equal(sets.length, 3);
     assert.ok(sets.every((s) => s.reps === 0 && s.weight === 0 && !s.completed));
   });
+
+  await t.test('saveEditedHistoryLog replaces the diary and leaves the live set (.997)', () => {
+    useWorkoutStore.getState().startWorkout('Push', template('bench-press', 2));
+    useWorkoutStore.getState().logSet(0, 0, 5, 135);
+    useWorkoutStore.getState().logSet(0, 1, 5, 135);
+    const finished = useWorkoutStore.getState().completeActiveWorkout();
+    assert.ok(finished);
+    useWorkoutStore.getState().startWorkout('Live', template('squat', 1));
+    const live = useWorkoutStore.getState().activeWorkout;
+    assert.ok(live);
+
+    const edited = {
+      ...finished!,
+      exercises: [{ exerciseId: 'bench-press', sets: [{ reps: 5, weight: 225 }] }],
+      totalVolume: 1125,
+      revision: 2,
+      deletedAt: null,
+    };
+    const saved = useWorkoutStore.getState().saveEditedHistoryLog(edited);
+    assert.ok(saved);
+    assert.equal(saved?.exercises[0]?.sets[0]?.weight, 225);
+    assert.equal(useWorkoutStore.getState().workoutHistory[0]?.exercises[0]?.sets[0]?.weight, 225);
+    assert.equal(useWorkoutStore.getState().activeWorkout?.workoutName, 'Live');
+    assert.equal(useWorkoutStore.getState().activeWorkout?.clientId, live?.clientId);
+
+    const wiped = useWorkoutStore.getState().saveEditedHistoryLog({
+      ...edited,
+      exercises: [],
+    });
+    assert.equal(wiped, null);
+    assert.equal(useWorkoutStore.getState().workoutHistory[0]?.exercises[0]?.sets[0]?.weight, 225);
+  });
 });

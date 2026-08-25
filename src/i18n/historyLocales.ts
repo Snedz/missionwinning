@@ -82,6 +82,21 @@ type HistoryStrings = {
   historySetCount: string;
   historySetCountOne: string;
   historyOpenLog: string;
+  /** `.997` — edit the sets on a finished session. */
+  historyEdit: string;
+  historyEditSave: string;
+  historyEditCancel: string;
+  historyEditConfirmTitle: string;
+  historyEditConfirmDesc: string;
+  historyEditConfirm: string;
+  historyEditEmpty: string;
+  historyEditEmptyDesc: string;
+  historyAddSet: string;
+  historyRemoveSet: string;
+  historyTableTime: string;
+  historyTableVest: string;
+  historyTableAssist: string;
+  historyTableLogged: string;
 };
 
 const en: HistoryStrings = {
@@ -161,6 +176,21 @@ const en: HistoryStrings = {
   historySetCount: '{{count}} sets',
   historySetCountOne: '1 set',
   historyOpenLog: 'Open log: {{name}}',
+  historyEdit: 'Edit',
+  historyEditSave: 'Save',
+  historyEditCancel: 'Cancel',
+  historyEditConfirmTitle: 'Save these changes?',
+  historyEditConfirmDesc:
+    'This updates the session you logged. Coach and History will use the new numbers. The session is not deleted.',
+  historyEditConfirm: 'Save changes',
+  historyEditEmpty: 'Nothing to save',
+  historyEditEmptyDesc: 'Empty invents nothing — this session stays as it was.',
+  historyAddSet: 'Add set',
+  historyRemoveSet: 'Remove',
+  historyTableTime: 'Time',
+  historyTableVest: '+kg',
+  historyTableAssist: 'Assist',
+  historyTableLogged: 'Logged',
 };
 
 const es: HistoryStrings = {

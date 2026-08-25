@@ -164,6 +164,8 @@ interface WorkoutState {
   setSessionNote: (note: string) => void;
   /** Receipt add / edit of a finished session note. Local only. Empty clears. */
   setHistorySessionNote: (logId: string, note: string) => void;
+  /** History Save of a finished session they own. Same id. Never wipes. */
+  saveEditedHistoryLog: (log: CompletedWorkoutLog) => CompletedWorkoutLog | null;
   startRestTimer: (seconds?: number, exerciseId?: string, lane?: RestLane) => void;
   adjustRestTimer: (delta: number) => void;
   tickRestTimer: () => void;
@@ -856,6 +858,19 @@ export const useWorkoutStore = create<WorkoutState>()(
             row.id === logId ? attachSessionNote(row, note) : row
           ),
         }));
+      },
+
+      saveEditedHistoryLog: (log) => {
+        if (!log || log.deletedAt) return null;
+        const existing = get().workoutHistory.find((row) => row.id === log.id);
+        if (!existing || existing.deletedAt) return null;
+        if (!log.exercises?.some((ex) => (ex.sets ?? []).length > 0)) return null;
+        const next = { ...log, deletedAt: null };
+        set((s) => ({
+          workoutHistory: s.workoutHistory.map((row) => (row.id === log.id ? next : row)),
+        }));
+        enqueueWorkoutUpsert(next);
+        return next;
       },
 
       startRestTimer: (seconds?: number, exerciseId?: string, lane?: RestLane) => {
