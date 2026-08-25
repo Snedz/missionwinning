@@ -6,6 +6,167 @@ Living roadmap for the **everything app** (a bodyweight coach app Super Bundle �
 
 ---
 
+## Frozen plan — `.969` Quiet Move (2026-08-25)
+
+> **Frozen.** Implement only this section. Plan commit is `[skip vercel]`.
+> Label: `2026.07-unified.974` — Quiet Move (concern `.969`) on master that now has
+> cues `.973` (`#805`) + honesty `.971` (`#801`) + set tags `.970` (`#802`)
+> + RPE `.967` (`#803`) + Fuel `.965`.
+> Ship label is `.974` because master already minted `.973`.
+> **`.969` is not greater than master `.973`.** Do not downgrade health.
+> Do **not** smash cues `.973`, honesty `.971`, set tags `.970`, RPE `.967`,
+> Fuel restock `.965`, resume `.963`, week strip
+> `.961`, notebook `.960`, swap/skip `.959`, desk→gym `.958`,
+> `/private` `.957`, close receipt `.956`, Wednesday `.955`, or
+> Today Start `.954`.
+> Implement commit may allow one Preview. No empty-commit retrigger.
+> No `PRIVATE_MODE` flip. No promote. Live www stays `.696`.
+> Guest path. First set stays ungated. Confirm-gated writes
+> only where a write can wipe. Brand: **Log a set. Offline.**
+> / No account. No wearable. Coach stays opt-in / skippable.
+> Train + Coach only on the door. Move stays off Today.
+
+Rest days on the quiet week strip are empty on
+purpose. Empty is not a fail. Missing: a quiet
+walk / easy session they can log **on Move** so
+rest is not a shame hole — without making Move
+a second Start, a ring, or a Health permission
+before Train.
+
+### One concern
+
+Optional rest-day walk / easy session on Move.
+Not Today. Not a ring. Not a wearable gate.
+
+### Investigate (done — hypothesis holds)
+
+Read `origin/master` tip with cues `.973`, honesty `.971`,
+set tags `.970`, RPE `.967`, Fuel `.965`. Keep all five.
+
+| Layer | What exists | Gap this ship closes |
+|-------|-------------|----------------------|
+| Move `/move` | Timed mobility flows + premium preview + recent flow wins | No walk / easy-session log. Rest has nowhere quiet to go. |
+| Track | `activityLog` walk/run/GPS + weekly stats | **Do not use.** That is a feed of activities. Refused. |
+| Fuel | Free log on `/nutrition`. Super Bundle depth later. Not a Today Start. | **Model.** Quiet Move is Fuel-class: own surface, guest log, no home takeover. |
+| Week strip `.961` | `quietWeekGlance` reads `workoutHistory` only. Empty stays empty. | **Keep.** A Move log must not mark Done. |
+| Today Start `.954` | One `.primary-action` → Train / Resume | **Keep.** Move is not a second Start. |
+| Resume `.963` | Leave Today / week / receipt, same session | **Keep.** |
+| Fuel restock `.965` | Fuel Show more copy list | **Keep.** Not this ship. |
+| RPE `.967` | Optional 1–10 RPE / RIR on the set row | **Keep.** |
+| Set tags `.970` | Optional W / D / F | **Keep.** |
+| Honesty `.971` | Thin-history honesty | **Keep.** |
+| Cues `.973` | Written cues on the movement | **Keep.** Not this ship. |
+| `/private` `.957` | Tight lock. No four-scene door. | **Keep.** |
+| Wearables / Health | Profile optional. Track GPS asks location. | **Never** a Train gate. No Health permission on Move. |
+| Cross-pillar chips | May suggest `/move` from strain | **Keep.** Do not add a walk CTA on Today. |
+| Pillar wins | Flow completions on Move | Quiet log is **not** a win feed and does not write `pillarWins` / Today journal. |
+
+Hypothesis (verified, keep):
+
+A **pure** helper over `{ kind, minutes?, distanceKm?, date }`
+returns a quiet row or empty. `kind` is `walk` | `easy`.
+Minutes and distance are optional — empty / 0 / invalid
+omit the number, they do not invent one. A kind-only log
+is valid (they moved; they did not measure). Own store
+`mw_quiet_move_log`. Does **not** write `workoutHistory`
+(week strip stays empty). Does **not** write `activityLog`
+(not a Track feed). Does **not** write `pillarWins` or
+Today journal. Guest. Surface is `/move` only. Outline
+Log, never `.primary-action`. No ring. No GPS. No
+Health permission.
+
+Closed rules:
+
+1. **Move surface only.** Not Today, Train, `/private`,
+   or the gated door. Not a six-pillar home.
+2. **Empty week-strip days stay empty.** Quiet log is
+   not a Train Done mark. No shame ✕. No streak.
+3. **Numbers are optional.** Distance or minutes, or
+   neither. Empty / 0 invents nothing.
+4. **No wearable. No ring. No Health gate.** Train
+   never waits on a permission. No Feed of walks.
+5. **Surfaces stay.** Today still one Start (Resume
+   when open). `/private` stays the tight `.957` lock.
+   Four-scene door stays refused. Fuel restock `.965`
+   stays on Fuel Show more. Resume `.963` stays.
+
+### Ship (only this)
+
+1. **Pure helper** `src/lib/move/quietMove.ts`.
+   `parseQuietMoveMinutes` · `parseQuietMoveDistanceKm`
+   · `decideQuietMove` · `listQuietMoveForDate` ·
+   `appendQuietMove`. Deterministic. Inject `todayIso`
+   + `nowIso` + `id`. No `generateWeek`. No GPS.
+
+2. **Card** `QuietMoveLogCard` on `/move` first paint
+   (Fuel-class log, not Show-more burial). Outline Log
+   (not `.primary-action`). Walk / easy chips use
+   `is-active-tab`, not a red fill. Optional minutes
+   + optional distance. Today's quiet rows listed.
+   Empty copy names rest as fine. No ring. No chart.
+
+3. **Own persist** `mw_quiet_move_log` via
+   `STORAGE_KEYS`. Guest. Additive (not confirm-gated
+   — this is not a wipe). Backup prefix-scan picks it
+   up. Do **not** register it as a journey day.
+
+4. **Help one-liner.** On a rest day, Move can take
+   an optional walk or easy session. Today stays Start
+   workout. Empty week days stay empty.
+
+### Tests
+
+- Kind-only walk / easy logs. Minutes-only. Distance-
+  only. Both. Mutant that requires a number dies.
+- Empty / 0 / NaN / negative invent no number.
+  Invalid kind invents nothing (`null`).
+- Append stays on `mw_quiet_move_log`. Mutant that
+  writes `workoutHistory` or `activityLog` or
+  `pillarWins` dies.
+- `quietWeekGlance` still ignores Move rows — empty
+  days stay empty after a quiet log.
+- Surface: Today / Train / `/private` / gated door
+  do not import quiet Move. Card has no
+  `.primary-action`, no geolocation, no Health
+  permission, no ring, no shop, no Discord.
+- `firstSetUngated` stays green. Today still one
+  `.primary-action`. No four-scene door.
+- Resume `.963` stays. Fuel restock `.965` stays on
+  Fuel Show more. RPE `.967` and tags `.970` stay.
+
+### Refuse
+
+WeChat / six-pillar home. Wearable-as-score. Health
+gate before Train. Feed of walks. Discord.com.
+Marketplace. Shame streaks. Quiet log on Today.
+Promote live. `PRIVATE_MODE` flip. Counsel-hold.
+Merge. Do not smash `.973` / `.971` / `.970` /
+`.967` / `.965` / `.963` / `.961` / `.957`.
+
+### Docs / ship protocol
+
+- `APP_BUILD_LABEL` → `2026.07-unified.974` (past master `.973`; planned as `.969`)
+- LOG heading `## 2026-08-25 — Quiet Move (\`.974\`)` + rotate oldest live entry
+- `CONTEXT.md` `## Now` one-line `.974`; rotate oldest shipped Now bullet so the block stays ≤25
+- Folder INDEX if the file list changes (`src/lib/move/INDEX.md`, Move components)
+- i18n: quiet Move copy via `t(key, { defaultValue })` on `moveLocales.ts`
+- Help: one line on Move / getting-started
+- Plan commit `[skip vercel]`. Implement commit: one Preview max. No empty-commit retrigger.
+- Draft PR against master. Do not merge. Do not promote. Live www stays `.696`.
+
+### Done when
+
+- This section was frozen before product code.
+- `/move` can log an optional walk / easy session
+  (distance or minutes, or neither). Empty week-strip
+  days stay empty. Move is not a second Today Start.
+- Guest. First set ungated. `/private` stays `.957`.
+  No four-scene door. Unit tests. tsc clean.
+- Label `.974` (concern `.969`). Draft PR against master.
+  Title: `Quiet Move (.969)`.
+
+---
+
 ## Frozen plan — `.973` Cues on the movement (2026-08-25)
 
 > **Frozen.** Implement only this section. Plan commit is `[skip vercel]`.
