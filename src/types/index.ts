@@ -190,6 +190,8 @@ export interface CompletedWorkoutLog {
       tempo?: SetTempo;
       /** Optional % of a known 1-rep max when they typed it (`.981`). */
       loadPct?: number;
+      /** Hold / finish time in seconds (`.994`). Duration rows only. */
+      durationSeconds?: number;
     }[];
     note?: string;
     /** Snapshot from catalog at complete time — readiness can skip EXERCISES lookup. */

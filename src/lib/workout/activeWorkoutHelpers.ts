@@ -283,13 +283,18 @@ export function nextSetInput(params: {
   const { prevManual, resolved, field, value } = params;
   const base = prevManual ?? resolved;
   if (field === 'duration') {
-    return { reps: base.reps, weight: base.weight, durationSeconds: value };
+    return {
+      reps: base.reps,
+      weight: base.weight,
+      ...(value > 0 ? { durationSeconds: value } : {}),
+    };
   }
   return {
-    reps: base.reps,
-    weight: base.weight,
-    durationSeconds: base.durationSeconds,
-    [field]: value,
+    reps: field === 'reps' ? value : base.reps,
+    weight: field === 'weight' ? value : base.weight,
+    ...(base.durationSeconds && base.durationSeconds > 0
+      ? { durationSeconds: base.durationSeconds }
+      : {}),
   };
 }
 

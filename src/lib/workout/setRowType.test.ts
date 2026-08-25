@@ -139,7 +139,7 @@ describe('parseDurationSeconds + work + format', () => {
 
   it('duration-only set is work; empty is not', () => {
     assert.equal(setRowHasWork({ reps: 0, durationSeconds: 45 }), true);
-    assert.equal(setRowHasWork({ reps: 8, weight: 60 }), true);
+    assert.equal(setRowHasWork({ reps: 8 }), true);
     assert.equal(setRowHasWork({ reps: 0, durationSeconds: 0 }), false);
     assert.equal(setRowHasWork({ reps: 8, durationSeconds: 30, kind: 'warmup' }), false);
   });

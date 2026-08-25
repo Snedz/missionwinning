@@ -40,7 +40,8 @@ describe('set-row type surface lock (.994)', () => {
     const card = read('src/components/workout/ActiveExerciseCard.tsx');
     assert.match(card, /resolveSetRowType/);
     assert.match(card, /rowType=\{rowType\}/);
-    assert.match(card, /plusLoad=\{rowType === 'bodyweight'\}/);
+    assert.match(card, /plusLoad=\{plusLoad\}/);
+    assert.match(card, /const plusLoad = rowType === 'bodyweight'/);
   });
 
   it('Today stays one Start; lean and /private do not import set-row type', () => {

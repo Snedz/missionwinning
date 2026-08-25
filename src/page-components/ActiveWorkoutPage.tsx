@@ -346,7 +346,7 @@ export function ActiveWorkoutPage() {
    */
   const getSetInput = (exIdx: number, setIdx: number, defaultReps: number, defaultWeight: number) => {
     const exLog = activeWorkout?.exercises[exIdx];
-    if (!exLog) return { reps: defaultReps, weight: defaultWeight };
+    if (!exLog) return { reps: defaultReps, weight: defaultWeight, durationSeconds: 0 };
     const exerciseId = exLog.exerciseId;
     const range = repRangeForGoal(goalId);
     const dial = resolveActiveSetDial({
