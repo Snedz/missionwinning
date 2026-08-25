@@ -42,6 +42,7 @@ import { recallLastRest, resolveRestForNextSet } from '@/lib/workout/restTimer';
 import { isMidRoundPeerOpen, isNextInThisGroup, supersetLabel } from '@/lib/workout/superset';
 import { isPlusLoadExercise } from '@/lib/workout/bodyweightLoad';
 import { knownMaxFromHistory, weightFromKnownMaxPct } from '@/lib/workout/setRowPercent';
+import type { WorkClockKind } from '@/lib/workout/workClock';
 import { cn } from '@/lib/utils';
 import type { UnitsPref } from '@/lib/units';
 import type {
@@ -111,6 +112,10 @@ type Props = {
   onOpenPlates?: () => void;
   onAddWarmups?: () => void;
   onRemovePlannedSet?: (setIdx: number) => void;
+  workClockKind?: WorkClockKind | null;
+  workClockRemaining?: number;
+  onStartWorkClock?: (kind: WorkClockKind, seconds?: number) => void;
+  onStopWorkClock?: () => void;
 };
 
 export function ActiveExerciseCard({
@@ -160,6 +165,10 @@ export function ActiveExerciseCard({
   onOpenPlates,
   onAddWarmups,
   onRemovePlannedSet,
+  workClockKind = null,
+  workClockRemaining = 0,
+  onStartWorkClock,
+  onStopWorkClock,
 }: Props) {
   const { t } = useTranslation();
   const [barWeight, setBarWeight] = useBarWeight(units);
@@ -350,6 +359,10 @@ export function ActiveExerciseCard({
               onSetInputChange('weight', target.weight);
             }}
             afterCompleteCites={afterCompleteCites}
+            workClockKind={workClockKind}
+            workClockRemaining={workClockRemaining}
+            onStartWorkClock={onStartWorkClock}
+            onStopWorkClock={onStopWorkClock}
           />
         </div>
         <ExerciseNoteField

@@ -21,6 +21,9 @@ const REST_PATH_MARKERS = [
   'RestTimerBar',
   'resolveStartRestSeconds',
   'tickRestTimer',
+  'startWorkClock',
+  'tickWorkClock',
+  'shouldAutoRestAfterLog',
 ] as const;
 
 /** Imports that mean the rest path reached the network layer. */
@@ -116,13 +119,16 @@ describe('localFirstRestGuard', () => {
       /logSetAndAdvance:\s*\([^)]*\)\s*=>\s*\{[\s\S]*?\n\s*\},/
     );
     const rest = store.match(/startRestTimer:\s*\([^)]*\)\s*=>\s*\{[\s\S]*?\n\s*\},/);
+    const work = store.match(/startWorkClock:\s*\([^)]*\)\s*=>\s*\{[\s\S]*?\n\s*\},/);
     assert.ok(logSet, 'logSet missing');
     assert.ok(advance, 'logSetAndAdvance missing');
     assert.ok(rest, 'startRestTimer missing');
+    assert.ok(work, 'startWorkClock missing');
     for (const [name, block] of [
       ['logSet', logSet![0]],
       ['logSetAndAdvance', advance![0]],
       ['startRestTimer', rest![0]],
+      ['startWorkClock', work![0]],
     ] as const) {
       assert.doesNotMatch(block, /\bawait\b/, `${name} must not await`);
       assert.doesNotMatch(block, /\bfetch\b/, `${name} must not fetch`);

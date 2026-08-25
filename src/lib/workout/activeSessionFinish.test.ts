@@ -166,6 +166,27 @@ describe('logSetIsPr + planLogSetRest', () => {
     assert.ok(rest.restSeconds >= 60);
   });
 
+  it('skips auto rest while a work clock is active; ordinary rest when it is off', () => {
+    const base = {
+      exercisesAfterLog: [
+        {
+          exerciseId: 'bench-press',
+          sets: [
+            { id: 'a', reps: 5, weight: 100, completed: true },
+            { id: 'b', reps: 5, weight: 100, completed: false },
+          ],
+        },
+      ],
+      exIdx: 0,
+      setIdx: 0,
+      advanceNext: { exerciseIndex: 0, setIndex: 1 },
+      exerciseName: 'Barbell Bench Press',
+    };
+    assert.equal(planLogSetRest({ ...base, workClockActive: true }).takeRest, false);
+    assert.equal(planLogSetRest({ ...base, workClockActive: false }).takeRest, true);
+    assert.equal(planLogSetRest(base).takeRest, true);
+  });
+
   it('uses recalled last rest for that exerciseId', () => {
     resetStorage();
     rememberLastRest('bench-press', 150);

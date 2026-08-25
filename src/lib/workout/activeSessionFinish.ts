@@ -21,6 +21,7 @@ import { computeBodyScores } from '@/lib/score';
 import type { MindCheckIn } from '@/lib/mindCheckIns';
 import { restIdentityAfterLog, shouldRestAfterLog } from '@/lib/workout/superset';
 import { resolveRestForNextSet } from '@/lib/workout/restTimer';
+import { shouldAutoRestAfterLog } from '@/lib/workout/workClock';
 import { isPersonalRecord } from '@/lib/workout/workoutPr';
 import {
   bodyScoreDeltas,
@@ -146,13 +147,17 @@ export function planLogSetRest(params: {
   exerciseId?: string;
   /** Name of the first peer — used when rest is the end of a group round. */
   groupLeadName?: string;
+  /** In-set EMOM/AMRAP already owns the clock — skip auto rest (`.987`). */
+  workClockActive?: boolean;
 }): LogSetRestPlan {
-  const takeRest = shouldRestAfterLog(
-    params.exercisesAfterLog,
-    params.exIdx,
-    params.setIdx,
-    params.advanceNext
-  );
+  const takeRest =
+    shouldAutoRestAfterLog({ workClockActive: params.workClockActive === true }) &&
+    shouldRestAfterLog(
+      params.exercisesAfterLog,
+      params.exIdx,
+      params.setIdx,
+      params.advanceNext
+    );
   const identity = restIdentityAfterLog(
     params.exercisesAfterLog,
     params.exIdx,

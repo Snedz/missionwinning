@@ -115,6 +115,9 @@ export function ActiveWorkoutPage() {
   const restSecondsRemaining = useWorkoutStore((s) => s.restSecondsRemaining);
   const restTimerActive = useWorkoutStore((s) => s.restTimerActive);
   const restTimerInitialSeconds = useWorkoutStore((s) => s.restTimerInitialSeconds);
+  const workClockKind = useWorkoutStore((s) => s.workClockKind);
+  const workClockActive = useWorkoutStore((s) => s.workClockActive);
+  const workClockRemaining = useWorkoutStore((s) => s.workClockRemaining);
   const startEmptyWorkout = useWorkoutStore((s) => s.startEmptyWorkout);
   const startWorkout = useWorkoutStore((s) => s.startWorkout);
   const cancelActiveWorkout = useWorkoutStore((s) => s.cancelActiveWorkout);
@@ -144,6 +147,9 @@ export function ActiveWorkoutPage() {
   const adjustRestTimer = useWorkoutStore((s) => s.adjustRestTimer);
   const tickElapsed = useWorkoutStore((s) => s.tickElapsed);
   const startRestTimer = useWorkoutStore((s) => s.startRestTimer);
+  const startWorkClock = useWorkoutStore((s) => s.startWorkClock);
+  const tickWorkClock = useWorkoutStore((s) => s.tickWorkClock);
+  const stopWorkClock = useWorkoutStore((s) => s.stopWorkClock);
   const workoutHistory = useWorkoutStore((s) => s.workoutHistory);
   const savedWorkouts = useWorkoutStore((s) => s.savedWorkouts);
   const hasHydrated = useWorkoutStore((s) => s.hasHydrated);
@@ -269,6 +275,12 @@ export function ActiveWorkoutPage() {
     const interval = setInterval(() => tickRestTimer(), 1000);
     return () => clearInterval(interval);
   }, [restTimerActive, tickRestTimer]);
+
+  useEffect(() => {
+    if (!workClockActive) return;
+    const interval = setInterval(() => tickWorkClock(), 1000);
+    return () => clearInterval(interval);
+  }, [workClockActive, tickWorkClock]);
 
   useEffect(() => {
     if (nextSet && nextSetRef.current) {
@@ -434,6 +446,7 @@ export function ActiveWorkoutPage() {
           const leadId = updatedExercises[peers[0]]?.exerciseId;
           return leadId ? getExerciseById(leadId)?.name : undefined;
         })(),
+        workClockActive: useWorkoutStore.getState().workClockActive,
       }),
       setKind
     );
@@ -762,6 +775,10 @@ export function ActiveWorkoutPage() {
             setSetInputs({});
           }}
           onStartRest={(seconds, exerciseId) => startRestTimer(seconds, exerciseId)}
+          workClockKind={workClockKind}
+          workClockRemaining={workClockRemaining}
+          onStartWorkClock={(kind, seconds) => startWorkClock(kind, seconds)}
+          onStopWorkClock={() => stopWorkClock()}
           onSetInputChange={(exIdx, setIdx, field, value) =>
             updateSetInput(exIdx, setIdx, field, value)
           }

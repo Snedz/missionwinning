@@ -271,6 +271,132 @@ Today still one Start.
 
 ---
 
+## Frozen plan — `.986` EMOM/AMRAP timer (2026-08-25)
+
+> **Frozen.** Implement only this section + root
+> [PLAN.md](../PLAN.md). Plan commit is `[skip vercel]`.
+> Label: `2026.07-unified.988` — next free after master `.986`
+> (`9c3b2ce6` — Drop-set rest-zero). Title stays
+> **EMOM/AMRAP timer (.987)**. Drop-set landed first; stamp
+> stays greater than that tip.
+> Warmup `.985` + notes `.983` + 1RM `.981` + Supersets
+> `.980` + Learn `.978` + week strip `.977` + Quiet Track
+> `.976` + Quiet Move `.974` + cues `.973` + honesty `.971`
+> + tags `.970` + RPE `.967` + Fuel `.965` + resume `.963`
+> are on master. Do not smash them.
+> Do **not** smash week strip `.961`, notebook `.960`,
+> swap/skip `.959`, desk→gym `.958`, `/private` `.957`,
+> close receipt `.956`, Wednesday `.955`, Today Start
+> `.954`, or identity `.949`.
+> Every commit `[skip vercel]`. No Preview. No
+> `PRIVATE_MODE` flip. No promote. Live www stays `.696`.
+> Guest path. First set stays ungated. Today stays one
+> Start. Brand: **Log a set. Offline.** / No account. No
+> wearable.
+
+Rest already exists. Missing: a clock that is
+not rest — an interval or countdown on the
+set they are logging so they do not fuss
+with a watch for EMOM or AMRAP. TH grammar
+(do not copy UI): distinct rest / AMRAP /
+EMOM clocks on the athlete page. This is
+that in-set steal. Not Watch-as-pitch.
+
+### First check (done — no leak)
+
+Read `origin/master` tip `8a9fe41f` / `.985`.
+Rest is a **post-set dock** (`planLogSetRest`
+→ `startRestTimer` → `RestTimerBar` in
+`ScreenDock`). Footer Timer starts the same
+rest. Set row has tags / RPE / RIR / tempo /
+%1RM — no clock. No work-clock module.
+Today lean still one `dock="start"`.
+`/private` stays the tight `.957` lock.
+Warmup `.985` / notes `.983` / 1RM `.981`
+stay. **Nothing to unmount first.** Do not
+reuse `RestTimerBar` for the work clock.
+
+### One concern
+
+On the live set row, start an optional
+EMOM minute (interval) or AMRAP window
+(countdown). Rest stays for ordinary rest.
+Empty invents nothing.
+
+### Investigate (done — hypothesis half-wrong)
+
+| Layer | What exists | Gap this ship closes |
+|-------|-------------|----------------------|
+| Rest dock | Auto after Log set. Footer Timer. Memory-only. Local-first. | **Keep.** Ordinary rest unchanged when no work clock. |
+| Set row | Optional W / D / F, RPE, RIR, tempo, %1RM. | **Home.** Idle chips + running clock live here. |
+| Program notes | Copy may say EMOM / AMRAP. | Do not auto-start a clock from a note. |
+| Watch / Health | `LiveHeartRate` BLE. Wearables Horizon 3. | **Do not touch.** Not Watch-as-pitch. |
+| Today / door | One Start. Tight `/private`. Resume `.963`. | **Keep.** No clock widget on Today. No four-scene door. |
+
+Hypothesis (founder): rest already lives
+next to the set row; extend that surface.
+
+**Verdict: discard the dock-extend half.**
+Rest is between sets. EMOM/AMRAP run during
+work. Keep the in-set, athlete-started,
+not-Watch half.
+
+Closed rules: see root [PLAN.md](../PLAN.md)
+§2–3. Short form:
+
+1. Separate `workClock*` slice. Share
+   `formatRestClock` only.
+2. EMOM = 60s interval, restart on 0.
+3. AMRAP = 5/10/12/20 min countdown;
+   first tap 10:00; on 0 stay at 0.
+4. One athlete clock at a time. Work
+   clock on → no auto rest. Start work
+   clock stops rest; start rest stops
+   work clock.
+5. Empty invents nothing. Guest. First
+   set ungated. Not on Today.
+
+### Ship (only this)
+
+Root [PLAN.md](../PLAN.md) §3 is the
+file list: `workClock.ts`, store slice,
+`planLogSetRest` compose, `SetLogTable`
+active-row chips, tests, help one-liner.
+
+### Refuse
+
+Watch-as-pitch. Wearable-as-permission.
+Live-share. Feed / DMs. Health gate.
+WeChat home. Four-scene door.
+Marketplace. Counsel-hold. Promote.
+`PRIVATE_MODE` flip. Merge. Second Today
+Start. Discord.com. Mind. Auto-start
+from a program note. Custom interval
+shop. Persist the ticking clock.
+
+### Docs / ship protocol
+
+- `APP_BUILD_LABEL` → `2026.07-unified.988`
+- LOG heading `## 2026-08-25 — EMOM/AMRAP timer (\`.988\`)`
+- `CONTEXT.md` `## Now` cites the full label
+- Plan commit `[skip vercel]`. Implement
+  commits `[skip vercel]`.
+- Draft PR. Title: `EMOM/AMRAP timer (.987)`.
+  Do not merge. Do not promote.
+
+### Done when
+
+- This section was frozen before product
+  code.
+- Live set row: optional EMOM minute or
+  AMRAP window that is not rest.
+- Ordinary rest still works. Empty
+  invents nothing. Guest. First set
+  ungated. Today one Start. `/private`
+  stays `.957`. Label `.988`. Draft PR.
+
+---
+
 ## Frozen plan — `.984` Warmup batch (2026-08-25)
 
 > **Frozen.** Implement only this section. Plan commit is `[skip vercel]`.

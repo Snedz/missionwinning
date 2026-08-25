@@ -38,6 +38,11 @@ import {
 } from '@/lib/workout/setRowAdjacency';
 import { formatRestClock } from '@/lib/workout/restTimer';
 import {
+  AMRAP_PRESETS,
+  formatWorkClock,
+  type WorkClockKind,
+} from '@/lib/workout/workClock';
+import {
   formatKnownMaxPct,
   loadPctOfKnownMax,
   parseOptionalLoadPct,
@@ -86,6 +91,11 @@ type Props = {
   onAcceptGhost?: (target: { reps: number; weight: number }) => void;
   /** After-complete next-set cite; null slots stay unpainted. */
   afterCompleteCites?: (AfterCompleteCite | null)[];
+  /** Optional EMOM / AMRAP on the live row only (`.987`). */
+  workClockKind?: WorkClockKind | null;
+  workClockRemaining?: number;
+  onStartWorkClock?: (kind: WorkClockKind, seconds?: number) => void;
+  onStopWorkClock?: () => void;
 };
 
 const cell = 'px-1.5 py-1.5 align-middle';
@@ -122,6 +132,10 @@ export function SetLogTable({
   lastSetGhost,
   onAcceptGhost,
   afterCompleteCites = [],
+  workClockKind = null,
+  workClockRemaining = 0,
+  onStartWorkClock,
+  onStopWorkClock,
 }: Props) {
   const { t } = useTranslation();
   const [skippedCiteIds, setSkippedCiteIds] = useState<ReadonlySet<string>>(
@@ -378,6 +392,18 @@ export function SetLogTable({
                 </td>
               </tr>
             ) : null}
+            {isActive && onStartWorkClock ? (
+              <tr>
+                <td colSpan={5} className={cn(cell, 'min-w-0 pt-0')}>
+                  <SetRowWorkClock
+                    kind={workClockKind ?? null}
+                    remaining={workClockRemaining}
+                    onStart={onStartWorkClock}
+                    onStop={onStopWorkClock}
+                  />
+                </td>
+              </tr>
+            ) : null}
             {completed ? (
               <tr className={cn('border-b border-border', !isActive && 'bg-muted/40')}>
                 <td
@@ -560,6 +586,107 @@ function SetRowPercentCite({
     >
       {token}
     </span>
+  );
+}
+
+function SetRowWorkClock({
+  kind,
+  remaining,
+  onStart,
+  onStop,
+}: {
+  kind: WorkClockKind | null;
+  remaining: number;
+  onStart: (kind: WorkClockKind, seconds?: number) => void;
+  onStop?: () => void;
+}) {
+  const { t } = useTranslation();
+  const chip =
+    'min-h-[44px] min-w-[44px] border-2 border-border px-2 text-[11px] font-semibold uppercase tracking-[0.06em] text-muted-foreground tap-target hover:bg-muted';
+
+  if (!kind) {
+    return (
+      <div
+        className="flex flex-wrap items-center gap-1"
+        data-testid="set-row-work-clock-start"
+        role="group"
+        aria-label={t('activeWorkClockStartAria', { defaultValue: 'Optional interval or countdown' })}
+      >
+        <button
+          type="button"
+          className={chip}
+          data-testid="set-row-work-clock-emom"
+          onClick={() => onStart('interval')}
+          aria-label={t('activeWorkClockEmomAria', { defaultValue: 'Start EMOM minute' })}
+        >
+          {t('activeWorkClockEmom', { defaultValue: 'EMOM' })}
+        </button>
+        <button
+          type="button"
+          className={chip}
+          data-testid="set-row-work-clock-amrap"
+          onClick={() => onStart('countdown')}
+          aria-label={t('activeWorkClockAmrapAria', { defaultValue: 'Start AMRAP window' })}
+        >
+          {t('activeWorkClockAmrap', { defaultValue: 'AMRAP' })}
+        </button>
+      </div>
+    );
+  }
+
+  const clock = formatWorkClock(remaining);
+  const kindLabel =
+    kind === 'interval'
+      ? t('activeWorkClockEmom', { defaultValue: 'EMOM' })
+      : t('activeWorkClockAmrap', { defaultValue: 'AMRAP' });
+
+  return (
+    <div
+      className="flex min-w-0 flex-wrap items-center gap-1"
+      data-testid="set-row-work-clock"
+      role="timer"
+      aria-live="polite"
+      aria-atomic="true"
+      aria-label={t('activeWorkClockRunningAria', {
+        kind: kindLabel,
+        clock,
+        defaultValue: '{{kind}} {{clock}}',
+      })}
+    >
+      <span className="text-[11px] font-semibold uppercase tracking-[0.06em] text-muted-foreground">
+        {kindLabel}
+      </span>
+      <span
+        className="font-extrabold tabular-nums text-foreground"
+        data-testid="set-row-work-clock-digits"
+      >
+        {clock}
+      </span>
+      {kind === 'countdown'
+        ? AMRAP_PRESETS.map((sec) => (
+            <button
+              key={sec}
+              type="button"
+              className={chip}
+              data-testid={`set-row-work-clock-preset-${sec}`}
+              onClick={() => onStart('countdown', sec)}
+            >
+              {sec / 60}m
+            </button>
+          ))
+        : null}
+      {onStop ? (
+        <button
+          type="button"
+          className={chip}
+          data-testid="set-row-work-clock-stop"
+          onClick={onStop}
+          aria-label={t('activeWorkClockStopAria', { defaultValue: 'Stop clock' })}
+        >
+          {t('activeWorkClockStop', { defaultValue: 'Stop' })}
+        </button>
+      ) : null}
+    </div>
   );
 }
 
