@@ -712,4 +712,48 @@ test('workoutStore', async (t) => {
     );
     assert.equal(useWorkoutStore.getState().workoutHistory.length, 1);
   });
+
+  await t.test('deleteFinishedHistoryLog tombs one finished log and leaves the live set (.1003)', () => {
+    useWorkoutStore.getState().startWorkout('Live', template('row', 1));
+    const live = useWorkoutStore.getState().activeWorkout;
+    assert.ok(live);
+    const monday = {
+      id: 'log-mon-1003',
+      clientId: 'cid-mon-1003',
+      revision: 1,
+      workoutName: 'Bogus Monday',
+      startedAt: '2026-08-17T10:00:00.000Z',
+      completedAt: '2026-08-17T11:00:00.000Z',
+      durationSeconds: 3600,
+      totalVolume: 675,
+      deletedAt: null,
+      exercises: [{ exerciseId: 'bench-press', sets: [{ reps: 5, weight: 135 }] }],
+    };
+    const tuesday = {
+      id: 'log-tue-1003',
+      clientId: 'cid-tue-1003',
+      revision: 1,
+      workoutName: 'Tuesday',
+      startedAt: '2026-08-18T10:00:00.000Z',
+      completedAt: '2026-08-18T11:00:00.000Z',
+      durationSeconds: 3600,
+      totalVolume: 925,
+      deletedAt: null,
+      exercises: [{ exerciseId: 'squat', sets: [{ reps: 5, weight: 185 }] }],
+    };
+    assert.ok(useWorkoutStore.getState().saveBackfillLog(monday));
+    assert.ok(useWorkoutStore.getState().saveBackfillLog(tuesday));
+    const deleted = useWorkoutStore.getState().deleteFinishedHistoryLog(monday.id);
+    assert.ok(deleted?.deletedAt);
+    assert.equal(deleted?.id, monday.id);
+    const history = useWorkoutStore.getState().workoutHistory;
+    assert.ok(history.find((row) => row.id === monday.id)?.deletedAt);
+    assert.equal(history.find((row) => row.id === tuesday.id)?.deletedAt ?? null, null);
+    assert.equal(useWorkoutStore.getState().activeWorkout?.clientId, live?.clientId);
+    assert.equal(useWorkoutStore.getState().deleteFinishedHistoryLog(''), null);
+    assert.equal(useWorkoutStore.getState().deleteFinishedHistoryLog('missing'), null);
+    assert.equal(useWorkoutStore.getState().deleteFinishedHistoryLog(live!.clientId ?? ''), null);
+    assert.equal(useWorkoutStore.getState().activeWorkout?.workoutName, 'Live');
+    assert.equal(useWorkoutStore.getState().workoutHistory.filter((row) => !row.deletedAt).length, 1);
+  });
 });

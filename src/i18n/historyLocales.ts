@@ -132,6 +132,12 @@ type HistoryStrings = {
   historyMergeEmptyDesc: string;
   historyMergeDone: string;
   historyMergeDoneDesc: string;
+  /** `.1003` — delete one finished session. */
+  historyDelete: string;
+  historyDeleteConfirmTitle: string;
+  historyDeleteConfirmDesc: string;
+  historyDeleteConfirm: string;
+  historyDeleteCancel: string;
 };
 
 const en: HistoryStrings = {
@@ -263,6 +269,12 @@ const en: HistoryStrings = {
     'Empty invents nothing — pick two different names that already exist.',
   historyMergeDone: 'Merged',
   historyMergeDoneDesc: 'History, PRs, notes, and rest now use the name you kept.',
+  historyDelete: 'Delete this session',
+  historyDeleteConfirmTitle: 'Delete this session?',
+  historyDeleteConfirmDesc:
+    'This session will be gone from History. It cannot be recovered. Other days stay.',
+  historyDeleteConfirm: 'Delete — cannot be recovered',
+  historyDeleteCancel: 'Cancel',
 };
 
 const es: HistoryStrings = {

@@ -53,6 +53,7 @@ import {
   persistMergedCustoms,
   persistMergedPrefs,
 } from "@/lib/workout/mergeExercises";
+import { applyDeleteFinishedSession } from "@/lib/workout/deleteFinishedSession";
 import { finishPartialFromActive, protectLiveStart } from "@/lib/workout/sessionResume";
 import { readRaw, writeRaw } from "@/lib/storage/safeStorage";
 import { STORAGE_KEYS } from "@/lib/storage/keys";
@@ -187,6 +188,8 @@ interface WorkoutState {
   saveBackfillLog: (log: CompletedWorkoutLog) => CompletedWorkoutLog | null;
   /** Confirm-gated merge of two exercise ids. Source identity gone. */
   applyMergedExercises: (sourceId: string, keeperId: string) => boolean;
+  /** History delete of one finished session. Confirm lives in the helper. Leaves the live set. */
+  deleteFinishedHistoryLog: (sessionId: string) => CompletedWorkoutLog | null;
   startRestTimer: (seconds?: number, exerciseId?: string, lane?: RestLane) => void;
   adjustRestTimer: (delta: number) => void;
   tickRestTimer: () => void;
@@ -979,6 +982,19 @@ export const useWorkoutStore = create<WorkoutState>()(
           enqueueOpenSession(snapshotFromActive(get().activeWorkout));
         }
         return true;
+      },
+
+      deleteFinishedHistoryLog: (sessionId) => {
+        const state = get();
+        const applied = applyDeleteFinishedSession({
+          sessionId,
+          history: state.workoutHistory,
+          live: state.activeWorkout,
+        });
+        if (!applied) return null;
+        set({ workoutHistory: applied.history });
+        enqueueWorkoutUpsert(applied.next);
+        return applied.next;
       },
 
       startRestTimer: (seconds?: number, exerciseId?: string, lane?: RestLane) => {

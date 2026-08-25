@@ -46,6 +46,7 @@ import { resolveExercise } from '@/lib/workout/customExercise';
 import { useUnits, weightUnitLabel } from '@/hooks/useUnits';
 import { formatDuration } from '@/lib/utils';
 import { HistorySessionEdit } from '@/components/history/HistorySessionEdit';
+import { HistorySessionDelete } from '@/components/history/HistorySessionDelete';
 import { HistoryBackfill } from '@/components/history/HistoryBackfill';
 import { HistoryMergeExercises } from '@/components/history/HistoryMergeExercises';
 import {
@@ -57,6 +58,7 @@ import {
   type BackfillDraft,
 } from '@/lib/workout/backfillSession';
 import { decideMergeExercises, knownIdsForMerge } from '@/lib/workout/mergeExercises';
+import { decideDeleteFinishedSession } from '@/lib/workout/deleteFinishedSession';
 import { newClientId } from '@/lib/workout/clientId';
 import {
   build1RMChartData,
@@ -118,6 +120,7 @@ export function HistoryPage() {
   const saveEditedHistoryLog = useWorkoutStore((s) => s.saveEditedHistoryLog);
   const saveBackfillLog = useWorkoutStore((s) => s.saveBackfillLog);
   const applyMergedExercises = useWorkoutStore((s) => s.applyMergedExercises);
+  const deleteFinishedHistoryLog = useWorkoutStore((s) => s.deleteFinishedHistoryLog);
   const savedWorkouts = useWorkoutStore((s) => s.savedWorkouts);
 
   const openLog = (log: CompletedWorkoutLog) => {
@@ -834,6 +837,23 @@ export function HistoryPage() {
                     {t('honorSaveAsRoutine', { defaultValue: 'Save as routine' })}
                   </Button>
                 </div>
+              ) : null}
+              {!editing ? (
+                <HistorySessionDelete
+                  sessionId={selected.id}
+                  history={workoutHistory}
+                  live={activeWorkout}
+                  onConfirm={(sessionId) => {
+                    const decision = decideDeleteFinishedSession({
+                      sessionId,
+                      history: workoutHistory,
+                      live: activeWorkout,
+                    });
+                    if (decision.kind !== 'needs-confirm') return;
+                    const deleted = deleteFinishedHistoryLog(decision.sessionId);
+                    if (deleted) closeSelected();
+                  }}
+                />
               ) : null}
             </>
           )}
