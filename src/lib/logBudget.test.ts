@@ -169,6 +169,13 @@ const NEVER_SHIPPED: { from: number; to: number; why: string }[] = [
       'heading on master ever ended in `.975`.',
   },
   {
+    from: 979,
+    to: 979,
+    why:
+      'Supersets concern. The ship stamp is `.980` after master `.978` (`1a06fbd7`). ' +
+      'No LOG heading on master ever ended in `.979`.',
+  },
+  {
     from: 982,
     to: 982,
     why:
