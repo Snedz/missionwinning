@@ -428,6 +428,21 @@ export function WorkoutVictorySheet({
         </details>
         </div>
 
+        <div
+          data-testid="victory-next-dock"
+          className="shrink-0 border-t-2 border-border bg-card px-6 pb-6 pt-3"
+        >
+          {summary.nextAction ? (
+            <VictoryNextActionStrip
+              nextAction={summary.nextAction}
+              onNavigate={() => onOpenChange(false)}
+            />
+          ) : (
+            <Button variant="outline" className="w-full min-h-[44px] tap-target" onClick={onViewToday}>
+              {t('victoryBackToday', { defaultValue: 'Back to Today' })}
+            </Button>
+          )}
+        </div>
         <SaveHonoredRoutineDoor
           open={!!honor.door}
           name={honor.door?.draft.name ?? summary.workoutName}
@@ -447,22 +462,6 @@ export function WorkoutVictorySheet({
             }
           }}
         />
-
-        <div
-          data-testid="victory-next-dock"
-          className="shrink-0 border-t-2 border-border bg-card px-6 pb-6 pt-3"
-        >
-          {summary.nextAction ? (
-            <VictoryNextActionStrip
-              nextAction={summary.nextAction}
-              onNavigate={() => onOpenChange(false)}
-            />
-          ) : (
-            <Button variant="outline" className="w-full min-h-[44px] tap-target" onClick={onViewToday}>
-              {t('victoryBackToday', { defaultValue: 'Back to Today' })}
-            </Button>
-          )}
-        </div>
       </DialogContent>
     </Dialog>
   );
