@@ -6,6 +6,203 @@ Living roadmap for the **everything app** (a bodyweight coach app Super Bundle �
 
 ---
 
+## Frozen plan — `.971` Thin-history honesty (2026-08-25)
+
+> **Frozen.** Implement only this section. Plan commit is `[skip vercel]`.
+> Label: `2026.07-unified.971` — next free after master `.970`
+> (`#802` squash `a56bbced` — free set tags).
+> Title may stay `Thin-history honesty (.964)`; the stamp is `.971`.
+> Tags `.970` (concern `.966`) are on master. Do not smash them.
+> **Skip `.972`** — Quiet Move. Do not take it.
+> Do **not** smash RPE `.967`, Fuel `.965`,
+> resume `.963`, week strip `.961`,
+> notebook `.960`, swap/skip `.959`, desk→gym `.958`,
+> `/private` `.957`, close receipt `.956`, Wednesday
+> `.955`, Today Start `.954`, or identity `.949`.
+> Implement commit may allow one Preview. No empty-commit retrigger.
+> No `PRIVATE_MODE` flip. No promote. Live www stays `.696`.
+> Guest path. First set stays ungated. Confirm-gated writes.
+> Brand: **Log a set. Offline.** / No account. No wearable.
+> Coach stays opt-in / skippable. Train + Coach only.
+
+Cite, Wednesday, and the quiet week strip
+must not look like a progression product
+when the athlete has one or two sessions.
+Week-1 Strong migrants have a notebook,
+not a dataset. E-Adjacency already specifies
+the empty target: **No prior sets yet —
+log this one.** Extend that honesty to
+Wednesday + the week strip: no invented
+next day, no fake consistency, no
+confidence theater.
+
+### One concern
+
+Thin diary stays a notebook. Wednesday
+does not invent a next day. The week
+strip does not invent a streak.
+
+### Investigate (done — hypothesis holds)
+
+Read `origin/master` tip `a56bbced` / `.970`
+(`#802`). Free set tags stay optional on the row.
+RPE `.967` stays optional. Fuel stays off Today.
+Wednesday `.955` + week strip `.961` + notebook
+`.960` + resume `.963`.
+
+| Layer | What exists | Gap this ship closes |
+|-------|-------------|----------------------|
+| E-Adjacency | `setRowAdjacency` `HONEST_EMPTY` (`empty: true`, no number). Specified empty: *No prior sets yet — log this one.* Why-line `session-empty` when `loggedWorkoutCount === 0`. | **Keep.** Do not remount the unused stack. Do not rewrite why. |
+| Wednesday | `nextDayFromLogs` returns `null` when unique names `< 2`. **Two named logs (Push then Pull) invent a rotation** and cite a next day. Tests require that. | Week-1 with two sessions is not a program. Cite must stay empty / say so. |
+| Wednesday Start | `honorCiteStart` — saved notebook wins over `cite.template`. `.963` live Start is keep. | Thin cite must not start a log-shape over their saved PPL. |
+| Week strip | `quietWeekGlance` + `TodayQuietWeekStrip`. Done = live log that day. Empty stays empty. No Start. | 1–2 sessions must not grow a streak, “on track”, or consistency score. |
+| Resume `.963` | Leave/return is the same live session. Finish-partial writes logged sets only. | **Do not regress.** |
+| Fuel `.965` | Landed restock list on Fuel Show more. | **Keep off Today / Train / `/private`.** |
+| RPE `.967` | Optional 1–10 / RIR on a logged set. | **Keep.** Never required to save. Empty invents no number. |
+| Tags `.970` | Optional W / D / F on the set row (concern `.966`). Warmup is not last time / vs-last / Wednesday. | **Keep.** Do not restyle or paywall. |
+
+Hypothesis (verified, keep):
+
+A **pure** thin-history predicate over live
+logs (`deletedAt` out, at least one
+performed set `reps > 0`) is true when
+the live count is **0, 1, or 2**. One
+home — Wednesday and the week strip both
+read it. Wednesday: thin + no live plan
+owning the next calendar day ⇒ `null`
+(do not invent a rotation). Live plan
+still wins (opted-in, not guessed from
+two logs). Enough diary (3+ live sessions
+and ≥2 names) keeps the `.955` rotation.
+When the cite is `null`, Coach says so
+plainly — same honesty grain as the
+set-row empty — and offers no log-shape
+Start. `honorCiteStart(null, saved, …)`
+still returns the notebook (`.960`);
+it must not start `cite.template`.
+Week strip: `thin: true` on 1–2 live
+sessions. Empty days stay empty. No
+streak / on-track / consistency field
+or copy. Guest. First set ungated.
+
+Closed rules (no invented program, no
+score from a notebook):
+
+1. **Thin is ≤2 live sessions.** Tombstone
+   / 0-rep do not count. Unique-name `< 2`
+   still invents nothing (already).
+2. **Wednesday stays empty** when thin
+   and no live plan owns the next day.
+   Mutant that cites Push/Pull wrap from
+   two logs dies.
+3. **Says so plainly.** Null cite mounts
+   a quiet empty — not a named day, not
+   a Start that invents one. Saved
+   notebook still owns a *cold* Today
+   Start (`.960`).
+4. **Week strip stays a glance.** Done
+   days may mark. Empty stays empty.
+   `thin` carries no score. No implied
+   streak from 1–2 Done cells.
+5. **Surfaces.** Today still one Start
+   (Resume when live). `/private` stays
+   the tight `.957` lock. No four-scene
+   door. Set-row / why-line empty copy
+   stays. Finish-partial / leave-return
+   stay `.963`. Tags `.970` stay optional.
+
+### Ship (only this)
+
+1. **Pure helper** `src/lib/workout/thinHistory.ts`.
+   `countLiveSessions` · `isThinHistory`.
+   Cap `2`. Deterministic. No
+   `generateWeek` / rewards / streak.
+
+2. **Wednesday.** `nextDayFromLogs`
+   returns `null` when thin (unless a
+   live plan owns the next day).
+   `CoachNextDayCite` accepts `null` and
+   paints the honest empty. No log-shape
+   Start on empty.
+
+3. **Week strip.** `quietWeekGlance`
+   adds `thin`. Strip source stays
+   glance-only. Tests kill on-track /
+   consistency / streak theater.
+
+4. **Help one-liner.** One or two
+   sessions is a notebook — Wednesday
+   does not invent tomorrow; empty week
+   days stay empty.
+
+### Tests
+
+- One named log invents nothing
+  (already). **Two named logs (Push +
+  Pull) invent nothing.** Mutant that
+  returns a wrap-around name dies.
+- Three+ live named sessions still
+  rotate (Push · Pull · Legs with Push
+  then Pull logged ⇒ Legs). Stable.
+- Live plan owning the next day still
+  wins over thin logs.
+- `honorCiteStart` with a thin/null
+  cite + saved PPL returns the notebook,
+  never a log template. Empty saved +
+  thin history ⇒ `null`.
+- Week glance: 1–2 live sessions ⇒
+  `thin: true`; empty days `done ===
+  false`; no `streak` / `onTrack` /
+  consistency field. Mutant that scores
+  1–2 sessions dies.
+- Set-row honest empty + why-line
+  `session-empty` copy stay. Resume /
+  Finish-partial contracts stay green.
+- `firstSetUngated` stays green; no
+  Feed / Top 8 / likes / XP / login
+  wall / Force Sync / Session Expired /
+  four-scene door. Today still one
+  `.primary-action`.
+
+### Refuse
+
+"AI suggested". Trainer generate-first.
+Shame on empty days. XP / Feed / likes /
+Top 8. Force Sync / Session Expired.
+Promote live. `PRIVATE_MODE` flip.
+Counsel-hold (field test / PT /
+pregnancy). Fuel / Amazon UI (`.965` stays
+off Today). Marketplace / Pump village /
+TrainHeroic leaderboards. Merge. Week-strip
+restyle. Notebook / swap-skip / desk→gym /
+identity / `/private` / resume rewrite.
+Do not take `.972`. Do not smash `.970` /
+`.967` / `.965`.
+
+### Docs / ship protocol
+
+- `APP_BUILD_LABEL` → `2026.07-unified.971`
+- LOG heading `## 2026-08-25 — Thin-history honesty (\`.971\`)` + rotate oldest live entry (`.951`)
+- `CONTEXT.md` `## Now` one-line `.971`; keep tags `.970` + RPE `.967` + Fuel `.965`; rotate oldest shipped Now bullet (`.952`) so the block stays ≤25
+- Folder INDEX only if a file list changes (`src/lib/workout/INDEX.md`, coach / today)
+- i18n: empty Wednesday copy via `t(key, { defaultValue })` — no shame
+- Help: one line on getting-started (one or two sessions stay a notebook)
+- Plan commit `[skip vercel]`. Implement commit: one Preview max. No empty-commit retrigger.
+- Draft PR against master. Do not merge. Do not promote. Live www stays `.696`.
+
+### Done when
+
+- This section was frozen before product code.
+- Wednesday does not invent a next day
+  from 1–2 sessions. Week strip empty
+  days stay empty. Cite / why-line /
+  resume stay. Fuel stays off Today.
+  Tags `.970` stay. Label `.971`. Draft PR
+  against master.
+  Title may stay `Thin-history honesty (.964)`.
+
+---
+
 ## Frozen plan — `.966` Free set tags (2026-08-25)
 
 > **Frozen.** Implement only this section. Plan commit is `[skip vercel]`.

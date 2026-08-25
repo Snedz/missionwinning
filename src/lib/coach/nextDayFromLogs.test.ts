@@ -78,7 +78,7 @@ describe('nextDayFromLogs', () => {
     );
   });
 
-  it('Push then Pull ⇒ next is the unused / wrap slot, stable on two calls', () => {
+  it('two named logs (Push then Pull) invent nothing — a notebook, not a rotation', () => {
     const history = [
       log({ id: 'p1', workoutName: 'Push', completedAt: '2026-08-17T11:00:00.000Z' }),
       log({
@@ -88,31 +88,29 @@ describe('nextDayFromLogs', () => {
         exercises: [{ exerciseId: 'barbell-row', sets: [{ reps: 8, weight: 80 }] }],
       }),
     ];
-    const a = nextDayFromLogs({ history, now: NOW });
-    const b = nextDayFromLogs({ history, now: NOW });
-    assert.ok(a);
-    assert.equal(a!.source, 'logs');
-    assert.equal(a!.name, 'Push');
-    assert.equal(a!.template?.name, 'Push');
-    assert.equal(a!.template?.exercises[0]?.exerciseId, 'bench-press');
-    assert.deepEqual(a, b);
+    assert.equal(nextDayFromLogs({ history, now: NOW }), null);
+    assert.equal(nextDayFromLogs({ history, now: TWO_DAYS_LATER }), null);
   });
 
-  it('Push then Pull: next after Push is Pull (unused slot in a 2-name rotation)', () => {
+  it('three live named sessions still rotate (Push · Pull · Push ⇒ unused Pull)', () => {
     const history = [
       log({ id: 'p1', workoutName: 'Push', completedAt: '2026-08-17T11:00:00.000Z' }),
       log({
         id: 'p2',
         workoutName: 'Pull',
-        completedAt: '2026-08-16T11:00:00.000Z',
+        completedAt: '2026-08-18T11:00:00.000Z',
         exercises: [{ exerciseId: 'barbell-row', sets: [{ reps: 8, weight: 80 }] }],
       }),
+      log({ id: 'p3', workoutName: 'Push', completedAt: '2026-08-19T11:00:00.000Z' }),
     ];
-    // Oldest Pull, then Push — rotation [Pull, Push], last is Push, unused is Pull.
-    const cite = nextDayFromLogs({ history, now: NOW });
-    assert.equal(cite?.name, 'Pull');
-    assert.equal(cite?.source, 'logs');
-    assert.equal(cite?.template?.exercises[0]?.exerciseId, 'barbell-row');
+    const a = nextDayFromLogs({ history, now: NOW });
+    const b = nextDayFromLogs({ history, now: NOW });
+    assert.ok(a);
+    assert.equal(a!.source, 'logs');
+    assert.equal(a!.name, 'Pull');
+    assert.equal(a!.template?.name, 'Pull');
+    assert.equal(a!.template?.exercises[0]?.exerciseId, 'barbell-row');
+    assert.deepEqual(a, b);
   });
 
   it('same diary two days later still names the same Wednesday until that session is logged', () => {
@@ -124,11 +122,12 @@ describe('nextDayFromLogs', () => {
         completedAt: '2026-08-18T11:00:00.000Z',
         exercises: [{ exerciseId: 'barbell-row', sets: [{ reps: 8, weight: 80 }] }],
       }),
+      log({ id: 'p3', workoutName: 'Push', completedAt: '2026-08-19T11:00:00.000Z' }),
     ];
     const monday = nextDayFromLogs({ history, now: NOW });
     const wednesday = nextDayFromLogs({ history, now: TWO_DAYS_LATER });
-    assert.equal(monday?.name, 'Push');
-    assert.equal(wednesday?.name, 'Push');
+    assert.equal(monday?.name, 'Pull');
+    assert.equal(wednesday?.name, 'Pull');
     assert.equal(monday?.source, 'logs');
     assert.equal(wednesday?.source, 'logs');
   });
@@ -142,20 +141,22 @@ describe('nextDayFromLogs', () => {
         completedAt: '2026-08-18T11:00:00.000Z',
         exercises: [{ exerciseId: 'barbell-row', sets: [{ reps: 8, weight: 80 }] }],
       }),
+      log({ id: 'p3', workoutName: 'Push', completedAt: '2026-08-19T11:00:00.000Z' }),
     ];
-    assert.equal(nextDayFromLogs({ history: before, now: NOW })?.name, 'Push');
+    assert.equal(nextDayFromLogs({ history: before, now: NOW })?.name, 'Pull');
 
     const after = [
       ...before,
       log({
         id: 'wed',
-        workoutName: 'Push',
-        completedAt: '2026-08-19T11:00:00.000Z',
+        workoutName: 'Pull',
+        completedAt: '2026-08-20T11:00:00.000Z',
+        exercises: [{ exerciseId: 'barbell-row', sets: [{ reps: 8, weight: 80 }] }],
       }),
     ];
     const next = nextDayFromLogs({ history: after, now: TWO_DAYS_LATER });
-    assert.equal(next?.name, 'Pull');
-    assert.notEqual(next?.name, 'Push');
+    assert.equal(next?.name, 'Push');
+    assert.notEqual(next?.name, 'Pull');
   });
 
   it('Push · Pull · Legs with Push then Pull logged ⇒ unused slot is Legs', () => {
@@ -219,17 +220,35 @@ describe('nextDayFromLogs', () => {
         completedAt: '2026-08-18T11:00:00.000Z',
         exercises: [{ exerciseId: 'barbell-row', sets: [{ reps: 8, weight: 80 }] }],
       }),
+      log({ id: 'p3', workoutName: 'Push', completedAt: '2026-08-19T11:00:00.000Z' }),
     ];
     const stale = plan({
       weekStart: '2026-08-10',
       sessions: [session({ id: 'old', dayOffset: 2, name: 'Catalog Invented' })],
     });
-    assert.equal(nextDayFromLogs({ history, plan: stale, now: NOW })?.name, 'Push');
+    assert.equal(nextDayFromLogs({ history, plan: stale, now: NOW })?.name, 'Pull');
 
     const done = plan({
       sessions: [session({ id: 'wed', dayOffset: 2, name: 'Upper Strength', status: 'done' })],
     });
-    assert.equal(nextDayFromLogs({ history, plan: done, now: NOW })?.name, 'Push');
+    assert.equal(nextDayFromLogs({ history, plan: done, now: NOW })?.name, 'Pull');
+  });
+
+  it('stale plan + two sessions invents nothing (thin wins over a guessed wrap)', () => {
+    const history = [
+      log({ id: 'p1', workoutName: 'Push', completedAt: '2026-08-17T11:00:00.000Z' }),
+      log({
+        id: 'p2',
+        workoutName: 'Pull',
+        completedAt: '2026-08-18T11:00:00.000Z',
+        exercises: [{ exerciseId: 'barbell-row', sets: [{ reps: 8, weight: 80 }] }],
+      }),
+    ];
+    const stale = plan({
+      weekStart: '2026-08-10',
+      sessions: [session({ id: 'old', dayOffset: 2, name: 'Catalog Invented' })],
+    });
+    assert.equal(nextDayFromLogs({ history, plan: stale, now: NOW }), null);
   });
 
   it('tombstoned / 0-rep / deleted logs do not count', () => {
@@ -253,9 +272,10 @@ describe('nextDayFromLogs', () => {
         completedAt: '2026-08-18T11:00:00.000Z',
         exercises: [{ exerciseId: 'barbell-row', sets: [{ reps: 8, weight: 80 }] }],
       }),
+      log({ id: 'p3', workoutName: 'Push', completedAt: '2026-08-19T11:00:00.000Z' }),
     ];
     const cite = nextDayFromLogs({ history, now: NOW });
-    assert.equal(cite?.name, 'Push');
+    assert.equal(cite?.name, 'Pull');
     assert.notEqual(cite?.name, 'Legs');
   });
 
@@ -275,6 +295,12 @@ describe('nextDayFromLogs', () => {
         completedAt: '2026-08-18T11:00:00.000Z',
         exercises: [{ exerciseId: 'barbell-row', sets: [{ reps: 8, weight: 80 }] }],
       }),
+      log({
+        id: 'p3',
+        workoutName: 'Legs',
+        completedAt: '2026-08-19T11:00:00.000Z',
+        exercises: [{ exerciseId: 'squats', sets: [{ reps: 5, weight: 140 }] }],
+      }),
     ];
     const cite = nextDayFromLogs({ history, now: NOW });
     assert.equal(cite?.name, 'Push');
@@ -289,6 +315,12 @@ describe('nextDayFromLogs', () => {
         workoutName: 'Pull',
         completedAt: '2026-08-18T11:00:00.000Z',
         exercises: [{ exerciseId: 'barbell-row', sets: [{ reps: 8, weight: 80 }] }],
+      }),
+      log({
+        id: 'p3',
+        workoutName: 'Legs',
+        completedAt: '2026-08-19T11:00:00.000Z',
+        exercises: [{ exerciseId: 'squats', sets: [{ reps: 5, weight: 140 }] }],
       }),
     ];
     const cite = nextDayFromLogs({ history, now: NOW });
@@ -310,8 +342,15 @@ describe('nextDayFromLogs', () => {
         completedAt: '2026-08-18T11:00:00.000Z',
         exercises: [{ exerciseId: 'barbell-row', sets: [{ reps: 8, weight: 80 }] }],
       }),
+      log({
+        id: 'p3',
+        workoutName: 'Legs',
+        completedAt: '2026-08-19T11:00:00.000Z',
+        exercises: [{ exerciseId: 'squats', sets: [{ reps: 5, weight: 140 }] }],
+      }),
     ];
     const cite = nextDayFromLogs({ history, now: NOW });
+    assert.equal(cite?.name, 'Push');
     assert.equal(cite && 'intensity' in cite, false);
   });
 });
@@ -361,6 +400,12 @@ describe('nextDayFromLogs', () => {
         workoutName: 'Pull',
         completedAt: '2026-08-18T11:00:00.000Z',
         exercises: [{ exerciseId: 'barbell-row', sets: [{ reps: 8, weight: 80 }] }],
+      }),
+      log({
+        id: 'legs',
+        workoutName: 'Legs',
+        completedAt: '2026-08-19T11:00:00.000Z',
+        exercises: [{ exerciseId: 'squats', sets: [{ reps: 5, weight: 140 }] }],
       }),
     ];
     const cite = nextDayFromLogs({ history, now: NOW });

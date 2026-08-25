@@ -17,7 +17,7 @@ import type { NextDayCite } from '@/lib/coach/nextDayFromLogs';
 import type { CoachPlan } from '@/lib/coach/types';
 
 type Props = {
-  cite: NextDayCite;
+  cite?: NextDayCite | null;
   plan?: CoachPlan | null;
   /** Hide Start when the boss card already starts this plan session. */
   hideStart?: boolean;
@@ -32,10 +32,29 @@ export function CoachNextDayCite({ cite, plan, hideStart }: Props) {
   const workoutHistory = useWorkoutStore((s) => s.workoutHistory);
   const startCoachSession = useStartCoachSession();
   const honored = honorCiteStart({
-    cite,
+    cite: cite ?? null,
     saved: savedWorkouts,
     history: workoutHistory,
   });
+
+  if (!cite) {
+    return (
+      <div
+        className="border-2 border-border bg-card px-4 py-3"
+        data-testid="coach-next-day"
+        data-next-day-source="empty"
+      >
+        <p className="eyebrow text-[10px] text-muted-foreground">
+          {t('coachNextDayEyebrow', { defaultValue: 'Next day' })}
+        </p>
+        <p className="mt-1 text-sm text-muted-foreground" data-testid="coach-next-day-empty">
+          {t('coachNextDayEmpty', {
+            defaultValue: 'Not enough logs yet — keep logging.',
+          })}
+        </p>
+      </div>
+    );
+  }
 
   const canStartLogs = honored?.source === 'logs' || honored?.source === 'saved';
   const canStartPlan = cite.source === 'plan' && !!cite.planSessionId && honored?.source !== 'saved';
@@ -65,7 +84,7 @@ export function CoachNextDayCite({ cite, plan, hideStart }: Props) {
     <div
       className="border-2 border-border bg-card px-4 py-3"
       data-testid="coach-next-day"
-      data-next-day-source={cite.source}
+      data-next-day-source={cite ? cite.source : 'empty'}
     >
       <p className="eyebrow text-[10px] text-muted-foreground">
         {t('coachNextDayEyebrow', { defaultValue: 'Next day' })}

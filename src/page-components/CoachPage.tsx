@@ -234,9 +234,7 @@ export function CoachPage({ askExerciseId }: CoachPageProps = {}) {
                 : 'One week from your logs. Free every week; Bundle adds chat and regenerate.',
             })}
           />
-          {nextDay ? (
-            <CoachNextDayCite cite={nextDay} plan={plan} hideStart={hideNextDayStart} />
-          ) : null}
+          <CoachNextDayCite cite={nextDay} plan={plan} hideStart={hideNextDayStart} />
           <ScreenDock>
             <div className="poster-field px-4 pb-4 pt-3.5">
               <p className="poster-kicker mb-2 text-[11px] font-semibold uppercase tracking-[0.12em]">
@@ -308,9 +306,7 @@ export function CoachPage({ askExerciseId }: CoachPageProps = {}) {
               loadZone: ctx.loadZone ?? null,
             }}
           />
-          {nextDay ? (
-            <CoachNextDayCite cite={nextDay} plan={plan} hideStart={hideNextDayStart} />
-          ) : null}
+          <CoachNextDayCite cite={nextDay} plan={plan} hideStart={hideNextDayStart} />
         </div>
       )}
 
@@ -397,9 +393,7 @@ export function CoachPage({ askExerciseId }: CoachPageProps = {}) {
                 canRegenerate={premium}
                 onRegenerate={() => generate()}
               />
-              {nextDay ? (
-                <CoachNextDayCite cite={nextDay} plan={plan} hideStart={hideNextDayStart} />
-              ) : null}
+              <CoachNextDayCite cite={nextDay} plan={plan} hideStart={hideNextDayStart} />
               <CoachPlanSessionGrid
                 mode="week"
                 sessions={plan.sessions}

@@ -4,11 +4,13 @@
  * Walks the athlete's own named live diary (tombstones / 0-rep excluded).
  * Same diary + same now window ⇒ same Wednesday. A live Coach plan that
  * already owns the next calendar day wins. Empty invents nothing.
+ * One or two live sessions stay a notebook (`.964`) — no invented rotation.
  * Does not call generateWeek, pick catalog work, or open a shop.
  */
 
 import type { CompletedWorkoutLog } from '@/types';
 import type { CoachPlan, PlanSession } from '@/lib/coach/types';
+import { isThinHistory } from '@/lib/workout/thinHistory';
 import {
   templateFromCompletedLog,
   type HistoryRetrainTemplate,
@@ -133,6 +135,8 @@ export function nextDayFromLogs(input: {
       planSessionId: owned.id,
     };
   }
+
+  if (isThinHistory(input.history)) return null;
 
   const named = liveNamedLogs(input.history);
   const rotation = rotationKeys(named);

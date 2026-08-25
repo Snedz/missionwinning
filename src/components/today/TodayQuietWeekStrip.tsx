@@ -20,6 +20,7 @@ export function TodayQuietWeekStrip({ glance }: Props) {
   return (
     <section
       data-testid="today-quiet-week"
+      data-thin={glance.thin ? 'true' : 'false'}
       aria-label={t('todayQuietWeekLabel', { defaultValue: 'This week' })}
     >
       <div className="grid grid-cols-7 gap-1">

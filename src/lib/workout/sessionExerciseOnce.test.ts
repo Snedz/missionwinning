@@ -155,6 +155,7 @@ describe('sessionExerciseOnce — swap', () => {
     const history = [
       namedLog({ id: 'push', workoutName: 'Push', completedAt: '2026-08-17T11:00:00.000Z' }),
       namedLog({ id: 'pull', workoutName: 'Pull', completedAt: '2026-08-18T11:00:00.000Z' }),
+      namedLog({ id: 'push-2', workoutName: 'Push', completedAt: '2026-08-19T11:00:00.000Z' }),
     ];
     const before = nextDayFromLogs({ history, now: NOW });
     assert.ok(before);
