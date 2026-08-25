@@ -17,6 +17,7 @@
  * `.983` — optional private session notes on the live session / close receipt (concern `.982`). Never a login wall.
  * `.985` — free warmup batch from the working weight (concern `.984`). Never a login wall.
  * `.986` — drop-tagged set skips rest / zeros a running timer. Never a login wall.
+ * `.987` — optional EMOM / AMRAP on the live set row. Never a login wall.
  */
 
 export function normalizeAppPath(pathname: string | null | undefined): string {

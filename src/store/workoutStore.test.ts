@@ -301,6 +301,59 @@ test('workoutStore', async (t) => {
     );
   });
 
+  await t.test('work clock starts an interval without turning rest on', () => {
+    useWorkoutStore.getState().startWorkClock('interval');
+    const s = useWorkoutStore.getState();
+    assert.equal(s.workClockActive, true);
+    assert.equal(s.workClockKind, 'interval');
+    assert.equal(s.workClockRemaining, 60);
+    assert.equal(s.restTimerActive, false);
+  });
+
+  await t.test('start rest clears the work clock; stop work clock returns idle', () => {
+    useWorkoutStore.getState().startWorkClock('countdown');
+    assert.equal(useWorkoutStore.getState().workClockActive, true);
+    useWorkoutStore.getState().startRestTimer(90);
+    assert.equal(useWorkoutStore.getState().workClockActive, false);
+    assert.equal(useWorkoutStore.getState().workClockKind, null);
+    assert.equal(useWorkoutStore.getState().restTimerActive, true);
+    useWorkoutStore.getState().startWorkClock('interval');
+    assert.equal(useWorkoutStore.getState().restTimerActive, false);
+    useWorkoutStore.getState().stopWorkClock();
+    assert.equal(useWorkoutStore.getState().workClockActive, false);
+    assert.equal(useWorkoutStore.getState().workClockKind, null);
+    assert.equal(useWorkoutStore.getState().workClockRemaining, 0);
+  });
+
+  await t.test('stopRestTimer also clears a leftover work clock', () => {
+    useWorkoutStore.getState().startWorkClock('interval');
+    useWorkoutStore.getState().stopRestTimer();
+    assert.equal(useWorkoutStore.getState().workClockActive, false);
+    assert.equal(useWorkoutStore.getState().workClockKind, null);
+    assert.equal(useWorkoutStore.getState().workClockRemaining, 0);
+  });
+
+  await t.test('work clock tick does not persist and interval restarts at zero', () => {
+    useWorkoutStore.getState().startWorkClock('interval');
+    useWorkoutStore.getState().tickWorkClock();
+    assert.equal(useWorkoutStore.getState().workClockRemaining, 59);
+    useWorkoutStore.setState({
+      workClockRemaining: 1,
+      workClockActive: true,
+      workClockKind: 'interval',
+    });
+    useWorkoutStore.getState().tickWorkClock();
+    assert.equal(useWorkoutStore.getState().workClockRemaining, 60);
+    assert.equal(useWorkoutStore.getState().workClockActive, true);
+  });
+
+  await t.test('empty work clock start invents nothing', () => {
+    useWorkoutStore.getState().stopWorkClock();
+    useWorkoutStore.getState().startWorkClock('countdown', 0);
+    assert.equal(useWorkoutStore.getState().workClockActive, false);
+    assert.equal(useWorkoutStore.getState().workClockKind, null);
+  });
+
   await t.test('startRestTimer without seconds uses the shared fallback (≥60s), not 30', () => {
     useWorkoutStore.getState().startRestTimer();
     const remaining = useWorkoutStore.getState().restSecondsRemaining;

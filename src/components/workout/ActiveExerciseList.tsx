@@ -16,6 +16,7 @@ import {
 import { garageSwapsWhenOpen, listGarageSwaps } from '@/lib/workout/garageSwap';
 import { resolveActiveTableSetControls } from '@/lib/workout/activeTableSetControls';
 import { parseSetSide, shouldOfferSetSide } from '@/lib/workout/unilateral';
+import type { WorkClockKind } from '@/lib/workout/workClock';
 import type { UnitsPref } from '@/lib/units';
 import type {
   ActiveExerciseLog,
@@ -69,6 +70,10 @@ type Props = {
   onOpenPlates?: () => void;
   onAddWarmups?: (exIdx: number) => void;
   onRemovePlannedSet?: (exIdx: number, setIdx: number) => void;
+  workClockKind?: WorkClockKind | null;
+  workClockRemaining?: number;
+  onStartWorkClock?: (kind: WorkClockKind, seconds?: number) => void;
+  onStopWorkClock?: () => void;
 };
 
 export function ActiveExerciseList({
@@ -109,6 +114,10 @@ export function ActiveExerciseList({
   onOpenPlates,
   onAddWarmups,
   onRemovePlannedSet,
+  workClockKind = null,
+  workClockRemaining = 0,
+  onStartWorkClock,
+  onStopWorkClock,
 }: Props) {
   return (
     <div className="space-y-3">
@@ -190,6 +199,10 @@ export function ActiveExerciseList({
             onRemovePlannedSet={
               onRemovePlannedSet ? (setIdx) => onRemovePlannedSet(exIdx, setIdx) : undefined
             }
+            workClockKind={workClockKind}
+            workClockRemaining={workClockRemaining}
+            onStartWorkClock={onStartWorkClock}
+            onStopWorkClock={onStopWorkClock}
           />
         );
       })}

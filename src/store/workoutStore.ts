@@ -49,6 +49,12 @@ import { readRaw, writeRaw } from "@/lib/storage/safeStorage";
 import { STORAGE_KEYS } from "@/lib/storage/keys";
 import { browserStorage, dedupeWrites, elapsedSecondsFrom } from "@/store/persistDedupe";
 import {
+  IDLE_WORK_CLOCK,
+  resolveWorkClockStart,
+  tickWorkClock as nextWorkClockTick,
+  type WorkClockKind,
+} from "@/lib/workout/workClock";
+import {
   FALLBACK_REST_SECONDS,
   rememberLastRest,
   rememberedRestAfterAdjust,
@@ -75,6 +81,11 @@ interface WorkoutState {
   restTimerInitialSeconds: number;
   /** Exercise the running rest belongs to — memory only, like other restTimer*. */
   restExerciseId: string | null;
+  /** In-set EMOM / AMRAP — memory only, not rest (`.987`). */
+  workClockKind: WorkClockKind | null;
+  workClockActive: boolean;
+  workClockRemaining: number;
+  workClockInitialSeconds: number;
   elapsedSeconds: number;
   /** False until persist finishes merging localStorage (avoids Start wipe race). */
   hasHydrated: boolean;
@@ -150,6 +161,9 @@ interface WorkoutState {
   adjustRestTimer: (delta: number) => void;
   tickRestTimer: () => void;
   stopRestTimer: () => void;
+  startWorkClock: (kind: WorkClockKind, seconds?: number) => void;
+  tickWorkClock: () => void;
+  stopWorkClock: () => void;
   tickElapsed: () => void;
   getRecentHistory: (limit?: number) => CompletedWorkoutLog[];
   loadFromCloud: () => Promise<void>;
@@ -193,6 +207,7 @@ export const useWorkoutStore = create<WorkoutState>()(
       restTimerActive: false,
       restTimerInitialSeconds: FALLBACK_REST_SECONDS,
       restExerciseId: null,
+      ...IDLE_WORK_CLOCK,
       elapsedSeconds: 0,
       hasHydrated: false,
       pendingRemoteOpenSession: null,
@@ -264,6 +279,7 @@ export const useWorkoutStore = create<WorkoutState>()(
           restTimerActive: false,
           restTimerInitialSeconds: FALLBACK_REST_SECONDS,
           restExerciseId: null,
+          ...IDLE_WORK_CLOCK,
           pendingRemoteOpenSession: null,
         });
         enqueueOpenSession(snapshotFromActive(active));
@@ -284,6 +300,7 @@ export const useWorkoutStore = create<WorkoutState>()(
           restTimerActive: false,
           restTimerInitialSeconds: FALLBACK_REST_SECONDS,
           restExerciseId: null,
+          ...IDLE_WORK_CLOCK,
           pendingRemoteOpenSession: null,
         });
         enqueueOpenSession(snapshotFromActive(active));
@@ -297,6 +314,7 @@ export const useWorkoutStore = create<WorkoutState>()(
           elapsedSeconds: 0,
           restSecondsRemaining: 0,
           restTimerActive: false,
+          ...IDLE_WORK_CLOCK,
           restTimerInitialSeconds: FALLBACK_REST_SECONDS,
           restExerciseId: null,
           pendingRemoteOpenSession: null,
@@ -347,6 +365,7 @@ export const useWorkoutStore = create<WorkoutState>()(
           restTimerActive: false,
           restTimerInitialSeconds: FALLBACK_REST_SECONDS,
           restExerciseId: null,
+          ...IDLE_WORK_CLOCK,
           pendingRemoteOpenSession: null,
         }));
 
@@ -812,6 +831,7 @@ export const useWorkoutStore = create<WorkoutState>()(
           restTimerInitialSeconds: sec,
           restTimerActive: true,
           restExerciseId: id,
+          ...IDLE_WORK_CLOCK,
         });
       },
 
@@ -851,7 +871,46 @@ export const useWorkoutStore = create<WorkoutState>()(
 
       stopRestTimer: () => {
         // Skip — leftover seconds must not become next rest.
-        set({ restSecondsRemaining: 0, restTimerActive: false, restExerciseId: null });
+        // One athlete clock: skip/stop rest also clears a leftover work clock.
+        set({
+          restSecondsRemaining: 0,
+          restTimerActive: false,
+          restExerciseId: null,
+          ...IDLE_WORK_CLOCK,
+        });
+      },
+
+      startWorkClock: (kind, seconds?) => {
+        const resolved = resolveWorkClockStart({ kind, seconds });
+        if (!resolved) return;
+        set({
+          restSecondsRemaining: 0,
+          restTimerActive: false,
+          restExerciseId: null,
+          workClockKind: resolved.kind,
+          workClockActive: true,
+          workClockRemaining: resolved.seconds,
+          workClockInitialSeconds: resolved.seconds,
+        });
+      },
+
+      tickWorkClock: () => {
+        set((s) => {
+          if (!s.workClockActive || !s.workClockKind) return s;
+          const next = nextWorkClockTick({
+            kind: s.workClockKind,
+            remaining: s.workClockRemaining,
+          });
+          return {
+            workClockRemaining: next.remaining,
+            workClockActive: next.active,
+            workClockKind: next.active ? s.workClockKind : s.workClockKind,
+          };
+        });
+      },
+
+      stopWorkClock: () => {
+        set({ ...IDLE_WORK_CLOCK });
       },
 
       tickElapsed: () => {
@@ -919,6 +978,7 @@ export const useWorkoutStore = create<WorkoutState>()(
           restTimerActive: false,
           restTimerInitialSeconds: FALLBACK_REST_SECONDS,
           restExerciseId: null,
+          ...IDLE_WORK_CLOCK,
           pendingRemoteOpenSession: null,
         });
       },

@@ -146,7 +146,14 @@ describe('the store wiring', () => {
   it('no key written by a setInterval appears in partialize', () => {
     const src = store();
     const partialize = src.slice(src.indexOf('partialize:'), src.indexOf('onRehydrateStorage'));
-    for (const ticked of ['elapsedSeconds', 'restSecondsRemaining']) {
+    for (const ticked of [
+      'elapsedSeconds',
+      'restSecondsRemaining',
+      'workClockRemaining',
+      'workClockKind',
+      'workClockActive',
+      'workClockInitialSeconds',
+    ]) {
       assert.doesNotMatch(
         partialize,
         new RegExp(`\\b${ticked}\\b`),

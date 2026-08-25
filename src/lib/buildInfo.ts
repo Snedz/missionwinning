@@ -1,5 +1,5 @@
-/** Shown on Profile so testers can confirm the deployed build. Bump when shipping UI to master. `.986` drop-set rest-zero (past master `.985` warmup batch `8a9fe41f`; keep warmup `.985` + notes `.983` + 1RM `.981` + supersets `.980` + Learn `.978` + week strip `.977` + Track `.976` + Move `.974` + cues `.973` + honesty `.971` + tags `.970` + RPE `.967` + Fuel `.965` + resume `.963`). */
-export const APP_BUILD_LABEL = "2026.07-unified.986";
+/** Shown on Profile so testers can confirm the deployed build. Bump when shipping UI to master. `.987` EMOM/AMRAP timer (past master `.986` drop-set rest-zero `9c3b2ce6`; keep drop-set `.986` + warmup `.985` + notes `.983` + 1RM `.981` + supersets `.980` + Learn `.978` + week strip `.977` + Track `.976` + Move `.974` + cues `.973` + honesty `.971` + tags `.970` + RPE `.967` + Fuel `.965` + resume `.963`). */
+export const APP_BUILD_LABEL = "2026.07-unified.987";
 
 /**
  * Semver for athletes. Distinct from `APP_BUILD_LABEL`, which `/api/health`

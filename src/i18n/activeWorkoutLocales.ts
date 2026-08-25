@@ -17,6 +17,15 @@ type ActiveWorkoutStrings = {
   activeRestTitle: string;
   activeRestSubtitle: string;
   activeRestSkip: string;
+  /** Optional EMOM / AMRAP on the live set row (`.987`). */
+  activeWorkClockEmom: string;
+  activeWorkClockAmrap: string;
+  activeWorkClockStop: string;
+  activeWorkClockStartAria: string;
+  activeWorkClockEmomAria: string;
+  activeWorkClockAmrapAria: string;
+  activeWorkClockStopAria: string;
+  activeWorkClockRunningAria: string;
   activeRestAdd15: string;
   activeRestSub15: string;
   activeAddExercise: string;
@@ -347,6 +356,14 @@ const en: ActiveWorkoutStrings = {
   activeRestTitle: 'Rest',
   activeRestSubtitle: 'Recover — next set when ready',
   activeRestSkip: 'Skip',
+  activeWorkClockEmom: 'EMOM',
+  activeWorkClockAmrap: 'AMRAP',
+  activeWorkClockStop: 'Stop',
+  activeWorkClockStartAria: 'Optional interval or countdown',
+  activeWorkClockEmomAria: 'Start EMOM minute',
+  activeWorkClockAmrapAria: 'Start AMRAP window',
+  activeWorkClockStopAria: 'Stop clock',
+  activeWorkClockRunningAria: '{{kind}} {{clock}}',
   activeRestAdd15: '+15s',
   activeRestSub15: '−15s',
   activeAddExercise: 'Add Exercise',
@@ -689,6 +706,11 @@ const es: ActiveWorkoutStrings = {
   activeRestTitle: 'Descanso',
   activeRestSubtitle: 'Recupera — siguiente serie cuando estés listo',
   activeRestSkip: 'Saltar',
+  activeWorkClockStop: 'Parar',
+  activeWorkClockStartAria: 'Intervalo o cuenta atrás opcional',
+  activeWorkClockEmomAria: 'Empezar minuto EMOM',
+  activeWorkClockAmrapAria: 'Empezar ventana AMRAP',
+  activeWorkClockStopAria: 'Parar el reloj',
   activeAddExercise: 'Añadir ejercicio',
   activeSwapEyebrow: 'Sin máquina',
   activeSwapTitle: 'Cambiar',

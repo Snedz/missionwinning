@@ -168,6 +168,13 @@ const NEVER_SHIPPED: { from: number; to: number; why: string }[] = [
       'Private session notes was planned as `.982` while 1RM percent landed as `.981` ' +
       '(`81b23935`). The ship stamp is `.983`. No LOG heading on master ever ended in `.982`.',
   },
+  {
+    from: 984,
+    to: 984,
+    why:
+      'Warmup batch concern. The ship stamp is `.985` after master `.983`. No LOG heading ' +
+      'on master ever ended in `.984`.',
+  },
 ];
 const neverShipped = (x: number) => NEVER_SHIPPED.some((g) => x >= g.from && x <= g.to);
 
