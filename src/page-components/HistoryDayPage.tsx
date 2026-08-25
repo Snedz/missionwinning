@@ -21,13 +21,14 @@ import { CalendarDays, ChevronLeft, ChevronRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { PillarPageShell } from '@/components/layout/PillarPageShell';
 import { EmptyState } from '@/components/ui/EmptyState';
-import { hasLoggedWork, useWorkoutStore } from '@/store/workoutStore';
+import { useWorkoutStore } from '@/store/workoutStore';
 import { buildDayRecord, isDayKey } from '@/lib/journey/dayRecord';
 import { sweepDaysWithData } from '@/lib/journey/daysWithData';
 import {
   logFromTrainJournalId,
   templateFromCompletedLog,
 } from '@/lib/workout/historyRetrain';
+import { decideStartAgain } from '@/lib/workout/startAgain';
 import { track } from '@/lib/analytics';
 import { formatLocalDateKey } from '@/lib/time/localDate';
 
@@ -141,20 +142,21 @@ export function HistoryDayPage({ date }: Props) {
                       size="sm"
                       className="mt-2 min-h-[44px]"
                       onClick={() => {
-                        const template = templateFromCompletedLog(trainLog);
-                        if (!template) return;
-                        if (hasLoggedWork(activeWorkout)) {
-                          router.push('/active');
-                          return;
-                        }
-                        startWorkout(template.name, template.exercises);
-                        track('history_train_again', {
-                          exerciseCount: template.exercises.length,
+                        const decision = decideStartAgain({
+                          log: trainLog,
+                          active: activeWorkout,
                         });
+                        if (decision.kind === 'empty') return;
+                        if (decision.kind === 'start') {
+                          startWorkout(decision.name, decision.exercises);
+                          track('history_train_again', {
+                            exerciseCount: decision.exercises.length,
+                          });
+                        }
                         router.push('/active');
                       }}
                     >
-                      {t('historyTrainAgain', { defaultValue: 'Train this again' })}
+                      {t('historyTrainAgain', { defaultValue: 'Start this again' })}
                     </Button>
                   ) : null}
                 </li>

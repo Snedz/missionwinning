@@ -1,5 +1,5 @@
-/** Shown on Profile so testers can confirm the deployed build. Bump when shipping UI to master. `.989` Quiet Track trend (past master `.988` EMOM/AMRAP `277b55d3`; keep EMOM `.988` + drop-set `.986` + warmup `.985` + notes `.983` + 1RM `.981` + supersets `.980` + Learn `.978` + week strip `.977` + Track `.976` + Move `.974` + cues `.973` + honesty `.971` + tags `.970` + RPE `.967` + Fuel `.965` + resume `.963`). */
-export const APP_BUILD_LABEL = "2026.07-unified.989";
+/** Shown on Profile so testers can confirm the deployed build. Bump when shipping UI to master. `.991` This session becomes a Start (past master `.989` Quiet Track trend `adad3e58`; keep Track trend `.989` + EMOM `.988` + drop-set `.986` + warmup `.985` + notes `.983` + 1RM `.981` + supersets `.980` + Learn `.978` + week strip `.977` + Track `.976` + Move `.974` + cues `.973` + honesty `.971` + tags `.970` + RPE `.967` + Fuel `.965` + resume `.963` + notebook `.960`). */
+export const APP_BUILD_LABEL = "2026.07-unified.991";
 
 /**
  * Semver for athletes. Distinct from `APP_BUILD_LABEL`, which `/api/health`

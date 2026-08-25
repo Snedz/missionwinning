@@ -41,7 +41,7 @@ type HistoryStrings = {
   historySelectExercise: string;
   historySignInFoot: string;
   historySessionVolume: string;
-  /** K7 — replay completed session in Train. */
+  /** K7 / `.991` — start a finished session again. */
   historyTrainAgain: string;
   /** K11 — short label on session list rows. */
   historyTrainAgainShort: string;
@@ -125,7 +125,7 @@ const en: HistoryStrings = {
   historySelectExercise: 'Chart exercise',
   historySignInFoot: 'Sign in (optional) to load full cloud history.',
   historySessionVolume: '{{volume}} {{unit}} total volume',
-  historyTrainAgain: 'Train this again',
+  historyTrainAgain: 'Start this again',
   historyTrainAgainShort: 'Again',
   historyTableSet: 'Set',
   historyTableReps: 'Reps',

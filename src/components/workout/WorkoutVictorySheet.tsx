@@ -2,6 +2,7 @@
 
 import { useMemo, useState } from 'react';
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 import { Share2 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { useLocaleFormat } from '@/hooks/useLocaleFormat';
@@ -26,6 +27,7 @@ import { useHonorSavedRoutine } from '@/hooks/useHonorSavedRoutine';
 import { SaveHonoredRoutineDoor } from '@/components/workout/SaveHonoredRoutineDoor';
 import { useWorkoutStore } from '@/store/workoutStore';
 import { templateFromCompletedLog } from '@/lib/workout/historyRetrain';
+import { decideStartAgain } from '@/lib/workout/startAgain';
 import { toast } from '@/hooks/use-toast';
 import { track } from '@/lib/analytics';
 import { upsertTodayPartial } from '@/lib/mindCheckIns';
@@ -95,12 +97,19 @@ export function WorkoutVictorySheet({
   onRunFieldTestAgain,
 }: Props) {
   const { t } = useTranslation();
+  const router = useRouter();
   const fmt = useLocaleFormat();
   const units = useUnits();
   const unitLabel = weightUnitLabel(units);
   const honor = useHonorSavedRoutine();
   const workoutHistory = useWorkoutStore((s) => s.workoutHistory);
+  const startWorkout = useWorkoutStore((s) => s.startWorkout);
+  const activeWorkout = useWorkoutStore((s) => s.activeWorkout);
   const setHistorySessionNote = useWorkoutStore((s) => s.setHistorySessionNote);
+  const finishedLog = workoutId
+    ? workoutHistory.find((row) => row.id === workoutId)
+    : undefined;
+  const startAgain = decideStartAgain({ log: finishedLog, active: activeWorkout });
   const [feelSaved, setFeelSaved] = useState(false);
   /** Share ladder full fail only — never cancel. Design review 2A. */
   const [shareFailHint, setShareFailHint] = useState(false);
@@ -361,6 +370,33 @@ export function WorkoutVictorySheet({
             }}
           >
             {t('honorSaveAsRoutine', { defaultValue: 'Save as routine' })}
+          </Button>
+        ) : null}
+
+        {startAgain.kind !== 'empty' ? (
+          <Button
+            type="button"
+            variant="outline"
+            className="w-full min-h-[44px] tap-target"
+            data-testid="victory-start-again"
+            onClick={() => {
+              const next = decideStartAgain({
+                log: finishedLog,
+                active: useWorkoutStore.getState().activeWorkout,
+              });
+              if (next.kind === 'empty') return;
+              onOpenChange(false);
+              if (next.kind === 'start') {
+                startWorkout(next.name, next.exercises);
+                track('history_train_again', {
+                  exerciseCount: next.exercises.length,
+                  from: 'receipt',
+                });
+              }
+              router.push('/active');
+            }}
+          >
+            {t('historyTrainAgain', { defaultValue: 'Start this again' })}
           </Button>
         ) : null}
 

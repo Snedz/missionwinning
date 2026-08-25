@@ -1,104 +1,101 @@
-# PLAN.md — Quiet Track trend (`.989`)
+# PLAN.md — This session becomes a Start (`.991`)
 
 **Freeze.** Implement only this file. Do not reopen refused items mid-build.
 **Not** [docs/PLAN.md](docs/PLAN.md) (build phases A–I). The living roadmap
 gets a matching frozen section so agents following the boot order find this
-ship; this file is the week-strip Track glance freeze.
-**Lane:** Engineering-Web · week strip · **Horizon:** 0
-**Label:** `2026.07-unified.989` (master is `.988` / `277b55d3`
-EMOM/AMRAP timer). Title stays **Quiet Track trend (.989)**.
-**Excellence-Override:** muted last-vs-this on the existing week-strip
-day (not a Today widget, not rings, not Bevel strain)
+ship; this file is the session-out Start freeze.
+**Lane:** Engineering-Web · close receipt / History · **Horizon:** 0
+**Label:** `2026.07-unified.991` (master is `.989` / `adad3e58`
+Quiet Track trend). Title stays **This session becomes a Start (.991)**.
+If custom exercise `.990` lands on master first, rebase onto that tip
+and bump the stamp so it stays greater than the new master. Title
+keeps `.991`.
+**Excellence-Override:** session-out Start this again on the existing
+receipt / History (not a shop, not a second Today Start)
 
 ---
 
 ## 0. What this is
 
-Track `.976` already logs weight and tape on `/track`. Week-strip
-quiet row `.977` already lets one optional Fuel / Walk / Scale row
-sit on an empty rest day. Missing: they logged weight (or tape)
-twice and cannot see last-vs-this without leaving Train-as-home
-for the Track diary.
+Honor notebook (`.960`) is **program-in**: they save a named routine;
+Start uses that notebook. Repeat last (`.717`) copies the *newest*
+log. Resume (`.963`) keeps the *open* session.
 
-This ship folds one muted last-vs-this into the **existing** strip
-day, from Track diary data. Empty invents nothing. `/track` stays
-the diary. Today stays one Start. Not Today-as-dashboard. Not
-rings. Not a shame slope. Not body photos.
+Missing is **session-out**: Thursday starts Monday's log without
+rebuilding an empty Train. One action off the close receipt (`.956`)
+and History: **Start this again**. Same movements. Not a shop.
+
+Strong grammar (do not copy UI or brand): a finished workout is a
+starting point for a new session — sets are not completed; last
+loads/reps are targets. You can start it from the end of the workout
+or from History. We do **not** take the 3-template cap, a template
+library, or an update-template prompt.
 
 `PRIVATE_MODE` stays on. Live www stays `.696`. Do not promote.
 
-## 1. Investigate (done — hypothesis holds, with a diary gap)
+## 1. Investigate (done — hypothesis holds)
 
-Checked on `origin/master` `.988` (`277b55d3`).
+Checked on `origin/master` `.989` (`adad3e58`).
 
 | Claim | Verified |
 |-------|----------|
-| `.977` already hosts Fuel / Walk / Scale on an empty rest day | **Yes.** `decideQuietWeekRow` + `TodayQuietWeekStrip`. Empty day is a quiet tap. One chooser. Outline Log. Train Done stays Done. A second row that day refuses. Quiet does not score `thin`. |
-| Track day on the strip already shows last-vs-this | **No.** A `quiet === 'track'` cell paints the kind label **Scale** only. No previous number. No sparkline. |
-| `/track` already has a two-log chart | **Yes.** `BodyMetricsCard` draws recharts when `series(metric).length >= 2`. Empty copy: "Log at least two entries to see a trend." That chart is the diary, not the strip. |
-| Track diary is `bodyMetrics` | **Yes.** `saveBodyMetric` / `loadBodyMetrics`. Strip write-through already calls `saveBodyMetric` for a Track row. `/track` writes the same store. |
-| Glance reads the Track diary | **No.** `quietWeekGlance` takes `history` + `quietRows` only. A `/track` log with no strip write does not paint the day. |
-| `bodyMetrics.delta` / `series` exist | **Yes.** `delta` uses `Date.now()` + a days cutoff (fixture-expiry shape). Do **not** reuse it on the strip. New helper takes injected entries + dates. |
-| Today already has sparkline chrome | **Yes.** `Sparkline.tsx` + `TodayMetricsSparklineRow` live under dashboard / health. Lean Today does not mount them. Using them here would be Today-as-dashboard. |
-| Today / door | One `dock="start"`. Resume `.963`. `/private` is the tight `.957` lock. Surface lock: Today tree must not mount `BodyMetricsCard` / photos / rings. |
+| Repeat last already exists | **Yes.** `repeatLastSessionTemplate` wraps `templateFromCompletedLog`. Train empty and Today Start (when no live Coach / no notebook) copy the **newest** viable log. |
+| Resume already exists | **Yes.** `.963` `sessionResume` + `protectLiveStart`. `startWorkout` keeps a live this-device session. Leave Today / week / receipt and come back — same session. A **closed** log is not resume. |
+| Honor notebook is program-in | **Yes.** `honorSavedRoutine` + confirm door. Receipt and History already have outline **Save as routine**. Start uses `pickHonoredStart` before repeat last / Just Go. Empty notebook invents nothing. **Keep. Do not rewrite.** |
+| History can start a finished log | **Yes.** K7/K11: list **Again**, details **Train this again**, day **Train this again**. All call `templateFromCompletedLog` then `startWorkout`. Live logged work → `/active` without wipe. Not a shop. |
+| Close receipt can Start this again | **No.** First paint is stats + lift table + notes + outline Save as routine. Next dock is Coach / Today (`.447` / `.956`). No session-out Start. |
+| Receipt first paint may grow a red Start | **No.** `sessionNoteSurface` forbids `primary-action` / `bg-primary-fill` on the open receipt (notes are not a red Start). Next dock stays the one red. **Start this again is outline.** |
+| Today is one Start | **Yes.** Lean `dock="start"`. Resume when live. Do not add a second Start. |
+| Empty invents a template | **No.** `templateFromCompletedLog` is null for empty / tombstone / warmup-only. Honor save is already empty-gated. |
+| `/private` | Tight `.957` lock. Do not touch. |
+| Custom exercise `.990` | Not on this master tip. Rebase + bump if it merges first. |
 
-**Hypothesis (founder, non-binding):** `.977` already lets one optional
-Fuel / Walk / Scale row sit on an empty rest day. Fold a quiet
-last-vs-this (or tiny sparkline) into that existing strip day
-using Track diary data, without a new Today Start or a Health gate.
+**Hypothesis (founder, non-binding):** Repeat last / resume already
+exist; leftover is turning a completed session into a Start target
+from the receipt or History without becoming a program marketplace.
 
-**Verdict: keep.** The strip day is the surface. Track diary is the
-source. Do not add a Today widget. Do not add a Health gate.
+**Verdict: keep.** The leftover is session-out. Reuse the existing
+mapper. Do not add a template library. Do not change Today Start.
+Honor notebook stays program-in.
 
-**Lock last-vs-this, not a sparkline.** Two numbers and a neutral
-arrow fit the 44px cell and match Train vs-last grammar. A two-point
-sparkline on this strip would reuse dashboard chart chrome and read
-as a ring segment. `Sparkline.tsx` / `TodayMetricsSparklineRow` /
-recharts stay off the strip.
+**Strong we take / leave:**
 
-**Diary gap (close it):** a rest day with a Track diary number and
-no other quiet kind paints as Scale, the same as a strip write.
-Otherwise two `/track` logs never appear on This week.
+- Take: finished session → new Start (same lifts, last loads as
+  targets, sets not completed). Door on the close **and** History.
+- Leave: 3-template lore as our cap. Template folders / shop.
+  Update Template / Keep Original prompt. Feed-share the template.
+  Trainer-rail.
 
-## 2. Lock (strip day + diary)
+## 2. Lock (session-out only)
 
-| Slot | Zero / one log | Two logs, same metric |
-|------|----------------|------------------------|
-| Rest day with a Track number | Kind label **Scale** (`.977`). No invented last. | Weekday + muted **last → this**. Kind is implicit. |
-| Rest day Fuel / Walk | Kind label only. No Track overlay. | Fuel / Walk still wins that day. No mixed trend. |
-| Train Done | **Done.** No quiet. No trend. | **Done.** Diary stays on `/track`. |
-| Empty rest day, no diary | Empty. Optional `.977` offer. | — |
+| Surface | Empty / no template | Finished session with lifts |
+|---------|---------------------|-----------------------------|
+| Close receipt first paint | No Start this again. Empty session still invents no receipt (`.956`). | Outline **Start this again**. Same mapper as History. Save as routine stays (`.960`). Next dock stays Coach / Today. |
+| History list / details / day | No Again button (already). | Same helper. Copy becomes **Start this again** (short list may stay **Again**). Not a shop. |
+| Today Start | Unchanged. One Start. Resume when live. Notebook / repeat last / Just Go stay their lanes. | Not a second Start. This ship does not pin Monday onto the dock. |
+| Train empty | Unchanged. Notebook → repeat last → blank. | Start this again *is* `startWorkout` from receipt / History, not a new empty-start kind. |
 
 Closed rules:
 
-1. **Lives on the week strip day.** Not a new Today widget. Not a
-   pin. Not a Start. Not on Train. Not on `/private`.
-2. **Two logs or nothing.** Weight or the same tape key, twice.
-   Zero or one finite number invents nothing. Date-only rows do
-   not count (`.976`).
-3. **Same metric.** Prefer `weightKg` when both this and last have
-   it. Else first overlapping tape key in `BODY_METRIC_KEYS` order
-   (`waistCm` → `chestCm` → `armCm` → `hipCm`). `bodyFatPct` is
-   not tape — skip it on the strip. No overlap ⇒ no trend.
-4. **This day is the later log on this week's strip.** Last is the
-   previous same-metric diary row (any earlier date). Last week →
-   this week is valid. Two logs last week and nothing this week
-   invents no cell.
-5. **Diary paints Scale.** A rest day with `entryHasLoggedNumber`
-   and no Fuel / Walk row gets `quiet: 'track'`. One row per day
-   still holds. Train Done still wins.
-6. **No shame slope.** Neutral muted `last → this`. No green/red.
-   No up/down verdict. No "lost" / "gained" / "%". Flat two-log
-   (`81 → 81`) is honest, not empty.
-7. **Not rings. Not photos. Not Bevel strain.** No `ScoreNumeral`.
-   No `ProgressPhotosCard`. No Health permission. No sparkline
-   on the strip.
-8. **Honesty `.971` still scores Train only.** Quiet + trend do
-   not set `done`, `streak`, `onTrack`, or `consistency`.
-9. **Today still one Start** (Resume when live). Strip Log stays
-   outline. Guest. First set ungated.
-10. **`/track` stays the diary.** Do not move the card, the chart,
-    or Log onto Today. Do not mount `BodyMetricsCard` on the strip.
+1. **Session-out, not program-in.** This action starts a **new**
+   session from a completed log. It does not write `savedWorkouts`.
+   It does not change `pickHonoredStart` / Wednesday / Builder.
+   Save as routine stays the notebook door.
+2. **One mapper.** `templateFromCompletedLog` stays the only lift
+   list. Working sets only (warmup omitted, `.966`). Superset
+   groups kept (`.980`). Empty / tombstone / warmup-only ⇒ no
+   action. Do not fork the loop.
+3. **Live session wins.** If `protectLiveStart` is `keep`, navigate
+   `/active` and do not mint a second session (`.963`). After a
+   normal Finish the active session is gone, so the receipt tap
+   starts.
+4. **Outline on the receipt.** Not `.primary-action`. Not a second
+   Today Start. Next dock stays the one red. Guest. First set
+   ungated.
+5. **Not a shop.** No template library, folder, cap, marketplace,
+   Feed share, or Trainer-rail. History stays a diary of logs.
+6. **Empty invents nothing.** No Start this again until they had
+   a session with at least one working set.
 
 ## 3. Ship (only this)
 
@@ -107,129 +104,117 @@ Closed rules:
 This freeze. Implement commit follows. Plan commit is `[skip vercel]`.
 Every later commit is `[skip vercel]`.
 
-### 3.2 Pure helper — `src/lib/today/quietWeekTrackTrend.ts`
+### 3.2 Pure helper — `src/lib/workout/startAgain.ts`
 
 One module. Deterministic. No store. No DOM. No premium / rewards /
-social / Health / speech / wearables. Injected entries so fixtures
-do not expire. Do **not** call `bodyMetrics.delta` (it uses
-`Date.now()`).
+social. Wraps `templateFromCompletedLog` + `protectLiveStart`.
 
 | Export | Rule |
 |--------|------|
-| `QuietWeekTrackTrend` | `{ date, metric, last, thisValue }` — `metric` is `weightKg` or a tape key. |
-| `decideQuietWeekTrackTrend({ entries, date })` | Entries with a logged number, newest first or any order. Find the entry on `date`. Find the previous entry (strictly earlier date) that shares a metric per §2.3. Both values finite and > 0. Else `null`. Invalid date ⇒ `null`. |
-| `trackQuietDateKeys(entries)` | Local `YYYY-MM-DD` keys that have a logged number. Used by glance to paint Scale from the diary. |
+| `StartAgainDecision` | `{ kind: 'empty' }` · `{ kind: 'resume-live' }` · `{ kind: 'start'; name; exercises }` |
+| `decideStartAgain({ log, active })` | No template ⇒ `empty`. Live keep ⇒ `resume-live`. Else `start` with the mapper's name + exercises. |
 
-Do not import this from Train, `/private`, Coach, or www.
+Do not import this from Today, `/private`, Coach generate, or www.
+History and the receipt are the only callers.
 
-### 3.3 Glance — fold diary into the existing day
+### 3.3 Close receipt
 
-`quietWeekGlance` accepts optional `trackEntries`.
+On `WorkoutVictorySheet` first paint, when the finished log has a
+template, outline **Start this again** (`data-testid="victory-start-again"`).
 
-- Rest day + diary number + no Fuel / Walk row ⇒ `quiet: 'track'`
-  (same as a strip write).
-- That day + `decideQuietWeekTrackTrend` ⇒ optional `trackTrend`.
-- Train Done ⇒ no `quiet`, no `trackTrend`.
-- Fuel / Walk that day ⇒ no `trackTrend`.
-- Empty days without a diary number keep the four keys
-  (`dateKey`, `done`, `isToday`, `offset`).
-- `thin` unchanged (Train history only).
+- `empty` ⇒ no button.
+- `resume-live` ⇒ close sheet, `/active` (do not wipe).
+- `start` ⇒ `startWorkout(name, exercises)`, close sheet, `/active`.
 
-`HomeTodayLean` passes `trackEntries: loadBodyMetrics()` on the
-same refresh that already reloads `quietRows`. After a strip Track
-log, refresh both (write-through already saved the diary).
+Sit with / after outline Save as routine. Do not replace the Next
+dock. Do not open the honor save door. Do not share.
 
-### 3.4 Strip paint
+### 3.4 History
 
-On a Track day with `trackTrend`, replace the **Scale** label with
-muted tabular `last → this` (`text-muted-foreground`, `text-[9px]`).
-Weight uses display units (`kgToDisplay` + existing unit hook) —
-numbers only, no unit suffix (cell is tight). Tape is the raw cm
-number. `data-testid="quiet-week-track-trend"` on that cell.
-
-No `Sparkline`. No recharts. No `.primary-action`. No ✕. No
-Health copy. Offer / Log / dismiss stay `.977`.
+`HistoryPage` list + details and `HistoryDayPage` call the same
+helper instead of inlining `templateFromCompletedLog` +
+`hasLoggedWork`. Copy: **Start this again** (keep a short **Again**
+on the tight list row if 44px needs it). Save as routine stays on
+the details door. Do not add a template grid.
 
 ### 3.5 Surfaces that do not change
 
-- `/track` first paint stays `BodyMetricsCard`. Chart stays there.
 - Today lean stays date · pins · highlights · strip · Show all ·
   one `JourneyHero` `dock="start"`.
-- `/private` stays the tight `.957` lock.
-- Honesty `.971`, resume `.963`, first set ungated, EMOM `.988`,
-  drop-set `.986`, warmup `.985` stay.
+- Honor notebook `.960` (save door, `pickHonoredStart`, Wednesday
+  cite) stays program-in.
+- Resume `.963`, Repeat last `.717`, close receipt keep `.956`,
+  `/private` `.957`.
+- First set ungated. Guest.
 
 ### 3.6 Tests
 
-- 0 logs / 1 log / date-only ⇒ `null` trend. Mutant that invents
-  a last from one row dies.
-- Two weights ⇒ last / this on the later date. Earlier date has
-  no trend (it is not "this").
-- Two waists, no weight ⇒ waist trend.
-- This has weight, last has only waist ⇒ no overlap ⇒ `null`.
-- Prefer weight when both days have it.
-- Invalid / non-local date invents nothing.
-- Glance: diary-only rest day paints `quiet: 'track'`. Two diary
-  weights attach `trackTrend` on the later rest day. Train Done
-  swallows quiet + trend. Fuel that day swallows trend. 1–2 Train
-  sessions still `thin: true`. No `streak` / `onTrack` /
-  consistency. Empty days without a diary number keep four keys.
-- Strip source: paints `quiet-week-track-trend`. No
-  `Sparkline` / `recharts` / `BodyMetricsCard` / `ProgressPhotos` /
-  `primary-action` / rings / Health / shame words (`lost`,
-  `gained`, `strain`). Today lean still one `dock="start"`.
-- `firstSetUngated` stays green. No Feed / Discord.com / likes /
-  XP / login wall / Force Sync / Session Expired / four-scene
-  door.
-- `/track` surface lock stays: card + chart remain on Track.
-  Today does not import `BodyMetricsCard`.
+- Helper: empty / tombstone / warmup-only ⇒ `empty`. Mutant that
+  invents a template dies.
+- Helper: live keep ⇒ `resume-live` (no start payload). Mutant
+  that starts over a live session dies.
+- Helper: finished Push with bench 5×100 ⇒ `start` with bench,
+  5 / 100, sets not completed. Warmup omitted. Group kept.
+- Receipt source: `victory-start-again` present; first-paint open
+  still has no `primary-action` / `bg-primary-fill`. Empty /
+  missing log has no button. Save as routine still there.
+  No shop / Feed / `discord.com` / marketplace / 3-template cap.
+- History source: list / details / day call `decideStartAgain`.
+  No catalog / folder / shop.
+- `firstSetUngated` stays green (comment this ship). Today lean
+  still one `dock="start"`. `todayPrimaryAction` does not import
+  `startAgain`.
+- Honor tests stay green. `/private` lock untouched.
 
 ### 3.7 Help / i18n / INDEX
 
-- Help one-liner: if they logged scale or tape twice, that rest
-  day on This week can show last → this. Today stays Start
-  workout. Empty invents nothing.
-- i18n via `t(key, { defaultValue })` — no shame.
-- Folder INDEX if the file list changes (`src/lib/INDEX.md`,
-  `src/components/today/INDEX.md`).
+- Help one-liner on getting-started: after Finish (or from
+  History) they can **Start this again** — same movements, last
+  loads as targets. Empty invents nothing. Today stays Start
+  workout. Save as routine is still the named notebook.
+- i18n via `t(key, { defaultValue: 'Start this again' })`. Reuse
+  `historyTrainAgain` / `historyTrainAgainShort` (update EN
+  default) or one new key with defaultValue. No Strong product
+  names.
+- Folder INDEX if the file list changes (`src/lib/workout/INDEX.md`,
+  `src/components/workout/INDEX.md`).
 
 ## 4. Refuse
 
-WeChat home. Four-scene door. Feed / DMs / marketplace. Health
-gate before Train. Body photos. Shame slope. Bevel strain /
-rings. Counsel-hold. Promote. `PRIVATE_MODE` flip. Merge.
-Second Today Start. Discord.com. Mind. Sparkline / recharts on
-the strip. `TodayMetricsSparklineRow` on lean Today. Moving
-Track onto Today. Inventing a last from one log.
+Program marketplace. 3-template lore as our cap. Feed-share the
+template. Trainer-rail. WeChat home. Four-scene door. Health gate.
+Counsel-hold. Promote. `PRIVATE_MODE` flip. Merge. Second Today
+Start. Discord.com. Mind. Update-template prompt. Template folders.
+Pinning Monday onto the Today dock. Rewriting honor notebook.
 
-Do not smash `.988` / `.986` / `.985` / `.983` / `.981` /
+Do not smash `.989` / `.988` / `.986` / `.985` / `.983` / `.981` /
 `.980` / `.978` / `.977` / `.976` / `.974` / `.973` / `.971` /
-`.970` / `.967` / `.965` / `.963` / `.961` / `.957`.
+`.970` / `.967` / `.965` / `.963` / `.961` / `.960` / `.957` /
+`.956`.
 
 ## 5. Docs / ship protocol
 
-- `APP_BUILD_LABEL` → `2026.07-unified.989`
-- LOG heading `## 2026-08-25 — Quiet Track trend (\`.989`)` +
+- `APP_BUILD_LABEL` → `2026.07-unified.991`
+- LOG heading `## 2026-08-25 — This session becomes a Start (\`.991`)` +
   rotate oldest live entry so LOG stays ≤15
-- `CONTEXT.md` `## Now` one-line `.989` citing the full label;
-  keep `.988` … `.970`; rotate oldest shipped Now bullet
-  (`.967`) so the block stays ≤25
+- `CONTEXT.md` `## Now` one-line `.991` citing the full label;
+  keep `.989` … `.970`; rotate oldest shipped Now bullet so the
+  block stays ≤25
 - Plan commit `[skip vercel]`. Implement commits `[skip vercel]`.
-- One draft PR against master. Title: `Quiet Track trend (.989)`.
+- One draft PR against master. Title: `This session becomes a Start (.991)`.
   Do not merge. Do not promote. Live www stays `.696`.
-- `tsc --noEmit` clean. `check-build-label` `.989` > master `.988`.
+- `tsc --noEmit` clean. `check-build-label` `.991` > master `.989`.
 
 ## 6. Done when
 
-- If they have two Track weight (or tape) logs, the week strip
-  day can show one muted last → this on that day. Empty invents
-  nothing.
-- Lives on the week strip, not a new Today widget. Not rings.
-  Not a shame slope. Not body photos.
-- Today still one Start (Resume when live). `/private` stays
-  the tight `.957` lock.
-- Guest. First set still ungated. Honesty `.971` still scores
-  Train only.
-- `/track` itself stays the diary. Do not move Track onto Today.
-- Unit tests. tsc clean. Label `.989`. Draft PR against master.
-  Title: `Quiet Track trend (.989)`.
+- From the close receipt and History they can **Start this again**
+  (same movements, not a rebuilt empty log).
+- Optional. Guest. First set still ungated. Empty invents nothing
+  (no Start this again until they had a session).
+- Not a shop. Not a 3-template cap as our identity. Not Feed-share.
+  Not Trainer-rail.
+- Today still one Start (Resume when live). `/private` stays the
+  tight `.957` lock.
+- Honor notebook (`.960`) stays program-in. This is session-out only.
+- Unit tests. tsc clean. Label `.991`. Draft PR against master.
+  Title: `This session becomes a Start (.991)`.

@@ -68,7 +68,7 @@ import {
   sweepDaysWithData,
 } from '@/lib/journey/daysWithData';
 import { getExercisesWithBenchmarkData } from '@/lib/benchmarks';
-import { hasLoggedWork, useWorkoutStore } from '@/store/workoutStore';
+import { useWorkoutStore } from '@/store/workoutStore';
 import type { CompletedWorkoutLog } from '@/types';
 import { getUser, getUserNutritionForDate, type CloudNutritionEntry } from '@/lib/supabase';
 import { PillarPageShell } from '@/components/layout/PillarPageShell';
@@ -77,6 +77,7 @@ import { Input } from '@/components/ui/input';
 import { SegmentedControl } from '@/components/ui/SegmentedControl';
 import { localDateKey, localDateKeyFromIso, formatLocalDateKey } from '@/lib/time/localDate';
 import { templateFromCompletedLog } from '@/lib/workout/historyRetrain';
+import { decideStartAgain } from '@/lib/workout/startAgain';
 import { useHonorSavedRoutine } from '@/hooks/useHonorSavedRoutine';
 import { SaveHonoredRoutineDoor } from '@/components/workout/SaveHonoredRoutineDoor';
 import { toast } from '@/hooks/use-toast';
@@ -107,18 +108,15 @@ export function HistoryPage() {
   const liveHistory = useMemo(() => liveSessionLogs(workoutHistory), [workoutHistory]);
   const [selected, setSelected] = useState<CompletedWorkoutLog | null>(null);
 
-  /** K7/K11 — start freestyle from a finished log; never wipe a logged session. */
+  /** K7/K11 / `.991` — start this finished log again; never wipe a live session. */
   const retrainFromLog = (log: CompletedWorkoutLog) => {
-    const template = templateFromCompletedLog(log);
-    if (!template) return;
-    if (hasLoggedWork(activeWorkout)) {
-      setSelected(null);
-      router.push('/active');
-      return;
-    }
-    startWorkout(template.name, template.exercises);
-    track('history_train_again', { exerciseCount: template.exercises.length });
+    const decision = decideStartAgain({ log, active: activeWorkout });
+    if (decision.kind === 'empty') return;
     setSelected(null);
+    if (decision.kind === 'start') {
+      startWorkout(decision.name, decision.exercises);
+      track('history_train_again', { exerciseCount: decision.exercises.length });
+    }
     router.push('/active');
   };
   const [cloudSynced, setCloudSynced] = useState(false);
@@ -727,7 +725,7 @@ export function HistoryPage() {
                     className="w-full min-h-[44px] primary-action"
                     onClick={() => retrainFromLog(selected)}
                   >
-                    {t('historyTrainAgain', { defaultValue: 'Train this again' })}
+                    {t('historyTrainAgain', { defaultValue: 'Start this again' })}
                   </Button>
                   <Button
                     type="button"
