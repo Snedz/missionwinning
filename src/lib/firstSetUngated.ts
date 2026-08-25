@@ -9,6 +9,7 @@
  * `.967` — optional RPE 1–10 / RIR on a logged set. Never a login wall.
  * `.970` — optional W / D / F on the set (concern `.966`); never a Log set gate.
  * `.964` / `.971` — one or two sessions stay a notebook. Wednesday does not invent tomorrow.
+ * `.973` — short written cues on the open live exercise. Never a login wall.
  */
 
 export function normalizeAppPath(pathname: string | null | undefined): string {

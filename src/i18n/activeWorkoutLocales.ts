@@ -35,6 +35,10 @@ type ActiveWorkoutStrings = {
   activeChooseExercise: string;
   activeEmptyExercises: string;
   activeFormGuide: string;
+  /** Short written cues on the open live exercise (`.973`). */
+  activeInSetCues: string;
+  activeInSetCuesHide: string;
+  activeInSetCuesDemoAlt: string;
   activeLoadPctChip: string;
   activeAddSet: string;
   activeStartRest: string;
@@ -354,6 +358,9 @@ const en: ActiveWorkoutStrings = {
   activeChooseExercise: 'Choose exercise...',
   activeEmptyExercises: 'Add an exercise to begin logging sets.',
   activeFormGuide: 'Form guide',
+  activeInSetCues: 'Cues',
+  activeInSetCuesHide: 'Hide cues',
+  activeInSetCuesDemoAlt: '{{name}} setup',
   activeLoadPctChip: '{{pct}}% · {{weight}} {{unit}}',
   activeAddSet: 'Add Set',
   activeStartRest: '{{seconds}}s Rest',

@@ -154,6 +154,13 @@ const NEVER_SHIPPED: { from: number; to: number; why: string }[] = [
       '`.968` was the honesty rebase stamp before tags landed as `.970`; this branch is ' +
       '`.971`. `.969` stays reserved. No LOG heading on master ever ended in those labels.',
   },
+  {
+    from: 972,
+    to: 972,
+    why:
+      'Quiet Move `#804` is in flight and reserved `.972`. This ship is `.973` cues on the ' +
+      'movement. No LOG heading on master ever ended in `.972`.',
+  },
 ];
 const neverShipped = (x: number) => NEVER_SHIPPED.some((g) => x >= g.from && x <= g.to);
 
