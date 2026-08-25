@@ -196,6 +196,14 @@ const NEVER_SHIPPED: { from: number; to: number; why: string }[] = [
       'EMOM/AMRAP timer title stays `.987`. Drop-set rest-zero took `.986` on master ' +
       '(`9c3b2ce6`); this ship stamp is `.988`. No LOG heading on master ever ended in `.987`.',
   },
+  {
+    from: 990,
+    to: 990,
+    why:
+      'Custom-exercise title stays `.990`. The ship stamp is `.992` after master `.991`. ' +
+      'No LOG heading on master ever ended in `.990`, so rotating `.989` leaves `.991` as ' +
+      'the live floor without a missing section.',
+  },
 ];
 const neverShipped = (x: number) => NEVER_SHIPPED.some((g) => x >= g.from && x <= g.to);
 
