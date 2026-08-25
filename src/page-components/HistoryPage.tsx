@@ -51,7 +51,7 @@ const HistoryVolumeChart = dynamic(
   () => import('@/components/history/HistoryCharts').then((m) => m.HistoryVolumeChart),
   { ssr: false, loading: () => <SkeletonBlock className="h-48" label="Loading volume chart" /> }
 );
-import { getExerciseById } from '@/data/exercises';
+import { resolveExercise } from '@/lib/workout/customExercise';
 import { useUnits, weightUnitLabel } from '@/hooks/useUnits';
 import { cn, formatDuration } from '@/lib/utils';
 import { countsTowardVolume, setKindBadgeClass, setKindDefaultLabel, setKindLabelKey } from '@/lib/workout/setKind';
@@ -514,7 +514,7 @@ export function HistoryPage() {
                       </SelectTrigger>
                       <SelectContent>
                         {exerciseIds.map((id) => {
-                          const ex = getExerciseById(id);
+                          const ex = resolveExercise(id);
                           return (
                             <SelectItem key={id} value={id}>
                               {ex?.name ?? id}
@@ -526,7 +526,7 @@ export function HistoryPage() {
                   )}
                   <History1RMChart
                     data={oneRmData}
-                    exerciseName={getExerciseById(activeChartId)?.name ?? activeChartId}
+                    exerciseName={resolveExercise(activeChartId)?.name ?? activeChartId}
                   />
                 </div>
               </div>
@@ -637,7 +637,7 @@ export function HistoryPage() {
                   );
                 })()}
                 {selected.exercises.map((ex) => {
-                  const exercise = getExerciseById(ex.exerciseId);
+                  const exercise = resolveExercise(ex.exerciseId);
                   return (
                     <div key={ex.exerciseId} className="space-y-2">
                       <div className="flex items-center gap-2">

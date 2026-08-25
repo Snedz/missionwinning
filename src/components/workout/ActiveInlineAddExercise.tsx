@@ -7,7 +7,7 @@
 import { useTranslation } from 'react-i18next';
 import { ExercisePicker } from '@/components/library/ExercisePicker';
 import { resolveAddExerciseId } from '@/lib/workout/activeSetInputPatches';
-import { getExerciseById } from '@/data/exercises';
+import { resolveExercise } from '@/lib/workout/customExercise';
 import type { MuscleGroup } from '@/types';
 
 type Props = {
@@ -38,7 +38,7 @@ export function ActiveInlineAddExercise({
         onClick={() => {
           const id = resolveAddExerciseId(addExerciseId);
           if (!id) return;
-          const ex = getExerciseById(id);
+          const ex = resolveExercise(id);
           onAdd(id, ex?.muscleGroups);
           onAddExerciseIdChange('');
         }}

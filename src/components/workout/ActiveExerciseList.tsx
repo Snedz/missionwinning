@@ -6,7 +6,7 @@
 
 import type { RefObject } from 'react';
 import { ActiveExerciseCard } from '@/components/workout/ActiveExerciseCard';
-import { getExerciseById } from '@/data/exercises';
+import { resolveExercise } from '@/lib/workout/customExercise';
 import { repRangeForGoal } from '@/lib/coach/progression';
 import {
   getLastSessionSets,
@@ -123,7 +123,7 @@ export function ActiveExerciseList({
     <div className="space-y-3">
       {exercises.map((exLog, exIdx) => {
         if (!laterLiftVisible(exercises, exIdx)) return null;
-        const exercise = getExerciseById(exLog.exerciseId);
+        const exercise = resolveExercise(exLog.exerciseId);
         if (!exercise) return null;
         const swapOptions = listGarageSwaps(exercise.id);
         const swapCandidates = garageSwapsWhenOpen({

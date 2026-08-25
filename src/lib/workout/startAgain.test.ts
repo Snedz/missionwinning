@@ -137,6 +137,27 @@ describe('decideStartAgain (.991)', () => {
     assert.equal('exercises' in decision, false);
   });
 
+  it('keeps a named custom id so Start this again still paints the leftover', () => {
+    const decision = decideStartAgain({
+      log: log({
+        workoutName: 'Garage',
+        exercises: [
+          {
+            exerciseId: 'custom-aaaaaaaa-bbbb-4ccc-8ddd-eeeeeeeeeeee',
+            sets: [{ reps: 8, weight: 40 }],
+          },
+        ],
+      }),
+    });
+    assert.equal(decision.kind, 'start');
+    if (decision.kind !== 'start') return;
+    assert.equal(decision.exercises[0]?.exerciseId, 'custom-aaaaaaaa-bbbb-4ccc-8ddd-eeeeeeeeeeee');
+    assert.equal(
+      (decision.exercises[0]?.sets[0] as { completed?: boolean }).completed,
+      undefined
+    );
+  });
+
   it('wraps templateFromCompletedLog + protectLiveStart rather than forking', () => {
     const src = read('src/lib/workout/startAgain.ts');
     assert.match(src, /from '@\/lib\/workout\/historyRetrain'/);

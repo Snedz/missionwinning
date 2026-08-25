@@ -13,9 +13,6 @@ Living roadmap for the **everything app** (a bodyweight coach app Super Bundle �
 > Label: `2026.07-unified.991` — next free after master `.989`
 > (`adad3e58` — Quiet Track trend). Title stays
 > **This session becomes a Start (.991)**.
-> If custom exercise `.990` lands on master first, rebase
-> onto that tip and bump the stamp so it stays greater
-> than the new master. Title keeps `.991`.
 > Track trend `.989` + EMOM `.988` + drop-set `.986` +
 > warmup `.985` + notes `.983` + 1RM `.981` + Supersets
 > `.980` + Learn `.978` + week strip `.977` + Quiet Track
@@ -50,6 +47,76 @@ Receipt first paint must not grow a red Start
 `.957` lock. **Nothing to unmount first.**
 
 Implement only root [PLAN.md](../PLAN.md).
+
+## Frozen plan — `.990` Custom exercise (2026-08-25)
+
+> **Frozen.** Implement only this section + root
+> [PLAN.md](../PLAN.md). Plan commit is `[skip vercel]`.
+> Label: `2026.07-unified.992` on this PR (rebased onto
+> master `.991` / `d561b8a5`). Title stays
+> **Custom exercise (.990)**.
+> This session becomes a Start `.991` + Quiet Track
+> trend `.989` + EMOM `.988` + drop-set `.986` +
+> warmup `.985` + notes `.983` + 1RM `.981` + Supersets
+> `.980` + Learn `.978` + week strip `.977` + Quiet Track
+> `.976` + Quiet Move `.974` + cues `.973` + honesty `.971`
+> + tags `.970` + RPE `.967` + Fuel `.965` + resume `.963`
+> are on master. Do not smash them.
+> Do **not** smash week strip `.961`, notebook `.960`,
+> swap/skip `.959`, desk→gym `.958`, `/private` `.957`,
+> close receipt `.956`, Wednesday `.955`, Today Start
+> `.954`, or identity `.949`.
+> Every commit `[skip vercel]`. No Preview. No
+> `PRIVATE_MODE` flip. No promote. Live www stays `.696`.
+> Guest path. First set stays ungated. Today stays one
+> Start. Brand: **Log a set. Offline.** / No account. No
+> wearable.
+
+The live set picker already searches the
+catalog. A library miss kills the add
+("No matches") and a session row whose
+id is not in `EXERCISES` is unmounted.
+They cannot name a movement during a
+live workout and keep logging.
+
+This is leftover, not a marketplace.
+Type a name in the existing Train
+picker. Persist locally + in the
+session. Unlimited. Free. Guest. Empty
+invents nothing. No video. No paywall.
+No invented library-size traction.
+Android already creates `custom-${uuid}`
+on the live add sheet. Web does not.
+
+### First check (done — no Today leak)
+
+Read `origin/master` tip `adad3e58` /
+`.989`. Lean Today still date · pins ·
+highlights · `TodayQuietWeekStrip` ·
+Show all · one `JourneyHero`
+`dock="start"`. `.989` last-vs-this
+paints only in the strip cell
+(`quiet-week-track-trend`). No
+`BodyMetricsCard` / `Sparkline` /
+`TodayMetricsSparklineRow` on lean
+Today. `/private` stays the tight
+`.957` lock. **Nothing to unmount
+first.** Keep that lock in tests.
+
+### Lock
+
+Live picker invents on a typed catalog
+miss. Name is enough. Catalog name
+wins. Same notebook name reuses.
+`custom-` + uuid. `resolveExercise`
+so a live row never vanishes. Library
+page stays the static catalog. Today
+one Start. No 7-cap. Start this again
+`.991` still holds.
+
+Full freeze: root [PLAN.md](../PLAN.md).
+
+---
 
 ## Frozen plan — `.989` Quiet Track trend (2026-08-25)
 

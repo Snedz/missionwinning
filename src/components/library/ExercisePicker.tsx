@@ -4,6 +4,13 @@ import { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { EXERCISES } from '@/data/exercises';
 import { DEFAULT_LIBRARY_FILTERS, filterExercises } from '@/lib/libraryFilters';
+import {
+  decideNamedCustom,
+  exercisesForPicker,
+  loadCustomExercises,
+  resolveExercise,
+  upsertCustomExercise,
+} from '@/lib/workout/customExercise';
 import type { Exercise } from '@/types';
 import { cn } from '@/lib/utils';
 
@@ -31,17 +38,36 @@ export function ExercisePicker({
 }: Props) {
   const { t } = useTranslation();
   const [query, setQuery] = useState('');
+  const [namedTick, setNamedTick] = useState(0);
+
+  const pickerExercises = useMemo(() => {
+    void namedTick;
+    return exercisesForPicker(exercises);
+  }, [exercises, namedTick]);
 
   const filtered = useMemo(
     () =>
-      filterExercises(exercises, {
+      filterExercises(pickerExercises, {
         ...DEFAULT_LIBRARY_FILTERS,
         query,
       }).slice(0, 40),
-    [exercises, query]
+    [pickerExercises, query]
   );
 
-  const selected = exercises.find((e) => e.id === value) ?? EXERCISES.find((e) => e.id === value);
+  const invent = useMemo(
+    () =>
+      decideNamedCustom({
+        name: query,
+        catalog: EXERCISES,
+        existing: loadCustomExercises(),
+      }),
+    [query, namedTick]
+  );
+
+  const selected =
+    resolveExercise(value, { catalog: pickerExercises }) ??
+    pickerExercises.find((e) => e.id === value) ??
+    EXERCISES.find((e) => e.id === value);
 
   return (
     <div className={cn('flex-1 min-w-0 space-y-2', className)}>
@@ -79,7 +105,28 @@ export function ExercisePicker({
           aria-label={t('exercisePickerList', { defaultValue: 'Exercise matches' })}
           tabIndex={0}
         >
-          {filtered.length === 0 ? (
+          {invent?.kind === 'create' ? (
+            <button
+              type="button"
+              role="option"
+              data-testid="exercise-picker-use-name"
+              aria-selected={false}
+              className="w-full min-h-[56px] px-3 py-2.5 text-start text-sm font-semibold hover:bg-muted tap-target"
+              onClick={() => {
+                const row = upsertCustomExercise(query);
+                if (!row) return;
+                setNamedTick((n) => n + 1);
+                onChange(row.id);
+                setQuery('');
+              }}
+            >
+              {t('exercisePickerUseName', {
+                name: invent.name,
+                defaultValue: `Use "${invent.name}"`,
+              })}
+            </button>
+          ) : null}
+          {filtered.length === 0 && invent?.kind !== 'create' ? (
             <p className="px-3 py-2 text-sm text-muted-foreground">
               {t('exercisePickerEmpty', { defaultValue: 'No matches' })}
             </p>
