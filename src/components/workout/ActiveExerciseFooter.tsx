@@ -9,6 +9,8 @@ import { useTranslation } from 'react-i18next';
 import { Plus, Timer } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { ActiveSetOptionsMenu } from '@/components/workout/ActiveSetOptionsMenu';
+import { ExerciseRestStrip } from '@/components/workout/ExerciseRestStrip';
+import { restLaneFromKind, type RestLane } from '@/lib/workout/restTimer';
 import { shouldShowSetOptionsFooter } from '@/lib/workout/activeWorkoutHelpers';
 import { SET_KINDS, setKindDefaultLabel, setKindLabelKey } from '@/lib/workout/setKind';
 import {
@@ -23,6 +25,9 @@ type Props = {
   isCompact: boolean;
   holdsActiveSet: boolean;
   restSec: number;
+  workRestSec: number;
+  warmupRestSec: number;
+  onSetRestLane: (lane: RestLane, seconds: number) => void;
   activeSetKind: SetKind;
   onSetKindChange: (kind: SetKind) => void;
   offerSetSide?: boolean;
@@ -32,7 +37,7 @@ type Props = {
   /** After a working set — start a drop of that set (existing `kind: 'drop'`). */
   canStartDrop: boolean;
   onStartDrop: () => void;
-  onStartRest: (seconds: number) => void;
+  onStartRest: (seconds: number, lane?: RestLane) => void;
   footerOpen: boolean;
   onFooterOpenChange: (open: boolean) => void;
   hasLastSets: boolean;
@@ -48,6 +53,9 @@ export function ActiveExerciseFooter({
   isCompact,
   holdsActiveSet,
   restSec,
+  workRestSec,
+  warmupRestSec,
+  onSetRestLane,
   activeSetKind,
   onSetKindChange,
   offerSetSide = false,
@@ -70,7 +78,8 @@ export function ActiveExerciseFooter({
   const { t } = useTranslation();
 
   return (
-    <div className="flex flex-wrap items-center gap-2 pt-1">
+    <div className="space-y-2 pt-1">
+      <div className="flex flex-wrap items-center gap-2">
       <Button variant="outline" size="sm" className="min-h-[44px] tap-target" onClick={onAddSet}>
         <Plus className="h-3 w-3 me-1" /> {t('activeAddSet', { defaultValue: 'Add Set' })}
       </Button>
@@ -107,10 +116,19 @@ export function ActiveExerciseFooter({
         size="icon"
         className="h-11 w-11 shrink-0 tap-target"
         aria-label={t('activeStartRest', { seconds: restSec, defaultValue: `${restSec}s Rest` })}
-        onClick={() => onStartRest(restSec)}
+        onClick={() => onStartRest(restSec, restLaneFromKind(activeSetKind))}
       >
         <Timer className="h-4 w-4" />
       </Button>
+    </div>
+      {holdsActiveSet ? (
+        <ExerciseRestStrip
+          workSeconds={workRestSec}
+          warmupSeconds={warmupRestSec}
+          onSetLane={onSetRestLane}
+        />
+      ) : null}
+      <div className="flex flex-wrap items-center gap-2">
       {/*
         Set kind — table is the entry path on every surface, so the chips
         cannot live only in a compact console.
@@ -177,6 +195,7 @@ export function ActiveExerciseFooter({
           onRemoveSet={onRemoveSet}
         />
       )}
+      </div>
     </div>
   );
 }

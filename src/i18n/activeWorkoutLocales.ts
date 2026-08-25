@@ -58,6 +58,10 @@ type ActiveWorkoutStrings = {
   activeLoadPctChip: string;
   activeAddSet: string;
   activeStartRest: string;
+  /** Per-exercise rest lanes on the open lift (`.995`). */
+  activeExerciseRestWork: string;
+  activeExerciseRestWarmup: string;
+  activeExerciseRestSetAria: string;
   activeLogSet: string;
   activeRepeatLast: string;
   /** Empty-state Start when a last completed session exists (.717). Not last set. */
@@ -400,6 +404,9 @@ const en: ActiveWorkoutStrings = {
   activeLoadPctChip: '{{pct}}% · {{weight}} {{unit}}',
   activeAddSet: 'Add Set',
   activeStartRest: '{{seconds}}s Rest',
+  activeExerciseRestWork: 'Work rest',
+  activeExerciseRestWarmup: 'Warmup rest',
+  activeExerciseRestSetAria: 'Set {{lane}} to {{clock}}',
   activeLogSet: 'Log set',
   activeRepeatLast: 'Repeat last set',
   activeRepeatLastSession: 'Repeat last session',
@@ -664,6 +671,9 @@ const en: ActiveWorkoutStrings = {
 
 const es: ActiveWorkoutStrings = {
   ...en,
+  activeExerciseRestWork: 'Descanso de trabajo',
+  activeExerciseRestWarmup: 'Descanso de calentamiento',
+  activeExerciseRestSetAria: 'Fijar {{lane}} en {{clock}}',
   activeSetAddedLoad: 'Carga',
   activeLiveSession: 'Sesión en vivo',
   activeCoachSessionEyebrow: 'Sesión Mission Coach',
@@ -895,6 +905,9 @@ const LOCALES: Partial<Record<string, ActiveWorkoutStrings>> = {
   de,
   pt: {
     ...en,
+    activeExerciseRestWork: 'Descanso de trabalho',
+    activeExerciseRestWarmup: 'Descanso de aquecimento',
+    activeExerciseRestSetAria: 'Definir {{lane}} para {{clock}}',
     activeSetAddedLoad: 'Carga',
     activeNoWorkout: 'Nenhum treino ativo',
     activeSavedRoutineStart: 'Começar {{name}}',

@@ -488,7 +488,7 @@ export function ActiveWorkoutPage() {
     );
     const restAction = restActionAfterCompose(rest, setKind);
     if (restAction === 'start') {
-      startRestTimer(rest.restSeconds, rest.rememberExerciseId ?? exerciseId);
+      startRestTimer(rest.restSeconds, rest.rememberExerciseId ?? exerciseId, rest.rememberLane);
     } else if (restAction === 'stop') {
       stopRestTimer();
     }
@@ -810,7 +810,7 @@ export function ActiveWorkoutPage() {
             removeLastPlannedSet(exIdx);
             setSetInputs({});
           }}
-          onStartRest={(seconds, exerciseId) => startRestTimer(seconds, exerciseId)}
+          onStartRest={(seconds, exerciseId, lane) => startRestTimer(seconds, exerciseId, lane)}
           workClockKind={workClockKind}
           workClockRemaining={workClockRemaining}
           onStartWorkClock={(kind, seconds) => startWorkClock(kind, seconds)}

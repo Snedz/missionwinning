@@ -60,8 +60,9 @@ export const STORAGE_KEYS = {
   missionServer: 'mw_mission_server',
   defaultRestSec: 'mw_default_rest_sec',
   /**
-   * `.715` — last chosen rest seconds per exercise id. Device-local; skip
-   * never writes. Cap lives in restTimer.ts, not here.
+   * `.715` / `.995` — last chosen rest per exercise id. A stored number is
+   * work (legacy). Warmup is a sibling field. Device-local; skip never
+   * writes. Cap lives in restTimer.ts, not here.
    */
   lastRestByExercise: 'mw_last_rest_by_exercise',
   /** Last ecc/pause/con tempo per exercise id — prefill on the next set (`.734`). */

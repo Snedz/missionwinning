@@ -38,7 +38,13 @@ import { getFormGuideOrCues } from '@/lib/formGuides';
 import { resolveInSetCues, shouldShowInSetCues } from '@/lib/workout/inSetCues';
 import { isSkippedThisSession } from '@/lib/workout/sessionExerciseOnce';
 import { canStartDrop } from '@/lib/workout/dropSet';
-import { recallLastRest, resolveRestForNextSet } from '@/lib/workout/restTimer';
+import {
+  recallLastRest,
+  rememberLastRest,
+  resolveRestForNextSet,
+  restLaneFromKind,
+  type RestLane,
+} from '@/lib/workout/restTimer';
 import { isMidRoundPeerOpen, isNextInThisGroup, supersetLabel } from '@/lib/workout/superset';
 import { resolveSetRowType } from '@/lib/workout/setRowType';
 import { knownMaxFromHistory, weightFromKnownMaxPct } from '@/lib/workout/setRowPercent';
@@ -97,7 +103,7 @@ type Props = {
   onAddSet: () => void;
   onStartDrop: () => void;
   onRemoveSet: () => void;
-  onStartRest: (seconds: number) => void;
+  onStartRest: (seconds: number, lane?: RestLane) => void;
   /* Desktop only — the table logs in place, so it needs the same input state
      the docked console gets. Compact ignores all three. */
   setInput: { reps: number; weight: number; durationSeconds?: number };
@@ -176,14 +182,28 @@ export function ActiveExerciseCard({
   const [menuOpen, setMenuOpen] = useState(false);
   const [footerOpen, setFooterOpen] = useState(false);
   const [cuesHidden, setCuesHidden] = useState(false);
+  const [restRev, setRestRev] = useState(0);
   const noteRef = useRef<HTMLInputElement>(null);
   const skipped = isSkippedThisSession(exLog);
   const hasCompleted = exerciseHasCompletedSet(exLog.sets);
   const hasPlanned = exerciseHasPlannedSet(exLog.sets);
+  const restLane = restLaneFromKind(activeSetKind);
   const restSec = resolveRestForNextSet({
     exerciseId: exLog.exerciseId,
     exerciseName: exercise.name,
+    lane: restLane,
   });
+  const workRestSec = resolveRestForNextSet({
+    exerciseId: exLog.exerciseId,
+    exerciseName: exercise.name,
+    lane: 'work',
+  });
+  const warmupRestSec = resolveRestForNextSet({
+    exerciseId: exLog.exerciseId,
+    exerciseName: exercise.name,
+    lane: 'warmup',
+  });
+  void restRev;
   const ssLabel = supersetLabel(exercises, exIdx);
   const hasNext = exIdx < exercises.length - 1;
   const nextInThisGroup = isNextInThisGroup(exercises, exIdx);
@@ -378,6 +398,12 @@ export function ActiveExerciseCard({
           isCompact={isCompact}
           holdsActiveSet={holdsActiveSet}
           restSec={restSec}
+          workRestSec={workRestSec}
+          warmupRestSec={warmupRestSec}
+          onSetRestLane={(lane: RestLane, seconds: number) => {
+            rememberLastRest(exLog.exerciseId, seconds, lane);
+            setRestRev((n) => n + 1);
+          }}
           activeSetKind={activeSetKind}
           onSetKindChange={(kind) => {
             const idx = activeSetIdxForExercise(nextSet, exIdx);

@@ -12,6 +12,7 @@ When adding a doc:
 
 | File | Absorbed by / note |
 |------|---------------------|
+| [log/LOG-rotate-974-for-995.md](./log/LOG-rotate-974-for-995.md) | rotated 2026-08-25 for `.995` Per-exercise rest (`.974`) |
 | [log/LOG-rotate-973-for-994.md](./log/LOG-rotate-973-for-994.md) | rotated 2026-08-25 for `.994` Set-row type (`.973`) |
 | [log/LOG-rotate-971-for-993.md](./log/LOG-rotate-971-for-993.md) | rotated 2026-08-25 for `.993` This-movement history (`.971`) |
 | [log/LOG-rotate-970-for-992.md](./log/LOG-rotate-970-for-992.md) | rotated 2026-08-25 for `.992` Custom exercise (`.970`) |

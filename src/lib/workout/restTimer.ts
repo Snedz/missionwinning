@@ -5,6 +5,9 @@
  * to **30s** while this module and the rest dock initial state used **90s**. A
  * bare `startRestTimer()` (or a future caller that omits seconds) was half a
  * the set-table logger rest — wrong for compounds and inconsistent with the preset strip.
+ *
+ * `.995` — rest duration lives on the exercise. Two lanes: warmup and work.
+ * A stored number is work (legacy). Warmup never inherits the work 3:00.
  */
 
 import { STORAGE_KEYS } from '@/lib/storage/keys';
@@ -13,8 +16,19 @@ import { readJson, readRaw, writeJson, writeRaw } from '@/lib/storage/safeStorag
 export const REST_PRESETS = [60, 90, 120, 180] as const;
 export type RestPreset = (typeof REST_PRESETS)[number];
 
+/** Work vs warmup rest on one lift (`.995`). Drop still zeros. */
+export type RestLane = 'work' | 'warmup';
+
+/** Warmup rest when that lane has never been set — never the work 3:00. */
+export const WARMUP_FALLBACK_SECONDS = 60;
+
 /** Single fallback when no user preset and no exercise suggestion applies. */
 export const FALLBACK_REST_SECONDS = 90;
+
+/** Warmup sets rest the warmup lane; everything else (incl. failure) is work. */
+export function restLaneFromKind(kind: string | undefined): RestLane {
+  return kind === 'warmup' ? 'warmup' : 'work';
+}
 
 const DEFAULT_REST_KEY = STORAGE_KEYS.defaultRestSec;
 const LAST_REST_KEY = STORAGE_KEYS.lastRestByExercise;
@@ -48,11 +62,15 @@ export function saveDefaultRestSeconds(seconds: number): void {
   writeRaw(DEFAULT_REST_KEY, String(Math.max(15, Math.min(600, seconds))));
 }
 
-/** Pick rest duration: user default, or exercise-specific if longer. */
+/**
+ * Work-rest fallback when this lift has no stored work lane.
+ * Named compound / isolation hints win. Global default is only the
+ * fallback for names without a hint — not a second home (`.995`).
+ */
 export function resolveRestSeconds(exerciseName: string): number {
   const suggested = getSuggestedRestSeconds(exerciseName);
-  const userDefault = loadDefaultRestSeconds();
-  return Math.max(suggested, userDefault);
+  if (suggested !== FALLBACK_REST_SECONDS) return suggested;
+  return loadDefaultRestSeconds();
 }
 
 /**
@@ -113,25 +131,36 @@ function clampLastRestSeconds(seconds: number): number | null {
   return Math.max(LAST_REST_MIN_SECONDS, Math.min(LAST_REST_MAX_SECONDS, Math.round(seconds)));
 }
 
-function readLastRestMap(): Record<string, number> {
+type ExerciseRestMemory = { work?: number; warmup?: number };
+
+function parseRestMemory(value: unknown): ExerciseRestMemory | null {
+  if (typeof value === 'number') {
+    const work = clampLastRestSeconds(value);
+    return work == null ? null : { work };
+  }
+  if (!value || typeof value !== 'object' || Array.isArray(value)) return null;
+  const raw = value as Record<string, unknown>;
+  const work = typeof raw.work === 'number' ? clampLastRestSeconds(raw.work) : null;
+  const warmup = typeof raw.warmup === 'number' ? clampLastRestSeconds(raw.warmup) : null;
+  if (work == null && warmup == null) return null;
+  return {
+    ...(work != null ? { work } : {}),
+    ...(warmup != null ? { warmup } : {}),
+  };
+}
+
+function readLastRestMap(): Record<string, ExerciseRestMemory> {
   const raw = readJson<unknown>(LAST_REST_KEY, {});
   if (!raw || typeof raw !== 'object' || Array.isArray(raw)) return {};
-  const out: Record<string, number> = {};
+  const out: Record<string, ExerciseRestMemory> = {};
   for (const [id, value] of Object.entries(raw as Record<string, unknown>)) {
-    if (typeof value === 'number') out[id] = value;
+    const parsed = parseRestMemory(value);
+    if (parsed) out[id] = parsed;
   }
   return out;
 }
 
-/** Persist last chosen rest for an exercise. No-op on empty id or non-finite seconds. */
-export function rememberLastRest(exerciseId: string, seconds: number): void {
-  const id = exerciseId.trim();
-  if (!id) return;
-  const sec = clampLastRestSeconds(seconds);
-  if (sec == null) return;
-  const map = readLastRestMap();
-  delete map[id];
-  map[id] = sec;
+function writeLastRestMap(map: Record<string, ExerciseRestMemory>): void {
   const keys = Object.keys(map);
   if (keys.length > LAST_REST_MAX_EXERCISES) {
     for (const stale of keys.slice(0, keys.length - LAST_REST_MAX_EXERCISES)) {
@@ -141,24 +170,48 @@ export function rememberLastRest(exerciseId: string, seconds: number): void {
   writeJson(LAST_REST_KEY, map);
 }
 
-/** Stored last rest for this exercise, or null when none / corrupt. */
-export function recallLastRest(exerciseId: string): number | null {
+/** Persist last chosen rest for an exercise lane. No-op on empty id or non-finite seconds. */
+export function rememberLastRest(
+  exerciseId: string,
+  seconds: number,
+  lane: RestLane = 'work'
+): void {
+  const id = exerciseId.trim();
+  if (!id) return;
+  const sec = clampLastRestSeconds(seconds);
+  if (sec == null) return;
+  const map = readLastRestMap();
+  const prev = map[id] ?? {};
+  delete map[id];
+  map[id] = { ...prev, [lane]: sec };
+  writeLastRestMap(map);
+}
+
+/** Stored last rest for this exercise lane, or null when none / corrupt. */
+export function recallLastRest(exerciseId: string, lane: RestLane = 'work'): number | null {
   const id = exerciseId.trim();
   if (!id) return null;
-  return clampLastRestSeconds(readLastRestMap()[id] ?? NaN);
+  const mem = readLastRestMap()[id];
+  if (!mem) return null;
+  return mem[lane] ?? null;
 }
 
 /**
- * Next rest: last rest for this exercise wins; else name heuristic ∪ session default.
+ * Next rest: last rest for this exercise + lane wins.
+ * Work falls back to name heuristic ∪ session default.
+ * Warmup falls back to 60s — never the work 3:00 (`.995`).
  */
 export function resolveRestForNextSet(params: {
   exerciseId?: string;
   exerciseName?: string;
+  lane?: RestLane;
 }): number {
+  const lane = params.lane ?? 'work';
   if (params.exerciseId) {
-    const last = recallLastRest(params.exerciseId);
+    const last = recallLastRest(params.exerciseId, lane);
     if (last != null) return last;
   }
+  if (lane === 'warmup') return WARMUP_FALLBACK_SECONDS;
   return restSecondsForExercise(params.exerciseName);
 }
 

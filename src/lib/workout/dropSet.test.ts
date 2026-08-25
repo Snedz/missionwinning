@@ -165,7 +165,7 @@ describe('drop rest-zero wiring', () => {
   it('handleLogSet starts work rest and zeros drop rest; never startRestTimer(0)', () => {
     const page = read('src/page-components/ActiveWorkoutPage.tsx');
     const fn = page.match(
-      /const handleLogSet[\s\S]*?startRestTimer\(rest\.restSeconds,\s*(?:rest\.rememberExerciseId\s*\?\?\s*)?exerciseId\);[\s\S]*?\n {2}\};/
+      /const handleLogSet[\s\S]*?startRestTimer\(rest\.restSeconds,\s*(?:rest\.rememberExerciseId\s*\?\?\s*)?exerciseId(?:,\s*rest\.rememberLane)?\);[\s\S]*?\n {2}\};/
     );
     assert.ok(fn, 'handleLogSet rest block missing');
     const body = fn[0];

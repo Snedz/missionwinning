@@ -11,7 +11,7 @@ Root-level `@/lib/{name}` paths re-export from here for compatibility — prefer
 1c. `unilateral.ts` — optional L/R/Alt on a unilateral set (not a SetKind, not a pair) (`.755`)  
 1d. `bodyweightLoad.ts` — BW + added load on one row (`.758`); `weight` is belt/vest  
 1e. `setRowType.ts` — open row speaks weight · bodyweight reps · duration · assisted (`.994`). Empty / custom stays weight×reps. Vest is extra only.  
-2. `restTimer.ts` — rest seconds, clock format, defaults, last-rest per exercise (`.745`)  
+2. `restTimer.ts` — rest seconds, clock format, defaults, last-rest per exercise (`.745`) with warmup vs work lanes (`.995`)  
 2b. `workClock.ts` — optional EMOM interval / AMRAP countdown on the live set row (`.987`). Not rest. Empty invents nothing.  
 2c. `customExercise.ts` — named custom on the live picker (`.990`). Local notebook. Unlimited. Empty invents nothing.  
 3. `superset.ts` — group of two or more (`groupWithNext` / `unpair` / `pairMark` A1/A2/A3), advance after log, rest gate, rest identity on first peer (`.749` / `.980` / concern `.979`)  
@@ -76,7 +76,8 @@ Root-level `@/lib/{name}` paths re-export from here for compatibility — prefer
 | `importCsvRestore.test.ts` | Preview does not write; confirm writes; second file still adds (`.940` / `.947` / `.951`); MW dump no-op (`.953`) |
 | `importHevyMeasurements.test.ts` | Empty / one / malformed measurements; merge existing-wins; re-import no-op (`.951`) |
 | `importReach.test.ts` | set-table CSV import stays reachable from I-Day + empty logger (`.766`); preview + confirm (`.940`) |
-| `restTimer.test.ts` | Clock + defaults + start seconds (`.292`) + last-rest recall / skip (`.745`) |
+| `restTimer.test.ts` | Clock + defaults + start seconds (`.292`) + last-rest recall / skip (`.745`) + warmup vs work lanes (`.995`) |
+| `exerciseRestSurface.test.ts` | Open-lift rest strip; Today stays one Start; global Default stays the dock (`.995`) |
 | `workClock.test.ts` | EMOM interval / AMRAP countdown + rest compose + surface refuse (`.987`) |
 | `customExercise.test.ts` | Named custom on live picker; unlimited; catalog miss does not unmount; empty invents nothing (`.990`) |
 | `superset.test.ts` | Group persist, A1/A2/A3 marks, advance, rest gate, first-peer rest (`.749` / `.980` / concern `.979`) |

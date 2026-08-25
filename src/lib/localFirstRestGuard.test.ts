@@ -91,7 +91,7 @@ describe('localFirstRestGuard', () => {
   it('Active log-set → rest does not await fetch/outbox/auth before startRestTimer', () => {
     const page = read('src/page-components/ActiveWorkoutPage.tsx');
     const fn = page.match(
-      /const handleLogSet[\s\S]*?startRestTimer\(rest\.restSeconds,\s*(?:rest\.rememberExerciseId\s*\?\?\s*)?exerciseId\);[\s\S]*?\n {2}\};/
+      /const handleLogSet[\s\S]*?startRestTimer\(rest\.restSeconds,\s*(?:rest\.rememberExerciseId\s*\?\?\s*)?exerciseId(?:,\s*rest\.rememberLane)?\);[\s\S]*?\n {2}\};/
     );
     assert.ok(fn, 'handleLogSet rest block missing');
     const body = fn![0];
@@ -106,7 +106,7 @@ describe('localFirstRestGuard', () => {
     assert.match(body, /restActionAfterCompose/);
     assert.match(
       body,
-      /startRestTimer\(rest\.restSeconds,\s*(?:rest\.rememberExerciseId\s*\?\?\s*)?exerciseId\)/
+      /startRestTimer\(rest\.restSeconds,\s*(?:rest\.rememberExerciseId\s*\?\?\s*)?exerciseId(?:,\s*rest\.rememberLane)?\)/
     );
     assert.match(body, /stopRestTimer\(\)/);
     assert.doesNotMatch(body, /startRestTimer\(\s*0/);

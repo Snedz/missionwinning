@@ -20,7 +20,7 @@ import {
 import { computeBodyScores } from '@/lib/score';
 import type { MindCheckIn } from '@/lib/mindCheckIns';
 import { restIdentityAfterLog, shouldRestAfterLog } from '@/lib/workout/superset';
-import { resolveRestForNextSet } from '@/lib/workout/restTimer';
+import { resolveRestForNextSet, restLaneFromKind, type RestLane } from '@/lib/workout/restTimer';
 import { shouldAutoRestAfterLog } from '@/lib/workout/workClock';
 import { isPersonalRecord } from '@/lib/workout/workoutPr';
 import {
@@ -129,6 +129,8 @@ export type LogSetRestPlan = {
   restSeconds: number;
   /** Last-rest key — first peer after a group round, else the logged lift. */
   rememberExerciseId?: string;
+  /** Warmup vs work — the logged set's kind, not the next set (`.995`). */
+  rememberLane: RestLane;
 };
 
 /**
@@ -169,13 +171,17 @@ export function planLogSetRest(params: {
     restId && restId !== params.exerciseId
       ? params.groupLeadName ?? params.exerciseName
       : params.exerciseName;
+  const loggedKind = params.exercisesAfterLog[params.exIdx]?.sets[params.setIdx]?.kind;
+  const rememberLane = restLaneFromKind(loggedKind);
   return {
     takeRest,
     restSeconds: resolveRestForNextSet({
       exerciseId: restId,
       exerciseName: restName,
+      lane: rememberLane,
     }),
     rememberExerciseId: restId,
+    rememberLane,
   };
 }
 
