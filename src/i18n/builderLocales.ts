@@ -218,6 +218,19 @@ const en: BuilderStrings = {
 
 const es: BuilderStrings = {
   ...en,
+  honorSaveTitle: '¿Guardar esta rutina?',
+  honorSaveDesc:
+    'Guarda los levantamientos que acabas de hacer (o escribir) con un nombre que reconozcas. Empezar la usa — el miércoles de tus logs no la sustituye.',
+  honorReplaceTitle: '¿Sustituir esta rutina?',
+  honorReplaceDesc:
+    '“{{name}}” ya es tuya. Confirma para actualizarla. Empezar usará esta lista.',
+  honorRoutineName: 'Nombre de la rutina',
+  honorSaveConfirm: 'Guardar rutina',
+  honorReplaceConfirm: 'Sustituir rutina',
+  honorSaveCancel: 'Cancelar',
+  honorSaveAsRoutine: 'Guardar como rutina',
+  honorSaveEmpty: 'Nada que guardar',
+  honorSaveEmptyDesc: 'Una rutina necesita un nombre y al menos un ejercicio.',
   builderTitle: 'Constructor de entrenamientos',
   builderTabBeginner: 'Principiante',
   builderTabAdvanced: 'Avanzado',

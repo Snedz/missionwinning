@@ -634,6 +634,8 @@ const es: ActiveWorkoutStrings = {
   activeNoWorkout: 'Sin entrenamiento activo',
   activeNoWorkoutDesc:
     'Inicia un entrenamiento rápido desde Hoy o lanza una rutina guardada desde el Builder.',
+  activeSavedRoutineStart: 'Empezar {{name}}',
+  activeSavedRoutineDesc: 'Tu rutina guardada — las cargas quedan en la fila.',
   activeReentryStart: 'Empezar sesión más fácil',
   activeReentryStartDesc:
     'Primera sesión más corta al volver — terminable, luego la semana se reconstruye.',
@@ -833,6 +835,8 @@ const LOCALES: Partial<Record<string, ActiveWorkoutStrings>> = {
     ...en,
     activeSetAddedLoad: 'Carga',
     activeNoWorkout: 'Nenhum treino ativo',
+    activeSavedRoutineStart: 'Começar {{name}}',
+    activeSavedRoutineDesc: 'A tua rotina guardada — as cargas ficam na linha.',
     activeStartPreviewSession: 'Começar {{name}} — {{count}} exercícios',
     activeReentryStart: 'Começar sessão mais fácil',
     activeReentryStartDesc:

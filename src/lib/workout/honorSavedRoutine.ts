@@ -3,7 +3,7 @@
  *
  * `.960`. One named routine they typed, finished, or picked from History.
  * Start uses the notebook. Logs still fill the set-row cite. Empty invents
- * nothing. Does not call generateWeek, Just Go, or a catalog shop.
+ * nothing. Does not invent a week, a freestyle session, or a catalog shop.
  */
 
 import type { CompletedWorkoutLog, SavedWorkout, WorkoutExerciseTemplate } from '@/types';
@@ -172,14 +172,23 @@ export function pickHonoredStart(input: {
 }
 
 /**
- * Wednesday outline Start. Saved notebook wins; log template only when
- * they have no saved routine. Never generateWeek.
+ * Wednesday outline Start. A saved row with the cite's name wins (so a
+ * log-shape Legs never replaces their saved Legs). Else the next unused
+ * saved slot. Log template only when the notebook is empty.
  */
 export function honorCiteStart(input: {
   cite: NextDayCite | null;
   saved: readonly SavedWorkout[];
   history: readonly CompletedWorkoutLog[];
 }): CiteStart {
+  const named = input.cite?.name?.trim();
+  if (named) {
+    const match = notebookRoutines(input.saved).find(
+      (row) => nameKey(row.name) === nameKey(named)
+    );
+    if (match) return { source: 'saved', routine: match };
+  }
+
   const honored = pickHonoredStart({ saved: input.saved, history: input.history });
   if (honored) return { source: 'saved', routine: honored };
 

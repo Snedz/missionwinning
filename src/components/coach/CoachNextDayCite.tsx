@@ -45,7 +45,7 @@ export function CoachNextDayCite({ cite, plan, hideStart }: Props) {
       router.push('/active');
       return;
     }
-    if (cite.source === 'plan' && cite.planSessionId && honored?.source !== 'saved') {
+    if (cite.source === 'plan' && cite.planSessionId) {
       const session = plan?.sessions.find((s) => s.id === cite.planSessionId);
       if (session) startCoachSession(session, { from: 'coach' });
       return;
