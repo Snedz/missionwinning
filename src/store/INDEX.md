@@ -10,6 +10,7 @@
 | `sessionResume.store.test.ts` | This-device leave/return + Finish-partial through the store (`.963`) |
 | `setRpe10.test.ts` | Optional 1–10 RPE persist / complete / empty (`.967`) |
 | `setLoadPct.test.ts` | Optional % of known 1RM persist / complete / empty (`.981`) |
+| `sessionNote.store.test.ts` | Live jot → completed log; receipt edit / clear stays local (`.982` / stamp `.983`) |
 
 ## State slices (`workoutStore`)
 
@@ -31,7 +32,8 @@
 | `startWorkout` / `startEmptyWorkout` | Begin active session. Refuse to replace a live session (`.963`) |
 | `logSet` / `logSetAndAdvance` | Record set; group advance; working-set week-4 events (`week4Logger`) |
 | `rateSetRpe10` | Optional 1–10 RPE on a logged set (`.967`). Empty is valid. Never required to log |
-| `completeActiveWorkout` | Finish-partial through `finishPartialFromActive` (`.963`); mint `clientId`, push to history, enqueue the cloud write on the outbox, analytics, leaderboard push |
+| `completeActiveWorkout` | Finish-partial through `finishPartialFromActive` (`.963`); mint `clientId`, attach session note when present (`.982`), push to history, enqueue the cloud write on the outbox, analytics, leaderboard push |
+| `setHistorySessionNote` | Receipt add / edit of a finished session note. Local only. Empty clears (`.982`) |
 | `loadFromCloud` | Merge Supabase history with local |
 | `syncCurrentHistoryToCloud` | Re-queue local logs — called from `useJourneySync` on `SIGNED_IN` (`.949`). Also enqueues the open session (`.958`) |
 | `restoreActiveWorkout` | Adopt a remote open session without minting a second `clientId` (`.958`) |

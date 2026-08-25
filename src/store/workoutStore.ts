@@ -24,6 +24,7 @@ import {
   suggestNextSide,
   type SetSide,
 } from "@/lib/workout/unilateral";
+import { attachSessionNote } from "@/lib/workout/sessionNote";
 import { getUserWorkoutHistory, getUserWorkoutsUpdatedSince, getUser } from "@/lib/supabase";
 import { recordWorkoutCompleted } from "@/lib/challenges";
 import { applyWorkoutRewards } from "@/lib/rewards/apply";
@@ -139,8 +140,10 @@ interface WorkoutState {
     muscleGroups?: import('@/types').MuscleGroup[]
   ) => void;
   setExerciseNote: (exerciseIndex: number, note: string) => void;
-  /** Session-level jot — becomes journal fragments at finish, never syncs. */
+  /** Session-level jot — stays on this device; copied onto the log at finish (`.982`). */
   setSessionNote: (note: string) => void;
+  /** Receipt add / edit of a finished session note. Local only. Empty clears. */
+  setHistorySessionNote: (logId: string, note: string) => void;
   startRestTimer: (seconds?: number, exerciseId?: string) => void;
   adjustRestTimer: (delta: number) => void;
   tickRestTimer: () => void;
@@ -310,18 +313,21 @@ export const useWorkoutStore = create<WorkoutState>()(
         const { exercises, volume } = partial;
         const allSets = exercises.flatMap((e) => e.sets).filter((s) => countsTowardVolume(s.kind));
         const completedAt = new Date().toISOString();
-        const log: CompletedWorkoutLog = {
-          id: `log-${Date.now()}`,
-          clientId: newClientId(),
-          revision: 1,
-          updatedAt: completedAt,
-          workoutName: activeWorkout.workoutName,
-          startedAt: activeWorkout.startedAt,
-          completedAt,
-          durationSeconds: elapsedSeconds,
-          exercises,
-          totalVolume: volume,
-        };
+        const log: CompletedWorkoutLog = attachSessionNote(
+          {
+            id: `log-${Date.now()}`,
+            clientId: newClientId(),
+            revision: 1,
+            updatedAt: completedAt,
+            workoutName: activeWorkout.workoutName,
+            startedAt: activeWorkout.startedAt,
+            completedAt,
+            durationSeconds: elapsedSeconds,
+            exercises,
+            totalVolume: volume,
+          },
+          activeWorkout.sessionNote
+        );
 
         const isFirstWorkout = get().workoutHistory.length === 0;
 
@@ -767,6 +773,14 @@ export const useWorkoutStore = create<WorkoutState>()(
           if (!s.activeWorkout) return s;
           return { activeWorkout: { ...s.activeWorkout, sessionNote: note } };
         });
+      },
+
+      setHistorySessionNote: (logId, note) => {
+        set((s) => ({
+          workoutHistory: s.workoutHistory.map((row) =>
+            row.id === logId ? attachSessionNote(row, note) : row
+          ),
+        }));
       },
 
       startRestTimer: (seconds?: number, exerciseId?: string) => {

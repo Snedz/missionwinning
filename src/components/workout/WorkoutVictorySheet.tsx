@@ -35,6 +35,7 @@ import { VictoryFeelStrip } from '@/components/workout/VictoryFeelStrip';
 import { VictoryBodyDeltaStrip } from '@/components/workout/VictoryBodyDeltaStrip';
 import { VictoryStatsStrip } from '@/components/workout/VictoryStatsStrip';
 import { VictoryReceiptStrip } from '@/components/workout/VictoryReceiptStrip';
+import { SessionJotField } from '@/components/workout/SessionJotField';
 import { VictoryNextActionStrip } from '@/components/workout/VictoryNextActionStrip';
 import { FieldTestReceiptStrip } from '@/components/workout/FieldTestReceiptStrip';
 import { VictorySecondaryLinks } from '@/components/workout/VictorySecondaryLinks';
@@ -99,6 +100,7 @@ export function WorkoutVictorySheet({
   const unitLabel = weightUnitLabel(units);
   const honor = useHonorSavedRoutine();
   const workoutHistory = useWorkoutStore((s) => s.workoutHistory);
+  const setHistorySessionNote = useWorkoutStore((s) => s.setHistorySessionNote);
   const [feelSaved, setFeelSaved] = useState(false);
   /** Share ladder full fail only — never cancel. Design review 2A. */
   const [shareFailHint, setShareFailHint] = useState(false);
@@ -207,6 +209,11 @@ export function WorkoutVictorySheet({
     setShareFailHint(true);
   };
 
+  const historyLog = workoutId
+    ? workoutHistory.find((row) => row.id === workoutId)
+    : undefined;
+  const sessionNote = historyLog?.sessionNote ?? '';
+
   const handleSaveReceipt = () => {
     if (!summary.receipt) return;
     const built = buildCloseReceiptDownload({
@@ -216,6 +223,7 @@ export function WorkoutVictorySheet({
       volumeLabel: `${volume.value} ${volume.unit}`,
       receipt: summary.receipt,
       dateKey: localDateKey(),
+      sessionNote,
     });
     if (!built.ok) return;
     triggerCloseReceiptDownload(built);
@@ -316,6 +324,15 @@ export function WorkoutVictorySheet({
             receipt={summary.receipt}
             unitLabel={unitLabel}
             onSaveReceipt={handleSaveReceipt}
+          />
+        ) : null}
+
+        {summary.receipt ? (
+          <SessionJotField
+            value={sessionNote}
+            onChange={(note) => {
+              if (workoutId) setHistorySessionNote(workoutId, note);
+            }}
           />
         ) : null}
 

@@ -1,5 +1,6 @@
 import type { CompletedWorkoutLog } from '@/types';
 import { normalizeCloudExercises } from '@/lib/sync/normalizeExercises';
+import { preserveSessionNote } from '@/lib/workout/sessionNote';
 
 /**
  * Keep enough history for year-over-year comparisons. Truncation is reported
@@ -43,25 +44,29 @@ function updatedAtOf(log: CompletedWorkoutLog): number {
  * Pick the winner between two versions of the same log.
  * Tombstones win outright; then highest revision; then most recently updated;
  * then a cloud row over a purely local one (it has a server id).
+ * Local session notes (`.982`) survive a cloud winner that has none.
  */
 function pickWinner(a: CompletedWorkoutLog, b: CompletedWorkoutLog): CompletedWorkoutLog {
   const aDeleted = !!a.deletedAt;
   const bDeleted = !!b.deletedAt;
-  if (aDeleted !== bDeleted) return aDeleted ? a : b;
-
-  const aRev = revisionOf(a);
-  const bRev = revisionOf(b);
-  if (aRev !== bRev) return aRev > bRev ? a : b;
-
-  const aUpdated = updatedAtOf(a);
-  const bUpdated = updatedAtOf(b);
-  if (aUpdated !== bUpdated) return aUpdated > bUpdated ? a : b;
-
-  const aCloud = !!a.id?.startsWith('cloud');
-  const bCloud = !!b.id?.startsWith('cloud');
-  if (aCloud !== bCloud) return aCloud ? a : b;
-
-  return b;
+  let winner: CompletedWorkoutLog;
+  if (aDeleted !== bDeleted) winner = aDeleted ? a : b;
+  else {
+    const aRev = revisionOf(a);
+    const bRev = revisionOf(b);
+    if (aRev !== bRev) winner = aRev > bRev ? a : b;
+    else {
+      const aUpdated = updatedAtOf(a);
+      const bUpdated = updatedAtOf(b);
+      if (aUpdated !== bUpdated) winner = aUpdated > bUpdated ? a : b;
+      else {
+        const aCloud = !!a.id?.startsWith('cloud');
+        const bCloud = !!b.id?.startsWith('cloud');
+        winner = aCloud !== bCloud ? (aCloud ? a : b) : b;
+      }
+    }
+  }
+  return preserveSessionNote(winner, winner === a ? b : a);
 }
 
 export interface MergeResult {

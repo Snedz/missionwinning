@@ -6,6 +6,242 @@ Living roadmap for the **everything app** (a bodyweight coach app Super Bundle �
 
 ---
 
+## Frozen plan — `.982` Private session notes (2026-08-25)
+
+> **Frozen.** Implement only this section. Plan commit is `[skip vercel]`.
+> Label: `2026.07-unified.983` — next free after master `.981`
+> (`81b23935` — 1RM percent). Concern stays `.982`.
+> 1RM `.981` + Supersets `.980` + Learn `.978` + week
+> strip `.977` + Quiet Track `.976` + Quiet Move `.974`
+> + cues `.973` + honesty `.971` + tags `.970` + RPE
+> `.967` + Fuel `.965` + resume `.963` are on master.
+> Do not smash them.
+> Do **not** smash week strip `.961`, notebook `.960`,
+> swap/skip `.959`, desk→gym `.958`, `/private` `.957`,
+> close receipt `.956`, Wednesday `.955`, Today Start
+> `.954`, or identity `.949`.
+> Implement commit may allow one Preview. No empty-commit
+> retrigger. No `PRIVATE_MODE` flip. No promote. Live www
+> stays `.696`. Guest path. First set stays ungated.
+> Confirm-gated writes only where a write can wipe.
+> Brand: **Log a set. Offline.** / No account. No wearable.
+> Coach stays opt-in / skippable. Train + Coach only.
+> Today stays one Start.
+
+A named-app session can take one
+optional note — Strong-style: add
+notes if you have more to record.
+`.748` already has a per-exercise
+cue. The live logger already jots
+`sessionNote` in Show all, then
+**siphon it into the journal** and
+leaves `CompletedWorkoutLog`
+without it. Close receipt `.956`
+keeps sets / vs-last / a private
+text file — exercise notes show,
+session notes do not. Missing: one
+field on the live session and the
+close receipt, stored **with the
+session**, empty invents nothing.
+Owned diary. Not a Feed. No public
+URL. No comments. No likes.
+
+### First check (done — no leak)
+
+Read `origin/master` tip `17039cb3`
+/ `.980`. Live `SessionJotField` is
+in Show all (chrome test forbids
+first paint — keep that).
+`ActiveWorkout.sessionNote` exists.
+`completeActiveWorkout` does **not**
+copy it onto the log.
+`toSyncPayload` already omits it.
+Desk→gym snapshot strips it
+(`.958`). Receipt shows `ex.note`,
+not a session field. Today lean
+still one `dock="start"`. `/private`
+stays the tight `.957` lock. **Nothing
+to unmount first.** Reframe journal-
+first copy; do not add a notes
+timeline.
+
+### One concern
+
+Optional notes field on the live
+session and the close receipt.
+Stored locally with the session.
+Empty invents nothing. Today stays
+Start workout.
+
+### Investigate (done — hypothesis holds)
+
+| Layer | What exists | Gap this ship closes |
+|-------|-------------|----------------------|
+| Live jot | `sessionNote` + `SessionJotField` in Show all. Copy says it opens the journal. | Reframe to session notes. Keep off first paint. Same field, not a second box. |
+| Finish | `assembleActiveVictory` hands the jot to `composeSessionEntry`. `completeActiveWorkout` builds the log without `sessionNote`. | Copy a trimmed note onto the completed log. Empty omit. |
+| Receipt `.956` | Sets, vs-last, exercise notes, Save receipt text. | One optional session field. Empty invents nothing. Text keep includes the note only when present. |
+| Cloud | `toSyncPayload` lists explicit fields — no `sessionNote`. Exercise notes still sync. | **Keep the omit.** Local persist via the history slice. Not another human's number. |
+| Desk→gym `.958` | Snapshot strips `sessionNote`. | **Keep the strip.** Notes stay on this device. |
+| Exercise cue `.748` | One line per lift. Prefills last time. | **Keep.** Session note is the session, not a lift cue. |
+| Journal | Device-only fragments at finish. | May still receive the jot at finish. Not a Feed. No comments / likes / public URL. Receipt edits stay on the log. |
+| Today / door | One Start. Tight `/private`. Resume `.963`. | **Keep.** No notes widget on Today. No four-scene door. |
+
+Hypothesis (verified, keep):
+
+Reuse `sessionNote`. A **pure**
+helper trims / caps / drops empty
+— never invents copy. Finish copies
+the kept string onto
+`CompletedWorkoutLog.sessionNote`.
+The close receipt shows the same
+field (add if they have more).
+Empty stays empty. Text keep
+includes it only when present.
+Cloud payload stays without it.
+Desk→gym strip stays. Jot stays in
+Show all. Share card does not print
+the diary. Guest. First set
+ungated. Never required to log or
+to close.
+
+Closed rules:
+
+1. **One field, with the session.**
+   Not a journal Feed. Not DMs.
+   Not comments. Not likes. Not a
+   public workout URL.
+2. **Empty invents nothing.**
+   Blank / whitespace omit the
+   field. A 0-set Finish still
+   invents no receipt (`.956`).
+3. **Local.** History persist keeps
+   it. Cloud upsert does not. Open-
+   session snapshot does not.
+4. **Strong-style.** Add notes if
+   you have more. Receipt can take
+   a note they did not jot live.
+5. **Surfaces.** Today still one
+   `.primary-action`. Resume /
+   Finish-partial stay `.963`.
+   `/private` stays the tight
+   `.957` lock. No four-scene
+   door. Jot stays off first paint.
+   Tags / RPE / cues / supersets
+   stay optional.
+
+### Ship (only this)
+
+1. **Pure helper** `src/lib/workout/sessionNote.ts`.
+   `normalizeSessionNote` (trim,
+   cap, empty → `undefined`).
+   `attachSessionNote` copies onto
+   a completed log when kept.
+   Deterministic. Inject the
+   string. No rewards / social /
+   premium / LLM.
+
+2. **Finish + persist.**
+   `completeActiveWorkout` attaches
+   the live jot. Store action
+   `setHistorySessionNote` updates
+   a finished log locally (receipt
+   add / edit). Empty clears.
+   `toSyncPayload` stays without
+   the field. Desk→gym strip stays.
+
+3. **Receipt + jot copy.**
+   Close receipt mounts one notes
+   field (reuse `SessionJotField`
+   or the same helper). Empty
+   placeholder: add notes if you
+   have more. `formatCloseReceiptText`
+   includes the note only when
+   present. Reframe live jot from
+   journal-entry copy to session
+   notes. Help one-liner. Share
+   card / public URL stay off.
+
+4. **Help one-liner.** After a
+   session you can add a private
+   note on the receipt or in the
+   live session. It stays with
+   that session on this device.
+   Empty invents nothing. Today
+   stays Start workout.
+
+### Tests
+
+- Empty / whitespace → omit.
+  Trimmed text attaches. Cap
+  truncates, does not invent.
+  Mutant that writes `''` onto
+  the log dies. Mutant that
+  invents copy from volume /
+  duration / vs-last dies.
+- Finish copies a live jot onto
+  the log. Finish with no jot
+  leaves `sessionNote` absent.
+  Receipt edit writes the log
+  locally. Empty edit clears.
+- Text keep includes the note
+  only when present. Empty keep
+  has no Notes line. Mutant that
+  mints `https://` / `/workout/`
+  dies.
+- `toSyncPayload` still omits
+  `sessionNote`. Desk→gym snapshot
+  still strips it. Share card
+  source does not read it.
+- Jot stays off Active first
+  paint. Receipt field is not
+  `.primary-action`. Today lean
+  still one `dock="start"`.
+- Helper + field do not import
+  premium / trial / rewards /
+  social / Health / Feed.
+- Today / `/private` / gated door
+  do not import `sessionNote` or
+  mount the field. Mutant that
+  mounts notes on Today dies.
+- `firstSetUngated` stays green;
+  no Feed / Discord.com / likes /
+  XP / login wall / Force Sync /
+  Session Expired / four-scene
+  door. Today still one
+  `.primary-action`.
+- Resume / Finish-partial
+  contracts stay green. Tags /
+  RPE / cues / supersets stay
+  optional. Log set never waits.
+
+### Refuse
+
+Feed. DMs. Likes. Public URL.
+Comments. Discord.com. WeChat
+home. Marketplace. Promote.
+`PRIVATE_MODE` flip. Counsel-hold.
+Merge. Four-scene door. Second
+Today Start. Do not smash 1RM
+`.981` / supersets `.980` / Learn
+`.978`
+/ week strip `.977` / `.976` /
+`.974` / `.973` / `.971` / `.970`
+/ `.967` / `.965` / `.963` /
+`.960` / `.956`.
+
+**Landed `.983` (concern `.982`):** `normalizeSessionNote` /
+`attachSessionNote` /
+`preserveSessionNote` in
+`src/lib/workout/sessionNote.ts`.
+Finish copies a trimmed jot onto
+the completed log. Receipt mounts
+the same field. Text keep includes
+Notes only when present. Cloud
+upsert and desk→gym snapshot stay
+without it. Empty invents nothing.
+
+---
+
 ## Frozen plan — `.981` 1RM percent (2026-08-25)
 
 > **Frozen.** Implement only this section. Plan commit is `[skip vercel]`.

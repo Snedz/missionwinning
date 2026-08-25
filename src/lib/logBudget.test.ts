@@ -161,6 +161,13 @@ const NEVER_SHIPPED: { from: number; to: number; why: string }[] = [
       'Quiet Move `#804` is in flight and reserved `.972`. This ship is `.973` cues on the ' +
       'movement. No LOG heading on master ever ended in `.972`.',
   },
+  {
+    from: 982,
+    to: 982,
+    why:
+      'Private session notes was planned as `.982` while 1RM percent landed as `.981` ' +
+      '(`81b23935`). The ship stamp is `.983`. No LOG heading on master ever ended in `.982`.',
+  },
 ];
 const neverShipped = (x: number) => NEVER_SHIPPED.some((g) => x >= g.from && x <= g.to);
 

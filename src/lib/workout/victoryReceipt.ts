@@ -36,6 +36,7 @@ import { getExerciseById } from '@/data/exercises';
 import { estimate1rm, PR_EPSILON, type PrKind } from '@/lib/coach/progress';
 import { countsTowardStrengthEstimate } from '@/lib/workout/setKind';
 import { countCompletedLogSets } from '@/lib/workout/completedLogSets';
+import { normalizeSessionNote } from '@/lib/workout/sessionNote';
 
 export type VictoryReceiptPr = {
   kind: PrKind;
@@ -316,6 +317,8 @@ export type CloseReceiptTextInput = {
   setCount: number;
   volumeLabel: string;
   receipt: VictoryReceipt;
+  /** Private session diary — included only when present (`.982`). */
+  sessionNote?: string;
 };
 
 /** Plain-text keep of the close receipt. Null when there is nothing to keep. */
@@ -337,6 +340,9 @@ export function formatCloseReceiptText(input: CloseReceiptTextInput): string | n
     if (vs.durationDelta !== 0) bits.push(formatReceiptDurationDelta(vs.durationDelta));
     if (bits.length > 0) lines.push(`vs last ${bits.join(' · ')}`);
   }
+
+  const note = normalizeSessionNote(input.sessionNote);
+  if (note) lines.push(`Notes ${note}`);
 
   for (const ex of input.receipt.exercises) {
     lines.push('');

@@ -139,10 +139,9 @@ export interface ActiveWorkout {
   revision?: number;
   updatedAt?: string;
   /**
-   * Session-level field note, jotted in the rest window ("knee twinge set 3").
-   * Journal content in the Day One sense: at finish it becomes fragments in the
-   * device-only journal — it is deliberately NOT copied onto CompletedWorkoutLog,
-   * which syncs to the cloud. Exercise notes sync; the journal never leaves.
+   * Optional private session note (`.982`). Strong-style: add notes if you
+   * have more. Empty invents nothing. Stays on this device — desk→gym snapshot
+   * strips it; cloud upsert omits it.
    */
   sessionNote?: string;
 }
@@ -193,6 +192,11 @@ export interface CompletedWorkoutLog {
     prescribed?: boolean;
   }[];
   totalVolume: number;
+  /**
+   * Optional private session note (`.982`). Stored with this log on the device.
+   * Empty / omitted invents nothing. Not a Feed. Cloud upsert omits it.
+   */
+  sessionNote?: string;
 }
 
 export type NavPage =
