@@ -5,7 +5,7 @@
  */
 
 import { STORAGE_KEYS } from '@/lib/storage/keys';
-import { readJson, writeJson } from '@/lib/storage/safeStorage';
+import { isPersistent, readJson, readRaw, writeJson } from '@/lib/storage/safeStorage';
 
 export const QUIET_MOVE_KINDS = ['walk', 'easy'] as const;
 
@@ -123,7 +123,44 @@ export function loadQuietMoveLog(): QuietMoveRow[] {
 }
 
 export function saveQuietMoveLog(rows: readonly QuietMoveRow[]): void {
-  writeJson(STORAGE_KEYS.quietMoveLog, rows);
+  const persisted = writeJson(STORAGE_KEYS.quietMoveLog, rows);
+  // #region agent log
+  const raw = readRaw(STORAGE_KEYS.quietMoveLog);
+  const entry = {
+    hypothesisId: 'D',
+    location: 'quietMove.ts:saveQuietMoveLog',
+    message: 'writeJson result',
+    data: {
+      persisted,
+      persistent: isPersistent(),
+      rawNull: raw == null,
+      rawLen: raw?.length ?? 0,
+      rowCount: rows.length,
+    },
+    timestamp: Date.now(),
+  };
+  try {
+    const g = globalThis as { __QM_DEBUG?: unknown[] };
+    g.__QM_DEBUG = g.__QM_DEBUG ?? [];
+    g.__QM_DEBUG.push(entry);
+  } catch {
+    /* ignore */
+  }
+  try {
+    console.info('[qm-debug]', JSON.stringify(entry));
+  } catch {
+    /* ignore */
+  }
+  try {
+    void fetch('http://127.0.0.1:7931/log', {
+      method: 'POST',
+      mode: 'no-cors',
+      body: JSON.stringify(entry),
+    }).catch(() => {});
+  } catch {
+    /* ignore */
+  }
+  // #endregion
 }
 
 export function logQuietMove(input: QuietMoveInput): QuietMoveRow | null {

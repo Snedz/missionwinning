@@ -50,6 +50,7 @@
 | `sync-ops-pack.mjs` | `npm run ops:sync` | Stage INTERNAL + founder critical path into gitignored `ops/` for private mission-ops ([DUAL_REPO.md](../docs/DUAL_REPO.md)) |
 | `export-public-snapshot.mjs` | `npm run snapshot:public` | Filtered **progress-report** copy for `Mission-Winning/missionwinning`. Sibling dir, orphan git, **does not push**, does not change origin. `--force` restores an existing org remote. Deny rules: [public-snapshot/](public-snapshot/INDEX.md) |
 | `public-snapshot/deny.test.mjs` | `npm run snapshot:check` | Deny-list unit tests. Not a gate step. |
+| `debug-quiet-move-repro.mjs` | `node scripts/debug-quiet-move-repro.mjs` | Temporary Quiet Move Log debug repro against `:3000`. Writes NDJSON to `/opt/cursor/logs/debug.log` |
 
 ## Related (not here)
 

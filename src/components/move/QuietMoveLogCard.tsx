@@ -5,7 +5,7 @@
  * Outline log. Optional minutes or distance. Not a Start. Not a score circle.
  */
 
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -25,6 +25,38 @@ function rowLine(kindLabel: string, minutesLabel?: string, kmLabel?: string): st
   return [kindLabel, minutesLabel, kmLabel].filter(Boolean).join(' · ');
 }
 
+let qmMountSeq = 0;
+
+function qmAgentLog(
+  hypothesisId: string,
+  location: string,
+  message: string,
+  data: Record<string, unknown>
+) {
+  const entry = { hypothesisId, location, message, data, timestamp: Date.now() };
+  try {
+    const g = globalThis as { __QM_DEBUG?: unknown[] };
+    g.__QM_DEBUG = g.__QM_DEBUG ?? [];
+    g.__QM_DEBUG.push(entry);
+  } catch {
+    /* ignore */
+  }
+  try {
+    console.info('[qm-debug]', JSON.stringify(entry));
+  } catch {
+    /* ignore */
+  }
+  try {
+    void fetch('http://127.0.0.1:7931/log', {
+      method: 'POST',
+      mode: 'no-cors',
+      body: JSON.stringify(entry),
+    }).catch(() => {});
+  } catch {
+    /* ignore */
+  }
+}
+
 export function QuietMoveLogCard() {
   const { t } = useTranslation();
   const [kind, setKind] = useState<QuietMoveKind>('walk');
@@ -34,15 +66,66 @@ export function QuietMoveLogCard() {
   // stays '' after SSR, so a successful Log would save and then hide the row.
   const [today, setToday] = useState('');
   const [rows, setRows] = useState<QuietMoveRow[]>([]);
+  const [hydrated, setHydrated] = useState(false);
+  const mountIdRef = useRef(++qmMountSeq);
+  const mountId = mountIdRef.current;
 
   useEffect(() => {
-    setToday(localDateKey());
-    setRows(loadQuietMoveLog());
-  }, []);
+    // #region agent log
+    qmAgentLog('E', 'QuietMoveLogCard.tsx:mount', 'card mount', {
+      mountId,
+      href: typeof location !== 'undefined' ? location.href : '',
+    });
+    // #endregion
+    return () => {
+      // #region agent log
+      qmAgentLog('E', 'QuietMoveLogCard.tsx:unmount', 'card unmount', { mountId });
+      // #endregion
+    };
+  }, [mountId]);
+
+  useEffect(() => {
+    const nextToday = localDateKey();
+    const loaded = loadQuietMoveLog();
+    setToday(nextToday);
+    setRows(loaded);
+    setHydrated(true);
+    // #region agent log
+    qmAgentLog('C', 'QuietMoveLogCard.tsx:hydrate', 'hydrate today+rows', {
+      mountId,
+      nextToday,
+      loadedCount: loaded.length,
+      loadedDates: loaded.map((r) => r.date),
+    });
+    // #endregion
+  }, [mountId]);
 
   const todayRows = useMemo(() => listQuietMoveForDate(rows, today), [rows, today]);
 
+  useEffect(() => {
+    // #region agent log
+    qmAgentLog('C', 'QuietMoveLogCard.tsx:view', 'todayRows view', {
+      mountId,
+      today,
+      hydrated,
+      rowCount: rows.length,
+      todayRowCount: todayRows.length,
+      rowDates: rows.map((r) => r.date),
+    });
+    // #endregion
+  }, [mountId, today, hydrated, rows, todayRows]);
+
   const handleLog = () => {
+    // #region agent log
+    qmAgentLog('A', 'QuietMoveLogCard.tsx:handleLog', 'handleLog entry', {
+      mountId,
+      kind,
+      minutes,
+      distanceKm,
+      today,
+      hydrated,
+    });
+    // #endregion
     const todayIso = today || localDateKey();
     const row = decideQuietMove({
       kind,
@@ -52,6 +135,15 @@ export function QuietMoveLogCard() {
       nowIso: new Date().toISOString(),
       id: `qm-${Date.now()}`,
     });
+    // #region agent log
+    qmAgentLog('B', 'QuietMoveLogCard.tsx:decide', 'decideQuietMove result', {
+      mountId,
+      todayIso,
+      rejected: !row,
+      rowDate: row?.date ?? null,
+      rowId: row?.id ?? null,
+    });
+    // #endregion
     if (!row) return;
     const next = appendQuietMove(loadQuietMoveLog(), row);
     saveQuietMoveLog(next);
@@ -64,6 +156,11 @@ export function QuietMoveLogCard() {
   return (
     <div
       data-testid="quiet-move-log"
+      data-qm-instrumented="1"
+      data-qm-hydrated={hydrated ? '1' : '0'}
+      data-qm-today={today}
+      data-qm-row-count={String(todayRows.length)}
+      data-qm-mount={String(mountId)}
       className="border-2 border-border bg-card px-3 py-3 space-y-3"
     >
       <div className="space-y-1">
@@ -148,6 +245,17 @@ export function QuietMoveLogCard() {
         variant="outline"
         className="min-h-[44px] tap-target"
         data-testid="quiet-move-log-submit"
+        onPointerDown={() => {
+          // #region agent log
+          qmAgentLog('A', 'QuietMoveLogCard.tsx:pointerdown', 'Log pointerdown', {
+            mountId,
+            today,
+            minutes,
+            kind,
+            hydrated,
+          });
+          // #endregion
+        }}
         onClick={handleLog}
       >
         {t('moveQuietLog', { defaultValue: 'Log' })}
