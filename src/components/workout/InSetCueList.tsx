@@ -4,9 +4,12 @@
  * Short written cues on the open live exercise (`.973`).
  * Quiet ink — Log set owns poster red. Hide never blocks logging.
  * Optional still only from media we already have. Not a clip marketplace.
+ * Quiet Learn link when they want more than a rack card (`.978`).
  */
 
+import Link from 'next/link';
 import { useTranslation } from 'react-i18next';
+import { quietLearnHref } from '@/lib/quietLearn';
 
 type Props = {
   lines: string[];
@@ -56,6 +59,13 @@ export function InSetCueList({ lines, stillUrl, exerciseName, onHide }: Props) {
           </li>
         ))}
       </ul>
+      <Link
+        href={quietLearnHref()}
+        data-testid="in-set-cues-more"
+        className="inline-flex min-h-[44px] items-center text-sm text-muted-foreground underline underline-offset-2 tap-target"
+      >
+        {t('activeInSetCuesMore', { defaultValue: 'More than a rack card' })}
+      </Link>
     </div>
   );
 }

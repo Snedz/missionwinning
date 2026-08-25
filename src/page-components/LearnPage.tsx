@@ -1,6 +1,7 @@
 'use client';
 /**
- * Page: /learn — education paths
+ * Page: /learn — Quiet Learn first-success intro (`.978`).
+ * Other paths / guidebook in Show more.
  * See: app/INDEX.md, src/page-components/INDEX.md
  */
 
@@ -10,7 +11,9 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import { useTranslation } from 'react-i18next';
 import { FREE_LEARN_PATHS } from '@/data/learnPaths';
 import { localizeLearnPaths } from '@/lib/localizeLearnPaths';
+import { QUIET_LEARN_PATH_ID } from '@/lib/quietLearn';
 import { LearnLockedPreview } from '@/components/learn/LearnLockedPreview';
+import { QuietLearnIntroCard } from '@/components/learn/QuietLearnIntroCard';
 import { usePremium } from '@/hooks/usePremium';
 import { useWorkoutStore } from '@/store/workoutStore';
 import { Button } from '@/components/ui/button';
@@ -96,14 +99,18 @@ export function LearnPage() {
 
   const filteredPaths = useMemo(() => {
     const q = pathQuery.trim().toLowerCase();
-    if (!q) return paths;
-    return paths.filter(
+    const pool = q
+      ? paths
+      : paths.filter((p) => p.id !== QUIET_LEARN_PATH_ID);
+    if (!q) return pool;
+    return pool.filter(
       (p) =>
         p.title.toLowerCase().includes(q) ||
         p.subtitle.toLowerCase().includes(q) ||
         p.lessons.some((l) => l.title.toLowerCase().includes(q))
     );
   }, [paths, pathQuery]);
+  const showMoreOpen = Boolean(expandedPath) || Boolean(pathQuery.trim());
 
   const markLessonDone = (lessonId: string, title: string) => {
     const next = new Set(completedLessons);
@@ -118,18 +125,21 @@ export function LearnPage() {
       icon={BookOpen}
       eyebrow={t('learnEyebrow', { defaultValue: 'Learn' })}
       title={t('learnTitle', { defaultValue: 'Learn & Master' })}
-      subtitle={
-        freeBeta
-          ? t('learnSubtitleBriefOpenBeta', {
-              defaultValue:
-                'Free paths first. Guidebook and specialist depth when you want them.',
-            })
-          : t('learnSubtitleBrief', {
-              defaultValue: 'Free paths first. Guide and Bundle depth when you want them.',
-            })
-      }
+      subtitle={t('quietLearnSubtitle', {
+        defaultValue: 'Log a set. Then Coach from those logs.',
+      })}
     >
-        {/* Field manual: paths first — guide/premium no longer own the fold. */}
+        <QuietLearnIntroCard paths={paths} />
+
+        <details open={showMoreOpen || undefined} className="group border-2 border-border bg-card">
+          <summary className="flex min-h-[44px] cursor-pointer list-none items-center gap-2 px-4 py-3 text-sm font-semibold text-foreground [&::-webkit-details-marker]:hidden">
+            <BookMarked className="h-4 w-4 text-primary" aria-hidden />
+            {t('quietLearnMorePaths', {
+              defaultValue: 'Other paths, guidebook & more',
+            })}
+          </summary>
+          <div className="space-y-3 border-t-2 border-border p-4">
+        {/* Catalog lives in Show more — first paint is the one intro. */}
         <div id="learn-paths" className="space-y-3 scroll-mt-20">
           <input
             type="search"
@@ -226,14 +236,7 @@ export function LearnPage() {
           })}
         </div>
 
-        <details className="group border-2 border-border bg-card">
-          <summary className="flex min-h-[44px] cursor-pointer list-none items-center gap-2 px-4 py-3 text-sm font-semibold text-foreground [&::-webkit-details-marker]:hidden">
-            <BookMarked className="h-4 w-4 text-primary" aria-hidden />
-            {freeBeta
-              ? t('learnMoreLearnOpenBeta', { defaultValue: 'Guide, sample & more' })
-              : t('learnMoreLearn', { defaultValue: 'Guide, sample & premium' })}
-          </summary>
-          <div className="space-y-4 border-t-2 border-border p-4">
+            <div className="space-y-4 border-t-2 border-border pt-4">
             <div>
               <p className="eyebrow mb-1 text-primary">
                 {t('learnExpandedBanner', { defaultValue: 'Beyond the Basics' })}
@@ -319,6 +322,7 @@ export function LearnPage() {
                     defaultValue: `${FREE_LEARN_PATHS.length} free education paths. Super Bundle unlocks full programs when paid depth is on.`,
                   })}
             </p>
+          </div>
           </div>
         </details>
     </PillarPageShell>

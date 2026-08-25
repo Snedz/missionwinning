@@ -39,6 +39,8 @@ type ActiveWorkoutStrings = {
   activeInSetCues: string;
   activeInSetCuesHide: string;
   activeInSetCuesDemoAlt: string;
+  /** Quiet Learn door when the rack card is not enough (`.978`). */
+  activeInSetCuesMore: string;
   activeLoadPctChip: string;
   activeAddSet: string;
   activeStartRest: string;
@@ -361,6 +363,7 @@ const en: ActiveWorkoutStrings = {
   activeInSetCues: 'Cues',
   activeInSetCuesHide: 'Hide cues',
   activeInSetCuesDemoAlt: '{{name}} setup',
+  activeInSetCuesMore: 'More than a rack card',
   activeLoadPctChip: '{{pct}}% · {{weight}} {{unit}}',
   activeAddSet: 'Add Set',
   activeStartRest: '{{seconds}}s Rest',

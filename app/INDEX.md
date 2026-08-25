@@ -39,7 +39,7 @@
 |-----|----------------|-------|
 | `/move` | `MovePage.tsx` | Mobility + quiet rest-day walk / easy log (`.969`) |
 | `/mind` | `MindPage.tsx` | Mind & recovery |
-| `/learn` | `LearnPage.tsx` | Education |
+| `/learn` | `LearnPage.tsx` | Quiet Learn first-success intro (`.978`); catalog in Show more |
 | `/learn/guide` | `GuidebookIndexPage.tsx` | Guidebook |
 | `/coaching` | `CoachingPage.tsx` | **Human** coaching leads — not AI Coach |
 | `/privacy` | `PrivacyPage.tsx` | Privacy policy |

@@ -25,6 +25,8 @@ On **Account**, list your **Home gym kit** (barbell, rack, plates, dumbbells, pu
 
 **Track** (`/track`) is the scale / tape log — a number you already have. Optional. Never required to train. Empty invents nothing.
 
+**Learn** (`/learn`) is the free first-success intro — log a set, then Coach from those logs. Other paths and the guidebook sit under Show more. Not a second Today. Opening a live exercise can show a short cue list; a quiet link there opens Learn when you want more than the rack card.
+
 ## Your first workout
 
 1. Tap **Train** in the bottom nav (or start from Today).

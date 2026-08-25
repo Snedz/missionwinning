@@ -54,6 +54,12 @@ type LearnStrings = {
   learnCourseBrowseFree: string;
   /** Kaizen Learn magazine link (`.560`). */
   learnOpenMagazine: string;
+  /** Quiet Learn first-success subtitle (`.978`). */
+  quietLearnSubtitle: string;
+  quietLearnMorePaths: string;
+  quietLearnEyebrow: string;
+  quietLearnEmpty: string;
+  quietLearnEmptyDesc: string;
 };
 
 const en: LearnStrings = {
@@ -113,6 +119,11 @@ const en: LearnStrings = {
     'The specialist catalogue is still being written. The free learning paths and the guidebook are complete and open to everyone.',
   learnCourseBrowseFree: 'Browse free paths',
   learnOpenMagazine: 'Magazine (web)',
+  quietLearnSubtitle: 'Log a set. Then Coach from those logs.',
+  quietLearnMorePaths: 'Other paths, guidebook & more',
+  quietLearnEyebrow: 'First success',
+  quietLearnEmpty: 'No first-success intro yet.',
+  quietLearnEmptyDesc: 'Learn invents nothing when the catalog has no log-then-Coach path.',
 };
 
 const es: LearnStrings = {
