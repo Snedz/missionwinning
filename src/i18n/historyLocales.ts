@@ -138,6 +138,20 @@ type HistoryStrings = {
   historyDeleteConfirmDesc: string;
   historyDeleteConfirm: string;
   historyDeleteCancel: string;
+  /** `.1005` — fold older days out of week 1. */
+  historyStartFrom: string;
+  historyStartFromTitle: string;
+  historyStartFromDesc: string;
+  historyStartFromDate: string;
+  historyStartFromApply: string;
+  historyStartFromClear: string;
+  historyStartFromActive: string;
+  historyStartFromEmpty: string;
+  historyStartFromEmptyDesc: string;
+  historyStartFromConfirmTitle: string;
+  historyStartFromConfirmDesc: string;
+  historyStartFromConfirm: string;
+  historyStartFromCancel: string;
 };
 
 const en: HistoryStrings = {
@@ -275,6 +289,21 @@ const en: HistoryStrings = {
     'This session will be gone from History. It cannot be recovered. Other days stay.',
   historyDeleteConfirm: 'Delete — cannot be recovered',
   historyDeleteCancel: 'Cancel',
+  historyStartFrom: 'Start history from this date',
+  historyStartFromTitle: 'Start history from this date',
+  historyStartFromDesc:
+    'Week strip, Coach, and streak start here. Older sessions stay in History. Empty invents nothing.',
+  historyStartFromDate: 'Date',
+  historyStartFromApply: 'Start history from this date',
+  historyStartFromClear: 'Show the full diary',
+  historyStartFromActive: 'Week 1 starts {{date}}. Older days stay in History.',
+  historyStartFromEmpty: 'Nothing to fold',
+  historyStartFromEmptyDesc: 'Empty invents nothing — pick a date that is not in the future.',
+  historyStartFromConfirmTitle: 'Fold older days out of week 1?',
+  historyStartFromConfirmDesc:
+    'This folds {{count}} training days out of the week strip, Coach, and streak. Sessions stay in History.',
+  historyStartFromConfirm: 'Fold — sessions stay',
+  historyStartFromCancel: 'Cancel',
 };
 
 const es: HistoryStrings = {

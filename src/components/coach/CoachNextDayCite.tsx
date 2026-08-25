@@ -12,6 +12,7 @@ import { CoachLogCite } from '@/components/coach/CoachLogCite';
 import { useStartCoachSession } from '@/hooks/useStartCoachSession';
 import { useWorkoutStore } from '@/store/workoutStore';
 import { honorCiteStart } from '@/lib/workout/honorSavedRoutine';
+import { historyForWeek } from '@/lib/workout/startHistoryFrom';
 import { protectLiveStart } from '@/lib/workout/sessionResume';
 import type { NextDayCite } from '@/lib/coach/nextDayFromLogs';
 import type { CoachPlan } from '@/lib/coach/types';
@@ -34,7 +35,7 @@ export function CoachNextDayCite({ cite, plan, hideStart }: Props) {
   const honored = honorCiteStart({
     cite: cite ?? null,
     saved: savedWorkouts,
-    history: workoutHistory,
+    history: historyForWeek(workoutHistory),
   });
 
   if (!cite) {

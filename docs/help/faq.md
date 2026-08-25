@@ -26,6 +26,9 @@ Open that finished session in History and **Delete this session**. Confirm — i
 **How do I hide a movement from Add?**  
 Open it in Library and tap **Hide this exercise**, or use **Hide from library** on the live lift overflow. The name leaves Add and search. Past sets, PRs, and notes stay. Unhide it from the Hidden list on Library. The app does not hide lookalikes.
 
+**I imported years of sessions and week 1 looks like I have been here forever.**  
+On History, open **Start history from this date**. Pick the day week 1 should start. Older sessions stay in History — they fold out of the week strip, Coach, and streak. If that hides a lot of days, confirm first. **Show the full diary** clears the fold. Empty or a future date invents nothing.
+
 **What does Victory show after I finish?**  
 A private receipt of the session you just logged — sets, load, duration when the clock ran (you can pause the session clock on Train so a phone call does not count), and vs last time when you have done the same lifts before. Each lift can show last-time **Prev** and beaten PRs. Stay, screenshot, or save a copy on this device. There is no public workout link. A session with no sets has no receipt. A first session has no invented PR. Instant, offline, and free. Share is optional; nothing is unlocked by posting.
 

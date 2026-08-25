@@ -33,6 +33,7 @@
  * `.1002` — merge duplicate exercises from History / library. Never a login wall.
  * `.1003` — delete one finished session from History. Never a login wall.
  * `.1004` — hide this exercise from the library. Never a login wall.
+ * `.1005` — start history from this date (fold, don't erase). Never a login wall.
  */
 
 export function normalizeAppPath(pathname: string | null | undefined): string {

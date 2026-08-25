@@ -10,6 +10,11 @@ import { usePremium } from '@/hooks/usePremium';
 import { supabase } from '@/lib/supabase';
 import { track } from '@/lib/analytics';
 import { readLocalCoachContext } from '@/lib/coach/contextBuilder';
+import {
+  historyForWeek,
+  loadStartHistoryFrom,
+  START_HISTORY_FROM_CHANGED,
+} from '@/lib/workout/startHistoryFrom';
 import { generateWeek } from '@/lib/coach/planEngine';
 import { adaptPlan, adaptForEquipmentChange, regenerateFutureSessions } from '@/lib/coach/adapt';
 import { currentWeekStart, todayDayOffset } from '@/lib/coach/splitPlanner';
@@ -40,15 +45,18 @@ export function useCoachPlan() {
   const [needsParq, setNeedsParq] = useState(
     () => typeof window !== 'undefined' && !hasParqScreen()
   );
+  const [startFrom, setStartFrom] = useState<string | null>(() =>
+    typeof window !== 'undefined' ? loadStartHistoryFrom() : null
+  );
 
   const weekStart = currentWeekStart();
   const todayOffset = todayDayOffset(weekStart);
   const tasterUsed = isTasterUsed();
 
   const ctx = useMemo(() => {
-    const base = readLocalCoachContext(history);
+    const base = readLocalCoachContext(historyForWeek(history, startFrom));
     return { ...base, seedId: userId ?? base.seedId ?? getOrCreateDeviceId() };
-  }, [history, userId]);
+  }, [history, userId, startFrom]);
 
   // Horizon W: never lock the whole Coach week behind Bundle. Free weekly plan + adapt;
   // same-week on-demand regen stays premium (see generate()).
@@ -116,6 +124,16 @@ export function useCoachPlan() {
     supabase.auth.getUser().then(({ data }) => {
       setUserId(data.user?.id ?? null);
     });
+  }, []);
+
+  useEffect(() => {
+    const sync = () => setStartFrom(loadStartHistoryFrom());
+    window.addEventListener(START_HISTORY_FROM_CHANGED, sync);
+    window.addEventListener('storage', sync);
+    return () => {
+      window.removeEventListener(START_HISTORY_FROM_CHANGED, sync);
+      window.removeEventListener('storage', sync);
+    };
   }, []);
 
   useEffect(() => {

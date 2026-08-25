@@ -12,6 +12,7 @@ When adding a doc:
 
 | File | Absorbed by / note |
 |------|---------------------|
+| [log/LOG-rotate-989-for-1005.md](./log/LOG-rotate-989-for-1005.md) | rotated 2026-08-25 for `.1005` Start history from this date (`.989`) |
 | [log/LOG-rotate-988-for-1004.md](./log/LOG-rotate-988-for-1004.md) | rotated 2026-08-25 for `.1004` Hide this exercise from the library (`.988`) |
 | [log/LOG-rotate-986-for-1003.md](./log/LOG-rotate-986-for-1003.md) | rotated 2026-08-25 for `.1003` Delete this finished session (`.986`) |
 | [log/LOG-rotate-985-for-1002.md](./log/LOG-rotate-985-for-1002.md) | rotated 2026-08-25 for `.1002` Merge duplicate exercises (`.985`) |
