@@ -6,6 +6,182 @@ Living roadmap for the **everything app** (a bodyweight coach app Super Bundle �
 
 ---
 
+## Frozen plan — `.1001` Pause the live clock (2026-08-25)
+
+> **Frozen.** Implement only this section + root
+> [PLAN.md](../PLAN.md). Plan commit is `[skip vercel]`.
+> Label: `2026.07-unified.1001` — rebased onto
+> master `.1000` (`1ab24514` — Backfill a past
+> session). Stamp stays `.1001`. Do not bump.
+> Title stays **Pause the live clock (.1001)**.
+> Do **not** open a second PR.
+> Backfill `.1000` + In-set PR `.999` + reorder
+> `.998` + History
+> Edit `.997` + note+pin `.996` + rest `.995`
+> + set-row type `.994` + history `.993` +
+> custom `.992` + Start this again `.991` +
+> Track trend `.989` + EMOM `.988` + drop-set
+> `.986` + warmup `.985` + notes `.983` +
+> 1RM `.981` + supersets `.980` + Learn
+> `.978` + honesty `.971` + tags `.970` +
+> RPE `.967` + Fuel `.965` + resume `.963`
+> + notebook `.960` are on master. Do not
+> smash them.
+> Do **not** smash week strip `.961`,
+> notebook `.960`, swap/skip `.959`,
+> desk→gym `.958`, `/private` `.957`,
+> close receipt `.956`, Wednesday `.955`,
+> Today Start `.954`, or identity `.949`.
+> Every commit `[skip vercel]`. No Preview.
+> No `PRIVATE_MODE` flip. No promote. Live
+> www stays `.696`.
+> Guest path. First set stays ungated.
+> Today stays one Start. Brand: **Log a
+> set. Offline.** / No account. No wearable.
+
+Resume `.963` keeps the set when they
+leave Today. The session clock still
+runs through a phone call. Receipt
+duration has to be true. Strong leftover:
+pause / turn off automatic timing.
+
+### First check (done — hypothesis holds)
+
+Read tip `fb7f9d34` / `.999`. Confirmed:
+
+- **Elapsed** is wall-clock from
+  `activeWorkout.startedAt` via
+  `elapsedSecondsFrom` in
+  `persistDedupe.ts`. `tickElapsed`
+  writes memory-only `elapsedSeconds`.
+  Finish copies that into
+  `durationSeconds`. No pause state.
+- **Resume `.963`** keeps the live
+  set on leave/return. It does **not**
+  pause the clock. `protectLiveStart`
+  is keep — not a clock policy.
+- **EMOM/AMRAP `.988`** is
+  `workClock.ts` — interval /
+  countdown on the live **set row**.
+  Independent of session elapsed.
+  Do not smash it.
+- **Rest `.995`** is
+  `restTimer.ts` + `RestTimerBar`.
+  Independent. Do not smash it.
+- **Today** is still one Start
+  (`HomeTodayLean` one
+  `dock="start"`). Resume when live
+  is the same Start, not a second
+  button.
+- **Help already says** "duration
+  when the clock ran" and "leave
+  Today… same session." It does
+  **not** promise auto-pause on
+  leave-Today. Default: leaving
+  Today does **not** auto-pause.
+  Explicit pause control only.
+- **`.210`** derived elapsed from
+  `startedAt` so a tick does not
+  persist history. Pause state
+  rides `activeWorkout` (written
+  on pause/resume only). Ticks
+  still derive. Do not put
+  `elapsedSeconds` back in
+  `partialize`.
+
+**Nothing to unmount first.** Do
+not treat Resume `.963` as this
+ship. Do not treat EMOM as this
+ship. Do not treat rest as this
+ship.
+
+### Lock
+
+1. One home helper in
+   `src/lib/workout/sessionClock.ts`.
+   Deterministic. No store import.
+   No premium / rewards / social /
+   Health / speech / wearables /
+   bodyMetrics. Own the seconds
+   math — do not import
+   `persistDedupe`.
+2. Clock shape: accumulated
+   seconds + `runningSince` (ISO
+   or null). Pause freezes
+   accumulated and clears
+   `runningSince`. Resume (the
+   **clock** button, not Today
+   Resume) sets `runningSince` to
+   now and keeps the paused total.
+   Finish writes `durationSeconds`
+   from elapsed-while-running
+   only (`sessionElapsedSeconds`).
+3. Empty / never started invents
+   nothing. No `startedAt` and no
+   clock → null / 0. Pausing a
+   live session with no logged
+   work is fine; duration stays
+   honest. Pre-`.1001` sessions
+   without a clock field run from
+   `startedAt` (today's behaviour).
+4. Chrome on the live session
+   bar only (`ActiveSessionChrome`,
+   next to elapsed). Not Today.
+   Not `/private`. Not a Feed.
+   Not a second Start. Not a
+   poster timer.
+5. Guest. First set ungated.
+   Pause never paywalls.
+6. Today still one Start. Do not
+   add a second Start. Do not
+   treat this as Resume `.963`
+   (leave/return of the live set).
+7. Rest `.995` and work clock
+   `.988` stay. Pause session
+   clock does not pause rest or
+   EMOM. They stay independent.
+8. Web PWA only. Do not smash
+   `.1000` backfill, `.999`
+   in-set PR, `.998` reorder,
+   `.997` edit, resume `.963`,
+   `/private` `.957`.
+   Do not rewrite Android.
+   Do not change desk→gym
+   snapshot shape (`.958`).
+   Same-device persist is enough
+   (clock rides `activeWorkout`).
+
+### Refuse
+
+- Lying duration (clock runs
+  while paused)
+- Auto-pause on leave-Today
+  (that is Resume; keep the set;
+  clock policy is this ship —
+  explicit pause only)
+- Feed / DMs / counsel-hold /
+  `PRIVATE_MODE` / promote /
+  merge / paywall / second Start
+- Pause that stops rest or EMOM
+- Smash `.210` (tick must not
+  persist history)
+
+### Done when
+
+- They can pause and unpause the
+  live session clock
+- Receipt duration matches time
+  the clock was running
+- Today still one Start
+- Label `2026.07-unified.1001`
+- Draft PR. Do not merge. Do not
+  promote.
+
+Excellence-Override: leftover
+honest session duration.
+
+Implement only root [PLAN.md](../PLAN.md).
+
 ## Frozen plan — `.1000` Backfill a past session (2026-08-25)
 
 > **Frozen.** Implement only this section + root
@@ -215,6 +391,7 @@ invents nothing. Today stays
 Start workout.
 
 Implement only root [PLAN.md](../PLAN.md).
+
 
 
 ## Frozen plan — `.999` In-set PR they hit (2026-08-25)
