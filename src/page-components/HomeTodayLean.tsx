@@ -1,8 +1,9 @@
 'use client';
 /**
- * Lean Today — Summary. Date, 0–4 pins, one highlights sentence, one Start.
- * Tour chrome (journey strip, rewards, continuity, day-review) is deleted.
- * Coach week lives in Show all. Dashboard is not this route.
+ * Lean Today — Summary. Date, 0–4 pins, one highlights sentence,
+ * quiet Mon–Sun glance, one Start. Tour chrome (journey strip, rewards,
+ * continuity, day-review) is deleted. Coach week lives in Show all.
+ * Dashboard is not this route.
  */
 
 import { useCallback, useEffect, useState } from 'react';
@@ -15,6 +16,7 @@ import { reentryCardMayMount } from '@/lib/today/todayGuidanceMount';
 import { TodaySummaryPins } from '@/components/today/TodaySummaryPins';
 import { TodayHighlights } from '@/components/today/TodayHighlights';
 import { TodayShowAll } from '@/components/today/TodayShowAll';
+import { TodayQuietWeekStrip } from '@/components/today/TodayQuietWeekStrip';
 import {
   parseSummaryPinIds,
   resolveSummaryPins,
@@ -51,6 +53,7 @@ import { buildJustGoHeroMeta, type JustGoHeroMeta } from '@/lib/justGoHeroMeta';
 import { shouldRepeatLastOnToday } from '@/lib/workout/repeatLastSession';
 import { formatLocalDateKey, localDateKey } from '@/lib/time/localDate';
 import { todayReturnCite } from '@/lib/today/todayReturnCite';
+import { quietWeekGlance } from '@/lib/today/quietWeekGlance';
 
 const SSR_ACTION: JourneyAction = {
   label: 'Start',
@@ -304,6 +307,7 @@ export function HomeTodayLean() {
         {plan.top.map(({ key, node }) => (
           <div key={key}>{node}</div>
         ))}
+        <TodayQuietWeekStrip glance={quietWeekGlance({ history: workoutHistory })} />
         <TodayShowAll />
       </div>
       <ScreenDock>
