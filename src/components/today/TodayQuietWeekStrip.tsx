@@ -26,7 +26,7 @@ type Props = {
   onLogged?: () => void;
 };
 
-function kindLabel(kind: QuietWeekRowKind, fuel: string, walk: string, scale: string): string {
+function quietWeekKindCopy(kind: QuietWeekRowKind, fuel: string, walk: string, scale: string): string {
   if (kind === 'fuel') return fuel;
   if (kind === 'move') return walk;
   return scale;
@@ -144,7 +144,7 @@ export function TodayQuietWeekStrip({ glance, onLogged }: Props) {
               >
                 {weekday}
                 <span className="text-[9px] font-semibold text-foreground">
-                  {kindLabel(
+                  {quietWeekKindCopy(
                     day.quiet,
                     t('todayQuietWeekFuel', { defaultValue: 'Fuel' }),
                     t('todayQuietWeekMove', { defaultValue: 'Walk' }),
@@ -209,7 +209,7 @@ export function TodayQuietWeekStrip({ glance, onLogged }: Props) {
                 )}
                 onClick={() => setKind(option)}
               >
-                {kindLabel(
+                {quietWeekKindCopy(
                   option,
                   t('todayQuietWeekFuel', { defaultValue: 'Fuel' }),
                   t('todayQuietWeekMove', { defaultValue: 'Walk' }),
