@@ -42,7 +42,7 @@
 | `NutritionPage.tsx` | `/nutrition` (Fuel) — shell + state; logging UI in `src/components/nutrition/`; this week's restock in Show more (`.965`) |
 | `MovePage.tsx` | `/move` — quiet rest-day walk / easy log first paint (`.969`); flows stay |
 | `MindPage.tsx` | `/mind` | First paint is check-in + breathe; sessions in Show all |
-| `TrackPage.tsx` | `/track` |
+| `TrackPage.tsx` | `/track` | First paint is weight / tape (`.975`); walks / GPS in Show more |
 | `LearnPage.tsx` | `/learn` |
 | `GuidebookIndexPage.tsx` | `/learn/guide` |
 | `GuidebookChapterPage.tsx` | `/learn/guide/[chapterId]` |

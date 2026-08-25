@@ -5,10 +5,13 @@ import { join } from 'node:path';
 
 const root = join(import.meta.dirname, '..', '..', '..');
 
-test('Track empty week links to track-log; log CTA is primary 52px', () => {
+test('Track first paint is the scale/tape log; activity stays in Show more', () => {
   const page = readFileSync(join(root, 'src/page-components/TrackPage.tsx'), 'utf8');
+  assert.match(page, /<BodyMetricsCard/);
   assert.match(page, /track-log/);
-  assert.match(page, /primary-action min-h-\[52px\]/);
+  assert.doesNotMatch(page, /primary-action/);
+  assert.doesNotMatch(page, /ScoreNumeral/);
+  assert.doesNotMatch(page, /ProgressPhotosCard/);
   assert.doesNotMatch(page, /Core mission is Train \+ Fuel/);
   assert.match(page, /h-11 w-11 tap-target/);
 });

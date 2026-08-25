@@ -9,6 +9,7 @@ import { Label } from '@/components/ui/label';
 import type { UnitsPref } from '@/lib/units';
 import { kgToDisplay, displayToKg, weightUnitLabel } from '@/lib/units';
 import type { BodyMetricEntry } from '@/lib/bodyMetrics';
+import { canSaveQuietTrack } from '@/lib/quietTrack';
 
 type Props = {
   open: boolean;
@@ -54,7 +55,7 @@ export function BodyMetricsSheet({ open, onClose, initial, onSave, units }: Prop
   const submit = (e: React.FormEvent) => {
     e.preventDefault();
     const w = num(weight);
-    onSave({
+    const entry = {
       date,
       weightKg: w != null ? displayToKg(w, units) : undefined,
       bodyFatPct: num(bodyFat),
@@ -63,7 +64,9 @@ export function BodyMetricsSheet({ open, onClose, initial, onSave, units }: Prop
       armCm: num(arm),
       hipCm: num(hip),
       note: note.trim() || undefined,
-    });
+    };
+    if (!canSaveQuietTrack(entry)) return;
+    onSave(entry);
   };
 
   return (

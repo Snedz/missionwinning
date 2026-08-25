@@ -69,6 +69,7 @@ type TrackStrings = {
   /** Kaizen Loop 5 O1 — body metrics / progress photos (.311) */
   bodyMetricsTitle: string;
   bodyMetricsLead: string;
+  bodyMetricsEmpty: string;
   bodyMetricsLog: string;
   bodyWeight: string;
   bodyFat: string;
@@ -111,12 +112,12 @@ type TrackStrings = {
 };
 
 const en: TrackStrings = {
-  trackTitle: 'Track Activity',
+  trackTitle: 'Track',
   trackSubtitle:
     'Free manual activity log — walk, run, bike, hike. Premium adds GPS and advanced stats (MapMy-style, Super Bundle).',
-  trackSubtitleBrief: 'Log a walk or run. GPS and extras when you want them.',
-  trackMoreGpsImport: 'GPS, insights & import',
-  trackMoreBodyWearables: 'Body, wearables & trends',
+  trackSubtitleBrief: 'A number you already have. Scale or tape. Never required to train.',
+  trackMoreGpsImport: 'Walks, GPS & import',
+  trackMoreBodyWearables: 'Trends & extras',
   trackWeekSessions: 'This Week',
   trackTotalTime: 'Total Time',
   trackDistance: 'Distance',
@@ -177,8 +178,9 @@ const en: TrackStrings = {
     'Free tier keeps manual logging and JSON import. Premium unlocks GPS + weekly pace stats.',
   trackExploreBundle: 'See Super Bundle',
   trackWeeklyGpsLocked: 'Weekly GPS distance and average pace — Super Bundle.',
-  bodyMetricsTitle: 'Body metrics',
-  bodyMetricsLead: 'Weight and measures on this device. Included in JSON backup.',
+  bodyMetricsTitle: 'Weight & tape',
+  bodyMetricsLead: 'A number you already have. Scale or tape. Never required to train.',
+  bodyMetricsEmpty: 'No number yet. Log the one on the scale or tape.',
   bodyMetricsLog: 'Log',
   bodyWeight: 'Weight',
   bodyFat: 'Body fat',
@@ -218,7 +220,7 @@ const en: TrackStrings = {
   trackImportHowTo:
     'Apple: Shortcuts → Find Workouts → Get Details → Save File as JSON with date, type, durationMin. Google: export Fit activities (or Takeout) and convert to the same fields, or use CSV.',
   sessions: 'sessions',
-  trackNoStrapRequired: 'No strap required. GPS and a typed walk are the live Track.',
+  trackNoStrapRequired: 'No strap required. GPS and a typed walk are optional beside Train.',
 };
 
 const es: TrackStrings = {

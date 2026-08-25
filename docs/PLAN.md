@@ -6,6 +6,194 @@ Living roadmap for the **everything app** (a bodyweight coach app Super Bundle �
 
 ---
 
+## Frozen plan — `.975` Quiet Track (2026-08-25)
+
+> **Frozen.** Implement only this section. Plan commit is `[skip vercel]`.
+> Label: `2026.07-unified.976` — next free after master `.974`
+> (`#804` squash `c4acb3bc` — Quiet Move). Concern stays `.975`.
+> Quiet Move `.974` + cues `.973` + honesty `.971` + tags `.970`
+> + RPE `.967` + Fuel `.965` + resume `.963` are on master.
+> Do not smash them.
+> Do **not** smash week strip `.961`, notebook `.960`,
+> swap/skip `.959`, desk→gym `.958`, `/private` `.957`,
+> close receipt `.956`, Wednesday `.955`, Today Start
+> `.954`, or identity `.949`.
+> Implement commit may allow one Preview. No empty-commit retrigger.
+> No `PRIVATE_MODE` flip. No promote. Live www stays `.696`.
+> Guest path. First set stays ungated. Confirm-gated writes.
+> Brand: **Log a set. Offline.** / No account. No wearable.
+> Coach stays opt-in / skippable. Train + Coach only.
+
+Track first paint is a walk/run
+logger with week rings. Body weight
+and tape already live in
+`bodyMetrics` + `BodyMetricsCard`,
+buried under Body & trends next to
+progress photos. Strong PRO-gates
+measurements. We keep them free. A
+number they already have (scale,
+tape) is the Quiet Track — Fuel-class
+Super Bundle pillar, off Today, never
+required to train.
+
+### One concern
+
+Log body weight and a few tape
+measures on Track. Not on Today.
+Empty invents nothing. Measurements
+stay free.
+
+### Investigate (done — hypothesis holds)
+
+Read `origin/master` tip `c4acb3bc` /
+`.974` (`#804` Quiet Move). Cues stay
+on the live lift. Move / honesty /
+tags / RPE / Fuel / resume stay.
+
+| Layer | What exists | Gap this ship closes |
+|-------|-------------|----------------------|
+| Storage | `bodyMetrics.ts` — weight, BF%, waist / chest / arm / hip. Guest `safeStorage`. Hevy measurements in (`.951`). Fuel `FuelWeightStrip` shares the same key. | **Keep the store.** One home. Do not invent a second diary. |
+| Card / sheet | `BodyMetricsCard` + `BodyMetricsSheet`. Log is outline. Empty paints em-dash + “need two for a trend.” | Buried in a disclosure. First paint is Activity rings. |
+| Track first paint | Week `ScoreNumeral` (0 / 0 / 0.0) + Log activity `primary-action`. GPS / import / wearables / photos under details. | Rings invent zeros. Activity is not the Quiet Track. Photos are shame. |
+| Fuel `.965` | Restock on Fuel Show more. Weight strip on Fuel. Off Today. | **Keep.** Quiet Track does not steal Fuel or put weight on Today. |
+| Today / door | One Start. Tight `/private` `.957`. Resume `.963`. Strain/recovery 50/50 stay pending-gated (`.600`). | **Keep.** No weight widget. No Health permission before Train. No strain-as-permission. |
+| Strong / PRO | Named apps PRO-gate measurements. MW already stores them free. | Do not add `usePremium` / trial to the log. |
+
+Hypothesis (verified, keep):
+
+A **pure** helper over entries they
+already have returns `{ empty, last }`.
+Empty = no logged number (date-only
+is empty). Invents no `0` kg, no
+strain, no recovery, no ring. Inject
+the list — do not reach rewards /
+social / premium / Health. Mount the
+existing card on `/track` first paint.
+Activity / GPS / import / wearables
+fold under Show more. Unmount
+progress photos from Track. Log is
+not `.primary-action` (Today keeps
+the one Start). Guest. First set
+ungated. Never required to train.
+
+Closed rules:
+
+1. **A number they typed.** Weight
+   and the existing tape fields.
+   Blank save does not persist a
+   fake day. Empty invents nothing.
+2. **Free.** No premium / trial
+   import on the helper or the card.
+   Strong may gate this. We do not.
+3. **Off Today / Train / door.**
+   No weight widget on `/log`.
+   No Health permission before
+   Train. No strain / recovery as
+   permission to Start.
+4. **No shame photos. No rings.**
+   `ProgressPhotosCard` off Track.
+   Week `ScoreNumeral` off first
+   paint.
+5. **Surfaces.** Today still one
+   `.primary-action`. Resume /
+   Finish-partial stay `.963`.
+   `/private` stays the tight `.957`
+   lock. No four-scene door. Fuel
+   restock stays on Fuel. Cues `.973`
+   stay on the lift.
+
+### Ship (only this)
+
+1. **Pure helper** `src/lib/quietTrack.ts`.
+   `entryHasLoggedNumber` ·
+   `quietTrackSnapshot` ·
+   `canSaveQuietTrack`. Deterministic.
+   Inject entries. No rewards /
+   social / premium / geolocation.
+
+2. **Track first paint** is the
+   body-metrics log (existing card /
+   sheet, snapshot-driven empty).
+   Quiet ink. Not poster red. Activity
+   / GPS / import / wearables under
+   `<details>`. Unmount photos and
+   week rings from first paint.
+
+3. **Help one-liner.** Track is the
+   scale / tape log. Optional. Never
+   required to train. Empty invents
+   nothing.
+
+### Tests
+
+- Empty list / date-only ⇒ `empty:
+  true`, `last: null`. Mutant that
+  seeds `weightKg: 0` dies.
+- Logged weight or waist ⇒ `empty:
+  false` and that last entry.
+  Blank save refused.
+- Helper + card do not import
+  premium / trial / Health /
+  geolocation / rewards.
+- Track first paint mounts the
+  metrics card before `<details>`.
+  No `ProgressPhotosCard`. No
+  `ScoreNumeral` on first paint.
+  No `.primary-action` on Track.
+- Today / Train / `/private` do not
+  import `quietTrack` or
+  `BodyMetricsCard`. Mutant that
+  mounts weight on Today dies.
+- `firstSetUngated` stays green; no
+  Feed / Discord.com / likes / XP /
+  login wall / Force Sync / Session
+  Expired / four-scene door. Today
+  still one `.primary-action`.
+- Resume / Finish-partial contracts
+  stay green. Fuel restock stays off
+  Today. Cues stay on the lift.
+
+### Refuse
+
+WeChat home. Wearable-as-score.
+Mind / Learn as a second pillar.
+Shame body photos. Feed.
+Discord.com. Marketplace. Promote.
+`PRIVATE_MODE` flip. Counsel-hold.
+Merge. Four-scene door. Weight on
+Today. Health permission before
+Train. Strain / recovery as
+permission. Do not smash `.974` / `.973` / `.971` /
+`.970` / `.967` / `.965` / `.963`.
+
+### Docs / ship protocol
+
+- `APP_BUILD_LABEL` → `2026.07-unified.976` (past master `.974`; concern `.975`)
+- LOG heading `## 2026-08-25 — Quiet Track (\`.976\`)` + rotate oldest live entry
+- `CONTEXT.md` `## Now` one-line `.976`; keep Quiet Move `.974` + cues `.973` + honesty `.971` + tags `.970` + RPE `.967` + Fuel `.965` + resume `.963`; rotate oldest shipped Now bullet so the block stays ≤25
+- Folder INDEX if the file list changes (`src/lib/INDEX.md`, track components, page-components)
+- i18n: Track title / empty via `t(key, { defaultValue })` — no shame
+- Help: one line on pillars / getting-started (scale / tape on Track; never required to train)
+- Plan commit `[skip vercel]`. Implement commit: one Preview max. No empty-commit retrigger.
+- Draft PR against master. Do not merge. Do not promote. Live www stays `.696`.
+
+### Done when
+
+- `/track` first paint logs body
+  weight and a few measurements.
+  Empty invents nothing. No shame
+  photos. No rings. Not on Today /
+  Train / door. Measurements stay
+  free. Guest. First set ungated.
+  Today still one Start. Resume
+  kept. `/private` stays `.957`.
+  No four-scene door. Unit tests.
+  tsc clean. Label `.976`. Draft PR
+  against master. Title stays
+  `Quiet Track (.975)`.
+
+---
+
 ## Frozen plan — `.969` Quiet Move (2026-08-25)
 
 > **Frozen.** Implement only this section. Plan commit is `[skip vercel]`.
@@ -156,7 +344,6 @@ Merge. Do not smash `.973` / `.971` / `.970` /
 
 ### Done when
 
-- This section was frozen before product code.
 - `/move` can log an optional walk / easy session
   (distance or minutes, or neither). Empty week-strip
   days stay empty. Move is not a second Today Start.
