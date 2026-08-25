@@ -295,6 +295,9 @@ type TodayStrings = {
   /** Quiet last/next cite on Today's Start (`.954`). */
   todayReturnLast: string;
   todayReturnNext: string;
+  /** Quiet Mon–Sun diary glance on Today (`.961`). */
+  todayQuietWeekLabel: string;
+  todayQuietWeekDone: string;
   /** Stable next day from the diary (`.955`) — Coach / Show all, not a second Today Start. */
   coachNextDayEyebrow: string;
   coachNextDayFromLogs: string;
@@ -612,6 +615,8 @@ const en: TodayStrings = {
   todayReentryQuietLine: "Back from {{exercise}}. Here's the {{minutes}}-minute version.",
   todayReturnLast: 'Last · {{name}}',
   todayReturnNext: 'Next · {{name}}',
+  todayQuietWeekLabel: 'This week',
+  todayQuietWeekDone: 'Done',
   coachNextDayEyebrow: 'Next day',
   coachNextDayFromLogs: 'From your logs',
   coachNextDayFromPlan: "From this week's plan",
@@ -636,6 +641,8 @@ const coachPlanDefaults = {
   todaySavedRoutineDesc: en.todaySavedRoutineDesc,
   todayReturnLast: en.todayReturnLast,
   todayReturnNext: en.todayReturnNext,
+  todayQuietWeekLabel: en.todayQuietWeekLabel,
+  todayQuietWeekDone: en.todayQuietWeekDone,
   coachNextDayEyebrow: en.coachNextDayEyebrow,
   coachNextDayFromLogs: en.coachNextDayFromLogs,
   coachNextDayFromPlan: en.coachNextDayFromPlan,
@@ -655,6 +662,8 @@ const es: TodayStrings = {
   todayWeeklyChallengesDescOpenBeta: en.todayWeeklyChallengesDescOpenBeta,
   todayDayStreak: 'Racha de {{count}} días',
   todayShowAll: 'Mostrar todo',
+  todayQuietWeekLabel: 'Esta semana',
+  todayQuietWeekDone: 'Hecho',
   todayStartWorkout: 'Empezar entrenamiento de hoy',
   todayRepeatLastCta: 'Repetir la última sesión',
   todayRepeatLastKicker: 'Entrenar',
@@ -1936,6 +1945,8 @@ const LOCALES: Partial<Record<string, TodayStrings>> = {
     todayBasicEncouragement:
       'Um passo de cada vez. Saúde para todos — treine, alimente-se, mova-se e aprenda.',
     todayStartWorkout: 'Começar treino de hoje',
+    todayQuietWeekLabel: 'Esta semana',
+    todayQuietWeekDone: 'Feito',
     todayRepeatLastCta: 'Repetir a última sessão',
     todayRepeatLastKicker: 'Treinar',
     todayRepeatLastTitle: '{{name}}',

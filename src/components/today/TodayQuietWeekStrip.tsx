@@ -33,20 +33,23 @@ export function TodayQuietWeekStrip({ glance }: Props) {
               className={cn(
                 'flex flex-col items-center border-2 p-2 text-center text-[10px]',
                 'border-transparent bg-transparent',
-                day.done && 'bg-neutral-900 text-neutral-100',
+                day.done && 'bg-foreground text-background',
                 day.isToday && 'border-[hsl(var(--accent-poster))]'
               )}
+              data-offset={day.offset}
+              data-done={day.done ? 'true' : 'false'}
+              data-today={day.isToday ? 'true' : 'false'}
             >
               <span
                 className={cn(
-                  'font-medium',
-                  day.done ? 'text-neutral-300' : 'text-muted-foreground'
+                  'font-semibold',
+                  day.done ? 'text-background' : 'text-muted-foreground'
                 )}
               >
                 {label}
               </span>
               {day.done ? (
-                <span className="text-[9px] font-semibold text-neutral-100">
+                <span className="text-[9px] font-semibold text-background">
                   {t('todayQuietWeekDone', { defaultValue: 'Done' })}
                 </span>
               ) : null}

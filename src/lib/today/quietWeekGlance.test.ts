@@ -127,6 +127,8 @@ describe('quietWeekGlance source', () => {
     assert.doesNotMatch(src, /from ['"]@\/components\/coach\/WeekStrip['"]/);
     assert.match(src, /defaultValue: 'Done'/);
     assert.match(src, /day\.done/);
+    assert.match(src, /data-done=/);
+    assert.doesNotMatch(src, /font-(?:medium|bold)\b/);
   });
 
   it('lean mounts the glance before Show all; Coach week stays in Show all', () => {
