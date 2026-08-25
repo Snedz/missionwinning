@@ -3,6 +3,7 @@
 /**
  * One exercise block in the active logger (header + set rows + actions).
  * Open lift: short written cues in-set (`.973`). Their note + pin (`.996`).
+ * Quiet diary PR on the live set (`.999`).
  * Full Form guide stays behind Info. Actions in overflow.
  */
 
@@ -26,6 +27,7 @@ import {
 } from '@/lib/workout/activeWorkoutHelpers';
 import { resolveLastSetGhost } from '@/lib/workout/lastSetGhost';
 import { formatVsLastSetDeltas } from '@/lib/workout/vsLastSet';
+import { formatInSetPrLabels } from '@/lib/workout/inSetPr';
 import { resolveAfterCompleteCite } from '@/lib/workout/setRowAdjacency';
 import { setRowPlateBreakdown } from '@/lib/plateCalculator';
 import { useBarWeight } from '@/hooks/useBarWeight';
@@ -277,6 +279,17 @@ export function ActiveExerciseCard({
       reps: t('activeVsLastReps', { defaultValue: 'reps' }),
     }
   );
+  const inSetPrLabels = formatInSetPrLabels(
+    workoutHistory,
+    exLog.exerciseId,
+    exLog.sets,
+    rowType,
+    {
+      heaviest: t('activeInSetPrHeaviest', { defaultValue: 'Heaviest' }),
+      mostReps: t('activeInSetPrMostReps', { defaultValue: 'Most reps' }),
+      bestLogged5: t('activeInSetPrBestLogged5', { defaultValue: 'Best logged 5' }),
+    }
+  );
   const lastRestSeconds = recallLastRest(exLog.exerciseId);
   const afterCompleteCites = exLog.sets.map((_, setIdx) =>
     resolveAfterCompleteCite({
@@ -373,6 +386,7 @@ export function ActiveExerciseCard({
             prevLabels={prevLabels}
             pairMark={ssLabel}
             vsLastLabels={vsLastLabels}
+            inSetPrLabels={inSetPrLabels}
             ordinalLabels={ordinalLabels}
             plateLine={livePlateOffer.show ? livePlateOffer.platesLine : null}
             barWeight={livePlateOffer.barWeight}

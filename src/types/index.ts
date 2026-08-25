@@ -107,7 +107,7 @@ export interface LoggedSet {
    * Do not invent from weight.
    */
   loadPct?: number;
-  /** Set at log time when this beat prior e1RM — brass chip on row. */
+  /** Set at log time when this beat a diary number they already wrote (`.999`). */
   isPr?: boolean;
   /** L / R / Alt — only meaningful on a unilateral exercise; omit on bilateral. */
   side?: SetSide;

@@ -6,7 +6,13 @@
  * stay on the page.
  */
 
-import type { ActiveExerciseLog, CompletedWorkoutLog, SetKind, SetSide } from '@/types';
+import type {
+  ActiveExerciseLog,
+  CompletedWorkoutLog,
+  SetKind,
+  SetRowType,
+  SetSide,
+} from '@/types';
 import type { UnitsPref } from '@/lib/units';
 import { weightUnitLabel } from '@/lib/units';
 import { repRangeForGoal } from '@/lib/coach/progression';
@@ -22,7 +28,7 @@ import type { MindCheckIn } from '@/lib/mindCheckIns';
 import { restIdentityAfterLog, shouldRestAfterLog } from '@/lib/workout/superset';
 import { resolveRestForNextSet, restLaneFromKind, type RestLane } from '@/lib/workout/restTimer';
 import { shouldAutoRestAfterLog } from '@/lib/workout/workClock';
-import { isPersonalRecord } from '@/lib/workout/workoutPr';
+import { decideInSetPr, type InSetPrSet } from '@/lib/workout/inSetPr';
 import {
   bodyScoreDeltas,
   type BodyScoreTriple,
@@ -61,21 +67,31 @@ export function resolveLogSetPayload(params: {
   return payload;
 }
 
-/** PR check against completed history (active set is not history yet). */
+/** Honest diary PR — numbers they already wrote. First session invents nothing. */
 export function logSetIsPr(params: {
   exerciseId: string;
   reps: number;
   weight: number;
   setKind: SetKind;
   workoutHistory: CompletedWorkoutLog[];
+  durationSeconds?: number;
+  rowType?: SetRowType;
+  sessionPriors?: readonly InSetPrSet[];
 }): boolean {
-  return isPersonalRecord(
-    params.exerciseId,
-    params.reps,
-    params.weight,
-    params.workoutHistory,
-    params.setKind
-  );
+  const { kinds } = decideInSetPr({
+    exerciseId: params.exerciseId,
+    justLogged: {
+      reps: params.reps,
+      weight: params.weight,
+      kind: params.setKind,
+      durationSeconds: params.durationSeconds,
+      completed: true,
+    },
+    rowType: params.rowType ?? 'weight',
+    history: params.workoutHistory,
+    sessionPriors: params.sessionPriors,
+  });
+  return kinds.length > 0;
 }
 
 /** Brass PR haptic pattern (Design Orchestration D0) — null when not a PR. */

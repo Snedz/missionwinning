@@ -136,7 +136,7 @@ describe('planPrHaptic + nothingLoggedToastCopy', () => {
 });
 
 describe('logSetIsPr + planLogSetRest', () => {
-  it('names a PR from empty history and starts rest when more sets remain', () => {
+  it('invents nothing from empty history and starts rest when more sets remain', () => {
     assert.equal(
       logSetIsPr({
         exerciseId: 'bench-press',
@@ -144,6 +144,16 @@ describe('logSetIsPr + planLogSetRest', () => {
         weight: 100,
         setKind: 'normal',
         workoutHistory: [],
+      }),
+      false
+    );
+    assert.equal(
+      logSetIsPr({
+        exerciseId: 'bench-press',
+        reps: 5,
+        weight: 110,
+        setKind: 'normal',
+        workoutHistory: [log()],
       }),
       true
     );
@@ -423,6 +433,7 @@ describe('Active page wiring (.405/.409)', () => {
       'utf8'
     );
     assert.match(src, /logSetIsPr\(/);
+    assert.match(src, /sessionPriors/);
     assert.match(src, /planLogSetRest\(/);
     assert.match(src, /assembleActiveVictory\(/);
     const finish = readFileSync(
@@ -437,7 +448,7 @@ describe('Active page wiring (.405/.409)', () => {
     assert.match(src, /finishBlockedReason\(/);
     assert.doesNotMatch(
       src,
-      /isPersonalRecord\(/,
+      /decideInSetPr\(|isPersonalRecord\(/,
       'PR detection must live inside logSetIsPr'
     );
     assert.doesNotMatch(

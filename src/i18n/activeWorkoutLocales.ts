@@ -318,6 +318,11 @@ type ActiveWorkoutStrings = {
   activeVsLastRep: string;
   activeVsLastReps: string;
   activeVsLastAria: string;
+  /** Quiet diary PR on the live set (`.999`). */
+  activeInSetPrHeaviest: string;
+  activeInSetPrMostReps: string;
+  activeInSetPrBestLogged5: string;
+  activeInSetPrAria: string;
   /** After-complete next-set cite (.939). */
   activeNextCiteRest: string;
   activeNextCiteFromSession: string;
@@ -642,6 +647,10 @@ const en: ActiveWorkoutStrings = {
   activeVsLastRep: 'rep',
   activeVsLastReps: 'reps',
   activeVsLastAria: 'versus last {{delta}}',
+  activeInSetPrHeaviest: 'Heaviest',
+  activeInSetPrMostReps: 'Most reps',
+  activeInSetPrBestLogged5: 'Best logged 5',
+  activeInSetPrAria: 'Personal record: {{kinds}}',
   activeNextCiteRest: 'Rest {{clock}}',
   activeNextCiteFromSession: 'From this session · {{sets}}',
   activeNextCiteLastRest: 'Last rest',
