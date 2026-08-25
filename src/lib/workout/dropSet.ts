@@ -114,3 +114,26 @@ export function composeDropRest<T extends RestPlan>(plan: T, kind: string | unde
   }
   return plan;
 }
+
+/**
+ * After compose: start work rest, or zero a running timer after a drop.
+ * Never `start` on drop — `startRestTimer(0)` would resolve to last rest / 90s.
+ */
+export type RestActionAfterLog = 'start' | 'stop' | 'hold';
+
+export function restActionAfterCompose(
+  plan: RestPlan,
+  kind: string | undefined
+): RestActionAfterLog {
+  if (kind === 'drop') return 'stop';
+  if (plan.takeRest) return 'start';
+  return 'hold';
+}
+
+/** Tagging an incomplete set drop stops rest — same as Start drop. */
+export function shouldStopRestOnDropTag(
+  kind: string | undefined,
+  completed: boolean | undefined
+): boolean {
+  return kind === 'drop' && !completed;
+}

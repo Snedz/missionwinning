@@ -260,6 +260,15 @@ supersets `.980` / Learn `.978`
   against master. Title:
   `Drop-set rest-zero (.986)`.
 
+**Landed `.986`:** `composeDropRest` stays the
+one drop-rest rule.
+`restActionAfterCompose` starts work rest
+or `stopRestTimer` after a drop (never
+`startRestTimer(0)`). Tagging an incomplete
+set drop stops rest the same way Start
+drop already did. Warmup stays warmup.
+Today still one Start.
+
 ---
 
 ## Frozen plan — `.984` Warmup batch (2026-08-25)
