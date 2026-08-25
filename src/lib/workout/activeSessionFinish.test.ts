@@ -181,7 +181,7 @@ describe('logSetIsPr + planLogSetRest', () => {
       setIdx: 0,
       advanceNext: { exerciseIndex: 0, setIndex: 1 },
       exerciseName: 'Barbell Bench Press',
-    } as const;
+    };
     assert.equal(planLogSetRest({ ...base, workClockActive: true }).takeRest, false);
     assert.equal(planLogSetRest({ ...base, workClockActive: false }).takeRest, true);
     assert.equal(planLogSetRest(base).takeRest, true);
