@@ -306,5 +306,16 @@
   "magazineTitle": "За пределами основ",
   "moreGuidebookDesc": "Beyond the Basics — глубокая справка",
   "navGuidebook": "Путеводитель",
-  "todayCoachChipAction": "Открыть"
+  "todayCoachChipAction": "Открыть",
+  "fuelRestockTitle": "Пополнение на этой неделе",
+  "fuelRestockEmpty": "Запишите приёмы пищи на этой неделе или напишите, что нужно. Пустое ничего не придумывает.",
+  "fuelRestockHint": "Из журнала Fuel за эту неделю. Скопируйте. Вы покупаете. Мы не заказываем.",
+  "fuelRestockTypedLabel": "Добавьте, что нужно",
+  "fuelRestockTypedPlaceholder": "яйца, овсянка, курица…",
+  "fuelRestockCopy": "Копировать список",
+  "fuelRestockCopied": "Скопировано",
+  "fuelRestockCopyFailed": "Не скопировалось — выделите список.",
+  "fuelRestockDownload": "Скачать список",
+  "fuelRestockCount": "{{count}} позиций",
+  "fuelRestockYouShop": "Вы покупаете. Мы не заказываем."
 }

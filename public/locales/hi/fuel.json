@@ -202,5 +202,17 @@
   "fuelPremiumFetchFailedOpenBeta": "Could not load extra recipes",
   "fuelPremiumOfflineOpenBeta": "Extra recipes unavailable offline — free recipes above still work.",
   "fuelPremiumRecipesTitleCountBeta": "More recipes ({{count}})",
-  "fuelPremiumRecipesTitleCountPaid": "Premium recipes ({{count}})"
+  "fuelPremiumRecipesTitleCountPaid": "Premium recipes ({{count}})",
+  "fuelRestockTitle": "इस सप्ताह की भरपाई",
+  "fuelRestockEmpty": "इस सप्ताह भोजन दर्ज करें, या जो चाहिए वह लिखें। खाली कुछ नहीं बनाता।",
+  "fuelRestockHint": "इस सप्ताह के Fuel लॉग से। कॉपी करें। आप खरीदें। हम ऑर्डर नहीं करते।",
+  "fuelRestockTypedLabel": "जो चाहिए वह जोड़ें",
+  "fuelRestockTypedPlaceholder": "अंडे, जई, चिकन…",
+  "fuelRestockCopy": "सूची कॉपी करें",
+  "fuelRestockCopied": "कॉपी हो गया",
+  "fuelRestockCopyFailed": "कॉपी नहीं हुआ — सूची चुनें।",
+  "fuelRestockDownload": "सूची डाउनलोड करें",
+  "fuelRestockTimes": "×{{count}}",
+  "fuelRestockCount": "{{count}} चीज़ें",
+  "fuelRestockYouShop": "आप खरीदें। हम ऑर्डर नहीं करते।"
 }

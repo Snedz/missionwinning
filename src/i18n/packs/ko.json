@@ -978,5 +978,16 @@
   "youthVerifyCta": "확인 및 계속",
   "youthVerifyPending": "부모 동의 이메일에 있는 6자리 코드를 입력하세요.",
   "youthVerifySent": "귀하의 부모/보호자에게 6자리 코드와 링크 확인 이메일을 보냈습니다. 계속하려면 여기에 코드를 입력하세요.",
-  "youthVerifyTitle": "인증코드를 입력하세요"
+  "youthVerifyTitle": "인증코드를 입력하세요",
+  "fuelRestockTitle": "이번 주 재보충",
+  "fuelRestockEmpty": "이번 주 식사를 기록하거나 필요한 것을 입력하세요. 비어 있으면 아무것도 만들지 않습니다.",
+  "fuelRestockHint": "이번 주 Fuel 기록에서. 복사하세요. 당신이 삽니다. 우리는 주문하지 않습니다.",
+  "fuelRestockTypedLabel": "필요한 것 추가",
+  "fuelRestockTypedPlaceholder": "계란, 오트, 닭고기…",
+  "fuelRestockCopy": "목록 복사",
+  "fuelRestockCopied": "복사됨",
+  "fuelRestockCopyFailed": "복사 실패 — 목록을 선택하세요.",
+  "fuelRestockDownload": "목록 다운로드",
+  "fuelRestockCount": "{{count}}개",
+  "fuelRestockYouShop": "당신이 삽니다. 우리는 주문하지 않습니다."
 }

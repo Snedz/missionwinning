@@ -1179,5 +1179,16 @@
   "youthVerifyCta": "Verificar y continuar",
   "youthVerifyPending": "Ingrese el código de 6 dígitos del correo electrónico de consentimiento de los padres.",
   "youthVerifySent": "Le enviamos por correo electrónico a sus padres/tutores un código de 6 dígitos y un enlace de confirmación. Ingrese el código aquí para continuar.",
-  "youthVerifyTitle": "Ingrese el código de verificación"
+  "youthVerifyTitle": "Ingrese el código de verificación",
+  "fuelRestockTitle": "Reposición de esta semana",
+  "fuelRestockEmpty": "Registra comidas esta semana, o escribe lo que necesitas. Vacío no inventa nada.",
+  "fuelRestockHint": "Del registro Fuel de esta semana. Cópialo. Tú compras. Nosotros no pedimos.",
+  "fuelRestockTypedLabel": "Añade lo que necesitas",
+  "fuelRestockTypedPlaceholder": "huevos, avena, pollo…",
+  "fuelRestockCopy": "Copiar lista",
+  "fuelRestockCopied": "Copiado",
+  "fuelRestockCopyFailed": "No se pudo copiar — selecciona la lista.",
+  "fuelRestockDownload": "Descargar lista",
+  "fuelRestockCount": "{{count}} artículos",
+  "fuelRestockYouShop": "Tú compras. Nosotros no pedimos."
 }

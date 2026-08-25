@@ -202,5 +202,17 @@
   "fuelPremiumFetchFailedOpenBeta": "Could not load extra recipes",
   "fuelPremiumOfflineOpenBeta": "Extra recipes unavailable offline — free recipes above still work.",
   "fuelPremiumRecipesTitleCountBeta": "More recipes ({{count}})",
-  "fuelPremiumRecipesTitleCountPaid": "Premium recipes ({{count}})"
+  "fuelPremiumRecipesTitleCountPaid": "Premium recipes ({{count}})",
+  "fuelRestockTitle": "Bổ sung tuần này",
+  "fuelRestockEmpty": "Ghi bữa tuần này, hoặc gõ thứ bạn cần. Trống không bịa gì.",
+  "fuelRestockHint": "Từ nhật ký Fuel tuần này. Sao chép. Bạn mua. Chúng tôi không đặt hàng.",
+  "fuelRestockTypedLabel": "Thêm thứ bạn cần",
+  "fuelRestockTypedPlaceholder": "trứng, yến mạch, gà…",
+  "fuelRestockCopy": "Sao chép danh sách",
+  "fuelRestockCopied": "Đã sao chép",
+  "fuelRestockCopyFailed": "Sao chép thất bại — hãy chọn danh sách.",
+  "fuelRestockDownload": "Tải danh sách",
+  "fuelRestockTimes": "×{{count}}",
+  "fuelRestockCount": "{{count}} mục",
+  "fuelRestockYouShop": "Bạn mua. Chúng tôi không đặt hàng."
 }

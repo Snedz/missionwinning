@@ -598,5 +598,16 @@
   "welcomeSignInTitle": "حفظ التقدم — اختيارك",
   "welcomeSkipSignIn": "تخطي - انتقل إلى اليوم",
   "welcomeSubtitle": "حدد المسار الخاص بك، ثم سجل جلستك الأولى. خطوة واحدة في كل مرة - يعرض اليوم دائمًا الإجراء التالي.",
-  "welcomeTitle": "مرحباً بك، عضو البعثة"
+  "welcomeTitle": "مرحباً بك، عضو البعثة",
+  "fuelRestockTitle": "تجديد هذا الأسبوع",
+  "fuelRestockEmpty": "سجّل وجبات هذا الأسبوع، أو اكتب ما تحتاج. الفارغ لا يخترع شيئًا.",
+  "fuelRestockHint": "من سجل Fuel لهذا الأسبوع. انسخه. أنت تتسوق. نحن لا نطلب.",
+  "fuelRestockTypedLabel": "أضف ما تحتاج",
+  "fuelRestockTypedPlaceholder": "بيض, شوفان, دجاج…",
+  "fuelRestockCopy": "نسخ القائمة",
+  "fuelRestockCopied": "تم النسخ",
+  "fuelRestockCopyFailed": "فشل النسخ — حدّد القائمة.",
+  "fuelRestockDownload": "تنزيل القائمة",
+  "fuelRestockCount": "{{count}} عناصر",
+  "fuelRestockYouShop": "أنت تتسوق. نحن لا نطلب."
 }

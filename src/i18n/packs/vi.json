@@ -1017,5 +1017,16 @@
   "youthVerifyCta": "Xác minh và tiếp tục",
   "youthVerifyPending": "Nhập mã gồm 6 chữ số từ email chấp thuận của phụ huynh.",
   "youthVerifySent": "Chúng tôi đã gửi email cho phụ huynh/người giám hộ của bạn một mã gồm 6 chữ số và liên kết xác nhận. Nhập mã vào đây để tiếp tục.",
-  "youthVerifyTitle": "Nhập mã xác minh"
+  "youthVerifyTitle": "Nhập mã xác minh",
+  "fuelRestockTitle": "Bổ sung tuần này",
+  "fuelRestockEmpty": "Ghi bữa tuần này, hoặc gõ thứ bạn cần. Trống không bịa gì.",
+  "fuelRestockHint": "Từ nhật ký Fuel tuần này. Sao chép. Bạn mua. Chúng tôi không đặt hàng.",
+  "fuelRestockTypedLabel": "Thêm thứ bạn cần",
+  "fuelRestockTypedPlaceholder": "trứng, yến mạch, gà…",
+  "fuelRestockCopy": "Sao chép danh sách",
+  "fuelRestockCopied": "Đã sao chép",
+  "fuelRestockCopyFailed": "Sao chép thất bại — hãy chọn danh sách.",
+  "fuelRestockDownload": "Tải danh sách",
+  "fuelRestockCount": "{{count}} mục",
+  "fuelRestockYouShop": "Bạn mua. Chúng tôi không đặt hàng."
 }

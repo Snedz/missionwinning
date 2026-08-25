@@ -306,5 +306,16 @@
   "magazineTitle": "Oltre le basi",
   "moreGuidebookDesc": "Beyond the Basics — riferimento profondo",
   "navGuidebook": "Guida",
-  "todayCoachChipAction": "Apri"
+  "todayCoachChipAction": "Apri",
+  "fuelRestockTitle": "Rifornimento di questa settimana",
+  "fuelRestockEmpty": "Registra i pasti di questa settimana, o scrivi cosa ti serve. Vuoto non inventa nulla.",
+  "fuelRestockHint": "Dal registro Fuel di questa settimana. Copialo. Compra tu. Noi non ordiniamo.",
+  "fuelRestockTypedLabel": "Aggiungi ciò che ti serve",
+  "fuelRestockTypedPlaceholder": "uova, avena, pollo…",
+  "fuelRestockCopy": "Copia elenco",
+  "fuelRestockCopied": "Copiato",
+  "fuelRestockCopyFailed": "Copia non riuscita — seleziona l'elenco.",
+  "fuelRestockDownload": "Scarica elenco",
+  "fuelRestockCount": "{{count}} voci",
+  "fuelRestockYouShop": "Compra tu. Noi non ordiniamo."
 }

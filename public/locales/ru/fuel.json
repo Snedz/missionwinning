@@ -202,5 +202,17 @@
   "fuelPremiumFetchFailedOpenBeta": "Could not load extra recipes",
   "fuelPremiumOfflineOpenBeta": "Extra recipes unavailable offline — free recipes above still work.",
   "fuelPremiumRecipesTitleCountBeta": "More recipes ({{count}})",
-  "fuelPremiumRecipesTitleCountPaid": "Premium recipes ({{count}})"
+  "fuelPremiumRecipesTitleCountPaid": "Premium recipes ({{count}})",
+  "fuelRestockTitle": "Пополнение на этой неделе",
+  "fuelRestockEmpty": "Запишите приёмы пищи на этой неделе или напишите, что нужно. Пустое ничего не придумывает.",
+  "fuelRestockHint": "Из журнала Fuel за эту неделю. Скопируйте. Вы покупаете. Мы не заказываем.",
+  "fuelRestockTypedLabel": "Добавьте, что нужно",
+  "fuelRestockTypedPlaceholder": "яйца, овсянка, курица…",
+  "fuelRestockCopy": "Копировать список",
+  "fuelRestockCopied": "Скопировано",
+  "fuelRestockCopyFailed": "Не скопировалось — выделите список.",
+  "fuelRestockDownload": "Скачать список",
+  "fuelRestockTimes": "×{{count}}",
+  "fuelRestockCount": "{{count}} позиций",
+  "fuelRestockYouShop": "Вы покупаете. Мы не заказываем."
 }

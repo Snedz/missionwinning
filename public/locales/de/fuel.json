@@ -202,5 +202,17 @@
   "fuelPremiumFetchFailedOpenBeta": "Could not load extra recipes",
   "fuelPremiumOfflineOpenBeta": "Extra recipes unavailable offline — free recipes above still work.",
   "fuelPremiumRecipesTitleCountBeta": "More recipes ({{count}})",
-  "fuelPremiumRecipesTitleCountPaid": "Premium recipes ({{count}})"
+  "fuelPremiumRecipesTitleCountPaid": "Premium recipes ({{count}})",
+  "fuelRestockTitle": "Nachschub dieser Woche",
+  "fuelRestockEmpty": "Protokolliere Mahlzeiten diese Woche oder tippe, was du brauchst. Leer erfindet nichts.",
+  "fuelRestockHint": "Aus dem Fuel-Protokoll dieser Woche. Kopieren. Du kaufst. Wir bestellen nicht.",
+  "fuelRestockTypedLabel": "Ergänze, was du brauchst",
+  "fuelRestockTypedPlaceholder": "Eier, Hafer, Hähnchen…",
+  "fuelRestockCopy": "Liste kopieren",
+  "fuelRestockCopied": "Kopiert",
+  "fuelRestockCopyFailed": "Kopieren fehlgeschlagen — Liste markieren.",
+  "fuelRestockDownload": "Liste herunterladen",
+  "fuelRestockTimes": "×{{count}}",
+  "fuelRestockCount": "{{count}} Einträge",
+  "fuelRestockYouShop": "Du kaufst. Wir bestellen nicht."
 }

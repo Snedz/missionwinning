@@ -976,5 +976,16 @@
   "youthVerifyCta": "確認して続行",
   "youthVerifyPending": "保護者の同意メールに記載されている 6 桁のコードを入力します。",
   "youthVerifySent": "保護者に 6 桁のコードと確認用リンクを電子メールで送信しました。 続行するには、ここにコードを入力してください。",
-  "youthVerifyTitle": "確認コードを入力してください"
+  "youthVerifyTitle": "確認コードを入力してください",
+  "fuelRestockTitle": "今週の補充",
+  "fuelRestockEmpty": "今週の食事を記録するか、必要なものを入力。空なら何も作りません。",
+  "fuelRestockHint": "今週のFuel記録から。コピーして。買うのはあなた。こちらは注文しません。",
+  "fuelRestockTypedLabel": "必要なものを追加",
+  "fuelRestockTypedPlaceholder": "卵、オート麦、鶏肉…",
+  "fuelRestockCopy": "リストをコピー",
+  "fuelRestockCopied": "コピーしました",
+  "fuelRestockCopyFailed": "コピーできません — リストを選択。",
+  "fuelRestockDownload": "リストをダウンロード",
+  "fuelRestockCount": "{{count}} 品",
+  "fuelRestockYouShop": "買うのはあなた。こちらは注文しません。"
 }

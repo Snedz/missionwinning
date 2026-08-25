@@ -118,6 +118,8 @@ export const STORAGE_KEYS = {
   fuelStreak: 'mw_fuel_streak',
   fuelLastLogDate: 'mw_fuel_last_log_date',
   fuelAdaptEnabled: 'mw_fuel_adapt_enabled',
+  /** Typed extras for this week's restock list (.965). Their words. */
+  fuelRestockExtras: 'mw_fuel_restock_extras',
   water: 'mw_water',
   bodyMetrics: 'mw_body_metrics',
 

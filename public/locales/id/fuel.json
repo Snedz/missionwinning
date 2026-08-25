@@ -202,5 +202,17 @@
   "fuelPremiumFetchFailedOpenBeta": "Could not load extra recipes",
   "fuelPremiumOfflineOpenBeta": "Extra recipes unavailable offline — free recipes above still work.",
   "fuelPremiumRecipesTitleCountBeta": "More recipes ({{count}})",
-  "fuelPremiumRecipesTitleCountPaid": "Premium recipes ({{count}})"
+  "fuelPremiumRecipesTitleCountPaid": "Premium recipes ({{count}})",
+  "fuelRestockTitle": "Stok ulang minggu ini",
+  "fuelRestockEmpty": "Catat makanan minggu ini, atau ketik yang kamu butuhkan. Kosong tidak mengada-ada.",
+  "fuelRestockHint": "Dari log Fuel minggu ini. Salin. Kamu belanja. Kami tidak memesan.",
+  "fuelRestockTypedLabel": "Tambah yang kamu butuhkan",
+  "fuelRestockTypedPlaceholder": "telur, oat, ayam…",
+  "fuelRestockCopy": "Salin daftar",
+  "fuelRestockCopied": "Tersalin",
+  "fuelRestockCopyFailed": "Gagal menyalin — pilih daftar.",
+  "fuelRestockDownload": "Unduh daftar",
+  "fuelRestockTimes": "×{{count}}",
+  "fuelRestockCount": "{{count}} item",
+  "fuelRestockYouShop": "Kamu belanja. Kami tidak memesan."
 }

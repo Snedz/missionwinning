@@ -927,5 +927,16 @@
   "welcomeSignInEyebrow": "Opcional",
   "welcomeSignInSubtitle": "Faça login com o Google ou envie um e-mail para sincronizar entre dispositivos. Pule a qualquer momento – o progresso local ainda funciona.",
   "welcomeSignInTitle": "Salve o progresso – sua escolha",
-  "welcomeSubtitle": "Defina seu caminho e registre sua primeira sessão. Um passo de cada vez — Hoje sempre mostra a próxima ação."
+  "welcomeSubtitle": "Defina seu caminho e registre sua primeira sessão. Um passo de cada vez — Hoje sempre mostra a próxima ação.",
+  "fuelRestockTitle": "Reposição desta semana",
+  "fuelRestockEmpty": "Registe refeições esta semana, ou escreva o que precisa. Vazio não inventa nada.",
+  "fuelRestockHint": "Do registo Fuel desta semana. Copie. Você compra. Nós não encomendamos.",
+  "fuelRestockTypedLabel": "Adicione o que precisa",
+  "fuelRestockTypedPlaceholder": "ovos, aveia, frango…",
+  "fuelRestockCopy": "Copiar lista",
+  "fuelRestockCopied": "Copiado",
+  "fuelRestockCopyFailed": "Falha ao copiar — selecione a lista.",
+  "fuelRestockDownload": "Transferir lista",
+  "fuelRestockCount": "{{count}} itens",
+  "fuelRestockYouShop": "Você compra. Nós não encomendamos."
 }

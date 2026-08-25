@@ -202,5 +202,17 @@
   "fuelPremiumFetchFailedOpenBeta": "Could not load extra recipes",
   "fuelPremiumOfflineOpenBeta": "Extra recipes unavailable offline — free recipes above still work.",
   "fuelPremiumRecipesTitleCountBeta": "More recipes ({{count}})",
-  "fuelPremiumRecipesTitleCountPaid": "Premium recipes ({{count}})"
+  "fuelPremiumRecipesTitleCountPaid": "Premium recipes ({{count}})",
+  "fuelRestockTitle": "This week's restock",
+  "fuelRestockEmpty": "Log meals this week, or type what you need. Empty invents nothing.",
+  "fuelRestockHint": "From this week's Fuel log. Copy it. You shop. We do not order.",
+  "fuelRestockTypedLabel": "Add what you need",
+  "fuelRestockTypedPlaceholder": "eggs, oats, chicken…",
+  "fuelRestockCopy": "Copy list",
+  "fuelRestockCopied": "Copied",
+  "fuelRestockCopyFailed": "Copy failed — select the list.",
+  "fuelRestockDownload": "Download list",
+  "fuelRestockTimes": "×{{count}}",
+  "fuelRestockCount": "{{count}} items",
+  "fuelRestockYouShop": "You shop. We do not order."
 }
