@@ -27,6 +27,7 @@ type Props = {
   onDiscard: () => void;
   onFinish: () => void;
   onTakeOtherSession?: () => void;
+  onLogPastSession?: () => void;
 };
 
 export function ActiveSessionChrome({
@@ -42,6 +43,7 @@ export function ActiveSessionChrome({
   onDiscard,
   onFinish,
   onTakeOtherSession,
+  onLogPastSession,
 }: Props) {
   const { t } = useTranslation();
   const [menuOpen, setMenuOpen] = useState(false);
@@ -144,6 +146,21 @@ export function ActiveSessionChrome({
                       logPulse={logPulse}
                     />
                   </div>
+                  {onLogPastSession ? (
+                    <Button
+                      type="button"
+                      variant="ghost"
+                      size="sm"
+                      className="w-full justify-start min-h-[44px] tap-target"
+                      data-testid="session-train-backfill"
+                      onClick={() => {
+                        setMenuOpen(false);
+                        onLogPastSession();
+                      }}
+                    >
+                      {t('historyBackfill', { defaultValue: 'Log a past session' })}
+                    </Button>
+                  ) : null}
                   {onTakeOtherSession ? (
                     <HoldToConfirmButton
                       size="sm"

@@ -12,6 +12,7 @@ When adding a doc:
 
 | File | Absorbed by / note |
 |------|---------------------|
+| [log/LOG-rotate-981-for-1000.md](./log/LOG-rotate-981-for-1000.md) | rotated 2026-08-25 for `.1000` Backfill a past session (`.981`) |
 | [log/LOG-rotate-980-for-999.md](./log/LOG-rotate-980-for-999.md) | rotated 2026-08-25 for `.999` In-set PR they hit (`.980`) |
 | [log/LOG-rotate-978-for-998.md](./log/LOG-rotate-978-for-998.md) | rotated 2026-08-25 for `.998` Live session reorder (`.978`) |
 | [log/LOG-rotate-977-for-997.md](./log/LOG-rotate-977-for-997.md) | rotated 2026-08-25 for `.997` Edit a finished session (`.977`) |

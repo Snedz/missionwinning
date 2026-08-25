@@ -145,6 +145,13 @@ export function ActiveEmptyState({
         >
           {t('csvImportCta', { defaultValue: 'Import workout CSV' })}
         </a>
+        <a
+          href="/history?backfill=1"
+          className="min-h-[44px] inline-flex items-center text-muted-foreground underline-offset-2 hover:text-foreground hover:underline"
+          data-testid="session-train-backfill"
+        >
+          {t('historyBackfill', { defaultValue: 'Log a past session' })}
+        </a>
       </div>
       {/*
         Compact dock owns the one red Start. Desktop `ScreenDock` renders in

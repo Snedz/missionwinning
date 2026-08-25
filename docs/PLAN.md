@@ -6,6 +6,217 @@ Living roadmap for the **everything app** (a bodyweight coach app Super Bundle �
 
 ---
 
+## Frozen plan — `.1000` Backfill a past session (2026-08-25)
+
+> **Frozen.** Implement only this section + root
+> [PLAN.md](../PLAN.md). Plan commit is `[skip vercel]`.
+> Label: `2026.07-unified.1000` — next free after master `.999`
+> (`fb7f9d34` — In-set PR they hit). Title stays
+> **Backfill a past session (.1000)**.
+> In-set PR `.999` + Reorder `.998` +
+> History Edit `.997` + Exercise note + pin
+> `.996` + Per-exercise rest `.995` +
+> Set-row type `.994` + This-movement
+> history `.993` + Custom `.992` + Start this
+> again `.991` + Quiet Track trend `.989` +
+> EMOM `.988` + drop-set `.986` + warmup
+> `.985` + notes `.983` + 1RM `.981` +
+> Supersets `.980` + Learn `.978` + week
+> strip `.977` + Quiet Track `.976` + Quiet
+> Move `.974` + cues `.973` + honesty `.971`
+> + tags `.970` + RPE `.967` + Fuel `.965` +
+> resume `.963` + notebook `.960` are on
+> master. Do not smash them.
+> Do **not** smash week strip `.961`,
+> notebook `.960`, swap/skip `.959`,
+> desk→gym `.958`, `/private` `.957`, close
+> receipt `.956`, Wednesday `.955`, Today
+> Start `.954`, or identity `.949`.
+> Every commit `[skip vercel]`. No Preview.
+> No `PRIVATE_MODE` flip. No promote. Live
+> www stays `.696`.
+> Guest path. First set stays ungated.
+> Today stays one Start. Brand: **Log a
+> set. Offline.** / No account. No wearable.
+
+Edit-finished `.997` corrects a session
+that already exists. Missing: Monday they
+trained and never opened the app. Strong
+leftover: Adjust Start/End Time, turn
+off automatic timing. Hevy leftover:
+Finish, then set the date. Same Start
+(today still one Start). Honest date.
+No invented sets.
+
+### First check (done — hypothesis holds)
+
+Read tip `fb7f9d34` / `.999`.
+Confirmed:
+
+- **History Edit `.997`**
+  (`editFinishedSession.ts`,
+  `HistorySessionEdit`,
+  `saveEditedHistoryLog`) edits sets
+  of an existing History row. Same
+  `id` / `clientId`. Empty invents
+  nothing — does not wipe. Does
+  **not** mint a dated session that
+  never started. Keep it on History.
+- **Resume `.963`**
+  (`sessionResume.ts`,
+  `decideThisDeviceResume`,
+  `protectLiveStart`) is the live
+  set. Start this again `.991`
+  replays last order from a finished
+  log via `startWorkout`. Neither is
+  this ship.
+- **Today lean** is still date ·
+  pins · highlights · week strip ·
+  Show all · one `JourneyHero`
+  `dock="start"`. In-set PR `.999`
+  chrome is on the live set only
+  (`SetLogTable` /
+  `set-table-in-set-pr`). Wedge
+  already LGTM'd no Today leak —
+  keep that lock. History Edit
+  stays on History.
+- **Honesty `.971`**
+  (`thinHistory.ts`
+  `countLiveSessions`) scores Train
+  session count from finished logs.
+  A backfilled session they actually
+  did counts as a session they
+  logged, not an invented third.
+- **Set-row type `.994`** already
+  honors weight · bodyweight ·
+  duration · assisted. Warmup/drop
+  tags stay optional (`.970`).
+- **Nothing to unmount first.** Do
+  not treat Resume as this ship.
+  Do not treat Edit as this ship.
+
+### Lock
+
+1. One home helper in
+   `src/lib/workout/`
+   (`decideBackfillSession` /
+   `applyBackfillLog`).
+   Deterministic. No store import.
+   No premium / rewards / social /
+   Health / speech / wearables.
+2. They can log a session they
+   already did: pick a date (and
+   optional start/end time), log
+   the sets they remember, Save.
+   Duration is honest from the
+   times they set, or omitted
+   (`durationSeconds = 0`) if they
+   turn timing off — never invent
+   a clock from `now`. Default
+   timing **off**. Calendar date
+   from `localDateKey` / local
+   fields, never
+   `toISOString()`-derived.
+   Future date is empty. Today is
+   allowed. End before start on
+   the same clock adds one local
+   day (overnight), never `now`.
+3. Empty invents nothing: no date
+   + no work → do not mint a log.
+   Work without a date is empty.
+   Date without work is empty. A
+   `0/0/0` save is not a session.
+   Same identity rules as `.997`:
+   never tombstone, never mint a
+   second `clientId` on one apply,
+   never call `startWorkout` /
+   write `activeWorkout`.
+4. This is **not** Resume and
+   **not** Edit. Resume stays the
+   live set. Edit `.997` stays
+   correcting an existing History
+   row. Backfill mints one new
+   completed log they own, dated
+   in the past (or today if they
+   choose), then it appears in
+   History like any other finished
+   session. Do not auto-fill sets
+   from last time. Do not copy
+   Wednesday into the backfill.
+5. Guest. First set ungated.
+   Backfill never paywalls.
+   Opening it is never required to
+   log a live set.
+6. Today still one Start (Resume
+   when live). Not a second Start.
+   Not a Today widget. Door is
+   History (empty + list) and Train
+   overflow / empty Train quiet
+   link — not `/private`, not a
+   Feed. Outline / quiet, never
+   `primary-action`.
+7. Honesty `.971` still scores
+   Train session count honestly —
+   a backfilled session they
+   actually did counts as a
+   session they logged. Do not
+   score a PR as a third session.
+8. Honor set-row type `.994`.
+   Warmup/drop tags stay optional.
+   In-set PR `.999` may apply on
+   Save against prior diary
+   (quiet cite on the backfill
+   sheet). First-ever still
+   invents nothing. Do not import
+   `decideInSetPr` into Today,
+   `/private`, or `HistoryPage.tsx`
+   (keep the `.999` surface lock;
+   PR labels live in the backfill
+   sheet / helper).
+9. Web PWA only. Do not rewrite
+   Android. Do not smash `.999` /
+   `.998` / `.997` / `.996` /
+   `.995` / `.994` / resume `.963`
+   / `/private` `.957`.
+
+### Refuse
+
+- Invented sets
+- Silent wipe
+- Treat Resume as this ship
+- Treat Edit as this ship
+- Feed / DMs / medals /
+  four-scene door
+- Counsel-hold
+- Flip `PRIVATE_MODE`
+- Promote live off `.696`
+- Merge
+- Paywall
+- Second Today Start
+- Auto-timing that lies (clock
+  running while they type a past
+  session)
+- Put backfill chrome on Today
+  home
+
+### Done when
+
+- They can save a past session
+  with an honest date and the
+  sets they type
+- Empty invents nothing
+- Today still one Start · first
+  set ungated
+- Label `2026.07-unified.1000`
+
+Excellence-Override: leftover
+honest past-session log. Empty
+invents nothing. Today stays
+Start workout.
+
+Implement only root [PLAN.md](../PLAN.md).
+
+
 ## Frozen plan — `.999` In-set PR they hit (2026-08-25)
 
 > **Frozen.** Implement only this section + root

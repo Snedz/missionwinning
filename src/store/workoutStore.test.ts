@@ -684,4 +684,32 @@ test('workoutStore', async (t) => {
       'same-index reorder invents nothing'
     );
   });
+
+  await t.test('saveBackfillLog prepends a past log and leaves the live set (.1000)', () => {
+    useWorkoutStore.getState().startWorkout('Live', template('squat', 1));
+    const live = useWorkoutStore.getState().activeWorkout;
+    assert.ok(live);
+    const past = {
+      id: 'log-backfill-1',
+      clientId: 'cid-backfill-1',
+      revision: 1,
+      workoutName: 'Monday',
+      startedAt: '2026-08-24T12:00:00.000Z',
+      completedAt: '2026-08-24T12:00:00.000Z',
+      durationSeconds: 0,
+      totalVolume: 675,
+      deletedAt: null,
+      exercises: [{ exerciseId: 'bench-press', sets: [{ reps: 5, weight: 135 }] }],
+    };
+    const saved = useWorkoutStore.getState().saveBackfillLog(past);
+    assert.ok(saved);
+    assert.equal(useWorkoutStore.getState().workoutHistory[0]?.id, 'log-backfill-1');
+    assert.equal(useWorkoutStore.getState().activeWorkout?.clientId, live?.clientId);
+    assert.equal(useWorkoutStore.getState().saveBackfillLog(past), null);
+    assert.equal(
+      useWorkoutStore.getState().saveBackfillLog({ ...past, id: 'log-empty', clientId: 'cid-empty', exercises: [] }),
+      null
+    );
+    assert.equal(useWorkoutStore.getState().workoutHistory.length, 1);
+  });
 });

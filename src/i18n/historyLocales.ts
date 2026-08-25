@@ -97,6 +97,23 @@ type HistoryStrings = {
   historyTableVest: string;
   historyTableAssist: string;
   historyTableLogged: string;
+  /** `.1000` — log a session they already did. */
+  historyBackfill: string;
+  historyBackfillTitle: string;
+  historyBackfillDesc: string;
+  historyBackfillSave: string;
+  historyBackfillCancel: string;
+  historyBackfillEmpty: string;
+  historyBackfillEmptyDesc: string;
+  historyBackfillDate: string;
+  historyBackfillName: string;
+  historyBackfillNamePlaceholder: string;
+  historyBackfillTiming: string;
+  historyBackfillTimingOff: string;
+  historyBackfillStart: string;
+  historyBackfillEnd: string;
+  historyBackfillAddExercise: string;
+  historyBackfillRemoveExercise: string;
 };
 
 const en: HistoryStrings = {
@@ -191,6 +208,23 @@ const en: HistoryStrings = {
   historyTableVest: '+kg',
   historyTableAssist: 'Assist',
   historyTableLogged: 'Logged',
+  historyBackfill: 'Log a past session',
+  historyBackfillTitle: 'Log a past session',
+  historyBackfillDesc:
+    'If you trained and never opened the app, log that session with the date it happened. Empty invents nothing.',
+  historyBackfillSave: 'Save',
+  historyBackfillCancel: 'Cancel',
+  historyBackfillEmpty: 'Nothing to save',
+  historyBackfillEmptyDesc: 'Empty invents nothing — pick a date and the sets you remember.',
+  historyBackfillDate: 'Date',
+  historyBackfillName: 'Name',
+  historyBackfillNamePlaceholder: 'Workout',
+  historyBackfillTiming: 'Use start and end time',
+  historyBackfillTimingOff: 'Timing is off — duration is omitted. The date still stands.',
+  historyBackfillStart: 'Start',
+  historyBackfillEnd: 'End',
+  historyBackfillAddExercise: 'Add exercise',
+  historyBackfillRemoveExercise: 'Remove',
 };
 
 const es: HistoryStrings = {
