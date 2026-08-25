@@ -6,6 +6,227 @@ Living roadmap for the **everything app** (a bodyweight coach app Super Bundle �
 
 ---
 
+## Frozen plan — `.978` Quiet Learn (2026-08-25)
+
+> **Frozen.** Implement only this section. Plan commit is `[skip vercel]`.
+> Label: `2026.07-unified.978` — next free after master `.977`
+> (`79791d8b` — Week strip quiet row).
+> Week strip `.977` + Quiet Track `.976` + Quiet Move `.974`
+> + cues `.973` + honesty `.971` + tags `.970` + RPE `.967`
+> + Fuel `.965` + resume `.963` are on master.
+> Do not smash them.
+> Do **not** smash week strip `.961`, notebook `.960`,
+> swap/skip `.959`, desk→gym `.958`, `/private` `.957`,
+> close receipt `.956`, Wednesday `.955`, Today Start
+> `.954`, or identity `.949`.
+> Implement commit may allow one Preview. No empty-commit retrigger.
+> No `PRIVATE_MODE` flip. No promote. Live www stays `.696`.
+> Guest path. First set stays ungated. Confirm-gated writes
+> only where a write can wipe.
+> Brand: **Log a set. Offline.** / No account. No wearable.
+> Coach stays opt-in / skippable. Train + Coach only.
+> Mind is counsel-hold. Do not build Mind.
+
+Learn first paint is a ten-path
+catalog. First success already lives
+in the catalog: Strength Basics
+`sb-0` *Offline Log, Then Coach*,
+plus `pd-0` *Weeks From Your Logs*,
+guidebook `getting-started-mw`, and
+help getting-started. Existing-path-
+first. Last safe Super Bundle pillar
+(Mind is hold). Off Today. Not a
+second home. Not a paid gate. Cues
+`.973` stay a rack card — link here
+when they want more than three lines.
+
+### One concern
+
+One free intro off Today: log a set,
+then Coach from those logs. Reuse
+the path we already have. Empty
+invents nothing.
+
+### Investigate (done — hypothesis holds)
+
+Read `origin/master` tip `79791d8b` /
+`.977` (`Week strip quiet row`). Cues
+stay on the live lift. Week strip
+quiet row, Track / Move / Fuel /
+honesty / tags / RPE / resume stay.
+
+| Layer | What exists | Gap this ship closes |
+|-------|-------------|----------------------|
+| Free path `sb-0` | `FREE_LEARN_PATHS` Strength Basics lesson `sb-0` — *Offline Log, Then Coach*. Action `/active`. Original MW. | Buried in a 10-path accordion. First paint is the catalog. |
+| Free path `pd-0` | Periodization lesson `pd-0` — *Weeks From Your Logs*. Action `/coach`. | Coach half of first success. Do not rewrite. Pair the existing CTA. |
+| Guidebook Ch4 | `getting-started-mw` / `ch4-s1` — I-Day + log one session. | Broader than first success. Keep under Show more. Do not edit chapters. |
+| Help | `docs/help/getting-started.md` first workout. | Help article, not the in-app intro. One line only. |
+| Learn first paint | Search + 10 path cards + done counts. Guidebook / sample / premium already in `<details>`. | Catalog is a second home. Quiet Learn is one tutorial. |
+| Cues `.973` | Cap 3 written setup on the open lift. Hide never blocks Log set. Full guide behind Info. | No door when they want more than a rack card. Quiet ink link only. |
+| Super Bundle Learn | Premium Ch11–12 sequence + specialist. `LearnLockedPreview` in details. Free intro stays free (`.705`). | **Keep.** Do not paywall `sb-0`. Do not invite-gate. |
+| Today / door | One Start. Tight `/private` `.957`. Resume `.963`. Week strip `.977` quiet row on empty days. | **Keep.** No Learn widget on Today. No four-scene door. |
+
+Hypothesis (verified, keep):
+
+`sb-0` already *is* the Diataxis
+tutorial for first success (log a
+set, then Coach from logs). Do not
+invent a new lesson, new chapter, or
+new wording. A **pure** helper reads
+the existing catalog and returns
+`{ empty, lesson, coach }`. Empty =
+`sb-0` missing. Invents no title,
+no ISSA, no Feed. Mount that one
+intro on `/learn` first paint.
+Other paths / search / guidebook /
+sample / premium fold under Show
+more. Cues get a quiet link to
+`/learn` — not a second form guide,
+not poster red, never a Log set
+gate. Guest. First set ungated.
+Today still one Start.
+
+Closed rules:
+
+1. **Existing path first.** Helper
+   resolves `strength-basics` /
+   `sb-0` from `FREE_LEARN_PATHS`.
+   Coach CTA from existing `pd-0`
+   action only. No new catalog row.
+   Do not edit `learnPaths.ts` or
+   guidebook chapter bodies.
+2. **One intro.** First paint is
+   that lesson (title, summary, key
+   points, existing actions). Not
+   ten cards. Not a Feed. Not
+   Discord.com.
+3. **Free. Guest.** No premium /
+   trial / invite import on the
+   helper or the intro card. First
+   set stays ungated. `/private`
+   stays the tight `.957` lock.
+4. **Off Today / door.** No Learn
+   widget on `/log`. Today still
+   one `.primary-action` (Start
+   workout). Train keeps Log set.
+   Cue link is quiet ink only.
+5. **Empty invents nothing.**
+   Missing `sb-0` ⇒ `empty: true`.
+   No invented tutorial. No
+   ISSA leak. Original wording
+   stays the catalog's.
+6. **Mind is hold.** Do not open
+   `/mind` as a ship. Do not add
+   Mind chrome to the intro.
+7. **Do not smash `.977`.** Week
+   strip quiet row is on master.
+
+### Ship (only this)
+
+1. **Pure helper** `src/lib/quietLearn.ts`.
+   `quietLearnIntro` · `quietLearnHref`
+   · `isQuietLearnFirstSuccess`.
+   Inject paths. Deterministic. No
+   rewards / social / premium /
+   Discord.
+
+2. **Learn first paint** is the
+   existing `sb-0` intro (quiet
+   card). Coach door is the existing
+   `pd-0` CTA when present. Other
+   paths, search, guidebook, sample,
+   and locked preview under
+   `<details>`. No `.primary-action`
+   on Learn.
+
+3. **Cue link.** `InSetCueList`
+   quiet link to `/learn` when the
+   rack card is showing. Not a clip.
+   Hide still never blocks Log set.
+
+4. **Help one-liner.** Learn is the
+   free first-success intro — log a
+   set, then Coach from those logs.
+   Other paths under Show more.
+   Not on Today.
+
+### Tests
+
+- Helper resolves `sb-0` and the
+  copy still names log + Coach.
+  Mutant that invents a new title
+  or seeds ISSA / Discord.com dies.
+- Missing `sb-0` ⇒ `empty: true`,
+  `lesson: null`. Empty invents
+  nothing.
+- Helper + intro card do not import
+  premium / trial / rewards /
+  invite.
+- Learn first paint mounts the intro
+  before `<details>`. Search / other
+  paths live in Show more. No
+  `.primary-action` on Learn.
+- Today / door / `/private` do not
+  import `quietLearn` or the intro
+  card. Mutant that mounts Learn on
+  Today dies.
+- Cue list may import `quietLearnHref`
+  only. Link is not
+  `.primary-action`. Hide / Log set
+  contracts stay.
+- `firstSetUngated` stays green; no
+  Feed / Discord.com / likes / XP /
+  login wall / Force Sync / Session
+  Expired / four-scene door. Today
+  still one `.primary-action`.
+- Resume / Finish-partial contracts
+  stay green. Track / Move / Fuel
+  stay off Today. Cues stay on the
+  lift. Week strip `.977` stays.
+
+### Refuse
+
+WeChat home. Learn as a second
+pillar on Today. Paid / invite gate
+on the intro. Mind. Counsel-hold.
+Discord.com. Marketplace. Promote.
+`PRIVATE_MODE` flip. Merge. Four-
+scene door. New ISSA wording.
+New lesson when `sb-0` already
+covers first success. Do not smash
+`.977` / `.976` / `.974` / `.973` /
+`.971` / `.970` / `.967` / `.965` /
+`.963`.
+
+### Docs / ship protocol
+
+- `APP_BUILD_LABEL` → `2026.07-unified.978` (past master `.977`)
+- LOG heading `## 2026-08-25 — Quiet Learn (\`.978\`)` + rotate oldest live entry (`.955`)
+- `CONTEXT.md` `## Now` one-line `.978`; keep Week strip `.977` + Track `.976` + Move `.974` + cues `.973` + honesty `.971` + tags `.970` + RPE `.967` + Fuel `.965` + resume `.963`; rotate oldest shipped Now bullet (`.956`) so the block stays ≤25
+- Folder INDEX if the file list changes (`src/lib/INDEX.md`, learn components, page-components, workout cues)
+- i18n: intro / cue-more via `t(key, { defaultValue })` — no locale farm
+- Help: one line on pillars / getting-started (free intro off Today; not a second Start)
+- Plan commit `[skip vercel]`. Implement commit: one Preview max. No empty-commit retrigger.
+- Draft PR against master. Title `Quiet Learn (.978)`. Do not merge. Do not promote. Live www stays `.696`.
+
+### Done when
+
+- `/learn` first paint is one free
+  intro (existing `sb-0`). Empty
+  invents nothing. Other paths under
+  Show more. Cue list can open it
+  when they want more than a rack
+  card. Not on Today / Train-as-home
+  / door. Guest. First set ungated.
+  Today still one Start. Resume
+  kept. `/private` stays `.957`.
+  No four-scene door. No ISSA leak.
+  Unit tests. tsc clean. Label
+  `.978`. Draft PR against master.
+  Title `Quiet Learn (.978)`.
+
+---
+
 ## Frozen plan — `.977` Week strip quiet row (2026-08-25)
 
 > **Frozen.** Implement only this section. Plan commit is `[skip vercel]`.

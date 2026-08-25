@@ -25,7 +25,7 @@
 | `landing/` | Homepage demos — `LogToPlanHero` (the signature: real progression engine), `CoachAdaptDemo` |
 | `layout/` | App shell — [layout/INDEX.md](layout/INDEX.md) |
 | `leaderboard/` | Leaderboard UI |
-| `learn/` | Learn path UI + `GuideSectionExtras`, `GuideApexShell`, `GuideContentsRail`, `GuideLocaleSelect` (public magazine reader) |
+| `learn/` | Learn path UI + `QuietLearnIntroCard` (`.978` first-success intro) + `GuideSectionExtras`, `GuideApexShell`, `GuideContentsRail`, `GuideLocaleSelect` (public magazine reader) |
 | `metrics/` | CoachInsightCard, pillar scores (not weekly plan) |
 | `move/` | Move UI — `MoveLockedPreview`, `QuietMoveLogCard` (`.969` quiet rest-day walk / easy session) |
 | `nutrition/` | Fuel UI — `FuelMacroOverview`, `FuelQuickLogPanel`, `FuelMoreTools`, `FuelTodayLogCard`, `FuelLogSheet`, `FuelRecipesPanel`, `FuelRestockCard` (`.965` this week's restock they take) |

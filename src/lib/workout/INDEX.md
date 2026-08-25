@@ -21,7 +21,7 @@ Root-level `@/lib/{name}` paths re-export from here for compatibility — prefer
 9b. `victoryReceipt.ts` — vs-last session totals by **shape** (sorted unique lift ids, `.944`) + per-lift rows (`.713`). Close receipt ready-gate + private text keep (`.956`)  
 9c. `completedLogSets.ts` — one set-count for a completed log (Today highlights + Victory) (`.930`)  
 10. `activeWorkoutHelpers.ts` — next incomplete set, last session, set stats, `buildConsoleSet` / `planApplyTargets` / `resolveActiveSetDial` (`.297`/`.303`); `getLastSessionSets` reads `lastLiveSessionForExercise` (`.939` recovers #487 leftover); Prev matches working-set index and stays quiet on warmup (`.966`)  
-10c. `inSetCues.ts` — short written setup on the open live lift (`.973`). Cap 3. Optional still from media we already have. Empty invents nothing.
+10c. `inSetCues.ts` — short written setup on the open live lift (`.973`). Cap 3. Optional still from media we already have. Empty invents nothing. Cue list may link to Quiet Learn (`.978`).
 10a. `repeatLastSession.ts` — last completed log → startWorkout template (`.717`); wraps `historyRetrain.templateFromCompletedLog` (working sets only — warmup omitted, `.966`)  
 10a2. `honorSavedRoutine.ts` — saved notebook over Wednesday / Just Go (`.960`). `pickHonoredStart` / `honorCiteStart` / confirm-gated `decideSavedWrite`. Empty invents nothing.  
 10a3. `thinHistory.ts` — 1–2 live sessions are a notebook (`.971`). Wednesday and the week strip both read `isThinHistory`. Empty invents nothing.  

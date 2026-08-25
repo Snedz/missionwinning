@@ -11,11 +11,12 @@ const root = join(import.meta.dirname, '..', '..');
 
 test('LearnPage free-beta uses open-beta Learn chrome keys', () => {
   const src = readFileSync(join(root, 'src/page-components/LearnPage.tsx'), 'utf8');
-  assert.match(src, /learnSubtitleBriefOpenBeta/);
-  assert.match(src, /learnMoreLearnOpenBeta/);
+  assert.match(src, /quietLearnSubtitle/);
   assert.match(src, /learnSubtitleOpenBeta/);
   assert.match(src, /learnPremiumTitleOpenBeta/);
   assert.match(src, /isFreeBeta|freeBeta/);
+  const firstPaint = src.slice(0, src.indexOf('<details'));
+  assert.doesNotMatch(firstPaint, /Super Bundle unlocks|Join Discord/);
 });
 
 test('learnLocales EN open-beta strings omit Super Bundle and premium pay pitch', () => {

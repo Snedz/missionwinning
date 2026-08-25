@@ -43,7 +43,7 @@
 | `MovePage.tsx` | `/move` — quiet rest-day walk / easy log first paint (`.969`); flows stay |
 | `MindPage.tsx` | `/mind` | First paint is check-in + breathe; sessions in Show all |
 | `TrackPage.tsx` | `/track` | First paint is weight / tape (`.975`); walks / GPS in Show more |
-| `LearnPage.tsx` | `/learn` |
+| `LearnPage.tsx` | `/learn` | First paint is the free `sb-0` intro (`.978`); other paths in Show more |
 | `GuidebookIndexPage.tsx` | `/learn/guide` |
 | `GuidebookChapterPage.tsx` | `/learn/guide/[chapterId]` |
 | `GuidePublicIndexPage.tsx` | `/guide` — Apex shell + Contents |

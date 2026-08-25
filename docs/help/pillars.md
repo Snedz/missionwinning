@@ -48,7 +48,7 @@ Walks, GPS, and activity import live under Show more. You can import activity fi
 
 **Route:** `/learn`, `/learn/guide`
 
-Education — structured paths and the Mission Winning guidebook (**Beyond the Basics**). Free chapters are public at `/guide` without an account: expandable **Contents** sidebar (desktop) or Contents panel (mobile), plus a language switcher. You can also download the magazine PDF from `/guide` or `/learn/guide` (English compilation). The free intro stays free. Super Bundle adds a sequence course (Train, then Coach, then Fuel / Move / Mind on the same week) plus specialist depth — not a second set of apps.
+Education — one free first-success intro on `/learn` (log a set, then Coach from those logs). Other structured paths and the Mission Winning guidebook (**Beyond the Basics**) sit under Show more. Free chapters are public at `/guide` without an account: expandable **Contents** sidebar (desktop) or Contents panel (mobile), plus a language switcher. You can also download the magazine PDF from `/guide` or `/learn/guide` (English compilation). The free intro stays free and is not on Today. Super Bundle adds a sequence course (Train, then Coach, then Fuel / Move / Mind on the same week) plus specialist depth — not a second set of apps.
 
 ## Today — your hub
 

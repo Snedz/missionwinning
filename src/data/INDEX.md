@@ -25,7 +25,7 @@
 | `guidebook/chapters.ts`, `guidebook/premiumChapters.ts` | Guidebook content (+ optional `heroImage` / `figure`). Premium Ch11–12 = Super Bundle sequence (Diataxis). |
 | `guidebook/types.ts` | Guide chapter/section types incl. `GuideFigure` |
 | `guidebook/magazineMeta.ts` | Beyond the Basics magazine front matter + PDF path |
-| `learnPaths.ts`, `learnLessonEnhancements.ts` | Learn pillar paths |
+| `learnPaths.ts`, `learnLessonEnhancements.ts` | Learn pillar paths — Quiet Learn first-success is existing `sb-0` (`.978`; do not invent a new row) |
 | `presidentialFitnessStandards.json` | PFT scoring standards |
 | `fieldTestAcftScales.ts` | Published five-event scoring tables (23 March 2022) — field test only |
 | `pftWeekOneChallenge.ts` | PFT challenge data |
