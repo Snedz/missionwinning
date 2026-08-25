@@ -18,6 +18,7 @@ export type WorkSetIntensity = {
 type IntensitySet = {
   kind?: string;
   reps?: number;
+  weight?: number;
   rpe10?: unknown;
   rir?: unknown;
   rpe?: unknown;
@@ -48,7 +49,9 @@ export function formatWorkSetIntensity(bit: WorkSetIntensity | null | undefined)
 }
 
 /** Last working set in this list — warmup / 0-rep skipped. */
-export function lastWorkSet<T extends IntensitySet>(sets: readonly T[] | undefined): T | null {
+export function lastWorkSet<T extends IntensitySet>(
+  sets: readonly T[] | null | undefined
+): T | null {
   if (!sets?.length) return null;
   for (let i = sets.length - 1; i >= 0; i--) {
     const set = sets[i];
@@ -61,7 +64,9 @@ export function lastWorkSet<T extends IntensitySet>(sets: readonly T[] | undefin
  * Intensity of the last working set only. If that set has no RPE/RIR,
  * return null — do not walk back.
  */
-export function lastWorkSetIntensity(sets: readonly IntensitySet[] | undefined): string | null {
+export function lastWorkSetIntensity(
+  sets: readonly IntensitySet[] | null | undefined
+): string | null {
   const last = lastWorkSet(sets);
   if (!last) return null;
   return formatWorkSetIntensity(readWorkSetIntensity(last));
@@ -72,7 +77,7 @@ export function lastWorkSetIntensity(sets: readonly IntensitySet[] | undefined):
  * The last exercise that has a working set wins. Empty stays empty.
  */
 export function sessionLastWorkSetIntensity(
-  exercises: readonly { sets?: readonly IntensitySet[] }[] | undefined
+  exercises: readonly { sets?: readonly IntensitySet[] | null }[] | null | undefined
 ): string | null {
   if (!exercises?.length) return null;
   let last: IntensitySet | null = null;
