@@ -12,6 +12,7 @@ import { MOBILITY_FLOWS } from '@/data/mobilityFlows';
 import type { MobilityFlow } from '@/data/mobilityFlows';
 import { TimedFlowRunner } from '@/components/pillars/TimedFlowRunner';
 import { MoveLockedPreview } from '@/components/move/MoveLockedPreview';
+import { QuietMoveLogCard } from '@/components/move/QuietMoveLogCard';
 import { usePremium } from '@/hooks/usePremium';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -210,6 +211,8 @@ export function MovePage() {
             })
       }
     >
+      <QuietMoveLogCard />
+
       <div
         id="move-flows"
         className="scroll-mt-20 space-y-6"

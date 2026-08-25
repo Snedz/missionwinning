@@ -50,6 +50,18 @@ type MoveStrings = {
   moveSubtitleBrief: string;
   /** Free-beta: no premium pay teaser on the shell (pack overrides defaultValue). */
   moveSubtitleBriefOpenBeta: string;
+  /** `.969` — optional rest-day walk / easy session. */
+  moveQuietTitle: string;
+  moveQuietHint: string;
+  moveQuietKinds: string;
+  moveQuietWalk: string;
+  moveQuietEasy: string;
+  moveQuietMinutes: string;
+  moveQuietDistance: string;
+  moveQuietLog: string;
+  moveQuietEmpty: string;
+  moveQuietRowMinutes: string;
+  moveQuietRowDistance: string;
 };
 
 const en: MoveStrings = {
@@ -92,6 +104,17 @@ const en: MoveStrings = {
   moveSubtitleBrief: 'Pick a free flow. Timers and bodyweight — premium later if you want.',
   moveSubtitleBriefOpenBeta:
     'Pick a free flow. Timers and bodyweight — recovery depth open in Alpha.',
+  moveQuietTitle: 'Easy walk or easy session',
+  moveQuietHint: 'Rest is fine. Optional — minutes or distance if you have them.',
+  moveQuietKinds: 'Easy Move kind',
+  moveQuietWalk: 'Walk',
+  moveQuietEasy: 'Easy session',
+  moveQuietMinutes: 'Minutes (optional)',
+  moveQuietDistance: 'Distance km (optional)',
+  moveQuietLog: 'Log',
+  moveQuietEmpty: 'Nothing logged. Rest is not a fail.',
+  moveQuietRowMinutes: '{{count}} min',
+  moveQuietRowDistance: '{{km}} km',
 };
 
 const es: MoveStrings = {

@@ -37,7 +37,7 @@
 
 | URL | Page component | Notes |
 |-----|----------------|-------|
-| `/move` | `MovePage.tsx` | Mobility |
+| `/move` | `MovePage.tsx` | Mobility + quiet rest-day walk / easy log (`.969`) |
 | `/mind` | `MindPage.tsx` | Mind & recovery |
 | `/learn` | `LearnPage.tsx` | Education |
 | `/learn/guide` | `GuidebookIndexPage.tsx` | Guidebook |
