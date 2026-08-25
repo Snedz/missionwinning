@@ -2,7 +2,8 @@
 
 /**
  * One exercise block in the active logger (header + set rows + actions).
- * Dense mobile: cues live in Form guide; actions in overflow.
+ * Open lift: short written cues in-set (`.973`). Full Form guide stays
+ * behind Info. Actions in overflow.
  */
 
 import { useEffect, useRef, useState, type RefObject } from 'react';
@@ -12,6 +13,7 @@ import { SetLogTable } from '@/components/workout/SetLogTable';
 import { ActiveExerciseHeader } from '@/components/workout/ActiveExerciseHeader';
 import { ActiveExerciseFooter } from '@/components/workout/ActiveExerciseFooter';
 import { ExerciseNoteField } from '@/components/workout/ExerciseNoteField';
+import { InSetCueList } from '@/components/workout/InSetCueList';
 import { useIsCompact } from '@/hooks/useIsCompact';
 import {
   exerciseHasCompletedSet,
@@ -33,6 +35,7 @@ import {
   shouldShowAddWarmups,
 } from '@/lib/workout/warmupRamp';
 import { getFormGuideOrCues } from '@/lib/formGuides';
+import { resolveInSetCues, shouldShowInSetCues } from '@/lib/workout/inSetCues';
 import { isSkippedThisSession } from '@/lib/workout/sessionExerciseOnce';
 import { canStartDrop } from '@/lib/workout/dropSet';
 import { recallLastRest, resolveRestForNextSet } from '@/lib/workout/restTimer';
@@ -157,6 +160,7 @@ export function ActiveExerciseCard({
   const isCompact = useIsCompact();
   const [menuOpen, setMenuOpen] = useState(false);
   const [footerOpen, setFooterOpen] = useState(false);
+  const [cuesHidden, setCuesHidden] = useState(false);
   const noteRef = useRef<HTMLInputElement>(null);
   const skipped = isSkippedThisSession(exLog);
   const hasCompleted = exerciseHasCompletedSet(exLog.sets);
@@ -169,7 +173,15 @@ export function ActiveExerciseCard({
   const hasNext = exIdx < exercises.length - 1;
   const holdsActiveSet = holdsActiveExercise(nextSet, exIdx);
   const lastSets = lastSessionSets(workoutHistory, exLog.exerciseId);
-  const hasFormGuide = !!getFormGuideOrCues(exercise.id, { exercise });
+  const formGuide = getFormGuideOrCues(exercise.id, { exercise });
+  const hasFormGuide = !!formGuide;
+  const inSetCues = resolveInSetCues(formGuide);
+  const showInSetCues = shouldShowInSetCues({
+    holdsActiveExercise: holdsActiveSet,
+    skippedThisSession: skipped,
+    hidden: cuesHidden,
+    lines: inSetCues.lines,
+  });
 
   useEffect(() => {
     if (noteOpen) noteRef.current?.focus();
@@ -281,6 +293,14 @@ export function ActiveExerciseCard({
       />
       {skipped ? null : (
       <CardContent className="min-w-0 space-y-2 p-3 pt-0">
+        {showInSetCues ? (
+          <InSetCueList
+            lines={inSetCues.lines}
+            stillUrl={inSetCues.stillUrl}
+            exerciseName={exercise.name}
+            onHide={() => setCuesHidden(true)}
+          />
+        ) : null}
         <div ref={holdsActiveExercise(nextSet, exIdx) ? nextSetRef : undefined}>
           <SetLogTable
             sets={exLog.sets}

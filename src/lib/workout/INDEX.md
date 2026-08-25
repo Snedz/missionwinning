@@ -21,6 +21,7 @@ Root-level `@/lib/{name}` paths re-export from here for compatibility — prefer
 9b. `victoryReceipt.ts` — vs-last session totals by **shape** (sorted unique lift ids, `.944`) + per-lift rows (`.713`). Close receipt ready-gate + private text keep (`.956`)  
 9c. `completedLogSets.ts` — one set-count for a completed log (Today highlights + Victory) (`.930`)  
 10. `activeWorkoutHelpers.ts` — next incomplete set, last session, set stats, `buildConsoleSet` / `planApplyTargets` / `resolveActiveSetDial` (`.297`/`.303`); `getLastSessionSets` reads `lastLiveSessionForExercise` (`.939` recovers #487 leftover); Prev matches working-set index and stays quiet on warmup (`.966`)  
+10c. `inSetCues.ts` — short written setup on the open live lift (`.973`). Cap 3. Optional still from media we already have. Empty invents nothing.
 10a. `repeatLastSession.ts` — last completed log → startWorkout template (`.717`); wraps `historyRetrain.templateFromCompletedLog` (working sets only — warmup omitted, `.966`)  
 10a2. `honorSavedRoutine.ts` — saved notebook over Wednesday / Just Go (`.960`). `pickHonoredStart` / `honorCiteStart` / confirm-gated `decideSavedWrite`. Empty invents nothing.  
 10a3. `thinHistory.ts` — 1–2 live sessions are a notebook (`.971`). Wednesday and the week strip both read `isThinHistory`. Empty invents nothing.  
@@ -83,6 +84,7 @@ Root-level `@/lib/{name}` paths re-export from here for compatibility — prefer
 | `repeatLastSession.test.ts` | Last-session copy + empty-history path (`.717`) |
 | `honorSavedRoutine.test.ts` | Save then Start uses their routine; Wednesday cite does not overwrite a saved PPL; empty invents nothing (`.960`) |
 | `thinHistory.test.ts` | Two named logs invent no Wednesday; week strip does not score 1–2 sessions; saved notebook still wins (`.964`) |
+| `inSetCues.test.ts` | Setup first, cap 3; empty invents nothing; no remote clip URL; Train-only (`.973`) |
 | `openSessionContinuity.test.ts` | Desk start → phone finish is one session; guest; no wipe; no Force Sync (`.958`) |
 | `sessionResume.test.ts` | Leave Today → back = same session; Finish-partial keeps logged sets; empty invents nothing (`.963`) |
 | `vsLastSet.test.ts` | After-save vs-last: +weight / +reps / first-ever (`.760`) |

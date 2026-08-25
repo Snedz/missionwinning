@@ -6,6 +6,202 @@ Living roadmap for the **everything app** (a bodyweight coach app Super Bundle �
 
 ---
 
+## Frozen plan — `.973` Cues on the movement (2026-08-25)
+
+> **Frozen.** Implement only this section. Plan commit is `[skip vercel]`.
+> Label: `2026.07-unified.973` — next free after master `.971`
+> (`#801` squash `6568617d` — thin-history honesty).
+> Honesty `.971` + tags `.970` + RPE `.967` + Fuel `.965`
+> + resume `.963` are on master. Do not smash them.
+> **Skip `.972`** — Quiet Move `#804`, in flight. Do not take it.
+> Do **not** smash week strip `.961`, notebook `.960`,
+> swap/skip `.959`, desk→gym `.958`, `/private` `.957`,
+> close receipt `.956`, Wednesday `.955`, Today Start
+> `.954`, or identity `.949`.
+> Implement commit may allow one Preview. No empty-commit retrigger.
+> No `PRIVATE_MODE` flip. No promote. Live www stays `.696`.
+> Guest path. First set stays ungated. Confirm-gated writes.
+> Brand: **Log a set. Offline.** / No account. No wearable.
+> Coach stays opt-in / skippable. Train + Coach only.
+
+The live set already has a Form guide
+sheet behind Info. Setup / execute /
+avoid / breath + optional pack still
+live there. Catalog `Exercise.cues`
+already backfills a thin guide. Week-4
+dies when they do not know the setup
+and abandon the set rather than tap
+Info. Missing: short written coaching
+points **on the movement**, in-set.
+Confidence at the rack. Not a clip
+marketplace. Not a Feed.
+
+### One concern
+
+Short written cues sit with the live
+exercise. Optional demo only if we
+already have media. Not on Today.
+
+### Investigate (done — hypothesis holds)
+
+Read `origin/master` tip `6568617d` /
+`.971` (`#801`). Form guide sheet +
+catalog cues + Form Index stills.
+Honesty / tags / RPE / Fuel / resume
+stay.
+
+| Layer | What exists | Gap this ship closes |
+|-------|-------------|----------------------|
+| Structured guides | `formGuides.ts` + `formGuidesExtended.ts`. Floor 80. `setup` / `execute` / `commonErrors` / `breathing`. | Teaching is one Info tap away. Mid-set they never see setup. |
+| Catalog cues | `Exercise.cues` string. `getFormGuideOrCues` splits on `;` / `.` into execute. Generic setup when only cues exist. | Same sheet. No in-set list. |
+| Media | Form Index pack + legacy SVG + pattern still. `formGuideStillUrl`. Video autoplay is **sheet-only**. | In-set may reuse a still. Do **not** add a CDN, player, or clip feed. |
+| Info sheet | `FormGuideSheet` + `resolveFormGuideSheet`. "Got it — start set". | **Keep.** Long form stays behind Info. This ship does not restyle it. |
+| Cue me | `ActiveTrainCues` speech in overflow. | **Keep.** Spoken rest-end is not written setup. Do not remount speech on the card. |
+| Exercise note | Per-exercise diary under the table (`.748`). | Their words. Not coaching points. Do not reuse as cues. |
+| Active card | Dense header + set table. Cues "live in Form guide" (card comment). `holdsActiveExercise` is the open lift. Later lifts hide until first set (H-15). | Open / active lift has no written setup. |
+| Today / door | One Start. Tight `/private` `.957`. Resume `.963`. | **Keep.** Cues do not sit on Today as home. |
+
+Hypothesis (verified, keep):
+
+A **pure** helper over the guide we
+already resolve (`getFormGuideOrCues`)
+returns `{ lines, stillUrl }`. Setup
+first (up to 2), then execute until
+**3** lines. Empty guide / empty
+arrays → empty (invents nothing). No
+generic invent when the catalog has
+no cues and no structured guide.
+`stillUrl` is `formGuideStillUrl`
+only when `mediaUrl` already exists;
+video packs use the poster. No new
+URL host. No commonErrors / breath
+on the card (those stay in the sheet).
+Mount on the exercise that
+`holdsActiveExercise` — the open
+movement in the live session. Quiet
+ink. Not `.primary-action`. Log set
+never waits. Guest. First set ungated.
+
+Closed rules:
+
+1. **Written setup on the open lift.**
+   Cap 3. Setup before execute. Empty
+   invents nothing.
+2. **Demo is optional and local.**
+   Existing still / poster only. No
+   new video pipeline, no YouTube, no
+   marketplace of clips.
+3. **Sit with the exercise.** Train
+   card only. Not Today fold-1. Not
+   `/private`. Not Fuel. Not a Feed,
+   comments, or DMs.
+4. **Sheet stays.** Info still opens
+   the full Form guide. Cue me speech
+   stays overflow. Exercise note stays
+   their diary.
+5. **Surfaces.** Today still one
+   `.primary-action`. Resume / Finish-
+   partial stay `.963`. `/private`
+   stays the tight `.957` lock. No
+   four-scene door. Tags `.970` and
+   RPE `.967` stay optional.
+
+### Ship (only this)
+
+1. **Pure helper** `src/lib/workout/inSetCues.ts`.
+   `resolveInSetCues`. Deterministic.
+   Cap 3. Inject the already-resolved
+   `FormGuide | null`. Reuse
+   `formGuideStillUrl`. No rewards /
+   social / speech import.
+
+2. **In-set list** on the active
+   exercise card (`holdsActiveExercise`).
+   Short written lines + optional still.
+   Quiet ink. Not poster red. Does not
+   replace Log set. Skippable collapse
+   so a known lift is not a lecture.
+   Collapse is session-local, not a
+   wipe (not confirm-gated).
+
+3. **Help one-liner.** Opening the
+   live exercise can show short setup
+   points. Optional still if we have
+   one. Full guide stays behind Info.
+
+### Tests
+
+- Structured guide → setup first,
+  then execute, cap 3. Mutant that
+  emits 4+ lines dies.
+- Catalog-cues-only guide → execute
+  lines from the cue string; no
+  invented shop/clip URL.
+- Empty / null guide invents nothing.
+  Mutant that seeds a generic
+  "brace your core" without a guide
+  dies.
+- `stillUrl` is the existing still /
+  poster when `mediaUrl` is set;
+  null when absent. Mutant that
+  emits `http` / YouTube / a new
+  host dies.
+- Card mounts cues only when
+  `holdsActiveExercise`. Today /
+  `/private` / gated door / Fuel do
+  not import `inSetCues` or the
+  in-set cue component. Mutant that
+  mounts cues on Today dies.
+- `firstSetUngated` stays green; no
+  Feed / comments / DMs / likes /
+  XP / login wall / Force Sync /
+  Session Expired / four-scene door.
+  Today still one `.primary-action`.
+- Resume / Finish-partial contracts
+  stay green. Tags / RPE stay
+  optional. Log set never waits.
+
+### Refuse
+
+Marketplace. Feed of clips. Discord.com.
+Arnold AI Coach. Leaderboards. Promote.
+`PRIVATE_MODE` flip. Counsel-hold.
+WeChat home. Merge. Four-scene door.
+Cues on Today as home. New video CDN.
+Speech remount on the card. Exercise
+note rewrite. Form guide sheet restyle.
+Do not take `.972`. Do not smash
+`.971` / `.970` / `.967` / `.965` /
+`.963`.
+
+### Docs / ship protocol
+
+- `APP_BUILD_LABEL` → `2026.07-unified.973`
+- LOG heading `## 2026-08-25 — Cues on the movement (\`.973\`)` + rotate oldest live entry (`.952`)
+- `CONTEXT.md` `## Now` one-line `.973`; keep honesty `.971` + tags `.970` + RPE `.967` + Fuel `.965` + resume `.963`; rotate oldest shipped Now bullet (`.953`) so the block stays ≤25
+- Folder INDEX if the file list changes (`src/lib/workout/INDEX.md`, workout components)
+- i18n: cue heading / skip via `t(key, { defaultValue })` on `activeWorkoutLocales.ts`
+- Help: one line on getting-started (setup points sit with the live exercise)
+- Plan commit `[skip vercel]`. Implement commit: one Preview max. No empty-commit retrigger.
+- Draft PR against master. Do not merge. Do not promote. Live www stays `.696`.
+
+### Done when
+
+- This section was frozen before product code.
+- Opening the live exercise can show
+  a short written cue list. Optional
+  demo only from media we already
+  have. Cues sit with the exercise,
+  not on Today. Guest. First set
+  ungated. Today still one Start.
+  Resume kept. `/private` stays `.957`.
+  No four-scene door. Unit tests.
+  tsc clean. Label `.973`. Draft PR
+  against master. Title:
+  `Cues on the movement (.973)`.
+
+---
+
 ## Frozen plan — `.971` Thin-history honesty (2026-08-25)
 
 > **Frozen.** Implement only this section. Plan commit is `[skip vercel]`.
