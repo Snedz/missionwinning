@@ -584,5 +584,16 @@
   "welcomeSignInTitle": "Simpan kemajuan — pilihan Anda",
   "welcomeSkipSignIn": "Lewati — buka Hari Ini",
   "welcomeSubtitle": "Tetapkan jalur Anda, lalu catat sesi pertama Anda. Selangkah demi selangkah — Hari ini selalu menampilkan tindakan selanjutnya.",
-  "welcomeTitle": "Selamat datang, Anggota Misi"
+  "welcomeTitle": "Selamat datang, Anggota Misi",
+  "fuelRestockTitle": "Stok ulang minggu ini",
+  "fuelRestockEmpty": "Catat makanan minggu ini, atau ketik yang kamu butuhkan. Kosong tidak mengada-ada.",
+  "fuelRestockHint": "Dari log Fuel minggu ini. Salin. Kamu belanja. Kami tidak memesan.",
+  "fuelRestockTypedLabel": "Tambah yang kamu butuhkan",
+  "fuelRestockTypedPlaceholder": "telur, oat, ayam…",
+  "fuelRestockCopy": "Salin daftar",
+  "fuelRestockCopied": "Tersalin",
+  "fuelRestockCopyFailed": "Gagal menyalin — pilih daftar.",
+  "fuelRestockDownload": "Unduh daftar",
+  "fuelRestockCount": "{{count}} item",
+  "fuelRestockYouShop": "Kamu belanja. Kami tidak memesan."
 }

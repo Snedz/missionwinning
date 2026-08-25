@@ -118,6 +118,14 @@ const NEVER_SHIPPED: { from: number; to: number; why: string }[] = [
       '`.938`. No LOG heading on master ever ended in those labels, so rotating `.934` ' +
       'leaves `.938` as the live floor without a missing section.',
   },
+  {
+    from: 948,
+    to: 948,
+    why:
+      'Plate math was reserved as `.948` while guest-identity shipped as `.949`; plate math ' +
+      'landed as `.950`. No LOG heading on master ever ended in `.948`, so rotating `.947` ' +
+      'leaves `.949` as the live floor without a missing section.',
+  },
 ];
 const neverShipped = (x: number) => NEVER_SHIPPED.some((g) => x >= g.from && x <= g.to);
 

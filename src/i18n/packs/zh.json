@@ -678,5 +678,16 @@
   "welcomeSignInTitle": "保存进度——您的选择",
   "welcomeSkipSignIn": "跳过 — 转到今天",
   "welcomeSubtitle": "设置您的路径，然后记录您的第一个会话。 一次一步——今天总是显示下一步行动。",
-  "welcomeTitle": "欢迎，使命成员"
+  "welcomeTitle": "欢迎，使命成员",
+  "fuelRestockTitle": "本周补货",
+  "fuelRestockEmpty": "记录本周餐食，或输入你需要的。空白不会编造。",
+  "fuelRestockHint": "来自本周 Fuel 记录。复制。你去买。我们不下单。",
+  "fuelRestockTypedLabel": "加上你需要的",
+  "fuelRestockTypedPlaceholder": "鸡蛋、燕麦、鸡肉…",
+  "fuelRestockCopy": "复制清单",
+  "fuelRestockCopied": "已复制",
+  "fuelRestockCopyFailed": "复制失败 — 请选中清单。",
+  "fuelRestockDownload": "下载清单",
+  "fuelRestockCount": "{{count}} 项",
+  "fuelRestockYouShop": "你去买。我们不下单。"
 }

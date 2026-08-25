@@ -202,5 +202,17 @@
   "fuelPremiumFetchFailedOpenBeta": "Could not load extra recipes",
   "fuelPremiumOfflineOpenBeta": "Extra recipes unavailable offline — free recipes above still work.",
   "fuelPremiumRecipesTitleCountBeta": "More recipes ({{count}})",
-  "fuelPremiumRecipesTitleCountPaid": "Premium recipes ({{count}})"
+  "fuelPremiumRecipesTitleCountPaid": "Premium recipes ({{count}})",
+  "fuelRestockTitle": "今週の補充",
+  "fuelRestockEmpty": "今週の食事を記録するか、必要なものを入力。空なら何も作りません。",
+  "fuelRestockHint": "今週のFuel記録から。コピーして。買うのはあなた。こちらは注文しません。",
+  "fuelRestockTypedLabel": "必要なものを追加",
+  "fuelRestockTypedPlaceholder": "卵、オート麦、鶏肉…",
+  "fuelRestockCopy": "リストをコピー",
+  "fuelRestockCopied": "コピーしました",
+  "fuelRestockCopyFailed": "コピーできません — リストを選択。",
+  "fuelRestockDownload": "リストをダウンロード",
+  "fuelRestockTimes": "×{{count}}",
+  "fuelRestockCount": "{{count}} 品",
+  "fuelRestockYouShop": "買うのはあなた。こちらは注文しません。"
 }

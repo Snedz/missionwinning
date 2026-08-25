@@ -38,6 +38,11 @@ import {
 import { FuelWeekGlance } from '@/components/nutrition/FuelWeekGlance';
 import { FuelWeightStrip } from '@/components/nutrition/FuelWeightStrip';
 import { FuelPastDaysCard } from '@/components/nutrition/FuelPastDaysCard';
+import { FuelRestockCard } from '@/components/nutrition/FuelRestockCard';
+import {
+  defaultRestockWeekStart,
+  loadFuelRestockExtras,
+} from '@/lib/fuelRestock';
 import { DEFAULT_MACRO_TARGETS, loadMacroTargets } from '@/lib/macroTargets';
 import {
   adaptDeltaSummary,
@@ -598,6 +603,13 @@ export function NutritionPage() {
             }}
           />
           <FuelWeekGlance days={weekDays} todayIso={today} targetCals={targetCals} />
+          <FuelRestockCard
+            logs={allLogs}
+            todayIso={today}
+            weekStart={defaultRestockWeekStart(today)}
+            recipes={[...freeRecipes, ...premiumRecipes]}
+            initialTypedText={loadFuelRestockExtras()}
+          />
           <FuelWeightStrip todayIso={today} />
           <FuelMoreTools onLogFood={addEntry} />
           <FuelRecipesPanel

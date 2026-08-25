@@ -202,5 +202,17 @@
   "fuelPremiumFetchFailedOpenBeta": "Could not load extra recipes",
   "fuelPremiumOfflineOpenBeta": "Extra recipes unavailable offline — free recipes above still work.",
   "fuelPremiumRecipesTitleCountBeta": "Más recetas ({{count}})",
-  "fuelPremiumRecipesTitleCountPaid": "Recetas premium ({{count}})"
+  "fuelPremiumRecipesTitleCountPaid": "Recetas premium ({{count}})",
+  "fuelRestockTitle": "Reposición de esta semana",
+  "fuelRestockEmpty": "Registra comidas esta semana, o escribe lo que necesitas. Vacío no inventa nada.",
+  "fuelRestockHint": "Del registro Fuel de esta semana. Cópialo. Tú compras. Nosotros no pedimos.",
+  "fuelRestockTypedLabel": "Añade lo que necesitas",
+  "fuelRestockTypedPlaceholder": "huevos, avena, pollo…",
+  "fuelRestockCopy": "Copiar lista",
+  "fuelRestockCopied": "Copiado",
+  "fuelRestockCopyFailed": "No se pudo copiar — selecciona la lista.",
+  "fuelRestockDownload": "Descargar lista",
+  "fuelRestockTimes": "×{{count}}",
+  "fuelRestockCount": "{{count}} artículos",
+  "fuelRestockYouShop": "Tú compras. Nosotros no pedimos."
 }

@@ -57,6 +57,7 @@
     "{{signed}} {{unit}}",
     "{{signed}} reps",
     "{{count}} PRs",
+    "×{{count}}",
     "{{name}}",
     "1 PR",
     "Train",

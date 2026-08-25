@@ -162,7 +162,7 @@ This file is the **long-term constitution** (Team Humanity north star, six pilla
 ### Decade map (metrics-gated, constitution unchanged)
 
 - **Year 1 — earn the wedge.** Train + Mission Coach: free offline logger, adaptive plans from logs. One boss metric: week-4 retained weekly loggers. Web PWA + Android native; guidebook free chapters as the SEO moat.
-- **Years 2–3 — deepen the pillars.** Fuel/Move/Mind/Track/Learn premium depth, native iOS ([docs/IOS_PLAYBOOK.md](docs/IOS_PLAYBOOK.md)), full locale body parity, wearables as inputs (never as the score's master).
+- **Years 2–3 — deepen the pillars.** Fuel/Move/Mind/Track/Learn premium depth, native iOS ([docs/IOS_PLAYBOOK.md](docs/IOS_PLAYBOOK.md)), full locale body parity, wearables as inputs (never as the score's master). Quiet utilities after health is kept (a list they take to a shop) — never first paint.
 - **Years 4+ — the platform.** B2B/schools/teams, human coaching ops, book editions in every supported language, optional Foundation for scholarships. The free core is still free — that is the moat and the mission.
 
 Each stage unlocks only when the previous stage's retention/revenue gates hold ([ORCHESTRATION.md](ORCHESTRATION.md) scorecard). The map extends the constitution; it never overrides it.

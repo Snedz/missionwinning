@@ -15,6 +15,7 @@ Estimates are **tools**, not medical advice. Always review macros before logging
 7. **Today’s meals** — grouped by breakfast/lunch/dinner/snack; edit (pencil) or delete.
 8. **Past days** — browse recent days and **Copy to today**.
 9. **Weight** — optional daily weight on Fuel (same local body metrics as Track); 7-day delta when you have history.
+10. **This week's restock** — under Search, barcode & recipes. Meals you logged this week (or a typed list) become a list you copy or download. You shop. The app does not order.
 
 ## Accuracy tips
 

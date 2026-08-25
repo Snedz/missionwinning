@@ -6,6 +6,159 @@ Living roadmap for the **everything app** (a bodyweight coach app Super Bundle �
 
 ---
 
+## Frozen plan — `.965` This week's restock they take (2026-08-25)
+
+> **Frozen.** Implement only this section. Plan commit is `[skip vercel]`.
+> Label: `2026.07-unified.965` — next free after master `.963`
+> (`#799` squash `cacf1660` — resume / finish-partial).
+> **Skip `.964`** — reserved for thin-history honesty `#801`.
+> Do **not** smash resume `.963`, week strip `.961`, notebook
+> `.960`, swap/skip `.959`, desk→gym `.958`, `/private` `.957`,
+> close receipt `.956`, Wednesday `.955`, or Today Start `.954`.
+> Implement commit may allow one Preview. No empty-commit retrigger.
+> No `PRIVATE_MODE` flip. No promote. Live www stays `.696`.
+> Guest path. First set stays ungated. Confirm-gated writes
+> only where a write can wipe. Brand: **Log a set. Offline.**
+> / No account. No wearable. Coach stays opt-in / skippable.
+> Train + Coach only on the door. Fuel stays off the log path.
+
+They already name meals on Fuel. A messy typed list
+is the other honest input. Assemble a keepable restock
+list they copy and take. Not a shop. Not Place Order.
+Not payment. Not a cart on Today, Train, or `/private`.
+
+### One concern
+
+This week's Fuel restock they take. Not a marketplace.
+Not a second Today Start. Not fold-1.
+
+### Investigate (done — hypothesis holds)
+
+Read `origin/master` tip `cacf1660` / `.963` (`#799`).
+
+| Layer | What exists | Gap this ship closes |
+|-------|-------------|----------------------|
+| Fuel diary | `nutritionQuickLog` rows: name + macros + local `date`. Week glance is last 7 days. Fuel Coach week is local Monday. | Names they logged are not assembled into a list they can take. |
+| Recipes | `Recipe.ingredients` is a comma string. Logging a recipe stores the **meal name**, not the explode. | A logged recipe name can honestly expand to catalog ingredients. No match → keep the name they typed. |
+| Fuel plan | `FuelPlan` / `FuelMealPlanCard` in Show more. Planned meals they have not logged. | **Do not use.** A generated week they did not cook is not the diary. |
+| Saved presets | `savedMeals` — templates, not this week. | **Do not use** unless logged. |
+| Quick defaults | `DEFAULT_QUICK_FOODS` seeds the frequent chips. | **Must not** seed restock. Empty week invents nothing. |
+| NL estimate | `nlMealLog` templates for macros. | **Do not** invent a shop SKU from a template. |
+| Home gym kit | Account equipment they have. | **Not this ship.** Equipment is not Fuel restock. |
+| Export | Workout CSV / clipboard share. Fuel has no restock copy. | Copy / `.txt` handoff only. No checkout URL. |
+| Today / Train / door | One Start. Tight `/private` lock. Resume `.963` keeps the live session. | **Keep.** No shop, cart, or restock on those surfaces. |
+
+Hypothesis (verified, keep):
+
+A **pure** helper over `{ logs, todayIso, weekStart, typedText, recipes }`
+returns `{ items }` (name + times + source) or empty.
+Local Monday week (`startOfLocalWeek`). Logged names this week
+are the diary. A case-insensitive exact recipe-name match
+explodes that recipe's ingredient string. No match keeps the
+food name they logged. Typed messy text splits on
+comma / newline / semicolon, strips a closed intent prefix
+and a trailing "for the X", drops a closed checkout-filler
+set. Empty logs + empty typed → empty (invents nothing).
+Defaults / plan / workouts / kit do not seed. Export is a
+numbered list + "You shop. We do not order." No URL, no
+price, no brand invent. Guest. Copy is the keep.
+
+Closed rules:
+
+1. **Diary first.** This local week only. Undated rows count
+   as today. Last week does not leak. Empty invents nothing.
+2. **Recipe explode is a lookup, not a shop.** Exact name
+   match against the recipe list the page already has. No
+   fuzzy "chicken" → a bowl. Ingredients stay catalog text.
+3. **Typed extras are theirs.** Parse what they named. Keep
+   their spelling. Do not correct into a store brand.
+4. **Handoff only.** Copy and optional `.txt`. No Place
+   Order. No payment. No cart URL.
+5. **Surfaces.** Fuel Show more only. Today still one
+   `.primary-action`. Train untouched. Resume `.963` stays:
+   leave Today / week / Wednesday / receipt, return is the
+   same live session; Finish-partial writes logged sets only.
+   `/private` stays the tight `.957` lock. Four-scene door
+   stays refused.
+
+### Ship (only this)
+
+1. **Pure helper** `src/lib/fuelRestock.ts`.
+   `rowsThisLocalWeek` · `parseMessyRestockList` ·
+   `assembleRestockList` · `formatRestockExport`.
+   Deterministic. Inject `todayIso` + `weekStart`.
+
+2. **Fuel card** `FuelRestockCard` inside NutritionPage
+   `<details>` (Show more). Not first paint. Outline Copy
+   (not `.primary-action`). Optional Download list.
+   Textarea for extras. Empty state names the two honest
+   inputs. Footer: You shop. We do not order.
+
+3. **Optional persist** of the typed extras string
+   (`mw_fuel_restock_extras`). Their words. Guest.
+   Not confirm-gated (scratch list, not a wipe).
+
+4. **Quiet vision hint** — utilities after health is kept,
+   never fold-1. One sentence. No shop name.
+
+5. **Help one-liner.** This week's Fuel log (or a typed
+   list) becomes a restock list you copy. You shop.
+
+### Tests
+
+- Logged foods this week assemble unique lines; ×N when
+  repeated. Mutant that seeds `DEFAULT_QUICK_FOODS` dies.
+- Empty week + empty typed invents nothing.
+- Last-week log does not appear.
+- Logged recipe name explodes catalog ingredients; a
+  non-recipe name stays the name they logged.
+- Messy typed list: purpose tails strip, checkout-filler
+  drops, spelling they typed is kept. Mutant that emits a
+  checkout URL or a price dies.
+- Export text has no `http`, no Place Order.
+- Surface: Today / Train / `/private` / gated door do not
+  import restock or name a shop/cart. Fuel card is inside
+  Show more only.
+- `firstSetUngated` stays green. Today still one
+  `.primary-action`. No four-scene door.
+- Resume `.963` stays: leave/return same session;
+  Finish-partial writes logged sets only.
+
+### Refuse
+
+Marketplace. Place Order. Payment. Cart URL. Brand/price
+invent. Workout-log → groceries. Fuel-plan meals they did
+not log. Home-gym shopping. Restock on Today / Train /
+`/private`. Four-scene door. Counsel-hold. Super Bundle
+on Today. Promote live. `PRIVATE_MODE` flip. Merge.
+Do not take `.964`. Do not smash `.963`.
+
+### Docs / ship protocol
+
+- `APP_BUILD_LABEL` → `2026.07-unified.965`
+- LOG heading `## 2026-08-25 — This week's restock they take (\\`.965\\`)` + rotate oldest live entry (`.947`)
+- `CONTEXT.md` `## Now` one-line `.965`; rotate oldest shipped Now bullet (`.949`) so the block stays ≤25
+- Folder INDEX if the file list changes (`src/lib/INDEX.md`, nutrition components)
+- i18n: restock copy via `t(key, { defaultValue })` on `fuelLocales.ts`
+- Help: one line on Fuel
+- `vision.md`: one quiet utilities-after-health sentence — never fold-1
+- Plan commit `[skip vercel]`. Implement commit: one Preview max. No empty-commit retrigger.
+- Draft PR against master. Do not merge. Do not promote. Live www stays `.696`.
+
+### Done when
+
+- This section was frozen before product code.
+- This week's Fuel names (or a typed list) become a
+  keepable list they copy. Empty invents nothing. No shop
+  on Today / Train / the door.
+- Resume `.963` is still on this branch: leave Today /
+  week / Wednesday / receipt, return is the same live
+  session; Finish-partial writes logged sets only.
+- Label `.965`. Same PR `#800`. Title may keep the
+  product name; the stamp is `.965`.
+
+---
+
 ## Frozen plan — `.963` Resume / finish-partial (2026-08-25)
 
 > **Frozen.** Implement only this section. Plan commit is `[skip vercel]`.

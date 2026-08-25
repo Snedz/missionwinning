@@ -202,5 +202,17 @@
   "fuelPremiumFetchFailedOpenBeta": "Could not load extra recipes",
   "fuelPremiumOfflineOpenBeta": "Extra recipes unavailable offline — free recipes above still work.",
   "fuelPremiumRecipesTitleCountBeta": "More recipes ({{count}})",
-  "fuelPremiumRecipesTitleCountPaid": "Premium recipes ({{count}})"
+  "fuelPremiumRecipesTitleCountPaid": "Premium recipes ({{count}})",
+  "fuelRestockTitle": "تجديد هذا الأسبوع",
+  "fuelRestockEmpty": "سجّل وجبات هذا الأسبوع، أو اكتب ما تحتاج. الفارغ لا يخترع شيئًا.",
+  "fuelRestockHint": "من سجل Fuel لهذا الأسبوع. انسخه. أنت تتسوق. نحن لا نطلب.",
+  "fuelRestockTypedLabel": "أضف ما تحتاج",
+  "fuelRestockTypedPlaceholder": "بيض, شوفان, دجاج…",
+  "fuelRestockCopy": "نسخ القائمة",
+  "fuelRestockCopied": "تم النسخ",
+  "fuelRestockCopyFailed": "فشل النسخ — حدّد القائمة.",
+  "fuelRestockDownload": "تنزيل القائمة",
+  "fuelRestockTimes": "×{{count}}",
+  "fuelRestockCount": "{{count}} عناصر",
+  "fuelRestockYouShop": "أنت تتسوق. نحن لا نطلب."
 }

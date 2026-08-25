@@ -290,5 +290,16 @@
   "magazineStartTraining": "Training starten",
   "magazineSubtitle": "Mission Winning zum Lesen",
   "magazineTitle": "Über die Grundlagen hinaus",
-  "todayCoachChipAction": "Öffnen"
+  "todayCoachChipAction": "Öffnen",
+  "fuelRestockTitle": "Nachschub dieser Woche",
+  "fuelRestockEmpty": "Protokolliere Mahlzeiten diese Woche oder tippe, was du brauchst. Leer erfindet nichts.",
+  "fuelRestockHint": "Aus dem Fuel-Protokoll dieser Woche. Kopieren. Du kaufst. Wir bestellen nicht.",
+  "fuelRestockTypedLabel": "Ergänze, was du brauchst",
+  "fuelRestockTypedPlaceholder": "Eier, Hafer, Hähnchen…",
+  "fuelRestockCopy": "Liste kopieren",
+  "fuelRestockCopied": "Kopiert",
+  "fuelRestockCopyFailed": "Kopieren fehlgeschlagen — Liste markieren.",
+  "fuelRestockDownload": "Liste herunterladen",
+  "fuelRestockCount": "{{count}} Einträge",
+  "fuelRestockYouShop": "Du kaufst. Wir bestellen nicht."
 }

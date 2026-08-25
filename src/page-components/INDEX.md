@@ -39,7 +39,7 @@
 
 | File | Route |
 |------|-------|
-| `NutritionPage.tsx` | `/nutrition` (Fuel) — shell + state; logging UI in `src/components/nutrition/` |
+| `NutritionPage.tsx` | `/nutrition` (Fuel) — shell + state; logging UI in `src/components/nutrition/`; this week's restock in Show more (`.965`) |
 | `MovePage.tsx` | `/move` |
 | `MindPage.tsx` | `/mind` | First paint is check-in + breathe; sessions in Show all |
 | `TrackPage.tsx` | `/track` |

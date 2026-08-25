@@ -19,7 +19,7 @@ Strength and conditioning — log workouts, browse exercises, run programs, and 
 
 Nutrition pillar — daily macros, water, quick logging, barcode lookup, and photo meal estimate.
 
-- Free: manual logging, basic targets, simple recipes
+- Free: manual logging, basic targets, simple recipes, this week's restock list you copy
 - Premium: deeper meal plans and full recipe library
 
 See [fuel-and-nutrition.md](fuel-and-nutrition.md).

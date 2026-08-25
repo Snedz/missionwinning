@@ -819,5 +819,16 @@
   "youthVerifyCta": "ยืนยันและดำเนินการต่อ",
   "youthVerifyPending": "กรอกรหัส 6 หลักจากอีเมลยินยอมของผู้ปกครอง",
   "youthVerifySent": "เราได้ส่งรหัส 6 หลักให้พ่อแม่/ผู้ปกครองของคุณทางอีเมลและยืนยันลิงก์ ป้อนรหัสที่นี่เพื่อดำเนินการต่อ",
-  "youthVerifyTitle": "ป้อนรหัสยืนยัน"
+  "youthVerifyTitle": "ป้อนรหัสยืนยัน",
+  "fuelRestockTitle": "ของที่ต้องเติมสัปดาห์นี้",
+  "fuelRestockEmpty": "บันทึกมื้ออาหารสัปดาห์นี้ หรือพิมพ์สิ่งที่ต้องการ ว่างเปล่าจะไม่สร้างอะไรขึ้นมา",
+  "fuelRestockHint": "จากบันทึก Fuel สัปดาห์นี้ คัดลอก คุณซื้อเอง เราไม่สั่งให้",
+  "fuelRestockTypedLabel": "เพิ่มสิ่งที่ต้องการ",
+  "fuelRestockTypedPlaceholder": "ไข่, ข้าวโอ๊ต, ไก่…",
+  "fuelRestockCopy": "คัดลอกรายการ",
+  "fuelRestockCopied": "คัดลอกแล้ว",
+  "fuelRestockCopyFailed": "คัดลอกไม่สำเร็จ — เลือกรายการ",
+  "fuelRestockDownload": "ดาวน์โหลดรายการ",
+  "fuelRestockCount": "{{count}} รายการ",
+  "fuelRestockYouShop": "คุณซื้อเอง เราไม่สั่งให้"
 }

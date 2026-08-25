@@ -608,5 +608,16 @@
   "welcomeSignInTitle": "प्रगति सहेजें - आपकी पसंद",
   "welcomeSkipSignIn": "छोड़ें - आज पर जाएँ",
   "welcomeSubtitle": "अपना पथ निर्धारित करें, फिर अपना पहला सत्र लॉग करें। एक समय में एक कदम - आज हमेशा अगली कार्रवाई दिखाता है।",
-  "welcomeTitle": "आपका स्वागत है, मिशन सदस्य"
+  "welcomeTitle": "आपका स्वागत है, मिशन सदस्य",
+  "fuelRestockTitle": "इस सप्ताह की भरपाई",
+  "fuelRestockEmpty": "इस सप्ताह भोजन दर्ज करें, या जो चाहिए वह लिखें। खाली कुछ नहीं बनाता।",
+  "fuelRestockHint": "इस सप्ताह के Fuel लॉग से। कॉपी करें। आप खरीदें। हम ऑर्डर नहीं करते।",
+  "fuelRestockTypedLabel": "जो चाहिए वह जोड़ें",
+  "fuelRestockTypedPlaceholder": "अंडे, जई, चिकन…",
+  "fuelRestockCopy": "सूची कॉपी करें",
+  "fuelRestockCopied": "कॉपी हो गया",
+  "fuelRestockCopyFailed": "कॉपी नहीं हुआ — सूची चुनें।",
+  "fuelRestockDownload": "सूची डाउनलोड करें",
+  "fuelRestockCount": "{{count}} चीज़ें",
+  "fuelRestockYouShop": "आप खरीदें। हम ऑर्डर नहीं करते।"
 }
