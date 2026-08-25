@@ -21,7 +21,7 @@
 
 | File | Route |
 |------|-------|
-| `ActiveWorkoutPage.tsx` | `/active` | Live session is name + table + rest; plates / jot / HR in Show all |
+| `ActiveWorkoutPage.tsx` | `/active` | Live session is name + table + rest; elapsed pauses (`.1001`); plates / jot / HR in Show all |
 | `BuilderPage.tsx` | `/builder` | First paint is Blank workout; program templates in Show all |
 | `HistoryPage.tsx` | `/history` | First paint is the session list; calendar / charts / journal in Show all. Finished log can be edited then Saved (`.997`). Past session they typed can be Saved as a new log (`.1000`). |
 | `LibraryPage.tsx` | `/library` | First paint is a pick list; posters / templates in Show all |

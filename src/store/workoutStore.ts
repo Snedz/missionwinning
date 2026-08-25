@@ -48,7 +48,13 @@ import { reorderSessionExercises } from "@/lib/workout/sessionReorder";
 import { finishPartialFromActive, protectLiveStart } from "@/lib/workout/sessionResume";
 import { readRaw, writeRaw } from "@/lib/storage/safeStorage";
 import { STORAGE_KEYS } from "@/lib/storage/keys";
-import { browserStorage, dedupeWrites, elapsedSecondsFrom } from "@/store/persistDedupe";
+import { browserStorage, dedupeWrites } from "@/store/persistDedupe";
+import {
+  readSessionClock,
+  sessionElapsedSeconds,
+  startSessionClock,
+  toggleSessionClock as applySessionClockToggle,
+} from "@/lib/workout/sessionClock";
 import {
   IDLE_WORK_CLOCK,
   resolveWorkClockStart,
@@ -179,6 +185,8 @@ interface WorkoutState {
   tickWorkClock: () => void;
   stopWorkClock: () => void;
   tickElapsed: () => void;
+  /** Pause / resume the SESSION elapsed clock — not rest, not EMOM (`.1001`). */
+  toggleSessionClock: () => void;
   getRecentHistory: (limit?: number) => CompletedWorkoutLog[];
   loadFromCloud: () => Promise<void>;
   syncCurrentHistoryToCloud: () => Promise<void>;
@@ -265,10 +273,12 @@ export const useWorkoutStore = create<WorkoutState>()(
         const units = readRaw(STORAGE_KEYS.units) === 'imperial' ? 'imperial' : 'metric';
         const history = get().workoutHistory;
         const resolved = materializeTemplates(exercises, history, units);
+        const startedAt = new Date().toISOString();
         const active: ActiveWorkout = touchOpenSession({
           workoutId,
           workoutName: name,
-          startedAt: new Date().toISOString(),
+          startedAt,
+          sessionClock: startSessionClock(startedAt),
           exercises: stripOrphanGroups(
             resolved.map((ex) =>
               applyHistoryNote(
@@ -303,9 +313,11 @@ export const useWorkoutStore = create<WorkoutState>()(
 
       startEmptyWorkout: () => {
         if (protectLiveStart(get().activeWorkout) === 'keep') return;
+        const startedAt = new Date().toISOString();
         const active = touchOpenSession({
           workoutName: "Quick Workout",
-          startedAt: new Date().toISOString(),
+          startedAt,
+          sessionClock: startSessionClock(startedAt),
           exercises: [] as ActiveWorkout['exercises'],
         });
         syncActiveFlag(active);
@@ -341,7 +353,7 @@ export const useWorkoutStore = create<WorkoutState>()(
       },
 
       completeActiveWorkout: () => {
-        const { activeWorkout, elapsedSeconds } = get();
+        const { activeWorkout } = get();
         if (!activeWorkout) return null;
 
         // Prefer muscle groups already on the active log (set when exercise was added).
@@ -364,7 +376,7 @@ export const useWorkoutStore = create<WorkoutState>()(
             workoutName: activeWorkout.workoutName,
             startedAt: activeWorkout.startedAt,
             completedAt,
-            durationSeconds: elapsedSeconds,
+            durationSeconds: sessionElapsedSeconds(readSessionClock(activeWorkout)),
             exercises,
             totalVolume: volume,
           },
@@ -1016,10 +1028,22 @@ export const useWorkoutStore = create<WorkoutState>()(
       },
 
       tickElapsed: () => {
-        const next = elapsedSecondsFrom(get().activeWorkout?.startedAt);
+        const next = sessionElapsedSeconds(readSessionClock(get().activeWorkout));
         // Only touch state when the displayed second actually changes: every
         // `set()` is a persist write, even when the value is unchanged.
         if (next !== get().elapsedSeconds) set({ elapsedSeconds: next });
+      },
+
+      toggleSessionClock: () => {
+        const active = get().activeWorkout;
+        if (!active) return;
+        const now = Date.now();
+        const next = applySessionClockToggle(readSessionClock(active), now);
+        if (!next) return;
+        set({
+          activeWorkout: { ...active, sessionClock: next },
+          elapsedSeconds: sessionElapsedSeconds(next, now),
+        });
       },
 
       getRecentHistory: (limit = 5) => {
@@ -1075,7 +1099,7 @@ export const useWorkoutStore = create<WorkoutState>()(
         syncActiveFlag(next);
         set({
           activeWorkout: next,
-          elapsedSeconds: elapsedSecondsFrom(next.startedAt),
+          elapsedSeconds: sessionElapsedSeconds(readSessionClock(next)),
           restSecondsRemaining: 0,
           restTimerActive: false,
           restTimerInitialSeconds: FALLBACK_REST_SECONDS,
@@ -1162,8 +1186,8 @@ export const useWorkoutStore = create<WorkoutState>()(
          * serialised the whole history to localStorage every second: ~3.5 ms of
          * `JSON.stringify` on a 200-session history, plus a synchronous disk
          * write, plus a 4–6x mobile penalty. It is derived from
-         * `activeWorkout.startedAt` now, which is also more correct — the
-         * counter did not advance while the tab was closed.
+         * `sessionClock` (`.1001`) now — pause/resume writes the clock on
+         * `activeWorkout`; ticks still leave `partialize`.
          */
       }),
       onRehydrateStorage: () => (state, error) => {

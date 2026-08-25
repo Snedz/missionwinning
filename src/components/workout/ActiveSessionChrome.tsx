@@ -20,6 +20,8 @@ type Props = {
   totalSets: number;
   hardCount: number;
   elapsedSeconds: number;
+  sessionClockPaused?: boolean;
+  onToggleSessionClock?: () => void;
   restTimerActive: boolean;
   nextCue: { exerciseName: string; weight?: number | null; reps?: number | null } | null;
   logPulse: number;
@@ -36,6 +38,8 @@ export function ActiveSessionChrome({
   totalSets,
   hardCount,
   elapsedSeconds,
+  sessionClockPaused = false,
+  onToggleSessionClock,
   restTimerActive,
   nextCue,
   logPulse,
@@ -72,15 +76,38 @@ export function ActiveSessionChrome({
             <h1 className="truncate font-display text-[1.35rem] font-extrabold leading-[1.08] tracking-[-0.015em] md:text-[1.65rem]">
               {workoutName}
             </h1>
-            <p
-              className="mt-0.5 truncate text-[11px] tabular-nums text-muted-foreground"
-              role="timer"
-              aria-live="polite"
-              aria-label={t('activeSessionTimer', { defaultValue: 'Session timer' })}
-            >
-              {formatDuration(elapsedSeconds)}
-              {' · '}
-              {completedSets}/{totalSets}
+            <p className="mt-0.5 flex min-w-0 items-center gap-1 truncate text-[11px] tabular-nums text-muted-foreground">
+              <button
+                type="button"
+                data-testid="session-clock-toggle"
+                className="inline-flex min-h-[44px] min-w-[44px] items-center tap-target -my-2 text-inherit"
+                aria-pressed={sessionClockPaused}
+                aria-label={
+                  sessionClockPaused
+                    ? t('activeSessionClockResumeAria', {
+                        defaultValue: 'Resume session clock',
+                      })
+                    : t('activeSessionClockPauseAria', {
+                        defaultValue: 'Pause session clock',
+                      })
+                }
+                onClick={onToggleSessionClock}
+              >
+                <span
+                  role="timer"
+                  aria-live="polite"
+                  aria-label={t('activeSessionTimer', { defaultValue: 'Session timer' })}
+                >
+                  {formatDuration(elapsedSeconds)}
+                  {sessionClockPaused
+                    ? ` · ${t('activeSessionClockPaused', { defaultValue: 'Paused' })}`
+                    : ''}
+                </span>
+              </button>
+              <span aria-hidden>·</span>
+              <span>
+                {completedSets}/{totalSets}
+              </span>
             </p>
           </div>
 

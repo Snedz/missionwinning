@@ -8,6 +8,7 @@
 |------|---------|
 | `workoutStore.ts` | Single store: saved workouts, history, active session, rest timer |
 | `sessionResume.store.test.ts` | This-device leave/return + Finish-partial through the store (`.963`) |
+| `sessionClock.store.test.ts` | Pause / resume session elapsed; finish duration; rest / EMOM stay (`.1001`) |
 | `setRpe10.test.ts` | Optional 1–10 RPE persist / complete / empty (`.967`) |
 | `setLoadPct.test.ts` | Optional % of known 1RM persist / complete / empty (`.981`) |
 | `sessionNote.store.test.ts` | Live jot → completed log; receipt edit / clear stays local (`.982` / stamp `.983`) |
@@ -23,7 +24,7 @@
 | `pendingRemoteOpenSession` | memory | Other-device session waiting on confirm — never silent-wipe |
 | `restTimer*` | memory | Rest countdown between sets. `restLane` is warmup vs work (`.995`). |
 | `workClock*` | memory | Optional EMOM / AMRAP on the live set row (`.987`). Not rest. |
-| `elapsedSeconds` | memory | Workout clock |
+| `elapsedSeconds` | memory | Workout clock — derived from `sessionClock` (`.1001`) |
 | `hasHydrated` | memory | True once rehydration settles — gates Active Start. Owned by the reconciliation block *after* `create()`, never inside `onRehydrateStorage` (zustand runs that synchronously during `create()`, so touching the store there throws a swallowed TDZ error and the logger stays disabled). |
 
 ## Key actions
@@ -32,6 +33,7 @@
 |--------|--------|
 | `addSavedWorkout` / `replaceSavedWorkout` | Append a new named routine, or replace one in place after confirm (`.960`) |
 | `startWorkout` / `startEmptyWorkout` | Begin active session. Refuse to replace a live session (`.963`) |
+| `toggleSessionClock` | Pause / resume SESSION elapsed (`.1001`). Not rest. Not EMOM. Not Today Resume |
 | `logSet` / `logSetAndAdvance` | Record set; group advance; working-set week-4 events (`week4Logger`) |
 | `rateSetRpe10` | Optional 1–10 RPE on a logged set (`.967`). Empty is valid. Never required to log |
 | `completeActiveWorkout` | Finish-partial through `finishPartialFromActive` (`.963`); mint `clientId`, attach session note when present (`.982`), push to history, enqueue the cloud write on the outbox, analytics, leaderboard push |

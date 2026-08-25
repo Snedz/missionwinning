@@ -173,7 +173,7 @@ describe('the store wiring', () => {
   });
 
   /** And elapsed is derived, not counted — the reason it can leave `partialize`. */
-  it('elapsed time is derived from the session start', () => {
+  it('elapsed time is derived from the session clock, not an incrementing counter', () => {
     const src = store();
     /*
      * Bounded from the *implementation*, not from the first textual match.
@@ -191,7 +191,9 @@ describe('the store wiring', () => {
     const to = src.indexOf('getRecentHistory:', from);
     assert.ok(to > from, 'could not bound the tickElapsed body');
     const tick = src.slice(from, to);
-    assert.match(tick, /elapsedSecondsFrom\(/);
+    assert.match(tick, /sessionElapsedSeconds\(/);
+    assert.match(tick, /readSessionClock\(/);
+    assert.doesNotMatch(tick, /elapsedSecondsFrom\(/);
     assert.doesNotMatch(
       tick,
       /elapsedSeconds:\s*s\.elapsedSeconds\s*\+\s*1/,
