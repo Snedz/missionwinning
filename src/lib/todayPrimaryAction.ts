@@ -6,12 +6,13 @@ import type { JourneyAction } from '@/lib/missionJourney';
 import type { RecommendedFocus } from '@/lib/score';
 import type { ReadinessInfo } from '@/lib/readinessIndex';
 import type { MuscleGroup } from '@/lib/muscleGroups';
-import type { CompletedWorkoutLog } from '@/types';
+import type { CompletedWorkoutLog, SavedWorkout } from '@/types';
 import type { UnitsPref } from '@/lib/units';
 import { loadCoachTodayOptional } from '@/lib/coach/loadCoachTodayOptional';
 import { track } from '@/lib/analytics';
 import { scaleExercisesByDose } from '@/lib/reentry';
 import { shouldRepeatLastOnToday } from '@/lib/workout/repeatLastSession';
+import { pickHonoredStart } from '@/lib/workout/honorSavedRoutine';
 import type { HomeGymKit } from '@/lib/workout/homeGymKit';
 
 type StartWorkoutFn = (
@@ -48,6 +49,8 @@ export type TodayPrimaryActionOpts = {
   recommendedFocus: RecommendedFocus;
   readiness: Record<MuscleGroup, ReadinessInfo>;
   history: CompletedWorkoutLog[];
+  /** Saved notebook — Start honors it before Just Go / Coach peek (`.960`). */
+  savedWorkouts?: SavedWorkout[];
   units: UnitsPref;
   equipment: string;
   homeGymKit?: HomeGymKit | null;
@@ -71,6 +74,7 @@ export async function runTodayPrimaryAction(opts: TodayPrimaryActionOpts): Promi
     recommendedFocus,
     readiness,
     history,
+    savedWorkouts = [],
     units,
     equipment,
     homeGymKit = null,
@@ -99,6 +103,16 @@ export async function runTodayPrimaryAction(opts: TodayPrimaryActionOpts): Promi
   });
 
   if (trainReady) {
+    const honored = pickHonoredStart({ saved: savedWorkouts, history });
+    if (honored) {
+      startWorkout(honored.name, applyDose(honored.exercises), honored.id);
+      track('history_train_again', {
+        exerciseCount: honored.exercises.length,
+        from: 'today_saved',
+      });
+      navigate('/active');
+      return;
+    }
     const coachToday = await loadCoachTodayOptional();
     const last = shouldRepeatLastOnToday({
       hasLiveCoach: !!(coachToday && coachToday.exercises.length > 0),

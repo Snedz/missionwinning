@@ -12,7 +12,7 @@
 
 | Slice | Persistence | Notes |
 |-------|-------------|-------|
-| `savedWorkouts` | zustand persist | Builder templates |
+| `savedWorkouts` | zustand persist | Their notebook — Start honors it (`.960`) |
 | `workoutHistory` | zustand persist | Completed logs — merges with cloud |
 | `activeWorkout` | memory + persist | In-progress session — `clientId` / `revision` ride for desk → gym (`.958`) |
 | `pendingRemoteOpenSession` | memory | Other-device session waiting on confirm — never silent-wipe |
@@ -24,6 +24,7 @@
 
 | Action | Effect |
 |--------|--------|
+| `addSavedWorkout` / `replaceSavedWorkout` | Append a new named routine, or replace one in place after confirm (`.960`) |
 | `startWorkout` / `startEmptyWorkout` | Begin active session |
 | `logSet` / `logSetAndAdvance` | Record set; superset advance; working-set week-4 events (`week4Logger`) |
 | `completeActiveWorkout` | Mint `clientId`, push to history, enqueue the cloud write on the outbox, analytics, leaderboard push |

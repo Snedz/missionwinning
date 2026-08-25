@@ -23,6 +23,7 @@
 | `useFileUploadQueue.ts` | Track import, Profile backup | per-file progress/retry queue |
 | `useIsCompact.ts` | `ScreenDock`, `JourneyHero` | `matchMedia('(max-width: 767px)')` — **the line between the two designs**, see below |
 | `useVisualViewportKeyboardOverlap.ts` | `AppLayout` | `visualViewport` overlap — lifts the logger dock above the keys |
+| `useHonorSavedRoutine.ts` | Victory / Builder / History save door | `honorSavedRoutine.ts` + store — confirm before write (`.960`) |
 
 ## Conventions
 

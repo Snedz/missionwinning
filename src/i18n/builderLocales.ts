@@ -93,6 +93,18 @@ type BuilderStrings = {
   builderRemoveExercise: string;
   builderRemoveSet: string;
   builderContinue: string;
+  /** Confirm-gated save of a named routine they recognize (`.960`). */
+  honorSaveTitle: string;
+  honorSaveDesc: string;
+  honorReplaceTitle: string;
+  honorReplaceDesc: string;
+  honorRoutineName: string;
+  honorSaveConfirm: string;
+  honorReplaceConfirm: string;
+  honorSaveCancel: string;
+  honorSaveAsRoutine: string;
+  honorSaveEmpty: string;
+  honorSaveEmptyDesc: string;
 };
 
 const en: BuilderStrings = {
@@ -189,10 +201,36 @@ const en: BuilderStrings = {
   builderRemoveExercise: 'Remove exercise',
   builderRemoveSet: 'Remove set',
   builderContinue: 'Continue',
+  honorSaveTitle: 'Save this routine?',
+  honorSaveDesc:
+    'Keep the lifts you just did (or typed) under a name you recognize. Start uses it — Wednesday from logs does not replace it.',
+  honorReplaceTitle: 'Replace this routine?',
+  honorReplaceDesc:
+    '“{{name}}” is already yours. Confirm to update it. Start will use this list.',
+  honorRoutineName: 'Routine name',
+  honorSaveConfirm: 'Save routine',
+  honorReplaceConfirm: 'Replace routine',
+  honorSaveCancel: 'Cancel',
+  honorSaveAsRoutine: 'Save as routine',
+  honorSaveEmpty: 'Nothing to save',
+  honorSaveEmptyDesc: 'A routine needs a name and at least one lift.',
 };
 
 const es: BuilderStrings = {
   ...en,
+  honorSaveTitle: '¿Guardar esta rutina?',
+  honorSaveDesc:
+    'Guarda los levantamientos que acabas de hacer (o escribir) con un nombre que reconozcas. Empezar la usa — el miércoles de tus logs no la sustituye.',
+  honorReplaceTitle: '¿Sustituir esta rutina?',
+  honorReplaceDesc:
+    '“{{name}}” ya es tuya. Confirma para actualizarla. Empezar usará esta lista.',
+  honorRoutineName: 'Nombre de la rutina',
+  honorSaveConfirm: 'Guardar rutina',
+  honorReplaceConfirm: 'Sustituir rutina',
+  honorSaveCancel: 'Cancelar',
+  honorSaveAsRoutine: 'Guardar como rutina',
+  honorSaveEmpty: 'Nada que guardar',
+  honorSaveEmptyDesc: 'Una rutina necesita un nombre y al menos un ejercicio.',
   builderTitle: 'Constructor de entrenamientos',
   builderTabBeginner: 'Principiante',
   builderTabAdvanced: 'Avanzado',

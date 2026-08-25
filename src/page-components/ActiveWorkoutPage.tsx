@@ -139,6 +139,7 @@ export function ActiveWorkoutPage() {
   const tickElapsed = useWorkoutStore((s) => s.tickElapsed);
   const startRestTimer = useWorkoutStore((s) => s.startRestTimer);
   const workoutHistory = useWorkoutStore((s) => s.workoutHistory);
+  const savedWorkouts = useWorkoutStore((s) => s.savedWorkouts);
   const hasHydrated = useWorkoutStore((s) => s.hasHydrated);
   const pendingRemoteOpenSession = useWorkoutStore((s) => s.pendingRemoteOpenSession);
   const acceptPendingRemoteOpenSession = useWorkoutStore(
@@ -585,7 +586,15 @@ export function ActiveWorkoutPage() {
      * Cold devices stay freestyle empty. Do not seed Just Go or Coach here —
      * Train is the logger; rest stays off until a set is logged.
      */
-    const start = resolveActiveEmptyStart(workoutHistory);
+    const start = resolveActiveEmptyStart(workoutHistory, savedWorkouts);
+    if (start.kind === 'saved') {
+      startWorkout(start.name, start.exercises, start.id);
+      track('history_train_again', {
+        exerciseCount: start.exercises.length,
+        from: 'active_empty_saved',
+      });
+      return;
+    }
     if (start.kind === 'repeat_last') {
       startWorkout(start.name, start.exercises);
       track('history_train_again', {
@@ -609,7 +618,7 @@ export function ActiveWorkoutPage() {
   };
 
   if (!activeWorkout) {
-    const emptyStart = resolveActiveEmptyStart(workoutHistory);
+    const emptyStart = resolveActiveEmptyStart(workoutHistory, savedWorkouts);
     const equipment = hasHydrated ? readRaw(STORAGE_KEYS.equipment) : null;
     const preview =
       emptyStart.kind === 'empty' && equipment
@@ -623,6 +632,7 @@ export function ActiveWorkoutPage() {
         previewExerciseCount={preview?.exercises.length}
         hydrated={hasHydrated}
         hasLastSession={emptyStart.kind === 'repeat_last'}
+        savedRoutineName={emptyStart.kind === 'saved' ? emptyStart.name : undefined}
         victoryOpen={victoryOpen}
         victorySummary={victorySummary}
         onVictoryOpenChange={setVictoryOpen}

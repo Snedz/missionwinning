@@ -17,6 +17,11 @@ type TodayStrings = {
   todayRepeatLastKicker: string;
   todayRepeatLastTitle: string;
   todayRepeatLastDesc: string;
+  /** Today hero when Start honors a saved routine (`.960`). */
+  todaySavedRoutineCta: string;
+  todaySavedRoutineKicker: string;
+  todaySavedRoutineTitle: string;
+  todaySavedRoutineDesc: string;
   todaySectionProgress: string;
   todaySectionProgressDesc: string;
   todayQuickOptions: string;
@@ -311,6 +316,10 @@ const en: TodayStrings = {
   todayDayStreak: '{{count}}-day streak',
   todayStartWorkout: "Start Today's Workout",
   todayRepeatLastCta: 'Repeat last session',
+  todaySavedRoutineCta: 'Start {{name}}',
+  todaySavedRoutineKicker: 'Your routine',
+  todaySavedRoutineTitle: '{{name}}',
+  todaySavedRoutineDesc: 'The routine you saved — last loads stay on the set row.',
   todayRepeatLastKicker: 'Train',
   todayRepeatLastTitle: '{{name}}',
   todayRepeatLastDesc: 'Same as last time — last loads are ready in the set log.',
@@ -621,6 +630,10 @@ const coachPlanDefaults = {
   todayRepeatLastKicker: en.todayRepeatLastKicker,
   todayRepeatLastTitle: en.todayRepeatLastTitle,
   todayRepeatLastDesc: en.todayRepeatLastDesc,
+  todaySavedRoutineCta: en.todaySavedRoutineCta,
+  todaySavedRoutineKicker: en.todaySavedRoutineKicker,
+  todaySavedRoutineTitle: en.todaySavedRoutineTitle,
+  todaySavedRoutineDesc: en.todaySavedRoutineDesc,
   todayReturnLast: en.todayReturnLast,
   todayReturnNext: en.todayReturnNext,
   coachNextDayEyebrow: en.coachNextDayEyebrow,
@@ -643,6 +656,14 @@ const es: TodayStrings = {
   todayDayStreak: 'Racha de {{count}} días',
   todayShowAll: 'Mostrar todo',
   todayStartWorkout: 'Empezar entrenamiento de hoy',
+  todayRepeatLastCta: 'Repetir la última sesión',
+  todayRepeatLastKicker: 'Entrenar',
+  todayRepeatLastTitle: '{{name}}',
+  todayRepeatLastDesc: 'Igual que la última vez — las cargas quedan en la fila.',
+  todaySavedRoutineCta: 'Empezar {{name}}',
+  todaySavedRoutineKicker: 'Tu rutina',
+  todaySavedRoutineTitle: '{{name}}',
+  todaySavedRoutineDesc: 'La rutina que guardaste — las cargas quedan en la fila.',
   todaySectionProgress: 'Progreso y herramientas',
   todaySectionProgressDesc: 'Preparación, estadísticas e historial',
   todayQuickOptions: 'Opciones rápidas',
@@ -1915,6 +1936,14 @@ const LOCALES: Partial<Record<string, TodayStrings>> = {
     todayBasicEncouragement:
       'Um passo de cada vez. Saúde para todos — treine, alimente-se, mova-se e aprenda.',
     todayStartWorkout: 'Começar treino de hoje',
+    todayRepeatLastCta: 'Repetir a última sessão',
+    todayRepeatLastKicker: 'Treinar',
+    todayRepeatLastTitle: '{{name}}',
+    todayRepeatLastDesc: 'Igual à última vez — as cargas ficam na linha.',
+    todaySavedRoutineCta: 'Começar {{name}}',
+    todaySavedRoutineKicker: 'A tua rotina',
+    todaySavedRoutineTitle: '{{name}}',
+    todaySavedRoutineDesc: 'A rotina que guardaste — as cargas ficam na linha.',
     todayCoachChipAction: 'Abrir',
     coachPlanTitle: 'Coach IA — plano semanal',
     coachPlanCta: 'Gerar esta semana',

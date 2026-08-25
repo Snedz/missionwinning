@@ -8,7 +8,7 @@
  */
 import type { CoachSessionLike, JustGoSession } from '@/lib/justGoSession';
 
-export type JustGoHeroSource = JustGoSession['source'] | 'repeat_last';
+export type JustGoHeroSource = JustGoSession['source'] | 'repeat_last' | 'saved';
 
 export type JustGoHeroMeta = {
   focusLabel: string;
@@ -26,6 +26,8 @@ export type BuildJustGoHeroMetaOpts = {
   coach: CoachSessionLike | null;
   /** Last completed session name when Repeat Last owns the tap (`.717`). */
   repeatLastName?: string | null;
+  /** Saved notebook name when honor owns the tap (`.960`). */
+  savedRoutineName?: string | null;
 };
 
 /**
@@ -35,6 +37,14 @@ export type BuildJustGoHeroMetaOpts = {
 export function buildJustGoHeroMeta(opts: BuildJustGoHeroMetaOpts): JustGoHeroMeta | null {
   if (opts.hasActiveWorkout || !opts.trainReady) return null;
   const focusLabel = opts.focusLabel.trim() || 'Training';
+  const savedName = opts.savedRoutineName?.trim();
+  if (savedName) {
+    return {
+      focusLabel,
+      source: 'saved',
+      sessionName: savedName,
+    };
+  }
   const coach = opts.coach;
   if (coach && coach.exercises.length > 0) {
     return {
@@ -82,6 +92,22 @@ export function resolveJustGoHeroCopy(
   opts?: ResolveJustGoHeroCopyOpts
 ): JustGoHeroCopy {
   const week1Second = opts?.completedSessions === 1;
+
+  if (meta.source === 'saved') {
+    const name = meta.sessionName?.trim() || meta.focusLabel;
+    return {
+      labelKey: 'todaySavedRoutineCta',
+      defaultLabel: 'Start {{name}}',
+      kickerKey: 'todaySavedRoutineKicker',
+      defaultKicker: 'Your routine',
+      titleKey: 'todaySavedRoutineTitle',
+      defaultTitle: name,
+      titleParams: { name },
+      descKey: 'todaySavedRoutineDesc',
+      defaultDesc: 'The routine you saved — last loads stay on the set row.',
+      descParams: { name },
+    };
+  }
 
   if (meta.source === 'repeat_last') {
     const name = meta.sessionName?.trim() || meta.focusLabel;

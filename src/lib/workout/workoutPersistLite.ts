@@ -3,7 +3,7 @@
  * For cold-path shells (Today lean, nav) that only need history counts / flags.
  */
 
-import type { CompletedWorkoutLog } from '@/types';
+import type { CompletedWorkoutLog, SavedWorkout } from '@/types';
 import { WORKOUT_STORE_KEY } from '@/lib/storage/keys';
 import { readJson } from '@/lib/storage/safeStorage';
 import { localDateKey, localDateKeyFromIso } from '@/lib/time/localDate';
@@ -12,6 +12,7 @@ import { streakFromDates } from '@/lib/streakRecency';
 type PersistShape = {
   state?: {
     workoutHistory?: CompletedWorkoutLog[];
+    savedWorkouts?: SavedWorkout[];
     activeWorkout?: unknown;
   };
 };
@@ -24,6 +25,13 @@ export function readWorkoutHistoryFromStorage(): CompletedWorkoutLog[] {
   const parsed = parsePersist();
   const history = parsed?.state?.workoutHistory;
   return Array.isArray(history) ? history : [];
+}
+
+/** Saved notebook for cold Today Start (`.960`). Empty is valid. */
+export function readSavedWorkoutsFromStorage(): SavedWorkout[] {
+  const parsed = parsePersist();
+  const saved = parsed?.state?.savedWorkouts;
+  return Array.isArray(saved) ? saved : [];
 }
 
 /**

@@ -22,6 +22,11 @@ import {
   shouldShowVictoryBackTodaySecondary,
 } from '@/lib/workout/workoutVictory';
 import { useUnits, weightUnitLabel } from '@/hooks/useUnits';
+import { useHonorSavedRoutine } from '@/hooks/useHonorSavedRoutine';
+import { SaveHonoredRoutineDoor } from '@/components/workout/SaveHonoredRoutineDoor';
+import { useWorkoutStore } from '@/store/workoutStore';
+import { templateFromCompletedLog } from '@/lib/workout/historyRetrain';
+import { toast } from '@/hooks/use-toast';
 import { track } from '@/lib/analytics';
 import { upsertTodayPartial } from '@/lib/mindCheckIns';
 import { getCachedReferralCode } from '@/lib/referral';
@@ -92,6 +97,8 @@ export function WorkoutVictorySheet({
   const fmt = useLocaleFormat();
   const units = useUnits();
   const unitLabel = weightUnitLabel(units);
+  const honor = useHonorSavedRoutine();
+  const workoutHistory = useWorkoutStore((s) => s.workoutHistory);
   const [feelSaved, setFeelSaved] = useState(false);
   /** Share ladder full fail only — never cancel. Design review 2A. */
   const [shareFailHint, setShareFailHint] = useState(false);
@@ -312,6 +319,34 @@ export function WorkoutVictorySheet({
           />
         ) : null}
 
+        {workoutId ? (
+          <Button
+            type="button"
+            variant="outline"
+            className="w-full min-h-[44px] tap-target"
+            data-testid="victory-save-routine"
+            onClick={() => {
+              const log = workoutHistory.find((row) => row.id === workoutId);
+              const template = log ? templateFromCompletedLog(log) : null;
+              const opened = honor.requestSave({
+                name: template?.name ?? summary.workoutName,
+                exercises: template?.exercises,
+              });
+              if (opened.kind === 'empty') {
+                toast({
+                  title: t('honorSaveEmpty', { defaultValue: 'Nothing to save' }),
+                  description: t('honorSaveEmptyDesc', {
+                    defaultValue: 'A routine needs a name and at least one lift.',
+                  }),
+                  variant: 'destructive',
+                });
+              }
+            }}
+          >
+            {t('honorSaveAsRoutine', { defaultValue: 'Save as routine' })}
+          </Button>
+        ) : null}
+
         <details className="group border-2 border-border bg-card">
           <summary
             className="flex min-h-[44px] cursor-pointer list-none items-center justify-center px-4 py-3 text-sm font-semibold text-foreground [&::-webkit-details-marker]:hidden"
@@ -408,6 +443,25 @@ export function WorkoutVictorySheet({
             </Button>
           )}
         </div>
+        <SaveHonoredRoutineDoor
+          open={!!honor.door}
+          name={honor.door?.draft.name ?? summary.workoutName}
+          onNameChange={honor.setName}
+          replaceExisting={!!honor.door?.replaceExisting}
+          onCancel={honor.cancelSave}
+          onConfirm={() => {
+            const result = honor.confirmSave();
+            if (result.kind === 'added' || result.kind === 'replaced') {
+              toast({
+                title: t('builderWorkoutSaved', { defaultValue: 'Workout saved' }),
+                description: t('builderWorkoutSavedDesc', {
+                  name: result.name,
+                  defaultValue: `"${result.name}" is ready to use.`,
+                }),
+              });
+            }
+          }}
+        />
       </DialogContent>
     </Dialog>
   );

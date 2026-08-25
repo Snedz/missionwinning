@@ -356,6 +356,11 @@ function StartDockHero({
 
   const label = activeWorkout
     ? t('resumeWorkout', { defaultValue: 'Resume workout' })
+    : justGoMeta?.source === 'saved'
+      ? t('todaySavedRoutineCta', {
+          name: justGoMeta.sessionName ?? '',
+          defaultValue: 'Start {{name}}',
+        })
     : justGoMeta?.source === 'repeat_last'
       ? t('todayRepeatLastCta', { defaultValue: 'Repeat last session' })
       : justGoMeta?.source === 'coach'

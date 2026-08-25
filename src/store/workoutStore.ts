@@ -78,6 +78,10 @@ interface WorkoutState {
   hasHydrated: boolean;
 
   addSavedWorkout: (workout: Omit<SavedWorkout, "id" | "createdAt">) => void;
+  replaceSavedWorkout: (
+    id: string,
+    workout: Omit<SavedWorkout, "id" | "createdAt">
+  ) => void;
   deleteSavedWorkout: (id: string) => void;
   startWorkout: (name: string, exercises: WorkoutExerciseTemplate[], workoutId?: string) => void;
   startEmptyWorkout: () => void;
@@ -186,6 +190,21 @@ export const useWorkoutStore = create<WorkoutState>()(
           createdAt: new Date().toISOString(),
         };
         set((s) => ({ savedWorkouts: [...s.savedWorkouts, newWorkout] }));
+      },
+
+      replaceSavedWorkout: (id, workout) => {
+        set((s) => ({
+          savedWorkouts: s.savedWorkouts.map((row) =>
+            row.id === id
+              ? {
+                  ...row,
+                  name: workout.name,
+                  exercises: workout.exercises,
+                  ...(workout.note !== undefined ? { note: workout.note } : {}),
+                }
+              : row
+          ),
+        }));
       },
 
       deleteSavedWorkout: (id) => {
