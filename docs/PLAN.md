@@ -6,6 +6,257 @@ Living roadmap for the **everything app** (a bodyweight coach app Super Bundle �
 
 ---
 
+## Frozen plan — `.984` Warmup batch (2026-08-25)
+
+> **Frozen.** Implement only this section. Plan commit is `[skip vercel]`.
+> Label: `2026.07-unified.985` — next free after master `.983`
+> (`046fe67e` — Private session notes). Concern stays `.984`.
+> Old stamp `.984` is behind notes `.983`. Do not take `.983`.
+> Notes `.983` + 1RM `.981` + Supersets `.980` + Learn
+> `.978` + week strip `.977` + Quiet Track `.976` + Quiet
+> Move `.974` + cues `.973` + honesty `.971` + tags `.970`
+> + RPE `.967` + Fuel `.965` + resume `.963` are on
+> master. Do not smash them.
+> Do **not** smash week strip `.961`, notebook `.960`,
+> swap/skip `.959`, desk→gym `.958`, `/private` `.957`,
+> close receipt `.956`, Wednesday `.955`, Today Start
+> `.954`, or identity `.949`.
+> Implement commit may allow one Preview. No empty-commit
+> retrigger. No `PRIVATE_MODE` flip. No promote. Live www
+> stays `.696`. Guest path. First set stays ungated.
+> Confirm-gated writes. Brand: **Log a set. Offline.** /
+> No account. No wearable. Coach stays opt-in /
+> skippable. Train + Coach only. Today stays one Start.
+
+Tags (`.970`) already mark warmup.
+Strong paywalls the calculator that
+batches them. After supersets,
+leftover in-set grammar: add a
+small batch of warmup sets from
+**this work set** without a formula
+paywall. Simple fractions. Athlete
+can edit or delete any of them.
+Empty invents nothing. Warmups stay
+excluded from cites.
+
+### First check (done — no leak)
+
+Read `origin/master` tip `046fe67e`
+/ `.983`. `planWarmupRamp` is the
+garage olympic 40/60/80 × 8/5/3
+insert (`.764`). `shouldShowAddWarmups`
+hides unless `barLoaded` and work
+is above the bar — DB / machine /
+light work get nothing. `.970`
+called that ramp PRO-class / later
+and forbade auto formulas on the
+tag ship. Footer **Add warmups**
+already inserts editable `kind:
+warmup` rows. Cite / Prev /
+Wednesday already skip warmup.
+Today lean still one
+`dock="start"`. `/private` stays
+the tight `.957` lock. Notes
+`.983` / 1RM `.981` / supersets
+`.980` stay. **Nothing to unmount
+first.** One door — do not keep a
+second olympic formula next to the
+batch.
+
+### One concern
+
+From a working set, add a small
+batch of warmup sets (e.g. 3)
+derived from that weight. Simple
+fractions. Athlete-editable.
+Empty invents nothing.
+
+### Investigate (done — hypothesis holds)
+
+| Layer | What exists | Gap this ship closes |
+|-------|-------------|----------------------|
+| Tags `.970` | Optional W / D / F. Warmup is not Prev / vs-last / why-line / Wednesday / Repeat last. | **Keep.** Batch writes the same `kind: 'warmup'`. |
+| Ramp `.764` | `planWarmupRamp` 40/60/80 × 8/5/3. Requires `barLoaded` and work > bar. | Strong-style calculator shape. Hidden for anything that is not a loaded bar. `.970` deferred this as PRO-class. |
+| Footer | **Add warmups** when `shouldShowAddWarmups`. Insert before first incomplete. Idempotent. | Show from any working weight > 0. Simple fractions, not 40/60/80. |
+| Store | `insertWarmupRampOnExercise` + set-row edit + remove last planned / retag. | **Keep edit / delete.** Empty ramp is a no-op. |
+| Cites | `workingSets` / `workingSetIndex` skip warmup. | **Keep.** Mutant that cites a batch row dies. |
+| Paywall | `plateWarmupFree` already forbids premium on the ramp path. | **Keep / extend.** No calculator paywall. |
+| Today / door | One Start. Tight `/private`. Resume `.963`. Notes `.983`. 1RM `.981`. | **Keep.** No batch widget on Today. No four-scene door. |
+
+Hypothesis (verified, keep):
+
+One **pure** `planWarmupBatch`:
+½ / ⅔ / ¾ of the working weight,
+three steps, rounded to the unit
+step. Skip 0, skip ≥ work, skip a
+duplicate after rounding. No work
+weight ⇒ `[]`. No bar floor. No
+`barLoaded` gate. Insert as
+`kind: 'warmup'` through the
+existing store door. Athlete edits
+weight / reps or deletes any row.
+Idempotent when that batch is
+already present. Guest. First set
+ungated. Never required to log.
+`planWarmupRamp` becomes the same
+helper — do not keep a second id.
+
+Closed rules:
+
+1. **Free batch, not a calculator.**
+   No paywall. No custom-% sheet.
+   No saved ramp shop. No injury /
+   pregnancy / PT warmup.
+2. **Simple fractions of this work
+   set.** ½ × 5, ⅔ × 3, ¾ × 1.
+   Not 40/60/80 olympic. Not e1RM.
+   Not a known-max % (`.981` stays
+   on the work row).
+3. **Empty invents nothing.**
+   Weight ≤ 0 ⇒ no rows. After
+   rounding, a step that is 0 or
+   ≥ work is dropped. All dropped
+   ⇒ hide the button.
+4. **Athlete owns the rows.**
+   Edit or delete any warmup.
+   Retag to work is `.970`. Double
+   tap does not invent a second
+   batch.
+5. **Warmup is not evidence.**
+   Cites stay `.970`. Wednesday /
+   Repeat last / Prev / vs-last
+   ignore the batch.
+6. **Surfaces.** Today still one
+   `.primary-action`. Resume /
+   Finish-partial stay `.963`.
+   `/private` stays the tight
+   `.957` lock. No four-scene
+   door. Notes / 1RM / supersets /
+   tags / RPE / cues stay optional.
+
+### Ship (only this)
+
+1. **Pure helper** in
+   `src/lib/workout/warmupRamp.ts`.
+   `planWarmupBatch` (½ / ⅔ / ¾,
+   5 / 3 / 1). `planWarmupRamp` is
+   the same function. Drop the bar
+   floor. `shouldShowAddWarmups`
+   drops `barLoaded`. Deterministic.
+   Inject weight + units. No
+   rewards / social / premium /
+   Health.
+
+2. **Insert + edit.** Existing
+   `insertWarmupRampOnExercise` /
+   `insertWarmupSets`. Footer
+   **Add warmups** shows for any
+   working weight that yields a
+   non-empty batch and is not
+   already present. Set row stays
+   the editor. Empty invents
+   nothing.
+
+3. **Cites stay `.970`.** Batch
+   rows are `kind: 'warmup'`.
+   Mutant that paints vs-last /
+   Prev / Wednesday from a batch
+   row dies.
+
+4. **Help one-liner.** From a
+   work set, Add warmups inserts
+   three simple fractions of that
+   weight. Edit or delete any.
+   Warmup is not last time or
+   Wednesday. Free.
+
+### Tests
+
+- 100 kg ⇒ 50 × 5, 67.5 × 3,
+  75 × 1. Mutant that still emits
+  40/60/80 × 8/5/3 dies.
+- 0 / empty / no working weight
+  ⇒ `[]`. Button hidden.
+- Dumbbell / no-bar 40 kg still
+  yields a batch. Mutant that
+  requires `barLoaded` dies.
+- Step that rounds to 0 or to the
+  work weight is dropped.
+  Duplicate after rounding is
+  dropped. All dropped ⇒ empty.
+- Insert then insert is a no-op.
+  Athlete can change a warmup
+  weight / reps and delete one.
+- Prev / vs-last / after-complete
+  cite ignore batch rows. Warmup-
+  only still invents nothing.
+- Helper + footer + card do not
+  import premium / trial /
+  rewards / social / Health.
+- Today / `/private` / gated door
+  do not import the batch or
+  mount Add warmups. Mutant that
+  mounts it on Today dies.
+- `firstSetUngated` stays green;
+  no Feed / Discord.com / likes /
+  XP / login wall / Force Sync /
+  Session Expired / four-scene
+  door. Today still one
+  `.primary-action`.
+- Resume / Finish-partial
+  contracts stay green. Tags /
+  RPE / cues / supersets / 1RM /
+  notes stay optional. Log set
+  never waits.
+
+### Refuse
+
+Paywall the batch. Auto they
+cannot edit. Injury warmup.
+Custom-% calculator. WeChat home.
+Feed. Discord.com. Marketplace.
+Promote. `PRIVATE_MODE` flip.
+Counsel-hold. Merge. Four-scene
+door. Second Today Start. Do not
+smash notes `.983` / 1RM `.981` /
+supersets `.980` / Learn `.978` /
+week strip `.977` / `.976` /
+`.974` / `.973` / `.971` / `.970`
+/ `.967` / `.965` / `.963` /
+`.960`.
+
+### Docs / ship protocol
+
+- `APP_BUILD_LABEL` → `2026.07-unified.985` (past master `.983`; concern `.984`)
+- LOG heading `## 2026-08-25 — Warmup batch (\`.985\`)` + rotate oldest live entry
+- `CONTEXT.md` `## Now` one-line `.985`; keep notes `.983` + 1RM `.981` + supersets `.980` + Learn `.978`; rotate oldest shipped Now bullet so the block stays ≤25
+- Folder INDEX if the file list or concerns change (`src/lib/workout/INDEX.md`)
+- i18n: reuse `activeAddWarmups` via `t(key, { defaultValue })`
+- Help: one line on getting-started (batch from this work set; simple fractions; edit or delete; warmup is not last time / Wednesday)
+- Plan commit `[skip vercel]`. Implement commit: one Preview max. No empty-commit retrigger.
+- Draft PR against master. Title: `Warmup batch (.984)`. Do not merge. Do not promote. Live www stays `.696`.
+
+### Done when
+
+- This section was frozen before
+  product code.
+- From a working set they can add
+  a small batch of warmup sets
+  derived from that weight.
+  Simple fractions. Athlete can
+  edit or delete any. Empty
+  invents nothing. Warmups stay
+  excluded from cites. No
+  calculator paywall. No injury
+  warmup. Guest. First set
+  ungated. Today still one Start.
+  `/private` stays `.957`. Unit
+  tests. tsc clean. Label `.985`.
+  Draft PR against master. Title:
+  `Warmup batch (.984)`.
+
+---
+
 ## Frozen plan — `.982` Private session notes (2026-08-25)
 
 > **Frozen.** Implement only this section. Plan commit is `[skip vercel]`.
