@@ -34,6 +34,7 @@ Root-level `@/lib/{name}` paths re-export from here for compatibility — prefer
 19. `activeWorkoutHelpers.ts` — also `resolveExerciseNextTarget` + loadPct/menu gates (`.418`); `formatPrevSetLabels` + footer peel (`.425`)
 20. `exerciseNote.ts` — per-exercise diary seed (unset vs clear) + history wrap (`.748`)
 21. `garageSwap.ts` — 1–2 bodyweight/garage stand-ins on a logger or Coach plan line (`.752`); not a generate rewrite
+21b. `sessionExerciseOnce.ts` — skip or swap this exercise **this session** (`.959`); does not write Wednesday / saved / plan
 22. `rir.ts` — optional integer 0–5 reps in reserve; empty valid; never replaces RPE (`.756`)
 23. `tempo.ts` — optional ecc/pause/con parse + last-tempo recall (`.757`)
 24. `lastSetGhost.ts` — last **working** set ghost (not warmup W); one-tap accept (`.759`). Dial prefill reuses the same reader via `lastWorkingForDial` (`.946` / F-013)
@@ -81,6 +82,7 @@ Root-level `@/lib/{name}` paths re-export from here for compatibility — prefer
 | `loggerSpeed.test.ts` | Use-next offer rules (`.288`) |
 | `exerciseNote.test.ts` | Prefill / clear / persist seed + first-paint guards (`.748`) |
 | `garageSwap.test.ts` | Garage list ≤2, load clear, plan-line swap, wiring (`.752`) |
+| `sessionExerciseOnce.test.ts` | Skip once leaves the rest; swap once does not change Wednesday; empty invents nothing (`.959`) |
 | `rir.test.ts` | Optional 0–5 parse; empty OK; Log set ungated (`.756`) |
 | `tempo.test.ts` | Optional tempo parse / last-tempo / not a Log set gate (`.757`) |
 | `lastSetGhost.test.ts` | First-ever no ghost; returning last working set not warmup (`.759`) |

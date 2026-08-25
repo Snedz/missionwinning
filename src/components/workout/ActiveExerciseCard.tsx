@@ -33,6 +33,7 @@ import {
   shouldShowAddWarmups,
 } from '@/lib/workout/warmupRamp';
 import { getFormGuideOrCues } from '@/lib/formGuides';
+import { isSkippedThisSession } from '@/lib/workout/sessionExerciseOnce';
 import { canStartDrop } from '@/lib/workout/dropSet';
 import { recallLastRest, resolveRestForNextSet } from '@/lib/workout/restTimer';
 import { supersetLabel } from '@/lib/workout/superset';
@@ -77,6 +78,7 @@ type Props = {
   onUnlinkSuperset: () => void;
   onToggleNote: () => void;
   onToggleSwap: () => void;
+  onSkip: () => void;
   onRemove: () => void;
   onSwapTo: (id: string) => void;
   onNoteChange: (note: string) => void;
@@ -125,6 +127,7 @@ export function ActiveExerciseCard({
   onUnlinkSuperset,
   onToggleNote,
   onToggleSwap,
+  onSkip,
   onRemove,
   onSwapTo,
   onNoteChange,
@@ -153,6 +156,7 @@ export function ActiveExerciseCard({
   const [menuOpen, setMenuOpen] = useState(false);
   const [footerOpen, setFooterOpen] = useState(false);
   const noteRef = useRef<HTMLInputElement>(null);
+  const skipped = isSkippedThisSession(exLog);
   const hasCompleted = exerciseHasCompletedSet(exLog.sets);
   const hasPlanned = exerciseHasPlannedSet(exLog.sets);
   const restSec = resolveRestForNextSet({
@@ -265,10 +269,12 @@ export function ActiveExerciseCard({
         onUnlinkSuperset={onUnlinkSuperset}
         onToggleNote={onToggleNote}
         onToggleSwap={onToggleSwap}
+        onSkip={onSkip}
         onRemove={onRemove}
         onSwapTo={onSwapTo}
         onRepeatLast={onRepeatLast}
       />
+      {skipped ? null : (
       <CardContent className="min-w-0 space-y-2 p-3 pt-0">
         <div ref={holdsActiveExercise(nextSet, exIdx) ? nextSetRef : undefined}>
           <SetLogTable
@@ -328,6 +334,7 @@ export function ActiveExerciseCard({
           onAddWarmups={onAddWarmups}
         />
       </CardContent>
+      )}
     </Card>
   );
 }

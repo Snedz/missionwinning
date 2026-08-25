@@ -42,8 +42,7 @@ import {
   touchOpenSession,
   type OpenSessionSnapshot,
 } from "@/lib/workout/openSessionContinuity";
-import { applyGarageSwapToActive, garageEquipmentChanged } from "@/lib/workout/garageSwap";
-import { getExerciseById } from "@/data/exercises";
+import { skipExerciseThisSession, swapExerciseThisSession } from "@/lib/workout/sessionExerciseOnce";
 import { readRaw, writeRaw } from "@/lib/storage/safeStorage";
 import { STORAGE_KEYS } from "@/lib/storage/keys";
 import { browserStorage, dedupeWrites, elapsedSecondsFrom } from "@/store/persistDedupe";
@@ -122,6 +121,8 @@ interface WorkoutState {
   /** Removes the last not-yet-completed set (planned-too-many case). */
   removeLastPlannedSet: (exerciseIndex: number) => void;
   removeExerciseFromActive: (exerciseIndex: number) => void;
+  /** Skip this exercise once — this session. Keeps logged sets. */
+  skipExerciseInActive: (exerciseIndex: number) => void;
   /** Swap to a different exercise — only while no sets are completed. */
   replaceExerciseInActive: (
     exerciseIndex: number,
@@ -672,22 +673,27 @@ export const useWorkoutStore = create<WorkoutState>()(
         });
       },
 
+      skipExerciseInActive: (exerciseIndex) => {
+        set((s) => {
+          if (!s.activeWorkout) return s;
+          const exercises = skipExerciseThisSession(s.activeWorkout.exercises, exerciseIndex);
+          if (!exercises) return s;
+          return { activeWorkout: { ...s.activeWorkout, exercises } };
+        });
+      },
+
       replaceExerciseInActive: (exerciseIndex, newExerciseId, muscleGroups) => {
         set((s) => {
           if (!s.activeWorkout) return s;
-          const exercises = [...s.activeWorkout.exercises];
-          const ex = exercises[exerciseIndex];
-          if (!ex || ex.sets.some((x) => x.completed)) return s;
-          const from = getExerciseById(ex.exerciseId);
-          const to = getExerciseById(newExerciseId);
-          exercises[exerciseIndex] = applyHistoryNote(
-            applyGarageSwapToActive({
-              current: ex,
-              nextId: newExerciseId,
-              nextMuscleGroups: muscleGroups,
-              equipmentChanged: garageEquipmentChanged(from?.equipment, to?.equipment),
-            }),
-            s.workoutHistory
+          const swapped = swapExerciseThisSession(
+            s.activeWorkout.exercises,
+            exerciseIndex,
+            newExerciseId,
+            muscleGroups
+          );
+          if (!swapped) return s;
+          const exercises = swapped.map((ex, i) =>
+            i === exerciseIndex ? applyHistoryNote(ex, s.workoutHistory) : ex
           );
           return { activeWorkout: { ...s.activeWorkout, exercises } };
         });

@@ -25,6 +25,13 @@ type ActiveWorkoutStrings = {
   activeSwapTitle: string;
   activeSwapPlaceholder: string;
   activeSwapGarageLead: string;
+  /** Skip / swap this exercise once, this session (`.959`). */
+  activeSkipThisExerciseHold: string;
+  activeSkippedThisSession: string;
+  activeSwapThisSessionEyebrow: string;
+  activeSwapThisSessionTitle: string;
+  activeSwapAnotherMovement: string;
+  activeSwapConfirm: string;
   activeChooseExercise: string;
   activeEmptyExercises: string;
   activeFormGuide: string;
@@ -331,6 +338,12 @@ const en: ActiveWorkoutStrings = {
   activeSwapTitle: 'Swap',
   activeSwapPlaceholder: 'Swap to… (same muscles first)',
   activeSwapGarageLead: 'Same pattern. Floor, chair, or a bar you already have.',
+  activeSkipThisExerciseHold: 'Skip this exercise — this session',
+  activeSkippedThisSession: 'Skipped this session',
+  activeSwapThisSessionEyebrow: 'This session',
+  activeSwapThisSessionTitle: 'Swap this exercise',
+  activeSwapAnotherMovement: 'Another movement',
+  activeSwapConfirm: 'Swap this session',
   activeChooseExercise: 'Choose exercise...',
   activeEmptyExercises: 'Add an exercise to begin logging sets.',
   activeFormGuide: 'Form guide',

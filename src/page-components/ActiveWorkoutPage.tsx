@@ -129,6 +129,7 @@ export function ActiveWorkoutPage() {
   const insertWarmupRampOnExercise = useWorkoutStore((s) => s.insertWarmupRampOnExercise);
   const removeLastPlannedSet = useWorkoutStore((s) => s.removeLastPlannedSet);
   const removeExerciseFromActive = useWorkoutStore((s) => s.removeExerciseFromActive);
+  const skipExerciseInActive = useWorkoutStore((s) => s.skipExerciseInActive);
   const replaceExerciseInActive = useWorkoutStore((s) => s.replaceExerciseInActive);
   const setExerciseNote = useWorkoutStore((s) => s.setExerciseNote);
   const setSessionNote = useWorkoutStore((s) => s.setSessionNote);
@@ -701,6 +702,12 @@ export function ActiveWorkoutPage() {
           onUnlinkSuperset={(exIdx) => unlinkSuperset(exIdx)}
           onToggleNote={(exIdx) => setNoteOpenIdx((cur) => toggleOpenIdx(cur, exIdx))}
           onToggleSwap={(exIdx) => setSwapOpenIdx((cur) => toggleOpenIdx(cur, exIdx))}
+          onSkip={(exIdx) => {
+            skipExerciseInActive(exIdx);
+            setSwapOpenIdx(null);
+            setNoteOpenIdx(null);
+            setSetInputs({});
+          }}
           onRemove={(exIdx) => {
             removeExerciseFromActive(exIdx);
             setSwapOpenIdx(null);

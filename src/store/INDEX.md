@@ -32,6 +32,7 @@
 | `restoreActiveWorkout` | Adopt a remote open session without minting a second `clientId` (`.958`) |
 | `ensureOpenSessionIdentity` | Stamp `clientId` once on a pre-`.958` persist |
 | `cancelActiveWorkout` | Discard in-progress. Tombstones the open session so the other surface does not reopen it |
+| `skipExerciseInActive` | Skip this exercise once, this session (`.959`). Keeps logged sets. Does not rewrite the plan |
 
 ## Who reads / writes
 

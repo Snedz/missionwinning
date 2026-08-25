@@ -6,6 +6,165 @@ Living roadmap for the **everything app** (a bodyweight coach app Super Bundle �
 
 ---
 
+## Frozen plan — `.959` Swap / skip this exercise, this session (2026-08-24)
+
+> **Frozen.** Implement only this section. Plan commit is `[skip vercel]`.
+> Label: `2026.07-unified.959` — next free after master `.958`
+> (`#795` squash `55a0c6c9` — desk → gym one session).
+> Do **not** smash desk→gym `.958`, `/private` `.957`, close
+> receipt `.956`, Wednesday `.955`, or Today Start `.954`.
+> Implement commit may allow one Preview. No empty-commit retrigger.
+> No `PRIVATE_MODE` flip. No promote. Live www stays `.696`.
+> Guest path. First set stays ungated. Confirm-gated writes.
+> Brand: **Log a set. Offline.** / No account. No wearable.
+> Coach stays opt-in / skippable. Train + Coach only.
+
+Wednesday (`.955`) and Today cite (`.954`) already tell them
+*what*. Week-4 dies when the cable is taken and the session
+stalls. A rival ships swap as Trainer Pro. Another lets them
+edit the notebook. We need logger grammar: skip or swap
+**this exercise once, this session**. The plan stays. The
+why-line does not become a new program.
+
+### One concern
+
+Skip or swap this exercise, this session. Not a new program.
+Not a plan rewrite. Not a fail identity.
+
+### Investigate (done — hypothesis holds)
+
+Read `origin/master` tip `55a0c6c9` / `.958` (`#795`).
+
+| Layer | What exists | Gap this ship closes |
+|-------|-------------|----------------------|
+| Remove | `removeExerciseFromActive` + HoldToConfirm **Remove exercise**. Deletes the card. With logged sets it **discards** them. | Remove is a wipe, not skip. Skip must leave logged sets and the rest of the session. |
+| Next-set pointer | `findNextSet` lands on the first incomplete set. `laterLiftVisible` hides later lifts until **any** completed set. | A taken cable on the current card stalls unless they wipe it. Skip must advance the pointer without failing. |
+| Garage swap | `listGarageSwaps` = 1–2 floor stand-ins. `replaceExerciseInActive` is session-only and refuses after a completed set. Sheet is one-tap `GarageSwapList`. | Hidden when the map is empty. Not "another movement." One tap is not confirm-gated. |
+| Coach plan swap | `swapExerciseInPlan` + `useCoachPlan.swapExercise` **rewrites** the live plan (`revision++`). | **Do not call from Train.** This-session swap must not touch Wednesday, saved routines, or the why-line. |
+| Wednesday cite | `nextDayFromLogs` walks **named** live history. Same diary + same now ⇒ same Wednesday. | Session name does not change when they skip/swap a lift. Guard: swap once must not change the cite. |
+| Finish | Empty Finish no-ops (`finishBlockedReason` / `completeActiveWorkout` filters 0-set cards). Close receipt `.956` stays private. | Skip-only (no logged set) invents nothing. Skip after a logged set on another lift still finishes. |
+| Today / private | One Start `.954`. Tight `/private` `.957`. Desk→gym `.958`. | **Do not restyle.** No four-scene door. No Force Sync. |
+
+Hypothesis (verified, keep):
+
+A **pure** helper over the **active** exercise list returns
+the next list (or `null`). Skip once marks that card
+`skippedThisSession` and leaves every other card. Swap once
+replaces the movement on that card **in the open session
+only**. Neither imports `swapExerciseInPlan`, `savePlan`,
+`generateWeek`, or `savedWorkouts`. Empty / missing index /
+same-id swap ⇒ `null` (invents nothing). Confirm in the UI
+before the store writes. Guest path. First set still
+ungated.
+
+Closed rules (no catalog shop, no RNG, no plan write):
+
+1. **Skip this session.** Mark `skippedThisSession`. Keep
+   any completed sets on that card (no silent wipe). Unpair
+   if needed. `findNextSet` / `laterLiftVisible` treat a
+   skipped card as passed so the rest of the session shows.
+   Finish still requires ≥1 completed set somewhere — skip
+   alone does not mint a log and is not a fail identity.
+2. **Swap this session.** No completed set on that card ⇒
+   replace `exerciseId` in place (reuse
+   `applyGarageSwapToActive` for load-clear on equipment
+   change). Completed set on that card ⇒ `null` (they skip
+   remaining; do not reattribute logged work). Next id must
+   be a different catalog movement. Never write the Coach
+   plan, saved routines, or Wednesday.
+3. **Candidates.** Garage 1–2 stay the fast stand-ins when
+   the map has them. **Another movement** is the existing
+   `ExercisePicker` in the same sheet, confirm in the footer
+   (Add-exercise door). Not a program shop. Not Trainer.
+4. **Confirm.** Skip = HoldToConfirm. Swap write = sheet
+   footer confirm (garage tap still goes through that
+   confirm, not a silent replace). Cancel leaves the list
+   unchanged.
+5. **Surfaces.** Today still one `.primary-action`.
+   Wednesday still a cite. Close receipt stays private.
+   `/private` stays the tight `.957` lock.
+
+### Ship (only this)
+
+1. **Pure helper** `src/lib/workout/sessionExerciseOnce.ts`.
+   `skipExerciseThisSession(exercises, index)` and
+   `swapExerciseThisSession(exercises, index, nextId,
+   nextMuscleGroups?)`. Input/output is the active list
+   only. Deterministic. No plan / saved / generateWeek
+   import.
+
+2. **Pointer.** `findNextSet` and `laterLiftVisible` skip
+   `skippedThisSession` cards so a taken cable does not
+   stall the rest of the session.
+
+3. **Store.** `skipExerciseInActive(index)` applies the
+   helper (confirm already happened). Swap keeps
+   `replaceExerciseInActive` as the write, fed only by the
+   helper (still refuses after a completed set). Do not
+   call `swapExerciseInPlan` from `/active`.
+
+4. **Train UI** on the active exercise: **Skip this
+   exercise** (HoldToConfirm, this session) and **Swap**
+   (sheet: garage shortcuts if any + another movement +
+   confirm). Not `.primary-action`. Log a set stays the
+   red. Guest. No login wall.
+
+5. **Help one-liner.** Cable taken → skip this one or swap
+   to another movement **this session**. The week / saved
+   routine does not change.
+
+### Tests
+
+- Skip once leaves the rest of the session (other cards
+  intact; next set advances). Mutant that wipes siblings
+  dies.
+- Skip does not fail the session: a logged set on another
+  lift still finishes; skip-only (no completed set) does
+  not mint a log.
+- Swap once does not change next-day cite (`nextDayFromLogs`
+  same name before/after a this-session swap). Mutant that
+  calls `swapExerciseInPlan` / `savePlan` / `generateWeek`
+  from this path dies.
+- Empty session / missing index / same-id swap invents
+  nothing (`null`).
+- Confirm-gated: skip/swap write is not a silent one-tap
+  wipe. Source: HoldToConfirm on skip; swap confirm in the
+  sheet footer.
+- `firstSetUngated` stays green; no Feed / Top 8 / likes /
+  login wall / Force Sync strings. Today still one
+  `.primary-action`. `/private` is not remounted as the
+  four-scene door.
+
+### Refuse
+
+Injury-as-product. Counsel-hold (field test / PT /
+pregnancy). Trainer-rail. Permanent rewrite without asking.
+Marketplace substitute program. Four-scene door. Force Sync.
+Watch. Super Bundle on Today. Promote live. `PRIVATE_MODE`
+flip. Merge. Today / Wednesday / close-receipt / desk→gym
+rewrite.
+
+### Docs / ship protocol
+
+- `APP_BUILD_LABEL` → `2026.07-unified.959`
+- LOG heading `## 2026-08-24 — Swap / skip this exercise, this session (\`.959\`)` + rotate oldest live entry (`.943`)
+- `CONTEXT.md` `## Now` one-line `.959`; rotate oldest shipped Now bullet (`.944`) so the block stays ≤25
+- Folder INDEX only if a file list changes (`src/lib/workout/INDEX.md`, maybe `src/components/workout/INDEX.md`)
+- i18n: skip / swap-this-session copy via `t(key, { defaultValue })` on `activeWorkoutLocales.ts`
+- Help: one line on getting-started (cable taken → skip or swap this session)
+- Plan commit `[skip vercel]`. Implement commit: one Preview max. No empty-commit retrigger.
+- Draft PR against master. Do not merge. Do not promote. Live www stays `.696`.
+
+### Done when
+
+- This section was frozen before product code.
+- Skip once leaves the rest. Swap once does not change
+  Wednesday. Empty invents nothing. Plan / saved stay.
+- Label `.959`. Draft PR against master. Title:
+  `Swap / skip this exercise, this session (.959)`.
+
+---
+
 ## Frozen plan — `.958` Desk → gym, one session (2026-08-24)
 
 > **Frozen.** Implement only this section. Plan commit is `[skip vercel]`.

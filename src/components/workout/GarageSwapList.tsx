@@ -5,14 +5,17 @@
  */
 
 import { useTranslation } from 'react-i18next';
+import { cn } from '@/lib/utils';
 import type { Exercise } from '@/types';
 
 type Props = {
   options: Exercise[];
   onChoose: (id: string) => void;
+  /** Pending pick — confirm still happens in the Train sheet footer (`.959`). */
+  selectedId?: string;
 };
 
-export function GarageSwapList({ options, onChoose }: Props) {
+export function GarageSwapList({ options, onChoose, selectedId }: Props) {
   const { t } = useTranslation();
 
   return (
@@ -29,7 +32,12 @@ export function GarageSwapList({ options, onChoose }: Props) {
               type="button"
               data-testid="garage-swap-option"
               data-swap-id={ex.id}
-              className="flex min-h-[44px] w-full flex-col items-start gap-0.5 border-2 border-border bg-background px-3 py-2.5 text-start hover:bg-muted"
+              className={cn(
+                'flex min-h-[44px] w-full flex-col items-start gap-0.5 border-2 px-3 py-2.5 text-start hover:bg-muted',
+                selectedId === ex.id
+                  ? 'border-primary bg-muted'
+                  : 'border-border bg-background'
+              )}
               onClick={() => onChoose(ex.id)}
             >
               <span className="font-semibold">{ex.name}</span>
