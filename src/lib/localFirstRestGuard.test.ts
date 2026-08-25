@@ -88,17 +88,21 @@ describe('localFirstRestGuard', () => {
   it('Active log-set → rest does not await fetch/outbox/auth before startRestTimer', () => {
     const page = read('src/page-components/ActiveWorkoutPage.tsx');
     const fn = page.match(
-      /const handleLogSet[\s\S]*?startRestTimer\(rest\.restSeconds(?:,\s*exerciseId)?\);[\s\S]*?\n {2}\};/
+      /const handleLogSet[\s\S]*?startRestTimer\(rest\.restSeconds,\s*(?:rest\.rememberExerciseId\s*\?\?\s*)?exerciseId\);[\s\S]*?\n {2}\};/
     );
     assert.ok(fn, 'handleLogSet rest block missing');
     const body = fn![0];
     // Mid-set must stay sync — no await of any kind (session-expired / sync
-    // fail-open; Kaizen Strong acceptance).
+    // fail-open; Kaizen Strong acceptance). After a group round, rest keys
+    // the first peer (`rememberExerciseId`), never a cloud lookup.
     assert.doesNotMatch(body, /\bawait\b/);
     assert.doesNotMatch(body, /\basync\b/);
     assert.doesNotMatch(body, /getUser|getSession|flushOutbox|flush\s*\(/);
     assert.match(body, /planLogSetRest/);
-    assert.match(body, /startRestTimer\(rest\.restSeconds,\s*exerciseId\)/);
+    assert.match(
+      body,
+      /startRestTimer\(rest\.restSeconds,\s*(?:rest\.rememberExerciseId\s*\?\?\s*)?exerciseId\)/
+    );
   });
 
   it('store logSet + logSetAndAdvance + startRestTimer never await network/auth', () => {
