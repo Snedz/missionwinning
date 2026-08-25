@@ -6,12 +6,14 @@
  * `.946`). One tap accepts weight × reps when the dial has diverged (same
  * patch path as Use next). First-ever is null: the empty row still logs.
  *
- * Optional tempo / RIR / side are *displayed* when the last working set object
- * already carries them. This module does not mint those fields.
+ * Optional tempo / RPE 1–10 / RIR / side are *displayed* when the last working
+ * set object already carries them. This module does not mint those fields.
  *
  * Does not rewrite set-input resolution, last-rest, or repeat-last session.
  */
 import type { CompletedWorkoutLog } from '@/types';
+import { parseOptionalRpe10 } from '@/lib/workout/rpe10';
+import { parseOptionalRir } from '@/lib/workout/rir';
 import { workingSets } from '@/lib/workout/setMath';
 
 export type LastSetGhost = {
@@ -19,6 +21,7 @@ export type LastSetGhost = {
   weight: number;
   tempo?: string;
   rir?: number;
+  rpe10?: number;
   side?: string;
 };
 
@@ -28,18 +31,20 @@ type GhostSourceSet = {
   kind?: string;
   tempo?: unknown;
   rir?: unknown;
+  rpe10?: unknown;
   side?: unknown;
 };
 
-function pickOptionalExtras(set: GhostSourceSet): Pick<LastSetGhost, 'tempo' | 'rir' | 'side'> {
-  const extras: Pick<LastSetGhost, 'tempo' | 'rir' | 'side'> = {};
+function pickOptionalExtras(set: GhostSourceSet): Pick<LastSetGhost, 'tempo' | 'rir' | 'rpe10' | 'side'> {
+  const extras: Pick<LastSetGhost, 'tempo' | 'rir' | 'rpe10' | 'side'> = {};
   if (typeof set.tempo === 'string') {
     const tempo = set.tempo.trim();
     if (tempo) extras.tempo = tempo;
   }
-  if (typeof set.rir === 'number' && Number.isFinite(set.rir)) {
-    extras.rir = set.rir;
-  }
+  const rir = parseOptionalRir(set.rir);
+  if (rir !== undefined) extras.rir = rir;
+  const rpe10 = parseOptionalRpe10(set.rpe10);
+  if (rpe10 !== undefined) extras.rpe10 = rpe10;
   if (typeof set.side === 'string') {
     const side = set.side.trim();
     if (side) extras.side = side;
@@ -81,10 +86,11 @@ export function shouldOfferLastSetGhost(
   return ghost.reps !== dial.reps || ghost.weight !== dial.weight;
 }
 
-/** Notation suffix (tempo · RIR · side) — empty when none of those fields exist. */
+/** Notation suffix (tempo · RPE · RIR · side) — empty when none of those fields exist. */
 export function formatLastSetGhostExtras(ghost: LastSetGhost): string {
   const parts: string[] = [];
   if (ghost.tempo) parts.push(ghost.tempo);
+  if (ghost.rpe10 != null) parts.push(`RPE ${ghost.rpe10}`);
   if (ghost.rir != null) parts.push(`RIR ${ghost.rir}`);
   if (ghost.side) parts.push(ghost.side);
   return parts.length ? ` · ${parts.join(' · ')}` : '';

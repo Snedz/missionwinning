@@ -38,6 +38,8 @@ Root-level `@/lib/{name}` paths re-export from here for compatibility — prefer
 21. `garageSwap.ts` — 1–2 bodyweight/garage stand-ins on a logger or Coach plan line (`.752`); not a generate rewrite
 21b. `sessionExerciseOnce.ts` — skip or swap this exercise **this session** (`.959`); does not write Wednesday / saved / plan
 22. `rir.ts` — optional integer 0–5 reps in reserve; empty valid; never replaces RPE (`.756`)
+22b. `rpe10.ts` — optional integer 1–10 RPE; empty valid; never required to log (`.967`)
+22c. `workSetIntensity.ts` — last work set RPE/RIR cite token; empty stays empty (`.967`)
 23. `tempo.ts` — optional ecc/pause/con parse + last-tempo recall (`.757`)
 24. `lastSetGhost.ts` — last **working** set ghost (not warmup W); one-tap accept (`.759`). Dial prefill reuses the same reader via `lastWorkingForDial` (`.946` / F-013)
 25. `vsLastSet.ts` — after-save vs-last delta on the set row (`.760`); working-set index; not ghost prefill
@@ -88,6 +90,8 @@ Root-level `@/lib/{name}` paths re-export from here for compatibility — prefer
 | `garageSwap.test.ts` | Garage list ≤2, load clear, plan-line swap, wiring (`.752`) |
 | `sessionExerciseOnce.test.ts` | Skip once leaves the rest; swap once does not change Wednesday; empty invents nothing (`.959`) |
 | `rir.test.ts` | Optional 0–5 parse; empty OK; Log set ungated (`.756`) |
+| `rpe10.test.ts` | Optional 1–10 parse; empty OK; Log set ungated (`.967`) |
+| `workSetIntensity.test.ts` | Last work set cite; no invented number; warmup skipped (`.967`) |
 | `tempo.test.ts` | Optional tempo parse / last-tempo / not a Log set gate (`.757`) |
 | `lastSetGhost.test.ts` | First-ever no ghost; returning last working set not warmup (`.759`) |
 | `smartDefaultsF013.test.ts` | Empty history no invented default; one prior working set prefills and is editable; cite/ghost not a second Prev (`.946`) |

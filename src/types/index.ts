@@ -82,6 +82,12 @@ export interface LoggedSet {
   kind?: SetKind;
   rpe?: Rpe;
   /**
+   * Optional 1–10 RPE on a logged set (`.967`). Never required; never
+   * replaces categorical `rpe`. Empty / omitted is valid. Do not invent
+   * a number from Easy/Med/Hard.
+   */
+  rpe10?: number;
+  /**
    * Optional reps in reserve, integer 0–5 (`.725`). Never required; never
    * replaces `rpe`. Empty / omitted is valid.
    */
@@ -158,6 +164,8 @@ export interface CompletedWorkoutLog {
       kind?: SetKind;
       rpe?: 'easy' | 'med' | 'hard';
       side?: SetSide;
+      /** Optional 1–10; omitted when the athlete did not rate RPE (`.967`). */
+      rpe10?: number;
       /** Optional 0–5; omitted when the athlete did not rate RIR (`.756`). */
       rir?: number;
       tempo?: SetTempo;

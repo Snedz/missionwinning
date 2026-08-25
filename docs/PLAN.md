@@ -6,6 +6,214 @@ Living roadmap for the **everything app** (a bodyweight coach app Super Bundle �
 
 ---
 
+## Frozen plan — `.967` RPE / RIR on the set row (2026-08-25)
+
+> **Frozen.** Implement only this section. Plan commit is `[skip vercel]`.
+> Label: `2026.07-unified.967` — next free after master `.965`
+> (`#800` squash `18aac904` — this week's Fuel restock).
+> **Skip `.966`** — set tags #802 (parallel).
+> **Skip `.968`** — honesty #801 rebase (parallel).
+> Do **not** smash Fuel `.965`, resume `.963`, week strip
+> `.961`, notebook `.960`, swap/skip `.959`, desk→gym
+> `.958`, `/private` `.957`, close receipt `.956`,
+> Wednesday `.955`, Today Start `.954`, or identity `.949`.
+> Fuel stays off Today / Train / the door.
+> Implement commit may allow one Preview. No empty-commit retrigger.
+> No `PRIVATE_MODE` flip. No promote. Live www stays `.696`.
+> Guest path. First set stays ungated. Confirm-gated writes.
+> Brand: **Log a set. Offline.** / No account. No wearable.
+> Coach stays opt-in / skippable. Train + Coach only.
+> Grammar only — not autoreg as identity.
+
+After tags, vs-last / why / Wednesday
+still treat a grind like a warmup: the
+row has Easy/Med/Hard (coach buckets)
+and optional RIR 0–5, but no 1–10 RPE
+and no cite that quotes last work-set
+intensity. Strong / Boostcamp ship
+RPE+RIR on the tracker. Missing: an
+optional intensity bit so a logged
+grind is visible on the next cite.
+
+### One concern
+
+Optional RPE 1–10 and/or RIR on a
+logged set. Cite / why / Wednesday may
+quote the last work set's numbers when
+present. Empty stays empty.
+
+### Investigate (done — hypothesis holds)
+
+Read `origin/master` tip `18aac904` / `.965`
+(`#800`). Set row + cite + store rating.
+Fuel restock stays on Fuel Show more.
+
+| Layer | What exists | Gap this ship closes |
+|-------|-------------|----------------------|
+| Categorical RPE | `LoggedSet.rpe` is `easy` / `med` / `hard`. `rateSet` + Easy/Med/Hard after log. Coach `progression` / `load` read buckets. Android maps 6–10 → buckets. | 1–10 grammar is not on the row. Do **not** replace buckets or invent a number from Easy/Med/Hard. |
+| RIR | `rir.ts` 0–5. `rateSetRir`. `SetRirSelect` on completed rows. Finish-partial copies when set. | **Keep.** Cite does not quote it yet. |
+| Log set | `logSetAndAdvance` leaves ratings unstamped. First paint is load/reps. | Must stay ungated. Never require RPE/RIR to save. |
+| vs-last | `vsLastSet.ts` is +weight / +reps / same. Warmup quiet. | No intensity bit — last grind looks like last warmup. |
+| Why / cite | `setRowAdjacency` `From last Wed · set 3`. Session why is log-cited, not intensity. | Last work set RPE/RIR never appear. |
+| Wednesday | `nextDayFromLogs` names the next day from the diary. | Name only — no last-work intensity. |
+| Ghost | `lastSetGhost` already shows RIR when present. | Show `rpe10` the same way — do not mint. |
+| Fuel `.965` | Restock list on Fuel Show more. Off Today. | **Keep.** No restock on Today / Train / the door. |
+
+Hypothesis (verified, keep):
+
+A **pure** `rpe10` parse (integer 1–10;
+empty valid; out of range dropped, not
+clamped) plus a **pure** last-work
+intensity reader. Last working set
+(warmup skipped, reps > 0) yields
+`{ rpe10?, rir? }` from fields that
+are actually present. Format is
+`RPE 9` / `RIR 1` / `RPE 9 · RIR 1`
+or `null`. Never invent a 1–10 from
+Easy/Med/Hard. Never walk back to an
+earlier rated set. vs-last / after-
+complete cite / Wednesday append the
+token when present; empty line stays
+the line they already have. Store
+`rateSetRpe10` mirrors `rateSetRir`.
+`logSetAndAdvance` still stamps
+nothing. Guest path. First set
+ungated. Today still one Start.
+Fuel stays off Today.
+
+Closed rules (grammar, not autoreg):
+
+1. **Optional.** Log a set never waits
+   for RPE or RIR. Empty is valid. 1
+   is a real RPE; 0 is a real RIR.
+2. **One numeric home.** `rpe10` is
+   1–10. Categorical `rpe` stays the
+   coach bucket — do not map either
+   way this ship (mapping invents a
+   number or a coach signal).
+3. **Cite quotes, never guesses.**
+   Last work set only. Warmup skipped.
+   No number ⇒ no token.
+4. **Surfaces.** Today still one Start.
+   Resume `.963` kept. Fuel `.965`
+   stays off Today. `/private` stays
+   the tight `.957` lock. No four-scene
+   door. Easy/Med/Hard + RIR + tempo
+   stay. Do not take tags `.966` or
+   honesty `.968`.
+
+### Ship (only this)
+
+1. **Pure parse** `src/lib/workout/rpe10.ts`.
+   `parseOptionalRpe10` · 1–10 integer.
+   Empty / omitted → `undefined`. Out
+   of range dropped, not clamped.
+
+2. **Pure cite** `src/lib/workout/workSetIntensity.ts`.
+   `readWorkSetIntensity` ·
+   `formatWorkSetIntensity` ·
+   `lastWorkSetIntensity` ·
+   `appendIntensityCite`. Deterministic.
+   No `generateWeek`. No load change.
+   No Juggernaut / AP Prompts.
+
+3. **Store door.** `rateSetRpe10` like
+   `rateSetRir`. Field `rpe10?: number`
+   on `LoggedSet` + completed sets.
+   Finish-partial copies when set;
+   omits when empty. `logSetAndAdvance`
+   still unstamped.
+
+4. **Row UI.** Compact `SetRpe10Select`
+   beside `SetRirSelect` on
+   `SetLogTable` (live) + `SetLogRow`
+   (legacy). After log only. Native
+   select. No filled red. LogConsole
+   stays load/reps.
+
+5. **Cite wiring.** After-complete why
+   + vs-last + Wednesday (`nextDayFromLogs`
+   optional token) append last work
+   intensity when present. Ghost extras
+   may show `rpe10` when the last work
+   set already has it.
+
+6. **Help one-liner.** Optional RPE
+   1–10 / RIR on a logged set. Next
+   cite / vs-last / Wednesday may quote
+   the last work set when you logged
+   one. Empty stays empty.
+
+### Tests
+
+- Parse: 1–10 survive; empty / 0 / 11 /
+  8.5 / NaN drop; 1 is real.
+- Log set without RPE/RIR still saves
+  and finishes. Mutant that stamps
+  `rpe10` on `logSetAndAdvance` dies.
+- `rateSetRpe10` persists / clears;
+  out of range dropped; complete keeps
+  when set and omits when empty.
+- Last work set with RPE 9 → cite
+  contains `RPE 9`. Warmup-only / empty
+  → no token. Categorical `hard` alone
+  invents no `RPE 9`.
+- vs-last load token unchanged when
+  intensity is empty; appends when the
+  last work set has a number.
+- Wednesday from logs: intensity
+  present ⇒ shown; empty ⇒ existing
+  name-only cite.
+- `firstSetUngated` stays green; no
+  Feed / Top 8 / likes / login wall /
+  Force Sync / Session Expired /
+  four-scene door / paywall on the
+  field. Today still one
+  `.primary-action`. Coach buckets
+  and RIR 0–5 unchanged. Fuel restock
+  stays off Today.
+
+### Refuse
+
+Autoreg as the pitch. Trainer-rail.
+Paywall the field. "AI suggested"
+load. Promote. `PRIVATE_MODE` flip.
+Counsel-hold. WeChat home. Feed.
+Merge the PR. Four-scene door.
+Force Sync. Session Expired.
+Do not take `.966` / `.968`.
+Do not smash Fuel `.965`, Easy/Med/Hard,
+RIR 0–5, resume, `/private`, or Today Start.
+
+### Docs / ship protocol
+
+- `APP_BUILD_LABEL` → `2026.07-unified.967`
+- LOG heading `## 2026-08-25 — RPE / RIR on the set row (\`.967\`)` + rotate oldest live entry if over budget
+- `CONTEXT.md` `## Now` one-line `.967`; keep `.965` Fuel; rotate oldest shipped Now bullet so the block stays ≤25
+- Folder INDEX only if a file list changes (`src/lib/workout/INDEX.md`, components / store)
+- i18n: RPE 1–10 select keys in `activeWorkoutLocales.ts`; cite tokens stay `RPE n` / `RIR n` (same as ghost extras)
+- Help: one line on getting-started
+- Plan commit `[skip vercel]`. Implement commit: one Preview max. No empty-commit retrigger.
+- Draft PR against master. Do not merge. Do not promote. Live www stays `.696`.
+
+### Done when
+
+- This section was frozen before product code.
+- Optional RPE 1–10 and/or RIR on a
+  logged set. Never required to save.
+- Cite / why / Wednesday mention last
+  work set RPE/RIR when present. Empty
+  stays empty. No invented number.
+- Guest. First set ungated. Today still
+  one Start. Resume `.963` kept. Fuel
+  `.965` stays off Today. `/private`
+  stays `.957`.
+- Unit tests. `tsc` clean.
+- Label `.967`. Draft PR against master.
+  Title: `RPE/RIR on the set row (.967)`.
+
+---
+
 ## Frozen plan — `.965` This week's restock they take (2026-08-25)
 
 > **Frozen.** Implement only this section. Plan commit is `[skip vercel]`.

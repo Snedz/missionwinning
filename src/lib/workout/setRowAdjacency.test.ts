@@ -27,7 +27,7 @@ function isoOnPreviousJsWeekday(jsDay: number): string {
 
 function historyWith(
   exerciseId: string,
-  sets: { reps: number; weight: number; kind?: 'normal' | 'warmup' }[],
+  sets: { reps: number; weight: number; kind?: 'normal' | 'warmup'; rpe10?: number; rir?: number }[],
   completedAt: string,
   over: Partial<CompletedWorkoutLog> = {}
 ): CompletedWorkoutLog[] {
@@ -42,7 +42,13 @@ function historyWith(
       exercises: [
         {
           exerciseId,
-          sets: sets.map((s) => ({ reps: s.reps, weight: s.weight, kind: s.kind ?? 'normal' })),
+          sets: sets.map((s) => ({
+            reps: s.reps,
+            weight: s.weight,
+            kind: s.kind ?? 'normal',
+            ...(s.rpe10 != null ? { rpe10: s.rpe10 } : {}),
+            ...(s.rir != null ? { rir: s.rir } : {}),
+          })),
         },
       ],
       ...over,
@@ -80,6 +86,32 @@ describe('resolveSetRowAdjacency', () => {
     assert.equal(out.cite.weekdayShort, 'Tue');
     assert.equal(out.cite.setFrom, 2);
     assert.equal(out.cite.setTo, 4);
+    assert.equal(out.cite.intensity, undefined);
+  });
+
+  it('attaches last work set RPE when the cited session logged one', () => {
+    const completedAt = isoOnPreviousJsWeekday(3);
+    const hist = historyWith(
+      'bench-press',
+      [
+        { reps: 8, weight: 40, kind: 'warmup' },
+        { reps: 5, weight: 100, rpe10: 9 },
+      ],
+      completedAt
+    );
+    const out = resolveSetRowAdjacency({
+      workoutHistory: hist,
+      exerciseId: 'bench-press',
+      setIdx: 0,
+      planned: { reps: 5, weight: 100 },
+      units: 'metric',
+    });
+    assert.ok(out.cite && out.cite.kind === 'logs');
+    if (out.cite.kind !== 'logs') return;
+    assert.equal(out.cite.intensity, 'RPE 9');
+    const line = formatAdjacencyCiteLine(out.cite, (key, opts) => String(opts?.defaultValue ?? key));
+    assert.match(line ?? '', /RPE 9/);
+    assert.match(line ?? '', /set 2/);
   });
 
   it('cites the matching working set when adding a rep', () => {
@@ -280,6 +312,42 @@ describe('formatAdjacencyCiteLine', () => {
   it('does not invent a Tuesday for a coach cite', () => {
     assert.equal(formatAdjacencyCiteLine({ kind: 'coach' }, t), 'Coach plan');
   });
+
+  it('appends intensity to a Coach plan cite when present', () => {
+    assert.equal(
+      formatAdjacencyCiteLine({ kind: 'coach', intensity: 'RPE 9 · RIR 1' }, t),
+      'Coach plan · RPE 9 · RIR 1'
+    );
+  });
+
+  it('appends last work set intensity when present', () => {
+    const line = formatAdjacencyCiteLine(
+      {
+        kind: 'logs',
+        weekdayMondayOffset: 2,
+        weekdayShort: 'Wed',
+        setFrom: 3,
+        setTo: 3,
+        intensity: 'RPE 9',
+      },
+      t
+    );
+    assert.equal(line, 'From last Wed · set 3 · RPE 9');
+  });
+
+  it('empty intensity leaves the cite unchanged', () => {
+    const line = formatAdjacencyCiteLine(
+      {
+        kind: 'logs',
+        weekdayMondayOffset: 2,
+        weekdayShort: 'Wed',
+        setFrom: 3,
+        setTo: 3,
+      },
+      t
+    );
+    assert.equal(line, 'From last Wed · set 3');
+  });
 });
 
 describe('setRowAdjacency honesty', () => {
@@ -478,6 +546,66 @@ describe('resolveAfterCompleteCite', () => {
       suggestion: { kind: 'load', reps: 5, weight: 100 },
       cite: { kind: 'coach' },
     });
+  });
+
+  it('prescribed cite quotes the completed set RPE/RIR when present', () => {
+    const out = resolveAfterCompleteCite({
+      workoutHistory: [],
+      exerciseId: 'tuck-jump',
+      sessionSets: [
+        { reps: 5, weight: 0, completed: true, kind: 'normal', rpe10: 9, rir: 1 },
+        { reps: 5, weight: 0, completed: false, kind: 'normal' },
+      ],
+      completedSetIdx: 0,
+      prescribed: true,
+      units: 'metric',
+      lastRestSeconds: null,
+    });
+    assert.ok(out);
+    assert.equal(out?.cite.kind, 'coach');
+    if (out?.cite.kind !== 'coach') return;
+    assert.equal(out.cite.intensity, 'RPE 9 · RIR 1');
+    const parts = formatAfterCompleteParts(out, (key, opts) =>
+      String(opts?.defaultValue ?? key)
+    );
+    assert.equal(parts.provenance, 'Coach plan · RPE 9 · RIR 1');
+  });
+
+  it('session cite quotes the completed set RPE when present', () => {
+    const out = resolveAfterCompleteCite({
+      workoutHistory: [],
+      exerciseId: 'bench-press',
+      sessionSets: [
+        { reps: 8, weight: 60, completed: true, kind: 'normal', rpe10: 9 },
+        { reps: 8, weight: 60, completed: false, kind: 'normal' },
+      ],
+      completedSetIdx: 0,
+      units: 'metric',
+      lastRestSeconds: null,
+    });
+    assert.ok(out);
+    assert.equal(out?.cite.kind, 'session');
+    if (out?.cite.kind !== 'session') return;
+    assert.equal(out.cite.intensity, 'RPE 9');
+  });
+
+  it('does not walk back to an earlier rated set when this one is empty', () => {
+    const out = resolveAfterCompleteCite({
+      workoutHistory: [],
+      exerciseId: 'bench-press',
+      sessionSets: [
+        { reps: 8, weight: 60, completed: true, kind: 'normal', rpe10: 9 },
+        { reps: 8, weight: 60, completed: true, kind: 'normal' },
+        { reps: 8, weight: 60, completed: false, kind: 'normal' },
+      ],
+      completedSetIdx: 1,
+      units: 'metric',
+      lastRestSeconds: null,
+    });
+    assert.ok(out);
+    assert.equal(out?.cite.kind, 'session');
+    if (out?.cite.kind !== 'session') return;
+    assert.equal(out.cite.intensity, undefined);
   });
 
   it('does not persist a next-session program bump when every prescribed set hits the top of the range', () => {

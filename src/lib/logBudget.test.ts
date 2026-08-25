@@ -126,6 +126,21 @@ const NEVER_SHIPPED: { from: number; to: number; why: string }[] = [
       'landed as `.950`. No LOG heading on master ever ended in `.948`, so rotating `.947` ' +
       'leaves `.949` as the live floor without a missing section.',
   },
+  {
+    from: 964,
+    to: 964,
+    why:
+      'Reserved for thin-history honesty #801 while Fuel shipped as `.965` and this branch ' +
+      'is `.967`. Honesty rebased as `.968` (do not take). No LOG heading on master ever ' +
+      'ended in `.964`.',
+  },
+  {
+    from: 966,
+    to: 966,
+    why:
+      'Reserved for set tags #802 while this branch is `.967` RPE/RIR on Fuel `.965`. ' +
+      'No LOG heading on master ever ended in `.966`.',
+  },
 ];
 const neverShipped = (x: number) => NEVER_SHIPPED.some((g) => x >= g.from && x <= g.to);
 

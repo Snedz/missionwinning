@@ -78,6 +78,14 @@ export function CoachNextDayCite({ cite, plan, hideStart }: Props) {
           ? t('coachNextDayFromPlan', { defaultValue: "From this week's plan" })
           : t('coachNextDayFromLogs', { defaultValue: 'From your logs' })}
       </p>
+      {cite.intensity ? (
+        <p
+          className="mt-0.5 text-xs tabular-nums text-muted-foreground"
+          data-testid="coach-next-day-intensity"
+        >
+          {cite.intensity}
+        </p>
+      ) : null}
       <CoachLogCite className="mt-1" />
       {showStart ? (
         <Button

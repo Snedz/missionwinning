@@ -15,6 +15,7 @@ import type {
 } from "@/types";
 import { countsTowardVolume } from "@/lib/workout/setKind";
 import { parseOptionalRir } from "@/lib/workout/rir";
+import { parseOptionalRpe10 } from "@/lib/workout/rpe10";
 import { lastTempoForExercise, parseOptionalTempo, rememberLastTempo } from "@/lib/workout/tempo";
 import { advanceAfterLog, pairWithNext, unpair } from "@/lib/workout/superset";
 import {
@@ -105,6 +106,8 @@ interface WorkoutState {
   rateSet: (exerciseIndex: number, setIndex: number, rpe: 'easy' | 'med' | 'hard') => void;
   /** Optional 0–5 RIR after log — never stamped by `logSet` (`.725`). */
   rateSetRir: (exerciseIndex: number, setIndex: number, rir: number | undefined) => void;
+  /** Optional 1–10 RPE after log — never stamped by `logSet` (`.967`). */
+  rateSetRpe10: (exerciseIndex: number, setIndex: number, rpe10: number | undefined) => void;
   /** Optional ecc/pause/con after log — last tempo prefills on `logSet` (`.734`). */
   rateSetTempo: (
     exerciseIndex: number,
@@ -498,6 +501,27 @@ export const useWorkoutStore = create<WorkoutState>()(
             const next = { ...sets[setIndex] };
             if (parsed === undefined) delete next.rir;
             else next.rir = parsed;
+            sets[setIndex] = next;
+          }
+          ex.sets = sets;
+          exercises[exerciseIndex] = ex;
+          return {
+            activeWorkout: { ...s.activeWorkout, exercises },
+          };
+        });
+      },
+
+      rateSetRpe10: (exerciseIndex, setIndex, rpe10) => {
+        set((s) => {
+          if (!s.activeWorkout) return s;
+          const parsed = parseOptionalRpe10(rpe10);
+          const exercises = [...s.activeWorkout.exercises];
+          const ex = { ...exercises[exerciseIndex] };
+          const sets = [...ex.sets];
+          if (sets[setIndex]) {
+            const next = { ...sets[setIndex] };
+            if (parsed === undefined) delete next.rpe10;
+            else next.rpe10 = parsed;
             sets[setIndex] = next;
           }
           ex.sets = sets;
