@@ -123,7 +123,8 @@ describe('quietWeekGlance source', () => {
     assert.doesNotMatch(src, /primary-action|bg-primary-fill|bg-accent-poster/);
     assert.doesNotMatch(src, /onClick|onKeyDown|<button|<Link\b/);
     assert.doesNotMatch(src, /Missed|line-through|✕|✗|&times;|streak|XP|Top 8|Feed/);
-    assert.doesNotMatch(src, /coachSessionMissed|TodayCoachWeekStrip|WeekStrip/);
+    assert.doesNotMatch(src, /coachSessionMissed|TodayCoachWeekStrip/);
+    assert.doesNotMatch(src, /from ['"]@\/components\/coach\/WeekStrip['"]/);
     assert.match(src, /defaultValue: 'Done'/);
     assert.match(src, /day\.done/);
   });

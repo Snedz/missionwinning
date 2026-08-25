@@ -2,7 +2,7 @@
 
 /**
  * Quiet Mon–Sun glance on Today. Done days marked. Empty days stay empty.
- * Not a Start. Not Coach WeekStrip. See: src/components/today/INDEX.md
+ * Not a Start. Not the Coach plan row. See: src/components/today/INDEX.md
  */
 
 import { useTranslation } from 'react-i18next';

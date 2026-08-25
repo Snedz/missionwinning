@@ -2,7 +2,7 @@
  * Quiet Mon–Sun glance for Today — diary, not a shame grid.
  *
  * Done = a live log on that local calendar day. Empty stays empty.
- * Planned holes are not an input. Never `toISOString()` for a date.
+ * Planned holes are not an input. Dates stay local-field.
  */
 
 import type { CompletedWorkoutLog } from '@/types';
