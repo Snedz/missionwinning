@@ -71,6 +71,11 @@ const LIBRARY_EN: Record<string, string> = {
   libraryClearPick: 'Clear',
   libraryTrainPicked: 'Train selected ({{count}})',
   libraryAddPickedToSession: 'Add {{count}} to session',
+  libraryHide: 'Hide this exercise',
+  libraryHideFromLibrary: 'Hide from library',
+  libraryUnhide: 'Unhide',
+  libraryHidden: 'Hidden',
+  libraryHiddenDesc: 'Hidden names stay off Add and search. History stays.',
 };
 
 const LIBRARY_ES: Record<string, string> = {

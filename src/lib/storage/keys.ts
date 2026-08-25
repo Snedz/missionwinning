@@ -34,6 +34,11 @@ export const STORAGE_KEYS = {
    * notebook, not a public catalog. Unlimited. Empty invents nothing.
    */
   customExercises: 'mw_custom_exercises',
+  /**
+   * `.1004` — exercise ids hidden from Add / search / picker.
+   * History / PRs / notes stay. Empty invents nothing.
+   */
+  hiddenExercises: 'mw_hidden_exercises',
   streak: 'mw_streak',
   /**
    * `.217` — the day `mw_streak` was last incremented. The override was a

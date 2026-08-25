@@ -32,6 +32,7 @@
  * `.1001` — pause the live session clock. Never a login wall.
  * `.1002` — merge duplicate exercises from History / library. Never a login wall.
  * `.1003` — delete one finished session from History. Never a login wall.
+ * `.1004` — hide this exercise from the library. Never a login wall.
  */
 
 export function normalizeAppPath(pathname: string | null | undefined): string {

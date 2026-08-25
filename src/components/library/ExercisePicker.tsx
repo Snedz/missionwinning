@@ -11,6 +11,10 @@ import {
   resolveExercise,
   upsertCustomExercise,
 } from '@/lib/workout/customExercise';
+import {
+  loadHiddenExerciseIds,
+  omitHiddenExercises,
+} from '@/lib/workout/hideExercise';
 import type { Exercise } from '@/types';
 import { cn } from '@/lib/utils';
 
@@ -42,7 +46,7 @@ export function ExercisePicker({
 
   const pickerExercises = useMemo(() => {
     void namedTick;
-    return exercisesForPicker(exercises);
+    return omitHiddenExercises(exercisesForPicker(exercises), loadHiddenExerciseIds());
   }, [exercises, namedTick]);
 
   const filtered = useMemo(

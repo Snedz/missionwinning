@@ -36,6 +36,7 @@ Root-level `@/lib/{name}` paths re-export from here for compatibility — prefer
 10a7. `backfillSession.ts` — mint one completed log they already did (`.1000`). Honest date. Empty invents nothing. Not Resume. Not Edit.  
 10a8. `mergeExercises.ts` — confirm-gated merge of two exercise ids (`.1002`). Empty / same / missing invents nothing.  
 10a9. `deleteFinishedSession.ts` — confirm-gated delete of one finished History log (`.1003`). Empty / live / missing invents nothing. Cannot recover.  
+10a10. `hideExercise.ts` — hide / unhide a library name (`.1004`). History stays. Empty / missing / already-hidden invents nothing.  
 10a3. `thinHistory.ts` — 1–2 live sessions are a notebook (`.971`). Wednesday and the week strip both read `isThinHistory`. Empty invents nothing.  
 10b. `openSessionContinuity.ts` — desk → gym decide for the *open* session (`.958`); `reconcileOpenSession.ts` pulls/applies. `sessionNote` stays on device
 10b2. `sessionResume.ts` — this-device leave/return + Finish-partial (`.963`). Live Start is keep. Empty leftovers invent no volume
@@ -130,6 +131,8 @@ Root-level `@/lib/{name}` paths re-export from here for compatibility — prefer
 | `mergeExercisesSurface.test.ts` | History / library door; Today one Start; confirm cannot be undone (`.1002`) |
 | `deleteFinishedSession.test.ts` | Confirm-gated delete; empty / live / missing invent nothing; other days stay (`.1003`) |
 | `deleteFinishedSessionSurface.test.ts` | History detail door; Today one Start; confirm cannot be recovered (`.1003`) |
+| `hideExercise.test.ts` | Hide / unhide; empty / missing / already-hidden invent nothing; history stays (`.1004`) |
+| `hideExerciseSurface.test.ts` | Library / overflow door; Today one Start; Add omits hidden (`.1004`) |
 | `backfillSession.test.ts` | Past-session mint: date + work applies; empty / 0/0/0 / future invent nothing; timing off is duration 0 (`.1000`) |
 | `backfillSessionSurface.test.ts` | History + Train overflow door; Today one Start; Edit stays on History (`.1000`) |
 | `garageSwap.test.ts` | Garage list ≤2, load clear, plan-line swap, wiring (`.752`) |

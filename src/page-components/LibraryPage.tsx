@@ -23,6 +23,12 @@ import {
 } from '@/components/ui/dialog';
 import { HistoryMergeExercises } from '@/components/history/HistoryMergeExercises';
 import { decideMergeExercises, knownIdsForMerge } from '@/lib/workout/mergeExercises';
+import {
+  listHiddenExercises,
+  loadHiddenExerciseIds,
+  omitHiddenExercises,
+  unhideExerciseNow,
+} from '@/lib/workout/hideExercise';
 import { PillarPageShell } from '@/components/layout/PillarPageShell';
 import { LibraryDetailSheet } from '@/components/library/LibraryDetailSheet';
 import { EmptyState } from '@/components/ui/EmptyState';
@@ -83,6 +89,7 @@ export function LibraryPage() {
   const savedWorkouts = useWorkoutStore((s) => s.savedWorkouts);
   const applyMergedExercises = useWorkoutStore((s) => s.applyMergedExercises);
   const [mergeOpen, setMergeOpen] = useState(false);
+  const [hideTick, setHideTick] = useState(0);
   const [filters, setFilters] = useState<LibraryFilterState>({ ...DEFAULT_LIBRARY_FILTERS });
   const [detailId, setDetailId] = useState<string | null>(null);
   const [catalogRevision, setCatalogRevision] = useState(0);
@@ -111,12 +118,29 @@ export function LibraryPage() {
     return allMuscles.filter((m) => m.toLowerCase().includes(q));
   }, [allMuscles, muscleQuery]);
 
-  const filtered = useMemo(
-    () => filterExercises(EXERCISES, filters),
+  const hiddenIds = useMemo(() => {
+    void hideTick;
+    return loadHiddenExerciseIds();
+  }, [hideTick]);
+  const visibleCatalog = useMemo(
+    () => omitHiddenExercises(EXERCISES, hiddenIds),
     // eslint-disable-next-line react-hooks/exhaustive-deps -- in-place catalog extension
-    [filters, catalogRevision]
+    [hiddenIds, catalogRevision]
   );
-  const detailExercise = detailId ? EXERCISES.find((e) => e.id === detailId) ?? null : null;
+  const hiddenRows = useMemo(
+    () => listHiddenExercises({ hiddenIds }),
+    [hiddenIds]
+  );
+  const filtered = useMemo(
+    () => filterExercises(visibleCatalog, filters),
+    [visibleCatalog, filters]
+  );
+  const detailExercise = detailId
+    ? visibleCatalog.find((e) => e.id === detailId) ??
+      EXERCISES.find((e) => e.id === detailId) ??
+      null
+    : null;
+  const bumpHide = () => setHideTick((n) => n + 1);
 
   const setFilter = <K extends keyof LibraryFilterState>(key: K, value: LibraryFilterState[K]) => {
     setFilters((prev) => ({ ...prev, [key]: value }));
@@ -179,6 +203,42 @@ export function LibraryPage() {
       >
         {t('historyMerge', { defaultValue: 'Merge duplicate exercises' })}
       </Button>
+      {hiddenRows.length > 0 ? (
+        <div
+          className="mb-3 space-y-2 border-2 border-border p-3"
+          data-testid="library-hidden"
+        >
+          <p className="font-mono text-[10px] uppercase tracking-wider text-muted-foreground">
+            {t('libraryHidden', { defaultValue: 'Hidden' })}
+          </p>
+          <p className="text-xs text-muted-foreground">
+            {t('libraryHiddenDesc', {
+              defaultValue: 'Hidden names stay off Add and search. History stays.',
+            })}
+          </p>
+          <ul className="space-y-1">
+            {hiddenRows.map((row) => (
+              <li
+                key={row.id}
+                className="flex min-h-[44px] items-center justify-between gap-2"
+              >
+                <span className="text-sm font-semibold">{row.name}</span>
+                <Button
+                  type="button"
+                  variant="outline"
+                  className="min-h-[44px] shrink-0 tap-target"
+                  data-testid="library-unhide"
+                  onClick={() => {
+                    if (unhideExerciseNow(row.id)) bumpHide();
+                  }}
+                >
+                  {t('libraryUnhide', { defaultValue: 'Unhide' })}
+                </Button>
+              </li>
+            ))}
+          </ul>
+        </div>
+      ) : null}
       <div className="sticky top-0 z-10 -mx-1 space-y-2 border-b-2 border-border bg-background py-2">
         <div className="flex gap-2">
           <div className="relative flex-1">
@@ -247,8 +307,8 @@ export function LibraryPage() {
         <p className="text-xs text-muted-foreground">
           {t('libraryShowingCount', {
             shown: filtered.length,
-            total: EXERCISES.length,
-            defaultValue: `Showing ${filtered.length} of ${EXERCISES.length}`,
+            total: visibleCatalog.length,
+            defaultValue: `Showing ${filtered.length} of ${visibleCatalog.length}`,
           })}
         </p>
       </div>
@@ -551,6 +611,12 @@ export function LibraryPage() {
         onOpenChange={(open) => !open && setDetailId(null)}
         onSelectExercise={(id) => setDetailId(id)}
         neighborIds={filtered.map((e) => e.id)}
+        onHidden={() => {
+          if (detailId) {
+            setPickedIds((prev) => prev.filter((id) => id !== detailId));
+          }
+          bumpHide();
+        }}
       />
 
       {pickMode && (

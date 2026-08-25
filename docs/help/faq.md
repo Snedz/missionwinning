@@ -23,6 +23,9 @@ On History or Library, open **Merge duplicate exercises**. Pick the name to move
 **I logged a session on the wrong day.**  
 Open that finished session in History and **Delete this session**. Confirm — it cannot be recovered. Other days stay. This does not wipe your account and does not cancel a live workout.
 
+**How do I hide a movement from Add?**  
+Open it in Library and tap **Hide this exercise**, or use **Hide from library** on the live lift overflow. The name leaves Add and search. Past sets, PRs, and notes stay. Unhide it from the Hidden list on Library. The app does not hide lookalikes.
+
 **What does Victory show after I finish?**  
 A private receipt of the session you just logged — sets, load, duration when the clock ran (you can pause the session clock on Train so a phone call does not count), and vs last time when you have done the same lifts before. Each lift can show last-time **Prev** and beaten PRs. Stay, screenshot, or save a copy on this device. There is no public workout link. A session with no sets has no receipt. A first session has no invented PR. Instant, offline, and free. Share is optional; nothing is unlocked by posting.
 

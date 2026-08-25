@@ -23,6 +23,7 @@ import { useWorkoutStore } from '@/store/workoutStore';
 import { countsTowardVolume } from '@/lib/workout/setKind';
 import { inferFormPattern } from '@/lib/formPatterns';
 import { PATTERN_FILTER_LABELS } from '@/lib/libraryFilters';
+import { hideExerciseNow } from '@/lib/workout/hideExercise';
 
 type Props = {
   exercise: Exercise | null;
@@ -35,6 +36,8 @@ type Props = {
    * only alternatives / external select still work.
    */
   neighborIds?: string[];
+  /** After hide — parent refreshes the visible catalog. */
+  onHidden?: () => void;
 };
 
 export function LibraryDetailSheet({
@@ -43,6 +46,7 @@ export function LibraryDetailSheet({
   onOpenChange,
   onSelectExercise,
   neighborIds,
+  onHidden,
 }: Props) {
   const { t } = useTranslation();
   const router = useRouter();
@@ -104,6 +108,13 @@ export function LibraryDetailSheet({
       total: neighborIds.length,
     };
   }, [exercise, neighborIds]);
+
+  const hideFromLibrary = () => {
+    if (!exercise) return;
+    if (!hideExerciseNow(exercise.id)) return;
+    onHidden?.();
+    onOpenChange(false);
+  };
 
   const addToSession = () => {
     if (!exercise) return;
@@ -327,6 +338,15 @@ export function LibraryDetailSheet({
                     {t('libraryViewFormGuide', { defaultValue: 'Full form guide' })}
                   </Button>
                 )}
+                <Button
+                  type="button"
+                  variant="outline"
+                  className="min-h-[44px] border-2 w-full tap-target"
+                  data-testid="library-hide"
+                  onClick={hideFromLibrary}
+                >
+                  {t('libraryHide', { defaultValue: 'Hide this exercise' })}
+                </Button>
               </div>
           )}
       </AdaptiveOverlay>

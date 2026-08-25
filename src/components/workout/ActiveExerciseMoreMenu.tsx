@@ -15,6 +15,12 @@ import {
   shouldShowExerciseSwapMenuitem,
 } from '@/lib/workout/activeWorkoutHelpers';
 import { SESSION_E1RM_COPY } from '@/lib/workout/sessionE1rm';
+import {
+  hideExerciseNow,
+  isExerciseHidden,
+  loadHiddenExerciseIds,
+  unhideExerciseNow,
+} from '@/lib/workout/hideExercise';
 
 type Props = {
   open: boolean;
@@ -56,6 +62,7 @@ export function ActiveExerciseMoreMenu({
   onRemove,
 }: Props) {
   const { t } = useTranslation();
+  const hidden = isExerciseHidden(exerciseId, loadHiddenExerciseIds());
 
   return (
     <div className="relative">
@@ -154,6 +161,21 @@ export function ActiveExerciseMoreMenu({
                 {e1rmVisible
                   ? t('activeE1rmHide', { defaultValue: SESSION_E1RM_COPY.hide })
                   : t('activeE1rmShow', { defaultValue: SESSION_E1RM_COPY.show })}
+              </button>
+              <button
+                type="button"
+                role="menuitem"
+                data-testid="active-hide-from-library"
+                className="flex w-full min-h-[44px] items-center px-3 text-sm hover:bg-muted text-start"
+                onClick={() => {
+                  if (hidden) unhideExerciseNow(exerciseId);
+                  else hideExerciseNow(exerciseId, { live: [{ exerciseId }] });
+                  onOpenChange(false);
+                }}
+              >
+                {hidden
+                  ? t('libraryUnhide', { defaultValue: 'Unhide' })
+                  : t('libraryHideFromLibrary', { defaultValue: 'Hide from library' })}
               </button>
             </div>
             <div className="border-t-2 border-border px-1 pt-1 space-y-1">
